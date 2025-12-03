@@ -1,16 +1,16 @@
 @interface WCRBloomFilter
-+ (BOOL)_shouldBlock:(id)a3 withBloomFilter:(id)a4 useCipherML:(BOOL)a5;
-+ (id)_matchingStringsForDomain:(id)a3;
-+ (id)_matchingStringsForURL:(id)a3;
-+ (id)_nameOfNewestFile:(id)a3;
-+ (void)reportAnalyticsBloomFilterVersion:(id)a3 withAppleAllowListVersion:(id)a4;
-- (BOOL)shouldBlock:(id)a3;
++ (BOOL)_shouldBlock:(id)block withBloomFilter:(id)filter useCipherML:(BOOL)l;
++ (id)_matchingStringsForDomain:(id)domain;
++ (id)_matchingStringsForURL:(id)l;
++ (id)_nameOfNewestFile:(id)file;
++ (void)reportAnalyticsBloomFilterVersion:(id)version withAppleAllowListVersion:(id)listVersion;
+- (BOOL)shouldBlock:(id)block;
 - (WCRBloomFilter)init;
-- (id)initFromFile:(id)a3;
+- (id)initFromFile:(id)file;
 - (void)_loadFilterResourcesFromLocalFallback;
 - (void)_loadFilterResourcesFromMobileAsset;
-- (void)_loadFilterResourcesFromMobileAsset:(id)a3;
-- (void)_loadFilterResourcesWithMobileAssetPath:(id)a3;
+- (void)_loadFilterResourcesFromMobileAsset:(id)asset;
+- (void)_loadFilterResourcesWithMobileAssetPath:(id)path;
 @end
 
 @implementation WCRBloomFilter
@@ -84,16 +84,16 @@ uint64_t __22__WCRBloomFilter_init__block_invoke_2(uint64_t a1)
   return [v5 _loadFilterResourcesFromMobileAsset];
 }
 
-- (id)initFromFile:(id)a3
+- (id)initFromFile:(id)file
 {
-  v5 = a3;
+  fileCopy = file;
   v12.receiver = self;
   v12.super_class = WCRBloomFilter;
   v6 = [(WCRBloomFilter *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_localPath, a3);
+    objc_storeStrong(&v6->_localPath, file);
     v8 = [[_TtC22WebContentRestrictions15BloomFilterShim alloc] initWithPath:v7->_localPath];
     bloomFilter = v7->_bloomFilter;
     v7->_bloomFilter = v8;
@@ -107,13 +107,13 @@ uint64_t __22__WCRBloomFilter_init__block_invoke_2(uint64_t a1)
 
 - (void)_loadFilterResourcesFromMobileAsset
 {
-  v3 = [(WCRBloomFilter *)self autoAsset];
+  autoAsset = [(WCRBloomFilter *)self autoAsset];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __53__WCRBloomFilter__loadFilterResourcesFromMobileAsset__block_invoke;
   v4[3] = &unk_279E7F230;
   v4[4] = self;
-  [v3 startUsingLocalAsset:v4];
+  [autoAsset startUsingLocalAsset:v4];
 }
 
 void __53__WCRBloomFilter__loadFilterResourcesFromMobileAsset__block_invoke(uint64_t a1, void *a2)
@@ -130,74 +130,74 @@ void __53__WCRBloomFilter__loadFilterResourcesFromMobileAsset__block_invoke(uint
   dispatch_async(v4, v6);
 }
 
-- (void)_loadFilterResourcesWithMobileAssetPath:(id)a3
+- (void)_loadFilterResourcesWithMobileAssetPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     [(WCRBloomFilter *)self _loadFilterResourcesFromMobileAsset:?];
   }
 
   [(WCRBloomFilter *)self _loadFilterResourcesFromLocalFallback];
   v4 = objc_opt_class();
-  v11 = [(WCRBloomFilter *)self localPath];
-  v5 = [v11 lastPathComponent];
-  v6 = [v5 stringByDeletingPathExtension];
-  v7 = [(WCRBloomFilter *)self appleAllowList];
-  v8 = [v7 localPath];
-  v9 = [v8 lastPathComponent];
-  v10 = [v9 stringByDeletingPathExtension];
-  [v4 reportAnalyticsBloomFilterVersion:v6 withAppleAllowListVersion:v10];
+  localPath = [(WCRBloomFilter *)self localPath];
+  lastPathComponent = [localPath lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  appleAllowList = [(WCRBloomFilter *)self appleAllowList];
+  localPath2 = [appleAllowList localPath];
+  lastPathComponent2 = [localPath2 lastPathComponent];
+  stringByDeletingPathExtension2 = [lastPathComponent2 stringByDeletingPathExtension];
+  [v4 reportAnalyticsBloomFilterVersion:stringByDeletingPathExtension withAppleAllowListVersion:stringByDeletingPathExtension2];
 }
 
 - (void)_loadFilterResourcesFromLocalFallback
 {
-  v3 = [(WCRBloomFilter *)self bloomFilter];
+  bloomFilter = [(WCRBloomFilter *)self bloomFilter];
 
-  if (!v3)
+  if (!bloomFilter)
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Loading fallback filter %@", @"WCRFilter-2025-04-07.plist"];
     [WCRLogging log:v4 withType:0];
 
     v5 = [MEMORY[0x277CCA8D8] bundleWithPath:@"/System/Library/PrivateFrameworks/WebContentRestrictions.framework"];
-    v6 = [@"WCRFilter-2025-04-07.plist" stringByDeletingPathExtension];
-    v7 = [@"WCRFilter-2025-04-07.plist" pathExtension];
-    v8 = [v5 pathForResource:v6 ofType:v7];
+    stringByDeletingPathExtension = [@"WCRFilter-2025-04-07.plist" stringByDeletingPathExtension];
+    pathExtension = [@"WCRFilter-2025-04-07.plist" pathExtension];
+    v8 = [v5 pathForResource:stringByDeletingPathExtension ofType:pathExtension];
 
     [(WCRBloomFilter *)self setLocalPath:v8];
     v9 = [_TtC22WebContentRestrictions15BloomFilterShim alloc];
-    v10 = [(WCRBloomFilter *)self localPath];
-    v11 = [(BloomFilterShim *)v9 initWithPath:v10];
+    localPath = [(WCRBloomFilter *)self localPath];
+    v11 = [(BloomFilterShim *)v9 initWithPath:localPath];
     [(WCRBloomFilter *)self setBloomFilter:v11];
 
-    v12 = [(WCRBloomFilter *)self bloomFilter];
+    bloomFilter2 = [(WCRBloomFilter *)self bloomFilter];
 
-    if (v12)
+    if (bloomFilter2)
     {
       v13 = MEMORY[0x277CCACA8];
-      v14 = [(WCRBloomFilter *)self localPath];
-      v15 = [v13 stringWithFormat:@"Loaded fallback filter at path %@", v14];
+      localPath2 = [(WCRBloomFilter *)self localPath];
+      v15 = [v13 stringWithFormat:@"Loaded fallback filter at path %@", localPath2];
       [WCRLogging log:v15 withType:0];
     }
   }
 
-  v16 = [(WCRBloomFilter *)self appleAllowList];
+  appleAllowList = [(WCRBloomFilter *)self appleAllowList];
 
-  if (!v16)
+  if (!appleAllowList)
   {
     v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Loading fallback Apple allow list %@", @"WCRAppleAllowList-2025-04-07.plist"];
     [WCRLogging log:v17 withType:0];
 
     v18 = [MEMORY[0x277CCA8D8] bundleWithPath:@"/System/Library/PrivateFrameworks/WebContentRestrictions.framework"];
-    v19 = [@"WCRAppleAllowList-2025-04-07.plist" stringByDeletingPathExtension];
-    v20 = [@"WCRAppleAllowList-2025-04-07.plist" pathExtension];
-    v24 = [v18 pathForResource:v19 ofType:v20];
+    stringByDeletingPathExtension2 = [@"WCRAppleAllowList-2025-04-07.plist" stringByDeletingPathExtension];
+    pathExtension2 = [@"WCRAppleAllowList-2025-04-07.plist" pathExtension];
+    v24 = [v18 pathForResource:stringByDeletingPathExtension2 ofType:pathExtension2];
 
     v21 = [[WCRAppleAllowList alloc] initFromFile:v24];
     [(WCRBloomFilter *)self setAppleAllowList:v21];
 
-    v22 = [(WCRBloomFilter *)self appleAllowList];
+    appleAllowList2 = [(WCRBloomFilter *)self appleAllowList];
 
-    if (v22)
+    if (appleAllowList2)
     {
       v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"Loaded fallback Apple allow list at path %@", v24];
       [WCRLogging log:v23 withType:0];
@@ -205,23 +205,23 @@ void __53__WCRBloomFilter__loadFilterResourcesFromMobileAsset__block_invoke(uint
   }
 }
 
-- (void)_loadFilterResourcesFromMobileAsset:(id)a3
+- (void)_loadFilterResourcesFromMobileAsset:(id)asset
 {
-  v24 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v4 fileExistsAtPath:v24])
+  assetCopy = asset;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:assetCopy])
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Will use MobileAsset bundle path: %@", v24];
-    [WCRLogging log:v5 withType:2];
+    assetCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Will use MobileAsset bundle path: %@", assetCopy];
+    [WCRLogging log:assetCopy withType:2];
 
-    v6 = [v24 stringByAppendingPathComponent:@"Bloom Filters"];
-    v7 = [v4 contentsOfDirectoryAtPath:v6 error:0];
+    assetCopy2 = [assetCopy stringByAppendingPathComponent:@"Bloom Filters"];
+    v7 = [defaultManager contentsOfDirectoryAtPath:assetCopy2 error:0];
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Content of bloom filters dir: %@", v7];
     [WCRLogging log:v8 withType:2];
 
     v23 = v7;
     v9 = [objc_opt_class() _nameOfNewestFile:v7];
-    v10 = [v6 stringByAppendingPathComponent:v9];
+    v10 = [assetCopy2 stringByAppendingPathComponent:v9];
 
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Loading bloom filter from MobileAsset bundle: %@", v10];
     [WCRLogging log:v11 withType:2];
@@ -230,16 +230,16 @@ void __53__WCRBloomFilter__loadFilterResourcesFromMobileAsset__block_invoke(uint
     v12 = [[_TtC22WebContentRestrictions15BloomFilterShim alloc] initWithPath:v10];
     [(WCRBloomFilter *)self setBloomFilter:v12];
 
-    v13 = [(WCRBloomFilter *)self bloomFilter];
+    bloomFilter = [(WCRBloomFilter *)self bloomFilter];
 
-    if (v13)
+    if (bloomFilter)
     {
       v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Loaded bloom filter at path %@", v10];
       [WCRLogging log:v14 withType:0];
     }
 
-    v15 = [v24 stringByAppendingPathComponent:@"Apple Allow Lists"];
-    v16 = [v4 contentsOfDirectoryAtPath:v15 error:0];
+    v15 = [assetCopy stringByAppendingPathComponent:@"Apple Allow Lists"];
+    v16 = [defaultManager contentsOfDirectoryAtPath:v15 error:0];
     v17 = [objc_opt_class() _nameOfNewestFile:v16];
     v18 = [v15 stringByAppendingPathComponent:v17];
 
@@ -249,9 +249,9 @@ void __53__WCRBloomFilter__loadFilterResourcesFromMobileAsset__block_invoke(uint
     v20 = [[WCRAppleAllowList alloc] initFromFile:v18];
     [(WCRBloomFilter *)self setAppleAllowList:v20];
 
-    v21 = [(WCRBloomFilter *)self appleAllowList];
+    appleAllowList = [(WCRBloomFilter *)self appleAllowList];
 
-    if (v21)
+    if (appleAllowList)
     {
       v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"Loaded Apple allow list at path %@", v18];
       [WCRLogging log:v22 withType:0];
@@ -260,46 +260,46 @@ void __53__WCRBloomFilter__loadFilterResourcesFromMobileAsset__block_invoke(uint
 
   else
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"MobileAsset bundle doesn't exist at path: %@", v24];
-    [WCRLogging log:v6 withType:1];
+    assetCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"MobileAsset bundle doesn't exist at path: %@", assetCopy];
+    [WCRLogging log:assetCopy2 withType:1];
   }
 }
 
-+ (id)_nameOfNewestFile:(id)a3
++ (id)_nameOfNewestFile:(id)file
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  fileCopy = file;
+  v4 = fileCopy;
+  if (fileCopy && [fileCopy count])
   {
     v5 = [v4 sortedArrayUsingComparator:&__block_literal_global];
-    v6 = [v5 lastObject];
+    lastObject = [v5 lastObject];
   }
 
   else
   {
-    v6 = 0;
+    lastObject = 0;
   }
 
-  return v6;
+  return lastObject;
 }
 
-- (BOOL)shouldBlock:(id)a3
+- (BOOL)shouldBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_opt_class();
-  v6 = [(WCRBloomFilter *)self bloomFilter];
-  LOBYTE(self) = [v5 _shouldBlock:v4 withBloomFilter:v6 useCipherML:{-[WCRBloomFilter useCipherML](self, "useCipherML")}];
+  bloomFilter = [(WCRBloomFilter *)self bloomFilter];
+  LOBYTE(self) = [v5 _shouldBlock:blockCopy withBloomFilter:bloomFilter useCipherML:{-[WCRBloomFilter useCipherML](self, "useCipherML")}];
 
   return self;
 }
 
-+ (BOOL)_shouldBlock:(id)a3 withBloomFilter:(id)a4 useCipherML:(BOOL)a5
++ (BOOL)_shouldBlock:(id)block withBloomFilter:(id)filter useCipherML:(BOOL)l
 {
-  v5 = a5;
+  lCopy = l;
   v44 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_opt_class() _matchingStringsForURL:v7];
+  blockCopy = block;
+  filterCopy = filter;
+  v9 = [objc_opt_class() _matchingStringsForURL:blockCopy];
   v10 = v9;
   if (v9)
   {
@@ -311,9 +311,9 @@ void __53__WCRBloomFilter__loadFilterResourcesFromMobileAsset__block_invoke(uint
     v12 = [v11 countByEnumeratingWithState:&v35 objects:v43 count:16];
     if (v12)
     {
-      v31 = v5;
+      v31 = lCopy;
       v32 = v10;
-      v33 = v7;
+      v33 = blockCopy;
       v13 = *v36;
 LABEL_4:
       v14 = 0;
@@ -325,7 +325,7 @@ LABEL_4:
         }
 
         v15 = *(*(&v35 + 1) + 8 * v14);
-        v16 = [v8 contains:v15];
+        v16 = [filterCopy contains:v15];
         v17 = __WCRDefaultLog();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
@@ -356,7 +356,7 @@ LABEL_4:
           }
 
           v19 = 0;
-          v7 = v33;
+          blockCopy = v33;
           goto LABEL_29;
         }
       }
@@ -368,7 +368,7 @@ LABEL_4:
       {
         v19 = 1;
         v10 = v32;
-        v7 = v33;
+        blockCopy = v33;
         goto LABEL_31;
       }
 
@@ -377,7 +377,7 @@ LABEL_4:
       v21 = v34;
       v11 = v21;
       v22 = MEMORY[0x277CCACA8];
-      v7 = v33;
+      blockCopy = v33;
       if (v20 || !v21)
       {
         v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"CipherML response: %@", v20];
@@ -408,10 +408,10 @@ LABEL_31:
 
   else
   {
-    v25 = [v7 scheme];
+    scheme = [blockCopy scheme];
 
     v26 = @"Unknown format";
-    if (!v25)
+    if (!scheme)
     {
       v26 = @"Missing a scheme (e.g. https://)";
     }
@@ -426,11 +426,11 @@ LABEL_31:
   return v19;
 }
 
-+ (id)_matchingStringsForDomain:(id)a3
++ (id)_matchingStringsForDomain:(id)domain
 {
-  if (a3)
+  if (domain)
   {
-    v3 = [a3 componentsSeparatedByString:@"."];
+    v3 = [domain componentsSeparatedByString:@"."];
     v4 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v3, "count")}];
     if ([v3 count])
     {
@@ -460,35 +460,35 @@ LABEL_31:
   return v9;
 }
 
-+ (id)_matchingStringsForURL:(id)a3
++ (id)_matchingStringsForURL:(id)l
 {
   v56 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  lCopy = l;
+  v4 = lCopy;
+  if (lCopy)
   {
     v5 = MEMORY[0x277CBEB58];
-    v6 = [v3 pathComponents];
-    v7 = [v5 setWithCapacity:{objc_msgSend(v6, "count")}];
+    pathComponents = [lCopy pathComponents];
+    v7 = [v5 setWithCapacity:{objc_msgSend(pathComponents, "count")}];
 
-    v8 = [v4 host];
+    host = [v4 host];
 
-    if (v8)
+    if (host)
     {
       v9 = objc_opt_class();
-      v10 = [v4 host];
-      v11 = [v9 _matchingStringsForDomain:v10];
+      host2 = [v4 host];
+      v11 = [v9 _matchingStringsForDomain:host2];
 
-      v12 = [v11 allObjects];
-      [v7 addObjectsFromArray:v12];
+      allObjects = [v11 allObjects];
+      [v7 addObjectsFromArray:allObjects];
 
-      v13 = [v4 host];
-      v14 = [v13 hasPrefix:@"www."];
-      v15 = [v4 host];
-      v16 = v15;
+      host3 = [v4 host];
+      v14 = [host3 hasPrefix:@"www."];
+      host4 = [v4 host];
+      v16 = host4;
       if (v14)
       {
-        v17 = [v15 stringByReplacingOccurrencesOfString:@"www." withString:&stru_288271F70];
+        v17 = [host4 stringByReplacingOccurrencesOfString:@"www." withString:&stru_288271F70];
 
         v16 = v17;
       }
@@ -499,13 +499,13 @@ LABEL_31:
         [v7 addObject:v16];
         v49 = v16;
         v18 = v16;
-        v19 = [v4 host];
+        host5 = [v4 host];
         v51 = 0u;
         v52 = 0u;
         v53 = 0u;
         v54 = 0u;
-        v20 = [v4 pathComponents];
-        v21 = [v20 countByEnumeratingWithState:&v51 objects:v55 count:16];
+        pathComponents2 = [v4 pathComponents];
+        v21 = [pathComponents2 countByEnumeratingWithState:&v51 objects:v55 count:16];
         if (v21)
         {
           v22 = v21;
@@ -514,48 +514,48 @@ LABEL_31:
           {
             v24 = 0;
             v25 = v18;
-            v26 = v19;
+            v26 = host5;
             do
             {
               if (*v52 != v23)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(pathComponents2);
               }
 
               v27 = *(*(&v51 + 1) + 8 * v24);
               v18 = [v25 stringByAppendingPathComponent:v27];
 
-              v19 = [v26 stringByAppendingPathComponent:v27];
+              host5 = [v26 stringByAppendingPathComponent:v27];
 
               v28 = [v18 copy];
               [v7 addObject:v28];
 
-              v29 = [v19 copy];
+              v29 = [host5 copy];
               [v7 addObject:v29];
 
               ++v24;
               v25 = v18;
-              v26 = v19;
+              v26 = host5;
             }
 
             while (v22 != v24);
-            v22 = [v20 countByEnumeratingWithState:&v51 objects:v55 count:16];
+            v22 = [pathComponents2 countByEnumeratingWithState:&v51 objects:v55 count:16];
           }
 
           while (v22);
         }
 
-        v30 = [v4 query];
+        query = [v4 query];
 
-        if (v30)
+        if (query)
         {
           v31 = MEMORY[0x277CCACA8];
-          v32 = [v4 query];
-          v33 = [v31 stringWithFormat:@"?%@", v32];
+          query2 = [v4 query];
+          v33 = [v31 stringWithFormat:@"?%@", query2];
 
           v34 = [v18 stringByAppendingString:v33];
 
-          v35 = [v19 stringByAppendingString:v33];
+          v35 = [host5 stringByAppendingString:v33];
 
           v36 = [v34 copy];
           [v7 addObject:v36];
@@ -564,21 +564,21 @@ LABEL_31:
           [v7 addObject:v37];
 
           v18 = v34;
-          v19 = v35;
+          host5 = v35;
         }
 
-        v38 = [v4 fragment];
+        fragment = [v4 fragment];
 
         v16 = v49;
-        if (v38)
+        if (fragment)
         {
           v39 = MEMORY[0x277CCACA8];
-          v40 = [v4 fragment];
-          v41 = [v39 stringWithFormat:@"#%@", v40];
+          fragment2 = [v4 fragment];
+          v41 = [v39 stringWithFormat:@"#%@", fragment2];
 
           v42 = [v18 stringByAppendingString:v41];
 
-          v43 = [v19 stringByAppendingString:v41];
+          v43 = [host5 stringByAppendingString:v41];
 
           v44 = [v42 copy];
           [v7 addObject:v44];
@@ -587,7 +587,7 @@ LABEL_31:
           [v7 addObject:v45];
 
           v18 = v42;
-          v19 = v43;
+          host5 = v43;
         }
 
         v11 = v50;
@@ -616,14 +616,14 @@ LABEL_31:
   return v46;
 }
 
-+ (void)reportAnalyticsBloomFilterVersion:(id)a3 withAppleAllowListVersion:(id)a4
++ (void)reportAnalyticsBloomFilterVersion:(id)version withAppleAllowListVersion:(id)listVersion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  versionCopy = version;
+  listVersionCopy = listVersion;
+  v7 = listVersionCopy;
+  if (versionCopy && listVersionCopy)
   {
-    v9 = v5;
+    v9 = versionCopy;
     v10 = v7;
     AnalyticsSendEventLazy();
   }

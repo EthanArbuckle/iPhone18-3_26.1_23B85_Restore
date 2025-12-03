@@ -1,26 +1,26 @@
 @interface TFDataAggregationTask
 + (CGSize)screenDimensions;
 + (double)batteryLevel;
-+ (id)anytimeTasksForSession:(id)a3;
++ (id)anytimeTasksForSession:(id)session;
 + (id)cellularServiceInfo;
 + (id)deviceInfoTask;
 + (id)networkInfoTask;
 + (id)networkType;
 + (id)regionInfoTask;
-+ (id)sessionInfoTaskForIdentifier:(id)a3;
-+ (id)snapshotTasksForSession:(id)a3;
++ (id)sessionInfoTaskForIdentifier:(id)identifier;
++ (id)snapshotTasksForSession:(id)session;
 + (id)watchInfoTask;
-- (TFDataAggregationTask)initWithName:(id)a3 providedEntryIdentifiers:(id)a4;
-- (void)extractDataPropertiesFromData:(id)a3 intoDataContainer:(id)a4;
-- (void)loadDataOnQueue:(id)a3 withCompletionHandler:(id)a4;
+- (TFDataAggregationTask)initWithName:(id)name providedEntryIdentifiers:(id)identifiers;
+- (void)extractDataPropertiesFromData:(id)data intoDataContainer:(id)container;
+- (void)loadDataOnQueue:(id)queue withCompletionHandler:(id)handler;
 @end
 
 @implementation TFDataAggregationTask
 
 + (CGSize)screenDimensions
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
   v6 = v5;
 
@@ -33,11 +33,11 @@
 
 + (double)batteryLevel
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  [v2 setBatteryMonitoringEnabled:1];
-  [v2 batteryLevel];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  [currentDevice setBatteryMonitoringEnabled:1];
+  [currentDevice batteryLevel];
   v4 = v3;
-  [v2 setBatteryMonitoringEnabled:0];
+  [currentDevice setBatteryMonitoringEnabled:0];
 
   return v4;
 }
@@ -165,7 +165,7 @@ void __51__TFDataAggregationTask_DeviceInfo__deviceInfoTask__block_invoke_3(uint
   v7[1] = 3221225472;
   v7[2] = __53__TFDataAggregationTask_NetworkInfo__networkInfoTask__block_invoke;
   v7[3] = &__block_descriptor_40_e25_v16__0___v_____NSError__8l;
-  v7[4] = a1;
+  v7[4] = self;
   [(TFDataAggregationTask *)v5 setLoadDataBlock:v7];
   [(TFDataAggregationTask *)v5 setExtractValuesBlock:&__block_literal_global_1];
 
@@ -247,19 +247,19 @@ void __53__TFDataAggregationTask_NetworkInfo__networkInfoTask__block_invoke_3(ui
   v21[10] = @"LTE";
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:11];
   v8 = objc_alloc_init(MEMORY[0x277CC3790]);
-  v9 = [v8 serviceSubscriberCellularProviders];
-  v10 = [v9 allKeys];
-  v11 = [v10 firstObject];
+  serviceSubscriberCellularProviders = [v8 serviceSubscriberCellularProviders];
+  allKeys = [serviceSubscriberCellularProviders allKeys];
+  firstObject = [allKeys firstObject];
 
-  if (v11)
+  if (firstObject)
   {
     v12 = objc_opt_new();
-    v13 = [v9 objectForKeyedSubscript:v11];
-    v14 = [v13 carrierName];
+    v13 = [serviceSubscriberCellularProviders objectForKeyedSubscript:firstObject];
+    carrierName = [v13 carrierName];
 
-    [v12 setObject:v14 forKeyedSubscript:@"t"];
-    v15 = [v8 serviceCurrentRadioAccessTechnology];
-    v16 = [v15 objectForKeyedSubscript:v11];
+    [v12 setObject:carrierName forKeyedSubscript:@"t"];
+    serviceCurrentRadioAccessTechnology = [v8 serviceCurrentRadioAccessTechnology];
+    v16 = [serviceCurrentRadioAccessTechnology objectForKeyedSubscript:firstObject];
 
     v17 = [v7 objectForKeyedSubscript:v16];
     [v12 setObject:v17 forKeyedSubscript:@"u"];
@@ -277,19 +277,19 @@ void __53__TFDataAggregationTask_NetworkInfo__networkInfoTask__block_invoke_3(ui
 
 + (id)networkType
 {
-  v2 = [MEMORY[0x277CD9200] sharedDefaultEvaluator];
-  v3 = [v2 path];
-  if ([v3 usesInterfaceType:1])
+  mEMORY[0x277CD9200] = [MEMORY[0x277CD9200] sharedDefaultEvaluator];
+  path = [mEMORY[0x277CD9200] path];
+  if ([path usesInterfaceType:1])
   {
     v4 = @"WI_FI";
   }
 
-  else if ([v3 usesInterfaceType:2])
+  else if ([path usesInterfaceType:2])
   {
     v4 = @"MOBILE_DATA";
   }
 
-  else if ([v3 usesInterfaceType:3])
+  else if ([path usesInterfaceType:3])
   {
     v4 = @"WIRE";
   }
@@ -302,10 +302,10 @@ void __53__TFDataAggregationTask_NetworkInfo__networkInfoTask__block_invoke_3(ui
   return v4;
 }
 
-+ (id)sessionInfoTaskForIdentifier:(id)a3
++ (id)sessionInfoTaskForIdentifier:(id)identifier
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [TFDataAggregationTask alloc];
   v11[0] = @"i";
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
@@ -315,8 +315,8 @@ void __53__TFDataAggregationTask_NetworkInfo__networkInfoTask__block_invoke_3(ui
   v9[1] = 3221225472;
   v9[2] = __67__TFDataAggregationTask_SessionInfo__sessionInfoTaskForIdentifier___block_invoke;
   v9[3] = &unk_279D98298;
-  v10 = v3;
-  v7 = v3;
+  v10 = identifierCopy;
+  v7 = identifierCopy;
   [(TFDataAggregationTask *)v6 setLoadDataBlock:v9];
   [(TFDataAggregationTask *)v6 setExtractValuesBlock:&__block_literal_global_2];
 
@@ -377,20 +377,20 @@ void __67__TFDataAggregationTask_SessionInfo__sessionInfoTaskForIdentifier___blo
   [a3 performBatchUpdates:v6];
 }
 
-- (TFDataAggregationTask)initWithName:(id)a3 providedEntryIdentifiers:(id)a4
+- (TFDataAggregationTask)initWithName:(id)name providedEntryIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  identifiersCopy = identifiers;
   v18.receiver = self;
   v18.super_class = TFDataAggregationTask;
   v8 = [(TFDataAggregationTask *)&v18 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    v11 = [v7 copy];
+    v11 = [identifiersCopy copy];
     providedEntryIdentifiers = v8->_providedEntryIdentifiers;
     v8->_providedEntryIdentifiers = v11;
 
@@ -408,30 +408,30 @@ void __67__TFDataAggregationTask_SessionInfo__sessionInfoTaskForIdentifier___blo
   return v8;
 }
 
-- (void)loadDataOnQueue:(id)a3 withCompletionHandler:(id)a4
+- (void)loadDataOnQueue:(id)queue withCompletionHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   v8 = +[TFLogConfiguration defaultConfiguration];
-  v9 = [v8 generatedLogger];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v8 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
-    v11 = [(TFDataAggregationTask *)self name];
-    v12 = [(TFDataAggregationTask *)self logKey];
+    name = [(TFDataAggregationTask *)self name];
+    logKey = [(TFDataAggregationTask *)self logKey];
     *buf = 138543874;
     v19 = v10;
     v20 = 2114;
-    v21 = v11;
+    v21 = name;
     v22 = 2112;
-    v23 = v12;
-    _os_log_impl(&dword_26D2C7000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] loadDataOnQueue:withCompletionHandler:", buf, 0x20u);
+    v23 = logKey;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] loadDataOnQueue:withCompletionHandler:", buf, 0x20u);
   }
 
-  v13 = [(TFDataAggregationTask *)self loadDataBlock];
+  loadDataBlock = [(TFDataAggregationTask *)self loadDataBlock];
 
-  if (!v13)
+  if (!loadDataBlock)
     v15 = {;
     objc_exception_throw(v15);
   }
@@ -441,9 +441,9 @@ void __67__TFDataAggregationTask_SessionInfo__sessionInfoTaskForIdentifier___blo
   v16[2] = __63__TFDataAggregationTask_loadDataOnQueue_withCompletionHandler___block_invoke;
   v16[3] = &unk_279D98390;
   v16[4] = self;
-  v17 = v7;
-  v14 = v7;
-  dispatch_async(v6, v16);
+  v17 = handlerCopy;
+  v14 = handlerCopy;
+  dispatch_async(queueCopy, v16);
 }
 
 void __63__TFDataAggregationTask_loadDataOnQueue_withCompletionHandler___block_invoke(uint64_t a1)
@@ -452,43 +452,43 @@ void __63__TFDataAggregationTask_loadDataOnQueue_withCompletionHandler___block_i
   v2[2](v2, *(a1 + 40));
 }
 
-- (void)extractDataPropertiesFromData:(id)a3 intoDataContainer:(id)a4
+- (void)extractDataPropertiesFromData:(id)data intoDataContainer:(id)container
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  containerCopy = container;
   v8 = +[TFLogConfiguration defaultConfiguration];
-  v9 = [v8 generatedLogger];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v8 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
-    v11 = [(TFDataAggregationTask *)self name];
-    v12 = [(TFDataAggregationTask *)self logKey];
+    name = [(TFDataAggregationTask *)self name];
+    logKey = [(TFDataAggregationTask *)self logKey];
     v16 = 138543874;
     v17 = v10;
     v18 = 2114;
-    v19 = v11;
+    v19 = name;
     v20 = 2112;
-    v21 = v12;
-    _os_log_impl(&dword_26D2C7000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] extractDataPropertiesFromData:intoDataContainer:", &v16, 0x20u);
+    v21 = logKey;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] extractDataPropertiesFromData:intoDataContainer:", &v16, 0x20u);
   }
 
-  v13 = [(TFDataAggregationTask *)self extractValuesBlock];
+  extractValuesBlock = [(TFDataAggregationTask *)self extractValuesBlock];
 
-  if (!v13)
+  if (!extractValuesBlock)
     v15 = {;
     objc_exception_throw(v15);
   }
 
-  v14 = [(TFDataAggregationTask *)self extractValuesBlock];
-  (v14)[2](v14, v6, v7);
+  extractValuesBlock2 = [(TFDataAggregationTask *)self extractValuesBlock];
+  (extractValuesBlock2)[2](extractValuesBlock2, dataCopy, containerCopy);
 }
 
-+ (id)snapshotTasksForSession:(id)a3
++ (id)snapshotTasksForSession:(id)session
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v3 = [a3 bundleIdentifier];
-  v4 = [TFDataAggregationTask sessionInfoTaskForIdentifier:v3];
+  bundleIdentifier = [session bundleIdentifier];
+  v4 = [TFDataAggregationTask sessionInfoTaskForIdentifier:bundleIdentifier];
   v8[0] = v4;
   v5 = +[TFDataAggregationTask networkInfoTask];
   v8[1] = v5;
@@ -497,7 +497,7 @@ void __63__TFDataAggregationTask_loadDataOnQueue_withCompletionHandler___block_i
   return v6;
 }
 
-+ (id)anytimeTasksForSession:(id)a3
++ (id)anytimeTasksForSession:(id)session
 {
   v8[3] = *MEMORY[0x277D85DE8];
   v3 = +[TFDataAggregationTask watchInfoTask];

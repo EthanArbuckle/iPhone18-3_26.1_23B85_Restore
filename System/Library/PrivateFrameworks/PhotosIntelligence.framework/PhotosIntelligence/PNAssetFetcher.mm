@@ -1,14 +1,14 @@
 @interface PNAssetFetcher
-+ (id)fetchAssetsWithOptions:(id)a3;
++ (id)fetchAssetsWithOptions:(id)options;
 @end
 
 @implementation PNAssetFetcher
 
-+ (id)fetchAssetsWithOptions:(id)a3
++ (id)fetchAssetsWithOptions:(id)options
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static AssetFetcher.fetchAssets(options:)(v4);
+  optionsCopy = options;
+  v5 = static AssetFetcher.fetchAssets(options:)(optionsCopy);
 
   return v5;
 }

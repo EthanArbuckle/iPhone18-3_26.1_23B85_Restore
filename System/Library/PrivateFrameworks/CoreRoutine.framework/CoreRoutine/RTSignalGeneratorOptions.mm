@@ -1,36 +1,36 @@
 @interface RTSignalGeneratorOptions
-+ (BOOL)visitsOverlapping:(id)a3;
-+ (id)getVisitsFromVisitsDescriptionData:(id)a3;
-+ (id)visitsDescriptionDataAtPath:(id)a3;
-- (RTSignalGeneratorOptions)initWithCoder:(id)a3;
-- (RTSignalGeneratorOptions)initWithStartLocation:(id)a3 endLocation:(id)a4 expectedVisits:(id)a5;
-- (RTSignalGeneratorOptions)initWithVisitsDescriptionData:(id)a3;
-- (RTSignalGeneratorOptions)initWithVisitsDescriptionPListPath:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (BOOL)visitsOverlapping:(id)overlapping;
++ (id)getVisitsFromVisitsDescriptionData:(id)data;
++ (id)visitsDescriptionDataAtPath:(id)path;
+- (RTSignalGeneratorOptions)initWithCoder:(id)coder;
+- (RTSignalGeneratorOptions)initWithStartLocation:(id)location endLocation:(id)endLocation expectedVisits:(id)visits;
+- (RTSignalGeneratorOptions)initWithVisitsDescriptionData:(id)data;
+- (RTSignalGeneratorOptions)initWithVisitsDescriptionPListPath:(id)path;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTSignalGeneratorOptions
 
-+ (id)visitsDescriptionDataAtPath:(id)a3
++ (id)visitsDescriptionDataAtPath:(id)path
 {
   v102 = *MEMORY[0x1E69E9840];
-  v65 = a3;
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v3 fileExistsAtPath:v65];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:pathCopy];
 
   if (v4)
   {
-    oslog = [MEMORY[0x1E695DF90] dictionaryWithContentsOfFile:v65];
+    oslog = [MEMORY[0x1E695DF90] dictionaryWithContentsOfFile:pathCopy];
     if (oslog)
     {
-      v5 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       v6 = [oslog objectForKey:@"Locations"];
       v7 = [v6 mutableCopy];
 
       v64 = [oslog objectForKey:@"WeeklyVisits"];
       v61 = [v64 count];
-      v8 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v9 = [v8 components:764 fromDate:v5];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      v9 = [currentCalendar components:764 fromDate:date];
 
       v90[0] = MEMORY[0x1E69E9820];
       v90[1] = 3221225472;
@@ -39,7 +39,7 @@
       v10 = v9;
       v91 = v10;
       v94 = v61;
-      v11 = v5;
+      v11 = date;
       v92 = v11;
       v12 = v7;
       v93 = v12;
@@ -231,7 +231,7 @@
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v65;
+        *(&buf + 4) = pathCopy;
         _os_log_error_impl(&dword_1BF1C4000, v17, OS_LOG_TYPE_ERROR, "issue creating dictionary with contents of file, %@", &buf, 0xCu);
       }
 
@@ -245,7 +245,7 @@
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v65;
+      *(&buf + 4) = pathCopy;
       _os_log_error_impl(&dword_1BF1C4000, oslog, OS_LOG_TYPE_ERROR, "file doesn't exist at path, %@", &buf, 0xCu);
     }
 
@@ -804,16 +804,16 @@ LABEL_6:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)visitsOverlapping:(id)a3
++ (BOOL)visitsOverlapping:(id)overlapping
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  overlappingCopy = overlapping;
   v4 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = v3;
+  v5 = overlappingCopy;
   v6 = [v5 countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v6)
   {
@@ -879,10 +879,10 @@ LABEL_6:
   return 0;
 }
 
-+ (id)getVisitsFromVisitsDescriptionData:(id)a3
++ (id)getVisitsFromVisitsDescriptionData:(id)data
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dataCopy = data;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -900,7 +900,7 @@ LABEL_6:
   v14 = &v15;
   v5 = v4;
   v12 = v5;
-  [v3 enumerateKeysAndObjectsUsingBlock:v11];
+  [dataCopy enumerateKeysAndObjectsUsingBlock:v11];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -1012,11 +1012,11 @@ uint64_t __63__RTSignalGeneratorOptions_getVisitsFromVisitsDescriptionData___blo
   return v7;
 }
 
-- (RTSignalGeneratorOptions)initWithVisitsDescriptionData:(id)a3
+- (RTSignalGeneratorOptions)initWithVisitsDescriptionData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_opt_class();
-  v6 = [v4 objectForKey:@"Locations"];
+  v6 = [dataCopy objectForKey:@"Locations"];
 
   v7 = [v5 getVisitsFromVisitsDescriptionData:v6];
   v8 = [(RTSignalGeneratorOptions *)self initWithStartLocation:0 endLocation:0 expectedVisits:v7];
@@ -1024,11 +1024,11 @@ uint64_t __63__RTSignalGeneratorOptions_getVisitsFromVisitsDescriptionData___blo
   return v8;
 }
 
-- (RTSignalGeneratorOptions)initWithVisitsDescriptionPListPath:(id)a3
+- (RTSignalGeneratorOptions)initWithVisitsDescriptionPListPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_opt_class();
-  v6 = [objc_opt_class() visitsDescriptionDataAtPath:v4];
+  v6 = [objc_opt_class() visitsDescriptionDataAtPath:pathCopy];
 
   v7 = [v6 objectForKeyedSubscript:@"Locations"];
   v8 = [v5 getVisitsFromVisitsDescriptionData:v7];
@@ -1037,13 +1037,13 @@ uint64_t __63__RTSignalGeneratorOptions_getVisitsFromVisitsDescriptionData___blo
   return v9;
 }
 
-- (RTSignalGeneratorOptions)initWithStartLocation:(id)a3 endLocation:(id)a4 expectedVisits:(id)a5
+- (RTSignalGeneratorOptions)initWithStartLocation:(id)location endLocation:(id)endLocation expectedVisits:(id)visits
 {
   v50 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  locationCopy = location;
+  endLocationCopy = endLocation;
+  visitsCopy = visits;
+  if (!visitsCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1061,9 +1061,9 @@ uint64_t __63__RTSignalGeneratorOptions_getVisitsFromVisitsDescriptionData___blo
   v12 = [(RTSignalGeneratorOptions *)&v45 init];
   if (v12)
   {
-    if (v8)
+    if (locationCopy)
     {
-      v13 = v8;
+      v13 = locationCopy;
       startLocation = v12->_startLocation;
       v12->_startLocation = v13;
     }
@@ -1071,25 +1071,25 @@ uint64_t __63__RTSignalGeneratorOptions_getVisitsFromVisitsDescriptionData___blo
     else
     {
       v39 = [RTLocation alloc];
-      startLocation = [v10 firstObject];
-      v43 = [startLocation location];
-      [v43 latitude];
+      startLocation = [visitsCopy firstObject];
+      location = [startLocation location];
+      [location latitude];
       v16 = v15 + -0.1;
-      v41 = [v10 firstObject];
-      v17 = [v41 location];
-      [v17 longitude];
+      firstObject = [visitsCopy firstObject];
+      location2 = [firstObject location];
+      [location2 longitude];
       v19 = v18;
-      v20 = [v10 firstObject];
-      v21 = [v20 entry];
-      v22 = [v21 dateByAddingTimeInterval:-1800.0];
+      firstObject2 = [visitsCopy firstObject];
+      entry = [firstObject2 entry];
+      v22 = [entry dateByAddingTimeInterval:-1800.0];
       v23 = [(RTLocation *)v39 initWithLatitude:v22 longitude:v16 horizontalUncertainty:v19 date:10.0];
       v24 = v12->_startLocation;
       v12->_startLocation = v23;
     }
 
-    if (v9)
+    if (endLocationCopy)
     {
-      v25 = v9;
+      v25 = endLocationCopy;
       endLocation = v12->_endLocation;
       v12->_endLocation = v25;
     }
@@ -1097,50 +1097,50 @@ uint64_t __63__RTSignalGeneratorOptions_getVisitsFromVisitsDescriptionData___blo
     else
     {
       v40 = [RTLocation alloc];
-      endLocation = [v10 lastObject];
-      v44 = [endLocation location];
-      [v44 latitude];
+      endLocation = [visitsCopy lastObject];
+      location3 = [endLocation location];
+      [location3 latitude];
       v28 = v27 + 0.1;
-      v42 = [v10 lastObject];
-      v29 = [v42 location];
-      [v29 longitude];
+      lastObject = [visitsCopy lastObject];
+      location4 = [lastObject location];
+      [location4 longitude];
       v31 = v30;
-      v32 = [v10 lastObject];
-      v33 = [v32 exit];
-      v34 = [v33 dateByAddingTimeInterval:1800.0];
+      lastObject2 = [visitsCopy lastObject];
+      exit = [lastObject2 exit];
+      v34 = [exit dateByAddingTimeInterval:1800.0];
       v35 = [(RTLocation *)v40 initWithLatitude:v34 longitude:v28 horizontalUncertainty:v31 date:10.0];
       v36 = v12->_endLocation;
       v12->_endLocation = v35;
     }
 
-    objc_storeStrong(&v12->_expectedVisits, a5);
+    objc_storeStrong(&v12->_expectedVisits, visits);
   }
 
   v37 = *MEMORY[0x1E69E9840];
   return v12;
 }
 
-- (RTSignalGeneratorOptions)initWithCoder:(id)a3
+- (RTSignalGeneratorOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startLocation"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endLocation"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startLocation"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endLocation"];
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"expectedVisits"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"expectedVisits"];
 
   v11 = [(RTSignalGeneratorOptions *)self initWithStartLocation:v5 endLocation:v6 expectedVisits:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startLocation = self->_startLocation;
-  v5 = a3;
-  [v5 encodeObject:startLocation forKey:@"startLocation"];
-  [v5 encodeObject:self->_endLocation forKey:@"endLocation"];
-  [v5 encodeObject:self->_expectedVisits forKey:@"expectedVisits"];
+  coderCopy = coder;
+  [coderCopy encodeObject:startLocation forKey:@"startLocation"];
+  [coderCopy encodeObject:self->_endLocation forKey:@"endLocation"];
+  [coderCopy encodeObject:self->_expectedVisits forKey:@"expectedVisits"];
 }
 
 @end

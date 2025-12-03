@@ -1,22 +1,22 @@
 @interface JavaUtilBitSet
 + (int)sizeOfLong;
 + (void)initialize;
-- (BOOL)intersectsWithJavaUtilBitSet:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)intersectsWithJavaUtilBitSet:(id)set;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)toByteArray;
 - (int)cardinality;
 - (int)length;
 - (int)size;
 - (unint64_t)hash;
-- (void)andNotWithJavaUtilBitSet:(id)a3;
-- (void)and__WithJavaUtilBitSet:(id)a3;
+- (void)andNotWithJavaUtilBitSet:(id)set;
+- (void)and__WithJavaUtilBitSet:(id)set;
 - (void)dealloc;
-- (void)or__WithJavaUtilBitSet:(id)a3;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)xor__WithJavaUtilBitSet:(id)a3;
+- (void)or__WithJavaUtilBitSet:(id)set;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)xor__WithJavaUtilBitSet:(id)set;
 @end
 
 @implementation JavaUtilBitSet
@@ -35,9 +35,9 @@
 {
   v6.receiver = self;
   v6.super_class = JavaUtilBitSet;
-  v3 = [(JavaUtilBitSet *)&v6 clone];
+  clone = [(JavaUtilBitSet *)&v6 clone];
   objc_opt_class();
-  if (!v3)
+  if (!clone)
   {
     goto LABEL_5;
   }
@@ -54,14 +54,14 @@ LABEL_5:
     JreThrowNullPointerException();
   }
 
-  JreStrongAssign(v3 + 1, [(IOSArray *)bits clone]);
-  sub_100180000(v3);
-  return v3;
+  JreStrongAssign(clone + 1, [(IOSArray *)bits clone]);
+  sub_100180000(clone);
+  return clone;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self != a3)
+  if (self != equal)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -70,7 +70,7 @@ LABEL_5:
     }
 
     objc_opt_class();
-    if (!a3)
+    if (!equal)
     {
       goto LABEL_19;
     }
@@ -81,7 +81,7 @@ LABEL_5:
     }
 
     longCount = self->longCount_;
-    if (longCount != *(a3 + 4))
+    if (longCount != *(equal + 4))
     {
       return 0;
     }
@@ -104,7 +104,7 @@ LABEL_5:
         }
 
         v9 = bits->buffer_[v6];
-        v10 = *(a3 + 1);
+        v10 = *(equal + 1);
         v11 = *(v10 + 8);
         if (v6 >= v11)
         {
@@ -165,15 +165,15 @@ LABEL_19:
   return (v5 ^ (v5 << 32)) >> 32;
 }
 
-- (BOOL)intersectsWithJavaUtilBitSet:(id)a3
+- (BOOL)intersectsWithJavaUtilBitSet:(id)set
 {
-  if (!a3)
+  if (!set)
   {
     goto LABEL_15;
   }
 
-  v4 = *(a3 + 1);
-  v5 = JavaLangMath_minWithInt_withInt_(self->longCount_, *(a3 + 4));
+  v4 = *(set + 1);
+  v5 = JavaLangMath_minWithInt_withInt_(self->longCount_, *(set + 4));
   if (v5 >= 1)
   {
     v6 = v5;
@@ -227,20 +227,20 @@ LABEL_15:
   return 0;
 }
 
-- (void)and__WithJavaUtilBitSet:(id)a3
+- (void)and__WithJavaUtilBitSet:(id)set
 {
-  if (!a3)
+  if (!set)
   {
     goto LABEL_14;
   }
 
-  v9 = JavaLangMath_minWithInt_withInt_(self->longCount_, *(a3 + 4));
+  v9 = JavaLangMath_minWithInt_withInt_(self->longCount_, *(set + 4));
   if (v9 >= 1)
   {
     v10 = 0;
     while (1)
     {
-      v11 = *(a3 + 1);
+      v11 = *(set + 1);
       v12 = *(v11 + 8);
       if (v10 >= v12)
       {
@@ -277,21 +277,21 @@ LABEL_11:
   sub_100180000(self);
 }
 
-- (void)andNotWithJavaUtilBitSet:(id)a3
+- (void)andNotWithJavaUtilBitSet:(id)set
 {
-  if (!a3)
+  if (!set)
   {
     goto LABEL_14;
   }
 
-  v5 = JavaLangMath_minWithInt_withInt_(self->longCount_, *(a3 + 4));
+  v5 = JavaLangMath_minWithInt_withInt_(self->longCount_, *(set + 4));
   if (v5 >= 1)
   {
     v6 = 0;
     v7 = v5;
     while (1)
     {
-      v8 = *(a3 + 1);
+      v8 = *(set + 1);
       v9 = *(v8 + 8);
       if (v6 >= v9)
       {
@@ -327,15 +327,15 @@ LABEL_11:
   sub_100180000(self);
 }
 
-- (void)or__WithJavaUtilBitSet:(id)a3
+- (void)or__WithJavaUtilBitSet:(id)set
 {
-  if (!a3)
+  if (!set)
   {
     goto LABEL_14;
   }
 
-  v5 = JavaLangMath_minWithInt_withInt_(self->longCount_, *(a3 + 4));
-  v6 = JavaLangMath_maxWithInt_withInt_(self->longCount_, *(a3 + 4));
+  v5 = JavaLangMath_minWithInt_withInt_(self->longCount_, *(set + 4));
+  v6 = JavaLangMath_maxWithInt_withInt_(self->longCount_, *(set + 4));
   v7 = v6;
   sub_100180478(self, v6);
   if (v5 >= 1)
@@ -343,7 +343,7 @@ LABEL_11:
     v8 = 0;
     while (1)
     {
-      v9 = *(a3 + 1);
+      v9 = *(set + 1);
       v10 = *(v9 + 8);
       if (v8 >= v10)
       {
@@ -375,23 +375,23 @@ LABEL_14:
   }
 
 LABEL_11:
-  if (*(a3 + 4) > v5)
+  if (*(set + 4) > v5)
   {
-    JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(a3 + 1), v5, self->bits_, v5, (v7 - v5));
+    JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(set + 1), v5, self->bits_, v5, (v7 - v5));
   }
 
   self->longCount_ = v7;
 }
 
-- (void)xor__WithJavaUtilBitSet:(id)a3
+- (void)xor__WithJavaUtilBitSet:(id)set
 {
-  if (!a3)
+  if (!set)
   {
     goto LABEL_16;
   }
 
-  v5 = JavaLangMath_minWithInt_withInt_(self->longCount_, *(a3 + 4));
-  v6 = JavaLangMath_maxWithInt_withInt_(self->longCount_, *(a3 + 4));
+  v5 = JavaLangMath_minWithInt_withInt_(self->longCount_, *(set + 4));
+  v6 = JavaLangMath_maxWithInt_withInt_(self->longCount_, *(set + 4));
   v7 = v6;
   sub_100180478(self, v6);
   if (v5 >= 1)
@@ -399,7 +399,7 @@ LABEL_11:
     v8 = 0;
     while (1)
     {
-      v9 = *(a3 + 1);
+      v9 = *(set + 1);
       v10 = *(v9 + 8);
       if (v8 >= v10)
       {
@@ -431,9 +431,9 @@ LABEL_16:
   }
 
 LABEL_11:
-  if (*(a3 + 4) > v5)
+  if (*(set + 4) > v5)
   {
-    JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(a3 + 1), v5, self->bits_, v5, (v7 - v5));
+    JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(set + 1), v5, self->bits_, v5, (v7 - v5));
   }
 
   self->longCount_ = v7;
@@ -622,9 +622,9 @@ LABEL_11:
   return v6;
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3 || ([a3 defaultReadObject], (bits = self->bits_) == 0))
+  if (!stream || ([stream defaultReadObject], (bits = self->bits_) == 0))
   {
     JreThrowNullPointerException();
   }
@@ -641,16 +641,16 @@ LABEL_11:
   [(JavaUtilBitSet *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(JavaUtilBitSet *)self clone];
+  clone = [(JavaUtilBitSet *)self clone];
 
-  return v3;
+  return clone;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if ((atomic_load_explicit(JavaUtilBitSet__initialized, memory_order_acquire) & 1) == 0)
     {

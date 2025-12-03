@@ -4,24 +4,24 @@
 - (BOOL)_setupDepthControlsIfNeeded;
 - (BOOL)_setupLightingControlsIfNeeded;
 - (BOOL)apertureToolbarIsDepthActive;
-- (BOOL)apertureToolbarShouldRotateLabelsWithOrientation:(id)a3;
+- (BOOL)apertureToolbarShouldRotateLabelsWithOrientation:(id)orientation;
 - (BOOL)wantsTapToToggleOriginalEnabled;
 - (CGRect)currentFocusRect;
-- (id)accessibilityHUDItemForButton:(id)a3;
+- (id)accessibilityHUDItemForButton:(id)button;
 - (id)leadingToolbarViews;
 - (id)viewsActivatingMainToolbarShadow;
 - (id)viewsActivatingToolControlShadow;
 - (int64_t)_defaultPortraitTool;
 - (void)_createFocusOverlayIfNeeded;
 - (void)_didModifyLightingIntensity;
-- (void)_handlePortraitEffectButton:(id)a3;
-- (void)_handlePortraitNavigationButtons:(id)a3;
+- (void)_handlePortraitEffectButton:(id)button;
+- (void)_handlePortraitNavigationButtons:(id)buttons;
 - (void)_refreshFromValuesCalculator;
 - (void)_removeFocusOverlayIfNeeded;
 - (void)_resetDefaultToolMode;
 - (void)_restoreCachedLightingIntensity;
-- (void)_selectNextEffectType:(BOOL)a3;
-- (void)_setShowLightingControl:(BOOL)a3 animated:(BOOL)a4;
+- (void)_selectNextEffectType:(BOOL)type;
+- (void)_setShowLightingControl:(BOOL)control animated:(BOOL)animated;
 - (void)_updateApertureSliderLength;
 - (void)_updateCompositionWithLightingIntensity;
 - (void)_updateFocusOverlay;
@@ -29,89 +29,89 @@
 - (void)_updateLabelOrientation;
 - (void)_updateLightingControl;
 - (void)_updateLightingIntensityCache;
-- (void)_updateLightingMarkerForType:(int64_t)a3;
-- (void)_updateLightingNameBadgeForOrientation:(int64_t)a3 expanded:(BOOL)a4;
-- (void)_updateLightingSliderAnimated:(BOOL)a3;
-- (void)_updateNavigationButtonsAnimated:(BOOL)a3;
+- (void)_updateLightingMarkerForType:(int64_t)type;
+- (void)_updateLightingNameBadgeForOrientation:(int64_t)orientation expanded:(BOOL)expanded;
+- (void)_updateLightingSliderAnimated:(BOOL)animated;
+- (void)_updateNavigationButtonsAnimated:(BOOL)animated;
 - (void)_updateToolConstraints;
 - (void)_updateToolContainerConstraints;
-- (void)_updateToolVisibilityAnimated:(BOOL)a3;
-- (void)apertureToolbar:(id)a3 didChangeValue:(double)a4;
-- (void)apertureToolbar:(id)a3 didUpdateDepthActive:(BOOL)a4;
-- (void)apertureToolbarDidStartSliding:(id)a3;
-- (void)apertureToolbarDidStopSliding:(id)a3;
-- (void)compositionControllerDidChangeForAdjustments:(id)a3;
-- (void)decreaseScrubberValue:(BOOL)a3;
-- (void)decreaseSliderValue:(BOOL)a3;
-- (void)focusRectChanged:(CGRect)a3;
-- (void)increaseScrubberValue:(BOOL)a3;
-- (void)increaseSliderValue:(BOOL)a3;
-- (void)lightingControl:(id)a3 willChangeExpanded:(BOOL)a4;
-- (void)lightingControlDidChangeExpanded:(id)a3;
-- (void)lightingControlDidChangeSelectedLightingType:(id)a3;
-- (void)longPressed:(id)a3;
-- (void)mediaView:(id)a3 didZoom:(double)a4;
-- (void)mediaViewDidEndZooming:(id)a3;
-- (void)mediaViewDidScroll:(id)a3;
+- (void)_updateToolVisibilityAnimated:(BOOL)animated;
+- (void)apertureToolbar:(id)toolbar didChangeValue:(double)value;
+- (void)apertureToolbar:(id)toolbar didUpdateDepthActive:(BOOL)active;
+- (void)apertureToolbarDidStartSliding:(id)sliding;
+- (void)apertureToolbarDidStopSliding:(id)sliding;
+- (void)compositionControllerDidChangeForAdjustments:(id)adjustments;
+- (void)decreaseScrubberValue:(BOOL)value;
+- (void)decreaseSliderValue:(BOOL)value;
+- (void)focusRectChanged:(CGRect)changed;
+- (void)increaseScrubberValue:(BOOL)value;
+- (void)increaseSliderValue:(BOOL)value;
+- (void)lightingControl:(id)control willChangeExpanded:(BOOL)expanded;
+- (void)lightingControlDidChangeExpanded:(id)expanded;
+- (void)lightingControlDidChangeSelectedLightingType:(id)type;
+- (void)longPressed:(id)pressed;
+- (void)mediaView:(id)view didZoom:(double)zoom;
+- (void)mediaViewDidEndZooming:(id)zooming;
+- (void)mediaViewDidScroll:(id)scroll;
 - (void)mediaViewIsReady;
-- (void)navigateToNextTab:(id)a3;
-- (void)navigateToPreviousTab:(id)a3;
+- (void)navigateToNextTab:(id)tab;
+- (void)navigateToPreviousTab:(id)tab;
 - (void)previewingOriginalDidStart;
 - (void)previewingOriginalDidStop;
 - (void)reactivate;
-- (void)setBackdropViewGroupName:(id)a3;
-- (void)setLayoutOrientation:(int64_t)a3 withTransitionCoordinator:(id)a4;
-- (void)setPhotoEditSpec:(id)a3;
-- (void)setToolSelection:(int64_t)a3 animated:(BOOL)a4;
-- (void)setupWithAsset:(id)a3 compositionController:(id)a4 editSource:(id)a5 valuesCalculator:(id)a6;
-- (void)sliderDidEndScrolling:(id)a3;
-- (void)sliderDidScroll:(id)a3;
-- (void)sliderWillBeginScrolling:(id)a3;
-- (void)sliderWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)toolControllerWantsToShowOriginal:(BOOL)a3;
+- (void)setBackdropViewGroupName:(id)name;
+- (void)setLayoutOrientation:(int64_t)orientation withTransitionCoordinator:(id)coordinator;
+- (void)setPhotoEditSpec:(id)spec;
+- (void)setToolSelection:(int64_t)selection animated:(BOOL)animated;
+- (void)setupWithAsset:(id)asset compositionController:(id)controller editSource:(id)source valuesCalculator:(id)calculator;
+- (void)sliderDidEndScrolling:(id)scrolling;
+- (void)sliderDidScroll:(id)scroll;
+- (void)sliderWillBeginScrolling:(id)scrolling;
+- (void)sliderWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)toolControllerWantsToShowOriginal:(BOOL)original;
 - (void)updateViewConstraints;
-- (void)validateCommand:(id)a3;
+- (void)validateCommand:(id)command;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)willBecomeActiveTool;
 @end
 
 @implementation PUPhotoEditPortraitToolController
 
-- (void)mediaViewDidEndZooming:(id)a3
+- (void)mediaViewDidEndZooming:(id)zooming
 {
   v3.receiver = self;
   v3.super_class = PUPhotoEditPortraitToolController;
-  [(PUPhotoEditToolController *)&v3 mediaViewDidEndZooming:a3];
+  [(PUPhotoEditToolController *)&v3 mediaViewDidEndZooming:zooming];
 }
 
-- (void)mediaViewDidScroll:(id)a3
+- (void)mediaViewDidScroll:(id)scroll
 {
   focusOverlayController = self->_focusOverlayController;
   if (focusOverlayController)
   {
-    v5 = [(PUPhotoEditPortraitFocusOverlayViewController *)focusOverlayController view];
-    [v5 setNeedsLayout];
+    view = [(PUPhotoEditPortraitFocusOverlayViewController *)focusOverlayController view];
+    [view setNeedsLayout];
 
-    v7 = [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController view];
-    v6 = [v7 layer];
-    [v6 setNeedsDisplay];
+    view2 = [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController view];
+    layer = [view2 layer];
+    [layer setNeedsDisplay];
   }
 }
 
-- (void)mediaView:(id)a3 didZoom:(double)a4
+- (void)mediaView:(id)view didZoom:(double)zoom
 {
   focusOverlayController = self->_focusOverlayController;
   if (focusOverlayController)
   {
-    v6 = [(PUPhotoEditPortraitFocusOverlayViewController *)focusOverlayController view:a3];
+    v6 = [(PUPhotoEditPortraitFocusOverlayViewController *)focusOverlayController view:view];
     [v6 setNeedsLayout];
 
-    v8 = [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController view];
-    v7 = [v8 layer];
-    [v7 setNeedsDisplay];
+    view = [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController view];
+    layer = [view layer];
+    [layer setNeedsDisplay];
   }
 }
 
@@ -124,10 +124,10 @@
   }
 }
 
-- (void)toolControllerWantsToShowOriginal:(BOOL)a3
+- (void)toolControllerWantsToShowOriginal:(BOOL)original
 {
-  v4 = [(PUPhotoEditToolController *)self delegate];
-  [v4 toolControllerWantsToToggleOriginal:self];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  [delegate toolControllerWantsToToggleOriginal:self];
 }
 
 - (CGRect)currentFocusRect
@@ -136,15 +136,15 @@
   v3 = *(MEMORY[0x1E695F058] + 8);
   v4 = *(MEMORY[0x1E695F058] + 16);
   v5 = *(MEMORY[0x1E695F058] + 24);
-  v6 = [(PUPhotoEditToolController *)self compositionController];
-  v7 = [v6 depthAdjustmentController];
-  v8 = v7;
-  if (v7)
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  depthAdjustmentController = [compositionController depthAdjustmentController];
+  v8 = depthAdjustmentController;
+  if (depthAdjustmentController)
   {
-    v9 = [v7 focusRect];
-    if (v9)
+    focusRect = [depthAdjustmentController focusRect];
+    if (focusRect)
     {
-      v10 = v9;
+      v10 = focusRect;
 LABEL_5:
       v12 = [v10 objectForKeyedSubscript:@"x"];
       v13 = [v10 objectForKeyedSubscript:@"y"];
@@ -162,8 +162,8 @@ LABEL_5:
       goto LABEL_6;
     }
 
-    v11 = [v8 depthInfo];
-    v10 = [v11 objectForKeyedSubscript:@"focusRect"];
+    depthInfo = [v8 depthInfo];
+    v10 = [depthInfo objectForKeyedSubscript:@"focusRect"];
 
     if (v10)
     {
@@ -184,16 +184,16 @@ LABEL_6:
   return result;
 }
 
-- (void)focusRectChanged:(CGRect)a3
+- (void)focusRectChanged:(CGRect)changed
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = changed.size.height;
+  width = changed.size.width;
+  y = changed.origin.y;
+  x = changed.origin.x;
   [(PUPhotoEditToolController *)self willModifyAdjustment];
-  v8 = [(PUPhotoEditToolController *)self compositionController];
-  v9 = [v8 adjustmentConstants];
-  v10 = [v9 PIDepthAdjustmentKey];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  adjustmentConstants = [compositionController adjustmentConstants];
+  pIDepthAdjustmentKey = [adjustmentConstants PIDepthAdjustmentKey];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __54__PUPhotoEditPortraitToolController_focusRectChanged___block_invoke;
@@ -202,7 +202,7 @@ LABEL_6:
   *&v13[5] = y;
   *&v13[6] = width;
   *&v13[7] = height;
-  [v8 modifyAdjustmentWithKey:v10 modificationBlock:v13];
+  [compositionController modifyAdjustmentWithKey:pIDepthAdjustmentKey modificationBlock:v13];
 
   v11 = PULocalizedString(@"PHOTOEDIT_PORTRAIT_FOCUS_RECT_ACTION_TITLE");
   v12 = [(PUPhotoEditToolController *)self didModifyAdjustmentWithLocalizedName:v11];
@@ -230,40 +230,40 @@ void __54__PUPhotoEditPortraitToolController_focusRectChanged___block_invoke(dou
 
 - (BOOL)apertureToolbarIsDepthActive
 {
-  v2 = [(PUPhotoEditToolController *)self compositionController];
-  v3 = [v2 depthAdjustmentController];
-  v4 = [v3 enabled];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  depthAdjustmentController = [compositionController depthAdjustmentController];
+  enabled = [depthAdjustmentController enabled];
+
+  return enabled;
+}
+
+- (void)apertureToolbar:(id)toolbar didUpdateDepthActive:(BOOL)active
+{
+  activeCopy = active;
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  livePortraitBehaviorController = [delegate livePortraitBehaviorController];
+
+  [PUPhotoEditEffectsSupport updateCompositionController:compositionController withDepthEnabled:activeCopy livePortraitBehaviorController:livePortraitBehaviorController];
+}
+
+- (BOOL)apertureToolbarShouldRotateLabelsWithOrientation:(id)orientation
+{
+  photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+  v4 = [photoEditSpec currentLayoutStyle] == 4;
 
   return v4;
 }
 
-- (void)apertureToolbar:(id)a3 didUpdateDepthActive:(BOOL)a4
-{
-  v4 = a4;
-  v8 = [(PUPhotoEditToolController *)self compositionController];
-  v6 = [(PUPhotoEditToolController *)self delegate];
-  v7 = [v6 livePortraitBehaviorController];
-
-  [PUPhotoEditEffectsSupport updateCompositionController:v8 withDepthEnabled:v4 livePortraitBehaviorController:v7];
-}
-
-- (BOOL)apertureToolbarShouldRotateLabelsWithOrientation:(id)a3
-{
-  v3 = [(PUPhotoEditToolController *)self photoEditSpec];
-  v4 = [v3 currentLayoutStyle] == 4;
-
-  return v4;
-}
-
-- (void)apertureToolbarDidStopSliding:(id)a3
+- (void)apertureToolbarDidStopSliding:(id)sliding
 {
   [(PUPhotoEditToolController *)self setActivelyAdjusting:0];
   [(PUPhotoEditToolController *)self setPerformingLiveInteraction:0];
   v4 = PULocalizedString(@"PHOTOEDIT_PORTRAIT_APERTURE_ACTION_TITLE");
   v5 = [(PUPhotoEditToolController *)self didModifyAdjustmentWithLocalizedName:v4];
 
-  v11 = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
-  [v11 apertureValue];
+  apertureToolbar = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
+  [apertureToolbar apertureValue];
   if (v6 == 0.0)
   {
     lastKnownAperture = self->_lastKnownAperture;
@@ -271,15 +271,15 @@ void __54__PUPhotoEditPortraitToolController_focusRectChanged___block_invoke(dou
     if (lastKnownAperture > 0.0)
     {
       self->_suspendUIUpdatesFromComposition = 1;
-      v8 = [(PUPhotoEditToolController *)self compositionController];
-      v9 = [v8 adjustmentConstants];
-      v10 = [v9 PIDepthAdjustmentKey];
+      compositionController = [(PUPhotoEditToolController *)self compositionController];
+      adjustmentConstants = [compositionController adjustmentConstants];
+      pIDepthAdjustmentKey = [adjustmentConstants PIDepthAdjustmentKey];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __67__PUPhotoEditPortraitToolController_apertureToolbarDidStopSliding___block_invoke;
       v12[3] = &unk_1E7B7A688;
       v12[4] = self;
-      [v8 modifyAdjustmentWithKey:v10 modificationBlock:v12];
+      [compositionController modifyAdjustmentWithKey:pIDepthAdjustmentKey modificationBlock:v12];
 
       self->_suspendUIUpdatesFromComposition = 0;
     }
@@ -290,7 +290,7 @@ void __54__PUPhotoEditPortraitToolController_focusRectChanged___block_invoke(dou
   }
 }
 
-- (void)apertureToolbarDidStartSliding:(id)a3
+- (void)apertureToolbarDidStartSliding:(id)sliding
 {
   [(PUPhotoEditToolController *)self setActivelyAdjusting:1];
   [(PUPhotoEditToolController *)self setPerformingLiveInteraction:1];
@@ -298,39 +298,39 @@ void __54__PUPhotoEditPortraitToolController_focusRectChanged___block_invoke(dou
   [(PUPhotoEditApertureToolbar *)self->_apertureToolbar apertureValue];
   if (v4 > 0.0)
   {
-    v6 = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
-    [v6 apertureValue];
+    apertureToolbar = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
+    [apertureToolbar apertureValue];
     self->_lastKnownAperture = v5;
   }
 }
 
-- (void)apertureToolbar:(id)a3 didChangeValue:(double)a4
+- (void)apertureToolbar:(id)toolbar didChangeValue:(double)value
 {
-  v5 = [(PUPhotoEditToolController *)self compositionController];
-  v6 = [v5 adjustmentConstants];
-  v7 = [v6 PIDepthAdjustmentKey];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  adjustmentConstants = [compositionController adjustmentConstants];
+  pIDepthAdjustmentKey = [adjustmentConstants PIDepthAdjustmentKey];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __68__PUPhotoEditPortraitToolController_apertureToolbar_didChangeValue___block_invoke;
   v8[3] = &__block_descriptor_40_e37_v16__0__PIDepthAdjustmentController_8l;
-  *&v8[4] = a4;
-  [v5 modifyAdjustmentWithKey:v7 modificationBlock:v8];
+  *&v8[4] = value;
+  [compositionController modifyAdjustmentWithKey:pIDepthAdjustmentKey modificationBlock:v8];
 }
 
 - (void)_updateLightingIntensityCache
 {
   if (self->_lightingSlider)
   {
-    v3 = [(PUPhotoEditPortraitToolController *)self lightingControl];
-    v4 = [v3 selectedLightingType];
+    lightingControl = [(PUPhotoEditPortraitToolController *)self lightingControl];
+    selectedLightingType = [lightingControl selectedLightingType];
 
-    if (v4)
+    if (selectedLightingType)
     {
       lightingIntensityCache = self->_lightingIntensityCache;
       v6 = MEMORY[0x1E696AD98];
       [(CEKSlider *)self->_lightingSlider value];
       v8 = [v6 numberWithDouble:?];
-      v7 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
+      v7 = [MEMORY[0x1E696AD98] numberWithInteger:selectedLightingType];
       [(NSMutableDictionary *)lightingIntensityCache setObject:v8 forKey:v7];
     }
   }
@@ -339,13 +339,13 @@ void __54__PUPhotoEditPortraitToolController_focusRectChanged___block_invoke(dou
 - (void)_restoreCachedLightingIntensity
 {
   [(PUPhotoEditPortraitToolController *)self _updateLightingSliderAnimated:1];
-  v3 = [(PUPhotoEditPortraitToolController *)self lightingControl];
-  v4 = [v3 selectedLightingType];
+  lightingControl = [(PUPhotoEditPortraitToolController *)self lightingControl];
+  selectedLightingType = [lightingControl selectedLightingType];
 
-  if (v4)
+  if (selectedLightingType)
   {
     lightingIntensityCache = self->_lightingIntensityCache;
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
+    v6 = [MEMORY[0x1E696AD98] numberWithInteger:selectedLightingType];
     v9 = [(NSMutableDictionary *)lightingIntensityCache objectForKey:v6];
 
     if (v9)
@@ -369,15 +369,15 @@ void __54__PUPhotoEditPortraitToolController_focusRectChanged___block_invoke(dou
 
 - (void)_updateCompositionWithLightingIntensity
 {
-  v3 = [(PUPhotoEditToolController *)self compositionController];
-  v4 = [v3 adjustmentConstants];
-  v5 = [v4 PIPortraitAdjustmentKey];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  adjustmentConstants = [compositionController adjustmentConstants];
+  pIPortraitAdjustmentKey = [adjustmentConstants PIPortraitAdjustmentKey];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __76__PUPhotoEditPortraitToolController__updateCompositionWithLightingIntensity__block_invoke;
   v6[3] = &unk_1E7B80728;
   v6[4] = self;
-  [v3 modifyAdjustmentWithKey:v5 modificationBlock:v6];
+  [compositionController modifyAdjustmentWithKey:pIPortraitAdjustmentKey modificationBlock:v6];
 }
 
 void __76__PUPhotoEditPortraitToolController__updateCompositionWithLightingIntensity__block_invoke(uint64_t a1, void *a2)
@@ -389,20 +389,20 @@ void __76__PUPhotoEditPortraitToolController__updateCompositionWithLightingInten
   [v4 setStrength:*&v3];
 }
 
-- (void)_updateLightingNameBadgeForOrientation:(int64_t)a3 expanded:(BOOL)a4
+- (void)_updateLightingNameBadgeForOrientation:(int64_t)orientation expanded:(BOOL)expanded
 {
-  v4 = a4;
-  v7 = [(PUPhotoEditPortraitToolController *)self view];
+  expandedCopy = expanded;
+  view = [(PUPhotoEditPortraitToolController *)self view];
 
-  if (!v7)
+  if (!view)
   {
     return;
   }
 
-  v8 = a3 != 1 || !v4;
+  v8 = orientation != 1 || !expandedCopy;
   [(CEKLightingControl *)self->_lightingControl setNameBadgeHidden:v8 animated:1];
   lightingNameBadge = self->_lightingNameBadge;
-  if (a3 == 1)
+  if (orientation == 1)
   {
     if (!lightingNameBadge)
     {
@@ -428,12 +428,12 @@ void __76__PUPhotoEditPortraitToolController__updateCompositionWithLightingInten
     [(CEKLightingNameBadge *)self->_lightingNameBadge setHighlighted:1];
     [(CEKLightingNameBadge *)self->_lightingNameBadge setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CEKLightingNameBadge *)self->_lightingNameBadge setLightingType:[(CEKLightingControl *)self->_lightingControl selectedLightingType]];
-    v12 = [(PUPhotoEditPortraitToolController *)self view];
-    [v12 addSubview:self->_lightingNameBadge];
+    view2 = [(PUPhotoEditPortraitToolController *)self view];
+    [view2 addSubview:self->_lightingNameBadge];
 
-    v13 = [(CEKLightingControl *)self->_lightingControl isExpanded];
+    isExpanded = [(CEKLightingControl *)self->_lightingControl isExpanded];
     v14 = 0.0;
-    if (v13)
+    if (isExpanded)
     {
       v14 = 1.0;
     }
@@ -447,19 +447,19 @@ void __76__PUPhotoEditPortraitToolController__updateCompositionWithLightingInten
     v15 = self->_lightingNameBadgeConstraints;
     self->_lightingNameBadgeConstraints = 0;
 
-    v18 = [(PUPhotoEditPortraitToolController *)self view];
-    [(NSArray *)v18 setNeedsUpdateConstraints];
-    lightingNameBadgeConstraints = v18;
+    view3 = [(PUPhotoEditPortraitToolController *)self view];
+    [(NSArray *)view3 setNeedsUpdateConstraints];
+    lightingNameBadgeConstraints = view3;
 LABEL_14:
   }
 }
 
 - (void)_updateLabelOrientation
 {
-  v3 = [(PUPhotoEditToolController *)self photoEditSpec];
-  v4 = [v3 currentLayoutStyle];
+  photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+  currentLayoutStyle = [photoEditSpec currentLayoutStyle];
 
-  if (v4 == 4 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (currentLayoutStyle == 4 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     if ([(PUPhotoEditToolController *)self layoutOrientation]== 3)
     {
@@ -477,20 +477,20 @@ LABEL_14:
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = PUPhotoEditPortraitToolController;
-  v7 = a4;
-  [(PUPhotoEditToolController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(PUPhotoEditToolController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __88__PUPhotoEditPortraitToolController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E7B7DC38;
   v8[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v8];
 }
 
 void __88__PUPhotoEditPortraitToolController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -499,29 +499,29 @@ void __88__PUPhotoEditPortraitToolController_viewWillTransitionToSize_withTransi
   [v1 setNeedsDisplay];
 }
 
-- (void)setLayoutOrientation:(int64_t)a3 withTransitionCoordinator:(id)a4
+- (void)setLayoutOrientation:(int64_t)orientation withTransitionCoordinator:(id)coordinator
 {
-  v6 = a4;
+  coordinatorCopy = coordinator;
   v12.receiver = self;
   v12.super_class = PUPhotoEditPortraitToolController;
-  [(PUPhotoEditToolController *)&v12 setLayoutOrientation:a3 withTransitionCoordinator:v6];
+  [(PUPhotoEditToolController *)&v12 setLayoutOrientation:orientation withTransitionCoordinator:coordinatorCopy];
   [(PUPhotoEditPortraitToolController *)self _updateLabelOrientation];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __84__PUPhotoEditPortraitToolController_setLayoutOrientation_withTransitionCoordinator___block_invoke;
   aBlock[3] = &unk_1E7B7FF70;
   aBlock[4] = self;
-  aBlock[5] = a3;
+  aBlock[5] = orientation;
   v7 = _Block_copy(aBlock);
   v8 = v7;
-  if (v6)
+  if (coordinatorCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __84__PUPhotoEditPortraitToolController_setLayoutOrientation_withTransitionCoordinator___block_invoke_2;
     v9[3] = &unk_1E7B7ABE0;
     v10 = v7;
-    [v6 animateAlongsideTransition:v9 completion:0];
+    [coordinatorCopy animateAlongsideTransition:v9 completion:0];
   }
 
   else
@@ -577,11 +577,11 @@ void __84__PUPhotoEditPortraitToolController_setLayoutOrientation_withTransition
   [v11 setNeedsUpdateConstraints];
 }
 
-- (void)setPhotoEditSpec:(id)a3
+- (void)setPhotoEditSpec:(id)spec
 {
   v4.receiver = self;
   v4.super_class = PUPhotoEditPortraitToolController;
-  [(PUPhotoEditToolController *)&v4 setPhotoEditSpec:a3];
+  [(PUPhotoEditToolController *)&v4 setPhotoEditSpec:spec];
   [(PUPhotoEditPortraitToolController *)self _updateLabelOrientation];
 }
 
@@ -593,7 +593,7 @@ void __84__PUPhotoEditPortraitToolController_setLayoutOrientation_withTransition
   v3 = [(PUPhotoEditToolController *)self didModifyAdjustmentWithLocalizedName:v4];
 }
 
-- (void)sliderDidEndScrolling:(id)a3
+- (void)sliderDidEndScrolling:(id)scrolling
 {
   [(PUPhotoEditToolController *)self setActivelyAdjusting:0];
   [(PUPhotoEditToolController *)self setPerformingLiveInteraction:0];
@@ -601,10 +601,10 @@ void __84__PUPhotoEditPortraitToolController_setLayoutOrientation_withTransition
   [(PUPhotoEditPortraitToolController *)self _didModifyLightingIntensity];
 }
 
-- (void)sliderWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)sliderWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a4.x;
-  [(PUPhotoEditToolController *)self setPerformingLiveInteraction:0, a5, a4.x, a4.y];
+  x = velocity.x;
+  [(PUPhotoEditToolController *)self setPerformingLiveInteraction:0, offset, velocity.x, velocity.y];
   if (x == 0.0)
   {
 
@@ -612,23 +612,23 @@ void __84__PUPhotoEditPortraitToolController_setLayoutOrientation_withTransition
   }
 }
 
-- (void)sliderDidScroll:(id)a3
+- (void)sliderDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = [(PUPhotoEditToolController *)self compositionController];
-  v6 = [v5 portraitAdjustmentController];
-  [v6 strength];
-  [v4 value];
+  scrollCopy = scroll;
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  portraitAdjustmentController = [compositionController portraitAdjustmentController];
+  [portraitAdjustmentController strength];
+  [scrollCopy value];
 
-  LOBYTE(v4) = PXFloatEqualToFloatWithTolerance();
-  if ((v4 & 1) == 0)
+  LOBYTE(scrollCopy) = PXFloatEqualToFloatWithTolerance();
+  if ((scrollCopy & 1) == 0)
   {
 
     [(PUPhotoEditPortraitToolController *)self _updateCompositionWithLightingIntensity];
   }
 }
 
-- (void)sliderWillBeginScrolling:(id)a3
+- (void)sliderWillBeginScrolling:(id)scrolling
 {
   [(PUPhotoEditToolController *)self setActivelyAdjusting:1];
   [(PUPhotoEditToolController *)self setPerformingLiveInteraction:1];
@@ -640,9 +640,9 @@ void __84__PUPhotoEditPortraitToolController_setLayoutOrientation_withTransition
   }
 }
 
-- (void)_setShowLightingControl:(BOOL)a3 animated:(BOOL)a4
+- (void)_setShowLightingControl:(BOOL)control animated:(BOOL)animated
 {
-  if (a3)
+  if (control)
   {
     v5 = 1.0;
   }
@@ -652,7 +652,7 @@ void __84__PUPhotoEditPortraitToolController_setLayoutOrientation_withTransition
     v5 = 0.0;
   }
 
-  if (!a4 || (v6 = a3, [(CEKLightingControl *)self->_lightingControl alpha], v7 == v5))
+  if (!animated || (v6 = control, [(CEKLightingControl *)self->_lightingControl alpha], v7 == v5))
   {
     lightingControl = self->_lightingControl;
 
@@ -681,12 +681,12 @@ void __84__PUPhotoEditPortraitToolController_setLayoutOrientation_withTransition
   }
 }
 
-- (void)lightingControlDidChangeExpanded:(id)a3
+- (void)lightingControlDidChangeExpanded:(id)expanded
 {
-  v4 = [(CEKLightingControl *)self->_lightingControl isExpanded];
-  [(PUPhotoEditToolController *)self setActivelyAdjusting:v4];
-  [(PUPhotoEditToolController *)self setPerformingLiveInteraction:v4];
-  if ((v4 & 1) == 0)
+  isExpanded = [(CEKLightingControl *)self->_lightingControl isExpanded];
+  [(PUPhotoEditToolController *)self setActivelyAdjusting:isExpanded];
+  [(PUPhotoEditToolController *)self setPerformingLiveInteraction:isExpanded];
+  if ((isExpanded & 1) == 0)
   {
     v5 = PULocalizedString(@"PHOTOEDIT_PORTRAIT_LIGHTING_ACTION_TITLE");
     v6 = [(PUPhotoEditToolController *)self didModifyAdjustmentWithLocalizedName:v5];
@@ -697,13 +697,13 @@ void __84__PUPhotoEditPortraitToolController_setLayoutOrientation_withTransition
   }
 }
 
-- (void)lightingControl:(id)a3 willChangeExpanded:(BOOL)a4
+- (void)lightingControl:(id)control willChangeExpanded:(BOOL)expanded
 {
-  v4 = a4;
-  v6 = a3;
-  [(PUPhotoEditToolController *)self setActivelyAdjusting:v4];
-  [(PUPhotoEditToolController *)self setPerformingLiveInteraction:v4];
-  if (v4)
+  expandedCopy = expanded;
+  controlCopy = control;
+  [(PUPhotoEditToolController *)self setActivelyAdjusting:expandedCopy];
+  [(PUPhotoEditToolController *)self setPerformingLiveInteraction:expandedCopy];
+  if (expandedCopy)
   {
     [(PUPhotoEditToolController *)self willModifyAdjustment];
     [(CEKLightingControl *)self->_lightingControl frame];
@@ -717,59 +717,59 @@ void __84__PUPhotoEditPortraitToolController_setLayoutOrientation_withTransition
   v20[2] = __72__PUPhotoEditPortraitToolController_lightingControl_willChangeExpanded___block_invoke;
   v20[3] = &unk_1E7B7FF70;
   v20[4] = self;
-  *&v20[5] = v4;
+  *&v20[5] = expandedCopy;
   [MEMORY[0x1E69DD250] animateWithDuration:v20 animations:0.25];
-  [(PUPhotoEditPortraitToolController *)self _updateLightingNameBadgeForOrientation:[(PUPhotoEditToolController *)self layoutOrientation] expanded:v4];
-  v7 = [(PUPhotoEditToolController *)self delegate];
-  v8 = [v7 livePortraitBehaviorController];
+  [(PUPhotoEditPortraitToolController *)self _updateLightingNameBadgeForOrientation:[(PUPhotoEditToolController *)self layoutOrientation] expanded:expandedCopy];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  livePortraitBehaviorController = [delegate livePortraitBehaviorController];
 
-  if ([v8 hasLivePortrait])
+  if ([livePortraitBehaviorController hasLivePortrait])
   {
-    if (v4)
+    if (expandedCopy)
     {
-      v9 = [(PUPhotoEditToolController *)self delegate];
-      self->_livePhotoOnBeforeAdjustingLighting = [v9 isVideoOn];
+      delegate2 = [(PUPhotoEditToolController *)self delegate];
+      self->_livePhotoOnBeforeAdjustingLighting = [delegate2 isVideoOn];
 LABEL_6:
 
       goto LABEL_7;
     }
 
-    v15 = [v6 selectedLightingType];
+    selectedLightingType = [controlCopy selectedLightingType];
     v16 = +[PUPhotoEditProtoSettings sharedInstance];
-    v17 = [v16 changeLightingDisablesLive];
+    changeLightingDisablesLive = [v16 changeLightingDisablesLive];
 
-    if (v17)
+    if (changeLightingDisablesLive)
     {
-      if ((v15 - 2) < 5)
+      if ((selectedLightingType - 2) < 5)
       {
         goto LABEL_7;
       }
     }
 
-    else if ((v15 - 4) < 3)
+    else if ((selectedLightingType - 4) < 3)
     {
       goto LABEL_7;
     }
 
     if (self->_livePhotoOnBeforeAdjustingLighting)
     {
-      v18 = [(PUPhotoEditToolController *)self delegate];
-      v19 = [v18 isVideoOn];
+      delegate3 = [(PUPhotoEditToolController *)self delegate];
+      isVideoOn = [delegate3 isVideoOn];
 
-      if ((v19 & 1) == 0)
+      if ((isVideoOn & 1) == 0)
       {
-        v9 = [(PUPhotoEditToolController *)self delegate];
-        [v9 toggleLivePhotoActive];
+        delegate2 = [(PUPhotoEditToolController *)self delegate];
+        [delegate2 toggleLivePhotoActive];
         goto LABEL_6;
       }
     }
   }
 
 LABEL_7:
-  v10 = [(PUPhotoEditToolController *)self compositionController];
-  v11 = [v10 portraitAdjustmentController];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  portraitAdjustmentController = [compositionController portraitAdjustmentController];
 
-  if (v4 && ([v11 enabled] & 1) == 0)
+  if (expandedCopy && ([portraitAdjustmentController enabled] & 1) == 0)
   {
     if ([(PUPhotoEditPortraitToolController *)self _shouldShowPortraitV2])
     {
@@ -781,24 +781,24 @@ LABEL_7:
       v12 = 1;
     }
 
-    v13 = +[PUPhotoEditEffectsSupport identifierForLightingType:lightingVersion:](PUPhotoEditEffectsSupport, "identifierForLightingType:lightingVersion:", [v6 selectedLightingType], v12);
-    v14 = [(PUPhotoEditToolController *)self compositionController];
-    [PUPhotoEditEffectsSupport updateCompositionController:v14 withLightingIdentifier:v13 portraitInfo:self->_cachedPortraitEffectSettings spillMatteAllowed:self->_cachedSpillMatteAllowed];
+    v13 = +[PUPhotoEditEffectsSupport identifierForLightingType:lightingVersion:](PUPhotoEditEffectsSupport, "identifierForLightingType:lightingVersion:", [controlCopy selectedLightingType], v12);
+    compositionController2 = [(PUPhotoEditToolController *)self compositionController];
+    [PUPhotoEditEffectsSupport updateCompositionController:compositionController2 withLightingIdentifier:v13 portraitInfo:self->_cachedPortraitEffectSettings spillMatteAllowed:self->_cachedSpillMatteAllowed];
   }
 }
 
-- (void)lightingControlDidChangeSelectedLightingType:(id)a3
+- (void)lightingControlDidChangeSelectedLightingType:(id)type
 {
-  v4 = a3;
-  v5 = [(PUPhotoEditToolController *)self compositionController];
+  typeCopy = type;
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __82__PUPhotoEditPortraitToolController_lightingControlDidChangeSelectedLightingType___block_invoke;
   v7[3] = &unk_1E7B80C38;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 performChanges:v7];
+  v8 = typeCopy;
+  selfCopy = self;
+  v6 = typeCopy;
+  [compositionController performChanges:v7];
 }
 
 void __82__PUPhotoEditPortraitToolController_lightingControlDidChangeSelectedLightingType___block_invoke(uint64_t a1)
@@ -840,14 +840,14 @@ void __82__PUPhotoEditPortraitToolController_lightingControlDidChangeSelectedLig
   [*(a1 + 40) _updateFocusOverlay];
 }
 
-- (void)navigateToNextTab:(id)a3
+- (void)navigateToNextTab:(id)tab
 {
   [(PUPhotoEditPortraitToolController *)self setToolSelection:2 animated:1];
 
   [(PUPhotoEditPortraitToolController *)self _updateNavigationButtonsAnimated:1];
 }
 
-- (void)navigateToPreviousTab:(id)a3
+- (void)navigateToPreviousTab:(id)tab
 {
   [(PUPhotoEditPortraitToolController *)self setToolSelection:1 animated:1];
 
@@ -857,25 +857,25 @@ void __82__PUPhotoEditPortraitToolController_lightingControlDidChangeSelectedLig
 - (id)viewsActivatingToolControlShadow
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotoEditToolController *)self photoEditSpec];
-  v4 = [v3 currentLayoutStyle];
+  photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+  currentLayoutStyle = [photoEditSpec currentLayoutStyle];
 
-  v5 = [(PUPhotoEditToolController *)self layoutOrientation];
-  if (v5 == 3)
+  layoutOrientation = [(PUPhotoEditToolController *)self layoutOrientation];
+  if (layoutOrientation == 3)
   {
-    if (v4 == 4)
+    if (currentLayoutStyle == 4)
     {
-      v6 = [(PUPhotoEditApertureToolbar *)self->_apertureToolbar view];
-      v10 = v6;
+      view = [(PUPhotoEditApertureToolbar *)self->_apertureToolbar view];
+      v10 = view;
       v7 = &v10;
       goto LABEL_6;
     }
   }
 
-  else if (v5 == 2)
+  else if (layoutOrientation == 2)
   {
-    v6 = [(PUPhotoEditApertureToolbar *)self->_apertureToolbar view];
-    v11[0] = v6;
+    view = [(PUPhotoEditApertureToolbar *)self->_apertureToolbar view];
+    v11[0] = view;
     v7 = v11;
 LABEL_6:
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
@@ -892,16 +892,16 @@ LABEL_8:
 - (id)viewsActivatingMainToolbarShadow
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotoEditToolController *)self photoEditSpec];
-  v4 = [v3 currentLayoutStyle];
+  photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+  currentLayoutStyle = [photoEditSpec currentLayoutStyle];
 
-  v5 = [(PUPhotoEditToolController *)self layoutOrientation];
-  if (v5 == 3)
+  layoutOrientation = [(PUPhotoEditToolController *)self layoutOrientation];
+  if (layoutOrientation == 3)
   {
-    if (v4 != 4)
+    if (currentLayoutStyle != 4)
     {
-      v6 = [(PUPhotoEditApertureToolbar *)self->_apertureToolbar view];
-      v10 = v6;
+      view = [(PUPhotoEditApertureToolbar *)self->_apertureToolbar view];
+      v10 = view;
       v7 = &v10;
       goto LABEL_7;
     }
@@ -911,13 +911,13 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  if (v5 != 1)
+  if (layoutOrientation != 1)
   {
     goto LABEL_5;
   }
 
-  v6 = [(PUPhotoEditApertureToolbar *)self->_apertureToolbar view];
-  v11[0] = v6;
+  view = [(PUPhotoEditApertureToolbar *)self->_apertureToolbar view];
+  v11[0] = view;
   v7 = v11;
 LABEL_7:
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
@@ -927,34 +927,34 @@ LABEL_8:
   return v8;
 }
 
-- (void)decreaseSliderValue:(BOOL)a3
+- (void)decreaseSliderValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   if (![(UIView *)self->_lightingContainer isHidden])
   {
-    [PUPhotoEditSupport changeValueOfSlider:self->_lightingSlider reverse:0 coarse:v3];
+    [PUPhotoEditSupport changeValueOfSlider:self->_lightingSlider reverse:0 coarse:valueCopy];
 
     [(PUPhotoEditPortraitToolController *)self _updateCompositionWithLightingIntensity];
   }
 }
 
-- (void)increaseSliderValue:(BOOL)a3
+- (void)increaseSliderValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   if (![(UIView *)self->_lightingContainer isHidden])
   {
-    [PUPhotoEditSupport changeValueOfSlider:self->_lightingSlider reverse:1 coarse:v3];
+    [PUPhotoEditSupport changeValueOfSlider:self->_lightingSlider reverse:1 coarse:valueCopy];
 
     [(PUPhotoEditPortraitToolController *)self _updateCompositionWithLightingIntensity];
   }
 }
 
-- (void)decreaseScrubberValue:(BOOL)a3
+- (void)decreaseScrubberValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   if ([(UIView *)self->_lightingContainer isHidden])
   {
-    if (![(UIView *)self->_apertureContainer isHidden]&& [(PUPhotoEditApertureToolbar *)self->_apertureToolbar setNextApertureValue:0 coarse:v3])
+    if (![(UIView *)self->_apertureContainer isHidden]&& [(PUPhotoEditApertureToolbar *)self->_apertureToolbar setNextApertureValue:0 coarse:valueCopy])
     {
       apertureToolbar = self->_apertureToolbar;
       [(PUPhotoEditApertureToolbar *)apertureToolbar apertureValue];
@@ -970,12 +970,12 @@ LABEL_8:
   }
 }
 
-- (void)increaseScrubberValue:(BOOL)a3
+- (void)increaseScrubberValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   if ([(UIView *)self->_lightingContainer isHidden])
   {
-    if (![(UIView *)self->_apertureContainer isHidden]&& [(PUPhotoEditApertureToolbar *)self->_apertureToolbar setNextApertureValue:1 coarse:v3])
+    if (![(UIView *)self->_apertureContainer isHidden]&& [(PUPhotoEditApertureToolbar *)self->_apertureToolbar setNextApertureValue:1 coarse:valueCopy])
     {
       apertureToolbar = self->_apertureToolbar;
       [(PUPhotoEditApertureToolbar *)apertureToolbar apertureValue];
@@ -993,12 +993,12 @@ LABEL_8:
 
 - (BOOL)wantsTapToToggleOriginalEnabled
 {
-  v3 = [(PUPhotoEditToolController *)self compositionController];
-  v4 = [v3 depthAdjustmentController];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  depthAdjustmentController = [compositionController depthAdjustmentController];
 
   if ([(PUPhotoEditPortraitToolController *)self _shouldShowPortraitFocusEditingUI])
   {
-    v5 = [v4 enabled] ^ 1;
+    v5 = [depthAdjustmentController enabled] ^ 1;
   }
 
   else
@@ -1026,34 +1026,34 @@ LABEL_8:
   return v4;
 }
 
-- (void)compositionControllerDidChangeForAdjustments:(id)a3
+- (void)compositionControllerDidChangeForAdjustments:(id)adjustments
 {
-  v4 = a3;
+  adjustmentsCopy = adjustments;
   if (self->_suspendUIUpdatesFromComposition)
   {
     goto LABEL_26;
   }
 
-  v33 = v4;
-  v5 = [(PUPhotoEditToolController *)self compositionController];
-  v6 = [v5 adjustmentConstants];
-  v7 = [v6 PIDepthAdjustmentKey];
-  if ([v33 containsObject:v7])
+  v33 = adjustmentsCopy;
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  adjustmentConstants = [compositionController adjustmentConstants];
+  pIDepthAdjustmentKey = [adjustmentConstants PIDepthAdjustmentKey];
+  if ([v33 containsObject:pIDepthAdjustmentKey])
   {
 
     goto LABEL_5;
   }
 
-  v8 = [v6 PIPortraitAdjustmentKey];
-  v9 = [v33 containsObject:v8];
+  pIPortraitAdjustmentKey = [adjustmentConstants PIPortraitAdjustmentKey];
+  v9 = [v33 containsObject:pIPortraitAdjustmentKey];
 
   if (v9)
   {
 LABEL_5:
-    v10 = [v5 depthAdjustmentController];
-    v11 = [v10 enabled];
-    [(PUPhotoEditToolActivationButton *)self->_portraitToolbarButton setSelected:v11];
-    [(UILongPressGestureRecognizer *)self->_longPressGestureRecognizer setEnabled:v11];
+    depthAdjustmentController = [compositionController depthAdjustmentController];
+    enabled = [depthAdjustmentController enabled];
+    [(PUPhotoEditToolActivationButton *)self->_portraitToolbarButton setSelected:enabled];
+    [(UILongPressGestureRecognizer *)self->_longPressGestureRecognizer setEnabled:enabled];
     v12 = MEMORY[0x1E69C3BF0];
     if ([(PUPhotoEditToolActivationButton *)self->_portraitToolbarButton isSelected])
     {
@@ -1069,31 +1069,31 @@ LABEL_5:
     [(PXUIButton *)self->_portraitToolbarButton setPx_configuration:v14];
 
     v15 = +[PUPhotoEditProtoSettings sharedInstance];
-    v16 = [v15 apertureSliderHasOffPosition];
+    apertureSliderHasOffPosition = [v15 apertureSliderHasOffPosition];
 
-    if ((v16 & 1) == 0)
+    if ((apertureSliderHasOffPosition & 1) == 0)
     {
-      v17 = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
-      [v17 setEnabled:v11];
+      apertureToolbar = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
+      [apertureToolbar setEnabled:enabled];
     }
 
     [(PUPhotoEditPortraitToolController *)self _updateNavigationButtonsAnimated:1];
     v18 = +[PUPhotoEditProtoSettings sharedInstance];
-    v19 = [v18 apertureSliderHasOffPosition];
+    apertureSliderHasOffPosition2 = [v18 apertureSliderHasOffPosition];
 
-    if (v19)
+    if (apertureSliderHasOffPosition2)
     {
-      if (v11)
+      if (enabled)
       {
-        [v10 aperture];
+        [depthAdjustmentController aperture];
         if (v20 > 0.0)
         {
           v21 = v20;
-          v22 = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
-          [v22 setApertureValueClosestTo:v21];
+          apertureToolbar2 = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
+          [apertureToolbar2 setApertureValueClosestTo:v21];
 
-          v23 = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
-          [v23 apertureValue];
+          apertureToolbar3 = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
+          [apertureToolbar3 apertureValue];
           [(CEKApertureButton *)self->_apertureButton setApertureValue:?];
 
           v24 = self->_focusOverlayController == 0;
@@ -1106,32 +1106,32 @@ LABEL_19:
         if (v24 || self->_focusOverlayController)
         {
           [(PUPhotoEditPortraitToolController *)self _updateFocusOverlay];
-          v29 = [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController view];
-          v30 = [v29 layer];
-          [v30 setNeedsDisplay];
+          view = [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController view];
+          layer = [view layer];
+          [layer setNeedsDisplay];
         }
 
         goto LABEL_23;
       }
 
-      v28 = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
-      [v28 setDepthIsOn:0];
+      apertureToolbar4 = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
+      [apertureToolbar4 setDepthIsOn:0];
     }
 
     else
     {
-      [v10 aperture];
+      [depthAdjustmentController aperture];
       if (v25 <= 0.0)
       {
         goto LABEL_18;
       }
 
       v26 = v25;
-      v27 = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
-      [v27 setApertureValueClosestTo:v26];
+      apertureToolbar5 = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
+      [apertureToolbar5 setApertureValueClosestTo:v26];
 
-      v28 = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
-      [v28 apertureValue];
+      apertureToolbar4 = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
+      [apertureToolbar4 apertureValue];
       [(CEKApertureButton *)self->_apertureButton setApertureValue:?];
     }
 
@@ -1139,8 +1139,8 @@ LABEL_19:
   }
 
 LABEL_23:
-  v31 = [v6 PIPortraitAdjustmentKey];
-  v32 = [v33 containsObject:v31];
+  pIPortraitAdjustmentKey2 = [adjustmentConstants PIPortraitAdjustmentKey];
+  v32 = [v33 containsObject:pIPortraitAdjustmentKey2];
 
   if (v32)
   {
@@ -1148,19 +1148,19 @@ LABEL_23:
     [(PUPhotoEditPortraitToolController *)self _updateLightingSliderAnimated:0];
   }
 
-  v4 = v33;
+  adjustmentsCopy = v33;
 LABEL_26:
 }
 
-- (id)accessibilityHUDItemForButton:(id)a3
+- (id)accessibilityHUDItemForButton:(id)button
 {
-  if ([a3 isEqual:self->_portraitToolbarButton])
+  if ([button isEqual:self->_portraitToolbarButton])
   {
-    v4 = [(PUPhotoEditPortraitToolController *)self _depthButtonTitle];
-    v5 = [v4 localizedUppercaseString];
+    _depthButtonTitle = [(PUPhotoEditPortraitToolController *)self _depthButtonTitle];
+    localizedUppercaseString = [_depthButtonTitle localizedUppercaseString];
 
     v6 = objc_alloc(MEMORY[0x1E69DC618]);
-    v7 = [v6 initWithTitle:v5 image:0 imageInsets:1 scaleImage:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+    v7 = [v6 initWithTitle:localizedUppercaseString image:0 imageInsets:1 scaleImage:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
   }
 
   else
@@ -1171,18 +1171,18 @@ LABEL_26:
   return v7;
 }
 
-- (void)setBackdropViewGroupName:(id)a3
+- (void)setBackdropViewGroupName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v7.receiver = self;
   v7.super_class = PUPhotoEditPortraitToolController;
-  [(PUPhotoEditToolController *)&v7 setBackdropViewGroupName:v4];
-  v5 = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
+  [(PUPhotoEditToolController *)&v7 setBackdropViewGroupName:nameCopy];
+  apertureToolbar = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
 
-  if (v5)
+  if (apertureToolbar)
   {
-    v6 = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
-    [v6 setBackdropViewGroupName:v4];
+    apertureToolbar2 = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
+    [apertureToolbar2 setBackdropViewGroupName:nameCopy];
   }
 }
 
@@ -1198,12 +1198,12 @@ LABEL_26:
     [(PUPhotoEditPortraitToolController *)self _resetDefaultToolMode];
   }
 
-  v3 = [(PUPhotoEditToolController *)self ppt_didBecomeActiveToolBlock];
+  ppt_didBecomeActiveToolBlock = [(PUPhotoEditToolController *)self ppt_didBecomeActiveToolBlock];
 
-  if (v3)
+  if (ppt_didBecomeActiveToolBlock)
   {
-    v4 = [(PUPhotoEditToolController *)self ppt_didBecomeActiveToolBlock];
-    v4[2]();
+    ppt_didBecomeActiveToolBlock2 = [(PUPhotoEditToolController *)self ppt_didBecomeActiveToolBlock];
+    ppt_didBecomeActiveToolBlock2[2]();
   }
 }
 
@@ -1217,17 +1217,17 @@ LABEL_26:
   [(PUPhotoEditPortraitToolController *)self _updateLightingSliderAnimated:0];
 }
 
-- (void)_handlePortraitEffectButton:(id)a3
+- (void)_handlePortraitEffectButton:(id)button
 {
-  v10 = [(PUPhotoEditToolController *)self compositionController];
-  v4 = [v10 depthAdjustmentController];
-  v5 = [v4 enabled];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  depthAdjustmentController = [compositionController depthAdjustmentController];
+  enabled = [depthAdjustmentController enabled];
 
   [(PUPhotoEditToolController *)self willModifyAdjustment];
-  v6 = [(PUPhotoEditToolController *)self delegate];
-  v7 = [v6 livePortraitBehaviorController];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  livePortraitBehaviorController = [delegate livePortraitBehaviorController];
 
-  [PUPhotoEditEffectsSupport updateCompositionController:v10 withDepthEnabled:v5 ^ 1u livePortraitBehaviorController:v7];
+  [PUPhotoEditEffectsSupport updateCompositionController:compositionController withDepthEnabled:enabled ^ 1u livePortraitBehaviorController:livePortraitBehaviorController];
   v8 = PULocalizedString(@"PHOTOEDIT_PORTRAIT_SWITCH");
   v9 = [(PUPhotoEditToolController *)self didModifyAdjustmentWithLocalizedName:v8];
 
@@ -1238,10 +1238,10 @@ LABEL_26:
 
 - (void)_updateFocusOverlay
 {
-  v3 = [(PUPhotoEditToolController *)self compositionController];
-  v7 = [v3 depthAdjustmentController];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  depthAdjustmentController = [compositionController depthAdjustmentController];
 
-  if ([v7 enabled] && -[PUPhotoEditPortraitToolController _shouldShowPortraitFocusEditingUI](self, "_shouldShowPortraitFocusEditingUI"))
+  if ([depthAdjustmentController enabled] && -[PUPhotoEditPortraitToolController _shouldShowPortraitFocusEditingUI](self, "_shouldShowPortraitFocusEditingUI"))
   {
     if (self->_focusOverlayController)
     {
@@ -1259,40 +1259,40 @@ LABEL_26:
     [(PUPhotoEditPortraitToolController *)self _removeFocusOverlayIfNeeded];
     v4 = 1;
 LABEL_7:
-    v5 = [(PUPhotoEditPortraitToolController *)self view];
-    [v5 setNeedsUpdateConstraints];
+    view = [(PUPhotoEditPortraitToolController *)self view];
+    [view setNeedsUpdateConstraints];
 
     goto LABEL_9;
   }
 
   v4 = 1;
 LABEL_9:
-  v6 = [(PUPhotoEditToolController *)self delegate];
-  [v6 toolControllerDidChangeWantsTapToToggleOriginalEnabled:self enabled:v4];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  [delegate toolControllerDidChangeWantsTapToToggleOriginalEnabled:self enabled:v4];
 }
 
-- (void)_updateLightingSliderAnimated:(BOOL)a3
+- (void)_updateLightingSliderAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PUPhotoEditToolController *)self compositionController];
-  v6 = [v5 portraitAdjustmentController];
+  animatedCopy = animated;
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  portraitAdjustmentController = [compositionController portraitAdjustmentController];
 
-  if (v6)
+  if (portraitAdjustmentController)
   {
-    [v6 strength];
+    [portraitAdjustmentController strength];
     [(CEKSlider *)self->_lightingSlider setValue:?];
   }
 
-  v7 = [(CEKLightingControl *)self->_lightingControl selectedLightingType];
+  selectedLightingType = [(CEKLightingControl *)self->_lightingControl selectedLightingType];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __67__PUPhotoEditPortraitToolController__updateLightingSliderAnimated___block_invoke;
   v13 = &unk_1E7B7FF98;
-  v14 = self;
-  v15 = v7 > 1;
+  selfCopy = self;
+  v15 = selectedLightingType > 1;
   v8 = _Block_copy(&v10);
   v9 = v8;
-  if (v3)
+  if (animatedCopy)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:4 delay:v8 options:0 animations:0.25 completion:{0.0, v10, v11, v12, v13}];
   }
@@ -1314,11 +1314,11 @@ uint64_t __67__PUPhotoEditPortraitToolController__updateLightingSliderAnimated__
   return [*(*(a1 + 32) + 1320) setAlpha:v1];
 }
 
-- (void)_updateLightingMarkerForType:(int64_t)a3
+- (void)_updateLightingMarkerForType:(int64_t)type
 {
   if (objc_opt_respondsToSelector())
   {
-    if (self->_initialLightingType == a3)
+    if (self->_initialLightingType == type)
     {
       initialLightingIntensity = self->_initialLightingIntensity;
     }
@@ -1336,47 +1336,47 @@ uint64_t __67__PUPhotoEditPortraitToolController__updateLightingSliderAnimated__
 
 - (void)_updateLightingControl
 {
-  v6 = [(PUPhotoEditToolController *)self compositionController];
-  v3 = [v6 portraitAdjustmentController];
-  v4 = [v3 kind];
-  if (![v3 enabled] || (v5 = +[PUPhotoEditEffectsSupport lightingEffectTypeForIdentifier:](PUPhotoEditEffectsSupport, "lightingEffectTypeForIdentifier:", v4)) == 0)
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  portraitAdjustmentController = [compositionController portraitAdjustmentController];
+  kind = [portraitAdjustmentController kind];
+  if (![portraitAdjustmentController enabled] || (defaultLightingType = +[PUPhotoEditEffectsSupport lightingEffectTypeForIdentifier:](PUPhotoEditEffectsSupport, "lightingEffectTypeForIdentifier:", kind)) == 0)
   {
-    v5 = [(CEKLightingControl *)self->_lightingControl defaultLightingType];
+    defaultLightingType = [(CEKLightingControl *)self->_lightingControl defaultLightingType];
   }
 
-  [(PUPhotoEditPortraitToolController *)self _updateLightingMarkerForType:v5];
-  [(CEKLightingControl *)self->_lightingControl setSelectedLightingType:v5];
-  [(CEKLightingNameBadge *)self->_lightingNameBadge setLightingType:v5];
+  [(PUPhotoEditPortraitToolController *)self _updateLightingMarkerForType:defaultLightingType];
+  [(CEKLightingControl *)self->_lightingControl setSelectedLightingType:defaultLightingType];
+  [(CEKLightingNameBadge *)self->_lightingNameBadge setLightingType:defaultLightingType];
   [(PUPhotoEditPortraitToolController *)self _updateLightingNameBadgeForOrientation:[(PUPhotoEditToolController *)self layoutOrientation] expanded:[(CEKLightingControl *)self->_lightingControl isExpanded]];
 }
 
-- (void)_updateNavigationButtonsAnimated:(BOOL)a3
+- (void)_updateNavigationButtonsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PUPhotoEditPortraitToolController *)self toolSelection];
-  if (v3)
+  animatedCopy = animated;
+  toolSelection = [(PUPhotoEditPortraitToolController *)self toolSelection];
+  if (animatedCopy)
   {
-    v6 = [(CEKApertureButton *)self->_apertureButton superview];
-    [v6 layoutIfNeeded];
+    superview = [(CEKApertureButton *)self->_apertureButton superview];
+    [superview layoutIfNeeded];
   }
 
-  [(PUPhotoEditToolbarButton *)self->_lightingIntensityButton setSelected:v5 != 2];
-  [(CEKApertureButton *)self->_apertureButton setActive:v5 == 2];
-  if (v5 == 2)
+  [(PUPhotoEditToolbarButton *)self->_lightingIntensityButton setSelected:toolSelection != 2];
+  [(CEKApertureButton *)self->_apertureButton setActive:toolSelection == 2];
+  if (toolSelection == 2)
   {
-    v10 = 0;
+    enabled = 0;
   }
 
   else
   {
-    v7 = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
-    [v7 apertureValue];
+    apertureToolbar = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
+    [apertureToolbar apertureValue];
     [(CEKApertureButton *)self->_apertureButton setApertureValue:?];
 
-    v8 = [(PUPhotoEditToolController *)self compositionController];
-    v9 = [v8 depthAdjustmentController];
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    depthAdjustmentController = [compositionController depthAdjustmentController];
 
-    v10 = [v9 enabled];
+    enabled = [depthAdjustmentController enabled];
   }
 
   if (MEMORY[0x1B8C6D660]())
@@ -1387,13 +1387,13 @@ uint64_t __67__PUPhotoEditPortraitToolController__updateLightingSliderAnimated__
 
   else
   {
-    v11 = v10;
-    v12 = v3;
+    v11 = enabled;
+    v12 = animatedCopy;
   }
 
   [(CEKApertureButton *)self->_apertureButton setShouldShowApertureValue:v11 animated:v12];
-  v13 = [(CEKApertureButton *)self->_apertureButton superview];
-  [v13 setNeedsLayout];
+  superview2 = [(CEKApertureButton *)self->_apertureButton superview];
+  [superview2 setNeedsLayout];
 
   v14 = +[PUInterfaceManager currentTheme];
   if (([(PUPhotoEditToolbarButton *)self->_lightingIntensityButton isSelected]& 1) != 0)
@@ -1407,7 +1407,7 @@ uint64_t __67__PUPhotoEditPortraitToolController__updateLightingSliderAnimated__
   }
   v15 = ;
   [(PUPhotoEditToolbarButton *)self->_lightingIntensityButton setTintColor:v15];
-  if (v3)
+  if (animatedCopy)
   {
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -1426,12 +1426,12 @@ void __70__PUPhotoEditPortraitToolController__updateNavigationButtonsAnimated___
 
 - (int64_t)_defaultPortraitTool
 {
-  v2 = [(PUPhotoEditToolController *)self compositionController];
-  v3 = [v2 depthAdjustmentController];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  depthAdjustmentController = [compositionController depthAdjustmentController];
 
-  if (v3)
+  if (depthAdjustmentController)
   {
-    if ([v3 canAdjustApertureValue])
+    if ([depthAdjustmentController canAdjustApertureValue])
     {
       v4 = 2;
     }
@@ -1467,8 +1467,8 @@ void __70__PUPhotoEditPortraitToolController__updateNavigationButtonsAnimated___
 
     [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController willMoveToParentViewController:0];
     [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController removeFromParentViewController];
-    v4 = [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController view];
-    [v4 removeFromSuperview];
+    view = [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController view];
+    [view removeFromSuperview];
 
     focusOverlayController = self->_focusOverlayController;
     self->_focusOverlayController = 0;
@@ -1479,48 +1479,48 @@ void __70__PUPhotoEditPortraitToolController__updateNavigationButtonsAnimated___
 {
   if (!self->_focusOverlayController)
   {
-    v3 = [(PUPhotoEditToolController *)self compositionController];
-    v4 = [v3 composition];
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    composition = [compositionController composition];
 
-    v19 = v4;
-    v5 = [objc_alloc(MEMORY[0x1E69B3B30]) initWithComposition:v4];
+    v19 = composition;
+    v5 = [objc_alloc(MEMORY[0x1E69B3B30]) initWithComposition:composition];
     [v5 setName:@"PUPhotoEditPortraitToolController-imageProperties"];
     v20 = 0;
     v6 = [v5 submitSynchronous:&v20];
     v18 = v20;
-    v7 = [v6 properties];
-    if ([v7 isHDR])
+    properties = [v6 properties];
+    if ([properties isHDR])
     {
-      v8 = 1;
+      hasGainMap = 1;
     }
 
     else
     {
-      v8 = [v7 hasGainMap];
+      hasGainMap = [properties hasGainMap];
     }
 
     v9 = [PUPhotoEditPortraitFocusOverlayViewController alloc];
-    v10 = [(PUPhotoEditToolController *)self delegate];
-    v11 = [v10 mediaView];
-    v12 = [(PUPhotoEditToolController *)self delegate];
-    v13 = [(PUPhotoEditPortraitFocusOverlayViewController *)v9 initWithMediaView:v11 isHDR:v8 delegate:v12];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    mediaView = [delegate mediaView];
+    delegate2 = [(PUPhotoEditToolController *)self delegate];
+    v13 = [(PUPhotoEditPortraitFocusOverlayViewController *)v9 initWithMediaView:mediaView isHDR:hasGainMap delegate:delegate2];
     focusOverlayController = self->_focusOverlayController;
     self->_focusOverlayController = v13;
 
     [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController setPortraitFocusDelegate:self];
-    v15 = [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController view];
-    [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
     [(PUPhotoEditPortraitToolController *)self addChildViewController:self->_focusOverlayController];
     [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController didMoveToParentViewController:self];
-    v16 = [(PUPhotoEditPortraitToolController *)self view];
-    v17 = [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController view];
+    view2 = [(PUPhotoEditPortraitToolController *)self view];
+    view3 = [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController view];
 
-    [v16 insertSubview:v17 atIndex:0];
+    [view2 insertSubview:view3 atIndex:0];
   }
 }
 
-- (void)_handlePortraitNavigationButtons:(id)a3
+- (void)_handlePortraitNavigationButtons:(id)buttons
 {
   if ([(PUPhotoEditPortraitToolController *)self toolSelection]== 1)
   {
@@ -1537,33 +1537,33 @@ void __70__PUPhotoEditPortraitToolController__updateNavigationButtonsAnimated___
   [(PUPhotoEditPortraitToolController *)self _updateNavigationButtonsAnimated:1];
 }
 
-- (void)_selectNextEffectType:(BOOL)a3
+- (void)_selectNextEffectType:(BOOL)type
 {
-  v3 = a3;
+  typeCopy = type;
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [(CEKLightingControl *)self->_lightingControl lightingEffectSet];
-  if (v5 > 3)
+  lightingEffectSet = [(CEKLightingControl *)self->_lightingControl lightingEffectSet];
+  if (lightingEffectSet > 3)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = qword_1E7B7A6C8[v5];
+    v6 = qword_1E7B7A6C8[lightingEffectSet];
   }
 
-  v7 = [(CEKLightingControl *)self->_lightingControl selectedLightingType];
+  selectedLightingType = [(CEKLightingControl *)self->_lightingControl selectedLightingType];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
-  if (v8)
+  integerValue = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  if (integerValue)
   {
-    v9 = v8;
-    v16 = v3;
+    v9 = integerValue;
+    v16 = typeCopy;
     v10 = 0;
-    v11 = 0;
+    integerValue2 = 0;
     v12 = *v18;
 LABEL_6:
     v13 = 0;
@@ -1575,23 +1575,23 @@ LABEL_6:
       }
 
       v14 = *(*(&v17 + 1) + 8 * v13);
-      v8 = [v14 integerValue];
+      integerValue = [v14 integerValue];
       if (v10)
       {
         break;
       }
 
-      v10 = v7 == v8;
-      if (v7 != v8)
+      v10 = selectedLightingType == integerValue;
+      if (selectedLightingType != integerValue)
       {
-        v11 = [v14 integerValue];
+        integerValue2 = [v14 integerValue];
       }
 
       if (v9 == ++v13)
       {
-        v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
-        v9 = v8;
-        if (v8)
+        integerValue = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = integerValue;
+        if (integerValue)
         {
           goto LABEL_6;
         }
@@ -1600,22 +1600,22 @@ LABEL_6:
       }
     }
 
-    v3 = v16;
+    typeCopy = v16;
   }
 
   else
   {
-    v11 = 0;
+    integerValue2 = 0;
   }
 
-  if (v3)
+  if (typeCopy)
   {
-    v15 = v11;
+    v15 = integerValue2;
   }
 
   else
   {
-    v15 = v8;
+    v15 = integerValue;
   }
 
   if (v15)
@@ -1627,12 +1627,12 @@ LABEL_6:
 
 - (BOOL)_setupApertureControlsIfNeeded
 {
-  v3 = [(PUPhotoEditToolController *)self compositionController];
-  v4 = [v3 depthAdjustmentController];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  depthAdjustmentController = [compositionController depthAdjustmentController];
 
-  v5 = [v4 canAdjustApertureValue];
+  canAdjustApertureValue = [depthAdjustmentController canAdjustApertureValue];
   apertureToolbar = self->_apertureToolbar;
-  if (v5)
+  if (canAdjustApertureValue)
   {
     v7 = apertureToolbar == 0;
     if (!apertureToolbar)
@@ -1640,22 +1640,22 @@ LABEL_6:
       v8 = objc_alloc_init(PUPhotoEditApertureToolbar);
       [(PUPhotoEditApertureToolbar *)v8 setDelegate:self];
       [(PUPhotoEditApertureToolbar *)v8 setLayoutOrientation:[(PUPhotoEditToolController *)self layoutOrientation]];
-      [v4 minimumAperture];
+      [depthAdjustmentController minimumAperture];
       [(PUPhotoEditApertureToolbar *)v8 setMinimumApertureValue:?];
-      [v4 maximumAperture];
+      [depthAdjustmentController maximumAperture];
       [(PUPhotoEditApertureToolbar *)v8 setMaximumApertureValue:?];
-      [v4 aperture];
+      [depthAdjustmentController aperture];
       if (v9 > 0.0)
       {
         [(PUPhotoEditApertureToolbar *)v8 setApertureValueClosestTo:?];
       }
 
       apertureContainer = self->_apertureContainer;
-      v11 = [(PUPhotoEditApertureToolbar *)v8 view];
-      [(UIView *)apertureContainer addSubview:v11];
+      view = [(PUPhotoEditApertureToolbar *)v8 view];
+      [(UIView *)apertureContainer addSubview:view];
 
-      v12 = [v4 depthInfo];
-      v13 = [v12 objectForKeyedSubscript:@"capturedAperture"];
+      depthInfo = [depthAdjustmentController depthInfo];
+      v13 = [depthInfo objectForKeyedSubscript:@"capturedAperture"];
 
       [v13 floatValue];
       if (v13 && v14 > 0.0)
@@ -1665,16 +1665,16 @@ LABEL_6:
 
       objc_storeStrong(&self->_apertureToolbar, v8);
       v15 = +[PUPhotoEditProtoSettings sharedInstance];
-      v16 = [v15 apertureSliderHasOffPosition];
+      apertureSliderHasOffPosition = [v15 apertureSliderHasOffPosition];
 
-      if (v16)
+      if (apertureSliderHasOffPosition)
       {
-        -[PUPhotoEditApertureToolbar setDepthIsOn:](self->_apertureToolbar, "setDepthIsOn:", [v4 enabled]);
+        -[PUPhotoEditApertureToolbar setDepthIsOn:](self->_apertureToolbar, "setDepthIsOn:", [depthAdjustmentController enabled]);
       }
 
       else
       {
-        -[PUPhotoEditApertureToolbar setEnabled:](self->_apertureToolbar, "setEnabled:", [v4 enabled]);
+        -[PUPhotoEditApertureToolbar setEnabled:](self->_apertureToolbar, "setEnabled:", [depthAdjustmentController enabled]);
       }
     }
 
@@ -1685,8 +1685,8 @@ LABEL_6:
       apertureButton = self->_apertureButton;
       self->_apertureButton = &v18->super;
 
-      v20 = [(PUPhotoEditPortraitToolController *)self view];
-      v21 = [v20 effectiveUserInterfaceLayoutDirection] != 1;
+      view2 = [(PUPhotoEditPortraitToolController *)self view];
+      v21 = [view2 effectiveUserInterfaceLayoutDirection] != 1;
 
       v22 = MEMORY[0x1B8C6D660]([(CEKApertureButton *)self->_apertureButton setExpansionDirection:v21]);
       v23 = 11.0;
@@ -1697,8 +1697,8 @@ LABEL_6:
 
       [(CEKApertureButton *)self->_apertureButton setTappableEdgeInsets:v23, v23, v23, v23];
       [(CEKApertureButton *)self->_apertureButton setTranslatesAutoresizingMaskIntoConstraints:0];
-      v24 = [v17 photoEditingToolbarMainButtonColor];
-      [(CEKApertureButton *)self->_apertureButton setTintColor:v24];
+      photoEditingToolbarMainButtonColor = [v17 photoEditingToolbarMainButtonColor];
+      [(CEKApertureButton *)self->_apertureButton setTintColor:photoEditingToolbarMainButtonColor];
 
       [(CEKApertureButton *)self->_apertureButton addTarget:self action:sel__handlePortraitNavigationButtons_ forControlEvents:64];
       [(PUPhotoEditPortraitToolController *)self _updateNavigationButtonsAnimated:0];
@@ -1729,9 +1729,9 @@ LABEL_20:
 
 - (BOOL)_setupLightingControlsIfNeeded
 {
-  v3 = [(PUPhotoEditPortraitToolController *)self _canRenderPortraitEffect];
+  _canRenderPortraitEffect = [(PUPhotoEditPortraitToolController *)self _canRenderPortraitEffect];
   lightingControl = self->_lightingControl;
-  if (!v3)
+  if (!_canRenderPortraitEffect)
   {
     if (lightingControl)
     {
@@ -1769,9 +1769,9 @@ LABEL_11:
   v8 = 1;
   [(CEKLightingControl *)self->_lightingControl setHighlighted:1];
   [(CEKLightingControl *)self->_lightingControl setNameBadgeHidden:1];
-  v9 = [(PUPhotoEditPortraitToolController *)self _shouldShowPortraitV2];
+  _shouldShowPortraitV2 = [(PUPhotoEditPortraitToolController *)self _shouldShowPortraitV2];
   v10 = 2;
-  if (v9)
+  if (_shouldShowPortraitV2)
   {
     v10 = 3;
   }
@@ -1795,15 +1795,15 @@ LABEL_11:
   [(PUPhotoEditPortraitToolController *)self _updateLightingControl];
   self->_initialLightingType = [(CEKLightingControl *)self->_lightingControl selectedLightingType];
 LABEL_12:
-  v16 = [(PUPhotoEditPortraitToolController *)self _shouldShowPortraitV2];
+  _shouldShowPortraitV22 = [(PUPhotoEditPortraitToolController *)self _shouldShowPortraitV2];
   lightingIntensityButton = self->_lightingIntensityButton;
-  if (v16)
+  if (_shouldShowPortraitV22)
   {
     if (!lightingIntensityButton)
     {
       objc_initWeak(&location, self);
-      v18 = [(PUPhotoEditToolController *)self photoEditSpec];
-      v19 = [PUPhotoEditToolbarButton buttonWithImageNamed:@"camera.lightcontrol" selectedImageNamed:0 accessibilityLabel:&stru_1F2AC6818 spec:v18];
+      photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+      v19 = [PUPhotoEditToolbarButton buttonWithImageNamed:@"camera.lightcontrol" selectedImageNamed:0 accessibilityLabel:&stru_1F2AC6818 spec:photoEditSpec];
       v20 = self->_lightingIntensityButton;
       self->_lightingIntensityButton = v19;
 
@@ -1833,12 +1833,12 @@ LABEL_12:
       [(CEKSlider *)self->_lightingSlider setDelegate:self];
       [(CEKSlider *)self->_lightingSlider setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UIView *)self->_lightingContainer addSubview:self->_lightingSlider];
-      v25 = [(PUPhotoEditToolController *)self compositionController];
-      v26 = [v25 portraitAdjustmentController];
+      compositionController = [(PUPhotoEditToolController *)self compositionController];
+      portraitAdjustmentController = [compositionController portraitAdjustmentController];
 
-      if (v26)
+      if (portraitAdjustmentController)
       {
-        [v26 strength];
+        [portraitAdjustmentController strength];
         [(CEKSlider *)self->_lightingSlider setValue:?];
       }
 
@@ -1898,20 +1898,20 @@ void __67__PUPhotoEditPortraitToolController__setupLightingControlsIfNeeded__blo
 
 - (BOOL)_setupDepthControlsIfNeeded
 {
-  v3 = [(PUPhotoEditToolController *)self compositionController];
-  v4 = [v3 depthAdjustmentController];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  depthAdjustmentController = [compositionController depthAdjustmentController];
 
-  v5 = [v4 canRenderDepth];
-  v6 = [v4 enabled];
+  canRenderDepth = [depthAdjustmentController canRenderDepth];
+  enabled = [depthAdjustmentController enabled];
   portraitToolbarButton = self->_portraitToolbarButton;
-  if (v5)
+  if (canRenderDepth)
   {
     if (!portraitToolbarButton)
     {
-      v8 = v6;
-      v9 = [(PUPhotoEditPortraitToolController *)self _depthButtonTitle];
-      v10 = [v9 localizedUppercaseString];
-      v11 = [PUPhotoEditToolActivationButton buttonWithTitle:v10];
+      v8 = enabled;
+      _depthButtonTitle = [(PUPhotoEditPortraitToolController *)self _depthButtonTitle];
+      localizedUppercaseString = [_depthButtonTitle localizedUppercaseString];
+      v11 = [PUPhotoEditToolActivationButton buttonWithTitle:localizedUppercaseString];
       v12 = self->_portraitToolbarButton;
       self->_portraitToolbarButton = v11;
 
@@ -1943,12 +1943,12 @@ LABEL_6:
 LABEL_8:
   if ([(PUPhotoEditPortraitToolController *)self _shouldShowPortraitFocusEditingUI])
   {
-    v14 = [(PUPhotoEditToolController *)self compositionController];
-    v15 = [v14 depthAdjustmentController];
+    compositionController2 = [(PUPhotoEditToolController *)self compositionController];
+    depthAdjustmentController2 = [compositionController2 depthAdjustmentController];
 
-    v16 = [v15 enabled];
+    enabled2 = [depthAdjustmentController2 enabled];
     focusOverlayController = self->_focusOverlayController;
-    if (v16)
+    if (enabled2)
     {
       if (!focusOverlayController)
       {
@@ -1978,13 +1978,13 @@ void __64__PUPhotoEditPortraitToolController__setupDepthControlsIfNeeded__block_
 - (void)_refreshFromValuesCalculator
 {
   v95 = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotoEditToolController *)self valuesCalculator];
-  if (![v3 hasImageValues])
+  valuesCalculator = [(PUPhotoEditToolController *)self valuesCalculator];
+  if (![valuesCalculator hasImageValues])
   {
     goto LABEL_50;
   }
 
-  v4 = [v3 portraitValuesWithAccuracy:0];
+  v4 = [valuesCalculator portraitValuesWithAccuracy:0];
   v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69BDFF8]];
   v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69BE070]];
   v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69BE080]];
@@ -2017,12 +2017,12 @@ void __64__PUPhotoEditPortraitToolController__setupDepthControlsIfNeeded__block_
   }
 
   v14 = v13;
-  v15 = [v11 unsignedIntegerValue];
+  unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-  [(PUPhotoEditPortraitToolController *)self setMajorVersion:v15];
-  v16 = [v14 unsignedIntegerValue];
+  [(PUPhotoEditPortraitToolController *)self setMajorVersion:unsignedIntegerValue];
+  unsignedIntegerValue2 = [v14 unsignedIntegerValue];
 
-  [(PUPhotoEditPortraitToolController *)self setMinorVersion:v16];
+  [(PUPhotoEditPortraitToolController *)self setMinorVersion:unsignedIntegerValue2];
   v17 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69BE000]];
   objc_opt_class();
   v76 = v17;
@@ -2052,12 +2052,12 @@ void __64__PUPhotoEditPortraitToolController__setupDepthControlsIfNeeded__block_
   }
 
   v23 = v22;
-  v24 = [v20 unsignedIntegerValue];
+  unsignedIntegerValue3 = [v20 unsignedIntegerValue];
 
-  [(PUPhotoEditPortraitToolController *)self setDepthInfoMajorVersion:v24];
-  v25 = [v23 unsignedIntegerValue];
+  [(PUPhotoEditPortraitToolController *)self setDepthInfoMajorVersion:unsignedIntegerValue3];
+  unsignedIntegerValue4 = [v23 unsignedIntegerValue];
 
-  [(PUPhotoEditPortraitToolController *)self setDepthInfoMinorVersion:v25];
+  [(PUPhotoEditPortraitToolController *)self setDepthInfoMinorVersion:unsignedIntegerValue4];
   v26 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69BE078]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2075,28 +2075,28 @@ void __64__PUPhotoEditPortraitToolController__setupDepthControlsIfNeeded__block_
   [v28 floatValue];
   v30 = v29;
 
-  v31 = [(PUPhotoEditToolController *)self compositionController];
-  v32 = [v31 portraitAdjustmentController];
-  v33 = [v32 portraitInfo];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  portraitAdjustmentController = [compositionController portraitAdjustmentController];
+  portraitInfo = [portraitAdjustmentController portraitInfo];
 
   v79 = v7;
-  v74 = v32;
-  if (v33 || !v6)
+  v74 = portraitAdjustmentController;
+  if (portraitInfo || !v6)
   {
-    v35 = [v32 portraitInfo];
+    portraitInfo2 = [portraitAdjustmentController portraitInfo];
     cachedPortraitEffectSettings = self->_cachedPortraitEffectSettings;
-    self->_cachedPortraitEffectSettings = v35;
+    self->_cachedPortraitEffectSettings = portraitInfo2;
 
-    v37 = [v32 spillMatteAllowed];
+    spillMatteAllowed = [portraitAdjustmentController spillMatteAllowed];
     cachedSpillMatteAllowed = self->_cachedSpillMatteAllowed;
-    self->_cachedSpillMatteAllowed = v37;
+    self->_cachedSpillMatteAllowed = spillMatteAllowed;
   }
 
   else
   {
     objc_storeStrong(&self->_cachedPortraitEffectSettings, v6);
     objc_storeStrong(&self->_cachedSpillMatteAllowed, v7);
-    if (v32)
+    if (portraitAdjustmentController)
     {
       v34 = *MEMORY[0x1E69BE060];
       v89[0] = MEMORY[0x1E69E9820];
@@ -2106,7 +2106,7 @@ void __64__PUPhotoEditPortraitToolController__setupDepthControlsIfNeeded__block_
       v90 = v6;
       v92 = v30;
       v91 = v4;
-      [v31 modifyAdjustmentWithKey:v34 modificationBlock:v89];
+      [compositionController modifyAdjustmentWithKey:v34 modificationBlock:v89];
     }
   }
 
@@ -2117,14 +2117,14 @@ void __64__PUPhotoEditPortraitToolController__setupDepthControlsIfNeeded__block_
   v42 = v41;
 
   v81 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69BDFE8]];
-  v82 = v31;
-  v43 = [v31 depthAdjustmentController];
-  v44 = [v43 depthInfo];
-  if (v44)
+  v82 = compositionController;
+  depthAdjustmentController = [compositionController depthAdjustmentController];
+  depthInfo = [depthAdjustmentController depthInfo];
+  if (depthInfo)
   {
-    v45 = v44;
-    v46 = [v43 depthInfo];
-    v47 = [v46 objectForKeyedSubscript:@"focusRect"];
+    v45 = depthInfo;
+    depthInfo2 = [depthAdjustmentController depthInfo];
+    v47 = [depthInfo2 objectForKeyedSubscript:@"focusRect"];
     if (v47)
     {
 
@@ -2137,8 +2137,8 @@ void __64__PUPhotoEditPortraitToolController__setupDepthControlsIfNeeded__block_
     goto LABEL_29;
   }
 
-  v48 = [v82 adjustmentConstants];
-  v49 = [v48 PIDepthAdjustmentKey];
+  adjustmentConstants = [v82 adjustmentConstants];
+  pIDepthAdjustmentKey = [adjustmentConstants PIDepthAdjustmentKey];
   v83[0] = MEMORY[0x1E69E9820];
   v83[1] = 3221225472;
   v83[2] = __65__PUPhotoEditPortraitToolController__refreshFromValuesCalculator__block_invoke_2;
@@ -2147,37 +2147,37 @@ void __64__PUPhotoEditPortraitToolController__setupDepthControlsIfNeeded__block_
   v88 = v42;
   v85 = v81;
   v86 = v4;
-  v87 = v43;
-  [v82 modifyAdjustmentWithKey:v49 modificationBlock:v83];
+  v87 = depthAdjustmentController;
+  [v82 modifyAdjustmentWithKey:pIDepthAdjustmentKey modificationBlock:v83];
 
   v45 = v84;
 LABEL_28:
 
 LABEL_29:
-  v50 = [v3 apertureValuesWithAccuracy:0];
+  v50 = [valuesCalculator apertureValuesWithAccuracy:0];
   v51 = [v50 objectForKeyedSubscript:v39];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v52 = [v43 depthInfo];
-    v53 = [v52 objectForKey:@"capturedAperture"];
+    depthInfo3 = [depthAdjustmentController depthInfo];
+    v53 = [depthInfo3 objectForKey:@"capturedAperture"];
 
     if (!v53)
     {
-      v54 = [v43 depthInfo];
-      v55 = [v54 mutableCopy];
+      depthInfo4 = [depthAdjustmentController depthInfo];
+      v55 = [depthInfo4 mutableCopy];
 
       [v55 setObject:v51 forKeyedSubscript:@"capturedAperture"];
-      [v43 setDepthInfo:v55];
+      [depthAdjustmentController setDepthInfo:v55];
     }
   }
 
   v56 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
   {
-    v57 = [(PUPhotoEditPortraitToolController *)self _canRenderPortraitEffect];
+    _canRenderPortraitEffect = [(PUPhotoEditPortraitToolController *)self _canRenderPortraitEffect];
     v58 = @"N";
-    if (v57)
+    if (_canRenderPortraitEffect)
     {
       v58 = @"Y";
     }
@@ -2187,16 +2187,16 @@ LABEL_29:
     _os_log_impl(&dword_1B36F3000, v56, OS_LOG_TYPE_DEFAULT, "PUPhotoEditPortraitToolCOntroller: has portrait? %@", buf, 0xCu);
   }
 
-  v59 = [(PUPhotoEditToolController *)self valuesCalculator];
-  v60 = [v59 hasImageValues];
+  valuesCalculator2 = [(PUPhotoEditToolController *)self valuesCalculator];
+  hasImageValues = [valuesCalculator2 hasImageValues];
 
-  if (v60)
+  if (hasImageValues)
   {
-    v73 = v3;
+    v73 = valuesCalculator;
     v61 = v26;
     v62 = v5;
-    v63 = [(PUPhotoEditToolController *)self valuesCalculator];
-    v64 = [v63 portraitValuesWithAccuracy:0];
+    valuesCalculator3 = [(PUPhotoEditToolController *)self valuesCalculator];
+    v64 = [valuesCalculator3 portraitValuesWithAccuracy:0];
 
     v65 = [v64 objectForKeyedSubscript:*MEMORY[0x1E69BE068]];
     objc_opt_class();
@@ -2214,23 +2214,23 @@ LABEL_29:
 
     v5 = v62;
     v26 = v61;
-    v3 = v73;
+    valuesCalculator = v73;
   }
 
-  v67 = [(PUPhotoEditPortraitToolController *)self _setupDepthControlsIfNeeded];
-  v68 = [(PUPhotoEditPortraitToolController *)self _setupLightingControlsIfNeeded];
-  v69 = [(PUPhotoEditPortraitToolController *)self _setupApertureControlsIfNeeded];
-  if (v67 || v68 || v69)
+  _setupDepthControlsIfNeeded = [(PUPhotoEditPortraitToolController *)self _setupDepthControlsIfNeeded];
+  _setupLightingControlsIfNeeded = [(PUPhotoEditPortraitToolController *)self _setupLightingControlsIfNeeded];
+  _setupApertureControlsIfNeeded = [(PUPhotoEditPortraitToolController *)self _setupApertureControlsIfNeeded];
+  if (_setupDepthControlsIfNeeded || _setupLightingControlsIfNeeded || _setupApertureControlsIfNeeded)
   {
-    v70 = [(PUPhotoEditToolController *)self delegate];
-    [v70 toolControllerDidUpdateToolbar:self];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    [delegate toolControllerDidUpdateToolbar:self];
 
-    v71 = [(PUPhotoEditPortraitToolController *)self view];
-    [v71 setNeedsUpdateConstraints];
+    view = [(PUPhotoEditPortraitToolController *)self view];
+    [view setNeedsUpdateConstraints];
   }
 
-  v72 = [(PUPhotoEditPortraitToolController *)self toolSelection];
-  if (v43 && !v72)
+  toolSelection = [(PUPhotoEditPortraitToolController *)self toolSelection];
+  if (depthAdjustmentController && !toolSelection)
   {
     [(PUPhotoEditPortraitToolController *)self _resetDefaultToolMode];
   }
@@ -2265,17 +2265,17 @@ void __65__PUPhotoEditPortraitToolController__refreshFromValuesCalculator__block
   }
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v5 = a3;
-  if ([v5 action] == sel_navigateToPreviousTab_)
+  commandCopy = command;
+  if ([commandCopy action] == sel_navigateToPreviousTab_)
   {
     v3 = @"PHOTOEDIT_PORTRAIT_LIGHTING_EFFECTS_KEY_COMMAND_TITLE";
   }
 
   else
   {
-    if ([v5 action] != sel_navigateToNextTab_)
+    if ([commandCopy action] != sel_navigateToNextTab_)
     {
       goto LABEL_6;
     }
@@ -2284,28 +2284,28 @@ void __65__PUPhotoEditPortraitToolController__refreshFromValuesCalculator__block
   }
 
   v4 = PULocalizedString(v3);
-  [v5 setTitle:v4];
+  [commandCopy setTitle:v4];
 
 LABEL_6:
 }
 
 - (void)_updateApertureSliderLength
 {
-  v3 = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
+  apertureToolbar = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
 
-  if (v3)
+  if (apertureToolbar)
   {
-    v4 = [(PUPhotoEditToolController *)self photoEditSpec];
-    v5 = [v4 shouldDisplayCompactToolbar];
+    photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+    shouldDisplayCompactToolbar = [photoEditSpec shouldDisplayCompactToolbar];
 
     v6 = 0.0;
-    if ((v5 & 1) == 0)
+    if ((shouldDisplayCompactToolbar & 1) == 0)
     {
-      v7 = [(PUPhotoEditToolController *)self photoEditSpec];
-      v8 = [v7 currentLayoutStyle];
+      photoEditSpec2 = [(PUPhotoEditToolController *)self photoEditSpec];
+      currentLayoutStyle = [photoEditSpec2 currentLayoutStyle];
 
-      v9 = [(PUPhotoEditToolController *)self layoutOrientation];
-      if (v8 != 4 && v9 == 1)
+      layoutOrientation = [(PUPhotoEditToolController *)self layoutOrientation];
+      if (currentLayoutStyle != 4 && layoutOrientation == 1)
       {
         v6 = 275.0;
       }
@@ -2316,14 +2316,14 @@ LABEL_6:
       }
     }
 
-    v11 = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
-    [v11 setSliderWidth:v6];
+    apertureToolbar2 = [(PUPhotoEditPortraitToolController *)self apertureToolbar];
+    [apertureToolbar2 setSliderWidth:v6];
   }
 }
 
-- (void)_updateToolVisibilityAnimated:(BOOL)a3
+- (void)_updateToolVisibilityAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = [(PUPhotoEditPortraitToolController *)self toolSelection]== 1;
   v6 = [(PUPhotoEditPortraitToolController *)self toolSelection]== 2;
   [(PUPhotoEditToolController *)self setToolGradientDistance:dbl_1B3D0CF30[v5]];
@@ -2343,7 +2343,7 @@ LABEL_6:
   v10 = v5;
   v11 = v6;
   v8 = _Block_copy(v9);
-  if (v3)
+  if (animatedCopy)
   {
     [(UIView *)self->_lightingContainer setHidden:0];
     [(UIView *)self->_apertureContainer setHidden:0];
@@ -2394,24 +2394,24 @@ uint64_t __67__PUPhotoEditPortraitToolController__updateToolVisibilityAnimated__
   return [v2 setHidden:v3];
 }
 
-- (void)setToolSelection:(int64_t)a3 animated:(BOOL)a4
+- (void)setToolSelection:(int64_t)selection animated:(BOOL)animated
 {
-  if (self->_toolSelection != a3)
+  if (self->_toolSelection != selection)
   {
-    self->_toolSelection = a3;
-    [(PUPhotoEditPortraitToolController *)self _updateToolVisibilityAnimated:a4];
+    self->_toolSelection = selection;
+    [(PUPhotoEditPortraitToolController *)self _updateToolVisibilityAnimated:animated];
   }
 }
 
 - (BOOL)_canRenderPortraitEffect
 {
   v3 = PECanRenderPortrait();
-  v4 = [(PUPhotoEditToolController *)self compositionController];
-  v5 = [v4 portraitAdjustmentController];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  portraitAdjustmentController = [compositionController portraitAdjustmentController];
 
   if (v3)
   {
-    v6 = ([v5 canRenderPortraitEffect] & 1) != 0 || -[NSDictionary count](self->_cachedPortraitEffectSettings, "count") != 0;
+    v6 = ([portraitAdjustmentController canRenderPortraitEffect] & 1) != 0 || -[NSDictionary count](self->_cachedPortraitEffectSettings, "count") != 0;
   }
 
   else
@@ -2422,25 +2422,25 @@ uint64_t __67__PUPhotoEditPortraitToolController__updateToolVisibilityAnimated__
   return v6;
 }
 
-- (void)longPressed:(id)a3
+- (void)longPressed:(id)pressed
 {
-  if ([a3 state] != 2)
+  if ([pressed state] != 2)
   {
-    v4 = [(PUPhotoEditToolController *)self delegate];
-    [v4 toolControllerWantsToToggleOriginal:self];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    [delegate toolControllerWantsToToggleOriginal:self];
   }
 }
 
 - (void)previewingOriginalDidStop
 {
-  v2 = [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController view];
-  [v2 setHidden:0];
+  view = [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController view];
+  [view setHidden:0];
 }
 
 - (void)previewingOriginalDidStart
 {
-  v2 = [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController view];
-  [v2 setHidden:1];
+  view = [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController view];
+  [view setHidden:1];
 }
 
 - (void)updateViewConstraints
@@ -2464,27 +2464,27 @@ uint64_t __67__PUPhotoEditPortraitToolController__updateToolVisibilityAnimated__
       focusOverlayControllerConstraints = self->_focusOverlayControllerConstraints;
       self->_focusOverlayControllerConstraints = v3;
 
-      v5 = [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController view];
+      view = [(PUPhotoEditPortraitFocusOverlayViewController *)self->_focusOverlayController view];
       v16 = self->_focusOverlayControllerConstraints;
-      v22 = [v5 leadingAnchor];
-      v23 = [(PUPhotoEditPortraitToolController *)self view];
-      v21 = [v23 leadingAnchor];
-      v20 = [v22 constraintEqualToAnchor:v21];
+      leadingAnchor = [view leadingAnchor];
+      view2 = [(PUPhotoEditPortraitToolController *)self view];
+      leadingAnchor2 = [view2 leadingAnchor];
+      v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v24[0] = v20;
-      v18 = [v5 trailingAnchor];
-      v19 = [(PUPhotoEditPortraitToolController *)self view];
-      v17 = [v19 trailingAnchor];
-      v15 = [v18 constraintEqualToAnchor:v17];
+      trailingAnchor = [view trailingAnchor];
+      view3 = [(PUPhotoEditPortraitToolController *)self view];
+      trailingAnchor2 = [view3 trailingAnchor];
+      v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v24[1] = v15;
-      v13 = [v5 topAnchor];
-      v14 = [(PUPhotoEditPortraitToolController *)self view];
-      v6 = [v14 topAnchor];
-      v7 = [v13 constraintEqualToAnchor:v6];
+      topAnchor = [view topAnchor];
+      view4 = [(PUPhotoEditPortraitToolController *)self view];
+      topAnchor2 = [view4 topAnchor];
+      v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v24[2] = v7;
-      v8 = [v5 bottomAnchor];
-      v9 = [(PUPhotoEditPortraitToolController *)self view];
-      v10 = [v9 bottomAnchor];
-      v11 = [v8 constraintEqualToAnchor:v10];
+      bottomAnchor = [view bottomAnchor];
+      view5 = [(PUPhotoEditPortraitToolController *)self view];
+      bottomAnchor2 = [view5 bottomAnchor];
+      v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v24[3] = v11;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
       [(NSMutableArray *)v16 addObjectsFromArray:v12];
@@ -2507,20 +2507,20 @@ uint64_t __67__PUPhotoEditPortraitToolController__updateToolVisibilityAnimated__
     if (lightingControl)
     {
       v39 = self->_toolConstraints;
-      v49 = [(CEKLightingControl *)lightingControl heightAnchor];
-      v46 = [v49 constraintEqualToConstant:140.0];
+      heightAnchor = [(CEKLightingControl *)lightingControl heightAnchor];
+      v46 = [heightAnchor constraintEqualToConstant:140.0];
       v55[0] = v46;
-      v43 = [(UIView *)self->_lightingContainer widthAnchor];
-      v41 = [(CEKLightingControl *)self->_lightingControl widthAnchor];
-      v37 = [v43 constraintEqualToAnchor:v41];
+      widthAnchor = [(UIView *)self->_lightingContainer widthAnchor];
+      widthAnchor2 = [(CEKLightingControl *)self->_lightingControl widthAnchor];
+      v37 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
       v55[1] = v37;
-      v6 = [(UIView *)self->_lightingContainer centerXAnchor];
-      v7 = [(CEKLightingControl *)self->_lightingControl centerXAnchor];
-      v8 = [v6 constraintEqualToAnchor:v7];
+      centerXAnchor = [(UIView *)self->_lightingContainer centerXAnchor];
+      centerXAnchor2 = [(CEKLightingControl *)self->_lightingControl centerXAnchor];
+      v8 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v55[2] = v8;
-      v9 = [(UIView *)self->_lightingContainer topAnchor];
-      v10 = [(CEKLightingControl *)self->_lightingControl topAnchor];
-      v11 = [v9 constraintEqualToAnchor:v10];
+      topAnchor = [(UIView *)self->_lightingContainer topAnchor];
+      topAnchor2 = [(CEKLightingControl *)self->_lightingControl topAnchor];
+      v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v55[3] = v11;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:4];
       [(NSMutableArray *)v39 addObjectsFromArray:v12];
@@ -2529,40 +2529,40 @@ uint64_t __67__PUPhotoEditPortraitToolController__updateToolVisibilityAnimated__
       lightingContainer = self->_lightingContainer;
       if (self->_lightingSlider)
       {
-        v42 = [(UIView *)lightingContainer widthAnchor];
-        v38 = [(CEKSlider *)self->_lightingSlider widthAnchor];
-        v44 = [v42 constraintEqualToAnchor:v38];
+        widthAnchor3 = [(UIView *)lightingContainer widthAnchor];
+        widthAnchor4 = [(CEKSlider *)self->_lightingSlider widthAnchor];
+        v44 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
         v54[0] = v44;
-        v50 = [(UIView *)self->_lightingContainer centerXAnchor];
-        v47 = [(CEKSlider *)self->_lightingSlider centerXAnchor];
-        v40 = [v50 constraintEqualToAnchor:v47];
+        centerXAnchor3 = [(UIView *)self->_lightingContainer centerXAnchor];
+        centerXAnchor4 = [(CEKSlider *)self->_lightingSlider centerXAnchor];
+        v40 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
         v54[1] = v40;
-        v36 = [(UIView *)self->_lightingContainer bottomAnchor];
-        v35 = [(CEKSlider *)self->_lightingSlider bottomAnchor];
-        v15 = [v36 constraintEqualToAnchor:v35 constant:5.0];
+        bottomAnchor = [(UIView *)self->_lightingContainer bottomAnchor];
+        bottomAnchor2 = [(CEKSlider *)self->_lightingSlider bottomAnchor];
+        v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:5.0];
         v54[2] = v15;
-        v16 = [(CEKLightingControl *)self->_lightingControl bottomAnchor];
+        bottomAnchor3 = [(CEKLightingControl *)self->_lightingControl bottomAnchor];
         [(CEKSlider *)self->_lightingSlider topAnchor];
         v18 = v17 = v13;
-        v19 = [v16 constraintEqualToAnchor:v18 constant:10.0];
+        v19 = [bottomAnchor3 constraintEqualToAnchor:v18 constant:10.0];
         v54[3] = v19;
-        v20 = [(CEKSlider *)self->_lightingSlider heightAnchor];
-        v21 = [v20 constraintEqualToConstant:66.0];
+        heightAnchor2 = [(CEKSlider *)self->_lightingSlider heightAnchor];
+        v21 = [heightAnchor2 constraintEqualToConstant:66.0];
         v54[4] = v21;
         v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:5];
         [(NSMutableArray *)v17 addObjectsFromArray:v22];
 
-        v23 = v38;
-        v24 = v42;
+        bottomAnchor5 = widthAnchor4;
+        bottomAnchor4 = widthAnchor3;
 
         v25 = v44;
       }
 
       else
       {
-        v24 = [(UIView *)lightingContainer bottomAnchor];
-        v23 = [(CEKLightingControl *)self->_lightingControl bottomAnchor];
-        v25 = [v24 constraintEqualToAnchor:v23 constant:66.0];
+        bottomAnchor4 = [(UIView *)lightingContainer bottomAnchor];
+        bottomAnchor5 = [(CEKLightingControl *)self->_lightingControl bottomAnchor];
+        v25 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:66.0];
         [(NSMutableArray *)v13 addObject:v25];
       }
     }
@@ -2570,19 +2570,19 @@ uint64_t __67__PUPhotoEditPortraitToolController__updateToolVisibilityAnimated__
     apertureToolbar = self->_apertureToolbar;
     if (apertureToolbar)
     {
-      v27 = [(PUPhotoEditApertureToolbar *)apertureToolbar view];
+      view = [(PUPhotoEditApertureToolbar *)apertureToolbar view];
       v45 = self->_toolConstraints;
-      v52 = [(UIView *)self->_apertureContainer widthAnchor];
-      v51 = [v27 widthAnchor];
-      v48 = [v52 constraintEqualToAnchor:v51];
+      widthAnchor5 = [(UIView *)self->_apertureContainer widthAnchor];
+      widthAnchor6 = [view widthAnchor];
+      v48 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6];
       v53[0] = v48;
-      v28 = [(UIView *)self->_apertureContainer centerXAnchor];
-      v29 = [v27 centerXAnchor];
-      v30 = [v28 constraintEqualToAnchor:v29];
+      centerXAnchor5 = [(UIView *)self->_apertureContainer centerXAnchor];
+      centerXAnchor6 = [view centerXAnchor];
+      v30 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
       v53[1] = v30;
-      v31 = [(UIView *)self->_apertureContainer bottomAnchor];
-      v32 = [v27 bottomAnchor];
-      v33 = [v31 constraintEqualToAnchor:v32];
+      bottomAnchor6 = [(UIView *)self->_apertureContainer bottomAnchor];
+      bottomAnchor7 = [view bottomAnchor];
+      v33 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
       v53[2] = v33;
       v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:3];
       [(NSMutableArray *)v45 addObjectsFromArray:v34];
@@ -2595,10 +2595,10 @@ uint64_t __67__PUPhotoEditPortraitToolController__updateToolVisibilityAnimated__
 - (void)_updateToolContainerConstraints
 {
   v97[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotoEditToolController *)self toolContainerView];
-  v4 = [v3 window];
+  toolContainerView = [(PUPhotoEditToolController *)self toolContainerView];
+  window = [toolContainerView window];
 
-  if (v4)
+  if (window)
   {
     if (!self->_containerConstraints && self->_lightingContainer)
     {
@@ -2606,61 +2606,61 @@ uint64_t __67__PUPhotoEditPortraitToolController__updateToolVisibilityAnimated__
       containerConstraints = self->_containerConstraints;
       self->_containerConstraints = v5;
 
-      v7 = [(PUPhotoEditToolController *)self photoEditSpec];
-      v8 = [v7 currentLayoutStyle];
+      photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+      currentLayoutStyle = [photoEditSpec currentLayoutStyle];
 
-      v90 = v3;
-      if ([(PUPhotoEditToolController *)self layoutOrientation]!= 1 || v8 == 4)
+      v90 = toolContainerView;
+      if ([(PUPhotoEditToolController *)self layoutOrientation]!= 1 || currentLayoutStyle == 4)
       {
-        v69 = v8;
+        v69 = currentLayoutStyle;
         v21 = objc_alloc_init(MEMORY[0x1E69DCC20]);
-        v22 = [(PUPhotoEditPortraitToolController *)self view];
-        [v22 addLayoutGuide:v21];
+        view = [(PUPhotoEditPortraitToolController *)self view];
+        [view addLayoutGuide:v21];
 
-        v23 = [v3 centerYAnchor];
-        v24 = [v3 window];
+        centerYAnchor = [toolContainerView centerYAnchor];
+        window2 = [toolContainerView window];
 
-        if (v24)
+        if (window2)
         {
-          v25 = [v3 window];
-          v26 = [v25 centerYAnchor];
+          window3 = [toolContainerView window];
+          centerYAnchor2 = [window3 centerYAnchor];
 
-          v23 = v26;
+          centerYAnchor = centerYAnchor2;
         }
 
         v77 = self->_containerConstraints;
-        v88 = [v21 heightAnchor];
-        v81 = [v3 heightAnchor];
-        v27 = [v88 constraintEqualToAnchor:v81];
+        heightAnchor = [v21 heightAnchor];
+        heightAnchor2 = [toolContainerView heightAnchor];
+        v27 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
         v96[0] = v27;
         [v21 centerYAnchor];
         v29 = v28 = v21;
-        v85 = v23;
-        v30 = [v29 constraintEqualToAnchor:v23];
+        v85 = centerYAnchor;
+        v30 = [v29 constraintEqualToAnchor:centerYAnchor];
         v96[1] = v30;
-        v31 = [v28 rightAnchor];
-        v32 = [v3 rightAnchor];
-        v33 = [v31 constraintEqualToAnchor:v32 constant:5.0];
+        rightAnchor = [v28 rightAnchor];
+        rightAnchor2 = [toolContainerView rightAnchor];
+        v33 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:5.0];
         v96[2] = v33;
         v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v96 count:3];
         [(NSMutableArray *)v77 addObjectsFromArray:v34];
 
         v71 = self->_containerConstraints;
-        v82 = [(UIView *)self->_lightingContainer centerXAnchor];
-        v78 = [v28 centerXAnchor];
-        v75 = [v82 constraintEqualToAnchor:v78];
+        centerXAnchor = [(UIView *)self->_lightingContainer centerXAnchor];
+        centerXAnchor2 = [v28 centerXAnchor];
+        v75 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         v95[0] = v75;
-        v73 = [(UIView *)self->_lightingContainer centerYAnchor];
-        v72 = [v28 centerYAnchor];
-        v70 = [v73 constraintEqualToAnchor:v72];
+        centerYAnchor3 = [(UIView *)self->_lightingContainer centerYAnchor];
+        centerYAnchor4 = [v28 centerYAnchor];
+        v70 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
         v95[1] = v70;
-        v35 = [(UIView *)self->_lightingContainer widthAnchor];
-        v36 = [v28 heightAnchor];
-        v37 = [v35 constraintEqualToAnchor:v36];
+        widthAnchor = [(UIView *)self->_lightingContainer widthAnchor];
+        heightAnchor3 = [v28 heightAnchor];
+        v37 = [widthAnchor constraintEqualToAnchor:heightAnchor3];
         v95[2] = v37;
-        v38 = [(UIView *)self->_lightingContainer heightAnchor];
-        v39 = [v28 widthAnchor];
-        v40 = [v38 constraintEqualToAnchor:v39];
+        heightAnchor4 = [(UIView *)self->_lightingContainer heightAnchor];
+        widthAnchor2 = [v28 widthAnchor];
+        v40 = [heightAnchor4 constraintEqualToAnchor:widthAnchor2];
         v95[3] = v40;
         v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v95 count:4];
         [(NSMutableArray *)v71 addObjectsFromArray:v41];
@@ -2672,8 +2672,8 @@ uint64_t __67__PUPhotoEditPortraitToolController__updateToolVisibilityAnimated__
 
         else
         {
-          v43 = [(PUPhotoEditToolController *)self layoutOrientation];
-          v44 = v69 == 4 || v43 == 2;
+          layoutOrientation = [(PUPhotoEditToolController *)self layoutOrientation];
+          v44 = v69 == 4 || layoutOrientation == 2;
           v42 = 1.57079633;
           if (v44)
           {
@@ -2686,7 +2686,7 @@ uint64_t __67__PUPhotoEditPortraitToolController__updateToolVisibilityAnimated__
         v93 = v92;
         [(UIView *)lightingContainer setTransform:&v93];
         v19 = 0x1E695D000uLL;
-        v11 = v85;
+        widthAnchor4 = v85;
         v20 = v28;
       }
 
@@ -2699,41 +2699,41 @@ uint64_t __67__PUPhotoEditPortraitToolController__updateToolVisibilityAnimated__
         *&v93.tx = *(MEMORY[0x1E695EFD0] + 32);
         [(UIView *)v9 setTransform:&v93];
         v80 = self->_containerConstraints;
-        v87 = [v3 widthAnchor];
-        v11 = [(UIView *)self->_lightingContainer widthAnchor];
-        v84 = [v87 constraintEqualToAnchor:v11];
+        widthAnchor3 = [toolContainerView widthAnchor];
+        widthAnchor4 = [(UIView *)self->_lightingContainer widthAnchor];
+        v84 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
         v97[0] = v84;
-        v12 = [v3 centerXAnchor];
-        v13 = [(UIView *)self->_lightingContainer centerXAnchor];
-        v14 = [v12 constraintEqualToAnchor:v13];
+        centerXAnchor3 = [toolContainerView centerXAnchor];
+        centerXAnchor4 = [(UIView *)self->_lightingContainer centerXAnchor];
+        v14 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
         v97[1] = v14;
-        v15 = [v3 bottomAnchor];
-        v16 = [(UIView *)self->_lightingContainer bottomAnchor];
-        v17 = [v15 constraintEqualToAnchor:v16];
+        bottomAnchor = [toolContainerView bottomAnchor];
+        bottomAnchor2 = [(UIView *)self->_lightingContainer bottomAnchor];
+        v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v97[2] = v17;
         v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v97 count:3];
         [(NSMutableArray *)v80 addObjectsFromArray:v18];
 
         v19 = 0x1E695D000;
-        v20 = v87;
+        v20 = widthAnchor3;
       }
 
       v74 = self->_containerConstraints;
-      v89 = [(UIView *)self->_lightingContainer topAnchor];
-      v86 = [(UIView *)self->_apertureContainer topAnchor];
-      v83 = [v89 constraintEqualToAnchor:v86];
+      topAnchor = [(UIView *)self->_lightingContainer topAnchor];
+      topAnchor2 = [(UIView *)self->_apertureContainer topAnchor];
+      v83 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v94[0] = v83;
-      v79 = [(UIView *)self->_lightingContainer bottomAnchor];
-      v76 = [(UIView *)self->_apertureContainer bottomAnchor];
-      v46 = [v79 constraintEqualToAnchor:v76];
+      bottomAnchor3 = [(UIView *)self->_lightingContainer bottomAnchor];
+      bottomAnchor4 = [(UIView *)self->_apertureContainer bottomAnchor];
+      v46 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
       v94[1] = v46;
-      v47 = [(UIView *)self->_lightingContainer leftAnchor];
-      v48 = [(UIView *)self->_apertureContainer leftAnchor];
-      v49 = [v47 constraintEqualToAnchor:v48];
+      leftAnchor = [(UIView *)self->_lightingContainer leftAnchor];
+      leftAnchor2 = [(UIView *)self->_apertureContainer leftAnchor];
+      v49 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
       v94[2] = v49;
-      v50 = [(UIView *)self->_lightingContainer rightAnchor];
-      v51 = [(UIView *)self->_apertureContainer rightAnchor];
-      v52 = [v50 constraintEqualToAnchor:v51];
+      rightAnchor3 = [(UIView *)self->_lightingContainer rightAnchor];
+      rightAnchor4 = [(UIView *)self->_apertureContainer rightAnchor];
+      v52 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
       v94[3] = v52;
       v53 = [*(v19 + 3784) arrayWithObjects:v94 count:4];
       [(NSMutableArray *)v74 addObjectsFromArray:v53];
@@ -2749,7 +2749,7 @@ uint64_t __67__PUPhotoEditPortraitToolController__updateToolVisibilityAnimated__
         memset(&v91, 0, sizeof(v91));
       }
 
-      v3 = v90;
+      toolContainerView = v90;
       apertureContainer = self->_apertureContainer;
       v93 = v91;
       [(UIView *)apertureContainer setTransform:&v93];
@@ -2761,69 +2761,69 @@ uint64_t __67__PUPhotoEditPortraitToolController__updateToolVisibilityAnimated__
     {
       if (!self->_lightingNameBadgeConstraints)
       {
-        v57 = [(CEKLightingNameBadge *)lightingNameBadge window];
+        window4 = [(CEKLightingNameBadge *)lightingNameBadge window];
 
-        if (v57)
+        if (window4)
         {
-          v58 = [MEMORY[0x1E695DF70] array];
-          v59 = [(PUPhotoEditToolController *)self delegate];
-          v60 = [v59 mediaView];
-          v61 = [v60 _scrollView];
+          array = [MEMORY[0x1E695DF70] array];
+          delegate = [(PUPhotoEditToolController *)self delegate];
+          mediaView = [delegate mediaView];
+          _scrollView = [mediaView _scrollView];
 
-          v62 = [(CEKLightingNameBadge *)self->_lightingNameBadge bottomAnchor];
-          v63 = [v61 bottomAnchor];
-          v64 = [v62 constraintEqualToAnchor:v63 constant:-10.0];
-          [(NSArray *)v58 addObject:v64];
+          bottomAnchor5 = [(CEKLightingNameBadge *)self->_lightingNameBadge bottomAnchor];
+          bottomAnchor6 = [_scrollView bottomAnchor];
+          v64 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:-10.0];
+          [(NSArray *)array addObject:v64];
 
-          v65 = [(CEKLightingNameBadge *)self->_lightingNameBadge centerXAnchor];
-          v66 = [v61 centerXAnchor];
-          v67 = [v65 constraintEqualToAnchor:v66 constant:0.0];
-          [(NSArray *)v58 addObject:v67];
+          centerXAnchor5 = [(CEKLightingNameBadge *)self->_lightingNameBadge centerXAnchor];
+          centerXAnchor6 = [_scrollView centerXAnchor];
+          v67 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6 constant:0.0];
+          [(NSArray *)array addObject:v67];
 
-          [MEMORY[0x1E696ACD8] activateConstraints:v58];
+          [MEMORY[0x1E696ACD8] activateConstraints:array];
           lightingNameBadgeConstraints = self->_lightingNameBadgeConstraints;
-          self->_lightingNameBadgeConstraints = v58;
+          self->_lightingNameBadgeConstraints = array;
         }
       }
     }
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = PUPhotoEditPortraitToolController;
-  [(PUPhotoEditPortraitToolController *)&v6 viewWillDisappear:a3];
+  [(PUPhotoEditPortraitToolController *)&v6 viewWillDisappear:disappear];
   [(PUPhotoEditPortraitToolController *)self _removeFocusOverlayIfNeeded];
-  v4 = [(UILongPressGestureRecognizer *)self->_longPressGestureRecognizer view];
-  [v4 removeGestureRecognizer:self->_longPressGestureRecognizer];
+  view = [(UILongPressGestureRecognizer *)self->_longPressGestureRecognizer view];
+  [view removeGestureRecognizer:self->_longPressGestureRecognizer];
 
   longPressGestureRecognizer = self->_longPressGestureRecognizer;
   self->_longPressGestureRecognizer = 0;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = PUPhotoEditPortraitToolController;
-  [(PUPhotoEditToolController *)&v12 viewWillAppear:a3];
+  [(PUPhotoEditToolController *)&v12 viewWillAppear:appear];
   [(PUPhotoEditPortraitToolController *)self _updateFocusOverlay];
-  v4 = [(PUPhotoEditToolController *)self asset];
-  v5 = [v4 isLivePhoto];
+  asset = [(PUPhotoEditToolController *)self asset];
+  isLivePhoto = [asset isLivePhoto];
 
-  if ((v5 & 1) == 0)
+  if ((isLivePhoto & 1) == 0)
   {
     v6 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:self action:sel_longPressed_];
     longPressGestureRecognizer = self->_longPressGestureRecognizer;
     self->_longPressGestureRecognizer = v6;
 
     [(UILongPressGestureRecognizer *)self->_longPressGestureRecognizer setDelegate:0];
-    v8 = [(PUPhotoEditToolController *)self compositionController];
-    v9 = [v8 depthAdjustmentController];
-    -[UILongPressGestureRecognizer setEnabled:](self->_longPressGestureRecognizer, "setEnabled:", [v9 enabled]);
-    v10 = [(PUPhotoEditToolController *)self delegate];
-    v11 = [v10 mediaView];
-    [v11 addGestureRecognizer:self->_longPressGestureRecognizer];
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    depthAdjustmentController = [compositionController depthAdjustmentController];
+    -[UILongPressGestureRecognizer setEnabled:](self->_longPressGestureRecognizer, "setEnabled:", [depthAdjustmentController enabled]);
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    mediaView = [delegate mediaView];
+    [mediaView addGestureRecognizer:self->_longPressGestureRecognizer];
   }
 }
 
@@ -2837,23 +2837,23 @@ uint64_t __67__PUPhotoEditPortraitToolController__updateToolVisibilityAnimated__
   self->_lightingContainer = v3;
 
   [(UIView *)self->_lightingContainer setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(PUPhotoEditToolController *)self toolContainerView];
-  [v5 addSubview:self->_lightingContainer];
+  toolContainerView = [(PUPhotoEditToolController *)self toolContainerView];
+  [toolContainerView addSubview:self->_lightingContainer];
 
   v6 = objc_alloc_init(MEMORY[0x1E69DD250]);
   apertureContainer = self->_apertureContainer;
   self->_apertureContainer = v6;
 
   [(UIView *)self->_apertureContainer setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [(PUPhotoEditToolController *)self toolContainerView];
-  [v8 addSubview:self->_apertureContainer];
+  toolContainerView2 = [(PUPhotoEditToolController *)self toolContainerView];
+  [toolContainerView2 addSubview:self->_apertureContainer];
 }
 
-- (void)setupWithAsset:(id)a3 compositionController:(id)a4 editSource:(id)a5 valuesCalculator:(id)a6
+- (void)setupWithAsset:(id)asset compositionController:(id)controller editSource:(id)source valuesCalculator:(id)calculator
 {
   v7.receiver = self;
   v7.super_class = PUPhotoEditPortraitToolController;
-  [(PUPhotoEditToolController *)&v7 setupWithAsset:a3 compositionController:a4 editSource:a5 valuesCalculator:a6];
+  [(PUPhotoEditToolController *)&v7 setupWithAsset:asset compositionController:controller editSource:source valuesCalculator:calculator];
   [(PUPhotoEditPortraitToolController *)self setToolSelection:[(PUPhotoEditPortraitToolController *)self _defaultPortraitTool]];
   [(PUPhotoEditPortraitToolController *)self _refreshFromValuesCalculator];
   [(PUPhotoEditPortraitToolController *)self _updateApertureSliderLength];

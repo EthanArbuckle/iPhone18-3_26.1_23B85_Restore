@@ -1,18 +1,18 @@
 @interface ScoreInterceptTargetWithCallback
-- (ScoreInterceptTargetWithCallback)initWithCallback:(id)a3;
+- (ScoreInterceptTargetWithCallback)initWithCallback:(id)callback;
 @end
 
 @implementation ScoreInterceptTargetWithCallback
 
-- (ScoreInterceptTargetWithCallback)initWithCallback:(id)a3
+- (ScoreInterceptTargetWithCallback)initWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v9.receiver = self;
   v9.super_class = ScoreInterceptTargetWithCallback;
   v5 = [(ComAppleProactiveLuceneScoreInterceptTargetBase *)&v9 init];
   if (v5)
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(callbackCopy);
     v7 = *(v5 + 10);
     *(v5 + 10) = v6;
   }

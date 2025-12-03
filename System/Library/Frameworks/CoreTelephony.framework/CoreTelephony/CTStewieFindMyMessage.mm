@@ -1,21 +1,21 @@
 @interface CTStewieFindMyMessage
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFindMyMessage:(id)a3;
-- (CTStewieFindMyMessage)initWithCoder:(id)a3;
-- (CTStewieFindMyMessage)initWithData:(id)a3 error:(id *)p_isa;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFindMyMessage:(id)message;
+- (CTStewieFindMyMessage)initWithCoder:(id)coder;
+- (CTStewieFindMyMessage)initWithData:(id)data error:(id *)p_isa;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTStewieFindMyMessage
 
-- (CTStewieFindMyMessage)initWithData:(id)a3 error:(id *)p_isa
+- (CTStewieFindMyMessage)initWithData:(id)data error:(id *)p_isa
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (v7 && [v7 length])
+  dataCopy = data;
+  v8 = dataCopy;
+  if (dataCopy && [dataCopy length])
   {
     v14.receiver = self;
     v14.super_class = CTStewieFindMyMessage;
@@ -23,7 +23,7 @@
     p_isa = &v9->super.isa;
     if (v9)
     {
-      objc_storeStrong(&v9->_encryptedData, a3);
+      objc_storeStrong(&v9->_encryptedData, data);
       self = p_isa;
       p_isa = &self->super.isa;
     }
@@ -52,28 +52,28 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTStewieFindMyMessage *)self encryptedData];
-  [v3 appendFormat:@", encryptedData=%@", v4];
+  encryptedData = [(CTStewieFindMyMessage *)self encryptedData];
+  [v3 appendFormat:@", encryptedData=%@", encryptedData];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqualToFindMyMessage:(id)a3
+- (BOOL)isEqualToFindMyMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(CTStewieFindMyMessage *)self encryptedData];
-  v6 = [v4 encryptedData];
-  v7 = [v5 isEqualToData:v6];
+  messageCopy = message;
+  encryptedData = [(CTStewieFindMyMessage *)self encryptedData];
+  encryptedData2 = [messageCopy encryptedData];
+  v7 = [encryptedData isEqualToData:encryptedData2];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -81,37 +81,37 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieFindMyMessage *)self isEqualToFindMyMessage:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieFindMyMessage *)self isEqualToFindMyMessage:equalCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(CTStewieFindMyMessage *)self encryptedData];
-  [v4 setEncryptedData:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  encryptedData = [(CTStewieFindMyMessage *)self encryptedData];
+  [v4 setEncryptedData:encryptedData];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(CTStewieFindMyMessage *)self encryptedData];
-  [v5 encodeObject:v4 forKey:@"encryptedData"];
+  coderCopy = coder;
+  encryptedData = [(CTStewieFindMyMessage *)self encryptedData];
+  [coderCopy encodeObject:encryptedData forKey:@"encryptedData"];
 }
 
-- (CTStewieFindMyMessage)initWithCoder:(id)a3
+- (CTStewieFindMyMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CTStewieFindMyMessage;
   v5 = [(CTStewieFindMyMessage *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"encryptedData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"encryptedData"];
     [(CTStewieFindMyMessage *)v5 setEncryptedData:v6];
 
     v7 = v5;

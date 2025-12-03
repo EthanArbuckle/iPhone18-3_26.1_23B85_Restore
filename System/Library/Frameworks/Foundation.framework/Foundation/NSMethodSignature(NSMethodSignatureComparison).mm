@@ -6,7 +6,7 @@
 
 - (uint64_t)_isCompatibleWithMethodSignature:()NSMethodSignatureComparison
 {
-  if ([a1 isEqual:?])
+  if ([self isEqual:?])
   {
     return 1;
   }
@@ -23,25 +23,25 @@
     return 0;
   }
 
-  v6 = [a1 numberOfArguments];
-  if (v6 != [a3 numberOfArguments])
+  numberOfArguments = [self numberOfArguments];
+  if (numberOfArguments != [a3 numberOfArguments])
   {
     return 0;
   }
 
-  result = encodingsAreCompatible([a1 methodReturnType], objc_msgSend(a3, "methodReturnType"));
+  result = encodingsAreCompatible([self methodReturnType], objc_msgSend(a3, "methodReturnType"));
   if (!result)
   {
     return result;
   }
 
-  v7 = [a1 _isBlock];
-  if (v7 != [a3 _isBlock])
+  _isBlock = [self _isBlock];
+  if (_isBlock != [a3 _isBlock])
   {
     return 0;
   }
 
-  if (!v6)
+  if (!numberOfArguments)
   {
     return 1;
   }
@@ -49,14 +49,14 @@
   v8 = 0;
   do
   {
-    result = encodingsAreCompatible([a1 getArgumentTypeAtIndex:v8], objc_msgSend(a3, "getArgumentTypeAtIndex:", v8));
+    result = encodingsAreCompatible([self getArgumentTypeAtIndex:v8], objc_msgSend(a3, "getArgumentTypeAtIndex:", v8));
     if (!result)
     {
       break;
     }
   }
 
-  while (v6 - 1 != v8++);
+  while (numberOfArguments - 1 != v8++);
   return result;
 }
 

@@ -101,10 +101,10 @@
 
 - (double)effectiveScale
 {
-  v3 = [(CIPortraitBlurV2 *)self sensorSize];
+  sensorSize = [(CIPortraitBlurV2 *)self sensorSize];
   [(CIImage *)self->inputBlurmapImage extent];
   v5 = v4;
-  [v3 X];
+  [sensorSize X];
   *&v6 = v5 / (v6 * 0.5);
   return *&v6;
 }
@@ -258,7 +258,7 @@
     [(CIFilter *)v53 setValue:inputMatteImage forKey:@"inputMatteImage"];
   }
 
-  v55 = [(CIFilter *)v54 outputImage];
+  outputImage = [(CIFilter *)v54 outputImage];
   SDOFRenderingValue(&cfstr_Antialiasblurs.isa, self->inputTuningParameters);
   v57 = v56;
   [(NSNumber *)self->inputLumaNoiseScale floatValue];
@@ -291,10 +291,10 @@
     v85[5] = [CIVector vectorWithCGRect:v25, v27, v29, v31];
     v84[6] = @"inputSensorSize";
     v85[6] = [(CIPortraitBlurV2 *)self sensorSize];
-    v55 = -[CIImage imageByApplyingFilter:withInputParameters:](v55, "imageByApplyingFilter:withInputParameters:", @"CIPortraitAntialias", [MEMORY[0x1E695DF20] dictionaryWithObjects:v85 forKeys:v84 count:7]);
+    outputImage = -[CIImage imageByApplyingFilter:withInputParameters:](outputImage, "imageByApplyingFilter:withInputParameters:", @"CIPortraitAntialias", [MEMORY[0x1E695DF20] dictionaryWithObjects:v85 forKeys:v84 count:7]);
   }
 
-  v69 = [(CIImage *)v55 imageByCroppingToRect:v25, v27, v29, v31];
+  v69 = [(CIImage *)outputImage imageByCroppingToRect:v25, v27, v29, v31];
   v70 = self->inputImage;
   v82[0] = @"inputImage";
   v82[1] = @"inputBlurImage";

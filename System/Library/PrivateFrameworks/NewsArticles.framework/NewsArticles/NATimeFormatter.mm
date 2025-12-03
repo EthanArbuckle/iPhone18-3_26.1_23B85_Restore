@@ -1,7 +1,7 @@
 @interface NATimeFormatter
 - (NATimeFormatter)init;
-- (id)formatElapsedDuration:(double)a3;
-- (id)formatRemainingDuration:(double)a3;
+- (id)formatElapsedDuration:(double)duration;
+- (id)formatRemainingDuration:(double)duration;
 @end
 
 @implementation NATimeFormatter
@@ -16,31 +16,31 @@
     v3 = objc_alloc_init(MEMORY[0x1E6988158]);
     [(NATimeFormatter *)v2 setElapsedDurationFormatter:v3];
 
-    v4 = [(NATimeFormatter *)v2 elapsedDurationFormatter];
-    [v4 setStyle:1];
+    elapsedDurationFormatter = [(NATimeFormatter *)v2 elapsedDurationFormatter];
+    [elapsedDurationFormatter setStyle:1];
 
     v5 = objc_alloc_init(MEMORY[0x1E6988158]);
     [(NATimeFormatter *)v2 setRemainingDurationFormatter:v5];
 
-    v6 = [(NATimeFormatter *)v2 remainingDurationFormatter];
-    [v6 setStyle:2];
+    remainingDurationFormatter = [(NATimeFormatter *)v2 remainingDurationFormatter];
+    [remainingDurationFormatter setStyle:2];
   }
 
   return v2;
 }
 
-- (id)formatElapsedDuration:(double)a3
+- (id)formatElapsedDuration:(double)duration
 {
-  v4 = [(NATimeFormatter *)self elapsedDurationFormatter];
-  v5 = [v4 stringFromSeconds:a3];
+  elapsedDurationFormatter = [(NATimeFormatter *)self elapsedDurationFormatter];
+  v5 = [elapsedDurationFormatter stringFromSeconds:duration];
 
   return v5;
 }
 
-- (id)formatRemainingDuration:(double)a3
+- (id)formatRemainingDuration:(double)duration
 {
-  v4 = [(NATimeFormatter *)self remainingDurationFormatter];
-  v5 = [v4 stringFromSeconds:a3];
+  remainingDurationFormatter = [(NATimeFormatter *)self remainingDurationFormatter];
+  v5 = [remainingDurationFormatter stringFromSeconds:duration];
 
   return v5;
 }

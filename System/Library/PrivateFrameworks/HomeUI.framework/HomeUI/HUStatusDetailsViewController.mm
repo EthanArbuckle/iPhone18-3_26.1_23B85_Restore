@@ -1,23 +1,23 @@
 @interface HUStatusDetailsViewController
-- (BOOL)presentationCoordinator:(id)a3 shouldBeginInteractivePresentationWithTouchLocation:(CGPoint)a4 view:(id)a5;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUStatusDetailsViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4;
-- (HUStatusDetailsViewController)initWithStatusItem:(id)a3 delegate:(id)a4;
+- (BOOL)presentationCoordinator:(id)coordinator shouldBeginInteractivePresentationWithTouchLocation:(CGPoint)location view:(id)view;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUStatusDetailsViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout;
+- (HUStatusDetailsViewController)initWithStatusItem:(id)item delegate:(id)delegate;
 - (HUStatusDetailsViewControllerDelegate)statusDetailsDelegate;
-- (id)detailsViewControllerForPresentationCoordinator:(id)a3 item:(id)a4;
-- (id)displayedItemsInSection:(id)a3;
-- (id)finishPresentation:(id)a3 animated:(BOOL)a4;
-- (id)initUsingCompositionalLayoutWithItemManager:(id)a3;
-- (id)layoutSectionForSection:(int64_t)a3 layoutEnvironment:(id)a4;
-- (id)prepareToPerformToggleActionForItem:(id)a3 sourceItem:(id)a4;
-- (id)transform:(id)a3;
-- (void)accessoryControlViewControllerFor:(HFAccessoryRepresentableItem *)a3 tileItem:(HFItem *)a4 completionHandler:(id)a5;
-- (void)configureCell:(id)a3 forItem:(id)a4;
-- (void)doneButtonPressed:(id)a3;
-- (void)presentationCoordinator:(id)a3 willBeginPresentationWithContext:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (id)detailsViewControllerForPresentationCoordinator:(id)coordinator item:(id)item;
+- (id)displayedItemsInSection:(id)section;
+- (id)finishPresentation:(id)presentation animated:(BOOL)animated;
+- (id)initUsingCompositionalLayoutWithItemManager:(id)manager;
+- (id)layoutSectionForSection:(int64_t)section layoutEnvironment:(id)environment;
+- (id)prepareToPerformToggleActionForItem:(id)item sourceItem:(id)sourceItem;
+- (id)transform:(id)transform;
+- (void)accessoryControlViewControllerFor:(HFAccessoryRepresentableItem *)for tileItem:(HFItem *)item completionHandler:(id)handler;
+- (void)configureCell:(id)cell forItem:(id)item;
+- (void)doneButtonPressed:(id)pressed;
+- (void)presentationCoordinator:(id)coordinator willBeginPresentationWithContext:(id)context;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -31,71 +31,71 @@
   return Strong;
 }
 
-- (HUStatusDetailsViewController)initWithStatusItem:(id)a3 delegate:(id)a4
+- (HUStatusDetailsViewController)initWithStatusItem:(id)item delegate:(id)delegate
 {
-  v4 = a3;
+  itemCopy = item;
   swift_unknownObjectRetain();
-  return StatusDetailsViewController.init(statusItem:delegate:)(v4);
+  return StatusDetailsViewController.init(statusItem:delegate:)(itemCopy);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20D119C10();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for StatusDetailsViewController();
   v4 = v5.receiver;
-  [(HUControllableItemCollectionViewController *)&v5 viewDidAppear:v3];
+  [(HUControllableItemCollectionViewController *)&v5 viewDidAppear:appearCopy];
   [objc_opt_self() sendEvent_];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for StatusDetailsViewController();
   v4 = v6.receiver;
-  [(HUControllableItemCollectionViewController *)&v6 viewDidDisappear:v3];
-  v5 = [v4 itemManager];
+  [(HUControllableItemCollectionViewController *)&v6 viewDidDisappear:disappearCopy];
+  itemManager = [v4 itemManager];
   objc_opt_self();
   [swift_dynamicCastObjCClassUnconditional() resetItemPrioritiesToDefaults];
 }
 
-- (id)finishPresentation:(id)a3 animated:(BOOL)a4
+- (id)finishPresentation:(id)presentation animated:(BOOL)animated
 {
-  v4 = [(UIViewController *)self hu_dismissViewControllerAnimated:a4];
+  v4 = [(UIViewController *)self hu_dismissViewControllerAnimated:animated];
 
   return v4;
 }
 
-- (void)doneButtonPressed:(id)a3
+- (void)doneButtonPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = self;
+  pressedCopy = pressed;
+  selfCopy = self;
   sub_20D11C4B4();
 }
 
-- (BOOL)presentationCoordinator:(id)a3 shouldBeginInteractivePresentationWithTouchLocation:(CGPoint)a4 view:(id)a5
+- (BOOL)presentationCoordinator:(id)coordinator shouldBeginInteractivePresentationWithTouchLocation:(CGPoint)location view:(id)view
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_20D11A01C(v9, v10, x, y);
+  y = location.y;
+  x = location.x;
+  coordinatorCopy = coordinator;
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_20D11A01C(coordinatorCopy, viewCopy, x, y);
 
   return v12 & 1;
 }
 
-- (id)detailsViewControllerForPresentationCoordinator:(id)a3 item:(id)a4
+- (id)detailsViewControllerForPresentationCoordinator:(id)coordinator item:(id)item
 {
   v5 = swift_dynamicCastObjCProtocolUnconditional();
-  v6 = a4;
+  itemCopy = item;
   result = _s6HomeUI22AccessoryDetailsRouterC11detailsView3for20navigationController7dismissSo33HUDetailsPresentationDelegateHost_So06UIViewJ0CXcSgSo6HFItemC_So012UINavigationJ0CSgyycSgtFZ_0(v5, 0, 0, 0);
   if (result)
   {
@@ -112,21 +112,21 @@
   return result;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
   v6 = sub_20D5638C8();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v15 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20D563878();
-  v10 = a3;
-  v11 = self;
-  v12 = [(HUItemCollectionViewController *)v11 itemManager];
+  itemCopy = item;
+  selfCopy = self;
+  itemManager = [(HUItemCollectionViewController *)selfCopy itemManager];
   objc_opt_self();
-  v13 = [swift_dynamicCastObjCClassUnconditional() shouldUseTitleDescriptionStyleForItem_];
+  shouldUseTitleDescriptionStyleForItem_ = [swift_dynamicCastObjCClassUnconditional() shouldUseTitleDescriptionStyleForItem_];
 
   (*(v7 + 8))(v9, v6);
-  if (v13)
+  if (shouldUseTitleDescriptionStyleForItem_)
   {
     sub_20CECF940(0, &unk_27C821B08);
   }
@@ -139,33 +139,33 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_20D11A518(v6, v7);
+  cellCopy = cell;
+  itemCopy = item;
+  selfCopy = self;
+  sub_20D11A518(cellCopy, itemCopy);
 }
 
-- (id)layoutSectionForSection:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)layoutSectionForSection:(int64_t)section layoutEnvironment:(id)environment
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_20D11ACA0(a3, a4);
+  selfCopy = self;
+  v8 = sub_20D11ACA0(section, environment);
   swift_unknownObjectRelease();
 
   return v8;
 }
 
-- (void)accessoryControlViewControllerFor:(HFAccessoryRepresentableItem *)a3 tileItem:(HFItem *)a4 completionHandler:(id)a5
+- (void)accessoryControlViewControllerFor:(HFAccessoryRepresentableItem *)for tileItem:(HFItem *)item completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C81C610);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v20 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = for;
+  v13[3] = item;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_20D567C58();
@@ -180,64 +180,64 @@
   v16[3] = 0;
   v16[4] = &unk_20D5C5200;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
-  v19 = self;
+  forCopy = for;
+  itemCopy = item;
+  selfCopy = self;
   sub_20D11C1C8(0, 0, v11, &unk_20D5BCD00, v16);
 }
 
-- (id)prepareToPerformToggleActionForItem:(id)a3 sourceItem:(id)a4
+- (id)prepareToPerformToggleActionForItem:(id)item sourceItem:(id)sourceItem
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = [(HUItemCollectionViewController *)v8 itemManager];
+  itemCopy = item;
+  sourceItemCopy = sourceItem;
+  selfCopy = self;
+  itemManager = [(HUItemCollectionViewController *)selfCopy itemManager];
   objc_opt_self();
   [swift_dynamicCastObjCClassUnconditional() maintainMinimumPriorityForItem_];
 
-  v12.receiver = v8;
+  v12.receiver = selfCopy;
   v12.super_class = type metadata accessor for StatusDetailsViewController();
-  v10 = [(HUControllableItemCollectionViewController *)&v12 prepareToPerformToggleActionForItem:v6 sourceItem:v7];
+  v10 = [(HUControllableItemCollectionViewController *)&v12 prepareToPerformToggleActionForItem:itemCopy sourceItem:sourceItemCopy];
 
   return v10;
 }
 
-- (void)presentationCoordinator:(id)a3 willBeginPresentationWithContext:(id)a4
+- (void)presentationCoordinator:(id)coordinator willBeginPresentationWithContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = [(HUItemCollectionViewController *)v8 itemManager];
+  coordinatorCopy = coordinator;
+  contextCopy = context;
+  selfCopy = self;
+  itemManager = [(HUItemCollectionViewController *)selfCopy itemManager];
   objc_opt_self();
   v10 = swift_dynamicCastObjCClassUnconditional();
-  v11 = [v7 item];
+  item = [contextCopy item];
   [v10 maintainMinimumPriorityForItem_];
 
-  v12.receiver = v8;
+  v12.receiver = selfCopy;
   v12.super_class = type metadata accessor for StatusDetailsViewController();
-  [(HUControllableItemCollectionViewController *)&v12 presentationCoordinator:v6 willBeginPresentationWithContext:v7];
+  [(HUControllableItemCollectionViewController *)&v12 presentationCoordinator:coordinatorCopy willBeginPresentationWithContext:contextCopy];
 }
 
-- (HUStatusDetailsViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4
+- (HUStatusDetailsViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)initUsingCompositionalLayoutWithItemManager:(id)a3
+- (id)initUsingCompositionalLayoutWithItemManager:(id)manager
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)displayedItemsInSection:(id)a3
+- (id)displayedItemsInSection:(id)section
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(HUItemCollectionViewController *)v5 itemManager];
-  v7 = [(HFItemManager *)v6 displayedItemsInSectionWithIdentifier:v4];
+  sectionCopy = section;
+  selfCopy = self;
+  itemManager = [(HUItemCollectionViewController *)selfCopy itemManager];
+  v7 = [(HFItemManager *)itemManager displayedItemsInSectionWithIdentifier:sectionCopy];
 
   if (!v7)
   {
@@ -249,27 +249,27 @@
   return v7;
 }
 
-- (id)transform:(id)a3
+- (id)transform:(id)transform
 {
-  v3 = a3;
-  [v3 setSectionTopMargin_];
+  transformCopy = transform;
+  [transformCopy setSectionTopMargin_];
 
-  return v3;
+  return transformCopy;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v9 = sub_20D5636B8();
   v10 = *(v9 - 8);
   MEMORY[0x28223BE20](v9);
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20D563698();
-  v13 = a3;
-  v14 = self;
-  LOBYTE(a6) = sub_20D11C654(v12, a6);
+  viewCopy = view;
+  selfCopy = self;
+  LOBYTE(interaction) = sub_20D11C654(v12, interaction);
 
   (*(v10 + 8))(v12, v9);
-  return a6 & 1;
+  return interaction & 1;
 }
 
 @end

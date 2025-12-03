@@ -1,14 +1,14 @@
 @interface _TVRUITabSelectorControlCellLayoutResult
 - (CGSize)resolvedLayoutSize;
-- (_TVRUITabSelectorControlCellLayoutResult)initWithResolvedLayoutSize:(CGSize)a3;
+- (_TVRUITabSelectorControlCellLayoutResult)initWithResolvedLayoutSize:(CGSize)size;
 @end
 
 @implementation _TVRUITabSelectorControlCellLayoutResult
 
-- (_TVRUITabSelectorControlCellLayoutResult)initWithResolvedLayoutSize:(CGSize)a3
+- (_TVRUITabSelectorControlCellLayoutResult)initWithResolvedLayoutSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = _TVRUITabSelectorControlCellLayoutResult;
   result = [(_TVRUITabSelectorControlCellLayoutResult *)&v6 init];

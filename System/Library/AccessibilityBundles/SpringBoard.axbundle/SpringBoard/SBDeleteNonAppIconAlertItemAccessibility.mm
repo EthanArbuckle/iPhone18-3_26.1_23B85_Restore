@@ -1,14 +1,14 @@
 @interface SBDeleteNonAppIconAlertItemAccessibility
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 @end
 
 @implementation SBDeleteNonAppIconAlertItemAccessibility
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
   v5.receiver = self;
   v5.super_class = SBDeleteNonAppIconAlertItemAccessibility;
-  [(SBDeleteNonAppIconAlertItemAccessibility *)&v5 configure:a3 requirePasscodeForActions:a4];
+  [(SBDeleteNonAppIconAlertItemAccessibility *)&v5 configure:configure requirePasscodeForActions:actions];
   [(SBDeleteNonAppIconAlertItemAccessibility *)self _accessibilitySetRetainedValue:&unk_2A230C910 forKey:*MEMORY[0x29EDC7608]];
 }
 

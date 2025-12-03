@@ -1,18 +1,18 @@
 @interface FinHealthTestUtils
-+ (id)convertToFHTransaction:(id)a3;
-+ (id)transactionsFromJsonFile:(id)a3;
++ (id)convertToFHTransaction:(id)transaction;
++ (id)transactionsFromJsonFile:(id)file;
 @end
 
 @implementation FinHealthTestUtils
 
-+ (id)convertToFHTransaction:(id)a3
++ (id)convertToFHTransaction:(id)transaction
 {
-  v3 = a3;
+  transactionCopy = transaction;
   v4 = objc_opt_new();
-  v5 = [v3 amount];
-  if (v5)
+  amount = [transactionCopy amount];
+  if (amount)
   {
-    [v3 amount];
+    [transactionCopy amount];
   }
 
   else
@@ -22,22 +22,22 @@
   v6 = ;
   [v4 setAmount:v6];
 
-  v7 = [v3 transactionDate];
-  [v4 setTransactionDate:v7];
+  transactionDate = [transactionCopy transactionDate];
+  [v4 setTransactionDate:transactionDate];
 
-  v8 = [v3 identifier];
-  [v4 setIdentifier:v8];
+  identifier = [transactionCopy identifier];
+  [v4 setIdentifier:identifier];
 
   return v4;
 }
 
-+ (id)transactionsFromJsonFile:(id)a3
++ (id)transactionsFromJsonFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = +[NSFileManager defaultManager];
-  if ([v4 fileExistsAtPath:v3])
+  if ([v4 fileExistsAtPath:fileCopy])
   {
-    v5 = [NSData dataWithContentsOfFile:v3];
+    v5 = [NSData dataWithContentsOfFile:fileCopy];
     v20 = 0;
     v6 = [NSJSONSerialization JSONObjectWithData:v5 options:0 error:&v20];
     v7 = v20;
@@ -73,7 +73,7 @@
 
   else
   {
-    printf("jsonFile :%s does not exist\n", [v3 UTF8String]);
+    printf("jsonFile :%s does not exist\n", [fileCopy UTF8String]);
     v11 = 0;
   }
 

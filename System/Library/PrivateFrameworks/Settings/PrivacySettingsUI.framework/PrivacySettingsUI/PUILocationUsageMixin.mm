@@ -1,9 +1,9 @@
 @interface PUILocationUsageMixin
 - (CGSize)usageIndicatorSize;
 - (PUILocationUsageMixin)init;
-- (id)_authLevelStringForMask:(unint64_t)a3 learnedRoutesAccess:(int)a4 visitHistoryAccess:(int)a5;
-- (id)iconForUsage:(int)a3;
-- (void)setUsage:(int)a3;
+- (id)_authLevelStringForMask:(unint64_t)mask learnedRoutesAccess:(int)access visitHistoryAccess:(int)historyAccess;
+- (id)iconForUsage:(int)usage;
+- (void)setUsage:(int)usage;
 @end
 
 @implementation PUILocationUsageMixin
@@ -34,27 +34,27 @@
   return v4;
 }
 
-- (id)iconForUsage:(int)a3
+- (id)iconForUsage:(int)usage
 {
-  if ((a3 - 2) > 2)
+  if ((usage - 2) > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *off_279BA1D40[a3 - 2];
+    v4 = *off_279BA1D40[usage - 2];
   }
 
   return v4;
 }
 
-- (void)setUsage:(int)a3
+- (void)setUsage:(int)usage
 {
-  if (self->_usage != a3)
+  if (self->_usage != usage)
   {
     v6 = [(PUILocationUsageMixin *)self iconForUsage:?];
-    self->_usage = a3;
+    self->_usage = usage;
     v7 = v6;
     if (v6)
     {
@@ -88,14 +88,14 @@ uint64_t __43__PUILocationUsageMixin_usageIndicatorSize__block_invoke()
   return result;
 }
 
-- (id)_authLevelStringForMask:(unint64_t)a3 learnedRoutesAccess:(int)a4 visitHistoryAccess:(int)a5
+- (id)_authLevelStringForMask:(unint64_t)mask learnedRoutesAccess:(int)access visitHistoryAccess:(int)historyAccess
 {
   v6 = 0;
-  if (a3 > 1)
+  if (mask > 1)
   {
-    if (a3 == 2)
+    if (mask == 2)
     {
-      if (a5 == 3 || a4 == 3)
+      if (historyAccess == 3 || access == 3)
       {
         v7 = @"WHEN_IN_USE_AUTHORIZATION_AND_MORE";
       }
@@ -108,7 +108,7 @@ uint64_t __43__PUILocationUsageMixin_usageIndicatorSize__block_invoke()
 
     else
     {
-      if (a3 != 4)
+      if (mask != 4)
       {
         goto LABEL_16;
       }
@@ -117,9 +117,9 @@ uint64_t __43__PUILocationUsageMixin_usageIndicatorSize__block_invoke()
     }
   }
 
-  else if (a3)
+  else if (mask)
   {
-    if (a3 != 1)
+    if (mask != 1)
     {
       goto LABEL_16;
     }

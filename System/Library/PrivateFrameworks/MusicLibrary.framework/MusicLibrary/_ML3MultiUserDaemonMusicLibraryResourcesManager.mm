@@ -1,21 +1,21 @@
 @interface _ML3MultiUserDaemonMusicLibraryResourcesManager
-- (BOOL)shouldExecuteAccountChangeOperation:(id)a3 reason:(id *)a4;
+- (BOOL)shouldExecuteAccountChangeOperation:(id)operation reason:(id *)reason;
 - (MLMediaLibraryAccountChangeObserver)accountChangeObserver;
 - (NSString)currentActiveAccountDSID;
-- (_ML3MultiUserDaemonMusicLibraryResourcesManager)initWithAccountInfo:(id)a3 accountChangeObserver:(id)a4;
+- (_ML3MultiUserDaemonMusicLibraryResourcesManager)initWithAccountInfo:(id)info accountChangeObserver:(id)observer;
 - (id)_blockingCurrentActiveAccountDSID;
-- (id)_libraryContainerPathForDSID:(id)a3;
-- (id)databasePathForDSID:(id)a3;
+- (id)_libraryContainerPathForDSID:(id)d;
+- (id)databasePathForDSID:(id)d;
 - (id)libraryContainerPath;
 - (id)musicAssetsContainerPath;
-- (void)_accountStoreDidChangeNotification:(id)a3;
-- (void)_notifyClients:(id)a3;
+- (void)_accountStoreDidChangeNotification:(id)notification;
+- (void)_notifyClients:(id)clients;
 - (void)_processAccountChangeNotification;
 - (void)_setupNotifications;
 - (void)_tearDownNotifications;
-- (void)accountChangeOperationWillStartPerformingDatabasePathChange:(id)a3 newDatabasePath:(id)a4;
+- (void)accountChangeOperationWillStartPerformingDatabasePathChange:(id)change newDatabasePath:(id)path;
 - (void)dealloc;
-- (void)setCurrentActiveAccountDSID:(id)a3;
+- (void)setCurrentActiveAccountDSID:(id)d;
 @end
 
 @implementation _ML3MultiUserDaemonMusicLibraryResourcesManager
@@ -27,31 +27,31 @@
   return WeakRetained;
 }
 
-- (void)accountChangeOperationWillStartPerformingDatabasePathChange:(id)a3 newDatabasePath:(id)a4
+- (void)accountChangeOperationWillStartPerformingDatabasePathChange:(id)change newDatabasePath:(id)path
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  pathCopy = path;
   v8 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 finalDSID];
+    finalDSID = [changeCopy finalDSID];
     v11 = 138543619;
-    v12 = self;
+    selfCopy = self;
     v13 = 2113;
-    v14 = v9;
+    v14 = finalDSID;
     _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ - accountChangeOperationWillStartPerformingDatabasePathChange - final DSID: %{private}@", &v11, 0x16u);
   }
 
-  v10 = [v6 finalDSID];
-  [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self setCurrentActiveAccountDSID:v10];
+  finalDSID2 = [changeCopy finalDSID];
+  [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self setCurrentActiveAccountDSID:finalDSID2];
 
-  [ML3MusicLibrary setAutoupdatingSharedLibraryPath:v7];
+  [ML3MusicLibrary setAutoupdatingSharedLibraryPath:pathCopy];
 }
 
-- (id)databasePathForDSID:(id)a3
+- (id)databasePathForDSID:(id)d
 {
-  v4 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self _libraryContainerPathForDSID:a3];
+  v4 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self _libraryContainerPathForDSID:d];
   v7.receiver = self;
   v7.super_class = _ML3MultiUserDaemonMusicLibraryResourcesManager;
   v5 = [(_ML3BaseMusicLibraryResourcesManager *)&v7 pathForResourceFileOrFolder:15 basePath:v4 relativeToBase:0 createParentFolderIfNecessary:1];
@@ -59,56 +59,56 @@
   return v5;
 }
 
-- (BOOL)shouldExecuteAccountChangeOperation:(id)a3 reason:(id *)a4
+- (BOOL)shouldExecuteAccountChangeOperation:(id)operation reason:(id *)reason
 {
-  *a4 = &stru_28408B690;
-  v6 = a3;
-  v7 = [v6 finalDSID];
-  v8 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self currentActiveAccountDSID];
-  v9 = [v7 isEqualToString:v8];
+  *reason = &stru_28408B690;
+  operationCopy = operation;
+  finalDSID = [operationCopy finalDSID];
+  currentActiveAccountDSID = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self currentActiveAccountDSID];
+  v9 = [finalDSID isEqualToString:currentActiveAccountDSID];
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [v6 finalDSID];
+  finalDSID2 = [operationCopy finalDSID];
 
   if (v9)
   {
-    *a4 = [v10 stringWithFormat:@"final and current dsid are identical: %@", v11];
+    *reason = [v10 stringWithFormat:@"final and current dsid are identical: %@", finalDSID2];
   }
 
   else
   {
-    v12 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self currentActiveAccountDSID];
-    *a4 = [v10 stringWithFormat:@"final (%@) and current (%@) dsid are different", v11, v12];
+    currentActiveAccountDSID2 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self currentActiveAccountDSID];
+    *reason = [v10 stringWithFormat:@"final (%@) and current (%@) dsid are different", finalDSID2, currentActiveAccountDSID2];
   }
 
   return v9 ^ 1;
 }
 
-- (void)_notifyClients:(id)a3
+- (void)_notifyClients:(id)clients
 {
-  v4 = a3;
-  v5 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self calloutQueue];
+  clientsCopy = clients;
+  calloutQueue = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self calloutQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66___ML3MultiUserDaemonMusicLibraryResourcesManager__notifyClients___block_invoke;
   v7[3] = &unk_2787660F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = clientsCopy;
+  v6 = clientsCopy;
+  dispatch_sync(calloutQueue, v7);
 }
 
 - (void)_processAccountChangeNotification
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self accountInfo];
-  v4 = [v3 accountDSID];
+  accountInfo = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self accountInfo];
+  accountDSID = [accountInfo accountDSID];
 
-  v5 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self currentActiveAccountDSID];
-  v6 = v5;
-  if (v4)
+  currentActiveAccountDSID = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self currentActiveAccountDSID];
+  v6 = currentActiveAccountDSID;
+  if (accountDSID)
   {
-    v7 = [v4 isEqualToString:v5];
+    v7 = [accountDSID isEqualToString:currentActiveAccountDSID];
 
     if (v7)
     {
@@ -116,7 +116,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
         v18 = 138543362;
-        v19 = self;
+        selfCopy3 = self;
         v9 = "%{public}@ - User was logged-in and is still logged-in with the same dsid: nothing to to";
 LABEL_11:
         _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEBUG, v9, &v18, 0xCu);
@@ -128,32 +128,32 @@ LABEL_11:
 
 LABEL_6:
     v10 = [_ML3MultiUserDaemonAccountChangeOperation alloc];
-    v11 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self currentActiveAccountDSID];
-    v12 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self accountChangeObserver];
-    v8 = [(_ML3MultiUserDaemonAccountChangeOperation *)v10 initWithInitialDSID:v11 finalDSID:v4 accountChangeObserver:v12];
+    currentActiveAccountDSID2 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self currentActiveAccountDSID];
+    accountChangeObserver = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self accountChangeObserver];
+    v8 = [(_ML3MultiUserDaemonAccountChangeOperation *)v10 initWithInitialDSID:currentActiveAccountDSID2 finalDSID:accountDSID accountChangeObserver:accountChangeObserver];
 
     [v8 setDelegate:self];
     v13 = os_log_create("com.apple.amp.medialibrary", "MultiUser_Oversize");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self currentActiveAccountDSID];
-      v15 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self accountChangeOperationQueue];
-      v16 = [v15 operations];
+      currentActiveAccountDSID3 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self currentActiveAccountDSID];
+      accountChangeOperationQueue = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self accountChangeOperationQueue];
+      operations = [accountChangeOperationQueue operations];
       v18 = 138544387;
-      v19 = self;
+      selfCopy3 = self;
       v20 = 2113;
-      v21 = v14;
+      v21 = currentActiveAccountDSID3;
       v22 = 2113;
-      v23 = v4;
+      v23 = accountDSID;
       v24 = 2048;
       v25 = v8;
       v26 = 2114;
-      v27 = v16;
+      v27 = operations;
       _os_log_impl(&dword_22D2FA000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ - current dsid: %{private}@ - new dsid: %{private}@ - Enqueueing change operation=%p, all operations on queue=%{public}@", &v18, 0x34u);
     }
 
-    v17 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self accountChangeOperationQueue];
-    [v17 addOperation:v8];
+    accountChangeOperationQueue2 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self accountChangeOperationQueue];
+    [accountChangeOperationQueue2 addOperation:v8];
 
     goto LABEL_12;
   }
@@ -167,7 +167,7 @@ LABEL_6:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v18 = 138543362;
-    v19 = self;
+    selfCopy3 = self;
     v9 = "%{public}@ - User was logged-out and is still logged-out: nothing to to";
     goto LABEL_11;
   }
@@ -175,14 +175,14 @@ LABEL_6:
 LABEL_12:
 }
 
-- (void)_accountStoreDidChangeNotification:(id)a3
+- (void)_accountStoreDidChangeNotification:(id)notification
 {
   v7 = *MEMORY[0x277D85DE8];
   v4 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22D2FA000, v4, OS_LOG_TYPE_DEBUG, "%{public}@ - Received account change notification", &v5, 0xCu);
   }
 
@@ -191,24 +191,24 @@ LABEL_12:
 
 - (void)_tearDownNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)_setupNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__accountStoreDidChangeNotification_ name:*MEMORY[0x277CB8DB8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__accountStoreDidChangeNotification_ name:*MEMORY[0x277CB8DB8] object:0];
 }
 
-- (id)_libraryContainerPathForDSID:(id)a3
+- (id)_libraryContainerPathForDSID:(id)d
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   memset(v61, 0, sizeof(v61));
   v60 = 4001;
   CC_SHA1_Init(v61);
-  v5 = v4;
+  v5 = dCopy;
   CC_SHA1_Update(v61, [v5 UTF8String], objc_msgSend(v5, "length"));
 
   memset(&v62[8], 0, 64);
@@ -406,9 +406,9 @@ LABEL_47:
   if (*v62 != 2000)
   {
 LABEL_52:
-    v57 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v58 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull _MSVHashGetDigest(MSVHash)"];
-    [v57 handleFailureInFunction:v58 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
+    [currentHandler handleFailureInFunction:v58 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
 
     v53 = &stru_28408B690;
     goto LABEL_49;
@@ -452,24 +452,24 @@ LABEL_49:
 
   v59.receiver = self;
   v59.super_class = _ML3MultiUserDaemonMusicLibraryResourcesManager;
-  v54 = [(_ML3BaseMusicLibraryResourcesManager *)&v59 libraryContainerPath];
-  v55 = [v54 stringByAppendingPathComponent:v53];
+  libraryContainerPath = [(_ML3BaseMusicLibraryResourcesManager *)&v59 libraryContainerPath];
+  v55 = [libraryContainerPath stringByAppendingPathComponent:v53];
 
   return v55;
 }
 
-- (void)setCurrentActiveAccountDSID:(id)a3
+- (void)setCurrentActiveAccountDSID:(id)d
 {
-  v4 = a3;
-  v5 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self serialQueue];
+  dCopy = d;
+  serialQueue = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __79___ML3MultiUserDaemonMusicLibraryResourcesManager_setCurrentActiveAccountDSID___block_invoke;
   v7[3] = &unk_2787660F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_sync(serialQueue, v7);
 }
 
 - (NSString)currentActiveAccountDSID
@@ -480,14 +480,14 @@ LABEL_49:
   v10 = __Block_byref_object_copy__21234;
   v11 = __Block_byref_object_dispose__21235;
   v12 = 0;
-  v3 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self serialQueue];
+  serialQueue = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self serialQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __75___ML3MultiUserDaemonMusicLibraryResourcesManager_currentActiveAccountDSID__block_invoke;
   v6[3] = &unk_278766080;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(serialQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -501,11 +501,11 @@ LABEL_49:
   v3 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self accountChangeOperationQueue];
+    accountChangeOperationQueue = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self accountChangeOperationQueue];
     *buf = 138543618;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v4;
+    *&buf[14] = accountChangeOperationQueue;
     _os_log_impl(&dword_22D2FA000, v3, OS_LOG_TYPE_DEBUG, "%{public}@ - BLOCKING - Retrieving libraryContainerPath on serial queue: %{public}@", buf, 0x16u);
   }
 
@@ -522,18 +522,18 @@ LABEL_49:
   v11[4] = self;
   v11[5] = buf;
   v5 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:v11];
-  v6 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self accountChangeOperationQueue];
-  [v6 addOperation:v5];
+  accountChangeOperationQueue2 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self accountChangeOperationQueue];
+  [accountChangeOperationQueue2 addOperation:v5];
 
   [v5 waitUntilFinished];
   v7 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self accountChangeOperationQueue];
+    accountChangeOperationQueue3 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self accountChangeOperationQueue];
     *v12 = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
-    v15 = v8;
+    v15 = accountChangeOperationQueue3;
     _os_log_impl(&dword_22D2FA000, v7, OS_LOG_TYPE_DEBUG, "%{public}@ - UNBLOCKED - Retrieved libraryContainerPath on serial queue: %{public}@", v12, 0x16u);
   }
 
@@ -546,13 +546,13 @@ LABEL_49:
 - (id)libraryContainerPath
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self _blockingCurrentActiveAccountDSID];
-  v4 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self _libraryContainerPathForDSID:v3];
+  _blockingCurrentActiveAccountDSID = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self _blockingCurrentActiveAccountDSID];
+  v4 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self _libraryContainerPathForDSID:_blockingCurrentActiveAccountDSID];
   v5 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
     v10 = v4;
     _os_log_impl(&dword_22D2FA000, v5, OS_LOG_TYPE_DEBUG, "%{public}@ - Retrieved libraryContainerPath %{public}@", &v7, 0x16u);
@@ -564,7 +564,7 @@ LABEL_49:
 - (id)musicAssetsContainerPath
 {
   v78 = *MEMORY[0x277D85DE8];
-  v3 = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self _blockingCurrentActiveAccountDSID];
+  _blockingCurrentActiveAccountDSID = [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)self _blockingCurrentActiveAccountDSID];
   v73 = 0u;
   v72 = 0u;
   v71 = 0u;
@@ -579,7 +579,7 @@ LABEL_49:
   memset(&buf[8], 0, 32);
   *buf = 4001;
   CC_SHA1_Init(&buf[8]);
-  v4 = v3;
+  v4 = _blockingCurrentActiveAccountDSID;
   CC_SHA1_Update(&buf[8], [v4 UTF8String], objc_msgSend(v4, "length"));
 
   memset(&v74[8], 0, 64);
@@ -777,9 +777,9 @@ LABEL_47:
   if (*v74 != 2000)
   {
 LABEL_56:
-    v59 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v60 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull _MSVHashGetDigest(MSVHash)"];
-    [v59 handleFailureInFunction:v60 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
+    [currentHandler handleFailureInFunction:v60 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
 
     v52 = &stru_28408B690;
     goto LABEL_49;
@@ -823,9 +823,9 @@ LABEL_49:
 
   v61.receiver = self;
   v61.super_class = _ML3MultiUserDaemonMusicLibraryResourcesManager;
-  v53 = [(_ML3BaseMusicLibraryResourcesManager *)&v61 musicAssetsContainerPath];
-  v54 = [v53 lastPathComponent];
-  v55 = [v54 isEqualToString:@"Music"];
+  musicAssetsContainerPath = [(_ML3BaseMusicLibraryResourcesManager *)&v61 musicAssetsContainerPath];
+  lastPathComponent = [musicAssetsContainerPath lastPathComponent];
+  v55 = [lastPathComponent isEqualToString:@"Music"];
 
   if ((v55 & 1) == 0)
   {
@@ -835,14 +835,14 @@ LABEL_49:
       *buf = 138543875;
       *&buf[4] = self;
       *&buf[12] = 2113;
-      *&buf[14] = v53;
+      *&buf[14] = musicAssetsContainerPath;
       *&buf[22] = 2114;
       *&buf[24] = v52;
       _os_log_impl(&dword_22D2FA000, v56, OS_LOG_TYPE_FAULT, "%{public}@ - Unexpected musicAssetsContainerPath from base implementation. path=%{private}@ hashedDSID=%{public}@", buf, 0x20u);
     }
   }
 
-  v57 = [v53 stringByAppendingPathComponent:v52];
+  v57 = [musicAssetsContainerPath stringByAppendingPathComponent:v52];
 
   return v57;
 }
@@ -855,10 +855,10 @@ LABEL_49:
   [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)&v3 dealloc];
 }
 
-- (_ML3MultiUserDaemonMusicLibraryResourcesManager)initWithAccountInfo:(id)a3 accountChangeObserver:(id)a4
+- (_ML3MultiUserDaemonMusicLibraryResourcesManager)initWithAccountInfo:(id)info accountChangeObserver:(id)observer
 {
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  observerCopy = observer;
   v22.receiver = self;
   v22.super_class = _ML3MultiUserDaemonMusicLibraryResourcesManager;
   v9 = [(_ML3BaseMusicLibraryResourcesManager *)&v22 init];
@@ -879,16 +879,16 @@ LABEL_49:
     [(NSOperationQueue *)v9->_accountChangeOperationQueue setName:@"com.apple.medialibraryd.multi-user-deamon-resources-account-change-queue"];
     [(NSOperationQueue *)v9->_accountChangeOperationQueue setMaxConcurrentOperationCount:1];
     [(NSOperationQueue *)v9->_accountChangeOperationQueue setQualityOfService:25];
-    objc_storeStrong(&v9->_accountInfo, a3);
-    objc_storeWeak(&v9->_accountChangeObserver, v8);
-    v16 = [(_MSVAccountInformationProviding *)v9->_accountInfo accountDSID];
-    v17 = [v16 copy];
+    objc_storeStrong(&v9->_accountInfo, info);
+    objc_storeWeak(&v9->_accountChangeObserver, observerCopy);
+    accountDSID = [(_MSVAccountInformationProviding *)v9->_accountInfo accountDSID];
+    v17 = [accountDSID copy];
     currentActiveAccountDSID = v9->_currentActiveAccountDSID;
     v9->_currentActiveAccountDSID = v17;
 
-    v19 = [MEMORY[0x277CB8F48] defaultStore];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
     accountStore = v9->_accountStore;
-    v9->_accountStore = v19;
+    v9->_accountStore = defaultStore;
 
     [(_ML3MultiUserDaemonMusicLibraryResourcesManager *)v9 _setupNotifications];
   }

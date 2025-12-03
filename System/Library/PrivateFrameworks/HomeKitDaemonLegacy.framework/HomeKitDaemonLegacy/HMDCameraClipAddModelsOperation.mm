@@ -10,8 +10,8 @@
   v16.receiver = self;
   v16.super_class = HMDCameraClipAddModelsOperation;
   [(HMDCameraClipOperation *)&v16 main];
-  v3 = [(HMDCameraClipOperation *)self localZone];
-  [v3 addMirrorOutputObserver:self];
+  localZone = [(HMDCameraClipOperation *)self localZone];
+  [localZone addMirrorOutputObserver:self];
 
   v4 = objc_alloc(MEMORY[0x277D17108]);
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"add models for %@", objc_opt_class()];
@@ -19,9 +19,9 @@
 
   [v6 setQualityOfService:-1];
   [v6 setDisallowsCellularAccessForMirrorOutput:1];
-  v7 = [(HMDCameraClipOperation *)self localZone];
-  v8 = [(HMDCameraClipAddModelsOperation *)self modelsToAdd];
-  v9 = [v7 addModels:v8 options:v6];
+  localZone2 = [(HMDCameraClipOperation *)self localZone];
+  modelsToAdd = [(HMDCameraClipAddModelsOperation *)self modelsToAdd];
+  v9 = [localZone2 addModels:modelsToAdd options:v6];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __39__HMDCameraClipAddModelsOperation_main__block_invoke;

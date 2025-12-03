@@ -1,8 +1,8 @@
 @interface DYExperimentResultsGenerator
 - (BOOL)shouldTerminateExperiment;
-- (DYExperimentResultsGenerator)initWithExperiment:(id)a3;
+- (DYExperimentResultsGenerator)initWithExperiment:(id)experiment;
 - (uint64_t)endIteration;
-- (void)beginIteration:(unsigned int)a3;
+- (void)beginIteration:(unsigned int)iteration;
 - (void)dealloc;
 - (void)endIteration;
 - (void)onFrameEnd;
@@ -16,17 +16,17 @@
 
 @implementation DYExperimentResultsGenerator
 
-- (DYExperimentResultsGenerator)initWithExperiment:(id)a3
+- (DYExperimentResultsGenerator)initWithExperiment:(id)experiment
 {
   v6.receiver = self;
   v6.super_class = DYExperimentResultsGenerator;
   v4 = [(DYExperimentResultsGenerator *)&v6 init];
   result = 0;
-  if (a3)
+  if (experiment)
   {
     if (v4)
     {
-      v4->_experiment = a3;
+      v4->_experiment = experiment;
       v4->_prevFileFunctionIndex = -1;
       return v4;
     }
@@ -76,21 +76,21 @@
   }
 }
 
-- (void)beginIteration:(unsigned int)a3
+- (void)beginIteration:(unsigned int)iteration
 {
-  self->_iteration = a3;
-  if (!a3)
+  self->_iteration = iteration;
+  if (!iteration)
   {
     -[NSMutableDictionary setObject:forKey:](-[DYExperiment results](self->_experiment, "results"), "setObject:forKey:", [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:DYTimingBenchmark()], @"TimingCost");
   }
 
   self->_frameTimeStart = mach_absolute_time();
-  if ([(DYExperiment *)self->_experiment enablePerFrameTiming]&& (iteration = self->_iteration, iteration >= [(DYExperiment *)self->_experiment warmupCount]) || (v5 = [(DYExperiment *)self->_experiment enablePerFrameTiming], (v5 & 1) == 0) && (v6 = self->_iteration, v5 = [(DYExperiment *)self->_experiment warmupCount], v6 == v5))
+  if ([(DYExperiment *)self->_experiment enablePerFrameTiming]&& (iteration = self->_iteration, iteration >= [(DYExperiment *)self->_experiment warmupCount]) || (startTiming = [(DYExperiment *)self->_experiment enablePerFrameTiming], (startTiming & 1) == 0) && (v6 = self->_iteration, startTiming = [(DYExperiment *)self->_experiment warmupCount], v6 == startTiming))
   {
-    v5 = [(DYExperimentResultsGenerator *)self startTiming];
+    startTiming = [(DYExperimentResultsGenerator *)self startTiming];
   }
 
-  MEMORY[0x282162458](v5);
+  MEMORY[0x282162458](startTiming);
 }
 
 - (void)endIteration
@@ -160,9 +160,9 @@
     if (v4)
     {
       v5 = v4;
-      v6 = [(DYExperiment *)self->_experiment results];
+      results = [(DYExperiment *)self->_experiment results];
 
-      [(NSMutableDictionary *)v6 setObject:v5 forKey:@"PerFunctionProfilingData"];
+      [(NSMutableDictionary *)results setObject:v5 forKey:@"PerFunctionProfilingData"];
     }
   }
 }
@@ -200,16 +200,16 @@
 
   GPUTools::RunningStatistics<unsigned long long>::AddElement(ptr, &self->_frameTime);
   v7 = self->_iteration;
-  v8 = [(DYExperiment *)self->_experiment warmupCount];
-  if (v7 == v8 + [(DYExperiment *)self->_experiment repeatCount]- 1)
+  warmupCount = [(DYExperiment *)self->_experiment warmupCount];
+  if (v7 == warmupCount + [(DYExperiment *)self->_experiment repeatCount]- 1)
   {
     goto LABEL_6;
   }
 
-  v4 = [(DYExperiment *)self->_experiment allowEarlyTermination];
-  if (!v4)
+  allowEarlyTermination = [(DYExperiment *)self->_experiment allowEarlyTermination];
+  if (!allowEarlyTermination)
   {
-    return v4;
+    return allowEarlyTermination;
   }
 
   v10 = *(p_frameTimeStatistics->__ptr_ + 6);
@@ -224,16 +224,16 @@
   if (v11 < v12 || (v13 = *(self->_frameTimeStatistics.__ptr_ + 56), v13 >= [(DYExperiment *)self->_experiment frameTimeVariationArraySize]) && (v19 = 0.0, v20 = 0.0, GPUTools::RunningStatistics<unsigned long long>::IQRtoIQMRatioMinMax(self->_frameTimeStatistics.__ptr_, [(DYExperiment *)self->_experiment frameTimeVariationArraySize], &v20, &v19)) && (v14 = v19, [(DYExperiment *)self->_experiment frameTimeVariationLimit2], v14 < v15) && (v16 = v19 - v20, [(DYExperiment *)self->_experiment frameTimeVariationRangeMax], v16 < v17))
   {
 LABEL_6:
-    LOBYTE(v4) = 1;
+    LOBYTE(allowEarlyTermination) = 1;
   }
 
   else
   {
 LABEL_2:
-    LOBYTE(v4) = 0;
+    LOBYTE(allowEarlyTermination) = 0;
   }
 
-  return v4;
+  return allowEarlyTermination;
 }
 
 - (void)terminateExperiment
@@ -307,9 +307,9 @@ LABEL_2:
 {
   v6 = objc_opt_new();
   *a3 = v6;
-  v7 = [*a1 results];
+  results = [*self results];
 
-  return [v7 setObject:v6 forKey:a2];
+  return [results setObject:v6 forKey:a2];
 }
 
 @end

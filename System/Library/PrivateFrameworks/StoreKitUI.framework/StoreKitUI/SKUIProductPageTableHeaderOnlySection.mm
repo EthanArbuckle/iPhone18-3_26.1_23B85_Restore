@@ -1,19 +1,19 @@
 @interface SKUIProductPageTableHeaderOnlySection
-- (id)headerViewForTableView:(id)a3;
+- (id)headerViewForTableView:(id)view;
 @end
 
 @implementation SKUIProductPageTableHeaderOnlySection
 
-- (id)headerViewForTableView:(id)a3
+- (id)headerViewForTableView:(id)view
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIProductPageTableHeaderOnlySection headerViewForTableView:];
   }
 
-  v4 = [(SKUIProductPageTableHeaderOnlySection *)self headerView];
+  headerView = [(SKUIProductPageTableHeaderOnlySection *)self headerView];
 
-  return v4;
+  return headerView;
 }
 
 - (void)headerViewForTableView:.cold.1()

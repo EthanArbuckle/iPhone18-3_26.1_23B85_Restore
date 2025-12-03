@@ -11,17 +11,17 @@
   v3 = __UIAccessibilityCastAsSafeCategory();
   if ([v3 _gaxShouldAppearLaunchDisabled])
   {
-    v4 = 0;
+    isUninstallSupported = 0;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = GAXSBBookmarkIconOverride;
-    v4 = [(GAXSBBookmarkIconOverride *)&v6 isUninstallSupported];
+    isUninstallSupported = [(GAXSBBookmarkIconOverride *)&v6 isUninstallSupported];
   }
 
-  return v4;
+  return isUninstallSupported;
 }
 
 @end

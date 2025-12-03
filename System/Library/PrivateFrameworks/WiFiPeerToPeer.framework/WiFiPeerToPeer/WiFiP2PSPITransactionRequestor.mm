@@ -1,10 +1,10 @@
 @interface WiFiP2PSPITransactionRequestor
 + (id)shared;
 - (WiFiP2PSPITransactionRequestor)init;
-- (void)_removeOpenTransaction:(int64_t)a3;
-- (void)beginTransaction:(int64_t)a3 completionHandler:(id)a4;
-- (void)endTransaction:(int64_t)a3 completionHandler:(id)a4;
-- (void)handleConnectionEstablishedWithProxy:(id)a3;
+- (void)_removeOpenTransaction:(int64_t)transaction;
+- (void)beginTransaction:(int64_t)transaction completionHandler:(id)handler;
+- (void)endTransaction:(int64_t)transaction completionHandler:(id)handler;
+- (void)handleConnectionEstablishedWithProxy:(id)proxy;
 @end
 
 @implementation WiFiP2PSPITransactionRequestor
@@ -28,9 +28,9 @@
   v2 = [(WiFiP2PSPITransactionRequestor *)&v11 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     openTransactions = v2->_openTransactions;
-    v2->_openTransactions = v3;
+    v2->_openTransactions = array;
 
     v5 = [WiFiP2PXPCConnection alloc];
     v6 = +[WiFiP2PXPCConnection wifiPeerToPeerWorkloop];
@@ -52,10 +52,10 @@ uint64_t __40__WiFiP2PSPITransactionRequestor_shared__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)handleConnectionEstablishedWithProxy:(id)a3
+- (void)handleConnectionEstablishedWithProxy:(id)proxy
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  proxyCopy = proxy;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -76,7 +76,7 @@ uint64_t __40__WiFiP2PSPITransactionRequestor_shared__block_invoke()
           objc_enumerationMutation(v5);
         }
 
-        [v4 beginTransaction:objc_msgSend(*(*(&v11 + 1) + 8 * v9++) completionHandler:{"integerValue", v11), &__block_literal_global_53}];
+        [proxyCopy beginTransaction:objc_msgSend(*(*(&v11 + 1) + 8 * v9++) completionHandler:{"integerValue", v11), &__block_literal_global_53}];
       }
 
       while (v7 != v9);
@@ -89,10 +89,10 @@ uint64_t __40__WiFiP2PSPITransactionRequestor_shared__block_invoke()
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeOpenTransaction:(int64_t)a3
+- (void)_removeOpenTransaction:(int64_t)transaction
 {
   openTransactions = self->_openTransactions;
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:transaction];
   v6 = [(NSMutableArray *)openTransactions indexOfObject:v5];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
@@ -103,9 +103,9 @@ uint64_t __40__WiFiP2PSPITransactionRequestor_shared__block_invoke()
   }
 }
 
-- (void)beginTransaction:(int64_t)a3 completionHandler:(id)a4
+- (void)beginTransaction:(int64_t)transaction completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
@@ -116,16 +116,16 @@ uint64_t __40__WiFiP2PSPITransactionRequestor_shared__block_invoke()
   v13[2] = __69__WiFiP2PSPITransactionRequestor_beginTransaction_completionHandler___block_invoke;
   v13[3] = &unk_2787AB3C0;
   v13[5] = v14;
-  v13[6] = a3;
+  v13[6] = transaction;
   v13[4] = self;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__WiFiP2PSPITransactionRequestor_beginTransaction_completionHandler___block_invoke_2;
   v9[3] = &unk_2787AB3E8;
   v11 = v14;
-  v12 = a3;
+  transactionCopy = transaction;
   v9[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   v10 = v8;
   [(WiFiP2PXPCConnection *)xpcConnection withRemoteObjectProxy:v13 clientCompletionHandler:v9];
 
@@ -173,9 +173,9 @@ uint64_t __69__WiFiP2PSPITransactionRequestor_beginTransaction_completionHandler
   return result;
 }
 
-- (void)endTransaction:(int64_t)a3 completionHandler:(id)a4
+- (void)endTransaction:(int64_t)transaction completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
@@ -186,16 +186,16 @@ uint64_t __69__WiFiP2PSPITransactionRequestor_beginTransaction_completionHandler
   v13[2] = __67__WiFiP2PSPITransactionRequestor_endTransaction_completionHandler___block_invoke;
   v13[3] = &unk_2787AB3C0;
   v13[5] = v14;
-  v13[6] = a3;
+  v13[6] = transaction;
   v13[4] = self;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__WiFiP2PSPITransactionRequestor_endTransaction_completionHandler___block_invoke_2;
   v9[3] = &unk_2787AB3E8;
   v11 = v14;
-  v12 = a3;
+  transactionCopy = transaction;
   v9[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   v10 = v8;
   [(WiFiP2PXPCConnection *)xpcConnection withRemoteObjectProxy:v13 clientCompletionHandler:v9];
 

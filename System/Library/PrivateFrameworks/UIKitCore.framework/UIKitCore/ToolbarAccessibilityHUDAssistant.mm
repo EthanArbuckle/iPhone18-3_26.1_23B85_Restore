@@ -1,8 +1,8 @@
 @interface ToolbarAccessibilityHUDAssistant
-- (BOOL)_accessibilityHUDGestureManager:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)_accessibilityHUDGestureManager:(id)manager shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)recognizer;
 - (_TtC5UIKit32ToolbarAccessibilityHUDAssistant)init;
-- (id)_accessibilityHUDGestureManager:(id)a3 HUDItemForPoint:(CGPoint)a4;
-- (void)_accessibilityHUDGestureManager:(id)a3 gestureLiftedAtPoint:(CGPoint)a4;
+- (id)_accessibilityHUDGestureManager:(id)manager HUDItemForPoint:(CGPoint)point;
+- (void)_accessibilityHUDGestureManager:(id)manager gestureLiftedAtPoint:(CGPoint)point;
 - (void)setupHUDGestureIfNecessary;
 @end
 
@@ -10,39 +10,39 @@
 
 - (void)setupHUDGestureIfNecessary
 {
-  v2 = self;
+  selfCopy = self;
   sub_188AF1D24();
 }
 
-- (BOOL)_accessibilityHUDGestureManager:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)_accessibilityHUDGestureManager:(id)manager shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)recognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1890A566C(v7);
+  managerCopy = manager;
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  v9 = sub_1890A566C(recognizerCopy);
 
   return v9 & 1;
 }
 
-- (void)_accessibilityHUDGestureManager:(id)a3 gestureLiftedAtPoint:(CGPoint)a4
+- (void)_accessibilityHUDGestureManager:(id)manager gestureLiftedAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = self;
-  sub_1890A50D8(v7, x, y);
+  y = point.y;
+  x = point.x;
+  managerCopy = manager;
+  selfCopy = self;
+  sub_1890A50D8(managerCopy, x, y);
 }
 
-- (id)_accessibilityHUDGestureManager:(id)a3 HUDItemForPoint:(CGPoint)a4
+- (id)_accessibilityHUDGestureManager:(id)manager HUDItemForPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = self;
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
   v7 = sub_1890A5210();
   if (v7)
   {
     v8 = v7;
-    v9 = *(&v6->super.isa + OBJC_IVAR____TtC5UIKit32ToolbarAccessibilityHUDAssistant_view);
+    v9 = *(&selfCopy->super.isa + OBJC_IVAR____TtC5UIKit32ToolbarAccessibilityHUDAssistant_view);
     v10 = objc_opt_self();
     v11 = v9;
     v12 = [v10 HUDItemForBarButtonItem:v8 atPoint:v11 inView:0 isBackButton:{x, y}];

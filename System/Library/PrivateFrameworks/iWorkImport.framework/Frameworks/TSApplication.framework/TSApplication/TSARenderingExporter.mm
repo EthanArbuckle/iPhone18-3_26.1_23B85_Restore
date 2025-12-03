@@ -1,22 +1,22 @@
 @interface TSARenderingExporter
-- (BOOL)drawCurrentPageInContext:(CGContext *)a3 viewScale:(double)a4 unscaledClipRect:(CGRect)a5 createPage:(BOOL)a6;
+- (BOOL)drawCurrentPageInContext:(CGContext *)context viewScale:(double)scale unscaledClipRect:(CGRect)rect createPage:(BOOL)page;
 - (BOOL)incrementPage;
-- (BOOL)p_exportToURL:(id)a3 pageNumber:(unint64_t)a4 delegate:(id)a5 error:(id *)a6;
-- (BOOL)preparePage:(unint64_t)a3;
+- (BOOL)p_exportToURL:(id)l pageNumber:(unint64_t)number delegate:(id)delegate error:(id *)error;
+- (BOOL)preparePage:(unint64_t)page;
 - (BOOL)setInfosToCurrentPage;
-- (BOOL)setUpAndDrawCurrentPageInContext:(CGContext *)a3 viewScale:(double)a4 unscaledClipRect:(CGRect)a5 createPage:(BOOL)a6;
+- (BOOL)setUpAndDrawCurrentPageInContext:(CGContext *)context viewScale:(double)scale unscaledClipRect:(CGRect)rect createPage:(BOOL)page;
 - (CGRect)boundsRect;
-- (TSARenderingExporter)initWithDocumentRoot:(id)a3;
-- (TSARenderingExporter)initWithDocumentRoot:(id)a3 imager:(id)a4;
+- (TSARenderingExporter)initWithDocumentRoot:(id)root;
+- (TSARenderingExporter)initWithDocumentRoot:(id)root imager:(id)imager;
 - (double)progressForCurrentPage;
 - (id)currentInfos;
 - (id)p_renderingExporterDelegate;
 - (unint64_t)pageCount;
-- (void)drawAllPagesWithContext:(CGContext *)a3 returnSuccess:(BOOL *)a4;
-- (void)drawCurrentPageWithContext:(CGContext *)a3 returnSuccess:(BOOL *)a4;
-- (void)p_drawCurrentPageWithContext:(CGContext *)a3 returnSuccess:(BOOL *)a4 createPage:(BOOL)a5;
-- (void)performBlockWithImager:(id)a3;
-- (void)setOptions:(id)a3;
+- (void)drawAllPagesWithContext:(CGContext *)context returnSuccess:(BOOL *)success;
+- (void)drawCurrentPageWithContext:(CGContext *)context returnSuccess:(BOOL *)success;
+- (void)p_drawCurrentPageWithContext:(CGContext *)context returnSuccess:(BOOL *)success createPage:(BOOL)page;
+- (void)performBlockWithImager:(id)imager;
+- (void)setOptions:(id)options;
 - (void)teardown;
 @end
 
@@ -66,18 +66,18 @@
   objc_exception_throw(v23);
 }
 
-- (TSARenderingExporter)initWithDocumentRoot:(id)a3 imager:(id)a4
+- (TSARenderingExporter)initWithDocumentRoot:(id)root imager:(id)imager
 {
-  v7 = a3;
-  v8 = a4;
+  rootCopy = root;
+  imagerCopy = imager;
   v27.receiver = self;
   v27.super_class = TSARenderingExporter;
   v9 = [(TSARenderingExporter *)&v27 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mDocumentRoot, a3);
-    objc_storeStrong(&v10->mImager, a4);
+    objc_storeStrong(&v9->mDocumentRoot, root);
+    objc_storeStrong(&v10->mImager, imager);
     v14 = objc_msgSend_p_renderingExporterDelegate(v10, v11, v12, v13);
     mRenderingExporterDelegate = v10->mRenderingExporterDelegate;
     v10->mRenderingExporterDelegate = v14;
@@ -97,9 +97,9 @@
   return v10;
 }
 
-- (TSARenderingExporter)initWithDocumentRoot:(id)a3
+- (TSARenderingExporter)initWithDocumentRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v8 = objc_msgSend_currentCapabilities(MEMORY[0x277D801F0], v5, v6, v7);
   if (!objc_msgSend_isHDRCapable(v8, v9, v10, v11))
   {
@@ -113,40 +113,40 @@
   {
 LABEL_5:
     v24 = objc_alloc(objc_msgSend_imagerClass(self, v16, v17, v18));
-    v21 = objc_msgSend_initWithDocumentRoot_(v24, v25, v4, v26);
+    v21 = objc_msgSend_initWithDocumentRoot_(v24, v25, rootCopy, v26);
     goto LABEL_6;
   }
 
   v19 = objc_alloc(objc_msgSend_imagerClass(self, v16, v17, v18));
-  v21 = objc_msgSend_initWithDocumentRoot_renderForWideGamut_renderHDRContent_(v19, v20, v4, 1, 1);
+  v21 = objc_msgSend_initWithDocumentRoot_renderForWideGamut_renderHDRContent_(v19, v20, rootCopy, 1, 1);
 LABEL_6:
   v27 = v21;
   objc_msgSend_setIsPrinting_(v21, v22, 1, v23);
   objc_msgSend_setMayBeReused_(v27, v28, 1, v29);
-  v31 = objc_msgSend_initWithDocumentRoot_imager_(self, v30, v4, v27);
+  v31 = objc_msgSend_initWithDocumentRoot_imager_(self, v30, rootCopy, v27);
 
   return v31;
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
-  v11 = a3;
-  v7 = objc_msgSend_copy(v11, v4, v5, v6);
+  optionsCopy = options;
+  v7 = objc_msgSend_copy(optionsCopy, v4, v5, v6);
   mOptions = self->mOptions;
   self->mOptions = v7;
 
-  objc_msgSend_setUpPdfTaggerWithOptions_(self, v9, v11, v10);
+  objc_msgSend_setUpPdfTaggerWithOptions_(self, v9, optionsCopy, v10);
 }
 
-- (BOOL)setUpAndDrawCurrentPageInContext:(CGContext *)a3 viewScale:(double)a4 unscaledClipRect:(CGRect)a5 createPage:(BOOL)a6
+- (BOOL)setUpAndDrawCurrentPageInContext:(CGContext *)context viewScale:(double)scale unscaledClipRect:(CGRect)rect createPage:(BOOL)page
 {
-  v6 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  pageCopy = page;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v14 = objc_autoreleasePoolPush();
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   if (self->mBitmapRenderingQualityInfo)
   {
     TSDCGContextSetBitmapQualityInfo();
@@ -156,31 +156,31 @@ LABEL_6:
   if (mPdfTagger)
   {
     TSDCGContextSetPdfTagger();
-    objc_msgSend_setCGContext_(self->mPdfTagger, v16, a3, v17);
+    objc_msgSend_setCGContext_(self->mPdfTagger, v16, context, v17);
     objc_msgSend_beginPage(self->mPdfTagger, v18, v19, v20);
   }
 
-  Page = objc_msgSend_drawCurrentPageInContext_viewScale_unscaledClipRect_createPage_(self, mPdfTagger, a3, v6, a4, x, y, width, height);
+  Page = objc_msgSend_drawCurrentPageInContext_viewScale_unscaledClipRect_createPage_(self, mPdfTagger, context, pageCopy, scale, x, y, width, height);
   v25 = self->mPdfTagger;
   if (v25)
   {
     objc_msgSend_endPage(v25, v21, v22, v23);
   }
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
   objc_autoreleasePoolPop(v14);
   return Page;
 }
 
-- (void)p_drawCurrentPageWithContext:(CGContext *)a3 returnSuccess:(BOOL *)a4 createPage:(BOOL)a5
+- (void)p_drawCurrentPageWithContext:(CGContext *)context returnSuccess:(BOOL *)success createPage:(BOOL)page
 {
-  if (*a4)
+  if (*success)
   {
-    v6 = a5;
-    objc_msgSend_viewScale(self->mRenderingExporterDelegate, a2, a3, a4);
+    pageCopy = page;
+    objc_msgSend_viewScale(self->mRenderingExporterDelegate, a2, context, success);
     v10 = v9;
     objc_msgSend_unscaledClipRect(self, v11, v12, v13);
-    Page = objc_msgSend_setUpAndDrawCurrentPageInContext_viewScale_unscaledClipRect_createPage_(self, v14, a3, v6, v10, v15, v16, v17, v18);
+    Page = objc_msgSend_setUpAndDrawCurrentPageInContext_viewScale_unscaledClipRect_createPage_(self, v14, context, pageCopy, v10, v15, v16, v17, v18);
   }
 
   else
@@ -188,12 +188,12 @@ LABEL_6:
     Page = 0;
   }
 
-  *a4 = Page;
+  *success = Page;
 }
 
-- (void)drawAllPagesWithContext:(CGContext *)a3 returnSuccess:(BOOL *)a4
+- (void)drawAllPagesWithContext:(CGContext *)context returnSuccess:(BOOL *)success
 {
-  objc_msgSend_waitForRecalcToFinish(self, a2, a3, a4);
+  objc_msgSend_waitForRecalcToFinish(self, a2, context, success);
   if (objc_msgSend_incrementPage(self, v7, v8, v9))
   {
     do
@@ -203,34 +203,34 @@ LABEL_6:
         break;
       }
 
-      if (!*a4)
+      if (!*success)
       {
         break;
       }
 
-      objc_msgSend_p_drawCurrentPageWithContext_returnSuccess_createPage_(self, v13, a3, a4, 1);
+      objc_msgSend_p_drawCurrentPageWithContext_returnSuccess_createPage_(self, v13, context, success, 1);
     }
 
     while ((objc_msgSend_incrementPage(self, v14, v15, v16) & 1) != 0);
   }
 }
 
-- (void)drawCurrentPageWithContext:(CGContext *)a3 returnSuccess:(BOOL *)a4
+- (void)drawCurrentPageWithContext:(CGContext *)context returnSuccess:(BOOL *)success
 {
-  if ((objc_msgSend_isCancelled(self, a2, a3, a4) & 1) == 0)
+  if ((objc_msgSend_isCancelled(self, a2, context, success) & 1) == 0)
   {
     objc_msgSend_waitForRecalcToFinish(self, v7, v8, v9);
     v14 = objc_msgSend_supportsPaging(self->mRenderingExporterDelegate, v10, v11, v12);
 
-    objc_msgSend_p_drawCurrentPageWithContext_returnSuccess_createPage_(self, v13, a3, a4, v14);
+    objc_msgSend_p_drawCurrentPageWithContext_returnSuccess_createPage_(self, v13, context, success, v14);
   }
 }
 
-- (BOOL)p_exportToURL:(id)a3 pageNumber:(unint64_t)a4 delegate:(id)a5 error:(id *)a6
+- (BOOL)p_exportToURL:(id)l pageNumber:(unint64_t)number delegate:(id)delegate error:(id *)error
 {
-  v10 = a3;
-  v137 = a5;
-  if (a4 == -1 && (objc_msgSend_supportsPaging(self->mRenderingExporterDelegate, v11, v12, v13) & 1) == 0)
+  lCopy = l;
+  delegateCopy = delegate;
+  if (number == -1 && (objc_msgSend_supportsPaging(self->mRenderingExporterDelegate, v11, v12, v13) & 1) == 0)
   {
     v74 = MEMORY[0x277D81150];
     v75 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "[TSARenderingExporter p_exportToURL:pageNumber:delegate:error:]", v15);
@@ -246,7 +246,7 @@ LABEL_6:
     objc_opt_class();
     v16 = TSUDynamicCast();
     v20 = v16;
-    if (v16 && !objc_msgSend_validatePassphrases_(v16, v17, a6, v19))
+    if (v16 && !objc_msgSend_validatePassphrases_(v16, v17, error, v19))
     {
       v73 = 0;
     }
@@ -254,9 +254,9 @@ LABEL_6:
     else
     {
       v138 = 0;
-      self->mDoesDrawAllPages = a4 == -1;
+      self->mDoesDrawAllPages = number == -1;
       objc_msgSend_setup(self, v17, v18, v19);
-      if (a4 == -1 || objc_msgSend_preparePage_(self, v21, a4, v23))
+      if (number == -1 || objc_msgSend_preparePage_(self, v21, number, v23))
       {
         v136 = objc_msgSend_calculationEngine(self->mDocumentRoot, v21, v22, v23);
         v27 = objc_msgSend_dirtyCellCount(v136, v24, v25, v26);
@@ -268,7 +268,7 @@ LABEL_6:
         v43 = objc_msgSend_progressContext(self, v40, v41, v42);
         objc_msgSend_nextSubStageWillTakeThisManyOfMySteps_(v43, v44, v45, v46, v27 / 1000.0);
 
-        if ((objc_msgSend_isFileURL(v10, v47, v48, v49) & 1) == 0)
+        if ((objc_msgSend_isFileURL(lCopy, v47, v48, v49) & 1) == 0)
         {
           v52 = MEMORY[0x277D81150];
           v53 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v50, "[TSARenderingExporter p_exportToURL:pageNumber:delegate:error:]", v51);
@@ -278,7 +278,7 @@ LABEL_6:
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v58, v59, v60);
         }
 
-        v61 = objc_msgSend_newCGContextForURL_(self->mRenderingExporterDelegate, v50, v10, v51);
+        v61 = objc_msgSend_newCGContextForURL_(self->mRenderingExporterDelegate, v50, lCopy, v51);
         if (v61)
         {
           TSDCGContextSetIsExportingWithRenderingExporter();
@@ -319,19 +319,19 @@ LABEL_6:
             self->mBitmapRenderingQualityInfo = v98;
           }
 
-          if (a4 == -1)
+          if (number == -1)
           {
             objc_msgSend_drawAllPagesWithContext_returnSuccess_(self, v71, v61, &v138);
             if (objc_msgSend_isCancelled(self, v102, v103, v104))
             {
               v106 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v100, v105, v101);
-              v110 = objc_msgSend_path(v10, v107, v108, v109);
+              v110 = objc_msgSend_path(lCopy, v107, v108, v109);
               v113 = objc_msgSend_fileExistsAtPath_(v106, v111, v110, v112);
 
               if (v113)
               {
                 v115 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v100, v114, v101);
-                v119 = objc_msgSend_path(v10, v116, v117, v118);
+                v119 = objc_msgSend_path(lCopy, v116, v117, v118);
                 objc_msgSend_removeItemAtPath_error_(v115, v120, v119, 0);
               }
             }
@@ -409,7 +409,7 @@ LABEL_6:
   objc_exception_throw(v23);
 }
 
-- (BOOL)preparePage:(unint64_t)a3
+- (BOOL)preparePage:(unint64_t)page
 {
   v4 = MEMORY[0x277D81150];
   v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSARenderingExporter preparePage:]", v3);
@@ -450,18 +450,18 @@ LABEL_6:
   return v6 != 0;
 }
 
-- (BOOL)drawCurrentPageInContext:(CGContext *)a3 viewScale:(double)a4 unscaledClipRect:(CGRect)a5 createPage:(BOOL)a6
+- (BOOL)drawCurrentPageInContext:(CGContext *)context viewScale:(double)scale unscaledClipRect:(CGRect)rect createPage:(BOOL)page
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  contextCopy = context;
   v51 = 0;
   v52 = &v51;
   v53 = 0x2020000000;
   v54 = 1;
-  v14 = objc_msgSend_progressContext(self, a2, a3, a6);
+  v14 = objc_msgSend_progressContext(self, a2, context, page);
   objc_msgSend_progressForCurrentPage(self, v15, v16, v17);
   objc_msgSend_createStageWithSteps_takingSteps_(v14, v18, v19, v20, 2.0, v21);
   v25 = objc_msgSend_documentRoot(self, v22, v23, v24);
@@ -470,31 +470,31 @@ LABEL_6:
   v38 = 3221225472;
   v39 = sub_2760B4B78;
   v40 = &unk_27A6B0298;
-  v41 = self;
+  selfCopy = self;
   v30 = v14;
-  v50 = a6;
-  v44 = a4;
+  pageCopy = page;
+  scaleCopy = scale;
   v45 = x;
   v46 = y;
   v47 = width;
   v48 = height;
   v42 = v30;
   v43 = &v51;
-  v49 = v12;
+  v49 = contextCopy;
   objc_msgSend_performRead_(v29, v31, &v37, v32);
 
-  objc_msgSend_endStage(v30, v33, v34, v35, v37, v38, v39, v40, v41);
-  LOBYTE(v12) = *(v52 + 24);
+  objc_msgSend_endStage(v30, v33, v34, v35, v37, v38, v39, v40, selfCopy);
+  LOBYTE(contextCopy) = *(v52 + 24);
 
   _Block_object_dispose(&v51, 8);
-  return v12;
+  return contextCopy;
 }
 
-- (void)performBlockWithImager:(id)a3
+- (void)performBlockWithImager:(id)imager
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  imagerCopy = imager;
+  v5 = imagerCopy;
+  if (imagerCopy)
   {
     mImagerAccessLock = self->mImagerAccessLock;
     v7[0] = MEMORY[0x277D85DD0];
@@ -502,7 +502,7 @@ LABEL_6:
     v7[2] = sub_2760B4E3C;
     v7[3] = &unk_27A6B02C0;
     v7[4] = self;
-    v8 = v4;
+    v8 = imagerCopy;
     dispatch_sync(mImagerAccessLock, v7);
   }
 }

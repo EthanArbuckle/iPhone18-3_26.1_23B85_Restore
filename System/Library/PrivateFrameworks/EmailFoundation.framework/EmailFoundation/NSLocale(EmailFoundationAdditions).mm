@@ -24,16 +24,16 @@
 + (BOOL)ef_isCurrentLocaleRTL
 {
   v0 = MEMORY[0x1E695DF58];
-  v1 = [MEMORY[0x1E695DF58] currentLocale];
-  v2 = [v1 languageIdentifier];
-  v3 = [v0 characterDirectionForLanguage:v2] == 2;
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  languageIdentifier = [currentLocale languageIdentifier];
+  v3 = [v0 characterDirectionForLanguage:languageIdentifier] == 2;
 
   return v3;
 }
 
 + (__CFString)ef_directionalMarkForCurrentLocale
 {
-  if ([a1 ef_isCurrentLocaleRTL])
+  if ([self ef_isCurrentLocaleRTL])
   {
     return @"\u200F";
   }
@@ -50,8 +50,8 @@
   v3 = [a3 ef_compactMap:&__block_literal_global_10_2];
   if (![v3 count])
   {
-    v4 = [MEMORY[0x1E695DF58] currentLocale];
-    v8[0] = v4;
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    v8[0] = currentLocale;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
 
     v3 = v5;
@@ -68,8 +68,8 @@
   v3 = a3;
   if (![v3 count])
   {
-    v4 = [MEMORY[0x1E695DF58] currentLocale];
-    v24[0] = v4;
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    v24[0] = currentLocale;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
 
     v3 = v5;
@@ -95,9 +95,9 @@
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 quotationBeginDelimiter];
-        v13 = [v11 quotationEndDelimiter];
-        v14 = [EFPair pairWithFirst:v12 second:v13];
+        quotationBeginDelimiter = [v11 quotationBeginDelimiter];
+        quotationEndDelimiter = [v11 quotationEndDelimiter];
+        v14 = [EFPair pairWithFirst:quotationBeginDelimiter second:quotationEndDelimiter];
         [v6 addObject:v14];
       }
 
@@ -110,17 +110,17 @@
   v15 = [EFPair pairWithFirst:@" second:@"];
   [v6 addObject:v15];
 
-  v16 = [v6 array];
+  array = [v6 array];
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return array;
 }
 
 + (id)ef_quotePairsForLanguages:()EmailFoundationAdditions
 {
-  v2 = [a1 ef_localesFromLanguages:?];
-  v3 = [a1 ef_quotePairsForLocales:v2];
+  v2 = [self ef_localesFromLanguages:?];
+  v3 = [self ef_quotePairsForLocales:v2];
 
   return v3;
 }

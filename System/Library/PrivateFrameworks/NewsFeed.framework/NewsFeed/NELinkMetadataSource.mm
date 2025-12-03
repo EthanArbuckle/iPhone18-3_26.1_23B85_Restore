@@ -1,27 +1,27 @@
 @interface NELinkMetadataSource
-- (NELinkMetadataSource)initWithTitle:(id)a3 url:(id)a4 image:(id)a5;
-- (NELinkMetadataSource)initWithTitle:(id)a3 url:(id)a4 imageProvider:(id)a5 iconProvider:(id)a6 selectedText:(id)a7;
-- (id)_linkPresentationImageFromImage:(id)a3;
+- (NELinkMetadataSource)initWithTitle:(id)title url:(id)url image:(id)image;
+- (NELinkMetadataSource)initWithTitle:(id)title url:(id)url imageProvider:(id)provider iconProvider:(id)iconProvider selectedText:(id)text;
+- (id)_linkPresentationImageFromImage:(id)image;
 @end
 
 @implementation NELinkMetadataSource
 
-- (NELinkMetadataSource)initWithTitle:(id)a3 url:(id)a4 image:(id)a5
+- (NELinkMetadataSource)initWithTitle:(id)title url:(id)url image:(id)image
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  urlCopy = url;
+  imageCopy = image;
   v18.receiver = self;
   v18.super_class = NELinkMetadataSource;
   v11 = [(NELinkMetadataSource *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    v13 = [(NELinkMetadataSource *)v11 _linkPresentationImageFromImage:v10];
+    v13 = [(NELinkMetadataSource *)v11 _linkPresentationImageFromImage:imageCopy];
     v14 = objc_alloc_init(MEMORY[0x1E696ECA0]);
-    [(LPLinkMetadata *)v14 setTitle:v8];
-    [(LPLinkMetadata *)v14 setOriginalURL:v9];
-    [(LPLinkMetadata *)v14 setURL:v9];
+    [(LPLinkMetadata *)v14 setTitle:titleCopy];
+    [(LPLinkMetadata *)v14 setOriginalURL:urlCopy];
+    [(LPLinkMetadata *)v14 setURL:urlCopy];
     v15 = objc_alloc_init(MEMORY[0x1E696EC10]);
     [(LPLinkMetadata *)v14 setSpecialization:v15];
 
@@ -38,28 +38,28 @@
   return v12;
 }
 
-- (NELinkMetadataSource)initWithTitle:(id)a3 url:(id)a4 imageProvider:(id)a5 iconProvider:(id)a6 selectedText:(id)a7
+- (NELinkMetadataSource)initWithTitle:(id)title url:(id)url imageProvider:(id)provider iconProvider:(id)iconProvider selectedText:(id)text
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  urlCopy = url;
+  providerCopy = provider;
+  iconProviderCopy = iconProvider;
+  textCopy = text;
   v22.receiver = self;
   v22.super_class = NELinkMetadataSource;
   v17 = [(NELinkMetadataSource *)&v22 init];
   if (v17)
   {
     v18 = objc_alloc_init(MEMORY[0x1E696ECA0]);
-    [(LPLinkMetadata *)v18 setOriginalURL:v13];
-    [(LPLinkMetadata *)v18 setURL:v13];
-    [(LPLinkMetadata *)v18 setTitle:v12];
+    [(LPLinkMetadata *)v18 setOriginalURL:urlCopy];
+    [(LPLinkMetadata *)v18 setURL:urlCopy];
+    [(LPLinkMetadata *)v18 setTitle:titleCopy];
     v19 = objc_alloc_init(MEMORY[0x1E696EC10]);
     [(LPLinkMetadata *)v18 setSpecialization:v19];
 
-    [(LPLinkMetadata *)v18 setSelectedText:v16];
-    [(LPLinkMetadata *)v18 setImageProvider:v14];
-    [(LPLinkMetadata *)v18 setIconProvider:v15];
+    [(LPLinkMetadata *)v18 setSelectedText:textCopy];
+    [(LPLinkMetadata *)v18 setImageProvider:providerCopy];
+    [(LPLinkMetadata *)v18 setIconProvider:iconProviderCopy];
     linkMetadata = v17->_linkMetadata;
     v17->_linkMetadata = v18;
   }
@@ -67,17 +67,17 @@
   return v17;
 }
 
-- (id)_linkPresentationImageFromImage:(id)a3
+- (id)_linkPresentationImageFromImage:(id)image
 {
-  v3 = a3;
-  if ([(UIImage *)v3 isSymbolImage])
+  imageCopy = image;
+  if ([(UIImage *)imageCopy isSymbolImage])
   {
-    v4 = [objc_alloc(MEMORY[0x1E696EC68]) initWithPlatformImage:v3];
+    v4 = [objc_alloc(MEMORY[0x1E696EC68]) initWithPlatformImage:imageCopy];
   }
 
-  else if (v3)
+  else if (imageCopy)
   {
-    v5 = UIImagePNGRepresentation(v3);
+    v5 = UIImagePNGRepresentation(imageCopy);
     if (v5)
     {
       v4 = [objc_alloc(MEMORY[0x1E696EC68]) initWithData:v5 MIMEType:@"image/png"];

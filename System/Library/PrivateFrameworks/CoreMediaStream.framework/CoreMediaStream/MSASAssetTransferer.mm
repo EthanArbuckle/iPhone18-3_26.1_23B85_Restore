@@ -1,5 +1,5 @@
 @interface MSASAssetTransferer
-- (MSASAssetTransferer)initWithPersonID:(id)a3 eventQueue:(id)a4;
+- (MSASAssetTransferer)initWithPersonID:(id)d eventQueue:(id)queue;
 - (MSASPersonModel)model;
 - (MSAlbumSharingDaemon)daemon;
 - (MSBackoffManager)backoffManager;
@@ -9,17 +9,17 @@
 - (id)_missingURLError;
 - (id)delegate;
 - (unint64_t)workQueueNextItemID;
-- (void)MMCSEngine:(id)a3 logPerformanceMetrics:(id)a4;
+- (void)MMCSEngine:(id)engine logPerformanceMetrics:(id)metrics;
 - (void)_rereadPerformanceLoggingSetting;
 - (void)_sendDidIdleNotification;
-- (void)cancelCompletionBlock:(id)a3;
+- (void)cancelCompletionBlock:(id)block;
 - (void)retryOutstandingActivities;
-- (void)setFocusAlbumGUID:(id)a3;
-- (void)setFocusAssetCollectionGUID:(id)a3;
-- (void)setMaxMMCSTokenValidityTimeInterval:(double)a3;
-- (void)shutDownCompletionBlock:(id)a3;
-- (void)stopCompletionBlock:(id)a3;
-- (void)workQueueShutDownCompletionBlock:(id)a3;
+- (void)setFocusAlbumGUID:(id)d;
+- (void)setFocusAssetCollectionGUID:(id)d;
+- (void)setMaxMMCSTokenValidityTimeInterval:(double)interval;
+- (void)shutDownCompletionBlock:(id)block;
+- (void)stopCompletionBlock:(id)block;
+- (void)workQueueShutDownCompletionBlock:(id)block;
 @end
 
 @implementation MSASAssetTransferer
@@ -52,15 +52,15 @@
   return WeakRetained;
 }
 
-- (void)MMCSEngine:(id)a3 logPerformanceMetrics:(id)a4
+- (void)MMCSEngine:(id)engine logPerformanceMetrics:(id)metrics
 {
   v11 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = a4;
+    metricsCopy = metrics;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@", &v7, 0x16u);
   }
 
@@ -69,13 +69,13 @@
 
 - (void)_sendDidIdleNotification
 {
-  v3 = [(MSASAssetTransferer *)self eventQueue];
+  eventQueue = [(MSASAssetTransferer *)self eventQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__MSASAssetTransferer__sendDidIdleNotification__block_invoke;
   block[3] = &unk_278E926D8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(eventQueue, block);
 }
 
 void __47__MSASAssetTransferer__sendDidIdleNotification__block_invoke(uint64_t a1)
@@ -170,28 +170,28 @@ void __39__MSASAssetTransferer__missingURLError__block_invoke()
 
 - (unint64_t)workQueueNextItemID
 {
-  v2 = [(MSASAssetTransferer *)self model];
-  v3 = [v2 nextMMCSItemID];
+  model = [(MSASAssetTransferer *)self model];
+  nextMMCSItemID = [model nextMMCSItemID];
 
-  return v3;
+  return nextMMCSItemID;
 }
 
 - (void)retryOutstandingActivities
 {
-  v3 = [(MSASAssetTransferer *)self workQueue];
+  workQueue = [(MSASAssetTransferer *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__MSASAssetTransferer_retryOutstandingActivities__block_invoke;
   block[3] = &unk_278E926D8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
-- (void)workQueueShutDownCompletionBlock:(id)a3
+- (void)workQueueShutDownCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  blockCopy = block;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   engine = self->_engine;
   v8[0] = MEMORY[0x277D85DD0];
@@ -199,8 +199,8 @@ void __39__MSASAssetTransferer__missingURLError__block_invoke()
   v8[2] = __56__MSASAssetTransferer_workQueueShutDownCompletionBlock___block_invoke;
   v8[3] = &unk_278E927A0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = blockCopy;
+  v7 = blockCopy;
   [(MMCSEngine *)engine shutDownCompletionBlock:v8];
 }
 
@@ -230,18 +230,18 @@ void __56__MSASAssetTransferer_workQueueShutDownCompletionBlock___block_invoke_2
   }
 }
 
-- (void)shutDownCompletionBlock:(id)a3
+- (void)shutDownCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MSASAssetTransferer *)self workQueue];
+  blockCopy = block;
+  workQueue = [(MSASAssetTransferer *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__MSASAssetTransferer_shutDownCompletionBlock___block_invoke;
   v7[3] = &unk_278E927A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __47__MSASAssetTransferer_shutDownCompletionBlock___block_invoke(uint64_t a1)
@@ -267,18 +267,18 @@ void __47__MSASAssetTransferer_shutDownCompletionBlock___block_invoke_2(uint64_t
   }
 }
 
-- (void)cancelCompletionBlock:(id)a3
+- (void)cancelCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MSASAssetTransferer *)self workQueue];
+  blockCopy = block;
+  workQueue = [(MSASAssetTransferer *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__MSASAssetTransferer_cancelCompletionBlock___block_invoke;
   v7[3] = &unk_278E927A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __45__MSASAssetTransferer_cancelCompletionBlock___block_invoke(uint64_t a1)
@@ -291,18 +291,18 @@ void __45__MSASAssetTransferer_cancelCompletionBlock___block_invoke(uint64_t a1)
   }
 }
 
-- (void)stopCompletionBlock:(id)a3
+- (void)stopCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MSASAssetTransferer *)self workQueue];
+  blockCopy = block;
+  workQueue = [(MSASAssetTransferer *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__MSASAssetTransferer_stopCompletionBlock___block_invoke;
   v7[3] = &unk_278E927A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __43__MSASAssetTransferer_stopCompletionBlock___block_invoke(uint64_t a1)
@@ -315,16 +315,16 @@ void __43__MSASAssetTransferer_stopCompletionBlock___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setMaxMMCSTokenValidityTimeInterval:(double)a3
+- (void)setMaxMMCSTokenValidityTimeInterval:(double)interval
 {
-  v5 = [(MSASAssetTransferer *)self workQueue];
+  workQueue = [(MSASAssetTransferer *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__MSASAssetTransferer_setMaxMMCSTokenValidityTimeInterval___block_invoke;
   v6[3] = &unk_278E92750;
   v6[4] = self;
-  *&v6[5] = a3;
-  dispatch_async(v5, v6);
+  *&v6[5] = interval;
+  dispatch_async(workQueue, v6);
 }
 
 double __59__MSASAssetTransferer_setMaxMMCSTokenValidityTimeInterval___block_invoke(uint64_t a1)
@@ -334,38 +334,38 @@ double __59__MSASAssetTransferer_setMaxMMCSTokenValidityTimeInterval___block_inv
   return result;
 }
 
-- (void)setFocusAssetCollectionGUID:(id)a3
+- (void)setFocusAssetCollectionGUID:(id)d
 {
-  v4 = a3;
-  v5 = [(MSASAssetTransferer *)self workQueue];
+  dCopy = d;
+  workQueue = [(MSASAssetTransferer *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__MSASAssetTransferer_setFocusAssetCollectionGUID___block_invoke;
   v7[3] = &unk_278E927C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)setFocusAlbumGUID:(id)a3
+- (void)setFocusAlbumGUID:(id)d
 {
-  v4 = a3;
-  v5 = [(MSASAssetTransferer *)self workQueue];
+  dCopy = d;
+  workQueue = [(MSASAssetTransferer *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__MSASAssetTransferer_setFocusAlbumGUID___block_invoke;
   v7[3] = &unk_278E927C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (MSASAssetTransferer)initWithPersonID:(id)a3 eventQueue:(id)a4
+- (MSASAssetTransferer)initWithPersonID:(id)d eventQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  queueCopy = queue;
   v26.receiver = self;
   v26.super_class = MSASAssetTransferer;
   v9 = [(MSASAssetTransferer *)&v26 init];
@@ -375,9 +375,9 @@ double __59__MSASAssetTransferer_setMaxMMCSTokenValidityTimeInterval___block_inv
     workQueue = v9->_workQueue;
     v9->_workQueue = v10;
 
-    if (v8)
+    if (queueCopy)
     {
-      v12 = v8;
+      v12 = queueCopy;
     }
 
     else
@@ -395,9 +395,9 @@ double __59__MSASAssetTransferer_setMaxMMCSTokenValidityTimeInterval___block_inv
     block[3] = &unk_278E927C8;
     v15 = v9;
     v24 = v15;
-    v25 = v7;
+    v25 = dCopy;
     dispatch_sync(v14, block);
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v17 = objc_alloc_init(MEMORY[0x277CCABD8]);
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -405,10 +405,10 @@ double __59__MSASAssetTransferer_setMaxMMCSTokenValidityTimeInterval___block_inv
     v21[3] = &unk_278E91C28;
     v18 = v15;
     v22 = v18;
-    v19 = [v16 addObserverForName:@"MSPlatformPerformanceLoggingSettingDidChange" object:0 queue:v17 usingBlock:v21];
+    v19 = [defaultCenter addObserverForName:@"MSPlatformPerformanceLoggingSettingDidChange" object:0 queue:v17 usingBlock:v21];
 
     *&v18->_maxBatchCount = 0x30000000ALL;
-    objc_storeStrong(&v18->_personID, a3);
+    objc_storeStrong(&v18->_personID, d);
   }
 
   return v9;

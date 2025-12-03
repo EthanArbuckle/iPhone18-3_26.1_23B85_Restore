@@ -17,8 +17,8 @@
 {
   v3 = objc_opt_new();
   v4 = MEMORY[0x277D3FAD8];
-  v5 = [(HMHearingAidManufacturerAddressViewController *)self getManufactureAddress];
-  v6 = [v4 preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:0 cell:4 edit:0];
+  getManufactureAddress = [(HMHearingAidManufacturerAddressViewController *)self getManufactureAddress];
+  v6 = [v4 preferenceSpecifierNamed:getManufactureAddress target:self set:0 get:0 detail:0 cell:4 edit:0];
 
   [v6 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FD80]];
   [v3 addObject:v6];

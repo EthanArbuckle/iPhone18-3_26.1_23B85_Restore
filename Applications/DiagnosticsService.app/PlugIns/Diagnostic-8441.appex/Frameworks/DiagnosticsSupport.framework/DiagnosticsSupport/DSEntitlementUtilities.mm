@@ -1,13 +1,13 @@
 @interface DSEntitlementUtilities
-+ (BOOL)auditToken:(id *)a3 hasEntitlement:(id)a4;
-+ (BOOL)currentProcessHasEntitlement:(id)a3;
++ (BOOL)auditToken:(id *)token hasEntitlement:(id)entitlement;
++ (BOOL)currentProcessHasEntitlement:(id)entitlement;
 @end
 
 @implementation DSEntitlementUtilities
 
-+ (BOOL)currentProcessHasEntitlement:(id)a3
++ (BOOL)currentProcessHasEntitlement:(id)entitlement
 {
-  [a3 UTF8String];
+  [entitlement UTF8String];
   v3 = xpc_copy_entitlement_for_self();
   v4 = v3;
   if (v3)
@@ -29,9 +29,9 @@
   return value;
 }
 
-+ (BOOL)auditToken:(id *)a3 hasEntitlement:(id)a4
++ (BOOL)auditToken:(id *)token hasEntitlement:(id)entitlement
 {
-  [a4 UTF8String];
+  [entitlement UTF8String];
   v4 = xpc_copy_entitlement_for_token();
   v5 = v4;
   if (v4)

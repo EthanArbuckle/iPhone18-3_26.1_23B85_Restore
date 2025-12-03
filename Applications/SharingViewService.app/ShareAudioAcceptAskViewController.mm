@@ -1,17 +1,17 @@
 @interface ShareAudioAcceptAskViewController
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (void)handleCancelButton:(id)a3;
-- (void)handleJoinButton:(id)a3;
-- (void)updateProductID:(unsigned int)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (void)handleCancelButton:(id)button;
+- (void)handleJoinButton:(id)button;
+- (void)updateProductID:(unsigned int)d;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ShareAudioAcceptAskViewController
 
-- (void)updateProductID:(unsigned int)a3
+- (void)updateProductID:(unsigned int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   if (self->_viewDidAppear)
   {
     if (dword_1001BEE38 <= 30 && (dword_1001BEE38 != -1 || _LogCategory_Initialize()))
@@ -42,7 +42,7 @@
       }
     }
 
-    v9 = [(SVSBaseMainController *)self->_mainController userInfo];
+    userInfo = [(SVSBaseMainController *)self->_mainController userInfo];
     CFStringGetTypeID();
     v10 = CFDictionaryGetTypedValue();
 
@@ -62,9 +62,9 @@
   }
 }
 
-- (void)handleCancelButton:(id)a3
+- (void)handleCancelButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BEE38 <= 30 && (dword_1001BEE38 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -75,9 +75,9 @@
   [(ShareAudioAcceptMainController *)self->_mainController dismissWithAction:3];
 }
 
-- (void)handleJoinButton:(id)a3
+- (void)handleJoinButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BEE38 <= 30 && (dword_1001BEE38 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -88,9 +88,9 @@
   [(ShareAudioAcceptMainController *)self->_mainController dismissWithAction:2];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BEE38 <= 30 && (dword_1001BEE38 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -98,12 +98,12 @@
 
   v5.receiver = self;
   v5.super_class = ShareAudioAcceptAskViewController;
-  [(ShareAudioAcceptAskViewController *)&v5 viewDidDisappear:v3];
+  [(ShareAudioAcceptAskViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BEE38 <= 30 && (dword_1001BEE38 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -111,16 +111,16 @@
 
   v14.receiver = self;
   v14.super_class = ShareAudioAcceptAskViewController;
-  [(ShareAudioAcceptAskViewController *)&v14 viewWillAppear:v3];
-  v5 = [(ShareAudioAcceptMainController *)self->_mainController _remoteViewControllerProxy];
-  [v5 setStatusBarHidden:1 withDuration:0.0];
+  [(ShareAudioAcceptAskViewController *)&v14 viewWillAppear:appearCopy];
+  _remoteViewControllerProxy = [(ShareAudioAcceptMainController *)self->_mainController _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setStatusBarHidden:1 withDuration:0.0];
 
   self->_viewDidAppear = 1;
   v6 = [UIFont _preferredFontForTextStyle:UIFontTextStyleTitle1 variant:1280];
   [(UILabel *)self->_titleLabel setFont:v6];
 
   v7 = [NSBundle bundleWithIdentifier:@"com.apple.Sharing"];
-  v8 = [(SVSBaseMainController *)self->_mainController userInfo];
+  userInfo = [(SVSBaseMainController *)self->_mainController userInfo];
   CFStringGetTypeID();
   v9 = CFDictionaryGetTypedValue();
   CFStringGetTypeID();
@@ -148,11 +148,11 @@
   [(ShareAudioAcceptAskViewController *)self updateProductID:[(ShareAudioAcceptMainController *)self->_mainController btProductID]];
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PopUpPresentationController alloc] initWithPresentedViewController:v7 presentingViewController:v6];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  v8 = [[PopUpPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
   [(PopUpPresentationController *)v8 setBlurBackground:1];
 

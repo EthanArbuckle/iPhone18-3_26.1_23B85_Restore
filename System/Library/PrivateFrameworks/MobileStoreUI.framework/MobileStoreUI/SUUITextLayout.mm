@@ -1,27 +1,27 @@
 @interface SUUITextLayout
-+ (__CFAttributedString)_newAttributedStringWithRequest:(id)a3;
-+ (__CFAttributedString)newAttributedStringWithText:(id)a3;
++ (__CFAttributedString)_newAttributedStringWithRequest:(id)request;
++ (__CFAttributedString)newAttributedStringWithText:(id)text;
 - (CGSize)textSize;
 - (CGSize)truncatedSize;
-- (SUUITextLayout)initWithLayoutRequest:(id)a3;
+- (SUUITextLayout)initWithLayoutRequest:(id)request;
 - (void)dealloc;
 @end
 
 @implementation SUUITextLayout
 
-- (SUUITextLayout)initWithLayoutRequest:(id)a3
+- (SUUITextLayout)initWithLayoutRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v23.receiver = self;
   v23.super_class = SUUITextLayout;
   v5 = [(SUUITextLayout *)&v23 init];
   if (v5)
   {
-    v6 = [v4 attributedText];
-    if (v6 || (v6 = [objc_opt_class() _newAttributedStringWithRequest:v4]) != 0)
+    attributedText = [requestCopy attributedText];
+    if (attributedText || (attributedText = [objc_opt_class() _newAttributedStringWithRequest:requestCopy]) != 0)
     {
-      v7 = v6;
-      [v4 width];
+      v7 = attributedText;
+      [requestCopy width];
       v9 = v8;
       v10 = CTFramesetterCreateWithAttributedString(v7);
       v5->_framesetter = v10;
@@ -53,11 +53,11 @@
       v5->_size = vcvtq_f64_f32(vrndp_f32(vcvt_f32_f64(v11)));
       Lines = CTFrameGetLines(v5->_textFrame);
       Count = CFArrayGetCount(Lines);
-      v20 = [v4 numberOfLines];
-      if (v20 && v20 < Count)
+      numberOfLines = [requestCopy numberOfLines];
+      if (numberOfLines && numberOfLines < Count)
       {
         v5->_requiresTruncation = 1;
-        v5->_truncatedSize.width = SUUITextLayoutSizeForCTFrame(v5->_textFrame, v20);
+        v5->_truncatedSize.width = SUUITextLayoutSizeForCTFrame(v5->_textFrame, numberOfLines);
         v5->_truncatedSize.height = v21;
       }
 
@@ -88,48 +88,48 @@
   [(SUUITextLayout *)&v5 dealloc];
 }
 
-+ (__CFAttributedString)newAttributedStringWithText:(id)a3
++ (__CFAttributedString)newAttributedStringWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = objc_alloc_init(SUUITextLayoutRequest);
-  [(SUUITextLayoutRequest *)v5 setText:v4];
+  [(SUUITextLayoutRequest *)v5 setText:textCopy];
 
-  v6 = [a1 _newAttributedStringWithRequest:v5];
+  v6 = [self _newAttributedStringWithRequest:v5];
   return v6;
 }
 
-+ (__CFAttributedString)_newAttributedStringWithRequest:(id)a3
++ (__CFAttributedString)_newAttributedStringWithRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_alloc_init(MEMORY[0x277D74240]);
   [v4 setMinimumLineHeight:16.0];
   [v4 setLineBreakMode:0];
-  [v4 setAlignment:{NSTextAlignmentFromCTTextAlignment(objc_msgSend(v3, "textAlignment"))}];
-  v5 = 0;
-  if ([v3 fontWeight] <= 2)
+  [v4 setAlignment:{NSTextAlignmentFromCTTextAlignment(objc_msgSend(requestCopy, "textAlignment"))}];
+  fontName = 0;
+  if ([requestCopy fontWeight] <= 2)
   {
     v6 = MEMORY[0x277D74300];
-    [v3 fontSize];
+    [requestCopy fontSize];
     v7 = [v6 systemFontOfSize:? weight:?];
-    v5 = [v7 fontName];
+    fontName = [v7 fontName];
   }
 
   if (UIAccessibilityIsBoldTextEnabled())
   {
     v8 = MEMORY[0x277D74300];
-    [v3 fontSize];
+    [requestCopy fontSize];
     v9 = [v8 systemFontOfSize:?];
-    v10 = [v9 fontName];
+    fontName2 = [v9 fontName];
 
-    v5 = v10;
+    fontName = fontName2;
   }
 
-  [v3 fontSize];
-  v12 = CTFontCreateWithName(v5, v11, 0);
+  [requestCopy fontSize];
+  v12 = CTFontCreateWithName(fontName, v11, 0);
   v13 = objc_alloc(MEMORY[0x277CBEAC0]);
   v14 = [v13 initWithObjectsAndKeys:{v12, *MEMORY[0x277CC4838], *MEMORY[0x277CBED28], *MEMORY[0x277CC49C8], v4, *MEMORY[0x277D74118], 0}];
-  v15 = [v3 text];
-  v16 = CFAttributedStringCreate(0, v15, v14);
+  text = [requestCopy text];
+  v16 = CFAttributedStringCreate(0, text, v14);
 
   CFRelease(v12);
   return v16;

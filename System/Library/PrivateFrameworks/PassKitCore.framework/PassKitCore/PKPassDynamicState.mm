@@ -1,10 +1,10 @@
 @interface PKPassDynamicState
-- (BOOL)isEqual:(id)a3;
-- (PKPassDynamicState)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPassDynamicState)initWithCoder:(id)coder;
 - (id)_init;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassDynamicState
@@ -16,43 +16,43 @@
   return [(PKPassDynamicState *)&v3 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   liveRender = self->_liveRender;
-  v5 = a3;
-  [v5 encodeObject:liveRender forKey:@"liveRender"];
-  [v5 encodeObject:self->_balanceModel forKey:@"balances"];
-  [v5 encodeObject:self->_relevancyModel forKey:@"relevancy"];
-  [v5 encodeObject:self->_agreements forKey:@"agreements"];
-  [v5 encodeObject:self->_flight forKey:@"flight"];
+  coderCopy = coder;
+  [coderCopy encodeObject:liveRender forKey:@"liveRender"];
+  [coderCopy encodeObject:self->_balanceModel forKey:@"balances"];
+  [coderCopy encodeObject:self->_relevancyModel forKey:@"relevancy"];
+  [coderCopy encodeObject:self->_agreements forKey:@"agreements"];
+  [coderCopy encodeObject:self->_flight forKey:@"flight"];
 }
 
-- (PKPassDynamicState)initWithCoder:(id)a3
+- (PKPassDynamicState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKPassDynamicState *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"liveRender"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"liveRender"];
     liveRender = v5->_liveRender;
     v5->_liveRender = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"balances"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"balances"];
     balanceModel = v5->_balanceModel;
     v5->_balanceModel = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relevancy"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relevancy"];
     relevancyModel = v5->_relevancyModel;
     v5->_relevancyModel = v10;
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"agreements"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"agreements"];
     agreements = v5->_agreements;
     v5->_agreements = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"flight"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"flight"];
     flight = v5->_flight;
     v5->_flight = v17;
   }
@@ -60,11 +60,11 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v4.receiver = self;
   v4.super_class = PKPassDynamicState;
-  return [(PKPassDynamicState *)&v4 isEqual:a3];
+  return [(PKPassDynamicState *)&v4 isEqual:equal];
 }
 
 - (unint64_t)hash

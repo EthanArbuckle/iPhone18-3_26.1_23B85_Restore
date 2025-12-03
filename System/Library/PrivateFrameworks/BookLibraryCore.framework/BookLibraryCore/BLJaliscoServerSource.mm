@@ -2,30 +2,30 @@
 + (id)sharedSource;
 + (void)preWarmSync;
 - (BLJaliscoServerSource)init;
-- (BLJaliscoServerSource)initWithIdentifier:(id)a3 databaseContainerPath:(id)a4;
+- (BLJaliscoServerSource)initWithIdentifier:(id)identifier databaseContainerPath:(id)path;
 - (BOOL)_setupCoreDataStack;
 - (BOOL)p_createPersistentDirectoryIfNeeded;
 - (BOOL)p_databaseExistsAtPrivateiBooksContainerLocation;
 - (BOOL)p_databaseExistsAtSharediBooksContainerLocation;
-- (BOOL)truncateDatabaseError:(id *)a3;
+- (BOOL)truncateDatabaseError:(id *)error;
 - (BOOL)workaround_18397698;
 - (NSPersistentHistoryToken)currentJaliscoHistoryToken;
 - (id)_persistentStoreOptions;
-- (id)existingEntitiesWithName:(id)a3 matchingPredicate:(id)a4 fromManagedObjectContext:(id)a5 limit:(unint64_t)a6 error:(id *)a7;
-- (id)existingServerDatabaseWithPredicate:(id)a3 fromManagedObjectContext:(id)a4 error:(id *)a5;
-- (id)existingServerInfoWithPredicate:(id)a3 fromManagedObjectContext:(id)a4 error:(id *)a5;
-- (id)existingServerItemWithPredicate:(id)a3 fromManagedObjectContext:(id)a4 error:(id *)a5;
-- (id)fetchRequestForAllBookletsIDsWithParentStoreIDs:(id)a3;
-- (id)fetchRequestForAllCloudIDs:(id)a3 dsids:(id)a4;
-- (id)fetchRequestForAllStoreIDs:(id)a3;
-- (id)fetchRequestForAllStoreIDs:(id)a3 dsids:(id)a4;
-- (id)fetchRequestForAllStoreIDs:(id)a3 dsids:(id)a4 isImported:(BOOL)a5 includeHidden:(BOOL)a6;
-- (id)fetchRequestForAllStoreIDsWithNonEmptyPurchasedToken:(id)a3 dsids:(id)a4;
-- (id)fetchRequestForBookletItemsForStoreIDs:(id)a3;
-- (id)fetchRequestForBuyParameters:(id)a3;
-- (id)fetchRequestForHiddenItemsWithAccountIDs:(id)a3;
-- (id)fetchRequestForNotInStoreAccountIDs:(id)a3;
-- (id)fetchRequestForStoreIDs:(id)a3 dsids:(id)a4;
+- (id)existingEntitiesWithName:(id)name matchingPredicate:(id)predicate fromManagedObjectContext:(id)context limit:(unint64_t)limit error:(id *)error;
+- (id)existingServerDatabaseWithPredicate:(id)predicate fromManagedObjectContext:(id)context error:(id *)error;
+- (id)existingServerInfoWithPredicate:(id)predicate fromManagedObjectContext:(id)context error:(id *)error;
+- (id)existingServerItemWithPredicate:(id)predicate fromManagedObjectContext:(id)context error:(id *)error;
+- (id)fetchRequestForAllBookletsIDsWithParentStoreIDs:(id)ds;
+- (id)fetchRequestForAllCloudIDs:(id)ds dsids:(id)dsids;
+- (id)fetchRequestForAllStoreIDs:(id)ds;
+- (id)fetchRequestForAllStoreIDs:(id)ds dsids:(id)dsids;
+- (id)fetchRequestForAllStoreIDs:(id)ds dsids:(id)dsids isImported:(BOOL)imported includeHidden:(BOOL)hidden;
+- (id)fetchRequestForAllStoreIDsWithNonEmptyPurchasedToken:(id)token dsids:(id)dsids;
+- (id)fetchRequestForBookletItemsForStoreIDs:(id)ds;
+- (id)fetchRequestForBuyParameters:(id)parameters;
+- (id)fetchRequestForHiddenItemsWithAccountIDs:(id)ds;
+- (id)fetchRequestForNotInStoreAccountIDs:(id)ds;
+- (id)fetchRequestForStoreIDs:(id)ds dsids:(id)dsids;
 - (id)managedObjectModel;
 - (id)newManagedObjectContext;
 - (id)newManagedObjectContextWithPrivateQueueConcurrency;
@@ -33,18 +33,18 @@
 - (id)p_persistentStoreDirectory;
 - (id)p_persistentStoreFullPathAtPrivateiBooksLocation;
 - (id)p_persistentStoreFullPathAtSharediBooksLocation;
-- (id)persistentStoreCoordinatorWithError:(id *)a3;
-- (id)platformPredicatesForItemsWithActiveUserID:(id)a3;
-- (id)predicateForBookletItems:(BOOL)a3 dsids:(id)a4;
-- (id)predicateForItems:(BOOL)a3 dsids:(id)a4;
-- (id)predicateForNeedsImport:(BOOL)a3;
-- (id)predicateForStoreAccountID:(id)a3 storeIDs:(id)a4;
-- (id)serverDatabaseForDSID:(id)a3 fromManagedObjectContext:(id)a4 error:(id *)a5;
-- (id)serverDatabaseForDSID:(id)a3 withIdentifier:(id)a4 fromManagedObjectContext:(id)a5 error:(id *)a6;
-- (id)serverInfoForDSID:(id)a3 fromManagedObjectContext:(id)a4 error:(id *)a5;
-- (id)serverItemWithStoreID:(id)a3 inDatabaseWithIdentifier:(id)a4 forDSID:(id)a5 fromManagedObjectContext:(id)a6 error:(id *)a7;
+- (id)persistentStoreCoordinatorWithError:(id *)error;
+- (id)platformPredicatesForItemsWithActiveUserID:(id)d;
+- (id)predicateForBookletItems:(BOOL)items dsids:(id)dsids;
+- (id)predicateForItems:(BOOL)items dsids:(id)dsids;
+- (id)predicateForNeedsImport:(BOOL)import;
+- (id)predicateForStoreAccountID:(id)d storeIDs:(id)ds;
+- (id)serverDatabaseForDSID:(id)d fromManagedObjectContext:(id)context error:(id *)error;
+- (id)serverDatabaseForDSID:(id)d withIdentifier:(id)identifier fromManagedObjectContext:(id)context error:(id *)error;
+- (id)serverInfoForDSID:(id)d fromManagedObjectContext:(id)context error:(id *)error;
+- (id)serverItemWithStoreID:(id)d inDatabaseWithIdentifier:(id)identifier forDSID:(id)iD fromManagedObjectContext:(id)context error:(id *)error;
 - (void)dealloc;
-- (void)refreshStoreWithCompletion:(id)a3;
+- (void)refreshStoreWithCompletion:(id)completion;
 @end
 
 @implementation BLJaliscoServerSource
@@ -53,7 +53,7 @@
 {
   kdebug_trace();
   v3 = +[BLJaliscoServerSource sharedSource];
-  v2 = [v3 persistentStoreCoordinator];
+  persistentStoreCoordinator = [v3 persistentStoreCoordinator];
   kdebug_trace();
 }
 
@@ -62,7 +62,7 @@
   os_unfair_lock_lock(&unk_280BC5810);
   if (!qword_280BC5860)
   {
-    v3 = [a1 alloc];
+    v3 = [self alloc];
     v4 = +[BLJaliscoVersion defaultIdentifier];
     v5 = [v3 initWithIdentifier:v4 databaseContainerPath:0];
     v6 = qword_280BC5860;
@@ -78,7 +78,7 @@
 - (BOOL)_setupCoreDataStack
 {
   v8[6] = *MEMORY[0x277D85DE8];
-  v3 = [(BLJaliscoServerSource *)self managedObjectModel];
+  managedObjectModel = [(BLJaliscoServerSource *)self managedObjectModel];
   v8[0] = 0;
   v4 = [(BLJaliscoServerSource *)self persistentStoreCoordinatorWithError:v8];
   v5 = v8[0];
@@ -128,87 +128,87 @@
 
 - (id)p_persistentStoreFullPathAtSharediBooksLocation
 {
-  v2 = [(BLJaliscoServerSource *)self p_persistentStoreDirectory];
+  p_persistentStoreDirectory = [(BLJaliscoServerSource *)self p_persistentStoreDirectory];
   v3 = +[BLJaliscoVersion persistentStoreFileName];
-  v4 = [v2 stringByAppendingPathComponent:v3];
+  v4 = [p_persistentStoreDirectory stringByAppendingPathComponent:v3];
 
   return v4;
 }
 
 - (id)p_persistentStoreDirectory
 {
-  v3 = [(BLJaliscoServerSource *)self databaseContainerPath];
+  databaseContainerPath = [(BLJaliscoServerSource *)self databaseContainerPath];
 
-  if (v3)
+  if (databaseContainerPath)
   {
-    v4 = [(BLJaliscoServerSource *)self databaseContainerPath];
+    databaseContainerPath2 = [(BLJaliscoServerSource *)self databaseContainerPath];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEBC0] bu_booksGroupContainerDocumentsURL];
-    v6 = [v5 path];
+    bu_booksGroupContainerDocumentsURL = [MEMORY[0x277CBEBC0] bu_booksGroupContainerDocumentsURL];
+    path = [bu_booksGroupContainerDocumentsURL path];
 
-    v4 = [v6 stringByAppendingPathComponent:@"BKJaliscoServerSource"];
+    databaseContainerPath2 = [path stringByAppendingPathComponent:@"BKJaliscoServerSource"];
   }
 
-  return v4;
+  return databaseContainerPath2;
 }
 
 - (BOOL)p_databaseExistsAtPrivateiBooksContainerLocation
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(BLJaliscoServerSource *)self p_persistentStoreFullPathAtPrivateiBooksLocation];
-  v5 = [v3 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  p_persistentStoreFullPathAtPrivateiBooksLocation = [(BLJaliscoServerSource *)self p_persistentStoreFullPathAtPrivateiBooksLocation];
+  v5 = [defaultManager fileExistsAtPath:p_persistentStoreFullPathAtPrivateiBooksLocation];
 
   return v5;
 }
 
 - (id)p_persistentStoreFullPathAtPrivateiBooksLocation
 {
-  v2 = [(BLJaliscoServerSource *)self p_oldPersistentStoreDirectory];
+  p_oldPersistentStoreDirectory = [(BLJaliscoServerSource *)self p_oldPersistentStoreDirectory];
   v3 = +[BLJaliscoVersion persistentStoreFileName];
-  v4 = [v2 stringByAppendingPathComponent:v3];
+  v4 = [p_oldPersistentStoreDirectory stringByAppendingPathComponent:v3];
 
   return v4;
 }
 
 - (id)p_oldPersistentStoreDirectory
 {
-  v3 = [(BLJaliscoServerSource *)self databaseContainerPath];
+  databaseContainerPath = [(BLJaliscoServerSource *)self databaseContainerPath];
 
-  if (v3)
+  if (databaseContainerPath)
   {
-    v4 = [(BLJaliscoServerSource *)self databaseContainerPath];
+    databaseContainerPath2 = [(BLJaliscoServerSource *)self databaseContainerPath];
   }
 
   else
   {
     v5 = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, 1uLL, 1);
-    v6 = [v5 lastObject];
-    v4 = [v6 stringByAppendingPathComponent:@"BKJaliscoServerSource"];
+    lastObject = [v5 lastObject];
+    databaseContainerPath2 = [lastObject stringByAppendingPathComponent:@"BKJaliscoServerSource"];
   }
 
-  return v4;
+  return databaseContainerPath2;
 }
 
 - (BOOL)p_createPersistentDirectoryIfNeeded
 {
-  v2 = [(BLJaliscoServerSource *)self p_persistentStoreDirectory];
-  v3 = [MEMORY[0x277CBEBC0] fileURLWithPath:v2 isDirectory:1];
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v3 relativePath];
+  p_persistentStoreDirectory = [(BLJaliscoServerSource *)self p_persistentStoreDirectory];
+  v3 = [MEMORY[0x277CBEBC0] fileURLWithPath:p_persistentStoreDirectory isDirectory:1];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  relativePath = [v3 relativePath];
   v8 = 0;
-  v6 = [v4 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:&v8];
+  v6 = [defaultManager createDirectoryAtPath:relativePath withIntermediateDirectories:1 attributes:0 error:&v8];
 
   return v6;
 }
 
 - (BOOL)p_databaseExistsAtSharediBooksContainerLocation
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(BLJaliscoServerSource *)self p_persistentStoreFullPathAtSharediBooksLocation];
-  v5 = [v3 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  p_persistentStoreFullPathAtSharediBooksLocation = [(BLJaliscoServerSource *)self p_persistentStoreFullPathAtSharediBooksLocation];
+  v5 = [defaultManager fileExistsAtPath:p_persistentStoreFullPathAtSharediBooksLocation];
 
   return v5;
 }
@@ -234,20 +234,20 @@
   return v4;
 }
 
-- (BLJaliscoServerSource)initWithIdentifier:(id)a3 databaseContainerPath:(id)a4
+- (BLJaliscoServerSource)initWithIdentifier:(id)identifier databaseContainerPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = BLJaliscoServerSource;
   v8 = [(BLJaliscoServerSource *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [pathCopy copy];
     databaseContainerPath = v8->_databaseContainerPath;
     v8->_databaseContainerPath = v11;
 
@@ -281,15 +281,15 @@
 {
   v50[1] = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = [(BLJaliscoServerSource *)self newManagedObjectContext];
+  newManagedObjectContext = [(BLJaliscoServerSource *)self newManagedObjectContext];
   v5 = [objc_alloc(MEMORY[0x277CBE428]) initWithEntityName:@"BLJaliscoServerItem"];
   [v5 setResultType:4];
   v45 = 0;
-  v6 = [v4 executeFetchRequest:v5 error:&v45];
+  v6 = [newManagedObjectContext executeFetchRequest:v5 error:&v45];
   v7 = v45;
-  v8 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  if (v8)
+  if (firstObject)
   {
     v9 = [objc_alloc(MEMORY[0x277CBE428]) initWithEntityName:@"BLJaliscoServerItem"];
     [v9 setReturnsDistinctResults:1];
@@ -303,32 +303,32 @@
     [v9 setPropertiesToFetch:v11];
 
     v44 = v7;
-    v12 = [v4 executeFetchRequest:v9 error:&v44];
+    v12 = [newManagedObjectContext executeFetchRequest:v9 error:&v44];
     v13 = v44;
 
     if (v9)
     {
-      v14 = [v8 integerValue];
+      integerValue = [firstObject integerValue];
       v15 = [v12 count];
       v16 = 0;
-      if (v14 < 2001 || v14 <= 3 * v15)
+      if (integerValue < 2001 || integerValue <= 3 * v15)
       {
         goto LABEL_29;
       }
 
       v32 = v12;
       v33 = v9;
-      v34 = v8;
+      v34 = firstObject;
       v35 = v5;
-      v36 = v4;
+      v36 = newManagedObjectContext;
       v37 = v3;
-      v17 = [v4 persistentStoreCoordinator];
+      persistentStoreCoordinator = [newManagedObjectContext persistentStoreCoordinator];
       v40 = 0u;
       v41 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v18 = [v17 persistentStores];
-      v19 = [v18 copy];
+      persistentStores = [persistentStoreCoordinator persistentStores];
+      v19 = [persistentStores copy];
 
       v20 = [v19 countByEnumeratingWithState:&v40 objects:v48 count:16];
       if (v20)
@@ -347,11 +347,11 @@
 
             v24 = *(*(&v40 + 1) + 8 * i);
             v25 = [v24 URL];
-            v26 = [v24 type];
+            type = [v24 type];
             if (v25)
             {
               v39 = v13;
-              v27 = [v17 destroyPersistentStoreAtURL:v25 withType:v26 options:0 error:&v39];
+              v27 = [persistentStoreCoordinator destroyPersistentStoreAtURL:v25 withType:type options:0 error:&v39];
               v28 = v39;
 
               if (v27)
@@ -385,9 +385,9 @@
         v38 = 0;
       }
 
-      v4 = v36;
+      newManagedObjectContext = v36;
       v3 = v37;
-      v8 = v34;
+      firstObject = v34;
       v5 = v35;
       v12 = v32;
       v9 = v33;
@@ -396,12 +396,12 @@
 
     else
     {
-      v17 = BLJaliscoLog();
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      persistentStoreCoordinator = BLJaliscoLog();
+      if (os_log_type_enabled(persistentStoreCoordinator, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v47 = v13;
-        _os_log_impl(&dword_241D1F000, v17, OS_LOG_TYPE_ERROR, "Failed to fetch distinct items count:  %@", buf, 0xCu);
+        _os_log_impl(&dword_241D1F000, persistentStoreCoordinator, OS_LOG_TYPE_ERROR, "Failed to fetch distinct items count:  %@", buf, 0xCu);
       }
 
       v16 = 0;
@@ -441,7 +441,7 @@ LABEL_30:
   [(BLJaliscoServerSource *)&v5 dealloc];
 }
 
-- (id)persistentStoreCoordinatorWithError:(id *)a3
+- (id)persistentStoreCoordinatorWithError:(id *)error
 {
   pscSentinel = self->_pscSentinel;
   p_pscSentinel = &self->_pscSentinel;
@@ -450,7 +450,7 @@ LABEL_30:
   v7[2] = sub_241D50E00;
   v7[3] = &unk_278D17A40;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = error;
   if (pscSentinel != -1)
   {
     dispatch_once(p_pscSentinel, v7);
@@ -528,45 +528,45 @@ LABEL_30:
   return v4;
 }
 
-- (id)serverInfoForDSID:(id)a3 fromManagedObjectContext:(id)a4 error:(id *)a5
+- (id)serverInfoForDSID:(id)d fromManagedObjectContext:(id)context error:(id *)error
 {
   v8 = MEMORY[0x277CCAC30];
-  v9 = a4;
-  v10 = [v8 predicateWithFormat:@"userUID = %@", a3];
+  contextCopy = context;
+  v10 = [v8 predicateWithFormat:@"userUID = %@", d];
   v15 = 0;
-  v11 = [(BLJaliscoServerSource *)self existingServerInfoWithPredicate:v10 fromManagedObjectContext:v9 error:&v15];
+  v11 = [(BLJaliscoServerSource *)self existingServerInfoWithPredicate:v10 fromManagedObjectContext:contextCopy error:&v15];
 
   v12 = v15;
-  if (a5 && !v11)
+  if (error && !v11)
   {
     v13 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v11;
 }
 
-- (BOOL)truncateDatabaseError:(id *)a3
+- (BOOL)truncateDatabaseError:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = [(BLJaliscoServerSource *)self newManagedObjectContext];
-  v6 = [(BLJaliscoServerSource *)self _persistentStoreOptions];
-  v7 = [(BLJaliscoServerSource *)self persistentStoreCoordinatorWithError:a3];
-  v8 = [v7 persistentStores];
-  v9 = [v8 lastObject];
+  newManagedObjectContext = [(BLJaliscoServerSource *)self newManagedObjectContext];
+  _persistentStoreOptions = [(BLJaliscoServerSource *)self _persistentStoreOptions];
+  v7 = [(BLJaliscoServerSource *)self persistentStoreCoordinatorWithError:error];
+  persistentStores = [v7 persistentStores];
+  lastObject = [persistentStores lastObject];
 
   v10 = MEMORY[0x277CBEBC0];
-  v11 = [(BLJaliscoServerSource *)self p_persistentStoreFullPathAtSharediBooksLocation];
-  v12 = [v10 fileURLWithPath:v11 isDirectory:0];
+  p_persistentStoreFullPathAtSharediBooksLocation = [(BLJaliscoServerSource *)self p_persistentStoreFullPathAtSharediBooksLocation];
+  v12 = [v10 fileURLWithPath:p_persistentStoreFullPathAtSharediBooksLocation isDirectory:0];
 
-  if (v9)
+  if (lastObject)
   {
-    v13 = [v7 URLForPersistentStore:v9];
+    v13 = [v7 URLForPersistentStore:lastObject];
 
-    [v7 removePersistentStore:v9 error:0];
-    [v5 reset];
+    [v7 removePersistentStore:lastObject error:0];
+    [newManagedObjectContext reset];
     v14 = *MEMORY[0x277CBE2E8];
-    v15 = [v7 destroyPersistentStoreAtURL:v13 withType:*MEMORY[0x277CBE2E8] options:v6 error:a3];
+    v15 = [v7 destroyPersistentStoreAtURL:v13 withType:*MEMORY[0x277CBE2E8] options:_persistentStoreOptions error:error];
     v16 = BLJaliscoLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -599,23 +599,23 @@ LABEL_30:
     v14 = *MEMORY[0x277CBE2E8];
   }
 
-  v18 = [(NSPersistentStoreCoordinator *)self->_psc addPersistentStoreWithType:v14 configuration:0 URL:v12 options:v6 error:a3];
+  v18 = [(NSPersistentStoreCoordinator *)self->_psc addPersistentStoreWithType:v14 configuration:0 URL:v12 options:_persistentStoreOptions error:error];
   if (v18)
   {
     v19 = v18;
     v20 = BLJaliscoLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v19 identifier];
-      v22 = [(BLJaliscoServerSource *)self currentJaliscoHistoryToken];
+      identifier = [v19 identifier];
+      currentJaliscoHistoryToken = [(BLJaliscoServerSource *)self currentJaliscoHistoryToken];
       v28 = 138413058;
       v29 = v12;
       v30 = 2112;
-      v31 = v21;
+      v31 = identifier;
       v32 = 2112;
-      v33 = v6;
+      v33 = _persistentStoreOptions;
       v34 = 2112;
-      v35 = v22;
+      v35 = currentJaliscoHistoryToken;
       _os_log_impl(&dword_241D1F000, v20, OS_LOG_TYPE_DEFAULT, "Added new store at storeURL:(%@), persistentstoreID:(%@), storeOptions:(%@) Setup jalisco stack with history token after truncate:(%@)", &v28, 0x2Au);
     }
 
@@ -629,47 +629,47 @@ LABEL_30:
 
 LABEL_15:
   v24 = +[BLJaliscoDAAPClient sharedClient];
-  v25 = [v24 resetPoliteTimers];
+  resetPoliteTimers = [v24 resetPoliteTimers];
 
   v26 = *MEMORY[0x277D85DE8];
-  return v23 & v25;
+  return v23 & resetPoliteTimers;
 }
 
-- (void)refreshStoreWithCompletion:(id)a3
+- (void)refreshStoreWithCompletion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
   v28 = 0;
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(BLJaliscoServerSource *)self persistentStoreCoordinatorWithError:&v28];
   v6 = v28;
-  v7 = [v5 persistentStores];
-  v8 = [v7 lastObject];
+  persistentStores = [v5 persistentStores];
+  lastObject = [persistentStores lastObject];
 
   v9 = MEMORY[0x277CBEBC0];
-  v10 = [(BLJaliscoServerSource *)self p_persistentStoreFullPathAtSharediBooksLocation];
-  v11 = [v9 fileURLWithPath:v10 isDirectory:0];
+  p_persistentStoreFullPathAtSharediBooksLocation = [(BLJaliscoServerSource *)self p_persistentStoreFullPathAtSharediBooksLocation];
+  v11 = [v9 fileURLWithPath:p_persistentStoreFullPathAtSharediBooksLocation isDirectory:0];
 
-  v12 = [(BLJaliscoServerSource *)self _persistentStoreOptions];
+  _persistentStoreOptions = [(BLJaliscoServerSource *)self _persistentStoreOptions];
   v13 = BLJaliscoLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v8 identifier];
+    identifier = [lastObject identifier];
     *buf = 138412546;
     v30 = v11;
     v31 = 2112;
-    v32 = v14;
+    v32 = identifier;
     _os_log_impl(&dword_241D1F000, v13, OS_LOG_TYPE_DEFAULT, "Trying to refresh store at storeURL:(%@), persistentstoreID:(%@)", buf, 0x16u);
   }
 
-  if (v8)
+  if (lastObject)
   {
-    v15 = [v5 URLForPersistentStore:v8];
+    v15 = [v5 URLForPersistentStore:lastObject];
 
-    [v5 removePersistentStore:v8 error:0];
+    [v5 removePersistentStore:lastObject error:0];
     psc = self->_psc;
     v17 = *MEMORY[0x277CBE2E8];
     v27 = v6;
-    v18 = [(NSPersistentStoreCoordinator *)psc addPersistentStoreWithType:v17 configuration:0 URL:v15 options:v12 error:&v27];
+    v18 = [(NSPersistentStoreCoordinator *)psc addPersistentStoreWithType:v17 configuration:0 URL:v15 options:_persistentStoreOptions error:&v27];
     v19 = v27;
 
     v20 = BLJaliscoLog();
@@ -678,16 +678,16 @@ LABEL_15:
     {
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v18 identifier];
-        v23 = [(BLJaliscoServerSource *)self currentJaliscoHistoryToken];
+        identifier2 = [v18 identifier];
+        currentJaliscoHistoryToken = [(BLJaliscoServerSource *)self currentJaliscoHistoryToken];
         *buf = 138413058;
         v30 = v15;
         v31 = 2112;
-        v32 = v22;
+        v32 = identifier2;
         v33 = 2112;
-        v34 = v12;
+        v34 = _persistentStoreOptions;
         v35 = 2112;
-        v36 = v23;
+        v36 = currentJaliscoHistoryToken;
         _os_log_impl(&dword_241D1F000, v21, OS_LOG_TYPE_DEFAULT, "Refreshed store at storeURL:(%@), persistentstoreID:(%@) storeOptions:(%@) History token(%@)", buf, 0x2Au);
       }
 
@@ -723,7 +723,7 @@ LABEL_15:
     v19 = v6;
   }
 
-  v25 = MEMORY[0x245CFF560](v4);
+  v25 = MEMORY[0x245CFF560](completionCopy);
   if (v25)
   {
     v25[2](v25, v24);
@@ -732,69 +732,69 @@ LABEL_15:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)serverDatabaseForDSID:(id)a3 fromManagedObjectContext:(id)a4 error:(id *)a5
+- (id)serverDatabaseForDSID:(id)d fromManagedObjectContext:(id)context error:(id *)error
 {
   v8 = MEMORY[0x277CCAC30];
-  v9 = a4;
-  v10 = [v8 predicateWithFormat:@"server.userUID = %@", a3];
+  contextCopy = context;
+  v10 = [v8 predicateWithFormat:@"server.userUID = %@", d];
   v15 = 0;
-  v11 = [(BLJaliscoServerSource *)self existingServerDatabaseWithPredicate:v10 fromManagedObjectContext:v9 error:&v15];
+  v11 = [(BLJaliscoServerSource *)self existingServerDatabaseWithPredicate:v10 fromManagedObjectContext:contextCopy error:&v15];
 
   v12 = v15;
-  if (a5 && !v11)
+  if (error && !v11)
   {
     v13 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v11;
 }
 
-- (id)serverDatabaseForDSID:(id)a3 withIdentifier:(id)a4 fromManagedObjectContext:(id)a5 error:(id *)a6
+- (id)serverDatabaseForDSID:(id)d withIdentifier:(id)identifier fromManagedObjectContext:(id)context error:(id *)error
 {
   v10 = MEMORY[0x277CCAC30];
-  v11 = a5;
-  v12 = [v10 predicateWithFormat:@"identifier = %@ AND server.userUID = %@", a4, a3];
+  contextCopy = context;
+  v12 = [v10 predicateWithFormat:@"identifier = %@ AND server.userUID = %@", identifier, d];
   v17 = 0;
-  v13 = [(BLJaliscoServerSource *)self existingServerDatabaseWithPredicate:v12 fromManagedObjectContext:v11 error:&v17];
+  v13 = [(BLJaliscoServerSource *)self existingServerDatabaseWithPredicate:v12 fromManagedObjectContext:contextCopy error:&v17];
 
   v14 = v17;
-  if (a6 && !v13)
+  if (error && !v13)
   {
     v15 = v14;
-    *a6 = v14;
+    *error = v14;
   }
 
   return v13;
 }
 
-- (id)existingEntitiesWithName:(id)a3 matchingPredicate:(id)a4 fromManagedObjectContext:(id)a5 limit:(unint64_t)a6 error:(id *)a7
+- (id)existingEntitiesWithName:(id)name matchingPredicate:(id)predicate fromManagedObjectContext:(id)context limit:(unint64_t)limit error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  nameCopy = name;
+  predicateCopy = predicate;
+  contextCopy = context;
   v14 = objc_autoreleasePoolPush();
   v15 = objc_alloc_init(MEMORY[0x277CBE428]);
-  v16 = [MEMORY[0x277CBE408] entityForName:v11 inManagedObjectContext:v13];
+  v16 = [MEMORY[0x277CBE408] entityForName:nameCopy inManagedObjectContext:contextCopy];
   [v15 setEntity:v16];
 
-  [v15 setPredicate:v12];
+  [v15 setPredicate:predicateCopy];
   [v15 setResultType:1];
-  if (a6)
+  if (limit)
   {
-    [v15 setFetchLimit:a6];
+    [v15 setFetchLimit:limit];
   }
 
   v22 = 0;
-  v17 = [v13 executeFetchRequest:v15 error:&v22];
+  v17 = [contextCopy executeFetchRequest:v15 error:&v22];
   v18 = v22;
   v19 = v18;
   if (v18)
   {
-    if (a7)
+    if (error)
     {
       v20 = v18;
-      *a7 = v19;
+      *error = v19;
     }
 
     [v19 logRecursively];
@@ -805,25 +805,25 @@ LABEL_15:
   return v17;
 }
 
-- (id)existingServerInfoWithPredicate:(id)a3 fromManagedObjectContext:(id)a4 error:(id *)a5
+- (id)existingServerInfoWithPredicate:(id)predicate fromManagedObjectContext:(id)context error:(id *)error
 {
-  v8 = a4;
+  contextCopy = context;
   v16 = 0;
-  v9 = [(BLJaliscoServerSource *)self existingEntitiesWithName:@"BLJaliscoServerInfo" matchingPredicate:a3 fromManagedObjectContext:v8 limit:1 error:&v16];
+  v9 = [(BLJaliscoServerSource *)self existingEntitiesWithName:@"BLJaliscoServerInfo" matchingPredicate:predicate fromManagedObjectContext:contextCopy limit:1 error:&v16];
   v10 = v16;
-  v11 = [v9 lastObject];
+  lastObject = [v9 lastObject];
 
-  if (v11)
+  if (lastObject)
   {
-    v12 = [v9 lastObject];
-    v13 = [v8 existingObjectWithID:v12 error:0];
+    lastObject2 = [v9 lastObject];
+    v13 = [contextCopy existingObjectWithID:lastObject2 error:0];
   }
 
-  else if (a5)
+  else if (error)
   {
     v14 = v10;
     v13 = 0;
-    *a5 = v10;
+    *error = v10;
   }
 
   else
@@ -834,25 +834,25 @@ LABEL_15:
   return v13;
 }
 
-- (id)existingServerDatabaseWithPredicate:(id)a3 fromManagedObjectContext:(id)a4 error:(id *)a5
+- (id)existingServerDatabaseWithPredicate:(id)predicate fromManagedObjectContext:(id)context error:(id *)error
 {
-  v8 = a4;
+  contextCopy = context;
   v16 = 0;
-  v9 = [(BLJaliscoServerSource *)self existingEntitiesWithName:@"BLJaliscoServerDatabase" matchingPredicate:a3 fromManagedObjectContext:v8 limit:1 error:&v16];
+  v9 = [(BLJaliscoServerSource *)self existingEntitiesWithName:@"BLJaliscoServerDatabase" matchingPredicate:predicate fromManagedObjectContext:contextCopy limit:1 error:&v16];
   v10 = v16;
-  v11 = [v9 lastObject];
+  lastObject = [v9 lastObject];
 
-  if (v11)
+  if (lastObject)
   {
-    v12 = [v9 lastObject];
-    v13 = [v8 existingObjectWithID:v12 error:0];
+    lastObject2 = [v9 lastObject];
+    v13 = [contextCopy existingObjectWithID:lastObject2 error:0];
   }
 
-  else if (a5)
+  else if (error)
   {
     v14 = v10;
     v13 = 0;
-    *a5 = v10;
+    *error = v10;
   }
 
   else
@@ -863,25 +863,25 @@ LABEL_15:
   return v13;
 }
 
-- (id)existingServerItemWithPredicate:(id)a3 fromManagedObjectContext:(id)a4 error:(id *)a5
+- (id)existingServerItemWithPredicate:(id)predicate fromManagedObjectContext:(id)context error:(id *)error
 {
-  v8 = a4;
+  contextCopy = context;
   v16 = 0;
-  v9 = [(BLJaliscoServerSource *)self existingEntitiesWithName:@"BLJaliscoServerItem" matchingPredicate:a3 fromManagedObjectContext:v8 limit:1 error:&v16];
+  v9 = [(BLJaliscoServerSource *)self existingEntitiesWithName:@"BLJaliscoServerItem" matchingPredicate:predicate fromManagedObjectContext:contextCopy limit:1 error:&v16];
   v10 = v16;
-  v11 = [v9 lastObject];
+  lastObject = [v9 lastObject];
 
-  if (v11)
+  if (lastObject)
   {
-    v12 = [v9 lastObject];
-    v13 = [v8 existingObjectWithID:v12 error:0];
+    lastObject2 = [v9 lastObject];
+    v13 = [contextCopy existingObjectWithID:lastObject2 error:0];
   }
 
-  else if (a5)
+  else if (error)
   {
     v14 = v10;
     v13 = 0;
-    *a5 = v10;
+    *error = v10;
   }
 
   else
@@ -892,52 +892,52 @@ LABEL_15:
   return v13;
 }
 
-- (id)serverItemWithStoreID:(id)a3 inDatabaseWithIdentifier:(id)a4 forDSID:(id)a5 fromManagedObjectContext:(id)a6 error:(id *)a7
+- (id)serverItemWithStoreID:(id)d inDatabaseWithIdentifier:(id)identifier forDSID:(id)iD fromManagedObjectContext:(id)context error:(id *)error
 {
   v12 = MEMORY[0x277CCAC30];
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = [a3 stringValue];
-  v17 = [v12 predicateWithFormat:@"storeID = %@ AND database.identifier = %@ and database.server.userUID = %@", v16, v15, v14];
+  contextCopy = context;
+  iDCopy = iD;
+  identifierCopy = identifier;
+  stringValue = [d stringValue];
+  iDCopy = [v12 predicateWithFormat:@"storeID = %@ AND database.identifier = %@ and database.server.userUID = %@", stringValue, identifierCopy, iDCopy];
 
   v22 = 0;
-  v18 = [(BLJaliscoServerSource *)self existingServerItemWithPredicate:v17 fromManagedObjectContext:v13 error:&v22];
+  v18 = [(BLJaliscoServerSource *)self existingServerItemWithPredicate:iDCopy fromManagedObjectContext:contextCopy error:&v22];
 
   v19 = v22;
-  if (a7 && !v18)
+  if (error && !v18)
   {
     v20 = v19;
-    *a7 = v19;
+    *error = v19;
   }
 
   return v18;
 }
 
-- (id)platformPredicatesForItemsWithActiveUserID:(id)a3
+- (id)platformPredicatesForItemsWithActiveUserID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_opt_new();
   v5 = MEMORY[0x277CCAC30];
-  v6 = [v3 stringValue];
-  v7 = [v3 stringValue];
+  stringValue = [dCopy stringValue];
+  stringValue2 = [dCopy stringValue];
 
-  v8 = [v5 predicateWithFormat:@"(((database.server.userUID == %@) AND (%K == NO OR %K == NULL)) OR ((database.server.userUID != %@) AND (%K == YES)))", v6, @"isAudiobook", @"isAudiobook", v7, @"isAudiobook"];
+  v8 = [v5 predicateWithFormat:@"(((database.server.userUID == %@) AND (%K == NO OR %K == NULL)) OR ((database.server.userUID != %@) AND (%K == YES)))", stringValue, @"isAudiobook", @"isAudiobook", stringValue2, @"isAudiobook"];
   [v4 addObject:v8];
 
   return v4;
 }
 
-- (id)predicateForItems:(BOOL)a3 dsids:(id)a4
+- (id)predicateForItems:(BOOL)items dsids:(id)dsids
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277CF32F0] sharedProvider];
-  v8 = [v7 activeStoreAccount];
-  v9 = [v8 ams_DSID];
+  dsidsCopy = dsids;
+  mEMORY[0x277CF32F0] = [MEMORY[0x277CF32F0] sharedProvider];
+  activeStoreAccount = [mEMORY[0x277CF32F0] activeStoreAccount];
+  ams_DSID = [activeStoreAccount ams_DSID];
 
-  if (v9)
+  if (ams_DSID)
   {
-    v10 = [v6 valueForKey:@"stringValue"];
+    v10 = [dsidsCopy valueForKey:@"stringValue"];
     v11 = v10;
     v12 = MEMORY[0x277CBEBF8];
     if (v10)
@@ -950,10 +950,10 @@ LABEL_15:
     v14 = [MEMORY[0x277CCAC30] predicateWithFormat:@"database.server.userUID IN %@", v13];
 
     v15 = [MEMORY[0x277CBEB18] arrayWithObject:v14];
-    v16 = [(BLJaliscoServerSource *)self platformPredicatesForItemsWithActiveUserID:v9];
+    v16 = [(BLJaliscoServerSource *)self platformPredicatesForItemsWithActiveUserID:ams_DSID];
     [v15 addObjectsFromArray:v16];
 
-    if (!a3)
+    if (!items)
     {
       v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == NO OR %K == NULL)", @"isHidden", @"isHidden"];
       [v15 addObject:v17];
@@ -970,16 +970,16 @@ LABEL_15:
   return v18;
 }
 
-- (id)predicateForBookletItems:(BOOL)a3 dsids:(id)a4
+- (id)predicateForBookletItems:(BOOL)items dsids:(id)dsids
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CF32F0] sharedProvider];
-  v7 = [v6 activeStoreAccount];
-  v8 = [v7 ams_DSID];
+  dsidsCopy = dsids;
+  mEMORY[0x277CF32F0] = [MEMORY[0x277CF32F0] sharedProvider];
+  activeStoreAccount = [mEMORY[0x277CF32F0] activeStoreAccount];
+  ams_DSID = [activeStoreAccount ams_DSID];
 
-  if (v8)
+  if (ams_DSID)
   {
-    v9 = [v5 valueForKey:@"stringValue"];
+    v9 = [dsidsCopy valueForKey:@"stringValue"];
     v10 = v9;
     v11 = MEMORY[0x277CBEBF8];
     if (v9)
@@ -992,7 +992,7 @@ LABEL_15:
     v13 = [MEMORY[0x277CCAC30] predicateWithFormat:@"parentItem.database.server.userUID IN %@", v12];
 
     v14 = [MEMORY[0x277CBEB18] arrayWithObject:v13];
-    if (!a3)
+    if (!items)
     {
       v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(parentItem.%K == NO OR parentItem.%K == NULL)", @"isHidden", @"isHidden"];
       [v14 addObject:v15];
@@ -1009,20 +1009,20 @@ LABEL_15:
   return v16;
 }
 
-- (id)fetchRequestForAllCloudIDs:(id)a3 dsids:(id)a4
+- (id)fetchRequestForAllCloudIDs:(id)ds dsids:(id)dsids
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BLJaliscoServerSource *)self itemsFetchRequestForDSIDs:v6];
-  v9 = [v7 count];
-  v10 = [v6 count];
+  dsidsCopy = dsids;
+  dsCopy = ds;
+  v8 = [(BLJaliscoServerSource *)self itemsFetchRequestForDSIDs:dsidsCopy];
+  v9 = [dsCopy count];
+  v10 = [dsidsCopy count];
 
   [v8 setFetchLimit:v10 * v9];
   v11 = MEMORY[0x277CBEB18];
-  v12 = [v8 predicate];
-  v13 = [MEMORY[0x277CCAC30] predicateWithFormat:@"cloudID IN %@", v7];
+  predicate = [v8 predicate];
+  dsCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"cloudID IN %@", dsCopy];
 
-  v14 = [v11 arrayWithObjects:{v12, v13, 0}];
+  v14 = [v11 arrayWithObjects:{predicate, dsCopy, 0}];
 
   v15 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:1 subpredicates:v14];
   [v8 setPredicate:v15];
@@ -1030,20 +1030,20 @@ LABEL_15:
   return v8;
 }
 
-- (id)fetchRequestForStoreIDs:(id)a3 dsids:(id)a4
+- (id)fetchRequestForStoreIDs:(id)ds dsids:(id)dsids
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BLJaliscoServerSource *)self itemsFetchRequestForDSIDs:v6];
-  v9 = [v7 count];
-  v10 = [v6 count];
+  dsidsCopy = dsids;
+  dsCopy = ds;
+  v8 = [(BLJaliscoServerSource *)self itemsFetchRequestForDSIDs:dsidsCopy];
+  v9 = [dsCopy count];
+  v10 = [dsidsCopy count];
 
   [v8 setFetchLimit:v10 * v9];
   v11 = MEMORY[0x277CBEB18];
-  v12 = [v8 predicate];
-  v13 = [MEMORY[0x277CCAC30] predicateWithFormat:@"storeID IN %@", v7];
+  predicate = [v8 predicate];
+  dsCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"storeID IN %@", dsCopy];
 
-  v14 = [v11 arrayWithObjects:{v12, v13, 0}];
+  v14 = [v11 arrayWithObjects:{predicate, dsCopy, 0}];
 
   v15 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:1 subpredicates:v14];
   [v8 setPredicate:v15];
@@ -1051,20 +1051,20 @@ LABEL_15:
   return v8;
 }
 
-- (id)fetchRequestForAllStoreIDs:(id)a3 dsids:(id)a4
+- (id)fetchRequestForAllStoreIDs:(id)ds dsids:(id)dsids
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BLJaliscoServerSource *)self allItemsFetchRequestForDSIDs:v6];
-  v9 = [v7 count];
-  v10 = [v6 count];
+  dsidsCopy = dsids;
+  dsCopy = ds;
+  v8 = [(BLJaliscoServerSource *)self allItemsFetchRequestForDSIDs:dsidsCopy];
+  v9 = [dsCopy count];
+  v10 = [dsidsCopy count];
 
   [v8 setFetchLimit:v10 * v9];
   v11 = MEMORY[0x277CBEB18];
-  v12 = [v8 predicate];
-  v13 = [MEMORY[0x277CCAC30] predicateWithFormat:@"storeID IN %@", v7];
+  predicate = [v8 predicate];
+  dsCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"storeID IN %@", dsCopy];
 
-  v14 = [v11 arrayWithObjects:{v12, v13, 0}];
+  v14 = [v11 arrayWithObjects:{predicate, dsCopy, 0}];
 
   v15 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:1 subpredicates:v14];
   [v8 setPredicate:v15];
@@ -1072,21 +1072,21 @@ LABEL_15:
   return v8;
 }
 
-- (id)fetchRequestForAllStoreIDsWithNonEmptyPurchasedToken:(id)a3 dsids:(id)a4
+- (id)fetchRequestForAllStoreIDsWithNonEmptyPurchasedToken:(id)token dsids:(id)dsids
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BLJaliscoServerSource *)self allItemsFetchRequestForDSIDs:v6];
-  v9 = [v7 count];
-  v10 = [v6 count];
+  dsidsCopy = dsids;
+  tokenCopy = token;
+  v8 = [(BLJaliscoServerSource *)self allItemsFetchRequestForDSIDs:dsidsCopy];
+  v9 = [tokenCopy count];
+  v10 = [dsidsCopy count];
 
   [v8 setFetchLimit:v10 * v9];
   v11 = MEMORY[0x277CBEB18];
-  v12 = [v8 predicate];
-  v13 = [MEMORY[0x277CCAC30] predicateWithFormat:@"storeID IN %@", v7];
-  v14 = [MEMORY[0x277CCAC30] predicateWithFormat:@"purchasedTokenCode != NULL and purchasedTokenCode != 0", v7];
+  predicate = [v8 predicate];
+  tokenCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"storeID IN %@", tokenCopy];
+  tokenCopy2 = [MEMORY[0x277CCAC30] predicateWithFormat:@"purchasedTokenCode != NULL and purchasedTokenCode != 0", tokenCopy];
 
-  v15 = [v11 arrayWithObjects:{v12, v13, v14, 0}];
+  v15 = [v11 arrayWithObjects:{predicate, tokenCopy, tokenCopy2, 0}];
 
   v16 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:1 subpredicates:v15];
   [v8 setPredicate:v16];
@@ -1094,19 +1094,19 @@ LABEL_15:
   return v8;
 }
 
-- (id)fetchRequestForAllStoreIDs:(id)a3
+- (id)fetchRequestForAllStoreIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = MEMORY[0x277CBE428];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = [v4 fetchRequestWithEntityName:v6];
 
-  v8 = [MEMORY[0x277CF32F0] sharedProvider];
-  v9 = [v8 activeStoreAccount];
-  v10 = [v9 ams_DSID];
+  mEMORY[0x277CF32F0] = [MEMORY[0x277CF32F0] sharedProvider];
+  activeStoreAccount = [mEMORY[0x277CF32F0] activeStoreAccount];
+  ams_DSID = [activeStoreAccount ams_DSID];
 
-  if (v10)
+  if (ams_DSID)
   {
     v11 = MEMORY[0x277CBEA60];
     v12 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"artist" ascending:1];
@@ -1114,22 +1114,22 @@ LABEL_15:
     [v7 setSortDescriptors:v13];
   }
 
-  v14 = [MEMORY[0x277CCAC30] predicateWithFormat:@"storeID IN %@", v3];
-  [v7 setPredicate:v14];
+  dsCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"storeID IN %@", dsCopy];
+  [v7 setPredicate:dsCopy];
 
   return v7;
 }
 
-- (id)fetchRequestForAllStoreIDs:(id)a3 dsids:(id)a4 isImported:(BOOL)a5 includeHidden:(BOOL)a6
+- (id)fetchRequestForAllStoreIDs:(id)ds dsids:(id)dsids isImported:(BOOL)imported includeHidden:(BOOL)hidden
 {
-  v7 = a5;
-  v9 = [(BLJaliscoServerSource *)self fetchRequestForAllStoreIDs:a3 dsids:a4];
+  importedCopy = imported;
+  v9 = [(BLJaliscoServerSource *)self fetchRequestForAllStoreIDs:ds dsids:dsids];
   v10 = MEMORY[0x277CBEB18];
-  v11 = [v9 predicate];
-  v12 = [(BLJaliscoServerSource *)self predicateForNeedsImport:!v7];
-  v13 = [v10 arrayWithObjects:{v11, v12, 0}];
+  predicate = [v9 predicate];
+  v12 = [(BLJaliscoServerSource *)self predicateForNeedsImport:!importedCopy];
+  v13 = [v10 arrayWithObjects:{predicate, v12, 0}];
 
-  if (!a6)
+  if (!hidden)
   {
     v14 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == NO OR %K == NULL)", @"isHidden", @"isHidden"];
     [v13 addObject:v14];
@@ -1141,9 +1141,9 @@ LABEL_15:
   return v9;
 }
 
-- (id)predicateForNeedsImport:(BOOL)a3
+- (id)predicateForNeedsImport:(BOOL)import
 {
-  if (a3)
+  if (import)
   {
     v4 = @"(%K == YES)";
   }
@@ -1155,14 +1155,14 @@ LABEL_15:
 
   v5 = [MEMORY[0x277CCAC30] predicateWithFormat:v4, @"needsImport", @"needsImport"];
   v6 = [MEMORY[0x277CBEB18] arrayWithObject:v5];
-  v7 = [MEMORY[0x277CF32F0] sharedProvider];
-  v8 = [v7 activeStoreAccount];
-  v9 = [v8 ams_DSID];
-  v10 = v9;
+  mEMORY[0x277CF32F0] = [MEMORY[0x277CF32F0] sharedProvider];
+  activeStoreAccount = [mEMORY[0x277CF32F0] activeStoreAccount];
+  ams_DSID = [activeStoreAccount ams_DSID];
+  v10 = ams_DSID;
   v11 = &unk_2853F21A0;
-  if (v9)
+  if (ams_DSID)
   {
-    v11 = v9;
+    v11 = ams_DSID;
   }
 
   v12 = v11;
@@ -1175,30 +1175,30 @@ LABEL_15:
   return v14;
 }
 
-- (id)fetchRequestForBuyParameters:(id)a3
+- (id)fetchRequestForBuyParameters:(id)parameters
 {
   v3 = MEMORY[0x277CBE428];
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = [v3 fetchRequestWithEntityName:v6];
 
-  v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"storeDownloadParameters == %@", v4];
+  parametersCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"storeDownloadParameters == %@", parametersCopy];
 
-  [v7 setPredicate:v8];
+  [v7 setPredicate:parametersCopy];
 
   return v7;
 }
 
-- (id)fetchRequestForNotInStoreAccountIDs:(id)a3
+- (id)fetchRequestForNotInStoreAccountIDs:(id)ds
 {
   v3 = MEMORY[0x277CBE428];
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = [v3 fetchRequestWithEntityName:v6];
 
-  v8 = [v4 valueForKey:@"stringValue"];
+  v8 = [dsCopy valueForKey:@"stringValue"];
 
   v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (storeAccountID IN %@)", v8];
   [v7 setPredicate:v9];
@@ -1206,27 +1206,27 @@ LABEL_15:
   return v7;
 }
 
-- (id)predicateForStoreAccountID:(id)a3 storeIDs:(id)a4
+- (id)predicateForStoreAccountID:(id)d storeIDs:(id)ds
 {
   v23[2] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCAC30];
-  v7 = a4;
-  v8 = [a3 stringValue];
-  v9 = [v6 predicateWithFormat:@"storeAccountID = %@", v8];
-  v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"storeID IN %@", v7, v9];
+  dsCopy = ds;
+  stringValue = [d stringValue];
+  v9 = [v6 predicateWithFormat:@"storeAccountID = %@", stringValue];
+  v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"storeID IN %@", dsCopy, v9];
 
   v23[1] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
   v12 = [v11 mutableCopy];
 
-  v13 = [MEMORY[0x277CF32F0] sharedProvider];
-  v14 = [v13 activeStoreAccount];
-  v15 = [v14 ams_DSID];
-  v16 = v15;
+  mEMORY[0x277CF32F0] = [MEMORY[0x277CF32F0] sharedProvider];
+  activeStoreAccount = [mEMORY[0x277CF32F0] activeStoreAccount];
+  ams_DSID = [activeStoreAccount ams_DSID];
+  v16 = ams_DSID;
   v17 = &unk_2853F21A0;
-  if (v15)
+  if (ams_DSID)
   {
-    v17 = v15;
+    v17 = ams_DSID;
   }
 
   v18 = v17;
@@ -1241,19 +1241,19 @@ LABEL_15:
   return v20;
 }
 
-- (id)fetchRequestForBookletItemsForStoreIDs:(id)a3
+- (id)fetchRequestForBookletItemsForStoreIDs:(id)ds
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBE428];
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = [v3 fetchRequestWithEntityName:v6];
 
   v8 = MEMORY[0x277CCA920];
-  v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"storeID IN %@", v4];
+  dsCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"storeID IN %@", dsCopy];
 
-  v14[0] = v9;
+  v14[0] = dsCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
   v11 = [v8 andPredicateWithSubpredicates:v10];
   [v7 setPredicate:v11];
@@ -1263,18 +1263,18 @@ LABEL_15:
   return v7;
 }
 
-- (id)fetchRequestForAllBookletsIDsWithParentStoreIDs:(id)a3
+- (id)fetchRequestForAllBookletsIDsWithParentStoreIDs:(id)ds
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBE428];
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = [v3 fetchRequestWithEntityName:v6];
 
-  v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"parentItem.storeID IN %@", v4];
+  dsCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"parentItem.storeID IN %@", dsCopy];
 
-  [v7 setPredicate:v8];
+  [v7 setPredicate:dsCopy];
   [v7 setReturnsDistinctResults:1];
   [v7 setResultType:2];
   v14[0] = @"storeID";
@@ -1290,16 +1290,16 @@ LABEL_15:
   return v7;
 }
 
-- (id)fetchRequestForHiddenItemsWithAccountIDs:(id)a3
+- (id)fetchRequestForHiddenItemsWithAccountIDs:(id)ds
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBE428];
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = [v3 fetchRequestWithEntityName:v6];
 
-  v8 = [v4 valueForKey:@"stringValue"];
+  v8 = [dsCopy valueForKey:@"stringValue"];
 
   v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"database.server.userUID IN %@", v8];
   v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == YES)", @"isHidden"];

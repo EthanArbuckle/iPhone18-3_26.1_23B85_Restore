@@ -1,26 +1,26 @@
 @interface HMITorsoClassification
-- (BOOL)isEqual:(id)a3;
-- (HMITorsoClassification)initWithCoder:(id)a3;
-- (HMITorsoClassification)initWithPersonUUID:(id)a3 sourceUUID:(id)a4 confidence:(double)a5;
+- (BOOL)isEqual:(id)equal;
+- (HMITorsoClassification)initWithCoder:(id)coder;
+- (HMITorsoClassification)initWithPersonUUID:(id)d sourceUUID:(id)iD confidence:(double)confidence;
 - (id)attributeDescriptions;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMITorsoClassification
 
-- (HMITorsoClassification)initWithPersonUUID:(id)a3 sourceUUID:(id)a4 confidence:(double)a5
+- (HMITorsoClassification)initWithPersonUUID:(id)d sourceUUID:(id)iD confidence:(double)confidence
 {
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v14.receiver = self;
   v14.super_class = HMITorsoClassification;
   v11 = [(HMITorsoClassification *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_sourceUUID, a4);
-    objc_storeStrong(&v12->_personUUID, a3);
-    v12->_confidence = a5;
+    objc_storeStrong(&v11->_sourceUUID, iD);
+    objc_storeStrong(&v12->_personUUID, d);
+    v12->_confidence = confidence;
   }
 
   return v12;
@@ -30,12 +30,12 @@
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMITorsoClassification *)self personUUID];
-  v5 = [v3 initWithName:@"Person UUID" value:v4];
+  personUUID = [(HMITorsoClassification *)self personUUID];
+  v5 = [v3 initWithName:@"Person UUID" value:personUUID];
   v16[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMITorsoClassification *)self sourceUUID];
-  v8 = [v6 initWithName:@"Source UUID" value:v7];
+  sourceUUID = [(HMITorsoClassification *)self sourceUUID];
+  v8 = [v6 initWithName:@"Source UUID" value:sourceUUID];
   v16[1] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
   v10 = MEMORY[0x277CCACA8];
@@ -48,10 +48,10 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
@@ -61,9 +61,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HMITorsoClassification *)self sourceUUID];
-      v7 = [(HMITorsoClassification *)v5 sourceUUID];
+      v5 = equalCopy;
+      sourceUUID = [(HMITorsoClassification *)self sourceUUID];
+      sourceUUID2 = [(HMITorsoClassification *)v5 sourceUUID];
       v8 = HMFEqualObjects();
 
       if (v8 && ([(HMITorsoClassification *)self personUUID], v9 = objc_claimAutoreleasedReturnValue(), [(HMITorsoClassification *)v5 personUUID], v10 = objc_claimAutoreleasedReturnValue(), v11 = HMFEqualObjects(), v10, v9, v11))
@@ -89,29 +89,29 @@
   return v15;
 }
 
-- (HMITorsoClassification)initWithCoder:(id)a3
+- (HMITorsoClassification)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMITC.su"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMITC.pu"];
-  [v4 decodeDoubleForKey:@"HMITC.conf"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMITC.su"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMITC.pu"];
+  [coderCopy decodeDoubleForKey:@"HMITC.conf"];
   v8 = v7;
 
   v9 = [(HMITorsoClassification *)self initWithPersonUUID:v6 sourceUUID:v5 confidence:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(HMITorsoClassification *)self sourceUUID];
-  [v6 encodeObject:v4 forKey:@"HMITC.su"];
+  coderCopy = coder;
+  sourceUUID = [(HMITorsoClassification *)self sourceUUID];
+  [coderCopy encodeObject:sourceUUID forKey:@"HMITC.su"];
 
-  v5 = [(HMITorsoClassification *)self personUUID];
-  [v6 encodeObject:v5 forKey:@"HMITC.pu"];
+  personUUID = [(HMITorsoClassification *)self personUUID];
+  [coderCopy encodeObject:personUUID forKey:@"HMITC.pu"];
 
   [(HMITorsoClassification *)self confidence];
-  [v6 encodeDouble:@"HMITC.conf" forKey:?];
+  [coderCopy encodeDouble:@"HMITC.conf" forKey:?];
 }
 
 @end

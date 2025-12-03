@@ -1,5 +1,5 @@
 @interface HAPPGFrame
-- (HAPPGFrame)initWithPPGProcessorOutput:(const void *)a3 rawPacket:(shared_ptr<const)std:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:(mimosa:(id)a5 :PacketV12>>)a4 :PacketV11 :PacketV10 :PacketV9 :PacketV8 :PacketV7 :PacketV6 :PacketV5 :PacketV4 :PacketV3 :PacketV2 :variant<mimosa::PacketV1 bootDate:;
+- (HAPPGFrame)initWithPPGProcessorOutput:(const void *)output rawPacket:(shared_ptr<const)std:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:(mimosa:(id)mimosa :PacketV12>>)a4 :PacketV11 :PacketV10 :PacketV9 :PacketV8 :PacketV7 :PacketV6 :PacketV5 :PacketV4 :PacketV3 :PacketV2 :variant<mimosa::PacketV1 bootDate:;
 - (HAPPGTemperatureSample)temperatureSample;
 - (id).cxx_construct;
 - (int64_t)timestamp;
@@ -8,7 +8,7 @@
 
 @implementation HAPPGFrame
 
-- (HAPPGFrame)initWithPPGProcessorOutput:(const void *)a3 rawPacket:(shared_ptr<const)std:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:(mimosa:(id)a5 :PacketV12>>)a4 :PacketV11 :PacketV10 :PacketV9 :PacketV8 :PacketV7 :PacketV6 :PacketV5 :PacketV4 :PacketV3 :PacketV2 :variant<mimosa::PacketV1 bootDate:
+- (HAPPGFrame)initWithPPGProcessorOutput:(const void *)output rawPacket:(shared_ptr<const)std:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:()mimosa:(mimosa:(id)mimosa :PacketV12>>)a4 :PacketV11 :PacketV10 :PacketV9 :PacketV8 :PacketV7 :PacketV6 :PacketV5 :PacketV4 :PacketV3 :PacketV2 :variant<mimosa::PacketV1 bootDate:
 {
   cntrl = a4.__cntrl_;
   ptr = a4.__ptr_;
@@ -33,10 +33,10 @@
   }
 
   objc_storeStrong(&v11->_startDate, cntrl);
-  v15 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:(*(a3 + 1) - *a3) >> 6];
-  v16 = *a3;
-  v17 = *(a3 + 1);
-  if (*a3 != v17)
+  v15 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:(*(output + 1) - *output) >> 6];
+  v16 = *output;
+  v17 = *(output + 1);
+  if (*output != v17)
   {
     do
     {
@@ -50,9 +50,9 @@
   }
 
   objc_storeStrong(&v11->_opticalSamples, v15);
-  v19 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:0xAAAAAAAAAAAAAAABLL * ((*(a3 + 4) - *(a3 + 3)) >> 3)];
-  v21 = *(a3 + 3);
-  for (i = *(a3 + 4); v21 != i; v21 += 24)
+  v19 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:0xAAAAAAAAAAAAAAABLL * ((*(output + 4) - *(output + 3)) >> 3)];
+  v21 = *(output + 3);
+  for (i = *(output + 4); v21 != i; v21 += 24)
   {
     v22 = [HAPPGAccelSample alloc];
     LODWORD(v23) = *(v21 + 12);

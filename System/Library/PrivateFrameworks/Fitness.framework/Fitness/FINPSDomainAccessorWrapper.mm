@@ -1,12 +1,12 @@
 @interface FINPSDomainAccessorWrapper
-- (BOOL)BOOLForKey:(id)a3;
-- (FINPSDomainAccessorWrapper)initWithDomain:(id)a3;
-- (id)dataForKey:(id)a3;
-- (id)objectForKey:(id)a3;
+- (BOOL)BOOLForKey:(id)key;
+- (FINPSDomainAccessorWrapper)initWithDomain:(id)domain;
+- (id)dataForKey:(id)key;
+- (id)objectForKey:(id)key;
 - (id)synchronize;
 - (void)migrateUserDefaultsToNPS;
-- (void)setInteger:(int64_t)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setInteger:(int64_t)integer forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation FINPSDomainAccessorWrapper
@@ -16,21 +16,21 @@
   npsDomainAccessor = self->_npsDomainAccessor;
   if (npsDomainAccessor)
   {
-    v4 = [(NPSDomainAccessor *)npsDomainAccessor synchronize];
+    synchronize = [(NPSDomainAccessor *)npsDomainAccessor synchronize];
   }
 
   else
   {
     [(NSUserDefaults *)self->_userDefaults synchronize];
-    v4 = 0;
+    synchronize = 0;
   }
 
-  return v4;
+  return synchronize;
 }
 
-- (FINPSDomainAccessorWrapper)initWithDomain:(id)a3
+- (FINPSDomainAccessorWrapper)initWithDomain:(id)domain
 {
-  v5 = a3;
+  domainCopy = domain;
   v15.receiver = self;
   v15.super_class = FINPSDomainAccessorWrapper;
   v6 = [(FINPSDomainAccessorWrapper *)&v15 init];
@@ -42,17 +42,17 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (v5)
+  if (domainCopy)
   {
-    objc_storeStrong(&v6->_domain, a3);
-    v8 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:v5];
+    objc_storeStrong(&v6->_domain, domain);
+    v8 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:domainCopy];
     npsDomainAccessor = v7->_npsDomainAccessor;
     v7->_npsDomainAccessor = v8;
 
     if (v7->_npsDomainAccessor)
     {
-      v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      userDefaults = [v10 objectForKey:@"MigrationToNPSCompleted"];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      userDefaults = [standardUserDefaults objectForKey:@"MigrationToNPSCompleted"];
 
       if (!userDefaults || ([userDefaults BOOLValue] & 1) == 0)
       {
@@ -62,7 +62,7 @@ LABEL_10:
 
     else
     {
-      v13 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:v5];
+      v13 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:domainCopy];
       userDefaults = v7->_userDefaults;
       v7->_userDefaults = v13;
     }
@@ -82,7 +82,7 @@ LABEL_11:
   userDefaults = self->_userDefaults;
   if (userDefaults && self->_npsDomainAccessor)
   {
-    v4 = [(NSUserDefaults *)userDefaults dictionaryRepresentation];
+    dictionaryRepresentation = [(NSUserDefaults *)userDefaults dictionaryRepresentation];
     _HKInitializeLogging();
     v5 = MEMORY[0x277CCC330];
     v6 = *MEMORY[0x277CCC330];
@@ -92,7 +92,7 @@ LABEL_11:
       *buf = 138412546;
       v29 = domain;
       v30 = 2112;
-      v31 = v4;
+      v31 = dictionaryRepresentation;
       _os_log_impl(&dword_24B35E000, v6, OS_LOG_TYPE_DEFAULT, "NSUserDefaults values to be migrated (domain: %@): %@", buf, 0x16u);
     }
 
@@ -100,7 +100,7 @@ LABEL_11:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = v4;
+    v8 = dictionaryRepresentation;
     v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v9)
     {
@@ -140,12 +140,12 @@ LABEL_11:
       while (v16);
     }
 
-    v17 = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
-    v18 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v18 setBool:1 forKey:@"MigrationToNPSCompleted"];
+    synchronize = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setBool:1 forKey:@"MigrationToNPSCompleted"];
 
-    v19 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v19 synchronize];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults2 synchronize];
 
     _HKInitializeLogging();
     v20 = *v5;
@@ -171,7 +171,7 @@ LABEL_11:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
   npsDomainAccessor = self->_npsDomainAccessor;
   if (!npsDomainAccessor)
@@ -179,10 +179,10 @@ LABEL_11:
     npsDomainAccessor = self->_userDefaults;
   }
 
-  return [npsDomainAccessor BOOLForKey:a3];
+  return [npsDomainAccessor BOOLForKey:key];
 }
 
-- (id)dataForKey:(id)a3
+- (id)dataForKey:(id)key
 {
   npsDomainAccessor = self->_npsDomainAccessor;
   if (!npsDomainAccessor)
@@ -190,12 +190,12 @@ LABEL_11:
     npsDomainAccessor = self->_userDefaults;
   }
 
-  v5 = [npsDomainAccessor dataForKey:a3];
+  v5 = [npsDomainAccessor dataForKey:key];
 
   return v5;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   npsDomainAccessor = self->_npsDomainAccessor;
   if (!npsDomainAccessor)
@@ -203,12 +203,12 @@ LABEL_11:
     npsDomainAccessor = self->_userDefaults;
   }
 
-  v5 = [npsDomainAccessor objectForKey:a3];
+  v5 = [npsDomainAccessor objectForKey:key];
 
   return v5;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   npsDomainAccessor = self->_npsDomainAccessor;
   if (!npsDomainAccessor)
@@ -216,10 +216,10 @@ LABEL_11:
     npsDomainAccessor = self->_userDefaults;
   }
 
-  [npsDomainAccessor setObject:a3 forKey:a4];
+  [npsDomainAccessor setObject:object forKey:key];
 }
 
-- (void)setInteger:(int64_t)a3 forKey:(id)a4
+- (void)setInteger:(int64_t)integer forKey:(id)key
 {
   npsDomainAccessor = self->_npsDomainAccessor;
   if (!npsDomainAccessor)
@@ -227,7 +227,7 @@ LABEL_11:
     npsDomainAccessor = self->_userDefaults;
   }
 
-  [npsDomainAccessor setInteger:a3 forKey:a4];
+  [npsDomainAccessor setInteger:integer forKey:key];
 }
 
 @end

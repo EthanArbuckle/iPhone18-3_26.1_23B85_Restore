@@ -1,34 +1,34 @@
 @interface MPSGraphOptimizer
-- (MPSGraphOptimizer)initWithGraph:(id)a3 learningRateTensor:(id)a4 trainableVariables:(id)a5 variablesToGradientTensorMap:(id)a6 name:(id)a7;
-- (MPSGraphOptimizer)initWithGraph:(id)a3 lossTensor:(id)a4 learningRateTensor:(id)a5 trainableVariables:(id)a6 name:(id)a7;
+- (MPSGraphOptimizer)initWithGraph:(id)graph learningRateTensor:(id)tensor trainableVariables:(id)variables variablesToGradientTensorMap:(id)map name:(id)name;
+- (MPSGraphOptimizer)initWithGraph:(id)graph lossTensor:(id)tensor learningRateTensor:(id)rateTensor trainableVariables:(id)variables name:(id)name;
 - (NSArray)updateOperations;
 @end
 
 @implementation MPSGraphOptimizer
 
-- (MPSGraphOptimizer)initWithGraph:(id)a3 learningRateTensor:(id)a4 trainableVariables:(id)a5 variablesToGradientTensorMap:(id)a6 name:(id)a7
+- (MPSGraphOptimizer)initWithGraph:(id)graph learningRateTensor:(id)tensor trainableVariables:(id)variables variablesToGradientTensorMap:(id)map name:(id)name
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  graphCopy = graph;
+  tensorCopy = tensor;
+  variablesCopy = variables;
+  mapCopy = map;
+  nameCopy = name;
   v25.receiver = self;
   v25.super_class = MPSGraphOptimizer;
   v18 = [(MPSGraphOptimizer *)&v25 init];
-  objc_storeStrong(&v18->_graph, a3);
-  objc_storeStrong(&v18->_learningRateTensor, a4);
-  objc_storeStrong(&v18->_variablesToGradientTensorMap, a6);
+  objc_storeStrong(&v18->_graph, graph);
+  objc_storeStrong(&v18->_learningRateTensor, tensor);
+  objc_storeStrong(&v18->_variablesToGradientTensorMap, map);
   variablesToUpdateOpMap = v18->_variablesToUpdateOpMap;
   v18->_variablesToUpdateOpMap = 0;
 
-  v20 = [v15 copy];
+  v20 = [variablesCopy copy];
   trainableVariables = v18->_trainableVariables;
   v18->_trainableVariables = v20;
 
-  if (v17)
+  if (nameCopy)
   {
-    objc_storeStrong(&v18->_name, v17);
+    objc_storeStrong(&v18->_name, nameCopy);
   }
 
   else
@@ -41,33 +41,33 @@
   return v18;
 }
 
-- (MPSGraphOptimizer)initWithGraph:(id)a3 lossTensor:(id)a4 learningRateTensor:(id)a5 trainableVariables:(id)a6 name:(id)a7
+- (MPSGraphOptimizer)initWithGraph:(id)graph lossTensor:(id)tensor learningRateTensor:(id)rateTensor trainableVariables:(id)variables name:(id)name
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [MEMORY[0x1E695DF70] array];
+  graphCopy = graph;
+  tensorCopy = tensor;
+  rateTensorCopy = rateTensor;
+  variablesCopy = variables;
+  nameCopy = name;
+  array = [MEMORY[0x1E695DF70] array];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __89__MPSGraphOptimizer_initWithGraph_lossTensor_learningRateTensor_trainableVariables_name___block_invoke;
   v28[3] = &unk_1E86D4DF8;
-  v18 = v17;
+  v18 = array;
   v29 = v18;
-  [v15 enumerateObjectsUsingBlock:v28];
-  v19 = [v12 gradientForPrimaryTensor:v13 withTensors:v18 name:v16];
-  v20 = [MEMORY[0x1E695DF90] dictionary];
+  [variablesCopy enumerateObjectsUsingBlock:v28];
+  v19 = [graphCopy gradientForPrimaryTensor:tensorCopy withTensors:v18 name:nameCopy];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __89__MPSGraphOptimizer_initWithGraph_lossTensor_learningRateTensor_trainableVariables_name___block_invoke_2;
   v25[3] = &unk_1E86D4E20;
-  v21 = v20;
+  v21 = dictionary;
   v26 = v21;
   v22 = v19;
   v27 = v22;
   [v18 enumerateObjectsUsingBlock:v25];
-  v23 = [(MPSGraphOptimizer *)self initWithGraph:v12 learningRateTensor:v14 trainableVariables:v15 variablesToGradientTensorMap:v21 name:v16];
+  v23 = [(MPSGraphOptimizer *)self initWithGraph:graphCopy learningRateTensor:rateTensorCopy trainableVariables:variablesCopy variablesToGradientTensorMap:v21 name:nameCopy];
 
   return v23;
 }
@@ -92,15 +92,15 @@ void __89__MPSGraphOptimizer_initWithGraph_lossTensor_learningRateTensor_trainab
 
 - (NSArray)updateOperations
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   trainableVariables = self->_trainableVariables;
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __37__MPSGraphOptimizer_updateOperations__block_invoke;
   v11 = &unk_1E86D4E48;
-  v5 = v3;
+  v5 = array;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   [(NSArray *)trainableVariables enumerateObjectsUsingBlock:&v8];
   v6 = [MEMORY[0x1E695DEC8] arrayWithArray:{v5, v8, v9, v10, v11}];
 

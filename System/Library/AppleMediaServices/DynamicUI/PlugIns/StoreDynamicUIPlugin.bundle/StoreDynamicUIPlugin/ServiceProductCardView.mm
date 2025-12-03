@@ -1,28 +1,28 @@
 @interface ServiceProductCardView
-- (void)dismissButtonActionWithSender:(id)a3;
+- (void)dismissButtonActionWithSender:(id)sender;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ServiceProductCardView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10639C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_10667C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_10667C(change);
 }
 
-- (void)dismissButtonActionWithSender:(id)a3
+- (void)dismissButtonActionWithSender:(id)sender
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_13BF54();
   swift_unknownObjectRelease();
   sub_106BC4(v5);

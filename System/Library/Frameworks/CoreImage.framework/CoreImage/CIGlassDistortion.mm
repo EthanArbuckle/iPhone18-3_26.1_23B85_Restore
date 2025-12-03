@@ -75,7 +75,7 @@
     v29[4] = v16;
     v29[5] = v13;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:6];
-    v26 = [(CIGlassDistortion *)self _kernel];
+    _kernel = [(CIGlassDistortion *)self _kernel];
     [(CIImage *)self->inputImage extent];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
@@ -92,7 +92,7 @@
     v28[5] = v16;
     v28[6] = v13;
     v28[7] = self->inputScale;
-    return [v26 applyWithExtent:v27 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v28, 8), v20, v21, v22, v23}];
+    return [_kernel applyWithExtent:v27 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v28, 8), v20, v21, v22, v23}];
   }
 
   else

@@ -3,8 +3,8 @@
 - (id)labelView;
 - (id)rightMostView;
 - (id)variableConstraints;
-- (void)setCardGroupItem:(id)a3;
-- (void)setLabelTextAttributes:(id)a3;
+- (void)setCardGroupItem:(id)item;
+- (void)setLabelTextAttributes:(id)attributes;
 - (void)tintColorDidChange;
 @end
 
@@ -17,8 +17,8 @@
   v5.super_class = CNContactActionCell;
   [(CNLabeledCell *)&v5 tintColorDidChange];
   v6 = *MEMORY[0x1E69DB650];
-  v3 = [(UIView *)self tintColorOverride];
-  v7[0] = v3;
+  tintColorOverride = [(UIView *)self tintColorOverride];
+  v7[0] = tintColorOverride;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   [self cn_updateDictionaryForKey:@"labelTextAttributes" withChanges:v4];
 }
@@ -28,23 +28,23 @@
   v3 = MEMORY[0x1E695DF70];
   v16.receiver = self;
   v16.super_class = CNContactActionCell;
-  v4 = [(CNLabeledCell *)&v16 variableConstraints];
-  v5 = [v3 arrayWithArray:v4];
+  variableConstraints = [(CNLabeledCell *)&v16 variableConstraints];
+  v5 = [v3 arrayWithArray:variableConstraints];
 
-  v6 = [(CNContactActionCell *)self transportIcon];
+  transportIcon = [(CNContactActionCell *)self transportIcon];
 
-  if (v6)
+  if (transportIcon)
   {
     v7 = MEMORY[0x1E696ACD8];
-    v8 = [(CNContactActionCell *)self transportIcon];
-    v9 = [(CNContactActionCell *)self labelView];
-    v10 = [v7 constraintWithItem:v8 attribute:10 relatedBy:0 toItem:v9 attribute:10 multiplier:1.0 constant:0.0];
+    transportIcon2 = [(CNContactActionCell *)self transportIcon];
+    labelView = [(CNContactActionCell *)self labelView];
+    v10 = [v7 constraintWithItem:transportIcon2 attribute:10 relatedBy:0 toItem:labelView attribute:10 multiplier:1.0 constant:0.0];
     [v5 addObject:v10];
 
     v11 = MEMORY[0x1E696ACD8];
-    v12 = [(CNContactActionCell *)self labelView];
-    v13 = [(CNContactActionCell *)self transportIcon];
-    v14 = [v11 constraintWithItem:v12 attribute:6 relatedBy:0 toItem:v13 attribute:5 multiplier:1.0 constant:-16.0];
+    labelView2 = [(CNContactActionCell *)self labelView];
+    transportIcon3 = [(CNContactActionCell *)self transportIcon];
+    v14 = [v11 constraintWithItem:labelView2 attribute:6 relatedBy:0 toItem:transportIcon3 attribute:5 multiplier:1.0 constant:-16.0];
     [v5 addObject:v14];
   }
 
@@ -53,34 +53,34 @@
 
 - (CNContactAction)action
 {
-  v2 = [(CNContactActionCell *)self actionGroupItem];
-  v3 = [v2 actions];
-  v4 = [v3 objectAtIndexedSubscript:0];
+  actionGroupItem = [(CNContactActionCell *)self actionGroupItem];
+  actions = [actionGroupItem actions];
+  v4 = [actions objectAtIndexedSubscript:0];
 
   return v4;
 }
 
-- (void)setCardGroupItem:(id)a3
+- (void)setCardGroupItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CNContactCell *)self cardGroupItem];
+  itemCopy = item;
+  cardGroupItem = [(CNContactCell *)self cardGroupItem];
 
-  if (v5 != v4)
+  if (cardGroupItem != itemCopy)
   {
     v26.receiver = self;
     v26.super_class = CNContactActionCell;
-    [(CNContactCell *)&v26 setCardGroupItem:v4];
-    v6 = [(CNContactActionCell *)self action];
-    v7 = [v6 title];
-    v8 = [(CNContactActionCell *)self label];
-    [v8 setText:v7];
+    [(CNContactCell *)&v26 setCardGroupItem:itemCopy];
+    action = [(CNContactActionCell *)self action];
+    title = [action title];
+    label = [(CNContactActionCell *)self label];
+    [label setText:title];
 
-    v9 = [(CNContactActionCell *)self action];
-    v10 = [v9 transportType];
+    action2 = [(CNContactActionCell *)self action];
+    transportType = [action2 transportType];
 
-    v11 = [(CNContactActionCell *)self transportIcon];
-    v12 = v11;
-    if (v10)
+    transportIcon = [(CNContactActionCell *)self transportIcon];
+    v12 = transportIcon;
+    if (transportType)
     {
 
       if (!v12)
@@ -88,35 +88,35 @@
         v13 = +[CNTransportButton transportButton];
         [(CNContactActionCell *)self setTransportIcon:v13];
 
-        v14 = [(CNContactActionCell *)self transportIcon];
-        [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+        transportIcon2 = [(CNContactActionCell *)self transportIcon];
+        [transportIcon2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-        v15 = [(CNContactActionCell *)self contentView];
-        v16 = [(CNContactActionCell *)self transportIcon];
-        [v15 addSubview:v16];
+        contentView = [(CNContactActionCell *)self contentView];
+        transportIcon3 = [(CNContactActionCell *)self transportIcon];
+        [contentView addSubview:transportIcon3];
 
         [(CNContactActionCell *)self setNeedsUpdateConstraints];
       }
 
-      v17 = [(CNContactActionCell *)self action];
-      v18 = [v17 glyphColor];
-      v19 = [(CNContactActionCell *)self transportIcon];
-      [v19 setGlyphColor:v18];
+      action3 = [(CNContactActionCell *)self action];
+      glyphColor = [action3 glyphColor];
+      transportIcon4 = [(CNContactActionCell *)self transportIcon];
+      [transportIcon4 setGlyphColor:glyphColor];
 
-      v20 = [(CNContactActionCell *)self action];
-      v21 = [v20 transportType];
-      v22 = [(CNContactActionCell *)self transportIcon];
-      [v22 setTransportType:v21];
+      action4 = [(CNContactActionCell *)self action];
+      transportType2 = [action4 transportType];
+      transportIcon5 = [(CNContactActionCell *)self transportIcon];
+      [transportIcon5 setTransportType:transportType2];
 
-      v23 = [(CNContactActionCell *)self action];
-      v24 = [v23 showBackgroundPlatter];
-      v25 = [(CNContactActionCell *)self transportIcon];
-      [v25 setShowBackgroundPlatter:v24];
+      action5 = [(CNContactActionCell *)self action];
+      showBackgroundPlatter = [action5 showBackgroundPlatter];
+      transportIcon6 = [(CNContactActionCell *)self transportIcon];
+      [transportIcon6 setShowBackgroundPlatter:showBackgroundPlatter];
     }
 
     else
     {
-      [v11 removeFromSuperview];
+      [transportIcon removeFromSuperview];
 
       [(CNContactActionCell *)self setTransportIcon:0];
       [(CNContactActionCell *)self setNeedsUpdateConstraints];
@@ -124,9 +124,9 @@
   }
 }
 
-- (void)setLabelTextAttributes:(id)a3
+- (void)setLabelTextAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   if ([MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory])
   {
     v5 = 0;
@@ -135,11 +135,11 @@
 
   else
   {
-    v7 = [(CNContactActionCell *)self action];
-    v8 = [v7 wrapTitle];
+    action = [(CNContactActionCell *)self action];
+    wrapTitle = [action wrapTitle];
 
-    v5 = v8 ^ 1u;
-    if (v8)
+    v5 = wrapTitle ^ 1u;
+    if (wrapTitle)
     {
       v6 = 0;
     }
@@ -150,21 +150,21 @@
     }
   }
 
-  v9 = [(CNContactActionCell *)self label];
-  [v9 setNumberOfLines:v5];
+  label = [(CNContactActionCell *)self label];
+  [label setNumberOfLines:v5];
 
-  v10 = [(CNContactActionCell *)self label];
-  [v10 setLineBreakMode:v6];
+  label2 = [(CNContactActionCell *)self label];
+  [label2 setLineBreakMode:v6];
 
-  v11 = [(CNContactActionCell *)self action];
-  v12 = [v11 color];
+  action2 = [(CNContactActionCell *)self action];
+  color = [action2 color];
 
-  if (v12)
+  if (color)
   {
-    v13 = [v4 mutableCopy];
-    v14 = [(CNContactActionCell *)self action];
-    v15 = [v14 color];
-    [v13 setObject:v15 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+    v13 = [attributesCopy mutableCopy];
+    action3 = [(CNContactActionCell *)self action];
+    color2 = [action3 color];
+    [v13 setObject:color2 forKeyedSubscript:*MEMORY[0x1E69DB650]];
 
     v21.receiver = self;
     v21.super_class = CNContactActionCell;
@@ -173,18 +173,18 @@
 
   else
   {
-    v16 = [(CNContactActionCell *)self action];
-    v17 = [v16 isDestructive];
+    action4 = [(CNContactActionCell *)self action];
+    isDestructive = [action4 isDestructive];
 
-    if (!v17)
+    if (!isDestructive)
     {
       v19.receiver = self;
       v19.super_class = CNContactActionCell;
-      [(CNLabeledCell *)&v19 setLabelTextAttributes:v4];
+      [(CNLabeledCell *)&v19 setLabelTextAttributes:attributesCopy];
       goto LABEL_11;
     }
 
-    v13 = [v4 mutableCopy];
+    v13 = [attributesCopy mutableCopy];
     v18 = +[CNUIColorRepository contactCardDestructiveActionTitleTextColor];
     [v13 setObject:v18 forKeyedSubscript:*MEMORY[0x1E69DB650]];
 
@@ -198,21 +198,21 @@ LABEL_11:
 
 - (id)rightMostView
 {
-  v3 = [(CNContactActionCell *)self transportIcon];
+  transportIcon = [(CNContactActionCell *)self transportIcon];
 
-  if (v3)
+  if (transportIcon)
   {
-    v4 = [(CNContactActionCell *)self transportIcon];
+    transportIcon2 = [(CNContactActionCell *)self transportIcon];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = CNContactActionCell;
-    v4 = [(CNLabeledCell *)&v6 rightMostView];
+    transportIcon2 = [(CNLabeledCell *)&v6 rightMostView];
   }
 
-  return v4;
+  return transportIcon2;
 }
 
 - (id)labelView
@@ -220,9 +220,9 @@ LABEL_11:
   label = self->_label;
   if (!label)
   {
-    v4 = [(CNLabeledCell *)self standardLabelView];
+    standardLabelView = [(CNLabeledCell *)self standardLabelView];
     v5 = self->_label;
-    self->_label = v4;
+    self->_label = standardLabelView;
 
     label = self->_label;
   }

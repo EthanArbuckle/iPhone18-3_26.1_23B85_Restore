@@ -1,20 +1,20 @@
 @interface BLSHTailspinLogWriter
 + (BOOL)isTailspinAvailable;
-- (BLSHTailspinLogWriter)initWithReason:(id)a3;
-- (void)writeTailspinLogWithCompletion:(id)a3;
+- (BLSHTailspinLogWriter)initWithReason:(id)reason;
+- (void)writeTailspinLogWithCompletion:(id)completion;
 @end
 
 @implementation BLSHTailspinLogWriter
 
-- (BLSHTailspinLogWriter)initWithReason:(id)a3
+- (BLSHTailspinLogWriter)initWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v9.receiver = self;
   v9.super_class = BLSHTailspinLogWriter;
   v5 = [(BLSHTailspinLogWriter *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [reasonCopy copy];
     reason = v5->_reason;
     v5->_reason = v6;
 
@@ -59,45 +59,45 @@ void __44__BLSHTailspinLogWriter_isTailspinAvailable__block_invoke()
   }
 }
 
-- (void)writeTailspinLogWithCompletion:(id)a3
+- (void)writeTailspinLogWithCompletion:(id)completion
 {
   v40[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  completionCopy = completion;
   if (self->_completion)
   {
     [BLSHTailspinLogWriter writeTailspinLogWithCompletion:a2];
   }
 
-  v6 = v5;
-  if (!v5)
+  v6 = completionCopy;
+  if (!completionCopy)
   {
     [BLSHTailspinLogWriter writeTailspinLogWithCompletion:a2];
   }
 
-  v7 = [v5 copy];
+  v7 = [completionCopy copy];
   completion = self->_completion;
   self->_completion = v7;
 
-  v9 = [MEMORY[0x277CBEAA8] date];
-  v10 = [v9 bls_fileNameString];
+  date = [MEMORY[0x277CBEAA8] date];
+  bls_fileNameString = [date bls_fileNameString];
 
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"BacklightServices-%@.tailspin", v10];
-  v12 = [(BLSHTailspinLogWriter *)self _tailspinFilesDirectory];
-  v13 = [v12 stringByAppendingPathComponent:v11];
+  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"BacklightServices-%@.tailspin", bls_fileNameString];
+  _tailspinFilesDirectory = [(BLSHTailspinLogWriter *)self _tailspinFilesDirectory];
+  v13 = [_tailspinFilesDirectory stringByAppendingPathComponent:v11];
   v14 = [v13 cStringUsingEncoding:4];
   if (v14)
   {
     v15 = v14;
     v16 = objc_alloc_init(MEMORY[0x277CCAA00]);
     v38 = 0;
-    v17 = [v16 createDirectoryAtPath:v12 withIntermediateDirectories:1 attributes:0 error:&v38];
+    v17 = [v16 createDirectoryAtPath:_tailspinFilesDirectory withIntermediateDirectories:1 attributes:0 error:&v38];
     v18 = v38;
     if ((v17 & 1) == 0)
     {
       v19 = bls_diagnostics_log();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        [(BLSHTailspinLogWriter *)v12 writeTailspinLogWithCompletion:v18, v19];
+        [(BLSHTailspinLogWriter *)_tailspinFilesDirectory writeTailspinLogWithCompletion:v18, v19];
       }
     }
 
@@ -140,7 +140,7 @@ LABEL_20:
         v35 = v13;
         v36 = v29;
         v30 = v29;
-        v31 = self;
+        selfCopy = self;
         tailspin_dump_output_with_options();
 
         v16 = v33;

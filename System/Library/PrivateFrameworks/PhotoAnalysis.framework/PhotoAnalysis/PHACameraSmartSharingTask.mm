@@ -1,16 +1,16 @@
 @interface PHACameraSmartSharingTask
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-- (BOOL)shouldRunWithGraphManager:(id)a3;
-- (id)_libraryScopeToUseWithGraphManager:(id)a3 error:(id *)a4;
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
+- (BOOL)shouldRunWithGraphManager:(id)manager;
+- (id)_libraryScopeToUseWithGraphManager:(id)manager error:(id *)error;
 - (id)taskClassDependencies;
-- (void)timeoutFatal:(BOOL)a3;
+- (void)timeoutFatal:(BOOL)fatal;
 @end
 
 @implementation PHACameraSmartSharingTask
 
-- (void)timeoutFatal:(BOOL)a3
+- (void)timeoutFatal:(BOOL)fatal
 {
-  if (a3)
+  if (fatal)
   {
     __assert_rtn("[PHACameraSmartSharingTask timeoutFatal:]", "PHACameraSmartSharingTask.m", 280, "NO");
   }
@@ -22,30 +22,30 @@
   }
 }
 
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
   v144 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v97 = a5;
-  if (![v9 isCancelledWithProgress:0.0])
+  managerCopy = manager;
+  reporterCopy = reporter;
+  errorCopy = error;
+  if (![reporterCopy isCancelledWithProgress:0.0])
   {
-    v11 = [v8 workingContext];
-    v12 = [v11 loggingConnection];
+    workingContext = [managerCopy workingContext];
+    loggingConnection = [workingContext loggingConnection];
 
-    v13 = [(PHACameraSmartSharingTask *)self _libraryScopeToUseWithGraphManager:v8 error:a5];
+    v13 = [(PHACameraSmartSharingTask *)self _libraryScopeToUseWithGraphManager:managerCopy error:error];
     if (v13)
     {
-      v14 = [v8 photoLibrary];
-      v15 = [v14 librarySpecificFetchOptions];
+      photoLibrary = [managerCopy photoLibrary];
+      librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
       v105 = objc_alloc_init(MEMORY[0x277CBDAB8]);
       v16 = MEMORY[0x277CD99C8];
-      v103 = v15;
-      v17 = [v15 copy];
+      v103 = librarySpecificFetchOptions;
+      v17 = [librarySpecificFetchOptions copy];
       v18 = [v16 fetchParticipantsInShare:v13 options:v17];
 
-      v96 = v8;
+      v96 = managerCopy;
       v19 = 0x277CBE000uLL;
       v110 = objc_alloc_init(MEMORY[0x277CBEB58]);
       v132 = 0u;
@@ -64,8 +64,8 @@
         *&v20 = 138478339;
         v95 = v20;
         v21 = MEMORY[0x277CBEBF8];
-        oslog = v12;
-        v101 = v9;
+        oslog = loggingConnection;
+        v101 = reporterCopy;
 LABEL_10:
         v22 = 0;
         while (1)
@@ -77,7 +77,7 @@ LABEL_10:
 
           v23 = *(*(&v132 + 1) + 8 * v22);
           context = objc_autoreleasePoolPush();
-          if ([v9 isCancelledWithProgress:0.5])
+          if ([reporterCopy isCancelledWithProgress:0.5])
           {
             objc_autoreleasePoolPop(context);
             v69 = 1;
@@ -96,15 +96,15 @@ LABEL_10:
             if (![v13 libraryScopeInLocalMode])
             {
               v45 = v113;
-              if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+              if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
               {
                 v46 = v22;
-                v47 = v12;
-                v48 = [v115 acceptanceStatus];
+                v47 = loggingConnection;
+                acceptanceStatus = [v115 acceptanceStatus];
                 *buf = 138412546;
                 *v139 = v115;
                 *&v139[8] = 1024;
-                *&v139[10] = v48;
+                *&v139[10] = acceptanceStatus;
                 _os_log_impl(&dword_22FA28000, v47, OS_LOG_TYPE_DEFAULT, "PHACameraSmartSharingTask: Not scanning for participant:%@ acceptanceStatus:%d", buf, 0x12u);
 
                 v22 = v46;
@@ -114,14 +114,14 @@ LABEL_10:
             }
 
             v24 = v22;
-            v25 = v12;
+            v25 = loggingConnection;
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
             {
-              v26 = [v23 acceptanceStatus];
+              acceptanceStatus2 = [v23 acceptanceStatus];
               *buf = 138412546;
               *v139 = v23;
               *&v139[8] = 1024;
-              *&v139[10] = v26;
+              *&v139[10] = acceptanceStatus2;
               _os_log_impl(&dword_22FA28000, v25, OS_LOG_TYPE_DEFAULT, "PHACameraSmartSharingTask: Allowed scan because of local mode, participant:%@ acceptance status:%d", buf, 0x12u);
             }
 
@@ -133,11 +133,11 @@ LABEL_10:
           v28 = [v103 copy];
           v29 = [v27 fetchPersonForShareParticipant:v23 options:v28];
 
-          if (![v29 count] && os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+          if (![v29 count] && os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
             *v139 = v23;
-            _os_log_impl(&dword_22FA28000, v12, OS_LOG_TYPE_DEFAULT, "PHACameraSmartSharingTask: Missing PHPerson for share participant:%@", buf, 0xCu);
+            _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, "PHACameraSmartSharingTask: Missing PHPerson for share participant:%@", buf, 0xCu);
           }
 
           v130 = 0u;
@@ -165,14 +165,14 @@ LABEL_10:
 
               v36 = *(*(&v128 + 1) + 8 * i);
               v37 = [v36 linkedContactWithKeysToFetch:v21];
-              v38 = [v37 identifier];
-              v39 = [v38 length];
+              identifier = [v37 identifier];
+              v39 = [identifier length];
 
               if (v39)
               {
-                v40 = [v37 identifier];
+                identifier2 = [v37 identifier];
 
-                v33 = v40;
+                v33 = identifier2;
               }
 
               else if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -190,7 +190,7 @@ LABEL_10:
 
           while (v32);
 
-          v12 = oslog;
+          loggingConnection = oslog;
           v19 = 0x277CBE000;
           if (!v33)
           {
@@ -201,34 +201,34 @@ LABEL_10:
           [v113 addObject:v33];
 LABEL_47:
           v50 = objc_alloc_init(*(v19 + 2904));
-          v51 = [v115 phoneNumber];
-          if ([v51 length])
+          phoneNumber = [v115 phoneNumber];
+          if ([phoneNumber length])
           {
-            v52 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:v51];
+            v52 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:phoneNumber];
             [v50 addObject:v52];
           }
 
           v107 = v50;
           v53 = objc_alloc_init(*(v19 + 2904));
-          v54 = [v115 emailAddress];
-          if ([v54 length])
+          emailAddress = [v115 emailAddress];
+          if ([emailAddress length])
           {
-            [v53 addObject:v54];
+            [v53 addObject:emailAddress];
           }
 
           v55 = objc_alloc(MEMORY[0x277CD9820]);
-          v56 = [v41 allObjects];
-          v108 = v51;
-          v57 = [v55 initWithPhoneNumber:v51 emailAddress:v54 contactIdentifiers:v56];
+          allObjects = [v41 allObjects];
+          v108 = phoneNumber;
+          v57 = [v55 initWithPhoneNumber:phoneNumber emailAddress:emailAddress contactIdentifiers:allObjects];
 
           [v110 addObject:v57];
-          if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138478083;
             *v139 = v57;
             *&v139[8] = 2112;
             *&v139[10] = v115;
-            _os_log_impl(&dword_22FA28000, v12, OS_LOG_TYPE_DEFAULT, "PHACameraSmartSharingTask: Added identify %{private}@ for participant:%@", buf, 0x16u);
+            _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, "PHACameraSmartSharingTask: Added identify %{private}@ for participant:%@", buf, 0x16u);
           }
 
           v106 = v57;
@@ -241,8 +241,8 @@ LABEL_47:
 
           v61 = MEMORY[0x277CBDA58];
           v45 = v113;
-          v62 = [v113 allObjects];
-          v63 = [v61 predicateForContactsWithIdentifiers:v62];
+          allObjects2 = [v113 allObjects];
+          v63 = [v61 predicateForContactsWithIdentifiers:allObjects2];
           [v60 setPredicate:v63];
 
           v127 = 0;
@@ -252,7 +252,7 @@ LABEL_47:
           v121[3] = &unk_2788B1668;
           v122 = v53;
           v123 = v110;
-          v124 = v12;
+          v124 = loggingConnection;
           v125 = v115;
           v126 = v107;
           v64 = v53;
@@ -260,8 +260,8 @@ LABEL_47:
           [v105 enumerateContactsWithFetchRequest:v60 error:&v127 usingBlock:v121];
           v66 = v127;
 
-          v12 = oslog;
-          v9 = v101;
+          loggingConnection = oslog;
+          reporterCopy = v101;
           v13 = v102;
           v19 = 0x277CBE000;
           v22 = v109;
@@ -283,16 +283,16 @@ LABEL_55:
 
 LABEL_37:
         v41 = v113;
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138477827;
           *v139 = v115;
-          _os_log_impl(&dword_22FA28000, v12, OS_LOG_TYPE_DEFAULT, "PHACameraSmartSharingTask: Unable to retrieve contact for share participant %{private}@, falling back to lookup by email/phone number.", buf, 0xCu);
+          _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, "PHACameraSmartSharingTask: Unable to retrieve contact for share participant %{private}@, falling back to lookup by email/phone number.", buf, 0xCu);
         }
 
-        v42 = [v115 emailAddress];
-        v43 = [v115 phoneNumber];
-        v44 = [v105 allContactIDsMatchingEmailAddress:v42 orPhoneNumber:v43];
+        emailAddress2 = [v115 emailAddress];
+        phoneNumber2 = [v115 phoneNumber];
+        v44 = [v105 allContactIDsMatchingEmailAddress:emailAddress2 orPhoneNumber:phoneNumber2];
 
         if ([v44 count])
         {
@@ -301,17 +301,17 @@ LABEL_37:
 
         else
         {
-          v49 = v12;
+          v49 = loggingConnection;
           if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
           {
-            v67 = [v115 emailAddress];
-            v68 = [v115 phoneNumber];
+            emailAddress3 = [v115 emailAddress];
+            phoneNumber3 = [v115 phoneNumber];
             *buf = v95;
             *v139 = v115;
             *&v139[8] = 2113;
-            *&v139[10] = v67;
+            *&v139[10] = emailAddress3;
             v140 = 2113;
-            v141 = v68;
+            v141 = phoneNumber3;
             _os_log_error_impl(&dword_22FA28000, v49, OS_LOG_TYPE_ERROR, "PHACameraSmartSharingTask: Unable to retrieve fallback contact IDs for share participant %{private}@ with email %{private}@ or phone number %{private}@", buf, 0x20u);
           }
 
@@ -326,15 +326,15 @@ LABEL_57:
       v69 = 0;
 LABEL_59:
 
-      v8 = v96;
-      if (![v110 count] && os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      managerCopy = v96;
+      if (![v110 count] && os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
         *v139 = v13;
-        _os_log_impl(&dword_22FA28000, v12, OS_LOG_TYPE_DEFAULT, "PHACameraSmartSharingTask: No share participants to auto-share with for libraryScope %@", buf, 0xCu);
+        _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, "PHACameraSmartSharingTask: No share participants to auto-share with for libraryScope %@", buf, 0xCu);
       }
 
-      if ((v69 & 1) != 0 || [v9 isCancelledWithProgress:0.5])
+      if ((v69 & 1) != 0 || [reporterCopy isCancelledWithProgress:0.5])
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -345,10 +345,10 @@ LABEL_59:
           _os_log_impl(&dword_22FA28000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
         }
 
-        if (v97 && !*v97)
+        if (errorCopy && !*errorCopy)
         {
           [MEMORY[0x277D22C28] errorForCode:-4];
-          *v97 = v10 = 0;
+          *errorCopy = v10 = 0;
         }
 
         else
@@ -361,12 +361,12 @@ LABEL_59:
 
       else
       {
-        v70 = [v96 homeCircularRegions];
-        v71 = v70;
+        homeCircularRegions = [v96 homeCircularRegions];
+        v71 = homeCircularRegions;
         v72 = MEMORY[0x277CBEBF8];
-        if (v70)
+        if (homeCircularRegions)
         {
-          v73 = v70;
+          v73 = homeCircularRegions;
         }
 
         else
@@ -378,11 +378,11 @@ LABEL_59:
 
         if ([v96 isReady])
         {
-          v75 = [v96 recentFrequentLocationRegions];
-          v76 = v75;
-          if (v75)
+          recentFrequentLocationRegions = [v96 recentFrequentLocationRegions];
+          v76 = recentFrequentLocationRegions;
+          if (recentFrequentLocationRegions)
           {
-            v77 = v75;
+            v77 = recentFrequentLocationRegions;
           }
 
           else
@@ -395,10 +395,10 @@ LABEL_59:
 
         else
         {
-          if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
-            _os_log_impl(&dword_22FA28000, v12, OS_LOG_TYPE_DEFAULT, "PHACameraSmartSharingTask: graph manager not ready, smart sharing cache will be missing frequent location data", buf, 2u);
+            _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, "PHACameraSmartSharingTask: graph manager not ready, smart sharing cache will be missing frequent location data", buf, 2u);
           }
 
           v78 = MEMORY[0x277CBEBF8];
@@ -428,11 +428,11 @@ LABEL_59:
               [v84 center];
               if ([MEMORY[0x277D27728] isLocationShiftRequiredForCoordinate:v86])
               {
-                if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+                if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138477827;
                   *v139 = v84;
-                  _os_log_impl(&dword_22FA28000, v12, OS_LOG_TYPE_DEFAULT, "PHACameraSmartSharingTask: locationShiftingRequired needed for location: %{private}@", buf, 0xCu);
+                  _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, "PHACameraSmartSharingTask: locationShiftingRequired needed for location: %{private}@", buf, 0xCu);
                 }
 
                 v81 = 1;
@@ -453,40 +453,40 @@ LABEL_59:
 LABEL_98:
 
         v87 = objc_alloc(MEMORY[0x277CD9828]);
-        v88 = [v102 localIdentifier];
-        v89 = [v110 allObjects];
-        v90 = [v87 initWithLibraryScopeIdentifier:v88 identities:v89 homeLocations:v80 frequentLocations:v78 locationShiftingRequired:v81];
+        localIdentifier = [v102 localIdentifier];
+        allObjects3 = [v110 allObjects];
+        v90 = [v87 initWithLibraryScopeIdentifier:localIdentifier identities:allObjects3 homeLocations:v80 frequentLocations:v78 locationShiftingRequired:v81];
 
         v91 = MEMORY[0x277CD9828];
-        v8 = v96;
-        v92 = [v96 photoLibrary];
-        v10 = [v91 storeMetadata:v90 forPhotoLibrary:v92 error:v97];
+        managerCopy = v96;
+        photoLibrary2 = [v96 photoLibrary];
+        v10 = [v91 storeMetadata:v90 forPhotoLibrary:photoLibrary2 error:errorCopy];
 
         if (v10)
         {
           v13 = v102;
-          if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138477827;
             *v139 = v90;
-            _os_log_impl(&dword_22FA28000, v12, OS_LOG_TYPE_DEFAULT, "PHACameraSmartSharingTask: Successfully generated smart sharing cache: %{private}@", buf, 0xCu);
+            _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, "PHACameraSmartSharingTask: Successfully generated smart sharing cache: %{private}@", buf, 0xCu);
           }
         }
 
         else
         {
           v13 = v102;
-          if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
           {
-            v94 = v97;
-            if (v97)
+            v94 = errorCopy;
+            if (errorCopy)
             {
-              v94 = *v97;
+              v94 = *errorCopy;
             }
 
             *buf = 138412290;
             *v139 = v94;
-            _os_log_error_impl(&dword_22FA28000, v12, OS_LOG_TYPE_ERROR, "PHACameraSmartSharingTask: Error writing metadata: %@", buf, 0xCu);
+            _os_log_error_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_ERROR, "PHACameraSmartSharingTask: Error writing metadata: %@", buf, 0xCu);
           }
         }
 
@@ -501,16 +501,16 @@ LABEL_98:
 
     else
     {
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_error_impl(&dword_22FA28000, v12, OS_LOG_TYPE_ERROR, "PHACameraSmartSharingTask: No existing active scope, not generating cache.", buf, 2u);
+        _os_log_error_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_ERROR, "PHACameraSmartSharingTask: No existing active scope, not generating cache.", buf, 2u);
       }
 
       v10 = 0;
     }
 
-    if (![v9 isCancelledWithProgress:{1.0, v95}])
+    if (![reporterCopy isCancelledWithProgress:{1.0, v95}])
     {
 LABEL_110:
 
@@ -526,10 +526,10 @@ LABEL_110:
       _os_log_impl(&dword_22FA28000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
     }
 
-    if (v97 && !*v97)
+    if (errorCopy && !*errorCopy)
     {
       [MEMORY[0x277D22C28] errorForCode:-4];
-      *v97 = v10 = 0;
+      *errorCopy = v10 = 0;
       goto LABEL_110;
     }
 
@@ -547,10 +547,10 @@ LABEL_109:
     _os_log_impl(&dword_22FA28000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
   }
 
-  if (a5 && !*a5)
+  if (error && !*error)
   {
     [MEMORY[0x277D22C28] errorForCode:-4];
-    *v97 = v10 = 0;
+    *errorCopy = v10 = 0;
   }
 
   else
@@ -708,102 +708,102 @@ LABEL_25:
   }
 }
 
-- (id)_libraryScopeToUseWithGraphManager:(id)a3 error:(id *)a4
+- (id)_libraryScopeToUseWithGraphManager:(id)manager error:(id *)error
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(PHACameraSmartSharingTask *)self libraryScope];
+  managerCopy = manager;
+  libraryScope = [(PHACameraSmartSharingTask *)self libraryScope];
 
-  if (!v7)
+  if (!libraryScope)
   {
-    v8 = [v6 photoLibrary];
-    v9 = [v8 librarySpecificFetchOptions];
+    photoLibrary = [managerCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    [v9 setFetchLimit:1];
+    [librarySpecificFetchOptions setFetchLimit:1];
     v10 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:0];
     v27[0] = v10;
     v11 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:0];
     v27[1] = v11;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:2];
-    [v9 setSortDescriptors:v12];
+    [librarySpecificFetchOptions setSortDescriptors:v12];
 
-    v13 = [v6 workingContext];
-    v14 = [v13 loggingConnection];
+    workingContext = [managerCopy workingContext];
+    loggingConnection = [workingContext loggingConnection];
 
     v15 = MEMORY[0x277CD98A8];
     if (!self->_libraryScopeLocalIdentifier)
     {
-      v20 = [v9 copy];
+      v20 = [librarySpecificFetchOptions copy];
       v21 = [v15 fetchActiveLibraryScopeWithOptions:v20];
-      v19 = [v21 firstObject];
+      firstObject = [v21 firstObject];
 
       goto LABEL_8;
     }
 
     libraryScopeLocalIdentifier = self->_libraryScopeLocalIdentifier;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&libraryScopeLocalIdentifier count:1];
-    v17 = [v9 copy];
+    v17 = [librarySpecificFetchOptions copy];
     v18 = [v15 fetchLibraryScopesWithLocalIdentifiers:v16 options:v17];
-    v19 = [v18 firstObject];
+    firstObject = [v18 firstObject];
 
-    if (v19)
+    if (firstObject)
     {
 LABEL_9:
-      [(PHACameraSmartSharingTask *)self setLibraryScope:v19];
+      [(PHACameraSmartSharingTask *)self setLibraryScope:firstObject];
 
       goto LABEL_10;
     }
 
     v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot find library scope for localIdentifier: %@", self->_libraryScopeLocalIdentifier];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v25 = v20;
-      _os_log_error_impl(&dword_22FA28000, v14, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
-      if (a4)
+      _os_log_error_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
+      if (error)
       {
         goto LABEL_6;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_6:
       [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:9 localizedDescription:v20];
-      *a4 = v19 = 0;
+      *error = firstObject = 0;
 LABEL_8:
 
       goto LABEL_9;
     }
 
-    v19 = 0;
+    firstObject = 0;
     goto LABEL_8;
   }
 
 LABEL_10:
-  v22 = [(PHACameraSmartSharingTask *)self libraryScope];
+  libraryScope2 = [(PHACameraSmartSharingTask *)self libraryScope];
 
-  return v22;
+  return libraryScope2;
 }
 
-- (BOOL)shouldRunWithGraphManager:(id)a3
+- (BOOL)shouldRunWithGraphManager:(id)manager
 {
-  v4 = a3;
-  v5 = [v4 photoLibrary];
-  v6 = [v5 isSystemPhotoLibrary];
+  managerCopy = manager;
+  photoLibrary = [managerCopy photoLibrary];
+  isSystemPhotoLibrary = [photoLibrary isSystemPhotoLibrary];
 
-  if ((v6 & 1) == 0)
+  if ((isSystemPhotoLibrary & 1) == 0)
   {
-    v9 = [v4 workingContext];
-    v10 = [v9 loggingConnection];
+    workingContext = [managerCopy workingContext];
+    loggingConnection = [workingContext loggingConnection];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 0;
       v11 = "PHACameraSmartSharingTask: Task is running on a non system photo library: not running Camera Smart Sharing job";
       v12 = &v16;
 LABEL_8:
-      _os_log_impl(&dword_22FA28000, v10, OS_LOG_TYPE_DEFAULT, v11, v12, 2u);
+      _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, v11, v12, 2u);
     }
 
 LABEL_9:
@@ -812,14 +812,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v7 = [(PHACameraSmartSharingTask *)self _libraryScopeToUseWithGraphManager:v4 error:0];
+  v7 = [(PHACameraSmartSharingTask *)self _libraryScopeToUseWithGraphManager:managerCopy error:0];
 
   if (!v7)
   {
-    v13 = [v4 workingContext];
-    v10 = [v13 loggingConnection];
+    workingContext2 = [managerCopy workingContext];
+    loggingConnection = [workingContext2 loggingConnection];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 0;
       v11 = "PHACameraSmartSharingTask: Task is running without an active library scope: not running Camera Smart Sharing job";

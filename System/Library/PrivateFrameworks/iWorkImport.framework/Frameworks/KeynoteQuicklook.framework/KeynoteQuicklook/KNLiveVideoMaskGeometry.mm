@@ -1,23 +1,23 @@
 @interface KNLiveVideoMaskGeometry
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)normalizedOffset;
 - (CGRect)maskBounds;
-- (CGRect)videoBoundsForNaturalSize:(CGSize)a3;
-- (CGRect)videoTextureRectForNaturalSize:(CGSize)a3;
-- (KNLiveVideoMaskGeometry)initWithMaskBounds:(CGRect)a3 scale:(double)a4 normalizedOffset:(CGPoint)a5;
+- (CGRect)videoBoundsForNaturalSize:(CGSize)size;
+- (CGRect)videoTextureRectForNaturalSize:(CGSize)size;
+- (KNLiveVideoMaskGeometry)initWithMaskBounds:(CGRect)bounds scale:(double)scale normalizedOffset:(CGPoint)offset;
 - (unint64_t)hash;
 @end
 
 @implementation KNLiveVideoMaskGeometry
 
-- (KNLiveVideoMaskGeometry)initWithMaskBounds:(CGRect)a3 scale:(double)a4 normalizedOffset:(CGPoint)a5
+- (KNLiveVideoMaskGeometry)initWithMaskBounds:(CGRect)bounds scale:(double)scale normalizedOffset:(CGPoint)offset
 {
-  y = a5.y;
-  x = a5.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  y = offset.y;
+  x = offset.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  v10 = bounds.origin.y;
+  v11 = bounds.origin.x;
   v13.receiver = self;
   v13.super_class = KNLiveVideoMaskGeometry;
   result = [(KNLiveVideoMaskGeometry *)&v13 init];
@@ -26,7 +26,7 @@
     result->_maskBounds.origin.y = v10;
     result->_maskBounds.size.width = width;
     result->_maskBounds.size.height = height;
-    result->_scale = a4;
+    result->_scale = scale;
     result->_normalizedOffset.x = x;
     result->_normalizedOffset.y = y;
     result->_maskBounds.origin.x = v11;
@@ -35,14 +35,14 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -91,7 +91,7 @@
   return v31;
 }
 
-- (CGRect)videoBoundsForNaturalSize:(CGSize)a3
+- (CGRect)videoBoundsForNaturalSize:(CGSize)size
 {
   objc_msgSend_maskBounds(self, a2, v3);
   v6 = v5;
@@ -130,10 +130,10 @@
   return result;
 }
 
-- (CGRect)videoTextureRectForNaturalSize:(CGSize)a3
+- (CGRect)videoTextureRectForNaturalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   objc_msgSend_maskBounds(self, a2, v3);
   v8 = v7;
   v10 = v9;

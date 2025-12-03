@@ -1,17 +1,17 @@
 @interface CHBPie3DType
-+ (id)chdChartTypeWithState:(id)a3;
++ (id)chdChartTypeWithState:(id)state;
 @end
 
 @implementation CHBPie3DType
 
-+ (id)chdChartTypeWithState:(id)a3
++ (id)chdChartTypeWithState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = [CHDPie3DType alloc];
-  v5 = [v3 chart];
-  v6 = [(CHDPie2DType *)v4 initWithChart:v5];
+  chart = [stateCopy chart];
+  v6 = [(CHDPie2DType *)v4 initWithChart:chart];
 
-  [CHBPie2DType readWithState:v3 chartType:v6];
+  [CHBPie2DType readWithState:stateCopy chartType:v6];
 
   return v6;
 }

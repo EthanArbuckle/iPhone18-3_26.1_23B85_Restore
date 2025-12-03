@@ -18,21 +18,21 @@
     if (v6)
     {
       v7 = v6;
-      v8 = [(NSPProactiveTokenFetchAnalytics *)self vendor];
-      [v7 setObject:v8 forKeyedSubscript:@"Vendor"];
+      vendor = [(NSPProactiveTokenFetchAnalytics *)self vendor];
+      [v7 setObject:vendor forKeyedSubscript:@"Vendor"];
 
-      v9 = [(NSPProactiveTokenFetchAnalytics *)self type];
-      [v7 setObject:v9 forKeyedSubscript:@"Type"];
+      type = [(NSPProactiveTokenFetchAnalytics *)self type];
+      [v7 setObject:type forKeyedSubscript:@"Type"];
 
-      v10 = [(NSPProactiveTokenFetchAnalytics *)self stats];
-      [v7 addEntriesFromDictionary:v10];
+      stats = [(NSPProactiveTokenFetchAnalytics *)self stats];
+      [v7 addEntriesFromDictionary:stats];
 
-      v11 = [(NSPProactiveTokenFetchAnalytics *)self fromDate];
-      v12 = [v4 stringFromDate:v11];
+      fromDate = [(NSPProactiveTokenFetchAnalytics *)self fromDate];
+      v12 = [v4 stringFromDate:fromDate];
       [v7 setObject:v12 forKeyedSubscript:@"FromDate"];
 
-      v13 = [(NSPProactiveTokenFetchAnalytics *)self toDate];
-      v14 = [v4 stringFromDate:v13];
+      toDate = [(NSPProactiveTokenFetchAnalytics *)self toDate];
+      v14 = [v4 stringFromDate:toDate];
       [v7 setObject:v14 forKeyedSubscript:@"ToDate"];
 
       if ([(NSPProactiveTokenFetchAnalytics *)self tokenFetchTriggered])

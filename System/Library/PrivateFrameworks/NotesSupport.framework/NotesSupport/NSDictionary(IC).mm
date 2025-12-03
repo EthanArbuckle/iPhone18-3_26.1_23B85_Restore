@@ -40,7 +40,7 @@
   v20 = v9;
   v21 = a3;
   v11 = v9;
-  [a1 enumerateKeysAndObjectsUsingBlock:&v15];
+  [self enumerateKeysAndObjectsUsingBlock:&v15];
   [v10 appendFormat:@"%@}", v8, v15, v16, v17, v18];
   v12 = v20;
   v13 = v10;
@@ -52,7 +52,7 @@
 {
   if (a3)
   {
-    v4 = [a1 objectForKeyedSubscript:?];
+    v4 = [self objectForKeyedSubscript:?];
   }
 
   else
@@ -65,10 +65,10 @@
 
 - (id)ic_md5
 {
-  v1 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a1 requiringSecureCoding:0 error:0];
-  v2 = [v1 ic_md5];
+  v1 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:0 error:0];
+  ic_md5 = [v1 ic_md5];
 
-  return v2;
+  return ic_md5;
 }
 
 @end

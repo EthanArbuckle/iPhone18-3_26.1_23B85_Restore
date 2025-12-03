@@ -1,12 +1,12 @@
 @interface UARPHashMachine
 - (BOOL)finalizeHash;
-- (BOOL)updateHash:(id)a3;
-- (UARPHashMachine)initWithAlgorithm:(int64_t)a3;
+- (BOOL)updateHash:(id)hash;
+- (UARPHashMachine)initWithAlgorithm:(int64_t)algorithm;
 @end
 
 @implementation UARPHashMachine
 
-- (UARPHashMachine)initWithAlgorithm:(int64_t)a3
+- (UARPHashMachine)initWithAlgorithm:(int64_t)algorithm
 {
   v8.receiver = self;
   v8.super_class = UARPHashMachine;
@@ -14,8 +14,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_hashAlgorithm = a3;
-    switch(a3)
+    v4->_hashAlgorithm = algorithm;
+    switch(algorithm)
     {
       case 3:
         CC_SHA512_Init(&v4->_context512);
@@ -38,21 +38,21 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)updateHash:(id)a3
+- (BOOL)updateHash:(id)hash
 {
-  v4 = a3;
-  v5 = v4;
+  hashCopy = hash;
+  v5 = hashCopy;
   hashAlgorithm = self->_hashAlgorithm;
   switch(hashAlgorithm)
   {
     case 3:
-      CC_SHA512_Update(&self->_context512, [v4 bytes], objc_msgSend(v4, "length"));
+      CC_SHA512_Update(&self->_context512, [hashCopy bytes], objc_msgSend(hashCopy, "length"));
       break;
     case 2:
-      CC_SHA384_Update(&self->_context384, [v4 bytes], objc_msgSend(v4, "length"));
+      CC_SHA384_Update(&self->_context384, [hashCopy bytes], objc_msgSend(hashCopy, "length"));
       break;
     case 1:
-      CC_SHA256_Update(&self->_context256, [v4 bytes], objc_msgSend(v4, "length"));
+      CC_SHA256_Update(&self->_context256, [hashCopy bytes], objc_msgSend(hashCopy, "length"));
       break;
   }
 

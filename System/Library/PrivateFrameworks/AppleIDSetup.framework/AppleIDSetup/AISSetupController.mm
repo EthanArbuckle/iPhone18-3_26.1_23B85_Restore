@@ -1,21 +1,21 @@
 @interface AISSetupController
-- (AISSetupController)initWithQueue:(id)a3;
-- (void)setupWithContext:(id)a3 completionHandler:(id)a4;
+- (AISSetupController)initWithQueue:(id)queue;
+- (void)setupWithContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation AISSetupController
 
-- (AISSetupController)initWithQueue:(id)a3
+- (AISSetupController)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = AISSetupController;
   v5 = [(AISSetupController *)&v13 init];
   if (v5)
   {
-    if (v4)
+    if (queueCopy)
     {
-      v6 = v4;
+      v6 = queueCopy;
       queue = v5->_queue;
       v5->_queue = v6;
     }
@@ -36,12 +36,12 @@
   return v5;
 }
 
-- (void)setupWithContext:(id)a3 completionHandler:(id)a4
+- (void)setupWithContext:(id)context completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AISSetupController *)self implementation];
-  [v8 setupWithContext:v7 completionHandler:v6];
+  handlerCopy = handler;
+  contextCopy = context;
+  implementation = [(AISSetupController *)self implementation];
+  [implementation setupWithContext:contextCopy completionHandler:handlerCopy];
 }
 
 @end

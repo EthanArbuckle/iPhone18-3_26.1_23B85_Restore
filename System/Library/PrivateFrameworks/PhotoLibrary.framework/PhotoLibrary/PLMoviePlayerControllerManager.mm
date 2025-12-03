@@ -1,23 +1,23 @@
 @interface PLMoviePlayerControllerManager
 - (PLMoviePlayerControllerManager)init;
 - (void)dealloc;
-- (void)moveControllerToTopOfStack:(id)a3;
-- (void)removeControllerFromStack:(id)a3;
+- (void)moveControllerToTopOfStack:(id)stack;
+- (void)removeControllerFromStack:(id)stack;
 @end
 
 @implementation PLMoviePlayerControllerManager
 
-- (void)removeControllerFromStack:(id)a3
+- (void)removeControllerFromStack:(id)stack
 {
-  if ([(NSMutableArray *)self->_playerStack lastObject]== a3)
+  if ([(NSMutableArray *)self->_playerStack lastObject]== stack)
   {
-    [a3 willResignAsActiveController];
-    [(NSMutableArray *)self->_playerStack removeObject:a3];
-    v6 = [(NSMutableArray *)self->_playerStack lastObject];
-    if (v6)
+    [stack willResignAsActiveController];
+    [(NSMutableArray *)self->_playerStack removeObject:stack];
+    lastObject = [(NSMutableArray *)self->_playerStack lastObject];
+    if (lastObject)
     {
 
-      [v6 didBecomeActiveController];
+      [lastObject didBecomeActiveController];
     }
   }
 
@@ -25,20 +25,20 @@
   {
     playerStack = self->_playerStack;
 
-    [(NSMutableArray *)playerStack removeObject:a3];
+    [(NSMutableArray *)playerStack removeObject:stack];
   }
 }
 
-- (void)moveControllerToTopOfStack:(id)a3
+- (void)moveControllerToTopOfStack:(id)stack
 {
-  v5 = [(NSMutableArray *)self->_playerStack lastObject];
-  if (v5 != a3)
+  lastObject = [(NSMutableArray *)self->_playerStack lastObject];
+  if (lastObject != stack)
   {
-    [v5 willResignAsActiveController];
-    [(NSMutableArray *)self->_playerStack removeObject:a3];
-    [(NSMutableArray *)self->_playerStack addObject:a3];
+    [lastObject willResignAsActiveController];
+    [(NSMutableArray *)self->_playerStack removeObject:stack];
+    [(NSMutableArray *)self->_playerStack addObject:stack];
 
-    [a3 didBecomeActiveController];
+    [stack didBecomeActiveController];
   }
 }
 

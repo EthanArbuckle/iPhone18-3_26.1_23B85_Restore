@@ -1,42 +1,42 @@
 @interface ComposerShader
-- (id)getComputePipeLineStateForDevice:(id)a3 Library:(id)a4;
-- (id)getComputePipeLineStateForDevice:(id)a3 Library:(id)a4 input:(int)a5 output:(int)a6;
-- (id)initShaderWithName:(id)a3 dolby84:(BOOL)a4 forLLDovi:(BOOL)a5 input:(int)a6 output:(int)a7;
+- (id)getComputePipeLineStateForDevice:(id)device Library:(id)library;
+- (id)getComputePipeLineStateForDevice:(id)device Library:(id)library input:(int)input output:(int)output;
+- (id)initShaderWithName:(id)name dolby84:(BOOL)dolby84 forLLDovi:(BOOL)dovi input:(int)input output:(int)output;
 @end
 
 @implementation ComposerShader
 
-- (id)initShaderWithName:(id)a3 dolby84:(BOOL)a4 forLLDovi:(BOOL)a5 input:(int)a6 output:(int)a7
+- (id)initShaderWithName:(id)name dolby84:(BOOL)dolby84 forLLDovi:(BOOL)dovi input:(int)input output:(int)output
 {
   v12.receiver = self;
   v12.super_class = ComposerShader;
-  result = [(ForwardDmShader *)&v12 initShaderWithName:a3];
+  result = [(ForwardDmShader *)&v12 initShaderWithName:name];
   if (result)
   {
-    *(result + 32) = a4;
-    *(result + 33) = a5;
-    *(result + 9) = a6;
-    *(result + 10) = a7;
+    *(result + 32) = dolby84;
+    *(result + 33) = dovi;
+    *(result + 9) = input;
+    *(result + 10) = output;
   }
 
   return result;
 }
 
-- (id)getComputePipeLineStateForDevice:(id)a3 Library:(id)a4
+- (id)getComputePipeLineStateForDevice:(id)device Library:(id)library
 {
-  v4 = [(ComposerShader *)self getComputePipeLineStateForDevice:a3 Library:a4 input:38 output:6];
+  v4 = [(ComposerShader *)self getComputePipeLineStateForDevice:device Library:library input:38 output:6];
 
   return v4;
 }
 
-- (id)getComputePipeLineStateForDevice:(id)a3 Library:(id)a4 input:(int)a5 output:(int)a6
+- (id)getComputePipeLineStateForDevice:(id)device Library:(id)library input:(int)input output:(int)output
 {
   v28 = *MEMORY[0x277D85DE8];
   v18[0] = self->_dolby84;
   v18[1] = self->_forLLDovi;
   v17.receiver = self;
   v17.super_class = ComposerShader;
-  v9 = [(ForwardDmShader *)&v17 getComputePipeLineStateForDevice:a3 Library:a4 Constants:v18 ConstantNumber:2 input:a5 output:a6];
+  v9 = [(ForwardDmShader *)&v17 getComputePipeLineStateForDevice:device Library:library Constants:v18 ConstantNumber:2 input:input output:output];
   if (!v9)
   {
     if (enableLogInstance)
@@ -64,9 +64,9 @@
         *&v23[4] = 1024;
         *v24 = forLLDovi;
         *&v24[4] = 1024;
-        v25 = a5;
+        inputCopy = input;
         v26 = 1024;
-        v27 = a6;
+        outputCopy = output;
         _os_log_impl(&dword_250836000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.450.54] #%04llx %s : ERROR: Failed creating a new function with dolby84=%d, forLLDoVi=%d input=%d output=%d", buf, 0x2Eu);
       }
 
@@ -84,9 +84,9 @@
       *&v22[4] = 1024;
       *&v22[6] = v14;
       *v23 = 1024;
-      *&v23[2] = a5;
+      *&v23[2] = input;
       *v24 = 1024;
-      *&v24[2] = a6;
+      *&v24[2] = output;
       _os_log_impl(&dword_250836000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.450.54] %s : ERROR: Failed creating a new function with dolby84=%d, forLLDoVi=%d input=%d output=%d", buf, 0x24u);
     }
   }

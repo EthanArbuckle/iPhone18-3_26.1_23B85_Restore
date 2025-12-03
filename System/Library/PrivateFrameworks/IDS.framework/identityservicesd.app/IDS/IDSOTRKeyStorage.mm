@@ -1,28 +1,28 @@
 @interface IDSOTRKeyStorage
 + (id)sharedInstance;
-- (BOOL)__saveStoreForDataProtectionClass:(unsigned int)a3;
+- (BOOL)__saveStoreForDataProtectionClass:(unsigned int)class;
 - (BOOL)_isUnderFirstDataProtectionLock;
-- (BOOL)isSessionStoreAvailableForDataProtectionClass:(unsigned int)a3;
+- (BOOL)isSessionStoreAvailableForDataProtectionClass:(unsigned int)class;
 - (BOOL)isUnderLock;
 - (IDSOTRKeyStorage)init;
-- (id)_objectForKey:(id)a3;
-- (id)sessionKeyForToken:(id)a3;
-- (void)_daemonWillShutdown:(id)a3;
+- (id)_objectForKey:(id)key;
+- (id)sessionKeyForToken:(id)token;
+- (void)_daemonWillShutdown:(id)shutdown;
 - (void)_loadIfNeeded;
 - (void)_purgeMap;
 - (void)_purgeTimerFiredOnMain;
-- (void)_removeObjectForKey:(id)a3;
+- (void)_removeObjectForKey:(id)key;
 - (void)_save;
 - (void)_saveNow;
 - (void)_saveTimerFiredOnMain;
-- (void)_setObject:(id)a3 forKey:(id)a4;
+- (void)_setObject:(id)object forKey:(id)key;
 - (void)_setPurgeTimer;
 - (void)_setSaveTimer;
 - (void)dealloc;
-- (void)loadStoreForDataProtectionClass:(unsigned int)a3;
+- (void)loadStoreForDataProtectionClass:(unsigned int)class;
 - (void)removeSessionKeyForAllTokenFromMainQueue;
-- (void)removeSessionKeyForToken:(id)a3;
-- (void)storeSessionKey:(id)a3 token:(id)a4;
+- (void)removeSessionKeyForToken:(id)token;
+- (void)storeSessionKey:(id)key token:(id)token;
 - (void)systemDidEnterDataProtectionLock;
 - (void)systemDidLeaveDataProtectionLock;
 - (void)systemDidLeaveFirstDataProtectionLock;
@@ -45,17 +45,17 @@
 - (BOOL)_isUnderFirstDataProtectionLock
 {
   v2 = +[IMSystemMonitor sharedInstance];
-  v3 = [v2 isUnderFirstDataProtectionLock];
+  isUnderFirstDataProtectionLock = [v2 isUnderFirstDataProtectionLock];
 
-  return v3;
+  return isUnderFirstDataProtectionLock;
 }
 
 - (BOOL)isUnderLock
 {
   v2 = +[IMSystemMonitor sharedInstance];
-  v3 = [v2 isUnderDataProtectionLock];
+  isUnderDataProtectionLock = [v2 isUnderDataProtectionLock];
 
-  return v3;
+  return isUnderDataProtectionLock;
 }
 
 - (void)systemDidLeaveFirstDataProtectionLock
@@ -183,7 +183,7 @@ LABEL_17:
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (BOOL)__saveStoreForDataProtectionClass:(unsigned int)a3
+- (BOOL)__saveStoreForDataProtectionClass:(unsigned int)class
 {
   [(NSRecursiveLock *)self->_lock lock];
   v4 = IDSDataProtectionClassStringFromDataProtectionClass();
@@ -263,11 +263,11 @@ LABEL_17:
   [(NSRecursiveLock *)lock unlock];
 }
 
-- (void)loadStoreForDataProtectionClass:(unsigned int)a3
+- (void)loadStoreForDataProtectionClass:(unsigned int)class
 {
   [(NSRecursiveLock *)self->_lock lock];
   v30 = 0;
-  if (a3 == 1)
+  if (class == 1)
   {
     if ([(IDSOTRKeyStorage *)self isUnderLock])
     {
@@ -313,7 +313,7 @@ LABEL_39:
     goto LABEL_25;
   }
 
-  if (a3 == 2)
+  if (class == 2)
   {
     if (self->_isClassDStoreAvailable)
     {
@@ -337,7 +337,7 @@ LABEL_39:
     goto LABEL_42;
   }
 
-  if (a3)
+  if (class)
   {
 LABEL_25:
     v8 = 0;
@@ -424,7 +424,7 @@ LABEL_42:
       }
     }
 
-    if (((v9 | v8) & 1) != 0 || a3 == 1)
+    if (((v9 | v8) & 1) != 0 || class == 1)
     {
       v22 = 72;
       if (v9)
@@ -432,7 +432,7 @@ LABEL_42:
         v22 = 73;
       }
 
-      if (a3 == 1)
+      if (class == 1)
       {
         v22 = 74;
       }
@@ -488,28 +488,28 @@ LABEL_42:
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (BOOL)isSessionStoreAvailableForDataProtectionClass:(unsigned int)a3
+- (BOOL)isSessionStoreAvailableForDataProtectionClass:(unsigned int)class
 {
   [(NSRecursiveLock *)self->_lock lock];
   [(IDSOTRKeyStorage *)self _loadIfNeeded];
-  if (a3 > 2)
+  if (class > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = *(&self->super.isa + qword_1009ABDA0[a3]);
+    v5 = *(&self->super.isa + qword_1009ABDA0[class]);
   }
 
   [(NSRecursiveLock *)self->_lock unlock];
   return v5 & 1;
 }
 
-- (void)_setObject:(id)a3 forKey:(id)a4
+- (void)_setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   [(NSRecursiveLock *)self->_lock lock];
   if (!self->_sessionKeyStorage)
   {
@@ -518,7 +518,7 @@ LABEL_42:
     self->_sessionKeyStorage = Mutable;
   }
 
-  v10 = sub_10058123C(v7);
+  v10 = sub_10058123C(keyCopy);
   if ([v10 length])
   {
     v11 = +[IDSDServiceController sharedInstance];
@@ -532,7 +532,7 @@ LABEL_42:
       v14 = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     }
 
-    [v14 setObject:v6 forKey:v7];
+    [v14 setObject:objectCopy forKey:keyCopy];
     [(NSMutableDictionary *)self->_sessionKeyStorage setObject:v14 forKey:v13];
     self->_changedSinceLastSave = 1;
   }
@@ -559,12 +559,12 @@ LABEL_42:
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (id)_objectForKey:(id)a3
+- (id)_objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if ([(NSMutableDictionary *)self->_sessionKeyStorage count])
   {
-    v5 = sub_10058123C(v4);
+    v5 = sub_10058123C(keyCopy);
     if ([v5 length])
     {
       v6 = +[IDSDServiceController sharedInstance];
@@ -576,7 +576,7 @@ LABEL_42:
       v10 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [v9 objectForKey:v4];
+        v11 = [v9 objectForKey:keyCopy];
         *buf = 134218242;
         v18 = v11;
         v19 = 2112;
@@ -586,12 +586,12 @@ LABEL_42:
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v15 = [v9 objectForKey:v4];
+        v15 = [v9 objectForKey:keyCopy];
         v16 = v5;
         _IDSLogV();
       }
 
-      v12 = [v9 objectForKey:{v4, v15, v16}];
+      v12 = [v9 objectForKey:{keyCopy, v15, v16}];
     }
 
     else
@@ -623,13 +623,13 @@ LABEL_42:
   return v12;
 }
 
-- (void)_removeObjectForKey:(id)a3
+- (void)_removeObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(NSRecursiveLock *)self->_lock lock];
   if ([(NSMutableDictionary *)self->_sessionKeyStorage count])
   {
-    v5 = sub_10058123C(v4);
+    v5 = sub_10058123C(keyCopy);
     if ([v5 length])
     {
       v6 = +[IDSDServiceController sharedInstance];
@@ -638,7 +638,7 @@ LABEL_42:
 
       v8 = IDSDataProtectionClassStringFromDataProtectionClass();
       v9 = [(NSMutableDictionary *)self->_sessionKeyStorage objectForKey:v8];
-      [v9 removeObjectForKey:v4];
+      [v9 removeObjectForKey:keyCopy];
       if (![v9 count])
       {
         [(NSMutableDictionary *)self->_sessionKeyStorage removeObjectForKey:v8];
@@ -782,7 +782,7 @@ LABEL_42:
   [(IDSOTRKeyStorage *)&v4 dealloc];
 }
 
-- (void)_daemonWillShutdown:(id)a3
+- (void)_daemonWillShutdown:(id)shutdown
 {
   if (self->_saveTimer)
   {
@@ -790,10 +790,10 @@ LABEL_42:
   }
 }
 
-- (id)sessionKeyForToken:(id)a3
+- (id)sessionKeyForToken:(id)token
 {
-  v4 = a3;
-  if (!v4)
+  tokenCopy = token;
+  if (!tokenCopy)
   {
     v5 = 0;
     goto LABEL_15;
@@ -801,14 +801,14 @@ LABEL_42:
 
   [(NSRecursiveLock *)self->_lock lock];
   [(IDSOTRKeyStorage *)self _loadIfNeeded];
-  v5 = [(IDSOTRKeyStorage *)self _objectForKey:v4];
+  v5 = [(IDSOTRKeyStorage *)self _objectForKey:tokenCopy];
   if (v5)
   {
     v6 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = v4;
+      v11 = tokenCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Found session key for token: %@", buf, 0xCu);
     }
 
@@ -824,7 +824,7 @@ LABEL_42:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = v4;
+      v11 = tokenCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "No session key for token: %@", buf, 0xCu);
     }
 
@@ -834,7 +834,7 @@ LABEL_42:
     }
   }
 
-  v9 = v4;
+  v9 = tokenCopy;
   _IDSLogV();
 LABEL_14:
   [(NSRecursiveLock *)self->_lock unlock];
@@ -906,64 +906,64 @@ LABEL_15:
   dispatch_async(v4, self->_purgeEnqueueBlock);
 }
 
-- (void)storeSessionKey:(id)a3 token:(id)a4
+- (void)storeSessionKey:(id)key token:(id)token
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  keyCopy = key;
+  tokenCopy = token;
+  if (tokenCopy)
   {
     v8 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = v7;
+      v11 = tokenCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Storing session key for %@.", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v9 = v7;
+      v9 = tokenCopy;
       _IDSLogV();
     }
 
-    if ([v6 length])
+    if ([keyCopy length])
     {
       [(IDSOTRKeyStorage *)self _loadIfNeeded];
       [(NSRecursiveLock *)self->_lock lock];
-      [(IDSOTRKeyStorage *)self _setObject:v6 forKey:v7];
+      [(IDSOTRKeyStorage *)self _setObject:keyCopy forKey:tokenCopy];
       [(NSRecursiveLock *)self->_lock unlock];
       [(IDSOTRKeyStorage *)self _setSaveTimer];
     }
 
     else
     {
-      [(IDSOTRKeyStorage *)self removeSessionKeyForToken:v7];
+      [(IDSOTRKeyStorage *)self removeSessionKeyForToken:tokenCopy];
     }
   }
 }
 
-- (void)removeSessionKeyForToken:(id)a3
+- (void)removeSessionKeyForToken:(id)token
 {
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     v5 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v8 = v4;
+      v8 = tokenCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing session key for %@.", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v6 = v4;
+      v6 = tokenCopy;
       _IDSLogV();
     }
 
     [(IDSOTRKeyStorage *)self _loadIfNeeded];
     [(NSRecursiveLock *)self->_lock lock];
-    [(IDSOTRKeyStorage *)self _removeObjectForKey:v4];
+    [(IDSOTRKeyStorage *)self _removeObjectForKey:tokenCopy];
     [(NSRecursiveLock *)self->_lock unlock];
     [(IDSOTRKeyStorage *)self _setSaveTimer];
   }

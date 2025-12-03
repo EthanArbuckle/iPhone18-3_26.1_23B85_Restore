@@ -1,8 +1,8 @@
 @interface PedestrianARGradientOverlay
-- (PedestrianARGradientOverlay)initWithConfiguration:(id)a3;
+- (PedestrianARGradientOverlay)initWithConfiguration:(id)configuration;
 - (void)_updateGradient;
 - (void)layoutSubviews;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation PedestrianARGradientOverlay
@@ -13,76 +13,76 @@
   Width = CGRectGetWidth(v49);
   [(PedestrianARGradientOverlay *)self frame];
   Height = CGRectGetHeight(v50);
-  v5 = [(PedestrianARGradientOverlay *)self configuration];
-  v6 = v5;
+  configuration = [(PedestrianARGradientOverlay *)self configuration];
+  v6 = configuration;
   if (Width <= Height)
   {
-    [v5 portraitStartPoint];
+    [configuration portraitStartPoint];
     v28 = v27;
     v30 = v29;
-    v31 = [self->_localizingGradientView gradientLayer];
-    [v31 setStartPoint:{v28, v30}];
+    gradientLayer = [self->_localizingGradientView gradientLayer];
+    [gradientLayer setStartPoint:{v28, v30}];
 
-    v32 = [(PedestrianARGradientOverlay *)self configuration];
-    [v32 portraitEndPoint];
+    configuration2 = [(PedestrianARGradientOverlay *)self configuration];
+    [configuration2 portraitEndPoint];
     v34 = v33;
     v36 = v35;
-    v37 = [self->_localizingGradientView gradientLayer];
-    [v37 setEndPoint:{v34, v36}];
+    gradientLayer2 = [self->_localizingGradientView gradientLayer];
+    [gradientLayer2 setEndPoint:{v34, v36}];
 
-    v38 = [(PedestrianARGradientOverlay *)self configuration];
-    [v38 portraitStartPoint];
+    configuration3 = [(PedestrianARGradientOverlay *)self configuration];
+    [configuration3 portraitStartPoint];
     v40 = v39;
     v42 = v41;
     p_runningGradientView = &self->_runningGradientView;
-    v43 = [self->_runningGradientView gradientLayer];
-    [v43 setStartPoint:{v40, v42}];
+    gradientLayer3 = [self->_runningGradientView gradientLayer];
+    [gradientLayer3 setStartPoint:{v40, v42}];
 
-    v47 = [(PedestrianARGradientOverlay *)self configuration];
-    [v47 portraitEndPoint];
+    configuration4 = [(PedestrianARGradientOverlay *)self configuration];
+    [configuration4 portraitEndPoint];
   }
 
   else
   {
-    [v5 landscapeStartPoint];
+    [configuration landscapeStartPoint];
     v8 = v7;
     v10 = v9;
-    v11 = [self->_localizingGradientView gradientLayer];
-    [v11 setStartPoint:{v8, v10}];
+    gradientLayer4 = [self->_localizingGradientView gradientLayer];
+    [gradientLayer4 setStartPoint:{v8, v10}];
 
-    v12 = [(PedestrianARGradientOverlay *)self configuration];
-    [v12 landscapeEndPoint];
+    configuration5 = [(PedestrianARGradientOverlay *)self configuration];
+    [configuration5 landscapeEndPoint];
     v14 = v13;
     v16 = v15;
-    v17 = [self->_localizingGradientView gradientLayer];
-    [v17 setEndPoint:{v14, v16}];
+    gradientLayer5 = [self->_localizingGradientView gradientLayer];
+    [gradientLayer5 setEndPoint:{v14, v16}];
 
-    v18 = [(PedestrianARGradientOverlay *)self configuration];
-    [v18 landscapeStartPoint];
+    configuration6 = [(PedestrianARGradientOverlay *)self configuration];
+    [configuration6 landscapeStartPoint];
     v20 = v19;
     v22 = v21;
     p_runningGradientView = &self->_runningGradientView;
-    v24 = [self->_runningGradientView gradientLayer];
-    [v24 setStartPoint:{v20, v22}];
+    gradientLayer6 = [self->_runningGradientView gradientLayer];
+    [gradientLayer6 setStartPoint:{v20, v22}];
 
-    v47 = [(PedestrianARGradientOverlay *)self configuration];
-    [v47 landscapeEndPoint];
+    configuration4 = [(PedestrianARGradientOverlay *)self configuration];
+    [configuration4 landscapeEndPoint];
   }
 
   v44 = v25;
   v45 = v26;
-  v46 = [*p_runningGradientView gradientLayer];
-  [v46 setEndPoint:{v44, v45}];
+  gradientLayer7 = [*p_runningGradientView gradientLayer];
+  [gradientLayer7 setEndPoint:{v44, v45}];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
-    if (a3 > 1)
+    self->_state = state;
+    if (state > 1)
     {
-      if (a3 == 2)
+      if (state == 2)
       {
         v21 = +[UIColor clearColor];
         [(PedestrianARGradientOverlay *)self setBackgroundColor:v21];
@@ -100,27 +100,27 @@ LABEL_18:
         return;
       }
 
-      if (a3 == 3)
+      if (state == 3)
       {
         v13 = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.6];
         [(PedestrianARGradientOverlay *)self setBackgroundColor:v13];
 
-        v14 = [(PedestrianARGradientOverlay *)self runningGradientView];
-        v15 = [v14 layer];
-        [v15 setOpacity:0.0];
+        runningGradientView = [(PedestrianARGradientOverlay *)self runningGradientView];
+        layer = [runningGradientView layer];
+        [layer setOpacity:0.0];
 
-        v22 = [(PedestrianARGradientOverlay *)self localizingGradientView];
-        v16 = [v22 layer];
+        localizingGradientView = [(PedestrianARGradientOverlay *)self localizingGradientView];
+        layer2 = [localizingGradientView layer];
         LODWORD(v17) = 1.0;
-        [v16 setOpacity:v17];
+        [layer2 setOpacity:v17];
       }
     }
 
     else
     {
-      if (a3)
+      if (state)
       {
-        if (a3 != 1)
+        if (state != 1)
         {
           return;
         }
@@ -128,14 +128,14 @@ LABEL_18:
         v4 = +[UIColor clearColor];
         [(PedestrianARGradientOverlay *)self setBackgroundColor:v4];
 
-        v5 = [(PedestrianARGradientOverlay *)self runningGradientView];
-        v6 = [v5 layer];
+        runningGradientView2 = [(PedestrianARGradientOverlay *)self runningGradientView];
+        layer3 = [runningGradientView2 layer];
         LODWORD(v7) = 1.0;
-        [v6 setOpacity:v7];
+        [layer3 setOpacity:v7];
 
-        v8 = [(PedestrianARGradientOverlay *)self localizingGradientView];
-        v9 = [v8 layer];
-        [v9 setOpacity:0.0];
+        localizingGradientView2 = [(PedestrianARGradientOverlay *)self localizingGradientView];
+        layer4 = [localizingGradientView2 layer];
+        [layer4 setOpacity:0.0];
 
         v24[0] = _NSConcreteStackBlock;
         v24[1] = 3221225472;
@@ -183,10 +183,10 @@ LABEL_18:
   [(PedestrianARGradientOverlay *)self _updateGradient];
 }
 
-- (PedestrianARGradientOverlay)initWithConfiguration:(id)a3
+- (PedestrianARGradientOverlay)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     v55 = sub_10006D178();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
@@ -220,8 +220,8 @@ LABEL_18:
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v8 = [(PedestrianARGradientOverlay *)&v94 initWithFrame:CGRectZero.origin.x, y, width, height];
-  if (v8)
+  height = [(PedestrianARGradientOverlay *)&v94 initWithFrame:CGRectZero.origin.x, y, width, height];
+  if (height)
   {
     if (qword_10195DD48 != -1)
     {
@@ -232,26 +232,26 @@ LABEL_18:
     if (os_log_type_enabled(qword_10195DD40, OS_LOG_TYPE_INFO))
     {
       *buf = 134349314;
-      v100 = v8;
+      v100 = height;
       v101 = 2112;
-      v102 = v4;
+      v102 = configurationCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Initializing with configuration: %@", buf, 0x16u);
     }
 
-    v10 = [v4 copy];
-    configuration = v8->_configuration;
-    v8->_configuration = v10;
+    v10 = [configurationCopy copy];
+    configuration = height->_configuration;
+    height->_configuration = v10;
 
-    v12 = [[GradientView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-    localizingGradientView = v8->_localizingGradientView;
-    v8->_localizingGradientView = v12;
+    height2 = [[GradientView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    localizingGradientView = height->_localizingGradientView;
+    height->_localizingGradientView = height2;
 
-    [v8->_localizingGradientView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v14 = [v8->_localizingGradientView layer];
-    [v14 setOpacity:0.0];
+    [height->_localizingGradientView setTranslatesAutoresizingMaskIntoConstraints:0];
+    layer = [height->_localizingGradientView layer];
+    [layer setOpacity:0.0];
 
-    v15 = [v8->_localizingGradientView gradientLayer];
-    [v15 setLocations:&off_1016ED088];
+    gradientLayer = [height->_localizingGradientView gradientLayer];
+    [gradientLayer setLocations:&off_1016ED088];
 
     v89 = +[UIColor blackColor];
     v85 = [v89 colorWithAlphaComponent:0.0];
@@ -279,42 +279,42 @@ LABEL_18:
     v98[7] = [v17 CGColor];
     v18 = +[UIColor blackColor];
     [v18 colorWithAlphaComponent:0.337997257];
-    v19 = v93 = v4;
+    v19 = v93 = configurationCopy;
     v98[8] = [v19 CGColor];
     v20 = +[UIColor blackColor];
     v21 = [v20 colorWithAlphaComponent:0.35];
     v98[9] = [v21 CGColor];
     v22 = [NSArray arrayWithObjects:v98 count:10];
-    v23 = [v8->_localizingGradientView gradientLayer];
-    [v23 setColors:v22];
+    gradientLayer2 = [height->_localizingGradientView gradientLayer];
+    [gradientLayer2 setColors:v22];
 
-    [(PedestrianARGradientOverlay *)v8 addSubview:v8->_localizingGradientView];
-    v90 = [v8->_localizingGradientView leadingAnchor];
-    v86 = [(PedestrianARGradientOverlay *)v8 leadingAnchor];
-    v82 = [v90 constraintEqualToAnchor:v86];
+    [(PedestrianARGradientOverlay *)height addSubview:height->_localizingGradientView];
+    leadingAnchor = [height->_localizingGradientView leadingAnchor];
+    leadingAnchor2 = [(PedestrianARGradientOverlay *)height leadingAnchor];
+    v82 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v97[0] = v82;
-    v78 = [v8->_localizingGradientView trailingAnchor];
-    v24 = [(PedestrianARGradientOverlay *)v8 trailingAnchor];
-    v25 = [v78 constraintEqualToAnchor:v24];
+    trailingAnchor = [height->_localizingGradientView trailingAnchor];
+    trailingAnchor2 = [(PedestrianARGradientOverlay *)height trailingAnchor];
+    v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v97[1] = v25;
-    v26 = [v8->_localizingGradientView topAnchor];
-    v27 = [(PedestrianARGradientOverlay *)v8 topAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    topAnchor = [height->_localizingGradientView topAnchor];
+    topAnchor2 = [(PedestrianARGradientOverlay *)height topAnchor];
+    v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v97[2] = v28;
-    v29 = [v8->_localizingGradientView bottomAnchor];
-    v30 = [(PedestrianARGradientOverlay *)v8 bottomAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    bottomAnchor = [height->_localizingGradientView bottomAnchor];
+    bottomAnchor2 = [(PedestrianARGradientOverlay *)height bottomAnchor];
+    v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v97[3] = v31;
     v32 = [NSArray arrayWithObjects:v97 count:4];
     [NSLayoutConstraint activateConstraints:v32];
 
-    v33 = [[GradientView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-    runningGradientView = v8->_runningGradientView;
-    v8->_runningGradientView = v33;
+    height3 = [[GradientView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    runningGradientView = height->_runningGradientView;
+    height->_runningGradientView = height3;
 
-    [v8->_runningGradientView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v35 = [v8->_runningGradientView gradientLayer];
-    [v35 setLocations:&off_1016ED0A0];
+    [height->_runningGradientView setTranslatesAutoresizingMaskIntoConstraints:0];
+    gradientLayer3 = [height->_runningGradientView gradientLayer];
+    [gradientLayer3 setLocations:&off_1016ED0A0];
 
     v91 = +[UIColor blackColor];
     v87 = [v91 colorWithAlphaComponent:0.0];
@@ -347,33 +347,33 @@ LABEL_18:
     v42 = [v41 colorWithAlphaComponent:0.75];
     v96[9] = [v42 CGColor];
     v43 = [NSArray arrayWithObjects:v96 count:10];
-    v44 = [v8->_runningGradientView gradientLayer];
-    [v44 setColors:v43];
+    gradientLayer4 = [height->_runningGradientView gradientLayer];
+    [gradientLayer4 setColors:v43];
 
-    [(PedestrianARGradientOverlay *)v8 addSubview:v8->_runningGradientView];
-    v92 = [v8->_runningGradientView leadingAnchor];
-    v88 = [(PedestrianARGradientOverlay *)v8 leadingAnchor];
-    v84 = [v92 constraintEqualToAnchor:v88];
+    [(PedestrianARGradientOverlay *)height addSubview:height->_runningGradientView];
+    leadingAnchor3 = [height->_runningGradientView leadingAnchor];
+    leadingAnchor4 = [(PedestrianARGradientOverlay *)height leadingAnchor];
+    v84 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v95[0] = v84;
-    v80 = [v8->_runningGradientView trailingAnchor];
-    v45 = [(PedestrianARGradientOverlay *)v8 trailingAnchor];
-    v46 = [v80 constraintEqualToAnchor:v45];
+    trailingAnchor3 = [height->_runningGradientView trailingAnchor];
+    trailingAnchor4 = [(PedestrianARGradientOverlay *)height trailingAnchor];
+    v46 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v95[1] = v46;
-    v47 = [v8->_runningGradientView topAnchor];
-    v48 = [(PedestrianARGradientOverlay *)v8 topAnchor];
-    v49 = [v47 constraintEqualToAnchor:v48];
+    topAnchor3 = [height->_runningGradientView topAnchor];
+    topAnchor4 = [(PedestrianARGradientOverlay *)height topAnchor];
+    v49 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v95[2] = v49;
-    v50 = [v8->_runningGradientView bottomAnchor];
-    v51 = [(PedestrianARGradientOverlay *)v8 bottomAnchor];
-    v52 = [v50 constraintEqualToAnchor:v51];
+    bottomAnchor3 = [height->_runningGradientView bottomAnchor];
+    bottomAnchor4 = [(PedestrianARGradientOverlay *)height bottomAnchor];
+    v52 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v95[3] = v52;
     v53 = [NSArray arrayWithObjects:v95 count:4];
     [NSLayoutConstraint activateConstraints:v53];
 
-    v4 = v93;
+    configurationCopy = v93;
   }
 
-  return v8;
+  return height;
 }
 
 @end

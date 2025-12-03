@@ -1,8 +1,8 @@
 @interface CTPriVersion
-- (CTPriVersion)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTPriVersion)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTPriVersion
@@ -10,68 +10,68 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTPriVersion *)self majorVersion];
-  [v3 appendFormat:@", major=%@", v4];
+  majorVersion = [(CTPriVersion *)self majorVersion];
+  [v3 appendFormat:@", major=%@", majorVersion];
 
-  v5 = [(CTPriVersion *)self minorVersion];
-  [v3 appendFormat:@", minor=%@", v5];
+  minorVersion = [(CTPriVersion *)self minorVersion];
+  [v3 appendFormat:@", minor=%@", minorVersion];
 
-  v6 = [(CTPriVersion *)self releaseVersion];
-  [v3 appendFormat:@", release=%@", v6];
+  releaseVersion = [(CTPriVersion *)self releaseVersion];
+  [v3 appendFormat:@", release=%@", releaseVersion];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(CTPriVersion *)self majorVersion];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  majorVersion = [(CTPriVersion *)self majorVersion];
+  v6 = [majorVersion copy];
   [v4 setMajorVersion:v6];
 
-  v7 = [(CTPriVersion *)self minorVersion];
-  v8 = [v7 copy];
+  minorVersion = [(CTPriVersion *)self minorVersion];
+  v8 = [minorVersion copy];
   [v4 setMinorVersion:v8];
 
-  v9 = [(CTPriVersion *)self releaseVersion];
-  v10 = [v9 copy];
+  releaseVersion = [(CTPriVersion *)self releaseVersion];
+  v10 = [releaseVersion copy];
   [v4 setReleaseVersion:v10];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CTPriVersion *)self majorVersion];
-  [v4 encodeObject:v5 forKey:@"major"];
+  coderCopy = coder;
+  majorVersion = [(CTPriVersion *)self majorVersion];
+  [coderCopy encodeObject:majorVersion forKey:@"major"];
 
-  v6 = [(CTPriVersion *)self minorVersion];
-  [v4 encodeObject:v6 forKey:@"minor"];
+  minorVersion = [(CTPriVersion *)self minorVersion];
+  [coderCopy encodeObject:minorVersion forKey:@"minor"];
 
-  v7 = [(CTPriVersion *)self releaseVersion];
-  [v4 encodeObject:v7 forKey:@"release"];
+  releaseVersion = [(CTPriVersion *)self releaseVersion];
+  [coderCopy encodeObject:releaseVersion forKey:@"release"];
 }
 
-- (CTPriVersion)initWithCoder:(id)a3
+- (CTPriVersion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CTPriVersion;
   v5 = [(CTPriVersion *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"major"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"major"];
     majorVersion = v5->_majorVersion;
     v5->_majorVersion = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minor"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minor"];
     minorVersion = v5->_minorVersion;
     v5->_minorVersion = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"release"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"release"];
     releaseVersion = v5->_releaseVersion;
     v5->_releaseVersion = v10;
   }

@@ -1,5 +1,5 @@
 @interface EVOnboardingNetworksOfferViewController
-- (EVOnboardingNetworksOfferViewController)initWithDelegate:(id)a3 vehicleName:(id)a4;
+- (EVOnboardingNetworksOfferViewController)initWithDelegate:(id)delegate vehicleName:(id)name;
 - (id)obViewController;
 - (void)_chooseNetworks;
 - (void)_setUpLaterPressed;
@@ -12,10 +12,10 @@
   v3 = sub_100798370();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -23,22 +23,22 @@
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(EVOnboardingNetworksOfferViewController *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(EVOnboardingNetworksOfferViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543618;
-    v13 = v9;
+    v13 = selfCopy;
     v14 = 2080;
     v15 = "[EVOnboardingNetworksOfferViewController _setUpLaterPressed]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] %s", buf, 0x16u);
@@ -56,10 +56,10 @@ LABEL_10:
   v3 = sub_100798370();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -67,22 +67,22 @@ LABEL_10:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(EVOnboardingNetworksOfferViewController *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(EVOnboardingNetworksOfferViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543618;
-    v13 = v9;
+    v13 = selfCopy;
     v14 = 2080;
     v15 = "[EVOnboardingNetworksOfferViewController _chooseNetworks]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] %s", buf, 0x16u);
@@ -116,8 +116,8 @@ LABEL_10:
   v8 = [UIImage imageNamed:@"PreferredNetworks"];
   v9 = [[OBWelcomeController alloc] initWithTitle:v5 detailText:v7 icon:v8];
   [v9 setModalPresentationStyle:2];
-  v10 = [v9 headerView];
-  [v10 setAllowFullWidthIcon:1];
+  headerView = [v9 headerView];
+  [headerView setAllowFullWidthIcon:1];
 
   v11 = +[OBBoldTrayButton boldButton];
   v12 = +[NSBundle mainBundle];
@@ -126,8 +126,8 @@ LABEL_10:
 
   [v11 addTarget:self action:"_chooseNetworks" forControlEvents:64];
   [v11 setAccessibilityIdentifier:@"ConnectButton"];
-  v14 = [v9 buttonTray];
-  [v14 addButton:v11];
+  buttonTray = [v9 buttonTray];
+  [buttonTray addButton:v11];
 
   v15 = +[OBLinkTrayButton linkButton];
   v16 = +[NSBundle mainBundle];
@@ -136,24 +136,24 @@ LABEL_10:
 
   [v15 addTarget:self action:"_setUpLaterPressed" forControlEvents:64];
   [v15 setAccessibilityIdentifier:@"SetUpLaterButton"];
-  v18 = [v9 buttonTray];
-  [v18 addButton:v15];
+  buttonTray2 = [v9 buttonTray];
+  [buttonTray2 addButton:v15];
 
   return v9;
 }
 
-- (EVOnboardingNetworksOfferViewController)initWithDelegate:(id)a3 vehicleName:(id)a4
+- (EVOnboardingNetworksOfferViewController)initWithDelegate:(id)delegate vehicleName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = EVOnboardingNetworksOfferViewController;
-  v8 = [(EVOnboardingBaseViewController *)&v13 initWithDelegate:v6];
+  v8 = [(EVOnboardingBaseViewController *)&v13 initWithDelegate:delegateCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    v10 = [nameCopy copy];
     vehicleName = v9->_vehicleName;
     v9->_vehicleName = v10;
   }

@@ -1,13 +1,13 @@
 @interface CKDPShareVettingInitiateRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPShareVettingInitiateRequest
@@ -67,100 +67,100 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_shareId)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_encryptedKey)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_participantId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_baseToken)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   shareId = self->_shareId;
-  v10 = v4;
+  v10 = toCopy;
   if (shareId)
   {
-    objc_msgSend_setShareId_(v4, v5, shareId);
-    v4 = v10;
+    objc_msgSend_setShareId_(toCopy, v5, shareId);
+    toCopy = v10;
   }
 
   encryptedKey = self->_encryptedKey;
   if (encryptedKey)
   {
     objc_msgSend_setEncryptedKey_(v10, v5, encryptedKey);
-    v4 = v10;
+    toCopy = v10;
   }
 
   participantId = self->_participantId;
   if (participantId)
   {
     objc_msgSend_setParticipantId_(v10, v5, participantId);
-    v4 = v10;
+    toCopy = v10;
   }
 
   baseToken = self->_baseToken;
   if (baseToken)
   {
     objc_msgSend_setBaseToken_(v10, v5, baseToken);
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_shareId, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_shareId, v11, zone);
   v13 = v10[4];
   v10[4] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_encryptedKey, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_encryptedKey, v14, zone);
   v16 = v10[2];
   v10[2] = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_participantId, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_participantId, v17, zone);
   v19 = v10[3];
   v10[3] = v18;
 
-  v21 = objc_msgSend_copyWithZone_(self->_baseToken, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_baseToken, v20, zone);
   v22 = v10[1];
   v10[1] = v21;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((shareId = self->_shareId, v9 = v4[4], !(shareId | v9)) || objc_msgSend_isEqual_(shareId, v7, v9)) && ((encryptedKey = self->_encryptedKey, v11 = v4[2], !(encryptedKey | v11)) || objc_msgSend_isEqual_(encryptedKey, v7, v11)) && ((participantId = self->_participantId, v13 = v4[3], !(participantId | v13)) || objc_msgSend_isEqual_(participantId, v7, v13)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((shareId = self->_shareId, v9 = equalCopy[4], !(shareId | v9)) || objc_msgSend_isEqual_(shareId, v7, v9)) && ((encryptedKey = self->_encryptedKey, v11 = equalCopy[2], !(encryptedKey | v11)) || objc_msgSend_isEqual_(encryptedKey, v7, v11)) && ((participantId = self->_participantId, v13 = equalCopy[3], !(participantId | v13)) || objc_msgSend_isEqual_(participantId, v7, v13)))
   {
     baseToken = self->_baseToken;
-    v15 = v4[1];
+    v15 = equalCopy[1];
     if (baseToken | v15)
     {
       isEqual = objc_msgSend_isEqual_(baseToken, v7, v15);
@@ -188,41 +188,41 @@
   return v7 ^ v10 ^ objc_msgSend_hash(self->_baseToken, v11, v12);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   shareId = self->_shareId;
-  v10 = v4;
-  v6 = v4[4];
+  v10 = fromCopy;
+  v6 = fromCopy[4];
   if (shareId)
   {
     if (v6)
     {
-      objc_msgSend_mergeFrom_(shareId, v4, v6);
+      objc_msgSend_mergeFrom_(shareId, fromCopy, v6);
     }
   }
 
   else if (v6)
   {
-    objc_msgSend_setShareId_(self, v4, v6);
+    objc_msgSend_setShareId_(self, fromCopy, v6);
   }
 
   v7 = v10[2];
   if (v7)
   {
-    objc_msgSend_setEncryptedKey_(self, v4, v7);
+    objc_msgSend_setEncryptedKey_(self, fromCopy, v7);
   }
 
   v8 = v10[3];
   if (v8)
   {
-    objc_msgSend_setParticipantId_(self, v4, v8);
+    objc_msgSend_setParticipantId_(self, fromCopy, v8);
   }
 
   v9 = v10[1];
   if (v9)
   {
-    objc_msgSend_setBaseToken_(self, v4, v9);
+    objc_msgSend_setBaseToken_(self, fromCopy, v9);
   }
 }
 

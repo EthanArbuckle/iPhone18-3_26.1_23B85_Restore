@@ -1,27 +1,27 @@
 @interface TUIKTConversationViewController
 - (TUIKTConversationViewControllerDelegate)delegate;
-- (id)initForMembers:(id)a3 options:(id)a4;
+- (id)initForMembers:(id)members options:(id)options;
 - (id)specifiers;
 - (void)_doneButtonTapped;
-- (void)_openWithNavigationController:(id)a3;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
-- (void)reloadSpecifiersForProvider:(id)a3 oldSpecifiers:(id)a4 animated:(BOOL)a5;
-- (void)requestPresentationStyleExpanded:(BOOL)a3;
-- (void)specifierProvider:(id)a3 didFinishLoadingSpecifier:(id)a4;
-- (void)specifierProvider:(id)a3 showViewController:(id)a4;
-- (void)specifierProvider:(id)a3 willBeginLoadingSpecifier:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)validateDataclassAccessForProvider:(id)a3 specifier:(id)a4 completion:(id)a5;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)_openWithNavigationController:(id)controller;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
+- (void)reloadSpecifiersForProvider:(id)provider oldSpecifiers:(id)specifiers animated:(BOOL)animated;
+- (void)requestPresentationStyleExpanded:(BOOL)expanded;
+- (void)specifierProvider:(id)provider didFinishLoadingSpecifier:(id)specifier;
+- (void)specifierProvider:(id)provider showViewController:(id)controller;
+- (void)specifierProvider:(id)provider willBeginLoadingSpecifier:(id)specifier;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)validateDataclassAccessForProvider:(id)provider specifier:(id)specifier completion:(id)completion;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation TUIKTConversationViewController
 
-- (id)initForMembers:(id)a3 options:(id)a4
+- (id)initForMembers:(id)members options:(id)options
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  membersCopy = members;
+  optionsCopy = options;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_7 != -1)
   {
     [TUIKTConversationViewController initForMembers:options:];
@@ -33,11 +33,11 @@
     v18 = 136315906;
     v19 = "[TUIKTConversationViewController initForMembers:options:]";
     v20 = 2114;
-    v21 = v6;
+    v21 = membersCopy;
     v22 = 2114;
-    v23 = v7;
+    v23 = optionsCopy;
     v24 = 2114;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26F50B000, v8, OS_LOG_TYPE_DEFAULT, "%s conversationMembers = %{public}@, options = %{public}@ on %{public}@", &v18, 0x2Au);
   }
 
@@ -47,14 +47,14 @@
     goto LABEL_8;
   }
 
-  if ([v6 count])
+  if ([membersCopy count])
   {
-    objc_storeStrong(&v9->_options, a4);
+    objc_storeStrong(&v9->_options, options);
     v10 = objc_alloc_init(TUIAnalytics);
     analytics = v9->_analytics;
     v9->_analytics = v10;
 
-    v12 = [[TUIStaticIdentityManager alloc] initWithConversationMembers:v6 options:v7];
+    v12 = [[TUIStaticIdentityManager alloc] initWithConversationMembers:membersCopy options:optionsCopy];
     staticIdentityManager = v9->_staticIdentityManager;
     v9->_staticIdentityManager = v12;
 
@@ -97,42 +97,42 @@ uint64_t __58__TUIKTConversationViewController_initForMembers_options___block_in
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v9.receiver = self;
   v9.super_class = TUIKTConversationViewController;
-  [(TUIKTConversationViewController *)&v9 willMoveToParentViewController:a3];
-  v4 = [(TUIKTConversationViewController *)self navigationController];
-  if (v4)
+  [(TUIKTConversationViewController *)&v9 willMoveToParentViewController:controller];
+  navigationController = [(TUIKTConversationViewController *)self navigationController];
+  if (navigationController)
   {
-    v5 = v4;
-    v6 = [MEMORY[0x277D75418] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    v5 = navigationController;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       [(TUIStaticIdentityManager *)self->_staticIdentityManager showAccountKeys:0];
-      v8 = [(TUIKTConversationViewController *)self navigationController];
-      [v8 setModalPresentationStyle:2];
+      navigationController2 = [(TUIKTConversationViewController *)self navigationController];
+      [navigationController2 setModalPresentationStyle:2];
     }
   }
 }
 
-- (void)requestPresentationStyleExpanded:(BOOL)a3
+- (void)requestPresentationStyleExpanded:(BOOL)expanded
 {
-  v3 = a3;
+  expandedCopy = expanded;
   v17[1] = *MEMORY[0x277D85DE8];
-  v5 = [(TUIKTConversationViewController *)self navigationController];
-  v6 = [v5 presentationController];
+  navigationController = [(TUIKTConversationViewController *)self navigationController];
+  presentationController = [navigationController presentationController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [(TUIKTConversationViewController *)self navigationController];
-    v9 = [v8 presentationController];
+    navigationController2 = [(TUIKTConversationViewController *)self navigationController];
+    presentationController2 = [navigationController2 presentationController];
 
-    if (v3)
+    if (expandedCopy)
     {
       [MEMORY[0x277D75A28] largeDetent];
     }
@@ -144,15 +144,15 @@ uint64_t __58__TUIKTConversationViewController_initForMembers_options___block_in
     v10 = ;
     v17[0] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-    [v9 setDetents:v11];
+    [presentationController2 setDetents:v11];
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __68__TUIKTConversationViewController_requestPresentationStyleExpanded___block_invoke;
     v14[3] = &unk_279DDAEC8;
-    v16 = v3;
-    v15 = v9;
-    v12 = v9;
+    v16 = expandedCopy;
+    v15 = presentationController2;
+    v12 = presentationController2;
     [v12 animateChanges:v14];
   }
 
@@ -225,7 +225,7 @@ uint64_t __52__TUIKTConversationViewController__doneButtonTapped__block_invoke_8
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     staticIdentitySpecifierProvider = self->_staticIdentitySpecifierProvider;
     if (!staticIdentitySpecifierProvider)
     {
@@ -237,8 +237,8 @@ uint64_t __52__TUIKTConversationViewController__doneButtonTapped__block_invoke_8
       staticIdentitySpecifierProvider = self->_staticIdentitySpecifierProvider;
     }
 
-    v9 = [(TUIStaticIdentitySpecifierProvider *)staticIdentitySpecifierProvider specifiers];
-    [v5 addObjectsFromArray:v9];
+    specifiers = [(TUIStaticIdentitySpecifierProvider *)staticIdentitySpecifierProvider specifiers];
+    [array addObjectsFromArray:specifiers];
 
     if ([(TUIStaticIdentityManager *)self->_staticIdentityManager accountKeysDisplayed])
     {
@@ -249,8 +249,8 @@ uint64_t __52__TUIKTConversationViewController__doneButtonTapped__block_invoke_8
       [(TUIAccountKeySpecifierProvider *)self->_peerAccountKeySpecifierProvider setDelegate:self];
       [(TUIAccountKeySpecifierProvider *)self->_peerAccountKeySpecifierProvider setIsPeerAccount:1];
       [(TUIAccountKeySpecifierProvider *)self->_peerAccountKeySpecifierProvider setIsExpanded:1];
-      v12 = [(TUIAccountKeySpecifierProvider *)self->_peerAccountKeySpecifierProvider specifiers];
-      [v5 addObjectsFromArray:v12];
+      specifiers2 = [(TUIAccountKeySpecifierProvider *)self->_peerAccountKeySpecifierProvider specifiers];
+      [array addObjectsFromArray:specifiers2];
 
       selfAccountKeySpecifierProvider = self->_selfAccountKeySpecifierProvider;
       if (!selfAccountKeySpecifierProvider)
@@ -264,12 +264,12 @@ uint64_t __52__TUIKTConversationViewController__doneButtonTapped__block_invoke_8
         selfAccountKeySpecifierProvider = self->_selfAccountKeySpecifierProvider;
       }
 
-      v16 = [(TUIAccountKeySpecifierProvider *)selfAccountKeySpecifierProvider specifiers];
-      [v5 addObjectsFromArray:v16];
+      specifiers3 = [(TUIAccountKeySpecifierProvider *)selfAccountKeySpecifierProvider specifiers];
+      [array addObjectsFromArray:specifiers3];
     }
 
     [(TUIKTConversationViewController *)self requestPresentationStyleExpanded:[(TUIStaticIdentityManager *)self->_staticIdentityManager accountKeysDisplayed]];
-    v17 = [v5 copy];
+    v17 = [array copy];
     v18 = *(&self->super.super.super.super.super.isa + v3);
     *(&self->super.super.super.super.super.isa + v3) = v17;
 
@@ -279,15 +279,15 @@ uint64_t __52__TUIKTConversationViewController__doneButtonTapped__block_invoke_8
   return v4;
 }
 
-- (void)specifierProvider:(id)a3 showViewController:(id)a4
+- (void)specifierProvider:(id)provider showViewController:(id)controller
 {
-  v7 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  controllerCopy = controller;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 setDelegate:self];
+    [controllerCopy setDelegate:self];
   }
 
   else
@@ -298,26 +298,26 @@ uint64_t __52__TUIKTConversationViewController__doneButtonTapped__block_invoke_8
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        [(TUIKTConversationViewController *)self presentViewController:v6 animated:1 completion:0];
+        [(TUIKTConversationViewController *)self presentViewController:controllerCopy animated:1 completion:0];
       }
 
       else
       {
-        [(TUIKTConversationViewController *)self showViewController:v6 sender:v7];
+        [(TUIKTConversationViewController *)self showViewController:controllerCopy sender:providerCopy];
       }
 
       goto LABEL_5;
     }
   }
 
-  [(TUIKTConversationViewController *)self _openWithNavigationController:v6];
+  [(TUIKTConversationViewController *)self _openWithNavigationController:controllerCopy];
 LABEL_5:
 }
 
-- (void)specifierProvider:(id)a3 willBeginLoadingSpecifier:(id)a4
+- (void)specifierProvider:(id)provider willBeginLoadingSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  specifierCopy = specifier;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_7 != -1)
   {
     [TUIKTConversationViewController specifierProvider:willBeginLoadingSpecifier:];
@@ -338,10 +338,10 @@ uint64_t __79__TUIKTConversationViewController_specifierProvider_willBeginLoadin
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)specifierProvider:(id)a3 didFinishLoadingSpecifier:(id)a4
+- (void)specifierProvider:(id)provider didFinishLoadingSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  specifierCopy = specifier;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_7 != -1)
   {
     [TUIKTConversationViewController specifierProvider:didFinishLoadingSpecifier:];
@@ -362,10 +362,10 @@ uint64_t __79__TUIKTConversationViewController_specifierProvider_didFinishLoadin
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)reloadSpecifiersForProvider:(id)a3 oldSpecifiers:(id)a4 animated:(BOOL)a5
+- (void)reloadSpecifiersForProvider:(id)provider oldSpecifiers:(id)specifiers animated:(BOOL)animated
 {
   v11 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  providerCopy = provider;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_7 != -1)
   {
@@ -376,7 +376,7 @@ uint64_t __79__TUIKTConversationViewController_specifierProvider_didFinishLoadin
   if (os_log_type_enabled(TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_7, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138412290;
-    v10 = v6;
+    v10 = providerCopy;
     _os_log_impl(&dword_26F50B000, v7, OS_LOG_TYPE_DEBUG, "Reloading specifiers for provider %@", &v9, 0xCu);
   }
 
@@ -392,11 +392,11 @@ uint64_t __86__TUIKTConversationViewController_reloadSpecifiersForProvider_oldSp
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)validateDataclassAccessForProvider:(id)a3 specifier:(id)a4 completion:(id)a5
+- (void)validateDataclassAccessForProvider:(id)provider specifier:(id)specifier completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  providerCopy = provider;
+  specifierCopy = specifier;
+  completionCopy = completion;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_7 != -1)
   {
     [TUIKTConversationViewController validateDataclassAccessForProvider:specifier:completion:];
@@ -417,10 +417,10 @@ uint64_t __91__TUIKTConversationViewController_validateDataclassAccessForProvide
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  contactCopy = contact;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_7 != -1)
   {
     [TUIKTConversationViewController contactViewController:didCompleteWithContact:];
@@ -429,7 +429,7 @@ uint64_t __91__TUIKTConversationViewController_validateDataclassAccessForProvide
   v8 = TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_7;
   if (os_log_type_enabled(TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_7, OS_LOG_TYPE_DEBUG))
   {
-    [(TUIKTConversationViewController *)v7 contactViewController:v8 didCompleteWithContact:?];
+    [(TUIKTConversationViewController *)contactCopy contactViewController:v8 didCompleteWithContact:?];
   }
 
   objc_initWeak(&location, self);
@@ -439,7 +439,7 @@ uint64_t __91__TUIKTConversationViewController_validateDataclassAccessForProvide
   v12 = __80__TUIKTConversationViewController_contactViewController_didCompleteWithContact___block_invoke_102;
   v13 = &unk_279DDAB28;
   objc_copyWeak(&v14, &location);
-  [(TUIStaticIdentityManager *)staticIdentityManager verifyConversationWithContact:v7 completionHandler:&v10];
+  [(TUIStaticIdentityManager *)staticIdentityManager verifyConversationWithContact:contactCopy completionHandler:&v10];
   [(TUIKTConversationViewController *)self dismissViewControllerAnimated:1 completion:0, v10, v11, v12, v13];
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -546,25 +546,25 @@ uint64_t __80__TUIKTConversationViewController_contactViewController_didComplete
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a4;
-  v6 = a5;
-  v7 = [v6 section] || objc_msgSend(v6, "row");
-  [v8 setSeparatorStyle:v7];
+  cellCopy = cell;
+  pathCopy = path;
+  v7 = [pathCopy section] || objc_msgSend(pathCopy, "row");
+  [cellCopy setSeparatorStyle:v7];
 }
 
-- (void)_openWithNavigationController:(id)a3
+- (void)_openWithNavigationController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__TUIKTConversationViewController__openWithNavigationController___block_invoke;
   block[3] = &unk_279DDA9E8;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = controllerCopy;
+  v5 = controllerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v8);

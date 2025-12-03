@@ -1,28 +1,28 @@
 @interface CKDetailsMapViewProvider
-- (CKDetailsMapViewProvider)initWithConversation:(id)a3;
-- (id)mapViewForParticipantsSharingLocationUsingDisplayName:(id)a3;
+- (CKDetailsMapViewProvider)initWithConversation:(id)conversation;
+- (id)mapViewForParticipantsSharingLocationUsingDisplayName:(id)name;
 @end
 
 @implementation CKDetailsMapViewProvider
 
-- (CKDetailsMapViewProvider)initWithConversation:(id)a3
+- (CKDetailsMapViewProvider)initWithConversation:(id)conversation
 {
-  v5 = a3;
+  conversationCopy = conversation;
   v9.receiver = self;
   v9.super_class = CKDetailsMapViewProvider;
   v6 = [(CKDetailsMapViewProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_conversation, a3);
+    objc_storeStrong(&v6->_conversation, conversation);
   }
 
   return v7;
 }
 
-- (id)mapViewForParticipantsSharingLocationUsingDisplayName:(id)a3
+- (id)mapViewForParticipantsSharingLocationUsingDisplayName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2050000000;
@@ -59,12 +59,12 @@
 
   v8 = v7;
   _Block_object_dispose(&v27, 8);
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = [(CKDetailsMapViewProvider *)self conversation];
-  v11 = [v10 chat];
-  v12 = [v11 participants];
-  v13 = [v12 __imArrayByApplyingBlock:&__block_literal_global_154];
-  [v9 addObjectsFromArray:v13];
+  array = [MEMORY[0x1E695DF70] array];
+  conversation = [(CKDetailsMapViewProvider *)self conversation];
+  chat = [conversation chat];
+  participants = [chat participants];
+  v13 = [participants __imArrayByApplyingBlock:&__block_literal_global_154];
+  [array addObjectsFromArray:v13];
 
   v14 = objc_alloc_init(v5);
   if (v7 && (objc_opt_respondsToSelector() & 1) != 0 && (([v7 messagesChatDetails], v15 = objc_claimAutoreleasedReturnValue(), (objc_opt_isKindOfClass() & 1) == 0) ? (v16 = 0) : (v16 = v15), v17 = v16, v15, v17))
@@ -82,10 +82,10 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v18 = v4;
-    v19 = [(CKDetailsMapViewProvider *)self conversation];
-    v20 = [v19 lastAddressedHandle];
-    [v14 startObservingHandles:v9 callerHandle:v20 groupName:v18];
+    v18 = nameCopy;
+    conversation2 = [(CKDetailsMapViewProvider *)self conversation];
+    lastAddressedHandle = [conversation2 lastAddressedHandle];
+    [v14 startObservingHandles:array callerHandle:lastAddressedHandle groupName:v18];
   }
 
   else
@@ -95,9 +95,9 @@
       goto LABEL_19;
     }
 
-    v19 = [(CKDetailsMapViewProvider *)self conversation];
-    v20 = [v19 lastAddressedHandle];
-    [v14 setRemoteParticipantHandles:v9 localParticipantHandle:v20];
+    conversation2 = [(CKDetailsMapViewProvider *)self conversation];
+    lastAddressedHandle = [conversation2 lastAddressedHandle];
+    [v14 setRemoteParticipantHandles:array localParticipantHandle:lastAddressedHandle];
   }
 
 LABEL_19:

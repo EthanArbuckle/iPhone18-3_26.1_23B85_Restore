@@ -1,10 +1,10 @@
 @interface SKUISettingsDescriptionUpdate
-- (SKUISettingsDescriptionUpdate)initWithUpdateType:(int64_t)a3;
+- (SKUISettingsDescriptionUpdate)initWithUpdateType:(int64_t)type;
 @end
 
 @implementation SKUISettingsDescriptionUpdate
 
-- (SKUISettingsDescriptionUpdate)initWithUpdateType:(int64_t)a3
+- (SKUISettingsDescriptionUpdate)initWithUpdateType:(int64_t)type
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
@@ -16,7 +16,7 @@
   result = [(SKUISettingsDescriptionUpdate *)&v6 init];
   if (result)
   {
-    result->_updateType = a3;
+    result->_updateType = type;
   }
 
   return result;

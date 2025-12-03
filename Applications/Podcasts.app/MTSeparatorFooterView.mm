@@ -1,55 +1,55 @@
 @interface MTSeparatorFooterView
-+ (double)heightForSeparatorInsets:(UIEdgeInsets)a3;
++ (double)heightForSeparatorInsets:(UIEdgeInsets)insets;
 - (CGRect)floatingRect;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MTSeparatorFooterView)initWithReuseIdentifier:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MTSeparatorFooterView)initWithReuseIdentifier:(id)identifier;
 - (UIEdgeInsets)separatorInsets;
 - (UIView)dividerView;
 - (void)layoutSubviews;
-- (void)setSeparatorInsets:(UIEdgeInsets)a3;
+- (void)setSeparatorInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation MTSeparatorFooterView
 
-+ (double)heightForSeparatorInsets:(UIEdgeInsets)a3
++ (double)heightForSeparatorInsets:(UIEdgeInsets)insets
 {
-  bottom = a3.bottom;
-  top = a3.top;
-  v5 = [UIScreen mainScreen:a3.top];
+  bottom = insets.bottom;
+  top = insets.top;
+  v5 = [UIScreen mainScreen:insets.top];
   [v5 scale];
   v7 = v6;
 
   return bottom + top + 1.0 / v7;
 }
 
-- (MTSeparatorFooterView)initWithReuseIdentifier:(id)a3
+- (MTSeparatorFooterView)initWithReuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = MTSeparatorFooterView;
-  v3 = [(MTSeparatorFooterView *)&v8 initWithReuseIdentifier:a3];
+  v3 = [(MTSeparatorFooterView *)&v8 initWithReuseIdentifier:identifier];
   if (v3)
   {
     v4 = objc_alloc_init(UIView);
     [(MTSeparatorFooterView *)v3 setBackgroundView:v4];
 
     [(MTSeparatorFooterView *)v3 setPreservesSuperviewLayoutMargins:1];
-    v5 = [(MTSeparatorFooterView *)v3 contentView];
-    v6 = [(MTSeparatorFooterView *)v3 dividerView];
-    [v5 addSubview:v6];
+    contentView = [(MTSeparatorFooterView *)v3 contentView];
+    dividerView = [(MTSeparatorFooterView *)v3 dividerView];
+    [contentView addSubview:dividerView];
   }
 
   return v3;
 }
 
-- (void)setSeparatorInsets:(UIEdgeInsets)a3
+- (void)setSeparatorInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_separatorInsets.top, v3), vceqq_f64(*&self->_separatorInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_separatorInsets = a3;
+    self->_separatorInsets = insets;
     [(MTSeparatorFooterView *)self setNeedsLayout];
   }
 }
@@ -66,8 +66,8 @@
   v7 = v6;
 
   v8 = 1.0 / v7;
-  v9 = [(MTSeparatorFooterView *)self contentView];
-  [v9 bounds];
+  contentView = [(MTSeparatorFooterView *)self contentView];
+  [contentView bounds];
   v10 = CGRectGetWidth(v15) - v4;
 
   if ([(MTSeparatorFooterView *)self mt_isRTL])
@@ -77,13 +77,13 @@
 
   [(MTSeparatorFooterView *)self separatorInsets];
   v12 = v11;
-  v13 = [(MTSeparatorFooterView *)self dividerView];
-  [v13 setFrame:{v4, v12, v10, v8}];
+  dividerView = [(MTSeparatorFooterView *)self dividerView];
+  [dividerView setFrame:{v4, v12, v10, v8}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v5 = objc_opt_class();
   [(MTSeparatorFooterView *)self separatorInsets];
   [v5 heightForSeparatorInsets:?];

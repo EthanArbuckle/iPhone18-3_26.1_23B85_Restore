@@ -2,34 +2,34 @@
 + (CGSize)desiredContentSize;
 - (BOOL)isEdited;
 - (BOOL)isNewAlarm;
-- (MTAAlarmEditViewController)initWithAlarm:(id)a3 isNewAlarm:(BOOL)a4;
+- (MTAAlarmEditViewController)initWithAlarm:(id)alarm isNewAlarm:(BOOL)newAlarm;
 - (MTAAlarmEditViewControllerDelegate)delegate;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)defaultEditLabel;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)timePickerCellForTableView:(id)a3;
-- (id)tonePickerCellForTableView:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)timePickerCellForTableView:(id)view;
+- (id)tonePickerCellForTableView:(id)view;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_cancelButtonClicked:(id)a3;
-- (void)_doneButtonClicked:(id)a3;
-- (void)_snoozeControlChanged:(id)a3;
-- (void)alarmEditSettingController:(id)a3 didEditAlarm:(id)a4;
+- (void)_cancelButtonClicked:(id)clicked;
+- (void)_doneButtonClicked:(id)clicked;
+- (void)_snoozeControlChanged:(id)changed;
+- (void)alarmEditSettingController:(id)controller didEditAlarm:(id)alarm;
 - (void)contentSizeCategoryDidChange;
-- (void)didUpdateWithLabel:(id)a3 sender:(id)a4;
-- (void)reloadDataForAlarm:(id)a3;
-- (void)saveAlarmOnlyIfEdited:(BOOL)a3 saveNew:(BOOL)a4;
-- (void)setDelegate:(id)a3;
-- (void)startEditingSetting:(int64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)didUpdateWithLabel:(id)label sender:(id)sender;
+- (void)reloadDataForAlarm:(id)alarm;
+- (void)saveAlarmOnlyIfEdited:(BOOL)edited saveNew:(BOOL)new;
+- (void)setDelegate:(id)delegate;
+- (void)startEditingSetting:(int64_t)setting;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 - (void)viewDidUnload;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MTAAlarmEditViewController
@@ -43,10 +43,10 @@
   return result;
 }
 
-- (MTAAlarmEditViewController)initWithAlarm:(id)a3 isNewAlarm:(BOOL)a4
+- (MTAAlarmEditViewController)initWithAlarm:(id)alarm isNewAlarm:(BOOL)newAlarm
 {
-  v5 = a4;
-  v8 = a3;
+  newAlarmCopy = newAlarm;
+  alarmCopy = alarm;
   if (_os_feature_enabled_impl())
   {
     v9 = 2;
@@ -66,12 +66,12 @@
     goto LABEL_20;
   }
 
-  objc_storeStrong(&v10->_originalAlarm, a3);
-  if (v8)
+  objc_storeStrong(&v10->_originalAlarm, alarm);
+  if (alarmCopy)
   {
-    if (!v5)
+    if (!newAlarmCopy)
     {
-      v13 = [v8 mutableCopy];
+      v13 = [alarmCopy mutableCopy];
       v14 = @"ALARM_EDIT";
       goto LABEL_11;
     }
@@ -79,7 +79,7 @@
     originalAlarm = v11->_originalAlarm;
     v11->_originalAlarm = 0;
 
-    v13 = [v8 mutableCopy];
+    v13 = [alarmCopy mutableCopy];
   }
 
   else
@@ -98,51 +98,51 @@ LABEL_11:
   v11->_editingAlarmSetting = -1;
   [(MTAAlarmEditViewController *)v11 setTitle:v17];
   v18 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:v11 action:"_cancelButtonClicked:"];
-  v19 = [(MTAAlarmEditViewController *)v11 navigationItem];
-  [v19 setLeftBarButtonItem:v18];
+  navigationItem = [(MTAAlarmEditViewController *)v11 navigationItem];
+  [navigationItem setLeftBarButtonItem:v18];
 
-  v20 = [(MTAAlarmEditViewController *)v11 navigationItem];
-  v21 = [v20 leftBarButtonItem];
-  [v21 setAccessibilityIdentifier:@"Cancel"];
+  navigationItem2 = [(MTAAlarmEditViewController *)v11 navigationItem];
+  leftBarButtonItem = [navigationItem2 leftBarButtonItem];
+  [leftBarButtonItem setAccessibilityIdentifier:@"Cancel"];
 
   v22 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:v11 action:"_doneButtonClicked:"];
-  v23 = [(MTAAlarmEditViewController *)v11 navigationItem];
-  [v23 setRightBarButtonItem:v22];
+  navigationItem3 = [(MTAAlarmEditViewController *)v11 navigationItem];
+  [navigationItem3 setRightBarButtonItem:v22];
 
-  v24 = [(MTAAlarmEditViewController *)v11 navigationItem];
-  v25 = [v24 rightBarButtonItem];
-  [v25 setAccessibilityIdentifier:@"Save"];
+  navigationItem4 = [(MTAAlarmEditViewController *)v11 navigationItem];
+  rightBarButtonItem = [navigationItem4 rightBarButtonItem];
+  [rightBarButtonItem setAccessibilityIdentifier:@"Save"];
 
   v26 = +[UIColor mtui_tintColor];
-  v27 = [(MTAAlarmEditViewController *)v11 navigationItem];
-  v28 = [v27 rightBarButtonItem];
-  [v28 setTintColor:v26];
+  navigationItem5 = [(MTAAlarmEditViewController *)v11 navigationItem];
+  rightBarButtonItem2 = [navigationItem5 rightBarButtonItem];
+  [rightBarButtonItem2 setTintColor:v26];
 
-  v29 = [(MTAAlarmEditViewController *)v11 navigationItem];
-  v30 = [v29 rightBarButtonItem];
-  [v30 setStyle:2];
+  navigationItem6 = [(MTAAlarmEditViewController *)v11 navigationItem];
+  rightBarButtonItem3 = [navigationItem6 rightBarButtonItem];
+  [rightBarButtonItem3 setStyle:2];
 
   v31 = [_TtC11MobileTimer23SnoozeDurationViewModel alloc];
-  v32 = [(MTAAlarmEditViewController *)v11 editedAlarm];
-  v33 = [v32 snoozeDuration];
-  v34 = [(MTAAlarmEditViewController *)v11 editedAlarm];
-  v35 = [v34 isFiring];
-  if (v35)
+  editedAlarm = [(MTAAlarmEditViewController *)v11 editedAlarm];
+  snoozeDuration = [editedAlarm snoozeDuration];
+  editedAlarm2 = [(MTAAlarmEditViewController *)v11 editedAlarm];
+  isFiring = [editedAlarm2 isFiring];
+  if (isFiring)
   {
     v36 = 0;
   }
 
   else
   {
-    v4 = [(MTAAlarmEditViewController *)v11 editedAlarm];
-    v36 = [v4 isSnoozed] ^ 1;
+    editedAlarm3 = [(MTAAlarmEditViewController *)v11 editedAlarm];
+    v36 = [editedAlarm3 isSnoozed] ^ 1;
   }
 
-  v37 = [(SnoozeDurationViewModel *)v31 initWithSelectedDuration:v33 maxDuration:15 minDuration:1 isEnabled:v36 isPickerShown:0];
+  v37 = [(SnoozeDurationViewModel *)v31 initWithSelectedDuration:snoozeDuration maxDuration:15 minDuration:1 isEnabled:v36 isPickerShown:0];
   snoozeDurationViewModel = v11->_snoozeDurationViewModel;
   v11->_snoozeDurationViewModel = v37;
 
-  if ((v35 & 1) == 0)
+  if ((isFiring & 1) == 0)
   {
   }
 
@@ -165,18 +165,18 @@ LABEL_20:
   return v11;
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
+  collectionCopy = collection;
   v9.receiver = self;
   v9.super_class = MTAAlarmEditViewController;
-  [(MTAAlarmEditViewController *)&v9 willTransitionToTraitCollection:v6 withTransitionCoordinator:a4];
-  v7 = [(MTAAlarmEditViewController *)self traitCollection];
-  if ([v7 horizontalSizeClass] == 1 && objc_msgSend(v6, "horizontalSizeClass") == 2)
+  [(MTAAlarmEditViewController *)&v9 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinator];
+  traitCollection = [(MTAAlarmEditViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 1 && objc_msgSend(collectionCopy, "horizontalSizeClass") == 2)
   {
-    v8 = [v6 verticalSizeClass];
+    verticalSizeClass = [collectionCopy verticalSizeClass];
 
-    if (v8 == 2)
+    if (verticalSizeClass == 2)
     {
       [(MTAAlarmEditViewController *)self saveAlarmOnlyIfEdited:1];
     }
@@ -189,8 +189,8 @@ LABEL_20:
 
 - (BOOL)isNewAlarm
 {
-  v2 = [(MTAAlarmEditViewController *)self originalAlarm];
-  v3 = v2 == 0;
+  originalAlarm = [(MTAAlarmEditViewController *)self originalAlarm];
+  v3 = originalAlarm == 0;
 
   return v3;
 }
@@ -204,158 +204,158 @@ LABEL_20:
 
   else
   {
-    v4 = [(MTAAlarmEditViewController *)self originalAlarm];
-    v5 = [(MTAAlarmEditViewController *)self editedAlarm];
-    v3 = [v4 isEqual:v5] ^ 1;
+    originalAlarm = [(MTAAlarmEditViewController *)self originalAlarm];
+    editedAlarm = [(MTAAlarmEditViewController *)self editedAlarm];
+    v3 = [originalAlarm isEqual:editedAlarm] ^ 1;
   }
 
   return v3;
 }
 
-- (void)saveAlarmOnlyIfEdited:(BOOL)a3 saveNew:(BOOL)a4
+- (void)saveAlarmOnlyIfEdited:(BOOL)edited saveNew:(BOOL)new
 {
-  v4 = a3;
-  if ([(MTAAlarmEditViewController *)self isEdited]&& a4 || !v4)
+  editedCopy = edited;
+  if ([(MTAAlarmEditViewController *)self isEdited]&& new || !editedCopy)
   {
     v6 = MTLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(MTMutableAlarm *)self->_editedAlarm alarmID];
+      alarmID = [(MTMutableAlarm *)self->_editedAlarm alarmID];
       v25 = 138543618;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2114;
-      v28 = v7;
+      v28 = alarmID;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ saving edited alarm: %{public}@", &v25, 0x16u);
     }
 
-    v8 = [(UIDatePicker *)self->_timePicker calendar];
-    v9 = [(UIDatePicker *)self->_timePicker _dateUnderSelectionBar];
-    v10 = [v8 components:96 fromDate:v9];
+    calendar = [(UIDatePicker *)self->_timePicker calendar];
+    _dateUnderSelectionBar = [(UIDatePicker *)self->_timePicker _dateUnderSelectionBar];
+    v10 = [calendar components:96 fromDate:_dateUnderSelectionBar];
 
-    v11 = [v10 hour];
-    v12 = [(MTAAlarmEditViewController *)self editedAlarm];
-    [v12 setHour:v11];
+    hour = [v10 hour];
+    editedAlarm = [(MTAAlarmEditViewController *)self editedAlarm];
+    [editedAlarm setHour:hour];
 
-    v13 = [v10 minute];
-    v14 = [(MTAAlarmEditViewController *)self editedAlarm];
-    [v14 setMinute:v13];
+    minute = [v10 minute];
+    editedAlarm2 = [(MTAAlarmEditViewController *)self editedAlarm];
+    [editedAlarm2 setMinute:minute];
 
     if ([(MTAAlarmEditViewController *)self isEdited])
     {
-      v15 = [(MTAAlarmEditViewController *)self editedAlarm];
-      [v15 setEnabled:1];
+      editedAlarm3 = [(MTAAlarmEditViewController *)self editedAlarm];
+      [editedAlarm3 setEnabled:1];
     }
 
     v16 = MTLogForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(MTAAlarmEditViewController *)self snoozeDurationViewModel];
-      v18 = [v17 selectedDuration];
-      v19 = [(MTMutableAlarm *)self->_editedAlarm alarmID];
+      snoozeDurationViewModel = [(MTAAlarmEditViewController *)self snoozeDurationViewModel];
+      selectedDuration = [snoozeDurationViewModel selectedDuration];
+      alarmID2 = [(MTMutableAlarm *)self->_editedAlarm alarmID];
       v25 = 138543874;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2050;
-      v28 = v18;
+      v28 = selectedDuration;
       v29 = 2114;
-      v30 = v19;
+      v30 = alarmID2;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ snooze duration changed to: %{public}lu  for alarm: %{public}@", &v25, 0x20u);
     }
 
-    v20 = [(MTAAlarmEditViewController *)self snoozeDurationViewModel];
-    v21 = [v20 selectedDuration];
-    v22 = [(MTAAlarmEditViewController *)self editedAlarm];
-    [v22 setSnoozeDuration:v21];
+    snoozeDurationViewModel2 = [(MTAAlarmEditViewController *)self snoozeDurationViewModel];
+    selectedDuration2 = [snoozeDurationViewModel2 selectedDuration];
+    editedAlarm4 = [(MTAAlarmEditViewController *)self editedAlarm];
+    [editedAlarm4 setSnoozeDuration:selectedDuration2];
 
-    LODWORD(v22) = [(MTAAlarmEditViewController *)self isNewAlarm];
-    v23 = [(MTAAlarmEditViewController *)self delegate];
-    v24 = [(MTAAlarmEditViewController *)self editedAlarm];
-    if (v22)
+    LODWORD(editedAlarm4) = [(MTAAlarmEditViewController *)self isNewAlarm];
+    delegate = [(MTAAlarmEditViewController *)self delegate];
+    editedAlarm5 = [(MTAAlarmEditViewController *)self editedAlarm];
+    if (editedAlarm4)
     {
-      [v23 alarmEditController:self didAddAlarm:v24];
+      [delegate alarmEditController:self didAddAlarm:editedAlarm5];
     }
 
     else
     {
-      [v23 alarmEditController:self didEditAlarm:v24];
+      [delegate alarmEditController:self didEditAlarm:editedAlarm5];
     }
   }
 }
 
-- (void)_cancelButtonClicked:(id)a3
+- (void)_cancelButtonClicked:(id)clicked
 {
   v4 = MTLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(MTMutableAlarm *)self->_editedAlarm alarmID];
+    alarmID = [(MTMutableAlarm *)self->_editedAlarm alarmID];
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v5;
+    v10 = alarmID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ cancel button clicked for alarm: %{public}@", &v7, 0x16u);
   }
 
-  v6 = [(MTAAlarmEditViewController *)self delegate];
-  [v6 alarmEditControllerDidCancel:self];
+  delegate = [(MTAAlarmEditViewController *)self delegate];
+  [delegate alarmEditControllerDidCancel:self];
 }
 
-- (void)_doneButtonClicked:(id)a3
+- (void)_doneButtonClicked:(id)clicked
 {
   v4 = MTLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(MTMutableAlarm *)self->_editedAlarm alarmID];
+    alarmID = [(MTMutableAlarm *)self->_editedAlarm alarmID];
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2114;
-    v9 = v5;
+    v9 = alarmID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ done button clicked for alarm: %{public}@", &v6, 0x16u);
   }
 
   [(MTAAlarmEditViewController *)self saveAlarmOnlyIfEdited:0];
 }
 
-- (void)_snoozeControlChanged:(id)a3
+- (void)_snoozeControlChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 isOn];
-    v7 = [(MTMutableAlarm *)self->_editedAlarm alarmID];
+    isOn = [changedCopy isOn];
+    alarmID = [(MTMutableAlarm *)self->_editedAlarm alarmID];
     v11 = 138543874;
-    v12 = self;
+    selfCopy = self;
     v13 = 1026;
-    v14 = v6;
+    v14 = isOn;
     v15 = 2114;
-    v16 = v7;
+    v16 = alarmID;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ snooze control changed to: %{public}i  for alarm: %{public}@", &v11, 0x1Cu);
   }
 
-  v8 = [v4 isOn];
-  v9 = [(MTAAlarmEditViewController *)self editedAlarm];
-  [v9 setAllowsSnooze:v8];
+  isOn2 = [changedCopy isOn];
+  editedAlarm = [(MTAAlarmEditViewController *)self editedAlarm];
+  [editedAlarm setAllowsSnooze:isOn2];
 
-  v10 = [(MTAAlarmEditViewController *)self tableView];
-  [v10 reloadData];
+  tableView = [(MTAAlarmEditViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)startEditingSetting:(int64_t)a3
+- (void)startEditingSetting:(int64_t)setting
 {
   [(UIDatePicker *)self->_timePicker resignFirstResponder];
-  self->_editingAlarmSetting = a3;
+  self->_editingAlarmSetting = setting;
   v5 = [MTAAlarmEditSettingViewController alloc];
-  v6 = [(MTAAlarmEditViewController *)self editedAlarm];
-  v8 = [(MTAAlarmEditSettingViewController *)v5 initWithAlarm:v6 setting:a3 delegate:self];
+  editedAlarm = [(MTAAlarmEditViewController *)self editedAlarm];
+  v8 = [(MTAAlarmEditSettingViewController *)v5 initWithAlarm:editedAlarm setting:setting delegate:self];
 
   [(MTAAlarmEditViewController *)self preferredContentSize];
   [(MTAAlarmEditSettingViewController *)v8 setPreferredContentSize:?];
-  v7 = [(MTAAlarmEditViewController *)self navigationController];
-  [v7 pushViewController:v8 animated:1];
+  navigationController = [(MTAAlarmEditViewController *)self navigationController];
+  [navigationController pushViewController:v8 animated:1];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -368,26 +368,26 @@ LABEL_20:
 
 - (void)contentSizeCategoryDidChange
 {
-  v8 = [(MTAAlarmEditViewController *)self tableView];
-  [v8 contentOffset];
+  tableView = [(MTAAlarmEditViewController *)self tableView];
+  [tableView contentOffset];
   v4 = v3;
   v6 = v5;
-  v7 = [(MTAAlarmEditViewController *)self tableView];
-  [v7 reloadData];
+  tableView2 = [(MTAAlarmEditViewController *)self tableView];
+  [tableView2 reloadData];
 
-  [v8 setContentOffset:0 animated:{v4, v6}];
+  [tableView setContentOffset:0 animated:{v4, v6}];
 }
 
-- (void)reloadDataForAlarm:(id)a3
+- (void)reloadDataForAlarm:(id)alarm
 {
-  v4 = [a3 mutableCopy];
+  v4 = [alarm mutableCopy];
   editedAlarm = self->_editedAlarm;
   self->_editedAlarm = v4;
 
   v8 = [NSIndexPath indexPathForRow:4 inSection:1];
   v6 = [NSArray arrayWithObjects:v8, 0];
-  v7 = [(MTAAlarmEditViewController *)self tableView];
-  [v7 reloadRowsAtIndexPaths:v6 withRowAnimation:100];
+  tableView = [(MTAAlarmEditViewController *)self tableView];
+  [tableView reloadRowsAtIndexPaths:v6 withRowAnimation:100];
 }
 
 - (unint64_t)supportedInterfaceOrientations
@@ -410,15 +410,15 @@ LABEL_20:
   v13.receiver = self;
   v13.super_class = MTAAlarmEditViewController;
   [(MTAAlarmEditViewController *)&v13 viewDidLoad];
-  v3 = [(MTAAlarmEditViewController *)self tableView];
-  [v3 setAlwaysBounceVertical:0];
-  [v3 setRowHeight:UITableViewAutomaticDimension];
-  [v3 setEstimatedRowHeight:UITableViewDefaultRowHeight];
-  [v3 setKeyboardDismissMode:2];
+  tableView = [(MTAAlarmEditViewController *)self tableView];
+  [tableView setAlwaysBounceVertical:0];
+  [tableView setRowHeight:UITableViewAutomaticDimension];
+  [tableView setEstimatedRowHeight:UITableViewDefaultRowHeight];
+  [tableView setKeyboardDismissMode:2];
   v4 = [[UIView alloc] initWithFrame:{0.0, 0.0, 0.0, 2.22507386e-308}];
-  [v3 setTableHeaderView:v4];
+  [tableView setTableHeaderView:v4];
 
-  [v3 setAutoresizingMask:18];
+  [tableView setAutoresizingMask:18];
   v5 = [[UIDatePicker alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   timePicker = self->_timePicker;
   self->_timePicker = v5;
@@ -429,36 +429,36 @@ LABEL_20:
   [(UIDatePicker *)self->_timePicker setDatePickerMode:0];
   [(UIDatePicker *)self->_timePicker _setSelectionBarIgnoresInset:1];
   v7 = objc_alloc_init(NSDateComponents);
-  v8 = [(MTAAlarmEditViewController *)self editedAlarm];
-  [v7 setHour:{objc_msgSend(v8, "hour")}];
+  editedAlarm = [(MTAAlarmEditViewController *)self editedAlarm];
+  [v7 setHour:{objc_msgSend(editedAlarm, "hour")}];
 
-  v9 = [(MTAAlarmEditViewController *)self editedAlarm];
-  [v7 setMinute:{objc_msgSend(v9, "minute")}];
+  editedAlarm2 = [(MTAAlarmEditViewController *)self editedAlarm];
+  [v7 setMinute:{objc_msgSend(editedAlarm2, "minute")}];
 
   v10 = self->_timePicker;
-  v11 = [(UIDatePicker *)v10 calendar];
-  v12 = [v11 dateFromComponents:v7];
+  calendar = [(UIDatePicker *)v10 calendar];
+  v12 = [calendar dateFromComponents:v7];
   [(UIDatePicker *)v10 setDate:v12];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   self->_editingAlarmSetting = -1;
-  v5 = [(MTAAlarmEditViewController *)self tableView];
-  [v5 reloadData];
+  tableView = [(MTAAlarmEditViewController *)self tableView];
+  [tableView reloadData];
 
-  v6 = [(MTAAlarmEditViewController *)self tableView];
-  v7 = [(MTAAlarmEditViewController *)self tableView];
-  v8 = [v7 indexPathForSelectedRow];
-  [v6 deselectRowAtIndexPath:v8 animated:1];
+  tableView2 = [(MTAAlarmEditViewController *)self tableView];
+  tableView3 = [(MTAAlarmEditViewController *)self tableView];
+  indexPathForSelectedRow = [tableView3 indexPathForSelectedRow];
+  [tableView2 deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 
-  v9 = [(MTAAlarmEditViewController *)self view];
-  [v9 endEditing:0];
+  view = [(MTAAlarmEditViewController *)self view];
+  [view endEditing:0];
 
   v10.receiver = self;
   v10.super_class = MTAAlarmEditViewController;
-  [(MTAAlarmEditViewController *)&v10 viewWillAppear:v3];
+  [(MTAAlarmEditViewController *)&v10 viewWillAppear:appearCopy];
 }
 
 - (void)viewDidUnload
@@ -469,18 +469,18 @@ LABEL_20:
   [(MTAAlarmEditViewController *)&v3 viewDidUnload];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(MTAAlarmEditViewController *)self view];
-  [v5 endEditing:1];
+  disappearCopy = disappear;
+  view = [(MTAAlarmEditViewController *)self view];
+  [view endEditing:1];
 
   v6.receiver = self;
   v6.super_class = MTAAlarmEditViewController;
-  [(MTAAlarmEditViewController *)&v6 viewWillDisappear:v3];
+  [(MTAAlarmEditViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (MTUIIsPadIdiom())
   {
@@ -495,14 +495,14 @@ LABEL_20:
   return 3;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if (_os_feature_enabled_impl())
   {
-    if (a4 == 1)
+    if (section == 1)
     {
-      v6 = [(MTAAlarmEditViewController *)self editedAlarm];
-      if ([v6 allowsSnooze])
+      editedAlarm = [(MTAAlarmEditViewController *)self editedAlarm];
+      if ([editedAlarm allowsSnooze])
       {
         v7 = 5;
       }
@@ -519,7 +519,7 @@ LABEL_20:
     }
   }
 
-  else if (a4 == 1)
+  else if (section == 1)
   {
     return 4;
   }
@@ -532,54 +532,54 @@ LABEL_20:
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 row];
-  v9 = [v7 section];
-  if (v9 == 2)
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [pathCopy row];
+  section = [pathCopy section];
+  if (section == 2)
   {
     v11 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"MTDTVC"];
     v12 = +[NSBundle mainBundle];
     v13 = [v12 localizedStringForKey:@"EDIT_DELETE" value:&stru_1000AEF10 table:0];
-    v14 = [(MTALabelEditCell *)v11 textLabel];
-    [v14 setText:v13];
+    textLabel = [(MTALabelEditCell *)v11 textLabel];
+    [textLabel setText:v13];
 
-    v15 = [(MTALabelEditCell *)v11 textLabel];
-    [v15 setTextAlignment:1];
+    textLabel2 = [(MTALabelEditCell *)v11 textLabel];
+    [textLabel2 setTextAlignment:1];
 
     v16 = +[UIColor systemRedColor];
-    v17 = [(MTALabelEditCell *)v11 textLabel];
-    [v17 setTextColor:v16];
+    textLabel3 = [(MTALabelEditCell *)v11 textLabel];
+    [textLabel3 setTextColor:v16];
 
     v18 = +[UIColor mtui_foregroundColor];
     [(MTALabelEditCell *)v11 setBackgroundColor:v18];
 
-    v19 = +[UIColor mtui_cellHighlightColor];
-    [(MTALabelEditCell *)v11 setSelectedBackgroundColor:v19];
+    editedAlarm6 = +[UIColor mtui_cellHighlightColor];
+    [(MTALabelEditCell *)v11 setSelectedBackgroundColor:editedAlarm6];
     goto LABEL_9;
   }
 
-  if (v9 == 1)
+  if (section == 1)
   {
-    if ([v7 row] == 2)
+    if ([pathCopy row] == 2)
     {
-      v10 = [(MTAAlarmEditViewController *)self tonePickerCellForTableView:v6];
+      v10 = [(MTAAlarmEditViewController *)self tonePickerCellForTableView:viewCopy];
       goto LABEL_7;
     }
 
     if (v8 == 1)
     {
-      v20 = [v6 dequeueReusableCellWithIdentifier:off_1000D1190];
+      v20 = [viewCopy dequeueReusableCellWithIdentifier:off_1000D1190];
       if (!v20)
       {
         v38 = [MTALabelEditCell alloc];
-        v26 = [(MTAAlarmEditViewController *)self editedAlarm];
-        v39 = [v26 displayTitle];
-        v40 = [(MTAAlarmEditViewController *)self editedAlarm];
-        v41 = [v40 title];
-        v11 = -[MTALabelEditCell initWithDelegate:currentTitle:isEmpty:](v38, "initWithDelegate:currentTitle:isEmpty:", self, v39, [v41 length] == 0);
+        editedAlarm = [(MTAAlarmEditViewController *)self editedAlarm];
+        displayTitle = [editedAlarm displayTitle];
+        editedAlarm2 = [(MTAAlarmEditViewController *)self editedAlarm];
+        title = [editedAlarm2 title];
+        v11 = -[MTALabelEditCell initWithDelegate:currentTitle:isEmpty:](v38, "initWithDelegate:currentTitle:isEmpty:", self, displayTitle, [title length] == 0);
 
         goto LABEL_28;
       }
@@ -591,30 +591,30 @@ LABEL_20:
       {
         objc_opt_class();
         v29 = +[_TtC11MobileTimer21MTASnoozeDurationCell reuseIdentifier];
-        v30 = [v6 dequeueReusableCellWithIdentifier:v29];
+        v30 = [viewCopy dequeueReusableCellWithIdentifier:v29];
         objc_opt_isKindOfClass();
 
         v31 = [_TtC11MobileTimer21MTASnoozeDurationCell alloc];
-        v32 = [(MTAAlarmEditViewController *)self snoozeDurationViewModel];
-        v11 = [(MTASnoozeDurationCell *)v31 initWithViewModel:v32 in:v6];
+        snoozeDurationViewModel = [(MTAAlarmEditViewController *)self snoozeDurationViewModel];
+        v11 = [(MTASnoozeDurationCell *)v31 initWithViewModel:snoozeDurationViewModel in:viewCopy];
 
-        v33 = [(MTAAlarmEditViewController *)self editedAlarm];
-        v34 = [v33 isFiring];
-        if (v34)
+        editedAlarm3 = [(MTAAlarmEditViewController *)self editedAlarm];
+        isFiring = [editedAlarm3 isFiring];
+        if (isFiring)
         {
           v35 = 0;
         }
 
         else
         {
-          v60 = [(MTAAlarmEditViewController *)self editedAlarm];
-          v35 = [v60 isSnoozed] ^ 1;
+          editedAlarm4 = [(MTAAlarmEditViewController *)self editedAlarm];
+          v35 = [editedAlarm4 isSnoozed] ^ 1;
         }
 
-        v37 = [(MTAAlarmEditViewController *)self snoozeDurationViewModel];
-        [v37 setIsEnabled:v35];
+        snoozeDurationViewModel2 = [(MTAAlarmEditViewController *)self snoozeDurationViewModel];
+        [snoozeDurationViewModel2 setIsEnabled:v35];
 
-        if ((v34 & 1) == 0)
+        if ((isFiring & 1) == 0)
         {
         }
 
@@ -624,42 +624,42 @@ LABEL_20:
 
       if (v8 != 3)
       {
-        v11 = [v6 dequeueReusableCellWithIdentifier:@"UITVC"];
+        v11 = [viewCopy dequeueReusableCellWithIdentifier:@"UITVC"];
         if (!v11)
         {
           v11 = [[UITableViewCell alloc] initWithStyle:1 reuseIdentifier:@"UITVC"];
         }
 
-        v36 = [(MTALabelEditCell *)v11 detailTextLabel];
-        [v36 setAdjustsFontSizeToFitWidth:0];
+        detailTextLabel = [(MTALabelEditCell *)v11 detailTextLabel];
+        [detailTextLabel setAdjustsFontSizeToFitWidth:0];
 
         [(MTALabelEditCell *)v11 setAccessoryType:1];
         goto LABEL_29;
       }
 
-      v20 = [v6 dequeueReusableCellWithIdentifier:off_1000D1B18];
+      v20 = [viewCopy dequeueReusableCellWithIdentifier:off_1000D1B18];
       if (!v20)
       {
         v21 = [UITableViewCell alloc];
         v11 = [v21 initWithStyle:1 reuseIdentifier:off_1000D1B18];
         v22 = +[NSBundle mainBundle];
         v23 = [v22 localizedStringForKey:@"EDIT_SNOOZE" value:&stru_1000AEF10 table:0];
-        v24 = [(MTALabelEditCell *)v11 textLabel];
-        [v24 setText:v23];
+        textLabel4 = [(MTALabelEditCell *)v11 textLabel];
+        [textLabel4 setText:v23];
 
-        v25 = [(MTALabelEditCell *)v11 detailTextLabel];
-        [v25 setText:0];
+        detailTextLabel2 = [(MTALabelEditCell *)v11 detailTextLabel];
+        [detailTextLabel2 setText:0];
 
-        v26 = objc_alloc_init(UISwitch);
-        [v26 setOnTintColor:0];
+        editedAlarm = objc_alloc_init(UISwitch);
+        [editedAlarm setOnTintColor:0];
         v27 = +[UIColor mtui_switchTintColor];
-        [v26 setTintColor:v27];
+        [editedAlarm setTintColor:v27];
 
-        v28 = [(MTAAlarmEditViewController *)self editedAlarm];
-        [v26 setOn:objc_msgSend(v28 animated:{"allowsSnooze"), 0}];
+        editedAlarm5 = [(MTAAlarmEditViewController *)self editedAlarm];
+        [editedAlarm setOn:objc_msgSend(editedAlarm5 animated:{"allowsSnooze"), 0}];
 
-        [v26 addTarget:self action:"_snoozeControlChanged:" forControlEvents:4096];
-        [(MTALabelEditCell *)v11 setAccessoryView:v26];
+        [editedAlarm addTarget:self action:"_snoozeControlChanged:" forControlEvents:4096];
+        [(MTALabelEditCell *)v11 setAccessoryView:editedAlarm];
 LABEL_28:
 
         goto LABEL_29;
@@ -669,26 +669,26 @@ LABEL_28:
     v11 = v20;
 LABEL_29:
     v42 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    v43 = [(MTALabelEditCell *)v11 textLabel];
-    [v43 setFont:v42];
+    textLabel5 = [(MTALabelEditCell *)v11 textLabel];
+    [textLabel5 setFont:v42];
 
     v44 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    v45 = [(MTALabelEditCell *)v11 detailTextLabel];
-    [v45 setFont:v44];
+    detailTextLabel3 = [(MTALabelEditCell *)v11 detailTextLabel];
+    [detailTextLabel3 setFont:v44];
 
-    v46 = [(MTALabelEditCell *)v11 textLabel];
-    [v46 setAdjustsFontForContentSizeCategory:1];
+    textLabel6 = [(MTALabelEditCell *)v11 textLabel];
+    [textLabel6 setAdjustsFontForContentSizeCategory:1];
 
-    v47 = [(MTALabelEditCell *)v11 detailTextLabel];
-    [v47 setAdjustsFontForContentSizeCategory:1];
+    detailTextLabel4 = [(MTALabelEditCell *)v11 detailTextLabel];
+    [detailTextLabel4 setAdjustsFontForContentSizeCategory:1];
 
     [(MTALabelEditCell *)v11 setSelectionStyle:(v8 - 5) < 0xFFFFFFFFFFFFFFFELL];
     v48 = +[UIColor mtui_foregroundColor];
     [(MTALabelEditCell *)v11 setBackgroundColor:v48];
 
     v49 = +[UIColor mtui_primaryTextColor];
-    v50 = [(MTALabelEditCell *)v11 textLabel];
-    [v50 setTextColor:v49];
+    textLabel7 = [(MTALabelEditCell *)v11 textLabel];
+    [textLabel7 setTextColor:v49];
 
     v51 = +[UIColor mtui_cellHighlightColor];
     [(MTALabelEditCell *)v11 setSelectedBackgroundColor:v51];
@@ -700,28 +700,28 @@ LABEL_29:
 
     v53 = +[NSBundle mainBundle];
     v54 = [v53 localizedStringForKey:@"EDIT_REPEAT" value:&stru_1000AEF10 table:0];
-    v55 = [(MTALabelEditCell *)v11 textLabel];
-    [v55 setText:v54];
+    textLabel8 = [(MTALabelEditCell *)v11 textLabel];
+    [textLabel8 setText:v54];
 
-    v56 = [(MTALabelEditCell *)v11 detailTextLabel];
-    [v56 setAdjustsFontSizeToFitWidth:1];
+    detailTextLabel5 = [(MTALabelEditCell *)v11 detailTextLabel];
+    [detailTextLabel5 setAdjustsFontSizeToFitWidth:1];
 
-    v57 = [(MTALabelEditCell *)v11 detailTextLabel];
-    [v57 setMinimumScaleFactor:0.705882353];
+    detailTextLabel6 = [(MTALabelEditCell *)v11 detailTextLabel];
+    [detailTextLabel6 setMinimumScaleFactor:0.705882353];
 
-    v19 = [(MTAAlarmEditViewController *)self editedAlarm];
-    [v19 repeatSchedule];
+    editedAlarm6 = [(MTAAlarmEditViewController *)self editedAlarm];
+    [editedAlarm6 repeatSchedule];
     v58 = DateMaskToString();
-    v59 = [(MTALabelEditCell *)v11 detailTextLabel];
-    [v59 setText:v58];
+    detailTextLabel7 = [(MTALabelEditCell *)v11 detailTextLabel];
+    [detailTextLabel7 setText:v58];
 
 LABEL_9:
     goto LABEL_30;
   }
 
-  if (!v9)
+  if (!section)
   {
-    v10 = [(MTAAlarmEditViewController *)self timePickerCellForTableView:v6];
+    v10 = [(MTAAlarmEditViewController *)self timePickerCellForTableView:viewCopy];
 LABEL_7:
     v11 = v10;
     goto LABEL_30;
@@ -733,20 +733,20 @@ LABEL_30:
   return v11;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v6 row];
-  if ([v6 section] == 1)
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [pathCopy row];
+  if ([pathCopy section] == 1)
   {
     if ((v7 - 3) >= 2 && v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
       if (v7 == 1)
       {
-        v8 = [v11 cellForRowAtIndexPath:v6];
+        v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
         [v8 activate];
-        [v11 deselectRowAtIndexPath:v6 animated:1];
+        [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
       }
 
       else
@@ -756,20 +756,20 @@ LABEL_30:
     }
   }
 
-  else if ([v6 section] == 2)
+  else if ([pathCopy section] == 2)
   {
-    v9 = [(MTAAlarmEditViewController *)self delegate];
-    v10 = [(MTAAlarmEditViewController *)self originalAlarm];
-    [v9 alarmEditController:self didDeleteAlarm:v10];
+    delegate = [(MTAAlarmEditViewController *)self delegate];
+    originalAlarm = [(MTAAlarmEditViewController *)self originalAlarm];
+    [delegate alarmEditController:self didDeleteAlarm:originalAlarm];
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a3;
-  if ([a4 section])
+  viewCopy = view;
+  if ([path section])
   {
-    [v5 rowHeight];
+    [viewCopy rowHeight];
   }
 
   else
@@ -786,42 +786,42 @@ LABEL_30:
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  if (a4 < 2)
+  if (section < 2)
   {
     return 2.22507386e-308;
   }
 
-  [a3 sectionHeaderHeight];
+  [view sectionHeaderHeight];
   return result;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  if (!a4)
+  if (!section)
   {
     return 2.22507386e-308;
   }
 
-  [a3 sectionFooterHeight];
+  [view sectionFooterHeight];
   return result;
 }
 
-- (void)alarmEditSettingController:(id)a3 didEditAlarm:(id)a4
+- (void)alarmEditSettingController:(id)controller didEditAlarm:(id)alarm
 {
-  v5 = [a4 mutableCopy];
+  v5 = [alarm mutableCopy];
   [(MTAAlarmEditViewController *)self setEditedAlarm:v5];
 
-  v6 = [(MTAAlarmEditViewController *)self tableView];
-  [v6 reloadData];
+  tableView = [(MTAAlarmEditViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (id)tonePickerCellForTableView:(id)a3
+- (id)tonePickerCellForTableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
-  v5 = [v4 dequeueReusableCellWithIdentifier:@"tonePicker"];
+  v5 = [viewCopy dequeueReusableCellWithIdentifier:@"tonePicker"];
 
   if (objc_opt_isKindOfClass())
   {
@@ -845,11 +845,11 @@ LABEL_30:
   [(MTATonePickerCell *)v5 setTitle:v9];
 
   v10 = +[UIColor mtui_primaryColor];
-  v11 = [(MTATonePickerCell *)v5 textLabel];
-  [v11 setTextColor:v10];
+  textLabel = [(MTATonePickerCell *)v5 textLabel];
+  [textLabel setTextColor:v10];
 
-  v12 = [(MTAAlarmEditViewController *)self editedAlarm];
-  [(MTATonePickerCell *)v5 setAlarm:v12];
+  editedAlarm = [(MTAAlarmEditViewController *)self editedAlarm];
+  [(MTATonePickerCell *)v5 setAlarm:editedAlarm];
 
   v13 = +[UIColor mtui_foregroundColor];
   [(MTATonePickerCell *)v5 setBackgroundColor:v13];
@@ -857,37 +857,37 @@ LABEL_30:
   return v5;
 }
 
-- (id)timePickerCellForTableView:(id)a3
+- (id)timePickerCellForTableView:(id)view
 {
-  v4 = [a3 dequeueReusableCellWithIdentifier:@"timePicker"];
+  v4 = [view dequeueReusableCellWithIdentifier:@"timePicker"];
   if (!v4)
   {
     v4 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"timePicker"];
     [v4 setClipsToBounds:1];
     [v4 setSelectionStyle:0];
-    v5 = [v4 contentView];
-    [v5 addSubview:self->_timePicker];
+    contentView = [v4 contentView];
+    [contentView addSubview:self->_timePicker];
 
     v6 = +[UIColor clearColor];
     [v4 setBackgroundColor:v6];
 
     v7 = objc_opt_new();
-    v8 = [(UIDatePicker *)self->_timePicker leadingAnchor];
-    v9 = [v4 contentView];
-    v10 = [v9 leadingAnchor];
-    v11 = [v8 constraintEqualToAnchor:v10];
+    leadingAnchor = [(UIDatePicker *)self->_timePicker leadingAnchor];
+    contentView2 = [v4 contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v7 addObject:v11];
 
-    v12 = [(UIDatePicker *)self->_timePicker centerYAnchor];
-    v13 = [v4 contentView];
-    v14 = [v13 centerYAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    centerYAnchor = [(UIDatePicker *)self->_timePicker centerYAnchor];
+    contentView3 = [v4 contentView];
+    centerYAnchor2 = [contentView3 centerYAnchor];
+    v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v7 addObject:v15];
 
-    v16 = [(UIDatePicker *)self->_timePicker trailingAnchor];
-    v17 = [v4 contentView];
-    v18 = [v17 trailingAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18];
+    trailingAnchor = [(UIDatePicker *)self->_timePicker trailingAnchor];
+    contentView4 = [v4 contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v7 addObject:v19];
 
     [NSLayoutConstraint activateConstraints:v7];
@@ -896,19 +896,19 @@ LABEL_30:
   return v4;
 }
 
-- (void)didUpdateWithLabel:(id)a3 sender:(id)a4
+- (void)didUpdateWithLabel:(id)label sender:(id)sender
 {
-  v5 = a3;
-  v6 = [(MTAAlarmEditViewController *)self editedAlarm];
-  [v6 setTitle:v5];
+  labelCopy = label;
+  editedAlarm = [(MTAAlarmEditViewController *)self editedAlarm];
+  [editedAlarm setTitle:labelCopy];
 }
 
 - (id)defaultEditLabel
 {
-  v2 = [(MTAAlarmEditViewController *)self editedAlarm];
-  v3 = [v2 displayTitle];
+  editedAlarm = [(MTAAlarmEditViewController *)self editedAlarm];
+  displayTitle = [editedAlarm displayTitle];
 
-  return v3;
+  return displayTitle;
 }
 
 - (MTAAlarmEditViewControllerDelegate)delegate

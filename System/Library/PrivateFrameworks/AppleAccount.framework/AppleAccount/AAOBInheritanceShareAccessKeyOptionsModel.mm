@@ -1,18 +1,18 @@
 @interface AAOBInheritanceShareAccessKeyOptionsModel
-- (AAOBInheritanceShareAccessKeyOptionsModel)initWithBeneficiaryName:(id)a3 handle:(id)a4;
+- (AAOBInheritanceShareAccessKeyOptionsModel)initWithBeneficiaryName:(id)name handle:(id)handle;
 - (id)availableSharingOptions;
-- (id)detailTextForShareAccessKeyType:(unint64_t)a3;
-- (id)titleForShareAccessKeyType:(unint64_t)a3;
-- (void)availableSharingOptionsWithCompletion:(id)a3;
+- (id)detailTextForShareAccessKeyType:(unint64_t)type;
+- (id)titleForShareAccessKeyType:(unint64_t)type;
+- (void)availableSharingOptionsWithCompletion:(id)completion;
 @end
 
 @implementation AAOBInheritanceShareAccessKeyOptionsModel
 
-- (AAOBInheritanceShareAccessKeyOptionsModel)initWithBeneficiaryName:(id)a3 handle:(id)a4
+- (AAOBInheritanceShareAccessKeyOptionsModel)initWithBeneficiaryName:(id)name handle:(id)handle
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_beneficiaryName, a3);
+  nameCopy = name;
+  handleCopy = handle;
+  objc_storeStrong(&self->_beneficiaryName, name);
   v30.receiver = self;
   v30.super_class = AAOBInheritanceShareAccessKeyOptionsModel;
   v9 = [(AAOBInheritanceShareAccessKeyOptionsModel *)&v30 init];
@@ -22,7 +22,7 @@
     imageName = v9->_imageName;
     v9->_imageName = 0;
 
-    objc_storeStrong(&v10->_recipientHandle, a4);
+    objc_storeStrong(&v10->_recipientHandle, handle);
     v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
     if (+[AAUrlBagHelper isLCInviteAcceptanceEnabled])
     {
@@ -105,19 +105,19 @@
   }
 }
 
-- (void)availableSharingOptionsWithCompletion:(id)a3
+- (void)availableSharingOptionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   recipientHandle = self->_recipientHandle;
   if (recipientHandle && [(NSString *)recipientHandle length])
   {
-    v6 = [[AAMessagingDestination alloc] initWithHandle:self->_recipientHandle];
+    defaultSharingOptions = [[AAMessagingDestination alloc] initWithHandle:self->_recipientHandle];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __83__AAOBInheritanceShareAccessKeyOptionsModel_availableSharingOptionsWithCompletion___block_invoke;
     v9[3] = &unk_1E7C9A780;
-    v10 = v4;
-    [(AAMessagingDestination *)v6 isRegisteredToiMessageWithCompletion:v9];
+    v10 = completionCopy;
+    [(AAMessagingDestination *)defaultSharingOptions isRegisteredToiMessageWithCompletion:v9];
   }
 
   else
@@ -129,8 +129,8 @@
       _os_log_impl(&dword_1B6F6A000, v7, OS_LOG_TYPE_DEFAULT, "Handle is either nil or empty.", v8, 2u);
     }
 
-    v6 = [(AAOBInheritanceShareAccessKeyOptionsModel *)self defaultSharingOptions];
-    (*(v4 + 2))(v4, v6);
+    defaultSharingOptions = [(AAOBInheritanceShareAccessKeyOptionsModel *)self defaultSharingOptions];
+    (*(completionCopy + 2))(completionCopy, defaultSharingOptions);
   }
 }
 
@@ -162,9 +162,9 @@ uint64_t __83__AAOBInheritanceShareAccessKeyOptionsModel_availableSharingOptions
   }
 }
 
-- (id)titleForShareAccessKeyType:(unint64_t)a3
+- (id)titleForShareAccessKeyType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
     v5 = +[AAUrlBagHelper isLCInviteAcceptanceEnabled];
@@ -173,7 +173,7 @@ uint64_t __83__AAOBInheritanceShareAccessKeyOptionsModel_availableSharingOptions
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!type)
   {
     v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
     v5 = +[AAUrlBagHelper isLCInviteAcceptanceEnabled];
@@ -196,9 +196,9 @@ LABEL_5:
   return v3;
 }
 
-- (id)detailTextForShareAccessKeyType:(unint64_t)a3
+- (id)detailTextForShareAccessKeyType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
     if (+[AAUrlBagHelper isLCInviteAcceptanceEnabled])
@@ -216,7 +216,7 @@ LABEL_5:
 
   else
   {
-    if (a3)
+    if (type)
     {
       goto LABEL_12;
     }

@@ -1,11 +1,11 @@
 @interface _HKClinicalContact
-+ (id)clinicalContactWithContact:(id)a3 property:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSyncedContact:(id)a3;
-- (_HKClinicalContact)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)clinicalContactWithContact:(id)contact property:(id)property;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSyncedContact:(id)contact;
+- (_HKClinicalContact)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HKClinicalContact
@@ -13,62 +13,62 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_HKClinicalContact *)self name];
-  v5 = [(_HKClinicalContact *)self phoneNumber];
-  v6 = [v3 stringWithFormat:@"[%@]:%@", v4, v5];
+  name = [(_HKClinicalContact *)self name];
+  phoneNumber = [(_HKClinicalContact *)self phoneNumber];
+  v6 = [v3 stringWithFormat:@"[%@]:%@", name, phoneNumber];
 
   return v6;
 }
 
-- (_HKClinicalContact)initWithCoder:(id)a3
+- (_HKClinicalContact)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_HKClinicalContact *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HKClinicalContactNameKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HKClinicalContactNameKey"];
     [(_HKClinicalContact *)v5 setName:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HKClinicalContactNameContactIdentifierKey"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HKClinicalContactNameContactIdentifierKey"];
     [(_HKClinicalContact *)v5 setNameContactIdentifier:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HKEClinicalContactPhoneNumberKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HKEClinicalContactPhoneNumberKey"];
     [(_HKClinicalContact *)v5 setPhoneNumber:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HKClinicalContactPhoneNumberContactIdentifierKey"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HKClinicalContactPhoneNumberContactIdentifierKey"];
     [(_HKClinicalContact *)v5 setPhoneNumberContactIdentifier:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HKClinicalContactPhoneNumberLabelKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HKClinicalContactPhoneNumberLabelKey"];
     [(_HKClinicalContact *)v5 setPhoneNumberLabel:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HKClinicalContactRelationshipKey"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HKClinicalContactRelationshipKey"];
     [(_HKClinicalContact *)v5 setRelationship:v11];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(_HKClinicalContact *)self name];
-    v7 = [v5 name];
-    if (v6 != v7)
+    name = [(_HKClinicalContact *)self name];
+    name2 = [equalCopy name];
+    if (name != name2)
     {
-      v8 = [v5 name];
-      if (!v8)
+      name3 = [equalCopy name];
+      if (!name3)
       {
         v11 = 0;
         goto LABEL_35;
       }
 
-      v3 = v8;
-      v9 = [(_HKClinicalContact *)self name];
-      v10 = [v5 name];
-      if (![v9 isEqualToString:v10])
+      v3 = name3;
+      name4 = [(_HKClinicalContact *)self name];
+      name5 = [equalCopy name];
+      if (![name4 isEqualToString:name5])
       {
         v11 = 0;
 LABEL_34:
@@ -76,74 +76,74 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      v74 = v10;
-      v75 = v9;
+      v74 = name5;
+      v75 = name4;
     }
 
-    v12 = [(_HKClinicalContact *)self nameContactIdentifier];
-    v13 = [v5 nameContactIdentifier];
-    if (v12 != v13)
+    nameContactIdentifier = [(_HKClinicalContact *)self nameContactIdentifier];
+    nameContactIdentifier2 = [equalCopy nameContactIdentifier];
+    if (nameContactIdentifier != nameContactIdentifier2)
     {
-      v14 = [v5 nameContactIdentifier];
-      if (!v14)
+      nameContactIdentifier3 = [equalCopy nameContactIdentifier];
+      if (!nameContactIdentifier3)
       {
         goto LABEL_31;
       }
 
-      v15 = v14;
-      v16 = [(_HKClinicalContact *)self nameContactIdentifier];
-      v17 = [v5 nameContactIdentifier];
-      if (([v16 isEqualToString:v17] & 1) == 0)
+      v15 = nameContactIdentifier3;
+      nameContactIdentifier4 = [(_HKClinicalContact *)self nameContactIdentifier];
+      nameContactIdentifier5 = [equalCopy nameContactIdentifier];
+      if (([nameContactIdentifier4 isEqualToString:nameContactIdentifier5] & 1) == 0)
       {
 
         goto LABEL_31;
       }
 
-      v67 = v17;
-      v68 = v16;
+      v67 = nameContactIdentifier5;
+      v68 = nameContactIdentifier4;
       v69 = v15;
     }
 
-    v18 = [(_HKClinicalContact *)self phoneNumber];
-    v19 = [v5 phoneNumber];
-    v20 = v19;
-    v73 = v18;
-    if (v18 == v19)
+    phoneNumber = [(_HKClinicalContact *)self phoneNumber];
+    phoneNumber2 = [equalCopy phoneNumber];
+    v20 = phoneNumber2;
+    v73 = phoneNumber;
+    if (phoneNumber == phoneNumber2)
     {
-      v71 = v13;
-      v23 = v12;
+      v71 = nameContactIdentifier2;
+      v23 = nameContactIdentifier;
       v24 = v3;
-      v25 = v19;
+      v25 = phoneNumber2;
       goto LABEL_18;
     }
 
-    v21 = [v5 phoneNumber];
-    if (v21)
+    phoneNumber3 = [equalCopy phoneNumber];
+    if (phoneNumber3)
     {
-      v66 = v21;
-      v18 = [(_HKClinicalContact *)self phoneNumber];
-      v22 = [v5 phoneNumber];
-      if ([v18 isEqualToString:v22])
+      v66 = phoneNumber3;
+      phoneNumber = [(_HKClinicalContact *)self phoneNumber];
+      phoneNumber4 = [equalCopy phoneNumber];
+      if ([phoneNumber isEqualToString:phoneNumber4])
       {
-        v71 = v13;
-        v23 = v12;
+        v71 = nameContactIdentifier2;
+        v23 = nameContactIdentifier;
         v24 = v3;
         v25 = v20;
-        v63 = v22;
+        v63 = phoneNumber4;
 LABEL_18:
-        v26 = [(_HKClinicalContact *)self phoneNumberContactIdentifier];
-        [v5 phoneNumberContactIdentifier];
-        v70 = v72 = v26;
-        if (v26 == v70)
+        phoneNumberContactIdentifier = [(_HKClinicalContact *)self phoneNumberContactIdentifier];
+        [equalCopy phoneNumberContactIdentifier];
+        v70 = v72 = phoneNumberContactIdentifier;
+        if (phoneNumberContactIdentifier == v70)
         {
           v65 = v25;
           v3 = v24;
 LABEL_24:
-          v31 = [(_HKClinicalContact *)self phoneNumberLabel];
-          [v5 phoneNumberLabel];
+          phoneNumberLabel = [(_HKClinicalContact *)self phoneNumberLabel];
+          [equalCopy phoneNumberLabel];
           v62 = v61 = v23;
-          v64 = v18;
-          if (v31 == v62)
+          v64 = phoneNumber;
+          if (phoneNumberLabel == v62)
           {
             v59 = v3;
             v36 = v23;
@@ -152,8 +152,8 @@ LABEL_24:
 
           else
           {
-            v32 = [v5 phoneNumberLabel];
-            if (!v32)
+            phoneNumberLabel2 = [equalCopy phoneNumberLabel];
+            if (!phoneNumberLabel2)
             {
               v11 = 0;
               v50 = v63;
@@ -162,10 +162,10 @@ LABEL_24:
               goto LABEL_58;
             }
 
-            v56 = v32;
-            v33 = [(_HKClinicalContact *)self phoneNumberLabel];
-            v34 = [v5 phoneNumberLabel];
-            if (([v33 isEqualToString:v34] & 1) == 0)
+            v56 = phoneNumberLabel2;
+            phoneNumberLabel3 = [(_HKClinicalContact *)self phoneNumberLabel];
+            phoneNumberLabel4 = [equalCopy phoneNumberLabel];
+            if (([phoneNumberLabel3 isEqualToString:phoneNumberLabel4] & 1) == 0)
             {
 
               v11 = 0;
@@ -213,28 +213,28 @@ LABEL_66:
               goto LABEL_46;
             }
 
-            v54 = v34;
-            v55 = v33;
+            v54 = phoneNumberLabel4;
+            v55 = phoneNumberLabel3;
             v59 = v3;
             v35 = v71;
             v36 = v61;
           }
 
-          v40 = [(_HKClinicalContact *)self relationship];
-          v41 = [v5 relationship];
-          v11 = v40 == v41;
-          if (v40 != v41)
+          relationship = [(_HKClinicalContact *)self relationship];
+          relationship2 = [equalCopy relationship];
+          v11 = relationship == relationship2;
+          if (relationship != relationship2)
           {
-            v42 = [v5 relationship];
-            if (v42)
+            relationship3 = [equalCopy relationship];
+            if (relationship3)
             {
               v71 = v35;
-              v53 = v42;
-              v43 = [(_HKClinicalContact *)self relationship];
-              v44 = [v5 relationship];
-              v11 = [v43 isEqualToString:v44];
+              v53 = relationship3;
+              relationship4 = [(_HKClinicalContact *)self relationship];
+              relationship5 = [equalCopy relationship];
+              v11 = [relationship4 isEqualToString:relationship5];
 
-              if (v31 != v62)
+              if (phoneNumberLabel != v62)
               {
               }
 
@@ -253,7 +253,7 @@ LABEL_66:
             }
           }
 
-          if (v31 == v62)
+          if (phoneNumberLabel == v62)
           {
 
             v51 = v73;
@@ -287,9 +287,9 @@ LABEL_60:
             }
 
 LABEL_33:
-            v10 = v74;
-            v9 = v75;
-            if (v6 != v7)
+            name5 = v74;
+            name4 = v75;
+            if (name != name2)
             {
               goto LABEL_34;
             }
@@ -305,11 +305,11 @@ LABEL_59:
           goto LABEL_60;
         }
 
-        v27 = [v5 phoneNumberContactIdentifier];
+        phoneNumberContactIdentifier2 = [equalCopy phoneNumberContactIdentifier];
         v28 = v25;
-        if (!v27)
+        if (!phoneNumberContactIdentifier2)
         {
-          v64 = v18;
+          v64 = phoneNumber;
           v11 = 0;
           v38 = v63;
           v39 = v73;
@@ -319,14 +319,14 @@ LABEL_59:
         }
 
         v65 = v25;
-        v60 = v27;
-        v29 = [(_HKClinicalContact *)self phoneNumberContactIdentifier];
-        v30 = [v5 phoneNumberContactIdentifier];
+        v60 = phoneNumberContactIdentifier2;
+        phoneNumberContactIdentifier3 = [(_HKClinicalContact *)self phoneNumberContactIdentifier];
+        phoneNumberContactIdentifier4 = [equalCopy phoneNumberContactIdentifier];
         v3 = v24;
-        if ([v29 isEqualToString:v30])
+        if ([phoneNumberContactIdentifier3 isEqualToString:phoneNumberContactIdentifier4])
         {
-          v57 = v29;
-          v58 = v30;
+          v57 = phoneNumberContactIdentifier3;
+          v58 = phoneNumberContactIdentifier4;
           goto LABEL_24;
         }
 
@@ -344,7 +344,7 @@ LABEL_32:
       }
     }
 
-    if (v12 != v13)
+    if (nameContactIdentifier != nameContactIdentifier2)
     {
     }
 
@@ -359,24 +359,24 @@ LABEL_36:
   return v11;
 }
 
-- (BOOL)isEqualToSyncedContact:(id)a3
+- (BOOL)isEqualToSyncedContact:(id)contact
 {
-  v8 = a3;
-  v9 = [(_HKClinicalContact *)self name];
-  v10 = [v8 name];
-  if (v9 != v10)
+  contactCopy = contact;
+  name = [(_HKClinicalContact *)self name];
+  name2 = [contactCopy name];
+  if (name != name2)
   {
-    v11 = [v8 name];
-    if (!v11)
+    name3 = [contactCopy name];
+    if (!name3)
     {
       v12 = 0;
       goto LABEL_39;
     }
 
-    v5 = v11;
-    v3 = [(_HKClinicalContact *)self name];
-    v4 = [v8 name];
-    if (![v3 isEqualToString:v4])
+    v5 = name3;
+    name4 = [(_HKClinicalContact *)self name];
+    name5 = [contactCopy name];
+    if (![name4 isEqualToString:name5])
     {
       v12 = 0;
 LABEL_38:
@@ -385,17 +385,17 @@ LABEL_38:
     }
   }
 
-  v13 = [(_HKClinicalContact *)self phoneNumber];
-  v14 = [v8 phoneNumber];
-  if (v13 == v14)
+  phoneNumber = [(_HKClinicalContact *)self phoneNumber];
+  phoneNumber2 = [contactCopy phoneNumber];
+  if (phoneNumber == phoneNumber2)
   {
-    v43 = v13;
+    v43 = phoneNumber;
   }
 
   else
   {
-    v15 = [v8 phoneNumber];
-    if (!v15)
+    phoneNumber3 = [contactCopy phoneNumber];
+    if (!phoneNumber3)
     {
       v12 = 0;
 LABEL_31:
@@ -403,20 +403,20 @@ LABEL_31:
       goto LABEL_37;
     }
 
-    v44 = v4;
-    v16 = v3;
+    v44 = name5;
+    v16 = name4;
     v17 = v5;
-    v41 = v15;
-    v6 = [(_HKClinicalContact *)self phoneNumber];
-    v18 = [v8 phoneNumber];
-    if (([v6 isEqualToString:v18] & 1) == 0)
+    v41 = phoneNumber3;
+    phoneNumber4 = [(_HKClinicalContact *)self phoneNumber];
+    phoneNumber5 = [contactCopy phoneNumber];
+    if (([phoneNumber4 isEqualToString:phoneNumber5] & 1) == 0)
     {
 
       v12 = 0;
       v5 = v17;
-      v3 = v16;
-      v4 = v44;
-      if (v9 == v10)
+      name4 = v16;
+      name5 = v44;
+      if (name == name2)
       {
         goto LABEL_39;
       }
@@ -424,45 +424,45 @@ LABEL_31:
       goto LABEL_38;
     }
 
-    v37 = v18;
-    v43 = v13;
+    v37 = phoneNumber5;
+    v43 = phoneNumber;
     v5 = v17;
-    v3 = v16;
-    v4 = v44;
+    name4 = v16;
+    name5 = v44;
   }
 
-  v19 = [(_HKClinicalContact *)self phoneNumberLabel];
-  v46 = [v8 phoneNumberLabel];
-  v42 = v19;
-  v40 = v6;
-  if (v19 == v46)
+  phoneNumberLabel = [(_HKClinicalContact *)self phoneNumberLabel];
+  phoneNumberLabel2 = [contactCopy phoneNumberLabel];
+  v42 = phoneNumberLabel;
+  v40 = phoneNumber4;
+  if (phoneNumberLabel == phoneNumberLabel2)
   {
-    v38 = v3;
-    v39 = v14;
-    v45 = v4;
+    v38 = name4;
+    v39 = phoneNumber2;
+    v45 = name5;
     [(_HKClinicalContact *)self relationship];
   }
 
   else
   {
-    v20 = [v8 phoneNumberLabel];
-    if (!v20)
+    phoneNumberLabel3 = [contactCopy phoneNumberLabel];
+    if (!phoneNumberLabel3)
     {
       v12 = 0;
-      v30 = v19;
+      v30 = phoneNumberLabel;
       goto LABEL_27;
     }
 
-    v39 = v14;
-    v36 = v20;
-    v21 = [(_HKClinicalContact *)self phoneNumberLabel];
-    v14 = [v8 phoneNumberLabel];
-    if (([v21 isEqualToString:v14] & 1) == 0)
+    v39 = phoneNumber2;
+    v36 = phoneNumberLabel3;
+    phoneNumberLabel4 = [(_HKClinicalContact *)self phoneNumberLabel];
+    phoneNumber2 = [contactCopy phoneNumberLabel];
+    if (([phoneNumberLabel4 isEqualToString:phoneNumber2] & 1) == 0)
     {
 
       v12 = 0;
-      v13 = v43;
-      v14 = v39;
+      phoneNumber = v43;
+      phoneNumber2 = v39;
       v29 = v43 == v39;
 LABEL_29:
       if (!v29)
@@ -472,26 +472,26 @@ LABEL_29:
       goto LABEL_31;
     }
 
-    v45 = v4;
-    v38 = v3;
+    v45 = name5;
+    v38 = name4;
     [(_HKClinicalContact *)self relationship];
   }
   v22 = ;
-  v23 = [v8 relationship];
-  v24 = v23;
-  v12 = v22 == v23;
-  if (v22 == v23)
+  relationship = [contactCopy relationship];
+  v24 = relationship;
+  v12 = v22 == relationship;
+  if (v22 == relationship)
   {
 
     v30 = v42;
-    if (v42 == v46)
+    if (v42 == phoneNumberLabel2)
     {
 LABEL_33:
 
       v31 = v43;
-      v4 = v45;
-      v3 = v38;
-      v14 = v39;
+      name5 = v45;
+      name4 = v38;
+      phoneNumber2 = v39;
       goto LABEL_34;
     }
   }
@@ -499,47 +499,47 @@ LABEL_33:
   else
   {
     v35 = v5;
-    v25 = [v8 relationship];
-    if (v25)
+    relationship2 = [contactCopy relationship];
+    if (relationship2)
     {
-      v26 = v25;
-      v27 = [(_HKClinicalContact *)self relationship];
-      v28 = [v8 relationship];
-      v12 = [v27 isEqualToString:v28];
+      v26 = relationship2;
+      relationship3 = [(_HKClinicalContact *)self relationship];
+      relationship4 = [contactCopy relationship];
+      v12 = [relationship3 isEqualToString:relationship4];
 
-      if (v42 != v46)
+      if (v42 != phoneNumberLabel2)
       {
       }
 
-      v13 = v43;
-      v4 = v45;
-      v3 = v38;
-      v14 = v39;
+      phoneNumber = v43;
+      name5 = v45;
+      name4 = v38;
+      phoneNumber2 = v39;
       v29 = v43 == v39;
       v5 = v35;
       goto LABEL_29;
     }
 
     v30 = v42;
-    if (v42 == v46)
+    if (v42 == phoneNumberLabel2)
     {
       goto LABEL_33;
     }
   }
 
-  v3 = v38;
-  v14 = v39;
-  v4 = v45;
+  name4 = v38;
+  phoneNumber2 = v39;
+  name5 = v45;
 LABEL_27:
 
   v31 = v43;
 LABEL_34:
-  if (v31 != v14)
+  if (v31 != phoneNumber2)
   {
   }
 
 LABEL_37:
-  if (v9 != v10)
+  if (name != name2)
   {
     goto LABEL_38;
   }
@@ -549,76 +549,76 @@ LABEL_39:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_HKClinicalContact *)self name];
-  [v4 encodeObject:v5 forKey:@"HKClinicalContactNameKey"];
+  coderCopy = coder;
+  name = [(_HKClinicalContact *)self name];
+  [coderCopy encodeObject:name forKey:@"HKClinicalContactNameKey"];
 
-  v6 = [(_HKClinicalContact *)self nameContactIdentifier];
-  [v4 encodeObject:v6 forKey:@"HKClinicalContactNameContactIdentifierKey"];
+  nameContactIdentifier = [(_HKClinicalContact *)self nameContactIdentifier];
+  [coderCopy encodeObject:nameContactIdentifier forKey:@"HKClinicalContactNameContactIdentifierKey"];
 
-  v7 = [(_HKClinicalContact *)self phoneNumber];
-  [v4 encodeObject:v7 forKey:@"HKEClinicalContactPhoneNumberKey"];
+  phoneNumber = [(_HKClinicalContact *)self phoneNumber];
+  [coderCopy encodeObject:phoneNumber forKey:@"HKEClinicalContactPhoneNumberKey"];
 
-  v8 = [(_HKClinicalContact *)self phoneNumberContactIdentifier];
-  [v4 encodeObject:v8 forKey:@"HKClinicalContactPhoneNumberContactIdentifierKey"];
+  phoneNumberContactIdentifier = [(_HKClinicalContact *)self phoneNumberContactIdentifier];
+  [coderCopy encodeObject:phoneNumberContactIdentifier forKey:@"HKClinicalContactPhoneNumberContactIdentifierKey"];
 
-  v9 = [(_HKClinicalContact *)self phoneNumberLabel];
-  [v4 encodeObject:v9 forKey:@"HKClinicalContactPhoneNumberLabelKey"];
+  phoneNumberLabel = [(_HKClinicalContact *)self phoneNumberLabel];
+  [coderCopy encodeObject:phoneNumberLabel forKey:@"HKClinicalContactPhoneNumberLabelKey"];
 
-  v10 = [(_HKClinicalContact *)self relationship];
-  [v4 encodeObject:v10 forKey:@"HKClinicalContactRelationshipKey"];
+  relationship = [(_HKClinicalContact *)self relationship];
+  [coderCopy encodeObject:relationship forKey:@"HKClinicalContactRelationshipKey"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_HKClinicalContact allocWithZone:?]];
-  v5 = [(_HKClinicalContact *)self name];
-  v6 = [v5 copy];
+  name = [(_HKClinicalContact *)self name];
+  v6 = [name copy];
   [(_HKClinicalContact *)v4 setName:v6];
 
-  v7 = [(_HKClinicalContact *)self nameContactIdentifier];
-  v8 = [v7 copy];
+  nameContactIdentifier = [(_HKClinicalContact *)self nameContactIdentifier];
+  v8 = [nameContactIdentifier copy];
   [(_HKClinicalContact *)v4 setNameContactIdentifier:v8];
 
-  v9 = [(_HKClinicalContact *)self phoneNumber];
-  v10 = [v9 copy];
+  phoneNumber = [(_HKClinicalContact *)self phoneNumber];
+  v10 = [phoneNumber copy];
   [(_HKClinicalContact *)v4 setPhoneNumber:v10];
 
-  v11 = [(_HKClinicalContact *)self phoneNumberContactIdentifier];
-  v12 = [v11 copy];
+  phoneNumberContactIdentifier = [(_HKClinicalContact *)self phoneNumberContactIdentifier];
+  v12 = [phoneNumberContactIdentifier copy];
   [(_HKClinicalContact *)v4 setPhoneNumberContactIdentifier:v12];
 
-  v13 = [(_HKClinicalContact *)self phoneNumberLabel];
-  v14 = [v13 copy];
+  phoneNumberLabel = [(_HKClinicalContact *)self phoneNumberLabel];
+  v14 = [phoneNumberLabel copy];
   [(_HKClinicalContact *)v4 setPhoneNumberLabel:v14];
 
-  v15 = [(_HKClinicalContact *)self relationship];
-  v16 = [v15 copy];
+  relationship = [(_HKClinicalContact *)self relationship];
+  v16 = [relationship copy];
   [(_HKClinicalContact *)v4 setRelationship:v16];
 
   return v4;
 }
 
-+ (id)clinicalContactWithContact:(id)a3 property:(id)a4
++ (id)clinicalContactWithContact:(id)contact property:(id)property
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  contactCopy = contact;
+  propertyCopy = property;
+  v7 = propertyCopy;
+  if (propertyCopy)
   {
-    v8 = [v6 contact];
+    contact = [propertyCopy contact];
 
-    v5 = v8;
+    contactCopy = contact;
   }
 
   v9 = objc_alloc_init(_HKClinicalContact);
-  v10 = _HKFormattedMedicalIDNameForContact(v5);
+  v10 = _HKFormattedMedicalIDNameForContact(contactCopy);
   [(_HKClinicalContact *)v9 setName:v10];
 
-  v11 = [v5 identifier];
-  [(_HKClinicalContact *)v9 setNameContactIdentifier:v11];
+  identifier = [contactCopy identifier];
+  [(_HKClinicalContact *)v9 setNameContactIdentifier:identifier];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -626,7 +626,7 @@ LABEL_39:
   v14[3] = &unk_1E73818D0;
   v12 = v9;
   v15 = v12;
-  _HKMedicalIDPhoneNumberForContact(v5, v7, v14);
+  _HKMedicalIDPhoneNumberForContact(contactCopy, v7, v14);
 
   return v12;
 }

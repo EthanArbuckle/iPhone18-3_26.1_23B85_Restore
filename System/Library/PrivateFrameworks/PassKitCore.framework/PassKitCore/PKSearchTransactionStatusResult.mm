@@ -1,18 +1,18 @@
 @interface PKSearchTransactionStatusResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PKSearchTransactionStatusResult)initWithCoder:(id)a3;
+- (PKSearchTransactionStatusResult)initWithCoder:(id)coder;
 @end
 
 @implementation PKSearchTransactionStatusResult
 
-- (PKSearchTransactionStatusResult)initWithCoder:(id)a3
+- (PKSearchTransactionStatusResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKSearchTransactionStatusResult *)self init];
   if (v5)
   {
-    v5->_transactionStatus = [v4 decodeIntegerForKey:@"transactionStatus"];
+    v5->_transactionStatus = [coderCopy decodeIntegerForKey:@"transactionStatus"];
   }
 
   return v5;
@@ -31,11 +31,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_transactionStatus == v4[1];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_transactionStatus == equalCopy[1];
 
   return v5;
 }

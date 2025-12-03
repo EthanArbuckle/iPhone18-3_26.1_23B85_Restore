@@ -2,9 +2,9 @@
 + (id)sharedObserver;
 - (TSKPopoverUndoObserver)init;
 - (void)dealloc;
-- (void)setObservedUndoManager:(id)a3;
-- (void)undoManagerWillRedo:(id)a3;
-- (void)undoManagerWillUndo:(id)a3;
+- (void)setObservedUndoManager:(id)manager;
+- (void)undoManagerWillRedo:(id)redo;
+- (void)undoManagerWillUndo:(id)undo;
 @end
 
 @implementation TSKPopoverUndoObserver
@@ -47,22 +47,22 @@ TSKPopoverUndoObserver *__40__TSKPopoverUndoObserver_sharedObserver__block_invok
   return result;
 }
 
-- (void)setObservedUndoManager:(id)a3
+- (void)setObservedUndoManager:(id)manager
 {
-  if ((a3 == 0) == (self->mUndoManager == 0))
+  if ((manager == 0) == (self->mUndoManager == 0))
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKPopoverUndoObserver setObservedUndoManager:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverUndoObserver.m"), 50, @"In [TSKPopoverUndoObserver setObservedUndoManager:] mUndoManager must be nil when setting a non-nil undoManager, and non-nil when setting a nil undoManager."}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverUndoObserver.m"), 50, @"In [TSKPopoverUndoObserver setObservedUndoManager:] mUndoManager must be nil when setting a non-nil undoManager, and non-nil when setting a nil undoManager."}];
   }
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  v8 = v7;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v8 = defaultCenter;
   v9 = MEMORY[0x277CCA828];
   v10 = MEMORY[0x277CCA820];
   if (self->mUndoManager)
   {
-    [v7 removeObserver:self name:*MEMORY[0x277CCA828] object:?];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277CCA828] object:?];
     [v8 removeObserver:self name:*v10 object:self->mUndoManager];
     mUndoManager = self->mUndoManager;
   }
@@ -73,11 +73,11 @@ TSKPopoverUndoObserver *__40__TSKPopoverUndoObserver_sharedObserver__block_invok
   }
 
   v12 = mUndoManager;
-  v13 = a3;
-  self->mUndoManager = v13;
-  if (v13)
+  managerCopy = manager;
+  self->mUndoManager = managerCopy;
+  if (managerCopy)
   {
-    [v8 addObserver:self selector:sel_undoManagerWillUndo_ name:*v9 object:v13];
+    [v8 addObserver:self selector:sel_undoManagerWillUndo_ name:*v9 object:managerCopy];
     v14 = *v10;
     v15 = self->mUndoManager;
 
@@ -85,7 +85,7 @@ TSKPopoverUndoObserver *__40__TSKPopoverUndoObserver_sharedObserver__block_invok
   }
 }
 
-- (void)undoManagerWillUndo:(id)a3
+- (void)undoManagerWillUndo:(id)undo
 {
   v26 = *MEMORY[0x277D85DE8];
   v20 = 0u;
@@ -153,7 +153,7 @@ TSKPopoverUndoObserver *__40__TSKPopoverUndoObserver_sharedObserver__block_invok
   }
 }
 
-- (void)undoManagerWillRedo:(id)a3
+- (void)undoManagerWillRedo:(id)redo
 {
   v26 = *MEMORY[0x277D85DE8];
   v20 = 0u;

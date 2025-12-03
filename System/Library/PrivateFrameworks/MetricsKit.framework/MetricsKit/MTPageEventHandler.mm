@@ -1,11 +1,11 @@
 @interface MTPageEventHandler
 - (NSMutableArray)trackedPageHistory;
 - (id)eventType;
-- (id)eventVersion:(id)a3;
+- (id)eventVersion:(id)version;
 - (id)knownFields;
-- (id)pageHistory:(id)a3;
-- (void)didCreateMetricsData:(id)a3;
-- (void)updatePageHistoryWithPage:(id)a3;
+- (id)pageHistory:(id)history;
+- (void)didCreateMetricsData:(id)data;
+- (void)updatePageHistoryWithPage:(id)page;
 @end
 
 @implementation MTPageEventHandler
@@ -28,20 +28,20 @@
 - (id)knownFields
 {
   v11[6] = *MEMORY[0x277D85DE8];
-  v3 = [(MTEventDataProvider *)self delegate];
+  delegate = [(MTEventDataProvider *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MTEventDataProvider *)self delegate];
-    v6 = [v5 knownFields];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    knownFields = [delegate2 knownFields];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = MTPageEventHandler;
-    v5 = [(MTEventHandler *)&v10 knownFields];
+    delegate2 = [(MTEventHandler *)&v10 knownFields];
     v11[0] = @"extRefUrl";
     v11[1] = @"refApp";
     v11[2] = @"pageHistory";
@@ -49,23 +49,23 @@
     v11[4] = @"searchFilters";
     v11[5] = @"searchTerm";
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:6];
-    v6 = [v5 arrayByAddingObjectsFromArray:v7];
+    knownFields = [delegate2 arrayByAddingObjectsFromArray:v7];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return knownFields;
 }
 
 - (id)eventType
 {
   v7.receiver = self;
   v7.super_class = MTPageEventHandler;
-  v2 = [(MTEventHandler *)&v7 eventType];
-  v3 = v2;
-  if (v2)
+  eventType = [(MTEventHandler *)&v7 eventType];
+  v3 = eventType;
+  if (eventType)
   {
-    v4 = v2;
+    v4 = eventType;
   }
 
   else
@@ -78,11 +78,11 @@
   return v4;
 }
 
-- (id)eventVersion:(id)a3
+- (id)eventVersion:(id)version
 {
   v8.receiver = self;
   v8.super_class = MTPageEventHandler;
-  v3 = [(MTEventHandler *)&v8 eventVersion:a3];
+  v3 = [(MTEventHandler *)&v8 eventVersion:version];
   v4 = v3;
   if (v3)
   {
@@ -99,34 +99,34 @@
   return v5;
 }
 
-- (id)pageHistory:(id)a3
+- (id)pageHistory:(id)history
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  historyCopy = history;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [(MTPageEventHandler *)v7 pageHistory:v4];
+    selfCopy = [(MTEventDataProvider *)self delegate];
+    v8 = [(MTPageEventHandler *)selfCopy pageHistory:historyCopy];
   }
 
   else
   {
-    v9 = [v4 objectForKeyedSubscript:@"pageHistory"];
+    v9 = [historyCopy objectForKeyedSubscript:@"pageHistory"];
 
     if (v9)
     {
-      v8 = [v4 objectForKeyedSubscript:@"pageHistory"];
+      v8 = [historyCopy objectForKeyedSubscript:@"pageHistory"];
       goto LABEL_7;
     }
 
-    v7 = self;
-    objc_sync_enter(v7);
-    v10 = [(MTPageEventHandler *)v7 trackedPageHistory];
-    v8 = [v10 copy];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    trackedPageHistory = [(MTPageEventHandler *)selfCopy trackedPageHistory];
+    v8 = [trackedPageHistory copy];
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 
 LABEL_7:
@@ -134,41 +134,41 @@ LABEL_7:
   return v8;
 }
 
-- (void)updatePageHistoryWithPage:(id)a3
+- (void)updatePageHistoryWithPage:(id)page
 {
-  v4 = a3;
-  if (v4)
+  pageCopy = page;
+  if (pageCopy)
   {
-    v10 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(MTPageEventHandler *)v5 trackedPageHistory];
-    v7 = [v6 count];
+    v10 = pageCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    trackedPageHistory = [(MTPageEventHandler *)selfCopy trackedPageHistory];
+    v7 = [trackedPageHistory count];
 
     if (v7 >= 5)
     {
-      v8 = [(MTPageEventHandler *)v5 trackedPageHistory];
-      [v8 removeObjectAtIndex:0];
+      trackedPageHistory2 = [(MTPageEventHandler *)selfCopy trackedPageHistory];
+      [trackedPageHistory2 removeObjectAtIndex:0];
     }
 
-    v9 = [(MTPageEventHandler *)v5 trackedPageHistory];
-    [v9 addObject:v10];
+    trackedPageHistory3 = [(MTPageEventHandler *)selfCopy trackedPageHistory];
+    [trackedPageHistory3 addObject:v10];
 
-    objc_sync_exit(v5);
-    v4 = v10;
+    objc_sync_exit(selfCopy);
+    pageCopy = v10;
   }
 }
 
-- (void)didCreateMetricsData:(id)a3
+- (void)didCreateMetricsData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __43__MTPageEventHandler_didCreateMetricsData___block_invoke;
   v5[3] = &unk_2798CD4A8;
   objc_copyWeak(&v6, &location);
-  [v4 addPostProcessingBlock:v5];
+  [dataCopy addPostProcessingBlock:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }

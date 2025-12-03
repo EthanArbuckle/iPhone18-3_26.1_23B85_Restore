@@ -1,8 +1,8 @@
 @interface PLResult
-+ (id)failureWithError:(id)a3;
-+ (id)successWithResult:(id)a3;
++ (id)failureWithError:(id)error;
++ (id)successWithResult:(id)result;
 - (id)initForSubclasses;
-- (id)resultByWrappingUnderlyingErrorWithDomain:(id)a3 code:(int64_t)a4 debugDescription:(id)a5;
+- (id)resultByWrappingUnderlyingErrorWithDomain:(id)domain code:(int64_t)code debugDescription:(id)description;
 @end
 
 @implementation PLResult
@@ -14,41 +14,41 @@
   return [(PLResult *)&v3 init];
 }
 
-- (id)resultByWrappingUnderlyingErrorWithDomain:(id)a3 code:(int64_t)a4 debugDescription:(id)a5
+- (id)resultByWrappingUnderlyingErrorWithDomain:(id)domain code:(int64_t)code debugDescription:(id)description
 {
-  v8 = a3;
-  v9 = a5;
+  domainCopy = domain;
+  descriptionCopy = description;
   if ([(PLResult *)self isSuccess])
   {
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [v11 setObject:v9 forKeyedSubscript:*MEMORY[0x1E696A278]];
-    v12 = [(PLResult *)self error];
-    [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+    [v11 setObject:descriptionCopy forKeyedSubscript:*MEMORY[0x1E696A278]];
+    error = [(PLResult *)self error];
+    [v11 setObject:error forKeyedSubscript:*MEMORY[0x1E696AA08]];
 
-    v13 = [MEMORY[0x1E696ABC0] errorWithDomain:v8 code:a4 userInfo:v11];
-    v10 = [objc_opt_class() failureWithError:v13];
+    v13 = [MEMORY[0x1E696ABC0] errorWithDomain:domainCopy code:code userInfo:v11];
+    selfCopy = [objc_opt_class() failureWithError:v13];
   }
 
-  return v10;
+  return selfCopy;
 }
 
-+ (id)failureWithError:(id)a3
++ (id)failureWithError:(id)error
 {
-  v3 = a3;
-  v4 = [[PLResultFailure alloc] initWithError:v3];
+  errorCopy = error;
+  v4 = [[PLResultFailure alloc] initWithError:errorCopy];
 
   return v4;
 }
 
-+ (id)successWithResult:(id)a3
++ (id)successWithResult:(id)result
 {
-  v3 = a3;
-  v4 = [[PLResultSuccess alloc] initWithResult:v3];
+  resultCopy = result;
+  v4 = [[PLResultSuccess alloc] initWithResult:resultCopy];
 
   return v4;
 }

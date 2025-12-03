@@ -1,35 +1,35 @@
 @interface BatterySwellingViewController
-- (BOOL)checkIfCorrectOrientation:(int)a3;
+- (BOOL)checkIfCorrectOrientation:(int)orientation;
 - (BOOL)setupHIDForceTouchImageRecognizer;
 - (id)instructionImageName;
-- (id)mergeFrames:(signed __int16 *)a3;
+- (id)mergeFrames:(signed __int16 *)frames;
 - (signed)allocatePixelMaps;
-- (void)checkAngle:(id)a3;
+- (void)checkAngle:(id)angle;
 - (void)determineBatteryGasGaugeTemp;
-- (void)deviceHasFlipped:(id)a3;
+- (void)deviceHasFlipped:(id)flipped;
 - (void)disableSensorMonitoring;
 - (void)enableSensorMonitoring;
-- (void)endTestWithStatusCode:(id)a3;
-- (void)receivedExcessiveEventNotification:(id)a3;
-- (void)samplingFinished:(id)a3;
+- (void)endTestWithStatusCode:(id)code;
+- (void)receivedExcessiveEventNotification:(id)notification;
+- (void)samplingFinished:(id)finished;
 - (void)setupAngleMonitoring;
 - (void)setupAngleMotionManager;
 - (void)setupExcessiveMotionNotification;
-- (void)setupForSamplingCompleted:(id)a3;
+- (void)setupForSamplingCompleted:(id)completed;
 - (void)setupView;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 - (void)startExcessiveMotionMonitoring;
 - (void)stopExcessiveMotionMonitoring;
 - (void)teardown;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation BatterySwellingViewController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  [(BatterySwellingViewController *)self setInputs:a3, a4];
+  [(BatterySwellingViewController *)self setInputs:inputs, responder];
   [(BatterySwellingViewController *)self setFaceUpPixelMaps:0];
   [(BatterySwellingViewController *)self setFaceDownPixelMaps:0];
   [(BatterySwellingViewController *)self setIsFinishedFaceDownPixelMaps:0];
@@ -45,14 +45,14 @@
   v3 = objc_alloc_init(CMMotionManager);
   [(BatterySwellingViewController *)self setMotionManager:v3];
 
-  v4 = [(BatterySwellingViewController *)self motionManager];
-  [v4 setShowsDeviceMovementDisplay:1];
+  motionManager = [(BatterySwellingViewController *)self motionManager];
+  [motionManager setShowsDeviceMovementDisplay:1];
 
-  v5 = [(BatterySwellingViewController *)self motionManager];
-  [v5 setDeviceMotionUpdateInterval:0.00999999978];
+  motionManager2 = [(BatterySwellingViewController *)self motionManager];
+  [motionManager2 setDeviceMotionUpdateInterval:0.00999999978];
 
-  v6 = [(BatterySwellingViewController *)self motionManager];
-  [v6 startDeviceMotionUpdatesUsingReferenceFrame:1];
+  motionManager3 = [(BatterySwellingViewController *)self motionManager];
+  [motionManager3 startDeviceMotionUpdatesUsingReferenceFrame:1];
 }
 
 - (BOOL)setupHIDForceTouchImageRecognizer
@@ -148,35 +148,35 @@
 
 - (signed)allocatePixelMaps
 {
-  v3 = [(BatterySwellingViewController *)self inputs];
-  v4 = [v3 pixelMapWidth];
-  v5 = [(BatterySwellingViewController *)self inputs];
-  v6 = v4 * [v5 pixelMapHeight];
-  v7 = [(BatterySwellingViewController *)self inputs];
-  v8 = malloc_type_malloc(2 * v6 * [v7 numFramesToRecord], 0x1000040BDFB0063uLL);
+  inputs = [(BatterySwellingViewController *)self inputs];
+  pixelMapWidth = [inputs pixelMapWidth];
+  inputs2 = [(BatterySwellingViewController *)self inputs];
+  v6 = pixelMapWidth * [inputs2 pixelMapHeight];
+  inputs3 = [(BatterySwellingViewController *)self inputs];
+  v8 = malloc_type_malloc(2 * v6 * [inputs3 numFramesToRecord], 0x1000040BDFB0063uLL);
 
-  v9 = [(BatterySwellingViewController *)self inputs];
-  v10 = malloc_type_malloc(8 * [v9 numFramesToRecord], 0x10040436913F5uLL);
+  inputs4 = [(BatterySwellingViewController *)self inputs];
+  v10 = malloc_type_malloc(8 * [inputs4 numFramesToRecord], 0x10040436913F5uLL);
 
-  v11 = [(BatterySwellingViewController *)self inputs];
-  LODWORD(v7) = [v11 numFramesToRecord];
+  inputs5 = [(BatterySwellingViewController *)self inputs];
+  LODWORD(inputs3) = [inputs5 numFramesToRecord];
 
-  if (v7 >= 1)
+  if (inputs3 >= 1)
   {
     v12 = 0;
     do
     {
-      v13 = [(BatterySwellingViewController *)self inputs];
-      v14 = [v13 pixelMapWidth] * v12;
-      v15 = [(BatterySwellingViewController *)self inputs];
-      v10[v12] = &v8[2 * v14 * [v15 pixelMapHeight]];
+      inputs6 = [(BatterySwellingViewController *)self inputs];
+      v14 = [inputs6 pixelMapWidth] * v12;
+      inputs7 = [(BatterySwellingViewController *)self inputs];
+      v10[v12] = &v8[2 * v14 * [inputs7 pixelMapHeight]];
 
       ++v12;
-      v16 = [(BatterySwellingViewController *)self inputs];
-      LODWORD(v15) = [v16 numFramesToRecord];
+      inputs8 = [(BatterySwellingViewController *)self inputs];
+      LODWORD(inputs7) = [inputs8 numFramesToRecord];
     }
 
-    while (v12 < v15);
+    while (v12 < inputs7);
   }
 
   return v10;
@@ -211,28 +211,28 @@
 - (void)setupView
 {
   v3 = +[UIColor whiteColor];
-  v4 = [(BatterySwellingViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(BatterySwellingViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = [UIImageView alloc];
-  v6 = [(BatterySwellingViewController *)self view];
-  [v6 bounds];
+  view2 = [(BatterySwellingViewController *)self view];
+  [view2 bounds];
   v7 = [v5 initWithFrame:?];
   [(BatterySwellingViewController *)self setFlipInstructionImageView:v7];
 
-  v13 = [(BatterySwellingViewController *)self instructionImageName];
-  if (v13)
+  instructionImageName = [(BatterySwellingViewController *)self instructionImageName];
+  if (instructionImageName)
   {
-    v8 = [(BatterySwellingViewController *)self instructionImageName];
-    v9 = [(BatterySwellingViewController *)self flipInstructionImageView];
-    [v9 setImage:v8];
+    instructionImageName2 = [(BatterySwellingViewController *)self instructionImageName];
+    flipInstructionImageView = [(BatterySwellingViewController *)self flipInstructionImageView];
+    [flipInstructionImageView setImage:instructionImageName2];
 
-    v10 = [(BatterySwellingViewController *)self flipInstructionImageView];
-    [v10 setAlpha:0.0];
+    flipInstructionImageView2 = [(BatterySwellingViewController *)self flipInstructionImageView];
+    [flipInstructionImageView2 setAlpha:0.0];
 
-    v11 = [(BatterySwellingViewController *)self view];
-    v12 = [(BatterySwellingViewController *)self flipInstructionImageView];
-    [v11 addSubview:v12];
+    view3 = [(BatterySwellingViewController *)self view];
+    flipInstructionImageView3 = [(BatterySwellingViewController *)self flipInstructionImageView];
+    [view3 addSubview:flipInstructionImageView3];
   }
 
   else
@@ -246,33 +246,33 @@
   v3 = [[DAMotionDetector alloc] initWithThreshold:&off_10000C7D8];
   [(BatterySwellingViewController *)self setMotionDetectionMonitor:v3];
 
-  v4 = [(BatterySwellingViewController *)self motionDetectionMonitor];
-  [v4 start];
+  motionDetectionMonitor = [(BatterySwellingViewController *)self motionDetectionMonitor];
+  [motionDetectionMonitor start];
 }
 
 - (void)determineBatteryGasGaugeTemp
 {
   v5 = objc_alloc_init(MultiTouchHelper);
-  v3 = [(MultiTouchHelper *)v5 temperatureData];
-  v4 = [v3 objectForKeyedSubscript:@"TG0B"];
+  temperatureData = [(MultiTouchHelper *)v5 temperatureData];
+  v4 = [temperatureData objectForKeyedSubscript:@"TG0B"];
   [(BatterySwellingViewController *)self setBatteryTemp:v4];
 }
 
 - (id)instructionImageName
 {
-  v3 = [(BatterySwellingViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 screen];
-  [v6 bounds];
+  view = [(BatterySwellingViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  screen = [windowScene screen];
+  [screen bounds];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(BatterySwellingViewController *)self view];
-  v12 = [v11 window];
-  v13 = [v12 windowScene];
-  v14 = [v13 screen];
-  [v14 scale];
+  view2 = [(BatterySwellingViewController *)self view];
+  window2 = [view2 window];
+  windowScene2 = [window2 windowScene];
+  screen2 = [windowScene2 screen];
+  [screen2 scale];
   v16 = v15;
 
   v17 = +[NSMutableString string];
@@ -323,15 +323,15 @@
   [v3 removeObserver:self];
 }
 
-- (void)checkAngle:(id)a3
+- (void)checkAngle:(id)angle
 {
-  v4 = [(BatterySwellingViewController *)self motionManager];
-  v5 = [v4 deviceMotion];
-  v6 = [v5 attitude];
+  motionManager = [(BatterySwellingViewController *)self motionManager];
+  deviceMotion = [motionManager deviceMotion];
+  attitude = [deviceMotion attitude];
 
-  if (v6)
+  if (attitude)
   {
-    [v6 rotationMatrix];
+    [attitude rotationMatrix];
   }
 
   v7 = acos(-0.0);
@@ -339,11 +339,11 @@
   {
     v8 = v7 * 180.0 / 3.14159265;
     v9 = [(BatterySwellingViewController *)self checkIfCorrectOrientation:5];
-    v10 = [(BatterySwellingViewController *)self inputs];
-    v11 = [v10 angleTolerance];
+    inputs = [(BatterySwellingViewController *)self inputs];
+    angleTolerance = [inputs angleTolerance];
     if (v9)
     {
-      v12 = (180 - v11);
+      v12 = (180 - angleTolerance);
 
       if (v8 < v12)
       {
@@ -359,7 +359,7 @@
 
     else
     {
-      v14 = v11;
+      v14 = angleTolerance;
 
       if (v8 > v14)
       {
@@ -378,15 +378,15 @@ LABEL_11:
   }
 }
 
-- (BOOL)checkIfCorrectOrientation:(int)a3
+- (BOOL)checkIfCorrectOrientation:(int)orientation
 {
-  v4 = [(BatterySwellingViewController *)self motionManager];
-  v5 = [v4 deviceMotion];
-  v6 = [v5 attitude];
+  motionManager = [(BatterySwellingViewController *)self motionManager];
+  deviceMotion = [motionManager deviceMotion];
+  attitude = [deviceMotion attitude];
 
-  if (v6)
+  if (attitude)
   {
-    [v6 rotationMatrix];
+    [attitude rotationMatrix];
   }
 
   v7 = acos(-0.0) + -1.57079633;
@@ -397,27 +397,27 @@ LABEL_11:
     v9 = 5;
   }
 
-  v11 = v8 > 40.0 && v9 == a3;
+  v11 = v8 > 40.0 && v9 == orientation;
 
   return v11;
 }
 
 - (void)setupAngleMonitoring
 {
-  v3 = [(BatterySwellingViewController *)self displayLink];
+  displayLink = [(BatterySwellingViewController *)self displayLink];
 
-  if (!v3)
+  if (!displayLink)
   {
     v4 = [CADisplayLink displayLinkWithTarget:self selector:"checkAngle:"];
     [(BatterySwellingViewController *)self setDisplayLink:v4];
 
-    v6 = [(BatterySwellingViewController *)self displayLink];
+    displayLink2 = [(BatterySwellingViewController *)self displayLink];
     v5 = +[NSRunLoop currentRunLoop];
-    [v6 addToRunLoop:v5 forMode:NSRunLoopCommonModes];
+    [displayLink2 addToRunLoop:v5 forMode:NSRunLoopCommonModes];
   }
 }
 
-- (void)receivedExcessiveEventNotification:(id)a3
+- (void)receivedExcessiveEventNotification:(id)notification
 {
   v4 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -428,7 +428,7 @@ LABEL_11:
   [(BatterySwellingViewController *)self endTestWithStatusCode:&off_10000C838];
 }
 
-- (void)setupForSamplingCompleted:(id)a3
+- (void)setupForSamplingCompleted:(id)completed
 {
   [(BatterySwellingViewController *)self builtInDevice];
   if ((MTRegisterImageCallbackWithRefcon() & 1) == 0)
@@ -436,16 +436,16 @@ LABEL_11:
     [(BatterySwellingViewController *)self endTestWithStatusCode:&off_10000C850];
   }
 
-  v5 = [(BatterySwellingViewController *)self inputs];
-  [v5 samplingTimeout];
+  inputs = [(BatterySwellingViewController *)self inputs];
+  [inputs samplingTimeout];
   v4 = [NSTimer scheduledTimerWithTimeInterval:self target:"sampleTimeout:" selector:0 userInfo:0 repeats:?];
   [(BatterySwellingViewController *)self setSamplingTimer:v4];
 }
 
-- (void)samplingFinished:(id)a3
+- (void)samplingFinished:(id)finished
 {
-  v4 = [(BatterySwellingViewController *)self samplingTimer];
-  [v4 invalidate];
+  samplingTimer = [(BatterySwellingViewController *)self samplingTimer];
+  [samplingTimer invalidate];
 
   [(BatterySwellingViewController *)self setSamplingTimer:0];
   [(BatterySwellingViewController *)self disableSensorMonitoring];
@@ -457,8 +457,8 @@ LABEL_11:
     v7[3] = &unk_10000C388;
     v7[4] = self;
     [UIView animateWithDuration:v7 animations:0.25];
-    v5 = [(BatterySwellingViewController *)self inputs];
-    [v5 flipSetupTimeout];
+    inputs = [(BatterySwellingViewController *)self inputs];
+    [inputs flipSetupTimeout];
     v6 = [NSTimer scheduledTimerWithTimeInterval:self target:"deviceHasFlipped:" selector:0 userInfo:0 repeats:?];
     [(BatterySwellingViewController *)self setFlipSetupTimer:v6];
   }
@@ -471,7 +471,7 @@ LABEL_11:
   }
 }
 
-- (void)deviceHasFlipped:(id)a3
+- (void)deviceHasFlipped:(id)flipped
 {
   if ([(BatterySwellingViewController *)self checkIfCorrectOrientation:5])
   {
@@ -488,19 +488,19 @@ LABEL_11:
   {
     [(BatterySwellingViewController *)self setDeviceOrientation:6];
     [(BatterySwellingViewController *)self enableSensorMonitoring];
-    v5 = [(BatterySwellingViewController *)self flipInstructionImageView];
-    [v5 setAlpha:0.0];
+    flipInstructionImageView = [(BatterySwellingViewController *)self flipInstructionImageView];
+    [flipInstructionImageView setAlpha:0.0];
 
-    v7 = [(BatterySwellingViewController *)self inputs];
-    [v7 samplingSetupTimeout];
+    inputs = [(BatterySwellingViewController *)self inputs];
+    [inputs samplingSetupTimeout];
     v6 = [NSTimer scheduledTimerWithTimeInterval:self target:"setupForSamplingCompleted:" selector:0 userInfo:0 repeats:?];
     [(BatterySwellingViewController *)self setSamplingSetupTimer:v6];
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  if (![(BatterySwellingViewController *)self touchAllowed:a3])
+  if (![(BatterySwellingViewController *)self touchAllowed:began])
   {
     v5 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -512,39 +512,39 @@ LABEL_11:
   }
 }
 
-- (id)mergeFrames:(signed __int16 *)a3
+- (id)mergeFrames:(signed __int16 *)frames
 {
   v5 = &MGGetBoolAnswer_ptr;
-  v6 = [(BatterySwellingViewController *)self inputs];
-  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 pixelMapHeight]);
+  inputs = [(BatterySwellingViewController *)self inputs];
+  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [inputs pixelMapHeight]);
 
-  v8 = [(BatterySwellingViewController *)self rowZeroAtBottom];
-  v9 = [(BatterySwellingViewController *)self inputs];
-  v10 = [v9 pixelMapHeight];
-  if (v8)
+  rowZeroAtBottom = [(BatterySwellingViewController *)self rowZeroAtBottom];
+  inputs2 = [(BatterySwellingViewController *)self inputs];
+  pixelMapHeight = [inputs2 pixelMapHeight];
+  if (rowZeroAtBottom)
   {
 
-    if (v10 >= 1)
+    if (pixelMapHeight >= 1)
     {
       v11 = 0;
       do
       {
-        v12 = [(BatterySwellingViewController *)self inputs];
-        v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v12 pixelMapWidth]);
+        inputs3 = [(BatterySwellingViewController *)self inputs];
+        v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [inputs3 pixelMapWidth]);
         [v7 addObject:v13];
 
-        v14 = [(BatterySwellingViewController *)self inputs];
-        LODWORD(v12) = [v14 pixelMapWidth];
+        inputs4 = [(BatterySwellingViewController *)self inputs];
+        LODWORD(inputs3) = [inputs4 pixelMapWidth];
 
-        if (v12 >= 1)
+        if (inputs3 >= 1)
         {
           v15 = 0;
           do
           {
-            v16 = [(BatterySwellingViewController *)self inputs];
-            v17 = [v16 numFramesToRecord];
+            inputs5 = [(BatterySwellingViewController *)self inputs];
+            numFramesToRecord = [inputs5 numFramesToRecord];
 
-            if (v17 < 1)
+            if (numFramesToRecord < 1)
             {
               v19 = 0.0;
             }
@@ -555,64 +555,64 @@ LABEL_11:
               v19 = 0.0;
               do
               {
-                v20 = a3[v18];
-                v21 = [(BatterySwellingViewController *)self inputs];
-                v19 = v19 + v20[(v15 + [v21 pixelMapWidth] * v11)];
+                v20 = frames[v18];
+                inputs6 = [(BatterySwellingViewController *)self inputs];
+                v19 = v19 + v20[(v15 + [inputs6 pixelMapWidth] * v11)];
 
                 ++v18;
-                v22 = [(BatterySwellingViewController *)self inputs];
-                LODWORD(v20) = [v22 numFramesToRecord];
+                inputs7 = [(BatterySwellingViewController *)self inputs];
+                LODWORD(v20) = [inputs7 numFramesToRecord];
               }
 
               while (v18 < v20);
             }
 
             v23 = [v7 objectAtIndexedSubscript:v11];
-            v24 = [(BatterySwellingViewController *)self inputs];
-            v25 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v19 / [v24 numFramesToRecord]);
+            inputs8 = [(BatterySwellingViewController *)self inputs];
+            v25 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v19 / [inputs8 numFramesToRecord]);
             [v23 addObject:v25];
 
             ++v15;
-            v26 = [(BatterySwellingViewController *)self inputs];
-            LODWORD(v25) = [v26 pixelMapWidth];
+            inputs9 = [(BatterySwellingViewController *)self inputs];
+            LODWORD(v25) = [inputs9 pixelMapWidth];
           }
 
           while (v15 < v25);
         }
 
         ++v11;
-        v27 = [(BatterySwellingViewController *)self inputs];
-        v28 = [v27 pixelMapHeight];
+        inputs10 = [(BatterySwellingViewController *)self inputs];
+        pixelMapHeight2 = [inputs10 pixelMapHeight];
       }
 
-      while (v11 < v28);
+      while (v11 < pixelMapHeight2);
     }
   }
 
   else
   {
 
-    if (v10 >= 1)
+    if (pixelMapHeight >= 1)
     {
       do
       {
         v29 = v5[94];
-        v30 = [(BatterySwellingViewController *)self inputs];
-        v31 = [v29 arrayWithCapacity:{objc_msgSend(v30, "pixelMapWidth")}];
+        inputs11 = [(BatterySwellingViewController *)self inputs];
+        v31 = [v29 arrayWithCapacity:{objc_msgSend(inputs11, "pixelMapWidth")}];
         [v7 addObject:v31];
 
-        v32 = [(BatterySwellingViewController *)self inputs];
-        LODWORD(v30) = [v32 pixelMapWidth];
+        inputs12 = [(BatterySwellingViewController *)self inputs];
+        LODWORD(inputs11) = [inputs12 pixelMapWidth];
 
-        if (v30 >= 1)
+        if (inputs11 >= 1)
         {
           v33 = 0;
           do
           {
-            v34 = [(BatterySwellingViewController *)self inputs];
-            v35 = [v34 numFramesToRecord];
+            inputs13 = [(BatterySwellingViewController *)self inputs];
+            numFramesToRecord2 = [inputs13 numFramesToRecord];
 
-            if (v35 < 1)
+            if (numFramesToRecord2 < 1)
             {
               v37 = 0.0;
             }
@@ -623,33 +623,33 @@ LABEL_11:
               v37 = 0.0;
               do
               {
-                v38 = a3[v36];
-                v39 = [(BatterySwellingViewController *)self inputs];
-                v37 = v37 + v38[v33 + [v39 pixelMapWidth] * (v10 - 1)];
+                v38 = frames[v36];
+                inputs14 = [(BatterySwellingViewController *)self inputs];
+                v37 = v37 + v38[v33 + [inputs14 pixelMapWidth] * (pixelMapHeight - 1)];
 
                 ++v36;
-                v40 = [(BatterySwellingViewController *)self inputs];
-                LODWORD(v38) = [v40 numFramesToRecord];
+                inputs15 = [(BatterySwellingViewController *)self inputs];
+                LODWORD(v38) = [inputs15 numFramesToRecord];
               }
 
               while (v36 < v38);
             }
 
-            v41 = [(BatterySwellingViewController *)self inputs];
-            v42 = [v7 objectAtIndexedSubscript:{(objc_msgSend(v41, "pixelMapHeight") - v10)}];
-            v43 = [(BatterySwellingViewController *)self inputs];
-            v44 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v37 / [v43 numFramesToRecord]);
+            inputs16 = [(BatterySwellingViewController *)self inputs];
+            v42 = [v7 objectAtIndexedSubscript:{(objc_msgSend(inputs16, "pixelMapHeight") - pixelMapHeight)}];
+            inputs17 = [(BatterySwellingViewController *)self inputs];
+            v44 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v37 / [inputs17 numFramesToRecord]);
             [v42 addObject:v44];
 
             ++v33;
-            v45 = [(BatterySwellingViewController *)self inputs];
-            LODWORD(v42) = [v45 pixelMapWidth];
+            inputs18 = [(BatterySwellingViewController *)self inputs];
+            LODWORD(v42) = [inputs18 pixelMapWidth];
           }
 
           while (v33 < v42);
         }
 
-        v46 = v10-- <= 1;
+        v46 = pixelMapHeight-- <= 1;
         v5 = &MGGetBoolAnswer_ptr;
       }
 
@@ -660,11 +660,11 @@ LABEL_11:
   return v7;
 }
 
-- (void)endTestWithStatusCode:(id)a3
+- (void)endTestWithStatusCode:(id)code
 {
-  v4 = a3;
-  v5 = [(BatterySwellingViewController *)self result];
-  [v5 setStatusCode:v4];
+  codeCopy = code;
+  result = [(BatterySwellingViewController *)self result];
+  [result setStatusCode:codeCopy];
 
   if ([(BatterySwellingViewController *)self isCompleted])
   {
@@ -675,12 +675,12 @@ LABEL_11:
     v7 = [(BatterySwellingViewController *)self mergeFrames:[(BatterySwellingViewController *)self faceDownPixelMaps]];
     v15[1] = v7;
     v14[2] = @"batteryTemperature";
-    v8 = [(BatterySwellingViewController *)self batteryTemp];
-    v9 = numberOrNull(v8);
+    batteryTemp = [(BatterySwellingViewController *)self batteryTemp];
+    v9 = numberOrNull(batteryTemp);
     v15[2] = v9;
     v10 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:3];
-    v11 = [(BatterySwellingViewController *)self result];
-    [v11 setData:v10];
+    result2 = [(BatterySwellingViewController *)self result];
+    [result2 setData:v10];
 
     v12 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -691,7 +691,7 @@ LABEL_11:
     v13 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      sub_10000519C(v4, v13);
+      sub_10000519C(codeCopy, v13);
     }
   }
 
@@ -701,52 +701,52 @@ LABEL_11:
 - (void)teardown
 {
   [(BatterySwellingViewController *)self disableSensorMonitoring];
-  v3 = [(BatterySwellingViewController *)self flipSetupTimer];
+  flipSetupTimer = [(BatterySwellingViewController *)self flipSetupTimer];
 
-  if (v3)
+  if (flipSetupTimer)
   {
-    v4 = [(BatterySwellingViewController *)self flipSetupTimer];
-    [v4 invalidate];
+    flipSetupTimer2 = [(BatterySwellingViewController *)self flipSetupTimer];
+    [flipSetupTimer2 invalidate];
 
     [(BatterySwellingViewController *)self setFlipSetupTimer:0];
   }
 
-  v5 = [(BatterySwellingViewController *)self samplingTimer];
+  samplingTimer = [(BatterySwellingViewController *)self samplingTimer];
 
-  if (v5)
+  if (samplingTimer)
   {
-    v6 = [(BatterySwellingViewController *)self samplingTimer];
-    [v6 invalidate];
+    samplingTimer2 = [(BatterySwellingViewController *)self samplingTimer];
+    [samplingTimer2 invalidate];
 
     [(BatterySwellingViewController *)self setSamplingTimer:0];
   }
 
-  v7 = [(BatterySwellingViewController *)self samplingSetupTimer];
+  samplingSetupTimer = [(BatterySwellingViewController *)self samplingSetupTimer];
 
-  if (v7)
+  if (samplingSetupTimer)
   {
-    v8 = [(BatterySwellingViewController *)self samplingSetupTimer];
-    [v8 invalidate];
+    samplingSetupTimer2 = [(BatterySwellingViewController *)self samplingSetupTimer];
+    [samplingSetupTimer2 invalidate];
 
     [(BatterySwellingViewController *)self setSamplingSetupTimer:0];
   }
 
-  v9 = [(BatterySwellingViewController *)self displayLink];
+  displayLink = [(BatterySwellingViewController *)self displayLink];
 
-  if (v9)
+  if (displayLink)
   {
-    v10 = [(BatterySwellingViewController *)self displayLink];
-    [v10 invalidate];
+    displayLink2 = [(BatterySwellingViewController *)self displayLink];
+    [displayLink2 invalidate];
 
     [(BatterySwellingViewController *)self setDisplayLink:0];
   }
 
-  v11 = [(BatterySwellingViewController *)self motionDetectionMonitor];
+  motionDetectionMonitor = [(BatterySwellingViewController *)self motionDetectionMonitor];
 
-  if (v11)
+  if (motionDetectionMonitor)
   {
-    v12 = [(BatterySwellingViewController *)self motionDetectionMonitor];
-    [v12 stop];
+    motionDetectionMonitor2 = [(BatterySwellingViewController *)self motionDetectionMonitor];
+    [motionDetectionMonitor2 stop];
 
     v13 = +[NSNotificationCenter defaultCenter];
     [v13 removeObserver:self];

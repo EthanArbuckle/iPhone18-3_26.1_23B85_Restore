@@ -1,7 +1,7 @@
 @interface AKCustodianRequestProvider
-- (AKCustodianRequestProvider)initWithContext:(id)a3 urlBagKey:(id)a4;
-- (BOOL)signRequest:(id)a3 error:(id *)a4;
-- (BOOL)validateResponseData:(id)a3 error:(id *)a4;
+- (AKCustodianRequestProvider)initWithContext:(id)context urlBagKey:(id)key;
+- (BOOL)signRequest:(id)request error:(id *)error;
+- (BOOL)validateResponseData:(id)data error:(id *)error;
 - (id)_bodyForAddAndRevokeCustodianRequest;
 - (id)_bodyForCustodianUpdateRecoveryKeyRequest;
 - (id)_bodyForEmbargoEndFeedback;
@@ -12,79 +12,79 @@
 
 @implementation AKCustodianRequestProvider
 
-- (AKCustodianRequestProvider)initWithContext:(id)a3 urlBagKey:(id)a4
+- (AKCustodianRequestProvider)initWithContext:(id)context urlBagKey:(id)key
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v4 = v12;
-  v12 = 0;
+  objc_storeStrong(&v10, key);
+  v4 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v4;
   v9.super_class = AKCustodianRequestProvider;
   v8 = [(AKURLRequestProviderImpl *)&v9 initWithContext:location[0] urlBagKey:v10 shouldCacheResource:0];
-  v12 = v8;
-  objc_storeStrong(&v12, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    objc_storeStrong(&v12->_custodianContext, location[0]);
+    objc_storeStrong(&selfCopy->_custodianContext, location[0]);
   }
 
-  v6 = _objc_retain(v12);
+  v6 = _objc_retain(selfCopy);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (BOOL)signRequest:(id)a3 error:(id *)a4
+- (BOOL)signRequest:(id)request error:(id *)error
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v34 = a4;
+  objc_storeStrong(location, request);
+  errorCopy = error;
   v19 = [AKDServerUIController alloc];
-  v20 = [(AKURLRequestProviderImpl *)v36 client];
+  client = [(AKURLRequestProviderImpl *)selfCopy client];
   v33 = [(AKDServerUIController *)v19 initWithClient:?];
-  _objc_release(v20);
+  _objc_release(client);
   v21 = [AKAppleIDAuthenticationContext alloc];
-  v22 = [(AKCustodianRequestProvider *)v36 custodianContext];
+  custodianContext = [(AKCustodianRequestProvider *)selfCopy custodianContext];
   v32 = [v21 initWithAuthenticatedServerRequestContext:?];
-  _objc_release(v22);
-  [v32 set_shouldSendIdentityTokenForRemoteUI:{-[AKCustodianRequestProvider signWithIdentityToken](v36, "signWithIdentityToken")}];
+  _objc_release(custodianContext);
+  [v32 set_shouldSendIdentityTokenForRemoteUI:{-[AKCustodianRequestProvider signWithIdentityToken](selfCopy, "signWithIdentityToken")}];
   [v32 set_shouldSendGrandSlamTokensForRemoteUI:1];
   v31 = [v33 resourceLoadDelegateWithContext:v32];
-  v23 = [(AKURLRequestProviderImpl *)v36 urlBagKey];
+  urlBagKey = [(AKURLRequestProviderImpl *)selfCopy urlBagKey];
   [v31 setInitialURLRequestKey:?];
-  _objc_release(v23);
-  v24 = [(AKURLRequestProviderImpl *)v36 urlBagKey];
+  _objc_release(urlBagKey);
+  urlBagKey2 = [(AKURLRequestProviderImpl *)selfCopy urlBagKey];
   [v31 setBagUrlKey:?];
-  _objc_release(v24);
-  v25 = [(AKURLRequestProviderImpl *)v36 dataCenterIdentifier];
+  _objc_release(urlBagKey2);
+  dataCenterIdentifier = [(AKURLRequestProviderImpl *)selfCopy dataCenterIdentifier];
   [v31 setDataCenterIdentifier:?];
-  _objc_release(v25);
-  v26 = [(AKCustodianRequestProvider *)v36 custodianContext];
-  [v31 setCliMode:{-[AKCustodianContext cliMode](v26, "cliMode")}];
-  _objc_release(v26);
-  if ([(AKCustodianRequestProvider *)v36 authenticatedRequest])
+  _objc_release(dataCenterIdentifier);
+  custodianContext2 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  [v31 setCliMode:{-[AKCustodianContext cliMode](custodianContext2, "cliMode")}];
+  _objc_release(custodianContext2);
+  if ([(AKCustodianRequestProvider *)selfCopy authenticatedRequest])
   {
-    v13 = [(AKCustodianRequestProvider *)v36 custodianContext];
-    v12 = [(AKCustodianContext *)v13 custodianSetupToken];
+    custodianContext3 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    custodianSetupToken = [(AKCustodianContext *)custodianContext3 custodianSetupToken];
     [v31 setServiceToken:?];
-    _objc_release(v12);
-    _objc_release(v13);
-    v15 = [(AKCustodianRequestProvider *)v36 custodianContext];
-    v14 = [(AKCustodianContext *)v15 custodianRecoveryToken];
+    _objc_release(custodianSetupToken);
+    _objc_release(custodianContext3);
+    custodianContext4 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    custodianRecoveryToken = [(AKCustodianContext *)custodianContext4 custodianRecoveryToken];
     [v31 setCustodianRecoveryToken:?];
-    _objc_release(v14);
-    _objc_release(v15);
-    v16 = [(AKCustodianRequestProvider *)v36 custodianContext];
-    v17 = [(AKCustodianContext *)v16 isCustodianSyncAction];
-    _objc_release(v16);
-    if (v17)
+    _objc_release(custodianRecoveryToken);
+    _objc_release(custodianContext4);
+    custodianContext5 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    isCustodianSyncAction = [(AKCustodianContext *)custodianContext5 isCustodianSyncAction];
+    _objc_release(custodianContext5);
+    if (isCustodianSyncAction)
     {
       v30 = _AKLogSystem();
       v29 = 2;
@@ -100,9 +100,9 @@
       [location[0] ak_addCustodianSyncActionHeader];
     }
 
-    v9 = [v31 heartbeatToken];
-    _objc_release(v9);
-    if (v9)
+    heartbeatToken = [v31 heartbeatToken];
+    _objc_release(heartbeatToken);
+    if (heartbeatToken)
     {
       [v31 signRequestWithCommonHeaders:location[0]];
       v37 = 1;
@@ -113,20 +113,20 @@
       v27 = _AKLogSystem();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
-        v8 = [(AKCustodianRequestProvider *)v36 custodianContext];
-        v7 = [(AKCustodianContext *)v8 altDSID];
-        sub_1000194D4(v38, v7);
+        custodianContext6 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+        altDSID = [(AKCustodianContext *)custodianContext6 altDSID];
+        sub_1000194D4(v38, altDSID);
         _os_log_error_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "Could not find heartbeat token for account %@", v38, 0xCu);
-        _objc_release(v7);
-        _objc_release(v8);
+        _objc_release(altDSID);
+        _objc_release(custodianContext6);
       }
 
       objc_storeStrong(&v27, 0);
-      if (v34)
+      if (errorCopy)
       {
         v6 = [NSError ak_errorWithCode:-7042];
         v4 = v6;
-        *v34 = v6;
+        *errorCopy = v6;
       }
 
       v37 = 0;
@@ -148,132 +148,132 @@
 
 - (id)authKitBody
 {
-  v11 = [(AKURLRequestProviderImpl *)self urlBagKey];
+  urlBagKey = [(AKURLRequestProviderImpl *)self urlBagKey];
   v19 = 0;
   v17 = 0;
   v15 = 0;
   v12 = 1;
-  if (v11 != AKURLBagKeyCustodianRecoveryCircle)
+  if (urlBagKey != AKURLBagKeyCustodianRecoveryCircle)
   {
-    v20 = [(AKURLRequestProviderImpl *)self urlBagKey];
+    urlBagKey2 = [(AKURLRequestProviderImpl *)self urlBagKey];
     v19 = 1;
     v12 = 1;
-    if (v20 != AKURLBagKeyCustodianPostCircle)
+    if (urlBagKey2 != AKURLBagKeyCustodianPostCircle)
     {
-      v18 = [(AKURLRequestProviderImpl *)self urlBagKey];
+      urlBagKey3 = [(AKURLRequestProviderImpl *)self urlBagKey];
       v17 = 1;
       v12 = 1;
-      if (v18 != AKURLBagKeyCustodianRecoveryWrappingKey)
+      if (urlBagKey3 != AKURLBagKeyCustodianRecoveryWrappingKey)
       {
-        v16 = [(AKURLRequestProviderImpl *)self urlBagKey];
+        urlBagKey4 = [(AKURLRequestProviderImpl *)self urlBagKey];
         v15 = 1;
-        v12 = v16 == AKURLBagKeyCustodianRecoveryRequest;
+        v12 = urlBagKey4 == AKURLBagKeyCustodianRecoveryRequest;
       }
     }
   }
 
   if (v15)
   {
-    _objc_release(v16);
+    _objc_release(urlBagKey4);
   }
 
   if (v17)
   {
-    _objc_release(v18);
+    _objc_release(urlBagKey3);
   }
 
   if (v19)
   {
-    _objc_release(v20);
+    _objc_release(urlBagKey2);
   }
 
-  _objc_release(v11);
+  _objc_release(urlBagKey);
   if (v12)
   {
-    v22 = [(AKCustodianRequestProvider *)self _bodyForRecoveryCircle];
+    _bodyForRecoveryCircle = [(AKCustodianRequestProvider *)self _bodyForRecoveryCircle];
   }
 
   else
   {
-    v9 = [(AKURLRequestProviderImpl *)self urlBagKey];
+    urlBagKey5 = [(AKURLRequestProviderImpl *)self urlBagKey];
     v13 = 0;
     v10 = 1;
-    if (![(NSString *)v9 isEqualToString:AKURLBagKeyCustodianInitiation])
+    if (![(NSString *)urlBagKey5 isEqualToString:AKURLBagKeyCustodianInitiation])
     {
-      v14 = [(AKURLRequestProviderImpl *)self urlBagKey];
+      urlBagKey6 = [(AKURLRequestProviderImpl *)self urlBagKey];
       v13 = 1;
-      v10 = [(NSString *)v14 isEqualToString:AKURLBagKeyCustodianDeletion];
+      v10 = [(NSString *)urlBagKey6 isEqualToString:AKURLBagKeyCustodianDeletion];
     }
 
     if (v13)
     {
-      _objc_release(v14);
+      _objc_release(urlBagKey6);
     }
 
-    _objc_release(v9);
+    _objc_release(urlBagKey5);
     if (v10)
     {
-      v22 = [(AKCustodianRequestProvider *)self _bodyForAddAndRevokeCustodianRequest];
+      _bodyForRecoveryCircle = [(AKCustodianRequestProvider *)self _bodyForAddAndRevokeCustodianRequest];
     }
 
     else
     {
-      v7 = [(AKURLRequestProviderImpl *)self urlBagKey];
-      v8 = [(NSString *)v7 isEqualToString:AKURLBagKeyCustodianApproval];
-      _objc_release(v7);
+      urlBagKey7 = [(AKURLRequestProviderImpl *)self urlBagKey];
+      v8 = [(NSString *)urlBagKey7 isEqualToString:AKURLBagKeyCustodianApproval];
+      _objc_release(urlBagKey7);
       if (v8)
       {
-        v22 = [(AKCustodianRequestProvider *)self _bodyForFinalizeCustodianRequest];
+        _bodyForRecoveryCircle = [(AKCustodianRequestProvider *)self _bodyForFinalizeCustodianRequest];
       }
 
       else
       {
-        v5 = [(AKURLRequestProviderImpl *)self urlBagKey];
-        v6 = [(NSString *)v5 isEqualToString:AKURLBagKeyCustodianUpdateRecoveryKey];
-        _objc_release(v5);
+        urlBagKey8 = [(AKURLRequestProviderImpl *)self urlBagKey];
+        v6 = [(NSString *)urlBagKey8 isEqualToString:AKURLBagKeyCustodianUpdateRecoveryKey];
+        _objc_release(urlBagKey8);
         if (v6)
         {
-          v22 = [(AKCustodianRequestProvider *)self _bodyForCustodianUpdateRecoveryKeyRequest];
+          _bodyForRecoveryCircle = [(AKCustodianRequestProvider *)self _bodyForCustodianUpdateRecoveryKeyRequest];
         }
 
         else
         {
-          v3 = [(AKURLRequestProviderImpl *)self urlBagKey];
-          v4 = [(NSString *)v3 isEqualToString:AKURLBagKeyCustodianRecoveryFeedback];
-          _objc_release(v3);
+          urlBagKey9 = [(AKURLRequestProviderImpl *)self urlBagKey];
+          v4 = [(NSString *)urlBagKey9 isEqualToString:AKURLBagKeyCustodianRecoveryFeedback];
+          _objc_release(urlBagKey9);
           if (v4)
           {
-            v22 = [(AKCustodianRequestProvider *)self _bodyForEmbargoEndFeedback];
+            _bodyForRecoveryCircle = [(AKCustodianRequestProvider *)self _bodyForEmbargoEndFeedback];
           }
 
           else
           {
-            v22 = 0;
+            _bodyForRecoveryCircle = 0;
           }
         }
       }
     }
   }
 
-  return v22;
+  return _bodyForRecoveryCircle;
 }
 
 - (id)_bodyForRecoveryCircle
 {
-  v68 = self;
+  selfCopy = self;
   v67[1] = a2;
   v67[0] = objc_alloc_init(NSMutableDictionary);
-  v55 = [(AKCustodianRequestProvider *)v68 custodianContext];
-  v56 = [(AKCustodianContext *)v55 pushToken];
-  _objc_release(v56);
-  _objc_release(v55);
-  if (v56)
+  custodianContext = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  pushToken = [(AKCustodianContext *)custodianContext pushToken];
+  _objc_release(pushToken);
+  _objc_release(custodianContext);
+  if (pushToken)
   {
-    v54 = [(AKCustodianRequestProvider *)v68 custodianContext];
-    v53 = [(AKCustodianContext *)v54 pushToken];
+    custodianContext2 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    pushToken2 = [(AKCustodianContext *)custodianContext2 pushToken];
     [v67[0] setObject:? forKeyedSubscript:?];
-    _objc_release(v53);
-    _objc_release(v54);
+    _objc_release(pushToken2);
+    _objc_release(custodianContext2);
   }
 
   else
@@ -291,17 +291,17 @@
     objc_storeStrong(&location, 0);
   }
 
-  v49 = [(AKCustodianRequestProvider *)v68 custodianContext];
-  v50 = [(AKCustodianContext *)v49 recoverySessionID];
-  _objc_release(v50);
-  _objc_release(v49);
-  if (v50)
+  custodianContext3 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  recoverySessionID = [(AKCustodianContext *)custodianContext3 recoverySessionID];
+  _objc_release(recoverySessionID);
+  _objc_release(custodianContext3);
+  if (recoverySessionID)
   {
-    v48 = [(AKCustodianRequestProvider *)v68 custodianContext];
-    v47 = [(AKCustodianContext *)v48 recoverySessionID];
+    custodianContext4 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    recoverySessionID2 = [(AKCustodianContext *)custodianContext4 recoverySessionID];
     [v67[0] setObject:? forKeyedSubscript:?];
-    _objc_release(v47);
-    _objc_release(v48);
+    _objc_release(recoverySessionID2);
+    _objc_release(custodianContext4);
   }
 
   else
@@ -319,141 +319,141 @@
     objc_storeStrong(&v63, 0);
   }
 
-  v43 = [(AKCustodianRequestProvider *)v68 custodianContext];
-  v44 = [(AKCustodianContext *)v43 recoveryStep];
-  _objc_release(v44);
-  _objc_release(v43);
-  if (v44)
+  custodianContext5 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  recoveryStep = [(AKCustodianContext *)custodianContext5 recoveryStep];
+  _objc_release(recoveryStep);
+  _objc_release(custodianContext5);
+  if (recoveryStep)
   {
-    v42 = [(AKCustodianRequestProvider *)v68 custodianContext];
-    v41 = [(AKCustodianContext *)v42 recoveryStep];
+    custodianContext6 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    recoveryStep2 = [(AKCustodianContext *)custodianContext6 recoveryStep];
     [v67[0] setObject:? forKeyedSubscript:?];
-    _objc_release(v41);
-    _objc_release(v42);
+    _objc_release(recoveryStep2);
+    _objc_release(custodianContext6);
   }
 
-  v39 = [(AKCustodianRequestProvider *)v68 custodianContext];
-  v40 = [(AKCustodianContext *)v39 recoverySessionID];
-  _objc_release(v40);
-  _objc_release(v39);
-  if (v40)
+  custodianContext7 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  recoverySessionID3 = [(AKCustodianContext *)custodianContext7 recoverySessionID];
+  _objc_release(recoverySessionID3);
+  _objc_release(custodianContext7);
+  if (recoverySessionID3)
   {
-    v38 = [(AKCustodianRequestProvider *)v68 custodianContext];
-    v37 = [(AKCustodianContext *)v38 recoverySessionID];
+    custodianContext8 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    recoverySessionID4 = [(AKCustodianContext *)custodianContext8 recoverySessionID];
     [v67[0] setObject:? forKeyedSubscript:?];
-    _objc_release(v37);
-    _objc_release(v38);
+    _objc_release(recoverySessionID4);
+    _objc_release(custodianContext8);
   }
 
-  v35 = [(AKCustodianRequestProvider *)v68 custodianContext];
-  v36 = [(AKCustodianContext *)v35 ownerAppleID];
-  _objc_release(v36);
-  _objc_release(v35);
-  if (v36)
+  custodianContext9 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  ownerAppleID = [(AKCustodianContext *)custodianContext9 ownerAppleID];
+  _objc_release(ownerAppleID);
+  _objc_release(custodianContext9);
+  if (ownerAppleID)
   {
-    v34 = [(AKCustodianRequestProvider *)v68 custodianContext];
-    v33 = [(AKCustodianContext *)v34 ownerAppleID];
+    custodianContext10 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    ownerAppleID2 = [(AKCustodianContext *)custodianContext10 ownerAppleID];
     [v67[0] setObject:? forKeyedSubscript:?];
-    _objc_release(v33);
-    _objc_release(v34);
+    _objc_release(ownerAppleID2);
+    _objc_release(custodianContext10);
   }
 
-  v31 = [(AKCustodianRequestProvider *)v68 custodianContext];
-  v32 = [(AKCustodianContext *)v31 ownerCustodianAltDSID];
-  _objc_release(v32);
-  _objc_release(v31);
-  if (v32)
+  custodianContext11 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  ownerCustodianAltDSID = [(AKCustodianContext *)custodianContext11 ownerCustodianAltDSID];
+  _objc_release(ownerCustodianAltDSID);
+  _objc_release(custodianContext11);
+  if (ownerCustodianAltDSID)
   {
-    v30 = [(AKCustodianRequestProvider *)v68 custodianContext];
-    v29 = [(AKCustodianContext *)v30 ownerCustodianAltDSID];
+    custodianContext12 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    ownerCustodianAltDSID2 = [(AKCustodianContext *)custodianContext12 ownerCustodianAltDSID];
     [v67[0] setObject:? forKeyedSubscript:?];
-    _objc_release(v29);
-    _objc_release(v30);
+    _objc_release(ownerCustodianAltDSID2);
+    _objc_release(custodianContext12);
   }
 
-  v27 = [(AKCustodianRequestProvider *)v68 custodianContext];
-  v28 = [(AKCustodianContext *)v27 custodianUUID];
-  _objc_release(v28);
-  _objc_release(v27);
-  if (v28)
+  custodianContext13 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  custodianUUID = [(AKCustodianContext *)custodianContext13 custodianUUID];
+  _objc_release(custodianUUID);
+  _objc_release(custodianContext13);
+  if (custodianUUID)
   {
-    v26 = [(AKCustodianRequestProvider *)v68 custodianContext];
-    v25 = [(AKCustodianContext *)v26 custodianUUID];
-    v24 = [v25 UUIDString];
+    custodianContext14 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    custodianUUID2 = [(AKCustodianContext *)custodianContext14 custodianUUID];
+    uUIDString = [custodianUUID2 UUIDString];
     [v67[0] setObject:? forKeyedSubscript:?];
-    _objc_release(v24);
-    _objc_release(v25);
-    _objc_release(v26);
+    _objc_release(uUIDString);
+    _objc_release(custodianUUID2);
+    _objc_release(custodianContext14);
   }
 
-  v22 = [(AKCustodianRequestProvider *)v68 custodianContext];
-  v23 = [(AKCustodianContext *)v22 idmsData];
-  _objc_release(v23);
-  _objc_release(v22);
-  if (v23)
+  custodianContext15 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  idmsData = [(AKCustodianContext *)custodianContext15 idmsData];
+  _objc_release(idmsData);
+  _objc_release(custodianContext15);
+  if (idmsData)
   {
-    v21 = [(AKCustodianRequestProvider *)v68 custodianContext];
-    v20 = [(AKCustodianContext *)v21 idmsData];
-    v60 = [v20 base64EncodedStringWithOptions:0];
-    _objc_release(v20);
-    _objc_release(v21);
+    custodianContext16 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    idmsData2 = [(AKCustodianContext *)custodianContext16 idmsData];
+    v60 = [idmsData2 base64EncodedStringWithOptions:0];
+    _objc_release(idmsData2);
+    _objc_release(custodianContext16);
     [v67[0] setObject:v60 forKeyedSubscript:@"idmsdata"];
     objc_storeStrong(&v60, 0);
   }
 
-  v18 = [(AKCustodianRequestProvider *)v68 custodianContext];
-  v19 = [(AKCustodianContext *)v18 aaData];
-  _objc_release(v19);
-  _objc_release(v18);
-  if (v19)
+  custodianContext17 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  aaData = [(AKCustodianContext *)custodianContext17 aaData];
+  _objc_release(aaData);
+  _objc_release(custodianContext17);
+  if (aaData)
   {
-    v17 = [(AKCustodianRequestProvider *)v68 custodianContext];
-    v16 = [(AKCustodianContext *)v17 aaData];
-    v59 = [v16 base64EncodedStringWithOptions:0];
-    _objc_release(v16);
-    _objc_release(v17);
+    custodianContext18 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    aaData2 = [(AKCustodianContext *)custodianContext18 aaData];
+    v59 = [aaData2 base64EncodedStringWithOptions:0];
+    _objc_release(aaData2);
+    _objc_release(custodianContext18);
     [v67[0] setObject:v59 forKeyedSubscript:@"aadata"];
     objc_storeStrong(&v59, 0);
   }
 
-  v14 = [(AKCustodianRequestProvider *)v68 custodianContext];
-  v15 = [(AKCustodianContext *)v14 encryptedPRKC];
-  _objc_release(v15);
-  _objc_release(v14);
-  if (v15)
+  custodianContext19 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  encryptedPRKC = [(AKCustodianContext *)custodianContext19 encryptedPRKC];
+  _objc_release(encryptedPRKC);
+  _objc_release(custodianContext19);
+  if (encryptedPRKC)
   {
-    v13 = [(AKCustodianRequestProvider *)v68 custodianContext];
-    v12 = [(AKCustodianContext *)v13 encryptedPRKC];
-    v58 = [v12 base64EncodedStringWithOptions:0];
-    _objc_release(v12);
-    _objc_release(v13);
+    custodianContext20 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    encryptedPRKC2 = [(AKCustodianContext *)custodianContext20 encryptedPRKC];
+    v58 = [encryptedPRKC2 base64EncodedStringWithOptions:0];
+    _objc_release(encryptedPRKC2);
+    _objc_release(custodianContext20);
     [v67[0] setObject:v58 forKeyedSubscript:@"encryptedPRKC"];
     objc_storeStrong(&v58, 0);
   }
 
-  v10 = [(AKCustodianRequestProvider *)v68 custodianContext];
-  v11 = [(AKCustodianContext *)v10 clientErrorCode];
-  _objc_release(v10);
-  if (v11)
+  custodianContext21 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  clientErrorCode = [(AKCustodianContext *)custodianContext21 clientErrorCode];
+  _objc_release(custodianContext21);
+  if (clientErrorCode)
   {
-    v9 = [(AKCustodianRequestProvider *)v68 custodianContext];
-    v8 = [NSNumber numberWithInteger:[(AKCustodianContext *)v9 clientErrorCode]];
+    custodianContext22 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    v8 = [NSNumber numberWithInteger:[(AKCustodianContext *)custodianContext22 clientErrorCode]];
     [v67[0] setObject:? forKeyedSubscript:?];
     _objc_release(v8);
-    _objc_release(v9);
+    _objc_release(custodianContext22);
   }
 
-  v6 = [(AKCustodianRequestProvider *)v68 custodianContext];
-  v7 = [(AKCustodianContext *)v6 recordBuildVersion];
-  _objc_release(v7);
-  _objc_release(v6);
-  if (v7)
+  custodianContext23 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  recordBuildVersion = [(AKCustodianContext *)custodianContext23 recordBuildVersion];
+  _objc_release(recordBuildVersion);
+  _objc_release(custodianContext23);
+  if (recordBuildVersion)
   {
-    v5 = [(AKCustodianRequestProvider *)v68 custodianContext];
-    v4 = [(AKCustodianContext *)v5 recordBuildVersion];
+    custodianContext24 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    recordBuildVersion2 = [(AKCustodianContext *)custodianContext24 recordBuildVersion];
     [v67[0] setObject:? forKeyedSubscript:?];
-    _objc_release(v4);
-    _objc_release(v5);
+    _objc_release(recordBuildVersion2);
+    _objc_release(custodianContext24);
   }
 
   v57 = _AKLogSystem();
@@ -472,22 +472,22 @@
 
 - (id)_bodyForAddAndRevokeCustodianRequest
 {
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
   v14[0] = objc_alloc_init(NSMutableDictionary);
-  v9 = [(AKCustodianRequestProvider *)v15 custodianContext];
-  v10 = [(AKCustodianContext *)v9 custodianUUID];
-  _objc_release(v10);
-  _objc_release(v9);
-  if (v10)
+  custodianContext = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  custodianUUID = [(AKCustodianContext *)custodianContext custodianUUID];
+  _objc_release(custodianUUID);
+  _objc_release(custodianContext);
+  if (custodianUUID)
   {
-    v8 = [(AKCustodianRequestProvider *)v15 custodianContext];
-    v7 = [(AKCustodianContext *)v8 custodianUUID];
-    v6 = [v7 UUIDString];
+    custodianContext2 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    custodianUUID2 = [(AKCustodianContext *)custodianContext2 custodianUUID];
+    uUIDString = [custodianUUID2 UUIDString];
     [v14[0] setObject:? forKeyedSubscript:?];
-    _objc_release(v6);
-    _objc_release(v7);
-    _objc_release(v8);
+    _objc_release(uUIDString);
+    _objc_release(custodianUUID2);
+    _objc_release(custodianContext2);
   }
 
   else
@@ -513,22 +513,22 @@
 
 - (id)_bodyForFinalizeCustodianRequest
 {
-  v20 = self;
+  selfCopy = self;
   v19[1] = a2;
   v19[0] = objc_alloc_init(NSMutableDictionary);
-  v13 = [(AKCustodianRequestProvider *)v20 custodianContext];
-  v14 = [(AKCustodianContext *)v13 custodianUUID];
-  _objc_release(v14);
-  _objc_release(v13);
-  if (v14)
+  custodianContext = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  custodianUUID = [(AKCustodianContext *)custodianContext custodianUUID];
+  _objc_release(custodianUUID);
+  _objc_release(custodianContext);
+  if (custodianUUID)
   {
-    v12 = [(AKCustodianRequestProvider *)v20 custodianContext];
-    v11 = [(AKCustodianContext *)v12 custodianUUID];
-    v10 = [v11 UUIDString];
+    custodianContext2 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    custodianUUID2 = [(AKCustodianContext *)custodianContext2 custodianUUID];
+    uUIDString = [custodianUUID2 UUIDString];
     [v19[0] setObject:? forKeyedSubscript:?];
-    _objc_release(v10);
-    _objc_release(v11);
-    _objc_release(v12);
+    _objc_release(uUIDString);
+    _objc_release(custodianUUID2);
+    _objc_release(custodianContext2);
   }
 
   else
@@ -546,17 +546,17 @@
     objc_storeStrong(&location, 0);
   }
 
-  v6 = [(AKCustodianRequestProvider *)v20 custodianContext];
-  v7 = [(AKCustodianContext *)v6 wrappingKeyRKC];
-  _objc_release(v7);
-  _objc_release(v6);
-  if (v7)
+  custodianContext3 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  wrappingKeyRKC = [(AKCustodianContext *)custodianContext3 wrappingKeyRKC];
+  _objc_release(wrappingKeyRKC);
+  _objc_release(custodianContext3);
+  if (wrappingKeyRKC)
   {
-    v5 = [(AKCustodianRequestProvider *)v20 custodianContext];
-    v4 = [(AKCustodianContext *)v5 wrappingKeyRKC];
-    v15 = [v4 base64EncodedStringWithOptions:0];
-    _objc_release(v4);
-    _objc_release(v5);
+    custodianContext4 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    wrappingKeyRKC2 = [(AKCustodianContext *)custodianContext4 wrappingKeyRKC];
+    v15 = [wrappingKeyRKC2 base64EncodedStringWithOptions:0];
+    _objc_release(wrappingKeyRKC2);
+    _objc_release(custodianContext4);
     [v19[0] setObject:v15 forKeyedSubscript:@"wrappingKeyRKC"];
     objc_storeStrong(&v15, 0);
   }
@@ -569,22 +569,22 @@
 
 - (id)_bodyForCustodianUpdateRecoveryKeyRequest
 {
-  v25 = self;
+  selfCopy = self;
   v24[1] = a2;
   v24[0] = objc_alloc_init(NSMutableDictionary);
-  v15 = [(AKCustodianRequestProvider *)v25 custodianContext];
-  v16 = [(AKCustodianContext *)v15 custodianUUID];
-  _objc_release(v16);
-  _objc_release(v15);
-  if (v16)
+  custodianContext = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  custodianUUID = [(AKCustodianContext *)custodianContext custodianUUID];
+  _objc_release(custodianUUID);
+  _objc_release(custodianContext);
+  if (custodianUUID)
   {
-    v14 = [(AKCustodianRequestProvider *)v25 custodianContext];
-    v13 = [(AKCustodianContext *)v14 custodianUUID];
-    v12 = [v13 UUIDString];
+    custodianContext2 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    custodianUUID2 = [(AKCustodianContext *)custodianContext2 custodianUUID];
+    uUIDString = [custodianUUID2 UUIDString];
     [v24[0] setObject:? forKeyedSubscript:?];
-    _objc_release(v12);
-    _objc_release(v13);
-    _objc_release(v14);
+    _objc_release(uUIDString);
+    _objc_release(custodianUUID2);
+    _objc_release(custodianContext2);
   }
 
   else
@@ -602,17 +602,17 @@
     objc_storeStrong(&location, 0);
   }
 
-  v8 = [(AKCustodianRequestProvider *)v25 custodianContext];
-  v9 = [(AKCustodianContext *)v8 wrappingKeyRKC];
-  _objc_release(v9);
-  _objc_release(v8);
-  if (v9)
+  custodianContext3 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  wrappingKeyRKC = [(AKCustodianContext *)custodianContext3 wrappingKeyRKC];
+  _objc_release(wrappingKeyRKC);
+  _objc_release(custodianContext3);
+  if (wrappingKeyRKC)
   {
-    v7 = [(AKCustodianRequestProvider *)v25 custodianContext];
-    v6 = [(AKCustodianContext *)v7 wrappingKeyRKC];
-    v20 = [v6 base64EncodedStringWithOptions:0];
-    _objc_release(v6);
-    _objc_release(v7);
+    custodianContext4 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    wrappingKeyRKC2 = [(AKCustodianContext *)custodianContext4 wrappingKeyRKC];
+    v20 = [wrappingKeyRKC2 base64EncodedStringWithOptions:0];
+    _objc_release(wrappingKeyRKC2);
+    _objc_release(custodianContext4);
     [v24[0] setObject:v20 forKeyedSubscript:@"wrappingKeyRKC"];
     objc_storeStrong(&v20, 0);
   }
@@ -640,38 +640,38 @@
 
 - (id)_bodyForEmbargoEndFeedback
 {
-  v30 = self;
+  selfCopy = self;
   v29[1] = a2;
   v29[0] = objc_alloc_init(NSMutableDictionary);
-  v21 = [(AKCustodianRequestProvider *)v30 custodianContext];
-  v22 = [(AKCustodianContext *)v21 transactionID];
-  _objc_release(v22);
-  _objc_release(v21);
-  if (v22)
+  custodianContext = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  transactionID = [(AKCustodianContext *)custodianContext transactionID];
+  _objc_release(transactionID);
+  _objc_release(custodianContext);
+  if (transactionID)
   {
-    v20 = [(AKCustodianRequestProvider *)v30 custodianContext];
-    v19 = [(AKCustodianContext *)v20 transactionID];
+    custodianContext2 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    transactionID2 = [(AKCustodianContext *)custodianContext2 transactionID];
     [v29[0] setObject:? forKeyedSubscript:?];
-    _objc_release(v19);
-    _objc_release(v20);
+    _objc_release(transactionID2);
+    _objc_release(custodianContext2);
   }
 
-  v16 = [(AKCustodianRequestProvider *)v30 custodianContext];
-  v15 = [NSNumber numberWithInteger:[(AKCustodianContext *)v16 notificationAction]];
+  custodianContext3 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  v15 = [NSNumber numberWithInteger:[(AKCustodianContext *)custodianContext3 notificationAction]];
   [v29[0] setObject:? forKeyedSubscript:?];
   _objc_release(v15);
-  _objc_release(v16);
-  v17 = [(AKCustodianRequestProvider *)v30 custodianContext];
-  v18 = [(AKCustodianContext *)v17 recoverySessionID];
-  _objc_release(v18);
-  _objc_release(v17);
-  if (v18)
+  _objc_release(custodianContext3);
+  custodianContext4 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  recoverySessionID = [(AKCustodianContext *)custodianContext4 recoverySessionID];
+  _objc_release(recoverySessionID);
+  _objc_release(custodianContext4);
+  if (recoverySessionID)
   {
-    v14 = [(AKCustodianRequestProvider *)v30 custodianContext];
-    v13 = [(AKCustodianContext *)v14 recoverySessionID];
+    custodianContext5 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    recoverySessionID2 = [(AKCustodianContext *)custodianContext5 recoverySessionID];
     [v29[0] setObject:? forKeyedSubscript:?];
-    _objc_release(v13);
-    _objc_release(v14);
+    _objc_release(recoverySessionID2);
+    _objc_release(custodianContext5);
   }
 
   else
@@ -689,17 +689,17 @@
     objc_storeStrong(&location, 0);
   }
 
-  v9 = [(AKCustodianRequestProvider *)v30 custodianContext];
-  v10 = [(AKCustodianContext *)v9 altDSID];
-  _objc_release(v10);
-  _objc_release(v9);
-  if (v10)
+  custodianContext6 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+  altDSID = [(AKCustodianContext *)custodianContext6 altDSID];
+  _objc_release(altDSID);
+  _objc_release(custodianContext6);
+  if (altDSID)
   {
-    v8 = [(AKCustodianRequestProvider *)v30 custodianContext];
-    v7 = [(AKCustodianContext *)v8 altDSID];
+    custodianContext7 = [(AKCustodianRequestProvider *)selfCopy custodianContext];
+    altDSID2 = [(AKCustodianContext *)custodianContext7 altDSID];
     [v29[0] setObject:? forKeyedSubscript:?];
-    _objc_release(v7);
-    _objc_release(v8);
+    _objc_release(altDSID2);
+    _objc_release(custodianContext7);
   }
 
   else
@@ -723,16 +723,16 @@
   return v4;
 }
 
-- (BOOL)validateResponseData:(id)a3 error:(id *)a4
+- (BOOL)validateResponseData:(id)data error:(id *)error
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = a4;
-  v15.receiver = v19;
+  objc_storeStrong(location, data);
+  errorCopy = error;
+  v15.receiver = selfCopy;
   v15.super_class = AKCustodianRequestProvider;
-  v16 = [(AKURLRequestProviderImpl *)&v15 validateResponseData:location[0] error:a4];
+  v16 = [(AKURLRequestProviderImpl *)&v15 validateResponseData:location[0] error:error];
   if ((v16 & 1) == 1)
   {
     v14 = [AAFSerialization dictionaryFromObject:location[0] ofType:@"application/json"];
@@ -759,7 +759,7 @@
         _objc_release(v7);
         v8 = [NSError ak_errorWithCode:-7010 userInfo:v10];
         v4 = v8;
-        *v17 = v8;
+        *errorCopy = v8;
         v16 = 0;
         objc_storeStrong(&v10, 0);
       }

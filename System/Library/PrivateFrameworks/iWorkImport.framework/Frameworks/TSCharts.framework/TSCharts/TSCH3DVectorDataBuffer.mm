@@ -1,19 +1,19 @@
 @interface TSCH3DVectorDataBuffer
-+ (id)bufferWithCapacity:(unint64_t)a3;
-+ (id)bufferWithCapacity:(unint64_t)a3 dimension:(unint64_t)a4;
++ (id)bufferWithCapacity:(unint64_t)capacity;
++ (id)bufferWithCapacity:(unint64_t)capacity dimension:(unint64_t)dimension;
 @end
 
 @implementation TSCH3DVectorDataBuffer
 
-+ (id)bufferWithCapacity:(unint64_t)a3 dimension:(unint64_t)a4
++ (id)bufferWithCapacity:(unint64_t)capacity dimension:(unint64_t)dimension
 {
-  v8 = a4 - 1;
-  if (a4 - 1 >= 4)
+  v8 = dimension - 1;
+  if (dimension - 1 >= 4)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, "+[TSCH3DVectorDataBuffer bufferWithCapacity:dimension:]");
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, v13, v14, v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DVectorDataBuffer.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v17, v18, v19, v20, v11, v16, 39, 0, "dimension out of bounds %lu must be 1-4", a4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v17, v18, v19, v20, v11, v16, 39, 0, "dimension out of bounds %lu must be 1-4", dimension);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24);
   }
@@ -29,13 +29,13 @@
     v25 = 0;
   }
 
-  return objc_msgSend_bufferWithCapacity_(v25, a2, v4, v5, v6, a3);
+  return objc_msgSend_bufferWithCapacity_(v25, a2, v4, v5, v6, capacity);
 }
 
-+ (id)bufferWithCapacity:(unint64_t)a3
++ (id)bufferWithCapacity:(unint64_t)capacity
 {
-  v4 = [a1 alloc];
-  v9 = objc_msgSend_initWithCapacity_(v4, v5, v6, v7, v8, a3);
+  v4 = [self alloc];
+  v9 = objc_msgSend_initWithCapacity_(v4, v5, v6, v7, v8, capacity);
 
   return v9;
 }

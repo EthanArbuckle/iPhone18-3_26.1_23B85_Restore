@@ -1,59 +1,59 @@
 @interface _FavoritesTwoLinesContentViewModel
-- (id)_secondaryTitleForPlaceCount:(unint64_t)a3 transitLineCount:(unint64_t)a4;
-- (id)_secondaryTitlePlacesOnly:(unint64_t)a3;
-- (id)_secondaryTitleTransitLineOnly:(unint64_t)a3;
-- (void)_updateSubtitleWithContents:(id)a3;
-- (void)setObservedQuery:(id)a3;
+- (id)_secondaryTitleForPlaceCount:(unint64_t)count transitLineCount:(unint64_t)lineCount;
+- (id)_secondaryTitlePlacesOnly:(unint64_t)only;
+- (id)_secondaryTitleTransitLineOnly:(unint64_t)only;
+- (void)_updateSubtitleWithContents:(id)contents;
+- (void)setObservedQuery:(id)query;
 @end
 
 @implementation _FavoritesTwoLinesContentViewModel
 
-- (id)_secondaryTitleForPlaceCount:(unint64_t)a3 transitLineCount:(unint64_t)a4
+- (id)_secondaryTitleForPlaceCount:(unint64_t)count transitLineCount:(unint64_t)lineCount
 {
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"count_of_places" value:@"localized string not found" table:0];
 
-  v8 = [NSString localizedStringWithFormat:v7, a3];
+  v8 = [NSString localizedStringWithFormat:v7, count];
   v9 = +[NSBundle mainBundle];
   v10 = [v9 localizedStringForKey:@"count_of_transit_lines" value:@"localized string not found" table:0];
 
-  v11 = [NSString localizedStringWithFormat:v10, a4];
+  lineCount = [NSString localizedStringWithFormat:v10, lineCount];
   v12 = +[NSBundle mainBundle];
   v13 = [v12 localizedStringForKey:@"count_of_places_and_transit_lines" value:@"localized string not found" table:0];
 
-  v14 = [NSString stringWithFormat:v13, v8, v11];
+  v14 = [NSString stringWithFormat:v13, v8, lineCount];
 
   return v14;
 }
 
-- (id)_secondaryTitleTransitLineOnly:(unint64_t)a3
+- (id)_secondaryTitleTransitLineOnly:(unint64_t)only
 {
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"count_of_transit_lines" value:@"localized string not found" table:0];
 
-  v6 = [NSString localizedStringWithFormat:v5, a3];
+  only = [NSString localizedStringWithFormat:v5, only];
 
-  return v6;
+  return only;
 }
 
-- (id)_secondaryTitlePlacesOnly:(unint64_t)a3
+- (id)_secondaryTitlePlacesOnly:(unint64_t)only
 {
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"count_of_places" value:@"localized string not found" table:0];
 
-  v6 = [NSString localizedStringWithFormat:v5, a3];
+  only = [NSString localizedStringWithFormat:v5, only];
 
-  return v6;
+  return only;
 }
 
-- (void)_updateSubtitleWithContents:(id)a3
+- (void)_updateSubtitleWithContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [contentsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -66,7 +66,7 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(contentsCopy);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -82,7 +82,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [contentsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -119,12 +119,12 @@ LABEL_17:
   [(_BasicTwoLinesContentViewModel *)self setSubtitleText:v13];
 }
 
-- (void)setObservedQuery:(id)a3
+- (void)setObservedQuery:(id)query
 {
-  v5 = a3;
-  if (self->_observedQuery != v5)
+  queryCopy = query;
+  if (self->_observedQuery != queryCopy)
   {
-    objc_storeStrong(&self->_observedQuery, a3);
+    objc_storeStrong(&self->_observedQuery, query);
     objc_initWeak(&location, self);
     observedQuery = self->_observedQuery;
     v8[0] = _NSConcreteStackBlock;

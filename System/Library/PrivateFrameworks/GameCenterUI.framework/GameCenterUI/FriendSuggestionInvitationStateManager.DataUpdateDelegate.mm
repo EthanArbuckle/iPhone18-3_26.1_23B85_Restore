@@ -1,31 +1,31 @@
 @interface FriendSuggestionInvitationStateManager.DataUpdateDelegate
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4;
-- (void)refreshFromFriendRecommendationsNotification:(id)a3;
-- (void)refreshFromMessageBasedFriendRequestSent:(id)a3;
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info;
+- (void)refreshFromFriendRecommendationsNotification:(id)notification;
+- (void)refreshFromMessageBasedFriendRequestSent:(id)sent;
 @end
 
 @implementation FriendSuggestionInvitationStateManager.DataUpdateDelegate
 
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info
 {
-  v4 = *&a3;
+  v4 = *&type;
   sub_24E347C08();
-  v6 = self;
+  selfCopy = self;
   sub_24E156368(v4);
 }
 
-- (void)refreshFromFriendRecommendationsNotification:(id)a3
+- (void)refreshFromFriendRecommendationsNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E156498(v4, 4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_24E156498(notificationCopy, 4);
 }
 
-- (void)refreshFromMessageBasedFriendRequestSent:(id)a3
+- (void)refreshFromMessageBasedFriendRequestSent:(id)sent
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E156498(v4, 21);
+  sentCopy = sent;
+  selfCopy = self;
+  sub_24E156498(sentCopy, 21);
 }
 
 @end

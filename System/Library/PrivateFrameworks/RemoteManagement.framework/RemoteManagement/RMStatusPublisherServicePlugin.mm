@@ -1,11 +1,11 @@
 @interface RMStatusPublisherServicePlugin
-+ (BOOL)_validPluginWithURL:(id)a3;
++ (BOOL)_validPluginWithURL:(id)l;
 + (id)loadPlugins;
-- (RMStatusPublisherServicePlugin)initWithURL:(id)a3;
-- (RMStatusPublisherServicePlugin)initWithURL:(id)a3 identifier:(id)a4 statusKeysByXPCEvent:(id)a5 statusKeys:(id)a6;
+- (RMStatusPublisherServicePlugin)initWithURL:(id)l;
+- (RMStatusPublisherServicePlugin)initWithURL:(id)l identifier:(id)identifier statusKeysByXPCEvent:(id)event statusKeys:(id)keys;
 - (id)_serviceConnection;
 - (id)reportDetails;
-- (void)publishStatusKeys:(id)a3 storeIdentifier:(id)a4;
+- (void)publishStatusKeys:(id)keys storeIdentifier:(id)identifier;
 @end
 
 @implementation RMStatusPublisherServicePlugin
@@ -16,7 +16,7 @@
   v17[1] = 3221225472;
   v17[2] = sub_100067130;
   v17[3] = &unk_1000D1988;
-  v17[4] = a1;
+  v17[4] = self;
   v2 = [RMPluginDiscovery discoverPluginsWithType:@"status" checkValidURL:v17];
   v3 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v2 count]);
   v13 = 0u;
@@ -53,11 +53,11 @@
   return v3;
 }
 
-+ (BOOL)_validPluginWithURL:(id)a3
++ (BOOL)_validPluginWithURL:(id)l
 {
-  v15 = [NSBundle bundleWithURL:a3];
-  v3 = [v15 infoDictionary];
-  v4 = [RMStatusPublisherDescription descriptionWithServiceDictionary:v3];
+  v15 = [NSBundle bundleWithURL:l];
+  infoDictionary = [v15 infoDictionary];
+  v4 = [RMStatusPublisherDescription descriptionWithServiceDictionary:infoDictionary];
 
   v5 = +[RMModelSharedDefinitions currentPlatform];
   v6 = +[RMBundle managementScope];
@@ -65,8 +65,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [v4 statusKeys];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  statusKeys = [v4 statusKeys];
+  v8 = [statusKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -77,7 +77,7 @@ LABEL_3:
     {
       if (*v17 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(statusKeys);
       }
 
       v12 = *(*(&v16 + 1) + 8 * v11);
@@ -89,7 +89,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [statusKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
         LOBYTE(v13) = 0;
         if (v9)
         {
@@ -109,33 +109,33 @@ LABEL_3:
   return v13;
 }
 
-- (RMStatusPublisherServicePlugin)initWithURL:(id)a3
+- (RMStatusPublisherServicePlugin)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v29.receiver = self;
   v29.super_class = RMStatusPublisherServicePlugin;
   v6 = [(RMStatusPublisherServicePlugin *)&v29 init];
   if (v6)
   {
-    v7 = [NSBundle bundleWithURL:v5];
-    v8 = [v7 bundleIdentifier];
+    v7 = [NSBundle bundleWithURL:lCopy];
+    bundleIdentifier = [v7 bundleIdentifier];
     identifier = v6->_identifier;
-    v6->_identifier = v8;
+    v6->_identifier = bundleIdentifier;
 
-    v10 = [v7 infoDictionary];
-    v11 = [RMStatusPublisherDescription descriptionWithServiceDictionary:v10];
+    infoDictionary = [v7 infoDictionary];
+    v11 = [RMStatusPublisherDescription descriptionWithServiceDictionary:infoDictionary];
 
-    v12 = [v11 statusKeys];
+    statusKeys = [v11 statusKeys];
 
-    if (v12)
+    if (statusKeys)
     {
-      v13 = [v11 statusKeysByXPCEvent];
-      v14 = [v13 copy];
+      statusKeysByXPCEvent = [v11 statusKeysByXPCEvent];
+      v14 = [statusKeysByXPCEvent copy];
       statusKeysByXPCEvent = v6->_statusKeysByXPCEvent;
       v6->_statusKeysByXPCEvent = v14;
 
-      v16 = [v11 statusKeys];
-      v17 = [v16 copy];
+      statusKeys2 = [v11 statusKeys];
+      v17 = [statusKeys2 copy];
       statusKeys = v6->_statusKeys;
       v6->_statusKeys = v17;
     }
@@ -145,7 +145,7 @@ LABEL_3:
       v19 = +[RMLog statusPublisherServicePlugin];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        sub_100026D8C(v5);
+        sub_100026D8C(lCopy);
       }
 
       v20 = objc_opt_new();
@@ -153,20 +153,20 @@ LABEL_3:
       v6->_statusKeysByXPCEvent = v20;
 
       v22 = objc_opt_new();
-      v16 = v6->_statusKeys;
+      statusKeys2 = v6->_statusKeys;
       v6->_statusKeys = v22;
     }
 
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
     v23 = +[RMLog statusPublisherServicePlugin];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
-      v25 = [v5 lastPathComponent];
+      lastPathComponent = [lCopy lastPathComponent];
       v26 = v6->_identifier;
-      v27 = [(NSSet *)v6->_statusKeys allObjects];
-      v28 = [v27 componentsJoinedByString:{@", "}];
+      allObjects = [(NSSet *)v6->_statusKeys allObjects];
+      v28 = [allObjects componentsJoinedByString:{@", "}];
       *buf = 138543874;
-      v31 = v25;
+      v31 = lastPathComponent;
       v32 = 2114;
       v33 = v26;
       v34 = 2114;
@@ -178,36 +178,36 @@ LABEL_3:
   return v6;
 }
 
-- (RMStatusPublisherServicePlugin)initWithURL:(id)a3 identifier:(id)a4 statusKeysByXPCEvent:(id)a5 statusKeys:(id)a6
+- (RMStatusPublisherServicePlugin)initWithURL:(id)l identifier:(id)identifier statusKeysByXPCEvent:(id)event statusKeys:(id)keys
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  lCopy = l;
+  identifierCopy = identifier;
+  eventCopy = event;
+  keysCopy = keys;
   v25.receiver = self;
   v25.super_class = RMStatusPublisherServicePlugin;
   v15 = [(RMStatusPublisherServicePlugin *)&v25 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_url, a3);
-    objc_storeStrong(&v16->_identifier, a4);
-    objc_storeStrong(&v16->_statusKeysByXPCEvent, a5);
-    v17 = [v14 copy];
+    objc_storeStrong(&v15->_url, l);
+    objc_storeStrong(&v16->_identifier, identifier);
+    objc_storeStrong(&v16->_statusKeysByXPCEvent, event);
+    v17 = [keysCopy copy];
     statusKeys = v16->_statusKeys;
     v16->_statusKeys = v17;
 
     v19 = +[RMLog statusPublisherServicePlugin];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [v11 lastPathComponent];
+      lastPathComponent = [lCopy lastPathComponent];
       identifier = v16->_identifier;
-      v23 = [(NSSet *)v16->_statusKeys allObjects];
-      v24 = [v23 componentsJoinedByString:{@", "}];
+      allObjects = [(NSSet *)v16->_statusKeys allObjects];
+      v24 = [allObjects componentsJoinedByString:{@", "}];
       *buf = 138543874;
-      v27 = v21;
+      v27 = lastPathComponent;
       v28 = 2114;
-      v29 = identifier;
+      identifierCopy2 = identifier;
       v30 = 2114;
       v31 = v24;
       _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "Created XPC service plugin: %{public}@ %{public}@ %{public}@", buf, 0x20u);
@@ -217,42 +217,42 @@ LABEL_3:
   return v16;
 }
 
-- (void)publishStatusKeys:(id)a3 storeIdentifier:(id)a4
+- (void)publishStatusKeys:(id)keys storeIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RMStatusPublisherServicePlugin *)self _serviceConnection];
+  identifierCopy = identifier;
+  keysCopy = keys;
+  _serviceConnection = [(RMStatusPublisherServicePlugin *)self _serviceConnection];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100067898;
   v12[3] = &unk_1000D1020;
   v12[4] = self;
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v12];
-  v10 = [v7 allObjects];
+  v9 = [_serviceConnection synchronousRemoteObjectProxyWithErrorHandler:v12];
+  allObjects = [keysCopy allObjects];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100067904;
   v11[3] = &unk_1000D1020;
   v11[4] = self;
-  [v9 publishStatusKeys:v10 storeIdentifier:v6 scope:+[RMStoreHelper storeScope](RMStoreHelper completionHandler:{"storeScope"), v11}];
+  [v9 publishStatusKeys:allObjects storeIdentifier:identifierCopy scope:+[RMStoreHelper storeScope](RMStoreHelper completionHandler:{"storeScope"), v11}];
 
-  [v8 invalidate];
+  [_serviceConnection invalidate];
 }
 
 - (id)reportDetails
 {
   v11[0] = @"Location";
   v3 = [(RMStatusPublisherServicePlugin *)self url];
-  v4 = [v3 path];
-  v12[0] = v4;
+  path = [v3 path];
+  v12[0] = path;
   v11[1] = @"Identifier";
-  v5 = [(RMStatusPublisherServicePlugin *)self identifier];
-  v12[1] = v5;
+  identifier = [(RMStatusPublisherServicePlugin *)self identifier];
+  v12[1] = identifier;
   v11[2] = @"StatusItems";
-  v6 = [(RMStatusPublisherServicePlugin *)self statusKeys];
-  v7 = [v6 allObjects];
-  v8 = [v7 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+  statusKeys = [(RMStatusPublisherServicePlugin *)self statusKeys];
+  allObjects = [statusKeys allObjects];
+  v8 = [allObjects sortedArrayUsingSelector:"caseInsensitiveCompare:"];
   v12[2] = v8;
   v9 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:3];
 
@@ -262,8 +262,8 @@ LABEL_3:
 - (id)_serviceConnection
 {
   v3 = [NSXPCConnection alloc];
-  v4 = [(RMStatusPublisherServicePlugin *)self identifier];
-  v5 = [v3 initWithServiceName:v4];
+  identifier = [(RMStatusPublisherServicePlugin *)self identifier];
+  v5 = [v3 initWithServiceName:identifier];
 
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___RMConfigurationSubscriberXPCService];
   [v5 setRemoteObjectInterface:v6];

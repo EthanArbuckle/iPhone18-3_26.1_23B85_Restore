@@ -1,24 +1,24 @@
 @interface SKUIStyledImageButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)hitRect;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIStyledImageButton)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIStyledImageButton)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)bigHitInsets;
 - (UIEdgeInsets)hitRectInsets;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)setBackgroundColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation SKUIStyledImageButton
 
-- (SKUIStyledImageButton)initWithFrame:(CGRect)a3
+- (SKUIStyledImageButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIStyledImageButton initWithFrame:];
@@ -26,57 +26,57 @@
 
   v16.receiver = self;
   v16.super_class = SKUIStyledImageButton;
-  v8 = [(SKUIStyledImageButton *)&v16 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIStyledImageButton *)&v16 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = [SKUIImageView alloc];
-    [(SKUIStyledImageButton *)v8 bounds];
+    [(SKUIStyledImageButton *)height bounds];
     v10 = [(SKUIImageView *)v9 initWithFrame:?];
-    imageView = v8->_imageView;
-    v8->_imageView = v10;
+    imageView = height->_imageView;
+    height->_imageView = v10;
 
-    [(SKUIImageView *)v8->_imageView setAutoresizingMask:18];
-    [(SKUIImageView *)v8->_imageView setUserInteractionEnabled:0];
-    [(SKUIStyledImageButton *)v8 addSubview:v8->_imageView];
+    [(SKUIImageView *)height->_imageView setAutoresizingMask:18];
+    [(SKUIImageView *)height->_imageView setUserInteractionEnabled:0];
+    [(SKUIStyledImageButton *)height addSubview:height->_imageView];
     v12 = [SKUIImageView alloc];
     v13 = [(SKUIImageView *)v12 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-    additionalImageView = v8->_additionalImageView;
-    v8->_additionalImageView = v13;
+    additionalImageView = height->_additionalImageView;
+    height->_additionalImageView = v13;
 
-    [(SKUIImageView *)v8->_additionalImageView setAutoresizingMask:45];
-    [(SKUIImageView *)v8->_additionalImageView setUserInteractionEnabled:0];
-    [(SKUIStyledImageButton *)v8 addSubview:v8->_additionalImageView];
+    [(SKUIImageView *)height->_additionalImageView setAutoresizingMask:45];
+    [(SKUIImageView *)height->_additionalImageView setUserInteractionEnabled:0];
+    [(SKUIStyledImageButton *)height addSubview:height->_additionalImageView];
   }
 
-  return v8;
+  return height;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   self->_didInitialHighlightForTouch = 0;
   v4.receiver = self;
   v4.super_class = SKUIStyledImageButton;
-  [(SKUIStyledImageButton *)&v4 touchesBegan:a3 withEvent:a4];
+  [(SKUIStyledImageButton *)&v4 touchesBegan:began withEvent:event];
 }
 
 - (CGRect)hitRect
 {
   if (self->_useBigHitTarget)
   {
-    v16 = self;
+    selfCopy = self;
     v3 = &OBJC_IVAR___SKUIStyledImageButton__bigHitInsets;
-    v4 = &v16;
+    v4 = &selfCopy;
   }
 
   else
   {
-    v15 = self;
+    selfCopy2 = self;
     v3 = &OBJC_IVAR___SKUIStyledImageButton__hitRectInsets;
-    v4 = &v15;
+    v4 = &selfCopy2;
   }
 
   v4[1] = SKUIStyledImageButton;
-  objc_msgSendSuper2(v4, sel_hitRect, v15);
+  objc_msgSendSuper2(v4, sel_hitRect, selfCopy2);
   v5 = (self + *v3);
   v6 = v5[1];
   v8 = v7 + v6;
@@ -105,10 +105,10 @@
   [(SKUIImageView *)additionalImageView setFrame:v8, CGRectGetMidY(v11) - v6 * 0.5, v4, v6];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(SKUIStyledImageButton *)self hitRect];
   v10 = x;
   v11 = y;
@@ -116,30 +116,30 @@
   return CGRectContainsPoint(*&v6, *&v10);
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   imageView = self->_imageView;
-  v5 = a3;
-  [(SKUIImageView *)imageView setBackgroundColor:v5];
+  colorCopy = color;
+  [(SKUIImageView *)imageView setBackgroundColor:colorCopy];
   additionalImageView = self->_additionalImageView;
-  v7 = [MEMORY[0x277D75348] clearColor];
-  [(SKUIImageView *)additionalImageView setBackgroundColor:v7];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(SKUIImageView *)additionalImageView setBackgroundColor:clearColor];
 
   v8.receiver = self;
   v8.super_class = SKUIStyledImageButton;
-  [(SKUIStyledImageButton *)&v8 setBackgroundColor:v5];
+  [(SKUIStyledImageButton *)&v8 setBackgroundColor:colorCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(SKUIStyledImageButton *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(SKUIStyledImageButton *)self isHighlighted]!= highlighted)
   {
     v7.receiver = self;
     v7.super_class = SKUIStyledImageButton;
-    [(SKUIStyledImageButton *)&v7 setHighlighted:v3];
+    [(SKUIStyledImageButton *)&v7 setHighlighted:highlightedCopy];
     v5 = 1.0;
-    if (v3 && (v5 = 0.2, !self->_didInitialHighlightForTouch))
+    if (highlightedCopy && (v5 = 0.2, !self->_didInitialHighlightForTouch))
     {
       [(SKUIStyledImageButton *)self setAlpha:0.2, 0.2];
       self->_didInitialHighlightForTouch = 1;
@@ -158,9 +158,9 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(SKUIImageView *)self->_imageView sizeThatFits:a3.width, a3.height];
+  [(SKUIImageView *)self->_imageView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

@@ -7,7 +7,7 @@
 
 - (void)runOneTimeLaunchTask
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002CBAAC();
 }
 

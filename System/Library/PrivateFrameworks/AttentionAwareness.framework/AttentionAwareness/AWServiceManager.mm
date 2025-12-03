@@ -1,12 +1,12 @@
 @interface AWServiceManager
-+ (id)invokeWithService:(id)a3;
++ (id)invokeWithService:(id)service;
 + (id)sharedManager;
-+ (void)addObserver:(id)a3;
-+ (void)removeObserver:(id)a3;
++ (void)addObserver:(id)observer;
++ (void)removeObserver:(id)observer;
 - (AWServiceManager)init;
-- (id)invokeWithService:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (id)invokeWithService:(id)service;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation AWServiceManager
@@ -23,10 +23,10 @@
   return v3;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (!v4)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     __assert_rtn("[AWServiceManager removeObserver:]", "ClientHelpers.m", 134, "observer");
   }
@@ -37,15 +37,15 @@
   v7[2] = __35__AWServiceManager_removeObserver___block_invoke;
   v7[3] = &unk_1E7F38060;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (!v4)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     __assert_rtn("[AWServiceManager addObserver:]", "ClientHelpers.m", 121, "observer");
   }
@@ -56,15 +56,15 @@
   v7[2] = __32__AWServiceManager_addObserver___block_invoke;
   v7[3] = &unk_1E7F38060;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (id)invokeWithService:(id)a3
+- (id)invokeWithService:(id)service
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  serviceCopy = service;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -88,7 +88,7 @@
   dispatch_sync(queue, block);
   if (v17[5])
   {
-    v6 = v4[2](v4);
+    v6 = serviceCopy[2](serviceCopy);
     if (!v6)
     {
       v7 = v23[5];
@@ -356,25 +356,25 @@ void __24__AWServiceManager_init__block_invoke_2(uint64_t a1)
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)removeObserver:(id)a3
++ (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [a1 sharedManager];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  sharedManager = [self sharedManager];
+  [sharedManager removeObserver:observerCopy];
 }
 
-+ (void)addObserver:(id)a3
++ (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [a1 sharedManager];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  sharedManager = [self sharedManager];
+  [sharedManager addObserver:observerCopy];
 }
 
-+ (id)invokeWithService:(id)a3
++ (id)invokeWithService:(id)service
 {
-  v4 = a3;
-  v5 = [a1 sharedManager];
-  v6 = [v5 invokeWithService:v4];
+  serviceCopy = service;
+  sharedManager = [self sharedManager];
+  v6 = [sharedManager invokeWithService:serviceCopy];
 
   return v6;
 }

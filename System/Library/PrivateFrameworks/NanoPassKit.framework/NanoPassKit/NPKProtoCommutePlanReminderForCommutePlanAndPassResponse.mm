@@ -1,20 +1,20 @@
 @interface NPKProtoCommutePlanReminderForCommutePlanAndPassResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPending:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPending:(BOOL)pending;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoCommutePlanReminderForCommutePlanAndPassResponse
 
-- (void)setHasPending:(BOOL)a3
+- (void)setHasPending:(BOOL)pending
 {
-  if (a3)
+  if (pending)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoCommutePlanReminderForCommutePlanAndPassResponse;
   v4 = [(NPKProtoCommutePlanReminderForCommutePlanAndPassResponse *)&v8 description];
-  v5 = [(NPKProtoCommutePlanReminderForCommutePlanAndPassResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoCommutePlanReminderForCommutePlanAndPassResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_pending];
-    [v3 setObject:v5 forKey:@"pending"];
+    [dictionary setObject:v5 forKey:@"pending"];
 
     has = self->_has;
   }
@@ -54,28 +54,28 @@
   if (has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_reminderInterval];
-    [v3 setObject:v6 forKey:@"reminderInterval"];
+    [dictionary setObject:v6 forKey:@"reminderInterval"];
   }
 
   errorData = self->_errorData;
   if (errorData)
   {
-    [v3 setObject:errorData forKey:@"errorData"];
+    [dictionary setObject:errorData forKey:@"errorData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if ((has & 2) != 0)
   {
     pending = self->_pending;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -83,44 +83,44 @@
   {
     reminderInterval = self->_reminderInterval;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_errorData)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[24] = self->_pending;
-    v4[28] |= 2u;
+    toCopy[24] = self->_pending;
+    toCopy[28] |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_reminderInterval;
-    v4[28] |= 1u;
+    *(toCopy + 1) = *&self->_reminderInterval;
+    toCopy[28] |= 1u;
   }
 
   if (self->_errorData)
   {
-    v6 = v4;
-    [v4 setErrorData:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setErrorData:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -136,25 +136,25 @@
     *(v5 + 28) |= 1u;
   }
 
-  v8 = [(NSData *)self->_errorData copyWithZone:a3];
+  v8 = [(NSData *)self->_errorData copyWithZone:zone];
   v9 = v6[2];
   v6[2] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 28) & 2) == 0)
+    if ((*(equalCopy + 28) & 2) == 0)
     {
       goto LABEL_4;
     }
@@ -164,21 +164,21 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if ((*(v4 + 28) & 2) == 0)
+  if ((*(equalCopy + 28) & 2) == 0)
   {
     goto LABEL_16;
   }
 
-  v6 = *(v4 + 24);
+  v6 = *(equalCopy + 24);
   if (self->_pending)
   {
-    if ((*(v4 + 24) & 1) == 0)
+    if ((*(equalCopy + 24) & 1) == 0)
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_16;
   }
@@ -186,19 +186,19 @@ LABEL_16:
 LABEL_4:
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_reminderInterval != *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_reminderInterval != *(equalCopy + 1))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_16;
   }
 
   errorData = self->_errorData;
-  if (errorData | *(v4 + 2))
+  if (errorData | *(equalCopy + 2))
   {
     v8 = [(NSData *)errorData isEqual:?];
   }
@@ -263,28 +263,28 @@ LABEL_3:
   return v12 ^ v8 ^ [(NSData *)self->_errorData hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if ((v5 & 2) != 0)
   {
-    self->_pending = *(v4 + 24);
+    self->_pending = *(fromCopy + 24);
     *&self->_has |= 2u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
   }
 
   if (v5)
   {
-    self->_reminderInterval = *(v4 + 1);
+    self->_reminderInterval = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(NPKProtoCommutePlanReminderForCommutePlanAndPassResponse *)self setErrorData:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

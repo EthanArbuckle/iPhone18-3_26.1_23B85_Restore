@@ -1,49 +1,49 @@
 @interface HKCalendarWeekView
-- (BOOL)containsDate:(id)a3;
-- (CGRect)frameForDayCell:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)containsDate:(id)date;
+- (CGRect)frameForDayCell:(id)cell;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (Class)cellClass;
 - (Class)monthTitleClass;
-- (HKCalendarWeekView)initWithDateCache:(id)a3;
+- (HKCalendarWeekView)initWithDateCache:(id)cache;
 - (HKCalendarWeekViewDelegate)delegate;
 - (double)preferredHeight;
-- (id)_getDayCellWithTouchLocation:(CGPoint)a3;
-- (id)_getDayCellWithTouches:(id)a3;
+- (id)_getDayCellWithTouchLocation:(CGPoint)location;
+- (id)_getDayCellWithTouches:(id)touches;
 - (id)currentWeekStartDate;
 - (id)description;
 - (id)nextWeekStartDate;
 - (id)previousWeekStartDate;
 - (void)reloadCells;
-- (void)selectedCalendarDay:(id)a3;
-- (void)setMonthWeekStart:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)selectedCalendarDay:(id)day;
+- (void)setMonthWeekStart:(id)start;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation HKCalendarWeekView
 
-- (HKCalendarWeekView)initWithDateCache:(id)a3
+- (HKCalendarWeekView)initWithDateCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   v16.receiver = self;
   v16.super_class = HKCalendarWeekView;
   v6 = [(HKCalendarWeekView *)&v16 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v6)
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     dayCells = v6->_dayCells;
-    v6->_dayCells = v7;
+    v6->_dayCells = array;
 
-    objc_storeStrong(&v6->_dateCache, a3);
+    objc_storeStrong(&v6->_dateCache, cache);
     if ([(HKCalendarWeekView *)v6 cellClass])
     {
       for (i = *MEMORY[0x1E696B760]; i; --i)
       {
         v10 = [objc_alloc(-[HKCalendarWeekView cellClass](v6 "cellClass"))];
-        v11 = [(HKCalendarWeekView *)v6 layer];
-        [v11 addSublayer:v10];
+        layer = [(HKCalendarWeekView *)v6 layer];
+        [layer addSublayer:v10];
 
         [(NSMutableArray *)v6->_dayCells addObject:v10];
       }
@@ -52,11 +52,11 @@
     v12 = objc_alloc_init([(HKCalendarWeekView *)v6 monthTitleClass]);
     [(HKCalendarWeekView *)v6 setMonthTitleView:v12];
 
-    v13 = [(HKCalendarWeekView *)v6 monthTitleView];
-    [v13 setHidden:1];
+    monthTitleView = [(HKCalendarWeekView *)v6 monthTitleView];
+    [monthTitleView setHidden:1];
 
-    v14 = [(HKCalendarWeekView *)v6 monthTitleView];
-    [(HKCalendarWeekView *)v6 addSubview:v14];
+    monthTitleView2 = [(HKCalendarWeekView *)v6 monthTitleView];
+    [(HKCalendarWeekView *)v6 addSubview:monthTitleView2];
   }
 
   return v6;
@@ -67,15 +67,15 @@
   v13.receiver = self;
   v13.super_class = HKCalendarWeekView;
   v3 = [(HKCalendarWeekView *)&v13 description];
-  v4 = [(NSMutableArray *)self->_dayCells firstObject];
-  v5 = [(NSMutableArray *)self->_dayCells lastObject];
+  firstObject = [(NSMutableArray *)self->_dayCells firstObject];
+  lastObject = [(NSMutableArray *)self->_dayCells lastObject];
   v6 = MEMORY[0x1E696AB78];
-  v7 = [v4 date];
-  v8 = [v6 localizedStringFromDate:v7 dateStyle:2 timeStyle:0];
+  date = [firstObject date];
+  v8 = [v6 localizedStringFromDate:date dateStyle:2 timeStyle:0];
 
   v9 = MEMORY[0x1E696AB78];
-  v10 = [v5 date];
-  v11 = [v9 localizedStringFromDate:v10 dateStyle:2 timeStyle:0];
+  date2 = [lastObject date];
+  v11 = [v9 localizedStringFromDate:date2 dateStyle:2 timeStyle:0];
 
   [v3 deleteCharactersInRange:{objc_msgSend(v3, "length") - 1, 1}];
   [v3 appendFormat:@"; dates: %@ – %@>", v8, v11];
@@ -83,10 +83,10 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(HKCalendarWeekView *)self preferredHeight:a3.width];
+  width = fits.width;
+  [(HKCalendarWeekView *)self preferredHeight:fits.width];
   v5 = v4;
   v6 = width;
   result.height = v5;
@@ -94,14 +94,14 @@
   return result;
 }
 
-- (void)setMonthWeekStart:(id)a3
+- (void)setMonthWeekStart:(id)start
 {
   v4 = MEMORY[0x1E6979518];
-  v5 = a3;
+  startCopy = start;
   [v4 begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
-  v15 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v6 = [v15 startOfDayForDate:v5];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v6 = [currentCalendar startOfDayForDate:startCopy];
 
   self->_firstDayOfMonthCellIndex = -1;
   if ([(HKCalendarWeekView *)self supportsRTL])
@@ -127,8 +127,8 @@
       }
 
       v11 = [(NSMutableArray *)self->_dayCells objectAtIndexedSubscript:v10];
-      v12 = [v15 dateByAddingUnit:16 value:v8 toDate:v6 options:0];
-      v13 = [v15 component:16 fromDate:v12];
+      v12 = [currentCalendar dateByAddingUnit:16 value:v8 toDate:v6 options:0];
+      v13 = [currentCalendar component:16 fromDate:v12];
       if (v13 == 1)
       {
         self->_firstDayOfMonthCellIndex = v10;
@@ -213,24 +213,24 @@
   return v12;
 }
 
-- (BOOL)containsDate:(id)a3
+- (BOOL)containsDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HKCalendarWeekView *)self currentWeekStartDate];
+  dateCopy = date;
+  currentWeekStartDate = [(HKCalendarWeekView *)self currentWeekStartDate];
 
   v6 = 0;
-  if (v4 && v5)
+  if (dateCopy && currentWeekStartDate)
   {
     v16 = 0.0;
-    v7 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     v15 = 0;
-    v8 = [(HKCalendarWeekView *)self currentWeekStartDate];
-    v9 = [v7 rangeOfUnit:4096 startDate:&v15 interval:&v16 forDate:v8];
+    currentWeekStartDate2 = [(HKCalendarWeekView *)self currentWeekStartDate];
+    v9 = [currentCalendar rangeOfUnit:4096 startDate:&v15 interval:&v16 forDate:currentWeekStartDate2];
     v10 = v15;
 
     if (v9)
     {
-      [v4 timeIntervalSinceReferenceDate];
+      [dateCopy timeIntervalSinceReferenceDate];
       v12 = v11;
       [v10 timeIntervalSinceReferenceDate];
       v6 = v12 < v13 + v16 && v12 >= v13;
@@ -245,14 +245,14 @@
   return v6;
 }
 
-- (CGRect)frameForDayCell:(id)a3
+- (CGRect)frameForDayCell:(id)cell
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(HKCalendarWeekView *)self containsDate:v4])
+  cellCopy = cell;
+  if ([(HKCalendarWeekView *)self containsDate:cellCopy])
   {
-    v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v6 = [v5 components:30 fromDate:v4];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v6 = [currentCalendar components:30 fromDate:cellCopy];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -273,8 +273,8 @@
           }
 
           v12 = *(*(&v27 + 1) + 8 * i);
-          v13 = [v12 date];
-          v14 = [v5 components:30 fromDate:v13];
+          date = [v12 date];
+          v14 = [currentCalendar components:30 fromDate:date];
 
           if ([v6 isEqual:v14])
           {
@@ -320,43 +320,43 @@ LABEL_13:
 {
   if ([(HKCalendarWeekView *)self supportsRTL]&& HKUICalendarLocaleIsRightToLeft())
   {
-    v3 = [(NSMutableArray *)self->_dayCells lastObject];
+    lastObject = [(NSMutableArray *)self->_dayCells lastObject];
   }
 
   else
   {
-    v3 = [(NSMutableArray *)self->_dayCells firstObject];
+    lastObject = [(NSMutableArray *)self->_dayCells firstObject];
   }
 
-  v4 = v3;
-  v5 = [v3 date];
+  v4 = lastObject;
+  date = [lastObject date];
 
-  return v5;
+  return date;
 }
 
 - (id)previousWeekStartDate
 {
-  v3 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v4 = [(HKCalendarWeekView *)self currentWeekStartDate];
-  v5 = [v3 dateByAddingUnit:0x2000 value:-1 toDate:v4 options:0];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentWeekStartDate = [(HKCalendarWeekView *)self currentWeekStartDate];
+  v5 = [currentCalendar dateByAddingUnit:0x2000 value:-1 toDate:currentWeekStartDate options:0];
 
   return v5;
 }
 
 - (id)nextWeekStartDate
 {
-  v3 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v4 = [(HKCalendarWeekView *)self currentWeekStartDate];
-  v5 = [v3 dateByAddingUnit:0x2000 value:1 toDate:v4 options:0];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentWeekStartDate = [(HKCalendarWeekView *)self currentWeekStartDate];
+  v5 = [currentCalendar dateByAddingUnit:0x2000 value:1 toDate:currentWeekStartDate options:0];
 
   return v5;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = [(HKCalendarWeekView *)self _getDayCellWithTouches:a3, a4];
+  event = [(HKCalendarWeekView *)self _getDayCellWithTouches:began, event];
   pressedDayCell = self->_pressedDayCell;
-  self->_pressedDayCell = v5;
+  self->_pressedDayCell = event;
 
   if (self->_pressedDayCell)
   {
@@ -366,31 +366,31 @@ LABEL_13:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   pressedDayCell = self->_pressedDayCell;
   if (pressedDayCell)
   {
-    [(HKCalendarWeekView *)self selectedCalendarDay:pressedDayCell, a4];
+    [(HKCalendarWeekView *)self selectedCalendarDay:pressedDayCell, event];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   if (self->_pressedDayCell)
   {
-    v5 = [(HKCalendarWeekView *)self _getDayCellWithTouches:a3, a4];
+    event = [(HKCalendarWeekView *)self _getDayCellWithTouches:moved, event];
     pressedDayCell = self->_pressedDayCell;
-    if (pressedDayCell != v5)
+    if (pressedDayCell != event)
     {
-      v7 = v5;
+      v7 = event;
       [(HKCalendarWeekView *)self pressedOnCalendarDay:self->_pressedDayOfWeek cell:pressedDayCell down:0];
-      v5 = v7;
+      event = v7;
     }
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   pressedDayCell = self->_pressedDayCell;
   if (pressedDayCell)
@@ -399,19 +399,19 @@ LABEL_13:
   }
 }
 
-- (id)_getDayCellWithTouches:(id)a3
+- (id)_getDayCellWithTouches:(id)touches
 {
-  v4 = [a3 anyObject];
-  [v4 locationInView:self];
+  anyObject = [touches anyObject];
+  [anyObject locationInView:self];
   v5 = [(HKCalendarWeekView *)self _getDayCellWithTouchLocation:?];
 
   return v5;
 }
 
-- (id)_getDayCellWithTouchLocation:(CGPoint)a3
+- (id)_getDayCellWithTouchLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   [(HKCalendarWeekView *)self frame];
   v7 = floor(v6 / *MEMORY[0x1E696B760]);
   v8 = vcvtpd_s64_f64(x / v7);
@@ -463,7 +463,7 @@ LABEL_13:
   return WeakRetained;
 }
 
-- (void)selectedCalendarDay:(id)a3
+- (void)selectedCalendarDay:(id)day
 {
   objc_opt_class();
   OUTLINED_FUNCTION_0_10();

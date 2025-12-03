@@ -1,23 +1,23 @@
 @interface MPSNDArrayRandomTruncatedNormal
-- (MPSNDArrayRandomTruncatedNormal)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayRandomTruncatedNormal)initWithDevice:(id)a3 mean:(float)a4 standardDeviation:(float)a5;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (MPSNDArrayRandomTruncatedNormal)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayRandomTruncatedNormal)initWithDevice:(id)device mean:(float)mean standardDeviation:(float)deviation;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNDArrayRandomTruncatedNormal
 
-- (MPSNDArrayRandomTruncatedNormal)initWithDevice:(id)a3 mean:(float)a4 standardDeviation:(float)a5
+- (MPSNDArrayRandomTruncatedNormal)initWithDevice:(id)device mean:(float)mean standardDeviation:(float)deviation
 {
   v8.receiver = self;
   v8.super_class = MPSNDArrayRandomTruncatedNormal;
-  result = [(MPSNDArrayRandom *)&v8 initWithDevice:a3];
+  result = [(MPSNDArrayRandom *)&v8 initWithDevice:device];
   if (result)
   {
-    result->_mean = a4;
-    result->_standardDeviation = a5;
-    result->_minimum = a4 - (a5 + a5);
-    result->_maximum = (result->_standardDeviation + result->_standardDeviation) + a4;
+    result->_mean = mean;
+    result->_standardDeviation = deviation;
+    result->_minimum = mean - (deviation + deviation);
+    result->_maximum = (result->_standardDeviation + result->_standardDeviation) + mean;
     result->_samplingMethod = 0;
     result->super.super.super._encode = EncodeRandomTruncatedNormal;
   }
@@ -25,11 +25,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSNDArrayRandomTruncatedNormal;
-  result = [(MPSNDArrayMultiaryKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayMultiaryKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 167) = LODWORD(self->_mean);
@@ -43,42 +43,42 @@
   return result;
 }
 
-- (MPSNDArrayRandomTruncatedNormal)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayRandomTruncatedNormal)initWithCoder:(id)coder device:(id)device
 {
   v11.receiver = self;
   v11.super_class = MPSNDArrayRandomTruncatedNormal;
-  v5 = [(MPSNDArrayUnaryKernel *)&v11 initWithCoder:a3 device:a4];
+  v5 = [(MPSNDArrayUnaryKernel *)&v11 initWithCoder:coder device:device];
   if (v5)
   {
-    [a3 decodeFloatForKey:@"MPSNDArrayRandomTruncatedNormalMean"];
+    [coder decodeFloatForKey:@"MPSNDArrayRandomTruncatedNormalMean"];
     v5->_mean = v6;
-    [a3 decodeFloatForKey:@"MPSNDArrayRandomTruncatedNormalStandardDeviation"];
+    [coder decodeFloatForKey:@"MPSNDArrayRandomTruncatedNormalStandardDeviation"];
     v5->_standardDeviation = v7;
-    [a3 decodeFloatForKey:@"MPSNDArrayRandomTruncatedNormalMinimum"];
+    [coder decodeFloatForKey:@"MPSNDArrayRandomTruncatedNormalMinimum"];
     v5->_minimum = v8;
-    [a3 decodeFloatForKey:@"MPSNDArrayRandomTruncatedNormalMaximum"];
+    [coder decodeFloatForKey:@"MPSNDArrayRandomTruncatedNormalMaximum"];
     v5->_maximum = v9;
-    v5->_samplingMethod = [a3 decodeInt32ForKey:@"MPSNDArrayRandomTruncatedNormalSamplingMethod"];
+    v5->_samplingMethod = [coder decodeInt32ForKey:@"MPSNDArrayRandomTruncatedNormalSamplingMethod"];
     v5->super.super.super._encode = EncodeRandomTruncatedNormal;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = MPSNDArrayRandomTruncatedNormal;
   [(MPSNDArrayMultiaryBase *)&v9 encodeWithCoder:?];
   *&v5 = self->_mean;
-  [a3 encodeFloat:@"MPSNDArrayRandomTruncatedNormalMean" forKey:v5];
+  [coder encodeFloat:@"MPSNDArrayRandomTruncatedNormalMean" forKey:v5];
   *&v6 = self->_standardDeviation;
-  [a3 encodeFloat:@"MPSNDArrayRandomTruncatedNormalStandardDeviation" forKey:v6];
+  [coder encodeFloat:@"MPSNDArrayRandomTruncatedNormalStandardDeviation" forKey:v6];
   *&v7 = self->_minimum;
-  [a3 encodeFloat:@"MPSNDArrayRandomTruncatedNormalMinimum" forKey:v7];
+  [coder encodeFloat:@"MPSNDArrayRandomTruncatedNormalMinimum" forKey:v7];
   *&v8 = self->_maximum;
-  [a3 encodeFloat:@"MPSNDArrayRandomTruncatedNormalMaximum" forKey:v8];
-  [a3 encodeInt32:self->_samplingMethod forKey:@"MPSNDArrayRandomTruncatedNormalSamplingMethod"];
+  [coder encodeFloat:@"MPSNDArrayRandomTruncatedNormalMaximum" forKey:v8];
+  [coder encodeInt32:self->_samplingMethod forKey:@"MPSNDArrayRandomTruncatedNormalSamplingMethod"];
 }
 
 @end

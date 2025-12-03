@@ -1,9 +1,9 @@
 @interface GKCollectionHorizontalLayout
 - (CGSize)collectionViewContentSize;
 - (double)maxHeaderHeight;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 - (int64_t)firstValidSection;
 - (int64_t)lastValidSection;
 - (void)applyDefaults;
@@ -26,10 +26,10 @@
 
 - (double)maxHeaderHeight
 {
-  v3 = [(GKCollectionHorizontalLayout *)self collectionView];
-  v4 = [v3 numberOfSections];
+  collectionView = [(GKCollectionHorizontalLayout *)self collectionView];
+  numberOfSections = [collectionView numberOfSections];
 
-  if (v4 < 1)
+  if (numberOfSections < 1)
   {
     return 0.0;
   }
@@ -47,23 +47,23 @@
     ++v5;
   }
 
-  while (v4 != v5);
+  while (numberOfSections != v5);
   return v6;
 }
 
 - (void)prepareLayout
 {
-  v3 = [(GKCollectionHorizontalLayout *)self collectionView];
-  [v3 bounds];
+  collectionView = [(GKCollectionHorizontalLayout *)self collectionView];
+  [collectionView bounds];
   if (v4 != 0.0)
   {
     v5 = v4;
     v68.receiver = self;
     v68.super_class = GKCollectionHorizontalLayout;
     [(GKCollectionFocusingLayout *)&v68 prepareLayout];
-    v6 = [v3 numberOfSections];
-    v7 = [MEMORY[0x277CBEB38] dictionary];
-    v57 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v6];
+    numberOfSections = [collectionView numberOfSections];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v57 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:numberOfSections];
     [(GKCollectionFocusingLayout *)self sectionInset];
     v9 = v8;
     v11 = v10;
@@ -74,7 +74,7 @@
     v17 = v15 + v16;
     extraSectionHeaderToCellSpace = self->_extraSectionHeaderToCellSpace;
     [(GKCollectionFocusingLayout *)self topHeaderHeight];
-    v56 = v6;
+    v56 = numberOfSections;
     if (v19 > 0.0)
     {
       v20 = MEMORY[0x277D75308];
@@ -84,24 +84,24 @@
 
       [(GKCollectionFocusingLayout *)self topHeaderHeight];
       v24 = v23;
-      v25 = [(GKCollectionFocusingLayout *)self topHeaderAttributes];
-      [v25 setFrame:{0.0, 0.0, v5, v24}];
+      topHeaderAttributes = [(GKCollectionFocusingLayout *)self topHeaderAttributes];
+      [topHeaderAttributes setFrame:{0.0, 0.0, v5, v24}];
     }
 
     v26 = v17 + extraSectionHeaderToCellSpace;
     v27 = v17 + extraSectionHeaderToCellSpace;
-    if (v6 >= 1)
+    if (numberOfSections >= 1)
     {
       v28 = 0;
       v29 = v5 - v11 - v13;
       v54 = *MEMORY[0x277D767D8];
-      v55 = v3;
+      v55 = collectionView;
       v30 = v11;
       v31 = v29;
       v27 = v26;
       do
       {
-        v32 = [v3 numberOfItemsInSection:v28];
+        v32 = [collectionView numberOfItemsInSection:v28];
         if (v32)
         {
           v33 = v32;
@@ -139,22 +139,22 @@
               }
 
               [v35 setFrame:{v30, v26, v41, v42}];
-              [v7 setObject:v35 forKeyedSubscript:v34];
+              [dictionary setObject:v35 forKeyedSubscript:v34];
               v44 = v30 + v43;
               [(GKCollectionFocusingLayout *)self minimumInteritemSpacingForSectionAtIndex:v28];
               v30 = v44 + v45;
             }
 
             v31 = v44 - v11;
-            v3 = v55;
-            v6 = v56;
+            collectionView = v55;
+            numberOfSections = v56;
           }
         }
 
         ++v28;
       }
 
-      while (v28 != v6);
+      while (v28 != numberOfSections);
       if (self->_centersItemsInExcessSpace && v31 < v29)
       {
         aBlock[0] = MEMORY[0x277D85DD0];
@@ -169,7 +169,7 @@
         v65[3] = &unk_279669F10;
         v48 = v47;
         v66 = v48;
-        [v7 enumerateKeysAndObjectsUsingBlock:v65];
+        [dictionary enumerateKeysAndObjectsUsingBlock:v65];
         v63[0] = MEMORY[0x277D85DD0];
         v63[1] = 3221225472;
         v63[2] = __45__GKCollectionHorizontalLayout_prepareLayout__block_invoke_3;
@@ -182,7 +182,7 @@
 
     if (!self->_alignItemsToTop)
     {
-      [v3 frame];
+      [collectionView frame];
       if (v26 < v50)
       {
         v62[0] = MEMORY[0x277D85DD0];
@@ -197,7 +197,7 @@
         v60[3] = &unk_279669F10;
         v52 = v51;
         v61 = v52;
-        [v7 enumerateKeysAndObjectsUsingBlock:v60];
+        [dictionary enumerateKeysAndObjectsUsingBlock:v60];
         v58[0] = MEMORY[0x277D85DD0];
         v58[1] = 3221225472;
         v58[2] = __45__GKCollectionHorizontalLayout_prepareLayout__block_invoke_6;
@@ -209,7 +209,7 @@
     }
 
     [(GKCollectionHorizontalLayout *)self setHeaderAttributes:v57];
-    [(GKCollectionHorizontalLayout *)self setItemAttributes:v7];
+    [(GKCollectionHorizontalLayout *)self setItemAttributes:dictionary];
   }
 }
 
@@ -227,14 +227,14 @@ void __45__GKCollectionHorizontalLayout_prepareLayout__block_invoke_4(uint64_t a
   [v2 setFrame:?];
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSDictionary count](self->_itemAttributes, "count") + 1}];
-  v9 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   itemAttributes = self->_itemAttributes;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -247,7 +247,7 @@ void __45__GKCollectionHorizontalLayout_prepareLayout__block_invoke_4(uint64_t a
   v28[4] = self;
   v11 = v8;
   v29 = v11;
-  v12 = v9;
+  v12 = indexSet;
   v30 = v12;
   [(NSDictionary *)itemAttributes enumerateKeysAndObjectsUsingBlock:v28];
   v26[0] = MEMORY[0x277D85DD0];
@@ -258,12 +258,12 @@ void __45__GKCollectionHorizontalLayout_prepareLayout__block_invoke_4(uint64_t a
   v13 = v11;
   v27 = v13;
   [v12 enumerateIndexesUsingBlock:v26];
-  v14 = [(GKCollectionFocusingLayout *)self topHeaderAttributes];
-  if (v14)
+  topHeaderAttributes = [(GKCollectionFocusingLayout *)self topHeaderAttributes];
+  if (topHeaderAttributes)
   {
-    v15 = v14;
-    v16 = [(GKCollectionFocusingLayout *)self topHeaderAttributes];
-    [v16 frame];
+    v15 = topHeaderAttributes;
+    topHeaderAttributes2 = [(GKCollectionFocusingLayout *)self topHeaderAttributes];
+    [topHeaderAttributes2 frame];
     v36.origin.x = v17;
     v36.origin.y = v18;
     v36.size.width = v19;
@@ -276,8 +276,8 @@ void __45__GKCollectionHorizontalLayout_prepareLayout__block_invoke_4(uint64_t a
 
     if (v21)
     {
-      v22 = [(GKCollectionFocusingLayout *)self topHeaderAttributes];
-      [v13 addObject:v22];
+      topHeaderAttributes3 = [(GKCollectionFocusingLayout *)self topHeaderAttributes];
+      [v13 addObject:topHeaderAttributes3];
     }
   }
 
@@ -321,10 +321,10 @@ void __66__GKCollectionHorizontalLayout_layoutAttributesForElementsInRect___bloc
   }
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_itemAttributes objectForKeyedSubscript:v4];
+  pathCopy = path;
+  v5 = [(NSDictionary *)self->_itemAttributes objectForKeyedSubscript:pathCopy];
   if (v5)
   {
     v6 = v5;
@@ -333,36 +333,36 @@ void __66__GKCollectionHorizontalLayout_layoutAttributesForElementsInRect___bloc
 
   else
   {
-    v7 = [MEMORY[0x277D75308] layoutAttributesForCellWithIndexPath:v4];
+    v7 = [MEMORY[0x277D75308] layoutAttributesForCellWithIndexPath:pathCopy];
     [v7 setAlpha:0.0];
   }
 
   return v7;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"GKCollectionLayoutTopHeaderKind"])
+  kindCopy = kind;
+  pathCopy = path;
+  if ([kindCopy isEqualToString:@"GKCollectionLayoutTopHeaderKind"])
   {
     [(GKCollectionFocusingLayout *)self topHeaderAttributes];
   }
 
   else
   {
-    [(NSDictionary *)self->_headerAttributes objectForKeyedSubscript:v7];
+    [(NSDictionary *)self->_headerAttributes objectForKeyedSubscript:pathCopy];
   }
   v8 = ;
   if (v8)
   {
-    v9 = [(GKCollectionHorizontalLayout *)self collectionView];
-    [v9 contentOffset];
+    collectionView = [(GKCollectionHorizontalLayout *)self collectionView];
+    [collectionView contentOffset];
     v11 = v10;
-    [v9 contentInset];
+    [collectionView contentInset];
     v13 = v12;
-    v14 = [v9 numberOfSections];
-    if ([v7 section] >= v14 - 1)
+    numberOfSections = [collectionView numberOfSections];
+    if ([pathCopy section] >= numberOfSections - 1)
     {
       v16 = 0;
       v23 = INFINITY;
@@ -370,20 +370,20 @@ void __66__GKCollectionHorizontalLayout_layoutAttributesForElementsInRect___bloc
 
     else
     {
-      v40 = v9;
-      v41 = v7;
+      v40 = collectionView;
+      v41 = pathCopy;
       v15 = 0;
       v16 = 0;
-      v17 = [v7 section] + 1;
+      v17 = [pathCopy section] + 1;
       do
       {
         v18 = v16;
         v19 = v15;
         v16 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:v17];
 
-        v15 = [(GKCollectionHorizontalLayout *)self layoutAttributesForSupplementaryViewOfKind:v6 atIndexPath:v16];
+        v15 = [(GKCollectionHorizontalLayout *)self layoutAttributesForSupplementaryViewOfKind:kindCopy atIndexPath:v16];
 
-        if (v17 >= v14)
+        if (v17 >= numberOfSections)
         {
           break;
         }
@@ -407,8 +407,8 @@ void __66__GKCollectionHorizontalLayout_layoutAttributesForElementsInRect___bloc
         v23 = v22;
       }
 
-      v9 = v40;
-      v7 = v41;
+      collectionView = v40;
+      pathCopy = v41;
     }
 
     [v8 frame];
@@ -452,7 +452,7 @@ void __66__GKCollectionHorizontalLayout_layoutAttributesForElementsInRect___bloc
 
   else
   {
-    v24 = [MEMORY[0x277D75308] layoutAttributesForSupplementaryViewOfKind:v6 withIndexPath:v7];
+    v24 = [MEMORY[0x277D75308] layoutAttributesForSupplementaryViewOfKind:kindCopy withIndexPath:pathCopy];
     [v24 setAlpha:0.0];
   }
 
@@ -469,21 +469,21 @@ void __66__GKCollectionHorizontalLayout_layoutAttributesForElementsInRect___bloc
   [(GKCollectionFocusingLayout *)self sectionInset];
   v4 = v3;
   v6 = v5;
-  v7 = [(GKCollectionHorizontalLayout *)self firstValidSection];
-  if (v7 < 0)
+  firstValidSection = [(GKCollectionHorizontalLayout *)self firstValidSection];
+  if (firstValidSection < 0)
   {
     v17 = *MEMORY[0x277CBF3A8];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:v7];
+    v8 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:firstValidSection];
     v9 = [(NSDictionary *)self->_itemAttributes objectForKeyedSubscript:v8];
-    v10 = [(GKCollectionHorizontalLayout *)self lastValidSection];
-    v11 = [(GKCollectionHorizontalLayout *)self collectionView];
-    v12 = [v11 numberOfItemsInSection:v10];
+    lastValidSection = [(GKCollectionHorizontalLayout *)self lastValidSection];
+    collectionView = [(GKCollectionHorizontalLayout *)self collectionView];
+    v12 = [collectionView numberOfItemsInSection:lastValidSection];
 
-    v13 = [MEMORY[0x277CCAA70] indexPathForItem:v12 - 1 inSection:v10];
+    v13 = [MEMORY[0x277CCAA70] indexPathForItem:v12 - 1 inSection:lastValidSection];
 
     v14 = [(NSDictionary *)self->_itemAttributes objectForKeyedSubscript:v13];
     [v14 frame];
@@ -503,8 +503,8 @@ void __66__GKCollectionHorizontalLayout_layoutAttributesForElementsInRect___bloc
   }
 
   v19 = v4 + v18 + v17;
-  v20 = [(GKCollectionHorizontalLayout *)self collectionView];
-  [v20 bounds];
+  collectionView2 = [(GKCollectionHorizontalLayout *)self collectionView];
+  [collectionView2 bounds];
   v22 = v21;
 
   if (v19 >= v22)
@@ -512,8 +512,8 @@ void __66__GKCollectionHorizontalLayout_layoutAttributesForElementsInRect___bloc
     v22 = v19;
   }
 
-  v23 = [(GKCollectionHorizontalLayout *)self collectionView];
-  [v23 bounds];
+  collectionView3 = [(GKCollectionHorizontalLayout *)self collectionView];
+  [collectionView3 bounds];
   v25 = v24;
 
   v26 = v22;
@@ -525,10 +525,10 @@ void __66__GKCollectionHorizontalLayout_layoutAttributesForElementsInRect___bloc
 
 - (int64_t)firstValidSection
 {
-  v3 = [(GKCollectionHorizontalLayout *)self collectionView];
-  v4 = [v3 numberOfSections];
+  collectionView = [(GKCollectionHorizontalLayout *)self collectionView];
+  numberOfSections = [collectionView numberOfSections];
 
-  if (v4 < 1)
+  if (numberOfSections < 1)
   {
     return -1;
   }
@@ -536,15 +536,15 @@ void __66__GKCollectionHorizontalLayout_layoutAttributesForElementsInRect___bloc
   v5 = 0;
   while (1)
   {
-    v6 = [(GKCollectionHorizontalLayout *)self collectionView];
-    v7 = [v6 numberOfItemsInSection:v5];
+    collectionView2 = [(GKCollectionHorizontalLayout *)self collectionView];
+    v7 = [collectionView2 numberOfItemsInSection:v5];
 
     if (v7 > 0)
     {
       break;
     }
 
-    if (v4 == ++v5)
+    if (numberOfSections == ++v5)
     {
       return -1;
     }
@@ -555,17 +555,17 @@ void __66__GKCollectionHorizontalLayout_layoutAttributesForElementsInRect___bloc
 
 - (int64_t)lastValidSection
 {
-  v3 = [(GKCollectionHorizontalLayout *)self collectionView];
-  v4 = [v3 numberOfSections];
+  collectionView = [(GKCollectionHorizontalLayout *)self collectionView];
+  numberOfSections = [collectionView numberOfSections];
 
-  while (v4-- >= 1)
+  while (numberOfSections-- >= 1)
   {
-    v6 = [(GKCollectionHorizontalLayout *)self collectionView];
-    v7 = [v6 numberOfItemsInSection:v4];
+    collectionView2 = [(GKCollectionHorizontalLayout *)self collectionView];
+    v7 = [collectionView2 numberOfItemsInSection:numberOfSections];
 
     if (v7 >= 1)
     {
-      return v4;
+      return numberOfSections;
     }
   }
 

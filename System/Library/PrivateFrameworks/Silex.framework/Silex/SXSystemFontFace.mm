@@ -1,28 +1,28 @@
 @interface SXSystemFontFace
 - (NSDictionary)fontDescriptorAttributes;
 - (NSString)description;
-- (SXSystemFontFace)initWithMetadata:(id)a3;
-- (id)fontAttributesForMetadata:(id)a3;
-- (int64_t)fontStyleForValue:(id)a3;
-- (int64_t)fontWeightForValue:(id)a3;
-- (int64_t)fontWidthForValue:(id)a3;
+- (SXSystemFontFace)initWithMetadata:(id)metadata;
+- (id)fontAttributesForMetadata:(id)metadata;
+- (int64_t)fontStyleForValue:(id)value;
+- (int64_t)fontWeightForValue:(id)value;
+- (int64_t)fontWidthForValue:(id)value;
 @end
 
 @implementation SXSystemFontFace
 
-- (SXSystemFontFace)initWithMetadata:(id)a3
+- (SXSystemFontFace)initWithMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v11.receiver = self;
   v11.super_class = SXSystemFontFace;
   v5 = [(SXSystemFontFace *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"ps"];
+    v6 = [metadataCopy objectForKey:@"ps"];
     fontName = v5->_fontName;
     v5->_fontName = v6;
 
-    v8 = [(SXSystemFontFace *)v5 fontAttributesForMetadata:v4];
+    v8 = [(SXSystemFontFace *)v5 fontAttributesForMetadata:metadataCopy];
     fontAttributes = v5->_fontAttributes;
     v5->_fontAttributes = v8;
   }
@@ -34,20 +34,20 @@
 {
   v26[2] = *MEMORY[0x1E69E9840];
   v25[0] = *MEMORY[0x1E69DB8B8];
-  v3 = [(SXSystemFontFace *)self fontName];
-  v26[0] = v3;
+  fontName = [(SXSystemFontFace *)self fontName];
+  v26[0] = fontName;
   v25[1] = *MEMORY[0x1E69DB8F0];
   v23[0] = *MEMORY[0x1E69DB990];
   v4 = MEMORY[0x1E696AD98];
-  v5 = [(SXSystemFontFace *)self fontAttributes];
-  v6 = [v5 weight];
-  if (v6 <= 499)
+  fontAttributes = [(SXSystemFontFace *)self fontAttributes];
+  weight = [fontAttributes weight];
+  if (weight <= 499)
   {
-    if (v6 <= 299)
+    if (weight <= 299)
     {
-      if (v6 != 100)
+      if (weight != 100)
       {
-        if (v6 == 200)
+        if (weight == 200)
         {
           v7 = MEMORY[0x1E69DB998];
           goto LABEL_21;
@@ -60,7 +60,7 @@
       goto LABEL_21;
     }
 
-    if (v6 == 300)
+    if (weight == 300)
     {
       v7 = MEMORY[0x1E69DB968];
       goto LABEL_21;
@@ -71,15 +71,15 @@ LABEL_12:
     goto LABEL_21;
   }
 
-  if (v6 <= 699)
+  if (weight <= 699)
   {
-    if (v6 == 500)
+    if (weight == 500)
     {
       v7 = MEMORY[0x1E69DB970];
       goto LABEL_21;
     }
 
-    if (v6 == 600)
+    if (weight == 600)
     {
       v7 = MEMORY[0x1E69DB980];
       goto LABEL_21;
@@ -88,7 +88,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  switch(v6)
+  switch(weight)
   {
     case 700:
       v7 = MEMORY[0x1E69DB958];
@@ -108,13 +108,13 @@ LABEL_21:
   v24[0] = v8;
   v23[1] = *MEMORY[0x1E69DB9C0];
   v9 = MEMORY[0x1E696AD98];
-  v10 = [(SXSystemFontFace *)self fontAttributes];
-  v11 = [v10 width];
-  if (v11 > 5)
+  fontAttributes2 = [(SXSystemFontFace *)self fontAttributes];
+  width = [fontAttributes2 width];
+  if (width > 5)
   {
-    if (v11 > 8)
+    if (width > 8)
     {
-      switch(v11)
+      switch(width)
       {
         case 9:
           v12 = MEMORY[0x1E6965990];
@@ -130,13 +130,13 @@ LABEL_21:
 
     else
     {
-      if (v11 == 6)
+      if (width == 6)
       {
         v12 = MEMORY[0x1E69659B0];
         goto LABEL_45;
       }
 
-      if (v11 != 7)
+      if (width != 7)
       {
         v12 = MEMORY[0x1E69659B8];
         goto LABEL_45;
@@ -148,14 +148,14 @@ LABEL_38:
     goto LABEL_45;
   }
 
-  if (v11 > 2)
+  if (width > 2)
   {
-    if (v11 == 3)
+    if (width == 3)
     {
       v12 = MEMORY[0x1E6965980];
     }
 
-    else if (v11 == 4)
+    else if (width == 4)
     {
       v12 = MEMORY[0x1E69659A0];
     }
@@ -168,13 +168,13 @@ LABEL_38:
     goto LABEL_45;
   }
 
-  if (!v11)
+  if (!width)
   {
     v12 = MEMORY[0x1E69659D0];
     goto LABEL_45;
   }
 
-  if (v11 != 1 && v11 != 2)
+  if (width != 1 && width != 2)
   {
     goto LABEL_38;
   }
@@ -187,10 +187,10 @@ LABEL_46:
   v24[1] = v14;
   v23[2] = *MEMORY[0x1E69DB910];
   v15 = MEMORY[0x1E696AD98];
-  v16 = [(SXSystemFontFace *)self fontAttributes];
-  v17 = [v16 style];
+  fontAttributes3 = [(SXSystemFontFace *)self fontAttributes];
+  style = [fontAttributes3 style];
   v18 = 0.06944444;
-  if ((v17 - 1) >= 2)
+  if ((style - 1) >= 2)
   {
     v18 = 0.0;
   }
@@ -204,24 +204,24 @@ LABEL_46:
   return v21;
 }
 
-- (id)fontAttributesForMetadata:(id)a3
+- (id)fontAttributesForMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"f"];
-  v6 = [v4 objectForKey:@"wi"];
-  v7 = [v4 objectForKey:@"we"];
-  v8 = [v4 objectForKey:@"s"];
+  metadataCopy = metadata;
+  v5 = [metadataCopy objectForKey:@"f"];
+  v6 = [metadataCopy objectForKey:@"wi"];
+  v7 = [metadataCopy objectForKey:@"we"];
+  v8 = [metadataCopy objectForKey:@"s"];
 
   v9 = [[SXFontAttributes alloc] initWithFamilyName:v5 weight:[(SXSystemFontFace *)self fontWeightForValue:v7] width:[(SXSystemFontFace *)self fontWidthForValue:v6] style:[(SXSystemFontFace *)self fontStyleForValue:v8] grade:0];
 
   return v9;
 }
 
-- (int64_t)fontWidthForValue:(id)a3
+- (int64_t)fontWidthForValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v4 = [v3 integerValue], v4 <= 9))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v4 = [valueCopy integerValue], v4 <= 9))
   {
     v5 = qword_1D83921A8[v4];
   }
@@ -234,42 +234,42 @@ LABEL_46:
   return v5;
 }
 
-- (int64_t)fontWeightForValue:(id)a3
+- (int64_t)fontWeightForValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_17;
   }
 
-  v4 = [v3 integerValue];
-  v5 = v4;
-  if (v4 <= 499)
+  integerValue = [valueCopy integerValue];
+  v5 = integerValue;
+  if (integerValue <= 499)
   {
-    if (v4 > 299)
+    if (integerValue > 299)
     {
-      if (v4 != 300 && v4 != 400)
+      if (integerValue != 300 && integerValue != 400)
       {
         goto LABEL_17;
       }
     }
 
-    else if (v4 != 100 && v4 != 200)
+    else if (integerValue != 100 && integerValue != 200)
     {
       goto LABEL_17;
     }
   }
 
-  else if (v4 <= 699)
+  else if (integerValue <= 699)
   {
-    if (v4 != 500 && v4 != 600)
+    if (integerValue != 500 && integerValue != 600)
     {
       goto LABEL_17;
     }
   }
 
-  else if (v4 != 700 && v4 != 800 && v4 != 900)
+  else if (integerValue != 700 && integerValue != 800 && integerValue != 900)
   {
 LABEL_17:
     v5 = 400;
@@ -278,19 +278,19 @@ LABEL_17:
   return v5;
 }
 
-- (int64_t)fontStyleForValue:(id)a3
+- (int64_t)fontStyleForValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v3 isEqualToString:@"n"] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([valueCopy isEqualToString:@"n"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"i"])
+    if ([valueCopy isEqualToString:@"i"])
     {
       v4 = 1;
       goto LABEL_4;
     }
 
-    if ([v3 isEqualToString:@"o"])
+    if ([valueCopy isEqualToString:@"o"])
     {
       v4 = 2;
       goto LABEL_4;
@@ -306,11 +306,11 @@ LABEL_4:
 - (NSString)description
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@: %p", objc_opt_class(), self];
-  v4 = [(SXSystemFontFace *)self fontName];
-  [v3 appendFormat:@"; PostScript name: %@", v4];
+  fontName = [(SXSystemFontFace *)self fontName];
+  [v3 appendFormat:@"; PostScript name: %@", fontName];
 
-  v5 = [(SXSystemFontFace *)self fontAttributes];
-  [v3 appendFormat:@"; attributes: %@", v5];
+  fontAttributes = [(SXSystemFontFace *)self fontAttributes];
+  [v3 appendFormat:@"; attributes: %@", fontAttributes];
 
   [v3 appendString:@">"];
 

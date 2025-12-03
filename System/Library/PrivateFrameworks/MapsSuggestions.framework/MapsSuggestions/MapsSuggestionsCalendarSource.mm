@@ -1,11 +1,11 @@
 @interface MapsSuggestionsCalendarSource
-- (BOOL)removeEntry:(id)a3 behavior:(int64_t)a4 handler:(id)a5;
-- (BOOL)suggestionsEntriesAtLocation:(id)a3 period:(id)a4 handler:(id)a5;
-- (MapsSuggestionsCalendarSource)initWithDelegate:(id)a3 eventKit:(id)a4 guardian:(id)a5 name:(id)a6;
-- (double)updateSuggestionEntriesWithHandler:(id)a3;
-- (id)initFromResourceDepot:(id)a3 name:(id)a4;
-- (void)_q_updateSuggestionEntriesWithHandler:(uint64_t)a1;
-- (void)eventKitDidChange:(id)a3;
+- (BOOL)removeEntry:(id)entry behavior:(int64_t)behavior handler:(id)handler;
+- (BOOL)suggestionsEntriesAtLocation:(id)location period:(id)period handler:(id)handler;
+- (MapsSuggestionsCalendarSource)initWithDelegate:(id)delegate eventKit:(id)kit guardian:(id)guardian name:(id)name;
+- (double)updateSuggestionEntriesWithHandler:(id)handler;
+- (id)initFromResourceDepot:(id)depot name:(id)name;
+- (void)_q_updateSuggestionEntriesWithHandler:(uint64_t)handler;
+- (void)eventKitDidChange:(id)change;
 - (void)start;
 - (void)stop;
 @end
@@ -62,13 +62,13 @@ void __38__MapsSuggestionsCalendarSource_start__block_invoke(uint64_t a1)
   }
 }
 
-- (MapsSuggestionsCalendarSource)initWithDelegate:(id)a3 eventKit:(id)a4 guardian:(id)a5 name:(id)a6
+- (MapsSuggestionsCalendarSource)initWithDelegate:(id)delegate eventKit:(id)kit guardian:(id)guardian name:(id)name
 {
-  v11 = a4;
-  v12 = a5;
+  kitCopy = kit;
+  guardianCopy = guardian;
   v18.receiver = self;
   v18.super_class = MapsSuggestionsCalendarSource;
-  v13 = [(MapsSuggestionsBaseSource *)&v18 initWithDelegate:a3 name:a6];
+  v13 = [(MapsSuggestionsBaseSource *)&v18 initWithDelegate:delegate name:name];
   if (v13)
   {
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -76,19 +76,19 @@ void __38__MapsSuggestionsCalendarSource_start__block_invoke(uint64_t a1)
     queue = v13->_queue;
     v13->_queue = v15;
 
-    objc_storeStrong(&v13->_eventKit, a4);
-    objc_storeStrong(&v13->_guardian, a5);
+    objc_storeStrong(&v13->_eventKit, kit);
+    objc_storeStrong(&v13->_guardian, guardian);
   }
 
   return v13;
 }
 
-- (id)initFromResourceDepot:(id)a3 name:(id)a4
+- (id)initFromResourceDepot:(id)depot name:(id)name
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  depotCopy = depot;
+  nameCopy = name;
+  if (!depotCopy)
   {
     v14 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -110,9 +110,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v8 = [v6 oneSourceDelegate];
+  oneSourceDelegate = [depotCopy oneSourceDelegate];
 
-  if (!v8)
+  if (!oneSourceDelegate)
   {
     v14 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -132,9 +132,9 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v9 = [v6 oneEventKit];
+  oneEventKit = [depotCopy oneEventKit];
 
-  if (!v9)
+  if (!oneEventKit)
   {
     v14 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -153,19 +153,19 @@ LABEL_11:
 
 LABEL_12:
 
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
-  v10 = [v6 oneSourceDelegate];
-  v11 = [v6 oneEventKit];
-  v12 = [v6 oneAppGuardian];
-  self = [(MapsSuggestionsCalendarSource *)self initWithDelegate:v10 eventKit:v11 guardian:v12 name:v7];
+  oneSourceDelegate2 = [depotCopy oneSourceDelegate];
+  oneEventKit2 = [depotCopy oneEventKit];
+  oneAppGuardian = [depotCopy oneAppGuardian];
+  self = [(MapsSuggestionsCalendarSource *)self initWithDelegate:oneSourceDelegate2 eventKit:oneEventKit2 guardian:oneAppGuardian name:nameCopy];
 
-  v13 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v13;
+  return selfCopy;
 }
 
 - (void)stop
@@ -181,17 +181,17 @@ LABEL_13:
   [(MapsSuggestionsEventKit *)self->_eventKit unregisterObserver:self];
 }
 
-- (double)updateSuggestionEntriesWithHandler:(id)a3
+- (double)updateSuggestionEntriesWithHandler:(id)handler
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsBaseSource *)self uniqueName];
+    uniqueName = [(MapsSuggestionsBaseSource *)self uniqueName];
     v7 = NSStringFromMapsSuggestionsCurrentBestLocation();
     *buf = 138412802;
-    v41 = v6;
+    v41 = uniqueName;
     v42 = 2112;
     v43 = @"ALL";
     v44 = 2112;
@@ -202,9 +202,9 @@ LABEL_13:
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [(MapsSuggestionsBaseSource *)self uniqueName];
+    uniqueName2 = [(MapsSuggestionsBaseSource *)self uniqueName];
     *buf = 138412546;
-    v41 = v9;
+    v41 = uniqueName2;
     v42 = 2080;
     v43 = "updateSuggestionEntries";
     _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -226,7 +226,7 @@ LABEL_13:
     block[2] = __68__MapsSuggestionsCalendarSource_updateSuggestionEntriesWithHandler___block_invoke;
     block[3] = &unk_1E81F5CB0;
     objc_copyWeak(&v39, buf);
-    v38 = v4;
+    v38 = handlerCopy;
     dispatch_async(queue, block);
 
     objc_destroyWeak(&v39);
@@ -243,7 +243,7 @@ LABEL_14:
     v34[2] = __68__MapsSuggestionsCalendarSource_updateSuggestionEntriesWithHandler___block_invoke_627;
     v34[3] = &unk_1E81F5CB0;
     objc_copyWeak(&v36, buf);
-    v35 = v4;
+    v35 = handlerCopy;
     dispatch_async(v17, v34);
 
     objc_destroyWeak(&v36);
@@ -263,7 +263,7 @@ LABEL_14:
       v14 = &v26;
       objc_copyWeak(&v26, buf);
       v15 = &v25;
-      v25 = v4;
+      v25 = handlerCopy;
       v16 = v24;
     }
 
@@ -284,7 +284,7 @@ LABEL_14:
       v14 = &v29;
       objc_copyWeak(&v29, buf);
       v15 = &v28;
-      v28 = v4;
+      v28 = handlerCopy;
       v16 = v27;
     }
 
@@ -308,7 +308,7 @@ LABEL_14:
     v30[3] = &unk_1E81F5CB0;
     v14 = &v32;
     objc_copyWeak(&v32, buf);
-    v31 = v4;
+    v31 = handlerCopy;
     dispatch_async(v20, v30);
     GEOConfigGetDouble();
     v18 = v21;
@@ -614,14 +614,14 @@ LABEL_17:
   }
 }
 
-- (BOOL)suggestionsEntriesAtLocation:(id)a3 period:(id)a4 handler:(id)a5
+- (BOOL)suggestionsEntriesAtLocation:(id)location period:(id)period handler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8)
+  locationCopy = location;
+  periodCopy = period;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (!locationCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -643,7 +643,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v9)
+  if (!periodCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -663,7 +663,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v10)
+  if (!handlerCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -686,18 +686,18 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v12 = [(MapsSuggestionsEventKit *)self->_eventKit entriesForEventsAtLocation:v8 period:v9 fetchMapItems:1 handler:v10];
+  v12 = [(MapsSuggestionsEventKit *)self->_eventKit entriesForEventsAtLocation:locationCopy period:periodCopy fetchMapItems:1 handler:handlerCopy];
 LABEL_13:
 
   return v12;
 }
 
-- (BOOL)removeEntry:(id)a3 behavior:(int64_t)a4 handler:(id)a5
+- (BOOL)removeEntry:(id)entry behavior:(int64_t)behavior handler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (!v9)
+  entryCopy = entry;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -720,7 +720,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!v8)
+  if (!entryCopy)
   {
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -740,20 +740,20 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (a4 != 8)
+  if (behavior != 8)
   {
 LABEL_11:
     v10 = 0;
     goto LABEL_12;
   }
 
-  v10 = [(MapsSuggestionsEventKit *)self->_eventKit deleteOrDeclineEntry:v8 handler:v9];
+  v10 = [(MapsSuggestionsEventKit *)self->_eventKit deleteOrDeclineEntry:entryCopy handler:handlerCopy];
 LABEL_12:
 
   return v10;
 }
 
-- (void)eventKitDidChange:(id)a3
+- (void)eventKitDidChange:(id)change
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -801,13 +801,13 @@ void __51__MapsSuggestionsCalendarSource_eventKitDidChange___block_invoke(uint64
   }
 }
 
-- (void)_q_updateSuggestionEntriesWithHandler:(uint64_t)a1
+- (void)_q_updateSuggestionEntriesWithHandler:(uint64_t)handler
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (handler)
   {
-    dispatch_assert_queue_V2(*(a1 + 40));
+    dispatch_assert_queue_V2(*(handler + 40));
     v4 = MapsSuggestionsCurrentBestLocation();
     v5 = GEOFindOrCreateLog();
     v6 = v5;
@@ -825,7 +825,7 @@ void __51__MapsSuggestionsCalendarSource_eventKitDidChange___block_invoke(uint64
       GEOConfigGetDouble();
       v9 = MapsSuggestionsNowWithOffset(v8);
       v10 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v6 endDate:v9];
-      if (([*(a1 + 24) entriesForEventsAtLocation:v4 period:v10 fetchMapItems:1 handler:v3] & 1) == 0)
+      if (([*(handler + 24) entriesForEventsAtLocation:v4 period:v10 fetchMapItems:1 handler:v3] & 1) == 0)
       {
         v11 = [MEMORY[0x1E696ABC0] GEOErrorWithCode:-12 reason:@"Was not called back from MapsSuggestionsEventKit"];
         v3[2](v3, 0, v11);

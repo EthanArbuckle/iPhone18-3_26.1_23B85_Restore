@@ -1,30 +1,30 @@
 @interface VOTImageExplorerImageView
-- (BOOL)addElement:(id)a3 toElements:(id)a4 forFeatureKey:(id)a5;
+- (BOOL)addElement:(id)element toElements:(id)elements forFeatureKey:(id)key;
 - (BOOL)isAccessibilityElement;
 - (NSArray)axSortedElements;
 - (NSDictionary)elements;
-- (id)_accessibilityCustomContentForFeature:(id)a3;
-- (id)_axNearbyRelationKeyForFeature:(id)a3 andNeighborFeature:(id)a4;
-- (id)_axNearbyRelationsForFeature:(id)a3;
-- (id)_axRelationOfCurrentFrame:(CGRect)a3 withNeighborFrame:(CGRect)a4;
-- (id)_findPeopleFeatureThatOverlapsWithFace:(id)a3;
+- (id)_accessibilityCustomContentForFeature:(id)feature;
+- (id)_axNearbyRelationKeyForFeature:(id)feature andNeighborFeature:(id)neighborFeature;
+- (id)_axNearbyRelationsForFeature:(id)feature;
+- (id)_axRelationOfCurrentFrame:(CGRect)frame withNeighborFrame:(CGRect)neighborFrame;
+- (id)_findPeopleFeatureThatOverlapsWithFace:(id)face;
 - (id)_generateFaceAccessibilityElements;
 - (id)_generateOCRDocumentAccessibilityElements;
-- (id)_generateOCRTextAccessibilityElementsForFeature:(id)a3;
+- (id)_generateOCRTextAccessibilityElementsForFeature:(id)feature;
 - (id)_generateObjectClassificationAccessibilityElements;
 - (id)accessibilityCustomRotors;
-- (id)filteredSubfeaturesForFeature:(id)a3 withOCRType:(int64_t)a4;
+- (id)filteredSubfeaturesForFeature:(id)feature withOCRType:(int64_t)type;
 - (id)generateAccessibilityElements;
-- (id)imageExplorerRotorWithName:(id)a3;
+- (id)imageExplorerRotorWithName:(id)name;
 - (id)sortedElements;
-- (void)setVisionFeatures:(id)a3;
+- (void)setVisionFeatures:(id)features;
 @end
 
 @implementation VOTImageExplorerImageView
 
-- (void)setVisionFeatures:(id)a3
+- (void)setVisionFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   v5 = +[NSMutableArray array];
   [(VOTImageExplorerImageView *)self setObjectClassificationFeatures:v5];
 
@@ -45,7 +45,7 @@
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v11 = v4;
+  v11 = featuresCopy;
   v12 = [v11 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v12)
   {
@@ -61,12 +61,12 @@
         }
 
         v16 = *(*(&v31 + 1) + 8 * i);
-        v17 = [v16 featureType];
-        if (v17 > 9)
+        featureType = [v16 featureType];
+        if (featureType > 9)
         {
-          if (v17 > 26)
+          if (featureType > 26)
           {
-            if (v17 == 27)
+            if (featureType == 27)
             {
               if (!AXRuntimeCheck_MediaAnalysisSupport())
               {
@@ -74,53 +74,53 @@
               }
 
 LABEL_21:
-              v19 = [v16 classificationLabel];
-              v20 = [v10 containsObject:v19];
+              classificationLabel = [v16 classificationLabel];
+              v20 = [v10 containsObject:classificationLabel];
 
               if (v20)
               {
-                v21 = [v16 classificationLabel];
-                v22 = [v21 isEqualToString:@"people"];
+                classificationLabel2 = [v16 classificationLabel];
+                v22 = [classificationLabel2 isEqualToString:@"people"];
 
                 if (!v22)
                 {
                   continue;
                 }
 
-                v18 = [(VOTImageExplorerImageView *)self peopleFeatures];
+                peopleFeatures = [(VOTImageExplorerImageView *)self peopleFeatures];
               }
 
               else
               {
-                v18 = [(VOTImageExplorerImageView *)self objectClassificationFeatures];
+                peopleFeatures = [(VOTImageExplorerImageView *)self objectClassificationFeatures];
               }
 
 LABEL_27:
-              v26 = v18;
-              [v18 axSafelyAddObject:v16];
+              v26 = peopleFeatures;
+              [peopleFeatures axSafelyAddObject:v16];
 
               continue;
             }
 
-            if (v17 == 31 && AXRuntimeCheck_MediaAnalysisSupport())
+            if (featureType == 31 && AXRuntimeCheck_MediaAnalysisSupport())
             {
 LABEL_19:
-              v18 = [(VOTImageExplorerImageView *)self faceFeatures];
+              peopleFeatures = [(VOTImageExplorerImageView *)self faceFeatures];
               goto LABEL_27;
             }
           }
 
           else
           {
-            if (v17 == 10)
+            if (featureType == 10)
             {
               goto LABEL_21;
             }
 
-            if (v17 == 26 && AXRuntimeCheck_MediaAnalysisSupport())
+            if (featureType == 26 && AXRuntimeCheck_MediaAnalysisSupport())
             {
 LABEL_15:
-              v18 = [(VOTImageExplorerImageView *)self sceneClassificationFeatures];
+              peopleFeatures = [(VOTImageExplorerImageView *)self sceneClassificationFeatures];
               goto LABEL_27;
             }
           }
@@ -128,27 +128,27 @@ LABEL_15:
 
         else
         {
-          if ((v17 - 5) < 2)
+          if ((featureType - 5) < 2)
           {
             goto LABEL_19;
           }
 
-          if (v17 == 8)
+          if (featureType == 8)
           {
-            v23 = [(VOTImageExplorerImageView *)self explorableOCRTypes];
+            explorableOCRTypes = [(VOTImageExplorerImageView *)self explorableOCRTypes];
             v24 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v16 ocrFeatureType]);
-            v25 = [v23 containsObject:v24];
+            v25 = [explorableOCRTypes containsObject:v24];
 
             if (!v25)
             {
               continue;
             }
 
-            v18 = [(VOTImageExplorerImageView *)self ocrFeatures];
+            peopleFeatures = [(VOTImageExplorerImageView *)self ocrFeatures];
             goto LABEL_27;
           }
 
-          if (v17 == 9)
+          if (featureType == 9)
           {
             goto LABEL_15;
           }
@@ -161,20 +161,20 @@ LABEL_15:
     while (v13);
   }
 
-  v27 = [(VOTImageExplorerImageView *)self faceFeatures];
-  if ([v27 count])
+  faceFeatures = [(VOTImageExplorerImageView *)self faceFeatures];
+  if ([faceFeatures count])
   {
     goto LABEL_33;
   }
 
-  v28 = [(VOTImageExplorerImageView *)self peopleFeatures];
-  v29 = [v28 count];
+  peopleFeatures2 = [(VOTImageExplorerImageView *)self peopleFeatures];
+  v29 = [peopleFeatures2 count];
 
   if (v29)
   {
-    v27 = [(VOTImageExplorerImageView *)self objectClassificationFeatures];
-    v30 = [(VOTImageExplorerImageView *)self peopleFeatures];
-    [v27 axSafelyAddObjectsFromArray:v30];
+    faceFeatures = [(VOTImageExplorerImageView *)self objectClassificationFeatures];
+    peopleFeatures3 = [(VOTImageExplorerImageView *)self peopleFeatures];
+    [faceFeatures axSafelyAddObjectsFromArray:peopleFeatures3];
 
 LABEL_33:
   }
@@ -184,28 +184,28 @@ LABEL_33:
 {
   if (!self->_elements)
   {
-    v3 = [(VOTImageExplorerImageView *)self ocrFeatures];
-    if ([v3 count])
+    ocrFeatures = [(VOTImageExplorerImageView *)self ocrFeatures];
+    if ([ocrFeatures count])
     {
 LABEL_5:
 
 LABEL_6:
-      v5 = [(VOTImageExplorerImageView *)self generateAccessibilityElements];
+      generateAccessibilityElements = [(VOTImageExplorerImageView *)self generateAccessibilityElements];
       elements = self->_elements;
-      self->_elements = v5;
+      self->_elements = generateAccessibilityElements;
 
       goto LABEL_7;
     }
 
-    v4 = [(VOTImageExplorerImageView *)self objectClassificationFeatures];
-    if ([v4 count])
+    objectClassificationFeatures = [(VOTImageExplorerImageView *)self objectClassificationFeatures];
+    if ([objectClassificationFeatures count])
     {
 
       goto LABEL_5;
     }
 
-    v9 = [(VOTImageExplorerImageView *)self faceFeatures];
-    v10 = [v9 count];
+    faceFeatures = [(VOTImageExplorerImageView *)self faceFeatures];
+    v10 = [faceFeatures count];
 
     if (v10)
     {
@@ -223,13 +223,13 @@ LABEL_7:
 {
   if (!self->_axSortedElements)
   {
-    v3 = [(VOTImageExplorerImageView *)self elements];
+    elements = [(VOTImageExplorerImageView *)self elements];
 
-    if (v3)
+    if (elements)
     {
-      v4 = [(VOTImageExplorerImageView *)self sortedElements];
+      sortedElements = [(VOTImageExplorerImageView *)self sortedElements];
       axSortedElements = self->_axSortedElements;
-      self->_axSortedElements = v4;
+      self->_axSortedElements = sortedElements;
     }
   }
 
@@ -238,24 +238,24 @@ LABEL_7:
   return v6;
 }
 
-- (id)filteredSubfeaturesForFeature:(id)a3 withOCRType:(int64_t)a4
+- (id)filteredSubfeaturesForFeature:(id)feature withOCRType:(int64_t)type
 {
-  v5 = [a3 subfeatures];
+  subfeatures = [feature subfeatures];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100009000;
   v9[3] = &unk_100028978;
-  v9[4] = a4;
+  v9[4] = type;
   v6 = [NSPredicate predicateWithBlock:v9];
-  v7 = [v5 filteredArrayUsingPredicate:v6];
+  v7 = [subfeatures filteredArrayUsingPredicate:v6];
 
   return v7;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(VOTImageExplorerImageView *)self axSortedElements];
-  v3 = [v2 count] == 0;
+  axSortedElements = [(VOTImageExplorerImageView *)self axSortedElements];
+  v3 = [axSortedElements count] == 0;
 
   return v3;
 }
@@ -265,12 +265,12 @@ LABEL_7:
   v3 = +[NSMutableArray array];
   v33.receiver = self;
   v33.super_class = VOTImageExplorerImageView;
-  v4 = [(VOTImageExplorerImageView *)&v33 accessibilityCustomRotors];
+  accessibilityCustomRotors = [(VOTImageExplorerImageView *)&v33 accessibilityCustomRotors];
   v28 = v3;
-  [v3 axSafelyAddObjectsFromArray:v4];
+  [v3 axSafelyAddObjectsFromArray:accessibilityCustomRotors];
 
-  v5 = [(VOTImageExplorerImageView *)self ocrFeatures];
-  v6 = [v5 count];
+  ocrFeatures = [(VOTImageExplorerImageView *)self ocrFeatures];
+  v6 = [ocrFeatures count];
 
   if (v6)
   {
@@ -279,8 +279,8 @@ LABEL_7:
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v8 = [(VOTImageExplorerImageView *)self ocrFeatures];
-    v9 = [v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    ocrFeatures2 = [(VOTImageExplorerImageView *)self ocrFeatures];
+    v9 = [ocrFeatures2 countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (!v9)
     {
       goto LABEL_22;
@@ -294,7 +294,7 @@ LABEL_7:
       {
         if (*v30 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(ocrFeatures2);
         }
 
         v13 = *(*(&v29 + 1) + 8 * i);
@@ -306,17 +306,17 @@ LABEL_7:
           v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v13 ocrFeatureType]);
           [v7 addObject:v16];
 
-          v17 = [v13 ocrFeatureType];
-          if (v17 <= 12)
+          ocrFeatureType = [v13 ocrFeatureType];
+          if (ocrFeatureType <= 12)
           {
-            if (v17 == 1)
+            if (ocrFeatureType == 1)
             {
               v18 = @"VoiceOverImageExplorer.text.rotor";
             }
 
             else
             {
-              if (v17 != 7)
+              if (ocrFeatureType != 7)
               {
                 continue;
               }
@@ -327,7 +327,7 @@ LABEL_7:
             goto LABEL_19;
           }
 
-          if (v17 == 16 || v17 == 13)
+          if (ocrFeatureType == 16 || ocrFeatureType == 13)
           {
             v18 = @"VoiceOverImageExplorer.document.rotor";
 LABEL_19:
@@ -339,7 +339,7 @@ LABEL_19:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v10 = [ocrFeatures2 countByEnumeratingWithState:&v29 objects:v34 count:16];
       if (!v10)
       {
 LABEL_22:
@@ -349,8 +349,8 @@ LABEL_22:
     }
   }
 
-  v21 = [(VOTImageExplorerImageView *)self objectClassificationFeatures];
-  v22 = [v21 count];
+  objectClassificationFeatures = [(VOTImageExplorerImageView *)self objectClassificationFeatures];
+  v22 = [objectClassificationFeatures count];
 
   if (v22)
   {
@@ -358,8 +358,8 @@ LABEL_22:
     [v28 axSafelyAddObject:v23];
   }
 
-  v24 = [(VOTImageExplorerImageView *)self faceFeatures];
-  v25 = [v24 count];
+  faceFeatures = [(VOTImageExplorerImageView *)self faceFeatures];
+  v25 = [faceFeatures count];
 
   if (v25)
   {
@@ -373,31 +373,31 @@ LABEL_22:
 - (id)generateAccessibilityElements
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(VOTImageExplorerImageView *)self ocrFeatures];
-  v5 = [v4 count];
+  ocrFeatures = [(VOTImageExplorerImageView *)self ocrFeatures];
+  v5 = [ocrFeatures count];
 
   if (v5)
   {
-    v6 = [(VOTImageExplorerImageView *)self _generateOCRDocumentAccessibilityElements];
-    [v3 axSafelyAddEntriesFromDictionary:v6];
+    _generateOCRDocumentAccessibilityElements = [(VOTImageExplorerImageView *)self _generateOCRDocumentAccessibilityElements];
+    [v3 axSafelyAddEntriesFromDictionary:_generateOCRDocumentAccessibilityElements];
   }
 
-  v7 = [(VOTImageExplorerImageView *)self faceFeatures];
-  v8 = [v7 count];
+  faceFeatures = [(VOTImageExplorerImageView *)self faceFeatures];
+  v8 = [faceFeatures count];
 
   if (v8)
   {
-    v9 = [(VOTImageExplorerImageView *)self _generateFaceAccessibilityElements];
-    [v3 axSafelyAddEntriesFromDictionary:v9];
+    _generateFaceAccessibilityElements = [(VOTImageExplorerImageView *)self _generateFaceAccessibilityElements];
+    [v3 axSafelyAddEntriesFromDictionary:_generateFaceAccessibilityElements];
   }
 
-  v10 = [(VOTImageExplorerImageView *)self objectClassificationFeatures];
-  v11 = [v10 count];
+  objectClassificationFeatures = [(VOTImageExplorerImageView *)self objectClassificationFeatures];
+  v11 = [objectClassificationFeatures count];
 
   if (v11)
   {
-    v12 = [(VOTImageExplorerImageView *)self _generateObjectClassificationAccessibilityElements];
-    [v3 axSafelyAddEntriesFromDictionary:v12];
+    _generateObjectClassificationAccessibilityElements = [(VOTImageExplorerImageView *)self _generateObjectClassificationAccessibilityElements];
+    [v3 axSafelyAddEntriesFromDictionary:_generateObjectClassificationAccessibilityElements];
   }
 
   return v3;
@@ -441,16 +441,16 @@ LABEL_22:
         else
         {
           v44 = v8;
-          v11 = [v9 ocrFeatureType];
+          ocrFeatureType = [v9 ocrFeatureType];
           v12 = @"VoiceOverImageExplorer.document.rotor";
-          if (v11 == 7)
+          if (ocrFeatureType == 7)
           {
             v12 = @"VoiceOverImageExplorer.table.rotor";
           }
 
           v42 = v12;
           v13 = &off_1000283E0;
-          if (v11 != 7)
+          if (ocrFeatureType != 7)
           {
             v13 = off_1000283D8;
           }
@@ -472,16 +472,16 @@ LABEL_22:
               v20 = [(VOTImageExplorerImageView *)self filteredSubfeaturesForFeature:v9 withOCRType:9];
               v21 = [v20 objectAtIndex:v19];
 
-              v22 = [v21 subfeatures];
-              v23 = [v22 count];
+              subfeatures = [v21 subfeatures];
+              v23 = [subfeatures count];
 
               if (v23)
               {
                 v24 = 0;
                 do
                 {
-                  v25 = [v21 subfeatures];
-                  v26 = [v25 objectAtIndex:v24];
+                  subfeatures2 = [v21 subfeatures];
+                  v26 = [subfeatures2 objectAtIndex:v24];
 
                   v27 = [[VOTImageExplorerTextElement alloc] initWithImageView:self forTextFeature:v26 withParentTextFeature:v9 hasFlippedYAxis:0];
                   v28 = [(VOTImageExplorerImageView *)self _accessibilityCustomContentForFeature:v9];
@@ -492,8 +492,8 @@ LABEL_22:
                   [v16 axSafelyAddObject:v27];
 
                   ++v24;
-                  v29 = [v21 subfeatures];
-                  v30 = [v29 count];
+                  subfeatures3 = [v21 subfeatures];
+                  v30 = [subfeatures3 count];
                 }
 
                 while (v24 < v30);
@@ -548,14 +548,14 @@ LABEL_22:
   return v3;
 }
 
-- (id)_generateOCRTextAccessibilityElementsForFeature:(id)a3
+- (id)_generateOCRTextAccessibilityElementsForFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [(VOTImageExplorerElement *)[VOTImageExplorerDocumentElement alloc] initWithImageView:self forFeature:v4 hasFlippedYAxis:0];
+  v6 = [(VOTImageExplorerElement *)[VOTImageExplorerDocumentElement alloc] initWithImageView:self forFeature:featureCopy hasFlippedYAxis:0];
   v7 = +[NSMutableArray array];
-  v8 = [v4 value];
-  v9 = [v8 length];
+  value = [featureCopy value];
+  v9 = [value length];
 
   if (v9)
   {
@@ -564,7 +564,7 @@ LABEL_22:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    obj = [v4 subfeatures];
+    obj = [featureCopy subfeatures];
     v24 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v24)
     {
@@ -583,8 +583,8 @@ LABEL_22:
           v28 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v12 = [v11 subfeatures];
-          v13 = [v12 countByEnumeratingWithState:&v27 objects:v35 count:16];
+          subfeatures = [v11 subfeatures];
+          v13 = [subfeatures countByEnumeratingWithState:&v27 objects:v35 count:16];
           if (v13)
           {
             v14 = v13;
@@ -595,14 +595,14 @@ LABEL_22:
               {
                 if (*v28 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(subfeatures);
                 }
 
-                v17 = [[VOTImageExplorerTextElement alloc] initWithImageView:self forTextFeature:*(*(&v27 + 1) + 8 * j) withParentTextFeature:v4 hasFlippedYAxis:0];
+                v17 = [[VOTImageExplorerTextElement alloc] initWithImageView:self forTextFeature:*(*(&v27 + 1) + 8 * j) withParentTextFeature:featureCopy hasFlippedYAxis:0];
                 [v7 axSafelyAddObject:v17];
               }
 
-              v14 = [v12 countByEnumeratingWithState:&v27 objects:v35 count:16];
+              v14 = [subfeatures countByEnumeratingWithState:&v27 objects:v35 count:16];
             }
 
             while (v14);
@@ -664,11 +664,11 @@ LABEL_22:
         }
 
         v10 = *(*(&v22 + 1) + 8 * v9);
-        v11 = [(VOTImageExplorerImageView *)self sceneClassificationFeatures];
-        v12 = [AXMVisionFeature filterFeatureList:v11 basedOnSceneClassIdsForFeature:v10];
+        sceneClassificationFeatures = [(VOTImageExplorerImageView *)self sceneClassificationFeatures];
+        v12 = [AXMVisionFeature filterFeatureList:sceneClassificationFeatures basedOnSceneClassIdsForFeature:v10];
 
-        v13 = [v10 classificationLabel];
-        v14 = [v13 isEqualToString:@"people"];
+        classificationLabel = [v10 classificationLabel];
+        v14 = [classificationLabel isEqualToString:@"people"];
 
         v7 += v14;
         v15 = [[VOTImageExplorerObjectClassificationElement alloc] initWithImageView:self forFeature:v10 withMatchingScenes:v12 hasFlippedYAxis:1 objectIndex:v7];
@@ -755,37 +755,37 @@ LABEL_22:
     while (v7);
   }
 
-  v15 = [(VOTImageExplorerImageView *)self faceFeatures];
-  v16 = [v15 count];
-  v17 = [(VOTImageExplorerImageView *)self peopleFeatures];
-  v18 = [v17 count];
+  faceFeatures = [(VOTImageExplorerImageView *)self faceFeatures];
+  v16 = [faceFeatures count];
+  peopleFeatures = [(VOTImageExplorerImageView *)self peopleFeatures];
+  v18 = [peopleFeatures count];
 
   if (v16 < v18)
   {
-    v19 = [(VOTImageExplorerImageView *)self peopleFeatures];
+    peopleFeatures2 = [(VOTImageExplorerImageView *)self peopleFeatures];
 
-    if (v19 && v4)
+    if (peopleFeatures2 && v4)
     {
-      v20 = [(VOTImageExplorerImageView *)self peopleFeatures];
+      peopleFeatures3 = [(VOTImageExplorerImageView *)self peopleFeatures];
       v27[0] = _NSConcreteStackBlock;
       v27[1] = 3221225472;
       v27[2] = sub_10000A244;
       v27[3] = &unk_100028A08;
       v28 = v4;
-      [v20 ax_removeObjectsFromArrayUsingBlock:v27];
+      [peopleFeatures3 ax_removeObjectsFromArrayUsingBlock:v27];
     }
 
-    v21 = [(VOTImageExplorerImageView *)self objectClassificationFeatures];
-    v22 = [(VOTImageExplorerImageView *)self peopleFeatures];
-    [v21 axSafelyAddObjectsFromArray:v22];
+    objectClassificationFeatures = [(VOTImageExplorerImageView *)self objectClassificationFeatures];
+    peopleFeatures4 = [(VOTImageExplorerImageView *)self peopleFeatures];
+    [objectClassificationFeatures axSafelyAddObjectsFromArray:peopleFeatures4];
   }
 
   return v3;
 }
 
-- (id)_findPeopleFeatureThatOverlapsWithFace:(id)a3
+- (id)_findPeopleFeatureThatOverlapsWithFace:(id)face
 {
-  v4 = a3;
+  faceCopy = face;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -796,17 +796,17 @@ LABEL_22:
   v13[1] = v13;
   v13[2] = 0x2020000000;
   v13[3] = 0x10000000000000;
-  v5 = [(VOTImageExplorerImageView *)self peopleFeatures];
+  peopleFeatures = [(VOTImageExplorerImageView *)self peopleFeatures];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000A3EC;
   v9[3] = &unk_100028A30;
   v9[4] = self;
-  v6 = v4;
+  v6 = faceCopy;
   v10 = v6;
   v11 = v13;
   v12 = &v14;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [peopleFeatures enumerateObjectsUsingBlock:v9];
 
   v7 = v15[5];
   _Block_object_dispose(v13, 8);
@@ -815,51 +815,51 @@ LABEL_22:
   return v7;
 }
 
-- (BOOL)addElement:(id)a3 toElements:(id)a4 forFeatureKey:(id)a5
+- (BOOL)addElement:(id)element toElements:(id)elements forFeatureKey:(id)key
 {
-  v7 = a3;
-  if (a5)
+  elementCopy = element;
+  if (key)
   {
-    v8 = a5;
-    v9 = a4;
-    v10 = [v9 objectForKeyedSubscript:v8];
+    keyCopy = key;
+    elementsCopy = elements;
+    v10 = [elementsCopy objectForKeyedSubscript:keyCopy];
     if (!v10)
     {
       v10 = +[NSMutableArray array];
     }
 
-    [v10 addObject:v7];
-    [v9 setObject:v10 forKey:v8];
+    [v10 addObject:elementCopy];
+    [elementsCopy setObject:v10 forKey:keyCopy];
   }
 
-  return a5 != 0;
+  return key != 0;
 }
 
-- (id)imageExplorerRotorWithName:(id)a3
+- (id)imageExplorerRotorWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(VOTImageExplorerImageView *)self elements];
+  nameCopy = name;
+  elements = [(VOTImageExplorerImageView *)self elements];
 
-  if (v5)
+  if (elements)
   {
-    v6 = [(VOTImageExplorerImageView *)self imageExplorerRotorCache];
-    v7 = [v6 objectForKey:v4];
+    imageExplorerRotorCache = [(VOTImageExplorerImageView *)self imageExplorerRotorCache];
+    v7 = [imageExplorerRotorCache objectForKey:nameCopy];
     if (!v7)
     {
       objc_initWeak(&location, self);
       v8 = [UIAccessibilityCustomRotor alloc];
-      v9 = sub_10000CCD4(v4);
+      v9 = sub_10000CCD4(nameCopy);
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_10000A820;
       v12[3] = &unk_100028A98;
       objc_copyWeak(&v14, &location);
-      v10 = v4;
+      v10 = nameCopy;
       v13 = v10;
       v7 = [v8 initWithName:v9 itemSearchBlock:v12];
 
-      [v6 setObject:v7 forKey:v10];
-      [(VOTImageExplorerImageView *)self setImageExplorerRotorCache:v6];
+      [imageExplorerRotorCache setObject:v7 forKey:v10];
+      [(VOTImageExplorerImageView *)self setImageExplorerRotorCache:imageExplorerRotorCache];
 
       objc_destroyWeak(&v14);
       objc_destroyWeak(&location);
@@ -876,26 +876,26 @@ LABEL_22:
 
 - (id)sortedElements
 {
-  v2 = [(VOTImageExplorerImageView *)self elements];
-  v3 = [v2 allValues];
-  v4 = [v3 valueForKeyPath:@"@unionOfArrays.self"];
+  elements = [(VOTImageExplorerImageView *)self elements];
+  allValues = [elements allValues];
+  v4 = [allValues valueForKeyPath:@"@unionOfArrays.self"];
 
   v5 = [v4 sortedArrayUsingSelector:"accessibilityCompareGeometry:"];
 
   return v5;
 }
 
-- (id)_axRelationOfCurrentFrame:(CGRect)a3 withNeighborFrame:(CGRect)a4
+- (id)_axRelationOfCurrentFrame:(CGRect)frame withNeighborFrame:(CGRect)neighborFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  MinX = CGRectGetMinX(a4);
+  height = neighborFrame.size.height;
+  width = neighborFrame.size.width;
+  y = neighborFrame.origin.y;
+  x = neighborFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
+  MinX = CGRectGetMinX(neighborFrame);
   v24.origin.x = x;
   v24.origin.y = y;
   v24.size.width = width;
@@ -984,33 +984,33 @@ LABEL_19:
   return v17;
 }
 
-- (id)_axNearbyRelationKeyForFeature:(id)a3 andNeighborFeature:(id)a4
+- (id)_axNearbyRelationKeyForFeature:(id)feature andNeighborFeature:(id)neighborFeature
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 featureType];
-  [v6 featureType];
+  featureCopy = feature;
+  neighborFeatureCopy = neighborFeature;
+  [neighborFeatureCopy featureType];
+  [featureCopy featureType];
   if (AXRuntimeCheck_MediaAnalysisSupport())
   {
-    [v7 featureType];
-    [v6 featureType];
+    [neighborFeatureCopy featureType];
+    [featureCopy featureType];
   }
 
-  if (v6 == v7)
+  if (featureCopy == neighborFeatureCopy)
   {
     v24 = 0;
   }
 
   else
   {
-    [v6 normalizedFrame];
+    [featureCopy normalizedFrame];
     [(VOTImageExplorerImageView *)self frame];
     UIAccessibilityFrameForBounds();
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    [v7 normalizedFrame];
+    [neighborFeatureCopy normalizedFrame];
     [(VOTImageExplorerImageView *)self frame];
     UIAccessibilityFrameForBounds();
     v17 = v16;
@@ -1063,24 +1063,24 @@ LABEL_7:
   return v24;
 }
 
-- (id)_axNearbyRelationsForFeature:(id)a3
+- (id)_axNearbyRelationsForFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   v5 = +[NSMutableDictionary dictionary];
   objc_initWeak(&location, self);
-  v6 = [(VOTImageExplorerImageView *)self faceFeatures];
+  faceFeatures = [(VOTImageExplorerImageView *)self faceFeatures];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_10000B1B8;
   v26[3] = &unk_100028AC0;
   objc_copyWeak(&v29, &location);
-  v7 = v4;
+  v7 = featureCopy;
   v27 = v7;
   v8 = v5;
   v28 = v8;
-  [v6 enumerateObjectsUsingBlock:v26];
+  [faceFeatures enumerateObjectsUsingBlock:v26];
 
-  v9 = [(VOTImageExplorerImageView *)self objectClassificationFeatures];
+  objectClassificationFeatures = [(VOTImageExplorerImageView *)self objectClassificationFeatures];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10000B32C;
@@ -1090,9 +1090,9 @@ LABEL_7:
   v23 = v10;
   v11 = v8;
   v24 = v11;
-  [v9 enumerateObjectsUsingBlock:v22];
+  [objectClassificationFeatures enumerateObjectsUsingBlock:v22];
 
-  v12 = [(VOTImageExplorerImageView *)self ocrFeatures];
+  ocrFeatures = [(VOTImageExplorerImageView *)self ocrFeatures];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10000B450;
@@ -1102,7 +1102,7 @@ LABEL_7:
   v19 = v13;
   v14 = v11;
   v20 = v14;
-  [v12 enumerateObjectsUsingBlock:v18];
+  [ocrFeatures enumerateObjectsUsingBlock:v18];
 
   v15 = v20;
   v16 = v14;
@@ -1116,16 +1116,16 @@ LABEL_7:
   return v16;
 }
 
-- (id)_accessibilityCustomContentForFeature:(id)a3
+- (id)_accessibilityCustomContentForFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = sub_10000A3D4;
   v13 = sub_10000A3E4;
   v14 = +[NSMutableArray array];
-  v5 = [(VOTImageExplorerImageView *)self _axNearbyRelationsForFeature:v4];
+  v5 = [(VOTImageExplorerImageView *)self _axNearbyRelationsForFeature:featureCopy];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000B6DC;

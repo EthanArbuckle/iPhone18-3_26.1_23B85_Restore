@@ -1,29 +1,29 @@
 @interface _SWMutableCollaborationMetadata
-- (BOOL)isEqual:(id)a3;
-- (_SWMutableCollaborationMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_SWMutableCollaborationMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SWMutableCollaborationMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = _SWMutableCollaborationMetadata;
-  if ([(SWCollaborationMetadata *)&v11 isEqual:v5])
+  if ([(SWCollaborationMetadata *)&v11 isEqual:equalCopy])
   {
-    v6 = [(SWCollaborationMetadata *)self ckAppBundleIDs];
-    if (v6 || ([v5 ckAppBundleIDs], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    ckAppBundleIDs = [(SWCollaborationMetadata *)self ckAppBundleIDs];
+    if (ckAppBundleIDs || ([equalCopy ckAppBundleIDs], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v7 = [(SWCollaborationMetadata *)self ckAppBundleIDs];
-      v8 = [v5 ckAppBundleIDs];
-      v9 = [v7 isEqual:v8];
+      ckAppBundleIDs2 = [(SWCollaborationMetadata *)self ckAppBundleIDs];
+      ckAppBundleIDs3 = [equalCopy ckAppBundleIDs];
+      v9 = [ckAppBundleIDs2 isEqual:ckAppBundleIDs3];
 
-      if (v6)
+      if (ckAppBundleIDs)
       {
 LABEL_9:
 
@@ -50,72 +50,72 @@ LABEL_10:
   v7.receiver = self;
   v7.super_class = _SWMutableCollaborationMetadata;
   v3 = [(SWCollaborationMetadata *)&v7 hash];
-  v4 = [(SWCollaborationMetadata *)self ckAppBundleIDs];
-  v5 = [v4 hash];
+  ckAppBundleIDs = [(SWCollaborationMetadata *)self ckAppBundleIDs];
+  v5 = [ckAppBundleIDs hash];
 
   return v5 ^ v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = _SWMutableCollaborationMetadata;
-  v4 = [(SWCollaborationMetadata *)&v8 copyWithZone:a3];
-  v5 = [(SWCollaborationMetadata *)self ckAppBundleIDs];
+  v4 = [(SWCollaborationMetadata *)&v8 copyWithZone:zone];
+  ckAppBundleIDs = [(SWCollaborationMetadata *)self ckAppBundleIDs];
 
-  if (v5)
+  if (ckAppBundleIDs)
   {
-    v6 = [(SWCollaborationMetadata *)self ckAppBundleIDs];
-    [v4 setCkAppBundleIDs:v6];
+    ckAppBundleIDs2 = [(SWCollaborationMetadata *)self ckAppBundleIDs];
+    [v4 setCkAppBundleIDs:ckAppBundleIDs2];
   }
 
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = _SWMutableCollaborationMetadata;
-  v4 = [(SWCollaborationMetadata *)&v8 mutableCopyWithZone:a3];
-  v5 = [(SWCollaborationMetadata *)self ckAppBundleIDs];
+  v4 = [(SWCollaborationMetadata *)&v8 mutableCopyWithZone:zone];
+  ckAppBundleIDs = [(SWCollaborationMetadata *)self ckAppBundleIDs];
 
-  if (v5)
+  if (ckAppBundleIDs)
   {
-    v6 = [(SWCollaborationMetadata *)self ckAppBundleIDs];
-    [v4 setCkAppBundleIDs:v6];
+    ckAppBundleIDs2 = [(SWCollaborationMetadata *)self ckAppBundleIDs];
+    [v4 setCkAppBundleIDs:ckAppBundleIDs2];
   }
 
   return v4;
 }
 
-- (_SWMutableCollaborationMetadata)initWithCoder:(id)a3
+- (_SWMutableCollaborationMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = _SWMutableCollaborationMetadata;
-  v5 = [(SWCollaborationMetadata *)&v12 initWithCoder:v4];
+  v5 = [(SWCollaborationMetadata *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
     v9 = NSStringFromSelector(sel_ckAppBundleIDs);
-    v10 = [v4 decodeObjectOfClasses:v8 forKey:v9];
+    v10 = [coderCopy decodeObjectOfClasses:v8 forKey:v9];
     [(SWCollaborationMetadata *)v5 setCkAppBundleIDs:v10];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = _SWMutableCollaborationMetadata;
-  v4 = a3;
-  [(SWCollaborationMetadata *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(SWCollaborationMetadata *)&v7 encodeWithCoder:coderCopy];
   v5 = [(SWCollaborationMetadata *)self ckAppBundleIDs:v7.receiver];
   v6 = NSStringFromSelector(sel_ckAppBundleIDs);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 }
 
 @end

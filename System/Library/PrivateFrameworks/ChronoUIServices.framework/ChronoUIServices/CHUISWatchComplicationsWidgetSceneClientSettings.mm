@@ -1,32 +1,32 @@
 @interface CHUISWatchComplicationsWidgetSceneClientSettings
 - (double)curvedTextAngularWidth;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 @end
 
 @implementation CHUISWatchComplicationsWidgetSceneClientSettings
 
 - (double)curvedTextAngularWidth
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:89888];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:89888];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CHUISMutableWatchComplicationsWidgetSceneClientSettings alloc];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 89888)
+  if (setting == 89888)
   {
     v5 = @"curvedTextAngularWidth";
   }
@@ -43,20 +43,20 @@
   return v5;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v8 = a4;
-  v9 = v8;
-  if (a5 == 89888)
+  objectCopy = object;
+  v9 = objectCopy;
+  if (setting == 89888)
   {
-    v10 = v8;
+    v10 = objectCopy;
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = CHUISWatchComplicationsWidgetSceneClientSettings;
-    v10 = [(FBSSettings *)&v13 valueDescriptionForFlag:a3 object:v8 ofSetting:a5];
+    v10 = [(FBSSettings *)&v13 valueDescriptionForFlag:flag object:objectCopy ofSetting:setting];
   }
 
   v11 = v10;

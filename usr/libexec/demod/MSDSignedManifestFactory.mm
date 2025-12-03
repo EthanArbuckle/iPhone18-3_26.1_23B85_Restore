@@ -1,19 +1,19 @@
 @interface MSDSignedManifestFactory
-+ (id)createSignedManifestFromManifestFile:(id)a3;
-+ (id)readManifestFromFile:(id)a3;
++ (id)createSignedManifestFromManifestFile:(id)file;
++ (id)readManifestFromFile:(id)file;
 @end
 
 @implementation MSDSignedManifestFactory
 
-+ (id)readManifestFromFile:(id)a3
++ (id)readManifestFromFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  v5 = [v4 fileExistsAtPath:fileCopy];
 
   if (v5)
   {
-    v6 = [NSInputStream inputStreamWithFileAtPath:v3];
+    v6 = [NSInputStream inputStreamWithFileAtPath:fileCopy];
     if (v6)
     {
       v7 = v6;
@@ -62,13 +62,13 @@
 
         else
         {
-          sub_1000DD900(v3, v9);
+          sub_1000DD900(fileCopy, v9);
         }
       }
 
       else
       {
-        sub_1000DD76C(v3, v9);
+        sub_1000DD76C(fileCopy, v9);
       }
     }
 
@@ -97,18 +97,18 @@ LABEL_12:
   return v9;
 }
 
-+ (id)createSignedManifestFromManifestFile:(id)a3
++ (id)createSignedManifestFromManifestFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = objc_autoreleasePoolPush();
-  v5 = [MSDSignedManifestFactory readManifestFromFile:v3];
+  v5 = [MSDSignedManifestFactory readManifestFromFile:fileCopy];
   v6 = v5;
   if (v5)
   {
     v7 = [v5 objectForKey:@"Version"];
-    v8 = [v7 intValue];
+    intValue = [v7 intValue];
     v9 = &off_100168E40;
-    if (v8 != 7)
+    if (intValue != 7)
     {
       v9 = off_100168E38;
     }

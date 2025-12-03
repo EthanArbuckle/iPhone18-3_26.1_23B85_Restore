@@ -1,17 +1,17 @@
 @interface SRSuggestionsViewController
 - (BOOL)isShowingGuide;
 - (BOOL)isShowingUserNudge;
-- (BOOL)suggestionsViewIsInTextInputMode:(id)a3;
+- (BOOL)suggestionsViewIsInTextInputMode:(id)mode;
 - (SRSuggestionsViewControllerDelegate)delegate;
-- (double)contentWidthForSuggestionsView:(id)a3;
-- (double)statusBarHeightForSuggestionsView:(id)a3;
-- (double)statusViewHeightForSuggestionsView:(id)a3;
+- (double)contentWidthForSuggestionsView:(id)view;
+- (double)statusBarHeightForSuggestionsView:(id)view;
+- (double)statusViewHeightForSuggestionsView:(id)view;
 - (id)_initialHeaderText;
 - (id)_nudgeHeaderText;
 - (void)_createGuideController;
-- (void)_showHeaderText:(id)a3 subheaderText:(id)a4 largeSubheaderText:(id)a5;
+- (void)_showHeaderText:(id)text subheaderText:(id)subheaderText largeSubheaderText:(id)largeSubheaderText;
 - (void)animateOut;
-- (void)didShowSuggestionsForSuggestionsView:(id)a3;
+- (void)didShowSuggestionsForSuggestionsView:(id)view;
 - (void)hideAcousticIDSpinner;
 - (void)loadView;
 - (void)showAcousticIDSpinner;
@@ -19,9 +19,9 @@
 - (void)showGreeting;
 - (void)showUnavailable;
 - (void)showUserNudge;
-- (void)suggestionsView:(id)a3 didHideVibrantView:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)suggestionsView:(id)view didHideVibrantView:(id)vibrantView;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SRSuggestionsViewController
@@ -32,8 +32,8 @@
   [v4 setAutoresizingMask:18];
   [v4 setDelegate:self];
   [(SRSuggestionsViewController *)self setView:v4];
-  v3 = [(SRSuggestionsViewController *)self view];
-  [v3 setHidden:1];
+  view = [(SRSuggestionsViewController *)self view];
+  [view setHidden:1];
 }
 
 - (id)_initialHeaderText
@@ -76,11 +76,11 @@
 
 - (void)showGreeting
 {
-  v3 = [(SRSuggestionsViewController *)self _initialHeaderText];
-  [(SRSuggestionsViewController *)self _showHeaderText:v3 subheaderText:0 largeSubheaderText:0];
+  _initialHeaderText = [(SRSuggestionsViewController *)self _initialHeaderText];
+  [(SRSuggestionsViewController *)self _showHeaderText:_initialHeaderText subheaderText:0 largeSubheaderText:0];
 
-  v4 = [(SRSuggestionsViewController *)self view];
-  [v4 clearCurrentSuggestions];
+  view = [(SRSuggestionsViewController *)self view];
+  [view clearCurrentSuggestions];
 
   v5 = UIApp;
   v6 = SUICPPTTestNameSiriBringupToInitialQuery;
@@ -90,21 +90,21 @@
 
 - (void)showUserNudge
 {
-  v3 = [(SRSuggestionsViewController *)self _nudgeHeaderText];
-  [(SRSuggestionsViewController *)self _showHeaderText:v3 subheaderText:0 largeSubheaderText:0];
+  _nudgeHeaderText = [(SRSuggestionsViewController *)self _nudgeHeaderText];
+  [(SRSuggestionsViewController *)self _showHeaderText:_nudgeHeaderText subheaderText:0 largeSubheaderText:0];
 
-  v4 = [(SRSuggestionsViewController *)self view];
-  [v4 setGuideHidden:1];
+  view = [(SRSuggestionsViewController *)self view];
+  [view setGuideHidden:1];
 }
 
 - (BOOL)isShowingUserNudge
 {
-  v3 = [(SRSuggestionsViewController *)self view];
-  v4 = [v3 headerText];
-  v5 = [v4 regularString];
-  v6 = [(SRSuggestionsViewController *)self _nudgeHeaderText];
-  v7 = [v6 regularString];
-  v8 = [v5 isEqualToString:v7];
+  view = [(SRSuggestionsViewController *)self view];
+  headerText = [view headerText];
+  regularString = [headerText regularString];
+  _nudgeHeaderText = [(SRSuggestionsViewController *)self _nudgeHeaderText];
+  regularString2 = [_nudgeHeaderText regularString];
+  v8 = [regularString isEqualToString:regularString2];
 
   return v8;
 }
@@ -112,61 +112,61 @@
 - (void)showEmptyView
 {
   [(SRSuggestionsViewController *)self _showHeaderText:0 subheaderText:0 largeSubheaderText:0];
-  v3 = [(SRSuggestionsViewController *)self view];
-  [v3 setGuideHidden:1];
+  view = [(SRSuggestionsViewController *)self view];
+  [view setGuideHidden:1];
 }
 
-- (void)_showHeaderText:(id)a3 subheaderText:(id)a4 largeSubheaderText:(id)a5
+- (void)_showHeaderText:(id)text subheaderText:(id)subheaderText largeSubheaderText:(id)largeSubheaderText
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(SRSuggestionsViewController *)self view];
-  [v11 setHidden:0];
+  largeSubheaderTextCopy = largeSubheaderText;
+  subheaderTextCopy = subheaderText;
+  textCopy = text;
+  view = [(SRSuggestionsViewController *)self view];
+  [view setHidden:0];
 
-  v12 = [(SRSuggestionsViewController *)self view];
-  [v12 setSubheaderText:v9];
+  view2 = [(SRSuggestionsViewController *)self view];
+  [view2 setSubheaderText:subheaderTextCopy];
 
-  v13 = [(SRSuggestionsViewController *)self view];
-  [v13 setLargeSubheaderText:v8];
+  view3 = [(SRSuggestionsViewController *)self view];
+  [view3 setLargeSubheaderText:largeSubheaderTextCopy];
 
-  v14 = [(SRSuggestionsViewController *)self view];
-  [v14 setHeaderText:v10];
+  view4 = [(SRSuggestionsViewController *)self view];
+  [view4 setHeaderText:textCopy];
 
-  v15 = [(SRSuggestionsViewController *)self view];
-  [v15 setGuideHidden:1 animated:1];
+  view5 = [(SRSuggestionsViewController *)self view];
+  [view5 setGuideHidden:1 animated:1];
 }
 
 - (void)showAcousticIDSpinner
 {
-  v2 = [(SRSuggestionsViewController *)self view];
-  [v2 showAcousticIDSpinner];
+  view = [(SRSuggestionsViewController *)self view];
+  [view showAcousticIDSpinner];
 }
 
 - (void)hideAcousticIDSpinner
 {
-  v2 = [(SRSuggestionsViewController *)self view];
-  [v2 hideAcousticIDSpinner];
+  view = [(SRSuggestionsViewController *)self view];
+  [view hideAcousticIDSpinner];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = SRSuggestionsViewController;
-  [(SRSuggestionsViewController *)&v6 viewWillAppear:a3];
-  v4 = [(SRSuggestionsViewController *)self view];
-  [v4 setOrientation:{objc_msgSend(UIApp, "statusBarOrientation")}];
+  [(SRSuggestionsViewController *)&v6 viewWillAppear:appear];
+  view = [(SRSuggestionsViewController *)self view];
+  [view setOrientation:{objc_msgSend(UIApp, "statusBarOrientation")}];
 
-  v5 = [(SRSuggestionsViewController *)self view];
-  [v5 setNeedsLayout];
+  view2 = [(SRSuggestionsViewController *)self view];
+  [view2 setNeedsLayout];
 }
 
 - (BOOL)isShowingGuide
 {
-  v2 = [(SRSuggestionsViewController *)self view];
-  v3 = [v2 isGuideHidden];
+  view = [(SRSuggestionsViewController *)self view];
+  isGuideHidden = [view isGuideHidden];
 
-  return v3 ^ 1;
+  return isGuideHidden ^ 1;
 }
 
 - (void)animateOut
@@ -180,21 +180,21 @@
   [v2 animateOutWithCompletion:v3];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v6.receiver = self;
   v6.super_class = SRSuggestionsViewController;
-  [(SRSuggestionsViewController *)&v6 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
-  v5 = [(SRSuggestionsViewController *)self view];
-  [v5 setOrientation:{objc_msgSend(UIApp, "statusBarOrientation")}];
+  [(SRSuggestionsViewController *)&v6 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
+  view = [(SRSuggestionsViewController *)self view];
+  [view setOrientation:{objc_msgSend(UIApp, "statusBarOrientation")}];
 }
 
 - (void)_createGuideController
 {
   v8 = [[AFUISiriLanguage alloc] initWithDelegate:0];
   v3 = [AFConversation alloc];
-  v4 = [v8 spokenLanguageCode];
-  v5 = [v3 initWithLanguageCode:v4];
+  spokenLanguageCode = [v8 spokenLanguageCode];
+  v5 = [v3 initWithLanguageCode:spokenLanguageCode];
   conversation = self->_conversation;
   self->_conversation = v5;
 
@@ -203,7 +203,7 @@
   [(AFConversation *)self->_conversation addItemsForShowHelpCommand:v7];
 }
 
-- (void)didShowSuggestionsForSuggestionsView:(id)a3
+- (void)didShowSuggestionsForSuggestionsView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -215,47 +215,47 @@
   }
 }
 
-- (double)statusBarHeightForSuggestionsView:(id)a3
+- (double)statusBarHeightForSuggestionsView:(id)view
 {
-  v4 = [(SRSuggestionsViewController *)self delegate];
-  [v4 statusBarFrameForSuggestionsViewController:self];
+  delegate = [(SRSuggestionsViewController *)self delegate];
+  [delegate statusBarFrameForSuggestionsViewController:self];
   MaxY = CGRectGetMaxY(v7);
 
   return MaxY;
 }
 
-- (double)statusViewHeightForSuggestionsView:(id)a3
+- (double)statusViewHeightForSuggestionsView:(id)view
 {
-  v4 = [(SRSuggestionsViewController *)self delegate];
-  [v4 statusViewHeightForSuggestionsViewController:self];
+  delegate = [(SRSuggestionsViewController *)self delegate];
+  [delegate statusViewHeightForSuggestionsViewController:self];
   v6 = v5;
 
   return v6;
 }
 
-- (void)suggestionsView:(id)a3 didHideVibrantView:(id)a4
+- (void)suggestionsView:(id)view didHideVibrantView:(id)vibrantView
 {
-  v8 = a4;
+  vibrantViewCopy = vibrantView;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 suggestionsViewController:self didHideVibrantView:v8];
+    [v7 suggestionsViewController:self didHideVibrantView:vibrantViewCopy];
   }
 }
 
-- (double)contentWidthForSuggestionsView:(id)a3
+- (double)contentWidthForSuggestionsView:(id)view
 {
-  v4 = [(SRSuggestionsViewController *)self delegate];
-  [v4 contentWidthForSuggestionsViewController:self];
+  delegate = [(SRSuggestionsViewController *)self delegate];
+  [delegate contentWidthForSuggestionsViewController:self];
   v6 = v5;
 
   return v6;
 }
 
-- (BOOL)suggestionsViewIsInTextInputMode:(id)a3
+- (BOOL)suggestionsViewIsInTextInputMode:(id)mode
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();

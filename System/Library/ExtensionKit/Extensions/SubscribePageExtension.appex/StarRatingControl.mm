@@ -1,29 +1,29 @@
 @interface StarRatingControl
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSArray)accessibilityCustomActions;
 - (NSString)accessibilityHint;
 - (NSString)accessibilityLabel;
 - (NSString)accessibilityValue;
-- (_TtC22SubscribePageExtension17StarRatingControl)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtension17StarRatingControl)initWithFrame:(CGRect)a3;
+- (_TtC22SubscribePageExtension17StarRatingControl)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtension17StarRatingControl)initWithFrame:(CGRect)frame;
 - (void)accessibilitySetStarRatingFive;
 - (void)accessibilitySetStarRatingFour;
 - (void)accessibilitySetStarRatingOne;
 - (void)accessibilitySetStarRatingThree;
 - (void)accessibilitySetStarRatingTwo;
 - (void)accessibilitySetStarRatingZero;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (void)setAccessibilityCustomActions:(id)a3;
-- (void)setIsAccessibilityElement:(BOOL)a3;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)drawRect:(CGRect)rect;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
+- (void)setAccessibilityCustomActions:(id)actions;
+- (void)setIsAccessibilityElement:(BOOL)element;
 - (void)tintColorDidChange;
 @end
 
 @implementation StarRatingControl
 
-- (_TtC22SubscribePageExtension17StarRatingControl)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension17StarRatingControl)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension17StarRatingControl_rating) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension17StarRatingControl_lastSentRating) = 0;
@@ -35,10 +35,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
-  v4 = [(StarRatingControl *)v3 traitCollection];
+  selfCopy = self;
+  traitCollection = [(StarRatingControl *)selfCopy traitCollection];
   v5 = sub_10011F6F8(1);
   [v5 size];
   v7 = v6;
@@ -51,25 +51,25 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_10011D9C8(x, y, width, height);
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_10011F8E8(a3);
+  touchCopy = touch;
+  eventCopy = event;
+  selfCopy = self;
+  sub_10011F8E8(touch);
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   v3 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension17StarRatingControl_lastSentRating);
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension17StarRatingControl_rating);
@@ -89,16 +89,16 @@
   [v2 setNeedsDisplay];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v6 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension17StarRatingControl_touchOutsideMargin);
   v7 = *&self->rating[OBJC_IVAR____TtC22SubscribePageExtension17StarRatingControl_touchOutsideMargin];
   v8 = *&self->lastSentRating[OBJC_IVAR____TtC22SubscribePageExtension17StarRatingControl_touchOutsideMargin];
   v9 = *&self->touchOutsideMargin[OBJC_IVAR____TtC22SubscribePageExtension17StarRatingControl_touchOutsideMargin];
-  v10 = self;
-  [(StarRatingControl *)v10 bounds];
+  selfCopy = self;
+  [(StarRatingControl *)selfCopy bounds];
   v18.origin.x = v11 - v7;
   v18.origin.y = v12 - v6;
   v18.size.width = v7 + v9 + v13;
@@ -110,12 +110,12 @@
   return v15;
 }
 
-- (void)setIsAccessibilityElement:(BOOL)a3
+- (void)setIsAccessibilityElement:(BOOL)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4.receiver = self;
   v4.super_class = type metadata accessor for StarRatingControl();
-  [(StarRatingControl *)&v4 setIsAccessibilityElement:v3];
+  [(StarRatingControl *)&v4 setIsAccessibilityElement:elementCopy];
 }
 
 - (NSString)accessibilityLabel
@@ -152,7 +152,7 @@
 
   else
   {
-    v3 = self;
+    selfCopy = self;
     v6._object = 0x800000010076C240;
     v6._countAndFlagsBits = 0xD00000000000001ALL;
     v7._countAndFlagsBits = 0;
@@ -169,7 +169,7 @@
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10011EC40();
 
   if (v3)
@@ -186,20 +186,20 @@
   return v4.super.isa;
 }
 
-- (void)setAccessibilityCustomActions:(id)a3
+- (void)setAccessibilityCustomActions:(id)actions
 {
-  isa = a3;
-  if (a3)
+  isa = actions;
+  if (actions)
   {
     sub_100016C60(0, &qword_1009292E8);
     sub_1007532A4();
-    v5 = self;
+    selfCopy = self;
     isa = sub_100753294().super.isa;
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
   }
 
   v7.receiver = self;
@@ -209,41 +209,41 @@
 
 - (void)accessibilitySetStarRatingZero
 {
-  v2 = self;
+  selfCopy = self;
   sub_10011EF74(0);
 }
 
 - (void)accessibilitySetStarRatingOne
 {
-  v2 = self;
+  selfCopy = self;
   sub_10011EF74(1);
 }
 
 - (void)accessibilitySetStarRatingTwo
 {
-  v2 = self;
+  selfCopy = self;
   sub_10011EF74(2);
 }
 
 - (void)accessibilitySetStarRatingThree
 {
-  v2 = self;
+  selfCopy = self;
   sub_10011EF74(3);
 }
 
 - (void)accessibilitySetStarRatingFour
 {
-  v2 = self;
+  selfCopy = self;
   sub_10011EF74(4);
 }
 
 - (void)accessibilitySetStarRatingFive
 {
-  v2 = self;
+  selfCopy = self;
   sub_10011EF74(5);
 }
 
-- (_TtC22SubscribePageExtension17StarRatingControl)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension17StarRatingControl)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

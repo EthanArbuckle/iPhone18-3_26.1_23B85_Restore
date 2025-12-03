@@ -1,6 +1,6 @@
 @interface PXPeopleFaceCropFetchResult
 - (CGRect)faceRect;
-- (PXPeopleFaceCropFetchResult)initWithImage:(id)a3 assetObjectID:(id)a4 assetLocalIdentifier:(id)a5 faceRect:(CGRect)a6 isCropped:(BOOL)a7 isDegraded:(BOOL)a8 options:(id)a9;
+- (PXPeopleFaceCropFetchResult)initWithImage:(id)image assetObjectID:(id)d assetLocalIdentifier:(id)identifier faceRect:(CGRect)rect isCropped:(BOOL)cropped isDegraded:(BOOL)degraded options:(id)options;
 - (id)description;
 @end
 
@@ -26,14 +26,14 @@
   v3 = [(PXPeopleFaceCropFetchResult *)&v15 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(PXPeopleFaceCropFetchResult *)self image];
-  [v4 appendFormat:@":\nimage: %@, \n", v5];
+  image = [(PXPeopleFaceCropFetchResult *)self image];
+  [v4 appendFormat:@":\nimage: %@, \n", image];
 
-  v6 = [(PXPeopleFaceCropFetchResult *)self assetObjectID];
-  [v4 appendFormat:@"assetObjectID: %@, \n", v6];
+  assetObjectID = [(PXPeopleFaceCropFetchResult *)self assetObjectID];
+  [v4 appendFormat:@"assetObjectID: %@, \n", assetObjectID];
 
-  v7 = [(PXPeopleFaceCropFetchResult *)self assetLocalIdentifier];
-  [v4 appendFormat:@"assetLocalIdentifier: %@, \n", v7];
+  assetLocalIdentifier = [(PXPeopleFaceCropFetchResult *)self assetLocalIdentifier];
+  [v4 appendFormat:@"assetLocalIdentifier: %@, \n", assetLocalIdentifier];
 
   [(PXPeopleFaceCropFetchResult *)self faceRect];
   v8 = NSStringFromCGRect(v17);
@@ -64,38 +64,38 @@
   v12 = v11;
   [v4 appendFormat:@"isDegraded: %@, \n", v12];
 
-  v13 = [(PXPeopleFaceCropFetchResult *)self options];
-  [v4 appendFormat:@"options: %@\n", v13];
+  options = [(PXPeopleFaceCropFetchResult *)self options];
+  [v4 appendFormat:@"options: %@\n", options];
 
   return v4;
 }
 
-- (PXPeopleFaceCropFetchResult)initWithImage:(id)a3 assetObjectID:(id)a4 assetLocalIdentifier:(id)a5 faceRect:(CGRect)a6 isCropped:(BOOL)a7 isDegraded:(BOOL)a8 options:(id)a9
+- (PXPeopleFaceCropFetchResult)initWithImage:(id)image assetObjectID:(id)d assetLocalIdentifier:(id)identifier faceRect:(CGRect)rect isCropped:(BOOL)cropped isDegraded:(BOOL)degraded options:(id)options
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a9;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  imageCopy = image;
+  dCopy = d;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v27.receiver = self;
   v27.super_class = PXPeopleFaceCropFetchResult;
   v23 = [(PXPeopleFaceCropFetchResult *)&v27 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_image, a3);
-    objc_storeStrong(&v24->_assetObjectID, a4);
-    objc_storeStrong(&v24->_assetLocalIdentifier, a5);
+    objc_storeStrong(&v23->_image, image);
+    objc_storeStrong(&v24->_assetObjectID, d);
+    objc_storeStrong(&v24->_assetLocalIdentifier, identifier);
     v24->_faceRect.origin.x = x;
     v24->_faceRect.origin.y = y;
     v24->_faceRect.size.width = width;
     v24->_faceRect.size.height = height;
-    v24->_isCropped = a7;
-    v24->_isDegraded = a8;
-    objc_storeStrong(&v24->_options, a9);
+    v24->_isCropped = cropped;
+    v24->_isDegraded = degraded;
+    objc_storeStrong(&v24->_options, options);
   }
 
   return v24;

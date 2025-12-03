@@ -1,34 +1,34 @@
 @interface PXCMMDebugSharingSuggestionViewController
-+ (BOOL)generateSectionTitles:(id *)a3 andTableContent:(id *)a4 forIndex:(int64_t)a5 sourceSuggestion:(id)a6 sourceDictionary:(id)a7;
-- (PXCMMDebugSharingSuggestionViewController)initWithSharingSuggestion:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_sendByEmailAction:(id)a3;
-- (void)_switchLogsAction:(id)a3;
++ (BOOL)generateSectionTitles:(id *)titles andTableContent:(id *)content forIndex:(int64_t)index sourceSuggestion:(id)suggestion sourceDictionary:(id)dictionary;
+- (PXCMMDebugSharingSuggestionViewController)initWithSharingSuggestion:(id)suggestion;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_sendByEmailAction:(id)action;
+- (void)_switchLogsAction:(id)action;
 - (void)viewDidLoad;
 @end
 
 @implementation PXCMMDebugSharingSuggestionViewController
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 dequeueReusableCellWithIdentifier:@"KeywordsCell"];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"KeywordsCell"];
   if (!v8)
   {
     v8 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:3 reuseIdentifier:@"KeywordsCell"];
   }
 
-  v9 = -[PXCMMDebugSharingSuggestionViewController tableView:titleForHeaderInSection:](self, "tableView:titleForHeaderInSection:", v7, [v6 section]);
+  v9 = -[PXCMMDebugSharingSuggestionViewController tableView:titleForHeaderInSection:](self, "tableView:titleForHeaderInSection:", viewCopy, [pathCopy section]);
 
   v10 = [(NSDictionary *)self->_tableContent objectForKeyedSubscript:v9];
-  v11 = [v6 row];
+  v11 = [pathCopy row];
 
   v12 = [v10 objectAtIndexedSubscript:v11];
 
-  v13 = [v9 lowercaseString];
-  LODWORD(v11) = [v13 isEqualToString:@"location"];
+  lowercaseString = [v9 lowercaseString];
+  LODWORD(v11) = [lowercaseString isEqualToString:@"location"];
 
   if (v11)
   {
@@ -60,33 +60,33 @@
     v12 = v18;
   }
 
-  v19 = [v8 textLabel];
-  [v19 setText:v12];
+  textLabel = [v8 textLabel];
+  [textLabel setText:v12];
   v20 = [MEMORY[0x1E69DB878] systemFontOfSize:13.0];
-  [v19 setFont:v20];
+  [textLabel setFont:v20];
 
-  [v19 setNumberOfLines:0];
-  [v19 sizeToFit];
+  [textLabel setNumberOfLines:0];
+  [textLabel sizeToFit];
 
   return v8;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(PXCMMDebugSharingSuggestionViewController *)self tableView:a3 titleForHeaderInSection:a4];
+  v5 = [(PXCMMDebugSharingSuggestionViewController *)self tableView:view titleForHeaderInSection:section];
   v6 = [(NSDictionary *)self->_tableContent objectForKeyedSubscript:v5];
   v7 = [v6 count];
 
   return v7;
 }
 
-- (void)_sendByEmailAction:(id)a3
+- (void)_sendByEmailAction:(id)action
 {
   v18 = *MEMORY[0x1E69E9840];
   if ([getMFMailComposeViewControllerClass_255265() canSendMail])
   {
-    v4 = [(PXCMMDebugSharingSuggestionViewController *)self title];
-    v5 = [@"PhotosGraph " stringByAppendingString:v4];
+    title = [(PXCMMDebugSharingSuggestionViewController *)self title];
+    v5 = [@"PhotosGraph " stringByAppendingString:title];
 
     v6 = [MEMORY[0x1E695DEC8] arrayWithObject:@"photos-memories-feedback@group.apple.com"];
     v7 = objc_alloc_init(getMFMailComposeViewControllerClass_255265());
@@ -107,8 +107,8 @@
       if (v10)
       {
         v11 = MEMORY[0x1E696AEC0];
-        v12 = [v10 localizedDescription];
-        v13 = [v11 stringWithFormat:@"Cannot attach results.plist: %@.", v12];
+        localizedDescription = [v10 localizedDescription];
+        v13 = [v11 stringWithFormat:@"Cannot attach results.plist: %@.", localizedDescription];
 
         v14 = PLSharingGetLog();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -146,15 +146,15 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)_switchLogsAction:(id)a3
+- (void)_switchLogsAction:(id)action
 {
-  v4 = [(PXCMMDebugSharingSuggestionViewController *)self segmentedControl];
-  v5 = [v4 selectedSegmentIndex];
+  segmentedControl = [(PXCMMDebugSharingSuggestionViewController *)self segmentedControl];
+  selectedSegmentIndex = [segmentedControl selectedSegmentIndex];
 
   v13 = 0;
   v14 = 0;
-  v6 = [(PXCMMDebugSharingSuggestionViewController *)self sourceSuggestion];
-  [PXCMMDebugSharingSuggestionViewController generateSectionTitles:&v14 andTableContent:&v13 forIndex:v5 sourceSuggestion:v6 sourceDictionary:self->_sourceDictionary];
+  sourceSuggestion = [(PXCMMDebugSharingSuggestionViewController *)self sourceSuggestion];
+  [PXCMMDebugSharingSuggestionViewController generateSectionTitles:&v14 andTableContent:&v13 forIndex:selectedSegmentIndex sourceSuggestion:sourceSuggestion sourceDictionary:self->_sourceDictionary];
   v7 = v14;
   v8 = v13;
 
@@ -165,8 +165,8 @@ LABEL_14:
   tableContent = self->_tableContent;
   self->_tableContent = v8;
 
-  v12 = [(PXCMMDebugSharingSuggestionViewController *)self tableView];
-  [v12 reloadData];
+  tableView = [(PXCMMDebugSharingSuggestionViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)viewDidLoad
@@ -174,35 +174,35 @@ LABEL_14:
   v21.receiver = self;
   v21.super_class = PXCMMDebugSharingSuggestionViewController;
   [(PXCMMDebugSharingSuggestionViewController *)&v21 viewDidLoad];
-  v3 = [(PXCMMDebugSharingSuggestionViewController *)self view];
-  [v3 setAutoresizingMask:18];
-  v4 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PXCMMDebugSharingSuggestionViewController *)self view];
+  [view setAutoresizingMask:18];
+  systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+  [view setBackgroundColor:systemGroupedBackgroundColor];
 
   v5 = [objc_alloc(MEMORY[0x1E69DCF38]) initWithItems:&unk_1F1911AA0];
   [v5 addTarget:self action:sel__switchLogsAction_ forControlEvents:4096];
   [v5 setSelectedSegmentIndex:0];
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(PXCMMDebugSharingSuggestionViewController *)self setSegmentedControl:v5];
-  [v3 addSubview:v5];
+  [view addSubview:v5];
   v6 = objc_alloc_init(MEMORY[0x1E69DD250]);
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 addSubview:v6];
-  v7 = [v5 topAnchor];
-  v8 = [v3 safeAreaLayoutGuide];
-  v9 = [v8 topAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9 constant:10.0];
+  [view addSubview:v6];
+  topAnchor = [v5 topAnchor];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
   [v10 setActive:1];
 
   v11 = _NSDictionaryOfVariableBindings(&cfstr_Segmentedcontr_1.isa, v5, v6, 0);
   v12 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:[segmentedControl(<=44)]-10-[contentView]-0-|" options:0 metrics:0 views:v11];
-  [v3 addConstraints:v12];
+  [view addConstraints:v12];
 
   v13 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|-[segmentedControl]-|" options:0 metrics:0 views:v11];
-  [v3 addConstraints:v13];
+  [view addConstraints:v13];
 
   v14 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|[contentView]|" options:0 metrics:0 views:v11];
-  [v3 addConstraints:v14];
+  [view addConstraints:v14];
 
   v15 = objc_alloc(MEMORY[0x1E69DD020]);
   [v6 frame];
@@ -213,20 +213,20 @@ LABEL_14:
   [v6 addSubview:v16];
   [(PXCMMDebugSharingSuggestionViewController *)self setTableView:v16];
   v17 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:@"Close" style:2 target:self action:sel__closeAction_];
-  v18 = [(PXCMMDebugSharingSuggestionViewController *)self navigationItem];
-  [v18 setLeftBarButtonItem:v17];
+  navigationItem = [(PXCMMDebugSharingSuggestionViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v17];
 
   v19 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:7 target:self action:sel__sendByEmailAction_];
-  v20 = [(PXCMMDebugSharingSuggestionViewController *)self navigationItem];
-  [v20 setRightBarButtonItem:v19];
+  navigationItem2 = [(PXCMMDebugSharingSuggestionViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v19];
 
   [(PXCMMDebugSharingSuggestionViewController *)self _switchLogsAction:0];
 }
 
-- (PXCMMDebugSharingSuggestionViewController)initWithSharingSuggestion:(id)a3
+- (PXCMMDebugSharingSuggestionViewController)initWithSharingSuggestion:(id)suggestion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  suggestionCopy = suggestion;
   v18.receiver = self;
   v18.super_class = PXCMMDebugSharingSuggestionViewController;
   v6 = [(PXCMMDebugSharingSuggestionViewController *)&v18 init];
@@ -234,11 +234,11 @@ LABEL_14:
   if (v6)
   {
     [(PXCMMDebugSharingSuggestionViewController *)v6 setTitle:@"Suggestion Debug"];
-    objc_storeStrong(&v7->_sourceSuggestion, a3);
-    v8 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-    v9 = [v5 localIdentifier];
+    objc_storeStrong(&v7->_sourceSuggestion, suggestion);
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    localIdentifier = [suggestionCopy localIdentifier];
     v17 = 0;
-    v10 = [v8 sharingSuggestionDebugInformationForAssetCollectionLocalIdentifier:v9 error:&v17];
+    v10 = [px_deprecated_appPhotoLibrary sharingSuggestionDebugInformationForAssetCollectionLocalIdentifier:localIdentifier error:&v17];
     v11 = v17;
     sourceDictionary = v7->_sourceDictionary;
     v7->_sourceDictionary = v10;
@@ -249,28 +249,28 @@ LABEL_14:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v20 = v5;
+        v20 = suggestionCopy;
         _os_log_impl(&dword_1A3C1C000, v13, OS_LOG_TYPE_DEFAULT, "Failed to retrieve debug information for asset collection %@", buf, 0xCu);
       }
 
-      v14 = [(PXCMMDebugSharingSuggestionViewController *)v7 _debugDictionary];
+      _debugDictionary = [(PXCMMDebugSharingSuggestionViewController *)v7 _debugDictionary];
       v15 = v7->_sourceDictionary;
-      v7->_sourceDictionary = v14;
+      v7->_sourceDictionary = _debugDictionary;
     }
   }
 
   return v7;
 }
 
-+ (BOOL)generateSectionTitles:(id *)a3 andTableContent:(id *)a4 forIndex:(int64_t)a5 sourceSuggestion:(id)a6 sourceDictionary:(id)a7
++ (BOOL)generateSectionTitles:(id *)titles andTableContent:(id *)content forIndex:(int64_t)index sourceSuggestion:(id)suggestion sourceDictionary:(id)dictionary
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v11 = a6;
-  v12 = a7;
-  v13 = v12;
-  if (a3)
+  suggestionCopy = suggestion;
+  dictionaryCopy = dictionary;
+  v13 = dictionaryCopy;
+  if (titles)
   {
-    v14 = a4 == 0;
+    v14 = content == 0;
   }
 
   else
@@ -281,10 +281,10 @@ LABEL_14:
   v15 = !v14;
   if (!v14)
   {
-    switch(a5)
+    switch(index)
     {
       case 2:
-        v17 = [v12 objectForKeyedSubscript:@"content"];
+        v17 = [dictionaryCopy objectForKeyedSubscript:@"content"];
         v21 = objc_opt_new();
         v22 = objc_opt_new();
         v26[0] = MEMORY[0x1E69E9820];
@@ -297,9 +297,9 @@ LABEL_14:
         v18 = v21;
         [v17 enumerateKeysAndObjectsUsingBlock:v26];
         v23 = v18;
-        *a3 = v18;
+        *titles = v18;
         v24 = v19;
-        *a4 = v19;
+        *content = v19;
 
         goto LABEL_14;
       case 1:
@@ -312,10 +312,10 @@ LABEL_14:
         v30 = v20;
         v18 = v20;
         [v17 enumerateKeysAndObjectsUsingBlock:v29];
-        *a3 = &unk_1F1911AD0;
+        *titles = &unk_1F1911AD0;
         v33 = &stru_1F1741150;
         v34 = v18;
-        *a4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
+        *content = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
         v19 = v30;
         goto LABEL_14;
       case 0:
@@ -328,10 +328,10 @@ LABEL_14:
         v32 = v16;
         v18 = v16;
         [v17 enumerateKeysAndObjectsUsingBlock:v31];
-        *a3 = &unk_1F1911AB8;
+        *titles = &unk_1F1911AB8;
         v35 = &stru_1F1741150;
         v36[0] = v18;
-        *a4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:&v35 count:1];
+        *content = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:&v35 count:1];
         v19 = v32;
 LABEL_14:
 

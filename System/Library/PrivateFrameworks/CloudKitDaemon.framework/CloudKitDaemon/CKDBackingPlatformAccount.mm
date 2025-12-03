@@ -1,7 +1,7 @@
 @interface CKDBackingPlatformAccount
-- (CKDBackingPlatformAccount)initWithAppleAccount:(id)a3;
+- (CKDBackingPlatformAccount)initWithAppleAccount:(id)account;
 - (id)ckAccount;
-- (void)updateAccountPropertiesAndSaveAccount:(id)a3;
+- (void)updateAccountPropertiesAndSaveAccount:(id)account;
 @end
 
 @implementation CKDBackingPlatformAccount
@@ -14,18 +14,18 @@
   return v6;
 }
 
-- (CKDBackingPlatformAccount)initWithAppleAccount:(id)a3
+- (CKDBackingPlatformAccount)initWithAppleAccount:(id)account
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_ck_cloudKitAccount(v4, v5, v6);
+  accountCopy = account;
+  v7 = objc_msgSend_ck_cloudKitAccount(accountCopy, v5, v6);
 
   if (v7)
   {
     v12.receiver = self;
     v12.super_class = CKDBackingPlatformAccount;
-    self = [(CKDBackingAccount *)&v12 initWithAppleAccount:v4];
-    v8 = self;
+    self = [(CKDBackingAccount *)&v12 initWithAppleAccount:accountCopy];
+    selfCopy = self;
   }
 
   else
@@ -39,22 +39,22 @@
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_FAULT))
     {
       *buf = 134218242;
-      v14 = v4;
+      v14 = accountCopy;
       v15 = 2112;
-      v16 = v4;
+      v16 = accountCopy;
       _os_log_fault_impl(&dword_22506F000, v9, OS_LOG_TYPE_FAULT, "There's an iCloud account without a CloudKit Child Account. Ignoring it. %p: %@", buf, 0x16u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v8;
+  return selfCopy;
 }
 
-- (void)updateAccountPropertiesAndSaveAccount:(id)a3
+- (void)updateAccountPropertiesAndSaveAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v7 = objc_msgSend_sharedAccountStore(CKDAccountStore, v5, v6);
   v10 = objc_msgSend_accountStore(v7, v8, v9);
 
@@ -63,11 +63,11 @@
   v17[1] = 3221225472;
   v17[2] = sub_225116534;
   v17[3] = &unk_278545C50;
-  v19 = self;
-  v20 = v4;
+  selfCopy = self;
+  v20 = accountCopy;
   v18 = v10;
   v14 = v10;
-  v15 = v4;
+  v15 = accountCopy;
   objc_msgSend_aa_updatePropertiesForAppleAccount_completion_(v14, v16, v13, v17);
 }
 

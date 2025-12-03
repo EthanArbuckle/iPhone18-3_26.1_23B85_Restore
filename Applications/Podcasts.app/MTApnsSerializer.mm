@@ -27,19 +27,19 @@
         }
 
         v4 = *(*(&v24 + 1) + 8 * i);
-        v5 = [(MZKeyValueStoreSerializer *)self transaction];
-        v6 = [v5 processor];
+        transaction = [(MZKeyValueStoreSerializer *)self transaction];
+        processor = [transaction processor];
 
-        v7 = [(MZKeyValueStoreSerializer *)self transaction];
+        transaction2 = [(MZKeyValueStoreSerializer *)self transaction];
         v23 = 0;
-        v8 = [v6 dataForSetTransaction:v7 key:v4 version:&v23];
+        v8 = [processor dataForSetTransaction:transaction2 key:v4 version:&v23];
         v9 = v23;
 
         if (v8)
         {
-          v10 = [objc_opt_class() whitelistedClasses];
+          whitelistedClasses = [objc_opt_class() whitelistedClasses];
           v22 = 0;
-          v11 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v10 fromData:v8 error:&v22];
+          v11 = [NSKeyedUnarchiver unarchivedObjectOfClasses:whitelistedClasses fromData:v8 error:&v22];
           v12 = v22;
 
           if (v12 || !v11)

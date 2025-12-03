@@ -1,13 +1,13 @@
 @interface CSDMomentsControllerSession
 - (CSDAVCMoments)moments;
-- (CSDMomentsControllerSession)initWithMoments:(id)a3 remoteIDSDestinations:(id)a4 callCenterObserver:(id)a5;
+- (CSDMomentsControllerSession)initWithMoments:(id)moments remoteIDSDestinations:(id)destinations callCenterObserver:(id)observer;
 - (NSDictionary)activeRequestsByTransactionID;
 - (NSDictionary)remoteIDSDestinations;
 - (NSString)description;
-- (void)removeActiveRequestForTransactionID:(id)a3;
-- (void)setActiveRequest:(id)a3 forTransactionID:(id)a4;
-- (void)setActiveRequestsByTransactionID:(id)a3;
-- (void)setRemoteIDSDestinations:(id)a3;
+- (void)removeActiveRequestForTransactionID:(id)d;
+- (void)setActiveRequest:(id)request forTransactionID:(id)d;
+- (void)setActiveRequestsByTransactionID:(id)d;
+- (void)setRemoteIDSDestinations:(id)destinations;
 @end
 
 @implementation CSDMomentsControllerSession
@@ -27,10 +27,10 @@
   return v2.super.isa;
 }
 
-- (void)setRemoteIDSDestinations:(id)a3
+- (void)setRemoteIDSDestinations:(id)destinations
 {
   v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_1003AA8F0(v4, &OBJC_IVAR___CSDMomentsControllerSession_remoteIDSDestinations);
 }
 
@@ -43,17 +43,17 @@
   return v2.super.isa;
 }
 
-- (void)setActiveRequestsByTransactionID:(id)a3
+- (void)setActiveRequestsByTransactionID:(id)d
 {
   type metadata accessor for MomentsRequest();
   v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_1003AA8F0(v4, &OBJC_IVAR___CSDMomentsControllerSession_activeRequestsByTransactionID);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003AA9AC();
 
   v3 = String._bridgeToObjectiveC()();
@@ -61,27 +61,27 @@
   return v3;
 }
 
-- (CSDMomentsControllerSession)initWithMoments:(id)a3 remoteIDSDestinations:(id)a4 callCenterObserver:(id)a5
+- (CSDMomentsControllerSession)initWithMoments:(id)moments remoteIDSDestinations:(id)destinations callCenterObserver:(id)observer
 {
   v7 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  return sub_1003AAD1C(a3, v7, a5);
+  return sub_1003AAD1C(moments, v7, observer);
 }
 
-- (void)setActiveRequest:(id)a3 forTransactionID:(id)a4
+- (void)setActiveRequest:(id)request forTransactionID:(id)d
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
-  sub_1003AB598(v9, v6, v8);
+  requestCopy = request;
+  selfCopy = self;
+  sub_1003AB598(requestCopy, v6, v8);
 }
 
-- (void)removeActiveRequestForTransactionID:(id)a3
+- (void)removeActiveRequestForTransactionID:(id)d
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   sub_1003AB6B0();
 }
 

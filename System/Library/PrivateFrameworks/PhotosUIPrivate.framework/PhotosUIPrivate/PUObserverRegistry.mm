@@ -1,25 +1,25 @@
 @interface PUObserverRegistry
 - (PUObserverRegistry)init;
-- (void)enumerateObserversWithBlock:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)enumerateObserversWithBlock:(id)block;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation PUObserverRegistry
 
-- (void)enumerateObserversWithBlock:(id)a3
+- (void)enumerateObserversWithBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
     observerQueue = self->__observerQueue;
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __50__PUObserverRegistry_enumerateObserversWithBlock___block_invoke;
     v13 = &unk_1E7B80C38;
-    v14 = self;
-    v7 = v5;
+    selfCopy = self;
+    v7 = weakObjectsPointerArray;
     v15 = v7;
     dispatch_sync(observerQueue, &v10);
     if ([v7 count])
@@ -28,7 +28,7 @@
       do
       {
         v9 = [v7 pointerAtIndex:v8];
-        v4[2](v4, v9);
+        blockCopy[2](blockCopy, v9);
 
         ++v8;
       }
@@ -59,11 +59,11 @@ void __50__PUObserverRegistry_enumerateObserversWithBlock___block_invoke(uint64_
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     observerQueue = self->__observerQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -71,7 +71,7 @@ void __50__PUObserverRegistry_enumerateObserversWithBlock___block_invoke(uint64_
     v7[2] = __41__PUObserverRegistry_unregisterObserver___block_invoke;
     v7[3] = &unk_1E7B80C38;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_sync(observerQueue, v7);
   }
 }
@@ -96,11 +96,11 @@ void __41__PUObserverRegistry_unregisterObserver___block_invoke(uint64_t a1)
 LABEL_7:
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     observerQueue = self->__observerQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -108,7 +108,7 @@ LABEL_7:
     v7[2] = __39__PUObserverRegistry_registerObserver___block_invoke;
     v7[3] = &unk_1E7B80C38;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_sync(observerQueue, v7);
   }
 }
@@ -142,9 +142,9 @@ LABEL_5:
   v2 = [(PUObserverRegistry *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
     observers = v2->__observers;
-    v2->__observers = v3;
+    v2->__observers = weakObjectsPointerArray;
 
     v5 = dispatch_queue_create("com.apple.photosui.observerregistry.observer-queue", 0);
     observerQueue = v2->__observerQueue;

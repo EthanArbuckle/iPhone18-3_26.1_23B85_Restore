@@ -1,12 +1,12 @@
 @interface ConsoleModeLimitation
 - (NSString)description;
 - (_TtC10GamePolicy21ConsoleModeLimitation)init;
-- (_TtC10GamePolicy21ConsoleModeLimitation)initWithCoder:(id)a3;
+- (_TtC10GamePolicy21ConsoleModeLimitation)initWithCoder:(id)coder;
 @end
 
 @implementation ConsoleModeLimitation
 
-- (_TtC10GamePolicy21ConsoleModeLimitation)initWithCoder:(id)a3
+- (_TtC10GamePolicy21ConsoleModeLimitation)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for GamePolicyAssertion.Attribute();

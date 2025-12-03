@@ -1,28 +1,28 @@
 @interface _DPLaplaceNoiseGenerator
-+ (id)zeroMeanLaplaceNoiseGenerator:(double)a3;
-- (_DPLaplaceNoiseGenerator)initWithScale:(double)a3;
++ (id)zeroMeanLaplaceNoiseGenerator:(double)generator;
+- (_DPLaplaceNoiseGenerator)initWithScale:(double)scale;
 - (double)sample;
 - (id)description;
 @end
 
 @implementation _DPLaplaceNoiseGenerator
 
-- (_DPLaplaceNoiseGenerator)initWithScale:(double)a3
+- (_DPLaplaceNoiseGenerator)initWithScale:(double)scale
 {
   v5.receiver = self;
   v5.super_class = _DPLaplaceNoiseGenerator;
   result = [(_DPLaplaceNoiseGenerator *)&v5 init];
   if (result)
   {
-    result->_b = a3;
+    result->_b = scale;
   }
 
   return result;
 }
 
-+ (id)zeroMeanLaplaceNoiseGenerator:(double)a3
++ (id)zeroMeanLaplaceNoiseGenerator:(double)generator
 {
-  v3 = [[a1 alloc] initWithScale:a3];
+  v3 = [[self alloc] initWithScale:generator];
 
   return v3;
 }

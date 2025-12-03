@@ -7,13 +7,13 @@
 - (id)createLanguageOptionGroups
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [a1 availableMediaCharacteristicsWithMediaSelectionOptions];
+  availableMediaCharacteristicsWithMediaSelectionOptions = [self availableMediaCharacteristicsWithMediaSelectionOptions];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = v2;
+  v4 = availableMediaCharacteristicsWithMediaSelectionOptions;
   v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
@@ -28,17 +28,17 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [a1 mediaSelectionGroupForMediaCharacteristic:{*(*(&v15 + 1) + 8 * i), v15}];
+        v9 = [self mediaSelectionGroupForMediaCharacteristic:{*(*(&v15 + 1) + 8 * i), v15}];
         v10 = v9;
         if (v9)
         {
-          v11 = [v9 makeNowPlayingInfoLanguageOptionGroup];
-          v12 = [v11 languageOptions];
-          v13 = [v12 count];
+          makeNowPlayingInfoLanguageOptionGroup = [v9 makeNowPlayingInfoLanguageOptionGroup];
+          languageOptions = [makeNowPlayingInfoLanguageOptionGroup languageOptions];
+          v13 = [languageOptions count];
 
           if (v13)
           {
-            [v3 addObject:v11];
+            [v3 addObject:makeNowPlayingInfoLanguageOptionGroup];
           }
         }
       }

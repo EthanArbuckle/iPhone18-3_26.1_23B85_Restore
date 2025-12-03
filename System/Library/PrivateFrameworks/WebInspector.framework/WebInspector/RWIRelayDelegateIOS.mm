@@ -1,15 +1,15 @@
 @interface RWIRelayDelegateIOS
 - (id)_processMonitorPredicatesForConnectedApplications;
-- (id)relay:(id)a3 applicationInfoForIncomingConnection:(id)a4 bundleIdentifier:(id)a5;
+- (id)relay:(id)relay applicationInfoForIncomingConnection:(id)connection bundleIdentifier:(id)identifier;
 - (void)_createProcessMonitorIfNeeded;
-- (void)_handleProcessMonitorStateUpdate:(id)a3 forProcess:(id)a4;
+- (void)_handleProcessMonitorStateUpdate:(id)update forProcess:(id)process;
 - (void)_startPreventingDeviceFromIdling;
 - (void)_stopPreventingDeviceFromIdling;
 - (void)_updateDeviceIdlePrevention;
 - (void)_updateProcessMonitorPredicates;
-- (void)relay:(id)a3 activateApplicationWithBundleIdentifier:(id)a4;
-- (void)relay:(id)a3 unhandledApplicationXPCMessage:(id)a4;
-- (void)relayInitialize:(id)a3;
+- (void)relay:(id)relay activateApplicationWithBundleIdentifier:(id)identifier;
+- (void)relay:(id)relay unhandledApplicationXPCMessage:(id)message;
+- (void)relayInitialize:(id)initialize;
 @end
 
 @implementation RWIRelayDelegateIOS
@@ -18,17 +18,17 @@
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(RWIRelay *)self->_relay applicationConnections];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  applicationConnections = [(RWIRelay *)self->_relay applicationConnections];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(applicationConnections, "count")}];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(RWIRelay *)self->_relay applicationConnections];
-  v7 = [v6 allValues];
+  applicationConnections2 = [(RWIRelay *)self->_relay applicationConnections];
+  allValues = [applicationConnections2 allValues];
 
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -39,7 +39,7 @@
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = MEMORY[0x277D46FA0];
@@ -48,7 +48,7 @@
         [v5 addObject:v14];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
@@ -59,19 +59,19 @@
   return v5;
 }
 
-- (void)_handleProcessMonitorStateUpdate:(id)a3 forProcess:(id)a4
+- (void)_handleProcessMonitorStateUpdate:(id)update forProcess:(id)process
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = +[_RWIApplicationInfo identifierForPID:](_RWIApplicationInfo, "identifierForPID:", [v7 pid]);
-  v9 = [(RWIRelay *)self->_relay applicationConnections];
-  v10 = [v9 objectForKey:v8];
+  updateCopy = update;
+  processCopy = process;
+  v8 = +[_RWIApplicationInfo identifierForPID:](_RWIApplicationInfo, "identifierForPID:", [processCopy pid]);
+  applicationConnections = [(RWIRelay *)self->_relay applicationConnections];
+  v10 = [applicationConnections objectForKey:v8];
 
   if (v10)
   {
-    v11 = [v6 state];
-    v12 = convertRBSProcessState(v11);
+    state = [updateCopy state];
+    v12 = convertRBSProcessState(state);
 
     if ([v10 debuggerAvailability] != v12)
     {
@@ -79,7 +79,7 @@
       v13 = RWIDefaultLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v7 pid];
+        v14 = [processCopy pid];
         v15 = NSStringFromRWIDebuggerAvailability([v10 debuggerAvailability]);
         v18[0] = 67109378;
         v18[1] = v14;
@@ -97,7 +97,7 @@
     v16 = RWIDefaultLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [RWIRelayDelegateIOS _handleProcessMonitorStateUpdate:v7 forProcess:?];
+      [RWIRelayDelegateIOS _handleProcessMonitorStateUpdate:processCopy forProcess:?];
     }
   }
 
@@ -204,10 +204,10 @@ void __54__RWIRelayDelegateIOS__updateProcessMonitorPredicates__block_invoke(uin
   [v3 setPredicates:v4];
 }
 
-- (void)relayInitialize:(id)a3
+- (void)relayInitialize:(id)initialize
 {
-  objc_storeStrong(&self->_relay, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_relay, initialize);
+  initializeCopy = initialize;
   v6 = dispatch_time(0, 2000000000);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -239,13 +239,13 @@ void __39__RWIRelayDelegateIOS_relayInitialize___block_invoke(uint64_t a1)
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (id)relay:(id)a3 applicationInfoForIncomingConnection:(id)a4 bundleIdentifier:(id)a5
+- (id)relay:(id)relay applicationInfoForIncomingConnection:(id)connection bundleIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = a5;
+  connectionCopy = connection;
+  identifierCopy = identifier;
   [(RWIRelayDelegateIOS *)self _createProcessMonitorIfNeeded];
-  v9 = [v7 connection];
-  pid = xpc_connection_get_pid(v9);
+  connection = [connectionCopy connection];
+  pid = xpc_connection_get_pid(connection);
 
   v11 = MEMORY[0x277D46F48];
   v12 = [MEMORY[0x277D46F50] identifierWithPid:pid];
@@ -265,14 +265,14 @@ void __39__RWIRelayDelegateIOS_relayInitialize___block_invoke(uint64_t a1)
 
   if (v15)
   {
-    v16 = [v13 currentState];
-    v33 = convertRBSProcessState(v16);
+    currentState = [v13 currentState];
+    v33 = convertRBSProcessState(currentState);
   }
 
   else
   {
-    v16 = RWIDefaultLog();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    currentState = RWIDefaultLog();
+    if (os_log_type_enabled(currentState, OS_LOG_TYPE_ERROR))
     {
       [RWIRelayDelegateIOS relay:v14 applicationInfoForIncomingConnection:? bundleIdentifier:?];
     }
@@ -280,8 +280,8 @@ void __39__RWIRelayDelegateIOS_relayInitialize___block_invoke(uint64_t a1)
     v33 = 0;
   }
 
-  v17 = [v7 connection];
-  v18 = v8;
+  connection2 = [connectionCopy connection];
+  v18 = identifierCopy;
   v36 = 0u;
   v37 = 0u;
   xpc_connection_get_audit_token();
@@ -297,7 +297,7 @@ void __39__RWIRelayDelegateIOS_relayInitialize___block_invoke(uint64_t a1)
     v32 = [v18 hasPrefix:@"com.apple.WebKit.WebContent"];
   }
 
-  v19 = [v7 connection];
+  connection3 = [connectionCopy connection];
   v20 = v18;
   *&v36 = 0;
   v21 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:v20 allowPlaceholder:0 error:&v36];
@@ -312,9 +312,9 @@ void __39__RWIRelayDelegateIOS_relayInitialize___block_invoke(uint64_t a1)
   }
 
   v24 = v14;
-  v25 = [v21 localizedName];
-  v26 = v25;
-  if (!v25 || ![(__CFString *)v25 length])
+  localizedName = [v21 localizedName];
+  v26 = localizedName;
+  if (!localizedName || ![(__CFString *)localizedName length])
   {
     v27 = processNameForPID();
 
@@ -329,16 +329,16 @@ void __39__RWIRelayDelegateIOS_relayInitialize___block_invoke(uint64_t a1)
 
   v29 = v28;
 
-  v30 = [[_RWIApplicationInfo alloc] initWithPID:pid bundleId:v20 name:v29 isProxy:v32 connection:v7 debuggerAvailability:v33];
+  v30 = [[_RWIApplicationInfo alloc] initWithPID:pid bundleId:v20 name:v29 isProxy:v32 connection:connectionCopy debuggerAvailability:v33];
 
   return v30;
 }
 
-- (void)relay:(id)a3 activateApplicationWithBundleIdentifier:(id)a4
+- (void)relay:(id)relay activateApplicationWithBundleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  v5 = [v4 isEqualToString:@"com.apple.mobilesafari"];
+  identifierCopy = identifier;
+  v5 = [identifierCopy isEqualToString:@"com.apple.mobilesafari"];
   v6 = RWIDefaultLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
   if (v5)
@@ -346,7 +346,7 @@ void __39__RWIRelayDelegateIOS_relayInitialize___block_invoke(uint64_t a1)
     if (v7)
     {
       *buf = 138412290;
-      v18 = v4;
+      v18 = identifierCopy;
       _os_log_impl(&dword_273C9C000, v6, OS_LOG_TYPE_DEFAULT, "Device: activating application with bundle identifier: %@", buf, 0xCu);
     }
 
@@ -359,19 +359,19 @@ void __39__RWIRelayDelegateIOS_relayInitialize___block_invoke(uint64_t a1)
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
     v6 = [v8 optionsWithDictionary:v10];
 
-    v11 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+    serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __69__RWIRelayDelegateIOS_relay_activateApplicationWithBundleIdentifier___block_invoke;
     v13[3] = &unk_279EAC228;
-    v14 = v4;
-    [v11 openApplication:v14 withOptions:v6 completion:v13];
+    v14 = identifierCopy;
+    [serviceWithDefaultShellEndpoint openApplication:v14 withOptions:v6 completion:v13];
   }
 
   else if (v7)
   {
     *buf = 138412290;
-    v18 = v4;
+    v18 = identifierCopy;
     _os_log_impl(&dword_273C9C000, v6, OS_LOG_TYPE_DEFAULT, "Device: application activation request ignored, not allowed for bundle identifier: %@", buf, 0xCu);
   }
 
@@ -420,9 +420,9 @@ void __69__RWIRelayDelegateIOS_relay_activateApplicationWithBundleIdentifier___b
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)relay:(id)a3 unhandledApplicationXPCMessage:(id)a4
+- (void)relay:(id)relay unhandledApplicationXPCMessage:(id)message
 {
-  v5 = a3;
+  relayCopy = relay;
   cf = 0;
   if (!lockdown_copy_checkin_info())
   {
@@ -443,7 +443,7 @@ void __69__RWIRelayDelegateIOS_relay_activateApplicationWithBundleIdentifier___b
         _os_log_impl(&dword_273C9C000, v8, OS_LOG_TYPE_DEFAULT, "Device: Received Client Connection", v9, 2u);
       }
 
-      [v5 addPendingClientConnection:v7];
+      [relayCopy addPendingClientConnection:v7];
     }
 
     if (cf)
@@ -451,7 +451,7 @@ void __69__RWIRelayDelegateIOS_relay_activateApplicationWithBundleIdentifier___b
       CFRelease(cf);
     }
 
-    [v5 shutdownIfDisabled];
+    [relayCopy shutdownIfDisabled];
   }
 }
 
@@ -459,7 +459,7 @@ void __69__RWIRelayDelegateIOS_relay_activateApplicationWithBundleIdentifier___b
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_273C9C000, a2, OS_LOG_TYPE_ERROR, "Unable to take assertion to prevent device from becoming idle: %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -484,14 +484,14 @@ void __69__RWIRelayDelegateIOS_relay_activateApplicationWithBundleIdentifier___b
 - (void)_updateDeviceIdlePrevention
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(RWIRelay *)self->_relay applicationConnections];
-  v4 = [v3 allKeys];
+  applicationConnections = [(RWIRelay *)self->_relay applicationConnections];
+  allKeys = [applicationConnections allKeys];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v4;
+  v5 = allKeys;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -508,14 +508,14 @@ void __69__RWIRelayDelegateIOS_relay_activateApplicationWithBundleIdentifier___b
         }
 
         v10 = *(*(&v17 + 1) + 8 * v9);
-        v11 = [(RWIRelay *)self->_relay applicationConnections];
-        v12 = [v11 objectForKey:v10];
+        applicationConnections2 = [(RWIRelay *)self->_relay applicationConnections];
+        v12 = [applicationConnections2 objectForKey:v10];
 
         if ([v12 debuggerAvailability] && objc_msgSend(v12, "hasRemoteDebugSession"))
         {
-          v13 = [(RWIRelay *)self->_relay clientConnections];
-          v14 = [v12 debuggerConnectionIdentifier];
-          v15 = [v13 objectForKey:v14];
+          clientConnections = [(RWIRelay *)self->_relay clientConnections];
+          debuggerConnectionIdentifier = [v12 debuggerConnectionIdentifier];
+          v15 = [clientConnections objectForKey:debuggerConnectionIdentifier];
 
           if (([v15 sleeping] & 1) == 0)
           {

@@ -6,14 +6,14 @@
 
 + (BOOL)isEnabled
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___GAX_UIKeyboardCameraViewControllerOverride;
   if (objc_msgSendSuper2(&v6, "isEnabled"))
   {
     v2 = +[GAXClient sharedInstance];
-    v3 = [v2 isActive];
+    isActive = [v2 isActive];
 
-    v4 = v3 ^ 1;
+    v4 = isActive ^ 1;
   }
 
   else

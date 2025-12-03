@@ -1,14 +1,14 @@
 @interface PKPaymentSetupFieldBuiltInLastName
-- (PKPaymentSetupFieldBuiltInLastName)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (PKPaymentSetupFieldBuiltInLastName)initWithIdentifier:(id)identifier type:(unint64_t)type;
 @end
 
 @implementation PKPaymentSetupFieldBuiltInLastName
 
-- (PKPaymentSetupFieldBuiltInLastName)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldBuiltInLastName)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = PKPaymentSetupFieldBuiltInLastName;
-  v4 = [(PKPaymentSetupFieldText *)&v7 initWithIdentifier:@"lastName" type:a4];
+  v4 = [(PKPaymentSetupFieldText *)&v7 initWithIdentifier:@"lastName" type:type];
   if (v4)
   {
     v5 = PKLocalizedPaymentString(&cfstr_LastName.isa, 0);

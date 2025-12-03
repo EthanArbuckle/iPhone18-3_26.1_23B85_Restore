@@ -1,19 +1,19 @@
 @interface ORReader
-- (BOOL)cancelProvisionAndReturnError:(id *)a3;
+- (BOOL)cancelProvisionAndReturnError:(id *)error;
 - (ORProvisionDelegate)delegate;
-- (ORReader)initWithConnector:(id)a3;
-- (ORReader)initWithIsProduction:(BOOL)a3 error:(id *)a4;
-- (void)checkStatusWithCompletion:(id)a3;
-- (void)provisionCardWithParameters:(id)a3 completion:(id)a4;
+- (ORReader)initWithConnector:(id)connector;
+- (ORReader)initWithIsProduction:(BOOL)production error:(id *)error;
+- (void)checkStatusWithCompletion:(id)completion;
+- (void)provisionCardWithParameters:(id)parameters completion:(id)completion;
 @end
 
 @implementation ORReader
 
-- (ORReader)initWithConnector:(id)a3
+- (ORReader)initWithConnector:(id)connector
 {
   v7.receiver = self;
   v7.super_class = ORReader;
-  v3 = [(SPRObject *)&v7 initWithConnector:a3];
+  v3 = [(SPRObject *)&v7 initWithConnector:connector];
   if (v3)
   {
     v4 = dispatch_get_global_queue(25, 0);
@@ -24,30 +24,30 @@
   return v3;
 }
 
-- (ORReader)initWithIsProduction:(BOOL)a3 error:(id *)a4
+- (ORReader)initWithIsProduction:(BOOL)production error:(id *)error
 {
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_26A946184;
   v12[3] = &unk_279CA5A10;
-  v13 = a3;
-  v6 = objc_msgSend_initWithConnector_(self, a2, v12, a4, v4);
-  v10 = objc_msgSend_connectAndReturnError_(v6, v7, a4, v8, v9);
+  productionCopy = production;
+  v6 = objc_msgSend_initWithConnector_(self, a2, v12, error, v4);
+  v10 = objc_msgSend_connectAndReturnError_(v6, v7, error, v8, v9);
 
   return v10;
 }
 
-- (void)provisionCardWithParameters:(id)a3 completion:(id)a4
+- (void)provisionCardWithParameters:(id)parameters completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = sub_26A946580;
   v18[3] = &unk_279CA57B8;
   v18[4] = self;
-  v7 = v6;
+  v7 = completionCopy;
   v19 = v7;
-  v8 = a3;
+  parametersCopy = parameters;
   v12 = objc_msgSend_asyncProxyWithErrorHandler_(self, v9, v18, v10, v11);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v16[0] = MEMORY[0x277D85DD0];
@@ -57,10 +57,10 @@
   v16[4] = self;
   v17 = v7;
   v14 = v7;
-  objc_msgSend_provisionCardWithParameters_delegate_reply_(v12, v15, v8, WeakRetained, v16);
+  objc_msgSend_provisionCardWithParameters_delegate_reply_(v12, v15, parametersCopy, WeakRetained, v16);
 }
 
-- (BOOL)cancelProvisionAndReturnError:(id *)a3
+- (BOOL)cancelProvisionAndReturnError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -86,12 +86,12 @@
   v13[5] = &v19;
   objc_msgSend_cancelProvisionWithReply_(v6, v7, v13, v8, v9);
 
-  if (a3)
+  if (error)
   {
     v10 = v20[5];
     if (v10)
     {
-      *a3 = v10;
+      *error = v10;
     }
   }
 
@@ -102,15 +102,15 @@
   return v11;
 }
 
-- (void)checkStatusWithCompletion:(id)a3
+- (void)checkStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = sub_26A946A30;
   v16[3] = &unk_279CA57B8;
   v16[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v17 = v5;
   v9 = objc_msgSend_asyncProxyWithErrorHandler_(self, v6, v16, v7, v8);
   v14[0] = MEMORY[0x277D85DD0];

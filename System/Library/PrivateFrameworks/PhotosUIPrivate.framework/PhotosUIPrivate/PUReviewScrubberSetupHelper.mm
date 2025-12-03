@@ -1,41 +1,41 @@
 @interface PUReviewScrubberSetupHelper
-+ (double)heightForTraitCollection:(id)a3;
-+ (id)createReviewScrubberWithDataSource:(id)a3 delegate:(id)a4;
-+ (void)configureHeightConstraint:(id *)a3 forReviewScrubber:(id)a4 withTraitCollection:(id)a5;
-+ (void)setupBaseConstraintsForReviewScrubber:(id)a3 inView:(id)a4;
++ (double)heightForTraitCollection:(id)collection;
++ (id)createReviewScrubberWithDataSource:(id)source delegate:(id)delegate;
++ (void)configureHeightConstraint:(id *)constraint forReviewScrubber:(id)scrubber withTraitCollection:(id)collection;
++ (void)setupBaseConstraintsForReviewScrubber:(id)scrubber inView:(id)view;
 @end
 
 @implementation PUReviewScrubberSetupHelper
 
-+ (void)configureHeightConstraint:(id *)a3 forReviewScrubber:(id)a4 withTraitCollection:(id)a5
++ (void)configureHeightConstraint:(id *)constraint forReviewScrubber:(id)scrubber withTraitCollection:(id)collection
 {
-  v11 = a4;
-  [a1 heightForTraitCollection:a5];
+  scrubberCopy = scrubber;
+  [self heightForTraitCollection:collection];
   v9 = v8;
-  if (*a3)
+  if (*constraint)
   {
-    [*a3 setConstant:v8];
+    [*constraint setConstant:v8];
   }
 
   else
   {
-    v10 = [v11 heightAnchor];
-    *a3 = [v10 constraintEqualToConstant:v9];
+    heightAnchor = [scrubberCopy heightAnchor];
+    *constraint = [heightAnchor constraintEqualToConstant:v9];
 
-    [*a3 setActive:1];
+    [*constraint setActive:1];
   }
 }
 
-+ (double)heightForTraitCollection:(id)a3
++ (double)heightForTraitCollection:(id)collection
 {
-  v3 = [a3 horizontalSizeClass];
-  if (!v3 || v3 == 2)
+  horizontalSizeClass = [collection horizontalSizeClass];
+  if (!horizontalSizeClass || horizontalSizeClass == 2)
   {
 
     +[PUReviewScrubber regularWidthPreferredHeight];
   }
 
-  else if (v3 == 1)
+  else if (horizontalSizeClass == 1)
   {
 
     +[PUReviewScrubber compactWidthPreferredHeight];
@@ -49,41 +49,41 @@
   return result;
 }
 
-+ (void)setupBaseConstraintsForReviewScrubber:(id)a3 inView:(id)a4
++ (void)setupBaseConstraintsForReviewScrubber:(id)scrubber inView:(id)view
 {
   v19[3] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v5 addSubview:v6];
-  v7 = [v5 safeAreaLayoutGuide];
+  viewCopy = view;
+  scrubberCopy = scrubber;
+  [scrubberCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  [viewCopy addSubview:scrubberCopy];
+  safeAreaLayoutGuide = [viewCopy safeAreaLayoutGuide];
 
   v17 = MEMORY[0x1E696ACD8];
-  v18 = [v6 leadingAnchor];
-  v8 = [v7 leadingAnchor];
-  v9 = [v18 constraintEqualToAnchor:v8];
+  leadingAnchor = [scrubberCopy leadingAnchor];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v19[0] = v9;
-  v10 = [v6 trailingAnchor];
-  v11 = [v7 trailingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  trailingAnchor = [scrubberCopy trailingAnchor];
+  trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v19[1] = v12;
-  v13 = [v6 bottomAnchor];
+  bottomAnchor = [scrubberCopy bottomAnchor];
 
-  v14 = [v7 bottomAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v19[2] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:3];
   [v17 activateConstraints:v16];
 }
 
-+ (id)createReviewScrubberWithDataSource:(id)a3 delegate:(id)a4
++ (id)createReviewScrubberWithDataSource:(id)source delegate:(id)delegate
 {
-  v5 = a4;
-  v6 = a3;
+  delegateCopy = delegate;
+  sourceCopy = source;
   v7 = objc_alloc_init(PUReviewScrubber);
-  [(PUReviewScrubber *)v7 setDataSource:v6];
+  [(PUReviewScrubber *)v7 setDataSource:sourceCopy];
 
-  [(PUReviewScrubber *)v7 setScrubberDelegate:v5];
+  [(PUReviewScrubber *)v7 setScrubberDelegate:delegateCopy];
 
   return v7;
 }

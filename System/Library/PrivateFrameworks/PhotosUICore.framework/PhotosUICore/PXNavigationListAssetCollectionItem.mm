@@ -3,11 +3,11 @@
 - (BOOL)isDraggable;
 - (BOOL)isRenamable;
 - (BOOL)wantsKeyAssetImage;
-- (PXNavigationListAssetCollectionItem)initWithAssetCollection:(id)a3 accessoryTitle:(id)a4 reorderable:(BOOL)a5 topLevelIdentifier:(id)a6;
+- (PXNavigationListAssetCollectionItem)initWithAssetCollection:(id)collection accessoryTitle:(id)title reorderable:(BOOL)reorderable topLevelIdentifier:(id)identifier;
 - (id)accessibilityIdentifier;
 - (id)accessoryGlyphImageName;
 - (id)accessoryTitle;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)glyphImageName;
 @end
 
@@ -15,8 +15,8 @@
 
 - (id)accessibilityIdentifier
 {
-  v4 = [(PXNavigationListAssetCollectionItem *)self collection];
-  if (v4)
+  collection = [(PXNavigationListAssetCollectionItem *)self collection];
+  if (collection)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -24,19 +24,19 @@
       goto LABEL_3;
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = objc_opt_class();
     v13 = NSStringFromClass(v14);
-    v15 = [v4 px_descriptionForAssertionMessage];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXNavigationListItem.m" lineNumber:460 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.collection", v13, v15}];
+    px_descriptionForAssertionMessage = [collection px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXNavigationListItem.m" lineNumber:460 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.collection", v13, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    [v11 handleFailureInMethod:a2 object:self file:@"PXNavigationListItem.m" lineNumber:460 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.collection", v13}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXNavigationListItem.m" lineNumber:460 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.collection", v13}];
   }
 
 LABEL_3:
@@ -45,10 +45,10 @@ LABEL_3:
     dispatch_once(&accessibilityIdentifier_onceToken_489, &__block_literal_global_492);
   }
 
-  if ([v4 isTransient])
+  if ([collection isTransient])
   {
-    v5 = [(PXNavigationListItem *)self identifier];
-    v6 = [accessibilityIdentifier_mapping_490 objectForKeyedSubscript:v5];
+    identifier = [(PXNavigationListItem *)self identifier];
+    v6 = [accessibilityIdentifier_mapping_490 objectForKeyedSubscript:identifier];
     v7 = v6;
     if (v6)
     {
@@ -57,15 +57,15 @@ LABEL_3:
 
     else
     {
-      v8 = v5;
+      v8 = identifier;
     }
 
     v9 = v8;
   }
 
-  else if ([v4 assetCollectionType] == 2)
+  else if ([collection assetCollectionType] == 2)
   {
-    v9 = [MEMORY[0x1E6978650] descriptionForSubtype:{objc_msgSend(v4, "assetCollectionSubtype")}];
+    v9 = [MEMORY[0x1E6978650] descriptionForSubtype:{objc_msgSend(collection, "assetCollectionSubtype")}];
   }
 
   else
@@ -104,16 +104,16 @@ void __62__PXNavigationListAssetCollectionItem_accessibilityIdentifier__block_in
 {
   v7.receiver = self;
   v7.super_class = PXNavigationListAssetCollectionItem;
-  v3 = [(PXNavigationListItem *)&v7 accessoryGlyphImageName];
-  v4 = [(PXNavigationListAssetCollectionItem *)self lockState];
-  if (v4 == 1)
+  accessoryGlyphImageName = [(PXNavigationListItem *)&v7 accessoryGlyphImageName];
+  lockState = [(PXNavigationListAssetCollectionItem *)self lockState];
+  if (lockState == 1)
   {
     v5 = @"lock.fill";
   }
 
   else
   {
-    if (v4 != 2)
+    if (lockState != 2)
     {
       goto LABEL_6;
     }
@@ -121,127 +121,127 @@ void __62__PXNavigationListAssetCollectionItem_accessibilityIdentifier__block_in
     v5 = @"lock.open.fill";
   }
 
-  v3 = v5;
+  accessoryGlyphImageName = v5;
 LABEL_6:
 
-  return v3;
+  return accessoryGlyphImageName;
 }
 
 - (id)accessoryTitle
 {
-  v3 = [(PXNavigationListAssetCollectionItem *)self collection];
-  v4 = [v3 px_containsPrivateContent];
+  collection = [(PXNavigationListAssetCollectionItem *)self collection];
+  px_containsPrivateContent = [collection px_containsPrivateContent];
 
-  if (v4)
+  if (px_containsPrivateContent)
   {
-    v5 = @" ";
+    accessoryTitle = @" ";
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = PXNavigationListAssetCollectionItem;
-    v5 = [(PXNavigationListItem *)&v7 accessoryTitle];
+    accessoryTitle = [(PXNavigationListItem *)&v7 accessoryTitle];
   }
 
-  return v5;
+  return accessoryTitle;
 }
 
 - (id)glyphImageName
 {
-  v2 = [(PXNavigationListAssetCollectionItem *)self collection];
-  v3 = [v2 px_symbolImageName];
+  collection = [(PXNavigationListAssetCollectionItem *)self collection];
+  px_symbolImageName = [collection px_symbolImageName];
 
-  return v3;
+  return px_symbolImageName;
 }
 
 - (BOOL)wantsKeyAssetImage
 {
-  v2 = [(PXNavigationListAssetCollectionItem *)self collection];
-  if ([v2 px_isRegularAlbum] & 1) != 0 || (objc_msgSend(v2, "px_isSharedAlbum") & 1) != 0 || (objc_msgSend(v2, "px_isMacSyncedRegularAlbum") & 1) != 0 || (objc_msgSend(v2, "px_isMacSyncedFacesAlbum"))
+  collection = [(PXNavigationListAssetCollectionItem *)self collection];
+  if ([collection px_isRegularAlbum] & 1) != 0 || (objc_msgSend(collection, "px_isSharedAlbum") & 1) != 0 || (objc_msgSend(collection, "px_isMacSyncedRegularAlbum") & 1) != 0 || (objc_msgSend(collection, "px_isMacSyncedFacesAlbum"))
   {
-    v3 = 1;
+    px_isMomentShare = 1;
   }
 
   else
   {
-    v3 = [v2 px_isMomentShare];
+    px_isMomentShare = [collection px_isMomentShare];
   }
 
-  return v3;
+  return px_isMomentShare;
 }
 
 - (BOOL)isDeletable
 {
-  v2 = [(PXNavigationListAssetCollectionItem *)self collection];
-  v3 = [v2 px_isDeletable];
+  collection = [(PXNavigationListAssetCollectionItem *)self collection];
+  px_isDeletable = [collection px_isDeletable];
 
-  return v3;
+  return px_isDeletable;
 }
 
 - (BOOL)isRenamable
 {
-  v2 = [(PXNavigationListAssetCollectionItem *)self collection];
-  v3 = [v2 px_isRenamable];
+  collection = [(PXNavigationListAssetCollectionItem *)self collection];
+  px_isRenamable = [collection px_isRenamable];
 
-  return v3;
+  return px_isRenamable;
 }
 
 - (BOOL)isDraggable
 {
-  v3 = [(PXNavigationListAssetCollectionItem *)self collection];
-  v4 = ([v3 px_isPlacesSmartAlbum] & 1) == 0 && (objc_msgSend(v3, "px_isMyPhotoStreamAlbum") & 1) == 0 && ((objc_msgSend(v3, "px_isLemonadeUtilitiesAlbum") & 1) != 0 || (objc_msgSend(v3, "isTransient") & 1) == 0) && -[PXNavigationListAssetCollectionItem lockState](self, "lockState") != 1;
+  collection = [(PXNavigationListAssetCollectionItem *)self collection];
+  v4 = ([collection px_isPlacesSmartAlbum] & 1) == 0 && (objc_msgSend(collection, "px_isMyPhotoStreamAlbum") & 1) == 0 && ((objc_msgSend(collection, "px_isLemonadeUtilitiesAlbum") & 1) != 0 || (objc_msgSend(collection, "isTransient") & 1) == 0) && -[PXNavigationListAssetCollectionItem lockState](self, "lockState") != 1;
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = PXNavigationListAssetCollectionItem;
   v5 = [(PXNavigationListItem *)&v13 copyWithZone:?];
-  v6 = [(PXNavigationListAssetCollectionItem *)self collection];
-  v7 = [v6 copyWithZone:a3];
+  collection = [(PXNavigationListAssetCollectionItem *)self collection];
+  v7 = [collection copyWithZone:zone];
   v8 = v5[6];
   v5[6] = v7;
 
-  v9 = [(PXNavigationListAssetCollectionItem *)self collectionIdentifier];
-  v10 = [v9 copyWithZone:a3];
+  collectionIdentifier = [(PXNavigationListAssetCollectionItem *)self collectionIdentifier];
+  v10 = [collectionIdentifier copyWithZone:zone];
   v11 = v5[7];
   v5[7] = v10;
 
   return v5;
 }
 
-- (PXNavigationListAssetCollectionItem)initWithAssetCollection:(id)a3 accessoryTitle:(id)a4 reorderable:(BOOL)a5 topLevelIdentifier:(id)a6
+- (PXNavigationListAssetCollectionItem)initWithAssetCollection:(id)collection accessoryTitle:(id)title reorderable:(BOOL)reorderable topLevelIdentifier:(id)identifier
 {
-  v7 = a5;
-  v11 = a3;
-  v12 = a6;
-  v13 = a4;
-  v14 = PXNavigationListItemCollectionIdentifier(v11);
-  v15 = PXNavigationListItemIdentifier(v12, v14);
-  v16 = [v11 localizedSmartDescription];
-  v17 = v16;
-  if (v16)
+  reorderableCopy = reorderable;
+  collectionCopy = collection;
+  identifierCopy = identifier;
+  titleCopy = title;
+  v14 = PXNavigationListItemCollectionIdentifier(collectionCopy);
+  v15 = PXNavigationListItemIdentifier(identifierCopy, v14);
+  localizedSmartDescription = [collectionCopy localizedSmartDescription];
+  v17 = localizedSmartDescription;
+  if (localizedSmartDescription)
   {
-    v18 = v16;
+    localizedTitle = localizedSmartDescription;
   }
 
   else
   {
-    v18 = [v11 localizedTitle];
+    localizedTitle = [collectionCopy localizedTitle];
   }
 
-  v19 = v18;
+  v19 = localizedTitle;
 
   v22.receiver = self;
   v22.super_class = PXNavigationListAssetCollectionItem;
-  v20 = [(PXNavigationListItem *)&v22 initWithIdentifier:v15 title:v19 accessoryTitle:v13 reorderable:v7 topLevelIdentifier:v12];
+  v20 = [(PXNavigationListItem *)&v22 initWithIdentifier:v15 title:v19 accessoryTitle:titleCopy reorderable:reorderableCopy topLevelIdentifier:identifierCopy];
 
   if (v20)
   {
-    objc_storeStrong(&v20->_collection, a3);
+    objc_storeStrong(&v20->_collection, collection);
     objc_storeStrong(&v20->_collectionIdentifier, v14);
   }
 

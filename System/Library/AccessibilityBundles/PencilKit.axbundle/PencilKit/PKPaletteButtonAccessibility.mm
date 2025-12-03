@@ -7,57 +7,57 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(PKPaletteButtonAccessibility *)self accessibilityIdentifier];
-  if ([v3 isEqualToString:@"Scribble-UCB-Undo-Button"])
+  accessibilityIdentifier = [(PKPaletteButtonAccessibility *)self accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:@"Scribble-UCB-Undo-Button"])
   {
     v4 = @"pkpalettebutton.undo";
 LABEL_15:
-    v5 = accessibilityPencilKitLocalizedString(v4);
+    accessibilityLabel = accessibilityPencilKitLocalizedString(v4);
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:@"Scribble-UCB-Redo-Button"])
+  if ([accessibilityIdentifier isEqualToString:@"Scribble-UCB-Redo-Button"])
   {
     v4 = @"pkpalettebutton.redo";
     goto LABEL_15;
   }
 
-  if ([v3 isEqualToString:@"Scribble-UCB-More-Button"])
+  if ([accessibilityIdentifier isEqualToString:@"Scribble-UCB-More-Button"])
   {
     v4 = @"pkpalettebutton.more";
     goto LABEL_15;
   }
 
-  if ([v3 isEqualToString:@"Scribble-UCB-Plus-Button"])
+  if ([accessibilityIdentifier isEqualToString:@"Scribble-UCB-Plus-Button"])
   {
     v4 = @"pkpalettebutton.plus";
     goto LABEL_15;
   }
 
-  if ([v3 isEqualToString:@"Scribble-UCB-Keyboard-Button"])
+  if ([accessibilityIdentifier isEqualToString:@"Scribble-UCB-Keyboard-Button"])
   {
     v4 = @"pkpalettebutton.keyboard";
     goto LABEL_15;
   }
 
-  if ([v3 isEqualToString:@"Scribble-UCB-Emoji-Button"])
+  if ([accessibilityIdentifier isEqualToString:@"Scribble-UCB-Emoji-Button"])
   {
     v4 = @"pkpalettebutton.emoji";
     goto LABEL_15;
   }
 
-  if ([v3 isEqualToString:@"Scribble-UCB-Small-Return-Button"])
+  if ([accessibilityIdentifier isEqualToString:@"Scribble-UCB-Small-Return-Button"])
   {
     v4 = @"pkpalettebutton.return";
     goto LABEL_15;
   }
 
   v7 = [(PKPaletteButtonAccessibility *)self safeValueForKey:@"button"];
-  v5 = [v7 accessibilityLabel];
+  accessibilityLabel = [v7 accessibilityLabel];
 
 LABEL_16:
 
-  return v5;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits

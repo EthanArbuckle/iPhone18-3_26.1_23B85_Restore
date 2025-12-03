@@ -1,53 +1,53 @@
 @interface RAPRouteFeedbackViewController
-- (BOOL)_canTableViewSelectIndexPath:(id)a3;
-- (BOOL)isMapItemTrailOrTrailHead:(id)a3;
-- (RAPRouteFeedbackViewController)initWithReport:(id)a3 recording:(id)a4 delegate:(id)a5;
+- (BOOL)_canTableViewSelectIndexPath:(id)path;
+- (BOOL)isMapItemTrailOrTrailHead:(id)head;
+- (RAPRouteFeedbackViewController)initWithReport:(id)report recording:(id)recording delegate:(id)delegate;
 - (double)_cellContentWidth;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_dismiss;
 - (void)_reloadTableViewIfNeeded;
 - (void)_setupConstraints;
 - (void)_setupViews;
 - (void)_updateTableHeightConstraint;
-- (void)dataSourceDidUpdate:(id)a3;
-- (void)macFooterViewLeftButtonTapped:(id)a3;
-- (void)routeStepDetailViewControllerDidSubmitReport:(id)a3;
-- (void)setAllowsScrolling:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)dataSourceDidUpdate:(id)update;
+- (void)macFooterViewLeftButtonTapped:(id)tapped;
+- (void)routeStepDetailViewControllerDidSubmitReport:(id)report;
+- (void)setAllowsScrolling:(BOOL)scrolling;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)virtualGarageDidUpdate:(id)a3;
+- (void)virtualGarageDidUpdate:(id)update;
 @end
 
 @implementation RAPRouteFeedbackViewController
 
-- (BOOL)isMapItemTrailOrTrailHead:(id)a3
+- (BOOL)isMapItemTrailOrTrailHead:(id)head
 {
-  v3 = a3;
-  v4 = [v3 _placeCategoryType] == 1 || objc_msgSend(v3, "_placeCategoryType") == 2;
+  headCopy = head;
+  v4 = [headCopy _placeCategoryType] == 1 || objc_msgSend(headCopy, "_placeCategoryType") == 2;
 
   return v4;
 }
 
-- (void)virtualGarageDidUpdate:(id)a3
+- (void)virtualGarageDidUpdate:(id)update
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100583E24;
   v4[3] = &unk_101661A90;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  updateCopy = update;
+  v3 = updateCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)macFooterViewLeftButtonTapped:(id)a3
+- (void)macFooterViewLeftButtonTapped:(id)tapped
 {
   v4 = sub_100798874();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -59,7 +59,7 @@
   [(RAPRouteFeedbackViewController *)self _dismiss];
 }
 
-- (void)routeStepDetailViewControllerDidSubmitReport:(id)a3
+- (void)routeStepDetailViewControllerDidSubmitReport:(id)report
 {
   v4 = sub_100798874();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -72,9 +72,9 @@
   [WeakRetained routeFeedbackViewControllerDidDismiss:self];
 }
 
-- (BOOL)_canTableViewSelectIndexPath:(id)a3
+- (BOOL)_canTableViewSelectIndexPath:(id)path
 {
-  v4 = [(RAPRouteFeedbackDataSource *)self->_dataSource _stepItemForIndexPath:a3];
+  v4 = [(RAPRouteFeedbackDataSource *)self->_dataSource _stepItemForIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -95,10 +95,10 @@
 
   if ([v6 waypointType])
   {
-    v8 = [v7 waypoint];
-    v9 = [v8 mapItemIfLoaded];
+    waypoint = [v7 waypoint];
+    mapItemIfLoaded = [waypoint mapItemIfLoaded];
 
-    if (v9 && [(RAPRouteFeedbackViewController *)self isMapItemTrailOrTrailHead:v9])
+    if (mapItemIfLoaded && [(RAPRouteFeedbackViewController *)self isMapItemTrailOrTrailHead:mapItemIfLoaded])
     {
       v10 = 0;
 LABEL_20:
@@ -119,15 +119,15 @@ LABEL_10:
       v12 = 0;
     }
 
-    v9 = v12;
+    mapItemIfLoaded = v12;
 
-    if (v9)
+    if (mapItemIfLoaded)
     {
-      v13 = [v9 step];
-      if ([v13 isArrivalStep])
+      step = [mapItemIfLoaded step];
+      if ([step isArrivalStep])
       {
-        v14 = [(RAPRouteFeedbackDataSource *)self->_dataSource endWaypointMapItem];
-        v15 = [(RAPRouteFeedbackViewController *)self isMapItemTrailOrTrailHead:v14];
+        endWaypointMapItem = [(RAPRouteFeedbackDataSource *)self->_dataSource endWaypointMapItem];
+        v15 = [(RAPRouteFeedbackViewController *)self isMapItemTrailOrTrailHead:endWaypointMapItem];
 
         v10 = v15 ^ 1;
       }
@@ -152,12 +152,12 @@ LABEL_21:
   return v10;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([(RAPRouteFeedbackViewController *)self _canTableViewSelectIndexPath:v5])
+  pathCopy = path;
+  if ([(RAPRouteFeedbackViewController *)self _canTableViewSelectIndexPath:pathCopy])
   {
-    v6 = v5;
+    v6 = pathCopy;
   }
 
   else
@@ -170,18 +170,18 @@ LABEL_21:
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
   stepDetailViewController = self->_stepDetailViewController;
   self->_stepDetailViewController = 0;
 
-  v8 = [(RAPRouteFeedbackDataSource *)self->_dataSource _stepItemForIndexPath:v6];
+  v8 = [(RAPRouteFeedbackDataSource *)self->_dataSource _stepItemForIndexPath:pathCopy];
 
   v9 = [(RAPRouteFeedbackDataSource *)self->_dataSource _userPathForStepItem:v8];
   v10 = [(RAPRouteFeedbackDataSource *)self->_dataSource _routeForStepItem:v8];
-  v11 = [v10 _maps_routeIndex];
+  _maps_routeIndex = [v10 _maps_routeIndex];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -189,19 +189,19 @@ LABEL_21:
     v12 = v8;
     v13 = [RAPRouteStepDetailViewController alloc];
     report = self->_report;
-    v15 = [v12 step];
+    step = [v12 step];
 
-    if (v11 == 0x7FFFFFFFFFFFFFFFLL)
+    if (_maps_routeIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       v16 = 0;
     }
 
     else
     {
-      v16 = v11;
+      v16 = _maps_routeIndex;
     }
 
-    v17 = [(RAPRouteStepDetailViewController *)v13 initWithReport:report step:v15 userPath:v9 routeIndex:v16 delegate:self];
+    v17 = [(RAPRouteStepDetailViewController *)v13 initWithReport:report step:step userPath:v9 routeIndex:v16 delegate:self];
     v18 = self->_stepDetailViewController;
     self->_stepDetailViewController = v17;
   }
@@ -212,10 +212,10 @@ LABEL_21:
     if (objc_opt_isKindOfClass())
     {
       v19 = v8;
-      v20 = [v19 waypointType];
-      if ((v20 - 1) >= 2)
+      waypointType = [v19 waypointType];
+      if ((waypointType - 1) >= 2)
       {
-        if (!v20)
+        if (!waypointType)
         {
           v28 = sub_100798874();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
@@ -228,24 +228,24 @@ LABEL_21:
 
       else
       {
-        v21 = [v19 arrivalStep];
+        arrivalStep = [v19 arrivalStep];
 
-        if (v21)
+        if (arrivalStep)
         {
           v22 = [RAPRouteStepDetailViewController alloc];
           v23 = self->_report;
-          v24 = [v19 arrivalStep];
-          if (v11 == 0x7FFFFFFFFFFFFFFFLL)
+          arrivalStep2 = [v19 arrivalStep];
+          if (_maps_routeIndex == 0x7FFFFFFFFFFFFFFFLL)
           {
             v25 = 0;
           }
 
           else
           {
-            v25 = v11;
+            v25 = _maps_routeIndex;
           }
 
-          v26 = [(RAPRouteStepDetailViewController *)v22 initWithReport:v23 step:v24 userPath:v9 routeIndex:v25 delegate:self];
+          v26 = [(RAPRouteStepDetailViewController *)v22 initWithReport:v23 step:arrivalStep2 userPath:v9 routeIndex:v25 delegate:self];
           v27 = self->_stepDetailViewController;
           self->_stepDetailViewController = v26;
         }
@@ -262,19 +262,19 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "tableView:didSelectRowAtIndexPath: will present a RAPRouteStepDetailViewController", v31, 2u);
     }
 
-    v30 = [(RAPRouteFeedbackViewController *)self navigationController];
-    [v30 pushViewController:self->_stepDetailViewController animated:1];
+    navigationController = [(RAPRouteFeedbackViewController *)self navigationController];
+    [navigationController pushViewController:self->_stepDetailViewController animated:1];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  if (v8 > 1)
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section > 1)
   {
-    v13 = v8;
+    v13 = section;
     v14 = sub_100798874();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -291,14 +291,14 @@ LABEL_21:
 
   else
   {
-    v9 = [(RAPRouteFeedbackDataSource *)self->_dataSource _stepItemForIndexPath:v7];
+    v9 = [(RAPRouteFeedbackDataSource *)self->_dataSource _stepItemForIndexPath:pathCopy];
     v10 = NSStringFromClass([v9 cellClass]);
-    v11 = [v6 dequeueReusableCellWithIdentifier:v10];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:v10];
 
     if (v11)
     {
       [v11 setItem:v9];
-      [v11 setAccessoryType:{-[RAPRouteFeedbackViewController _canTableViewSelectIndexPath:](self, "_canTableViewSelectIndexPath:", v7)}];
+      [v11 setAccessoryType:{-[RAPRouteFeedbackViewController _canTableViewSelectIndexPath:](self, "_canTableViewSelectIndexPath:", pathCopy)}];
       v12 = v11;
     }
 
@@ -324,9 +324,9 @@ LABEL_21:
   return v16;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = [(RAPRouteFeedbackDataSource *)self->_dataSource _stepItemForIndexPath:a4];
+  v5 = [(RAPRouteFeedbackDataSource *)self->_dataSource _stepItemForIndexPath:path];
   computedWidth = self->_computedWidth;
   if (computedWidth)
   {
@@ -336,8 +336,8 @@ LABEL_21:
 
   else
   {
-    v9 = [(RAPRouteFeedbackViewController *)self view];
-    [v9 frame];
+    view = [(RAPRouteFeedbackViewController *)self view];
+    [view frame];
     v8 = v10;
   }
 
@@ -347,10 +347,10 @@ LABEL_21:
   return v12;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 1)
+  viewCopy = view;
+  if (section == 1)
   {
     v7 = +[NSBundle mainBundle];
     v8 = v7;
@@ -358,7 +358,7 @@ LABEL_21:
     goto LABEL_5;
   }
 
-  if (!a4)
+  if (!section)
   {
     v7 = +[NSBundle mainBundle];
     v8 = v7;
@@ -374,7 +374,7 @@ LABEL_5:
   {
     dataSource = self->_dataSource;
     v14 = 134218242;
-    v15 = a4;
+    sectionCopy = section;
     v16 = 2112;
     v17 = dataSource;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "titleForHeaderInSection: called with invalid section: %lu, dataSource: %@", &v14, 0x16u);
@@ -386,15 +386,15 @@ LABEL_9:
   return v10;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4)
+  viewCopy = view;
+  if (section)
   {
-    if (a4 == 1)
+    if (section == 1)
     {
-      v7 = [(RAPRouteFeedbackDataSource *)self->_dataSource allItems];
-      v8 = [v7 count];
+      allItems = [(RAPRouteFeedbackDataSource *)self->_dataSource allItems];
+      v8 = [allItems count];
     }
 
     else
@@ -404,7 +404,7 @@ LABEL_9:
       {
         dataSource = self->_dataSource;
         v12 = 134218242;
-        v13 = a4;
+        sectionCopy = section;
         v14 = 2112;
         v15 = dataSource;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "numberOfRowsInSection: called with invalid section: %lu, dataSource: %@", &v12, 0x16u);
@@ -438,16 +438,16 @@ LABEL_9:
   [WeakRetained routeFeedbackViewControllerDidDismiss:self];
 }
 
-- (void)dataSourceDidUpdate:(id)a3
+- (void)dataSourceDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   [(UITableView *)self->_tableView reloadData];
   [(RAPRouteFeedbackViewController *)self _updateTableHeightConstraint];
   v5 = sub_100798874();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = updateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "datasourceDidUpdate: %@", &v6, 0xCu);
   }
 }
@@ -462,30 +462,30 @@ LABEL_9:
   {
     [(UITableView *)self->_tableView contentSize];
     [(NSLayoutConstraint *)self->_tableHeightConstraint setConstant:v6];
-    v7 = [(RAPRouteFeedbackViewController *)self view];
-    [v7 setNeedsLayout];
+    view = [(RAPRouteFeedbackViewController *)self view];
+    [view setNeedsLayout];
 
-    v8 = [(RAPRouteFeedbackViewController *)self view];
-    [v8 layoutIfNeeded];
+    view2 = [(RAPRouteFeedbackViewController *)self view];
+    [view2 layoutIfNeeded];
   }
 }
 
 - (double)_cellContentWidth
 {
-  v3 = [(RAPRouteFeedbackViewController *)self tableView];
+  tableView = [(RAPRouteFeedbackViewController *)self tableView];
   v4 = [NSIndexPath indexPathForRow:0 inSection:0];
-  v5 = [v3 cellForRowAtIndexPath:v4];
+  v5 = [tableView cellForRowAtIndexPath:v4];
 
   if (v5)
   {
-    v6 = [v5 contentView];
-    [v6 bounds];
+    contentView = [v5 contentView];
+    [contentView bounds];
   }
 
   else
   {
-    v6 = [(RAPRouteFeedbackViewController *)self view];
-    [v6 frame];
+    contentView = [(RAPRouteFeedbackViewController *)self view];
+    [contentView frame];
   }
 
   v8 = v7;
@@ -493,19 +493,19 @@ LABEL_9:
   return v8;
 }
 
-- (void)setAllowsScrolling:(BOOL)a3
+- (void)setAllowsScrolling:(BOOL)scrolling
 {
-  if (self->_allowsScrolling != a3)
+  if (self->_allowsScrolling != scrolling)
   {
-    self->_allowsScrolling = a3;
+    self->_allowsScrolling = scrolling;
     [(UIScrollView *)self->_scrollView setScrollEnabled:?];
   }
 }
 
 - (void)_setupConstraints
 {
-  v3 = [(RAPRouteFeedbackViewController *)self traitCollection];
-  if ([v3 userInterfaceIdiom] == 5)
+  traitCollection = [(RAPRouteFeedbackViewController *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 5)
   {
     v4 = 5.0;
   }
@@ -515,114 +515,114 @@ LABEL_9:
     v4 = 8.0;
   }
 
-  v90 = [(UIScrollView *)self->_scrollView topAnchor];
-  v91 = [(RAPRouteFeedbackViewController *)self view];
-  v89 = [v91 safeAreaLayoutGuide];
-  v88 = [v89 topAnchor];
-  v87 = [v90 constraintEqualToAnchor:v88];
+  topAnchor = [(UIScrollView *)self->_scrollView topAnchor];
+  view = [(RAPRouteFeedbackViewController *)self view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v87 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v94[0] = v87;
-  v85 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v86 = [(RAPRouteFeedbackViewController *)self view];
-  v84 = [v86 leadingAnchor];
-  v83 = [v85 constraintEqualToAnchor:v84];
+  leadingAnchor = [(UIScrollView *)self->_scrollView leadingAnchor];
+  view2 = [(RAPRouteFeedbackViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v83 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v94[1] = v83;
-  v81 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v82 = [(RAPRouteFeedbackViewController *)self view];
-  v80 = [v82 trailingAnchor];
-  v79 = [v81 constraintEqualToAnchor:v80];
+  trailingAnchor = [(UIScrollView *)self->_scrollView trailingAnchor];
+  view3 = [(RAPRouteFeedbackViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v79 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v94[2] = v79;
-  v78 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
-  v76 = [v78 widthAnchor];
-  v77 = [(RAPRouteFeedbackViewController *)self view];
-  v75 = [v77 widthAnchor];
-  v74 = [v76 constraintEqualToAnchor:v75];
+  contentLayoutGuide = [(UIScrollView *)self->_scrollView contentLayoutGuide];
+  widthAnchor = [contentLayoutGuide widthAnchor];
+  view4 = [(RAPRouteFeedbackViewController *)self view];
+  widthAnchor2 = [view4 widthAnchor];
+  v74 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v94[3] = v74;
-  v73 = [(UIView *)self->_containerView topAnchor];
-  v72 = [(UIScrollView *)self->_scrollView topAnchor];
-  v71 = [v73 constraintEqualToAnchor:v72];
+  topAnchor3 = [(UIView *)self->_containerView topAnchor];
+  topAnchor4 = [(UIScrollView *)self->_scrollView topAnchor];
+  v71 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v94[4] = v71;
-  v70 = [(UIView *)self->_containerView leadingAnchor];
-  v69 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69];
+  leadingAnchor3 = [(UIView *)self->_containerView leadingAnchor];
+  leadingAnchor4 = [(UIScrollView *)self->_scrollView leadingAnchor];
+  v68 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v94[5] = v68;
-  v67 = [(UIView *)self->_containerView trailingAnchor];
-  v66 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v65 = [v67 constraintEqualToAnchor:v66];
+  trailingAnchor3 = [(UIView *)self->_containerView trailingAnchor];
+  trailingAnchor4 = [(UIScrollView *)self->_scrollView trailingAnchor];
+  v65 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v94[6] = v65;
-  v64 = [(UIView *)self->_containerView bottomAnchor];
-  v63 = [(UIScrollView *)self->_scrollView bottomAnchor];
-  v62 = [v64 constraintEqualToAnchor:v63];
+  bottomAnchor = [(UIView *)self->_containerView bottomAnchor];
+  bottomAnchor2 = [(UIScrollView *)self->_scrollView bottomAnchor];
+  v62 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v94[7] = v62;
-  v61 = [(UILayoutGuide *)self->_containerLayoutGuide topAnchor];
-  v60 = [(UIView *)self->_containerView topAnchor];
-  v59 = [v61 constraintEqualToAnchor:v60];
+  topAnchor5 = [(UILayoutGuide *)self->_containerLayoutGuide topAnchor];
+  topAnchor6 = [(UIView *)self->_containerView topAnchor];
+  v59 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v94[8] = v59;
-  v58 = [(UILayoutGuide *)self->_containerLayoutGuide leadingAnchor];
-  v57 = [(UIView *)self->_containerView leadingAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57];
+  leadingAnchor5 = [(UILayoutGuide *)self->_containerLayoutGuide leadingAnchor];
+  leadingAnchor6 = [(UIView *)self->_containerView leadingAnchor];
+  v56 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v94[9] = v56;
-  v55 = [(UILayoutGuide *)self->_containerLayoutGuide trailingAnchor];
-  v54 = [(UIView *)self->_containerView trailingAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  trailingAnchor5 = [(UILayoutGuide *)self->_containerLayoutGuide trailingAnchor];
+  trailingAnchor6 = [(UIView *)self->_containerView trailingAnchor];
+  v53 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v94[10] = v53;
-  v52 = [(UILayoutGuide *)self->_containerLayoutGuide bottomAnchor];
-  v51 = [(UIView *)self->_containerView bottomAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  bottomAnchor3 = [(UILayoutGuide *)self->_containerLayoutGuide bottomAnchor];
+  bottomAnchor4 = [(UIView *)self->_containerView bottomAnchor];
+  v50 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v94[11] = v50;
-  v49 = [(UILabel *)self->_titleLabel topAnchor];
-  v48 = [(UILayoutGuide *)self->_containerLayoutGuide topAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48 constant:v4];
+  topAnchor7 = [(UILabel *)self->_titleLabel topAnchor];
+  topAnchor8 = [(UILayoutGuide *)self->_containerLayoutGuide topAnchor];
+  v47 = [topAnchor7 constraintEqualToAnchor:topAnchor8 constant:v4];
   v94[12] = v47;
-  v46 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v45 = [(UILayoutGuide *)self->_containerLayoutGuide leadingAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45 constant:16.0];
+  leadingAnchor7 = [(UILabel *)self->_titleLabel leadingAnchor];
+  leadingAnchor8 = [(UILayoutGuide *)self->_containerLayoutGuide leadingAnchor];
+  v44 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:16.0];
   v94[13] = v44;
-  v43 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v42 = [(UILayoutGuide *)self->_containerLayoutGuide trailingAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42 constant:-16.0];
+  trailingAnchor7 = [(UILabel *)self->_titleLabel trailingAnchor];
+  trailingAnchor8 = [(UILayoutGuide *)self->_containerLayoutGuide trailingAnchor];
+  v41 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-16.0];
   v94[14] = v41;
-  v40 = [(UIView *)self->_tableViewContainer topAnchor];
-  v39 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  topAnchor9 = [(UIView *)self->_tableViewContainer topAnchor];
+  bottomAnchor5 = [(UILabel *)self->_titleLabel bottomAnchor];
+  v38 = [topAnchor9 constraintEqualToAnchor:bottomAnchor5];
   v94[15] = v38;
-  v37 = [(UIView *)self->_tableViewContainer leadingAnchor];
-  v36 = [(UILayoutGuide *)self->_containerLayoutGuide leadingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  leadingAnchor9 = [(UIView *)self->_tableViewContainer leadingAnchor];
+  leadingAnchor10 = [(UILayoutGuide *)self->_containerLayoutGuide leadingAnchor];
+  v35 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   v94[16] = v35;
-  v34 = [(UIView *)self->_tableViewContainer trailingAnchor];
-  v33 = [(UILayoutGuide *)self->_containerLayoutGuide trailingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  trailingAnchor9 = [(UIView *)self->_tableViewContainer trailingAnchor];
+  trailingAnchor10 = [(UILayoutGuide *)self->_containerLayoutGuide trailingAnchor];
+  v32 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
   tableHeightConstraint = self->_tableHeightConstraint;
   v94[17] = v32;
   v94[18] = tableHeightConstraint;
-  v31 = [(UIView *)self->_tableViewContainer bottomAnchor];
-  v30 = [(UILayoutGuide *)self->_containerLayoutGuide bottomAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  bottomAnchor6 = [(UIView *)self->_tableViewContainer bottomAnchor];
+  bottomAnchor7 = [(UILayoutGuide *)self->_containerLayoutGuide bottomAnchor];
+  v29 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
   v94[19] = v29;
-  v28 = [(UITableView *)self->_tableView leadingAnchor];
-  v27 = [(UIView *)self->_tableViewContainer leadingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  leadingAnchor11 = [(UITableView *)self->_tableView leadingAnchor];
+  leadingAnchor12 = [(UIView *)self->_tableViewContainer leadingAnchor];
+  v26 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
   v94[20] = v26;
-  v25 = [(UITableView *)self->_tableView trailingAnchor];
-  v6 = [(UIView *)self->_tableViewContainer trailingAnchor];
-  v7 = [v25 constraintEqualToAnchor:v6];
+  trailingAnchor11 = [(UITableView *)self->_tableView trailingAnchor];
+  trailingAnchor12 = [(UIView *)self->_tableViewContainer trailingAnchor];
+  v7 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
   v94[21] = v7;
-  v8 = [(UITableView *)self->_tableView topAnchor];
-  v9 = [(UIView *)self->_tableViewContainer topAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  topAnchor10 = [(UITableView *)self->_tableView topAnchor];
+  topAnchor11 = [(UIView *)self->_tableViewContainer topAnchor];
+  v10 = [topAnchor10 constraintEqualToAnchor:topAnchor11];
   v94[22] = v10;
-  v11 = [(UITableView *)self->_tableView bottomAnchor];
-  v12 = [(UIView *)self->_tableViewContainer bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  bottomAnchor8 = [(UITableView *)self->_tableView bottomAnchor];
+  bottomAnchor9 = [(UIView *)self->_tableViewContainer bottomAnchor];
+  v13 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9];
   v94[23] = v13;
   v14 = [NSArray arrayWithObjects:v94 count:24];
   [NSLayoutConstraint activateConstraints:v14];
 
-  v15 = self;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v15;
+    v16 = selfCopy;
   }
 
   else
@@ -632,14 +632,14 @@ LABEL_9:
 
   v17 = v16;
 
-  v18 = [(UIScrollView *)self->_scrollView bottomAnchor];
-  v19 = [(RAPRouteFeedbackViewController *)v15 view];
-  v20 = v19;
+  bottomAnchor10 = [(UIScrollView *)self->_scrollView bottomAnchor];
+  view5 = [(RAPRouteFeedbackViewController *)selfCopy view];
+  v20 = view5;
   if (v17)
   {
-    v21 = [v19 safeAreaLayoutGuide];
-    v22 = [v21 bottomAnchor];
-    v23 = [v18 constraintEqualToAnchor:v22];
+    safeAreaLayoutGuide2 = [view5 safeAreaLayoutGuide];
+    bottomAnchor11 = [safeAreaLayoutGuide2 bottomAnchor];
+    v23 = [bottomAnchor10 constraintEqualToAnchor:bottomAnchor11];
     v93 = v23;
     v24 = [NSArray arrayWithObjects:&v93 count:1];
     [NSLayoutConstraint activateConstraints:v24];
@@ -647,9 +647,9 @@ LABEL_9:
 
   else
   {
-    v21 = [v19 bottomAnchor];
-    v22 = [v18 constraintEqualToAnchor:v21];
-    v92 = v22;
+    safeAreaLayoutGuide2 = [view5 bottomAnchor];
+    bottomAnchor11 = [bottomAnchor10 constraintEqualToAnchor:safeAreaLayoutGuide2];
+    v92 = bottomAnchor11;
     v23 = [NSArray arrayWithObjects:&v92 count:1];
     [NSLayoutConstraint activateConstraints:v23];
     v24 = 0;
@@ -665,12 +665,12 @@ LABEL_9:
   [(UIScrollView *)self->_scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIScrollView *)self->_scrollView setAlwaysBounceVertical:1];
   [(UIScrollView *)self->_scrollView setClipsToBounds:1];
-  v5 = [(UIScrollView *)self->_scrollView layer];
-  [v5 setAllowsGroupOpacity:0];
+  layer = [(UIScrollView *)self->_scrollView layer];
+  [layer setAllowsGroupOpacity:0];
 
   [(UIScrollView *)self->_scrollView setScrollEnabled:[(RAPRouteFeedbackViewController *)self allowsScrolling]];
-  v6 = [(RAPRouteFeedbackViewController *)self view];
-  [v6 addSubview:self->_scrollView];
+  view = [(RAPRouteFeedbackViewController *)self view];
+  [view addSubview:self->_scrollView];
 
   v7 = objc_alloc_init(UIView);
   containerView = self->_containerView;
@@ -692,16 +692,16 @@ LABEL_9:
   [(UILabel *)self->_titleLabel setTextColor:v13];
 
   [(UILabel *)self->_titleLabel setNumberOfLines:0];
-  v14 = [(RAPRouteFeedbackViewController *)self traitCollection];
-  v15 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleTitle3 weight:v14 compatibleWithTraitCollection:UIFontWeightBold];
+  traitCollection = [(RAPRouteFeedbackViewController *)self traitCollection];
+  v15 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleTitle3 weight:traitCollection compatibleWithTraitCollection:UIFontWeightBold];
   [(UILabel *)self->_titleLabel setFont:v15];
 
-  v16 = [(RAPRouteFeedbackDataSource *)self->_dataSource endWaypointMapItem];
-  v17 = [v16 name];
-  v18 = v17;
-  if (v17)
+  endWaypointMapItem = [(RAPRouteFeedbackDataSource *)self->_dataSource endWaypointMapItem];
+  name = [endWaypointMapItem name];
+  v18 = name;
+  if (name)
   {
-    v36 = v17;
+    v36 = name;
   }
 
   else
@@ -742,27 +742,27 @@ LABEL_9:
   [(UITableView *)v31 registerClass:v30 forCellReuseIdentifier:v32];
 
   [(UIView *)self->_tableViewContainer addSubview:self->_tableView];
-  v33 = [(UIView *)self->_tableViewContainer heightAnchor];
-  v34 = [v33 constraintEqualToConstant:0.0];
+  heightAnchor = [(UIView *)self->_tableViewContainer heightAnchor];
+  v34 = [heightAnchor constraintEqualToConstant:0.0];
   tableHeightConstraint = self->_tableHeightConstraint;
   self->_tableHeightConstraint = v34;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = RAPRouteFeedbackViewController;
-  v4 = a3;
-  [(RAPRouteFeedbackViewController *)&v9 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(RAPRouteFeedbackViewController *)&v9 traitCollectionDidChange:changeCopy];
   v5 = [(RAPRouteFeedbackViewController *)self traitCollection:v9.receiver];
   [(RAPRouteFeedbackDataSource *)self->_dataSource setTraitCollection:v5];
 
-  v6 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  v7 = [(RAPRouteFeedbackViewController *)self traitCollection];
-  v8 = [v7 preferredContentSizeCategory];
+  traitCollection = [(RAPRouteFeedbackViewController *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
 
-  if (v6 != v8)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     [(RAPRouteFeedbackViewController *)self _updateTableHeightConstraint];
   }
@@ -797,20 +797,20 @@ LABEL_9:
   [(RAPRouteFeedbackViewController *)self _reloadTableViewIfNeeded];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = RAPRouteFeedbackViewController;
-  [(RAPRouteFeedbackViewController *)&v9 viewDidAppear:a3];
-  v4 = [(RAPRouteFeedbackViewController *)self navigationController];
-  v5 = [v4 viewControllers];
-  v6 = [v5 firstObject];
+  [(RAPRouteFeedbackViewController *)&v9 viewDidAppear:appear];
+  navigationController = [(RAPRouteFeedbackViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  if (v6 == self)
+  if (firstObject == self)
   {
     v7 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancelPressed:"];
-    v8 = [(RAPRouteFeedbackViewController *)self navigationItem];
-    [v8 setLeftBarButtonItem:v7];
+    navigationItem = [(RAPRouteFeedbackViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v7];
   }
 }
 
@@ -822,31 +822,31 @@ LABEL_9:
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"[RAP Web UI] Report an Issue" value:@"localized string not found" table:0];
 
-  v5 = [(RAPRouteFeedbackViewController *)self navigationItem];
-  [v5 setTitle:v4];
+  navigationItem = [(RAPRouteFeedbackViewController *)self navigationItem];
+  [navigationItem setTitle:v4];
 
   [(RAPRouteFeedbackViewController *)self _setupViews];
   [(RAPRouteFeedbackViewController *)self _setupConstraints];
 }
 
-- (RAPRouteFeedbackViewController)initWithReport:(id)a3 recording:(id)a4 delegate:(id)a5
+- (RAPRouteFeedbackViewController)initWithReport:(id)report recording:(id)recording delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  reportCopy = report;
+  recordingCopy = recording;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = RAPRouteFeedbackViewController;
   v12 = [(RAPRouteFeedbackViewController *)&v25 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_report, a3);
-    objc_storeStrong(&v13->_recording, a4);
-    objc_storeWeak(&v13->_delegate, v11);
+    objc_storeStrong(&v12->_report, report);
+    objc_storeStrong(&v13->_recording, recording);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
     v14 = [RAPRouteFeedbackDataSource alloc];
     recording = v13->_recording;
-    v16 = [(RAPRouteFeedbackViewController *)v13 traitCollection];
-    v17 = [(RAPRouteFeedbackDataSource *)v14 initWithRecording:recording traitCollection:v16 delegate:v13];
+    traitCollection = [(RAPRouteFeedbackViewController *)v13 traitCollection];
+    v17 = [(RAPRouteFeedbackDataSource *)v14 initWithRecording:recording traitCollection:traitCollection delegate:v13];
     dataSource = v13->_dataSource;
     v13->_dataSource = v17;
 

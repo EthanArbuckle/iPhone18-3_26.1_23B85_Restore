@@ -1,24 +1,24 @@
 @interface UIWebCaretRectTextPosition
-+ (id)textPositionWithCaretRect:(CGRect)a3;
++ (id)textPositionWithCaretRect:(CGRect)rect;
 - (CGRect)caretRect;
-- (UIWebCaretRectTextPosition)initWithCaretRect:(CGRect)a3;
+- (UIWebCaretRectTextPosition)initWithCaretRect:(CGRect)rect;
 @end
 
 @implementation UIWebCaretRectTextPosition
 
-+ (id)textPositionWithCaretRect:(CGRect)a3
++ (id)textPositionWithCaretRect:(CGRect)rect
 {
-  v3 = [[a1 alloc] initWithCaretRect:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v3 = [[self alloc] initWithCaretRect:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
 
   return v3;
 }
 
-- (UIWebCaretRectTextPosition)initWithCaretRect:(CGRect)a3
+- (UIWebCaretRectTextPosition)initWithCaretRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8.receiver = self;
   v8.super_class = UIWebCaretRectTextPosition;
   result = [(UIWebCaretRectTextPosition *)&v8 init];

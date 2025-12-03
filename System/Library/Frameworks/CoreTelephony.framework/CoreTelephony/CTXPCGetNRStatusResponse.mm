@@ -1,17 +1,17 @@
 @interface CTXPCGetNRStatusResponse
 + (id)allowedClassesForArguments;
 - (CTNRStatus)nrStatus;
-- (CTXPCGetNRStatusResponse)initWithNRStatus:(id)a3;
+- (CTXPCGetNRStatusResponse)initWithNRStatus:(id)status;
 @end
 
 @implementation CTXPCGetNRStatusResponse
 
-- (CTXPCGetNRStatusResponse)initWithNRStatus:(id)a3
+- (CTXPCGetNRStatusResponse)initWithNRStatus:(id)status
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  statusCopy = status;
   v10 = @"status";
-  v11[0] = v4;
+  v11[0] = statusCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v9.receiver = self;
   v9.super_class = CTXPCGetNRStatusResponse;
@@ -23,8 +23,8 @@
 
 - (CTNRStatus)nrStatus
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"status"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"status"];
   v4 = CTThrowingCastIfClass<CTNRStatus>(v3);
 
   return v4;
@@ -32,7 +32,7 @@
 
 + (id)allowedClassesForArguments
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CTXPCGetNRStatusResponse;
   v2 = objc_msgSendSuper2(&v5, sel_allowedClassesForArguments);
   v3 = [v2 setByAddingObject:objc_opt_class()];

@@ -12,21 +12,21 @@
   v3 = [(VerticalLockupCollectionViewCellAccessibility *)self _accessibilityAncestorIsKindOf:objc_opt_class()];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 collectionViewLayout];
+  collectionViewLayout = [v4 collectionViewLayout];
 
-  return v5;
+  return collectionViewLayout;
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v3 = [(VerticalLockupCollectionViewCellAccessibility *)self _axCollectionViewLayout];
+  _axCollectionViewLayout = [(VerticalLockupCollectionViewCellAccessibility *)self _axCollectionViewLayout];
   MEMORY[0x29C2E2DD0](@"MusicApplication.ShelfCollectionViewLayout");
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(VerticalLockupCollectionViewCellAccessibility *)self _axCollectionViewLayout];
-    [v5 setAccessibilityIdentifier:@"AX_VertificalLockupCollectionViewCell"];
+    _axCollectionViewLayout2 = [(VerticalLockupCollectionViewCellAccessibility *)self _axCollectionViewLayout];
+    [_axCollectionViewLayout2 setAccessibilityIdentifier:@"AX_VertificalLockupCollectionViewCell"];
   }
 
   v6.receiver = self;

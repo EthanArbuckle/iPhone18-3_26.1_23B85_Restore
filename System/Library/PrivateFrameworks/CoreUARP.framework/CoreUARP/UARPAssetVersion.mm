@@ -1,13 +1,13 @@
 @interface UARPAssetVersion
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UARPAssetVersion)init;
-- (UARPAssetVersion)initWithBVERString:(id)a3;
-- (UARPAssetVersion)initWithCoder:(id)a3;
-- (UARPAssetVersion)initWithMajorVersion:(unint64_t)a3 minorVersion:(unint64_t)a4 releaseVersion:(unint64_t)a5 buildVersion:(unint64_t)a6;
-- (UARPAssetVersion)initWithVersionString:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (UARPAssetVersion)initWithBVERString:(id)string;
+- (UARPAssetVersion)initWithCoder:(id)coder;
+- (UARPAssetVersion)initWithMajorVersion:(unint64_t)version minorVersion:(unint64_t)minorVersion releaseVersion:(unint64_t)releaseVersion buildVersion:(unint64_t)buildVersion;
+- (UARPAssetVersion)initWithVersionString:(id)string;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UARPAssetVersion
@@ -19,118 +19,118 @@
   return 0;
 }
 
-- (UARPAssetVersion)initWithMajorVersion:(unint64_t)a3 minorVersion:(unint64_t)a4 releaseVersion:(unint64_t)a5 buildVersion:(unint64_t)a6
+- (UARPAssetVersion)initWithMajorVersion:(unint64_t)version minorVersion:(unint64_t)minorVersion releaseVersion:(unint64_t)releaseVersion buildVersion:(unint64_t)buildVersion
 {
   v11.receiver = self;
   v11.super_class = UARPAssetVersion;
   result = [(UARPAssetVersion *)&v11 init];
   if (result)
   {
-    result->_majorVersion = a3;
-    result->_minorVersion = a4;
-    result->_releaseVersion = a5;
-    result->_buildVersion = a6;
+    result->_majorVersion = version;
+    result->_minorVersion = minorVersion;
+    result->_releaseVersion = releaseVersion;
+    result->_buildVersion = buildVersion;
   }
 
   return result;
 }
 
-- (UARPAssetVersion)initWithVersionString:(id)a3
+- (UARPAssetVersion)initWithVersionString:(id)string
 {
-  v4 = [a3 componentsSeparatedByString:@"."];
+  v4 = [string componentsSeparatedByString:@"."];
   if ([v4 count] == 1)
   {
     v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v5 integerValue];
-    v7 = 0;
+    integerValue = [v5 integerValue];
+    integerValue2 = 0;
 LABEL_5:
-    v9 = 0;
+    integerValue3 = 0;
 LABEL_6:
-    v10 = 0;
+    integerValue4 = 0;
     goto LABEL_7;
   }
 
   if ([v4 count] == 2)
   {
     v8 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v8 integerValue];
+    integerValue = [v8 integerValue];
 
     v5 = [v4 objectAtIndexedSubscript:1];
-    v7 = [v5 integerValue];
+    integerValue2 = [v5 integerValue];
     goto LABEL_5;
   }
 
   if ([v4 count] == 3)
   {
     v13 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v13 integerValue];
+    integerValue = [v13 integerValue];
 
     v14 = [v4 objectAtIndexedSubscript:1];
-    v7 = [v14 integerValue];
+    integerValue2 = [v14 integerValue];
 
     v5 = [v4 objectAtIndexedSubscript:2];
-    v9 = [v5 integerValue];
+    integerValue3 = [v5 integerValue];
     goto LABEL_6;
   }
 
   if ([v4 count] != 4)
   {
-    v6 = 0;
-    v7 = 0;
-    v9 = 0;
-    v10 = 0;
+    integerValue = 0;
+    integerValue2 = 0;
+    integerValue3 = 0;
+    integerValue4 = 0;
     goto LABEL_8;
   }
 
   v15 = [v4 objectAtIndexedSubscript:0];
-  v6 = [v15 integerValue];
+  integerValue = [v15 integerValue];
 
   v16 = [v4 objectAtIndexedSubscript:1];
-  v7 = [v16 integerValue];
+  integerValue2 = [v16 integerValue];
 
   v17 = [v4 objectAtIndexedSubscript:2];
-  v9 = [v17 integerValue];
+  integerValue3 = [v17 integerValue];
 
   v5 = [v4 objectAtIndexedSubscript:3];
-  v10 = [v5 integerValue];
+  integerValue4 = [v5 integerValue];
 LABEL_7:
 
 LABEL_8:
-  v11 = [(UARPAssetVersion *)self initWithMajorVersion:v6 minorVersion:v7 releaseVersion:v9 buildVersion:v10];
+  v11 = [(UARPAssetVersion *)self initWithMajorVersion:integerValue minorVersion:integerValue2 releaseVersion:integerValue3 buildVersion:integerValue4];
 
   return v11;
 }
 
-- (UARPAssetVersion)initWithBVERString:(id)a3
+- (UARPAssetVersion)initWithBVERString:(id)string
 {
-  v4 = [a3 componentsSeparatedByString:@"|"];
+  v4 = [string componentsSeparatedByString:@"|"];
   v5 = [v4 objectAtIndexedSubscript:0];
   v6 = [v5 componentsSeparatedByString:@"."];
 
   v7 = 0;
-  v8 = 0;
+  integerValue2 = 0;
   v9 = 0;
-  v10 = 0;
+  integerValue = 0;
   if ([v6 count] == 3)
   {
     v11 = [v6 objectAtIndexedSubscript:0];
-    v10 = [v11 integerValue];
+    integerValue = [v11 integerValue];
 
     v12 = [v6 objectAtIndexedSubscript:1];
-    v13 = [v12 longLongValue];
+    longLongValue = [v12 longLongValue];
 
-    v9 = HIDWORD(v13);
-    v7 = v13;
+    v9 = HIDWORD(longLongValue);
+    v7 = longLongValue;
     v14 = [v6 objectAtIndexedSubscript:2];
-    v8 = [v14 integerValue];
+    integerValue2 = [v14 integerValue];
   }
 
-  v15 = [(UARPAssetVersion *)self initWithMajorVersion:v10 minorVersion:v9 releaseVersion:v7 buildVersion:v8];
+  v15 = [(UARPAssetVersion *)self initWithMajorVersion:integerValue minorVersion:v9 releaseVersion:v7 buildVersion:integerValue2];
 
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [UARPAssetVersion alloc];
   majorVersion = self->_majorVersion;
@@ -141,50 +141,50 @@ LABEL_8:
   return [(UARPAssetVersion *)v4 initWithMajorVersion:majorVersion minorVersion:minorVersion releaseVersion:releaseVersion buildVersion:buildVersion];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   majorVersion = self->_majorVersion;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithUnsignedInteger:majorVersion];
-  [v6 encodeObject:v7 forKey:@"majorVersion"];
+  [coderCopy encodeObject:v7 forKey:@"majorVersion"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_minorVersion];
-  [v6 encodeObject:v8 forKey:@"minorVersion"];
+  [coderCopy encodeObject:v8 forKey:@"minorVersion"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_releaseVersion];
-  [v6 encodeObject:v9 forKey:@"releaseVersion"];
+  [coderCopy encodeObject:v9 forKey:@"releaseVersion"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_buildVersion];
-  [v6 encodeObject:v10 forKey:@"buildVersion"];
+  [coderCopy encodeObject:v10 forKey:@"buildVersion"];
 }
 
-- (UARPAssetVersion)initWithCoder:(id)a3
+- (UARPAssetVersion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"majorVersion"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minorVersion"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"releaseVersion"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"buildVersion"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"majorVersion"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minorVersion"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"releaseVersion"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"buildVersion"];
 
   v9 = -[UARPAssetVersion initWithMajorVersion:minorVersion:releaseVersion:buildVersion:](self, "initWithMajorVersion:minorVersion:releaseVersion:buildVersion:", [v5 unsignedIntegerValue], objc_msgSend(v6, "unsignedIntegerValue"), objc_msgSend(v7, "unsignedIntegerValue"), objc_msgSend(v8, "unsignedIntegerValue"));
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v10 = 1;
     }
 
     else
     {
-      v5 = v4;
+      v5 = equalCopy;
       majorVersion = self->_majorVersion;
       if (majorVersion == [(UARPAssetVersion *)v5 majorVersion]&& (minorVersion = self->_minorVersion, minorVersion == [(UARPAssetVersion *)v5 minorVersion]) && (releaseVersion = self->_releaseVersion, releaseVersion == [(UARPAssetVersion *)v5 releaseVersion]))
       {
@@ -207,43 +207,43 @@ LABEL_8:
   return v10;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(UARPAssetVersion *)self majorVersion];
-  if (v5 < [v4 majorVersion])
+  compareCopy = compare;
+  majorVersion = [(UARPAssetVersion *)self majorVersion];
+  if (majorVersion < [compareCopy majorVersion])
   {
     goto LABEL_2;
   }
 
-  v7 = [(UARPAssetVersion *)self majorVersion];
-  if (v7 > [v4 majorVersion])
+  majorVersion2 = [(UARPAssetVersion *)self majorVersion];
+  if (majorVersion2 > [compareCopy majorVersion])
   {
 LABEL_4:
     v6 = 1;
     goto LABEL_5;
   }
 
-  v9 = [(UARPAssetVersion *)self minorVersion];
-  if (v9 >= [v4 minorVersion])
+  minorVersion = [(UARPAssetVersion *)self minorVersion];
+  if (minorVersion >= [compareCopy minorVersion])
   {
-    v10 = [(UARPAssetVersion *)self minorVersion];
-    if (v10 > [v4 minorVersion])
+    minorVersion2 = [(UARPAssetVersion *)self minorVersion];
+    if (minorVersion2 > [compareCopy minorVersion])
     {
       goto LABEL_4;
     }
 
-    v11 = [(UARPAssetVersion *)self releaseVersion];
-    if (v11 >= [v4 releaseVersion])
+    releaseVersion = [(UARPAssetVersion *)self releaseVersion];
+    if (releaseVersion >= [compareCopy releaseVersion])
     {
-      v12 = [(UARPAssetVersion *)self releaseVersion];
-      if (v12 <= [v4 releaseVersion])
+      releaseVersion2 = [(UARPAssetVersion *)self releaseVersion];
+      if (releaseVersion2 <= [compareCopy releaseVersion])
       {
-        v13 = [(UARPAssetVersion *)self buildVersion];
-        if (v13 >= [v4 buildVersion])
+        buildVersion = [(UARPAssetVersion *)self buildVersion];
+        if (buildVersion >= [compareCopy buildVersion])
         {
-          v14 = [(UARPAssetVersion *)self buildVersion];
-          v6 = v14 > [v4 buildVersion];
+          buildVersion2 = [(UARPAssetVersion *)self buildVersion];
+          v6 = buildVersion2 > [compareCopy buildVersion];
           goto LABEL_5;
         }
 

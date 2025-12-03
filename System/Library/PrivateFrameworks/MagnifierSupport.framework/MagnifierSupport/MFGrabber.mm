@@ -2,8 +2,8 @@
 - (BOOL)accessibilityActivate;
 - (CGRect)accessibilityFrame;
 - (_TtC16MagnifierSupport9MFGrabber)init;
-- (_TtC16MagnifierSupport9MFGrabber)initWithCoder:(id)a3;
-- (_TtC16MagnifierSupport9MFGrabber)initWithFrame:(CGRect)a3;
+- (_TtC16MagnifierSupport9MFGrabber)initWithCoder:(id)coder;
+- (_TtC16MagnifierSupport9MFGrabber)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MFGrabber
@@ -23,7 +23,7 @@
   return v5;
 }
 
-- (_TtC16MagnifierSupport9MFGrabber)initWithCoder:(id)a3
+- (_TtC16MagnifierSupport9MFGrabber)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC16MagnifierSupport9MFGrabber_backgroundView;
   type metadata accessor for MFChevronView();
@@ -35,7 +35,7 @@
 
 - (CGRect)accessibilityFrame
 {
-  v2 = self;
+  selfCopy = self;
   sub_257C81D24();
   v4 = v3;
   v6 = v5;
@@ -67,7 +67,7 @@
   return 1;
 }
 
-- (_TtC16MagnifierSupport9MFGrabber)initWithFrame:(CGRect)a3
+- (_TtC16MagnifierSupport9MFGrabber)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,52 +1,52 @@
 @interface NRDeviceInfo
-- (BOOL)isEqual:(id)a3;
-- (NRDeviceInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NRDeviceInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NRDeviceInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(NRDeviceInfo *)self connectedLinkType];
-      if (v6 != [v5 connectedLinkType])
+      v5 = equalCopy;
+      connectedLinkType = [(NRDeviceInfo *)self connectedLinkType];
+      if (connectedLinkType != [v5 connectedLinkType])
       {
         goto LABEL_27;
       }
 
-      v7 = [(NRDeviceInfo *)self connectedLinkSubtype];
-      if (v7 != [v5 connectedLinkSubtype])
+      connectedLinkSubtype = [(NRDeviceInfo *)self connectedLinkSubtype];
+      if (connectedLinkSubtype != [v5 connectedLinkSubtype])
       {
         goto LABEL_27;
       }
 
-      v8 = [(NRDeviceInfo *)self nrDeviceIdentifier];
-      if (v8)
+      nrDeviceIdentifier = [(NRDeviceInfo *)self nrDeviceIdentifier];
+      if (nrDeviceIdentifier)
       {
       }
 
       else
       {
-        v10 = [v5 nrDeviceIdentifier];
+        nrDeviceIdentifier2 = [v5 nrDeviceIdentifier];
 
-        if (!v10)
+        if (!nrDeviceIdentifier2)
         {
           goto LABEL_10;
         }
       }
 
-      v11 = [(NRDeviceInfo *)self nrDeviceIdentifier];
-      v12 = [v5 nrDeviceIdentifier];
-      v13 = [v11 isEqual:v12];
+      nrDeviceIdentifier3 = [(NRDeviceInfo *)self nrDeviceIdentifier];
+      nrDeviceIdentifier4 = [v5 nrDeviceIdentifier];
+      v13 = [nrDeviceIdentifier3 isEqual:nrDeviceIdentifier4];
 
       if (!v13)
       {
@@ -54,24 +54,24 @@
       }
 
 LABEL_10:
-      v14 = [(NRDeviceInfo *)self connectedInterfaceName];
-      if (v14)
+      connectedInterfaceName = [(NRDeviceInfo *)self connectedInterfaceName];
+      if (connectedInterfaceName)
       {
       }
 
       else
       {
-        v15 = [v5 connectedInterfaceName];
+        connectedInterfaceName2 = [v5 connectedInterfaceName];
 
-        if (!v15)
+        if (!connectedInterfaceName2)
         {
           goto LABEL_14;
         }
       }
 
-      v16 = [(NRDeviceInfo *)self connectedInterfaceName];
-      v17 = [v5 connectedInterfaceName];
-      v18 = [v16 isEqual:v17];
+      connectedInterfaceName3 = [(NRDeviceInfo *)self connectedInterfaceName];
+      connectedInterfaceName4 = [v5 connectedInterfaceName];
+      v18 = [connectedInterfaceName3 isEqual:connectedInterfaceName4];
 
       if (!v18)
       {
@@ -79,24 +79,24 @@ LABEL_10:
       }
 
 LABEL_14:
-      v19 = [(NRDeviceInfo *)self localEndpoint];
-      if (v19)
+      localEndpoint = [(NRDeviceInfo *)self localEndpoint];
+      if (localEndpoint)
       {
       }
 
       else
       {
-        v20 = [v5 localEndpoint];
+        localEndpoint2 = [v5 localEndpoint];
 
-        if (!v20)
+        if (!localEndpoint2)
         {
           goto LABEL_18;
         }
       }
 
-      v21 = [(NRDeviceInfo *)self localEndpoint];
-      v22 = [v5 localEndpoint];
-      v23 = [v21 isEqual:v22];
+      localEndpoint3 = [(NRDeviceInfo *)self localEndpoint];
+      localEndpoint4 = [v5 localEndpoint];
+      v23 = [localEndpoint3 isEqual:localEndpoint4];
 
       if (!v23)
       {
@@ -104,28 +104,28 @@ LABEL_14:
       }
 
 LABEL_18:
-      v24 = [(NRDeviceInfo *)self remoteEndpoint];
-      if (v24)
+      remoteEndpoint = [(NRDeviceInfo *)self remoteEndpoint];
+      if (remoteEndpoint)
       {
       }
 
       else
       {
-        v25 = [v5 remoteEndpoint];
+        remoteEndpoint2 = [v5 remoteEndpoint];
 
-        if (!v25)
+        if (!remoteEndpoint2)
         {
 LABEL_22:
-          v29 = [(NRDeviceInfo *)self proxyInfo];
-          if (v29)
+          proxyInfo = [(NRDeviceInfo *)self proxyInfo];
+          if (proxyInfo)
           {
           }
 
           else
           {
-            v30 = [v5 proxyInfo];
+            proxyInfo2 = [v5 proxyInfo];
 
-            if (!v30)
+            if (!proxyInfo2)
             {
 LABEL_26:
               v9 = 1;
@@ -135,9 +135,9 @@ LABEL_28:
             }
           }
 
-          v31 = [(NRDeviceInfo *)self proxyInfo];
-          v32 = [v5 proxyInfo];
-          v33 = [v31 isEqual:v32];
+          proxyInfo3 = [(NRDeviceInfo *)self proxyInfo];
+          proxyInfo4 = [v5 proxyInfo];
+          v33 = [proxyInfo3 isEqual:proxyInfo4];
 
           if (v33)
           {
@@ -150,9 +150,9 @@ LABEL_27:
         }
       }
 
-      v26 = [(NRDeviceInfo *)self remoteEndpoint];
-      v27 = [v5 remoteEndpoint];
-      v28 = [v26 isEqual:v27];
+      remoteEndpoint3 = [(NRDeviceInfo *)self remoteEndpoint];
+      remoteEndpoint4 = [v5 remoteEndpoint];
+      v28 = [remoteEndpoint3 isEqual:remoteEndpoint4];
 
       if (!v28)
       {
@@ -202,31 +202,31 @@ LABEL_29:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NRDeviceInfo *)self nrDeviceIdentifier];
-  [v4 encodeObject:v5 forKey:@"nrDeviceIdentifier"];
+  coderCopy = coder;
+  nrDeviceIdentifier = [(NRDeviceInfo *)self nrDeviceIdentifier];
+  [coderCopy encodeObject:nrDeviceIdentifier forKey:@"nrDeviceIdentifier"];
 
-  v6 = [(NRDeviceInfo *)self connectedInterfaceName];
-  [v4 encodeObject:v6 forKey:@"connectedInterfaceName"];
+  connectedInterfaceName = [(NRDeviceInfo *)self connectedInterfaceName];
+  [coderCopy encodeObject:connectedInterfaceName forKey:@"connectedInterfaceName"];
 
-  v7 = [(NRDeviceInfo *)self localEndpoint];
-  [v4 encodeObject:v7 forKey:@"localEndpoint"];
+  localEndpoint = [(NRDeviceInfo *)self localEndpoint];
+  [coderCopy encodeObject:localEndpoint forKey:@"localEndpoint"];
 
-  v8 = [(NRDeviceInfo *)self remoteEndpoint];
-  [v4 encodeObject:v8 forKey:@"remoteEndpoint"];
+  remoteEndpoint = [(NRDeviceInfo *)self remoteEndpoint];
+  [coderCopy encodeObject:remoteEndpoint forKey:@"remoteEndpoint"];
 
-  [v4 encodeInt32:-[NRDeviceInfo connectedLinkType](self forKey:{"connectedLinkType"), @"connectedLinkType"}];
-  [v4 encodeInt32:-[NRDeviceInfo connectedLinkSubtype](self forKey:{"connectedLinkSubtype"), @"connectedLinkSubtype"}];
-  v9 = [(NRDeviceInfo *)self proxyInfo];
-  [v4 encodeObject:v9 forKey:@"proxyInfo"];
+  [coderCopy encodeInt32:-[NRDeviceInfo connectedLinkType](self forKey:{"connectedLinkType"), @"connectedLinkType"}];
+  [coderCopy encodeInt32:-[NRDeviceInfo connectedLinkSubtype](self forKey:{"connectedLinkSubtype"), @"connectedLinkSubtype"}];
+  proxyInfo = [(NRDeviceInfo *)self proxyInfo];
+  [coderCopy encodeObject:proxyInfo forKey:@"proxyInfo"];
 }
 
-- (NRDeviceInfo)initWithCoder:(id)a3
+- (NRDeviceInfo)initWithCoder:(id)coder
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = NRDeviceInfo;
   v5 = [(NRDeviceInfo *)&v28 init];
@@ -263,44 +263,44 @@ LABEL_7:
   }
 
   v6 = v5;
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nrDeviceIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nrDeviceIdentifier"];
   [(NRDeviceInfo *)v6 setNrDeviceIdentifier:v7];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"connectedInterfaceName"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"connectedInterfaceName"];
   [(NRDeviceInfo *)v6 setConnectedInterfaceName:v8];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localEndpoint"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localEndpoint"];
   [(NRDeviceInfo *)v6 setLocalEndpoint:v9];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remoteEndpoint"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteEndpoint"];
   [(NRDeviceInfo *)v6 setRemoteEndpoint:v10];
 
-  -[NRDeviceInfo setConnectedLinkType:](v6, "setConnectedLinkType:", [v4 decodeInt32ForKey:@"connectedLinkType"]);
-  -[NRDeviceInfo setConnectedLinkSubtype:](v6, "setConnectedLinkSubtype:", [v4 decodeInt32ForKey:@"connectedLinkSubtype"]);
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxyInfo"];
+  -[NRDeviceInfo setConnectedLinkType:](v6, "setConnectedLinkType:", [coderCopy decodeInt32ForKey:@"connectedLinkType"]);
+  -[NRDeviceInfo setConnectedLinkSubtype:](v6, "setConnectedLinkSubtype:", [coderCopy decodeInt32ForKey:@"connectedLinkSubtype"]);
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxyInfo"];
   [(NRDeviceInfo *)v6 setProxyInfo:v11];
 
   v12 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(NRDeviceInfo *)self nrDeviceIdentifier];
-  [v4 setNrDeviceIdentifier:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  nrDeviceIdentifier = [(NRDeviceInfo *)self nrDeviceIdentifier];
+  [v4 setNrDeviceIdentifier:nrDeviceIdentifier];
 
   [v4 setConnectedLinkType:{-[NRDeviceInfo connectedLinkType](self, "connectedLinkType")}];
   [v4 setConnectedLinkSubtype:{-[NRDeviceInfo connectedLinkSubtype](self, "connectedLinkSubtype")}];
-  v6 = [(NRDeviceInfo *)self connectedInterfaceName];
-  [v4 setConnectedInterfaceName:v6];
+  connectedInterfaceName = [(NRDeviceInfo *)self connectedInterfaceName];
+  [v4 setConnectedInterfaceName:connectedInterfaceName];
 
-  v7 = [(NRDeviceInfo *)self localEndpoint];
-  v8 = [v7 copy];
+  localEndpoint = [(NRDeviceInfo *)self localEndpoint];
+  v8 = [localEndpoint copy];
   [v4 setLocalEndpoint:v8];
 
-  v9 = [(NRDeviceInfo *)self remoteEndpoint];
-  v10 = [v9 copy];
+  remoteEndpoint = [(NRDeviceInfo *)self remoteEndpoint];
+  v10 = [remoteEndpoint copy];
   [v4 setRemoteEndpoint:v10];
 
   return v4;

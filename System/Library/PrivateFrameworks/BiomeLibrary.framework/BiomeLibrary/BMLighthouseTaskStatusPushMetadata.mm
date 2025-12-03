@@ -1,39 +1,39 @@
 @interface BMLighthouseTaskStatusPushMetadata
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMLighthouseTaskStatusPushMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMLighthouseTaskStatusPushMetadata)initWithTopic:(id)a3 channelID:(id)a4 pushType:(id)a5 pushPriority:(id)a6 creationDate:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMLighthouseTaskStatusPushMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMLighthouseTaskStatusPushMetadata)initWithTopic:(id)topic channelID:(id)d pushType:(id)type pushPriority:(id)priority creationDate:(id)date;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)creationDate;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMLighthouseTaskStatusPushMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMLighthouseTaskStatusPushMetadata *)self topic];
-    v7 = [v5 topic];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    topic = [(BMLighthouseTaskStatusPushMetadata *)self topic];
+    topic2 = [v5 topic];
+    v8 = topic2;
+    if (topic == topic2)
     {
     }
 
     else
     {
-      v9 = [(BMLighthouseTaskStatusPushMetadata *)self topic];
-      v10 = [v5 topic];
-      v11 = [v9 isEqual:v10];
+      topic3 = [(BMLighthouseTaskStatusPushMetadata *)self topic];
+      topic4 = [v5 topic];
+      v11 = [topic3 isEqual:topic4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMLighthouseTaskStatusPushMetadata *)self channelID];
-    v14 = [v5 channelID];
-    v15 = v14;
-    if (v13 == v14)
+    channelID = [(BMLighthouseTaskStatusPushMetadata *)self channelID];
+    channelID2 = [v5 channelID];
+    v15 = channelID2;
+    if (channelID == channelID2)
     {
     }
 
     else
     {
-      v16 = [(BMLighthouseTaskStatusPushMetadata *)self channelID];
-      v17 = [v5 channelID];
-      v18 = [v16 isEqual:v17];
+      channelID3 = [(BMLighthouseTaskStatusPushMetadata *)self channelID];
+      channelID4 = [v5 channelID];
+      v18 = [channelID3 isEqual:channelID4];
 
       if (!v18)
       {
@@ -60,18 +60,18 @@
       }
     }
 
-    v19 = [(BMLighthouseTaskStatusPushMetadata *)self pushType];
-    v20 = [v5 pushType];
-    v21 = v20;
-    if (v19 == v20)
+    pushType = [(BMLighthouseTaskStatusPushMetadata *)self pushType];
+    pushType2 = [v5 pushType];
+    v21 = pushType2;
+    if (pushType == pushType2)
     {
     }
 
     else
     {
-      v22 = [(BMLighthouseTaskStatusPushMetadata *)self pushType];
-      v23 = [v5 pushType];
-      v24 = [v22 isEqual:v23];
+      pushType3 = [(BMLighthouseTaskStatusPushMetadata *)self pushType];
+      pushType4 = [v5 pushType];
+      v24 = [pushType3 isEqual:pushType4];
 
       if (!v24)
       {
@@ -79,18 +79,18 @@
       }
     }
 
-    v25 = [(BMLighthouseTaskStatusPushMetadata *)self pushPriority];
-    v26 = [v5 pushPriority];
-    v27 = v26;
-    if (v25 == v26)
+    pushPriority = [(BMLighthouseTaskStatusPushMetadata *)self pushPriority];
+    pushPriority2 = [v5 pushPriority];
+    v27 = pushPriority2;
+    if (pushPriority == pushPriority2)
     {
     }
 
     else
     {
-      v28 = [(BMLighthouseTaskStatusPushMetadata *)self pushPriority];
-      v29 = [v5 pushPriority];
-      v30 = [v28 isEqual:v29];
+      pushPriority3 = [(BMLighthouseTaskStatusPushMetadata *)self pushPriority];
+      pushPriority4 = [v5 pushPriority];
+      v30 = [pushPriority3 isEqual:pushPriority4];
 
       if (!v30)
       {
@@ -102,18 +102,18 @@ LABEL_23:
       }
     }
 
-    v31 = [(BMLighthouseTaskStatusPushMetadata *)self creationDate];
-    v32 = [v5 creationDate];
-    if (v31 == v32)
+    creationDate = [(BMLighthouseTaskStatusPushMetadata *)self creationDate];
+    creationDate2 = [v5 creationDate];
+    if (creationDate == creationDate2)
     {
       v12 = 1;
     }
 
     else
     {
-      v33 = [(BMLighthouseTaskStatusPushMetadata *)self creationDate];
-      v34 = [v5 creationDate];
-      v12 = [v33 isEqual:v34];
+      creationDate3 = [(BMLighthouseTaskStatusPushMetadata *)self creationDate];
+      creationDate4 = [v5 creationDate];
+      v12 = [creationDate3 isEqual:creationDate4];
     }
 
     goto LABEL_23;
@@ -145,16 +145,16 @@ LABEL_24:
 - (id)jsonDictionary
 {
   v22[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMLighthouseTaskStatusPushMetadata *)self topic];
-  v4 = [(BMLighthouseTaskStatusPushMetadata *)self channelID];
-  v5 = [(BMLighthouseTaskStatusPushMetadata *)self pushType];
-  v6 = [(BMLighthouseTaskStatusPushMetadata *)self pushPriority];
-  v7 = [(BMLighthouseTaskStatusPushMetadata *)self creationDate];
-  if (v7)
+  topic = [(BMLighthouseTaskStatusPushMetadata *)self topic];
+  channelID = [(BMLighthouseTaskStatusPushMetadata *)self channelID];
+  pushType = [(BMLighthouseTaskStatusPushMetadata *)self pushType];
+  pushPriority = [(BMLighthouseTaskStatusPushMetadata *)self pushPriority];
+  creationDate = [(BMLighthouseTaskStatusPushMetadata *)self creationDate];
+  if (creationDate)
   {
     v8 = MEMORY[0x1E696AD98];
-    v9 = [(BMLighthouseTaskStatusPushMetadata *)self creationDate];
-    [v9 timeIntervalSince1970];
+    creationDate2 = [(BMLighthouseTaskStatusPushMetadata *)self creationDate];
+    [creationDate2 timeIntervalSince1970];
     v10 = [v8 numberWithDouble:?];
   }
 
@@ -163,51 +163,51 @@ LABEL_24:
     v10 = 0;
   }
 
-  v19 = v3;
+  v19 = topic;
   v21[0] = @"topic";
-  v11 = v3;
-  if (!v3)
+  null = topic;
+  if (!topic)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22[0] = v11;
+  v22[0] = null;
   v21[1] = @"channelID";
-  v12 = v4;
-  if (!v4)
+  null2 = channelID;
+  if (!channelID)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22[1] = v12;
+  v22[1] = null2;
   v21[2] = @"pushType";
-  v13 = v5;
-  if (!v5)
+  null3 = pushType;
+  if (!pushType)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22[2] = v13;
+  v22[2] = null3;
   v21[3] = @"pushPriority";
-  v14 = v6;
-  if (!v6)
+  null4 = pushPriority;
+  if (!pushPriority)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22[3] = v14;
+  v22[3] = null4;
   v21[4] = @"creationDate";
-  v15 = v10;
+  null5 = v10;
   if (!v10)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22[4] = v15;
+  v22[4] = null5;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:{5, v19}];
   if (v10)
   {
-    if (v6)
+    if (pushPriority)
     {
       goto LABEL_16;
     }
@@ -216,17 +216,17 @@ LABEL_24:
   else
   {
 
-    if (v6)
+    if (pushPriority)
     {
 LABEL_16:
-      if (v5)
+      if (pushType)
       {
         goto LABEL_17;
       }
 
 LABEL_25:
 
-      if (v4)
+      if (channelID)
       {
         goto LABEL_18;
       }
@@ -235,13 +235,13 @@ LABEL_25:
     }
   }
 
-  if (!v5)
+  if (!pushType)
   {
     goto LABEL_25;
   }
 
 LABEL_17:
-  if (v4)
+  if (channelID)
   {
     goto LABEL_18;
   }
@@ -258,29 +258,29 @@ LABEL_18:
   return v16;
 }
 
-- (BMLighthouseTaskStatusPushMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMLighthouseTaskStatusPushMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"topic"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"topic"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"channelID"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"channelID"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v45 = 0;
           v25 = 0;
           goto LABEL_41;
         }
 
-        v39 = a4;
+        errorCopy = error;
         v26 = objc_alloc(MEMORY[0x1E696ABC0]);
         v27 = *MEMORY[0x1E698F240];
         v52 = *MEMORY[0x1E696A578];
@@ -289,7 +289,7 @@ LABEL_4:
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
         v45 = 0;
         v25 = 0;
-        *v39 = [v26 initWithDomain:v27 code:2 userInfo:v10];
+        *errorCopy = [v26 initWithDomain:v27 code:2 userInfo:v10];
         goto LABEL_40;
       }
 
@@ -301,22 +301,22 @@ LABEL_4:
       v45 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"pushType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"pushType"];
     v42 = v8;
-    v44 = self;
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v43 = 0;
           v25 = 0;
           goto LABEL_40;
         }
 
-        v28 = a4;
+        errorCopy2 = error;
         v29 = objc_alloc(MEMORY[0x1E696ABC0]);
         v30 = *MEMORY[0x1E698F240];
         v50 = *MEMORY[0x1E696A578];
@@ -325,10 +325,10 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
         v43 = 0;
         v25 = 0;
-        *v28 = [v29 initWithDomain:v30 code:2 userInfo:v11];
+        *errorCopy2 = [v29 initWithDomain:v30 code:2 userInfo:v11];
 LABEL_39:
 
-        self = v44;
+        self = selfCopy;
         v8 = v42;
 LABEL_40:
 
@@ -343,14 +343,14 @@ LABEL_40:
       v43 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"pushPriority"];
-    v12 = a4;
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"pushPriority"];
+    errorCopy3 = error;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v13 = 0;
           v25 = 0;
@@ -366,7 +366,7 @@ LABEL_40:
         v32 = [v40 initWithDomain:v31 code:2 userInfo:v14];
         v13 = 0;
         v25 = 0;
-        *v12 = v32;
+        *errorCopy3 = v32;
         goto LABEL_38;
       }
 
@@ -378,7 +378,7 @@ LABEL_40:
       v13 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"creationDate"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"creationDate"];
     if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -407,7 +407,7 @@ LABEL_40:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (v12)
+          if (errorCopy3)
           {
             v41 = objc_alloc(MEMORY[0x1E696ABC0]);
             v38 = *MEMORY[0x1E698F240];
@@ -415,7 +415,7 @@ LABEL_40:
             v36 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (as time internal since 1970), NSString (ISO8601 format), or NSDate", objc_opt_class(), @"creationDate"];
             v47 = v36;
             v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
-            *v12 = [v41 initWithDomain:v38 code:2 userInfo:v37];
+            *errorCopy3 = [v41 initWithDomain:v38 code:2 userInfo:v37];
           }
 
           v15 = 0;
@@ -435,8 +435,8 @@ LABEL_40:
     }
 
 LABEL_37:
-    v25 = [(BMLighthouseTaskStatusPushMetadata *)v44 initWithTopic:v42 channelID:v45 pushType:v43 pushPriority:v13 creationDate:v15];
-    v44 = v25;
+    v25 = [(BMLighthouseTaskStatusPushMetadata *)selfCopy initWithTopic:v42 channelID:v45 pushType:v43 pushPriority:v13 creationDate:v15];
+    selfCopy = v25;
 LABEL_38:
 
     goto LABEL_39;
@@ -449,14 +449,14 @@ LABEL_38:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v25 = 0;
     goto LABEL_42;
   }
 
-  v22 = a4;
+  errorCopy4 = error;
   v23 = objc_alloc(MEMORY[0x1E696ABC0]);
   v24 = *MEMORY[0x1E698F240];
   v54 = *MEMORY[0x1E696A578];
@@ -465,7 +465,7 @@ LABEL_38:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:&v54 count:1];
   v8 = 0;
   v25 = 0;
-  *v22 = [v23 initWithDomain:v24 code:2 userInfo:v9];
+  *errorCopy4 = [v23 initWithDomain:v24 code:2 userInfo:v9];
 LABEL_41:
 
 LABEL_42:
@@ -477,50 +477,50 @@ LABEL_42:
 {
   v3 = objc_opt_new();
   [(BMLighthouseTaskStatusPushMetadata *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_topic)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_channelID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_pushType)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_pushPriority)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_hasRaw_creationDate)
   {
     raw_creationDate = self->_raw_creationDate;
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v25.receiver = self;
   v25.super_class = BMLighthouseTaskStatusPushMetadata;
   v5 = [(BMEventBase *)&v25 init];
@@ -529,12 +529,12 @@ LABEL_42:
     goto LABEL_40;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -545,18 +545,18 @@ LABEL_42:
       while (1)
       {
         LOBYTE(v26) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v26 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v26 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v26) & 0x7F) << v7;
@@ -573,9 +573,9 @@ LABEL_42:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -617,18 +617,18 @@ LABEL_31:
           case 5:
             v5->_hasRaw_creationDate = 1;
             v26 = 0.0;
-            v16 = [v4 position] + 8;
-            if (v16 >= [v4 position] && (v17 = objc_msgSend(v4, "position") + 8, v17 <= objc_msgSend(v4, "length")))
+            v16 = [fromCopy position] + 8;
+            if (v16 >= [fromCopy position] && (v17 = objc_msgSend(fromCopy, "position") + 8, v17 <= objc_msgSend(fromCopy, "length")))
             {
-              v22 = [v4 data];
-              [v22 getBytes:&v26 range:{objc_msgSend(v4, "position"), 8}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v26 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v5->_raw_creationDate = v26;
@@ -642,13 +642,13 @@ LABEL_31:
       }
 
 LABEL_32:
-      v21 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v21 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_39:
     v23 = 0;
@@ -666,37 +666,37 @@ LABEL_40:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMLighthouseTaskStatusPushMetadata *)self topic];
-  v5 = [(BMLighthouseTaskStatusPushMetadata *)self channelID];
-  v6 = [(BMLighthouseTaskStatusPushMetadata *)self pushType];
-  v7 = [(BMLighthouseTaskStatusPushMetadata *)self pushPriority];
-  v8 = [(BMLighthouseTaskStatusPushMetadata *)self creationDate];
-  v9 = [v3 initWithFormat:@"BMLighthouseTaskStatusPushMetadata with topic: %@, channelID: %@, pushType: %@, pushPriority: %@, creationDate: %@", v4, v5, v6, v7, v8];
+  topic = [(BMLighthouseTaskStatusPushMetadata *)self topic];
+  channelID = [(BMLighthouseTaskStatusPushMetadata *)self channelID];
+  pushType = [(BMLighthouseTaskStatusPushMetadata *)self pushType];
+  pushPriority = [(BMLighthouseTaskStatusPushMetadata *)self pushPriority];
+  creationDate = [(BMLighthouseTaskStatusPushMetadata *)self creationDate];
+  v9 = [v3 initWithFormat:@"BMLighthouseTaskStatusPushMetadata with topic: %@, channelID: %@, pushType: %@, pushPriority: %@, creationDate: %@", topic, channelID, pushType, pushPriority, creationDate];
 
   return v9;
 }
 
-- (BMLighthouseTaskStatusPushMetadata)initWithTopic:(id)a3 channelID:(id)a4 pushType:(id)a5 pushPriority:(id)a6 creationDate:(id)a7
+- (BMLighthouseTaskStatusPushMetadata)initWithTopic:(id)topic channelID:(id)d pushType:(id)type pushPriority:(id)priority creationDate:(id)date
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  topicCopy = topic;
+  dCopy = d;
+  typeCopy = type;
+  priorityCopy = priority;
+  dateCopy = date;
   v21.receiver = self;
   v21.super_class = BMLighthouseTaskStatusPushMetadata;
   v17 = [(BMEventBase *)&v21 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v17->_topic, a3);
-    objc_storeStrong(&v17->_channelID, a4);
-    objc_storeStrong(&v17->_pushType, a5);
-    objc_storeStrong(&v17->_pushPriority, a6);
-    if (v16)
+    objc_storeStrong(&v17->_topic, topic);
+    objc_storeStrong(&v17->_channelID, d);
+    objc_storeStrong(&v17->_pushType, type);
+    objc_storeStrong(&v17->_pushPriority, priority);
+    if (dateCopy)
     {
       v17->_hasRaw_creationDate = 1;
-      [v16 timeIntervalSince1970];
+      [dateCopy timeIntervalSince1970];
     }
 
     else
@@ -750,9 +750,9 @@ LABEL_40:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -760,8 +760,8 @@ LABEL_40:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMLighthouseTaskStatusPushMetadata alloc] initByReadFrom:v7];
     v4 = v8;

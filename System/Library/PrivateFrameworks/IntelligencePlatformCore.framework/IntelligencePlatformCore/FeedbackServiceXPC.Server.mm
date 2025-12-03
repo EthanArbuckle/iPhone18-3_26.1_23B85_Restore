@@ -1,32 +1,32 @@
 @interface FeedbackServiceXPC.Server
-- (void)logFeedback:(id)a3 ofType:(id)a4 ofVariant:(id)a5 forEvent:(int64_t)a6 withTimestamp:(id)a7 shouldProcessImmediately:(BOOL)a8 completion:(id)a9;
+- (void)logFeedback:(id)feedback ofType:(id)type ofVariant:(id)variant forEvent:(int64_t)event withTimestamp:(id)timestamp shouldProcessImmediately:(BOOL)immediately completion:(id)completion;
 @end
 
 @implementation FeedbackServiceXPC.Server
 
-- (void)logFeedback:(id)a3 ofType:(id)a4 ofVariant:(id)a5 forEvent:(int64_t)a6 withTimestamp:(id)a7 shouldProcessImmediately:(BOOL)a8 completion:(id)a9
+- (void)logFeedback:(id)feedback ofType:(id)type ofVariant:(id)variant forEvent:(int64_t)event withTimestamp:(id)timestamp shouldProcessImmediately:(BOOL)immediately completion:(id)completion
 {
-  v35 = a8;
-  v36 = a6;
+  immediatelyCopy = immediately;
+  eventCopy = event;
   v14 = sub_1C4EF9CD8();
   v37 = *(v14 - 8);
   v38 = v14;
   v15 = *(v37 + 64);
   MEMORY[0x1EEE9AC00](v14);
   v17 = &v33 - ((v16 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v18 = _Block_copy(a9);
-  v19 = a3;
-  v20 = a4;
-  v21 = a7;
-  v34 = self;
-  v22 = a5;
+  v18 = _Block_copy(completion);
+  feedbackCopy = feedback;
+  typeCopy = type;
+  timestampCopy = timestamp;
+  selfCopy = self;
+  variantCopy = variant;
   v23 = sub_1C4EF9A68();
   v25 = v24;
 
   v26 = sub_1C4F01138();
   v28 = v27;
 
-  if (v22)
+  if (variantCopy)
   {
     v29 = sub_1C4F01138();
     v31 = v30;
@@ -41,8 +41,8 @@
   sub_1C4EF9C78();
 
   _Block_copy(v18);
-  v32 = v34;
-  sub_1C4807420(v23, v25, v26, v28, v29, v31, v36, v17, v35, v34, v18);
+  v32 = selfCopy;
+  sub_1C4807420(v23, v25, v26, v28, v29, v31, eventCopy, v17, immediatelyCopy, selfCopy, v18);
   _Block_release(v18);
 
   sub_1C4434000(v23, v25);

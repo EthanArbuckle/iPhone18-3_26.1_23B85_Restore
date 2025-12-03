@@ -1,16 +1,16 @@
 @interface SiriUIBackgroundBlurView
-- (SiriUIBackgroundBlurView)initWithFrame:(CGRect)a3;
+- (SiriUIBackgroundBlurView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setVisible:(BOOL)a3;
+- (void)setVisible:(BOOL)visible;
 @end
 
 @implementation SiriUIBackgroundBlurView
 
-- (SiriUIBackgroundBlurView)initWithFrame:(CGRect)a3
+- (SiriUIBackgroundBlurView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SiriUIBackgroundBlurView;
-  v3 = [(SiriUIBackgroundBlurView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriUIBackgroundBlurView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -19,26 +19,26 @@
     materialView = v4->_materialView;
     v4->_materialView = v5;
 
-    v7 = [(MTMaterialView *)v4->_materialView layer];
-    [v7 setAllowsHitTesting:0];
+    layer = [(MTMaterialView *)v4->_materialView layer];
+    [layer setAllowsHitTesting:0];
 
     [(MTMaterialView *)v4->_materialView setOverrideUserInterfaceStyle:2];
     [(MTMaterialView *)v4->_materialView setRecipeDynamic:0];
     [(MTMaterialView *)v4->_materialView setShouldCrossfade:1];
     [(MTMaterialView *)v4->_materialView setWeighting:0.0];
     [(SiriUIBackgroundBlurView *)v4 addSubview:v4->_materialView];
-    v8 = [(SiriUIBackgroundBlurView *)v4 layer];
-    [v8 setAllowsGroupBlending:0];
+    layer2 = [(SiriUIBackgroundBlurView *)v4 layer];
+    [layer2 setAllowsGroupBlending:0];
   }
 
   return v4;
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
   materialView = self->_materialView;
   v4 = 0.0;
-  if (a3)
+  if (visible)
   {
     v4 = 1.0;
   }

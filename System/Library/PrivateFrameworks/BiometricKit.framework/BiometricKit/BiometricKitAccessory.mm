@@ -1,10 +1,10 @@
 @interface BiometricKitAccessory
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAccessory:(id)a3;
-- (BiometricKitAccessory)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAccessory:(id)accessory;
+- (BiometricKitAccessory)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BiometricKitAccessory
@@ -21,16 +21,16 @@
   return v8;
 }
 
-- (BiometricKitAccessory)initWithCoder:(id)a3
+- (BiometricKitAccessory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = BiometricKitAccessory;
   v5 = [(BiometricKitAccessory *)&v16 init];
   if (v5)
   {
     v15 = 0;
-    v6 = [v4 decodeBytesForKey:@"BKAccessoryUUID" returnedLength:&v15];
+    v6 = [coderCopy decodeBytesForKey:@"BKAccessoryUUID" returnedLength:&v15];
     if (v15 == 16)
     {
       v7 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:v6];
@@ -38,65 +38,65 @@
       v5->_uuid = v7;
     }
 
-    v5->_type = [v4 decodeInt32ForKey:@"BKAccessoryType"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BKAccessoryName"];
+    v5->_type = [coderCopy decodeInt32ForKey:@"BKAccessoryType"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BKAccessoryName"];
     v10 = [v9 copy];
     name = v5->_name;
     v5->_name = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BKAccessoryGroup"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BKAccessoryGroup"];
     group = v5->_group;
     v5->_group = v12;
 
-    v5->_flags = [v4 decodeInt32ForKey:@"BKAccessoryFlags"];
+    v5->_flags = [coderCopy decodeInt32ForKey:@"BKAccessoryFlags"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7[2] = *MEMORY[0x1E69E9840];
   v7[0] = 0;
   v7[1] = 0;
   uuid = self->_uuid;
-  v5 = a3;
+  coderCopy = coder;
   [(NSUUID *)uuid getUUIDBytes:v7];
-  [v5 encodeInt32:self->_type forKey:@"BKAccessoryType"];
-  [v5 encodeBytes:v7 length:16 forKey:@"BKAccessoryUUID"];
-  [v5 encodeObject:self->_name forKey:@"BKAccessoryName"];
-  [v5 encodeObject:self->_group forKey:@"BKAccessoryGroup"];
-  [v5 encodeInt32:self->_flags forKey:@"BKAccessoryFlags"];
+  [coderCopy encodeInt32:self->_type forKey:@"BKAccessoryType"];
+  [coderCopy encodeBytes:v7 length:16 forKey:@"BKAccessoryUUID"];
+  [coderCopy encodeObject:self->_name forKey:@"BKAccessoryName"];
+  [coderCopy encodeObject:self->_group forKey:@"BKAccessoryGroup"];
+  [coderCopy encodeInt32:self->_flags forKey:@"BKAccessoryFlags"];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(BiometricKitAccessory);
-  v5 = [(BiometricKitAccessory *)self uuid];
-  v6 = [v5 copy];
+  uuid = [(BiometricKitAccessory *)self uuid];
+  v6 = [uuid copy];
   [(BiometricKitAccessory *)v4 setUuid:v6];
 
   [(BiometricKitAccessory *)v4 setType:[(BiometricKitAccessory *)self type]];
-  v7 = [(BiometricKitAccessory *)self name];
-  [(BiometricKitAccessory *)v4 setName:v7];
+  name = [(BiometricKitAccessory *)self name];
+  [(BiometricKitAccessory *)v4 setName:name];
 
-  v8 = [(BiometricKitAccessory *)self group];
-  v9 = [v8 copy];
+  group = [(BiometricKitAccessory *)self group];
+  v9 = [group copy];
   [(BiometricKitAccessory *)v4 setGroup:v9];
 
   [(BiometricKitAccessory *)v4 setFlags:[(BiometricKitAccessory *)self flags]];
   return v4;
 }
 
-- (BOOL)isEqualToAccessory:(id)a3
+- (BOOL)isEqualToAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_type == *(v4 + 2))
+  accessoryCopy = accessory;
+  v5 = accessoryCopy;
+  if (accessoryCopy && self->_type == *(accessoryCopy + 2))
   {
-    v6 = [(NSUUID *)self->_uuid isEqual:*(v4 + 2)];
+    v6 = [(NSUUID *)self->_uuid isEqual:*(accessoryCopy + 2)];
   }
 
   else
@@ -107,10 +107,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -118,7 +118,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BiometricKitAccessory *)self isEqualToAccessory:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BiometricKitAccessory *)self isEqualToAccessory:equalCopy];
   }
 
   return v5;

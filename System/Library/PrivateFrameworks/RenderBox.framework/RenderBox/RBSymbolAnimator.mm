@@ -1,6 +1,6 @@
 @interface RBSymbolAnimator
 - ($A37143018C4D5433AE0D7FFC21A1DA3D)transform;
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)colorForStyle:(unsigned int)a3;
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)colorForStyle:(unsigned int)style;
 - ($C28CD4A45FD07A4F97CC9D5F91F25271)opacities;
 - (CGPoint)anchorPoint;
 - (CGPoint)position;
@@ -10,42 +10,42 @@
 - (CGRect)unroundedAlignmentRect;
 - (CGSize)size;
 - (id).cxx_construct;
-- (id)copyDebugDescriptionForUpdate:(_RBSymbolUpdate *)a3;
-- (id)fillProviderForStyle:(unsigned int)a3;
+- (id)copyDebugDescriptionForUpdate:(_RBSymbolUpdate *)update;
+- (id)fillProviderForStyle:(unsigned int)style;
 - (int)scaleLevel;
 - (uint64_t)notifyObservers;
 - (uint64_t)unblockObservers;
-- (unsigned)addAnimation:(unsigned int)a3 options:(id)a4;
+- (unsigned)addAnimation:(unsigned int)animation options:(id)options;
 - (unsigned)depth;
-- (void)addObserver:(uint64_t)a1;
+- (void)addObserver:(uint64_t)observer;
 - (void)cancelAllAnimations;
-- (void)cancelAnimation:(unsigned int)a3;
-- (void)cancelAnimationWithID:(unsigned int)a3;
+- (void)cancelAnimation:(unsigned int)animation;
+- (void)cancelAnimationWithID:(unsigned int)d;
 - (void)dealloc;
-- (void)endUpdate:(_RBSymbolUpdate *)a3;
+- (void)endUpdate:(_RBSymbolUpdate *)update;
 - (void)notifyObservers;
 - (void)removeAllAnimations;
-- (void)removeAnimation:(unsigned int)a3;
-- (void)removeAnimationWithID:(unsigned int)a3;
-- (void)removeObserver:(uint64_t)a1;
-- (void)setAnchorPoint:(CGPoint)a3;
-- (void)setColor:(id)a3 forStyle:(unsigned int)a4;
-- (void)setCurrentTime:(double)a3;
-- (void)setDepth:(unsigned int)a3;
-- (void)setFillProvider:(id)a3 forStyle:(unsigned int)a4;
-- (void)setFlipsRightToLeft:(BOOL)a3;
-- (void)setGlyph:(id)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setOpacities:(id)a3;
-- (void)setPosition:(CGPoint)a3;
-- (void)setPresentationPosition:(CGPoint)a3;
-- (void)setPriority:(float)a3 ofAnimationWithID:(unsigned int)a4;
-- (void)setRenderingMode:(unsigned int)a3;
-- (void)setRenderingOptions:(unsigned int)a3;
-- (void)setScaleLevel:(int)a3;
-- (void)setSize:(CGSize)a3;
-- (void)setTransform:(id)a3;
-- (void)setVariableValue:(double)a3;
+- (void)removeAnimation:(unsigned int)animation;
+- (void)removeAnimationWithID:(unsigned int)d;
+- (void)removeObserver:(uint64_t)observer;
+- (void)setAnchorPoint:(CGPoint)point;
+- (void)setColor:(id)color forStyle:(unsigned int)style;
+- (void)setCurrentTime:(double)time;
+- (void)setDepth:(unsigned int)depth;
+- (void)setFillProvider:(id)provider forStyle:(unsigned int)style;
+- (void)setFlipsRightToLeft:(BOOL)left;
+- (void)setGlyph:(id)glyph;
+- (void)setHidden:(BOOL)hidden;
+- (void)setOpacities:(id)opacities;
+- (void)setPosition:(CGPoint)position;
+- (void)setPresentationPosition:(CGPoint)position;
+- (void)setPriority:(float)priority ofAnimationWithID:(unsigned int)d;
+- (void)setRenderingMode:(unsigned int)mode;
+- (void)setRenderingOptions:(unsigned int)options;
+- (void)setScaleLevel:(int)level;
+- (void)setSize:(CGSize)size;
+- (void)setTransform:(id)transform;
+- (void)setVariableValue:(double)value;
 @end
 
 @implementation RBSymbolAnimator
@@ -63,30 +63,30 @@
 - (void)notifyObservers
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a1 && (*(a1 + 120) & 1) != 0)
+  if (self && (*(self + 120) & 1) != 0)
   {
     v20 = 0;
     v21 = 0;
     v22 = 4;
-    os_unfair_lock_lock((a1 + 80));
-    if (*(a1 + 104))
+    os_unfair_lock_lock((self + 80));
+    if (*(self + 104))
     {
-      v2 = *(a1 + 104);
+      v2 = *(self + 104);
     }
 
     else
     {
-      v2 = (a1 + 88);
+      v2 = (self + 88);
     }
 
-    v3 = *(a1 + 112);
+    v3 = *(self + 112);
     if (v3)
     {
       v4 = 8 * v3;
       do
       {
         v5 = *v2;
-        v6 = a1;
+        selfCopy = self;
         v7 = v5;
         v8 = v21;
         v9 = v21 + 1;
@@ -104,7 +104,7 @@
         }
 
         v11 = &v10[16 * v8];
-        *v11 = v6;
+        *v11 = selfCopy;
         v11[1] = v7;
         v21 = v9;
         ++v2;
@@ -114,8 +114,8 @@
       while (v4);
     }
 
-    os_unfair_lock_unlock((a1 + 80));
-    *(a1 + 120) = 0;
+    os_unfair_lock_unlock((self + 80));
+    *(self + 120) = 0;
     if (v21)
     {
       if (!pthread_main_np())
@@ -205,23 +205,23 @@ LABEL_28:
   [(RBSymbolAnimator *)&v3 dealloc];
 }
 
-- (void)addObserver:(uint64_t)a1
+- (void)addObserver:(uint64_t)observer
 {
-  if (a1)
+  if (observer)
   {
-    os_unfair_lock_lock((a1 + 80));
-    v4 = *(a1 + 104);
+    os_unfair_lock_lock((observer + 80));
+    v4 = *(observer + 104);
     if (v4)
     {
-      v5 = *(a1 + 104);
+      v5 = *(observer + 104);
     }
 
     else
     {
-      v5 = (a1 + 88);
+      v5 = (observer + 88);
     }
 
-    v6 = *(a1 + 112);
+    v6 = *(observer + 112);
     if (v6)
     {
       v7 = 8 * v6;
@@ -239,57 +239,57 @@ LABEL_28:
     else
     {
 LABEL_9:
-      if (*(a1 + 116) < (v6 + 1))
+      if (*(observer + 116) < (v6 + 1))
       {
-        RB::vector<objc_object  {objcproto24RBSymbolAnimatorObserver}*,2ul,unsigned int>::reserve_slow((a1 + 88), v6 + 1);
-        v4 = *(a1 + 104);
-        v6 = *(a1 + 112);
+        RB::vector<objc_object  {objcproto24RBSymbolAnimatorObserver}*,2ul,unsigned int>::reserve_slow((observer + 88), v6 + 1);
+        v4 = *(observer + 104);
+        v6 = *(observer + 112);
       }
 
       if (!v4)
       {
-        v4 = a1 + 88;
+        v4 = observer + 88;
       }
 
       *(v4 + 8 * v6) = a2;
-      ++*(a1 + 112);
-      *(a1 + 120) = 1;
+      ++*(observer + 112);
+      *(observer + 120) = 1;
     }
 
-    os_unfair_lock_unlock((a1 + 80));
+    os_unfair_lock_unlock((observer + 80));
   }
 }
 
-- (void)setGlyph:(id)a3
+- (void)setGlyph:(id)glyph
 {
-  if (RB::Symbol::Animator::set_glyph(&self->_animator, a3))
+  if (RB::Symbol::Animator::set_glyph(&self->_animator, glyph))
   {
 
     [(RBSymbolAnimator *)self notifyObservers];
   }
 }
 
-- (void)setRenderingMode:(unsigned int)a3
+- (void)setRenderingMode:(unsigned int)mode
 {
-  if (RB::Symbol::Animator::set_rendering_mode(&self->_animator, a3))
+  if (RB::Symbol::Animator::set_rendering_mode(&self->_animator, mode))
   {
 
     [(RBSymbolAnimator *)self notifyObservers];
   }
 }
 
-- (void)setRenderingOptions:(unsigned int)a3
+- (void)setRenderingOptions:(unsigned int)options
 {
-  if (RB::Symbol::Animator::set_rendering_options(&self->_animator, a3))
+  if (RB::Symbol::Animator::set_rendering_options(&self->_animator, options))
   {
 
     [(RBSymbolAnimator *)self notifyObservers];
   }
 }
 
-- (void)setFlipsRightToLeft:(BOOL)a3
+- (void)setFlipsRightToLeft:(BOOL)left
 {
-  if (RB::Symbol::Animator::set_flips_rtl(&self->_animator, a3))
+  if (RB::Symbol::Animator::set_flips_rtl(&self->_animator, left))
   {
 
     [(RBSymbolAnimator *)self notifyObservers];
@@ -311,31 +311,31 @@ LABEL_9:
   return result;
 }
 
-- (void)setTransform:(id)a3
+- (void)setTransform:(id)transform
 {
-  dy = a3.var0.dy;
-  v5 = a3.var1.dy;
-  v6[0] = vcvt_f32_f64(a3.var0);
-  v6[1] = vcvt_f32_f64(a3.var1);
+  dy = transform.var0.dy;
+  v5 = transform.var1.dy;
+  v6[0] = vcvt_f32_f64(transform.var0);
+  v6[1] = vcvt_f32_f64(transform.var1);
   if (RB::Symbol::Animator::set_transform(&self->_animator._lock._lock, v6))
   {
     [(RBSymbolAnimator *)self notifyObservers];
   }
 }
 
-- (void)setVariableValue:(double)a3
+- (void)setVariableValue:(double)value
 {
-  v4 = a3;
-  if (RB::Symbol::Animator::set_variable_value(&self->_animator._lock._lock, v4))
+  valueCopy = value;
+  if (RB::Symbol::Animator::set_variable_value(&self->_animator._lock._lock, valueCopy))
   {
 
     [(RBSymbolAnimator *)self notifyObservers];
   }
 }
 
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)colorForStyle:(unsigned int)a3
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)colorForStyle:(unsigned int)style
 {
-  v3 = RB::Symbol::Animator::color(&self->_animator, a3);
+  v3 = RB::Symbol::Animator::color(&self->_animator, style);
   result.var3 = v6;
   result.var2 = v5;
   result.var1 = v4;
@@ -343,26 +343,26 @@ LABEL_9:
   return result;
 }
 
-- (void)setColor:(id)a3 forStyle:(unsigned int)a4
+- (void)setColor:(id)color forStyle:(unsigned int)style
 {
-  v5 = a3;
-  if (RB::Symbol::Animator::set_color(&self->_animator, a4, &v5))
+  colorCopy = color;
+  if (RB::Symbol::Animator::set_color(&self->_animator, style, &colorCopy))
   {
     [(RBSymbolAnimator *)self notifyObservers];
   }
 }
 
-- (id)fillProviderForStyle:(unsigned int)a3
+- (id)fillProviderForStyle:(unsigned int)style
 {
-  RB::Symbol::Animator::fill(&self->_animator, a3, &v5);
+  RB::Symbol::Animator::fill(&self->_animator, style, &v5);
   v3 = v5;
 
   return v3;
 }
 
-- (void)setFillProvider:(id)a3 forStyle:(unsigned int)a4
+- (void)setFillProvider:(id)provider forStyle:(unsigned int)style
 {
-  if (RB::Symbol::Animator::set_fill(&self->_animator, a4, a3))
+  if (RB::Symbol::Animator::set_fill(&self->_animator, style, provider))
   {
 
     [(RBSymbolAnimator *)self notifyObservers];
@@ -385,18 +385,18 @@ LABEL_9:
   return result;
 }
 
-- (void)setOpacities:(id)a3
+- (void)setOpacities:(id)opacities
 {
-  v4 = a3;
-  if (RB::Symbol::Animator::set_alpha(&self->_animator._lock._lock, &v4.var0, 4uLL))
+  opacitiesCopy = opacities;
+  if (RB::Symbol::Animator::set_alpha(&self->_animator._lock._lock, &opacitiesCopy.var0, 4uLL))
   {
     [(RBSymbolAnimator *)self notifyObservers];
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  if (RB::Symbol::Animator::set_hidden(&self->_animator._lock._lock, a3))
+  if (RB::Symbol::Animator::set_hidden(&self->_animator._lock._lock, hidden))
   {
 
     [(RBSymbolAnimator *)self notifyObservers];
@@ -427,9 +427,9 @@ LABEL_9:
   }
 }
 
-- (void)setScaleLevel:(int)a3
+- (void)setScaleLevel:(int)level
 {
-  if (RB::Symbol::Animator::set_scale_level(&self->_animator._lock._lock, a3))
+  if (RB::Symbol::Animator::set_scale_level(&self->_animator._lock._lock, level))
   {
 
     [(RBSymbolAnimator *)self notifyObservers];
@@ -438,28 +438,28 @@ LABEL_9:
 
 - (unsigned)depth
 {
-  v2 = [(RBSymbolAnimator *)self scaleLevel];
-  if (v2 == -1)
+  scaleLevel = [(RBSymbolAnimator *)self scaleLevel];
+  if (scaleLevel == -1)
   {
     return 2;
   }
 
   else
   {
-    return v2 == 1;
+    return scaleLevel == 1;
   }
 }
 
-- (void)setDepth:(unsigned int)a3
+- (void)setDepth:(unsigned int)depth
 {
-  if (a3 == 2)
+  if (depth == 2)
   {
     v3 = 0xFFFFFFFFLL;
   }
 
   else
   {
-    v3 = a3 == 1;
+    v3 = depth == 1;
   }
 
   [(RBSymbolAnimator *)self setScaleLevel:v3];
@@ -474,10 +474,10 @@ LABEL_9:
   return result;
 }
 
-- (void)setAnchorPoint:(CGPoint)a3
+- (void)setAnchorPoint:(CGPoint)point
 {
-  y = a3.y;
-  if (RB::Symbol::Animator::set_anchor_point(&self->_animator, vcvt_f32_f64(a3)))
+  y = point.y;
+  if (RB::Symbol::Animator::set_anchor_point(&self->_animator, vcvt_f32_f64(point)))
   {
 
     [(RBSymbolAnimator *)self notifyObservers];
@@ -493,10 +493,10 @@ LABEL_9:
   return result;
 }
 
-- (void)setPosition:(CGPoint)a3
+- (void)setPosition:(CGPoint)position
 {
-  y = a3.y;
-  if (RB::Symbol::Animator::set_position(&self->_animator, vcvt_f32_f64(a3)))
+  y = position.y;
+  if (RB::Symbol::Animator::set_position(&self->_animator, vcvt_f32_f64(position)))
   {
 
     [(RBSymbolAnimator *)self notifyObservers];
@@ -512,10 +512,10 @@ LABEL_9:
   return result;
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  height = a3.height;
-  if (RB::Symbol::Animator::set_size(&self->_animator, vcvt_f32_f64(a3)))
+  height = size.height;
+  if (RB::Symbol::Animator::set_size(&self->_animator, vcvt_f32_f64(size)))
   {
 
     [(RBSymbolAnimator *)self notifyObservers];
@@ -531,40 +531,40 @@ LABEL_9:
   return result;
 }
 
-- (void)setPresentationPosition:(CGPoint)a3
+- (void)setPresentationPosition:(CGPoint)position
 {
-  y = a3.y;
-  if (RB::Symbol::Animator::set_presentation_position(&self->_animator, vcvt_f32_f64(a3)))
+  y = position.y;
+  if (RB::Symbol::Animator::set_presentation_position(&self->_animator, vcvt_f32_f64(position)))
   {
 
     [(RBSymbolAnimator *)self notifyObservers];
   }
 }
 
-- (unsigned)addAnimation:(unsigned int)a3 options:(id)a4
+- (unsigned)addAnimation:(unsigned int)animation options:(id)options
 {
   v68 = 0;
-  v67 = a3;
+  animationCopy = animation;
   v69 = xmmword_195E47680;
   v71 = 0;
   v72 = 0;
   v70 = 0;
-  if (a4)
+  if (options)
   {
-    v7 = [a4 objectForKeyedSubscript:RBSymbolAnimationPriority];
+    v7 = [options objectForKeyedSubscript:RBSymbolAnimationPriority];
     if (v7)
     {
       [v7 floatValue];
       LODWORD(v69) = v8;
     }
 
-    v9 = [a4 objectForKeyedSubscript:RBSymbolAnimationSpeed];
+    v9 = [options objectForKeyedSubscript:RBSymbolAnimationSpeed];
     if (v9)
     {
       [v9 floatValue];
       v11 = v10;
       *(&v69 + 1) = v10;
-      v12 = [a4 objectForKeyedSubscript:RBSymbolAnimationClampsSpeed];
+      v12 = [options objectForKeyedSubscript:RBSymbolAnimationClampsSpeed];
       if (!v12 || [v12 BOOLValue])
       {
         v13 = 0.5;
@@ -582,21 +582,21 @@ LABEL_9:
       }
     }
 
-    v14 = [a4 objectForKeyedSubscript:RBSymbolAnimationRepeatCount];
+    v14 = [options objectForKeyedSubscript:RBSymbolAnimationRepeatCount];
     if (v14)
     {
       [v14 floatValue];
       DWORD2(v69) = v15;
     }
 
-    v16 = [a4 objectForKeyedSubscript:RBSymbolAnimationRepeatDelay];
+    v16 = [options objectForKeyedSubscript:RBSymbolAnimationRepeatDelay];
     if (v16)
     {
       [v16 floatValue];
       HIDWORD(v69) = v17;
     }
 
-    v18 = [a4 objectForKeyedSubscript:RBSymbolAnimationByLayer];
+    v18 = [options objectForKeyedSubscript:RBSymbolAnimationByLayer];
     if (v18)
     {
       v19 = 16;
@@ -610,7 +610,7 @@ LABEL_9:
         v20 = 0;
       }
 
-      v67.i32[1] = v20;
+      animationCopy.i32[1] = v20;
       v68 = 16;
     }
 
@@ -620,31 +620,31 @@ LABEL_9:
       v20 = 0;
     }
 
-    v71 = [a4 objectForKeyedSubscript:RBSymbolAnimationTiming];
-    v21 = [a4 objectForKeyedSubscript:RBSymbolAnimationOnCompletion];
+    v71 = [options objectForKeyedSubscript:RBSymbolAnimationTiming];
+    v21 = [options objectForKeyedSubscript:RBSymbolAnimationOnCompletion];
     if (v21)
     {
       v72 = v21;
     }
 
-    switch(a3)
+    switch(animation)
     {
       case 1u:
-        v44 = [a4 objectForKeyedSubscript:RBSymbolAnimationVariableColorOptions];
+        v44 = [options objectForKeyedSubscript:RBSymbolAnimationVariableColorOptions];
         if (v44)
         {
-          v45 = [v44 unsignedIntValue];
-          v20 |= (v45 << 27) & 0x40000000 | (v45 << 31) | (((v45 >> 1) & 1) << 29);
-          if ((v45 & 0xB) != 0)
+          unsignedIntValue = [v44 unsignedIntValue];
+          v20 |= (unsignedIntValue << 27) & 0x40000000 | (unsignedIntValue << 31) | (((unsignedIntValue >> 1) & 1) << 29);
+          if ((unsignedIntValue & 0xB) != 0)
           {
-            v67.i32[1] = v20;
+            animationCopy.i32[1] = v20;
           }
 
           v19 |= 0xE0000000;
           v68 = v19;
         }
 
-        v46 = [a4 objectForKeyedSubscript:RBSymbolAnimationSymbolDefaults];
+        v46 = [options objectForKeyedSubscript:RBSymbolAnimationSymbolDefaults];
         if (v46 || (v56 = [(RBSymbolAnimator *)self glyph]) != 0 && (v57 = v56, (objc_opt_respondsToSelector() & 1) != 0) && (v46 = [(CUINamedVectorGlyph *)v57 symbolDefaults]) != 0)
         {
           v47 = [v46 objectForKeyedSubscript:@"variableColorContinuous"];
@@ -652,7 +652,7 @@ LABEL_9:
           {
             if ([v47 BOOLValue])
             {
-              v67.i32[1] = v20 | 0x10000000;
+              animationCopy.i32[1] = v20 | 0x10000000;
             }
 
             v48 = v19 | 0x10000000;
@@ -662,7 +662,7 @@ LABEL_9:
 
         break;
       case 2u:
-        v49 = [a4 objectForKeyedSubscript:RBSymbolAnimationPulseOptions];
+        v49 = [options objectForKeyedSubscript:RBSymbolAnimationPulseOptions];
         if (v49)
         {
           v50 = [v49 unsignedIntValue] & 0xF;
@@ -679,46 +679,46 @@ LABEL_9:
 
         break;
       case 3u:
-        v38 = [a4 objectForKeyedSubscript:RBSymbolAnimationBounceOptions];
+        v38 = [options objectForKeyedSubscript:RBSymbolAnimationBounceOptions];
         if (!v38)
         {
           break;
         }
 
-        v39 = [v38 unsignedIntValue];
-        if ((v39 & 0xF) == 1)
+        unsignedIntValue2 = [v38 unsignedIntValue];
+        if ((unsignedIntValue2 & 0xF) == 1)
         {
           goto LABEL_52;
         }
 
-        if ((v39 & 0xF) == 2)
+        if ((unsignedIntValue2 & 0xF) == 2)
         {
           v20 |= 0x80000000;
-          v67.i32[1] = v20;
+          animationCopy.i32[1] = v20;
 LABEL_52:
           v68 = v19 | 0x80000000;
         }
 
-        if ((v39 & 0x10) != 0)
+        if ((unsignedIntValue2 & 0x10) != 0)
         {
-          v67.i32[1] = v20 | 0x20;
+          animationCopy.i32[1] = v20 | 0x20;
         }
 
         break;
       case 4u:
       case 8u:
-        v67.i32[0] = 4;
+        animationCopy.i32[0] = 4;
         break;
       case 5u:
       case 9u:
-        v22 = [a4 objectForKeyedSubscript:RBSymbolAnimationAppearDisappearOptions];
+        v22 = [options objectForKeyedSubscript:RBSymbolAnimationAppearDisappearOptions];
         if (!v22)
         {
           break;
         }
 
-        v23 = [v22 unsignedIntValue];
-        v24 = v23 & 0xF;
+        unsignedIntValue3 = [v22 unsignedIntValue];
+        v24 = unsignedIntValue3 & 0xF;
         switch(v24)
         {
           case 1:
@@ -731,7 +731,7 @@ LABEL_52:
             break;
           default:
             v48 = 16;
-            if ((v23 & 0x10) != 0)
+            if ((unsignedIntValue3 & 0x10) != 0)
             {
               goto LABEL_143;
             }
@@ -739,25 +739,25 @@ LABEL_52:
             goto LABEL_144;
         }
 
-        v67.i32[1] = v20 | v25;
+        animationCopy.i32[1] = v20 | v25;
 LABEL_95:
         v68 = v19 | 0xC0000000;
         v48 = -1073741808;
-        if ((v23 & 0x10) != 0)
+        if ((unsignedIntValue3 & 0x10) != 0)
         {
           goto LABEL_143;
         }
 
         break;
       case 6u:
-        v40 = [a4 objectForKeyedSubscript:RBSymbolAnimationReplaceOptions];
+        v40 = [options objectForKeyedSubscript:RBSymbolAnimationReplaceOptions];
         if (!v40)
         {
           break;
         }
 
-        v41 = [v40 unsignedIntValue];
-        v42 = v41 & 0xF;
+        unsignedIntValue4 = [v40 unsignedIntValue];
+        v42 = unsignedIntValue4 & 0xF;
         if (v42 > 2)
         {
           if (v42 == 4)
@@ -792,19 +792,19 @@ LABEL_95:
         }
 
         v20 |= v43;
-        v67.i32[1] = v20;
+        animationCopy.i32[1] = v20;
 LABEL_107:
         v19 |= 0xC0000000;
         v68 = v19;
 LABEL_108:
-        if ((v41 & 0x10) != 0)
+        if ((unsignedIntValue4 & 0x10) != 0)
         {
           v19 |= 0x10u;
           v68 = v19;
-          if ((v41 & 0x20) == 0)
+          if ((unsignedIntValue4 & 0x20) == 0)
           {
 LABEL_110:
-            if ((v41 & 0x40) == 0)
+            if ((unsignedIntValue4 & 0x40) == 0)
             {
               goto LABEL_111;
             }
@@ -813,19 +813,19 @@ LABEL_110:
           }
         }
 
-        else if ((v41 & 0x20) == 0)
+        else if ((unsignedIntValue4 & 0x20) == 0)
         {
           goto LABEL_110;
         }
 
         v20 &= ~0x20000000u;
         v19 |= 0x20000000u;
-        v67.i32[1] = v20;
+        animationCopy.i32[1] = v20;
         v68 = v19;
-        if ((v41 & 0x40) == 0)
+        if ((unsignedIntValue4 & 0x40) == 0)
         {
 LABEL_111:
-          if ((v41 & 0x80) == 0)
+          if ((unsignedIntValue4 & 0x80) == 0)
           {
             break;
           }
@@ -839,16 +839,16 @@ LABEL_116:
 LABEL_115:
         v20 &= ~0x10000000u;
         v19 |= 0x10000000u;
-        v67.i32[1] = v20;
+        animationCopy.i32[1] = v20;
         v68 = v19;
-        if ((v41 & 0x80) == 0)
+        if ((unsignedIntValue4 & 0x80) == 0)
         {
           break;
         }
 
         goto LABEL_116;
       case 7u:
-        v55 = [a4 objectForKeyedSubscript:RBSymbolAnimationInterpolateOptions];
+        v55 = [options objectForKeyedSubscript:RBSymbolAnimationInterpolateOptions];
         if (!v55)
         {
           break;
@@ -861,7 +861,7 @@ LABEL_115:
 
         goto LABEL_88;
       case 0xAu:
-        v31 = [a4 objectForKeyedSubscript:RBSymbolAnimationWiggleAngle];
+        v31 = [options objectForKeyedSubscript:RBSymbolAnimationWiggleAngle];
         if (v31)
         {
           [v31 floatValue];
@@ -871,15 +871,15 @@ LABEL_115:
           v68 = v19;
         }
 
-        v34 = [a4 objectForKeyedSubscript:RBSymbolAnimationWiggleOptions];
+        v34 = [options objectForKeyedSubscript:RBSymbolAnimationWiggleOptions];
         if (!v34)
         {
           goto LABEL_129;
         }
 
-        v35 = [v34 unsignedIntValue];
-        v36 = v35 & 0xF;
-        if ((v35 & 0xF) == 0 || (v19 & 0x80000000) != 0)
+        unsignedIntValue5 = [v34 unsignedIntValue];
+        v36 = unsignedIntValue5 & 0xF;
+        if ((unsignedIntValue5 & 0xF) == 0 || (v19 & 0x80000000) != 0)
         {
           goto LABEL_123;
         }
@@ -887,7 +887,7 @@ LABEL_115:
         if (v36 == 3)
         {
           v20 |= 0x80000000;
-          v67.i32[1] = v20;
+          animationCopy.i32[1] = v20;
         }
 
         else
@@ -913,24 +913,24 @@ LABEL_115:
         v19 |= 0x80000000;
         v68 = v19;
 LABEL_123:
-        if ((v35 & 0xF0) == 0x10)
+        if ((unsignedIntValue5 & 0xF0) == 0x10)
         {
           goto LABEL_126;
         }
 
-        if ((v35 & 0xF0) == 0x20)
+        if ((unsignedIntValue5 & 0xF0) == 0x20)
         {
           v20 |= 0x40000000u;
-          v67.i32[1] = v20;
+          animationCopy.i32[1] = v20;
 LABEL_126:
           v19 |= 0x40000000u;
           v68 = v19;
         }
 
-        if ((v35 & 0x100) != 0)
+        if ((unsignedIntValue5 & 0x100) != 0)
         {
           v20 |= 0x20u;
-          v67.i32[1] = v20;
+          animationCopy.i32[1] = v20;
         }
 
 LABEL_129:
@@ -939,39 +939,39 @@ LABEL_129:
           break;
         }
 
-        v59 = [a4 objectForKeyedSubscript:RBSymbolAnimationSymbolDefaults];
-        if (!v59)
+        glyph = [options objectForKeyedSubscript:RBSymbolAnimationSymbolDefaults];
+        if (!glyph)
         {
-          v59 = [(RBSymbolAnimator *)self glyph];
-          if (v59)
+          glyph = [(RBSymbolAnimator *)self glyph];
+          if (glyph)
           {
             if (objc_opt_respondsToSelector())
             {
-              v59 = [(CUINamedVectorGlyph *)v59 symbolDefaults];
+              glyph = [(CUINamedVectorGlyph *)glyph symbolDefaults];
             }
 
             else
             {
-              v59 = 0;
+              glyph = 0;
             }
           }
         }
 
-        v60 = [(CUINamedVectorGlyph *)v59 objectForKeyedSubscript:@"wiggleStyle"];
+        v60 = [(CUINamedVectorGlyph *)glyph objectForKeyedSubscript:@"wiggleStyle"];
         if (!v60)
         {
           break;
         }
 
-        v61 = [v60 unsignedIntValue];
-        if ((v61 - 1) >= 2)
+        unsignedIntValue6 = [v60 unsignedIntValue];
+        if ((unsignedIntValue6 - 1) >= 2)
         {
-          if (v61 != 3)
+          if (unsignedIntValue6 != 3)
           {
             break;
           }
 
-          v62 = [(CUINamedVectorGlyph *)v59 objectForKeyedSubscript:@"wiggleAngle"];
+          v62 = [(CUINamedVectorGlyph *)glyph objectForKeyedSubscript:@"wiggleAngle"];
           if (!v62)
           {
             break;
@@ -990,16 +990,16 @@ LABEL_129:
 
         else
         {
-          v67.i32[1] = v20 | 0x80000000;
+          animationCopy.i32[1] = v20 | 0x80000000;
           v68 = v19 | 0x80000000;
           if (v19 >> 30)
           {
             break;
           }
 
-          if (v61 != 1)
+          if (unsignedIntValue6 != 1)
           {
-            v67.i32[1] = v20 | 0xC0000000;
+            animationCopy.i32[1] = v20 | 0xC0000000;
           }
         }
 
@@ -1008,31 +1008,31 @@ LABEL_143:
         v68 = v48;
         break;
       case 0xBu:
-        v51 = [a4 objectForKeyedSubscript:RBSymbolAnimationRotateOptions];
+        v51 = [options objectForKeyedSubscript:RBSymbolAnimationRotateOptions];
         if (!v51)
         {
           goto LABEL_81;
         }
 
-        v52 = [v51 unsignedIntValue];
-        if ((v52 & 0xF) == 1)
+        unsignedIntValue7 = [v51 unsignedIntValue];
+        if ((unsignedIntValue7 & 0xF) == 1)
         {
           goto LABEL_77;
         }
 
-        if ((v52 & 0xF) == 2)
+        if ((unsignedIntValue7 & 0xF) == 2)
         {
           v20 |= 0x80000000;
-          v67.i32[1] = v20;
+          animationCopy.i32[1] = v20;
 LABEL_77:
           v19 |= 0x80000000;
           v68 = v19;
         }
 
-        if ((v52 & 0x10) != 0)
+        if ((unsignedIntValue7 & 0x10) != 0)
         {
           v20 |= 0x20u;
-          v67.i32[1] = v20;
+          animationCopy.i32[1] = v20;
         }
 
         if ((v19 & 0x80000000) != 0)
@@ -1041,26 +1041,26 @@ LABEL_77:
         }
 
 LABEL_81:
-        v53 = [a4 objectForKeyedSubscript:RBSymbolAnimationSymbolDefaults];
-        if (!v53)
+        glyph2 = [options objectForKeyedSubscript:RBSymbolAnimationSymbolDefaults];
+        if (!glyph2)
         {
-          v53 = [(RBSymbolAnimator *)self glyph];
-          if (v53)
+          glyph2 = [(RBSymbolAnimator *)self glyph];
+          if (glyph2)
           {
-            v58 = v53;
+            v58 = glyph2;
             if (objc_opt_respondsToSelector())
             {
-              v53 = [(CUINamedVectorGlyph *)v58 symbolDefaults];
+              glyph2 = [(CUINamedVectorGlyph *)v58 symbolDefaults];
             }
 
             else
             {
-              v53 = 0;
+              glyph2 = 0;
             }
           }
         }
 
-        v54 = [(CUINamedVectorGlyph *)v53 objectForKeyedSubscript:@"rotatesClockwise"];
+        v54 = [(CUINamedVectorGlyph *)glyph2 objectForKeyedSubscript:@"rotatesClockwise"];
         if (!v54)
         {
           break;
@@ -1069,14 +1069,14 @@ LABEL_81:
         if (([v54 BOOLValue] & 1) == 0)
         {
 LABEL_87:
-          v67.i32[1] = v20 | 0x80000000;
+          animationCopy.i32[1] = v20 | 0x80000000;
         }
 
 LABEL_88:
         v48 = v19 | 0x80000000;
         goto LABEL_143;
       case 0xCu:
-        v30 = [a4 objectForKeyedSubscript:RBSymbolAnimationBreatheOptions];
+        v30 = [options objectForKeyedSubscript:RBSymbolAnimationBreatheOptions];
         if (!v30 || ([v30 unsignedIntValue] & 1) == 0)
         {
           break;
@@ -1088,22 +1088,22 @@ LABEL_72:
         goto LABEL_117;
       case 0xDu:
       case 0xEu:
-        v26 = [a4 objectForKeyedSubscript:RBSymbolAnimationDrawOnOffOptions];
+        v26 = [options objectForKeyedSubscript:RBSymbolAnimationDrawOnOffOptions];
         if (!v26)
         {
           break;
         }
 
-        v27 = [v26 unsignedIntValue];
-        if (v27)
+        unsignedIntValue8 = [v26 unsignedIntValue];
+        if (unsignedIntValue8)
         {
           v20 |= 0x80000000;
           v19 |= 0x80000000;
-          v67.i32[1] = v20;
+          animationCopy.i32[1] = v20;
           v68 = v19;
         }
 
-        if ((v27 & 2) == 0)
+        if ((unsignedIntValue8 & 2) == 0)
         {
           break;
         }
@@ -1111,7 +1111,7 @@ LABEL_72:
         v28 = v20 | 0x40000000;
         v29 = v19 | 0x40000000;
 LABEL_117:
-        v67.i32[1] = v28;
+        animationCopy.i32[1] = v28;
         v68 = v29;
         break;
       default:
@@ -1120,7 +1120,7 @@ LABEL_117:
   }
 
 LABEL_144:
-  v65 = RB::Symbol::Animator::add_animation(&self->_animator, &v67);
+  v65 = RB::Symbol::Animator::add_animation(&self->_animator, &animationCopy);
   if (v65)
   {
     [(RBSymbolAnimator *)self notifyObservers];
@@ -1129,18 +1129,18 @@ LABEL_144:
   return v65;
 }
 
-- (void)cancelAnimationWithID:(unsigned int)a3
+- (void)cancelAnimationWithID:(unsigned int)d
 {
-  if (a3 && RB::Symbol::Animator::cancel_animation_by_id(&self->_animator._lock._lock, a3))
+  if (d && RB::Symbol::Animator::cancel_animation_by_id(&self->_animator._lock._lock, d))
   {
 
     [(RBSymbolAnimator *)self notifyObservers];
   }
 }
 
-- (void)cancelAnimation:(unsigned int)a3
+- (void)cancelAnimation:(unsigned int)animation
 {
-  if (RB::Symbol::Animator::cancel_animations_by_mask(&self->_animator._lock._lock, 1 << a3))
+  if (RB::Symbol::Animator::cancel_animations_by_mask(&self->_animator._lock._lock, 1 << animation))
   {
 
     [(RBSymbolAnimator *)self notifyObservers];
@@ -1156,18 +1156,18 @@ LABEL_144:
   }
 }
 
-- (void)removeAnimationWithID:(unsigned int)a3
+- (void)removeAnimationWithID:(unsigned int)d
 {
-  if (a3 && RB::Symbol::Animator::remove_animation_by_id(&self->_animator._lock._lock, a3))
+  if (d && RB::Symbol::Animator::remove_animation_by_id(&self->_animator._lock._lock, d))
   {
 
     [(RBSymbolAnimator *)self notifyObservers];
   }
 }
 
-- (void)removeAnimation:(unsigned int)a3
+- (void)removeAnimation:(unsigned int)animation
 {
-  if (RB::Symbol::Animator::remove_animations_by_mask(&self->_animator._lock._lock, 1 << a3))
+  if (RB::Symbol::Animator::remove_animations_by_mask(&self->_animator._lock._lock, 1 << animation))
   {
 
     [(RBSymbolAnimator *)self notifyObservers];
@@ -1183,18 +1183,18 @@ LABEL_144:
   }
 }
 
-- (void)setPriority:(float)a3 ofAnimationWithID:(unsigned int)a4
+- (void)setPriority:(float)priority ofAnimationWithID:(unsigned int)d
 {
-  if (RB::Symbol::Animator::set_priority_by_id(&self->_animator._lock._lock, a4, a3))
+  if (RB::Symbol::Animator::set_priority_by_id(&self->_animator._lock._lock, d, priority))
   {
 
     [(RBSymbolAnimator *)self notifyObservers];
   }
 }
 
-- (void)setCurrentTime:(double)a3
+- (void)setCurrentTime:(double)time
 {
-  if (RB::Symbol::Animator::set_current_time(&self->_animator._lock._lock, a3))
+  if (RB::Symbol::Animator::set_current_time(&self->_animator._lock._lock, time))
   {
 
     [(RBSymbolAnimator *)self notifyObservers];
@@ -1245,21 +1245,21 @@ LABEL_144:
   return result;
 }
 
-- (void)endUpdate:(_RBSymbolUpdate *)a3
+- (void)endUpdate:(_RBSymbolUpdate *)update
 {
-  if (a3)
+  if (update)
   {
-    RB::Symbol::Presentation::~Presentation(a3);
+    RB::Symbol::Presentation::~Presentation(update);
 
     JUMPOUT(0x19A8C09E0);
   }
 }
 
-- (id)copyDebugDescriptionForUpdate:(_RBSymbolUpdate *)a3
+- (id)copyDebugDescriptionForUpdate:(_RBSymbolUpdate *)update
 {
   *__p = 0u;
   memset(v8, 0, sizeof(v8));
-  RB::Symbol::Presentation::print(a3, __p, &self->_animator._lock._lock, 0);
+  RB::Symbol::Presentation::print(update, __p, &self->_animator._lock._lock, 0);
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   if (v8[7] >= 0)
   {
@@ -1282,16 +1282,16 @@ LABEL_144:
 
 - (uint64_t)notifyObservers
 {
-  v2 = *(a1 + 8);
-  v3 = *(a1 + 9);
+  v2 = *(self + 8);
+  v3 = *(self + 9);
   if (v2)
   {
-    v4 = v2;
+    selfCopy = v2;
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
   if (!v3)
@@ -1300,7 +1300,7 @@ LABEL_144:
   }
 
   v5 = 16 * v3;
-  v6 = (v4 + 8);
+  v6 = (selfCopy + 8);
   do
   {
     v7 = *v6;
@@ -1310,23 +1310,23 @@ LABEL_144:
   }
 
   while (v5);
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 8);
+    v2 = *(self + 8);
     if (v2)
     {
-      v9 = *(a1 + 8);
+      selfCopy2 = *(self + 8);
     }
 
     else
     {
-      v9 = a1;
+      selfCopy2 = self;
     }
 
-    if (*(a1 + 9))
+    if (*(self + 9))
     {
       v10 = 0;
-      v11 = (v9 + 8);
+      v11 = (selfCopy2 + 8);
       do
       {
 
@@ -1334,8 +1334,8 @@ LABEL_144:
         v11 += 2;
       }
 
-      while (v10 < *(a1 + 9));
-      v2 = *(a1 + 8);
+      while (v10 < *(self + 9));
+      v2 = *(self + 8);
     }
 
 LABEL_15:
@@ -1350,22 +1350,22 @@ LABEL_15:
   return result;
 }
 
-- (void)removeObserver:(uint64_t)a1
+- (void)removeObserver:(uint64_t)observer
 {
-  if (a1)
+  if (observer)
   {
-    os_unfair_lock_lock((a1 + 80));
-    v4 = *(a1 + 112);
+    os_unfair_lock_lock((observer + 80));
+    v4 = *(observer + 112);
     if (v4)
     {
       v5 = 0;
       v6 = 8 * v4;
       do
       {
-        v7 = *(a1 + 104);
+        v7 = *(observer + 104);
         if (!v7)
         {
-          v7 = a1 + 88;
+          v7 = observer + 88;
         }
 
         v8 = *(v7 + v5);
@@ -1374,8 +1374,8 @@ LABEL_15:
           v9 = v4 - 1;
           *(v7 + v5) = *(v7 + 8 * v9);
           *(v7 + 8 * v9) = v8;
-          LODWORD(v4) = *(a1 + 112) - 1;
-          *(a1 + 112) = v4;
+          LODWORD(v4) = *(observer + 112) - 1;
+          *(observer + 112) = v4;
         }
 
         v5 += 8;
@@ -1384,7 +1384,7 @@ LABEL_15:
       while (v6 != v5);
     }
 
-    os_unfair_lock_unlock((a1 + 80));
+    os_unfair_lock_unlock((observer + 80));
   }
 }
 

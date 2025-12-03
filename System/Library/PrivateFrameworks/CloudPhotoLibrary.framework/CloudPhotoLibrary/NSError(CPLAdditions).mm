@@ -18,50 +18,50 @@
 
 - (uint64_t)cplReturnCode
 {
-  v1 = [a1 cplUnderlyingPOSIXError];
-  v2 = v1;
-  if (v1)
+  cplUnderlyingPOSIXError = [self cplUnderlyingPOSIXError];
+  v2 = cplUnderlyingPOSIXError;
+  if (cplUnderlyingPOSIXError)
   {
-    v3 = [v1 code];
+    code = [cplUnderlyingPOSIXError code];
   }
 
   else
   {
-    v3 = 0xFFFFFFFFLL;
+    code = 0xFFFFFFFFLL;
   }
 
-  return v3;
+  return code;
 }
 
 - (id)cplReinflatedErrorForXPC
 {
   v8 = 0;
-  v2 = [a1 _cplReinflatedUserInfoForXPCDidChange:&v8];
+  v2 = [self _cplReinflatedUserInfoForXPCDidChange:&v8];
   v3 = objc_opt_class();
   if (v3 == objc_opt_class() && v8 != 1)
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
   else
   {
     v4 = MEMORY[0x1E696ABC0];
-    v5 = [a1 domain];
-    v6 = [v4 errorWithDomain:v5 code:objc_msgSend(a1 userInfo:{"code"), v2}];
+    domain = [self domain];
+    selfCopy = [v4 errorWithDomain:domain code:objc_msgSend(self userInfo:{"code"), v2}];
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)_cplReinflatedUserInfoForXPCDidChange:()CPLAdditions
 {
-  v4 = [a1 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"CPLErrorRetryAfterDate"];
+  userInfo = [self userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"CPLErrorRetryAfterDate"];
 
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v4];
-    v7 = [v4 objectForKeyedSubscript:@"CPLErrorRetryAfterDate"];
+    v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:userInfo];
+    v7 = [userInfo objectForKeyedSubscript:@"CPLErrorRetryAfterDate"];
     v8 = MEMORY[0x1E695DF00];
     [v7 doubleValue];
     v9 = [v8 dateWithTimeIntervalSinceReferenceDate:?];
@@ -73,7 +73,7 @@
   else
   {
     *a3 = 0;
-    v6 = v4;
+    v6 = userInfo;
   }
 
   return v6;
@@ -82,35 +82,35 @@
 - (id)cplSafeErrorForXPC
 {
   v8 = 0;
-  v2 = [a1 _cplSafeUserInfoForXPCDidChange:&v8];
+  v2 = [self _cplSafeUserInfoForXPCDidChange:&v8];
   v3 = objc_opt_class();
   if (v3 == objc_opt_class() && v8 != 1)
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
   else
   {
     v4 = MEMORY[0x1E696ABC0];
-    v5 = [a1 domain];
-    v6 = [v4 errorWithDomain:v5 code:objc_msgSend(a1 userInfo:{"code"), v2}];
+    domain = [self domain];
+    selfCopy = [v4 errorWithDomain:domain code:objc_msgSend(self userInfo:{"code"), v2}];
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)_cplSafeUserInfoForXPCDidChange:()CPLAdditions
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = [a1 userInfo];
-  v5 = [v4 count];
+  userInfo = [self userInfo];
+  v5 = [userInfo count];
   v6 = *MEMORY[0x1E696A578];
-  v7 = [v4 objectForKey:*MEMORY[0x1E696A578]];
+  v7 = [userInfo objectForKey:*MEMORY[0x1E696A578]];
   v8 = v7;
   if (!v5 || v5 == 1 && v7)
   {
     *a3 = 0;
-    v9 = v4;
+    v9 = userInfo;
   }
 
   else
@@ -148,7 +148,7 @@
           }
 
           v16 = *(*(&v27 + 1) + 8 * i);
-          v17 = [v4 objectForKey:{v16, v27}];
+          v17 = [userInfo objectForKey:{v16, v27}];
           if (v17)
           {
             [v9 setObject:v17 forKey:v16];
@@ -161,7 +161,7 @@
       while (v13);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"CPLErrorRetryAfterDate"];
+    v18 = [userInfo objectForKeyedSubscript:@"CPLErrorRetryAfterDate"];
     v19 = v18;
     if (v18)
     {
@@ -172,12 +172,12 @@
     }
 
     v22 = *MEMORY[0x1E696AA08];
-    v23 = [v4 objectForKey:{*MEMORY[0x1E696AA08], v27}];
-    v24 = [v23 cplSafeErrorForXPC];
+    v23 = [userInfo objectForKey:{*MEMORY[0x1E696AA08], v27}];
+    cplSafeErrorForXPC = [v23 cplSafeErrorForXPC];
 
-    if (v24)
+    if (cplSafeErrorForXPC)
     {
-      [v9 setObject:v24 forKey:v22];
+      [v9 setObject:cplSafeErrorForXPC forKey:v22];
     }
   }
 
@@ -193,10 +193,10 @@
     dispatch_once(&cplShortDomainDescription_onceToken, &__block_literal_global_10475);
   }
 
-  v2 = [a1 domain];
-  if (v2)
+  domain = [self domain];
+  if (domain)
   {
-    v3 = [cplShortDomainDescription_wellKnownDomainToShortDomain objectForKey:v2];
+    v3 = [cplShortDomainDescription_wellKnownDomainToShortDomain objectForKey:domain];
     v4 = v3;
     if (v3)
     {
@@ -205,7 +205,7 @@
 
     else
     {
-      v5 = v2;
+      v5 = domain;
     }
 
     v6 = v5;
@@ -221,22 +221,22 @@
 
 - (id)cplUnderlyingError
 {
-  v1 = a1;
-  v2 = [v1 userInfo];
+  selfCopy = self;
+  userInfo = [selfCopy userInfo];
   v3 = *MEMORY[0x1E696AA08];
-  v4 = [v2 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+  v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
   if (v4)
   {
     do
     {
-      v5 = [v1 userInfo];
-      v6 = [v5 objectForKeyedSubscript:v3];
+      userInfo2 = [selfCopy userInfo];
+      v6 = [userInfo2 objectForKeyedSubscript:v3];
 
-      v7 = [v6 userInfo];
-      v8 = [v7 objectForKeyedSubscript:v3];
+      userInfo3 = [v6 userInfo];
+      v8 = [userInfo3 objectForKeyedSubscript:v3];
 
-      v1 = v6;
+      selfCopy = v6;
     }
 
     while (v8);
@@ -244,7 +244,7 @@
 
   else
   {
-    v6 = v1;
+    v6 = selfCopy;
   }
 
   return v6;
@@ -252,76 +252,76 @@
 
 - (id)cplUnderlyingPOSIXError
 {
-  v1 = a1;
+  selfCopy = self;
   v2 = *MEMORY[0x1E696A798];
   v3 = *MEMORY[0x1E696AA08];
   do
   {
-    v4 = [v1 domain];
-    v5 = [v4 isEqual:v2];
+    domain = [selfCopy domain];
+    v5 = [domain isEqual:v2];
 
     if (v5)
     {
       break;
     }
 
-    v6 = [v1 userInfo];
-    v7 = [v6 objectForKey:v3];
+    userInfo = [selfCopy userInfo];
+    v7 = [userInfo objectForKey:v3];
 
-    v1 = v7;
+    selfCopy = v7;
   }
 
   while (v7);
 
-  return v1;
+  return selfCopy;
 }
 
 - (BOOL)isCPLEncryptionError
 {
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:@"CloudPhotoLibraryErrorDomain"];
+  domain = [self domain];
+  v3 = [domain isEqualToString:@"CloudPhotoLibraryErrorDomain"];
 
-  return v3 && [a1 code] == 70;
+  return v3 && [self code] == 70;
 }
 
 - (BOOL)isCPLThrottlingError
 {
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:@"CloudPhotoLibraryErrorDomain"];
+  domain = [self domain];
+  v3 = [domain isEqualToString:@"CloudPhotoLibraryErrorDomain"];
 
-  return v3 && ([a1 code] & 0xFFFFFFFFFFFFFFFBLL) == 1000;
+  return v3 && ([self code] & 0xFFFFFFFFFFFFFFFBLL) == 1000;
 }
 
 - (uint64_t)isCPLOperationCancelledError
 {
-  if ([a1 code] != 3072)
+  if ([self code] != 3072)
   {
     return 0;
   }
 
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E696A250]];
+  domain = [self domain];
+  v3 = [domain isEqualToString:*MEMORY[0x1E696A250]];
 
   return v3;
 }
 
 - (uint64_t)isCPLError
 {
-  v1 = [a1 domain];
-  v2 = [v1 isEqual:@"CloudPhotoLibraryErrorDomain"];
+  domain = [self domain];
+  v2 = [domain isEqual:@"CloudPhotoLibraryErrorDomain"];
 
   return v2;
 }
 
 - (uint64_t)isCPLErrorWithCode:()CPLAdditions
 {
-  if ([a1 code] != a3)
+  if ([self code] != a3)
   {
     return 0;
   }
 
-  v4 = [a1 domain];
-  v5 = [v4 isEqual:@"CloudPhotoLibraryErrorDomain"];
+  domain = [self domain];
+  v5 = [domain isEqual:@"CloudPhotoLibraryErrorDomain"];
 
   return v5;
 }

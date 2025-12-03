@@ -1,32 +1,32 @@
 @interface SidebarBrickCollectionViewListCell
-- (_TtC7Journal34SidebarBrickCollectionViewListCell)initWithCoder:(id)a3;
-- (_TtC7Journal34SidebarBrickCollectionViewListCell)initWithFrame:(CGRect)a3;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (_TtC7Journal34SidebarBrickCollectionViewListCell)initWithCoder:(id)coder;
+- (_TtC7Journal34SidebarBrickCollectionViewListCell)initWithFrame:(CGRect)frame;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 @end
 
 @implementation SidebarBrickCollectionViewListCell
 
-- (_TtC7Journal34SidebarBrickCollectionViewListCell)initWithFrame:(CGRect)a3
+- (_TtC7Journal34SidebarBrickCollectionViewListCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = type metadata accessor for SidebarBrickCollectionViewListCell();
-  v7 = [(SidebarBrickCollectionViewListCell *)&v9 initWithFrame:x, y, width, height];
-  [(SidebarBrickCollectionViewListCell *)v7 setFocusEffect:0];
-  return v7;
+  height = [(SidebarBrickCollectionViewListCell *)&v9 initWithFrame:x, y, width, height];
+  [(SidebarBrickCollectionViewListCell *)height setFocusEffect:0];
+  return height;
 }
 
-- (_TtC7Journal34SidebarBrickCollectionViewListCell)initWithCoder:(id)a3
+- (_TtC7Journal34SidebarBrickCollectionViewListCell)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_1000F24EC(&qword_100AF16C0);
   __chkstk_darwin(v4 - 8);
@@ -36,10 +36,10 @@
   __chkstk_darwin(v7);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = self;
+  selfCopy = self;
   isa = UICellConfigurationState._bridgeToObjectiveC()().super.super.isa;
   v13 = type metadata accessor for SidebarBrickCollectionViewListCell();
-  v15.receiver = v11;
+  v15.receiver = selfCopy;
   v15.super_class = v13;
   [(SidebarBrickCollectionViewListCell *)&v15 _bridgedUpdateConfigurationUsingState:isa];
 

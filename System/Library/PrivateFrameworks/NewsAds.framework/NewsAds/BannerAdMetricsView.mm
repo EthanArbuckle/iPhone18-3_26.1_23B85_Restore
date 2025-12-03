@@ -1,8 +1,8 @@
 @interface BannerAdMetricsView
-- (_TtC7NewsAds19BannerAdMetricsView)initWithFrame:(CGRect)a3;
+- (_TtC7NewsAds19BannerAdMetricsView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)metricsViewCollapsed:(id)a3;
-- (void)metricsViewReady:(id)a3;
+- (void)metricsViewCollapsed:(id)collapsed;
+- (void)metricsViewReady:(id)ready;
 @end
 
 @implementation BannerAdMetricsView
@@ -21,30 +21,30 @@
   }
 }
 
-- (_TtC7NewsAds19BannerAdMetricsView)initWithFrame:(CGRect)a3
+- (_TtC7NewsAds19BannerAdMetricsView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)metricsViewReady:(id)a3
+- (void)metricsViewReady:(id)ready
 {
-  v4 = a3;
-  v5 = self;
+  readyCopy = ready;
+  selfCopy = self;
   sub_1D7703E30();
-  sub_1D76BFB50(v4);
-  v6 = [v4 ready];
+  sub_1D76BFB50(readyCopy);
+  ready = [readyCopy ready];
   sub_1D76899CC();
   sub_1D77034A0();
 
-  sub_1D7689A20(v6);
+  sub_1D7689A20(ready);
 }
 
-- (void)metricsViewCollapsed:(id)a3
+- (void)metricsViewCollapsed:(id)collapsed
 {
   sub_1D76899CC();
-  v4 = self;
+  selfCopy = self;
   sub_1D77034A0();
 }
 

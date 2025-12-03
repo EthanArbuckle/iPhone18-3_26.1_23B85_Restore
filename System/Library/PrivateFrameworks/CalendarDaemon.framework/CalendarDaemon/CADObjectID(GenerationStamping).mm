@@ -6,7 +6,7 @@
 
 - (CADGenerationStampedObjectID)stampedCopyWithGeneration:()GenerationStamping
 {
-  v3 = -[CADGenerationStampedObjectID initWithEntityType:entityID:databaseID:generation:]([CADGenerationStampedObjectID alloc], "initWithEntityType:entityID:databaseID:generation:", [a1 entityType], objc_msgSend(a1, "entityID"), objc_msgSend(a1, "databaseID"), a3);
+  v3 = -[CADGenerationStampedObjectID initWithEntityType:entityID:databaseID:generation:]([CADGenerationStampedObjectID alloc], "initWithEntityType:entityID:databaseID:generation:", [self entityType], objc_msgSend(self, "entityID"), objc_msgSend(self, "databaseID"), a3);
 
   return v3;
 }

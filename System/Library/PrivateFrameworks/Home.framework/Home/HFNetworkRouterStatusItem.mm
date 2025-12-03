@@ -1,7 +1,7 @@
 @interface HFNetworkRouterStatusItem
 + (NSSet)serviceTypes;
-- (HFNetworkRouterStatusItem)initWithHome:(id)a3 room:(id)a4 valueSource:(id)a5;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HFNetworkRouterStatusItem)initWithHome:(id)home room:(id)room valueSource:(id)source;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFNetworkRouterStatusItem
@@ -25,24 +25,24 @@
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  if (a3)
+  if (options)
   {
     sub_20DD64DC4();
   }
 
-  v4 = self;
+  selfCopy = self;
   updated = _sSo25HFNetworkRouterStatusItemC4HomeE16_subclass_update7optionsSo8NAFutureCySo19HFItemUpdateOutcomeCGSDys11AnyHashableVypGSg_tF_0();
 
   return updated;
 }
 
-- (HFNetworkRouterStatusItem)initWithHome:(id)a3 room:(id)a4 valueSource:(id)a5
+- (HFNetworkRouterStatusItem)initWithHome:(id)home room:(id)room valueSource:(id)source
 {
   v6.receiver = self;
   v6.super_class = HFNetworkRouterStatusItem;
-  return [(HFStatusItem *)&v6 initWithHome:a3 room:a4 valueSource:a5];
+  return [(HFStatusItem *)&v6 initWithHome:home room:room valueSource:source];
 }
 
 @end

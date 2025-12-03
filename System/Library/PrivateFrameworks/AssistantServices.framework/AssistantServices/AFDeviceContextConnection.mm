@@ -1,33 +1,33 @@
 @interface AFDeviceContextConnection
-- (AFDeviceContextConnection)initWithQueue:(id)a3 instanceContext:(id)a4 delegate:(id)a5;
+- (AFDeviceContextConnection)initWithQueue:(id)queue instanceContext:(id)context delegate:(id)delegate;
 - (NSString)description;
-- (id)_remoteServiceWithErrorHandler:(id)a3;
+- (id)_remoteServiceWithErrorHandler:(id)handler;
 - (id)_xpcConnection;
 - (void)_beginUpdateLocalDeviceContext;
 - (void)_clearXPCConnection;
 - (void)_endUpdateLocalDeviceContext;
-- (void)_fetchLocalDeviceContextWithCompletion:(id)a3;
+- (void)_fetchLocalDeviceContextWithCompletion:(id)completion;
 - (void)_handleXPCConnectionInterruption;
 - (void)_handleXPCConnectionInvalidation;
 - (void)_invalidate;
-- (void)_updateLocalDeviceContext:(id)a3;
+- (void)_updateLocalDeviceContext:(id)context;
 - (void)beginUpdateLocalDeviceContext;
 - (void)dealloc;
-- (void)donateSerializedContextMapByPrivacyClass:(id)a3 withMetadataMap:(id)a4 forType:(id)a5 pushToRemote:(BOOL)a6 completion:(id)a7;
+- (void)donateSerializedContextMapByPrivacyClass:(id)class withMetadataMap:(id)map forType:(id)type pushToRemote:(BOOL)remote completion:(id)completion;
 - (void)endUpdateLocalDeviceContext;
-- (void)getLocalDeviceContextWithCompletion:(id)a3;
+- (void)getLocalDeviceContextWithCompletion:(id)completion;
 - (void)invalidate;
 @end
 
 @implementation AFDeviceContextConnection
 
-- (void)_updateLocalDeviceContext:(id)a3
+- (void)_updateLocalDeviceContext:(id)context
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   dispatch_assert_queue_V2(self->_queue);
   v5 = self->_localDeviceContext;
-  v6 = v4;
+  v6 = contextCopy;
   v7 = v6;
   if (v5 == v6)
   {
@@ -55,16 +55,16 @@ LABEL_13:
   {
     localDeviceContext = self->_localDeviceContext;
     v11 = v9;
-    v12 = [(AFDeviceContext *)localDeviceContext identifier];
-    v13 = [(AFDeviceContext *)v7 identifier];
+    identifier = [(AFDeviceContext *)localDeviceContext identifier];
+    identifier2 = [(AFDeviceContext *)v7 identifier];
     v20 = 136315906;
     v21 = "[AFDeviceContextConnection _updateLocalDeviceContext:]";
     v22 = 2048;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
-    v25 = v12;
+    v25 = identifier;
     v26 = 2112;
-    v27 = v13;
+    v27 = identifier2;
     _os_log_impl(&dword_1912FE000, v11, OS_LOG_TYPE_INFO, "%s %p localDeviceContext (old) = %@ (new) = %@", &v20, 0x2Au);
   }
 
@@ -104,7 +104,7 @@ LABEL_14:
       *buf = 136315394;
       v11 = "[AFDeviceContextConnection _endUpdateLocalDeviceContext]";
       v12 = 2048;
-      v13 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&dword_1912FE000, v3, OS_LOG_TYPE_ERROR, "%s %p Ignored because the connection is invalidated.", buf, 0x16u);
     }
   }
@@ -121,7 +121,7 @@ LABEL_14:
       *buf = 136315394;
       v11 = "[AFDeviceContextConnection _endUpdateLocalDeviceContext]";
       v12 = 2048;
-      v13 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s %p", buf, 0x16u);
     }
 
@@ -174,7 +174,7 @@ void __57__AFDeviceContextConnection__endUpdateLocalDeviceContext__block_invoke(
       *buf = 136315394;
       v16 = "[AFDeviceContextConnection _beginUpdateLocalDeviceContext]";
       v17 = 2048;
-      v18 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&dword_1912FE000, v3, OS_LOG_TYPE_ERROR, "%s %p Ignored because the connection is invalidated.", buf, 0x16u);
     }
   }
@@ -191,7 +191,7 @@ void __57__AFDeviceContextConnection__endUpdateLocalDeviceContext__block_invoke(
       *buf = 136315394;
       v16 = "[AFDeviceContextConnection _beginUpdateLocalDeviceContext]";
       v17 = 2048;
-      v18 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s %p", buf, 0x16u);
     }
 
@@ -263,10 +263,10 @@ void __59__AFDeviceContextConnection__beginUpdateLocalDeviceContext__block_invok
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_fetchLocalDeviceContextWithCompletion:(id)a3
+- (void)_fetchLocalDeviceContextWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v5 = AFSiriLogContextConnection;
   if (self->_isInvalid)
@@ -276,9 +276,9 @@ void __59__AFDeviceContextConnection__beginUpdateLocalDeviceContext__block_invok
       *buf = 136315394;
       v14 = "[AFDeviceContextConnection _fetchLocalDeviceContextWithCompletion:]";
       v15 = 2048;
-      v16 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&dword_1912FE000, v5, OS_LOG_TYPE_ERROR, "%s %p Ignored because the connection is invalidated.", buf, 0x16u);
-      if (!v4)
+      if (!completionCopy)
       {
         goto LABEL_8;
       }
@@ -286,10 +286,10 @@ void __59__AFDeviceContextConnection__beginUpdateLocalDeviceContext__block_invok
       goto LABEL_4;
     }
 
-    if (v4)
+    if (completionCopy)
     {
 LABEL_4:
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -300,7 +300,7 @@ LABEL_4:
       *buf = 136315394;
       v14 = "[AFDeviceContextConnection _fetchLocalDeviceContextWithCompletion:]";
       v15 = 2048;
-      v16 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s %p", buf, 0x16u);
     }
 
@@ -316,7 +316,7 @@ LABEL_4:
     v8[2] = __68__AFDeviceContextConnection__fetchLocalDeviceContextWithCompletion___block_invoke_11;
     v8[3] = &unk_1E73482D0;
     objc_copyWeak(&v10, buf);
-    v9 = v4;
+    v9 = completionCopy;
     [v6 getLocalDeviceContextWithReply:v8];
 
     objc_destroyWeak(&v10);
@@ -381,20 +381,20 @@ void __68__AFDeviceContextConnection__fetchLocalDeviceContextWithCompletion___bl
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_remoteServiceWithErrorHandler:(id)a3
+- (id)_remoteServiceWithErrorHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_isInvalid)
   {
-    v6 = [(AFDeviceContextConnection *)self _xpcConnection];
+    _xpcConnection = [(AFDeviceContextConnection *)self _xpcConnection];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __60__AFDeviceContextConnection__remoteServiceWithErrorHandler___block_invoke;
     v10[3] = &unk_1E7348AA8;
-    v11 = v4;
-    v7 = [v6 remoteObjectProxyWithErrorHandler:v10];
+    v11 = handlerCopy;
+    v7 = [_xpcConnection remoteObjectProxyWithErrorHandler:v10];
 
     goto LABEL_6;
   }
@@ -405,19 +405,19 @@ void __68__AFDeviceContextConnection__fetchLocalDeviceContextWithCompletion___bl
     *buf = 136315394;
     v13 = "[AFDeviceContextConnection _remoteServiceWithErrorHandler:]";
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_1912FE000, v5, OS_LOG_TYPE_ERROR, "%s %p Ignored because the connection is invalidated.", buf, 0x16u);
-    if (v4)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
 LABEL_4:
-    v6 = [AFError errorWithCode:23];
-    (*(v4 + 2))(v4, v6);
+    _xpcConnection = [AFError errorWithCode:23];
+    (*(handlerCopy + 2))(handlerCopy, _xpcConnection);
     v7 = 0;
 LABEL_6:
 
@@ -457,7 +457,7 @@ uint64_t __60__AFDeviceContextConnection__remoteServiceWithErrorHandler___block_
       v6 = 136315394;
       v7 = "[AFDeviceContextConnection _invalidate]";
       v8 = 2048;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s %p", &v6, 0x16u);
     }
 
@@ -484,7 +484,7 @@ uint64_t __60__AFDeviceContextConnection__remoteServiceWithErrorHandler___block_
       v7 = 136315650;
       v8 = "[AFDeviceContextConnection _clearXPCConnection]";
       v9 = 2048;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
       v12 = xpcConnection;
       _os_log_impl(&dword_1912FE000, v4, OS_LOG_TYPE_INFO, "%s %p xpcConnection = %@", &v7, 0x20u);
@@ -510,7 +510,7 @@ uint64_t __60__AFDeviceContextConnection__remoteServiceWithErrorHandler___block_
     v6 = 136315650;
     v7 = "[AFDeviceContextConnection _handleXPCConnectionInterruption]";
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = xpcConnection;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s %p xpcConnection = %@", &v6, 0x20u);
@@ -531,7 +531,7 @@ uint64_t __60__AFDeviceContextConnection__remoteServiceWithErrorHandler___block_
     v6 = 136315650;
     v7 = "[AFDeviceContextConnection _handleXPCConnectionInvalidation]";
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = xpcConnection;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s %p xpcConnection = %@", &v6, 0x20u);
@@ -553,7 +553,7 @@ uint64_t __60__AFDeviceContextConnection__remoteServiceWithErrorHandler___block_
       *buf = 136315394;
       v26 = "[AFDeviceContextConnection _xpcConnection]";
       v27 = 2048;
-      v28 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&dword_1912FE000, v3, OS_LOG_TYPE_ERROR, "%s %p Ignored because the connection is invalidated.", buf, 0x16u);
     }
 
@@ -605,7 +605,7 @@ uint64_t __60__AFDeviceContextConnection__remoteServiceWithErrorHandler___block_
         *buf = 136315650;
         v26 = "[AFDeviceContextConnection _xpcConnection]";
         v27 = 2048;
-        v28 = self;
+        selfCopy2 = self;
         v29 = 2112;
         v30 = v17;
         _os_log_impl(&dword_1912FE000, v16, OS_LOG_TYPE_INFO, "%s %p xpcConnection = %@", buf, 0x20u);
@@ -648,27 +648,27 @@ void __43__AFDeviceContextConnection__xpcConnection__block_invoke_2(uint64_t a1)
   dispatch_async(queue, block);
 }
 
-- (void)donateSerializedContextMapByPrivacyClass:(id)a3 withMetadataMap:(id)a4 forType:(id)a5 pushToRemote:(BOOL)a6 completion:(id)a7
+- (void)donateSerializedContextMapByPrivacyClass:(id)class withMetadataMap:(id)map forType:(id)type pushToRemote:(BOOL)remote completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  classCopy = class;
+  mapCopy = map;
+  typeCopy = type;
+  completionCopy = completion;
   queue = self->_queue;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __118__AFDeviceContextConnection_donateSerializedContextMapByPrivacyClass_withMetadataMap_forType_pushToRemote_completion___block_invoke;
   v21[3] = &unk_1E7349578;
   v21[4] = self;
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v26 = a6;
-  v25 = v15;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v22 = classCopy;
+  v23 = mapCopy;
+  v24 = typeCopy;
+  remoteCopy = remote;
+  v25 = completionCopy;
+  v17 = completionCopy;
+  v18 = typeCopy;
+  v19 = mapCopy;
+  v20 = classCopy;
   dispatch_async(queue, v21);
 }
 
@@ -738,9 +738,9 @@ void __118__AFDeviceContextConnection_donateSerializedContextMapByPrivacyClass_w
   dispatch_async(queue, block);
 }
 
-- (void)getLocalDeviceContextWithCompletion:(id)a3
+- (void)getLocalDeviceContextWithCompletion:(id)completion
 {
-  if (!a3)
+  if (!completion)
   {
     v8 = v3;
     v9 = v4;
@@ -774,20 +774,20 @@ void __65__AFDeviceContextConnection_getLocalDeviceContextWithCompletion___block
   }
 }
 
-- (AFDeviceContextConnection)initWithQueue:(id)a3 instanceContext:(id)a4 delegate:(id)a5
+- (AFDeviceContextConnection)initWithQueue:(id)queue instanceContext:(id)context delegate:(id)delegate
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  contextCopy = context;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = AFDeviceContextConnection;
   v11 = [(AFDeviceContextConnection *)&v22 init];
   if (v11)
   {
-    if (v8)
+    if (queueCopy)
     {
-      v12 = v8;
+      v12 = queueCopy;
       queue = v11->_queue;
       v11->_queue = v12;
     }
@@ -800,9 +800,9 @@ void __65__AFDeviceContextConnection_getLocalDeviceContextWithCompletion___block
       v11->_queue = v14;
     }
 
-    if (v9)
+    if (contextCopy)
     {
-      v16 = v9;
+      v16 = contextCopy;
     }
 
     else
@@ -813,7 +813,7 @@ void __65__AFDeviceContextConnection_getLocalDeviceContextWithCompletion___block
     instanceContext = v11->_instanceContext;
     v11->_instanceContext = v16;
 
-    objc_storeWeak(&v11->_delegate, v10);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
     v18 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
     {
@@ -842,7 +842,7 @@ void __65__AFDeviceContextConnection_getLocalDeviceContextWithCompletion___block
     *buf = 136315650;
     v8 = "[AFDeviceContextConnection dealloc]";
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = instanceContext;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s %p instanceContext = %@", buf, 0x20u);

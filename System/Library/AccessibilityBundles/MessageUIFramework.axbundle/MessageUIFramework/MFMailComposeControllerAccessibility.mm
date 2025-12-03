@@ -1,21 +1,21 @@
 @interface MFMailComposeControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_composeViewDidDraw:(id)a3;
+- (void)_composeViewDidDraw:(id)draw;
 - (void)viewDidLoad;
 @end
 
 @implementation MFMailComposeControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFMailComposeController" hasInstanceMethod:@"_composeViewDidDraw:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"MFMailComposeController" hasInstanceVariable:@"_toField" withType:"MFMailComposeToField"];
-  [v3 validateClass:@"MFMailComposeController" hasInstanceVariable:@"_sendButtonItem" withType:"UIBarButtonItem"];
-  [v3 validateClass:@"MFMailComposeController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"WKScrollView"];
-  [v3 validateClass:@"MFMailComposeController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFMailComposeController" hasInstanceMethod:@"_composeViewDidDraw:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"MFMailComposeController" hasInstanceVariable:@"_toField" withType:"MFMailComposeToField"];
+  [validationsCopy validateClass:@"MFMailComposeController" hasInstanceVariable:@"_sendButtonItem" withType:"UIBarButtonItem"];
+  [validationsCopy validateClass:@"MFMailComposeController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"WKScrollView"];
+  [validationsCopy validateClass:@"MFMailComposeController" isKindOfClass:@"UIViewController"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -41,11 +41,11 @@ uint64_t __82__MFMailComposeControllerAccessibility__accessibilityLoadAccessibil
   return isKindOfClass & 1;
 }
 
-- (void)_composeViewDidDraw:(id)a3
+- (void)_composeViewDidDraw:(id)draw
 {
   v3.receiver = self;
   v3.super_class = MFMailComposeControllerAccessibility;
-  [(MFMailComposeControllerAccessibility *)&v3 _composeViewDidDraw:a3];
+  [(MFMailComposeControllerAccessibility *)&v3 _composeViewDidDraw:draw];
   AXPerformBlockOnMainThreadAfterDelay();
 }
 

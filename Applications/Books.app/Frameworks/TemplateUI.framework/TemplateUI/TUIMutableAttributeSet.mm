@@ -1,48 +1,48 @@
 @interface TUIMutableAttributeSet
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addAttribute:(unsigned __int16)a3;
-- (void)addAttributesFromArray:(id)a3;
-- (void)removeAttribute:(unsigned __int16)a3;
-- (void)unionSet:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addAttribute:(unsigned __int16)attribute;
+- (void)addAttributesFromArray:(id)array;
+- (void)removeAttribute:(unsigned __int16)attribute;
+- (void)unionSet:(id)set;
 @end
 
 @implementation TUIMutableAttributeSet
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TUIAttributeSet allocWithZone:a3];
+  v4 = [TUIAttributeSet allocWithZone:zone];
 
   return [(TUIAttributeSet *)v4 initWithOther:self];
 }
 
-- (void)addAttribute:(unsigned __int16)a3
+- (void)addAttribute:(unsigned __int16)attribute
 {
-  if (a3 >= 0x100u)
+  if (attribute >= 0x100u)
   {
     sub_8BEBC("bitset set argument out of range");
   }
 
-  *(self->super._bitset.__first_ + ((a3 >> 3) & 0x1FF8)) |= 1 << a3;
+  *(self->super._bitset.__first_ + ((attribute >> 3) & 0x1FF8)) |= 1 << attribute;
 }
 
-- (void)removeAttribute:(unsigned __int16)a3
+- (void)removeAttribute:(unsigned __int16)attribute
 {
-  if (a3 >= 0x100u)
+  if (attribute >= 0x100u)
   {
     sub_8BEBC("bitset reset argument out of range");
   }
 
-  *(self->super._bitset.__first_ + ((a3 >> 3) & 0x1FF8)) &= ~(1 << a3);
+  *(self->super._bitset.__first_ + ((attribute >> 3) & 0x1FF8)) &= ~(1 << attribute);
 }
 
-- (void)addAttributesFromArray:(id)a3
+- (void)addAttributesFromArray:(id)array
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  arrayCopy = array;
+  v5 = [arrayCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -54,7 +54,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v9 = [TUIAttributeRegistry attributeWithName:*(*(&v10 + 1) + 8 * v8), v10];
@@ -68,20 +68,20 @@
       }
 
       while (v5 != v8);
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [arrayCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)unionSet:(id)a3
+- (void)unionSet:(id)set
 {
-  if (a3)
+  if (set)
   {
     for (i = 0; i != 4; ++i)
     {
-      self->super._bitset.__first_[i] |= *(a3 + i * 8 + 8);
+      self->super._bitset.__first_[i] |= *(set + i * 8 + 8);
     }
   }
 }

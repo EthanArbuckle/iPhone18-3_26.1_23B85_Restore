@@ -1,38 +1,38 @@
 @interface TVRCMatchPointDeviceImpl
-+ (id)implWithService:(id)a3;
++ (id)implWithService:(id)service;
 - (NSString)description;
-- (TVRCMatchPointDeviceImpl)initWithService:(id)a3;
+- (TVRCMatchPointDeviceImpl)initWithService:(id)service;
 - (_TVRCDeviceImplDelegate)delegate;
 - (id)allIdentifiers;
 - (id)identifier;
 - (id)model;
 - (id)name;
 - (id)supportedButtons;
-- (void)connectedToService:(id)a3;
-- (void)disconnectedFromService:(id)a3 error:(id)a4;
-- (void)service:(id)a3 updatedName:(id)a4;
+- (void)connectedToService:(id)service;
+- (void)disconnectedFromService:(id)service error:(id)error;
+- (void)service:(id)service updatedName:(id)name;
 @end
 
 @implementation TVRCMatchPointDeviceImpl
 
-+ (id)implWithService:(id)a3
++ (id)implWithService:(id)service
 {
-  v3 = a3;
-  v4 = [[TVRCMatchPointDeviceImpl alloc] initWithService:v3];
+  serviceCopy = service;
+  v4 = [[TVRCMatchPointDeviceImpl alloc] initWithService:serviceCopy];
 
   return v4;
 }
 
-- (TVRCMatchPointDeviceImpl)initWithService:(id)a3
+- (TVRCMatchPointDeviceImpl)initWithService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v9.receiver = self;
   v9.super_class = TVRCMatchPointDeviceImpl;
   v6 = [(TVRCMatchPointDeviceImpl *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_service, a3);
+    objc_storeStrong(&v6->_service, service);
     [(TVRCHMServiceWrapper *)v7->_service setDelegate:v7];
     v7->_priority = 1;
   }
@@ -43,26 +43,26 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(TVRCMatchPointDeviceImpl *)self name];
-  [v3 appendString:v4 withName:@"name"];
+  name = [(TVRCMatchPointDeviceImpl *)self name];
+  [v3 appendString:name withName:@"name"];
 
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 - (id)name
 {
-  v2 = [(TVRCHMServiceWrapper *)self->_service name];
-  v3 = [v2 copy];
+  name = [(TVRCHMServiceWrapper *)self->_service name];
+  v3 = [name copy];
 
   return v3;
 }
 
 - (id)identifier
 {
-  v2 = [(TVRCHMServiceWrapper *)self->_service identifier];
-  v3 = [v2 copy];
+  identifier = [(TVRCHMServiceWrapper *)self->_service identifier];
+  v3 = [identifier copy];
 
   return v3;
 }
@@ -70,20 +70,20 @@
 - (id)allIdentifiers
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(TVRCMatchPointDeviceImpl *)self identifier];
+  identifier = [(TVRCMatchPointDeviceImpl *)self identifier];
 
-  if (v4)
+  if (identifier)
   {
-    v5 = [(TVRCMatchPointDeviceImpl *)self identifier];
-    [v3 addObject:v5];
+    identifier2 = [(TVRCMatchPointDeviceImpl *)self identifier];
+    [v3 addObject:identifier2];
   }
 
-  v6 = [(TVRCMatchPointDeviceImpl *)self name];
+  name = [(TVRCMatchPointDeviceImpl *)self name];
 
-  if (v6)
+  if (name)
   {
-    v7 = [(TVRCMatchPointDeviceImpl *)self name];
-    [v3 addObject:v7];
+    name2 = [(TVRCMatchPointDeviceImpl *)self name];
+    [v3 addObject:name2];
   }
 
   v8 = [MEMORY[0x277CBEB98] setWithSet:v3];
@@ -93,8 +93,8 @@
 
 - (id)model
 {
-  v2 = [(TVRCHMServiceWrapper *)self->_service model];
-  v3 = [v2 copy];
+  model = [(TVRCHMServiceWrapper *)self->_service model];
+  v3 = [model copy];
 
   return v3;
 }
@@ -158,25 +158,25 @@
   return v17;
 }
 
-- (void)connectedToService:(id)a3
+- (void)connectedToService:(id)service
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained didConnectWithDevice:self];
 }
 
-- (void)disconnectedFromService:(id)a3 error:(id)a4
+- (void)disconnectedFromService:(id)service error:(id)error
 {
-  v5 = 4 * (a4 != 0);
-  v6 = a4;
+  v5 = 4 * (error != 0);
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained device:self didDisconnectWithReason:v5 error:v6];
+  [WeakRetained device:self didDisconnectWithReason:v5 error:errorCopy];
 }
 
-- (void)service:(id)a3 updatedName:(id)a4
+- (void)service:(id)service updatedName:(id)name
 {
-  v5 = a4;
+  nameCopy = name;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained device:self didUpdateName:v5];
+  [WeakRetained device:self didUpdateName:nameCopy];
 }
 
 - (_TVRCDeviceImplDelegate)delegate

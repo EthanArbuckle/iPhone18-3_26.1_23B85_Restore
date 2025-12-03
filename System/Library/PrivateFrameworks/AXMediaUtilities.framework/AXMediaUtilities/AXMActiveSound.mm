@@ -1,8 +1,8 @@
 @interface AXMActiveSound
 - (AXMActiveSound)init;
-- (BOOL)beginPlayback:(id)a3 withError:(id *)a4;
-- (void)connectToEngine:(id)a3;
-- (void)disconnectFromEngine:(id)a3;
+- (BOOL)beginPlayback:(id)playback withError:(id *)error;
+- (void)connectToEngine:(id)engine;
+- (void)disconnectFromEngine:(id)engine;
 @end
 
 @implementation AXMActiveSound
@@ -24,51 +24,51 @@
   return v2;
 }
 
-- (void)connectToEngine:(id)a3
+- (void)connectToEngine:(id)engine
 {
-  v4 = a3;
-  v5 = [(AXMActiveSound *)self player];
-  [v4 attachNode:v5];
+  engineCopy = engine;
+  player = [(AXMActiveSound *)self player];
+  [engineCopy attachNode:player];
 
-  v11 = [v4 mainMixerNode];
+  mainMixerNode = [engineCopy mainMixerNode];
   v6 = [objc_alloc(MEMORY[0x1E6958418]) initStandardFormatWithSampleRate:2 channels:44100.0];
-  v7 = [(AXMActiveSound *)self timePitch];
-  [v4 attachNode:v7];
+  timePitch = [(AXMActiveSound *)self timePitch];
+  [engineCopy attachNode:timePitch];
 
-  v8 = [(AXMActiveSound *)self player];
-  v9 = [(AXMActiveSound *)self timePitch];
-  [v4 connect:v8 to:v9 fromBus:0 toBus:0 format:v6];
+  player2 = [(AXMActiveSound *)self player];
+  timePitch2 = [(AXMActiveSound *)self timePitch];
+  [engineCopy connect:player2 to:timePitch2 fromBus:0 toBus:0 format:v6];
 
-  v10 = [(AXMActiveSound *)self timePitch];
-  [v4 connect:v10 to:v11 fromBus:0 toBus:objc_msgSend(v11 format:{"nextAvailableInputBus"), v6}];
+  timePitch3 = [(AXMActiveSound *)self timePitch];
+  [engineCopy connect:timePitch3 to:mainMixerNode fromBus:0 toBus:objc_msgSend(mainMixerNode format:{"nextAvailableInputBus"), v6}];
 }
 
-- (void)disconnectFromEngine:(id)a3
+- (void)disconnectFromEngine:(id)engine
 {
-  v4 = a3;
-  v5 = [(AXMActiveSound *)self player];
-  [v4 detachNode:v5];
+  engineCopy = engine;
+  player = [(AXMActiveSound *)self player];
+  [engineCopy detachNode:player];
 
-  v6 = [(AXMActiveSound *)self timePitch];
-  [v4 detachNode:v6];
+  timePitch = [(AXMActiveSound *)self timePitch];
+  [engineCopy detachNode:timePitch];
 }
 
-- (BOOL)beginPlayback:(id)a3 withError:(id *)a4
+- (BOOL)beginPlayback:(id)playback withError:(id *)error
 {
   v6 = MEMORY[0x1E6958440];
-  v7 = a3;
+  playbackCopy = playback;
   v8 = [v6 alloc];
-  v9 = [v7 processingFormat];
-  v10 = [v8 initWithPCMFormat:v9 frameCapacity:objc_msgSend(v7, "length")];
+  processingFormat = [playbackCopy processingFormat];
+  v10 = [v8 initWithPCMFormat:processingFormat frameCapacity:objc_msgSend(playbackCopy, "length")];
 
-  v11 = [v7 readIntoBuffer:v10 error:a4];
+  v11 = [playbackCopy readIntoBuffer:v10 error:error];
   if (v11)
   {
-    v12 = [(AXMActiveSound *)self player];
-    [v12 scheduleBuffer:v10 atTime:0 options:1 completionHandler:0];
+    player = [(AXMActiveSound *)self player];
+    [player scheduleBuffer:v10 atTime:0 options:1 completionHandler:0];
 
-    v13 = [(AXMActiveSound *)self player];
-    [v13 play];
+    player2 = [(AXMActiveSound *)self player];
+    [player2 play];
   }
 
   return v11;

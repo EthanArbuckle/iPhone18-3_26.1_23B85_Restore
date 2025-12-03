@@ -2,52 +2,52 @@
 - (BOOL)isTesting;
 - (BOOL)webViewLoading;
 - (UIView)sectionView;
-- (_TtC6MapsUI36MUWebBasedPlacecardSectionController)initWithMapItem:(id)a3;
-- (_TtC6MapsUI36MUWebBasedPlacecardSectionController)initWithMapItem:(id)a3 placeActionDispatcher:(id)a4 bridge:(id)a5 configuration:(id)a6;
+- (_TtC6MapsUI36MUWebBasedPlacecardSectionController)initWithMapItem:(id)item;
+- (_TtC6MapsUI36MUWebBasedPlacecardSectionController)initWithMapItem:(id)item placeActionDispatcher:(id)dispatcher bridge:(id)bridge configuration:(id)configuration;
 - (_TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration)configuration;
 - (_TtP6MapsUI44MUWebBasedPlacecardSectionControllerDelegate_)sectionDelegate;
 - (double)bottomInset;
 - (double)topInset;
 - (float)cardExpansionProgress;
 - (float)cardExpansionProgressDefaultValue;
-- (id)generateReportWithResult:(id)a3 testName:(id)a4;
-- (void)ETAProviderUpdated:(id)a3;
+- (id)generateReportWithResult:(id)result testName:(id)name;
+- (void)ETAProviderUpdated:(id)updated;
 - (void)addTestingObserverIfNeeded;
-- (void)callBridgeMethodForExpansionProgressWithProgress:(float)a3;
+- (void)callBridgeMethodForExpansionProgressWithProgress:(float)progress;
 - (void)cleanPlacecard;
-- (void)didReceiveMessageFromWebContentViewController:(id)a3 replyHandler:(id)a4;
-- (void)didSelectMenuItemWithItemId:(id)a3 menuItemId:(id)a4 menuType:(int64_t)a5;
-- (void)didTapCloseButtonIn:(id)a3;
+- (void)didReceiveMessageFromWebContentViewController:(id)controller replyHandler:(id)handler;
+- (void)didSelectMenuItemWithItemId:(id)id menuItemId:(id)itemId menuType:(int64_t)type;
+- (void)didTapCloseButtonIn:(id)in;
 - (void)didUpdateHeight;
-- (void)evChargerAvailabilityProvider:(id)a3 didUpdateAvailability:(id)a4;
-- (void)fetchWebScrollFPSWithCompletion:(id)a3;
-- (void)handleCardExpansionForVerifiedHeaderWithProgress:(float)a3;
-- (void)handleCardExpansionWithProgress:(float)a3 height:(float)a4;
-- (void)handleNativeUITapFor:(int64_t)a3;
-- (void)loadPlaceCardWithUrl:(id)a3;
+- (void)evChargerAvailabilityProvider:(id)provider didUpdateAvailability:(id)availability;
+- (void)fetchWebScrollFPSWithCompletion:(id)completion;
+- (void)handleCardExpansionForVerifiedHeaderWithProgress:(float)progress;
+- (void)handleCardExpansionWithProgress:(float)progress height:(float)height;
+- (void)handleNativeUITapFor:(int64_t)for;
+- (void)loadPlaceCardWithUrl:(id)url;
 - (void)loadWebViewDidFail;
 - (void)loadWebViewFromResourceURL;
-- (void)postNotificationForContentLoadWithEvent:(int64_t)a3;
+- (void)postNotificationForContentLoadWithEvent:(int64_t)event;
 - (void)presentDebugPanel;
-- (void)reloadDataWithMapItem:(id)a3 configuration:(id)a4;
+- (void)reloadDataWithMapItem:(id)item configuration:(id)configuration;
 - (void)removeTestingObserverIfNeeded;
-- (void)runOnMainThread:(id)a3;
-- (void)runScrollingTestWithNote:(id)a3;
-- (void)setBottomInset:(double)a3;
-- (void)setCardExpansionProgress:(float)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setTopInset:(double)a3;
+- (void)runOnMainThread:(id)thread;
+- (void)runScrollingTestWithNote:(id)note;
+- (void)setBottomInset:(double)inset;
+- (void)setCardExpansionProgress:(float)progress;
+- (void)setConfiguration:(id)configuration;
+- (void)setTopInset:(double)inset;
 - (void)setupWebContentViewController;
 - (void)updateDirectionsMetadata;
 - (void)updateDownloadButton;
 - (void)updateETAProvider;
-- (void)updateEVChargerWithAvailability:(id)a3;
+- (void)updateEVChargerWithAvailability:(id)availability;
 - (void)updatePlacecard;
 - (void)updateUserData;
 - (void)updateUserPreferences;
-- (void)webBasedPlacecardVC:(id)a3 didScroll:(id)a4;
+- (void)webBasedPlacecardVC:(id)c didScroll:(id)scroll;
 - (void)webViewFinishedLoading;
-- (void)webViewIsCurrent:(BOOL)a3;
+- (void)webViewIsCurrent:(BOOL)current;
 @end
 
 @implementation MUWebBasedPlacecardSectionController
@@ -67,16 +67,16 @@
   return *(self + v3);
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
+  configurationCopy = configuration;
+  selfCopy = self;
   sub_1C5734640(&selRef_removeObserver_, MUEVChargerAvailabilityProvider.unregisterObserver(_:));
   v6 = OBJC_IVAR____TtC6MapsUI36MUWebBasedPlacecardSectionController_configuration;
   swift_beginAccess();
-  v7 = *(v5 + v6);
-  *(v5 + v6) = v4;
-  v8 = v4;
+  v7 = *(selfCopy + v6);
+  *(selfCopy + v6) = configurationCopy;
+  v8 = configurationCopy;
 
   sub_1C5734640(&selRef_addObserver_, MUEVChargerAvailabilityProvider.registerObserver(_:));
 }
@@ -84,7 +84,7 @@
 - (BOOL)webViewLoading
 {
   v2 = *(self + OBJC_IVAR____TtC6MapsUI36MUWebBasedPlacecardSectionController_bridge);
-  v3 = self;
+  selfCopy = self;
   v4 = v2;
   v5 = sub_1C566AF74();
 
@@ -99,11 +99,11 @@
   return *(self + v3);
 }
 
-- (void)setTopInset:(double)a3
+- (void)setTopInset:(double)inset
 {
   v5 = OBJC_IVAR____TtC6MapsUI36MUWebBasedPlacecardSectionController_topInset;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = inset;
 }
 
 - (double)bottomInset
@@ -113,33 +113,33 @@
   return *(self + v3);
 }
 
-- (void)setBottomInset:(double)a3
+- (void)setBottomInset:(double)inset
 {
   v5 = OBJC_IVAR____TtC6MapsUI36MUWebBasedPlacecardSectionController_bottomInset;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = inset;
 }
 
 - (float)cardExpansionProgress
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C5725A7C();
 
   return v3;
 }
 
-- (void)setCardExpansionProgress:(float)a3
+- (void)setCardExpansionProgress:(float)progress
 {
   v3 = (self + OBJC_IVAR____TtC6MapsUI36MUWebBasedPlacecardSectionController____lazy_storage___cardExpansionProgress);
-  *v3 = a3;
+  *v3 = progress;
   *(v3 + 4) = 0;
 }
 
 - (float)cardExpansionProgressDefaultValue
 {
-  v2 = [objc_opt_self() isMapsProcess];
+  isMapsProcess = [objc_opt_self() isMapsProcess];
   result = 1.0;
-  if (v2)
+  if (isMapsProcess)
   {
     return 0.0;
   }
@@ -147,26 +147,26 @@
   return result;
 }
 
-- (_TtC6MapsUI36MUWebBasedPlacecardSectionController)initWithMapItem:(id)a3 placeActionDispatcher:(id)a4 bridge:(id)a5 configuration:(id)a6
+- (_TtC6MapsUI36MUWebBasedPlacecardSectionController)initWithMapItem:(id)item placeActionDispatcher:(id)dispatcher bridge:(id)bridge configuration:(id)configuration
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = sub_1C57347EC(v9, v10, v11, v12);
+  itemCopy = item;
+  dispatcherCopy = dispatcher;
+  bridgeCopy = bridge;
+  configurationCopy = configuration;
+  v13 = sub_1C57347EC(itemCopy, dispatcherCopy, bridgeCopy, configurationCopy);
 
   return v13;
 }
 
-- (void)reloadDataWithMapItem:(id)a3 configuration:(id)a4
+- (void)reloadDataWithMapItem:(id)item configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1C5726068(v6, v7);
+  itemCopy = item;
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_1C5726068(itemCopy, configurationCopy);
 }
 
-- (_TtC6MapsUI36MUWebBasedPlacecardSectionController)initWithMapItem:(id)a3
+- (_TtC6MapsUI36MUWebBasedPlacecardSectionController)initWithMapItem:(id)item
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -183,11 +183,11 @@
 
 - (void)loadWebViewFromResourceURL
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5726670();
 }
 
-- (void)loadPlaceCardWithUrl:(id)a3
+- (void)loadPlaceCardWithUrl:(id)url
 {
   v4 = sub_1C584EA90();
   v5 = *(v4 - 8);
@@ -195,7 +195,7 @@
   MEMORY[0x1EEE9AC00](v4, v7);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1C584EA50();
-  v10 = self;
+  selfCopy = self;
   sub_1C5726794(v9);
 
   (*(v5 + 8))(v9, v4);
@@ -203,20 +203,20 @@
 
 - (void)webViewFinishedLoading
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5726B88();
 }
 
-- (void)didReceiveMessageFromWebContentViewController:(id)a3 replyHandler:(id)a4
+- (void)didReceiveMessageFromWebContentViewController:(id)controller replyHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
-  v11 = self;
+  v6 = _Block_copy(handler);
+  controllerCopy = controller;
+  selfCopy = self;
   v8 = sub_1C584EAE0();
   v10 = v9;
 
   _Block_copy(v6);
-  sub_1C5739208(v8, v10, v11, v6);
+  sub_1C5739208(v8, v10, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
   sub_1C566DD84(v8, v10);
@@ -224,14 +224,14 @@
 
 - (void)loadWebViewDidFail
 {
-  v2 = self;
+  selfCopy = self;
   MUWebBasedPlacecardSectionController.loadWebViewDidFail()();
 }
 
-- (void)callBridgeMethodForExpansionProgressWithProgress:(float)a3
+- (void)callBridgeMethodForExpansionProgressWithProgress:(float)progress
 {
   v3 = *(self + OBJC_IVAR____TtC6MapsUI36MUWebBasedPlacecardSectionController_bridge);
-  v5 = self;
+  selfCopy = self;
   v4 = v3;
   sub_1C566C6D4();
 }
@@ -242,13 +242,13 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x1EEE9AC00](v3 - 8, v5);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
+  selfCopy = self;
   sub_1C569789C(v7);
   sub_1C569A8D8(8);
-  v9 = *(v8 + OBJC_IVAR____TtC6MapsUI36MUWebBasedPlacecardSectionController_bridge);
+  v9 = *(selfCopy + OBJC_IVAR____TtC6MapsUI36MUWebBasedPlacecardSectionController_bridge);
   sub_1C566BB7C(v7, 0, 0);
 
-  v10 = *(v8 + OBJC_IVAR____TtC6MapsUI36MUWebBasedPlacecardSectionController_webContentViewController);
+  v10 = *(selfCopy + OBJC_IVAR____TtC6MapsUI36MUWebBasedPlacecardSectionController_webContentViewController);
   sub_1C5718EA0();
   sub_1C57439F8(v7, type metadata accessor for WebPlacecardBridgeReply.MUNativeWebCall);
 }
@@ -259,106 +259,106 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x1EEE9AC00](v3 - 8, v5);
   v7 = &v10 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
+  selfCopy = self;
   sub_1C569789C(v7);
   sub_1C569A8D8(9);
-  v9 = *(v8 + OBJC_IVAR____TtC6MapsUI36MUWebBasedPlacecardSectionController_bridge);
+  v9 = *(selfCopy + OBJC_IVAR____TtC6MapsUI36MUWebBasedPlacecardSectionController_bridge);
   sub_1C566BB7C(v7, 0, 0);
 
   sub_1C57439F8(v7, type metadata accessor for WebPlacecardBridgeReply.MUNativeWebCall);
 }
 
-- (void)handleNativeUITapFor:(int64_t)a3
+- (void)handleNativeUITapFor:(int64_t)for
 {
-  v4 = self;
-  MUWebBasedPlacecardSectionController.handleNativeUITap(for:)(a3);
+  selfCopy = self;
+  MUWebBasedPlacecardSectionController.handleNativeUITap(for:)(for);
 }
 
 - (void)updateUserData
 {
-  v2 = self;
+  selfCopy = self;
   MUWebBasedPlacecardSectionController.updateUserData()();
 }
 
 - (void)updateUserPreferences
 {
-  v2 = self;
+  selfCopy = self;
   MUWebBasedPlacecardSectionController.updateUserPreferences()();
 }
 
 - (void)updateDirectionsMetadata
 {
-  v2 = self;
+  selfCopy = self;
   MUWebBasedPlacecardSectionController.updateDirectionsMetadata()();
 }
 
 - (void)updateETAProvider
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5731EE8();
 }
 
-- (void)handleCardExpansionWithProgress:(float)a3 height:(float)a4
+- (void)handleCardExpansionWithProgress:(float)progress height:(float)height
 {
-  v6 = self;
-  MUWebBasedPlacecardSectionController.handleCardExpansion(progress:height:)(a3, a4);
+  selfCopy = self;
+  MUWebBasedPlacecardSectionController.handleCardExpansion(progress:height:)(progress, height);
 }
 
-- (void)handleCardExpansionForVerifiedHeaderWithProgress:(float)a3
+- (void)handleCardExpansionForVerifiedHeaderWithProgress:(float)progress
 {
   v4 = *((*MEMORY[0x1E69E7D40] & *self) + 0x1B0);
-  v6 = self;
-  v4(a3);
-  *&v5 = a3;
-  [(MUWebBasedPlacecardSectionController *)v6 callBridgeMethodForExpansionProgressWithProgress:v5];
+  selfCopy = self;
+  v4(progress);
+  *&v5 = progress;
+  [(MUWebBasedPlacecardSectionController *)selfCopy callBridgeMethodForExpansionProgressWithProgress:v5];
 }
 
-- (void)updateEVChargerWithAvailability:(id)a3
+- (void)updateEVChargerWithAvailability:(id)availability
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C5732754(v4);
+  availabilityCopy = availability;
+  selfCopy = self;
+  sub_1C5732754(availabilityCopy);
 }
 
 - (void)updateDownloadButton
 {
-  v2 = self;
+  selfCopy = self;
   MUWebBasedPlacecardSectionController.updateDownloadButton()();
 }
 
-- (void)runOnMainThread:(id)a3
+- (void)runOnMainThread:(id)thread
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(thread);
   _Block_copy(v4);
-  v5 = self;
+  selfCopy = self;
   sub_1C5742764(v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (void)ETAProviderUpdated:(id)a3
+- (void)ETAProviderUpdated:(id)updated
 {
-  if (a3)
+  if (updated)
   {
     [(MUWebBasedPlacecardSectionController *)self updateETAProvider];
   }
 }
 
-- (void)evChargerAvailabilityProvider:(id)a3 didUpdateAvailability:(id)a4
+- (void)evChargerAvailabilityProvider:(id)provider didUpdateAvailability:(id)availability
 {
   v5 = *(self + OBJC_IVAR____TtC6MapsUI36MUWebBasedPlacecardSectionController_evChargerAvailability);
-  *(self + OBJC_IVAR____TtC6MapsUI36MUWebBasedPlacecardSectionController_evChargerAvailability) = a4;
-  v6 = a4;
-  v7 = self;
+  *(self + OBJC_IVAR____TtC6MapsUI36MUWebBasedPlacecardSectionController_evChargerAvailability) = availability;
+  availabilityCopy = availability;
+  selfCopy = self;
 
-  [(MUWebBasedPlacecardSectionController *)v7 updateEVChargerWithAvailability:v6];
+  [(MUWebBasedPlacecardSectionController *)selfCopy updateEVChargerWithAvailability:availabilityCopy];
 }
 
-- (void)didTapCloseButtonIn:(id)a3
+- (void)didTapCloseButtonIn:(id)in
 {
   v4 = *(self + OBJC_IVAR____TtC6MapsUI36MUWebBasedPlacecardSectionController_actionDispatcher);
   type metadata accessor for MUPlaceActionDispatcher.CloseAction();
-  v5 = self;
+  selfCopy = self;
   v6 = MUPlaceActionDispatcher.CloseAction.__allocating_init()();
   type metadata accessor for MUPlaceActionFeedbackEnvironment();
   v7 = sub_1C56433CC(0);
@@ -367,23 +367,23 @@
 
 - (void)didUpdateHeight
 {
-  v3 = self;
-  v2 = [(MUPlaceSectionController *)v3 delegate];
-  if (v2)
+  selfCopy = self;
+  delegate = [(MUPlaceSectionController *)selfCopy delegate];
+  if (delegate)
   {
-    [(MUPlaceSectionControllerDelegate *)v2 placeSectionControllerRequestsLayoutChange:v3];
+    [(MUPlaceSectionControllerDelegate *)delegate placeSectionControllerRequestsLayoutChange:selfCopy];
     swift_unknownObjectRelease();
   }
 }
 
-- (void)didSelectMenuItemWithItemId:(id)a3 menuItemId:(id)a4 menuType:(int64_t)a5
+- (void)didSelectMenuItemWithItemId:(id)id menuItemId:(id)itemId menuType:(int64_t)type
 {
   v7 = sub_1C584F660();
   v9 = v8;
   v10 = sub_1C584F660();
   v12 = v11;
-  v13 = self;
-  v14 = sub_1C57042D8(a5);
+  selfCopy = self;
+  v14 = sub_1C57042D8(type);
   if (v14 == 3)
   {
     v15 = 0;
@@ -397,21 +397,21 @@
   sub_1C572DC6C(v7, v9, v10, v12, v15);
 }
 
-- (void)webViewIsCurrent:(BOOL)a3
+- (void)webViewIsCurrent:(BOOL)current
 {
-  v4 = self;
-  MUWebBasedPlacecardSectionController.webViewIsCurrent(_:)(a3);
+  selfCopy = self;
+  MUWebBasedPlacecardSectionController.webViewIsCurrent(_:)(current);
 }
 
-- (void)webBasedPlacecardVC:(id)a3 didScroll:(id)a4
+- (void)webBasedPlacecardVC:(id)c didScroll:(id)scroll
 {
   v5 = *((*MEMORY[0x1E69E7D40] & *self) + 0xB0);
-  v6 = a4;
-  v8 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   v7 = v5();
   if (v7)
   {
-    [v7 sectionController:v8 didScroll:v6];
+    [v7 sectionController:selfCopy didScroll:scrollCopy];
     swift_unknownObjectRelease();
   }
 }
@@ -419,7 +419,7 @@
 - (UIView)sectionView
 {
   v2 = *(self + OBJC_IVAR____TtC6MapsUI36MUWebBasedPlacecardSectionController_webContentViewController);
-  v3 = self;
+  selfCopy = self;
   result = [v2 view];
   if (result)
   {
@@ -438,7 +438,7 @@
 
 - (void)presentDebugPanel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5733F8C();
 }
 
@@ -458,33 +458,33 @@
   return v2;
 }
 
-- (void)postNotificationForContentLoadWithEvent:(int64_t)a3
+- (void)postNotificationForContentLoadWithEvent:(int64_t)event
 {
-  v4 = self;
-  sub_1C577CC9C(a3);
+  selfCopy = self;
+  sub_1C577CC9C(event);
 }
 
 - (void)addTestingObserverIfNeeded
 {
-  v3 = self;
-  if ([(MUWebBasedPlacecardSectionController *)v3 isTesting])
+  selfCopy = self;
+  if ([(MUWebBasedPlacecardSectionController *)selfCopy isTesting])
   {
-    v2 = [objc_opt_self() defaultCenter];
-    [v2 addObserver:v3 selector:sel_runScrollingTestWithNote_ name:@"MUWebBasedPlacecardScrollTestNotification" object:0];
+    defaultCenter = [objc_opt_self() defaultCenter];
+    [defaultCenter addObserver:selfCopy selector:sel_runScrollingTestWithNote_ name:@"MUWebBasedPlacecardScrollTestNotification" object:0];
   }
 }
 
 - (void)removeTestingObserverIfNeeded
 {
-  v3 = self;
-  if ([(MUWebBasedPlacecardSectionController *)v3 isTesting])
+  selfCopy = self;
+  if ([(MUWebBasedPlacecardSectionController *)selfCopy isTesting])
   {
-    v2 = [objc_opt_self() defaultCenter];
-    [v2 removeObserver:v3 name:@"MUWebBasedPlacecardScrollTestNotification" object:0];
+    defaultCenter = [objc_opt_self() defaultCenter];
+    [defaultCenter removeObserver:selfCopy name:@"MUWebBasedPlacecardScrollTestNotification" object:0];
   }
 }
 
-- (void)runScrollingTestWithNote:(id)a3
+- (void)runScrollingTestWithNote:(id)note
 {
   v4 = sub_1C584E7C0();
   v5 = *(v4 - 8);
@@ -492,15 +492,15 @@
   MEMORY[0x1EEE9AC00](v4, v7);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1C584E790();
-  v10 = self;
+  selfCopy = self;
   sub_1C577CF90(v9);
 
   (*(v5 + 8))(v9, v4);
 }
 
-- (void)fetchWebScrollFPSWithCompletion:(id)a3
+- (void)fetchWebScrollFPSWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -515,17 +515,17 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1C577DBE8(v7, v6);
   sub_1C5632FA8(v7);
 }
 
-- (id)generateReportWithResult:(id)a3 testName:(id)a4
+- (id)generateReportWithResult:(id)result testName:(id)name
 {
   v5 = sub_1C584F770();
   v6 = sub_1C584F660();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   sub_1C577F1B0(v5, v6, v8);
 
   v10 = sub_1C584F5C0();

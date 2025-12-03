@@ -1,6 +1,6 @@
 @interface CARSettingsUtilities
 + (_TtC5CAFUI26CAFUILoadingViewController)loadingViewController;
-+ (id)lastPanelID:(id)a3 vehicle:(id)a4;
++ (id)lastPanelID:(id)d vehicle:(id)vehicle;
 - (_TtC15CarPlaySettings20CARSettingsUtilities)init;
 @end
 
@@ -13,12 +13,12 @@
   return v2;
 }
 
-+ (id)lastPanelID:(id)a3 vehicle:(id)a4
++ (id)lastPanelID:(id)d vehicle:(id)vehicle
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
-  v8 = a4;
-  sub_100058328(v5, v7, v8);
+  vehicleCopy = vehicle;
+  sub_100058328(v5, v7, vehicleCopy);
 
   v9 = String._bridgeToObjectiveC()();
 

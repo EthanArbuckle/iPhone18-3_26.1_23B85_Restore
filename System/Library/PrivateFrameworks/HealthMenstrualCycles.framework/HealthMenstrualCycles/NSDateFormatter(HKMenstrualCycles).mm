@@ -45,11 +45,11 @@
 {
   v7 = a3;
   v8 = a4;
-  v9 = [MEMORY[0x277CCA968] hkmc_longRelativeDateFormatter];
-  v10 = [v9 stringFromDate:v7];
+  hkmc_longRelativeDateFormatter = [MEMORY[0x277CCA968] hkmc_longRelativeDateFormatter];
+  v10 = [hkmc_longRelativeDateFormatter stringFromDate:v7];
 
-  v11 = [MEMORY[0x277CCA968] hkmc_longNonRelativeDateFormatter];
-  v12 = [v11 stringFromDate:v7];
+  hkmc_longNonRelativeDateFormatter = [MEMORY[0x277CCA968] hkmc_longNonRelativeDateFormatter];
+  v12 = [hkmc_longNonRelativeDateFormatter stringFromDate:v7];
 
   v13 = [v12 isEqualToString:v10];
   if (v13)
@@ -58,8 +58,8 @@
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"NOTIFICATION_UPDATE_FERTILE_WINDOW_BODY_WILL_END_ON_%@", v14];
     v16 = HKMCLocalizedString(v15);
 
-    v17 = [MEMORY[0x277CCA968] hkmc_nonRelativeDateWithoutDayFormatter];
-    v18 = [v17 stringFromDate:v7];
+    hkmc_nonRelativeDateWithoutDayFormatter = [MEMORY[0x277CCA968] hkmc_nonRelativeDateWithoutDayFormatter];
+    v18 = [hkmc_nonRelativeDateWithoutDayFormatter stringFromDate:v7];
 
     v19 = HKMCLocalizedString(@"NOTIFICATION_UPDATE_FERTILE_WINDOW_BODY_FULL_FORMAT_%@_%@");
     v20 = [MEMORY[0x277CCACA8] stringWithFormat:v19, v16, v18];

@@ -1,13 +1,13 @@
 @interface NSXPCConnection
-- (BOOL)hasCategory:(id)a3 forEntitlement:(id)a4;
-- (BOOL)hasEntitlement:(id)a3;
+- (BOOL)hasCategory:(id)category forEntitlement:(id)entitlement;
+- (BOOL)hasEntitlement:(id)entitlement;
 @end
 
 @implementation NSXPCConnection
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v3 = [(NSXPCConnection *)self valueForEntitlement:a3];
+  v3 = [(NSXPCConnection *)self valueForEntitlement:entitlement];
   if (v3)
   {
     objc_opt_class();
@@ -31,19 +31,19 @@
   return isKindOfClass & 1;
 }
 
-- (BOOL)hasCategory:(id)a3 forEntitlement:(id)a4
+- (BOOL)hasCategory:(id)category forEntitlement:(id)entitlement
 {
-  v6 = a3;
-  v7 = [(NSXPCConnection *)self valueForEntitlement:a4];
+  categoryCopy = category;
+  v7 = [(NSXPCConnection *)self valueForEntitlement:entitlement];
   if (!v7)
   {
     goto LABEL_9;
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && ([v7 containsObject:v6])
+  if (objc_opt_isKindOfClass() & 1) != 0 && ([v7 containsObject:categoryCopy])
   {
-    v8 = 1;
+    bOOLValue = 1;
     goto LABEL_14;
   }
 
@@ -51,34 +51,34 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_9:
-    v8 = 0;
+    bOOLValue = 0;
     goto LABEL_14;
   }
 
-  v9 = [v7 objectForKey:v6];
+  v9 = [v7 objectForKey:categoryCopy];
   if (v9)
   {
-    v10 = [v7 objectForKey:v6];
+    v10 = [v7 objectForKey:categoryCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v7 objectForKey:v6];
-      v8 = [v11 BOOLValue];
+      v11 = [v7 objectForKey:categoryCopy];
+      bOOLValue = [v11 BOOLValue];
     }
 
     else
     {
-      v8 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
 LABEL_14:
-  return v8;
+  return bOOLValue;
 }
 
 @end

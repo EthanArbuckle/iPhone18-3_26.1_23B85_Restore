@@ -1,16 +1,16 @@
 @interface _INPBStartCallIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBStartCallIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBStartCallIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsConfirmationReason:(id)a3;
+- (int)StringAsConfirmationReason:(id)reason;
 - (unint64_t)hash;
-- (void)addRestrictedContacts:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setConfirmationReason:(int)a3;
-- (void)setHasShouldDoEmergencyCountdown:(BOOL)a3;
-- (void)setRestrictedContacts:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addRestrictedContacts:(id)contacts;
+- (void)encodeWithCoder:(id)coder;
+- (void)setConfirmationReason:(int)reason;
+- (void)setHasShouldDoEmergencyCountdown:(BOOL)countdown;
+- (void)setRestrictedContacts:(id)contacts;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBStartCallIntentResponse
@@ -18,26 +18,26 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBStartCallIntentResponse *)self hasConfirmationReason])
   {
-    v4 = [(_INPBStartCallIntentResponse *)self confirmationReason];
-    if ((v4 - 1) >= 4)
+    confirmationReason = [(_INPBStartCallIntentResponse *)self confirmationReason];
+    if ((confirmationReason - 1) >= 4)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", confirmationReason];
     }
 
     else
     {
-      v5 = *(&off_1E7287060 + (v4 - 1));
+      v5 = *(&off_1E7287060 + (confirmationReason - 1));
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"confirmationReason"];
+    [dictionary setObject:v5 forKeyedSubscript:@"confirmationReason"];
   }
 
   if ([(NSArray *)self->_restrictedContacts count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -57,8 +57,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -67,22 +67,22 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"restrictedContacts"];
+    [dictionary setObject:array forKeyedSubscript:@"restrictedContacts"];
   }
 
   if ([(_INPBStartCallIntentResponse *)self hasShouldDoEmergencyCountdown])
   {
     v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBStartCallIntentResponse shouldDoEmergencyCountdown](self, "shouldDoEmergencyCountdown")}];
-    [v3 setObject:v13 forKeyedSubscript:@"shouldDoEmergencyCountdown"];
+    [dictionary setObject:v13 forKeyedSubscript:@"shouldDoEmergencyCountdown"];
   }
 
-  v14 = [(_INPBStartCallIntentResponse *)self startedCall];
-  v15 = [v14 dictionaryRepresentation];
-  [v3 setObject:v15 forKeyedSubscript:@"startedCall"];
+  startedCall = [(_INPBStartCallIntentResponse *)self startedCall];
+  dictionaryRepresentation2 = [startedCall dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"startedCall"];
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -111,46 +111,46 @@
   return v4 ^ v3 ^ v5 ^ [(_INPBConnectedCall *)self->_startedCall hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(_INPBStartCallIntentResponse *)self hasConfirmationReason];
-  if (v5 != [v4 hasConfirmationReason])
+  hasConfirmationReason = [(_INPBStartCallIntentResponse *)self hasConfirmationReason];
+  if (hasConfirmationReason != [equalCopy hasConfirmationReason])
   {
     goto LABEL_20;
   }
 
   if ([(_INPBStartCallIntentResponse *)self hasConfirmationReason])
   {
-    if ([v4 hasConfirmationReason])
+    if ([equalCopy hasConfirmationReason])
     {
       confirmationReason = self->_confirmationReason;
-      if (confirmationReason != [v4 confirmationReason])
+      if (confirmationReason != [equalCopy confirmationReason])
       {
         goto LABEL_20;
       }
     }
   }
 
-  v7 = [(_INPBStartCallIntentResponse *)self restrictedContacts];
-  v8 = [v4 restrictedContacts];
-  if ((v7 != 0) == (v8 == 0))
+  restrictedContacts = [(_INPBStartCallIntentResponse *)self restrictedContacts];
+  restrictedContacts2 = [equalCopy restrictedContacts];
+  if ((restrictedContacts != 0) == (restrictedContacts2 == 0))
   {
     goto LABEL_19;
   }
 
-  v9 = [(_INPBStartCallIntentResponse *)self restrictedContacts];
-  if (v9)
+  restrictedContacts3 = [(_INPBStartCallIntentResponse *)self restrictedContacts];
+  if (restrictedContacts3)
   {
-    v10 = v9;
-    v11 = [(_INPBStartCallIntentResponse *)self restrictedContacts];
-    v12 = [v4 restrictedContacts];
-    v13 = [v11 isEqual:v12];
+    v10 = restrictedContacts3;
+    restrictedContacts4 = [(_INPBStartCallIntentResponse *)self restrictedContacts];
+    restrictedContacts5 = [equalCopy restrictedContacts];
+    v13 = [restrictedContacts4 isEqual:restrictedContacts5];
 
     if (!v13)
     {
@@ -162,30 +162,30 @@
   {
   }
 
-  v14 = [(_INPBStartCallIntentResponse *)self hasShouldDoEmergencyCountdown];
-  if (v14 != [v4 hasShouldDoEmergencyCountdown])
+  hasShouldDoEmergencyCountdown = [(_INPBStartCallIntentResponse *)self hasShouldDoEmergencyCountdown];
+  if (hasShouldDoEmergencyCountdown != [equalCopy hasShouldDoEmergencyCountdown])
   {
     goto LABEL_20;
   }
 
   if ([(_INPBStartCallIntentResponse *)self hasShouldDoEmergencyCountdown])
   {
-    if ([v4 hasShouldDoEmergencyCountdown])
+    if ([equalCopy hasShouldDoEmergencyCountdown])
     {
       shouldDoEmergencyCountdown = self->_shouldDoEmergencyCountdown;
-      if (shouldDoEmergencyCountdown != [v4 shouldDoEmergencyCountdown])
+      if (shouldDoEmergencyCountdown != [equalCopy shouldDoEmergencyCountdown])
       {
         goto LABEL_20;
       }
     }
   }
 
-  v7 = [(_INPBStartCallIntentResponse *)self startedCall];
-  v8 = [v4 startedCall];
-  if ((v7 != 0) != (v8 == 0))
+  restrictedContacts = [(_INPBStartCallIntentResponse *)self startedCall];
+  restrictedContacts2 = [equalCopy startedCall];
+  if ((restrictedContacts != 0) != (restrictedContacts2 == 0))
   {
-    v16 = [(_INPBStartCallIntentResponse *)self startedCall];
-    if (!v16)
+    startedCall = [(_INPBStartCallIntentResponse *)self startedCall];
+    if (!startedCall)
     {
 
 LABEL_23:
@@ -193,10 +193,10 @@ LABEL_23:
       goto LABEL_21;
     }
 
-    v17 = v16;
-    v18 = [(_INPBStartCallIntentResponse *)self startedCall];
-    v19 = [v4 startedCall];
-    v20 = [v18 isEqual:v19];
+    v17 = startedCall;
+    startedCall2 = [(_INPBStartCallIntentResponse *)self startedCall];
+    startedCall3 = [equalCopy startedCall];
+    v20 = [startedCall2 isEqual:startedCall3];
 
     if (v20)
     {
@@ -216,7 +216,7 @@ LABEL_21:
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBStartCallIntentResponse allocWithZone:](_INPBStartCallIntentResponse init];
   if ([(_INPBStartCallIntentResponse *)self hasConfirmationReason])
@@ -224,7 +224,7 @@ LABEL_21:
     [(_INPBStartCallIntentResponse *)v5 setConfirmationReason:[(_INPBStartCallIntentResponse *)self confirmationReason]];
   }
 
-  v6 = [(NSArray *)self->_restrictedContacts copyWithZone:a3];
+  v6 = [(NSArray *)self->_restrictedContacts copyWithZone:zone];
   [(_INPBStartCallIntentResponse *)v5 setRestrictedContacts:v6];
 
   if ([(_INPBStartCallIntentResponse *)self hasShouldDoEmergencyCountdown])
@@ -232,40 +232,40 @@ LABEL_21:
     [(_INPBStartCallIntentResponse *)v5 setShouldDoEmergencyCountdown:[(_INPBStartCallIntentResponse *)self shouldDoEmergencyCountdown]];
   }
 
-  v7 = [(_INPBConnectedCall *)self->_startedCall copyWithZone:a3];
+  v7 = [(_INPBConnectedCall *)self->_startedCall copyWithZone:zone];
   [(_INPBStartCallIntentResponse *)v5 setStartedCall:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBStartCallIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBStartCallIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBStartCallIntentResponse)initWithCoder:(id)a3
+- (_INPBStartCallIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBStartCallIntentResponse *)self initWithData:v6];
+    self = [(_INPBStartCallIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_INPBStartCallIntentResponse *)self hasConfirmationReason])
   {
     confirmationReason = self->_confirmationReason;
@@ -310,20 +310,20 @@ LABEL_21:
     PBDataWriterWriteBOOLField();
   }
 
-  v13 = [(_INPBStartCallIntentResponse *)self startedCall];
+  startedCall = [(_INPBStartCallIntentResponse *)self startedCall];
 
-  if (v13)
+  if (startedCall)
   {
-    v14 = [(_INPBStartCallIntentResponse *)self startedCall];
+    startedCall2 = [(_INPBStartCallIntentResponse *)self startedCall];
     PBDataWriterWriteSubmessage();
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setHasShouldDoEmergencyCountdown:(BOOL)a3
+- (void)setHasShouldDoEmergencyCountdown:(BOOL)countdown
 {
-  if (a3)
+  if (countdown)
   {
     v3 = 2;
   }
@@ -336,52 +336,52 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addRestrictedContacts:(id)a3
+- (void)addRestrictedContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   restrictedContacts = self->_restrictedContacts;
-  v8 = v4;
+  v8 = contactsCopy;
   if (!restrictedContacts)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_restrictedContacts;
-    self->_restrictedContacts = v6;
+    self->_restrictedContacts = array;
 
-    v4 = v8;
+    contactsCopy = v8;
     restrictedContacts = self->_restrictedContacts;
   }
 
-  [(NSArray *)restrictedContacts addObject:v4];
+  [(NSArray *)restrictedContacts addObject:contactsCopy];
 }
 
-- (void)setRestrictedContacts:(id)a3
+- (void)setRestrictedContacts:(id)contacts
 {
-  v4 = [a3 mutableCopy];
+  v4 = [contacts mutableCopy];
   restrictedContacts = self->_restrictedContacts;
   self->_restrictedContacts = v4;
 
   MEMORY[0x1EEE66BB8](v4, restrictedContacts);
 }
 
-- (int)StringAsConfirmationReason:(id)a3
+- (int)StringAsConfirmationReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CALLS_ON_HOMEPOD"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"CALLS_ON_HOMEPOD"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"REDIAL_EMERGENCY"])
+  else if ([reasonCopy isEqualToString:@"REDIAL_EMERGENCY"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CALL_BACK_EMERGENCY"])
+  else if ([reasonCopy isEqualToString:@"CALL_BACK_EMERGENCY"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"HAS_RESTRICTED_CONTACTS"])
+  else if ([reasonCopy isEqualToString:@"HAS_RESTRICTED_CONTACTS"])
   {
     v4 = 4;
   }
@@ -394,10 +394,10 @@ LABEL_21:
   return v4;
 }
 
-- (void)setConfirmationReason:(int)a3
+- (void)setConfirmationReason:(int)reason
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (reason == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -405,7 +405,7 @@ LABEL_21:
   else
   {
     *&self->_has = has | 1;
-    self->_confirmationReason = a3;
+    self->_confirmationReason = reason;
   }
 }
 

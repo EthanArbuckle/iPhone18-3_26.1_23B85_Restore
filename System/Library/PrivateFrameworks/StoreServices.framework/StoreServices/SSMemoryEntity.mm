@@ -1,24 +1,24 @@
 @interface SSMemoryEntity
-+ (id)anyInDatabase:(id)a3 predicate:(id)a4;
-+ (id)queryWithDatabase:(id)a3 predicate:(id)a4 orderingProperties:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)anyInDatabase:(id)database predicate:(id)predicate;
++ (id)queryWithDatabase:(id)database predicate:(id)predicate orderingProperties:(id)properties;
+- (BOOL)isEqual:(id)equal;
 - (SSMemoryEntity)init;
-- (SSMemoryEntity)initWithDatabaseEntity:(id)a3 properties:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SSMemoryEntity)initWithDatabaseEntity:(id)entity properties:(id)properties;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)valueForExternalProperty:(id)a3;
-- (id)valueForProperty:(id)a3;
+- (id)valueForExternalProperty:(id)property;
+- (id)valueForProperty:(id)property;
 - (void)dealloc;
-- (void)reloadFromDatabaseEntity:(id)a3 properties:(id)a4;
-- (void)setValue:(id)a3 forExternalProperty:(id)a4;
-- (void)setValue:(id)a3 forProperty:(id)a4;
-- (void)setValues:(id *)a3 forExternalProperties:(const void *)a4 count:(int64_t)a5;
-- (void)setValues:(id *)a3 forProperties:(const void *)a4 count:(int64_t)a5;
+- (void)reloadFromDatabaseEntity:(id)entity properties:(id)properties;
+- (void)setValue:(id)value forExternalProperty:(id)property;
+- (void)setValue:(id)value forProperty:(id)property;
+- (void)setValues:(id *)values forExternalProperties:(const void *)properties count:(int64_t)count;
+- (void)setValues:(id *)values forProperties:(const void *)properties count:(int64_t)count;
 @end
 
 @implementation SSMemoryEntity
 
-+ (id)anyInDatabase:(id)a3 predicate:(id)a4
++ (id)anyInDatabase:(id)database predicate:(id)predicate
 {
   v8 = 0;
   v9 = &v8;
@@ -26,7 +26,7 @@
   v11 = __Block_byref_object_copy__60;
   v12 = __Block_byref_object_dispose__60;
   v13 = 0;
-  v4 = [a1 queryWithDatabase:a3 predicate:a4];
+  v4 = [self queryWithDatabase:database predicate:predicate];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__SSMemoryEntity_SSSQLiteQuery__anyInDatabase_predicate___block_invoke;
@@ -46,14 +46,14 @@ id __57__SSMemoryEntity_SSSQLiteQuery__anyInDatabase_predicate___block_invoke(ui
   return result;
 }
 
-+ (id)queryWithDatabase:(id)a3 predicate:(id)a4 orderingProperties:(id)a5
++ (id)queryWithDatabase:(id)database predicate:(id)predicate orderingProperties:(id)properties
 {
   v9 = objc_alloc_init(SSSQLiteQueryDescriptor);
-  -[SSSQLiteQueryDescriptor setEntityClass:](v9, "setEntityClass:", [a1 databaseEntityClass]);
-  [(SSSQLiteQueryDescriptor *)v9 setMemoryEntityClass:a1];
-  [(SSSQLiteQueryDescriptor *)v9 setOrderingProperties:a5];
-  [(SSSQLiteQueryDescriptor *)v9 setPredicate:a4];
-  v10 = [[SSSQLiteQuery alloc] initWithDatabase:a3 descriptor:v9];
+  -[SSSQLiteQueryDescriptor setEntityClass:](v9, "setEntityClass:", [self databaseEntityClass]);
+  [(SSSQLiteQueryDescriptor *)v9 setMemoryEntityClass:self];
+  [(SSSQLiteQueryDescriptor *)v9 setOrderingProperties:properties];
+  [(SSSQLiteQueryDescriptor *)v9 setPredicate:predicate];
+  v10 = [[SSSQLiteQuery alloc] initWithDatabase:database descriptor:v9];
 
   return v10;
 }
@@ -72,14 +72,14 @@ id __57__SSMemoryEntity_SSSQLiteQuery__anyInDatabase_predicate___block_invoke(ui
   return v2;
 }
 
-- (SSMemoryEntity)initWithDatabaseEntity:(id)a3 properties:(id)a4
+- (SSMemoryEntity)initWithDatabaseEntity:(id)entity properties:(id)properties
 {
   v6 = [(SSMemoryEntity *)self init];
   v7 = v6;
   if (v6)
   {
-    [(SSMemoryEntity *)v6 reloadFromDatabaseEntity:a3 properties:a4];
-    v7->_databaseID = [a3 persistentID];
+    [(SSMemoryEntity *)v6 reloadFromDatabaseEntity:entity properties:properties];
+    v7->_databaseID = [entity persistentID];
   }
 
   return v7;
@@ -92,19 +92,19 @@ id __57__SSMemoryEntity_SSSQLiteQuery__anyInDatabase_predicate___block_invoke(ui
   [(SSMemoryEntity *)&v3 dealloc];
 }
 
-- (void)reloadFromDatabaseEntity:(id)a3 properties:(id)a4
+- (void)reloadFromDatabaseEntity:(id)entity properties:(id)properties
 {
-  v7 = [a4 count];
+  v7 = [properties count];
   v8 = malloc_type_malloc(8 * v7, 0x80040B8603338uLL);
   if (v8)
   {
     v9 = v8;
-    [a4 getObjects:v8 range:{0, v7}];
+    [properties getObjects:v8 range:{0, v7}];
     v10 = malloc_type_malloc(8 * v7, 0x80040B8603338uLL);
     if (v10)
     {
       v11 = v10;
-      [a3 getValues:v10 forProperties:v9 count:v7];
+      [entity getValues:v10 forProperties:v9 count:v7];
       [(SSMemoryEntity *)self setValues:v11 forProperties:v9 count:v7];
       free(v11);
     }
@@ -113,84 +113,84 @@ id __57__SSMemoryEntity_SSSQLiteQuery__anyInDatabase_predicate___block_invoke(ui
   }
 }
 
-- (void)setValue:(id)a3 forProperty:(id)a4
+- (void)setValue:(id)value forProperty:(id)property
 {
-  v4 = a4;
-  v5 = a3;
-  [(SSMemoryEntity *)self setValues:&v5 forProperties:&v4 count:1];
+  propertyCopy = property;
+  valueCopy = value;
+  [(SSMemoryEntity *)self setValues:&valueCopy forProperties:&propertyCopy count:1];
 }
 
-- (void)setValues:(id *)a3 forProperties:(const void *)a4 count:(int64_t)a5
+- (void)setValues:(id *)values forProperties:(const void *)properties count:(int64_t)count
 {
-  if (a5 >= 1)
+  if (count >= 1)
   {
-    v5 = a5;
+    countCopy = count;
     do
     {
       propertyValues = self->_propertyValues;
-      if (*a3)
+      if (*values)
       {
-        [(NSMutableDictionary *)propertyValues setObject:*a3 forKey:*a4];
+        [(NSMutableDictionary *)propertyValues setObject:*values forKey:*properties];
       }
 
       else
       {
-        [(NSMutableDictionary *)propertyValues removeObjectForKey:*a4];
+        [(NSMutableDictionary *)propertyValues removeObjectForKey:*properties];
       }
 
-      ++a4;
-      ++a3;
-      --v5;
+      ++properties;
+      ++values;
+      --countCopy;
     }
 
-    while (v5);
+    while (countCopy);
   }
 }
 
-- (void)setValue:(id)a3 forExternalProperty:(id)a4
+- (void)setValue:(id)value forExternalProperty:(id)property
 {
-  v4 = a4;
-  v5 = a3;
-  [(SSMemoryEntity *)self setValues:&v5 forExternalProperties:&v4 count:1];
+  propertyCopy = property;
+  valueCopy = value;
+  [(SSMemoryEntity *)self setValues:&valueCopy forExternalProperties:&propertyCopy count:1];
 }
 
-- (void)setValues:(id *)a3 forExternalProperties:(const void *)a4 count:(int64_t)a5
+- (void)setValues:(id *)values forExternalProperties:(const void *)properties count:(int64_t)count
 {
-  if (a5 >= 1)
+  if (count >= 1)
   {
-    v5 = a5;
+    countCopy = count;
     do
     {
       externalPropertyValues = self->_externalPropertyValues;
-      if (*a3)
+      if (*values)
       {
-        [(NSMutableDictionary *)externalPropertyValues setObject:*a3 forKey:*a4];
+        [(NSMutableDictionary *)externalPropertyValues setObject:*values forKey:*properties];
       }
 
       else
       {
-        [(NSMutableDictionary *)externalPropertyValues removeObjectForKey:*a4];
+        [(NSMutableDictionary *)externalPropertyValues removeObjectForKey:*properties];
       }
 
-      ++a4;
-      ++a3;
-      --v5;
+      ++properties;
+      ++values;
+      --countCopy;
     }
 
-    while (v5);
+    while (countCopy);
   }
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
-  v3 = [(NSMutableDictionary *)self->_propertyValues objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_propertyValues objectForKey:property];
 
   return v3;
 }
 
-- (id)valueForExternalProperty:(id)a3
+- (id)valueForExternalProperty:(id)property
 {
-  v3 = [(NSMutableDictionary *)self->_externalPropertyValues objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_externalPropertyValues objectForKey:property];
 
   return v3;
 }
@@ -202,7 +202,7 @@ id __57__SSMemoryEntity_SSSQLiteQuery__anyInDatabase_predicate___block_invoke(ui
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %lld", -[SSMemoryEntity description](&v3, sel_description), self->_databaseID];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
@@ -210,21 +210,21 @@ id __57__SSMemoryEntity_SSSQLiteQuery__anyInDatabase_predicate___block_invoke(ui
     return 0;
   }
 
-  v6 = [(SSMemoryEntity *)self databaseID];
-  if (v6 != [a3 databaseID] || !-[NSDictionary isEqualToDictionary:](-[SSMemoryEntity propertyValues](self, "propertyValues"), "isEqualToDictionary:", objc_msgSend(a3, "propertyValues")))
+  databaseID = [(SSMemoryEntity *)self databaseID];
+  if (databaseID != [equal databaseID] || !-[NSDictionary isEqualToDictionary:](-[SSMemoryEntity propertyValues](self, "propertyValues"), "isEqualToDictionary:", objc_msgSend(equal, "propertyValues")))
   {
     return 0;
   }
 
-  v7 = [(SSMemoryEntity *)self externalPropertyValues];
-  v8 = [a3 externalPropertyValues];
+  externalPropertyValues = [(SSMemoryEntity *)self externalPropertyValues];
+  externalPropertyValues2 = [equal externalPropertyValues];
 
-  return [(NSDictionary *)v7 isEqualToDictionary:v8];
+  return [(NSDictionary *)externalPropertyValues isEqualToDictionary:externalPropertyValues2];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4 + 8) = self->_databaseID;
   [*(v4 + 16) addEntriesFromDictionary:self->_propertyValues];
   [*(v4 + 24) addEntriesFromDictionary:self->_externalPropertyValues];

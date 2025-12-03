@@ -1,18 +1,18 @@
 @interface NSSQLForeignKeyIntermediate
-- (NSSQLForeignKeyIntermediate)initWithConstantValue:(id)a3 inScope:(id)a4;
-- (id)generateSQLStringInContext:(id)a3;
+- (NSSQLForeignKeyIntermediate)initWithConstantValue:(id)value inScope:(id)scope;
+- (id)generateSQLStringInContext:(id)context;
 @end
 
 @implementation NSSQLForeignKeyIntermediate
 
-- (NSSQLForeignKeyIntermediate)initWithConstantValue:(id)a3 inScope:(id)a4
+- (NSSQLForeignKeyIntermediate)initWithConstantValue:(id)value inScope:(id)scope
 {
   v5.receiver = self;
   v5.super_class = NSSQLForeignKeyIntermediate;
-  return [(NSSQLConstantValueIntermediate *)&v5 initWithConstantValue:a3 inScope:a4 context:0];
+  return [(NSSQLConstantValueIntermediate *)&v5 initWithConstantValue:value inScope:scope context:0];
 }
 
-- (id)generateSQLStringInContext:(id)a3
+- (id)generateSQLStringInContext:(id)context
 {
   constantValue = self->super._constantValue;
   if ([MEMORY[0x1E695DFB0] null] == constantValue)
@@ -40,7 +40,7 @@
     }
 
 LABEL_11:
-    v8 = -[NSSQLiteAdapter sqlTypeForExpressionConstantValue:]([objc_msgSend(a3 objectForKey:{@"persistentStore", "adapter"}], v6);
+    v8 = -[NSSQLiteAdapter sqlTypeForExpressionConstantValue:]([objc_msgSend(context objectForKey:{@"persistentStore", "adapter"}], v6);
     if (v8 == 1)
     {
       v9 = 2;
@@ -61,7 +61,7 @@ LABEL_11:
       v10 = @"bindVars";
     }
 
-    v11 = [a3 objectForKey:v10];
+    v11 = [context objectForKey:v10];
     v12 = [[NSSQLBindVariable alloc] initWithValue:v6 sqlType:v9 propertyDescription:0];
     goto LABEL_18;
   }
@@ -73,9 +73,9 @@ LABEL_11:
   }
 
 LABEL_7:
-  if (([constantValue isTemporaryID] & 1) != 0 || (v7 = objc_msgSend(constantValue, "persistentStore"), v7 != objc_msgSend(a3, "objectForKey:", @"persistentStore")))
+  if (([constantValue isTemporaryID] & 1) != 0 || (v7 = objc_msgSend(constantValue, "persistentStore"), v7 != objc_msgSend(context, "objectForKey:", @"persistentStore")))
   {
-    -[NSSQLConstantValueIntermediate _addBindVarForConstId:ofType:inContext:](self, [MEMORY[0x1E696AD98] numberWithLongLong:0], 2, a3);
+    -[NSSQLConstantValueIntermediate _addBindVarForConstId:ofType:inContext:](self, [MEMORY[0x1E696AD98] numberWithLongLong:0], 2, context);
     goto LABEL_19;
   }
 
@@ -89,7 +89,7 @@ LABEL_7:
     v15 = @"bindVars";
   }
 
-  v11 = [a3 objectForKey:v15];
+  v11 = [context objectForKey:v15];
   v12 = -[NSSQLBindVariable initWithInt64:sqlType:]([NSSQLBindVariable alloc], "initWithInt64:sqlType:", [constantValue _referenceData64], 2);
 LABEL_18:
   v13 = v12;

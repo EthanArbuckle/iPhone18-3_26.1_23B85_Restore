@@ -1,22 +1,22 @@
 @interface ModelManagerGameAssertionStatus
 - (_TtC20GamePolicyFoundation31ModelManagerGameAssertionStatus)init;
-- (_TtC20GamePolicyFoundation31ModelManagerGameAssertionStatus)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC20GamePolicyFoundation31ModelManagerGameAssertionStatus)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ModelManagerGameAssertionStatus
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_29EB4B4BC(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_29EB4B4BC(coderCopy);
 }
 
-- (_TtC20GamePolicyFoundation31ModelManagerGameAssertionStatus)initWithCoder:(id)a3
+- (_TtC20GamePolicyFoundation31ModelManagerGameAssertionStatus)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_29EB4C0FC(v3);
+  coderCopy = coder;
+  v4 = sub_29EB4C0FC(coderCopy);
 
   return v4;
 }

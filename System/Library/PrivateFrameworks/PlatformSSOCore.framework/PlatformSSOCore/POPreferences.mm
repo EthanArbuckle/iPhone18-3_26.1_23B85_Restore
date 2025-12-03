@@ -1,34 +1,34 @@
 @interface POPreferences
-+ (BOOL)BOOLValueForKey:(__CFString *)a3 defaultValue:(BOOL)a4;
++ (BOOL)BOOLValueForKey:(__CFString *)key defaultValue:(BOOL)value;
 + (BOOL)buddyTestMode;
 + (BOOL)forceKerberosTGTExchange;
 + (BOOL)requireRootCAInSystemTrustStore;
 + (BOOL)skipPreMDMDeviceRegistration;
 + (NSNumber)forceExtensionSDKVersion;
-+ (id)numberValueForKey:(__CFString *)a3 defaultValue:(id)a4;
++ (id)numberValueForKey:(__CFString *)key defaultValue:(id)value;
 @end
 
 @implementation POPreferences
 
-+ (BOOL)BOOLValueForKey:(__CFString *)a3 defaultValue:(BOOL)a4
++ (BOOL)BOOLValueForKey:(__CFString *)key defaultValue:(BOOL)value
 {
   v6 = *MEMORY[0x277CBF010];
-  v7 = CFPreferencesCopyValue(a3, @"com.apple.PlatformSSO", *MEMORY[0x277CBF020], *MEMORY[0x277CBF010]);
-  if (v7 || (v7 = CFPreferencesCopyValue(a3, @"com.apple.PlatformSSO", *MEMORY[0x277CBF040], v6)) != 0)
+  v7 = CFPreferencesCopyValue(key, @"com.apple.PlatformSSO", *MEMORY[0x277CBF020], *MEMORY[0x277CBF010]);
+  if (v7 || (v7 = CFPreferencesCopyValue(key, @"com.apple.PlatformSSO", *MEMORY[0x277CBF040], v6)) != 0)
   {
     v8 = v7;
-    a4 = [v7 BOOLValue];
+    value = [v7 BOOLValue];
   }
 
-  return a4;
+  return value;
 }
 
-+ (id)numberValueForKey:(__CFString *)a3 defaultValue:(id)a4
++ (id)numberValueForKey:(__CFString *)key defaultValue:(id)value
 {
   v5 = *MEMORY[0x277CBF020];
   v6 = *MEMORY[0x277CBF010];
-  v7 = a4;
-  v8 = CFPreferencesCopyValue(a3, @"com.apple.PlatformSSO", v5, v6);
+  valueCopy = value;
+  v8 = CFPreferencesCopyValue(key, @"com.apple.PlatformSSO", v5, v6);
   v9 = v8;
   if (v8)
   {
@@ -37,7 +37,7 @@
 
   else
   {
-    v10 = CFPreferencesCopyValue(a3, @"com.apple.PlatformSSO", *MEMORY[0x277CBF040], v6);
+    v10 = CFPreferencesCopyValue(key, @"com.apple.PlatformSSO", *MEMORY[0x277CBF040], v6);
   }
 
   v11 = v10;
@@ -49,7 +49,7 @@
 
   else
   {
-    v12 = v7;
+    v12 = valueCopy;
   }
 
   v13 = v12;
@@ -63,7 +63,7 @@
   block[1] = 3221225472;
   block[2] = __48__POPreferences_requireRootCAInSystemTrustStore__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (requireRootCAInSystemTrustStore_onceToken != -1)
   {
     dispatch_once(&requireRootCAInSystemTrustStore_onceToken, block);
@@ -101,7 +101,7 @@ void __48__POPreferences_requireRootCAInSystemTrustStore__block_invoke(uint64_t 
   block[1] = 3221225472;
   block[2] = __41__POPreferences_forceKerberosTGTExchange__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (forceKerberosTGTExchange_onceToken != -1)
   {
     dispatch_once(&forceKerberosTGTExchange_onceToken, block);
@@ -133,7 +133,7 @@ void __41__POPreferences_forceKerberosTGTExchange__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __41__POPreferences_forceExtensionSDKVersion__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (forceExtensionSDKVersion_onceToken != -1)
   {
     dispatch_once(&forceExtensionSDKVersion_onceToken, block);
@@ -173,7 +173,7 @@ void __41__POPreferences_forceExtensionSDKVersion__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __45__POPreferences_skipPreMDMDeviceRegistration__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (skipPreMDMDeviceRegistration_onceToken != -1)
   {
     dispatch_once(&skipPreMDMDeviceRegistration_onceToken, block);
@@ -207,7 +207,7 @@ void __45__POPreferences_skipPreMDMDeviceRegistration__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __30__POPreferences_buddyTestMode__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (buddyTestMode_onceToken != -1)
   {
     dispatch_once(&buddyTestMode_onceToken, block);

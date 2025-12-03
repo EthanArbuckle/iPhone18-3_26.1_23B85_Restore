@@ -18,7 +18,7 @@
 
 - (BOOL)px_contentOcclusionRectangleUpdatesRequested
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100007AF8();
 
   return v3 & 1;
@@ -26,7 +26,7 @@
 
 - (unint64_t)px_adaptiveTimeMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100007B50();
 
   return v3;

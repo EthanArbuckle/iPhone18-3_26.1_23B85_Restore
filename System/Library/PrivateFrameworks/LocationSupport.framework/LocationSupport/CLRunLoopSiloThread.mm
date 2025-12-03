@@ -1,7 +1,7 @@
 @interface CLRunLoopSiloThread
 - (CLRunLoopSiloThread)init;
 - (CLRunLoopSiloThread)initWithCurrentThread;
-- (CLRunLoopSiloThread)initWithRunLoop:(__CFRunLoop *)a3;
+- (CLRunLoopSiloThread)initWithRunLoop:(__CFRunLoop *)loop;
 - (void)dealloc;
 @end
 
@@ -14,13 +14,13 @@
   v2 = [(CLRunLoopSiloThread *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AF00] currentThread];
+    currentThread = [MEMORY[0x1E696AF00] currentThread];
     underlyingThread = v2->_underlyingThread;
-    v2->_underlyingThread = v3;
+    v2->_underlyingThread = currentThread;
 
-    v5 = [MEMORY[0x1E695DFD0] currentRunLoop];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
     underlyingRunLoop = v2->_underlyingRunLoop;
-    v2->_underlyingRunLoop = v5;
+    v2->_underlyingRunLoop = currentRunLoop;
 
     v2->_threadId = pthread_self();
     v2->_shouldCancelThread = 0;
@@ -110,7 +110,7 @@ LABEL_11:
   return v8;
 }
 
-- (CLRunLoopSiloThread)initWithRunLoop:(__CFRunLoop *)a3
+- (CLRunLoopSiloThread)initWithRunLoop:(__CFRunLoop *)loop
 {
   v20.receiver = self;
   v20.super_class = CLRunLoopSiloThread;
@@ -134,7 +134,7 @@ LABEL_11:
   v4 = v4;
   v12 = v4;
   v13 = &v14;
-  CFRunLoopPerformBlock(a3, v5, block);
+  CFRunLoopPerformBlock(loop, v5, block);
   v6 = dispatch_semaphore_wait(v15[5], 0xFFFFFFFFFFFFFFFFLL);
   if (v6)
   {

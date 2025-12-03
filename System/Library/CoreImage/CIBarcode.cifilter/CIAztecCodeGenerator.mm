@@ -1,7 +1,7 @@
 @interface CIAztecCodeGenerator
 + (id)customAttributes;
 - (CGImage)outputCGImage;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation CIAztecCodeGenerator
@@ -66,16 +66,16 @@
   return v6;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"inputOptions"])
+  valueCopy = value;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"inputOptions"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v6;
+      v8 = valueCopy;
       v9 = [v8 objectForKey:@"AztecOptionErrorCorrectionPercentage"];
 
       if (v9)
@@ -106,7 +106,7 @@
   {
     v15.receiver = self;
     v15.super_class = CIAztecCodeGenerator;
-    [(CIAztecCodeGenerator *)&v15 setValue:v6 forUndefinedKey:v7];
+    [(CIAztecCodeGenerator *)&v15 setValue:valueCopy forUndefinedKey:keyCopy];
   }
 }
 
@@ -186,8 +186,8 @@ LABEL_9:
 
   else if (v15)
   {
-    v17 = [v15 localizedDescription];
-    NSLog(@"%@", v17);
+    localizedDescription = [v15 localizedDescription];
+    NSLog(@"%@", localizedDescription);
   }
 
   else

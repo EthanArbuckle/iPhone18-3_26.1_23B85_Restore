@@ -1,42 +1,42 @@
 @interface SUUIViewElementTextLayoutCache
-- (CGSize)_bestGuessSizeForButton:(id)a3 width:(double)a4;
-- (CGSize)_bestGuessSizeForLabel:(id)a3 width:(double)a4;
-- (CGSize)_bestGuessSizeForOrdinal:(id)a3 width:(double)a4;
-- (CGSize)estimatedSizeForButton:(id)a3 width:(double)a4;
-- (CGSize)estimatedSizeForLabel:(id)a3 width:(double)a4;
-- (CGSize)estimatedSizeForOrdinal:(id)a3 width:(double)a4;
-- (CGSize)sizeForButton:(id)a3 width:(double)a4;
-- (CGSize)sizeForLabel:(id)a3 width:(double)a4;
-- (CGSize)sizeForViewElement:(id)a3 width:(double)a4;
-- (SUUIViewElementTextLayoutCache)initWithLayoutCache:(id)a3;
+- (CGSize)_bestGuessSizeForButton:(id)button width:(double)width;
+- (CGSize)_bestGuessSizeForLabel:(id)label width:(double)width;
+- (CGSize)_bestGuessSizeForOrdinal:(id)ordinal width:(double)width;
+- (CGSize)estimatedSizeForButton:(id)button width:(double)width;
+- (CGSize)estimatedSizeForLabel:(id)label width:(double)width;
+- (CGSize)estimatedSizeForOrdinal:(id)ordinal width:(double)width;
+- (CGSize)sizeForButton:(id)button width:(double)width;
+- (CGSize)sizeForLabel:(id)label width:(double)width;
+- (CGSize)sizeForViewElement:(id)element width:(double)width;
+- (SUUIViewElementTextLayoutCache)initWithLayoutCache:(id)cache;
 - (id)_bestGuessCache;
-- (id)_createLayoutRequestForBadge:(id)a3 width:(int64_t)a4;
-- (id)_createLayoutRequestForButton:(id)a3 attributedString:(id)a4 width:(int64_t)a5;
-- (id)_createLayoutRequestForLabel:(id)a3 attributedString:(id)a4 width:(int64_t)a5;
-- (id)_createLayoutRequestForViewElement:(id)a3 attributedString:(id)a4 width:(int64_t)a5;
-- (id)_existingLayoutForViewElement:(id)a3 width:(int64_t)a4;
-- (id)_layoutIndexForViewElement:(id)a3 width:(int64_t)a4;
-- (void)_addRequest:(id)a3 forViewElement:(id)a4;
+- (id)_createLayoutRequestForBadge:(id)badge width:(int64_t)width;
+- (id)_createLayoutRequestForButton:(id)button attributedString:(id)string width:(int64_t)width;
+- (id)_createLayoutRequestForLabel:(id)label attributedString:(id)string width:(int64_t)width;
+- (id)_createLayoutRequestForViewElement:(id)element attributedString:(id)string width:(int64_t)width;
+- (id)_existingLayoutForViewElement:(id)element width:(int64_t)width;
+- (id)_layoutIndexForViewElement:(id)element width:(int64_t)width;
+- (void)_addRequest:(id)request forViewElement:(id)element;
 - (void)invalidateLayoutsForUpdatedElements;
-- (void)requestLayoutForBadge:(id)a3 width:(int64_t)a4;
-- (void)requestLayoutForButton:(id)a3 attributedString:(id)a4 width:(int64_t)a5;
-- (void)requestLayoutForLabel:(id)a3 attributedString:(id)a4 width:(int64_t)a5;
-- (void)requestLayoutForOrdinal:(id)a3 attributedString:(id)a4 width:(int64_t)a5;
-- (void)requestLayoutForViewElement:(id)a3 attributedString:(id)a4 width:(int64_t)a5;
+- (void)requestLayoutForBadge:(id)badge width:(int64_t)width;
+- (void)requestLayoutForButton:(id)button attributedString:(id)string width:(int64_t)width;
+- (void)requestLayoutForLabel:(id)label attributedString:(id)string width:(int64_t)width;
+- (void)requestLayoutForOrdinal:(id)ordinal attributedString:(id)string width:(int64_t)width;
+- (void)requestLayoutForViewElement:(id)element attributedString:(id)string width:(int64_t)width;
 @end
 
 @implementation SUUIViewElementTextLayoutCache
 
-- (SUUIViewElementTextLayoutCache)initWithLayoutCache:(id)a3
+- (SUUIViewElementTextLayoutCache)initWithLayoutCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   v11.receiver = self;
   v11.super_class = SUUIViewElementTextLayoutCache;
   v6 = [(SUUIViewElementTextLayoutCache *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_layoutCache, a3);
+    objc_storeStrong(&v6->_layoutCache, cache);
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     layoutMapTables = v7->_layoutMapTables;
     v7->_layoutMapTables = v8;
@@ -45,10 +45,10 @@
   return v7;
 }
 
-- (CGSize)estimatedSizeForButton:(id)a3 width:(double)a4
+- (CGSize)estimatedSizeForButton:(id)button width:(double)width
 {
-  v6 = a3;
-  v7 = [(SUUIViewElementTextLayoutCache *)self _existingLayoutForViewElement:v6 width:a4];
+  buttonCopy = button;
+  v7 = [(SUUIViewElementTextLayoutCache *)self _existingLayoutForViewElement:buttonCopy width:width];
   v8 = v7;
   if (v7)
   {
@@ -57,7 +57,7 @@
 
   else
   {
-    [(SUUIViewElementTextLayoutCache *)self _bestGuessSizeForButton:v6 width:a4];
+    [(SUUIViewElementTextLayoutCache *)self _bestGuessSizeForButton:buttonCopy width:width];
   }
 
   v11 = v9;
@@ -70,14 +70,14 @@
   return result;
 }
 
-- (CGSize)estimatedSizeForLabel:(id)a3 width:(double)a4
+- (CGSize)estimatedSizeForLabel:(id)label width:(double)width
 {
-  v6 = a3;
-  v7 = [(SUUIViewElementTextLayoutCache *)self _existingLayoutForViewElement:v6 width:a4];
+  labelCopy = label;
+  v7 = [(SUUIViewElementTextLayoutCache *)self _existingLayoutForViewElement:labelCopy width:width];
   if (v7)
   {
-    v8 = [v6 trailingBadges];
-    if ([v8 count])
+    trailingBadges = [labelCopy trailingBadges];
+    if ([trailingBadges count])
     {
       v9 = estimatedSizeForLabel_width__sSizingView;
       if (!estimatedSizeForLabel_width__sSizingView)
@@ -91,45 +91,45 @@
 
       [v9 setLayout:v7];
       v12 = estimatedSizeForLabel_width__sSizingView;
-      v13 = [v6 trailingBadges];
-      [v12 setRequiredBadges:v13];
+      trailingBadges2 = [labelCopy trailingBadges];
+      [v12 setRequiredBadges:trailingBadges2];
 
-      v14 = [v6 badgePlacement] == 1;
+      v14 = [labelCopy badgePlacement] == 1;
       [estimatedSizeForLabel_width__sSizingView setBadgePlacement:v14];
-      [estimatedSizeForLabel_width__sSizingView sizeThatFits:{a4, 1.79769313e308}];
+      [estimatedSizeForLabel_width__sSizingView sizeThatFits:{width, 1.79769313e308}];
       v17 = v16;
-      if (v15 < a4)
+      if (v15 < width)
       {
-        a4 = v15;
+        width = v15;
       }
     }
 
     else
     {
       [v7 boundingSize];
-      a4 = v20;
+      width = v20;
       v17 = v21;
     }
   }
 
   else
   {
-    [(SUUIViewElementTextLayoutCache *)self _bestGuessSizeForLabel:v6 width:a4];
-    a4 = v18;
+    [(SUUIViewElementTextLayoutCache *)self _bestGuessSizeForLabel:labelCopy width:width];
+    width = v18;
     v17 = v19;
   }
 
-  v22 = a4;
+  widthCopy = width;
   v23 = v17;
   result.height = v23;
-  result.width = v22;
+  result.width = widthCopy;
   return result;
 }
 
-- (CGSize)estimatedSizeForOrdinal:(id)a3 width:(double)a4
+- (CGSize)estimatedSizeForOrdinal:(id)ordinal width:(double)width
 {
-  v6 = a3;
-  v7 = [(SUUIViewElementTextLayoutCache *)self _existingLayoutForViewElement:v6 width:a4];
+  ordinalCopy = ordinal;
+  v7 = [(SUUIViewElementTextLayoutCache *)self _existingLayoutForViewElement:ordinalCopy width:width];
   v8 = v7;
   if (v7)
   {
@@ -138,7 +138,7 @@
 
   else
   {
-    [(SUUIViewElementTextLayoutCache *)self _bestGuessSizeForOrdinal:v6 width:a4];
+    [(SUUIViewElementTextLayoutCache *)self _bestGuessSizeForOrdinal:ordinalCopy width:width];
   }
 
   v11 = v9;
@@ -209,60 +209,60 @@ void __69__SUUIViewElementTextLayoutCache_invalidateLayoutsForUpdatedElements__b
   [*(a1 + 32) setObject:v7 forKey:v5];
 }
 
-- (void)requestLayoutForBadge:(id)a3 width:(int64_t)a4
+- (void)requestLayoutForBadge:(id)badge width:(int64_t)width
 {
-  v6 = a3;
+  badgeCopy = badge;
   v5 = [SUUIViewElementTextLayoutCache _createLayoutRequestForBadge:"_createLayoutRequestForBadge:width:" width:?];
   if (v5)
   {
-    [(SUUIViewElementTextLayoutCache *)self _addRequest:v5 forViewElement:v6];
+    [(SUUIViewElementTextLayoutCache *)self _addRequest:v5 forViewElement:badgeCopy];
   }
 }
 
-- (void)requestLayoutForButton:(id)a3 attributedString:(id)a4 width:(int64_t)a5
+- (void)requestLayoutForButton:(id)button attributedString:(id)string width:(int64_t)width
 {
-  v7 = a3;
+  buttonCopy = button;
   v6 = [SUUIViewElementTextLayoutCache _createLayoutRequestForButton:"_createLayoutRequestForButton:attributedString:width:" attributedString:? width:?];
   if (v6)
   {
-    [(SUUIViewElementTextLayoutCache *)self _addRequest:v6 forViewElement:v7];
+    [(SUUIViewElementTextLayoutCache *)self _addRequest:v6 forViewElement:buttonCopy];
   }
 }
 
-- (void)requestLayoutForLabel:(id)a3 attributedString:(id)a4 width:(int64_t)a5
+- (void)requestLayoutForLabel:(id)label attributedString:(id)string width:(int64_t)width
 {
-  v7 = a3;
+  labelCopy = label;
   v6 = [SUUIViewElementTextLayoutCache _createLayoutRequestForLabel:"_createLayoutRequestForLabel:attributedString:width:" attributedString:? width:?];
   if (v6)
   {
-    [(SUUIViewElementTextLayoutCache *)self _addRequest:v6 forViewElement:v7];
+    [(SUUIViewElementTextLayoutCache *)self _addRequest:v6 forViewElement:labelCopy];
   }
 }
 
-- (void)requestLayoutForOrdinal:(id)a3 attributedString:(id)a4 width:(int64_t)a5
+- (void)requestLayoutForOrdinal:(id)ordinal attributedString:(id)string width:(int64_t)width
 {
-  v7 = a3;
+  ordinalCopy = ordinal;
   v6 = [SUUIViewElementTextLayoutCache _createLayoutRequestForOrdinal:"_createLayoutRequestForOrdinal:attributedString:width:" attributedString:? width:?];
   if (v6)
   {
-    [(SUUIViewElementTextLayoutCache *)self _addRequest:v6 forViewElement:v7];
+    [(SUUIViewElementTextLayoutCache *)self _addRequest:v6 forViewElement:ordinalCopy];
   }
 }
 
-- (void)requestLayoutForViewElement:(id)a3 attributedString:(id)a4 width:(int64_t)a5
+- (void)requestLayoutForViewElement:(id)element attributedString:(id)string width:(int64_t)width
 {
-  v7 = a3;
+  elementCopy = element;
   v6 = [SUUIViewElementTextLayoutCache _createLayoutRequestForViewElement:"_createLayoutRequestForViewElement:attributedString:width:" attributedString:? width:?];
   if (v6)
   {
-    [(SUUIViewElementTextLayoutCache *)self _addRequest:v6 forViewElement:v7];
+    [(SUUIViewElementTextLayoutCache *)self _addRequest:v6 forViewElement:elementCopy];
   }
 }
 
-- (CGSize)sizeForButton:(id)a3 width:(double)a4
+- (CGSize)sizeForButton:(id)button width:(double)width
 {
-  v6 = a3;
-  v7 = [(SUUIViewElementTextLayoutCache *)self _layoutIndexForViewElement:v6 width:a4];
+  buttonCopy = button;
+  v7 = [(SUUIViewElementTextLayoutCache *)self _layoutIndexForViewElement:buttonCopy width:width];
   v8 = v7;
   if (v7 && (-[SUUILayoutCache layoutForIndex:forced:](self->_layoutCache, "layoutForIndex:forced:", [v7 integerValue], 1), (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
@@ -274,7 +274,7 @@ void __69__SUUIViewElementTextLayoutCache_invalidateLayoutsForUpdatedElements__b
 
   else
   {
-    [(SUUIViewElementTextLayoutCache *)self _bestGuessSizeForButton:v6 width:a4];
+    [(SUUIViewElementTextLayoutCache *)self _bestGuessSizeForButton:buttonCopy width:width];
     v12 = v15;
     v14 = v16;
   }
@@ -286,10 +286,10 @@ void __69__SUUIViewElementTextLayoutCache_invalidateLayoutsForUpdatedElements__b
   return result;
 }
 
-- (CGSize)sizeForLabel:(id)a3 width:(double)a4
+- (CGSize)sizeForLabel:(id)label width:(double)width
 {
-  v6 = a3;
-  v7 = [(SUUIViewElementTextLayoutCache *)self _layoutIndexForViewElement:v6 width:a4];
+  labelCopy = label;
+  v7 = [(SUUIViewElementTextLayoutCache *)self _layoutIndexForViewElement:labelCopy width:width];
   v8 = v7;
   if (v7 && (-[SUUILayoutCache layoutForIndex:forced:](self->_layoutCache, "layoutForIndex:forced:", [v7 integerValue], 1), (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
@@ -301,7 +301,7 @@ void __69__SUUIViewElementTextLayoutCache_invalidateLayoutsForUpdatedElements__b
 
   else
   {
-    [(SUUIViewElementTextLayoutCache *)self _bestGuessSizeForLabel:v6 width:a4];
+    [(SUUIViewElementTextLayoutCache *)self _bestGuessSizeForLabel:labelCopy width:width];
     v12 = v15;
     v14 = v16;
   }
@@ -313,9 +313,9 @@ void __69__SUUIViewElementTextLayoutCache_invalidateLayoutsForUpdatedElements__b
   return result;
 }
 
-- (CGSize)sizeForViewElement:(id)a3 width:(double)a4
+- (CGSize)sizeForViewElement:(id)element width:(double)width
 {
-  v5 = [(SUUIViewElementTextLayoutCache *)self _layoutIndexForViewElement:a3 width:a4];
+  v5 = [(SUUIViewElementTextLayoutCache *)self _layoutIndexForViewElement:element width:width];
   v6 = v5;
   if (v5 && (-[SUUILayoutCache layoutForIndex:forced:](self->_layoutCache, "layoutForIndex:forced:", [v5 integerValue], 1), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
@@ -338,17 +338,17 @@ void __69__SUUIViewElementTextLayoutCache_invalidateLayoutsForUpdatedElements__b
   return result;
 }
 
-- (void)_addRequest:(id)a3 forViewElement:(id)a4
+- (void)_addRequest:(id)request forViewElement:(id)element
 {
-  v25 = a3;
-  v6 = a4;
-  [v25 width];
+  requestCopy = request;
+  elementCopy = element;
+  [requestCopy width];
   v8 = v7;
-  v9 = [(SUUIViewElementTextLayoutCache *)self _existingLayoutForViewElement:v6 width:v7];
+  v9 = [(SUUIViewElementTextLayoutCache *)self _existingLayoutForViewElement:elementCopy width:v7];
 
   if (!v9)
   {
-    v10 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{v25, 0}];
+    v10 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{requestCopy, 0}];
     v11 = [(SUUILayoutCache *)self->_layoutCache addLayoutRequests:v10];
     v12 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:v11];
     v13 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:v8];
@@ -359,8 +359,8 @@ void __69__SUUIViewElementTextLayoutCache_invalidateLayoutsForUpdatedElements__b
       [(NSMutableDictionary *)self->_layoutMapTables setObject:v14 forKey:v13];
     }
 
-    v15 = [v6 uniquingMapKey];
-    v16 = [v14 objectForKey:v6];
+    uniquingMapKey = [elementCopy uniquingMapKey];
+    v16 = [v14 objectForKey:elementCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -380,23 +380,23 @@ void __69__SUUIViewElementTextLayoutCache_invalidateLayoutsForUpdatedElements__b
 
     else
     {
-      v19 = v15 == 0;
+      v19 = uniquingMapKey == 0;
     }
 
     if (v19)
     {
       v21 = v18;
-      if (!v15)
+      if (!uniquingMapKey)
       {
         if (v18)
         {
-          v20 = [MEMORY[0x277CBEB68] null];
-          [v21 setObject:v12 forKey:v20];
+          null = [MEMORY[0x277CBEB68] null];
+          [v21 setObject:v12 forKey:null];
         }
 
         else
         {
-          [v14 setObject:v12 forKey:v6];
+          [v14 setObject:v12 forKey:elementCopy];
         }
 
         goto LABEL_19;
@@ -410,14 +410,14 @@ void __69__SUUIViewElementTextLayoutCache_invalidateLayoutsForUpdatedElements__b
       v23 = v22;
       if (v22)
       {
-        v24 = [MEMORY[0x277CBEB68] null];
-        [v21 setObject:v23 forKey:v24];
+        null2 = [MEMORY[0x277CBEB68] null];
+        [v21 setObject:v23 forKey:null2];
       }
 
-      [v14 setObject:v21 forKey:v6];
+      [v14 setObject:v21 forKey:elementCopy];
     }
 
-    [v21 setObject:v12 forKey:v15];
+    [v21 setObject:v12 forKey:uniquingMapKey];
 
 LABEL_19:
   }
@@ -439,25 +439,25 @@ LABEL_19:
   return v2;
 }
 
-- (CGSize)_bestGuessSizeForButton:(id)a3 width:(double)a4
+- (CGSize)_bestGuessSizeForButton:(id)button width:(double)width
 {
-  v6 = a3;
-  v7 = [v6 elementType];
-  if (v7 == 141 || v7 == 12)
+  buttonCopy = button;
+  elementType = [buttonCopy elementType];
+  if (elementType == 141 || elementType == 12)
   {
-    v9 = [v6 buttonTitleStyle];
-    v10 = v9;
-    if (v9)
+    buttonTitleStyle = [buttonCopy buttonTitleStyle];
+    v10 = buttonTitleStyle;
+    if (buttonTitleStyle)
     {
-      v11 = v9;
+      style = buttonTitleStyle;
     }
 
     else
     {
-      v11 = [v6 style];
+      style = [buttonCopy style];
     }
 
-    v14 = v11;
+    v14 = style;
 
     v15 = SUUIViewElementFontWithStyle(v14);
     if (!v15)
@@ -466,14 +466,14 @@ LABEL_19:
     }
 
     v16 = objc_alloc_init(_SUUIViewElementTextLayoutCacheBestGuessCacheKey);
-    v17 = [v6 buttonText];
-    v18 = [v17 string];
-    [(_SUUIViewElementTextLayoutCacheBestGuessCacheKey *)v16 setText:v18];
+    buttonText = [buttonCopy buttonText];
+    string = [buttonText string];
+    [(_SUUIViewElementTextLayoutCacheBestGuessCacheKey *)v16 setText:string];
 
     [(_SUUIViewElementTextLayoutCacheBestGuessCacheKey *)v16 setFont:v15];
-    [(_SUUIViewElementTextLayoutCacheBestGuessCacheKey *)v16 setWidth:a4];
-    v19 = [(SUUIViewElementTextLayoutCache *)self _bestGuessCache];
-    v20 = [v19 objectForKey:v16];
+    [(_SUUIViewElementTextLayoutCacheBestGuessCacheKey *)v16 setWidth:width];
+    _bestGuessCache = [(SUUIViewElementTextLayoutCache *)self _bestGuessCache];
+    v20 = [_bestGuessCache objectForKey:v16];
 
     if (v20)
     {
@@ -495,17 +495,17 @@ LABEL_19:
         v24 = 0;
       }
 
-      v25 = [v6 buttonText];
-      v26 = [v25 attributedStringWithDefaultFont:v15 foregroundColor:0 textAlignment:v24 style:v14];
+      buttonText2 = [buttonCopy buttonText];
+      v26 = [buttonText2 attributedStringWithDefaultFont:v15 foregroundColor:0 textAlignment:v24 style:v14];
 
-      v27 = [(SUUIViewElementTextLayoutCache *)self _createLayoutRequestForButton:v6 attributedString:v26 width:a4];
+      v27 = [(SUUIViewElementTextLayoutCache *)self _createLayoutRequestForButton:buttonCopy attributedString:v26 width:width];
       v28 = [[SUUIAttributedStringLayout alloc] initWithLayoutRequest:v27];
       [(SUUIAttributedStringLayout *)v28 boundingSize];
       v12 = v29;
       v13 = v30;
       v20 = [MEMORY[0x277CCAE60] valueWithCGSize:?];
-      v31 = [(SUUIViewElementTextLayoutCache *)self _bestGuessCache];
-      [v31 setObject:v20 forKey:v16];
+      _bestGuessCache2 = [(SUUIViewElementTextLayoutCache *)self _bestGuessCache];
+      [_bestGuessCache2 setObject:v20 forKey:v16];
     }
   }
 
@@ -522,21 +522,21 @@ LABEL_19:
   return result;
 }
 
-- (CGSize)_bestGuessSizeForLabel:(id)a3 width:(double)a4
+- (CGSize)_bestGuessSizeForLabel:(id)label width:(double)width
 {
-  v6 = a3;
-  v7 = [v6 style];
-  v8 = SUUIViewElementFontWithStyle(v7);
+  labelCopy = label;
+  style = [labelCopy style];
+  v8 = SUUIViewElementFontWithStyle(style);
 
   v9 = objc_alloc_init(_SUUIViewElementTextLayoutCacheBestGuessCacheKey);
-  v10 = [v6 text];
-  v11 = [v10 string];
-  [(_SUUIViewElementTextLayoutCacheBestGuessCacheKey *)v9 setText:v11];
+  text = [labelCopy text];
+  string = [text string];
+  [(_SUUIViewElementTextLayoutCacheBestGuessCacheKey *)v9 setText:string];
 
   [(_SUUIViewElementTextLayoutCacheBestGuessCacheKey *)v9 setFont:v8];
-  [(_SUUIViewElementTextLayoutCacheBestGuessCacheKey *)v9 setWidth:a4];
-  v12 = [(SUUIViewElementTextLayoutCache *)self _bestGuessCache];
-  v13 = [v12 objectForKey:v9];
+  [(_SUUIViewElementTextLayoutCacheBestGuessCacheKey *)v9 setWidth:width];
+  _bestGuessCache = [(SUUIViewElementTextLayoutCache *)self _bestGuessCache];
+  v13 = [_bestGuessCache objectForKey:v9];
 
   if (v13)
   {
@@ -547,18 +547,18 @@ LABEL_19:
 
   else
   {
-    v18 = [v6 text];
-    v19 = [v6 style];
-    v20 = [v18 attributedStringWithDefaultFont:v8 foregroundColor:0 style:v19];
+    text2 = [labelCopy text];
+    style2 = [labelCopy style];
+    v20 = [text2 attributedStringWithDefaultFont:v8 foregroundColor:0 style:style2];
 
-    v21 = [(SUUIViewElementTextLayoutCache *)self _createLayoutRequestForLabel:v6 attributedString:v20 width:a4];
+    v21 = [(SUUIViewElementTextLayoutCache *)self _createLayoutRequestForLabel:labelCopy attributedString:v20 width:width];
     v22 = [[SUUIAttributedStringLayout alloc] initWithLayoutRequest:v21];
     [(SUUIAttributedStringLayout *)v22 boundingSize];
     v15 = v23;
     v17 = v24;
     v13 = [MEMORY[0x277CCAE60] valueWithCGSize:?];
-    v25 = [(SUUIViewElementTextLayoutCache *)self _bestGuessCache];
-    [v25 setObject:v13 forKey:v9];
+    _bestGuessCache2 = [(SUUIViewElementTextLayoutCache *)self _bestGuessCache];
+    [_bestGuessCache2 setObject:v13 forKey:v9];
   }
 
   v26 = v15;
@@ -568,11 +568,11 @@ LABEL_19:
   return result;
 }
 
-- (CGSize)_bestGuessSizeForOrdinal:(id)a3 width:(double)a4
+- (CGSize)_bestGuessSizeForOrdinal:(id)ordinal width:(double)width
 {
-  v6 = a3;
-  v7 = [v6 style];
-  v8 = SUUIViewElementFontWithStyle(v7);
+  ordinalCopy = ordinal;
+  style = [ordinalCopy style];
+  v8 = SUUIViewElementFontWithStyle(style);
 
   if (!v8)
   {
@@ -583,14 +583,14 @@ LABEL_19:
   }
 
   v11 = objc_alloc_init(_SUUIViewElementTextLayoutCacheBestGuessCacheKey);
-  v12 = [v6 text];
-  v13 = [v12 string];
-  [(_SUUIViewElementTextLayoutCacheBestGuessCacheKey *)v11 setText:v13];
+  text = [ordinalCopy text];
+  string = [text string];
+  [(_SUUIViewElementTextLayoutCacheBestGuessCacheKey *)v11 setText:string];
 
   [(_SUUIViewElementTextLayoutCacheBestGuessCacheKey *)v11 setFont:v8];
-  [(_SUUIViewElementTextLayoutCacheBestGuessCacheKey *)v11 setWidth:a4];
-  v14 = [(SUUIViewElementTextLayoutCache *)self _bestGuessCache];
-  v15 = [v14 objectForKey:v11];
+  [(_SUUIViewElementTextLayoutCacheBestGuessCacheKey *)v11 setWidth:width];
+  _bestGuessCache = [(SUUIViewElementTextLayoutCache *)self _bestGuessCache];
+  v15 = [_bestGuessCache objectForKey:v11];
 
   if (v15)
   {
@@ -601,17 +601,17 @@ LABEL_19:
 
   else
   {
-    v20 = [v6 text];
-    v21 = [v20 attributedStringWithDefaultFont:v8 foregroundColor:0];
+    text2 = [ordinalCopy text];
+    v21 = [text2 attributedStringWithDefaultFont:v8 foregroundColor:0];
 
-    v22 = [(SUUIViewElementTextLayoutCache *)self _createLayoutRequestForOrdinal:v6 attributedString:v21 width:a4];
+    v22 = [(SUUIViewElementTextLayoutCache *)self _createLayoutRequestForOrdinal:ordinalCopy attributedString:v21 width:width];
     v23 = [[SUUIAttributedStringLayout alloc] initWithLayoutRequest:v22];
     [(SUUIAttributedStringLayout *)v23 boundingSize];
     v17 = v24;
     v19 = v25;
     v15 = [MEMORY[0x277CCAE60] valueWithCGSize:?];
-    v26 = [(SUUIViewElementTextLayoutCache *)self _bestGuessCache];
-    [v26 setObject:v15 forKey:v11];
+    _bestGuessCache2 = [(SUUIViewElementTextLayoutCache *)self _bestGuessCache];
+    [_bestGuessCache2 setObject:v15 forKey:v11];
   }
 
   v27 = v17;
@@ -621,16 +621,16 @@ LABEL_19:
   return result;
 }
 
-- (id)_createLayoutRequestForBadge:(id)a3 width:(int64_t)a4
+- (id)_createLayoutRequestForBadge:(id)badge width:(int64_t)width
 {
-  v5 = a3;
-  if ([v5 badgeType] == 1 && (objc_msgSend(v5, "attributedString"), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  badgeCopy = badge;
+  if ([badgeCopy badgeType] == 1 && (objc_msgSend(badgeCopy, "attributedString"), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
     v8 = [[SUUIAttributedStringLayoutRequest alloc] initWithAttributedString:v6];
     [(SUUIAttributedStringLayoutRequest *)v8 setNumberOfLines:1];
     [(SUUIAttributedStringLayoutRequest *)v8 setWantsBaselineOffset:1];
-    [(SUUIAttributedStringLayoutRequest *)v8 setWidth:a4];
+    [(SUUIAttributedStringLayoutRequest *)v8 setWidth:width];
   }
 
   else
@@ -641,74 +641,74 @@ LABEL_19:
   return v8;
 }
 
-- (id)_createLayoutRequestForButton:(id)a3 attributedString:(id)a4 width:(int64_t)a5
+- (id)_createLayoutRequestForButton:(id)button attributedString:(id)string width:(int64_t)width
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [[SUUIAttributedStringLayoutRequest alloc] initWithAttributedString:v8];
+  buttonCopy = button;
+  stringCopy = string;
+  v9 = [[SUUIAttributedStringLayoutRequest alloc] initWithAttributedString:stringCopy];
 
-  [(SUUIAttributedStringLayoutRequest *)v9 setWidth:a5];
-  if ([v7 buttonViewType] == 9)
+  [(SUUIAttributedStringLayoutRequest *)v9 setWidth:width];
+  if ([buttonCopy buttonViewType] == 9)
   {
     [(SUUIAttributedStringLayoutRequest *)v9 setNumberOfLines:2];
   }
 
   else
   {
-    v10 = [v7 style];
-    v11 = [v10 valueForStyle:*MEMORY[0x277D1B000]];
+    style = [buttonCopy style];
+    v11 = [style valueForStyle:*MEMORY[0x277D1B000]];
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v11 integerValue];
+      integerValue = [v11 integerValue];
     }
 
     else
     {
-      v12 = 1;
+      integerValue = 1;
     }
 
-    [(SUUIAttributedStringLayoutRequest *)v9 setNumberOfLines:v12];
+    [(SUUIAttributedStringLayoutRequest *)v9 setNumberOfLines:integerValue];
     [(SUUIAttributedStringLayoutRequest *)v9 setWantsBaselineOffset:1];
   }
 
   return v9;
 }
 
-- (id)_createLayoutRequestForLabel:(id)a3 attributedString:(id)a4 width:(int64_t)a5
+- (id)_createLayoutRequestForLabel:(id)label attributedString:(id)string width:(int64_t)width
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [[SUUIAttributedStringLayoutRequest alloc] initWithAttributedString:v8];
+  labelCopy = label;
+  stringCopy = string;
+  v9 = [[SUUIAttributedStringLayoutRequest alloc] initWithAttributedString:stringCopy];
 
-  v10 = [v7 style];
-  v11 = [v10 maxTextLines];
-  if (!v10 || (v12 = v11, v11 == -1))
+  style = [labelCopy style];
+  maxTextLines = [style maxTextLines];
+  if (!style || (numberOfLines = maxTextLines, maxTextLines == -1))
   {
-    v12 = [v7 numberOfLines];
+    numberOfLines = [labelCopy numberOfLines];
   }
 
-  [(SUUIAttributedStringLayoutRequest *)v9 setNumberOfLines:v12];
+  [(SUUIAttributedStringLayoutRequest *)v9 setNumberOfLines:numberOfLines];
   [(SUUIAttributedStringLayoutRequest *)v9 setWantsBaselineOffset:1];
-  [(SUUIAttributedStringLayoutRequest *)v9 setWidth:a5];
+  [(SUUIAttributedStringLayoutRequest *)v9 setWidth:width];
 
   return v9;
 }
 
-- (id)_createLayoutRequestForViewElement:(id)a3 attributedString:(id)a4 width:(int64_t)a5
+- (id)_createLayoutRequestForViewElement:(id)element attributedString:(id)string width:(int64_t)width
 {
-  v6 = a4;
-  v7 = [[SUUIAttributedStringLayoutRequest alloc] initWithAttributedString:v6];
+  stringCopy = string;
+  v7 = [[SUUIAttributedStringLayoutRequest alloc] initWithAttributedString:stringCopy];
 
   [(SUUIAttributedStringLayoutRequest *)v7 setNumberOfLines:1];
   [(SUUIAttributedStringLayoutRequest *)v7 setWantsBaselineOffset:1];
-  [(SUUIAttributedStringLayoutRequest *)v7 setWidth:a5];
+  [(SUUIAttributedStringLayoutRequest *)v7 setWidth:width];
 
   return v7;
 }
 
-- (id)_existingLayoutForViewElement:(id)a3 width:(int64_t)a4
+- (id)_existingLayoutForViewElement:(id)element width:(int64_t)width
 {
-  v5 = [(SUUIViewElementTextLayoutCache *)self _layoutIndexForViewElement:a3 width:a4];
+  v5 = [(SUUIViewElementTextLayoutCache *)self _layoutIndexForViewElement:element width:width];
   v6 = v5;
   if (v5)
   {
@@ -723,14 +723,14 @@ LABEL_19:
   return v7;
 }
 
-- (id)_layoutIndexForViewElement:(id)a3 width:(int64_t)a4
+- (id)_layoutIndexForViewElement:(id)element width:(int64_t)width
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithInteger:a4];
+  elementCopy = element;
+  v8 = [v6 numberWithInteger:width];
   v9 = [(NSMutableDictionary *)self->_layoutMapTables objectForKey:v8];
-  v10 = [v7 uniquingMapKey];
-  v11 = [v9 objectForKey:v7];
+  uniquingMapKey = [elementCopy uniquingMapKey];
+  v11 = [v9 objectForKey:elementCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -745,17 +745,17 @@ LABEL_19:
 
   v13 = v12;
   v14 = v13;
-  if (v10)
+  if (uniquingMapKey)
   {
-    v15 = [v13 objectForKey:v10];
+    v15 = [v13 objectForKey:uniquingMapKey];
   }
 
   else
   {
     if (v13)
     {
-      v17 = [MEMORY[0x277CBEB68] null];
-      v16 = [v14 objectForKey:v17];
+      null = [MEMORY[0x277CBEB68] null];
+      v16 = [v14 objectForKey:null];
 
       goto LABEL_9;
     }

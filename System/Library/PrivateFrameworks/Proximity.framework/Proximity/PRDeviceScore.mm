@@ -1,8 +1,8 @@
 @interface PRDeviceScore
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPRDeviceScore:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPRDeviceScore:(id)score;
 - (PRDeviceScore)init;
-- (PRDeviceScore)initWithValues:(id)a3 proximity:(int64_t)a4 range:(id)a5 angle:(id)a6 score:(double)a7 scoreUncertainty:(double)a8;
+- (PRDeviceScore)initWithValues:(id)values proximity:(int64_t)proximity range:(id)range angle:(id)angle score:(double)score scoreUncertainty:(double)uncertainty;
 @end
 
 @implementation PRDeviceScore
@@ -14,12 +14,12 @@
   return 0;
 }
 
-- (PRDeviceScore)initWithValues:(id)a3 proximity:(int64_t)a4 range:(id)a5 angle:(id)a6 score:(double)a7 scoreUncertainty:(double)a8
+- (PRDeviceScore)initWithValues:(id)values proximity:(int64_t)proximity range:(id)range angle:(id)angle score:(double)score scoreUncertainty:(double)uncertainty
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  if (!v15)
+  valuesCopy = values;
+  rangeCopy = range;
+  angleCopy = angle;
+  if (!valuesCopy)
   {
     [PRDeviceScore initWithValues:a2 proximity:self range:? angle:? score:? scoreUncertainty:?];
   }
@@ -29,70 +29,70 @@
   v18 = [(PRDeviceScore *)&v26 init];
   if (v18)
   {
-    v19 = [v15 copy];
+    v19 = [valuesCopy copy];
     btAddress = v18->_btAddress;
     v18->_btAddress = v19;
 
-    v18->_proximity = a4;
-    v21 = [v16 copy];
+    v18->_proximity = proximity;
+    v21 = [rangeCopy copy];
     range = v18->_range;
     v18->_range = v21;
 
-    v23 = [v17 copy];
+    v23 = [angleCopy copy];
     angle = v18->_angle;
     v18->_angle = v23;
 
-    v18->_score = a7;
-    v18->_scoreUncertainty = a8;
+    v18->_score = score;
+    v18->_scoreUncertainty = uncertainty;
   }
 
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PRDeviceScore *)self isEqualToPRDeviceScore:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PRDeviceScore *)self isEqualToPRDeviceScore:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPRDeviceScore:(id)a3
+- (BOOL)isEqualToPRDeviceScore:(id)score
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  scoreCopy = score;
+  v5 = scoreCopy;
+  if (self != scoreCopy)
   {
     btAddress = self->_btAddress;
-    v7 = [(PRDeviceScore *)v4 btAddress];
-    LODWORD(btAddress) = [(NSData *)btAddress isEqual:v7];
+    btAddress = [(PRDeviceScore *)scoreCopy btAddress];
+    LODWORD(btAddress) = [(NSData *)btAddress isEqual:btAddress];
 
     if (!btAddress)
     {
       goto LABEL_17;
     }
 
-    v8 = [(PRDeviceScore *)self proximity];
-    if (v8 != [(PRDeviceScore *)v5 proximity])
+    proximity = [(PRDeviceScore *)self proximity];
+    if (proximity != [(PRDeviceScore *)v5 proximity])
     {
       goto LABEL_17;
     }
 
-    v9 = [(PRDeviceScore *)self range];
-    if (v9 && (v10 = v9, [(PRDeviceScore *)v5 range], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
+    range = [(PRDeviceScore *)self range];
+    if (range && (v10 = range, [(PRDeviceScore *)v5 range], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
     {
-      v12 = [(PRDeviceScore *)self range];
-      v13 = [(PRDeviceScore *)v5 range];
-      v14 = [v12 isEqual:v13];
+      range2 = [(PRDeviceScore *)self range];
+      range3 = [(PRDeviceScore *)v5 range];
+      v14 = [range2 isEqual:range3];
 
       if ((v14 & 1) == 0)
       {
@@ -102,31 +102,31 @@
 
     else
     {
-      v16 = [(PRDeviceScore *)self range];
-      if (v16)
+      range4 = [(PRDeviceScore *)self range];
+      if (range4)
       {
         goto LABEL_16;
       }
 
-      v17 = [(PRDeviceScore *)v5 range];
+      range5 = [(PRDeviceScore *)v5 range];
 
-      if (v17)
+      if (range5)
       {
         goto LABEL_17;
       }
     }
 
-    v18 = [(PRDeviceScore *)self angle];
-    if (v18)
+    angle = [(PRDeviceScore *)self angle];
+    if (angle)
     {
-      v19 = v18;
-      v20 = [(PRDeviceScore *)v5 angle];
+      v19 = angle;
+      angle2 = [(PRDeviceScore *)v5 angle];
 
-      if (v20)
+      if (angle2)
       {
-        v21 = [(PRDeviceScore *)self angle];
-        v22 = [(PRDeviceScore *)v5 angle];
-        v23 = [v21 isEqual:v22];
+        angle3 = [(PRDeviceScore *)self angle];
+        angle4 = [(PRDeviceScore *)v5 angle];
+        v23 = [angle3 isEqual:angle4];
 
         if (v23)
         {
@@ -150,12 +150,12 @@ LABEL_17:
       }
     }
 
-    v16 = [(PRDeviceScore *)self angle];
-    if (!v16)
+    range4 = [(PRDeviceScore *)self angle];
+    if (!range4)
     {
-      v25 = [(PRDeviceScore *)v5 angle];
+      angle5 = [(PRDeviceScore *)v5 angle];
 
-      if (!v25)
+      if (!angle5)
       {
         goto LABEL_20;
       }

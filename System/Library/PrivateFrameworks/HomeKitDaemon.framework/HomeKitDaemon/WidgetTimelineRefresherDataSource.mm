@@ -1,35 +1,35 @@
 @interface WidgetTimelineRefresherDataSource
 - (_TtC13HomeKitDaemon33WidgetTimelineRefresherDataSource)init;
-- (id)darwinNotificationProviderForTimelineRefresher:(id)a3;
-- (id)matterDeviceControllerForTimelineRefresher:(id)a3 withUUID:(id)a4;
-- (id)widgetConfigurationReaderForTimelineRefresher:(id)a3;
-- (id)widgetTimelineControllerForTimelineRefresher:(id)a3;
+- (id)darwinNotificationProviderForTimelineRefresher:(id)refresher;
+- (id)matterDeviceControllerForTimelineRefresher:(id)refresher withUUID:(id)d;
+- (id)widgetConfigurationReaderForTimelineRefresher:(id)refresher;
+- (id)widgetTimelineControllerForTimelineRefresher:(id)refresher;
 @end
 
 @implementation WidgetTimelineRefresherDataSource
 
-- (id)darwinNotificationProviderForTimelineRefresher:(id)a3
+- (id)darwinNotificationProviderForTimelineRefresher:(id)refresher
 {
   v3 = [objc_allocWithZone(MEMORY[0x277CD19C0]) init];
 
   return v3;
 }
 
-- (id)widgetConfigurationReaderForTimelineRefresher:(id)a3
+- (id)widgetConfigurationReaderForTimelineRefresher:(id)refresher
 {
   v3 = [objc_allocWithZone(HMDWidgetConfigurationReader) init];
 
   return v3;
 }
 
-- (id)widgetTimelineControllerForTimelineRefresher:(id)a3
+- (id)widgetTimelineControllerForTimelineRefresher:(id)refresher
 {
   v3 = [objc_allocWithZone(HMDWidgetTimelineController) init];
 
   return v3;
 }
 
-- (id)matterDeviceControllerForTimelineRefresher:(id)a3 withUUID:(id)a4
+- (id)matterDeviceControllerForTimelineRefresher:(id)refresher withUUID:(id)d
 {
   v4 = sub_22A4DB7DC();
   v5 = *(v4 - 8);
@@ -39,11 +39,11 @@
   sub_22A4DB79C();
   v9 = objc_opt_self();
   v10 = sub_22A4DB77C();
-  v11 = [v9 matterDeviceControllerWithUUID_];
+  matterDeviceControllerWithUUID_ = [v9 matterDeviceControllerWithUUID_];
 
   (*(v5 + 8))(v8, v4);
 
-  return v11;
+  return matterDeviceControllerWithUUID_;
 }
 
 - (_TtC13HomeKitDaemon33WidgetTimelineRefresherDataSource)init

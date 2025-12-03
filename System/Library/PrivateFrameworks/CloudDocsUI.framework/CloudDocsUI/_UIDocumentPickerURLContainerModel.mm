@@ -4,22 +4,22 @@
 + (id)tagColorsByTag;
 + (void)_tagColorsDidChange;
 - (BOOL)afterInitialUpdate;
-- (BOOL)shouldAllowPickingType:(id)a3;
-- (BOOL)shouldEnableContainer:(id)a3;
-- (BOOL)shouldShowContainerForType:(id)a3;
+- (BOOL)shouldAllowPickingType:(id)type;
+- (BOOL)shouldEnableContainer:(id)container;
+- (BOOL)shouldShowContainerForType:(id)type;
 - (NSString)description;
 - (NSString)displayTitle;
 - (_UIDocumentPickerURLContainerModel)init;
-- (_UIDocumentPickerURLContainerModel)initWithURL:(id)a3 pickableTypes:(id)a4 mode:(unint64_t)a5;
+- (_UIDocumentPickerURLContainerModel)initWithURL:(id)l pickableTypes:(id)types mode:(unint64_t)mode;
 - (id)_createObserver;
 - (id)scopes;
-- (void)arrayController:(id)a3 modelChanged:(id)a4 differences:(id)a5;
-- (void)callUpdateHandlerWithNewItems:(id)a3 diff:(id)a4;
+- (void)arrayController:(id)controller modelChanged:(id)changed differences:(id)differences;
+- (void)callUpdateHandlerWithNewItems:(id)items diff:(id)diff;
 - (void)dealloc;
-- (void)refreshItem:(id)a3 thumbnailOnly:(BOOL)a4;
+- (void)refreshItem:(id)item thumbnailOnly:(BOOL)only;
 - (void)startMonitoringChanges;
 - (void)stopMonitoringChanges;
-- (void)updateObserverForURL:(id)a3;
+- (void)updateObserverForURL:(id)l;
 - (void)updateSortDescriptors;
 @end
 
@@ -31,7 +31,7 @@
   block[1] = 3221225472;
   block[2] = __52___UIDocumentPickerURLContainerModel_tagColorsByTag__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (tagColorsByTag_onceToken != -1)
   {
     dispatch_once(&tagColorsByTag_onceToken, block);
@@ -44,7 +44,7 @@
 
 + (id)allTags
 {
-  v2 = [a1 tagColorsByTag];
+  tagColorsByTag = [self tagColorsByTag];
   v3 = [_UIDocumentPickerURLContainerModelAllTags copy];
 
   return v3;
@@ -64,7 +64,7 @@
 
 + (void)_tagColorsDidChange
 {
-  v1 = [a1 objectForKey:@"FinderTagDictVersion"];
+  v1 = [self objectForKey:@"FinderTagDictVersion"];
   [v1 unsignedIntegerValue];
   OUTLINED_FUNCTION_1();
   _os_log_fault_impl(v2, v3, OS_LOG_TYPE_FAULT, v4, v5, 0xCu);
@@ -80,13 +80,13 @@
   return 0;
 }
 
-- (_UIDocumentPickerURLContainerModel)initWithURL:(id)a3 pickableTypes:(id)a4 mode:(unint64_t)a5
+- (_UIDocumentPickerURLContainerModel)initWithURL:(id)l pickableTypes:(id)types mode:(unint64_t)mode
 {
-  v9 = a4;
-  v10 = [a3 br_realpathURL];
-  if (-[_UIDocumentPickerURLContainerModel isMemberOfClass:](self, "isMemberOfClass:", objc_opt_class()) && (!v10 || ([MEMORY[0x277CBEBC0] ui_cloudDocsContainerURL], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "isEqual:", v11), v11, v12)))
+  typesCopy = types;
+  br_realpathURL = [l br_realpathURL];
+  if (-[_UIDocumentPickerURLContainerModel isMemberOfClass:](self, "isMemberOfClass:", objc_opt_class()) && (!br_realpathURL || ([MEMORY[0x277CBEBC0] ui_cloudDocsContainerURL], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(br_realpathURL, "isEqual:", v11), v11, v12)))
   {
-    v13 = [[_UIDocumentPickerRootContainerModel alloc] initWithPickableTypes:v9 mode:a5];
+    v13 = [[_UIDocumentPickerRootContainerModel alloc] initWithPickableTypes:typesCopy mode:mode];
   }
 
   else
@@ -97,9 +97,9 @@
     v15 = v14;
     if (v14)
     {
-      objc_storeStrong(&v14->_url, v10);
-      objc_storeStrong(&v15->_pickableTypes, a4);
-      v15->_pickerMode = a5;
+      objc_storeStrong(&v14->_url, br_realpathURL);
+      objc_storeStrong(&v15->_pickableTypes, types);
+      v15->_pickerMode = mode;
       v16 = objc_opt_new();
       presentedItemOperationQueue = v15->_presentedItemOperationQueue;
       v15->_presentedItemOperationQueue = v16;
@@ -134,8 +134,8 @@
 
 - (void)dealloc
 {
-  v3 = [(_UIDocumentPickerURLContainerModel *)self observer];
-  [v3 invalidate];
+  observer = [(_UIDocumentPickerURLContainerModel *)self observer];
+  [observer invalidate];
 
   v4.receiver = self;
   v4.super_class = _UIDocumentPickerURLContainerModel;
@@ -158,9 +158,9 @@
     v3 = v9;
     if (!v6)
     {
-      v7 = [(NSURL *)self->_url lastPathComponent];
+      lastPathComponent = [(NSURL *)self->_url lastPathComponent];
 
-      v3 = v7;
+      v3 = lastPathComponent;
     }
   }
 
@@ -169,12 +169,12 @@
 
 - (void)startMonitoringChanges
 {
-  v3 = [(_UIDocumentPickerURLContainerModel *)self observer];
+  observer = [(_UIDocumentPickerURLContainerModel *)self observer];
 
-  if (!v3)
+  if (!observer)
   {
-    v4 = [(_UIDocumentPickerURLContainerModel *)self _createObserver];
-    [(_UIDocumentPickerURLContainerModel *)self setObserver:v4];
+    _createObserver = [(_UIDocumentPickerURLContainerModel *)self _createObserver];
+    [(_UIDocumentPickerURLContainerModel *)self setObserver:_createObserver];
 
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     self->_startObservingTime = v5;
@@ -186,17 +186,17 @@
 - (id)_createObserver
 {
   v3 = [(_UIDocumentPickerURLContainerModel *)self url];
-  v4 = [v3 br_isInMobileDocuments];
+  br_isInMobileDocuments = [v3 br_isInMobileDocuments];
 
   v5 = off_278DD5BB8;
-  if (!v4)
+  if (!br_isInMobileDocuments)
   {
     v5 = off_278DD5BC8;
   }
 
   v6 = objc_alloc(*v5);
-  v7 = [(_UIDocumentPickerURLContainerModel *)self scopes];
-  v8 = [v6 initWithScopes:v7 delegate:self];
+  scopes = [(_UIDocumentPickerURLContainerModel *)self scopes];
+  v8 = [v6 initWithScopes:scopes delegate:self];
 
   return v8;
 }
@@ -223,8 +223,8 @@
 
 - (void)stopMonitoringChanges
 {
-  v3 = [(_UIDocumentPickerURLContainerModel *)self observer];
-  [v3 invalidate];
+  observer = [(_UIDocumentPickerURLContainerModel *)self observer];
+  [observer invalidate];
 
   [(_UIDocumentPickerURLContainerModel *)self setObserver:0];
   v4 = MEMORY[0x277CBEBF8];
@@ -235,12 +235,12 @@
 - (void)updateSortDescriptors
 {
   v26[3] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __59___UIDocumentPickerURLContainerModel_updateSortDescriptors__block_invoke;
   v22[3] = &unk_278DD6470;
-  v4 = v3;
+  v4 = currentLocale;
   v23 = v4;
   v5 = MEMORY[0x245D41DF0](v22);
   v17 = MEMORY[0x277D85DD0];
@@ -253,8 +253,8 @@
   v8 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"title" ascending:1 comparator:{v6, v17, v18, v19, v20}];
   v9 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:0 ascending:0 comparator:&__block_literal_global_122];
   v10 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"tags" ascending:0 comparator:v7];
-  v11 = [(_UIDocumentPickerContainerModel *)self sortOrder];
-  switch(v11)
+  sortOrder = [(_UIDocumentPickerContainerModel *)self sortOrder];
+  switch(sortOrder)
   {
     case 2:
       v24 = v10;
@@ -277,26 +277,26 @@ LABEL_8:
       v12[1] = v13;
       v12[2] = v14;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:? count:?];
-      v16 = [(_UIDocumentPickerURLContainerModel *)self observer];
-      [v16 setSortDescriptors:v15];
+      observer = [(_UIDocumentPickerURLContainerModel *)self observer];
+      [observer setSortDescriptors:v15];
 
       break;
   }
 }
 
-- (void)refreshItem:(id)a3 thumbnailOnly:(BOOL)a4
+- (void)refreshItem:(id)item thumbnailOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(_UIDocumentPickerURLContainerModel *)self modelObjects];
-  v8 = [v7 indexOfObject:v6];
+  itemCopy = item;
+  modelObjects = [(_UIDocumentPickerURLContainerModel *)self modelObjects];
+  v8 = [modelObjects indexOfObject:itemCopy];
 
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = [MEMORY[0x277CCAA70] indexPathForItem:v8 inSection:0];
-    v10 = [(_UIDocumentPickerURLContainerModel *)self modelObjects];
-    if (v4)
+    modelObjects2 = [(_UIDocumentPickerURLContainerModel *)self modelObjects];
+    if (onlyCopy)
     {
       v20 = v9;
       v21 = @"_UIDocumentPickerModelModifiedThumbnail";
@@ -320,21 +320,21 @@ LABEL_8:
     }
 
     v16 = [v12 dictionaryWithObjects:v13 forKeys:v14 count:1];
-    [(_UIDocumentPickerURLContainerModel *)self callUpdateHandlerWithNewItems:v10 diff:v16];
+    [(_UIDocumentPickerURLContainerModel *)self callUpdateHandlerWithNewItems:modelObjects2 diff:v16];
   }
 }
 
-- (BOOL)shouldEnableContainer:(id)a3
+- (BOOL)shouldEnableContainer:(id)container
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 documentsTypes];
-  v6 = [v5 count];
+  containerCopy = container;
+  documentsTypes = [containerCopy documentsTypes];
+  v6 = [documentsTypes count];
 
   if (v6)
   {
-    v7 = [v4 documentsTypes];
-    v8 = [v7 valueForKeyPath:@"@distinctUnionOfArrays.LSItemContentTypes"];
+    documentsTypes2 = [containerCopy documentsTypes];
+    v8 = [documentsTypes2 valueForKeyPath:@"@distinctUnionOfArrays.LSItemContentTypes"];
 
     v18 = 0u;
     v19 = 0u;
@@ -384,20 +384,20 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)shouldAllowPickingType:(id)a3
+- (BOOL)shouldAllowPickingType:(id)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_UIDocumentPickerURLContainerModel *)self pickableTypes];
+  typeCopy = type;
+  pickableTypes = [(_UIDocumentPickerURLContainerModel *)self pickableTypes];
 
-  if (v5)
+  if (pickableTypes)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(_UIDocumentPickerURLContainerModel *)self pickableTypes];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    pickableTypes2 = [(_UIDocumentPickerURLContainerModel *)self pickableTypes];
+    v7 = [pickableTypes2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -409,18 +409,18 @@ LABEL_12:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(pickableTypes2);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
-          if (UTTypeConformsTo(v4, v12) || ([(__CFString *)v12 isEqual:v10]& 1) != 0)
+          if (UTTypeConformsTo(typeCopy, v12) || ([(__CFString *)v12 isEqual:v10]& 1) != 0)
           {
             v13 = 1;
             goto LABEL_15;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [pickableTypes2 countByEnumeratingWithState:&v15 objects:v19 count:16];
         v13 = 0;
         if (v8)
         {
@@ -447,13 +447,13 @@ LABEL_15:
   return v13;
 }
 
-- (BOOL)shouldShowContainerForType:(id)a3
+- (BOOL)shouldShowContainerForType:(id)type
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_UIDocumentPickerURLContainerModel *)self pickableTypes];
+  typeCopy = type;
+  pickableTypes = [(_UIDocumentPickerURLContainerModel *)self pickableTypes];
 
-  if (v5)
+  if (pickableTypes)
   {
     if ([(_UIDocumentPickerURLContainerModel *)self pickerMode]&& [(_UIDocumentPickerURLContainerModel *)self pickerMode]!= 1)
     {
@@ -461,29 +461,29 @@ LABEL_15:
       v13 = 0u;
       v10 = 0u;
       v11 = 0u;
-      v6 = [(_UIDocumentPickerURLContainerModel *)self pickableTypes];
-      v5 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
-      if (v5)
+      pickableTypes2 = [(_UIDocumentPickerURLContainerModel *)self pickableTypes];
+      pickableTypes = [pickableTypes2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      if (pickableTypes)
       {
         v7 = *v11;
         while (2)
         {
-          for (i = 0; i != v5; i = i + 1)
+          for (i = 0; i != pickableTypes; i = i + 1)
           {
             if (*v11 != v7)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(pickableTypes2);
             }
 
-            if (UTTypeConformsTo(*(*(&v10 + 1) + 8 * i), v4))
+            if (UTTypeConformsTo(*(*(&v10 + 1) + 8 * i), typeCopy))
             {
-              LOBYTE(v5) = 1;
+              LOBYTE(pickableTypes) = 1;
               goto LABEL_15;
             }
           }
 
-          v5 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
-          if (v5)
+          pickableTypes = [pickableTypes2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+          if (pickableTypes)
           {
             continue;
           }
@@ -497,24 +497,24 @@ LABEL_15:
 
     else
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(pickableTypes) = 1;
     }
   }
 
-  return v5;
+  return pickableTypes;
 }
 
-- (void)arrayController:(id)a3 modelChanged:(id)a4 differences:(id)a5
+- (void)arrayController:(id)controller modelChanged:(id)changed differences:(id)differences
 {
   v80 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v51 = a5;
-  v58 = [MEMORY[0x277CBEB18] array];
+  changedCopy = changed;
+  differencesCopy = differences;
+  array = [MEMORY[0x277CBEB18] array];
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  obj = v7;
+  obj = changedCopy;
   v8 = [obj countByEnumeratingWithState:&v73 objects:v79 count:16];
   if (v8)
   {
@@ -541,21 +541,21 @@ LABEL_15:
             goto LABEL_40;
           }
 
-          v13 = [v12 container];
-          v14 = [v12 pickable];
-          v15 = [(__CFString *)v13 documentsTypes];
-          v16 = v15;
-          if (v14)
+          container = [v12 container];
+          pickable = [v12 pickable];
+          documentsTypes = [(__CFString *)container documentsTypes];
+          v16 = documentsTypes;
+          if (pickable)
           {
-            v17 = [v15 count];
+            v17 = [documentsTypes count];
 
             if (v17)
             {
               v60 = v12;
               v53 = v11;
-              v55 = v13;
-              v18 = [(__CFString *)v13 documentsTypes];
-              v19 = [v18 valueForKeyPath:@"@distinctUnionOfArrays.LSItemContentTypes"];
+              v55 = container;
+              documentsTypes2 = [(__CFString *)container documentsTypes];
+              v19 = [documentsTypes2 valueForKeyPath:@"@distinctUnionOfArrays.LSItemContentTypes"];
 
               v71 = 0u;
               v72 = 0u;
@@ -581,9 +581,9 @@ LABEL_15:
                     v66 = 0u;
                     v67 = 0u;
                     v68 = 0u;
-                    v25 = self;
-                    v26 = [(_UIDocumentPickerURLContainerModel *)self pickableTypes];
-                    v27 = [v26 countByEnumeratingWithState:&v65 objects:v77 count:16];
+                    selfCopy = self;
+                    pickableTypes = [(_UIDocumentPickerURLContainerModel *)self pickableTypes];
+                    v27 = [pickableTypes countByEnumeratingWithState:&v65 objects:v77 count:16];
                     if (v27)
                     {
                       v28 = v27;
@@ -594,7 +594,7 @@ LABEL_15:
                         {
                           if (*v66 != v29)
                           {
-                            objc_enumerationMutation(v26);
+                            objc_enumerationMutation(pickableTypes);
                           }
 
                           v31 = *(*(&v65 + 1) + 8 * j);
@@ -607,7 +607,7 @@ LABEL_15:
                           }
                         }
 
-                        v28 = [v26 countByEnumeratingWithState:&v65 objects:v77 count:16];
+                        v28 = [pickableTypes countByEnumeratingWithState:&v65 objects:v77 count:16];
                         if (v28)
                         {
                           continue;
@@ -619,7 +619,7 @@ LABEL_15:
 
 LABEL_25:
 
-                    self = v25;
+                    self = selfCopy;
                   }
 
                   v21 = [v59 countByEnumeratingWithState:&v69 objects:v78 count:16];
@@ -631,7 +631,7 @@ LABEL_25:
               v9 = v52;
               v11 = v53;
               v10 = v54;
-              v13 = v55;
+              container = v55;
               v12 = v60;
               goto LABEL_39;
             }
@@ -641,23 +641,23 @@ LABEL_25:
             goto LABEL_38;
           }
 
-          v61 = [v15 valueForKeyPath:@"@distinctUnionOfArrays.LSItemContentTypes"];
+          v61 = [documentsTypes valueForKeyPath:@"@distinctUnionOfArrays.LSItemContentTypes"];
 
           v38 = MEMORY[0x277CCACA8];
-          v39 = [(__CFString *)v13 identifier];
+          identifier = [(__CFString *)container identifier];
           [v61 allObjects];
-          v40 = v56 = v13;
+          v40 = v56 = container;
           v41 = [v40 componentsJoinedByString:{@", "}];
           [(_UIDocumentPickerURLContainerModel *)self pickableTypes];
           v43 = v42 = v11;
           v44 = [v43 componentsJoinedByString:{@", "}];
-          v45 = [v38 stringWithFormat:@"Container %@ declares types (%@), which doesn't overlap requested types (%@)", v39, v41, v44];
+          v45 = [v38 stringWithFormat:@"Container %@ declares types (%@), which doesn't overlap requested types (%@)", identifier, v41, v44];
           [v12 setPickabilityReason:v45];
 
           v11 = v42;
           v10 = v54;
 
-          v13 = v56;
+          container = v56;
         }
 
         else
@@ -665,33 +665,33 @@ LABEL_25:
           if ([(_UIDocumentPickerURLContainerModel *)self pickerMode]&& [(_UIDocumentPickerURLContainerModel *)self pickerMode]!= 1)
           {
             [v12 setPickable:0];
-            v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Document picker is in a mode that doesn't allow picking items"];
+            container = [MEMORY[0x277CCACA8] stringWithFormat:@"Document picker is in a mode that doesn't allow picking items"];
             v46 = v12;
-            v47 = v13;
+            v47 = container;
 LABEL_38:
             [v46 setPickabilityReason:v47];
             goto LABEL_39;
           }
 
-          v13 = [v12 contentType];
-          if (!v13)
+          container = [v12 contentType];
+          if (!container)
           {
             [v12 setPickable:0];
             v48 = MEMORY[0x277CCACA8];
             v34 = [v12 url];
-            v35 = [v48 stringWithFormat:@"Item %@ has nil type.", v34];
-            [v12 setPickabilityReason:v35];
+            pickableTypes2 = [v48 stringWithFormat:@"Item %@ has nil type.", v34];
+            [v12 setPickabilityReason:pickableTypes2];
             goto LABEL_36;
           }
 
-          if (![(_UIDocumentPickerURLContainerModel *)self shouldAllowPickingType:v13])
+          if (![(_UIDocumentPickerURLContainerModel *)self shouldAllowPickingType:container])
           {
             [v12 setPickable:0];
             v33 = MEMORY[0x277CCACA8];
             v34 = [v12 url];
-            v35 = [(_UIDocumentPickerURLContainerModel *)self pickableTypes];
-            v36 = [v35 componentsJoinedByString:{@", "}];
-            v37 = [v33 stringWithFormat:@"Item %@ has type %@, which does not conform to any of the allowed types (%@)", v34, v13, v36];
+            pickableTypes2 = [(_UIDocumentPickerURLContainerModel *)self pickableTypes];
+            v36 = [pickableTypes2 componentsJoinedByString:{@", "}];
+            v37 = [v33 stringWithFormat:@"Item %@ has type %@, which does not conform to any of the allowed types (%@)", v34, container, v36];
             [v12 setPickabilityReason:v37];
 
 LABEL_36:
@@ -701,7 +701,7 @@ LABEL_36:
 LABEL_39:
 
 LABEL_40:
-        [v58 addObject:v12];
+        [array addObject:v12];
         ++v11;
       }
 
@@ -723,36 +723,36 @@ LABEL_40:
   block[2] = __79___UIDocumentPickerURLContainerModel_arrayController_modelChanged_differences___block_invoke;
   block[3] = &unk_278DD64E0;
   block[4] = self;
-  v63 = v58;
-  v64 = v51;
-  v49 = v51;
-  v50 = v58;
+  v63 = array;
+  v64 = differencesCopy;
+  v49 = differencesCopy;
+  v50 = array;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)callUpdateHandlerWithNewItems:(id)a3 diff:(id)a4
+- (void)callUpdateHandlerWithNewItems:(id)items diff:(id)diff
 {
-  v10 = a3;
-  v6 = a4;
-  if (v10)
+  itemsCopy = items;
+  diffCopy = diff;
+  if (itemsCopy)
   {
-    [(_UIDocumentPickerURLContainerModel *)self setModelObjects:v10];
+    [(_UIDocumentPickerURLContainerModel *)self setModelObjects:itemsCopy];
   }
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = v7;
-  if (v6)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v8 = dictionary;
+  if (diffCopy)
   {
-    [v7 setObject:v6 forKey:@"changes"];
+    [dictionary setObject:diffCopy forKey:@"changes"];
   }
 
-  if (v10)
+  if (itemsCopy)
   {
-    [v8 setObject:v10 forKey:@"model"];
+    [v8 setObject:itemsCopy forKey:@"model"];
   }
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 postNotificationName:@"_UIDocumentPickerModelUpdatedNotification" object:self userInfo:v8];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"_UIDocumentPickerModelUpdatedNotification" object:self userInfo:v8];
 }
 
 - (NSString)description
@@ -768,17 +768,17 @@ LABEL_40:
 
 - (BOOL)afterInitialUpdate
 {
-  v2 = [(_UIDocumentPickerURLContainerModel *)self observer];
-  v3 = [v2 afterInitialUpdate];
+  observer = [(_UIDocumentPickerURLContainerModel *)self observer];
+  afterInitialUpdate = [observer afterInitialUpdate];
 
-  return v3;
+  return afterInitialUpdate;
 }
 
-- (void)updateObserverForURL:(id)a3
+- (void)updateObserverForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [(_UIDocumentPickerURLContainerModel *)self url];
-  v6 = [v5 isEqual:v4];
+  v6 = [v5 isEqual:lCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -788,10 +788,10 @@ LABEL_40:
       [_UIDocumentPickerURLContainerModel updateObserverForURL:?];
     }
 
-    [(_UIDocumentPickerURLContainerModel *)self setUrl:v4];
-    v8 = [(_UIDocumentPickerURLContainerModel *)self observer];
+    [(_UIDocumentPickerURLContainerModel *)self setUrl:lCopy];
+    observer = [(_UIDocumentPickerURLContainerModel *)self observer];
 
-    if (v8)
+    if (observer)
     {
       v9 = cdui_default_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -799,8 +799,8 @@ LABEL_40:
         [_UIDocumentPickerURLContainerModel updateObserverForURL:v9];
       }
 
-      v10 = [(_UIDocumentPickerURLContainerModel *)self observer];
-      [v10 invalidate];
+      observer2 = [(_UIDocumentPickerURLContainerModel *)self observer];
+      [observer2 invalidate];
 
       [(_UIDocumentPickerURLContainerModel *)self setObserver:0];
       block[0] = MEMORY[0x277D85DD0];

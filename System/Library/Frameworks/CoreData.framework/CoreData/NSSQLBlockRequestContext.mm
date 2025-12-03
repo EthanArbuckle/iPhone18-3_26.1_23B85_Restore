@@ -1,6 +1,6 @@
 @interface NSSQLBlockRequestContext
-- (BOOL)executeRequestCore:(id *)a3;
-- (NSSQLBlockRequestContext)initWithBlock:(id)a3 context:(id)a4 sqlCore:(id)a5;
+- (BOOL)executeRequestCore:(id *)core;
+- (NSSQLBlockRequestContext)initWithBlock:(id)block context:(id)context sqlCore:(id)core;
 - (void)dealloc;
 @end
 
@@ -14,25 +14,25 @@
   [(NSSQLStoreRequestContext *)&v3 dealloc];
 }
 
-- (NSSQLBlockRequestContext)initWithBlock:(id)a3 context:(id)a4 sqlCore:(id)a5
+- (NSSQLBlockRequestContext)initWithBlock:(id)block context:(id)context sqlCore:(id)core
 {
   v8.receiver = self;
   v8.super_class = NSSQLBlockRequestContext;
-  v6 = [(NSSQLStoreRequestContext *)&v8 initWithRequest:0 context:a4 sqlCore:a5];
+  v6 = [(NSSQLStoreRequestContext *)&v8 initWithRequest:0 context:context sqlCore:core];
   if (v6)
   {
-    v6->_workBlock = [a3 copy];
+    v6->_workBlock = [block copy];
   }
 
   return v6;
 }
 
-- (BOOL)executeRequestCore:(id *)a3
+- (BOOL)executeRequestCore:(id *)core
 {
   (*(self->_workBlock + 2))();
-  if (a3 && *a3)
+  if (core && *core)
   {
-    objc_setProperty_nonatomic(self, v5, *a3, 40);
+    objc_setProperty_nonatomic(self, v5, *core, 40);
   }
 
   return !self->super._exception && self->super._error == 0;

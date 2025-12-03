@@ -1,5 +1,5 @@
 @interface CNAddressFormats
-+ (id)addressFormatForCountryCode:(id)a3;
++ (id)addressFormatForCountryCode:(id)code;
 + (id)countryCodeByGlobalDefaultsLookup;
 + (id)countryCodeByLocaleLookup;
 + (id)defaultKeyboardSettingsDictionary;
@@ -38,7 +38,7 @@ uint64_t __33__CNAddressFormats_usaStateNames__block_invoke()
   block[1] = 3221225472;
   block[2] = __38__CNAddressFormats_supportedCountries__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (supportedCountries_cn_once_token_0 != -1)
   {
     dispatch_once(&supportedCountries_cn_once_token_0, block);
@@ -59,9 +59,9 @@ void __38__CNAddressFormats_supportedCountries__block_invoke(uint64_t a1)
 
 + (id)makeSupportedCountries
 {
-  v2 = [a1 addressFormats];
-  v3 = [v2 allKeys];
-  v4 = [v3 mutableCopy];
+  addressFormats = [self addressFormats];
+  allKeys = [addressFormats allKeys];
+  v4 = [allKeys mutableCopy];
 
   [v4 removeObject:@"defaultKbdSettings"];
   [v4 removeObject:@"yu"];
@@ -73,55 +73,55 @@ void __38__CNAddressFormats_supportedCountries__block_invoke(uint64_t a1)
 
 + (id)defaultKeyboardSettingsDictionary
 {
-  v2 = [a1 addressFormats];
-  v3 = [v2 objectForKeyedSubscript:@"defaultKbdSettings"];
+  addressFormats = [self addressFormats];
+  v3 = [addressFormats objectForKeyedSubscript:@"defaultKbdSettings"];
 
   return v3;
 }
 
-+ (id)addressFormatForCountryCode:(id)a3
++ (id)addressFormatForCountryCode:(id)code
 {
-  v4 = a3;
-  v5 = [a1 addressFormats];
-  v6 = [v5 objectForKey:v4];
+  codeCopy = code;
+  addressFormats = [self addressFormats];
+  v6 = [addressFormats objectForKey:codeCopy];
 
   return v6;
 }
 
 + (id)countryCodeByLocaleLookup
 {
-  v2 = [MEMORY[0x1E695DF58] currentLocale];
-  v3 = [v2 localeIdentifier];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  if (v3)
+  if (localeIdentifier)
   {
-    v4 = [v3 componentsSeparatedByString:@"_"];
+    v4 = [localeIdentifier componentsSeparatedByString:@"_"];
     if ([v4 count] < 2)
     {
-      v6 = 0;
+      lowercaseString = 0;
     }
 
     else
     {
       v5 = [v4 objectAtIndex:1];
-      v6 = [v5 lowercaseString];
+      lowercaseString = [v5 lowercaseString];
     }
   }
 
   else
   {
-    v6 = 0;
+    lowercaseString = 0;
   }
 
-  return v6;
+  return lowercaseString;
 }
 
 + (id)countryCodeByGlobalDefaultsLookup
 {
   v2 = CFPreferencesCopyValue(@"Country", *MEMORY[0x1E695E890], *MEMORY[0x1E695E8A0], *MEMORY[0x1E695E8B0]);
-  v3 = [v2 lowercaseString];
+  lowercaseString = [v2 lowercaseString];
 
-  return v3;
+  return lowercaseString;
 }
 
 + (id)usaStateAbbreviations

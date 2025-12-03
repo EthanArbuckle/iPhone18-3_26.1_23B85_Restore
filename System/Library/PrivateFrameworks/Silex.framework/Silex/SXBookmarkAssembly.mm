@@ -1,19 +1,19 @@
 @interface SXBookmarkAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXBookmarkAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerProtocol:&unk_1F53D5C30 factory:&__block_literal_global_21];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerProtocol:&unk_1F53D5C30 factory:&__block_literal_global_21];
   v6 = [v5 withConfiguration:&__block_literal_global_4];
 
-  v8 = [v3 publicContainer];
+  publicContainer2 = [registryCopy publicContainer];
 
-  v7 = [v8 registerClass:objc_opt_class() factory:&__block_literal_global_9];
+  v7 = [publicContainer2 registerClass:objc_opt_class() factory:&__block_literal_global_9];
 }
 
 SXBookmarkManager *__37__SXBookmarkAssembly_loadInRegistry___block_invoke()

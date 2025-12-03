@@ -1,7 +1,7 @@
 @interface AVAssetPlannerTrackSegmentState
 + (id)emptyState;
-+ (id)fromDictionary:(id)a3 error:(id *)a4;
-- (BOOL)resumableBy:(id)a3;
++ (id)fromDictionary:(id)dictionary error:(id *)error;
+- (BOOL)resumableBy:(id)by;
 - (id)description;
 - (id)toDictionary;
 - (void)dealloc;
@@ -16,9 +16,9 @@
   return v2;
 }
 
-+ (id)fromDictionary:(id)a3 error:(id *)a4
++ (id)fromDictionary:(id)dictionary error:(id *)error
 {
-  v6 = [a3 objectForKey:@"SegmentURL"];
+  v6 = [dictionary objectForKey:@"SegmentURL"];
   v7 = [MEMORY[0x1E695DFF8] URLWithString:v6];
   if (!v7)
   {
@@ -27,7 +27,7 @@
   }
 
   v8 = v7;
-  v9 = [a3 objectForKey:@"TimeRange"];
+  v9 = [dictionary objectForKey:@"TimeRange"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -59,7 +59,7 @@
       goto LABEL_31;
     }
 
-    v10 = [a3 objectForKey:@"RequiresFrameCount"];
+    v10 = [dictionary objectForKey:@"RequiresFrameCount"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -71,17 +71,17 @@
     {
       if ([v10 BOOLValue])
       {
-        v11 = [a3 objectForKey:@"FrameCount"];
+        v11 = [dictionary objectForKey:@"FrameCount"];
         if (v11)
         {
           v12 = v11;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v13 = [v12 integerValue];
-            if (v13 > 0)
+            integerValue = [v12 integerValue];
+            if (integerValue > 0)
             {
-              v10 = v13;
+              v10 = integerValue;
               v14 = 1;
               goto LABEL_23;
             }
@@ -115,14 +115,14 @@ LABEL_31:
     }
 
 LABEL_23:
-    v17 = [a3 objectForKey:@"HasCompleted"];
+    v17 = [dictionary objectForKey:@"HasCompleted"];
     if (v17)
     {
       v18 = v17;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = [v18 BOOLValue];
+        bOOLValue = [v18 BOOLValue];
         v16 = +[AVAssetPlannerTrackSegmentState emptyState];
         [v16 setSegmentURL:v8];
         v21 = v23;
@@ -133,7 +133,7 @@ LABEL_23:
           [v16 setFrameCount:v10];
         }
 
-        [v16 setHasCompleted:v19];
+        [v16 setHasCompleted:bOOLValue];
         return v16;
       }
 
@@ -152,10 +152,10 @@ LABEL_23:
   value = FigSignalErrorAtGM();
 LABEL_18:
   v16 = 0;
-  if (a4 && value)
+  if (error && value)
   {
     v16 = 0;
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"AVFoundationErrorDomain" code:value userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"AVFoundationErrorDomain" code:value userInfo:0];
   }
 
   return v16;
@@ -170,22 +170,22 @@ LABEL_18:
 
 - (id)toDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *MEMORY[0x1E695E480];
   v5 = *&self->_timeRange.start.epoch;
   *&v7.start.value = *&self->_timeRange.start.value;
   *&v7.start.epoch = v5;
   *&v7.duration.timescale = *&self->_timeRange.duration.timescale;
-  [v3 setObject:CMTimeRangeCopyAsDictionary(&v7 forKey:{v4), @"TimeRange"}];
-  [v3 setObject:-[NSURL absoluteString](self->_segmentURL forKey:{"absoluteString"), @"SegmentURL"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_requiresFrameCount), @"RequiresFrameCount"}];
+  [dictionary setObject:CMTimeRangeCopyAsDictionary(&v7 forKey:{v4), @"TimeRange"}];
+  [dictionary setObject:-[NSURL absoluteString](self->_segmentURL forKey:{"absoluteString"), @"SegmentURL"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_requiresFrameCount), @"RequiresFrameCount"}];
   if (self->_requiresFrameCount)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithLong:", self->_frameCount), @"FrameCount"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithLong:", self->_frameCount), @"FrameCount"}];
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_hasCompleted), @"HasCompleted"}];
-  return v3;
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_hasCompleted), @"HasCompleted"}];
+  return dictionary;
 }
 
 - (id)description
@@ -196,14 +196,14 @@ LABEL_18:
   return [v4 stringWithFormat:@"<%@: %p, %@>", NSStringFromClass(v5), self, v3];
 }
 
-- (BOOL)resumableBy:(id)a3
+- (BOOL)resumableBy:(id)by
 {
-  v5 = -[NSURL isEqual:](-[NSURL absoluteURL](self->_segmentURL, "absoluteURL"), "isEqual:", [objc_msgSend(a3 "segmentURL")]);
+  v5 = -[NSURL isEqual:](-[NSURL absoluteURL](self->_segmentURL, "absoluteURL"), "isEqual:", [objc_msgSend(by "segmentURL")]);
   if (v5)
   {
-    if (a3)
+    if (by)
     {
-      [a3 timeRange];
+      [by timeRange];
     }
 
     else
@@ -219,7 +219,7 @@ LABEL_18:
     if (v5)
     {
       frameCount = self->_frameCount;
-      LOBYTE(v5) = frameCount == [a3 frameCount];
+      LOBYTE(v5) = frameCount == [by frameCount];
     }
   }
 

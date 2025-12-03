@@ -2,28 +2,28 @@
 - (BOOL)marconiBypassEnabled;
 - (PRBLEDiscoverySession)init;
 - (id).cxx_construct;
-- (id)addPeerDiscoveryToken:(id)a3;
-- (id)removePeerDiscoveryToken:(id)a3;
+- (id)addPeerDiscoveryToken:(id)token;
+- (id)removePeerDiscoveryToken:(id)token;
 - (optional<unsigned)nonConnectableAdvertisingAddress;
 - (void)_cancelScanRateAdjustmentTimer;
 - (void)_configureCBSpatialSession;
 - (void)_executeActivationPendingOperations;
-- (void)activateWithDelegate:(id)a3 delegateQueue:(id)a4 sessionIRK:(id)a5 sessionIdentifier:(id)a6 controlFlags:(NIBluetoothDiscoveryControlFlags)a7 tokenFlags:(unsigned int)a8;
+- (void)activateWithDelegate:(id)delegate delegateQueue:(id)queue sessionIRK:(id)k sessionIdentifier:(id)identifier controlFlags:(NIBluetoothDiscoveryControlFlags)flags tokenFlags:(unsigned int)tokenFlags;
 - (void)bluetoothAdvertisingAddressChanged;
 - (void)bluetoothServiceInterrupted;
 - (void)bluetoothStateChanged;
 - (void)clearWifiRangingActiveAdvertisement;
-- (void)didDiscoverDevice:(id)a3;
-- (void)didFailWithError:(id)a3;
-- (void)didLoseDevice:(id)a3;
+- (void)didDiscoverDevice:(id)device;
+- (void)didFailWithError:(id)error;
+- (void)didLoseDevice:(id)device;
 - (void)invalidate;
 - (void)payloadDidChange;
-- (void)setDeviceRelationshipFlags:(unint64_t)a3;
+- (void)setDeviceRelationshipFlags:(unint64_t)flags;
 - (void)setWifiRangingActiveAdvertisement;
 - (void)startAdvertising;
 - (void)startAdvertisingBurstForDeviceDiscovery;
 - (void)startScanning;
-- (void)startScanningWithBurstPeriod:(double)a3;
+- (void)startScanningWithBurstPeriod:(double)period;
 - (void)stopAdvertising;
 - (void)stopAndClearState;
 - (void)systemOverrideNotification;
@@ -131,7 +131,7 @@
   return 0;
 }
 
-- (void)setDeviceRelationshipFlags:(unint64_t)a3
+- (void)setDeviceRelationshipFlags:(unint64_t)flags
 {
   dispatch_assert_queue_V2(self->_clientQueue);
   cbSessionState = self->_cbSessionState;
@@ -166,10 +166,10 @@ LABEL_11:
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
       sub_10049A590();
-      if ((a3 & 2) == 0)
+      if ((flags & 2) == 0)
       {
 LABEL_8:
-        if ((a3 & 5) == 0)
+        if ((flags & 5) == 0)
         {
           [(CBSpatialInteractionSession *)self->_cbSession setControlFlags:[(CBSpatialInteractionSession *)self->_cbSession controlFlags]| 0x400];
         }
@@ -178,7 +178,7 @@ LABEL_8:
       }
     }
 
-    else if ((a3 & 2) == 0)
+    else if ((flags & 2) == 0)
     {
       goto LABEL_8;
     }
@@ -192,34 +192,34 @@ LABEL_8:
     sub_10049A604();
   }
 
-  self->_activationPendingRelationshipSpecifier.var0.__val_ = a3;
+  self->_activationPendingRelationshipSpecifier.var0.__val_ = flags;
   self->_activationPendingRelationshipSpecifier.__engaged_ = 1;
 }
 
-- (void)activateWithDelegate:(id)a3 delegateQueue:(id)a4 sessionIRK:(id)a5 sessionIdentifier:(id)a6 controlFlags:(NIBluetoothDiscoveryControlFlags)a7 tokenFlags:(unsigned int)a8
+- (void)activateWithDelegate:(id)delegate delegateQueue:(id)queue sessionIRK:(id)k sessionIdentifier:(id)identifier controlFlags:(NIBluetoothDiscoveryControlFlags)flags tokenFlags:(unsigned int)tokenFlags
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  queueCopy = queue;
+  kCopy = k;
+  identifierCopy = identifier;
   if ((self->_cbSessionState - 1) >= 2)
   {
-    objc_storeWeak(&self->_delegate, a3);
-    objc_storeStrong(&self->_clientQueue, a4);
+    objc_storeWeak(&self->_delegate, delegate);
+    objc_storeStrong(&self->_clientQueue, queue);
     cbSession = self->_cbSession;
     self->_cbSession = 0;
 
     [(PRBLEDiscoverySession *)self _configureCBSpatialSession];
-    [(CBSpatialInteractionSession *)self->_cbSession setUwbTokenFlags:[(CBSpatialInteractionSession *)self->_cbSession uwbTokenFlags]| a8];
-    [(CBSpatialInteractionSession *)self->_cbSession setClientIrkData:v16];
-    [(CBSpatialInteractionSession *)self->_cbSession setClientIdentifierData:v17];
+    [(CBSpatialInteractionSession *)self->_cbSession setUwbTokenFlags:[(CBSpatialInteractionSession *)self->_cbSession uwbTokenFlags]| tokenFlags];
+    [(CBSpatialInteractionSession *)self->_cbSession setClientIrkData:kCopy];
+    [(CBSpatialInteractionSession *)self->_cbSession setClientIdentifierData:identifierCopy];
     [(CBSpatialInteractionSession *)self->_cbSession setBleRSSIThresholdHint:4294967206];
     [(CBSpatialInteractionSession *)self->_cbSession setControlFlags:25];
-    if (a7.var0)
+    if (flags.var0)
     {
       [(CBSpatialInteractionSession *)self->_cbSession setControlFlags:[(CBSpatialInteractionSession *)self->_cbSession controlFlags]| 2];
     }
 
-    if ((*&a7 & 0x100) != 0)
+    if ((*&flags & 0x100) != 0)
     {
       [(CBSpatialInteractionSession *)self->_cbSession setControlFlags:[(CBSpatialInteractionSession *)self->_cbSession controlFlags]| 0x800];
       self->_wifiAdvertisingAllowed = 1;
@@ -228,15 +228,15 @@ LABEL_8:
     v19 = qword_1009F9820;
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(CBSpatialInteractionSession *)self->_cbSession controlFlags];
+      controlFlags = [(CBSpatialInteractionSession *)self->_cbSession controlFlags];
       LODWORD(buf) = 67109888;
-      HIDWORD(buf) = a7.var0;
+      HIDWORD(buf) = flags.var0;
       v26 = 1024;
-      v27 = (*&a7 & 0x100) >> 8;
+      v27 = (*&flags & 0x100) >> 8;
       v28 = 1024;
-      v29 = a8;
+      tokenFlagsCopy = tokenFlags;
       v30 = 1024;
-      v31 = v20;
+      v31 = controlFlags;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "#ble,Activate. Supports UWB: [%d], Supports WiFi ToF: [%d], TokenFlags: [0x%08x]. ControlFlags: [0x%08x]", &buf, 0x1Au);
     }
 
@@ -282,11 +282,11 @@ LABEL_8:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     activationPendingControlFlags = self->_activationPendingControlFlags;
-    v7 = [(CBSpatialInteractionSession *)self->_cbSession controlFlags];
+    controlFlags = [(CBSpatialInteractionSession *)self->_cbSession controlFlags];
     *buf = 67109376;
     LODWORD(v22[0]) = activationPendingControlFlags;
     WORD2(v22[0]) = 1024;
-    *(v22 + 6) = v7;
+    *(v22 + 6) = controlFlags;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ble,Activation pending operation: act on control flags 0x%08x (current 0x%08x)", buf, 0xEu);
   }
 
@@ -303,11 +303,11 @@ LABEL_8:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     activationPendingRssiThresholdHint = self->_activationPendingRssiThresholdHint;
-    v12 = [(CBSpatialInteractionSession *)self->_cbSession bleRSSIThresholdHint];
+    bleRSSIThresholdHint = [(CBSpatialInteractionSession *)self->_cbSession bleRSSIThresholdHint];
     *buf = 67109376;
     LODWORD(v22[0]) = activationPendingRssiThresholdHint;
     WORD2(v22[0]) = 1024;
-    *(v22 + 6) = v12;
+    *(v22 + 6) = bleRSSIThresholdHint;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "#ble,Activation pending operation: RSSI hint %d dBm (current %d dBm)", buf, 0xEu);
   }
 
@@ -370,9 +370,9 @@ LABEL_8:
     [(PRBLEDiscoverySession *)self allowScreenOffOperation:1];
   }
 
-  v17 = [(CBSpatialInteractionSession *)self->_cbSession bleRSSIThresholdHint];
+  bleRSSIThresholdHint2 = [(CBSpatialInteractionSession *)self->_cbSession bleRSSIThresholdHint];
   v18 = self->_activationPendingRssiThresholdHint;
-  if (v18 != v17)
+  if (v18 != bleRSSIThresholdHint2)
   {
     [(PRBLEDiscoverySession *)self setBleRSSIThresholdHint:v18];
   }
@@ -432,9 +432,9 @@ LABEL_8:
   [v5 removePayloadChangeObserver:self];
 }
 
-- (id)addPeerDiscoveryToken:(id)a3
+- (id)addPeerDiscoveryToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_clientQueue);
   p_cbSessionState = &self->_cbSessionState;
   cbSessionState = self->_cbSessionState;
@@ -459,7 +459,7 @@ LABEL_8:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "#ble,addPeerToken %{private}@ waiting for activation complete", buf, 0xCu);
       }
 
-      [(NSMutableSet *)self->_activationPendingPeers addObject:v4];
+      [(NSMutableSet *)self->_activationPendingPeers addObject:tokenCopy];
     }
 
     else if (cbSessionState == 2)
@@ -473,7 +473,7 @@ LABEL_8:
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#ble,addPeerToken %{private}@ started", buf, 0xCu);
       }
 
-      [(NSMutableSet *)self->_peers addObject:v4];
+      [(NSMutableSet *)self->_peers addObject:tokenCopy];
       objc_initWeak(buf, self);
       v9 = sub_100005288();
       cbSession = self->_cbSession;
@@ -483,7 +483,7 @@ LABEL_8:
       v16[3] = &unk_10098AB88;
       v18[1] = *&v9;
       objc_copyWeak(v18, buf);
-      v17 = v4;
+      v17 = tokenCopy;
       [(CBSpatialInteractionSession *)cbSession addPeerToken:v17 completion:v16];
 
       objc_destroyWeak(v18);
@@ -504,9 +504,9 @@ LABEL_15:
   return 0;
 }
 
-- (id)removePeerDiscoveryToken:(id)a3
+- (id)removePeerDiscoveryToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_clientQueue);
   cbSessionState = self->_cbSessionState;
   if (cbSessionState > 2)
@@ -541,7 +541,7 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "#ble,removePeerToken %{private}@ removing from tokens that are waiting for activation complete", buf, 0xCu);
       }
 
-      [(NSMutableSet *)self->_activationPendingPeers removeObject:v4];
+      [(NSMutableSet *)self->_activationPendingPeers removeObject:tokenCopy];
       break;
     case 2:
       v6 = qword_1009F9820;
@@ -553,7 +553,7 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#ble,removePeerToken %{private}@ started", buf, 0xCu);
       }
 
-      v8 = [(PRBluetoothDeviceCache *)self->_deviceCache deviceForTokenData:v4];
+      v8 = [(PRBluetoothDeviceCache *)self->_deviceCache deviceForTokenData:tokenCopy];
       v9 = v8;
       if (v8 && [v8 systemKeyRelationship])
       {
@@ -569,7 +569,7 @@ LABEL_13:
 
       else
       {
-        [(NSMutableSet *)self->_peers removeObject:v4];
+        [(NSMutableSet *)self->_peers removeObject:tokenCopy];
         objc_initWeak(buf, self);
         v15 = sub_100005288();
         cbSession = self->_cbSession;
@@ -579,7 +579,7 @@ LABEL_13:
         v18[3] = &unk_10098AB88;
         v20[1] = *&v15;
         objc_copyWeak(v20, buf);
-        v19 = v4;
+        v19 = tokenCopy;
         [(CBSpatialInteractionSession *)cbSession removePeerToken:v19 completion:v18];
 
         objc_destroyWeak(v20);
@@ -625,18 +625,18 @@ LABEL_20:
     else if (cbSessionState == 2)
     {
       v4 = +[NIServerSpatialInteractionPayloadAggregator sharedInstance];
-      v5 = [v4 aggregatedUWBData];
+      aggregatedUWBData = [v4 aggregatedUWBData];
 
       v6 = qword_1009F9820;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
       {
         v8 = 138412290;
-        v9 = v5;
+        v9 = aggregatedUWBData;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#ble,startAdvertising with UWB config: %@", &v8, 0xCu);
       }
 
       [(CBSpatialInteractionSession *)self->_cbSession setAdvertiseRate:40];
-      [(CBSpatialInteractionSession *)self->_cbSession setUwbConfigData:v5];
+      [(CBSpatialInteractionSession *)self->_cbSession setUwbConfigData:aggregatedUWBData];
       [(CBSpatialInteractionSession *)self->_cbSession setAdvertiseRate:50 timeout:2.0];
       [(CBSpatialInteractionSession *)self->_cbSession setControlFlags:[(CBSpatialInteractionSession *)self->_cbSession controlFlags]& 0xFFFFFFF7];
     }
@@ -962,7 +962,7 @@ LABEL_20:
   }
 }
 
-- (void)startScanningWithBurstPeriod:(double)a3
+- (void)startScanningWithBurstPeriod:(double)period
 {
   dispatch_assert_queue_V2(self->_clientQueue);
   cbSessionState = self->_cbSessionState;
@@ -982,12 +982,12 @@ LABEL_20:
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v17 = a3;
+        periodCopy2 = period;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "#ble,startScanningWithBurstPeriod [%0.1f s] waiting for activation complete", buf, 0xCu);
       }
 
       self->_activationPendingControlFlags &= ~0x10u;
-      self->_activationPendingScanBurstPeriod = a3;
+      self->_activationPendingScanBurstPeriod = period;
     }
 
     else if (cbSessionState == 2)
@@ -996,7 +996,7 @@ LABEL_20:
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v17 = a3;
+        periodCopy2 = period;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#ble,startScanningWithBurstPeriod [%0.1f s]", buf, 0xCu);
       }
 
@@ -1009,7 +1009,7 @@ LABEL_20:
       self->_scanRateAdjustmentTimer = v7;
 
       v10 = self->_scanRateAdjustmentTimer;
-      v11 = dispatch_time(0, llround(a3 * 1000000000.0));
+      v11 = dispatch_time(0, llround(period * 1000000000.0));
       dispatch_source_set_timer(v10, v11, 0xFFFFFFFFFFFFFFFFLL, 0x989680uLL);
       objc_initWeak(buf, self);
       v12 = self->_scanRateAdjustmentTimer;
@@ -1018,7 +1018,7 @@ LABEL_20:
       v14[2] = sub_100028BB8;
       v14[3] = &unk_10098ABD8;
       objc_copyWeak(v15, buf);
-      v15[1] = *&a3;
+      v15[1] = *&period;
       dispatch_source_set_event_handler(v12, v14);
       dispatch_resume(*p_scanRateAdjustmentTimer);
       objc_destroyWeak(v15);
@@ -1050,11 +1050,11 @@ LABEL_20:
 {
   if (self->_cbSessionState == 2)
   {
-    v2 = [(CBSpatialInteractionSession *)self->_cbSession advertisingAddressData];
-    v3 = v2;
-    if (v2)
+    advertisingAddressData = [(CBSpatialInteractionSession *)self->_cbSession advertisingAddressData];
+    v3 = advertisingAddressData;
+    if (advertisingAddressData)
     {
-      if ([v2 length] == 6)
+      if ([advertisingAddressData length] == 6)
       {
         [v3 getBytes:v10 length:6];
         v4 = v10[5];
@@ -1093,27 +1093,27 @@ LABEL_13:
   return result;
 }
 
-- (void)didDiscoverDevice:(id)a3
+- (void)didDiscoverDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_clientQueue);
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v4;
+    v16 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ble,Discovered device: %@", &v15, 0xCu);
   }
 
-  if (v4)
+  if (deviceCopy)
   {
-    v6 = [v4 btAddressData];
-    if (v6 && ([v4 btAddressData], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length") == 6, v7, v6, v8))
+    btAddressData = [deviceCopy btAddressData];
+    if (btAddressData && ([deviceCopy btAddressData], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length") == 6, v7, btAddressData, v8))
     {
-      v9 = [[PRBluetoothDevice alloc] initWithCBDevice:v4];
+      v9 = [[PRBluetoothDevice alloc] initWithCBDevice:deviceCopy];
       deviceCache = self->_deviceCache;
-      v11 = [(PRBluetoothDevice *)v9 discoveryTokenData];
-      v12 = [(PRBluetoothDeviceCache *)deviceCache deviceForTokenData:v11];
+      discoveryTokenData = [(PRBluetoothDevice *)v9 discoveryTokenData];
+      v12 = [(PRBluetoothDeviceCache *)deviceCache deviceForTokenData:discoveryTokenData];
 
       [(PRBluetoothDeviceCache *)self->_deviceCache cacheDevice:v9];
       if (self->_cbSessionState == 2)
@@ -1139,25 +1139,25 @@ LABEL_13:
   }
 }
 
-- (void)didLoseDevice:(id)a3
+- (void)didLoseDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_clientQueue);
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v4;
+    v15 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ble,Lost device: %@", &v14, 0xCu);
   }
 
-  if (v4)
+  if (deviceCopy)
   {
-    v6 = [v4 btAddressData];
-    if (v6 && ([v4 btAddressData], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length") == 6, v7, v6, v8))
+    btAddressData = [deviceCopy btAddressData];
+    if (btAddressData && ([deviceCopy btAddressData], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length") == 6, v7, btAddressData, v8))
     {
-      v9 = [v4 btAddressData];
-      v10 = sub_1000298A8(v9);
+      btAddressData2 = [deviceCopy btAddressData];
+      v10 = sub_1000298A8(btAddressData2);
 
       v11 = [(PRBluetoothDeviceCache *)self->_deviceCache deviceForIdentifier:v10];
       v12 = v11;
@@ -1165,7 +1165,7 @@ LABEL_13:
       {
         if (!v11)
         {
-          v12 = [[PRBluetoothDevice alloc] initWithCBDevice:v4];
+          v12 = [[PRBluetoothDevice alloc] initWithCBDevice:deviceCopy];
         }
 
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1180,9 +1180,9 @@ LABEL_13:
   }
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
   {
     sub_10049B114();
@@ -1192,18 +1192,18 @@ LABEL_13:
 - (void)bluetoothStateChanged
 {
   dispatch_assert_queue_V2(self->_clientQueue);
-  v3 = [(CBSpatialInteractionSession *)self->_cbSession bluetoothState];
+  bluetoothState = [(CBSpatialInteractionSession *)self->_cbSession bluetoothState];
   v4 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
-    if (v3 > 0xA)
+    if (bluetoothState > 0xA)
     {
       v5 = "?";
     }
 
     else
     {
-      v5 = off_10098AC48[v3];
+      v5 = off_10098AC48[bluetoothState];
     }
 
     v7 = 136315138;
@@ -1241,20 +1241,20 @@ LABEL_48:
       return;
     }
 
-    v4 = [(CBSpatialInteractionSession *)self->_cbSession systemOverrideFlags];
-    v5 = [(CBSpatialInteractionSession *)self->_cbSession systemOverrideFlags];
-    v6 = [(CBSpatialInteractionSession *)self->_cbSession scanRate];
-    if (v6 > 34)
+    systemOverrideFlags = [(CBSpatialInteractionSession *)self->_cbSession systemOverrideFlags];
+    systemOverrideFlags2 = [(CBSpatialInteractionSession *)self->_cbSession systemOverrideFlags];
+    scanRate = [(CBSpatialInteractionSession *)self->_cbSession scanRate];
+    if (scanRate > 34)
     {
-      if (v6 > 49)
+      if (scanRate > 49)
       {
-        if (v6 == 50)
+        if (scanRate == 50)
         {
           v7 = "High";
           goto LABEL_23;
         }
 
-        if (v6 == 60)
+        if (scanRate == 60)
         {
           v7 = "Max";
           goto LABEL_23;
@@ -1263,13 +1263,13 @@ LABEL_48:
 
       else
       {
-        if (v6 == 35)
+        if (scanRate == 35)
         {
           v7 = "MediumLow";
           goto LABEL_23;
         }
 
-        if (v6 == 40)
+        if (scanRate == 40)
         {
           v7 = "Medium";
           goto LABEL_23;
@@ -1277,15 +1277,15 @@ LABEL_48:
       }
     }
 
-    else if (v6 > 19)
+    else if (scanRate > 19)
     {
-      if (v6 == 20)
+      if (scanRate == 20)
       {
         v7 = "Background";
         goto LABEL_23;
       }
 
-      if (v6 == 30)
+      if (scanRate == 30)
       {
         v7 = "Low";
         goto LABEL_23;
@@ -1294,13 +1294,13 @@ LABEL_48:
 
     else
     {
-      if (!v6)
+      if (!scanRate)
       {
         v7 = "Default";
         goto LABEL_23;
       }
 
-      if (v6 == 10)
+      if (scanRate == 10)
       {
         v7 = "Periodic";
         goto LABEL_23;
@@ -1309,18 +1309,18 @@ LABEL_48:
 
     v7 = "?";
 LABEL_23:
-    v8 = [(CBSpatialInteractionSession *)self->_cbSession advertiseRate];
-    if (v8 > 39)
+    advertiseRate = [(CBSpatialInteractionSession *)self->_cbSession advertiseRate];
+    if (advertiseRate > 39)
     {
-      if (v8 <= 44)
+      if (advertiseRate <= 44)
       {
-        if (v8 == 40)
+        if (advertiseRate == 40)
         {
           v9 = "Medium";
           goto LABEL_47;
         }
 
-        if (v8 == 42)
+        if (advertiseRate == 42)
         {
           v9 = "MediumMid";
           goto LABEL_47;
@@ -1329,7 +1329,7 @@ LABEL_23:
 
       else
       {
-        switch(v8)
+        switch(advertiseRate)
         {
           case '-':
             v9 = "MediumHigh";
@@ -1344,15 +1344,15 @@ LABEL_23:
       }
     }
 
-    else if (v8 <= 14)
+    else if (advertiseRate <= 14)
     {
-      if (!v8)
+      if (!advertiseRate)
       {
         v9 = "Default";
         goto LABEL_47;
       }
 
-      if (v8 == 10)
+      if (advertiseRate == 10)
       {
         v9 = "Periodic";
         goto LABEL_47;
@@ -1361,7 +1361,7 @@ LABEL_23:
 
     else
     {
-      switch(v8)
+      switch(advertiseRate)
       {
         case 15:
           v9 = "PeriodicHigh";
@@ -1373,9 +1373,9 @@ LABEL_23:
           v9 = "Low";
 LABEL_47:
           v10[0] = 67109890;
-          v10[1] = v4;
+          v10[1] = systemOverrideFlags;
           v11 = 1024;
-          v12 = v5 & 1;
+          v12 = systemOverrideFlags2 & 1;
           v13 = 2080;
           v14 = v7;
           v15 = 2080;
@@ -1395,10 +1395,10 @@ LABEL_47:
   dispatch_assert_queue_V2(self->_clientQueue);
   if (self->_cbSessionState == 2)
   {
-    v3 = [(PRBLEDiscoverySession *)self nonConnectableAdvertisingAddress];
+    nonConnectableAdvertisingAddress = [(PRBLEDiscoverySession *)self nonConnectableAdvertisingAddress];
     if (v4)
     {
-      v5 = v3;
+      v5 = nonConnectableAdvertisingAddress;
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained bluetoothAdvertisingAddressChanged:v5];
     }
@@ -1411,20 +1411,20 @@ LABEL_47:
   if (self->_cbSessionState == 2)
   {
     v3 = +[NIServerSpatialInteractionPayloadAggregator sharedInstance];
-    v4 = [v3 aggregatedUWBData];
+    aggregatedUWBData = [v3 aggregatedUWBData];
 
-    v5 = [(CBSpatialInteractionSession *)self->_cbSession uwbConfigData];
-    if (v5 | v4 && (-[CBSpatialInteractionSession uwbConfigData](self->_cbSession, "uwbConfigData"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isEqualToData:v4], v6, v5, !v7))
+    uwbConfigData = [(CBSpatialInteractionSession *)self->_cbSession uwbConfigData];
+    if (uwbConfigData | aggregatedUWBData && (-[CBSpatialInteractionSession uwbConfigData](self->_cbSession, "uwbConfigData"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isEqualToData:aggregatedUWBData], v6, uwbConfigData, !v7))
     {
       if (([(CBSpatialInteractionSession *)self->_cbSession controlFlags]& 8) == 0)
       {
         [(CBSpatialInteractionSession *)self->_cbSession setControlFlags:[(CBSpatialInteractionSession *)self->_cbSession controlFlags]| 8];
-        [(CBSpatialInteractionSession *)self->_cbSession setUwbConfigData:v4];
+        [(CBSpatialInteractionSession *)self->_cbSession setUwbConfigData:aggregatedUWBData];
         v12 = qword_1009F9820;
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
         {
           v14 = 138412290;
-          v15 = v4;
+          v15 = aggregatedUWBData;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "#ble,Payload did change: %@. Session updated, and control flags toggled for it to take effect", &v14, 0xCu);
         }
 
@@ -1432,12 +1432,12 @@ LABEL_47:
         goto LABEL_13;
       }
 
-      [(CBSpatialInteractionSession *)self->_cbSession setUwbConfigData:v4];
+      [(CBSpatialInteractionSession *)self->_cbSession setUwbConfigData:aggregatedUWBData];
       v13 = qword_1009F9820;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138412290;
-        v15 = v4;
+        v15 = aggregatedUWBData;
         v9 = "#ble,Payload did change: %@. Session updated, but not currently advertising";
         v10 = v13;
         v11 = 12;

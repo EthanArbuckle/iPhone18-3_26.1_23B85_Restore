@@ -48,7 +48,7 @@
 
 - (void)_rescheduleEndLiveResizeTimer
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  WeakRetained = objc_loadWeakRetained((self + 32));
   [WeakRetained _endLiveResize];
   if (WeakRetained)
   {
@@ -57,14 +57,14 @@
 
 - (void)_acquireResizeAssertionForReason:
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  WeakRetained = objc_loadWeakRetained((self + 32));
   if (WeakRetained)
   {
-    if ((*(*(a1 + 40) + 4) & 1) == 0)
+    if ((*(*(self + 40) + 4) & 1) == 0)
     {
       v3 = WeakRetained;
       [WeakRetained _invalidateResizeAssertions];
-      *(*(a1 + 40) + 4) = 1;
+      *(*(self + 40) + 4) = 1;
       WeakRetained = v3;
     }
   }
@@ -72,22 +72,22 @@
 
 - (void)_firePresentationUpdateForPendingStableStatePresentationCallbacks
 {
-  v2 = a1[1];
-  *a1 = &unk_1F10FD270;
-  a1[1] = 0;
+  v2 = self[1];
+  *self = &unk_1F10FD270;
+  self[1] = 0;
   if (v2)
   {
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)_firePresentationUpdateForPendingStableStatePresentationCallbacks
 {
-  result = [*(*(a1 + 8) + 1736) count];
+  result = [*(*(self + 8) + 1736) count];
   if (result)
   {
-    v3 = *(a1 + 8);
+    v3 = *(self + 8);
 
     return [v3 _firePresentationUpdateForPendingStableStatePresentationCallbacks];
   }
@@ -97,24 +97,24 @@
 
 - (void)_endLiveResize
 {
-  v2 = a1[1];
-  *a1 = &unk_1F10FD4E0;
-  a1[1] = 0;
+  v2 = self[1];
+  *self = &unk_1F10FD4E0;
+  self[1] = 0;
   if (v2)
   {
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_presentLockdownMode
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 objectForInfoDictionaryKey:*MEMORY[0x1E695E120]];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v3 = [mainBundle objectForInfoDictionaryKey:*MEMORY[0x1E695E120]];
   if (!v3)
   {
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v3 = [v4 objectForInfoDictionaryKey:*MEMORY[0x1E695E4F8]];
+    mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+    v3 = [mainBundle2 objectForInfoDictionaryKey:*MEMORY[0x1E695E4F8]];
   }
 
   v5 = objc_alloc(MEMORY[0x1E696AEC0]);
@@ -133,7 +133,7 @@
   }
 
   v9 = [v5 initWithFormat:v7, v3];
-  WebKit::createUIAlertController(v9, *(a1 + 8), &v17);
+  WebKit::createUIAlertController(v9, *(self + 8), &v17);
   if (v9)
   {
   }
@@ -155,8 +155,8 @@
   }
 
   [v11 addAction:{objc_msgSend(v12, "actionWithTitle:style:handler:", v13, 0, 0)}];
-  v15 = [*(a1 + 16) _wk_viewControllerForFullScreenPresentation];
-  [v15 presentViewController:v17 animated:1 completion:0];
+  _wk_viewControllerForFullScreenPresentation = [*(self + 16) _wk_viewControllerForFullScreenPresentation];
+  [_wk_viewControllerForFullScreenPresentation presentViewController:v17 animated:1 completion:0];
   [objc_msgSend(MEMORY[0x1E695E000] "standardUserDefaults")];
   v16 = v17;
   v17 = 0;
@@ -177,9 +177,9 @@
     lockdownModeWarningNeeded = 0;
     if (a2 == 3)
     {
-      v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
 
-      return [v2 setBool:1 forKey:@"WebKitCaptivePortalModeAlertShown"];
+      return [standardUserDefaults setBool:1 forKey:@"WebKitCaptivePortalModeAlertShown"];
     }
 
     else
@@ -231,37 +231,37 @@
 
 - (void)_restorePageScrollPosition:()WKViewInternalIOS scrollOrigin:previousObscuredInset:scale:
 {
-  v2 = a1[1];
-  *a1 = &unk_1F10FD3C8;
-  a1[1] = 0;
+  v2 = self[1];
+  *self = &unk_1F10FD3C8;
+  self[1] = 0;
   if (v2)
   {
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)_restorePageScrollPosition:()WKViewInternalIOS scrollOrigin:previousObscuredInset:scale:
 {
-  LODWORD(a2) = *(a1 + 28);
-  LODWORD(a3) = *(a1 + 32);
-  LODWORD(a4) = *(a1 + 36);
-  LODWORD(a5) = *(a1 + 40);
-  LODWORD(a6) = *(a1 + 44);
-  LODWORD(a7) = *(a1 + 48);
-  return [*(a1 + 8) _restorePageScrollPosition:*(a1 + 16) scrollOrigin:*(a1 + 24) previousObscuredInset:a2 scale:{a3, a4, a5, a6, a7, *(a1 + 56)}];
+  LODWORD(a2) = *(self + 28);
+  LODWORD(a3) = *(self + 32);
+  LODWORD(a4) = *(self + 36);
+  LODWORD(a5) = *(self + 40);
+  LODWORD(a6) = *(self + 44);
+  LODWORD(a7) = *(self + 48);
+  return [*(self + 8) _restorePageScrollPosition:*(self + 16) scrollOrigin:*(self + 24) previousObscuredInset:a2 scale:{a3, a4, a5, a6, a7, *(self + 56)}];
 }
 
 - (void)_restorePageStateToUnobscuredCenter:()WKViewInternalIOS scale:
 {
-  v2 = a1[1];
-  *a1 = &unk_1F10FD3F0;
-  a1[1] = 0;
+  v2 = self[1];
+  *self = &unk_1F10FD3F0;
+  self[1] = 0;
   if (v2)
   {
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)_restorePageStateToUnobscuredCenter:()WKViewInternalIOS scale:
@@ -278,15 +278,15 @@
 
 - (void)_takeViewSnapshot
 {
-  v2 = a1[1];
-  *a1 = &unk_1F10FD418;
-  a1[1] = 0;
+  v2 = self[1];
+  *self = &unk_1F10FD418;
+  self[1] = 0;
   if (v2)
   {
     WTF::RefCounted<WebKit::ViewSnapshot>::deref((v2 + 8));
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)_takeViewSnapshot
@@ -325,40 +325,32 @@
 
 - (uint64_t)scrollView:()WKViewInternalIOS handleScrollUpdate:completion:
 {
-  *a1 = &unk_1F10FD440;
-  _Block_release(*(a1 + 16));
-  objc_destroyWeak((a1 + 8));
-  return a1;
-}
-
-{
-  *a1 = &unk_1F10FD440;
-  _Block_release(*(a1 + 16));
-  objc_destroyWeak((a1 + 8));
-
-  return WTF::fastFree(a1, v2);
+  *self = &unk_1F10FD440;
+  _Block_release(*(self + 16));
+  objc_destroyWeak((self + 8));
+  return self;
 }
 
 - (void)scrollView:()WKViewInternalIOS handleScrollUpdate:completion:
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
+  WeakRetained = objc_loadWeakRetained((self + 8));
   if (WeakRetained)
   {
     v6 = WeakRetained;
-    if (*(a1 + 24))
+    if (*(self + 24))
     {
       if ((WeakRetained[1754] & 1) == 0)
       {
         *(WeakRetained + 1753) = a2 ^ 1 | 0x100;
       }
 
-      (*(*(a1 + 16) + 16))();
+      (*(*(self + 16) + 16))();
     }
   }
 
-  else if (*(a1 + 24))
+  else if (*(self + 24))
   {
-    v5 = *(*(a1 + 16) + 16);
+    v5 = *(*(self + 16) + 16);
 
     v5();
   }
@@ -366,40 +358,25 @@
 
 - (uint64_t)_acquireResizeAssertionForReason:()WKViewInternalIOS
 {
-  *a1 = &unk_1F10FD468;
-  v3 = *(a1 + 16);
-  *(a1 + 16) = 0;
+  *self = &unk_1F10FD468;
+  v3 = *(self + 16);
+  *(self + 16) = 0;
   if (v3 && atomic_fetch_add(v3, 0xFFFFFFFF) == 1)
   {
     atomic_store(1u, v3);
     WTF::fastFree(v3, a2);
   }
 
-  objc_destroyWeak((a1 + 8));
-  return a1;
-}
-
-{
-  *a1 = &unk_1F10FD468;
-  v3 = *(a1 + 16);
-  *(a1 + 16) = 0;
-  if (v3 && atomic_fetch_add(v3, 0xFFFFFFFF) == 1)
-  {
-    atomic_store(1u, v3);
-    WTF::fastFree(v3, a2);
-  }
-
-  objc_destroyWeak((a1 + 8));
-
-  return WTF::fastFree(a1, v4);
+  objc_destroyWeak((self + 8));
+  return self;
 }
 
 - (void)_acquireResizeAssertionForReason:()WKViewInternalIOS
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ((*(*(a1 + 16) + 4) & 1) == 0)
+  if ((*(*(self + 16) + 4) & 1) == 0)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
+    WeakRetained = objc_loadWeakRetained((self + 8));
     if (WeakRetained)
     {
       v3 = WeakRetained;
@@ -412,26 +389,26 @@
       }
 
       [v3 _invalidateResizeAssertions];
-      *(*(a1 + 16) + 4) = 1;
+      *(*(self + 16) + 4) = 1;
     }
   }
 }
 
 - (void)_scheduleVisibleContentRectUpdateAfterScrollInView:()WKViewInternalIOS
 {
-  v2 = a1[1];
-  *a1 = &unk_1F10FD490;
-  a1[1] = 0;
+  v2 = self[1];
+  *self = &unk_1F10FD490;
+  self[1] = 0;
   if (v2)
   {
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)_scheduleVisibleContentRectUpdateAfterScrollInView:()WKViewInternalIOS
 {
-  v1 = *(a1 + 8);
+  v1 = *(self + 8);
   result = [v1 _isValid];
   if (result)
   {
@@ -444,14 +421,14 @@
 
 - (void)_updateVisibleContentRects
 {
-  v2 = a1[1];
-  *a1 = &unk_1F10FD4B8;
-  a1[1] = 0;
+  v2 = self[1];
+  *self = &unk_1F10FD4B8;
+  self[1] = 0;
   if (v2)
   {
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)_updateVisibleContentRects

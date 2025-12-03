@@ -1,36 +1,36 @@
 @interface VCSessionMessageTopic
-- (BOOL)attemptToSendOrBufferReliableMessage:(id)a3 participantID:(unint64_t)a4 sequenceNumber:(int64_t)a5 retryNumber:(int64_t)a6;
-- (BOOL)isDuplicateMessageID:(id)a3 messageHistory:(id)a4 participantID:(id)a5;
-- (BOOL)isPayloadAssociated:(id)a3;
-- (BOOL)sendReliableMessage:(id)a3 participantID:(unint64_t)a4 withOptions:(id)a5 completion:(id)a6;
-- (VCSessionMessageTopic)initWithTopicKey:(id)a3 strings:(id)a4 allowConcurrent:(BOOL)a5 requireReliable:(BOOL)a6 controlChannel:(id)a7 sendCompletionHandler:(id)a8 receiveHandler:(id)aBlock sendMessageDataCompletionHandler:(id)a10 receiveMessageDictionaryHandler:(id)a11;
-- (id)messageForCommand:(id)a3;
-- (void)clearTransactionCacheForParticipant:(id)a3;
+- (BOOL)attemptToSendOrBufferReliableMessage:(id)message participantID:(unint64_t)d sequenceNumber:(int64_t)number retryNumber:(int64_t)retryNumber;
+- (BOOL)isDuplicateMessageID:(id)d messageHistory:(id)history participantID:(id)iD;
+- (BOOL)isPayloadAssociated:(id)associated;
+- (BOOL)sendReliableMessage:(id)message participantID:(unint64_t)d withOptions:(id)options completion:(id)completion;
+- (VCSessionMessageTopic)initWithTopicKey:(id)key strings:(id)strings allowConcurrent:(BOOL)concurrent requireReliable:(BOOL)reliable controlChannel:(id)channel sendCompletionHandler:(id)handler receiveHandler:(id)aBlock sendMessageDataCompletionHandler:(id)self0 receiveMessageDictionaryHandler:(id)self1;
+- (id)messageForCommand:(id)command;
+- (void)clearTransactionCacheForParticipant:(id)participant;
 - (void)dealloc;
-- (void)dispatchedCompletionHandlerForSendMessage:(id)a3 withTopic:(id)a4 participantID:(unint64_t)a5 result:(BOOL)a6 sequenceNumber:(int64_t)a7 retryNumber:(int64_t)a8;
-- (void)dispatchedSendMessage:(id)a3 participantID:(unint64_t)a4 withSequence:(int64_t)a5 numRetries:(int64_t)a6;
-- (void)handleSendMessageDidSucceed:(BOOL)a3 message:(id)a4 participantID:(id)a5;
-- (void)passMessage:(id)a3 sequence:(int)a4 fromParticipant:(id)a5;
-- (void)purgeExpiredEntries:(double)a3 messageHistory:(id)a4 participantID:(id)a5;
-- (void)sendBufferedReliableMessagesForParticipantID:(unint64_t)a3;
-- (void)sendMessage:(id)a3 participantID:(unint64_t)a4;
-- (void)sendMessage:(id)a3 participantID:(unint64_t)a4 withSequence:(int64_t)a5 numRetries:(int64_t)a6;
-- (void)setIsSendingEnabled:(BOOL)a3;
+- (void)dispatchedCompletionHandlerForSendMessage:(id)message withTopic:(id)topic participantID:(unint64_t)d result:(BOOL)result sequenceNumber:(int64_t)number retryNumber:(int64_t)retryNumber;
+- (void)dispatchedSendMessage:(id)message participantID:(unint64_t)d withSequence:(int64_t)sequence numRetries:(int64_t)retries;
+- (void)handleSendMessageDidSucceed:(BOOL)succeed message:(id)message participantID:(id)d;
+- (void)passMessage:(id)message sequence:(int)sequence fromParticipant:(id)participant;
+- (void)purgeExpiredEntries:(double)entries messageHistory:(id)history participantID:(id)d;
+- (void)sendBufferedReliableMessagesForParticipantID:(unint64_t)d;
+- (void)sendMessage:(id)message participantID:(unint64_t)d;
+- (void)sendMessage:(id)message participantID:(unint64_t)d withSequence:(int64_t)sequence numRetries:(int64_t)retries;
+- (void)setIsSendingEnabled:(BOOL)enabled;
 @end
 
 @implementation VCSessionMessageTopic
 
-- (VCSessionMessageTopic)initWithTopicKey:(id)a3 strings:(id)a4 allowConcurrent:(BOOL)a5 requireReliable:(BOOL)a6 controlChannel:(id)a7 sendCompletionHandler:(id)a8 receiveHandler:(id)aBlock sendMessageDataCompletionHandler:(id)a10 receiveMessageDictionaryHandler:(id)a11
+- (VCSessionMessageTopic)initWithTopicKey:(id)key strings:(id)strings allowConcurrent:(BOOL)concurrent requireReliable:(BOOL)reliable controlChannel:(id)channel sendCompletionHandler:(id)handler receiveHandler:(id)aBlock sendMessageDataCompletionHandler:(id)self0 receiveMessageDictionaryHandler:(id)self1
 {
   v22 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = VCSessionMessageTopic;
   v17 = [(VCSessionMessageTopic *)&v21 init];
-  v17->topicKey = [a3 copy];
-  v17->controlChannel = a7;
-  if (a4)
+  v17->topicKey = [key copy];
+  v17->controlChannel = channel;
+  if (strings)
   {
-    v17->associatedStrings = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:a4];
+    v17->associatedStrings = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:strings];
     v17->shouldEncodeTopicKeyInMessage = 0;
     [(VCControlChannel *)v17->controlChannel addOptionalTopic:v17->topicKey];
   }
@@ -41,11 +41,11 @@
     v17->shouldEncodeTopicKeyInMessage = 1;
   }
 
-  v17->allowConcurrent = a5;
-  v17->requireReliable = a6;
-  if (a8)
+  v17->allowConcurrent = concurrent;
+  v17->requireReliable = reliable;
+  if (handler)
   {
-    v17->sendMessageCompletionBlock = _Block_copy(a8);
+    v17->sendMessageCompletionBlock = _Block_copy(handler);
   }
 
   if (aBlock)
@@ -53,14 +53,14 @@
     v17->receiveMessageBlock = _Block_copy(aBlock);
   }
 
-  if (a10)
+  if (completionHandler)
   {
-    v17->sendMessageDataCompletionBlock = _Block_copy(a10);
+    v17->sendMessageDataCompletionBlock = _Block_copy(completionHandler);
   }
 
-  if (a11)
+  if (dictionaryHandler)
   {
-    v17->receiveMessageDictionaryBlock = _Block_copy(a11);
+    v17->receiveMessageDictionaryBlock = _Block_copy(dictionaryHandler);
   }
 
   v17->transactionCache = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -91,7 +91,7 @@
     v4 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(NSString *)self->topicKey UTF8String];
+      uTF8String = [(NSString *)self->topicKey UTF8String];
       *buf = 136315906;
       v14 = v3;
       v15 = 2080;
@@ -99,7 +99,7 @@
       v17 = 1024;
       v18 = 126;
       v19 = 2080;
-      v20 = v5;
+      v20 = uTF8String;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCSessionMessageTopic with topic %s dealloc", buf, 0x26u);
     }
   }
@@ -145,76 +145,76 @@
   [(VCSessionMessageTopic *)&v12 dealloc];
 }
 
-- (BOOL)isPayloadAssociated:(id)a3
+- (BOOL)isPayloadAssociated:(id)associated
 {
   objc_sync_enter(self);
   shouldEncodeTopicKeyInMessage = self->shouldEncodeTopicKeyInMessage;
   if (shouldEncodeTopicKeyInMessage)
   {
-    LOBYTE(a3) = [a3 hasPrefix:self->topicKey];
+    LOBYTE(associated) = [associated hasPrefix:self->topicKey];
     v6 = 0;
   }
 
   else
   {
-    v6 = [(NSArray *)self->associatedStrings containsObject:a3];
+    v6 = [(NSArray *)self->associatedStrings containsObject:associated];
   }
 
   objc_sync_exit(self);
   if (shouldEncodeTopicKeyInMessage)
   {
-    v7 = a3;
+    associatedCopy = associated;
   }
 
   else
   {
-    v7 = v6;
+    associatedCopy = v6;
   }
 
-  return v7 & 1;
+  return associatedCopy & 1;
 }
 
-- (void)setIsSendingEnabled:(BOOL)a3
+- (void)setIsSendingEnabled:(BOOL)enabled
 {
   objc_sync_enter(self);
-  self->isSendingEnabled = a3;
+  self->isSendingEnabled = enabled;
 
   objc_sync_exit(self);
 }
 
-- (id)messageForCommand:(id)a3
+- (id)messageForCommand:(id)command
 {
   if (self->shouldEncodeTopicKeyInMessage)
   {
-    return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", self->topicKey, a3, v3, v4];
+    return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", self->topicKey, command, v3, v4];
   }
 
   else
   {
-    return a3;
+    return command;
   }
 }
 
-- (void)sendMessage:(id)a3 participantID:(unint64_t)a4
+- (void)sendMessage:(id)message participantID:(unint64_t)d
 {
   objc_sync_enter(self);
   latestOutgoingMessageIndex = self->latestOutgoingMessageIndex;
   self->latestOutgoingMessageIndex = latestOutgoingMessageIndex + 1;
   objc_sync_exit(self);
 
-  [(VCSessionMessageTopic *)self sendMessage:a3 participantID:a4 withSequence:latestOutgoingMessageIndex numRetries:0];
+  [(VCSessionMessageTopic *)self sendMessage:message participantID:d withSequence:latestOutgoingMessageIndex numRetries:0];
 }
 
-- (void)handleSendMessageDidSucceed:(BOOL)a3 message:(id)a4 participantID:(id)a5
+- (void)handleSendMessageDidSucceed:(BOOL)succeed message:(id)message participantID:(id)d
 {
   sendMessageCompletionBlock = self->sendMessageCompletionBlock;
   if (sendMessageCompletionBlock || (sendMessageCompletionBlock = self->sendMessageDataCompletionBlock) != 0)
   {
-    sendMessageCompletionBlock[2](sendMessageCompletionBlock, a4, a3, a5);
+    sendMessageCompletionBlock[2](sendMessageCompletionBlock, message, succeed, d);
   }
 }
 
-- (BOOL)sendReliableMessage:(id)a3 participantID:(unint64_t)a4 withOptions:(id)a5 completion:(id)a6
+- (BOOL)sendReliableMessage:(id)message participantID:(unint64_t)d withOptions:(id)options completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -230,28 +230,28 @@
       v22 = 1024;
       v23 = 207;
       v24 = 2112;
-      v25 = [(VCSessionMessageTopic *)self topicKey];
+      topicKey = [(VCSessionMessageTopic *)self topicKey];
       _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d sendReliableMessage topic=%@", buf, 0x26u);
     }
   }
 
   controlChannel = self->controlChannel;
-  v14 = [(VCSessionMessageTopic *)self topicKey];
-  v15 = [(VCControlChannel *)self->controlChannel reliableMessageResendInterval];
+  topicKey2 = [(VCSessionMessageTopic *)self topicKey];
+  reliableMessageResendInterval = [(VCControlChannel *)self->controlChannel reliableMessageResendInterval];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __82__VCSessionMessageTopic_sendReliableMessage_participantID_withOptions_completion___block_invoke;
   v17[3] = &unk_1E85F9710;
-  v17[4] = a6;
-  return [(VCControlChannel *)controlChannel sendReliableMessage:a3 withTopic:v14 participantID:a4 timeout:v15 withOptions:a5 completion:v17];
+  v17[4] = completion;
+  return [(VCControlChannel *)controlChannel sendReliableMessage:message withTopic:topicKey2 participantID:d timeout:reliableMessageResendInterval withOptions:options completion:v17];
 }
 
-- (void)sendMessage:(id)a3 participantID:(unint64_t)a4 withSequence:(int64_t)a5 numRetries:(int64_t)a6
+- (void)sendMessage:(id)message participantID:(unint64_t)d withSequence:(int64_t)sequence numRetries:(int64_t)retries
 {
   v38 = *MEMORY[0x1E69E9840];
   if (self->isSendingEnabled)
   {
-    if (a6 < 8)
+    if (retries < 8)
     {
       objc_sync_enter(self);
       if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -277,18 +277,18 @@
           v30 = 1024;
           v31 = allowConcurrent;
           v32 = 1024;
-          v33 = a5;
+          sequenceCopy = sequence;
           v34 = 1024;
           v35 = latestOutgoingMessageIndex;
           v36 = 1024;
-          v37 = a6;
+          retriesCopy = retries;
           _os_log_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d sendMessage topic=%@ reliable=%d, concurent=%d, outgoingIndex=%d, lastOutgoingIndex=%d, retries=%d", buf, 0x44u);
         }
       }
 
       if (self->requireReliable)
       {
-        if (!a6 || self->latestOutgoingMessageIndex - 1 <= a5)
+        if (!retries || self->latestOutgoingMessageIndex - 1 <= sequence)
         {
           outMessageQueue = self->_outMessageQueue;
           block[0] = MEMORY[0x1E69E9820];
@@ -296,17 +296,17 @@
           block[2] = __75__VCSessionMessageTopic_sendMessage_participantID_withSequence_numRetries___block_invoke;
           block[3] = &unk_1E85F9788;
           block[4] = self;
-          block[5] = a3;
-          block[6] = a4;
-          block[7] = a5;
-          block[8] = a6;
+          block[5] = message;
+          block[6] = d;
+          block[7] = sequence;
+          block[8] = retries;
           dispatch_async(outMessageQueue, block);
         }
       }
 
       else
       {
-        [(VCControlChannel *)self->controlChannel sendUnreliableMessage:a3 withTopic:self->topicKey participantID:a4];
+        [(VCControlChannel *)self->controlChannel sendUnreliableMessage:message withTopic:self->topicKey participantID:d];
       }
 
       objc_sync_exit(self);
@@ -314,14 +314,14 @@
 
     else
     {
-      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{a4, a4, a5}];
+      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{d, d, sequence}];
 
-      [(VCSessionMessageTopic *)self handleSendMessageDidSucceed:0 message:a3 participantID:v10];
+      [(VCSessionMessageTopic *)self handleSendMessageDidSucceed:0 message:message participantID:v10];
     }
   }
 }
 
-- (void)dispatchedSendMessage:(id)a3 participantID:(unint64_t)a4 withSequence:(int64_t)a5 numRetries:(int64_t)a6
+- (void)dispatchedSendMessage:(id)message participantID:(unint64_t)d withSequence:(int64_t)sequence numRetries:(int64_t)retries
 {
   v68 = *MEMORY[0x1E69E9840];
   if (self->isSendingEnabled)
@@ -329,7 +329,7 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v11 = [(VCControlChannel *)self->controlChannel sendReliableMessageAndWait:[(VCSessionMessageTopic *)self messageForCommand:a3] withTopic:self->topicKey];
+      v11 = [(VCControlChannel *)self->controlChannel sendReliableMessageAndWait:[(VCSessionMessageTopic *)self messageForCommand:message] withTopic:self->topicKey];
       if (objc_opt_class() == self)
       {
         if (VRTraceGetErrorLogLevelForModule() < 6)
@@ -402,9 +402,9 @@
         v52 = 2112;
         v53 = v13;
         v54 = 2048;
-        v55 = self;
+        selfCopy3 = self;
         v56 = 2080;
-        v57 = v24;
+        dCopy3 = v24;
         v19 = " [%s] %s:%d %@(%p) sendReliableMessageAndWait result=%s";
         v20 = v23;
         v21 = 58;
@@ -418,13 +418,13 @@ LABEL_40:
       }
 
 LABEL_54:
-      -[VCSessionMessageTopic handleSendMessageDidSucceed:message:participantID:](self, "handleSendMessageDidSucceed:message:participantID:", 1, a3, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4]);
+      -[VCSessionMessageTopic handleSendMessageDidSucceed:message:participantID:](self, "handleSendMessageDidSucceed:message:participantID:", 1, message, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d]);
       return;
     }
 
     if (self->allowConcurrent)
     {
-      v11 = [(VCControlChannel *)self->controlChannel sendReliableMessageAndWait:a3 withTopic:self->topicKey participantID:a4];
+      v11 = [(VCControlChannel *)self->controlChannel sendReliableMessageAndWait:message withTopic:self->topicKey participantID:d];
       if (objc_opt_class() != self)
       {
         if (objc_opt_respondsToSelector())
@@ -458,17 +458,17 @@ LABEL_54:
             v52 = 2112;
             v53 = v12;
             v54 = 2048;
-            v55 = self;
+            selfCopy3 = self;
             v56 = 2080;
-            v57 = v37;
+            dCopy3 = v37;
             v58 = 2048;
-            v59 = a4;
+            sequenceCopy3 = d;
             v60 = 2048;
-            v61 = a5;
+            dCopy4 = sequence;
             v62 = 2048;
-            v63 = a6;
+            sequenceCopy4 = retries;
             v64 = 2112;
-            v65 = a3;
+            retriesCopy4 = message;
             v19 = " [%s] %s:%d %@(%p) sendReliableMessageAndWait result=%s, participantID=%llu, index=%ld, retry=%ld, payload=%@";
             v20 = v36;
             v21 = 98;
@@ -500,13 +500,13 @@ LABEL_54:
           v52 = 2080;
           v53 = v27;
           v54 = 2048;
-          v55 = a4;
+          selfCopy3 = d;
           v56 = 2048;
-          v57 = a5;
+          dCopy3 = sequence;
           v58 = 2048;
-          v59 = a6;
+          sequenceCopy3 = retries;
           v60 = 2112;
-          v61 = a3;
+          dCopy4 = message;
           v19 = " [%s] %s:%d sendReliableMessageAndWait result=%s, participantID=%llu, index=%ld, retry=%ld, payload=%@";
           v20 = v26;
           v21 = 78;
@@ -524,7 +524,7 @@ LABEL_42:
       goto LABEL_53;
     }
 
-    v14 = [(VCSessionMessageTopic *)self attemptToSendOrBufferReliableMessage:a3 participantID:a4 sequenceNumber:a5 retryNumber:a6];
+    v14 = [(VCSessionMessageTopic *)self attemptToSendOrBufferReliableMessage:message participantID:d sequenceNumber:sequence retryNumber:retries];
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -549,15 +549,15 @@ LABEL_42:
           v52 = 2080;
           v53 = v31;
           v54 = 2112;
-          v55 = topicKey;
+          selfCopy3 = topicKey;
           v56 = 2048;
-          v57 = a4;
+          dCopy3 = d;
           v58 = 2048;
-          v59 = a5;
+          sequenceCopy3 = sequence;
           v60 = 2048;
-          v61 = a6;
+          dCopy4 = retries;
           v62 = 2112;
-          v63 = a3;
+          sequenceCopy4 = message;
           v32 = " [%s] %s:%d attemptToSendOrBufferReliableMessage result=%s, topic=%@ participantID=%llu, index=%ld, retry=%ld, payload=%@";
           v33 = v29;
           v34 = 88;
@@ -576,10 +576,10 @@ LABEL_55:
           block[2] = __85__VCSessionMessageTopic_dispatchedSendMessage_participantID_withSequence_numRetries___block_invoke;
           block[3] = &unk_1E85F9788;
           block[4] = self;
-          block[5] = a3;
-          block[6] = a4;
-          block[7] = a5;
-          block[8] = a6;
+          block[5] = message;
+          block[6] = d;
+          block[7] = sequence;
+          block[8] = retries;
           dispatch_after(v43, outMessageQueue, block);
           return;
         }
@@ -620,19 +620,19 @@ LABEL_55:
           v52 = 2112;
           v53 = v15;
           v54 = 2048;
-          v55 = self;
+          selfCopy3 = self;
           v56 = 2080;
-          v57 = v41;
+          dCopy3 = v41;
           v58 = 2112;
-          v59 = v42;
+          sequenceCopy3 = v42;
           v60 = 2048;
-          v61 = a4;
+          dCopy4 = d;
           v62 = 2048;
-          v63 = a5;
+          sequenceCopy4 = sequence;
           v64 = 2048;
-          v65 = a6;
+          retriesCopy4 = retries;
           v66 = 2112;
-          v67 = a3;
+          messageCopy4 = message;
           v32 = " [%s] %s:%d %@(%p) attemptToSendOrBufferReliableMessage result=%s, topic=%@ participantID=%llu, index=%ld, retry=%ld, payload=%@";
           v33 = v40;
           v34 = 108;
@@ -657,17 +657,17 @@ LABEL_53:
   }
 }
 
-- (BOOL)attemptToSendOrBufferReliableMessage:(id)a3 participantID:(unint64_t)a4 sequenceNumber:(int64_t)a5 retryNumber:(int64_t)a6
+- (BOOL)attemptToSendOrBufferReliableMessage:(id)message participantID:(unint64_t)d sequenceNumber:(int64_t)number retryNumber:(int64_t)retryNumber
 {
   v39 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_outMessageQueue);
-  if (!-[NSMutableDictionary objectForKeyedSubscript:](self->_sendMessageBuffers, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4]))
+  if (!-[NSMutableDictionary objectForKeyedSubscript:](self->_sendMessageBuffers, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d]))
   {
-    v11 = [MEMORY[0x1E695DF70] array];
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_sendMessageBuffers, "setObject:forKeyedSubscript:", v11, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4]);
+    array = [MEMORY[0x1E695DF70] array];
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_sendMessageBuffers, "setObject:forKeyedSubscript:", array, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d]);
   }
 
-  v12 = -[NSMutableDictionary objectForKeyedSubscript:](self->_sendMessageBuffers, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4]);
+  v12 = -[NSMutableDictionary objectForKeyedSubscript:](self->_sendMessageBuffers, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d]);
   if (!v12)
   {
     if (objc_opt_class() != self)
@@ -704,9 +704,9 @@ LABEL_53:
       v33 = 2112;
       v34 = v17;
       v35 = 2048;
-      v36 = self;
+      selfCopy2 = self;
       v37 = 2048;
-      v38 = a4;
+      dCopy = d;
       v21 = " [%s] %s:%d %@(%p) Cannot create sendMessageBuffer for participantID=%llu";
       v22 = v20;
       v23 = 58;
@@ -732,7 +732,7 @@ LABEL_29:
     return v16;
   }
 
-  if (!a3)
+  if (!message)
   {
     if (objc_opt_class() != self)
     {
@@ -768,7 +768,7 @@ LABEL_29:
       v33 = 2112;
       v34 = v18;
       v35 = 2048;
-      v36 = self;
+      selfCopy2 = self;
       v21 = " [%s] %s:%d %@(%p) Cannot send or buffer with a nil message";
       v22 = v25;
       v23 = 48;
@@ -792,45 +792,45 @@ LABEL_29:
 
   v13 = v12;
   v14 = [v12 count];
-  v15 = [[VCSessionMessageBufferElement alloc] initWithMessage:a3 sequenceNumber:a5 retryNumber:a6];
+  v15 = [[VCSessionMessageBufferElement alloc] initWithMessage:message sequenceNumber:number retryNumber:retryNumber];
   [v13 addObject:v15];
 
   if (!v14)
   {
-    [(VCSessionMessageTopic *)self sendBufferedReliableMessagesForParticipantID:a4];
+    [(VCSessionMessageTopic *)self sendBufferedReliableMessagesForParticipantID:d];
   }
 
   LOBYTE(v16) = 1;
   return v16;
 }
 
-- (void)sendBufferedReliableMessagesForParticipantID:(unint64_t)a3
+- (void)sendBufferedReliableMessagesForParticipantID:(unint64_t)d
 {
   v30 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_outMessageQueue);
-  v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_sendMessageBuffers, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3]);
+  v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_sendMessageBuffers, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d]);
   if (v5)
   {
-    v6 = [v5 firstObject];
-    if (v6)
+    firstObject = [v5 firstObject];
+    if (firstObject)
     {
-      v7 = v6;
-      v8 = [v6 message];
-      v9 = [v7 sequenceNumber];
-      v10 = [v7 retryNumber];
+      v7 = firstObject;
+      message = [firstObject message];
+      sequenceNumber = [v7 sequenceNumber];
+      retryNumber = [v7 retryNumber];
       controlChannel = self->controlChannel;
       topicKey = self->topicKey;
-      v13 = [(VCControlChannel *)controlChannel reliableMessageResendInterval];
+      reliableMessageResendInterval = [(VCControlChannel *)controlChannel reliableMessageResendInterval];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __70__VCSessionMessageTopic_sendBufferedReliableMessagesForParticipantID___block_invoke;
       v17[3] = &unk_1E85F97D8;
       v17[4] = self;
-      v17[5] = v8;
-      v17[6] = a3;
-      v17[7] = v9;
-      v17[8] = v10;
-      [(VCControlChannel *)controlChannel sendReliableMessage:v8 withTopic:topicKey participantID:a3 timeout:v13 completion:v17];
+      v17[5] = message;
+      v17[6] = d;
+      v17[7] = sequenceNumber;
+      v17[8] = retryNumber;
+      [(VCControlChannel *)controlChannel sendReliableMessage:message withTopic:topicKey participantID:d timeout:reliableMessageResendInterval completion:v17];
     }
   }
 
@@ -873,9 +873,9 @@ LABEL_29:
         v24 = 2112;
         v25 = v14;
         v26 = 2048;
-        v27 = self;
+        selfCopy = self;
         v28 = 2048;
-        v29 = a3;
+        dCopy = d;
         _os_log_error_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Cannot retrieve sendMessageBuffer for participantID=%llu", buf, 0x3Au);
       }
     }
@@ -900,9 +900,9 @@ __n128 __70__VCSessionMessageTopic_sendBufferedReliableMessagesForParticipantID_
   return result;
 }
 
-- (void)dispatchedCompletionHandlerForSendMessage:(id)a3 withTopic:(id)a4 participantID:(unint64_t)a5 result:(BOOL)a6 sequenceNumber:(int64_t)a7 retryNumber:(int64_t)a8
+- (void)dispatchedCompletionHandlerForSendMessage:(id)message withTopic:(id)topic participantID:(unint64_t)d result:(BOOL)result sequenceNumber:(int64_t)number retryNumber:(int64_t)retryNumber
 {
-  v10 = a6;
+  resultCopy = result;
   v64 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -923,7 +923,7 @@ __n128 __70__VCSessionMessageTopic_sendBufferedReliableMessagesForParticipantID_
     *buf = 136317186;
     v45 = "[VCSessionMessageTopic dispatchedCompletionHandlerForSendMessage:withTopic:participantID:result:sequenceNumber:retryNumber:]";
     v44 = 2080;
-    if (v10)
+    if (resultCopy)
     {
       v18 = "SUCCESS";
     }
@@ -931,17 +931,17 @@ __n128 __70__VCSessionMessageTopic_sendBufferedReliableMessagesForParticipantID_
     v46 = 1024;
     v47 = 345;
     v48 = 2080;
-    v49 = v18;
+    dCopy3 = v18;
     v50 = 2112;
-    v51 = a4;
+    selfCopy2 = topic;
     v52 = 2048;
-    v53 = a5;
+    dCopy4 = d;
     v54 = 2048;
-    v55 = a7;
+    topicCopy2 = number;
     v56 = 2048;
-    v57 = a8;
+    numberCopy4 = retryNumber;
     v58 = 2112;
-    v59 = a3;
+    numberCopy2 = message;
     v19 = " [%s] %s:%d sendReliableMessage result=%s topic=%@ participantID=%llu, index=%ld, retry=%ld, payload=%@";
     v20 = v17;
     v21 = 88;
@@ -969,7 +969,7 @@ __n128 __70__VCSessionMessageTopic_sendBufferedReliableMessagesForParticipantID_
       v43 = v22;
       v45 = "[VCSessionMessageTopic dispatchedCompletionHandlerForSendMessage:withTopic:participantID:result:sequenceNumber:retryNumber:]";
       v44 = 2080;
-      if (v10)
+      if (resultCopy)
       {
         v24 = "SUCCESS";
       }
@@ -977,21 +977,21 @@ __n128 __70__VCSessionMessageTopic_sendBufferedReliableMessagesForParticipantID_
       v46 = 1024;
       v47 = 345;
       v48 = 2112;
-      v49 = v15;
+      dCopy3 = v15;
       v50 = 2048;
-      v51 = self;
+      selfCopy2 = self;
       v52 = 2080;
-      v53 = v24;
+      dCopy4 = v24;
       v54 = 2112;
-      v55 = a4;
+      topicCopy2 = topic;
       v56 = 2048;
-      v57 = a5;
+      numberCopy4 = d;
       v58 = 2048;
-      v59 = a7;
+      numberCopy2 = number;
       v60 = 2048;
-      v61 = a8;
+      retryNumberCopy4 = retryNumber;
       v62 = 2112;
-      v63 = a3;
+      messageCopy2 = message;
       v19 = " [%s] %s:%d %@(%p) sendReliableMessage result=%s topic=%@ participantID=%llu, index=%ld, retry=%ld, payload=%@";
       v20 = v23;
       v21 = 108;
@@ -1001,9 +1001,9 @@ LABEL_15:
   }
 
 LABEL_16:
-  if (v10)
+  if (resultCopy)
   {
-    -[VCSessionMessageTopic handleSendMessageDidSucceed:message:participantID:](self, "handleSendMessageDidSucceed:message:participantID:", 1, a3, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a5]);
+    -[VCSessionMessageTopic handleSendMessageDidSucceed:message:participantID:](self, "handleSendMessageDidSucceed:message:participantID:", 1, message, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d]);
   }
 
   else
@@ -1015,18 +1015,18 @@ LABEL_16:
     block[2] = __125__VCSessionMessageTopic_dispatchedCompletionHandlerForSendMessage_withTopic_participantID_result_sequenceNumber_retryNumber___block_invoke;
     block[3] = &unk_1E85F9788;
     block[4] = self;
-    block[5] = a3;
-    block[6] = a5;
-    block[7] = a7;
-    block[8] = a8;
+    block[5] = message;
+    block[6] = d;
+    block[7] = number;
+    block[8] = retryNumber;
     dispatch_after(v25, outMessageQueue, block);
   }
 
-  v27 = -[NSMutableDictionary objectForKeyedSubscript:](self->_sendMessageBuffers, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a5]);
+  v27 = -[NSMutableDictionary objectForKeyedSubscript:](self->_sendMessageBuffers, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d]);
   if ([v27 count])
   {
     v28 = [v27 objectAtIndexedSubscript:0];
-    if ([v28 sequenceNumber] == a7 && objc_msgSend(v28, "retryNumber") == a8)
+    if ([v28 sequenceNumber] == number && objc_msgSend(v28, "retryNumber") == retryNumber)
     {
       [v27 removeObjectAtIndex:0];
       goto LABEL_32;
@@ -1046,8 +1046,8 @@ LABEL_16:
         goto LABEL_32;
       }
 
-      v32 = [v28 sequenceNumber];
-      v33 = [v28 retryNumber];
+      sequenceNumber = [v28 sequenceNumber];
+      retryNumber = [v28 retryNumber];
       *buf = 136316930;
       v43 = v30;
       v44 = 2080;
@@ -1055,15 +1055,15 @@ LABEL_16:
       v46 = 1024;
       v47 = 360;
       v48 = 2048;
-      v49 = a5;
+      dCopy3 = d;
       v50 = 2048;
-      v51 = v32;
+      selfCopy2 = sequenceNumber;
       v52 = 2048;
-      v53 = a7;
+      dCopy4 = number;
       v54 = 2048;
-      v55 = v33;
+      topicCopy2 = retryNumber;
       v56 = 2048;
-      v57 = a8;
+      numberCopy4 = retryNumber;
       v34 = " [%s] %s:%d Cannot match element in participantMessageBuffer for participantID=%llu, element index=%ld, index=%ld, element retry=%ld, retry=%ld";
       v35 = v31;
       v36 = 78;
@@ -1093,8 +1093,8 @@ LABEL_16:
         goto LABEL_32;
       }
 
-      v39 = [v28 sequenceNumber];
-      v40 = [v28 retryNumber];
+      sequenceNumber2 = [v28 sequenceNumber];
+      retryNumber2 = [v28 retryNumber];
       *buf = 136317442;
       v43 = v37;
       v44 = 2080;
@@ -1102,19 +1102,19 @@ LABEL_16:
       v46 = 1024;
       v47 = 360;
       v48 = 2112;
-      v49 = v29;
+      dCopy3 = v29;
       v50 = 2048;
-      v51 = self;
+      selfCopy2 = self;
       v52 = 2048;
-      v53 = a5;
+      dCopy4 = d;
       v54 = 2048;
-      v55 = v39;
+      topicCopy2 = sequenceNumber2;
       v56 = 2048;
-      v57 = a7;
+      numberCopy4 = number;
       v58 = 2048;
-      v59 = v40;
+      numberCopy2 = retryNumber2;
       v60 = 2048;
-      v61 = a8;
+      retryNumberCopy4 = retryNumber;
       v34 = " [%s] %s:%d %@(%p) Cannot match element in participantMessageBuffer for participantID=%llu, element index=%ld, index=%ld, element retry=%ld, retry=%ld";
       v35 = v38;
       v36 = 98;
@@ -1124,18 +1124,18 @@ LABEL_16:
   }
 
 LABEL_32:
-  [(VCSessionMessageTopic *)self sendBufferedReliableMessagesForParticipantID:a5];
+  [(VCSessionMessageTopic *)self sendBufferedReliableMessagesForParticipantID:d];
 }
 
-- (BOOL)isDuplicateMessageID:(id)a3 messageHistory:(id)a4 participantID:(id)a5
+- (BOOL)isDuplicateMessageID:(id)d messageHistory:(id)history participantID:(id)iD
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = [a4 objectForKeyedSubscript:@"replayThreshold"];
+  v8 = [history objectForKeyedSubscript:@"replayThreshold"];
   if (v8)
   {
     v9 = v8;
-    v10 = [a3 unsignedLongLongValue];
-    if (v10 <= [v9 unsignedLongLongValue])
+    unsignedLongLongValue = [d unsignedLongLongValue];
+    if (unsignedLongLongValue <= [v9 unsignedLongLongValue])
     {
       if (VRTraceGetErrorLogLevelForModule() >= 5)
       {
@@ -1150,9 +1150,9 @@ LABEL_32:
           v34 = 1024;
           v35 = 374;
           v36 = 2112;
-          v37 = a5;
+          iDCopy2 = iD;
           v38 = 2112;
-          v39 = a3;
+          dCopy2 = d;
           v40 = 2112;
           v41 = v9;
           v20 = " [%s] %s:%d ParticipantID=%@: Message too old: transactionID=%@, replayProtectionThreshold=%@";
@@ -1168,7 +1168,7 @@ LABEL_16:
     }
   }
 
-  v11 = [a4 objectForKeyedSubscript:@"messageHistory"];
+  v11 = [history objectForKeyedSubscript:@"messageHistory"];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -1188,7 +1188,7 @@ LABEL_5:
       }
 
       v16 = *(*(&v26 + 1) + 8 * v15);
-      if ([a3 isEqualToNumber:{objc_msgSend(v16, "objectForKeyedSubscript:", @"messageID"}])
+      if ([d isEqualToNumber:{objc_msgSend(v16, "objectForKeyedSubscript:", @"messageID"}])
       {
         break;
       }
@@ -1220,9 +1220,9 @@ LABEL_5:
         v34 = 1024;
         v35 = 378;
         v36 = 2112;
-        v37 = a5;
+        iDCopy2 = iD;
         v38 = 2112;
-        v39 = a3;
+        dCopy2 = d;
         v40 = 2112;
         v41 = v19;
         v20 = " [%s] %s:%d ParticipantID=%@: Found duplicate message with transactionID=%@ and expiration time=%@";
@@ -1237,22 +1237,22 @@ LABEL_5:
   return v12;
 }
 
-- (void)purgeExpiredEntries:(double)a3 messageHistory:(id)a4 participantID:(id)a5
+- (void)purgeExpiredEntries:(double)entries messageHistory:(id)history participantID:(id)d
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = [a4 objectForKeyedSubscript:@"messageHistory"];
-  v8 = [objc_msgSend(a4 objectForKeyedSubscript:{@"replayThreshold", "unsignedLongLongValue"}];
+  v7 = [history objectForKeyedSubscript:@"messageHistory"];
+  v8 = [objc_msgSend(history objectForKeyedSubscript:{@"replayThreshold", "unsignedLongLongValue"}];
   if ([v7 count])
   {
     *&v9 = 136316930;
     v17 = v9;
     do
     {
-      v10 = [v7 firstObject];
-      [objc_msgSend(v10 objectForKeyedSubscript:{@"expireTime", "doubleValue"}];
+      firstObject = [v7 firstObject];
+      [objc_msgSend(firstObject objectForKeyedSubscript:{@"expireTime", "doubleValue"}];
       v12 = v11;
-      v13 = [objc_msgSend(v10 objectForKeyedSubscript:{@"messageID", "unsignedLongLongValue"}];
-      if (v12 > a3)
+      v13 = [objc_msgSend(firstObject objectForKeyedSubscript:{@"messageID", "unsignedLongLongValue"}];
+      if (v12 > entries)
       {
         break;
       }
@@ -1263,7 +1263,7 @@ LABEL_5:
         v8 = v13;
       }
 
-      [a4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLongLong:", v8), @"replayThreshold"}];
+      [history setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLongLong:", v8), @"replayThreshold"}];
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
         v15 = VRTraceErrorLogLevelToCSTR();
@@ -1277,13 +1277,13 @@ LABEL_5:
           v23 = 1024;
           v24 = 399;
           v25 = 2112;
-          v26 = a5;
+          dCopy = d;
           v27 = 2048;
           v28 = v14;
           v29 = 2048;
           v30 = v12;
           v31 = 2048;
-          v32 = a3;
+          entriesCopy = entries;
           v33 = 2048;
           v34 = v8;
           _os_log_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d ParticipantID=%@: Purging message with transactionID=%llu and expiration time=%f. Current time=%f, replayProtectionThreshold=%llu", buf, 0x4Eu);
@@ -1297,23 +1297,23 @@ LABEL_5:
   }
 }
 
-- (void)passMessage:(id)a3 sequence:(int)a4 fromParticipant:(id)a5
+- (void)passMessage:(id)message sequence:(int)sequence fromParticipant:(id)participant
 {
-  v6 = *&a4;
+  v6 = *&sequence;
   v41 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
-  if (!a5)
+  if (!participant)
   {
-    a5 = &unk_1F579BB50;
+    participant = &unk_1F579BB50;
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithInt:v6];
   v10 = micro();
-  v11 = [(NSMutableDictionary *)self->transactionCache objectForKeyedSubscript:a5];
+  v11 = [(NSMutableDictionary *)self->transactionCache objectForKeyedSubscript:participant];
   if (!v11)
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [(NSMutableDictionary *)self->transactionCache setObject:v11 forKeyedSubscript:a5];
+    [(NSMutableDictionary *)self->transactionCache setObject:v11 forKeyedSubscript:participant];
   }
 
   v12 = [v11 objectForKeyedSubscript:@"messageHistory"];
@@ -1323,8 +1323,8 @@ LABEL_5:
     [v11 setObject:v12 forKeyedSubscript:@"messageHistory"];
   }
 
-  [(VCSessionMessageTopic *)self purgeExpiredEntries:v11 messageHistory:a5 participantID:v10];
-  if ([(VCSessionMessageTopic *)self isDuplicateMessageID:v9 messageHistory:v11 participantID:a5])
+  [(VCSessionMessageTopic *)self purgeExpiredEntries:v11 messageHistory:participant participantID:v10];
+  if ([(VCSessionMessageTopic *)self isDuplicateMessageID:v9 messageHistory:v11 participantID:participant])
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -1340,9 +1340,9 @@ LABEL_5:
         v31 = 1024;
         v32 = 452;
         v33 = 2112;
-        v34 = a5;
+        participantCopy3 = participant;
         v35 = 2112;
-        v36 = a3;
+        messageCopy2 = message;
         v37 = 2112;
         v38 = v9;
         v39 = 2112;
@@ -1368,9 +1368,9 @@ LABEL_5:
         v31 = 1024;
         v32 = 432;
         v33 = 2112;
-        v34 = a5;
+        participantCopy3 = participant;
         v35 = 2112;
-        v36 = v9;
+        messageCopy2 = v9;
         v37 = 2112;
         v38 = v12;
         v39 = 2112;
@@ -1398,9 +1398,9 @@ LABEL_5:
         v31 = 1024;
         v32 = 438;
         v33 = 2112;
-        v34 = a5;
+        participantCopy3 = participant;
         v35 = 2112;
-        v36 = a3;
+        messageCopy2 = message;
         v37 = 2112;
         v38 = v9;
         v39 = 2112;
@@ -1422,8 +1422,8 @@ LABEL_5:
     block[2] = __62__VCSessionMessageTopic_passMessage_sequence_fromParticipant___block_invoke;
     block[3] = &unk_1E85F3E30;
     block[4] = self;
-    block[5] = a3;
-    block[6] = a5;
+    block[5] = message;
+    block[6] = participant;
     dispatch_async(inMessageQueue, block);
   }
 
@@ -1448,7 +1448,7 @@ void *__62__VCSessionMessageTopic_passMessage_sequence_fromParticipant___block_i
   return result;
 }
 
-- (void)clearTransactionCacheForParticipant:(id)a3
+- (void)clearTransactionCacheForParticipant:(id)participant
 {
   v15 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
@@ -1465,12 +1465,12 @@ void *__62__VCSessionMessageTopic_passMessage_sequence_fromParticipant___block_i
       v11 = 1024;
       v12 = 461;
       v13 = 2112;
-      v14 = a3;
+      participantCopy = participant;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d clearTransactionCacheForParticipant:%@", &v7, 0x26u);
     }
   }
 
-  [(NSMutableDictionary *)self->transactionCache removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->transactionCache removeObjectForKey:participant];
   objc_sync_exit(self);
 }
 

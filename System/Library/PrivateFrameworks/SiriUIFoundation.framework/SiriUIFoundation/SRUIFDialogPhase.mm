@@ -1,21 +1,21 @@
 @interface SRUIFDialogPhase
-+ (id)_dialogPhaseWithType:(int64_t)a3;
-+ (id)dialogPhaseForAceDialogPhase:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDialogPhase:(id)a3;
++ (id)_dialogPhaseWithType:(int64_t)type;
++ (id)dialogPhaseForAceDialogPhase:(id)phase;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDialogPhase:(id)phase;
 - (NSString)aceDialogPhaseValue;
-- (SRUIFDialogPhase)initWithCoder:(id)a3;
-- (id)_initWithType:(int64_t)a3;
+- (SRUIFDialogPhase)initWithCoder:(id)coder;
+- (id)_initWithType:(int64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRUIFDialogPhase
 
-+ (id)dialogPhaseForAceDialogPhase:(id)a3
++ (id)dialogPhaseForAceDialogPhase:(id)phase
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277D48BD0]])
+  phaseCopy = phase;
+  if ([phaseCopy isEqualToString:*MEMORY[0x277D48BD0]])
   {
     v4 = +[SRUIFDialogPhase acknowledgementDialogPhase];
 LABEL_21:
@@ -23,55 +23,55 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277D48C08]])
+  if ([phaseCopy isEqualToString:*MEMORY[0x277D48C08]])
   {
     v4 = +[SRUIFDialogPhase reflectionDialogPhase];
     goto LABEL_21;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277D48C10]])
+  if ([phaseCopy isEqualToString:*MEMORY[0x277D48C10]])
   {
     v4 = +[SRUIFDialogPhase statusDialogPhase];
     goto LABEL_21;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277D48BE0]])
+  if ([phaseCopy isEqualToString:*MEMORY[0x277D48BE0]])
   {
     v4 = +[SRUIFDialogPhase clarificationDialogPhase];
     goto LABEL_21;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277D48C18]])
+  if ([phaseCopy isEqualToString:*MEMORY[0x277D48C18]])
   {
     v4 = +[SRUIFDialogPhase summaryDialogPhase];
     goto LABEL_21;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277D48BF0]])
+  if ([phaseCopy isEqualToString:*MEMORY[0x277D48BF0]])
   {
     v4 = +[SRUIFDialogPhase confirmationDialogPhase];
     goto LABEL_21;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277D48BE8]])
+  if ([phaseCopy isEqualToString:*MEMORY[0x277D48BE8]])
   {
     v4 = +[SRUIFDialogPhase completionDialogPhase];
     goto LABEL_21;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277D48C00]])
+  if ([phaseCopy isEqualToString:*MEMORY[0x277D48C00]])
   {
     v4 = +[SRUIFDialogPhase errorDialogPhase];
     goto LABEL_21;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277D48BF8]])
+  if ([phaseCopy isEqualToString:*MEMORY[0x277D48BF8]])
   {
     v4 = +[SRUIFDialogPhase confirmedDialogPhase];
     goto LABEL_21;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277D48BD8]])
+  if ([phaseCopy isEqualToString:*MEMORY[0x277D48BD8]])
   {
     v4 = +[SRUIFDialogPhase cancelledDialogPhase];
     goto LABEL_21;
@@ -83,68 +83,68 @@ LABEL_22:
   return v5;
 }
 
-+ (id)_dialogPhaseWithType:(int64_t)a3
++ (id)_dialogPhaseWithType:(int64_t)type
 {
-  v3 = [[SRUIFDialogPhase alloc] _initWithType:a3];
+  v3 = [[SRUIFDialogPhase alloc] _initWithType:type];
 
   return v3;
 }
 
-- (id)_initWithType:(int64_t)a3
+- (id)_initWithType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = SRUIFDialogPhase;
   result = [(SRUIFDialogPhase *)&v5 init];
   if (result)
   {
-    *(result + 1) = a3;
+    *(result + 1) = type;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[SRUIFDialogPhase _type](self forKey:{"_type"), @"SRUIFDialogPhaseType"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[SRUIFDialogPhase _type](self forKey:{"_type"), @"SRUIFDialogPhaseType"}];
 }
 
-- (SRUIFDialogPhase)initWithCoder:(id)a3
+- (SRUIFDialogPhase)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SRUIFDialogPhase;
   v5 = [(SRUIFDialogPhase *)&v7 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"SRUIFDialogPhaseType"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"SRUIFDialogPhaseType"];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToDialogPhase:(id)a3
+- (BOOL)isEqualToDialogPhase:(id)phase
 {
-  v4 = a3;
-  v5 = [(SRUIFDialogPhase *)self _type];
-  v6 = [v4 _type];
+  phaseCopy = phase;
+  _type = [(SRUIFDialogPhase *)self _type];
+  _type2 = [phaseCopy _type];
 
-  return v5 == v6;
+  return _type == _type2;
 }
 
 - (NSString)aceDialogPhaseValue
 {
-  v3 = [(SRUIFDialogPhase *)self _type];
-  if (v3 <= 5)
+  _type = [(SRUIFDialogPhase *)self _type];
+  if (_type <= 5)
   {
-    if (v3 > 2)
+    if (_type > 2)
     {
-      if (v3 == 3)
+      if (_type == 3)
       {
         v4 = MEMORY[0x277D48C10];
       }
 
-      else if (v3 == 4)
+      else if (_type == 4)
       {
         v4 = MEMORY[0x277D48BE0];
       }
@@ -157,14 +157,14 @@ LABEL_22:
       goto LABEL_24;
     }
 
-    if (v3 == 1)
+    if (_type == 1)
     {
       v4 = MEMORY[0x277D48BD0];
     }
 
     else
     {
-      if (v3 != 2)
+      if (_type != 2)
       {
         goto LABEL_28;
       }
@@ -175,14 +175,14 @@ LABEL_22:
 
   else
   {
-    if (v3 <= 8)
+    if (_type <= 8)
     {
-      if (v3 == 6)
+      if (_type == 6)
       {
         v4 = MEMORY[0x277D48BF0];
       }
 
-      else if (v3 == 7)
+      else if (_type == 7)
       {
         v4 = MEMORY[0x277D48BE8];
       }
@@ -195,7 +195,7 @@ LABEL_22:
       goto LABEL_24;
     }
 
-    switch(v3)
+    switch(_type)
     {
       case 9:
         v4 = MEMORY[0x277D48BF8];
@@ -353,10 +353,10 @@ LABEL_25:
   return [MEMORY[0x277CCACA8] stringWithFormat:@"<%@ %@>", objc_opt_class(), v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -364,7 +364,7 @@ LABEL_25:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SRUIFDialogPhase *)self isEqualToDialogPhase:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SRUIFDialogPhase *)self isEqualToDialogPhase:equalCopy];
   }
 
   return v5;

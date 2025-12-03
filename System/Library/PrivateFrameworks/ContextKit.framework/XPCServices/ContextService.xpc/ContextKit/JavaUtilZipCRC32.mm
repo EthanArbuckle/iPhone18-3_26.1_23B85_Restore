@@ -1,42 +1,42 @@
 @interface JavaUtilZipCRC32
 - (JavaUtilZipCRC32)init;
-- (void)updateWithByteArray:(id)a3;
-- (void)updateWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (void)updateWithInt:(int)a3;
+- (void)updateWithByteArray:(id)array;
+- (void)updateWithByteArray:(id)array withInt:(int)int withInt:(int)withInt;
+- (void)updateWithInt:(int)int;
 @end
 
 @implementation JavaUtilZipCRC32
 
-- (void)updateWithInt:(int)a3
+- (void)updateWithInt:(int)int
 {
   crc = self->crc_;
-  buf = a3;
+  buf = int;
   self->crc_ = crc32(crc, &buf, 1u);
 }
 
-- (void)updateWithByteArray:(id)a3
+- (void)updateWithByteArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(array + 2);
 
-  [(JavaUtilZipCRC32 *)self updateWithByteArray:a3 withInt:0 withInt:v4];
+  [(JavaUtilZipCRC32 *)self updateWithByteArray:array withInt:0 withInt:v4];
 }
 
-- (void)updateWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (void)updateWithByteArray:(id)array withInt:(int)int withInt:(int)withInt
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(a3 + 2), a4, a5);
+  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(array + 2), int, withInt);
   crc = self->crc_;
-  self->tbytes_ += a5;
-  self->crc_ = crc32(crc, a3 + a4 + 12, a5);
+  self->tbytes_ += withInt;
+  self->crc_ = crc32(crc, array + int + 12, withInt);
 }
 
 - (JavaUtilZipCRC32)init

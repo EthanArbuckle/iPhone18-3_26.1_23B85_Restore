@@ -1,6 +1,6 @@
 @interface LoggedOutPushCache
 + (NSDate)expirationDate;
-+ (void)registeredDeviceWithExpirationDate:(id)a3;
++ (void)registeredDeviceWithExpirationDate:(id)date;
 + (void)unregisteredDevice;
 - (_TtC3ind18LoggedOutPushCache)init;
 @end
@@ -35,7 +35,7 @@
   return v9;
 }
 
-+ (void)registeredDeviceWithExpirationDate:(id)a3
++ (void)registeredDeviceWithExpirationDate:(id)date
 {
   v3 = type metadata accessor for Date();
   v4 = *(v3 - 8);

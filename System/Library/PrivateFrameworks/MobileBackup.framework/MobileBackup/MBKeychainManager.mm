@@ -1,86 +1,86 @@
 @interface MBKeychainManager
-+ (BOOL)addKeybagSecret:(id)a3 forUUID:(id)a4 error:(id *)a5;
-+ (BOOL)addLocalBackupPassword:(id)a3 error:(id *)a4;
-+ (BOOL)removeKeybagSecretForUUID:(id)a3 error:(id *)a4;
-+ (BOOL)removeKeybagSecretsWithError:(id *)a3;
-+ (BOOL)removeLocalBackupPasswordAndReturnError:(id *)a3;
-+ (BOOL)updateKeybagSecret:(id)a3 forUUID:(id)a4 error:(id *)a5;
-+ (BOOL)updateLocalBackupPassword:(id)a3 error:(id *)a4;
-+ (id)fetchKeybagSecretForUUID:(id)a3 error:(id *)a4;
-+ (id)fetchLocalBackupPasswordAndReturnError:(id *)a3;
++ (BOOL)addKeybagSecret:(id)secret forUUID:(id)d error:(id *)error;
++ (BOOL)addLocalBackupPassword:(id)password error:(id *)error;
++ (BOOL)removeKeybagSecretForUUID:(id)d error:(id *)error;
++ (BOOL)removeKeybagSecretsWithError:(id *)error;
++ (BOOL)removeLocalBackupPasswordAndReturnError:(id *)error;
++ (BOOL)updateKeybagSecret:(id)secret forUUID:(id)d error:(id *)error;
++ (BOOL)updateLocalBackupPassword:(id)password error:(id *)error;
++ (id)fetchKeybagSecretForUUID:(id)d error:(id *)error;
++ (id)fetchLocalBackupPasswordAndReturnError:(id *)error;
 @end
 
 @implementation MBKeychainManager
 
-+ (id)fetchLocalBackupPasswordAndReturnError:(id *)a3
++ (id)fetchLocalBackupPasswordAndReturnError:(id *)error
 {
-  v4 = [a1 managerToUse];
+  managerToUse = [self managerToUse];
 
-  return [v4 fetchLocalBackupPassword:a3];
+  return [managerToUse fetchLocalBackupPassword:error];
 }
 
-+ (id)fetchKeybagSecretForUUID:(id)a3 error:(id *)a4
++ (id)fetchKeybagSecretForUUID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_msgSend(a1 "managerToUse")];
+  dCopy = d;
+  v7 = [objc_msgSend(self "managerToUse")];
 
   return v7;
 }
 
-+ (BOOL)addLocalBackupPassword:(id)a3 error:(id *)a4
++ (BOOL)addLocalBackupPassword:(id)password error:(id *)error
 {
-  v6 = a3;
-  LOBYTE(a4) = [objc_msgSend(a1 "managerToUse")];
+  passwordCopy = password;
+  LOBYTE(error) = [objc_msgSend(self "managerToUse")];
 
-  return a4;
+  return error;
 }
 
-+ (BOOL)addKeybagSecret:(id)a3 forUUID:(id)a4 error:(id *)a5
++ (BOOL)addKeybagSecret:(id)secret forUUID:(id)d error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  LOBYTE(a5) = [objc_msgSend(a1 "managerToUse")];
+  dCopy = d;
+  secretCopy = secret;
+  LOBYTE(error) = [objc_msgSend(self "managerToUse")];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)updateLocalBackupPassword:(id)a3 error:(id *)a4
++ (BOOL)updateLocalBackupPassword:(id)password error:(id *)error
 {
-  v6 = a3;
-  LOBYTE(a4) = [objc_msgSend(a1 "managerToUse")];
+  passwordCopy = password;
+  LOBYTE(error) = [objc_msgSend(self "managerToUse")];
 
-  return a4;
+  return error;
 }
 
-+ (BOOL)updateKeybagSecret:(id)a3 forUUID:(id)a4 error:(id *)a5
++ (BOOL)updateKeybagSecret:(id)secret forUUID:(id)d error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  LOBYTE(a5) = [objc_msgSend(a1 "managerToUse")];
+  dCopy = d;
+  secretCopy = secret;
+  LOBYTE(error) = [objc_msgSend(self "managerToUse")];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)removeLocalBackupPasswordAndReturnError:(id *)a3
++ (BOOL)removeLocalBackupPasswordAndReturnError:(id *)error
 {
-  v4 = [a1 managerToUse];
+  managerToUse = [self managerToUse];
 
-  return [v4 removeLocalBackupPassword:a3];
+  return [managerToUse removeLocalBackupPassword:error];
 }
 
-+ (BOOL)removeKeybagSecretsWithError:(id *)a3
++ (BOOL)removeKeybagSecretsWithError:(id *)error
 {
-  v4 = [a1 managerToUse];
+  managerToUse = [self managerToUse];
 
-  return [v4 removeKeybagSecretsWithError:a3];
+  return [managerToUse removeKeybagSecretsWithError:error];
 }
 
-+ (BOOL)removeKeybagSecretForUUID:(id)a3 error:(id *)a4
++ (BOOL)removeKeybagSecretForUUID:(id)d error:(id *)error
 {
-  v6 = a3;
-  LOBYTE(a4) = [objc_msgSend(a1 "managerToUse")];
+  dCopy = d;
+  LOBYTE(error) = [objc_msgSend(self "managerToUse")];
 
-  return a4;
+  return error;
 }
 
 @end

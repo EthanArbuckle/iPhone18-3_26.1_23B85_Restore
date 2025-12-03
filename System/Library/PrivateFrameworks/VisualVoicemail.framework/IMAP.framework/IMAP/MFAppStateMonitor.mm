@@ -3,7 +3,7 @@
 - (BOOL)isForeground;
 - (MFAppStateMonitor)init;
 - (VFObservable)appStateObservable;
-- (void)_updateApplicationState:(id)a3 observer:(id)a4;
+- (void)_updateApplicationState:(id)state observer:(id)observer;
 - (void)dealloc;
 @end
 
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __35__MFAppStateMonitor_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_1 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_1, block);
@@ -57,26 +57,26 @@ uint64_t __35__MFAppStateMonitor_sharedInstance__block_invoke(uint64_t a1)
     v2->_queue = v4;
 
     objc_storeStrong(&v2->_observable, v3);
-    v6 = [MEMORY[0x277CCA8D8] mainBundle];
-    v7 = [v6 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    if (v7)
+    if (bundleIdentifier)
     {
       v8 = objc_alloc(MEMORY[0x277CEEE90]);
-      v20[0] = v7;
+      v20[0] = bundleIdentifier;
       v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
       v10 = [v8 initWithBundleIDs:v9 states:*MEMORY[0x277CEEE58]];
       appStateMonitor = v2->_appStateMonitor;
       v2->_appStateMonitor = v10;
 
-      v2->_appState = [(BKSApplicationStateMonitor *)v2->_appStateMonitor applicationStateForApplication:v7];
+      v2->_appState = [(BKSApplicationStateMonitor *)v2->_appStateMonitor applicationStateForApplication:bundleIdentifier];
       objc_initWeak(&location, v2);
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __25__MFAppStateMonitor_init__block_invoke;
       v14[3] = &unk_279E35B50;
       objc_copyWeak(&v17, &location);
-      v15 = v7;
+      v15 = bundleIdentifier;
       v16 = v3;
       [(BKSApplicationStateMonitor *)v2->_appStateMonitor setHandler:v14];
 
@@ -106,13 +106,13 @@ void __25__MFAppStateMonitor_init__block_invoke(uint64_t a1, void *a2)
 
 - (VFObservable)appStateObservable
 {
-  v3 = [(VFObserver *)self->_observable distinctUntilChanged];
+  distinctUntilChanged = [(VFObserver *)self->_observable distinctUntilChanged];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__MFAppStateMonitor_appStateObservable__block_invoke;
   v6[3] = &unk_279E35B78;
   v6[4] = self;
-  v4 = [v3 map:v6];
+  v4 = [distinctUntilChanged map:v6];
 
   return v4;
 }
@@ -136,20 +136,20 @@ void __25__MFAppStateMonitor_init__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (void)_updateApplicationState:(id)a3 observer:(id)a4
+- (void)_updateApplicationState:(id)state observer:(id)observer
 {
-  v6 = a3;
+  stateCopy = state;
   queue = self->_queue;
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __54__MFAppStateMonitor__updateApplicationState_observer___block_invoke;
   v13 = &unk_279E346E0;
-  v14 = v6;
-  v15 = self;
-  v8 = v6;
-  v9 = a4;
+  v14 = stateCopy;
+  selfCopy = self;
+  v8 = stateCopy;
+  observerCopy = observer;
   dispatch_barrier_sync(queue, &v10);
-  [v9 observerDidReceiveResult:{v8, v10, v11, v12, v13}];
+  [observerCopy observerDidReceiveResult:{v8, v10, v11, v12, v13}];
 }
 
 void __54__MFAppStateMonitor__updateApplicationState_observer___block_invoke(uint64_t a1)

@@ -1,5 +1,5 @@
 @interface MonogramPosterViewController
-- (_TtC23MonogramPosterExtension28MonogramPosterViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC23MonogramPosterExtension28MonogramPosterViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -7,13 +7,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000844C();
 }
 
-- (_TtC23MonogramPosterExtension28MonogramPosterViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC23MonogramPosterExtension28MonogramPosterViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_100026A20();
     v7 = v6;
@@ -25,8 +25,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10000ADF4(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10000ADF4(v5, v7, bundle);
 }
 
 @end

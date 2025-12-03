@@ -1,11 +1,11 @@
 @interface EMBiomeEvent
 + (OS_os_log)log;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (EMBiomeEvent)initWithCoder:(id)a3;
-- (EMBiomeEvent)initWithEventName:(id)a3 messageId:(id)a4 payload:(id)a5;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (EMBiomeEvent)initWithCoder:(id)coder;
+- (EMBiomeEvent)initWithEventName:(id)name messageId:(id)id payload:(id)payload;
 - (id)json;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)json;
 - (void)serialize;
 @end
@@ -40,7 +40,7 @@
   block[1] = 3221225472;
   block[2] = __19__EMBiomeEvent_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_3 != -1)
   {
     dispatch_once(&log_onceToken_3, block);
@@ -59,25 +59,25 @@ void __19__EMBiomeEvent_log__block_invoke(uint64_t a1)
   log_log_3 = v1;
 }
 
-- (EMBiomeEvent)initWithEventName:(id)a3 messageId:(id)a4 payload:(id)a5
+- (EMBiomeEvent)initWithEventName:(id)name messageId:(id)id payload:(id)payload
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  idCopy = id;
+  payloadCopy = payload;
   v19.receiver = self;
   v19.super_class = EMBiomeEvent;
   v11 = [(EMBiomeEvent *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     eventName = v11->_eventName;
     v11->_eventName = v12;
 
-    v14 = [v9 copy];
+    v14 = [idCopy copy];
     messageId = v11->_messageId;
     v11->_messageId = v14;
 
-    v16 = [v10 copy];
+    v16 = [payloadCopy copy];
     payload = v11->_payload;
     v11->_payload = v16;
   }
@@ -85,32 +85,32 @@ void __19__EMBiomeEvent_log__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(EMBiomeEvent *)self eventName];
-  [v7 encodeObject:v4 forKey:@"EFPropertyKey_eventName"];
+  coderCopy = coder;
+  eventName = [(EMBiomeEvent *)self eventName];
+  [coderCopy encodeObject:eventName forKey:@"EFPropertyKey_eventName"];
 
-  v5 = [(EMBiomeEvent *)self messageId];
-  [v7 encodeObject:v5 forKey:@"EFPropertyKey_messageId"];
+  messageId = [(EMBiomeEvent *)self messageId];
+  [coderCopy encodeObject:messageId forKey:@"EFPropertyKey_messageId"];
 
-  v6 = [(EMBiomeEvent *)self payload];
-  [v7 encodeObject:v6 forKey:@"EFPropertyKey_payload"];
+  payload = [(EMBiomeEvent *)self payload];
+  [coderCopy encodeObject:payload forKey:@"EFPropertyKey_payload"];
 }
 
-- (EMBiomeEvent)initWithCoder:(id)a3
+- (EMBiomeEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = EMBiomeEvent;
   v5 = [(EMBiomeEvent *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_eventName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_eventName"];
     eventName = v5->_eventName;
     v5->_eventName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_messageId"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_messageId"];
     messageId = v5->_messageId;
     v5->_messageId = v8;
 
@@ -119,7 +119,7 @@ void __19__EMBiomeEvent_log__block_invoke(uint64_t a1)
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v10 setWithObjects:{v11, v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"EFPropertyKey_payload"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"EFPropertyKey_payload"];
     payload = v5->_payload;
     v5->_payload = v15;
   }
@@ -127,11 +127,11 @@ void __19__EMBiomeEvent_log__block_invoke(uint64_t a1)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v4 = a3;
+  dataCopy = data;
   v16 = 0;
-  v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v16];
+  v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v16];
   v6 = v16;
   if (v5)
   {
@@ -154,32 +154,32 @@ void __19__EMBiomeEvent_log__block_invoke(uint64_t a1)
 {
   v23[3] = *MEMORY[0x1E69E9840];
   v22[0] = @"eventName";
-  v3 = [(EMBiomeEvent *)self eventName];
-  v23[0] = v3;
+  eventName = [(EMBiomeEvent *)self eventName];
+  v23[0] = eventName;
   v22[1] = @"messageId";
-  v4 = [(EMBiomeEvent *)self messageId];
-  v5 = v4;
-  if (!v4)
+  messageId = [(EMBiomeEvent *)self messageId];
+  null = messageId;
+  if (!messageId)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v5;
+  v23[1] = null;
   v22[2] = @"payload";
-  v6 = [(EMBiomeEvent *)self payload];
-  v7 = v6;
-  if (!v6)
+  payload = [(EMBiomeEvent *)self payload];
+  null2 = payload;
+  if (!payload)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v7;
+  v23[2] = null2;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:3];
-  if (!v6)
+  if (!payload)
   {
   }
 
-  if (!v4)
+  if (!messageId)
   {
   }
 

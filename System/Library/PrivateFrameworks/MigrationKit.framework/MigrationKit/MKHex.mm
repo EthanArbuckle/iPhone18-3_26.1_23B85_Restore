@@ -1,21 +1,21 @@
 @interface MKHex
-- (id)dataToHex:(id)a3;
-- (id)hexToData:(id)a3;
+- (id)dataToHex:(id)hex;
+- (id)hexToData:(id)data;
 @end
 
 @implementation MKHex
 
-- (id)dataToHex:(id)a3
+- (id)dataToHex:(id)hex
 {
-  v3 = a3;
-  v4 = 2 * [v3 length];
+  hexCopy = hex;
+  v4 = 2 * [hexCopy length];
   v5 = malloc_type_malloc(v4, 0x4F913ADAuLL);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __19__MKHex_dataToHex___block_invoke;
   v8[3] = &__block_descriptor_40_e29_v40__0r_v8__NSRange_QQ_16_B32l;
   v8[4] = v5;
-  [v3 enumerateByteRangesUsingBlock:v8];
+  [hexCopy enumerateByteRangesUsingBlock:v8];
 
   v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v5 length:v4 encoding:4];
   free(v5);
@@ -43,18 +43,18 @@ uint64_t __19__MKHex_dataToHex___block_invoke(uint64_t result, unsigned __int8 *
   return result;
 }
 
-- (id)hexToData:(id)a3
+- (id)hexToData:(id)data
 {
-  v3 = a3;
-  if ([v3 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
     v12 = 0;
     goto LABEL_17;
   }
 
-  v4 = [v3 length] >> 1;
+  v4 = [dataCopy length] >> 1;
   v5 = malloc_type_malloc(v4, 0xB53D9334uLL);
-  if (![v3 length])
+  if (![dataCopy length])
   {
 LABEL_14:
     v12 = [MEMORY[0x277CBEA90] dataWithBytes:v5 length:v4];
@@ -64,7 +64,7 @@ LABEL_14:
   v6 = 0;
   while (1)
   {
-    v7 = [v3 characterAtIndex:v6];
+    v7 = [dataCopy characterAtIndex:v6];
     if ((v7 - 48) >= 0xA)
     {
       break;
@@ -85,7 +85,7 @@ LABEL_10:
     }
 
     v5[v10] = v11;
-    if (++v6 >= [v3 length])
+    if (++v6 >= [dataCopy length])
     {
       goto LABEL_14;
     }

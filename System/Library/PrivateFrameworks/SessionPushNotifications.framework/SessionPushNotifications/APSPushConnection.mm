@@ -1,9 +1,9 @@
 @interface APSPushConnection
 - (_TtC24SessionPushNotifications17APSPushConnection)init;
-- (void)connection:(id)a3 channelSubscriptionsFailedWithFailures:(id)a4;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forInfo:(id)a5;
+- (void)connection:(id)connection channelSubscriptionsFailedWithFailures:(id)failures;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forInfo:(id)info;
 @end
 
 @implementation APSPushConnection
@@ -15,21 +15,21 @@
   return result;
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  if (a4)
+  if (token)
   {
-    v6 = a3;
-    v7 = self;
-    v8 = a4;
+    connectionCopy = connection;
+    selfCopy = self;
+    tokenCopy = token;
     v9 = sub_22CE858A4();
     v11 = v10;
   }
 
   else
   {
-    v12 = a3;
-    v13 = self;
+    connectionCopy2 = connection;
+    selfCopy2 = self;
     v9 = 0;
     v11 = 0xF000000000000000;
   }
@@ -38,51 +38,51 @@
   sub_22CE70B40(v9, v11);
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_22CE6FE2C(a4);
+  connectionCopy = connection;
+  messageCopy = message;
+  selfCopy = self;
+  sub_22CE6FE2C(message);
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forInfo:(id)a5
+- (void)connection:(id)connection didReceiveToken:(id)token forInfo:(id)info
 {
-  if (a4)
+  if (token)
   {
-    v8 = a3;
-    v9 = a5;
-    v10 = self;
-    v11 = a4;
+    connectionCopy = connection;
+    infoCopy = info;
+    selfCopy = self;
+    tokenCopy = token;
     v12 = sub_22CE858A4();
     v14 = v13;
   }
 
   else
   {
-    v15 = a3;
-    v16 = a5;
-    v17 = self;
+    connectionCopy2 = connection;
+    infoCopy2 = info;
+    selfCopy2 = self;
     v12 = 0;
     v14 = 0xF000000000000000;
   }
 
-  sub_22CE70160(v12, v14, a5);
+  sub_22CE70160(v12, v14, info);
   sub_22CE70B40(v12, v14);
 }
 
-- (void)connection:(id)a3 channelSubscriptionsFailedWithFailures:(id)a4
+- (void)connection:(id)connection channelSubscriptionsFailedWithFailures:(id)failures
 {
-  v4 = a4;
-  if (a4)
+  failuresCopy = failures;
+  if (failures)
   {
     sub_22CE70DD4();
-    v4 = sub_22CE85F34();
+    failuresCopy = sub_22CE85F34();
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_22CE70658(v4);
+  connectionCopy = connection;
+  selfCopy = self;
+  sub_22CE70658(failuresCopy);
 }
 
 @end

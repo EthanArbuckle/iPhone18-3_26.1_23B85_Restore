@@ -1,69 +1,69 @@
 @interface _CDContextualKeyPathMO
-+ (id)materializedContextValueFrom:(id)a3;
-+ (id)materializedKeyPathFrom:(id)a3;
-+ (void)hydrateMO:(id)a3 fromKeyPath:(id)a4 andValue:(id)a5;
++ (id)materializedContextValueFrom:(id)from;
++ (id)materializedKeyPathFrom:(id)from;
++ (void)hydrateMO:(id)o fromKeyPath:(id)path andValue:(id)value;
 @end
 
 @implementation _CDContextualKeyPathMO
 
-+ (void)hydrateMO:(id)a3 fromKeyPath:(id)a4 andValue:(id)a5
++ (void)hydrateMO:(id)o fromKeyPath:(id)path andValue:(id)value
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v10 key];
-  [v8 setKey:v11];
+  oCopy = o;
+  valueCopy = value;
+  pathCopy = path;
+  v11 = [pathCopy key];
+  [oCopy setKey:v11];
 
-  v12 = [v10 deviceID];
-  [v8 setDeviceIDString:v12];
+  deviceID = [pathCopy deviceID];
+  [oCopy setDeviceIDString:deviceID];
 
-  [v8 setIsUserCentric:{objc_msgSend(v10, "isUserCentric")}];
-  v13 = [v10 isEphemeral];
+  [oCopy setIsUserCentric:{objc_msgSend(pathCopy, "isUserCentric")}];
+  isEphemeral = [pathCopy isEphemeral];
 
-  [v8 setIsEphemeral:v13];
-  v14 = [v9 lastModifiedDate];
-  [v8 setLastModifiedDate:v14];
+  [oCopy setIsEphemeral:isEphemeral];
+  lastModifiedDate = [valueCopy lastModifiedDate];
+  [oCopy setLastModifiedDate:lastModifiedDate];
 
   v18 = 0;
-  v15 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v9 requiringSecureCoding:1 error:&v18];
+  v15 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:valueCopy requiringSecureCoding:1 error:&v18];
 
   v16 = v18;
   if (v15)
   {
-    [v8 setValue:v15];
+    [oCopy setValue:v15];
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    [_CDContextualKeyPathMO hydrateMO:a1 fromKeyPath:v16 andValue:?];
+    [_CDContextualKeyPathMO hydrateMO:self fromKeyPath:v16 andValue:?];
   }
 
-  v17 = [MEMORY[0x1E695DF00] date];
-  [v8 setCreationDate:v17];
+  date = [MEMORY[0x1E695DF00] date];
+  [oCopy setCreationDate:date];
 }
 
-+ (id)materializedKeyPathFrom:(id)a3
++ (id)materializedKeyPathFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = [_CDContextualKeyPath alloc];
-  v5 = [v3 key];
-  v6 = [v3 deviceIDString];
-  v7 = [v3 isUserCentric];
-  v8 = [v3 isEphemeral];
+  v5 = [fromCopy key];
+  deviceIDString = [fromCopy deviceIDString];
+  isUserCentric = [fromCopy isUserCentric];
+  isEphemeral = [fromCopy isEphemeral];
 
-  v9 = [(_CDContextualKeyPath *)v4 initWithKey:v5 forDeviceID:v6 isUserCentric:v7 isEphemeral:v8];
+  v9 = [(_CDContextualKeyPath *)v4 initWithKey:v5 forDeviceID:deviceIDString isUserCentric:isUserCentric isEphemeral:isEphemeral];
 
   return v9;
 }
 
-+ (id)materializedContextValueFrom:(id)a3
++ (id)materializedContextValueFrom:(id)from
 {
   v3 = MEMORY[0x1E696ACD0];
-  v4 = a3;
+  fromCopy = from;
   v5 = objc_opt_class();
-  v6 = [v4 value];
+  value = [fromCopy value];
 
-  v7 = [v3 unarchivedObjectOfClass:v5 fromData:v6 error:0];
+  v7 = [v3 unarchivedObjectOfClass:v5 fromData:value error:0];
 
   return v7;
 }

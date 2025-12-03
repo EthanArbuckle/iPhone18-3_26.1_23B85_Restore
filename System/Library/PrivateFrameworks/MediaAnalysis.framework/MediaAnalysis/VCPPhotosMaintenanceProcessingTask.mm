@@ -1,40 +1,40 @@
 @interface VCPPhotosMaintenanceProcessingTask
-+ (id)taskWithPhotoLibraries:(id)a3 andProgressHandler:(id)a4 andCompletionHandler:(id)a5 andCancelBlock:(id)a6;
++ (id)taskWithPhotoLibraries:(id)libraries andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler andCancelBlock:(id)block;
 - (BOOL)isCancelled;
-- (VCPPhotosMaintenanceProcessingTask)initWithPhotoLibraries:(id)a3 andProgressHandler:(id)a4 andCompletionHandler:(id)a5 andCancelBlock:(id)a6;
-- (int)_performComputeSyncBackfillForPhotoLibrary:(id)a3;
-- (int)_performVideoEmbeddingVersionBackfillForPhotoLibrary:(id)a3;
-- (int)_pruneProcessingStatusForPhotoLibrary:(id)a3;
-- (int)_removeImageEmbeddingFromMADBForPhotoLibrary:(id)a3;
-- (int)performForceClusterIfNeededWithPhotoLibrary:(id)a3;
+- (VCPPhotosMaintenanceProcessingTask)initWithPhotoLibraries:(id)libraries andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler andCancelBlock:(id)block;
+- (int)_performComputeSyncBackfillForPhotoLibrary:(id)library;
+- (int)_performVideoEmbeddingVersionBackfillForPhotoLibrary:(id)library;
+- (int)_pruneProcessingStatusForPhotoLibrary:(id)library;
+- (int)_removeImageEmbeddingFromMADBForPhotoLibrary:(id)library;
+- (int)performForceClusterIfNeededWithPhotoLibrary:(id)library;
 - (int)run;
-- (void)_persistBackfillForAssets:(id)a3 photoLibrary:(id)a4;
-- (void)_persistVideoEmbeddingBackfillForAssets:(id)a3 photoLibrary:(id)a4;
+- (void)_persistBackfillForAssets:(id)assets photoLibrary:(id)library;
+- (void)_persistVideoEmbeddingBackfillForAssets:(id)assets photoLibrary:(id)library;
 - (void)dealloc;
 @end
 
 @implementation VCPPhotosMaintenanceProcessingTask
 
-- (VCPPhotosMaintenanceProcessingTask)initWithPhotoLibraries:(id)a3 andProgressHandler:(id)a4 andCompletionHandler:(id)a5 andCancelBlock:(id)a6
+- (VCPPhotosMaintenanceProcessingTask)initWithPhotoLibraries:(id)libraries andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler andCancelBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  librariesCopy = libraries;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  blockCopy = block;
   v26.receiver = self;
   v26.super_class = VCPPhotosMaintenanceProcessingTask;
   v15 = [(VCPPhotosMaintenanceProcessingTask *)&v26 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_photoLibraries, a3);
-    v17 = objc_retainBlock(v12);
+    objc_storeStrong(&v15->_photoLibraries, libraries);
+    v17 = objc_retainBlock(handlerCopy);
     progressHandler = v16->_progressHandler;
     v16->_progressHandler = v17;
 
-    if (v13)
+    if (completionHandlerCopy)
     {
-      v19 = v13;
+      v19 = completionHandlerCopy;
     }
 
     else
@@ -46,9 +46,9 @@
     completionHandler = v16->_completionHandler;
     v16->_completionHandler = v20;
 
-    if (v14)
+    if (blockCopy)
     {
-      v22 = v14;
+      v22 = blockCopy;
     }
 
     else
@@ -64,13 +64,13 @@
   return v16;
 }
 
-+ (id)taskWithPhotoLibraries:(id)a3 andProgressHandler:(id)a4 andCompletionHandler:(id)a5 andCancelBlock:(id)a6
++ (id)taskWithPhotoLibraries:(id)libraries andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler andCancelBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [objc_alloc(objc_opt_class()) initWithPhotoLibraries:v9 andProgressHandler:v10 andCompletionHandler:v11 andCancelBlock:v12];
+  librariesCopy = libraries;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  blockCopy = block;
+  v13 = [objc_alloc(objc_opt_class()) initWithPhotoLibraries:librariesCopy andProgressHandler:handlerCopy andCompletionHandler:completionHandlerCopy andCancelBlock:blockCopy];
 
   return v13;
 }
@@ -103,17 +103,17 @@
   return v3 & 1;
 }
 
-- (void)_persistBackfillForAssets:(id)a3 photoLibrary:(id)a4
+- (void)_persistBackfillForAssets:(id)assets photoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
+  assetsCopy = assets;
+  libraryCopy = library;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v7 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v7))
     {
       *buf = 134217984;
-      v16 = [v5 count];
+      v16 = [assetsCopy count];
       _os_log_impl(&_mh_execute_header, &_os_log_default, v7, "[ComputeSync|Backfill] Persisting %lu assets", buf, 0xCu);
     }
   }
@@ -122,10 +122,10 @@
   v13[1] = 3221225472;
   v13[2] = sub_10016C638;
   v13[3] = &unk_100283210;
-  v8 = v5;
+  v8 = assetsCopy;
   v14 = v8;
   v12 = 0;
-  [v6 performChangesAndWait:v13 error:&v12];
+  [libraryCopy performChangesAndWait:v13 error:&v12];
   v9 = v12;
   if (v9)
   {
@@ -145,9 +145,9 @@
   }
 }
 
-- (int)_performComputeSyncBackfillForPhotoLibrary:(id)a3
+- (int)_performComputeSyncBackfillForPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   if (+[PHAsset mad_isComputeSyncDisabled])
   {
     if (MediaAnalysisLogLevel() < 5)
@@ -172,7 +172,7 @@ LABEL_21:
 
   if (+[MADManagedKeyValueStore isMACDReadEnabled])
   {
-    if ([MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:v4])
+    if ([MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:libraryCopy])
     {
       if (MediaAnalysisLogLevel() < 4)
       {
@@ -190,13 +190,13 @@ LABEL_21:
       goto LABEL_5;
     }
 
-    v7 = [v4 mad_fetchRequest];
-    v8 = [v7 dataStoreValueForKey:@"LastComputeSyncBackfillTimestamp"];
+    mad_fetchRequest = [libraryCopy mad_fetchRequest];
+    v8 = [mad_fetchRequest dataStoreValueForKey:@"LastComputeSyncBackfillTimestamp"];
   }
 
   else
   {
-    if (![VCPDatabaseManager existsDatabaseForPhotoLibrary:v4])
+    if (![VCPDatabaseManager existsDatabaseForPhotoLibrary:libraryCopy])
     {
       if (MediaAnalysisLogLevel() < 4)
       {
@@ -214,8 +214,8 @@ LABEL_21:
       goto LABEL_5;
     }
 
-    v7 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v4];
-    v8 = [v7 valueForKey:@"LastComputeSyncBackfillTimestamp"];
+    mad_fetchRequest = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
+    v8 = [mad_fetchRequest valueForKey:@"LastComputeSyncBackfillTimestamp"];
   }
 
   v9 = v8;
@@ -242,15 +242,15 @@ LABEL_21:
     v14 = VCPLogToOSLogType[5];
     if (os_log_type_enabled(&_os_log_default, v14))
     {
-      v15 = [v4 photoLibraryURL];
-      v16 = [v15 path];
+      photoLibraryURL = [libraryCopy photoLibraryURL];
+      path = [photoLibraryURL path];
       *buf = 138412290;
-      v47 = v16;
+      v47 = path;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v14, "[ComputeSync|Backfill] Attempting backfill for Photo Library %@", buf, 0xCu);
     }
   }
 
-  v43 = [PHAsset vcp_fetchOptionsForLibrary:v4 forTaskID:1];
+  v43 = [PHAsset vcp_fetchOptionsForLibrary:libraryCopy forTaskID:1];
   v17 = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:1];
   v50 = v17;
   v18 = [NSArray arrayWithObjects:&v50 count:1];
@@ -272,20 +272,20 @@ LABEL_21:
       [v26 pet];
 
       v27 = [v19 objectAtIndexedSubscript:v21];
-      v28 = [v27 mediaAnalysisProperties];
-      v29 = [v28 localAnalysisStage] == 0;
+      mediaAnalysisProperties = [v27 mediaAnalysisProperties];
+      v29 = [mediaAnalysisProperties localAnalysisStage] == 0;
 
       if (!v29)
       {
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v22))
         {
-          v30 = [v27 localIdentifier];
-          v31 = [v27 mediaAnalysisProperties];
-          v32 = [v31 localAnalysisStage];
+          localIdentifier = [v27 localIdentifier];
+          mediaAnalysisProperties2 = [v27 mediaAnalysisProperties];
+          localAnalysisStage = [mediaAnalysisProperties2 localAnalysisStage];
           *buf = 138412546;
-          v47 = v30;
+          v47 = localIdentifier;
           v48 = 1024;
-          v49 = v32;
+          v49 = localAnalysisStage;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v22, "[ComputeSync|Backfill][%@] Compute sync stage already set as %d; skipping backfill", buf, 0x12u);
         }
 
@@ -305,7 +305,7 @@ LABEL_21:
 
         else
         {
-          [(VCPPhotosMaintenanceProcessingTask *)self _persistBackfillForAssets:v20 photoLibrary:v4];
+          [(VCPPhotosMaintenanceProcessingTask *)self _persistBackfillForAssets:v20 photoLibrary:libraryCopy];
           v35 = [v20 count];
           [v20 removeAllObjects];
           v25 = 0;
@@ -317,9 +317,9 @@ LABEL_21:
       {
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v22))
         {
-          v36 = [v27 localIdentifier];
+          localIdentifier2 = [v27 localIdentifier];
           *buf = v42;
-          v47 = v36;
+          v47 = localIdentifier2;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v22, "[ComputeSync|Backfill][%@] Compute sync stage should be None; skipping backfill", buf, 0xCu);
         }
 
@@ -344,7 +344,7 @@ LABEL_42:
 
   if ([v20 count])
   {
-    [(VCPPhotosMaintenanceProcessingTask *)self _persistBackfillForAssets:v20 photoLibrary:v4];
+    [(VCPPhotosMaintenanceProcessingTask *)self _persistBackfillForAssets:v20 photoLibrary:libraryCopy];
     v44 = &v44[[v20 count]];
   }
 
@@ -359,12 +359,12 @@ LABEL_42:
     v45[2] = sub_10016D22C;
     v45[3] = &unk_100282F90;
     v45[4] = v39;
-    [v4 mad_performAnalysisDataStoreChanges:v45 error:0];
+    [libraryCopy mad_performAnalysisDataStoreChanges:v45 error:0];
   }
 
   else
   {
-    v40 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v4];
+    v40 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
     [v40 setValue:v39 forKey:@"LastComputeSyncBackfillTimestamp"];
     [v40 commit];
   }
@@ -387,17 +387,17 @@ LABEL_22:
   return v12;
 }
 
-- (void)_persistVideoEmbeddingBackfillForAssets:(id)a3 photoLibrary:(id)a4
+- (void)_persistVideoEmbeddingBackfillForAssets:(id)assets photoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
+  assetsCopy = assets;
+  libraryCopy = library;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v7 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v7))
     {
       *buf = 134217984;
-      *v16 = [v5 count];
+      *v16 = [assetsCopy count];
       _os_log_impl(&_mh_execute_header, &_os_log_default, v7, "[VideoEmbedding|Backfill] Persisting %lu assets", buf, 0xCu);
     }
   }
@@ -406,10 +406,10 @@ LABEL_22:
   v13[1] = 3221225472;
   v13[2] = sub_10016D474;
   v13[3] = &unk_100283210;
-  v8 = v5;
+  v8 = assetsCopy;
   v14 = v8;
   v12 = 0;
-  [v6 performChangesAndWait:v13 error:&v12];
+  [libraryCopy performChangesAndWait:v13 error:&v12];
   v9 = v12;
   if (v9)
   {
@@ -431,9 +431,9 @@ LABEL_22:
   }
 }
 
-- (int)_performVideoEmbeddingVersionBackfillForPhotoLibrary:(id)a3
+- (int)_performVideoEmbeddingVersionBackfillForPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   if ((+[VCPVideoCNNAnalyzer isMUBackboneEnabled]& 1) == 0)
   {
     if (MediaAnalysisLogLevel() < 7)
@@ -454,7 +454,7 @@ LABEL_22:
 
   if (+[MADManagedKeyValueStore isMACDReadEnabled])
   {
-    if ([MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:v4])
+    if ([MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:libraryCopy])
     {
       if (MediaAnalysisLogLevel() < 4)
       {
@@ -476,13 +476,13 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v7 = [v4 mad_fetchRequest];
-    v8 = [v7 dataStoreValueForKey:@"LastVideoEmbeddingVersionBackfillTimestamp"];
+    mad_fetchRequest = [libraryCopy mad_fetchRequest];
+    v8 = [mad_fetchRequest dataStoreValueForKey:@"LastVideoEmbeddingVersionBackfillTimestamp"];
   }
 
   else
   {
-    if (![VCPDatabaseManager existsDatabaseForPhotoLibrary:v4])
+    if (![VCPDatabaseManager existsDatabaseForPhotoLibrary:libraryCopy])
     {
       if (MediaAnalysisLogLevel() < 4)
       {
@@ -500,8 +500,8 @@ LABEL_21:
       goto LABEL_10;
     }
 
-    v7 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v4];
-    v8 = [v7 valueForKey:@"LastVideoEmbeddingVersionBackfillTimestamp"];
+    mad_fetchRequest = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
+    v8 = [mad_fetchRequest valueForKey:@"LastVideoEmbeddingVersionBackfillTimestamp"];
   }
 
   v9 = v8;
@@ -523,10 +523,10 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v36 = [PHMediaProcessingAlgorithmVersionProvider mad_sharedVideoEmbeddingVersionProviderWithPhotoLibrary:v4];
+  v36 = [PHMediaProcessingAlgorithmVersionProvider mad_sharedVideoEmbeddingVersionProviderWithPhotoLibrary:libraryCopy];
   [PHAsset mad_sceneConfidenceThresholdForTask:1];
   v38 = 0;
-  v14 = [v4 fetchAssetsForMediaProcessingTaskID:1 priority:0 algorithmVersion:v36 sceneConfidenceThreshold:&v38 error:?];
+  v14 = [libraryCopy fetchAssetsForMediaProcessingTaskID:1 priority:0 algorithmVersion:v36 sceneConfidenceThreshold:&v38 error:?];
   *&type[4] = v38;
   if (*&type[4])
   {
@@ -567,16 +567,16 @@ LABEL_21:
         [v22 pet];
 
         v23 = [v14 objectAtIndexedSubscript:v17];
-        v24 = [v23 mediaAnalysisProperties];
-        v25 = [v24 mediaAnalysisVersion] < v18;
+        mediaAnalysisProperties = [v23 mediaAnalysisProperties];
+        v25 = [mediaAnalysisProperties mediaAnalysisVersion] < v18;
 
         if (v25)
         {
           if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, type[0]))
           {
-            v26 = [v23 localIdentifier];
+            localIdentifier = [v23 localIdentifier];
             *buf = v33;
-            v40 = v26;
+            v40 = localIdentifier;
             _os_log_impl(&_mh_execute_header, &_os_log_default, type[0], "[VideoEmbedding|Backfill][%@] Asset has not been processed yet; skipping backfill", buf, 0xCu);
           }
 
@@ -593,7 +593,7 @@ LABEL_21:
 
           else
           {
-            [(VCPPhotosMaintenanceProcessingTask *)self _persistVideoEmbeddingBackfillForAssets:v16 photoLibrary:v4];
+            [(VCPPhotosMaintenanceProcessingTask *)self _persistVideoEmbeddingBackfillForAssets:v16 photoLibrary:libraryCopy];
             v27 = [v16 count];
             [v16 removeAllObjects];
             v21 = 0;
@@ -614,7 +614,7 @@ LABEL_21:
 
     if ([v16 count])
     {
-      [(VCPPhotosMaintenanceProcessingTask *)self _persistVideoEmbeddingBackfillForAssets:v16 photoLibrary:v4];
+      [(VCPPhotosMaintenanceProcessingTask *)self _persistVideoEmbeddingBackfillForAssets:v16 photoLibrary:libraryCopy];
       v35 = &v35[[v16 count]];
     }
 
@@ -629,12 +629,12 @@ LABEL_21:
       v37[2] = sub_10016DDB8;
       v37[3] = &unk_100282F90;
       v37[4] = v30;
-      [v4 mad_performAnalysisDataStoreChanges:v37 error:0];
+      [libraryCopy mad_performAnalysisDataStoreChanges:v37 error:0];
     }
 
     else
     {
-      v31 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v4];
+      v31 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
       [v31 setValue:v30 forKey:@"LastVideoEmbeddingVersionBackfillTimestamp"];
       [v31 commit];
     }
@@ -658,12 +658,12 @@ LABEL_22:
   return v12;
 }
 
-- (int)performForceClusterIfNeededWithPhotoLibrary:(id)a3
+- (int)performForceClusterIfNeededWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   if (![(VCPPhotosMaintenanceProcessingTask *)self isCancelled])
   {
-    v6 = [MADPhotosFullClusterProcessingTask taskWithPhotoLibrary:v4];
+    v6 = [MADPhotosFullClusterProcessingTask taskWithPhotoLibrary:libraryCopy];
     [v6 setRequiresProgressQuery:1];
     [v6 setFullModeClusterOnly:1];
     v11[0] = _NSConcreteStackBlock;
@@ -720,18 +720,18 @@ LABEL_12:
   return v5;
 }
 
-- (int)_pruneProcessingStatusForPhotoLibrary:(id)a3
+- (int)_pruneProcessingStatusForPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   if ([(VCPPhotosMaintenanceProcessingTask *)self isCancelled])
   {
-    v5 = -128;
+    code = -128;
     goto LABEL_26;
   }
 
   if (+[MADManagedProcessingStatus isMACDPersistEnabled])
   {
-    if ([MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:v4])
+    if ([MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:libraryCopy])
     {
       if (MediaAnalysisLogLevel() < 4)
       {
@@ -749,7 +749,7 @@ LABEL_12:
 LABEL_24:
       _os_log_impl(&_mh_execute_header, &_os_log_default, v6, v7, buf, 2u);
 LABEL_25:
-      v5 = 0;
+      code = 0;
       goto LABEL_26;
     }
 
@@ -769,7 +769,7 @@ LABEL_25:
     }
 
     v17 = 0;
-    v11 = [v4 mad_performAnalysisDataStoreChanges:&stru_1002877E0 error:&v17];
+    v11 = [libraryCopy mad_performAnalysisDataStoreChanges:&stru_1002877E0 error:&v17];
     v12 = v17;
     v13 = v12;
     if (v11)
@@ -778,7 +778,7 @@ LABEL_25:
       goto LABEL_18;
     }
 
-    v5 = [v12 code];
+    code = [v12 code];
     if (MediaAnalysisLogLevel() >= 3)
     {
       v15 = VCPLogToOSLogType[3];
@@ -799,7 +799,7 @@ LABEL_25:
 
   else
   {
-    if (![VCPDatabaseManager existsDatabaseForPhotoLibrary:v4])
+    if (![VCPDatabaseManager existsDatabaseForPhotoLibrary:libraryCopy])
     {
       if (MediaAnalysisLogLevel() < 4)
       {
@@ -817,18 +817,18 @@ LABEL_25:
       goto LABEL_24;
     }
 
-    v8 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v4];
+    v8 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
     v9 = [v8 removeProcessingStatusForTaskID:1 mediaType:0 mediaSubtypes:0];
-    v5 = v9;
+    code = v9;
     if (v9 == -108 || v9 == -36 || v9 == -23)
     {
 
       goto LABEL_26;
     }
 
-    v16 = [v8 commit];
-    v5 = v16;
-    if (v16 != -108 && v16 != -36 && v16 != -23)
+    commit = [v8 commit];
+    code = commit;
+    if (commit != -108 && commit != -36 && commit != -23)
     {
 
 LABEL_18:
@@ -848,7 +848,7 @@ LABEL_18:
       goto LABEL_24;
     }
 
-    if (v5 != -108 && v5 != -36 && v5 != -23)
+    if (code != -108 && code != -36 && code != -23)
     {
       goto LABEL_18;
     }
@@ -856,20 +856,20 @@ LABEL_18:
 
 LABEL_26:
 
-  return v5;
+  return code;
 }
 
-- (int)_removeImageEmbeddingFromMADBForPhotoLibrary:(id)a3
+- (int)_removeImageEmbeddingFromMADBForPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   if (![(VCPPhotosMaintenanceProcessingTask *)self isCancelled])
   {
-    v6 = [v4 vcp_description];
-    v7 = [NSString stringWithFormat:@"[VCPPhotosMaintenanceProcessingTask][RemoveImageEmbedding][%@]", v6];
+    vcp_description = [libraryCopy vcp_description];
+    v7 = [NSString stringWithFormat:@"[VCPPhotosMaintenanceProcessingTask][RemoveImageEmbedding][%@]", vcp_description];
 
     if (+[MADManagedPhotosAsset isMACDPersistEnabled])
     {
-      if ([MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:v4])
+      if ([MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:libraryCopy])
       {
         if (MediaAnalysisLogLevel() < 4)
         {
@@ -900,12 +900,12 @@ LABEL_26:
       }
 
       v21 = 0;
-      v11 = [v4 mad_performAnalysisDataStoreChanges:&stru_100287800 error:&v21];
+      v11 = [libraryCopy mad_performAnalysisDataStoreChanges:&stru_100287800 error:&v21];
       v12 = v21;
       v13 = v12;
       if ((v11 & 1) == 0)
       {
-        v5 = [v12 code];
+        code = [v12 code];
 
         goto LABEL_28;
       }
@@ -927,34 +927,34 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    if ([VCPDatabaseManager existsDatabaseForPhotoLibrary:v4])
+    if ([VCPDatabaseManager existsDatabaseForPhotoLibrary:libraryCopy])
     {
-      v15 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v4];
+      v15 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
       v16 = [v15 deleteAnalysisResultsWithType:73];
       v17 = v16;
       if (v16 == -108 || v16 == -36 || v16 == -23)
       {
-        v5 = v16;
+        code = v16;
       }
 
       else
       {
-        v19 = [v15 commit];
-        if (v19 == -108 || v19 == -36)
+        commit = [v15 commit];
+        if (commit == -108 || commit == -36)
         {
-          v5 = v19;
+          code = commit;
         }
 
         else
         {
-          v5 = v19;
-          if (v19 != -23)
+          code = commit;
+          if (commit != -23)
           {
-            v5 = v17;
+            code = v17;
           }
         }
 
-        if (v19 != -108 && v19 != -36 && v19 != -23)
+        if (commit != -108 && commit != -36 && commit != -23)
         {
           if (MediaAnalysisLogLevel() >= 5)
           {
@@ -978,7 +978,7 @@ LABEL_28:
     if (MediaAnalysisLogLevel() < 4 || (v8 = VCPLogToOSLogType[4], !os_log_type_enabled(&_os_log_default, v8)))
     {
 LABEL_27:
-      v5 = 0;
+      code = 0;
       goto LABEL_28;
     }
 
@@ -990,10 +990,10 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v5 = -128;
+  code = -128;
 LABEL_29:
 
-  return v5;
+  return code;
 }
 
 - (int)run
@@ -1082,8 +1082,8 @@ LABEL_29:
 
         else
         {
-          v20 = [v17 vcp_description];
-          v21 = [NSString stringWithFormat:@"[VCPPhotosMaintenanceProcessingTask][CS][%@]", v20];
+          vcp_description = [v17 vcp_description];
+          v21 = [NSString stringWithFormat:@"[VCPPhotosMaintenanceProcessingTask][CS][%@]", vcp_description];
 
           if ([v17 isCloudPhotoLibraryEnabled] && (objc_msgSend(v17, "isSystemPhotoLibrary") & 1) != 0)
           {
@@ -1168,8 +1168,8 @@ LABEL_29:
 
         else
         {
-          v30 = [v27 vcp_description];
-          v31 = [NSString stringWithFormat:@"[VCPPhotosMaintenanceProcessingTask][VSKVideo][%@]", v30];
+          vcp_description2 = [v27 vcp_description];
+          v31 = [NSString stringWithFormat:@"[VCPPhotosMaintenanceProcessingTask][VSKVideo][%@]", vcp_description2];
 
           if ([v27 isReadyForAnalysis])
           {
@@ -1269,8 +1269,8 @@ LABEL_29:
 
         else
         {
-          v47 = [v44 vcp_description];
-          v48 = [NSString stringWithFormat:@"[VCPPhotosMaintenanceProcessingTask][VSK][%@]", v47];
+          vcp_description3 = [v44 vcp_description];
+          v48 = [NSString stringWithFormat:@"[VCPPhotosMaintenanceProcessingTask][VSK][%@]", vcp_description3];
 
           if ([v44 isReadyForAnalysis])
           {
@@ -1389,8 +1389,8 @@ LABEL_29:
           goto LABEL_125;
         }
 
-        v62 = [v60 vcp_description];
-        v63 = [NSString stringWithFormat:@"[VCPPhotosMaintenanceProcessingTask][Cluster][%@]", v62];
+        vcp_description4 = [v60 vcp_description];
+        v63 = [NSString stringWithFormat:@"[VCPPhotosMaintenanceProcessingTask][Cluster][%@]", vcp_description4];
 
         if ([v60 vcp_isSyndicationLibrary])
         {

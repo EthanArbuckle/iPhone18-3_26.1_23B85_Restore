@@ -1,15 +1,15 @@
 @interface SCMLImageSanitization
-- (SCMLImageSanitization)initWithGranularOutput:(BOOL)a3;
+- (SCMLImageSanitization)initWithGranularOutput:(BOOL)output;
 - (id)description;
 - (id)unsafeReason;
-- (id)updateSignal:(id)a3 withSafe:(BOOL)a4;
+- (id)updateSignal:(id)signal withSafe:(BOOL)safe;
 @end
 
 @implementation SCMLImageSanitization
 
-- (SCMLImageSanitization)initWithGranularOutput:(BOOL)a3
+- (SCMLImageSanitization)initWithGranularOutput:(BOOL)output
 {
-  v3 = a3;
+  outputCopy = output;
   v10.receiver = self;
   v10.super_class = SCMLImageSanitization;
   v4 = [(SCMLImageSanitization *)&v10 init];
@@ -17,7 +17,7 @@
   if (v4)
   {
     v4->_safe = 1;
-    if (v3)
+    if (outputCopy)
     {
       v6 = [MEMORY[0x1E695E0F8] mutableCopy];
     }
@@ -30,7 +30,7 @@
     signals = v5->_signals;
     v5->_signals = v6;
 
-    v5->_granularOutput = v3;
+    v5->_granularOutput = outputCopy;
     v5->_regionalSensitive = 0;
     peopleCountInternal = v5->_peopleCountInternal;
     v5->_peopleCountInternal = 0;
@@ -99,20 +99,20 @@
   return v2;
 }
 
-- (id)updateSignal:(id)a3 withSafe:(BOOL)a4
+- (id)updateSignal:(id)signal withSafe:(BOOL)safe
 {
-  v4 = a4;
-  v6 = a3;
+  safeCopy = safe;
+  signalCopy = signal;
   if ([(SCMLImageSanitization *)self granularOutput])
   {
-    v7 = [(NSMutableDictionary *)self->_signals objectForKeyedSubscript:v6];
+    v7 = [(NSMutableDictionary *)self->_signals objectForKeyedSubscript:signalCopy];
     if (!v7)
     {
       v7 = objc_alloc_init(SCMLImageSanitizationSignal);
       [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
     }
 
-    [(SCMLImageSanitizationSignal *)v7 setSafe:[(SCMLImageSanitizationSignal *)v7 safe]& v4];
+    [(SCMLImageSanitizationSignal *)v7 setSafe:[(SCMLImageSanitizationSignal *)v7 safe]& safeCopy];
   }
 
   else
@@ -120,7 +120,7 @@
     v7 = 0;
   }
 
-  [(SCMLImageSanitization *)self setSafe:[(SCMLImageSanitization *)self safe]& v4];
+  [(SCMLImageSanitization *)self setSafe:[(SCMLImageSanitization *)self safe]& safeCopy];
 
   return v7;
 }

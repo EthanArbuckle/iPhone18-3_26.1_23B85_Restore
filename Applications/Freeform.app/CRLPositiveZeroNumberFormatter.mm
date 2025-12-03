@@ -1,18 +1,18 @@
 @interface CRLPositiveZeroNumberFormatter
-- (id)stringForObjectValue:(id)a3;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation CRLPositiveZeroNumberFormatter
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   if (objc_opt_respondsToSelector())
   {
-    [v4 floatValue];
+    [valueCopy floatValue];
     v6 = v5;
-    v7 = [(CRLPositiveZeroNumberFormatter *)self multiplier];
-    [v7 floatValue];
+    multiplier = [(CRLPositiveZeroNumberFormatter *)self multiplier];
+    [multiplier floatValue];
     v9 = v8;
 
     v10 = v9 == 0.0 ? v6 : v6 * v9;
@@ -20,13 +20,13 @@
     if (v10 <= 0.0 && v10 > v11)
     {
 
-      v4 = &off_1018E28E0;
+      valueCopy = &off_1018E28E0;
     }
   }
 
   v15.receiver = self;
   v15.super_class = CRLPositiveZeroNumberFormatter;
-  v13 = [(CRLPositiveZeroNumberFormatter *)&v15 stringForObjectValue:v4];
+  v13 = [(CRLPositiveZeroNumberFormatter *)&v15 stringForObjectValue:valueCopy];
 
   return v13;
 }

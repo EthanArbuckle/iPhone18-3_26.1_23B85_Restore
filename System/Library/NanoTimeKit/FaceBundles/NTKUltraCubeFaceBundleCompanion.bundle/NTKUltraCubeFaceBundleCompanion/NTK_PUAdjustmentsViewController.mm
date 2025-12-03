@@ -1,52 +1,52 @@
 @interface NTK_PUAdjustmentsViewController
-- (BOOL)canToggleCell:(id)a3;
+- (BOOL)canToggleCell:(id)cell;
 - (CGSize)controlSize;
 - (NTK_PUAdjustmentViewControllerDelegate)delegate;
-- (NTK_PUAdjustmentsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (NTK_PUAdjustmentsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (NTK_PUAdjustmentsViewDataSource)dataSource;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (id)_backgroundImageForItemAtIndexPath:(id)a3;
-- (id)_circularImageWithSize:(CGSize)a3 color:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (id)_backgroundImageForItemAtIndexPath:(id)path;
+- (id)_circularImageWithSize:(CGSize)size color:(id)color;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
 - (void)_performFeedbackIfNeeded;
-- (void)_resetControlsAtIndexPath:(id)a3;
+- (void)_resetControlsAtIndexPath:(id)path;
 - (void)_scrollToSelectedIndexPath;
 - (void)_setupCellBackgroundImagesIfNeeded;
 - (void)_sliderDidEndScrolling;
 - (void)_updateBadgeLayout;
-- (void)_updateCell:(id)a3 withInfo:(id)a4;
-- (void)_updateCollectionViewLayoutDirection:(int64_t)a3;
+- (void)_updateCell:(id)cell withInfo:(id)info;
+- (void)_updateCollectionViewLayoutDirection:(int64_t)direction;
 - (void)_updateSelectedInfo;
 - (void)_updateViewLayout;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)didToggleCell:(id)a3;
-- (void)ntk_setSelectedIndexPath:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setLayoutDirection:(int64_t)a3;
-- (void)setSelectedIndexPath:(id)a3;
-- (void)sliderValueChanged:(id)a3;
-- (void)sliderWillBeginScrolling:(id)a3;
-- (void)sliderWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)didToggleCell:(id)cell;
+- (void)ntk_setSelectedIndexPath:(id)path;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setLayoutDirection:(int64_t)direction;
+- (void)setSelectedIndexPath:(id)path;
+- (void)sliderValueChanged:(id)changed;
+- (void)sliderWillBeginScrolling:(id)scrolling;
+- (void)sliderWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 - (void)updateControls;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation NTK_PUAdjustmentsViewController
 
-- (NTK_PUAdjustmentsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (NTK_PUAdjustmentsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = NTK_PUAdjustmentsViewController;
-  result = [(NTK_PUAdjustmentsViewController *)&v5 initWithNibName:a3 bundle:a4];
+  result = [(NTK_PUAdjustmentsViewController *)&v5 initWithNibName:name bundle:bundle];
   if (result)
   {
     result->_shouldDisplayControlValues = 1;
@@ -63,8 +63,8 @@
   [(NTK_PUAdjustmentsViewController *)&v48 viewDidLoad];
   [(NTK_PUAdjustmentsViewController *)self setLayoutDirection:0];
   v3 = +[UIColor clearColor];
-  v4 = [(NTK_PUAdjustmentsViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(NTK_PUAdjustmentsViewController *)self view];
+  [view setBackgroundColor:v3];
 
   [(NTK_PUAdjustmentsViewController *)self setControlSize:51.0, 51.0];
   v5 = objc_alloc_init(NTK_PUAdjustmentsViewFlowLayout);
@@ -83,43 +83,43 @@
   v11 = [v7 initWithFrame:self->_collectionViewLayout collectionViewLayout:{CGRectZero.origin.x, y, width, height}];
   [(NTK_PUAdjustmentsViewController *)self setCollectionView:v11];
 
-  v12 = [(NTK_PUAdjustmentsViewController *)self view];
-  v13 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-  [v12 addSubview:v13];
+  view2 = [(NTK_PUAdjustmentsViewController *)self view];
+  collectionView = [(NTK_PUAdjustmentsViewController *)self collectionView];
+  [view2 addSubview:collectionView];
 
   v14 = +[UIColor clearColor];
-  v15 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-  [v15 setBackgroundColor:v14];
+  collectionView2 = [(NTK_PUAdjustmentsViewController *)self collectionView];
+  [collectionView2 setBackgroundColor:v14];
 
-  v16 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-  [v16 setShowsHorizontalScrollIndicator:0];
+  collectionView3 = [(NTK_PUAdjustmentsViewController *)self collectionView];
+  [collectionView3 setShowsHorizontalScrollIndicator:0];
 
-  v17 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-  [v17 setShowsVerticalScrollIndicator:0];
+  collectionView4 = [(NTK_PUAdjustmentsViewController *)self collectionView];
+  [collectionView4 setShowsVerticalScrollIndicator:0];
 
-  v18 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-  [v18 setSemanticContentAttribute:3];
+  collectionView5 = [(NTK_PUAdjustmentsViewController *)self collectionView];
+  [collectionView5 setSemanticContentAttribute:3];
 
-  v19 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-  [v19 setContentInsetAdjustmentBehavior:2];
+  collectionView6 = [(NTK_PUAdjustmentsViewController *)self collectionView];
+  [collectionView6 setContentInsetAdjustmentBehavior:2];
 
-  v20 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-  [v20 setSelectionFollowsFocus:1];
+  collectionView7 = [(NTK_PUAdjustmentsViewController *)self collectionView];
+  [collectionView7 setSelectionFollowsFocus:1];
 
-  v21 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-  [v21 setDelegate:self];
+  collectionView8 = [(NTK_PUAdjustmentsViewController *)self collectionView];
+  [collectionView8 setDelegate:self];
 
-  v22 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-  [v22 setDataSource:self];
+  collectionView9 = [(NTK_PUAdjustmentsViewController *)self collectionView];
+  [collectionView9 setDataSource:self];
 
-  v23 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-  [v23 setClipsToBounds:0];
+  collectionView10 = [(NTK_PUAdjustmentsViewController *)self collectionView];
+  [collectionView10 setClipsToBounds:0];
 
-  v24 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-  [v24 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"NTK_PUEditAdjustmentsCellReuseIdentifier"];
+  collectionView11 = [(NTK_PUAdjustmentsViewController *)self collectionView];
+  [collectionView11 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"NTK_PUEditAdjustmentsCellReuseIdentifier"];
 
-  v25 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-  [v25 setDecelerationRate:UIScrollViewDecelerationRateFast];
+  collectionView12 = [(NTK_PUAdjustmentsViewController *)self collectionView];
+  [collectionView12 setDecelerationRate:UIScrollViewDecelerationRateFast];
 
   if (NTK_PUHapticsAllowed())
   {
@@ -132,39 +132,39 @@
   v28 = [[CEKBadgeTextView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(NTK_PUAdjustmentsViewController *)self setBadgeView:v28];
 
-  v29 = [(NTK_PUAdjustmentsViewController *)self badgeView];
-  [v29 setUserInteractionEnabled:0];
+  badgeView = [(NTK_PUAdjustmentsViewController *)self badgeView];
+  [badgeView setUserInteractionEnabled:0];
 
   v30 = +[PUPhotoEditProtoSettings sharedInstance];
   [v30 adjustmentLabelPlatterAlpha];
   v32 = [UIColor colorWithWhite:0.0 alpha:v31];
-  v33 = [(NTK_PUAdjustmentsViewController *)self badgeView];
-  [v33 _setFillColor:v32];
+  badgeView2 = [(NTK_PUAdjustmentsViewController *)self badgeView];
+  [badgeView2 _setFillColor:v32];
 
   v34 = [UIColor colorWithWhite:1.0 alpha:1.0];
-  v35 = [(NTK_PUAdjustmentsViewController *)self badgeView];
-  [v35 _setContentColor:v34];
+  badgeView3 = [(NTK_PUAdjustmentsViewController *)self badgeView];
+  [badgeView3 _setContentColor:v34];
 
-  v36 = [(NTK_PUAdjustmentsViewController *)self badgeView];
-  [v36 _setFillCornerRadius:4.0];
+  badgeView4 = [(NTK_PUAdjustmentsViewController *)self badgeView];
+  [badgeView4 _setFillCornerRadius:4.0];
 
   +[CEKBadgeTextView _defaultTextInsets];
   v38 = v37 + 3.0;
   v40 = v39 + 3.0;
   v42 = v41 + 1.0;
   v44 = v43 + 1.0;
-  v45 = [(NTK_PUAdjustmentsViewController *)self badgeView];
-  [v45 _setTextInsets:{v44, v38, v42, v40}];
+  badgeView5 = [(NTK_PUAdjustmentsViewController *)self badgeView];
+  [badgeView5 _setTextInsets:{v44, v38, v42, v40}];
 
-  v46 = [(NTK_PUAdjustmentsViewController *)self view];
-  v47 = [(NTK_PUAdjustmentsViewController *)self badgeView];
-  [v46 addSubview:v47];
+  view3 = [(NTK_PUAdjustmentsViewController *)self view];
+  badgeView6 = [(NTK_PUAdjustmentsViewController *)self badgeView];
+  [view3 addSubview:badgeView6];
 }
 
 - (void)_updateViewLayout
 {
-  v3 = [(NTK_PUAdjustmentsViewController *)self view];
-  [v3 bounds];
+  view = [(NTK_PUAdjustmentsViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -172,24 +172,24 @@
 
   [(NTK_PUAdjustmentsViewController *)self ntk_controlHeight];
   v13 = v12;
-  v14 = [(NTK_PUAdjustmentsViewController *)self layoutDirection];
+  layoutDirection = [(NTK_PUAdjustmentsViewController *)self layoutDirection];
   v15 = v5;
   v16 = v7;
   v17 = v9;
   v18 = v11;
-  if (v14)
+  if (layoutDirection)
   {
     v19 = CGRectGetMaxX(*&v15) - v13;
-    v20 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-    [v20 setFrame:{v19, 0.0, v13, v11}];
+    collectionView = [(NTK_PUAdjustmentsViewController *)self collectionView];
+    [collectionView setFrame:{v19, 0.0, v13, v11}];
 
     v21 = v11 * 0.5;
     [(NTK_PUAdjustmentsViewController *)self controlSize];
     v23 = v11 * 0.5 - v22 * 0.5;
     [(NTK_PUAdjustmentsViewController *)self controlSize];
     v25 = v21 - v24 * 0.5;
-    v26 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-    v27 = v26;
+    collectionView2 = [(NTK_PUAdjustmentsViewController *)self collectionView];
+    v27 = collectionView2;
     v28 = 0.0;
     v29 = 0.0;
     v30 = v23;
@@ -199,31 +199,31 @@
   else
   {
     v32 = CGRectGetMaxY(*&v15) - v13;
-    v33 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-    [v33 setFrame:{0.0, v32, v9, v13}];
+    collectionView3 = [(NTK_PUAdjustmentsViewController *)self collectionView];
+    [collectionView3 setFrame:{0.0, v32, v9, v13}];
 
     v34 = v9 * 0.5;
     [(NTK_PUAdjustmentsViewController *)self controlSize];
     v36 = v34 - v35 * 0.5;
     [(NTK_PUAdjustmentsViewController *)self controlSize];
     v38 = v34 - v37 * 0.5;
-    v26 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-    v27 = v26;
+    collectionView2 = [(NTK_PUAdjustmentsViewController *)self collectionView];
+    v27 = collectionView2;
     v30 = 0.0;
     v31 = 0.0;
     v28 = v36;
     v29 = v38;
   }
 
-  [v26 setContentInset:{v30, v28, v31, v29}];
+  [collectionView2 setContentInset:{v30, v28, v31, v29}];
 
   [(NTK_PUAdjustmentsViewController *)self _updateBadgeLayout];
 }
 
 - (void)_updateBadgeLayout
 {
-  v3 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-  [v3 frame];
+  collectionView = [(NTK_PUAdjustmentsViewController *)self collectionView];
+  [collectionView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -234,15 +234,15 @@
   v19.size.width = v9;
   v19.size.height = v11;
   MinY = CGRectGetMinY(v19);
-  v13 = [(NTK_PUAdjustmentsViewController *)self view];
-  [v13 bounds];
+  view = [(NTK_PUAdjustmentsViewController *)self view];
+  [view bounds];
   v14 = CGRectGetWidth(v20) * 0.5;
 
-  v17 = [(NTK_PUAdjustmentsViewController *)self badgeView];
-  [v17 bounds];
+  badgeView = [(NTK_PUAdjustmentsViewController *)self badgeView];
+  [badgeView bounds];
   v15 = MinY + -12.0 - CGRectGetHeight(v21) * 0.5;
-  v16 = [(NTK_PUAdjustmentsViewController *)self badgeView];
-  [v16 setCenter:{v14, v15}];
+  badgeView2 = [(NTK_PUAdjustmentsViewController *)self badgeView];
+  [badgeView2 setCenter:{v14, v15}];
 }
 
 - (void)viewDidLayoutSubviews
@@ -256,9 +256,9 @@
 
 - (void)_scrollToSelectedIndexPath
 {
-  v3 = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
+  selectedIndexPath = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
 
-  if (v3)
+  if (selectedIndexPath)
   {
     if ([(NTK_PUAdjustmentsViewController *)self layoutDirection])
     {
@@ -270,108 +270,108 @@
       v4 = 16;
     }
 
-    v5 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-    v6 = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
-    [v5 selectItemAtIndexPath:v6 animated:0 scrollPosition:0];
+    collectionView = [(NTK_PUAdjustmentsViewController *)self collectionView];
+    selectedIndexPath2 = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
+    [collectionView selectItemAtIndexPath:selectedIndexPath2 animated:0 scrollPosition:0];
 
-    v8 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-    v7 = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
-    [v8 scrollToItemAtIndexPath:v7 atScrollPosition:v4 animated:0];
+    collectionView2 = [(NTK_PUAdjustmentsViewController *)self collectionView];
+    selectedIndexPath3 = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
+    [collectionView2 scrollToItemAtIndexPath:selectedIndexPath3 atScrollPosition:v4 animated:0];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = NTK_PUAdjustmentsViewController;
-  [(NTK_PUAdjustmentsViewController *)&v8 viewDidAppear:a3];
-  v4 = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
+  [(NTK_PUAdjustmentsViewController *)&v8 viewDidAppear:appear];
+  selectedIndexPath = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
 
-  if (!v4)
+  if (!selectedIndexPath)
   {
-    v5 = [(NTK_PUAdjustmentsViewController *)self collectionViewLayout];
-    v6 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-    [v6 bounds];
+    collectionViewLayout = [(NTK_PUAdjustmentsViewController *)self collectionViewLayout];
+    collectionView = [(NTK_PUAdjustmentsViewController *)self collectionView];
+    [collectionView bounds];
     UIRectGetCenter();
-    v7 = [v5 nearestIndexPathForVisibleItemAtPoint:?];
+    v7 = [collectionViewLayout nearestIndexPathForVisibleItemAtPoint:?];
     [(NTK_PUAdjustmentsViewController *)self setSelectedIndexPath:v7];
 
     [(NTK_PUAdjustmentsViewController *)self _scrollToSelectedIndexPath];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v11.receiver = self;
   v11.super_class = NTK_PUAdjustmentsViewController;
-  v7 = a4;
-  [(NTK_PUAdjustmentsViewController *)&v11 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-  v9 = [v8 collectionViewLayout];
-  [v9 invalidateLayout];
+  coordinatorCopy = coordinator;
+  [(NTK_PUAdjustmentsViewController *)&v11 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  collectionView = [(NTK_PUAdjustmentsViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_109EC;
   v10[3] = &unk_49008;
   v10[4] = self;
-  [v7 animateAlongsideTransition:v10 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v10 completion:0];
 }
 
-- (void)_updateCollectionViewLayoutDirection:(int64_t)a3
+- (void)_updateCollectionViewLayoutDirection:(int64_t)direction
 {
-  v4 = a3 == 0;
-  v5 = [(NTK_PUAdjustmentsViewController *)self collectionViewLayout];
-  [v5 setScrollDirection:v4];
+  v4 = direction == 0;
+  collectionViewLayout = [(NTK_PUAdjustmentsViewController *)self collectionViewLayout];
+  [collectionViewLayout setScrollDirection:v4];
 
-  v6 = [(NTK_PUAdjustmentsViewController *)self collectionViewLayout];
-  [v6 invalidateLayout];
+  collectionViewLayout2 = [(NTK_PUAdjustmentsViewController *)self collectionViewLayout];
+  [collectionViewLayout2 invalidateLayout];
 }
 
-- (void)setLayoutDirection:(int64_t)a3
+- (void)setLayoutDirection:(int64_t)direction
 {
-  if (self->_layoutDirection != a3)
+  if (self->_layoutDirection != direction)
   {
-    self->_layoutDirection = a3;
+    self->_layoutDirection = direction;
     [(NTK_PUAdjustmentsViewController *)self _updateCollectionViewLayoutDirection:?];
   }
 }
 
 - (void)_updateSelectedInfo
 {
-  v3 = [(NTK_PUAdjustmentsViewController *)self dataSource];
-  v4 = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
-  obj = [v3 infoForItemAtIndexPath:v4];
+  dataSource = [(NTK_PUAdjustmentsViewController *)self dataSource];
+  selectedIndexPath = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
+  obj = [dataSource infoForItemAtIndexPath:selectedIndexPath];
 
   if (obj)
   {
     objc_storeStrong(&self->_selectedAdjustmentInfo, obj);
-    v5 = [(NTK_PUAdjustmentInfo *)self->_selectedAdjustmentInfo localizedName];
-    v6 = [v5 localizedUppercaseString];
-    v7 = [(NTK_PUAdjustmentsViewController *)self badgeView];
-    [v7 _setText:v6];
+    localizedName = [(NTK_PUAdjustmentInfo *)self->_selectedAdjustmentInfo localizedName];
+    localizedUppercaseString = [localizedName localizedUppercaseString];
+    badgeView = [(NTK_PUAdjustmentsViewController *)self badgeView];
+    [badgeView _setText:localizedUppercaseString];
 
-    v8 = [(NTK_PUAdjustmentsViewController *)self badgeView];
-    [v8 sizeToFit];
+    badgeView2 = [(NTK_PUAdjustmentsViewController *)self badgeView];
+    [badgeView2 sizeToFit];
 
     [(NTK_PUAdjustmentsViewController *)self _updateBadgeLayout];
-    v9 = [(NTK_PUAdjustmentsViewController *)self delegate];
+    delegate = [(NTK_PUAdjustmentsViewController *)self delegate];
 
-    if (v9)
+    if (delegate)
     {
-      v10 = [(NTK_PUAdjustmentsViewController *)self delegate];
-      [v10 adjustmentsViewControllerDidUpdateSelectedControl:self];
+      delegate2 = [(NTK_PUAdjustmentsViewController *)self delegate];
+      [delegate2 adjustmentsViewControllerDidUpdateSelectedControl:self];
     }
   }
 
   _objc_release_x1();
 }
 
-- (void)ntk_setSelectedIndexPath:(id)a3
+- (void)ntk_setSelectedIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(NTK_PUAdjustmentsViewController *)self layoutDirection])
   {
     v5 = 2;
@@ -382,54 +382,54 @@
     v5 = 16;
   }
 
-  [(NTK_PUAdjustmentsViewController *)self setSelectedIndexPath:v4];
-  v6 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-  [v6 scrollToItemAtIndexPath:v4 atScrollPosition:v5 animated:0];
+  [(NTK_PUAdjustmentsViewController *)self setSelectedIndexPath:pathCopy];
+  collectionView = [(NTK_PUAdjustmentsViewController *)self collectionView];
+  [collectionView scrollToItemAtIndexPath:pathCopy atScrollPosition:v5 animated:0];
 }
 
-- (void)setSelectedIndexPath:(id)a3
+- (void)setSelectedIndexPath:(id)path
 {
-  v5 = a3;
-  if (self->_selectedIndexPath != v5)
+  pathCopy = path;
+  if (self->_selectedIndexPath != pathCopy)
   {
-    v10 = v5;
-    v6 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-    v7 = [v6 cellForItemAtIndexPath:self->_selectedIndexPath];
+    v10 = pathCopy;
+    collectionView = [(NTK_PUAdjustmentsViewController *)self collectionView];
+    v7 = [collectionView cellForItemAtIndexPath:self->_selectedIndexPath];
 
     [v7 setIsUserModifying:0];
     [v7 setSelected:0];
-    v8 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-    v9 = [v8 cellForItemAtIndexPath:v10];
+    collectionView2 = [(NTK_PUAdjustmentsViewController *)self collectionView];
+    v9 = [collectionView2 cellForItemAtIndexPath:v10];
 
     [v9 setSelected:1];
-    objc_storeStrong(&self->_selectedIndexPath, a3);
+    objc_storeStrong(&self->_selectedIndexPath, path);
     [(NTK_PUAdjustmentsViewController *)self _updateSelectedInfo];
 
-    v5 = v10;
+    pathCopy = v10;
   }
 }
 
-- (void)_resetControlsAtIndexPath:(id)a3
+- (void)_resetControlsAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-  v6 = [v5 cellForItemAtIndexPath:v4];
+  pathCopy = path;
+  collectionView = [(NTK_PUAdjustmentsViewController *)self collectionView];
+  v6 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   [v6 resetToDefault];
 }
 
-- (BOOL)canToggleCell:(id)a3
+- (BOOL)canToggleCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(NTK_PUAdjustmentsViewController *)self dataSource];
+  cellCopy = cell;
+  dataSource = [(NTK_PUAdjustmentsViewController *)self dataSource];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(NTK_PUAdjustmentsViewController *)self dataSource];
-    v8 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-    v9 = [v8 indexPathForCell:v4];
-    v10 = [v7 canModifyAdjustmentAtIndexPath:v9];
+    dataSource2 = [(NTK_PUAdjustmentsViewController *)self dataSource];
+    collectionView = [(NTK_PUAdjustmentsViewController *)self collectionView];
+    v9 = [collectionView indexPathForCell:cellCopy];
+    v10 = [dataSource2 canModifyAdjustmentAtIndexPath:v9];
   }
 
   else
@@ -440,33 +440,33 @@
   return v10;
 }
 
-- (void)didToggleCell:(id)a3
+- (void)didToggleCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-  v6 = [v5 indexPathForCell:v4];
+  cellCopy = cell;
+  collectionView = [(NTK_PUAdjustmentsViewController *)self collectionView];
+  v6 = [collectionView indexPathForCell:cellCopy];
 
-  v7 = [(NTK_PUAdjustmentsViewController *)self dataSource];
-  v8 = [v4 isEnabled];
+  dataSource = [(NTK_PUAdjustmentsViewController *)self dataSource];
+  isEnabled = [cellCopy isEnabled];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_11024;
   v11[3] = &unk_49030;
   v11[4] = self;
   v12 = v6;
-  v13 = v4;
-  v9 = v4;
+  v13 = cellCopy;
+  v9 = cellCopy;
   v10 = v6;
-  [v7 setAdjustmentEnabled:v8 atIndexPath:v10 completionHandler:v11];
+  [dataSource setAdjustmentEnabled:isEnabled atIndexPath:v10 completionHandler:v11];
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  viewCopy = view;
+  layoutCopy = layout;
+  if (index)
   {
-    if (a5 < 1)
+    if (index < 1)
     {
       bottom = UIEdgeInsetsZero.bottom;
       right = UIEdgeInsetsZero.right;
@@ -476,8 +476,8 @@
 
     else
     {
-      v10 = [(NTK_PUAdjustmentsViewController *)self layoutDirection];
-      if (v10)
+      layoutDirection = [(NTK_PUAdjustmentsViewController *)self layoutDirection];
+      if (layoutDirection)
       {
         right = 0.0;
       }
@@ -487,7 +487,7 @@
         right = 10.0;
       }
 
-      if (v10)
+      if (layoutDirection)
       {
         bottom = 10.0;
       }
@@ -497,7 +497,7 @@
         bottom = 0.0;
       }
 
-      if (v10)
+      if (layoutDirection)
       {
         left = 0.0;
       }
@@ -507,7 +507,7 @@
         left = 10.0;
       }
 
-      if (v10)
+      if (layoutDirection)
       {
         top = 10.0;
       }
@@ -521,9 +521,9 @@
 
   else
   {
-    v15 = [(NTK_PUAdjustmentsViewController *)self layoutDirection];
+    layoutDirection2 = [(NTK_PUAdjustmentsViewController *)self layoutDirection];
     left = 0.0;
-    if (v15)
+    if (layoutDirection2)
     {
       right = 0.0;
     }
@@ -533,7 +533,7 @@
       right = 10.0;
     }
 
-    if (v15)
+    if (layoutDirection2)
     {
       bottom = 10.0;
     }
@@ -557,14 +557,14 @@
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
+  pathCopy = path;
+  selectedIndexPath = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
 
-  if (v6 != v5)
+  if (selectedIndexPath != pathCopy)
   {
-    [(NTK_PUAdjustmentsViewController *)self setSelectedIndexPath:v5];
+    [(NTK_PUAdjustmentsViewController *)self setSelectedIndexPath:pathCopy];
     [(NTK_PUAdjustmentsViewController *)self setIsAnimatingScroll:1];
     if ([(NTK_PUAdjustmentsViewController *)self layoutDirection])
     {
@@ -581,7 +581,7 @@
     v9[2] = sub_112C4;
     v9[3] = &unk_49058;
     v9[4] = self;
-    v10 = v5;
+    v10 = pathCopy;
     v11 = v7;
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
@@ -592,44 +592,44 @@
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = [(NTK_PUAdjustmentsViewController *)self dataSource];
+  dataSource = [(NTK_PUAdjustmentsViewController *)self dataSource];
 
-  if (!v6)
+  if (!dataSource)
   {
     return 0;
   }
 
-  v7 = [(NTK_PUAdjustmentsViewController *)self dataSource];
-  v8 = [v7 numberOfItemsInSection:a4];
+  dataSource2 = [(NTK_PUAdjustmentsViewController *)self dataSource];
+  v8 = [dataSource2 numberOfItemsInSection:section];
 
   return v8;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v4 = [(NTK_PUAdjustmentsViewController *)self dataSource];
+  dataSource = [(NTK_PUAdjustmentsViewController *)self dataSource];
 
-  if (!v4)
+  if (!dataSource)
   {
     return 0;
   }
 
-  v5 = [(NTK_PUAdjustmentsViewController *)self dataSource];
-  v6 = [v5 numberOfSections];
+  dataSource2 = [(NTK_PUAdjustmentsViewController *)self dataSource];
+  numberOfSections = [dataSource2 numberOfSections];
 
-  return v6;
+  return numberOfSections;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NTK_PUAdjustmentsViewController *)self dataSource];
-  v9 = [v8 infoForItemAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  dataSource = [(NTK_PUAdjustmentsViewController *)self dataSource];
+  v9 = [dataSource infoForItemAtIndexPath:pathCopy];
 
-  v10 = [v7 dequeueReusableCellWithReuseIdentifier:@"NTK_PUEditAdjustmentsCellReuseIdentifier" forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"NTK_PUEditAdjustmentsCellReuseIdentifier" forIndexPath:pathCopy];
 
   [v10 setDelegate:self];
   [v10 setShouldDisplayValueLabel:{-[NTK_PUAdjustmentsViewController shouldDisplayControlValues](self, "shouldDisplayControlValues")}];
@@ -639,30 +639,30 @@
   return v10;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v10 = a4;
-  v7 = a5;
-  v8 = [(NTK_PUAdjustmentsViewController *)self dataSource];
-  v9 = [v8 infoForItemAtIndexPath:v7];
+  cellCopy = cell;
+  pathCopy = path;
+  dataSource = [(NTK_PUAdjustmentsViewController *)self dataSource];
+  v9 = [dataSource infoForItemAtIndexPath:pathCopy];
 
-  [(NTK_PUAdjustmentsViewController *)self _updateCell:v10 withInfo:v9];
+  [(NTK_PUAdjustmentsViewController *)self _updateCell:cellCopy withInfo:v9];
 }
 
-- (id)_circularImageWithSize:(CGSize)a3 color:(id)a4
+- (id)_circularImageWithSize:(CGSize)size color:(id)color
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a4;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
   v7 = [[UIGraphicsImageRenderer alloc] initWithSize:{width, height}];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_11660;
   v11[3] = &unk_490A8;
-  v12 = v6;
+  v12 = colorCopy;
   v13 = width;
   v14 = height;
-  v8 = v6;
+  v8 = colorCopy;
   v9 = [v7 imageWithActions:v11];
 
   return v9;
@@ -691,14 +691,14 @@
   }
 }
 
-- (id)_backgroundImageForItemAtIndexPath:(id)a3
+- (id)_backgroundImageForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   [(NTK_PUAdjustmentsViewController *)self _setupCellBackgroundImagesIfNeeded];
-  v5 = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
+  selectedIndexPath = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
 
   v6 = &OBJC_IVAR___NTK_PUAdjustmentsViewController__itemBackgroundImage;
-  if (v5 == v4)
+  if (selectedIndexPath == pathCopy)
   {
     v6 = &OBJC_IVAR___NTK_PUAdjustmentsViewController__selectedItemBackgroundImage;
   }
@@ -708,31 +708,31 @@
   return v7;
 }
 
-- (void)_updateCell:(id)a3 withInfo:(id)a4
+- (void)_updateCell:(id)cell withInfo:(id)info
 {
-  if (a3 && a4)
+  if (cell && info)
   {
-    v5 = a4;
-    v10 = a3;
-    v6 = [v5 iconName];
-    [v10 setImageName:v6];
+    infoCopy = info;
+    cellCopy = cell;
+    iconName = [infoCopy iconName];
+    [cellCopy setImageName:iconName];
 
-    v7 = [v5 ntk_icon];
-    [v10 ntk_setImage:v7];
+    ntk_icon = [infoCopy ntk_icon];
+    [cellCopy ntk_setImage:ntk_icon];
 
-    [v10 setEnabled:{objc_msgSend(v5, "enabled")}];
-    [v5 minimumLevel];
-    [v10 setMinValue:?];
-    [v5 maximumLevel];
-    [v10 setMaxValue:?];
-    [v5 defaultLevel];
-    [v10 setDefaultValue:?];
-    [v5 identityLevel];
-    [v10 setIdentityValue:?];
-    [v5 currentLevel];
+    [cellCopy setEnabled:{objc_msgSend(infoCopy, "enabled")}];
+    [infoCopy minimumLevel];
+    [cellCopy setMinValue:?];
+    [infoCopy maximumLevel];
+    [cellCopy setMaxValue:?];
+    [infoCopy defaultLevel];
+    [cellCopy setDefaultValue:?];
+    [infoCopy identityLevel];
+    [cellCopy setIdentityValue:?];
+    [infoCopy currentLevel];
     v9 = v8;
 
-    [v10 setValue:v9];
+    [cellCopy setValue:v9];
   }
 }
 
@@ -742,10 +742,10 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-  v4 = [v3 indexPathsForVisibleItems];
+  collectionView = [(NTK_PUAdjustmentsViewController *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [indexPathsForVisibleItems countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -757,19 +757,19 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v9 = *(*(&v15 + 1) + 8 * v8);
-        v10 = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
+        selectedIndexPath = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
 
-        if (v9 != v10)
+        if (v9 != selectedIndexPath)
         {
-          v11 = [(NTK_PUAdjustmentsViewController *)self dataSource];
-          v12 = [v11 infoForItemAtIndexPath:v9];
+          dataSource = [(NTK_PUAdjustmentsViewController *)self dataSource];
+          v12 = [dataSource infoForItemAtIndexPath:v9];
 
-          v13 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-          v14 = [v13 cellForItemAtIndexPath:v9];
+          collectionView2 = [(NTK_PUAdjustmentsViewController *)self collectionView];
+          v14 = [collectionView2 cellForItemAtIndexPath:v9];
 
           [(NTK_PUAdjustmentsViewController *)self _updateCell:v14 withInfo:v12];
         }
@@ -778,20 +778,20 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [indexPathsForVisibleItems countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)sliderValueChanged:(id)a3
+- (void)sliderValueChanged:(id)changed
 {
   if (![(NTK_PUAdjustmentsViewController *)self isAnimatingScroll])
   {
-    v4 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-    v5 = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
-    v6 = [v4 cellForItemAtIndexPath:v5];
+    collectionView = [(NTK_PUAdjustmentsViewController *)self collectionView];
+    selectedIndexPath = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
+    v6 = [collectionView cellForItemAtIndexPath:selectedIndexPath];
 
     if (([v6 isEnabled] & 1) == 0)
     {
@@ -802,16 +802,16 @@
   }
 }
 
-- (void)sliderWillBeginScrolling:(id)a3
+- (void)sliderWillBeginScrolling:(id)scrolling
 {
   self->_sliderIsScrubbing = 1;
-  v4 = [(NTK_PUAdjustmentsViewController *)self delegate];
+  delegate = [(NTK_PUAdjustmentsViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(NTK_PUAdjustmentsViewController *)self delegate];
-    [v6 adjustmentsViewControllerSliderWillBeginScrubbing:self];
+    delegate2 = [(NTK_PUAdjustmentsViewController *)self delegate];
+    [delegate2 adjustmentsViewControllerSliderWillBeginScrubbing:self];
   }
 
   snappingController = self->_snappingController;
@@ -822,13 +822,13 @@
 - (void)_sliderDidEndScrolling
 {
   self->_sliderIsScrubbing = 0;
-  v3 = [(NTK_PUAdjustmentsViewController *)self delegate];
+  delegate = [(NTK_PUAdjustmentsViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(NTK_PUAdjustmentsViewController *)self delegate];
-    [v5 adjustmentsViewControllerSliderDidEndScrubbing:self];
+    delegate2 = [(NTK_PUAdjustmentsViewController *)self delegate];
+    [delegate2 adjustmentsViewControllerSliderDidEndScrubbing:self];
   }
 
   snappingController = self->_snappingController;
@@ -836,11 +836,11 @@
   [(PXUISnappingController *)snappingController interactionEnded];
 }
 
-- (void)sliderWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)sliderWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  if (a4.x == 0.0)
+  if (velocity.x == 0.0)
   {
-    [(NTK_PUAdjustmentsViewController *)self _sliderDidEndScrolling:a3];
+    [(NTK_PUAdjustmentsViewController *)self _sliderDidEndScrolling:scrolling];
   }
 }
 
@@ -848,34 +848,34 @@
 {
   if (![(NTK_PUAdjustmentsViewController *)self didPerformHapticFeedback])
   {
-    v3 = [(NTK_PUAdjustmentsViewController *)self selectionFeedbackGenerator];
-    [v3 performFeedback];
+    selectionFeedbackGenerator = [(NTK_PUAdjustmentsViewController *)self selectionFeedbackGenerator];
+    [selectionFeedbackGenerator performFeedback];
 
     [(NTK_PUAdjustmentsViewController *)self setDidPerformHapticFeedback:1];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v27 = a3;
-  if (!-[NTK_PUAdjustmentsViewController isAnimatingScroll](self, "isAnimatingScroll") && (([v27 isTracking] & 1) != 0 || objc_msgSend(v27, "isDecelerating")))
+  scrollCopy = scroll;
+  if (!-[NTK_PUAdjustmentsViewController isAnimatingScroll](self, "isAnimatingScroll") && (([scrollCopy isTracking] & 1) != 0 || objc_msgSend(scrollCopy, "isDecelerating")))
   {
     Current = CFAbsoluteTimeGetCurrent();
     v5 = Current - self->_previousTimeStamp;
-    [v27 contentOffset];
+    [scrollCopy contentOffset];
     v7 = fabs((v6 - self->_lastOffset.x) / v5) / 100.0;
-    [v27 contentOffset];
+    [scrollCopy contentOffset];
     self->_lastOffset.x = v8;
     self->_lastOffset.y = v9;
     self->_previousTimeStamp = Current;
-    v10 = [(NTK_PUAdjustmentsViewController *)self collectionViewLayout];
-    [v27 bounds];
+    collectionViewLayout = [(NTK_PUAdjustmentsViewController *)self collectionViewLayout];
+    [scrollCopy bounds];
     PXRectGetCenter();
-    v11 = [v10 nearestIndexPathForVisibleItemAtPoint:?];
+    v11 = [collectionViewLayout nearestIndexPathForVisibleItemAtPoint:?];
 
-    v12 = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
+    selectedIndexPath = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
 
-    if (v11 != v12)
+    if (v11 != selectedIndexPath)
     {
       [(NTK_PUAdjustmentsViewController *)self setSelectedIndexPath:v11];
       [(NTK_PUAdjustmentsViewController *)self setDidPerformHapticFeedback:0];
@@ -885,14 +885,14 @@
       }
     }
 
-    [v27 bounds];
+    [scrollCopy bounds];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-    v22 = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
-    v23 = [v21 layoutAttributesForItemAtIndexPath:v22];
+    collectionView = [(NTK_PUAdjustmentsViewController *)self collectionView];
+    selectedIndexPath2 = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
+    v23 = [collectionView layoutAttributesForItemAtIndexPath:selectedIndexPath2];
 
     [v23 frame];
     MidX = CGRectGetMidX(v29);
@@ -908,40 +908,40 @@
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = [(NTK_PUAdjustmentsViewController *)self selectionFeedbackGenerator];
-  [v4 prepareFeedback];
+  selectionFeedbackGenerator = [(NTK_PUAdjustmentsViewController *)self selectionFeedbackGenerator];
+  [selectionFeedbackGenerator prepareFeedback];
 
-  v5 = [(NTK_PUAdjustmentsViewController *)self delegate];
+  delegate = [(NTK_PUAdjustmentsViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(NTK_PUAdjustmentsViewController *)self delegate];
-    [v7 adjustmentsViewControllerToolWillBeginScrubbing:self];
+    delegate2 = [(NTK_PUAdjustmentsViewController *)self delegate];
+    [delegate2 adjustmentsViewControllerToolWillBeginScrubbing:self];
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v5 = [(NTK_PUAdjustmentsViewController *)self delegate:a3];
+  v5 = [(NTK_PUAdjustmentsViewController *)self delegate:dragging];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(NTK_PUAdjustmentsViewController *)self delegate];
-    [v7 adjustmentsViewControllerToolDidEndScrubbing:self];
+    delegate = [(NTK_PUAdjustmentsViewController *)self delegate];
+    [delegate adjustmentsViewControllerToolDidEndScrubbing:self];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  if (([a3 isDragging] & 1) == 0)
+  if (([decelerating isDragging] & 1) == 0)
   {
-    v5 = [(NTK_PUAdjustmentsViewController *)self collectionView];
-    v4 = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
-    [v5 selectItemAtIndexPath:v4 animated:0 scrollPosition:0];
+    collectionView = [(NTK_PUAdjustmentsViewController *)self collectionView];
+    selectedIndexPath = [(NTK_PUAdjustmentsViewController *)self selectedIndexPath];
+    [collectionView selectItemAtIndexPath:selectedIndexPath animated:0 scrollPosition:0];
   }
 }
 

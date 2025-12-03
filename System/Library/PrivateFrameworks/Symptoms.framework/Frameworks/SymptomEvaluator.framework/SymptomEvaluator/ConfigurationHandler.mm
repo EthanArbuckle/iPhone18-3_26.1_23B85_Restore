@@ -1,40 +1,40 @@
 @interface ConfigurationHandler
-+ (id)classRepresentativeForName:(id)a3;
-+ (id)objectForName:(id)a3;
++ (id)classRepresentativeForName:(id)name;
++ (id)objectForName:(id)name;
 + (id)sharedInstance;
-+ (int)configureItems:(id)a3;
-+ (int)read:(id)a3 returnedValues:(id)a4;
++ (int)configureItems:(id)items;
++ (int)read:(id)read returnedValues:(id)values;
 + (void)dumpAll;
 + (void)initialize;
-+ (void)setConfigurationObject:(id)a3 forName:(id)a4;
-- (BOOL)noteSymptom:(id)a3;
++ (void)setConfigurationObject:(id)object forName:(id)name;
+- (BOOL)noteSymptom:(id)symptom;
 - (ConfigurationHandler)init;
-- (id)_configureBuildDetails:(id)a3;
-- (id)_configureHandlerClass:(id)a3;
-- (int)configure:(id)a3;
-- (int)read:(id)a3 returnedValues:(id)a4;
+- (id)_configureBuildDetails:(id)details;
+- (id)_configureHandlerClass:(id)class;
+- (int)configure:(id)configure;
+- (int)read:(id)read returnedValues:(id)values;
 - (void)_dumpState;
-- (void)_setAnnotation:(id)a3;
-- (void)generateInfoForId:(unint64_t)a3 context:(const char *)a4 uuid:(id)a5 completionBlock:(id)a6;
-- (void)setAnnotation:(id)a3;
+- (void)_setAnnotation:(id)annotation;
+- (void)generateInfoForId:(unint64_t)id context:(const char *)context uuid:(id)uuid completionBlock:(id)block;
+- (void)setAnnotation:(id)annotation;
 @end
 
 @implementation ConfigurationHandler
 
-- (void)_setAnnotation:(id)a3
+- (void)_setAnnotation:(id)annotation
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  annotationCopy = annotation;
   v4 = [buildInfo objectForKeyedSubscript:@"ANNOTATION"];
   if (v4)
   {
     [buildInfo setObject:v4 forKey:@"PREVIOUS_ANNOTATION"];
   }
 
-  [buildInfo setObject:v3 forKey:@"ANNOTATION"];
+  [buildInfo setObject:annotationCopy forKey:@"ANNOTATION"];
   v5 = buildInfo;
-  v6 = [MEMORY[0x277CBEAA8] date];
-  [v6 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v8 = dateStringMillisecondsFromTimeInterval(v7);
   [v5 setObject:v8 forKey:@"ANNOTATION_TIMESTAMP"];
 
@@ -50,26 +50,26 @@
   if (os_log_type_enabled(configurationLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v3;
+    v13 = annotationCopy;
     _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEFAULT, "Annotate Symptoms Daemon with: %@", &v12, 0xCu);
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAnnotation:(id)a3
+- (void)setAnnotation:(id)annotation
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  annotationCopy = annotation;
   v5 = configurationLogHandle;
   if (os_log_type_enabled(configurationLogHandle, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = annotationCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_INFO, "ConfigurationHandler Call to configure with annotation %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (annotationCopy)
   {
     v6 = [buildInfo objectForKeyedSubscript:@"ANNOTATION"];
     objc_opt_class();
@@ -96,13 +96,13 @@
         block[3] = &unk_27898A7A8;
         v13 = v8;
         block[4] = self;
-        v12 = v4;
+        v12 = annotationCopy;
         dispatch_async(v9, block);
       }
 
       else
       {
-        [(ConfigurationHandler *)self _setAnnotation:v4];
+        [(ConfigurationHandler *)self _setAnnotation:annotationCopy];
       }
     }
   }
@@ -159,7 +159,7 @@ uint64_t __34__ConfigurationHandler_initialize__block_invoke()
   block[1] = 3221225472;
   block[2] = __38__ConfigurationHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_4 != -1)
   {
     dispatch_once(&sharedInstance_pred_4, block);
@@ -243,9 +243,9 @@ void __38__ConfigurationHandler_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (id)objectForName:(id)a3
++ (id)objectForName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -257,7 +257,7 @@ void __38__ConfigurationHandler_sharedInstance__block_invoke(uint64_t a1)
   v7[2] = __38__ConfigurationHandler_objectForName___block_invoke;
   v7[3] = &unk_27898A848;
   v9 = &v10;
-  v4 = v3;
+  v4 = nameCopy;
   v8 = v4;
   sf_synchronize(&configuration_object_lock, v7);
   v5 = v11[5];
@@ -277,16 +277,16 @@ uint64_t __38__ConfigurationHandler_objectForName___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)classRepresentativeForName:(id)a3
++ (id)classRepresentativeForName:(id)name
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 objectForName:v4];
+  nameCopy = name;
+  v5 = [self objectForName:nameCopy];
   if (!v5)
   {
     v10[0] = @"HANDLER_CLASS";
     v10[1] = @"HANDLER_CONFIG";
-    v11[0] = v4;
+    v11[0] = nameCopy;
     v11[1] = MEMORY[0x277CBEC10];
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
     v7 = +[ConfigurationHandler sharedInstance];
@@ -298,18 +298,18 @@ uint64_t __38__ConfigurationHandler_objectForName___block_invoke(uint64_t a1)
   return v5;
 }
 
-+ (void)setConfigurationObject:(id)a3 forName:(id)a4
++ (void)setConfigurationObject:(id)object forName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  nameCopy = name;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __55__ConfigurationHandler_setConfigurationObject_forName___block_invoke;
   v9[3] = &unk_27898A7D0;
-  v10 = v6;
-  v11 = v5;
-  v7 = v5;
-  v8 = v6;
+  v10 = nameCopy;
+  v11 = objectCopy;
+  v7 = objectCopy;
+  v8 = nameCopy;
   sf_synchronize(&configuration_object_lock, v9);
 }
 
@@ -374,34 +374,34 @@ void __31__ConfigurationHandler_dumpAll__block_invoke_2(uint64_t a1, void *a2, v
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (int)configureItems:(id)a3
++ (int)configureItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v4 = +[ConfigurationHandler sharedInstance];
-  v5 = [v4 configure:v3];
+  v5 = [v4 configure:itemsCopy];
 
   return v5;
 }
 
-+ (int)read:(id)a3 returnedValues:(id)a4
++ (int)read:(id)read returnedValues:(id)values
 {
-  v5 = a4;
-  v6 = a3;
+  valuesCopy = values;
+  readCopy = read;
   v7 = +[ConfigurationHandler sharedInstance];
-  v8 = [v7 read:v6 returnedValues:v5];
+  v8 = [v7 read:readCopy returnedValues:valuesCopy];
 
   return v8;
 }
 
-- (id)_configureHandlerClass:(id)a3
+- (id)_configureHandlerClass:(id)class
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKey:@"HANDLER_CLASS"];
+  classCopy = class;
+  v4 = [classCopy objectForKey:@"HANDLER_CLASS"];
   v5 = NSClassFromString(v4);
   if (v5)
   {
-    v6 = [v3 objectForKey:@"HANDLER_CONFIG"];
+    v6 = [classCopy objectForKey:@"HANDLER_CONFIG"];
     v7 = v6;
     if (v6)
     {
@@ -419,7 +419,7 @@ void __31__ConfigurationHandler_dumpAll__block_invoke_2(uint64_t a1, void *a2, v
           v14 = v4;
           v15 = v13;
           v18 = 136315138;
-          v19 = [(NSString *)v4 UTF8String];
+          uTF8String = [(NSString *)v4 UTF8String];
           _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_ERROR, "Class %s has config but no configure method", &v18, 0xCu);
         }
 
@@ -438,7 +438,7 @@ void __31__ConfigurationHandler_dumpAll__block_invoke_2(uint64_t a1, void *a2, v
       v10 = v4;
       v11 = v9;
       v18 = 136315138;
-      v19 = [(NSString *)v4 UTF8String];
+      uTF8String = [(NSString *)v4 UTF8String];
       _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_ERROR, "Class %s from configuration unknown", &v18, 0xCu);
     }
 
@@ -450,35 +450,35 @@ void __31__ConfigurationHandler_dumpAll__block_invoke_2(uint64_t a1, void *a2, v
   return v12;
 }
 
-- (id)_configureBuildDetails:(id)a3
+- (id)_configureBuildDetails:(id)details
 {
-  [buildInfo addEntriesFromDictionary:a3];
+  [buildInfo addEntriesFromDictionary:details];
   v3 = buildInfo;
 
   return v3;
 }
 
-- (void)generateInfoForId:(unint64_t)a3 context:(const char *)a4 uuid:(id)a5 completionBlock:(id)a6
+- (void)generateInfoForId:(unint64_t)id context:(const char *)context uuid:(id)uuid completionBlock:(id)block
 {
-  v7 = a6 + 16;
+  v7 = block + 16;
   v8 = MEMORY[0x277CBEAA8];
-  v9 = a6;
-  v10 = [v8 date];
-  v11 = v10;
-  if (a3 == 2)
+  blockCopy = block;
+  date = [v8 date];
+  v11 = date;
+  if (id == 2)
   {
-    (*v7)(v9, 0, "Build details", v10, "collected on demand", 0, buildInfo);
+    (*v7)(blockCopy, 0, "Build details", date, "collected on demand", 0, buildInfo);
   }
 
   else
   {
-    (*v7)(v9, 0, "Unknown request", v10, "collected on demand", 0, MEMORY[0x277CBEC10]);
+    (*v7)(blockCopy, 0, "Unknown request", date, "collected on demand", 0, MEMORY[0x277CBEC10]);
   }
 }
 
-- (BOOL)noteSymptom:(id)a3
+- (BOOL)noteSymptom:(id)symptom
 {
-  v4 = [a3 eventQualifierStringForKey:@"1"];
+  v4 = [symptom eventQualifierStringForKey:@"1"];
   if (v4)
   {
     [(ConfigurationHandler *)self setAnnotation:v4];
@@ -486,21 +486,21 @@ void __31__ConfigurationHandler_dumpAll__block_invoke_2(uint64_t a1, void *a2, v
 
   else
   {
-    v5 = [MEMORY[0x277CBEB68] null];
-    [(ConfigurationHandler *)self setAnnotation:v5];
+    null = [MEMORY[0x277CBEB68] null];
+    [(ConfigurationHandler *)self setAnnotation:null];
   }
 
   return 1;
 }
 
-- (int)configure:(id)a3
+- (int)configure:(id)configure
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configureCopy = configure;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = configureCopy;
     v6 = [v5 objectForKey:@"GENERIC_CONFIG_TARGET"];
     v7 = v6;
     if (!v6)
@@ -655,9 +655,9 @@ LABEL_42:
       {
         v21 = [*(*(&buf + 1) + 40) description];
         v22 = v21;
-        v23 = [v21 UTF8String];
+        uTF8String = [v21 UTF8String];
         *v50 = 136315138;
-        v51 = v23;
+        v51 = uTF8String;
         _os_log_impl(&dword_23255B000, v20, OS_LOG_TYPE_ERROR, "Found %s, but not configurable", v50, 0xCu);
       }
     }
@@ -673,7 +673,7 @@ LABEL_42:
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v9 = v4;
+    v9 = configureCopy;
     v10 = [v9 countByEnumeratingWithState:&v37 objects:v48 count:16];
     if (v10)
     {
@@ -729,7 +729,7 @@ LABEL_30:
     if (os_log_type_enabled(configurationLogHandle, OS_LOG_TYPE_ERROR))
     {
       v15 = v14;
-      v16 = [v4 description];
+      v16 = [configureCopy description];
       LODWORD(buf) = 136315138;
       *(&buf + 4) = [v16 UTF8String];
       _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_ERROR, "Unknown class for newValues %s", &buf, 0xCu);
@@ -754,15 +754,15 @@ uint64_t __34__ConfigurationHandler_configure___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (int)read:(id)a3 returnedValues:(id)a4
+- (int)read:(id)read returnedValues:(id)values
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  readCopy = read;
+  valuesCopy = values;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
+    v7 = readCopy;
     v8 = [v7 objectForKey:@"GENERIC_CONFIG_TARGET"];
     v9 = v8;
     if (!v8)
@@ -796,7 +796,7 @@ uint64_t __34__ConfigurationHandler_configure___block_invoke(uint64_t a1)
     {
       if (objc_opt_respondsToSelector())
       {
-        v11 = [*(*(&buf + 1) + 40) read:v7 returnedValues:{v6, v26, v27, v28, v29}];
+        v11 = [*(*(&buf + 1) + 40) read:v7 returnedValues:{valuesCopy, v26, v27, v28, v29}];
 LABEL_20:
 
         _Block_object_dispose(&buf, 8);
@@ -810,9 +810,9 @@ LABEL_21:
       {
         v21 = [*(*(&buf + 1) + 40) description];
         v22 = v21;
-        v23 = [v21 UTF8String];
+        uTF8String = [v21 UTF8String];
         *v32 = 136315138;
-        v33 = v23;
+        v33 = uTF8String;
         _os_log_impl(&dword_23255B000, v18, OS_LOG_TYPE_ERROR, "Found %s, but not readable", v32, 0xCu);
       }
     }
@@ -823,9 +823,9 @@ LABEL_21:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         v19 = v10;
-        v20 = [v10 UTF8String];
+        uTF8String2 = [v10 UTF8String];
         *v32 = 136315138;
-        v33 = v20;
+        v33 = uTF8String2;
         _os_log_impl(&dword_23255B000, v18, OS_LOG_TYPE_ERROR, "Target %s not found", v32, 0xCu);
       }
     }
@@ -850,7 +850,7 @@ LABEL_21:
   else if (v14)
   {
     v15 = v13;
-    v16 = [v5 description];
+    v16 = [readCopy description];
     LODWORD(buf) = 136315138;
     *(&buf + 4) = [v16 UTF8String];
     _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_ERROR, "Unknown class for requiredValues %s", &buf, 0xCu);

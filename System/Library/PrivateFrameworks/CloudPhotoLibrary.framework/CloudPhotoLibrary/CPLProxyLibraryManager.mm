@@ -1,127 +1,127 @@
 @interface CPLProxyLibraryManager
 - (BOOL)_markConnectionAsInvalid;
-- (BOOL)_setStatusFromDictionary:(id)a3;
-- (CPLProxyLibraryManager)initWithAbstractObject:(id)a3;
+- (BOOL)_setStatusFromDictionary:(id)dictionary;
+- (CPLProxyLibraryManager)initWithAbstractObject:(id)object;
 - (id)_connection;
-- (id)_uploadTaskDidStartForResource:(id)a3 withTaskIdentifier:(id)a4;
-- (id)proxyWithErrorHandler:(id)a3;
-- (void)_dispatchBlockWhenOpen:(id)a3;
-- (void)_dispatchFailedDownloadTaskForResource:(id)a3 options:(id)a4 proposedTaskIdentifier:(id)a5 withError:(id)a6 withCompletionHandler:(id)a7;
-- (void)_dispatchFailedForceSyncTaskForScopeIdentifiers:(id)a3 withError:(id)a4 withCompletionHandler:(id)a5;
-- (void)_dispatchFailedInMemoryDownloadTaskForResource:(id)a3 withError:(id)a4 withCompletionHandler:(id)a5;
+- (id)_uploadTaskDidStartForResource:(id)resource withTaskIdentifier:(id)identifier;
+- (id)proxyWithErrorHandler:(id)handler;
+- (void)_dispatchBlockWhenOpen:(id)open;
+- (void)_dispatchFailedDownloadTaskForResource:(id)resource options:(id)options proposedTaskIdentifier:(id)identifier withError:(id)error withCompletionHandler:(id)handler;
+- (void)_dispatchFailedForceSyncTaskForScopeIdentifiers:(id)identifiers withError:(id)error withCompletionHandler:(id)handler;
+- (void)_dispatchFailedInMemoryDownloadTaskForResource:(id)resource withError:(id)error withCompletionHandler:(id)handler;
 - (void)_dropConnectionCompletly;
 - (void)_dropConnectionCompletlyLocked;
-- (void)_invokeOutstandingInvocationsWithTaskIdentifier:(id)a3;
-- (void)_invokeSyncOutstandingInvocationsWithTaskIdentifier:(id)a3;
+- (void)_invokeOutstandingInvocationsWithTaskIdentifier:(id)identifier;
+- (void)_invokeSyncOutstandingInvocationsWithTaskIdentifier:(id)identifier;
 - (void)_markConnectionAsInvalid;
-- (void)_reallyOpenWithCompletionHandler:(id)a3;
+- (void)_reallyOpenWithCompletionHandler:(id)handler;
 - (void)_setupConnection;
-- (void)_storeVoucher:(id)a3 forTaskWithIdentifier:(id)a4;
-- (void)_withVoucherForTaskWithIdentifier:(id)a3 do:(id)a4;
-- (void)acceptSharedScope:(id)a3 completionHandler:(id)a4;
-- (void)acknowledgeChangedStatuses:(id)a3;
-- (void)activateScopeWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)addDropDerivativesRecipe:(id)a3 writeToUserDefaults:(BOOL)a4 withCompletionHandler:(id)a5;
-- (void)addInfoToLog:(id)a3;
-- (void)addStatusChangesForRecordsWithScopedIdentifiers:(id)a3 persist:(BOOL)a4;
-- (void)attachComputeStates:(id)a3 completionHandler:(id)a4;
-- (void)backgroundDownloadDidFailForResource:(id)a3;
-- (void)backgroundDownloadDidFinishForResource:(id)a3;
+- (void)_storeVoucher:(id)voucher forTaskWithIdentifier:(id)identifier;
+- (void)_withVoucherForTaskWithIdentifier:(id)identifier do:(id)do;
+- (void)acceptSharedScope:(id)scope completionHandler:(id)handler;
+- (void)acknowledgeChangedStatuses:(id)statuses;
+- (void)activateScopeWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)addDropDerivativesRecipe:(id)recipe writeToUserDefaults:(BOOL)defaults withCompletionHandler:(id)handler;
+- (void)addInfoToLog:(id)log;
+- (void)addStatusChangesForRecordsWithScopedIdentifiers:(id)identifiers persist:(BOOL)persist;
+- (void)attachComputeStates:(id)states completionHandler:(id)handler;
+- (void)backgroundDownloadDidFailForResource:(id)resource;
+- (void)backgroundDownloadDidFinishForResource:(id)resource;
 - (void)barrier;
-- (void)beginDownloadForResource:(id)a3 clientBundleID:(id)a4 options:(id)a5 proposedTaskIdentifier:(id)a6 completionHandler:(id)a7;
-- (void)beginInMemoryDownloadOfResource:(id)a3 clientBundleID:(id)a4 completionHandler:(id)a5;
-- (void)blockEngineElement:(id)a3;
-- (void)boostPriorityForScopeWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)cancelSyncTask:(id)a3;
-- (void)cancelTask:(id)a3;
-- (void)checkHasBackgroundDownloadOperationsWithCompletionHandler:(id)a3;
-- (void)checkResourcesAreSafeToPrune:(id)a3 checkServerIfNecessary:(BOOL)a4 completionHandler:(id)a5;
-- (void)closeWithCompletionHandler:(id)a3;
-- (void)cloudCacheGetDescriptionForRecordWithScopedIdentifier:(id)a3 related:(BOOL)a4 completionHandler:(id)a5;
-- (void)compactFileCacheWithCompletionHandler:(id)a3;
-- (void)createScope:(id)a3 completionHandler:(id)a4;
-- (void)deactivateScopeWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)deactivateWithCompletionHandler:(id)a3;
+- (void)beginDownloadForResource:(id)resource clientBundleID:(id)d options:(id)options proposedTaskIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)beginInMemoryDownloadOfResource:(id)resource clientBundleID:(id)d completionHandler:(id)handler;
+- (void)blockEngineElement:(id)element;
+- (void)boostPriorityForScopeWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)cancelSyncTask:(id)task;
+- (void)cancelTask:(id)task;
+- (void)checkHasBackgroundDownloadOperationsWithCompletionHandler:(id)handler;
+- (void)checkResourcesAreSafeToPrune:(id)prune checkServerIfNecessary:(BOOL)necessary completionHandler:(id)handler;
+- (void)closeWithCompletionHandler:(id)handler;
+- (void)cloudCacheGetDescriptionForRecordWithScopedIdentifier:(id)identifier related:(BOOL)related completionHandler:(id)handler;
+- (void)compactFileCacheWithCompletionHandler:(id)handler;
+- (void)createScope:(id)scope completionHandler:(id)handler;
+- (void)deactivateScopeWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)deactivateWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)deleteResources:(id)a3 checkServerIfNecessary:(BOOL)a4 completionHandler:(id)a5;
-- (void)deleteScopeWithIdentifier:(id)a3 forced:(BOOL)a4 completionHandler:(id)a5;
+- (void)deleteResources:(id)resources checkServerIfNecessary:(BOOL)necessary completionHandler:(id)handler;
+- (void)deleteScopeWithIdentifier:(id)identifier forced:(BOOL)forced completionHandler:(id)handler;
 - (void)disableMingling;
-- (void)disableSynchronizationWithReason:(id)a3;
-- (void)dispatchBlockWhenLibraryIsOpen:(id)a3;
-- (void)downloadDidFinishForResourceTransferTask:(id)a3 finalResource:(id)a4 withError:(id)a5;
-- (void)downloadDidProgress:(float)a3 forResourceTransferTask:(id)a4;
-- (void)downloadDidStartForResourceTransferTask:(id)a3;
+- (void)disableSynchronizationWithReason:(id)reason;
+- (void)dispatchBlockWhenLibraryIsOpen:(id)open;
+- (void)downloadDidFinishForResourceTransferTask:(id)task finalResource:(id)resource withError:(id)error;
+- (void)downloadDidProgress:(float)progress forResourceTransferTask:(id)task;
+- (void)downloadDidStartForResourceTransferTask:(id)task;
 - (void)enableMingling;
-- (void)enableSynchronizationWithReason:(id)a3;
-- (void)fetchComputeStatesForRecordsWithScopedIdentifiers:(id)a3 validator:(id)a4 shouldDecrypt:(BOOL)a5 onDemand:(BOOL)a6 completionHandler:(id)a7;
-- (void)fetchExistingSharedLibraryScopeWithCompletionHandler:(id)a3;
-- (void)fetchSharedScopeFromShareURL:(id)a3 completionHandler:(id)a4;
-- (void)forceBackupWithCompletionHandler:(id)a3;
-- (void)forceSyncDidFinishForTask:(id)a3 withErrors:(id)a4;
-- (void)forceSynchronizingScopeWithIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)getChangedStatusesWithCompletionHandler:(id)a3;
-- (void)getCloudCacheRecordsWithLocalScopedIdentifiers:(id)a3 desiredProperties:(id)a4 completionHandler:(id)a5;
-- (void)getListOfComponentsWithCompletionHandler:(id)a3;
-- (void)getMappedScopedIdentifiersForScopedIdentifiers:(id)a3 inAreLocalIdentifiers:(BOOL)a4 completionHandler:(id)a5;
-- (void)getResourcesForItemWithScopedIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)getScopeStatusCountsForScopeWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)getStatusArrayForComponents:(id)a3 completionHandler:(id)a4;
-- (void)getStatusForComponents:(id)a3 completionHandler:(id)a4;
-- (void)getStatusForPendingRecordsSharedToScopeWithIdentifier:(id)a3 maximumCount:(unint64_t)a4 completionHandler:(id)a5;
-- (void)getStatusForRecordsWithScopedIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)getStatusesForScopesWithIdentifiers:(id)a3 includeStorages:(BOOL)a4 completionHandler:(id)a5;
-- (void)getStreamingURLForResource:(id)a3 intent:(unint64_t)a4 hints:(id)a5 timeRange:(id *)a6 clientBundleID:(id)a7 completionHandler:(id)a8;
-- (void)getSystemBudgetsWithCompletionHandler:(id)a3;
-- (void)getTargetsForRecordsWithScopedIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)inMemoryDownloadDidFinishForResourceTransferTask:(id)a3 data:(id)a4 withError:(id)a5;
-- (void)libraryManagerDidUpdateSizeOfResourcesToUploadToSize:(unint64_t)a3 sizeOfOriginalResourcesToUpload:(unint64_t)a4 numberOfImages:(unint64_t)a5 numberOfVideos:(unint64_t)a6 numberOfOtherItems:(unint64_t)a7;
-- (void)libraryManagerDidUpdateStatusWithProperties:(id)a3;
+- (void)enableSynchronizationWithReason:(id)reason;
+- (void)fetchComputeStatesForRecordsWithScopedIdentifiers:(id)identifiers validator:(id)validator shouldDecrypt:(BOOL)decrypt onDemand:(BOOL)demand completionHandler:(id)handler;
+- (void)fetchExistingSharedLibraryScopeWithCompletionHandler:(id)handler;
+- (void)fetchSharedScopeFromShareURL:(id)l completionHandler:(id)handler;
+- (void)forceBackupWithCompletionHandler:(id)handler;
+- (void)forceSyncDidFinishForTask:(id)task withErrors:(id)errors;
+- (void)forceSynchronizingScopeWithIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)getChangedStatusesWithCompletionHandler:(id)handler;
+- (void)getCloudCacheRecordsWithLocalScopedIdentifiers:(id)identifiers desiredProperties:(id)properties completionHandler:(id)handler;
+- (void)getListOfComponentsWithCompletionHandler:(id)handler;
+- (void)getMappedScopedIdentifiersForScopedIdentifiers:(id)identifiers inAreLocalIdentifiers:(BOOL)localIdentifiers completionHandler:(id)handler;
+- (void)getResourcesForItemWithScopedIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getScopeStatusCountsForScopeWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getStatusArrayForComponents:(id)components completionHandler:(id)handler;
+- (void)getStatusForComponents:(id)components completionHandler:(id)handler;
+- (void)getStatusForPendingRecordsSharedToScopeWithIdentifier:(id)identifier maximumCount:(unint64_t)count completionHandler:(id)handler;
+- (void)getStatusForRecordsWithScopedIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)getStatusesForScopesWithIdentifiers:(id)identifiers includeStorages:(BOOL)storages completionHandler:(id)handler;
+- (void)getStreamingURLForResource:(id)resource intent:(unint64_t)intent hints:(id)hints timeRange:(id *)range clientBundleID:(id)d completionHandler:(id)handler;
+- (void)getSystemBudgetsWithCompletionHandler:(id)handler;
+- (void)getTargetsForRecordsWithScopedIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)inMemoryDownloadDidFinishForResourceTransferTask:(id)task data:(id)data withError:(id)error;
+- (void)libraryManagerDidUpdateSizeOfResourcesToUploadToSize:(unint64_t)size sizeOfOriginalResourcesToUpload:(unint64_t)upload numberOfImages:(unint64_t)images numberOfVideos:(unint64_t)videos numberOfOtherItems:(unint64_t)items;
+- (void)libraryManagerDidUpdateStatusWithProperties:(id)properties;
 - (void)libraryManagerHasBeenReplaced;
 - (void)libraryManagerHasChangesToPull;
 - (void)libraryManagerHasStatusChanges;
 - (void)noteClientIsBeginningSignificantWork;
 - (void)noteClientIsEndingSignificantWork;
 - (void)noteClientIsInBackground;
-- (void)noteClientIsInForegroundQuietly:(BOOL)a3;
+- (void)noteClientIsInForegroundQuietly:(BOOL)quietly;
 - (void)noteClientReceivedNotificationOfServerChanges;
-- (void)openWithCompletionHandler:(id)a3;
-- (void)provideCloudResource:(id)a3 completionHandler:(id)a4;
-- (void)provideLocalResource:(id)a3 recordClassString:(id)a4 completionHandler:(id)a5;
-- (void)providePayloadForComputeStates:(id)a3 inFolderWithURL:(id)a4 completionHandler:(id)a5;
-- (void)provideRecordWithCloudScopeIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)provideScopeChangeForScopeWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)pushAllChangesWithCompletionHandler:(id)a3;
-- (void)queryUserDetailsForShareParticipants:(id)a3 completionHandler:(id)a4;
-- (void)rampingRequestForResourceType:(unint64_t)a3 numRequested:(unint64_t)a4 completionHandler:(id)a5;
-- (void)refreshScopeWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)removeParticipants:(id)a3 fromSharedScopeWithIdentifier:(id)a4 retentionPolicy:(int64_t)a5 exitSource:(int64_t)a6 completionHandler:(id)a7;
-- (void)reportMiscInformation:(id)a3;
-- (void)reportSetting:(id)a3 hasBeenSetToValue:(id)a4;
-- (void)requestClientToPullAllChangesInScopeIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)requestClientToPushAllChangesWithCompletionHandler:(id)a3;
-- (void)resetCacheWithOption:(unint64_t)a3 reason:(id)a4 completionHandler:(id)a5;
+- (void)openWithCompletionHandler:(id)handler;
+- (void)provideCloudResource:(id)resource completionHandler:(id)handler;
+- (void)provideLocalResource:(id)resource recordClassString:(id)string completionHandler:(id)handler;
+- (void)providePayloadForComputeStates:(id)states inFolderWithURL:(id)l completionHandler:(id)handler;
+- (void)provideRecordWithCloudScopeIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)provideScopeChangeForScopeWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)pushAllChangesWithCompletionHandler:(id)handler;
+- (void)queryUserDetailsForShareParticipants:(id)participants completionHandler:(id)handler;
+- (void)rampingRequestForResourceType:(unint64_t)type numRequested:(unint64_t)requested completionHandler:(id)handler;
+- (void)refreshScopeWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)removeParticipants:(id)participants fromSharedScopeWithIdentifier:(id)identifier retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler;
+- (void)reportMiscInformation:(id)information;
+- (void)reportSetting:(id)setting hasBeenSetToValue:(id)value;
+- (void)requestClientToPullAllChangesInScopeIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)requestClientToPushAllChangesWithCompletionHandler:(id)handler;
+- (void)resetCacheWithOption:(unint64_t)option reason:(id)reason completionHandler:(id)handler;
 - (void)resetStatus;
-- (void)resolveLocalScopedIdentifiersForCloudScopedIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)setShouldOverride:(BOOL)a3 forSystemBudgets:(unint64_t)a4;
-- (void)sharedLibraryRampCheckWithCompletionHandler:(id)a3;
-- (void)startExitFromSharedScopeWithIdentifier:(id)a3 retentionPolicy:(int64_t)a4 exitSource:(int64_t)a5 completionHandler:(id)a6;
+- (void)resolveLocalScopedIdentifiersForCloudScopedIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)setShouldOverride:(BOOL)override forSystemBudgets:(unint64_t)budgets;
+- (void)sharedLibraryRampCheckWithCompletionHandler:(id)handler;
+- (void)startExitFromSharedScopeWithIdentifier:(id)identifier retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler;
 - (void)startSyncSession;
-- (void)testKey:(id)a3 value:(id)a4 completionHandler:(id)a5;
-- (void)unblockEngineElement:(id)a3;
-- (void)unblockEngineElementOnce:(id)a3;
-- (void)updateShareForScope:(id)a3 completionHandler:(id)a4;
-- (void)uploadDidStartForResource:(id)a3 withResourceTransferTask:(id)a4;
-- (void)uploadOfResource:(id)a3 didFinishForResourceTransferTask:(id)a4 withError:(id)a5;
-- (void)uploadOfResource:(id)a3 didProgress:(float)a4 forResourceTransferTask:(id)a5;
+- (void)testKey:(id)key value:(id)value completionHandler:(id)handler;
+- (void)unblockEngineElement:(id)element;
+- (void)unblockEngineElementOnce:(id)once;
+- (void)updateShareForScope:(id)scope completionHandler:(id)handler;
+- (void)uploadDidStartForResource:(id)resource withResourceTransferTask:(id)task;
+- (void)uploadOfResource:(id)resource didFinishForResourceTransferTask:(id)task withError:(id)error;
+- (void)uploadOfResource:(id)resource didProgress:(float)progress forResourceTransferTask:(id)task;
 @end
 
 @implementation CPLProxyLibraryManager
 
-- (CPLProxyLibraryManager)initWithAbstractObject:(id)a3
+- (CPLProxyLibraryManager)initWithAbstractObject:(id)object
 {
   v21.receiver = self;
   v21.super_class = CPLProxyLibraryManager;
-  v3 = [(CPLPlatformObject *)&v21 initWithAbstractObject:a3];
+  v3 = [(CPLPlatformObject *)&v21 initWithAbstractObject:object];
   if (v3)
   {
     v4 = dispatch_queue_create("com.apple.cpl.librarymanager.proxy", 0);
@@ -174,7 +174,7 @@
   v6[1] = 3221225472;
   v7 = __37__CPLProxyLibraryManager__connection__block_invoke;
   v8 = &unk_1E861A850;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_realConnectionLock);
@@ -187,9 +187,9 @@
   return v4;
 }
 
-- (id)proxyWithErrorHandler:(id)a3
+- (id)proxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_killed)
   {
     v5 = 0;
@@ -197,14 +197,14 @@
 
   else
   {
-    v6 = [(CPLProxyLibraryManager *)self _connection];
+    _connection = [(CPLProxyLibraryManager *)self _connection];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __48__CPLProxyLibraryManager_proxyWithErrorHandler___block_invoke;
     v9[3] = &unk_1E861A878;
-    v10 = v6;
-    v11 = v4;
-    v7 = v6;
+    v10 = _connection;
+    v11 = handlerCopy;
+    v7 = _connection;
     v5 = [v7 remoteObjectProxyWithErrorHandler:v9];
   }
 
@@ -224,7 +224,7 @@ void __48__CPLProxyLibraryManager_proxyWithErrorHandler___block_invoke(uint64_t 
   v4[1] = 3221225472;
   v5 = __42__CPLProxyLibraryManager__setupConnection__block_invoke;
   v6 = &unk_1E861A940;
-  v7 = self;
+  selfCopy = self;
   v3 = v4;
   os_unfair_lock_lock(&self->_realConnectionLock);
   v5(v3);
@@ -362,25 +362,25 @@ void __42__CPLProxyLibraryManager__setupConnection__block_invoke_279(void *a1, u
   v4[1] = 3221225472;
   v5 = __50__CPLProxyLibraryManager__dropConnectionCompletly__block_invoke;
   v6 = &unk_1E861A940;
-  v7 = self;
+  selfCopy = self;
   v3 = v4;
   os_unfair_lock_lock(&self->_realConnectionLock);
   v5(v3);
   os_unfair_lock_unlock(&self->_realConnectionLock);
 }
 
-- (void)_reallyOpenWithCompletionHandler:(id)a3
+- (void)_reallyOpenWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CPLProxyLibraryManager *)self _connection];
+  handlerCopy = handler;
+  _connection = [(CPLProxyLibraryManager *)self _connection];
   self->_openingStatus = 2;
-  v6 = [(CPLPlatformObject *)self abstractObject];
-  v17 = [v6 clientLibraryBaseURL];
-  v16 = [v6 cloudLibraryStateStorageURL];
-  v7 = [v6 cloudLibraryResourceStorageURL];
-  v8 = [v6 libraryIdentifier];
-  v9 = [v6 mainScopeIdentifier];
-  v10 = [v6 libraryOptions];
+  abstractObject = [(CPLPlatformObject *)self abstractObject];
+  clientLibraryBaseURL = [abstractObject clientLibraryBaseURL];
+  cloudLibraryStateStorageURL = [abstractObject cloudLibraryStateStorageURL];
+  cloudLibraryResourceStorageURL = [abstractObject cloudLibraryResourceStorageURL];
+  libraryIdentifier = [abstractObject libraryIdentifier];
+  mainScopeIdentifier = [abstractObject mainScopeIdentifier];
+  libraryOptions = [abstractObject libraryOptions];
   firstTryOpeningLibrary = self->_firstTryOpeningLibrary;
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
@@ -388,7 +388,7 @@ void __42__CPLProxyLibraryManager__setupConnection__block_invoke_279(void *a1, u
   v30[3] = &unk_1E861A968;
   v30[4] = self;
   v32 = firstTryOpeningLibrary;
-  v12 = v4;
+  v12 = handlerCopy;
   v31 = v12;
   v13 = [(CPLProxyLibraryManager *)self proxyWithErrorHandler:v30];
   v14 = v13;
@@ -399,14 +399,14 @@ void __42__CPLProxyLibraryManager__setupConnection__block_invoke_279(void *a1, u
     v18[2] = __59__CPLProxyLibraryManager__reallyOpenWithCompletionHandler___block_invoke_2;
     v18[3] = &unk_1E861A9B8;
     v19 = v13;
-    v20 = v17;
-    v21 = v16;
-    v22 = v7;
-    v23 = v8;
-    v28 = v10;
-    v24 = v9;
-    v25 = self;
-    v26 = v5;
+    v20 = clientLibraryBaseURL;
+    v21 = cloudLibraryStateStorageURL;
+    v22 = cloudLibraryResourceStorageURL;
+    v23 = libraryIdentifier;
+    v28 = libraryOptions;
+    v24 = mainScopeIdentifier;
+    selfCopy = self;
+    v26 = _connection;
     v29 = firstTryOpeningLibrary;
     v27 = v12;
     [v19 connectWithCompletionHandler:v18];
@@ -461,12 +461,12 @@ void __59__CPLProxyLibraryManager__reallyOpenWithCompletionHandler___block_invok
   [v2 openLibraryWithClientLibraryBaseURL:v3 cloudLibraryStateStorageURL:v4 cloudLibraryResourceStorageURL:v5 libraryIdentifier:v6 mainScopeIdentifier:v7 options:v8 completionHandler:v10];
 }
 
-- (void)_dispatchBlockWhenOpen:(id)a3
+- (void)_dispatchBlockWhenOpen:(id)open
 {
-  v4 = a3;
-  v5 = [(CPLProxyLibraryManager *)self _connection];
+  openCopy = open;
+  _connection = [(CPLProxyLibraryManager *)self _connection];
 
-  if (!v5)
+  if (!_connection)
   {
     [CPLProxyLibraryManager _dispatchBlockWhenOpen:];
     goto LABEL_18;
@@ -519,14 +519,14 @@ void __59__CPLProxyLibraryManager__reallyOpenWithCompletionHandler___block_invok
     self->_openingStatus = 1;
   }
 
-  v9 = [(CPLPlatformObject *)self abstractObject];
+  abstractObject = [(CPLPlatformObject *)self abstractObject];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __49__CPLProxyLibraryManager__dispatchBlockWhenOpen___block_invoke;
   v17[3] = &unk_1E861AA28;
-  v18 = v9;
-  v19 = self;
-  v10 = v9;
+  v18 = abstractObject;
+  selfCopy = self;
+  v10 = abstractObject;
   [(CPLProxyLibraryManager *)self _reallyOpenWithCompletionHandler:v17];
 
   openingStatus = self->_openingStatus;
@@ -534,12 +534,12 @@ LABEL_15:
   if (openingStatus > 2)
   {
 LABEL_17:
-    v4[2](v4);
+    openCopy[2](openCopy);
     goto LABEL_18;
   }
 
   pendingBlocksAfterOpening = self->_pendingBlocksAfterOpening;
-  v12 = [v4 copy];
+  v12 = [openCopy copy];
   v16 = MEMORY[0x1E128EBA0](v12, v13, v14, v15);
   [(NSMutableArray *)pendingBlocksAfterOpening addObject:v16];
 
@@ -673,16 +673,16 @@ LABEL_18:
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dispatchBlockWhenLibraryIsOpen:(id)a3
+- (void)dispatchBlockWhenLibraryIsOpen:(id)open
 {
-  v4 = a3;
+  openCopy = open;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__CPLProxyLibraryManager_dispatchBlockWhenLibraryIsOpen___block_invoke;
   v10[3] = &unk_1E861AA50;
   v10[4] = self;
-  v11 = v4;
+  v11 = openCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -690,20 +690,20 @@ LABEL_18:
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = openCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
 
-- (void)openWithCompletionHandler:(id)a3
+- (void)openWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __52__CPLProxyLibraryManager_openWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E861AAC8;
-  v12 = v5;
+  v12 = handlerCopy;
   v13 = a2;
   v11[4] = self;
   v7 = v11;
@@ -713,7 +713,7 @@ LABEL_18:
   block[3] = &unk_1E861B4E0;
   v15 = v7;
   v8 = queue;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v8, v10);
 }
@@ -818,16 +818,16 @@ void __52__CPLProxyLibraryManager_openWithCompletionHandler___block_invoke_305(u
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)closeWithCompletionHandler:(id)a3
+- (void)closeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __53__CPLProxyLibraryManager_closeWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E861AA50;
   v10[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -835,7 +835,7 @@ void __52__CPLProxyLibraryManager_openWithCompletionHandler___block_invoke_305(u
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = handlerCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -887,16 +887,16 @@ void __53__CPLProxyLibraryManager_closeWithCompletionHandler___block_invoke_3(ui
   }
 }
 
-- (void)deactivateWithCompletionHandler:(id)a3
+- (void)deactivateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __58__CPLProxyLibraryManager_deactivateWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E861AA50;
   v10[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -904,7 +904,7 @@ void __53__CPLProxyLibraryManager_closeWithCompletionHandler___block_invoke_3(ui
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = handlerCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -973,17 +973,17 @@ void __58__CPLProxyLibraryManager_deactivateWithCompletionHandler___block_invoke
   dispatch_async(v7, v9);
 }
 
-- (void)activateScopeWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)activateScopeWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   queue = self->_queue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __72__CPLProxyLibraryManager_activateScopeWithIdentifier_completionHandler___block_invoke;
   v14[3] = &unk_1E861ABE0;
-  v15 = v6;
-  v16 = v7;
+  v15 = identifierCopy;
+  v16 = handlerCopy;
   v14[4] = self;
   v9 = v14;
   block[0] = MEMORY[0x1E69E9820];
@@ -992,8 +992,8 @@ void __58__CPLProxyLibraryManager_deactivateWithCompletionHandler___block_invoke
   block[3] = &unk_1E861B4E0;
   v18 = v9;
   v10 = queue;
-  v11 = v6;
-  v12 = v7;
+  v11 = identifierCopy;
+  v12 = handlerCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
@@ -1048,17 +1048,17 @@ uint64_t __72__CPLProxyLibraryManager_activateScopeWithIdentifier_completionHand
   return result;
 }
 
-- (void)deactivateScopeWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)deactivateScopeWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   queue = self->_queue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __74__CPLProxyLibraryManager_deactivateScopeWithIdentifier_completionHandler___block_invoke;
   v14[3] = &unk_1E861ABE0;
-  v15 = v6;
-  v16 = v7;
+  v15 = identifierCopy;
+  v16 = handlerCopy;
   v14[4] = self;
   v9 = v14;
   block[0] = MEMORY[0x1E69E9820];
@@ -1067,8 +1067,8 @@ uint64_t __72__CPLProxyLibraryManager_activateScopeWithIdentifier_completionHand
   block[3] = &unk_1E861B4E0;
   v18 = v9;
   v10 = queue;
-  v11 = v6;
-  v12 = v7;
+  v11 = identifierCopy;
+  v12 = handlerCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
@@ -1123,17 +1123,17 @@ uint64_t __74__CPLProxyLibraryManager_deactivateScopeWithIdentifier_completionHa
   return result;
 }
 
-- (void)boostPriorityForScopeWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)boostPriorityForScopeWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   queue = self->_queue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __80__CPLProxyLibraryManager_boostPriorityForScopeWithIdentifier_completionHandler___block_invoke;
   v14[3] = &unk_1E861ABE0;
-  v15 = v6;
-  v16 = v7;
+  v15 = identifierCopy;
+  v16 = handlerCopy;
   v14[4] = self;
   v9 = v14;
   block[0] = MEMORY[0x1E69E9820];
@@ -1142,8 +1142,8 @@ uint64_t __74__CPLProxyLibraryManager_deactivateScopeWithIdentifier_completionHa
   block[3] = &unk_1E861B4E0;
   v18 = v9;
   v10 = queue;
-  v11 = v6;
-  v12 = v7;
+  v11 = identifierCopy;
+  v12 = handlerCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
@@ -1198,20 +1198,20 @@ uint64_t __80__CPLProxyLibraryManager_boostPriorityForScopeWithIdentifier_comple
   return result;
 }
 
-- (void)_invokeOutstandingInvocationsWithTaskIdentifier:(id)a3
+- (void)_invokeOutstandingInvocationsWithTaskIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   outstandingInvocationsCount = self->_outstandingInvocationsCount;
   if (!outstandingInvocationsCount)
   {
     [CPLProxyLibraryManager _invokeOutstandingInvocationsWithTaskIdentifier:];
   }
 
-  v6 = v4;
-  if (v4)
+  v6 = identifierCopy;
+  if (identifierCopy)
   {
-    v7 = [(NSMutableDictionary *)self->_outstandingInvocations objectForKey:v4];
+    v7 = [(NSMutableDictionary *)self->_outstandingInvocations objectForKey:identifierCopy];
     if (v7)
     {
       [(NSMutableDictionary *)self->_outstandingInvocations removeObjectForKey:v6];
@@ -1247,17 +1247,17 @@ uint64_t __80__CPLProxyLibraryManager_boostPriorityForScopeWithIdentifier_comple
           goto LABEL_18;
         }
 
-        v9 = [v7 finalResource];
-        v10 = [v7 finalError];
-        [(CPLProxyLibraryManager *)self downloadDidFinishForResourceTransferTask:v6 finalResource:v9 withError:v10];
+        finalResource = [v7 finalResource];
+        finalError = [v7 finalError];
+        [(CPLProxyLibraryManager *)self downloadDidFinishForResourceTransferTask:v6 finalResource:finalResource withError:finalError];
         goto LABEL_17;
       }
 
       if ([v7 didFinish])
       {
-        v9 = [v7 finalData];
-        v10 = [v7 finalError];
-        [(CPLProxyLibraryManager *)self inMemoryDownloadDidFinishForResourceTransferTask:v6 data:v9 withError:v10];
+        finalResource = [v7 finalData];
+        finalError = [v7 finalError];
+        [(CPLProxyLibraryManager *)self inMemoryDownloadDidFinishForResourceTransferTask:v6 data:finalResource withError:finalError];
 LABEL_17:
       }
     }
@@ -1283,42 +1283,42 @@ LABEL_18:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_dispatchFailedDownloadTaskForResource:(id)a3 options:(id)a4 proposedTaskIdentifier:(id)a5 withError:(id)a6 withCompletionHandler:(id)a7
+- (void)_dispatchFailedDownloadTaskForResource:(id)resource options:(id)options proposedTaskIdentifier:(id)identifier withError:(id)error withCompletionHandler:(id)handler
 {
-  v23 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = a4;
+  resourceCopy = resource;
+  identifierCopy = identifier;
+  errorCopy = error;
+  handlerCopy = handler;
+  optionsCopy = options;
   v16 = [CPLResourceTransferTask alloc];
   v17 = v16;
-  if (v12)
+  if (identifierCopy)
   {
-    v18 = [(CPLResourceTransferTask *)v16 initWithResource:v23 taskIdentifier:v12];
+    v18 = [(CPLResourceTransferTask *)v16 initWithResource:resourceCopy taskIdentifier:identifierCopy];
   }
 
   else
   {
-    v19 = [MEMORY[0x1E696AFB0] UUID];
-    v20 = [v19 UUIDString];
-    v18 = [(CPLResourceTransferTask *)v17 initWithResource:v23 taskIdentifier:v20];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v18 = [(CPLResourceTransferTask *)v17 initWithResource:resourceCopy taskIdentifier:uUIDString];
   }
 
-  [(CPLResourceTransferTask *)v18 setOptions:v15];
+  [(CPLResourceTransferTask *)v18 setOptions:optionsCopy];
 
-  v14[2](v14, v18);
-  v21 = [(CPLPlatformObject *)self abstractObject];
-  v22 = [v21 resourceProgressDelegate];
-  [v22 libraryManager:v21 downloadDidFinishForResourceTransferTask:v18 finalResource:v23 withError:v13];
+  handlerCopy[2](handlerCopy, v18);
+  abstractObject = [(CPLPlatformObject *)self abstractObject];
+  resourceProgressDelegate = [abstractObject resourceProgressDelegate];
+  [resourceProgressDelegate libraryManager:abstractObject downloadDidFinishForResourceTransferTask:v18 finalResource:resourceCopy withError:errorCopy];
 }
 
-- (void)beginDownloadForResource:(id)a3 clientBundleID:(id)a4 options:(id)a5 proposedTaskIdentifier:(id)a6 completionHandler:(id)a7
+- (void)beginDownloadForResource:(id)resource clientBundleID:(id)d options:(id)options proposedTaskIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  resourceCopy = resource;
+  dCopy = d;
+  optionsCopy = options;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v18 = voucher_copy();
   queue = self->_queue;
   v29[0] = MEMORY[0x1E69E9820];
@@ -1326,12 +1326,12 @@ LABEL_18:
   v29[2] = __115__CPLProxyLibraryManager_beginDownloadForResource_clientBundleID_options_proposedTaskIdentifier_completionHandler___block_invoke;
   v29[3] = &unk_1E861AC58;
   v29[4] = self;
-  v30 = v13;
-  v31 = v15;
-  v32 = v16;
-  v35 = v17;
+  v30 = resourceCopy;
+  v31 = optionsCopy;
+  v32 = identifierCopy;
+  v35 = handlerCopy;
   v36 = a2;
-  v33 = v14;
+  v33 = dCopy;
   v34 = v18;
   v20 = v29;
   block[0] = MEMORY[0x1E69E9820];
@@ -1341,11 +1341,11 @@ LABEL_18:
   v38 = v20;
   v21 = queue;
   v22 = v18;
-  v23 = v14;
-  v24 = v17;
-  v25 = v16;
-  v26 = v15;
-  v27 = v13;
+  v23 = dCopy;
+  v24 = handlerCopy;
+  v25 = identifierCopy;
+  v26 = optionsCopy;
+  v27 = resourceCopy;
   v28 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v21, v28);
 }
@@ -1486,12 +1486,12 @@ void __115__CPLProxyLibraryManager_beginDownloadForResource_clientBundleID_optio
   [*(a1 + 40) _invokeOutstandingInvocationsWithTaskIdentifier:v8];
 }
 
-- (void)getStreamingURLForResource:(id)a3 intent:(unint64_t)a4 hints:(id)a5 timeRange:(id *)a6 clientBundleID:(id)a7 completionHandler:(id)a8
+- (void)getStreamingURLForResource:(id)resource intent:(unint64_t)intent hints:(id)hints timeRange:(id *)range clientBundleID:(id)d completionHandler:(id)handler
 {
-  v29 = a3;
-  v14 = a5;
-  v15 = a7;
-  v16 = a8;
+  resourceCopy = resource;
+  hintsCopy = hints;
+  dCopy = d;
+  handlerCopy = handler;
   v17 = objc_opt_class();
   v18 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   block = MEMORY[0x1E69E9820];
@@ -1504,19 +1504,19 @@ void __115__CPLProxyLibraryManager_beginDownloadForResource_clientBundleID_optio
   queue = self->_queue;
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
-  v20 = *&a6->var0.var3;
-  v38 = *&a6->var0.var0;
+  v20 = *&range->var0.var3;
+  v38 = *&range->var0.var0;
   v31[2] = __109__CPLProxyLibraryManager_getStreamingURLForResource_intent_hints_timeRange_clientBundleID_completionHandler___block_invoke;
   v31[3] = &unk_1E861ACF8;
   v31[4] = self;
   v32 = v18;
-  v36 = v16;
-  v37 = a4;
-  v33 = v29;
-  v34 = v14;
+  v36 = handlerCopy;
+  intentCopy = intent;
+  v33 = resourceCopy;
+  v34 = hintsCopy;
   v39 = v20;
-  v40 = *&a6->var1.var1;
-  v35 = v15;
+  v40 = *&range->var1.var1;
+  v35 = dCopy;
   v21 = v31;
   block = MEMORY[0x1E69E9820];
   v42 = 3221225472;
@@ -1524,11 +1524,11 @@ void __115__CPLProxyLibraryManager_beginDownloadForResource_clientBundleID_optio
   v44 = &unk_1E861B4E0;
   v45 = v21;
   v22 = queue;
-  v23 = v15;
-  v24 = v14;
-  v25 = v29;
+  v23 = dCopy;
+  v24 = hintsCopy;
+  v25 = resourceCopy;
   v26 = v18;
-  v27 = v16;
+  v27 = handlerCopy;
   v28 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
   dispatch_async(v22, v28);
 }
@@ -1658,9 +1658,9 @@ uint64_t __109__CPLProxyLibraryManager_getStreamingURLForResource_intent_hints_t
   return [v4 setCompletedUnitCount:v3];
 }
 
-- (void)rampingRequestForResourceType:(unint64_t)a3 numRequested:(unint64_t)a4 completionHandler:(id)a5
+- (void)rampingRequestForResourceType:(unint64_t)type numRequested:(unint64_t)requested completionHandler:(id)handler
 {
-  v9 = a5;
+  handlerCopy = handler;
   v10 = objc_opt_class();
   v11 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   block = MEMORY[0x1E69E9820];
@@ -1677,9 +1677,9 @@ uint64_t __109__CPLProxyLibraryManager_getStreamingURLForResource_intent_hints_t
   v18[3] = &unk_1E861AD48;
   v18[4] = self;
   v19 = v11;
-  v20 = v9;
-  v21 = a3;
-  v22 = a4;
+  v20 = handlerCopy;
+  typeCopy = type;
+  requestedCopy = requested;
   v13 = v18;
   block = MEMORY[0x1E69E9820];
   v24 = 3221225472;
@@ -1688,7 +1688,7 @@ uint64_t __109__CPLProxyLibraryManager_getStreamingURLForResource_intent_hints_t
   v27 = v13;
   v14 = queue;
   v15 = v11;
-  v16 = v9;
+  v16 = handlerCopy;
   v17 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
   dispatch_async(v14, v17);
 }
@@ -1787,29 +1787,29 @@ uint64_t __87__CPLProxyLibraryManager_rampingRequestForResourceType_numRequested
   return [v4 setCompletedUnitCount:v3];
 }
 
-- (void)_dispatchFailedInMemoryDownloadTaskForResource:(id)a3 withError:(id)a4 withCompletionHandler:(id)a5
+- (void)_dispatchFailedInMemoryDownloadTaskForResource:(id)resource withError:(id)error withCompletionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  errorCopy = error;
+  resourceCopy = resource;
   v11 = [CPLResourceTransferTask alloc];
-  v12 = [MEMORY[0x1E696AFB0] UUID];
-  v13 = [v12 UUIDString];
-  v16 = [(CPLResourceTransferTask *)v11 initWithResource:v10 taskIdentifier:v13];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v16 = [(CPLResourceTransferTask *)v11 initWithResource:resourceCopy taskIdentifier:uUIDString];
 
   [(CPLResourceTransferTask *)v16 setHighPriority:0];
-  v8[2](v8, v16);
+  handlerCopy[2](handlerCopy, v16);
 
-  v14 = [(CPLPlatformObject *)self abstractObject];
-  v15 = [v14 resourceProgressDelegate];
-  [v15 libraryManager:v14 inMemoryDownloadDidFinishForResourceTransferTask:v16 data:0 withError:v9];
+  abstractObject = [(CPLPlatformObject *)self abstractObject];
+  resourceProgressDelegate = [abstractObject resourceProgressDelegate];
+  [resourceProgressDelegate libraryManager:abstractObject inMemoryDownloadDidFinishForResourceTransferTask:v16 data:0 withError:errorCopy];
 }
 
-- (void)beginInMemoryDownloadOfResource:(id)a3 clientBundleID:(id)a4 completionHandler:(id)a5
+- (void)beginInMemoryDownloadOfResource:(id)resource clientBundleID:(id)d completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  resourceCopy = resource;
+  dCopy = d;
+  handlerCopy = handler;
   v12 = voucher_copy();
   queue = self->_queue;
   v21[0] = MEMORY[0x1E69E9820];
@@ -1817,10 +1817,10 @@ uint64_t __87__CPLProxyLibraryManager_rampingRequestForResourceType_numRequested
   v21[2] = __91__CPLProxyLibraryManager_beginInMemoryDownloadOfResource_clientBundleID_completionHandler___block_invoke;
   v21[3] = &unk_1E861ADC0;
   v21[4] = self;
-  v22 = v9;
-  v25 = v11;
+  v22 = resourceCopy;
+  v25 = handlerCopy;
   v26 = a2;
-  v23 = v10;
+  v23 = dCopy;
   v24 = v12;
   v14 = v21;
   block[0] = MEMORY[0x1E69E9820];
@@ -1830,9 +1830,9 @@ uint64_t __87__CPLProxyLibraryManager_rampingRequestForResourceType_numRequested
   v28 = v14;
   v15 = queue;
   v16 = v12;
-  v17 = v10;
-  v18 = v11;
-  v19 = v9;
+  v17 = dCopy;
+  v18 = handlerCopy;
+  v19 = resourceCopy;
   v20 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v15, v20);
 }
@@ -1954,17 +1954,17 @@ void __91__CPLProxyLibraryManager_beginInMemoryDownloadOfResource_clientBundleID
   [*(a1 + 40) _invokeOutstandingInvocationsWithTaskIdentifier:v7];
 }
 
-- (void)resolveLocalScopedIdentifiersForCloudScopedIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)resolveLocalScopedIdentifiersForCloudScopedIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   queue = self->_queue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __99__CPLProxyLibraryManager_resolveLocalScopedIdentifiersForCloudScopedIdentifiers_completionHandler___block_invoke;
   v14[3] = &unk_1E861ABE0;
-  v15 = v6;
-  v16 = v7;
+  v15 = identifiersCopy;
+  v16 = handlerCopy;
   v14[4] = self;
   v9 = v14;
   block[0] = MEMORY[0x1E69E9820];
@@ -1973,8 +1973,8 @@ void __91__CPLProxyLibraryManager_beginInMemoryDownloadOfResource_clientBundleID
   block[3] = &unk_1E861B4E0;
   v18 = v9;
   v10 = queue;
-  v11 = v6;
-  v12 = v7;
+  v11 = identifiersCopy;
+  v12 = handlerCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
@@ -2029,19 +2029,19 @@ uint64_t __99__CPLProxyLibraryManager_resolveLocalScopedIdentifiersForCloudScope
   return result;
 }
 
-- (void)getMappedScopedIdentifiersForScopedIdentifiers:(id)a3 inAreLocalIdentifiers:(BOOL)a4 completionHandler:(id)a5
+- (void)getMappedScopedIdentifiersForScopedIdentifiers:(id)identifiers inAreLocalIdentifiers:(BOOL)localIdentifiers completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   queue = self->_queue;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __113__CPLProxyLibraryManager_getMappedScopedIdentifiersForScopedIdentifiers_inAreLocalIdentifiers_completionHandler___block_invoke;
   v16[3] = &unk_1E861ADE8;
-  v17 = v8;
-  v18 = v9;
+  v17 = identifiersCopy;
+  v18 = handlerCopy;
   v16[4] = self;
-  v19 = a4;
+  localIdentifiersCopy = localIdentifiers;
   v11 = v16;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -2049,8 +2049,8 @@ uint64_t __99__CPLProxyLibraryManager_resolveLocalScopedIdentifiersForCloudScope
   block[3] = &unk_1E861B4E0;
   v21 = v11;
   v12 = queue;
-  v13 = v8;
-  v14 = v9;
+  v13 = identifiersCopy;
+  v14 = handlerCopy;
   v15 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v12, v15);
 }
@@ -2106,10 +2106,10 @@ uint64_t __113__CPLProxyLibraryManager_getMappedScopedIdentifiersForScopedIdenti
   return result;
 }
 
-- (void)createScope:(id)a3 completionHandler:(id)a4
+- (void)createScope:(id)scope completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  scopeCopy = scope;
+  handlerCopy = handler;
   v9 = objc_opt_class();
   v10 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   block = MEMORY[0x1E69E9820];
@@ -2126,8 +2126,8 @@ uint64_t __113__CPLProxyLibraryManager_getMappedScopedIdentifiersForScopedIdenti
   v18[3] = &unk_1E861AE60;
   v18[4] = self;
   v19 = v10;
-  v20 = v7;
-  v21 = v8;
+  v20 = scopeCopy;
+  v21 = handlerCopy;
   v12 = v18;
   block = MEMORY[0x1E69E9820];
   v23 = 3221225472;
@@ -2135,9 +2135,9 @@ uint64_t __113__CPLProxyLibraryManager_getMappedScopedIdentifiersForScopedIdenti
   v25 = &unk_1E861B4E0;
   v26 = v12;
   v13 = queue;
-  v14 = v7;
+  v14 = scopeCopy;
   v15 = v10;
-  v16 = v8;
+  v16 = handlerCopy;
   v17 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
   dispatch_async(v13, v17);
 }
@@ -2239,10 +2239,10 @@ uint64_t __56__CPLProxyLibraryManager_createScope_completionHandler___block_invo
   return [v4 setCompletedUnitCount:v3];
 }
 
-- (void)updateShareForScope:(id)a3 completionHandler:(id)a4
+- (void)updateShareForScope:(id)scope completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  scopeCopy = scope;
+  handlerCopy = handler;
   v9 = objc_opt_class();
   v10 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   block = MEMORY[0x1E69E9820];
@@ -2259,8 +2259,8 @@ uint64_t __56__CPLProxyLibraryManager_createScope_completionHandler___block_invo
   v18[3] = &unk_1E861AE60;
   v18[4] = self;
   v19 = v10;
-  v20 = v7;
-  v21 = v8;
+  v20 = scopeCopy;
+  v21 = handlerCopy;
   v12 = v18;
   block = MEMORY[0x1E69E9820];
   v23 = 3221225472;
@@ -2268,9 +2268,9 @@ uint64_t __56__CPLProxyLibraryManager_createScope_completionHandler___block_invo
   v25 = &unk_1E861B4E0;
   v26 = v12;
   v13 = queue;
-  v14 = v7;
+  v14 = scopeCopy;
   v15 = v10;
-  v16 = v8;
+  v16 = handlerCopy;
   v17 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
   dispatch_async(v13, v17);
 }
@@ -2372,10 +2372,10 @@ uint64_t __64__CPLProxyLibraryManager_updateShareForScope_completionHandler___bl
   return [v4 setCompletedUnitCount:v3];
 }
 
-- (void)deleteScopeWithIdentifier:(id)a3 forced:(BOOL)a4 completionHandler:(id)a5
+- (void)deleteScopeWithIdentifier:(id)identifier forced:(BOOL)forced completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v10 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   queue = self->_queue;
   v18[0] = MEMORY[0x1E69E9820];
@@ -2384,9 +2384,9 @@ uint64_t __64__CPLProxyLibraryManager_updateShareForScope_completionHandler___bl
   v18[3] = &unk_1E861AEB0;
   v18[4] = self;
   v19 = v10;
-  v20 = v8;
-  v21 = v9;
-  v22 = a4;
+  v20 = identifierCopy;
+  v21 = handlerCopy;
+  forcedCopy = forced;
   v12 = v18;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -2394,9 +2394,9 @@ uint64_t __64__CPLProxyLibraryManager_updateShareForScope_completionHandler___bl
   block[3] = &unk_1E861B4E0;
   v24 = v12;
   v13 = queue;
-  v14 = v8;
+  v14 = identifierCopy;
   v15 = v10;
-  v16 = v9;
+  v16 = handlerCopy;
   v17 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v13, v17);
 }
@@ -2501,10 +2501,10 @@ uint64_t __77__CPLProxyLibraryManager_deleteScopeWithIdentifier_forced_completio
   return [v4 setCompletedUnitCount:v3];
 }
 
-- (void)refreshScopeWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)refreshScopeWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v9 = objc_opt_class();
   v10 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   block = MEMORY[0x1E69E9820];
@@ -2521,8 +2521,8 @@ uint64_t __77__CPLProxyLibraryManager_deleteScopeWithIdentifier_forced_completio
   v18[3] = &unk_1E861AE60;
   v18[4] = self;
   v19 = v10;
-  v20 = v7;
-  v21 = v8;
+  v20 = identifierCopy;
+  v21 = handlerCopy;
   v12 = v18;
   block = MEMORY[0x1E69E9820];
   v23 = 3221225472;
@@ -2530,9 +2530,9 @@ uint64_t __77__CPLProxyLibraryManager_deleteScopeWithIdentifier_forced_completio
   v25 = &unk_1E861B4E0;
   v26 = v12;
   v13 = queue;
-  v14 = v7;
+  v14 = identifierCopy;
   v15 = v10;
-  v16 = v8;
+  v16 = handlerCopy;
   v17 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
   dispatch_async(v13, v17);
 }
@@ -2634,10 +2634,10 @@ uint64_t __71__CPLProxyLibraryManager_refreshScopeWithIdentifier_completionHandl
   return [v4 setCompletedUnitCount:v3];
 }
 
-- (void)fetchSharedScopeFromShareURL:(id)a3 completionHandler:(id)a4
+- (void)fetchSharedScopeFromShareURL:(id)l completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v9 = objc_opt_class();
   v10 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   block = MEMORY[0x1E69E9820];
@@ -2654,8 +2654,8 @@ uint64_t __71__CPLProxyLibraryManager_refreshScopeWithIdentifier_completionHandl
   v18[3] = &unk_1E861AE60;
   v18[4] = self;
   v19 = v10;
-  v20 = v7;
-  v21 = v8;
+  v20 = lCopy;
+  v21 = handlerCopy;
   v12 = v18;
   block = MEMORY[0x1E69E9820];
   v23 = 3221225472;
@@ -2663,9 +2663,9 @@ uint64_t __71__CPLProxyLibraryManager_refreshScopeWithIdentifier_completionHandl
   v25 = &unk_1E861B4E0;
   v26 = v12;
   v13 = queue;
-  v14 = v7;
+  v14 = lCopy;
   v15 = v10;
-  v16 = v8;
+  v16 = handlerCopy;
   v17 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
   dispatch_async(v13, v17);
 }
@@ -2767,10 +2767,10 @@ uint64_t __73__CPLProxyLibraryManager_fetchSharedScopeFromShareURL_completionHan
   return [v4 setCompletedUnitCount:v3];
 }
 
-- (void)acceptSharedScope:(id)a3 completionHandler:(id)a4
+- (void)acceptSharedScope:(id)scope completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  scopeCopy = scope;
+  handlerCopy = handler;
   v9 = objc_opt_class();
   v10 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   block = MEMORY[0x1E69E9820];
@@ -2787,8 +2787,8 @@ uint64_t __73__CPLProxyLibraryManager_fetchSharedScopeFromShareURL_completionHan
   v18[3] = &unk_1E861AE60;
   v18[4] = self;
   v19 = v10;
-  v20 = v7;
-  v21 = v8;
+  v20 = scopeCopy;
+  v21 = handlerCopy;
   v12 = v18;
   block = MEMORY[0x1E69E9820];
   v23 = 3221225472;
@@ -2796,9 +2796,9 @@ uint64_t __73__CPLProxyLibraryManager_fetchSharedScopeFromShareURL_completionHan
   v25 = &unk_1E861B4E0;
   v26 = v12;
   v13 = queue;
-  v14 = v7;
+  v14 = scopeCopy;
   v15 = v10;
-  v16 = v8;
+  v16 = handlerCopy;
   v17 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
   dispatch_async(v13, v17);
 }
@@ -2900,9 +2900,9 @@ uint64_t __62__CPLProxyLibraryManager_acceptSharedScope_completionHandler___bloc
   return [v4 setCompletedUnitCount:v3];
 }
 
-- (void)fetchExistingSharedLibraryScopeWithCompletionHandler:(id)a3
+- (void)fetchExistingSharedLibraryScopeWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = objc_opt_class();
   v7 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   block = MEMORY[0x1E69E9820];
@@ -2918,7 +2918,7 @@ uint64_t __62__CPLProxyLibraryManager_acceptSharedScope_completionHandler___bloc
   v14[2] = __79__CPLProxyLibraryManager_fetchExistingSharedLibraryScopeWithCompletionHandler___block_invoke;
   v14[3] = &unk_1E861ABE0;
   v15 = v7;
-  v16 = v5;
+  v16 = handlerCopy;
   v14[4] = self;
   v9 = v14;
   block = MEMORY[0x1E69E9820];
@@ -2928,7 +2928,7 @@ uint64_t __62__CPLProxyLibraryManager_acceptSharedScope_completionHandler___bloc
   v21 = v9;
   v10 = queue;
   v11 = v7;
-  v12 = v5;
+  v12 = handlerCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
   dispatch_async(v10, v13);
 }
@@ -3023,10 +3023,10 @@ uint64_t __79__CPLProxyLibraryManager_fetchExistingSharedLibraryScopeWithComplet
   return [v4 setCompletedUnitCount:v3];
 }
 
-- (void)startExitFromSharedScopeWithIdentifier:(id)a3 retentionPolicy:(int64_t)a4 exitSource:(int64_t)a5 completionHandler:(id)a6
+- (void)startExitFromSharedScopeWithIdentifier:(id)identifier retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v12 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   queue = self->_queue;
   v20[0] = MEMORY[0x1E69E9820];
@@ -3035,10 +3035,10 @@ uint64_t __79__CPLProxyLibraryManager_fetchExistingSharedLibraryScopeWithComplet
   v20[3] = &unk_1E861AF00;
   v20[4] = self;
   v21 = v12;
-  v22 = v10;
-  v23 = v11;
-  v24 = a4;
-  v25 = a5;
+  v22 = identifierCopy;
+  v23 = handlerCopy;
+  policyCopy = policy;
+  sourceCopy = source;
   v14 = v20;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -3046,9 +3046,9 @@ uint64_t __79__CPLProxyLibraryManager_fetchExistingSharedLibraryScopeWithComplet
   block[3] = &unk_1E861B4E0;
   v27 = v14;
   v15 = queue;
-  v16 = v10;
+  v16 = identifierCopy;
   v17 = v12;
-  v18 = v11;
+  v18 = handlerCopy;
   v19 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v15, v19);
 }
@@ -3123,11 +3123,11 @@ uint64_t __110__CPLProxyLibraryManager_startExitFromSharedScopeWithIdentifier_re
   return result;
 }
 
-- (void)removeParticipants:(id)a3 fromSharedScopeWithIdentifier:(id)a4 retentionPolicy:(int64_t)a5 exitSource:(int64_t)a6 completionHandler:(id)a7
+- (void)removeParticipants:(id)participants fromSharedScopeWithIdentifier:(id)identifier retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  participantsCopy = participants;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v15 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   queue = self->_queue;
   v24[0] = MEMORY[0x1E69E9820];
@@ -3136,11 +3136,11 @@ uint64_t __110__CPLProxyLibraryManager_startExitFromSharedScopeWithIdentifier_re
   v24[3] = &unk_1E861AF50;
   v24[4] = self;
   v25 = v15;
-  v26 = v12;
-  v27 = v13;
-  v28 = v14;
-  v29 = a5;
-  v30 = a6;
+  v26 = participantsCopy;
+  v27 = identifierCopy;
+  v28 = handlerCopy;
+  policyCopy = policy;
+  sourceCopy = source;
   v17 = v24;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -3148,10 +3148,10 @@ uint64_t __110__CPLProxyLibraryManager_startExitFromSharedScopeWithIdentifier_re
   block[3] = &unk_1E861B4E0;
   v32 = v17;
   v18 = queue;
-  v19 = v13;
-  v20 = v12;
+  v19 = identifierCopy;
+  v20 = participantsCopy;
   v21 = v15;
-  v22 = v14;
+  v22 = handlerCopy;
   v23 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v18, v23);
 }
@@ -3229,9 +3229,9 @@ uint64_t __120__CPLProxyLibraryManager_removeParticipants_fromSharedScopeWithIde
   return result;
 }
 
-- (void)sharedLibraryRampCheckWithCompletionHandler:(id)a3
+- (void)sharedLibraryRampCheckWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = objc_opt_class();
   v7 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   block = MEMORY[0x1E69E9820];
@@ -3247,7 +3247,7 @@ uint64_t __120__CPLProxyLibraryManager_removeParticipants_fromSharedScopeWithIde
   v14[2] = __70__CPLProxyLibraryManager_sharedLibraryRampCheckWithCompletionHandler___block_invoke;
   v14[3] = &unk_1E861ABE0;
   v15 = v7;
-  v16 = v5;
+  v16 = handlerCopy;
   v14[4] = self;
   v9 = v14;
   block = MEMORY[0x1E69E9820];
@@ -3257,7 +3257,7 @@ uint64_t __120__CPLProxyLibraryManager_removeParticipants_fromSharedScopeWithIde
   v21 = v9;
   v10 = queue;
   v11 = v7;
-  v12 = v5;
+  v12 = handlerCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
   dispatch_async(v10, v13);
 }
@@ -3352,19 +3352,19 @@ uint64_t __70__CPLProxyLibraryManager_sharedLibraryRampCheckWithCompletionHandle
   return [v4 setCompletedUnitCount:v3];
 }
 
-- (void)getStatusForPendingRecordsSharedToScopeWithIdentifier:(id)a3 maximumCount:(unint64_t)a4 completionHandler:(id)a5
+- (void)getStatusForPendingRecordsSharedToScopeWithIdentifier:(id)identifier maximumCount:(unint64_t)count completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   queue = self->_queue;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __111__CPLProxyLibraryManager_getStatusForPendingRecordsSharedToScopeWithIdentifier_maximumCount_completionHandler___block_invoke;
   v16[3] = &unk_1E861AFA0;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = a4;
+  v17 = identifierCopy;
+  v18 = handlerCopy;
+  countCopy = count;
   v11 = v16;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -3372,8 +3372,8 @@ uint64_t __70__CPLProxyLibraryManager_sharedLibraryRampCheckWithCompletionHandle
   block[3] = &unk_1E861B4E0;
   v21 = v11;
   v12 = queue;
-  v13 = v8;
-  v14 = v9;
+  v13 = identifierCopy;
+  v14 = handlerCopy;
   v15 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v12, v15);
 }
@@ -3431,10 +3431,10 @@ uint64_t __111__CPLProxyLibraryManager_getStatusForPendingRecordsSharedToScopeWi
   return result;
 }
 
-- (void)queryUserDetailsForShareParticipants:(id)a3 completionHandler:(id)a4
+- (void)queryUserDetailsForShareParticipants:(id)participants completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  participantsCopy = participants;
+  handlerCopy = handler;
   v9 = objc_opt_class();
   v10 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   block = MEMORY[0x1E69E9820];
@@ -3451,8 +3451,8 @@ uint64_t __111__CPLProxyLibraryManager_getStatusForPendingRecordsSharedToScopeWi
   v18[3] = &unk_1E861AE60;
   v18[4] = self;
   v19 = v10;
-  v20 = v7;
-  v21 = v8;
+  v20 = participantsCopy;
+  v21 = handlerCopy;
   v12 = v18;
   block = MEMORY[0x1E69E9820];
   v23 = 3221225472;
@@ -3460,9 +3460,9 @@ uint64_t __111__CPLProxyLibraryManager_getStatusForPendingRecordsSharedToScopeWi
   v25 = &unk_1E861B4E0;
   v26 = v12;
   v13 = queue;
-  v14 = v7;
+  v14 = participantsCopy;
   v15 = v10;
-  v16 = v8;
+  v16 = handlerCopy;
   v17 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
   dispatch_async(v13, v17);
 }
@@ -3564,20 +3564,20 @@ uint64_t __81__CPLProxyLibraryManager_queryUserDetailsForShareParticipants_compl
   return [v4 setCompletedUnitCount:v3];
 }
 
-- (void)testKey:(id)a3 value:(id)a4 completionHandler:(id)a5
+- (void)testKey:(id)key value:(id)value completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  valueCopy = value;
+  handlerCopy = handler;
   queue = self->_queue;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __58__CPLProxyLibraryManager_testKey_value_completionHandler___block_invoke;
   v18[3] = &unk_1E861B018;
   v18[4] = self;
-  v19 = v8;
-  v20 = v9;
-  v21 = v10;
+  v19 = keyCopy;
+  v20 = valueCopy;
+  v21 = handlerCopy;
   v12 = v18;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -3585,9 +3585,9 @@ uint64_t __81__CPLProxyLibraryManager_queryUserDetailsForShareParticipants_compl
   block[3] = &unk_1E861B4E0;
   v23 = v12;
   v13 = queue;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v14 = handlerCopy;
+  v15 = valueCopy;
+  v16 = keyCopy;
   v17 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v13, v17);
 }
@@ -3622,19 +3622,19 @@ void __58__CPLProxyLibraryManager_testKey_value_completionHandler___block_invoke
   [v3 testKey:*(a1 + 40) value:*(a1 + 48) completionHandler:{*(a1 + 56), v4, v5, v6, v7}];
 }
 
-- (void)getTargetsForRecordsWithScopedIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)getTargetsForRecordsWithScopedIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __86__CPLProxyLibraryManager_getTargetsForRecordsWithScopedIdentifiers_completionHandler___block_invoke;
   v15[3] = &unk_1E861AFA0;
-  v17 = v8;
+  v17 = handlerCopy;
   v18 = a2;
   v15[4] = self;
-  v16 = v7;
+  v16 = identifiersCopy;
   v10 = v15;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -3642,8 +3642,8 @@ void __58__CPLProxyLibraryManager_testKey_value_completionHandler___block_invoke
   block[3] = &unk_1E861B4E0;
   v20 = v10;
   v11 = queue;
-  v12 = v7;
-  v13 = v8;
+  v12 = identifiersCopy;
+  v13 = handlerCopy;
   v14 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v11, v14);
 }
@@ -3677,19 +3677,19 @@ void __86__CPLProxyLibraryManager_getTargetsForRecordsWithScopedIdentifiers_comp
   [v4 getTargetsForRecordsWithScopedIdentifiers:*(a1 + 40) completionHandler:*(a1 + 48)];
 }
 
-- (void)deleteResources:(id)a3 checkServerIfNecessary:(BOOL)a4 completionHandler:(id)a5
+- (void)deleteResources:(id)resources checkServerIfNecessary:(BOOL)necessary completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  resourcesCopy = resources;
+  handlerCopy = handler;
   queue = self->_queue;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __83__CPLProxyLibraryManager_deleteResources_checkServerIfNecessary_completionHandler___block_invoke;
   v16[3] = &unk_1E861B090;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = a4;
+  v17 = resourcesCopy;
+  v18 = handlerCopy;
+  necessaryCopy = necessary;
   v11 = v16;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -3697,8 +3697,8 @@ void __86__CPLProxyLibraryManager_getTargetsForRecordsWithScopedIdentifiers_comp
   block[3] = &unk_1E861B4E0;
   v21 = v11;
   v12 = queue;
-  v13 = v9;
-  v14 = v8;
+  v13 = handlerCopy;
+  v14 = resourcesCopy;
   v15 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v12, v15);
 }
@@ -3782,19 +3782,19 @@ void __83__CPLProxyLibraryManager_deleteResources_checkServerIfNecessary_complet
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkResourcesAreSafeToPrune:(id)a3 checkServerIfNecessary:(BOOL)a4 completionHandler:(id)a5
+- (void)checkResourcesAreSafeToPrune:(id)prune checkServerIfNecessary:(BOOL)necessary completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  pruneCopy = prune;
+  handlerCopy = handler;
   queue = self->_queue;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __96__CPLProxyLibraryManager_checkResourcesAreSafeToPrune_checkServerIfNecessary_completionHandler___block_invoke;
   v16[3] = &unk_1E861B090;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = a4;
+  v17 = pruneCopy;
+  v18 = handlerCopy;
+  necessaryCopy = necessary;
   v11 = v16;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -3802,8 +3802,8 @@ void __83__CPLProxyLibraryManager_deleteResources_checkServerIfNecessary_complet
   block[3] = &unk_1E861B4E0;
   v21 = v11;
   v12 = queue;
-  v13 = v9;
-  v14 = v8;
+  v13 = handlerCopy;
+  v14 = pruneCopy;
   v15 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v12, v15);
 }
@@ -3947,7 +3947,7 @@ uint64_t __42__CPLProxyLibraryManager_startSyncSession__block_invoke(uint64_t a1
   return [v1 _dispatchBlockWhenOpen:v3];
 }
 
-- (void)noteClientIsInForegroundQuietly:(BOOL)a3
+- (void)noteClientIsInForegroundQuietly:(BOOL)quietly
 {
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -3956,7 +3956,7 @@ uint64_t __42__CPLProxyLibraryManager_startSyncSession__block_invoke(uint64_t a1
   v7[3] = &unk_1E861B0D8;
   v7[4] = self;
   v7[5] = a2;
-  v8 = a3;
+  quietlyCopy = quietly;
   v4 = v7;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -4058,16 +4058,16 @@ uint64_t __50__CPLProxyLibraryManager_noteClientIsInBackground__block_invoke(uin
   return [*(a1 + 32) _dispatchBlockWhenOpen:v2];
 }
 
-- (void)disableSynchronizationWithReason:(id)a3
+- (void)disableSynchronizationWithReason:(id)reason
 {
-  v5 = a3;
+  reasonCopy = reason;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__CPLProxyLibraryManager_disableSynchronizationWithReason___block_invoke;
   v11[3] = &unk_1E861B128;
   v11[4] = self;
-  v12 = v5;
+  v12 = reasonCopy;
   v13 = a2;
   v7 = v11;
   block[0] = MEMORY[0x1E69E9820];
@@ -4076,7 +4076,7 @@ uint64_t __50__CPLProxyLibraryManager_noteClientIsInBackground__block_invoke(uin
   block[3] = &unk_1E861B4E0;
   v15 = v7;
   v8 = queue;
-  v9 = v5;
+  v9 = reasonCopy;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v8, v10);
 }
@@ -4121,16 +4121,16 @@ void __59__CPLProxyLibraryManager_disableSynchronizationWithReason___block_invok
   }
 }
 
-- (void)enableSynchronizationWithReason:(id)a3
+- (void)enableSynchronizationWithReason:(id)reason
 {
-  v5 = a3;
+  reasonCopy = reason;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __58__CPLProxyLibraryManager_enableSynchronizationWithReason___block_invoke;
   v11[3] = &unk_1E861B128;
   v11[4] = self;
-  v12 = v5;
+  v12 = reasonCopy;
   v13 = a2;
   v7 = v11;
   block[0] = MEMORY[0x1E69E9820];
@@ -4139,7 +4139,7 @@ void __59__CPLProxyLibraryManager_disableSynchronizationWithReason___block_invok
   block[3] = &unk_1E861B4E0;
   v15 = v7;
   v8 = queue;
-  v9 = v5;
+  v9 = reasonCopy;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v8, v10);
 }
@@ -4300,15 +4300,15 @@ void __62__CPLProxyLibraryManager_noteClientIsBeginningSignificantWork__block_in
   }
 }
 
-- (void)getSystemBudgetsWithCompletionHandler:(id)a3
+- (void)getSystemBudgetsWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __64__CPLProxyLibraryManager_getSystemBudgetsWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E861AAC8;
-  v12 = v5;
+  v12 = handlerCopy;
   v13 = a2;
   v11[4] = self;
   v7 = v11;
@@ -4318,7 +4318,7 @@ void __62__CPLProxyLibraryManager_noteClientIsBeginningSignificantWork__block_in
   block[3] = &unk_1E861B4E0;
   v15 = v7;
   v8 = queue;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v8, v10);
 }
@@ -4337,7 +4337,7 @@ void __64__CPLProxyLibraryManager_getSystemBudgetsWithCompletionHandler___block_
   [v1 _dispatchBlockWhenOpen:v4];
 }
 
-- (void)setShouldOverride:(BOOL)a3 forSystemBudgets:(unint64_t)a4
+- (void)setShouldOverride:(BOOL)override forSystemBudgets:(unint64_t)budgets
 {
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -4346,8 +4346,8 @@ void __64__CPLProxyLibraryManager_getSystemBudgetsWithCompletionHandler___block_
   v8[3] = &unk_1E861B150;
   v8[4] = self;
   v8[5] = a2;
-  v9 = a3;
-  v8[6] = a4;
+  overrideCopy = override;
+  v8[6] = budgets;
   v5 = v8;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -4400,15 +4400,15 @@ uint64_t __59__CPLProxyLibraryManager_noteClientIsEndingSignificantWork__block_i
   return [*(a1 + 32) _dispatchBlockWhenOpen:v2];
 }
 
-- (void)checkHasBackgroundDownloadOperationsWithCompletionHandler:(id)a3
+- (void)checkHasBackgroundDownloadOperationsWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __84__CPLProxyLibraryManager_checkHasBackgroundDownloadOperationsWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E861AAC8;
-  v12 = v5;
+  v12 = handlerCopy;
   v13 = a2;
   v11[4] = self;
   v7 = v11;
@@ -4418,7 +4418,7 @@ uint64_t __59__CPLProxyLibraryManager_noteClientIsEndingSignificantWork__block_i
   block[3] = &unk_1E861B4E0;
   v15 = v7;
   v8 = queue;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v8, v10);
 }
@@ -4461,19 +4461,19 @@ void __84__CPLProxyLibraryManager_checkHasBackgroundDownloadOperationsWithComple
   }
 }
 
-- (void)getStatusForRecordsWithScopedIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)getStatusForRecordsWithScopedIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __85__CPLProxyLibraryManager_getStatusForRecordsWithScopedIdentifiers_completionHandler___block_invoke;
   v15[3] = &unk_1E861AFA0;
-  v17 = v8;
+  v17 = handlerCopy;
   v18 = a2;
   v15[4] = self;
-  v16 = v7;
+  v16 = identifiersCopy;
   v10 = v15;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -4481,8 +4481,8 @@ void __84__CPLProxyLibraryManager_checkHasBackgroundDownloadOperationsWithComple
   block[3] = &unk_1E861B4E0;
   v20 = v10;
   v11 = queue;
-  v12 = v7;
-  v13 = v8;
+  v12 = identifiersCopy;
+  v13 = handlerCopy;
   v14 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v11, v14);
 }
@@ -4526,15 +4526,15 @@ void __85__CPLProxyLibraryManager_getStatusForRecordsWithScopedIdentifiers_compl
   }
 }
 
-- (void)getChangedStatusesWithCompletionHandler:(id)a3
+- (void)getChangedStatusesWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66__CPLProxyLibraryManager_getChangedStatusesWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E861AAC8;
-  v12 = v5;
+  v12 = handlerCopy;
   v13 = a2;
   v11[4] = self;
   v7 = v11;
@@ -4544,7 +4544,7 @@ void __85__CPLProxyLibraryManager_getStatusForRecordsWithScopedIdentifiers_compl
   block[3] = &unk_1E861B4E0;
   v15 = v7;
   v8 = queue;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v8, v10);
 }
@@ -4587,15 +4587,15 @@ void __66__CPLProxyLibraryManager_getChangedStatusesWithCompletionHandler___bloc
   }
 }
 
-- (void)acknowledgeChangedStatuses:(id)a3
+- (void)acknowledgeChangedStatuses:(id)statuses
 {
-  v5 = a3;
+  statusesCopy = statuses;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __53__CPLProxyLibraryManager_acknowledgeChangedStatuses___block_invoke;
   v11[3] = &unk_1E861B128;
-  v12 = v5;
+  v12 = statusesCopy;
   v13 = a2;
   v11[4] = self;
   v7 = v11;
@@ -4605,7 +4605,7 @@ void __66__CPLProxyLibraryManager_getChangedStatusesWithCompletionHandler___bloc
   block[3] = &unk_1E861B4E0;
   v15 = v7;
   v8 = queue;
-  v9 = v5;
+  v9 = statusesCopy;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v8, v10);
 }
@@ -4624,18 +4624,18 @@ void __53__CPLProxyLibraryManager_acknowledgeChangedStatuses___block_invoke(uint
   [v1 _dispatchBlockWhenOpen:v4];
 }
 
-- (void)addStatusChangesForRecordsWithScopedIdentifiers:(id)a3 persist:(BOOL)a4
+- (void)addStatusChangesForRecordsWithScopedIdentifiers:(id)identifiers persist:(BOOL)persist
 {
-  v7 = a3;
+  identifiersCopy = identifiers;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __82__CPLProxyLibraryManager_addStatusChangesForRecordsWithScopedIdentifiers_persist___block_invoke;
   v13[3] = &unk_1E861B178;
-  v14 = v7;
+  v14 = identifiersCopy;
   v15 = a2;
   v13[4] = self;
-  v16 = a4;
+  persistCopy = persist;
   v9 = v13;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -4643,7 +4643,7 @@ void __53__CPLProxyLibraryManager_acknowledgeChangedStatuses___block_invoke(uint
   block[3] = &unk_1E861B4E0;
   v18 = v9;
   v10 = queue;
-  v11 = v7;
+  v11 = identifiersCopy;
   v12 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v12);
 }
@@ -4663,25 +4663,25 @@ void __82__CPLProxyLibraryManager_addStatusChangesForRecordsWithScopedIdentifier
   [v2 _dispatchBlockWhenOpen:v5];
 }
 
-- (BOOL)_setStatusFromDictionary:(id)a3
+- (BOOL)_setStatusFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"status"];
-  v6 = [v4 objectForKeyedSubscript:@"error"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"status"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"error"];
 
   if (v5)
   {
-    v7 = [v5 unsignedIntegerValue];
-    v8 = [MEMORY[0x1E695DFB0] null];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (v6 == v8)
+    if (v6 == null)
     {
 
       v6 = 0;
     }
 
-    v9 = [(CPLPlatformObject *)self abstractObject];
-    v10 = [v9 _setStatus:v7 andError:v6];
+    abstractObject = [(CPLPlatformObject *)self abstractObject];
+    v10 = [abstractObject _setStatus:unsignedIntegerValue andError:v6];
   }
 
   else
@@ -4692,19 +4692,19 @@ void __82__CPLProxyLibraryManager_addStatusChangesForRecordsWithScopedIdentifier
   return v10;
 }
 
-- (void)getScopeStatusCountsForScopeWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getScopeStatusCountsForScopeWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __87__CPLProxyLibraryManager_getScopeStatusCountsForScopeWithIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_1E861AFA0;
-  v17 = v8;
+  v17 = handlerCopy;
   v18 = a2;
   v15[4] = self;
-  v16 = v7;
+  v16 = identifierCopy;
   v10 = v15;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -4712,8 +4712,8 @@ void __82__CPLProxyLibraryManager_addStatusChangesForRecordsWithScopedIdentifier
   block[3] = &unk_1E861B4E0;
   v20 = v10;
   v11 = queue;
-  v12 = v7;
-  v13 = v8;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
   v14 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v11, v14);
 }
@@ -4757,20 +4757,20 @@ void __87__CPLProxyLibraryManager_getScopeStatusCountsForScopeWithIdentifier_com
   }
 }
 
-- (void)_invokeSyncOutstandingInvocationsWithTaskIdentifier:(id)a3
+- (void)_invokeSyncOutstandingInvocationsWithTaskIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   syncOutstandingInvocationsCount = self->_syncOutstandingInvocationsCount;
   if (!syncOutstandingInvocationsCount)
   {
     [CPLProxyLibraryManager _invokeSyncOutstandingInvocationsWithTaskIdentifier:];
   }
 
-  v6 = v4;
-  if (v4)
+  v6 = identifierCopy;
+  if (identifierCopy)
   {
-    v7 = [(NSMutableDictionary *)self->_syncOutstandingInvocations objectForKey:v4];
+    v7 = [(NSMutableDictionary *)self->_syncOutstandingInvocations objectForKey:identifierCopy];
     if (v7)
     {
       [(NSMutableDictionary *)self->_syncOutstandingInvocations removeObjectForKey:v6];
@@ -4789,8 +4789,8 @@ void __87__CPLProxyLibraryManager_getScopeStatusCountsForScopeWithIdentifier_com
 
       if ([v7 didFinish])
       {
-        v9 = [v7 errors];
-        [(CPLProxyLibraryManager *)self forceSyncDidFinishForTask:v6 withErrors:v9];
+        errors = [v7 errors];
+        [(CPLProxyLibraryManager *)self forceSyncDidFinishForTask:v6 withErrors:errors];
       }
     }
 
@@ -4813,28 +4813,28 @@ void __87__CPLProxyLibraryManager_getScopeStatusCountsForScopeWithIdentifier_com
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_dispatchFailedForceSyncTaskForScopeIdentifiers:(id)a3 withError:(id)a4 withCompletionHandler:(id)a5
+- (void)_dispatchFailedForceSyncTaskForScopeIdentifiers:(id)identifiers withError:(id)error withCompletionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v16 = [[CPLForceSyncTask alloc] initWithScopeIdentifiers:v10];
-  v11 = [MEMORY[0x1E696AFB0] UUID];
-  v12 = [v11 UUIDString];
-  [(CPLForceSyncTask *)v16 setTaskIdentifier:v12];
+  handlerCopy = handler;
+  errorCopy = error;
+  identifiersCopy = identifiers;
+  v16 = [[CPLForceSyncTask alloc] initWithScopeIdentifiers:identifiersCopy];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [(CPLForceSyncTask *)v16 setTaskIdentifier:uUIDString];
 
-  v8[2](v8, v16);
-  v13 = [(CPLPlatformObject *)self abstractObject];
-  v14 = [v13 forceSyncDelegate];
-  v15 = [CPLErrors errorsForIdentifiers:v10 error:v9];
+  handlerCopy[2](handlerCopy, v16);
+  abstractObject = [(CPLPlatformObject *)self abstractObject];
+  forceSyncDelegate = [abstractObject forceSyncDelegate];
+  v15 = [CPLErrors errorsForIdentifiers:identifiersCopy error:errorCopy];
 
-  [v14 libraryManager:v13 didFinishForceSyncTask:v16 withErrors:v15];
+  [forceSyncDelegate libraryManager:abstractObject didFinishForceSyncTask:v16 withErrors:v15];
 }
 
-- (void)forceSynchronizingScopeWithIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)forceSynchronizingScopeWithIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v9 = voucher_copy();
   queue = self->_queue;
   v17[0] = MEMORY[0x1E69E9820];
@@ -4842,8 +4842,8 @@ void __87__CPLProxyLibraryManager_getScopeStatusCountsForScopeWithIdentifier_com
   v17[2] = __83__CPLProxyLibraryManager_forceSynchronizingScopeWithIdentifiers_completionHandler___block_invoke;
   v17[3] = &unk_1E861B1A0;
   v17[4] = self;
-  v18 = v7;
-  v20 = v8;
+  v18 = identifiersCopy;
+  v20 = handlerCopy;
   v21 = a2;
   v19 = v9;
   v11 = v17;
@@ -4854,8 +4854,8 @@ void __87__CPLProxyLibraryManager_getScopeStatusCountsForScopeWithIdentifier_com
   v23 = v11;
   v12 = queue;
   v13 = v9;
-  v14 = v8;
-  v15 = v7;
+  v14 = handlerCopy;
+  v15 = identifiersCopy;
   v16 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v12, v16);
 }
@@ -4972,16 +4972,16 @@ void __83__CPLProxyLibraryManager_forceSynchronizingScopeWithIdentifiers_complet
   [*(a1 + 40) _invokeSyncOutstandingInvocationsWithTaskIdentifier:a2];
 }
 
-- (void)downloadDidStartForResourceTransferTask:(id)a3
+- (void)downloadDidStartForResourceTransferTask:(id)task
 {
-  v5 = a3;
+  taskCopy = task;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66__CPLProxyLibraryManager_downloadDidStartForResourceTransferTask___block_invoke;
   v11[3] = &unk_1E861B128;
   v11[4] = self;
-  v12 = v5;
+  v12 = taskCopy;
   v13 = a2;
   v7 = v11;
   block[0] = MEMORY[0x1E69E9820];
@@ -4990,7 +4990,7 @@ void __83__CPLProxyLibraryManager_forceSynchronizingScopeWithIdentifiers_complet
   block[3] = &unk_1E861B4E0;
   v15 = v7;
   v8 = queue;
-  v9 = v5;
+  v9 = taskCopy;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v8, v10);
 }
@@ -5010,17 +5010,17 @@ void __66__CPLProxyLibraryManager_downloadDidStartForResourceTransferTask___bloc
   [v2 _dispatchBlockWhenOpen:v5];
 }
 
-- (void)downloadDidProgress:(float)a3 forResourceTransferTask:(id)a4
+- (void)downloadDidProgress:(float)progress forResourceTransferTask:(id)task
 {
-  v7 = a4;
+  taskCopy = task;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __70__CPLProxyLibraryManager_downloadDidProgress_forResourceTransferTask___block_invoke;
   v13[3] = &unk_1E861B218;
   v13[4] = self;
-  v14 = v7;
-  v16 = a3;
+  v14 = taskCopy;
+  progressCopy = progress;
   v15 = a2;
   v9 = v13;
   block[0] = MEMORY[0x1E69E9820];
@@ -5029,7 +5029,7 @@ void __66__CPLProxyLibraryManager_downloadDidStartForResourceTransferTask___bloc
   block[3] = &unk_1E861B4E0;
   v18 = v9;
   v10 = queue;
-  v11 = v7;
+  v11 = taskCopy;
   v12 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v12);
 }
@@ -5050,20 +5050,20 @@ void __70__CPLProxyLibraryManager_downloadDidProgress_forResourceTransferTask___
   [v2 _dispatchBlockWhenOpen:v5];
 }
 
-- (void)downloadDidFinishForResourceTransferTask:(id)a3 finalResource:(id)a4 withError:(id)a5
+- (void)downloadDidFinishForResourceTransferTask:(id)task finalResource:(id)resource withError:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  taskCopy = task;
+  resourceCopy = resource;
+  errorCopy = error;
   queue = self->_queue;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __91__CPLProxyLibraryManager_downloadDidFinishForResourceTransferTask_finalResource_withError___block_invoke;
   v19[3] = &unk_1E861B268;
   v19[4] = self;
-  v20 = v11;
-  v21 = v9;
-  v22 = v10;
+  v20 = errorCopy;
+  v21 = taskCopy;
+  v22 = resourceCopy;
   v23 = a2;
   v13 = v19;
   block[0] = MEMORY[0x1E69E9820];
@@ -5072,9 +5072,9 @@ void __70__CPLProxyLibraryManager_downloadDidProgress_forResourceTransferTask___
   block[3] = &unk_1E861B4E0;
   v25 = v13;
   v14 = queue;
-  v15 = v10;
-  v16 = v9;
-  v17 = v11;
+  v15 = resourceCopy;
+  v16 = taskCopy;
+  v17 = errorCopy;
   v18 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v14, v18);
 }
@@ -5100,20 +5100,20 @@ void __91__CPLProxyLibraryManager_downloadDidFinishForResourceTransferTask_final
   [v3 _dispatchBlockWhenOpen:v9];
 }
 
-- (void)inMemoryDownloadDidFinishForResourceTransferTask:(id)a3 data:(id)a4 withError:(id)a5
+- (void)inMemoryDownloadDidFinishForResourceTransferTask:(id)task data:(id)data withError:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  taskCopy = task;
+  dataCopy = data;
+  errorCopy = error;
   queue = self->_queue;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __90__CPLProxyLibraryManager_inMemoryDownloadDidFinishForResourceTransferTask_data_withError___block_invoke;
   v19[3] = &unk_1E861B268;
   v19[4] = self;
-  v20 = v11;
-  v21 = v9;
-  v22 = v10;
+  v20 = errorCopy;
+  v21 = taskCopy;
+  v22 = dataCopy;
   v23 = a2;
   v13 = v19;
   block[0] = MEMORY[0x1E69E9820];
@@ -5122,9 +5122,9 @@ void __91__CPLProxyLibraryManager_downloadDidFinishForResourceTransferTask_final
   block[3] = &unk_1E861B4E0;
   v25 = v13;
   v14 = queue;
-  v15 = v10;
-  v16 = v9;
-  v17 = v11;
+  v15 = dataCopy;
+  v16 = taskCopy;
+  v17 = errorCopy;
   v18 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v14, v18);
 }
@@ -5150,16 +5150,16 @@ void __90__CPLProxyLibraryManager_inMemoryDownloadDidFinishForResourceTransferTa
   [v3 _dispatchBlockWhenOpen:v9];
 }
 
-- (void)backgroundDownloadDidFinishForResource:(id)a3
+- (void)backgroundDownloadDidFinishForResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__CPLProxyLibraryManager_backgroundDownloadDidFinishForResource___block_invoke;
   v10[3] = &unk_1E861B290;
   v10[4] = self;
-  v11 = v4;
+  v11 = resourceCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -5167,7 +5167,7 @@ void __90__CPLProxyLibraryManager_inMemoryDownloadDidFinishForResourceTransferTa
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = resourceCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -5184,16 +5184,16 @@ void __65__CPLProxyLibraryManager_backgroundDownloadDidFinishForResource___block
   [v1 _dispatchBlockWhenOpen:v2];
 }
 
-- (void)backgroundDownloadDidFailForResource:(id)a3
+- (void)backgroundDownloadDidFailForResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __63__CPLProxyLibraryManager_backgroundDownloadDidFailForResource___block_invoke;
   v10[3] = &unk_1E861B290;
   v10[4] = self;
-  v11 = v4;
+  v11 = resourceCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -5201,7 +5201,7 @@ void __65__CPLProxyLibraryManager_backgroundDownloadDidFinishForResource___block
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = resourceCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -5218,36 +5218,36 @@ void __63__CPLProxyLibraryManager_backgroundDownloadDidFailForResource___block_i
   [v1 _dispatchBlockWhenOpen:v2];
 }
 
-- (id)_uploadTaskDidStartForResource:(id)a3 withTaskIdentifier:(id)a4
+- (id)_uploadTaskDidStartForResource:(id)resource withTaskIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_uploadTasks objectForKey:v7];
+  resourceCopy = resource;
+  identifierCopy = identifier;
+  v8 = [(NSMutableDictionary *)self->_uploadTasks objectForKey:identifierCopy];
   if (!v8)
   {
-    v8 = [(CPLResourceTransferTask *)[CPLProxyResourceTransferTask alloc] initWithResource:v6 taskIdentifier:v7];
+    v8 = [(CPLResourceTransferTask *)[CPLProxyResourceTransferTask alloc] initWithResource:resourceCopy taskIdentifier:identifierCopy];
     [(CPLProxyResourceTransferTask *)v8 setProxyLibraryManager:self];
-    [(NSMutableDictionary *)self->_uploadTasks setObject:v8 forKey:v7];
-    v9 = [(CPLPlatformObject *)self abstractObject];
-    v10 = [v9 resourceProgressDelegate];
-    [v10 libraryManager:v9 uploadDidStartForResourceTransferTask:v8];
+    [(NSMutableDictionary *)self->_uploadTasks setObject:v8 forKey:identifierCopy];
+    abstractObject = [(CPLPlatformObject *)self abstractObject];
+    resourceProgressDelegate = [abstractObject resourceProgressDelegate];
+    [resourceProgressDelegate libraryManager:abstractObject uploadDidStartForResourceTransferTask:v8];
   }
 
   return v8;
 }
 
-- (void)uploadDidStartForResource:(id)a3 withResourceTransferTask:(id)a4
+- (void)uploadDidStartForResource:(id)resource withResourceTransferTask:(id)task
 {
-  v6 = a3;
-  v7 = a4;
+  resourceCopy = resource;
+  taskCopy = task;
   queue = self->_queue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __77__CPLProxyLibraryManager_uploadDidStartForResource_withResourceTransferTask___block_invoke;
   v14[3] = &unk_1E861B1C8;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
+  v15 = resourceCopy;
+  v16 = taskCopy;
   v9 = v14;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -5255,8 +5255,8 @@ void __63__CPLProxyLibraryManager_backgroundDownloadDidFailForResource___block_i
   block[3] = &unk_1E861B4E0;
   v18 = v9;
   v10 = queue;
-  v11 = v7;
-  v12 = v6;
+  v11 = taskCopy;
+  v12 = resourceCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
@@ -5276,19 +5276,19 @@ void __77__CPLProxyLibraryManager_uploadDidStartForResource_withResourceTransfer
   [v2 _dispatchBlockWhenOpen:v5];
 }
 
-- (void)uploadOfResource:(id)a3 didProgress:(float)a4 forResourceTransferTask:(id)a5
+- (void)uploadOfResource:(id)resource didProgress:(float)progress forResourceTransferTask:(id)task
 {
-  v8 = a3;
-  v9 = a5;
+  resourceCopy = resource;
+  taskCopy = task;
   queue = self->_queue;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __79__CPLProxyLibraryManager_uploadOfResource_didProgress_forResourceTransferTask___block_invoke;
   v16[3] = &unk_1E861B1F0;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = a4;
+  v17 = resourceCopy;
+  v18 = taskCopy;
+  progressCopy = progress;
   v11 = v16;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -5296,8 +5296,8 @@ void __77__CPLProxyLibraryManager_uploadDidStartForResource_withResourceTransfer
   block[3] = &unk_1E861B4E0;
   v21 = v11;
   v12 = queue;
-  v13 = v9;
-  v14 = v8;
+  v13 = taskCopy;
+  v14 = resourceCopy;
   v15 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v12, v15);
 }
@@ -5318,20 +5318,20 @@ void __79__CPLProxyLibraryManager_uploadOfResource_didProgress_forResourceTransf
   [v2 _dispatchBlockWhenOpen:v5];
 }
 
-- (void)uploadOfResource:(id)a3 didFinishForResourceTransferTask:(id)a4 withError:(id)a5
+- (void)uploadOfResource:(id)resource didFinishForResourceTransferTask:(id)task withError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resourceCopy = resource;
+  taskCopy = task;
+  errorCopy = error;
   queue = self->_queue;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __86__CPLProxyLibraryManager_uploadOfResource_didFinishForResourceTransferTask_withError___block_invoke;
   v18[3] = &unk_1E861B2B8;
   v18[4] = self;
-  v19 = v10;
-  v20 = v8;
-  v21 = v9;
+  v19 = errorCopy;
+  v20 = resourceCopy;
+  v21 = taskCopy;
   v12 = v18;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -5339,9 +5339,9 @@ void __79__CPLProxyLibraryManager_uploadOfResource_didProgress_forResourceTransf
   block[3] = &unk_1E861B4E0;
   v23 = v12;
   v13 = queue;
-  v14 = v9;
-  v15 = v8;
-  v16 = v10;
+  v14 = taskCopy;
+  v15 = resourceCopy;
+  v16 = errorCopy;
   v17 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v13, v17);
 }
@@ -5395,16 +5395,16 @@ uint64_t __56__CPLProxyLibraryManager_libraryManagerHasChangesToPull__block_invo
   return [v1 _dispatchBlockWhenOpen:v3];
 }
 
-- (void)libraryManagerDidUpdateStatusWithProperties:(id)a3
+- (void)libraryManagerDidUpdateStatusWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__CPLProxyLibraryManager_libraryManagerDidUpdateStatusWithProperties___block_invoke;
   v10[3] = &unk_1E861B290;
   v10[4] = self;
-  v11 = v4;
+  v11 = propertiesCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -5412,7 +5412,7 @@ uint64_t __56__CPLProxyLibraryManager_libraryManagerHasChangesToPull__block_invo
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = propertiesCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -5431,7 +5431,7 @@ void __70__CPLProxyLibraryManager_libraryManagerDidUpdateStatusWithProperties___
   [v2 _dispatchBlockWhenOpen:v5];
 }
 
-- (void)libraryManagerDidUpdateSizeOfResourcesToUploadToSize:(unint64_t)a3 sizeOfOriginalResourcesToUpload:(unint64_t)a4 numberOfImages:(unint64_t)a5 numberOfVideos:(unint64_t)a6 numberOfOtherItems:(unint64_t)a7
+- (void)libraryManagerDidUpdateSizeOfResourcesToUploadToSize:(unint64_t)size sizeOfOriginalResourcesToUpload:(unint64_t)upload numberOfImages:(unint64_t)images numberOfVideos:(unint64_t)videos numberOfOtherItems:(unint64_t)items
 {
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
@@ -5439,11 +5439,11 @@ void __70__CPLProxyLibraryManager_libraryManagerDidUpdateStatusWithProperties___
   v11[2] = __160__CPLProxyLibraryManager_libraryManagerDidUpdateSizeOfResourcesToUploadToSize_sizeOfOriginalResourcesToUpload_numberOfImages_numberOfVideos_numberOfOtherItems___block_invoke;
   v11[3] = &unk_1E861B2E0;
   v11[4] = self;
-  v11[5] = a3;
-  v11[6] = a4;
-  v11[7] = a5;
-  v11[8] = a6;
-  v11[9] = a7;
+  v11[5] = size;
+  v11[6] = upload;
+  v11[7] = images;
+  v11[8] = videos;
+  v11[9] = items;
   v8 = v11;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -5499,18 +5499,18 @@ uint64_t __56__CPLProxyLibraryManager_libraryManagerHasStatusChanges__block_invo
   return [v1 _dispatchBlockWhenOpen:v3];
 }
 
-- (void)forceSyncDidFinishForTask:(id)a3 withErrors:(id)a4
+- (void)forceSyncDidFinishForTask:(id)task withErrors:(id)errors
 {
-  v7 = a3;
-  v8 = a4;
+  taskCopy = task;
+  errorsCopy = errors;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __63__CPLProxyLibraryManager_forceSyncDidFinishForTask_withErrors___block_invoke;
   v15[3] = &unk_1E861B330;
   v15[4] = self;
-  v16 = v8;
-  v17 = v7;
+  v16 = errorsCopy;
+  v17 = taskCopy;
   v18 = a2;
   v10 = v15;
   block[0] = MEMORY[0x1E69E9820];
@@ -5519,8 +5519,8 @@ uint64_t __56__CPLProxyLibraryManager_libraryManagerHasStatusChanges__block_invo
   block[3] = &unk_1E861B4E0;
   v20 = v10;
   v11 = queue;
-  v12 = v7;
-  v13 = v8;
+  v12 = taskCopy;
+  v13 = errorsCopy;
   v14 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v11, v14);
 }
@@ -5551,12 +5551,12 @@ void __63__CPLProxyLibraryManager_forceSyncDidFinishForTask_withErrors___block_i
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (void)provideLocalResource:(id)a3 recordClassString:(id)a4 completionHandler:(id)a5
+- (void)provideLocalResource:(id)resource recordClassString:(id)string completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = NSClassFromString(v9);
+  resourceCopy = resource;
+  stringCopy = string;
+  handlerCopy = handler;
+  v11 = NSClassFromString(stringCopy);
   if (v11 && (v12 = v11, ([(objc_class *)v11 isSubclassOfClass:objc_opt_class()]& 1) != 0))
   {
     queue = self->_queue;
@@ -5565,9 +5565,9 @@ void __63__CPLProxyLibraryManager_forceSyncDidFinishForTask_withErrors___block_i
     v17[2] = __83__CPLProxyLibraryManager_provideLocalResource_recordClassString_completionHandler___block_invoke;
     v17[3] = &unk_1E861B358;
     v17[4] = self;
-    v18 = v8;
+    v18 = resourceCopy;
     v20 = v12;
-    v19 = v10;
+    v19 = handlerCopy;
     v14 = v17;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -5638,16 +5638,16 @@ void __83__CPLProxyLibraryManager_provideLocalResource_recordClassString_complet
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pushAllChangesWithCompletionHandler:(id)a3
+- (void)pushAllChangesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __62__CPLProxyLibraryManager_pushAllChangesWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E861AA50;
   v10[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -5655,7 +5655,7 @@ void __83__CPLProxyLibraryManager_provideLocalResource_recordClassString_complet
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = handlerCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -5705,11 +5705,11 @@ void __62__CPLProxyLibraryManager_pushAllChangesWithCompletionHandler___block_in
   }
 }
 
-- (void)providePayloadForComputeStates:(id)a3 inFolderWithURL:(id)a4 completionHandler:(id)a5
+- (void)providePayloadForComputeStates:(id)states inFolderWithURL:(id)l completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  statesCopy = states;
+  lCopy = l;
+  handlerCopy = handler;
   v11 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:2];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
@@ -5717,8 +5717,8 @@ void __62__CPLProxyLibraryManager_pushAllChangesWithCompletionHandler___block_in
   v28[3] = &unk_1E861B380;
   v12 = v11;
   v29 = v12;
-  v30 = v10;
-  v13 = v10;
+  v30 = handlerCopy;
+  v13 = handlerCopy;
   v14 = MEMORY[0x1E128EBA0](v28);
   queue = self->_queue;
   v23[0] = MEMORY[0x1E69E9820];
@@ -5727,8 +5727,8 @@ void __62__CPLProxyLibraryManager_pushAllChangesWithCompletionHandler___block_in
   v23[3] = &unk_1E861B3A8;
   v23[4] = self;
   v24 = v12;
-  v25 = v8;
-  v26 = v9;
+  v25 = statesCopy;
+  v26 = lCopy;
   v27 = v14;
   v16 = v23;
   block[0] = MEMORY[0x1E69E9820];
@@ -5738,8 +5738,8 @@ void __62__CPLProxyLibraryManager_pushAllChangesWithCompletionHandler___block_in
   v32 = v16;
   v17 = queue;
   v18 = v14;
-  v19 = v9;
-  v20 = v8;
+  v19 = lCopy;
+  v20 = statesCopy;
   v21 = v12;
   v22 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v17, v22);
@@ -5811,16 +5811,16 @@ void __91__CPLProxyLibraryManager_providePayloadForComputeStates_inFolderWithURL
   }
 }
 
-- (void)cancelTask:(id)a3
+- (void)cancelTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __37__CPLProxyLibraryManager_cancelTask___block_invoke;
   v10[3] = &unk_1E861B290;
-  v11 = v4;
-  v12 = self;
+  v11 = taskCopy;
+  selfCopy = self;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -5828,21 +5828,21 @@ void __91__CPLProxyLibraryManager_providePayloadForComputeStates_inFolderWithURL
   block[3] = &unk_1E861B4E0;
   v14 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = taskCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
 
-- (void)cancelSyncTask:(id)a3
+- (void)cancelSyncTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __41__CPLProxyLibraryManager_cancelSyncTask___block_invoke;
   v10[3] = &unk_1E861B290;
-  v11 = v4;
-  v12 = self;
+  v11 = taskCopy;
+  selfCopy = self;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -5850,7 +5850,7 @@ void __91__CPLProxyLibraryManager_providePayloadForComputeStates_inFolderWithURL
   block[3] = &unk_1E861B4E0;
   v14 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = taskCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -5898,18 +5898,18 @@ void __33__CPLProxyLibraryManager_barrier__block_invoke(uint64_t a1)
   }
 }
 
-- (void)getResourcesForItemWithScopedIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getResourcesForItemWithScopedIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   queue = self->_queue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __84__CPLProxyLibraryManager_getResourcesForItemWithScopedIdentifier_completionHandler___block_invoke;
   v14[3] = &unk_1E861B3D0;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
+  v15 = identifierCopy;
+  v16 = handlerCopy;
   v9 = v14;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -5917,8 +5917,8 @@ void __33__CPLProxyLibraryManager_barrier__block_invoke(uint64_t a1)
   block[3] = &unk_1E861B4E0;
   v18 = v9;
   v10 = queue;
-  v11 = v7;
-  v12 = v6;
+  v11 = handlerCopy;
+  v12 = identifierCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
@@ -5958,16 +5958,16 @@ void __84__CPLProxyLibraryManager_getResourcesForItemWithScopedIdentifier_comple
   }
 }
 
-- (void)compactFileCacheWithCompletionHandler:(id)a3
+- (void)compactFileCacheWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __64__CPLProxyLibraryManager_compactFileCacheWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E861AA50;
   v10[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -5975,7 +5975,7 @@ void __84__CPLProxyLibraryManager_getResourcesForItemWithScopedIdentifier_comple
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = handlerCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -6015,19 +6015,19 @@ void __64__CPLProxyLibraryManager_compactFileCacheWithCompletionHandler___block_
   }
 }
 
-- (void)resetCacheWithOption:(unint64_t)a3 reason:(id)a4 completionHandler:(id)a5
+- (void)resetCacheWithOption:(unint64_t)option reason:(id)reason completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  reasonCopy = reason;
+  handlerCopy = handler;
   queue = self->_queue;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __72__CPLProxyLibraryManager_resetCacheWithOption_reason_completionHandler___block_invoke;
   v16[3] = &unk_1E861AFA0;
-  v18 = v9;
-  v19 = a3;
+  v18 = handlerCopy;
+  optionCopy = option;
   v16[4] = self;
-  v17 = v8;
+  v17 = reasonCopy;
   v11 = v16;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -6035,8 +6035,8 @@ void __64__CPLProxyLibraryManager_compactFileCacheWithCompletionHandler___block_
   block[3] = &unk_1E861B4E0;
   v21 = v11;
   v12 = queue;
-  v13 = v8;
-  v14 = v9;
+  v13 = reasonCopy;
+  v14 = handlerCopy;
   v15 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v12, v15);
 }
@@ -6080,16 +6080,16 @@ void __72__CPLProxyLibraryManager_resetCacheWithOption_reason_completionHandler_
   }
 }
 
-- (void)getListOfComponentsWithCompletionHandler:(id)a3
+- (void)getListOfComponentsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __67__CPLProxyLibraryManager_getListOfComponentsWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E861AA50;
   v10[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -6097,7 +6097,7 @@ void __72__CPLProxyLibraryManager_resetCacheWithOption_reason_completionHandler_
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = handlerCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -6137,17 +6137,17 @@ void __67__CPLProxyLibraryManager_getListOfComponentsWithCompletionHandler___blo
   }
 }
 
-- (void)getStatusForComponents:(id)a3 completionHandler:(id)a4
+- (void)getStatusForComponents:(id)components completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  componentsCopy = components;
+  handlerCopy = handler;
   queue = self->_queue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __67__CPLProxyLibraryManager_getStatusForComponents_completionHandler___block_invoke;
   v14[3] = &unk_1E861ABE0;
-  v15 = v6;
-  v16 = v7;
+  v15 = componentsCopy;
+  v16 = handlerCopy;
   v14[4] = self;
   v9 = v14;
   block[0] = MEMORY[0x1E69E9820];
@@ -6156,8 +6156,8 @@ void __67__CPLProxyLibraryManager_getListOfComponentsWithCompletionHandler___blo
   block[3] = &unk_1E861B4E0;
   v18 = v9;
   v10 = queue;
-  v11 = v6;
-  v12 = v7;
+  v11 = componentsCopy;
+  v12 = handlerCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
@@ -6198,17 +6198,17 @@ void __67__CPLProxyLibraryManager_getStatusForComponents_completionHandler___blo
   }
 }
 
-- (void)getStatusArrayForComponents:(id)a3 completionHandler:(id)a4
+- (void)getStatusArrayForComponents:(id)components completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  componentsCopy = components;
+  handlerCopy = handler;
   queue = self->_queue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __72__CPLProxyLibraryManager_getStatusArrayForComponents_completionHandler___block_invoke;
   v14[3] = &unk_1E861ABE0;
-  v15 = v6;
-  v16 = v7;
+  v15 = componentsCopy;
+  v16 = handlerCopy;
   v14[4] = self;
   v9 = v14;
   block[0] = MEMORY[0x1E69E9820];
@@ -6217,8 +6217,8 @@ void __67__CPLProxyLibraryManager_getStatusForComponents_completionHandler___blo
   block[3] = &unk_1E861B4E0;
   v18 = v9;
   v10 = queue;
-  v11 = v6;
-  v12 = v7;
+  v11 = componentsCopy;
+  v12 = handlerCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
@@ -6259,19 +6259,19 @@ void __72__CPLProxyLibraryManager_getStatusArrayForComponents_completionHandler_
   }
 }
 
-- (void)getStatusesForScopesWithIdentifiers:(id)a3 includeStorages:(BOOL)a4 completionHandler:(id)a5
+- (void)getStatusesForScopesWithIdentifiers:(id)identifiers includeStorages:(BOOL)storages completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   queue = self->_queue;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __96__CPLProxyLibraryManager_getStatusesForScopesWithIdentifiers_includeStorages_completionHandler___block_invoke;
   v16[3] = &unk_1E861ADE8;
-  v17 = v8;
-  v18 = v9;
+  v17 = identifiersCopy;
+  v18 = handlerCopy;
   v16[4] = self;
-  v19 = a4;
+  storagesCopy = storages;
   v11 = v16;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -6279,8 +6279,8 @@ void __72__CPLProxyLibraryManager_getStatusArrayForComponents_completionHandler_
   block[3] = &unk_1E861B4E0;
   v21 = v11;
   v12 = queue;
-  v13 = v8;
-  v14 = v9;
+  v13 = identifiersCopy;
+  v14 = handlerCopy;
   v15 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v12, v15);
 }
@@ -6322,20 +6322,20 @@ void __96__CPLProxyLibraryManager_getStatusesForScopesWithIdentifiers_includeSto
   }
 }
 
-- (void)getCloudCacheRecordsWithLocalScopedIdentifiers:(id)a3 desiredProperties:(id)a4 completionHandler:(id)a5
+- (void)getCloudCacheRecordsWithLocalScopedIdentifiers:(id)identifiers desiredProperties:(id)properties completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  propertiesCopy = properties;
+  handlerCopy = handler;
   queue = self->_queue;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __109__CPLProxyLibraryManager_getCloudCacheRecordsWithLocalScopedIdentifiers_desiredProperties_completionHandler___block_invoke;
   v18[3] = &unk_1E861AE60;
   v18[4] = self;
-  v19 = v8;
-  v20 = v9;
-  v21 = v10;
+  v19 = identifiersCopy;
+  v20 = propertiesCopy;
+  v21 = handlerCopy;
   v12 = v18;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -6343,9 +6343,9 @@ void __96__CPLProxyLibraryManager_getStatusesForScopesWithIdentifiers_includeSto
   block[3] = &unk_1E861B4E0;
   v23 = v12;
   v13 = queue;
-  v14 = v9;
-  v15 = v8;
-  v16 = v10;
+  v14 = propertiesCopy;
+  v15 = identifiersCopy;
+  v16 = handlerCopy;
   v17 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v13, v17);
 }
@@ -6391,19 +6391,19 @@ void __109__CPLProxyLibraryManager_getCloudCacheRecordsWithLocalScopedIdentifier
   }
 }
 
-- (void)cloudCacheGetDescriptionForRecordWithScopedIdentifier:(id)a3 related:(BOOL)a4 completionHandler:(id)a5
+- (void)cloudCacheGetDescriptionForRecordWithScopedIdentifier:(id)identifier related:(BOOL)related completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   queue = self->_queue;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __106__CPLProxyLibraryManager_cloudCacheGetDescriptionForRecordWithScopedIdentifier_related_completionHandler___block_invoke;
   v16[3] = &unk_1E861ADE8;
-  v17 = v8;
-  v18 = v9;
+  v17 = identifierCopy;
+  v18 = handlerCopy;
   v16[4] = self;
-  v19 = a4;
+  relatedCopy = related;
   v11 = v16;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -6411,8 +6411,8 @@ void __109__CPLProxyLibraryManager_getCloudCacheRecordsWithLocalScopedIdentifier
   block[3] = &unk_1E861B4E0;
   v21 = v11;
   v12 = queue;
-  v13 = v8;
-  v14 = v9;
+  v13 = identifierCopy;
+  v14 = handlerCopy;
   v15 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v12, v15);
 }
@@ -6454,16 +6454,16 @@ void __106__CPLProxyLibraryManager_cloudCacheGetDescriptionForRecordWithScopedId
   }
 }
 
-- (void)addInfoToLog:(id)a3
+- (void)addInfoToLog:(id)log
 {
-  v4 = a3;
+  logCopy = log;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __39__CPLProxyLibraryManager_addInfoToLog___block_invoke;
   v10[3] = &unk_1E861B290;
   v10[4] = self;
-  v11 = v4;
+  v11 = logCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -6471,7 +6471,7 @@ void __106__CPLProxyLibraryManager_cloudCacheGetDescriptionForRecordWithScopedId
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = logCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -6488,9 +6488,9 @@ void __39__CPLProxyLibraryManager_addInfoToLog___block_invoke(uint64_t a1)
   [v1 _dispatchBlockWhenOpen:v2];
 }
 
-- (void)forceBackupWithCompletionHandler:(id)a3
+- (void)forceBackupWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = objc_opt_class();
   v7 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   block = MEMORY[0x1E69E9820];
@@ -6506,7 +6506,7 @@ void __39__CPLProxyLibraryManager_addInfoToLog___block_invoke(uint64_t a1)
   v14[2] = __59__CPLProxyLibraryManager_forceBackupWithCompletionHandler___block_invoke;
   v14[3] = &unk_1E861ABE0;
   v15 = v7;
-  v16 = v5;
+  v16 = handlerCopy;
   v14[4] = self;
   v9 = v14;
   block = MEMORY[0x1E69E9820];
@@ -6516,7 +6516,7 @@ void __39__CPLProxyLibraryManager_addInfoToLog___block_invoke(uint64_t a1)
   v21 = v9;
   v10 = queue;
   v11 = v7;
-  v12 = v5;
+  v12 = handlerCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
   dispatch_async(v10, v13);
 }
@@ -6611,9 +6611,9 @@ uint64_t __59__CPLProxyLibraryManager_forceBackupWithCompletionHandler___block_i
   return [v4 setCompletedUnitCount:v3];
 }
 
-- (void)requestClientToPushAllChangesWithCompletionHandler:(id)a3
+- (void)requestClientToPushAllChangesWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = objc_opt_class();
   v7 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   block = MEMORY[0x1E69E9820];
@@ -6629,7 +6629,7 @@ uint64_t __59__CPLProxyLibraryManager_forceBackupWithCompletionHandler___block_i
   v14[2] = __77__CPLProxyLibraryManager_requestClientToPushAllChangesWithCompletionHandler___block_invoke;
   v14[3] = &unk_1E861ABE0;
   v15 = v7;
-  v16 = v5;
+  v16 = handlerCopy;
   v14[4] = self;
   v9 = v14;
   block = MEMORY[0x1E69E9820];
@@ -6639,7 +6639,7 @@ uint64_t __59__CPLProxyLibraryManager_forceBackupWithCompletionHandler___block_i
   v21 = v9;
   v10 = queue;
   v11 = v7;
-  v12 = v5;
+  v12 = handlerCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
   dispatch_async(v10, v13);
 }
@@ -6734,10 +6734,10 @@ uint64_t __77__CPLProxyLibraryManager_requestClientToPushAllChangesWithCompletio
   return [v4 setCompletedUnitCount:v3];
 }
 
-- (void)requestClientToPullAllChangesInScopeIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)requestClientToPullAllChangesInScopeIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v9 = objc_opt_class();
   v10 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   block = MEMORY[0x1E69E9820];
@@ -6754,8 +6754,8 @@ uint64_t __77__CPLProxyLibraryManager_requestClientToPushAllChangesWithCompletio
   v18[3] = &unk_1E861AE60;
   v18[4] = self;
   v19 = v10;
-  v20 = v7;
-  v21 = v8;
+  v20 = identifiersCopy;
+  v21 = handlerCopy;
   v12 = v18;
   block = MEMORY[0x1E69E9820];
   v23 = 3221225472;
@@ -6763,9 +6763,9 @@ uint64_t __77__CPLProxyLibraryManager_requestClientToPushAllChangesWithCompletio
   v25 = &unk_1E861B4E0;
   v26 = v12;
   v13 = queue;
-  v14 = v7;
+  v14 = identifiersCopy;
   v15 = v10;
-  v16 = v8;
+  v16 = handlerCopy;
   v17 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
   dispatch_async(v13, v17);
 }
@@ -6867,18 +6867,18 @@ uint64_t __92__CPLProxyLibraryManager_requestClientToPullAllChangesInScopeIdenti
   return [v4 setCompletedUnitCount:v3];
 }
 
-- (void)reportSetting:(id)a3 hasBeenSetToValue:(id)a4
+- (void)reportSetting:(id)setting hasBeenSetToValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  settingCopy = setting;
+  valueCopy = value;
   queue = self->_queue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __58__CPLProxyLibraryManager_reportSetting_hasBeenSetToValue___block_invoke;
   v14[3] = &unk_1E861B1C8;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
+  v15 = settingCopy;
+  v16 = valueCopy;
   v9 = v14;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -6886,8 +6886,8 @@ uint64_t __92__CPLProxyLibraryManager_requestClientToPullAllChangesInScopeIdenti
   block[3] = &unk_1E861B4E0;
   v18 = v9;
   v10 = queue;
-  v11 = v7;
-  v12 = v6;
+  v11 = valueCopy;
+  v12 = settingCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
@@ -6905,16 +6905,16 @@ void __58__CPLProxyLibraryManager_reportSetting_hasBeenSetToValue___block_invoke
   [v2 _dispatchBlockWhenOpen:v3];
 }
 
-- (void)reportMiscInformation:(id)a3
+- (void)reportMiscInformation:(id)information
 {
-  v4 = a3;
+  informationCopy = information;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __48__CPLProxyLibraryManager_reportMiscInformation___block_invoke;
   v10[3] = &unk_1E861B290;
   v10[4] = self;
-  v11 = v4;
+  v11 = informationCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -6922,7 +6922,7 @@ void __58__CPLProxyLibraryManager_reportSetting_hasBeenSetToValue___block_invoke
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = informationCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -6939,16 +6939,16 @@ void __48__CPLProxyLibraryManager_reportMiscInformation___block_invoke(uint64_t 
   [v1 _dispatchBlockWhenOpen:v2];
 }
 
-- (void)blockEngineElement:(id)a3
+- (void)blockEngineElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __45__CPLProxyLibraryManager_blockEngineElement___block_invoke;
   v10[3] = &unk_1E861B290;
   v10[4] = self;
-  v11 = v4;
+  v11 = elementCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -6956,7 +6956,7 @@ void __48__CPLProxyLibraryManager_reportMiscInformation___block_invoke(uint64_t 
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = elementCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -6973,16 +6973,16 @@ void __45__CPLProxyLibraryManager_blockEngineElement___block_invoke(uint64_t a1)
   [v1 _dispatchBlockWhenOpen:v2];
 }
 
-- (void)unblockEngineElement:(id)a3
+- (void)unblockEngineElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __47__CPLProxyLibraryManager_unblockEngineElement___block_invoke;
   v10[3] = &unk_1E861B290;
   v10[4] = self;
-  v11 = v4;
+  v11 = elementCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -6990,7 +6990,7 @@ void __45__CPLProxyLibraryManager_blockEngineElement___block_invoke(uint64_t a1)
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = elementCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -7007,16 +7007,16 @@ void __47__CPLProxyLibraryManager_unblockEngineElement___block_invoke(uint64_t a
   [v1 _dispatchBlockWhenOpen:v2];
 }
 
-- (void)unblockEngineElementOnce:(id)a3
+- (void)unblockEngineElementOnce:(id)once
 {
-  v4 = a3;
+  onceCopy = once;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __51__CPLProxyLibraryManager_unblockEngineElementOnce___block_invoke;
   v10[3] = &unk_1E861B290;
   v10[4] = self;
-  v11 = v4;
+  v11 = onceCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -7024,7 +7024,7 @@ void __47__CPLProxyLibraryManager_unblockEngineElement___block_invoke(uint64_t a
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = onceCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -7041,19 +7041,19 @@ void __51__CPLProxyLibraryManager_unblockEngineElementOnce___block_invoke(uint64
   [v1 _dispatchBlockWhenOpen:v2];
 }
 
-- (void)provideScopeChangeForScopeWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)provideScopeChangeForScopeWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __85__CPLProxyLibraryManager_provideScopeChangeForScopeWithIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_1E861AFA0;
-  v17 = v8;
+  v17 = handlerCopy;
   v18 = a2;
   v15[4] = self;
-  v16 = v7;
+  v16 = identifierCopy;
   v10 = v15;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -7061,8 +7061,8 @@ void __51__CPLProxyLibraryManager_unblockEngineElementOnce___block_invoke(uint64
   block[3] = &unk_1E861B4E0;
   v20 = v10;
   v11 = queue;
-  v12 = v7;
-  v13 = v8;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
   v14 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v11, v14);
 }
@@ -7106,19 +7106,19 @@ void __85__CPLProxyLibraryManager_provideScopeChangeForScopeWithIdentifier_compl
   }
 }
 
-- (void)provideRecordWithCloudScopeIdentifier:(id)a3 completionHandler:(id)a4
+- (void)provideRecordWithCloudScopeIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __82__CPLProxyLibraryManager_provideRecordWithCloudScopeIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_1E861AFA0;
-  v17 = v8;
+  v17 = handlerCopy;
   v18 = a2;
   v15[4] = self;
-  v16 = v7;
+  v16 = identifierCopy;
   v10 = v15;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -7126,8 +7126,8 @@ void __85__CPLProxyLibraryManager_provideScopeChangeForScopeWithIdentifier_compl
   block[3] = &unk_1E861B4E0;
   v20 = v10;
   v11 = queue;
-  v12 = v7;
-  v13 = v8;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
   v14 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v11, v14);
 }
@@ -7171,19 +7171,19 @@ void __82__CPLProxyLibraryManager_provideRecordWithCloudScopeIdentifier_completi
   }
 }
 
-- (void)provideCloudResource:(id)a3 completionHandler:(id)a4
+- (void)provideCloudResource:(id)resource completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  resourceCopy = resource;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __65__CPLProxyLibraryManager_provideCloudResource_completionHandler___block_invoke;
   v15[3] = &unk_1E861AFA0;
-  v17 = v8;
+  v17 = handlerCopy;
   v18 = a2;
   v15[4] = self;
-  v16 = v7;
+  v16 = resourceCopy;
   v10 = v15;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -7191,8 +7191,8 @@ void __82__CPLProxyLibraryManager_provideRecordWithCloudScopeIdentifier_completi
   block[3] = &unk_1E861B4E0;
   v20 = v10;
   v11 = queue;
-  v12 = v7;
-  v13 = v8;
+  v12 = resourceCopy;
+  v13 = handlerCopy;
   v14 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v11, v14);
 }
@@ -7236,20 +7236,20 @@ void __65__CPLProxyLibraryManager_provideCloudResource_completionHandler___block
   }
 }
 
-- (void)addDropDerivativesRecipe:(id)a3 writeToUserDefaults:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)addDropDerivativesRecipe:(id)recipe writeToUserDefaults:(BOOL)defaults withCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  recipeCopy = recipe;
+  handlerCopy = handler;
   queue = self->_queue;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __93__CPLProxyLibraryManager_addDropDerivativesRecipe_writeToUserDefaults_withCompletionHandler___block_invoke;
   v17[3] = &unk_1E861B3F8;
-  v19 = v10;
+  v19 = handlerCopy;
   v20 = a2;
   v17[4] = self;
-  v18 = v9;
-  v21 = a4;
+  v18 = recipeCopy;
+  defaultsCopy = defaults;
   v12 = v17;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -7257,8 +7257,8 @@ void __65__CPLProxyLibraryManager_provideCloudResource_completionHandler___block
   block[3] = &unk_1E861B4E0;
   v23 = v12;
   v13 = queue;
-  v14 = v9;
-  v15 = v10;
+  v14 = recipeCopy;
+  v15 = handlerCopy;
   v16 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v13, v16);
 }
@@ -7303,19 +7303,19 @@ void __93__CPLProxyLibraryManager_addDropDerivativesRecipe_writeToUserDefaults_w
   }
 }
 
-- (void)attachComputeStates:(id)a3 completionHandler:(id)a4
+- (void)attachComputeStates:(id)states completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  statesCopy = states;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __64__CPLProxyLibraryManager_attachComputeStates_completionHandler___block_invoke;
   v15[3] = &unk_1E861AFA0;
-  v17 = v8;
+  v17 = handlerCopy;
   v18 = a2;
   v15[4] = self;
-  v16 = v7;
+  v16 = statesCopy;
   v10 = v15;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -7323,8 +7323,8 @@ void __93__CPLProxyLibraryManager_addDropDerivativesRecipe_writeToUserDefaults_w
   block[3] = &unk_1E861B4E0;
   v20 = v10;
   v11 = queue;
-  v12 = v7;
-  v13 = v8;
+  v12 = statesCopy;
+  v13 = handlerCopy;
   v14 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v11, v14);
 }
@@ -7368,11 +7368,11 @@ void __64__CPLProxyLibraryManager_attachComputeStates_completionHandler___block_
   }
 }
 
-- (void)fetchComputeStatesForRecordsWithScopedIdentifiers:(id)a3 validator:(id)a4 shouldDecrypt:(BOOL)a5 onDemand:(BOOL)a6 completionHandler:(id)a7
+- (void)fetchComputeStatesForRecordsWithScopedIdentifiers:(id)identifiers validator:(id)validator shouldDecrypt:(BOOL)decrypt onDemand:(BOOL)demand completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  identifiersCopy = identifiers;
+  validatorCopy = validator;
+  handlerCopy = handler;
   v15 = objc_opt_class();
   v16 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   block = MEMORY[0x1E69E9820];
@@ -7387,14 +7387,14 @@ void __64__CPLProxyLibraryManager_attachComputeStates_completionHandler___block_
   v26[1] = 3221225472;
   v26[2] = __127__CPLProxyLibraryManager_fetchComputeStatesForRecordsWithScopedIdentifiers_validator_shouldDecrypt_onDemand_completionHandler___block_invoke;
   v26[3] = &unk_1E861B498;
-  v30 = v14;
+  v30 = handlerCopy;
   v31 = a2;
   v26[4] = self;
   v27 = v16;
-  v28 = v12;
-  v29 = v13;
-  v32 = a5;
-  v33 = a6;
+  v28 = identifiersCopy;
+  v29 = validatorCopy;
+  decryptCopy = decrypt;
+  demandCopy = demand;
   v18 = v26;
   block = MEMORY[0x1E69E9820];
   v35 = 3221225472;
@@ -7402,10 +7402,10 @@ void __64__CPLProxyLibraryManager_attachComputeStates_completionHandler___block_
   v37 = &unk_1E861B4E0;
   v38 = v18;
   v19 = queue;
-  v20 = v13;
-  v21 = v12;
+  v20 = validatorCopy;
+  v21 = identifiersCopy;
   v22 = v16;
-  v23 = v14;
+  v23 = handlerCopy;
   v24 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
   dispatch_async(v19, v24);
 }
@@ -7500,29 +7500,29 @@ uint64_t __127__CPLProxyLibraryManager_fetchComputeStatesForRecordsWithScopedIde
   return [v3 setCompletedUnitCount:v2];
 }
 
-- (void)_withVoucherForTaskWithIdentifier:(id)a3 do:(id)a4
+- (void)_withVoucherForTaskWithIdentifier:(id)identifier do:(id)do
 {
-  v9 = a4;
-  v6 = [(NSMutableDictionary *)self->_vouchersPerTaskIdentifier objectForKeyedSubscript:a3];
+  doCopy = do;
+  v6 = [(NSMutableDictionary *)self->_vouchersPerTaskIdentifier objectForKeyedSubscript:identifier];
   v7 = v6;
   if (v6)
   {
     v8 = v6;
     voucher_adopt();
-    v9[2]();
+    doCopy[2]();
   }
 
   else
   {
-    v9[2]();
+    doCopy[2]();
   }
 }
 
-- (void)_storeVoucher:(id)a3 forTaskWithIdentifier:(id)a4
+- (void)_storeVoucher:(id)voucher forTaskWithIdentifier:(id)identifier
 {
-  if (a3)
+  if (voucher)
   {
-    [(NSMutableDictionary *)self->_vouchersPerTaskIdentifier setObject:a3 forKeyedSubscript:a4];
+    [(NSMutableDictionary *)self->_vouchersPerTaskIdentifier setObject:voucher forKeyedSubscript:identifier];
   }
 }
 
@@ -7535,7 +7535,7 @@ uint64_t __127__CPLProxyLibraryManager_fetchComputeStatesForRecordsWithScopedIde
     if (OUTLINED_FUNCTION_75(v4))
     {
       *buf = 138412290;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DC05A000, v2, OS_LOG_TYPE_DEBUG, "%@ has been deallocated", buf, 0xCu);
     }
   }
@@ -10019,7 +10019,7 @@ void __63__CPLProxyLibraryManager_forceSyncDidFinishForTask_withErrors___block_i
       v4 = __CPLManagerOSLogDomain();
       if (OUTLINED_FUNCTION_72(v4))
       {
-        v5 = [(CPLPlatformObject *)self abstractObject];
+        abstractObject = [(CPLPlatformObject *)self abstractObject];
         OUTLINED_FUNCTION_78();
         OUTLINED_FUNCTION_34();
         _os_log_impl(v6, v7, v8, v9, v10, 0xCu);
@@ -10841,7 +10841,7 @@ uint64_t __42__CPLProxyLibraryManager__setupConnection__block_invoke_cold_1(void
 
 - (BOOL)_markConnectionAsInvalid
 {
-  [a1 timeIntervalSinceNow];
+  [self timeIntervalSinceNow];
   if (v3 >= -1800.0)
   {
     v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:1800.0];

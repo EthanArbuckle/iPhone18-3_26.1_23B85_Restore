@@ -1,22 +1,22 @@
 @interface ICDocCamPDFGenerator
 + (OS_dispatch_queue)fileQueue;
 + (OS_dispatch_queue)syncGeneratorQueue;
-+ (id)blockingGeneratePDFDataForAttachment:(id)a3 withProgress:(id)a4 queue:(id)a5 error:(id *)a6;
-+ (id)blockingGeneratePDFURLForAttachment:(id)a3 withProgress:(id)a4 error:(id *)a5;
-+ (id)folderPathForAttachment:(id)a3;
-+ (id)folderPathForAttachmentIdentifier:(id)a3 passwordProtected:(BOOL)a4;
-+ (id)generatePDFURLForAttachment:(id)a3;
-+ (id)pdfURLForAttachment:(id)a3;
++ (id)blockingGeneratePDFDataForAttachment:(id)attachment withProgress:(id)progress queue:(id)queue error:(id *)error;
++ (id)blockingGeneratePDFURLForAttachment:(id)attachment withProgress:(id)progress error:(id *)error;
++ (id)folderPathForAttachment:(id)attachment;
++ (id)folderPathForAttachmentIdentifier:(id)identifier passwordProtected:(BOOL)protected;
++ (id)generatePDFURLForAttachment:(id)attachment;
++ (id)pdfURLForAttachment:(id)attachment;
 + (id)rootPDFFolderPath;
 + (id)rootPDFFolderPathForPWAttachments;
-+ (id)versionFolderPathForAttachment:(id)a3;
-+ (id)versionPDFPathForAttachment:(id)a3;
-+ (void)createEmptyPDFFileAtURLIFNecessaryForAttachment:(id)a3;
++ (id)versionFolderPathForAttachment:(id)attachment;
++ (id)versionPDFPathForAttachment:(id)attachment;
++ (void)createEmptyPDFFileAtURLIFNecessaryForAttachment:(id)attachment;
 + (void)deleteAllDocCamPDFs;
 + (void)deleteAllDocCamPasswordProtectedPDFs;
-+ (void)deletePDFFolderIfExistsForAttachment:(id)a3;
-+ (void)generatePDFsIfNecessaryForGalleryAttachments:(id)a3 displayWindow:(id)a4 presentingViewController:(id)a5 completionHandler:(id)a6;
-+ (void)performPDFGenerationWithGenerator:(id)a3 galleryModel:(id)a4 progress:(id)a5;
++ (void)deletePDFFolderIfExistsForAttachment:(id)attachment;
++ (void)generatePDFsIfNecessaryForGalleryAttachments:(id)attachments displayWindow:(id)window presentingViewController:(id)controller completionHandler:(id)handler;
++ (void)performPDFGenerationWithGenerator:(id)generator galleryModel:(id)model progress:(id)progress;
 @end
 
 @implementation ICDocCamPDFGenerator
@@ -63,52 +63,52 @@ void __33__ICDocCamPDFGenerator_fileQueue__block_invoke()
 
 + (id)rootPDFFolderPath
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v8 = 0;
-  v3 = [v2 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:&v8];
+  v3 = [defaultManager URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:&v8];
   v4 = v8;
 
-  v5 = [v3 path];
-  if (!v5)
+  path = [v3 path];
+  if (!path)
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"__objc_no" functionName:"+[ICDocCamPDFGenerator rootPDFFolderPath]" simulateCrash:1 showAlert:0 format:{@"ICDocCamPDFGenerator: Failed get caches directory with error (falling back to NSTemporaryDirectory): %@", v4}];
-    v5 = NSTemporaryDirectory();
+    path = NSTemporaryDirectory();
   }
 
-  v6 = [v5 stringByAppendingPathComponent:@"galleryTempPDFFolder"];
+  v6 = [path stringByAppendingPathComponent:@"galleryTempPDFFolder"];
 
   return v6;
 }
 
 + (id)rootPDFFolderPathForPWAttachments
 {
-  v2 = [a1 rootPDFFolderPath];
-  v3 = [v2 stringByAppendingPathComponent:@"P"];
+  rootPDFFolderPath = [self rootPDFFolderPath];
+  v3 = [rootPDFFolderPath stringByAppendingPathComponent:@"P"];
 
   return v3;
 }
 
-+ (id)folderPathForAttachmentIdentifier:(id)a3 passwordProtected:(BOOL)a4
++ (id)folderPathForAttachmentIdentifier:(id)identifier passwordProtected:(BOOL)protected
 {
-  v6 = a3;
-  if (a4)
+  identifierCopy = identifier;
+  if (protected)
   {
-    [a1 rootPDFFolderPathForPWAttachments];
+    [self rootPDFFolderPathForPWAttachments];
   }
 
   else
   {
-    [a1 rootPDFFolderPath];
+    [self rootPDFFolderPath];
   }
   v7 = ;
-  v8 = [v7 stringByAppendingPathComponent:v6];
+  v8 = [v7 stringByAppendingPathComponent:identifierCopy];
 
   return v8;
 }
 
-+ (id)folderPathForAttachment:(id)a3
++ (id)folderPathForAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -119,18 +119,18 @@ void __33__ICDocCamPDFGenerator_fileQueue__block_invoke()
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v5 = [v4 managedObjectContext];
+  managedObjectContext = [attachmentCopy managedObjectContext];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __48__ICDocCamPDFGenerator_folderPathForAttachment___block_invoke;
   v9[3] = &unk_1E8468FF8;
   v11 = &v17;
-  v6 = v4;
+  v6 = attachmentCopy;
   v10 = v6;
   v12 = &v13;
-  [v5 performBlockAndWait:v9];
+  [managedObjectContext performBlockAndWait:v9];
 
-  v7 = [a1 folderPathForAttachmentIdentifier:v18[5] passwordProtected:*(v14 + 24)];
+  v7 = [self folderPathForAttachmentIdentifier:v18[5] passwordProtected:*(v14 + 24)];
 
   _Block_object_dispose(&v13, 8);
   _Block_object_dispose(&v17, 8);
@@ -150,49 +150,49 @@ uint64_t __48__ICDocCamPDFGenerator_folderPathForAttachment___block_invoke(uint6
   return result;
 }
 
-+ (id)versionFolderPathForAttachment:(id)a3
++ (id)versionFolderPathForAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [a1 folderPathForAttachment:v4];
+  attachmentCopy = attachment;
+  v5 = [self folderPathForAttachment:attachmentCopy];
   v6 = MEMORY[0x1E696AD98];
-  v7 = [v4 docCamPDFVersion];
+  docCamPDFVersion = [attachmentCopy docCamPDFVersion];
 
-  v8 = [v6 numberWithInteger:v7];
-  v9 = [v8 stringValue];
-  v10 = [v5 stringByAppendingPathComponent:v9];
+  v8 = [v6 numberWithInteger:docCamPDFVersion];
+  stringValue = [v8 stringValue];
+  v10 = [v5 stringByAppendingPathComponent:stringValue];
 
   return v10;
 }
 
-+ (id)versionPDFPathForAttachment:(id)a3
++ (id)versionPDFPathForAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__7;
   v23 = __Block_byref_object_dispose__7;
   v24 = 0;
-  v5 = [v4 managedObjectContext];
+  managedObjectContext = [attachmentCopy managedObjectContext];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __52__ICDocCamPDFGenerator_versionPDFPathForAttachment___block_invoke;
   v16 = &unk_1E8468FA8;
   v18 = &v19;
-  v6 = v4;
+  v6 = attachmentCopy;
   v17 = v6;
-  [v5 performBlockAndWait:&v13];
+  [managedObjectContext performBlockAndWait:&v13];
 
-  v7 = [v20[5] ic_sanitizedFilenameString];
-  if (![v7 length])
+  ic_sanitizedFilenameString = [v20[5] ic_sanitizedFilenameString];
+  if (![ic_sanitizedFilenameString length])
   {
-    v8 = [v6 defaultTitle];
+    defaultTitle = [v6 defaultTitle];
 
-    v7 = v8;
+    ic_sanitizedFilenameString = defaultTitle;
   }
 
-  v9 = [a1 versionFolderPathForAttachment:v6];
-  v10 = [v9 stringByAppendingPathComponent:v7];
+  v9 = [self versionFolderPathForAttachment:v6];
+  v10 = [v9 stringByAppendingPathComponent:ic_sanitizedFilenameString];
 
   v11 = [v10 stringByAppendingPathExtension:@"pdf"];
 
@@ -208,19 +208,19 @@ uint64_t __52__ICDocCamPDFGenerator_versionPDFPathForAttachment___block_invoke(u
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)createEmptyPDFFileAtURLIFNecessaryForAttachment:(id)a3
++ (void)createEmptyPDFFileAtURLIFNecessaryForAttachment:(id)attachment
 {
-  v4 = [a1 versionPDFPathForAttachment:a3];
+  v4 = [self versionPDFPathForAttachment:attachment];
   v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:v4];
-  v6 = [a1 fileQueue];
+  fileQueue = [self fileQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __72__ICDocCamPDFGenerator_createEmptyPDFFileAtURLIFNecessaryForAttachment___block_invoke;
   v8[3] = &unk_1E84698E0;
   v9 = v5;
-  v10 = a1;
+  selfCopy = self;
   v7 = v5;
-  dispatch_sync(v6, v8);
+  dispatch_sync(fileQueue, v8);
 }
 
 void __72__ICDocCamPDFGenerator_createEmptyPDFFileAtURLIFNecessaryForAttachment___block_invoke(uint64_t a1)
@@ -237,27 +237,27 @@ void __72__ICDocCamPDFGenerator_createEmptyPDFFileAtURLIFNecessaryForAttachment_
   }
 }
 
-+ (void)deletePDFFolderIfExistsForAttachment:(id)a3
++ (void)deletePDFFolderIfExistsForAttachment:(id)attachment
 {
-  v4 = a3;
-  v6 = [a1 fileManager];
-  v5 = [a1 folderPathForAttachment:v4];
+  attachmentCopy = attachment;
+  fileManager = [self fileManager];
+  v5 = [self folderPathForAttachment:attachmentCopy];
 
-  if ([v6 fileExistsAtPath:v5])
+  if ([fileManager fileExistsAtPath:v5])
   {
-    [v6 removeItemAtPath:v5 error:0];
+    [fileManager removeItemAtPath:v5 error:0];
   }
 }
 
 + (void)deleteAllDocCamPDFs
 {
-  v3 = [a1 fileQueue];
+  fileQueue = [self fileQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__ICDocCamPDFGenerator_deleteAllDocCamPDFs__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
-  dispatch_async(v3, block);
+  block[4] = self;
+  dispatch_async(fileQueue, block);
 
   v4 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -275,13 +275,13 @@ void __43__ICDocCamPDFGenerator_deleteAllDocCamPDFs__block_invoke(uint64_t a1)
 
 + (void)deleteAllDocCamPasswordProtectedPDFs
 {
-  v3 = [a1 fileQueue];
+  fileQueue = [self fileQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__ICDocCamPDFGenerator_deleteAllDocCamPasswordProtectedPDFs__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
-  dispatch_async(v3, block);
+  block[4] = self;
+  dispatch_async(fileQueue, block);
 
   v4 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -297,25 +297,25 @@ void __60__ICDocCamPDFGenerator_deleteAllDocCamPasswordProtectedPDFs__block_invo
   [v3 removeItemAtPath:v2 error:0];
 }
 
-+ (id)pdfURLForAttachment:(id)a3
++ (id)pdfURLForAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__7;
   v17 = __Block_byref_object_dispose__7;
   v18 = 0;
-  v5 = [a1 fileQueue];
+  fileQueue = [self fileQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__ICDocCamPDFGenerator_pdfURLForAttachment___block_invoke;
   block[3] = &unk_1E8469928;
   v11 = &v13;
-  v12 = a1;
-  v10 = v4;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  selfCopy = self;
+  v10 = attachmentCopy;
+  v6 = attachmentCopy;
+  dispatch_sync(fileQueue, block);
 
   v7 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -333,19 +333,19 @@ void __44__ICDocCamPDFGenerator_pdfURLForAttachment___block_invoke(uint64_t a1)
   }
 }
 
-+ (id)generatePDFURLForAttachment:(id)a3
++ (id)generatePDFURLForAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [a1 pdfURLForAttachment:v4];
+  attachmentCopy = attachment;
+  v5 = [self pdfURLForAttachment:attachmentCopy];
   if (!v5)
   {
     objc_opt_class();
-    v6 = [v4 attachmentModel];
+    attachmentModel = [attachmentCopy attachmentModel];
     v7 = ICDynamicCast();
 
-    if ([v4 attachmentType] == 11)
+    if ([attachmentCopy attachmentType] == 11)
     {
-      v8 = [ICDocCamPDFGenerator blockingGeneratePDFURLForAttachment:v4 withProgress:0 error:0];
+      fallbackPDFURL = [ICDocCamPDFGenerator blockingGeneratePDFURLForAttachment:attachmentCopy withProgress:0 error:0];
     }
 
     else
@@ -357,22 +357,22 @@ void __44__ICDocCamPDFGenerator_pdfURLForAttachment___block_invoke(uint64_t a1)
       }
 
       [v7 generateFallbackPDFIfNecessary];
-      if ([v4 isPasswordProtected] && objc_msgSend(v4, "attachmentType") == 15)
+      if ([attachmentCopy isPasswordProtected] && objc_msgSend(attachmentCopy, "attachmentType") == 15)
       {
-        v9 = [v4 fallbackPDFData];
-        if (v9)
+        fallbackPDFData = [attachmentCopy fallbackPDFData];
+        if (fallbackPDFData)
         {
           v10 = MEMORY[0x1E695DFF8];
-          v11 = [a1 versionPDFPathForAttachment:v4];
+          v11 = [self versionPDFPathForAttachment:attachmentCopy];
           v12 = [v10 fileURLWithPath:v11 isDirectory:0];
 
-          v13 = [MEMORY[0x1E696AC08] defaultManager];
-          [v13 removeItemAtURL:v12 error:0];
-          v14 = [v12 URLByDeletingLastPathComponent];
-          [v13 createDirectoryAtURL:v14 withIntermediateDirectories:1 attributes:0 error:0];
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+          [defaultManager removeItemAtURL:v12 error:0];
+          uRLByDeletingLastPathComponent = [v12 URLByDeletingLastPathComponent];
+          [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
           v19 = 0;
-          v15 = [v9 writeToURL:v12 options:1 error:&v19];
+          v15 = [fallbackPDFData writeToURL:v12 options:1 error:&v19];
           v16 = v19;
           if ((v15 & 1) == 0)
           {
@@ -385,25 +385,25 @@ void __44__ICDocCamPDFGenerator_pdfURLForAttachment___block_invoke(uint64_t a1)
         }
       }
 
-      v8 = [v4 fallbackPDFURL];
+      fallbackPDFURL = [attachmentCopy fallbackPDFURL];
     }
 
-    v5 = v8;
+    v5 = fallbackPDFURL;
 LABEL_16:
   }
 
   return v5;
 }
 
-+ (void)generatePDFsIfNecessaryForGalleryAttachments:(id)a3 displayWindow:(id)a4 presentingViewController:(id)a5 completionHandler:(id)a6
++ (void)generatePDFsIfNecessaryForGalleryAttachments:(id)attachments displayWindow:(id)window presentingViewController:(id)controller completionHandler:(id)handler
 {
   v99 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v51 = a5;
-  v52 = v10;
-  v53 = a6;
-  if (!v10)
+  attachmentsCopy = attachments;
+  windowCopy = window;
+  controllerCopy = controller;
+  v52 = windowCopy;
+  handlerCopy = handler;
+  if (!windowCopy)
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"((displayWindow) != nil)" functionName:"+[ICDocCamPDFGenerator generatePDFsIfNecessaryForGalleryAttachments:displayWindow:presentingViewController:completionHandler:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "displayWindow"}];
   }
@@ -419,7 +419,7 @@ LABEL_16:
   v93 = 0u;
   v90 = 0u;
   v91 = 0u;
-  obj = v9;
+  obj = attachmentsCopy;
   v11 = [obj countByEnumeratingWithState:&v90 objects:v98 count:16];
   if (v11)
   {
@@ -436,7 +436,7 @@ LABEL_16:
         objc_opt_class();
         v14 = ICDynamicCast();
         objc_opt_class();
-        v15 = [v14 attachmentModel];
+        attachmentModel = [v14 attachmentModel];
         v16 = ICDynamicCast();
 
         if (v16)
@@ -451,12 +451,12 @@ LABEL_16:
         }
 
         objc_opt_class();
-        v19 = [v14 attachmentModel];
+        attachmentModel2 = [v14 attachmentModel];
         v20 = ICDynamicCast();
 
         if (v20 && ([v20 tooLargeForPreviewGeneration] & 1) == 0)
         {
-          v21 = [v14 hasFallbackPDF];
+          hasFallbackPDF = [v14 hasFallbackPDF];
           if ([v14 isPasswordProtected] && objc_msgSend(v14, "attachmentType") == 15)
           {
             v22 = [ICDocCamPDFGenerator pdfURLForAttachment:v14];
@@ -468,11 +468,11 @@ LABEL_16:
             v23 = 0;
           }
 
-          v24 = [v14 previewImages];
-          if ([v24 count])
+          previewImages = [v14 previewImages];
+          if ([previewImages count])
           {
-            v25 = [v14 previewUpdateDate];
-            v26 = v25 == 0;
+            previewUpdateDate = [v14 previewUpdateDate];
+            v26 = previewUpdateDate == 0;
           }
 
           else
@@ -480,14 +480,14 @@ LABEL_16:
             v26 = 0;
           }
 
-          if (v23 || (v21 & 1) == 0 || v26)
+          if (v23 || (hasFallbackPDF & 1) == 0 || v26)
           {
             [v54 addObject:v20];
           }
         }
 
         objc_opt_class();
-        v27 = [v14 attachmentModel];
+        attachmentModel3 = [v14 attachmentModel];
         v28 = ICDynamicCast();
 
         if (v28 && [v28 needToGeneratePreviews])
@@ -533,15 +533,15 @@ LABEL_16:
           }
 
           v34 = *(*(&v80 + 1) + 8 * j);
-          v35 = [v34 attachment];
-          v36 = [v35 managedObjectContext];
+          attachment = [v34 attachment];
+          managedObjectContext = [attachment managedObjectContext];
           v79[0] = MEMORY[0x1E69E9820];
           v79[1] = 3221225472;
           v79[2] = __126__ICDocCamPDFGenerator_generatePDFsIfNecessaryForGalleryAttachments_displayWindow_presentingViewController_completionHandler___block_invoke;
           v79[3] = &unk_1E8468FA8;
           v79[4] = v34;
           v79[5] = &v84;
-          [v36 performBlockAndWait:v79];
+          [managedObjectContext performBlockAndWait:v79];
         }
 
         v31 = [v57 countByEnumeratingWithState:&v80 objects:v97 count:16];
@@ -569,15 +569,15 @@ LABEL_16:
           }
 
           v40 = *(*(&v75 + 1) + 8 * k);
-          v41 = [v40 attachment];
-          v42 = [v41 managedObjectContext];
+          attachment2 = [v40 attachment];
+          managedObjectContext2 = [attachment2 managedObjectContext];
           v74[0] = MEMORY[0x1E69E9820];
           v74[1] = 3221225472;
           v74[2] = __126__ICDocCamPDFGenerator_generatePDFsIfNecessaryForGalleryAttachments_displayWindow_presentingViewController_completionHandler___block_invoke_2;
           v74[3] = &unk_1E8468FA8;
           v74[4] = v40;
           v74[5] = &v84;
-          [v42 performBlockAndWait:v74];
+          [managedObjectContext2 performBlockAndWait:v74];
         }
 
         v37 = [v56 countByEnumeratingWithState:&v75 objects:v96 count:16];
@@ -594,9 +594,9 @@ LABEL_16:
     [(ICLongRunningTaskController *)v44 setProgressString:v45];
     [(ICLongRunningTaskController *)v44 setShouldShowCancelButton:1];
     [(ICLongRunningTaskController *)v44 setShouldShowCircularProgress:1];
-    [(ICLongRunningTaskController *)v44 setViewControllerToPresentFrom:v51];
-    v46 = [MEMORY[0x1E69B7800] sharedContext];
-    v47 = [v46 workerManagedObjectContext];
+    [(ICLongRunningTaskController *)v44 setViewControllerToPresentFrom:controllerCopy];
+    mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+    workerManagedObjectContext = [mEMORY[0x1E69B7800] workerManagedObjectContext];
 
     v64[0] = MEMORY[0x1E69E9820];
     v64[1] = 3221225472;
@@ -604,12 +604,12 @@ LABEL_16:
     v64[3] = &unk_1E8469978;
     v70 = &v84;
     v65 = v57;
-    v48 = v47;
+    v48 = workerManagedObjectContext;
     v66 = v48;
     v49 = v44;
     v67 = v49;
     v68 = v56;
-    v73 = a1;
+    selfCopy = self;
     v69 = v58;
     v71 = v88;
     v72 = v94;
@@ -619,16 +619,16 @@ LABEL_16:
     v60[3] = &unk_1E84699A0;
     v63 = 0;
     v62 = v88;
-    v61 = v53;
+    v61 = handlerCopy;
     [(ICLongRunningTaskController *)v49 startTask:v64 completionBlock:v60];
 
     _Block_object_dispose(&v84, 8);
     _Block_object_dispose(v88, 8);
   }
 
-  else if (v53)
+  else if (handlerCopy)
   {
-    (*(v53 + 2))(v53, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 
   _Block_object_dispose(v94, 8);
@@ -921,29 +921,29 @@ uint64_t __126__ICDocCamPDFGenerator_generatePDFsIfNecessaryForGalleryAttachment
   return v3(v1, v2 ^ 1u);
 }
 
-+ (id)blockingGeneratePDFURLForAttachment:(id)a3 withProgress:(id)a4 error:(id *)a5
++ (id)blockingGeneratePDFURLForAttachment:(id)attachment withProgress:(id)progress error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  attachmentCopy = attachment;
+  progressCopy = progress;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__7;
   v22 = __Block_byref_object_dispose__7;
-  v23 = [a1 pdfURLForAttachment:v7];
+  v23 = [self pdfURLForAttachment:attachmentCopy];
   v9 = v19[5];
   if (!v9)
   {
-    v10 = [a1 syncGeneratorQueue];
+    syncGeneratorQueue = [self syncGeneratorQueue];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __79__ICDocCamPDFGenerator_blockingGeneratePDFURLForAttachment_withProgress_error___block_invoke;
     v13[3] = &unk_1E84699F0;
-    v17 = a1;
-    v14 = v7;
-    v15 = v8;
+    selfCopy = self;
+    v14 = attachmentCopy;
+    v15 = progressCopy;
     v16 = &v18;
-    dispatch_sync(v10, v13);
+    dispatch_sync(syncGeneratorQueue, v13);
 
     v9 = v19[5];
   }
@@ -1064,11 +1064,11 @@ void __79__ICDocCamPDFGenerator_blockingGeneratePDFURLForAttachment_withProgress
   objc_storeStrong(v4, v3);
 }
 
-+ (id)blockingGeneratePDFDataForAttachment:(id)a3 withProgress:(id)a4 queue:(id)a5 error:(id *)a6
++ (id)blockingGeneratePDFDataForAttachment:(id)attachment withProgress:(id)progress queue:(id)queue error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  attachmentCopy = attachment;
+  progressCopy = progress;
+  queueCopy = queue;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -1087,33 +1087,33 @@ void __79__ICDocCamPDFGenerator_blockingGeneratePDFURLForAttachment_withProgress
   v34[3] = __Block_byref_object_copy__7;
   v34[4] = __Block_byref_object_dispose__7;
   v35 = 0;
-  v12 = [v9 managedObjectContext];
+  managedObjectContext = [attachmentCopy managedObjectContext];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __86__ICDocCamPDFGenerator_blockingGeneratePDFDataForAttachment_withProgress_queue_error___block_invoke;
   v30[3] = &unk_1E8468FF8;
   v32 = v36;
-  v13 = v9;
+  v13 = attachmentCopy;
   v31 = v13;
   v33 = v34;
-  [v12 performBlockAndWait:v30];
+  [managedObjectContext performBlockAndWait:v30];
 
-  v14 = [MEMORY[0x1E69B7800] sharedContext];
-  v15 = [v14 workerManagedObjectContext];
+  mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+  workerManagedObjectContext = [mEMORY[0x1E69B7800] workerManagedObjectContext];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __86__ICDocCamPDFGenerator_blockingGeneratePDFDataForAttachment_withProgress_queue_error___block_invoke_61;
   v22[3] = &unk_1E8469A18;
-  v16 = v15;
+  v16 = workerManagedObjectContext;
   v23 = v16;
   v17 = v13;
   v24 = v17;
   v27 = v34;
-  v18 = v11;
+  v18 = queueCopy;
   v25 = v18;
-  v29 = a1;
-  v19 = v10;
+  selfCopy = self;
+  v19 = progressCopy;
   v26 = v19;
   v28 = &v38;
   [v16 performBlockAndWait:v22];
@@ -1215,45 +1215,45 @@ void __86__ICDocCamPDFGenerator_blockingGeneratePDFDataForAttachment_withProgres
   }
 }
 
-+ (void)performPDFGenerationWithGenerator:(id)a3 galleryModel:(id)a4 progress:(id)a5
++ (void)performPDFGenerationWithGenerator:(id)generator galleryModel:(id)model progress:(id)progress
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DF00] date];
+  generatorCopy = generator;
+  modelCopy = model;
+  progressCopy = progress;
+  date = [MEMORY[0x1E695DF00] date];
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x2020000000;
   v25[3] = 0;
-  [v7 startGenerating];
+  [generatorCopy startGenerating];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __80__ICDocCamPDFGenerator_performPDFGenerationWithGenerator_galleryModel_progress___block_invoke;
   v21[3] = &unk_1E8469A68;
-  v11 = v9;
+  v11 = progressCopy;
   v22 = v11;
   v24 = v25;
-  v12 = v7;
+  v12 = generatorCopy;
   v23 = v12;
-  [v8 enumerateSubAttachmentsWithBlock:v21];
-  v13 = [v8 attachment];
-  v14 = [v13 identifier];
+  [modelCopy enumerateSubAttachmentsWithBlock:v21];
+  attachment = [modelCopy attachment];
+  identifier = [attachment identifier];
 
   v15 = os_log_create("com.apple.notes", "Export");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v16 = [MEMORY[0x1E695DF00] date];
-    [v16 timeIntervalSinceDate:v10];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [date2 timeIntervalSinceDate:date];
     v18 = v17;
-    v19 = [v8 attachment];
-    v20 = [v19 docCamPDFVersion];
+    attachment2 = [modelCopy attachment];
+    docCamPDFVersion = [attachment2 docCamPDFVersion];
     *buf = 134218498;
     v27 = v18;
     v28 = 2112;
-    v29 = v14;
+    v29 = identifier;
     v30 = 2048;
-    v31 = v20;
+    v31 = docCamPDFVersion;
     _os_log_impl(&dword_1D4171000, v15, OS_LOG_TYPE_INFO, "PDF Generation time: %f. ID: %@:%ld", buf, 0x20u);
   }
 

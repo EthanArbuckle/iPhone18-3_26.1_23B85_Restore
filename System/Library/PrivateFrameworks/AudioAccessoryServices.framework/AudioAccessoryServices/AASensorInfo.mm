@@ -1,28 +1,28 @@
 @interface AASensorInfo
-- (AASensorInfo)initWithBTAddress:(id)a3;
-- (AASensorInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AASensorInfo)initWithBTAddress:(id)address;
+- (AASensorInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AASensorInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(AASensorInfo *)self btAddress];
-  v6 = [v4 initWithBTAddress:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  btAddress = [(AASensorInfo *)self btAddress];
+  v6 = [v4 initWithBTAddress:btAddress];
 
   return v6;
 }
 
-- (AASensorInfo)initWithCoder:(id)a3
+- (AASensorInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AASensorInfo *)self init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -32,18 +32,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   btAddress = self->_btAddress;
   if (btAddress)
   {
-    [a3 encodeObject:btAddress forKey:@"btAd"];
+    [coder encodeObject:btAddress forKey:@"btAd"];
   }
 }
 
-- (AASensorInfo)initWithBTAddress:(id)a3
+- (AASensorInfo)initWithBTAddress:(id)address
 {
-  v4 = [a3 copy];
+  v4 = [address copy];
   btAddress = self->_btAddress;
   self->_btAddress = v4;
 

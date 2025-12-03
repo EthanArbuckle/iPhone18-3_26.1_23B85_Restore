@@ -3,32 +3,32 @@
 - (BOOL)isPaused;
 - (NSURL)broadcastURL;
 - (RPBroadcastController)initWithCurrentSession;
-- (RPBroadcastController)initWithExtensionBundleID:(id)a3 broadcastURL:(id)a4;
+- (RPBroadcastController)initWithExtensionBundleID:(id)d broadcastURL:(id)l;
 - (id)delegate;
 - (void)finishBroadcastWithHandler:(void *)handler;
-- (void)finishSystemBroadcastWithHandler:(id)a3;
+- (void)finishSystemBroadcastWithHandler:(id)handler;
 - (void)pauseBroadcast;
 - (void)resumeBroadcast;
-- (void)setBroadcastURL:(id)a3;
+- (void)setBroadcastURL:(id)l;
 - (void)startBroadcastWithHandler:(void *)handler;
-- (void)startSystemBroadcastWithHandler:(id)a3;
+- (void)startSystemBroadcastWithHandler:(id)handler;
 @end
 
 @implementation RPBroadcastController
 
-- (RPBroadcastController)initWithExtensionBundleID:(id)a3 broadcastURL:(id)a4
+- (RPBroadcastController)initWithExtensionBundleID:(id)d broadcastURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = RPBroadcastController;
   v9 = [(RPBroadcastController *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_broadcastExtensionBundleID, a3);
+    objc_storeStrong(&v9->_broadcastExtensionBundleID, d);
     v11 = +[RPScreenRecorder sharedRecorder];
-    [v11 setBroadcastURL:v8];
+    [v11 setBroadcastURL:lCopy];
   }
 
   return v10;
@@ -51,32 +51,32 @@
 - (BOOL)isBroadcasting
 {
   v2 = +[RPScreenRecorder sharedRecorder];
-  v3 = [v2 isRecording];
+  isRecording = [v2 isRecording];
 
-  return v3;
+  return isRecording;
 }
 
 - (BOOL)isPaused
 {
   v2 = +[RPScreenRecorder sharedRecorder];
-  v3 = [v2 isPaused];
+  isPaused = [v2 isPaused];
 
-  return v3;
+  return isPaused;
 }
 
 - (NSURL)broadcastURL
 {
   v2 = +[RPScreenRecorder sharedRecorder];
-  v3 = [v2 broadcastURL];
+  broadcastURL = [v2 broadcastURL];
 
-  return v3;
+  return broadcastURL;
 }
 
-- (void)setBroadcastURL:(id)a3
+- (void)setBroadcastURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[RPScreenRecorder sharedRecorder];
-  [v4 setBroadcastURL:v3];
+  [v4 setBroadcastURL:lCopy];
 }
 
 - (void)startBroadcastWithHandler:(void *)handler
@@ -138,9 +138,9 @@ void __52__RPBroadcastController_finishBroadcastWithHandler___block_invoke(uint6
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)startSystemBroadcastWithHandler:(id)a3
+- (void)startSystemBroadcastWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[RPScreenRecorder sharedRecorder];
   [v5 setActiveBroadcastController:self];
 
@@ -149,22 +149,22 @@ void __52__RPBroadcastController_finishBroadcastWithHandler___block_invoke(uint6
   v8[1] = 3221225472;
   v8[2] = __57__RPBroadcastController_startSystemBroadcastWithHandler___block_invoke;
   v8[3] = &unk_278B61DE8;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [v6 startSystemBroadcastWithHandler:v8];
 }
 
-- (void)finishSystemBroadcastWithHandler:(id)a3
+- (void)finishSystemBroadcastWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[RPScreenRecorder sharedRecorder];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__RPBroadcastController_finishSystemBroadcastWithHandler___block_invoke;
   v7[3] = &unk_278B62510;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [v5 stopSystemBroadcastWithHandler:v7];
 }
 

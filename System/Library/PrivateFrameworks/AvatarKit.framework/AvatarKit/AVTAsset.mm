@@ -1,10 +1,10 @@
 @interface AVTAsset
-- (AVTAsset)initWithType:(int64_t)a3 identifier:(id)a4 path:(id)a5;
-- (id)assetImageForAsset:(id)a3;
+- (AVTAsset)initWithType:(int64_t)type identifier:(id)identifier path:(id)path;
+- (id)assetImageForAsset:(id)asset;
 - (id)instantiateResource;
-- (id)resourceByCachingIfNeeded:(BOOL)a3;
+- (id)resourceByCachingIfNeeded:(BOOL)needed;
 - (void)decrUseCount;
-- (void)enumerateVariantDependenciesOfKind:(unint64_t)a3 block:(id)a4;
+- (void)enumerateVariantDependenciesOfKind:(unint64_t)kind block:(id)block;
 - (void)freeCache;
 - (void)incrUseCount;
 - (void)instantiateResource;
@@ -12,18 +12,18 @@
 
 @implementation AVTAsset
 
-- (AVTAsset)initWithType:(int64_t)a3 identifier:(id)a4 path:(id)a5
+- (AVTAsset)initWithType:(int64_t)type identifier:(id)identifier path:(id)path
 {
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  pathCopy = path;
   v82.receiver = self;
   v82.super_class = AVTAsset;
   v11 = [(AVTAsset *)&v82 init];
   v12 = v11;
   if (v11)
   {
-    v11->_componentType = a3;
-    objc_storeStrong(&v11->_identifier, a4);
+    v11->_componentType = type;
+    objc_storeStrong(&v11->_identifier, identifier);
     v12->_cacheLock._os_unfair_lock_opaque = 0;
     v13 = AVTPrecompiledMemojiAssetWithIdentifier(v12->_identifier);
     if (!v13)
@@ -57,7 +57,7 @@
       v79[3] = &unk_1E7F48280;
       v23 = v22;
       v80 = v23;
-      v81 = v10;
+      v81 = pathCopy;
       [v21 enumerateKeysAndObjectsUsingBlock:v79];
       layers = v12->_layers;
       v12->_layers = v23;
@@ -65,7 +65,7 @@
     }
 
     v70 = v21;
-    v71 = v9;
+    v71 = identifierCopy;
     v26 = [v13 objectForKeyedSubscript:@"uvRemapping"];
     v69 = v26;
     if (v26)
@@ -82,7 +82,7 @@
       [v32 floatValue];
       v75 = __PAIR64__(v33, v74);
       [v28 objectAtIndexedSubscript:2];
-      v35 = v34 = v10;
+      v35 = v34 = pathCopy;
       [v35 floatValue];
       v72 = v36;
       v37 = [v28 objectAtIndexedSubscript:3];
@@ -97,7 +97,7 @@
       v12[1]._identifier = v73;
       v12[1]._resourcePath = __PAIR64__(v42, v68);
 
-      v10 = v34;
+      pathCopy = v34;
     }
 
     else
@@ -109,28 +109,28 @@
     }
 
     v43 = [v13 objectForKeyedSubscript:@"main"];
-    v44 = [v10 stringByAppendingPathComponent:v43];
+    v44 = [pathCopy stringByAppendingPathComponent:v43];
     resourcePath = v12->_resourcePath;
     v12->_resourcePath = v44;
 
-    v46 = [(NSString *)v12->_resourcePath pathExtension];
-    if (([v46 isEqualToString:@"vfxz-world"] & 1) != 0 || objc_msgSend(v46, "isEqualToString:", @"vfx-world"))
+    pathExtension = [(NSString *)v12->_resourcePath pathExtension];
+    if (([pathExtension isEqualToString:@"vfxz-world"] & 1) != 0 || objc_msgSend(pathExtension, "isEqualToString:", @"vfx-world"))
     {
       v47 = [v13 objectForKeyedSubscript:@"accentColors"];
       v48 = v47;
       v49 = v70;
-      v9 = v71;
+      identifierCopy = v71;
       if (v47)
       {
-        v50 = [v47 unsignedIntegerValue];
+        unsignedIntegerValue = [v47 unsignedIntegerValue];
       }
 
       else
       {
-        v50 = 1;
+        unsignedIntegerValue = 1;
       }
 
-      v12->_editableColorCount = v50;
+      v12->_editableColorCount = unsignedIntegerValue;
       v12->_resourceType = 0;
     }
 
@@ -138,13 +138,13 @@
     {
       v12->_resourceType = 1;
       v49 = v70;
-      v9 = v71;
+      identifierCopy = v71;
     }
 
     v51 = [v13 objectForKeyedSubscript:@"ao"];
     if (v51)
     {
-      v52 = [v10 stringByAppendingPathComponent:v51];
+      v52 = [pathCopy stringByAppendingPathComponent:v51];
       ambientOcclusion = v12->_ambientOcclusion;
       v12->_ambientOcclusion = v52;
     }
@@ -162,7 +162,7 @@
       v76[2] = __41__AVTAsset_initWithType_identifier_path___block_invoke_2;
       v76[3] = &unk_1E7F482A8;
       v77 = v56;
-      v78 = v10;
+      v78 = pathCopy;
       v58 = v56;
       [(NSDictionary *)v57 enumerateKeysAndObjectsUsingBlock:v76];
       v59 = [v58 copy];
@@ -206,19 +206,19 @@ void __41__AVTAsset_initWithType_identifier_path___block_invoke_2(uint64_t a1, v
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-- (void)enumerateVariantDependenciesOfKind:(unint64_t)a3 block:(id)a4
+- (void)enumerateVariantDependenciesOfKind:(unint64_t)kind block:(id)block
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   v14[0] = self->_morphVariantDependencies;
   v14[1] = self->_imageVariantDependencies;
   v14[2] = self->_materialVariantDependencies;
-  v7 = v14[a3];
+  v7 = v14[kind];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __53__AVTAsset_enumerateVariantDependenciesOfKind_block___block_invoke;
   v12[3] = &unk_1E7F482F8;
-  v8 = v6;
+  v8 = blockCopy;
   v13 = v8;
   v9 = v7;
   [v9 enumerateKeysAndObjectsUsingBlock:v12];
@@ -323,8 +323,8 @@ void __53__AVTAsset_enumerateVariantDependenciesOfKind_block___block_invoke(uint
 
     else
     {
-      v11 = [v6 childNodes];
-      v8 = [v11 objectAtIndexedSubscript:0];
+      childNodes = [v6 childNodes];
+      v8 = [childNodes objectAtIndexedSubscript:0];
 
       [v8 removeFromParentNode];
       if (v8)
@@ -343,14 +343,14 @@ void __53__AVTAsset_enumerateVariantDependenciesOfKind_block___block_invoke(uint
         [v8 avt_enableSubdivisionOnHierarchyWithQuality:v12 animoji:0];
         if (self->_wrapDeformerDriverNames)
         {
-          v15 = [(NSString *)self->_resourcePath stringByDeletingLastPathComponent];
+          stringByDeletingLastPathComponent = [(NSString *)self->_resourcePath stringByDeletingLastPathComponent];
           v18[0] = MEMORY[0x1E69E9820];
           v18[1] = 3221225472;
           v18[2] = __31__AVTAsset_instantiateResource__block_invoke;
           v18[3] = &unk_1E7F47EA0;
           v18[4] = self;
-          v19 = v15;
-          v16 = v15;
+          v19 = stringByDeletingLastPathComponent;
+          v16 = stringByDeletingLastPathComponent;
           [v8 enumerateHierarchyUsingBlock:v18];
         }
 
@@ -405,20 +405,20 @@ void __31__AVTAsset_instantiateResource__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (id)resourceByCachingIfNeeded:(BOOL)a3
+- (id)resourceByCachingIfNeeded:(BOOL)needed
 {
-  if (!a3)
+  if (!needed)
   {
-    v7 = [(AVTAsset *)self instantiateResource];
+    instantiateResource = [(AVTAsset *)self instantiateResource];
     goto LABEL_14;
   }
 
   os_unfair_lock_lock(&self->_cacheLock);
   if (!self->_cachedResource)
   {
-    v4 = [(AVTAsset *)self instantiateResource];
+    instantiateResource2 = [(AVTAsset *)self instantiateResource];
     cachedResource = self->_cachedResource;
-    self->_cachedResource = v4;
+    self->_cachedResource = instantiateResource2;
   }
 
   if (self->_resourceType == 1)
@@ -436,26 +436,26 @@ void __31__AVTAsset_instantiateResource__block_invoke(uint64_t a1, void *a2)
         [(AVTAsset *)&self->_resourceType instantiateResource];
       }
 
-      v7 = 0;
+      instantiateResource = 0;
       goto LABEL_13;
     }
 
     v6 = AVTCloneNodesAndMaterials(self->_cachedResource);
   }
 
-  v7 = v6;
+  instantiateResource = v6;
 LABEL_13:
   os_unfair_lock_unlock(&self->_cacheLock);
 LABEL_14:
 
-  return v7;
+  return instantiateResource;
 }
 
-- (id)assetImageForAsset:(id)a3
+- (id)assetImageForAsset:(id)asset
 {
   perAssetMain = self->_perAssetMain;
-  v4 = [a3 identifier];
-  v5 = [(NSDictionary *)perAssetMain objectForKeyedSubscript:v4];
+  identifier = [asset identifier];
+  v5 = [(NSDictionary *)perAssetMain objectForKeyedSubscript:identifier];
 
   return v5;
 }
@@ -471,7 +471,7 @@ LABEL_14:
 - (void)instantiateResource
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = *a1;
+  v7 = *self;
   OUTLINED_FUNCTION_0_1();
   _os_log_error_impl(v1, v2, v3, v4, v5, 8u);
   v6 = *MEMORY[0x1E69E9840];

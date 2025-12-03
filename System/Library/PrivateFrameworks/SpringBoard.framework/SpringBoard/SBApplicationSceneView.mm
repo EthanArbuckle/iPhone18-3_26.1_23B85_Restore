@@ -1,33 +1,33 @@
 @interface SBApplicationSceneView
 - (SBApplication)application;
-- (SBApplicationSceneView)initWithSceneHandle:(id)a3 referenceSize:(CGSize)a4 contentOrientation:(int64_t)a5 containerOrientation:(int64_t)a6 hostRequester:(id)a7;
+- (SBApplicationSceneView)initWithSceneHandle:(id)handle referenceSize:(CGSize)size contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation hostRequester:(id)requester;
 @end
 
 @implementation SBApplicationSceneView
 
-- (SBApplicationSceneView)initWithSceneHandle:(id)a3 referenceSize:(CGSize)a4 contentOrientation:(int64_t)a5 containerOrientation:(int64_t)a6 hostRequester:(id)a7
+- (SBApplicationSceneView)initWithSceneHandle:(id)handle referenceSize:(CGSize)size contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation hostRequester:(id)requester
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
+  height = size.height;
+  width = size.width;
+  handleCopy = handle;
   v17.receiver = self;
   v17.super_class = SBApplicationSceneView;
-  v14 = [(SBSceneView *)&v17 initWithSceneHandle:v13 referenceSize:a5 contentOrientation:a6 containerOrientation:a7 hostRequester:width, height];
-  if (v14)
+  height = [(SBSceneView *)&v17 initWithSceneHandle:handleCopy referenceSize:orientation contentOrientation:containerOrientation containerOrientation:requester hostRequester:width, height];
+  if (height)
   {
-    v15 = [v13 newScenePlaceholderContentContextWithActivationSettings:0];
-    [(SBSceneView *)v14 setPlaceholderContentContext:v15];
+    v15 = [handleCopy newScenePlaceholderContentContextWithActivationSettings:0];
+    [(SBSceneView *)height setPlaceholderContentContext:v15];
   }
 
-  return v14;
+  return height;
 }
 
 - (SBApplication)application
 {
-  v2 = [(SBSceneView *)self sceneHandle];
-  v3 = [v2 application];
+  sceneHandle = [(SBSceneView *)self sceneHandle];
+  application = [sceneHandle application];
 
-  return v3;
+  return application;
 }
 
 @end

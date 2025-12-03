@@ -1,8 +1,8 @@
 @interface LSMIResultRegistrantServerDatabaseContextProviding
 - (LSMIResultRegistrantServerDatabaseContextProviding)init;
 - (id).cxx_construct;
-- (id)databaseContextWithError:(id *)a3;
-- (void)armSaveTimerIfNecessary:(id)a3;
+- (id)databaseContextWithError:(id *)error;
+- (void)armSaveTimerIfNecessary:(id)necessary;
 @end
 
 @implementation LSMIResultRegistrantServerDatabaseContextProviding
@@ -15,7 +15,7 @@
   return [(LSMIResultRegistrantServerDatabaseContextProviding *)&v4 init];
 }
 
-- (id)databaseContextWithError:(id *)a3
+- (id)databaseContextWithError:(id *)error
 {
   v5 = +[_LSDServiceDomain defaultServiceDomain];
   v6 = LaunchServices::Database::Context::_get(&self->_ctx, v5, 0);
@@ -24,7 +24,7 @@
   {
     v7 = [[LSMIResultRegistrantTrueDatabaseContext alloc] initWithDatabase:*v6];
     v8 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -46,7 +46,7 @@
     }
 
     v7 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -55,7 +55,7 @@
   if (!v7)
   {
     v8 = v8;
-    *a3 = v8;
+    *error = v8;
   }
 
 LABEL_10:
@@ -63,15 +63,15 @@ LABEL_10:
   return v7;
 }
 
-- (void)armSaveTimerIfNecessary:(id)a3
+- (void)armSaveTimerIfNecessary:(id)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __78__LSMIResultRegistrantServerDatabaseContextProviding_armSaveTimerIfNecessary___block_invoke;
   v5[3] = &unk_1E6A1E4E0;
-  v6 = v3;
-  v4 = v3;
+  v6 = necessaryCopy;
+  v4 = necessaryCopy;
   _LSArmSaveTimerWithObserver(5, v5);
 }
 

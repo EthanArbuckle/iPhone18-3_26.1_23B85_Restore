@@ -2,37 +2,37 @@
 - (CKSwipeActionIndicator)replyIndicator;
 - (CKTranscriptBalloonCell)cell;
 - (double)initialIndicatorX;
-- (id)initForCell:(id)a3 swipeCompletionHandler:(id)a4 swipeChangedHandler:(id)a5;
-- (void)_beginReplyWithSwipeVelocity:(CGPoint)a3;
-- (void)_doPulseAnimationWithHaptic:(BOOL)a3;
-- (void)_gestureBegan:(id)a3 forCell:(id)a4;
-- (void)_gestureChanged:(id)a3 forCell:(id)a4;
-- (void)_gestureFinished:(id)a3 forCell:(id)a4;
+- (id)initForCell:(id)cell swipeCompletionHandler:(id)handler swipeChangedHandler:(id)changedHandler;
+- (void)_beginReplyWithSwipeVelocity:(CGPoint)velocity;
+- (void)_doPulseAnimationWithHaptic:(BOOL)haptic;
+- (void)_gestureBegan:(id)began forCell:(id)cell;
+- (void)_gestureChanged:(id)changed forCell:(id)cell;
+- (void)_gestureFinished:(id)finished forCell:(id)cell;
 - (void)_playHaptic;
-- (void)_swipeValueChanged:(double)a3;
+- (void)_swipeValueChanged:(double)changed;
 - (void)prepareForReuse;
-- (void)swipeToReplyGestureHandler:(id)a3;
+- (void)swipeToReplyGestureHandler:(id)handler;
 @end
 
 @implementation CKBalloonSwipeController
 
-- (id)initForCell:(id)a3 swipeCompletionHandler:(id)a4 swipeChangedHandler:(id)a5
+- (id)initForCell:(id)cell swipeCompletionHandler:(id)handler swipeChangedHandler:(id)changedHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  cellCopy = cell;
+  handlerCopy = handler;
+  changedHandlerCopy = changedHandler;
   v18.receiver = self;
   v18.super_class = CKBalloonSwipeController;
   v11 = [(CKBalloonSwipeController *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_cell, v8);
-    v13 = _Block_copy(v9);
+    objc_storeWeak(&v11->_cell, cellCopy);
+    v13 = _Block_copy(handlerCopy);
     onSwipeCompletion = v12->_onSwipeCompletion;
     v12->_onSwipeCompletion = v13;
 
-    v15 = _Block_copy(v10);
+    v15 = _Block_copy(changedHandlerCopy);
     onSwipeChanged = v12->_onSwipeChanged;
     v12->_onSwipeChanged = v15;
 
@@ -44,13 +44,13 @@
 
 - (CKSwipeActionIndicator)replyIndicator
 {
-  v3 = [(CKBalloonSwipeController *)self balloonView];
-  v4 = [v3 traitCollection];
-  v5 = [v4 isTranscriptBackgroundActive];
+  balloonView = [(CKBalloonSwipeController *)self balloonView];
+  traitCollection = [balloonView traitCollection];
+  isTranscriptBackgroundActive = [traitCollection isTranscriptBackgroundActive];
 
-  if (self->_wasBackgroundActive != v5)
+  if (self->_wasBackgroundActive != isTranscriptBackgroundActive)
   {
-    self->_wasBackgroundActive = v5;
+    self->_wasBackgroundActive = isTranscriptBackgroundActive;
     [(CKSwipeActionIndicator *)self->_replyIndicator removeFromSuperview];
     replyIndicator = self->_replyIndicator;
     self->_replyIndicator = 0;
@@ -60,7 +60,7 @@
 
   if (!self->_replyIndicator)
   {
-    if (v5)
+    if (isTranscriptBackgroundActive)
     {
       +[CKSwipeActionIndicator generateMaterialReplyIndicator];
     }
@@ -71,13 +71,13 @@
     }
     v7 = ;
     [(CKSwipeActionIndicator *)v7 updateAlpha:0.0];
-    v8 = [(CKBalloonSwipeController *)self cell];
-    v9 = [v8 contentView];
-    [v9 addSubview:v7];
+    cell = [(CKBalloonSwipeController *)self cell];
+    contentView = [cell contentView];
+    [contentView addSubview:v7];
 
-    v10 = [(CKBalloonSwipeController *)self cell];
-    v11 = [v10 contentView];
-    [v11 sendSubviewToBack:v7];
+    cell2 = [(CKBalloonSwipeController *)self cell];
+    contentView2 = [cell2 contentView];
+    [contentView2 sendSubviewToBack:v7];
 
     v12 = self->_replyIndicator;
     self->_replyIndicator = v7;
@@ -85,14 +85,14 @@
 
   if (self->_needsReplyIndicatorRepositioning)
   {
-    v13 = [(CKBalloonSwipeController *)self balloonView];
-    [v13 frame];
+    balloonView2 = [(CKBalloonSwipeController *)self balloonView];
+    [balloonView2 frame];
     [(CKBalloonSwipeController *)self setInitialBalloonX:CGRectGetMinX(v26)];
 
     [(CKBalloonSwipeController *)self initialIndicatorX];
     v15 = v14;
-    v16 = [(CKBalloonSwipeController *)self balloonView];
-    [v16 frame];
+    balloonView3 = [(CKBalloonSwipeController *)self balloonView];
+    [balloonView3 frame];
     MidY = CGRectGetMidY(v27);
     [(CKSwipeActionIndicator *)self->_replyIndicator preferredSize];
     v19 = MidY + v18 * -0.5;
@@ -112,10 +112,10 @@
 
 - (double)initialIndicatorX
 {
-  v3 = [(CKBalloonSwipeController *)self cell];
-  v4 = [v3 orientation];
+  cell = [(CKBalloonSwipeController *)self cell];
+  orientation = [cell orientation];
 
-  if (v4)
+  if (orientation)
   {
 
     [(CKBalloonSwipeController *)self initialBalloonX];
@@ -123,8 +123,8 @@
 
   else
   {
-    v6 = [(CKBalloonSwipeController *)self cell];
-    [v6 associatedItemOffset];
+    cell2 = [(CKBalloonSwipeController *)self cell];
+    [cell2 associatedItemOffset];
     v8 = v7;
 
     [(CKBalloonSwipeController *)self initialBalloonX];
@@ -139,43 +139,43 @@
   return result;
 }
 
-- (void)swipeToReplyGestureHandler:(id)a3
+- (void)swipeToReplyGestureHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKBalloonSwipeController *)self cell];
+  handlerCopy = handler;
+  cell = [(CKBalloonSwipeController *)self cell];
 
-  if (v5)
+  if (cell)
   {
-    v6 = [v4 state];
-    if ((v6 - 3) >= 3)
+    state = [handlerCopy state];
+    if ((state - 3) >= 3)
     {
-      if (v6 == 2)
+      if (state == 2)
       {
-        v18 = [(CKBalloonSwipeController *)self cell];
-        [(CKBalloonSwipeController *)self _gestureChanged:v4 forCell:v18];
+        cell2 = [(CKBalloonSwipeController *)self cell];
+        [(CKBalloonSwipeController *)self _gestureChanged:handlerCopy forCell:cell2];
       }
 
-      else if (v6 == 1)
+      else if (state == 1)
       {
         if (IMOSLoggingEnabled())
         {
           v13 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
           {
-            v14 = [(CKBalloonSwipeController *)self cell];
-            v15 = [(CKBalloonSwipeController *)self cell];
-            v16 = [v15 balloonView];
+            cell3 = [(CKBalloonSwipeController *)self cell];
+            cell4 = [(CKBalloonSwipeController *)self cell];
+            balloonView = [cell4 balloonView];
             v19 = 134218240;
-            v20 = v14;
+            v20 = cell3;
             v21 = 2048;
-            v22 = v16;
+            v22 = balloonView;
             _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "CKBalloonSwipeController detected begin swipe on balloon <%p> in cell <%p>.", &v19, 0x16u);
           }
         }
 
-        v17 = [(CKBalloonSwipeController *)self cell];
-        [(CKBalloonSwipeController *)self _gestureBegan:v4 forCell:v17];
+        cell5 = [(CKBalloonSwipeController *)self cell];
+        [(CKBalloonSwipeController *)self _gestureBegan:handlerCopy forCell:cell5];
       }
     }
 
@@ -186,19 +186,19 @@
         v7 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
         {
-          v8 = [(CKBalloonSwipeController *)self cell];
-          v9 = [(CKBalloonSwipeController *)self cell];
-          v10 = [v9 balloonView];
+          cell6 = [(CKBalloonSwipeController *)self cell];
+          cell7 = [(CKBalloonSwipeController *)self cell];
+          balloonView2 = [cell7 balloonView];
           v19 = 134218240;
-          v20 = v8;
+          v20 = cell6;
           v21 = 2048;
-          v22 = v10;
+          v22 = balloonView2;
           _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "CKBalloonSwipeController detected end swipe on balloon <%p> in cell <%p>.", &v19, 0x16u);
         }
       }
 
-      v11 = [(CKBalloonSwipeController *)self cell];
-      [(CKBalloonSwipeController *)self _gestureFinished:v4 forCell:v11];
+      cell8 = [(CKBalloonSwipeController *)self cell];
+      [(CKBalloonSwipeController *)self _gestureFinished:handlerCopy forCell:cell8];
     }
   }
 
@@ -213,32 +213,32 @@
   }
 }
 
-- (void)_gestureBegan:(id)a3 forCell:(id)a4
+- (void)_gestureBegan:(id)began forCell:(id)cell
 {
-  [(CKBalloonSwipeController *)self setIsGestureCommittedToAction:0, a4];
-  v5 = [(CKBalloonSwipeController *)self replyIndicator];
-  [v5 updateAlpha:0.0];
+  [(CKBalloonSwipeController *)self setIsGestureCommittedToAction:0, cell];
+  replyIndicator = [(CKBalloonSwipeController *)self replyIndicator];
+  [replyIndicator updateAlpha:0.0];
 
-  v11 = [(CKBalloonSwipeController *)self replyIndicator];
+  replyIndicator2 = [(CKBalloonSwipeController *)self replyIndicator];
   v6 = +[CKUIBehavior sharedBehaviors];
   [v6 initialReplyIndicatorScale];
   v8 = v7;
-  v9 = [(CKBalloonSwipeController *)self replyIndicator];
-  [v9 currentHorizontalTranslation];
-  [v11 setTransformForScale:v8 horizontalTranslation:v10];
+  replyIndicator3 = [(CKBalloonSwipeController *)self replyIndicator];
+  [replyIndicator3 currentHorizontalTranslation];
+  [replyIndicator2 setTransformForScale:v8 horizontalTranslation:v10];
 }
 
-- (void)_gestureChanged:(id)a3 forCell:(id)a4
+- (void)_gestureChanged:(id)changed forCell:(id)cell
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 contentView];
-  [v7 velocityInView:v8];
+  cellCopy = cell;
+  changedCopy = changed;
+  contentView = [cellCopy contentView];
+  [changedCopy velocityInView:contentView];
   v10 = v9;
 
-  v11 = [v6 contentView];
+  contentView2 = [cellCopy contentView];
 
-  [v7 translationInView:v11];
+  [changedCopy translationInView:contentView2];
   v13 = v12;
 
   v14 = +[CKUIBehavior sharedBehaviors];
@@ -266,10 +266,10 @@
   {
     v21 = fmax(v13 - v16, 0.0) / (v19 - v16);
     v22 = fmin(fmax(v21, 0.0), 1.0);
-    v23 = [(CKBalloonSwipeController *)self cell];
-    v24 = [v23 orientation];
+    cell = [(CKBalloonSwipeController *)self cell];
+    orientation = [cell orientation];
 
-    if (v24 == 2)
+    if (orientation == 2)
     {
       v25 = +[CKUIBehavior sharedBehaviors];
       [v25 replyToSelfButtonOffset];
@@ -289,8 +289,8 @@
 
     [(CKSwipeActionIndicator *)self->_replyIndicator setTransformForScale:v32 horizontalTranslation:v20 * v22 + 0.0];
     [(CKSwipeActionIndicator *)self->_replyIndicator setBlurRadius:v35];
-    v36 = [(CKBalloonSwipeController *)self replyIndicator];
-    v37 = v36;
+    replyIndicator = [(CKBalloonSwipeController *)self replyIndicator];
+    v37 = replyIndicator;
     if (v21 == 0.0)
     {
       v38 = 0.0;
@@ -301,7 +301,7 @@
       v38 = v22;
     }
 
-    [v36 updateAlpha:v38];
+    [replyIndicator updateAlpha:v38];
   }
 
   if (v13 <= v19 || v10 <= 0.0 || [(CKBalloonSwipeController *)self isGestureCommittedToAction])
@@ -322,12 +322,12 @@
   }
 }
 
-- (void)_gestureFinished:(id)a3 forCell:(id)a4
+- (void)_gestureFinished:(id)finished forCell:(id)cell
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 contentView];
-  [v6 velocityInView:v8];
+  finishedCopy = finished;
+  cellCopy = cell;
+  contentView = [cellCopy contentView];
+  [finishedCopy velocityInView:contentView];
   v10 = v9;
   v12 = v11;
 
@@ -427,9 +427,9 @@ void __53__CKBalloonSwipeController__gestureFinished_forCell___block_invoke_203(
   [v15 _swipeValueChanged:0.0];
 }
 
-- (void)_doPulseAnimationWithHaptic:(BOOL)a3
+- (void)_doPulseAnimationWithHaptic:(BOOL)haptic
 {
-  v3 = a3;
+  hapticCopy = haptic;
   v5 = MEMORY[0x1E69DD250];
   v6 = +[CKUIBehavior sharedBehaviors];
   [v6 replyIndicatorPulseAnimationDuration];
@@ -440,7 +440,7 @@ void __53__CKBalloonSwipeController__gestureFinished_forCell___block_invoke_203(
   v12[4] = self;
   [v5 animateKeyframesWithDuration:4 delay:v12 options:0 animations:? completion:?];
 
-  if (v3)
+  if (hapticCopy)
   {
     v7 = +[CKUIBehavior sharedBehaviors];
     [v7 replyIndicatorPulseAnimationDuration];
@@ -506,10 +506,10 @@ void __56__CKBalloonSwipeController__doPulseAnimationWithHaptic___block_invoke_3
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(CKBalloonSwipeController *)self cell];
+      cell = [(CKBalloonSwipeController *)self cell];
       [(CKBalloonSwipeController *)self offsetDelta];
       v7 = 134218240;
-      v8 = v5;
+      v8 = cell;
       v9 = 2048;
       v10 = v6;
       _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_INFO, "CKBalloonSwipeController hit prepareForReuse for cell <%p> but had a non-zero offset {%g}.", &v7, 0x16u);
@@ -517,16 +517,16 @@ void __56__CKBalloonSwipeController__doPulseAnimationWithHaptic___block_invoke_3
   }
 }
 
-- (void)_beginReplyWithSwipeVelocity:(CGPoint)a3
+- (void)_beginReplyWithSwipeVelocity:(CGPoint)velocity
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CKBalloonSwipeController *)self onSwipeCompletion];
+  y = velocity.y;
+  x = velocity.x;
+  onSwipeCompletion = [(CKBalloonSwipeController *)self onSwipeCompletion];
 
-  if (v6)
+  if (onSwipeCompletion)
   {
-    v8 = [(CKBalloonSwipeController *)self onSwipeCompletion];
-    v8[2](self->_offsetDelta, x, y);
+    onSwipeCompletion2 = [(CKBalloonSwipeController *)self onSwipeCompletion];
+    onSwipeCompletion2[2](self->_offsetDelta, x, y);
   }
 
   else
@@ -539,14 +539,14 @@ void __56__CKBalloonSwipeController__doPulseAnimationWithHaptic___block_invoke_3
   }
 }
 
-- (void)_swipeValueChanged:(double)a3
+- (void)_swipeValueChanged:(double)changed
 {
-  v5 = [(CKBalloonSwipeController *)self onSwipeChanged];
+  onSwipeChanged = [(CKBalloonSwipeController *)self onSwipeChanged];
 
-  if (v5)
+  if (onSwipeChanged)
   {
-    v7 = [(CKBalloonSwipeController *)self onSwipeChanged];
-    v7[2](a3);
+    onSwipeChanged2 = [(CKBalloonSwipeController *)self onSwipeChanged];
+    onSwipeChanged2[2](changed);
   }
 
   else

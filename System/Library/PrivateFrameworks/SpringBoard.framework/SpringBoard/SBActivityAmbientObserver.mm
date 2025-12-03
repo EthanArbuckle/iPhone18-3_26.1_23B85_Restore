@@ -1,19 +1,19 @@
 @interface SBActivityAmbientObserver
-- (BOOL)isActiveActivityItem:(id)a3;
-- (BOOL)shouldHandleActivityItem:(id)a3;
+- (BOOL)isActiveActivityItem:(id)item;
+- (BOOL)shouldHandleActivityItem:(id)item;
 - (SBActivityAmbientObserver)init;
 - (SBActivityAmbientObserverDelegate)delegate;
 - (SBActivityItem)nextPendingItem;
 - (id)_sortActivityItems;
-- (void)activityDidEnd:(id)a3;
-- (void)activityDidStart:(id)a3;
-- (void)activityProminenceChanged:(BOOL)a3 item:(id)a4;
+- (void)activityDidEnd:(id)end;
+- (void)activityDidStart:(id)start;
+- (void)activityProminenceChanged:(BOOL)changed item:(id)item;
 - (void)addOverlaysForOngoingActivitiesIfNecessary;
-- (void)addPendingItem:(id)a3;
+- (void)addPendingItem:(id)item;
 - (void)dealloc;
-- (void)dismissAlert:(id)a3;
-- (void)presentAlert:(id)a3;
-- (void)removePendingItem:(id)a3;
+- (void)dismissAlert:(id)alert;
+- (void)presentAlert:(id)alert;
+- (void)removePendingItem:(id)item;
 @end
 
 @implementation SBActivityAmbientObserver
@@ -39,9 +39,9 @@
     v15 = 0u;
     v16 = 0u;
     v7 = +[SBActivityManager sharedInstance];
-    v8 = [v7 activities];
+    activities = [v7 activities];
 
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    v9 = [activities countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -52,7 +52,7 @@
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(activities);
           }
 
           v13 = *(*(&v15 + 1) + 8 * i);
@@ -62,7 +62,7 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v10 = [activities countByEnumeratingWithState:&v15 objects:v20 count:16];
       }
 
       while (v10);
@@ -86,12 +86,12 @@
 - (void)addOverlaysForOngoingActivitiesIfNecessary
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SBActivityAmbientObserver *)self _sortActivityItems];
+  _sortActivityItems = [(SBActivityAmbientObserver *)self _sortActivityItems];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [_sortActivityItems countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -103,46 +103,46 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_sortActivityItems);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
-        v9 = [(SBActivityAmbientObserver *)self delegate];
-        [v9 addActivityItem:v8 forOngoingActivity:1];
+        delegate = [(SBActivityAmbientObserver *)self delegate];
+        [delegate addActivityItem:v8 forOngoingActivity:1];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [_sortActivityItems countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)addPendingItem:(id)a3
+- (void)addPendingItem:(id)item
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
     v5 = SBLogActivity();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 identifier];
+      identifier = [itemCopy identifier];
       v7 = 138543362;
-      v8 = v6;
+      v8 = identifier;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] adding ambient item to pending items", &v7, 0xCu);
     }
 
-    [(NSMutableOrderedSet *)self->_pendingItems addObject:v4];
+    [(NSMutableOrderedSet *)self->_pendingItems addObject:itemCopy];
   }
 }
 
-- (void)removePendingItem:(id)a3
+- (void)removePendingItem:(id)item
 {
-  if (a3)
+  if (item)
   {
     [(NSMutableOrderedSet *)self->_pendingItems removeObject:?];
   }
@@ -163,115 +163,115 @@
   return v3;
 }
 
-- (BOOL)isActiveActivityItem:(id)a3
+- (BOOL)isActiveActivityItem:(id)item
 {
-  if (!a3)
+  if (!item)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(SBActivityAmbientObserver *)self activeActivityItems];
-  v6 = [v5 containsObject:v4];
+  itemCopy = item;
+  activeActivityItems = [(SBActivityAmbientObserver *)self activeActivityItems];
+  v6 = [activeActivityItems containsObject:itemCopy];
 
   return v6;
 }
 
-- (void)activityDidStart:(id)a3
+- (void)activityDidStart:(id)start
 {
-  v5 = a3;
+  startCopy = start;
   if (([(NSMutableOrderedSet *)self->_activeActivityItems containsObject:?]& 1) == 0)
   {
-    [(NSMutableOrderedSet *)self->_activeActivityItems addObject:v5];
+    [(NSMutableOrderedSet *)self->_activeActivityItems addObject:startCopy];
   }
 
-  v4 = [(SBActivityAmbientObserver *)self delegate];
-  [v4 addActivityItem:v5 forOngoingActivity:0];
+  delegate = [(SBActivityAmbientObserver *)self delegate];
+  [delegate addActivityItem:startCopy forOngoingActivity:0];
 }
 
-- (void)activityDidEnd:(id)a3
+- (void)activityDidEnd:(id)end
 {
-  v5 = a3;
+  endCopy = end;
   if ([(NSMutableOrderedSet *)self->_activeActivityItems containsObject:?])
   {
-    [(NSMutableOrderedSet *)self->_activeActivityItems removeObject:v5];
-    [(NSMutableOrderedSet *)self->_pendingItems removeObject:v5];
-    v4 = [(SBActivityAmbientObserver *)self delegate];
-    [v4 removeActivityItem:v5];
+    [(NSMutableOrderedSet *)self->_activeActivityItems removeObject:endCopy];
+    [(NSMutableOrderedSet *)self->_pendingItems removeObject:endCopy];
+    delegate = [(SBActivityAmbientObserver *)self delegate];
+    [delegate removeActivityItem:endCopy];
   }
 }
 
-- (BOOL)shouldHandleActivityItem:(id)a3
+- (BOOL)shouldHandleActivityItem:(id)item
 {
-  if (!a3)
+  if (!item)
   {
     return 0;
   }
 
-  v3 = [a3 descriptor];
-  v4 = [v3 presentationOptions];
-  v5 = [v4 destinations];
-  v6 = [v5 bs_containsObjectPassingTest:&__block_literal_global_194];
+  descriptor = [item descriptor];
+  presentationOptions = [descriptor presentationOptions];
+  destinations = [presentationOptions destinations];
+  v6 = [destinations bs_containsObjectPassingTest:&__block_literal_global_194];
 
   v7 = +[SBLiveActivityDomain rootSettings];
-  v8 = [v7 hideActivitiesInAmbient];
+  hideActivitiesInAmbient = [v7 hideActivitiesInAmbient];
 
-  v9 = (v8 ^ 1) & v6;
+  v9 = (hideActivitiesInAmbient ^ 1) & v6;
   return v9;
 }
 
-- (void)presentAlert:(id)a3
+- (void)presentAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   activeActivityItems = self->_activeActivityItems;
-  v8 = v4;
-  v6 = [v4 item];
-  LODWORD(activeActivityItems) = [(NSMutableOrderedSet *)activeActivityItems containsObject:v6];
+  v8 = alertCopy;
+  item = [alertCopy item];
+  LODWORD(activeActivityItems) = [(NSMutableOrderedSet *)activeActivityItems containsObject:item];
 
   if (activeActivityItems)
   {
-    v7 = [(SBActivityAmbientObserver *)self delegate];
+    delegate = [(SBActivityAmbientObserver *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v7 presentAmbientActivityAlert:v8];
+      [delegate presentAmbientActivityAlert:v8];
     }
   }
 }
 
-- (void)dismissAlert:(id)a3
+- (void)dismissAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   activeActivityItems = self->_activeActivityItems;
-  v8 = v4;
-  v6 = [v4 item];
-  LODWORD(activeActivityItems) = [(NSMutableOrderedSet *)activeActivityItems containsObject:v6];
+  v8 = alertCopy;
+  item = [alertCopy item];
+  LODWORD(activeActivityItems) = [(NSMutableOrderedSet *)activeActivityItems containsObject:item];
 
   if (activeActivityItems)
   {
-    v7 = [(SBActivityAmbientObserver *)self delegate];
+    delegate = [(SBActivityAmbientObserver *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v7 dismissAmbientActivityAlert:v8];
+      [delegate dismissAmbientActivityAlert:v8];
     }
   }
 }
 
-- (void)activityProminenceChanged:(BOOL)a3 item:(id)a4
+- (void)activityProminenceChanged:(BOOL)changed item:(id)item
 {
-  v4 = a3;
-  v6 = [a4 identifier];
+  changedCopy = changed;
+  identifier = [item identifier];
   activeActivityItems = self->_activeActivityItems;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __60__SBActivityAmbientObserver_activityProminenceChanged_item___block_invoke;
   v11[3] = &unk_2783B7EC0;
-  v8 = v6;
+  v8 = identifier;
   v12 = v8;
   v9 = [(NSMutableOrderedSet *)activeActivityItems bs_firstObjectPassingTest:v11];
   if (v9)
   {
     v10 = [[SBActivityAlert alloc] initWithItem:v9 payloadIdentifier:0 options:0 title:0 body:0];
-    if (v4)
+    if (changedCopy)
     {
       [(SBActivityAmbientObserver *)self presentAlert:v10];
     }

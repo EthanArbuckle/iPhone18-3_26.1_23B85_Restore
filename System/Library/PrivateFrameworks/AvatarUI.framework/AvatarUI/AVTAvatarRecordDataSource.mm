@@ -1,50 +1,50 @@
 @interface AVTAvatarRecordDataSource
-+ (id)defaultUIDataSourceWithDomainIdentifier:(id)a3;
-- (AVTAvatarRecordDataSource)initWithRecordStore:(id)a3 fetchRequest:(id)a4;
-- (AVTAvatarRecordDataSource)initWithRecordStore:(id)a3 fetchRequest:(id)a4 environment:(id)a5;
++ (id)defaultUIDataSourceWithDomainIdentifier:(id)identifier;
+- (AVTAvatarRecordDataSource)initWithRecordStore:(id)store fetchRequest:(id)request;
+- (AVTAvatarRecordDataSource)initWithRecordStore:(id)store fetchRequest:(id)request environment:(id)environment;
 - (id)indexSetForEditableRecords;
-- (id)indexesOfRecordsPassingTest:(id)a3;
+- (id)indexesOfRecordsPassingTest:(id)test;
 - (id)internalRecordStore;
-- (id)recordAtIndex:(unint64_t)a3;
+- (id)recordAtIndex:(unint64_t)index;
 - (id)recordStore;
-- (unint64_t)indexOfRecordPassingTest:(id)a3;
+- (unint64_t)indexOfRecordPassingTest:(id)test;
 - (unint64_t)numberOfRecords;
-- (void)addObserver:(id)a3;
-- (void)addPriorityObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)addPriorityObserver:(id)observer;
 - (void)flushRecordsForEnteringBackground;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation AVTAvatarRecordDataSource
 
-- (AVTAvatarRecordDataSource)initWithRecordStore:(id)a3 fetchRequest:(id)a4
+- (AVTAvatarRecordDataSource)initWithRecordStore:(id)store fetchRequest:(id)request
 {
-  v6 = a4;
-  v7 = a3;
+  requestCopy = request;
+  storeCopy = store;
   v8 = +[AVTUIEnvironment defaultEnvironment];
-  v9 = [(AVTAvatarRecordDataSource *)self initWithRecordStore:v7 fetchRequest:v6 environment:v8];
+  v9 = [(AVTAvatarRecordDataSource *)self initWithRecordStore:storeCopy fetchRequest:requestCopy environment:v8];
 
   return v9;
 }
 
-- (AVTAvatarRecordDataSource)initWithRecordStore:(id)a3 fetchRequest:(id)a4 environment:(id)a5
+- (AVTAvatarRecordDataSource)initWithRecordStore:(id)store fetchRequest:(id)request environment:(id)environment
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  requestCopy = request;
+  environmentCopy = environment;
   v19.receiver = self;
   v19.super_class = AVTAvatarRecordDataSource;
   v12 = [(AVTAvatarRecordDataSource *)&v19 init];
   if (v12)
   {
     v13 = objc_alloc(MEMORY[0x1E698E340]);
-    v14 = [v9 internalStore];
-    v15 = [v11 coreEnvironment];
-    v16 = [v13 initWithRecordStore:v14 fetchRequest:v10 environment:v15];
+    internalStore = [storeCopy internalStore];
+    coreEnvironment = [environmentCopy coreEnvironment];
+    v16 = [v13 initWithRecordStore:internalStore fetchRequest:requestCopy environment:coreEnvironment];
     persistenceAvatarRecordDataSource = v12->_persistenceAvatarRecordDataSource;
     v12->_persistenceAvatarRecordDataSource = v16;
 
-    objc_storeStrong(&v12->_avatarStore, a3);
+    objc_storeStrong(&v12->_avatarStore, store);
   }
 
   return v12;
@@ -52,14 +52,14 @@
 
 - (id)internalRecordStore
 {
-  v3 = [(AVTAvatarRecordDataSource *)self observableWrappedAvatarStore];
+  observableWrappedAvatarStore = [(AVTAvatarRecordDataSource *)self observableWrappedAvatarStore];
 
-  if (!v3)
+  if (!observableWrappedAvatarStore)
   {
     v4 = [AVTAvatarStore alloc];
-    v5 = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
-    v6 = [v5 internalRecordStore];
-    v7 = [(AVTAvatarStore *)v4 initWithPersistenceAvatarStore:v6];
+    persistenceAvatarRecordDataSource = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
+    internalRecordStore = [persistenceAvatarRecordDataSource internalRecordStore];
+    v7 = [(AVTAvatarStore *)v4 initWithPersistenceAvatarStore:internalRecordStore];
 
     [(AVTAvatarRecordDataSource *)self setObservableWrappedAvatarStore:v7];
   }
@@ -67,89 +67,89 @@
   return [(AVTAvatarRecordDataSource *)self observableWrappedAvatarStore];
 }
 
-- (void)addPriorityObserver:(id)a3
+- (void)addPriorityObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
-  [v5 addPriorityObserver:v4];
+  observerCopy = observer;
+  persistenceAvatarRecordDataSource = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
+  [persistenceAvatarRecordDataSource addPriorityObserver:observerCopy];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  persistenceAvatarRecordDataSource = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
+  [persistenceAvatarRecordDataSource addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  persistenceAvatarRecordDataSource = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
+  [persistenceAvatarRecordDataSource removeObserver:observerCopy];
 }
 
 - (void)flushRecordsForEnteringBackground
 {
-  v2 = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
-  [v2 flushRecordsForEnteringBackground];
+  persistenceAvatarRecordDataSource = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
+  [persistenceAvatarRecordDataSource flushRecordsForEnteringBackground];
 }
 
 - (unint64_t)numberOfRecords
 {
-  v2 = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
-  v3 = [v2 numberOfRecords];
+  persistenceAvatarRecordDataSource = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
+  numberOfRecords = [persistenceAvatarRecordDataSource numberOfRecords];
 
-  return v3;
+  return numberOfRecords;
 }
 
-- (id)recordAtIndex:(unint64_t)a3
+- (id)recordAtIndex:(unint64_t)index
 {
-  v4 = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
-  v5 = [v4 recordAtIndex:a3];
+  persistenceAvatarRecordDataSource = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
+  v5 = [persistenceAvatarRecordDataSource recordAtIndex:index];
 
   return v5;
 }
 
 - (id)recordStore
 {
-  v2 = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
-  v3 = [v2 recordStore];
+  persistenceAvatarRecordDataSource = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
+  recordStore = [persistenceAvatarRecordDataSource recordStore];
 
-  return v3;
+  return recordStore;
 }
 
-- (id)indexesOfRecordsPassingTest:(id)a3
+- (id)indexesOfRecordsPassingTest:(id)test
 {
-  v4 = a3;
-  v5 = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
-  v6 = [v5 indexesOfRecordsPassingTest:v4];
+  testCopy = test;
+  persistenceAvatarRecordDataSource = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
+  v6 = [persistenceAvatarRecordDataSource indexesOfRecordsPassingTest:testCopy];
 
   return v6;
 }
 
-- (unint64_t)indexOfRecordPassingTest:(id)a3
+- (unint64_t)indexOfRecordPassingTest:(id)test
 {
-  v4 = a3;
-  v5 = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
-  v6 = [v5 indexOfRecordPassingTest:v4];
+  testCopy = test;
+  persistenceAvatarRecordDataSource = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
+  v6 = [persistenceAvatarRecordDataSource indexOfRecordPassingTest:testCopy];
 
   return v6;
 }
 
 - (id)indexSetForEditableRecords
 {
-  v2 = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
-  v3 = [v2 indexSetForEditableRecords];
+  persistenceAvatarRecordDataSource = [(AVTAvatarRecordDataSource *)self persistenceAvatarRecordDataSource];
+  indexSetForEditableRecords = [persistenceAvatarRecordDataSource indexSetForEditableRecords];
 
-  return v3;
+  return indexSetForEditableRecords;
 }
 
-+ (id)defaultUIDataSourceWithDomainIdentifier:(id)a3
++ (id)defaultUIDataSourceWithDomainIdentifier:(id)identifier
 {
   v4 = objc_alloc_init(MEMORY[0x1E698E348]);
   v5 = [[AVTAvatarStore alloc] initWithPersistenceAvatarStore:v4];
-  v6 = [MEMORY[0x1E698E310] requestForAllAvatars];
-  v7 = [[a1 alloc] initWithRecordStore:v5 fetchRequest:v6];
+  requestForAllAvatars = [MEMORY[0x1E698E310] requestForAllAvatars];
+  v7 = [[self alloc] initWithRecordStore:v5 fetchRequest:requestForAllAvatars];
 
   return v7;
 }

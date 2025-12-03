@@ -11,7 +11,7 @@
 {
   v43 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v30 = self;
+  selfCopy = self;
   [(TIDPRecorder *)self characterExplodedRecords];
   v35 = 0u;
   v36 = 0u;
@@ -22,12 +22,12 @@
   {
     v5 = v4;
     v28 = v3;
-    v6 = 0;
+    coderVersion = 0;
     v7 = *v36;
     do
     {
       v8 = 0;
-      v9 = v6;
+      v9 = coderVersion;
       do
       {
         if (*v36 != v7)
@@ -56,10 +56,10 @@
                 objc_enumerationMutation(v12);
               }
 
-              v17 = [*(*(&v31 + 1) + 8 * i) codedWord];
-              if (v17)
+              codedWord = [*(*(&v31 + 1) + 8 * i) codedWord];
+              if (codedWord)
               {
-                [v11 addObject:v17];
+                [v11 addObject:codedWord];
               }
             }
 
@@ -69,32 +69,32 @@
           while (v14);
         }
 
-        v18 = [v12 firstObject];
-        v6 = [v18 coderVersion];
+        firstObject = [v12 firstObject];
+        coderVersion = [firstObject coderVersion];
 
         v19 = [v11 copy];
         if ([v19 count])
         {
-          v20 = [v6 UUIDString];
-          v21 = v20;
+          uUIDString = [coderVersion UUIDString];
+          v21 = uUIDString;
           v22 = @"UNKNOWN_VERSION";
-          if (v20)
+          if (uUIDString)
           {
-            v22 = v20;
+            v22 = uUIDString;
           }
 
           v23 = v22;
 
-          v24 = [(TIDPUnknownTokenRecorder *)v30 delegate];
+          delegate = [(TIDPUnknownTokenRecorder *)selfCopy delegate];
           v39 = @"VersionHash";
           v40 = v23;
           v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
 
-          [v24 record:v19 metadata:v25];
+          [delegate record:v19 metadata:v25];
         }
 
         ++v8;
-        v9 = v6;
+        v9 = coderVersion;
       }
 
       while (v8 != v5);
@@ -114,14 +114,14 @@
 - (id)records
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(TIDPRecorder *)self characterCoder];
+  characterCoder = [(TIDPRecorder *)self characterCoder];
 
-  if (v3)
+  if (characterCoder)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v5 = [(TIDPRecorder *)self typingSessionAligned];
-    v6 = [v5 alignedEntries];
-    v7 = [v6 count];
+    typingSessionAligned = [(TIDPRecorder *)self typingSessionAligned];
+    alignedEntries = [typingSessionAligned alignedEntries];
+    v7 = [alignedEntries count];
 
     if (v7)
     {
@@ -130,27 +130,27 @@
       do
       {
         v10 = v9;
-        v11 = [(TIDPRecorder *)self typingSessionAligned];
-        v12 = [v11 alignedEntries];
-        v9 = [v12 objectAtIndexedSubscript:v8];
+        typingSessionAligned2 = [(TIDPRecorder *)self typingSessionAligned];
+        alignedEntries2 = [typingSessionAligned2 alignedEntries];
+        v9 = [alignedEntries2 objectAtIndexedSubscript:v8];
 
-        v13 = [v9 originalWord];
-        LODWORD(v12) = [(TIDPRecorder *)self isWordEntryReallyOOV:v13 caseSensitive:0];
+        originalWord = [v9 originalWord];
+        LODWORD(alignedEntries2) = [(TIDPRecorder *)self isWordEntryReallyOOV:originalWord caseSensitive:0];
 
-        if (v12)
+        if (alignedEntries2)
         {
-          v14 = [v9 originalWord];
-          v15 = [v14 acceptedString];
-          v16 = [(TIDPRecorder *)self characterCoder];
-          v17 = [TIDPWordRecord word:v15 atPosition:&unk_28400BEB0 coder:v16];
+          originalWord2 = [v9 originalWord];
+          acceptedString = [originalWord2 acceptedString];
+          characterCoder2 = [(TIDPRecorder *)self characterCoder];
+          v17 = [TIDPWordRecord word:acceptedString atPosition:&unk_28400BEB0 coder:characterCoder2];
 
           [v4 addObject:v17];
         }
 
         ++v8;
-        v18 = [(TIDPRecorder *)self typingSessionAligned];
-        v19 = [v18 alignedEntries];
-        v20 = [v19 count];
+        typingSessionAligned3 = [(TIDPRecorder *)self typingSessionAligned];
+        alignedEntries3 = [typingSessionAligned3 alignedEntries];
+        v20 = [alignedEntries3 count];
       }
 
       while (v8 < v20);
@@ -163,11 +163,11 @@
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
-      v22 = [(TIDPRecorder *)self recordingKeyLocaleSubstring];
+      recordingKeyLocaleSubstring = [(TIDPRecorder *)self recordingKeyLocaleSubstring];
       v25 = 136315394;
       v26 = "[TIDPUnknownTokenRecorder records]";
       v27 = 2112;
-      v28 = v22;
+      v28 = recordingKeyLocaleSubstring;
       _os_log_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s  Not recording unknown tokens for locale '%@' because a valid character coder could not be loaded.", &v25, 0x16u);
     }
 
@@ -181,8 +181,8 @@
 
 - (id)recordingKey
 {
-  v2 = [(TIDPRecorder *)self recordingKeyLocaleSubstring];
-  v3 = [@"com.apple.TextInput.UnknownToken." stringByAppendingString:v2];
+  recordingKeyLocaleSubstring = [(TIDPRecorder *)self recordingKeyLocaleSubstring];
+  v3 = [@"com.apple.TextInput.UnknownToken." stringByAppendingString:recordingKeyLocaleSubstring];
 
   return v3;
 }
@@ -191,13 +191,13 @@
 {
   v11.receiver = self;
   v11.super_class = TIDPUnknownTokenRecorder;
-  v3 = [(TIDPRecorder *)&v11 delegate];
+  delegate = [(TIDPRecorder *)&v11 delegate];
 
-  if (!v3)
+  if (!delegate)
   {
     v4 = objc_alloc(MEMORY[0x277D05308]);
-    v5 = [(TIDPUnknownTokenRecorder *)self recordingKey];
-    v6 = [v4 initWithKey:v5];
+    recordingKey = [(TIDPUnknownTokenRecorder *)self recordingKey];
+    v6 = [v4 initWithKey:recordingKey];
 
     v10.receiver = self;
     v10.super_class = TIDPUnknownTokenRecorder;
@@ -206,9 +206,9 @@
 
   v9.receiver = self;
   v9.super_class = TIDPUnknownTokenRecorder;
-  v7 = [(TIDPRecorder *)&v9 delegate];
+  delegate2 = [(TIDPRecorder *)&v9 delegate];
 
-  return v7;
+  return delegate2;
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface RAPWebBundleHomeViewController
-- (RAPWebBundleHomeViewController)initWithReport:(id)a3 completion:(id)a4;
+- (RAPWebBundleHomeViewController)initWithReport:(id)report completion:(id)completion;
 - (id)_headerTitle;
-- (void)_contextFromQuestionWithLocales:(id)a3 withReplyHandler:(id)a4;
+- (void)_contextFromQuestionWithLocales:(id)locales withReplyHandler:(id)handler;
 - (void)_dismiss;
 - (void)_presentAddressUI;
-- (void)_presentAutocompleteViewController:(id)a3 forItemKind:(int64_t)a4;
-- (void)_presentContainmentUIIsParentContainment:(BOOL)a3 currentlySelectedMUIDs:(id)a4;
-- (void)_reportSentWithDismissalGesture:(BOOL)a3;
+- (void)_presentAutocompleteViewController:(id)controller forItemKind:(int64_t)kind;
+- (void)_presentContainmentUIIsParentContainment:(BOOL)containment currentlySelectedMUIDs:(id)ds;
+- (void)_reportSentWithDismissalGesture:(BOOL)gesture;
 - (void)_submit;
-- (void)_uploadForm:(id)a3;
-- (void)categoryChooserViewController:(id)a3 categoriesDidNotChange:(id)a4;
-- (void)categoryChooserViewController:(id)a3 didReceiveSelectedCategories:(id)a4;
+- (void)_uploadForm:(id)form;
+- (void)categoryChooserViewController:(id)controller categoriesDidNotChange:(id)change;
+- (void)categoryChooserViewController:(id)controller didReceiveSelectedCategories:(id)categories;
 - (void)didDismissByGesture;
-- (void)didReceiveMessageFromUserContentController:(id)a3 message:(id)a4 replyHandler:(id)a5;
-- (void)rapSearchAutocompleteViewController:(id)a3 finishedPickingAutocompleteResult:(id)a4 isAutocompleteResult:(BOOL)a5;
+- (void)didReceiveMessageFromUserContentController:(id)controller message:(id)message replyHandler:(id)handler;
+- (void)rapSearchAutocompleteViewController:(id)controller finishedPickingAutocompleteResult:(id)result isAutocompleteResult:(BOOL)autocompleteResult;
 - (void)setupViews;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation RAPWebBundleHomeViewController
 
-- (void)categoryChooserViewController:(id)a3 categoriesDidNotChange:(id)a4
+- (void)categoryChooserViewController:(id)controller categoriesDidNotChange:(id)change
 {
   replyHandler = self->_replyHandler;
   if (replyHandler)
   {
     v9 = @"categories";
-    v10 = a4;
-    v6 = a4;
-    v7 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
+    changeCopy = change;
+    changeCopy2 = change;
+    v7 = [NSDictionary dictionaryWithObjects:&changeCopy forKeys:&v9 count:1];
     replyHandler[2](replyHandler, v7, 0);
 
     v8 = self->_replyHandler;
@@ -37,15 +37,15 @@
   }
 }
 
-- (void)categoryChooserViewController:(id)a3 didReceiveSelectedCategories:(id)a4
+- (void)categoryChooserViewController:(id)controller didReceiveSelectedCategories:(id)categories
 {
   replyHandler = self->_replyHandler;
   if (replyHandler)
   {
     v9 = @"categories";
-    v10 = a4;
-    v6 = a4;
-    v7 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
+    categoriesCopy = categories;
+    categoriesCopy2 = categories;
+    v7 = [NSDictionary dictionaryWithObjects:&categoriesCopy forKeys:&v9 count:1];
     replyHandler[2](replyHandler, v7, 0);
 
     v8 = self->_replyHandler;
@@ -53,90 +53,90 @@
   }
 }
 
-- (void)rapSearchAutocompleteViewController:(id)a3 finishedPickingAutocompleteResult:(id)a4 isAutocompleteResult:(BOOL)a5
+- (void)rapSearchAutocompleteViewController:(id)controller finishedPickingAutocompleteResult:(id)result isAutocompleteResult:(BOOL)autocompleteResult
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  autocompleteResultCopy = autocompleteResult;
+  controllerCopy = controller;
+  resultCopy = result;
+  v10 = resultCopy;
   currentAutocompleteSelectionKind = self->_currentAutocompleteSelectionKind;
   if (currentAutocompleteSelectionKind)
   {
     if (currentAutocompleteSelectionKind == 1)
     {
-      v46 = v8;
-      v12 = [v9 selectedMapItem];
+      v46 = controllerCopy;
+      selectedMapItem = [resultCopy selectedMapItem];
       v13 = objc_alloc_init(RAPWebBundleImageContext);
-      v14 = [v12 _styleAttributes];
+      _styleAttributes = [selectedMapItem _styleAttributes];
       v15 = +[UIScreen mainScreen];
       [v15 scale];
-      v16 = [MKIconManager imageForStyle:v14 size:3 forScale:0 format:?];
+      v16 = [MKIconManager imageForStyle:_styleAttributes size:3 forScale:0 format:?];
 
       v17 = UIImagePNGRepresentation(v16);
       [(RAPWebBundleImageContext *)v13 setImage:v17];
 
-      v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [v12 _muid]);
+      v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [selectedMapItem _muid]);
       [(RAPWebBundleImageContext *)v13 setIdentifier:v18];
-      v19 = [(RAPWebBundleImageContext *)v13 identifier];
+      identifier = [(RAPWebBundleImageContext *)v13 identifier];
       v45 = v16;
-      [(RAPWebBundleBaseViewController *)self saveImage:v16 withIdentifier:v19];
+      [(RAPWebBundleBaseViewController *)self saveImage:v16 withIdentifier:identifier];
 
       v20 = objc_alloc_init(RAPWebBundlePlaceSummaryContext);
       [(RAPWebBundlePlaceSummaryContext *)v20 setIdentifier:v18];
-      v21 = [v12 name];
-      [(RAPWebBundlePlaceSummaryContext *)v20 setTitle:v21];
+      name = [selectedMapItem name];
+      [(RAPWebBundlePlaceSummaryContext *)v20 setTitle:name];
 
-      v22 = [v12 _addressFormattedAsShortenedAddress];
-      [(RAPWebBundlePlaceSummaryContext *)v20 setSubtitle:v22];
+      _addressFormattedAsShortenedAddress = [selectedMapItem _addressFormattedAsShortenedAddress];
+      [(RAPWebBundlePlaceSummaryContext *)v20 setSubtitle:_addressFormattedAsShortenedAddress];
 
-      v23 = [[RAPPlaceCorrectableAddress alloc] _initWithMapItem:v12];
-      v24 = [v23 freeformAddress];
-      v25 = [v24 value];
-      [(RAPWebBundlePlaceSummaryContext *)v20 setAddress:v25];
+      v23 = [[RAPPlaceCorrectableAddress alloc] _initWithMapItem:selectedMapItem];
+      freeformAddress = [v23 freeformAddress];
+      value = [freeformAddress value];
+      [(RAPWebBundlePlaceSummaryContext *)v20 setAddress:value];
 
       [(RAPWebBundlePlaceSummaryContext *)v20 setImageContext:v13];
       replyHandler = self->_replyHandler;
       if (replyHandler)
       {
-        v27 = [(RAPWebBundlePlaceSummaryContext *)v20 context];
-        replyHandler[2](replyHandler, v27, 0);
+        context = [(RAPWebBundlePlaceSummaryContext *)v20 context];
+        replyHandler[2](replyHandler, context, 0);
 
         v28 = self->_replyHandler;
         self->_replyHandler = 0;
       }
 
-      v8 = v46;
+      controllerCopy = v46;
     }
   }
 
   else
   {
-    v29 = [v9 searchBarText];
-    v30 = v29;
+    searchBarText = [resultCopy searchBarText];
+    v30 = searchBarText;
     v31 = &stru_1016631F0;
-    if (v29)
+    if (searchBarText)
     {
-      v31 = v29;
+      v31 = searchBarText;
     }
 
     v32 = v31;
 
-    if (v5)
+    if (autocompleteResultCopy)
     {
       v33 = [RAPPlaceCorrectableAddress alloc];
-      v34 = [v10 selectedMapItem];
-      v35 = [(RAPPlaceCorrectableAddress *)v33 _initWithMapItem:v34];
+      selectedMapItem2 = [v10 selectedMapItem];
+      v35 = [(RAPPlaceCorrectableAddress *)v33 _initWithMapItem:selectedMapItem2];
 
-      v36 = [v35 freeformAddress];
-      v37 = [v36 value];
-      v38 = [v37 length];
+      freeformAddress2 = [v35 freeformAddress];
+      value2 = [freeformAddress2 value];
+      v38 = [value2 length];
 
       if (v38)
       {
-        v39 = [v35 freeformAddress];
-        v40 = [v39 value];
+        freeformAddress3 = [v35 freeformAddress];
+        value3 = [freeformAddress3 value];
 
-        v32 = v40;
+        v32 = value3;
       }
     }
 
@@ -156,26 +156,26 @@
   }
 }
 
-- (void)_presentAutocompleteViewController:(id)a3 forItemKind:(int64_t)a4
+- (void)_presentAutocompleteViewController:(id)controller forItemKind:(int64_t)kind
 {
-  self->_currentAutocompleteSelectionKind = a4;
-  v5 = a3;
-  [v5 setDelegate:self];
-  [(RAPWebBundleBaseViewController *)self presentAccessoryViewController:v5];
+  self->_currentAutocompleteSelectionKind = kind;
+  controllerCopy = controller;
+  [controllerCopy setDelegate:self];
+  [(RAPWebBundleBaseViewController *)self presentAccessoryViewController:controllerCopy];
 }
 
-- (void)_presentContainmentUIIsParentContainment:(BOOL)a3 currentlySelectedMUIDs:(id)a4
+- (void)_presentContainmentUIIsParentContainment:(BOOL)containment currentlySelectedMUIDs:(id)ds
 {
-  v5 = a4;
-  v6 = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
-  v7 = [v6 report];
-  v8 = [v7 _context];
-  v9 = [v8 mapCamera];
-  [v9 centerCoordinate];
+  dsCopy = ds;
+  webBundleQuestion = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
+  report = [webBundleQuestion report];
+  _context = [report _context];
+  mapCamera = [_context mapCamera];
+  [mapCamera centerCoordinate];
 
   GEOCoordinateRegionMakeWithDistance();
   v17 = [[GEOMapRegion alloc] initWithCoordinateRegion:{v10, v11, v12, v13}];
-  v14 = [RAPSearchAutocompleteViewController poiAutocompleteViewControllerWithBoundedMapRegion:v17 excludedMUIDs:v5];
+  v14 = [RAPSearchAutocompleteViewController poiAutocompleteViewControllerWithBoundedMapRegion:v17 excludedMUIDs:dsCopy];
 
   v15 = +[NSBundle mainBundle];
   v16 = [v15 localizedStringForKey:@"Choose a Place [RAP]" value:@"localized string not found" table:0];
@@ -184,11 +184,11 @@
   [(RAPWebBundleHomeViewController *)self _presentAutocompleteViewController:v14 forItemKind:1];
 }
 
-- (void)_contextFromQuestionWithLocales:(id)a3 withReplyHandler:(id)a4
+- (void)_contextFromQuestionWithLocales:(id)locales withReplyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
+  localesCopy = locales;
+  handlerCopy = handler;
+  webBundleQuestion = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -196,9 +196,9 @@
   v10[3] = &unk_10162F548;
   objc_copyWeak(&v12, &location);
   v10[4] = self;
-  v9 = v7;
+  v9 = handlerCopy;
   v11 = v9;
-  [v8 retrieveContextwithLocales:v6 contextCompletion:v10];
+  [webBundleQuestion retrieveContextwithLocales:localesCopy contextCompletion:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -206,26 +206,26 @@
 
 - (void)_presentAddressUI
 {
-  v16 = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
+  webBundleQuestion = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
   v3 = [RAPPlaceCorrectableAddress alloc];
-  v4 = [v16 reportedPlace];
-  v5 = [v4 mapItem];
-  v6 = [(RAPPlaceCorrectableAddress *)v3 _initWithMapItem:v5];
+  reportedPlace = [webBundleQuestion reportedPlace];
+  mapItem = [reportedPlace mapItem];
+  v6 = [(RAPPlaceCorrectableAddress *)v3 _initWithMapItem:mapItem];
 
-  v7 = [v6 freeformAddress];
-  v8 = [v7 value];
-  v9 = [RAPSearchAutocompleteViewController addressAutocompleteViewControllerWithInitialSearchString:v8];
+  freeformAddress = [v6 freeformAddress];
+  value = [freeformAddress value];
+  v9 = [RAPSearchAutocompleteViewController addressAutocompleteViewControllerWithInitialSearchString:value];
 
-  v10 = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
-  v11 = [v10 questionType];
+  webBundleQuestion2 = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
+  questionType = [webBundleQuestion2 questionType];
 
   v12 = @"Change Address [RAP]";
-  if (v11 == 28)
+  if (questionType == 28)
   {
     v12 = @"Add Address [RAP]";
   }
 
-  if ((v11 - 2) >= 5)
+  if ((questionType - 2) >= 5)
   {
     v13 = v12;
   }
@@ -242,20 +242,20 @@
   [(RAPWebBundleHomeViewController *)self _presentAutocompleteViewController:v9 forItemKind:0];
 }
 
-- (void)didReceiveMessageFromUserContentController:(id)a3 message:(id)a4 replyHandler:(id)a5
+- (void)didReceiveMessageFromUserContentController:(id)controller message:(id)message replyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  messageCopy = message;
+  handlerCopy = handler;
   v53.receiver = self;
   v53.super_class = RAPWebBundleHomeViewController;
-  [(RAPWebBundleBaseMapViewController *)&v53 didReceiveMessageFromUserContentController:v8 message:v9 replyHandler:v10];
-  v11 = [v9 objectForKeyedSubscript:@"name"];
+  [(RAPWebBundleBaseMapViewController *)&v53 didReceiveMessageFromUserContentController:controllerCopy message:messageCopy replyHandler:handlerCopy];
+  v11 = [messageCopy objectForKeyedSubscript:@"name"];
   v12 = [v11 isEqualToString:@"context"];
 
   if (v12)
   {
-    v13 = [v9 objectForKeyedSubscript:@"supportedLocales"];
+    v13 = [messageCopy objectForKeyedSubscript:@"supportedLocales"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -264,28 +264,28 @@
       v13 = v14;
     }
 
-    [(RAPWebBundleHomeViewController *)self _contextFromQuestionWithLocales:v13 withReplyHandler:v10];
+    [(RAPWebBundleHomeViewController *)self _contextFromQuestionWithLocales:v13 withReplyHandler:handlerCopy];
   }
 
   else
   {
-    v15 = [v9 objectForKeyedSubscript:@"name"];
+    v15 = [messageCopy objectForKeyedSubscript:@"name"];
     v16 = [v15 isEqualToString:@"setValid"];
 
     if (v16)
     {
-      v17 = [(RAPWebBundleBaseViewController *)self delegate];
-      [v17 enableDismissByGesture:0];
+      delegate = [(RAPWebBundleBaseViewController *)self delegate];
+      [delegate enableDismissByGesture:0];
     }
 
     else
     {
-      v18 = [v9 objectForKeyedSubscript:@"name"];
+      v18 = [messageCopy objectForKeyedSubscript:@"name"];
       v19 = [v18 isEqualToString:@"getAddress"];
 
       if (v19)
       {
-        v20 = objc_retainBlock(v10);
+        v20 = objc_retainBlock(handlerCopy);
         replyHandler = self->_replyHandler;
         self->_replyHandler = v20;
 
@@ -294,16 +294,16 @@
 
       else
       {
-        v22 = [v9 objectForKeyedSubscript:@"name"];
+        v22 = [messageCopy objectForKeyedSubscript:@"name"];
         v23 = [v22 isEqualToString:@"getCategories"];
 
         if (v23)
         {
-          v24 = objc_retainBlock(v10);
+          v24 = objc_retainBlock(handlerCopy);
           v25 = self->_replyHandler;
           self->_replyHandler = v24;
 
-          v26 = [v9 objectForKeyedSubscript:@"categories"];
+          v26 = [messageCopy objectForKeyedSubscript:@"categories"];
           v27 = [[ReportAProblemCategoryChooserViewController alloc] initWithPresentationStyle:1 selectedCategoryNames:v26];
           [(ReportAProblemCategoryChooserViewController *)v27 setChooserDelegate:self];
           [(RAPWebBundleBaseViewController *)self presentAccessoryViewController:v27];
@@ -311,20 +311,20 @@
 
         else
         {
-          v28 = [v9 objectForKeyedSubscript:@"name"];
+          v28 = [messageCopy objectForKeyedSubscript:@"name"];
           v29 = [v28 isEqualToString:@"showPoi"];
 
           if (v29)
           {
-            v30 = [v9 objectForKeyedSubscript:@"id"];
+            v30 = [messageCopy objectForKeyedSubscript:@"id"];
             v31 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v30 unsignedLongLongValue]);
 
             v32 = +[GEOMapService sharedService];
             v54 = v31;
             v33 = [NSArray arrayWithObjects:&v54 count:1];
             v34 = +[GEOMapService sharedService];
-            v35 = [v34 defaultTraits];
-            v36 = [v32 ticketForMUIDs:v33 traits:v35];
+            defaultTraits = [v34 defaultTraits];
+            v36 = [v32 ticketForMUIDs:v33 traits:defaultTraits];
 
             objc_initWeak(&location, self);
             v49[0] = _NSConcreteStackBlock;
@@ -343,12 +343,12 @@
 
           else
           {
-            v39 = [v9 objectForKeyedSubscript:@"name"];
+            v39 = [messageCopy objectForKeyedSubscript:@"name"];
             v40 = [v39 isEqualToString:@"getPoi"];
 
             if (v40)
             {
-              v41 = objc_retainBlock(v10);
+              v41 = objc_retainBlock(handlerCopy);
               v42 = self->_replyHandler;
               self->_replyHandler = v41;
 
@@ -357,15 +357,15 @@
 
             else
             {
-              v43 = [v9 objectForKeyedSubscript:@"name"];
+              v43 = [messageCopy objectForKeyedSubscript:@"name"];
               v44 = [v43 hasPrefix:@"showModal"];
 
               if (v44)
               {
-                v45 = [v9 objectForKeyedSubscript:@"url"];
-                v46 = [v9 objectForKeyedSubscript:@"title"];
-                v47 = [v9 objectForKeyedSubscript:@"modalData"];
-                v48 = [[RAPWebBundleDataDrivenViewController alloc] initWithEntryPoint:v45 report:self->_report title:v46 data:v47 replyHandler:v10];
+                v45 = [messageCopy objectForKeyedSubscript:@"url"];
+                v46 = [messageCopy objectForKeyedSubscript:@"title"];
+                v47 = [messageCopy objectForKeyedSubscript:@"modalData"];
+                v48 = [[RAPWebBundleDataDrivenViewController alloc] initWithEntryPoint:v45 report:self->_report title:v46 data:v47 replyHandler:handlerCopy];
                 [(RAPWebBundleBaseViewController *)self presentAccessoryViewController:v48];
               }
             }
@@ -378,8 +378,8 @@
 
 - (void)didDismissByGesture
 {
-  v3 = [(RAPWebBundleHomeViewController *)self navigationController];
-  v4 = [v3 topViewController];
+  navigationController = [(RAPWebBundleHomeViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -390,11 +390,11 @@
   }
 }
 
-- (void)_uploadForm:(id)a3
+- (void)_uploadForm:(id)form
 {
-  v4 = a3;
-  v5 = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
-  [v5 setDynamicForm:v4];
+  formCopy = form;
+  webBundleQuestion = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
+  [webBundleQuestion setDynamicForm:formCopy];
   v6 = sub_100BD9980();
   objc_initWeak(&location, self);
   report = self->_report;
@@ -412,7 +412,7 @@
   objc_copyWeak(&v13, &location);
   v9 = v8;
   v11 = v9;
-  v12 = self;
+  selfCopy = self;
   [(RAPReport *)report submitWithPrivacyRequestHandler:&stru_10162F4A8 willStartSubmitting:v14 didFinishSubmitting:v10];
 
   objc_destroyWeak(&v13);
@@ -422,12 +422,12 @@
 
 - (id)_headerTitle
 {
-  v2 = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
-  v3 = [v2 questionType];
+  webBundleQuestion = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
+  questionType = [webBundleQuestion questionType];
 
-  if (v3 <= 12)
+  if (questionType <= 12)
   {
-    if ((v3 - 2) < 7)
+    if ((questionType - 2) < 7)
     {
 LABEL_3:
       BOOL = GEOConfigGetBOOL();
@@ -453,9 +453,9 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (v3 > 14)
+  if (questionType > 14)
   {
-    switch(v3)
+    switch(questionType)
     {
       case 15:
         v5 = +[NSBundle mainBundle];
@@ -475,7 +475,7 @@ LABEL_16:
   }
 
   v5 = +[NSBundle mainBundle];
-  if (v3 == 13)
+  if (questionType == 13)
   {
     v6 = v5;
     v7 = @"[RAP Web UI] Add Address";
@@ -497,16 +497,16 @@ LABEL_17:
 {
   [(RAPWebBundleHomeViewController *)self setAccessibilityIdentifier:@"RAPHomeView"];
   v3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_dismiss"];
-  v4 = [(RAPWebBundleHomeViewController *)self navigationItem];
-  [v4 setLeftBarButtonItem:v3];
+  navigationItem = [(RAPWebBundleHomeViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v3];
 
   v5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_submit"];
-  v6 = [(RAPWebBundleHomeViewController *)self navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  navigationItem2 = [(RAPWebBundleHomeViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v5];
 
-  v7 = [(RAPWebBundleHomeViewController *)self _headerTitle];
-  v8 = [(RAPWebBundleHomeViewController *)self navigationItem];
-  [v8 setTitle:v7];
+  _headerTitle = [(RAPWebBundleHomeViewController *)self _headerTitle];
+  navigationItem3 = [(RAPWebBundleHomeViewController *)self navigationItem];
+  [navigationItem3 setTitle:_headerTitle];
 
   v9.receiver = self;
   v9.super_class = RAPWebBundleHomeViewController;
@@ -522,17 +522,17 @@ LABEL_17:
   v10[3] = &unk_101661B98;
   objc_copyWeak(&v11, &location);
   v3 = objc_retainBlock(v10);
-  v4 = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
-  if ([v4 isAnonymous])
+  webBundleQuestion = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
+  if ([webBundleQuestion isAnonymous])
   {
   }
 
   else
   {
     v5 = +[UserProfileReportHistoryManager sharedInstance];
-    v6 = [v5 inChina];
+    inChina = [v5 inChina];
 
-    if ((v6 & 1) == 0)
+    if ((inChina & 1) == 0)
     {
       v7[0] = _NSConcreteStackBlock;
       v7[1] = 3221225472;
@@ -554,13 +554,13 @@ LABEL_6:
   objc_destroyWeak(&location);
 }
 
-- (void)_reportSentWithDismissalGesture:(BOOL)a3
+- (void)_reportSentWithDismissalGesture:(BOOL)gesture
 {
   report = self->_report;
-  v5 = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
-  v6 = [v5 reportedPlace];
-  v7 = [v6 mapItem];
-  +[RAPAnalyticsManager captureRAPAcknowledgementDoneActionFromReport:forMuid:](RAPAnalyticsManager, "captureRAPAcknowledgementDoneActionFromReport:forMuid:", report, [v7 _muid]);
+  webBundleQuestion = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
+  reportedPlace = [webBundleQuestion reportedPlace];
+  mapItem = [reportedPlace mapItem];
+  +[RAPAnalyticsManager captureRAPAcknowledgementDoneActionFromReport:forMuid:](RAPAnalyticsManager, "captureRAPAcknowledgementDoneActionFromReport:forMuid:", report, [mapItem _muid]);
 
   [(RAPWebBundleBaseViewController *)self removeAllPhotos];
   completion = self->_completion;
@@ -575,10 +575,10 @@ LABEL_6:
 - (void)_dismiss
 {
   report = self->_report;
-  v4 = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
-  v5 = [v4 reportedPlace];
-  v6 = [v5 mapItem];
-  +[RAPAnalyticsManager captureRAPCancelActionFromReport:forMuid:](RAPAnalyticsManager, "captureRAPCancelActionFromReport:forMuid:", report, [v6 _muid]);
+  webBundleQuestion = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
+  reportedPlace = [webBundleQuestion reportedPlace];
+  mapItem = [reportedPlace mapItem];
+  +[RAPAnalyticsManager captureRAPCancelActionFromReport:forMuid:](RAPAnalyticsManager, "captureRAPCancelActionFromReport:forMuid:", report, [mapItem _muid]);
 
   [(RAPWebBundleBaseViewController *)self removeAllPhotos];
   completion = self->_completion;
@@ -590,16 +590,16 @@ LABEL_6:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = RAPWebBundleHomeViewController;
-  [(RAPWebBundleHomeViewController *)&v8 viewDidAppear:a3];
+  [(RAPWebBundleHomeViewController *)&v8 viewDidAppear:appear];
   report = self->_report;
-  v5 = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
-  v6 = [v5 reportedPlace];
-  v7 = [v6 mapItem];
-  +[RAPAnalyticsManager captureRAPRevealActionFromReport:forMuid:](RAPAnalyticsManager, "captureRAPRevealActionFromReport:forMuid:", report, [v7 _muid]);
+  webBundleQuestion = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
+  reportedPlace = [webBundleQuestion reportedPlace];
+  mapItem = [reportedPlace mapItem];
+  +[RAPAnalyticsManager captureRAPRevealActionFromReport:forMuid:](RAPAnalyticsManager, "captureRAPRevealActionFromReport:forMuid:", report, [mapItem _muid]);
 }
 
 - (void)viewDidLoad
@@ -610,18 +610,18 @@ LABEL_6:
   [(RAPWebBundleBaseViewController *)self loadWebView];
 }
 
-- (RAPWebBundleHomeViewController)initWithReport:(id)a3 completion:(id)a4
+- (RAPWebBundleHomeViewController)initWithReport:(id)report completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  reportCopy = report;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = RAPWebBundleHomeViewController;
-  v9 = [(RAPWebBundleBaseMapViewController *)&v14 initWithReport:v7];
+  v9 = [(RAPWebBundleBaseMapViewController *)&v14 initWithReport:reportCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_report, a3);
-    v11 = objc_retainBlock(v8);
+    objc_storeStrong(&v9->_report, report);
+    v11 = objc_retainBlock(completionCopy);
     completion = v10->_completion;
     v10->_completion = v11;
   }

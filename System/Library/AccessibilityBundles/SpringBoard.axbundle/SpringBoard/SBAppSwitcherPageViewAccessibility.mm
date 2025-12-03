@@ -1,5 +1,5 @@
 @interface SBAppSwitcherPageViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsNotFirstElement;
 - (BOOL)_accessibilityScrollToVisible;
 - (CGRect)_accessibilityVisibleFrame;
@@ -9,7 +9,7 @@
 - (id)_accessibilityResizeGrabber;
 - (id)_accessibilityScrollStatus;
 - (id)accessibilityElements;
-- (id)accessibilityRemoteSubstituteChildren:(id)a3;
+- (id)accessibilityRemoteSubstituteChildren:(id)children;
 - (id)accessibilityValue;
 - (int)_accessibilitySceneApplicationPid;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -20,23 +20,23 @@
 
 @implementation SBAppSwitcherPageViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBAppSwitcherPageView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"scrollView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBAppSwitcherPageView" hasInstanceVariable:@"_hitTestBlocker" withType:"UIView"];
-  [v3 validateClass:@"SBAppSwitcherPageView" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBAppSwitcherPageView" hasInstanceVariable:@"_bottomRightResizeGrabberPillView" withType:"SBAppResizeGrabberView"];
-  [v3 validateClass:@"SBAppSwitcherPageView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherItemContainer" hasInstanceMethod:@"appLayout" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBAppLayout" hasInstanceMethod:@"allItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBDisplayItem" hasInstanceMethod:@"bundleIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBDisplayItem" hasInstanceMethod:@"uniqueIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBApplicationController" hasInstanceMethod:@"applicationWithBundleIdentifier:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"SBApplication" hasInstanceMethod:@"processState" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBApplicationProcessState" hasInstanceMethod:@"pid" withFullSignature:{"i", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBAppSwitcherPageView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"scrollView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBAppSwitcherPageView" hasInstanceVariable:@"_hitTestBlocker" withType:"UIView"];
+  [validationsCopy validateClass:@"SBAppSwitcherPageView" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBAppSwitcherPageView" hasInstanceVariable:@"_bottomRightResizeGrabberPillView" withType:"SBAppResizeGrabberView"];
+  [validationsCopy validateClass:@"SBAppSwitcherPageView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherItemContainer" hasInstanceMethod:@"appLayout" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBAppLayout" hasInstanceMethod:@"allItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBDisplayItem" hasInstanceMethod:@"bundleIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBDisplayItem" hasInstanceMethod:@"uniqueIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBApplicationController" hasInstanceMethod:@"applicationWithBundleIdentifier:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"SBApplication" hasInstanceMethod:@"processState" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBApplicationProcessState" hasInstanceMethod:@"pid" withFullSignature:{"i", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -51,17 +51,17 @@
 {
   if ([(SBAppSwitcherPageViewAccessibility *)self _axShouldUseRemoteElement]&& !_AXSAutomationEnabled())
   {
-    v3 = MEMORY[0x29EDB8E90];
+    accessibilityElements = MEMORY[0x29EDB8E90];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SBAppSwitcherPageViewAccessibility;
-    v3 = [(SBAppSwitcherPageViewAccessibility *)&v5 accessibilityElements];
+    accessibilityElements = [(SBAppSwitcherPageViewAccessibility *)&v5 accessibilityElements];
   }
 
-  return v3;
+  return accessibilityElements;
 }
 
 - (id)_accessibilityAdditionalHitTestElements
@@ -71,28 +71,28 @@
     v8 = 0;
     objc_opt_class();
     v3 = __UIAccessibilityCastAsClass();
-    v4 = [v3 subviews];
-    v5 = [v4 axFilterObjectsUsingBlock:&__block_literal_global_4];
+    subviews = [v3 subviews];
+    _accessibilityAdditionalHitTestElements = [subviews axFilterObjectsUsingBlock:&__block_literal_global_4];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SBAppSwitcherPageViewAccessibility;
-    v5 = [(SBAppSwitcherPageViewAccessibility *)&v7 _accessibilityAdditionalHitTestElements];
+    _accessibilityAdditionalHitTestElements = [(SBAppSwitcherPageViewAccessibility *)&v7 _accessibilityAdditionalHitTestElements];
   }
 
-  return v5;
+  return _accessibilityAdditionalHitTestElements;
 }
 
-- (id)accessibilityRemoteSubstituteChildren:(id)a3
+- (id)accessibilityRemoteSubstituteChildren:(id)children
 {
   v7[1] = *MEMORY[0x29EDCA608];
-  v3 = [(SBAppSwitcherPageViewAccessibility *)self _accessibilityResizeGrabber];
-  v4 = v3;
-  if (v3)
+  _accessibilityResizeGrabber = [(SBAppSwitcherPageViewAccessibility *)self _accessibilityResizeGrabber];
+  v4 = _accessibilityResizeGrabber;
+  if (_accessibilityResizeGrabber)
   {
-    v7[0] = v3;
+    v7[0] = _accessibilityResizeGrabber;
     v5 = [MEMORY[0x29EDB8D80] arrayWithObjects:v7 count:1];
   }
 
@@ -119,8 +119,8 @@
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v4 = [MEMORY[0x29EDBDFA8] server];
-  v5 = [v4 runningAppProcesses];
+  server = [MEMORY[0x29EDBDFA8] server];
+  runningAppProcesses = [server runningAppProcesses];
 
   v12[0] = MEMORY[0x29EDCA5F8];
   v12[1] = 3221225472;
@@ -129,21 +129,21 @@
   v6 = v3;
   v13 = v6;
   v14 = &v15;
-  [v5 enumerateObjectsUsingBlock:v12];
+  [runningAppProcesses enumerateObjectsUsingBlock:v12];
   v11.receiver = self;
   v11.super_class = SBAppSwitcherPageViewAccessibility;
-  v7 = [(SBAppSwitcherPageViewAccessibility *)&v11 accessibilityValue];
+  accessibilityValue = [(SBAppSwitcherPageViewAccessibility *)&v11 accessibilityValue];
   if (*(v16 + 24) == 1 && ([v6 isEqualToString:*MEMORY[0x29EDBD670]] & 1) == 0)
   {
     v10 = accessibilityLocalizedString(@"app.running.status");
     v8 = __UIAXStringForVariables();
 
-    v7 = v8;
+    accessibilityValue = v8;
   }
 
   _Block_object_dispose(&v15, 8);
 
-  return v7;
+  return accessibilityValue;
 }
 
 void __56__SBAppSwitcherPageViewAccessibility_accessibilityValue__block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -192,9 +192,9 @@ void __56__SBAppSwitcherPageViewAccessibility_accessibilityValue__block_invoke(u
 {
   v4.receiver = self;
   v4.super_class = SBAppSwitcherPageViewAccessibility;
-  v2 = [(SBAppSwitcherPageViewAccessibility *)&v4 _accessibilityScrollToVisible];
+  _accessibilityScrollToVisible = [(SBAppSwitcherPageViewAccessibility *)&v4 _accessibilityScrollToVisible];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], *MEMORY[0x29EDBDAE8]);
-  return v2;
+  return _accessibilityScrollToVisible;
 }
 
 - (CGRect)_accessibilityVisibleFrame
@@ -204,8 +204,8 @@ void __56__SBAppSwitcherPageViewAccessibility_accessibilityValue__block_invoke(u
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SBAppSwitcherPageViewAccessibility *)self window];
-  [v11 bounds];
+  window = [(SBAppSwitcherPageViewAccessibility *)self window];
+  [window bounds];
   v27.origin.x = v12;
   v27.origin.y = v13;
   v27.size.width = v14;
@@ -241,8 +241,8 @@ void __56__SBAppSwitcherPageViewAccessibility_accessibilityValue__block_invoke(u
 
 - (void)dealloc
 {
-  v3 = [(SBAppSwitcherPageViewAccessibility *)self _accessibilityRemoteElement];
-  [v3 unregister];
+  _accessibilityRemoteElement = [(SBAppSwitcherPageViewAccessibility *)self _accessibilityRemoteElement];
+  [_accessibilityRemoteElement unregister];
 
   [(SBAppSwitcherPageViewAccessibility *)self _accessibilitySetRemoteElement:0];
   v4.receiver = self;
@@ -254,8 +254,8 @@ void __56__SBAppSwitcherPageViewAccessibility_accessibilityValue__block_invoke(u
 {
   if ([(SBAppSwitcherPageViewAccessibility *)self _axShouldUseRemoteElement])
   {
-    v3 = [(SBAppSwitcherPageViewAccessibility *)self _accessibilityPrimaryApplication];
-    v4 = [v3 safeStringForKey:@"uniqueIdentifier"];
+    _accessibilityPrimaryApplication = [(SBAppSwitcherPageViewAccessibility *)self _accessibilityPrimaryApplication];
+    v4 = [_accessibilityPrimaryApplication safeStringForKey:@"uniqueIdentifier"];
 
     v5 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@:%@", @"resize-grabber", v4];
     v6 = MEMORY[0x29EDBD800];
@@ -291,8 +291,8 @@ void __56__SBAppSwitcherPageViewAccessibility_accessibilityValue__block_invoke(u
       objc_destroyWeak(&location);
     }
 
-    v12 = [(SBAppSwitcherPageViewAccessibility *)self _accessibilityResizeGrabber];
-    [v12 setAccessibilityContainer:v11];
+    _accessibilityResizeGrabber = [(SBAppSwitcherPageViewAccessibility *)self _accessibilityResizeGrabber];
+    [_accessibilityResizeGrabber setAccessibilityContainer:v11];
   }
 }
 
@@ -332,8 +332,8 @@ uint64_t __71__SBAppSwitcherPageViewAccessibility__axCreateRemoteElementIfNecess
 
 - (int)_accessibilitySceneApplicationPid
 {
-  v2 = [(SBAppSwitcherPageViewAccessibility *)self _accessibilityPrimaryApplication];
-  v3 = [v2 safeStringForKey:@"bundleIdentifier"];
+  _accessibilityPrimaryApplication = [(SBAppSwitcherPageViewAccessibility *)self _accessibilityPrimaryApplication];
+  v3 = [_accessibilityPrimaryApplication safeStringForKey:@"bundleIdentifier"];
 
   v4 = AXSBApplicationControllerSharedInstance();
   v5 = [v4 applicationWithBundleIdentifier:v3];
@@ -348,9 +348,9 @@ uint64_t __71__SBAppSwitcherPageViewAccessibility__axCreateRemoteElementIfNecess
   v2 = [(SBAppSwitcherPageViewAccessibility *)self safeValueForKey:@"delegate"];
   v3 = [v2 safeValueForKey:@"appLayout"];
   v4 = [v3 safeArrayForKey:@"allItems"];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 @end

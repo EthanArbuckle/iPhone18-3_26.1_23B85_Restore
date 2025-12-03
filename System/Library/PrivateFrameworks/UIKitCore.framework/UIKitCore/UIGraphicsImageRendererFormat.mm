@@ -4,10 +4,10 @@
 - (BOOL)prefersExtendedRange;
 - (UIGraphicsImageRendererFormat)init;
 - (double)_contextScale;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setGrayscale:(BOOL)a3;
-- (void)_setOverrideColorSpace:(CGColorSpace *)a3;
-- (void)_setWantsAlphaMask:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setGrayscale:(BOOL)grayscale;
+- (void)_setOverrideColorSpace:(CGColorSpace *)space;
+- (void)_setWantsAlphaMask:(BOOL)mask;
 - (void)dealloc;
 - (void)setPreferredRange:(UIGraphicsImageRendererFormatRange)preferredRange;
 - (void)setPrefersExtendedRange:(BOOL)prefersExtendedRange;
@@ -20,8 +20,8 @@
   [(UIGraphicsImageRendererFormat *)self scale];
   if (result == 0.0)
   {
-    v3 = [objc_opt_self() mainScreen];
-    [v3 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     v5 = v4;
 
     return v5;
@@ -55,7 +55,7 @@
 
 + (id)defaultFormat
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___UIGraphicsImageRendererFormat;
   v2 = objc_msgSendSuper2(&v7, sel_defaultFormat);
   [v2 setOpaque:0];
@@ -81,8 +81,8 @@
 
     [v2 setPreferredRange:v4];
 
-    v5 = [objc_opt_self() mainScreen];
-    [v5 _maximumSupportedScale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen _maximumSupportedScale];
     [v2 setScale:?];
   }
 
@@ -91,11 +91,11 @@
 
 - (BOOL)prefersExtendedRange
 {
-  v2 = [(UIGraphicsImageRendererFormat *)self preferredRange];
+  preferredRange = [(UIGraphicsImageRendererFormat *)self preferredRange];
   result = 1;
-  if (v2 > UIGraphicsImageRendererFormatRangeExtended)
+  if (preferredRange > UIGraphicsImageRendererFormatRangeExtended)
   {
-    if ((v2 - 100) < 2)
+    if ((preferredRange - 100) < 2)
     {
       return result;
     }
@@ -103,14 +103,14 @@
     return 0;
   }
 
-  if (v2 == UIGraphicsImageRendererFormatRangeUnspecified)
+  if (preferredRange == UIGraphicsImageRendererFormatRangeUnspecified)
   {
     return 0;
   }
 
-  if (v2)
+  if (preferredRange)
   {
-    if (v2 == UIGraphicsImageRendererFormatRangeExtended)
+    if (preferredRange == UIGraphicsImageRendererFormatRangeExtended)
     {
       return result;
     }
@@ -118,19 +118,19 @@
     return 0;
   }
 
-  v4 = [objc_opt_self() mainScreen];
-  v5 = [v4 traitCollection];
-  v6 = [v5 displayGamut];
+  mainScreen = [objc_opt_self() mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  displayGamut = [traitCollection displayGamut];
 
-  if (v6 != -1)
+  if (displayGamut != -1)
   {
-    return v6 != 0;
+    return displayGamut != 0;
   }
 
   v7 = +[UIDevice currentDevice];
-  v8 = [v7 _supportsDeepColor];
+  _supportsDeepColor = [v7 _supportsDeepColor];
 
-  return v8;
+  return _supportsDeepColor;
 }
 
 + (UIGraphicsImageRendererFormat)formatForTraitCollection:(UITraitCollection *)traitCollection
@@ -138,31 +138,31 @@
   v5 = traitCollection;
   if (!v5)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"UIGraphicsImageRenderer.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"traitCollection"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIGraphicsImageRenderer.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"traitCollection"}];
   }
 
-  v6 = [a1 preferredFormat];
+  preferredFormat = [self preferredFormat];
   [(UITraitCollection *)v5 displayScale];
   if (fabs(v7) >= 2.22044605e-16)
   {
-    [v6 setScale:?];
+    [preferredFormat setScale:?];
   }
 
-  v8 = [(UITraitCollection *)v5 displayGamut];
-  if (v8 != -1)
+  displayGamut = [(UITraitCollection *)v5 displayGamut];
+  if (displayGamut != -1)
   {
-    [v6 setPrefersExtendedRange:v8 != 0];
+    [preferredFormat setPrefersExtendedRange:displayGamut != 0];
   }
 
-  return v6;
+  return preferredFormat;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = UIGraphicsImageRendererFormat;
-  v4 = [(UIGraphicsRendererFormat *)&v6 copyWithZone:a3];
+  v4 = [(UIGraphicsRendererFormat *)&v6 copyWithZone:zone];
   [v4 setOpaque:{-[UIGraphicsImageRendererFormat opaque](self, "opaque")}];
   [(UIGraphicsImageRendererFormat *)self scale];
   [v4 setScale:?];
@@ -172,18 +172,18 @@
   return v4;
 }
 
-- (void)_setOverrideColorSpace:(CGColorSpace *)a3
+- (void)_setOverrideColorSpace:(CGColorSpace *)space
 {
   if ((CGColorSpaceEqualToColorSpace() & 1) == 0)
   {
-    if (a3)
+    if (space)
     {
       self->_preferredRange = -1;
     }
 
-    CGColorSpaceRetain(a3);
+    CGColorSpaceRetain(space);
     CGColorSpaceRelease(self->_overrideColorSpace);
-    self->_overrideColorSpace = a3;
+    self->_overrideColorSpace = space;
   }
 }
 
@@ -210,20 +210,20 @@
 {
   if (self->_preferredRange != preferredRange)
   {
-    v5 = self;
-    [(UIGraphicsImageRendererFormat *)v5 _setOverrideColorSpace:0];
-    [(UIGraphicsImageRendererFormat *)v5 _setOverrideBitsPerComponent:0];
+    selfCopy = self;
+    [(UIGraphicsImageRendererFormat *)selfCopy _setOverrideColorSpace:0];
+    [(UIGraphicsImageRendererFormat *)selfCopy _setOverrideBitsPerComponent:0];
 
     self->_preferredRange = preferredRange;
   }
 }
 
-- (void)_setWantsAlphaMask:(BOOL)a3
+- (void)_setWantsAlphaMask:(BOOL)mask
 {
-  v3 = a3;
-  if ([(UIGraphicsImageRendererFormat *)self _wantsAlphaMask]!= a3)
+  maskCopy = mask;
+  if ([(UIGraphicsImageRendererFormat *)self _wantsAlphaMask]!= mask)
   {
-    if (v3)
+    if (maskCopy)
     {
       v5 = 0x7FFFLL;
     }
@@ -237,12 +237,12 @@
   }
 }
 
-- (void)_setGrayscale:(BOOL)a3
+- (void)_setGrayscale:(BOOL)grayscale
 {
-  v3 = a3;
-  if ([(UIGraphicsImageRendererFormat *)self _grayscale]!= a3)
+  grayscaleCopy = grayscale;
+  if ([(UIGraphicsImageRendererFormat *)self _grayscale]!= grayscale)
   {
-    if (v3)
+    if (grayscaleCopy)
     {
       v5 = 32766;
     }

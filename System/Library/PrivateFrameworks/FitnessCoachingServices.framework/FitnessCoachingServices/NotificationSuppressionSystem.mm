@@ -1,13 +1,13 @@
 @interface NotificationSuppressionSystem
-- (void)scheduler:(id)a3 performActivityWithName:(id)a4 completion:(id)a5;
+- (void)scheduler:(id)scheduler performActivityWithName:(id)name completion:(id)completion;
 @end
 
 @implementation NotificationSuppressionSystem
 
-- (void)scheduler:(id)a3 performActivityWithName:(id)a4 completion:(id)a5
+- (void)scheduler:(id)scheduler performActivityWithName:(id)name completion:(id)completion
 {
-  v6 = _Block_copy(a5);
-  v7 = a3;
+  v6 = _Block_copy(completion);
+  schedulerCopy = scheduler;
 
   sub_22786D73C();
   _Block_release(v6);

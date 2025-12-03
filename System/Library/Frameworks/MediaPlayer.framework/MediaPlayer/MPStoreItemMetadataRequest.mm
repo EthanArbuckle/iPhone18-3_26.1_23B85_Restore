@@ -8,8 +8,8 @@
 - (NSString)clientIdentifier;
 - (NSString)requestingBundleIdentifier;
 - (NSString)requestingBundleVersion;
-- (void)setRequestingBundleIdentifier:(id)a3;
-- (void)setRequestingBundleVersion:(id)a3;
+- (void)setRequestingBundleIdentifier:(id)identifier;
+- (void)setRequestingBundleVersion:(id)version;
 @end
 
 @implementation MPStoreItemMetadataRequest
@@ -17,30 +17,30 @@
 - (ICStorePlatformRequest)storePlatformRequest
 {
   v3 = objc_alloc_init(MEMORY[0x1E69E4610]);
-  v4 = [(MPStoreItemMetadataRequest *)self itemIdentifiers];
-  [v3 setItemIdentifiers:v4];
+  itemIdentifiers = [(MPStoreItemMetadataRequest *)self itemIdentifiers];
+  [v3 setItemIdentifiers:itemIdentifiers];
 
-  v5 = [(MPStoreItemMetadataRequest *)self reason];
-  if (v5 - 1 > 2)
+  reason = [(MPStoreItemMetadataRequest *)self reason];
+  if (reason - 1 > 2)
   {
     v6 = MEMORY[0x1E69E42A0];
   }
 
   else
   {
-    v6 = qword_1E767D5A0[v5 - 1];
+    v6 = qword_1E767D5A0[reason - 1];
   }
 
   [v3 setKeyProfile:*v6];
-  v7 = [(MPStoreItemMetadataRequest *)self personalizationStyle];
-  if (v7 >= 3)
+  personalizationStyle = [(MPStoreItemMetadataRequest *)self personalizationStyle];
+  if (personalizationStyle >= 3)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = v7;
+    v8 = personalizationStyle;
   }
 
   [v3 setPersonalizationStyle:v8];
@@ -111,15 +111,15 @@ void __50__MPStoreItemMetadataRequest_storePlatformRequest__block_invoke(uint64_
   userIdentityStore = self->_userIdentityStore;
   if (userIdentityStore)
   {
-    v3 = userIdentityStore;
+    defaultIdentityStore = userIdentityStore;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69E4688] defaultIdentityStore];
+    defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
   }
 
-  return v3;
+  return defaultIdentityStore;
 }
 
 - (ICUserIdentity)userIdentity
@@ -127,9 +127,9 @@ void __50__MPStoreItemMetadataRequest_storePlatformRequest__block_invoke(uint64_
   userIdentity = self->_userIdentity;
   if (!userIdentity)
   {
-    v4 = [MEMORY[0x1E69E4680] activeAccount];
+    activeAccount = [MEMORY[0x1E69E4680] activeAccount];
     v5 = self->_userIdentity;
-    self->_userIdentity = v4;
+    self->_userIdentity = activeAccount;
 
     userIdentity = self->_userIdentity;
   }
@@ -137,25 +137,25 @@ void __50__MPStoreItemMetadataRequest_storePlatformRequest__block_invoke(uint64_
   return userIdentity;
 }
 
-- (void)setRequestingBundleVersion:(id)a3
+- (void)setRequestingBundleVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(MPStoreItemMetadataRequest *)self clientInfo];
-  v8 = [v5 mutableCopy];
+  versionCopy = version;
+  clientInfo = [(MPStoreItemMetadataRequest *)self clientInfo];
+  v8 = [clientInfo mutableCopy];
 
-  [v8 setRequestingBundleVersion:v4];
+  [v8 setRequestingBundleVersion:versionCopy];
   v6 = [v8 copy];
   clientInfo = self->_clientInfo;
   self->_clientInfo = v6;
 }
 
-- (void)setRequestingBundleIdentifier:(id)a3
+- (void)setRequestingBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MPStoreItemMetadataRequest *)self clientInfo];
-  v8 = [v5 mutableCopy];
+  identifierCopy = identifier;
+  clientInfo = [(MPStoreItemMetadataRequest *)self clientInfo];
+  v8 = [clientInfo mutableCopy];
 
-  [v8 setRequestingBundleIdentifier:v4];
+  [v8 setRequestingBundleIdentifier:identifierCopy];
   v6 = [v8 copy];
   clientInfo = self->_clientInfo;
   self->_clientInfo = v6;
@@ -163,11 +163,11 @@ void __50__MPStoreItemMetadataRequest_storePlatformRequest__block_invoke(uint64_
 
 - (NSString)requestingBundleVersion
 {
-  v2 = [(ICClientInfo *)self->_clientInfo requestingBundleVersion];
-  v3 = v2;
-  if (v2)
+  requestingBundleVersion = [(ICClientInfo *)self->_clientInfo requestingBundleVersion];
+  v3 = requestingBundleVersion;
+  if (requestingBundleVersion)
   {
-    v4 = v2;
+    v4 = requestingBundleVersion;
   }
 
   else
@@ -182,11 +182,11 @@ void __50__MPStoreItemMetadataRequest_storePlatformRequest__block_invoke(uint64_
 
 - (NSString)requestingBundleIdentifier
 {
-  v2 = [(ICClientInfo *)self->_clientInfo requestingBundleIdentifier];
-  v3 = v2;
-  if (v2)
+  requestingBundleIdentifier = [(ICClientInfo *)self->_clientInfo requestingBundleIdentifier];
+  v3 = requestingBundleIdentifier;
+  if (requestingBundleIdentifier)
   {
-    v4 = v2;
+    v4 = requestingBundleIdentifier;
   }
 
   else
@@ -217,15 +217,15 @@ void __50__MPStoreItemMetadataRequest_storePlatformRequest__block_invoke(uint64_
   clientInfo = self->_clientInfo;
   if (clientInfo)
   {
-    v3 = clientInfo;
+    defaultInfo = clientInfo;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69E43B0] defaultInfo];
+    defaultInfo = [MEMORY[0x1E69E43B0] defaultInfo];
   }
 
-  return v3;
+  return defaultInfo;
 }
 
 - (NSString)clientIdentifier

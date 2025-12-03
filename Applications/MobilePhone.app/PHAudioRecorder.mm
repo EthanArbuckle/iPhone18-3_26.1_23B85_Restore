@@ -2,17 +2,17 @@
 - (AVCaptureConnection)captureConnection;
 - (AVCaptureMovieFileOutput)captureFileOutput;
 - (AVCaptureSession)captureSession;
-- (BOOL)startWithError:(id *)a3;
+- (BOOL)startWithError:(id *)error;
 - (PHAudioRecorder)init;
 - (PHAudioRecorderDelegate)audioRecorderDelegate;
 - (void)_buildCaptureSessionAndOutputIfNecessary;
-- (void)_stopWithError:(id)a3;
-- (void)_updateRecordProgress:(id)a3;
-- (void)captureOutput:(id)a3 didFinishRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5 error:(id)a6;
+- (void)_stopWithError:(id)error;
+- (void)_updateRecordProgress:(id)progress;
+- (void)captureOutput:(id)output didFinishRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections error:(id)error;
 - (void)dealloc;
-- (void)setMaxRecordedDuration:(double)a3;
-- (void)setOutputFile:(id)a3;
-- (void)setUpdateTimer:(id)a3;
+- (void)setMaxRecordedDuration:(double)duration;
+- (void)setOutputFile:(id)file;
+- (void)setUpdateTimer:(id)timer;
 @end
 
 @implementation PHAudioRecorder
@@ -35,24 +35,24 @@
   [(PHAudioRecorder *)&v4 dealloc];
 }
 
-- (BOOL)startWithError:(id *)a3
+- (BOOL)startWithError:(id *)error
 {
-  v5 = [(PHAudioRecorder *)self isRecording];
-  if (a3 && v5)
+  isRecording = [(PHAudioRecorder *)self isRecording];
+  if (error && isRecording)
   {
     v32 = NSLocalizedFailureReasonErrorKey;
     v33 = @"Can't start recording, as we're already recording";
     v6 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
     v7 = 5;
 LABEL_10:
-    *a3 = [NSError errorWithDomain:@"com.apple.mobilephone.PHAudioController" code:v7 userInfo:v6];
+    *error = [NSError errorWithDomain:@"com.apple.mobilephone.PHAudioController" code:v7 userInfo:v6];
 
     return 0;
   }
 
-  v8 = [(PHAudioRecorder *)self outputFile];
+  outputFile = [(PHAudioRecorder *)self outputFile];
 
-  if (a3 && !v8)
+  if (error && !outputFile)
   {
     v30 = NSLocalizedFailureReasonErrorKey;
     v31 = @"No output file specified";
@@ -62,7 +62,7 @@ LABEL_10:
   }
 
   [(PHAudioRecorder *)self maxRecordedDuration];
-  if (a3 && v9 <= 0.0)
+  if (error && v9 <= 0.0)
   {
     v28 = NSLocalizedFailureReasonErrorKey;
     v29 = @"No max duration specified";
@@ -71,13 +71,13 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v12 = [(PHAudioRecorder *)self captureSession];
+  captureSession = [(PHAudioRecorder *)self captureSession];
 
-  if (!a3 || v12)
+  if (!error || captureSession)
   {
     v14 = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio];
     v15 = [v14 supportsAVCaptureSessionPreset:AVCaptureSessionPresetVoicemailGreeting] ^ 1;
-    if (a3)
+    if (error)
     {
       v16 = v15;
     }
@@ -92,37 +92,37 @@ LABEL_10:
       v26 = NSLocalizedFailureReasonErrorKey;
       v27 = @"Audio capture device does not support voicemail greeting";
       v17 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-      *a3 = [NSError errorWithDomain:@"com.apple.mobilephone.PHAudioController" code:6 userInfo:v17];
+      *error = [NSError errorWithDomain:@"com.apple.mobilephone.PHAudioController" code:6 userInfo:v17];
     }
 
     else
     {
       [(PHAudioRecorder *)self setIsRecording:1];
-      v18 = [(PHAudioRecorder *)self audioRecorderDelegate];
+      audioRecorderDelegate = [(PHAudioRecorder *)self audioRecorderDelegate];
 
-      if (v18)
+      if (audioRecorderDelegate)
       {
-        v19 = [(PHAudioRecorder *)self audioRecorderDelegate];
-        v20 = [(PHAudioRecorder *)self outputFile];
-        [v19 audioRecorderStartedWithFile:v20];
+        audioRecorderDelegate2 = [(PHAudioRecorder *)self audioRecorderDelegate];
+        outputFile2 = [(PHAudioRecorder *)self outputFile];
+        [audioRecorderDelegate2 audioRecorderStartedWithFile:outputFile2];
       }
 
-      v21 = [(PHAudioRecorder *)self captureSession];
-      [v21 startRunning];
+      captureSession2 = [(PHAudioRecorder *)self captureSession];
+      [captureSession2 startRunning];
 
       v22 = [NSURL alloc];
-      v23 = [(PHAudioRecorder *)self outputFile];
-      v17 = [v22 initFileURLWithPath:v23];
+      outputFile3 = [(PHAudioRecorder *)self outputFile];
+      v17 = [v22 initFileURLWithPath:outputFile3];
 
-      v24 = [(PHAudioRecorder *)self captureFileOutput];
-      [v24 startRecordingToOutputFileURL:v17 recordingDelegate:self];
+      captureFileOutput = [(PHAudioRecorder *)self captureFileOutput];
+      [captureFileOutput startRecordingToOutputFileURL:v17 recordingDelegate:self];
 
       v25 = [NSTimer scheduledTimerWithTimeInterval:self target:"_updateRecordProgress:" selector:0 userInfo:1 repeats:0.0333333351];
       [(PHAudioRecorder *)self setUpdateTimer:v25];
 
-      if (a3)
+      if (error)
       {
-        *a3 = 0;
+        *error = 0;
       }
     }
 
@@ -133,15 +133,15 @@ LABEL_10:
   {
     v13 = self->_buildCaptureSessionError;
     v10 = 0;
-    *a3 = v13;
+    *error = v13;
   }
 
   return v10;
 }
 
-- (void)setOutputFile:(id)a3
+- (void)setOutputFile:(id)file
 {
-  v7 = a3;
+  fileCopy = file;
   if ([(PHAudioRecorder *)self isRecording])
   {
     v6 = [NSString stringWithFormat:@"Already recording, cannot set output file"];
@@ -158,11 +158,11 @@ LABEL_10:
 
   if (![(PHAudioRecorder *)self isRecording])
   {
-    objc_storeStrong(&self->_outputFile, a3);
+    objc_storeStrong(&self->_outputFile, file);
   }
 }
 
-- (void)setMaxRecordedDuration:(double)a3
+- (void)setMaxRecordedDuration:(double)duration
 {
   if ([(PHAudioRecorder *)self isRecording])
   {
@@ -180,11 +180,11 @@ LABEL_10:
 
   if (![(PHAudioRecorder *)self isRecording])
   {
-    self->_maxRecordedDuration = a3;
-    CMTimeMakeWithSeconds(&v9, a3, 1);
-    v7 = [(PHAudioRecorder *)self captureFileOutput];
+    self->_maxRecordedDuration = duration;
+    CMTimeMakeWithSeconds(&v9, duration, 1);
+    captureFileOutput = [(PHAudioRecorder *)self captureFileOutput];
     v8 = v9;
-    [v7 setMaxRecordedDuration:&v8];
+    [captureFileOutput setMaxRecordedDuration:&v8];
   }
 }
 
@@ -212,34 +212,34 @@ LABEL_10:
   return captureConnection;
 }
 
-- (void)setUpdateTimer:(id)a3
+- (void)setUpdateTimer:(id)timer
 {
-  v5 = a3;
+  timerCopy = timer;
   updateTimer = self->_updateTimer;
   p_updateTimer = &self->_updateTimer;
   v6 = updateTimer;
-  v10 = v5;
+  v10 = timerCopy;
   if (updateTimer)
   {
     [(NSTimer *)v6 invalidate];
     v9 = *p_updateTimer;
     *p_updateTimer = 0;
 
-    v5 = v10;
+    timerCopy = v10;
   }
 
-  if (v5)
+  if (timerCopy)
   {
-    objc_storeStrong(p_updateTimer, a3);
+    objc_storeStrong(p_updateTimer, timer);
   }
 
   _objc_release_x1();
 }
 
-- (void)captureOutput:(id)a3 didFinishRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5 error:(id)a6
+- (void)captureOutput:(id)output didFinishRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections error:(id)error
 {
-  v7 = a6;
-  v6 = v7;
+  errorCopy = error;
+  v6 = errorCopy;
   TUGuaranteeExecutionOnMainThreadAsync();
 }
 
@@ -263,9 +263,9 @@ void __42__PHAudioRecorder__captureSessionErrored___block_invoke(uint64_t a1)
   [v1 _stopWithError:v3];
 }
 
-- (void)_updateRecordProgress:(id)a3
+- (void)_updateRecordProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   if (!self->_captureFileOutput)
   {
     v6 = [NSString stringWithFormat:@"Update timer fired while capture file output was nil!  This shouldn't happen."];
@@ -287,11 +287,11 @@ LABEL_5:
     }
   }
 
-  v7 = [(PHAudioRecorder *)self audioRecorderDelegate];
+  audioRecorderDelegate = [(PHAudioRecorder *)self audioRecorderDelegate];
 
-  if (v7)
+  if (audioRecorderDelegate)
   {
-    v8 = [(PHAudioRecorder *)self audioRecorderDelegate];
+    audioRecorderDelegate2 = [(PHAudioRecorder *)self audioRecorderDelegate];
     outputFile = self->_outputFile;
     captureFileOutput = self->_captureFileOutput;
     if (captureFileOutput)
@@ -304,7 +304,7 @@ LABEL_5:
       memset(&time, 0, sizeof(time));
     }
 
-    [v8 audioRecorderContinuedWithFile:outputFile duration:CMTimeGetSeconds(&time)];
+    [audioRecorderDelegate2 audioRecorderContinuedWithFile:outputFile duration:CMTimeGetSeconds(&time)];
   }
 
 LABEL_11:
@@ -379,35 +379,35 @@ LABEL_8:
   }
 }
 
-- (void)_stopWithError:(id)a3
+- (void)_stopWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (![(PHAudioRecorder *)self handlingStop])
   {
     [(PHAudioRecorder *)self setHandlingStop:1];
     [(PHAudioRecorder *)self setUpdateTimer:0];
     if ([(PHAudioRecorder *)self isRecording])
     {
-      v5 = [(PHAudioRecorder *)self captureFileOutput];
-      v6 = [v5 isRecording];
+      captureFileOutput = [(PHAudioRecorder *)self captureFileOutput];
+      isRecording = [captureFileOutput isRecording];
 
-      if (v6)
+      if (isRecording)
       {
-        v7 = [(PHAudioRecorder *)self captureFileOutput];
-        [v7 stopRecording];
+        captureFileOutput2 = [(PHAudioRecorder *)self captureFileOutput];
+        [captureFileOutput2 stopRecording];
       }
 
-      v8 = [(PHAudioRecorder *)self captureSession];
-      [v8 stopRunning];
+      captureSession = [(PHAudioRecorder *)self captureSession];
+      [captureSession stopRunning];
 
       v9 = 0.0;
-      if (!v4)
+      if (!errorCopy)
       {
-        v10 = [(PHAudioRecorder *)self captureFileOutput];
-        v11 = v10;
-        if (v10)
+        captureFileOutput3 = [(PHAudioRecorder *)self captureFileOutput];
+        v11 = captureFileOutput3;
+        if (captureFileOutput3)
         {
-          [v10 recordedDuration];
+          [captureFileOutput3 recordedDuration];
         }
 
         else
@@ -421,13 +421,13 @@ LABEL_8:
       }
 
       [(PHAudioRecorder *)self setIsRecording:0];
-      v13 = [(PHAudioRecorder *)self audioRecorderDelegate];
+      audioRecorderDelegate = [(PHAudioRecorder *)self audioRecorderDelegate];
 
-      if (v13)
+      if (audioRecorderDelegate)
       {
-        v14 = [(PHAudioRecorder *)self audioRecorderDelegate];
-        v15 = [(PHAudioRecorder *)self outputFile];
-        [v14 audioRecorderEndedWithFile:v15 duration:v4 error:v9];
+        audioRecorderDelegate2 = [(PHAudioRecorder *)self audioRecorderDelegate];
+        outputFile = [(PHAudioRecorder *)self outputFile];
+        [audioRecorderDelegate2 audioRecorderEndedWithFile:outputFile duration:errorCopy error:v9];
       }
     }
 

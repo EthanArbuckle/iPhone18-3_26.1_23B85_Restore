@@ -1,39 +1,39 @@
 @interface HMBLocalZoneQueryResultParentModelIDOfType
-- (BOOL)bindPropertiesToStatement:(sqlite3_stmt *)a3 error:(id *)a4;
-- (HMBLocalZoneQueryResultParentModelIDOfType)initWithLocalZone:(id)a3 parentModelID:(id)a4 modelClassName:(id)a5;
+- (BOOL)bindPropertiesToStatement:(sqlite3_stmt *)statement error:(id *)error;
+- (HMBLocalZoneQueryResultParentModelIDOfType)initWithLocalZone:(id)zone parentModelID:(id)d modelClassName:(id)name;
 @end
 
 @implementation HMBLocalZoneQueryResultParentModelIDOfType
 
-- (BOOL)bindPropertiesToStatement:(sqlite3_stmt *)a3 error:(id *)a4
+- (BOOL)bindPropertiesToStatement:(sqlite3_stmt *)statement error:(id *)error
 {
-  v7 = [(HMBLocalZoneQueryResult *)self zoneRowBindOffset];
-  v8 = [(HMBLocalZoneQueryResult *)self localZone];
-  hmbBindIntSQLite3(a3, v7, [v8 zoneRow], a4);
+  zoneRowBindOffset = [(HMBLocalZoneQueryResult *)self zoneRowBindOffset];
+  localZone = [(HMBLocalZoneQueryResult *)self localZone];
+  hmbBindIntSQLite3(statement, zoneRowBindOffset, [localZone zoneRow], error);
 
-  v9 = [(HMBLocalZoneQueryResultParentModelIDOfType *)self parentModelIDOffset];
-  v10 = [(HMBLocalZoneQueryResultParentModelIDOfType *)self parentModelID];
-  hmbBindUUIDSQLite3(a3, v9, v10, a4);
+  parentModelIDOffset = [(HMBLocalZoneQueryResultParentModelIDOfType *)self parentModelIDOffset];
+  parentModelID = [(HMBLocalZoneQueryResultParentModelIDOfType *)self parentModelID];
+  hmbBindUUIDSQLite3(statement, parentModelIDOffset, parentModelID, error);
 
-  v11 = [(HMBLocalZoneQueryResultParentModelIDOfType *)self modelClassNameOffset];
-  v12 = [(HMBLocalZoneQueryResultParentModelIDOfType *)self modelClassName];
-  hmbBindStringSQLite3(a3, v11, v12, a4);
+  modelClassNameOffset = [(HMBLocalZoneQueryResultParentModelIDOfType *)self modelClassNameOffset];
+  modelClassName = [(HMBLocalZoneQueryResultParentModelIDOfType *)self modelClassName];
+  hmbBindStringSQLite3(statement, modelClassNameOffset, modelClassName, error);
 
   return 1;
 }
 
-- (HMBLocalZoneQueryResultParentModelIDOfType)initWithLocalZone:(id)a3 parentModelID:(id)a4 modelClassName:(id)a5
+- (HMBLocalZoneQueryResultParentModelIDOfType)initWithLocalZone:(id)zone parentModelID:(id)d modelClassName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  zoneCopy = zone;
+  dCopy = d;
+  nameCopy = name;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__3999;
   v31 = __Block_byref_object_dispose__4000;
   v32 = 0;
-  v11 = [v8 sql];
+  v11 = [zoneCopy sql];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __93__HMBLocalZoneQueryResultParentModelIDOfType_initWithLocalZone_parentModelID_modelClassName___block_invoke;
@@ -45,28 +45,28 @@
   v14 = +[HMBSQLQueryIterator maximumRowsPerSelect];
   v25.receiver = self;
   v25.super_class = HMBLocalZoneQueryResultParentModelIDOfType;
-  v15 = [(HMBLocalZoneQueryResult *)&v25 initWithLocalZone:v8 statement:v13 initialSequence:&unk_283EB9DF8 arguments:MEMORY[0x277CBEC10] maximumRowsPerSelect:v14];
+  v15 = [(HMBLocalZoneQueryResult *)&v25 initWithLocalZone:zoneCopy statement:v13 initialSequence:&unk_283EB9DF8 arguments:MEMORY[0x277CBEC10] maximumRowsPerSelect:v14];
   if (!v15)
   {
     goto LABEL_5;
   }
 
-  v16 = [v9 copy];
+  v16 = [dCopy copy];
   parentModelID = v15->_parentModelID;
   v15->_parentModelID = v16;
 
-  v18 = [v28[5] arguments];
-  v19 = [v18 hmf_numberForKey:@"_parent_uuid"];
+  arguments = [v28[5] arguments];
+  v19 = [arguments hmf_numberForKey:@"_parent_uuid"];
 
   if (v19)
   {
     v15->_parentModelIDOffset = [v19 intValue];
-    v20 = [v10 copy];
+    v20 = [nameCopy copy];
     modelClassName = v15->_modelClassName;
     v15->_modelClassName = v20;
 
-    v22 = [v28[5] arguments];
-    v23 = [v22 hmf_numberForKey:@"_type"];
+    arguments2 = [v28[5] arguments];
+    v23 = [arguments2 hmf_numberForKey:@"_type"];
 
     if (v23)
     {

@@ -1,20 +1,20 @@
 @interface UIKeyboardEmojiVariantView
-+ (CGSize)preferredContentViewSizeForKey:(id)a3 withTraits:(id)a4;
-- (BOOL)updateSelectedVariantIndexForKey:(id)a3 atPoint:(CGPoint)a4;
-- (UIKeyboardEmojiVariantView)initWithFrame:(CGRect)a3;
++ (CGSize)preferredContentViewSizeForKey:(id)key withTraits:(id)traits;
+- (BOOL)updateSelectedVariantIndexForKey:(id)key atPoint:(CGPoint)point;
+- (UIKeyboardEmojiVariantView)initWithFrame:(CGRect)frame;
 - (id)nextResponder;
-- (void)updateForKeyplane:(id)a3 key:(id)a4;
-- (void)updateHighlightForSelectedVariantIndex:(int64_t)a3;
-- (void)updateRenderConfig:(id)a3;
+- (void)updateForKeyplane:(id)keyplane key:(id)key;
+- (void)updateHighlightForSelectedVariantIndex:(int64_t)index;
+- (void)updateRenderConfig:(id)config;
 @end
 
 @implementation UIKeyboardEmojiVariantView
 
-- (UIKeyboardEmojiVariantView)initWithFrame:(CGRect)a3
+- (UIKeyboardEmojiVariantView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = UIKeyboardEmojiVariantView;
-  v3 = [(UIView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -25,10 +25,10 @@
   return v3;
 }
 
-+ (CGSize)preferredContentViewSizeForKey:(id)a3 withTraits:(id)a4
++ (CGSize)preferredContentViewSizeForKey:(id)key withTraits:(id)traits
 {
-  v4 = [a3 subtrees];
-  v5 = [v4 count] - 1;
+  subtrees = [key subtrees];
+  v5 = [subtrees count] - 1;
 
   v6 = v5 * 44.0 + 13.0 + 24.0;
   v7 = 56.0;
@@ -37,13 +37,13 @@
   return result;
 }
 
-- (void)updateForKeyplane:(id)a3 key:(id)a4
+- (void)updateForKeyplane:(id)keyplane key:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  keyplaneCopy = keyplane;
+  keyCopy = key;
   if ([(NSMutableArray *)self->_cells count])
   {
-    -[UIKeyboardEmojiVariantView updateHighlightForSelectedVariantIndex:](self, "updateHighlightForSelectedVariantIndex:", [v7 selectedVariantIndex]);
+    -[UIKeyboardEmojiVariantView updateHighlightForSelectedVariantIndex:](self, "updateHighlightForSelectedVariantIndex:", [keyCopy selectedVariantIndex]);
   }
 
   else
@@ -53,16 +53,16 @@
     v12[2] = 0x3032000000;
     v12[3] = __Block_byref_object_copy__68;
     v12[4] = __Block_byref_object_dispose__68;
-    v13 = [(UIView *)self leadingAnchor];
-    v8 = [v7 subtrees];
+    leadingAnchor = [(UIView *)self leadingAnchor];
+    subtrees = [keyCopy subtrees];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __52__UIKeyboardEmojiVariantView_updateForKeyplane_key___block_invoke;
     v9[3] = &unk_1E70F7EB0;
     v9[4] = self;
-    v10 = v7;
+    v10 = keyCopy;
     v11 = v12;
-    [v8 enumerateObjectsUsingBlock:v9];
+    [subtrees enumerateObjectsUsingBlock:v9];
 
     _Block_object_dispose(v12, 8);
   }
@@ -124,25 +124,25 @@ void __52__UIKeyboardEmojiVariantView_updateForKeyplane_key___block_invoke(uint6
   *(v19 + 40) = v18;
 }
 
-- (void)updateHighlightForSelectedVariantIndex:(int64_t)a3
+- (void)updateHighlightForSelectedVariantIndex:(int64_t)index
 {
   [(NSMutableArray *)self->_cells enumerateObjectsUsingBlock:&__block_literal_global_182];
-  if (!a3 || (--a3, a3))
+  if (!index || (--index, index))
   {
-    if (a3 < [(NSMutableArray *)self->_cells count])
+    if (index < [(NSMutableArray *)self->_cells count])
     {
-      v5 = [(NSMutableArray *)self->_cells objectAtIndexedSubscript:a3];
+      v5 = [(NSMutableArray *)self->_cells objectAtIndexedSubscript:index];
       [v5 setHighlighted:1];
     }
   }
 }
 
-- (BOOL)updateSelectedVariantIndexForKey:(id)a3 atPoint:(CGPoint)a4
+- (BOOL)updateSelectedVariantIndexForKey:(id)key atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [v7 selectedVariantIndex];
+  y = point.y;
+  x = point.x;
+  keyCopy = key;
+  selectedVariantIndex = [keyCopy selectedVariantIndex];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -161,7 +161,7 @@ void __52__UIKeyboardEmojiVariantView_updateForKeyplane_key___block_invoke(uint6
   v15[4] = v16;
   v15[5] = &v17;
   [(NSMutableArray *)cells enumerateObjectsUsingBlock:v15];
-  if (v18[3] == 0x7FFFFFFFFFFFFFFFLL || ((-[NSMutableArray objectAtIndexedSubscript:](self->_cells, "objectAtIndexedSubscript:"), v10 = objc_claimAutoreleasedReturnValue(), [v10 setHighlighted:1], v10, v11 = v18[3], v11 <= 0) ? (v12 = v18[3]) : (v12 = v11 + 1), objc_msgSend(v7, "setSelectedVariantIndex:", v12), v12 == v8))
+  if (v18[3] == 0x7FFFFFFFFFFFFFFFLL || ((-[NSMutableArray objectAtIndexedSubscript:](self->_cells, "objectAtIndexedSubscript:"), v10 = objc_claimAutoreleasedReturnValue(), [v10 setHighlighted:1], v10, v11 = v18[3], v11 <= 0) ? (v12 = v18[3]) : (v12 = v11 + 1), objc_msgSend(keyCopy, "setSelectedVariantIndex:", v12), v12 == selectedVariantIndex))
   {
     v13 = 0;
   }
@@ -198,37 +198,37 @@ uint64_t __71__UIKeyboardEmojiVariantView_updateSelectedVariantIndexForKey_atPoi
   return result;
 }
 
-- (void)updateRenderConfig:(id)a3
+- (void)updateRenderConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   cells = self->_cells;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__UIKeyboardEmojiVariantView_updateRenderConfig___block_invoke;
   v7[3] = &unk_1E7106190;
-  v8 = v4;
-  v6 = v4;
+  v8 = configCopy;
+  v6 = configCopy;
   [(NSMutableArray *)cells enumerateObjectsUsingBlock:v7];
   [(UIKeyboardEmojiVariantDivider *)self->_divider setRenderConfig:v6];
 }
 
 - (id)nextResponder
 {
-  v3 = [(UIKeyboardEmojiVariantView *)self touchForwardingView];
-  v4 = v3;
-  if (v3)
+  touchForwardingView = [(UIKeyboardEmojiVariantView *)self touchForwardingView];
+  v4 = touchForwardingView;
+  if (touchForwardingView)
   {
-    v5 = v3;
+    nextResponder = touchForwardingView;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UIKeyboardEmojiVariantView;
-    v5 = [(UIView *)&v8 nextResponder];
+    nextResponder = [(UIView *)&v8 nextResponder];
   }
 
-  v6 = v5;
+  v6 = nextResponder;
 
   return v6;
 }

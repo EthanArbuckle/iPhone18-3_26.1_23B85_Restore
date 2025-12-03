@@ -1,61 +1,61 @@
 @interface SBFMutablePhysicalButtonSceneTarget
-+ (id)targetWithScene:(id)a3;
-+ (id)targetWithSceneIdentity:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addButtonTarget:(id)a3;
-- (void)removeButtonTargetForButton:(unint64_t)a3;
++ (id)targetWithScene:(id)scene;
++ (id)targetWithSceneIdentity:(id)identity;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addButtonTarget:(id)target;
+- (void)removeButtonTargetForButton:(unint64_t)button;
 @end
 
 @implementation SBFMutablePhysicalButtonSceneTarget
 
-+ (id)targetWithScene:(id)a3
++ (id)targetWithScene:(id)scene
 {
-  v5 = a3;
-  if (!v5)
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
     [SBFMutablePhysicalButtonSceneTarget targetWithScene:a2];
   }
 
-  [(SBFMutablePhysicalButtonSceneTarget *)a1 targetWithScene:v5, &v7];
+  [(SBFMutablePhysicalButtonSceneTarget *)self targetWithScene:sceneCopy, &v7];
   return v7;
 }
 
-+ (id)targetWithSceneIdentity:(id)a3
++ (id)targetWithSceneIdentity:(id)identity
 {
-  v5 = a3;
-  if (!v5)
+  identityCopy = identity;
+  if (!identityCopy)
   {
     [SBFMutablePhysicalButtonSceneTarget targetWithSceneIdentity:a2];
   }
 
-  [(SBFMutablePhysicalButtonSceneTarget *)a1 targetWithSceneIdentity:v5, &v7];
+  [(SBFMutablePhysicalButtonSceneTarget *)self targetWithSceneIdentity:identityCopy, &v7];
   return v7;
 }
 
-- (void)addButtonTarget:(id)a3
+- (void)addButtonTarget:(id)target
 {
-  if (a3)
+  if (target)
   {
     targetsByButton = self->super._targetsByButton;
     v4 = MEMORY[0x1E696AD98];
-    v5 = a3;
-    v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(v5, "button")}];
-    [(NSMutableDictionary *)targetsByButton setObject:v5 forKey:v6];
+    targetCopy = target;
+    v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(targetCopy, "button")}];
+    [(NSMutableDictionary *)targetsByButton setObject:targetCopy forKey:v6];
   }
 }
 
-- (void)removeButtonTargetForButton:(unint64_t)a3
+- (void)removeButtonTargetForButton:(unint64_t)button
 {
   targetsByButton = self->super._targetsByButton;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:button];
   [(NSMutableDictionary *)targetsByButton removeObjectForKey:v4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SBFPhysicalButtonSceneTarget alloc];
-  v5 = [(SBFPhysicalButtonSceneTarget *)self scene];
-  v6 = [(SBFPhysicalButtonSceneTarget *)self sceneIdentity];
+  scene = [(SBFPhysicalButtonSceneTarget *)self scene];
+  sceneIdentity = [(SBFPhysicalButtonSceneTarget *)self sceneIdentity];
   v7 = OUTLINED_FUNCTION_0_9([(NSMutableDictionary *)self->super._targetsByButton mutableCopy]);
 
   return v7;

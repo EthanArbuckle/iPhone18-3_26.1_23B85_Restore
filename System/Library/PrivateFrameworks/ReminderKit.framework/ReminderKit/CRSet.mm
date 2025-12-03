@@ -1,69 +1,69 @@
 @interface CRSet
-- (BOOL)containsObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)containsObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (CRDocument)document;
-- (CRSet)initWithCRCoder:(id)a3;
-- (CRSet)initWithCRCoder:(id)a3 set:(const void *)a4;
-- (CRSet)initWithCRCoder:(id)a3 set:(const void *)a4 elementValueDecoder:(id)a5;
-- (CRSet)initWithDocument:(id)a3;
+- (CRSet)initWithCRCoder:(id)coder;
+- (CRSet)initWithCRCoder:(id)coder set:(const void *)set;
+- (CRSet)initWithCRCoder:(id)coder set:(const void *)set elementValueDecoder:(id)decoder;
+- (CRSet)initWithDocument:(id)document;
 - (NSArray)allObjects;
 - (NSString)description;
 - (id)anyObject;
-- (id)deltaSince:(id)a3 in:(id)a4;
-- (id)member:(id)a3;
+- (id)deltaSince:(id)since in:(id)in;
+- (id)member:(id)member;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (unint64_t)hash;
-- (void)addObject:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)encodeWithCRCoder:(id)a3;
-- (void)encodeWithCRCoder:(id)a3 set:(void *)a4;
-- (void)encodeWithCRCoder:(id)a3 set:(void *)a4 elementValueCoder:(id)a5;
-- (void)mergeWith:(id)a3;
+- (void)addObject:(id)object;
+- (void)addObserver:(id)observer;
+- (void)encodeWithCRCoder:(id)coder;
+- (void)encodeWithCRCoder:(id)coder set:(void *)set;
+- (void)encodeWithCRCoder:(id)coder set:(void *)set elementValueCoder:(id)valueCoder;
+- (void)mergeWith:(id)with;
 - (void)removeAllObjects;
-- (void)removeObject:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setObject:(id)a3;
-- (void)walkGraph:(id)a3;
+- (void)removeObject:(id)object;
+- (void)removeObserver:(id)observer;
+- (void)setObject:(id)object;
+- (void)walkGraph:(id)graph;
 @end
 
 @implementation CRSet
 
-- (CRSet)initWithDocument:(id)a3
+- (CRSet)initWithDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v11.receiver = self;
   v11.super_class = CRSet;
   v5 = [(CRSet *)&v11 init];
   if (v5)
   {
-    v6 = [[CRDictionary alloc] initWithDocument:v4];
+    v6 = [[CRDictionary alloc] initWithDocument:documentCopy];
     dictionary = v5->_dictionary;
     v5->_dictionary = v6;
 
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v5->_observers;
-    v5->_observers = v8;
+    v5->_observers = weakObjectsHashTable;
   }
 
   return v5;
 }
 
-- (void)encodeWithCRCoder:(id)a3
+- (void)encodeWithCRCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [v8 currentDocumentObjectForEncoding];
-  v5 = v4;
-  if (*(v4 + 48) != 4)
+  coderCopy = coder;
+  currentDocumentObjectForEncoding = [coderCopy currentDocumentObjectForEncoding];
+  v5 = currentDocumentObjectForEncoding;
+  if (*(currentDocumentObjectForEncoding + 48) != 4)
   {
-    CRDT::Document_DocObject::clear_contents(v4);
+    CRDT::Document_DocObject::clear_contents(currentDocumentObjectForEncoding);
     *(v5 + 48) = 4;
     operator new();
   }
 
-  v6 = *(v4 + 40);
-  v7 = [(CRSet *)self dictionary];
-  [v7 encodeWithCRCoder:v8 dictionary:v6 elementValueCoder:&__block_literal_global_46];
+  v6 = *(currentDocumentObjectForEncoding + 40);
+  dictionary = [(CRSet *)self dictionary];
+  [dictionary encodeWithCRCoder:coderCopy dictionary:v6 elementValueCoder:&__block_literal_global_46];
 }
 
 void __27__CRSet_encodeWithCRCoder___block_invoke(uint64_t a1, void *a2, void *a3, uint64_t a4, void *a5)
@@ -84,54 +84,54 @@ void __27__CRSet_encodeWithCRCoder___block_invoke(uint64_t a1, void *a2, void *a
   }
 }
 
-- (void)encodeWithCRCoder:(id)a3 set:(void *)a4
+- (void)encodeWithCRCoder:(id)coder set:(void *)set
 {
-  v7 = a3;
-  v6 = [(CRSet *)self dictionary];
-  [v6 encodeWithCRCoder:v7 dictionary:a4];
+  coderCopy = coder;
+  dictionary = [(CRSet *)self dictionary];
+  [dictionary encodeWithCRCoder:coderCopy dictionary:set];
 }
 
-- (void)encodeWithCRCoder:(id)a3 set:(void *)a4 elementValueCoder:(id)a5
+- (void)encodeWithCRCoder:(id)coder set:(void *)set elementValueCoder:(id)valueCoder
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CRSet *)self dictionary];
+  coderCopy = coder;
+  valueCoderCopy = valueCoder;
+  dictionary = [(CRSet *)self dictionary];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __49__CRSet_encodeWithCRCoder_set_elementValueCoder___block_invoke;
   v12[3] = &unk_1E7509D70;
-  v11 = v9;
+  v11 = valueCoderCopy;
   v13 = v11;
-  [v10 encodeWithCRCoder:v8 dictionary:a4 elementValueCoder:v12];
+  [dictionary encodeWithCRCoder:coderCopy dictionary:set elementValueCoder:v12];
 }
 
-- (CRSet)initWithCRCoder:(id)a3
+- (CRSet)initWithCRCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 currentDocumentObjectForDecoding];
-  if (*(v5 + 48) == 4)
+  coderCopy = coder;
+  currentDocumentObjectForDecoding = [coderCopy currentDocumentObjectForDecoding];
+  if (*(currentDocumentObjectForDecoding + 48) == 4)
   {
-    v6 = [(CRSet *)self initWithCRCoder:v4 set:*(v5 + 40)];
+    v6 = [(CRSet *)self initWithCRCoder:coderCopy set:*(currentDocumentObjectForDecoding + 40)];
   }
 
   else
   {
-    v7 = [v4 document];
-    v6 = [(CRSet *)self initWithDocument:v7];
+    document = [coderCopy document];
+    v6 = [(CRSet *)self initWithDocument:document];
   }
 
   return v6;
 }
 
-- (CRSet)initWithCRCoder:(id)a3 set:(const void *)a4
+- (CRSet)initWithCRCoder:(id)coder set:(const void *)set
 {
-  v6 = a3;
-  v7 = [v6 document];
-  v8 = [(CRSet *)self initWithDocument:v7];
+  coderCopy = coder;
+  document = [coderCopy document];
+  v8 = [(CRSet *)self initWithDocument:document];
 
   if (v8)
   {
-    v9 = [[CRDictionary alloc] initWithCRCoder:v6 dictionary:a4 elementValueDecoder:&__block_literal_global_64];
+    v9 = [[CRDictionary alloc] initWithCRCoder:coderCopy dictionary:set elementValueDecoder:&__block_literal_global_64];
     [(CRSet *)v8 setDictionary:v9];
   }
 
@@ -164,12 +164,12 @@ id __29__CRSet_initWithCRCoder_set___block_invoke(uint64_t a1, uint64_t a2, void
   return v8;
 }
 
-- (CRSet)initWithCRCoder:(id)a3 set:(const void *)a4 elementValueDecoder:(id)a5
+- (CRSet)initWithCRCoder:(id)coder set:(const void *)set elementValueDecoder:(id)decoder
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 document];
-  v11 = [(CRSet *)self initWithDocument:v10];
+  coderCopy = coder;
+  decoderCopy = decoder;
+  document = [coderCopy document];
+  v11 = [(CRSet *)self initWithDocument:document];
 
   if (v11)
   {
@@ -178,8 +178,8 @@ id __29__CRSet_initWithCRCoder_set___block_invoke(uint64_t a1, uint64_t a2, void
     v15[1] = 3221225472;
     v15[2] = __49__CRSet_initWithCRCoder_set_elementValueDecoder___block_invoke;
     v15[3] = &unk_1E7509D98;
-    v16 = v9;
-    v13 = [(CRDictionary *)v12 initWithCRCoder:v8 dictionary:a4 elementValueDecoder:v15];
+    v16 = decoderCopy;
+    v13 = [(CRDictionary *)v12 initWithCRCoder:coderCopy dictionary:set elementValueDecoder:v15];
     [(CRSet *)v11 setDictionary:v13];
   }
 
@@ -194,20 +194,20 @@ id __49__CRSet_initWithCRCoder_set_elementValueDecoder___block_invoke(uint64_t a
   return v4;
 }
 
-- (id)member:(id)a3
+- (id)member:(id)member
 {
-  v4 = a3;
-  v5 = [(CRSet *)self dictionary];
-  v6 = [v5 objectForKey:v4];
+  memberCopy = member;
+  dictionary = [(CRSet *)self dictionary];
+  v6 = [dictionary objectForKey:memberCopy];
 
   return v6;
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
-  v4 = a3;
-  v5 = [(CRSet *)self dictionary];
-  v6 = [v5 objectForKey:v4];
+  objectCopy = object;
+  dictionary = [(CRSet *)self dictionary];
+  v6 = [dictionary objectForKey:objectCopy];
   v7 = v6 != 0;
 
   return v7;
@@ -215,8 +215,8 @@ id __49__CRSet_initWithCRCoder_set_elementValueDecoder___block_invoke(uint64_t a
 
 - (unint64_t)count
 {
-  v2 = [(CRSet *)self dictionary];
-  v3 = [v2 count];
+  dictionary = [(CRSet *)self dictionary];
+  v3 = [dictionary count];
 
   return v3;
 }
@@ -229,8 +229,8 @@ id __49__CRSet_initWithCRCoder_set_elementValueDecoder___block_invoke(uint64_t a
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(CRSet *)self dictionary];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  dictionary = [(CRSet *)self dictionary];
+  v5 = [dictionary countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -240,13 +240,13 @@ id __49__CRSet_initWithCRCoder_set_elementValueDecoder___block_invoke(uint64_t a
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dictionary);
         }
 
         [v3 addObject:*(*(&v10 + 1) + 8 * i)];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [dictionary countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -259,48 +259,48 @@ id __49__CRSet_initWithCRCoder_set_elementValueDecoder___block_invoke(uint64_t a
 
 - (id)anyObject
 {
-  v2 = [(CRSet *)self dictionary];
-  v3 = [v2 keyEnumerator];
-  v4 = [v3 nextObject];
+  dictionary = [(CRSet *)self dictionary];
+  keyEnumerator = [dictionary keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
 
-  return v4;
+  return nextObject;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = [(CRSet *)self dictionary];
-  v9 = [v8 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  dictionary = [(CRSet *)self dictionary];
+  v9 = [dictionary countByEnumeratingWithState:state objects:objects count:count];
 
   return v9;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  v4 = [(CRSet *)self observers];
-  [v4 addObject:v5];
+  observerCopy = observer;
+  observers = [(CRSet *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
-  v4 = [(CRSet *)self observers];
-  [v4 removeObject:v5];
+  observerCopy = observer;
+  observers = [(CRSet *)self observers];
+  [observers removeObject:observerCopy];
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CRSet *)self dictionary];
-  [v5 setObject:v4 forKey:v4];
+  objectCopy = object;
+  dictionary = [(CRSet *)self dictionary];
+  [dictionary setObject:objectCopy forKey:objectCopy];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(CRSet *)self observers];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [(CRSet *)self observers];
+  v7 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -311,14 +311,14 @@ id __49__CRSet_initWithCRCoder_set_elementValueDecoder___block_invoke(uint64_t a
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(observers);
         }
 
         [*(*(&v11 + 1) + 8 * v9++) setUpdated:self];
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -327,38 +327,38 @@ id __49__CRSet_initWithCRCoder_set_elementValueDecoder___block_invoke(uint64_t a
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v5 = a3;
-  v4 = [(CRSet *)self dictionary];
-  [v4 removeObjectForKey:v5];
+  objectCopy = object;
+  dictionary = [(CRSet *)self dictionary];
+  [dictionary removeObjectForKey:objectCopy];
 }
 
 - (void)removeAllObjects
 {
-  v2 = [(CRSet *)self dictionary];
-  [v2 removeAllObjects];
+  dictionary = [(CRSet *)self dictionary];
+  [dictionary removeAllObjects];
 }
 
-- (void)setObject:(id)a3
+- (void)setObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   [(CRSet *)self removeAllObjects];
-  if (v4)
+  if (objectCopy)
   {
-    [(CRSet *)self addObject:v4];
+    [(CRSet *)self addObject:objectCopy];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CRSet *)self dictionary];
-    v6 = [v4 dictionary];
-    v7 = [v5 isEqual:v6];
+    dictionary = [(CRSet *)self dictionary];
+    dictionary2 = [equalCopy dictionary];
+    v7 = [dictionary isEqual:dictionary2];
   }
 
   else
@@ -371,15 +371,15 @@ id __49__CRSet_initWithCRCoder_set_elementValueDecoder___block_invoke(uint64_t a
 
 - (unint64_t)hash
 {
-  v2 = [(CRSet *)self dictionary];
-  v3 = [v2 hash];
+  dictionary = [(CRSet *)self dictionary];
+  v3 = [dictionary hash];
 
   return v3;
 }
 
-- (void)mergeWith:(id)a3
+- (void)mergeWith:(id)with
 {
-  v7 = a3;
+  withCopy = with;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -387,29 +387,29 @@ id __49__CRSet_initWithCRCoder_set_elementValueDecoder___block_invoke(uint64_t a
     objc_exception_throw(v6);
   }
 
-  v4 = [(CRSet *)self dictionary];
-  v5 = [v7 dictionary];
-  [v4 mergeWith:v5];
+  dictionary = [(CRSet *)self dictionary];
+  dictionary2 = [withCopy dictionary];
+  [dictionary mergeWith:dictionary2];
 }
 
 - (CRDocument)document
 {
-  v2 = [(CRSet *)self dictionary];
-  v3 = [v2 document];
+  dictionary = [(CRSet *)self dictionary];
+  document = [dictionary document];
 
-  return v3;
+  return document;
 }
 
-- (id)deltaSince:(id)a3 in:(id)a4
+- (id)deltaSince:(id)since in:(id)in
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRSet *)self dictionary];
-  v9 = [v8 deltaSince:v6 in:v7];
+  sinceCopy = since;
+  inCopy = in;
+  dictionary = [(CRSet *)self dictionary];
+  v9 = [dictionary deltaSince:sinceCopy in:inCopy];
 
   if (v9)
   {
-    v10 = [[CRSet alloc] initWithDocument:v7];
+    v10 = [[CRSet alloc] initWithDocument:inCopy];
     [(CRSet *)v10 setDictionary:v9];
   }
 
@@ -421,11 +421,11 @@ id __49__CRSet_initWithCRCoder_set_elementValueDecoder___block_invoke(uint64_t a
   return v10;
 }
 
-- (void)walkGraph:(id)a3
+- (void)walkGraph:(id)graph
 {
-  v5 = a3;
-  v4 = [(CRSet *)self dictionary];
-  v5[2](v5, v4);
+  graphCopy = graph;
+  dictionary = [(CRSet *)self dictionary];
+  graphCopy[2](graphCopy, dictionary);
 }
 
 - (NSString)description
@@ -437,14 +437,14 @@ id __49__CRSet_initWithCRCoder_set_elementValueDecoder___block_invoke(uint64_t a
     v5 = NSStringFromClass(v4);
     v6 = objc_msgSend(v3, "stringWithFormat:", @"<%@ %p (\n"), v5, self;
 
-    v7 = [(CRSet *)self dictionary];
+    dictionary = [(CRSet *)self dictionary];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __20__CRSet_description__block_invoke;
     v13[3] = &unk_1E7509DC0;
     v8 = v6;
     v14 = v8;
-    [v7 enumerateKeysObjectsAndTimestampsUsingBlock:v13];
+    [dictionary enumerateKeysObjectsAndTimestampsUsingBlock:v13];
 
     [v8 replaceCharactersInRange:objc_msgSend(v8 withString:{"length") - 2, 2, @">"}]);
   }

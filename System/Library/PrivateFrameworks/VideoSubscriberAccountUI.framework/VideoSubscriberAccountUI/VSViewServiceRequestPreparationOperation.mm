@@ -1,17 +1,17 @@
 @interface VSViewServiceRequestPreparationOperation
 - ($115C4C562B26FF47E01F9F4EA65B5887)hostAuditToken;
 - (VSViewServiceRequestPreparationOperation)init;
-- (id)_privacyServiceWithErrorHandler:(id)a3;
+- (id)_privacyServiceWithErrorHandler:(id)handler;
 - (void)_checkAvailability;
 - (void)_checkEntitlement;
 - (void)_checkPrivacy;
 - (void)_checkSupportedProviders;
-- (void)_continueCheckPrivacyWithAccessStatus:(unint64_t)a3;
-- (void)_finishWithError:(id)a3;
-- (void)_finishWithSupportedProviders:(id)a3;
+- (void)_continueCheckPrivacyWithAccessStatus:(unint64_t)status;
+- (void)_finishWithError:(id)error;
+- (void)_finishWithSupportedProviders:(id)providers;
 - (void)cancel;
 - (void)dealloc;
-- (void)setHostAuditToken:(id *)a3;
+- (void)setHostAuditToken:(id *)token;
 @end
 
 @implementation VSViewServiceRequestPreparationOperation
@@ -47,9 +47,9 @@
     [(NSXPCConnection *)v2->_privacyServiceConnection setInterruptionHandler:&__block_literal_global_4];
     [(NSXPCConnection *)v2->_privacyServiceConnection setInvalidationHandler:&__block_literal_global_8];
     [(NSXPCConnection *)v2->_privacyServiceConnection resume];
-    v12 = [MEMORY[0x277CE2268] defaultCenter];
+    defaultCenter = [MEMORY[0x277CE2268] defaultCenter];
     availabilityInfoCenter = v2->_availabilityInfoCenter;
-    v2->_availabilityInfoCenter = v12;
+    v2->_availabilityInfoCenter = defaultCenter;
 
     v14 = objc_alloc_init(MEMORY[0x277CE2298]);
     v15 = v2->_result;
@@ -89,19 +89,19 @@ void __48__VSViewServiceRequestPreparationOperation_init__block_invoke_6()
   [(VSViewServiceRequestPreparationOperation *)&v3 dealloc];
 }
 
-- (id)_privacyServiceWithErrorHandler:(id)a3
+- (id)_privacyServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(VSViewServiceRequestPreparationOperation *)self privacyServiceConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  privacyServiceConnection = [(VSViewServiceRequestPreparationOperation *)self privacyServiceConnection];
+  v6 = [privacyServiceConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The error parameter must not be nil."];
   }
@@ -113,7 +113,7 @@ void __48__VSViewServiceRequestPreparationOperation_init__block_invoke_6()
   }
 
   v6 = MEMORY[0x277CE2298];
-  v7 = [MEMORY[0x277CE2250] failableWithError:v4];
+  v7 = [MEMORY[0x277CE2250] failableWithError:errorCopy];
   v8 = [v6 optionalWithObject:v7];
   [(VSViewServiceRequestPreparationOperation *)self setResult:v8];
 
@@ -166,13 +166,13 @@ void __48__VSViewServiceRequestPreparationOperation_init__block_invoke_6()
   v7[3] = &unk_279E19730;
   v7[4] = self;
   v4 = [(VSViewServiceRequestPreparationOperation *)self _privacyServiceWithErrorHandler:v7];
-  v5 = [(VSViewServiceRequestPreparationOperation *)self hostProcessIdentifier];
+  hostProcessIdentifier = [(VSViewServiceRequestPreparationOperation *)self hostProcessIdentifier];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__VSViewServiceRequestPreparationOperation__checkPrivacy__block_invoke_23;
   v6[3] = &unk_279E197D0;
   v6[4] = self;
-  [v4 preflightCheckForProcessIdentifier:v5 withCompletionHandler:v6];
+  [v4 preflightCheckForProcessIdentifier:hostProcessIdentifier withCompletionHandler:v6];
 }
 
 void __57__VSViewServiceRequestPreparationOperation__checkPrivacy__block_invoke(uint64_t a1, void *a2)
@@ -337,15 +337,15 @@ void __57__VSViewServiceRequestPreparationOperation__checkPrivacy__block_invoke_
   [*(a1 + 32) _finishWithError:v5];
 }
 
-- (void)_continueCheckPrivacyWithAccessStatus:(unint64_t)a3
+- (void)_continueCheckPrivacyWithAccessStatus:(unint64_t)status
 {
-  if (a3 == 2)
+  if (status == 2)
   {
     v7 = VSPrivateError();
     [(VSViewServiceRequestPreparationOperation *)self _finishWithError:v7];
   }
 
-  else if (a3 == 1)
+  else if (status == 1)
   {
 
     [(VSViewServiceRequestPreparationOperation *)self _checkAvailability];
@@ -353,14 +353,14 @@ void __57__VSViewServiceRequestPreparationOperation__checkPrivacy__block_invoke_
 
   else
   {
-    if (a3)
+    if (status)
     {
       return;
     }
 
     if ([(VSViewServiceRequestPreparationOperation *)self requestRequiresPrivacyUI])
     {
-      v4 = self;
+      selfCopy2 = self;
       v5 = 1;
     }
 
@@ -368,7 +368,7 @@ void __57__VSViewServiceRequestPreparationOperation__checkPrivacy__block_invoke_
     {
       if ([(VSViewServiceRequestPreparationOperation *)self requestAllowsPrivacyUI])
       {
-        v6 = [(VSViewServiceRequestPreparationOperation *)self currentAccount];
+        currentAccount = [(VSViewServiceRequestPreparationOperation *)self currentAccount];
         v9[0] = MEMORY[0x277D85DD0];
         v9[1] = 3221225472;
         v9[2] = __82__VSViewServiceRequestPreparationOperation__continueCheckPrivacyWithAccessStatus___block_invoke;
@@ -379,16 +379,16 @@ void __57__VSViewServiceRequestPreparationOperation__checkPrivacy__block_invoke_
         v8[2] = __82__VSViewServiceRequestPreparationOperation__continueCheckPrivacyWithAccessStatus___block_invoke_2;
         v8[3] = &unk_279E19290;
         v8[4] = self;
-        [v6 conditionallyUnwrapObject:v9 otherwise:v8];
+        [currentAccount conditionallyUnwrapObject:v9 otherwise:v8];
 
         return;
       }
 
-      v4 = self;
+      selfCopy2 = self;
       v5 = 0;
     }
 
-    [(VSViewServiceRequestPreparationOperation *)v4 _determineProviderDisplayNameWithUI:v5];
+    [(VSViewServiceRequestPreparationOperation *)selfCopy2 _determineProviderDisplayNameWithUI:v5];
   }
 }
 
@@ -401,13 +401,13 @@ void __57__VSViewServiceRequestPreparationOperation__checkPrivacy__block_invoke_
     _os_log_impl(&dword_270DD4000, v3, OS_LOG_TYPE_DEFAULT, "Prep operation will check availability", buf, 2u);
   }
 
-  v4 = [(VSViewServiceRequestPreparationOperation *)self availabilityInfoCenter];
+  availabilityInfoCenter = [(VSViewServiceRequestPreparationOperation *)self availabilityInfoCenter];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __62__VSViewServiceRequestPreparationOperation__checkAvailability__block_invoke;
   v5[3] = &unk_279E19820;
   v5[4] = self;
-  [v4 determineIdentityProviderAvailabilityWithCompletionHandler:v5];
+  [availabilityInfoCenter determineIdentityProviderAvailabilityWithCompletionHandler:v5];
 }
 
 void __62__VSViewServiceRequestPreparationOperation__checkAvailability__block_invoke(uint64_t a1, int a2, void *a3)
@@ -432,21 +432,21 @@ void __62__VSViewServiceRequestPreparationOperation__checkAvailability__block_in
   }
 }
 
-- (void)_finishWithSupportedProviders:(id)a3
+- (void)_finishWithSupportedProviders:(id)providers
 {
   v61 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 count])
+  providersCopy = providers;
+  if (![providersCopy count])
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"No filtered identity providers provided."];
   }
 
-  v5 = [v4 valueForKeyPath:@"providerID.object"];
-  v6 = [(VSViewServiceRequestPreparationOperation *)self featuredIdentityProviderIdentifiers];
+  v5 = [providersCopy valueForKeyPath:@"providerID.object"];
+  featuredIdentityProviderIdentifiers = [(VSViewServiceRequestPreparationOperation *)self featuredIdentityProviderIdentifiers];
   v7 = [MEMORY[0x277CCA9C0] expressionForKeyPath:@"self"];
   v8 = [MEMORY[0x277CCA9C0] expressionForConstantValue:v5];
   v9 = [MEMORY[0x277CCA918] predicateWithLeftExpression:v7 rightExpression:v8 modifier:0 type:10 options:0];
-  v10 = [v6 filteredArrayUsingPredicate:v9];
+  v10 = [featuredIdentityProviderIdentifiers filteredArrayUsingPredicate:v9];
 
   if (-[VSViewServiceRequestPreparationOperation shouldInferFeaturedProviders](self, "shouldInferFeaturedProviders") && ![v10 count])
   {
@@ -454,8 +454,8 @@ void __62__VSViewServiceRequestPreparationOperation__checkAvailability__block_in
     v11 = v10;
     v12 = [MEMORY[0x277CBEB98] setWithArray:v5];
     v13 = MEMORY[0x277CBEB98];
-    v14 = [(VSViewServiceRequestPreparationOperation *)self supportedIdentityProviderIdentifiers];
-    v15 = [v13 setWithArray:v14];
+    supportedIdentityProviderIdentifiers = [(VSViewServiceRequestPreparationOperation *)self supportedIdentityProviderIdentifiers];
+    v15 = [v13 setWithArray:supportedIdentityProviderIdentifiers];
     v16 = [v12 isSubsetOfSet:v15];
 
     if (v16)
@@ -476,14 +476,14 @@ void __62__VSViewServiceRequestPreparationOperation__checkAvailability__block_in
     v43 = v9;
     v44 = v10;
     v39 = v7;
-    v40 = self;
+    selfCopy = self;
     v41 = v5;
     v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v18 = v4;
+    v18 = providersCopy;
     v19 = [v18 countByEnumeratingWithState:&v55 objects:v60 count:16];
     if (v19)
     {
@@ -500,14 +500,14 @@ void __62__VSViewServiceRequestPreparationOperation__checkAvailability__block_in
 
           v23 = *(*(&v55 + 1) + 8 * i);
           [v23 setRankForSorting:0];
-          v24 = [v23 providerID];
+          providerID = [v23 providerID];
           v52[0] = MEMORY[0x277D85DD0];
           v52[1] = 3221225472;
           v52[2] = __74__VSViewServiceRequestPreparationOperation__finishWithSupportedProviders___block_invoke;
           v52[3] = &unk_279E19598;
           v53 = v17;
           v54 = v23;
-          [v24 conditionallyUnwrapObject:v52];
+          [providerID conditionallyUnwrapObject:v52];
         }
 
         v20 = [v18 countByEnumeratingWithState:&v55 objects:v60 count:16];
@@ -554,26 +554,26 @@ void __62__VSViewServiceRequestPreparationOperation__checkAvailability__block_in
 
     v5 = v41;
     v7 = v39;
-    self = v40;
+    self = selfCopy;
     v10 = v44;
     v9 = v43;
   }
 
-  v33 = [(VSViewServiceRequestPreparationOperation *)self privateQueue];
+  privateQueue = [(VSViewServiceRequestPreparationOperation *)self privateQueue];
   v34 = objc_alloc_init(VSFeaturedIdentityProviderLimitingOperation);
-  [(VSFeaturedIdentityProviderLimitingOperation *)v34 setUnlimitedIdentityProviders:v4];
-  [v33 addOperation:v34];
+  [(VSFeaturedIdentityProviderLimitingOperation *)v34 setUnlimitedIdentityProviders:providersCopy];
+  [privateQueue addOperation:v34];
   v35 = MEMORY[0x277CCA8C8];
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
   v45[2] = __74__VSViewServiceRequestPreparationOperation__finishWithSupportedProviders___block_invoke_2;
   v45[3] = &unk_279E19848;
   v46 = v34;
-  v47 = self;
+  selfCopy2 = self;
   v36 = v34;
   v37 = [v35 blockOperationWithBlock:v45];
   [v37 addDependency:v36];
-  [v33 addOperation:v37];
+  [privateQueue addOperation:v37];
 
   v38 = *MEMORY[0x277D85DE8];
 }
@@ -602,11 +602,11 @@ void __74__VSViewServiceRequestPreparationOperation__finishWithSupportedProvider
   }
 
   v4 = objc_alloc_init(VSIdentityProviderFetchAllOperation);
-  v5 = [(VSViewServiceRequestPreparationOperation *)self auditToken];
-  [(VSIdentityProviderFetchAllOperation *)v4 setAuditToken:v5];
+  auditToken = [(VSViewServiceRequestPreparationOperation *)self auditToken];
+  [(VSIdentityProviderFetchAllOperation *)v4 setAuditToken:auditToken];
 
-  v6 = [(VSViewServiceRequestPreparationOperation *)self applicationAccountProviders];
-  [(VSIdentityProviderFetchAllOperation *)v4 setApplicationAccountProviders:v6];
+  applicationAccountProviders = [(VSViewServiceRequestPreparationOperation *)self applicationAccountProviders];
+  [(VSIdentityProviderFetchAllOperation *)v4 setApplicationAccountProviders:applicationAccountProviders];
 
   [(VSAsyncOperation *)v4 start];
   [(VSIdentityProviderFetchAllOperation *)v4 waitUntilFinished];
@@ -617,8 +617,8 @@ void __74__VSViewServiceRequestPreparationOperation__finishWithSupportedProvider
     _os_log_impl(&dword_270DD4000, v7, OS_LOG_TYPE_DEFAULT, "Prep operation did fetch identity providers.", buf, 2u);
   }
 
-  v8 = [(VSIdentityProviderFetchAllOperation *)v4 result];
-  v9 = [v8 forceUnwrapObject];
+  result = [(VSIdentityProviderFetchAllOperation *)v4 result];
+  forceUnwrapObject = [result forceUnwrapObject];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -630,7 +630,7 @@ void __74__VSViewServiceRequestPreparationOperation__finishWithSupportedProvider
   v10[2] = __68__VSViewServiceRequestPreparationOperation__checkSupportedProviders__block_invoke_4;
   v10[3] = &unk_279E19730;
   v10[4] = self;
-  [v9 unwrapObject:v11 error:v10];
+  [forceUnwrapObject unwrapObject:v11 error:v10];
 }
 
 void __68__VSViewServiceRequestPreparationOperation__checkSupportedProviders__block_invoke(uint64_t a1, void *a2)
@@ -860,10 +860,10 @@ LABEL_6:
   return self;
 }
 
-- (void)setHostAuditToken:(id *)a3
+- (void)setHostAuditToken:(id *)token
 {
-  v3 = *&a3->var0[4];
-  *self->_hostAuditToken.val = *a3->var0;
+  v3 = *&token->var0[4];
+  *self->_hostAuditToken.val = *token->var0;
   *&self->_hostAuditToken.val[4] = v3;
 }
 

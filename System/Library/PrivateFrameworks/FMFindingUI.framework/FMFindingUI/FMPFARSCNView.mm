@@ -1,30 +1,30 @@
 @interface FMPFARSCNView
 - (NSString)description;
-- (_TtC11FMFindingUI13FMPFARSCNView)initWithFrame:(CGRect)a3;
-- (_TtC11FMFindingUI13FMPFARSCNView)initWithFrame:(CGRect)a3 options:(id)a4;
-- (void)_drawAtTime:(double)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (_TtC11FMFindingUI13FMPFARSCNView)initWithFrame:(CGRect)frame;
+- (_TtC11FMFindingUI13FMPFARSCNView)initWithFrame:(CGRect)frame options:(id)options;
+- (void)_drawAtTime:(double)time;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation FMPFARSCNView
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   sub_24A50D7EC(0, &qword_27EF505C8, 0x277D75C68);
   sub_24A5789C0();
   sub_24A62EE64();
-  v6 = a4;
-  v7 = self;
+  eventCopy = event;
+  selfCopy = self;
   v8 = sub_24A62EE54();
 
-  v9.receiver = v7;
+  v9.receiver = selfCopy;
   v9.super_class = type metadata accessor for FMPFARSCNView();
-  [(FMPFARSCNView *)&v9 touchesBegan:v8 withEvent:v6];
+  [(FMPFARSCNView *)&v9 touchesBegan:v8 withEvent:eventCopy];
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A578204();
 
   v3 = sub_24A62EBE4();
@@ -32,26 +32,26 @@
   return v3;
 }
 
-- (void)_drawAtTime:(double)a3
+- (void)_drawAtTime:(double)time
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for FMPFARSCNView();
-  [(FMPFARSCNView *)&v4 _drawAtTime:a3];
+  [(FMPFARSCNView *)&v4 _drawAtTime:time];
 }
 
-- (_TtC11FMFindingUI13FMPFARSCNView)initWithFrame:(CGRect)a3 options:(id)a4
+- (_TtC11FMFindingUI13FMPFARSCNView)initWithFrame:(CGRect)frame options:(id)options
 {
-  if (a4)
+  if (options)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
+    height = frame.size.height;
+    width = frame.size.width;
+    y = frame.origin.y;
+    x = frame.origin.x;
     v8 = sub_24A62EB84();
-    a3.origin.x = x;
-    a3.origin.y = y;
-    a3.size.width = width;
-    a3.size.height = height;
+    frame.origin.x = x;
+    frame.origin.y = y;
+    frame.size.width = width;
+    frame.size.height = height;
   }
 
   else
@@ -59,15 +59,15 @@
     v8 = 0;
   }
 
-  return sub_24A5783B4(v8, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
+  return sub_24A5783B4(v8, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
 }
 
-- (_TtC11FMFindingUI13FMPFARSCNView)initWithFrame:(CGRect)a3
+- (_TtC11FMFindingUI13FMPFARSCNView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = sub_24A62EAA4();
   v9 = *(v8 - 8);
   v10 = *(v9 + 64);

@@ -1,28 +1,28 @@
 @interface VMUHeapAndVMAggregator
 - (NSArray)heapZoneAggregates;
-- (VMUHeapAndVMAggregator)initWithGraph:(id)a3 options:(id)a4;
-- (id)_classDisplayName:(id)a3;
-- (void)_countAllocation:(id)a3 inRegion:(id)a4;
+- (VMUHeapAndVMAggregator)initWithGraph:(id)graph options:(id)options;
+- (id)_classDisplayName:(id)name;
+- (void)_countAllocation:(id)allocation inRegion:(id)region;
 - (void)analyzeMemgraph;
 @end
 
 @implementation VMUHeapAndVMAggregator
 
-- (VMUHeapAndVMAggregator)initWithGraph:(id)a3 options:(id)a4
+- (VMUHeapAndVMAggregator)initWithGraph:(id)graph options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  graphCopy = graph;
+  optionsCopy = options;
   v16.receiver = self;
   v16.super_class = VMUHeapAndVMAggregator;
   v9 = [(VMUHeapAndVMAggregator *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_heapAndVMOptions, a4);
-    objc_storeStrong(&v10->_graph, a3);
-    v11 = [(VMUHeapAndVMAggregatorOptions *)v10->_heapAndVMOptions classFilterPatternMatcher];
+    objc_storeStrong(&v9->_heapAndVMOptions, options);
+    objc_storeStrong(&v10->_graph, graph);
+    classFilterPatternMatcher = [(VMUHeapAndVMAggregatorOptions *)v10->_heapAndVMOptions classFilterPatternMatcher];
     classFilterPatternMatcher = v10->_classFilterPatternMatcher;
-    v10->_classFilterPatternMatcher = v11;
+    v10->_classFilterPatternMatcher = classFilterPatternMatcher;
 
     v13 = [VMUClassInfo classInfoWithClassName:@"non-object" binaryPath:&stru_1F461F9C8 type:0];
     nonObjectInfo = v10->_nonObjectInfo;
@@ -39,89 +39,89 @@
   return v2;
 }
 
-- (id)_classDisplayName:(id)a3
+- (id)_classDisplayName:(id)name
 {
   heapAndVMOptions = self->_heapAndVMOptions;
-  v4 = a3;
+  nameCopy = name;
   if ([(VMUHeapAndVMAggregatorOptions *)heapAndVMOptions showRawClassNames])
   {
-    [v4 className];
+    [nameCopy className];
   }
 
   else
   {
-    [v4 displayName];
+    [nameCopy displayName];
   }
   v5 = ;
 
   return v5;
 }
 
-- (void)_countAllocation:(id)a3 inRegion:(id)a4
+- (void)_countAllocation:(id)allocation inRegion:(id)region
 {
-  v10 = a4;
-  v6 = [*(a3.var0 + 16) genericInfo];
-  nonObjectInfo = v6;
-  if (!v6)
+  regionCopy = region;
+  genericInfo = [*(allocation.var0 + 16) genericInfo];
+  nonObjectInfo = genericInfo;
+  if (!genericInfo)
   {
     nonObjectInfo = self->_nonObjectInfo;
   }
 
   v8 = nonObjectInfo;
 
-  [(VMUMallocZoneAggregate *)self->_allZonesAggregate incrementAllocationCountForClassInfo:v8 size:*(a3.var0 + 8) & 0xFFFFFFFFFFFFFFFLL];
+  [(VMUMallocZoneAggregate *)self->_allZonesAggregate incrementAllocationCountForClassInfo:v8 size:*(allocation.var0 + 8) & 0xFFFFFFFFFFFFFFFLL];
   if ([(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions separateByZone])
   {
-    v9 = [(NSMutableArray *)self->_heapZoneAggregates objectAtIndexedSubscript:v10[37]];
-    [v9 incrementAllocationCountForClassInfo:v8 size:*(a3.var0 + 8) & 0xFFFFFFFFFFFFFFFLL];
+    v9 = [(NSMutableArray *)self->_heapZoneAggregates objectAtIndexedSubscript:regionCopy[37]];
+    [v9 incrementAllocationCountForClassInfo:v8 size:*(allocation.var0 + 8) & 0xFFFFFFFFFFFFFFFLL];
   }
 }
 
 - (void)analyzeMemgraph
 {
   v91 = *MEMORY[0x1E69E9840];
-  v2 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-  if (v2)
+  debugTimer = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+  if (debugTimer)
   {
-    v3 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-    v4 = [v3 signpostID];
+    debugTimer2 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+    signpostID = [debugTimer2 signpostID];
 
-    if (v4)
+    if (signpostID)
     {
-      v5 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-      v6 = [v5 logHandle];
+      debugTimer3 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+      logHandle = [debugTimer3 logHandle];
 
-      v7 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-      v8 = [v7 signpostID];
+      debugTimer4 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+      signpostID2 = [debugTimer4 signpostID];
 
-      if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
+      if (signpostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle))
       {
         *buf = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v6, OS_SIGNPOST_INTERVAL_END, v8, "VMUHeapAndVMAggregator", "", buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle, OS_SIGNPOST_INTERVAL_END, signpostID2, "VMUHeapAndVMAggregator", "", buf, 2u);
       }
     }
   }
 
-  v9 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-  [v9 endEvent:"VMUHeapAndVMAggregator"];
+  debugTimer5 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+  [debugTimer5 endEvent:"VMUHeapAndVMAggregator"];
 
-  v10 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-  [v10 startWithCategory:"VMUHeapAndVMAggregator" message:"counting allocations"];
+  debugTimer6 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+  [debugTimer6 startWithCategory:"VMUHeapAndVMAggregator" message:"counting allocations"];
 
-  v11 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+  debugTimer7 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
 
-  if (v11)
+  if (debugTimer7)
   {
-    v12 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-    v13 = [v12 logHandle];
+    debugTimer8 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+    logHandle2 = [debugTimer8 logHandle];
 
-    v14 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-    v15 = [v14 signpostID];
+    debugTimer9 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+    signpostID3 = [debugTimer9 signpostID];
 
-    if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
+    if (signpostID3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle2))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&dword_1C679D000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v15, "VMUHeapAndVMAggregator", "counting allocations", buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle2, OS_SIGNPOST_INTERVAL_BEGIN, signpostID3, "VMUHeapAndVMAggregator", "counting allocations", buf, 2u);
     }
   }
 
@@ -131,9 +131,9 @@
 
   if ([(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions separateByZone])
   {
-    v18 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     heapZoneAggregates = self->_heapZoneAggregates;
-    self->_heapZoneAggregates = v18;
+    self->_heapZoneAggregates = array;
 
     if ([(VMUCommonGraphInterface *)self->_graph zoneCount])
     {
@@ -155,15 +155,15 @@
   v88[1] = v88;
   v88[2] = 0x2020000000;
   v89 = 0;
-  v23 = self;
-  v69 = [(VMUCommonGraphInterface *)self->_graph nodeNamespaceSize];
-  v68 = [(VMUCommonGraphInterface *)self->_graph zoneCount];
+  selfCopy2 = self;
+  nodeNamespaceSize = [(VMUCommonGraphInterface *)self->_graph nodeNamespaceSize];
+  zoneCount = [(VMUCommonGraphInterface *)self->_graph zoneCount];
   v67 = objc_opt_new();
   if ([(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions guessNonObjects])
   {
-    __b = malloc_type_malloc(4 * v69, 0x100004052888210uLL);
+    __b = malloc_type_malloc(4 * nodeNamespaceSize, 0x100004052888210uLL);
     *buf = -1;
-    memset_pattern4(__b, buf, 4 * v69);
+    memset_pattern4(__b, buf, 4 * nodeNamespaceSize);
   }
 
   else
@@ -178,8 +178,8 @@
     v87 = 0u;
     v84 = 0u;
     v85 = 0u;
-    v25 = [(VMUVMRegionIdentifier *)v24 zoneNames];
-    v26 = [v25 countByEnumeratingWithState:&v84 objects:v90 count:16];
+    zoneNames = [(VMUVMRegionIdentifier *)v24 zoneNames];
+    v26 = [zoneNames countByEnumeratingWithState:&v84 objects:v90 count:16];
     if (v26)
     {
       v27 = *v85;
@@ -189,7 +189,7 @@
         {
           if (*v85 != v27)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(zoneNames);
           }
 
           v29 = *(*(&v84 + 1) + 8 * i);
@@ -210,98 +210,98 @@
           }
         }
 
-        v26 = [v25 countByEnumeratingWithState:&v84 objects:v90 count:16];
+        v26 = [zoneNames countByEnumeratingWithState:&v84 objects:v90 count:16];
       }
 
       while (v26);
     }
 
-    v23 = self;
+    selfCopy2 = self;
   }
 
-  graph = v23->_graph;
+  graph = selfCopy2->_graph;
   v73[0] = MEMORY[0x1E69E9820];
   v73[1] = 3221225472;
   v73[2] = __41__VMUHeapAndVMAggregator_analyzeMemgraph__block_invoke;
   v73[3] = &unk_1E827AB10;
-  v77 = v69;
+  v77 = nodeNamespaceSize;
   v75 = v88;
-  v73[4] = v23;
+  v73[4] = selfCopy2;
   v76 = __b;
   v33 = v67;
   v74 = v33;
-  v78 = v68;
+  v78 = zoneCount;
   [(VMUCommonGraphInterface *)graph enumerateRegionsWithBlock:v73];
 
-  v34 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-  if (v34)
+  debugTimer10 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+  if (debugTimer10)
   {
-    v35 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-    v36 = [v35 signpostID] == 0;
+    debugTimer11 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+    v36 = [debugTimer11 signpostID] == 0;
 
     if (!v36)
     {
-      v37 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-      v38 = [v37 logHandle];
+      debugTimer12 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+      logHandle3 = [debugTimer12 logHandle];
 
-      v39 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-      v40 = [v39 signpostID];
+      debugTimer13 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+      signpostID4 = [debugTimer13 signpostID];
 
-      if (v40 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v38))
+      if (signpostID4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle3))
       {
         *buf = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v38, OS_SIGNPOST_INTERVAL_END, v40, "VMUHeapAndVMAggregator", "", buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle3, OS_SIGNPOST_INTERVAL_END, signpostID4, "VMUHeapAndVMAggregator", "", buf, 2u);
       }
     }
   }
 
-  v41 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-  [v41 endEvent:"VMUHeapAndVMAggregator"];
+  debugTimer14 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+  [debugTimer14 endEvent:"VMUHeapAndVMAggregator"];
 
   if ([(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions guessNonObjects])
   {
-    v42 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-    if (v42)
+    debugTimer15 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+    if (debugTimer15)
     {
-      v43 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-      v44 = [v43 signpostID] == 0;
+      debugTimer16 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+      v44 = [debugTimer16 signpostID] == 0;
 
       if (!v44)
       {
-        v45 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-        v46 = [v45 logHandle];
+        debugTimer17 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+        logHandle4 = [debugTimer17 logHandle];
 
-        v47 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-        v48 = [v47 signpostID];
+        debugTimer18 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+        signpostID5 = [debugTimer18 signpostID];
 
-        if (v48 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v46))
+        if (signpostID5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle4))
         {
           *buf = 0;
-          _os_signpost_emit_with_name_impl(&dword_1C679D000, v46, OS_SIGNPOST_INTERVAL_END, v48, "VMUHeapAndVMAggregator", "", buf, 2u);
+          _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle4, OS_SIGNPOST_INTERVAL_END, signpostID5, "VMUHeapAndVMAggregator", "", buf, 2u);
         }
       }
     }
 
-    v49 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-    [v49 endEvent:"VMUHeapAndVMAggregator"];
+    debugTimer19 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+    [debugTimer19 endEvent:"VMUHeapAndVMAggregator"];
 
-    v50 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-    [v50 startWithCategory:"VMUHeapAndVMAggregator" message:"enumerating references for guessNonObjects"];
+    debugTimer20 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+    [debugTimer20 startWithCategory:"VMUHeapAndVMAggregator" message:"enumerating references for guessNonObjects"];
 
-    v51 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+    debugTimer21 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
 
-    if (v51)
+    if (debugTimer21)
     {
-      v52 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-      v53 = [v52 logHandle];
+      debugTimer22 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+      logHandle5 = [debugTimer22 logHandle];
 
-      v54 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-      v55 = [v54 signpostID];
+      debugTimer23 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+      signpostID6 = [debugTimer23 signpostID];
 
-      if (v55 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v53))
+      if (signpostID6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle5))
       {
         *buf = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v53, OS_SIGNPOST_INTERVAL_BEGIN, v55, "VMUHeapAndVMAggregator", "enumerating references for guessNonObjects", buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle5, OS_SIGNPOST_INTERVAL_BEGIN, signpostID6, "VMUHeapAndVMAggregator", "enumerating references for guessNonObjects", buf, 2u);
       }
     }
 
@@ -315,30 +315,30 @@
     v72[5] = __b;
     [(VMUCommonGraphInterface *)v57 enumerateReferencesWithBlock:v72];
     objc_autoreleasePoolPop(v56);
-    v58 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-    if (v58)
+    debugTimer24 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+    if (debugTimer24)
     {
-      v59 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-      v60 = [v59 signpostID] == 0;
+      debugTimer25 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+      v60 = [debugTimer25 signpostID] == 0;
 
       if (!v60)
       {
-        v61 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-        v62 = [v61 logHandle];
+        debugTimer26 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+        logHandle6 = [debugTimer26 logHandle];
 
-        v63 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-        v64 = [v63 signpostID];
+        debugTimer27 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+        signpostID7 = [debugTimer27 signpostID];
 
-        if (v64 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v62))
+        if (signpostID7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle6))
         {
           *buf = 0;
-          _os_signpost_emit_with_name_impl(&dword_1C679D000, v62, OS_SIGNPOST_INTERVAL_END, v64, "VMUHeapAndVMAggregator", "", buf, 2u);
+          _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle6, OS_SIGNPOST_INTERVAL_END, signpostID7, "VMUHeapAndVMAggregator", "", buf, 2u);
         }
       }
     }
 
-    v65 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
-    [v65 endEvent:"VMUHeapAndVMAggregator"];
+    debugTimer28 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions debugTimer];
+    [debugTimer28 endEvent:"VMUHeapAndVMAggregator"];
 
     free(__b);
   }

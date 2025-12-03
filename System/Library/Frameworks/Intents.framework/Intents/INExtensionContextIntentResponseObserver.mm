@@ -1,23 +1,23 @@
 @interface INExtensionContextIntentResponseObserver
 - (INExtensionContextIntentResponseObserver)init;
-- (void)_intentResponseDidUpdate:(id)a3;
-- (void)setObserver:(id)a3 forConnection:(id)a4;
+- (void)_intentResponseDidUpdate:(id)update;
+- (void)setObserver:(id)observer forConnection:(id)connection;
 @end
 
 @implementation INExtensionContextIntentResponseObserver
 
-- (void)_intentResponseDidUpdate:(id)a3
+- (void)_intentResponseDidUpdate:(id)update
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  updateCopy = update;
   v4 = +[INCache sharedCache];
   v5 = [MEMORY[0x1E695DFA8] set];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [v3 _intents_cacheableObjects];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  _intents_cacheableObjects = [updateCopy _intents_cacheableObjects];
+  v7 = [_intents_cacheableObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -28,12 +28,12 @@
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_intents_cacheableObjects);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 cacheIdentifier];
-        v13 = [v4 cacheableObjectForIdentifier:v12];
+        cacheIdentifier = [v11 cacheIdentifier];
+        v13 = [v4 cacheableObjectForIdentifier:cacheIdentifier];
 
         if (v13)
         {
@@ -48,7 +48,7 @@
         [v5 addObject:v14];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [_intents_cacheableObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v8);
@@ -59,8 +59,8 @@
   v18[2] = __69__INExtensionContextIntentResponseObserver__intentResponseDidUpdate___block_invoke;
   v18[3] = &unk_1E7285510;
   v18[4] = self;
-  v19 = v3;
-  v15 = v3;
+  v19 = updateCopy;
+  v15 = updateCopy;
   [INSerializedCacheItem serializeCacheableObjects:v5 completion:v18];
 
   v16 = *MEMORY[0x1E69E9840];
@@ -111,20 +111,20 @@ void __69__INExtensionContextIntentResponseObserver__intentResponseDidUpdate___b
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setObserver:(id)a3 forConnection:(id)a4
+- (void)setObserver:(id)observer forConnection:(id)connection
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(INExtensionContextIntentResponseObserver *)self remoteObservers];
-  v8 = v7;
-  if (v9)
+  observerCopy = observer;
+  connectionCopy = connection;
+  remoteObservers = [(INExtensionContextIntentResponseObserver *)self remoteObservers];
+  v8 = remoteObservers;
+  if (observerCopy)
   {
-    [v7 setObject:v9 forKey:v6];
+    [remoteObservers setObject:observerCopy forKey:connectionCopy];
   }
 
   else
   {
-    [v7 removeObjectForKey:v6];
+    [remoteObservers removeObjectForKey:connectionCopy];
   }
 }
 
@@ -135,9 +135,9 @@ void __69__INExtensionContextIntentResponseObserver__intentResponseDidUpdate___b
   v2 = [(INExtensionContextIntentResponseObserver *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     remoteObservers = v2->_remoteObservers;
-    v2->_remoteObservers = v3;
+    v2->_remoteObservers = weakToStrongObjectsMapTable;
   }
 
   return v2;

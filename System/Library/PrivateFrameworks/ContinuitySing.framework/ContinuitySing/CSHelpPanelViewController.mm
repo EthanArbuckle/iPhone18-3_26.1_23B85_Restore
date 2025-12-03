@@ -1,38 +1,38 @@
 @interface CSHelpPanelViewController
-- (CSHelpPanelViewController)initWithRequestClient:(id)a3;
-- (id)_labelWithLocalizationKey:(id)a3 textStyle:(id)a4 weight:(double)a5 color:(id)a6 variant:(int64_t)a7;
-- (id)_linkWithAttributedString:(id)a3 textStyle:(id)a4 weight:(double)a5 color:(id)a6;
+- (CSHelpPanelViewController)initWithRequestClient:(id)client;
+- (id)_labelWithLocalizationKey:(id)key textStyle:(id)style weight:(double)weight color:(id)color variant:(int64_t)variant;
+- (id)_linkWithAttributedString:(id)string textStyle:(id)style weight:(double)weight color:(id)color;
 - (void)_createViews;
 - (void)_handleSDRSwitch;
 - (void)_setupConstraints;
 - (void)_setupStackView;
 - (void)_updateSDRTexts;
 - (void)dealloc;
-- (void)setSdrMode:(int64_t)a3;
-- (void)shieldManager:(id)a3 didUpdateSessionState:(id)a4;
+- (void)setSdrMode:(int64_t)mode;
+- (void)shieldManager:(id)manager didUpdateSessionState:(id)state;
 - (void)viewDidLoad;
 @end
 
 @implementation CSHelpPanelViewController
 
-- (CSHelpPanelViewController)initWithRequestClient:(id)a3
+- (CSHelpPanelViewController)initWithRequestClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v13.receiver = self;
   v13.super_class = CSHelpPanelViewController;
   v6 = [(CSHelpPanelViewController *)&v13 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_requestClient, a3);
+    objc_storeStrong(&v6->_requestClient, client);
     v8 = [[CSLatencyCardViewController alloc] initWithRequestClient:v7->_requestClient];
     latencyCardViewController = v7->_latencyCardViewController;
     v7->_latencyCardViewController = v8;
 
     v10 = +[CSShieldManager sharedManager];
     [v10 addObserver:v7];
-    v11 = [v10 sessionState];
-    v7->_sdrMode = [v11 sdrMode];
+    sessionState = [v10 sessionState];
+    v7->_sdrMode = [sessionState sdrMode];
   }
 
   return v7;
@@ -61,8 +61,8 @@
   v6 = [MEMORY[0x277D755B0] _systemImageNamed:@"xmark"];
   v7 = [v5 initWithImage:v6 style:7 target:self action:sel__handleDismiss];
 
-  v8 = [(CSHelpPanelViewController *)self navigationItem];
-  [v8 setRightBarButtonItem:v7];
+  navigationItem = [(CSHelpPanelViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v7];
 
   [(CSHelpPanelViewController *)self _createViews];
   [(CSHelpPanelViewController *)self _setupStackView];
@@ -71,17 +71,17 @@
   self->_scrollView = v9;
 
   [(UIScrollView *)self->_scrollView addSubview:self->_stackView];
-  v11 = [(CSHelpPanelViewController *)self view];
-  [v11 addSubview:self->_scrollView];
+  view = [(CSHelpPanelViewController *)self view];
+  [view addSubview:self->_scrollView];
 
   [(CSHelpPanelViewController *)self _setupConstraints];
 }
 
-- (void)setSdrMode:(int64_t)a3
+- (void)setSdrMode:(int64_t)mode
 {
-  if (self->_sdrMode != a3)
+  if (self->_sdrMode != mode)
   {
-    self->_sdrMode = a3;
+    self->_sdrMode = mode;
     [(CSHelpPanelViewController *)self _updateSDRTexts];
   }
 }
@@ -91,7 +91,7 @@
   v2 = 136315394;
   v3 = "[CSHelpPanelViewController _createViews]";
   v4 = 2112;
-  v5 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_2441FB000, a2, OS_LOG_TYPE_ERROR, "%s: Placeholder '%%1$@' not found in localized string '%@'", &v2, 0x16u);
 }
 
@@ -103,10 +103,10 @@ void __41__CSHelpPanelViewController__createViews__block_invoke(uint64_t a1)
 
 - (void)_setupStackView
 {
-  v12 = [(CSLatencyCardViewController *)self->_latencyCardViewController view];
+  view = [(CSLatencyCardViewController *)self->_latencyCardViewController view];
   v3 = objc_alloc(MEMORY[0x277D75A70]);
   v13[0] = self->_titleLabel;
-  v13[1] = v12;
+  v13[1] = view;
   sdrDescriptionLabel = self->_sdrDescriptionLabel;
   v13[2] = self->_sdrTitleLabel;
   v13[3] = sdrDescriptionLabel;
@@ -128,7 +128,7 @@ void __41__CSHelpPanelViewController__createViews__block_invoke(uint64_t a1)
   [(UIStackView *)v9 setLayoutMargins:?];
   [(UIStackView *)v9 setLayoutMarginsRelativeArrangement:1];
   [(UIStackView *)v9 setCustomSpacing:self->_titleLabel afterView:36.0];
-  [(UIStackView *)v9 setCustomSpacing:v12 afterView:36.0];
+  [(UIStackView *)v9 setCustomSpacing:view afterView:36.0];
   [(UIStackView *)v9 setCustomSpacing:self->_sdrTitleLabel afterView:7.0];
   [(UIStackView *)v9 setCustomSpacing:self->_sdrDescriptionLabel afterView:16.0];
   [(UIStackView *)v9 setCustomSpacing:self->_sdrSwitchButton afterView:10.0];
@@ -145,25 +145,25 @@ void __41__CSHelpPanelViewController__createViews__block_invoke(uint64_t a1)
   [(CSLatencyCardViewController *)self->_latencyCardViewController didMoveToParentViewController:self];
 }
 
-- (id)_labelWithLocalizationKey:(id)a3 textStyle:(id)a4 weight:(double)a5 color:(id)a6 variant:(int64_t)a7
+- (id)_labelWithLocalizationKey:(id)key textStyle:(id)style weight:(double)weight color:(id)color variant:(int64_t)variant
 {
-  v10 = a3;
-  v11 = a4;
+  keyCopy = key;
+  styleCopy = style;
   v12 = MEMORY[0x277D756C0];
-  v13 = a6;
+  colorCopy = color;
   v14 = objc_alloc_init(v12);
-  if (v10)
+  if (keyCopy)
   {
     v15 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.ContinuitySing"];
-    v16 = [v15 localizedStringForKey:v10 value:&stru_285797E10 table:0];
+    v16 = [v15 localizedStringForKey:keyCopy value:&stru_285797E10 table:0];
     [v14 setText:v16];
   }
 
-  v17 = [MEMORY[0x277D74300] _preferredFontForTextStyle:v11 weight:a5];
+  v17 = [MEMORY[0x277D74300] _preferredFontForTextStyle:styleCopy weight:weight];
   [v14 setFont:v17];
 
   [v14 setNumberOfLines:0];
-  [v14 setTextColor:v13];
+  [v14 setTextColor:colorCopy];
 
   [v14 setAdjustsFontForContentSizeCategory:1];
   v18 = [[CSPaddingView alloc] initWithWrappedView:v14];
@@ -172,24 +172,24 @@ void __41__CSHelpPanelViewController__createViews__block_invoke(uint64_t a1)
   return v18;
 }
 
-- (id)_linkWithAttributedString:(id)a3 textStyle:(id)a4 weight:(double)a5 color:(id)a6
+- (id)_linkWithAttributedString:(id)string textStyle:(id)style weight:(double)weight color:(id)color
 {
   v9 = MEMORY[0x277D75C48];
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  colorCopy = color;
+  styleCopy = style;
+  stringCopy = string;
   v13 = objc_alloc_init(v9);
-  [v13 setAttributedText:v12];
+  [v13 setAttributedText:stringCopy];
 
-  v14 = [MEMORY[0x277D74300] _preferredFontForTextStyle:v11 weight:a5];
+  v14 = [MEMORY[0x277D74300] _preferredFontForTextStyle:styleCopy weight:weight];
 
   [v13 setFont:v14];
-  [v13 setTextColor:v10];
+  [v13 setTextColor:colorCopy];
 
   [v13 setAdjustsFontForContentSizeCategory:1];
   [v13 setTextContainerInset:{*MEMORY[0x277D768C0], *(MEMORY[0x277D768C0] + 8), *(MEMORY[0x277D768C0] + 16), *(MEMORY[0x277D768C0] + 24)}];
-  v15 = [v13 textContainer];
-  [v15 setLineFragmentPadding:0.0];
+  textContainer = [v13 textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
   [v13 setUserInteractionEnabled:1];
   [v13 setScrollEnabled:0];
@@ -205,55 +205,55 @@ void __41__CSHelpPanelViewController__createViews__block_invoke(uint64_t a1)
   [(UIStackView *)self->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIButton *)self->_sdrSwitchButton setTranslatesAutoresizingMaskIntoConstraints:0];
   v27 = MEMORY[0x277CCAAD0];
-  v42 = [(UIStackView *)self->_stackView topAnchor];
-  v43 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
-  v41 = [v43 topAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41 constant:18.0];
+  topAnchor = [(UIStackView *)self->_stackView topAnchor];
+  contentLayoutGuide = [(UIScrollView *)self->_scrollView contentLayoutGuide];
+  topAnchor2 = [contentLayoutGuide topAnchor];
+  v40 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:18.0];
   v44[0] = v40;
-  v38 = [(UIStackView *)self->_stackView leadingAnchor];
-  v39 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
-  v37 = [v39 leadingAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  leadingAnchor = [(UIStackView *)self->_stackView leadingAnchor];
+  contentLayoutGuide2 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
+  leadingAnchor2 = [contentLayoutGuide2 leadingAnchor];
+  v36 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v44[1] = v36;
-  v34 = [(UIStackView *)self->_stackView trailingAnchor];
-  v35 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
-  v33 = [v35 trailingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  trailingAnchor = [(UIStackView *)self->_stackView trailingAnchor];
+  contentLayoutGuide3 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
+  trailingAnchor2 = [contentLayoutGuide3 trailingAnchor];
+  v32 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v44[2] = v32;
-  v30 = [(UIStackView *)self->_stackView bottomAnchor];
-  v31 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
-  v29 = [v31 bottomAnchor];
-  v28 = [v30 constraintLessThanOrEqualToAnchor:v29];
+  bottomAnchor = [(UIStackView *)self->_stackView bottomAnchor];
+  contentLayoutGuide4 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
+  bottomAnchor2 = [contentLayoutGuide4 bottomAnchor];
+  v28 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v44[3] = v28;
-  v26 = [(UIStackView *)self->_stackView widthAnchor];
-  v25 = [(UIScrollView *)self->_scrollView widthAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  widthAnchor = [(UIStackView *)self->_stackView widthAnchor];
+  widthAnchor2 = [(UIScrollView *)self->_scrollView widthAnchor];
+  v24 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v44[4] = v24;
-  v22 = [(UIScrollView *)self->_scrollView topAnchor];
-  v23 = [(CSHelpPanelViewController *)self view];
-  v21 = [v23 topAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  topAnchor3 = [(UIScrollView *)self->_scrollView topAnchor];
+  view = [(CSHelpPanelViewController *)self view];
+  topAnchor4 = [view topAnchor];
+  v20 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v44[5] = v20;
-  v18 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v19 = [(CSHelpPanelViewController *)self view];
-  v17 = [v19 leadingAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  leadingAnchor3 = [(UIScrollView *)self->_scrollView leadingAnchor];
+  view2 = [(CSHelpPanelViewController *)self view];
+  leadingAnchor4 = [view2 leadingAnchor];
+  v16 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v44[6] = v16;
-  v14 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v15 = [(CSHelpPanelViewController *)self view];
-  v13 = [v15 trailingAnchor];
-  v3 = [v14 constraintEqualToAnchor:v13];
+  trailingAnchor3 = [(UIScrollView *)self->_scrollView trailingAnchor];
+  view3 = [(CSHelpPanelViewController *)self view];
+  trailingAnchor4 = [view3 trailingAnchor];
+  v3 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v44[7] = v3;
-  v4 = [(UIScrollView *)self->_scrollView bottomAnchor];
-  v5 = [(CSHelpPanelViewController *)self view];
-  v6 = [v5 bottomAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  bottomAnchor3 = [(UIScrollView *)self->_scrollView bottomAnchor];
+  view4 = [(CSHelpPanelViewController *)self view];
+  bottomAnchor4 = [view4 bottomAnchor];
+  v7 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v44[8] = v7;
-  v8 = [(UIButton *)self->_sdrSwitchButton heightAnchor];
-  v9 = [v8 constraintGreaterThanOrEqualToConstant:48.0];
+  heightAnchor = [(UIButton *)self->_sdrSwitchButton heightAnchor];
+  v9 = [heightAnchor constraintGreaterThanOrEqualToConstant:48.0];
   v44[9] = v9;
-  v10 = [(CSPaddingView *)self->_divider heightAnchor];
-  v11 = [v10 constraintEqualToConstant:1.0];
+  heightAnchor2 = [(CSPaddingView *)self->_divider heightAnchor];
+  v11 = [heightAnchor2 constraintEqualToConstant:1.0];
   v44[10] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:11];
   [v27 activateConstraints:v12];
@@ -261,12 +261,12 @@ void __41__CSHelpPanelViewController__createViews__block_invoke(uint64_t a1)
 
 - (void)_handleSDRSwitch
 {
-  v3 = [(CSHelpPanelViewController *)self sdrMode];
-  if (v3 != 1)
+  sdrMode = [(CSHelpPanelViewController *)self sdrMode];
+  if (sdrMode != 1)
   {
-    v4 = v3 != 2;
-    v5 = [(CSHelpPanelViewController *)self requestClient];
-    [v5 sendDisplayMode:v4];
+    v4 = sdrMode != 2;
+    requestClient = [(CSHelpPanelViewController *)self requestClient];
+    [requestClient sendDisplayMode:v4];
 
     [(CSHelpPanelViewController *)self setSdrMode:2 * v4];
   }
@@ -275,13 +275,13 @@ void __41__CSHelpPanelViewController__createViews__block_invoke(uint64_t a1)
 - (void)_updateSDRTexts
 {
   v3 = MEMORY[0x277D75D18];
-  v4 = [(CSHelpPanelViewController *)self view];
+  view = [(CSHelpPanelViewController *)self view];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __44__CSHelpPanelViewController__updateSDRTexts__block_invoke;
   v5[3] = &unk_278E0ACD8;
   v5[4] = self;
-  [v3 transitionWithView:v4 duration:5242880 options:v5 animations:&__block_literal_global_11 completion:0.2];
+  [v3 transitionWithView:view duration:5242880 options:v5 animations:&__block_literal_global_11 completion:0.2];
 }
 
 void __44__CSHelpPanelViewController__updateSDRTexts__block_invoke(uint64_t a1)
@@ -356,11 +356,11 @@ void __44__CSHelpPanelViewController__updateSDRTexts__block_invoke(uint64_t a1)
   [v14 setTextColor:v13];
 }
 
-- (void)shieldManager:(id)a3 didUpdateSessionState:(id)a4
+- (void)shieldManager:(id)manager didUpdateSessionState:(id)state
 {
-  v5 = [a4 sdrMode];
+  sdrMode = [state sdrMode];
 
-  [(CSHelpPanelViewController *)self setSdrMode:v5];
+  [(CSHelpPanelViewController *)self setSdrMode:sdrMode];
 }
 
 @end

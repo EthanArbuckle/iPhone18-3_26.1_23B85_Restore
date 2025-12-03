@@ -6,11 +6,11 @@
 - (UIColor)backgroundColor;
 - (int64_t)contentMode;
 - (void)layoutSubviews;
-- (void)setAccessibilityElementsHidden:(BOOL)a3;
-- (void)setAccessibilityIgnoresInvertColors:(BOOL)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setClipsToBounds:(BOOL)a3;
-- (void)setContentMode:(int64_t)a3;
+- (void)setAccessibilityElementsHidden:(BOOL)hidden;
+- (void)setAccessibilityIgnoresInvertColors:(BOOL)colors;
+- (void)setBackgroundColor:(id)color;
+- (void)setClipsToBounds:(BOOL)bounds;
+- (void)setContentMode:(int64_t)mode;
 @end
 
 @implementation ImageView
@@ -22,15 +22,15 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
-  v4 = self;
-  ImageView.contentMode.setter(a3);
+  selfCopy = self;
+  ImageView.contentMode.setter(mode);
 }
 
 - (int64_t)contentMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ImageView.contentMode.getter();
 
   return v3;
@@ -38,22 +38,22 @@
 
 - (BOOL)accessibilityIgnoresInvertColors
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ImageView.accessibilityIgnoresInvertColors.getter();
 
   return v3 & 1;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D7E73C1C(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_1D7E73C1C(color);
 }
 
 - (UIColor)backgroundColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D7E73E84();
 
   return v3;
@@ -61,42 +61,42 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   ImageView.layoutSubviews()();
 }
 
-- (void)setAccessibilityIgnoresInvertColors:(BOOL)a3
+- (void)setAccessibilityIgnoresInvertColors:(BOOL)colors
 {
-  v4 = self;
-  ImageView.accessibilityIgnoresInvertColors.setter(a3);
+  selfCopy = self;
+  ImageView.accessibilityIgnoresInvertColors.setter(colors);
 }
 
 - (BOOL)clipsToBounds
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ImageView.clipsToBounds.getter();
 
   return v3 & 1;
 }
 
-- (void)setClipsToBounds:(BOOL)a3
+- (void)setClipsToBounds:(BOOL)bounds
 {
-  v4 = self;
-  ImageView.clipsToBounds.setter(a3);
+  selfCopy = self;
+  ImageView.clipsToBounds.setter(bounds);
 }
 
 - (BOOL)accessibilityElementsHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ImageView.accessibilityElementsHidden.getter();
 
   return v3 & 1;
 }
 
-- (void)setAccessibilityElementsHidden:(BOOL)a3
+- (void)setAccessibilityElementsHidden:(BOOL)hidden
 {
-  v4 = self;
-  ImageView.accessibilityElementsHidden.setter(a3);
+  selfCopy = self;
+  ImageView.accessibilityElementsHidden.setter(hidden);
 }
 
 @end

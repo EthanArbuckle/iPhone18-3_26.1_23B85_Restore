@@ -2,17 +2,17 @@
 + (PHFetchResult)fetchCollectionsInCollectionList:(PHCollectionList *)collectionList options:(PHFetchOptions *)options;
 + (PHFetchResult)fetchTopLevelUserCollectionsWithOptions:(PHFetchOptions *)options;
 + (id)entityKeyMap;
-+ (id)fetchFilteredAssetCollections:(id)a3 containingAssetsMatchingPredicate:(id)a4;
-+ (id)fetchMomentsForAssetsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)fetchMomentsForAssetsWithOIDs:(id)a3 options:(id)a4;
-+ (id)fetchMomentsForFacesWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)fetchMomentsForPersonsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4;
++ (id)fetchFilteredAssetCollections:(id)collections containingAssetsMatchingPredicate:(id)predicate;
++ (id)fetchMomentsForAssetsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)fetchMomentsForAssetsWithOIDs:(id)ds options:(id)options;
++ (id)fetchMomentsForFacesWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)fetchMomentsForPersonsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path;
 - (BOOL)hasLocalizedTitle;
 - (BOOL)isDeleted;
-- (PHCollection)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
+- (PHCollection)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
 - (id)description;
-- (unint64_t)ancestryIndexOfCollectionList:(id)a3 context:(id)a4;
+- (unint64_t)ancestryIndexOfCollectionList:(id)list context:(id)context;
 @end
 
 @implementation PHCollection
@@ -22,19 +22,19 @@
   v8.receiver = self;
   v8.super_class = PHCollection;
   v3 = [(PHObject *)&v8 description];
-  v4 = [(PHCollection *)self localizedTitle];
-  v5 = [(PHCollection *)self localizedSubtitle];
-  v6 = [v3 stringByAppendingFormat:@", title:%@, subtitle:%@", v4, v5];
+  localizedTitle = [(PHCollection *)self localizedTitle];
+  localizedSubtitle = [(PHCollection *)self localizedSubtitle];
+  v6 = [v3 stringByAppendingFormat:@", title:%@, subtitle:%@", localizedTitle, localizedSubtitle];
 
   return v6;
 }
 
-- (unint64_t)ancestryIndexOfCollectionList:(id)a3 context:(id)a4
+- (unint64_t)ancestryIndexOfCollectionList:(id)list context:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 == self)
+  listCopy = list;
+  contextCopy = context;
+  if (listCopy == self)
   {
     v11 = 0;
   }
@@ -42,32 +42,32 @@
   else
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v9 = [(PHCollection *)self parentFolderID];
-    v10 = [v7 folderForID:v9];
+    parentFolderID = [(PHCollection *)self parentFolderID];
+    v10 = [contextCopy folderForID:parentFolderID];
 
     if (v10)
     {
       v11 = 1;
       while (1)
       {
-        v12 = [v10 objectID];
-        v13 = [v8 containsObject:v12];
+        objectID = [v10 objectID];
+        v13 = [v8 containsObject:objectID];
 
         if (v13)
         {
           break;
         }
 
-        v14 = [v10 objectID];
-        [v8 addObject:v14];
+        objectID2 = [v10 objectID];
+        [v8 addObject:objectID2];
 
-        if ([(PHObject *)v6 isEqual:v10])
+        if ([(PHObject *)listCopy isEqual:v10])
         {
           goto LABEL_14;
         }
 
-        v15 = [v10 parentFolderID];
-        v16 = [v7 folderForID:v15];
+        parentFolderID2 = [v10 parentFolderID];
+        v16 = [contextCopy folderForID:parentFolderID2];
 
         ++v11;
         v10 = v16;
@@ -80,9 +80,9 @@
       v17 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v18 = [v10 objectID];
+        objectID3 = [v10 objectID];
         v20 = 138412290;
-        v21 = v18;
+        v21 = objectID3;
         _os_log_impl(&dword_19C86F000, v17, OS_LOG_TYPE_ERROR, "Cycle detected in PHCollectionList hierarchy for %@", &v20, 0xCu);
       }
 
@@ -109,71 +109,71 @@ LABEL_14:
 
 - (BOOL)hasLocalizedTitle
 {
-  v2 = [(PHCollection *)self localizedTitle];
-  v3 = [v2 length] != 0;
+  localizedTitle = [(PHCollection *)self localizedTitle];
+  v3 = [localizedTitle length] != 0;
 
   return v3;
 }
 
-- (PHCollection)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHCollection)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = PHCollection;
-  v9 = [(PHObject *)&v14 initWithFetchDictionary:v8 propertyHint:a4 photoLibrary:a5];
+  v9 = [(PHObject *)&v14 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:library];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"customSortAscending"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"customSortAscending"];
     v9->_customSortAscending = [v10 BOOLValue];
 
-    v11 = [v8 objectForKeyedSubscript:@"customSortKey"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"customSortKey"];
     v9->_customSortKey = [v11 unsignedIntegerValue];
 
-    v12 = [v8 objectForKeyedSubscript:@"trashedState"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"trashedState"];
     v9->_trashed = [v12 intValue] != 0;
   }
 
   return v9;
 }
 
-+ (id)fetchFilteredAssetCollections:(id)a3 containingAssetsMatchingPredicate:(id)a4
++ (id)fetchFilteredAssetCollections:(id)collections containingAssetsMatchingPredicate:(id)predicate
 {
   v70[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  collectionsCopy = collections;
+  predicateCopy = predicate;
+  if ([collectionsCopy count])
   {
-    v41 = v6;
-    v7 = [v5 firstObject];
-    v42 = [v7 photoLibrary];
-    v43 = [PHQuery queryForAssetsInAssetCollection:v7 options:0];
-    v8 = [v43 containerRelationship];
-    v9 = [v8 name];
-    if (v8 && ([v8 isToMany] & 1) == 0)
+    v41 = predicateCopy;
+    firstObject = [collectionsCopy firstObject];
+    photoLibrary = [firstObject photoLibrary];
+    v43 = [PHQuery queryForAssetsInAssetCollection:firstObject options:0];
+    containerRelationship = [v43 containerRelationship];
+    name = [containerRelationship name];
+    if (containerRelationship && ([containerRelationship isToMany] & 1) == 0)
     {
-      v39 = [v5 fetchedObjectIDs];
-      v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"noindex:(%@) IN (%%@)", v9];
-      v37 = [MEMORY[0x1E696AE18] predicateWithFormat:v38, v39];
+      fetchedObjectIDs = [collectionsCopy fetchedObjectIDs];
+      v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"noindex:(%@) IN (%%@)", name];
+      v37 = [MEMORY[0x1E696AE18] predicateWithFormat:v38, fetchedObjectIDs];
       v11 = MEMORY[0x1E695D5E0];
-      v12 = [MEMORY[0x1E69BE540] entityName];
-      v13 = [v11 fetchRequestWithEntityName:v12];
+      entityName = [MEMORY[0x1E69BE540] entityName];
+      v13 = [v11 fetchRequestWithEntityName:entityName];
 
       [v13 setResultType:2];
       v14 = MEMORY[0x1E696AB28];
-      v70[0] = v6;
+      v70[0] = predicateCopy;
       v70[1] = v37;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:2];
       v16 = [v14 andPredicateWithSubpredicates:v15];
       [v13 setPredicate:v16];
 
       [v13 setSortDescriptors:MEMORY[0x1E695E0F0]];
-      v69 = v9;
+      v69 = name;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v69 count:1];
       [v13 setPropertiesToGroupBy:v17];
 
       v40 = objc_alloc_init(MEMORY[0x1E695D5C8]);
-      [v40 setName:v9];
-      v18 = [MEMORY[0x1E696ABC8] expressionForKeyPath:v9];
+      [v40 setName:name];
+      v18 = [MEMORY[0x1E696ABC8] expressionForKeyPath:name];
       [v40 setExpression:v18];
 
       [v40 setExpressionResultType:2000];
@@ -193,13 +193,13 @@ LABEL_14:
       v56 = __Block_byref_object_copy__44481;
       v57 = __Block_byref_object_dispose__44482;
       v58 = 0;
-      v20 = [v42 photoLibraryForCurrentQueueQoS];
+      photoLibraryForCurrentQueueQoS = [photoLibrary photoLibraryForCurrentQueueQoS];
       v48[0] = MEMORY[0x1E69E9820];
       v48[1] = 3221225472;
       v48[2] = __80__PHCollection_fetchFilteredAssetCollections_containingAssetsMatchingPredicate___block_invoke;
       v48[3] = &unk_1E75A9D58;
       v51 = &v59;
-      v21 = v20;
+      v21 = photoLibraryForCurrentQueueQoS;
       v49 = v21;
       v22 = v13;
       v50 = v22;
@@ -240,9 +240,9 @@ LABEL_14:
         }
 
         v30 = [PHManualFetchResult alloc];
-        v31 = [v5 fetchType];
-        v32 = [v5 fetchPropertySets];
-        v10 = [(PHManualFetchResult *)v30 initWithOids:v24 photoLibrary:v42 fetchType:v31 fetchPropertySets:v32 identifier:0 registerIfNeeded:0];
+        fetchType = [collectionsCopy fetchType];
+        fetchPropertySets = [collectionsCopy fetchPropertySets];
+        v10 = [(PHManualFetchResult *)v30 initWithOids:v24 photoLibrary:photoLibrary fetchType:fetchType fetchPropertySets:fetchPropertySets identifier:0 registerIfNeeded:0];
       }
 
       else
@@ -268,12 +268,12 @@ LABEL_14:
       v10 = 0;
     }
 
-    v6 = v41;
+    predicateCopy = v41;
   }
 
   else
   {
-    v10 = v5;
+    v10 = collectionsCopy;
   }
 
   return v10;
@@ -292,34 +292,34 @@ void __80__PHCollection_fetchFilteredAssetCollections_containingAssetsMatchingPr
   *(v6 + 40) = v5;
 }
 
-+ (id)fetchMomentsForPersonsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)fetchMomentsForPersonsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v6 chunkSizeForFetch])
+  identifiersCopy = identifiers;
+  optionsCopy = options;
+  if (![optionsCopy chunkSizeForFetch])
   {
-    if (v6)
+    if (optionsCopy)
     {
-      v7 = [v6 copy];
+      v7 = [optionsCopy copy];
 
-      v6 = v7;
+      optionsCopy = v7;
     }
 
     else
     {
-      v6 = objc_opt_new();
+      optionsCopy = objc_opt_new();
     }
 
-    [v6 setChunkSizeForFetch:2000];
+    [optionsCopy setChunkSizeForFetch:2000];
   }
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __67__PHCollection_fetchMomentsForPersonsWithLocalIdentifiers_options___block_invoke;
   v11[3] = &unk_1E75AB0E0;
-  v12 = v5;
-  v8 = v5;
-  v9 = [PHObject authorizationAwareFetchResultWithOptions:v6 fetchBlock:v11];
+  v12 = identifiersCopy;
+  v8 = identifiersCopy;
+  v9 = [PHObject authorizationAwareFetchResultWithOptions:optionsCopy fetchBlock:v11];
 
   return v9;
 }
@@ -336,34 +336,34 @@ id __67__PHCollection_fetchMomentsForPersonsWithLocalIdentifiers_options___block
   return v5;
 }
 
-+ (id)fetchMomentsForFacesWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)fetchMomentsForFacesWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v6 chunkSizeForFetch])
+  identifiersCopy = identifiers;
+  optionsCopy = options;
+  if (![optionsCopy chunkSizeForFetch])
   {
-    if (v6)
+    if (optionsCopy)
     {
-      v7 = [v6 copy];
+      v7 = [optionsCopy copy];
 
-      v6 = v7;
+      optionsCopy = v7;
     }
 
     else
     {
-      v6 = objc_opt_new();
+      optionsCopy = objc_opt_new();
     }
 
-    [v6 setChunkSizeForFetch:2000];
+    [optionsCopy setChunkSizeForFetch:2000];
   }
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __65__PHCollection_fetchMomentsForFacesWithLocalIdentifiers_options___block_invoke;
   v11[3] = &unk_1E75AB0E0;
-  v12 = v5;
-  v8 = v5;
-  v9 = [PHObject authorizationAwareFetchResultWithOptions:v6 fetchBlock:v11];
+  v12 = identifiersCopy;
+  v8 = identifiersCopy;
+  v9 = [PHObject authorizationAwareFetchResultWithOptions:optionsCopy fetchBlock:v11];
 
   return v9;
 }
@@ -376,34 +376,34 @@ id __65__PHCollection_fetchMomentsForFacesWithLocalIdentifiers_options___block_i
   return v3;
 }
 
-+ (id)fetchMomentsForAssetsWithOIDs:(id)a3 options:(id)a4
++ (id)fetchMomentsForAssetsWithOIDs:(id)ds options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v6 chunkSizeForFetch])
+  dsCopy = ds;
+  optionsCopy = options;
+  if (![optionsCopy chunkSizeForFetch])
   {
-    if (v6)
+    if (optionsCopy)
     {
-      v7 = [v6 copy];
+      v7 = [optionsCopy copy];
 
-      v6 = v7;
+      optionsCopy = v7;
     }
 
     else
     {
-      v6 = objc_opt_new();
+      optionsCopy = objc_opt_new();
     }
 
-    [v6 setChunkSizeForFetch:2000];
+    [optionsCopy setChunkSizeForFetch:2000];
   }
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __54__PHCollection_fetchMomentsForAssetsWithOIDs_options___block_invoke;
   v11[3] = &unk_1E75AB0E0;
-  v12 = v5;
-  v8 = v5;
-  v9 = [PHObject authorizationAwareFetchResultWithOptions:v6 fetchBlock:v11];
+  v12 = dsCopy;
+  v8 = dsCopy;
+  v9 = [PHObject authorizationAwareFetchResultWithOptions:optionsCopy fetchBlock:v11];
 
   return v9;
 }
@@ -416,34 +416,34 @@ id __54__PHCollection_fetchMomentsForAssetsWithOIDs_options___block_invoke(uint6
   return v3;
 }
 
-+ (id)fetchMomentsForAssetsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)fetchMomentsForAssetsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v6 chunkSizeForFetch])
+  identifiersCopy = identifiers;
+  optionsCopy = options;
+  if (![optionsCopy chunkSizeForFetch])
   {
-    if (v6)
+    if (optionsCopy)
     {
-      v7 = [v6 copy];
+      v7 = [optionsCopy copy];
 
-      v6 = v7;
+      optionsCopy = v7;
     }
 
     else
     {
-      v6 = objc_opt_new();
+      optionsCopy = objc_opt_new();
     }
 
-    [v6 setChunkSizeForFetch:2000];
+    [optionsCopy setChunkSizeForFetch:2000];
   }
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66__PHCollection_fetchMomentsForAssetsWithLocalIdentifiers_options___block_invoke;
   v11[3] = &unk_1E75AB0E0;
-  v12 = v5;
-  v8 = v5;
-  v9 = [PHObject authorizationAwareFetchResultWithOptions:v6 fetchBlock:v11];
+  v12 = identifiersCopy;
+  v8 = identifiersCopy;
+  v9 = [PHObject authorizationAwareFetchResultWithOptions:optionsCopy fetchBlock:v11];
 
   return v9;
 }
@@ -471,16 +471,16 @@ id __66__PHCollection_fetchMomentsForAssetsWithLocalIdentifiers_options___block_
     v5 = objc_opt_new();
   }
 
-  v6 = [v5 sortDescriptors];
-  if (v6)
+  sortDescriptors = [v5 sortDescriptors];
+  if (sortDescriptors)
   {
   }
 
   else
   {
-    v7 = [v5 internalSortDescriptors];
+    internalSortDescriptors = [v5 internalSortDescriptors];
 
-    if (!v7)
+    if (!internalSortDescriptors)
     {
       v8 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"parentFolder" ascending:1];
       v12[0] = v8;
@@ -513,24 +513,24 @@ id __56__PHCollection_fetchTopLevelUserCollectionsWithOptions___block_invoke(uin
       goto LABEL_8;
     }
 
-    v7 = [(PHCollectionList *)v5 transientIdentifier];
-    v8 = [(PHCollectionList *)v5 query];
-    v9 = v8;
-    if (v8)
+    transientIdentifier = [(PHCollectionList *)v5 transientIdentifier];
+    query = [(PHCollectionList *)v5 query];
+    v9 = query;
+    if (query)
     {
-      v10 = [v8 executeQuery];
+      executeQuery = [query executeQuery];
     }
 
     else
     {
-      v11 = [(PHCollectionList *)v5 collections];
+      collections = [(PHCollectionList *)v5 collections];
       v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v5];
       v13 = [PHManualFetchResult alloc];
-      v14 = [(PHFetchOptions *)v6 fetchPropertySetsAsSet];
-      v10 = [(PHManualFetchResult *)v13 initWithObjects:v11 photoLibrary:v12 fetchType:@"PHCollectionList" fetchPropertySets:v14 identifier:v7 registerIfNeeded:1];
+      fetchPropertySetsAsSet = [(PHFetchOptions *)v6 fetchPropertySetsAsSet];
+      executeQuery = [(PHManualFetchResult *)v13 initWithObjects:collections photoLibrary:v12 fetchType:@"PHCollectionList" fetchPropertySets:fetchPropertySetsAsSet identifier:transientIdentifier registerIfNeeded:1];
     }
 
-    if (!v10)
+    if (!executeQuery)
     {
 LABEL_8:
       if (!v6)
@@ -538,44 +538,44 @@ LABEL_8:
         v6 = [PHFetchOptions fetchOptionsWithPhotoLibrary:0 orObject:v5];
       }
 
-      v15 = [(PHFetchOptions *)v6 photoLibrary];
+      photoLibrary = [(PHFetchOptions *)v6 photoLibrary];
 
-      if (!v15)
+      if (!photoLibrary)
       {
-        v16 = [(PHObject *)v5 photoLibrary];
-        [(PHFetchOptions *)v6 setPhotoLibrary:v16];
+        photoLibrary2 = [(PHObject *)v5 photoLibrary];
+        [(PHFetchOptions *)v6 setPhotoLibrary:photoLibrary2];
       }
 
       v17 = [PHQuery queryForCollectionsInCollectionList:v5 options:v6];
-      v10 = [v17 executeQuery];
+      executeQuery = [v17 executeQuery];
     }
   }
 
   else
   {
-    v10 = 0;
+    executeQuery = 0;
   }
 
-  return v10;
+  return executeQuery;
 }
 
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  expressionCopy = expression;
+  pathCopy = path;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__PHCollection_transformValueExpression_forKeyPath___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transformValueExpression_forKeyPath__onceToken_44502 != -1)
   {
     dispatch_once(&transformValueExpression_forKeyPath__onceToken_44502, block);
   }
 
-  if ([transformValueExpression_forKeyPath___passThroughSet_44503 containsObject:v7])
+  if ([transformValueExpression_forKeyPath___passThroughSet_44503 containsObject:pathCopy])
   {
-    v8 = v6;
+    v8 = expressionCopy;
   }
 
   else

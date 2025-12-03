@@ -1,16 +1,16 @@
 @interface AXInvertColors_WebKit
-+ (void)performValidations:(id)a3;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_WebKit
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WKWebView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"WKContentView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"WKWebView" hasInstanceMethod:@"_didFinishNavigation:" withFullSignature:{"v", "^{Navigation=}", 0}];
-  [v3 validateClass:@"WKWebView" hasInstanceMethod:@"_didStartProvisionalLoadForMainFrame" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WKWebView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"WKContentView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"WKWebView" hasInstanceMethod:@"_didFinishNavigation:" withFullSignature:{"v", "^{Navigation=}", 0}];
+  [validationsCopy validateClass:@"WKWebView" hasInstanceMethod:@"_didStartProvisionalLoadForMainFrame" withFullSignature:{"v", 0}];
 }
 
 @end

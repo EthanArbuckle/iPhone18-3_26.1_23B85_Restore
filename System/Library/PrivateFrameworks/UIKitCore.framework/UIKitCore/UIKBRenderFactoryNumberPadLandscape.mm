@@ -12,16 +12,16 @@
 - (UIEdgeInsets)dynamicInsets;
 - (double)letterFontSize;
 - (double)numberFontSize;
-- (void)_customizeSymbolStyle:(id)a3 secondaryStyle:(id)a4 forKey:(id)a5 contents:(id)a6;
+- (void)_customizeSymbolStyle:(id)style secondaryStyle:(id)secondaryStyle forKey:(id)key contents:(id)contents;
 @end
 
 @implementation UIKBRenderFactoryNumberPadLandscape
 
 - (double)numberFontSize
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
   v4 = 27.0;
-  if ([v3 usesCompactKeycapsFont])
+  if ([renderConfig usesCompactKeycapsFont])
   {
     v7.receiver = self;
     v7.super_class = UIKBRenderFactoryNumberPadLandscape;
@@ -34,9 +34,9 @@
 
 - (double)letterFontSize
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
   v4 = 10.0;
-  if ([v3 usesCompactKeycapsFont])
+  if ([renderConfig usesCompactKeycapsFont])
   {
     v7.receiver = self;
     v7.super_class = UIKBRenderFactoryNumberPadLandscape;
@@ -49,8 +49,8 @@
 
 - (CGPoint)deleteGlyphOffset
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  if ([v3 usesCompactKeycapsFont])
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  if ([renderConfig usesCompactKeycapsFont])
   {
     v10.receiver = self;
     v10.super_class = UIKBRenderFactoryNumberPadLandscape;
@@ -74,10 +74,10 @@
 
 - (CGPoint)dictationGlyphOffset
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
   v4 = 0.0;
   v5 = 0.0;
-  if ([v3 usesCompactKeycapsFont])
+  if ([renderConfig usesCompactKeycapsFont])
   {
     v10.receiver = self;
     v10.super_class = UIKBRenderFactoryNumberPadLandscape;
@@ -95,13 +95,13 @@
 
 - (CGPoint)leftColumnNumberOffset
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  v4 = [v3 usesCompactKeycapsFont];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  usesCompactKeycapsFont = [renderConfig usesCompactKeycapsFont];
 
-  v5 = [(UIKBRenderFactory *)self dynamicFactory];
-  if (v4)
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
+  if (usesCompactKeycapsFont)
   {
-    if (v5)
+    if (dynamicFactory)
     {
       v8.receiver = self;
       v8.super_class = UIKBRenderFactoryNumberPadLandscape;
@@ -119,7 +119,7 @@
   {
     v6 = 2.0;
     v7 = -3.5;
-    if (!v5)
+    if (!dynamicFactory)
     {
       v7 = 2.0;
       v6 = 0.0;
@@ -133,13 +133,13 @@
 
 - (CGPoint)leftColumnLetterOffset
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  v4 = [v3 usesCompactKeycapsFont];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  usesCompactKeycapsFont = [renderConfig usesCompactKeycapsFont];
 
-  v5 = [(UIKBRenderFactory *)self dynamicFactory];
-  if (v4)
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
+  if (usesCompactKeycapsFont)
   {
-    if (v5)
+    if (dynamicFactory)
     {
       v8.receiver = self;
       v8.super_class = UIKBRenderFactoryNumberPadLandscape;
@@ -156,13 +156,13 @@
   else
   {
     v7 = 15.0;
-    if (!v5)
+    if (!dynamicFactory)
     {
       v7 = 1.0;
     }
 
     v6 = 16.0;
-    if (v5)
+    if (dynamicFactory)
     {
       v6 = 0.0;
     }
@@ -175,14 +175,14 @@
 
 - (CGPoint)centerColumnNumberOffset
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  v4 = [v3 usesCompactKeycapsFont];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  usesCompactKeycapsFont = [renderConfig usesCompactKeycapsFont];
 
-  v5 = [(UIKBRenderFactory *)self dynamicFactory];
-  if (!v4)
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
+  if (!usesCompactKeycapsFont)
   {
     v7 = -3.5;
-    if (!v5)
+    if (!dynamicFactory)
     {
       v7 = 2.0;
     }
@@ -190,7 +190,7 @@
     goto LABEL_8;
   }
 
-  if (!v5)
+  if (!dynamicFactory)
   {
     v7 = 2.0;
 LABEL_8:
@@ -209,13 +209,13 @@ LABEL_9:
 
 - (CGPoint)centerColumnLetterOffset
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  v4 = [v3 usesCompactKeycapsFont];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  usesCompactKeycapsFont = [renderConfig usesCompactKeycapsFont];
 
-  v5 = [(UIKBRenderFactory *)self dynamicFactory];
-  if (v4)
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
+  if (usesCompactKeycapsFont)
   {
-    if (v5)
+    if (dynamicFactory)
     {
       v8.receiver = self;
       v8.super_class = UIKBRenderFactoryNumberPadLandscape;
@@ -232,13 +232,13 @@ LABEL_9:
   else
   {
     v7 = 15.0;
-    if (!v5)
+    if (!dynamicFactory)
     {
       v7 = 1.0;
     }
 
     v6 = 16.0;
-    if (v5)
+    if (dynamicFactory)
     {
       v6 = 0.0;
     }
@@ -251,14 +251,14 @@ LABEL_9:
 
 - (CGPoint)rightColumnNumberOffset
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  v4 = [v3 usesCompactKeycapsFont];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  usesCompactKeycapsFont = [renderConfig usesCompactKeycapsFont];
 
-  v5 = [(UIKBRenderFactory *)self dynamicFactory];
-  if (!v4)
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
+  if (!usesCompactKeycapsFont)
   {
     v7 = -3.5;
-    if (!v5)
+    if (!dynamicFactory)
     {
       v7 = 2.0;
     }
@@ -266,7 +266,7 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (!v5)
+  if (!dynamicFactory)
   {
     v7 = 2.0;
 LABEL_8:
@@ -285,13 +285,13 @@ LABEL_9:
 
 - (CGPoint)rightColumnLetterOffset
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  v4 = [v3 usesCompactKeycapsFont];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  usesCompactKeycapsFont = [renderConfig usesCompactKeycapsFont];
 
-  v5 = [(UIKBRenderFactory *)self dynamicFactory];
-  if (v4)
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
+  if (usesCompactKeycapsFont)
   {
-    if (v5)
+    if (dynamicFactory)
     {
       v8.receiver = self;
       v8.super_class = UIKBRenderFactoryNumberPadLandscape;
@@ -308,13 +308,13 @@ LABEL_9:
   else
   {
     v7 = 15.0;
-    if (!v5)
+    if (!dynamicFactory)
     {
       v7 = 1.0;
     }
 
     v6 = 16.0;
-    if (v5)
+    if (dynamicFactory)
     {
       v6 = 0.0;
     }
@@ -327,12 +327,12 @@ LABEL_9:
 
 - (CGPoint)loneZeroOffset
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  v4 = [v3 usesCompactKeycapsFont];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  usesCompactKeycapsFont = [renderConfig usesCompactKeycapsFont];
 
   v5 = 2.0;
   v6 = 0.0;
-  if (v4 && [(UIKBRenderFactory *)self dynamicFactory])
+  if (usesCompactKeycapsFont && [(UIKBRenderFactory *)self dynamicFactory])
   {
     v11.receiver = self;
     v11.super_class = UIKBRenderFactoryNumberPadLandscape;
@@ -350,16 +350,16 @@ LABEL_9:
 
 - (CGPoint)specialSymbolOffset
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  v4 = [v3 usesCompactKeycapsFont];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  usesCompactKeycapsFont = [renderConfig usesCompactKeycapsFont];
 
   v5 = 5.0;
   v6 = 0.0;
-  if (v4)
+  if (usesCompactKeycapsFont)
   {
-    v7 = [(UIKBRenderFactory *)self dynamicFactory];
+    dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
     v5 = 2.0;
-    if (v7)
+    if (dynamicFactory)
     {
       v10.receiver = self;
       v10.super_class = UIKBRenderFactoryNumberPadLandscape;
@@ -387,21 +387,21 @@ LABEL_9:
   return result;
 }
 
-- (void)_customizeSymbolStyle:(id)a3 secondaryStyle:(id)a4 forKey:(id)a5 contents:(id)a6
+- (void)_customizeSymbolStyle:(id)style secondaryStyle:(id)secondaryStyle forKey:(id)key contents:(id)contents
 {
-  v10 = a4;
-  v11 = a5;
+  secondaryStyleCopy = secondaryStyle;
+  keyCopy = key;
   v17.receiver = self;
   v17.super_class = UIKBRenderFactoryNumberPadLandscape;
-  [(UIKBRenderFactoryNumberPad *)&v17 _customizeSymbolStyle:a3 secondaryStyle:v10 forKey:v11 contents:a6];
+  [(UIKBRenderFactoryNumberPad *)&v17 _customizeSymbolStyle:style secondaryStyle:secondaryStyleCopy forKey:keyCopy contents:contents];
   if (![(UIKBRenderFactory *)self dynamicFactory])
   {
-    if ([(UIKBRenderFactory *)self keyIsRightToLeftSensitive:v11])
+    if ([(UIKBRenderFactory *)self keyIsRightToLeftSensitive:keyCopy])
     {
-      [v10 textOffset];
+      [secondaryStyleCopy textOffset];
       v13 = -v12;
-      [v10 textOffset];
-      [v10 setTextOffset:v13];
+      [secondaryStyleCopy textOffset];
+      [secondaryStyleCopy setTextOffset:v13];
       v14 = 2;
     }
 
@@ -410,15 +410,15 @@ LABEL_9:
       v14 = 0;
     }
 
-    [v10 setAlignment:v14];
+    [secondaryStyleCopy setAlignment:v14];
   }
 
-  v15 = [v11 name];
-  v16 = [v15 containsString:@"-Arabic-Digit-"];
+  name = [keyCopy name];
+  v16 = [name containsString:@"-Arabic-Digit-"];
 
   if (v16)
   {
-    [v10 setKerning:-1.0];
+    [secondaryStyleCopy setKerning:-1.0];
   }
 }
 

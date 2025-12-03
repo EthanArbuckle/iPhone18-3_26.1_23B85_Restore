@@ -1,35 +1,35 @@
 @interface FTTapToTrackPreprocessor
-- (BOOL)preprocessBuffer:(__CVBuffer *)a3;
-- (FTTapToTrackPreprocessor)initWithScaler:(id)a3;
+- (BOOL)preprocessBuffer:(__CVBuffer *)buffer;
+- (FTTapToTrackPreprocessor)initWithScaler:(id)scaler;
 - (double)meanPixel;
 - (id).cxx_construct;
 @end
 
 @implementation FTTapToTrackPreprocessor
 
-- (FTTapToTrackPreprocessor)initWithScaler:(id)a3
+- (FTTapToTrackPreprocessor)initWithScaler:(id)scaler
 {
-  v5 = a3;
+  scalerCopy = scaler;
   v10.receiver = self;
   v10.super_class = FTTapToTrackPreprocessor;
   v6 = [(FTTapToTrackPreprocessor *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scaler, a3);
+    objc_storeStrong(&v6->_scaler, scaler);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (BOOL)preprocessBuffer:(__CVBuffer *)a3
+- (BOOL)preprocessBuffer:(__CVBuffer *)buffer
 {
   ptr = self->_intermediateBuffer.__ptr_;
   if (!ptr)
   {
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
     if (Width <= Height)
     {
       v7 = Height;
@@ -56,12 +56,12 @@
       v9 = v8;
     }
 
-    v10 = CVPixelBufferGetWidth(a3) / v9;
-    v11 = CVPixelBufferGetHeight(a3);
+    v10 = CVPixelBufferGetWidth(buffer) / v9;
+    v11 = CVPixelBufferGetHeight(buffer);
     ft::CreateIOSurfaceBackedPixelBuffer(v10, v11 / v9, 0x42475241u, &v16);
   }
 
-  v12 = [(FTScaling *)self->_scaler scaleSourceBuffer:a3 toDestinationBuffer:ptr sourceROI:self->_meanPixel destinationROI:*MEMORY[0x277CBF398] mean:*(MEMORY[0x277CBF398] + 8), *(MEMORY[0x277CBF398] + 16), *(MEMORY[0x277CBF398] + 24), *MEMORY[0x277CBF398], *(MEMORY[0x277CBF398] + 8), *(MEMORY[0x277CBF398] + 16), *(MEMORY[0x277CBF398] + 24), v16];
+  v12 = [(FTScaling *)self->_scaler scaleSourceBuffer:buffer toDestinationBuffer:ptr sourceROI:self->_meanPixel destinationROI:*MEMORY[0x277CBF398] mean:*(MEMORY[0x277CBF398] + 8), *(MEMORY[0x277CBF398] + 16), *(MEMORY[0x277CBF398] + 24), *MEMORY[0x277CBF398], *(MEMORY[0x277CBF398] + 8), *(MEMORY[0x277CBF398] + 16), *(MEMORY[0x277CBF398] + 24), v16];
   if ((v12 & 1) == 0)
   {
     v13 = v12;
@@ -79,7 +79,7 @@
 
 - (double)meanPixel
 {
-  a2.i32[0] = *(a1 + 24);
+  a2.i32[0] = *(self + 24);
   *&result = vmovl_u8(a2).u64[0];
   return result;
 }

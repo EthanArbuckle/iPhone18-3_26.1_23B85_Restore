@@ -1,14 +1,14 @@
 @interface BSAuditHistory
 - (BSAuditHistory)init;
-- (BSAuditHistory)initWithCoder:(id)a3;
-- (BSAuditHistory)initWithXPCDictionary:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BSAuditHistory)initWithCoder:(id)coder;
+- (BSAuditHistory)initWithXPCDictionary:(id)dictionary;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)addItem:(id)a3;
-- (void)addItemWithFormat:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addItem:(id)item;
+- (void)addItemWithFormat:(id)format;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BSAuditHistory
@@ -28,42 +28,42 @@
   return v2;
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
-    [(NSMutableArray *)self->_items addObject:v4];
+    [(NSMutableArray *)self->_items addObject:itemCopy];
   }
 }
 
-- (void)addItemWithFormat:(id)a3
+- (void)addItemWithFormat:(id)format
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v4 arguments:&v8];
+  formatCopy = format;
+  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:formatCopy arguments:&v8];
   items = self->_items;
   v7 = [BSAuditHistoryItem itemWithString:v5];
   [(NSMutableArray *)items addObject:v7];
 }
 
-- (BSAuditHistory)initWithXPCDictionary:(id)a3
+- (BSAuditHistory)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(BSAuditHistory *)self init];
   v6 = v5;
   if (v5)
   {
     items = v5->_items;
-    v8 = BSCreateDeserializedArrayFromXPCDictionaryWithKey(v4, "items", &__block_literal_global_26);
+    v8 = BSCreateDeserializedArrayFromXPCDictionaryWithKey(dictionaryCopy, "items", &__block_literal_global_26);
     [(NSMutableArray *)items addObjectsFromArray:v8];
   }
 
   return v6;
 }
 
-- (BSAuditHistory)initWithCoder:(id)a3
+- (BSAuditHistory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BSAuditHistory *)self init];
   if (v5)
   {
@@ -72,26 +72,26 @@
       dispatch_once(&qword_1ED450088, &__block_literal_global_36);
     }
 
-    v6 = [v4 decodeObjectOfClasses:_MergedGlobals_34 forKey:@"items"];
+    v6 = [coderCopy decodeObjectOfClasses:_MergedGlobals_34 forKey:@"items"];
     [(NSMutableArray *)v5->_items addObjectsFromArray:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = [(NSMutableArray *)self->_items copy];
-  [v5 encodeObject:v4 forKey:@"items"];
+  [coderCopy encodeObject:v4 forKey:@"items"];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(BSAuditHistory *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BSAuditHistory *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -102,21 +102,21 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSAuditHistory *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSAuditHistory *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(BSAuditHistory *)self succinctDescriptionBuilder];
-  [v5 appendArraySection:self->_items withName:0 multilinePrefix:v4 skipIfEmpty:1];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(BSAuditHistory *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder appendArraySection:self->_items withName:0 multilinePrefix:prefixCopy skipIfEmpty:1];
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
 @end

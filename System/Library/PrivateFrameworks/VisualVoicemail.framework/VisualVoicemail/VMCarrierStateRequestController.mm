@@ -1,45 +1,45 @@
 @interface VMCarrierStateRequestController
 - (CTMessageCenter)messageCenter;
-- (VMCarrierStateRequestController)initWithMessageCenter:(id)a3 telephonyClient:(id)a4 queue:(id)a5;
-- (VMCarrierStateRequestController)initWithTelephonyClient:(id)a3;
+- (VMCarrierStateRequestController)initWithMessageCenter:(id)center telephonyClient:(id)client queue:(id)queue;
+- (VMCarrierStateRequestController)initWithTelephonyClient:(id)client;
 - (void)dealloc;
-- (void)executeRequest:(id)a3;
-- (void)postSMSMessageSent:(id)a3 success:(BOOL)a4 messageID:(int64_t)a5 err1:(int64_t)a6 err2:(int64_t)a7;
+- (void)executeRequest:(id)request;
+- (void)postSMSMessageSent:(id)sent success:(BOOL)success messageID:(int64_t)d err1:(int64_t)err1 err2:(int64_t)err2;
 @end
 
 @implementation VMCarrierStateRequestController
 
-- (VMCarrierStateRequestController)initWithTelephonyClient:(id)a3
+- (VMCarrierStateRequestController)initWithTelephonyClient:(id)client
 {
-  v4 = a3;
-  v5 = [objc_opt_class() vm_classIdentifier];
+  clientCopy = client;
+  vm_classIdentifier = [objc_opt_class() vm_classIdentifier];
   v6 = NSStringFromSelector("queue");
-  v7 = [NSString stringWithFormat:@"%@.%@", v5, v6];
+  v7 = [NSString stringWithFormat:@"%@.%@", vm_classIdentifier, v6];
 
   v8 = dispatch_queue_create([v7 UTF8String], 0);
   dispatch_queue_set_specific(v8, off_10010CE20, self, 0);
   v9 = +[CTMessageCenter sharedMessageCenter];
-  v10 = [(VMCarrierStateRequestController *)self initWithMessageCenter:v9 telephonyClient:v4 queue:v8];
+  v10 = [(VMCarrierStateRequestController *)self initWithMessageCenter:v9 telephonyClient:clientCopy queue:v8];
 
   return v10;
 }
 
-- (VMCarrierStateRequestController)initWithMessageCenter:(id)a3 telephonyClient:(id)a4 queue:(id)a5
+- (VMCarrierStateRequestController)initWithMessageCenter:(id)center telephonyClient:(id)client queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  centerCopy = center;
+  clientCopy = client;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = VMCarrierStateRequestController;
-  v12 = [(VMTelephonyRequestController *)&v16 initWithQueue:v11];
+  v12 = [(VMTelephonyRequestController *)&v16 initWithQueue:queueCopy];
   v13 = v12;
   if (v12)
   {
     dword_10010DA90 = -1;
-    objc_storeStrong(&v12->_messageCenter, a3);
-    [(VMCarrierStateRequestController *)v13 setTelephonyClient:v10];
-    v14 = [(VMCarrierStateRequestController *)v13 telephonyClient];
-    [v14 addDelegate:v13 queue:v11];
+    objc_storeStrong(&v12->_messageCenter, center);
+    [(VMCarrierStateRequestController *)v13 setTelephonyClient:clientCopy];
+    telephonyClient = [(VMCarrierStateRequestController *)v13 telephonyClient];
+    [telephonyClient addDelegate:v13 queue:queueCopy];
   }
 
   return v13;
@@ -47,19 +47,19 @@
 
 - (void)dealloc
 {
-  v3 = [(VMCarrierStateRequestController *)self telephonyClient];
-  [v3 removeDelegate:self];
+  telephonyClient = [(VMCarrierStateRequestController *)self telephonyClient];
+  [telephonyClient removeDelegate:self];
 
   v4.receiver = self;
   v4.super_class = VMCarrierStateRequestController;
   [(VMCarrierStateRequestController *)&v4 dealloc];
 }
 
-- (void)executeRequest:(id)a3
+- (void)executeRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(VMTelephonyRequestController *)self pendingRequest];
-  v6 = [v5 isEqualToRequest:v4];
+  requestCopy = request;
+  pendingRequest = [(VMTelephonyRequestController *)self pendingRequest];
+  v6 = [pendingRequest isEqualToRequest:requestCopy];
 
   if (v6)
   {
@@ -67,17 +67,17 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412290;
-      v20 = v4;
+      v20 = requestCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Sending message for STATE request %@", &v19, 0xCu);
     }
 
     v19 = -1;
-    v8 = [(VMCarrierStateRequestController *)self messageCenter];
-    v9 = [v4 subscription];
-    v10 = [v4 message];
-    v11 = [v4 serviceCenter];
-    v12 = [v4 destination];
-    v13 = [v8 sendSMSWithText:v9 text:v10 serviceCenter:v11 toAddress:v12 trackingID:&v19];
+    messageCenter = [(VMCarrierStateRequestController *)self messageCenter];
+    subscription = [requestCopy subscription];
+    message = [requestCopy message];
+    serviceCenter = [requestCopy serviceCenter];
+    destination = [requestCopy destination];
+    v13 = [messageCenter sendSMSWithText:subscription text:message serviceCenter:serviceCenter toAddress:destination trackingID:&v19];
 
     if (v13)
     {
@@ -89,15 +89,15 @@
       v14 = vm_vmd_log();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        sub_10009C180(v4, v14);
+        sub_10009C180(requestCopy, v14);
       }
 
       v15 = [VMCarrierStateResponseError errorWithCode:qword_10010D668 userInfo:0];
       v16 = [VMCarrierStateResponse alloc];
-      v17 = [v4 subscription];
-      v18 = [(VMTelephonyResponse *)v16 initWithSubscription:v17 error:v15];
+      subscription2 = [requestCopy subscription];
+      v18 = [(VMTelephonyResponse *)v16 initWithSubscription:subscription2 error:v15];
 
-      [(VMTelephonyRequestController *)self postResponse:v18 forRequest:v4];
+      [(VMTelephonyRequestController *)self postResponse:v18 forRequest:requestCopy];
     }
   }
 }
@@ -123,14 +123,14 @@
   return v2;
 }
 
-- (void)postSMSMessageSent:(id)a3 success:(BOOL)a4 messageID:(int64_t)a5 err1:(int64_t)a6 err2:(int64_t)a7
+- (void)postSMSMessageSent:(id)sent success:(BOOL)success messageID:(int64_t)d err1:(int64_t)err1 err2:(int64_t)err2
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = [(VMTelephonyRequestController *)self queue];
-  dispatch_assert_queue_V2(v13);
+  successCopy = success;
+  sentCopy = sent;
+  queue = [(VMTelephonyRequestController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (dword_10010DA90 == a5)
+  if (dword_10010DA90 == d)
   {
     v14 = vm_vmd_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -138,39 +138,39 @@
       v30 = 138413570;
       v31 = objc_opt_class();
       v32 = 2112;
-      v33 = v12;
+      v33 = sentCopy;
       v34 = 1024;
-      v35 = v10;
+      v35 = successCopy;
       v36 = 2048;
-      v37 = a5;
+      dCopy = d;
       v38 = 2048;
-      v39 = a6;
+      err1Copy = err1;
       v40 = 2048;
-      v41 = a7;
+      err2Copy = err2;
       v15 = v31;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%@ is handling postSMSMessageSent delegate callback with context:%@, success: %d, messageID: %ld, err1: %ld, err2: %ld", &v30, 0x3Au);
     }
 
     dword_10010DA90 = -1;
-    v16 = [(VMTelephonyRequestController *)self pendingRequest];
-    v17 = v16;
-    if (v16)
+    pendingRequest = [(VMTelephonyRequestController *)self pendingRequest];
+    v17 = pendingRequest;
+    if (pendingRequest)
     {
-      v18 = [v16 subscription];
-      v19 = [v18 uuid];
-      v20 = [v12 uuid];
-      v21 = [v19 isEqual:v20];
+      subscription = [pendingRequest subscription];
+      uuid = [subscription uuid];
+      uuid2 = [sentCopy uuid];
+      v21 = [uuid isEqual:uuid2];
 
       if (v21)
       {
-        if (v10)
+        if (successCopy)
         {
           v22 = 0;
         }
 
         else
         {
-          v22 = [VMCarrierStateResponseError errorWithCode:a6 userInfo:0];
+          v22 = [VMCarrierStateResponseError errorWithCode:err1 userInfo:0];
         }
 
         v23 = vm_vmd_log();
@@ -181,8 +181,8 @@
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Acknowledging outgoing message for STATE request %@", &v30, 0xCu);
         }
 
-        v24 = [(VMCarrierStateRequestController *)self messageCenter];
-        [v24 acknowledgeOutgoingMessageWithId:a5];
+        messageCenter = [(VMCarrierStateRequestController *)self messageCenter];
+        [messageCenter acknowledgeOutgoingMessageWithId:d];
 
         v25 = vm_vmd_log();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -201,8 +201,8 @@
         }
 
         v27 = [VMCarrierStateResponse alloc];
-        v28 = [v17 subscription];
-        v29 = [(VMTelephonyResponse *)v27 initWithSubscription:v28 error:v22];
+        subscription2 = [v17 subscription];
+        v29 = [(VMTelephonyResponse *)v27 initWithSubscription:subscription2 error:v22];
         [(VMTelephonyRequestController *)self postResponse:v29 forRequest:v17];
       }
 
@@ -214,7 +214,7 @@
           v30 = 138412546;
           v31 = v17;
           v32 = 2112;
-          v33 = v12;
+          v33 = sentCopy;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Ignoring handling pendingStateRequest: %@, context: %@", &v30, 0x16u);
         }
       }

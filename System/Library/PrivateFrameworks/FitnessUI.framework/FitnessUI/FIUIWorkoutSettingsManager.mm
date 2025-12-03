@@ -1,28 +1,28 @@
 @interface FIUIWorkoutSettingsManager
-+ (int64_t)defaultMetricsVersionForDeviceType:(int64_t)a3;
++ (int64_t)defaultMetricsVersionForDeviceType:(int64_t)type;
 + (int64_t)readWorkoutMetricsActivityMoveMode;
 + (void)obliterateUserConfiguredWorkoutMetrics;
-- (BOOL)_enabledMetricsAreDefaultAfterPaceMigration:(id)a3 workoutActivityType:(id)a4;
-- (BOOL)_hasUserMadeMetricChangesToWorkoutType:(id)a3 enabledMetrics:(id)a4 settingOverridesByMetric:(id)a5 metricFormatVersion:(id)a6;
-- (BOOL)_useUserConfiguredWorkoutMetricsForMetricsActivityMoveMode:(int64_t)a3 activityMoveMode:(int64_t)a4;
-- (BOOL)isMetricEnabled:(unint64_t)a3;
-- (FIUIWorkoutSettingsManager)initWithWorkoutActivityType:(id)a3 activityMoveMode:(int64_t)a4;
-- (FIUIWorkoutSettingsManager)initWithWorkoutActivityType:(id)a3 activityMoveMode:(int64_t)a4 deviceType:(int64_t)a5;
+- (BOOL)_enabledMetricsAreDefaultAfterPaceMigration:(id)migration workoutActivityType:(id)type;
+- (BOOL)_hasUserMadeMetricChangesToWorkoutType:(id)type enabledMetrics:(id)metrics settingOverridesByMetric:(id)metric metricFormatVersion:(id)version;
+- (BOOL)_useUserConfiguredWorkoutMetricsForMetricsActivityMoveMode:(int64_t)mode activityMoveMode:(int64_t)moveMode;
+- (BOOL)isMetricEnabled:(unint64_t)enabled;
+- (FIUIWorkoutSettingsManager)initWithWorkoutActivityType:(id)type activityMoveMode:(int64_t)mode;
+- (FIUIWorkoutSettingsManager)initWithWorkoutActivityType:(id)type activityMoveMode:(int64_t)mode deviceType:(int64_t)deviceType;
 - (NPSDomainAccessor)domainAccessor;
 - (NPSManager)syncManager;
 - (id)orderedDisabledMetrics;
 - (id)orderedEnabledAndSupportedMetrics;
 - (id)orderedSupportedMetrics;
 - (id)supportedMetrics;
-- (int64_t)disabledIndexForMetricType:(unint64_t)a3;
+- (int64_t)disabledIndexForMetricType:(unint64_t)type;
 - (void)_clearOldMetricsIfNeeded;
 - (void)_migratePaceViewSettingIfNeeded;
 - (void)_readFromDomain;
-- (void)_writeToDomainWithShouldUpdateVersion:(BOOL)a3;
-- (void)assignMetricType:(unint64_t)a3 toSlotIndex:(int64_t)a4;
-- (void)moveMetricType:(unint64_t)a3 toEnabledIndex:(int64_t)a4;
+- (void)_writeToDomainWithShouldUpdateVersion:(BOOL)version;
+- (void)assignMetricType:(unint64_t)type toSlotIndex:(int64_t)index;
+- (void)moveMetricType:(unint64_t)type toEnabledIndex:(int64_t)index;
 - (void)reloadMetrics;
-- (void)setEnabled:(BOOL)a3 forMetricType:(unint64_t)a4 didChange:(BOOL *)a5;
+- (void)setEnabled:(BOOL)enabled forMetricType:(unint64_t)type didChange:(BOOL *)change;
 @end
 
 @implementation FIUIWorkoutSettingsManager
@@ -30,8 +30,8 @@
 - (void)_readFromDomain
 {
   v48 = *MEMORY[0x1E69E9840];
-  v3 = [(FIUIWorkoutSettingsManager *)self domainAccessor];
-  v4 = [v3 objectForKey:@"SettingsByActivityType"];
+  domainAccessor = [(FIUIWorkoutSettingsManager *)self domainAccessor];
+  v4 = [domainAccessor objectForKey:@"SettingsByActivityType"];
   v5 = [v4 mutableCopy];
   settingsByActivityType = self->_settingsByActivityType;
   self->_settingsByActivityType = v5;
@@ -39,9 +39,9 @@
   v7 = self->_settingsByActivityType;
   if (!v7)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v9 = self->_settingsByActivityType;
-    self->_settingsByActivityType = v8;
+    self->_settingsByActivityType = dictionary;
 
     v7 = self->_settingsByActivityType;
   }
@@ -58,10 +58,10 @@
 
     else
     {
-      v12 = [(FIUIWorkoutActivityType *)self->_workoutActivityType identifier];
-      v13 = [(FIUIWorkoutActivityType *)self->_workoutActivityType isIndoor];
-      v14 = [(FIUIWorkoutActivityType *)self->_workoutActivityType metadata];
-      v15 = [FIUIWorkoutActivityType activityTypeWithHKWorkoutActivityTypeIdentifier:v12 isIndoor:!v13 metadata:v14];
+      identifier = [(FIUIWorkoutActivityType *)self->_workoutActivityType identifier];
+      isIndoor = [(FIUIWorkoutActivityType *)self->_workoutActivityType isIndoor];
+      metadata = [(FIUIWorkoutActivityType *)self->_workoutActivityType metadata];
+      v15 = [FIUIWorkoutActivityType activityTypeWithHKWorkoutActivityTypeIdentifier:identifier isIndoor:!isIndoor metadata:metadata];
 
       v16 = self->_settingsByActivityType;
       v17 = KeyForWorkoutActivityType(v15);
@@ -87,8 +87,8 @@
     v26 = self->_settingsByActivityType;
     v27 = self->_enabledMetrics;
     v28 = v25;
-    v29 = [(FIUIWorkoutSettingsManager *)self domainAccessor];
-    v30 = [v29 objectForKey:@"ActivitySettingsFormatVersion"];
+    domainAccessor2 = [(FIUIWorkoutSettingsManager *)self domainAccessor];
+    v30 = [domainAccessor2 objectForKey:@"ActivitySettingsFormatVersion"];
     v42 = 138412802;
     v43 = v26;
     v44 = 2112;
@@ -100,17 +100,17 @@
 
   if (!self->_enabledMetrics)
   {
-    v31 = [(FIUIWorkoutDefaultMetricsProvider *)self->_defaultMetricsProvider defaultEnabledMetrics];
-    v32 = [v31 mutableCopy];
+    defaultEnabledMetrics = [(FIUIWorkoutDefaultMetricsProvider *)self->_defaultMetricsProvider defaultEnabledMetrics];
+    v32 = [defaultEnabledMetrics mutableCopy];
     v33 = self->_enabledMetrics;
     self->_enabledMetrics = v32;
   }
 
   if (!self->_settingOverridesByMetric)
   {
-    v34 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v35 = self->_settingOverridesByMetric;
-    self->_settingOverridesByMetric = v34;
+    self->_settingOverridesByMetric = dictionary2;
   }
 
   [(FIUIWorkoutSettingsManager *)self _migratePaceViewSettingIfNeeded];
@@ -121,8 +121,8 @@
     v37 = self->_settingsByActivityType;
     v38 = self->_enabledMetrics;
     v39 = v36;
-    v40 = [(FIUIWorkoutSettingsManager *)self domainAccessor];
-    v41 = [v40 objectForKey:@"ActivitySettingsFormatVersion"];
+    domainAccessor3 = [(FIUIWorkoutSettingsManager *)self domainAccessor];
+    v41 = [domainAccessor3 objectForKey:@"ActivitySettingsFormatVersion"];
     v42 = 138412802;
     v43 = v37;
     v44 = 2112;
@@ -137,8 +137,8 @@
 {
   if (![(NSMutableDictionary *)self->_settingOverridesByMetric count]&& [(FIUIWorkoutSettingsManager *)self isMetricEnabled:4])
   {
-    v3 = [(FIUIWorkoutSettingsManager *)self domainAccessor];
-    v8 = [v3 objectForKey:@"ShowAveragePace"];
+    domainAccessor = [(FIUIWorkoutSettingsManager *)self domainAccessor];
+    v8 = [domainAccessor objectForKey:@"ShowAveragePace"];
 
     if ([v8 BOOLValue])
     {
@@ -159,13 +159,13 @@
 - (id)orderedSupportedMetrics
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(FIUIWorkoutSettingsManager *)self supportedMetrics];
-  v4 = [v3 allObjects];
-  v5 = [v4 mutableCopy];
+  supportedMetrics = [(FIUIWorkoutSettingsManager *)self supportedMetrics];
+  allObjects = [supportedMetrics allObjects];
+  v5 = [allObjects mutableCopy];
 
   v6 = MEMORY[0x1E695DFD8];
-  v7 = [(FIUIWorkoutDefaultMetricsProvider *)self->_defaultMetricsProvider supportedMetrics];
-  v8 = [v6 setWithArray:v7];
+  supportedMetrics2 = [(FIUIWorkoutDefaultMetricsProvider *)self->_defaultMetricsProvider supportedMetrics];
+  v8 = [v6 setWithArray:supportedMetrics2];
 
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v17 = 0u;
@@ -207,13 +207,13 @@
 
 - (id)supportedMetrics
 {
-  v3 = [(FIUIWorkoutActivityType *)self->_workoutActivityType identifier];
-  v4 = [(FIUIWorkoutActivityType *)self->_workoutActivityType isIndoor];
+  identifier = [(FIUIWorkoutActivityType *)self->_workoutActivityType identifier];
+  isIndoor = [(FIUIWorkoutActivityType *)self->_workoutActivityType isIndoor];
   v5 = MEMORY[0x1E695DFA8];
-  v6 = [(FIUIWorkoutDefaultMetricsProvider *)self->_defaultMetricsProvider supportedMetrics];
-  v7 = [v5 setWithArray:v6];
+  supportedMetrics = [(FIUIWorkoutDefaultMetricsProvider *)self->_defaultMetricsProvider supportedMetrics];
+  v7 = [v5 setWithArray:supportedMetrics];
 
-  if (([MEMORY[0x1E696C588] fiui_isHeartRateSupportedForActivityType:v3 isIndoor:v4] & 1) == 0)
+  if (([MEMORY[0x1E696C588] fiui_isHeartRateSupportedForActivityType:identifier isIndoor:isIndoor] & 1) == 0)
   {
     [v7 removeObject:&unk_1F5F9B418];
     [v7 removeObject:&unk_1F5F9B430];
@@ -228,8 +228,8 @@
 - (id)orderedEnabledAndSupportedMetrics
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(FIUIWorkoutSettingsManager *)self supportedMetrics];
+  array = [MEMORY[0x1E695DF70] array];
+  supportedMetrics = [(FIUIWorkoutSettingsManager *)self supportedMetrics];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -250,9 +250,9 @@
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        if ([v4 containsObject:{v10, v12}])
+        if ([supportedMetrics containsObject:{v10, v12}])
         {
-          [v3 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -262,29 +262,29 @@
     while (v7);
   }
 
-  return v3;
+  return array;
 }
 
-- (FIUIWorkoutSettingsManager)initWithWorkoutActivityType:(id)a3 activityMoveMode:(int64_t)a4
+- (FIUIWorkoutSettingsManager)initWithWorkoutActivityType:(id)type activityMoveMode:(int64_t)mode
 {
   v6 = MEMORY[0x1E696C608];
-  v7 = a3;
-  v8 = [v6 sharedBehavior];
-  v9 = [v8 currentDeviceClass];
+  typeCopy = type;
+  sharedBehavior = [v6 sharedBehavior];
+  currentDeviceClass = [sharedBehavior currentDeviceClass];
 
-  v10 = [(FIUIWorkoutSettingsManager *)self initWithWorkoutActivityType:v7 activityMoveMode:a4 deviceType:[FIUIDeviceTypeResolver deviceTypeForDeviceClass:v9]];
+  v10 = [(FIUIWorkoutSettingsManager *)self initWithWorkoutActivityType:typeCopy activityMoveMode:mode deviceType:[FIUIDeviceTypeResolver deviceTypeForDeviceClass:currentDeviceClass]];
   return v10;
 }
 
-+ (int64_t)defaultMetricsVersionForDeviceType:(int64_t)a3
++ (int64_t)defaultMetricsVersionForDeviceType:(int64_t)type
 {
-  if ((a3 - 2) < 2)
+  if ((type - 2) < 2)
   {
     _HKInitializeLogging();
     v6 = HKLogWorkoutsCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(FIUIWorkoutSettingsManager *)a3 defaultMetricsVersionForDeviceType:v6];
+      [(FIUIWorkoutSettingsManager *)type defaultMetricsVersionForDeviceType:v6];
     }
 
     return 0;
@@ -293,12 +293,12 @@
   else
   {
     v4 = 6;
-    if (a3 != 1)
+    if (type != 1)
     {
       v4 = 0;
     }
 
-    if (a3)
+    if (type)
     {
       return v4;
     }
@@ -310,25 +310,25 @@
   }
 }
 
-- (FIUIWorkoutSettingsManager)initWithWorkoutActivityType:(id)a3 activityMoveMode:(int64_t)a4 deviceType:(int64_t)a5
+- (FIUIWorkoutSettingsManager)initWithWorkoutActivityType:(id)type activityMoveMode:(int64_t)mode deviceType:(int64_t)deviceType
 {
-  v9 = a3;
+  typeCopy = type;
   v21.receiver = self;
   v21.super_class = FIUIWorkoutSettingsManager;
   v10 = [(FIUIWorkoutSettingsManager *)&v21 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_workoutActivityType, a3);
-    v11->_activityMoveMode = a4;
-    v12 = [FIUIWorkoutSettingsManager defaultMetricsVersionForDeviceType:a5];
+    objc_storeStrong(&v10->_workoutActivityType, type);
+    v11->_activityMoveMode = mode;
+    v12 = [FIUIWorkoutSettingsManager defaultMetricsVersionForDeviceType:deviceType];
     v13 = [FIUIWorkoutDefaultMetricsProvider alloc];
     v14 = FIUIDeviceSupportsElevationGain();
-    v15 = [(FIUIWorkoutDefaultMetricsProvider *)v13 initWithMetricsVersion:v12 activityType:v9 activityMoveMode:a4 deviceSupportsElevationMetrics:v14 deviceSupportsGroundElevationMetrics:FIUIDeviceSupportsGroundElevation()];
+    v15 = [(FIUIWorkoutDefaultMetricsProvider *)v13 initWithMetricsVersion:v12 activityType:typeCopy activityMoveMode:mode deviceSupportsElevationMetrics:v14 deviceSupportsGroundElevationMetrics:FIUIDeviceSupportsGroundElevation()];
     defaultMetricsProvider = v11->_defaultMetricsProvider;
     v11->_defaultMetricsProvider = v15;
 
-    if ([(FIUIWorkoutSettingsManager *)v11 _useUserConfiguredWorkoutMetricsForMetricsActivityMoveMode:+[FIUIWorkoutSettingsManager activityMoveMode:"readWorkoutMetricsActivityMoveMode"], a4])
+    if ([(FIUIWorkoutSettingsManager *)v11 _useUserConfiguredWorkoutMetricsForMetricsActivityMoveMode:+[FIUIWorkoutSettingsManager activityMoveMode:"readWorkoutMetricsActivityMoveMode"], mode])
     {
       [(FIUIWorkoutSettingsManager *)v11 _clearOldMetricsIfNeeded];
       [(FIUIWorkoutSettingsManager *)v11 _readFromDomain];
@@ -336,8 +336,8 @@
 
     else
     {
-      v17 = [(FIUIWorkoutDefaultMetricsProvider *)v11->_defaultMetricsProvider defaultEnabledMetrics];
-      v18 = [v17 mutableCopy];
+      defaultEnabledMetrics = [(FIUIWorkoutDefaultMetricsProvider *)v11->_defaultMetricsProvider defaultEnabledMetrics];
+      v18 = [defaultEnabledMetrics mutableCopy];
       enabledMetrics = v11->_enabledMetrics;
       v11->_enabledMetrics = v18;
     }
@@ -380,8 +380,8 @@
 - (void)_clearOldMetricsIfNeeded
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(FIUIWorkoutSettingsManager *)self domainAccessor];
-  v4 = [v3 objectForKey:@"SettingsByActivityType"];
+  domainAccessor = [(FIUIWorkoutSettingsManager *)self domainAccessor];
+  v4 = [domainAccessor objectForKey:@"SettingsByActivityType"];
   v5 = [v4 mutableCopy];
   settingsByActivityType = self->_settingsByActivityType;
   self->_settingsByActivityType = v5;
@@ -400,8 +400,8 @@
   enabledMetrics = self->_enabledMetrics;
   self->_enabledMetrics = v14;
 
-  v16 = [(FIUIWorkoutSettingsManager *)self domainAccessor];
-  v17 = [v16 objectForKey:@"ActivitySettingsFormatVersion"];
+  domainAccessor2 = [(FIUIWorkoutSettingsManager *)self domainAccessor];
+  v17 = [domainAccessor2 objectForKey:@"ActivitySettingsFormatVersion"];
 
   if ([(FIUIWorkoutActivityType *)self->_workoutActivityType identifier]== 37 && ![(FIUIWorkoutActivityType *)self->_workoutActivityType isIndoor]&& FIDeviceMeetsMinimumOSVersionGlory() && ![(FIUIWorkoutSettingsManager *)self _hasUserMadeMetricChangesToWorkoutType:self->_workoutActivityType enabledMetrics:self->_enabledMetrics settingOverridesByMetric:self->_settingOverridesByMetric metricFormatVersion:v17])
   {
@@ -430,31 +430,31 @@
   }
 }
 
-- (BOOL)isMetricEnabled:(unint64_t)a3
+- (BOOL)isMetricEnabled:(unint64_t)enabled
 {
   settingOverridesByMetric = self->_settingOverridesByMetric;
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", a3];
-  v7 = [(NSMutableDictionary *)settingOverridesByMetric objectForKey:v6];
+  enabled = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", enabled];
+  v7 = [(NSMutableDictionary *)settingOverridesByMetric objectForKey:enabled];
 
   if (v7)
   {
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v9 = [(FIUIWorkoutDefaultMetricsProvider *)self->_defaultMetricsProvider defaultEnabledMetrics];
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    v8 = [v9 containsObject:v10];
+    defaultEnabledMetrics = [(FIUIWorkoutDefaultMetricsProvider *)self->_defaultMetricsProvider defaultEnabledMetrics];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:enabled];
+    bOOLValue = [defaultEnabledMetrics containsObject:v10];
   }
 
-  return v8;
+  return bOOLValue;
 }
 
 - (id)orderedDisabledMetrics
 {
-  v3 = [(FIUIWorkoutDefaultMetricsProvider *)self->_defaultMetricsProvider supportedMetrics];
-  v4 = [v3 mutableCopy];
+  supportedMetrics = [(FIUIWorkoutDefaultMetricsProvider *)self->_defaultMetricsProvider supportedMetrics];
+  v4 = [supportedMetrics mutableCopy];
 
   [v4 removeObjectsInArray:self->_enabledMetrics];
   [v4 sortUsingFunction:_SortMetricBySortIndex context:0];
@@ -462,18 +462,18 @@
   return v4;
 }
 
-- (void)setEnabled:(BOOL)a3 forMetricType:(unint64_t)a4 didChange:(BOOL *)a5
+- (void)setEnabled:(BOOL)enabled forMetricType:(unint64_t)type didChange:(BOOL *)change
 {
-  v7 = a3;
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", a4];
-  v17 = v9;
-  if (a5)
+  enabledCopy = enabled;
+  type = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", type];
+  v17 = type;
+  if (change)
   {
-    v10 = [(NSMutableDictionary *)self->_settingOverridesByMetric objectForKey:v9];
+    v10 = [(NSMutableDictionary *)self->_settingOverridesByMetric objectForKey:type];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 BOOLValue] ^ v7;
+      v12 = [v10 BOOLValue] ^ enabledCopy;
     }
 
     else
@@ -481,16 +481,16 @@
       v12 = 1;
     }
 
-    *a5 = v12;
+    *change = v12;
   }
 
   settingOverridesByMetric = self->_settingOverridesByMetric;
-  v14 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v14 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
   [(NSMutableDictionary *)settingOverridesByMetric setObject:v14 forKey:v17];
 
   enabledMetrics = self->_enabledMetrics;
-  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  if (v7)
+  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  if (enabledCopy)
   {
     [(NSMutableArray *)enabledMetrics addObject:v16];
   }
@@ -503,18 +503,18 @@
   [(FIUIWorkoutSettingsManager *)self _writeToDomainWithShouldUpdateVersion:0];
 }
 
-- (void)moveMetricType:(unint64_t)a3 toEnabledIndex:(int64_t)a4
+- (void)moveMetricType:(unint64_t)type toEnabledIndex:(int64_t)index
 {
   v23 = *MEMORY[0x1E69E9840];
-  if ([(NSMutableArray *)self->_enabledMetrics count]>= a4)
+  if ([(NSMutableArray *)self->_enabledMetrics count]>= index)
   {
     enabledMetrics = self->_enabledMetrics;
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
     [(NSMutableArray *)enabledMetrics removeObject:v9];
 
     v10 = self->_enabledMetrics;
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    [(NSMutableArray *)v10 insertObject:v11 atIndex:a4];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+    [(NSMutableArray *)v10 insertObject:v11 atIndex:index];
 
     [(FIUIWorkoutSettingsManager *)self _writeToDomainWithShouldUpdateVersion:0];
   }
@@ -527,8 +527,8 @@
     {
       v12 = MEMORY[0x1E696AD98];
       v13 = v7;
-      v14 = [v12 numberWithUnsignedInteger:a3];
-      v15 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+      v14 = [v12 numberWithUnsignedInteger:type];
+      v15 = [MEMORY[0x1E696AD98] numberWithInteger:index];
       v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSMutableArray count](self->_enabledMetrics, "count")}];
       v17 = 138412802;
       v18 = v14;
@@ -541,30 +541,30 @@
   }
 }
 
-- (void)assignMetricType:(unint64_t)a3 toSlotIndex:(int64_t)a4
+- (void)assignMetricType:(unint64_t)type toSlotIndex:(int64_t)index
 {
-  [(NSMutableArray *)self->_enabledMetrics removeObjectAtIndex:a4];
+  [(NSMutableArray *)self->_enabledMetrics removeObjectAtIndex:index];
   enabledMetrics = self->_enabledMetrics;
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [(NSMutableArray *)enabledMetrics insertObject:v8 atIndex:a4];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  [(NSMutableArray *)enabledMetrics insertObject:v8 atIndex:index];
 
   [(FIUIWorkoutSettingsManager *)self _writeToDomainWithShouldUpdateVersion:0];
 }
 
-- (int64_t)disabledIndexForMetricType:(unint64_t)a3
+- (int64_t)disabledIndexForMetricType:(unint64_t)type
 {
-  v5 = [(FIUIWorkoutSettingsManager *)self orderedDisabledMetrics];
-  v6 = [v5 mutableCopy];
+  orderedDisabledMetrics = [(FIUIWorkoutSettingsManager *)self orderedDisabledMetrics];
+  v6 = [orderedDisabledMetrics mutableCopy];
 
-  if ([(FIUIWorkoutSettingsManager *)self isMetricEnabled:a3])
+  if ([(FIUIWorkoutSettingsManager *)self isMetricEnabled:type])
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
     [v6 addObject:v7];
 
     [v6 sortUsingFunction:_SortMetricBySortIndex context:0];
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   v9 = [v6 indexOfObject:v8];
 
   return v9;
@@ -580,26 +580,26 @@
 
   else
   {
-    v5 = [(FIUIWorkoutDefaultMetricsProvider *)self->_defaultMetricsProvider defaultEnabledMetrics];
-    v3 = [v5 mutableCopy];
+    defaultEnabledMetrics = [(FIUIWorkoutDefaultMetricsProvider *)self->_defaultMetricsProvider defaultEnabledMetrics];
+    v3 = [defaultEnabledMetrics mutableCopy];
     enabledMetrics = self->_enabledMetrics;
     self->_enabledMetrics = v3;
   }
 }
 
-- (BOOL)_enabledMetricsAreDefaultAfterPaceMigration:(id)a3 workoutActivityType:(id)a4
+- (BOOL)_enabledMetricsAreDefaultAfterPaceMigration:(id)migration workoutActivityType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 isIndoor];
-  v8 = [v6 identifier];
+  migrationCopy = migration;
+  typeCopy = type;
+  isIndoor = [typeCopy isIndoor];
+  identifier = [typeCopy identifier];
 
   v9 = 0;
-  if (v8 == 37 && (v7 & 1) == 0)
+  if (identifier == 37 && (isIndoor & 1) == 0)
   {
-    if ([v5 count] == 4 && (objc_msgSend(v5, "objectAtIndexedSubscript:", 0), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "unsignedIntegerValue"), v10, v11 == 3) && (objc_msgSend(v5, "objectAtIndexedSubscript:", 1), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "unsignedIntegerValue"), v12, v13 == 8) && (objc_msgSend(v5, "objectAtIndexedSubscript:", 2), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "unsignedIntegerValue"), v14, v15 == 5))
+    if ([migrationCopy count] == 4 && (objc_msgSend(migrationCopy, "objectAtIndexedSubscript:", 0), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "unsignedIntegerValue"), v10, v11 == 3) && (objc_msgSend(migrationCopy, "objectAtIndexedSubscript:", 1), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "unsignedIntegerValue"), v12, v13 == 8) && (objc_msgSend(migrationCopy, "objectAtIndexedSubscript:", 2), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "unsignedIntegerValue"), v14, v15 == 5))
     {
-      v16 = [v5 objectAtIndexedSubscript:3];
+      v16 = [migrationCopy objectAtIndexedSubscript:3];
       v9 = [v16 unsignedIntegerValue] == 1;
     }
 
@@ -612,18 +612,18 @@
   return v9;
 }
 
-- (BOOL)_hasUserMadeMetricChangesToWorkoutType:(id)a3 enabledMetrics:(id)a4 settingOverridesByMetric:(id)a5 metricFormatVersion:(id)a6
+- (BOOL)_hasUserMadeMetricChangesToWorkoutType:(id)type enabledMetrics:(id)metrics settingOverridesByMetric:(id)metric metricFormatVersion:(id)version
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v11 | v12)
+  typeCopy = type;
+  metricsCopy = metrics;
+  metricCopy = metric;
+  versionCopy = version;
+  v14 = versionCopy;
+  if (metricsCopy | metricCopy)
   {
-    if ([v13 intValue] == 1 || objc_msgSend(v14, "intValue") == 2)
+    if ([versionCopy intValue] == 1 || objc_msgSend(v14, "intValue") == 2)
     {
-      v15 = ![(FIUIWorkoutSettingsManager *)self _enabledMetricsAreDefaultAfterPaceMigration:v11 workoutActivityType:v10];
+      v15 = ![(FIUIWorkoutSettingsManager *)self _enabledMetricsAreDefaultAfterPaceMigration:metricsCopy workoutActivityType:typeCopy];
     }
 
     else
@@ -644,7 +644,7 @@
 {
   v2 = objc_alloc(MEMORY[0x1E69B3588]);
   v3 = [v2 initWithDomain:*MEMORY[0x1E699CA20]];
-  v4 = [v3 synchronize];
+  synchronize = [v3 synchronize];
   v8 = 0;
   v5 = [v3 integerForKey:@"WorkoutMetricsActivityMoveMode" keyExistsAndHasValidFormat:&v8];
   if (v8)
@@ -660,16 +660,16 @@
   return v6;
 }
 
-- (void)_writeToDomainWithShouldUpdateVersion:(BOOL)a3
+- (void)_writeToDomainWithShouldUpdateVersion:(BOOL)version
 {
-  v3 = a3;
+  versionCopy = version;
   v36 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = v5;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v6 = dictionary;
   enabledMetrics = self->_enabledMetrics;
   if (enabledMetrics)
   {
-    [v5 setObject:enabledMetrics forKey:@"EnabledMetrics"];
+    [dictionary setObject:enabledMetrics forKey:@"EnabledMetrics"];
   }
 
   settingOverridesByMetric = self->_settingOverridesByMetric;
@@ -691,24 +691,24 @@
     [(NSMutableDictionary *)settingsByActivityType removeObjectForKey:v11];
   }
 
-  v12 = [(FIUIWorkoutSettingsManager *)self domainAccessor];
-  [v12 setObject:self->_settingsByActivityType forKey:@"SettingsByActivityType"];
+  domainAccessor = [(FIUIWorkoutSettingsManager *)self domainAccessor];
+  [domainAccessor setObject:self->_settingsByActivityType forKey:@"SettingsByActivityType"];
 
-  if (v3)
+  if (versionCopy)
   {
-    v13 = [(FIUIWorkoutSettingsManager *)self domainAccessor];
+    domainAccessor2 = [(FIUIWorkoutSettingsManager *)self domainAccessor];
     v14 = [MEMORY[0x1E696AD98] numberWithInteger:{-[FIUIWorkoutDefaultMetricsProvider metricsVersion](self->_defaultMetricsProvider, "metricsVersion")}];
-    [v13 setObject:v14 forKey:@"ActivitySettingsFormatVersion"];
+    [domainAccessor2 setObject:v14 forKey:@"ActivitySettingsFormatVersion"];
   }
 
-  v15 = [(FIUIWorkoutSettingsManager *)self domainAccessor];
-  v16 = [v15 synchronize];
+  domainAccessor3 = [(FIUIWorkoutSettingsManager *)self domainAccessor];
+  synchronize = [domainAccessor3 synchronize];
 
-  v17 = [(FIUIWorkoutSettingsManager *)self syncManager];
-  v18 = [(FIUIWorkoutSettingsManager *)self domainAccessor];
-  v19 = [v18 domain];
+  syncManager = [(FIUIWorkoutSettingsManager *)self syncManager];
+  domainAccessor4 = [(FIUIWorkoutSettingsManager *)self domainAccessor];
+  domain = [domainAccessor4 domain];
   v20 = [MEMORY[0x1E695DFD8] setWithObject:@"SettingsByActivityType"];
-  [v17 synchronizeNanoDomain:v19 keys:v20];
+  [syncManager synchronizeNanoDomain:domain keys:v20];
 
   _HKInitializeLogging();
   v21 = *MEMORY[0x1E696B9A8];
@@ -716,7 +716,7 @@
   {
     v22 = self->_settingsByActivityType;
     v23 = self->_enabledMetrics;
-    if (v3)
+    if (versionCopy)
     {
       v24 = @"YES";
     }
@@ -727,8 +727,8 @@
     }
 
     v25 = v21;
-    v26 = [(FIUIWorkoutSettingsManager *)self domainAccessor];
-    v27 = [v26 objectForKey:@"ActivitySettingsFormatVersion"];
+    domainAccessor5 = [(FIUIWorkoutSettingsManager *)self domainAccessor];
+    v27 = [domainAccessor5 objectForKey:@"ActivitySettingsFormatVersion"];
     v28 = 138413058;
     v29 = v22;
     v30 = 2112;
@@ -741,17 +741,17 @@
   }
 }
 
-- (BOOL)_useUserConfiguredWorkoutMetricsForMetricsActivityMoveMode:(int64_t)a3 activityMoveMode:(int64_t)a4
+- (BOOL)_useUserConfiguredWorkoutMetricsForMetricsActivityMoveMode:(int64_t)mode activityMoveMode:(int64_t)moveMode
 {
-  v4 = a3 != 2 || a4 > 1;
-  if (a3 >= 2)
+  v4 = mode != 2 || moveMode > 1;
+  if (mode >= 2)
   {
     return v4;
   }
 
   else
   {
-    return a4 != 2;
+    return moveMode != 2;
   }
 }
 
@@ -760,11 +760,11 @@
   v13[2] = *MEMORY[0x1E69E9840];
   v2 = objc_alloc(MEMORY[0x1E69B3588]);
   v3 = [v2 initWithDomain:*MEMORY[0x1E699CA20]];
-  v4 = [v3 synchronize];
+  synchronize = [v3 synchronize];
   [v3 removeObjectForKey:@"SettingsByActivityType"];
   [v3 removeObjectForKey:@"ActivitySettingsFormatVersion"];
   [v3 removeObjectForKey:@"WorkoutMetricsActivityMoveMode"];
-  v5 = [v3 synchronize];
+  synchronize2 = [v3 synchronize];
   v6 = objc_alloc_init(MEMORY[0x1E69B3590]);
   v7 = MEMORY[0x1E695DFA8];
   v13[0] = @"SettingsByActivityType";
@@ -773,8 +773,8 @@
   v9 = [v7 setWithArray:v8];
 
   [v9 addObject:@"WorkoutMetricsActivityMoveMode"];
-  v10 = [v3 domain];
-  [v6 synchronizeNanoDomain:v10 keys:v9];
+  domain = [v3 domain];
+  [v6 synchronizeNanoDomain:domain keys:v9];
 
   _HKInitializeLogging();
   v11 = *MEMORY[0x1E696B9A8];

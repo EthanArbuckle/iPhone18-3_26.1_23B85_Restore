@@ -1,15 +1,15 @@
 @interface ASDTIOA2ServiceManager
-- (BOOL)ioServiceCanBeAdded:(id)a3;
+- (BOOL)ioServiceCanBeAdded:(id)added;
 @end
 
 @implementation ASDTIOA2ServiceManager
 
-- (BOOL)ioServiceCanBeAdded:(id)a3
+- (BOOL)ioServiceCanBeAdded:(id)added
 {
-  v3 = [a3 objectForKey:@"is private"];
-  v4 = [v3 BOOLValue];
+  v3 = [added objectForKey:@"is private"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

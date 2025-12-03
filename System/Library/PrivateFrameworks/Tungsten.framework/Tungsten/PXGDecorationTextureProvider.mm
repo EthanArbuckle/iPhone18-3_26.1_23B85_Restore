@@ -1,9 +1,9 @@
 @interface PXGDecorationTextureProvider
-- (PXGDecorationTextureProvider)initWithBadgeDrawingHelper:(id)a3;
+- (PXGDecorationTextureProvider)initWithBadgeDrawingHelper:(id)helper;
 - (PXGViewSource)overlayViewSource;
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7;
-- (void)_requestTextureForDecorationInfo:(PXGDecorationBadgeInfo *)a3 drawingHelper:(id)a4 solidColorOverlay:(id)a5 debugDecoration:(id)a6 targetSize:(CGSize)a7 cornerRadius:(id)a8 screenScale:(double)a9 requestID:(int)a10 viewEnvironment:(id)a11 userInterfaceDirection:(unint64_t)a12;
-- (void)_requestViewTextureForDecorationInfo:(PXGDecorationBadgeInfo *)a3 customViewClass:(Class)a4 userData:(id)a5 decorationOptions:(unint64_t)a6 requestID:(int)a7;
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout;
+- (void)_requestTextureForDecorationInfo:(PXGDecorationBadgeInfo *)info drawingHelper:(id)helper solidColorOverlay:(id)overlay debugDecoration:(id)decoration targetSize:(CGSize)size cornerRadius:(id)radius screenScale:(double)scale requestID:(int)self0 viewEnvironment:(id)self1 userInterfaceDirection:(unint64_t)self2;
+- (void)_requestViewTextureForDecorationInfo:(PXGDecorationBadgeInfo *)info customViewClass:(Class)class userData:(id)data decorationOptions:(unint64_t)options requestID:(int)d;
 @end
 
 @implementation PXGDecorationTextureProvider
@@ -15,15 +15,15 @@
   return WeakRetained;
 }
 
-- (void)_requestViewTextureForDecorationInfo:(PXGDecorationBadgeInfo *)a3 customViewClass:(Class)a4 userData:(id)a5 decorationOptions:(unint64_t)a6 requestID:(int)a7
+- (void)_requestViewTextureForDecorationInfo:(PXGDecorationBadgeInfo *)info customViewClass:(Class)class userData:(id)data decorationOptions:(unint64_t)options requestID:(int)d
 {
-  v7 = *&a7;
-  v13 = a5;
+  v7 = *&d;
+  dataCopy = data;
   if ([(PXGTextureProvider *)self isRequestActive:v7])
   {
-    if (a3->var0)
+    if (info->var0)
     {
-      v12 = [[PXGDecorationViewPayload alloc] initWithDecorationOptions:a6 viewClass:a4 userData:v13];
+      v12 = [[PXGDecorationViewPayload alloc] initWithDecorationOptions:options viewClass:class userData:dataCopy];
       [(PXGTextureProvider *)self providePayload:v12 forRequestID:v7];
     }
 
@@ -34,64 +34,64 @@
   }
 }
 
-- (void)_requestTextureForDecorationInfo:(PXGDecorationBadgeInfo *)a3 drawingHelper:(id)a4 solidColorOverlay:(id)a5 debugDecoration:(id)a6 targetSize:(CGSize)a7 cornerRadius:(id)a8 screenScale:(double)a9 requestID:(int)a10 viewEnvironment:(id)a11 userInterfaceDirection:(unint64_t)a12
+- (void)_requestTextureForDecorationInfo:(PXGDecorationBadgeInfo *)info drawingHelper:(id)helper solidColorOverlay:(id)overlay debugDecoration:(id)decoration targetSize:(CGSize)size cornerRadius:(id)radius screenScale:(double)scale requestID:(int)self0 viewEnvironment:(id)self1 userInterfaceDirection:(unint64_t)self2
 {
-  v16 = *&a8.var0.var1[2];
-  v17 = *&a8.var0.var0.var0;
+  v16 = *&radius.var0.var1[2];
+  v17 = *&radius.var0.var0.var0;
   v18 = v15;
   v19 = v14;
   v20 = v13;
   v21 = v12;
-  v22 = LODWORD(a9);
-  height = a7.height;
-  width = a7.width;
-  v29 = a4;
-  v30 = a5;
-  v31 = a6;
+  v22 = LODWORD(scale);
+  height = size.height;
+  width = size.width;
+  helperCopy = helper;
+  overlayCopy = overlay;
+  decorationCopy = decoration;
   v32 = v16;
   if ([(PXGTextureProvider *)self isRequestActive:v17])
   {
-    if (a3->var0)
+    if (info->var0)
     {
       IsZero = PXPixelSizeAreaIsZero();
-      if (v31 || (IsZero & 1) == 0)
+      if (decorationCopy || (IsZero & 1) == 0)
       {
         goto LABEL_5;
       }
     }
 
-    else if (v31)
+    else if (decorationCopy)
     {
 LABEL_5:
-      v38 = *&a3->var2;
-      v60[0] = *&a3->var0;
+      v38 = *&info->var2;
+      v60[0] = *&info->var0;
       v60[1] = v38;
-      v60[2] = *&a3->var4;
+      v60[2] = *&info->var4;
       LODWORD(v33) = v22;
       LODWORD(v34) = v21;
       LODWORD(v35) = v20;
       LODWORD(v36) = v19;
-      v39 = [v29 cacheKeyForDecorationInfo:v60 solidColorOverlay:v30 debugDecoration:v31 targetSize:v32 cornerRadius:*&a10 screenScale:width viewEnvironment:height userInterfaceDirection:{v33, v34, v35, v36, v18}];
+      v39 = [helperCopy cacheKeyForDecorationInfo:v60 solidColorOverlay:overlayCopy debugDecoration:decorationCopy targetSize:v32 cornerRadius:*&d screenScale:width viewEnvironment:height userInterfaceDirection:{v33, v34, v35, v36, v18}];
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
       v44[2] = __198__PXGDecorationTextureProvider__requestTextureForDecorationInfo_drawingHelper_solidColorOverlay_debugDecoration_targetSize_cornerRadius_screenScale_requestID_viewEnvironment_userInterfaceDirection___block_invoke;
       v44[3] = &unk_2782AC5D8;
       v49 = width;
       v50 = height;
-      v45 = v29;
-      v40 = *&a3->var2;
-      v51 = *&a3->var0;
+      v45 = helperCopy;
+      v40 = *&info->var2;
+      v51 = *&info->var0;
       v52 = v40;
-      v53 = *&a3->var4;
-      v46 = v30;
-      v47 = v31;
+      v53 = *&info->var4;
+      v46 = overlayCopy;
+      v47 = decorationCopy;
       v56 = v22;
       v57 = v21;
       v58 = v20;
       v59 = v19;
       v54 = v18;
       v48 = v32;
-      v55 = *&a10;
+      v55 = *&d;
       v41[0] = MEMORY[0x277D85DD0];
       v41[1] = 3221225472;
       v41[2] = __198__PXGDecorationTextureProvider__requestTextureForDecorationInfo_drawingHelper_solidColorOverlay_debugDecoration_targetSize_cornerRadius_screenScale_requestID_viewEnvironment_userInterfaceDirection___block_invoke_3;
@@ -165,38 +165,38 @@ uint64_t __198__PXGDecorationTextureProvider__requestTextureForDecorationInfo_dr
   return [v11 drawWithDecorationInfo:v19 solidColorOverlay:v10 debugDecoration:v13 cornerRadius:a2 context:v14 viewport:v15 screenScale:v17 viewEnvironment:*&v16 userInterfaceDirection:{a5, a6, a3, a4, v7, v6, v12}];
 }
 
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout
 {
   v197 = *MEMORY[0x277D85DE8];
-  v12 = a7;
+  layoutCopy = layout;
   v191.receiver = self;
   v191.super_class = PXGDecorationTextureProvider;
-  v89 = a6;
-  v70 = [(PXGTextureProvider *)&v191 requestTexturesForSpritesInRange:a3 geometries:a4 styles:a5 infos:a6 inLayout:v12];
+  infosCopy = infos;
+  v70 = [(PXGTextureProvider *)&v191 requestTexturesForSpritesInRange:range geometries:geometries styles:styles infos:infos inLayout:layoutCopy];
   v68 = v13;
-  v100 = v12;
-  v94 = [v100 numberOfDecoratingSpritesPerDecoratedSprite];
-  if (v94)
+  v100 = layoutCopy;
+  numberOfDecoratingSpritesPerDecoratedSprite = [v100 numberOfDecoratingSpritesPerDecoratedSprite];
+  if (numberOfDecoratingSpritesPerDecoratedSprite)
   {
-    v14 = [v100 decoratedLayout];
-    v15 = [v14 displayAssetSource];
-    v97 = HIDWORD(*&a3);
-    v98 = [v15 displayAssetFetchResultForSpritesInRange:(a3.location / v94) | (((a3.location + a3.length - 1) / v94 - a3.location / v94 + 1) << 32) inLayout:v14];
+    decoratedLayout = [v100 decoratedLayout];
+    displayAssetSource = [decoratedLayout displayAssetSource];
+    v97 = HIDWORD(*&range);
+    v98 = [displayAssetSource displayAssetFetchResultForSpritesInRange:(range.location / numberOfDecoratingSpritesPerDecoratedSprite) | (((range.location + range.length - 1) / numberOfDecoratingSpritesPerDecoratedSprite - range.location / numberOfDecoratingSpritesPerDecoratedSprite + 1) << 32) inLayout:decoratedLayout];
 
-    v16 = [v100 assetBadgeDecorationSource];
-    v92 = [v100 assetProgressDecorationSource];
-    v17 = [v100 selectionDecorationSource];
-    v73 = [v100 highlightDecorationSource];
-    v71 = [v100 solidColorOverlayDecorationSource];
-    v72 = [v100 dragDecorationSource];
+    assetBadgeDecorationSource = [v100 assetBadgeDecorationSource];
+    assetProgressDecorationSource = [v100 assetProgressDecorationSource];
+    selectionDecorationSource = [v100 selectionDecorationSource];
+    highlightDecorationSource = [v100 highlightDecorationSource];
+    solidColorOverlayDecorationSource = [v100 solidColorOverlayDecorationSource];
+    dragDecorationSource = [v100 dragDecorationSource];
     queuea = [v100 debugDecorationSource];
-    v83 = [v100 viewDecorationSource];
-    v69 = [(PXGDecorationTextureProvider *)self overlayViewSource];
-    v87 = [v17 selectedSpriteIndexesInLayout:v14];
-    v86 = [v73 highlightedSpriteIndexesInLayout:v14];
-    v84 = [v72 draggingSpriteIndexesInLayout:v14];
-    v81 = [v71 solidColorOverlayForLayout:v14];
-    v80 = [v100 debugDecorationIndex];
+    viewDecorationSource = [v100 viewDecorationSource];
+    overlayViewSource = [(PXGDecorationTextureProvider *)self overlayViewSource];
+    v87 = [selectionDecorationSource selectedSpriteIndexesInLayout:decoratedLayout];
+    v86 = [highlightDecorationSource highlightedSpriteIndexesInLayout:decoratedLayout];
+    v84 = [dragDecorationSource draggingSpriteIndexesInLayout:decoratedLayout];
+    v81 = [solidColorOverlayDecorationSource solidColorOverlayForLayout:decoratedLayout];
+    debugDecorationIndex = [v100 debugDecorationIndex];
     v76 = objc_opt_respondsToSelector();
     v74 = objc_opt_respondsToSelector();
     v187 = 0;
@@ -250,12 +250,12 @@ uint64_t __198__PXGDecorationTextureProvider__requestTextureForDecorationInfo_dr
     v155 = &v187;
     v77 = v98;
     v145 = v77;
-    v95 = v16;
+    v95 = assetBadgeDecorationSource;
     v146 = v95;
     v156 = buf;
-    v96 = v14;
+    v96 = decoratedLayout;
     v147 = v96;
-    v61 = v92;
+    v61 = assetProgressDecorationSource;
     v148 = v61;
     v67 = v18;
     v154 = v67;
@@ -263,7 +263,7 @@ uint64_t __198__PXGDecorationTextureProvider__requestTextureForDecorationInfo_dr
     v63 = queuea;
     v149 = v63;
     v158 = &v176;
-    v62 = v17;
+    v62 = selectionDecorationSource;
     v150 = v62;
     v159 = &v172;
     v64 = v87;
@@ -281,17 +281,17 @@ uint64_t __198__PXGDecorationTextureProvider__requestTextureForDecorationInfo_dr
     v20 = v19;
     [v100 textureScale];
     v22 = v21;
-    v82 = [v100 viewEnvironment];
-    v79 = [v100 userInterfaceDirection];
-    v88 = [v100 decorationSizeClass];
-    v99 = [(PXGDecorationTextureProvider *)self badgeDrawingHelper];
-    if (HIDWORD(*&a3))
+    viewEnvironment = [v100 viewEnvironment];
+    userInterfaceDirection = [v100 userInterfaceDirection];
+    decorationSizeClass = [v100 decorationSizeClass];
+    badgeDrawingHelper = [(PXGDecorationTextureProvider *)self badgeDrawingHelper];
+    if (HIDWORD(*&range))
     {
       v23 = v20 * v22;
-      v24 = v83;
-      if (v69)
+      v24 = viewDecorationSource;
+      if (overlayViewSource)
       {
-        v24 = v69;
+        v24 = overlayViewSource;
       }
 
       v78 = v24;
@@ -299,14 +299,14 @@ uint64_t __198__PXGDecorationTextureProvider__requestTextureForDecorationInfo_dr
       v25 = v70;
       do
       {
-        v26 = (v89 + 40 * a3.location);
+        v26 = (infosCopy + 40 * range.location);
         v27 = v26[1];
-        v28 = [v100 decoratingTypeForSpriteIndex:a3];
-        v93[2](v93, a3.location / v94);
+        v28 = [v100 decoratingTypeForSpriteIndex:range];
+        v93[2](v93, range.location / numberOfDecoratingSpritesPerDecoratedSprite);
         v141 = 0u;
         v142 = 0u;
         v140 = 0u;
-        if (v99)
+        if (badgeDrawingHelper)
         {
           v29 = *(v165 + 24);
           v30 = *(v169 + 24);
@@ -318,29 +318,29 @@ uint64_t __198__PXGDecorationTextureProvider__requestTextureForDecorationInfo_dr
           v139[1] = v34;
           BYTE1(v60) = v29;
           LOBYTE(v60) = v30;
-          [v99 decorationSpriteInfoForDecoratedSpriteIndex:v33 decorationType:v28 decoratingLayout:v100 assetDecorationInfo:v139 overallSelectionOrder:v32 isItemSelected:v31 isItemHighlighted:v60 isItemDragged:?];
+          [badgeDrawingHelper decorationSpriteInfoForDecoratedSpriteIndex:v33 decorationType:v28 decoratingLayout:v100 assetDecorationInfo:v139 overallSelectionOrder:v32 isItemSelected:v31 isItemHighlighted:v60 isItemDragged:?];
         }
 
-        v35 = [v96 spriteDataStore];
-        v36 = v35;
-        v37 = [v35 styles];
-        v139[0] = *(v37 + 160 * *(v188 + 6) + 36);
+        spriteDataStore = [v96 spriteDataStore];
+        v36 = spriteDataStore;
+        styles = [spriteDataStore styles];
+        v139[0] = *(styles + 160 * *(v188 + 6) + 36);
 
-        *(&v140 + 1) = v88;
+        *(&v140 + 1) = decorationSizeClass;
         if (v26->i8[0] == 1)
         {
-          v38 = v83;
+          v38 = viewDecorationSource;
           if (v28 == 3)
           {
             v38 = v78;
           }
 
           v39 = v38;
-          v40 = [v39 viewClassForSpriteAtIndex:a3 inLayout:v100];
+          v40 = [v39 viewClassForSpriteAtIndex:range inLayout:v100];
           if (v40)
           {
-            v85 = [v100 captionDecorationSource];
-            v41 = [v85 wantsCaptionDecorationsInLayout:v96];
+            captionDecorationSource = [v100 captionDecorationSource];
+            v41 = [captionDecorationSource wantsCaptionDecorationsInLayout:v96];
             v42 = [v95 wantsInteractiveFavoriteBadgesInLayout:v96];
             v43 = [v95 wantsFileSizeBadgesInLayout:v96];
             v44 = *(v173 + 24);
@@ -405,7 +405,7 @@ uint64_t __198__PXGDecorationTextureProvider__requestTextureForDecorationInfo_dr
               }
             }
 
-            v54 = [v39 viewUserDataForSpriteAtIndex:a3 inLayout:v100];
+            v54 = [v39 viewUserDataForSpriteAtIndex:range inLayout:v100];
             v55 = [v54 copyWithZone:0];
 
             block[0] = MEMORY[0x277D85DD0];
@@ -466,26 +466,26 @@ uint64_t __198__PXGDecorationTextureProvider__requestTextureForDecorationInfo_dr
           v101[3] = &unk_2782AC588;
           v105 = v162;
           v106[1] = v28;
-          v113 = v80;
+          v113 = debugDecorationIndex;
           objc_copyWeak(v106, &location);
           v107 = v140;
           v108 = v141;
           v109 = v142;
-          v102 = v99;
+          v102 = badgeDrawingHelper;
           v103 = v81;
           v110 = vcvtq_f64_f32(v27);
           v114 = v139[0];
           v111 = v23;
           v115 = v25;
-          v104 = v82;
-          v112 = v79;
+          v104 = viewEnvironment;
+          v112 = userInterfaceDirection;
           dispatch_async(queue, v101);
 
           objc_destroyWeak(v106);
         }
 
         ++v25;
-        a3 = (a3.location + 1);
+        range = (range.location + 1);
         --v97;
       }
 
@@ -671,22 +671,22 @@ void __98__PXGDecorationTextureProvider_requestTexturesForSpritesInRange_geometr
   [WeakRetained _requestTextureForDecorationInfo:v15 drawingHelper:v5 solidColorOverlay:v6 debugDecoration:v3 targetSize:v7 cornerRadius:v8 screenScale:*(a1 + 128) requestID:*(a1 + 136) viewEnvironment:v11 userInterfaceDirection:{v12, v13, v14, *(a1 + 144), v9}];
 }
 
-- (PXGDecorationTextureProvider)initWithBadgeDrawingHelper:(id)a3
+- (PXGDecorationTextureProvider)initWithBadgeDrawingHelper:(id)helper
 {
-  v4 = a3;
+  helperCopy = helper;
   v8.receiver = self;
   v8.super_class = PXGDecorationTextureProvider;
   v5 = [(PXGCGImageTextureProvider *)&v8 init];
   if (v5)
   {
-    v6 = v4;
-    if (!v4)
+    v6 = helperCopy;
+    if (!helperCopy)
     {
       v6 = objc_alloc_init(PXGDecorationDefaultBadgeDrawingHelper);
     }
 
     objc_storeStrong(&v5->_badgeDrawingHelper, v6);
-    if (!v4)
+    if (!helperCopy)
     {
     }
   }

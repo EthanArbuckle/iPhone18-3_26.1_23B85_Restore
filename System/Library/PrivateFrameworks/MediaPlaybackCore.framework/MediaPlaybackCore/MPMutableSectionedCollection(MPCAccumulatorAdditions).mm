@@ -20,7 +20,7 @@
   v5 = v4;
   v13 = v5;
   v14 = &v15;
-  [a1 enumerateSectionsUsingBlock:v12];
+  [self enumerateSectionsUsingBlock:v12];
   v6 = v16[5];
   if (!v6)
   {
@@ -30,7 +30,7 @@
     v9[3] = &unk_1E8233C08;
     v10 = v5;
     v11 = &v15;
-    [a1 enumerateItemsUsingBlock:v9];
+    [self enumerateItemsUsingBlock:v9];
 
     v6 = v16[5];
   }

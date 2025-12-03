@@ -1,11 +1,11 @@
 @interface VCLog
-+ (id)logForCategory:(id)a3;
++ (id)logForCategory:(id)category;
 - (VCLog)init;
 @end
 
 @implementation VCLog
 
-+ (id)logForCategory:(id)a3
++ (id)logForCategory:(id)category
 {
   v3._countAndFlagsBits = sub_2723FE5B4();
   VCLogging.Category.init(rawValue:)(v3);

@@ -1,11 +1,11 @@
 @interface LinkableHeaderCollectionViewCell
-- (_TtC18ASMessagesProvider32LinkableHeaderCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider32LinkableHeaderCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation LinkableHeaderCollectionViewCell
 
-- (_TtC18ASMessagesProvider32LinkableHeaderCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider32LinkableHeaderCollectionViewCell)initWithCoder:(id)coder
 {
   result = sub_76A840();
   __break(1u);
@@ -18,7 +18,7 @@
   v12.super_class = type metadata accessor for LinkableHeaderCollectionViewCell();
   v2 = v12.receiver;
   [(LinkableHeaderCollectionViewCell *)&v12 layoutSubviews];
-  v3 = [v2 contentView];
+  contentView = [v2 contentView];
   sub_BE70(0, &qword_93E550);
   sub_75D650();
   v5 = v4;

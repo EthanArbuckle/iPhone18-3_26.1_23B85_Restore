@@ -2,21 +2,21 @@
 - (HOOnboardingChildViewControllerDelegate)delegate;
 - (HOOnboardingChildViewControllerNavigationBarDelegate)navigationBarDelegate;
 - (HOOnboardingIncomingInvitationFlowDelegate)incomingInvitationDelegate;
-- (HOOnboardingInvitationJoinedHomeViewController)initWithIncomingInvitation:(id)a3 delegate:(id)a4;
-- (void)_continueButtonTapped:(id)a3;
+- (HOOnboardingInvitationJoinedHomeViewController)initWithIncomingInvitation:(id)invitation delegate:(id)delegate;
+- (void)_continueButtonTapped:(id)tapped;
 - (void)nextButtonPressed;
 @end
 
 @implementation HOOnboardingInvitationJoinedHomeViewController
 
-- (HOOnboardingInvitationJoinedHomeViewController)initWithIncomingInvitation:(id)a3 delegate:(id)a4
+- (HOOnboardingInvitationJoinedHomeViewController)initWithIncomingInvitation:(id)invitation delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
+  delegateCopy = delegate;
+  invitationCopy = invitation;
   v8 = sub_1000371C0(@"HOIncomingInvitation_RestrictedGuest_JoinedHome_Title");
-  v9 = [v7 homeName];
+  homeName = [invitationCopy homeName];
 
-  v10 = [NSString stringWithValidatedFormat:v8 validFormatSpecifiers:@"%@" error:0, v9];
+  v10 = [NSString stringWithValidatedFormat:v8 validFormatSpecifiers:@"%@" error:0, homeName];
 
   v11 = [UIImage systemImageNamed:@"house.circle.fill"];
   v22.receiver = self;
@@ -25,12 +25,12 @@
 
   if (v12)
   {
-    objc_storeWeak(&v12->_incomingInvitationDelegate, v6);
-    v13 = [(HOOnboardingInvitationJoinedHomeViewController *)v12 headerView];
-    [v13 setIconAccessibilityIdentifier:@"Home.Onboarding.Guest.JoinedHome.Icon"];
+    objc_storeWeak(&v12->_incomingInvitationDelegate, delegateCopy);
+    headerView = [(HOOnboardingInvitationJoinedHomeViewController *)v12 headerView];
+    [headerView setIconAccessibilityIdentifier:@"Home.Onboarding.Guest.JoinedHome.Icon"];
 
-    v14 = [(HOOnboardingInvitationJoinedHomeViewController *)v12 headerView];
-    [v14 setTitleAccessibilityIdentifier:@"Home.Onboarding.Guest.JoinedHome.Title"];
+    headerView2 = [(HOOnboardingInvitationJoinedHomeViewController *)v12 headerView];
+    [headerView2 setTitleAccessibilityIdentifier:@"Home.Onboarding.Guest.JoinedHome.Title"];
 
     v15 = +[OBBoldTrayButton boldButton];
     continueButton = v12->_continueButton;
@@ -43,18 +43,18 @@
 
     [(OBTrayButton *)v12->_continueButton setAccessibilityIdentifier:@"Home.Onboarding.Guest.JoinedHome.ContinueButton"];
     [(OBTrayButton *)v12->_continueButton addTarget:v12 action:"_continueButtonTapped:" forControlEvents:64];
-    v19 = [(HOOnboardingInvitationJoinedHomeViewController *)v12 buttonTray];
-    [v19 addButton:v12->_continueButton];
+    buttonTray = [(HOOnboardingInvitationJoinedHomeViewController *)v12 buttonTray];
+    [buttonTray addButton:v12->_continueButton];
 
     [(HOOnboardingInvitationJoinedHomeViewController *)v12 setModalInPresentation:1];
-    v20 = [(HOOnboardingInvitationJoinedHomeViewController *)v12 navigationItem];
-    [v20 setHidesBackButton:1];
+    navigationItem = [(HOOnboardingInvitationJoinedHomeViewController *)v12 navigationItem];
+    [navigationItem setHidesBackButton:1];
   }
 
   return v12;
 }
 
-- (void)_continueButtonTapped:(id)a3
+- (void)_continueButtonTapped:(id)tapped
 {
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -65,20 +65,20 @@
   }
 
   [(HOOnboardingInvitationJoinedHomeViewController *)self setDidUserTriggerOnboardingDismissal:1];
-  v5 = [(HOOnboardingInvitationJoinedHomeViewController *)self incomingInvitationDelegate];
+  incomingInvitationDelegate = [(HOOnboardingInvitationJoinedHomeViewController *)self incomingInvitationDelegate];
   v6 = objc_opt_respondsToSelector();
 
-  v7 = [(HOOnboardingInvitationJoinedHomeViewController *)self incomingInvitationDelegate];
-  v8 = v7;
+  incomingInvitationDelegate2 = [(HOOnboardingInvitationJoinedHomeViewController *)self incomingInvitationDelegate];
+  v8 = incomingInvitationDelegate2;
   if (v6)
   {
-    v9 = [(HOOnboardingInvitationJoinedHomeViewController *)self invitation];
-    [v8 didAcceptInvitation:v9 viewController:self];
+    invitation = [(HOOnboardingInvitationJoinedHomeViewController *)self invitation];
+    [v8 didAcceptInvitation:invitation viewController:self];
   }
 
   else
   {
-    [v7 invitationViewControllerDidAcceptInvitation:self];
+    [incomingInvitationDelegate2 invitationViewControllerDidAcceptInvitation:self];
   }
 }
 

@@ -2,7 +2,7 @@
 - (BOOL)isBaseFontNameUsed;
 - (NSString)description;
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (id)layoutSchemata;
 - (void)dealloc;
 @end
@@ -13,24 +13,24 @@
 {
   *a2 = &unk_2884CB990;
   *(a2 + 8) = 19;
-  result = a1;
+  result = self;
   *(a2 + 16) = result;
   *(a2 + 24) = 0;
   return result;
 }
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
   v28 = *MEMORY[0x277D85DE8];
-  objc_msgSend_pushState_(a4, a2, 2, a4);
-  v9 = objc_msgSend_parseChildrenAsArrayFromXMLNode_(a4, v7, a3, v8);
+  objc_msgSend_pushState_(parser, a2, 2, parser);
+  v9 = objc_msgSend_parseChildrenAsArrayFromXMLNode_(parser, v7, node, v8);
   v26.receiver = self;
   v26.super_class = EQKitMathMLMTable;
   v10 = [(EQKitMathMLMTable *)&v26 init];
   v14 = v10;
-  if (a4)
+  if (parser)
   {
-    if (a3)
+    if (node)
     {
       if (v10)
       {
@@ -68,7 +68,7 @@
     }
   }
 
-  objc_msgSend_popState(a4, v11, v12, v13);
+  objc_msgSend_popState(parser, v11, v12, v13);
   return v14;
 }
 

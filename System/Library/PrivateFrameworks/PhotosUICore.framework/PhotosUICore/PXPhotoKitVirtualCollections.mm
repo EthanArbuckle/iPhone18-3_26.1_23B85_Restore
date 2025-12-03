@@ -1,14 +1,14 @@
 @interface PXPhotoKitVirtualCollections
-+ (id)_makeTransientAssetCollectionWithRecentsKey:(id)a3 title:(id)a4 identifier:(id)a5 photoLibrary:(id)a6 configurationHandler:(id)a7;
-+ (id)_virtualCollectionForType:(int64_t)a3 photoLibrary:(id)a4;
++ (id)_makeTransientAssetCollectionWithRecentsKey:(id)key title:(id)title identifier:(id)identifier photoLibrary:(id)library configurationHandler:(id)handler;
++ (id)_virtualCollectionForType:(int64_t)type photoLibrary:(id)library;
 - (PHAssetCollection)peopleCollection;
 - (PHAssetCollection)prototypeCollection;
 - (PHPhotoLibrary)photoLibrary;
-- (PXPhotoKitVirtualCollections)initWithPhotoLibrary:(id)a3;
-- (id)featuredEventsCollectionsWithAssetFetchResult:(id)a3;
-- (id)featuredMemoriesCollectionsWithAssetFetchResult:(id)a3;
-- (id)featuredPeopleCollectionsWithAssetFetchResult:(id)a3;
-- (id)featuredTripsCollectionsWithAssetFetchResult:(id)a3;
+- (PXPhotoKitVirtualCollections)initWithPhotoLibrary:(id)library;
+- (id)featuredEventsCollectionsWithAssetFetchResult:(id)result;
+- (id)featuredMemoriesCollectionsWithAssetFetchResult:(id)result;
+- (id)featuredPeopleCollectionsWithAssetFetchResult:(id)result;
+- (id)featuredTripsCollectionsWithAssetFetchResult:(id)result;
 @end
 
 @implementation PXPhotoKitVirtualCollections
@@ -20,46 +20,46 @@
   return WeakRetained;
 }
 
-- (id)featuredPeopleCollectionsWithAssetFetchResult:(id)a3
+- (id)featuredPeopleCollectionsWithAssetFetchResult:(id)result
 {
   v4 = MEMORY[0x1E6978650];
-  v5 = [a3 fetchedObjects];
+  fetchedObjects = [result fetchedObjects];
   v6 = PXLocalizedStringFromTable(@"PXCollectionFeaturedPeopleCollectionTitle", @"LemonadeLocalizable");
-  v7 = [(PXPhotoKitVirtualCollections *)self photoLibrary];
-  v8 = [v4 transientAssetCollectionWithAssets:v5 title:v6 identifier:@"PXTransientCollectionIdentifierFeaturedPeople" photoLibrary:v7];
+  photoLibrary = [(PXPhotoKitVirtualCollections *)self photoLibrary];
+  v8 = [v4 transientAssetCollectionWithAssets:fetchedObjects title:v6 identifier:@"PXTransientCollectionIdentifierFeaturedPeople" photoLibrary:photoLibrary];
 
   return v8;
 }
 
-- (id)featuredMemoriesCollectionsWithAssetFetchResult:(id)a3
+- (id)featuredMemoriesCollectionsWithAssetFetchResult:(id)result
 {
   v4 = MEMORY[0x1E6978650];
-  v5 = [a3 fetchedObjects];
+  fetchedObjects = [result fetchedObjects];
   v6 = PXLocalizedStringFromTable(@"PXCollectionFeaturedMemoriesCollectionTitle", @"LemonadeLocalizable");
-  v7 = [(PXPhotoKitVirtualCollections *)self photoLibrary];
-  v8 = [v4 transientAssetCollectionWithAssets:v5 title:v6 identifier:@"PXTransientCollectionIdentifierFeaturedMemories" photoLibrary:v7];
+  photoLibrary = [(PXPhotoKitVirtualCollections *)self photoLibrary];
+  v8 = [v4 transientAssetCollectionWithAssets:fetchedObjects title:v6 identifier:@"PXTransientCollectionIdentifierFeaturedMemories" photoLibrary:photoLibrary];
 
   return v8;
 }
 
-- (id)featuredEventsCollectionsWithAssetFetchResult:(id)a3
+- (id)featuredEventsCollectionsWithAssetFetchResult:(id)result
 {
   v4 = MEMORY[0x1E6978650];
-  v5 = [a3 fetchedObjects];
+  fetchedObjects = [result fetchedObjects];
   v6 = PXLocalizedStringFromTable(@"PXCollectionFeaturedEventsCollectionTitle", @"LemonadeLocalizable");
-  v7 = [(PXPhotoKitVirtualCollections *)self photoLibrary];
-  v8 = [v4 transientAssetCollectionWithAssets:v5 title:v6 identifier:@"PXTransientCollectionIdentifierFeaturedEvents" photoLibrary:v7];
+  photoLibrary = [(PXPhotoKitVirtualCollections *)self photoLibrary];
+  v8 = [v4 transientAssetCollectionWithAssets:fetchedObjects title:v6 identifier:@"PXTransientCollectionIdentifierFeaturedEvents" photoLibrary:photoLibrary];
 
   return v8;
 }
 
-- (id)featuredTripsCollectionsWithAssetFetchResult:(id)a3
+- (id)featuredTripsCollectionsWithAssetFetchResult:(id)result
 {
   v4 = MEMORY[0x1E6978650];
-  v5 = [a3 fetchedObjects];
+  fetchedObjects = [result fetchedObjects];
   v6 = PXLocalizedStringFromTable(@"PXCollectionFeaturedTripsCollectionTitle", @"LemonadeLocalizable");
-  v7 = [(PXPhotoKitVirtualCollections *)self photoLibrary];
-  v8 = [v4 transientAssetCollectionWithAssets:v5 title:v6 identifier:@"PXTransientCollectionIdentifierFeaturedTrips" photoLibrary:v7];
+  photoLibrary = [(PXPhotoKitVirtualCollections *)self photoLibrary];
+  v8 = [v4 transientAssetCollectionWithAssets:fetchedObjects title:v6 identifier:@"PXTransientCollectionIdentifierFeaturedTrips" photoLibrary:photoLibrary];
 
   return v8;
 }
@@ -67,152 +67,152 @@
 - (PHAssetCollection)prototypeCollection
 {
   v2 = MEMORY[0x1E6978650];
-  v3 = [(PXPhotoKitVirtualCollections *)self photoLibrary];
-  v4 = [v2 transientAssetCollectionWithAssets:MEMORY[0x1E695E0F0] title:@"Prototype" identifier:@"PXPrototypeVirtualCollection" photoLibrary:v3];
+  photoLibrary = [(PXPhotoKitVirtualCollections *)self photoLibrary];
+  v4 = [v2 transientAssetCollectionWithAssets:MEMORY[0x1E695E0F0] title:@"Prototype" identifier:@"PXPrototypeVirtualCollection" photoLibrary:photoLibrary];
 
   return v4;
 }
 
 - (PHAssetCollection)peopleCollection
 {
-  v3 = [(PXPhotoKitVirtualCollections *)self photoLibrary];
-  v4 = PXLocalizedStringForPersonOrPetAndVisibility(0, [v3 px_peoplePetsHomeVisibility], @"PXCollectionPeopleTitle");
+  photoLibrary = [(PXPhotoKitVirtualCollections *)self photoLibrary];
+  v4 = PXLocalizedStringForPersonOrPetAndVisibility(0, [photoLibrary px_peoplePetsHomeVisibility], @"PXCollectionPeopleTitle");
 
   v5 = MEMORY[0x1E6978650];
-  v6 = [(PXPhotoKitVirtualCollections *)self photoLibrary];
-  v7 = [v5 transientAssetCollectionWithAssets:MEMORY[0x1E695E0F0] title:v4 identifier:@"PXPeopleVirtualCollection" photoLibrary:v6];
+  photoLibrary2 = [(PXPhotoKitVirtualCollections *)self photoLibrary];
+  v7 = [v5 transientAssetCollectionWithAssets:MEMORY[0x1E695E0F0] title:v4 identifier:@"PXPeopleVirtualCollection" photoLibrary:photoLibrary2];
 
   return v7;
 }
 
-- (PXPhotoKitVirtualCollections)initWithPhotoLibrary:(id)a3
+- (PXPhotoKitVirtualCollections)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v142.receiver = self;
   v142.super_class = PXPhotoKitVirtualCollections;
   v5 = [(PXPhotoKitVirtualCollections *)&v142 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_photoLibrary, v4);
+    objc_storeWeak(&v5->_photoLibrary, libraryCopy);
     v7 = MEMORY[0x1E6978650];
     v8 = PXLocalizedStringFromTable(@"PXCollectionCollectionsTitle", @"PhotosUICore");
     v9 = MEMORY[0x1E695E0F0];
-    v10 = [v7 transientAssetCollectionWithAssets:MEMORY[0x1E695E0F0] title:v8 identifier:@"PXCollectionsVirtualCollection" photoLibrary:v4];
+    v10 = [v7 transientAssetCollectionWithAssets:MEMORY[0x1E695E0F0] title:v8 identifier:@"PXCollectionsVirtualCollection" photoLibrary:libraryCopy];
     collectionsCollection = v6->_collectionsCollection;
     v6->_collectionsCollection = v10;
 
     v12 = MEMORY[0x1E6978650];
     v13 = PXLocalizedStringFromTable(@"PXCollectionPhotosTitle", @"PhotosUICore");
-    v14 = [v12 transientAssetCollectionWithAssets:v9 title:v13 identifier:@"PXMomentsVirtualCollection" photoLibrary:v4];
+    v14 = [v12 transientAssetCollectionWithAssets:v9 title:v13 identifier:@"PXMomentsVirtualCollection" photoLibrary:libraryCopy];
     momentsCollection = v6->_momentsCollection;
     v6->_momentsCollection = v14;
 
     v16 = MEMORY[0x1E6978650];
     v17 = PXLocalizedStringFromTable(@"PXCollectionLibraryTitle", @"PhotosUICore");
-    v18 = [v16 transientAssetCollectionWithAssets:v9 title:v17 identifier:@"PXPhotosVirtualCollection" photoLibrary:v4];
+    v18 = [v16 transientAssetCollectionWithAssets:v9 title:v17 identifier:@"PXPhotosVirtualCollection" photoLibrary:libraryCopy];
     photosCollection = v6->_photosCollection;
     v6->_photosCollection = v18;
 
     v20 = MEMORY[0x1E6978650];
     v21 = PXLocalizedStringFromTable(@"PXCollectionMemoriesTitle", @"PhotosUICore");
-    v22 = [v20 transientAssetCollectionWithAssets:v9 title:v21 identifier:@"PXMemoriesVirtualCollection" photoLibrary:v4];
+    v22 = [v20 transientAssetCollectionWithAssets:v9 title:v21 identifier:@"PXMemoriesVirtualCollection" photoLibrary:libraryCopy];
     memoriesCollection = v6->_memoriesCollection;
     v6->_memoriesCollection = v22;
 
     v24 = MEMORY[0x1E6978650];
     v25 = PXLocalizedStringFromTable(@"PXCollectionAllAlbumsTitle", @"PhotosUICore");
-    v26 = [v24 transientAssetCollectionWithAssets:v9 title:v25 identifier:@"PXAllAlbumsVirtualCollection" photoLibrary:v4];
+    v26 = [v24 transientAssetCollectionWithAssets:v9 title:v25 identifier:@"PXAllAlbumsVirtualCollection" photoLibrary:libraryCopy];
     allAlbumsCollection = v6->_allAlbumsCollection;
     v6->_allAlbumsCollection = v26;
 
     v28 = MEMORY[0x1E6978650];
     v29 = PXLocalizedStringFromTable(@"PXCollectionAllProjectsTitle", @"PhotosUICore");
-    v30 = [v28 transientAssetCollectionWithAssets:v9 title:v29 identifier:@"PXAllProjectsVirtualCollection" photoLibrary:v4];
+    v30 = [v28 transientAssetCollectionWithAssets:v9 title:v29 identifier:@"PXAllProjectsVirtualCollection" photoLibrary:libraryCopy];
     allProjectsCollection = v6->_allProjectsCollection;
     v6->_allProjectsCollection = v30;
 
     v32 = MEMORY[0x1E6978650];
     v33 = PXLocalizedStringFromTable(@"PXCollectionAllSharedAlbumsTitle", @"PhotosUICore");
-    v34 = [v32 transientAssetCollectionWithAssets:v9 title:v33 identifier:@"PXAllSharedAlbumsVirtualCollection" photoLibrary:v4];
+    v34 = [v32 transientAssetCollectionWithAssets:v9 title:v33 identifier:@"PXAllSharedAlbumsVirtualCollection" photoLibrary:libraryCopy];
     sharedAlbumsCollection = v6->_sharedAlbumsCollection;
     v6->_sharedAlbumsCollection = v34;
 
     v36 = MEMORY[0x1E6978650];
     v37 = PXLocalizedStringFromTable(@"PXCollectionSearchTitle", @"PhotosUICore");
-    v38 = [v36 transientAssetCollectionWithAssets:v9 title:v37 identifier:@"PXPhotosSearchVirtualCollection" photoLibrary:v4];
+    v38 = [v36 transientAssetCollectionWithAssets:v9 title:v37 identifier:@"PXPhotosSearchVirtualCollection" photoLibrary:libraryCopy];
     searchCollection = v6->_searchCollection;
     v6->_searchCollection = v38;
 
     v40 = MEMORY[0x1E6978650];
     v41 = PXLocalizedStringFromTable(@"PXCollectionBookmarksTitle", @"PhotosUICore");
-    v42 = [v40 transientAssetCollectionWithAssets:v9 title:v41 identifier:@"PXBookmarksVirtualCollection" photoLibrary:v4];
+    v42 = [v40 transientAssetCollectionWithAssets:v9 title:v41 identifier:@"PXBookmarksVirtualCollection" photoLibrary:libraryCopy];
     bookmarksCollection = v6->_bookmarksCollection;
     v6->_bookmarksCollection = v42;
 
     v44 = MEMORY[0x1E6978650];
     v45 = PXLocalizedStringFromTable(@"PXCollectionCompleteMyMomentTitle", @"PhotosUICore");
-    v46 = [v44 transientAssetCollectionWithAssets:v9 title:v45 identifier:@"PXCompleteMyMomentVirtualCollection" photoLibrary:v4];
+    v46 = [v44 transientAssetCollectionWithAssets:v9 title:v45 identifier:@"PXCompleteMyMomentVirtualCollection" photoLibrary:libraryCopy];
     completeMyMomentCollection = v6->_completeMyMomentCollection;
     v6->_completeMyMomentCollection = v46;
 
     v48 = MEMORY[0x1E6978650];
     v49 = PXLocalizedStringFromTable(@"PXCollectionSharedActivityTitle", @"PhotosUICore");
-    v50 = [v48 transientAssetCollectionWithAssets:v9 title:v49 identifier:@"PXSharedActivityVirtualCollection" photoLibrary:v4];
+    v50 = [v48 transientAssetCollectionWithAssets:v9 title:v49 identifier:@"PXSharedActivityVirtualCollection" photoLibrary:libraryCopy];
     sharedActivityCollection = v6->_sharedActivityCollection;
     v6->_sharedActivityCollection = v50;
 
     v52 = MEMORY[0x1E6978650];
     v53 = PXLocalizedStringFromTable(@"PXCollectionEventsTitle", @"LemonadeLocalizable");
-    v54 = [v52 transientAssetCollectionWithAssets:v9 title:v53 identifier:@"PXEventsVirtualCollection" photoLibrary:v4];
+    v54 = [v52 transientAssetCollectionWithAssets:v9 title:v53 identifier:@"PXEventsVirtualCollection" photoLibrary:libraryCopy];
     eventsCollection = v6->_eventsCollection;
     v6->_eventsCollection = v54;
 
     v56 = MEMORY[0x1E6978650];
     v57 = PXLocalizedStringFromTable(@"PXCollectionTripsTitle", @"LemonadeLocalizable");
-    v58 = [v56 transientAssetCollectionWithAssets:v9 title:v57 identifier:@"PXTripsVirtualCollection" photoLibrary:v4];
+    v58 = [v56 transientAssetCollectionWithAssets:v9 title:v57 identifier:@"PXTripsVirtualCollection" photoLibrary:libraryCopy];
     tripsCollection = v6->_tripsCollection;
     v6->_tripsCollection = v58;
 
     v60 = MEMORY[0x1E6978650];
     v61 = PXLocalizedStringFromTable(@"PXCollectionFeaturedPhotosTitle", @"LemonadeLocalizable");
-    v62 = [v60 transientAssetCollectionWithAssets:v9 title:v61 identifier:@"PXFeaturedPhotosVirtualCollection" photoLibrary:v4];
+    v62 = [v60 transientAssetCollectionWithAssets:v9 title:v61 identifier:@"PXFeaturedPhotosVirtualCollection" photoLibrary:libraryCopy];
     featuredPhotosCollection = v6->_featuredPhotosCollection;
     v6->_featuredPhotosCollection = v62;
 
     v64 = MEMORY[0x1E6978650];
     v65 = PXLocalizedStringFromTable(@"PXCollectionWallpaperSuggestionsCollectionTitle", @"LemonadeLocalizable");
-    v66 = [v64 transientAssetCollectionWithAssets:v9 title:v65 identifier:@"PXWallpaperSuggestionsVirtualCollection" photoLibrary:v4];
+    v66 = [v64 transientAssetCollectionWithAssets:v9 title:v65 identifier:@"PXWallpaperSuggestionsVirtualCollection" photoLibrary:libraryCopy];
     wallpaperSuggestionsCollection = v6->_wallpaperSuggestionsCollection;
     v6->_wallpaperSuggestionsCollection = v66;
 
     v68 = MEMORY[0x1E6978650];
     v69 = PXLocalizedStringFromTable(@"PXCollectionMapCollectionTitle", @"LemonadeLocalizable");
-    v70 = [v68 transientAssetCollectionWithAssets:v9 title:v69 identifier:@"PXTransientCollectionIdentifierMap" photoLibrary:v4];
+    v70 = [v68 transientAssetCollectionWithAssets:v9 title:v69 identifier:@"PXTransientCollectionIdentifierMap" photoLibrary:libraryCopy];
     mapCollection = v6->_mapCollection;
     v6->_mapCollection = v70;
 
     v72 = MEMORY[0x1E6978760];
     v73 = PXLocalizedStringFromTable(@"PXCollectionBookmarksCollectionTitle", @"LemonadeLocalizable");
-    v74 = [v72 transientCollectionListWithCollections:v9 title:v73 identifier:@"PXBookmarksVirtualCollectionList" photoLibrary:v4];
+    v74 = [v72 transientCollectionListWithCollections:v9 title:v73 identifier:@"PXBookmarksVirtualCollectionList" photoLibrary:libraryCopy];
     bookmarksCollectionList = v6->_bookmarksCollectionList;
     v6->_bookmarksCollectionList = v74;
 
     v76 = MEMORY[0x1E6978760];
     v77 = PXLocalizedStringFromTable(@"PXOtherAlbumsOutlineTitle", @"PhotosUICore");
-    v78 = [v76 transientCollectionListWithCollections:v9 title:v77 identifier:@"PXTransientCollectionIdentifierUtilities" photoLibrary:v4];
+    v78 = [v76 transientCollectionListWithCollections:v9 title:v77 identifier:@"PXTransientCollectionIdentifierUtilities" photoLibrary:libraryCopy];
     utilitiesCollectionList = v6->_utilitiesCollectionList;
     v6->_utilitiesCollectionList = v78;
 
     v80 = MEMORY[0x1E6978760];
     v81 = PXLocalizedStringFromTable(@"PXCollectionSharedAlbumsTitle", @"PhotosUICore");
-    v82 = [v80 transientCollectionListWithCollections:v9 title:v81 identifier:@"PXSharedAlbumsAndActivityVirtualCollection" photoLibrary:v4];
+    v82 = [v80 transientCollectionListWithCollections:v9 title:v81 identifier:@"PXSharedAlbumsAndActivityVirtualCollection" photoLibrary:libraryCopy];
     sharedAlbumsAndActivityCollectionList = v6->_sharedAlbumsAndActivityCollectionList;
     v6->_sharedAlbumsAndActivityCollectionList = v82;
 
     v84 = MEMORY[0x1E6978760];
     v85 = PXLocalizedStringFromTable(@"PXSyncedFromMacOutlineTitle", @"PhotosUICore");
-    v86 = [v84 transientCollectionListWithCollections:v9 title:v85 identifier:@"PXMacSyncedAlbumsVirtualCollection" photoLibrary:v4];
+    v86 = [v84 transientCollectionListWithCollections:v9 title:v85 identifier:@"PXMacSyncedAlbumsVirtualCollection" photoLibrary:libraryCopy];
     macSyncedAlbumsCollectionList = v6->_macSyncedAlbumsCollectionList;
     v6->_macSyncedAlbumsCollectionList = v86;
 
@@ -221,7 +221,7 @@
     v140[1] = 3221225472;
     v140[2] = __53__PXPhotoKitVirtualCollections_initWithPhotoLibrary___block_invoke;
     v140[3] = &unk_1E774BB70;
-    v89 = v4;
+    v89 = libraryCopy;
     v141 = v89;
     v90 = [v88 initWithRetriableBlock:v140];
     importHistoryCollection = v6->_importHistoryCollection;
@@ -318,114 +318,114 @@
   return v6;
 }
 
-+ (id)_virtualCollectionForType:(int64_t)a3 photoLibrary:(id)a4
++ (id)_virtualCollectionForType:(int64_t)type photoLibrary:(id)library
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 > 4)
+  libraryCopy = library;
+  v7 = libraryCopy;
+  if (type > 4)
   {
-    if (a3 > 6)
+    if (type > 6)
     {
-      switch(a3)
+      switch(type)
       {
         case 7:
           v23 = MEMORY[0x1E6978760];
-          v10 = [v6 px_standardLibrarySpecificFetchOptions];
-          v24 = [v23 fetchRootProjectCollectionListWithOptions:v10];
+          px_standardLibrarySpecificFetchOptions = [libraryCopy px_standardLibrarySpecificFetchOptions];
+          v24 = [v23 fetchRootProjectCollectionListWithOptions:px_standardLibrarySpecificFetchOptions];
           break;
         case 8:
           v25 = MEMORY[0x1E6978760];
-          v10 = [v6 px_standardLibrarySpecificFetchOptions];
-          v24 = [v25 fetchRootAlbumCollectionListWithOptions:v10];
+          px_standardLibrarySpecificFetchOptions = [libraryCopy px_standardLibrarySpecificFetchOptions];
+          v24 = [v25 fetchRootAlbumCollectionListWithOptions:px_standardLibrarySpecificFetchOptions];
           break;
         case 9:
           v8 = MEMORY[0x1E6978770];
-          v9 = [v6 px_standardLibrarySpecificFetchOptions];
-          v10 = [v8 fetchAssetCollectionsWithType:12 subtype:102 options:v9];
+          px_standardLibrarySpecificFetchOptions2 = [libraryCopy px_standardLibrarySpecificFetchOptions];
+          px_standardLibrarySpecificFetchOptions = [v8 fetchAssetCollectionsWithType:12 subtype:102 options:px_standardLibrarySpecificFetchOptions2];
 
           v11 = PXLocalizedStringFromTable(@"PXCollectionSharedAlbumsTitle", @"PhotosUICore");
-          v12 = [MEMORY[0x1E6978760] transientCollectionListWithCollectionsFetchResult:v10 title:v11 identifier:@"PXSharedAlbumsVirtualCollection"];
+          firstObject = [MEMORY[0x1E6978760] transientCollectionListWithCollectionsFetchResult:px_standardLibrarySpecificFetchOptions title:v11 identifier:@"PXSharedAlbumsVirtualCollection"];
           goto LABEL_24;
         default:
           goto LABEL_26;
       }
 
       v11 = v24;
-      v12 = [v24 firstObject];
+      firstObject = [v24 firstObject];
 LABEL_24:
-      v4 = v12;
+      v4 = firstObject;
 
       goto LABEL_25;
     }
 
-    if (a3 != 5)
+    if (type != 5)
     {
       v17 = MEMORY[0x1E6978650];
-      v18 = [MEMORY[0x1E6978650] px_mediaTypeSmartAlbumSubtypes];
-      v10 = [v17 px_fetchAssetCollectionsWithAlbumSubtypes:v18 photoLibrary:v7];
+      px_mediaTypeSmartAlbumSubtypes = [MEMORY[0x1E6978650] px_mediaTypeSmartAlbumSubtypes];
+      px_standardLibrarySpecificFetchOptions = [v17 px_fetchAssetCollectionsWithAlbumSubtypes:px_mediaTypeSmartAlbumSubtypes photoLibrary:v7];
 
       v11 = PXLocalizedStringFromTable(@"PXMediaTypesAlbumsListTitle", @"PhotosUICore");
-      v12 = [MEMORY[0x1E6978760] transientCollectionListWithCollections:v10 title:v11 identifier:@"PXMediaTypesVirtualCollection" photoLibrary:v7];
+      firstObject = [MEMORY[0x1E6978760] transientCollectionListWithCollections:px_standardLibrarySpecificFetchOptions title:v11 identifier:@"PXMediaTypesVirtualCollection" photoLibrary:v7];
       goto LABEL_24;
     }
 
-    v10 = PXLocalizedStringFromTable(@"PXCollectionRecentlyViewedTitle", @"LemonadeLocalizable");
+    px_standardLibrarySpecificFetchOptions = PXLocalizedStringFromTable(@"PXCollectionRecentlyViewedTitle", @"LemonadeLocalizable");
     v15 = @"additionalAttributes.lastViewedDate";
     v16 = @"PXRecentlyViewedVirtualCollection";
     goto LABEL_19;
   }
 
-  if (a3 > 2)
+  if (type > 2)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
-      v10 = PXLocalizedStringFromTable(@"PXCollectionRecentlyEditedTitle", @"LemonadeLocalizable");
+      px_standardLibrarySpecificFetchOptions = PXLocalizedStringFromTable(@"PXCollectionRecentlyEditedTitle", @"LemonadeLocalizable");
       v15 = @"adjustmentTimestamp";
       v16 = @"PXRecentlyEditedVirtualCollection";
       v20 = &__block_literal_global_161350;
-      v21 = v10;
+      v21 = px_standardLibrarySpecificFetchOptions;
       v22 = v7;
 LABEL_20:
       v19 = [PXPhotoKitVirtualCollections _makeTransientAssetCollectionWithRecentsKey:v15 title:v21 identifier:v16 photoLibrary:v22 configurationHandler:v20];
       goto LABEL_21;
     }
 
-    v10 = PXLocalizedStringFromTable(@"PXCollectionRecentlySharedTitle", @"LemonadeLocalizable");
+    px_standardLibrarySpecificFetchOptions = PXLocalizedStringFromTable(@"PXCollectionRecentlySharedTitle", @"LemonadeLocalizable");
     v15 = @"lastSharedDate";
     v16 = @"PXRecentlySharedVirtualCollection";
 LABEL_19:
-    v21 = v10;
+    v21 = px_standardLibrarySpecificFetchOptions;
     v22 = v7;
     v20 = 0;
     goto LABEL_20;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
-    if (a3 != 2)
+    if (type != 2)
     {
       goto LABEL_26;
     }
 
-    v10 = [v6 px_standardLibrarySpecificFetchOptions];
+    px_standardLibrarySpecificFetchOptions = [libraryCopy px_standardLibrarySpecificFetchOptions];
     v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"importSession != nil"];
-    [v10 setInternalPredicate:v13];
+    [px_standardLibrarySpecificFetchOptions setInternalPredicate:v13];
 
-    [v10 setWantsIncrementalChangeDetails:1];
-    [v10 setSortDescriptors:MEMORY[0x1E695E0F0]];
-    v11 = [objc_alloc(MEMORY[0x1E6978AF8]) initWithFetchOptions:v10];
+    [px_standardLibrarySpecificFetchOptions setWantsIncrementalChangeDetails:1];
+    [px_standardLibrarySpecificFetchOptions setSortDescriptors:MEMORY[0x1E695E0F0]];
+    v11 = [objc_alloc(MEMORY[0x1E6978AF8]) initWithFetchOptions:px_standardLibrarySpecificFetchOptions];
     [v11 setType:2];
     v14 = PXLocalizedStringFromTable(@"PXImportHistoryTitle", @"PhotosUICore");
     [v11 setTitle:v14];
 
     [v11 setIdentifier:@"PXImportHistoryVirtualCollection"];
     [v11 setKeyAssetsPosition:2];
-    v12 = [MEMORY[0x1E6978650] transientAssetCollectionWithOptions:v11];
+    firstObject = [MEMORY[0x1E6978650] transientAssetCollectionWithOptions:v11];
     goto LABEL_24;
   }
 
-  v10 = PXContentSyndicationLocalizedSocialLayerTitle();
-  v19 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssets:MEMORY[0x1E695E0F0] title:v10 identifier:@"PXContentSyndicationVirtualCollection" photoLibrary:v7];
+  px_standardLibrarySpecificFetchOptions = PXContentSyndicationLocalizedSocialLayerTitle();
+  v19 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssets:MEMORY[0x1E695E0F0] title:px_standardLibrarySpecificFetchOptions identifier:@"PXContentSyndicationVirtualCollection" photoLibrary:v7];
 LABEL_21:
   v4 = v19;
 LABEL_25:
@@ -435,44 +435,44 @@ LABEL_26:
   return v4;
 }
 
-+ (id)_makeTransientAssetCollectionWithRecentsKey:(id)a3 title:(id)a4 identifier:(id)a5 photoLibrary:(id)a6 configurationHandler:(id)a7
++ (id)_makeTransientAssetCollectionWithRecentsKey:(id)key title:(id)title identifier:(id)identifier photoLibrary:(id)library configurationHandler:(id)handler
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v11 = a7;
+  handlerCopy = handler;
   v12 = MEMORY[0x1E695DEE8];
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [v12 currentCalendar];
+  libraryCopy = library;
+  identifierCopy = identifier;
+  titleCopy = title;
+  keyCopy = key;
+  currentCalendar = [v12 currentCalendar];
   v18 = objc_opt_new();
   [v18 setDay:-14];
   v19 = [MEMORY[0x1E695DF00] now];
-  v20 = [v17 startOfDayForDate:v19];
+  v20 = [currentCalendar startOfDayForDate:v19];
 
-  v21 = [v17 dateByAddingComponents:v18 toDate:v20 options:0];
-  v22 = [v13 px_standardLibrarySpecificFetchOptions];
+  v21 = [currentCalendar dateByAddingComponents:v18 toDate:v20 options:0];
+  px_standardLibrarySpecificFetchOptions = [libraryCopy px_standardLibrarySpecificFetchOptions];
 
-  v23 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %@", v16, v21];
-  [v22 setInternalPredicate:v23];
+  v23 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %@", keyCopy, v21];
+  [px_standardLibrarySpecificFetchOptions setInternalPredicate:v23];
 
-  v24 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:v16 ascending:0];
+  v24 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:keyCopy ascending:0];
 
   v29[0] = v24;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
-  [v22 setInternalSortDescriptors:v25];
+  [px_standardLibrarySpecificFetchOptions setInternalSortDescriptors:v25];
 
-  [v22 setWantsIncrementalChangeDetails:1];
-  if (v11)
+  [px_standardLibrarySpecificFetchOptions setWantsIncrementalChangeDetails:1];
+  if (handlerCopy)
   {
-    v11[2](v11, v22);
+    handlerCopy[2](handlerCopy, px_standardLibrarySpecificFetchOptions);
   }
 
-  v26 = [objc_alloc(MEMORY[0x1E6978AF8]) initWithFetchOptions:v22];
+  v26 = [objc_alloc(MEMORY[0x1E6978AF8]) initWithFetchOptions:px_standardLibrarySpecificFetchOptions];
   [v26 setType:2];
-  [v26 setTitle:v15];
+  [v26 setTitle:titleCopy];
 
-  [v26 setIdentifier:v14];
+  [v26 setIdentifier:identifierCopy];
   [v26 setKeyAssetsPosition:1];
   v27 = [MEMORY[0x1E6978650] transientAssetCollectionWithOptions:v26];
 

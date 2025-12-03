@@ -1,60 +1,60 @@
 @interface SBRouteToMixedGridSwitcherModifier
-- (CGPoint)restingOffsetForScrollOffset:(CGPoint)a3 velocity:(CGPoint)a4;
-- (SBRouteToMixedGridSwitcherModifier)initWithTransitionID:(id)a3 mixedGridModifier:(id)a4;
-- (double)contentPageViewScaleForAppLayout:(id)a3 withScale:(double)a4;
-- (double)snapshotScaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
+- (CGPoint)restingOffsetForScrollOffset:(CGPoint)offset velocity:(CGPoint)velocity;
+- (SBRouteToMixedGridSwitcherModifier)initWithTransitionID:(id)d mixedGridModifier:(id)modifier;
+- (double)contentPageViewScaleForAppLayout:(id)layout withScale:(double)scale;
+- (double)snapshotScaleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
 - (id)appLayoutsToCacheSnapshots;
-- (id)handleTransitionEvent:(id)a3;
+- (id)handleTransitionEvent:(id)event;
 - (id)scrollViewAttributes;
 @end
 
 @implementation SBRouteToMixedGridSwitcherModifier
 
-- (SBRouteToMixedGridSwitcherModifier)initWithTransitionID:(id)a3 mixedGridModifier:(id)a4
+- (SBRouteToMixedGridSwitcherModifier)initWithTransitionID:(id)d mixedGridModifier:(id)modifier
 {
-  v7 = a4;
+  modifierCopy = modifier;
   v11.receiver = self;
   v11.super_class = SBRouteToMixedGridSwitcherModifier;
-  v8 = [(SBTransitionSwitcherModifier *)&v11 initWithTransitionID:a3];
+  v8 = [(SBTransitionSwitcherModifier *)&v11 initWithTransitionID:d];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_mixedGridModifier, a4);
+    objc_storeStrong(&v8->_mixedGridModifier, modifier);
     v9->_isTransitioningOutOfAppSwitcher = 0;
   }
 
   return v9;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 fromEnvironmentMode];
-  v6 = [v4 toEnvironmentMode];
-  v8 = v5 == 2 && v6 != 2;
+  eventCopy = event;
+  fromEnvironmentMode = [eventCopy fromEnvironmentMode];
+  toEnvironmentMode = [eventCopy toEnvironmentMode];
+  v8 = fromEnvironmentMode == 2 && toEnvironmentMode != 2;
   self->_isTransitioningOutOfAppSwitcher = v8;
   v11.receiver = self;
   v11.super_class = SBRouteToMixedGridSwitcherModifier;
-  v9 = [(SBTransitionSwitcherModifier *)&v11 handleTransitionEvent:v4];
+  v9 = [(SBTransitionSwitcherModifier *)&v11 handleTransitionEvent:eventCopy];
 
   return v9;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
-  v4 = a3;
-  v5 = v4;
+  layoutsCopy = layouts;
+  v5 = layoutsCopy;
   if (self->_isTransitioningOutOfAppSwitcher)
   {
     v20.receiver = self;
     v20.super_class = SBRouteToMixedGridSwitcherModifier;
-    v6 = [(SBTransitionSwitcherModifier *)&v20 adjustedAppLayoutsForAppLayouts:v4];
+    v6 = [(SBTransitionSwitcherModifier *)&v20 adjustedAppLayoutsForAppLayouts:layoutsCopy];
   }
 
   else
   {
-    v6 = v4;
+    v6 = layoutsCopy;
   }
 
   v14 = 0;
@@ -118,9 +118,9 @@ void __64__SBRouteToMixedGridSwitcherModifier_appLayoutsToCacheSnapshots__block_
   *(v3 + 40) = v2;
 }
 
-- (double)snapshotScaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)snapshotScaleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -131,9 +131,9 @@ void __64__SBRouteToMixedGridSwitcherModifier_appLayoutsToCacheSnapshots__block_
   v11[2] = __77__SBRouteToMixedGridSwitcherModifier_snapshotScaleForLayoutRole_inAppLayout___block_invoke;
   v11[3] = &unk_2783AA668;
   v13 = &v15;
-  v14 = a3;
+  roleCopy = role;
   v11[4] = self;
-  v8 = v6;
+  v8 = layoutCopy;
   v12 = v8;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:mixedGridModifier usingBlock:v11];
   v9 = v16[3];
@@ -149,9 +149,9 @@ uint64_t __77__SBRouteToMixedGridSwitcherModifier_snapshotScaleForLayoutRole_inA
   return result;
 }
 
-- (double)contentPageViewScaleForAppLayout:(id)a3 withScale:(double)a4
+- (double)contentPageViewScaleForAppLayout:(id)layout withScale:(double)scale
 {
-  v6 = a3;
+  layoutCopy = layout;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -163,9 +163,9 @@ uint64_t __77__SBRouteToMixedGridSwitcherModifier_snapshotScaleForLayoutRole_inA
   v11[3] = &unk_2783AA668;
   v13 = &v15;
   v11[4] = self;
-  v8 = v6;
+  v8 = layoutCopy;
   v12 = v8;
-  v14 = a4;
+  scaleCopy = scale;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:mixedGridModifier usingBlock:v11];
   v9 = v16[3];
 
@@ -210,7 +210,7 @@ void __58__SBRouteToMixedGridSwitcherModifier_scrollViewAttributes__block_invoke
   *(v3 + 40) = v2;
 }
 
-- (CGPoint)restingOffsetForScrollOffset:(CGPoint)a3 velocity:(CGPoint)a4
+- (CGPoint)restingOffsetForScrollOffset:(CGPoint)offset velocity:(CGPoint)velocity
 {
   v12 = 0;
   v13 = &v12;
@@ -224,8 +224,8 @@ void __58__SBRouteToMixedGridSwitcherModifier_scrollViewAttributes__block_invoke
   v9[3] = &unk_2783AEEC0;
   v9[4] = self;
   v9[5] = &v12;
-  v10 = a3;
-  v11 = a4;
+  offsetCopy = offset;
+  velocityCopy = velocity;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:mixedGridModifier usingBlock:v9];
   v5 = v13[4];
   v6 = v13[5];

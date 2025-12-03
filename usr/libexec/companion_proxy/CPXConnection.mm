@@ -1,16 +1,16 @@
 @interface CPXConnection
-- (CPXConnection)initWithIDSDeviceConnection:(id)a3 idsMessageContext:(id)a4 localSocket:(int)a5 bridgeSocket:(int)a6 localCompletion:(id)a7 bridgeCompletion:(id)a8 serviceName:(id)a9 servicePort:(unint64_t)a10;
+- (CPXConnection)initWithIDSDeviceConnection:(id)connection idsMessageContext:(id)context localSocket:(int)socket bridgeSocket:(int)bridgeSocket localCompletion:(id)completion bridgeCompletion:(id)bridgeCompletion serviceName:(id)name servicePort:(unint64_t)self0;
 @end
 
 @implementation CPXConnection
 
-- (CPXConnection)initWithIDSDeviceConnection:(id)a3 idsMessageContext:(id)a4 localSocket:(int)a5 bridgeSocket:(int)a6 localCompletion:(id)a7 bridgeCompletion:(id)a8 serviceName:(id)a9 servicePort:(unint64_t)a10
+- (CPXConnection)initWithIDSDeviceConnection:(id)connection idsMessageContext:(id)context localSocket:(int)socket bridgeSocket:(int)bridgeSocket localCompletion:(id)completion bridgeCompletion:(id)bridgeCompletion serviceName:(id)name servicePort:(unint64_t)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  connectionCopy = connection;
+  contextCopy = context;
+  completionCopy = completion;
+  bridgeCompletionCopy = bridgeCompletion;
+  nameCopy = name;
   v30.receiver = self;
   v30.super_class = CPXConnection;
   v21 = [(CPXConnection *)&v30 init];
@@ -21,28 +21,28 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  if (v16)
+  if (connectionCopy)
   {
-    if (!v17 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
+    if (!contextCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "idsMessageContext was unexpectedly nil. This connection will not be boosted", buf, 2u);
     }
 
-    objc_storeStrong(&v21->_idsDeviceConnection, a3);
-    objc_storeStrong(&v21->_boostingMessageContext, a4);
-    v21->_localSocket = a5;
-    v21->_bridgeSocket = a6;
-    v22 = objc_retainBlock(v18);
+    objc_storeStrong(&v21->_idsDeviceConnection, connection);
+    objc_storeStrong(&v21->_boostingMessageContext, context);
+    v21->_localSocket = socket;
+    v21->_bridgeSocket = bridgeSocket;
+    v22 = objc_retainBlock(completionCopy);
     localCompletion = v21->_localCompletion;
     v21->_localCompletion = v22;
 
-    v24 = objc_retainBlock(v19);
+    v24 = objc_retainBlock(bridgeCompletionCopy);
     bridgeCompletion = v21->_bridgeCompletion;
     v21->_bridgeCompletion = v24;
 
-    objc_storeStrong(&v21->_serviceName, a9);
-    v21->_servicePort = a10;
+    objc_storeStrong(&v21->_serviceName, name);
+    v21->_servicePort = port;
     goto LABEL_7;
   }
 

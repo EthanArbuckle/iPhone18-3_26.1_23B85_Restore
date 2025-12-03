@@ -1,8 +1,8 @@
 @interface MPMediaItemAnimatedArtwork
 + (id)imageEncodeQueue;
-+ (id)validatePreviewImage:(id)a3 forRequestedSize:(CGSize)a4;
-+ (void)validateAssetFileURL:(id)a3 forRequestedSize:(CGSize)a4 completion:(id)a5;
-- (MPMediaItemAnimatedArtwork)initWithArtworkID:(id)a3 previewImageRequestHandler:(id)a4 videoAssetFileURLRequestHandler:(id)a5;
++ (id)validatePreviewImage:(id)image forRequestedSize:(CGSize)size;
++ (void)validateAssetFileURL:(id)l forRequestedSize:(CGSize)size completion:(id)completion;
+- (MPMediaItemAnimatedArtwork)initWithArtworkID:(id)d previewImageRequestHandler:(id)handler videoAssetFileURLRequestHandler:(id)requestHandler;
 - (id)mrAnimatedArtwork;
 @end
 
@@ -104,23 +104,23 @@ void __47__MPMediaItemAnimatedArtwork_mrAnimatedArtwork__block_invoke_3(uint64_t
   (*(*(a1 + 40) + 16))();
 }
 
-- (MPMediaItemAnimatedArtwork)initWithArtworkID:(id)a3 previewImageRequestHandler:(id)a4 videoAssetFileURLRequestHandler:(id)a5
+- (MPMediaItemAnimatedArtwork)initWithArtworkID:(id)d previewImageRequestHandler:(id)handler videoAssetFileURLRequestHandler:(id)requestHandler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  handlerCopy = handler;
+  requestHandlerCopy = requestHandler;
   v19.receiver = self;
   v19.super_class = MPMediaItemAnimatedArtwork;
   v12 = [(MPMediaItemAnimatedArtwork *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_artworkID, a3);
-    v14 = _Block_copy(v10);
+    objc_storeStrong(&v12->_artworkID, d);
+    v14 = _Block_copy(handlerCopy);
     previewImageRequestHandler = v13->_previewImageRequestHandler;
     v13->_previewImageRequestHandler = v14;
 
-    v16 = _Block_copy(v11);
+    v16 = _Block_copy(requestHandlerCopy);
     videoAssetFileURLRequestHandler = v13->_videoAssetFileURLRequestHandler;
     v13->_videoAssetFileURLRequestHandler = v16;
   }
@@ -128,20 +128,20 @@ void __47__MPMediaItemAnimatedArtwork_mrAnimatedArtwork__block_invoke_3(uint64_t
   return v13;
 }
 
-+ (void)validateAssetFileURL:(id)a3 forRequestedSize:(CGSize)a4 completion:(id)a5
++ (void)validateAssetFileURL:(id)l forRequestedSize:(CGSize)size completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (lCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __79__MPMediaItemAnimatedArtwork_validateAssetFileURL_forRequestedSize_completion___block_invoke;
     aBlock[3] = &unk_1E7678DD8;
-    v11 = v8;
+    v11 = lCopy;
     v25 = v11;
     v27 = width;
     v28 = height;
@@ -174,7 +174,7 @@ void __47__MPMediaItemAnimatedArtwork_mrAnimatedArtwork__block_invoke_3(uint64_t
 
   else
   {
-    (*(v9 + 2))(v9, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -363,19 +363,19 @@ void __79__MPMediaItemAnimatedArtwork_validateAssetFileURL_forRequestedSize_comp
   }
 }
 
-+ (id)validatePreviewImage:(id)a3 forRequestedSize:(CGSize)a4
++ (id)validatePreviewImage:(id)image forRequestedSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  imageCopy = image;
+  v7 = imageCopy;
+  if (!imageCopy)
   {
     goto LABEL_14;
   }
 
-  [v6 size];
+  [imageCopy size];
   if (v8 == 0.0 || height == 0.0)
   {
     v13 = os_log_create("com.apple.amp.mediaplayer", "Default");

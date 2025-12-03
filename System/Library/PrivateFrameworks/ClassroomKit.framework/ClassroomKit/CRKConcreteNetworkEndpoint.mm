@@ -1,20 +1,20 @@
 @interface CRKConcreteNetworkEndpoint
-- (CRKConcreteNetworkEndpoint)initWithUnderlyingEndpoint:(id)a3;
+- (CRKConcreteNetworkEndpoint)initWithUnderlyingEndpoint:(id)endpoint;
 - (NSString)IPAddress;
 @end
 
 @implementation CRKConcreteNetworkEndpoint
 
-- (CRKConcreteNetworkEndpoint)initWithUnderlyingEndpoint:(id)a3
+- (CRKConcreteNetworkEndpoint)initWithUnderlyingEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v9.receiver = self;
   v9.super_class = CRKConcreteNetworkEndpoint;
   v6 = [(CRKConcreteNetworkEndpoint *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingEndpoint, a3);
+    objc_storeStrong(&v6->_underlyingEndpoint, endpoint);
   }
 
   return v7;

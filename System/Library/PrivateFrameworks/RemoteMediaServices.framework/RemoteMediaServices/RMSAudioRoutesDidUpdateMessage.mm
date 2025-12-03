@@ -1,33 +1,33 @@
 @interface RMSAudioRoutesDidUpdateMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAudioRoutes:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAudioRoutes:(id)routes;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RMSAudioRoutesDidUpdateMessage
 
-- (void)addAudioRoutes:(id)a3
+- (void)addAudioRoutes:(id)routes
 {
-  v4 = a3;
+  routesCopy = routes;
   audioRoutes = self->_audioRoutes;
-  v8 = v4;
+  v8 = routesCopy;
   if (!audioRoutes)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_audioRoutes;
     self->_audioRoutes = v6;
 
-    v4 = v8;
+    routesCopy = v8;
     audioRoutes = self->_audioRoutes;
   }
 
-  [(NSMutableArray *)audioRoutes addObject:v4];
+  [(NSMutableArray *)audioRoutes addObject:routesCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = RMSAudioRoutesDidUpdateMessage;
   v4 = [(RMSAudioRoutesDidUpdateMessage *)&v8 description];
-  v5 = [(RMSAudioRoutesDidUpdateMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(RMSAudioRoutesDidUpdateMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,11 +45,11 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithInt:self->_sessionIdentifier];
-    [v3 setObject:v4 forKey:@"sessionIdentifier"];
+    [dictionary setObject:v4 forKey:@"sessionIdentifier"];
   }
 
   if ([(NSMutableArray *)self->_audioRoutes count])
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -84,16 +84,16 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"audioRoutes"];
+    [dictionary setObject:v5 forKey:@"audioRoutes"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
@@ -131,23 +131,23 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_sessionIdentifier;
-    *(v4 + 20) |= 1u;
+    toCopy[4] = self->_sessionIdentifier;
+    *(toCopy + 20) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(RMSAudioRoutesDidUpdateMessage *)self audioRoutesCount])
   {
     [v9 clearAudioRoutes];
-    v5 = [(RMSAudioRoutesDidUpdateMessage *)self audioRoutesCount];
-    if (v5)
+    audioRoutesCount = [(RMSAudioRoutesDidUpdateMessage *)self audioRoutesCount];
+    if (audioRoutesCount)
     {
-      v6 = v5;
+      v6 = audioRoutesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(RMSAudioRoutesDidUpdateMessage *)self audioRoutesAtIndex:i];
@@ -157,10 +157,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -188,7 +188,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{a3, v14}];
+        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{zone, v14}];
         [v6 addAudioRoutes:v12];
 
         ++v11;
@@ -204,23 +204,23 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_sessionIdentifier != *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_sessionIdentifier != *(equalCopy + 4))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_9:
     v6 = 0;
@@ -228,7 +228,7 @@ LABEL_9:
   }
 
   audioRoutes = self->_audioRoutes;
-  if (audioRoutes | *(v4 + 1))
+  if (audioRoutes | *(equalCopy + 1))
   {
     v6 = [(NSMutableArray *)audioRoutes isEqual:?];
   }
@@ -258,14 +258,14 @@ LABEL_10:
   return [(NSMutableArray *)self->_audioRoutes hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 20))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 20))
   {
-    self->_sessionIdentifier = *(v4 + 4);
+    self->_sessionIdentifier = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
@@ -273,7 +273,7 @@ LABEL_10:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {

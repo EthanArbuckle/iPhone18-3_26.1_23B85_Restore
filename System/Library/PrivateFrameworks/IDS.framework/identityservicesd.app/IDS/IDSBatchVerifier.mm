@@ -1,129 +1,129 @@
 @interface IDSBatchVerifier
-+ (id)getItemToNoteForRemoteURI:(id)a3;
-- (IDSBatchVerifier)initWithPeerIDManager:(id)a3 rateLimiter:(id)a4 localURI:(id)a5 service:(id)a6 cert:(id)a7 keyType:(unsigned int)a8 keyDiversifier:(id)a9 publicIdentityCache:(id)a10 builder:(id)a11;
-- (IDSBatchVerifier)initWithPeerIDManager:(id)a3 rateLimiter:(id)a4 localURI:(id)a5 service:(id)a6 cert:(id)a7 keyType:(unsigned int)a8 keyDiversifier:(id)a9 publicIdentityCache:(id)a10 builder:(id)a11 queue:(id)a12;
-- (id)_lookupEndpointFromURI:(id)a3;
-- (id)_verifySignedDataWithContext:(id)a3 endpoint:(id)a4 forType:(int64_t)a5 onQueue:(id)a6;
-- (id)_verifySignedDataWithContext:(id)a3 forType:(int64_t)a4 withPublicDeviceIdentity:(id)a5 onQueue:(id)a6;
-- (id)lastResortCacheIdentityForURI:(id)a3;
-- (void)verifyPayloadsFromContexts:(id)a3 forType:(int64_t)a4 onQueue:(id)a5 withCompletion:(id)a6;
++ (id)getItemToNoteForRemoteURI:(id)i;
+- (IDSBatchVerifier)initWithPeerIDManager:(id)manager rateLimiter:(id)limiter localURI:(id)i service:(id)service cert:(id)cert keyType:(unsigned int)type keyDiversifier:(id)diversifier publicIdentityCache:(id)self0 builder:(id)self1;
+- (IDSBatchVerifier)initWithPeerIDManager:(id)manager rateLimiter:(id)limiter localURI:(id)i service:(id)service cert:(id)cert keyType:(unsigned int)type keyDiversifier:(id)diversifier publicIdentityCache:(id)self0 builder:(id)self1 queue:(id)self2;
+- (id)_lookupEndpointFromURI:(id)i;
+- (id)_verifySignedDataWithContext:(id)context endpoint:(id)endpoint forType:(int64_t)type onQueue:(id)queue;
+- (id)_verifySignedDataWithContext:(id)context forType:(int64_t)type withPublicDeviceIdentity:(id)identity onQueue:(id)queue;
+- (id)lastResortCacheIdentityForURI:(id)i;
+- (void)verifyPayloadsFromContexts:(id)contexts forType:(int64_t)type onQueue:(id)queue withCompletion:(id)completion;
 @end
 
 @implementation IDSBatchVerifier
 
-- (IDSBatchVerifier)initWithPeerIDManager:(id)a3 rateLimiter:(id)a4 localURI:(id)a5 service:(id)a6 cert:(id)a7 keyType:(unsigned int)a8 keyDiversifier:(id)a9 publicIdentityCache:(id)a10 builder:(id)a11
+- (IDSBatchVerifier)initWithPeerIDManager:(id)manager rateLimiter:(id)limiter localURI:(id)i service:(id)service cert:(id)cert keyType:(unsigned int)type keyDiversifier:(id)diversifier publicIdentityCache:(id)self0 builder:(id)self1
 {
-  v16 = a11;
-  v17 = a10;
-  v18 = a9;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
+  builderCopy = builder;
+  cacheCopy = cache;
+  diversifierCopy = diversifier;
+  certCopy = cert;
+  serviceCopy = service;
+  iCopy = i;
+  limiterCopy = limiter;
+  managerCopy = manager;
   v24 = [IDSBatchVerifier alloc];
   v25 = im_primary_queue();
-  v26 = [(IDSBatchVerifier *)v24 initWithPeerIDManager:v23 rateLimiter:v22 localURI:v21 service:v20 cert:v19 keyType:a8 keyDiversifier:v18 publicIdentityCache:v17 builder:v16 queue:v25];
+  v26 = [(IDSBatchVerifier *)v24 initWithPeerIDManager:managerCopy rateLimiter:limiterCopy localURI:iCopy service:serviceCopy cert:certCopy keyType:type keyDiversifier:diversifierCopy publicIdentityCache:cacheCopy builder:builderCopy queue:v25];
 
   return v26;
 }
 
-- (IDSBatchVerifier)initWithPeerIDManager:(id)a3 rateLimiter:(id)a4 localURI:(id)a5 service:(id)a6 cert:(id)a7 keyType:(unsigned int)a8 keyDiversifier:(id)a9 publicIdentityCache:(id)a10 builder:(id)a11 queue:(id)a12
+- (IDSBatchVerifier)initWithPeerIDManager:(id)manager rateLimiter:(id)limiter localURI:(id)i service:(id)service cert:(id)cert keyType:(unsigned int)type keyDiversifier:(id)diversifier publicIdentityCache:(id)self0 builder:(id)self1 queue:(id)self2
 {
-  v30 = a3;
-  v29 = a4;
-  v28 = a5;
-  v27 = a6;
-  v26 = a7;
-  v25 = a9;
-  v24 = a10;
-  v23 = a11;
-  v18 = a12;
+  managerCopy = manager;
+  limiterCopy = limiter;
+  iCopy = i;
+  serviceCopy = service;
+  certCopy = cert;
+  diversifierCopy = diversifier;
+  cacheCopy = cache;
+  builderCopy = builder;
+  queueCopy = queue;
   v31.receiver = self;
   v31.super_class = IDSBatchVerifier;
   v19 = [(IDSBatchVerifier *)&v31 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_peerIDManager, a3);
-    objc_storeStrong(&v20->_publicIdentityCache, a10);
-    objc_storeStrong(&v20->_rateLimiter, a4);
-    objc_storeStrong(&v20->_localURI, a5);
-    objc_storeStrong(&v20->_service, a6);
-    objc_storeStrong(&v20->_cert, a7);
-    v20->_keyType = a8;
-    objc_storeStrong(&v20->_keyDiversifier, a9);
-    objc_storeStrong(&v20->_builder, a11);
-    objc_storeStrong(&v20->_queue, a12);
+    objc_storeStrong(&v19->_peerIDManager, manager);
+    objc_storeStrong(&v20->_publicIdentityCache, cache);
+    objc_storeStrong(&v20->_rateLimiter, limiter);
+    objc_storeStrong(&v20->_localURI, i);
+    objc_storeStrong(&v20->_service, service);
+    objc_storeStrong(&v20->_cert, cert);
+    v20->_keyType = type;
+    objc_storeStrong(&v20->_keyDiversifier, diversifier);
+    objc_storeStrong(&v20->_builder, builder);
+    objc_storeStrong(&v20->_queue, queue);
   }
 
   return v20;
 }
 
-- (id)_verifySignedDataWithContext:(id)a3 endpoint:(id)a4 forType:(int64_t)a5 onQueue:(id)a6
+- (id)_verifySignedDataWithContext:(id)context endpoint:(id)endpoint forType:(int64_t)type onQueue:(id)queue
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a4;
+  contextCopy = context;
+  queueCopy = queue;
+  endpointCopy = endpoint;
   v13 = objc_alloc_init(CUTUnsafePromiseSeal);
-  v14 = [(IDSBatchVerifier *)self builder];
-  v15 = [(IDSBatchVerifier *)self keyType];
-  v16 = [(IDSBatchVerifier *)self keyDiversifier];
-  v17 = [v14 verifierWithEndpoint:v12 keyType:v15 keyDiversifier:v16];
+  builder = [(IDSBatchVerifier *)self builder];
+  keyType = [(IDSBatchVerifier *)self keyType];
+  keyDiversifier = [(IDSBatchVerifier *)self keyDiversifier];
+  v17 = [builder verifierWithEndpoint:endpointCopy keyType:keyType keyDiversifier:keyDiversifier];
 
-  v18 = [v10 signedPayload];
-  v19 = [v10 payloadData];
+  signedPayload = [contextCopy signedPayload];
+  payloadData = [contextCopy payloadData];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100357FB8;
   v24[3] = &unk_100BD6FB8;
   v24[4] = self;
-  v25 = v10;
+  v25 = contextCopy;
   v26 = v13;
   v20 = v13;
-  v21 = v10;
-  [v17 verifySignedData:v18 matchesData:v19 forType:a5 onQueue:v11 withCompletion:v24];
+  v21 = contextCopy;
+  [v17 verifySignedData:signedPayload matchesData:payloadData forType:type onQueue:queueCopy withCompletion:v24];
 
-  v22 = [v20 promise];
+  promise = [v20 promise];
 
-  return v22;
+  return promise;
 }
 
-- (id)_verifySignedDataWithContext:(id)a3 forType:(int64_t)a4 withPublicDeviceIdentity:(id)a5 onQueue:(id)a6
+- (id)_verifySignedDataWithContext:(id)context forType:(int64_t)type withPublicDeviceIdentity:(id)identity onQueue:(id)queue
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  identityCopy = identity;
+  queueCopy = queue;
   v13 = objc_alloc_init(CUTUnsafePromiseSeal);
-  v14 = [(IDSBatchVerifier *)self builder];
-  v15 = [v14 fullDeviceIdentitySigner];
+  builder = [(IDSBatchVerifier *)self builder];
+  fullDeviceIdentitySigner = [builder fullDeviceIdentitySigner];
 
   v22 = _NSConcreteStackBlock;
   v23 = 3221225472;
   v24 = sub_100358290;
   v25 = &unk_100BD8E10;
-  v26 = v15;
-  v27 = v10;
-  v28 = v11;
-  v29 = self;
+  v26 = fullDeviceIdentitySigner;
+  v27 = contextCopy;
+  v28 = identityCopy;
+  selfCopy = self;
   v30 = v13;
-  v31 = a4;
+  typeCopy = type;
   v16 = v13;
-  v17 = v11;
-  v18 = v10;
-  v19 = v15;
-  [v12 performAsyncBlock:&v22];
+  v17 = identityCopy;
+  v18 = contextCopy;
+  v19 = fullDeviceIdentitySigner;
+  [queueCopy performAsyncBlock:&v22];
 
-  v20 = [v16 promise];
+  promise = [v16 promise];
 
-  return v20;
+  return promise;
 }
 
-- (void)verifyPayloadsFromContexts:(id)a3 forType:(int64_t)a4 onQueue:(id)a5 withCompletion:(id)a6
+- (void)verifyPayloadsFromContexts:(id)contexts forType:(int64_t)type onQueue:(id)queue withCompletion:(id)completion
 {
-  v8 = a3;
-  v55 = a5;
-  v51 = a6;
+  contextsCopy = contexts;
+  queueCopy = queue;
+  completionCopy = completion;
   v82 = 0;
   v83 = &v82;
   v84 = 0x3032000000;
@@ -136,7 +136,7 @@
   v81 = 0u;
   v78 = 0u;
   v79 = 0u;
-  obj = v8;
+  obj = contextsCopy;
   v9 = [obj countByEnumeratingWithState:&v78 objects:v94 count:16];
   if (v9)
   {
@@ -152,14 +152,14 @@
         }
 
         v13 = *(*(&v78 + 1) + 8 * i);
-        v14 = [v13 remoteURI];
-        v15 = [v14 prefixedURI];
+        remoteURI = [v13 remoteURI];
+        prefixedURI = [remoteURI prefixedURI];
         v77 = 0;
-        v16 = [v15 _stripPotentialTokenURIWithToken:&v77];
+        v16 = [prefixedURI _stripPotentialTokenURIWithToken:&v77];
         v17 = v77;
 
-        v18 = [v13 remoteURI];
-        v19 = [v18 isTokenURI] ^ 1;
+        remoteURI2 = [v13 remoteURI];
+        v19 = [remoteURI2 isTokenURI] ^ 1;
         if (!v17)
         {
           v19 = 1;
@@ -179,12 +179,12 @@
         {
           v21 = [NSError errorWithDomain:v11 code:2 userInfo:0];
           v22 = [IDSPayloadVerificationResult alloc];
-          v23 = [v13 remoteURI];
-          v24 = [v22 initWithURI:v23 verified:0 error:v21];
+          remoteURI3 = [v13 remoteURI];
+          v24 = [v22 initWithURI:remoteURI3 verified:0 error:v21];
 
           v25 = v83[5];
-          v26 = [v13 remoteURI];
-          [v25 setObject:v24 forKey:v26];
+          remoteURI4 = [v13 remoteURI];
+          [v25 setObject:v24 forKey:remoteURI4];
         }
       }
 
@@ -214,13 +214,13 @@
 
         v31 = *(*(&v73 + 1) + 8 * j);
         v32 = v83[5];
-        v33 = [v31 remoteURI];
-        v34 = [v32 objectForKey:v33];
+        remoteURI5 = [v31 remoteURI];
+        v34 = [v32 objectForKey:remoteURI5];
 
         if (!v34)
         {
-          v35 = [v31 remoteURI];
-          v36 = [(IDSBatchVerifier *)self _lookupEndpointFromURI:v35];
+          remoteURI6 = [v31 remoteURI];
+          v36 = [(IDSBatchVerifier *)self _lookupEndpointFromURI:remoteURI6];
 
           if (v36)
           {
@@ -243,11 +243,11 @@
   v37 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
-    v38 = [v53 allKeys];
+    allKeys = [v53 allKeys];
     *buf = 138412546;
     v90 = v52;
     v91 = 2112;
-    v92 = v38;
+    v92 = allKeys;
     _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Found remote contexts needing query: %@, already have: %@", buf, 0x16u);
   }
 
@@ -266,12 +266,12 @@
     block[2] = sub_100358D04;
     block[3] = &unk_100BD8EC8;
     v59 = v52;
-    v60 = self;
+    selfCopy = self;
     v64 = &v82;
     v61 = v53;
-    v65 = a4;
-    v62 = v55;
-    v63 = v51;
+    typeCopy = type;
+    v62 = queueCopy;
+    v63 = completionCopy;
     dispatch_async(v39, block);
 
     v40 = v59;
@@ -300,7 +300,7 @@
 
           v45 = *(*(&v69 + 1) + 8 * k);
           v46 = [v41 objectForKey:v45];
-          v47 = [(IDSBatchVerifier *)self _verifySignedDataWithContext:v45 endpoint:v46 forType:a4 onQueue:v55];
+          v47 = [(IDSBatchVerifier *)self _verifySignedDataWithContext:v45 endpoint:v46 forType:type onQueue:queueCopy];
           [v40 addObject:v47];
         }
 
@@ -316,76 +316,76 @@
     v66[2] = sub_100358BB8;
     v66[3] = &unk_100BD8E38;
     v68 = &v82;
-    v67 = v51;
+    v67 = completionCopy;
     [v48 registerResultBlock:v66];
   }
 
   _Block_object_dispose(&v82, 8);
 }
 
-- (id)_lookupEndpointFromURI:(id)a3
+- (id)_lookupEndpointFromURI:(id)i
 {
-  v4 = a3;
-  v5 = [v4 prefixedURI];
+  iCopy = i;
+  prefixedURI = [iCopy prefixedURI];
   v15 = 0;
-  v6 = [v5 _stripPotentialTokenURIWithToken:&v15];
+  v6 = [prefixedURI _stripPotentialTokenURIWithToken:&v15];
   v7 = v15;
 
-  v8 = [(IDSBatchVerifier *)self peerIDManager];
+  peerIDManager = [(IDSBatchVerifier *)self peerIDManager];
   v9 = [IDSPushToken pushTokenWithData:v7 withServiceLoggingHint:self->_service];
 
-  v10 = [v4 tokenFreeURI];
+  tokenFreeURI = [iCopy tokenFreeURI];
 
-  v11 = [(IDSBatchVerifier *)self service];
-  v12 = [(IDSBatchVerifier *)self localURI];
-  v13 = [v8 endpointForPushToken:v9 URI:v10 service:v11 fromURI:v12];
+  service = [(IDSBatchVerifier *)self service];
+  localURI = [(IDSBatchVerifier *)self localURI];
+  v13 = [peerIDManager endpointForPushToken:v9 URI:tokenFreeURI service:service fromURI:localURI];
 
   return v13;
 }
 
-+ (id)getItemToNoteForRemoteURI:(id)a3
++ (id)getItemToNoteForRemoteURI:(id)i
 {
-  v3 = a3;
-  v4 = [v3 prefixedURI];
-  if ([v4 _appearsToBePseudonymID])
+  iCopy = i;
+  prefixedURI = [iCopy prefixedURI];
+  if ([prefixedURI _appearsToBePseudonymID])
   {
-    [v3 prefixedURI];
+    [iCopy prefixedURI];
   }
 
   else
   {
-    [v3 pushToken];
+    [iCopy pushToken];
   }
   v5 = ;
 
   return v5;
 }
 
-- (id)lastResortCacheIdentityForURI:(id)a3
+- (id)lastResortCacheIdentityForURI:(id)i
 {
-  v4 = a3;
-  v5 = [(IDSBatchVerifier *)self publicIdentityCache];
-  v6 = [v4 pushToken];
-  v7 = [v6 rawToken];
-  v8 = [(IDSBatchVerifier *)self service];
+  iCopy = i;
+  publicIdentityCache = [(IDSBatchVerifier *)self publicIdentityCache];
+  pushToken = [iCopy pushToken];
+  rawToken = [pushToken rawToken];
+  service = [(IDSBatchVerifier *)self service];
   v18 = 0;
-  v9 = [v5 identityForToken:v7 uri:v4 service:v8 error:&v18];
+  v9 = [publicIdentityCache identityForToken:rawToken uri:iCopy service:service error:&v18];
   v10 = v18;
-  v11 = [v9 ngmPublicDeviceIdentity];
+  ngmPublicDeviceIdentity = [v9 ngmPublicDeviceIdentity];
 
   v12 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v4 pushToken];
-    v14 = [(IDSBatchVerifier *)self service];
+    pushToken2 = [iCopy pushToken];
+    service2 = [(IDSBatchVerifier *)self service];
     *buf = 138413314;
-    v20 = v13;
+    v20 = pushToken2;
     v21 = 2112;
-    v22 = v4;
+    v22 = iCopy;
     v23 = 2112;
-    v24 = v14;
+    v24 = service2;
     v25 = 2112;
-    v26 = v11;
+    v26 = ngmPublicDeviceIdentity;
     v27 = 2112;
     v28 = v10;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Last resort cache query for { token: %@, URI: %@, service: %@ } returned: { identity: %@, error: %@ }", buf, 0x34u);
@@ -393,12 +393,12 @@
 
   if (os_log_shim_legacy_logging_enabled())
   {
-    v15 = [v4 pushToken];
-    v17 = [(IDSBatchVerifier *)self service];
+    pushToken3 = [iCopy pushToken];
+    service3 = [(IDSBatchVerifier *)self service];
     _IDSLogEventV();
   }
 
-  return v11;
+  return ngmPublicDeviceIdentity;
 }
 
 @end

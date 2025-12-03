@@ -1,10 +1,10 @@
 @interface MetalHUDNumberPreferences
 + (id)opacity;
 + (id)scale;
-- (id)init:(id)a3 key:(id)a4 defaultValue:(id)a5;
+- (id)init:(id)init key:(id)key defaultValue:(id)value;
 - (void)_updatePreferences;
 - (void)setToDefault;
-- (void)setValue:(id)a3;
+- (void)setValue:(id)value;
 @end
 
 @implementation MetalHUDNumberPreferences
@@ -27,29 +27,29 @@
   return v4;
 }
 
-- (id)init:(id)a3 key:(id)a4 defaultValue:(id)a5
+- (id)init:(id)init key:(id)key defaultValue:(id)value
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  initCopy = init;
+  keyCopy = key;
+  valueCopy = value;
   v19.receiver = self;
   v19.super_class = MetalHUDNumberPreferences;
   v12 = [(MetalHUDNumberPreferences *)&v19 init];
   p_isa = &v12->super.isa;
   if (v12)
   {
-    objc_storeStrong(&v12->_preferences, a3);
-    v14 = [v9 preferences];
-    v15 = [v14 objectForKeyedSubscript:v10];
+    objc_storeStrong(&v12->_preferences, init);
+    preferences = [initCopy preferences];
+    v15 = [preferences objectForKeyedSubscript:keyCopy];
 
     if (!v15 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v17 = v15, (isKindOfClass & 1) == 0))
     {
-      v17 = v11;
+      v17 = valueCopy;
     }
 
     objc_storeStrong(p_isa + 3, v17);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 4, a5);
+    objc_storeStrong(p_isa + 2, key);
+    objc_storeStrong(p_isa + 4, value);
   }
 
   return p_isa;
@@ -63,8 +63,8 @@
     value = self->_defaultValue;
   }
 
-  v4 = [(MetalHUDPreferences *)self->_preferences preferences];
-  [v4 setObject:value forKeyedSubscript:self->_key];
+  preferences = [(MetalHUDPreferences *)self->_preferences preferences];
+  [preferences setObject:value forKeyedSubscript:self->_key];
 
   preferences = self->_preferences;
 
@@ -78,9 +78,9 @@
   [(MetalHUDNumberPreferences *)self _updatePreferences];
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  objc_storeStrong(&self->_value, a3);
+  objc_storeStrong(&self->_value, value);
 
   [(MetalHUDNumberPreferences *)self _updatePreferences];
 }

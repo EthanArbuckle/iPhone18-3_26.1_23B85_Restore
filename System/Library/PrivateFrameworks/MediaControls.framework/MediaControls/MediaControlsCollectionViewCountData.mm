@@ -1,12 +1,12 @@
 @interface MediaControlsCollectionViewCountData
 - (MediaControlsCollectionViewCountData)init;
-- (MediaControlsCollectionViewCountData)initWithNumberOfItems:(int64_t)a3;
+- (MediaControlsCollectionViewCountData)initWithNumberOfItems:(int64_t)items;
 - (NSIndexSet)deletedIndexes;
 - (NSIndexSet)insertedIndexes;
 - (NSIndexSet)updatedIndexes;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)applyChanges;
-- (void)moveItemAtIndex:(int64_t)a3 toIndex:(int64_t)a4;
+- (void)moveItemAtIndex:(int64_t)index toIndex:(int64_t)toIndex;
 @end
 
 @implementation MediaControlsCollectionViewCountData
@@ -34,18 +34,18 @@
   return v2;
 }
 
-- (MediaControlsCollectionViewCountData)initWithNumberOfItems:(int64_t)a3
+- (MediaControlsCollectionViewCountData)initWithNumberOfItems:(int64_t)items
 {
   result = [(MediaControlsCollectionViewCountData *)self init];
   if (result)
   {
-    result->_numberOfItems = a3;
+    result->_numberOfItems = items;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MediaControlsCollectionViewCountData alloc];
   numberOfItems = self->_numberOfItems;
@@ -74,13 +74,13 @@
   return v2;
 }
 
-- (void)moveItemAtIndex:(int64_t)a3 toIndex:(int64_t)a4
+- (void)moveItemAtIndex:(int64_t)index toIndex:(int64_t)toIndex
 {
   self->_hasPendingChanges = 1;
-  [(NSMutableIndexSet *)self->_deletedIndexes addIndex:a3];
+  [(NSMutableIndexSet *)self->_deletedIndexes addIndex:index];
   insertedIndexes = self->_insertedIndexes;
 
-  [(NSMutableIndexSet *)insertedIndexes addIndex:a4];
+  [(NSMutableIndexSet *)insertedIndexes addIndex:toIndex];
 }
 
 - (void)applyChanges

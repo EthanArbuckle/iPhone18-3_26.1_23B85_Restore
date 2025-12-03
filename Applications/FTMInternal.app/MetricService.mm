@@ -1,6 +1,6 @@
 @interface MetricService
 - (_TtC11FTMInternal13MetricService)init;
-- (void)metricsDidUpdate:(id)a3;
+- (void)metricsDidUpdate:(id)update;
 @end
 
 @implementation MetricService
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)metricsDidUpdate:(id)a3
+- (void)metricsDidUpdate:(id)update
 {
-  if (a3)
+  if (update)
   {
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-    v5 = self;
+    selfCopy = self;
     isa = Dictionary._bridgeToObjectiveC()().super.isa;
     sub_10023FC7C(isa);
   }

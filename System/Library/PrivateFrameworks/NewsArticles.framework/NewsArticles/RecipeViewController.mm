@@ -1,10 +1,10 @@
 @interface RecipeViewController
-- (_TtC12NewsArticles20RecipeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC12NewsArticles20RecipeViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)childViewControllerForStatusBarHidden;
 - (void)dealloc;
-- (void)setContentScrollView:(id)a3 forEdge:(unint64_t)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setContentScrollView:(id)view forEdge:(unint64_t)edge;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
@@ -16,22 +16,22 @@
 {
   v2 = OBJC_IVAR____TtC12NewsArticles20RecipeViewController_contentViewController;
   swift_beginAccess();
-  return *(a1 + v2);
+  return *(self + v2);
 }
 
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
   sub_1D7C26404();
   swift_unknownObjectRelease();
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = ObjectType;
   [(RecipeViewController *)&v5 dealloc];
 }
 
-- (_TtC12NewsArticles20RecipeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticles20RecipeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -40,23 +40,23 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7C2BB18();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1D7C2C34C(a3);
+  selfCopy = self;
+  sub_1D7C2C34C(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  [(RecipeViewController *)&v8 viewDidDisappear:v3];
+  [(RecipeViewController *)&v8 viewDidDisappear:disappearCopy];
   v5 = *&v4[OBJC_IVAR____TtC12NewsArticles20RecipeViewController_eventHandler];
   if (*(v5 + 88))
   {
@@ -77,17 +77,17 @@
 
 - (void)viewSafeAreaInsetsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7C2C528();
 }
 
-- (void)setContentScrollView:(id)a3 forEdge:(unint64_t)a4
+- (void)setContentScrollView:(id)view forEdge:(unint64_t)edge
 {
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
-  v6 = a3;
+  viewCopy = view;
   v7 = v8.receiver;
-  [(RecipeViewController *)&v8 setContentScrollView:v6 forEdge:a4];
+  [(RecipeViewController *)&v8 setContentScrollView:viewCopy forEdge:edge];
   sub_1D7B08E88();
   sub_1D7D28F1C();
 }

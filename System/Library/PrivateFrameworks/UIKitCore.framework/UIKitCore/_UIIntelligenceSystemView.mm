@@ -1,15 +1,15 @@
 @interface _UIIntelligenceSystemView
-- (_UIIntelligenceSystemView)initWithFrame:(CGRect)a3 serviceIdentity:(id)a4 sceneSpecification:(id)a5;
+- (_UIIntelligenceSystemView)initWithFrame:(CGRect)frame serviceIdentity:(id)identity sceneSpecification:(id)specification;
 - (id)_sceneLayer;
-- (id)transitionerForConnectingHostingController:(id)a3;
+- (id)transitionerForConnectingHostingController:(id)controller;
 - (void)_addSceneViewIfNecessary;
 - (void)_didMoveToWindowScene;
-- (void)_layerCornerCurveDidChange:(id)a3;
-- (void)_layerCornerRadiusDidChange:(double)a3;
-- (void)_layerMaskedCornersDidChange:(unint64_t)a3;
+- (void)_layerCornerCurveDidChange:(id)change;
+- (void)_layerCornerRadiusDidChange:(double)change;
+- (void)_layerMaskedCornersDidChange:(unint64_t)change;
 - (void)_removeSceneViewIfNecessary;
 - (void)didMoveToWindow;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _UIIntelligenceSystemView
@@ -17,50 +17,50 @@
 - (void)_addSceneViewIfNecessary
 {
   v30[4] = *MEMORY[0x1E69E9840];
-  v3 = [(_UIIntelligenceSystemView *)self _sceneHostingController];
-  v4 = [v3 sceneView];
+  _sceneHostingController = [(_UIIntelligenceSystemView *)self _sceneHostingController];
+  sceneView = [_sceneHostingController sceneView];
 
-  v5 = [v4 superview];
+  superview = [sceneView superview];
 
-  if (!v5)
+  if (!superview)
   {
-    [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UIView *)self addSubview:v4];
+    [sceneView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UIView *)self addSubview:sceneView];
     v24 = MEMORY[0x1E69977A0];
-    v29 = [v4 widthAnchor];
-    v28 = [(UIView *)self widthAnchor];
-    v27 = [v29 constraintEqualToAnchor:v28];
+    widthAnchor = [sceneView widthAnchor];
+    widthAnchor2 = [(UIView *)self widthAnchor];
+    v27 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v30[0] = v27;
-    v26 = [v4 heightAnchor];
-    v25 = [(UIView *)self heightAnchor];
-    v6 = [v26 constraintEqualToAnchor:v25];
+    heightAnchor = [sceneView heightAnchor];
+    heightAnchor2 = [(UIView *)self heightAnchor];
+    v6 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v30[1] = v6;
-    v7 = [v4 centerXAnchor];
-    v8 = [(UIView *)self centerXAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    centerXAnchor = [sceneView centerXAnchor];
+    centerXAnchor2 = [(UIView *)self centerXAnchor];
+    v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v30[2] = v9;
-    v10 = [v4 centerYAnchor];
-    v11 = [(UIView *)self centerYAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    centerYAnchor = [sceneView centerYAnchor];
+    centerYAnchor2 = [(UIView *)self centerYAnchor];
+    v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v30[3] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:4];
     [v24 activateConstraints:v13];
 
-    v14 = [(UIView *)self layer];
-    [v14 cornerRadius];
+    layer = [(UIView *)self layer];
+    [layer cornerRadius];
     v16 = v15;
-    v17 = [v4 layer];
-    [v17 setCornerRadius:v16];
+    layer2 = [sceneView layer];
+    [layer2 setCornerRadius:v16];
 
-    v18 = [(UIView *)self layer];
-    v19 = [v18 cornerCurve];
-    v20 = [v4 layer];
-    [v20 setCornerCurve:v19];
+    layer3 = [(UIView *)self layer];
+    cornerCurve = [layer3 cornerCurve];
+    layer4 = [sceneView layer];
+    [layer4 setCornerCurve:cornerCurve];
 
-    v21 = [(UIView *)self layer];
-    v22 = [v21 maskedCorners];
-    v23 = [v4 layer];
-    [v23 setMaskedCorners:v22];
+    layer5 = [(UIView *)self layer];
+    maskedCorners = [layer5 maskedCorners];
+    layer6 = [sceneView layer];
+    [layer6 setMaskedCorners:maskedCorners];
   }
 }
 
@@ -69,11 +69,11 @@
   v5.receiver = self;
   v5.super_class = _UIIntelligenceSystemView;
   [(UIView *)&v5 didMoveToWindow];
-  v3 = [(UIView *)self window];
-  if (v3)
+  window = [(UIView *)self window];
+  if (window)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:self selector:sel__didMoveToWindowScene name:@"_UIWindowDidMoveToSceneNotification" object:v3];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__didMoveToWindowScene name:@"_UIWindowDidMoveToSceneNotification" object:window];
   }
 
   [(_UIIntelligenceSystemView *)self _didMoveToWindowScene];
@@ -81,17 +81,17 @@
 
 - (void)_didMoveToWindowScene
 {
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:@"UISceneWillEnterForegroundNotification" object:0];
-  [v5 removeObserver:self name:@"UISceneDidEnterBackgroundNotification" object:0];
-  v3 = [(UIView *)self window];
-  v4 = [v3 windowScene];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UISceneWillEnterForegroundNotification" object:0];
+  [defaultCenter removeObserver:self name:@"UISceneDidEnterBackgroundNotification" object:0];
+  window = [(UIView *)self window];
+  windowScene = [window windowScene];
 
-  if (v4)
+  if (windowScene)
   {
-    [v5 addObserver:self selector:sel__removeSceneViewIfNecessary name:@"UISceneDidEnterBackgroundNotification" object:v4];
-    [v5 addObserver:self selector:sel__addSceneViewIfNecessary name:@"UISceneWillEnterForegroundNotification" object:v4];
-    if ([v4 activationState] < 2 || -[_UIIntelligenceSystemView _isVisibilityExternallyManaged](self, "_isVisibilityExternallyManaged"))
+    [defaultCenter addObserver:self selector:sel__removeSceneViewIfNecessary name:@"UISceneDidEnterBackgroundNotification" object:windowScene];
+    [defaultCenter addObserver:self selector:sel__addSceneViewIfNecessary name:@"UISceneWillEnterForegroundNotification" object:windowScene];
+    if ([windowScene activationState] < 2 || -[_UIIntelligenceSystemView _isVisibilityExternallyManaged](self, "_isVisibilityExternallyManaged"))
     {
       [(_UIIntelligenceSystemView *)self _addSceneViewIfNecessary];
     }
@@ -103,30 +103,30 @@
   }
 }
 
-- (_UIIntelligenceSystemView)initWithFrame:(CGRect)a3 serviceIdentity:(id)a4 sceneSpecification:(id)a5
+- (_UIIntelligenceSystemView)initWithFrame:(CGRect)frame serviceIdentity:(id)identity sceneSpecification:(id)specification
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  identityCopy = identity;
+  specificationCopy = specification;
   v23.receiver = self;
   v23.super_class = _UIIntelligenceSystemView;
-  v13 = [(UIView *)&v23 initWithFrame:x, y, width, height];
-  if (v13)
+  height = [(UIView *)&v23 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v14 = [[_UISceneHostingControllerAdvancedConfiguration alloc] initWithProcessIdentity:v11];
-    [(_UISceneHostingControllerAdvancedConfiguration *)v14 setSceneSpecification:v12];
+    v14 = [[_UISceneHostingControllerAdvancedConfiguration alloc] initWithProcessIdentity:identityCopy];
+    [(_UISceneHostingControllerAdvancedConfiguration *)v14 setSceneSpecification:specificationCopy];
     v15 = [[_UISceneHostingController alloc] initWithAdvancedConfiguration:v14];
-    sceneHostingController = v13->_sceneHostingController;
-    v13->_sceneHostingController = v15;
+    sceneHostingController = height->_sceneHostingController;
+    height->_sceneHostingController = v15;
 
-    v17 = v13->_sceneHostingController;
+    v17 = height->_sceneHostingController;
     if (v17)
     {
       v17->_fencesDisabled = 1;
-      v18 = v13->_sceneHostingController;
+      v18 = height->_sceneHostingController;
     }
 
     else
@@ -134,26 +134,26 @@
       v18 = 0;
     }
 
-    v19 = [(_UISceneHostingController *)v18 intelligenceComponent];
-    [v19 setCollectAsRemoteElement:0];
+    intelligenceComponent = [(_UISceneHostingController *)v18 intelligenceComponent];
+    [intelligenceComponent setCollectAsRemoteElement:0];
 
     v20 = objc_alloc_init(_UISceneHostingReconnectingActivationController);
-    [(_UISceneHostingReconnectingActivationController *)v20 setDelegate:v13];
-    [(_UISceneHostingController *)v13->_sceneHostingController setActivationController:v20];
-    [(_UIIntelligenceSystemView *)v13 _addSceneViewIfNecessary];
-    v21 = [(UIView *)v13 layer];
-    [v21 setAllowsHitTesting:0];
+    [(_UISceneHostingReconnectingActivationController *)v20 setDelegate:height];
+    [(_UISceneHostingController *)height->_sceneHostingController setActivationController:v20];
+    [(_UIIntelligenceSystemView *)height _addSceneViewIfNecessary];
+    layer = [(UIView *)height layer];
+    [layer setAllowsHitTesting:0];
 
-    [(UIView *)v13 setUserInteractionEnabled:0];
+    [(UIView *)height setUserInteractionEnabled:0];
   }
 
-  return v13;
+  return height;
 }
 
-- (id)transitionerForConnectingHostingController:(id)a3
+- (id)transitionerForConnectingHostingController:(id)controller
 {
-  v3 = [(_UIIntelligenceSystemView *)self _connectionActionProvider];
-  v4 = v3[2]();
+  _connectionActionProvider = [(_UIIntelligenceSystemView *)self _connectionActionProvider];
+  v4 = _connectionActionProvider[2]();
 
   if ([v4 count])
   {
@@ -173,16 +173,16 @@
   return v5;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v10.receiver = self;
   v10.super_class = _UIIntelligenceSystemView;
-  [(UIView *)&v10 willMoveToWindow:a3];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  [(UIView *)&v10 willMoveToWindow:window];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v5 = [(_UISceneHostingController *)self->_sceneHostingController activationStateComponent];
-  v6 = [v5 foregroundAssertionForReason:@"Light effect flicker avoidance"];
+  activationStateComponent = [(_UISceneHostingController *)self->_sceneHostingController activationStateComponent];
+  v6 = [activationStateComponent foregroundAssertionForReason:@"Light effect flicker avoidance"];
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -195,55 +195,55 @@
 
 - (void)_removeSceneViewIfNecessary
 {
-  v3 = [(_UIIntelligenceSystemView *)self _sceneHostingController];
-  v7 = [v3 sceneView];
+  _sceneHostingController = [(_UIIntelligenceSystemView *)self _sceneHostingController];
+  sceneView = [_sceneHostingController sceneView];
 
-  v4 = [v7 superview];
-  if (v4)
+  superview = [sceneView superview];
+  if (superview)
   {
-    v5 = v4;
-    v6 = [(_UIIntelligenceSystemView *)self _isVisibilityExternallyManaged];
+    v5 = superview;
+    _isVisibilityExternallyManaged = [(_UIIntelligenceSystemView *)self _isVisibilityExternallyManaged];
 
-    if (!v6)
+    if (!_isVisibilityExternallyManaged)
     {
-      [v7 removeFromSuperview];
+      [sceneView removeFromSuperview];
     }
   }
 }
 
 - (id)_sceneLayer
 {
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 416) sceneView];
-    v2 = [v1 layer];
+    sceneView = [*(self + 416) sceneView];
+    layer = [sceneView layer];
   }
 
   else
   {
-    v2 = 0;
+    layer = 0;
   }
 
-  return v2;
+  return layer;
 }
 
-- (void)_layerCornerRadiusDidChange:(double)a3
+- (void)_layerCornerRadiusDidChange:(double)change
 {
-  v4 = [(_UIIntelligenceSystemView *)self _sceneLayer];
-  [v4 setCornerRadius:a3];
+  _sceneLayer = [(_UIIntelligenceSystemView *)self _sceneLayer];
+  [_sceneLayer setCornerRadius:change];
 }
 
-- (void)_layerCornerCurveDidChange:(id)a3
+- (void)_layerCornerCurveDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(_UIIntelligenceSystemView *)self _sceneLayer];
-  [v5 setCornerCurve:v4];
+  changeCopy = change;
+  _sceneLayer = [(_UIIntelligenceSystemView *)self _sceneLayer];
+  [_sceneLayer setCornerCurve:changeCopy];
 }
 
-- (void)_layerMaskedCornersDidChange:(unint64_t)a3
+- (void)_layerMaskedCornersDidChange:(unint64_t)change
 {
-  v4 = [(_UIIntelligenceSystemView *)self _sceneLayer];
-  [v4 setMaskedCorners:a3];
+  _sceneLayer = [(_UIIntelligenceSystemView *)self _sceneLayer];
+  [_sceneLayer setMaskedCorners:change];
 }
 
 @end

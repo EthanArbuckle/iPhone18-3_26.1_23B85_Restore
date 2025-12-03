@@ -1,10 +1,10 @@
 @interface EREyeReliefServer
 + (id)sharedServer;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (EREyeReliefServer)init;
-- (void)isDistanceSamplingEnabled:(id)a3;
+- (void)isDistanceSamplingEnabled:(id)enabled;
 - (void)startServer;
-- (void)toggleDistanceSampling:(id)a3;
+- (void)toggleDistanceSampling:(id)sampling;
 @end
 
 @implementation EREyeReliefServer
@@ -53,37 +53,37 @@ uint64_t __33__EREyeReliefServer_sharedServer__block_invoke()
   v4 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:@"com.apple.eyereliefd"];
   [(EREyeReliefServer *)self setListener:v4];
 
-  v5 = [(EREyeReliefServer *)self listener];
-  [v5 setDelegate:self];
+  listener = [(EREyeReliefServer *)self listener];
+  [listener setDelegate:self];
 
-  v6 = [(EREyeReliefServer *)self listener];
-  [v6 resume];
+  listener2 = [(EREyeReliefServer *)self listener];
+  [listener2 resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 processIdentifier];
-  v9 = [v7 valueForEntitlement:@"com.apple.eyerelief.distancesampling"];
-  v10 = [v9 BOOLValue];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  processIdentifier = [connectionCopy processIdentifier];
+  v9 = [connectionCopy valueForEntitlement:@"com.apple.eyerelief.distancesampling"];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
     v11 = EREyeReliefProtocolInterface();
-    [v7 setExportedInterface:v11];
+    [connectionCopy setExportedInterface:v11];
 
-    [v7 setExportedObject:self];
-    v12 = [(EREyeReliefServer *)self connectionQueue];
+    [connectionCopy setExportedObject:self];
+    connectionQueue = [(EREyeReliefServer *)self connectionQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __56__EREyeReliefServer_listener_shouldAcceptNewConnection___block_invoke;
     block[3] = &unk_278FD7C30;
-    v22 = v8;
+    v22 = processIdentifier;
     block[4] = self;
-    v13 = v7;
+    v13 = connectionCopy;
     v21 = v13;
-    dispatch_async(v12, block);
+    dispatch_async(connectionQueue, block);
 
     objc_initWeak(&location, v13);
     v16[0] = MEMORY[0x277D85DD0];
@@ -91,7 +91,7 @@ uint64_t __33__EREyeReliefServer_sharedServer__block_invoke()
     v16[2] = __56__EREyeReliefServer_listener_shouldAcceptNewConnection___block_invoke_2;
     v16[3] = &unk_278FD7C58;
     v16[4] = self;
-    v18 = v8;
+    v18 = processIdentifier;
     objc_copyWeak(&v17, &location);
     [v13 setInvalidationHandler:v16];
     [v13 resume];
@@ -101,11 +101,11 @@ uint64_t __33__EREyeReliefServer_sharedServer__block_invoke()
 
   else
   {
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Rejecting client connection from pid %d: Client not permitted to activate distance sampling.", v8];
+    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Rejecting client connection from pid %d: Client not permitted to activate distance sampling.", processIdentifier];
     [ERLogging log:v14 withType:1];
   }
 
-  return v10;
+  return bOOLValue;
 }
 
 void __56__EREyeReliefServer_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)
@@ -142,15 +142,15 @@ void __56__EREyeReliefServer_listener_shouldAcceptNewConnection___block_invoke_3
   [v4 removeObject:WeakRetained];
 }
 
-- (void)toggleDistanceSampling:(id)a3
+- (void)toggleDistanceSampling:(id)sampling
 {
-  v8 = a3;
-  v4 = [(EREyeReliefServer *)self distanceSamplingToggleHandler];
+  samplingCopy = sampling;
+  distanceSamplingToggleHandler = [(EREyeReliefServer *)self distanceSamplingToggleHandler];
 
-  if (v4)
+  if (distanceSamplingToggleHandler)
   {
-    v5 = [(EREyeReliefServer *)self distanceSamplingToggleHandler];
-    v5[2]();
+    distanceSamplingToggleHandler2 = [(EREyeReliefServer *)self distanceSamplingToggleHandler];
+    distanceSamplingToggleHandler2[2]();
   }
 
   else
@@ -159,23 +159,23 @@ void __56__EREyeReliefServer_listener_shouldAcceptNewConnection___block_invoke_3
     [ERLogging log:v6 withType:3];
   }
 
-  v7 = v8;
-  if (v8)
+  v7 = samplingCopy;
+  if (samplingCopy)
   {
-    (*(v8 + 2))(v8, v4 != 0, 0);
-    v7 = v8;
+    (*(samplingCopy + 2))(samplingCopy, distanceSamplingToggleHandler != 0, 0);
+    v7 = samplingCopy;
   }
 }
 
-- (void)isDistanceSamplingEnabled:(id)a3
+- (void)isDistanceSamplingEnabled:(id)enabled
 {
-  v8 = a3;
-  v4 = [(EREyeReliefServer *)self isDistanceSamplingEnabledHandler];
+  enabledCopy = enabled;
+  isDistanceSamplingEnabledHandler = [(EREyeReliefServer *)self isDistanceSamplingEnabledHandler];
 
-  if (!v4)
+  if (!isDistanceSamplingEnabledHandler)
   {
-    v7 = v8;
-    if (!v8)
+    v7 = enabledCopy;
+    if (!enabledCopy)
     {
       goto LABEL_7;
     }
@@ -184,15 +184,15 @@ void __56__EREyeReliefServer_listener_shouldAcceptNewConnection___block_invoke_3
     goto LABEL_6;
   }
 
-  v5 = [(EREyeReliefServer *)self isDistanceSamplingEnabledHandler];
-  v6 = v5[2]();
+  isDistanceSamplingEnabledHandler2 = [(EREyeReliefServer *)self isDistanceSamplingEnabledHandler];
+  v6 = isDistanceSamplingEnabledHandler2[2]();
 
-  v7 = v8;
-  if (v8)
+  v7 = enabledCopy;
+  if (enabledCopy)
   {
 LABEL_6:
-    (v7)[2](v8, v6, 0);
-    v7 = v8;
+    (v7)[2](enabledCopy, v6, 0);
+    v7 = enabledCopy;
   }
 
 LABEL_7:

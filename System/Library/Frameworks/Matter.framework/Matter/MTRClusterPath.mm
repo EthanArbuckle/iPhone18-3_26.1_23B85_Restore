@@ -1,27 +1,27 @@
 @interface MTRClusterPath
 + (MTRClusterPath)clusterPathWithEndpointID:(NSNumber *)endpointID clusterID:(NSNumber *)clusterID;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToClusterPath:(id)a3;
-- (MTRClusterPath)initWithCoder:(id)a3;
-- (MTRClusterPath)initWithPath:(const ConcreteClusterPath *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToClusterPath:(id)path;
+- (MTRClusterPath)initWithCoder:(id)coder;
+- (MTRClusterPath)initWithPath:(const ConcreteClusterPath *)path;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTRClusterPath
 
-- (MTRClusterPath)initWithPath:(const ConcreteClusterPath *)a3
+- (MTRClusterPath)initWithPath:(const ConcreteClusterPath *)path
 {
   v10.receiver = self;
   v10.super_class = MTRClusterPath;
   v4 = [(MTRClusterPath *)&v10 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:a3->mEndpointId];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:path->mEndpointId];
     endpoint = v4->_endpoint;
     v4->_endpoint = v5;
 
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a3->mClusterId];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:path->mClusterId];
     cluster = v4->_cluster;
     v4->_cluster = v7;
   }
@@ -32,11 +32,11 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NSNumber *)self->_endpoint unsignedShortValue];
-  v5 = [(NSNumber *)self->_cluster unsignedLongLongValue];
-  v6 = [(NSNumber *)self->_cluster unsignedLongLongValue];
+  unsignedShortValue = [(NSNumber *)self->_endpoint unsignedShortValue];
+  unsignedLongLongValue = [(NSNumber *)self->_cluster unsignedLongLongValue];
+  unsignedLongLongValue2 = [(NSNumber *)self->_cluster unsignedLongLongValue];
   v7 = MTRClusterNameForID([(NSNumber *)self->_cluster unsignedLongLongValue]);
-  v8 = [v3 stringWithFormat:@"<MTRClusterPath endpoint %u cluster 0x%llx (%llu, %@)>", v4, v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"<MTRClusterPath endpoint %u cluster 0x%llx (%llu, %@)>", unsignedShortValue, unsignedLongLongValue, unsignedLongLongValue2, v7];
 
   return v8;
 }
@@ -46,22 +46,22 @@
   v5 = endpointID;
   v6 = clusterID;
   v9[0] = [(NSNumber *)v5 unsignedShortValue];
-  v10 = [(NSNumber *)v6 unsignedLongValue];
+  unsignedLongValue = [(NSNumber *)v6 unsignedLongValue];
   v7 = [[MTRClusterPath alloc] initWithPath:v9];
 
   return v7;
 }
 
-- (BOOL)isEqualToClusterPath:(id)a3
+- (BOOL)isEqualToClusterPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   endpoint = self->_endpoint;
-  v6 = [v4 endpoint];
-  if (sub_238DB32F8(endpoint, v6))
+  endpoint = [pathCopy endpoint];
+  if (sub_238DB32F8(endpoint, endpoint))
   {
     cluster = self->_cluster;
-    v8 = [v4 cluster];
-    v9 = sub_238DB32F8(cluster, v8);
+    cluster = [pathCopy cluster];
+    v9 = sub_238DB32F8(cluster, cluster);
   }
 
   else
@@ -72,19 +72,19 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v5 == objc_opt_class() && [(MTRClusterPath *)self isEqualToClusterPath:v4];
+  v6 = v5 == objc_opt_class() && [(MTRClusterPath *)self isEqualToClusterPath:equalCopy];
 
   return v6;
 }
 
-- (MTRClusterPath)initWithCoder:(id)a3
+- (MTRClusterPath)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = MTRClusterPath;
   v5 = [(MTRClusterPath *)&v19 init];
@@ -93,7 +93,7 @@
     goto LABEL_15;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endpointKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endpointKey"];
   p_endpoint = &v5->_endpoint;
   endpoint = v5->_endpoint;
   v5->_endpoint = v6;
@@ -126,7 +126,7 @@ LABEL_15:
     }
   }
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clusterKey"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clusterKey"];
   p_endpoint = &v5->_cluster;
   cluster = v5->_cluster;
   v5->_cluster = v9;
@@ -161,11 +161,11 @@ LABEL_16:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_endpoint forKey:@"endpointKey"];
-  [v4 encodeObject:self->_cluster forKey:@"clusterKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_endpoint forKey:@"endpointKey"];
+  [coderCopy encodeObject:self->_cluster forKey:@"clusterKey"];
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface PLPhotosKnowledgeGraphAvailabilityStatus
-- (PLPhotosKnowledgeGraphAvailabilityStatus)initWithDictionary:(id)a3;
+- (PLPhotosKnowledgeGraphAvailabilityStatus)initWithDictionary:(id)dictionary;
 @end
 
 @implementation PLPhotosKnowledgeGraphAvailabilityStatus
 
-- (PLPhotosKnowledgeGraphAvailabilityStatus)initWithDictionary:(id)a3
+- (PLPhotosKnowledgeGraphAvailabilityStatus)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = PLPhotosKnowledgeGraphAvailabilityStatus;
   v5 = [(PLPhotosKnowledgeGraphAvailabilityStatus *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"graphStatusDescription"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"graphStatusDescription"];
     v7 = v6;
     if (v6)
     {
@@ -26,10 +26,10 @@
 
     objc_storeStrong(&v5->_statusDescription, v8);
 
-    v9 = [v4 objectForKeyedSubscript:@"graphIsReadyStatus"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"graphIsReadyStatus"];
     if (v9)
     {
-      v10 = [v4 objectForKeyedSubscript:@"graphIsReadyStatus"];
+      v10 = [dictionaryCopy objectForKeyedSubscript:@"graphIsReadyStatus"];
       if ([v10 BOOLValue])
       {
         v11 = 2;

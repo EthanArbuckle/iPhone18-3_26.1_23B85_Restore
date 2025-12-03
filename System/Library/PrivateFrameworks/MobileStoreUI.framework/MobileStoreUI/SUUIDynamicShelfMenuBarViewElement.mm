@@ -1,7 +1,7 @@
 @interface SUUIDynamicShelfMenuBarViewElement
 - (SUUIViewElement)cellTemplateViewElement;
-- (id)applyUpdatesWithElement:(id)a3;
-- (void)setShelfItemViewElementValidator:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
+- (void)setShelfItemViewElementValidator:(id)validator;
 @end
 
 @implementation SUUIDynamicShelfMenuBarViewElement
@@ -23,28 +23,28 @@
   return cellTemplateViewElement;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SUUIDynamicShelfMenuBarViewElement;
-  v5 = [(SUUIShelfMenuBarViewElement *)&v10 applyUpdatesWithElement:v4];
+  v5 = [(SUUIShelfMenuBarViewElement *)&v10 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    v7 = [(SUUIDynamicShelfMenuBarViewElement *)v4 cellTemplateViewElement];
+    cellTemplateViewElement = [(SUUIDynamicShelfMenuBarViewElement *)elementCopy cellTemplateViewElement];
     cellTemplateViewElement = self->_cellTemplateViewElement;
-    self->_cellTemplateViewElement = v7;
+    self->_cellTemplateViewElement = cellTemplateViewElement;
   }
 
   return v6;
 }
 
-- (void)setShelfItemViewElementValidator:(id)a3
+- (void)setShelfItemViewElementValidator:(id)validator
 {
   v5.receiver = self;
   v5.super_class = SUUIDynamicShelfMenuBarViewElement;
-  [(SUUIShelfViewElement *)&v5 setShelfItemViewElementValidator:a3];
+  [(SUUIShelfViewElement *)&v5 setShelfItemViewElementValidator:validator];
   cellTemplateViewElement = self->_cellTemplateViewElement;
   self->_cellTemplateViewElement = 0;
 }

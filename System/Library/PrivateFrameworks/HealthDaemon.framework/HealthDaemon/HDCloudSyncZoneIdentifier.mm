@@ -1,46 +1,46 @@
 @interface HDCloudSyncZoneIdentifier
-+ (id)identifierForZone:(id)a3 container:(id)a4 scope:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalentIgnoringOwnerToZone:(id)a3;
-- (BOOL)isEquivalentIgnoringOwnerToZone:(id)a3 container:(id)a4;
-- (BOOL)isEquivalentToZone:(id)a3 container:(id)a4;
-- (HDCloudSyncZoneIdentifier)initWithCoder:(id)a3;
++ (id)identifierForZone:(id)zone container:(id)container scope:(int64_t)scope;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalentIgnoringOwnerToZone:(id)zone;
+- (BOOL)isEquivalentIgnoringOwnerToZone:(id)zone container:(id)container;
+- (BOOL)isEquivalentToZone:(id)zone container:(id)container;
+- (HDCloudSyncZoneIdentifier)initWithCoder:(id)coder;
 - (id)description;
-- (id)initForZone:(id)a3 container:(id)a4 scope:(int64_t)a5;
+- (id)initForZone:(id)zone container:(id)container scope:(int64_t)scope;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDCloudSyncZoneIdentifier
 
-+ (id)identifierForZone:(id)a3 container:(id)a4 scope:(int64_t)a5
++ (id)identifierForZone:(id)zone container:(id)container scope:(int64_t)scope
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[HDCloudSyncZoneIdentifier alloc] initForZone:v8 container:v7 scope:a5];
+  containerCopy = container;
+  zoneCopy = zone;
+  v9 = [[HDCloudSyncZoneIdentifier alloc] initForZone:zoneCopy container:containerCopy scope:scope];
 
   return v9;
 }
 
-- (id)initForZone:(id)a3 container:(id)a4 scope:(int64_t)a5
+- (id)initForZone:(id)zone container:(id)container scope:(int64_t)scope
 {
-  v8 = a3;
-  v9 = a4;
+  zoneCopy = zone;
+  containerCopy = container;
   v32.receiver = self;
   v32.super_class = HDCloudSyncZoneIdentifier;
   v10 = [(HDCloudSyncZoneIdentifier *)&v32 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [zoneCopy copy];
     zoneIdentifier = v10->_zoneIdentifier;
     v10->_zoneIdentifier = v11;
 
-    v13 = [v9 copy];
+    v13 = [containerCopy copy];
     containerIdentifier = v10->_containerIdentifier;
     v10->_containerIdentifier = v13;
 
-    v10->_scope = a5;
-    v15 = v8;
+    v10->_scope = scope;
+    v15 = zoneCopy;
     objc_opt_self();
     v41 = 0;
     v16 = [v15 hd_isMasterZoneIDForSyncCircleIdentifier:&v41];
@@ -141,44 +141,44 @@ LABEL_21:
   return v10;
 }
 
-- (HDCloudSyncZoneIdentifier)initWithCoder:(id)a3
+- (HDCloudSyncZoneIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zone_id_record_zone_id"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zone_id_container_id"];
-  v7 = [v4 decodeIntForKey:@"zone_id_scope"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zone_id_record_zone_id"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zone_id_container_id"];
+  v7 = [coderCopy decodeIntForKey:@"zone_id_scope"];
 
   v8 = [(HDCloudSyncZoneIdentifier *)self initForZone:v5 container:v6 scope:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   zoneIdentifier = self->_zoneIdentifier;
-  v5 = a3;
-  [v5 encodeObject:zoneIdentifier forKey:@"zone_id_record_zone_id"];
-  [v5 encodeObject:self->_containerIdentifier forKey:@"zone_id_container_id"];
-  [v5 encodeInt:LODWORD(self->_scope) forKey:@"zone_id_scope"];
+  coderCopy = coder;
+  [coderCopy encodeObject:zoneIdentifier forKey:@"zone_id_record_zone_id"];
+  [coderCopy encodeObject:self->_containerIdentifier forKey:@"zone_id_container_id"];
+  [coderCopy encodeInt:LODWORD(self->_scope) forKey:@"zone_id_scope"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(CKRecordZoneID *)self->_zoneIdentifier zoneName];
-  v4 = [v3 hash];
+  zoneName = [(CKRecordZoneID *)self->_zoneIdentifier zoneName];
+  v4 = [zoneName hash];
   v5 = [(NSString *)self->_containerIdentifier hash]^ self->_scope;
 
   return v5 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_scope == v4[3])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_scope == equalCopy[3])
   {
-    v5 = [v4 zoneIdentifier];
-    v6 = [v4 containerIdentifier];
-    v7 = [(HDCloudSyncZoneIdentifier *)self isEquivalentToZone:v5 container:v6];
+    zoneIdentifier = [equalCopy zoneIdentifier];
+    containerIdentifier = [equalCopy containerIdentifier];
+    v7 = [(HDCloudSyncZoneIdentifier *)self isEquivalentToZone:zoneIdentifier container:containerIdentifier];
   }
 
   else
@@ -189,19 +189,19 @@ LABEL_21:
   return v7;
 }
 
-- (BOOL)isEquivalentToZone:(id)a3 container:(id)a4
+- (BOOL)isEquivalentToZone:(id)zone container:(id)container
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKRecordZoneID *)self->_zoneIdentifier zoneName];
-  v9 = [v6 zoneName];
-  if ([v8 isEqualToString:v9])
+  zoneCopy = zone;
+  containerCopy = container;
+  zoneName = [(CKRecordZoneID *)self->_zoneIdentifier zoneName];
+  zoneName2 = [zoneCopy zoneName];
+  if ([zoneName isEqualToString:zoneName2])
   {
-    v10 = [(CKRecordZoneID *)self->_zoneIdentifier ownerName];
-    v11 = [v6 ownerName];
-    if ([v10 isEqualToString:v11])
+    ownerName = [(CKRecordZoneID *)self->_zoneIdentifier ownerName];
+    ownerName2 = [zoneCopy ownerName];
+    if ([ownerName isEqualToString:ownerName2])
     {
-      v12 = [(NSString *)self->_containerIdentifier isEqualToString:v7];
+      v12 = [(NSString *)self->_containerIdentifier isEqualToString:containerCopy];
     }
 
     else
@@ -218,17 +218,17 @@ LABEL_21:
   return v12;
 }
 
-- (BOOL)isEquivalentIgnoringOwnerToZone:(id)a3 container:(id)a4
+- (BOOL)isEquivalentIgnoringOwnerToZone:(id)zone container:(id)container
 {
-  v6 = a4;
+  containerCopy = container;
   zoneIdentifier = self->_zoneIdentifier;
-  v8 = a3;
-  v9 = [(CKRecordZoneID *)zoneIdentifier zoneName];
-  v10 = [v8 zoneName];
+  zoneCopy = zone;
+  zoneName = [(CKRecordZoneID *)zoneIdentifier zoneName];
+  zoneName2 = [zoneCopy zoneName];
 
-  if ([v9 isEqualToString:v10])
+  if ([zoneName isEqualToString:zoneName2])
   {
-    v11 = [(NSString *)self->_containerIdentifier isEqualToString:v6];
+    v11 = [(NSString *)self->_containerIdentifier isEqualToString:containerCopy];
   }
 
   else
@@ -239,13 +239,13 @@ LABEL_21:
   return v11;
 }
 
-- (BOOL)isEquivalentIgnoringOwnerToZone:(id)a3
+- (BOOL)isEquivalentIgnoringOwnerToZone:(id)zone
 {
-  v4 = a3;
-  v5 = [v4 zoneIdentifier];
-  v6 = [v4 containerIdentifier];
+  zoneCopy = zone;
+  zoneIdentifier = [zoneCopy zoneIdentifier];
+  containerIdentifier = [zoneCopy containerIdentifier];
 
-  LOBYTE(self) = [(HDCloudSyncZoneIdentifier *)self isEquivalentIgnoringOwnerToZone:v5 container:v6];
+  LOBYTE(self) = [(HDCloudSyncZoneIdentifier *)self isEquivalentIgnoringOwnerToZone:zoneIdentifier container:containerIdentifier];
   return self;
 }
 
@@ -254,9 +254,9 @@ LABEL_21:
   v3 = MEMORY[0x277CCACA8];
   containerIdentifier = self->_containerIdentifier;
   v5 = HDCKDatabaseScopeToString(self->_scope);
-  v6 = [(CKRecordZoneID *)self->_zoneIdentifier zoneName];
-  v7 = [(CKRecordZoneID *)self->_zoneIdentifier ownerName];
-  v8 = [v3 stringWithFormat:@"<%@ (%@): %@ [%@]>", containerIdentifier, v5, v6, v7];
+  zoneName = [(CKRecordZoneID *)self->_zoneIdentifier zoneName];
+  ownerName = [(CKRecordZoneID *)self->_zoneIdentifier ownerName];
+  v8 = [v3 stringWithFormat:@"<%@ (%@): %@ [%@]>", containerIdentifier, v5, zoneName, ownerName];
 
   return v8;
 }

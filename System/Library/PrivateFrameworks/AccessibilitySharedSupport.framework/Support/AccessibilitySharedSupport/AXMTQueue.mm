@@ -4,7 +4,7 @@
 - (NSArray)values;
 - (id)_dequeue;
 - (unint64_t)count;
-- (void)_enqueue:(id)a3;
+- (void)_enqueue:(id)_enqueue;
 - (void)reset;
 @end
 
@@ -30,56 +30,56 @@
   [(AXMTQueue *)self setFilled:0];
   while ([(AXMTQueue *)self count])
   {
-    v3 = [(AXMTQueue *)self _dequeue];
+    _dequeue = [(AXMTQueue *)self _dequeue];
   }
 }
 
 - (NSArray)values
 {
-  v2 = [(AXMTQueue *)self _values];
-  v3 = [NSArray arrayWithArray:v2];
+  _values = [(AXMTQueue *)self _values];
+  v3 = [NSArray arrayWithArray:_values];
 
   return v3;
 }
 
 - (unint64_t)count
 {
-  v2 = [(AXMTQueue *)self _values];
-  v3 = [v2 count];
+  _values = [(AXMTQueue *)self _values];
+  v3 = [_values count];
 
   return v3;
 }
 
-- (void)_enqueue:(id)a3
+- (void)_enqueue:(id)_enqueue
 {
-  v7 = a3;
-  v4 = [(AXMTQueue *)self _values];
-  [v4 addObject:v7];
+  _enqueueCopy = _enqueue;
+  _values = [(AXMTQueue *)self _values];
+  [_values addObject:_enqueueCopy];
 
-  v5 = [(AXMTQueue *)self delegate];
-  v6 = v5;
-  if (v5)
+  delegate = [(AXMTQueue *)self delegate];
+  v6 = delegate;
+  if (delegate)
   {
-    [v5 queue:self enqueuedValue:v7];
+    [delegate queue:self enqueuedValue:_enqueueCopy];
   }
 }
 
 - (id)_dequeue
 {
-  v3 = [(AXMTQueue *)self _values];
-  v4 = [v3 firstObject];
+  _values = [(AXMTQueue *)self _values];
+  firstObject = [_values firstObject];
 
-  v5 = [(AXMTQueue *)self _values];
-  [v5 removeObjectAtIndex:0];
+  _values2 = [(AXMTQueue *)self _values];
+  [_values2 removeObjectAtIndex:0];
 
-  v6 = [(AXMTQueue *)self delegate];
-  v7 = v6;
-  if (v6)
+  delegate = [(AXMTQueue *)self delegate];
+  v7 = delegate;
+  if (delegate)
   {
-    [v6 queue:self dequeuedValue:v4];
+    [delegate queue:self dequeuedValue:firstObject];
   }
 
-  return v4;
+  return firstObject;
 }
 
 - (AXEQueueDelegate)delegate

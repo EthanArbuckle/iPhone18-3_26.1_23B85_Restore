@@ -1,22 +1,22 @@
 @interface TVRUITouchEvent
 - (CGPoint)digitizerLocation;
-- (TVRUITouchEvent)initWithTimestamp:(double)a3 touchPhase:(int64_t)a4 fingerIndex:(int64_t)a5 digitizerLocation:(CGPoint)a6;
+- (TVRUITouchEvent)initWithTimestamp:(double)timestamp touchPhase:(int64_t)phase fingerIndex:(int64_t)index digitizerLocation:(CGPoint)location;
 @end
 
 @implementation TVRUITouchEvent
 
-- (TVRUITouchEvent)initWithTimestamp:(double)a3 touchPhase:(int64_t)a4 fingerIndex:(int64_t)a5 digitizerLocation:(CGPoint)a6
+- (TVRUITouchEvent)initWithTimestamp:(double)timestamp touchPhase:(int64_t)phase fingerIndex:(int64_t)index digitizerLocation:(CGPoint)location
 {
-  y = a6.y;
-  x = a6.x;
+  y = location.y;
+  x = location.x;
   v12.receiver = self;
   v12.super_class = TVRUITouchEvent;
   result = [(TVRUITouchEvent *)&v12 init];
   if (result)
   {
-    result->_timestamp = a3;
-    result->_touchPhase = a4;
-    result->_fingerIndex = a5;
+    result->_timestamp = timestamp;
+    result->_touchPhase = phase;
+    result->_fingerIndex = index;
     result->_digitizerLocation.x = x;
     result->_digitizerLocation.y = y;
   }

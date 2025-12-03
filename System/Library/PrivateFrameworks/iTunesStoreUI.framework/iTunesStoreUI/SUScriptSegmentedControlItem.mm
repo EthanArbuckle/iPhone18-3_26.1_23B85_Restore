@@ -1,38 +1,38 @@
 @interface SUScriptSegmentedControlItem
-+ (id)webScriptNameForKeyName:(id)a3;
++ (id)webScriptNameForKeyName:(id)name;
 + (void)initialize;
 - (NSString)identifier;
 - (NSString)imageURL;
 - (NSString)title;
 - (SUScriptCanvasContext)canvas;
-- (SUScriptSegmentedControlItem)initWithPageSection:(id)a3;
+- (SUScriptSegmentedControlItem)initWithPageSection:(id)section;
 - (id)_segmentedControl;
 - (id)newPageSection;
 - (id)scriptAttributeKeys;
 - (id)userInfo;
 - (void)_reloadUserInterface;
-- (void)_setImage:(id)a3;
+- (void)_setImage:(id)image;
 - (void)dealloc;
-- (void)setCanvas:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setImageURL:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUserInfo:(id)a3;
+- (void)setCanvas:(id)canvas;
+- (void)setIdentifier:(id)identifier;
+- (void)setImageURL:(id)l;
+- (void)setTitle:(id)title;
+- (void)setUserInfo:(id)info;
 @end
 
 @implementation SUScriptSegmentedControlItem
 
-- (SUScriptSegmentedControlItem)initWithPageSection:(id)a3
+- (SUScriptSegmentedControlItem)initWithPageSection:(id)section
 {
   v6.receiver = self;
   v6.super_class = SUScriptSegmentedControlItem;
   v4 = [(SUScriptObject *)&v6 init];
   if (v4)
   {
-    v4->_identifier = [a3 identifier];
-    v4->_image = [a3 image];
-    v4->_title = [a3 title];
-    v4->_userInfo = -[SUScriptURLRequest initWithNativeRequestProperties:]([SUScriptURLRequest alloc], "initWithNativeRequestProperties:", [a3 URLRequestProperties]);
+    v4->_identifier = [section identifier];
+    v4->_image = [section image];
+    v4->_title = [section title];
+    v4->_userInfo = -[SUScriptURLRequest initWithNativeRequestProperties:]([SUScriptURLRequest alloc], "initWithNativeRequestProperties:", [section URLRequestProperties]);
   }
 
   return v4;
@@ -48,11 +48,11 @@
 - (id)newPageSection
 {
   v3 = objc_alloc_init(SUPageSection);
-  v4 = [(SUScriptSegmentedControlItem *)self userInfo];
+  userInfo = [(SUScriptSegmentedControlItem *)self userInfo];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SUPageSection *)v3 setStructuredPageType:[SUStructuredPage pageTypeForStorePageString:v4]];
+    [(SUPageSection *)v3 setStructuredPageType:[SUStructuredPage pageTypeForStorePageString:userInfo]];
   }
 
   else
@@ -60,18 +60,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 copyNativeRequestProperties];
-      [(SUPageSection *)v3 setURLRequestProperties:v5];
+      copyNativeRequestProperties = [userInfo copyNativeRequestProperties];
+      [(SUPageSection *)v3 setURLRequestProperties:copyNativeRequestProperties];
     }
   }
 
   if ([(SUPageSection *)v3 URLRequestProperties]|| [(SUPageSection *)v3 structuredPageType]== 8)
   {
-    v6 = [(SUScriptSegmentedControlItem *)self identifier];
+    identifier = [(SUScriptSegmentedControlItem *)self identifier];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = identifier;
     }
 
     else
@@ -81,11 +81,11 @@
 
     [(SUPageSection *)v3 setIdentifier:v7];
     [(SUPageSection *)v3 setImage:[(SUScriptSegmentedControlItem *)self image]];
-    v8 = [(SUScriptSegmentedControlItem *)self title];
+    title = [(SUScriptSegmentedControlItem *)self title];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = title;
     }
 
     else
@@ -150,7 +150,7 @@
   return [v5 null];
 }
 
-- (void)setCanvas:(id)a3
+- (void)setCanvas:(id)canvas
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -162,7 +162,7 @@
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = 0;
-  if (!a3 || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = a3, (objc_opt_isKindOfClass() & 1) != 0))
+  if (!canvas || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = canvas, (objc_opt_isKindOfClass() & 1) != 0))
   {
 LABEL_3:
     [(SUScriptObject *)self lock];
@@ -174,7 +174,7 @@ LABEL_3:
     }
 
     [(SUScriptObject *)self unlock];
-    v7 = [(SUScriptCanvasContext *)v5 copyCanvasImage];
+    copyCanvasImage = [(SUScriptCanvasContext *)v5 copyCanvasImage];
     WebThreadRunOnMainThread();
 
     return;
@@ -185,19 +185,19 @@ LABEL_3:
   [v9 throwException:@"Invalid argument"];
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    identifierCopy = 0;
 LABEL_3:
     [(SUScriptObject *)self lock];
     identifier = self->_identifier;
-    if (identifier != v5)
+    if (identifier != identifierCopy)
     {
 
-      self->_identifier = v5;
+      self->_identifier = identifierCopy;
     }
 
     [(SUScriptObject *)self unlock];
@@ -206,8 +206,8 @@ LABEL_3:
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = 0;
-  if (!a3)
+  identifierCopy = 0;
+  if (!identifier)
   {
     goto LABEL_3;
   }
@@ -218,7 +218,7 @@ LABEL_3:
   }
 
   objc_opt_class();
-  v5 = a3;
+  identifierCopy = identifier;
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_3;
@@ -229,25 +229,25 @@ LABEL_3:
   [v8 throwException:@"Invalid argument"];
 }
 
-- (void)setImageURL:(id)a3
+- (void)setImageURL:(id)l
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    lCopy = 0;
   }
 
   else
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v5 = 0;
-    if (a3)
+    lCopy = 0;
+    if (l)
     {
       if ((isKindOfClass & 1) == 0)
       {
         objc_opt_class();
-        v5 = a3;
+        lCopy = l;
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           goto LABEL_10;
@@ -256,16 +256,16 @@ LABEL_3:
     }
   }
 
-  v6 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v5];
+  v6 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:lCopy];
   if (v6)
   {
     v7 = v6;
     [(SUScriptObject *)self lock];
     imageURLString = self->_imageURLString;
-    if (imageURLString != v5)
+    if (imageURLString != lCopy)
     {
 
-      self->_imageURLString = v5;
+      self->_imageURLString = lCopy;
     }
 
     [(SUScriptObject *)self unlock];
@@ -330,10 +330,10 @@ void __44__SUScriptSegmentedControlItem_setImageURL___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !title) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -360,20 +360,20 @@ uint64_t __41__SUScriptSegmentedControlItem_setTitle___block_invoke(uint64_t a1)
   return [v2 _reloadUserInterface];
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a3 = 0;
+    info = 0;
   }
 
   [(SUScriptObject *)self lock];
   userInfo = self->_userInfo;
-  if (userInfo != a3)
+  if (userInfo != info)
   {
 
-    self->_userInfo = a3;
+    self->_userInfo = info;
   }
 
   [(SUScriptObject *)self unlock];
@@ -392,15 +392,15 @@ uint64_t __41__SUScriptSegmentedControlItem_setTitle___block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -429,18 +429,18 @@ uint64_t __37__SUScriptSegmentedControlItem_title__block_invoke(uint64_t a1)
 
 - (void)_reloadUserInterface
 {
-  v3 = [(SUScriptSegmentedControlItem *)self _segmentedControl];
-  v4 = [v3 rawSegments];
-  if (v4)
+  _segmentedControl = [(SUScriptSegmentedControlItem *)self _segmentedControl];
+  rawSegments = [_segmentedControl rawSegments];
+  if (rawSegments)
   {
-    v5 = [v4 indexOfObjectIdenticalTo:self];
+    v5 = [rawSegments indexOfObjectIdenticalTo:self];
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v6 = v5;
-      v7 = [v3 activeSegmentedControl];
-      [v7 setImage:self->_image forSegmentAtIndex:v6];
-      [v7 setTitle:self->_title forSegmentAtIndex:v6];
-      v8 = [objc_msgSend(objc_msgSend(objc_msgSend(v3 "storePageViewController")];
+      activeSegmentedControl = [_segmentedControl activeSegmentedControl];
+      [activeSegmentedControl setImage:self->_image forSegmentAtIndex:v6];
+      [activeSegmentedControl setTitle:self->_title forSegmentAtIndex:v6];
+      v8 = [objc_msgSend(objc_msgSend(objc_msgSend(_segmentedControl "storePageViewController")];
       [v8 setImage:self->_image];
       title = self->_title;
 
@@ -451,11 +451,11 @@ uint64_t __37__SUScriptSegmentedControlItem_title__block_invoke(uint64_t a1)
 
 - (id)_segmentedControl
 {
-  v2 = [(SUScriptObject *)self parentScriptObject];
+  parentScriptObject = [(SUScriptObject *)self parentScriptObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return v2;
+    return parentScriptObject;
   }
 
   else
@@ -464,26 +464,26 @@ uint64_t __37__SUScriptSegmentedControlItem_title__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setImage:(id)a3
+- (void)_setImage:(id)image
 {
   image = self->_image;
-  if (image != a3)
+  if (image != image)
   {
 
-    self->_image = a3;
+    self->_image = image;
   }
 
   [(SUScriptSegmentedControlItem *)self _reloadUserInterface];
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_47 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptSegmentedControlItem;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
@@ -493,14 +493,14 @@ uint64_t __37__SUScriptSegmentedControlItem_title__block_invoke(uint64_t a1)
 {
   v4.receiver = self;
   v4.super_class = SUScriptSegmentedControlItem;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_47 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_47 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __KeyMapping_47 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{@"canvas", @"identifier", @"identifier", @"imageURL", @"imageURL", @"title", @"title", @"userInfo", @"userInfo", 0}];
   }

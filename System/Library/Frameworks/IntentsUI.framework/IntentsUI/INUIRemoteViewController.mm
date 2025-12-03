@@ -1,27 +1,27 @@
 @interface INUIRemoteViewController
-+ (void)_attemptToConnectToRemoteViewControllerForRemainingExtensions:(id)a3 delegate:(id)a4 connectionHandler:(id)a5;
-+ (void)_getWidgetHostingRemoteViewControllerWithIntent:(id)a3 descriptor:(id)a4 completionHandler:(id)a5;
-+ (void)_getWidgetHostingRemoteViewControllerWithIntent:(id)a3 extensionMatchingError:(id)a4 completionHandler:(id)a5;
-+ (void)_requestRemoteViewControllerForSnippetExtensionInteraction:(id)a3 delegate:(id)a4 connectionHandler:(id)a5;
-+ (void)_requestRemoteViewControllerWithRequestInfo:(id)a3 delegate:(id)a4 reply:(id)a5;
-+ (void)requestRemoteViewControllerForInteraction:(id)a3 delegate:(id)a4 connectionHandler:(id)a5;
++ (void)_attemptToConnectToRemoteViewControllerForRemainingExtensions:(id)extensions delegate:(id)delegate connectionHandler:(id)handler;
++ (void)_getWidgetHostingRemoteViewControllerWithIntent:(id)intent descriptor:(id)descriptor completionHandler:(id)handler;
++ (void)_getWidgetHostingRemoteViewControllerWithIntent:(id)intent extensionMatchingError:(id)error completionHandler:(id)handler;
++ (void)_requestRemoteViewControllerForSnippetExtensionInteraction:(id)interaction delegate:(id)delegate connectionHandler:(id)handler;
++ (void)_requestRemoteViewControllerWithRequestInfo:(id)info delegate:(id)delegate reply:(id)reply;
++ (void)requestRemoteViewControllerForInteraction:(id)interaction delegate:(id)delegate connectionHandler:(id)handler;
 - (CGSize)preferredContentSize;
 - (INUIRemoteViewControllerDelegate)delegate;
 - (id)_errorHandlingServiceViewControllerProxy;
 - (id)disconnect;
-- (void)_queryRepresentedPropertiesWithCompletion:(id)a3;
-- (void)_updateExtensionContextStateWithCompletion:(id)a3;
-- (void)configureForParameters:(id)a3 ofInteraction:(id)a4 interactiveBehavior:(unint64_t)a5 context:(unint64_t)a6 completion:(id)a7;
-- (void)configureWithInteraction:(id)a3 context:(unint64_t)a4 completion:(id)a5;
-- (void)configureWithInteraction:(id)a3 context:(unint64_t)a4 errorHandlingCompletion:(id)a5;
-- (void)desiresInteractivity:(id)a3;
-- (void)extensionHostContext:(id)a3 wantsToHandleIntent:(id)a4;
-- (void)extensionHostContextWillBeginEditing:(id)a3;
+- (void)_queryRepresentedPropertiesWithCompletion:(id)completion;
+- (void)_updateExtensionContextStateWithCompletion:(id)completion;
+- (void)configureForParameters:(id)parameters ofInteraction:(id)interaction interactiveBehavior:(unint64_t)behavior context:(unint64_t)context completion:(id)completion;
+- (void)configureWithInteraction:(id)interaction context:(unint64_t)context completion:(id)completion;
+- (void)configureWithInteraction:(id)interaction context:(unint64_t)context errorHandlingCompletion:(id)completion;
+- (void)desiresInteractivity:(id)interactivity;
+- (void)extensionHostContext:(id)context wantsToHandleIntent:(id)intent;
+- (void)extensionHostContextWillBeginEditing:(id)editing;
 - (void)requestCancellation;
-- (void)setDelegate:(id)a3 completion:(id)a4;
-- (void)setIdealConfiguration:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setNeedsStateUpdate:(BOOL)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)setDelegate:(id)delegate completion:(id)completion;
+- (void)setIdealConfiguration:(id)configuration animated:(BOOL)animated completion:(id)completion;
+- (void)setNeedsStateUpdate:(BOOL)update;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation INUIRemoteViewController
@@ -42,16 +42,16 @@
   return result;
 }
 
-- (void)configureWithInteraction:(id)a3 context:(unint64_t)a4 completion:(id)a5
+- (void)configureWithInteraction:(id)interaction context:(unint64_t)context completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __72__INUIRemoteViewController_configureWithInteraction_context_completion___block_invoke;
   v10[3] = &unk_27872BE30;
-  v11 = v8;
-  v9 = v8;
-  [(INUIRemoteViewController *)self configureWithInteraction:a3 context:a4 errorHandlingCompletion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(INUIRemoteViewController *)self configureWithInteraction:interaction context:context errorHandlingCompletion:v10];
 }
 
 uint64_t __72__INUIRemoteViewController_configureWithInteraction_context_completion___block_invoke(uint64_t a1)
@@ -65,20 +65,20 @@ uint64_t __72__INUIRemoteViewController_configureWithInteraction_context_complet
   return result;
 }
 
-- (void)configureForParameters:(id)a3 ofInteraction:(id)a4 interactiveBehavior:(unint64_t)a5 context:(unint64_t)a6 completion:(id)a7
+- (void)configureForParameters:(id)parameters ofInteraction:(id)interaction interactiveBehavior:(unint64_t)behavior context:(unint64_t)context completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a7;
-  v13 = [(INUIRemoteViewController *)self extensionHostContext];
-  v14 = [v13 _auxiliaryConnection];
+  parametersCopy = parameters;
+  interactionCopy = interaction;
+  completionCopy = completion;
+  extensionHostContext = [(INUIRemoteViewController *)self extensionHostContext];
+  _auxiliaryConnection = [extensionHostContext _auxiliaryConnection];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __104__INUIRemoteViewController_configureForParameters_ofInteraction_interactiveBehavior_context_completion___block_invoke;
   v42[3] = &unk_27872BD90;
-  v15 = v12;
+  v15 = completionCopy;
   v43 = v15;
-  v16 = [v14 remoteObjectProxyWithErrorHandler:v42];
+  v16 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:v42];
 
   if (v16)
   {
@@ -96,28 +96,28 @@ uint64_t __72__INUIRemoteViewController_configureWithInteraction_context_complet
     v39 = v40;
     v19 = [v17 initWithTimeoutInterval:v37 timeoutHandler:10.0];
     [v19 start];
-    v20 = [(INUIRemoteViewController *)self extensionHostContext];
-    v21 = [v20 _auxiliaryConnection];
+    extensionHostContext2 = [(INUIRemoteViewController *)self extensionHostContext];
+    _auxiliaryConnection2 = [extensionHostContext2 _auxiliaryConnection];
 
     v35 = 0u;
     v36 = 0u;
-    if (v21)
+    if (_auxiliaryConnection2)
     {
-      [v21 auditToken];
+      [_auxiliaryConnection2 auditToken];
     }
 
-    v22 = [v11 intent];
-    v23 = [(INUIRemoteViewController *)self activeExtension];
-    v24 = [v23 _extensionBundle];
+    intent = [interactionCopy intent];
+    activeExtension = [(INUIRemoteViewController *)self activeExtension];
+    _extensionBundle = [activeExtension _extensionBundle];
     v33 = v35;
     v34 = v36;
-    [v22 trimDataAgainstTCCForAuditToken:&v33 bundle:v24];
+    [intent trimDataAgainstTCCForAuditToken:&v33 bundle:_extensionBundle];
 
     v33 = v35;
     v34 = v36;
     INIssueSandboxExtensionsForFileURLEnumerableToProcess();
-    v25 = [v11 intentResponse];
-    if (v25)
+    intentResponse = [interactionCopy intentResponse];
+    if (intentResponse)
     {
       v33 = v35;
       v34 = v36;
@@ -132,7 +132,7 @@ uint64_t __72__INUIRemoteViewController_configureWithInteraction_context_complet
     v32 = v40;
     v26 = v19;
     v30 = v26;
-    [v16 configureForParameters:v10 ofInteraction:v11 interactiveBehavior:a5 context:a6 completion:v29];
+    [v16 configureForParameters:parametersCopy ofInteraction:interactionCopy interactiveBehavior:behavior context:context completion:v29];
 
     _Block_object_dispose(v40, 8);
   }
@@ -243,16 +243,16 @@ void __104__INUIRemoteViewController_configureForParameters_ofInteraction_intera
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithInteraction:(id)a3 context:(unint64_t)a4 errorHandlingCompletion:(id)a5
+- (void)configureWithInteraction:(id)interaction context:(unint64_t)context errorHandlingCompletion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __85__INUIRemoteViewController_configureWithInteraction_context_errorHandlingCompletion___block_invoke;
   v10[3] = &unk_27872BD40;
-  v11 = v8;
-  v9 = v8;
-  [(INUIRemoteViewController *)self configureForParameters:0 ofInteraction:a3 interactiveBehavior:0 context:a4 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(INUIRemoteViewController *)self configureForParameters:0 ofInteraction:interaction interactiveBehavior:0 context:context completion:v10];
 }
 
 uint64_t __85__INUIRemoteViewController_configureWithInteraction_context_errorHandlingCompletion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -266,29 +266,29 @@ uint64_t __85__INUIRemoteViewController_configureWithInteraction_context_errorHa
   return result;
 }
 
-- (void)extensionHostContextWillBeginEditing:(id)a3
+- (void)extensionHostContextWillBeginEditing:(id)editing
 {
-  v4 = [(INUIRemoteViewController *)self delegate];
+  delegate = [(INUIRemoteViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 remoteViewControllerWillBeginEditing:self];
+    [delegate remoteViewControllerWillBeginEditing:self];
   }
 }
 
-- (void)extensionHostContext:(id)a3 wantsToHandleIntent:(id)a4
+- (void)extensionHostContext:(id)context wantsToHandleIntent:(id)intent
 {
-  v6 = a4;
-  v5 = [(INUIRemoteViewController *)self delegate];
+  intentCopy = intent;
+  delegate = [(INUIRemoteViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 remoteViewController:self requestsHandlingOfIntent:v6];
+    [delegate remoteViewController:self requestsHandlingOfIntent:intentCopy];
   }
 }
 
-- (void)_updateExtensionContextStateWithCompletion:(id)a3
+- (void)_updateExtensionContextStateWithCompletion:(id)completion
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   self->_needsStateUpdate = 1;
   objc_initWeak(&location, self);
   v19[0] = MEMORY[0x277D85DD0];
@@ -296,15 +296,15 @@ uint64_t __85__INUIRemoteViewController_configureWithInteraction_context_errorHa
   v19[2] = __71__INUIRemoteViewController__updateExtensionContextStateWithCompletion___block_invoke;
   v19[3] = &unk_27872BCF0;
   objc_copyWeak(&v21, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v20 = v5;
   v6 = MEMORY[0x2318BBC40](v19);
   v7 = v6;
   if (self->_extensionHostContext)
   {
     v8 = objc_alloc_init(_INUIExtensionContextState);
-    v9 = [(INUIRemoteViewController *)self delegate];
-    if (!v9)
+    delegate = [(INUIRemoteViewController *)self delegate];
+    if (!delegate)
     {
 LABEL_16:
       extensionHostContext = self->_extensionHostContext;
@@ -320,7 +320,7 @@ LABEL_16:
 
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v9 minimumSizesBySystemVersionForRemoteViewController:self];
+      v10 = [delegate minimumSizesBySystemVersionForRemoteViewController:self];
       [(_INUIExtensionContextState *)v8 setHostedViewMinimumAllowedSizes:v10];
     }
 
@@ -331,7 +331,7 @@ LABEL_16:
         goto LABEL_9;
       }
 
-      [v9 minimumSizeForRemoteViewController:self];
+      [delegate minimumSizeForRemoteViewController:self];
       v25 = &unk_283FD4FD8;
       v10 = [MEMORY[0x277CCAE60] valueWithCGSize:?];
       v26[0] = v10;
@@ -342,7 +342,7 @@ LABEL_16:
 LABEL_9:
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v9 maximumSizesBySystemVersionForRemoteViewController:self];
+      v12 = [delegate maximumSizesBySystemVersionForRemoteViewController:self];
       [(_INUIExtensionContextState *)v8 setHostedViewMaximumAllowedSizes:v12];
     }
 
@@ -353,7 +353,7 @@ LABEL_9:
         goto LABEL_14;
       }
 
-      [v9 maximumSizeForRemoteViewController:self];
+      [delegate maximumSizeForRemoteViewController:self];
       v23 = &unk_283FD4FD8;
       v12 = [MEMORY[0x277CCAE60] valueWithCGSize:?];
       v24 = v12;
@@ -364,7 +364,7 @@ LABEL_9:
 LABEL_14:
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v9 interfaceSectionsForRemoteViewController:self];
+      v14 = [delegate interfaceSectionsForRemoteViewController:self];
       [(_INUIExtensionContextState *)v8 setInterfaceSections:v14];
     }
 
@@ -399,9 +399,9 @@ uint64_t __71__INUIRemoteViewController__updateExtensionContextStateWithCompleti
 
 - (id)_errorHandlingServiceViewControllerProxy
 {
-  v2 = [(INUIRemoteViewController *)self extensionHostContext];
-  v3 = [v2 _auxiliaryConnection];
-  v4 = [v3 remoteObjectProxyWithErrorHandler:&__block_literal_global_46];
+  extensionHostContext = [(INUIRemoteViewController *)self extensionHostContext];
+  _auxiliaryConnection = [extensionHostContext _auxiliaryConnection];
+  v4 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_46];
 
   return v4;
 }
@@ -423,28 +423,28 @@ void __68__INUIRemoteViewController__errorHandlingServiceViewControllerProxy__bl
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queryRepresentedPropertiesWithCompletion:(id)a3
+- (void)_queryRepresentedPropertiesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(INUIRemoteViewController *)self _errorHandlingServiceViewControllerProxy];
-  [v5 queryRepresentedPropertiesWithCompletion:v4];
+  completionCopy = completion;
+  _errorHandlingServiceViewControllerProxy = [(INUIRemoteViewController *)self _errorHandlingServiceViewControllerProxy];
+  [_errorHandlingServiceViewControllerProxy queryRepresentedPropertiesWithCompletion:completionCopy];
 }
 
-- (void)desiresInteractivity:(id)a3
+- (void)desiresInteractivity:(id)interactivity
 {
-  v4 = a3;
-  v5 = [(INUIRemoteViewController *)self extensionHostContext];
-  v6 = [v5 _auxiliaryConnection];
-  v7 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_16];
+  interactivityCopy = interactivity;
+  extensionHostContext = [(INUIRemoteViewController *)self extensionHostContext];
+  _auxiliaryConnection = [extensionHostContext _auxiliaryConnection];
+  v7 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_16];
 
   if (v7)
   {
-    [v7 desiresInteractivity:v4];
+    [v7 desiresInteractivity:interactivityCopy];
   }
 
   else
   {
-    v4[2](v4, 0);
+    interactivityCopy[2](interactivityCopy, 0);
   }
 }
 
@@ -467,9 +467,9 @@ void __49__INUIRemoteViewController_desiresInteractivity___block_invoke(uint64_t
 
 - (void)requestCancellation
 {
-  v2 = [(INUIRemoteViewController *)self extensionHostContext];
-  v3 = [v2 _auxiliaryConnection];
-  v5 = [v3 remoteObjectProxyWithErrorHandler:&__block_literal_global_1156];
+  extensionHostContext = [(INUIRemoteViewController *)self extensionHostContext];
+  _auxiliaryConnection = [extensionHostContext _auxiliaryConnection];
+  v5 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_1156];
 
   v4 = v5;
   if (v5)
@@ -496,33 +496,33 @@ void __47__INUIRemoteViewController_requestCancellation__block_invoke(uint64_t a
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setIdealConfiguration:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setIdealConfiguration:(id)configuration animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  configurationCopy = configuration;
+  completionCopy = completion;
   if ([(INUIRemoteViewController *)self isWidgetHost])
   {
-    v9 = [(INUIRemoteViewController *)self widgetDescriptor];
-    [v9 preferredSize];
+    widgetDescriptor = [(INUIRemoteViewController *)self widgetDescriptor];
+    [widgetDescriptor preferredSize];
     [(INUIRemoteViewController *)self setPreferredContentSize:?];
 
-    v8[2](v8, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    v10 = [v7 parameters];
-    v11 = [(INUIExtensionRequestInfo *)self->_requestInfo interaction];
-    v12 = [v7 interactiveBehavior];
-    v13 = [v7 hostedViewContext];
+    parameters = [configurationCopy parameters];
+    interaction = [(INUIExtensionRequestInfo *)self->_requestInfo interaction];
+    interactiveBehavior = [configurationCopy interactiveBehavior];
+    hostedViewContext = [configurationCopy hostedViewContext];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __70__INUIRemoteViewController_setIdealConfiguration_animated_completion___block_invoke;
     v14[3] = &unk_27872BBB8;
     v14[4] = self;
-    v15 = v7;
-    v16 = v8;
-    [(INUIRemoteViewController *)self configureForParameters:v10 ofInteraction:v11 interactiveBehavior:v12 context:v13 completion:v14];
+    v15 = configurationCopy;
+    v16 = completionCopy;
+    [(INUIRemoteViewController *)self configureForParameters:parameters ofInteraction:interaction interactiveBehavior:interactiveBehavior context:hostedViewContext completion:v14];
   }
 }
 
@@ -549,28 +549,28 @@ void __70__INUIRemoteViewController_setIdealConfiguration_animated_completion___
   }
 }
 
-- (void)setNeedsStateUpdate:(BOOL)a3
+- (void)setNeedsStateUpdate:(BOOL)update
 {
-  if (self->_needsStateUpdate != a3 && a3)
+  if (self->_needsStateUpdate != update && update)
   {
     [(INUIRemoteViewController *)self _updateExtensionContextStateWithCompletion:0];
   }
 }
 
-- (void)setDelegate:(id)a3 completion:(id)a4
+- (void)setDelegate:(id)delegate completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
-  if (WeakRetained != v6)
+  if (WeakRetained != delegateCopy)
   {
-    objc_storeWeak(&self->_delegate, v6);
+    objc_storeWeak(&self->_delegate, delegateCopy);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __51__INUIRemoteViewController_setDelegate_completion___block_invoke;
     v9[3] = &unk_27872BB90;
-    v10 = v7;
+    v10 = completionCopy;
     [(INUIRemoteViewController *)self _updateExtensionContextStateWithCompletion:v9];
   }
 }
@@ -597,81 +597,81 @@ uint64_t __51__INUIRemoteViewController_setDelegate_completion___block_invoke(ui
 
   v7.receiver = self;
   v7.super_class = INUIRemoteViewController;
-  v5 = [(_UIRemoteViewController *)&v7 disconnect];
+  disconnect = [(_UIRemoteViewController *)&v7 disconnect];
 
-  return v5;
+  return disconnect;
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v8.receiver = self;
   v8.super_class = INUIRemoteViewController;
-  [(_UIRemoteViewController *)&v8 viewServiceDidTerminateWithError:v4];
+  [(_UIRemoteViewController *)&v8 viewServiceDidTerminateWithError:errorCopy];
   v5 = *MEMORY[0x277CD38C8];
   if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_ERROR))
   {
     *buf = 136315650;
     v10 = "[INUIRemoteViewController viewServiceDidTerminateWithError:]";
     v11 = 2114;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v4;
+    v14 = errorCopy;
     _os_log_error_impl(&dword_22CA36000, v5, OS_LOG_TYPE_ERROR, "%s Widget remote view controller service did terminate for RVC: %{public}@ error: %{public}@", buf, 0x20u);
   }
 
-  v6 = [(INUIRemoteViewController *)self delegate];
+  delegate = [(INUIRemoteViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 remoteViewControllerServiceDidTerminate:self];
+    [delegate remoteViewControllerServiceDidTerminate:self];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)requestRemoteViewControllerForInteraction:(id)a3 delegate:(id)a4 connectionHandler:(id)a5
++ (void)requestRemoteViewControllerForInteraction:(id)interaction delegate:(id)delegate connectionHandler:(id)handler
 {
-  v8 = a5;
-  if (v8)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v9 = a4;
-    v10 = a3;
-    v11 = [[INUIExtensionRequestInfo alloc] initWithInteraction:v10];
+    delegateCopy = delegate;
+    interactionCopy = interaction;
+    v11 = [[INUIExtensionRequestInfo alloc] initWithInteraction:interactionCopy];
 
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __97__INUIRemoteViewController_requestRemoteViewControllerForInteraction_delegate_connectionHandler___block_invoke;
     v12[3] = &unk_27872BD18;
-    v13 = v8;
-    [a1 _requestRemoteViewControllerWithRequestInfo:v11 delegate:v9 reply:v12];
+    v13 = handlerCopy;
+    [self _requestRemoteViewControllerWithRequestInfo:v11 delegate:delegateCopy reply:v12];
   }
 }
 
-+ (void)_getWidgetHostingRemoteViewControllerWithIntent:(id)a3 descriptor:(id)a4 completionHandler:(id)a5
++ (void)_getWidgetHostingRemoteViewControllerWithIntent:(id)intent descriptor:(id)descriptor completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  intentCopy = intent;
+  descriptorCopy = descriptor;
+  handlerCopy = handler;
   v10 = objc_alloc_init(INUIRemoteViewController);
   [(INUIRemoteViewController *)v10 setWidgetHost:1];
-  [(INUIRemoteViewController *)v10 setWidgetDescriptor:v8];
+  [(INUIRemoteViewController *)v10 setWidgetDescriptor:descriptorCopy];
   v11 = objc_alloc(MEMORY[0x277D75D18]);
-  [v8 preferredSize];
+  [descriptorCopy preferredSize];
   v13 = v12;
-  [v8 preferredSize];
+  [descriptorCopy preferredSize];
   v15 = [v11 initWithFrame:{0.0, 0.0, v13, v14}];
   [(INUIRemoteViewController *)v10 setView:v15];
 
-  v16 = [v8 preferredSizeClass];
-  if ((v16 - 1) >= 4)
+  preferredSizeClass = [descriptorCopy preferredSizeClass];
+  if ((preferredSizeClass - 1) >= 4)
   {
     v17 = 0;
   }
 
   else
   {
-    v17 = v16;
+    v17 = preferredSizeClass;
   }
 
   v40 = 0;
@@ -693,9 +693,9 @@ uint64_t __51__INUIRemoteViewController_setDelegate_completion___block_invoke(ui
   v19 = v18;
   _Block_object_dispose(&v40, 8);
   v20 = [v18 alloc];
-  v21 = [v8 extensionBundleIdentifier];
-  v22 = [v8 kind];
-  v23 = [v20 initWithExtensionBundleIdentifier:v21 containerBundleIdentifier:0 kind:v22 family:v17 intent:v7];
+  extensionBundleIdentifier = [descriptorCopy extensionBundleIdentifier];
+  kind = [descriptorCopy kind];
+  v23 = [v20 initWithExtensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:0 kind:kind family:v17 intent:intentCopy];
 
   v40 = 0;
   v41 = &v40;
@@ -716,7 +716,7 @@ uint64_t __51__INUIRemoteViewController_setDelegate_completion___block_invoke(ui
   v25 = v24;
   _Block_object_dispose(&v40, 8);
   v26 = [v24 alloc];
-  [v8 preferredSize];
+  [descriptorCopy preferredSize];
   v27 = [v26 initWithSize:? cornerRadius:?];
   v40 = 0;
   v41 = &v40;
@@ -738,26 +738,26 @@ uint64_t __51__INUIRemoteViewController_setDelegate_completion___block_invoke(ui
   _Block_object_dispose(&v40, 8);
   v30 = [[v28 alloc] initWithWidget:v23 metrics:v27 widgetConfigurationIdentifier:0];
   [(INUIRemoteViewController *)v10 addChildViewController:v30];
-  v31 = [v30 view];
-  v32 = [(INUIRemoteViewController *)v10 view];
-  [v32 bounds];
-  [v31 setFrame:?];
+  view = [v30 view];
+  view2 = [(INUIRemoteViewController *)v10 view];
+  [view2 bounds];
+  [view setFrame:?];
 
-  v33 = [(INUIRemoteViewController *)v10 view];
-  v34 = [v30 view];
-  [v33 addSubview:v34];
+  view3 = [(INUIRemoteViewController *)v10 view];
+  view4 = [v30 view];
+  [view3 addSubview:view4];
 
   [v30 didMoveToParentViewController:v10];
-  v9[2](v9, v10, 0);
+  handlerCopy[2](handlerCopy, v10, 0);
 }
 
-+ (void)_getWidgetHostingRemoteViewControllerWithIntent:(id)a3 extensionMatchingError:(id)a4 completionHandler:(id)a5
++ (void)_getWidgetHostingRemoteViewControllerWithIntent:(id)intent extensionMatchingError:(id)error completionHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 _type] != 2 || (objc_msgSend(v8, "_codableDescription"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEligibleForWidgets"), v11, (v12 & 1) == 0))
+  intentCopy = intent;
+  errorCopy = error;
+  handlerCopy = handler;
+  if ([intentCopy _type] != 2 || (objc_msgSend(intentCopy, "_codableDescription"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEligibleForWidgets"), v11, (v12 & 1) == 0))
   {
     v18 = *MEMORY[0x277CD38C8];
     if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_ERROR))
@@ -765,20 +765,20 @@ uint64_t __51__INUIRemoteViewController_setDelegate_completion___block_invoke(ui
       *buf = 136315650;
       v27 = "+[INUIRemoteViewController _getWidgetHostingRemoteViewControllerWithIntent:extensionMatchingError:completionHandler:]";
       v28 = 2112;
-      v29 = v8;
+      v29 = intentCopy;
       v30 = 2114;
-      v31 = v9;
+      v31 = errorCopy;
       v20 = "%s Error matching extensions for intent: %@ error: %{public}@";
       goto LABEL_15;
     }
 
 LABEL_10:
-    v10[2](v10, 0, v9);
+    handlerCopy[2](handlerCopy, 0, errorCopy);
     goto LABEL_11;
   }
 
-  v13 = [MEMORY[0x277CD4310] sharedProvider];
-  v14 = [v13 descriptorForIntent:v8];
+  mEMORY[0x277CD4310] = [MEMORY[0x277CD4310] sharedProvider];
+  v14 = [mEMORY[0x277CD4310] descriptorForIntent:intentCopy];
 
   if (!v14 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -789,9 +789,9 @@ LABEL_10:
       *buf = 136315650;
       v27 = "+[INUIRemoteViewController _getWidgetHostingRemoteViewControllerWithIntent:extensionMatchingError:completionHandler:]";
       v28 = 2112;
-      v29 = v8;
+      v29 = intentCopy;
       v30 = 2114;
-      v31 = v9;
+      v31 = errorCopy;
       v20 = "%s Error matching widget extensions for intent: %@ error: %{public}@";
 LABEL_15:
       _os_log_error_impl(&dword_22CA36000, v18, OS_LOG_TYPE_ERROR, v20, buf, 0x20u);
@@ -807,10 +807,10 @@ LABEL_15:
     v21[1] = 3221225472;
     v21[2] = __117__INUIRemoteViewController__getWidgetHostingRemoteViewControllerWithIntent_extensionMatchingError_completionHandler___block_invoke;
     v21[3] = &unk_27872BCC8;
-    v25 = a1;
-    v22 = v8;
+    selfCopy = self;
+    v22 = intentCopy;
     v23 = v14;
-    v24 = v10;
+    v24 = handlerCopy;
     v14 = v14;
     dispatch_async(MEMORY[0x277D85CD0], v21);
   }
@@ -821,43 +821,43 @@ LABEL_15:
     if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_INFO))
     {
       v16 = v15;
-      v17 = [v14 extensionBundleIdentifier];
+      extensionBundleIdentifier = [v14 extensionBundleIdentifier];
       *buf = 136315394;
       v27 = "+[INUIRemoteViewController _getWidgetHostingRemoteViewControllerWithIntent:extensionMatchingError:completionHandler:]";
       v28 = 2112;
-      v29 = v17;
+      v29 = extensionBundleIdentifier;
       _os_log_impl(&dword_22CA36000, v16, OS_LOG_TYPE_INFO, "%s %@ extension is not able to render medium or large size classes", buf, 0x16u);
     }
 
-    v10[2](v10, 0, v9);
+    handlerCopy[2](handlerCopy, 0, errorCopy);
   }
 
 LABEL_11:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_attemptToConnectToRemoteViewControllerForRemainingExtensions:(id)a3 delegate:(id)a4 connectionHandler:(id)a5
++ (void)_attemptToConnectToRemoteViewControllerForRemainingExtensions:(id)extensions delegate:(id)delegate connectionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  extensionsCopy = extensions;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v11 = [v8 firstObject];
-    v12 = v11;
-    if (v11)
+    firstObject = [extensionsCopy firstObject];
+    v12 = firstObject;
+    if (firstObject)
     {
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __117__INUIRemoteViewController__attemptToConnectToRemoteViewControllerForRemainingExtensions_delegate_connectionHandler___block_invoke;
       v19[3] = &unk_27872BC78;
-      v13 = v11;
+      v13 = firstObject;
       v20 = v13;
-      v23 = v10;
-      v21 = v9;
-      v14 = v8;
+      v23 = handlerCopy;
+      v21 = delegateCopy;
+      v14 = extensionsCopy;
       v22 = v14;
-      v24 = a1;
+      selfCopy = self;
       v15 = MEMORY[0x2318BBC40](v19);
       [v14 removeObject:v13];
       v17[0] = MEMORY[0x277D85DD0];
@@ -871,7 +871,7 @@ LABEL_11:
 
     else
     {
-      (*(v10 + 2))(v10, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 }
@@ -978,20 +978,20 @@ LABEL_17:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_requestRemoteViewControllerWithRequestInfo:(id)a3 delegate:(id)a4 reply:(id)a5
++ (void)_requestRemoteViewControllerWithRequestInfo:(id)info delegate:(id)delegate reply:(id)reply
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 interaction];
-  v12 = [v11 intent];
+  infoCopy = info;
+  delegateCopy = delegate;
+  replyCopy = reply;
+  interaction = [infoCopy interaction];
+  intent = [interaction intent];
 
-  v13 = [v12 identifier];
+  identifier = [intent identifier];
 
-  if (v13)
+  if (identifier)
   {
-    if (v12)
+    if (intent)
     {
       goto LABEL_3;
     }
@@ -1002,16 +1002,16 @@ LABEL_7:
     v33[0] = @"No valid input intent for remote view controller";
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:1];
     v21 = [v19 errorWithDomain:@"INUIRemoteViewControllerErrorDomain" code:0 userInfo:v20];
-    v10[2](v10, 0, v21);
+    replyCopy[2](replyCopy, 0, v21);
 
     goto LABEL_10;
   }
 
-  v17 = [MEMORY[0x277CCAD78] UUID];
-  v18 = [v17 UUIDString];
-  [v12 setIdentifier:v18];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [intent setIdentifier:uUIDString];
 
-  if (!v12)
+  if (!intent)
   {
     goto LABEL_7;
   }
@@ -1021,12 +1021,12 @@ LABEL_3:
   v24 = 3221225472;
   v25 = __87__INUIRemoteViewController__requestRemoteViewControllerWithRequestInfo_delegate_reply___block_invoke;
   v26 = &unk_27872BC00;
-  v14 = v12;
+  v14 = intent;
   v27 = v14;
-  v30 = v10;
-  v31 = a1;
-  v28 = v9;
-  v15 = v8;
+  v30 = replyCopy;
+  selfCopy = self;
+  v28 = delegateCopy;
+  v15 = infoCopy;
   v29 = v15;
   v16 = MEMORY[0x2318BBC40](&v23);
   if ([v15 requiresUserConsent] && objc_msgSend(v14, "_type") != 2)
@@ -1128,33 +1128,33 @@ void __87__INUIRemoteViewController__requestRemoteViewControllerWithRequestInfo_
   }
 }
 
-+ (void)_requestRemoteViewControllerForSnippetExtensionInteraction:(id)a3 delegate:(id)a4 connectionHandler:(id)a5
++ (void)_requestRemoteViewControllerForSnippetExtensionInteraction:(id)interaction delegate:(id)delegate connectionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  interactionCopy = interaction;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v11 = [v8 _snippet];
-    if (v11)
+    _snippet = [interactionCopy _snippet];
+    if (_snippet)
     {
       v12 = MEMORY[0x277CCA9C8];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __114__INUIRemoteViewController__requestRemoteViewControllerForSnippetExtensionInteraction_delegate_connectionHandler___block_invoke;
       v14[3] = &unk_27872BC00;
-      v15 = v8;
-      v18 = v10;
-      v19 = a1;
-      v16 = v11;
-      v17 = v9;
+      v15 = interactionCopy;
+      v18 = handlerCopy;
+      selfCopy = self;
+      v16 = _snippet;
+      v17 = delegateCopy;
       [v12 _intents_matchSiriUISnippetExtensionsWithCompletion:v14];
     }
 
     else
     {
       v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"_INUIRemoteViewControllerErrorDomain" code:1 userInfo:0];
-      (*(v10 + 2))(v10, 0, v13);
+      (*(handlerCopy + 2))(handlerCopy, 0, v13);
     }
   }
 }

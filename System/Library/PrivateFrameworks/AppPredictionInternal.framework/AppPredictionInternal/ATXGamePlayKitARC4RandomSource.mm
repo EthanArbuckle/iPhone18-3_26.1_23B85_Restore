@@ -1,17 +1,17 @@
 @interface ATXGamePlayKitARC4RandomSource
 - (ATXGamePlayKitARC4RandomSource)init;
-- (ATXGamePlayKitARC4RandomSource)initWithCoder:(id)a3;
-- (ATXGamePlayKitARC4RandomSource)initWithSeed:(id)a3;
+- (ATXGamePlayKitARC4RandomSource)initWithCoder:(id)coder;
+- (ATXGamePlayKitARC4RandomSource)initWithSeed:(id)seed;
 - (BOOL)nextBool;
 - (float)nextUniform;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)nextInt;
-- (unint64_t)nextBits:(int)a3;
-- (unint64_t)nextIntWithUpperBound:(unint64_t)a3;
+- (unint64_t)nextBits:(int)bits;
+- (unint64_t)nextIntWithUpperBound:(unint64_t)bound;
 - (void)dealloc;
-- (void)dropValuesWithCount:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSeed:(id)a3;
+- (void)dropValuesWithCount:(unint64_t)count;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSeed:(id)seed;
 @end
 
 @implementation ATXGamePlayKitARC4RandomSource
@@ -31,9 +31,9 @@
   return v5;
 }
 
-- (ATXGamePlayKitARC4RandomSource)initWithSeed:(id)a3
+- (ATXGamePlayKitARC4RandomSource)initWithSeed:(id)seed
 {
-  v4 = a3;
+  seedCopy = seed;
   v11.receiver = self;
   v11.super_class = ATXGamePlayKitARC4RandomSource;
   v5 = [(ATXGamePlayKitRandomSource *)&v11 init];
@@ -57,13 +57,13 @@
       while (v9 != 256);
     }
 
-    [(ATXGamePlayKitARC4RandomSource *)v5 setSeed:v4];
+    [(ATXGamePlayKitARC4RandomSource *)v5 setSeed:seedCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [objc_alloc(objc_opt_class()) initWithSeed:self->_seed];
   state = self->_state;
@@ -102,9 +102,9 @@
   return result;
 }
 
-- (ATXGamePlayKitARC4RandomSource)initWithCoder:(id)a3
+- (ATXGamePlayKitARC4RandomSource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ATXGamePlayKitARC4RandomSource *)self init];
   if (v5)
   {
@@ -126,10 +126,10 @@
       while (v9 != 256);
     }
 
-    v5->_state->var0 = [v4 decodeIntForKey:@"i"];
-    v5->_state->var1 = [v4 decodeIntForKey:@"j"];
+    v5->_state->var0 = [coderCopy decodeIntForKey:@"i"];
+    v5->_state->var1 = [coderCopy decodeIntForKey:@"j"];
     v13 = 0;
-    v10 = [v4 decodeBytesForKey:@"bytes" returnedLength:&v13];
+    v10 = [coderCopy decodeBytesForKey:@"bytes" returnedLength:&v13];
     if (v13 >= 0x100)
     {
       v11 = 256;
@@ -146,15 +146,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = ATXGamePlayKitARC4RandomSource;
-  [(ATXGamePlayKitRandomSource *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt:self->_state->var0 forKey:@"i"];
-  [v4 encodeInt:self->_state->var1 forKey:@"j"];
-  [v4 encodeBytes:self->_state->var2 length:256 forKey:@"bytes"];
+  [(ATXGamePlayKitRandomSource *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt:self->_state->var0 forKey:@"i"];
+  [coderCopy encodeInt:self->_state->var1 forKey:@"j"];
+  [coderCopy encodeBytes:self->_state->var2 length:256 forKey:@"bytes"];
 }
 
 - (void)dealloc
@@ -172,15 +172,15 @@
   [(ATXGamePlayKitARC4RandomSource *)&v4 dealloc];
 }
 
-- (void)setSeed:(id)a3
+- (void)setSeed:(id)seed
 {
-  v13 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithData:v13];
+  seedCopy = seed;
+  v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithData:seedCopy];
   seed = self->_seed;
   self->_seed = v4;
 
   state = self->_state;
-  v7 = [(NSData *)self->_seed bytes];
+  bytes = [(NSData *)self->_seed bytes];
   v8 = [(NSData *)self->_seed length];
   v9 = 0;
   v10 = 0;
@@ -188,7 +188,7 @@
   do
   {
     v12 = var2[v9];
-    v10 += v12 + v7[v9 % v8];
+    v10 += v12 + bytes[v9 % v8];
     var2[v9] = var2[v10];
     var2[v10] = v12;
     ++v9;
@@ -197,10 +197,10 @@
   while (v9 != 255);
 }
 
-- (unint64_t)nextBits:(int)a3
+- (unint64_t)nextBits:(int)bits
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a3 < 1)
+  if (bits < 1)
   {
     result = 0;
   }
@@ -208,17 +208,17 @@
   else
   {
     v3 = 0;
-    if (a3 >= 0x40)
+    if (bits >= 0x40)
     {
-      v4 = 64;
+      bitsCopy = 64;
     }
 
     else
     {
-      v4 = a3;
+      bitsCopy = bits;
     }
 
-    v5 = (v4 + 7) >> 3;
+    v5 = (bitsCopy + 7) >> 3;
     state = self->_state;
     var2 = state->var2;
     LODWORD(v8) = state->var0;
@@ -244,7 +244,7 @@
     }
 
     while (v5 != v11);
-    result = v12 >> (((v4 + 7) & 0xF8u) - v4);
+    result = v12 >> (((bitsCopy + 7) & 0xF8u) - bitsCopy);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -274,15 +274,15 @@
   return (v9[0] << 24) | (v9[1] << 16) | (v9[2] << 8) | v9[3];
 }
 
-- (unint64_t)nextIntWithUpperBound:(unint64_t)a3
+- (unint64_t)nextIntWithUpperBound:(unint64_t)bound
 {
-  if (a3 < 2)
+  if (bound < 2)
   {
     return 0;
   }
 
   v18 = 0;
-  if ((a3 & (a3 - 1)) != 0)
+  if ((bound & (bound - 1)) != 0)
   {
     do
     {
@@ -305,10 +305,10 @@
       state->var0 = v13;
       state->var1 = var1;
       v16 = bswap32(v18);
-      v3 = v16 % a3;
+      v3 = v16 % bound;
     }
 
-    while (a3 - 1 + v16 < v16 % a3);
+    while (bound - 1 + v16 < v16 % bound);
   }
 
   else
@@ -331,7 +331,7 @@
     while (v4 != 4);
     v5->var0 = v7;
     v5->var1 = v8;
-    return (bswap32(v18) * a3) >> 32;
+    return (bswap32(v18) * bound) >> 32;
   }
 
   return v3;
@@ -375,12 +375,12 @@
   return var2 & 1;
 }
 
-- (void)dropValuesWithCount:(unint64_t)a3
+- (void)dropValuesWithCount:(unint64_t)count
 {
   state = self->_state;
   LODWORD(v5) = state->var0;
   var1 = state->var1;
-  if (a3)
+  if (count)
   {
     var2 = state->var2;
     do
@@ -390,10 +390,10 @@
       LOBYTE(var1) = v7 + var1;
       var2[v5] = var2[var1];
       var2[var1] = v7;
-      --a3;
+      --count;
     }
 
-    while (a3);
+    while (count);
     var1 = var1;
   }
 

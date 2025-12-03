@@ -1,17 +1,17 @@
 @interface PXSharedAlbumContactMatcher
 + (id)sharedMatcher;
 - (PXSharedAlbumContactMatcher)init;
-- (id)_fetchContactMatchingIdentifier:(id)a3 keysToFetch:(id)a4;
-- (id)_fetchContactsMatchingIdentifiers:(id)a3 keysToFetch:(id)a4;
-- (id)contactsMatchingSubscriberInfos:(id)a3 keysToFetch:(id)a4;
+- (id)_fetchContactMatchingIdentifier:(id)identifier keysToFetch:(id)fetch;
+- (id)_fetchContactsMatchingIdentifiers:(id)identifiers keysToFetch:(id)fetch;
+- (id)contactsMatchingSubscriberInfos:(id)infos keysToFetch:(id)fetch;
 - (void)_observeContactStoreNotifications;
-- (void)contactsDidChange:(id)a3;
-- (void)requestContactPhotoForContact:(id)a3 diameter:(double)a4 resultHandler:(id)a5;
+- (void)contactsDidChange:(id)change;
+- (void)requestContactPhotoForContact:(id)contact diameter:(double)diameter resultHandler:(id)handler;
 @end
 
 @implementation PXSharedAlbumContactMatcher
 
-- (void)contactsDidChange:(id)a3
+- (void)contactsDidChange:(id)change
 {
   [(NSCache *)self->_contactIdentifiersBySubscriberIdentifiers removeAllObjects];
   contactPhotosCache = self->_contactPhotosCache;
@@ -19,15 +19,15 @@
   [(NSCache *)contactPhotosCache removeAllObjects];
 }
 
-- (id)_fetchContactsMatchingIdentifiers:(id)a3 keysToFetch:(id)a4
+- (id)_fetchContactsMatchingIdentifiers:(id)identifiers keysToFetch:(id)fetch
 {
   v19 = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695CD58];
-  v7 = a4;
-  v8 = [v6 predicateForContactsWithIdentifiers:a3];
+  fetchCopy = fetch;
+  v8 = [v6 predicateForContactsWithIdentifiers:identifiers];
   contactStore = self->_contactStore;
   v14 = 0;
-  v10 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:v8 keysToFetch:v7 error:&v14];
+  v10 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:v8 keysToFetch:fetchCopy error:&v14];
 
   v11 = v14;
   if (v11)
@@ -46,12 +46,12 @@
   return v10;
 }
 
-- (id)_fetchContactMatchingIdentifier:(id)a3 keysToFetch:(id)a4
+- (id)_fetchContactMatchingIdentifier:(id)identifier keysToFetch:(id)fetch
 {
   v14 = *MEMORY[0x1E69E9840];
   contactStore = self->_contactStore;
   v9 = 0;
-  v5 = [(CNContactStore *)contactStore unifiedContactWithIdentifier:a3 keysToFetch:a4 error:&v9];
+  v5 = [(CNContactStore *)contactStore unifiedContactWithIdentifier:identifier keysToFetch:fetch error:&v9];
   v6 = v9;
   if (v6)
   {
@@ -69,50 +69,50 @@
   return v5;
 }
 
-- (void)requestContactPhotoForContact:(id)a3 diameter:(double)a4 resultHandler:(id)a5
+- (void)requestContactPhotoForContact:(id)contact diameter:(double)diameter resultHandler:(id)handler
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 identifier];
-  v11 = [v10 stringByAppendingFormat:@"-%d", a4];
+  contactCopy = contact;
+  handlerCopy = handler;
+  identifier = [contactCopy identifier];
+  diameter = [identifier stringByAppendingFormat:@"-%d", diameter];
 
-  v12 = [(NSCache *)self->_contactPhotosCache objectForKey:v11];
+  v12 = [(NSCache *)self->_contactPhotosCache objectForKey:diameter];
   if (v12)
   {
-    v9[2](v9, v12);
+    handlerCopy[2](handlerCopy, v12);
   }
 
   else
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:diameter];
     v14 = [(NSCache *)self->_avatarRendererByContactImageDiameter objectForKey:v13];
     if (!v14)
     {
       v15 = objc_alloc(MEMORY[0x1E695D098]);
-      v16 = [MEMORY[0x1E695D0A8] defaultSettings];
-      v14 = [v15 initWithSettings:v16];
+      defaultSettings = [MEMORY[0x1E695D0A8] defaultSettings];
+      v14 = [v15 initWithSettings:defaultSettings];
 
       [(NSCache *)self->_avatarRendererByContactImageDiameter setObject:v14 forKey:v13];
     }
 
-    v17 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-    [v17 scale];
+    px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+    [px_mainScreen scale];
     v19 = v18;
 
-    v20 = [MEMORY[0x1E69DC668] sharedApplication];
-    v21 = [v20 userInterfaceLayoutDirection] == 1;
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    v21 = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection] == 1;
 
-    v22 = [MEMORY[0x1E695D0B0] scopeWithPointSize:v21 scale:0 rightToLeft:a4 style:{a4, v19}];
-    v28[0] = v8;
+    v22 = [MEMORY[0x1E695D0B0] scopeWithPointSize:v21 scale:0 rightToLeft:diameter style:{diameter, v19}];
+    v28[0] = contactCopy;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __84__PXSharedAlbumContactMatcher_requestContactPhotoForContact_diameter_resultHandler___block_invoke;
     v25[3] = &unk_1E772F100;
     v25[4] = self;
-    v26 = v11;
-    v27 = v9;
+    v26 = diameter;
+    v27 = handlerCopy;
     v24 = [v14 renderAvatarsForContacts:v23 scope:v22 imageHandler:v25];
   }
 }
@@ -127,11 +127,11 @@ void __84__PXSharedAlbumContactMatcher_requestContactPhotoForContact_diameter_re
   (*(a1[6] + 16))();
 }
 
-- (id)contactsMatchingSubscriberInfos:(id)a3 keysToFetch:(id)a4
+- (id)contactsMatchingSubscriberInfos:(id)infos keysToFetch:(id)fetch
 {
   v64 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v47 = a4;
+  infosCopy = infos;
+  fetchCopy = fetch;
   v46 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -139,7 +139,7 @@ void __84__PXSharedAlbumContactMatcher_requestContactPhotoForContact_diameter_re
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v8 = v5;
+  v8 = infosCopy;
   v9 = [v8 countByEnumeratingWithState:&v58 objects:v63 count:16];
   if (v9)
   {
@@ -155,10 +155,10 @@ void __84__PXSharedAlbumContactMatcher_requestContactPhotoForContact_diameter_re
         }
 
         v13 = *(*(&v58 + 1) + 8 * i);
-        v14 = [v13 identifier];
-        if (v14)
+        identifier = [v13 identifier];
+        if (identifier)
         {
-          v15 = [(NSCache *)self->_contactIdentifiersBySubscriberIdentifiers objectForKey:v14];
+          v15 = [(NSCache *)self->_contactIdentifiersBySubscriberIdentifiers objectForKey:identifier];
           v16 = v15;
           if (v15)
           {
@@ -185,9 +185,9 @@ void __84__PXSharedAlbumContactMatcher_requestContactPhotoForContact_diameter_re
   }
 
   v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v19 = self;
+  selfCopy2 = self;
   v43 = v6;
-  v20 = [(PXSharedAlbumContactMatcher *)self _fetchContactsMatchingIdentifiers:v6 keysToFetch:v47];
+  v20 = [(PXSharedAlbumContactMatcher *)self _fetchContactsMatchingIdentifiers:v6 keysToFetch:fetchCopy];
   v21 = [v7 count];
   if (v21 == [v20 count])
   {
@@ -226,9 +226,9 @@ void __84__PXSharedAlbumContactMatcher_requestContactPhotoForContact_diameter_re
         }
 
         v27 = *(*(&v50 + 1) + 8 * j);
-        v28 = [v27 identifier];
-        v29 = [v18 objectForKeyedSubscript:v28];
-        v30 = [(NSCache *)v19->_contactIdentifiersBySubscriberIdentifiers objectForKey:v28];
+        identifier2 = [v27 identifier];
+        v29 = [v18 objectForKeyedSubscript:identifier2];
+        v30 = [(NSCache *)selfCopy2->_contactIdentifiersBySubscriberIdentifiers objectForKey:identifier2];
         v31 = v30;
         if (v29)
         {
@@ -237,18 +237,18 @@ void __84__PXSharedAlbumContactMatcher_requestContactPhotoForContact_diameter_re
 
         else if (v30 != @"PXSharedAlbumContactNotFoundIdentifier")
         {
-          v32 = [(PXSharedAlbumContactMatcher *)v19 _fetchContactMatchingSubscriberInfo:v27 keysToFetch:v47];
+          v32 = [(PXSharedAlbumContactMatcher *)selfCopy2 _fetchContactMatchingSubscriberInfo:v27 keysToFetch:fetchCopy];
           if (v32)
           {
             [v24 addObject:v32];
           }
 
-          contactIdentifiersBySubscriberIdentifiers = v19->_contactIdentifiersBySubscriberIdentifiers;
-          v34 = [v32 identifier];
-          v35 = v34;
-          if (v34)
+          contactIdentifiersBySubscriberIdentifiers = selfCopy2->_contactIdentifiersBySubscriberIdentifiers;
+          identifier3 = [v32 identifier];
+          v35 = identifier3;
+          if (identifier3)
           {
-            v36 = v34;
+            v36 = identifier3;
           }
 
           else
@@ -256,12 +256,12 @@ void __84__PXSharedAlbumContactMatcher_requestContactPhotoForContact_diameter_re
             v36 = @"PXSharedAlbumContactNotFoundIdentifier";
           }
 
-          v37 = [v27 identifier];
+          identifier4 = [v27 identifier];
           v38 = contactIdentifiersBySubscriberIdentifiers;
           v24 = v46;
           v39 = v36;
-          v19 = self;
-          [(NSCache *)v38 setObject:v39 forKey:v37];
+          selfCopy2 = self;
+          [(NSCache *)v38 setObject:v39 forKey:identifier4];
 
           v22 = v44;
           v18 = v45;
@@ -288,8 +288,8 @@ void __75__PXSharedAlbumContactMatcher_contactsMatchingSubscriberInfos_keysToFet
 
 - (void)_observeContactStoreNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_contactsDidChange_ name:*MEMORY[0x1E695C3D8] object:self->_contactStore];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_contactsDidChange_ name:*MEMORY[0x1E695C3D8] object:self->_contactStore];
 }
 
 - (PXSharedAlbumContactMatcher)init
@@ -328,7 +328,7 @@ void __75__PXSharedAlbumContactMatcher_contactsMatchingSubscriberInfos_keysToFet
   block[1] = 3221225472;
   block[2] = __44__PXSharedAlbumContactMatcher_sharedMatcher__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedMatcher_onceToken != -1)
   {
     dispatch_once(&sharedMatcher_onceToken, block);

@@ -1,42 +1,42 @@
 @interface PKPaymentSetupPurchaseController
-- (PKPaymentSetupPurchaseController)initWithProvisioningController:(id)a3 context:(int64_t)a4 purchaseControllerDelegate:(id)a5 product:(id)a6 provisioningMetadata:(id)a7;
-- (id)paymentRequestForAmount:(id)a3;
-- (id)paymentRequestForProduct:(id)a3 serviceProviderProduct:(id)a4 productItem:(id)a5;
-- (void)presentAddCardAlert:(id)a3;
-- (void)presentTermsAndConditionsWithCompletion:(id)a3;
-- (void)presetPaymentRequest:(id)a3 forResultType:(int64_t)a4;
+- (PKPaymentSetupPurchaseController)initWithProvisioningController:(id)controller context:(int64_t)context purchaseControllerDelegate:(id)delegate product:(id)product provisioningMetadata:(id)metadata;
+- (id)paymentRequestForAmount:(id)amount;
+- (id)paymentRequestForProduct:(id)product serviceProviderProduct:(id)providerProduct productItem:(id)item;
+- (void)presentAddCardAlert:(id)alert;
+- (void)presentTermsAndConditionsWithCompletion:(id)completion;
+- (void)presetPaymentRequest:(id)request forResultType:(int64_t)type;
 @end
 
 @implementation PKPaymentSetupPurchaseController
 
-- (PKPaymentSetupPurchaseController)initWithProvisioningController:(id)a3 context:(int64_t)a4 purchaseControllerDelegate:(id)a5 product:(id)a6 provisioningMetadata:(id)a7
+- (PKPaymentSetupPurchaseController)initWithProvisioningController:(id)controller context:(int64_t)context purchaseControllerDelegate:(id)delegate product:(id)product provisioningMetadata:(id)metadata
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  controllerCopy = controller;
+  delegateCopy = delegate;
+  productCopy = product;
+  metadataCopy = metadata;
   v20.receiver = self;
   v20.super_class = PKPaymentSetupPurchaseController;
   v17 = [(PKPaymentSetupPurchaseController *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_product, a6);
-    objc_storeStrong(&v18->_provisioningController, a3);
-    v18->_setupContext = a4;
-    objc_storeStrong(&v18->_purchaseControllerDelegate, a5);
-    objc_storeStrong(&v18->_provisioningMethodMetadata, a7);
+    objc_storeStrong(&v17->_product, product);
+    objc_storeStrong(&v18->_provisioningController, controller);
+    v18->_setupContext = context;
+    objc_storeStrong(&v18->_purchaseControllerDelegate, delegate);
+    objc_storeStrong(&v18->_provisioningMethodMetadata, metadata);
   }
 
   return v18;
 }
 
-- (void)presentAddCardAlert:(id)a3
+- (void)presentAddCardAlert:(id)alert
 {
-  v4 = a3;
-  v5 = [v4 merchantCapabilities] & 0xC;
-  v6 = [v4 supportedNetworks];
-  v7 = [v6 count];
+  alertCopy = alert;
+  v5 = [alertCopy merchantCapabilities] & 0xC;
+  supportedNetworks = [alertCopy supportedNetworks];
+  v7 = [supportedNetworks count];
   v8 = PKLocalizedPaymentString(&cfstr_SetupPurchaseP.isa);
   v26 = PKLocalizedPaymentString(&cfstr_SetupPurchaseA_1.isa);
   if (v7 == 1)
@@ -54,7 +54,7 @@
     }
 
     v11 = v9;
-    v12 = [v6 objectAtIndexedSubscript:0];
+    v12 = [supportedNetworks objectAtIndexedSubscript:0];
     PKPaymentCredentialTypeForPaymentNetworkName();
 
     v13 = PKDisplayablePaymentNetworkNameForPaymentCredentialType();
@@ -91,15 +91,15 @@
 
   else
   {
-    v21 = [v4 supportedNetworks];
+    supportedNetworks2 = [alertCopy supportedNetworks];
     v22 = MEMORY[0x1E69DC648];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __56__PKPaymentSetupPurchaseController_presentAddCardAlert___block_invoke_2;
     v28[3] = &unk_1E8011310;
-    v29 = v21;
-    v30 = self;
-    v23 = v21;
+    v29 = supportedNetworks2;
+    selfCopy = self;
+    v23 = supportedNetworks2;
     v24 = [v22 actionWithTitle:v17 style:0 handler:v28];
     [v19 addAction:v24];
   }
@@ -239,12 +239,12 @@ uint64_t __56__PKPaymentSetupPurchaseController_presentAddCardAlert___block_invo
   return result;
 }
 
-- (void)presetPaymentRequest:(id)a3 forResultType:(int64_t)a4
+- (void)presetPaymentRequest:(id)request forResultType:(int64_t)type
 {
-  v6 = a3;
-  if (a4 != 2)
+  requestCopy = request;
+  if (type != 2)
   {
-    if (a4 == 9)
+    if (type == 9)
     {
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
@@ -257,7 +257,7 @@ uint64_t __56__PKPaymentSetupPurchaseController_presentAddCardAlert___block_invo
       goto LABEL_7;
     }
 
-    if (a4 != 5)
+    if (type != 5)
     {
       [(PKPaymentSetupPurchaseControllerDelegate *)self->_purchaseControllerDelegate showSpinner:1];
       objc_initWeak(&location, self);
@@ -266,7 +266,7 @@ uint64_t __56__PKPaymentSetupPurchaseController_presentAddCardAlert___block_invo
       v8[2] = __71__PKPaymentSetupPurchaseController_presetPaymentRequest_forResultType___block_invoke_2;
       v8[3] = &unk_1E8013B00;
       objc_copyWeak(&v10, &location);
-      v9 = v6;
+      v9 = requestCopy;
       [(PKPaymentSetupPurchaseController *)self presentTermsAndConditionsWithCompletion:v8];
 
       objc_destroyWeak(&v10);
@@ -275,7 +275,7 @@ uint64_t __56__PKPaymentSetupPurchaseController_presentAddCardAlert___block_invo
     }
   }
 
-  [(PKPaymentSetupPurchaseController *)self presentAddCardAlert:v6];
+  [(PKPaymentSetupPurchaseController *)self presentAddCardAlert:requestCopy];
 LABEL_7:
 }
 
@@ -312,51 +312,51 @@ void __71__PKPaymentSetupPurchaseController_presetPaymentRequest_forResultType__
   }
 }
 
-- (id)paymentRequestForAmount:(id)a3
+- (id)paymentRequestForAmount:(id)amount
 {
-  v4 = a3;
-  v5 = [(PKPaymentProvisioningMethodMetadata *)self->_provisioningMethodMetadata depositType];
+  amountCopy = amount;
+  depositType = [(PKPaymentProvisioningMethodMetadata *)self->_provisioningMethodMetadata depositType];
   v6 = @"SETUP_PURCHASE_REFUNDABLE_SERVICE_FEE_ITEM_LABEL";
-  if (v5 == 2)
+  if (depositType == 2)
   {
     v6 = @"SETUP_PURCHASE_NONREFUNDABLE_SERVICE_FEE_ITEM_LABEL";
   }
 
-  if (v5 == 1)
+  if (depositType == 1)
   {
     v6 = @"SETUP_PURCHASE_REFUNDABLE_DEPOSIT_ITEM_LABEL";
   }
 
   p_isa = &v6->isa;
-  v7 = v4;
-  v8 = [(PKPaymentProvisioningMethodMetadata *)self->_provisioningMethodMetadata depositAmount];
+  v7 = amountCopy;
+  depositAmount = [(PKPaymentProvisioningMethodMetadata *)self->_provisioningMethodMetadata depositAmount];
   v9 = v7;
-  if (v8)
+  if (depositAmount)
   {
-    v10 = [MEMORY[0x1E696AB90] zero];
-    v11 = [v10 compare:v8];
+    zero = [MEMORY[0x1E696AB90] zero];
+    v11 = [zero compare:depositAmount];
 
     v9 = v7;
     if (v11 == -1)
     {
-      v9 = [v7 decimalNumberByAdding:v8];
+      v9 = [v7 decimalNumberByAdding:depositAmount];
     }
   }
 
-  v12 = [(PKPaymentProvisioningMethodMetadata *)self->_provisioningMethodMetadata digitalIssuanceMetadata];
+  digitalIssuanceMetadata = [(PKPaymentProvisioningMethodMetadata *)self->_provisioningMethodMetadata digitalIssuanceMetadata];
   v13 = objc_alloc_init(MEMORY[0x1E69B8A10]);
-  v14 = [v12 action];
-  [v13 setItemDescription:v14];
+  action = [digitalIssuanceMetadata action];
+  [v13 setItemDescription:action];
 
   v15 = objc_alloc(MEMORY[0x1E695DF90]);
-  v16 = [v12 serviceProviderDict];
-  v17 = [v15 initWithDictionary:v16];
+  serviceProviderDict = [digitalIssuanceMetadata serviceProviderDict];
+  v17 = [v15 initWithDictionary:serviceProviderDict];
 
   [v17 setObject:v9 forKey:*MEMORY[0x1E69BC3E0]];
   v44 = v17;
   [v13 setServiceProviderData:v17];
-  v18 = [v12 serviceProviderIdentifier];
-  [v13 setServiceProviderIdentifier:v18];
+  serviceProviderIdentifier = [digitalIssuanceMetadata serviceProviderIdentifier];
+  [v13 setServiceProviderIdentifier:serviceProviderIdentifier];
 
   v45 = v9;
   if (self->_setupContext == 4 && PKIsAltAccountPairedOrPairing())
@@ -372,20 +372,20 @@ void __71__PKPaymentSetupPurchaseController_presetPaymentRequest_forResultType__
 
   v43 = v20;
   v21 = [objc_alloc(MEMORY[0x1E69B9218]) initWithServiceProviderOrder:v13 targetDeviceSerialNumber:v20];
-  v22 = [v12 serviceProviderAcceptedNetworks];
-  [v21 setSupportedNetworks:v22];
+  serviceProviderAcceptedNetworks = [digitalIssuanceMetadata serviceProviderAcceptedNetworks];
+  [v21 setSupportedNetworks:serviceProviderAcceptedNetworks];
 
-  v23 = [v12 serviceProviderCapabilities];
+  serviceProviderCapabilities = [digitalIssuanceMetadata serviceProviderCapabilities];
   [v21 setMerchantCapabilities:PKMerchantCapabilityFromStrings()];
 
-  v24 = [v12 serviceProviderCountryCode];
-  [v21 setCountryCode:v24];
+  serviceProviderCountryCode = [digitalIssuanceMetadata serviceProviderCountryCode];
+  [v21 setCountryCode:serviceProviderCountryCode];
 
-  v25 = [(PKPaymentProvisioningMethodMetadata *)self->_provisioningMethodMetadata currency];
-  [v21 setCurrencyCode:v25];
+  currency = [(PKPaymentProvisioningMethodMetadata *)self->_provisioningMethodMetadata currency];
+  [v21 setCurrencyCode:currency];
 
-  v26 = [v12 serviceProviderSupportedCountries];
-  [v21 setSupportedCountries:v26];
+  serviceProviderSupportedCountries = [digitalIssuanceMetadata serviceProviderSupportedCountries];
+  [v21 setSupportedCountries:serviceProviderSupportedCountries];
 
   v27 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:3];
   v28 = MEMORY[0x1E69B8E90];
@@ -394,34 +394,34 @@ void __71__PKPaymentSetupPurchaseController_presetPaymentRequest_forResultType__
   v30 = [v28 summaryItemWithLabel:v29 amount:v7];
 
   [v27 addObject:v30];
-  if (v8)
+  if (depositAmount)
   {
-    v31 = [MEMORY[0x1E696AB90] zero];
-    v32 = [v31 compare:v8];
+    zero2 = [MEMORY[0x1E696AB90] zero];
+    v32 = [zero2 compare:depositAmount];
 
     if (v32 == -1)
     {
       v33 = MEMORY[0x1E69B8E90];
       v34 = PKLocalizedPaymentString(p_isa);
-      v35 = [v33 summaryItemWithLabel:v34 amount:v8];
+      v35 = [v33 summaryItemWithLabel:v34 amount:depositAmount];
 
       [v27 addObject:v35];
     }
   }
 
-  v36 = [v12 serviceProviderLocalizedDisplayName];
-  v37 = v36;
-  if (v36)
+  serviceProviderLocalizedDisplayName = [digitalIssuanceMetadata serviceProviderLocalizedDisplayName];
+  v37 = serviceProviderLocalizedDisplayName;
+  if (serviceProviderLocalizedDisplayName)
   {
-    v38 = v36;
+    displayName = serviceProviderLocalizedDisplayName;
   }
 
   else
   {
-    v38 = [(PKPaymentSetupProduct *)self->_product displayName];
+    displayName = [(PKPaymentSetupProduct *)self->_product displayName];
   }
 
-  v39 = v38;
+  v39 = displayName;
 
   v40 = [MEMORY[0x1E69B8E90] summaryItemWithLabel:v39 amount:v45];
   [v27 addObject:v40];
@@ -430,54 +430,54 @@ void __71__PKPaymentSetupPurchaseController_presetPaymentRequest_forResultType__
   return v21;
 }
 
-- (id)paymentRequestForProduct:(id)a3 serviceProviderProduct:(id)a4 productItem:(id)a5
+- (id)paymentRequestForProduct:(id)product serviceProviderProduct:(id)providerProduct productItem:(id)item
 {
   v68[2] = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  v7 = [v6 amount];
-  v8 = [(PKPaymentProvisioningMethodMetadata *)self->_provisioningMethodMetadata depositAmount];
-  v9 = [(PKPaymentProvisioningMethodMetadata *)self->_provisioningMethodMetadata depositType];
+  itemCopy = item;
+  amount = [itemCopy amount];
+  depositAmount = [(PKPaymentProvisioningMethodMetadata *)self->_provisioningMethodMetadata depositAmount];
+  depositType = [(PKPaymentProvisioningMethodMetadata *)self->_provisioningMethodMetadata depositType];
   v10 = @"SETUP_PURCHASE_REFUNDABLE_SERVICE_FEE_ITEM_LABEL";
-  if (v9 == 2)
+  if (depositType == 2)
   {
     v10 = @"SETUP_PURCHASE_NONREFUNDABLE_SERVICE_FEE_ITEM_LABEL";
   }
 
-  if (v9 == 1)
+  if (depositType == 1)
   {
     v10 = @"SETUP_PURCHASE_REFUNDABLE_DEPOSIT_ITEM_LABEL";
   }
 
   p_isa = &v10->isa;
-  v65 = v8;
-  if (v8)
+  v65 = depositAmount;
+  if (depositAmount)
   {
-    v11 = [MEMORY[0x1E696AB90] zero];
-    v12 = [v11 compare:v8];
+    zero = [MEMORY[0x1E696AB90] zero];
+    v12 = [zero compare:depositAmount];
 
     if (v12 == -1)
     {
-      v13 = [v7 decimalNumberByAdding:v8];
+      v13 = [amount decimalNumberByAdding:depositAmount];
 
-      v7 = v13;
+      amount = v13;
     }
   }
 
-  v14 = [(PKPaymentProvisioningMethodMetadata *)self->_provisioningMethodMetadata digitalIssuanceMetadata];
+  digitalIssuanceMetadata = [(PKPaymentProvisioningMethodMetadata *)self->_provisioningMethodMetadata digitalIssuanceMetadata];
   v15 = objc_alloc_init(MEMORY[0x1E69B8A10]);
-  v16 = [v14 action];
-  [v15 setItemDescription:v16];
+  action = [digitalIssuanceMetadata action];
+  [v15 setItemDescription:action];
 
   v17 = objc_alloc(MEMORY[0x1E695DF90]);
-  v18 = [v14 serviceProviderDict];
-  v19 = [v17 initWithDictionary:v18];
+  serviceProviderDict = [digitalIssuanceMetadata serviceProviderDict];
+  v19 = [v17 initWithDictionary:serviceProviderDict];
 
-  [v19 setObject:v7 forKey:*MEMORY[0x1E69BC3E0]];
+  [v19 setObject:amount forKey:*MEMORY[0x1E69BC3E0]];
   v67[0] = @"identifier";
-  v20 = [v6 identifier];
+  identifier = [itemCopy identifier];
   v67[1] = @"amount";
-  v68[0] = v20;
-  v68[1] = v7;
+  v68[0] = identifier;
+  v68[1] = amount;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v68 forKeys:v67 count:2];
 
   v61 = v21;
@@ -486,10 +486,10 @@ void __71__PKPaymentSetupPurchaseController_presetPaymentRequest_forResultType__
   [v19 setObject:? forKey:?];
   v62 = v19;
   [v15 setServiceProviderData:v19];
-  v22 = [v14 serviceProviderIdentifier];
-  [v15 setServiceProviderIdentifier:v22];
+  serviceProviderIdentifier = [digitalIssuanceMetadata serviceProviderIdentifier];
+  [v15 setServiceProviderIdentifier:serviceProviderIdentifier];
 
-  v64 = v7;
+  v64 = amount;
   if (self->_setupContext == 4 && PKIsAltAccountPairedOrPairing())
   {
     v23 = PKPairedOrPairingDevice();
@@ -504,33 +504,33 @@ void __71__PKPaymentSetupPurchaseController_presetPaymentRequest_forResultType__
   v63 = v15;
   v59 = v24;
   v25 = [objc_alloc(MEMORY[0x1E69B9218]) initWithServiceProviderOrder:v15 targetDeviceSerialNumber:v24];
-  v26 = [v14 serviceProviderAcceptedNetworks];
-  [v25 setSupportedNetworks:v26];
+  serviceProviderAcceptedNetworks = [digitalIssuanceMetadata serviceProviderAcceptedNetworks];
+  [v25 setSupportedNetworks:serviceProviderAcceptedNetworks];
 
-  v27 = [v14 serviceProviderCapabilities];
+  serviceProviderCapabilities = [digitalIssuanceMetadata serviceProviderCapabilities];
   [v25 setMerchantCapabilities:PKMerchantCapabilityFromStrings()];
 
-  v28 = [v14 serviceProviderCountryCode];
-  [v25 setCountryCode:v28];
+  serviceProviderCountryCode = [digitalIssuanceMetadata serviceProviderCountryCode];
+  [v25 setCountryCode:serviceProviderCountryCode];
 
-  v29 = [(PKPaymentProvisioningMethodMetadata *)self->_provisioningMethodMetadata currency];
-  [v25 setCurrencyCode:v29];
+  currency = [(PKPaymentProvisioningMethodMetadata *)self->_provisioningMethodMetadata currency];
+  [v25 setCurrencyCode:currency];
 
-  v30 = [v14 serviceProviderSupportedCountries];
-  [v25 setSupportedCountries:v30];
+  serviceProviderSupportedCountries = [digitalIssuanceMetadata serviceProviderSupportedCountries];
+  [v25 setSupportedCountries:serviceProviderSupportedCountries];
 
   v31 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:3];
-  v32 = [v6 localizedDisplayName];
-  v33 = [v6 localizedDescription];
-  v34 = v33;
-  v58 = v32;
-  if (v33)
+  localizedDisplayName = [itemCopy localizedDisplayName];
+  localizedDescription = [itemCopy localizedDescription];
+  v34 = localizedDescription;
+  v58 = localizedDisplayName;
+  if (localizedDescription)
   {
-    v35 = [v33 length];
+    v35 = [localizedDescription length];
 
     if (v35)
     {
-      v36 = v32;
+      v36 = localizedDisplayName;
       v37 = v34;
       v38 = v37;
       if (v36 == v37)
@@ -557,18 +557,18 @@ LABEL_30:
     }
   }
 
-  [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v32, v56];
+  [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", localizedDisplayName, v56];
   v40 = LABEL_20:;
   v41 = MEMORY[0x1E69B8E90];
-  v42 = v6;
-  v43 = [v6 amount];
-  v44 = [v41 summaryItemWithLabel:v40 amount:v43];
+  v42 = itemCopy;
+  amount2 = [itemCopy amount];
+  v44 = [v41 summaryItemWithLabel:v40 amount:amount2];
 
   [v31 addObject:v44];
   if (v65)
   {
-    v45 = [MEMORY[0x1E696AB90] zero];
-    v46 = [v45 compare:v65];
+    zero2 = [MEMORY[0x1E696AB90] zero];
+    v46 = [zero2 compare:v65];
 
     if (v46 == -1)
     {
@@ -580,19 +580,19 @@ LABEL_30:
     }
   }
 
-  v50 = [v14 serviceProviderLocalizedDisplayName];
-  v51 = v50;
-  if (v50)
+  serviceProviderLocalizedDisplayName = [digitalIssuanceMetadata serviceProviderLocalizedDisplayName];
+  v51 = serviceProviderLocalizedDisplayName;
+  if (serviceProviderLocalizedDisplayName)
   {
-    v52 = v50;
+    displayName = serviceProviderLocalizedDisplayName;
   }
 
   else
   {
-    v52 = [(PKPaymentSetupProduct *)self->_product displayName];
+    displayName = [(PKPaymentSetupProduct *)self->_product displayName];
   }
 
-  v53 = v52;
+  v53 = displayName;
 
   v54 = [MEMORY[0x1E69B8E90] summaryItemWithLabel:v53 amount:v64];
   [v31 addObject:v54];
@@ -601,27 +601,27 @@ LABEL_30:
   return v25;
 }
 
-- (void)presentTermsAndConditionsWithCompletion:(id)a3
+- (void)presentTermsAndConditionsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_acceptedTerms)
   {
-    (*(v4 + 2))(v4, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 
   else
   {
-    v6 = [(PKPaymentSetupProduct *)self->_product termsURL];
-    if (v6)
+    termsURL = [(PKPaymentSetupProduct *)self->_product termsURL];
+    if (termsURL)
     {
       v7 = self->_purchaseControllerDelegate;
       if (v7)
       {
-        v8 = [(PKPaymentProvisioningController *)self->_provisioningController webService];
+        webService = [(PKPaymentProvisioningController *)self->_provisioningController webService];
         v9 = [PKProvisioningTermsPresenter alloc];
-        v10 = [v8 context];
-        v11 = -[PKProvisioningTermsPresenter initWithAllowNonSecureHTTP:paymentSetupContext:](v9, "initWithAllowNonSecureHTTP:paymentSetupContext:", [v10 devSigned], self->_setupContext);
+        context = [webService context];
+        v11 = -[PKProvisioningTermsPresenter initWithAllowNonSecureHTTP:paymentSetupContext:](v9, "initWithAllowNonSecureHTTP:paymentSetupContext:", [context devSigned], self->_setupContext);
         termsPresenter = self->_termsPresenter;
         self->_termsPresenter = v11;
 
@@ -633,7 +633,7 @@ LABEL_30:
         v14[3] = &unk_1E8017218;
         objc_copyWeak(&v16, &location);
         v15 = v5;
-        [(PKProvisioningTermsPresenter *)v13 presentWithTermsUrl:v6 forViewController:v7 completion:v14];
+        [(PKProvisioningTermsPresenter *)v13 presentWithTermsUrl:termsURL forViewController:v7 completion:v14];
 
         objc_destroyWeak(&v16);
         objc_destroyWeak(&location);

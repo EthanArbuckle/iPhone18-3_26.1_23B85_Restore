@@ -6,18 +6,18 @@
 
 - (void)setNeedsUpdateOfSupportedInterfaceOrientations
 {
-  v1 = [a1 view];
-  v7 = [v1 window];
+  view = [self view];
+  window = [view window];
 
   v2 = objc_opt_class();
-  v3 = [v7 _sbWindowScene];
-  v4 = SBSafeCast(v2, v3);
+  _sbWindowScene = [window _sbWindowScene];
+  v4 = SBSafeCast(v2, _sbWindowScene);
 
-  if (v7 && v4)
+  if (window && v4)
   {
-    v5 = [v7 _supportedInterfaceOrientationsForRootViewController];
-    v6 = [v4 delegate];
-    [v6 _windowScene:v4 window:v7 didUpdateSupportedInterfaceOrientations:v5 preferredOrientation:0];
+    _supportedInterfaceOrientationsForRootViewController = [window _supportedInterfaceOrientationsForRootViewController];
+    delegate = [v4 delegate];
+    [delegate _windowScene:v4 window:window didUpdateSupportedInterfaceOrientations:_supportedInterfaceOrientationsForRootViewController preferredOrientation:0];
   }
 }
 

@@ -1,21 +1,21 @@
 @interface CARDNDPanel
 - (BOOL)_isDrivingToggleOn;
-- (CARDNDPanel)initWithPanelController:(id)a3;
+- (CARDNDPanel)initWithPanelController:(id)controller;
 - (id)cellSpecifier;
 - (id)specifierSections;
-- (void)_drivingToggleChanged:(BOOL)a3;
+- (void)_drivingToggleChanged:(BOOL)changed;
 - (void)invalidate;
-- (void)modeConfigurationService:(id)a3 didReceiveAvailableModesUpdate:(id)a4;
+- (void)modeConfigurationService:(id)service didReceiveAvailableModesUpdate:(id)update;
 @end
 
 @implementation CARDNDPanel
 
-- (CARDNDPanel)initWithPanelController:(id)a3
+- (CARDNDPanel)initWithPanelController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v23.receiver = self;
   v23.super_class = CARDNDPanel;
-  v5 = [(CARSettingsPanel *)&v23 initWithPanelController:v4];
+  v5 = [(CARSettingsPanel *)&v23 initWithPanelController:controllerCopy];
   if (v5)
   {
     objc_initWeak(&location, v5);
@@ -42,11 +42,11 @@
     v13 = [NSNumber numberWithBool:[(CARDNDPanel *)v5 _isDrivingToggleOn]];
     [v12 setCellValue:v13];
 
-    v14 = [(CARDNDPanel *)v5 dndSpecifier];
-    [v14 setAccessibilityIdentifier:@"CPSettingsDriveFocusToggle"];
+    dndSpecifier = [(CARDNDPanel *)v5 dndSpecifier];
+    [dndSpecifier setAccessibilityIdentifier:@"CPSettingsDriveFocusToggle"];
 
-    v15 = [(CARDNDPanel *)v5 view];
-    [v15 setAccessibilityIdentifier:@"CPSettingsDriveFocusSetting"];
+    view = [(CARDNDPanel *)v5 view];
+    [view setAccessibilityIdentifier:@"CPSettingsDriveFocusSetting"];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -98,8 +98,8 @@
 {
   v3 = [CARSettingsCellSpecifierSection alloc];
   v4 = sub_10001C80C(@"DRIVING_FOCUS_FOOTER");
-  v5 = [(CARDNDPanel *)self dndSpecifier];
-  v10 = v5;
+  dndSpecifier = [(CARDNDPanel *)self dndSpecifier];
+  v10 = dndSpecifier;
   v6 = [NSArray arrayWithObjects:&v10 count:1];
   v7 = [(CARSettingsCellSpecifierSection *)v3 initWithFooter:v4 specifiers:v6];
   v11 = v7;
@@ -108,7 +108,7 @@
   return v8;
 }
 
-- (void)modeConfigurationService:(id)a3 didReceiveAvailableModesUpdate:(id)a4
+- (void)modeConfigurationService:(id)service didReceiveAvailableModesUpdate:(id)update
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -126,25 +126,25 @@
   v5 = v18;
   if (v5)
   {
-    v6 = sub_10001C784();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    dndStatus = sub_10001C784();
+    if (os_log_type_enabled(dndStatus, OS_LOG_TYPE_ERROR))
     {
-      sub_1000917E0(v5, v6, v7, v8, v9, v10, v11, v12);
+      sub_1000917E0(v5, dndStatus, v7, v8, v9, v10, v11, v12);
     }
 
 LABEL_4:
-    v13 = 0;
+    shouldActivateWithCarPlay = 0;
     goto LABEL_9;
   }
 
-  v6 = sub_10001C784();
-  v14 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
+  dndStatus = sub_10001C784();
+  v14 = os_log_type_enabled(dndStatus, OS_LOG_TYPE_DEFAULT);
   if (!v4)
   {
     if (v14)
     {
       *v16 = 0;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[Settings] No available driving focus.", v16, 2u);
+      _os_log_impl(&_mh_execute_header, dndStatus, OS_LOG_TYPE_DEFAULT, "[Settings] No available driving focus.", v16, 2u);
     }
 
     goto LABEL_4;
@@ -153,46 +153,46 @@ LABEL_4:
   if (v14)
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[Settings] Driving Focus is available.", buf, 2u);
+    _os_log_impl(&_mh_execute_header, dndStatus, OS_LOG_TYPE_DEFAULT, "[Settings] Driving Focus is available.", buf, 2u);
   }
 
-  v6 = [(CARDNDPanel *)self dndStatus];
-  v13 = [v6 shouldActivateWithCarPlay];
+  dndStatus = [(CARDNDPanel *)self dndStatus];
+  shouldActivateWithCarPlay = [dndStatus shouldActivateWithCarPlay];
 LABEL_9:
 
-  return v13;
+  return shouldActivateWithCarPlay;
 }
 
-- (void)_drivingToggleChanged:(BOOL)a3
+- (void)_drivingToggleChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v5 = sub_10001C784();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [NSNumber numberWithBool:v3];
+    v6 = [NSNumber numberWithBool:changedCopy];
     *buf = 138543362;
     v16 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[Settings] Toggled Driving to %{public}@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v7 = [(CARDNDPanel *)self dndStatus];
+  dndStatus = [(CARDNDPanel *)self dndStatus];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10001A1E8;
   v12[3] = &unk_1000DB3D0;
   objc_copyWeak(&v13, buf);
-  v14 = v3;
-  [v7 _performCARPreferencesBlock:v12 forReading:0];
+  v14 = changedCopy;
+  [dndStatus _performCARPreferencesBlock:v12 forReading:0];
 
-  v8 = [(CARDNDPanel *)self dndStatus];
+  dndStatus2 = [(CARDNDPanel *)self dndStatus];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10001A248;
   v9[3] = &unk_1000DB3F8;
   objc_copyWeak(&v10, buf);
-  v11 = v3;
-  [v8 setAutomaticDNDActive:v3 withReply:v9];
+  v11 = changedCopy;
+  [dndStatus2 setAutomaticDNDActive:changedCopy withReply:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&v13);

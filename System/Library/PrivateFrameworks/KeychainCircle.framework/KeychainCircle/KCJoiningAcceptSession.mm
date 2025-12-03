@@ -1,21 +1,21 @@
 @interface KCJoiningAcceptSession
-+ (id)sessionWithInitialMessage:(id)a3 secretDelegate:(id)a4 circleDelegate:(id)a5 dsid:(unint64_t)a6 altDSID:(id)a7 flowID:(id)a8 deviceSessionID:(id)a9 error:(id *)a10;
-+ (id)sessionWithInitialMessage:(id)a3 secretDelegate:(id)a4 circleDelegate:(id)a5 dsid:(unint64_t)a6 error:(id *)a7;
-- (BOOL)setupSession:(id *)a3;
++ (id)sessionWithInitialMessage:(id)message secretDelegate:(id)delegate circleDelegate:(id)circleDelegate dsid:(unint64_t)dsid altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID error:(id *)self0;
++ (id)sessionWithInitialMessage:(id)message secretDelegate:(id)delegate circleDelegate:(id)circleDelegate dsid:(unint64_t)dsid error:(id *)error;
+- (BOOL)setupSession:(id *)session;
 - (BOOL)shouldAcceptOctagonRequests;
-- (BOOL)shouldProcessSOSApplication:(id)a3 pairingMessage:(id)a4;
+- (BOOL)shouldProcessSOSApplication:(id)application pairingMessage:(id)message;
 - (KCJoiningAcceptCircleDelegate)circleDelegate;
 - (KCJoiningAcceptSecretDelegate)secretDelegate;
-- (KCJoiningAcceptSession)initWithSecretDelegate:(id)a3 circleDelegate:(id)a4 dsid:(unint64_t)a5 altDSID:(id)a6 flowID:(id)a7 deviceSessionID:(id)a8 rng:(ccrng_state *)a9 error:(id *)a10;
-- (id)copyChallengeMessage:(id *)a3;
-- (id)createPairingMessageFromJoiningMessage:(id)a3 error:(id *)a4;
-- (id)createTLKRequestResponse:(id *)a3;
+- (KCJoiningAcceptSession)initWithSecretDelegate:(id)delegate circleDelegate:(id)circleDelegate dsid:(unint64_t)dsid altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID rng:(ccrng_state *)rng error:(id *)self0;
+- (id)copyChallengeMessage:(id *)message;
+- (id)createPairingMessageFromJoiningMessage:(id)message error:(id *)error;
+- (id)createTLKRequestResponse:(id *)response;
 - (id)description;
-- (id)processApplication:(id)a3 error:(id *)a4;
-- (id)processInitialMessage:(id)a3 error:(id *)a4;
-- (id)processMessage:(id)a3 error:(id *)a4;
-- (id)processResponse:(id)a3 error:(id *)a4;
-- (id)processSOSApplication:(id)a3 error:(id *)a4;
+- (id)processApplication:(id)application error:(id *)error;
+- (id)processInitialMessage:(id)message error:(id *)error;
+- (id)processMessage:(id)message error:(id *)error;
+- (id)processResponse:(id)response error:(id *)error;
+- (id)processSOSApplication:(id)application error:(id *)error;
 - (id)stateString;
 @end
 
@@ -35,10 +35,10 @@
   return WeakRetained;
 }
 
-- (id)processMessage:(id)a3 error:(id *)a4
+- (id)processMessage:(id)message error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  messageCopy = message;
   v7 = secLogObjForScope("acceptor");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -50,7 +50,7 @@
 
   if ([(KCJoiningAcceptSession *)self state])
   {
-    v9 = [KCJoiningMessage messageWithDER:v6 error:a4];
+    v9 = [KCJoiningMessage messageWithDER:messageCopy error:error];
   }
 
   else
@@ -58,46 +58,46 @@
     v9 = 0;
   }
 
-  v10 = [(KCJoiningAcceptSession *)self state];
+  state = [(KCJoiningAcceptSession *)self state];
   v16 = 0;
-  if (v10 > 1)
+  if (state > 1)
   {
-    if (v10 == 2)
+    if (state == 2)
     {
       if (v9)
       {
-        v17 = [(KCJoiningAcceptSession *)self processApplication:v9 error:a4];
+        v17 = [(KCJoiningAcceptSession *)self processApplication:v9 error:error];
         goto LABEL_17;
       }
     }
 
     else
     {
-      if (v10 != 3)
+      if (state != 3)
       {
         goto LABEL_19;
       }
 
-      KCJoiningErrorCreate(6, a4, @"Unexpected message while done", v11, v12, v13, v14, v15, *v20);
+      KCJoiningErrorCreate(6, error, @"Unexpected message while done", v11, v12, v13, v14, v15, *v20);
     }
   }
 
   else
   {
-    if (!v10)
+    if (!state)
     {
-      v17 = [(KCJoiningAcceptSession *)self processInitialMessage:v6 error:a4];
+      v17 = [(KCJoiningAcceptSession *)self processInitialMessage:messageCopy error:error];
       goto LABEL_17;
     }
 
-    if (v10 != 1)
+    if (state != 1)
     {
       goto LABEL_19;
     }
 
     if (v9)
     {
-      v17 = [(KCJoiningAcceptSession *)self processResponse:v9 error:a4];
+      v17 = [(KCJoiningAcceptSession *)self processResponse:v9 error:error];
 LABEL_17:
       v16 = v17;
       goto LABEL_19;
@@ -112,20 +112,20 @@ LABEL_19:
   return v16;
 }
 
-- (id)processApplication:(id)a3 error:(id *)a4
+- (id)processApplication:(id)application error:(id *)error
 {
   v102 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  applicationCopy = application;
   v6 = [AAFAnalyticsEventSecurity alloc];
-  v7 = [(KCJoiningAcceptSession *)self altDSID];
-  v8 = [(KCJoiningAcceptSession *)self flowID];
-  v9 = [(KCJoiningAcceptSession *)self deviceSessionID];
+  altDSID = [(KCJoiningAcceptSession *)self altDSID];
+  flowID = [(KCJoiningAcceptSession *)self flowID];
+  deviceSessionID = [(KCJoiningAcceptSession *)self deviceSessionID];
   LOBYTE(v66) = 1;
-  v10 = [(AAFAnalyticsEventSecurity *)v6 initWithKeychainCircleMetrics:0 altDSID:v7 flowID:v8 deviceSessionID:v9 eventName:@"com.apple.security.piggybackingAcceptorProcessApplication" testsAreEnabled:metricsAreEnabled canSendMetrics:v66 category:&unk_2843768F0];
+  v10 = [(AAFAnalyticsEventSecurity *)v6 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:@"com.apple.security.piggybackingAcceptorProcessApplication" testsAreEnabled:metricsAreEnabled canSendMetrics:v66 category:&unk_2843768F0];
 
-  if ([v5 type] != 6)
+  if ([applicationCopy type] != 6)
   {
-    if ([v5 type] == 4)
+    if ([applicationCopy type] == 4)
     {
       if ([(KCJoiningAcceptSession *)self piggy_version]== 2)
       {
@@ -142,7 +142,7 @@ LABEL_19:
         v89 = __Block_byref_object_dispose__916;
         v90 = 0;
         v84 = 0;
-        v75 = [(KCJoiningAcceptSession *)self createPairingMessageFromJoiningMessage:v5 error:&v84];
+        v75 = [(KCJoiningAcceptSession *)self createPairingMessageFromJoiningMessage:applicationCopy error:&v84];
         v13 = v84;
         if (!v75 || v13)
         {
@@ -166,7 +166,7 @@ LABEL_19:
         {
           if ([v75 hasPrepare])
           {
-            v74 = [v75 prepare];
+            prepare = [v75 prepare];
             if ([v75 hasVersion] && objc_msgSend(v75, "version") > 2)
             {
               v69 = 1;
@@ -178,25 +178,25 @@ LABEL_19:
               *(&v94 + 1) = &v94;
               v95 = 0x2020000000;
               v96 = 1;
-              v26 = [(KCJoiningAcceptSession *)self otControl];
-              v27 = [(KCJoiningAcceptSession *)self controlArguments];
+              otControl = [(KCJoiningAcceptSession *)self otControl];
+              controlArguments = [(KCJoiningAcceptSession *)self controlArguments];
               v83[0] = MEMORY[0x277D85DD0];
               v83[1] = 3221225472;
               v83[2] = __51__KCJoiningAcceptSession_processApplication_error___block_invoke;
               v83[3] = &unk_278863DC0;
               v83[4] = &v94;
-              [v26 fetchEscrowRecords:v27 source:2 reply:v83];
+              [otControl fetchEscrowRecords:controlArguments source:2 reply:v83];
 
               v28 = [AAFAnalyticsEventSecurity alloc];
               v92 = @"totalViableEscrowRecords";
               v72 = [MEMORY[0x277CCABB0] numberWithBool:*(*(&v94 + 1) + 24)];
               v93 = v72;
               v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v93 forKeys:&v92 count:1];
-              v30 = [(KCJoiningAcceptSession *)self altDSID];
-              v31 = [(KCJoiningAcceptSession *)self flowID];
-              v32 = [(KCJoiningAcceptSession *)self deviceSessionID];
+              altDSID2 = [(KCJoiningAcceptSession *)self altDSID];
+              flowID2 = [(KCJoiningAcceptSession *)self flowID];
+              deviceSessionID2 = [(KCJoiningAcceptSession *)self deviceSessionID];
               LOBYTE(v67) = 1;
-              v33 = [(AAFAnalyticsEventSecurity *)v28 initWithKeychainCircleMetrics:v29 altDSID:v30 flowID:v31 deviceSessionID:v32 eventName:@"com.apple.security.initiatorPreVersion3Change" testsAreEnabled:metricsAreEnabled canSendMetrics:v67 category:&unk_2843768F0];
+              v33 = [(AAFAnalyticsEventSecurity *)v28 initWithKeychainCircleMetrics:v29 altDSID:altDSID2 flowID:flowID2 deviceSessionID:deviceSessionID2 eventName:@"com.apple.security.initiatorPreVersion3Change" testsAreEnabled:metricsAreEnabled canSendMetrics:v67 category:&unk_2843768F0];
 
               [(AAFAnalyticsEventSecurity *)v33 sendMetricWithResult:1 error:0];
               _Block_object_dispose(&v94, 8);
@@ -204,14 +204,14 @@ LABEL_19:
             }
 
             v34 = @"full";
-            v73 = [(KCJoiningAcceptSession *)self otControl];
-            v71 = [(KCJoiningAcceptSession *)self controlArguments];
-            v70 = [(KCJoiningAcceptSession *)self joiningConfiguration];
-            v35 = [v74 peerID];
-            v36 = [v74 permanentInfo];
-            v37 = [v74 permanentInfoSig];
-            v38 = [v74 stableInfo];
-            v39 = [v74 stableInfoSig];
+            otControl2 = [(KCJoiningAcceptSession *)self otControl];
+            controlArguments2 = [(KCJoiningAcceptSession *)self controlArguments];
+            joiningConfiguration = [(KCJoiningAcceptSession *)self joiningConfiguration];
+            peerID = [prepare peerID];
+            permanentInfo = [prepare permanentInfo];
+            permanentInfoSig = [prepare permanentInfoSig];
+            stableInfo = [prepare stableInfo];
+            stableInfoSig = [prepare stableInfoSig];
             v82[0] = MEMORY[0x277D85DD0];
             v82[1] = 3221225472;
             v82[2] = __51__KCJoiningAcceptSession_processApplication_error___block_invoke_2;
@@ -219,14 +219,14 @@ LABEL_19:
             v82[4] = self;
             v82[5] = &v85;
             v82[6] = &buf;
-            [v73 rpcVoucherWithArguments:v71 configuration:v70 peerID:v35 permanentInfo:v36 permanentInfoSig:v37 stableInfo:v38 stableInfoSig:v39 maxCapability:@"full" reply:v82];
+            [otControl2 rpcVoucherWithArguments:controlArguments2 configuration:joiningConfiguration peerID:peerID permanentInfo:permanentInfo permanentInfoSig:permanentInfoSig stableInfo:stableInfo stableInfoSig:stableInfoSig maxCapability:@"full" reply:v82];
 
             v40 = v86[5];
             if (*(*(&buf + 1) + 40))
             {
               if (!v40)
               {
-                if ([(KCJoiningAcceptSession *)self shouldProcessSOSApplication:v5 pairingMessage:v75])
+                if ([(KCJoiningAcceptSession *)self shouldProcessSOSApplication:applicationCopy pairingMessage:v75])
                 {
                   v41 = secLogObjForScope("joining");
                   if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
@@ -235,9 +235,9 @@ LABEL_19:
                     _os_log_impl(&dword_22EB09000, v41, OS_LOG_TYPE_DEFAULT, "doing SOS processSOSApplication", &v94, 2u);
                   }
 
-                  v42 = [v5 secondData];
+                  secondData = [applicationCopy secondData];
                   v81 = 0;
-                  v43 = [(KCJoiningAcceptSession *)self processSOSApplication:v42 error:&v81];
+                  v43 = [(KCJoiningAcceptSession *)self processSOSApplication:secondData error:&v81];
                   v13 = v81;
 
                   if (!v43 || v13)
@@ -256,11 +256,11 @@ LABEL_19:
                     }
 
                     [(AAFAnalyticsEventSecurity *)v10 sendMetricWithResult:0 error:v13];
-                    if (a4)
+                    if (error)
                     {
                       v45 = v13;
                       v11 = 0;
-                      *a4 = v13;
+                      *error = v13;
                     }
 
                     else
@@ -279,10 +279,10 @@ LABEL_19:
 
                 if (v69 && ![(KCJoiningAcceptSession *)self piggybacking_version_for_tests])
                 {
-                  v53 = [(KCJoiningAcceptSession *)self session];
+                  session = [(KCJoiningAcceptSession *)self session];
                   v54 = *(*(&buf + 1) + 40);
                   v80 = 0;
-                  v49 = [v53 encrypt:v54 error:&v80];
+                  v49 = [session encrypt:v54 error:&v80];
                   v55 = v80;
 
                   if (!v49 || v55)
@@ -295,7 +295,7 @@ LABEL_19:
                       _os_log_impl(&dword_22EB09000, v61, OS_LOG_TYPE_DEFAULT, "joining: failed to encrypt voucher payload: %@", &v94, 0xCu);
                     }
 
-                    if (a4)
+                    if (error)
                     {
                       if (v55)
                       {
@@ -308,7 +308,7 @@ LABEL_19:
                         v63 = [MEMORY[0x277CCA9B8] errorWithDomain:KCErrorDomain code:57 description:@"failed to encrypt the voucher"];
                       }
 
-                      *a4 = v63;
+                      *error = v63;
                     }
 
                     [(AAFAnalyticsEventSecurity *)v10 sendMetricWithResult:0 error:0];
@@ -319,11 +319,11 @@ LABEL_19:
                   }
 
                   v56 = [AAFAnalyticsEventSecurity alloc];
-                  v57 = [(KCJoiningAcceptSession *)self altDSID];
-                  v58 = [(KCJoiningAcceptSession *)self flowID];
-                  v59 = [(KCJoiningAcceptSession *)self deviceSessionID];
+                  altDSID3 = [(KCJoiningAcceptSession *)self altDSID];
+                  flowID3 = [(KCJoiningAcceptSession *)self flowID];
+                  deviceSessionID3 = [(KCJoiningAcceptSession *)self deviceSessionID];
                   LOBYTE(v68) = 1;
-                  v60 = [(AAFAnalyticsEventSecurity *)v56 initWithKeychainCircleMetrics:0 altDSID:v57 flowID:v58 deviceSessionID:v59 eventName:@"com.apple.security.acceptorChannelSecured" testsAreEnabled:metricsAreEnabled canSendMetrics:v68 category:&unk_2843768F0];
+                  v60 = [(AAFAnalyticsEventSecurity *)v56 initWithKeychainCircleMetrics:0 altDSID:altDSID3 flowID:flowID3 deviceSessionID:deviceSessionID3 eventName:@"com.apple.security.acceptorChannelSecured" testsAreEnabled:metricsAreEnabled canSendMetrics:v68 category:&unk_2843768F0];
 
                   [(AAFAnalyticsEventSecurity *)v60 sendMetricWithResult:1 error:0];
                   self->_state = 3;
@@ -350,10 +350,10 @@ LABEL_19:
                   }
 
                   [(AAFAnalyticsEventSecurity *)v10 sendMetricWithResult:0 error:v13];
-                  if (a4)
+                  if (error)
                   {
                     v52 = v13;
-                    *a4 = v13;
+                    *error = v13;
                   }
                 }
 
@@ -387,9 +387,9 @@ LABEL_100:
             [(AAFAnalyticsEventSecurity *)v10 sendMetricWithResult:0 error:v40];
             v13 = 0;
             v11 = 0;
-            if (a4)
+            if (error)
             {
-              *a4 = v86[5];
+              *error = v86[5];
             }
 
             goto LABEL_99;
@@ -407,9 +407,9 @@ LABEL_100:
         }
 
         v11 = 0;
-        if (a4)
+        if (error)
         {
-          *a4 = 0;
+          *error = 0;
         }
 
         goto LABEL_100;
@@ -417,9 +417,9 @@ LABEL_100:
 
       if (SOSCCIsSOSTrustAndSyncingEnabled())
       {
-        v16 = [v5 firstData];
+        firstData = [applicationCopy firstData];
         v78 = 0;
-        v17 = [(KCJoiningAcceptSession *)self processSOSApplication:v16 error:&v78];
+        v17 = [(KCJoiningAcceptSession *)self processSOSApplication:firstData error:&v78];
         v13 = v78;
 
         if (!v17 || v13)
@@ -430,7 +430,7 @@ LABEL_100:
           }
 
           [(AAFAnalyticsEventSecurity *)v10 sendMetricWithResult:0 error:v13];
-          if (!a4)
+          if (!error)
           {
             v11 = 0;
             goto LABEL_68;
@@ -471,7 +471,7 @@ LABEL_68:
           }
 
           [(AAFAnalyticsEventSecurity *)v10 sendMetricWithResult:0 error:v13];
-          if (!a4)
+          if (!error)
           {
             goto LABEL_68;
           }
@@ -479,7 +479,7 @@ LABEL_68:
           v46 = v13;
         }
 
-        *a4 = v13;
+        *error = v13;
         goto LABEL_68;
       }
 
@@ -494,10 +494,10 @@ LABEL_68:
 
       v13 = [MEMORY[0x277CCA9B8] errorWithJoiningError:7 format:{@"%@", v20}];
       [(AAFAnalyticsEventSecurity *)v10 sendMetricWithResult:0 error:v13];
-      if (a4)
+      if (error)
       {
         v22 = v13;
-        *a4 = v13;
+        *error = v13;
       }
     }
 
@@ -505,11 +505,11 @@ LABEL_68:
     {
       v13 = [MEMORY[0x277CCA9B8] errorWithDomain:KCErrorDomain code:45 description:@"Expected peerInfo!"];
       [(AAFAnalyticsEventSecurity *)v10 sendMetricWithResult:0 error:v13];
-      if (a4)
+      if (error)
       {
         v14 = v13;
         v11 = 0;
-        *a4 = v13;
+        *error = v13;
         goto LABEL_101;
       }
     }
@@ -530,10 +530,10 @@ LABEL_68:
     }
 
     [(AAFAnalyticsEventSecurity *)v10 sendMetricWithResult:0 error:v13];
-    if (a4)
+    if (error)
     {
       v15 = v13;
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -615,10 +615,10 @@ void __51__KCJoiningAcceptSession_processApplication_error___block_invoke_2(uint
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldProcessSOSApplication:(id)a3 pairingMessage:(id)a4
+- (BOOL)shouldProcessSOSApplication:(id)application pairingMessage:(id)message
 {
-  v5 = a3;
-  v6 = a4;
+  applicationCopy = application;
+  messageCopy = message;
   if ((SOSCCIsSOSTrustAndSyncingEnabled() & 1) == 0)
   {
     v10 = secLogObjForScope("joining");
@@ -636,9 +636,9 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v7 = [v5 secondData];
+  secondData = [applicationCopy secondData];
 
-  if (!v7)
+  if (!secondData)
   {
     v10 = secLogObjForScope("joining");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -652,12 +652,12 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if ([v6 hasSupportsSOS])
+  if ([messageCopy hasSupportsSOS])
   {
-    v8 = [v6 supportsSOS];
-    v9 = [v8 supported];
+    supportsSOS = [messageCopy supportsSOS];
+    supported = [supportsSOS supported];
 
-    if (v9 == 2)
+    if (supported == 2)
     {
       v10 = secLogObjForScope("joining");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -680,19 +680,19 @@ LABEL_14:
   return v13;
 }
 
-- (id)createTLKRequestResponse:(id *)a3
+- (id)createTLKRequestResponse:(id *)response
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [(KCJoiningAcceptSession *)self circleDelegate];
+  circleDelegate = [(KCJoiningAcceptSession *)self circleDelegate];
   v21 = 0;
-  v6 = [v5 circleGetInitialSyncViews:4 error:&v21];
+  v6 = [circleDelegate circleGetInitialSyncViews:4 error:&v21];
   v7 = v21;
 
   if (v6)
   {
-    v8 = [(KCJoiningAcceptSession *)self session];
+    session = [(KCJoiningAcceptSession *)self session];
     v20 = v7;
-    v9 = [v8 encrypt:v6 error:&v20];
+    v9 = [session encrypt:v6 error:&v20];
     v10 = v20;
 
     if (v9)
@@ -705,7 +705,7 @@ LABEL_14:
         _os_log_impl(&dword_22EB09000, v11, OS_LOG_TYPE_DEFAULT, "TLKRequest done.", buf, 2u);
       }
 
-      v12 = [KCJoiningMessage messageWithType:6 data:v9 error:a3];
+      v12 = [KCJoiningMessage messageWithType:6 data:v9 error:response];
       v13 = [v12 der];
     }
 
@@ -720,11 +720,11 @@ LABEL_14:
       }
 
       v13 = 0;
-      if (a3 && v10)
+      if (response && v10)
       {
         v17 = v10;
         v13 = 0;
-        *a3 = v10;
+        *response = v10;
       }
     }
   }
@@ -740,11 +740,11 @@ LABEL_14:
     }
 
     v13 = 0;
-    if (a3 && v7)
+    if (response && v7)
     {
       v15 = v7;
       v13 = 0;
-      *a3 = v7;
+      *response = v7;
     }
 
     v10 = v7;
@@ -755,14 +755,14 @@ LABEL_14:
   return v13;
 }
 
-- (id)createPairingMessageFromJoiningMessage:(id)a3 error:(id *)a4
+- (id)createPairingMessageFromJoiningMessage:(id)message error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(KCJoiningAcceptSession *)self session];
-  v8 = [v6 firstData];
+  messageCopy = message;
+  session = [(KCJoiningAcceptSession *)self session];
+  firstData = [messageCopy firstData];
   v33 = 0;
-  v9 = [v7 decryptAndVerify:v8 error:&v33];
+  v9 = [session decryptAndVerify:firstData error:&v33];
   v10 = v33;
 
   if (!v9 || v10)
@@ -776,8 +776,8 @@ LABEL_14:
     }
 
     v17 = [OTPairingMessage alloc];
-    v12 = [v6 firstData];
-    v15 = [(OTPairingMessage *)v17 initWithData:v12];
+    firstData2 = [messageCopy firstData];
+    v15 = [(OTPairingMessage *)v17 initWithData:firstData2];
   }
 
   else
@@ -785,12 +785,12 @@ LABEL_14:
     v11 = [[KCInitialMessageData alloc] initWithData:v9];
     if (v11)
     {
-      v12 = v11;
+      firstData2 = v11;
       if ([(KCInitialMessageData *)v11 hasPrepareMessage])
       {
         v13 = [OTPairingMessage alloc];
-        v14 = [v12 prepareMessage];
-        v15 = [(OTPairingMessage *)v13 initWithData:v14];
+        prepareMessage = [firstData2 prepareMessage];
+        v15 = [(OTPairingMessage *)v13 initWithData:prepareMessage];
 
         goto LABEL_16;
       }
@@ -802,7 +802,7 @@ LABEL_14:
         _os_log_impl(&dword_22EB09000, v24, OS_LOG_TYPE_DEFAULT, "InitialMessageData does not contain prepare message", buf, 2u);
       }
 
-      KCJoiningErrorCreate(6, a4, @"Expected prepare message inside InitialMessageData", v25, v26, v27, v28, v29, v32);
+      KCJoiningErrorCreate(6, error, @"Expected prepare message inside InitialMessageData", v25, v26, v27, v28, v29, v32);
     }
 
     else
@@ -814,8 +814,8 @@ LABEL_14:
         _os_log_impl(&dword_22EB09000, v18, OS_LOG_TYPE_DEFAULT, "Failed to parse InitialMessageData from decrypted message data", buf, 2u);
       }
 
-      KCJoiningErrorCreate(6, a4, @"Failed to parse InitialMessageData from decrypted message data", v19, v20, v21, v22, v23, v32);
-      v12 = 0;
+      KCJoiningErrorCreate(6, error, @"Failed to parse InitialMessageData from decrypted message data", v19, v20, v21, v22, v23, v32);
+      firstData2 = 0;
     }
 
     v15 = 0;
@@ -828,12 +828,12 @@ LABEL_16:
   return v15;
 }
 
-- (id)processSOSApplication:(id)a3 error:(id *)a4
+- (id)processSOSApplication:(id)application error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(KCJoiningAcceptSession *)self session];
-  v8 = [v7 decryptAndVerify:v6 error:a4];
+  applicationCopy = application;
+  session = [(KCJoiningAcceptSession *)self session];
+  v8 = [session decryptAndVerify:applicationCopy error:error];
 
   if (!v8)
   {
@@ -841,20 +841,20 @@ LABEL_16:
     goto LABEL_36;
   }
 
-  v9 = [(KCJoiningAcceptSession *)self circleDelegate];
+  circleDelegate = [(KCJoiningAcceptSession *)self circleDelegate];
   v28 = 0;
   v10 = SOSPeerInfoCreateFromData();
   if (v10)
   {
     v11 = v10;
-    v12 = [v9 circleJoinDataFor:v10 error:a4];
+    v12 = [circleDelegate circleJoinDataFor:v10 error:error];
     CFRelease(v11);
     if (v12)
     {
-      v13 = [(KCJoiningAcceptSession *)self piggy_version];
-      if (v13 > 1)
+      piggy_version = [(KCJoiningAcceptSession *)self piggy_version];
+      if (piggy_version > 1)
       {
-        if (v13 == 2)
+        if (piggy_version == 2)
         {
           v14 = secLogObjForScope("acceptor");
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -872,7 +872,7 @@ LABEL_16:
 LABEL_25:
 
           v27 = 0;
-          v20 = [v9 circleGetInitialSyncViews:v15 error:&v27];
+          v20 = [circleDelegate circleGetInitialSyncViews:v15 error:&v27];
           v17 = v27;
           v21 = [objc_alloc(MEMORY[0x277CBEB28]) initWithData:v12];
           v19 = v21;
@@ -895,11 +895,11 @@ LABEL_25:
           goto LABEL_31;
         }
 
-        if (v13 != 3)
+        if (piggy_version != 3)
         {
 LABEL_32:
-          v23 = [(KCJoiningAcceptSession *)self session];
-          v16 = [v23 encrypt:v12 error:a4];
+          session2 = [(KCJoiningAcceptSession *)self session];
+          v16 = [session2 encrypt:v12 error:error];
 
           if (v16)
           {
@@ -921,9 +921,9 @@ LABEL_20:
 
       else
       {
-        if (v13)
+        if (piggy_version)
         {
-          if (v13 == 1)
+          if (piggy_version == 1)
           {
             v14 = secLogObjForScope("acceptor");
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -958,7 +958,7 @@ LABEL_31:
     goto LABEL_13;
   }
 
-  if (!a4)
+  if (!error)
   {
 LABEL_13:
     v16 = 0;
@@ -966,7 +966,7 @@ LABEL_13:
   }
 
   v16 = 0;
-  *a4 = v28;
+  *error = v28;
 LABEL_35:
 
 LABEL_36:
@@ -975,37 +975,37 @@ LABEL_36:
   return v16;
 }
 
-- (id)processResponse:(id)a3 error:(id *)a4
+- (id)processResponse:(id)response error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  responseCopy = response;
   v7 = [AAFAnalyticsEventSecurity alloc];
-  v8 = [(KCJoiningAcceptSession *)self altDSID];
-  v9 = [(KCJoiningAcceptSession *)self flowID];
-  v10 = [(KCJoiningAcceptSession *)self deviceSessionID];
+  altDSID = [(KCJoiningAcceptSession *)self altDSID];
+  flowID = [(KCJoiningAcceptSession *)self flowID];
+  deviceSessionID = [(KCJoiningAcceptSession *)self deviceSessionID];
   LOBYTE(v45) = 1;
-  v11 = [(AAFAnalyticsEventSecurity *)v7 initWithKeychainCircleMetrics:0 altDSID:v8 flowID:v9 deviceSessionID:v10 eventName:@"com.apple.security.piggybackingAcceptorProcessMessage" testsAreEnabled:metricsAreEnabled canSendMetrics:v45 category:&unk_2843768F0];
+  v11 = [(AAFAnalyticsEventSecurity *)v7 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:@"com.apple.security.piggybackingAcceptorProcessMessage" testsAreEnabled:metricsAreEnabled canSendMetrics:v45 category:&unk_2843768F0];
 
-  if ([v6 type] == 2)
+  if ([responseCopy type] == 2)
   {
-    v12 = [(KCJoiningAcceptSession *)self secretDelegate];
-    v13 = [(KCJoiningAcceptSession *)self context];
-    v14 = [v6 firstData];
-    v15 = [v13 copyConfirmationFor:v14 error:0];
+    secretDelegate = [(KCJoiningAcceptSession *)self secretDelegate];
+    context = [(KCJoiningAcceptSession *)self context];
+    firstData = [responseCopy firstData];
+    v15 = [context copyConfirmationFor:firstData error:0];
 
     if (v15)
     {
       v16 = MEMORY[0x277CBEA90];
-      v17 = [v12 accountCode];
+      accountCode = [secretDelegate accountCode];
       v49 = 0;
-      v18 = [v16 dataWithEncodedString:v17 error:&v49];
+      data = [v16 dataWithEncodedString:accountCode error:&v49];
       v19 = v49;
 
-      if (v18 && !v19)
+      if (data && !v19)
       {
-        v20 = [(KCJoiningAcceptSession *)self session];
+        session = [(KCJoiningAcceptSession *)self session];
         v48 = 0;
-        v21 = [v20 encrypt:v18 error:&v48];
+        v21 = [session encrypt:data error:&v48];
         v19 = v48;
 
         if (!v21 || v19)
@@ -1016,7 +1016,7 @@ LABEL_36:
           }
 
           [(AAFAnalyticsEventSecurity *)v11 sendMetricWithResult:0 error:v19];
-          if (!a4)
+          if (!error)
           {
             v23 = 0;
             goto LABEL_54;
@@ -1048,7 +1048,7 @@ LABEL_54:
           }
 
           [(AAFAnalyticsEventSecurity *)v11 sendMetricWithResult:0 error:v19];
-          if (!a4)
+          if (!error)
           {
             goto LABEL_54;
           }
@@ -1056,7 +1056,7 @@ LABEL_54:
           v40 = v19;
         }
 
-        *a4 = v19;
+        *error = v19;
         goto LABEL_54;
       }
 
@@ -1067,7 +1067,7 @@ LABEL_54:
 
 LABEL_44:
       [(AAFAnalyticsEventSecurity *)v11 sendMetricWithResult:0 error:v19];
-      if (a4)
+      if (error)
       {
         v39 = v19;
         goto LABEL_46;
@@ -1077,7 +1077,7 @@ LABEL_44:
     }
 
     v53 = 0;
-    v25 = [v12 verificationFailed:&v53];
+    v25 = [secretDelegate verificationFailed:&v53];
     v19 = v53;
     v26 = secLogObjForScope("SecError");
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -1090,18 +1090,18 @@ LABEL_44:
     switch(v25)
     {
       case 2:
-        v32 = [(KCJoiningAcceptSession *)self context];
-        v46 = v12;
-        v33 = [v12 secret];
+        context2 = [(KCJoiningAcceptSession *)self context];
+        v46 = secretDelegate;
+        secret = [secretDelegate secret];
         v52 = v19;
-        v34 = [v32 resetWithPassword:v33 error:&v52];
+        v34 = [context2 resetWithPassword:secret error:&v52];
         v35 = v52;
 
         if (!v34)
         {
-          v18 = 0;
+          data = 0;
           v19 = v35;
-          v12 = v46;
+          secretDelegate = v46;
           if (v35)
           {
             goto LABEL_41;
@@ -1111,11 +1111,11 @@ LABEL_44:
         }
 
         v51 = v35;
-        v18 = [(KCJoiningAcceptSession *)self copyChallengeMessage:&v51];
+        data = [(KCJoiningAcceptSession *)self copyChallengeMessage:&v51];
         v19 = v51;
 
-        v12 = v46;
-        if (!v18)
+        secretDelegate = v46;
+        if (!data)
         {
 LABEL_39:
           if (v19)
@@ -1139,8 +1139,8 @@ LABEL_40:
 
         break;
       case 1:
-        v18 = [MEMORY[0x277CBEA90] data];
-        if (!v18)
+        data = [MEMORY[0x277CBEA90] data];
+        if (!data)
         {
           goto LABEL_39;
         }
@@ -1151,37 +1151,37 @@ LABEL_40:
         {
           v27 = MEMORY[0x277CCA9B8];
           v28 = KCErrorDomain;
-          v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"Delegate returned error without filling in error: %@", v12];
+          v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"Delegate returned error without filling in error: %@", secretDelegate];
           v19 = [v27 errorWithDomain:v28 code:38 description:v29];
         }
 
         [(AAFAnalyticsEventSecurity *)v11 sendMetricWithResult:0 error:v19];
-        if (a4)
+        if (error)
         {
           v30 = v19;
-          v18 = 0;
+          data = 0;
 LABEL_46:
           v23 = 0;
 LABEL_47:
-          *a4 = v19;
+          *error = v19;
 LABEL_65:
 
           goto LABEL_66;
         }
 
-        v18 = 0;
+        data = 0;
 LABEL_64:
         v23 = 0;
         goto LABEL_65;
       default:
-        v18 = 0;
+        data = 0;
         goto LABEL_39;
     }
 
     if (!v19)
     {
       v50 = 0;
-      v36 = [KCJoiningMessage messageWithType:0 data:v18 error:&v50];
+      v36 = [KCJoiningMessage messageWithType:0 data:data error:&v50];
       v19 = v50;
       v23 = [v36 der];
 
@@ -1213,7 +1213,7 @@ LABEL_64:
       }
 
       [(AAFAnalyticsEventSecurity *)v11 sendMetricWithResult:0 error:v19];
-      if (!a4)
+      if (!error)
       {
         goto LABEL_65;
       }
@@ -1227,11 +1227,11 @@ LABEL_64:
 
   v19 = [MEMORY[0x277CCA9B8] errorWithDomain:KCErrorDomain code:37 description:@"Expected response!"];
   [(AAFAnalyticsEventSecurity *)v11 sendMetricWithResult:0 error:v19];
-  if (a4)
+  if (error)
   {
     v24 = v19;
     v23 = 0;
-    *a4 = v19;
+    *error = v19;
   }
 
   else
@@ -1246,29 +1246,29 @@ LABEL_66:
   return v23;
 }
 
-- (id)processInitialMessage:(id)a3 error:(id *)a4
+- (id)processInitialMessage:(id)message error:(id *)error
 {
   v73 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  messageCopy = message;
   v60 = 0;
   v7 = [AAFAnalyticsEventSecurity alloc];
-  v8 = [(KCJoiningAcceptSession *)self altDSID];
-  v9 = [(KCJoiningAcceptSession *)self flowID];
-  v10 = [(KCJoiningAcceptSession *)self deviceSessionID];
+  altDSID = [(KCJoiningAcceptSession *)self altDSID];
+  flowID = [(KCJoiningAcceptSession *)self flowID];
+  deviceSessionID = [(KCJoiningAcceptSession *)self deviceSessionID];
   LOBYTE(v51) = 1;
-  v11 = [(AAFAnalyticsEventSecurity *)v7 initWithKeychainCircleMetrics:0 altDSID:v8 flowID:v9 deviceSessionID:v10 eventName:@"com.apple.security.piggybackingAcceptorInitialMessage" testsAreEnabled:metricsAreEnabled canSendMetrics:v51 category:&unk_2843768F0];
+  v11 = [(AAFAnalyticsEventSecurity *)v7 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:@"com.apple.security.piggybackingAcceptorInitialMessage" testsAreEnabled:metricsAreEnabled canSendMetrics:v51 category:&unk_2843768F0];
 
   v58 = 0;
   v59 = 0;
   v57 = 0;
-  v12 = extractStartFromInitialMessage(v6, &v60, &v59, &v58, &v57);
+  v12 = extractStartFromInitialMessage(messageCopy, &v60, &v59, &v58, &v57);
   v13 = v59;
   v52 = v58;
   v14 = v57;
   [(KCJoiningAcceptSession *)self setStartMessage:v12];
 
-  v15 = [(KCJoiningAcceptSession *)self startMessage];
-  if (v15)
+  startMessage = [(KCJoiningAcceptSession *)self startMessage];
+  if (startMessage)
   {
     v16 = v14 == 0;
   }
@@ -1296,12 +1296,12 @@ LABEL_66:
     }
 
     [(AAFAnalyticsEventSecurity *)v11 sendMetricWithResult:0 error:v14];
-    if (a4)
+    if (error)
     {
 LABEL_13:
       v19 = v14;
       v20 = 0;
-      *a4 = v14;
+      *error = v14;
       goto LABEL_71;
     }
 
@@ -1328,10 +1328,10 @@ LABEL_13:
 
       if ((SOSCCIsSOSTrustAndSyncingEnabled() & 1) == 0)
       {
-        v23 = [(KCJoiningAcceptSession *)self joiningConfiguration];
-        v24 = [v23 testsEnabled];
+        joiningConfiguration = [(KCJoiningAcceptSession *)self joiningConfiguration];
+        testsEnabled = [joiningConfiguration testsEnabled];
 
-        if ((v24 & 1) == 0)
+        if ((testsEnabled & 1) == 0)
         {
           v44 = secLogObjForScope("SecError");
           if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
@@ -1342,7 +1342,7 @@ LABEL_13:
 
           v14 = [MEMORY[0x277CCA9B8] errorWithDomain:KCErrorDomain code:20 description:@"Unable to piggyback with device due to lack of trust system support"];
           [(AAFAnalyticsEventSecurity *)v11 sendMetricWithResult:0 error:v14];
-          if (a4)
+          if (error)
           {
             goto LABEL_13;
           }
@@ -1387,11 +1387,11 @@ LABEL_57:
     }
 
     [(AAFAnalyticsEventSecurity *)v11 sendMetricWithResult:0 error:v14];
-    if (a4)
+    if (error)
     {
       v37 = v14;
       v20 = 0;
-      *a4 = v14;
+      *error = v14;
     }
 
     else
@@ -1404,8 +1404,8 @@ LABEL_57:
 
   self->_state = 1;
   v28 = objc_alloc(MEMORY[0x277CCACA8]);
-  v29 = [(KCJoiningAcceptSession *)self octagon];
-  v30 = [v28 initWithData:v29 encoding:4];
+  octagon = [(KCJoiningAcceptSession *)self octagon];
+  v30 = [v28 initWithData:octagon encoding:4];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -1421,24 +1421,24 @@ LABEL_57:
     v65 = __Block_byref_object_copy__915;
     v66 = __Block_byref_object_dispose__916;
     v67 = 0;
-    v31 = [(KCJoiningAcceptSession *)self otControl];
-    v32 = [(KCJoiningAcceptSession *)self controlArguments];
-    v33 = [(KCJoiningAcceptSession *)self joiningConfiguration];
+    otControl = [(KCJoiningAcceptSession *)self otControl];
+    controlArguments = [(KCJoiningAcceptSession *)self controlArguments];
+    joiningConfiguration2 = [(KCJoiningAcceptSession *)self joiningConfiguration];
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
     v55[2] = __54__KCJoiningAcceptSession_processInitialMessage_error___block_invoke;
     v55[3] = &unk_278863D88;
     v55[4] = &buf;
     v55[5] = &v63;
-    [v31 rpcEpochWithArguments:v32 configuration:v33 reply:v55];
+    [otControl rpcEpochWithArguments:controlArguments configuration:joiningConfiguration2 reply:v55];
 
     v34 = *(*(&buf + 1) + 40);
     if (v34)
     {
-      if (a4)
+      if (error)
       {
         v35 = v34;
-        *a4 = v34;
+        *error = v34;
         v34 = *(*(&buf + 1) + 40);
       }
 
@@ -1471,10 +1471,10 @@ LABEL_57:
         }
 
         [(AAFAnalyticsEventSecurity *)v11 sendMetricWithResult:0 error:v14];
-        if (a4)
+        if (error)
         {
           v48 = v14;
-          *a4 = v14;
+          *error = v14;
         }
       }
 
@@ -1492,14 +1492,14 @@ LABEL_57:
 
   if ((SOSCCIsSOSTrustAndSyncingEnabled() & 1) == 0)
   {
-    v38 = [(KCJoiningAcceptSession *)self joiningConfiguration];
-    v39 = [v38 testsEnabled];
+    joiningConfiguration3 = [(KCJoiningAcceptSession *)self joiningConfiguration];
+    testsEnabled2 = [joiningConfiguration3 testsEnabled];
 
-    if (!v39)
+    if (!testsEnabled2)
     {
       v14 = [MEMORY[0x277CCA9B8] errorWithDomain:KCErrorDomain code:20 description:@"Unable to piggyback with device due to lack of trust system support"];
       [(AAFAnalyticsEventSecurity *)v11 sendMetricWithResult:0 error:v14];
-      if (!a4)
+      if (!error)
       {
         v20 = 0;
         goto LABEL_69;
@@ -1532,14 +1532,14 @@ LABEL_57:
     }
 
     [(AAFAnalyticsEventSecurity *)v11 sendMetricWithResult:0 error:v14];
-    if (!a4)
+    if (!error)
     {
       goto LABEL_69;
     }
 
     v42 = v14;
 LABEL_53:
-    *a4 = v14;
+    *error = v14;
     goto LABEL_69;
   }
 
@@ -1621,18 +1621,18 @@ void __54__KCJoiningAcceptSession_processInitialMessage_error___block_invoke(uin
   v11 = 0;
   v3 = objc_alloc_init(MEMORY[0x277CDBD70]);
   [v3 setDiscretionaryNetwork:1];
-  v4 = [(KCJoiningAcceptSession *)self otControl];
-  v5 = [(KCJoiningAcceptSession *)self controlArguments];
+  otControl = [(KCJoiningAcceptSession *)self otControl];
+  controlArguments = [(KCJoiningAcceptSession *)self controlArguments];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__KCJoiningAcceptSession_shouldAcceptOctagonRequests__block_invoke;
   v7[3] = &unk_278863D50;
   v7[4] = &v8;
-  [v4 fetchTrustStatus:v5 configuration:v3 reply:v7];
+  [otControl fetchTrustStatus:controlArguments configuration:v3 reply:v7];
 
-  LOBYTE(v4) = *(v9 + 24);
+  LOBYTE(otControl) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return v4;
+  return otControl;
 }
 
 void __53__KCJoiningAcceptSession_shouldAcceptOctagonRequests__block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4, int a5, void *a6)
@@ -1665,20 +1665,20 @@ void __53__KCJoiningAcceptSession_shouldAcceptOctagonRequests__block_invoke(uint
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyChallengeMessage:(id *)a3
+- (id)copyChallengeMessage:(id *)message
 {
-  v5 = [(KCJoiningAcceptSession *)self context];
-  v6 = [(KCJoiningAcceptSession *)self startMessage];
-  v7 = [v5 copyChallengeFor:v6 error:a3];
+  context = [(KCJoiningAcceptSession *)self context];
+  startMessage = [(KCJoiningAcceptSession *)self startMessage];
+  v7 = [context copyChallengeFor:startMessage error:message];
 
   if (v7)
   {
     v8 = MEMORY[0x277CBEA90];
-    v9 = [(KCJoiningAcceptSession *)self context];
-    v10 = [v9 salt];
-    v11 = [v8 dataWithEncodedSequenceData:v10 data:v7 error:a3];
+    context2 = [(KCJoiningAcceptSession *)self context];
+    salt = [context2 salt];
+    v11 = [v8 dataWithEncodedSequenceData:salt data:v7 error:message];
 
-    if ([(KCJoiningAcceptSession *)self setupSession:a3])
+    if ([(KCJoiningAcceptSession *)self setupSession:message])
     {
       v12 = v11;
     }
@@ -1700,47 +1700,47 @@ void __53__KCJoiningAcceptSession_shouldAcceptOctagonRequests__block_invoke(uint
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(KCJoiningAcceptSession *)self dsid];
-  v5 = [(KCJoiningAcceptSession *)self stateString];
-  v6 = [(KCJoiningAcceptSession *)self context];
-  v7 = [(KCJoiningAcceptSession *)self piggy_uuid];
-  v8 = [v3 stringWithFormat:@"<KCJoiningAcceptSession: %lld %@ %@ uuid: %@>", v4, v5, v6, v7];
+  dsid = [(KCJoiningAcceptSession *)self dsid];
+  stateString = [(KCJoiningAcceptSession *)self stateString];
+  context = [(KCJoiningAcceptSession *)self context];
+  piggy_uuid = [(KCJoiningAcceptSession *)self piggy_uuid];
+  v8 = [v3 stringWithFormat:@"<KCJoiningAcceptSession: %lld %@ %@ uuid: %@>", dsid, stateString, context, piggy_uuid];
 
   return v8;
 }
 
 - (id)stateString
 {
-  v3 = [(KCJoiningAcceptSession *)self state];
-  if (v3 >= 4)
+  state = [(KCJoiningAcceptSession *)self state];
+  if (state >= 4)
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", -[KCJoiningAcceptSession state](self, "state")];
   }
 
   else
   {
-    v4 = off_278863E28[v3];
+    v4 = off_278863E28[state];
   }
 
   return v4;
 }
 
-- (KCJoiningAcceptSession)initWithSecretDelegate:(id)a3 circleDelegate:(id)a4 dsid:(unint64_t)a5 altDSID:(id)a6 flowID:(id)a7 deviceSessionID:(id)a8 rng:(ccrng_state *)a9 error:(id *)a10
+- (KCJoiningAcceptSession)initWithSecretDelegate:(id)delegate circleDelegate:(id)circleDelegate dsid:(unint64_t)dsid altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID rng:(ccrng_state *)rng error:(id *)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a7;
-  v45 = a8;
+  delegateCopy = delegate;
+  circleDelegateCopy = circleDelegate;
+  dCopy = d;
+  iDCopy = iD;
+  sessionIDCopy = sessionID;
   v47.receiver = self;
   v47.super_class = KCJoiningAcceptSession;
   v20 = [(KCJoiningAcceptSession *)&v47 init];
   if (v20)
   {
-    v41 = a8;
-    v42 = v19;
-    v43 = v18;
-    obj = v17;
+    sessionIDCopy2 = sessionID;
+    v42 = iDCopy;
+    v43 = dCopy;
+    obj = circleDelegateCopy;
     v21 = secLogObjForScope("accepting");
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
@@ -1748,38 +1748,38 @@ void __53__KCJoiningAcceptSession_shouldAcceptOctagonRequests__block_invoke(uint
       _os_log_impl(&dword_22EB09000, v21, OS_LOG_TYPE_DEFAULT, "initWithSecretDelegate", buf, 2u);
     }
 
-    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", a5];
+    dsid = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", dsid];
     v23 = [KCSRPServerContext alloc];
-    v24 = [v16 secret];
+    secret = [delegateCopy secret];
     v25 = ccsha256_di();
-    v26 = [(KCSRPServerContext *)v23 initWithUser:v22 password:v24 digestInfo:v25 group:ccsrp_gp_rfc5054_3072() randomSource:a9];
+    v26 = [(KCSRPServerContext *)v23 initWithUser:dsid password:secret digestInfo:v25 group:ccsrp_gp_rfc5054_3072() randomSource:rng];
     context = v20->_context;
     v20->_context = v26;
 
-    objc_storeWeak(&v20->_secretDelegate, v16);
-    v17 = obj;
+    objc_storeWeak(&v20->_secretDelegate, delegateCopy);
+    circleDelegateCopy = obj;
     objc_storeWeak(&v20->_circleDelegate, obj);
     v20->_state = 0;
-    v20->_dsid = a5;
+    v20->_dsid = dsid;
     piggy_uuid = v20->_piggy_uuid;
     v20->_piggy_uuid = 0;
 
-    v29 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     defaults = v20->_defaults;
-    v20->_defaults = v29;
+    v20->_defaults = dictionary;
 
-    objc_storeStrong(&v20->_altDSID, a6);
-    objc_storeStrong(&v20->_flowID, a7);
-    objc_storeStrong(&v20->_deviceSessionID, v41);
-    v31 = [MEMORY[0x277CDBD58] controlObject:1 error:a10];
+    objc_storeStrong(&v20->_altDSID, d);
+    objc_storeStrong(&v20->_flowID, iD);
+    objc_storeStrong(&v20->_deviceSessionID, sessionIDCopy2);
+    v31 = [MEMORY[0x277CDBD58] controlObject:1 error:error];
     otControl = v20->_otControl;
     v20->_otControl = v31;
 
     v20->_piggy_version = 2;
     v33 = objc_alloc(MEMORY[0x277CDBD68]);
-    v34 = [MEMORY[0x277CCAD78] UUID];
-    v35 = [v34 UUIDString];
-    v36 = [v33 initWithProtocolType:@"OctagonPiggybacking" uniqueDeviceID:@"acceptor-deviceid" uniqueClientID:@"requester-deviceid" pairingUUID:v35 epoch:0 isInitiator:0];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v36 = [v33 initWithProtocolType:@"OctagonPiggybacking" uniqueDeviceID:@"acceptor-deviceid" uniqueClientID:@"requester-deviceid" pairingUUID:uUIDString epoch:0 isInitiator:0];
     joiningConfiguration = v20->_joiningConfiguration;
     v20->_joiningConfiguration = v36;
 
@@ -1787,92 +1787,92 @@ void __53__KCJoiningAcceptSession_shouldAcceptOctagonRequests__block_invoke(uint
     controlArguments = v20->_controlArguments;
     v20->_controlArguments = v38;
 
-    v19 = v42;
-    v18 = v43;
+    iDCopy = v42;
+    dCopy = v43;
   }
 
   return v20;
 }
 
-- (BOOL)setupSession:(id *)a3
+- (BOOL)setupSession:(id *)session
 {
-  v10 = [(KCSRPContext *)self->_context getKey];
-  if (v10)
+  getKey = [(KCSRPContext *)self->_context getKey];
+  if (getKey)
   {
-    v11 = [KCAESGCMDuplexSession sessionAsReceiver:v10 context:[(KCJoiningAcceptSession *)self dsid]];
+    v11 = [KCAESGCMDuplexSession sessionAsReceiver:getKey context:[(KCJoiningAcceptSession *)self dsid]];
     session = self->_session;
     self->_session = v11;
 
-    v13 = [(KCJoiningAcceptSession *)self joiningConfiguration];
-    v14 = [v13 pairingUUID];
-    v15 = [(KCJoiningAcceptSession *)self session];
-    [v15 setPairingUUID:v14];
+    joiningConfiguration = [(KCJoiningAcceptSession *)self joiningConfiguration];
+    pairingUUID = [joiningConfiguration pairingUUID];
+    session = [(KCJoiningAcceptSession *)self session];
+    [session setPairingUUID:pairingUUID];
 
-    v16 = [(KCJoiningAcceptSession *)self altDSID];
-    v17 = [(KCJoiningAcceptSession *)self session];
-    [v17 setAltDSID:v16];
+    altDSID = [(KCJoiningAcceptSession *)self altDSID];
+    session2 = [(KCJoiningAcceptSession *)self session];
+    [session2 setAltDSID:altDSID];
 
-    v18 = [(KCJoiningAcceptSession *)self flowID];
-    v19 = [(KCJoiningAcceptSession *)self session];
-    [v19 setFlowID:v18];
+    flowID = [(KCJoiningAcceptSession *)self flowID];
+    session3 = [(KCJoiningAcceptSession *)self session];
+    [session3 setFlowID:flowID];
 
-    v20 = [(KCJoiningAcceptSession *)self deviceSessionID];
-    v21 = [(KCJoiningAcceptSession *)self session];
-    [v21 setDeviceSessionID:v20];
+    deviceSessionID = [(KCJoiningAcceptSession *)self deviceSessionID];
+    session4 = [(KCJoiningAcceptSession *)self session];
+    [session4 setDeviceSessionID:deviceSessionID];
 
-    v22 = [(KCJoiningAcceptSession *)self piggy_version];
-    v23 = [(KCJoiningAcceptSession *)self session];
-    [v23 setPiggybackingVersion:v22];
+    piggy_version = [(KCJoiningAcceptSession *)self piggy_version];
+    session5 = [(KCJoiningAcceptSession *)self session];
+    [session5 setPiggybackingVersion:piggy_version];
 
     [(KCJoiningAcceptSession *)self setPiggybacking_version_for_tests:0];
-    v24 = [(KCJoiningAcceptSession *)self session];
-    v25 = v24 != 0;
+    session6 = [(KCJoiningAcceptSession *)self session];
+    v25 = session6 != 0;
   }
 
   else
   {
-    KCJoiningErrorCreate(7, a3, @"No session key available", v5, v6, v7, v8, v9, v27);
+    KCJoiningErrorCreate(7, session, @"No session key available", v5, v6, v7, v8, v9, v27);
     v25 = 0;
   }
 
   return v25;
 }
 
-+ (id)sessionWithInitialMessage:(id)a3 secretDelegate:(id)a4 circleDelegate:(id)a5 dsid:(unint64_t)a6 error:(id *)a7
++ (id)sessionWithInitialMessage:(id)message secretDelegate:(id)delegate circleDelegate:(id)circleDelegate dsid:(unint64_t)dsid error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  delegateCopy = delegate;
+  circleDelegateCopy = circleDelegate;
   v12 = ccrng();
   if (v12)
   {
-    v18 = [[KCJoiningAcceptSession alloc] initWithSecretDelegate:v10 circleDelegate:v11 dsid:a6 altDSID:0 flowID:0 deviceSessionID:0 rng:v12 error:a7];
+    v18 = [[KCJoiningAcceptSession alloc] initWithSecretDelegate:delegateCopy circleDelegate:circleDelegateCopy dsid:dsid altDSID:0 flowID:0 deviceSessionID:0 rng:v12 error:error];
   }
 
   else
   {
-    CoreCryptoError(0, a7, @"RNG fetch failed", v13, v14, v15, v16, v17, v20);
+    CoreCryptoError(0, error, @"RNG fetch failed", v13, v14, v15, v16, v17, v20);
     v18 = 0;
   }
 
   return v18;
 }
 
-+ (id)sessionWithInitialMessage:(id)a3 secretDelegate:(id)a4 circleDelegate:(id)a5 dsid:(unint64_t)a6 altDSID:(id)a7 flowID:(id)a8 deviceSessionID:(id)a9 error:(id *)a10
++ (id)sessionWithInitialMessage:(id)message secretDelegate:(id)delegate circleDelegate:(id)circleDelegate dsid:(unint64_t)dsid altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID error:(id *)self0
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  delegateCopy = delegate;
+  circleDelegateCopy = circleDelegate;
+  dCopy = d;
+  iDCopy = iD;
+  sessionIDCopy = sessionID;
   v19 = ccrng();
   if (v19)
   {
-    v25 = [[KCJoiningAcceptSession alloc] initWithSecretDelegate:v14 circleDelegate:v15 dsid:a6 altDSID:v16 flowID:v17 deviceSessionID:v18 rng:v19 error:a10];
+    v25 = [[KCJoiningAcceptSession alloc] initWithSecretDelegate:delegateCopy circleDelegate:circleDelegateCopy dsid:dsid altDSID:dCopy flowID:iDCopy deviceSessionID:sessionIDCopy rng:v19 error:error];
   }
 
   else
   {
-    CoreCryptoError(0, a10, @"RNG fetch failed", v20, v21, v22, v23, v24, v27);
+    CoreCryptoError(0, error, @"RNG fetch failed", v20, v21, v22, v23, v24, v27);
     v25 = 0;
   }
 

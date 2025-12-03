@@ -1,73 +1,73 @@
 @interface RTIServiceOptions
-+ (id)combinedServiceOptions:(id)a3;
++ (id)combinedServiceOptions:(id)options;
 + (id)defaultServiceOptions;
-+ (id)defaultServiceOptionsForService:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (RTIServiceOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)defaultServiceOptionsForService:(id)service;
+- (BOOL)isEqual:(id)equal;
+- (RTIServiceOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTIServiceOptions
 
 + (id)defaultServiceOptions
 {
-  v2 = [MGCopyAnswer() intValue];
+  intValue = [MGCopyAnswer() intValue];
   v3 = 0;
-  if ((v2 - 4) <= 7)
+  if ((intValue - 4) <= 7)
   {
-    v3 = qword_19A2CBCA8[v2 - 4];
+    v3 = qword_19A2CBCA8[intValue - 4];
   }
 
   v4 = objc_alloc_init(RTIServiceOptions);
-  v4->_serviceDeviceClass = v2;
+  v4->_serviceDeviceClass = intValue;
   v4->_displayOptions = v3;
 
   return v4;
 }
 
-+ (id)defaultServiceOptionsForService:(id)a3
++ (id)defaultServiceOptionsForService:(id)service
 {
-  v4 = a3;
-  v5 = [a1 defaultServiceOptions];
-  v6 = v5;
-  if (v4)
+  serviceCopy = service;
+  defaultServiceOptions = [self defaultServiceOptions];
+  v6 = defaultServiceOptions;
+  if (serviceCopy)
   {
-    v7 = [v5 serviceDeviceClass];
-    v8 = [v6 displayOptions];
-    if (([v4 isEqualToString:@"com.apple.rti-screencontinuity"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"com.apple.iosmac.remote-text-editing"))
+    serviceDeviceClass = [defaultServiceOptions serviceDeviceClass];
+    displayOptions = [v6 displayOptions];
+    if (([serviceCopy isEqualToString:@"com.apple.rti-screencontinuity"] & 1) != 0 || objc_msgSend(serviceCopy, "isEqualToString:", @"com.apple.iosmac.remote-text-editing"))
     {
-      v8 |= 4uLL;
+      displayOptions |= 4uLL;
     }
 
-    else if (([v4 isEqualToString:@"com.apple.rapport.remote-text-input"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"com.apple.remote-text-editing-legacy"))
+    else if (([serviceCopy isEqualToString:@"com.apple.rapport.remote-text-input"] & 1) != 0 || objc_msgSend(serviceCopy, "isEqualToString:", @"com.apple.remote-text-editing-legacy"))
     {
-      v8 |= 1uLL;
+      displayOptions |= 1uLL;
     }
 
     v9 = objc_alloc_init(RTIServiceOptions);
-    v9->_serviceDeviceClass = v7;
-    v9->_displayOptions = v8;
+    v9->_serviceDeviceClass = serviceDeviceClass;
+    v9->_displayOptions = displayOptions;
   }
 
   else
   {
-    v9 = v5;
+    v9 = defaultServiceOptions;
   }
 
   return v9;
 }
 
-+ (id)combinedServiceOptions:(id)a3
++ (id)combinedServiceOptions:(id)options
 {
-  v3 = a3;
-  if ([v3 count])
+  optionsCopy = options;
+  if ([optionsCopy count])
   {
-    if ([v3 count] == 1)
+    if ([optionsCopy count] == 1)
     {
-      v4 = [v3 anyObject];
-      v5 = [v4 copy];
+      anyObject = [optionsCopy anyObject];
+      v5 = [anyObject copy];
     }
 
     else
@@ -85,7 +85,7 @@
       v7[2] = __44__RTIServiceOptions_combinedServiceOptions___block_invoke;
       v7[3] = &unk_1E7514BE0;
       v7[4] = &v8;
-      [v3 enumerateObjectsUsingBlock:v7];
+      [optionsCopy enumerateObjectsUsingBlock:v7];
       v5 = v9[5];
       _Block_object_dispose(&v8, 8);
     }
@@ -109,22 +109,22 @@ uint64_t __44__RTIServiceOptions_combinedServiceOptions___block_invoke(uint64_t 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The coder must allow keyed coding."];
   }
 
-  [v4 encodeInteger:self->_serviceDeviceClass forKey:@"deviceClass"];
-  [v4 encodeInteger:self->_displayOptions forKey:@"displayOptions"];
+  [coderCopy encodeInteger:self->_serviceDeviceClass forKey:@"deviceClass"];
+  [coderCopy encodeInteger:self->_displayOptions forKey:@"displayOptions"];
 }
 
-- (RTIServiceOptions)initWithCoder:(id)a3
+- (RTIServiceOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The decoder must allow keyed coding."];
   }
@@ -134,14 +134,14 @@ uint64_t __44__RTIServiceOptions_combinedServiceOptions___block_invoke(uint64_t 
   v5 = [(RTIServiceOptions *)&v7 init];
   if (v5)
   {
-    v5->_serviceDeviceClass = [v4 decodeIntegerForKey:@"deviceClass"];
-    v5->_displayOptions = [v4 decodeIntegerForKey:@"displayOptions"];
+    v5->_serviceDeviceClass = [coderCopy decodeIntegerForKey:@"deviceClass"];
+    v5->_displayOptions = [coderCopy decodeIntegerForKey:@"displayOptions"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[RTIServiceOptions allocWithZone:?]];
   *(result + 2) = self->_serviceDeviceClass;
@@ -149,10 +149,10 @@ uint64_t __44__RTIServiceOptions_combinedServiceOptions___block_invoke(uint64_t 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -162,12 +162,12 @@ uint64_t __44__RTIServiceOptions_combinedServiceOptions___block_invoke(uint64_t 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTIServiceOptions *)self serviceDeviceClass];
-      if (v6 == [(RTIServiceOptions *)v5 serviceDeviceClass])
+      v5 = equalCopy;
+      serviceDeviceClass = [(RTIServiceOptions *)self serviceDeviceClass];
+      if (serviceDeviceClass == [(RTIServiceOptions *)v5 serviceDeviceClass])
       {
-        v7 = [(RTIServiceOptions *)self displayOptions];
-        v8 = v7 == [(RTIServiceOptions *)v5 displayOptions];
+        displayOptions = [(RTIServiceOptions *)self displayOptions];
+        v8 = displayOptions == [(RTIServiceOptions *)v5 displayOptions];
       }
 
       else

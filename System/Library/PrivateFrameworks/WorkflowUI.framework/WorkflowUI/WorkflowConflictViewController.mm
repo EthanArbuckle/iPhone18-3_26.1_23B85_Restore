@@ -1,5 +1,5 @@
 @interface WorkflowConflictViewController
-- (_TtC10WorkflowUI30WorkflowConflictViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC10WorkflowUI30WorkflowConflictViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 - (void)viewDidLoad;
 @end
@@ -8,24 +8,24 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_27478E9D4();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_27478EC88();
 }
 
-- (_TtC10WorkflowUI30WorkflowConflictViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10WorkflowUI30WorkflowConflictViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     _sSo32WFShortcutConcerningReportReasona10WorkflowUIE2idSSvg_0();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   WorkflowConflictViewController.init(nibName:bundle:)();
 }
 

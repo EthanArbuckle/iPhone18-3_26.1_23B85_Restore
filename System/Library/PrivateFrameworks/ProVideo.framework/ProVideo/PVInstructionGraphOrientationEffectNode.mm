@@ -1,37 +1,37 @@
 @interface PVInstructionGraphOrientationEffectNode
-+ (id)newOrientationEffectNodeWithInputs:(id)a3 inputIDs:(id)a4 effect:(id)a5;
-- (HGRef<HGNode>)internalHGNodeForTime:(id *)a3 trackInputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6;
-- (PCRect<double>)inputSizeForPVEffect:(id)a3 igContext:(HGRef<PVInstructionGraphContext>)a4;
-- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)a3;
++ (id)newOrientationEffectNodeWithInputs:(id)inputs inputIDs:(id)ds effect:(id)effect;
+- (HGRef<HGNode>)internalHGNodeForTime:(id *)time trackInputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context;
+- (PCRect<double>)inputSizeForPVEffect:(id)effect igContext:(HGRef<PVInstructionGraphContext>)context;
+- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)label;
 @end
 
 @implementation PVInstructionGraphOrientationEffectNode
 
-+ (id)newOrientationEffectNodeWithInputs:(id)a3 inputIDs:(id)a4 effect:(id)a5
++ (id)newOrientationEffectNodeWithInputs:(id)inputs inputIDs:(id)ds effect:(id)effect
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  inputsCopy = inputs;
+  dsCopy = ds;
+  effectCopy = effect;
   v10 = objc_alloc_init(PVInstructionGraphOrientationEffectNode);
-  for (i = 0; [v7 count] > i; ++i)
+  for (i = 0; [inputsCopy count] > i; ++i)
   {
-    v12 = [v7 objectAtIndex:i];
-    v13 = [v8 objectAtIndex:i];
-    v14 = [v13 unsignedLongValue];
+    v12 = [inputsCopy objectAtIndex:i];
+    v13 = [dsCopy objectAtIndex:i];
+    unsignedLongValue = [v13 unsignedLongValue];
 
-    [(PVInstructionGraphEffectNode *)v10 setInputNode:v12 forInputID:v14];
+    [(PVInstructionGraphEffectNode *)v10 setInputNode:v12 forInputID:unsignedLongValue];
   }
 
-  [(PVInstructionGraphOrientationEffectNode *)v10 setEffect:v9];
+  [(PVInstructionGraphOrientationEffectNode *)v10 setEffect:effectCopy];
 
   return v10;
 }
 
-- (HGRef<HGNode>)internalHGNodeForTime:(id *)a3 trackInputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6
+- (HGRef<HGNode>)internalHGNodeForTime:(id *)time trackInputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v11 = v6;
   HGTraceGuard::HGTraceGuard(v111, "kPVInstructionGraphToHeliumGraphLogContext", 1, "[PVInstructionGraphEffectOrientationNode hgNodeForTime:...]");
-  v110 = *a6.m_Obj;
+  v110 = *context.m_Obj;
   if (v110)
   {
     (*(*v110 + 16))(v110);
@@ -56,8 +56,8 @@
       memset(&range, 0, sizeof(range));
     }
 
-    *&time.start.value = *&a3->var0;
-    time.start.epoch = a3->var3;
+    *&time.start.value = *&time->var0;
+    time.start.epoch = time->var3;
     v16 = CMTimeRangeContainsTime(&range, &time.start) == 0;
   }
 
@@ -79,8 +79,8 @@
       if (CMTimeRangeEqual(&range, &time))
       {
         v27 = self->_effect;
-        v28 = [(PVEffect *)v27 debugDisplayName];
-        NSLog(&cfstr_WarningHgnodef.isa, v27, v28);
+        debugDisplayName = [(PVEffect *)v27 debugDisplayName];
+        NSLog(&cfstr_WarningHgnodef.isa, v27, debugDisplayName);
       }
 
       v29 = atomic_load(HGLogger::_enabled);
@@ -89,7 +89,7 @@
         HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Current Time is out of Effect Range. Returning HGNode of first input, assuming input0 is set...\n", v25, v26);
       }
 
-      v30 = PVInstructionGraphContext::DotGraph(*a6.m_Obj);
+      v30 = PVInstructionGraphContext::DotGraph(*context.m_Obj);
       HGDotGraph::filled(v30, self, "#FFA500");
       if (+[PVEnvironment PV_DEBUG_COLOR_OUT_OF_RANGE_EFFECTS])
       {
@@ -106,16 +106,16 @@
         HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "effect is Nil. Returning HGNode of first input, assuming input0 is set...\n", v13, v14);
       }
 
-      v33 = PVInstructionGraphContext::DotGraph(*a6.m_Obj);
+      v33 = PVInstructionGraphContext::DotGraph(*context.m_Obj);
       HGDotGraph::filled(v33, self, "#822222");
     }
 
     LODWORD(time.start.value) = 0;
     range.start.value = &time;
     v34 = std::__tree<std::__value_type<unsigned int,PVImageBuffer * {__strong}>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,PVImageBuffer * {__strong}>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,PVImageBuffer * {__strong}>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int &&>,std::tuple<>>(&self->super._inputMap, &time)[5];
-    *&range.start.value = *&a3->var0;
-    range.start.epoch = a3->var3;
-    v35 = *a6.m_Obj;
+    *&range.start.value = *&time->var0;
+    range.start.epoch = time->var3;
+    v35 = *context.m_Obj;
     v81 = v35;
     if (v35)
     {
@@ -124,7 +124,7 @@
 
     if (v34)
     {
-      [v34 hgNodeForTime:&range trackInputs:a4 renderer:a5 igContext:&v81];
+      [v34 hgNodeForTime:&range trackInputs:inputs renderer:renderer igContext:&v81];
       v35 = v81;
       if (!v81)
       {
@@ -148,9 +148,9 @@
   v18 = atomic_load(HGLogger::_enabled);
   if (v18)
   {
-    v19 = [(PVEffect *)self->_effect debugDisplayName];
-    v20 = [v19 UTF8String];
-    HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Will Build render graph for effect (%s)\n", v21, v22, v20);
+    debugDisplayName2 = [(PVEffect *)self->_effect debugDisplayName];
+    uTF8String = [debugDisplayName2 UTF8String];
+    HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Will Build render graph for effect (%s)\n", v21, v22, uTF8String);
   }
 
   if (HGLogger::getLevel("kPVInstructionGraphToHeliumGraphLogContext", v12) >= 1)
@@ -171,8 +171,8 @@
     v38 = atomic_load(HGLogger::_enabled);
     if (v38)
     {
-      v39 = [v36 UTF8String];
-      HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Effect Time Range: %s\n", v40, v41, v39);
+      uTF8String2 = [v36 UTF8String];
+      HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Effect Time Range: %s\n", v40, v41, uTF8String2);
     }
 
     CFRelease(v37);
@@ -184,9 +184,9 @@
     LODWORD(time.start.value) = 0;
     range.start.value = &time;
     v50 = std::__tree<std::__value_type<unsigned int,PVImageBuffer * {__strong}>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,PVImageBuffer * {__strong}>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,PVImageBuffer * {__strong}>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int &&>,std::tuple<>>(&self->super._inputMap, &time)[5];
-    *&range.start.value = *&a3->var0;
-    range.start.epoch = a3->var3;
-    v109 = *a6.m_Obj;
+    *&range.start.value = *&time->var0;
+    range.start.epoch = time->var3;
+    v109 = *context.m_Obj;
     v51 = v109;
     if (v109)
     {
@@ -195,7 +195,7 @@
 
     if (v50)
     {
-      [v50 hgNodeForTime:&range trackInputs:a4 renderer:a5 igContext:&v109];
+      [v50 hgNodeForTime:&range trackInputs:inputs renderer:renderer igContext:&v109];
       v51 = v109;
       if (!v109)
       {
@@ -216,7 +216,7 @@
     goto LABEL_100;
   }
 
-  v108 = *a6.m_Obj;
+  v108 = *context.m_Obj;
   if (v108)
   {
     (*(*v108 + 16))(v108);
@@ -229,14 +229,14 @@
   }
 
   v42 = self->_effect;
-  *&range.start.value = *&a3->var0;
-  range.start.epoch = a3->var3;
+  *&range.start.value = *&time->var0;
+  range.start.epoch = time->var3;
   v79 = v42;
   v43 = [(PVEffect *)v42 inputsForTime:&range];
-  v44 = [v43 firstObject];
-  v45 = [v44 intValue];
+  firstObject = [v43 firstObject];
+  intValue = [firstObject intValue];
 
-  v107 = v45;
+  v107 = intValue;
   range.start.value = &v107;
   v48 = std::__tree<std::__value_type<unsigned int,PVImageBuffer * {__strong}>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,PVImageBuffer * {__strong}>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,PVImageBuffer * {__strong}>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int &&>,std::tuple<>>(&self->super._inputMap, &v107)[5];
   v49 = atomic_load(HGLogger::_enabled);
@@ -245,9 +245,9 @@
     HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Getting HGNode for effect inputID: %d\n", v46, v47, v107);
   }
 
-  v104 = *&a3->var0;
-  var3 = a3->var3;
-  v103 = *a6.m_Obj;
+  v104 = *&time->var0;
+  var3 = time->var3;
+  v103 = *context.m_Obj;
   if (v103)
   {
     (*(*v103 + 16))(v103);
@@ -255,7 +255,7 @@
 
   if (v48)
   {
-    [v48 hgNodeForTime:&v104 trackInputs:a4 renderer:a5 igContext:&v103];
+    [v48 hgNodeForTime:&v104 trackInputs:inputs renderer:renderer igContext:&v103];
   }
 
   else
@@ -270,7 +270,7 @@
 
   if (![(PVEffect *)self->_effect supportsExtendedRangeInputs]&& +[PVEnvironment PV_CLAMP_XR_INPUTS_TO_FILTERS])
   {
-    PVInstructionGraphContext::WorkingColorSpace(*a6.m_Obj);
+    PVInstructionGraphContext::WorkingColorSpace(*context.m_Obj);
     v78 = v77 = v11;
     v52 = +[PVColorSpace extendedSRGBColorSpace];
     if ([v78 isEqual:v52])
@@ -279,7 +279,7 @@
       goto LABEL_65;
     }
 
-    v55 = PVInstructionGraphContext::WorkingColorSpace(*a6.m_Obj);
+    v55 = PVInstructionGraphContext::WorkingColorSpace(*context.m_Obj);
     v56 = +[PVColorSpace extendedLinearSRGBColorSpace];
     v57 = [v55 isEqual:v56];
 
@@ -330,7 +330,7 @@ LABEL_65:
   }
 
   v61 = self->_effect;
-  v62 = *a6.m_Obj;
+  v62 = *context.m_Obj;
   v92 = v62;
   if (v62)
   {
@@ -360,7 +360,7 @@ LABEL_65:
   *(v63 + 5) = v93;
   *(v63 + 7) = v64;
   v65 = self->_effect;
-  v66 = *a6.m_Obj;
+  v66 = *context.m_Obj;
   v85 = v66;
   if (v66)
   {
@@ -392,24 +392,24 @@ LABEL_65:
   if (objc_opt_isKindOfClass())
   {
     v67 = v48;
-    v68 = [v67 isPortrait];
+    isPortrait = [v67 isPortrait];
     v112 = v107;
     *&v83 = &v112;
-    *(std::__tree<std::__value_type<unsigned int,unsigned int>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,unsigned int>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,unsigned int>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int &&>,std::tuple<>>(&v100, &v112) + 8) = v68 ^ 1;
+    *(std::__tree<std::__value_type<unsigned int,unsigned int>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,unsigned int>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,unsigned int>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int &&>,std::tuple<>>(&v100, &v112) + 8) = isPortrait ^ 1;
   }
 
   v69 = atomic_load(HGLogger::_enabled);
   if (v69)
   {
-    v70 = [(PVEffect *)self->_effect debugDisplayName];
-    v71 = [v70 UTF8String];
-    HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Building Graph for PVEffect (%s).\n", v72, v73, v71);
+    debugDisplayName3 = [(PVEffect *)self->_effect debugDisplayName];
+    uTF8String3 = [debugDisplayName3 UTF8String];
+    HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Building Graph for PVEffect (%s).\n", v72, v73, uTF8String3);
   }
 
   v74 = self->_effect;
-  v83 = *&a3->var0;
-  v84 = a3->var3;
-  v75 = *a6.m_Obj;
+  v83 = *&time->var0;
+  v84 = time->var3;
+  v75 = *context.m_Obj;
   v82 = v75;
   if (v75)
   {
@@ -418,7 +418,7 @@ LABEL_65:
 
   if (v74)
   {
-    [(PVEffect *)v74 hgNodeForTime:&v83 inputs:&range renderer:a5 igContext:&v82];
+    [(PVEffect *)v74 hgNodeForTime:&v83 inputs:&range renderer:renderer igContext:&v82];
     v75 = v82;
     if (!v82)
     {
@@ -448,18 +448,18 @@ LABEL_100:
   return v76;
 }
 
-- (PCRect<double>)inputSizeForPVEffect:(id)a3 igContext:(HGRef<PVInstructionGraphContext>)a4
+- (PCRect<double>)inputSizeForPVEffect:(id)effect igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v6 = v4;
-  v20 = a3;
+  effectCopy = effect;
   *v6 = 0;
   *(v6 + 8) = 0;
   __asm { FMOV            V0.2D, #-1.0 }
 
   *(v6 + 16) = _Q0;
-  v12 = (*(**a4.m_Obj + 40))();
+  v12 = (*(**context.m_Obj + 40))();
   v14 = v13;
-  v15 = (*(**a4.m_Obj + 48))();
+  v15 = (*(**context.m_Obj + 48))();
   *(v6 + 16) = v12 / v15;
   *(v6 + 24) = v14 / v15;
 
@@ -470,20 +470,20 @@ LABEL_100:
   return result;
 }
 
-- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)a3
+- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)label
 {
-  if (self->_effect && (v5 = PVInstructionGraphContext::DotGraph(*a3.m_Obj), HGDotGraph::on(v5)))
+  if (self->_effect && (v5 = PVInstructionGraphContext::DotGraph(*label.m_Obj), HGDotGraph::on(v5)))
   {
-    v6 = PVInstructionGraphContext::DotTreeLogLevel(*a3.m_Obj);
-    v7 = [(PVEffect *)self->_effect displayName];
-    v8 = [@"InstructionGraphOrientationEffectNode" stringByAppendingFormat:@" [%@]", v7];
+    v6 = PVInstructionGraphContext::DotTreeLogLevel(*label.m_Obj);
+    displayName = [(PVEffect *)self->_effect displayName];
+    v8 = [@"InstructionGraphOrientationEffectNode" stringByAppendingFormat:@" [%@]", displayName];
 
     if (v6 >= 2)
     {
-      v9 = [(PVEffect *)self->_effect effectType];
-      v10 = [(PVEffect *)self->_effect effectID];
-      v11 = [PVEffect categoryForEffectID:v10];
-      v12 = [v8 stringByAppendingFormat:@" {%@, %@}", v9, v11];
+      effectType = [(PVEffect *)self->_effect effectType];
+      effectID = [(PVEffect *)self->_effect effectID];
+      v11 = [PVEffect categoryForEffectID:effectID];
+      v12 = [v8 stringByAppendingFormat:@" {%@, %@}", effectType, v11];
 
       v8 = v12;
     }

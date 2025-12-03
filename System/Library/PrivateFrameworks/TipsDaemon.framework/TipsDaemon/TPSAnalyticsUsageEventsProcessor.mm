@@ -1,14 +1,14 @@
 @interface TPSAnalyticsUsageEventsProcessor
-+ (BOOL)_tipStatusValidForLiftProcessing:(id)a3 contextualInfo:(id)a4 firstShownDate:(id)a5;
-+ (BOOL)_validateContextualInfo:(id)a3 forDisplayType:(unint64_t)a4;
-+ (id)_firstShownDateForTipStatus:(id)a3;
-+ (id)_notifiedDateForTipStatus:(id)a3;
-- (BOOL)_shouldCalculateLift:(id)a3;
++ (BOOL)_tipStatusValidForLiftProcessing:(id)processing contextualInfo:(id)info firstShownDate:(id)date;
++ (BOOL)_validateContextualInfo:(id)info forDisplayType:(unint64_t)type;
++ (id)_firstShownDateForTipStatus:(id)status;
++ (id)_notifiedDateForTipStatus:(id)status;
+- (BOOL)_shouldCalculateLift:(id)lift;
 - (TPSAnalyticsUsageEventsProcessor)init;
-- (void)_calculateLift:(id)a3 completion:(id)a4;
-- (void)_countsForEvent:(id)a3 interval:(id)a4 completion:(id)a5;
-- (void)_saveHistoricalUsage:(id)a3 completion:(id)a4;
-- (void)processAnalytics:(id)a3;
+- (void)_calculateLift:(id)lift completion:(id)completion;
+- (void)_countsForEvent:(id)event interval:(id)interval completion:(id)completion;
+- (void)_saveHistoricalUsage:(id)usage completion:(id)completion;
+- (void)processAnalytics:(id)analytics;
 - (void)resetAnalytics;
 @end
 
@@ -21,26 +21,26 @@
   v2 = [(TPSAnalyticsProcessor *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     currentDate = v2->_currentDate;
-    v2->_currentDate = v3;
+    v2->_currentDate = date;
   }
 
   return v2;
 }
 
-- (void)processAnalytics:(id)a3
+- (void)processAnalytics:(id)analytics
 {
   v73 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v48 = [(TPSAnalyticsProcessor *)self dateLastRun];
+  analyticsCopy = analytics;
+  dateLastRun = [(TPSAnalyticsProcessor *)self dateLastRun];
   v44 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v4 = [(TPSAnalyticsProcessor *)self dataSource];
-  obj = [v4 allTipStatus];
+  dataSource = [(TPSAnalyticsProcessor *)self dataSource];
+  obj = [dataSource allTipStatus];
 
   v47 = [obj countByEnumeratingWithState:&v65 objects:v72 count:16];
   if (v47)
@@ -56,26 +56,26 @@
         }
 
         v6 = *(*(&v65 + 1) + 8 * i);
-        v7 = [v6 identifier];
-        v8 = [(TPSAnalyticsProcessor *)self dataSource];
-        v9 = [v8 contextualInfoForIdentifier:v7];
+        identifier = [v6 identifier];
+        dataSource2 = [(TPSAnalyticsProcessor *)self dataSource];
+        v9 = [dataSource2 contextualInfoForIdentifier:identifier];
 
         v10 = [objc_opt_class() _firstShownDateForTipStatus:v6];
         v11 = [objc_opt_class() _notifiedDateForTipStatus:v6];
         if ([objc_opt_class() _tipStatusValidForLiftProcessing:v6 contextualInfo:v9 firstShownDate:v10])
         {
-          v12 = [v9 usageEvents];
-          v13 = [v12 firstObject];
+          usageEvents = [v9 usageEvents];
+          firstObject = [usageEvents firstObject];
 
-          v14 = [v6 desiredOutcomePerformedDates];
-          v15 = [v14 count];
+          desiredOutcomePerformedDates = [v6 desiredOutcomePerformedDates];
+          v15 = [desiredOutcomePerformedDates count];
 
           v16 = objc_alloc_init(TPSAnalyticsUsageInfo);
           -[TPSAnalyticsUsageInfo setOverrideHoldout:](v16, "setOverrideHoldout:", [v6 overrideHoldout]);
           [(TPSAnalyticsUsageInfo *)v16 setFirstShownDate:v10];
           [(TPSAnalyticsUsageInfo *)v16 setNotifiedDate:v11];
-          [(TPSAnalyticsUsageInfo *)v16 setUsageEvent:v13];
-          [(TPSAnalyticsUsageInfo *)v16 setIdentifier:v7];
+          [(TPSAnalyticsUsageInfo *)v16 setUsageEvent:firstObject];
+          [(TPSAnalyticsUsageInfo *)v16 setIdentifier:identifier];
           [(TPSAnalyticsUsageInfo *)v16 setDesiredOutcomeCount:v15];
           [v44 addObject:v16];
         }
@@ -91,13 +91,13 @@
   v62 = &v61;
   v63 = 0x2020000000;
   v64 = [v44 count];
-  v17 = [MEMORY[0x277D71778] analytics];
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+  analytics = [MEMORY[0x277D71778] analytics];
+  if (os_log_type_enabled(analytics, OS_LOG_TYPE_INFO))
   {
     v18 = v62[3];
     *buf = 134217984;
     v71 = v18;
-    _os_log_impl(&dword_232D6F000, v17, OS_LOG_TYPE_INFO, "Valid tips for usage event processing: %lu", buf, 0xCu);
+    _os_log_impl(&dword_232D6F000, analytics, OS_LOG_TYPE_INFO, "Valid tips for usage event processing: %lu", buf, 0xCu);
   }
 
   if (v62[3])
@@ -107,10 +107,10 @@
     aBlock[2] = __53__TPSAnalyticsUsageEventsProcessor_processAnalytics___block_invoke;
     aBlock[3] = &unk_2789B0C30;
     v60 = &v61;
-    v59 = v43;
+    v59 = analyticsCopy;
     v19 = _Block_copy(aBlock);
-    v20 = [MEMORY[0x277CBEA80] currentCalendar];
-    v21 = [v20 dateByAddingUnit:16 value:-5 toDate:self->_currentDate options:0];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v21 = [currentCalendar dateByAddingUnit:16 value:-5 toDate:self->_currentDate options:0];
 
     v56 = 0u;
     v57 = 0u;
@@ -132,21 +132,21 @@
           }
 
           v26 = *(*(&v54 + 1) + 8 * v25);
-          if (v48 && ([*(*(&v54 + 1) + 8 * v25) firstShownDate], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "compare:", v48) == 1, v27, !v28))
+          if (dateLastRun && ([*(*(&v54 + 1) + 8 * v25) firstShownDate], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "compare:", dateLastRun) == 1, v27, !v28))
           {
             if ([(TPSAnalyticsUsageEventsProcessor *)self _shouldCalculateLift:v26])
             {
-              v34 = [MEMORY[0x277D71778] analytics];
-              if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
+              analytics2 = [MEMORY[0x277D71778] analytics];
+              if (os_log_type_enabled(analytics2, OS_LOG_TYPE_INFO))
               {
-                v35 = [v26 identifier];
+                identifier2 = [v26 identifier];
                 *buf = 138412290;
-                v71 = v35;
-                _os_log_impl(&dword_232D6F000, v34, OS_LOG_TYPE_INFO, "Lift threshold hit, calculating lift for: %@", buf, 0xCu);
+                v71 = identifier2;
+                _os_log_impl(&dword_232D6F000, analytics2, OS_LOG_TYPE_INFO, "Lift threshold hit, calculating lift for: %@", buf, 0xCu);
               }
 
-              v36 = [(TPSAnalyticsProcessor *)self dataSource];
-              v37 = [v36 experiment];
+              dataSource3 = [(TPSAnalyticsProcessor *)self dataSource];
+              experiment = [dataSource3 experiment];
 
               v49[0] = MEMORY[0x277D85DD0];
               v49[1] = 3221225472;
@@ -154,9 +154,9 @@
               v49[3] = &unk_2789B0C58;
               v49[4] = self;
               v49[5] = v26;
-              v50 = v48;
+              v50 = dateLastRun;
               v51 = v21;
-              v38 = v37;
+              v38 = experiment;
               v52 = v38;
               v53 = v19;
               [(TPSAnalyticsUsageEventsProcessor *)self _calculateLift:v26 completion:v49];
@@ -164,13 +164,13 @@
 
             else
             {
-              v39 = [MEMORY[0x277D71778] analytics];
-              if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
+              analytics3 = [MEMORY[0x277D71778] analytics];
+              if (os_log_type_enabled(analytics3, OS_LOG_TYPE_INFO))
               {
-                v40 = [v26 identifier];
+                identifier3 = [v26 identifier];
                 *buf = 138412290;
-                v71 = v40;
-                _os_log_impl(&dword_232D6F000, v39, OS_LOG_TYPE_INFO, "Lift threshold not yet hit for: %@", buf, 0xCu);
+                v71 = identifier3;
+                _os_log_impl(&dword_232D6F000, analytics3, OS_LOG_TYPE_INFO, "Lift threshold not yet hit for: %@", buf, 0xCu);
               }
 
               v19[2](v19);
@@ -179,22 +179,22 @@
 
           else
           {
-            v29 = [MEMORY[0x277D71778] analytics];
-            if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
+            analytics4 = [MEMORY[0x277D71778] analytics];
+            if (os_log_type_enabled(analytics4, OS_LOG_TYPE_INFO))
             {
-              v30 = [v26 identifier];
+              identifier4 = [v26 identifier];
               *buf = 138412290;
-              v71 = v30;
-              _os_log_impl(&dword_232D6F000, v29, OS_LOG_TYPE_INFO, "Tip shown since last run, saving historical usage: %@", buf, 0xCu);
+              v71 = identifier4;
+              _os_log_impl(&dword_232D6F000, analytics4, OS_LOG_TYPE_INFO, "Tip shown since last run, saving historical usage: %@", buf, 0xCu);
             }
 
-            v31 = [v26 firstShownDate];
-            v32 = [v31 compare:v21] == -1;
+            firstShownDate = [v26 firstShownDate];
+            v32 = [firstShownDate compare:v21] == -1;
 
             if (v32)
             {
-              v33 = [v26 identifier];
-              [(TPSAnalyticsUsageEventsProcessor *)self _savePreHintRangeOutOfBounds:1 forIdentifier:v33];
+              identifier5 = [v26 identifier];
+              [(TPSAnalyticsUsageEventsProcessor *)self _savePreHintRangeOutOfBounds:1 forIdentifier:identifier5];
             }
 
             [(TPSAnalyticsUsageEventsProcessor *)self _saveHistoricalUsage:v26 completion:v19];
@@ -214,7 +214,7 @@
 
   else
   {
-    v43[2]();
+    analyticsCopy[2]();
   }
 
   _Block_object_dispose(&v61, 8);
@@ -282,16 +282,16 @@ void __53__TPSAnalyticsUsageEventsProcessor_processAnalytics___block_invoke_6(ui
   v7.super_class = TPSAnalyticsUsageEventsProcessor;
   [(TPSAnalyticsProcessor *)&v7 resetAnalytics];
   [(TPSAnalyticsProcessor *)self setDateLastRun:0];
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 dictionaryRepresentation];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  dictionaryRepresentation = [standardUserDefaults dictionaryRepresentation];
 
-  v5 = [v4 allKeys];
+  allKeys = [dictionaryRepresentation allKeys];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__TPSAnalyticsUsageEventsProcessor_resetAnalytics__block_invoke;
   v6[3] = &unk_2789B0C80;
   v6[4] = self;
-  [v5 enumerateObjectsUsingBlock:v6];
+  [allKeys enumerateObjectsUsingBlock:v6];
 }
 
 void __50__TPSAnalyticsUsageEventsProcessor_resetAnalytics__block_invoke(uint64_t a1, void *a2)
@@ -304,27 +304,27 @@ void __50__TPSAnalyticsUsageEventsProcessor_resetAnalytics__block_invoke(uint64_
   }
 }
 
-- (BOOL)_shouldCalculateLift:(id)a3
+- (BOOL)_shouldCalculateLift:(id)lift
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D71740] crunchingIntervalInDays];
-  if (v5)
+  liftCopy = lift;
+  crunchingIntervalInDays = [MEMORY[0x277D71740] crunchingIntervalInDays];
+  if (crunchingIntervalInDays)
   {
-    if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+    if (crunchingIntervalInDays == 0x7FFFFFFFFFFFFFFFLL)
     {
       v6 = 20;
     }
 
     else
     {
-      v6 = v5;
+      v6 = crunchingIntervalInDays;
     }
 
-    v7 = [MEMORY[0x277CBEA80] currentCalendar];
-    v8 = [v7 dateByAddingUnit:16 value:-v6 toDate:self->_currentDate options:0];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v8 = [currentCalendar dateByAddingUnit:16 value:-v6 toDate:self->_currentDate options:0];
 
-    v9 = [v4 firstShownDate];
-    v10 = [v9 compare:v8] == -1;
+    firstShownDate = [liftCopy firstShownDate];
+    v10 = [firstShownDate compare:v8] == -1;
   }
 
   else
@@ -335,29 +335,29 @@ void __50__TPSAnalyticsUsageEventsProcessor_resetAnalytics__block_invoke(uint64_
   return v10;
 }
 
-- (void)_calculateLift:(id)a3 completion:(id)a4
+- (void)_calculateLift:(id)lift completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v9 = [v6 firstShownDate];
-  v10 = [v8 dateByAddingUnit:16 value:19 toDate:v9 options:0];
+  liftCopy = lift;
+  completionCopy = completion;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  firstShownDate = [liftCopy firstShownDate];
+  v10 = [currentCalendar dateByAddingUnit:16 value:19 toDate:firstShownDate options:0];
 
   v11 = objc_alloc(MEMORY[0x277CCA970]);
-  v12 = [v6 firstShownDate];
-  v13 = [v11 initWithStartDate:v12 endDate:v10];
+  firstShownDate2 = [liftCopy firstShownDate];
+  v13 = [v11 initWithStartDate:firstShownDate2 endDate:v10];
 
-  v14 = [v6 usageEvent];
+  usageEvent = [liftCopy usageEvent];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __62__TPSAnalyticsUsageEventsProcessor__calculateLift_completion___block_invoke;
   v17[3] = &unk_2789B0CA8;
   v17[4] = self;
-  v18 = v6;
-  v19 = v7;
-  v15 = v7;
-  v16 = v6;
-  [(TPSAnalyticsUsageEventsProcessor *)self _countsForEvent:v14 interval:v13 completion:v17];
+  v18 = liftCopy;
+  v19 = completionCopy;
+  v15 = completionCopy;
+  v16 = liftCopy;
+  [(TPSAnalyticsUsageEventsProcessor *)self _countsForEvent:usageEvent interval:v13 completion:v17];
 }
 
 uint64_t __62__TPSAnalyticsUsageEventsProcessor__calculateLift_completion___block_invoke(uint64_t a1)
@@ -376,30 +376,30 @@ uint64_t __62__TPSAnalyticsUsageEventsProcessor__calculateLift_completion___bloc
   return v9();
 }
 
-- (void)_saveHistoricalUsage:(id)a3 completion:(id)a4
+- (void)_saveHistoricalUsage:(id)usage completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v9 = [v6 firstShownDate];
-  v10 = [v8 dateByAddingUnit:16 value:-20 toDate:v9 options:0];
+  usageCopy = usage;
+  completionCopy = completion;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  firstShownDate = [usageCopy firstShownDate];
+  v10 = [currentCalendar dateByAddingUnit:16 value:-20 toDate:firstShownDate options:0];
 
-  v11 = [MEMORY[0x277CBEA80] currentCalendar];
-  v12 = [v6 firstShownDate];
-  v13 = [v11 dateByAddingUnit:16 value:-1 toDate:v12 options:0];
+  currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+  firstShownDate2 = [usageCopy firstShownDate];
+  v13 = [currentCalendar2 dateByAddingUnit:16 value:-1 toDate:firstShownDate2 options:0];
 
   v14 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v10 endDate:v13];
-  v15 = [v6 usageEvent];
+  usageEvent = [usageCopy usageEvent];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __68__TPSAnalyticsUsageEventsProcessor__saveHistoricalUsage_completion___block_invoke;
   v18[3] = &unk_2789B0CA8;
   v18[4] = self;
-  v19 = v6;
-  v20 = v7;
-  v16 = v7;
-  v17 = v6;
-  [(TPSAnalyticsUsageEventsProcessor *)self _countsForEvent:v15 interval:v14 completion:v18];
+  v19 = usageCopy;
+  v20 = completionCopy;
+  v16 = completionCopy;
+  v17 = usageCopy;
+  [(TPSAnalyticsUsageEventsProcessor *)self _countsForEvent:usageEvent interval:v14 completion:v18];
 }
 
 void __68__TPSAnalyticsUsageEventsProcessor__saveHistoricalUsage_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -430,82 +430,82 @@ void __68__TPSAnalyticsUsageEventsProcessor__saveHistoricalUsage_completion___bl
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_countsForEvent:(id)a3 interval:(id)a4 completion:(id)a5
+- (void)_countsForEvent:(id)event interval:(id)interval completion:(id)completion
 {
   v7 = MEMORY[0x277D716C8];
-  v8 = a5;
-  v8[2](v8, [v7 countsForEvent:a3 interval:a4]);
+  completionCopy = completion;
+  completionCopy[2](completionCopy, [v7 countsForEvent:event interval:interval]);
 }
 
-+ (id)_firstShownDateForTipStatus:(id)a3
++ (id)_firstShownDateForTipStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 displayType] && objc_msgSend(v3, "displayType") != 1)
+  statusCopy = status;
+  if ([statusCopy displayType] && objc_msgSend(statusCopy, "displayType") != 1)
   {
-    v5 = [v3 hintWouldHaveBeenDisplayedDate];
-    v6 = v5;
-    if (v5)
+    hintWouldHaveBeenDisplayedDate = [statusCopy hintWouldHaveBeenDisplayedDate];
+    v6 = hintWouldHaveBeenDisplayedDate;
+    if (hintWouldHaveBeenDisplayedDate)
     {
-      v4 = v5;
+      firstObject = hintWouldHaveBeenDisplayedDate;
     }
 
     else
     {
-      v7 = [v3 hintDisplayedDates];
-      v4 = [v7 firstObject];
+      hintDisplayedDates = [statusCopy hintDisplayedDates];
+      firstObject = [hintDisplayedDates firstObject];
     }
   }
 
   else
   {
-    v4 = [v3 contentViewedDate];
+    firstObject = [statusCopy contentViewedDate];
   }
 
-  return v4;
+  return firstObject;
 }
 
-+ (id)_notifiedDateForTipStatus:(id)a3
++ (id)_notifiedDateForTipStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 displayType] && objc_msgSend(v3, "displayType") != 1)
+  statusCopy = status;
+  if ([statusCopy displayType] && objc_msgSend(statusCopy, "displayType") != 1)
   {
-    v6 = 0;
+    firstObject = 0;
   }
 
   else
   {
-    v4 = [v3 hintWouldHaveBeenDisplayedDate];
-    v5 = v4;
-    if (v4)
+    hintWouldHaveBeenDisplayedDate = [statusCopy hintWouldHaveBeenDisplayedDate];
+    v5 = hintWouldHaveBeenDisplayedDate;
+    if (hintWouldHaveBeenDisplayedDate)
     {
-      v6 = v4;
+      firstObject = hintWouldHaveBeenDisplayedDate;
     }
 
     else
     {
-      v7 = [v3 hintDisplayedDates];
-      v6 = [v7 firstObject];
+      hintDisplayedDates = [statusCopy hintDisplayedDates];
+      firstObject = [hintDisplayedDates firstObject];
     }
   }
 
-  return v6;
+  return firstObject;
 }
 
-+ (BOOL)_tipStatusValidForLiftProcessing:(id)a3 contextualInfo:(id)a4 firstShownDate:(id)a5
++ (BOOL)_tipStatusValidForLiftProcessing:(id)processing contextualInfo:(id)info firstShownDate:(id)date
 {
-  v8 = a4;
-  v9 = a3;
+  infoCopy = info;
+  processingCopy = processing;
   v10 = objc_opt_class();
-  v11 = [v9 identifier];
-  v12 = [v10 _usageEventsProcessedKeyForIdentifier:v11];
-  v13 = [a1 loadValueForKey:v12 class:objc_opt_class()];
-  v14 = [v13 BOOLValue];
+  identifier = [processingCopy identifier];
+  v12 = [v10 _usageEventsProcessedKeyForIdentifier:identifier];
+  v13 = [self loadValueForKey:v12 class:objc_opt_class()];
+  bOOLValue = [v13 BOOLValue];
 
   v15 = objc_opt_class();
-  v16 = [v9 displayType];
+  displayType = [processingCopy displayType];
 
-  v17 = [v15 _validateContextualInfo:v8 forDisplayType:v16];
-  if (a5)
+  v17 = [v15 _validateContextualInfo:infoCopy forDisplayType:displayType];
+  if (date)
   {
     v18 = v17;
   }
@@ -515,31 +515,31 @@ void __68__TPSAnalyticsUsageEventsProcessor__saveHistoricalUsage_completion___bl
     v18 = 0;
   }
 
-  return v18 & (v14 ^ 1);
+  return v18 & (bOOLValue ^ 1);
 }
 
-+ (BOOL)_validateContextualInfo:(id)a3 forDisplayType:(unint64_t)a4
++ (BOOL)_validateContextualInfo:(id)info forDisplayType:(unint64_t)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  infoCopy = info;
+  v6 = infoCopy;
+  if (type)
   {
-    v7 = v5 != 0;
+    v7 = infoCopy != 0;
   }
 
   else
   {
-    v8 = [v5 usageEvents];
-    if ([v8 count])
+    usageEvents = [infoCopy usageEvents];
+    if ([usageEvents count])
     {
       v7 = 1;
     }
 
     else
     {
-      v9 = [v6 desiredOutcomeCondition];
-      v10 = [v9 rules];
-      v7 = [v10 count] != 0;
+      desiredOutcomeCondition = [v6 desiredOutcomeCondition];
+      rules = [desiredOutcomeCondition rules];
+      v7 = [rules count] != 0;
     }
   }
 

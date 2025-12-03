@@ -1,8 +1,8 @@
 @interface ASDTExclavesStatusProperty
 + (id)config;
-- (ASDTExclavesStatusProperty)initWithConfig:(id)a3;
+- (ASDTExclavesStatusProperty)initWithConfig:(id)config;
 - (id)retrievePropertyValue;
-- (void)addedToDevice:(id)a3;
+- (void)addedToDevice:(id)device;
 @end
 
 @implementation ASDTExclavesStatusProperty
@@ -24,12 +24,12 @@
   return v2;
 }
 
-- (ASDTExclavesStatusProperty)initWithConfig:(id)a3
+- (ASDTExclavesStatusProperty)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v8.receiver = self;
   v8.super_class = ASDTExclavesStatusProperty;
-  v5 = [(ASDTCustomProperty *)&v8 initWithConfig:v4 propertyDataType:1886155636 qualifierDataType:0];
+  v5 = [(ASDTCustomProperty *)&v8 initWithConfig:configCopy propertyDataType:1886155636 qualifierDataType:0];
   v6 = v5;
   if (v5)
   {
@@ -40,17 +40,17 @@
   return v6;
 }
 
-- (void)addedToDevice:(id)a3
+- (void)addedToDevice:(id)device
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_285364AE8])
+  deviceCopy = device;
+  if ([deviceCopy conformsToProtocol:&unk_285364AE8])
   {
-    [(ASDTExclavesStatusProperty *)self setStatusTrackerHost:v4];
-    v5 = [(ASDTExclavesStatusProperty *)self statusTrackerHost];
-    v6 = [v5 exclavesStatusTracker];
+    [(ASDTExclavesStatusProperty *)self setStatusTrackerHost:deviceCopy];
+    statusTrackerHost = [(ASDTExclavesStatusProperty *)self statusTrackerHost];
+    exclavesStatusTracker = [statusTrackerHost exclavesStatusTracker];
 
-    if (v6)
+    if (exclavesStatusTracker)
     {
       objc_initWeak(location, self);
       aBlock[0] = MEMORY[0x277D85DD0];
@@ -58,7 +58,7 @@
       aBlock[2] = __44__ASDTExclavesStatusProperty_addedToDevice___block_invoke;
       aBlock[3] = &unk_278CE6068;
       objc_copyWeak(&v11, location);
-      ASDT::Exclaves::StatusTracker::SetSignalBlock(v6, aBlock);
+      ASDT::Exclaves::StatusTracker::SetSignalBlock(exclavesStatusTracker, aBlock);
       objc_destroyWeak(&v11);
       objc_destroyWeak(location);
     }
@@ -68,8 +68,8 @@
       v7 = ASDTBaseLogType();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v8 = [v4 exclavesSensorName];
-        [(ASDTExclavesStatusProperty *)v8 addedToDevice:v7];
+        exclavesSensorName = [deviceCopy exclavesSensorName];
+        [(ASDTExclavesStatusProperty *)exclavesSensorName addedToDevice:v7];
       }
     }
   }
@@ -86,12 +86,12 @@ void __44__ASDTExclavesStatusProperty_addedToDevice___block_invoke(uint64_t a1)
 - (id)retrievePropertyValue
 {
   v18[5] = *MEMORY[0x277D85DE8];
-  v2 = [(ASDTExclavesStatusProperty *)self statusTrackerHost];
-  v3 = [v2 exclavesStatusTracker];
+  statusTrackerHost = [(ASDTExclavesStatusProperty *)self statusTrackerHost];
+  exclavesStatusTracker = [statusTrackerHost exclavesStatusTracker];
 
-  if (v3)
+  if (exclavesStatusTracker)
   {
-    ASDT::Exclaves::StatusTracker::Pop(v3, 0, &__p);
+    ASDT::Exclaves::StatusTracker::Pop(exclavesStatusTracker, 0, &__p);
     v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:0xCCCCCCCCCCCCCCCDLL * ((v16 - __p) >> 3)];
     v5 = __p;
     v6 = v16;

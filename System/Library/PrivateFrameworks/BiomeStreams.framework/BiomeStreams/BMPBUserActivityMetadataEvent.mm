@@ -1,39 +1,39 @@
 @interface BMPBUserActivityMetadataEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addTopics:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasHasAssociatedImageRepresentation:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addTopics:(id)topics;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasHasAssociatedImageRepresentation:(BOOL)representation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBUserActivityMetadataEvent
 
-- (void)addTopics:(id)a3
+- (void)addTopics:(id)topics
 {
-  v4 = a3;
+  topicsCopy = topics;
   topics = self->_topics;
-  v8 = v4;
+  v8 = topicsCopy;
   if (!topics)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_topics;
     self->_topics = v6;
 
-    v4 = v8;
+    topicsCopy = v8;
     topics = self->_topics;
   }
 
-  [(NSMutableArray *)topics addObject:v4];
+  [(NSMutableArray *)topics addObject:topicsCopy];
 }
 
-- (void)setHasHasAssociatedImageRepresentation:(BOOL)a3
+- (void)setHasHasAssociatedImageRepresentation:(BOOL)representation
 {
-  if (a3)
+  if (representation)
   {
     v3 = 2;
   }
@@ -52,8 +52,8 @@
   v8.receiver = self;
   v8.super_class = BMPBUserActivityMetadataEvent;
   v4 = [(BMPBUserActivityMetadataEvent *)&v8 description];
-  v5 = [(BMPBUserActivityMetadataEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBUserActivityMetadataEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -61,47 +61,47 @@
 - (id)dictionaryRepresentation
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_absoluteTimestamp];
-    [v3 setObject:v4 forKey:@"absoluteTimestamp"];
+    [dictionary setObject:v4 forKey:@"absoluteTimestamp"];
   }
 
   userActivityData = self->_userActivityData;
   if (userActivityData)
   {
-    [v3 setObject:userActivityData forKey:@"userActivityData"];
+    [dictionary setObject:userActivityData forKey:@"userActivityData"];
   }
 
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
   activityType = self->_activityType;
   if (activityType)
   {
-    [v3 setObject:activityType forKey:@"activityType"];
+    [dictionary setObject:activityType forKey:@"activityType"];
   }
 
   associatedBundleId = self->_associatedBundleId;
   if (associatedBundleId)
   {
-    [v3 setObject:associatedBundleId forKey:@"associatedBundleId"];
+    [dictionary setObject:associatedBundleId forKey:@"associatedBundleId"];
   }
 
   associatedURLString = self->_associatedURLString;
   if (associatedURLString)
   {
-    [v3 setObject:associatedURLString forKey:@"associatedURLString"];
+    [dictionary setObject:associatedURLString forKey:@"associatedURLString"];
   }
 
   modeIdentifier = self->_modeIdentifier;
   if (modeIdentifier)
   {
-    [v3 setObject:modeIdentifier forKey:@"modeIdentifier"];
+    [dictionary setObject:modeIdentifier forKey:@"modeIdentifier"];
   }
 
   if ([(NSMutableArray *)self->_topics count])
@@ -126,8 +126,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -136,30 +136,30 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"topics"];
+    [dictionary setObject:v11 forKey:@"topics"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v18 = [MEMORY[0x1E696AD98] numberWithBool:self->_hasAssociatedImageRepresentation];
-    [v3 setObject:v18 forKey:@"hasAssociatedImageRepresentation"];
+    [dictionary setObject:v18 forKey:@"hasAssociatedImageRepresentation"];
   }
 
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     absoluteTimestamp = self->_absoluteTimestamp;
@@ -242,19 +242,19 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = *&self->_absoluteTimestamp;
-    *(v4 + 84) |= 1u;
+    toCopy[1] = *&self->_absoluteTimestamp;
+    *(toCopy + 84) |= 1u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if (self->_userActivityData)
   {
-    [v4 setUserActivityData:?];
+    [toCopy setUserActivityData:?];
   }
 
   if (self->_title)
@@ -285,10 +285,10 @@
   if ([(BMPBUserActivityMetadataEvent *)self topicsCount])
   {
     [v10 clearTopics];
-    v5 = [(BMPBUserActivityMetadataEvent *)self topicsCount];
-    if (v5)
+    topicsCount = [(BMPBUserActivityMetadataEvent *)self topicsCount];
+    if (topicsCount)
     {
-      v6 = v5;
+      v6 = topicsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(BMPBUserActivityMetadataEvent *)self topicsAtIndex:i];
@@ -311,10 +311,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -322,27 +322,27 @@
     *(v5 + 84) |= 1u;
   }
 
-  v7 = [(NSData *)self->_userActivityData copyWithZone:a3];
+  v7 = [(NSData *)self->_userActivityData copyWithZone:zone];
   v8 = *(v6 + 64);
   *(v6 + 64) = v7;
 
-  v9 = [(NSString *)self->_title copyWithZone:a3];
+  v9 = [(NSString *)self->_title copyWithZone:zone];
   v10 = *(v6 + 48);
   *(v6 + 48) = v9;
 
-  v11 = [(NSString *)self->_activityType copyWithZone:a3];
+  v11 = [(NSString *)self->_activityType copyWithZone:zone];
   v12 = *(v6 + 16);
   *(v6 + 16) = v11;
 
-  v13 = [(NSString *)self->_associatedBundleId copyWithZone:a3];
+  v13 = [(NSString *)self->_associatedBundleId copyWithZone:zone];
   v14 = *(v6 + 24);
   *(v6 + 24) = v13;
 
-  v15 = [(NSString *)self->_associatedURLString copyWithZone:a3];
+  v15 = [(NSString *)self->_associatedURLString copyWithZone:zone];
   v16 = *(v6 + 32);
   *(v6 + 32) = v15;
 
-  v17 = [(NSString *)self->_modeIdentifier copyWithZone:a3];
+  v17 = [(NSString *)self->_modeIdentifier copyWithZone:zone];
   v18 = *(v6 + 40);
   *(v6 + 40) = v17;
 
@@ -366,7 +366,7 @@
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v29 + 1) + 8 * v23) copyWithZone:{a3, v29}];
+        v24 = [*(*(&v29 + 1) + 8 * v23) copyWithZone:{zone, v29}];
         [v6 addTopics:v24];
 
         ++v23;
@@ -385,7 +385,7 @@
     *(v6 + 84) |= 2u;
   }
 
-  v25 = [(NSString *)self->_uuid copyWithZone:a3, v29];
+  v25 = [(NSString *)self->_uuid copyWithZone:zone, v29];
   v26 = *(v6 + 72);
   *(v6 + 72) = v25;
 
@@ -393,36 +393,36 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
-  v5 = *(v4 + 84);
+  v5 = *(equalCopy + 84);
   if (*&self->_has)
   {
-    if ((*(v4 + 84) & 1) == 0 || self->_absoluteTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 84) & 1) == 0 || self->_absoluteTimestamp != *(equalCopy + 1))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 84))
+  else if (*(equalCopy + 84))
   {
     goto LABEL_26;
   }
 
   userActivityData = self->_userActivityData;
-  if (userActivityData | *(v4 + 8) && ![(NSData *)userActivityData isEqual:?])
+  if (userActivityData | *(equalCopy + 8) && ![(NSData *)userActivityData isEqual:?])
   {
     goto LABEL_26;
   }
 
   title = self->_title;
-  if (title | *(v4 + 6))
+  if (title | *(equalCopy + 6))
   {
     if (![(NSString *)title isEqual:?])
     {
@@ -431,7 +431,7 @@
   }
 
   activityType = self->_activityType;
-  if (activityType | *(v4 + 2))
+  if (activityType | *(equalCopy + 2))
   {
     if (![(NSString *)activityType isEqual:?])
     {
@@ -440,7 +440,7 @@
   }
 
   associatedBundleId = self->_associatedBundleId;
-  if (associatedBundleId | *(v4 + 3))
+  if (associatedBundleId | *(equalCopy + 3))
   {
     if (![(NSString *)associatedBundleId isEqual:?])
     {
@@ -449,7 +449,7 @@
   }
 
   associatedURLString = self->_associatedURLString;
-  if (associatedURLString | *(v4 + 4))
+  if (associatedURLString | *(equalCopy + 4))
   {
     if (![(NSString *)associatedURLString isEqual:?])
     {
@@ -458,7 +458,7 @@
   }
 
   modeIdentifier = self->_modeIdentifier;
-  if (modeIdentifier | *(v4 + 5))
+  if (modeIdentifier | *(equalCopy + 5))
   {
     if (![(NSString *)modeIdentifier isEqual:?])
     {
@@ -467,7 +467,7 @@
   }
 
   topics = self->_topics;
-  if (topics | *(v4 + 7))
+  if (topics | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)topics isEqual:?])
     {
@@ -475,10 +475,10 @@
     }
   }
 
-  v13 = *(v4 + 84);
+  v13 = *(equalCopy + 84);
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 84) & 2) == 0)
+    if ((*(equalCopy + 84) & 2) == 0)
     {
       goto LABEL_23;
     }
@@ -488,28 +488,28 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if ((*(v4 + 84) & 2) == 0)
+  if ((*(equalCopy + 84) & 2) == 0)
   {
     goto LABEL_26;
   }
 
-  v17 = *(v4 + 80);
+  v17 = *(equalCopy + 80);
   if (self->_hasAssociatedImageRepresentation)
   {
-    if ((*(v4 + 80) & 1) == 0)
+    if ((*(equalCopy + 80) & 1) == 0)
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 80))
+  else if (*(equalCopy + 80))
   {
     goto LABEL_26;
   }
 
 LABEL_23:
   uuid = self->_uuid;
-  if (uuid | *(v4 + 9))
+  if (uuid | *(equalCopy + 9))
   {
     v15 = [(NSString *)uuid isEqual:?];
   }
@@ -579,18 +579,18 @@ LABEL_27:
   return v9 ^ v5 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ [(NSString *)self->_uuid hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 84))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 84))
   {
-    self->_absoluteTimestamp = v4[1];
+    self->_absoluteTimestamp = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(BMPBUserActivityMetadataEvent *)self setUserActivityData:?];
   }

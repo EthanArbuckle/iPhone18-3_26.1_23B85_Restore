@@ -1,6 +1,6 @@
 @interface ButtonEventsConsumer
 - (_TtC11Diagnostics20ButtonEventsConsumer)init;
-- (void)consume:(unint64_t)a3;
+- (void)consume:(unint64_t)consume;
 @end
 
 @implementation ButtonEventsConsumer
@@ -16,9 +16,9 @@
   return [(ButtonEventsConsumer *)&v6 init];
 }
 
-- (void)consume:(unint64_t)a3
+- (void)consume:(unint64_t)consume
 {
-  v3 = self;
+  selfCopy = self;
   sub_10010F060();
 }
 

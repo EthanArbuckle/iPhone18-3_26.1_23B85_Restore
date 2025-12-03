@@ -1,8 +1,8 @@
 @interface FCWritablePrivateDataStorage
 - (FCWritablePrivateDataStorage)init;
-- (FCWritablePrivateDataStorage)initWithDropbox:(id)a3 transactionQueue:(id)a4;
-- (void)writeReadHistoryItem:(id)a3;
-- (void)writeSeenHistoryItems:(id)a3;
+- (FCWritablePrivateDataStorage)initWithDropbox:(id)dropbox transactionQueue:(id)queue;
+- (void)writeReadHistoryItem:(id)item;
+- (void)writeSeenHistoryItems:(id)items;
 @end
 
 @implementation FCWritablePrivateDataStorage
@@ -33,12 +33,12 @@
   objc_exception_throw(v6);
 }
 
-- (FCWritablePrivateDataStorage)initWithDropbox:(id)a3 transactionQueue:(id)a4
+- (FCWritablePrivateDataStorage)initWithDropbox:(id)dropbox transactionQueue:(id)queue
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dropboxCopy = dropbox;
+  queueCopy = queue;
+  if (!dropboxCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "dropbox"];
     *buf = 136315906;
@@ -51,13 +51,13 @@
     v23 = v13;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v8)
+    if (queueCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v8)
+  else if (queueCopy)
   {
     goto LABEL_6;
   }
@@ -83,19 +83,19 @@ LABEL_6:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dropbox, a3);
-    objc_storeStrong(&v10->_transactionQueue, a4);
+    objc_storeStrong(&v9->_dropbox, dropbox);
+    objc_storeStrong(&v10->_transactionQueue, queue);
   }
 
   v11 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-- (void)writeSeenHistoryItems:(id)a3
+- (void)writeSeenHistoryItems:(id)items
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  itemsCopy = items;
+  if (!itemsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "historyItems"];
     *buf = 136315906;
@@ -110,18 +110,18 @@ LABEL_6:
   }
 
   v5 = objc_opt_new();
-  v6 = [FCFileCoordinatedTodayDropboxTransaction transactionToMutateSeenArticlesWithInsertedOrUpdatedHistoryItems:v4 deletedArticleIDs:v5];
+  v6 = [FCFileCoordinatedTodayDropboxTransaction transactionToMutateSeenArticlesWithInsertedOrUpdatedHistoryItems:itemsCopy deletedArticleIDs:v5];
 
-  v7 = [(FCWritablePrivateDataStorage *)self dropbox];
+  dropbox = [(FCWritablePrivateDataStorage *)self dropbox];
   v23 = v6;
-  v8 = [v6 todayPrivateDataAccessor];
-  [v7 depositSyncWithAccessor:v8];
+  todayPrivateDataAccessor = [v6 todayPrivateDataAccessor];
+  [dropbox depositSyncWithAccessor:todayPrivateDataAccessor];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v4;
+  v9 = itemsCopy;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
@@ -138,13 +138,13 @@ LABEL_6:
 
         v14 = *(*(&v24 + 1) + 8 * i);
         v15 = [FCTodayMarkAsSeenTransaction alloc];
-        v16 = [v14 articleID];
-        v17 = [v14 maxVersionSeen];
-        v18 = [v14 firstSeenAtOfMaxVersionSeen];
-        v19 = [(FCTodayMarkAsSeenTransaction *)v15 initWithArticleID:v16 articleVersion:v17 seenDate:v18];
+        articleID = [v14 articleID];
+        maxVersionSeen = [v14 maxVersionSeen];
+        firstSeenAtOfMaxVersionSeen = [v14 firstSeenAtOfMaxVersionSeen];
+        v19 = [(FCTodayMarkAsSeenTransaction *)v15 initWithArticleID:articleID articleVersion:maxVersionSeen seenDate:firstSeenAtOfMaxVersionSeen];
 
-        v20 = [(FCWritablePrivateDataStorage *)self transactionQueue];
-        [v20 enqueueTransaction:v19 withMaxTransactionCount:100];
+        transactionQueue = [(FCWritablePrivateDataStorage *)self transactionQueue];
+        [transactionQueue enqueueTransaction:v19 withMaxTransactionCount:100];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -156,11 +156,11 @@ LABEL_6:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)writeReadHistoryItem:(id)a3
+- (void)writeReadHistoryItem:(id)item
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  itemCopy = item;
+  if (!itemCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "historyItem"];
     *buf = 136315906;
@@ -175,13 +175,13 @@ LABEL_6:
   }
 
   v5 = [FCTodayMarkAsReadTransaction alloc];
-  v6 = [v4 articleID];
-  v7 = [v4 maxVersionRead];
-  v8 = [v4 lastVisitedAt];
-  v9 = [(FCTodayMarkAsReadTransaction *)v5 initWithArticleID:v6 articleVersion:v7 readDate:v8];
+  articleID = [itemCopy articleID];
+  maxVersionRead = [itemCopy maxVersionRead];
+  lastVisitedAt = [itemCopy lastVisitedAt];
+  v9 = [(FCTodayMarkAsReadTransaction *)v5 initWithArticleID:articleID articleVersion:maxVersionRead readDate:lastVisitedAt];
 
-  v10 = [(FCWritablePrivateDataStorage *)self transactionQueue];
-  [v10 enqueueTransaction:v9 withMaxTransactionCount:100];
+  transactionQueue = [(FCWritablePrivateDataStorage *)self transactionQueue];
+  [transactionQueue enqueueTransaction:v9 withMaxTransactionCount:100];
 
   v11 = *MEMORY[0x1E69E9840];
 }

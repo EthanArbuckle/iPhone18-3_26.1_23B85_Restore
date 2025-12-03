@@ -1,14 +1,14 @@
 @interface MLCGraph
 + (MLCGraph)graph;
-+ (MLCGraph)graphWithGraphObjects:(id)a3;
-- (BOOL)addInputs:(id)a3 lossLabels:(id)a4 lossLabelWeights:(id)a5;
-- (BOOL)addOutputs:(id)a3;
-- (BOOL)bindAndWriteData:(id)a3 forInputs:(id)a4 toDevice:(id)a5 batchSize:(unint64_t)a6 synchronous:(BOOL)a7 skipWrite:(BOOL)a8;
-- (BOOL)checkPageAlignmentAndSizeForOutputs:(id)a3;
-- (BOOL)checksBeforeAddLayerInGraph:(id)a3 sources:(id)a4 forTraining:(BOOL)a5;
-- (BOOL)dispatchReadsForMultipleTensorOutputs:(id)a3 finalTensorInGraph:(id)a4 finalResultTensor:(id)a5 batchSize:(unint64_t)a6;
-- (BOOL)isLayerInGraphLayerList:(id)a3 graphLayerList:(id)a4;
-- (MLCGraph)initWithGraphObjects:(id)a3;
++ (MLCGraph)graphWithGraphObjects:(id)objects;
+- (BOOL)addInputs:(id)inputs lossLabels:(id)labels lossLabelWeights:(id)weights;
+- (BOOL)addOutputs:(id)outputs;
+- (BOOL)bindAndWriteData:(id)data forInputs:(id)inputs toDevice:(id)device batchSize:(unint64_t)size synchronous:(BOOL)synchronous skipWrite:(BOOL)write;
+- (BOOL)checkPageAlignmentAndSizeForOutputs:(id)outputs;
+- (BOOL)checksBeforeAddLayerInGraph:(id)graph sources:(id)sources forTraining:(BOOL)training;
+- (BOOL)dispatchReadsForMultipleTensorOutputs:(id)outputs finalTensorInGraph:(id)graph finalResultTensor:(id)tensor batchSize:(unint64_t)size;
+- (BOOL)isLayerInGraphLayerList:(id)list graphLayerList:(id)layerList;
+- (MLCGraph)initWithGraphObjects:(id)objects;
 - (MLCTensor)concatenateWithSources:(NSArray *)sources dimension:(NSUInteger)dimension;
 - (MLCTensor)gatherWithDimension:(NSUInteger)dimension source:(MLCTensor *)source indices:(MLCTensor *)indices;
 - (MLCTensor)nodeWithLayer:(MLCLayer *)layer source:(MLCTensor *)source;
@@ -22,39 +22,39 @@
 - (NSArray)splitWithSource:(MLCTensor *)source splitCount:(NSUInteger)splitCount dimension:(NSUInteger)dimension;
 - (NSArray)splitWithSource:(MLCTensor *)source splitSectionLengths:(NSArray *)splitSectionLengths dimension:(NSUInteger)dimension;
 - (NSString)summarizedDOTDescription;
-- (id)conditionalWithPredicate:(id)a3 trueBranch:(id)a4 falseBranch:(id)a5;
-- (id)createGradientSourceTensorWith:(id)a3 source:(id)a4;
-- (id)createLossGradientSourceTensorWith:(id)a3 source:(id)a4 batchSize:(id)a5;
+- (id)conditionalWithPredicate:(id)predicate trueBranch:(id)branch falseBranch:(id)falseBranch;
+- (id)createGradientSourceTensorWith:(id)with source:(id)source;
+- (id)createLossGradientSourceTensorWith:(id)with source:(id)source batchSize:(id)size;
 - (id)description;
-- (id)resultTensorsForLayer:(id)a3 graphLayerList:(id)a4;
-- (id)sourceTensorsForLayer:(id)a3 graphLayerList:(id)a4;
-- (void)addGraphNodes:(id)a3 withControlTreeNode:(id)a4;
-- (void)allocateDeviceMemoryForTensor:(id)a3 device:(id)a4;
-- (void)checkAndResetTensorsAssociatedWithLayer:(id)a3 sources:(id)a4;
-- (void)createVariableLengthSequenceTensorsForLayer:(id)a3 withVariableSequenceLength:(id)a4;
+- (id)resultTensorsForLayer:(id)layer graphLayerList:(id)list;
+- (id)sourceTensorsForLayer:(id)layer graphLayerList:(id)list;
+- (void)addGraphNodes:(id)nodes withControlTreeNode:(id)node;
+- (void)allocateDeviceMemoryForTensor:(id)tensor device:(id)device;
+- (void)checkAndResetTensorsAssociatedWithLayer:(id)layer sources:(id)sources;
+- (void)createVariableLengthSequenceTensorsForLayer:(id)layer withVariableSequenceLength:(id)length;
 - (void)dealloc;
-- (void)enumerateInputsUsingBlock:(id)a3;
-- (void)enumerateLayersUsingBlock:(id)a3;
-- (void)enumerateOutputsUsingBlock:(id)a3;
-- (void)flattenConditionalLayer:(id)a3;
-- (void)freeDeviceMemoryForTensorIfSafe:(id)a3 device:(id)a4;
-- (void)insertPhis:(id)a3;
-- (void)linkRelatedTensorsForConcatLayer:(id)a3 device:(id)a4;
-- (void)linkSourceTensorsWithLayer:(id)a3 sources:(id)a4;
+- (void)enumerateInputsUsingBlock:(id)block;
+- (void)enumerateLayersUsingBlock:(id)block;
+- (void)enumerateOutputsUsingBlock:(id)block;
+- (void)flattenConditionalLayer:(id)layer;
+- (void)freeDeviceMemoryForTensorIfSafe:(id)safe device:(id)device;
+- (void)insertPhis:(id)phis;
+- (void)linkRelatedTensorsForConcatLayer:(id)layer device:(id)device;
+- (void)linkSourceTensorsWithLayer:(id)layer sources:(id)sources;
 - (void)summarizedDOTDescription;
-- (void)updateDeviceMemoryReadCountForGradientWithLayer:(id)a3 tensor:(id)a4 checkIfSourceNeeded:(BOOL)a5 checkIfResultNeeded:(BOOL)a6;
-- (void)updateDeviceMemoryReadCountForTensor:(id)a3;
-- (void)updateLSTMLayersForVariableSequenceLengthInGraph:(id)a3 withInputData:(id)a4;
-- (void)updateOutputTensorsDeviceMemoryWithData:(id)a3;
-- (void)writeAsyncToDevice:(id)a3 dataForTensors:(id)a4;
+- (void)updateDeviceMemoryReadCountForGradientWithLayer:(id)layer tensor:(id)tensor checkIfSourceNeeded:(BOOL)needed checkIfResultNeeded:(BOOL)resultNeeded;
+- (void)updateDeviceMemoryReadCountForTensor:(id)tensor;
+- (void)updateLSTMLayersForVariableSequenceLengthInGraph:(id)graph withInputData:(id)data;
+- (void)updateOutputTensorsDeviceMemoryWithData:(id)data;
+- (void)writeAsyncToDevice:(id)device dataForTensors:(id)tensors;
 @end
 
 @implementation MLCGraph
 
-+ (MLCGraph)graphWithGraphObjects:(id)a3
++ (MLCGraph)graphWithGraphObjects:(id)objects
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithGraphObjects:v4];
+  objectsCopy = objects;
+  v5 = [[self alloc] initWithGraphObjects:objectsCopy];
 
   return v5;
 }
@@ -66,10 +66,10 @@
   return v2;
 }
 
-- (MLCGraph)initWithGraphObjects:(id)a3
+- (MLCGraph)initWithGraphObjects:(id)objects
 {
   v103 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  objectsCopy = objects;
   v97.receiver = self;
   v97.super_class = MLCGraph;
   v6 = [(MLCGraph *)&v97 init];
@@ -95,7 +95,7 @@
     rootLevelTensorNodes = v7->_rootLevelTensorNodes;
     v7->_rootLevelTensorNodes = v16;
 
-    objc_storeStrong(&v7->_graphObjects, a3);
+    objc_storeStrong(&v7->_graphObjects, objects);
     v7->_readyForExecution = 0;
     allInputs = v7->_allInputs;
     v7->_allInputs = 0;
@@ -118,39 +118,39 @@
     lstmLayerIndexList = v7->_lstmLayerIndexList;
     v7->_lstmLayerIndexList = v23;
 
-    v72 = 1;
+    nextLayerID = 1;
     v7->_allocateDeviceMemoryForTensorsInGraph = 1;
     v25 = [v8 mutableCopy];
     freeResourceList = v7->_freeResourceList;
     v7->_freeResourceList = v25;
 
-    if ([v5 count])
+    if ([objectsCopy count])
     {
       v27 = 0;
-      v71 = v5;
-      v72 = 1;
+      v71 = objectsCopy;
+      nextLayerID = 1;
       v28 = 0x278A68000uLL;
       v76 = v7;
       do
       {
         v73 = v27;
-        v29 = [v5 objectAtIndexedSubscript:v27];
-        if ([v29 nextLayerID] > v72)
+        v29 = [objectsCopy objectAtIndexedSubscript:v27];
+        if ([v29 nextLayerID] > nextLayerID)
         {
-          v72 = [v29 nextLayerID];
+          nextLayerID = [v29 nextLayerID];
         }
 
         v7->_staticBatchSizeInGraph &= [v29 staticBatchSizeInGraph];
-        v30 = [v29 graphLayerList];
-        v31 = [v30 count];
+        graphLayerList = [v29 graphLayerList];
+        v31 = [graphLayerList count];
 
         if (v31)
         {
           v32 = 0;
           do
           {
-            v33 = [v29 graphLayerList];
-            v34 = [v33 objectAtIndexedSubscript:v32];
+            graphLayerList2 = [v29 graphLayerList];
+            v34 = [graphLayerList2 objectAtIndexedSubscript:v32];
 
             v35 = *(v28 + 2776);
             objc_opt_class();
@@ -161,13 +161,13 @@
 
             else
             {
-              v36 = [(MLCGraph *)v7 graphLayerList];
-              [v36 addObject:v34];
+              graphLayerList3 = [(MLCGraph *)v7 graphLayerList];
+              [graphLayerList3 addObject:v34];
             }
 
             ++v32;
-            v37 = [v29 graphLayerList];
-            v38 = [v37 count];
+            graphLayerList4 = [v29 graphLayerList];
+            v38 = [graphLayerList4 count];
           }
 
           while (v32 < v38);
@@ -177,8 +177,8 @@
         v96 = 0u;
         v93 = 0u;
         v94 = 0u;
-        v39 = [v29 rootLevelTensorNodes];
-        v40 = [v39 countByEnumeratingWithState:&v93 objects:v102 count:16];
+        rootLevelTensorNodes = [v29 rootLevelTensorNodes];
+        v40 = [rootLevelTensorNodes countByEnumeratingWithState:&v93 objects:v102 count:16];
         if (v40)
         {
           v41 = v40;
@@ -189,13 +189,13 @@
             {
               if (*v94 != v42)
               {
-                objc_enumerationMutation(v39);
+                objc_enumerationMutation(rootLevelTensorNodes);
               }
 
               [(NSMutableArray *)v7->_rootLevelTensorNodes addObject:*(*(&v93 + 1) + 8 * i)];
             }
 
-            v41 = [v39 countByEnumeratingWithState:&v93 objects:v102 count:16];
+            v41 = [rootLevelTensorNodes countByEnumeratingWithState:&v93 objects:v102 count:16];
           }
 
           while (v41);
@@ -227,8 +227,8 @@
               v86 = 0u;
               v87 = 0u;
               v88 = 0u;
-              v51 = [v29 layerChildMap];
-              v52 = [v51 objectForKeyedSubscript:v49];
+              layerChildMap = [v29 layerChildMap];
+              v52 = [layerChildMap objectForKeyedSubscript:v49];
 
               v53 = [v52 countByEnumeratingWithState:&v85 objects:v100 count:16];
               if (v53)
@@ -288,8 +288,8 @@
               v78 = 0u;
               v79 = 0u;
               v80 = 0u;
-              v63 = [v29 layerParentMap];
-              v64 = [v63 objectForKeyedSubscript:v61];
+              layerParentMap = [v29 layerParentMap];
+              v64 = [layerParentMap objectForKeyedSubscript:v61];
 
               v65 = [v64 countByEnumeratingWithState:&v77 objects:v98 count:16];
               if (v65)
@@ -325,7 +325,7 @@
         }
 
         v27 = v73 + 1;
-        v5 = v71;
+        objectsCopy = v71;
         v28 = 0x278A68000;
         v7 = v76;
       }
@@ -333,7 +333,7 @@
       while (v73 + 1 < [v71 count]);
     }
 
-    v7->_nextLayerID = v72;
+    v7->_nextLayerID = nextLayerID;
   }
 
   v69 = *MEMORY[0x277D85DE8];
@@ -342,7 +342,7 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   v104 = *MEMORY[0x277D85DE8];
   if ([(NSMutableArray *)self->_graphLayerList count])
   {
@@ -350,14 +350,14 @@
     v4 = MEMORY[0x277CBEBF8];
     while (1)
     {
-      v5 = [(NSMutableArray *)v2->_graphLayerList objectAtIndexedSubscript:v3];
+      v5 = [(NSMutableArray *)selfCopy->_graphLayerList objectAtIndexedSubscript:v3];
       [v5 resetLayerID];
       v99 = 0u;
       v100 = 0u;
       v97 = 0u;
       v98 = 0u;
-      v6 = [v5 sourceTensors];
-      v7 = [v6 countByEnumeratingWithState:&v97 objects:v103 count:16];
+      sourceTensors = [v5 sourceTensors];
+      v7 = [sourceTensors countByEnumeratingWithState:&v97 objects:v103 count:16];
       if (v7)
       {
         v8 = v7;
@@ -368,18 +368,18 @@
           {
             if (*v98 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(sourceTensors);
             }
 
             v11 = *(*(&v97 + 1) + 8 * i);
-            v12 = [v11 childLayers];
-            [v12 removeAllObjects];
+            childLayers = [v11 childLayers];
+            [childLayers removeAllObjects];
 
-            v13 = [v11 parentLayers];
-            [v13 removeAllObjects];
+            parentLayers = [v11 parentLayers];
+            [parentLayers removeAllObjects];
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v97 objects:v103 count:16];
+          v8 = [sourceTensors countByEnumeratingWithState:&v97 objects:v103 count:16];
         }
 
         while (v8);
@@ -389,8 +389,8 @@
       v96 = 0u;
       v93 = 0u;
       v94 = 0u;
-      v14 = [v5 resultTensors];
-      v15 = [v14 countByEnumeratingWithState:&v93 objects:v102 count:16];
+      resultTensors = [v5 resultTensors];
+      v15 = [resultTensors countByEnumeratingWithState:&v93 objects:v102 count:16];
       if (v15)
       {
         v16 = v15;
@@ -401,25 +401,25 @@
           {
             if (*v94 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(resultTensors);
             }
 
             v19 = *(*(&v93 + 1) + 8 * j);
-            v20 = [v19 childLayers];
-            [v20 removeAllObjects];
+            childLayers2 = [v19 childLayers];
+            [childLayers2 removeAllObjects];
 
-            v21 = [v19 parentLayers];
-            [v21 removeAllObjects];
+            parentLayers2 = [v19 parentLayers];
+            [parentLayers2 removeAllObjects];
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v93 objects:v102 count:16];
+          v16 = [resultTensors countByEnumeratingWithState:&v93 objects:v102 count:16];
         }
 
         while (v16);
       }
 
-      v22 = [v5 intermediateGradientTensors];
-      [v22 removeAllObjects];
+      intermediateGradientTensors = [v5 intermediateGradientTensors];
+      [intermediateGradientTensors removeAllObjects];
 
       [v5 setIntermediateGradientTensorIndex:0];
       [v5 setIntermediateSumLayer:0];
@@ -427,8 +427,8 @@
       v92 = 0u;
       v89 = 0u;
       v90 = 0u;
-      v23 = [v5 fusedLayers];
-      v24 = [v23 countByEnumeratingWithState:&v89 objects:v101 count:16];
+      fusedLayers = [v5 fusedLayers];
+      v24 = [fusedLayers countByEnumeratingWithState:&v89 objects:v101 count:16];
       if (v24)
       {
         v25 = v24;
@@ -439,7 +439,7 @@
           {
             if (*v90 != v26)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(fusedLayers);
             }
 
             v28 = *(*(&v89 + 1) + 8 * k);
@@ -447,46 +447,46 @@
             [v28 setDeviceOps:v29];
           }
 
-          v25 = [v23 countByEnumeratingWithState:&v89 objects:v101 count:16];
+          v25 = [fusedLayers countByEnumeratingWithState:&v89 objects:v101 count:16];
         }
 
         while (v25);
       }
 
-      v30 = [v5 fusedLayers];
-      if ([v30 count])
+      fusedLayers2 = [v5 fusedLayers];
+      if ([fusedLayers2 count])
       {
-        v31 = 1;
+        skipLayer = 1;
       }
 
       else
       {
-        v31 = [v5 skipLayer];
+        skipLayer = [v5 skipLayer];
       }
 
-      v32 = [(MLCGraph *)v2 device];
-      if (![v32 type])
+      device = [(MLCGraph *)selfCopy device];
+      if (![device type])
       {
         goto LABEL_30;
       }
 
-      v33 = [(MLCGraph *)v2 device];
-      if ([v33 type] == 1)
+      device2 = [(MLCGraph *)selfCopy device];
+      if ([device2 type] == 1)
       {
         break;
       }
 
-      v73 = [(MLCGraph *)v2 device];
-      if ([v73 type] == 2)
+      device3 = [(MLCGraph *)selfCopy device];
+      if ([device3 type] == 2)
       {
-        v74 = [(MLCGraph *)v2 device];
-        [v74 gpuDevices];
-        v75 = v31;
-        v77 = v76 = v2;
+        device4 = [(MLCGraph *)selfCopy device];
+        [device4 gpuDevices];
+        v75 = skipLayer;
+        v77 = v76 = selfCopy;
         v87 = [v77 count];
 
-        v2 = v76;
-        v31 = v75;
+        selfCopy = v76;
+        skipLayer = v75;
 
         if (v87)
         {
@@ -501,27 +501,27 @@
 LABEL_54:
       [v5 setSkipLayer:0];
       [v5 setIsLastFusedLayer:0];
-      if (v31)
+      if (skipLayer)
       {
-        v78 = [v5 sourceTensors];
-        [v78 removeAllObjects];
+        sourceTensors2 = [v5 sourceTensors];
+        [sourceTensors2 removeAllObjects];
 
-        v79 = [v5 resultTensors];
-        [v79 removeAllObjects];
+        resultTensors2 = [v5 resultTensors];
+        [resultTensors2 removeAllObjects];
 
-        v80 = [v5 sourceGradientTensors];
-        [v80 removeAllObjects];
+        sourceGradientTensors = [v5 sourceGradientTensors];
+        [sourceGradientTensors removeAllObjects];
 
-        v81 = [v5 resultGradientTensors];
-        [v81 removeAllObjects];
+        resultGradientTensors = [v5 resultGradientTensors];
+        [resultGradientTensors removeAllObjects];
 
-        v82 = [v5 fusedLayers];
-        v83 = [v82 count];
+        fusedLayers3 = [v5 fusedLayers];
+        v83 = [fusedLayers3 count];
 
         if (v83)
         {
-          v84 = [v5 fusedLayers];
-          [v84 removeAllObjects];
+          fusedLayers4 = [v5 fusedLayers];
+          [fusedLayers4 removeAllObjects];
         }
 
         v85 = [v4 mutableCopy];
@@ -530,7 +530,7 @@ LABEL_54:
 
       [v5 unlinkAssociatedTensors];
 
-      if (++v3 >= [(NSMutableArray *)v2->_graphLayerList count])
+      if (++v3 >= [(NSMutableArray *)selfCopy->_graphLayerList count])
       {
         goto LABEL_59;
       }
@@ -541,100 +541,100 @@ LABEL_31:
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v31 = 1;
+      skipLayer = 1;
     }
 
-    v34 = [v5 sourceTensors];
-    v35 = [v34 count];
+    sourceTensors3 = [v5 sourceTensors];
+    v35 = [sourceTensors3 count];
 
     if (v35)
     {
       v36 = 0;
       do
       {
-        v37 = [v5 sourceTensors];
-        v38 = [v37 objectAtIndexedSubscript:v36];
-        v39 = [v38 sharedMemoryTensor];
+        sourceTensors4 = [v5 sourceTensors];
+        v38 = [sourceTensors4 objectAtIndexedSubscript:v36];
+        sharedMemoryTensor = [v38 sharedMemoryTensor];
 
-        if (v39)
+        if (sharedMemoryTensor)
         {
-          v40 = [v5 sourceTensors];
-          v41 = [v40 objectAtIndexedSubscript:v36];
-          v42 = [v41 deviceMemory];
-          [v42 removeAllObjects];
+          sourceTensors5 = [v5 sourceTensors];
+          v41 = [sourceTensors5 objectAtIndexedSubscript:v36];
+          deviceMemory = [v41 deviceMemory];
+          [deviceMemory removeAllObjects];
 
-          v43 = [v5 sourceTensors];
-          v44 = [v43 objectAtIndexedSubscript:v36];
+          sourceTensors6 = [v5 sourceTensors];
+          v44 = [sourceTensors6 objectAtIndexedSubscript:v36];
           [v44 setSharedMemoryTensor:0];
         }
 
         ++v36;
-        v45 = [v5 sourceTensors];
-        v46 = [v45 count];
+        sourceTensors7 = [v5 sourceTensors];
+        v46 = [sourceTensors7 count];
       }
 
       while (v36 < v46);
     }
 
-    v47 = [v5 resultTensors];
-    v48 = [v47 count];
+    resultTensors3 = [v5 resultTensors];
+    v48 = [resultTensors3 count];
 
     if (v48)
     {
       v49 = 0;
       do
       {
-        v50 = [v5 resultTensors];
-        v51 = [v50 objectAtIndexedSubscript:v49];
-        v52 = [v51 sharedMemoryTensor];
+        resultTensors4 = [v5 resultTensors];
+        v51 = [resultTensors4 objectAtIndexedSubscript:v49];
+        sharedMemoryTensor2 = [v51 sharedMemoryTensor];
 
-        if (v52)
+        if (sharedMemoryTensor2)
         {
-          v53 = [v5 resultTensors];
-          v54 = [v53 objectAtIndexedSubscript:v49];
-          v55 = [v54 deviceMemory];
-          [v55 removeAllObjects];
+          resultTensors5 = [v5 resultTensors];
+          v54 = [resultTensors5 objectAtIndexedSubscript:v49];
+          deviceMemory2 = [v54 deviceMemory];
+          [deviceMemory2 removeAllObjects];
 
-          v56 = [v5 resultTensors];
-          v57 = [v56 objectAtIndexedSubscript:v49];
+          resultTensors6 = [v5 resultTensors];
+          v57 = [resultTensors6 objectAtIndexedSubscript:v49];
           [v57 setSharedMemoryTensor:0];
         }
 
         ++v49;
-        v58 = [v5 resultTensors];
-        v59 = [v58 count];
+        resultTensors7 = [v5 resultTensors];
+        v59 = [resultTensors7 count];
       }
 
       while (v49 < v59);
     }
 
-    v60 = [v5 resultGradientTensors];
-    v61 = [v60 count];
+    resultGradientTensors2 = [v5 resultGradientTensors];
+    v61 = [resultGradientTensors2 count];
 
     if (v61)
     {
       v62 = 0;
       do
       {
-        v63 = [v5 resultGradientTensors];
-        v64 = [v63 objectAtIndexedSubscript:v62];
-        v65 = [v64 sharedMemoryTensor];
+        resultGradientTensors3 = [v5 resultGradientTensors];
+        v64 = [resultGradientTensors3 objectAtIndexedSubscript:v62];
+        sharedMemoryTensor3 = [v64 sharedMemoryTensor];
 
-        if (v65)
+        if (sharedMemoryTensor3)
         {
-          v66 = [v5 resultGradientTensors];
-          v67 = [v66 objectAtIndexedSubscript:v62];
-          v68 = [v67 deviceMemory];
-          [v68 removeAllObjects];
+          resultGradientTensors4 = [v5 resultGradientTensors];
+          v67 = [resultGradientTensors4 objectAtIndexedSubscript:v62];
+          deviceMemory3 = [v67 deviceMemory];
+          [deviceMemory3 removeAllObjects];
 
-          v69 = [v5 resultGradientTensors];
-          v70 = [v69 objectAtIndexedSubscript:v62];
+          resultGradientTensors5 = [v5 resultGradientTensors];
+          v70 = [resultGradientTensors5 objectAtIndexedSubscript:v62];
           [v70 setSharedMemoryTensor:0];
         }
 
         ++v62;
-        v71 = [v5 resultGradientTensors];
-        v72 = [v71 count];
+        resultGradientTensors6 = [v5 resultGradientTensors];
+        v72 = [resultGradientTensors6 count];
       }
 
       while (v62 < v72);
@@ -644,19 +644,19 @@ LABEL_31:
   }
 
 LABEL_59:
-  [(MLCGraph *)v2 addOutputs:0];
-  v88.receiver = v2;
+  [(MLCGraph *)selfCopy addOutputs:0];
+  v88.receiver = selfCopy;
   v88.super_class = MLCGraph;
   [(MLCGraph *)&v88 dealloc];
   v86 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createGradientSourceTensorWith:(id)a3 source:(id)a4
+- (id)createGradientSourceTensorWith:(id)with source:(id)source
 {
-  if (a4)
+  if (source)
   {
-    v4 = [a4 descriptor];
-    v5 = [MLCTensor tensorWithDescriptor:v4];
+    descriptor = [source descriptor];
+    v5 = [MLCTensor tensorWithDescriptor:descriptor];
   }
 
   else
@@ -673,25 +673,25 @@ LABEL_59:
   return v5;
 }
 
-- (id)createLossGradientSourceTensorWith:(id)a3 source:(id)a4 batchSize:(id)a5
+- (id)createLossGradientSourceTensorWith:(id)with source:(id)source batchSize:(id)size
 {
-  v7 = a4;
-  v8 = a5;
-  if (v7)
+  sourceCopy = source;
+  sizeCopy = size;
+  if (sourceCopy)
   {
     v9 = [MEMORY[0x277CBEBF8] mutableCopy];
-    v10 = [v7 descriptor];
-    v11 = [v10 shape];
-    v12 = [v11 count];
+    descriptor = [sourceCopy descriptor];
+    shape = [descriptor shape];
+    v12 = [shape count];
 
     if (v12)
     {
       v13 = 0;
       do
       {
-        v14 = [v7 descriptor];
-        v15 = [v14 shape];
-        v16 = [v15 objectAtIndex:v13];
+        descriptor2 = [sourceCopy descriptor];
+        shape2 = [descriptor2 shape];
+        v16 = [shape2 objectAtIndex:v13];
 
         if (v13)
         {
@@ -700,22 +700,22 @@ LABEL_59:
 
         else
         {
-          v17 = v8;
+          v17 = sizeCopy;
         }
 
         [v9 setObject:v17 atIndexedSubscript:v13];
 
         ++v13;
-        v18 = [v7 descriptor];
-        v19 = [v18 shape];
-        v20 = [v19 count];
+        descriptor3 = [sourceCopy descriptor];
+        shape3 = [descriptor3 shape];
+        v20 = [shape3 count];
       }
 
       while (v13 < v20);
     }
 
-    v21 = [v7 descriptor];
-    v22 = +[MLCTensorDescriptor descriptorWithShape:dataType:](MLCTensorDescriptor, "descriptorWithShape:dataType:", v9, [v21 dataType]);
+    descriptor4 = [sourceCopy descriptor];
+    v22 = +[MLCTensorDescriptor descriptorWithShape:dataType:](MLCTensorDescriptor, "descriptorWithShape:dataType:", v9, [descriptor4 dataType]);
 
     v23 = [MLCTensor tensorWithDescriptor:v22];
   }
@@ -734,17 +734,17 @@ LABEL_59:
   return v23;
 }
 
-- (void)checkAndResetTensorsAssociatedWithLayer:(id)a3 sources:(id)a4
+- (void)checkAndResetTensorsAssociatedWithLayer:(id)layer sources:(id)sources
 {
-  v36 = a3;
-  v5 = a4;
-  v6 = [v36 sourceTensors];
-  v7 = [v6 count];
+  layerCopy = layer;
+  sourcesCopy = sources;
+  sourceTensors = [layerCopy sourceTensors];
+  v7 = [sourceTensors count];
 
-  v8 = [v36 sourceTensors];
-  v9 = [v8 count];
+  sourceTensors2 = [layerCopy sourceTensors];
+  v9 = [sourceTensors2 count];
 
-  if (!v9 || ([v36 sourceTensors], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), v10, !v11))
+  if (!v9 || ([layerCopy sourceTensors], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), v10, !v11))
   {
 LABEL_6:
     if (v7)
@@ -758,9 +758,9 @@ LABEL_6:
   v12 = 0;
   while (1)
   {
-    v13 = [v36 sourceTensors];
-    v14 = [v13 objectAtIndexedSubscript:v12];
-    v15 = [v5 objectAtIndexedSubscript:v12];
+    sourceTensors3 = [layerCopy sourceTensors];
+    v14 = [sourceTensors3 objectAtIndexedSubscript:v12];
+    v15 = [sourcesCopy objectAtIndexedSubscript:v12];
 
     if (v14 != v15)
     {
@@ -768,8 +768,8 @@ LABEL_6:
     }
 
     ++v12;
-    v16 = [v36 sourceTensors];
-    v17 = [v16 count];
+    sourceTensors4 = [layerCopy sourceTensors];
+    v17 = [sourceTensors4 count];
 
     if (v12 >= v17)
     {
@@ -777,17 +777,17 @@ LABEL_6:
     }
   }
 
-  v27 = [v36 sourceTensors];
-  v28 = [v27 count];
+  sourceTensors5 = [layerCopy sourceTensors];
+  v28 = [sourceTensors5 count];
 
   if (v28)
   {
     v29 = 0;
     do
     {
-      v30 = [v36 sourceTensors];
-      v31 = [v30 objectAtIndexedSubscript:v29];
-      v32 = [v5 objectAtIndexedSubscript:v29];
+      sourceTensors6 = [layerCopy sourceTensors];
+      v31 = [sourceTensors6 objectAtIndexedSubscript:v29];
+      v32 = [sourcesCopy objectAtIndexedSubscript:v29];
       v33 = [v31 doesShapeMatchWithTensor:v32];
 
       if ((v33 & 1) == 0)
@@ -796,8 +796,8 @@ LABEL_6:
       }
 
       ++v29;
-      v34 = [v36 sourceTensors];
-      v35 = [v34 count];
+      sourceTensors7 = [layerCopy sourceTensors];
+      v35 = [sourceTensors7 count];
     }
 
     while (v29 < v35);
@@ -806,70 +806,70 @@ LABEL_6:
   if (!v7)
   {
 LABEL_7:
-    if ([v36 isUpdatable])
+    if ([layerCopy isUpdatable])
     {
-      v18 = [v36 sourceTensors];
-      v19 = [v18 count];
+      sourceTensors8 = [layerCopy sourceTensors];
+      v19 = [sourceTensors8 count];
 
       if (v19)
       {
-        v20 = [v36 device];
-        v21 = [v20 computeEngine];
-        [v21 synchronizeUpdatesForLayer:v36];
+        device = [layerCopy device];
+        computeEngine = [device computeEngine];
+        [computeEngine synchronizeUpdatesForLayer:layerCopy];
       }
     }
 
-    v22 = [v36 sourceTensors];
-    [v22 removeAllObjects];
+    sourceTensors9 = [layerCopy sourceTensors];
+    [sourceTensors9 removeAllObjects];
 
-    v23 = [v36 resultTensors];
-    [v23 removeAllObjects];
+    resultTensors = [layerCopy resultTensors];
+    [resultTensors removeAllObjects];
 
-    v24 = [v36 sourceGradientTensors];
-    [v24 removeAllObjects];
+    sourceGradientTensors = [layerCopy sourceGradientTensors];
+    [sourceGradientTensors removeAllObjects];
 
-    v25 = [v36 resultGradientTensors];
-    [v25 removeAllObjects];
+    resultGradientTensors = [layerCopy resultGradientTensors];
+    [resultGradientTensors removeAllObjects];
 
-    v26 = [MEMORY[0x277CBEBF8] mutableCopy];
-    [v36 setDeviceOps:v26];
+    sourceTensors10 = [MEMORY[0x277CBEBF8] mutableCopy];
+    [layerCopy setDeviceOps:sourceTensors10];
     goto LABEL_11;
   }
 
-  v26 = [v36 sourceTensors];
-  [v26 removeAllObjects];
+  sourceTensors10 = [layerCopy sourceTensors];
+  [sourceTensors10 removeAllObjects];
 LABEL_11:
 
 LABEL_12:
 }
 
-- (void)linkSourceTensorsWithLayer:(id)a3 sources:(id)a4
+- (void)linkSourceTensorsWithLayer:(id)layer sources:(id)sources
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MLCGraph *)self nextLayerID];
-  [(MLCGraph *)self setNextLayerID:v8 + 1];
-  [v6 assignLayerID:v8];
+  layerCopy = layer;
+  sourcesCopy = sources;
+  nextLayerID = [(MLCGraph *)self nextLayerID];
+  [(MLCGraph *)self setNextLayerID:nextLayerID + 1];
+  [layerCopy assignLayerID:nextLayerID];
   v9 = MEMORY[0x277CBEBF8];
   v10 = [MEMORY[0x277CBEBF8] mutableCopy];
-  v11 = [(MLCGraph *)self layerChildMap];
-  v12 = [v6 label];
-  [v11 setObject:v10 forKeyedSubscript:v12];
+  layerChildMap = [(MLCGraph *)self layerChildMap];
+  label = [layerCopy label];
+  [layerChildMap setObject:v10 forKeyedSubscript:label];
 
   v13 = [v9 mutableCopy];
-  v14 = [(MLCGraph *)self layerParentMap];
-  v15 = [v6 label];
-  [v14 setObject:v13 forKeyedSubscript:v15];
+  layerParentMap = [(MLCGraph *)self layerParentMap];
+  label2 = [layerCopy label];
+  [layerParentMap setObject:v13 forKeyedSubscript:label2];
 
-  v16 = [v6 sourceTensors];
-  v40 = [v16 count];
+  sourceTensors = [layerCopy sourceTensors];
+  v40 = [sourceTensors count];
 
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v7;
+  obj = sourcesCopy;
   v41 = [obj countByEnumeratingWithState:&v47 objects:v52 count:16];
   if (v41)
   {
@@ -884,13 +884,13 @@ LABEL_12:
         }
 
         v18 = *(*(&v47 + 1) + 8 * i);
-        v19 = [v18 childLayers];
-        [v19 addObject:v6];
+        childLayers = [v18 childLayers];
+        [childLayers addObject:layerCopy];
 
         if (!v40)
         {
-          v20 = [v6 sourceTensors];
-          [v20 addObject:v18];
+          sourceTensors2 = [layerCopy sourceTensors];
+          [sourceTensors2 addObject:v18];
         }
 
         v45 = 0u;
@@ -898,8 +898,8 @@ LABEL_12:
         v43 = 0u;
         v44 = 0u;
         v42 = v18;
-        v21 = [v18 parentLayers];
-        v22 = [v21 countByEnumeratingWithState:&v43 objects:v51 count:16];
+        parentLayers = [v18 parentLayers];
+        v22 = [parentLayers countByEnumeratingWithState:&v43 objects:v51 count:16];
         if (v22)
         {
           v23 = v22;
@@ -910,33 +910,33 @@ LABEL_12:
             {
               if (*v44 != v24)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(parentLayers);
               }
 
               v26 = *(*(&v43 + 1) + 8 * j);
               layerParentMap = self->_layerParentMap;
-              v28 = [v6 label];
-              v29 = [(NSMutableDictionary *)layerParentMap objectForKeyedSubscript:v28];
+              label3 = [layerCopy label];
+              v29 = [(NSMutableDictionary *)layerParentMap objectForKeyedSubscript:label3];
 
-              v30 = [v26 label];
-              [v29 addObject:v30];
+              label4 = [v26 label];
+              [v29 addObject:label4];
 
               layerChildMap = self->_layerChildMap;
-              v32 = [v26 label];
-              v33 = [(NSMutableDictionary *)layerChildMap objectForKeyedSubscript:v32];
+              label5 = [v26 label];
+              v33 = [(NSMutableDictionary *)layerChildMap objectForKeyedSubscript:label5];
 
-              v34 = [v6 label];
-              [v33 addObject:v34];
+              label6 = [layerCopy label];
+              [v33 addObject:label6];
             }
 
-            v23 = [v21 countByEnumeratingWithState:&v43 objects:v51 count:16];
+            v23 = [parentLayers countByEnumeratingWithState:&v43 objects:v51 count:16];
           }
 
           while (v23);
         }
 
-        v35 = [v42 parentLayers];
-        v36 = [v35 count];
+        parentLayers2 = [v42 parentLayers];
+        v36 = [parentLayers2 count];
 
         if (!v36)
         {
@@ -953,15 +953,15 @@ LABEL_12:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)checksBeforeAddLayerInGraph:(id)a3 sources:(id)a4 forTraining:(BOOL)a5
+- (BOOL)checksBeforeAddLayerInGraph:(id)graph sources:(id)sources forTraining:(BOOL)training
 {
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 resultTensors];
-  v12 = [v11 count];
+  graphCopy = graph;
+  sourcesCopy = sources;
+  resultTensors = [graphCopy resultTensors];
+  v12 = [resultTensors count];
 
-  if (v12 && ([(MLCGraph *)self graphLayerList], v13 = objc_claimAutoreleasedReturnValue(), v14 = [(MLCGraph *)self isLayerInGraphLayerList:v9 graphLayerList:v13], v13, v14))
+  if (v12 && ([(MLCGraph *)self graphLayerList], v13 = objc_claimAutoreleasedReturnValue(), v14 = [(MLCGraph *)self isLayerInGraphLayerList:graphCopy graphLayerList:v13], v13, v14))
   {
     v15 = +[MLCLog framework];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -970,7 +970,7 @@ LABEL_12:
     }
   }
 
-  else if ([v9 layerID])
+  else if ([graphCopy layerID])
   {
     v15 = +[MLCLog framework];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -979,11 +979,11 @@ LABEL_12:
     }
   }
 
-  else if ([v10 count])
+  else if ([sourcesCopy count])
   {
-    if ([v9 isSupportedShapeForTensorSources:v10])
+    if ([graphCopy isSupportedShapeForTensorSources:sourcesCopy])
     {
-      if (a5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+      if (training || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         v16 = 1;
         goto LABEL_9;
@@ -1005,9 +1005,9 @@ LABEL_12:
         v20 = 138412802;
         v21 = v19;
         v22 = 2112;
-        v23 = v9;
+        v23 = graphCopy;
         v24 = 2112;
-        v25 = v10;
+        v25 = sourcesCopy;
         _os_log_error_impl(&dword_238C1D000, v15, OS_LOG_TYPE_ERROR, "%@: layer (%@) does not support tensor shape used by sources (%@)", &v20, 0x20u);
       }
     }
@@ -1037,8 +1037,8 @@ LABEL_9:
   v10 = [(MLCGraph *)self nodeWithMultiOutputLayer:v9 source:v8 forTraining:1];
   if (v10)
   {
-    v11 = [v9 sourceGradientTensors];
-    v12 = [v11 count];
+    sourceGradientTensors = [v9 sourceGradientTensors];
+    v12 = [sourceGradientTensors count];
 
     if (!v12)
     {
@@ -1050,23 +1050,23 @@ LABEL_9:
         {
           v15 = [v10 objectAtIndexedSubscript:v13];
           v16 = [(MLCGraph *)self createGradientSourceTensorWith:v9 source:v15];
-          v17 = [v9 sourceGradientTensors];
-          [v17 setObject:v16 atIndexedSubscript:v13];
+          sourceGradientTensors2 = [v9 sourceGradientTensors];
+          [sourceGradientTensors2 setObject:v16 atIndexedSubscript:v13];
 
-          v18 = [v9 sourceGradientTensors];
-          v19 = [v18 objectAtIndexedSubscript:v13];
+          sourceGradientTensors3 = [v9 sourceGradientTensors];
+          v19 = [sourceGradientTensors3 objectAtIndexedSubscript:v13];
           [v19 setSplitOffset:v14];
 
-          v20 = [v9 dimension];
-          v21 = [v9 sourceGradientTensors];
-          v22 = [v21 objectAtIndexedSubscript:v13];
-          [v22 setSplitDimension:v20];
+          dimension = [v9 dimension];
+          sourceGradientTensors4 = [v9 sourceGradientTensors];
+          v22 = [sourceGradientTensors4 objectAtIndexedSubscript:v13];
+          [v22 setSplitDimension:dimension];
 
-          v23 = [v9 sourceGradientTensors];
-          v24 = [v23 objectAtIndexedSubscript:v13];
-          v25 = [v24 descriptor];
-          v26 = [v25 shape];
-          v27 = [v26 objectAtIndexedSubscript:{objc_msgSend(v9, "dimension")}];
+          sourceGradientTensors5 = [v9 sourceGradientTensors];
+          v24 = [sourceGradientTensors5 objectAtIndexedSubscript:v13];
+          descriptor = [v24 descriptor];
+          shape = [descriptor shape];
+          v27 = [shape objectAtIndexedSubscript:{objc_msgSend(v9, "dimension")}];
           v14 += [v27 unsignedIntegerValue];
 
           ++v13;
@@ -1088,8 +1088,8 @@ LABEL_9:
   v10 = [(MLCGraph *)self nodeWithMultiOutputLayer:v9 source:v8 forTraining:1];
   if (v10)
   {
-    v11 = [v9 sourceGradientTensors];
-    v12 = [v11 count];
+    sourceGradientTensors = [v9 sourceGradientTensors];
+    v12 = [sourceGradientTensors count];
 
     if (!v12)
     {
@@ -1101,23 +1101,23 @@ LABEL_9:
         {
           v15 = [v10 objectAtIndexedSubscript:v13];
           v16 = [(MLCGraph *)self createGradientSourceTensorWith:v9 source:v15];
-          v17 = [v9 sourceGradientTensors];
-          [v17 setObject:v16 atIndexedSubscript:v13];
+          sourceGradientTensors2 = [v9 sourceGradientTensors];
+          [sourceGradientTensors2 setObject:v16 atIndexedSubscript:v13];
 
-          v18 = [v9 sourceGradientTensors];
-          v19 = [v18 objectAtIndexedSubscript:v13];
+          sourceGradientTensors3 = [v9 sourceGradientTensors];
+          v19 = [sourceGradientTensors3 objectAtIndexedSubscript:v13];
           [v19 setSplitOffset:v14];
 
-          v20 = [v9 dimension];
-          v21 = [v9 sourceGradientTensors];
-          v22 = [v21 objectAtIndexedSubscript:v13];
-          [v22 setSplitDimension:v20];
+          dimension = [v9 dimension];
+          sourceGradientTensors4 = [v9 sourceGradientTensors];
+          v22 = [sourceGradientTensors4 objectAtIndexedSubscript:v13];
+          [v22 setSplitDimension:dimension];
 
-          v23 = [v9 sourceGradientTensors];
-          v24 = [v23 objectAtIndexedSubscript:v13];
-          v25 = [v24 descriptor];
-          v26 = [v25 shape];
-          v27 = [v26 objectAtIndexedSubscript:{objc_msgSend(v9, "dimension")}];
+          sourceGradientTensors5 = [v9 sourceGradientTensors];
+          v24 = [sourceGradientTensors5 objectAtIndexedSubscript:v13];
+          descriptor = [v24 descriptor];
+          shape = [descriptor shape];
+          v27 = [shape objectAtIndexedSubscript:{objc_msgSend(v9, "dimension")}];
           v14 += [v27 unsignedIntegerValue];
 
           ++v13;
@@ -1319,19 +1319,19 @@ LABEL_15:
   return v13;
 }
 
-- (BOOL)bindAndWriteData:(id)a3 forInputs:(id)a4 toDevice:(id)a5 batchSize:(unint64_t)a6 synchronous:(BOOL)a7 skipWrite:(BOOL)a8
+- (BOOL)bindAndWriteData:(id)data forInputs:(id)inputs toDevice:(id)device batchSize:(unint64_t)size synchronous:(BOOL)synchronous skipWrite:(BOOL)write
 {
-  v71 = a7;
+  synchronousCopy = synchronous;
   v99 = *MEMORY[0x277D85DE8];
-  v82 = a3;
-  v10 = a4;
-  v74 = a5;
+  dataCopy = data;
+  inputsCopy = inputs;
+  deviceCopy = device;
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
-  obj = v10;
-  v77 = [v10 countByEnumeratingWithState:&v92 objects:v98 count:16];
+  obj = inputsCopy;
+  v77 = [inputsCopy countByEnumeratingWithState:&v92 objects:v98 count:16];
   if (v77)
   {
     v75 = *v93;
@@ -1346,16 +1346,16 @@ LABEL_15:
 
         v12 = *(*(&v92 + 1) + 8 * i);
         v13 = [obj objectForKeyedSubscript:v12];
-        v14 = [v13 childLayers];
-        v15 = [v14 count];
+        childLayers = [v13 childLayers];
+        v15 = [childLayers count];
 
         if (v15)
         {
           v16 = 0;
           while (1)
           {
-            v17 = [v13 childLayers];
-            v18 = [v17 objectAtIndexedSubscript:v16];
+            childLayers2 = [v13 childLayers];
+            v18 = [childLayers2 objectAtIndexedSubscript:v16];
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1366,8 +1366,8 @@ LABEL_15:
 
 LABEL_19:
             ++v16;
-            v32 = [v13 childLayers];
-            v33 = [v32 count];
+            childLayers3 = [v13 childLayers];
+            v33 = [childLayers3 count];
 
             if (v16 >= v33)
             {
@@ -1375,26 +1375,26 @@ LABEL_19:
             }
           }
 
-          v20 = [v13 childLayers];
-          v21 = [v20 objectAtIndexedSubscript:v16];
+          childLayers4 = [v13 childLayers];
+          v21 = [childLayers4 objectAtIndexedSubscript:v16];
 
-          v22 = [v21 sourceTensors];
-          if ([v22 count] == 2)
+          sourceTensors = [v21 sourceTensors];
+          if ([sourceTensors count] == 2)
           {
 
             goto LABEL_12;
           }
 
-          v23 = [v21 sourceTensors];
-          v24 = [v23 count];
+          sourceTensors2 = [v21 sourceTensors];
+          v24 = [sourceTensors2 count];
 
           if (v24 == 4)
           {
 LABEL_12:
-            v25 = [v21 sourceTensors];
-            v26 = [v25 count];
-            v27 = [v21 sourceTensors];
-            v28 = v27;
+            sourceTensors3 = [v21 sourceTensors];
+            v26 = [sourceTensors3 count];
+            sourceTensors4 = [v21 sourceTensors];
+            v28 = sourceTensors4;
             if (v26 == 2)
             {
               v29 = 1;
@@ -1405,11 +1405,11 @@ LABEL_12:
               v29 = 3;
             }
 
-            v30 = [v27 objectAtIndexedSubscript:v29];
+            v30 = [sourceTensors4 objectAtIndexedSubscript:v29];
 
             if (v30 == v13)
             {
-              v31 = [v82 objectForKeyedSubscript:v12];
+              v31 = [dataCopy objectForKeyedSubscript:v12];
               [(MLCGraph *)self createVariableLengthSequenceTensorsForLayer:v21 withVariableSequenceLength:v31];
             }
           }
@@ -1430,16 +1430,16 @@ LABEL_20:
   v91 = 0u;
   v88 = 0u;
   v89 = 0u;
-  v34 = v82;
+  v34 = dataCopy;
   v35 = [v34 countByEnumeratingWithState:&v88 objects:v97 count:16];
   if (v35)
   {
     v36 = v35;
     v37 = *v89;
     v38 = &selRef_numberWithShort_;
-    v39 = v74;
-    v40 = a8;
-    v41 = a6;
+    v39 = deviceCopy;
+    writeCopy2 = write;
+    sizeCopy2 = size;
     v76 = v34;
     v78 = *v89;
     while (2)
@@ -1479,8 +1479,8 @@ LABEL_20:
             v87 = 0u;
             v84 = 0u;
             v85 = 0u;
-            v47 = [v45 childLayers];
-            v48 = [v47 countByEnumeratingWithState:&v84 objects:v96 count:16];
+            childLayers5 = [v45 childLayers];
+            v48 = [childLayers5 countByEnumeratingWithState:&v84 objects:v96 count:16];
             if (v48)
             {
               v49 = v48;
@@ -1491,22 +1491,22 @@ LABEL_20:
                 {
                   if (*v85 != v50)
                   {
-                    objc_enumerationMutation(v47);
+                    objc_enumerationMutation(childLayers5);
                   }
 
                   v52 = *(*(&v84 + 1) + 8 * j);
-                  v53 = [v52 device];
+                  device = [v52 device];
 
-                  if (v53)
+                  if (device)
                   {
-                    v54 = [v52 device];
+                    device2 = [v52 device];
 
-                    v46 = v54;
+                    v46 = device2;
                     goto LABEL_40;
                   }
                 }
 
-                v49 = [v47 countByEnumeratingWithState:&v84 objects:v96 count:16];
+                v49 = [childLayers5 countByEnumeratingWithState:&v84 objects:v96 count:16];
                 if (v49)
                 {
                   continue;
@@ -1516,33 +1516,33 @@ LABEL_20:
               }
 
 LABEL_40:
-              v39 = v74;
-              v40 = a8;
-              v41 = a6;
+              v39 = deviceCopy;
+              writeCopy2 = write;
+              sizeCopy2 = size;
             }
 
             v34 = v76;
           }
 
-          v55 = [v46 computeEngine];
+          computeEngine = [v46 computeEngine];
           v56 = objc_opt_respondsToSelector();
 
           if (v56)
           {
-            v57 = v41;
-            if (!v41)
+            v57 = sizeCopy2;
+            if (!sizeCopy2)
             {
               v57 = [v45 calculateBatchSizeToUse:0];
             }
 
-            v58 = [v46 computeEngine];
-            [v58 selectDevicesWithBatchSize:v57 calledfromBindAndWrite:1];
+            computeEngine2 = [v46 computeEngine];
+            [computeEngine2 selectDevicesWithBatchSize:v57 calledfromBindAndWrite:1];
           }
 
           if ([v46 type])
           {
-            v59 = [v46 computeEngine];
-            v60 = [v59 needToAllocateDeviceMemoryForTensor:v45];
+            computeEngine3 = [v46 computeEngine];
+            v60 = [computeEngine3 needToAllocateDeviceMemoryForTensor:v45];
 
             if (v60)
             {
@@ -1552,17 +1552,17 @@ LABEL_40:
 
           else if (([v45 isLayerParameter] & 1) == 0)
           {
-            v61 = [v44 data];
-            [v45 setData:v61];
+            data = [v44 data];
+            [v45 setData:data];
 
-            v62 = [v45 data];
-            v63 = [v45 deviceMemory];
-            [v63 setObject:v62 atIndexedSubscript:0];
+            data2 = [v45 data];
+            deviceMemory = [v45 deviceMemory];
+            [deviceMemory setObject:data2 atIndexedSubscript:0];
           }
 
-          if (!v40)
+          if (!writeCopy2)
           {
-            v64 = [v45 calculateBatchSizeToUse:v41];
+            v64 = [v45 calculateBatchSizeToUse:sizeCopy2];
             if ([v45 isLayerParameter])
             {
               [v45 bindAndWriteData:v44 toDevice:v46];
@@ -1570,10 +1570,10 @@ LABEL_40:
 
             else
             {
-              v65 = [v44 data];
-              [v45 setData:v65];
+              data3 = [v44 data];
+              [v45 setData:data3];
 
-              if (v71)
+              if (synchronousCopy)
               {
                 [v45 writeTensorDataToAllDevices:v46 batchSize:v64];
               }
@@ -1611,7 +1611,7 @@ LABEL_40:
   else
   {
     v66 = 1;
-    v39 = v74;
+    v39 = deviceCopy;
   }
 
 LABEL_65:
@@ -1625,54 +1625,54 @@ LABEL_65:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCGraph *)self graphObjects];
-  v7 = [(MLCGraph *)self graphLayerList];
-  v8 = [(MLCGraph *)self allInputs];
-  v9 = [(MLCGraph *)self allOutputs];
-  v10 = [(MLCGraph *)self device];
-  v11 = [v3 stringWithFormat:@"%@: { graphObjects=%@ : graphLayerList=%@ : allInputs=%@ : allOutputs=%@ : device=%@}", v5, v6, v7, v8, v9, v10];
+  graphObjects = [(MLCGraph *)self graphObjects];
+  graphLayerList = [(MLCGraph *)self graphLayerList];
+  allInputs = [(MLCGraph *)self allInputs];
+  allOutputs = [(MLCGraph *)self allOutputs];
+  device = [(MLCGraph *)self device];
+  v11 = [v3 stringWithFormat:@"%@: { graphObjects=%@ : graphLayerList=%@ : allInputs=%@ : allOutputs=%@ : device=%@}", v5, graphObjects, graphLayerList, allInputs, allOutputs, device];
 
   return v11;
 }
 
-- (void)writeAsyncToDevice:(id)a3 dataForTensors:(id)a4
+- (void)writeAsyncToDevice:(id)device dataForTensors:(id)tensors
 {
-  v11 = a3;
-  v5 = a4;
-  if ([v5 count])
+  deviceCopy = device;
+  tensorsCopy = tensors;
+  if ([tensorsCopy count])
   {
     v6 = 0;
     do
     {
-      v7 = [v11 computeEngine];
-      v8 = [v5 objectAtIndexedSubscript:v6];
-      [v7 allocateDeviceMemoryForTensor:v8];
+      computeEngine = [deviceCopy computeEngine];
+      v8 = [tensorsCopy objectAtIndexedSubscript:v6];
+      [computeEngine allocateDeviceMemoryForTensor:v8];
 
-      v9 = [v11 computeEngine];
-      v10 = [v5 objectAtIndexedSubscript:v6];
-      [v9 broadcastTensor:v10];
+      computeEngine2 = [deviceCopy computeEngine];
+      v10 = [tensorsCopy objectAtIndexedSubscript:v6];
+      [computeEngine2 broadcastTensor:v10];
 
       ++v6;
     }
 
-    while (v6 < [v5 count]);
+    while (v6 < [tensorsCopy count]);
   }
 }
 
-- (void)createVariableLengthSequenceTensorsForLayer:(id)a3 withVariableSequenceLength:(id)a4
+- (void)createVariableLengthSequenceTensorsForLayer:(id)layer withVariableSequenceLength:(id)length
 {
-  v36 = a3;
-  v5 = a4;
+  layerCopy = layer;
+  lengthCopy = length;
   v6 = [MEMORY[0x277CBEBF8] mutableCopy];
-  v7 = [v5 length];
+  v7 = [lengthCopy length];
   if (v7 >= 4)
   {
     v8 = 0;
     v9 = v7 >> 2;
     do
     {
-      v10 = [v5 bytes];
-      v11 = [MEMORY[0x277CCABB0] numberWithInt:*(v10 + 4 * v8)];
+      bytes = [lengthCopy bytes];
+      v11 = [MEMORY[0x277CCABB0] numberWithInt:*(bytes + 4 * v8)];
       [v6 addObject:v11];
 
       ++v8;
@@ -1681,75 +1681,75 @@ LABEL_65:
     while (v9 != v8);
   }
 
-  v12 = [v36 sourceTensors];
-  v35 = [v12 objectAtIndexedSubscript:0];
+  sourceTensors = [layerCopy sourceTensors];
+  v35 = [sourceTensors objectAtIndexedSubscript:0];
 
-  v13 = [v35 descriptor];
-  v14 = [v13 shape];
-  v15 = [v35 descriptor];
-  v16 = +[MLCTensorDescriptor descriptorWithShape:sequenceLengths:sortedSequences:dataType:](MLCTensorDescriptor, "descriptorWithShape:sequenceLengths:sortedSequences:dataType:", v14, v6, 1, [v15 dataType]);
-  v17 = [v36 sourceTensors];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  descriptor = [v35 descriptor];
+  shape = [descriptor shape];
+  descriptor2 = [v35 descriptor];
+  v16 = +[MLCTensorDescriptor descriptorWithShape:sequenceLengths:sortedSequences:dataType:](MLCTensorDescriptor, "descriptorWithShape:sequenceLengths:sortedSequences:dataType:", shape, v6, 1, [descriptor2 dataType]);
+  sourceTensors2 = [layerCopy sourceTensors];
+  v18 = [sourceTensors2 objectAtIndexedSubscript:0];
   [v18 setDescriptor:v16];
 
-  v19 = [v36 resultTensors];
-  v20 = [v19 objectAtIndexedSubscript:0];
+  resultTensors = [layerCopy resultTensors];
+  v20 = [resultTensors objectAtIndexedSubscript:0];
 
-  v21 = [v20 descriptor];
-  v22 = [v21 shape];
-  v23 = [v20 descriptor];
-  v24 = +[MLCTensorDescriptor descriptorWithShape:sequenceLengths:sortedSequences:dataType:](MLCTensorDescriptor, "descriptorWithShape:sequenceLengths:sortedSequences:dataType:", v22, v6, 1, [v23 dataType]);
-  v25 = [v36 resultTensors];
-  v26 = [v25 objectAtIndexedSubscript:0];
+  descriptor3 = [v20 descriptor];
+  shape2 = [descriptor3 shape];
+  descriptor4 = [v20 descriptor];
+  v24 = +[MLCTensorDescriptor descriptorWithShape:sequenceLengths:sortedSequences:dataType:](MLCTensorDescriptor, "descriptorWithShape:sequenceLengths:sortedSequences:dataType:", shape2, v6, 1, [descriptor4 dataType]);
+  resultTensors2 = [layerCopy resultTensors];
+  v26 = [resultTensors2 objectAtIndexedSubscript:0];
   [v26 setDescriptor:v24];
 
-  v27 = [v36 sourceGradientTensors];
-  v28 = [v27 objectAtIndexedSubscript:0];
+  sourceGradientTensors = [layerCopy sourceGradientTensors];
+  v28 = [sourceGradientTensors objectAtIndexedSubscript:0];
 
-  v29 = [v28 descriptor];
-  v30 = [v29 shape];
-  v31 = [v28 descriptor];
-  v32 = +[MLCTensorDescriptor descriptorWithShape:sequenceLengths:sortedSequences:dataType:](MLCTensorDescriptor, "descriptorWithShape:sequenceLengths:sortedSequences:dataType:", v30, v6, 1, [v31 dataType]);
-  v33 = [v36 sourceGradientTensors];
-  v34 = [v33 objectAtIndexedSubscript:0];
+  descriptor5 = [v28 descriptor];
+  shape3 = [descriptor5 shape];
+  descriptor6 = [v28 descriptor];
+  v32 = +[MLCTensorDescriptor descriptorWithShape:sequenceLengths:sortedSequences:dataType:](MLCTensorDescriptor, "descriptorWithShape:sequenceLengths:sortedSequences:dataType:", shape3, v6, 1, [descriptor6 dataType]);
+  sourceGradientTensors2 = [layerCopy sourceGradientTensors];
+  v34 = [sourceGradientTensors2 objectAtIndexedSubscript:0];
   [v34 setDescriptor:v32];
 }
 
-- (void)enumerateLayersUsingBlock:(id)a3
+- (void)enumerateLayersUsingBlock:(id)block
 {
-  v17 = a3;
-  v4 = [(MLCGraph *)self graphLayerList];
-  v5 = [v4 count];
+  blockCopy = block;
+  graphLayerList = [(MLCGraph *)self graphLayerList];
+  v5 = [graphLayerList count];
 
   if (v5)
   {
     v6 = 0;
     do
     {
-      v7 = [(MLCGraph *)self graphLayerList];
-      v8 = [v7 objectAtIndexedSubscript:v6];
+      graphLayerList2 = [(MLCGraph *)self graphLayerList];
+      v8 = [graphLayerList2 objectAtIndexedSubscript:v6];
 
       layerParentMap = self->_layerParentMap;
-      v10 = [v8 label];
-      v11 = [(NSMutableDictionary *)layerParentMap objectForKeyedSubscript:v10];
+      label = [v8 label];
+      v11 = [(NSMutableDictionary *)layerParentMap objectForKeyedSubscript:label];
       layerChildMap = self->_layerChildMap;
-      v13 = [v8 label];
-      v14 = [(NSMutableDictionary *)layerChildMap objectForKeyedSubscript:v13];
-      v17[2](v17, v8, v11, v14);
+      label2 = [v8 label];
+      v14 = [(NSMutableDictionary *)layerChildMap objectForKeyedSubscript:label2];
+      blockCopy[2](blockCopy, v8, v11, v14);
 
       ++v6;
-      v15 = [(MLCGraph *)self graphLayerList];
-      v16 = [v15 count];
+      graphLayerList3 = [(MLCGraph *)self graphLayerList];
+      v16 = [graphLayerList3 count];
     }
 
     while (v6 < v16);
   }
 }
 
-- (void)enumerateInputsUsingBlock:(id)a3
+- (void)enumerateInputsUsingBlock:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -1770,11 +1770,11 @@ LABEL_65:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 descriptor];
-        v12 = [v10 label];
-        v13 = [v11 dataType];
-        v14 = [v11 shape];
-        v4[2](v4, v12, v13, v14);
+        descriptor = [v10 descriptor];
+        label = [v10 label];
+        dataType = [descriptor dataType];
+        shape = [descriptor shape];
+        blockCopy[2](blockCopy, label, dataType, shape);
       }
 
       v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -1786,30 +1786,30 @@ LABEL_65:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateOutputsUsingBlock:(id)a3
+- (void)enumerateOutputsUsingBlock:(id)block
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MLCGraph *)self graphLayerList];
-  v6 = [v5 count];
+  blockCopy = block;
+  graphLayerList = [(MLCGraph *)self graphLayerList];
+  v6 = [graphLayerList count];
 
   if (v6)
   {
     v7 = 0;
-    v25 = self;
+    selfCopy = self;
     do
     {
-      v8 = [(MLCGraph *)self graphLayerList];
+      graphLayerList2 = [(MLCGraph *)self graphLayerList];
       v27 = v7;
-      v9 = [v8 objectAtIndexedSubscript:v7];
+      v9 = [graphLayerList2 objectAtIndexedSubscript:v7];
 
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
       v26 = v9;
-      v10 = [v9 resultTensors];
-      v11 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      resultTensors = [v9 resultTensors];
+      v11 = [resultTensors countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v11)
       {
         v12 = v11;
@@ -1820,33 +1820,33 @@ LABEL_65:
           {
             if (*v29 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(resultTensors);
             }
 
             v15 = *(*(&v28 + 1) + 8 * i);
-            v16 = [v15 childLayers];
-            v17 = [v16 count];
+            childLayers = [v15 childLayers];
+            v17 = [childLayers count];
 
             if (!v17)
             {
-              v18 = [v15 descriptor];
-              v19 = [v15 label];
-              v20 = [v18 dataType];
-              v21 = [v18 shape];
-              v4[2](v4, v19, v20, v21);
+              descriptor = [v15 descriptor];
+              label = [v15 label];
+              dataType = [descriptor dataType];
+              shape = [descriptor shape];
+              blockCopy[2](blockCopy, label, dataType, shape);
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+          v12 = [resultTensors countByEnumeratingWithState:&v28 objects:v32 count:16];
         }
 
         while (v12);
       }
 
       v7 = v27 + 1;
-      self = v25;
-      v22 = [(MLCGraph *)v25 graphLayerList];
-      v23 = [v22 count];
+      self = selfCopy;
+      graphLayerList3 = [(MLCGraph *)selfCopy graphLayerList];
+      v23 = [graphLayerList3 count];
     }
 
     while (v27 + 1 < v23);
@@ -1855,18 +1855,18 @@ LABEL_65:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isLayerInGraphLayerList:(id)a3 graphLayerList:(id)a4
+- (BOOL)isLayerInGraphLayerList:(id)list graphLayerList:(id)layerList
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  listCopy = list;
+  layerListCopy = layerList;
+  if ([layerListCopy count])
   {
     v7 = 0;
     do
     {
-      v8 = [v6 objectAtIndexedSubscript:v7];
+      v8 = [layerListCopy objectAtIndexedSubscript:v7];
 
-      v9 = v8 == v5;
+      v9 = v8 == listCopy;
       if (v9)
       {
         break;
@@ -1875,7 +1875,7 @@ LABEL_65:
       ++v7;
     }
 
-    while (v7 < [v6 count]);
+    while (v7 < [layerListCopy count]);
   }
 
   else
@@ -1889,12 +1889,12 @@ LABEL_65:
 - (NSArray)resultTensorsForLayer:(MLCLayer *)layer
 {
   v4 = layer;
-  v5 = [(MLCLayer *)v4 isDebuggingEnabled];
+  isDebuggingEnabled = [(MLCLayer *)v4 isDebuggingEnabled];
   [(MLCLayer *)v4 setIsDebuggingEnabled:0 isPrivate:1];
-  v6 = [(MLCGraph *)self graphLayerList];
-  v7 = [(MLCGraph *)self resultTensorsForLayer:v4 graphLayerList:v6];
+  graphLayerList = [(MLCGraph *)self graphLayerList];
+  v7 = [(MLCGraph *)self resultTensorsForLayer:v4 graphLayerList:graphLayerList];
 
-  [(MLCLayer *)v4 setIsDebuggingEnabled:v5 isPrivate:1];
+  [(MLCLayer *)v4 setIsDebuggingEnabled:isDebuggingEnabled isPrivate:1];
 
   return v7;
 }
@@ -1902,16 +1902,16 @@ LABEL_65:
 - (NSArray)sourceTensorsForLayer:(MLCLayer *)layer
 {
   v4 = layer;
-  v5 = [(MLCGraph *)self graphLayerList];
-  v6 = [(MLCGraph *)self sourceTensorsForLayer:v4 graphLayerList:v5];
+  graphLayerList = [(MLCGraph *)self graphLayerList];
+  v6 = [(MLCGraph *)self sourceTensorsForLayer:v4 graphLayerList:graphLayerList];
 
   return v6;
 }
 
-- (id)resultTensorsForLayer:(id)a3 graphLayerList:(id)a4
+- (id)resultTensorsForLayer:(id)layer graphLayerList:(id)list
 {
-  v6 = a3;
-  if (![(MLCGraph *)self isLayerInGraphLayerList:v6 graphLayerList:a4])
+  layerCopy = layer;
+  if (![(MLCGraph *)self isLayerInGraphLayerList:layerCopy graphLayerList:list])
   {
     v15 = +[MLCLog framework];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1922,7 +1922,7 @@ LABEL_65:
     goto LABEL_11;
   }
 
-  if ([v6 skipLayer] && (objc_msgSend(v6, "isLastFusedLayer") & 1) == 0)
+  if ([layerCopy skipLayer] && (objc_msgSend(layerCopy, "isLastFusedLayer") & 1) == 0)
   {
     v15 = +[MLCLog framework];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1932,45 +1932,45 @@ LABEL_65:
 
 LABEL_11:
 
-    v14 = MEMORY[0x277CBEBF8];
+    resultTensors4 = MEMORY[0x277CBEBF8];
     goto LABEL_12;
   }
 
-  if ([v6 isDebuggingEnabled])
+  if ([layerCopy isDebuggingEnabled])
   {
-    v7 = [v6 resultTensors];
-    v8 = [v7 count];
+    resultTensors = [layerCopy resultTensors];
+    v8 = [resultTensors count];
 
     if (v8)
     {
       v9 = 0;
       do
       {
-        v10 = [v6 resultTensors];
-        v11 = [v10 objectAtIndexedSubscript:v9];
+        resultTensors2 = [layerCopy resultTensors];
+        v11 = [resultTensors2 objectAtIndexedSubscript:v9];
         [v11 synchronizeData];
 
         ++v9;
-        v12 = [v6 resultTensors];
-        v13 = [v12 count];
+        resultTensors3 = [layerCopy resultTensors];
+        v13 = [resultTensors3 count];
       }
 
       while (v9 < v13);
     }
   }
 
-  v14 = [v6 resultTensors];
+  resultTensors4 = [layerCopy resultTensors];
 LABEL_12:
 
-  return v14;
+  return resultTensors4;
 }
 
-- (id)sourceTensorsForLayer:(id)a3 graphLayerList:(id)a4
+- (id)sourceTensorsForLayer:(id)layer graphLayerList:(id)list
 {
-  v6 = a3;
-  if ([(MLCGraph *)self isLayerInGraphLayerList:v6 graphLayerList:a4])
+  layerCopy = layer;
+  if ([(MLCGraph *)self isLayerInGraphLayerList:layerCopy graphLayerList:list])
   {
-    v7 = [v6 sourceTensors];
+    sourceTensors = [layerCopy sourceTensors];
   }
 
   else
@@ -1981,44 +1981,44 @@ LABEL_12:
       [MLCGraph resultTensorsForLayer:graphLayerList:];
     }
 
-    v7 = MEMORY[0x277CBEBF8];
+    sourceTensors = MEMORY[0x277CBEBF8];
   }
 
-  return v7;
+  return sourceTensors;
 }
 
-- (void)flattenConditionalLayer:(id)a3
+- (void)flattenConditionalLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [v4 sourceTensors];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  layerCopy = layer;
+  sourceTensors = [layerCopy sourceTensors];
+  v6 = [sourceTensors objectAtIndexedSubscript:0];
 
   v7 = [MLCControlTreeNode controlTreeNodeWithPredicate:v6 needToNegate:0];
-  v8 = [v4 trueBranch];
-  [(MLCGraph *)self addGraphNodes:v8 withControlTreeNode:v7];
+  trueBranch = [layerCopy trueBranch];
+  [(MLCGraph *)self addGraphNodes:trueBranch withControlTreeNode:v7];
 
   v10 = [MLCControlTreeNode controlTreeNodeWithPredicate:v6 needToNegate:1];
 
-  v9 = [v4 falseBranch];
-  [(MLCGraph *)self addGraphNodes:v9 withControlTreeNode:v10];
+  falseBranch = [layerCopy falseBranch];
+  [(MLCGraph *)self addGraphNodes:falseBranch withControlTreeNode:v10];
 
-  [(MLCGraph *)self insertPhis:v4];
+  [(MLCGraph *)self insertPhis:layerCopy];
 }
 
-- (void)addGraphNodes:(id)a3 withControlTreeNode:(id)a4
+- (void)addGraphNodes:(id)nodes withControlTreeNode:(id)node
 {
   *&v23[5] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 graphLayerList];
-  v9 = [v8 count];
+  nodesCopy = nodes;
+  nodeCopy = node;
+  graphLayerList = [nodesCopy graphLayerList];
+  v9 = [graphLayerList count];
 
   if (v9)
   {
     for (i = 0; i != v9; ++i)
     {
-      v11 = [v6 graphLayerList];
-      v12 = [v11 objectAtIndexedSubscript:i];
+      graphLayerList2 = [nodesCopy graphLayerList];
+      v12 = [graphLayerList2 objectAtIndexedSubscript:i];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2031,56 +2031,56 @@ LABEL_12:
         }
       }
 
-      v15 = [v6 graphLayerList];
-      v16 = [v15 objectAtIndexedSubscript:i];
-      [v16 setConditionalTreeNode:v7];
+      graphLayerList3 = [nodesCopy graphLayerList];
+      v16 = [graphLayerList3 objectAtIndexedSubscript:i];
+      [v16 setConditionalTreeNode:nodeCopy];
 
-      v17 = [(MLCGraph *)self graphLayerList];
-      v18 = [v6 graphLayerList];
-      v19 = [v18 objectAtIndexedSubscript:i];
-      [v17 addObject:v19];
+      graphLayerList4 = [(MLCGraph *)self graphLayerList];
+      graphLayerList5 = [nodesCopy graphLayerList];
+      v19 = [graphLayerList5 objectAtIndexedSubscript:i];
+      [graphLayerList4 addObject:v19];
     }
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)insertPhis:(id)a3
+- (void)insertPhis:(id)phis
 {
   v39[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 trueBranch];
-  v6 = [v4 falseBranch];
-  v7 = [v5 graphLayerList];
-  v8 = [v7 count];
+  phisCopy = phis;
+  trueBranch = [phisCopy trueBranch];
+  falseBranch = [phisCopy falseBranch];
+  graphLayerList = [trueBranch graphLayerList];
+  v8 = [graphLayerList count];
 
-  v9 = [v6 graphLayerList];
-  v10 = [v9 count];
+  graphLayerList2 = [falseBranch graphLayerList];
+  v10 = [graphLayerList2 count];
 
-  v11 = [v4 sourceTensors];
-  v12 = [v11 objectAtIndexedSubscript:0];
-  v13 = v4;
+  sourceTensors = [phisCopy sourceTensors];
+  v12 = [sourceTensors objectAtIndexedSubscript:0];
+  v13 = phisCopy;
   v38 = [MLCControlTreeNode controlTreeNodeWithPredicate:v12 needToNegate:0];
 
-  v14 = [v4 resultTensors];
-  v15 = [v14 count];
+  resultTensors = [phisCopy resultTensors];
+  v15 = [resultTensors count];
 
   if (v15)
   {
     v16 = 0;
     v34 = v10 - 1;
     v35 = v8 - 1;
-    v36 = self;
-    v37 = v5;
+    selfCopy = self;
+    v37 = trueBranch;
     do
     {
-      v17 = [v5 graphLayerList];
-      v18 = [v17 objectAtIndexedSubscript:v35];
-      v19 = [v18 resultTensors];
-      v20 = [v19 objectAtIndexedSubscript:0];
+      graphLayerList3 = [trueBranch graphLayerList];
+      v18 = [graphLayerList3 objectAtIndexedSubscript:v35];
+      resultTensors2 = [v18 resultTensors];
+      v20 = [resultTensors2 objectAtIndexedSubscript:0];
 
-      v21 = [v6 graphLayerList];
-      v22 = [v21 objectAtIndexedSubscript:v34];
+      graphLayerList4 = [falseBranch graphLayerList];
+      v22 = [graphLayerList4 objectAtIndexedSubscript:v34];
       [v22 resultTensors];
       v24 = v23 = v15;
       v25 = [v24 objectAtIndexedSubscript:0];
@@ -2088,19 +2088,19 @@ LABEL_12:
       v39[0] = v20;
       v39[1] = v25;
       v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:2];
-      v27 = [v13 resultTensors];
-      [v27 objectAtIndexedSubscript:v16];
-      v28 = v6;
+      resultTensors3 = [v13 resultTensors];
+      [resultTensors3 objectAtIndexedSubscript:v16];
+      v28 = falseBranch;
       v30 = v29 = v13;
       v31 = [MLCPhiLayer layerWithControlTreeNode:v38 sources:v26 resultTensor:v30];
 
       v13 = v29;
-      v6 = v28;
+      falseBranch = v28;
 
-      v32 = [(MLCGraph *)v36 graphLayerList];
-      [v32 addObject:v31];
+      graphLayerList5 = [(MLCGraph *)selfCopy graphLayerList];
+      [graphLayerList5 addObject:v31];
 
-      v5 = v37;
+      trueBranch = v37;
       v15 = v23;
 
       ++v16;
@@ -2112,13 +2112,13 @@ LABEL_12:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (id)conditionalWithPredicate:(id)a3 trueBranch:(id)a4 falseBranch:(id)a5
+- (id)conditionalWithPredicate:(id)predicate trueBranch:(id)branch falseBranch:(id)falseBranch
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [MLCConditionalLayer layerWithTrueBranch:v10 falseBranch:v11];
+  predicateCopy = predicate;
+  branchCopy = branch;
+  falseBranchCopy = falseBranch;
+  v12 = [MLCConditionalLayer layerWithTrueBranch:branchCopy falseBranch:falseBranchCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -2129,15 +2129,15 @@ LABEL_12:
     }
   }
 
-  v14 = [v10 allOutputs];
-  if ([v14 count])
+  allOutputs = [branchCopy allOutputs];
+  if ([allOutputs count])
   {
   }
 
   else
   {
-    v15 = [v11 allOutputs];
-    v16 = [v15 count];
+    allOutputs2 = [falseBranchCopy allOutputs];
+    v16 = [allOutputs2 count];
 
     if (!v16)
     {
@@ -2152,7 +2152,7 @@ LABEL_12:
   }
 
 LABEL_12:
-  v18 = [(MLCGraph *)self nodeWithLayer:v12 source:v9];
+  v18 = [(MLCGraph *)self nodeWithLayer:v12 source:predicateCopy];
   v22[0] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
 
@@ -2163,26 +2163,26 @@ LABEL_12:
 
 - (NSArray)layers
 {
-  v2 = [(MLCGraph *)self graphLayerList];
-  v3 = [v2 copy];
+  graphLayerList = [(MLCGraph *)self graphLayerList];
+  v3 = [graphLayerList copy];
 
   return v3;
 }
 
-- (BOOL)checkPageAlignmentAndSizeForOutputs:(id)a3
+- (BOOL)checkPageAlignmentAndSizeForOutputs:(id)outputs
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MLCGraph *)self device];
-  v6 = [v5 type];
+  outputsCopy = outputs;
+  device = [(MLCGraph *)self device];
+  type = [device type];
 
-  if (v6 == 1)
+  if (type == 1)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = v4;
+    v7 = outputsCopy;
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
@@ -2207,8 +2207,8 @@ LABEL_15:
             goto LABEL_16;
           }
 
-          v14 = [v12 bytes];
-          v15 = (NSPageSize() - 1) & v14;
+          bytes = [v12 bytes];
+          v15 = (NSPageSize() - 1) & bytes;
 
           if (v15)
           {
@@ -2244,15 +2244,15 @@ LABEL_16:
   return v16;
 }
 
-- (void)updateOutputTensorsDeviceMemoryWithData:(id)a3
+- (void)updateOutputTensorsDeviceMemoryWithData:(id)data
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  dataCopy = data;
+  v5 = [dataCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2263,23 +2263,23 @@ LABEL_16:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dataCopy);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v4 objectForKeyedSubscript:{v9, v17}];
-        v11 = [(MLCGraph *)self allOutputs];
-        v12 = [v11 objectForKeyedSubscript:v9];
+        v10 = [dataCopy objectForKeyedSubscript:{v9, v17}];
+        allOutputs = [(MLCGraph *)self allOutputs];
+        v12 = [allOutputs objectForKeyedSubscript:v9];
 
-        v13 = [v12 device];
+        device = [v12 device];
         v14 = objc_autoreleasePoolPush();
-        v15 = [v13 computeEngine];
-        [v15 setDeviceMemoryForTensor:v12 data:v10];
+        computeEngine = [device computeEngine];
+        [computeEngine setDeviceMemoryForTensor:v12 data:v10];
 
         objc_autoreleasePoolPop(v14);
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [dataCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -2288,27 +2288,27 @@ LABEL_16:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addInputs:(id)a3 lossLabels:(id)a4 lossLabelWeights:(id)a5
+- (BOOL)addInputs:(id)inputs lossLabels:(id)labels lossLabelWeights:(id)weights
 {
-  v8 = a5;
-  v9 = a4;
-  [(MLCGraph *)self setAllInputs:a3];
-  [(MLCGraph *)self setAllLossLabels:v9];
+  weightsCopy = weights;
+  labelsCopy = labels;
+  [(MLCGraph *)self setAllInputs:inputs];
+  [(MLCGraph *)self setAllLossLabels:labelsCopy];
 
-  [(MLCGraph *)self setAllLossLabelWeights:v8];
+  [(MLCGraph *)self setAllLossLabelWeights:weightsCopy];
   return 1;
 }
 
-- (BOOL)addOutputs:(id)a3
+- (BOOL)addOutputs:(id)outputs
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  outputsCopy = outputs;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v5 = [(MLCGraph *)self allOutputs];
-  v6 = [v5 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  allOutputs = [(MLCGraph *)self allOutputs];
+  v6 = [allOutputs countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2319,23 +2319,23 @@ LABEL_16:
       {
         if (*v36 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allOutputs);
         }
 
         v10 = *(*(&v35 + 1) + 8 * i);
-        v11 = [(MLCGraph *)self allOutputs];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        allOutputs2 = [(MLCGraph *)self allOutputs];
+        v12 = [allOutputs2 objectForKeyedSubscript:v10];
 
         [v12 setComputeFlags:{objc_msgSend(v12, "computeFlags") & 0xFFFFFFFELL}];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      v7 = [allOutputs countByEnumeratingWithState:&v35 objects:v40 count:16];
     }
 
     while (v7);
   }
 
-  if (!v4)
+  if (!outputsCopy)
   {
     goto LABEL_24;
   }
@@ -2344,7 +2344,7 @@ LABEL_16:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v13 = v4;
+  v13 = outputsCopy;
   v14 = [v13 countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (!v14)
   {
@@ -2380,15 +2380,15 @@ LABEL_16:
       v20 = v19;
       if (([v19 computeFlags] & 1) == 0)
       {
-        v21 = [v20 parentLayers];
-        if ([v21 count])
+        parentLayers = [v20 parentLayers];
+        if ([parentLayers count])
         {
         }
 
         else
         {
-          v22 = [v20 childLayers];
-          v23 = [v22 count];
+          childLayers = [v20 childLayers];
+          v23 = [childLayers count];
 
           if (!v23)
           {
@@ -2396,13 +2396,13 @@ LABEL_16:
           }
         }
 
-        v24 = [v20 sharedMemoryTensor];
+        sharedMemoryTensor = [v20 sharedMemoryTensor];
 
-        if (v24)
+        if (sharedMemoryTensor)
         {
           [v20 setSharedMemoryTensor:0];
-          v25 = [v20 deviceMemory];
-          [v25 removeAllObjects];
+          deviceMemory = [v20 deviceMemory];
+          [deviceMemory removeAllObjects];
         }
       }
 
@@ -2422,7 +2422,7 @@ LABEL_21:
 LABEL_23:
 
 LABEL_24:
-  [(MLCGraph *)self setAllOutputs:v4];
+  [(MLCGraph *)self setAllOutputs:outputsCopy];
   v26 = 1;
 LABEL_28:
 
@@ -2430,25 +2430,25 @@ LABEL_28:
   return v26;
 }
 
-- (BOOL)dispatchReadsForMultipleTensorOutputs:(id)a3 finalTensorInGraph:(id)a4 finalResultTensor:(id)a5 batchSize:(unint64_t)a6
+- (BOOL)dispatchReadsForMultipleTensorOutputs:(id)outputs finalTensorInGraph:(id)graph finalResultTensor:(id)tensor batchSize:(unint64_t)size
 {
   v51 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v37 = a5;
-  v40 = v10;
-  if (v9)
+  outputsCopy = outputs;
+  graphCopy = graph;
+  tensorCopy = tensor;
+  v40 = graphCopy;
+  if (outputsCopy)
   {
     v47 = 0uLL;
     v48 = 0uLL;
     v45 = 0uLL;
     v46 = 0uLL;
-    v11 = [v9 countByEnumeratingWithState:&v45 objects:v50 count:16];
+    v11 = [outputsCopy countByEnumeratingWithState:&v45 objects:v50 count:16];
     if (v11)
     {
       v12 = v11;
       v38 = *v46;
-      v13 = self;
+      selfCopy = self;
       do
       {
         v14 = 0;
@@ -2456,32 +2456,32 @@ LABEL_28:
         {
           if (*v46 != v38)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(outputsCopy);
           }
 
           v15 = *(*(&v45 + 1) + 8 * v14);
-          v16 = v9;
-          v17 = [v9 objectForKeyedSubscript:{v15, v37}];
-          v18 = [(MLCGraph *)self allOutputs];
-          v19 = [v18 objectForKeyedSubscript:v15];
+          v16 = outputsCopy;
+          v17 = [outputsCopy objectForKeyedSubscript:{v15, tensorCopy}];
+          allOutputs = [(MLCGraph *)self allOutputs];
+          v19 = [allOutputs objectForKeyedSubscript:v15];
 
-          v20 = [v19 device];
-          if (v10 && v19 == v10)
+          device = [v19 device];
+          if (graphCopy && v19 == graphCopy)
           {
-            v21 = v37;
+            v21 = tensorCopy;
 
             v19 = v21;
           }
 
-          v22 = [v19 calculateBatchSizeToUse:a6];
-          v23 = [v20 computeEngine];
-          v24 = [v17 data];
-          [v23 dispatchReadTensor:v19 targetBuffer:objc_msgSend(v24 batchSize:{"bytes"), v22}];
+          v22 = [v19 calculateBatchSizeToUse:size];
+          computeEngine = [device computeEngine];
+          data = [v17 data];
+          [computeEngine dispatchReadTensor:v19 targetBuffer:objc_msgSend(data batchSize:{"bytes"), v22}];
 
           ++v14;
-          v9 = v16;
-          self = v13;
-          v10 = v40;
+          outputsCopy = v16;
+          self = selfCopy;
+          graphCopy = v40;
         }
 
         while (v12 != v14);
@@ -2498,8 +2498,8 @@ LABEL_28:
     v44 = 0uLL;
     v41 = 0uLL;
     v42 = 0uLL;
-    v25 = [(MLCGraph *)self allOutputs];
-    v26 = [v25 countByEnumeratingWithState:&v41 objects:v49 count:16];
+    allOutputs2 = [(MLCGraph *)self allOutputs];
+    v26 = [allOutputs2 countByEnumeratingWithState:&v41 objects:v49 count:16];
     if (v26)
     {
       v27 = v26;
@@ -2510,37 +2510,37 @@ LABEL_28:
         {
           if (*v42 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(allOutputs2);
           }
 
           v30 = *(*(&v41 + 1) + 8 * i);
-          v31 = [(MLCGraph *)self allOutputs];
-          v32 = [v31 objectForKeyedSubscript:v30];
+          allOutputs3 = [(MLCGraph *)self allOutputs];
+          v32 = [allOutputs3 objectForKeyedSubscript:v30];
 
-          v33 = [v32 device];
-          v34 = [v33 computeEngine];
-          [v34 synchronizeTensor:v32];
+          device2 = [v32 device];
+          computeEngine2 = [device2 computeEngine];
+          [computeEngine2 synchronizeTensor:v32];
         }
 
-        v27 = [v25 countByEnumeratingWithState:&v41 objects:v49 count:16];
+        v27 = [allOutputs2 countByEnumeratingWithState:&v41 objects:v49 count:16];
       }
 
       while (v27);
     }
 
-    v10 = v40;
+    graphCopy = v40;
   }
 
   v35 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (void)linkRelatedTensorsForConcatLayer:(id)a3 device:(id)a4
+- (void)linkRelatedTensorsForConcatLayer:(id)layer device:(id)device
 {
-  v16 = a3;
-  v4 = [v16 dimension];
-  v5 = [v16 sourceTensors];
-  v6 = [v5 count];
+  layerCopy = layer;
+  dimension = [layerCopy dimension];
+  sourceTensors = [layerCopy sourceTensors];
+  v6 = [sourceTensors count];
 
   if (v6)
   {
@@ -2548,19 +2548,19 @@ LABEL_28:
     v8 = 0;
     do
     {
-      v9 = [v16 sourceTensors];
-      v10 = [v9 objectAtIndexedSubscript:v8];
+      sourceTensors2 = [layerCopy sourceTensors];
+      v10 = [sourceTensors2 objectAtIndexedSubscript:v8];
 
       [v10 setConcatOffset:v7];
-      [v10 setConcatDimension:v4];
-      v11 = [v10 descriptor];
-      v12 = [v11 shape];
-      v13 = [v12 objectAtIndexedSubscript:v4];
+      [v10 setConcatDimension:dimension];
+      descriptor = [v10 descriptor];
+      shape = [descriptor shape];
+      v13 = [shape objectAtIndexedSubscript:dimension];
       v7 += [v13 unsignedIntegerValue];
 
       ++v8;
-      v14 = [v16 sourceTensors];
-      v15 = [v14 count];
+      sourceTensors3 = [layerCopy sourceTensors];
+      v15 = [sourceTensors3 count];
     }
 
     while (v8 < v15);
@@ -2585,15 +2585,15 @@ LABEL_28:
   {
     v4 = [MEMORY[0x277CBEB98] setWithArray:MEMORY[0x277CBEBF8]];
     objc_opt_class();
-    v193 = self;
+    selfCopy = self;
     if (objc_opt_isKindOfClass())
     {
-      v5 = self;
-      v6 = [(MLCGraph *)v5 optimizer];
+      selfCopy2 = self;
+      optimizer = [(MLCGraph *)selfCopy2 optimizer];
 
-      if (v6)
+      if (optimizer)
       {
-        v7 = [(MLCGraph *)v5 optimizer];
+        optimizer2 = [(MLCGraph *)selfCopy2 optimizer];
         v8 = objc_opt_class();
         v186 = NSStringFromClass(v8);
       }
@@ -2604,8 +2604,8 @@ LABEL_28:
       }
 
       v11 = MEMORY[0x277CBEB98];
-      v12 = [(MLCGraph *)v5 stopGradientTensorList];
-      v13 = [v11 setWithArray:v12];
+      stopGradientTensorList = [(MLCGraph *)selfCopy2 stopGradientTensorList];
+      v13 = [v11 setWithArray:stopGradientTensorList];
 
       v196 = v13;
     }
@@ -2616,18 +2616,18 @@ LABEL_28:
       v186 = 0;
     }
 
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v243 = 0u;
     v244 = 0u;
     v245 = 0u;
     v246 = 0u;
-    obj = [(MLCGraph *)v193 layers];
+    obj = [(MLCGraph *)selfCopy layers];
     v188 = [obj countByEnumeratingWithState:&v243 objects:v255 count:16];
     if (v188)
     {
       v15 = 0;
       v189 = *v244;
-      v205 = v14;
+      v205 = array;
       do
       {
         v16 = 0;
@@ -2646,8 +2646,8 @@ LABEL_28:
           v240 = 0u;
           v241 = 0u;
           v242 = 0u;
-          v206 = [v18 sourceTensors];
-          v19 = [v206 countByEnumeratingWithState:&v239 objects:v254 count:16];
+          sourceTensors = [v18 sourceTensors];
+          v19 = [sourceTensors countByEnumeratingWithState:&v239 objects:v254 count:16];
           v209 = v18;
           if (v19)
           {
@@ -2662,27 +2662,27 @@ LABEL_28:
               {
                 if (*v240 != v21)
                 {
-                  objc_enumerationMutation(v206);
+                  objc_enumerationMutation(sourceTensors);
                 }
 
                 v23 = *(*(&v239 + 1) + 8 * v22);
-                v24 = [v23 parentLayers];
-                v25 = [v24 count];
+                parentLayers = [v23 parentLayers];
+                v25 = [parentLayers count];
 
                 if (!v25)
                 {
                   v26 = v15;
                   v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"invisibleInput%lu [style = invis]", v15];
-                  [v14 addObject:v27];
+                  [array addObject:v27];
 
-                  v28 = [MEMORY[0x277CCAB68] string];
-                  v29 = [v23 label];
-                  [v28 appendString:v29];
+                  string = [MEMORY[0x277CCAB68] string];
+                  label = [v23 label];
+                  [string appendString:label];
 
-                  [v28 appendString:@" ["];
-                  v30 = [v23 descriptor];
-                  v31 = [v30 shape];
-                  v32 = [v31 count];
+                  [string appendString:@" ["];
+                  descriptor = [v23 descriptor];
+                  shape = [descriptor shape];
+                  v32 = [shape count];
 
                   if (v32)
                   {
@@ -2690,24 +2690,24 @@ LABEL_28:
                     v34 = 1;
                     do
                     {
-                      v35 = [v23 descriptor];
-                      v36 = [v35 shape];
-                      v37 = [v36 objectAtIndexedSubscript:v33];
-                      [v28 appendFormat:@"%lu", objc_msgSend(v37, "unsignedLongValue")];
+                      descriptor2 = [v23 descriptor];
+                      shape2 = [descriptor2 shape];
+                      v37 = [shape2 objectAtIndexedSubscript:v33];
+                      [string appendFormat:@"%lu", objc_msgSend(v37, "unsignedLongValue")];
 
-                      v38 = [v23 descriptor];
-                      v39 = [v38 shape];
-                      v40 = [v39 count];
+                      descriptor3 = [v23 descriptor];
+                      shape3 = [descriptor3 shape];
+                      v40 = [shape3 count];
 
                       if (v40 > v34)
                       {
-                        [v28 appendString:{@", "}];
+                        [string appendString:{@", "}];
                       }
 
                       v33 = v34;
-                      v41 = [v23 descriptor];
-                      v42 = [v41 shape];
-                      v43 = [v42 count];
+                      descriptor4 = [v23 descriptor];
+                      shape4 = [descriptor4 shape];
+                      v43 = [shape4 count];
 
                       ++v34;
                     }
@@ -2715,11 +2715,11 @@ LABEL_28:
                     while (v43 > v33);
                   }
 
-                  [v28 appendString:@"]"];
+                  [string appendString:@"]"];
                   v44 = v26;
                   v18 = v209;
-                  v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"invisibleInput%lu -> %lu [label=<<FONT POINT-SIZE=10>%@</FONT>>]", v44, objc_msgSend(v209, "layerID"), v28];
-                  [v14 addObject:v45];
+                  v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"invisibleInput%lu -> %lu [label=<<FONT POINT-SIZE=10>%@</FONT>>]", v44, objc_msgSend(v209, "layerID"), string];
+                  [array addObject:v45];
 
                   v15 = v44 + 1;
                   v21 = v197;
@@ -2730,7 +2730,7 @@ LABEL_28:
               }
 
               while (v22 != v20);
-              v20 = [v206 countByEnumeratingWithState:&v239 objects:v254 count:16];
+              v20 = [sourceTensors countByEnumeratingWithState:&v239 objects:v254 count:16];
             }
 
             while (v20);
@@ -2742,8 +2742,8 @@ LABEL_28:
             v238 = 0u;
             v235 = 0u;
             v236 = 0u;
-            v198 = [v18 resultTensors];
-            v207 = [v198 countByEnumeratingWithState:&v235 objects:v253 count:16];
+            resultTensors = [v18 resultTensors];
+            v207 = [resultTensors countByEnumeratingWithState:&v235 objects:v253 count:16];
             if (v207)
             {
               v202 = *v236;
@@ -2753,22 +2753,22 @@ LABEL_28:
                 {
                   if (*v236 != v202)
                   {
-                    objc_enumerationMutation(v198);
+                    objc_enumerationMutation(resultTensors);
                   }
 
                   v47 = *(*(&v235 + 1) + 8 * i);
                   v48 = v15;
-                  v49 = [MEMORY[0x277CCACA8] stringWithFormat:@"invisibleOutput%lu [style = invis]", v15, v184];
-                  [v14 addObject:v49];
+                  layerID3 = [MEMORY[0x277CCACA8] stringWithFormat:@"invisibleOutput%lu [style = invis]", v15, layerID3];
+                  [array addObject:layerID3];
 
-                  v50 = [MEMORY[0x277CCAB68] string];
-                  v51 = [v47 label];
-                  [v50 appendString:v51];
+                  string2 = [MEMORY[0x277CCAB68] string];
+                  label2 = [v47 label];
+                  [string2 appendString:label2];
 
-                  [v50 appendString:@" ["];
-                  v52 = [v47 descriptor];
-                  v53 = [v52 shape];
-                  v54 = [v53 count];
+                  [string2 appendString:@" ["];
+                  descriptor5 = [v47 descriptor];
+                  shape5 = [descriptor5 shape];
+                  v54 = [shape5 count];
 
                   if (v54)
                   {
@@ -2776,24 +2776,24 @@ LABEL_28:
                     v56 = 1;
                     do
                     {
-                      v57 = [v47 descriptor];
-                      v58 = [v57 shape];
-                      v59 = [v58 objectAtIndexedSubscript:v55];
-                      [v50 appendFormat:@"%lu", objc_msgSend(v59, "unsignedLongValue")];
+                      descriptor6 = [v47 descriptor];
+                      shape6 = [descriptor6 shape];
+                      v59 = [shape6 objectAtIndexedSubscript:v55];
+                      [string2 appendFormat:@"%lu", objc_msgSend(v59, "unsignedLongValue")];
 
-                      v60 = [v47 descriptor];
-                      v61 = [v60 shape];
-                      v62 = [v61 count];
+                      descriptor7 = [v47 descriptor];
+                      shape7 = [descriptor7 shape];
+                      v62 = [shape7 count];
 
                       if (v62 > v56)
                       {
-                        [v50 appendString:{@", "}];
+                        [string2 appendString:{@", "}];
                       }
 
                       v55 = v56;
-                      v63 = [v47 descriptor];
-                      v64 = [v63 shape];
-                      v65 = [v64 count];
+                      descriptor8 = [v47 descriptor];
+                      shape8 = [descriptor8 shape];
+                      v65 = [shape8 count];
 
                       ++v56;
                     }
@@ -2801,14 +2801,14 @@ LABEL_28:
                     while (v65 > v55);
                   }
 
-                  [v50 appendString:@"]"];
-                  v66 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu -> invisibleOutput%lu [label=<<FONT POINT-SIZE=10>%@</FONT>>]", objc_msgSend(v209, "layerID"), v48, v50];
-                  [v14 addObject:v66];
+                  [string2 appendString:@"]"];
+                  v66 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu -> invisibleOutput%lu [label=<<FONT POINT-SIZE=10>%@</FONT>>]", objc_msgSend(v209, "layerID"), v48, string2];
+                  [array addObject:v66];
 
                   v15 = v48 + 1;
                 }
 
-                v207 = [v198 countByEnumeratingWithState:&v235 objects:v253 count:16];
+                v207 = [resultTensors countByEnumeratingWithState:&v235 objects:v253 count:16];
               }
 
               while (v207);
@@ -2822,27 +2822,27 @@ LABEL_28:
           if (objc_opt_isKindOfClass())
           {
             v67 = v18;
-            v68 = [v67 lossLabels];
-            if (v68)
+            lossLabels = [v67 lossLabels];
+            if (lossLabels)
             {
-              v69 = v68;
-              v70 = [v68 parentLayers];
-              v71 = [v70 count];
+              v69 = lossLabels;
+              parentLayers2 = [lossLabels parentLayers];
+              v71 = [parentLayers2 count];
 
               if (!v71)
               {
 LABEL_51:
-                v76 = [MEMORY[0x277CCACA8] stringWithFormat:@"invisibleLabel%lu [style = invis]", v191];
-                [v14 addObject:v76];
+                v191 = [MEMORY[0x277CCACA8] stringWithFormat:@"invisibleLabel%lu [style = invis]", v191];
+                [array addObject:v191];
 
-                v73 = [MEMORY[0x277CCAB68] string];
-                v77 = [v69 label];
-                [v73 appendString:v77];
+                string3 = [MEMORY[0x277CCAB68] string];
+                label3 = [v69 label];
+                [string3 appendString:label3];
 
-                [v73 appendString:@" ["];
-                v78 = [v69 descriptor];
-                v79 = [v78 shape];
-                v80 = [v79 count];
+                [string3 appendString:@" ["];
+                descriptor9 = [v69 descriptor];
+                shape9 = [descriptor9 shape];
+                v80 = [shape9 count];
 
                 if (v80)
                 {
@@ -2850,24 +2850,24 @@ LABEL_51:
                   v82 = 1;
                   do
                   {
-                    v83 = [v69 descriptor];
-                    v84 = [v83 shape];
-                    v85 = [v84 objectAtIndexedSubscript:v81];
-                    [v73 appendFormat:@"%lu", objc_msgSend(v85, "unsignedLongValue")];
+                    descriptor10 = [v69 descriptor];
+                    shape10 = [descriptor10 shape];
+                    v85 = [shape10 objectAtIndexedSubscript:v81];
+                    [string3 appendFormat:@"%lu", objc_msgSend(v85, "unsignedLongValue")];
 
-                    v86 = [v69 descriptor];
-                    v87 = [v86 shape];
-                    v88 = [v87 count];
+                    descriptor11 = [v69 descriptor];
+                    shape11 = [descriptor11 shape];
+                    v88 = [shape11 count];
 
                     if (v88 > v82)
                     {
-                      [v73 appendString:{@", "}];
+                      [string3 appendString:{@", "}];
                     }
 
                     v81 = v82;
-                    v89 = [v69 descriptor];
-                    v90 = [v89 shape];
-                    v91 = [v90 count];
+                    descriptor12 = [v69 descriptor];
+                    shape12 = [descriptor12 shape];
+                    v91 = [shape12 count];
 
                     ++v82;
                   }
@@ -2875,9 +2875,9 @@ LABEL_51:
                   while (v91 > v81);
                 }
 
-                [v73 appendString:@"]"];
-                v92 = [MEMORY[0x277CCACA8] stringWithFormat:@"invisibleLabel%lu -> %lu [label=<<FONT POINT-SIZE=10>%@</FONT>>]", v191, objc_msgSend(v67, "layerID"), v73];
-                [v14 addObject:v92];
+                [string3 appendString:@"]"];
+                v92 = [MEMORY[0x277CCACA8] stringWithFormat:@"invisibleLabel%lu -> %lu [label=<<FONT POINT-SIZE=10>%@</FONT>>]", v191, objc_msgSend(v67, "layerID"), string3];
+                [array addObject:v92];
 
                 ++v191;
                 v18 = v209;
@@ -2887,50 +2887,50 @@ LABEL_51:
 
             else
             {
-              v72 = [(MLCGraph *)v193 allLossLabels];
-              v73 = [v72 allKeys];
+              allLossLabels = [(MLCGraph *)selfCopy allLossLabels];
+              string3 = [allLossLabels allKeys];
 
-              if ([v73 count])
+              if ([string3 count])
               {
-                v74 = [v73 objectAtIndexedSubscript:0];
-                v75 = [(MLCGraph *)v193 allLossLabels];
-                v69 = [v75 objectForKeyedSubscript:v74];
+                v74 = [string3 objectAtIndexedSubscript:0];
+                allLossLabels2 = [(MLCGraph *)selfCopy allLossLabels];
+                v69 = [allLossLabels2 objectForKeyedSubscript:v74];
 
-                v14 = v205;
+                array = v205;
                 goto LABEL_51;
               }
 
               v69 = 0;
-              v14 = v205;
+              array = v205;
 LABEL_58:
             }
           }
 
           v93 = MEMORY[0x277CCACA8];
-          v94 = [v18 layerID];
-          v95 = [v18 summarizedDOTDescription];
-          v96 = [v93 stringWithFormat:@"%lu [fillcolor=lightblue label=%@]", v94, v95];
-          [v14 addObject:v96];
+          layerID = [v18 layerID];
+          summarizedDOTDescription = [v18 summarizedDOTDescription];
+          v96 = [v93 stringWithFormat:@"%lu [fillcolor=lightblue label=%@]", layerID, summarizedDOTDescription];
+          [array addObject:v96];
 
           v208 = [MEMORY[0x277CBEB58] set];
-          v97 = [MEMORY[0x277CBEB38] dictionary];
-          v98 = [MEMORY[0x277CBEB18] array];
-          v99 = [v18 fusedLayers];
-          v100 = [v99 count];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          array2 = [MEMORY[0x277CBEB18] array];
+          fusedLayers = [v18 fusedLayers];
+          v100 = [fusedLayers count];
 
           if (v100)
           {
-            v101 = [v18 fusedLayers];
-            [v98 addObjectsFromArray:v101];
+            fusedLayers2 = [v18 fusedLayers];
+            [array2 addObjectsFromArray:fusedLayers2];
 
             v102 = v18;
             v231 = 0u;
             v232 = 0u;
             v233 = 0u;
             v234 = 0u;
-            v199 = v102;
-            v103 = [v102 fusedLayers];
-            v104 = [v103 countByEnumeratingWithState:&v231 objects:v252 count:16];
+            resultTensors2 = v102;
+            fusedLayers3 = [v102 fusedLayers];
+            v104 = [fusedLayers3 countByEnumeratingWithState:&v231 objects:v252 count:16];
             if (v104)
             {
               v105 = v104;
@@ -2941,34 +2941,34 @@ LABEL_58:
                 {
                   if (*v232 != v106)
                   {
-                    objc_enumerationMutation(v103);
+                    objc_enumerationMutation(fusedLayers3);
                   }
 
                   v108 = *(*(&v231 + 1) + 8 * j);
-                  v109 = [v108 sourceTensors];
-                  if ([v109 count] != 1)
+                  sourceTensors2 = [v108 sourceTensors];
+                  if ([sourceTensors2 count] != 1)
                   {
                     [MLCGraph summarizedDOTDescription];
                   }
 
-                  v110 = [v108 sourceTensors];
-                  v111 = [v110 objectAtIndexedSubscript:0];
+                  sourceTensors3 = [v108 sourceTensors];
+                  v111 = [sourceTensors3 objectAtIndexedSubscript:0];
 
                   if ([v196 containsObject:v111])
                   {
-                    v112 = [v111 childLayers];
-                    [v208 addObjectsFromArray:v112];
+                    childLayers = [v111 childLayers];
+                    [v208 addObjectsFromArray:childLayers];
                   }
 
                   v230 = 0;
-                  v113 = [v199 layerID];
-                  v184 = [v108 layerID];
-                  hashCombine_9(&v230, v114, v115, v116, v117, v118, v119, v120, v113);
+                  layerID2 = [resultTensors2 layerID];
+                  layerID3 = [v108 layerID];
+                  hashCombine_9(&v230, v114, v115, v116, v117, v118, v119, v120, layerID2);
                   v121 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v230];
-                  [v97 setObject:v111 forKey:v121];
+                  [dictionary setObject:v111 forKey:v121];
                 }
 
-                v105 = [v103 countByEnumeratingWithState:&v231 objects:v252 count:16];
+                v105 = [fusedLayers3 countByEnumeratingWithState:&v231 objects:v252 count:16];
               }
 
               while (v105);
@@ -2981,8 +2981,8 @@ LABEL_58:
             v229 = 0u;
             v226 = 0u;
             v227 = 0u;
-            v199 = [v18 resultTensors];
-            v194 = [v199 countByEnumeratingWithState:&v226 objects:v251 count:16];
+            resultTensors2 = [v18 resultTensors];
+            v194 = [resultTensors2 countByEnumeratingWithState:&v226 objects:v251 count:16];
             if (v194)
             {
               v192 = *v227;
@@ -2994,27 +2994,27 @@ LABEL_58:
                 {
                   if (*v227 != v192)
                   {
-                    objc_enumerationMutation(v199);
+                    objc_enumerationMutation(resultTensors2);
                   }
 
                   v203 = v123;
                   v124 = *(*(&v226 + 1) + 8 * v123);
                   if ([v122 containsObject:v124])
                   {
-                    v125 = [v124 childLayers];
-                    [v208 addObjectsFromArray:v125];
+                    childLayers2 = [v124 childLayers];
+                    [v208 addObjectsFromArray:childLayers2];
                   }
 
                   v126 = MEMORY[0x277CBEB98];
-                  v127 = [(MLCGraph *)v193 layers];
-                  v128 = [v126 setWithArray:v127];
+                  layers = [(MLCGraph *)selfCopy layers];
+                  v128 = [v126 setWithArray:layers];
 
                   v224 = 0u;
                   v225 = 0u;
                   v222 = 0u;
                   v223 = 0u;
-                  v129 = [v124 childLayers];
-                  v130 = [v129 countByEnumeratingWithState:&v222 objects:v250 count:16];
+                  childLayers3 = [v124 childLayers];
+                  v130 = [childLayers3 countByEnumeratingWithState:&v222 objects:v250 count:16];
                   if (v130)
                   {
                     v131 = v130;
@@ -3025,17 +3025,17 @@ LABEL_58:
                       {
                         if (*v223 != v132)
                         {
-                          objc_enumerationMutation(v129);
+                          objc_enumerationMutation(childLayers3);
                         }
 
                         v134 = *(*(&v222 + 1) + 8 * k);
                         if ([v128 containsObject:v134])
                         {
-                          [v98 addObject:v134];
+                          [array2 addObject:v134];
                         }
                       }
 
-                      v131 = [v129 countByEnumeratingWithState:&v222 objects:v250 count:16];
+                      v131 = [childLayers3 countByEnumeratingWithState:&v222 objects:v250 count:16];
                     }
 
                     while (v131);
@@ -3045,8 +3045,8 @@ LABEL_58:
                   v221 = 0u;
                   v218 = 0u;
                   v219 = 0u;
-                  v135 = [v124 childLayers];
-                  v136 = [v135 countByEnumeratingWithState:&v218 objects:v249 count:16];
+                  childLayers4 = [v124 childLayers];
+                  v136 = [childLayers4 countByEnumeratingWithState:&v218 objects:v249 count:16];
                   if (v136)
                   {
                     v137 = v136;
@@ -3057,31 +3057,31 @@ LABEL_58:
                       {
                         if (*v219 != v138)
                         {
-                          objc_enumerationMutation(v135);
+                          objc_enumerationMutation(childLayers4);
                         }
 
                         v140 = *(*(&v218 + 1) + 8 * m);
                         v230 = 0;
-                        v141 = [v209 layerID];
-                        v184 = [v140 layerID];
-                        hashCombine_9(&v230, v142, v143, v144, v145, v146, v147, v148, v141);
+                        layerID4 = [v209 layerID];
+                        layerID3 = [v140 layerID];
+                        hashCombine_9(&v230, v142, v143, v144, v145, v146, v147, v148, layerID4);
                         v149 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v230];
-                        [v97 setObject:v124 forKey:v149];
+                        [dictionary setObject:v124 forKey:v149];
                       }
 
-                      v137 = [v135 countByEnumeratingWithState:&v218 objects:v249 count:16];
+                      v137 = [childLayers4 countByEnumeratingWithState:&v218 objects:v249 count:16];
                     }
 
                     while (v137);
                   }
 
-                  v14 = v205;
+                  array = v205;
                   v123 = v203 + 1;
                   v122 = v196;
                 }
 
                 while ((v203 + 1) != v194);
-                v194 = [v199 countByEnumeratingWithState:&v226 objects:v251 count:16];
+                v194 = [resultTensors2 countByEnumeratingWithState:&v226 objects:v251 count:16];
               }
 
               while (v194);
@@ -3092,7 +3092,7 @@ LABEL_58:
           v217 = 0u;
           v214 = 0u;
           v215 = 0u;
-          v195 = v98;
+          v195 = array2;
           v204 = [v195 countByEnumeratingWithState:&v214 objects:v248 count:16];
           if (v204)
           {
@@ -3116,51 +3116,51 @@ LABEL_58:
 
                 v154 = v153;
                 v155 = MEMORY[0x277CCACA8];
-                v156 = [v151 layerID];
-                v157 = [v151 summarizedDOTDescription];
-                v158 = [v155 stringWithFormat:@"%lu [fillcolor=lightblue label=%@]", v156, v157];
-                [v14 addObject:v158];
+                layerID5 = [v151 layerID];
+                summarizedDOTDescription2 = [v151 summarizedDOTDescription];
+                v157 = [v155 stringWithFormat:@"%lu [fillcolor=lightblue label=%@]", layerID5, summarizedDOTDescription2];
+                [array addObject:v157];
 
                 v230 = 0;
-                LOBYTE(v158) = [v209 layerID];
-                v185 = [v151 layerID];
-                hashCombine_9(&v230, v159, v160, v161, v162, v163, v164, v165, v158);
+                LOBYTE(v157) = [v209 layerID];
+                layerID6 = [v151 layerID];
+                hashCombine_9(&v230, v159, v160, v161, v162, v163, v164, v165, v157);
                 v166 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v230];
-                v167 = [v97 objectForKey:v166];
+                v167 = [dictionary objectForKey:v166];
 
-                v168 = [v167 descriptor];
-                v169 = [v168 shape];
+                descriptor13 = [v167 descriptor];
+                shape13 = [descriptor13 shape];
 
-                v170 = [MEMORY[0x277CCAB68] string];
-                v171 = [v167 label];
-                [v170 appendString:v171];
+                string4 = [MEMORY[0x277CCAB68] string];
+                label4 = [v167 label];
+                [string4 appendString:label4];
 
-                [v170 appendString:@"\n"];
-                [v170 appendString:@" ["];
-                if ([v169 count])
+                [string4 appendString:@"\n"];
+                [string4 appendString:@" ["];
+                if ([shape13 count])
                 {
                   v172 = 0;
                   v173 = 1;
                   do
                   {
-                    v174 = [v169 objectAtIndexedSubscript:v172];
-                    [v170 appendFormat:@"%lu", objc_msgSend(v174, "unsignedLongValue"), v185];
+                    v174 = [shape13 objectAtIndexedSubscript:v172];
+                    [string4 appendFormat:@"%lu", objc_msgSend(v174, "unsignedLongValue"), layerID6];
 
-                    if ([v169 count] > v173)
+                    if ([shape13 count] > v173)
                     {
-                      [v170 appendString:{@", "}];
+                      [string4 appendString:{@", "}];
                     }
 
                     v172 = v173++;
                   }
 
-                  while ([v169 count] > v172);
+                  while ([shape13 count] > v172);
                 }
 
-                [v170 appendString:@"]"];
-                v175 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu -> %lu [style=%@ label=<<FONT POINT-SIZE=10>%@</FONT>>]", objc_msgSend(v209, "layerID"), objc_msgSend(v151, "layerID"), v154, v170];
-                v14 = v205;
-                [v205 addObject:v175];
+                [string4 appendString:@"]"];
+                v170 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu -> %lu [style=%@ label=<<FONT POINT-SIZE=10>%@</FONT>>]", objc_msgSend(v209, "layerID"), objc_msgSend(v151, "layerID"), v154, string4];
+                array = v205;
+                [v205 addObject:v170];
               }
 
               v204 = [v195 countByEnumeratingWithState:&v214 objects:v248 count:16];
@@ -3191,7 +3191,7 @@ LABEL_58:
     v213 = 0u;
     v210 = 0u;
     v211 = 0u;
-    v177 = v14;
+    v177 = array;
     v178 = [v177 countByEnumeratingWithState:&v210 objects:v247 count:16];
     if (v178)
     {
@@ -3206,7 +3206,7 @@ LABEL_58:
             objc_enumerationMutation(v177);
           }
 
-          [(__CFString *)v10 appendFormat:@"\t%@;\n", *(*(&v210 + 1) + 8 * ii), v184];
+          [(__CFString *)v10 appendFormat:@"\t%@;\n", *(*(&v210 + 1) + 8 * ii), layerID3];
         }
 
         v179 = [v177 countByEnumeratingWithState:&v210 objects:v247 count:16];
@@ -3224,33 +3224,33 @@ LABEL_58:
   return v10;
 }
 
-- (void)updateLSTMLayersForVariableSequenceLengthInGraph:(id)a3 withInputData:(id)a4
+- (void)updateLSTMLayersForVariableSequenceLengthInGraph:(id)graph withInputData:(id)data
 {
   v41 = *MEMORY[0x277D85DE8];
-  v34 = a4;
-  v5 = [(MLCGraph *)self lstmLayerIndexList];
-  v6 = [v5 count];
+  dataCopy = data;
+  lstmLayerIndexList = [(MLCGraph *)self lstmLayerIndexList];
+  v6 = [lstmLayerIndexList count];
 
   if (v6)
   {
     v7 = 0;
     while (1)
     {
-      v8 = [(MLCGraph *)self lstmLayerIndexList];
-      v9 = [v8 objectAtIndexedSubscript:v7];
-      v10 = [v9 unsignedIntegerValue];
+      lstmLayerIndexList2 = [(MLCGraph *)self lstmLayerIndexList];
+      v9 = [lstmLayerIndexList2 objectAtIndexedSubscript:v7];
+      unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-      v11 = [(MLCGraph *)self graphLayerList];
-      v12 = [v11 objectAtIndexedSubscript:v10];
+      graphLayerList = [(MLCGraph *)self graphLayerList];
+      v12 = [graphLayerList objectAtIndexedSubscript:unsignedIntegerValue];
 
-      v13 = [v12 sourceTensors];
-      if ([v13 count] == 2)
+      sourceTensors = [v12 sourceTensors];
+      if ([sourceTensors count] == 2)
       {
         break;
       }
 
-      v14 = [v12 sourceTensors];
-      v15 = [v14 count];
+      sourceTensors2 = [v12 sourceTensors];
+      v15 = [sourceTensors2 count];
 
       if (v15 == 4)
       {
@@ -3260,8 +3260,8 @@ LABEL_58:
 LABEL_19:
 
       ++v7;
-      v31 = [(MLCGraph *)self lstmLayerIndexList];
-      v32 = [v31 count];
+      lstmLayerIndexList3 = [(MLCGraph *)self lstmLayerIndexList];
+      v32 = [lstmLayerIndexList3 count];
 
       if (v7 >= v32)
       {
@@ -3271,10 +3271,10 @@ LABEL_19:
 
 LABEL_6:
     v35 = v7;
-    v16 = [v12 sourceTensors];
-    v17 = [v16 count];
-    v18 = [v12 sourceTensors];
-    v19 = v18;
+    sourceTensors3 = [v12 sourceTensors];
+    v17 = [sourceTensors3 count];
+    sourceTensors4 = [v12 sourceTensors];
+    v19 = sourceTensors4;
     if (v17 == 2)
     {
       v20 = 1;
@@ -3285,13 +3285,13 @@ LABEL_6:
       v20 = 3;
     }
 
-    v21 = [v18 objectAtIndexedSubscript:v20];
+    v21 = [sourceTensors4 objectAtIndexedSubscript:v20];
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v22 = v34;
+    v22 = dataCopy;
     v23 = [v22 countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v23)
     {
@@ -3307,8 +3307,8 @@ LABEL_6:
           }
 
           v27 = *(*(&v36 + 1) + 8 * i);
-          v28 = [v21 label];
-          v29 = [v28 isEqualToString:v27];
+          label = [v21 label];
+          v29 = [label isEqualToString:v27];
 
           if (v29)
           {
@@ -3332,36 +3332,36 @@ LABEL_20:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)allocateDeviceMemoryForTensor:(id)a3 device:(id)a4
+- (void)allocateDeviceMemoryForTensor:(id)tensor device:(id)device
 {
-  v31 = a3;
-  v6 = a4;
-  v7 = [v6 computeEngine];
-  v8 = [v7 needToAllocateDeviceMemoryForTensor:v31];
+  tensorCopy = tensor;
+  deviceCopy = device;
+  computeEngine = [deviceCopy computeEngine];
+  v8 = [computeEngine needToAllocateDeviceMemoryForTensor:tensorCopy];
 
   if (v8)
   {
-    if ([v31 computeFlags])
+    if ([tensorCopy computeFlags])
     {
       goto LABEL_14;
     }
 
-    v9 = [v31 childLayers];
-    v10 = [v9 count];
+    childLayers = [tensorCopy childLayers];
+    v10 = [childLayers count];
 
     if (!v10)
     {
       goto LABEL_14;
     }
 
-    v11 = [v6 computeEngine];
-    v12 = [v11 deviceMemorySizeForTensor:v31];
+    computeEngine2 = [deviceCopy computeEngine];
+    v12 = [computeEngine2 deviceMemorySizeForTensor:tensorCopy];
 
-    v13 = [(MLCGraph *)self freeResourceList];
-    v14 = [v13 count];
+    freeResourceList = [(MLCGraph *)self freeResourceList];
+    v14 = [freeResourceList count];
 
-    v15 = [(MLCGraph *)self freeResourceList];
-    v16 = [v15 count];
+    freeResourceList2 = [(MLCGraph *)self freeResourceList];
+    v16 = [freeResourceList2 count];
 
     if (v16)
     {
@@ -3369,10 +3369,10 @@ LABEL_20:
       v18 = -1;
       while (1)
       {
-        v19 = [v6 computeEngine];
-        v20 = [(MLCGraph *)self freeResourceList];
-        v21 = [v20 objectAtIndexedSubscript:v17];
-        v22 = [v19 deviceMemorySizeForTensor:v21];
+        computeEngine3 = [deviceCopy computeEngine];
+        freeResourceList3 = [(MLCGraph *)self freeResourceList];
+        v21 = [freeResourceList3 objectAtIndexedSubscript:v17];
+        v22 = [computeEngine3 deviceMemorySizeForTensor:v21];
 
         if (v22 == v12)
         {
@@ -3386,8 +3386,8 @@ LABEL_20:
         }
 
         ++v17;
-        v23 = [(MLCGraph *)self freeResourceList];
-        v24 = [v23 count];
+        freeResourceList4 = [(MLCGraph *)self freeResourceList];
+        v24 = [freeResourceList4 count];
 
         if (v17 >= v24)
         {
@@ -3399,86 +3399,86 @@ LABEL_20:
     }
 
 LABEL_12:
-    v25 = [(MLCGraph *)self freeResourceList];
-    v26 = [v25 count];
+    freeResourceList5 = [(MLCGraph *)self freeResourceList];
+    v26 = [freeResourceList5 count];
 
     if (v14 >= v26)
     {
 LABEL_14:
-      v28 = [v6 computeEngine];
-      [v28 allocateDeviceMemoryForTensor:v31];
+      computeEngine4 = [deviceCopy computeEngine];
+      [computeEngine4 allocateDeviceMemoryForTensor:tensorCopy];
     }
 
     else
     {
-      v27 = [(MLCGraph *)self freeResourceList];
-      v28 = [v27 objectAtIndexedSubscript:v14];
+      freeResourceList6 = [(MLCGraph *)self freeResourceList];
+      computeEngine4 = [freeResourceList6 objectAtIndexedSubscript:v14];
 
-      v29 = [v6 computeEngine];
-      [v29 shareDeviceMemoryWithResultTensor:v31 sourceTensor:v28];
+      computeEngine5 = [deviceCopy computeEngine];
+      [computeEngine5 shareDeviceMemoryWithResultTensor:tensorCopy sourceTensor:computeEngine4];
 
-      v30 = [(MLCGraph *)self freeResourceList];
-      [v30 removeObjectAtIndex:v14];
+      freeResourceList7 = [(MLCGraph *)self freeResourceList];
+      [freeResourceList7 removeObjectAtIndex:v14];
     }
   }
 }
 
-- (void)freeDeviceMemoryForTensorIfSafe:(id)a3 device:(id)a4
+- (void)freeDeviceMemoryForTensorIfSafe:(id)safe device:(id)device
 {
-  v5 = a3;
-  v6 = [v5 parentLayers];
-  if (![v6 count])
+  safeCopy = safe;
+  parentLayers = [safeCopy parentLayers];
+  if (![parentLayers count])
   {
 
     goto LABEL_8;
   }
 
-  v7 = [v5 computeFlags];
+  computeFlags = [safeCopy computeFlags];
 
-  if (v7)
+  if (computeFlags)
   {
 LABEL_8:
-    v9 = v5;
+    sharedMemoryTensor2 = safeCopy;
     goto LABEL_9;
   }
 
-  v8 = [v5 sharedMemoryTensor];
+  sharedMemoryTensor = [safeCopy sharedMemoryTensor];
 
-  if (!v8)
+  if (!sharedMemoryTensor)
   {
-    v9 = v5;
+    sharedMemoryTensor2 = safeCopy;
 LABEL_11:
-    if ([v9 readCount])
+    if ([sharedMemoryTensor2 readCount])
     {
-      [v9 setReadCount:{objc_msgSend(v9, "readCount") - 1}];
-      if (![v9 readCount])
+      [sharedMemoryTensor2 setReadCount:{objc_msgSend(sharedMemoryTensor2, "readCount") - 1}];
+      if (![sharedMemoryTensor2 readCount])
       {
-        v12 = [(MLCGraph *)self freeResourceList];
-        [v12 addObject:v9];
+        freeResourceList = [(MLCGraph *)self freeResourceList];
+        [freeResourceList addObject:sharedMemoryTensor2];
       }
     }
 
     else
     {
-      v13 = [(MLCGraph *)self freeResourceList];
-      v14 = [v13 count];
+      freeResourceList2 = [(MLCGraph *)self freeResourceList];
+      v14 = [freeResourceList2 count];
 
       if (v14)
       {
         v15 = 0;
         while (1)
         {
-          v16 = [(MLCGraph *)self freeResourceList];
-          v17 = [v16 objectAtIndexedSubscript:v15];
+          freeResourceList3 = [(MLCGraph *)self freeResourceList];
+          v17 = [freeResourceList3 objectAtIndexedSubscript:v15];
 
-          if (v9 == v17)
+          if (sharedMemoryTensor2 == v17)
           {
             break;
           }
 
           ++v15;
-          v18 = [(MLCGraph *)self freeResourceList];
-          v19 = [v18 count];
+          freeResourceList4 = [(MLCGraph *)self freeResourceList];
+          v19 = [freeResourceList4 count];
 
           if (v15 >= v19)
           {
@@ -3490,12 +3490,12 @@ LABEL_11:
       else
       {
 LABEL_19:
-        v20 = [v9 childLayers];
-        v21 = [v20 count];
+        childLayers = [sharedMemoryTensor2 childLayers];
+        v21 = [childLayers count];
 
         if (v21)
         {
-          v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"tensor=%@ not found in free list", v9];
+          v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"tensor=%@ not found in free list", sharedMemoryTensor2];
           v23 = +[MLCLog framework];
           if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
           {
@@ -3508,18 +3508,18 @@ LABEL_19:
     goto LABEL_9;
   }
 
-  v9 = [v5 sharedMemoryTensor];
+  sharedMemoryTensor2 = [safeCopy sharedMemoryTensor];
 
-  v10 = [v9 parentLayers];
-  if (![v10 count])
+  parentLayers2 = [sharedMemoryTensor2 parentLayers];
+  if (![parentLayers2 count])
   {
 
     goto LABEL_9;
   }
 
-  v11 = [v9 computeFlags];
+  computeFlags2 = [sharedMemoryTensor2 computeFlags];
 
-  if ((v11 & 1) == 0)
+  if ((computeFlags2 & 1) == 0)
   {
     goto LABEL_11;
   }
@@ -3527,86 +3527,86 @@ LABEL_19:
 LABEL_9:
 }
 
-- (void)updateDeviceMemoryReadCountForTensor:(id)a3
+- (void)updateDeviceMemoryReadCountForTensor:(id)tensor
 {
-  v7 = a3;
-  v3 = [v7 sharedMemoryTensor];
+  tensorCopy = tensor;
+  sharedMemoryTensor = [tensorCopy sharedMemoryTensor];
 
-  if (v3)
+  if (sharedMemoryTensor)
   {
-    v4 = [v7 sharedMemoryTensor];
-    v5 = [v7 childLayers];
-    [v4 setReadCount:{objc_msgSend(v4, "readCount") + objc_msgSend(v5, "count")}];
+    sharedMemoryTensor2 = [tensorCopy sharedMemoryTensor];
+    childLayers = [tensorCopy childLayers];
+    [sharedMemoryTensor2 setReadCount:{objc_msgSend(sharedMemoryTensor2, "readCount") + objc_msgSend(childLayers, "count")}];
 
-    [v7 setReadCount:0];
+    [tensorCopy setReadCount:0];
   }
 
   else
   {
-    v6 = [v7 childLayers];
-    [v7 setReadCount:{objc_msgSend(v6, "count")}];
+    childLayers2 = [tensorCopy childLayers];
+    [tensorCopy setReadCount:{objc_msgSend(childLayers2, "count")}];
 
-    v7 = v6;
+    tensorCopy = childLayers2;
   }
 }
 
-- (void)updateDeviceMemoryReadCountForGradientWithLayer:(id)a3 tensor:(id)a4 checkIfSourceNeeded:(BOOL)a5 checkIfResultNeeded:(BOOL)a6
+- (void)updateDeviceMemoryReadCountForGradientWithLayer:(id)layer tensor:(id)tensor checkIfSourceNeeded:(BOOL)needed checkIfResultNeeded:(BOOL)resultNeeded
 {
-  v6 = a6;
-  v7 = a5;
-  v22 = a3;
-  v9 = a4;
-  if (v6)
+  resultNeededCopy = resultNeeded;
+  neededCopy = needed;
+  layerCopy = layer;
+  tensorCopy = tensor;
+  if (resultNeededCopy)
   {
-    v10 = [v22 deviceOps];
-    v11 = [v10 objectAtIndexedSubscript:0];
-    v12 = [v11 resultOfForwardNeededForGradient];
+    deviceOps = [layerCopy deviceOps];
+    v11 = [deviceOps objectAtIndexedSubscript:0];
+    resultOfForwardNeededForGradient = [v11 resultOfForwardNeededForGradient];
 
-    if (v12)
+    if (resultOfForwardNeededForGradient)
     {
-      v13 = [v9 sharedMemoryTensor];
+      sharedMemoryTensor = [tensorCopy sharedMemoryTensor];
 
-      if (v13)
+      if (sharedMemoryTensor)
       {
-        v14 = [v9 sharedMemoryTensor];
-        [v14 setReadCount:{objc_msgSend(v14, "readCount") + 1}];
+        sharedMemoryTensor2 = [tensorCopy sharedMemoryTensor];
+        [sharedMemoryTensor2 setReadCount:{objc_msgSend(sharedMemoryTensor2, "readCount") + 1}];
 
         v15 = 0;
       }
 
       else
       {
-        v15 = [v9 readCount] + 1;
+        v15 = [tensorCopy readCount] + 1;
       }
 
-      [v9 setReadCount:v15];
+      [tensorCopy setReadCount:v15];
     }
   }
 
-  if (v7)
+  if (neededCopy)
   {
-    v16 = [v22 deviceOps];
-    v17 = [v16 objectAtIndexedSubscript:0];
-    v18 = [v17 sourceOfForwardNeededForGradient];
+    deviceOps2 = [layerCopy deviceOps];
+    v17 = [deviceOps2 objectAtIndexedSubscript:0];
+    sourceOfForwardNeededForGradient = [v17 sourceOfForwardNeededForGradient];
 
-    if (v18)
+    if (sourceOfForwardNeededForGradient)
     {
-      v19 = [v9 sharedMemoryTensor];
+      sharedMemoryTensor3 = [tensorCopy sharedMemoryTensor];
 
-      if (v19)
+      if (sharedMemoryTensor3)
       {
-        v20 = [v9 sharedMemoryTensor];
-        [v20 setReadCount:{objc_msgSend(v20, "readCount") + 1}];
+        sharedMemoryTensor4 = [tensorCopy sharedMemoryTensor];
+        [sharedMemoryTensor4 setReadCount:{objc_msgSend(sharedMemoryTensor4, "readCount") + 1}];
 
         v21 = 0;
       }
 
       else
       {
-        v21 = [v9 readCount] + 1;
+        v21 = [tensorCopy readCount] + 1;
       }
 
-      [v9 setReadCount:v21];
+      [tensorCopy setReadCount:v21];
     }
   }
 }
@@ -3795,7 +3795,7 @@ LABEL_9:
 - (void)summarizedDOTDescription
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = NSStringFromSelector(a1);
+  v1 = NSStringFromSelector(self);
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_1_1();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);

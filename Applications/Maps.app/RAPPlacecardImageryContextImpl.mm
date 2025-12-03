@@ -1,41 +1,41 @@
 @interface RAPPlacecardImageryContextImpl
 - (GEOPDPlace)reportedPlace;
 - (NSString)vendorIdentifier;
-- (RAPPlacecardImageryContextImpl)initWithMapItem:(id)a3 photo:(id)a4 selectedPhotoURL:(id)a5;
+- (RAPPlacecardImageryContextImpl)initWithMapItem:(id)item photo:(id)photo selectedPhotoURL:(id)l;
 @end
 
 @implementation RAPPlacecardImageryContextImpl
 
 - (GEOPDPlace)reportedPlace
 {
-  v2 = [(MKMapItem *)self->_mapItem _geoMapItem];
-  v3 = [v2 _placeData];
+  _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+  _placeData = [_geoMapItem _placeData];
 
-  return v3;
+  return _placeData;
 }
 
 - (NSString)vendorIdentifier
 {
-  v2 = [(GEOMapItemPhoto *)self->_geoMapItemPhoto attribution];
-  v3 = [v2 providerID];
+  attribution = [(GEOMapItemPhoto *)self->_geoMapItemPhoto attribution];
+  providerID = [attribution providerID];
 
-  return v3;
+  return providerID;
 }
 
-- (RAPPlacecardImageryContextImpl)initWithMapItem:(id)a3 photo:(id)a4 selectedPhotoURL:(id)a5
+- (RAPPlacecardImageryContextImpl)initWithMapItem:(id)item photo:(id)photo selectedPhotoURL:(id)l
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  photoCopy = photo;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = RAPPlacecardImageryContextImpl;
   v12 = [(RAPPlacecardImageryContextImpl *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_selectedPhotoURL, a5);
-    objc_storeStrong(&v13->_mapItem, a3);
-    objc_storeStrong(&v13->_geoMapItemPhoto, a4);
+    objc_storeStrong(&v12->_selectedPhotoURL, l);
+    objc_storeStrong(&v13->_mapItem, item);
+    objc_storeStrong(&v13->_geoMapItemPhoto, photo);
   }
 
   return v13;

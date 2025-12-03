@@ -1,19 +1,19 @@
 @interface ICDocCamScanCache
-+ (void)setCachedItem:(id)a3;
++ (void)setCachedItem:(id)item;
 @end
 
 @implementation ICDocCamScanCache
 
-+ (void)setCachedItem:(id)a3
++ (void)setCachedItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   if (sCachedItem)
   {
     [sCachedItem deleteCacheImages];
   }
 
   v4 = sCachedItem;
-  sCachedItem = v3;
+  sCachedItem = itemCopy;
 }
 
 @end

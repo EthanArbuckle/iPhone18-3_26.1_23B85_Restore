@@ -1,35 +1,35 @@
 @interface SGQuickResponsesRanking
-- (SGQuickResponsesRanking)initWithSeed:(unint64_t)a3;
-- (id)classResultsForScores:(id)a3 numResponses:(id)a4 responseCount:(unint64_t)a5 config:(id)a6;
-- (id)indexesForScores:(id)a3 numResponses:(id)a4;
-- (id)resultsForModelScores:(id)a3 responseCount:(unint64_t)a4 config:(id)a5;
-- (id)semanticClassesForCategory:(unint64_t)a3 responseCount:(unint64_t)a4 configReplies:(id)a5;
-- (id)semanticClassesForResults:(id)a3 scores:(id)a4 numResponses:(id)a5 config:(id)a6;
+- (SGQuickResponsesRanking)initWithSeed:(unint64_t)seed;
+- (id)classResultsForScores:(id)scores numResponses:(id)responses responseCount:(unint64_t)count config:(id)config;
+- (id)indexesForScores:(id)scores numResponses:(id)responses;
+- (id)resultsForModelScores:(id)scores responseCount:(unint64_t)count config:(id)config;
+- (id)semanticClassesForCategory:(unint64_t)category responseCount:(unint64_t)count configReplies:(id)replies;
+- (id)semanticClassesForResults:(id)results scores:(id)scores numResponses:(id)responses config:(id)config;
 @end
 
 @implementation SGQuickResponsesRanking
 
-- (id)semanticClassesForCategory:(unint64_t)a3 responseCount:(unint64_t)a4 configReplies:(id)a5
+- (id)semanticClassesForCategory:(unint64_t)category responseCount:(unint64_t)count configReplies:(id)replies
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [v8 categorySemanticClasses];
-  v10 = [v9 objectAtIndexedSubscript:a3];
+  repliesCopy = replies;
+  categorySemanticClasses = [repliesCopy categorySemanticClasses];
+  v10 = [categorySemanticClasses objectAtIndexedSubscript:category];
 
   v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v10];
   [SGRandomization shuffleMutableArray:v11 withRng:self->_rng];
-  if ([v11 count] >= a4)
+  if ([v11 count] >= count)
   {
-    v23 = [v11 subarrayWithRange:{0, a4}];
+    v23 = [v11 subarrayWithRange:{0, count}];
   }
 
   else
   {
-    v26 = self;
-    v27 = a4;
+    selfCopy = self;
+    countCopy = count;
     v12 = objc_opt_new();
-    v29 = v8;
-    v13 = [v8 semanticClasses];
+    v29 = repliesCopy;
+    semanticClasses = [repliesCopy semanticClasses];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -51,7 +51,7 @@
           }
 
           v19 = *(*(&v30 + 1) + 8 * i);
-          v20 = [v13 objectAtIndexedSubscript:{objc_msgSend(v19, "unsignedIntegerValue", v26)}];
+          v20 = [semanticClasses objectAtIndexedSubscript:{objc_msgSend(v19, "unsignedIntegerValue", selfCopy)}];
           v21 = [v20 count] - 1;
 
           for (; v21; --v21)
@@ -66,12 +66,12 @@
       while (v16);
     }
 
-    [SGRandomization shuffleMutableArray:v12 withRng:v26->_rng];
-    v22 = [v12 subarrayWithRange:{0, v27 - objc_msgSend(v11, "count")}];
+    [SGRandomization shuffleMutableArray:v12 withRng:selfCopy->_rng];
+    v22 = [v12 subarrayWithRange:{0, countCopy - objc_msgSend(v11, "count")}];
     v23 = [v11 arrayByAddingObjectsFromArray:v22];
 
     v10 = v28;
-    v8 = v29;
+    repliesCopy = v29;
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -79,22 +79,22 @@
   return v23;
 }
 
-- (id)semanticClassesForResults:(id)a3 scores:(id)a4 numResponses:(id)a5 config:(id)a6
+- (id)semanticClassesForResults:(id)results scores:(id)scores numResponses:(id)responses config:(id)config
 {
   v56 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v13 predictionParams];
-  v15 = [v14 isPerCategory];
+  resultsCopy = results;
+  scoresCopy = scores;
+  responsesCopy = responses;
+  configCopy = config;
+  predictionParams = [configCopy predictionParams];
+  isPerCategory = [predictionParams isPerCategory];
 
-  if (v15 & 1) != 0 && ([v13 replies], v16 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v16, (isKindOfClass))
+  if (isPerCategory & 1) != 0 && ([configCopy replies], v16 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v16, (isKindOfClass))
   {
-    v41 = v13;
-    v18 = [v13 replies];
-    v19 = [v18 categoryModels];
-    v20 = [v19 count];
+    v41 = configCopy;
+    replies = [configCopy replies];
+    categoryModels = [replies categoryModels];
+    v20 = [categoryModels count];
 
     v21 = objc_opt_new();
     v22 = objc_opt_new();
@@ -117,22 +117,22 @@
     v50[1] = 3221225472;
     v50[2] = __80__SGQuickResponsesRanking_semanticClassesForResults_scores_numResponses_config___block_invoke;
     v50[3] = &unk_278EB85F8;
-    v43 = v11;
-    v51 = v11;
+    v43 = scoresCopy;
+    v51 = scoresCopy;
     v25 = v21;
     v52 = v25;
-    v53 = self;
-    v39 = v18;
+    selfCopy = self;
+    v39 = replies;
     v54 = v39;
-    v42 = v12;
-    [v12 enumerateObjectsUsingBlock:v50];
+    v42 = responsesCopy;
+    [responsesCopy enumerateObjectsUsingBlock:v50];
     v26 = objc_opt_new();
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v44 = v10;
-    obj = v10;
+    v44 = resultsCopy;
+    obj = resultsCopy;
     v27 = [obj countByEnumeratingWithState:&v46 objects:v55 count:16];
     if (v27)
     {
@@ -147,15 +147,15 @@
             objc_enumerationMutation(obj);
           }
 
-          v31 = [*(*(&v46 + 1) + 8 * i) unsignedIntegerValue];
-          v32 = [v22 objectAtIndexedSubscript:v31];
-          v33 = [v32 unsignedIntegerValue];
+          unsignedIntegerValue = [*(*(&v46 + 1) + 8 * i) unsignedIntegerValue];
+          v32 = [v22 objectAtIndexedSubscript:unsignedIntegerValue];
+          unsignedIntegerValue2 = [v32 unsignedIntegerValue];
 
-          v34 = [v25 objectAtIndexedSubscript:v31];
-          v35 = [v34 objectAtIndexedSubscript:v33];
+          v34 = [v25 objectAtIndexedSubscript:unsignedIntegerValue];
+          v35 = [v34 objectAtIndexedSubscript:unsignedIntegerValue2];
 
-          v36 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:v33 + 1];
-          [v22 setObject:v36 atIndexedSubscript:v31];
+          v36 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:unsignedIntegerValue2 + 1];
+          [v22 setObject:v36 atIndexedSubscript:unsignedIntegerValue];
 
           [v26 addObject:v35];
         }
@@ -166,15 +166,15 @@
       while (v28);
     }
 
-    v11 = v43;
-    v10 = v44;
-    v13 = v41;
-    v12 = v42;
+    scoresCopy = v43;
+    resultsCopy = v44;
+    configCopy = v41;
+    responsesCopy = v42;
   }
 
   else
   {
-    v26 = v10;
+    v26 = resultsCopy;
   }
 
   v37 = *MEMORY[0x277D85DE8];
@@ -194,20 +194,20 @@ void __80__SGQuickResponsesRanking_semanticClassesForResults_scores_numResponses
   [*(a1 + 40) setObject:v10 atIndexedSubscript:v8];
 }
 
-- (id)indexesForScores:(id)a3 numResponses:(id)a4
+- (id)indexesForScores:(id)scores numResponses:(id)responses
 {
-  v5 = a3;
-  v6 = a4;
+  scoresCopy = scores;
+  responsesCopy = responses;
   v7 = objc_opt_new();
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __57__SGQuickResponsesRanking_indexesForScores_numResponses___block_invoke;
   v13[3] = &unk_278EB85D0;
-  v14 = v5;
+  v14 = scoresCopy;
   v8 = v7;
   v15 = v8;
-  v9 = v5;
-  [v6 enumerateObjectsUsingBlock:v13];
+  v9 = scoresCopy;
+  [responsesCopy enumerateObjectsUsingBlock:v13];
 
   v10 = v15;
   v11 = v8;
@@ -228,37 +228,37 @@ void __57__SGQuickResponsesRanking_indexesForScores_numResponses___block_invoke(
   }
 }
 
-- (id)classResultsForScores:(id)a3 numResponses:(id)a4 responseCount:(unint64_t)a5 config:(id)a6
+- (id)classResultsForScores:(id)scores numResponses:(id)responses responseCount:(unint64_t)count config:(id)config
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = [v13 predictionParams];
-  v15 = [v14 responsesToShowAtTopForDiversity];
+  scoresCopy = scores;
+  responsesCopy = responses;
+  configCopy = config;
+  predictionParams = [configCopy predictionParams];
+  responsesToShowAtTopForDiversity = [predictionParams responsesToShowAtTopForDiversity];
 
-  if (v15 && v15 < a5)
+  if (responsesToShowAtTopForDiversity && responsesToShowAtTopForDiversity < count)
   {
-    v16 = [SGQuickResponsesDistributingCount numResponsesForScores:v11 responseCount:v15 config:v13];
+    v16 = [SGQuickResponsesDistributingCount numResponsesForScores:scoresCopy responseCount:responsesToShowAtTopForDiversity config:configCopy];
     v17 = objc_opt_new();
     v24 = MEMORY[0x277D85DD0];
     v25 = 3221225472;
     v26 = __83__SGQuickResponsesRanking_classResultsForScores_numResponses_responseCount_config___block_invoke;
     v27 = &unk_278EB85A8;
     v28 = v16;
-    v29 = self;
+    selfCopy = self;
     v30 = v17;
     v31 = a2;
     v18 = v17;
     v19 = v16;
-    [v12 enumerateObjectsUsingBlock:&v24];
-    v20 = [(SGQuickResponsesRanking *)self indexesForScores:v11 numResponses:v19, v24, v25, v26, v27];
-    v21 = [(SGQuickResponsesRanking *)self indexesForScores:v11 numResponses:v18];
+    [responsesCopy enumerateObjectsUsingBlock:&v24];
+    v20 = [(SGQuickResponsesRanking *)self indexesForScores:scoresCopy numResponses:v19, v24, v25, v26, v27];
+    v21 = [(SGQuickResponsesRanking *)self indexesForScores:scoresCopy numResponses:v18];
     v22 = [v20 arrayByAddingObjectsFromArray:v21];
   }
 
   else
   {
-    v22 = [(SGQuickResponsesRanking *)self indexesForScores:v11 numResponses:v12];
+    v22 = [(SGQuickResponsesRanking *)self indexesForScores:scoresCopy numResponses:responsesCopy];
   }
 
   return v22;
@@ -291,15 +291,15 @@ void __83__SGQuickResponsesRanking_classResultsForScores_numResponses_responseCo
   [v9 addObject:v10];
 }
 
-- (id)resultsForModelScores:(id)a3 responseCount:(unint64_t)a4 config:(id)a5
+- (id)resultsForModelScores:(id)scores responseCount:(unint64_t)count config:(id)config
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 count])
+  scoresCopy = scores;
+  configCopy = config;
+  if ([scoresCopy count])
   {
-    v10 = [SGQuickResponsesDistributingCount numResponsesForScores:v8 responseCount:a4 config:v9];
-    v11 = [(SGQuickResponsesRanking *)self classResultsForScores:v8 numResponses:v10 responseCount:a4 config:v9];
-    v12 = [(SGQuickResponsesRanking *)self semanticClassesForResults:v11 scores:v8 numResponses:v10 config:v9];
+    v10 = [SGQuickResponsesDistributingCount numResponsesForScores:scoresCopy responseCount:count config:configCopy];
+    v11 = [(SGQuickResponsesRanking *)self classResultsForScores:scoresCopy numResponses:v10 responseCount:count config:configCopy];
+    v12 = [(SGQuickResponsesRanking *)self semanticClassesForResults:v11 scores:scoresCopy numResponses:v10 config:configCopy];
   }
 
   else
@@ -310,14 +310,14 @@ void __83__SGQuickResponsesRanking_classResultsForScores_numResponses_responseCo
   return v12;
 }
 
-- (SGQuickResponsesRanking)initWithSeed:(unint64_t)a3
+- (SGQuickResponsesRanking)initWithSeed:(unint64_t)seed
 {
   v8.receiver = self;
   v8.super_class = SGQuickResponsesRanking;
   v4 = [(SGQuickResponsesRanking *)&v8 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x277D42618]) initWithSeed:a3];
+    v5 = [objc_alloc(MEMORY[0x277D42618]) initWithSeed:seed];
     rng = v4->_rng;
     v4->_rng = v5;
   }

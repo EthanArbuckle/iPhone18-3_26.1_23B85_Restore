@@ -1,126 +1,126 @@
 @interface RDXPCChangeTrackingPerformer
 - (_TtC7remindd28RDXPCChangeTrackingPerformer)init;
-- (void)currentChangeToken:(id)a3;
-- (void)currentChangeTokenForAccountTypes:(int64_t)a3 completion:(id)a4;
-- (void)deleteHistoryBeforeDate:(id)a3 completionHandler:(id)a4;
-- (void)deleteHistoryBeforeToken:(id)a3 completionHandler:(id)a4;
-- (void)fetchAuxiliaryChangeInfos:(id)a3 completionHandler:(id)a4;
-- (void)fetchHistoryAfterDate:(id)a3 entityNames:(id)a4 transactionFetchLimit:(unint64_t)a5 completionHandler:(id)a6;
-- (void)fetchHistoryAfterToken:(id)a3 entityNames:(id)a4 transactionFetchLimit:(unint64_t)a5 completionHandler:(id)a6;
-- (void)getTrackingStateWithClientID:(id)a3 completion:(id)a4;
-- (void)saveTrackingState:(id)a3 withClientID:(id)a4 completionHandler:(id)a5;
+- (void)currentChangeToken:(id)token;
+- (void)currentChangeTokenForAccountTypes:(int64_t)types completion:(id)completion;
+- (void)deleteHistoryBeforeDate:(id)date completionHandler:(id)handler;
+- (void)deleteHistoryBeforeToken:(id)token completionHandler:(id)handler;
+- (void)fetchAuxiliaryChangeInfos:(id)infos completionHandler:(id)handler;
+- (void)fetchHistoryAfterDate:(id)date entityNames:(id)names transactionFetchLimit:(unint64_t)limit completionHandler:(id)handler;
+- (void)fetchHistoryAfterToken:(id)token entityNames:(id)names transactionFetchLimit:(unint64_t)limit completionHandler:(id)handler;
+- (void)getTrackingStateWithClientID:(id)d completion:(id)completion;
+- (void)saveTrackingState:(id)state withClientID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation RDXPCChangeTrackingPerformer
 
-- (void)currentChangeToken:(id)a3
+- (void)currentChangeToken:(id)token
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(token);
   _Block_copy(v4);
-  v5 = self;
-  sub_1003CFE58(v5, v4);
+  selfCopy = self;
+  sub_1003CFE58(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (void)currentChangeTokenForAccountTypes:(int64_t)a3 completion:(id)a4
+- (void)currentChangeTokenForAccountTypes:(int64_t)types completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = self;
-  sub_1003CFF94(a3, v7, v6);
+  selfCopy = self;
+  sub_1003CFF94(types, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)getTrackingStateWithClientID:(id)a3 completion:(id)a4
+- (void)getTrackingStateWithClientID:(id)d completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_1003CE22C(a3, sub_1003CFE50, v7);
+  selfCopy = self;
+  sub_1003CE22C(d, sub_1003CFE50, v7);
   swift_unknownObjectRelease();
 }
 
-- (void)saveTrackingState:(id)a3 withClientID:(id)a4 completionHandler:(id)a5
+- (void)saveTrackingState:(id)state withClientID:(id)d completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  v10 = a3;
+  stateCopy = state;
   swift_unknownObjectRetain();
-  v11 = self;
-  sub_1003CE53C(v10, a4, sub_10003FE60, v9);
+  selfCopy = self;
+  sub_1003CE53C(stateCopy, d, sub_10003FE60, v9);
 
   swift_unknownObjectRelease();
 }
 
-- (void)fetchHistoryAfterToken:(id)a3 entityNames:(id)a4 transactionFetchLimit:(unint64_t)a5 completionHandler:(id)a6
+- (void)fetchHistoryAfterToken:(id)token entityNames:(id)names transactionFetchLimit:(unint64_t)limit completionHandler:(id)handler
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(handler);
   v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = swift_allocObject();
   *(v11 + 16) = v9;
-  v12 = a3;
-  v13 = self;
-  sub_1003CE8D8(a3, v10, a5, sub_1003D02C4, v11);
+  tokenCopy = token;
+  selfCopy = self;
+  sub_1003CE8D8(token, v10, limit, sub_1003D02C4, v11);
 }
 
-- (void)fetchHistoryAfterDate:(id)a3 entityNames:(id)a4 transactionFetchLimit:(unint64_t)a5 completionHandler:(id)a6
+- (void)fetchHistoryAfterDate:(id)date entityNames:(id)names transactionFetchLimit:(unint64_t)limit completionHandler:(id)handler
 {
   v9 = type metadata accessor for Date();
   v10 = *(v9 - 8);
   v11 = *(v10 + 64);
   __chkstk_darwin(v9);
   v13 = &v18 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v14 = _Block_copy(a6);
+  v14 = _Block_copy(handler);
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
   v15 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = swift_allocObject();
   *(v16 + 16) = v14;
-  v17 = self;
-  sub_1003CECFC(v13, v15, a5, sub_1003CFE50, v16);
+  selfCopy = self;
+  sub_1003CECFC(v13, v15, limit, sub_1003CFE50, v16);
 
   (*(v10 + 8))(v13, v9);
 }
 
-- (void)deleteHistoryBeforeToken:(id)a3 completionHandler:(id)a4
+- (void)deleteHistoryBeforeToken:(id)token completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_1003CF1B8(v8, sub_10003FE60, v7);
+  tokenCopy = token;
+  selfCopy = self;
+  sub_1003CF1B8(tokenCopy, sub_10003FE60, v7);
 }
 
-- (void)deleteHistoryBeforeDate:(id)a3 completionHandler:(id)a4
+- (void)deleteHistoryBeforeDate:(id)date completionHandler:(id)handler
 {
   v6 = type metadata accessor for Date();
   v7 = *(v6 - 8);
   v8 = *(v7 + 64);
   __chkstk_darwin(v6);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = swift_allocObject();
   *(v12 + 16) = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1003CF4C4(v10, sub_10003FE58, v12);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)fetchAuxiliaryChangeInfos:(id)a3 completionHandler:(id)a4
+- (void)fetchAuxiliaryChangeInfos:(id)infos completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   sub_10003980C();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = swift_allocObject();
   *(v7 + 16) = v5;
-  v8 = self;
+  selfCopy = self;
   sub_1003CF920(v6, sub_1003CFE48, v7);
 }
 

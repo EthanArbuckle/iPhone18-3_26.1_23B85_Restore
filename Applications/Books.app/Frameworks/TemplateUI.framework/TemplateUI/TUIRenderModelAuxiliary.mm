@@ -1,24 +1,24 @@
 @interface TUIRenderModelAuxiliary
-- (BOOL)isEqualToRenderModel:(id)a3;
+- (BOOL)isEqualToRenderModel:(id)model;
 - (CGSize)size;
-- (TUIRenderModelAuxiliary)initWithModels:(id)a3;
-- (TUIRenderModelAuxiliary)initWithNavigationItems:(id)a3;
+- (TUIRenderModelAuxiliary)initWithModels:(id)models;
+- (TUIRenderModelAuxiliary)initWithNavigationItems:(id)items;
 - (id)triggers;
 - (unint64_t)hash;
-- (void)appendResourcesToCollector:(id)a3 transform:(CGAffineTransform *)a4;
+- (void)appendResourcesToCollector:(id)collector transform:(CGAffineTransform *)transform;
 @end
 
 @implementation TUIRenderModelAuxiliary
 
-- (TUIRenderModelAuxiliary)initWithNavigationItems:(id)a3
+- (TUIRenderModelAuxiliary)initWithNavigationItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = TUIRenderModelAuxiliary;
   v5 = [(TUIRenderModelAuxiliary *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [itemsCopy copy];
     navigationItems = v5->_navigationItems;
     v5->_navigationItems = v6;
   }
@@ -26,9 +26,9 @@
   return v5;
 }
 
-- (TUIRenderModelAuxiliary)initWithModels:(id)a3
+- (TUIRenderModelAuxiliary)initWithModels:(id)models
 {
-  v4 = a3;
+  modelsCopy = models;
   v19.receiver = self;
   v19.super_class = TUIRenderModelAuxiliary;
   v5 = [(TUIRenderModelAuxiliary *)&v19 init];
@@ -39,7 +39,7 @@
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = v4;
+    v7 = modelsCopy;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v8)
     {
@@ -55,8 +55,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * v11) navigationItems];
-          [(NSArray *)v6 addObjectsFromArray:v12];
+          navigationItems = [*(*(&v15 + 1) + 8 * v11) navigationItems];
+          [(NSArray *)v6 addObjectsFromArray:navigationItems];
 
           v11 = v11 + 1;
         }
@@ -75,9 +75,9 @@
   return v5;
 }
 
-- (void)appendResourcesToCollector:(id)a3 transform:(CGAffineTransform *)a4
+- (void)appendResourcesToCollector:(id)collector transform:(CGAffineTransform *)transform
 {
-  v6 = a3;
+  collectorCopy = collector;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -99,11 +99,11 @@
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
-        v13 = *&a4->c;
-        v14[0] = *&a4->a;
+        v13 = *&transform->c;
+        v14[0] = *&transform->a;
         v14[1] = v13;
-        v14[2] = *&a4->tx;
-        [v12 appendResourcesToCollector:v6 transform:v14];
+        v14[2] = *&transform->tx;
+        [v12 appendResourcesToCollector:collectorCopy transform:v14];
         v11 = v11 + 1;
       }
 
@@ -115,17 +115,17 @@
   }
 }
 
-- (BOOL)isEqualToRenderModel:(id)a3
+- (BOOL)isEqualToRenderModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_opt_class();
-  v6 = TUIDynamicCast(v5, v4);
+  v6 = TUIDynamicCast(v5, modelCopy);
 
   if (TUIRenderModelIsEqualToRenderModel(self, v6))
   {
-    v7 = [(TUIRenderModelAuxiliary *)self navigationItems];
-    v8 = [v6 navigationItems];
-    v9 = v7 == v8 || [v7 isEqual:v8];
+    navigationItems = [(TUIRenderModelAuxiliary *)self navigationItems];
+    navigationItems2 = [v6 navigationItems];
+    v9 = navigationItems == navigationItems2 || [navigationItems isEqual:navigationItems2];
   }
 
   else
@@ -159,13 +159,13 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 observeTrigger];
-        v11 = [v10 length];
+        observeTrigger = [v9 observeTrigger];
+        v11 = [observeTrigger length];
 
         if (v11)
         {
-          v12 = [v9 observeTrigger];
-          [v3 addObject:v12];
+          observeTrigger2 = [v9 observeTrigger];
+          [v3 addObject:observeTrigger2];
         }
       }
 
@@ -180,8 +180,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(TUIRenderModelAuxiliary *)self identifier];
-  v3 = TUIIdentifierHash(v2);
+  identifier = [(TUIRenderModelAuxiliary *)self identifier];
+  v3 = TUIIdentifierHash(identifier);
 
   return v3;
 }

@@ -10,20 +10,20 @@
   v31 = *MEMORY[0x277D85DE8];
   v7 = a3;
   *a4 = 0;
-  v8 = [v7 values];
-  if (!v8)
+  values = [v7 values];
+  if (!values)
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"TRIClientTreatment+CloudKit.m" lineNumber:30 description:{@"Expression was unexpectedly nil/false: %@", @"record.values"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientTreatment+CloudKit.m" lineNumber:30 description:{@"Expression was unexpectedly nil/false: %@", @"record.values"}];
   }
 
-  v9 = [v8 triStringValueForField:*MEMORY[0x277D739D8] isNestedValue:0];
+  v9 = [values triStringValueForField:*MEMORY[0x277D739D8] isNestedValue:0];
   if (v9)
   {
-    v10 = [v8 triDataForField:*MEMORY[0x277D739C8]];
+    v10 = [values triDataForField:*MEMORY[0x277D739C8]];
     *a4 = [v10 length];
-    v11 = [v8 triStringValueForField:*MEMORY[0x277D739D0] isNestedValue:0];
-    v12 = [v8 triDataForField:*MEMORY[0x277D739C0]];
+    v11 = [values triStringValueForField:*MEMORY[0x277D739D0] isNestedValue:0];
+    v12 = [values triDataForField:*MEMORY[0x277D739C0]];
     v13 = v12;
     if (v10)
     {
@@ -66,9 +66,9 @@
           v21 = TRILogCategory_Server();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
-            v25 = [v7 recordID];
+            recordID = [v7 recordID];
             *buf = 138412546;
-            v28 = v25;
+            v28 = recordID;
             v29 = 2114;
             v30 = v19;
             _os_log_error_impl(&dword_26F567000, v21, OS_LOG_TYPE_ERROR, "could not parse TRIClientTreatment from CloudKit record %@: %{public}@", buf, 0x16u);
@@ -112,14 +112,14 @@
 {
   v7 = a3;
   v8 = a4;
-  v9 = [v7 values];
-  if (!v9)
+  values = [v7 values];
+  if (!values)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"TRIClientTreatment+CloudKit.m" lineNumber:75 description:{@"Expression was unexpectedly nil/false: %@", @"record.values"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientTreatment+CloudKit.m" lineNumber:75 description:{@"Expression was unexpectedly nil/false: %@", @"record.values"}];
   }
 
-  v10 = [v9 triDataForField:*MEMORY[0x277D739C0]];
+  v10 = [values triDataForField:*MEMORY[0x277D739C0]];
   if (v10)
   {
     v11 = [TRISignatureKey keyFromData:v10];
@@ -135,10 +135,10 @@
       v15[1] = 3221225472;
       v15[2] = __67__TRIClientTreatment_CloudKit__assetURLsFromCKRecord_assetIndexes___block_invoke;
       v15[3] = &unk_279DDF6D0;
-      v16 = v9;
+      v16 = values;
       v19 = &v22;
       v20 = a2;
-      v21 = a1;
+      selfCopy = self;
       v17 = v11;
       v18 = v7;
       [v8 enumerateRangesUsingBlock:v15];

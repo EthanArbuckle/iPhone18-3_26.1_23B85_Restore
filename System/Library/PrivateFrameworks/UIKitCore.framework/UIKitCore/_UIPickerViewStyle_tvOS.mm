@@ -1,12 +1,12 @@
 @interface _UIPickerViewStyle_tvOS
-- (CGSize)defaultSizeForTraitCollection:(id)a3;
+- (CGSize)defaultSizeForTraitCollection:(id)collection;
 - (id)createCenterHighlightView;
-- (void)configureMaskGradientLayer:(id)a3;
+- (void)configureMaskGradientLayer:(id)layer;
 @end
 
 @implementation _UIPickerViewStyle_tvOS
 
-- (CGSize)defaultSizeForTraitCollection:(id)a3
+- (CGSize)defaultSizeForTraitCollection:(id)collection
 {
   v3 = *MEMORY[0x1E695F060];
   v4 = *(MEMORY[0x1E695F060] + 8);
@@ -15,29 +15,29 @@
   return result;
 }
 
-- (void)configureMaskGradientLayer:(id)a3
+- (void)configureMaskGradientLayer:(id)layer
 {
   v11[6] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  layerCopy = layer;
   v4 = [UIColor colorWithWhite:0.0 alpha:0.0];
-  v5 = [v4 CGColor];
+  cGColor = [v4 CGColor];
 
   v6 = [UIColor colorWithWhite:0.0 alpha:0.71];
-  v7 = [v6 CGColor];
+  cGColor2 = [v6 CGColor];
 
   v8 = [UIColor colorWithWhite:0.0 alpha:0.8];
-  v9 = [v8 CGColor];
+  cGColor3 = [v8 CGColor];
 
-  v11[0] = v5;
-  v11[1] = v7;
-  v11[2] = v9;
-  v11[3] = v9;
-  v11[4] = v7;
-  v11[5] = v5;
+  v11[0] = cGColor;
+  v11[1] = cGColor2;
+  v11[2] = cGColor3;
+  v11[3] = cGColor3;
+  v11[4] = cGColor2;
+  v11[5] = cGColor;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:6];
-  [v3 setColors:v10];
+  [layerCopy setColors:v10];
 
-  [v3 setLocations:&unk_1EFE2BDE8];
+  [layerCopy setLocations:&unk_1EFE2BDE8];
 }
 
 - (id)createCenterHighlightView

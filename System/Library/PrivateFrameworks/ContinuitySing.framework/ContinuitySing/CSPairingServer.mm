@@ -1,9 +1,9 @@
 @interface CSPairingServer
 - (CSPairingServer)init;
-- (id)appendPairingCodeToURL:(id)a3;
+- (id)appendPairingCodeToURL:(id)l;
 - (id)createNewPassword;
 - (id)generateURL;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)deactivate;
 - (void)dealloc;
 @end
@@ -18,7 +18,7 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(CSPairingServer *)v2 createNewPassword];
+    createNewPassword = [(CSPairingServer *)v2 createNewPassword];
   }
 
   return v3;
@@ -32,9 +32,9 @@
   [(CSPairingServer *)&v3 dealloc];
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x277D441F8]);
   rpServer = self->_rpServer;
   self->_rpServer = v5;
@@ -56,8 +56,8 @@
   v11[1] = 3221225472;
   v11[2] = __42__CSPairingServer_activateWithCompletion___block_invoke_27;
   v11[3] = &unk_278E0B048;
-  v12 = v4;
-  v10 = v4;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [(CSPairingMessagingClient *)v9 activateWithCompletion:v11];
 }
 
@@ -161,8 +161,8 @@ void __42__CSPairingServer_activateWithCompletion___block_invoke_27(uint64_t a1,
   {
 LABEL_6:
     password = [MEMORY[0x277CCAD78] UUID];
-    v8 = [password UUIDString];
-    v9 = [v8 substringToIndex:8];
+    uUIDString = [password UUIDString];
+    v9 = [uUIDString substringToIndex:8];
     v10 = self->_password;
     self->_password = v9;
 
@@ -176,25 +176,25 @@ LABEL_6:
   return v11;
 }
 
-- (id)appendPairingCodeToURL:(id)a3
+- (id)appendPairingCodeToURL:(id)l
 {
-  v23 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v23 resolvingAgainstBaseURL:0];
+  lCopy = l;
+  v4 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:lCopy resolvingAgainstBaseURL:0];
   v5 = objc_alloc(MEMORY[0x277CCAD18]);
-  v6 = [(CSPairingServer *)self password];
-  v7 = [v5 initWithName:@"pw" value:v6];
+  password = [(CSPairingServer *)self password];
+  v7 = [v5 initWithName:@"pw" value:password];
 
   v8 = MEMORY[0x277CBEB18];
-  v9 = [v4 queryItems];
-  v10 = [v8 arrayWithCapacity:{objc_msgSend(v9, "count") + 1}];
+  queryItems = [v4 queryItems];
+  v10 = [v8 arrayWithCapacity:{objc_msgSend(queryItems, "count") + 1}];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
   v22 = v4;
-  v11 = [v4 queryItems];
-  v12 = [v11 countByEnumeratingWithState:&v25 objects:v24 count:16];
+  queryItems2 = [v4 queryItems];
+  v12 = [queryItems2 countByEnumeratingWithState:&v25 objects:v24 count:16];
   if (v12)
   {
     v13 = v12;
@@ -205,13 +205,13 @@ LABEL_6:
       {
         if (*v26 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(queryItems2);
         }
 
         v16 = *(*(&v25 + 1) + 8 * i);
-        v17 = [v16 name];
-        v18 = [v7 name];
-        v19 = [v17 isEqual:v18];
+        name = [v16 name];
+        name2 = [v7 name];
+        v19 = [name isEqual:name2];
 
         if ((v19 & 1) == 0)
         {
@@ -219,7 +219,7 @@ LABEL_6:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v25 objects:v24 count:16];
+      v13 = [queryItems2 countByEnumeratingWithState:&v25 objects:v24 count:16];
     }
 
     while (v13);
@@ -238,12 +238,12 @@ LABEL_6:
   [v3 setScheme:@"ContinuitySing"];
   [v3 setHost:@"connect"];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [MEMORY[0x277D27990] localDeviceInfo];
-  v6 = [v5 deviceUID];
-  if (v6 || ([v5 identifier], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  localDeviceInfo = [MEMORY[0x277D27990] localDeviceInfo];
+  deviceUID = [localDeviceInfo deviceUID];
+  if (deviceUID || ([localDeviceInfo identifier], (deviceUID = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = v6;
-    v8 = [MEMORY[0x277CCAD18] queryItemWithName:@"h" value:v6];
+    v7 = deviceUID;
+    v8 = [MEMORY[0x277CCAD18] queryItemWithName:@"h" value:deviceUID];
     [v4 addObject:v8];
   }
 

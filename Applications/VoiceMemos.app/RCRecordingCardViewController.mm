@@ -1,25 +1,25 @@
 @interface RCRecordingCardViewController
-- (RCRecordingCardViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (RCRecordingCardViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIView)hostedView;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)setHostedView:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setHostedView:(id)view;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation RCRecordingCardViewController
 
-- (RCRecordingCardViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (RCRecordingCardViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = RCRecordingCardViewController;
-  v4 = [(RCRecordingCardViewController *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(RCRecordingCardViewController *)&v10 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
-    v6 = [(RCRecordingCardViewController *)v4 navigationItem];
-    [v6 setHidesBackButton:1];
+    navigationItem = [(RCRecordingCardViewController *)v4 navigationItem];
+    [navigationItem setHidesBackButton:1];
 
     v7 = objc_opt_new();
     undoManager = v5->_undoManager;
@@ -35,66 +35,66 @@
   v6.super_class = RCRecordingCardViewController;
   [(RCRecordingCardViewController *)&v6 viewDidLoad];
   v3 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v4 = [v3 recordingCardBackgroundColor];
-  v5 = [(RCRecordingCardViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  recordingCardBackgroundColor = [v3 recordingCardBackgroundColor];
+  view = [(RCRecordingCardViewController *)self view];
+  [view setBackgroundColor:recordingCardBackgroundColor];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = RCRecordingCardViewController;
-  [(RCRecordingCardViewController *)&v4 viewDidAppear:a3];
+  [(RCRecordingCardViewController *)&v4 viewDidAppear:appear];
   [(RCRecordingCardViewController *)self becomeFirstResponder];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = RCRecordingCardViewController;
-  [(RCRecordingCardViewController *)&v4 viewWillDisappear:a3];
+  [(RCRecordingCardViewController *)&v4 viewWillDisappear:disappear];
   [(RCRecordingCardViewController *)self resignFirstResponder];
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
   v2 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v3 = [v2 supportedInterfaceOrientations];
+  supportedInterfaceOrientations = [v2 supportedInterfaceOrientations];
 
-  return v3;
+  return supportedInterfaceOrientations;
 }
 
-- (void)setHostedView:(id)a3
+- (void)setHostedView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_hostedView);
   [WeakRetained removeFromSuperview];
 
-  objc_storeWeak(&self->_hostedView, v4);
-  v6 = [(RCRecordingCardViewController *)self view];
-  [v6 addSubview:v4];
+  objc_storeWeak(&self->_hostedView, viewCopy);
+  view = [(RCRecordingCardViewController *)self view];
+  [view addSubview:viewCopy];
 
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v22 = [v4 bottomAnchor];
-  v23 = [(RCRecordingCardViewController *)self view];
-  v21 = [v23 bottomAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  bottomAnchor = [viewCopy bottomAnchor];
+  view2 = [(RCRecordingCardViewController *)self view];
+  bottomAnchor2 = [view2 bottomAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v24[0] = v20;
-  v18 = [v4 topAnchor];
-  v19 = [(RCRecordingCardViewController *)self view];
-  v17 = [v19 topAnchor];
-  v7 = [v18 constraintEqualToAnchor:v17];
+  topAnchor = [viewCopy topAnchor];
+  view3 = [(RCRecordingCardViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v24[1] = v7;
-  v8 = [v4 leadingAnchor];
-  v9 = [(RCRecordingCardViewController *)self view];
-  v10 = [v9 leadingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  leadingAnchor = [viewCopy leadingAnchor];
+  view4 = [(RCRecordingCardViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v24[2] = v11;
-  v12 = [v4 trailingAnchor];
+  trailingAnchor = [viewCopy trailingAnchor];
 
-  v13 = [(RCRecordingCardViewController *)self view];
-  v14 = [v13 trailingAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  view5 = [(RCRecordingCardViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v24[3] = v15;
   v16 = [NSArray arrayWithObjects:v24 count:4];
   [NSLayoutConstraint activateConstraints:v16];

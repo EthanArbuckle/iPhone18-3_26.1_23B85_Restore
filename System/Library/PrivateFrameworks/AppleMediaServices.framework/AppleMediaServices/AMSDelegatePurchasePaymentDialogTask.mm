@@ -1,34 +1,34 @@
 @interface AMSDelegatePurchasePaymentDialogTask
-- (AMSDelegatePurchasePaymentDialogTask)initWithDelegatePurchaseRequest:(id)a3 bag:(id)a4 andDesignVersion:(id)a5;
+- (AMSDelegatePurchasePaymentDialogTask)initWithDelegatePurchaseRequest:(id)request bag:(id)bag andDesignVersion:(id)version;
 - (id)_encodedURLRequest;
 - (id)_legacyUserAgentString;
-- (id)_purchaseResultFromPurchaseResult:(id)a3 andPaymentSheetInfo:(id)a4;
+- (id)_purchaseResultFromPurchaseResult:(id)result andPaymentSheetInfo:(id)info;
 - (id)performTask;
 @end
 
 @implementation AMSDelegatePurchasePaymentDialogTask
 
-- (AMSDelegatePurchasePaymentDialogTask)initWithDelegatePurchaseRequest:(id)a3 bag:(id)a4 andDesignVersion:(id)a5
+- (AMSDelegatePurchasePaymentDialogTask)initWithDelegatePurchaseRequest:(id)request bag:(id)bag andDesignVersion:(id)version
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  bagCopy = bag;
+  versionCopy = version;
   v21.receiver = self;
   v21.super_class = AMSDelegatePurchasePaymentDialogTask;
   v12 = [(AMSTask *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_currentRequest, a3);
-    v14 = [v9 purchaseResult];
-    v15 = [v14 purchase];
-    v16 = [v15 account];
+    objc_storeStrong(&v12->_currentRequest, request);
+    purchaseResult = [requestCopy purchaseResult];
+    purchase = [purchaseResult purchase];
+    account = [purchase account];
     account = v13->_account;
-    v13->_account = v16;
+    v13->_account = account;
 
-    objc_storeStrong(&v13->_bag, a4);
-    objc_storeStrong(&v13->_designVersion, a5);
-    if ([v11 isEqualToNumber:0x1F07798C8])
+    objc_storeStrong(&v13->_bag, bag);
+    objc_storeStrong(&v13->_designVersion, version);
+    if ([versionCopy isEqualToNumber:0x1F07798C8])
     {
       requestingPlatform = v13->_requestingPlatform;
       v13->_requestingPlatform = @"AppleTV";
@@ -250,20 +250,20 @@ id __51__AMSDelegatePurchasePaymentDialogTask_performTask__block_invoke_15(uint6
 
 - (id)_legacyUserAgentString
 {
-  v2 = [(AMSDelegatePurchasePaymentDialogTask *)self currentRequest];
-  v3 = [v2 userAgent];
+  currentRequest = [(AMSDelegatePurchasePaymentDialogTask *)self currentRequest];
+  userAgent = [currentRequest userAgent];
 
-  return v3;
+  return userAgent;
 }
 
-- (id)_purchaseResultFromPurchaseResult:(id)a3 andPaymentSheetInfo:(id)a4
+- (id)_purchaseResultFromPurchaseResult:(id)result andPaymentSheetInfo:(id)info
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 copy];
-  v8 = [v6 responseDictionary];
+  infoCopy = info;
+  resultCopy = result;
+  v7 = [resultCopy copy];
+  responseDictionary = [resultCopy responseDictionary];
 
-  v9 = [v8 ams_dictionaryByAddingEntriesFromDictionary:v5];
+  v9 = [responseDictionary ams_dictionaryByAddingEntriesFromDictionary:infoCopy];
 
   [v7 setResponseDictionary:v9];
 
@@ -280,14 +280,14 @@ id __51__AMSDelegatePurchasePaymentDialogTask_performTask__block_invoke_15(uint6
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v46 = objc_opt_class();
     v47 = 2114;
     v48 = v3;
-    _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Begin extracting URL endpoint from bag", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Begin extracting URL endpoint from bag", buf, 0x16u);
   }
 
   v6 = [(AMSDelegatePurchasePaymentDialogTask *)self bag];
@@ -305,8 +305,8 @@ id __51__AMSDelegatePurchasePaymentDialogTask_performTask__block_invoke_15(uint6
       v11 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v13 = objc_opt_class();
       v14 = AMSHashIfNeeded(@"generatePaymentSheetUrl");
@@ -318,7 +318,7 @@ id __51__AMSDelegatePurchasePaymentDialogTask_performTask__block_invoke_15(uint6
       v50 = v14;
       v51 = 2114;
       v52 = v9;
-      _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to find key: %@, error: %{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to find key: %@, error: %{public}@", buf, 0x2Au);
     }
 
     v15 = [AMSPromise promiseWithError:v9];
@@ -331,46 +331,46 @@ id __51__AMSDelegatePurchasePaymentDialogTask_performTask__block_invoke_15(uint6
       v11 = +[AMSLogConfig sharedConfig];
     }
 
-    v16 = [v11 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    oSLogObject3 = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
       v17 = objc_opt_class();
       *buf = 138543618;
       v46 = v17;
       v47 = 2114;
       v48 = v3;
-      _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Completed extracting URL endpoint from bag", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Completed extracting URL endpoint from bag", buf, 0x16u);
     }
 
     v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v19 = [(AMSDelegatePurchasePaymentDialogTask *)self currentRequest];
-    v20 = [v19 userAgent];
-    [v18 ams_setNullableObject:v20 forKey:@"requesterUserAgent"];
+    currentRequest = [(AMSDelegatePurchasePaymentDialogTask *)self currentRequest];
+    userAgent = [currentRequest userAgent];
+    [v18 ams_setNullableObject:userAgent forKey:@"requesterUserAgent"];
 
-    v21 = [(AMSDelegatePurchasePaymentDialogTask *)self targetPlatformVersion];
-    [v18 ams_setNullableObject:v21 forKey:@"targetPlatformVersion"];
+    targetPlatformVersion = [(AMSDelegatePurchasePaymentDialogTask *)self targetPlatformVersion];
+    [v18 ams_setNullableObject:targetPlatformVersion forKey:@"targetPlatformVersion"];
 
-    v22 = [(AMSDelegatePurchasePaymentDialogTask *)self requestingPlatform];
-    [v18 ams_setNullableObject:v22 forKey:@"requesterPlatform"];
+    requestingPlatform = [(AMSDelegatePurchasePaymentDialogTask *)self requestingPlatform];
+    [v18 ams_setNullableObject:requestingPlatform forKey:@"requesterPlatform"];
 
-    v23 = [(AMSDelegatePurchasePaymentDialogTask *)self designVersion];
-    v24 = [v23 stringValue];
-    [v18 ams_setNullableObject:v24 forKey:@"designVersion"];
+    designVersion = [(AMSDelegatePurchasePaymentDialogTask *)self designVersion];
+    stringValue = [designVersion stringValue];
+    [v18 ams_setNullableObject:stringValue forKey:@"designVersion"];
 
-    v25 = [(AMSDelegatePurchasePaymentDialogTask *)self currentRequest];
-    v26 = [v25 purchaseResult];
-    v27 = [v26 purchase];
-    v28 = [v27 buyParams];
-    v29 = [v28 dictionary];
-    [v18 addEntriesFromDictionary:v29];
+    currentRequest2 = [(AMSDelegatePurchasePaymentDialogTask *)self currentRequest];
+    purchaseResult = [currentRequest2 purchaseResult];
+    purchase = [purchaseResult purchase];
+    buyParams = [purchase buyParams];
+    dictionary = [buyParams dictionary];
+    [v18 addEntriesFromDictionary:dictionary];
 
     v30 = [v18 copy];
     v31 = [AMSURLRequestEncoder alloc];
     v32 = [(AMSDelegatePurchasePaymentDialogTask *)self bag];
     v33 = [(AMSURLRequestEncoder *)v31 initWithBag:v32];
 
-    v34 = [(AMSDelegatePurchasePaymentDialogTask *)self account];
-    [(AMSURLRequestEncoder *)v33 setAccount:v34];
+    account = [(AMSDelegatePurchasePaymentDialogTask *)self account];
+    [(AMSURLRequestEncoder *)v33 setAccount:account];
 
     [(AMSURLRequestEncoder *)v33 setLogUUID:v3];
     [(AMSURLRequestEncoder *)v33 setUrlKnownToBeTrusted:1];

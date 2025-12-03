@@ -1,22 +1,22 @@
 @interface PETailspin
 - (PETailspin)init;
 - (void)dealloc;
-- (void)dumpTailspinOutputWithCompletion:(id)a3;
+- (void)dumpTailspinOutputWithCompletion:(id)completion;
 @end
 
 @implementation PETailspin
 
-- (void)dumpTailspinOutputWithCompletion:(id)a3
+- (void)dumpTailspinOutputWithCompletion:(id)completion
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v4 setDateStyle:1];
   [v4 setDateFormat:@"yyyy-MM-dd-HHmmss"];
   v5 = NSTemporaryDirectory();
   v6 = MEMORY[0x277CCACA8];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v4 stringFromDate:v7];
+  date = [MEMORY[0x277CBEAA8] date];
+  v8 = [v4 stringFromDate:date];
   v9 = [v6 stringWithFormat:@"tailspin_trace_%@.tailspin", v8];
 
   v10 = [v5 stringByAppendingPathComponent:v9];
@@ -35,13 +35,13 @@
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:3];
     v14 = dispatch_get_global_queue(0, 0);
     v15 = v10;
-    v16 = v3;
+    v16 = completionCopy;
     tailspin_dump_output_with_options();
   }
 
   else
   {
-    (*(v3 + 2))(v3, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -64,13 +64,13 @@ void __47__PETailspin_dumpTailspinOutputWithCompletion___block_invoke(uint64_t a
 
 - (void)dealloc
 {
-  v3 = [(PETailspin *)self tailspinPropertyQueue];
+  tailspinPropertyQueue = [(PETailspin *)self tailspinPropertyQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __21__PETailspin_dealloc__block_invoke;
   block[3] = &unk_279A30D28;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(tailspinPropertyQueue, block);
 
   v4.receiver = self;
   v4.super_class = PETailspin;

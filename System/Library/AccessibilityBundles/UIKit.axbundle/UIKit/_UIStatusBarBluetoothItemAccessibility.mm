@@ -1,19 +1,19 @@
 @interface _UIStatusBarBluetoothItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation _UIStatusBarBluetoothItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v8 = location;
   v7 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"_UIStatusBarIndicatorItem";
   [location[0] validateClass:@"_UIStatusBarBluetoothItem" isKindOfClass:?];
   v6 = "@";
@@ -31,23 +31,23 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v39 = self;
+  selfCopy = self;
   v38 = a2;
   v37.receiver = self;
   v37.super_class = _UIStatusBarBluetoothItemAccessibility;
   [(_UIStatusBarBluetoothItemAccessibility *)&v37 _accessibilityLoadAccessibilityInformation];
-  v36 = [(_UIStatusBarBluetoothItemAccessibility *)v39 _accessibilityValueForKey:@"AccessibilityStatusBarUpdateData"];
+  v36 = [(_UIStatusBarBluetoothItemAccessibility *)selfCopy _accessibilityValueForKey:@"AccessibilityStatusBarUpdateData"];
   v34 = 0;
   objc_opt_class();
-  v22 = [(_UIStatusBarBluetoothItemAccessibility *)v39 safeValueForKey:@"imageView"];
+  v22 = [(_UIStatusBarBluetoothItemAccessibility *)selfCopy safeValueForKey:@"imageView"];
   v33 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v22);
   v32 = MEMORY[0x29EDC9748](v33);
   objc_storeStrong(&v33, 0);
   v35 = v32;
-  v21 = [v32 image];
-  v31 = [v21 accessibilityIdentifier];
-  if ([v31 isEqualToString:{@"bluetooth", MEMORY[0x29EDC9740](v21).n128_f64[0]}] & 1) != 0 || (objc_msgSend(v31, "isEqualToString:", @"headphones"))
+  image = [v32 image];
+  accessibilityIdentifier = [image accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:{@"bluetooth", MEMORY[0x29EDC9740](image).n128_f64[0]}] & 1) != 0 || (objc_msgSend(accessibilityIdentifier, "isEqualToString:", @"headphones"))
   {
     v30 = accessibilityLocalizedString(@"bluetooth");
     v29 = 0;
@@ -111,7 +111,7 @@
             v11 = AXFormatFloatWithPercentage();
             v12 = v29;
             v29 = v11;
-            if ([v31 isEqualToString:{@"headphones", MEMORY[0x29EDC9740](v12).n128_f64[0]}])
+            if ([accessibilityIdentifier isEqualToString:{@"headphones", MEMORY[0x29EDC9740](v12).n128_f64[0]}])
             {
               v13 = accessibilityLocalizedString(@"status.bluetooth.headphones.battery.charge");
             }
@@ -146,30 +146,30 @@
     [v35 setIsAccessibilityElement:1];
     [v35 setAccessibilityLabel:v30];
     v20 = v35;
-    v17 = [v35 accessibilityTraits];
-    [v20 setAccessibilityTraits:v17 & ~*MEMORY[0x29EDC7F88]];
+    accessibilityTraits = [v35 accessibilityTraits];
+    [v20 setAccessibilityTraits:accessibilityTraits & ~*MEMORY[0x29EDC7F88]];
     objc_storeStrong(&v29, 0);
     objc_storeStrong(&v30, 0);
   }
 
-  objc_storeStrong(&v31, 0);
+  objc_storeStrong(&accessibilityIdentifier, 0);
   objc_storeStrong(&v35, 0);
   objc_storeStrong(&v36, 0);
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  v7.receiver = v11;
+  objc_storeStrong(&v9, item);
+  v7.receiver = selfCopy;
   v7.super_class = _UIStatusBarBluetoothItemAccessibility;
   v8 = [(_UIStatusBarBluetoothItemAccessibility *)&v7 applyUpdate:location[0] toDisplayItem:v9];
-  [(_UIStatusBarBluetoothItemAccessibility *)v11 _accessibilitySetRetainedValue:location[0] forKey:@"AccessibilityStatusBarUpdateData"];
-  [(_UIStatusBarBluetoothItemAccessibility *)v11 _accessibilityLoadAccessibilityInformation];
+  [(_UIStatusBarBluetoothItemAccessibility *)selfCopy _accessibilitySetRetainedValue:location[0] forKey:@"AccessibilityStatusBarUpdateData"];
+  [(_UIStatusBarBluetoothItemAccessibility *)selfCopy _accessibilityLoadAccessibilityInformation];
   v6 = MEMORY[0x29EDC9748](v8);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);

@@ -36,13 +36,13 @@
 - (void)requestAssertionIfUnheld
 {
   objc_initWeak(&location, self);
-  v3 = [(CAMPreventConnectionHandoverAssertionController *)self _accessQueue];
+  _accessQueue = [(CAMPreventConnectionHandoverAssertionController *)self _accessQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __75__CAMPreventConnectionHandoverAssertionController_requestAssertionIfUnheld__block_invoke;
   v4[3] = &unk_1E76F8580;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(_accessQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -57,13 +57,13 @@ void __75__CAMPreventConnectionHandoverAssertionController_requestAssertionIfUnh
 - (void)_requestAssertionIfUnheld
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(CAMPreventConnectionHandoverAssertionController *)self _preventConnectionHandoverAssertion];
+  _preventConnectionHandoverAssertion = [(CAMPreventConnectionHandoverAssertionController *)self _preventConnectionHandoverAssertion];
 
-  if (!v3)
+  if (!_preventConnectionHandoverAssertion)
   {
-    v4 = [MEMORY[0x1E69B3760] sharedHardwareManagerWithNoUI];
+    mEMORY[0x1E69B3760] = [MEMORY[0x1E69B3760] sharedHardwareManagerWithNoUI];
     v11 = 0;
-    v5 = [v4 requestAssertion:3 error:&v11];
+    v5 = [mEMORY[0x1E69B3760] requestAssertion:3 error:&v11];
     v6 = v11;
 
     if (v6)
@@ -100,13 +100,13 @@ LABEL_7:
 - (void)releaseAssertionIfHeld
 {
   objc_initWeak(&location, self);
-  v3 = [(CAMPreventConnectionHandoverAssertionController *)self _accessQueue];
+  _accessQueue = [(CAMPreventConnectionHandoverAssertionController *)self _accessQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __73__CAMPreventConnectionHandoverAssertionController_releaseAssertionIfHeld__block_invoke;
   v4[3] = &unk_1E76F8580;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(_accessQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -120,13 +120,13 @@ void __73__CAMPreventConnectionHandoverAssertionController_releaseAssertionIfHel
 
 - (void)_releaseAssertionIfHeld
 {
-  v3 = [(CAMPreventConnectionHandoverAssertionController *)self _preventConnectionHandoverAssertion];
+  _preventConnectionHandoverAssertion = [(CAMPreventConnectionHandoverAssertionController *)self _preventConnectionHandoverAssertion];
 
-  if (v3)
+  if (_preventConnectionHandoverAssertion)
   {
-    v4 = [MEMORY[0x1E69B3760] sharedHardwareManagerWithNoUI];
-    v5 = [(CAMPreventConnectionHandoverAssertionController *)self _preventConnectionHandoverAssertion];
-    v6 = [v4 releaseAssertion:v5];
+    mEMORY[0x1E69B3760] = [MEMORY[0x1E69B3760] sharedHardwareManagerWithNoUI];
+    _preventConnectionHandoverAssertion2 = [(CAMPreventConnectionHandoverAssertionController *)self _preventConnectionHandoverAssertion];
+    v6 = [mEMORY[0x1E69B3760] releaseAssertion:_preventConnectionHandoverAssertion2];
 
     [(CAMPreventConnectionHandoverAssertionController *)self _setPreventConnectionHandoverAssertion:0];
     v7 = os_log_create("com.apple.camera", "PreventConnectionHandover");

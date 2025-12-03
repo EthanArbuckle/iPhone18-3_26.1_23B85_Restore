@@ -1,21 +1,21 @@
 @interface BKHIDEventSenderCache
-- (BKHIDEventSenderCache)initWithQueue:(id)a3;
+- (BKHIDEventSenderCache)initWithQueue:(id)queue;
 - (NSString)description;
-- (id)senderInfoForSenderID:(unint64_t)a3;
-- (void)addSenderInfo:(id)a3;
-- (void)addSenderInfo:(id)a3 forSenderID:(unint64_t)a4;
-- (void)removeSenderInfo:(id)a3;
-- (void)serviceDidDisappear:(id)a3;
+- (id)senderInfoForSenderID:(unint64_t)d;
+- (void)addSenderInfo:(id)info;
+- (void)addSenderInfo:(id)info forSenderID:(unint64_t)d;
+- (void)removeSenderInfo:(id)info;
+- (void)serviceDidDisappear:(id)disappear;
 - (void)sync;
 @end
 
 @implementation BKHIDEventSenderCache
 
-- (void)removeSenderInfo:(id)a3
+- (void)removeSenderInfo:(id)info
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  infoCopy = info;
+  if (!infoCopy)
   {
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"senders != ((void*)0)"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -28,7 +28,7 @@
       v19 = 2114;
       v20 = v13;
       v21 = 2048;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
       v24 = @"BKHIDEventSenderCache.m";
       v25 = 1024;
@@ -44,7 +44,7 @@
     JUMPOUT(0x223CDB9ACLL);
   }
 
-  v6 = v5;
+  v6 = infoCopy;
   os_unfair_lock_lock(&self->_lock);
   v7 = [(NSMutableDictionary *)self->_senderIDToSenderInfo copy];
   v14[0] = MEMORY[0x277D85DD0];
@@ -52,7 +52,7 @@
   v14[2] = __42__BKHIDEventSenderCache_removeSenderInfo___block_invoke;
   v14[3] = &unk_2784F6BC0;
   v15 = v6;
-  v16 = self;
+  selfCopy2 = self;
   v8 = v6;
   [v7 enumerateKeysAndObjectsUsingBlock:v14];
 
@@ -134,11 +134,11 @@ void __42__BKHIDEventSenderCache_removeSenderInfo___block_invoke(uint64_t a1, vo
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSenderInfo:(id)a3
+- (void)addSenderInfo:(id)info
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  infoCopy = info;
+  if (!infoCopy)
   {
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"senders != ((void*)0)"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -151,7 +151,7 @@ void __42__BKHIDEventSenderCache_removeSenderInfo___block_invoke(uint64_t a1, vo
       v23 = 2114;
       v24 = v15;
       v25 = 2048;
-      v26 = self;
+      selfCopy = self;
       v27 = 2114;
       v28 = @"BKHIDEventSenderCache.m";
       v29 = 1024;
@@ -167,12 +167,12 @@ void __42__BKHIDEventSenderCache_removeSenderInfo___block_invoke(uint64_t a1, vo
     JUMPOUT(0x223CDBDC4);
   }
 
-  v6 = v5;
+  v6 = infoCopy;
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [infoCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -201,13 +201,13 @@ void __42__BKHIDEventSenderCache_removeSenderInfo___block_invoke(uint64_t a1, vo
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSenderInfo:(id)a3 forSenderID:(unint64_t)a4
+- (void)addSenderInfo:(id)info forSenderID:(unint64_t)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  infoCopy = info;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
   v8 = [(NSMutableDictionary *)self->_senderIDToSenderInfo objectForKeyedSubscript:v7];
 
   v9 = BKLogHID();
@@ -217,7 +217,7 @@ void __42__BKHIDEventSenderCache_removeSenderInfo___block_invoke(uint64_t a1, vo
     if (v10)
     {
       *v13 = 134217984;
-      *&v13[4] = a4;
+      *&v13[4] = d;
       _os_log_impl(&dword_223CBE000, v9, OS_LOG_TYPE_DEFAULT, "we already have a service for senderID:%llX", v13, 0xCu);
     }
   }
@@ -227,7 +227,7 @@ void __42__BKHIDEventSenderCache_removeSenderInfo___block_invoke(uint64_t a1, vo
     if (v10)
     {
       *v13 = 134218242;
-      *&v13[4] = a4;
+      *&v13[4] = d;
       *&v13[12] = 2114;
       *&v13[14] = objc_opt_class();
       v11 = *&v13[14];
@@ -237,10 +237,10 @@ void __42__BKHIDEventSenderCache_removeSenderInfo___block_invoke(uint64_t a1, vo
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v6 addDisappearanceObserver:self queue:self->_queue];
+      [infoCopy addDisappearanceObserver:self queue:self->_queue];
     }
 
-    [(NSMutableDictionary *)self->_senderIDToSenderInfo setObject:v6 forKeyedSubscript:v7, *v13, *&v13[16], v14];
+    [(NSMutableDictionary *)self->_senderIDToSenderInfo setObject:infoCopy forKeyedSubscript:v7, *v13, *&v13[16], v14];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -248,12 +248,12 @@ void __42__BKHIDEventSenderCache_removeSenderInfo___block_invoke(uint64_t a1, vo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)senderInfoForSenderID:(unint64_t)a3
+- (id)senderInfoForSenderID:(unint64_t)d
 {
   v13 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
   senderIDToSenderInfo = self->_senderIDToSenderInfo;
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
   v7 = [(NSMutableDictionary *)senderIDToSenderInfo objectForKey:v6];
 
   os_unfair_lock_unlock(&self->_lock);
@@ -263,7 +263,7 @@ void __42__BKHIDEventSenderCache_removeSenderInfo___block_invoke(uint64_t a1, vo
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134217984;
-      v12 = a3;
+      dCopy = d;
       _os_log_impl(&dword_223CBE000, v8, OS_LOG_TYPE_DEFAULT, "unknown senderID: 0x%llX", &v11, 0xCu);
     }
 
@@ -294,15 +294,15 @@ void __29__BKHIDEventSenderCache_sync__block_invoke(uint64_t a1)
   os_unfair_lock_unlock(v2);
 }
 
-- (void)serviceDidDisappear:(id)a3
+- (void)serviceDidDisappear:(id)disappear
 {
   v9 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  disappearCopy = disappear;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  disappearCopy2 = disappear;
+  v6 = [v4 arrayWithObjects:&disappearCopy count:1];
 
-  [(BKHIDEventSenderCache *)self removeSenderInfo:v6, v8, v9];
+  [(BKHIDEventSenderCache *)self removeSenderInfo:v6, disappearCopy, v9];
   v7 = *MEMORY[0x277D85DE8];
 }
 
@@ -310,21 +310,21 @@ void __29__BKHIDEventSenderCache_sync__block_invoke(uint64_t a1)
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendObject:self->_senderIDToSenderInfo withName:@"senderIDToSenderInfo"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (BKHIDEventSenderCache)initWithQueue:(id)a3
+- (BKHIDEventSenderCache)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = BKHIDEventSenderCache;
   v6 = [(BKHIDEventSenderCache *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     senderIDToSenderInfo = v7->_senderIDToSenderInfo;
     v7->_senderIDToSenderInfo = v8;

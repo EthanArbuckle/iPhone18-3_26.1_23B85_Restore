@@ -1,5 +1,5 @@
 @interface PKBusinessChatAccountStateContext
-- (PKBusinessChatAccountStateContext)initWithAccount:(id)a3 paymentPass:(id)a4 eligibleForRecoveryPaymentPlan:(BOOL)a5;
+- (PKBusinessChatAccountStateContext)initWithAccount:(id)account paymentPass:(id)pass eligibleForRecoveryPaymentPlan:(BOOL)plan;
 - (id)bodyText;
 - (id)groupParameters;
 - (id)intentParameters;
@@ -7,19 +7,19 @@
 
 @implementation PKBusinessChatAccountStateContext
 
-- (PKBusinessChatAccountStateContext)initWithAccount:(id)a3 paymentPass:(id)a4 eligibleForRecoveryPaymentPlan:(BOOL)a5
+- (PKBusinessChatAccountStateContext)initWithAccount:(id)account paymentPass:(id)pass eligibleForRecoveryPaymentPlan:(BOOL)plan
 {
-  v9 = a3;
-  v10 = a4;
+  accountCopy = account;
+  passCopy = pass;
   v14.receiver = self;
   v14.super_class = PKBusinessChatAccountStateContext;
   v11 = [(PKBusinessChatAccountStateContext *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_account, a3);
-    objc_storeStrong(&v12->_paymentPass, a4);
-    v12->_eligibleForRecoveryPaymentPlan = a5;
+    objc_storeStrong(&v11->_account, account);
+    objc_storeStrong(&v12->_paymentPass, pass);
+    v12->_eligibleForRecoveryPaymentPlan = plan;
   }
 
   return v12;
@@ -27,16 +27,16 @@
 
 - (id)intentParameters
 {
-  v3 = [(PKAccount *)self->_account state];
-  if (v3 <= 1)
+  state = [(PKAccount *)self->_account state];
+  if (state <= 1)
   {
     v5 = @"wallet_account_active";
-    if (v3 != 1)
+    if (state != 1)
     {
       v5 = 0;
     }
 
-    if (v3)
+    if (state)
     {
       v4 = v5;
     }
@@ -49,7 +49,7 @@
 
   else
   {
-    switch(v3)
+    switch(state)
     {
       case 2:
         if ([(PKAccount *)self->_account stateReason]== 1 && self->_eligibleForRecoveryPaymentPlan)
@@ -86,8 +86,8 @@
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v6 setObject:v4 forKeyedSubscript:@"targetDialog"];
-  v7 = [(PKPaymentPass *)self->_paymentPass associatedAccountServiceAccountIdentifier];
-  [v6 setObject:v7 forKeyedSubscript:@"accountID"];
+  associatedAccountServiceAccountIdentifier = [(PKPaymentPass *)self->_paymentPass associatedAccountServiceAccountIdentifier];
+  [v6 setObject:associatedAccountServiceAccountIdentifier forKeyedSubscript:@"accountID"];
 
   v8 = [v6 copy];
 
@@ -96,16 +96,16 @@
 
 - (id)groupParameters
 {
-  v3 = [(PKAccount *)self->_account state];
-  if (v3 <= 1)
+  state = [(PKAccount *)self->_account state];
+  if (state <= 1)
   {
     v5 = @"wallet::account::active";
-    if (v3 != 1)
+    if (state != 1)
     {
       v5 = 0;
     }
 
-    if (v3)
+    if (state)
     {
       v4 = v5;
     }
@@ -118,7 +118,7 @@
 
   else
   {
-    switch(v3)
+    switch(state)
     {
       case 2:
         if ([(PKAccount *)self->_account stateReason]== 1 && self->_eligibleForRecoveryPaymentPlan)
@@ -164,8 +164,8 @@
 
 - (id)bodyText
 {
-  v3 = [(PKAccount *)self->_account state];
-  if (v3 == 4)
+  state = [(PKAccount *)self->_account state];
+  if (state == 4)
   {
     if ([(PKAccount *)self->_account stateReason]== 8 && self->_eligibleForRecoveryPaymentPlan)
     {
@@ -173,7 +173,7 @@
     }
   }
 
-  else if (v3 == 2 && self->_eligibleForRecoveryPaymentPlan)
+  else if (state == 2 && self->_eligibleForRecoveryPaymentPlan)
   {
 LABEL_8:
     v4 = PKLocalizedFeatureString();

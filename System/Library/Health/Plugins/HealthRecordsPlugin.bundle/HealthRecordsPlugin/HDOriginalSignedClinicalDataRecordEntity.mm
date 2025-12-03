@@ -1,38 +1,38 @@
 @interface HDOriginalSignedClinicalDataRecordEntity
-+ (BOOL)enumerateActiveCodableRecordsForAccountIdentifier:(id)a3 profile:(id)a4 error:(id *)a5 block:(id)a6;
-+ (BOOL)enumerateActiveEntitiesForAccountIdentifier:(id)a3 profile:(id)a4 error:(id *)a5 block:(id)a6;
-+ (BOOL)enumerateActiveRecordsForAccountIdentifier:(id)a3 profile:(id)a4 error:(id *)a5 block:(id)a6;
-+ (BOOL)insertCodableOriginalRecords:(id)a3 shouldReplace:(BOOL)a4 syncProvenance:(int64_t)a5 profile:(id)a6 error:(id *)a7;
-+ (BOOL)insertCodableOriginalRecordsFromSync:(id)a3 syncProvenance:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (BOOL)replaceOriginalRecordWithSyncIdentifier:(id)a3 newSignatureStatus:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (BOOL)validateCodableRecord:(id)a3 error:(id *)a4;
-+ (HDOriginalSignedClinicalDataRecordEntity)entityWithSyncIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)_lookUpAccountByGatewayExternalID:(id)a3 gatewayExternalIDToAccountMap:(id)a4 database:(id)a5 error:(id *)a6;
-+ (id)_lookUpAccountByIssuerIdentifier:(id)a3 issuerIdentifierToAccountMap:(id)a4 database:(id)a5 error:(id *)a6;
-+ (id)_predicateForUndeletedRecordsOnAccountEntity:(id)a3;
-+ (id)_predicateForUnextractedOriginalRecordsWithExtractionVersion:(int64_t)a3 ignoreExtractionVersion:(BOOL)a4;
-+ (id)accountEntityForCodableRecord:(id)a3 issuerIdentifierToAccountMap:(id)a4 gatewayExternalIDToAccountMap:(id)a5 database:(id)a6 error:(id *)a7;
-+ (id)codableOriginalRecordForHKRecord:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)codableWithRow:(HDSQLiteRow *)a3 error:(id *)a4;
-+ (id)existingDerivedVerifiableClinicalRecordsForRecordWithSyncIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)existingEntityBackingMedicalRecord:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)existingEntityWithSyncIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)existingEntityWithUniquenessChecksum:(id)a3 account:(id)a4 database:(id)a5 error:(id *)a6;
-+ (id)insertCodableRecord:(id)a3 shouldReplace:(BOOL)a4 accountPersistentID:(int64_t)a5 syncProvenance:(int64_t)a6 profile:(id)a7 transaction:(id)a8 error:(id *)a9;
++ (BOOL)enumerateActiveCodableRecordsForAccountIdentifier:(id)identifier profile:(id)profile error:(id *)error block:(id)block;
++ (BOOL)enumerateActiveEntitiesForAccountIdentifier:(id)identifier profile:(id)profile error:(id *)error block:(id)block;
++ (BOOL)enumerateActiveRecordsForAccountIdentifier:(id)identifier profile:(id)profile error:(id *)error block:(id)block;
++ (BOOL)insertCodableOriginalRecords:(id)records shouldReplace:(BOOL)replace syncProvenance:(int64_t)provenance profile:(id)profile error:(id *)error;
++ (BOOL)insertCodableOriginalRecordsFromSync:(id)sync syncProvenance:(int64_t)provenance profile:(id)profile error:(id *)error;
++ (BOOL)replaceOriginalRecordWithSyncIdentifier:(id)identifier newSignatureStatus:(int64_t)status profile:(id)profile error:(id *)error;
++ (BOOL)validateCodableRecord:(id)record error:(id *)error;
++ (HDOriginalSignedClinicalDataRecordEntity)entityWithSyncIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (id)_lookUpAccountByGatewayExternalID:(id)d gatewayExternalIDToAccountMap:(id)map database:(id)database error:(id *)error;
++ (id)_lookUpAccountByIssuerIdentifier:(id)identifier issuerIdentifierToAccountMap:(id)map database:(id)database error:(id *)error;
++ (id)_predicateForUndeletedRecordsOnAccountEntity:(id)entity;
++ (id)_predicateForUnextractedOriginalRecordsWithExtractionVersion:(int64_t)version ignoreExtractionVersion:(BOOL)extractionVersion;
++ (id)accountEntityForCodableRecord:(id)record issuerIdentifierToAccountMap:(id)map gatewayExternalIDToAccountMap:(id)accountMap database:(id)database error:(id *)error;
++ (id)codableOriginalRecordForHKRecord:(id)record profile:(id)profile error:(id *)error;
++ (id)codableWithRow:(HDSQLiteRow *)row error:(id *)error;
++ (id)existingDerivedVerifiableClinicalRecordsForRecordWithSyncIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (id)existingEntityBackingMedicalRecord:(id)record profile:(id)profile error:(id *)error;
++ (id)existingEntityWithSyncIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (id)existingEntityWithUniquenessChecksum:(id)checksum account:(id)account database:(id)database error:(id *)error;
++ (id)insertCodableRecord:(id)record shouldReplace:(BOOL)replace accountPersistentID:(int64_t)d syncProvenance:(int64_t)provenance profile:(id)profile transaction:(id)transaction error:(id *)error;
 + (id)newCompatibleCodableSignedClinicalDataRecord;
-+ (id)unextractedOriginalRecordsOnProfile:(id)a3 extractionVersion:(int64_t)a4 ignoreExtractionVersion:(BOOL)a5 error:(id *)a6;
-- (BOOL)_deleteDerivedRecordsWithTransaction:(id)a3 profile:(id)a4 error:(id *)a5;
-- (BOOL)deleteDerivedRecordsOnProfile:(id)a3 error:(id *)a4;
-- (BOOL)deleteOriginalAndDerivedRecordsOnProfile:(id)a3 error:(id *)a4;
-- (BOOL)storeSignedClinicalDataItem:(id)a3 account:(id)a4 profile:(id)a5 error:(id *)a6;
-- (id)codableInDatabase:(id)a3 error:(id *)a4;
-- (id)existingDerivedClinicalRecordsOnProfile:(id)a3 error:(id *)a4;
-- (id)existingDerivedMedicalRecordsOnProfile:(id)a3 excludeMainRecord:(BOOL)a4 error:(id *)a5;
-- (id)existingDerivedVerifiableClinicalRecordsOnProfile:(id)a3 error:(id *)a4;
-- (id)rawContentOnProfile:(id)a3 error:(id *)a4;
-- (id)signedClinicalDataRecordWithProfile:(id)a3 error:(id *)a4;
-- (id)syncIdentifierWithProfile:(id)a3 error:(id *)a4;
-- (int64_t)updateUniquenessChecksumIfNecessaryWithItem:(id)a3 database:(id)a4 error:(id *)a5;
++ (id)unextractedOriginalRecordsOnProfile:(id)profile extractionVersion:(int64_t)version ignoreExtractionVersion:(BOOL)extractionVersion error:(id *)error;
+- (BOOL)_deleteDerivedRecordsWithTransaction:(id)transaction profile:(id)profile error:(id *)error;
+- (BOOL)deleteDerivedRecordsOnProfile:(id)profile error:(id *)error;
+- (BOOL)deleteOriginalAndDerivedRecordsOnProfile:(id)profile error:(id *)error;
+- (BOOL)storeSignedClinicalDataItem:(id)item account:(id)account profile:(id)profile error:(id *)error;
+- (id)codableInDatabase:(id)database error:(id *)error;
+- (id)existingDerivedClinicalRecordsOnProfile:(id)profile error:(id *)error;
+- (id)existingDerivedMedicalRecordsOnProfile:(id)profile excludeMainRecord:(BOOL)record error:(id *)error;
+- (id)existingDerivedVerifiableClinicalRecordsOnProfile:(id)profile error:(id *)error;
+- (id)rawContentOnProfile:(id)profile error:(id *)error;
+- (id)signedClinicalDataRecordWithProfile:(id)profile error:(id *)error;
+- (id)syncIdentifierWithProfile:(id)profile error:(id *)error;
+- (int64_t)updateUniquenessChecksumIfNecessaryWithItem:(id)item database:(id)database error:(id *)error;
 @end
 
 @implementation HDOriginalSignedClinicalDataRecordEntity
@@ -43,28 +43,28 @@
   v3 = objc_alloc_init(HDCodableMessageVersion);
   [v2 setMessageVersion:v3];
 
-  v4 = [v2 messageVersion];
-  [v4 setCompatibilityVersion:0];
+  messageVersion = [v2 messageVersion];
+  [messageVersion setCompatibilityVersion:0];
 
-  v5 = [v2 messageVersion];
-  [v5 setEntityVersion:1];
+  messageVersion2 = [v2 messageVersion];
+  [messageVersion2 setEntityVersion:1];
 
   return v2;
 }
 
-+ (id)codableWithRow:(HDSQLiteRow *)a3 error:(id *)a4
++ (id)codableWithRow:(HDSQLiteRow *)row error:(id *)error
 {
-  if (!a3)
+  if (!row)
   {
-    sub_A5504(a2, a1);
+    sub_A5504(a2, self);
   }
 
   v6 = +[HDOriginalSignedClinicalDataRecordEntity newCompatibleCodableSignedClinicalDataRecord];
   v7 = HDSQLiteColumnWithNameAsInt64();
   if (v7 == 2)
   {
-    v8 = [v6 messageVersion];
-    [v8 setCompatibilityVersion:1];
+    messageVersion = [v6 messageVersion];
+    [messageVersion setCompatibilityVersion:1];
   }
 
   v9 = HDSQLiteColumnWithNameAsData();
@@ -109,7 +109,7 @@
   HDSQLiteColumnWithNameAsDouble();
   [v6 setLastModifiedDate:?];
   [v6 setDeleted:HDSQLiteColumnWithNameAsBoolean()];
-  if ([a1 validateCodableRecord:v6 error:a4])
+  if ([self validateCodableRecord:v6 error:error])
   {
     v22 = v6;
   }
@@ -122,19 +122,19 @@
   return v22;
 }
 
-+ (BOOL)validateCodableRecord:(id)a3 error:(id *)a4
++ (BOOL)validateCodableRecord:(id)record error:(id *)error
 {
-  v5 = a3;
+  recordCopy = record;
   v6 = objc_alloc_init(NSMutableArray);
-  if ([v5 hasMessageVersion])
+  if ([recordCopy hasMessageVersion])
   {
-    v7 = [v5 messageVersion];
-    v8 = [v7 compatibilityVersion];
+    messageVersion = [recordCopy messageVersion];
+    compatibilityVersion = [messageVersion compatibilityVersion];
 
-    if (v8 >= 2)
+    if (compatibilityVersion >= 2)
     {
-      v9 = [v5 messageVersion];
-      v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"compatibility version is higher (%lu) than what we support (%lu)", [v9 compatibilityVersion], 1);
+      messageVersion2 = [recordCopy messageVersion];
+      v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"compatibility version is higher (%lu) than what we support (%lu)", [messageVersion2 compatibilityVersion], 1);
       [v6 addObject:v10];
     }
   }
@@ -144,13 +144,13 @@
     [v6 addObject:@"no compatibility version"];
   }
 
-  v11 = [v5 syncIdentifier];
-  v12 = [v11 length];
+  syncIdentifier = [recordCopy syncIdentifier];
+  v12 = [syncIdentifier length];
 
   if (v12)
   {
-    v13 = [v5 syncIdentifier];
-    v14 = [NSUUID hk_UUIDWithData:v13];
+    syncIdentifier2 = [recordCopy syncIdentifier];
+    v14 = [NSUUID hk_UUIDWithData:syncIdentifier2];
 
     if (v14)
     {
@@ -167,74 +167,74 @@
 
   [v6 addObject:v15];
 LABEL_10:
-  if (([v5 hasSourceType] & 1) == 0)
+  if (([recordCopy hasSourceType] & 1) == 0)
   {
     [v6 addObject:@"no source type"];
   }
 
-  v16 = [v5 gatewayExternalID];
-  v17 = [v16 length];
-  v18 = [v5 issuerIdentifier];
-  v19 = [v18 length];
+  gatewayExternalID = [recordCopy gatewayExternalID];
+  v17 = [gatewayExternalID length];
+  issuerIdentifier = [recordCopy issuerIdentifier];
+  v19 = [issuerIdentifier length];
 
   if (!&v19[v17])
   {
     [v6 addObject:@"neither gateway external ID nor issuer ID are present"];
   }
 
-  if (([v5 hasRawContent] & 1) == 0 && !objc_msgSend(v5, "deleted") || objc_msgSend(v5, "hasRawContent") && objc_msgSend(v5, "deleted"))
+  if (([recordCopy hasRawContent] & 1) == 0 && !objc_msgSend(recordCopy, "deleted") || objc_msgSend(recordCopy, "hasRawContent") && objc_msgSend(recordCopy, "deleted"))
   {
     [v6 addObject:@"raw content and deleted should be mutually exclusive"];
   }
 
-  v20 = [v5 uniquenessChecksum];
-  v21 = [v20 length];
+  uniquenessChecksum = [recordCopy uniquenessChecksum];
+  v21 = [uniquenessChecksum length];
 
   if (!v21)
   {
     [v6 addObject:@"no uniqueness checksum"];
   }
 
-  v22 = [v5 types];
-  v23 = [v22 count];
+  types = [recordCopy types];
+  v23 = [types count];
 
   if (!v23)
   {
     [v6 addObject:@"no types"];
   }
 
-  if (([v5 hasFirstSeenDate] & 1) == 0)
+  if (([recordCopy hasFirstSeenDate] & 1) == 0)
   {
     [v6 addObject:@"no first seen date"];
   }
 
-  v24 = [v5 firstSeenDateTimeZoneName];
-  v25 = [v24 length];
+  firstSeenDateTimeZoneName = [recordCopy firstSeenDateTimeZoneName];
+  v25 = [firstSeenDateTimeZoneName length];
 
   if (!v25)
   {
     [v6 addObject:@"no first seen date timezone name"];
   }
 
-  if (([v5 hasReceivedDate] & 1) == 0)
+  if (([recordCopy hasReceivedDate] & 1) == 0)
   {
     [v6 addObject:@"no received date"];
   }
 
-  v26 = [v5 receivedDateTimeZoneName];
-  v27 = [v26 length];
+  receivedDateTimeZoneName = [recordCopy receivedDateTimeZoneName];
+  v27 = [receivedDateTimeZoneName length];
 
   if (!v27)
   {
     [v6 addObject:@"no received date timezone name"];
   }
 
-  if (([v5 hasSignatureStatus] & 1) == 0)
+  if (([recordCopy hasSignatureStatus] & 1) == 0)
   {
     [v6 addObject:@"no signature status"];
   }
 
-  if (([v5 hasLastModifiedDate] & 1) == 0)
+  if (([recordCopy hasLastModifiedDate] & 1) == 0)
   {
     [v6 addObject:@"no last modified date"];
   }
@@ -243,73 +243,73 @@ LABEL_10:
   if (v28)
   {
     v29 = [v6 componentsJoinedByString:@" "];;
-    [NSError hk_assignError:a4 code:3 format:@"codable signed clinical data record is invalid: %@", v29];
+    [NSError hk_assignError:error code:3 format:@"codable signed clinical data record is invalid: %@", v29];
   }
 
   return v28 == 0;
 }
 
-+ (id)insertCodableRecord:(id)a3 shouldReplace:(BOOL)a4 accountPersistentID:(int64_t)a5 syncProvenance:(int64_t)a6 profile:(id)a7 transaction:(id)a8 error:(id *)a9
++ (id)insertCodableRecord:(id)record shouldReplace:(BOOL)replace accountPersistentID:(int64_t)d syncProvenance:(int64_t)provenance profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v58 = a4;
-  v14 = a3;
-  v15 = a7;
-  v16 = a8;
+  replaceCopy = replace;
+  recordCopy = record;
+  profileCopy = profile;
+  transactionCopy = transaction;
   v71 = 0;
-  LOBYTE(a8) = [a1 validateCodableRecord:v14 error:&v71];
+  LOBYTE(transaction) = [self validateCodableRecord:recordCopy error:&v71];
   v17 = v71;
   v18 = v17;
-  if (a8)
+  if (transaction)
   {
     v56 = v17;
-    v59 = v16;
-    v19 = [v15 syncIdentityManager];
-    v20 = [v19 legacySyncIdentity];
+    v59 = transactionCopy;
+    syncIdentityManager = [profileCopy syncIdentityManager];
+    legacySyncIdentity = [syncIdentityManager legacySyncIdentity];
 
-    v57 = v15;
-    if (![v14 hasSyncIdentity])
+    v57 = profileCopy;
+    if (![recordCopy hasSyncIdentity])
     {
-      v54 = a9;
+      errorCopy2 = error;
       goto LABEL_12;
     }
 
-    v21 = [v14 syncIdentity];
+    syncIdentity = [recordCopy syncIdentity];
     v70 = 0;
-    v22 = [HDSyncIdentity syncIdentityWithCodable:v21 error:&v70];
+    v22 = [HDSyncIdentity syncIdentityWithCodable:syncIdentity error:&v70];
     v23 = v70;
 
     if (v22)
     {
-      v54 = a9;
-      v24 = [v15 syncIdentityManager];
+      errorCopy2 = error;
+      syncIdentityManager2 = [profileCopy syncIdentityManager];
       v69 = v23;
-      v25 = [v24 concreteIdentityForIdentity:v22 shouldCreate:1 transaction:v59 error:&v69];
+      v25 = [syncIdentityManager2 concreteIdentityForIdentity:v22 shouldCreate:1 transaction:v59 error:&v69];
       v26 = v69;
 
       if (v25)
       {
 
-        v20 = v25;
+        legacySyncIdentity = v25;
 LABEL_12:
         v32 = [NSUUID alloc];
-        v33 = [v14 syncIdentifier];
-        v34 = [v32 initWithUUIDBytes:{objc_msgSend(v33, "bytes")}];
+        syncIdentifier = [recordCopy syncIdentifier];
+        v34 = [v32 initWithUUIDBytes:{objc_msgSend(syncIdentifier, "bytes")}];
 
-        v35 = [v14 types];
-        v36 = [v35 componentsJoinedByString:@" "];
+        types = [recordCopy types];
+        v36 = [types componentsJoinedByString:@" "];
 
-        if ([v14 hasDeleted])
+        if ([recordCopy hasDeleted])
         {
-          v37 = [v14 deleted];
+          deleted = [recordCopy deleted];
         }
 
         else
         {
-          v37 = 0;
+          deleted = 0;
         }
 
-        v38 = [v59 protectedDatabase];
-        v39 = [a1 allColumns];
+        protectedDatabase = [v59 protectedDatabase];
+        allColumns = [self allColumns];
         v68 = 0;
         v60[0] = _NSConcreteStackBlock;
         v60[1] = 3221225472;
@@ -317,15 +317,15 @@ LABEL_12:
         v60[3] = &unk_107E48;
         v22 = v34;
         v61 = v22;
-        v62 = v14;
+        v62 = recordCopy;
         v40 = v36;
         v63 = v40;
-        v65 = a6;
-        v66 = a5;
-        v67 = v37;
-        v20 = v20;
-        v64 = v20;
-        v31 = [a1 insertOrReplaceEntity:v58 database:v38 properties:v39 error:&v68 bindingHandler:v60];
+        provenanceCopy = provenance;
+        dCopy = d;
+        v67 = deleted;
+        legacySyncIdentity = legacySyncIdentity;
+        v64 = legacySyncIdentity;
+        v31 = [self insertOrReplaceEntity:replaceCopy database:protectedDatabase properties:allColumns error:&v68 bindingHandler:v60];
         v41 = v68;
 
         if (v31)
@@ -341,13 +341,13 @@ LABEL_12:
           {
             v51 = v43;
             v52 = HKStringFromBool();
-            v53 = [v41 localizedDescription];
+            localizedDescription = [v41 localizedDescription];
             *buf = 138543874;
-            v73 = a1;
+            selfCopy2 = self;
             v74 = 2114;
             v75 = v52;
             v76 = 2114;
-            v77 = v53;
+            v77 = localizedDescription;
             _os_log_error_impl(&dword_0, v51, OS_LOG_TYPE_ERROR, "%{public}@ failed to insert (or replace: %{public}@) SCD record: %{public}@", buf, 0x20u);
           }
 
@@ -389,19 +389,19 @@ LABEL_12:
       v40 = v48;
       if (v48)
       {
-        if (a9)
+        if (error)
         {
           v49 = v48;
-          v20 = 0;
+          legacySyncIdentity = 0;
           v31 = 0;
-          *a9 = v40;
+          *error = v40;
           goto LABEL_43;
         }
 
         _HKLogDroppedError();
       }
 
-      v20 = 0;
+      legacySyncIdentity = 0;
     }
 
     else
@@ -415,18 +415,18 @@ LABEL_12:
       v40 = v23;
       if (v40)
       {
-        if (a9)
+        if (error)
         {
           v44 = v40;
           v31 = 0;
-          *a9 = v40;
+          *error = v40;
 LABEL_43:
           v41 = v40;
 LABEL_44:
 
           v18 = v56;
-          v15 = v57;
-          v16 = v59;
+          profileCopy = v57;
+          transactionCopy = v59;
           goto LABEL_45;
         }
 
@@ -443,22 +443,22 @@ LABEL_44:
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
   {
     v28 = v27;
-    v29 = [v18 localizedDescription];
+    localizedDescription2 = [v18 localizedDescription];
     *buf = 138543618;
-    v73 = a1;
+    selfCopy2 = self;
     v74 = 2114;
-    v75 = v29;
+    v75 = localizedDescription2;
     _os_log_impl(&dword_0, v28, OS_LOG_TYPE_DEFAULT, "%{public}@ validation failed, not inserting codable SCD record: %{public}@", buf, 0x16u);
   }
 
-  v20 = v18;
-  if (v20)
+  legacySyncIdentity = v18;
+  if (legacySyncIdentity)
   {
-    if (a9)
+    if (error)
     {
-      v30 = v20;
+      v30 = legacySyncIdentity;
       v31 = 0;
-      *a9 = v20;
+      *error = legacySyncIdentity;
       goto LABEL_45;
     }
 
@@ -471,29 +471,29 @@ LABEL_45:
   return v31;
 }
 
-+ (BOOL)insertCodableOriginalRecordsFromSync:(id)a3 syncProvenance:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)insertCodableOriginalRecordsFromSync:(id)sync syncProvenance:(int64_t)provenance profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  if ([v10 count])
+  syncCopy = sync;
+  profileCopy = profile;
+  if ([syncCopy count])
   {
-    v12 = [v11 database];
+    database = [profileCopy database];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_6332C;
     v19[3] = &unk_1067D8;
-    v20 = v10;
-    v21 = v11;
-    v22 = a1;
-    v23 = a4;
+    v20 = syncCopy;
+    v21 = profileCopy;
+    selfCopy = self;
+    provenanceCopy = provenance;
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_63824;
     v15[3] = &unk_106800;
     v16 = v20;
-    v18 = a4;
+    provenanceCopy2 = provenance;
     v17 = v21;
-    v13 = [a1 performWriteTransactionWithHealthDatabase:v12 error:a6 block:v19 inaccessibilityHandler:v15];
+    v13 = [self performWriteTransactionWithHealthDatabase:database error:error block:v19 inaccessibilityHandler:v15];
   }
 
   else
@@ -504,11 +504,11 @@ LABEL_45:
   return v13;
 }
 
-+ (BOOL)insertCodableOriginalRecords:(id)a3 shouldReplace:(BOOL)a4 syncProvenance:(int64_t)a5 profile:(id)a6 error:(id *)a7
++ (BOOL)insertCodableOriginalRecords:(id)records shouldReplace:(BOOL)replace syncProvenance:(int64_t)provenance profile:(id)profile error:(id *)error
 {
-  v12 = a3;
-  v13 = a6;
-  if ([v12 count])
+  recordsCopy = records;
+  profileCopy = profile;
+  if ([recordsCopy count])
   {
     _HKInitializeLogging();
     v14 = HKLogHealthRecords;
@@ -517,7 +517,7 @@ LABEL_45:
       v15 = v14;
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
-      v18 = [v12 count];
+      v18 = [recordsCopy count];
       v19 = HKStringFromBool();
       *buf = 138543874;
       v35 = v17;
@@ -528,25 +528,25 @@ LABEL_45:
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ starting to insert %lu codable original signed clinical data records, shouldReplace: %{public}@", buf, 0x20u);
     }
 
-    v20 = [v13 database];
+    database = [profileCopy database];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_63B14;
     v28[3] = &unk_107E70;
-    v31 = a1;
-    v33 = a4;
-    v29 = v12;
-    v32 = a5;
-    v30 = v13;
+    selfCopy = self;
+    replaceCopy = replace;
+    v29 = recordsCopy;
+    provenanceCopy = provenance;
+    v30 = profileCopy;
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_63FF4;
     v23[3] = &unk_107E98;
-    v27 = a4;
+    replaceCopy2 = replace;
     v24 = v29;
-    v26 = a5;
+    provenanceCopy2 = provenance;
     v25 = v30;
-    v21 = [a1 performWriteTransactionWithHealthDatabase:v20 error:a7 block:v28 inaccessibilityHandler:v23];
+    v21 = [self performWriteTransactionWithHealthDatabase:database error:error block:v28 inaccessibilityHandler:v23];
   }
 
   else
@@ -557,46 +557,46 @@ LABEL_45:
   return v21;
 }
 
-+ (id)accountEntityForCodableRecord:(id)a3 issuerIdentifierToAccountMap:(id)a4 gatewayExternalIDToAccountMap:(id)a5 database:(id)a6 error:(id *)a7
++ (id)accountEntityForCodableRecord:(id)record issuerIdentifierToAccountMap:(id)map gatewayExternalIDToAccountMap:(id)accountMap database:(id)database error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a3;
-  v16 = [v15 gatewayExternalID];
+  mapCopy = map;
+  accountMapCopy = accountMap;
+  databaseCopy = database;
+  recordCopy = record;
+  gatewayExternalID = [recordCopy gatewayExternalID];
 
-  if (v16)
+  if (gatewayExternalID)
   {
-    v17 = [v15 gatewayExternalID];
+    gatewayExternalID2 = [recordCopy gatewayExternalID];
 
-    [a1 _lookUpAccountByGatewayExternalID:v17 gatewayExternalIDToAccountMap:v13 database:v14 error:a7];
+    [self _lookUpAccountByGatewayExternalID:gatewayExternalID2 gatewayExternalIDToAccountMap:accountMapCopy database:databaseCopy error:error];
   }
 
   else
   {
-    v17 = [v15 issuerIdentifier];
+    gatewayExternalID2 = [recordCopy issuerIdentifier];
 
-    [a1 _lookUpAccountByIssuerIdentifier:v17 issuerIdentifierToAccountMap:v12 database:v14 error:a7];
+    [self _lookUpAccountByIssuerIdentifier:gatewayExternalID2 issuerIdentifierToAccountMap:mapCopy database:databaseCopy error:error];
   }
   v18 = ;
 
   return v18;
 }
 
-+ (id)_lookUpAccountByIssuerIdentifier:(id)a3 issuerIdentifierToAccountMap:(id)a4 database:(id)a5 error:(id *)a6
++ (id)_lookUpAccountByIssuerIdentifier:(id)identifier issuerIdentifierToAccountMap:(id)map database:(id)database error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v11 objectForKeyedSubscript:v10];
+  identifierCopy = identifier;
+  mapCopy = map;
+  databaseCopy = database;
+  v13 = [mapCopy objectForKeyedSubscript:identifierCopy];
   if (!v13)
   {
     v25 = 0;
-    v13 = [HDClinicalAccountEntity existingAccountEntityForSignedClinicalDataIssuerWithIdentifier:v10 database:v12 error:&v25];
+    v13 = [HDClinicalAccountEntity existingAccountEntityForSignedClinicalDataIssuerWithIdentifier:identifierCopy database:databaseCopy error:&v25];
     v14 = v25;
     if (v13)
     {
-      [v11 setObject:v13 forKeyedSubscript:v10];
+      [mapCopy setObject:v13 forKeyedSubscript:identifierCopy];
     }
 
     else
@@ -625,10 +625,10 @@ LABEL_45:
       v16 = v14;
       if (v16)
       {
-        if (a6)
+        if (error)
         {
           v17 = v16;
-          *a6 = v16;
+          *error = v16;
         }
 
         else
@@ -644,20 +644,20 @@ LABEL_45:
   return v13;
 }
 
-+ (id)_lookUpAccountByGatewayExternalID:(id)a3 gatewayExternalIDToAccountMap:(id)a4 database:(id)a5 error:(id *)a6
++ (id)_lookUpAccountByGatewayExternalID:(id)d gatewayExternalIDToAccountMap:(id)map database:(id)database error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v11 objectForKeyedSubscript:v10];
+  dCopy = d;
+  mapCopy = map;
+  databaseCopy = database;
+  v13 = [mapCopy objectForKeyedSubscript:dCopy];
   if (!v13)
   {
     v25 = 0;
-    v13 = [HDClinicalAccountEntity existingAccountEntityForGatewayWithExternalID:v10 database:v12 error:&v25];
+    v13 = [HDClinicalAccountEntity existingAccountEntityForGatewayWithExternalID:dCopy database:databaseCopy error:&v25];
     v14 = v25;
     if (v13)
     {
-      [v11 setObject:v13 forKeyedSubscript:v10];
+      [mapCopy setObject:v13 forKeyedSubscript:dCopy];
     }
 
     else
@@ -686,10 +686,10 @@ LABEL_45:
       v16 = v14;
       if (v16)
       {
-        if (a6)
+        if (error)
         {
           v17 = v16;
-          *a6 = v16;
+          *error = v16;
         }
 
         else
@@ -705,37 +705,37 @@ LABEL_45:
   return v13;
 }
 
-- (BOOL)storeSignedClinicalDataItem:(id)a3 account:(id)a4 profile:(id)a5 error:(id *)a6
+- (BOOL)storeSignedClinicalDataItem:(id)item account:(id)account profile:(id)profile error:(id *)error
 {
-  v115 = a3;
-  v112 = a4;
-  v106 = self;
-  v113 = a5;
-  v111 = a6;
+  itemCopy = item;
+  accountCopy = account;
+  selfCopy = self;
+  profileCopy = profile;
+  errorCopy = error;
   v117 = [HDOriginalSignedClinicalDataRecordEntity syncIdentifierWithProfile:"syncIdentifierWithProfile:error:" error:?];
   if (!v117)
   {
     goto LABEL_28;
   }
 
-  v10 = [v115 originalRecord];
-  v11 = [v10 syncIdentifier];
-  v12 = [v117 isEqual:v11];
+  originalRecord = [itemCopy originalRecord];
+  syncIdentifier = [originalRecord syncIdentifier];
+  v12 = [v117 isEqual:syncIdentifier];
 
   if ((v12 & 1) == 0)
   {
     v46 = @"original signed clinical data record's sync identifier does not match the entity's sync identifier";
 LABEL_27:
-    [NSError hk_assignError:v111 code:3 description:v46];
+    [NSError hk_assignError:errorCopy code:3 description:v46];
 LABEL_28:
     v47 = 0;
     goto LABEL_29;
   }
 
-  v13 = [v115 mainRecord];
-  v14 = [v13 originIdentifier];
-  v15 = [v14 signedClinicalDataRecordIdentifier];
-  v16 = [v117 isEqual:v15];
+  mainRecord = [itemCopy mainRecord];
+  originIdentifier = [mainRecord originIdentifier];
+  signedClinicalDataRecordIdentifier = [originIdentifier signedClinicalDataRecordIdentifier];
+  v16 = [v117 isEqual:signedClinicalDataRecordIdentifier];
 
   if ((v16 & 1) == 0)
   {
@@ -747,8 +747,8 @@ LABEL_28:
   v152 = 0u;
   v149 = 0u;
   v150 = 0u;
-  v17 = [v115 medicalRecords];
-  v18 = [v17 countByEnumeratingWithState:&v149 objects:v159 count:16];
+  medicalRecords = [itemCopy medicalRecords];
+  v18 = [medicalRecords countByEnumeratingWithState:&v149 objects:v159 count:16];
   if (v18)
   {
     v19 = *v150;
@@ -758,22 +758,22 @@ LABEL_28:
       {
         if (*v150 != v19)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(medicalRecords);
         }
 
-        v21 = [*(*(&v149 + 1) + 8 * i) originIdentifier];
-        v22 = [v21 signedClinicalDataRecordIdentifier];
-        v23 = [v117 isEqual:v22];
+        originIdentifier2 = [*(*(&v149 + 1) + 8 * i) originIdentifier];
+        signedClinicalDataRecordIdentifier2 = [originIdentifier2 signedClinicalDataRecordIdentifier];
+        v23 = [v117 isEqual:signedClinicalDataRecordIdentifier2];
 
         if ((v23 & 1) == 0)
         {
-          [NSError hk_assignError:v111 code:3 description:@"medical record's origin does not match original record's sync identifier"];
+          [NSError hk_assignError:errorCopy code:3 description:@"medical record's origin does not match original record's sync identifier"];
 
           goto LABEL_28;
         }
       }
 
-      v18 = [v17 countByEnumeratingWithState:&v149 objects:v159 count:16];
+      v18 = [medicalRecords countByEnumeratingWithState:&v149 objects:v159 count:16];
       if (v18)
       {
         continue;
@@ -787,8 +787,8 @@ LABEL_28:
   v148 = 0u;
   v145 = 0u;
   v146 = 0u;
-  v24 = [v115 clinicalRecords];
-  v25 = [v24 countByEnumeratingWithState:&v145 objects:v158 count:16];
+  clinicalRecords = [itemCopy clinicalRecords];
+  v25 = [clinicalRecords countByEnumeratingWithState:&v145 objects:v158 count:16];
   if (v25)
   {
     v26 = *v146;
@@ -799,24 +799,24 @@ LABEL_28:
       {
         if (*v146 != v26)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(clinicalRecords);
         }
 
         v29 = *(*(&v145 + 1) + 8 * j);
-        v30 = [v117 UUIDString];
-        v31 = [v29 metadata];
-        v32 = [v31 objectForKeyedSubscript:v27];
-        v33 = [v30 isEqualToString:v32];
+        uUIDString = [v117 UUIDString];
+        metadata = [v29 metadata];
+        v32 = [metadata objectForKeyedSubscript:v27];
+        v33 = [uUIDString isEqualToString:v32];
 
         if ((v33 & 1) == 0)
         {
-          [NSError hk_assignError:v111 code:3 description:@"clinical record's origin metadata entry does not match original record's sync identifier"];
+          [NSError hk_assignError:errorCopy code:3 description:@"clinical record's origin metadata entry does not match original record's sync identifier"];
 
           goto LABEL_28;
         }
       }
 
-      v25 = [v24 countByEnumeratingWithState:&v145 objects:v158 count:16];
+      v25 = [clinicalRecords countByEnumeratingWithState:&v145 objects:v158 count:16];
       if (v25)
       {
         continue;
@@ -826,23 +826,23 @@ LABEL_28:
     }
   }
 
-  v34 = [v115 verifiableClinicalRecord];
-  v35 = [v34 originIdentifier];
-  v36 = [v117 isEqual:v35];
+  verifiableClinicalRecord = [itemCopy verifiableClinicalRecord];
+  originIdentifier3 = [verifiableClinicalRecord originIdentifier];
+  v36 = [v117 isEqual:originIdentifier3];
 
   if ((v36 & 1) == 0)
   {
-    [NSError hk_assignError:v111 code:3 description:@"verifiable record's origin does not match original record's sync identifier"];
+    [NSError hk_assignError:errorCopy code:3 description:@"verifiable record's origin does not match original record's sync identifier"];
     goto LABEL_28;
   }
 
-  v37 = [v115 mainRecord];
-  v157 = v37;
+  mainRecord2 = [itemCopy mainRecord];
+  v157 = mainRecord2;
   v38 = [NSArray arrayWithObjects:&v157 count:1];
-  v39 = [v115 medicalRecords];
-  v103 = [v38 arrayByAddingObjectsFromArray:v39];
+  medicalRecords2 = [itemCopy medicalRecords];
+  v103 = [v38 arrayByAddingObjectsFromArray:medicalRecords2];
 
-  v104 = [(HDOriginalSignedClinicalDataRecordEntity *)v106 existingDerivedMedicalRecordsOnProfile:v113 error:v111];
+  v104 = [(HDOriginalSignedClinicalDataRecordEntity *)selfCopy existingDerivedMedicalRecordsOnProfile:profileCopy error:errorCopy];
   if (v104)
   {
     v40 = objc_alloc_init(NSMutableDictionary);
@@ -878,20 +878,20 @@ LABEL_28:
 
       v49 = v45;
 
-      v50 = [v49 items];
+      items = [v49 items];
       v138[0] = _NSConcreteStackBlock;
       v138[1] = 3221225472;
       v138[2] = sub_65610;
       v138[3] = &unk_107F70;
       v139 = v114;
-      v51 = [v50 hk_map:v138];
+      v51 = [items hk_map:v138];
       [v49 _setItems:v51];
     }
 
-    v52 = [v115 clinicalRecords];
-    v116 = [v52 mutableCopy];
+    clinicalRecords2 = [itemCopy clinicalRecords];
+    v116 = [clinicalRecords2 mutableCopy];
 
-    v100 = [(HDOriginalSignedClinicalDataRecordEntity *)v106 existingDerivedClinicalRecordsOnProfile:v113 error:v111];
+    v100 = [(HDOriginalSignedClinicalDataRecordEntity *)selfCopy existingDerivedClinicalRecordsOnProfile:profileCopy error:errorCopy];
     if (v100)
     {
       v108 = objc_alloc_init(NSMutableArray);
@@ -930,10 +930,10 @@ LABEL_28:
             {
               v58 = [v116 objectAtIndex:v57];
               [v116 removeObjectAtIndex:v57];
-              v59 = [v58 hrplug_medicalRecordUUIDFromPrivateMetadata];
-              if (v59)
+              hrplug_medicalRecordUUIDFromPrivateMetadata = [v58 hrplug_medicalRecordUUIDFromPrivateMetadata];
+              if (hrplug_medicalRecordUUIDFromPrivateMetadata)
               {
-                v60 = [v114 objectForKeyedSubscript:v59];
+                v60 = [v114 objectForKeyedSubscript:hrplug_medicalRecordUUIDFromPrivateMetadata];
                 v61 = v60;
                 if (v60)
                 {
@@ -942,7 +942,7 @@ LABEL_28:
 
                 else
                 {
-                  v62 = v59;
+                  v62 = hrplug_medicalRecordUUIDFromPrivateMetadata;
                 }
 
                 v63 = v62;
@@ -963,13 +963,13 @@ LABEL_28:
       v129 = 0u;
       v130 = 0u;
       v64 = v116;
-      v65 = [v64 countByEnumeratingWithState:&v129 objects:v155 count:16];
-      if (v65)
+      signedClinicalDataIssuer = [v64 countByEnumeratingWithState:&v129 objects:v155 count:16];
+      if (signedClinicalDataIssuer)
       {
         v66 = *v130;
         do
         {
-          for (m = 0; m != v65; m = m + 1)
+          for (m = 0; m != signedClinicalDataIssuer; m = m + 1)
           {
             if (*v130 != v66)
             {
@@ -977,28 +977,28 @@ LABEL_28:
             }
 
             v68 = *(*(&v129 + 1) + 8 * m);
-            v69 = [v68 hrplug_medicalRecordUUIDFromPrivateMetadata];
-            if (v69)
+            hrplug_medicalRecordUUIDFromPrivateMetadata2 = [v68 hrplug_medicalRecordUUIDFromPrivateMetadata];
+            if (hrplug_medicalRecordUUIDFromPrivateMetadata2)
             {
-              v70 = [v114 objectForKeyedSubscript:v69];
+              v70 = [v114 objectForKeyedSubscript:hrplug_medicalRecordUUIDFromPrivateMetadata2];
               v71 = v70;
-              if (v70 && ([v70 isEqual:v69] & 1) == 0)
+              if (v70 && ([v70 isEqual:hrplug_medicalRecordUUIDFromPrivateMetadata2] & 1) == 0)
               {
                 [v68 hrplug_updateMedicalRecordUUIDInPrivateMetadataToUUID:v71];
               }
             }
           }
 
-          v65 = [v64 countByEnumeratingWithState:&v129 objects:v155 count:16];
+          signedClinicalDataIssuer = [v64 countByEnumeratingWithState:&v129 objects:v155 count:16];
         }
 
-        while (v65);
+        while (signedClinicalDataIssuer);
       }
 
       v98 = [v64 copy];
       obja = [v101 arrayByAddingObjectsFromArray:v108];
 
-      v72 = [(HDOriginalSignedClinicalDataRecordEntity *)v106 existingDerivedVerifiableClinicalRecordsOnProfile:v113 error:v111];
+      v72 = [(HDOriginalSignedClinicalDataRecordEntity *)selfCopy existingDerivedVerifiableClinicalRecordsOnProfile:profileCopy error:errorCopy];
       v73 = v72;
       if (v72)
       {
@@ -1010,7 +1010,7 @@ LABEL_28:
         v122[1] = 3221225472;
         v122[2] = sub_656AC;
         v122[3] = &unk_107FC0;
-        v97 = v115;
+        v97 = itemCopy;
         v123 = v97;
         v124 = &v125;
         v102 = [v72 hk_filter:v122];
@@ -1018,8 +1018,8 @@ LABEL_28:
         v107 = v74;
         if ([v74 count])
         {
-          v75 = [v113 dataManager];
-          v76 = [v75 deleteDataObjects:v74 restrictedSourceEntities:0 failIfNotFound:1 recursiveDeleteAuthorizationBlock:0 error:v111];
+          dataManager = [profileCopy dataManager];
+          v76 = [dataManager deleteDataObjects:v74 restrictedSourceEntities:0 failIfNotFound:1 recursiveDeleteAuthorizationBlock:0 error:errorCopy];
 
           if ((v76 & 1) == 0)
           {
@@ -1029,8 +1029,8 @@ LABEL_28:
 
         if ([v99 count])
         {
-          v77 = [v112 identifier];
-          v78 = [HDMedicalRecordEntity _insertMedicalRecords:v99 accountIdentifier:v77 profile:v113 error:v111];
+          identifier = [accountCopy identifier];
+          v78 = [HDMedicalRecordEntity _insertMedicalRecords:v99 accountIdentifier:identifier profile:profileCopy error:errorCopy];
 
           if ((v78 & 1) == 0)
           {
@@ -1040,17 +1040,17 @@ LABEL_28:
 
         if ([v98 count])
         {
-          v79 = [v112 gateway];
-          v80 = [v79 externalID];
-          v81 = v80;
-          if (!v80)
+          gateway = [accountCopy gateway];
+          externalID = [gateway externalID];
+          identifier2 = externalID;
+          if (!externalID)
           {
-            v65 = [v112 signedClinicalDataIssuer];
-            v81 = [v65 identifier];
+            signedClinicalDataIssuer = [accountCopy signedClinicalDataIssuer];
+            identifier2 = [signedClinicalDataIssuer identifier];
           }
 
-          v82 = [HDClinicalRecordEntity _insertClinicalRecords:v98 clinicalExternalID:v81 profile:v113 error:v111];
-          if (!v80)
+          v82 = [HDClinicalRecordEntity _insertClinicalRecords:v98 clinicalExternalID:identifier2 profile:profileCopy error:errorCopy];
+          if (!externalID)
           {
           }
 
@@ -1067,8 +1067,8 @@ LABEL_28:
           v121 = 0u;
           v118 = 0u;
           v119 = 0u;
-          v83 = [v105 keyEnumerator];
-          v84 = [v83 countByEnumeratingWithState:&v118 objects:v154 count:16];
+          keyEnumerator = [v105 keyEnumerator];
+          v84 = [keyEnumerator countByEnumeratingWithState:&v118 objects:v154 count:16];
           if (v84)
           {
             v85 = *v119;
@@ -1079,14 +1079,14 @@ LABEL_28:
               {
                 if (*v119 != v85)
                 {
-                  objc_enumerationMutation(v83);
+                  objc_enumerationMutation(keyEnumerator);
                 }
 
                 v88 = *(*(&v118 + 1) + 8 * n);
                 v89 = [v105 objectForKeyedSubscript:v88];
-                v90 = [v113 metadataManager];
-                v91 = [v89 UUIDString];
-                LOBYTE(v88) = [v90 updateMetadataValue:v91 forKey:v86 object:v88 error:v111];
+                metadataManager = [profileCopy metadataManager];
+                uUIDString2 = [v89 UUIDString];
+                LOBYTE(v88) = [metadataManager updateMetadataValue:uUIDString2 forKey:v86 object:v88 error:errorCopy];
 
                 if ((v88 & 1) == 0)
                 {
@@ -1097,7 +1097,7 @@ LABEL_28:
                 }
               }
 
-              v84 = [v83 countByEnumeratingWithState:&v118 objects:v154 count:16];
+              v84 = [keyEnumerator countByEnumeratingWithState:&v118 objects:v154 count:16];
               if (v84)
               {
                 continue;
@@ -1115,12 +1115,12 @@ LABEL_28:
           goto LABEL_87;
         }
 
-        v92 = [v97 verifiableClinicalRecord];
-        v153 = v92;
+        verifiableClinicalRecord2 = [v97 verifiableClinicalRecord];
+        v153 = verifiableClinicalRecord2;
         v93 = [NSArray arrayWithObjects:&v153 count:1];
-        v94 = [v112 gateway];
-        v95 = [v94 externalID];
-        v96 = [HDVerifiableClinicalRecordEntity insertRecords:v93 gatewayExternalID:v95 profile:v113 error:v111];
+        gateway2 = [accountCopy gateway];
+        externalID2 = [gateway2 externalID];
+        v96 = [HDVerifiableClinicalRecordEntity insertRecords:v93 gatewayExternalID:externalID2 profile:profileCopy error:errorCopy];
 
         v74 = v107;
         if ((v96 & 1) == 0)
@@ -1164,12 +1164,12 @@ LABEL_29:
   return v47;
 }
 
-- (id)syncIdentifierWithProfile:(id)a3 error:(id *)a4
+- (id)syncIdentifierWithProfile:(id)profile error:(id *)error
 {
   v6 = HDOriginalSignedClinicalDataRecordEntityPropertySyncIdentifier;
-  v7 = [a3 database];
+  database = [profile database];
   v15 = 0;
-  v8 = [(HDOriginalSignedClinicalDataRecordEntity *)self valueForProperty:v6 healthDatabase:v7 error:&v15];
+  v8 = [(HDOriginalSignedClinicalDataRecordEntity *)self valueForProperty:v6 healthDatabase:database error:&v15];
   v9 = v15;
 
   if (v8)
@@ -1183,7 +1183,7 @@ LABEL_29:
 
     else
     {
-      [NSError hk_assignError:a4 code:100 format:@"unable to construct UUID from data %@", v8];
+      [NSError hk_assignError:error code:100 format:@"unable to construct UUID from data %@", v8];
     }
 
     goto LABEL_12;
@@ -1191,11 +1191,11 @@ LABEL_29:
 
   if (v9)
   {
-    if (a4)
+    if (error)
     {
       v13 = v9;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
       goto LABEL_12;
     }
 
@@ -1204,7 +1204,7 @@ LABEL_29:
 
   else
   {
-    [NSError hk_assignError:a4 code:118 format:@"sync identifier for %@ not found", self];
+    [NSError hk_assignError:error code:118 format:@"sync identifier for %@ not found", self];
   }
 
   v11 = 0;
@@ -1213,28 +1213,28 @@ LABEL_12:
   return v11;
 }
 
-+ (HDOriginalSignedClinicalDataRecordEntity)entityWithSyncIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (HDOriginalSignedClinicalDataRecordEntity)entityWithSyncIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  profileCopy = profile;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = sub_659CC;
   v23 = sub_659DC;
   v24 = 0;
-  v10 = [v9 database];
+  database = [profileCopy database];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_659E4;
   v15[3] = &unk_1067B0;
   v17 = &v19;
-  v18 = a1;
-  v11 = v8;
+  selfCopy = self;
+  v11 = identifierCopy;
   v16 = v11;
-  LODWORD(a5) = [a1 performReadTransactionWithHealthDatabase:v10 error:a5 block:v15];
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v15];
 
-  if (a5)
+  if (error)
   {
     v12 = v20[5];
   }
@@ -1251,11 +1251,11 @@ LABEL_12:
   return v13;
 }
 
-+ (id)existingEntityWithSyncIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)existingEntityWithSyncIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v15 = 0;
-  v9 = [a1 entityWithSyncIdentifier:v8 profile:a4 error:&v15];
+  v9 = [self entityWithSyncIdentifier:identifierCopy profile:profile error:&v15];
   v10 = v15;
   v11 = v10;
   if (v9)
@@ -1265,10 +1265,10 @@ LABEL_12:
 
   else if (v10)
   {
-    if (a5)
+    if (error)
     {
       v14 = v10;
-      *a5 = v11;
+      *error = v11;
     }
 
     else
@@ -1279,28 +1279,28 @@ LABEL_12:
 
   else
   {
-    [NSError hk_assignError:a5 code:118 format:@"original signed clinical data record with sync identifier %@ not found", v8];
+    [NSError hk_assignError:error code:118 format:@"original signed clinical data record with sync identifier %@ not found", identifierCopy];
   }
 
   return v9;
 }
 
-+ (id)existingEntityWithUniquenessChecksum:(id)a3 account:(id)a4 database:(id)a5 error:(id *)a6
++ (id)existingEntityWithUniquenessChecksum:(id)checksum account:(id)account database:(id)database error:(id *)error
 {
   v9 = HDOriginalSignedClinicalDataRecordEntityPropertyAccountROWID;
-  v10 = a5;
-  v11 = a3;
-  v12 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [a4 persistentID]);
+  databaseCopy = database;
+  checksumCopy = checksum;
+  v12 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [account persistentID]);
   v13 = [HDSQLiteComparisonPredicate predicateWithProperty:v9 equalToValue:v12];
 
-  v14 = [HDSQLiteComparisonPredicate predicateWithProperty:HDOriginalSignedClinicalDataRecordEntityPropertyUniquenessChecksum equalToValue:v11];
+  v14 = [HDSQLiteComparisonPredicate predicateWithProperty:HDOriginalSignedClinicalDataRecordEntityPropertyUniquenessChecksum equalToValue:checksumCopy];
 
   v20[0] = v13;
   v20[1] = v14;
   v15 = [NSArray arrayWithObjects:v20 count:2];
   v16 = [HDSQLiteCompoundPredicate predicateMatchingAllPredicates:v15];
 
-  v17 = [HDOriginalSignedClinicalDataRecordEntity anyInDatabase:v10 predicate:v16 error:a6];
+  v17 = [HDOriginalSignedClinicalDataRecordEntity anyInDatabase:databaseCopy predicate:v16 error:error];
 
   if (v17)
   {
@@ -1309,22 +1309,22 @@ LABEL_12:
 
   else
   {
-    [NSError hk_assignError:a6 code:118 description:@"No entity with the given uniqueness checksum found"];
+    [NSError hk_assignError:error code:118 description:@"No entity with the given uniqueness checksum found"];
   }
 
   return v17;
 }
 
-+ (id)existingEntityBackingMedicalRecord:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)existingEntityBackingMedicalRecord:(id)record profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 originIdentifier];
-  v11 = [v10 signedClinicalDataRecordIdentifier];
+  recordCopy = record;
+  profileCopy = profile;
+  originIdentifier = [recordCopy originIdentifier];
+  signedClinicalDataRecordIdentifier = [originIdentifier signedClinicalDataRecordIdentifier];
 
-  if (v11)
+  if (signedClinicalDataRecordIdentifier)
   {
-    v12 = [HDOriginalSignedClinicalDataRecordEntity existingEntityWithSyncIdentifier:v11 profile:v9 error:a5];
+    v12 = [HDOriginalSignedClinicalDataRecordEntity existingEntityWithSyncIdentifier:signedClinicalDataRecordIdentifier profile:profileCopy error:error];
     v13 = v12;
     if (v12)
     {
@@ -1340,10 +1340,10 @@ LABEL_12:
 
   else
   {
-    v13 = NSStringFromClass(a1);
-    v15 = [v8 UUID];
-    v16 = [v8 originIdentifier];
-    [NSError hk_assignError:a5 code:3 format:@"%@.existingEntityBackingMedicalRecord can only accept medical records backed by an SCD record, %@ however is backed by %@", v13, v15, v16];
+    v13 = NSStringFromClass(self);
+    uUID = [recordCopy UUID];
+    originIdentifier2 = [recordCopy originIdentifier];
+    [NSError hk_assignError:error code:3 format:@"%@.existingEntityBackingMedicalRecord can only accept medical records backed by an SCD record, %@ however is backed by %@", v13, uUID, originIdentifier2];
 
     v14 = 0;
   }
@@ -1351,20 +1351,20 @@ LABEL_12:
   return v14;
 }
 
-- (id)signedClinicalDataRecordWithProfile:(id)a3 error:(id *)a4
+- (id)signedClinicalDataRecordWithProfile:(id)profile error:(id *)error
 {
   v6 = HDMedicalRecordEntityPropertyOriginalSignedClinicalDataRecordROWID;
-  v7 = a3;
+  profileCopy = profile;
   v8 = [NSNumber numberWithLongLong:[(HDOriginalSignedClinicalDataRecordEntity *)self persistentID]];
   v9 = [HDSQLiteComparisonPredicate predicateWithProperty:v6 equalToValue:v8];
 
   v10 = +[HKSignedClinicalDataRecordType signedClinicalDataRecordType];
-  v11 = [HDSignedClinicalDataRecordEntity samplesWithType:v10 profile:v7 encodingOptions:0 predicate:v9 limit:kHDSQLiteQueryNoLimit anchor:0 error:a4];
+  v11 = [HDSignedClinicalDataRecordEntity samplesWithType:v10 profile:profileCopy encodingOptions:0 predicate:v9 limit:kHDSQLiteQueryNoLimit anchor:0 error:error];
 
   if (v11)
   {
-    v12 = [v11 firstObject];
-    if (v12)
+    firstObject = [v11 firstObject];
+    if (firstObject)
     {
       if ([v11 count] >= 2)
       {
@@ -1376,33 +1376,33 @@ LABEL_12:
         }
       }
 
-      v14 = v12;
+      v14 = firstObject;
     }
 
     else
     {
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
-      [NSError hk_assignError:a4 code:118 format:@"%@ was unable to find any HKSignedClinicalDataRecord associated with persistent ID %lu", v16, [(HDOriginalSignedClinicalDataRecordEntity *)self persistentID]];
+      [NSError hk_assignError:error code:118 format:@"%@ was unable to find any HKSignedClinicalDataRecord associated with persistent ID %lu", v16, [(HDOriginalSignedClinicalDataRecordEntity *)self persistentID]];
     }
   }
 
   else
   {
-    v12 = 0;
+    firstObject = 0;
   }
 
-  return v12;
+  return firstObject;
 }
 
-+ (id)_predicateForUnextractedOriginalRecordsWithExtractionVersion:(int64_t)a3 ignoreExtractionVersion:(BOOL)a4
++ (id)_predicateForUnextractedOriginalRecordsWithExtractionVersion:(int64_t)version ignoreExtractionVersion:(BOOL)extractionVersion
 {
-  v4 = a4;
-  v6 = [NSNumber numberWithInteger:a3];
-  v7 = [a1 disambiguatedDatabaseTable];
+  extractionVersionCopy = extractionVersion;
+  v6 = [NSNumber numberWithInteger:version];
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
   v8 = objc_opt_class();
   v9 = HDMedicalRecordEntityPropertyOriginalSignedClinicalDataRecordROWID;
-  v10 = [HDSQLiteJoinClause leftJoinClauseFromTable:v7 toTargetEntity:v8 as:0 localReference:HDSQLEntityPropertyPersistentID targetKey:HDMedicalRecordEntityPropertyOriginalSignedClinicalDataRecordROWID];
+  v10 = [HDSQLiteJoinClause leftJoinClauseFromTable:disambiguatedDatabaseTable toTargetEntity:v8 as:0 localReference:HDSQLEntityPropertyPersistentID targetKey:HDMedicalRecordEntityPropertyOriginalSignedClinicalDataRecordROWID];
 
   v11 = +[HDMedicalRecordEntity disambiguatedDatabaseTable];
   v12 = [HDSQLiteJoinClause leftJoinClauseFromTable:v11 toTargetEntity:objc_opt_class() as:0 localReference:HDDataEntityPropertyDataID targetKey:HDDataEntityPropertyDataID];
@@ -1414,14 +1414,14 @@ LABEL_12:
 
   v14 = [HDSQLiteNullPredicate isNullPredicateWithProperty:v9];
   v15 = +[HDSignedClinicalDataRecordEntity disambiguatedDatabaseTable];
-  v16 = [NSString stringWithFormat:@"%@.%@", v15, HDSignedClinicalDataRecordEntityPropertyIssuerIdentifier];
+  hDSignedClinicalDataRecordEntityPropertyIssuerIdentifier = [NSString stringWithFormat:@"%@.%@", v15, HDSignedClinicalDataRecordEntityPropertyIssuerIdentifier];
 
-  v34 = v16;
-  v17 = [HDSQLiteNullPredicate isNotNullPredicateWithProperty:v16];
+  v34 = hDSignedClinicalDataRecordEntityPropertyIssuerIdentifier;
+  v17 = [HDSQLiteNullPredicate isNotNullPredicateWithProperty:hDSignedClinicalDataRecordEntityPropertyIssuerIdentifier];
   v18 = v17;
   v19 = HDSourceEntity_ptr;
   v20 = v6;
-  if (v4)
+  if (extractionVersionCopy)
   {
     v21 = v17;
   }
@@ -1443,7 +1443,7 @@ LABEL_12:
   v26 = [v24 predicateMatchingAnyPredicates:v25];
 
   v27 = [v26 SQLForEntityClass:objc_opt_class()];
-  if (v4)
+  if (extractionVersionCopy)
   {
     v28 = [HDSQLiteRawPredicate predicateWithSQL:v27 overProperties:&__NSArray0__struct values:&__NSArray0__struct];
   }
@@ -1465,24 +1465,24 @@ LABEL_12:
   return v32;
 }
 
-+ (id)unextractedOriginalRecordsOnProfile:(id)a3 extractionVersion:(int64_t)a4 ignoreExtractionVersion:(BOOL)a5 error:(id *)a6
++ (id)unextractedOriginalRecordsOnProfile:(id)profile extractionVersion:(int64_t)version ignoreExtractionVersion:(BOOL)extractionVersion error:(id *)error
 {
-  v10 = a3;
+  profileCopy = profile;
   v11 = objc_alloc_init(NSMutableArray);
-  v12 = [v10 database];
+  database = [profileCopy database];
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_6655C;
   v17[3] = &unk_107FE8;
-  v19 = a1;
-  v20 = a4;
-  v21 = a5;
+  selfCopy = self;
+  versionCopy = version;
+  extractionVersionCopy = extractionVersion;
   v18 = v11;
   v13 = v11;
-  LODWORD(a6) = [a1 performReadTransactionWithHealthDatabase:v12 error:a6 block:v17];
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v17];
 
-  if (a6)
+  if (error)
   {
     v14 = v13;
   }
@@ -1497,12 +1497,12 @@ LABEL_12:
   return v14;
 }
 
-- (id)rawContentOnProfile:(id)a3 error:(id *)a4
+- (id)rawContentOnProfile:(id)profile error:(id *)error
 {
   v6 = HDOriginalSignedClinicalDataRecordEntityPropertyRawContent;
-  v7 = [a3 database];
+  database = [profile database];
   v15 = 0;
-  v8 = [(HDOriginalSignedClinicalDataRecordEntity *)self valueForProperty:v6 healthDatabase:v7 error:&v15];
+  v8 = [(HDOriginalSignedClinicalDataRecordEntity *)self valueForProperty:v6 healthDatabase:database error:&v15];
   v9 = v15;
 
   if (v8)
@@ -1516,16 +1516,16 @@ LABEL_12:
 
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    [NSError hk_assignError:a4 code:100 format:@"raw content for %@ is not NSData but %@", self, v13];
+    [NSError hk_assignError:error code:100 format:@"raw content for %@ is not NSData but %@", self, v13];
   }
 
   else if (v9)
   {
-    if (a4)
+    if (error)
     {
       v11 = v9;
       v10 = 0;
-      *a4 = v9;
+      *error = v9;
       goto LABEL_11;
     }
 
@@ -1534,7 +1534,7 @@ LABEL_12:
 
   else
   {
-    [NSError hk_assignError:a4 code:118 format:@"no raw content found for %@", self];
+    [NSError hk_assignError:error code:118 format:@"no raw content found for %@", self];
   }
 
   v10 = 0;
@@ -1543,29 +1543,29 @@ LABEL_11:
   return v10;
 }
 
-+ (id)codableOriginalRecordForHKRecord:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)codableOriginalRecordForHKRecord:(id)record profile:(id)profile error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  recordCopy = record;
+  profileCopy = profile;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = sub_659CC;
   v23 = sub_659DC;
   v24 = 0;
-  v9 = [v8 database];
+  database = [profileCopy database];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_669B8;
   v15[3] = &unk_106DB0;
-  v10 = v7;
+  v10 = recordCopy;
   v16 = v10;
-  v11 = v8;
+  v11 = profileCopy;
   v17 = v11;
   v18 = &v19;
-  LODWORD(a5) = [HDOriginalSignedClinicalDataRecordEntity performReadTransactionWithHealthDatabase:v9 error:a5 block:v15];
+  LODWORD(error) = [HDOriginalSignedClinicalDataRecordEntity performReadTransactionWithHealthDatabase:database error:error block:v15];
 
-  if (a5)
+  if (error)
   {
     v12 = v20[5];
   }
@@ -1582,10 +1582,10 @@ LABEL_11:
   return v13;
 }
 
-- (id)codableInDatabase:(id)a3 error:(id *)a4
+- (id)codableInDatabase:(id)database error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_opt_class() propertiesForCodable];
+  databaseCopy = database;
+  propertiesForCodable = [objc_opt_class() propertiesForCodable];
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1605,7 +1605,7 @@ LABEL_11:
   v16[4] = self;
   v16[5] = &v20;
   v16[6] = &v17;
-  v8 = [(HDOriginalSignedClinicalDataRecordEntity *)self getValuesForProperties:v7 database:v6 handler:v16];
+  v8 = [(HDOriginalSignedClinicalDataRecordEntity *)self getValuesForProperties:propertiesForCodable database:databaseCopy handler:v16];
   if (!v21[5])
   {
     _HKInitializeLogging();
@@ -1619,10 +1619,10 @@ LABEL_11:
     v11 = v10;
     if (v10)
     {
-      if (a4)
+      if (error)
       {
         v12 = v10;
-        *a4 = v11;
+        *error = v11;
       }
 
       else
@@ -1650,10 +1650,10 @@ LABEL_11:
   return v14;
 }
 
-+ (id)_predicateForUndeletedRecordsOnAccountEntity:(id)a3
++ (id)_predicateForUndeletedRecordsOnAccountEntity:(id)entity
 {
   v3 = HDOriginalSignedClinicalDataRecordEntityPropertyAccountROWID;
-  v4 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [a3 persistentID]);
+  v4 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [entity persistentID]);
   v5 = [HDSQLiteComparisonPredicate predicateWithProperty:v3 equalToValue:v4];
 
   v6 = [HDSQLiteComparisonPredicate predicateWithProperty:HDOriginalSignedClinicalDataRecordEntityPropertyDeleted equalToValue:&__kCFBooleanFalse];
@@ -1665,94 +1665,94 @@ LABEL_11:
   return v8;
 }
 
-+ (BOOL)enumerateActiveEntitiesForAccountIdentifier:(id)a3 profile:(id)a4 error:(id *)a5 block:(id)a6
++ (BOOL)enumerateActiveEntitiesForAccountIdentifier:(id)identifier profile:(id)profile error:(id *)error block:(id)block
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [a4 database];
+  identifierCopy = identifier;
+  blockCopy = block;
+  database = [profile database];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_66F94;
   v16[3] = &unk_108038;
-  v18 = v11;
-  v19 = a1;
-  v17 = v10;
-  v13 = v11;
-  v14 = v10;
-  LOBYTE(a5) = [a1 performReadTransactionWithHealthDatabase:v12 error:a5 block:v16];
+  v18 = blockCopy;
+  selfCopy = self;
+  v17 = identifierCopy;
+  v13 = blockCopy;
+  v14 = identifierCopy;
+  LOBYTE(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v16];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)enumerateActiveRecordsForAccountIdentifier:(id)a3 profile:(id)a4 error:(id *)a5 block:(id)a6
++ (BOOL)enumerateActiveRecordsForAccountIdentifier:(id)identifier profile:(id)profile error:(id *)error block:(id)block
 {
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_67310;
   v13[3] = &unk_108060;
-  v14 = a4;
-  v15 = a6;
-  v10 = v15;
-  v11 = v14;
-  LOBYTE(a5) = [a1 enumerateActiveEntitiesForAccountIdentifier:a3 profile:v11 error:a5 block:v13];
+  profileCopy = profile;
+  blockCopy = block;
+  v10 = blockCopy;
+  v11 = profileCopy;
+  LOBYTE(error) = [self enumerateActiveEntitiesForAccountIdentifier:identifier profile:v11 error:error block:v13];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)enumerateActiveCodableRecordsForAccountIdentifier:(id)a3 profile:(id)a4 error:(id *)a5 block:(id)a6
++ (BOOL)enumerateActiveCodableRecordsForAccountIdentifier:(id)identifier profile:(id)profile error:(id *)error block:(id)block
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_67430;
   v12[3] = &unk_108088;
-  v13 = a6;
-  v10 = v13;
-  LOBYTE(a5) = [a1 enumerateActiveEntitiesForAccountIdentifier:a3 profile:a4 error:a5 block:v12];
+  blockCopy = block;
+  v10 = blockCopy;
+  LOBYTE(error) = [self enumerateActiveEntitiesForAccountIdentifier:identifier profile:profile error:error block:v12];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)replaceOriginalRecordWithSyncIdentifier:(id)a3 newSignatureStatus:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)replaceOriginalRecordWithSyncIdentifier:(id)identifier newSignatureStatus:(int64_t)status profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [v11 database];
+  identifierCopy = identifier;
+  profileCopy = profile;
+  database = [profileCopy database];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_675FC;
   v20[3] = &unk_1067D8;
-  v21 = v10;
-  v22 = v11;
-  v23 = a4;
-  v24 = a1;
+  v21 = identifierCopy;
+  v22 = profileCopy;
+  statusCopy = status;
+  selfCopy = self;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_67830;
   v16[3] = &unk_106800;
   v18 = v22;
-  v19 = a4;
+  statusCopy2 = status;
   v17 = v21;
   v13 = v22;
   v14 = v21;
-  LOBYTE(a6) = [HDOriginalSignedClinicalDataRecordEntity performWriteTransactionWithHealthDatabase:v12 error:a6 block:v20 inaccessibilityHandler:v16];
+  LOBYTE(error) = [HDOriginalSignedClinicalDataRecordEntity performWriteTransactionWithHealthDatabase:database error:error block:v20 inaccessibilityHandler:v16];
 
-  return a6;
+  return error;
 }
 
-- (int64_t)updateUniquenessChecksumIfNecessaryWithItem:(id)a3 database:(id)a4 error:(id *)a5
+- (int64_t)updateUniquenessChecksumIfNecessaryWithItem:(id)item database:(id)database error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  itemCopy = item;
+  databaseCopy = database;
   v10 = HDOriginalSignedClinicalDataRecordEntityPropertyUniquenessChecksum;
-  v11 = [(HDOriginalSignedClinicalDataRecordEntity *)self valueForProperty:HDOriginalSignedClinicalDataRecordEntityPropertyUniquenessChecksum database:v9];
+  v11 = [(HDOriginalSignedClinicalDataRecordEntity *)self valueForProperty:HDOriginalSignedClinicalDataRecordEntityPropertyUniquenessChecksum database:databaseCopy];
   if (v11)
   {
     objc_opt_class();
     v12 = HKSafeObject();
     if (v12)
     {
-      v13 = [v8 uniquenessChecksum];
-      v14 = [v12 isEqual:v13];
+      uniquenessChecksum = [itemCopy uniquenessChecksum];
+      v14 = [v12 isEqual:uniquenessChecksum];
 
       if (v14)
       {
@@ -1767,8 +1767,8 @@ LABEL_11:
         v18[1] = 3221225472;
         v18[2] = sub_67AA0;
         v18[3] = &unk_105B80;
-        v19 = v8;
-        LODWORD(v15) = [(HDOriginalSignedClinicalDataRecordEntity *)self updateProperties:v16 database:v9 error:a5 bindingHandler:v18];
+        v19 = itemCopy;
+        LODWORD(v15) = [(HDOriginalSignedClinicalDataRecordEntity *)self updateProperties:v16 database:databaseCopy error:error bindingHandler:v18];
 
         v15 = v15;
       }
@@ -1782,27 +1782,27 @@ LABEL_11:
 
   else
   {
-    [NSError hk_assignError:a5 code:118 format:@"there is no uniqueness checksum on original record with ROWID %llu", [(HDOriginalSignedClinicalDataRecordEntity *)self persistentID]];
+    [NSError hk_assignError:error code:118 format:@"there is no uniqueness checksum on original record with ROWID %llu", [(HDOriginalSignedClinicalDataRecordEntity *)self persistentID]];
     v15 = 0;
   }
 
   return v15;
 }
 
-- (BOOL)_deleteDerivedRecordsWithTransaction:(id)a3 profile:(id)a4 error:(id *)a5
+- (BOOL)_deleteDerivedRecordsWithTransaction:(id)transaction profile:(id)profile error:(id *)error
 {
-  v7 = a4;
-  v8 = [(HDOriginalSignedClinicalDataRecordEntity *)self existingDerivedMedicalRecordsOnProfile:v7 error:a5];
-  if (v8 && ([v7 dataManager], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "deleteDataObjects:restrictedSourceEntities:failIfNotFound:recursiveDeleteAuthorizationBlock:error:", v8, 0, 1, 0, a5), v9, v10))
+  profileCopy = profile;
+  v8 = [(HDOriginalSignedClinicalDataRecordEntity *)self existingDerivedMedicalRecordsOnProfile:profileCopy error:error];
+  if (v8 && ([profileCopy dataManager], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "deleteDataObjects:restrictedSourceEntities:failIfNotFound:recursiveDeleteAuthorizationBlock:error:", v8, 0, 1, 0, error), v9, v10))
   {
-    v11 = [(HDOriginalSignedClinicalDataRecordEntity *)self existingDerivedClinicalRecordsOnProfile:v7 error:a5];
-    if (v11 && ([v7 dataManager], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "deleteDataObjects:restrictedSourceEntities:failIfNotFound:recursiveDeleteAuthorizationBlock:error:", v11, 0, 1, 0, a5), v12, v13))
+    v11 = [(HDOriginalSignedClinicalDataRecordEntity *)self existingDerivedClinicalRecordsOnProfile:profileCopy error:error];
+    if (v11 && ([profileCopy dataManager], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "deleteDataObjects:restrictedSourceEntities:failIfNotFound:recursiveDeleteAuthorizationBlock:error:", v11, 0, 1, 0, error), v12, v13))
     {
-      v14 = [(HDOriginalSignedClinicalDataRecordEntity *)self existingDerivedVerifiableClinicalRecordsOnProfile:v7 error:a5];
+      v14 = [(HDOriginalSignedClinicalDataRecordEntity *)self existingDerivedVerifiableClinicalRecordsOnProfile:profileCopy error:error];
       if (v14)
       {
-        v15 = [v7 dataManager];
-        v16 = [v15 deleteDataObjects:v14 restrictedSourceEntities:0 failIfNotFound:1 recursiveDeleteAuthorizationBlock:0 error:a5];
+        dataManager = [profileCopy dataManager];
+        v16 = [dataManager deleteDataObjects:v14 restrictedSourceEntities:0 failIfNotFound:1 recursiveDeleteAuthorizationBlock:0 error:error];
       }
 
       else
@@ -1825,41 +1825,41 @@ LABEL_11:
   return v16;
 }
 
-- (BOOL)deleteDerivedRecordsOnProfile:(id)a3 error:(id *)a4
+- (BOOL)deleteDerivedRecordsOnProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 database];
+  profileCopy = profile;
+  database = [profileCopy database];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_67D38;
   v10[3] = &unk_1080B0;
   v10[4] = self;
-  v11 = v6;
-  v8 = v6;
-  LOBYTE(a4) = [HDOriginalSignedClinicalDataRecordEntity performWriteTransactionWithHealthDatabase:v7 error:a4 block:v10];
+  v11 = profileCopy;
+  v8 = profileCopy;
+  LOBYTE(error) = [HDOriginalSignedClinicalDataRecordEntity performWriteTransactionWithHealthDatabase:database error:error block:v10];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)deleteOriginalAndDerivedRecordsOnProfile:(id)a3 error:(id *)a4
+- (BOOL)deleteOriginalAndDerivedRecordsOnProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 database];
+  profileCopy = profile;
+  database = [profileCopy database];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_67E20;
   v10[3] = &unk_1080B0;
   v10[4] = self;
-  v11 = v6;
-  v8 = v6;
-  LOBYTE(a4) = [HDOriginalSignedClinicalDataRecordEntity performWriteTransactionWithHealthDatabase:v7 error:a4 block:v10];
+  v11 = profileCopy;
+  v8 = profileCopy;
+  LOBYTE(error) = [HDOriginalSignedClinicalDataRecordEntity performWriteTransactionWithHealthDatabase:database error:error block:v10];
 
-  return a4;
+  return error;
 }
 
-- (id)existingDerivedMedicalRecordsOnProfile:(id)a3 excludeMainRecord:(BOOL)a4 error:(id *)a5
+- (id)existingDerivedMedicalRecordsOnProfile:(id)profile excludeMainRecord:(BOOL)record error:(id *)error
 {
-  v8 = a3;
+  profileCopy = profile;
   v9 = HDMedicalRecordEntityPropertyOriginalSignedClinicalDataRecordROWID;
   v10 = [NSNumber numberWithLongLong:[(HDOriginalSignedClinicalDataRecordEntity *)self persistentID]];
   v11 = [HDSQLiteComparisonPredicate predicateWithProperty:v9 equalToValue:v10];
@@ -1871,21 +1871,21 @@ LABEL_11:
   v28 = sub_659DC;
   v29 = 0;
   v12 = objc_opt_class();
-  v13 = [v8 database];
+  database = [profileCopy database];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_681CC;
   v18[3] = &unk_1080D8;
   v22 = &v24;
   v14 = v11;
-  v23 = a4;
+  recordCopy = record;
   v19 = v14;
-  v20 = self;
-  v15 = v8;
+  selfCopy = self;
+  v15 = profileCopy;
   v21 = v15;
-  LOBYTE(a5) = [v12 performReadTransactionWithHealthDatabase:v13 error:a5 block:v18];
+  LOBYTE(error) = [v12 performReadTransactionWithHealthDatabase:database error:error block:v18];
 
-  if (a5)
+  if (error)
   {
     v16 = v25[5];
   }
@@ -1900,25 +1900,25 @@ LABEL_11:
   return v16;
 }
 
-- (id)existingDerivedClinicalRecordsOnProfile:(id)a3 error:(id *)a4
+- (id)existingDerivedClinicalRecordsOnProfile:(id)profile error:(id *)error
 {
   v6 = HDClinicalRecordEntityPropertyOriginalSignedClinicalDataRecordROWID;
-  v7 = a3;
+  profileCopy = profile;
   v8 = [NSNumber numberWithLongLong:[(HDOriginalSignedClinicalDataRecordEntity *)self persistentID]];
   v9 = [HDSQLiteComparisonPredicate predicateWithProperty:v6 equalToValue:v8];
 
-  v10 = [HDClinicalRecordEntity _clinicalRecordsWithPredicate:v9 profile:v7 error:a4];
+  v10 = [HDClinicalRecordEntity _clinicalRecordsWithPredicate:v9 profile:profileCopy error:error];
 
   return v10;
 }
 
-- (id)existingDerivedVerifiableClinicalRecordsOnProfile:(id)a3 error:(id *)a4
+- (id)existingDerivedVerifiableClinicalRecordsOnProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDOriginalSignedClinicalDataRecordEntity *)self syncIdentifierWithProfile:v6 error:a4];
+  profileCopy = profile;
+  v7 = [(HDOriginalSignedClinicalDataRecordEntity *)self syncIdentifierWithProfile:profileCopy error:error];
   if (v7)
   {
-    v8 = [objc_opt_class() existingDerivedVerifiableClinicalRecordsForRecordWithSyncIdentifier:v7 profile:v6 error:a4];
+    v8 = [objc_opt_class() existingDerivedVerifiableClinicalRecordsForRecordWithSyncIdentifier:v7 profile:profileCopy error:error];
   }
 
   else
@@ -1929,13 +1929,13 @@ LABEL_11:
   return v8;
 }
 
-+ (id)existingDerivedVerifiableClinicalRecordsForRecordWithSyncIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)existingDerivedVerifiableClinicalRecordsForRecordWithSyncIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
   v7 = HDVerifiableClinicalRecordEntityPropertyOriginIdentifier;
-  v8 = a4;
-  v9 = [HDSQLiteComparisonPredicate predicateWithProperty:v7 equalToValue:a3];
+  profileCopy = profile;
+  v9 = [HDSQLiteComparisonPredicate predicateWithProperty:v7 equalToValue:identifier];
   v10 = +[HKVerifiableClinicalRecordType verifiableClinicalRecordType];
-  v11 = [HDVerifiableClinicalRecordEntity samplesWithType:v10 profile:v8 encodingOptions:0 predicate:v9 limit:kHDSQLiteQueryNoLimit anchor:0 error:a5];
+  v11 = [HDVerifiableClinicalRecordEntity samplesWithType:v10 profile:profileCopy encodingOptions:0 predicate:v9 limit:kHDSQLiteQueryNoLimit anchor:0 error:error];
 
   return v11;
 }

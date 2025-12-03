@@ -1,7 +1,7 @@
 @interface ViewControllerMatchingView
 - (_TtC5UIKitP33_23AF3A73A27963965B0057B8F7DCBABB26ViewControllerMatchingView)init;
-- (_TtC5UIKitP33_23AF3A73A27963965B0057B8F7DCBABB26ViewControllerMatchingView)initWithCoder:(id)a3;
-- (_TtC5UIKitP33_23AF3A73A27963965B0057B8F7DCBABB26ViewControllerMatchingView)initWithFrame:(CGRect)a3;
+- (_TtC5UIKitP33_23AF3A73A27963965B0057B8F7DCBABB26ViewControllerMatchingView)initWithCoder:(id)coder;
+- (_TtC5UIKitP33_23AF3A73A27963965B0057B8F7DCBABB26ViewControllerMatchingView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ViewControllerMatchingView
@@ -22,7 +22,7 @@
   return v7;
 }
 
-- (_TtC5UIKitP33_23AF3A73A27963965B0057B8F7DCBABB26ViewControllerMatchingView)initWithCoder:(id)a3
+- (_TtC5UIKitP33_23AF3A73A27963965B0057B8F7DCBABB26ViewControllerMatchingView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC5UIKitP33_23AF3A73A27963965B0057B8F7DCBABB26ViewControllerMatchingView_contentView;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(UIView) init];
@@ -31,7 +31,7 @@
   return result;
 }
 
-- (_TtC5UIKitP33_23AF3A73A27963965B0057B8F7DCBABB26ViewControllerMatchingView)initWithFrame:(CGRect)a3
+- (_TtC5UIKitP33_23AF3A73A27963965B0057B8F7DCBABB26ViewControllerMatchingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

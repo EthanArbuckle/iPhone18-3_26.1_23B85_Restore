@@ -1,28 +1,28 @@
 @interface CalConferenceDeserializationResult
-- (BOOL)isEqual:(id)a3;
-- (CalConferenceDeserializationResult)initWithConference:(id)a3 range:(_NSRange)a4 blockTitle:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (CalConferenceDeserializationResult)initWithConference:(id)conference range:(_NSRange)range blockTitle:(id)title;
 - (_NSRange)range;
 - (id)description;
 @end
 
 @implementation CalConferenceDeserializationResult
 
-- (CalConferenceDeserializationResult)initWithConference:(id)a3 range:(_NSRange)a4 blockTitle:(id)a5
+- (CalConferenceDeserializationResult)initWithConference:(id)conference range:(_NSRange)range blockTitle:(id)title
 {
-  length = a4.length;
-  location = a4.location;
-  v10 = a3;
-  v11 = a5;
+  length = range.length;
+  location = range.location;
+  conferenceCopy = conference;
+  titleCopy = title;
   v15.receiver = self;
   v15.super_class = CalConferenceDeserializationResult;
   v12 = [(CalConferenceDeserializationResult *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_conference, a3);
+    objc_storeStrong(&v12->_conference, conference);
     v13->_range.location = location;
     v13->_range.length = length;
-    objc_storeStrong(&v13->_blockTitle, a5);
+    objc_storeStrong(&v13->_blockTitle, title);
   }
 
   return v13;
@@ -41,15 +41,15 @@
   [(CalDescriptionBuilder *)v5 setKey:@"range" withString:v6];
 
   [(CalDescriptionBuilder *)v5 setKey:@"blockTitle" withString:self->_blockTitle];
-  v7 = [(CalDescriptionBuilder *)v5 build];
+  build = [(CalDescriptionBuilder *)v5 build];
 
-  return v7;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -59,14 +59,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       conference = self->_conference;
-      v7 = [(CalConferenceDeserializationResult *)v5 conference];
-      if (CalEqualObjects(conference, v7))
+      conference = [(CalConferenceDeserializationResult *)v5 conference];
+      if (CalEqualObjects(conference, conference))
       {
         blockTitle = self->_blockTitle;
-        v9 = [(CalConferenceDeserializationResult *)v5 blockTitle];
-        if (CalEqualStrings(blockTitle, v9))
+        blockTitle = [(CalConferenceDeserializationResult *)v5 blockTitle];
+        if (CalEqualStrings(blockTitle, blockTitle))
         {
           v12 = self->_range.location == [(CalConferenceDeserializationResult *)v5 range]&& self->_range.length == v10;
         }

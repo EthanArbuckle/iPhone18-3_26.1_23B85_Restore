@@ -1,20 +1,20 @@
 @interface AXUIBluetoothDevice
-- (AXUIBluetoothDevice)initWithDevice:(void *)a3 address:(id)a4 helper:(id)a5;
-- (AXUIBluetoothDevice)initWithPeripheral:(id)a3 helper:(id)a4;
+- (AXUIBluetoothDevice)initWithDevice:(void *)device address:(id)address helper:(id)helper;
+- (AXUIBluetoothDevice)initWithPeripheral:(id)peripheral helper:(id)helper;
 - (BOOL)connected;
 - (BOOL)connecting;
-- (BOOL)hasAddress:(id)a3;
+- (BOOL)hasAddress:(id)address;
 - (BOOL)isAppleHIDDevice;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDevice:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDevice:(id)device;
 - (BOOL)paired;
 - (id)address;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)identifier;
 - (id)name;
 - (int)type;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 - (unsigned)authorizedServices;
 - (unsigned)deviceClass;
@@ -22,64 +22,64 @@
 - (unsigned)minorClass;
 - (unsigned)productId;
 - (unsigned)vendorId;
-- (void)acceptSSP:(int)a3;
+- (void)acceptSSP:(int)p;
 - (void)connect;
-- (void)connectWithServices:(unsigned int)a3;
+- (void)connectWithServices:(unsigned int)services;
 - (void)disconnect;
-- (void)setDevice:(void *)a3;
-- (void)setPIN:(id)a3;
+- (void)setDevice:(void *)device;
+- (void)setPIN:(id)n;
 - (void)unpair;
 @end
 
 @implementation AXUIBluetoothDevice
 
-- (AXUIBluetoothDevice)initWithDevice:(void *)a3 address:(id)a4 helper:(id)a5
+- (AXUIBluetoothDevice)initWithDevice:(void *)device address:(id)address helper:(id)helper
 {
-  v8 = a4;
+  addressCopy = address;
   v13.receiver = self;
   v13.super_class = AXUIBluetoothDevice;
-  v9 = a5;
+  helperCopy = helper;
   v10 = [(AXUIBluetoothDevice *)&v13 init];
-  [(AXUIBluetoothDevice *)v10 setDevice:a3, v13.receiver, v13.super_class];
+  [(AXUIBluetoothDevice *)v10 setDevice:device, v13.receiver, v13.super_class];
   address = v10->_address;
-  v10->_address = v8;
+  v10->_address = addressCopy;
 
-  objc_storeWeak(&v10->_helper, v9);
+  objc_storeWeak(&v10->_helper, helperCopy);
   return v10;
 }
 
-- (AXUIBluetoothDevice)initWithPeripheral:(id)a3 helper:(id)a4
+- (AXUIBluetoothDevice)initWithPeripheral:(id)peripheral helper:(id)helper
 {
-  v6 = a3;
+  peripheralCopy = peripheral;
   v15.receiver = self;
   v15.super_class = AXUIBluetoothDevice;
-  v7 = a4;
+  helperCopy = helper;
   v8 = [(AXUIBluetoothDevice *)&v15 init];
   peripheral = v8->_peripheral;
-  v8->_peripheral = v6;
-  v10 = v6;
+  v8->_peripheral = peripheralCopy;
+  v10 = peripheralCopy;
 
   v11 = [(CBPeripheral *)v10 identifier:v15.receiver];
-  v12 = [v11 UUIDString];
+  uUIDString = [v11 UUIDString];
   address = v8->_address;
-  v8->_address = v12;
+  v8->_address = uUIDString;
 
-  objc_storeWeak(&v8->_helper, v7);
+  objc_storeWeak(&v8->_helper, helperCopy);
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_address copyWithZone:a3];
+  v8 = [(NSString *)self->_address copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(CBPeripheral *)self->_peripheral copyWithZone:a3];
+  v10 = [(CBPeripheral *)self->_peripheral copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
@@ -87,20 +87,20 @@
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(AXUIBluetoothDevice *)self name];
-  v6 = [v4 name];
+  compareCopy = compare;
+  name = [(AXUIBluetoothDevice *)self name];
+  name2 = [compareCopy name];
 
-  v7 = [v5 localizedCaseInsensitiveCompare:v6];
+  v7 = [name localizedCaseInsensitiveCompare:name2];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -108,49 +108,49 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AXUIBluetoothDevice *)self isEqualToDevice:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AXUIBluetoothDevice *)self isEqualToDevice:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToDevice:(id)a3
+- (BOOL)isEqualToDevice:(id)device
 {
-  if (!a3)
+  if (!device)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(AXUIBluetoothDevice *)self address];
-  v6 = [v4 address];
+  deviceCopy = device;
+  address = [(AXUIBluetoothDevice *)self address];
+  address2 = [deviceCopy address];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(deviceCopy) = [address isEqualToString:address2];
+  return deviceCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(AXUIBluetoothDevice *)self address];
-  v3 = [v2 hash];
+  address = [(AXUIBluetoothDevice *)self address];
+  v3 = [address hash];
 
   return v3;
 }
 
-- (BOOL)hasAddress:(id)a3
+- (BOOL)hasAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(AXUIBluetoothDevice *)self address];
-  v6 = [v5 isEqualToString:v4];
+  addressCopy = address;
+  address = [(AXUIBluetoothDevice *)self address];
+  v6 = [address isEqualToString:addressCopy];
 
   return v6;
 }
 
-- (void)setDevice:(void *)a3
+- (void)setDevice:(void *)device
 {
-  if (self->_device != a3)
+  if (self->_device != device)
   {
-    self->_device = a3;
+    self->_device = device;
   }
 }
 
@@ -161,7 +161,7 @@
   name = self->_name;
   if (name)
   {
-    v4 = name;
+    name = name;
   }
 
   else if ([(AXUIBluetoothDevice *)self isClassicDevice])
@@ -186,15 +186,15 @@
     {
       [MEMORY[0x1E696AEC0] stringWithUTF8String:v9];
     }
-    v4 = ;
+    name = ;
   }
 
   else
   {
-    v4 = [(CBPeripheral *)self->_peripheral name];
+    name = [(CBPeripheral *)self->_peripheral name];
   }
 
-  v7 = v4;
+  v7 = name;
 LABEL_13:
 
   return v7;
@@ -219,16 +219,16 @@ LABEL_13:
 {
   if ([(AXUIBluetoothDevice *)self isBTLEDevice])
   {
-    v3 = [(CBPeripheral *)self->_peripheral identifier];
-    v4 = [v3 UUIDString];
+    identifier = [(CBPeripheral *)self->_peripheral identifier];
+    uUIDString = [identifier UUIDString];
   }
 
   else
   {
-    v4 = [(AXUIBluetoothDevice *)self address];
+    uUIDString = [(AXUIBluetoothDevice *)self address];
   }
 
-  return v4;
+  return uUIDString;
 }
 
 - (int)type
@@ -314,9 +314,9 @@ LABEL_13:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(AXUIBluetoothDevice *)self name];
-  v7 = [(AXUIBluetoothDevice *)self address];
-  v8 = [v3 stringWithFormat:@"%@<%p>: name:'%@' address:'%@' BTDevice:%p, type:%d", v5, self, v6, v7, self->_device, -[AXUIBluetoothDevice type](self, "type")];
+  name = [(AXUIBluetoothDevice *)self name];
+  address = [(AXUIBluetoothDevice *)self address];
+  v8 = [v3 stringWithFormat:@"%@<%p>: name:'%@' address:'%@' BTDevice:%p, type:%d", v5, self, name, address, self->_device, -[AXUIBluetoothDevice type](self, "type")];
 
   return v8;
 }
@@ -369,10 +369,10 @@ LABEL_13:
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [MEMORY[0x1E698F468] sharedInstance];
-    v6 = [v5 connectingDevices];
+    mEMORY[0x1E698F468] = [MEMORY[0x1E698F468] sharedInstance];
+    connectingDevices = [mEMORY[0x1E698F468] connectingDevices];
 
-    v3 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v3 = [connectingDevices countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v3)
     {
       v7 = *v11;
@@ -382,7 +382,7 @@ LABEL_13:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(connectingDevices);
           }
 
           if ([*(*(&v10 + 1) + 8 * i) isEqual:v4])
@@ -392,7 +392,7 @@ LABEL_13:
           }
         }
 
-        v3 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v3 = [connectingDevices countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v3)
         {
           continue;
@@ -410,11 +410,11 @@ LABEL_13:
 
 - (unsigned)authorizedServices
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_helper);
-  LODWORD(v2) = [WeakRetained authorizedServicesForDevice:v2];
+  LODWORD(selfCopy) = [WeakRetained authorizedServicesForDevice:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)connect
@@ -423,9 +423,9 @@ LABEL_13:
   [WeakRetained connectDevice:self];
 }
 
-- (void)connectWithServices:(unsigned int)a3
+- (void)connectWithServices:(unsigned int)services
 {
-  v3 = *&a3;
+  v3 = *&services;
   WeakRetained = objc_loadWeakRetained(&self->_helper);
   [WeakRetained connectDevice:self withServices:v3];
 }
@@ -436,25 +436,25 @@ LABEL_13:
   if ([(AXUIBluetoothDevice *)self isBTLEDevice])
   {
     WeakRetained = objc_loadWeakRetained(&self->_helper);
-    v3 = [WeakRetained centralManager];
-    [v3 cancelPeripheralConnection:self->_peripheral options:0];
+    centralManager = [WeakRetained centralManager];
+    [centralManager cancelPeripheralConnection:self->_peripheral options:0];
   }
 
   else if (BTDeviceDisconnect())
   {
-    v4 = [MEMORY[0x1E69887B8] sharedInstance];
-    v5 = [v4 ignoreLogging];
+    mEMORY[0x1E69887B8] = [MEMORY[0x1E69887B8] sharedInstance];
+    ignoreLogging = [mEMORY[0x1E69887B8] ignoreLogging];
 
-    if ((v5 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
-      v6 = [MEMORY[0x1E69887B8] identifier];
+      identifier = [MEMORY[0x1E69887B8] identifier];
       v7 = AXLoggerForFacility();
 
       v8 = AXOSLogLevelFromAXLogLevel();
       if (os_log_type_enabled(v7, v8))
       {
         v9 = AXColorizeFormatLog();
-        v11 = [(AXUIBluetoothDevice *)self name];
+        name = [(AXUIBluetoothDevice *)self name];
         v10 = _AXStringForArgs();
 
         if (os_log_type_enabled(v7, v8))
@@ -468,26 +468,26 @@ LABEL_13:
   }
 }
 
-- (void)setPIN:(id)a3
+- (void)setPIN:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   WeakRetained = objc_loadWeakRetained(&self->_helper);
-  [WeakRetained setPincode:v4 forDevice:self];
+  [WeakRetained setPincode:nCopy forDevice:self];
 }
 
-- (void)acceptSSP:(int)a3
+- (void)acceptSSP:(int)p
 {
-  v3 = *&a3;
+  v3 = *&p;
   WeakRetained = objc_loadWeakRetained(&self->_helper);
   [WeakRetained acceptSSP:v3 forDevice:self];
 }
 
 - (void)unpair
 {
-  v3 = [(AXUIBluetoothDevice *)self isBTLEDevice];
+  isBTLEDevice = [(AXUIBluetoothDevice *)self isBTLEDevice];
   WeakRetained = objc_loadWeakRetained(&self->_helper);
   v5 = WeakRetained;
-  if (v3)
+  if (isBTLEDevice)
   {
     [WeakRetained unpairBTLEDevice:self];
   }

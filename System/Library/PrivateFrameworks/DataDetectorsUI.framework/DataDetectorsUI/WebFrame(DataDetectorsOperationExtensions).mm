@@ -8,7 +8,7 @@
 {
   v2 = [DDWebKitOperation alloc];
 
-  return [(DDOperation *)v2 initWithContainer:a1];
+  return [(DDOperation *)v2 initWithContainer:self];
 }
 
 @end

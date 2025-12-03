@@ -1,15 +1,15 @@
 @interface SUScriptExecutionContext
-- (BOOL)evaluateData:(id)a3 MIMEType:(id)a4 textEncodingName:(id)a5 baseURL:(id)a6;
+- (BOOL)evaluateData:(id)data MIMEType:(id)type textEncodingName:(id)name baseURL:(id)l;
 - (OpaqueJSContext)globalExecutionContext;
 - (id)_newLoadOperation;
 - (id)_webView;
-- (id)parentViewControllerForWebView:(id)a3;
+- (id)parentViewControllerForWebView:(id)view;
 - (void)_cancelLoadOperation;
 - (void)dealloc;
-- (void)evaluateScriptAtURL:(id)a3;
-- (void)evaluateScriptWithURLBagKey:(id)a3;
-- (void)operation:(id)a3 failedWithError:(id)a4;
-- (void)operation:(id)a3 finishedWithOutput:(id)a4;
+- (void)evaluateScriptAtURL:(id)l;
+- (void)evaluateScriptWithURLBagKey:(id)key;
+- (void)operation:(id)operation failedWithError:(id)error;
+- (void)operation:(id)operation finishedWithOutput:(id)output;
 @end
 
 @implementation SUScriptExecutionContext
@@ -24,18 +24,18 @@
   [(SUScriptExecutionContext *)&v3 dealloc];
 }
 
-- (BOOL)evaluateData:(id)a3 MIMEType:(id)a4 textEncodingName:(id)a5 baseURL:(id)a6
+- (BOOL)evaluateData:(id)data MIMEType:(id)type textEncodingName:(id)name baseURL:(id)l
 {
-  if ([a4 rangeOfString:@"javascript" options:1] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([type rangeOfString:@"javascript" options:1] == 0x7FFFFFFFFFFFFFFFLL)
   {
     [-[SUScriptExecutionContext _webView](self "_webView")];
   }
 
   else
   {
-    if (a5)
+    if (name)
     {
-      v11 = CFStringConvertIANACharSetNameToEncoding(a5);
+      v11 = CFStringConvertIANACharSetNameToEncoding(name);
     }
 
     else
@@ -43,7 +43,7 @@
       v11 = 134217984;
     }
 
-    v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:a3 encoding:CFStringConvertEncodingToNSStringEncoding(v11)];
+    v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:data encoding:CFStringConvertEncodingToNSStringEncoding(v11)];
     if (v12)
     {
       v13 = v12;
@@ -63,22 +63,22 @@ uint64_t __62__SUScriptExecutionContext_callWebScriptMethod_withArguments___bloc
   return [v2 callWebScriptMethod:v3 withArguments:v4];
 }
 
-- (void)evaluateScriptAtURL:(id)a3
+- (void)evaluateScriptAtURL:(id)l
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E69D4938] sharedConfig];
-  v6 = [v5 shouldLog];
-  if ([v5 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEBUG))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
   {
     v7 &= 2u;
   }
@@ -88,7 +88,7 @@ uint64_t __62__SUScriptExecutionContext_callWebScriptMethod_withArguments___bloc
     v14 = 138412546;
     v15 = objc_opt_class();
     v16 = 2112;
-    v17 = a3;
+    lCopy = l;
     LODWORD(v13) = 22;
     v12 = &v14;
     v8 = _os_log_send_and_compose_impl();
@@ -104,28 +104,28 @@ uint64_t __62__SUScriptExecutionContext_callWebScriptMethod_withArguments___bloc
 
   [(SUScriptExecutionContext *)self _cancelLoadOperation];
   self->_loadOperation = [(SUScriptExecutionContext *)self _newLoadOperation];
-  v11 = [objc_alloc(MEMORY[0x1E69D4A08]) initWithURL:a3];
+  v11 = [objc_alloc(MEMORY[0x1E69D4A08]) initWithURL:l];
   [(ISStoreURLOperation *)self->_loadOperation setRequestProperties:v11];
 
   [objc_msgSend(MEMORY[0x1E69E4798] "mainQueue")];
 }
 
-- (void)evaluateScriptWithURLBagKey:(id)a3
+- (void)evaluateScriptWithURLBagKey:(id)key
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E69D4938] sharedConfig];
-  v6 = [v5 shouldLog];
-  if ([v5 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEBUG))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
   {
     v7 &= 2u;
   }
@@ -135,7 +135,7 @@ uint64_t __62__SUScriptExecutionContext_callWebScriptMethod_withArguments___bloc
     v14 = 138412546;
     v15 = objc_opt_class();
     v16 = 2112;
-    v17 = a3;
+    keyCopy = key;
     LODWORD(v13) = 22;
     v12 = &v14;
     v8 = _os_log_send_and_compose_impl();
@@ -152,7 +152,7 @@ uint64_t __62__SUScriptExecutionContext_callWebScriptMethod_withArguments___bloc
   [(SUScriptExecutionContext *)self _cancelLoadOperation];
   self->_loadOperation = [(SUScriptExecutionContext *)self _newLoadOperation];
   v11 = objc_alloc_init(MEMORY[0x1E69D4970]);
-  [v11 setURLBagKey:a3];
+  [v11 setURLBagKey:key];
   [(ISStoreURLOperation *)self->_loadOperation setRequestProperties:v11];
 
   [objc_msgSend(MEMORY[0x1E69E4798] "mainQueue")];
@@ -165,22 +165,22 @@ uint64_t __62__SUScriptExecutionContext_callWebScriptMethod_withArguments___bloc
   return [v2 globalContext];
 }
 
-- (void)operation:(id)a3 failedWithError:(id)a4
+- (void)operation:(id)operation failedWithError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E69D4938] sharedConfig];
-  v6 = [v5 shouldLog];
-  if ([v5 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEFAULT))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
   {
     v7 &= 2u;
   }
@@ -205,36 +205,36 @@ uint64_t __62__SUScriptExecutionContext_callWebScriptMethod_withArguments___bloc
   [(SUScriptExecutionContext *)self _cancelLoadOperation];
 }
 
-- (void)operation:(id)a3 finishedWithOutput:(id)a4
+- (void)operation:(id)operation finishedWithOutput:(id)output
 {
   v19 = *MEMORY[0x1E69E9840];
-  if ([a4 length])
+  if ([output length])
   {
-    v7 = [a3 response];
-    v8 = [v7 textEncodingName];
-    if (!v8)
+    response = [operation response];
+    textEncodingName = [response textEncodingName];
+    if (!textEncodingName)
     {
-      v8 = CFStringConvertEncodingToIANACharSetName(0x8000100u);
+      textEncodingName = CFStringConvertEncodingToIANACharSetName(0x8000100u);
     }
 
-    -[SUScriptExecutionContext evaluateData:MIMEType:textEncodingName:baseURL:](self, "evaluateData:MIMEType:textEncodingName:baseURL:", a4, [v7 MIMEType], v8, objc_msgSend(objc_msgSend(a3, "response"), "URL"));
+    -[SUScriptExecutionContext evaluateData:MIMEType:textEncodingName:baseURL:](self, "evaluateData:MIMEType:textEncodingName:baseURL:", output, [response MIMEType], textEncodingName, objc_msgSend(objc_msgSend(operation, "response"), "URL"));
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69D4938] sharedConfig];
-    v10 = [v9 shouldLog];
-    if ([v9 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v11 &= 2u;
     }
@@ -260,24 +260,24 @@ uint64_t __62__SUScriptExecutionContext_callWebScriptMethod_withArguments___bloc
   [(SUScriptExecutionContext *)self _cancelLoadOperation];
 }
 
-- (id)parentViewControllerForWebView:(id)a3
+- (id)parentViewControllerForWebView:(id)view
 {
   v3 = +[SUClientDispatch tabBarController];
-  v4 = [v3 presentedViewController];
-  if (!v4)
+  presentedViewController = [v3 presentedViewController];
+  if (!presentedViewController)
   {
-    v4 = [v3 selectedViewController];
+    presentedViewController = [v3 selectedViewController];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v4 topViewController];
+    presentedViewController = [presentedViewController topViewController];
   }
 
-  if (v4)
+  if (presentedViewController)
   {
-    return v4;
+    return presentedViewController;
   }
 
   else

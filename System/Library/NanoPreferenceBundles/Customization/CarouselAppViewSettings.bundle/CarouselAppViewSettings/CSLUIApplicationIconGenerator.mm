@@ -1,23 +1,23 @@
 @interface CSLUIApplicationIconGenerator
-+ (void)_calendarIconImageOnCallbackQueue:(id)a3 completion:(id)a4;
-+ (void)iconImageForApplication:(id)a3 callbackQueue:(id)a4 completion:(id)a5;
++ (void)_calendarIconImageOnCallbackQueue:(id)queue completion:(id)completion;
++ (void)iconImageForApplication:(id)application callbackQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation CSLUIApplicationIconGenerator
 
-+ (void)iconImageForApplication:(id)a3 callbackQueue:(id)a4 completion:(id)a5
++ (void)iconImageForApplication:(id)application callbackQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isEqualToString:kCalendarBundleIdentifier])
+  applicationCopy = application;
+  queueCopy = queue;
+  completionCopy = completion;
+  if ([applicationCopy isEqualToString:kCalendarBundleIdentifier])
   {
-    [a1 _calendarIconImageOnCallbackQueue:v9 completion:v10];
+    [self _calendarIconImageOnCallbackQueue:queueCopy completion:completionCopy];
   }
 
   else
   {
-    v11 = [[ISIcon alloc] initWithBundleIdentifier:v8];
+    v11 = [[ISIcon alloc] initWithBundleIdentifier:applicationCopy];
     +[CSLUIIconView centerIconDiameter];
     v13 = v12;
     v14 = +[UIScreen mainScreen];
@@ -30,7 +30,7 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v25 = v8;
+      v25 = applicationCopy;
       v26 = 2048;
       v27 = v13;
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "iconImageForApplication fetching icon using Icon Services getCGImageForImageDescriptor bundleID=%@ size=%lf", buf, 0x16u);
@@ -41,17 +41,17 @@
     v19[2] = sub_15D4;
     v19[3] = &unk_3C8F8;
     v23 = v16;
-    v20 = v8;
-    v21 = v9;
-    v22 = v10;
+    v20 = applicationCopy;
+    v21 = queueCopy;
+    v22 = completionCopy;
     [v11 getCGImageForImageDescriptor:v17 completion:v19];
   }
 }
 
-+ (void)_calendarIconImageOnCallbackQueue:(id)a3 completion:(id)a4
++ (void)_calendarIconImageOnCallbackQueue:(id)queue completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   if (qword_46588 != -1)
   {
     sub_2372C();
@@ -62,10 +62,10 @@
   v10[1] = 3221225472;
   v10[2] = sub_1870;
   v10[3] = &unk_3C940;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = queueCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = queueCopy;
   dispatch_async(v7, v10);
 }
 

@@ -1,21 +1,21 @@
 @interface SafariWebKitExperimentalFeaturesSettingsController
-- (id)_featureWithName:(id)a3;
-- (id)experimentalFeatureSpecifierForFeature:(id)a3;
-- (id)getExperimentalFeature:(id)a3;
+- (id)_featureWithName:(id)name;
+- (id)experimentalFeatureSpecifierForFeature:(id)feature;
+- (id)getExperimentalFeature:(id)feature;
 - (id)specifiers;
-- (void)resetAllExperimentalFeatures:(id)a3;
-- (void)setExperimentalFeature:(id)a3 specifier:(id)a4;
+- (void)resetAllExperimentalFeatures:(id)features;
+- (void)setExperimentalFeature:(id)feature specifier:(id)specifier;
 @end
 
 @implementation SafariWebKitExperimentalFeaturesSettingsController
 
-- (id)experimentalFeatureSpecifierForFeature:(id)a3
+- (id)experimentalFeatureSpecifierForFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:"setExperimentalFeature:specifier:" get:"getExperimentalFeature:" detail:0 cell:6 edit:0];
+  featureCopy = feature;
+  name = [featureCopy name];
+  v6 = [PSSpecifier preferenceSpecifierNamed:name target:self set:"setExperimentalFeature:specifier:" get:"getExperimentalFeature:" detail:0 cell:6 edit:0];
 
-  v7 = [NSUserDefaults safari_keyForWebKitExperimentalFeature:v4];
+  v7 = [NSUserDefaults safari_keyForWebKitExperimentalFeature:featureCopy];
 
   [v6 setObject:v7 forKeyedSubscript:PSKeyNameKey];
   [v6 setObject:@"com.apple.mobilesafari" forKeyedSubscript:PSBundlePathKey];
@@ -92,9 +92,9 @@
 
       [v5 insertObject:v15 atIndex:v7];
       v19 = +[UIDevice currentDevice];
-      v20 = [v19 userInterfaceIdiom];
+      userInterfaceIdiom = [v19 userInterfaceIdiom];
 
-      if (!v20)
+      if (!userInterfaceIdiom)
       {
         v21 = [PSSpecifier preferenceSpecifierNamed:@"Fullscreen API" target:self set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
         v34[0] = v28;
@@ -131,16 +131,16 @@
   return v4;
 }
 
-- (id)_featureWithName:(id)a3
+- (id)_featureWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[WKPreferences _experimentalFeatures];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __71__SafariWebKitExperimentalFeaturesSettingsController__featureWithName___block_invoke;
   v8[3] = &unk_8B228;
-  v9 = v3;
-  v5 = v3;
+  v9 = nameCopy;
+  v5 = nameCopy;
   v6 = [v4 safari_firstObjectPassingTest:v8];
 
   return v6;
@@ -154,11 +154,11 @@ id __71__SafariWebKitExperimentalFeaturesSettingsController__featureWithName___b
   return v4;
 }
 
-- (id)getExperimentalFeature:(id)a3
+- (id)getExperimentalFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   v5 = +[NSUserDefaults safari_browserDefaults];
-  v6 = [v4 objectForKeyedSubscript:PSKeyNameKey];
+  v6 = [featureCopy objectForKeyedSubscript:PSKeyNameKey];
   v7 = [v5 objectForKey:v6];
 
   if (v7)
@@ -168,8 +168,8 @@ id __71__SafariWebKitExperimentalFeaturesSettingsController__featureWithName___b
 
   else
   {
-    v9 = [v4 name];
-    v10 = [(SafariWebKitExperimentalFeaturesSettingsController *)self _featureWithName:v9];
+    name = [featureCopy name];
+    v10 = [(SafariWebKitExperimentalFeaturesSettingsController *)self _featureWithName:name];
 
     if (v10)
     {
@@ -185,21 +185,21 @@ id __71__SafariWebKitExperimentalFeaturesSettingsController__featureWithName___b
   return v8;
 }
 
-- (void)setExperimentalFeature:(id)a3 specifier:(id)a4
+- (void)setExperimentalFeature:(id)feature specifier:(id)specifier
 {
-  v10 = a3;
-  v6 = [a4 name];
-  v7 = [(SafariWebKitExperimentalFeaturesSettingsController *)self _featureWithName:v6];
+  featureCopy = feature;
+  name = [specifier name];
+  v7 = [(SafariWebKitExperimentalFeaturesSettingsController *)self _featureWithName:name];
 
   if (v7)
   {
     v8 = [NSUserDefaults safari_keyForWebKitExperimentalFeature:v7];
     v9 = +[NSUserDefaults safari_browserDefaults];
-    [v9 setObject:v10 forKey:v8];
+    [v9 setObject:featureCopy forKey:v8];
   }
 }
 
-- (void)resetAllExperimentalFeatures:(id)a3
+- (void)resetAllExperimentalFeatures:(id)features
 {
   v4 = +[NSUserDefaults safari_browserDefaults];
   v5 = +[WKPreferences _experimentalFeatures];

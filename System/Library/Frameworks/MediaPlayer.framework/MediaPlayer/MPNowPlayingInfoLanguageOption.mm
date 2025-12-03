@@ -1,6 +1,6 @@
 @interface MPNowPlayingInfoLanguageOption
-- (BOOL)isEqualToLanguageOption:(id)a3;
-- (MPNowPlayingInfoLanguageOption)initWithMRLanguageOption:(void *)a3;
+- (BOOL)isEqualToLanguageOption:(id)option;
+- (MPNowPlayingInfoLanguageOption)initWithMRLanguageOption:(void *)option;
 - (MPNowPlayingInfoLanguageOption)initWithType:(MPNowPlayingInfoLanguageOptionType)languageOptionType languageTag:(NSString *)languageTag characteristics:(NSArray *)languageOptionCharacteristics displayName:(NSString *)displayName identifier:(NSString *)identifier;
 - (NSArray)languageOptionCharacteristics;
 - (NSString)displayName;
@@ -11,12 +11,12 @@
 
 @implementation MPNowPlayingInfoLanguageOption
 
-- (BOOL)isEqualToLanguageOption:(id)a3
+- (BOOL)isEqualToLanguageOption:(id)option
 {
   mrLanguageOption = self->_mrLanguageOption;
-  v4 = [a3 mrLanguageOption];
+  mrLanguageOption = [option mrLanguageOption];
 
-  return MEMORY[0x1EEE1CF20](mrLanguageOption, v4);
+  return MEMORY[0x1EEE1CF20](mrLanguageOption, mrLanguageOption);
 }
 
 - (NSString)identifier
@@ -47,15 +47,15 @@
   return v2;
 }
 
-- (MPNowPlayingInfoLanguageOption)initWithMRLanguageOption:(void *)a3
+- (MPNowPlayingInfoLanguageOption)initWithMRLanguageOption:(void *)option
 {
   v7.receiver = self;
   v7.super_class = MPNowPlayingInfoLanguageOption;
   v4 = [(MPNowPlayingInfoLanguageOption *)&v7 init];
   v5 = v4;
-  if (a3 && v4)
+  if (option && v4)
   {
-    v4->_mrLanguageOption = CFRetain(a3);
+    v4->_mrLanguageOption = CFRetain(option);
   }
 
   return v5;

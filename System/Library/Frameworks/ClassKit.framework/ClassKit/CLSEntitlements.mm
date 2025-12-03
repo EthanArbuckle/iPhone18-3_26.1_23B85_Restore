@@ -4,12 +4,12 @@
 + (BOOL)isPrivateSearchEnabledProcess;
 + (BOOL)isSearchEnabledProcess;
 + (id)allowedEntitlements;
-+ (id)entitlementsForCurrentTaskWithError:(id *)a3;
-+ (id)entitlementsForNonAppCurrentTaskWithError:(id *)a3;
-+ (id)entitlementsWithConnection:(id)a3 error:(id *)a4;
-+ (id)entitlementsWithSecTask:(__SecTask *)a3 overrides:(id)a4 error:(id *)a5;
-- (BOOL)BOOLValueForEntitlement:(id)a3 error:(id *)a4;
-- (BOOL)hasEntitlement:(id)a3;
++ (id)entitlementsForCurrentTaskWithError:(id *)error;
++ (id)entitlementsForNonAppCurrentTaskWithError:(id *)error;
++ (id)entitlementsWithConnection:(id)connection error:(id *)error;
++ (id)entitlementsWithSecTask:(__SecTask *)task overrides:(id)overrides error:(id *)error;
+- (BOOL)BOOLValueForEntitlement:(id)entitlement error:(id *)error;
+- (BOOL)hasEntitlement:(id)entitlement;
 - (BOOL)isDashboardAPIEnabled;
 - (BOOL)isInDevelopmentEnvironment;
 - (BOOL)isInternal;
@@ -19,38 +19,38 @@
 - (BOOL)isSearchAPIEnabled;
 - (BOOL)isUIClient;
 - (CLSEntitlements)init;
-- (CLSEntitlements)initWithEntitlements:(id)a3;
+- (CLSEntitlements)initWithEntitlements:(id)entitlements;
 - (NSString)classKitEnvironment;
-- (id)stringValueForEntitlement:(id)a3 error:(id *)a4;
+- (id)stringValueForEntitlement:(id)entitlement error:(id *)error;
 @end
 
 @implementation CLSEntitlements
 
-+ (id)entitlementsForCurrentTaskWithError:(id *)a3
++ (id)entitlementsForCurrentTaskWithError:(id *)error
 {
-  v5 = objc_msgSend_bundleRecordForCurrentProcess(MEMORY[0x277CC1E90], a2, a3);
+  v5 = objc_msgSend_bundleRecordForCurrentProcess(MEMORY[0x277CC1E90], a2, error);
   v6 = CLSExecutableLinkedOnOrAfter_iOS17_5_macOS_14_5();
   if (v5 && (v6 & 1) != 0)
   {
     objc_opt_class();
     objc_opt_isKindOfClass();
     v10 = objc_msgSend_entitlements(v5, v8, v9);
-    v13 = objc_msgSend_allowedEntitlements(a1, v11, v12);
+    v13 = objc_msgSend_allowedEntitlements(self, v11, v12);
     v15 = objc_msgSend_dictionaryOfObjectsForKeys_(v10, v14, v13);
 
-    v16 = [a1 alloc];
+    v16 = [self alloc];
     v18 = objc_msgSend_initWithEntitlements_(v16, v17, v15);
   }
 
   else
   {
-    v18 = objc_msgSend_entitlementsForNonAppCurrentTaskWithError_(a1, v7, a3);
+    v18 = objc_msgSend_entitlementsForNonAppCurrentTaskWithError_(self, v7, error);
   }
 
   return v18;
 }
 
-+ (id)entitlementsForNonAppCurrentTaskWithError:(id *)a3
++ (id)entitlementsForNonAppCurrentTaskWithError:(id *)error
 {
   v5 = SecTaskCreateFromSelf(0);
   if (v5)
@@ -61,29 +61,29 @@
     v14 = objc_msgSend_entitlements(v11, v12, v13);
 
     objc_autoreleasePoolPop(v8);
-    v17 = objc_msgSend_allowedEntitlements(a1, v15, v16);
+    v17 = objc_msgSend_allowedEntitlements(self, v15, v16);
     v19 = objc_msgSend_dictionaryOfObjectsForKeys_(v14, v18, v17);
 
-    v21 = objc_msgSend_entitlementsWithSecTask_overrides_error_(a1, v20, v7, v19, a3);
+    v21 = objc_msgSend_entitlementsWithSecTask_overrides_error_(self, v20, v7, v19, error);
     CFRelease(v7);
   }
 
   else
   {
-    objc_msgSend_cls_assignError_code_description_(MEMORY[0x277CCA9B8], v6, a3, 100, @"Unable to retrieve current task for entitlement lookup.");
+    objc_msgSend_cls_assignError_code_description_(MEMORY[0x277CCA9B8], v6, error, 100, @"Unable to retrieve current task for entitlement lookup.");
     v21 = 0;
   }
 
   return v21;
 }
 
-+ (id)entitlementsWithConnection:(id)a3 error:(id *)a4
++ (id)entitlementsWithConnection:(id)connection error:(id *)error
 {
-  v6 = a3;
-  v9 = v6;
-  if (v6)
+  connectionCopy = connection;
+  v9 = connectionCopy;
+  if (connectionCopy)
   {
-    objc_msgSend_auditToken(v6, v7, v8);
+    objc_msgSend_auditToken(connectionCopy, v7, v8);
   }
 
   else
@@ -100,37 +100,37 @@
     v18 = objc_msgSend_entitlements(v15, v16, v17);
 
     objc_autoreleasePoolPop(v13);
-    v21 = objc_msgSend_allowedEntitlements(a1, v19, v20);
+    v21 = objc_msgSend_allowedEntitlements(self, v19, v20);
     v23 = objc_msgSend_dictionaryOfObjectsForKeys_(v18, v22, v21);
 
-    v25 = objc_msgSend_entitlementsWithSecTask_overrides_error_(a1, v24, v12, v23, a4);
+    v25 = objc_msgSend_entitlementsWithSecTask_overrides_error_(self, v24, v12, v23, error);
     CFRelease(v12);
   }
 
   else
   {
-    objc_msgSend_cls_assignError_code_description_(MEMORY[0x277CCA9B8], v11, a4, 100, @"Unable to retrieve connection task for entitlement lookup.");
+    objc_msgSend_cls_assignError_code_description_(MEMORY[0x277CCA9B8], v11, error, 100, @"Unable to retrieve connection task for entitlement lookup.");
     v25 = 0;
   }
 
   return v25;
 }
 
-+ (id)entitlementsWithSecTask:(__SecTask *)a3 overrides:(id)a4 error:(id *)a5
++ (id)entitlementsWithSecTask:(__SecTask *)task overrides:(id)overrides error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  overridesCopy = overrides;
   error = 0;
-  v11 = objc_msgSend_allowedEntitlements(a1, v9, v10);
+  v11 = objc_msgSend_allowedEntitlements(self, v9, v10);
   v14 = objc_msgSend_allObjects(v11, v12, v13);
 
-  v15 = SecTaskCopyValuesForEntitlements(a3, v14, &error);
+  v15 = SecTaskCopyValuesForEntitlements(task, v14, &error);
   v18 = objc_msgSend_mutableCopy(v15, v16, v17);
 
-  v20 = error;
+  errorCopy = error;
   if (v18)
   {
-    v36 = error;
+    errorCopy2 = error;
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
@@ -151,7 +151,7 @@
           }
 
           v28 = *(*(&v37 + 1) + 8 * i);
-          v30 = objc_msgSend_objectForKeyedSubscript_(v8, v24, v28);
+          v30 = objc_msgSend_objectForKeyedSubscript_(overridesCopy, v24, v28);
           if (v30)
           {
             objc_msgSend_setObject_forKeyedSubscript_(v18, v29, v30, v28);
@@ -164,14 +164,14 @@
       while (v25);
     }
 
-    v31 = [a1 alloc];
+    v31 = [self alloc];
     v33 = objc_msgSend_initWithEntitlements_(v31, v32, v18);
-    v20 = v36;
+    errorCopy = errorCopy2;
   }
 
   else
   {
-    objc_msgSend_cls_assignError_fromError_(MEMORY[0x277CCA9B8], v19, a5, error);
+    objc_msgSend_cls_assignError_fromError_(MEMORY[0x277CCA9B8], v19, error, error);
     v33 = 0;
   }
 
@@ -207,7 +207,7 @@
   block[1] = 3221225472;
   block[2] = sub_236FAAA4C;
   block[3] = &unk_278A17960;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280B2A388 != -1)
   {
     dispatch_once(&qword_280B2A388, block);
@@ -222,7 +222,7 @@
   block[1] = 3221225472;
   block[2] = sub_236FAAC24;
   block[3] = &unk_278A17960;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280B2A390 != -1)
   {
     dispatch_once(&qword_280B2A390, block);
@@ -237,7 +237,7 @@
   block[1] = 3221225472;
   block[2] = sub_236FAAE00;
   block[3] = &unk_278A17960;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280B2A398 != -1)
   {
     dispatch_once(&qword_280B2A398, block);
@@ -252,7 +252,7 @@
   block[1] = 3221225472;
   block[2] = sub_236FAB030;
   block[3] = &unk_278A17960;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280B2A3A0 != -1)
   {
     dispatch_once(&qword_280B2A3A0, block);
@@ -275,10 +275,10 @@
   objc_exception_throw(v11);
 }
 
-- (CLSEntitlements)initWithEntitlements:(id)a3
+- (CLSEntitlements)initWithEntitlements:(id)entitlements
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entitlementsCopy = entitlements;
   v28.receiver = self;
   v28.super_class = CLSEntitlements;
   v5 = [(CLSEntitlements *)&v28 init];
@@ -306,7 +306,7 @@
           }
 
           v17 = *(*(&v24 + 1) + 8 * i);
-          v19 = objc_msgSend_objectForKeyedSubscript_(v4, v13, v17);
+          v19 = objc_msgSend_objectForKeyedSubscript_(entitlementsCopy, v13, v17);
           if (v19)
           {
             objc_msgSend_setObject_forKeyedSubscript_(v6, v18, v19, v17);
@@ -320,7 +320,7 @@
     }
 
     objc_storeStrong(&v5->_entitlements, v6);
-    v21 = objc_msgSend_objectForKeyedSubscript_(v4, v20, @"application-identifier");
+    v21 = objc_msgSend_objectForKeyedSubscript_(entitlementsCopy, v20, @"application-identifier");
     if (v21)
     {
       CPCopyBundleIdentifierAndTeamFromApplicationIdentifier();
@@ -569,13 +569,13 @@ LABEL_12:
   return v2;
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6))
+  entitlementCopy = entitlement;
+  if (objc_msgSend_length(entitlementCopy, v5, v6))
   {
     v9 = objc_msgSend_entitlements(self, v7, v8);
-    v11 = objc_msgSend_objectForKeyedSubscript_(v9, v10, v4);
+    v11 = objc_msgSend_objectForKeyedSubscript_(v9, v10, entitlementCopy);
     v12 = v11 != 0;
   }
 
@@ -604,13 +604,13 @@ LABEL_12:
   return isEqualToString;
 }
 
-- (BOOL)BOOLValueForEntitlement:(id)a3 error:(id *)a4
+- (BOOL)BOOLValueForEntitlement:(id)entitlement error:(id *)error
 {
-  v6 = a3;
-  if (objc_msgSend_hasEntitlement_(self, v7, v6))
+  entitlementCopy = entitlement;
+  if (objc_msgSend_hasEntitlement_(self, v7, entitlementCopy))
   {
     v10 = objc_msgSend_entitlements(self, v8, v9);
-    v12 = objc_msgSend_objectForKeyedSubscript_(v10, v11, v6);
+    v12 = objc_msgSend_objectForKeyedSubscript_(v10, v11, entitlementCopy);
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -620,7 +620,7 @@ LABEL_12:
 
     else
     {
-      objc_msgSend_cls_assignError_code_format_(MEMORY[0x277CCA9B8], v13, a4, 4, @"Expected a BOOL value for entitlement: %@", v6);
+      objc_msgSend_cls_assignError_code_format_(MEMORY[0x277CCA9B8], v13, error, 4, @"Expected a BOOL value for entitlement: %@", entitlementCopy);
       v15 = 0;
     }
   }
@@ -633,13 +633,13 @@ LABEL_12:
   return v15;
 }
 
-- (id)stringValueForEntitlement:(id)a3 error:(id *)a4
+- (id)stringValueForEntitlement:(id)entitlement error:(id *)error
 {
-  v6 = a3;
-  if (objc_msgSend_hasEntitlement_(self, v7, v6))
+  entitlementCopy = entitlement;
+  if (objc_msgSend_hasEntitlement_(self, v7, entitlementCopy))
   {
     v10 = objc_msgSend_entitlements(self, v8, v9);
-    v12 = objc_msgSend_objectForKeyedSubscript_(v10, v11, v6);
+    v12 = objc_msgSend_objectForKeyedSubscript_(v10, v11, entitlementCopy);
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -649,7 +649,7 @@ LABEL_12:
 
     else
     {
-      objc_msgSend_cls_assignError_code_format_(MEMORY[0x277CCA9B8], v13, a4, 4, @"Expected a string value for entitlement: %@", v6);
+      objc_msgSend_cls_assignError_code_format_(MEMORY[0x277CCA9B8], v13, error, 4, @"Expected a string value for entitlement: %@", entitlementCopy);
       v14 = 0;
     }
   }

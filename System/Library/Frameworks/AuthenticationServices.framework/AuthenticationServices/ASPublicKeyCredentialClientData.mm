@@ -1,6 +1,6 @@
 @interface ASPublicKeyCredentialClientData
 - (ASPublicKeyCredentialClientData)initWithChallenge:(NSData *)challenge origin:(NSString *)origin;
-- (id)jsonForOperationType:(unint64_t)a3;
+- (id)jsonForOperationType:(unint64_t)type;
 @end
 
 @implementation ASPublicKeyCredentialClientData
@@ -28,10 +28,10 @@
   return v8;
 }
 
-- (id)jsonForOperationType:(unint64_t)a3
+- (id)jsonForOperationType:(unint64_t)type
 {
-  v4 = self;
-  v5 = sub_1B1D2C0CC(a3);
+  selfCopy = self;
+  v5 = sub_1B1D2C0CC(type);
   v7 = v6;
 
   if (v7 >> 60 == 15)

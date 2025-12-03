@@ -1,27 +1,27 @@
 @interface HKModalNavigationController
-- (HKModalNavigationController)initWithRootViewController:(id)a3;
-- (void)dismissWithAnimation:(id)a3;
+- (HKModalNavigationController)initWithRootViewController:(id)controller;
+- (void)dismissWithAnimation:(id)animation;
 @end
 
 @implementation HKModalNavigationController
 
-- (HKModalNavigationController)initWithRootViewController:(id)a3
+- (HKModalNavigationController)initWithRootViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = HKModalNavigationController;
-  v5 = [(HKModalNavigationController *)&v11 initWithRootViewController:v4];
+  v5 = [(HKModalNavigationController *)&v11 initWithRootViewController:controllerCopy];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:24 target:v5 action:sel_dismissWithAnimation_];
     v7 = [@"UIA.Health" stringByAppendingString:@".ModalNavigationItem.Done"];
     [v6 setAccessibilityIdentifier:v7];
 
-    v8 = [v4 navigationItem];
-    [v8 setRightBarButtonItem:v6];
+    navigationItem = [controllerCopy navigationItem];
+    [navigationItem setRightBarButtonItem:v6];
 
-    v9 = [v4 title];
-    [(HKModalNavigationController *)v5 setTitle:v9];
+    title = [controllerCopy title];
+    [(HKModalNavigationController *)v5 setTitle:title];
 
     [(HKModalNavigationController *)v5 setCompletion:0];
   }
@@ -29,10 +29,10 @@
   return v5;
 }
 
-- (void)dismissWithAnimation:(id)a3
+- (void)dismissWithAnimation:(id)animation
 {
-  v4 = [(HKModalNavigationController *)self completion];
-  [(HKModalNavigationController *)self dismissViewControllerAnimated:1 completion:v4];
+  completion = [(HKModalNavigationController *)self completion];
+  [(HKModalNavigationController *)self dismissViewControllerAnimated:1 completion:completion];
 }
 
 @end

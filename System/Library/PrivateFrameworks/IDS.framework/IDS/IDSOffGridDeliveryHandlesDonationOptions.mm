@@ -1,8 +1,8 @@
 @interface IDSOffGridDeliveryHandlesDonationOptions
 - (IDSOffGridDeliveryHandlesDonationOptions)init;
-- (IDSOffGridDeliveryHandlesDonationOptions)initWithCoder:(id)a3;
+- (IDSOffGridDeliveryHandlesDonationOptions)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSOffGridDeliveryHandlesDonationOptions
@@ -18,39 +18,39 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(IDSOffGridDeliveryHandlesDonationOptions *)self priority];
-  v6 = [(IDSOffGridDeliveryHandlesDonationOptions *)self isInitialDonation];
+  priority = [(IDSOffGridDeliveryHandlesDonationOptions *)self priority];
+  isInitialDonation = [(IDSOffGridDeliveryHandlesDonationOptions *)self isInitialDonation];
   v7 = @"NO";
-  if (v6)
+  if (isInitialDonation)
   {
     v7 = @"YES";
   }
 
-  return [v3 stringWithFormat:@"<%@: %p priority: %ld, isInitialDonation: %@>", v4, self, v5, v7];
+  return [v3 stringWithFormat:@"<%@: %p priority: %ld, isInitialDonation: %@>", v4, self, priority, v7];
 }
 
-- (IDSOffGridDeliveryHandlesDonationOptions)initWithCoder:(id)a3
+- (IDSOffGridDeliveryHandlesDonationOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(IDSOffGridDeliveryHandlesDonationOptions);
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"priority"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"priority"];
   -[IDSOffGridDeliveryHandlesDonationOptions setPriority:](v5, "setPriority:", [v6 intValue]);
 
-  v7 = [v4 decodeBoolForKey:@"isInitialDonation"];
+  v7 = [coderCopy decodeBoolForKey:@"isInitialDonation"];
   [(IDSOffGridDeliveryHandlesDonationOptions *)v5 setIsInitialDonation:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   priority = self->_priority;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInteger:priority];
-  [v7 encodeObject:v6 forKey:@"priority"];
+  [coderCopy encodeObject:v6 forKey:@"priority"];
 
-  [v7 encodeBool:self->_isInitialDonation forKey:@"isInitialDonation"];
+  [coderCopy encodeBool:self->_isInitialDonation forKey:@"isInitialDonation"];
 }
 
 @end

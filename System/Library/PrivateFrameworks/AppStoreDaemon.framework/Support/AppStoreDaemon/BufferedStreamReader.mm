@@ -1,6 +1,6 @@
 @interface BufferedStreamReader
 - (BOOL)hasBytesAvailable;
-- (int64_t)readBytes:(char *)a3 length:(unint64_t)a4 error:(id *)a5;
+- (int64_t)readBytes:(char *)bytes length:(unint64_t)length error:(id *)error;
 - (void)close;
 - (void)dealloc;
 @end
@@ -13,7 +13,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "(BufferedStream) Reader deallocated: %@", buf, 0xCu);
   }
 
@@ -51,7 +51,7 @@
   return v4 & 1;
 }
 
-- (int64_t)readBytes:(char *)a3 length:(unint64_t)a4 error:(id *)a5
+- (int64_t)readBytes:(char *)bytes length:(unint64_t)length error:(id *)error
 {
   bufferedStream = self->_bufferedStream;
   if (!bufferedStream)
@@ -63,7 +63,7 @@
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  if (a4)
+  if (length)
   {
     queue = bufferedStream->_queue;
     v9[0] = _NSConcreteStackBlock;
@@ -72,8 +72,8 @@
     v9[3] = &unk_10051B7E0;
     v9[4] = bufferedStream;
     v9[5] = &v10;
-    v9[6] = a4;
-    v9[7] = a3;
+    v9[6] = length;
+    v9[7] = bytes;
     dispatch_sync(queue, v9);
     v7 = v11[3];
   }

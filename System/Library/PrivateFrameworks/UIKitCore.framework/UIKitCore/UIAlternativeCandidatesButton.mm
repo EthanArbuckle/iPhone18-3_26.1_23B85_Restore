@@ -1,17 +1,17 @@
 @interface UIAlternativeCandidatesButton
-- (UIAlternativeCandidatesButton)initWithFrame:(CGRect)a3;
-- (void)_setRenderConfig:(id)a3;
-- (void)setButtonState:(unint64_t)a3;
+- (UIAlternativeCandidatesButton)initWithFrame:(CGRect)frame;
+- (void)_setRenderConfig:(id)config;
+- (void)setButtonState:(unint64_t)state;
 - (void)updateImage;
 @end
 
 @implementation UIAlternativeCandidatesButton
 
-- (UIAlternativeCandidatesButton)initWithFrame:(CGRect)a3
+- (UIAlternativeCandidatesButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UIAlternativeCandidatesButton;
-  v3 = [(UIScriptSwitcherButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIScriptSwitcherButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -23,10 +23,10 @@
 
 - (void)updateImage
 {
-  v3 = [(UIAlternativeCandidatesButton *)self buttonState];
-  if (v3)
+  buttonState = [(UIAlternativeCandidatesButton *)self buttonState];
+  if (buttonState)
   {
-    if (v3 == 2)
+    if (buttonState == 2)
     {
       v4 = 1;
       v5 = @"script-switcher-down";
@@ -34,7 +34,7 @@
 
     else
     {
-      if (v3 != 1)
+      if (buttonState != 1)
       {
         return;
       }
@@ -56,19 +56,19 @@
   [(UIButton *)self setEnabled:v4];
 }
 
-- (void)setButtonState:(unint64_t)a3
+- (void)setButtonState:(unint64_t)state
 {
-  self->_buttonState = a3;
+  self->_buttonState = state;
   [(UIAlternativeCandidatesButton *)self updateImage];
 
   [(UIButton *)self setNeedsLayout];
 }
 
-- (void)_setRenderConfig:(id)a3
+- (void)_setRenderConfig:(id)config
 {
   v4.receiver = self;
   v4.super_class = UIAlternativeCandidatesButton;
-  [(UIScriptSwitcherButton *)&v4 _setRenderConfig:a3];
+  [(UIScriptSwitcherButton *)&v4 _setRenderConfig:config];
   [(UIAlternativeCandidatesButton *)self updateImage];
 }
 

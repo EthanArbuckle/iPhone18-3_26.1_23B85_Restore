@@ -8,13 +8,13 @@
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v7[0] = 0;
-  result = NSGetSizeAndAlignment([a1 objCType], v7, 0);
+  result = NSGetSizeAndAlignment([self objCType], v7, 0);
   if (v7[0] > 0x2F)
   {
     a2[1] = 0u;
     a2[2] = 0u;
     *a2 = 0u;
-    return [a1 getValue:a2 size:48];
+    return [self getValue:a2 size:48];
   }
 
   else

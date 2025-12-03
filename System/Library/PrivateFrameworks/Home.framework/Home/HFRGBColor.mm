@@ -1,55 +1,55 @@
 @interface HFRGBColor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HFRGBColor)init;
-- (HFRGBColor)initWithRed:(float)a3 green:(float)a4 blue:(float)a5;
-- (HFRGBColor)initWithUIColor:(id)a3;
+- (HFRGBColor)initWithRed:(float)red green:(float)green blue:(float)blue;
+- (HFRGBColor)initWithUIColor:(id)color;
 - (NSString)description;
 - (UIColor)UIColor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)valueDescription;
 - (unint64_t)hash;
-- (void)getHue:(float *)a3 saturation:(float *)a4 brightness:(float *)a5;
+- (void)getHue:(float *)hue saturation:(float *)saturation brightness:(float *)brightness;
 @end
 
 @implementation HFRGBColor
 
 - (HFRGBColor)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithRed_green_blue_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFColorPrimitive.m" lineNumber:21 description:{@"%s is unavailable; use %@ instead", "-[HFRGBColor init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFColorPrimitive.m" lineNumber:21 description:{@"%s is unavailable; use %@ instead", "-[HFRGBColor init]", v5}];
 
   return 0;
 }
 
-- (HFRGBColor)initWithRed:(float)a3 green:(float)a4 blue:(float)a5
+- (HFRGBColor)initWithRed:(float)red green:(float)green blue:(float)blue
 {
   v9.receiver = self;
   v9.super_class = HFRGBColor;
   result = [(HFRGBColor *)&v9 init];
   if (result)
   {
-    result->_red = a3;
-    result->_green = a4;
-    result->_blue = a5;
+    result->_red = red;
+    result->_green = green;
+    result->_blue = blue;
   }
 
   return result;
 }
 
-- (HFRGBColor)initWithUIColor:(id)a3
+- (HFRGBColor)initWithUIColor:(id)color
 {
-  v5 = a3;
-  if (!v5)
+  colorCopy = color;
+  if (!colorCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"HFColorPrimitive.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"color"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFColorPrimitive.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"color"}];
   }
 
   v13 = 0.0;
   v14 = 0.0;
   v12 = 0.0;
-  [v5 getRed:&v14 green:&v13 blue:&v12 alpha:0];
+  [colorCopy getRed:&v14 green:&v13 blue:&v12 alpha:0];
   HIDWORD(v7) = HIDWORD(v13);
   HIDWORD(v6) = HIDWORD(v14);
   *&v6 = v14;
@@ -61,7 +61,7 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   [(HFRGBColor *)self red];
@@ -88,7 +88,7 @@
   return [v3 colorWithRed:v5 green:v7 blue:v8 alpha:1.0];
 }
 
-- (void)getHue:(float *)a3 saturation:(float *)a4 brightness:(float *)a5
+- (void)getHue:(float *)hue saturation:(float *)saturation brightness:(float *)brightness
 {
   v21 = 0.0;
   v22 = 0.0;
@@ -102,29 +102,29 @@
   *v15.i64 = v10;
   *v16.i64 = v12;
   HFConvertRGBToHSB(&v22, &v21, &v20, v15, v16, v14);
-  if (a3)
+  if (hue)
   {
     v17 = v22;
-    *a3 = v17;
+    *hue = v17;
   }
 
-  if (a4)
+  if (saturation)
   {
     v18 = v21;
-    *a4 = v18;
+    *saturation = v18;
   }
 
-  if (a5)
+  if (brightness)
   {
     v19 = v20;
-    *a5 = v19;
+    *brightness = v19;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
@@ -134,7 +134,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(HFRGBColor *)self red];
       v7 = v6;
       [(HFRGBColor *)v5 red];
@@ -188,8 +188,8 @@
   v8.receiver = self;
   v8.super_class = HFRGBColor;
   v4 = [(HFRGBColor *)&v8 description];
-  v5 = [(HFRGBColor *)self valueDescription];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  valueDescription = [(HFRGBColor *)self valueDescription];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, valueDescription];
 
   return v6;
 }

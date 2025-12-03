@@ -1,35 +1,35 @@
 @interface CTXPCEncryptDataRequest
 + (id)allowedClassesForArguments;
-- (CTXPCEncryptDataRequest)initWithMcc:(id)a3 mnc:(id)a4 gid1:(id)a5 gid2:(id)a6 plainText:(id)a7;
+- (CTXPCEncryptDataRequest)initWithMcc:(id)mcc mnc:(id)mnc gid1:(id)gid1 gid2:(id)gid2 plainText:(id)text;
 - (id)gid1;
 - (id)gid2;
 - (id)mcc;
 - (id)mnc;
 - (id)plainText;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCEncryptDataRequest
 
-- (CTXPCEncryptDataRequest)initWithMcc:(id)a3 mnc:(id)a4 gid1:(id)a5 gid2:(id)a6 plainText:(id)a7
+- (CTXPCEncryptDataRequest)initWithMcc:(id)mcc mnc:(id)mnc gid1:(id)gid1 gid2:(id)gid2 plainText:(id)text
 {
   v24[3] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  mccCopy = mcc;
+  mncCopy = mnc;
+  gid1Copy = gid1;
+  gid2Copy = gid2;
+  textCopy = text;
   v23[0] = @"mcc";
   v23[1] = @"mnc";
-  v24[0] = v12;
-  v24[1] = v13;
+  v24[0] = mccCopy;
+  v24[1] = mncCopy;
   v23[2] = @"plainText";
-  v24[2] = v16;
+  v24[2] = textCopy;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:3];
   v18 = [v17 mutableCopy];
 
-  [v18 setObject:v14 forKeyedSubscript:@"gid1"];
-  [v18 setObject:v15 forKeyedSubscript:@"gid2"];
+  [v18 setObject:gid1Copy forKeyedSubscript:@"gid1"];
+  [v18 setObject:gid2Copy forKeyedSubscript:@"gid2"];
   v22.receiver = self;
   v22.super_class = CTXPCEncryptDataRequest;
   v19 = [(CTXPCMessage *)&v22 initWithNamedArguments:v18];
@@ -38,22 +38,22 @@
   return v19;
 }
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v8 = [(CTXPCEncryptDataRequest *)self mcc];
   v9 = [(CTXPCEncryptDataRequest *)self mnc];
-  v10 = [(CTXPCEncryptDataRequest *)self gid1];
-  v11 = [(CTXPCEncryptDataRequest *)self gid2];
-  v12 = [(CTXPCEncryptDataRequest *)self plainText];
+  gid1 = [(CTXPCEncryptDataRequest *)self gid1];
+  gid2 = [(CTXPCEncryptDataRequest *)self gid2];
+  plainText = [(CTXPCEncryptDataRequest *)self plainText];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __71__CTXPCEncryptDataRequest_performRequestWithHandler_completionHandler___block_invoke;
   v14[3] = &unk_1E6A45F28;
-  v13 = v7;
+  v13 = completionHandlerCopy;
   v15 = v13;
-  [v6 encryptDataWithCarrierIdentifiers:v8 mnc:v9 gid1:v10 gid2:v11 data:v12 completion:v14];
+  [handlerCopy encryptDataWithCarrierIdentifiers:v8 mnc:v9 gid1:gid1 gid2:gid2 data:plainText completion:v14];
 }
 
 void __71__CTXPCEncryptDataRequest_performRequestWithHandler_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -67,7 +67,7 @@ void __71__CTXPCEncryptDataRequest_performRequestWithHandler_completionHandler__
 
 + (id)allowedClassesForArguments
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CTXPCEncryptDataRequest;
   v2 = objc_msgSendSuper2(&v5, sel_allowedClassesForArguments);
   v3 = [v2 setByAddingObject:objc_opt_class()];
@@ -77,8 +77,8 @@ void __71__CTXPCEncryptDataRequest_performRequestWithHandler_completionHandler__
 
 - (id)mcc
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"mcc"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"mcc"];
   v4 = CTThrowingCastIfClass<NSString>(v3);
 
   return v4;
@@ -86,8 +86,8 @@ void __71__CTXPCEncryptDataRequest_performRequestWithHandler_completionHandler__
 
 - (id)mnc
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"mnc"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"mnc"];
   v4 = CTThrowingCastIfClass<NSString>(v3);
 
   return v4;
@@ -95,8 +95,8 @@ void __71__CTXPCEncryptDataRequest_performRequestWithHandler_completionHandler__
 
 - (id)gid1
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"gid1"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"gid1"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -113,8 +113,8 @@ void __71__CTXPCEncryptDataRequest_performRequestWithHandler_completionHandler__
 
 - (id)gid2
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"gid2"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"gid2"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -131,8 +131,8 @@ void __71__CTXPCEncryptDataRequest_performRequestWithHandler_completionHandler__
 
 - (id)plainText
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"plainText"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"plainText"];
   v4 = CTThrowingCastIfClass<NSString>(v3);
 
   return v4;

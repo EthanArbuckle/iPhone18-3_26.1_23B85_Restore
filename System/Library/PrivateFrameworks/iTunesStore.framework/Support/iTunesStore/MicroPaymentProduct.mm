@@ -1,73 +1,73 @@
 @interface MicroPaymentProduct
-+ (id)periodFromISO8601String:(id)a3;
-- (MicroPaymentProduct)initWithDictionary:(id)a3;
++ (id)periodFromISO8601String:(id)string;
+- (MicroPaymentProduct)initWithDictionary:(id)dictionary;
 - (id)copyProduct;
 - (void)dealloc;
 @end
 
 @implementation MicroPaymentProduct
 
-- (MicroPaymentProduct)initWithDictionary:(id)a3
+- (MicroPaymentProduct)initWithDictionary:(id)dictionary
 {
   v4 = [(MicroPaymentProduct *)self init];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"icu-locale"];
+    v5 = [dictionary objectForKey:@"icu-locale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(MicroPaymentProduct *)v4 setLocaleIdentifier:v5];
     }
 
-    v6 = [a3 objectForKey:@"description"];
+    v6 = [dictionary objectForKey:@"description"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(MicroPaymentProduct *)v4 setLocalizedDescription:v6];
     }
 
-    v7 = [a3 objectForKey:@"is-hosted"];
+    v7 = [dictionary objectForKey:@"is-hosted"];
     if (objc_opt_respondsToSelector())
     {
       -[MicroPaymentProduct setHosted:](v4, "setHosted:", [v7 BOOLValue]);
     }
 
-    v8 = [a3 objectForKey:@"title"];
+    v8 = [dictionary objectForKey:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(MicroPaymentProduct *)v4 setLocalizedTitle:v8];
     }
 
-    v9 = [a3 objectForKey:@"offerName"];
+    v9 = [dictionary objectForKey:@"offerName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(MicroPaymentProduct *)v4 setProductIdentifier:v9];
     }
 
-    v10 = [a3 objectForKey:@"version"];
+    v10 = [dictionary objectForKey:@"version"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(MicroPaymentProduct *)v4 setContentVersion:v10];
     }
 
-    v11 = [a3 objectForKey:@"subscriptionFamilyId"];
+    v11 = [dictionary objectForKey:@"subscriptionFamilyId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(MicroPaymentProduct *)v4 setSubscriptionGroupIdentifier:v11];
     }
 
-    v12 = [a3 objectForKey:@"recurringSubscriptionPeriod"];
+    v12 = [dictionary objectForKey:@"recurringSubscriptionPeriod"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MicroPaymentProduct setSubscriptionPeriod:](v4, "setSubscriptionPeriod:", [objc_opt_class() periodFromISO8601String:v12]);
     }
 
-    v13 = [a3 objectForKey:SSItemProtocolKeyStoreOffers];
+    v13 = [dictionary objectForKey:SSItemProtocolKeyStoreOffers];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,7 +90,7 @@
       }
     }
 
-    v17 = [a3 objectForKey:@"discounts"];
+    v17 = [dictionary objectForKey:@"discounts"];
     v18 = objc_opt_new();
     v32 = 0u;
     v33 = 0u;
@@ -141,15 +141,15 @@
         v24 = +[SSLogConfig sharedConfig];
       }
 
-      v25 = [v24 shouldLog];
+      shouldLog = [v24 shouldLog];
       if ([v24 shouldLogToDisk])
       {
-        v26 = v25 | 2;
+        v26 = shouldLog | 2;
       }
 
       else
       {
-        v26 = v25;
+        v26 = shouldLog;
       }
 
       if (!os_log_type_enabled([v24 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -190,7 +190,7 @@
 - (id)copyProduct
 {
   v3 = objc_alloc_init(sub_1001FA264());
-  v4 = [(MicroPaymentProduct *)self price];
+  price = [(MicroPaymentProduct *)self price];
   if ([(MicroPaymentProduct *)self isHosted])
   {
     [v3 _setContentVersion:{-[MicroPaymentProduct contentVersion](self, "contentVersion")}];
@@ -201,7 +201,7 @@
   [v3 _setLocaleIdentifier:{-[MicroPaymentProduct localeIdentifier](self, "localeIdentifier")}];
   [v3 _setLocalizedDescription:{-[MicroPaymentProduct localizedDescription](self, "localizedDescription")}];
   [v3 _setLocalizedTitle:{-[MicroPaymentProduct localizedTitle](self, "localizedTitle")}];
-  [v3 _setPrice:{+[NSDecimalNumber decimalNumberWithString:](NSDecimalNumber, "decimalNumberWithString:", -[NSNumber stringValue](v4, "stringValue"))}];
+  [v3 _setPrice:{+[NSDecimalNumber decimalNumberWithString:](NSDecimalNumber, "decimalNumberWithString:", -[NSNumber stringValue](price, "stringValue"))}];
   [v3 _setProductIdentifier:{-[MicroPaymentProduct productIdentifier](self, "productIdentifier")}];
   [v3 _setSubscriptionGroupIdentifier:{-[MicroPaymentProduct subscriptionGroupIdentifier](self, "subscriptionGroupIdentifier")}];
   v5 = objc_alloc_init(sub_1001FA258());
@@ -214,8 +214,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(MicroPaymentProduct *)self discounts];
-  v8 = [(NSArray *)v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  discounts = [(MicroPaymentProduct *)self discounts];
+  v8 = [(NSArray *)discounts countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -227,7 +227,7 @@
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(discounts);
         }
 
         [v6 addObject:{objc_msgSend(*(*(&v13 + 1) + 8 * v11), "copyProductDiscount")}];
@@ -235,7 +235,7 @@
       }
 
       while (v9 != v11);
-      v9 = [(NSArray *)v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [(NSArray *)discounts countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -246,9 +246,9 @@
   return v3;
 }
 
-+ (id)periodFromISO8601String:(id)a3
++ (id)periodFromISO8601String:(id)string
 {
-  v3 = [NSScanner scannerWithString:a3];
+  v3 = [NSScanner scannerWithString:string];
   v8 = 0;
   [(NSScanner *)v3 scanString:@"P" intoString:&v8];
   if (!v8)

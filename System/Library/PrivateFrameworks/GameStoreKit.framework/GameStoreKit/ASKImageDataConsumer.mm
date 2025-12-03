@@ -1,15 +1,15 @@
 @interface ASKImageDataConsumer
-- (ASKImageDataConsumer)initWithSize:(CGSize)a3 scale:(double)a4 isLayeredImage:(BOOL)a5 renderIntent:(int64_t)a6;
+- (ASKImageDataConsumer)initWithSize:(CGSize)size scale:(double)scale isLayeredImage:(BOOL)image renderIntent:(int64_t)intent;
 - (CGSize)size;
-- (id)objectForData:(id)a3 error:(id *)a4;
+- (id)objectForData:(id)data error:(id *)error;
 @end
 
 @implementation ASKImageDataConsumer
 
-- (ASKImageDataConsumer)initWithSize:(CGSize)a3 scale:(double)a4 isLayeredImage:(BOOL)a5 renderIntent:(int64_t)a6
+- (ASKImageDataConsumer)initWithSize:(CGSize)size scale:(double)scale isLayeredImage:(BOOL)image renderIntent:(int64_t)intent
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = ASKImageDataConsumer;
   result = [(ASKImageDataConsumer *)&v12 init];
@@ -17,18 +17,18 @@
   {
     result->_size.width = width;
     result->_size.height = height;
-    result->_scale = a4;
-    result->_isLayeredImage = a5;
-    result->_renderIntent = a6;
+    result->_scale = scale;
+    result->_isLayeredImage = image;
+    result->_renderIntent = intent;
   }
 
   return result;
 }
 
-- (id)objectForData:(id)a3 error:(id *)a4
+- (id)objectForData:(id)data error:(id *)error
 {
   v44[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dataCopy = data;
   v7 = ![(ASKImageDataConsumer *)self isLayeredImage]&& [(ASKImageDataConsumer *)self renderIntent]!= 1;
   [(ASKImageDataConsumer *)self scale];
   v9 = *&v8;
@@ -53,16 +53,16 @@
 
   if ((v12 | v11) == 1)
   {
-    v13 = [MEMORY[0x277D759A0] mainScreen];
-    [v13 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v9 = v14;
   }
 
-  v15 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:v6 scale:v9];
+  v15 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:dataCopy scale:v9];
 
   if (!v15)
   {
-    if (a4)
+    if (error)
     {
       v22 = MEMORY[0x277CCA9B8];
       v43 = *MEMORY[0x277CCA450];
@@ -81,7 +81,7 @@ LABEL_29:
   [(ASKImageDataConsumer *)v15 size];
   if (v16 <= 0.0 || ([(ASKImageDataConsumer *)v15 size], v17 <= 0.0))
   {
-    if (a4)
+    if (error)
     {
       v22 = MEMORY[0x277CCA9B8];
       v41 = *MEMORY[0x277CCA450];
@@ -91,7 +91,7 @@ LABEL_29:
       v25 = &v41;
 LABEL_28:
       v26 = [v23 dictionaryWithObjects:v24 forKeys:v25 count:1];
-      *a4 = [v22 errorWithDomain:@"ASKImageDataConsumerErrorDomain" code:-99 userInfo:v26];
+      *error = [v22 errorWithDomain:@"ASKImageDataConsumerErrorDomain" code:-99 userInfo:v26];
 
       goto LABEL_29;
     }
@@ -108,20 +108,20 @@ LABEL_28:
   [(ASKImageDataConsumer *)self size];
   if (v19 == *MEMORY[0x277CBF3A8] && v18 == *(MEMORY[0x277CBF3A8] + 8))
   {
-    v21 = v15;
+    selfCopy = v15;
   }
 
   else
   {
-    v21 = self;
+    selfCopy = self;
   }
 
-  [(ASKImageDataConsumer *)v21 size];
+  [(ASKImageDataConsumer *)selfCopy size];
   v31 = v29;
   v32 = v30;
   if (v29 <= 0.0 || v30 <= 0.0 || (*&v29 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&v30 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_29;
     }
@@ -135,9 +135,9 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v33 = [(ASKImageDataConsumer *)v15 imageRendererFormat];
-  [v33 setScale:v9];
-  v34 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:v33 format:{v31, v32}];
+  imageRendererFormat = [(ASKImageDataConsumer *)v15 imageRendererFormat];
+  [imageRendererFormat setScale:v9];
+  v34 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:imageRendererFormat format:{v31, v32}];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __44__ASKImageDataConsumer_objectForData_error___block_invoke;

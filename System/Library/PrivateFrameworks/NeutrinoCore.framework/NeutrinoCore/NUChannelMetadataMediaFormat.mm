@@ -2,14 +2,14 @@
 + (id)genericMetadataFormat;
 + (id)imageMetadataFormat;
 + (id)videoMetadataFormat;
-- (BOOL)canSpecializeMediaFormat:(id)a3;
-- (BOOL)canSpecializeMetadataMediaFormat:(id)a3;
-- (BOOL)isCompatibleWithMediaFormat:(id)a3;
-- (BOOL)isCompatibleWithMetadataMediaFormat:(id)a3;
-- (BOOL)isEqualToChannelFormat:(id)a3;
+- (BOOL)canSpecializeMediaFormat:(id)format;
+- (BOOL)canSpecializeMetadataMediaFormat:(id)format;
+- (BOOL)isCompatibleWithMediaFormat:(id)format;
+- (BOOL)isCompatibleWithMetadataMediaFormat:(id)format;
+- (BOOL)isEqualToChannelFormat:(id)format;
 - (id)description;
-- (id)specializedWithComponentMediaFormat:(id)a3;
-- (id)specializedWithMetadataMediaFormat:(id)a3;
+- (id)specializedWithComponentMediaFormat:(id)format;
+- (id)specializedWithMetadataMediaFormat:(id)format;
 @end
 
 @implementation NUChannelMetadataMediaFormat
@@ -23,11 +23,11 @@
   return v2;
 }
 
-- (id)specializedWithComponentMediaFormat:(id)a3
+- (id)specializedWithComponentMediaFormat:(id)format
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  formatCopy = format;
+  if (formatCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -54,8 +54,8 @@
           v18 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v19 = MEMORY[0x1E696AF00];
           v20 = v18;
-          v21 = [v19 callStackSymbols];
-          v22 = [v21 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v19 callStackSymbols];
+          v22 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v30 = v18;
           v31 = 2114;
@@ -66,8 +66,8 @@
 
       else if (v15)
       {
-        v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v17 = [v16 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v30 = v17;
         _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -79,22 +79,22 @@
     }
   }
 
-  v5 = [(NUChannelMediaFormat *)self temporality];
-  if (!v5)
+  temporality = [(NUChannelMediaFormat *)self temporality];
+  if (!temporality)
   {
-    v5 = [v4 temporality];
+    temporality = [formatCopy temporality];
   }
 
-  v6 = [(NUChannelMediaFormat *)[NUChannelMetadataMediaFormat alloc] initWithMediaTemporality:v5];
+  v6 = [(NUChannelMediaFormat *)[NUChannelMetadataMediaFormat alloc] initWithMediaTemporality:temporality];
 
   return v6;
 }
 
-- (id)specializedWithMetadataMediaFormat:(id)a3
+- (id)specializedWithMetadataMediaFormat:(id)format
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  formatCopy = format;
+  if (formatCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -121,8 +121,8 @@
           v18 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v19 = MEMORY[0x1E696AF00];
           v20 = v18;
-          v21 = [v19 callStackSymbols];
-          v22 = [v21 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v19 callStackSymbols];
+          v22 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v30 = v18;
           v31 = 2114;
@@ -133,8 +133,8 @@
 
       else if (v15)
       {
-        v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v17 = [v16 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v30 = v17;
         _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -146,30 +146,30 @@
     }
   }
 
-  v5 = [(NUChannelMediaFormat *)self temporality];
-  if (!v5)
+  temporality = [(NUChannelMediaFormat *)self temporality];
+  if (!temporality)
   {
-    v5 = [v4 temporality];
+    temporality = [formatCopy temporality];
   }
 
-  v6 = [(NUChannelMediaFormat *)[NUChannelMetadataMediaFormat alloc] initWithMediaTemporality:v5];
+  v6 = [(NUChannelMediaFormat *)[NUChannelMetadataMediaFormat alloc] initWithMediaTemporality:temporality];
 
   return v6;
 }
 
-- (BOOL)canSpecializeMetadataMediaFormat:(id)a3
+- (BOOL)canSpecializeMetadataMediaFormat:(id)format
 {
-  v4 = a3;
-  v5 = -[NUChannelMediaFormat temporality](self, "temporality") && ![v4 temporality];
+  formatCopy = format;
+  v5 = -[NUChannelMediaFormat temporality](self, "temporality") && ![formatCopy temporality];
 
   return v5;
 }
 
-- (BOOL)canSpecializeMediaFormat:(id)a3
+- (BOOL)canSpecializeMediaFormat:(id)format
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  formatCopy = format;
+  if (formatCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -196,8 +196,8 @@
           v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v18 = MEMORY[0x1E696AF00];
           v19 = v17;
-          v20 = [v18 callStackSymbols];
-          v21 = [v20 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v18 callStackSymbols];
+          v21 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = v17;
           v30 = 2114;
@@ -208,8 +208,8 @@
 
       else if (v14)
       {
-        v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v16 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v29 = v16;
         _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -221,16 +221,16 @@
     }
   }
 
-  v5 = [v4 mediaType] == 3 && -[NUChannelMetadataMediaFormat canSpecializeMetadataMediaFormat:](self, "canSpecializeMetadataMediaFormat:", v4);
+  v5 = [formatCopy mediaType] == 3 && -[NUChannelMetadataMediaFormat canSpecializeMetadataMediaFormat:](self, "canSpecializeMetadataMediaFormat:", formatCopy);
 
   return v5;
 }
 
-- (BOOL)isCompatibleWithMetadataMediaFormat:(id)a3
+- (BOOL)isCompatibleWithMetadataMediaFormat:(id)format
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  formatCopy = format;
+  if (formatCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -257,8 +257,8 @@
           v15 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v16 = MEMORY[0x1E696AF00];
           v17 = v15;
-          v18 = [v16 callStackSymbols];
-          v19 = [v18 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v16 callStackSymbols];
+          v19 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = v15;
           v28 = 2114;
@@ -269,8 +269,8 @@
 
       else if (v12)
       {
-        v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v14 = [v13 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v27 = v14;
         _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -285,11 +285,11 @@
   return 1;
 }
 
-- (BOOL)isCompatibleWithMediaFormat:(id)a3
+- (BOOL)isCompatibleWithMediaFormat:(id)format
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  formatCopy = format;
+  if (formatCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -316,8 +316,8 @@
           v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v18 = MEMORY[0x1E696AF00];
           v19 = v17;
-          v20 = [v18 callStackSymbols];
-          v21 = [v20 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v18 callStackSymbols];
+          v21 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = v17;
           v30 = 2114;
@@ -328,8 +328,8 @@
 
       else if (v14)
       {
-        v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v16 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v29 = v16;
         _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -341,37 +341,37 @@
     }
   }
 
-  v5 = [v4 mediaType] == 3 && -[NUChannelMetadataMediaFormat isCompatibleWithMetadataMediaFormat:](self, "isCompatibleWithMetadataMediaFormat:", v4);
+  v5 = [formatCopy mediaType] == 3 && -[NUChannelMetadataMediaFormat isCompatibleWithMetadataMediaFormat:](self, "isCompatibleWithMetadataMediaFormat:", formatCopy);
 
   return v5;
 }
 
-- (BOOL)isEqualToChannelFormat:(id)a3
+- (BOOL)isEqualToChannelFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUChannelMetadataMediaFormat *)self isEqualToMetadataMediaFormat:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUChannelMetadataMediaFormat *)self isEqualToMetadataMediaFormat:formatCopy];
 
   return v5;
 }
 
 + (id)videoMetadataFormat
 {
-  v2 = [[a1 alloc] initWithMediaTemporality:2];
+  v2 = [[self alloc] initWithMediaTemporality:2];
 
   return v2;
 }
 
 + (id)imageMetadataFormat
 {
-  v2 = [[a1 alloc] initWithMediaTemporality:1];
+  v2 = [[self alloc] initWithMediaTemporality:1];
 
   return v2;
 }
 
 + (id)genericMetadataFormat
 {
-  v2 = [[a1 alloc] initWithMediaTemporality:0];
+  v2 = [[self alloc] initWithMediaTemporality:0];
 
   return v2;
 }

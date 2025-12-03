@@ -1,21 +1,21 @@
 @interface NMSMusicRecommendationsResponse
-- (NMSMusicRecommendationsResponse)initWithCachedData:(id)a3 recommendations:(id)a4;
+- (NMSMusicRecommendationsResponse)initWithCachedData:(id)data recommendations:(id)recommendations;
 @end
 
 @implementation NMSMusicRecommendationsResponse
 
-- (NMSMusicRecommendationsResponse)initWithCachedData:(id)a3 recommendations:(id)a4
+- (NMSMusicRecommendationsResponse)initWithCachedData:(id)data recommendations:(id)recommendations
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  recommendationsCopy = recommendations;
   v12.receiver = self;
   v12.super_class = NMSMusicRecommendationsResponse;
   v9 = [(NMSMusicRecommendationsResponse *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cachedData, a3);
-    objc_storeStrong(&v10->_recommendations, a4);
+    objc_storeStrong(&v9->_cachedData, data);
+    objc_storeStrong(&v10->_recommendations, recommendations);
   }
 
   return v10;

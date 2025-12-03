@@ -1,16 +1,16 @@
 @interface ICOverlayWindowPresenter
-- (ICOverlayWindowPresenter)initWithRootViewController:(id)a3 presentingWindow:(id)a4;
-- (void)animateWindowFrameReverse:(BOOL)a3 duration:(double)a4 completionBlock:(id)a5;
-- (void)dismissWithCompletionBlock:(id)a3;
-- (void)presentWithCompletionBlock:(id)a3;
+- (ICOverlayWindowPresenter)initWithRootViewController:(id)controller presentingWindow:(id)window;
+- (void)animateWindowFrameReverse:(BOOL)reverse duration:(double)duration completionBlock:(id)block;
+- (void)dismissWithCompletionBlock:(id)block;
+- (void)presentWithCompletionBlock:(id)block;
 @end
 
 @implementation ICOverlayWindowPresenter
 
-- (ICOverlayWindowPresenter)initWithRootViewController:(id)a3 presentingWindow:(id)a4
+- (ICOverlayWindowPresenter)initWithRootViewController:(id)controller presentingWindow:(id)window
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  windowCopy = window;
   v17.receiver = self;
   v17.super_class = ICOverlayWindowPresenter;
   v8 = [(ICOverlayWindowPresenter *)&v17 init];
@@ -19,32 +19,32 @@
     objc_opt_class();
     v9 = ICDynamicCast();
     v10 = [ICWindow alloc];
-    v11 = [v7 windowScene];
-    v12 = [v10 initWithWindowScene:v11 behavior:{objc_msgSend(v7, "ic_behavior")}];
+    windowScene = [windowCopy windowScene];
+    v12 = [v10 initWithWindowScene:windowScene behavior:{objc_msgSend(windowCopy, "ic_behavior")}];
 
-    v13 = [v9 viewControllerManager];
-    [v12 setViewControllerManager:v13];
+    viewControllerManager = [v9 viewControllerManager];
+    [v12 setViewControllerManager:viewControllerManager];
 
-    [v12 setRootViewController:v6];
+    [v12 setRootViewController:controllerCopy];
     [v12 setWindowLevel:UIWindowLevelStatusBar + -1.0];
     window = v8->_window;
     v8->_window = v12;
     v15 = v12;
 
-    objc_storeStrong(&v8->_presentingWindow, a4);
+    objc_storeStrong(&v8->_presentingWindow, window);
   }
 
   return v8;
 }
 
-- (void)animateWindowFrameReverse:(BOOL)a3 duration:(double)a4 completionBlock:(id)a5
+- (void)animateWindowFrameReverse:(BOOL)reverse duration:(double)duration completionBlock:(id)block
 {
-  v6 = a3;
-  v8 = a5;
-  if (v6)
+  reverseCopy = reverse;
+  blockCopy = block;
+  if (reverseCopy)
   {
-    v9 = [(ICOverlayWindowPresenter *)self window];
-    [v9 bounds];
+    window = [(ICOverlayWindowPresenter *)self window];
+    [window bounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -54,8 +54,8 @@
 
   else
   {
-    v9 = [(ICOverlayWindowPresenter *)self presentingWindow];
-    [v9 frame];
+    window = [(ICOverlayWindowPresenter *)self presentingWindow];
+    [window frame];
     v11 = v19;
     v13 = v20;
     v15 = v21;
@@ -68,7 +68,7 @@
   v30.size.width = v15;
   v30.size.height = v17;
   MaxY = CGRectGetMaxY(v30);
-  if (v6)
+  if (reverseCopy)
   {
     v24 = v13;
   }
@@ -78,13 +78,13 @@
     v24 = MaxY;
   }
 
-  if (v6)
+  if (reverseCopy)
   {
     v13 = MaxY;
   }
 
-  v25 = [(ICOverlayWindowPresenter *)self window];
-  [v25 setFrame:{v11, v24, v15, v17}];
+  window2 = [(ICOverlayWindowPresenter *)self window];
+  [window2 setFrame:{v11, v24, v15, v17}];
 
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
@@ -99,43 +99,43 @@
   v27[1] = 3221225472;
   v27[2] = sub_1000DBAE4;
   v27[3] = &unk_1006465D0;
-  v28 = v8;
-  v26 = v8;
-  [UIView animateWithDuration:v18 delay:v29 options:v27 animations:a4 completion:0.0];
+  v28 = blockCopy;
+  v26 = blockCopy;
+  [UIView animateWithDuration:v18 delay:v29 options:v27 animations:duration completion:0.0];
 }
 
-- (void)presentWithCompletionBlock:(id)a3
+- (void)presentWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(ICOverlayWindowPresenter *)self window];
-  [v5 makeKeyAndVisible];
+  blockCopy = block;
+  window = [(ICOverlayWindowPresenter *)self window];
+  [window makeKeyAndVisible];
 
-  v6 = [(ICOverlayWindowPresenter *)self presentAnimationType];
-  if (v6)
+  presentAnimationType = [(ICOverlayWindowPresenter *)self presentAnimationType];
+  if (presentAnimationType)
   {
-    if (v6 == 2)
+    if (presentAnimationType == 2)
     {
-      v7 = [(ICOverlayWindowPresenter *)self windowBackgroundColor];
-      v8 = v7;
-      if (!v7)
+      windowBackgroundColor = [(ICOverlayWindowPresenter *)self windowBackgroundColor];
+      v8 = windowBackgroundColor;
+      if (!windowBackgroundColor)
       {
         v8 = +[UIColor ic_dynamicWhiteBlackColor];
       }
 
-      v9 = [(ICOverlayWindowPresenter *)self window];
-      [v9 setBackgroundColor:v8];
+      window2 = [(ICOverlayWindowPresenter *)self window];
+      [window2 setBackgroundColor:v8];
 
-      if (!v7)
+      if (!windowBackgroundColor)
       {
       }
 
-      v10 = [(ICOverlayWindowPresenter *)self window];
-      v11 = [v10 rootViewController];
-      v12 = [v11 view];
-      [v12 setAlpha:0.0];
+      window3 = [(ICOverlayWindowPresenter *)self window];
+      rootViewController = [window3 rootViewController];
+      view = [rootViewController view];
+      [view setAlpha:0.0];
 
-      v13 = [(ICOverlayWindowPresenter *)self window];
-      [v13 makeKeyAndVisible];
+      window4 = [(ICOverlayWindowPresenter *)self window];
+      [window4 makeKeyAndVisible];
 
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
@@ -146,13 +146,13 @@
       v14[1] = 3221225472;
       v14[2] = sub_1000DBD88;
       v14[3] = &unk_1006465D0;
-      v15 = v4;
+      v15 = blockCopy;
       [UIView animateWithDuration:v16 animations:v14 completion:0.25];
     }
 
-    else if (v6 == 1)
+    else if (presentAnimationType == 1)
     {
-      [(ICOverlayWindowPresenter *)self animateWindowFrameReverse:0 duration:v4 completionBlock:0.3];
+      [(ICOverlayWindowPresenter *)self animateWindowFrameReverse:0 duration:blockCopy completionBlock:0.3];
     }
   }
 
@@ -162,14 +162,14 @@
   }
 }
 
-- (void)dismissWithCompletionBlock:(id)a3
+- (void)dismissWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(ICOverlayWindowPresenter *)self presentAnimationType];
+  blockCopy = block;
+  presentAnimationType = [(ICOverlayWindowPresenter *)self presentAnimationType];
   v6 = 0.3;
-  if (v5)
+  if (presentAnimationType)
   {
-    if (v5 == 2)
+    if (presentAnimationType == 2)
     {
       v6 = 0.0;
     }
@@ -185,8 +185,8 @@
   v8[2] = sub_1000DBE98;
   v8[3] = &unk_100645E80;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = blockCopy;
+  v7 = blockCopy;
   [(ICOverlayWindowPresenter *)self animateWindowFrameReverse:1 duration:v8 completionBlock:v6];
 }
 

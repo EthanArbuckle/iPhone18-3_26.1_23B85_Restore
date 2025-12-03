@@ -2,18 +2,18 @@
 + (id)sharedInstance;
 - (CSSpeakerRecognitionAssetMetaUpdateMonitor)init;
 - (void)_didReceiveSpeakerRecognitionAssetMetaData;
-- (void)_notifyObserver:(id)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_notifyObserver:(id)observer;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
 @implementation CSSpeakerRecognitionAssetMetaUpdateMonitor
 
-- (void)_notifyObserver:(id)a3
+- (void)_notifyObserver:(id)observer
 {
-  v4 = a3;
-  [(CSSpeakerRecognitionAssetMetaUpdateMonitor *)self notifyObserver:v4];
-  [v4 CSSpeakerRecognitionAssetMetaUpdateMonitor:self didReceiveNewSpeakerRecognitionAssetMetaData:1];
+  observerCopy = observer;
+  [(CSSpeakerRecognitionAssetMetaUpdateMonitor *)self notifyObserver:observerCopy];
+  [observerCopy CSSpeakerRecognitionAssetMetaUpdateMonitor:self didReceiveNewSpeakerRecognitionAssetMetaData:1];
 }
 
 - (void)_didReceiveSpeakerRecognitionAssetMetaData
@@ -51,17 +51,17 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   if (self->_notifyToken == -1)
   {
-    v4 = a3;
+    queueCopy = queue;
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_10001867C;
     handler[3] = &unk_1002537C0;
     handler[4] = self;
-    notify_register_dispatch([(CSSpeakerRecognitionAssetMetaUpdateMonitor *)self _asssetMetaUpdatedKey], &self->_notifyToken, v4, handler);
+    notify_register_dispatch([(CSSpeakerRecognitionAssetMetaUpdateMonitor *)self _asssetMetaUpdatedKey], &self->_notifyToken, queueCopy, handler);
 
     v5 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))

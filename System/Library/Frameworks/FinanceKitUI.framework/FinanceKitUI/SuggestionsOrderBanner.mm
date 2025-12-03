@@ -5,15 +5,15 @@
 - (NSURL)orderDeepLink;
 - (UIImage)merchantLogo;
 - (_TtC12FinanceKitUI22SuggestionsOrderBanner)init;
-- (id)init:(id)a3 error:(id *)a4;
+- (id)init:(id)init error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation SuggestionsOrderBanner
 
-- (id)init:(id)a3 error:(id *)a4
+- (id)init:(id)init error:(id *)error
 {
-  v4 = a3;
+  initCopy = init;
   v5 = sub_23875B990();
   v7 = v6;
 
@@ -24,11 +24,11 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC12FinanceKitUI22SuggestionsOrderBanner_orderBundle);
-  v5 = self;
+  selfCopy = self;
 
   sub_238757BF0();
 
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(SuggestionsOrderBanner *)&v6 dealloc];
 }
@@ -41,7 +41,7 @@
   MEMORY[0x28223BE20](v3);
   v7 = &v13 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v8 = *(&self->super.isa + OBJC_IVAR____TtC12FinanceKitUI22SuggestionsOrderBanner_orderBundle);
-  v9 = self;
+  selfCopy = self;
   sub_238759B30();
   sub_238757C60();
   (*(v4 + 8))(v7, v3);
@@ -56,7 +56,7 @@
 
 - (UIImage)merchantLogo
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SuggestionsOrderBanner.merchantLogo.getter();
 
   return v3;
@@ -79,7 +79,7 @@
   v14 = *(v13 + 64);
   MEMORY[0x28223BE20](v12);
   v16 = &v21 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v17 = self;
+  selfCopy = self;
   sub_238757A20();
   LOBYTE(self) = sub_238757A60();
   (*(v8 + 8))(v11, v7);
@@ -105,7 +105,7 @@
 
 - (NSAttributedString)bannerAttributedSubtitle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SuggestionsOrderBanner.bannerAttributedSubtitle.getter();
 
   return v3;

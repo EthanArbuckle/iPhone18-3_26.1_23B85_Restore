@@ -1,10 +1,10 @@
 @interface CHCTLD
 - (CHCTLD)init;
-- (CHCTLD)initWithType:(unint64_t)a3;
-- (id)mergeStrokeGroups:(id)a3;
-- (id)orderStrokeGroups:(id)a3;
-- (id)reflowableLineRegions:(id)a3;
-- (id)strokeGroupRegions:(id)a3;
+- (CHCTLD)initWithType:(unint64_t)type;
+- (id)mergeStrokeGroups:(id)groups;
+- (id)orderStrokeGroups:(id)groups;
+- (id)reflowableLineRegions:(id)regions;
+- (id)strokeGroupRegions:(id)regions;
 @end
 
 @implementation CHCTLD
@@ -28,7 +28,7 @@
   return v2;
 }
 
-- (CHCTLD)initWithType:(unint64_t)a3
+- (CHCTLD)initWithType:(unint64_t)type
 {
   v10.receiver = self;
   v10.super_class = CHCTLD;
@@ -39,7 +39,7 @@
     ctld = v4->_ctld;
     v4->_ctld = v5;
 
-    v7 = sub_1837BED20(a3);
+    v7 = sub_1837BED20(type);
     ctldConfig = v4->_ctldConfig;
     v4->_ctldConfig = v7;
   }
@@ -47,10 +47,10 @@
   return v4;
 }
 
-- (id)orderStrokeGroups:(id)a3
+- (id)orderStrokeGroups:(id)groups
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_groupAndOrderRegions_config_(self->_ctld, a2, a3, self->_ctldConfig, v3, v4);
+  v5 = objc_msgSend_groupAndOrderRegions_config_(self->_ctld, a2, groups, self->_ctldConfig, v3, v4);
   v11 = objc_msgSend_array(MEMORY[0x1E695DF70], v6, v7, v8, v9, v10);
   v31 = 0u;
   v32 = 0u;
@@ -83,10 +83,10 @@
   return v11;
 }
 
-- (id)strokeGroupRegions:(id)a3
+- (id)strokeGroupRegions:(id)regions
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_groupAndOrderRegions_config_(self->_ctld, a2, a3, self->_ctldConfig, v3, v4);
+  v5 = objc_msgSend_groupAndOrderRegions_config_(self->_ctld, a2, regions, self->_ctldConfig, v3, v4);
   v11 = objc_msgSend_array(MEMORY[0x1E695DF70], v6, v7, v8, v9, v10);
   v31 = 0u;
   v32 = 0u;
@@ -119,10 +119,10 @@
   return v11;
 }
 
-- (id)reflowableLineRegions:(id)a3
+- (id)reflowableLineRegions:(id)regions
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_groupAndOrderRegions_config_(self->_ctld, a2, a3, self->_ctldConfig, v3, v4);
+  v5 = objc_msgSend_groupAndOrderRegions_config_(self->_ctld, a2, regions, self->_ctldConfig, v3, v4);
   v11 = objc_msgSend_array(MEMORY[0x1E695DF70], v6, v7, v8, v9, v10);
   v31 = 0u;
   v32 = 0u;
@@ -155,10 +155,10 @@
   return v11;
 }
 
-- (id)mergeStrokeGroups:(id)a3
+- (id)mergeStrokeGroups:(id)groups
 {
   v114 = *MEMORY[0x1E69E9840];
-  v99 = objc_msgSend_groupAndOrderRegions_config_(self->_ctld, a2, a3, self->_ctldConfig, v3, v4);
+  v99 = objc_msgSend_groupAndOrderRegions_config_(self->_ctld, a2, groups, self->_ctldConfig, v3, v4);
   v100 = objc_msgSend_array(MEMORY[0x1E695DF70], v5, v6, v7, v8, v9);
   v110 = 0u;
   v111 = 0u;

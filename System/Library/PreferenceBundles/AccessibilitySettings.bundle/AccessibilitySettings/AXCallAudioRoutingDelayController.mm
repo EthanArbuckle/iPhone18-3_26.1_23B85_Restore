@@ -1,9 +1,9 @@
 @interface AXCallAudioRoutingDelayController
 - (BOOL)numericalPreferenceEnabled;
 - (double)numericalPreferenceValue;
-- (void)_showSiriSettings:(id)a3;
-- (void)setNumericalPreferenceEnabledFromUser:(BOOL)a3;
-- (void)setNumericalPreferenceValueFromUser:(double)a3;
+- (void)_showSiriSettings:(id)settings;
+- (void)setNumericalPreferenceEnabledFromUser:(BOOL)user;
+- (void)setNumericalPreferenceValueFromUser:(double)user;
 @end
 
 @implementation AXCallAudioRoutingDelayController
@@ -17,28 +17,28 @@
   return v4;
 }
 
-- (void)setNumericalPreferenceValueFromUser:(double)a3
+- (void)setNumericalPreferenceValueFromUser:(double)user
 {
   v4 = +[AXSettings sharedInstance];
-  [v4 setCallAudioRoutingAutoAnswerDelay:a3];
+  [v4 setCallAudioRoutingAutoAnswerDelay:user];
 }
 
 - (BOOL)numericalPreferenceEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 callAudioRoutingAutoAnswerEnabled];
+  callAudioRoutingAutoAnswerEnabled = [v2 callAudioRoutingAutoAnswerEnabled];
 
-  return v3;
+  return callAudioRoutingAutoAnswerEnabled;
 }
 
-- (void)setNumericalPreferenceEnabledFromUser:(BOOL)a3
+- (void)setNumericalPreferenceEnabledFromUser:(BOOL)user
 {
-  v3 = a3;
+  userCopy = user;
   v4 = +[AXSettings sharedInstance];
-  [v4 setCallAudioRoutingAutoAnswerEnabled:v3];
+  [v4 setCallAudioRoutingAutoAnswerEnabled:userCopy];
 }
 
-- (void)_showSiriSettings:(id)a3
+- (void)_showSiriSettings:(id)settings
 {
   v4 = [NSURL URLWithString:@"prefs:root=ACCESSIBILITY&path=SIRI_SETTINGS_TITLE#SIRI_SETTINGS_VOICE_ACTIVATION_ALWAYS_ALLOW"];
   v3 = +[LSApplicationWorkspace defaultWorkspace];

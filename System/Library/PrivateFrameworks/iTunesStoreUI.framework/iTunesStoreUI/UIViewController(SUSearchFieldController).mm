@@ -6,9 +6,9 @@
 
 - (uint64_t)iTunesStoreUI_searchFieldController
 {
-  v1 = [a1 parentViewController];
+  parentViewController = [self parentViewController];
 
-  return [v1 iTunesStoreUI_searchFieldController];
+  return [parentViewController iTunesStoreUI_searchFieldController];
 }
 
 @end

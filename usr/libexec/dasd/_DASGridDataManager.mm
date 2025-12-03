@@ -1,15 +1,15 @@
 @interface _DASGridDataManager
 + (id)sharedInstance;
-- (BOOL)isCarbonImpactHighForState:(id)a3;
+- (BOOL)isCarbonImpactHighForState:(id)state;
 - (_DASGridDataManager)init;
 - (double)predictedPluggedInterval;
-- (id)carbonImpactWindowStartForForecast:(id)a3 withStartDate:(id)a4 windowSize:(double)a5;
-- (id)forecastForTimeInterval:(double)a3 from:(id)a4;
+- (id)carbonImpactWindowStartForForecast:(id)forecast withStartDate:(id)date windowSize:(double)size;
+- (id)forecastForTimeInterval:(double)interval from:(id)from;
 - (void)loadState;
 - (void)monitorPluggedInState;
 - (void)resetState;
 - (void)saveCarbonImpactWindowState;
-- (void)setupHighCarbonImpactWindow:(double)a3;
+- (void)setupHighCarbonImpactWindow:(double)window;
 - (void)updatePredictedInterval;
 @end
 
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = sub_10003AD94;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020AFB0 != -1)
   {
     dispatch_once(&qword_10020AFB0, block);
@@ -76,9 +76,9 @@
 
     v13 = v12;
     _Block_object_dispose(&v22, 8);
-    v14 = [v12 predictor];
+    predictor = [v12 predictor];
     pluggedInPredictor = v2->_pluggedInPredictor;
-    v2->_pluggedInPredictor = v14;
+    v2->_pluggedInPredictor = predictor;
 
     [(_DASGridDataManager *)v2 monitorPluggedInState];
     v2->_debugNotifyToken = -1;
@@ -108,21 +108,21 @@
   [(_CDContext *)self->_context registerCallback:v5];
 }
 
-- (void)setupHighCarbonImpactWindow:(double)a3
+- (void)setupHighCarbonImpactWindow:(double)window
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10003B354;
   v4[3] = &unk_1001B6250;
-  *&v4[5] = a3;
+  *&v4[5] = window;
   v4[4] = self;
   dispatch_sync(queue, v4);
 }
 
-- (BOOL)isCarbonImpactHighForState:(id)a3
+- (BOOL)isCarbonImpactHighForState:(id)state
 {
-  v4 = [_DASSystemContext isPluggedIn:a3];
+  v4 = [_DASSystemContext isPluggedIn:state];
   if (v4)
   {
     if (!self->_carbonImpactWindowStartDate || ([(NSDate *)self->_carbonImpactWindowFetchTime timeIntervalSinceNow], v5 < -self->_forecastCacheSeconds))
@@ -144,14 +144,14 @@
   return v4;
 }
 
-- (id)forecastForTimeInterval:(double)a3 from:(id)a4
+- (id)forecastForTimeInterval:(double)interval from:(id)from
 {
-  v5 = [a4 forecastMap];
-  if ([v5 count])
+  forecastMap = [from forecastMap];
+  if ([forecastMap count])
   {
     v6 = +[NSMutableArray array];
-    v7 = [v5 allKeys];
-    v8 = [v7 mutableCopy];
+    allKeys = [forecastMap allKeys];
+    v8 = [allKeys mutableCopy];
 
     v9 = [[NSSortDescriptor alloc] initWithKey:@"self" ascending:1];
     v17 = v9;
@@ -159,9 +159,9 @@
     [v8 sortUsingDescriptors:v10];
 
     v11 = [v8 count];
-    if (v11 >= (a3 / 900.0))
+    if (v11 >= (interval / 900.0))
     {
-      v12 = (a3 / 900.0);
+      v12 = (interval / 900.0);
     }
 
     else
@@ -174,7 +174,7 @@
       for (i = 0; i != v12; ++i)
       {
         v14 = [v8 objectAtIndexedSubscript:i];
-        v15 = [v5 objectForKeyedSubscript:v14];
+        v15 = [forecastMap objectForKeyedSubscript:v14];
 
         [v6 addObject:v15];
       }
@@ -201,9 +201,9 @@
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v7 = log;
-      v8 = [v5 localizedDescription];
+      localizedDescription = [v5 localizedDescription];
       *buf = 138412290;
-      v20 = *&v8;
+      v20 = *&localizedDescription;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Error querying the predictor through the client %@", buf, 0xCu);
     }
   }
@@ -246,23 +246,23 @@
   return v15;
 }
 
-- (id)carbonImpactWindowStartForForecast:(id)a3 withStartDate:(id)a4 windowSize:(double)a5
+- (id)carbonImpactWindowStartForForecast:(id)forecast withStartDate:(id)date windowSize:(double)size
 {
-  v8 = a3;
-  v9 = a4;
-  if (![v8 count])
+  forecastCopy = forecast;
+  dateCopy = date;
+  if (![forecastCopy count])
   {
     v25 = 0;
     goto LABEL_26;
   }
 
-  v10 = [v8 mutableCopy];
+  v10 = [forecastCopy mutableCopy];
   [v10 sortUsingComparator:&stru_1001B6270];
   v11 = [v10 objectAtIndexedSubscript:0];
   [v11 doubleValue];
   v13 = v12;
-  v14 = [v10 lastObject];
-  [v14 doubleValue];
+  lastObject = [v10 lastObject];
+  [lastObject doubleValue];
   v16 = vabdd_f64(v13, v15);
 
   if (v16 < 100.0)
@@ -274,8 +274,8 @@
       v19 = [v10 objectAtIndexedSubscript:0];
       [v19 doubleValue];
       v21 = v20;
-      v22 = [v10 lastObject];
-      [v22 doubleValue];
+      lastObject2 = [v10 lastObject];
+      [lastObject2 doubleValue];
       *buf = 134218240;
       v48 = v21;
       v49 = 2048;
@@ -289,22 +289,22 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v26 = fmax(floor(a5 / 900.0) + -1.0, 0.0);
-  if ([v8 count] >= v26)
+  v26 = fmax(floor(size / 900.0) + -1.0, 0.0);
+  if ([forecastCopy count] >= v26)
   {
-    v44 = self;
-    v46 = v9;
+    selfCopy = self;
+    v46 = dateCopy;
     v27 = 0;
     if (v26)
     {
       for (i = 0; i != v26; ++i)
       {
-        v29 = [v8 objectAtIndexedSubscript:{i, v44}];
+        v29 = [forecastCopy objectAtIndexedSubscript:{i, selfCopy}];
         v27 = &v27[[v29 unsignedIntegerValue]];
       }
     }
 
-    if ([v8 count] <= v26 || (v30 = objc_msgSend(v8, "count"), v30 == v26))
+    if ([forecastCopy count] <= v26 || (v30 = objc_msgSend(forecastCopy, "count"), v30 == v26))
     {
       v31 = 0;
     }
@@ -317,7 +317,7 @@ LABEL_24:
       v34 = 0;
       do
       {
-        v35 = [v8 objectAtIndexedSubscript:v26];
+        v35 = [forecastCopy objectAtIndexedSubscript:v26];
         v36 = &v27[[v35 unsignedIntegerValue]];
 
         if (v36 >= v33)
@@ -330,10 +330,10 @@ LABEL_24:
           v33 = v36;
         }
 
-        v37 = [v8 objectAtIndexedSubscript:v34];
+        v37 = [forecastCopy objectAtIndexedSubscript:v34];
         v38 = v27 - [v37 unsignedIntegerValue];
 
-        v39 = [v8 objectAtIndexedSubscript:v26];
+        v39 = [forecastCopy objectAtIndexedSubscript:v26];
         v27 = [v39 unsignedIntegerValue] + v38;
 
         ++v34;
@@ -347,7 +347,7 @@ LABEL_24:
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
       v41 = v40;
-      v42 = [v8 objectAtIndexedSubscript:v31];
+      v42 = [forecastCopy objectAtIndexedSubscript:v31];
       *buf = 134218242;
       v48 = v31;
       v49 = 2112;
@@ -355,7 +355,7 @@ LABEL_24:
       _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "HighCarbonImpact startIndex %lu, startValue %@", buf, 0x16u);
     }
 
-    v9 = v46;
+    dateCopy = v46;
     v24 = [NSDate dateWithTimeInterval:v46 sinceDate:v31 * 900.0];
     goto LABEL_24;
   }

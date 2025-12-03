@@ -1,19 +1,19 @@
 @interface MPSGraphConvolution2DDataGradientOp
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphConvolution2DDataGradientOp
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v65 = *MEMORY[0x1E69E9840];
-  v44 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphConvolution2DDataGradientOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphConvolutionOps.mm", __p);
-  v11 = v44;
+  v11 = nameCopy;
   v64 = 260;
   v63[0] = __p;
-  StringAttr = mlir::Builder::getStringAttr(a3, v63);
+  StringAttr = mlir::Builder::getStringAttr(builder, v63);
   v13 = mlir::FileLineColLoc::get(StringAttr, 0x15Bu, 0);
   if (!v11)
   {
@@ -21,8 +21,8 @@
   }
 
   v14 = v11;
-  v15 = [v11 UTF8String];
-  v16 = strlen(v15);
+  uTF8String = [v11 UTF8String];
+  v16 = strlen(uTF8String);
   if (v16 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -37,11 +37,11 @@
   v62 = v16;
   if (v16)
   {
-    memmove(&__dst, v15, v16);
+    memmove(&__dst, uTF8String, v16);
   }
 
   *(&__dst + v18) = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v17, &v58);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v17, &v58);
   v19 = v58.__r_.__value_.__r.__words[0];
   if ((v58.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -57,7 +57,7 @@
   }
 
   LOBYTE(v64) = v20;
-  v21 = mlir::Builder::getStringAttr(a3, v63);
+  v21 = mlir::Builder::getStringAttr(builder, v63);
   v51 = mlir::NameLoc::get(v21, v13);
   if (SHIBYTE(v58.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -76,36 +76,36 @@
   operator delete(__dst);
 LABEL_15:
 
-  v50 = a3;
+  builderCopy = builder;
   if (v54 < 0)
   {
     operator delete(__p[0]);
   }
 
   v49 = v11;
-  v22 = *a5;
-  v23 = *(a5 + 1) - *a5;
+  v22 = *values;
+  v23 = *(values + 1) - *values;
   if (v23 <= 8 || v23 == 16)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
   }
 
-  v24 = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc groups];
-  v25 = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc strideInX];
-  v26 = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc strideInY];
-  v27 = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc dilationRateInX];
-  v28 = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc dilationRateInY];
-  v29 = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc paddingLeft];
-  v47 = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc paddingRight];
-  v48 = v29;
-  v30 = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc paddingTop];
-  v46 = v28;
-  v31 = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc paddingBottom];
-  v32 = v27;
-  v45 = v26;
-  v33 = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc paddingStyle];
-  v34 = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc dataLayout];
-  v35 = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc weightsLayout];
+  groups = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc groups];
+  strideInX = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc strideInX];
+  strideInY = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc strideInY];
+  dilationRateInX = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc dilationRateInX];
+  dilationRateInY = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc dilationRateInY];
+  paddingLeft = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc paddingLeft];
+  paddingRight = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc paddingRight];
+  v48 = paddingLeft;
+  paddingTop = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc paddingTop];
+  v46 = dilationRateInY;
+  paddingBottom = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc paddingBottom];
+  v32 = dilationRateInX;
+  v45 = strideInY;
+  paddingStyle = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc paddingStyle];
+  dataLayout = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc dataLayout];
+  weightsLayout = [(MPSGraphConvolution2DOpDescriptor *)self->super._desc weightsLayout];
   v55 = v51;
   Context = mlir::Attribute::getContext(&v55);
   v37 = mlir::RegisteredOperationName::lookup(&mlir::detail::TypeIDResolver<mlir::mps::Conv2DDataGradientOp,void>::id, Context);
@@ -120,8 +120,8 @@ LABEL_15:
   }
 
   mlir::OperationState::OperationState(v63, v51, v37);
-  mlir::mps::Conv2DDataGradientOp::build(v50, v63, *v22, v22[1], v22[2], v24, v25, v45, v32, v46, v48, v47, v30, v31, v33, v34, v35);
-  v39 = mlir::OpBuilder::create(v50, v63);
+  mlir::mps::Conv2DDataGradientOp::build(builderCopy, v63, *v22, v22[1], v22[2], groups, strideInX, v45, v32, v46, v48, paddingRight, paddingTop, paddingBottom, paddingStyle, dataLayout, weightsLayout);
+  v39 = mlir::OpBuilder::create(builderCopy, v63);
   v40 = *(*(v39 + 48) + 16);
   mlir::OperationState::~OperationState(v63);
   if (v40 == &mlir::detail::TypeIDResolver<mlir::mps::Conv2DDataGradientOp,void>::id)
@@ -141,40 +141,40 @@ LABEL_15:
   return DefiningOp;
 }
 
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v30 = v9;
-  v12 = [(MPSGraphOperation *)self inputTensors];
-  v13 = [v12 objectAtIndexedSubscript:0];
+  tensorCopy = tensor;
+  gradientCopy = gradient;
+  nameCopy = name;
+  v30 = tensorCopy;
+  inputTensors = [(MPSGraphOperation *)self inputTensors];
+  v13 = [inputTensors objectAtIndexedSubscript:0];
 
   WeakRetained = objc_loadWeakRetained(&self->super.super._graph);
   [(NSArray *)self->super.super._inputTensors objectAtIndexedSubscript:1];
-  if (v13 == v9)
+  if (v13 == tensorCopy)
     v20 = {;
     desc = self->super._desc;
     v28 = MEMORY[0x1E696AEC0];
-    v21 = [(MPSGraphOperation *)self name];
-    v24 = [v28 stringWithFormat:@"%@/%@/convolutionTranspose2DDataGradient", v11, v21];
-    v26 = [WeakRetained convolution2DWithSourceTensor:v10 weightsTensor:v20 descriptor:desc name:v24];
+    name = [(MPSGraphOperation *)self name];
+    name3 = [v28 stringWithFormat:@"%@/%@/convolutionTranspose2DDataGradient", nameCopy, name];
+    v26 = [WeakRetained convolution2DWithSourceTensor:gradientCopy weightsTensor:v20 descriptor:desc name:name3];
   }
 
   else
     v15 = {;
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [(MPSGraphOperation *)self name];
-    v18 = [v16 stringWithFormat:@"%@/%@/convolutionTranspose2DDataGradient/shapeOp", v11, v17];
+    name2 = [(MPSGraphOperation *)self name];
+    v18 = [v16 stringWithFormat:@"%@/%@/convolutionTranspose2DDataGradient/shapeOp", nameCopy, name2];
     v19 = [WeakRetained shapeOfTensor:v15 name:v18];
 
     v20 = objc_loadWeakRetained(&self->super.super._graph);
-    v21 = [(NSArray *)self->super.super._inputTensors objectAtIndexedSubscript:0];
+    name = [(NSArray *)self->super.super._inputTensors objectAtIndexedSubscript:0];
     v22 = self->super._desc;
     v23 = MEMORY[0x1E696AEC0];
-    v24 = [(MPSGraphOperation *)self name];
-    v25 = [v23 stringWithFormat:@"%@/%@/convolutionTranspose2DWeightsGradient", v11, v24];
-    v26 = [v20 convolution2DWeightsGradientWithIncomingGradientTensor:v21 sourceTensor:v10 outputShapeTensor:v19 forwardConvolutionDescriptor:v22 name:v25];
+    name3 = [(MPSGraphOperation *)self name];
+    v25 = [v23 stringWithFormat:@"%@/%@/convolutionTranspose2DWeightsGradient", nameCopy, name3];
+    v26 = [v20 convolution2DWeightsGradientWithIncomingGradientTensor:name sourceTensor:gradientCopy outputShapeTensor:v19 forwardConvolutionDescriptor:v22 name:v25];
 
     WeakRetained = v19;
   }

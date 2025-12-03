@@ -1,13 +1,13 @@
 @interface MKPlaceCompactCollectionViewModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)photoSize;
-- (MKPlaceCompactCollectionViewModel)initWithGuideLocation:(id)a3 context:(int64_t)a4 useBorderHighlight:(BOOL)a5;
+- (MKPlaceCompactCollectionViewModel)initWithGuideLocation:(id)location context:(int64_t)context useBorderHighlight:(BOOL)highlight;
 - (NSAttributedString)subTitle;
 - (NSAttributedString)title;
 - (UIColor)backgroundColor;
 - (id)description;
-- (void)compactCollectionImageForSize:(CGSize)a3 onCompletion:(id)a4;
-- (void)contentCategorySizeDidChange:(id)a3;
+- (void)compactCollectionImageForSize:(CGSize)size onCompletion:(id)completion;
+- (void)contentCategorySizeDidChange:(id)change;
 - (void)initializeFonts;
 @end
 
@@ -25,29 +25,29 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(MKPlaceCompactCollectionViewModel *)self title];
-  v4 = [v3 string];
-  v5 = [v2 stringWithFormat:@"Guide Location: %@", v4];
+  title = [(MKPlaceCompactCollectionViewModel *)self title];
+  string = [title string];
+  v5 = [v2 stringWithFormat:@"Guide Location: %@", string];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(MKPlaceCompactCollectionViewModel *)self guideLocation];
-    v8 = [(MKPlaceCompactCollectionViewModel *)v6 guideLocation];
+    guideLocation = [(MKPlaceCompactCollectionViewModel *)self guideLocation];
+    guideLocation2 = [(MKPlaceCompactCollectionViewModel *)v6 guideLocation];
 
-    v9 = [v7 isEqual:v8];
+    v9 = [guideLocation isEqual:guideLocation2];
   }
 
   else
@@ -64,8 +64,8 @@
   if (!backgroundColor)
   {
     v4 = +[MKPlaceCollectionImageProvider sharedInstance];
-    v5 = [(MKPlaceCompactCollectionViewModel *)self guideLocation];
-    v6 = [v4 joeColorForCompactCollection:v5 usingCarouselContext:{-[MKPlaceCompactCollectionViewModel context](self, "context")}];
+    guideLocation = [(MKPlaceCompactCollectionViewModel *)self guideLocation];
+    v6 = [v4 joeColorForCompactCollection:guideLocation usingCarouselContext:{-[MKPlaceCompactCollectionViewModel context](self, "context")}];
     v7 = self->_backgroundColor;
     self->_backgroundColor = v6;
 
@@ -86,10 +86,10 @@
     goto LABEL_2;
   }
 
-  v5 = [(MKPlaceCompactCollectionViewModel *)self guideLocation];
-  v6 = [v5 country];
+  guideLocation = [(MKPlaceCompactCollectionViewModel *)self guideLocation];
+  country = [guideLocation country];
 
-  if (!v6)
+  if (!country)
   {
     subTitle = self->_subTitle;
 LABEL_2:
@@ -98,14 +98,14 @@ LABEL_2:
   }
 
   v15 = *MEMORY[0x1E69DB648];
-  v7 = [(MKPlaceCompactCollectionViewModel *)self subTitleFont];
-  v16[0] = v7;
+  subTitleFont = [(MKPlaceCompactCollectionViewModel *)self subTitleFont];
+  v16[0] = subTitleFont;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
 
   v9 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v10 = [(MKPlaceCompactCollectionViewModel *)self guideLocation];
-  v11 = [v10 country];
-  v12 = [v9 initWithString:v11 attributes:v8];
+  guideLocation2 = [(MKPlaceCompactCollectionViewModel *)self guideLocation];
+  country2 = [guideLocation2 country];
+  v12 = [v9 initWithString:country2 attributes:v8];
   v13 = self->_subTitle;
   self->_subTitle = v12;
 
@@ -124,10 +124,10 @@ LABEL_5:
     goto LABEL_2;
   }
 
-  v5 = [(MKPlaceCompactCollectionViewModel *)self guideLocation];
-  v6 = [v5 title];
+  guideLocation = [(MKPlaceCompactCollectionViewModel *)self guideLocation];
+  title = [guideLocation title];
 
-  if (!v6)
+  if (!title)
   {
     title = self->_title;
 LABEL_2:
@@ -136,8 +136,8 @@ LABEL_2:
   }
 
   v17[0] = *MEMORY[0x1E69DB648];
-  v7 = [(MKPlaceCompactCollectionViewModel *)self titleFont];
-  v18[0] = v7;
+  titleFont = [(MKPlaceCompactCollectionViewModel *)self titleFont];
+  v18[0] = titleFont;
   v17[1] = *MEMORY[0x1E69DB660];
   LODWORD(v8) = 1045220557;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
@@ -145,9 +145,9 @@ LABEL_2:
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
 
   v11 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v12 = [(MKPlaceCompactCollectionViewModel *)self guideLocation];
-  v13 = [v12 title];
-  v14 = [v11 initWithString:v13 attributes:v10];
+  guideLocation2 = [(MKPlaceCompactCollectionViewModel *)self guideLocation];
+  title2 = [guideLocation2 title];
+  v14 = [v11 initWithString:title2 attributes:v10];
   v15 = self->_title;
   self->_title = v14;
 
@@ -157,15 +157,15 @@ LABEL_5:
   return v3;
 }
 
-- (void)contentCategorySizeDidChange:(id)a3
+- (void)contentCategorySizeDidChange:(id)change
 {
-  v8 = a3;
-  v4 = [(MKPlaceCompactCollectionViewModel *)self preferredSizeCategory];
+  changeCopy = change;
+  preferredSizeCategory = [(MKPlaceCompactCollectionViewModel *)self preferredSizeCategory];
 
-  v5 = v8;
-  if (v4 != v8)
+  v5 = changeCopy;
+  if (preferredSizeCategory != changeCopy)
   {
-    [(MKPlaceCompactCollectionViewModel *)self setPreferredSizeCategory:v8];
+    [(MKPlaceCompactCollectionViewModel *)self setPreferredSizeCategory:changeCopy];
     title = self->_title;
     self->_title = 0;
 
@@ -173,7 +173,7 @@ LABEL_5:
     self->_subTitle = 0;
 
     [(MKPlaceCompactCollectionViewModel *)self initializeFonts];
-    v5 = v8;
+    v5 = changeCopy;
   }
 }
 
@@ -190,18 +190,18 @@ LABEL_5:
   [(MKPlaceCompactCollectionViewModel *)self setSubTitleFont:v6];
 }
 
-- (MKPlaceCompactCollectionViewModel)initWithGuideLocation:(id)a3 context:(int64_t)a4 useBorderHighlight:(BOOL)a5
+- (MKPlaceCompactCollectionViewModel)initWithGuideLocation:(id)location context:(int64_t)context useBorderHighlight:(BOOL)highlight
 {
-  v9 = a3;
+  locationCopy = location;
   v16.receiver = self;
   v16.super_class = MKPlaceCompactCollectionViewModel;
   v10 = [(MKPlaceCompactCollectionViewModel *)&v16 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_guideLocation, a3);
-    v11->_context = a4;
-    v11->_useBorderHighlight = a5;
+    objc_storeStrong(&v10->_guideLocation, location);
+    v11->_context = context;
+    v11->_useBorderHighlight = highlight;
     v12 = objc_alloc(MEMORY[0x1E695DEC8]);
     v13 = [v12 initWithObjects:{*MEMORY[0x1E69DDC68], *MEMORY[0x1E69DDC88], *MEMORY[0x1E69DDC78], *MEMORY[0x1E69DDC70], *MEMORY[0x1E69DDC60], 0}];
     supportedSizeCategories = v11->_supportedSizeCategories;
@@ -213,18 +213,18 @@ LABEL_5:
   return v11;
 }
 
-- (void)compactCollectionImageForSize:(CGSize)a3 onCompletion:(id)a4
+- (void)compactCollectionImageForSize:(CGSize)size onCompletion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
   [(MKPlaceCompactCollectionViewModel *)self setPhotoSize:width, height];
-  v8 = [(MKPlaceCompactCollectionViewModel *)self image];
+  image = [(MKPlaceCompactCollectionViewModel *)self image];
 
-  if (v8)
+  if (image)
   {
-    v9 = [(MKPlaceCompactCollectionViewModel *)self image];
-    v7[2](v7, v9, 0, 1, 1);
+    image2 = [(MKPlaceCompactCollectionViewModel *)self image];
+    completionCopy[2](completionCopy, image2, 0, 1, 1);
   }
 
   else
@@ -239,7 +239,7 @@ LABEL_5:
     v13[1] = *&width;
     v13[2] = *&height;
     objc_copyWeak(v13, &location);
-    v12 = v7;
+    v12 = completionCopy;
     dispatch_async(v10, v11);
 
     objc_destroyWeak(v13);

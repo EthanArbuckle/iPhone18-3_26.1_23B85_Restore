@@ -1,12 +1,12 @@
 @interface MapsSuggestionsCarplayDisconnectedCondition
 - (BOOL)isTrue;
-- (MapsSuggestionsCarplayDisconnectedCondition)initWithDisconnectDelay:(double)a3;
-- (void)sessionDidDisconnect:(id)a3;
+- (MapsSuggestionsCarplayDisconnectedCondition)initWithDisconnectDelay:(double)delay;
+- (void)sessionDidDisconnect:(id)disconnect;
 @end
 
 @implementation MapsSuggestionsCarplayDisconnectedCondition
 
-- (MapsSuggestionsCarplayDisconnectedCondition)initWithDisconnectDelay:(double)a3
+- (MapsSuggestionsCarplayDisconnectedCondition)initWithDisconnectDelay:(double)delay
 {
   v11.receiver = self;
   v11.super_class = MapsSuggestionsCarplayDisconnectedCondition;
@@ -14,7 +14,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_disconnectDelay = a3;
+    v4->_disconnectDelay = delay;
     v4->_isInitialized = 0;
     objc_initWeak(&location, v4);
     v6 = dispatch_get_global_queue(21, 0);
@@ -87,21 +87,21 @@ void __71__MapsSuggestionsCarplayDisconnectedCondition_initWithDisconnectDelay__
 - (BOOL)isTrue
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_isInitialized)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_isInitialized)
   {
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
 
-    v3 = [(CARSessionStatus *)v2->_carSessionStatus currentSession];
+    currentSession = [(CARSessionStatus *)selfCopy->_carSessionStatus currentSession];
 
-    if (v3)
+    if (currentSession)
     {
-      v2 = GEOFindOrCreateLog();
-      if (os_log_type_enabled(&v2->super.super, OS_LOG_TYPE_DEBUG))
+      selfCopy = GEOFindOrCreateLog();
+      if (os_log_type_enabled(&selfCopy->super.super, OS_LOG_TYPE_DEBUG))
       {
         LOWORD(v10) = 0;
-        _os_log_impl(&dword_1C5126000, &v2->super.super, OS_LOG_TYPE_DEBUG, "Failed because still connected to carplay", &v10, 2u);
+        _os_log_impl(&dword_1C5126000, &selfCopy->super.super, OS_LOG_TYPE_DEBUG, "Failed because still connected to carplay", &v10, 2u);
       }
 
       v4 = 0;
@@ -109,15 +109,15 @@ void __71__MapsSuggestionsCarplayDisconnectedCondition_initWithDisconnectDelay__
 
     else
     {
-      v2 = v2;
-      objc_sync_enter(v2);
-      disconnectTime = v2->_disconnectTime;
-      if (disconnectTime && MapsSuggestionsSecondsSince(disconnectTime) <= v2->_disconnectDelay)
+      selfCopy = selfCopy;
+      objc_sync_enter(selfCopy);
+      disconnectTime = selfCopy->_disconnectTime;
+      if (disconnectTime && MapsSuggestionsSecondsSince(disconnectTime) <= selfCopy->_disconnectDelay)
       {
         v7 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
         {
-          v8 = v2->_disconnectTime;
+          v8 = selfCopy->_disconnectTime;
           v10 = 138412290;
           v11 = v8;
           _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "Failed because disconnected only at %@", &v10, 0xCu);
@@ -131,7 +131,7 @@ void __71__MapsSuggestionsCarplayDisconnectedCondition_initWithDisconnectDelay__
         v4 = 1;
       }
 
-      objc_sync_exit(v2);
+      objc_sync_exit(selfCopy);
     }
   }
 
@@ -144,17 +144,17 @@ void __71__MapsSuggestionsCarplayDisconnectedCondition_initWithDisconnectDelay__
       _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "Carplay session not yet initialized", &v10, 2u);
     }
 
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
     v4 = 1;
   }
 
   return v4;
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -163,13 +163,13 @@ void __71__MapsSuggestionsCarplayDisconnectedCondition_initWithDisconnectDelay__
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "%s", &v9, 0xCu);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = MapsSuggestionsNow();
-  disconnectTime = v6->_disconnectTime;
-  v6->_disconnectTime = v7;
+  disconnectTime = selfCopy->_disconnectTime;
+  selfCopy->_disconnectTime = v7;
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
 @end

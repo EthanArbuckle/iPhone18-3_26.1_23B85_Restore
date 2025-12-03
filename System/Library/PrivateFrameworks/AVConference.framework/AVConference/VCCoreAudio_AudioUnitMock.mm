@@ -1,25 +1,25 @@
 @interface VCCoreAudio_AudioUnitMock
 + (id)sharedInstance;
-- (BOOL)audioUnit:(OpaqueAudioComponentInstance *)a3 setParameter:(unsigned int)a4 scope:(unsigned int)a5 element:(unsigned int)a6 value:(float)a7 bufferOffsetInFrames:(unsigned int)a8 outStatus:(int *)a9;
-- (BOOL)complexRender:(OpaqueAudioComponentInstance *)a3 ioActionFlags:(unsigned int *)a4 inTimeStamp:(const AudioTimeStamp *)a5 inOutputBusNumber:(unsigned int)a6 inNumberOfPackets:(unsigned int)a7 outNumberOfPackets:(unsigned int *)a8 outPacketDescriptions:(AudioStreamPacketDescription *)a9 ioData:(AudioBufferList *)a10 outMetadata:(void *)a11 outMetadataByteSize:(unsigned int *)a12 outStatus:(int *)a13;
-- (BOOL)generateMutedTalkerNotification:(unsigned int)a3;
-- (BOOL)getProperty:(OpaqueAudioComponentInstance *)a3 inID:(unsigned int)a4 inScope:(unsigned int)a5 inElement:(unsigned int)a6 outData:(void *)a7 ioDataSize:(unsigned int *)a8 outStatus:(int *)a9;
-- (BOOL)initialize:(OpaqueAudioComponentInstance *)a3 outStatus:(int *)a4;
-- (BOOL)outputUnitStart:(OpaqueAudioComponentInstance *)a3 outStatus:(int *)a4;
-- (BOOL)outputUnitStop:(OpaqueAudioComponentInstance *)a3 outStatus:(int *)a4;
-- (BOOL)registerAudioUnitMockInstance:(OpaqueAudioComponentInstance *)a3;
-- (BOOL)render:(OpaqueAudioComponentInstance *)a3 ioActionFlags:(unsigned int *)a4 inTimeStamp:(const AudioTimeStamp *)a5 inOutputBusNumber:(unsigned int)a6 inNumberFrames:(unsigned int)a7 ioData:(AudioBufferList *)a8 outStatus:(int *)a9;
-- (BOOL)setProperty:(OpaqueAudioComponentInstance *)a3 inID:(unsigned int)a4 inScope:(unsigned int)a5 inElement:(unsigned int)a6 inData:(const void *)a7 inDataSize:(unsigned int)a8 outStatus:(int *)a9;
-- (BOOL)shouldProcessAudioUnit:(OpaqueAudioComponentInstance *)a3;
-- (BOOL)uninitialize:(OpaqueAudioComponentInstance *)a3 outStatus:(int *)a4;
-- (BOOL)unregisterAudioUnitMockInstance:(OpaqueAudioComponentInstance *)a3;
+- (BOOL)audioUnit:(OpaqueAudioComponentInstance *)unit setParameter:(unsigned int)parameter scope:(unsigned int)scope element:(unsigned int)element value:(float)value bufferOffsetInFrames:(unsigned int)frames outStatus:(int *)status;
+- (BOOL)complexRender:(OpaqueAudioComponentInstance *)render ioActionFlags:(unsigned int *)flags inTimeStamp:(const AudioTimeStamp *)stamp inOutputBusNumber:(unsigned int)number inNumberOfPackets:(unsigned int)packets outNumberOfPackets:(unsigned int *)ofPackets outPacketDescriptions:(AudioStreamPacketDescription *)descriptions ioData:(AudioBufferList *)self0 outMetadata:(void *)self1 outMetadataByteSize:(unsigned int *)self2 outStatus:(int *)self3;
+- (BOOL)generateMutedTalkerNotification:(unsigned int)notification;
+- (BOOL)getProperty:(OpaqueAudioComponentInstance *)property inID:(unsigned int)d inScope:(unsigned int)scope inElement:(unsigned int)element outData:(void *)data ioDataSize:(unsigned int *)size outStatus:(int *)status;
+- (BOOL)initialize:(OpaqueAudioComponentInstance *)initialize outStatus:(int *)status;
+- (BOOL)outputUnitStart:(OpaqueAudioComponentInstance *)start outStatus:(int *)status;
+- (BOOL)outputUnitStop:(OpaqueAudioComponentInstance *)stop outStatus:(int *)status;
+- (BOOL)registerAudioUnitMockInstance:(OpaqueAudioComponentInstance *)instance;
+- (BOOL)render:(OpaqueAudioComponentInstance *)render ioActionFlags:(unsigned int *)flags inTimeStamp:(const AudioTimeStamp *)stamp inOutputBusNumber:(unsigned int)number inNumberFrames:(unsigned int)frames ioData:(AudioBufferList *)data outStatus:(int *)status;
+- (BOOL)setProperty:(OpaqueAudioComponentInstance *)property inID:(unsigned int)d inScope:(unsigned int)scope inElement:(unsigned int)element inData:(const void *)data inDataSize:(unsigned int)size outStatus:(int *)status;
+- (BOOL)shouldProcessAudioUnit:(OpaqueAudioComponentInstance *)unit;
+- (BOOL)uninitialize:(OpaqueAudioComponentInstance *)uninitialize outStatus:(int *)status;
+- (BOOL)unregisterAudioUnitMockInstance:(OpaqueAudioComponentInstance *)instance;
 - (VCCoreAudio_AudioUnitMock)init;
-- (id)audioInstanceForAudioUnit:(OpaqueAudioComponentInstance *)a3;
+- (id)audioInstanceForAudioUnit:(OpaqueAudioComponentInstance *)unit;
 - (id)newActiveInstances;
 - (void)dealloc;
 - (void)init;
 - (void)runAudioCallback;
-- (void)runAudioCallbackWithSampleCount:(unsigned int)a3 timeGap:(double)a4;
+- (void)runAudioCallbackWithSampleCount:(unsigned int)count timeGap:(double)gap;
 - (void)start;
 - (void)startMicThread;
 - (void)stop;
@@ -163,8 +163,8 @@ LABEL_8:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSMutableDictionary *)self->_audioUnitInstanceMap allValues];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  allValues = [(NSMutableDictionary *)self->_audioUnitInstanceMap allValues];
+  v5 = [allValues countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (v5)
   {
     v6 = v5;
@@ -175,7 +175,7 @@ LABEL_8:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         if (!self->_terminateMicThread && self->_isMockingEnabled)
@@ -191,7 +191,7 @@ LABEL_8:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v11 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v12 objects:v11 count:16];
     }
 
     while (v6);
@@ -206,12 +206,12 @@ LABEL_8:
   v13 = *MEMORY[0x1E69E9840];
   if (!pthread_rwlock_tryrdlock(&self->_callbackLock))
   {
-    v3 = [(VCCoreAudio_AudioUnitMock *)self newActiveInstances];
+    newActiveInstances = [(VCCoreAudio_AudioUnitMock *)self newActiveInstances];
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v8 count:16];
+    v4 = [newActiveInstances countByEnumeratingWithState:&v9 objects:v8 count:16];
     if (v4)
     {
       v5 = v4;
@@ -223,14 +223,14 @@ LABEL_8:
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(newActiveInstances);
           }
 
           [*(*(&v9 + 1) + 8 * v7++) runAudioCallback];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v9 objects:v8 count:16];
+        v5 = [newActiveInstances countByEnumeratingWithState:&v9 objects:v8 count:16];
       }
 
       while (v5);
@@ -240,18 +240,18 @@ LABEL_8:
   }
 }
 
-- (void)runAudioCallbackWithSampleCount:(unsigned int)a3 timeGap:(double)a4
+- (void)runAudioCallbackWithSampleCount:(unsigned int)count timeGap:(double)gap
 {
-  v5 = *&a3;
+  v5 = *&count;
   v17 = *MEMORY[0x1E69E9840];
   if (!pthread_rwlock_tryrdlock(&self->_callbackLock))
   {
-    v7 = [(VCCoreAudio_AudioUnitMock *)self newActiveInstances];
+    newActiveInstances = [(VCCoreAudio_AudioUnitMock *)self newActiveInstances];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v13 objects:v12 count:16];
+    v8 = [newActiveInstances countByEnumeratingWithState:&v13 objects:v12 count:16];
     if (v8)
     {
       v9 = v8;
@@ -263,14 +263,14 @@ LABEL_8:
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(newActiveInstances);
           }
 
-          [*(*(&v13 + 1) + 8 * v11++) runAudioCallbackWithSampleCount:v5 timeGap:a4];
+          [*(*(&v13 + 1) + 8 * v11++) runAudioCallbackWithSampleCount:v5 timeGap:gap];
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v13 objects:v12 count:16];
+        v9 = [newActiveInstances countByEnumeratingWithState:&v13 objects:v12 count:16];
       }
 
       while (v9);
@@ -280,21 +280,21 @@ LABEL_8:
   }
 }
 
-- (BOOL)generateMutedTalkerNotification:(unsigned int)a3
+- (BOOL)generateMutedTalkerNotification:(unsigned int)notification
 {
-  v3 = *&a3;
+  v3 = *&notification;
   v17 = *MEMORY[0x1E69E9840];
   if (pthread_rwlock_tryrdlock(&self->_callbackLock))
   {
     return 0;
   }
 
-  v6 = [(VCCoreAudio_AudioUnitMock *)self newActiveInstances];
+  newActiveInstances = [(VCCoreAudio_AudioUnitMock *)self newActiveInstances];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v12 count:16];
+  v7 = [newActiveInstances countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (v7)
   {
     v8 = v7;
@@ -306,7 +306,7 @@ LABEL_8:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(newActiveInstances);
         }
 
         if (v5)
@@ -320,7 +320,7 @@ LABEL_8:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v12 count:16];
+      v8 = [newActiveInstances countByEnumeratingWithState:&v13 objects:v12 count:16];
     }
 
     while (v8);
@@ -335,15 +335,15 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)registerAudioUnitMockInstance:(OpaqueAudioComponentInstance *)a3
+- (BOOL)registerAudioUnitMockInstance:(OpaqueAudioComponentInstance *)instance
 {
   pthread_rwlock_wrlock(&self->_callbackLock);
   [(VCObject *)self lock];
-  v5 = [(VCCoreAudio_AudioUnitMock *)self audioInstanceForAudioUnit:a3];
+  v5 = [(VCCoreAudio_AudioUnitMock *)self audioInstanceForAudioUnit:instance];
   if (!v5)
   {
     v6 = objc_alloc_init(VCCoreAudio_AudioUnitMockInstance);
-    v7 = [(VCCoreAudio_AudioUnitMock *)self newKeyForAudioUnit:a3];
+    v7 = [(VCCoreAudio_AudioUnitMock *)self newKeyForAudioUnit:instance];
     [(NSMutableDictionary *)self->_audioUnitInstanceMap setObject:v6 forKeyedSubscript:v7];
   }
 
@@ -352,14 +352,14 @@ LABEL_8:
   return v5 == 0;
 }
 
-- (BOOL)unregisterAudioUnitMockInstance:(OpaqueAudioComponentInstance *)a3
+- (BOOL)unregisterAudioUnitMockInstance:(OpaqueAudioComponentInstance *)instance
 {
   pthread_rwlock_wrlock(&self->_callbackLock);
   [(VCObject *)self lock];
-  v5 = [(VCCoreAudio_AudioUnitMock *)self audioInstanceForAudioUnit:a3];
+  v5 = [(VCCoreAudio_AudioUnitMock *)self audioInstanceForAudioUnit:instance];
   if (v5)
   {
-    v6 = [(VCCoreAudio_AudioUnitMock *)self newKeyForAudioUnit:a3];
+    v6 = [(VCCoreAudio_AudioUnitMock *)self newKeyForAudioUnit:instance];
     [(NSMutableDictionary *)self->_audioUnitInstanceMap setObject:0 forKeyedSubscript:v6];
   }
 
@@ -368,12 +368,12 @@ LABEL_8:
   return v5 != 0;
 }
 
-- (BOOL)shouldProcessAudioUnit:(OpaqueAudioComponentInstance *)a3
+- (BOOL)shouldProcessAudioUnit:(OpaqueAudioComponentInstance *)unit
 {
   result = 1;
-  if (a3 > 1919512424)
+  if (unit > 1919512424)
   {
-    if (a3 == 1919512425)
+    if (unit == 1919512425)
     {
       return result;
     }
@@ -383,7 +383,7 @@ LABEL_8:
 
   else
   {
-    if (a3 == 1650616686)
+    if (unit == 1650616686)
     {
       return result;
     }
@@ -391,52 +391,52 @@ LABEL_8:
     v4 = 1684366953;
   }
 
-  if (a3 != v4)
+  if (unit != v4)
   {
-    return a3 == 1937339241;
+    return unit == 1937339241;
   }
 
   return result;
 }
 
-- (id)audioInstanceForAudioUnit:(OpaqueAudioComponentInstance *)a3
+- (id)audioInstanceForAudioUnit:(OpaqueAudioComponentInstance *)unit
 {
-  v4 = [(VCCoreAudio_AudioUnitMock *)self newKeyForAudioUnit:a3];
+  v4 = [(VCCoreAudio_AudioUnitMock *)self newKeyForAudioUnit:unit];
   v5 = [(NSMutableDictionary *)self->_audioUnitInstanceMap objectForKey:v4];
 
   return v5;
 }
 
-- (BOOL)setProperty:(OpaqueAudioComponentInstance *)a3 inID:(unsigned int)a4 inScope:(unsigned int)a5 inElement:(unsigned int)a6 inData:(const void *)a7 inDataSize:(unsigned int)a8 outStatus:(int *)a9
+- (BOOL)setProperty:(OpaqueAudioComponentInstance *)property inID:(unsigned int)d inScope:(unsigned int)scope inElement:(unsigned int)element inData:(const void *)data inDataSize:(unsigned int)size outStatus:(int *)status
 {
-  v9 = *&a8;
-  v11 = *&a5;
-  if (a4 == 2021 || a4 == 8)
+  v9 = *&size;
+  v11 = *&scope;
+  if (d == 2021 || d == 8)
   {
     pthread_rwlock_wrlock(&self->_callbackLock);
   }
 
   [(VCObject *)self lock];
-  if (!self->_isMockingEnabled || ![(VCCoreAudio_AudioUnitMock *)self shouldProcessAudioUnit:a3])
+  if (!self->_isMockingEnabled || ![(VCCoreAudio_AudioUnitMock *)self shouldProcessAudioUnit:property])
   {
     v16 = 0;
     goto LABEL_31;
   }
 
-  v15 = [(VCCoreAudio_AudioUnitMock *)self audioInstanceForAudioUnit:a3];
-  *a9 = 0;
+  v15 = [(VCCoreAudio_AudioUnitMock *)self audioInstanceForAudioUnit:property];
+  *status = 0;
   v16 = 1;
-  if (a4 > 2020)
+  if (d > 2020)
   {
-    if (a4 > 2105)
+    if (d > 2105)
     {
-      if (a4 == 2106)
+      if (d == 2106)
       {
-        v17 = [v15 setMutedTalkerNotificiationHandlerWithScope:v11 data:a7 dataSize:v9];
+        v17 = [v15 setMutedTalkerNotificiationHandlerWithScope:v11 data:data dataSize:v9];
         goto LABEL_27;
       }
 
-      if (a4 != 1718839674)
+      if (d != 1718839674)
       {
         goto LABEL_31;
       }
@@ -446,13 +446,13 @@ LABEL_8:
 
     else
     {
-      if (a4 == 2021)
+      if (d == 2021)
       {
-        v18 = [v15 setIOBufferDurationWithScope:v11 data:a7 dataSize:v9];
+        v18 = [v15 setIOBufferDurationWithScope:v11 data:data dataSize:v9];
         goto LABEL_23;
       }
 
-      if (a4 != 2023)
+      if (d != 2023)
       {
         goto LABEL_31;
       }
@@ -465,45 +465,45 @@ LABEL_28:
     return v16;
   }
 
-  if (a4 <= 2002)
+  if (d <= 2002)
   {
-    if (a4 != 8)
+    if (d != 8)
     {
-      if (a4 == 23)
+      if (d == 23)
       {
-        v17 = [v15 setRenderCallbackWithScope:v11 data:a7 dataSize:v9];
+        v17 = [v15 setRenderCallbackWithScope:v11 data:data dataSize:v9];
 LABEL_27:
-        *a9 = v17;
+        *status = v17;
         goto LABEL_28;
       }
 
       goto LABEL_31;
     }
 
-    v18 = [v15 setStreamFormatWithScope:v11 data:a7 dataSize:v9];
+    v18 = [v15 setStreamFormatWithScope:v11 data:data dataSize:v9];
 LABEL_23:
-    *a9 = v18;
+    *status = v18;
     [(VCObject *)self unlock];
 LABEL_24:
     pthread_rwlock_unlock(&self->_callbackLock);
     return v16;
   }
 
-  if (a4 == 2003)
+  if (d == 2003)
   {
-    v17 = [v15 setEnableIOWithScope:v11 data:a7 dataSize:v9];
+    v17 = [v15 setEnableIOWithScope:v11 data:data dataSize:v9];
     goto LABEL_27;
   }
 
-  if (a4 == 2005)
+  if (d == 2005)
   {
-    v17 = [v15 setInputCallbackWithScope:v11 data:a7 dataSize:v9];
+    v17 = [v15 setInputCallbackWithScope:v11 data:data dataSize:v9];
     goto LABEL_27;
   }
 
 LABEL_31:
   [(VCObject *)self unlock];
-  if (a4 == 2021 || a4 == 8)
+  if (d == 2021 || d == 8)
   {
     goto LABEL_24;
   }
@@ -511,15 +511,15 @@ LABEL_31:
   return v16;
 }
 
-- (BOOL)getProperty:(OpaqueAudioComponentInstance *)a3 inID:(unsigned int)a4 inScope:(unsigned int)a5 inElement:(unsigned int)a6 outData:(void *)a7 ioDataSize:(unsigned int *)a8 outStatus:(int *)a9
+- (BOOL)getProperty:(OpaqueAudioComponentInstance *)property inID:(unsigned int)d inScope:(unsigned int)scope inElement:(unsigned int)element outData:(void *)data ioDataSize:(unsigned int *)size outStatus:(int *)status
 {
   [(VCObject *)self lock];
   OUTLINED_FUNCTION_5_36();
-  if (v12 && [(VCCoreAudio_AudioUnitMock *)self shouldProcessAudioUnit:a3])
+  if (v12 && [(VCCoreAudio_AudioUnitMock *)self shouldProcessAudioUnit:property])
   {
-    [(VCCoreAudio_AudioUnitMock *)self audioInstanceForAudioUnit:a3];
-    *a9 = 0;
-    switch(a4)
+    [(VCCoreAudio_AudioUnitMock *)self audioInstanceForAudioUnit:property];
+    *status = 0;
+    switch(d)
     {
       case 8u:
         OUTLINED_FUNCTION_1_33();
@@ -550,7 +550,7 @@ LABEL_31:
         break;
     }
 
-    *a9 = v14;
+    *status = v14;
     v20 = 1;
   }
 
@@ -563,7 +563,7 @@ LABEL_31:
   return v20;
 }
 
-- (BOOL)render:(OpaqueAudioComponentInstance *)a3 ioActionFlags:(unsigned int *)a4 inTimeStamp:(const AudioTimeStamp *)a5 inOutputBusNumber:(unsigned int)a6 inNumberFrames:(unsigned int)a7 ioData:(AudioBufferList *)a8 outStatus:(int *)a9
+- (BOOL)render:(OpaqueAudioComponentInstance *)render ioActionFlags:(unsigned int *)flags inTimeStamp:(const AudioTimeStamp *)stamp inOutputBusNumber:(unsigned int)number inNumberFrames:(unsigned int)frames ioData:(AudioBufferList *)data outStatus:(int *)status
 {
   [(VCObject *)self lock];
   OUTLINED_FUNCTION_5_36();
@@ -592,7 +592,7 @@ LABEL_31:
       v12 = -3;
     }
 
-    *a9 = v12;
+    *status = v12;
     v13 = 1;
   }
 
@@ -605,7 +605,7 @@ LABEL_31:
   return v13;
 }
 
-- (BOOL)complexRender:(OpaqueAudioComponentInstance *)a3 ioActionFlags:(unsigned int *)a4 inTimeStamp:(const AudioTimeStamp *)a5 inOutputBusNumber:(unsigned int)a6 inNumberOfPackets:(unsigned int)a7 outNumberOfPackets:(unsigned int *)a8 outPacketDescriptions:(AudioStreamPacketDescription *)a9 ioData:(AudioBufferList *)a10 outMetadata:(void *)a11 outMetadataByteSize:(unsigned int *)a12 outStatus:(int *)a13
+- (BOOL)complexRender:(OpaqueAudioComponentInstance *)render ioActionFlags:(unsigned int *)flags inTimeStamp:(const AudioTimeStamp *)stamp inOutputBusNumber:(unsigned int)number inNumberOfPackets:(unsigned int)packets outNumberOfPackets:(unsigned int *)ofPackets outPacketDescriptions:(AudioStreamPacketDescription *)descriptions ioData:(AudioBufferList *)self0 outMetadata:(void *)self1 outMetadataByteSize:(unsigned int *)self2 outStatus:(int *)self3
 {
   [(VCObject *)self lock];
   OUTLINED_FUNCTION_5_36();
@@ -634,7 +634,7 @@ LABEL_31:
       v16 = -3;
     }
 
-    *a13 = v16;
+    *status = v16;
     v17 = 1;
   }
 
@@ -647,7 +647,7 @@ LABEL_31:
   return v17;
 }
 
-- (BOOL)initialize:(OpaqueAudioComponentInstance *)a3 outStatus:(int *)a4
+- (BOOL)initialize:(OpaqueAudioComponentInstance *)initialize outStatus:(int *)status
 {
   OUTLINED_FUNCTION_3_40();
   [v6 lock];
@@ -679,7 +679,7 @@ LABEL_31:
   return v10;
 }
 
-- (BOOL)uninitialize:(OpaqueAudioComponentInstance *)a3 outStatus:(int *)a4
+- (BOOL)uninitialize:(OpaqueAudioComponentInstance *)uninitialize outStatus:(int *)status
 {
   OUTLINED_FUNCTION_3_40();
   [v6 lock];
@@ -711,7 +711,7 @@ LABEL_31:
   return v10;
 }
 
-- (BOOL)outputUnitStart:(OpaqueAudioComponentInstance *)a3 outStatus:(int *)a4
+- (BOOL)outputUnitStart:(OpaqueAudioComponentInstance *)start outStatus:(int *)status
 {
   OUTLINED_FUNCTION_3_40();
   pthread_rwlock_wrlock((v6 + 216));
@@ -744,7 +744,7 @@ LABEL_31:
   return v9;
 }
 
-- (BOOL)outputUnitStop:(OpaqueAudioComponentInstance *)a3 outStatus:(int *)a4
+- (BOOL)outputUnitStop:(OpaqueAudioComponentInstance *)stop outStatus:(int *)status
 {
   OUTLINED_FUNCTION_3_40();
   pthread_rwlock_wrlock((v6 + 216));
@@ -777,17 +777,17 @@ LABEL_31:
   return v9;
 }
 
-- (BOOL)audioUnit:(OpaqueAudioComponentInstance *)a3 setParameter:(unsigned int)a4 scope:(unsigned int)a5 element:(unsigned int)a6 value:(float)a7 bufferOffsetInFrames:(unsigned int)a8 outStatus:(int *)a9
+- (BOOL)audioUnit:(OpaqueAudioComponentInstance *)unit setParameter:(unsigned int)parameter scope:(unsigned int)scope element:(unsigned int)element value:(float)value bufferOffsetInFrames:(unsigned int)frames outStatus:(int *)status
 {
-  [(VCObject *)self lock:a3];
+  [(VCObject *)self lock:unit];
   OUTLINED_FUNCTION_5_36();
-  if (v14 && [(VCCoreAudio_AudioUnitMock *)self shouldProcessAudioUnit:a3])
+  if (v14 && [(VCCoreAudio_AudioUnitMock *)self shouldProcessAudioUnit:unit])
   {
-    v15 = [(VCCoreAudio_AudioUnitMock *)self audioInstanceForAudioUnit:a3];
-    *a9 = 0;
-    if (a4 == 14)
+    v15 = [(VCCoreAudio_AudioUnitMock *)self audioInstanceForAudioUnit:unit];
+    *status = 0;
+    if (parameter == 14)
     {
-      *&v16 = a7;
+      *&v16 = value;
       [v15 setDynamicDuckerVolume:v16];
     }
 

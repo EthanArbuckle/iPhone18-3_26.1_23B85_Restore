@@ -1,10 +1,10 @@
 @interface GMSpecifierController
 - (BOOL)featureOptInStatus;
 - (_TtP24AssistantSettingsSupport29GMSpecifierControllerDelegate_)delegate;
-- (void)clearCFUWithCompletionHandler:(id)a3;
-- (void)enrollWithCompletionHandler:(id)a3;
-- (void)fetchStatusWithCompletionHandler:(id)a3;
-- (void)fetchStatusWithForceDownloadIfNeeded:(BOOL)a3 completionHandler:(id)a4;
+- (void)clearCFUWithCompletionHandler:(id)handler;
+- (void)enrollWithCompletionHandler:(id)handler;
+- (void)fetchStatusWithCompletionHandler:(id)handler;
+- (void)fetchStatusWithForceDownloadIfNeeded:(BOOL)needed completionHandler:(id)handler;
 @end
 
 @implementation GMSpecifierController
@@ -17,13 +17,13 @@
   return Strong;
 }
 
-- (void)enrollWithCompletionHandler:(id)a3
+- (void)enrollWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E542718, &qword_241412930);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -39,19 +39,19 @@
   v13[3] = 0;
   v13[4] = &unk_2414137B8;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_241405C7C(0, 0, v8, &unk_2414137C0, v13);
 }
 
-- (void)fetchStatusWithForceDownloadIfNeeded:(BOOL)a3 completionHandler:(id)a4
+- (void)fetchStatusWithForceDownloadIfNeeded:(BOOL)needed completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E542718, &qword_241412930);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  *(v12 + 16) = a3;
+  *(v12 + 16) = needed;
   *(v12 + 24) = v11;
   *(v12 + 32) = self;
   v13 = sub_24140ECDC();
@@ -66,17 +66,17 @@
   v15[3] = 0;
   v15[4] = &unk_241413798;
   v15[5] = v14;
-  v16 = self;
+  selfCopy = self;
   sub_241405C7C(0, 0, v10, &unk_2414137A0, v15);
 }
 
-- (void)fetchStatusWithCompletionHandler:(id)a3
+- (void)fetchStatusWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E542718, &qword_241412930);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -92,7 +92,7 @@
   v13[3] = 0;
   v13[4] = &unk_241413778;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_241405C7C(0, 0, v8, &unk_241413780, v13);
 }
 
@@ -109,13 +109,13 @@
   return v4 & 1;
 }
 
-- (void)clearCFUWithCompletionHandler:(id)a3
+- (void)clearCFUWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E542718, &qword_241412930);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -131,7 +131,7 @@
   v13[3] = 0;
   v13[4] = &unk_241412F88;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_241405C7C(0, 0, v8, &unk_241412F90, v13);
 }
 

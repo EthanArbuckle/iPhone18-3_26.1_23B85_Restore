@@ -1,7 +1,7 @@
 @interface BMSyncCore
 + (void)resetEagerExitTimer;
-- (BMSyncCore)initWithQueue:(id)a3;
-- (BOOL)shouldCacheConnectionToMachService:(unint64_t)a3 domain:(unint64_t)a4 useCase:(id)a5;
+- (BMSyncCore)initWithQueue:(id)queue;
+- (BOOL)shouldCacheConnectionToMachService:(unint64_t)service domain:(unint64_t)domain useCase:(id)case;
 - (BOOL)start;
 @end
 
@@ -29,8 +29,8 @@
   if (self->_accessAssertion)
   {
     v11 = [BMSyncDatabase createPrimaryDatabaseWithQueue:self->_queue];
-    v3 = [v11 open];
-    if (v3)
+    open = [v11 open];
+    if (open)
     {
       objc_storeStrong(&self->_primaryDatabase, v11);
       v12 = [BMDistributedSyncMultiStreamManager multiStreamManagerWithPrimaryDatabase:self->_primaryDatabase account:0 queue:self->_queue];
@@ -48,8 +48,8 @@
       v18 = [BMSyncScheduler alloc];
       v19 = self->_rapportSyncEngine;
       v20 = self->_cloudKitSyncEngine;
-      v21 = [(BMRapportSyncEngine *)v19 peerStatusTracker];
-      v22 = [(BMSyncScheduler *)v18 initWithRapportSyncEngine:v19 cloudKitSyncEngine:v20 peerStatusTracker:v21 database:self->_primaryDatabase queue:self->_queue];
+      peerStatusTracker = [(BMRapportSyncEngine *)v19 peerStatusTracker];
+      v22 = [(BMSyncScheduler *)v18 initWithRapportSyncEngine:v19 cloudKitSyncEngine:v20 peerStatusTracker:peerStatusTracker database:self->_primaryDatabase queue:self->_queue];
       syncScheduler = self->_syncScheduler;
       self->_syncScheduler = v22;
 
@@ -72,11 +72,11 @@
       sub_100047F18(v9, v24);
     }
 
-    v3 = 0;
+    open = 0;
     self->_state = 1;
   }
 
-  return v3;
+  return open;
 }
 
 + (void)resetEagerExitTimer
@@ -92,29 +92,29 @@
   dispatch_source_set_timer(v2, v3, 0xFFFFFFFFFFFFFFFFLL, 0x12A05F200uLL);
 }
 
-- (BMSyncCore)initWithQueue:(id)a3
+- (BMSyncCore)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = BMSyncCore;
   v6 = [(BMSyncCore *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;
 }
 
-- (BOOL)shouldCacheConnectionToMachService:(unint64_t)a3 domain:(unint64_t)a4 useCase:(id)a5
+- (BOOL)shouldCacheConnectionToMachService:(unint64_t)service domain:(unint64_t)domain useCase:(id)case
 {
-  v7 = a5;
-  v8 = v7;
+  caseCopy = case;
+  v8 = caseCopy;
   v9 = 0;
-  if (a3 == 1 && !a4)
+  if (service == 1 && !domain)
   {
-    if ([v7 isEqual:BMUseCaseSync] & 1) != 0 || (objc_msgSend(v8, "isEqual:", BMUseCaseWriter))
+    if ([caseCopy isEqual:BMUseCaseSync] & 1) != 0 || (objc_msgSend(v8, "isEqual:", BMUseCaseWriter))
     {
       v9 = 1;
     }

@@ -23,15 +23,15 @@
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 mutableCopy];
+    dictionary = [v5 mutableCopy];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v8 = v7;
+  v8 = dictionary;
   if (a3 > 99)
   {
     if (a3 > 101)
@@ -269,9 +269,9 @@ LABEL_46:
 {
   v6 = a4;
   v7 = a3;
-  v8 = [v7 code];
+  code = [v7 code];
   v9 = 1;
-  switch(v8)
+  switch(code)
   {
     case 5000:
     case 5029:
@@ -422,7 +422,7 @@ LABEL_46:
       v9 = 19;
       goto LABEL_14;
     default:
-      if (v8 == 5170)
+      if (code == 5170)
       {
 LABEL_12:
         v9 = 6;
@@ -438,12 +438,12 @@ LABEL_14:
       v10 = [v6 mutableCopy];
 
       [v10 setObject:v7 forKeyedSubscript:*MEMORY[0x277CCA7E8]];
-      v11 = [v7 userInfo];
+      userInfo = [v7 userInfo];
 
-      v12 = [v11 objectForKeyedSubscript:@"GKServerStatusCode"];
+      v12 = [userInfo objectForKeyedSubscript:@"GKServerStatusCode"];
       [v10 setObject:v12 forKeyedSubscript:@"GKServerStatusCode"];
 
-      v13 = [a1 userErrorForCode:v9 userInfo:v10];
+      v13 = [self userErrorForCode:v9 userInfo:v10];
 
       return v13;
   }
@@ -451,8 +451,8 @@ LABEL_14:
 
 + (id)userErrorForServerCode:()GameKitErrors reason:
 {
-  v2 = [a1 serverErrorForCode:? withReason:?];
-  v3 = [a1 userErrorForServerError:v2];
+  v2 = [self serverErrorForCode:? withReason:?];
+  v3 = [self userErrorForServerError:v2];
 
   return v3;
 }
@@ -460,8 +460,8 @@ LABEL_14:
 + (id)userErrorForServerCode:()GameKitErrors reason:userInfo:
 {
   v8 = a5;
-  v9 = [a1 serverErrorForCode:a3 withReason:a4];
-  v10 = [a1 userErrorForServerError:v9 userInfo:v8];
+  v9 = [self serverErrorForCode:a3 withReason:a4];
+  v10 = [self userErrorForServerError:v9 userInfo:v8];
 
   return v10;
 }
@@ -474,33 +474,33 @@ LABEL_14:
   v9 = [v7 numberWithInteger:a3];
   v10 = [v6 dictionaryWithObjectsAndKeys:{v9, @"GKServerStatusCode", v8, *MEMORY[0x277CCA470], 0}];
 
-  v11 = [a1 serverErrorForCode:a3 withUserInfo:v10];
+  v11 = [self serverErrorForCode:a3 withUserInfo:v10];
 
   return v11;
 }
 
 - (uint64_t)gkIsUnauthenticatedError
 {
-  if ([a1 code] != 6)
+  if ([self code] != 6)
   {
     return 0;
   }
 
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:GKErrorDomain];
+  domain = [self domain];
+  v3 = [domain isEqualToString:GKErrorDomain];
 
   return v3;
 }
 
 - (uint64_t)gkIsNotConnectedToInternetError
 {
-  if ([a1 code] != -1009)
+  if ([self code] != -1009)
   {
     return 0;
   }
 
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:*MEMORY[0x277CCA738]];
+  domain = [self domain];
+  v3 = [domain isEqualToString:*MEMORY[0x277CCA738]];
 
   return v3;
 }
@@ -512,8 +512,8 @@ LABEL_14:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [a1 underlyingErrors];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  underlyingErrors = [self underlyingErrors];
+  v5 = [underlyingErrors countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -524,14 +524,14 @@ LABEL_14:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(underlyingErrors);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
         if ([v9 isGKServerError])
         {
-          v10 = [v9 userInfo];
-          v11 = [v10 objectForKey:@"GKServerStatusCode"];
+          userInfo = [v9 userInfo];
+          v11 = [userInfo objectForKey:@"GKServerStatusCode"];
 
           if (v11 && [v11 intValue] == a3)
           {
@@ -542,7 +542,7 @@ LABEL_14:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [underlyingErrors countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -562,16 +562,16 @@ LABEL_14:
 
 - (uint64_t)isGKClientError
 {
-  v1 = [a1 domain];
-  v2 = [v1 isEqualToString:GKErrorDomain];
+  domain = [self domain];
+  v2 = [domain isEqualToString:GKErrorDomain];
 
   return v2;
 }
 
 - (uint64_t)isGKServerError
 {
-  v1 = [a1 domain];
-  v2 = [v1 isEqualToString:@"GKServerErrorDomain"];
+  domain = [self domain];
+  v2 = [domain isEqualToString:@"GKServerErrorDomain"];
 
   return v2;
 }

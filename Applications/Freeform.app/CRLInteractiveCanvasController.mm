@@ -1,45 +1,45 @@
 @interface CRLInteractiveCanvasController
-+ (BOOL)selectorIsActionMethod:(SEL)a3;
-+ (double)smallRepOutsetForHitTestingWithPrecision:(BOOL)a3;
++ (BOOL)selectorIsActionMethod:(SEL)method;
++ (double)smallRepOutsetForHitTestingWithPrecision:(BOOL)precision;
 + (double)zoomAnimationDefaultDuration;
-- ($114667933B9B2D05530DD42EBD1EDB26)p_scrollingInformationForSelectionPath:(SEL)a3 allowZoom:(id)a4;
-- ($BCFEF2EB514CD33A670EC6D7ECA04AF1)p_collaboratorHUDPositionForSelectionPath:(SEL)a3 collaboratorPresence:(id)a4 allowScroll:(id)a5 hudSize:(BOOL)a6;
+- ($114667933B9B2D05530DD42EBD1EDB26)p_scrollingInformationForSelectionPath:(SEL)path allowZoom:(id)zoom;
+- ($BCFEF2EB514CD33A670EC6D7ECA04AF1)p_collaboratorHUDPositionForSelectionPath:(SEL)path collaboratorPresence:(id)presence allowScroll:(id)scroll hudSize:(BOOL)size;
 - (BOOL)anyConnectorKnobVisible;
 - (BOOL)canInsertFromImagePlayground;
-- (BOOL)canPerformInteractiveAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformInteractiveAction:(SEL)action withSender:(id)sender;
 - (BOOL)canZoomToCurrentSelection;
-- (BOOL)currentSelectionPathContainsInfo:(id)a3;
-- (BOOL)handleDoubleTapAtPoint:(CGPoint)a3 inputType:(int64_t)a4;
-- (BOOL)handleMultipleTapAtPoint:(CGPoint)a3;
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3 extendingSelection:(BOOL)a4 inputType:(int64_t)a5;
+- (BOOL)currentSelectionPathContainsInfo:(id)info;
+- (BOOL)handleDoubleTapAtPoint:(CGPoint)point inputType:(int64_t)type;
+- (BOOL)handleMultipleTapAtPoint:(CGPoint)point;
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point extendingSelection:(BOOL)selection inputType:(int64_t)type;
 - (BOOL)hasMediaReplacer;
 - (BOOL)hasSelectedInfosInMultipleContainers;
 - (BOOL)hasSelection;
-- (BOOL)i_areLayersInvalidForDecorator:(id)a3;
+- (BOOL)i_areLayersInvalidForDecorator:(id)decorator;
 - (BOOL)i_currentlySuppressingLayerUpdates;
-- (BOOL)i_isRepContentPlatformView:(id)a3;
+- (BOOL)i_isRepContentPlatformView:(id)view;
 - (BOOL)i_shouldAttemptToPreserveContentOffsetAfterFixFrame;
-- (BOOL)i_shouldShowCollaboratorCursorForLayout:(id)a3;
+- (BOOL)i_shouldShowCollaboratorCursorForLayout:(id)layout;
 - (BOOL)isCanvasBackgroundAlignmentSnappingEnabled;
 - (BOOL)isInDynamicOperation;
 - (BOOL)p_areAnyCollaboratorsPresent;
 - (BOOL)p_collaboratorOverlaysNeedUpdateForScroll;
 - (BOOL)p_currentSelectionIsOnscreen;
-- (BOOL)p_setNeedsDisplayIfNeededForAncestorRepOf:(id)a3 inRect:(CGRect)a4;
+- (BOOL)p_setNeedsDisplayIfNeededForAncestorRepOf:(id)of inRect:(CGRect)rect;
 - (BOOL)p_shouldSuppressMultiselectResizeInfo;
 - (BOOL)p_shouldTransformCurrentSelectionAsSingleEntity;
-- (BOOL)respondsToSelector:(SEL)a3 withSender:(id)a4;
-- (BOOL)scrollViewShouldOptOutOfUIScrollViewContentOffsetAnimationForScrollView:(id)a3;
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
-- (BOOL)sendViewportRequestMessageTo:(id)a3;
+- (BOOL)respondsToSelector:(SEL)selector withSender:(id)sender;
+- (BOOL)scrollViewShouldOptOutOfUIScrollViewContentOffsetAnimationForScrollView:(id)view;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
+- (BOOL)sendViewportRequestMessageTo:(id)to;
 - (BOOL)shouldAllowKeyCommands;
 - (BOOL)shouldEnableToolbarDoneButton;
-- (BOOL)shouldLayoutTilingLayer:(id)a3;
+- (BOOL)shouldLayoutTilingLayer:(id)layer;
 - (BOOL)shouldResizeCanvasToScrollView;
-- (BOOL)shouldShowInstructionalTextForLayout:(id)a3;
+- (BOOL)shouldShowInstructionalTextForLayout:(id)layout;
 - (BOOL)shouldShowTextOverflowGlyphs;
 - (BOOL)shouldSupportedDynamicOperationsEnqueueCommandsInRealTime;
-- (BOOL)shouldSuppressSelectionKnobsForRep:(id)a3;
+- (BOOL)shouldSuppressSelectionKnobsForRep:(id)rep;
 - (BOOL)shouldZoomOnSelectionChange;
 - (BOOL)spellCheckingSupported;
 - (BOOL)spellCheckingSuppressed;
@@ -47,46 +47,46 @@
 - (CALayer)overlayLayer;
 - (CALayer)repContainerLayer;
 - (CGColor)canvasEdgeBackgroundColor;
-- (CGPoint)clampedUnscaledContentOffset:(CGPoint)a3 forViewScale:(double)a4;
+- (CGPoint)clampedUnscaledContentOffset:(CGPoint)offset forViewScale:(double)scale;
 - (CGPoint)contentOffset;
-- (CGPoint)convertBoundsToUnscaledPoint:(CGPoint)a3;
-- (CGPoint)convertUnscaledToBoundsPoint:(CGPoint)a3;
-- (CGPoint)p_computeClampedUnscaledContentOffsetWithTargetRect:(CGRect)a3 selectionContextRectWhenZooming:(CGRect)a4 viewScale:(double)a5 unscaledOutset:(double)dy;
-- (CGPoint)p_contentOffsetToScrollRectToVisible:(CGRect)a3 shouldCenterVertically:(BOOL)a4 forceCenteringVertically:(BOOL)a5 forceCenteringHorizontally:(BOOL)a6;
+- (CGPoint)convertBoundsToUnscaledPoint:(CGPoint)point;
+- (CGPoint)convertUnscaledToBoundsPoint:(CGPoint)point;
+- (CGPoint)p_computeClampedUnscaledContentOffsetWithTargetRect:(CGRect)rect selectionContextRectWhenZooming:(CGRect)zooming viewScale:(double)scale unscaledOutset:(double)dy;
+- (CGPoint)p_contentOffsetToScrollRectToVisible:(CGRect)visible shouldCenterVertically:(BOOL)vertically forceCenteringVertically:(BOOL)centeringVertically forceCenteringHorizontally:(BOOL)horizontally;
 - (CGPoint)smartZoomCenterForNoSelection;
-- (CGRect)boundingRectForActiveGuidesForPoint:(CGPoint)a3;
-- (CGRect)convertBoundsToUnscaledRect:(CGRect)a3;
-- (CGRect)convertUnscaledToBoundsRect:(CGRect)a3;
-- (CGRect)growUnscaledCanvasLayerRect:(CGRect)a3 withViewScale:(double)a4;
+- (CGRect)boundingRectForActiveGuidesForPoint:(CGPoint)point;
+- (CGRect)convertBoundsToUnscaledRect:(CGRect)rect;
+- (CGRect)convertUnscaledToBoundsRect:(CGRect)rect;
+- (CGRect)growUnscaledCanvasLayerRect:(CGRect)rect withViewScale:(double)scale;
 - (CGRect)i_visibleBoundsRectForHitTestingCanvasView;
-- (CGRect)outsetSelectionRect:(CGRect)a3;
+- (CGRect)outsetSelectionRect:(CGRect)rect;
 - (CGRect)p_calculateVisibleBoundsRectForTiling;
 - (CGRect)p_calculateVisibleUnscaledRect;
-- (CGRect)p_convertNeedsDisplayRect:(CGRect)a3 fromRep:(id)a4 toRepForDrawing:(id)a5;
+- (CGRect)p_convertNeedsDisplayRect:(CGRect)rect fromRep:(id)rep toRepForDrawing:(id)drawing;
 - (CGRect)p_safeAreaLayoutGuideLayoutFrame;
-- (CGRect)p_scaledRectToScrollToForSelectionPath:(id)a3 shouldCenterVertically:(BOOL)a4;
+- (CGRect)p_scaledRectToScrollToForSelectionPath:(id)path shouldCenterVertically:(BOOL)vertically;
 - (CGRect)p_unobscuredScrollViewFrameIgnoringObscuringRectangles;
-- (CGRect)p_unosbcuredFrameOfView:(id)a3 includingObscuringRectangles:(BOOL)a4;
+- (CGRect)p_unosbcuredFrameOfView:(id)view includingObscuringRectangles:(BOOL)rectangles;
 - (CGRect)p_visibleBoundsRectForTiling;
-- (CGRect)p_visibleBoundsRectUsingSizeOfEnclosingScrollView:(BOOL)a3 respectObscuredFrame:(BOOL)a4 respectSafeArea:(BOOL)a5 respectObscuringRects:(BOOL)a6 respectAreaPastScollViewLimit:(BOOL)a7;
+- (CGRect)p_visibleBoundsRectUsingSizeOfEnclosingScrollView:(BOOL)view respectObscuredFrame:(BOOL)frame respectSafeArea:(BOOL)area respectObscuringRects:(BOOL)rects respectAreaPastScollViewLimit:(BOOL)limit;
 - (CGRect)p_visibleUnscaledRect;
-- (CGRect)rectInRootForScrollingToSelectionPath:(id)a3 onLayout:(id)a4 allowingZooming:(BOOL)a5;
-- (CGRect)unobscuredFrameOfView:(id)a3;
+- (CGRect)rectInRootForScrollingToSelectionPath:(id)path onLayout:(id)layout allowingZooming:(BOOL)zooming;
+- (CGRect)unobscuredFrameOfView:(id)view;
 - (CGRect)unobscuredScrollViewFrame;
-- (CGRect)visibleBoundsForTilingLayer:(id)a3;
+- (CGRect)visibleBoundsForTilingLayer:(id)layer;
 - (CGRect)visibleBoundsRect;
 - (CGRect)visibleBoundsRectForTiling;
 - (CGRect)visibleBoundsRectIgnoringLimit;
 - (CGRect)visibleBoundsRectUsingSizeOfEnclosingScrollView;
-- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)a3;
+- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)canvas;
 - (CGRect)visibleScaledRectForCanvasUI;
 - (CGRect)visibleUnscaledRect;
 - (CGRect)visibleUnscaledRectIgnoringLimit;
 - (CGSize)canvasScrollingOutset;
-- (CGSize)convertBoundsToUnscaledSize:(CGSize)a3;
-- (CGSize)convertUnscaledToBoundsSize:(CGSize)a3;
+- (CGSize)convertBoundsToUnscaledSize:(CGSize)size;
+- (CGSize)convertUnscaledToBoundsSize:(CGSize)size;
 - (CGSize)defaultMinimumUnscaledCanvasSize;
-- (CGSize)i_canvasCenterOffsetForProposedViewScale:(double)a3 originalViewScale:(double)a4;
+- (CGSize)i_canvasCenterOffsetForProposedViewScale:(double)scale originalViewScale:(double)viewScale;
 - (CGSize)p_calculatedSizeOfScrollViewEnclosingCanvas;
 - (CGSize)p_sizeOfScrollViewEnclosingCanvasForVisibleCanvasCalculations;
 - (CGSize)sizeOfScrollViewEnclosingCanvas;
@@ -124,284 +124,284 @@
 - (double)currentViewScale;
 - (double)defaultTargetPointSize;
 - (double)fitWidthViewScale;
-- (double)i_nextCanvasViewScaleDetentForProposedViewScale:(double)a3 greater:(BOOL)a4 isFastPinch:(BOOL)a5;
-- (double)i_viewScaleForProposedViewScale:(double)a3 originalViewScale:(double)a4 isFastPinch:(BOOL)a5;
+- (double)i_nextCanvasViewScaleDetentForProposedViewScale:(double)scale greater:(BOOL)greater isFastPinch:(BOOL)pinch;
+- (double)i_viewScaleForProposedViewScale:(double)scale originalViewScale:(double)viewScale isFastPinch:(BOOL)pinch;
 - (double)p_safeAreaMargin;
-- (double)p_targetViewScaleForUnscaledRect:(CGRect)a3;
+- (double)p_targetViewScaleForUnscaledRect:(CGRect)rect;
 - (double)targetPointSize;
 - (double)viewScale;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
-- (id)additionalChildInfosForLayout:(id)a3;
-- (id)additionalDependentLayoutsForBoardItem:(id)a3;
-- (id)additionalVisibleInfosForCanvas:(id)a3;
-- (id)adjustReceivedCollaboratorCursorSelectionPath:(id)a3;
-- (id)adjustedSelectionPathForRenderingCursorPath:(id)a3;
-- (id)closestRepToPoint:(CGPoint)a3 forStorage:(id)a4;
-- (id)containerRenderablesForRep:(id)a3;
+- (id)actionForLayer:(id)layer forKey:(id)key;
+- (id)additionalChildInfosForLayout:(id)layout;
+- (id)additionalDependentLayoutsForBoardItem:(id)item;
+- (id)additionalVisibleInfosForCanvas:(id)canvas;
+- (id)adjustReceivedCollaboratorCursorSelectionPath:(id)path;
+- (id)adjustedSelectionPathForRenderingCursorPath:(id)path;
+- (id)closestRepToPoint:(CGPoint)point forStorage:(id)storage;
+- (id)containerRenderablesForRep:(id)rep;
 - (id)customRotateTrackerForCurrentSelection;
-- (id)hitKnobAtPoint:(CGPoint)a3 inputType:(int64_t)a4 returningRep:(id *)a5;
-- (id)hitRep:(CGPoint)a3 withPrecision:(BOOL)a4 passingTest:(id)a5;
-- (id)hitRepIgnoringClickThrough:(CGPoint)a3;
-- (id)hitRepsAtPoint:(CGPoint)a3 withSlop:(CGSize)a4;
-- (id)i_collaboratorPresenceSelectingLayout:(id)a3;
-- (id)i_descriptionForViewScale:(double)a3 zoomMethod:(int64_t)a4;
-- (id)infoForSelectionPath:(id)a3;
-- (id)infosForSelectionPath:(id)a3;
-- (id)layoutForInfo:(id)a3;
-- (id)layoutForInfoNearestVisibleRect:(id)a3;
-- (id)layoutForInfoNearestVisibleRect:(id)a3 intersectingSelectionPath:(id)a4;
-- (id)layoutForSelectionPath:(id)a3;
-- (id)layoutsForInfo:(id)a3;
-- (id)layoutsForInfo:(id)a3 intersectingSelectionPath:(id)a4;
-- (id)layoutsForSelectionPath:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)hitKnobAtPoint:(CGPoint)point inputType:(int64_t)type returningRep:(id *)rep;
+- (id)hitRep:(CGPoint)rep withPrecision:(BOOL)precision passingTest:(id)test;
+- (id)hitRepIgnoringClickThrough:(CGPoint)through;
+- (id)hitRepsAtPoint:(CGPoint)point withSlop:(CGSize)slop;
+- (id)i_collaboratorPresenceSelectingLayout:(id)layout;
+- (id)i_descriptionForViewScale:(double)scale zoomMethod:(int64_t)method;
+- (id)infoForSelectionPath:(id)path;
+- (id)infosForSelectionPath:(id)path;
+- (id)layoutForInfo:(id)info;
+- (id)layoutForInfoNearestVisibleRect:(id)rect;
+- (id)layoutForInfoNearestVisibleRect:(id)rect intersectingSelectionPath:(id)path;
+- (id)layoutForSelectionPath:(id)path;
+- (id)layoutsForInfo:(id)info;
+- (id)layoutsForInfo:(id)info intersectingSelectionPath:(id)path;
+- (id)layoutsForSelectionPath:(id)path;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)mostVisibleParentForFreehandDrawingLayouts;
 - (id)newCanvasEditor;
 - (id)numberFormatter;
-- (id)p_infosByAddingAllAncestors:(id)a3;
-- (id)p_layoutForShowingCollaboratorCursorHUDAtSelectionPath:(id)a3;
-- (id)p_repForLayout:(id)a3 createIfNeeded:(BOOL)a4;
-- (id)p_repsForCollaboratorCursorSelectionPath:(id)a3;
-- (id)p_repsForStorage:(id)a3;
+- (id)p_infosByAddingAllAncestors:(id)ancestors;
+- (id)p_layoutForShowingCollaboratorCursorHUDAtSelectionPath:(id)path;
+- (id)p_repForLayout:(id)layout createIfNeeded:(BOOL)needed;
+- (id)p_repsForCollaboratorCursorSelectionPath:(id)path;
+- (id)p_repsForStorage:(id)storage;
 - (id)p_sourceInteractionSourceForNotficiationUserInfo;
-- (id)p_topCollaboratorPresenceOfPresences:(id)a3;
-- (id)parentForFreehandDrawingLayoutsAtPoint:(CGPoint)a3;
-- (id)renderableForRep:(id)a3;
-- (id)repDragTrackerDelegateForRep:(id)a3;
-- (id)repForInfo:(id)a3 createIfNeeded:(BOOL)a4;
-- (id)repsForInfo:(id)a3;
+- (id)p_topCollaboratorPresenceOfPresences:(id)presences;
+- (id)parentForFreehandDrawingLayoutsAtPoint:(CGPoint)point;
+- (id)renderableForRep:(id)rep;
+- (id)repDragTrackerDelegateForRep:(id)rep;
+- (id)repForInfo:(id)info createIfNeeded:(BOOL)needed;
+- (id)repsForInfo:(id)info;
 - (id)repsToHide;
-- (id)selectionPathForSearchReference:(id)a3;
-- (id)topLevelZOrderedSiblingsOfInfos:(id)a3;
+- (id)selectionPathForSearchReference:(id)reference;
+- (id)topLevelZOrderedSiblingsOfInfos:(id)infos;
 - (id)unitFormatter;
-- (id)unitStringForAngle:(double)a3;
-- (id)unitStringForAngle:(double)a3 andLength:(double)a4;
-- (id)unitStringForAngle:(double)a3 shouldNormalize:(BOOL)a4;
-- (id)unitStringForNumber:(double)a3;
-- (id)unitStringForPoint:(CGPoint)a3;
-- (id)unitStringForSize:(CGSize)a3 forAccessibility:(BOOL)a4;
-- (id)validatedLayoutForInfo:(id)a3;
+- (id)unitStringForAngle:(double)angle;
+- (id)unitStringForAngle:(double)angle andLength:(double)length;
+- (id)unitStringForAngle:(double)angle shouldNormalize:(BOOL)normalize;
+- (id)unitStringForNumber:(double)number;
+- (id)unitStringForPoint:(CGPoint)point;
+- (id)unitStringForSize:(CGSize)size forAccessibility:(BOOL)accessibility;
+- (id)validatedLayoutForInfo:(id)info;
 - (int64_t)mathHintsMode;
-- (void)addBackgroundRenderingObject:(id)a3;
-- (void)addCollaboratorHUDController:(id)a3;
+- (void)addBackgroundRenderingObject:(id)object;
+- (void)addCollaboratorHUDController:(id)controller;
 - (void)addCommonObservers;
-- (void)addDecorator:(id)a3;
+- (void)addDecorator:(id)decorator;
 - (void)animateIntoConnectorMode;
-- (void)animateToViewScale:(double)a3 contentOffset:(CGPoint)a4 duration:(double)a5 orientation:(int64_t)a6 completionHandler:(id)a7;
-- (void)beginAnimations:(id)a3;
+- (void)animateToViewScale:(double)scale contentOffset:(CGPoint)offset duration:(double)duration orientation:(int64_t)orientation completionHandler:(id)handler;
+- (void)beginAnimations:(id)animations;
 - (void)beginDynamicOperation;
-- (void)beginFollowing:(id)a3 forHUDController:(id)a4;
+- (void)beginFollowing:(id)following forHUDController:(id)controller;
 - (void)beginPossiblyParallelInspectorDynamicOperation;
 - (void)beginScrollingOperation;
-- (void)canvas:(id)a3 createdRep:(id)a4;
-- (void)canvasDidLayout:(id)a3;
-- (void)canvasDidValidateLayouts:(id)a3;
-- (void)canvasDidValidateLayoutsWithDependencies:(id)a3;
-- (void)canvasLayoutInvalidated:(id)a3;
-- (void)canvasWillUpdateRepsFromLayouts:(id)a3;
-- (void)canvasWillValidateLayouts:(id)a3;
+- (void)canvas:(id)canvas createdRep:(id)rep;
+- (void)canvasDidLayout:(id)layout;
+- (void)canvasDidValidateLayouts:(id)layouts;
+- (void)canvasDidValidateLayoutsWithDependencies:(id)dependencies;
+- (void)canvasLayoutInvalidated:(id)invalidated;
+- (void)canvasWillUpdateRepsFromLayouts:(id)layouts;
+- (void)canvasWillValidateLayouts:(id)layouts;
 - (void)clearLayoutsForTopLevelContainerChange;
-- (void)clipGuideToContainer:(id)a3 atUnscaledPoint:(CGPoint)a4;
+- (void)clipGuideToContainer:(id)container atUnscaledPoint:(CGPoint)point;
 - (void)closeOverlays;
-- (void)collaboratorCursorSelectionPathChangedFromSelectionPath:(id)a3 toSelectionPath:(id)a4 collaboratorPresence:(id)a5;
+- (void)collaboratorCursorSelectionPathChangedFromSelectionPath:(id)path toSelectionPath:(id)selectionPath collaboratorPresence:(id)presence;
 - (void)collapseAllExpandedCollaboratorHUDs;
 - (void)commitAnimations;
-- (void)contentInsetsDidChangeForScrollView:(id)a3;
-- (void)copyEditabilityPropertiesFromInteractiveCanvasController:(id)a3;
+- (void)contentInsetsDidChangeForScrollView:(id)view;
+- (void)copyEditabilityPropertiesFromInteractiveCanvasController:(id)controller;
 - (void)dealloc;
 - (void)didExitPreviewMode;
 - (void)didProcessAllChanges;
-- (void)discardRepForClassChange:(id)a3;
+- (void)discardRepForClassChange:(id)change;
 - (void)documentEditabilityDidChange;
-- (void)doubleTappedCanvasBackgroundAtPoint:(CGPoint)a3;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)doubleTappedCanvasBackgroundAtPoint:(CGPoint)point;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
 - (void)endDynamicOperation;
 - (void)endEditingDiscardingEdits;
-- (void)endEditingWithFlags:(unint64_t)a3;
-- (void)endFollowing:(id)a3 forHUDController:(id)a4;
+- (void)endEditingWithFlags:(unint64_t)flags;
+- (void)endFollowing:(id)following forHUDController:(id)controller;
 - (void)endPossiblyParallelInspectorDynamicOperation;
 - (void)endScrollingOperation;
-- (void)forLayoutNearestVisibleRectForInfosForSelectionPath:(id)a3 performBlock:(id)a4;
-- (void)forwardInvocation:(id)a3;
-- (void)growCanvasAsNeededToRestoreContentOffset:(CGPoint)a3;
-- (void)growCanvasAsNeededToSetContentOffset:(CGPoint)a3 scrollOptions:(unint64_t)a4;
-- (void)hideCollaboratorHUDForCollaborator:(id)a3;
-- (void)i_acquireLockAndPerformAction:(id)a3;
-- (void)i_beginSuppressingLayerUpdatesExceptForReps:(id)a3;
+- (void)forLayoutNearestVisibleRectForInfosForSelectionPath:(id)path performBlock:(id)block;
+- (void)forwardInvocation:(id)invocation;
+- (void)growCanvasAsNeededToRestoreContentOffset:(CGPoint)offset;
+- (void)growCanvasAsNeededToSetContentOffset:(CGPoint)offset scrollOptions:(unint64_t)options;
+- (void)hideCollaboratorHUDForCollaborator:(id)collaborator;
+- (void)i_acquireLockAndPerformAction:(id)action;
+- (void)i_beginSuppressingLayerUpdatesExceptForReps:(id)reps;
 - (void)i_canvasContentsScaleDidChange;
 - (void)i_canvasDidUpdateVisibleBounds;
 - (void)i_canvasWideGamutValueDidChange;
-- (void)i_canvasWillLayout:(id)a3;
-- (void)i_drawRepWithReadLock:(id)a3 inContext:(CGContext *)a4 forLayer:(id)a5;
+- (void)i_canvasWillLayout:(id)layout;
+- (void)i_drawRepWithReadLock:(id)lock inContext:(CGContext *)context forLayer:(id)layer;
 - (void)i_endSuppressingLayerUpdates;
 - (void)i_invalidateSelectionHighlightLayers;
 - (void)i_layout;
 - (void)i_recordUserViewScale;
-- (void)i_repNeedsDisplay:(id)a3;
-- (void)i_repNeedsDisplay:(id)a3 inRect:(CGRect)a4;
+- (void)i_repNeedsDisplay:(id)display;
+- (void)i_repNeedsDisplay:(id)display inRect:(CGRect)rect;
 - (void)i_selectionDidChange;
-- (void)i_setNeedsDisplayIfNeededForAncestorRepOf:(id)a3;
+- (void)i_setNeedsDisplayIfNeededForAncestorRepOf:(id)of;
 - (void)i_textDidChange;
-- (void)i_viewDidEndZoomingWithUserInfo:(id)a3;
-- (void)i_viewDidZoomToViewScale:(double)a3 notify:(BOOL)a4;
+- (void)i_viewDidEndZoomingWithUserInfo:(id)info;
+- (void)i_viewDidZoomToViewScale:(double)scale notify:(BOOL)notify;
 - (void)i_viewScaleDidChange;
 - (void)i_viewScrollDidChange;
-- (void)i_viewScrollingEndedWithUserInfo:(id)a3;
+- (void)i_viewScrollingEndedWithUserInfo:(id)info;
 - (void)i_viewWillBeginZooming;
 - (void)invalidateCollaboratorHUDControllers;
-- (void)invalidateLayersForDecorator:(id)a3;
+- (void)invalidateLayersForDecorator:(id)decorator;
 - (void)layoutIfNeeded;
-- (void)makeEditorPerformAction:(SEL)a3 withSender:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)makeEditorPerformAction:(SEL)action withSender:(id)sender;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)p_beginCachingLayoutsForCollaboratorCursors;
 - (void)p_beginObservingDocumentRoot;
 - (void)p_beginZoomingOperation;
 - (void)p_clearSelectionScrollingState;
-- (void)p_collabParticipantsDidChange:(id)a3;
+- (void)p_collabParticipantsDidChange:(id)change;
 - (void)p_commonInit;
 - (void)p_consumeRepsDrawnIntoAncestorToSetNeedsDisplayOnUpdatedGeometry;
-- (void)p_editorControllerDidChangeTextInputEditor:(id)a3;
-- (void)p_editorControllerSelectionDidChangeAndWantsKeyboard:(id)a3;
-- (void)p_editorControllerSelectionPathDidChange:(id)a3;
+- (void)p_editorControllerDidChangeTextInputEditor:(id)editor;
+- (void)p_editorControllerSelectionDidChangeAndWantsKeyboard:(id)keyboard;
+- (void)p_editorControllerSelectionPathDidChange:(id)change;
 - (void)p_endCachingLayoutsForCollaboratorCursors;
 - (void)p_endObservingDocumentRootIfNeeded;
 - (void)p_endZoomingOperation;
 - (void)p_fadeInForZoomOperation;
 - (void)p_fadeOutForZoomOperation;
-- (void)p_notifyRepsForChangeFromSelectionPath:(id)a3 toSelectionPath:(id)a4;
-- (void)p_notifyRepsForSelectionChangeFrom:(id)a3 to:(id)a4;
-- (void)p_performBlockWithCachedLayoutsForCollaboratorCursors:(id)a3;
-- (void)p_realTimeSessionNewParticipantDidJoin:(id)a3;
-- (void)p_realTimeStateDidChange:(id)a3;
-- (void)p_recursiveHitKnobAtPoint:(CGPoint)a3 inputType:(int64_t)a4 inRep:(id)a5 minDistance:(double *)a6 hitKnob:(id *)a7 hitRep:(id *)a8;
-- (void)p_recursivelyAddRep:(id)a3 forStorage:(id)a4 toSet:(id)a5;
-- (void)p_scrollToSelectionPath:(id)a3 scrollOptions:(unint64_t)a4;
-- (void)p_scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)p_selectionDoneChangingWithFlags:(unint64_t)a3;
-- (void)p_selectionPathDidChangeFromSelectionPath:(id)a3 toSelectionPath:(id)a4;
-- (void)p_setCurrentlyScrolling:(BOOL)a3;
-- (void)p_setTargetPointSize:(double)a3;
-- (void)p_showCollaboratorHUDForCollaborator:(id)a3 withSelectionPath:(id)a4 allowScroll:(BOOL)a5 hudSize:(unint64_t)a6;
-- (void)p_spellCheckerWordsDidChangeNotification:(id)a3;
-- (void)p_spellCheckingStateChangedNotification:(id)a3;
+- (void)p_notifyRepsForChangeFromSelectionPath:(id)path toSelectionPath:(id)selectionPath;
+- (void)p_notifyRepsForSelectionChangeFrom:(id)from to:(id)to;
+- (void)p_performBlockWithCachedLayoutsForCollaboratorCursors:(id)cursors;
+- (void)p_realTimeSessionNewParticipantDidJoin:(id)join;
+- (void)p_realTimeStateDidChange:(id)change;
+- (void)p_recursiveHitKnobAtPoint:(CGPoint)point inputType:(int64_t)type inRep:(id)rep minDistance:(double *)distance hitKnob:(id *)knob hitRep:(id *)hitRep;
+- (void)p_recursivelyAddRep:(id)rep forStorage:(id)storage toSet:(id)set;
+- (void)p_scrollToSelectionPath:(id)path scrollOptions:(unint64_t)options;
+- (void)p_scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)p_selectionDoneChangingWithFlags:(unint64_t)flags;
+- (void)p_selectionPathDidChangeFromSelectionPath:(id)path toSelectionPath:(id)selectionPath;
+- (void)p_setCurrentlyScrolling:(BOOL)scrolling;
+- (void)p_setTargetPointSize:(double)size;
+- (void)p_showCollaboratorHUDForCollaborator:(id)collaborator withSelectionPath:(id)path allowScroll:(BOOL)scroll hudSize:(unint64_t)size;
+- (void)p_spellCheckerWordsDidChangeNotification:(id)notification;
+- (void)p_spellCheckingStateChangedNotification:(id)notification;
 - (void)p_teardownCanvasEditor;
-- (void)p_textGesturesDidEndNotification:(id)a3;
-- (void)p_textGesturesWillBeginNotification:(id)a3;
+- (void)p_textGesturesDidEndNotification:(id)notification;
+- (void)p_textGesturesWillBeginNotification:(id)notification;
 - (void)p_updateCanvasSizeFromLayouts;
 - (void)p_updateInfosToDisplayIfNeeded;
 - (void)p_updateUnobscuredFrame;
 - (void)p_validateLayerSuppressionAPIAccess;
 - (void)p_viewScrollingEnded;
-- (void)performBlockOnMainThreadAfterLayoutIfNecessary:(id)a3;
-- (void)performDiscreteFrameChangingOperationOnDrawables:(id)a3 withBlock:(id)a4;
-- (void)positionDidUpdateForCollaboratorHUDController:(id)a3;
-- (void)preprocessChanges:(id)a3 forChangeSource:(id)a4;
-- (void)presentError:(id)a3 completionHandler:(id)a4;
-- (void)presentErrors:(id)a3 withLocalizedDescription:(id)a4 completionHandler:(id)a5;
-- (void)processChanges:(id)a3 forChangeSource:(id)a4;
+- (void)performBlockOnMainThreadAfterLayoutIfNecessary:(id)necessary;
+- (void)performDiscreteFrameChangingOperationOnDrawables:(id)drawables withBlock:(id)block;
+- (void)positionDidUpdateForCollaboratorHUDController:(id)controller;
+- (void)preprocessChanges:(id)changes forChangeSource:(id)source;
+- (void)presentError:(id)error completionHandler:(id)handler;
+- (void)presentErrors:(id)errors withLocalizedDescription:(id)description completionHandler:(id)handler;
+- (void)processChanges:(id)changes forChangeSource:(id)source;
 - (void)recreateAllLayoutsAndReps;
 - (void)removeAllCollaboratorHUDControllers;
-- (void)removeBackgroundRenderingObject:(id)a3;
-- (void)removeCollaboratorHUDController:(id)a3;
+- (void)removeBackgroundRenderingObject:(id)object;
+- (void)removeCollaboratorHUDController:(id)controller;
 - (void)removeCommonObservers;
-- (void)removeDecorator:(id)a3;
+- (void)removeDecorator:(id)decorator;
 - (void)resumeEditing;
-- (void)scrollCenteredOrZoomToUnscaledRect:(CGRect)a3 shouldAnimateScroll:(BOOL)a4;
-- (void)scrollCurrentSelectionToVisibleWithOptions:(unint64_t)a3;
-- (void)scrollRectToVisible:(CGRect)a3 scrollOptions:(unint64_t)a4;
-- (void)scrollRectToVisibleWithSelectionOutset:(CGRect)a3 scrollOptions:(unint64_t)a4;
-- (void)scrollSearchReferenceToVisible:(id)a3 scrollOptions:(unint64_t)a4;
-- (void)scrollToCollaborator:(id)a3 withSelectionPath:(id)a4;
-- (void)scrollToCurrentSelectionPathAfterLayoutWithOptions:(unint64_t)a3;
-- (void)scrollToSelectionPath:(id)a3 scrollOptions:(unint64_t)a4;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
+- (void)scrollCenteredOrZoomToUnscaledRect:(CGRect)rect shouldAnimateScroll:(BOOL)scroll;
+- (void)scrollCurrentSelectionToVisibleWithOptions:(unint64_t)options;
+- (void)scrollRectToVisible:(CGRect)visible scrollOptions:(unint64_t)options;
+- (void)scrollRectToVisibleWithSelectionOutset:(CGRect)outset scrollOptions:(unint64_t)options;
+- (void)scrollSearchReferenceToVisible:(id)visible scrollOptions:(unint64_t)options;
+- (void)scrollToCollaborator:(id)collaborator withSelectionPath:(id)path;
+- (void)scrollToCurrentSelectionPathAfterLayoutWithOptions:(unint64_t)options;
+- (void)scrollToSelectionPath:(id)path scrollOptions:(unint64_t)options;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
 - (void)sendRealTimeEnterToPeersIfNecessary;
 - (void)sendSelectionPathToPeersIfNecessary;
-- (void)setContentOffset:(CGPoint)a3 scrollOptions:(unint64_t)a4;
-- (void)setContentOffset:(CGPoint)a3 source:(id)a4 scrollOptions:(unint64_t)a5;
-- (void)setDelegate:(id)a3;
-- (void)setDocumentIsSharedReadOnly:(BOOL)a3;
-- (void)setFreehandDrawingToolkit:(id)a3;
-- (void)setInfosToDisplay:(id)a3;
-- (void)setLayerHost:(id)a3;
-- (void)setMathHintsMode:(int64_t)a3;
-- (void)setOverlayLayerSuppressed:(BOOL)a3;
-- (void)setPrimaryFindResultSearchReference:(id)a3;
-- (void)setSearchReferencesToHighlight:(id)a3;
-- (void)setSelectionHighlightColor:(id)a3;
-- (void)setSelectionPath:(id)a3 withSelectionFlags:(unint64_t)a4;
-- (void)setShouldSuppressFreehandContent:(BOOL)a3;
-- (void)setShouldSuppressRendering:(BOOL)a3 animated:(BOOL)a4;
-- (void)setShouldSuppressesCollaboratorHUD:(BOOL)a3;
-- (void)setShowGrayOverlay:(BOOL)a3;
-- (void)setShowInvisibleObjects:(BOOL)a3;
-- (void)setTemporaryAdditionalBoardItemsToDisplay:(id)a3;
-- (void)setTextInputResponder:(id)a3;
-- (void)setTextResponderEditorTo:(id)a3 withFlags:(unint64_t)a4;
-- (void)setUsesAlternateDrawableSelectionHighlight:(BOOL)a3;
-- (void)setViewScale:(double)a3;
-- (void)setViewScale:(double)a3 andScrollViewFrame:(CGRect)a4 animated:(BOOL)a5;
-- (void)setViewScale:(double)a3 andScrollViewFrame:(CGRect)a4 maintainPosition:(BOOL)a5 animated:(BOOL)a6;
-- (void)setViewScale:(double)a3 contentOffset:(CGPoint)a4 animated:(BOOL)a5 completionHandler:(id)a6;
-- (void)setViewScale:(double)a3 contentOffset:(CGPoint)a4 animated:(BOOL)a5 source:(id)a6;
+- (void)setContentOffset:(CGPoint)offset scrollOptions:(unint64_t)options;
+- (void)setContentOffset:(CGPoint)offset source:(id)source scrollOptions:(unint64_t)options;
+- (void)setDelegate:(id)delegate;
+- (void)setDocumentIsSharedReadOnly:(BOOL)only;
+- (void)setFreehandDrawingToolkit:(id)toolkit;
+- (void)setInfosToDisplay:(id)display;
+- (void)setLayerHost:(id)host;
+- (void)setMathHintsMode:(int64_t)mode;
+- (void)setOverlayLayerSuppressed:(BOOL)suppressed;
+- (void)setPrimaryFindResultSearchReference:(id)reference;
+- (void)setSearchReferencesToHighlight:(id)highlight;
+- (void)setSelectionHighlightColor:(id)color;
+- (void)setSelectionPath:(id)path withSelectionFlags:(unint64_t)flags;
+- (void)setShouldSuppressFreehandContent:(BOOL)content;
+- (void)setShouldSuppressRendering:(BOOL)rendering animated:(BOOL)animated;
+- (void)setShouldSuppressesCollaboratorHUD:(BOOL)d;
+- (void)setShowGrayOverlay:(BOOL)overlay;
+- (void)setShowInvisibleObjects:(BOOL)objects;
+- (void)setTemporaryAdditionalBoardItemsToDisplay:(id)display;
+- (void)setTextInputResponder:(id)responder;
+- (void)setTextResponderEditorTo:(id)to withFlags:(unint64_t)flags;
+- (void)setUsesAlternateDrawableSelectionHighlight:(BOOL)highlight;
+- (void)setViewScale:(double)scale;
+- (void)setViewScale:(double)scale andScrollViewFrame:(CGRect)frame animated:(BOOL)animated;
+- (void)setViewScale:(double)scale andScrollViewFrame:(CGRect)frame maintainPosition:(BOOL)position animated:(BOOL)animated;
+- (void)setViewScale:(double)scale contentOffset:(CGPoint)offset animated:(BOOL)animated completionHandler:(id)handler;
+- (void)setViewScale:(double)scale contentOffset:(CGPoint)offset animated:(BOOL)animated source:(id)source;
 - (void)setupTextInputResponder;
-- (void)tappedCanvasBackgroundAtPoint:(CGPoint)a3 inputType:(int64_t)a4;
+- (void)tappedCanvasBackgroundAtPoint:(CGPoint)point inputType:(int64_t)type;
 - (void)teardown;
 - (void)teardownBackgroundRendering;
-- (void)teardownCollaboratorCursorInfrastructureInvalidatingLayers:(BOOL)a3;
+- (void)teardownCollaboratorCursorInfrastructureInvalidatingLayers:(BOOL)layers;
 - (void)teardownTextInputResponder;
-- (void)toggleSizeForCollaboratorHUDController:(id)a3;
-- (void)translateGuide:(id)a3 toContainerRect:(CGRect)a4;
-- (void)translateGuides:(id)a3 toContainerRect:(CGRect)a4;
+- (void)toggleSizeForCollaboratorHUDController:(id)controller;
+- (void)translateGuide:(id)guide toContainerRect:(CGRect)rect;
+- (void)translateGuides:(id)guides toContainerRect:(CGRect)rect;
 - (void)unobscuredFrameDidChange;
 - (void)updateCanvasDotGridVisibilityIfNeeded;
 - (void)updateCanvasViewSubviewFrames;
-- (void)updateCollaboratorHUDForBeginFollowingCollaborator:(id)a3;
-- (void)updateCollaboratorHUDForStopFollowingCollaborator:(id)a3;
+- (void)updateCollaboratorHUDForBeginFollowingCollaborator:(id)collaborator;
+- (void)updateCollaboratorHUDForStopFollowingCollaborator:(id)collaborator;
 - (void)updateConnectorKnobVisibilityIfNeeded;
-- (void)updateLayerTreeForInteractiveCanvas:(id)a3;
+- (void)updateLayerTreeForInteractiveCanvas:(id)canvas;
 - (void)updateMultiselectResizeInfoIfNeeded;
-- (void)updatePositionForCollaboratorHUDController:(id)a3;
-- (void)updateRenderableForRep:(id)a3 usingBlock:(id)a4;
-- (void)updateSelectionForInteractionWithRep:(id)a3 extendingSelection:(BOOL)a4;
-- (void)updateSelectionForTapAtPoint:(CGPoint)a3 extendingSelection:(BOOL)a4;
-- (void)updateTipsWithConnectorKnobsEnabled:(BOOL)a3;
+- (void)updatePositionForCollaboratorHUDController:(id)controller;
+- (void)updateRenderableForRep:(id)rep usingBlock:(id)block;
+- (void)updateSelectionForInteractionWithRep:(id)rep extendingSelection:(BOOL)selection;
+- (void)updateSelectionForTapAtPoint:(CGPoint)point extendingSelection:(BOOL)selection;
+- (void)updateTipsWithConnectorKnobsEnabled:(BOOL)enabled;
 - (void)willEndDynamicOperation;
-- (void)withLayoutForSelectionPath:(id)a3 flags:(unint64_t)a4 performBlock:(id)a5;
-- (void)withLayoutNearestPoint:(CGPoint)a3 forStorage:(id)a4 performBlock:(id)a5;
+- (void)withLayoutForSelectionPath:(id)path flags:(unint64_t)flags performBlock:(id)block;
+- (void)withLayoutNearestPoint:(CGPoint)point forStorage:(id)storage performBlock:(id)block;
 - (void)zoomToCurrentSelection;
 - (void)zoomToFitAllContent;
-- (void)zoomToSelectionPath:(id)a3;
-- (void)zoomWithAnimation:(id)a3 toUnscaledRect:(CGRect)a4 layoutOffscreenContent:(BOOL)a5 completionBlock:(id)a6;
-- (void)zoomWithAnimationToUnscaledRect:(CGRect)a3;
-- (void)zoomWithAnimationToUnscaledRect:(CGRect)a3 withDuration:(double)a4;
+- (void)zoomToSelectionPath:(id)path;
+- (void)zoomWithAnimation:(id)animation toUnscaledRect:(CGRect)rect layoutOffscreenContent:(BOOL)content completionBlock:(id)block;
+- (void)zoomWithAnimationToUnscaledRect:(CGRect)rect;
+- (void)zoomWithAnimationToUnscaledRect:(CGRect)rect withDuration:(double)duration;
 @end
 
 @implementation CRLInteractiveCanvasController
 
-- (void)withLayoutNearestPoint:(CGPoint)a3 forStorage:(id)a4 performBlock:(id)a5
+- (void)withLayoutNearestPoint:(CGPoint)point forStorage:(id)storage performBlock:(id)block
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a5;
-  v10 = a4;
+  y = point.y;
+  x = point.x;
+  blockCopy = block;
+  storageCopy = storage;
   [(CRLInteractiveCanvasController *)self layoutIfNeeded];
-  v12 = [(CRLInteractiveCanvasController *)self closestRepToPoint:v10 forStorage:x, y];
+  v12 = [(CRLInteractiveCanvasController *)self closestRepToPoint:storageCopy forStorage:x, y];
 
-  v11 = [v12 layout];
-  v9[2](v9, v11);
+  layout = [v12 layout];
+  blockCopy[2](blockCopy, layout);
 }
 
-- (id)closestRepToPoint:(CGPoint)a3 forStorage:(id)a4
+- (id)closestRepToPoint:(CGPoint)point forStorage:(id)storage
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  [(CRLInteractiveCanvasController *)self p_repsForStorage:v7];
+  y = point.y;
+  x = point.x;
+  storageCopy = storage;
+  [(CRLInteractiveCanvasController *)self p_repsForStorage:storageCopy];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -479,18 +479,18 @@ LABEL_14:
   return v11;
 }
 
-- (id)p_repsForStorage:(id)a3
+- (id)p_repsForStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v5 = +[NSMutableSet set];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(CRLInteractiveCanvasController *)self canvas];
-  v7 = [v6 topLevelReps];
+  canvas = [(CRLInteractiveCanvasController *)self canvas];
+  topLevelReps = [canvas topLevelReps];
 
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [topLevelReps countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -501,13 +501,13 @@ LABEL_14:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(topLevelReps);
         }
 
-        [(CRLInteractiveCanvasController *)self p_recursivelyAddRep:*(*(&v13 + 1) + 8 * i) forStorage:v4 toSet:v5];
+        [(CRLInteractiveCanvasController *)self p_recursivelyAddRep:*(*(&v13 + 1) + 8 * i) forStorage:storageCopy toSet:v5];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [topLevelReps countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -516,17 +516,17 @@ LABEL_14:
   return v5;
 }
 
-- (void)p_recursivelyAddRep:(id)a3 forStorage:(id)a4 toSet:(id)a5
+- (void)p_recursivelyAddRep:(id)rep forStorage:(id)storage toSet:(id)set
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  repCopy = rep;
+  storageCopy = storage;
+  setCopy = set;
   v11 = objc_opt_class();
-  v12 = sub_100014370(v11, v8);
+  v12 = sub_100014370(v11, repCopy);
   v13 = v12;
-  if (v12 && ([v12 storage], v14 = objc_claimAutoreleasedReturnValue(), v14, v14 == v9))
+  if (v12 && ([v12 storage], v14 = objc_claimAutoreleasedReturnValue(), v14, v14 == storageCopy))
   {
-    [v10 addObject:v13];
+    [setCopy addObject:v13];
   }
 
   else
@@ -535,8 +535,8 @@ LABEL_14:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v15 = [v8 childReps];
-    v16 = [v15 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    childReps = [repCopy childReps];
+    v16 = [childReps countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v16)
     {
       v17 = v16;
@@ -548,15 +548,15 @@ LABEL_14:
         {
           if (*v21 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(childReps);
           }
 
-          [(CRLInteractiveCanvasController *)self p_recursivelyAddRep:*(*(&v20 + 1) + 8 * v19) forStorage:v9 toSet:v10];
+          [(CRLInteractiveCanvasController *)self p_recursivelyAddRep:*(*(&v20 + 1) + 8 * v19) forStorage:storageCopy toSet:setCopy];
           v19 = v19 + 1;
         }
 
         while (v17 != v19);
-        v17 = [v15 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v17 = [childReps countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v17);
@@ -587,8 +587,8 @@ LABEL_14:
   [v4 addObserver:self selector:"p_spellCheckingStateChangedNotification:" name:@"CRLWPSpellCheckingStateChangedNotification" object:0];
   [v4 addObserver:self selector:"p_spellCheckerWordsDidChangeNotification:" name:@"CRLWPSpellCheckingIgnoranceChangedNotification" object:0];
   [v4 addObserver:self selector:"p_spellCheckerWordsDidChangeNotification:" name:@"CRLWPSpellCheckingLearnedWordsChangedNotification" object:0];
-  v3 = [(CRLInteractiveCanvasController *)self layerHost];
-  [v3 addCommonObservers];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  [layerHost addCommonObservers];
 }
 
 - (void)removeCommonObservers
@@ -599,8 +599,8 @@ LABEL_14:
   v3 = +[NSUserDefaults standardUserDefaults];
   [v3 removeObserver:self forKeyPath:@"CRLScenesDebugView" context:@"CRLScenesDebugView"];
 
-  v4 = [(CRLInteractiveCanvasController *)self layerHost];
-  [v4 removeCommonObservers];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  [layerHost removeCommonObservers];
 }
 
 - (void)p_commonInit
@@ -792,19 +792,19 @@ LABEL_14:
 
 - (int64_t)mathHintsMode
 {
-  v2 = [(CRLInteractiveCanvasController *)self mathCalculationController];
-  v3 = [v2 mathHintsMode];
+  mathCalculationController = [(CRLInteractiveCanvasController *)self mathCalculationController];
+  mathHintsMode = [mathCalculationController mathHintsMode];
 
-  return v3;
+  return mathHintsMode;
 }
 
-- (void)setMathHintsMode:(int64_t)a3
+- (void)setMathHintsMode:(int64_t)mode
 {
-  v4 = [(CRLInteractiveCanvasController *)self mathCalculationController];
-  [v4 setMathHintsMode:a3];
+  mathCalculationController = [(CRLInteractiveCanvasController *)self mathCalculationController];
+  [mathCalculationController setMathHintsMode:mode];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v14.receiver = self;
   v14.super_class = CRLInteractiveCanvasController;
@@ -812,7 +812,7 @@ LABEL_14:
   {
     v13.receiver = self;
     v13.super_class = CRLInteractiveCanvasController;
-    v5 = [(CRLInteractiveCanvasController *)&v13 methodSignatureForSelector:a3];
+    v5 = [(CRLInteractiveCanvasController *)&v13 methodSignatureForSelector:selector];
   }
 
   else
@@ -862,27 +862,27 @@ LABEL_14:
   return v5;
 }
 
-+ (BOOL)selectorIsActionMethod:(SEL)a3
++ (BOOL)selectorIsActionMethod:(SEL)method
 {
-  Name = sel_getName(a3);
+  Name = sel_getName(method);
   v4 = &Name[strlen(Name) - 1];
   return *v4 == 58 && strchr(Name, 58) == v4;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3 withSender:(id)a4
+- (BOOL)respondsToSelector:(SEL)selector withSender:(id)sender
 {
-  v6 = a4;
+  senderCopy = sender;
   v11.receiver = self;
   v11.super_class = CRLInteractiveCanvasController;
-  if ([(CRLInteractiveCanvasController *)&v11 respondsToSelector:a3])
+  if ([(CRLInteractiveCanvasController *)&v11 respondsToSelector:selector])
   {
     v7 = 1;
   }
 
-  else if ([CRLInteractiveCanvasController selectorIsActionMethod:a3])
+  else if ([CRLInteractiveCanvasController selectorIsActionMethod:selector])
   {
-    v8 = [(CRLInteractiveCanvasController *)self editorController];
-    v9 = [v8 editorForEditAction:a3 withSender:v6];
+    editorController = [(CRLInteractiveCanvasController *)self editorController];
+    v9 = [editorController editorForEditAction:selector withSender:senderCopy];
     v7 = v9 != 0;
   }
 
@@ -894,26 +894,26 @@ LABEL_14:
   return v7;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  v5 = [v4 selector];
+  invocationCopy = invocation;
+  selector = [invocationCopy selector];
   v16 = 0;
-  [v4 getArgument:&v16 atIndex:2];
-  v6 = [(CRLInteractiveCanvasController *)self editorController];
-  v7 = [v6 editorForEditAction:v5 withSender:v16];
+  [invocationCopy getArgument:&v16 atIndex:2];
+  editorController = [(CRLInteractiveCanvasController *)self editorController];
+  v7 = [editorController editorForEditAction:selector withSender:v16];
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 invokeWithTarget:v7];
+    [invocationCopy invokeWithTarget:v7];
     goto LABEL_25;
   }
 
   v8 = v16;
-  v9 = [(CRLInteractiveCanvasController *)self layerHost];
-  if (v8 == v9 || [@"UIEditingInteraction" isEqual:v16])
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  if (v8 == layerHost || [@"UIEditingInteraction" isEqual:v16])
   {
-    if (v5 == "cut:" || v5 == "copy:")
+    if (selector == "cut:" || selector == "copy:")
     {
 
 LABEL_10:
@@ -946,7 +946,7 @@ LABEL_10:
       goto LABEL_25;
     }
 
-    if (v5 == "paste:")
+    if (selector == "paste:")
     {
       goto LABEL_10;
     }
@@ -956,14 +956,14 @@ LABEL_10:
   {
   }
 
-  if (v5 != "bringToFront:" && v5 != "sendToBack:" || (objc_opt_self(), v13 = objc_claimAutoreleasedReturnValue(), isKindOfClass = objc_opt_isKindOfClass(), v13, (isKindOfClass & 1) == 0))
+  if (selector != "bringToFront:" && selector != "sendToBack:" || (objc_opt_self(), v13 = objc_claimAutoreleasedReturnValue(), isKindOfClass = objc_opt_isKindOfClass(), v13, (isKindOfClass & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v15.receiver = self;
       v15.super_class = CRLInteractiveCanvasController;
-      [(CRLInteractiveCanvasController *)&v15 doesNotRecognizeSelector:v5];
+      [(CRLInteractiveCanvasController *)&v15 doesNotRecognizeSelector:selector];
     }
   }
 
@@ -974,8 +974,8 @@ LABEL_25:
 {
   if (self->mCanvasEditor)
   {
-    v3 = [(CRLEditorController *)self->mEditorController currentEditors];
-    v4 = [v3 indexOfObjectIdenticalTo:self->mCanvasEditor];
+    currentEditors = [(CRLEditorController *)self->mEditorController currentEditors];
+    v4 = [currentEditors indexOfObjectIdenticalTo:self->mCanvasEditor];
 
     if (v4 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -995,16 +995,16 @@ LABEL_25:
   self->mEditorController = 0;
 }
 
-- (void)teardownCollaboratorCursorInfrastructureInvalidatingLayers:(BOOL)a3
+- (void)teardownCollaboratorCursorInfrastructureInvalidatingLayers:(BOOL)layers
 {
-  v3 = a3;
+  layersCopy = layers;
   self->mCollaboratorCursorsInvalidated = 1;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary crl_allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  crl_allObjects = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary crl_allObjects];
+  v6 = [crl_allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1015,18 +1015,18 @@ LABEL_25:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(crl_allObjects);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
         [v10 teardown];
-        if (v3)
+        if (layersCopy)
         {
           [(CRLInteractiveCanvasController *)self invalidateLayersForDecorator:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [crl_allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -1054,8 +1054,8 @@ LABEL_25:
   self->mMultiselectResizeInfo = 0;
 
   [(CRLInteractiveCanvasController *)self teardownTextInputResponder];
-  v4 = [(CRLInteractiveCanvasController *)self gestureDispatcher];
-  [v4 teardown];
+  gestureDispatcher = [(CRLInteractiveCanvasController *)self gestureDispatcher];
+  [gestureDispatcher teardown];
 
   [(CRLCanvas *)self->mCanvas teardown];
   if (self->mCanvasEditor)
@@ -1064,8 +1064,8 @@ LABEL_25:
   }
 
   [(CRLInteractiveCanvasLayerUpdater *)self->mLayerUpdater teardown];
-  v5 = [(CRLInteractiveCanvasController *)self collaboratorCursorDelegate];
-  [v5 willTeardownRenderer:self];
+  collaboratorCursorDelegate = [(CRLInteractiveCanvasController *)self collaboratorCursorDelegate];
+  [collaboratorCursorDelegate willTeardownRenderer:self];
 
   [(CRLInteractiveCanvasController *)self setCollaboratorCursorDelegate:0];
   mInfosPreviouslyShowingCollabCursors = self->mInfosPreviouslyShowingCollabCursors;
@@ -1112,21 +1112,21 @@ LABEL_25:
   }
 }
 
-- (void)setShowGrayOverlay:(BOOL)a3
+- (void)setShowGrayOverlay:(BOOL)overlay
 {
-  self->mShowGrayOverlay = a3;
-  v3 = [(CRLInteractiveCanvasController *)self canvas];
-  [v3 i_setLayersInvalidWithoutInvalidatingAnySpecificLayers];
+  self->mShowGrayOverlay = overlay;
+  canvas = [(CRLInteractiveCanvasController *)self canvas];
+  [canvas i_setLayersInvalidWithoutInvalidatingAnySpecificLayers];
 }
 
-- (void)setLayerHost:(id)a3
+- (void)setLayerHost:(id)host
 {
-  if (a3)
+  if (host)
   {
     self->mHadLayerHost = 1;
   }
 
-  obj = a3;
+  obj = host;
   WeakRetained = objc_loadWeakRetained(&self->mLayerHost);
   [WeakRetained removeCommonObservers];
 
@@ -1195,9 +1195,9 @@ LABEL_25:
   }
 }
 
-- (void)addBackgroundRenderingObject:(id)a3
+- (void)addBackgroundRenderingObject:(id)object
 {
-  v8 = a3;
+  objectCopy = object;
   v4 = self->mBackgroundRenderingObjects;
   objc_sync_enter(v4);
   mBackgroundRenderingObjects = self->mBackgroundRenderingObjects;
@@ -1210,16 +1210,16 @@ LABEL_25:
     mBackgroundRenderingObjects = self->mBackgroundRenderingObjects;
   }
 
-  [(NSMutableArray *)mBackgroundRenderingObjects addObject:v8];
+  [(NSMutableArray *)mBackgroundRenderingObjects addObject:objectCopy];
   objc_sync_exit(v4);
 }
 
-- (void)removeBackgroundRenderingObject:(id)a3
+- (void)removeBackgroundRenderingObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = self->mBackgroundRenderingObjects;
   objc_sync_enter(v5);
-  v6 = [(NSMutableArray *)self->mBackgroundRenderingObjects indexOfObject:v4];
+  v6 = [(NSMutableArray *)self->mBackgroundRenderingObjects indexOfObject:objectCopy];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -1254,19 +1254,19 @@ LABEL_25:
   objc_sync_exit(v5);
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != delegateCopy)
   {
     v6 = objc_loadWeakRetained(&self->mDelegate);
 
     if (v6)
     {
       [(CRLInteractiveCanvasController *)self p_endObservingDocumentRootIfNeeded];
-      if (v4)
+      if (delegateCopy)
       {
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -1296,9 +1296,9 @@ LABEL_25:
       }
     }
 
-    v10 = objc_storeWeak(&self->mDelegate, v4);
+    v10 = objc_storeWeak(&self->mDelegate, delegateCopy);
 
-    if (v4)
+    if (delegateCopy)
     {
       [(CRLInteractiveCanvasController *)self p_beginObservingDocumentRoot];
       [(CRLInteractiveCanvasController *)self updateCanvasDotGridVisibilityIfNeeded];
@@ -1313,9 +1313,9 @@ LABEL_25:
 - (void)p_beginObservingDocumentRoot
 {
   v3 = +[NSNotificationCenter defaultCenter];
-  v4 = [(CRLInteractiveCanvasController *)self editingCoordinator];
+  editingCoordinator = [(CRLInteractiveCanvasController *)self editingCoordinator];
 
-  if (!v4)
+  if (!editingCoordinator)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1345,43 +1345,43 @@ LABEL_25:
   }
 
   v8 = [CRLCanvasLayoutChangeObserver alloc];
-  v9 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-  v10 = [v9 changeNotifier];
-  v11 = [(CRLCanvas *)self->mCanvas layoutController];
-  v12 = [(CRLCanvasLayoutChangeObserver *)v8 initWithChangeNotifier:v10 layoutController:v11];
+  editingCoordinator2 = [(CRLInteractiveCanvasController *)self editingCoordinator];
+  changeNotifier = [editingCoordinator2 changeNotifier];
+  layoutController = [(CRLCanvas *)self->mCanvas layoutController];
+  v12 = [(CRLCanvasLayoutChangeObserver *)v8 initWithChangeNotifier:changeNotifier layoutController:layoutController];
 
-  v13 = [(CRLCanvas *)self->mCanvas layoutController];
-  [v13 setI_layoutRegistrationObserver:v12];
+  layoutController2 = [(CRLCanvas *)self->mCanvas layoutController];
+  [layoutController2 setI_layoutRegistrationObserver:v12];
 
   [(CRLCanvasLayoutChangeObserver *)v12 setInteractiveCanvasController:self];
   if ([(CRLInteractiveCanvasController *)self shouldAddObservers])
   {
-    v14 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-    v15 = [v14 changeNotifier];
-    v16 = [(CRLInteractiveCanvasController *)self board];
-    [v15 addObserver:self forChangeSource:v16];
+    editingCoordinator3 = [(CRLInteractiveCanvasController *)self editingCoordinator];
+    changeNotifier2 = [editingCoordinator3 changeNotifier];
+    board = [(CRLInteractiveCanvasController *)self board];
+    [changeNotifier2 addObserver:self forChangeSource:board];
 
-    v17 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-    v18 = [v17 changeNotifier];
-    v19 = [(CRLInteractiveCanvasController *)self board];
-    v20 = [v19 rootContainer];
-    [v18 addObserver:self forChangeSource:v20];
+    editingCoordinator4 = [(CRLInteractiveCanvasController *)self editingCoordinator];
+    changeNotifier3 = [editingCoordinator4 changeNotifier];
+    board2 = [(CRLInteractiveCanvasController *)self board];
+    rootContainer = [board2 rootContainer];
+    [changeNotifier3 addObserver:self forChangeSource:rootContainer];
 
-    v21 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-    v22 = [v21 collaboratorCursorCoordinator];
-    [v22 registerCursorRenderer:self];
+    editingCoordinator5 = [(CRLInteractiveCanvasController *)self editingCoordinator];
+    collaboratorCursorCoordinator = [editingCoordinator5 collaboratorCursorCoordinator];
+    [collaboratorCursorCoordinator registerCursorRenderer:self];
 
     v23 = +[NSNotification CRLBoardRealTimeStateDidChange];
-    v24 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-    v25 = [v24 mainBoard];
-    [v3 addObserver:self selector:"p_realTimeStateDidChange:" name:v23 object:v25];
+    editingCoordinator6 = [(CRLInteractiveCanvasController *)self editingCoordinator];
+    mainBoard = [editingCoordinator6 mainBoard];
+    [v3 addObserver:self selector:"p_realTimeStateDidChange:" name:v23 object:mainBoard];
 
     v26 = +[NSNotification CRLBoardRealTimeNewParticipantDidJoinSession];
     [v3 addObserver:self selector:"p_realTimeSessionNewParticipantDidJoin:" name:v26 object:0];
   }
 
-  v27 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-  -[CRLInteractiveCanvasController setDocumentIsSharedReadOnly:](self, "setDocumentIsSharedReadOnly:", [v27 canPerformUserAction] ^ 1);
+  editingCoordinator7 = [(CRLInteractiveCanvasController *)self editingCoordinator];
+  -[CRLInteractiveCanvasController setDocumentIsSharedReadOnly:](self, "setDocumentIsSharedReadOnly:", [editingCoordinator7 canPerformUserAction] ^ 1);
 
   if (self->mPKDrawingProvider)
   {
@@ -1450,19 +1450,19 @@ LABEL_25:
   self->mDrawingIntelligenceProvider = v36;
 }
 
-- (void)p_realTimeSessionNewParticipantDidJoin:(id)a3
+- (void)p_realTimeSessionNewParticipantDidJoin:(id)join
 {
   [(CRLInteractiveCanvasController *)self sendRealTimeEnterToPeersIfNecessary];
 
   [(CRLInteractiveCanvasController *)self sendSelectionPathToPeersIfNecessary];
 }
 
-- (void)p_realTimeStateDidChange:(id)a3
+- (void)p_realTimeStateDidChange:(id)change
 {
-  v4 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-  v5 = [v4 isInRealTimeSyncSession];
+  editingCoordinator = [(CRLInteractiveCanvasController *)self editingCoordinator];
+  isInRealTimeSyncSession = [editingCoordinator isInRealTimeSyncSession];
 
-  if (v5)
+  if (isInRealTimeSyncSession)
   {
     if ([(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary count])
     {
@@ -1470,8 +1470,8 @@ LABEL_25:
       v14 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v6 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary crl_allObjects];
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      crl_allObjects = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary crl_allObjects];
+      v7 = [crl_allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v7)
       {
         v8 = v7;
@@ -1482,13 +1482,13 @@ LABEL_25:
           {
             if (*v12 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(crl_allObjects);
             }
 
             [(CRLInteractiveCanvasController *)self invalidateLayersForDecorator:*(*(&v11 + 1) + 8 * i)];
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+          v8 = [crl_allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
         }
 
         while (v8);
@@ -1512,17 +1512,17 @@ LABEL_25:
 
 - (void)p_endObservingDocumentRootIfNeeded
 {
-  v3 = [(CRLInteractiveCanvasController *)self delegate];
+  delegate = [(CRLInteractiveCanvasController *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
     v4 = +[NSNotificationCenter defaultCenter];
-    v5 = [(CRLCanvas *)self->mCanvas layoutController];
-    [v5 setI_layoutRegistrationObserver:0];
+    layoutController = [(CRLCanvas *)self->mCanvas layoutController];
+    [layoutController setI_layoutRegistrationObserver:0];
 
-    v6 = [(CRLInteractiveCanvasController *)self editingCoordinator];
+    editingCoordinator = [(CRLInteractiveCanvasController *)self editingCoordinator];
 
-    if (!v6)
+    if (!editingCoordinator)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -1551,16 +1551,16 @@ LABEL_25:
       [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:879 isFatal:0 description:"invalid nil value for '%{public}s'", "self.editingCoordinator"];
     }
 
-    v10 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-    v11 = [v10 changeNotifier];
-    v12 = [(CRLInteractiveCanvasController *)self board];
-    v13 = [v12 rootContainer];
-    [v11 removeObserver:self forChangeSource:v13];
+    editingCoordinator2 = [(CRLInteractiveCanvasController *)self editingCoordinator];
+    changeNotifier = [editingCoordinator2 changeNotifier];
+    board = [(CRLInteractiveCanvasController *)self board];
+    rootContainer = [board rootContainer];
+    [changeNotifier removeObserver:self forChangeSource:rootContainer];
 
     v14 = +[NSNotification CRLBoardRealTimeStateDidChange];
-    v15 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-    v16 = [v15 mainBoard];
-    [v4 removeObserver:self name:v14 object:v16];
+    editingCoordinator3 = [(CRLInteractiveCanvasController *)self editingCoordinator];
+    mainBoard = [editingCoordinator3 mainBoard];
+    [v4 removeObserver:self name:v14 object:mainBoard];
 
     v17 = +[NSNotification CRLBoardRealTimeNewParticipantDidJoinSession];
     [v4 removeObserver:self name:v17 object:0];
@@ -1614,34 +1614,34 @@ LABEL_25:
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:899 isFatal:0 description:"This operation must only be performed on the main thread."];
   }
 
-  v6 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-  v7 = [v6 mainBoard];
+  editingCoordinator = [(CRLInteractiveCanvasController *)self editingCoordinator];
+  mainBoard = [editingCoordinator mainBoard];
 
-  return v7;
+  return mainBoard;
 }
 
 - (_TtC8Freeform21CRLEditingCoordinator)editingCoordinator
 {
-  v3 = [(CRLInteractiveCanvasController *)self delegate];
-  v4 = [v3 editingCoordinatorForInteractiveCanvasController:self];
+  delegate = [(CRLInteractiveCanvasController *)self delegate];
+  v4 = [delegate editingCoordinatorForInteractiveCanvasController:self];
 
   return v4;
 }
 
 - (_TtC8Freeform20CRLCommandController)commandController
 {
-  v2 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-  v3 = [v2 commandController];
+  editingCoordinator = [(CRLInteractiveCanvasController *)self editingCoordinator];
+  commandController = [editingCoordinator commandController];
 
-  return v3;
+  return commandController;
 }
 
 - (CRLChangeNotifier)changeNotifier
 {
-  v2 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-  v3 = [v2 changeNotifier];
+  editingCoordinator = [(CRLInteractiveCanvasController *)self editingCoordinator];
+  changeNotifier = [editingCoordinator changeNotifier];
 
-  return v3;
+  return changeNotifier;
 }
 
 - (CGSize)defaultMinimumUnscaledCanvasSize
@@ -1653,13 +1653,13 @@ LABEL_25:
   return result;
 }
 
-- (void)canvasLayoutInvalidated:(id)a3
+- (void)canvasLayoutInvalidated:(id)invalidated
 {
   if (+[NSThread isMainThread])
   {
-    v5 = [(CRLInteractiveCanvasController *)self layerHost];
-    v4 = [v5 canvasLayer];
-    [v4 setNeedsLayout];
+    layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+    canvasLayer = [layerHost canvasLayer];
+    [canvasLayer setNeedsLayout];
   }
 }
 
@@ -1676,7 +1676,7 @@ LABEL_25:
   [(CRLInteractiveCanvasController *)self setP_visibleUnscaledRect:CGRectNull.origin.x, y, width, height];
 }
 
-- (void)canvasWillValidateLayouts:(id)a3
+- (void)canvasWillValidateLayouts:(id)layouts
 {
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
   v5 = objc_opt_respondsToSelector();
@@ -1688,7 +1688,7 @@ LABEL_25:
   }
 }
 
-- (void)canvasDidValidateLayouts:(id)a3
+- (void)canvasDidValidateLayouts:(id)layouts
 {
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
   v5 = objc_opt_respondsToSelector();
@@ -1700,13 +1700,13 @@ LABEL_25:
   }
 }
 
-- (void)canvasDidLayout:(id)a3
+- (void)canvasDidLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   if (!self->mHasCanvasEverLaidOut)
   {
-    v5 = [(CRLInteractiveCanvasController *)self infosToDisplay];
-    self->mHasCanvasEverLaidOut = [v5 count] != 0;
+    infosToDisplay = [(CRLInteractiveCanvasController *)self infosToDisplay];
+    self->mHasCanvasEverLaidOut = [infosToDisplay count] != 0;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
@@ -1737,25 +1737,25 @@ LABEL_25:
 
   if ([(CRLInteractiveCanvasController *)self p_areAnyCollaboratorsPresent])
   {
-    v10 = [(CRLInteractiveCanvasController *)self editorController];
-    v11 = [v10 isChangingSelection];
+    editorController = [(CRLInteractiveCanvasController *)self editorController];
+    isChangingSelection = [editorController isChangingSelection];
 
-    if (v11)
+    if (isChangingSelection)
     {
-      v12 = [(CRLInteractiveCanvasController *)self canvas];
+      canvas = [(CRLInteractiveCanvasController *)self canvas];
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_100444040;
       v15[3] = &unk_10183AB38;
       v15[4] = self;
-      [v12 performBlockAfterLayoutIfNecessary:v15];
+      [canvas performBlockAfterLayoutIfNecessary:v15];
     }
 
     else
     {
-      v13 = [(CRLInteractiveCanvasController *)self p_currentSelectionIsOnscreen];
-      v14 = v13;
-      if (self->mSelectionIsCurrentlyOnscreen && self->mDidTransform && !self->mCurrentlyScrolling && (v13 & 1) == 0)
+      p_currentSelectionIsOnscreen = [(CRLInteractiveCanvasController *)self p_currentSelectionIsOnscreen];
+      v14 = p_currentSelectionIsOnscreen;
+      if (self->mSelectionIsCurrentlyOnscreen && self->mDidTransform && !self->mCurrentlyScrolling && (p_currentSelectionIsOnscreen & 1) == 0)
       {
         [(CRLInteractiveCanvasController *)self scrollCurrentSelectionToVisibleWithOptions:0];
       }
@@ -1766,13 +1766,13 @@ LABEL_25:
   }
 }
 
-- (void)p_collabParticipantsDidChange:(id)a3
+- (void)p_collabParticipantsDidChange:(id)change
 {
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(CRLCanvas *)self->mCanvas topLevelReps:a3];
+  v3 = [(CRLCanvas *)self->mCanvas topLevelReps:change];
   v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
@@ -1799,25 +1799,25 @@ LABEL_25:
 
 - (BOOL)p_currentSelectionIsOnscreen
 {
-  v3 = [(CRLInteractiveCanvasController *)self delegate];
-  if (!v3)
+  delegate = [(CRLInteractiveCanvasController *)self delegate];
+  if (!delegate)
   {
     return 0;
   }
 
-  v4 = v3;
-  v5 = [(CRLInteractiveCanvasController *)self editorController];
-  v6 = [v5 selectionPath];
+  v4 = delegate;
+  editorController = [(CRLInteractiveCanvasController *)self editorController];
+  selectionPath = [editorController selectionPath];
 
-  if (!v6)
+  if (!selectionPath)
   {
     return 0;
   }
 
-  v7 = [(CRLInteractiveCanvasController *)self editorController];
-  v8 = [v7 selectionPath];
+  editorController2 = [(CRLInteractiveCanvasController *)self editorController];
+  selectionPath2 = [editorController2 selectionPath];
 
-  v9 = [(CRLInteractiveCanvasController *)self layoutsForSelectionPath:v8];
+  v9 = [(CRLInteractiveCanvasController *)self layoutsForSelectionPath:selectionPath2];
   [(CRLInteractiveCanvasController *)self visibleUnscaledRect];
   v42 = CGRectInset(v41, 4.0, 4.0);
   y = v42.origin.y;
@@ -1856,7 +1856,7 @@ LABEL_25:
       }
 
       v22 = *(*(&v36 + 1) + 8 * v20);
-      [(CRLInteractiveCanvasController *)self rectInRootForScrollingToSelectionPath:v8 onLayout:v22 allowingZooming:0, *&height, *&width, *&y, *&x, v36];
+      [(CRLInteractiveCanvasController *)self rectInRootForScrollingToSelectionPath:selectionPath2 onLayout:v22 allowingZooming:0, *&height, *&width, *&y, *&x, v36];
       v27 = v23;
       v28 = v24;
       v29 = v25;
@@ -1867,7 +1867,7 @@ LABEL_25:
         v16 = v25;
         v15 = v24;
         v14 = v23;
-        if ([v22 selectionMustBeEntirelyOnscreenToCountAsVisibleInSelectionPath:v8])
+        if ([v22 selectionMustBeEntirelyOnscreenToCountAsVisibleInSelectionPath:selectionPath2])
         {
           goto LABEL_13;
         }
@@ -1888,7 +1888,7 @@ LABEL_25:
         v15 = v44.origin.y;
         v16 = v44.size.width;
         v17 = v44.size.height;
-        if (v21 || [v22 selectionMustBeEntirelyOnscreenToCountAsVisibleInSelectionPath:v8])
+        if (v21 || [v22 selectionMustBeEntirelyOnscreenToCountAsVisibleInSelectionPath:selectionPath2])
         {
 LABEL_13:
           [(CRLInteractiveCanvasController *)self visibleUnscaledRect];
@@ -1944,13 +1944,13 @@ LABEL_23:
   return v21;
 }
 
-- (void)canvasWillUpdateRepsFromLayouts:(id)a3
+- (void)canvasWillUpdateRepsFromLayouts:(id)layouts
 {
-  v4 = [(CRLInteractiveCanvasController *)self tmCoordinator];
-  v5 = [v4 controllingTM];
-  v10 = [v5 tracker];
+  tmCoordinator = [(CRLInteractiveCanvasController *)self tmCoordinator];
+  controllingTM = [tmCoordinator controllingTM];
+  tracker = [controllingTM tracker];
 
-  if (!v10 || (objc_opt_respondsToSelector() & 1) == 0 || ([v10 disallowCanvasGrowingWhileTracking] & 1) == 0)
+  if (!tracker || (objc_opt_respondsToSelector() & 1) == 0 || ([tracker disallowCanvasGrowingWhileTracking] & 1) == 0)
   {
     if ([(CRLInteractiveCanvasController *)self resizeCanvasOnLayout])
     {
@@ -1959,44 +1959,44 @@ LABEL_23:
 
     else if ([(CRLInteractiveCanvasController *)self shouldCanvasScrollingSizeGrowToFitBoardContent])
     {
-      v6 = [(CRLInteractiveCanvasController *)self layerHost];
-      v7 = [v6 canvasLayer];
+      layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+      canvasLayer = [layerHost canvasLayer];
 
-      [v7 fixFrameAndScrollView];
+      [canvasLayer fixFrameAndScrollView];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v10 repsToHide];
+    repsToHide = [tracker repsToHide];
   }
 
   else
   {
-    v8 = 0;
+    repsToHide = 0;
   }
 
   mRepsToHideForCurrentTracker = self->mRepsToHideForCurrentTracker;
-  self->mRepsToHideForCurrentTracker = v8;
+  self->mRepsToHideForCurrentTracker = repsToHide;
 
   [(CRLInteractiveCanvasController *)self i_canvasDidUpdateVisibleBounds];
 }
 
 - (BOOL)i_currentlySuppressingLayerUpdates
 {
-  v2 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
-  v3 = [v2 currentlySuppressingLayerUpdates];
+  i_interactiveCanvasLayerHelper = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
+  currentlySuppressingLayerUpdates = [i_interactiveCanvasLayerHelper currentlySuppressingLayerUpdates];
 
-  return v3;
+  return currentlySuppressingLayerUpdates;
 }
 
-- (void)i_beginSuppressingLayerUpdatesExceptForReps:(id)a3
+- (void)i_beginSuppressingLayerUpdatesExceptForReps:(id)reps
 {
-  v4 = a3;
+  repsCopy = reps;
   [(CRLInteractiveCanvasController *)self p_validateLayerSuppressionAPIAccess];
-  v5 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
+  i_interactiveCanvasLayerHelper = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
 
-  if (!v5)
+  if (!i_interactiveCanvasLayerHelper)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -2025,16 +2025,16 @@ LABEL_23:
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:1143 isFatal:0 description:"invalid nil value for '%{public}s'", "self.i_interactiveCanvasLayerHelper"];
   }
 
-  v9 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
-  [v9 beginSuppressingLayerUpdatesExceptForReps:v4];
+  i_interactiveCanvasLayerHelper2 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
+  [i_interactiveCanvasLayerHelper2 beginSuppressingLayerUpdatesExceptForReps:repsCopy];
 }
 
 - (void)i_endSuppressingLayerUpdates
 {
   [(CRLInteractiveCanvasController *)self p_validateLayerSuppressionAPIAccess];
-  v3 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
+  i_interactiveCanvasLayerHelper = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
 
-  if (!v3)
+  if (!i_interactiveCanvasLayerHelper)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -2063,8 +2063,8 @@ LABEL_23:
     [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:1149 isFatal:0 description:"invalid nil value for '%{public}s'", "self.i_interactiveCanvasLayerHelper"];
   }
 
-  v7 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
-  [v7 endSuppressingLayerUpdates];
+  i_interactiveCanvasLayerHelper2 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
+  [i_interactiveCanvasLayerHelper2 endSuppressingLayerUpdates];
 }
 
 - (void)p_validateLayerSuppressionAPIAccess
@@ -2098,8 +2098,8 @@ LABEL_23:
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:1154 isFatal:0 description:"This operation must only be performed on the main thread."];
   }
 
-  v6 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-  if (([v6 areIncomingCollaborativeChangesSuspended] & 1) == 0)
+  editingCoordinator = [(CRLInteractiveCanvasController *)self editingCoordinator];
+  if (([editingCoordinator areIncomingCollaborativeChangesSuspended] & 1) == 0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -2129,47 +2129,47 @@ LABEL_23:
   }
 }
 
-- (void)updateLayerTreeForInteractiveCanvas:(id)a3
+- (void)updateLayerTreeForInteractiveCanvas:(id)canvas
 {
-  v3 = self;
-  v4 = [(CRLInteractiveCanvasController *)self layerHost];
-  [v4 willUpdateLayerTree];
+  selfCopy = self;
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  [layerHost willUpdateLayerTree];
 
-  v5 = [CRLRealTimeSyncDecorator shouldShowForICC:v3];
-  mLiveSyncDecorator = v3->mLiveSyncDecorator;
+  v5 = [CRLRealTimeSyncDecorator shouldShowForICC:selfCopy];
+  mLiveSyncDecorator = selfCopy->mLiveSyncDecorator;
   if (v5)
   {
     if (!mLiveSyncDecorator)
     {
-      v7 = [[CRLRealTimeSyncDecorator alloc] initWithInteractiveCanvasController:v3];
-      v8 = v3->mLiveSyncDecorator;
-      v3->mLiveSyncDecorator = v7;
+      v7 = [[CRLRealTimeSyncDecorator alloc] initWithInteractiveCanvasController:selfCopy];
+      v8 = selfCopy->mLiveSyncDecorator;
+      selfCopy->mLiveSyncDecorator = v7;
 
-      [(CRLInteractiveCanvasController *)v3 addDecorator:v3->mLiveSyncDecorator];
+      [(CRLInteractiveCanvasController *)selfCopy addDecorator:selfCopy->mLiveSyncDecorator];
     }
   }
 
   else if (mLiveSyncDecorator)
   {
-    [(CRLInteractiveCanvasController *)v3 removeDecorator:?];
-    v9 = v3->mLiveSyncDecorator;
-    v3->mLiveSyncDecorator = 0;
+    [(CRLInteractiveCanvasController *)selfCopy removeDecorator:?];
+    v9 = selfCopy->mLiveSyncDecorator;
+    selfCopy->mLiveSyncDecorator = 0;
   }
 
-  v10 = [(CRLInteractiveCanvasController *)v3 editingCoordinator];
-  if ([v10 isInSandboxiCloudEnvironment])
+  editingCoordinator = [(CRLInteractiveCanvasController *)selfCopy editingCoordinator];
+  if ([editingCoordinator isInSandboxiCloudEnvironment])
   {
-    v11 = v3->mLiveSyncDecorator;
+    v11 = selfCopy->mLiveSyncDecorator;
 
     if (!v11)
     {
-      if (!v3->mCKSandboxDecorator)
+      if (!selfCopy->mCKSandboxDecorator)
       {
-        v12 = [[CRLCKSandboxDecorator alloc] initWithInteractiveCanvasController:v3];
-        mCKSandboxDecorator = v3->mCKSandboxDecorator;
-        v3->mCKSandboxDecorator = v12;
+        v12 = [[CRLCKSandboxDecorator alloc] initWithInteractiveCanvasController:selfCopy];
+        mCKSandboxDecorator = selfCopy->mCKSandboxDecorator;
+        selfCopy->mCKSandboxDecorator = v12;
 
-        [(CRLInteractiveCanvasController *)v3 addDecorator:v3->mCKSandboxDecorator];
+        [(CRLInteractiveCanvasController *)selfCopy addDecorator:selfCopy->mCKSandboxDecorator];
       }
 
       goto LABEL_13;
@@ -2180,23 +2180,23 @@ LABEL_23:
   {
   }
 
-  if (v3->mCKSandboxDecorator)
+  if (selfCopy->mCKSandboxDecorator)
   {
-    [(CRLInteractiveCanvasController *)v3 removeDecorator:?];
-    v14 = v3->mCKSandboxDecorator;
-    v3->mCKSandboxDecorator = 0;
+    [(CRLInteractiveCanvasController *)selfCopy removeDecorator:?];
+    v14 = selfCopy->mCKSandboxDecorator;
+    selfCopy->mCKSandboxDecorator = 0;
   }
 
 LABEL_13:
-  v77 = v3;
-  if (v3->mCollaboratorCursorsInvalidated)
+  v77 = selfCopy;
+  if (selfCopy->mCollaboratorCursorsInvalidated)
   {
     v15 = +[NSMutableSet set];
     v120 = 0u;
     v121 = 0u;
     v122 = 0u;
     v123 = 0u;
-    obj = v3->mCurrentCollaboratorPresences;
+    obj = selfCopy->mCurrentCollaboratorPresences;
     v16 = [(NSMutableSet *)obj countByEnumeratingWithState:&v120 objects:v133 count:16];
     if (v16)
     {
@@ -2213,10 +2213,10 @@ LABEL_13:
           }
 
           v20 = *(*(&v120 + 1) + 8 * v19);
-          v21 = [(CRLInteractiveCanvasController *)v3 collaboratorCursorDelegate];
-          v22 = [v21 collaboratorCursorSelectionPathForRenderer:v3 collaboratorPresence:v20];
+          collaboratorCursorDelegate = [(CRLInteractiveCanvasController *)selfCopy collaboratorCursorDelegate];
+          v22 = [collaboratorCursorDelegate collaboratorCursorSelectionPathForRenderer:selfCopy collaboratorPresence:v20];
 
-          v23 = [(CRLInteractiveCanvasController *)v3 p_repsForCollaboratorCursorSelectionPath:v22];
+          v23 = [(CRLInteractiveCanvasController *)selfCopy p_repsForCollaboratorCursorSelectionPath:v22];
           if (qword_101AD5B90 != -1)
           {
             sub_101375784();
@@ -2260,7 +2260,7 @@ LABEL_13:
 
           [v15 unionSet:v25];
           v19 = v19 + 1;
-          v3 = v77;
+          selfCopy = v77;
         }
 
         while (v19 != v17);
@@ -2275,7 +2275,7 @@ LABEL_13:
     v113 = 0u;
     v114 = 0u;
     v115 = 0u;
-    v31 = v3->mInfosPreviouslyShowingCollabCursors;
+    v31 = selfCopy->mInfosPreviouslyShowingCollabCursors;
     v32 = [(NSSet *)v31 countByEnumeratingWithState:&v112 objects:v131 count:16];
     if (v32)
     {
@@ -2290,7 +2290,7 @@ LABEL_13:
             objc_enumerationMutation(v31);
           }
 
-          v36 = [(CRLInteractiveCanvasController *)v3 repForInfo:*(*(&v112 + 1) + 8 * j), v77];
+          v36 = [(CRLInteractiveCanvasController *)selfCopy repForInfo:*(*(&v112 + 1) + 8 * j), v77];
           if (v36)
           {
             [v30 addObject:v36];
@@ -2323,10 +2323,10 @@ LABEL_13:
             objc_enumerationMutation(v38);
           }
 
-          v43 = [*(*(&v108 + 1) + 8 * k) info];
-          if (v43)
+          info = [*(*(&v108 + 1) + 8 * k) info];
+          if (info)
           {
-            [v37 addObject:v43];
+            [v37 addObject:info];
           }
         }
 
@@ -2337,8 +2337,8 @@ LABEL_13:
     }
 
     v44 = [v37 copy];
-    mInfosPreviouslyShowingCollabCursors = v3->mInfosPreviouslyShowingCollabCursors;
-    v3->mInfosPreviouslyShowingCollabCursors = v44;
+    mInfosPreviouslyShowingCollabCursors = selfCopy->mInfosPreviouslyShowingCollabCursors;
+    selfCopy->mInfosPreviouslyShowingCollabCursors = v44;
 
     [v30 minusSet:v38];
     v106 = 0u;
@@ -2369,7 +2369,7 @@ LABEL_13:
       while (v48);
     }
 
-    v3->mCollaboratorCursorsInvalidated = 0;
+    selfCopy->mCollaboratorCursorsInvalidated = 0;
   }
 
   v78 = objc_alloc_init(NSMutableSet);
@@ -2377,7 +2377,7 @@ LABEL_13:
   v101 = 0u;
   v102 = 0u;
   v103 = 0u;
-  v51 = v3->mCurrentCollaboratorPresences;
+  v51 = selfCopy->mCurrentCollaboratorPresences;
   v52 = [(NSMutableSet *)v51 countByEnumeratingWithState:&v100 objects:v128 count:16];
   if (v52)
   {
@@ -2393,12 +2393,12 @@ LABEL_13:
         }
 
         v56 = *(*(&v100 + 1) + 8 * n);
-        v57 = [(CRLInteractiveCanvasController *)v3 collaboratorCursorDelegate];
-        v58 = [v57 collaboratorCursorSelectionPathForRenderer:v3 collaboratorPresence:v56];
+        collaboratorCursorDelegate2 = [(CRLInteractiveCanvasController *)selfCopy collaboratorCursorDelegate];
+        v58 = [collaboratorCursorDelegate2 collaboratorCursorSelectionPathForRenderer:selfCopy collaboratorPresence:v56];
 
         buf = 0u;
         v127 = 0u;
-        [(CRLInteractiveCanvasController *)v3 p_collaboratorHUDPositionForSelectionPath:v58 collaboratorPresence:v56 allowScroll:0 hudSize:1];
+        [(CRLInteractiveCanvasController *)selfCopy p_collaboratorHUDPositionForSelectionPath:v58 collaboratorPresence:v56 allowScroll:0 hudSize:1];
         if (BYTE8(v127) == 1 && v127 != 0)
         {
           [v78 addObject:v56];
@@ -2412,12 +2412,12 @@ LABEL_13:
   }
 
   v81 = [v78 mutableCopy];
-  [v81 minusSet:v3->mVisibleCollaboratorPresences];
+  [v81 minusSet:selfCopy->mVisibleCollaboratorPresences];
   v98 = 0u;
   v99 = 0u;
   v96 = 0u;
   v97 = 0u;
-  v79 = v3->mVisibleCollaboratorPresences;
+  v79 = selfCopy->mVisibleCollaboratorPresences;
   obja = [(NSMutableSet *)v79 countByEnumeratingWithState:&v96 objects:v125 count:16];
   if (obja)
   {
@@ -2452,9 +2452,9 @@ LABEL_13:
               }
 
               v67 = *(*(&v92 + 1) + 8 * jj);
-              v68 = [v67 presenceUUID];
-              v69 = [v61 presenceUUID];
-              v70 = [v68 isEqual:v69];
+              presenceUUID = [v67 presenceUUID];
+              presenceUUID2 = [v61 presenceUUID];
+              v70 = [presenceUUID isEqual:presenceUUID2];
 
               if (v70)
               {
@@ -2518,13 +2518,13 @@ LABEL_85:
   [(NSMutableSet *)v77->mDecoratorsWithInvalidLayers removeAllObjects];
 }
 
-- (void)canvasDidValidateLayoutsWithDependencies:(id)a3
+- (void)canvasDidValidateLayoutsWithDependencies:(id)dependencies
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:@"CRLInteractiveCanvasControllerDidValidateLayoutsWithDependenciesNotification" object:self];
 }
 
-- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)a3
+- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)canvas
 {
   if (self->mCreateRepsForOffscreenLayouts)
   {
@@ -2536,7 +2536,7 @@ LABEL_85:
 
   else
   {
-    [(CRLInteractiveCanvasController *)self visibleBoundsRectForTiling:a3];
+    [(CRLInteractiveCanvasController *)self visibleBoundsRectForTiling:canvas];
   }
 
   result.size.height = height;
@@ -2546,7 +2546,7 @@ LABEL_85:
   return result;
 }
 
-- (id)additionalVisibleInfosForCanvas:(id)a3
+- (id)additionalVisibleInfosForCanvas:(id)canvas
 {
   if (self->mCreateRepsForOffscreenLayouts)
   {
@@ -2555,15 +2555,15 @@ LABEL_85:
 
   else
   {
-    v5 = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
-    v6 = [(CRLInteractiveCanvasController *)self editorController];
-    v7 = [v6 selectionPath];
-    v8 = [v5 boardItemsForSelectionPath:v7];
+    selectionModelTranslator = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
+    editorController = [(CRLInteractiveCanvasController *)self editorController];
+    selectionPath = [editorController selectionPath];
+    v8 = [selectionModelTranslator boardItemsForSelectionPath:selectionPath];
 
-    v9 = [(CRLInteractiveCanvasController *)self dynamicOperationController];
-    v10 = [v9 allTransformedReps];
+    dynamicOperationController = [(CRLInteractiveCanvasController *)self dynamicOperationController];
+    allTransformedReps = [dynamicOperationController allTransformedReps];
 
-    if (v10)
+    if (allTransformedReps)
     {
       v3 = [NSMutableSet setWithSet:v8];
 
@@ -2571,7 +2571,7 @@ LABEL_85:
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v11 = v10;
+      v11 = allTransformedReps;
       v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v12)
       {
@@ -2586,8 +2586,8 @@ LABEL_85:
               objc_enumerationMutation(v11);
             }
 
-            v16 = [*(*(&v18 + 1) + 8 * i) info];
-            [v3 addObject:v16];
+            info = [*(*(&v18 + 1) + 8 * i) info];
+            [v3 addObject:info];
           }
 
           v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -2606,28 +2606,28 @@ LABEL_85:
   return v3;
 }
 
-- (void)canvas:(id)a3 createdRep:(id)a4
+- (void)canvas:(id)canvas createdRep:(id)rep
 {
-  v5 = a4;
-  v6 = [(CRLInteractiveCanvasController *)self canvasEditor];
-  [v6 repWasCreated:v5];
+  repCopy = rep;
+  canvasEditor = [(CRLInteractiveCanvasController *)self canvasEditor];
+  [canvasEditor repWasCreated:repCopy];
 }
 
-- (void)presentError:(id)a3 completionHandler:(id)a4
+- (void)presentError:(id)error completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRLInteractiveCanvasController *)self layerHost];
-  [v8 presentError:v7 completionHandler:v6];
+  handlerCopy = handler;
+  errorCopy = error;
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  [layerHost presentError:errorCopy completionHandler:handlerCopy];
 }
 
-- (void)presentErrors:(id)a3 withLocalizedDescription:(id)a4 completionHandler:(id)a5
+- (void)presentErrors:(id)errors withLocalizedDescription:(id)description completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CRLInteractiveCanvasController *)self layerHost];
-  [v11 presentErrors:v10 withLocalizedDescription:v9 completionHandler:v8];
+  handlerCopy = handler;
+  descriptionCopy = description;
+  errorsCopy = errors;
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  [layerHost presentErrors:errorsCopy withLocalizedDescription:descriptionCopy completionHandler:handlerCopy];
 }
 
 - (CRLEditorController)editorController
@@ -2636,14 +2636,14 @@ LABEL_85:
   mEditorController = self->mEditorController;
   if (!mEditorController)
   {
-    v5 = [(CRLInteractiveCanvasController *)self delegate];
-    if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+    delegate = [(CRLInteractiveCanvasController *)self delegate];
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
       mIsFetchingEditorController = self->mIsFetchingEditorController;
       if (mIsFetchingEditorController < 1)
       {
         self->mIsFetchingEditorController = mIsFetchingEditorController + 1;
-        v9 = [v5 editorControllerForInteractiveCanvasController:self];
+        v9 = [delegate editorControllerForInteractiveCanvasController:self];
         v10 = v9;
         v11 = self->mEditorController;
         if (!v11 || v9 == v11)
@@ -2720,7 +2720,7 @@ LABEL_85:
 
       else
       {
-        v7 = [v5 editorControllerForInteractiveCanvasController:self];
+        v7 = [delegate editorControllerForInteractiveCanvasController:self];
         v8 = self->mEditorController;
         self->mEditorController = v7;
       }
@@ -2777,18 +2777,18 @@ LABEL_39:
   return mEditorController;
 }
 
-- (void)setTextInputResponder:(id)a3
+- (void)setTextInputResponder:(id)responder
 {
-  v5 = a3;
-  if (self->mTextInputResponder != v5)
+  responderCopy = responder;
+  if (self->mTextInputResponder != responderCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->mTextInputResponder, a3);
-    v6 = [(CRLInteractiveCanvasController *)self layerHost];
-    v7 = [v6 asiOSCVC];
+    v8 = responderCopy;
+    objc_storeStrong(&self->mTextInputResponder, responder);
+    layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+    asiOSCVC = [layerHost asiOSCVC];
 
-    [v7 textInputResponderDidChange];
-    v5 = v8;
+    [asiOSCVC textInputResponderDidChange];
+    responderCopy = v8;
   }
 }
 
@@ -2804,9 +2804,9 @@ LABEL_39:
   mCanvasEditor = self->mCanvasEditor;
   if (!mCanvasEditor)
   {
-    v4 = [(CRLInteractiveCanvasController *)self newCanvasEditor];
+    newCanvasEditor = [(CRLInteractiveCanvasController *)self newCanvasEditor];
     v5 = self->mCanvasEditor;
-    self->mCanvasEditor = v4;
+    self->mCanvasEditor = newCanvasEditor;
 
     mCanvasEditor = self->mCanvasEditor;
   }
@@ -2814,30 +2814,30 @@ LABEL_39:
   return mCanvasEditor;
 }
 
-- (void)endEditingWithFlags:(unint64_t)a3
+- (void)endEditingWithFlags:(unint64_t)flags
 {
-  v14 = [(CRLInteractiveCanvasController *)self editorController];
-  v5 = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
-  v6 = [v14 selectionPath];
-  v7 = [v6 mostSpecificSelectionOfClass:objc_opt_class()];
+  editorController = [(CRLInteractiveCanvasController *)self editorController];
+  selectionModelTranslator = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
+  selectionPath = [editorController selectionPath];
+  v7 = [selectionPath mostSpecificSelectionOfClass:objc_opt_class()];
 
   if (v7)
   {
-    v8 = [v14 selectionPath];
-    v9 = [v8 indexForSelection:v7];
+    selectionPath2 = [editorController selectionPath];
+    v9 = [selectionPath2 indexForSelection:v7];
 
-    v10 = [v14 selectionPath];
-    v11 = [v10 orderedSelections];
-    v12 = [v11 subarrayWithRange:{0, v9 + 1}];
+    selectionPath3 = [editorController selectionPath];
+    orderedSelections = [selectionPath3 orderedSelections];
+    v12 = [orderedSelections subarrayWithRange:{0, v9 + 1}];
 
     v13 = [CRLSelectionPath selectionPathWithSelectionArray:v12];
-    [v14 setSelectionPath:v13 withFlags:a3];
+    [editorController setSelectionPath:v13 withFlags:flags];
   }
 
   else
   {
-    v12 = [v5 selectionPathForInfos:0];
-    [v14 setSelectionPath:v12 withFlags:a3];
+    v12 = [selectionModelTranslator selectionPathForInfos:0];
+    [editorController setSelectionPath:v12 withFlags:flags];
   }
 }
 
@@ -2850,10 +2850,10 @@ LABEL_39:
 
 - (BOOL)canZoomToCurrentSelection
 {
-  v3 = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
-  v4 = [(CRLInteractiveCanvasController *)self editorController];
-  v5 = [v4 selectionPath];
-  v6 = [v3 boardItemsForSelectionPath:v5];
+  selectionModelTranslator = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
+  editorController = [(CRLInteractiveCanvasController *)self editorController];
+  selectionPath = [editorController selectionPath];
+  v6 = [selectionModelTranslator boardItemsForSelectionPath:selectionPath];
   v7 = [v6 count] != 0;
 
   return v7;
@@ -2861,8 +2861,8 @@ LABEL_39:
 
 - (CGPoint)smartZoomCenterForNoSelection
 {
-  v2 = [(CRLInteractiveCanvasController *)self canvas];
-  [v2 unscaledSize];
+  canvas = [(CRLInteractiveCanvasController *)self canvas];
+  [canvas unscaledSize];
   v3 = sub_10011ECB4();
   v7 = sub_100120414(v3, v4, v5, v6);
   v9 = v8;
@@ -2876,9 +2876,9 @@ LABEL_39:
 
 - (void)zoomToCurrentSelection
 {
-  v4 = [(CRLInteractiveCanvasController *)self editorController];
-  v3 = [v4 selectionPath];
-  [(CRLInteractiveCanvasController *)self zoomToSelectionPath:v3];
+  editorController = [(CRLInteractiveCanvasController *)self editorController];
+  selectionPath = [editorController selectionPath];
+  [(CRLInteractiveCanvasController *)self zoomToSelectionPath:selectionPath];
 }
 
 - (void)zoomToFitAllContent
@@ -2886,7 +2886,7 @@ LABEL_39:
   if ([(CRLInteractiveCanvasController *)self shouldCanvasScrollingSizeGrowToFitBoardContent])
   {
     [(CRLCanvas *)self->mCanvas unscaledRectOfLayouts];
-    v7 = self;
+    selfCopy2 = self;
   }
 
   else
@@ -2920,15 +2920,15 @@ LABEL_39:
     v58.size.height = v22;
     if (!CGRectEqualToRect(v50, v58))
     {
-      v27 = [(CRLInteractiveCanvasController *)self layerHost];
-      v28 = [v27 canvasLayer];
-      if ([v28 horizontallyCenteredInScrollView])
+      layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+      canvasLayer = [layerHost canvasLayer];
+      if ([canvasLayer horizontallyCenteredInScrollView])
       {
-        v29 = [(CRLInteractiveCanvasController *)self layerHost];
-        v30 = [v29 canvasLayer];
-        v31 = [v30 verticallyCenteredInScrollView];
+        layerHost2 = [(CRLInteractiveCanvasController *)self layerHost];
+        canvasLayer2 = [layerHost2 canvasLayer];
+        verticallyCenteredInScrollView = [canvasLayer2 verticallyCenteredInScrollView];
 
-        if (v31)
+        if (verticallyCenteredInScrollView)
         {
           v32 = sub_100120414(v16, v18, v20, v22);
           v34 = v33;
@@ -2993,20 +2993,20 @@ LABEL_39:
       height = v56.size.height;
     }
 
-    v7 = self;
+    selfCopy2 = self;
     v3 = x;
     v4 = y;
     v5 = width;
     v6 = height;
   }
 
-  [(CRLInteractiveCanvasController *)v7 zoomWithAnimationToUnscaledRect:v3, v4, v5, v6];
+  [(CRLInteractiveCanvasController *)selfCopy2 zoomWithAnimationToUnscaledRect:v3, v4, v5, v6];
 }
 
-- (void)zoomToSelectionPath:(id)a3
+- (void)zoomToSelectionPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CRLInteractiveCanvasController *)self infosForSelectionPath:v4];
+  pathCopy = path;
+  v5 = [(CRLInteractiveCanvasController *)self infosForSelectionPath:pathCopy];
   if ([v5 count])
   {
     v6 = &CGRectZero;
@@ -3043,7 +3043,7 @@ LABEL_39:
         }
 
         v17 = [(CRLInteractiveCanvasController *)self layoutForInfoNearestVisibleRect:*(*(&v26 + 1) + 8 * v16), v26];
-        [v17 rectInRootForSelectionPath:v4];
+        [v17 rectInRootForSelectionPath:pathCopy];
         v22 = v18;
         v23 = v19;
         v24 = v20;
@@ -3082,13 +3082,13 @@ LABEL_39:
   [(CRLInteractiveCanvasController *)self zoomWithAnimationToUnscaledRect:v33.origin.x, v33.origin.y, v33.size.width, v33.size.height];
 }
 
-- (double)p_targetViewScaleForUnscaledRect:(CGRect)a3
+- (double)p_targetViewScaleForUnscaledRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsNull(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CGRectIsNull(rect))
   {
     v8 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -3143,24 +3143,24 @@ LABEL_39:
   }
 }
 
-- (void)scrollCenteredOrZoomToUnscaledRect:(CGRect)a3 shouldAnimateScroll:(BOOL)a4
+- (void)scrollCenteredOrZoomToUnscaledRect:(CGRect)rect shouldAnimateScroll:(BOOL)scroll
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectIsNull(a3))
+  scrollCopy = scroll;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectIsNull(rect))
   {
     [(CRLInteractiveCanvasController *)self p_targetViewScaleForUnscaledRect:x, y, width, height];
     v11 = v10;
-    v12 = [(CRLInteractiveCanvasController *)self layerHost];
-    v15 = [v12 canvasLayer];
+    layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+    canvasLayer = [layerHost canvasLayer];
 
-    [v15 viewScale];
+    [canvasLayer viewScale];
     if (v13 == v11 || vabdd_f64(v13, v11) < 0.00999999978 || v11 < 0.1 && v13 == 0.1)
     {
-      if (v4)
+      if (scrollCopy)
       {
         v14 = 97;
       }
@@ -3189,43 +3189,43 @@ LABEL_39:
   return v4;
 }
 
-- (void)zoomWithAnimationToUnscaledRect:(CGRect)a3
+- (void)zoomWithAnimationToUnscaledRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = +[CRLCanvasLayer zoomAnimationDefaultCAAnimation];
   [(CRLInteractiveCanvasController *)self zoomWithAnimation:v8 toUnscaledRect:x, y, width, height];
 }
 
-- (void)zoomWithAnimationToUnscaledRect:(CGRect)a3 withDuration:(double)a4
+- (void)zoomWithAnimationToUnscaledRect:(CGRect)rect withDuration:(double)duration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = +[CRLCanvasLayer zoomAnimationDefaultCAAnimation];
-  [v10 setDuration:a4];
+  [v10 setDuration:duration];
   [(CRLInteractiveCanvasController *)self zoomWithAnimation:v10 toUnscaledRect:x, y, width, height];
 }
 
-- (void)zoomWithAnimation:(id)a3 toUnscaledRect:(CGRect)a4 layoutOffscreenContent:(BOOL)a5 completionBlock:(id)a6
+- (void)zoomWithAnimation:(id)animation toUnscaledRect:(CGRect)rect layoutOffscreenContent:(BOOL)content completionBlock:(id)block
 {
-  v7 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  v14 = a6;
+  contentCopy = content;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  animationCopy = animation;
+  blockCopy = block;
   v56.origin.x = x;
   v56.origin.y = y;
   v56.size.width = width;
   v56.size.height = height;
   if (!CGRectIsNull(v56))
   {
-    if (v7)
+    if (contentCopy)
     {
       self->mPreviewVisibleUnscaledRectForTiling.origin.x = x;
       self->mPreviewVisibleUnscaledRectForTiling.origin.y = y;
@@ -3237,10 +3237,10 @@ LABEL_39:
       v54 = 0u;
       v51 = 0u;
       v52 = 0u;
-      v15 = [(CRLInteractiveCanvasController *)self canvas];
-      v16 = [v15 allReps];
+      canvas = [(CRLInteractiveCanvasController *)self canvas];
+      allReps = [canvas allReps];
 
-      v17 = [v16 countByEnumeratingWithState:&v51 objects:v55 count:16];
+      v17 = [allReps countByEnumeratingWithState:&v51 objects:v55 count:16];
       if (v17)
       {
         v18 = *v52;
@@ -3251,7 +3251,7 @@ LABEL_39:
           {
             if (*v52 != v18)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(allReps);
             }
 
             [*(*(&v51 + 1) + 8 * v19) frameInUnscaledCanvas];
@@ -3263,7 +3263,7 @@ LABEL_39:
           }
 
           while (v17 != v19);
-          v17 = [v16 countByEnumeratingWithState:&v51 objects:v55 count:16];
+          v17 = [allReps countByEnumeratingWithState:&v51 objects:v55 count:16];
         }
 
         while (v17);
@@ -3274,19 +3274,19 @@ LABEL_39:
 
     [(CRLInteractiveCanvasController *)self p_targetViewScaleForUnscaledRect:x, y, width, height];
     v28 = v27;
-    v29 = [(CRLInteractiveCanvasController *)self layerHost];
-    v30 = [v29 canvasLayer];
+    layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+    canvasLayer = [layerHost canvasLayer];
 
-    [v30 minimumPinchViewScale];
+    [canvasLayer minimumPinchViewScale];
     v32 = v31;
-    [v30 maximumPinchViewScale];
+    [canvasLayer maximumPinchViewScale];
     v45 = sub_1004C3240(v28, v32, v33);
     self->mRectToIncludeWhenGrowingCanvasToFitContent.origin.x = x;
     self->mRectToIncludeWhenGrowingCanvasToFitContent.origin.y = y;
     self->mRectToIncludeWhenGrowingCanvasToFitContent.size.width = width;
     self->mRectToIncludeWhenGrowingCanvasToFitContent.size.height = height;
     objc_initWeak(&location, self);
-    [v30 contentInset];
+    [canvasLayer contentInset];
     v35 = v34;
     v37 = v36;
     v39 = v38;
@@ -3298,9 +3298,9 @@ LABEL_39:
     v46[2] = sub_10044739C;
     v46[3] = &unk_101863940;
     objc_copyWeak(&v48, &location);
-    v49 = v7;
-    v47 = v14;
-    [v30 animateToViewScale:v13 contentCenter:v46 contentInset:v45 animation:v42 completionBlock:{v44, v35, v37, v39, v41}];
+    v49 = contentCopy;
+    v47 = blockCopy;
+    [canvasLayer animateToViewScale:animationCopy contentCenter:v46 contentInset:v45 animation:v42 completionBlock:{v44, v35, v37, v39, v41}];
 
     objc_destroyWeak(&v48);
     objc_destroyWeak(&location);
@@ -3309,7 +3309,7 @@ LABEL_39:
 
 - (BOOL)shouldZoomOnSelectionChange
 {
-  v3 = [(CRLInteractiveCanvasController *)self delegate];
+  delegate = [(CRLInteractiveCanvasController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -3317,37 +3317,37 @@ LABEL_39:
     return 0;
   }
 
-  v5 = [(CRLInteractiveCanvasController *)self delegate];
-  v6 = [v5 zoomOnSelectionChange:self];
+  delegate2 = [(CRLInteractiveCanvasController *)self delegate];
+  v6 = [delegate2 zoomOnSelectionChange:self];
 
   return v6;
 }
 
-- (id)infoForSelectionPath:(id)a3
+- (id)infoForSelectionPath:(id)path
 {
-  v3 = [(CRLInteractiveCanvasController *)self infosForSelectionPath:a3];
+  v3 = [(CRLInteractiveCanvasController *)self infosForSelectionPath:path];
   if ([v3 count] == 1)
   {
-    v4 = [v3 anyObject];
+    anyObject = [v3 anyObject];
   }
 
   else
   {
-    v4 = 0;
+    anyObject = 0;
   }
 
-  return v4;
+  return anyObject;
 }
 
 - (CRLSelectionModelTranslator)selectionModelTranslator
 {
-  v3 = [(CRLInteractiveCanvasController *)self delegate];
+  delegate = [(CRLInteractiveCanvasController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CRLInteractiveCanvasController *)self delegate];
-    v6 = [v5 selectionModelTranslatorForInteractiveCanvasController:self];
+    delegate2 = [(CRLInteractiveCanvasController *)self delegate];
+    v6 = [delegate2 selectionModelTranslatorForInteractiveCanvasController:self];
 
     if (v6)
     {
@@ -3382,8 +3382,8 @@ LABEL_39:
 
     v9 = [NSString stringWithUTF8String:"[CRLInteractiveCanvasController selectionModelTranslator]"];
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLInteractiveCanvasController.m"];
-    v11 = [(CRLInteractiveCanvasController *)self delegate];
-    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:1682 isFatal:0 description:"ICC delegate %@ must respond to selectionModelTranslatorForInteractiveCanvasController", v11];
+    delegate3 = [(CRLInteractiveCanvasController *)self delegate];
+    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:1682 isFatal:0 description:"ICC delegate %@ must respond to selectionModelTranslatorForInteractiveCanvasController", delegate3];
   }
 
   +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -3420,13 +3420,13 @@ LABEL_22:
 
 - (_TtC8Freeform16CRLContainerItem)containerForTopLevelInsertion
 {
-  v3 = [(CRLInteractiveCanvasController *)self delegate];
+  delegate = [(CRLInteractiveCanvasController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CRLInteractiveCanvasController *)self delegate];
-    v6 = [v5 containerForTopLevelInsertionForInteractiveCanvasController:self];
+    delegate2 = [(CRLInteractiveCanvasController *)self delegate];
+    rootContainer = [delegate2 containerForTopLevelInsertionForInteractiveCanvasController:self];
   }
 
   else
@@ -3456,55 +3456,55 @@ LABEL_22:
 
     v9 = [NSString stringWithUTF8String:"[CRLInteractiveCanvasController containerForTopLevelInsertion]"];
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLInteractiveCanvasController.m"];
-    v11 = [(CRLInteractiveCanvasController *)self delegate];
-    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:1693 isFatal:0 description:"ICC delegate %@ does not respond to containerForTopLevelInsertion", v11];
+    delegate3 = [(CRLInteractiveCanvasController *)self delegate];
+    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:1693 isFatal:0 description:"ICC delegate %@ does not respond to containerForTopLevelInsertion", delegate3];
 
-    v5 = [(CRLInteractiveCanvasController *)self board];
-    v6 = [v5 rootContainer];
+    delegate2 = [(CRLInteractiveCanvasController *)self board];
+    rootContainer = [delegate2 rootContainer];
   }
 
-  v12 = v6;
+  v12 = rootContainer;
 
   return v12;
 }
 
-- (id)infosForSelectionPath:(id)a3
+- (id)infosForSelectionPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
-  v6 = [v5 infosForSelectionPath:v4];
+  pathCopy = path;
+  selectionModelTranslator = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
+  v6 = [selectionModelTranslator infosForSelectionPath:pathCopy];
 
   return v6;
 }
 
 - (NSSet)infosForCurrentSelectionPath
 {
-  v3 = [(CRLInteractiveCanvasController *)self editorController];
-  v4 = [v3 selectionPath];
-  v5 = [(CRLInteractiveCanvasController *)self infosForSelectionPath:v4];
+  editorController = [(CRLInteractiveCanvasController *)self editorController];
+  selectionPath = [editorController selectionPath];
+  v5 = [(CRLInteractiveCanvasController *)self infosForSelectionPath:selectionPath];
 
   return v5;
 }
 
-- (BOOL)currentSelectionPathContainsInfo:(id)a3
+- (BOOL)currentSelectionPathContainsInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_opt_class();
-  v11 = sub_100303920(v4, v5, 1, v6, v7, v8, v9, v10, &OBJC_PROTOCOL___CRLCanvasElementInfo);
+  v11 = sub_100303920(infoCopy, v5, 1, v6, v7, v8, v9, v10, &OBJC_PROTOCOL___CRLCanvasElementInfo);
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
   if (v11)
   {
-    v12 = [(CRLInteractiveCanvasController *)self editorController];
+    editorController = [(CRLInteractiveCanvasController *)self editorController];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100447D00;
     v15[3] = &unk_10183ECE0;
     v15[4] = v11;
     v15[5] = &v16;
-    [v12 enumerateEditorsOnStackUsingBlock:v15];
+    [editorController enumerateEditorsOnStackUsingBlock:v15];
 
     v13 = *(v17 + 24);
   }
@@ -3521,17 +3521,17 @@ LABEL_22:
 
 - (BOOL)hasSelection
 {
-  v3 = [(CRLInteractiveCanvasController *)self editorController];
-  v4 = [v3 mostSpecificCurrentEditorOfClass:objc_opt_class()];
+  editorController = [(CRLInteractiveCanvasController *)self editorController];
+  v4 = [editorController mostSpecificCurrentEditorOfClass:objc_opt_class()];
 
   v5 = objc_opt_class();
-  v6 = [(CRLInteractiveCanvasController *)self editorController];
-  v7 = [v6 selectionPath];
-  v8 = [v7 mostSpecificSelectionOfClass:0];
+  editorController2 = [(CRLInteractiveCanvasController *)self editorController];
+  selectionPath = [editorController2 selectionPath];
+  v8 = [selectionPath mostSpecificSelectionOfClass:0];
   v9 = sub_100014370(v5, v8);
 
-  v10 = [(CRLInteractiveCanvasController *)self infosForCurrentSelectionPath];
-  v11 = [v10 count];
+  infosForCurrentSelectionPath = [(CRLInteractiveCanvasController *)self infosForCurrentSelectionPath];
+  v11 = [infosForCurrentSelectionPath count];
 
   if (!v11)
   {
@@ -3543,33 +3543,33 @@ LABEL_22:
 
 - (BOOL)hasSelectedInfosInMultipleContainers
 {
-  v2 = [(CRLInteractiveCanvasController *)self editorController];
-  v3 = [v2 selectionPath];
-  v4 = [v3 mostSpecificSelectionOfClass:objc_opt_class()];
+  editorController = [(CRLInteractiveCanvasController *)self editorController];
+  selectionPath = [editorController selectionPath];
+  v4 = [selectionPath mostSpecificSelectionOfClass:objc_opt_class()];
 
   if (v4)
   {
-    v5 = [v4 isCrossContainerSelection];
+    isCrossContainerSelection = [v4 isCrossContainerSelection];
   }
 
   else
   {
-    v5 = 0;
+    isCrossContainerSelection = 0;
   }
 
-  return v5;
+  return isCrossContainerSelection;
 }
 
 - (NSSet)containersForSelection
 {
-  v2 = [(CRLInteractiveCanvasController *)self editorController];
-  v3 = [v2 selectionPath];
-  v4 = [v3 mostSpecificSelectionOfClass:objc_opt_class()];
+  editorController = [(CRLInteractiveCanvasController *)self editorController];
+  selectionPath = [editorController selectionPath];
+  v4 = [selectionPath mostSpecificSelectionOfClass:objc_opt_class()];
 
   if (v4)
   {
-    v5 = [v4 containerGroups];
-    v6 = [NSSet setWithArray:v5];
+    containerGroups = [v4 containerGroups];
+    v6 = [NSSet setWithArray:containerGroups];
   }
 
   else
@@ -3580,52 +3580,52 @@ LABEL_22:
   return v6;
 }
 
-- (void)scrollCurrentSelectionToVisibleWithOptions:(unint64_t)a3
+- (void)scrollCurrentSelectionToVisibleWithOptions:(unint64_t)options
 {
-  v6 = [(CRLInteractiveCanvasController *)self editorController];
-  v5 = [v6 selectionPath];
-  [(CRLInteractiveCanvasController *)self scrollToSelectionPath:v5 scrollOptions:a3];
+  editorController = [(CRLInteractiveCanvasController *)self editorController];
+  selectionPath = [editorController selectionPath];
+  [(CRLInteractiveCanvasController *)self scrollToSelectionPath:selectionPath scrollOptions:options];
 }
 
-- (id)selectionPathForSearchReference:(id)a3
+- (id)selectionPathForSearchReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v5 = objc_opt_class();
-  v6 = sub_100013F00(v5, v4);
+  v6 = sub_100013F00(v5, referenceCopy);
 
-  v7 = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
-  v8 = [v6 selection];
-  v9 = [v6 storage];
-  v10 = [v7 selectionPathForSelection:v8 onStorage:v9];
+  selectionModelTranslator = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
+  selection = [v6 selection];
+  storage = [v6 storage];
+  v10 = [selectionModelTranslator selectionPathForSelection:selection onStorage:storage];
 
   return v10;
 }
 
-- (void)scrollSearchReferenceToVisible:(id)a3 scrollOptions:(unint64_t)a4
+- (void)scrollSearchReferenceToVisible:(id)visible scrollOptions:(unint64_t)options
 {
-  v10 = a3;
+  visibleCopy = visible;
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->mDelegate);
-    [v8 willScrollSearchReferenceToVisible:v10];
+    [v8 willScrollSearchReferenceToVisible:visibleCopy];
   }
 
-  v9 = [v10 selectionPath];
-  [(CRLInteractiveCanvasController *)self scrollToSelectionPath:v9 scrollOptions:a4];
+  selectionPath = [visibleCopy selectionPath];
+  [(CRLInteractiveCanvasController *)self scrollToSelectionPath:selectionPath scrollOptions:options];
 }
 
-- (void)setSelectionPath:(id)a3 withSelectionFlags:(unint64_t)a4
+- (void)setSelectionPath:(id)path withSelectionFlags:(unint64_t)flags
 {
-  v6 = a3;
-  v7 = v6;
-  if ((a4 & 0x4000) != 0)
+  pathCopy = path;
+  v7 = pathCopy;
+  if ((flags & 0x4000) != 0)
   {
-    if ((a4 & 4) != 0)
+    if ((flags & 4) != 0)
     {
-      if ((a4 & 0x200) != 0)
+      if ((flags & 0x200) != 0)
       {
         v9 = 9;
       }
@@ -3635,7 +3635,7 @@ LABEL_22:
         v9 = 1;
       }
 
-      v11 = v6;
+      selectionPath = pathCopy;
       goto LABEL_21;
     }
 
@@ -3668,12 +3668,12 @@ LABEL_22:
 
   else
   {
-    v8 = [(CRLInteractiveCanvasController *)self editorController];
-    [v8 setSelectionPath:v7 withFlags:a4 & 0xFFFFFFFFFFFFBFFBLL];
+    editorController = [(CRLInteractiveCanvasController *)self editorController];
+    [editorController setSelectionPath:v7 withFlags:flags & 0xFFFFFFFFFFFFBFFBLL];
 
-    if ((a4 & 4) != 0)
+    if ((flags & 4) != 0)
     {
-      if ((a4 & 0x200) != 0)
+      if ((flags & 0x200) != 0)
       {
         v9 = 9;
       }
@@ -3683,25 +3683,25 @@ LABEL_22:
         v9 = 1;
       }
 
-      v10 = [(CRLInteractiveCanvasController *)self editorController];
-      v11 = [v10 selectionPath];
+      editorController2 = [(CRLInteractiveCanvasController *)self editorController];
+      selectionPath = [editorController2 selectionPath];
 
 LABEL_21:
-      [(CRLInteractiveCanvasController *)self scrollToSelectionPath:v11 scrollOptions:v9];
+      [(CRLInteractiveCanvasController *)self scrollToSelectionPath:selectionPath scrollOptions:v9];
     }
   }
 }
 
-- (CGRect)rectInRootForScrollingToSelectionPath:(id)a3 onLayout:(id)a4 allowingZooming:(BOOL)a5
+- (CGRect)rectInRootForScrollingToSelectionPath:(id)path onLayout:(id)layout allowingZooming:(BOOL)zooming
 {
-  if (a5)
+  if (zooming)
   {
-    [a4 rectInRootForZoomingToSelectionPath:a3];
+    [layout rectInRootForZoomingToSelectionPath:path];
   }
 
   else
   {
-    [a4 rectInRootForSelectionPath:a3];
+    [layout rectInRootForSelectionPath:path];
   }
 
   result.size.height = v8;
@@ -3711,9 +3711,9 @@ LABEL_21:
   return result;
 }
 
-- ($114667933B9B2D05530DD42EBD1EDB26)p_scrollingInformationForSelectionPath:(SEL)a3 allowZoom:(id)a4
+- ($114667933B9B2D05530DD42EBD1EDB26)p_scrollingInformationForSelectionPath:(SEL)path allowZoom:(id)zoom
 {
-  v8 = a4;
+  zoomCopy = zoom;
   v46 = 0;
   v47 = &v46;
   v48 = 0x4010000000;
@@ -3751,11 +3751,11 @@ LABEL_21:
   v19[2] = sub_1004486BC;
   v19[3] = &unk_101863A68;
   v22 = &v29;
-  v11 = v8;
+  v11 = zoomCopy;
   v23 = v33;
   v24 = &v46;
   v20 = v11;
-  v21 = self;
+  selfCopy = self;
   v28 = a5;
   v25 = &v35;
   v26 = &v42;
@@ -3789,22 +3789,22 @@ LABEL_21:
   return result;
 }
 
-- (void)withLayoutForSelectionPath:(id)a3 flags:(unint64_t)a4 performBlock:(id)a5
+- (void)withLayoutForSelectionPath:(id)path flags:(unint64_t)flags performBlock:(id)block
 {
-  v7 = a3;
-  v8 = a5;
+  pathCopy = path;
+  blockCopy = block;
   [(CRLInteractiveCanvasController *)self layoutIfNeeded];
-  v9 = [(CRLInteractiveCanvasController *)self layoutsForSelectionPath:v7];
+  v9 = [(CRLInteractiveCanvasController *)self layoutsForSelectionPath:pathCopy];
   if ([v9 count] < 2)
   {
-    v22 = [v9 anyObject];
+    anyObject = [v9 anyObject];
   }
 
   else
   {
-    v10 = [(CRLInteractiveCanvasController *)self canvas];
+    canvas = [(CRLInteractiveCanvasController *)self canvas];
     [(CRLInteractiveCanvasController *)self visibleBoundsRect];
-    [v10 convertBoundsToUnscaledRect:?];
+    [canvas convertBoundsToUnscaledRect:?];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -3819,7 +3819,7 @@ LABEL_21:
     if (v20)
     {
       v21 = v20;
-      v22 = 0;
+      anyObject = 0;
       v23 = *v35;
       v24 = INFINITY;
       do
@@ -3832,7 +3832,7 @@ LABEL_21:
           }
 
           v26 = *(*(&v34 + 1) + 8 * i);
-          [v26 rectInRootForSelectionPath:{v7, v34}];
+          [v26 rectInRootForSelectionPath:{pathCopy, v34}];
           v31 = sub_1001202D8(v27, v28, v29, v30, v12, v14, v16, v18);
           if (v31 < v24)
           {
@@ -3840,7 +3840,7 @@ LABEL_21:
             v33 = v26;
 
             v24 = v32;
-            v22 = v33;
+            anyObject = v33;
           }
         }
 
@@ -3852,17 +3852,17 @@ LABEL_21:
 
     else
     {
-      v22 = 0;
+      anyObject = 0;
     }
   }
 
-  v8[2](v8, v22);
+  blockCopy[2](blockCopy, anyObject);
 }
 
-- (void)forLayoutNearestVisibleRectForInfosForSelectionPath:(id)a3 performBlock:(id)a4
+- (void)forLayoutNearestVisibleRectForInfosForSelectionPath:(id)path performBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(CRLInteractiveCanvasController *)self infosForSelectionPath:a3];
+  blockCopy = block;
+  v7 = [(CRLInteractiveCanvasController *)self infosForSelectionPath:path];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -3885,7 +3885,7 @@ LABEL_21:
         v12 = [(CRLInteractiveCanvasController *)self layoutForInfoNearestVisibleRect:*(*(&v13 + 1) + 8 * v11)];
         if (v12)
         {
-          v6[2](v6, v12);
+          blockCopy[2](blockCopy, v12);
         }
 
         v11 = v11 + 1;
@@ -3899,27 +3899,27 @@ LABEL_21:
   }
 }
 
-- (CGRect)p_scaledRectToScrollToForSelectionPath:(id)a3 shouldCenterVertically:(BOOL)a4
+- (CGRect)p_scaledRectToScrollToForSelectionPath:(id)path shouldCenterVertically:(BOOL)vertically
 {
-  v4 = a4;
-  v6 = a3;
+  verticallyCopy = vertically;
+  pathCopy = path;
   [(CRLInteractiveCanvasController *)self layoutIfNeeded];
-  [(CRLInteractiveCanvasController *)self p_scrollingInformationForSelectionPath:v6 allowZoom:0];
+  [(CRLInteractiveCanvasController *)self p_scrollingInformationForSelectionPath:pathCopy allowZoom:0];
 
   [(CRLInteractiveCanvasController *)self outsetSelectionRect:0, 0];
-  [(CRLInteractiveCanvasController *)self p_contentOffsetToScrollRectToVisible:v4 shouldCenterVertically:0 forceCenteringVertically:0 forceCenteringHorizontally:?];
+  [(CRLInteractiveCanvasController *)self p_contentOffsetToScrollRectToVisible:verticallyCopy shouldCenterVertically:0 forceCenteringVertically:0 forceCenteringHorizontally:?];
   [(CRLInteractiveCanvasController *)self unobscuredScrollViewFrame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(CRLInteractiveCanvasController *)self layerHost];
-  v16 = [v15 canvasView];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasView = [layerHost canvasView];
 
-  v17 = [v16 enclosingScrollView];
-  v18 = [v17 contentView];
-  v19 = [v17 superview];
-  [v18 convertRect:v19 fromView:{v8, v10, v12, v14}];
+  enclosingScrollView = [canvasView enclosingScrollView];
+  contentView = [enclosingScrollView contentView];
+  superview = [enclosingScrollView superview];
+  [contentView convertRect:superview fromView:{v8, v10, v12, v14}];
 
   SyncEvent.FetchedRecordZoneChanges.Deletion.init(recordID:recordType:)(v20, v21);
   v23 = v22;
@@ -3938,21 +3938,21 @@ LABEL_21:
   return result;
 }
 
-- (void)scrollToCurrentSelectionPathAfterLayoutWithOptions:(unint64_t)a3
+- (void)scrollToCurrentSelectionPathAfterLayoutWithOptions:(unint64_t)options
 {
   if (!self->mIsFetchingEditorController)
   {
     [(CRLCanvas *)self->mCanvas i_setLayersInvalidWithoutInvalidatingAnySpecificLayers];
-    v7 = [(CRLInteractiveCanvasController *)self editorController];
-    v6 = [v7 selectionPath];
-    [(CRLInteractiveCanvasController *)self scrollToSelectionPath:v6 scrollOptions:a3];
+    editorController = [(CRLInteractiveCanvasController *)self editorController];
+    selectionPath = [editorController selectionPath];
+    [(CRLInteractiveCanvasController *)self scrollToSelectionPath:selectionPath scrollOptions:options];
   }
 }
 
-- (void)scrollToSelectionPath:(id)a3 scrollOptions:(unint64_t)a4
+- (void)scrollToSelectionPath:(id)path scrollOptions:(unint64_t)options
 {
-  v6 = ~a4;
-  v7 = a3;
+  v6 = ~options;
+  pathCopy = path;
   if ((v6 & 0x180) == 0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -3982,11 +3982,11 @@ LABEL_21:
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:1945 isFatal:0 description:"Scroll options CRLCanvasScrollOptionWaitForViewLayoutIfNeeded and CRLCanvasScrollOptionScrollForcingLayoutIfNeeded are mutually exclusive"];
   }
 
-  v11 = [(CRLInteractiveCanvasController *)self layerHost];
-  v12 = [v11 canvasLayer];
-  v13 = [v12 isLayoutDisabled];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
+  isLayoutDisabled = [canvasLayer isLayoutDisabled];
 
-  if ((v13 & 1) == 0)
+  if ((isLayoutDisabled & 1) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->mDelegate);
     v15 = objc_opt_respondsToSelector();
@@ -3994,31 +3994,31 @@ LABEL_21:
     if (v15)
     {
       v16 = objc_loadWeakRetained(&self->mDelegate);
-      [v16 willScrollToSelectionPath:v7 onInteractiveCanvasController:self];
+      [v16 willScrollToSelectionPath:pathCopy onInteractiveCanvasController:self];
     }
 
-    if (v7)
+    if (pathCopy)
     {
       mSelectionPathToScrollTo = self->mSelectionPathToScrollTo;
-      v18 = [v7 copy];
+      v18 = [pathCopy copy];
       v19 = self->mSelectionPathToScrollTo;
       self->mSelectionPathToScrollTo = v18;
 
-      self->mOptionsForScrollingToSelection = a4;
+      self->mOptionsForScrollingToSelection = options;
       self->mSelectionShouldBeClearedInDidProcessAllChanges = 0;
       if (!mSelectionPathToScrollTo)
       {
-        v20 = [(CRLInteractiveCanvasController *)self canvas];
+        canvas = [(CRLInteractiveCanvasController *)self canvas];
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
         v21[2] = sub_100449060;
         v21[3] = &unk_10183AB38;
         v21[4] = self;
-        [v20 performBlockAfterLayoutIfNecessary:v21];
+        [canvas performBlockAfterLayoutIfNecessary:v21];
       }
     }
 
-    if ((a4 & 0x80) != 0)
+    if ((options & 0x80) != 0)
     {
       [(CRLInteractiveCanvasController *)self layoutIfNeeded];
     }
@@ -4035,12 +4035,12 @@ LABEL_21:
 
 - (double)p_safeAreaMargin
 {
-  v2 = [(CRLInteractiveCanvasController *)self canvasView];
-  v3 = [v2 enclosingScrollView];
+  canvasView = [(CRLInteractiveCanvasController *)self canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
 
-  [v3 safeAreaInsets];
+  [enclosingScrollView safeAreaInsets];
   v5 = v4;
-  [v3 safeAreaInsets];
+  [enclosingScrollView safeAreaInsets];
   if (v5 < v6)
   {
     v5 = v6;
@@ -4049,18 +4049,18 @@ LABEL_21:
   return v5;
 }
 
-- (CGPoint)p_computeClampedUnscaledContentOffsetWithTargetRect:(CGRect)a3 selectionContextRectWhenZooming:(CGRect)a4 viewScale:(double)a5 unscaledOutset:(double)dy
+- (CGPoint)p_computeClampedUnscaledContentOffsetWithTargetRect:(CGRect)rect selectionContextRectWhenZooming:(CGRect)zooming viewScale:(double)scale unscaledOutset:(double)dy
 {
-  width = a4.size.width;
-  height = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v7 = a3.size.height;
-  v8 = a3.size.width;
-  v9 = a3.origin.y;
-  v10 = a3.origin.x;
+  width = zooming.size.width;
+  height = zooming.size.height;
+  y = zooming.origin.y;
+  x = zooming.origin.x;
+  v7 = rect.size.height;
+  v8 = rect.size.width;
+  v9 = rect.origin.y;
+  v10 = rect.origin.x;
   [(CRLInteractiveCanvasController *)self p_safeAreaMargin];
-  v13 = -v12 / a5;
+  v13 = -v12 / scale;
   v95.origin.x = v10;
   v95.origin.y = v9;
   v95.size.width = v8;
@@ -4072,8 +4072,8 @@ LABEL_21:
   v16 = v96.size.width;
   v17 = v96.size.height;
   [(CRLInteractiveCanvasController *)self visibleBoundsRect];
-  v19 = v18 / a5;
-  v21 = v20 / a5;
+  v19 = v18 / scale;
+  v21 = v20 / scale;
   v22.super.isa = [(CRLInteractiveCanvasController *)self shouldCanvasScrollingSizeGrowToFitBoardContent];
   v93 = v21;
   SyncEvent.FetchedRecordZoneChanges.Deletion.init(recordID:recordType:)(v22, v23);
@@ -4106,12 +4106,12 @@ LABEL_21:
   }
 
   v92 = v30;
-  v37 = [(CRLInteractiveCanvasController *)self layerHost];
-  v38 = [v37 canvasLayer];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
 
   if ([(CRLInteractiveCanvasController *)self shouldCanvasScrollingSizeGrowToFitBoardContent])
   {
-    [v38 bounds];
+    [canvasLayer bounds];
     v40 = v39;
     v42 = v41;
     v44 = v43;
@@ -4125,24 +4125,24 @@ LABEL_21:
 
   else
   {
-    v55 = [(CRLInteractiveCanvasController *)self canvas];
-    [v55 unscaledSize];
+    canvas = [(CRLInteractiveCanvasController *)self canvas];
+    [canvas unscaledSize];
     v48 = sub_10011ECB4();
     v50 = v56;
     v52 = v57;
     v54 = v58;
 
-    v59 = [(CRLInteractiveCanvasController *)self canvas];
-    v60 = [v59 isAnchoredAtRight];
+    canvas2 = [(CRLInteractiveCanvasController *)self canvas];
+    isAnchoredAtRight = [canvas2 isAnchoredAtRight];
 
-    if (v60)
+    if (isAnchoredAtRight)
     {
       v48 = v48 - v52;
     }
   }
 
-  v61 = [(CRLInteractiveCanvasController *)self canvas];
-  [v61 contentInset];
+  canvas3 = [(CRLInteractiveCanvasController *)self canvas];
+  [canvas3 contentInset];
   v63 = v48 + v62;
   v65 = v50 + v64;
   v67 = v52 - (v62 + v66);
@@ -4153,7 +4153,7 @@ LABEL_21:
   v100.size.width = v67;
   v100.size.height = v69;
   v70 = CGRectGetMaxX(v100) - v19;
-  [v38 bounds];
+  [canvasLayer bounds];
   v72 = v71;
   v74 = v73;
   v76 = v75;
@@ -4162,7 +4162,7 @@ LABEL_21:
   v101.origin.x = sub_10011FFD8(v72, v74, v76, v78, 1.0 / v79);
   v80 = CGRectGetMaxY(v101) - v93;
   v81 = sub_1004C3240(v35, v63, v70);
-  [(CRLInteractiveCanvasController *)self clampedUnscaledContentOffset:v81 forViewScale:sub_1004C3240(v92, v65, v80), a5];
+  [(CRLInteractiveCanvasController *)self clampedUnscaledContentOffset:v81 forViewScale:sub_1004C3240(v92, v65, v80), scale];
   v83 = v82;
   v85 = v84;
 
@@ -4173,11 +4173,11 @@ LABEL_21:
   return result;
 }
 
-- (void)p_scrollToSelectionPath:(id)a3 scrollOptions:(unint64_t)a4
+- (void)p_scrollToSelectionPath:(id)path scrollOptions:(unint64_t)options
 {
-  v6 = a3;
-  v7 = a4 & 1;
-  v8 = (a4 & 6) != 0;
+  pathCopy = path;
+  v7 = options & 1;
+  v8 = (options & 6) != 0;
   if ([(CRLInteractiveCanvasController *)self animatingViewScale])
   {
 LABEL_2:
@@ -4192,21 +4192,21 @@ LABEL_2:
 
   if ([(CRLInteractiveCanvasController *)self textGesturesInFlight])
   {
-    if (!v6 || (a4 & 0x10) == 0)
+    if (!pathCopy || (options & 0x10) == 0)
     {
       goto LABEL_2;
     }
   }
 
-  else if (!v6)
+  else if (!pathCopy)
   {
     goto LABEL_2;
   }
 
-  [(CRLInteractiveCanvasController *)self p_scrollingInformationForSelectionPath:v6 allowZoom:(a4 & 6) != 0];
+  [(CRLInteractiveCanvasController *)self p_scrollingInformationForSelectionPath:pathCopy allowZoom:(options & 6) != 0];
   v9 = 0.0;
-  v10 = (a4 >> 1) & 1;
-  if ((a4 & 4) != 0)
+  v10 = (options >> 1) & 1;
+  if ((options & 4) != 0)
   {
     [(CRLInteractiveCanvasController *)self viewScale];
     v9 = v11;
@@ -4224,14 +4224,14 @@ LABEL_2:
     {
       [(CRLInteractiveCanvasController *)self p_safeAreaMargin];
       v53 = v12;
-      v13 = [(CRLInteractiveCanvasController *)self layerHost];
-      v14 = [v13 canvasLayer];
+      layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+      canvasLayer = [layerHost canvasLayer];
 
       [(CRLInteractiveCanvasController *)self fitWidthViewScale];
       v16 = v15;
-      [v14 maximumPinchViewScale];
+      [canvasLayer maximumPinchViewScale];
       v18 = sub_1004C3240(v9, v16, v17);
-      if (!(v10 | (v18 < v9) & (a4 >> 2)))
+      if (!(v10 | (v18 < v9) & (options >> 2)))
       {
         v18 = v9;
       }
@@ -4292,7 +4292,7 @@ LABEL_2:
         v41 = v39 / 0.0;
         [(CRLInteractiveCanvasController *)self fitWidthViewScale];
         v43 = v42;
-        [v14 maximumPinchViewScale];
+        [canvasLayer maximumPinchViewScale];
         v38 = sub_1004C3240(v41, v43, v44);
         x = CGRectZero.origin.x;
         y = CGRectZero.origin.y;
@@ -4314,7 +4314,7 @@ LABEL_2:
       [(CRLInteractiveCanvasController *)self viewScale];
       if (v38 == v50 || vabdd_f64(v38, v50) < fabs(v50 * 0.000000999999997))
       {
-        [(CRLInteractiveCanvasController *)self scrollRectToVisible:a4 & 0xFFFFFFFFFFFFFFF9 scrollOptions:v46, v47, v48, v49];
+        [(CRLInteractiveCanvasController *)self scrollRectToVisible:options & 0xFFFFFFFFFFFFFFF9 scrollOptions:v46, v47, v48, v49];
       }
 
       else
@@ -4327,22 +4327,22 @@ LABEL_2:
     else
     {
       [(CRLInteractiveCanvasController *)self outsetSelectionRect:0.0, 0.0, 0.0, 0.0];
-      [(CRLInteractiveCanvasController *)self scrollRectToVisible:a4 & 0xFFFFFFFFFFFFFFFDLL scrollOptions:?];
+      [(CRLInteractiveCanvasController *)self scrollRectToVisible:options & 0xFFFFFFFFFFFFFFFDLL scrollOptions:?];
     }
   }
 
 LABEL_33:
 }
 
-- (void)invalidateLayersForDecorator:(id)a3
+- (void)invalidateLayersForDecorator:(id)decorator
 {
-  [(NSMutableSet *)self->mDecoratorsWithInvalidLayers addObject:a3];
+  [(NSMutableSet *)self->mDecoratorsWithInvalidLayers addObject:decorator];
   mCanvas = self->mCanvas;
 
   [(CRLCanvas *)mCanvas i_setLayersInvalidWithoutInvalidatingAnySpecificLayers];
 }
 
-- (BOOL)i_areLayersInvalidForDecorator:(id)a3
+- (BOOL)i_areLayersInvalidForDecorator:(id)decorator
 {
   if (self->mAllDecoratorLayersAreInvalid)
   {
@@ -4351,7 +4351,7 @@ LABEL_33:
 
   else
   {
-    return [(NSMutableSet *)self->mDecoratorsWithInvalidLayers containsObject:a3];
+    return [(NSMutableSet *)self->mDecoratorsWithInvalidLayers containsObject:decorator];
   }
 }
 
@@ -4363,8 +4363,8 @@ LABEL_33:
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v3 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary crl_allObjects];
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    crl_allObjects = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary crl_allObjects];
+    v4 = [crl_allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v4)
     {
       v5 = v4;
@@ -4376,7 +4376,7 @@ LABEL_33:
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(crl_allObjects);
           }
 
           [(CRLInteractiveCanvasController *)self invalidateLayersForDecorator:*(*(&v8 + 1) + 8 * v7)];
@@ -4384,7 +4384,7 @@ LABEL_33:
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v5 = [crl_allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v5);
@@ -4392,19 +4392,19 @@ LABEL_33:
   }
 }
 
-- (void)setShouldSuppressRendering:(BOOL)a3 animated:(BOOL)a4
+- (void)setShouldSuppressRendering:(BOOL)rendering animated:(BOOL)animated
 {
-  if (self->mShouldSuppressRendering != a3)
+  if (self->mShouldSuppressRendering != rendering)
   {
-    self->mShouldSuppressRendering = a3;
-    if (!a3)
+    self->mShouldSuppressRendering = rendering;
+    if (!rendering)
     {
       v12 = 0u;
       v13 = 0u;
       v10 = 0u;
       v11 = 0u;
-      v5 = [(CRLCanvas *)self->mCanvas topLevelReps];
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      topLevelReps = [(CRLCanvas *)self->mCanvas topLevelReps];
+      v6 = [topLevelReps countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         v7 = v6;
@@ -4415,13 +4415,13 @@ LABEL_33:
           {
             if (*v11 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(topLevelReps);
             }
 
             [*(*(&v10 + 1) + 8 * i) recursivelyPerformSelector:"setNeedsDisplay"];
           }
 
-          v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+          v7 = [topLevelReps countByEnumeratingWithState:&v10 objects:v14 count:16];
         }
 
         while (v7);
@@ -4432,10 +4432,10 @@ LABEL_33:
   }
 }
 
-- (void)updateRenderableForRep:(id)a3 usingBlock:(id)a4
+- (void)updateRenderableForRep:(id)rep usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  repCopy = rep;
+  blockCopy = block;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -4465,10 +4465,10 @@ LABEL_33:
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:2317 isFatal:0 description:"This operation must only be performed on the main thread."];
   }
 
-  v11 = [(CRLInteractiveCanvasController *)self renderableForRep:v6];
+  v11 = [(CRLInteractiveCanvasController *)self renderableForRep:repCopy];
   if (v11)
   {
-    v7[2](v7, v11);
+    blockCopy[2](blockCopy, v11);
   }
 }
 
@@ -4478,8 +4478,8 @@ LABEL_33:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(CRLCanvas *)self->mCanvas topLevelReps];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  topLevelReps = [(CRLCanvas *)self->mCanvas topLevelReps];
+  v3 = [topLevelReps countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -4490,13 +4490,13 @@ LABEL_33:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(topLevelReps);
         }
 
         [*(*(&v7 + 1) + 8 * i) recursivelyPerformSelectorIfImplemented:"didExitPreviewMode"];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [topLevelReps countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -4505,24 +4505,24 @@ LABEL_33:
 
 - (void)setupTextInputResponder
 {
-  v3 = [(CRLInteractiveCanvasController *)self textInputResponder];
+  textInputResponder = [(CRLInteractiveCanvasController *)self textInputResponder];
 
-  if (!v3)
+  if (!textInputResponder)
   {
     v4 = objc_alloc([(CRLInteractiveCanvasController *)self textInputResponderClass]);
-    v5 = [(CRLInteractiveCanvasController *)self layerHost];
-    v6 = [v5 canvasView];
-    v7 = [v4 initWithNextResponder:v6 icc:self];
+    layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+    canvasView = [layerHost canvasView];
+    v7 = [v4 initWithNextResponder:canvasView icc:self];
     [(CRLInteractiveCanvasController *)self setTextInputResponder:v7];
 
-    v8 = [(CRLInteractiveCanvasController *)self editorController];
-    v11 = [v8 textInputEditor];
+    editorController = [(CRLInteractiveCanvasController *)self editorController];
+    textInputEditor = [editorController textInputEditor];
 
-    v9 = [(CRLInteractiveCanvasController *)self textInputResponder];
-    [v9 setEditor:v11 withFlags:0];
+    textInputResponder2 = [(CRLInteractiveCanvasController *)self textInputResponder];
+    [textInputResponder2 setEditor:textInputEditor withFlags:0];
 
-    v10 = [(CRLInteractiveCanvasController *)self textInputResponder];
-    [v10 reloadInputViews];
+    textInputResponder3 = [(CRLInteractiveCanvasController *)self textInputResponder];
+    [textInputResponder3 reloadInputViews];
   }
 }
 
@@ -4594,17 +4594,17 @@ LABEL_33:
   objc_exception_throw(v17);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (@"CRLScenesDebugView" == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (@"CRLScenesDebugView" == context)
   {
     [(CRLInteractiveCanvasController *)self p_updateInfosToDisplayIfNeeded];
   }
 
-  else if (off_1019F04D8 == a6)
+  else if (off_1019F04D8 == context)
   {
     [(CRLInteractiveCanvasController *)self recreateAllLayoutsAndReps];
   }
@@ -4613,32 +4613,32 @@ LABEL_33:
   {
     v13.receiver = self;
     v13.super_class = CRLInteractiveCanvasController;
-    [(CRLInteractiveCanvasController *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(CRLInteractiveCanvasController *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)p_editorControllerDidChangeTextInputEditor:(id)a3
+- (void)p_editorControllerDidChangeTextInputEditor:(id)editor
 {
-  v16 = a3;
-  v4 = [v16 object];
-  v5 = [v4 textInputEditor];
-  v12 = sub_1003035DC(v5, 1, v6, v7, v8, v9, v10, v11, &OBJC_PROTOCOL____TtP8Freeform18CRLTextInputEditor_);
+  editorCopy = editor;
+  object = [editorCopy object];
+  textInputEditor = [object textInputEditor];
+  v12 = sub_1003035DC(textInputEditor, 1, v6, v7, v8, v9, v10, v11, &OBJC_PROTOCOL____TtP8Freeform18CRLTextInputEditor_);
 
   if (v12)
   {
     [(CRLInteractiveCanvasController *)self setupTextInputResponder];
   }
 
-  v13 = [v16 userInfo];
-  v14 = [v13 objectForKey:@"CRLEditorControllerSelectionFlagsKey"];
-  v15 = [v14 unsignedIntegerValue];
+  userInfo = [editorCopy userInfo];
+  v14 = [userInfo objectForKey:@"CRLEditorControllerSelectionFlagsKey"];
+  unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-  [(CRLInteractiveCanvasController *)self setTextResponderEditorTo:v12 withFlags:v15];
+  [(CRLInteractiveCanvasController *)self setTextResponderEditorTo:v12 withFlags:unsignedIntegerValue];
 }
 
-- (void)p_editorControllerSelectionPathDidChange:(id)a3
+- (void)p_editorControllerSelectionPathDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
   v6 = objc_opt_respondsToSelector();
 
@@ -4648,83 +4648,83 @@ LABEL_33:
     [v7 selectionDidChange];
   }
 
-  v8 = [v4 userInfo];
-  v18 = [v8 objectForKeyedSubscript:@"CRLEditorControllerOldSelectionPathKey"];
+  userInfo = [changeCopy userInfo];
+  v18 = [userInfo objectForKeyedSubscript:@"CRLEditorControllerOldSelectionPathKey"];
 
-  v9 = [(CRLInteractiveCanvasController *)self editorController];
-  v10 = [v9 selectionPath];
+  editorController = [(CRLInteractiveCanvasController *)self editorController];
+  selectionPath = [editorController selectionPath];
 
-  [(CRLInteractiveCanvasController *)self p_selectionPathDidChangeFromSelectionPath:v18 toSelectionPath:v10];
-  [(CRLInteractiveCanvasController *)self p_notifyRepsForChangeFromSelectionPath:v18 toSelectionPath:v10];
+  [(CRLInteractiveCanvasController *)self p_selectionPathDidChangeFromSelectionPath:v18 toSelectionPath:selectionPath];
+  [(CRLInteractiveCanvasController *)self p_notifyRepsForChangeFromSelectionPath:v18 toSelectionPath:selectionPath];
   v11 = objc_loadWeakRetained(&self->mLayerHost);
-  [v11 selectionPathDidChangeFromSelectionPath:v18 toSelectionPath:v10];
+  [v11 selectionPathDidChangeFromSelectionPath:v18 toSelectionPath:selectionPath];
 
   [(CRLInteractiveCanvasController *)self updateMultiselectResizeInfoIfNeeded];
-  v12 = [v4 userInfo];
+  userInfo2 = [changeCopy userInfo];
 
-  v13 = [v12 objectForKey:@"CRLEditorControllerSelectionFlagsKey"];
-  v14 = [v13 unsignedIntegerValue];
+  v13 = [userInfo2 objectForKey:@"CRLEditorControllerSelectionFlagsKey"];
+  unsignedIntegerValue = [v13 unsignedIntegerValue];
 
-  v15 = (v14 >> 1) & 1;
+  v15 = (unsignedIntegerValue >> 1) & 1;
   if (self->mTextGesturesInFlight)
   {
-    if ((v14 & 4) != 0)
+    if ((unsignedIntegerValue & 4) != 0)
     {
       self->mDidSuppressScrollToSelectionDuringTextGestures = 1;
-      self->mShouldAnimateScrollAfterTextGestures = (v14 & 2) != 0;
+      self->mShouldAnimateScrollAfterTextGestures = (unsignedIntegerValue & 2) != 0;
     }
   }
 
   else
   {
-    [(CRLInteractiveCanvasController *)self p_selectionDoneChangingWithFlags:v14];
-    if ((v14 & 4) != 0)
+    [(CRLInteractiveCanvasController *)self p_selectionDoneChangingWithFlags:unsignedIntegerValue];
+    if ((unsignedIntegerValue & 4) != 0)
     {
-      v16 = [(CRLInteractiveCanvasController *)self editorController];
-      v17 = [v16 selectionPath];
-      [(CRLInteractiveCanvasController *)self scrollToSelectionPath:v17 scrollOptions:v15];
+      editorController2 = [(CRLInteractiveCanvasController *)self editorController];
+      selectionPath2 = [editorController2 selectionPath];
+      [(CRLInteractiveCanvasController *)self scrollToSelectionPath:selectionPath2 scrollOptions:v15];
     }
   }
 
-  [(CRLInteractiveCanvasController *)self updateTipsBasedOnSelection:v10];
+  [(CRLInteractiveCanvasController *)self updateTipsBasedOnSelection:selectionPath];
 }
 
 - (void)updateMultiselectResizeInfoIfNeeded
 {
-  v3 = [(CRLInteractiveCanvasController *)self p_shouldSuppressMultiselectResizeInfo];
-  v4 = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
-  v5 = [(CRLInteractiveCanvasController *)self editorController];
-  v6 = [v5 selectionPath];
-  v7 = [v4 unlockedBoardItemsForSelectionPath:v6];
+  p_shouldSuppressMultiselectResizeInfo = [(CRLInteractiveCanvasController *)self p_shouldSuppressMultiselectResizeInfo];
+  selectionModelTranslator = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
+  editorController = [(CRLInteractiveCanvasController *)self editorController];
+  selectionPath = [editorController selectionPath];
+  v7 = [selectionModelTranslator unlockedBoardItemsForSelectionPath:selectionPath];
 
   v8 = [v7 objectsPassingTest:&stru_101863B88];
-  if (!-[CRLInteractiveCanvasController displaysMultiselectionWithSingleBounds](self, "displaysMultiselectionWithSingleBounds") || (v3 & 1) != 0 || [v8 count] < 2)
+  if (!-[CRLInteractiveCanvasController displaysMultiselectionWithSingleBounds](self, "displaysMultiselectionWithSingleBounds") || (p_shouldSuppressMultiselectResizeInfo & 1) != 0 || [v8 count] < 2)
   {
     mMultiselectResizeInfo = self->mMultiselectResizeInfo;
     if (!mMultiselectResizeInfo)
     {
-      v11 = 0;
+      parentInfo = 0;
       goto LABEL_30;
     }
 
-    v11 = [(CRLMultiselectResizeInfo *)mMultiselectResizeInfo parentInfo];
+    parentInfo = [(CRLMultiselectResizeInfo *)mMultiselectResizeInfo parentInfo];
     v14 = self->mMultiselectResizeInfo;
     self->mMultiselectResizeInfo = 0;
 
     goto LABEL_8;
   }
 
-  v9 = [(CRLInteractiveCanvasController *)self topLevelContainerInfoForEditing];
-  v10 = [(CRLMultiselectResizeInfo *)self->mMultiselectResizeInfo parentInfo];
+  topLevelContainerInfoForEditing = [(CRLInteractiveCanvasController *)self topLevelContainerInfoForEditing];
+  parentInfo2 = [(CRLMultiselectResizeInfo *)self->mMultiselectResizeInfo parentInfo];
 
-  if (v10 == v9)
+  if (parentInfo2 == topLevelContainerInfoForEditing)
   {
-    v11 = 0;
+    parentInfo = 0;
   }
 
   else
   {
-    v11 = [(CRLMultiselectResizeInfo *)self->mMultiselectResizeInfo parentInfo];
+    parentInfo = [(CRLMultiselectResizeInfo *)self->mMultiselectResizeInfo parentInfo];
     v12 = self->mMultiselectResizeInfo;
     self->mMultiselectResizeInfo = 0;
   }
@@ -4733,16 +4733,16 @@ LABEL_33:
   v36 = v35;
   if (!v35)
   {
-    v37 = [[_TtC8Freeform24CRLMultiselectResizeInfo alloc] initWithParentInfo:v9];
+    v37 = [[_TtC8Freeform24CRLMultiselectResizeInfo alloc] initWithParentInfo:topLevelContainerInfoForEditing];
     v38 = self->mMultiselectResizeInfo;
     self->mMultiselectResizeInfo = v37;
 
     v36 = self->mMultiselectResizeInfo;
   }
 
-  v39 = [(CRLInteractiveCanvasController *)self canvas];
-  v40 = [v39 layoutController];
-  [(CRLMultiselectResizeInfo *)v36 setRepresentedSelectedBoardItems:v8 currentlyLaidOutWith:v40];
+  canvas = [(CRLInteractiveCanvasController *)self canvas];
+  layoutController = [canvas layoutController];
+  [(CRLMultiselectResizeInfo *)v36 setRepresentedSelectedBoardItems:v8 currentlyLaidOutWith:layoutController];
 
   v41 = objc_opt_class();
   v42 = [(CRLInteractiveCanvasController *)self repForInfo:self->mMultiselectResizeInfo];
@@ -4754,12 +4754,12 @@ LABEL_33:
 LABEL_8:
     v45 = v8;
     v46 = v7;
-    v15 = [(CRLInteractiveCanvasController *)self topLevelContainerRepForEditing];
-    v16 = [v15 layout];
-    [v16 invalidateChildren];
+    topLevelContainerRepForEditing = [(CRLInteractiveCanvasController *)self topLevelContainerRepForEditing];
+    layout = [topLevelContainerRepForEditing layout];
+    [layout invalidateChildren];
 
     v17 = objc_opt_class();
-    v23 = sub_100303920(v11, v17, 1, v18, v19, v20, v21, v22, &OBJC_PROTOCOL___CRLCanvasElementInfo);
+    v23 = sub_100303920(parentInfo, v17, 1, v18, v19, v20, v21, v22, &OBJC_PROTOCOL___CRLCanvasElementInfo);
     if (v23)
     {
       v24 = [(CRLInteractiveCanvasController *)self layoutsForInfo:v23];
@@ -4796,8 +4796,8 @@ LABEL_8:
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v29 = [(CRLCanvas *)self->mCanvas topLevelReps];
-    v30 = [v29 countByEnumeratingWithState:&v47 objects:v55 count:16];
+    topLevelReps = [(CRLCanvas *)self->mCanvas topLevelReps];
+    v30 = [topLevelReps countByEnumeratingWithState:&v47 objects:v55 count:16];
     if (v30)
     {
       v31 = v30;
@@ -4808,7 +4808,7 @@ LABEL_8:
         {
           if (*v48 != v32)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(topLevelReps);
           }
 
           v34 = *(*(&v47 + 1) + 8 * j);
@@ -4816,7 +4816,7 @@ LABEL_8:
           [v34 recursivelyPerformSelectorIfImplemented:"invalidateKnobs"];
         }
 
-        v31 = [v29 countByEnumeratingWithState:&v47 objects:v55 count:16];
+        v31 = [topLevelReps countByEnumeratingWithState:&v47 objects:v55 count:16];
       }
 
       while (v31);
@@ -4851,20 +4851,20 @@ LABEL_30:
   return [(CRLInteractiveCanvasController *)self wantsToSuppressMultiselectionForPenTool];
 }
 
-- (void)p_notifyRepsForChangeFromSelectionPath:(id)a3 toSelectionPath:(id)a4
+- (void)p_notifyRepsForChangeFromSelectionPath:(id)path toSelectionPath:(id)selectionPath
 {
-  v11 = a3;
-  v6 = a4;
-  if (v11)
+  pathCopy = path;
+  selectionPathCopy = selectionPath;
+  if (pathCopy)
   {
-    v7 = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
-    v8 = [v7 boardItemsForSelectionPath:v11];
+    selectionModelTranslator = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
+    v8 = [selectionModelTranslator boardItemsForSelectionPath:pathCopy];
 
-    if (v6)
+    if (selectionPathCopy)
     {
 LABEL_3:
-      v9 = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
-      v10 = [v9 boardItemsForSelectionPath:v6];
+      selectionModelTranslator2 = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
+      v10 = [selectionModelTranslator2 boardItemsForSelectionPath:selectionPathCopy];
 
       goto LABEL_6;
     }
@@ -4873,7 +4873,7 @@ LABEL_3:
   else
   {
     v8 = 0;
-    if (v6)
+    if (selectionPathCopy)
     {
       goto LABEL_3;
     }
@@ -4884,18 +4884,18 @@ LABEL_6:
   [(CRLInteractiveCanvasController *)self p_notifyRepsForSelectionChangeFrom:v8 to:v10];
 }
 
-- (void)p_notifyRepsForSelectionChangeFrom:(id)a3 to:(id)a4
+- (void)p_notifyRepsForSelectionChangeFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  fromCopy = from;
+  toCopy = to;
+  if (fromCopy && [fromCopy count])
   {
-    v34 = v6;
-    v8 = [v6 mutableCopy];
+    v34 = fromCopy;
+    v8 = [fromCopy mutableCopy];
     v9 = v8;
-    if (v7)
+    if (toCopy)
     {
-      [v8 minusSet:v7];
+      [v8 minusSet:toCopy];
     }
 
     v50 = 0u;
@@ -4960,19 +4960,19 @@ LABEL_6:
       while (v12);
     }
 
-    v6 = v34;
+    fromCopy = v34;
   }
 
-  if (v7 && [v7 count])
+  if (toCopy && [toCopy count])
   {
-    v21 = [v7 mutableCopy];
+    v21 = [toCopy mutableCopy];
     v22 = v21;
-    if (v6)
+    if (fromCopy)
     {
-      [v21 minusSet:v6];
+      [v21 minusSet:fromCopy];
     }
 
-    v35 = v6;
+    v35 = fromCopy;
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
@@ -5035,36 +5035,36 @@ LABEL_6:
       while (v25);
     }
 
-    v6 = v35;
+    fromCopy = v35;
   }
 }
 
-- (void)p_editorControllerSelectionDidChangeAndWantsKeyboard:(id)a3
+- (void)p_editorControllerSelectionDidChangeAndWantsKeyboard:(id)keyboard
 {
-  v4 = [a3 userInfo];
-  v7 = [v4 objectForKeyedSubscript:@"CRLEditorControllerOldSelectionPathKey"];
+  userInfo = [keyboard userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"CRLEditorControllerOldSelectionPathKey"];
 
-  v5 = [(CRLInteractiveCanvasController *)self editorController];
-  v6 = [v5 selectionPath];
+  editorController = [(CRLInteractiveCanvasController *)self editorController];
+  selectionPath = [editorController selectionPath];
 
-  [(CRLInteractiveCanvasController *)self p_selectionPathDidChangeFromSelectionPath:v7 toSelectionPath:v6];
+  [(CRLInteractiveCanvasController *)self p_selectionPathDidChangeFromSelectionPath:v7 toSelectionPath:selectionPath];
   [(CRLInteractiveCanvasController *)self p_selectionDoneChangingWithFlags:0];
 }
 
 - (CRLCanvasView)canvasView
 {
-  v2 = [(CRLInteractiveCanvasController *)self layerHost];
-  v3 = [v2 canvasView];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasView = [layerHost canvasView];
 
-  return v3;
+  return canvasView;
 }
 
 - (CRLCanvasLayer)canvasLayer
 {
-  v2 = [(CRLInteractiveCanvasController *)self layerHost];
-  v3 = [v2 canvasLayer];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
 
-  return v3;
+  return canvasLayer;
 }
 
 - (CGColor)canvasEdgeBackgroundColor
@@ -5079,26 +5079,26 @@ LABEL_6:
     +[UIColor secondarySystemBackgroundColor];
   }
   v2 = ;
-  v3 = [v2 CGColor];
+  cGColor = [v2 CGColor];
 
-  return v3;
+  return cGColor;
 }
 
 - (double)viewScale
 {
-  v2 = [(CRLInteractiveCanvasController *)self layerHost];
-  v3 = [v2 canvasLayer];
-  [v3 viewScale];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
+  [canvasLayer viewScale];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setViewScale:(double)a3
+- (void)setViewScale:(double)scale
 {
-  v5 = [(CRLInteractiveCanvasController *)self layerHost];
-  v4 = [v5 canvasLayer];
-  [v4 setViewScale:a3];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
+  [canvasLayer setViewScale:scale];
 }
 
 - (double)currentViewScale
@@ -5108,9 +5108,9 @@ LABEL_6:
     return self->mDynamicViewScale;
   }
 
-  v3 = [(CRLInteractiveCanvasController *)self layerHost];
-  v4 = [v3 canvasLayer];
-  [v4 viewScale];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
+  [canvasLayer viewScale];
   v6 = v5;
 
   return v6;
@@ -5118,16 +5118,16 @@ LABEL_6:
 
 - (double)fitWidthViewScale
 {
-  v3 = [(CRLInteractiveCanvasController *)self layerHost];
-  v4 = [v3 canvasLayer];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
 
   [(CRLInteractiveCanvasController *)self visibleBoundsRect];
   v6 = v5;
   [(CRLCanvas *)self->mCanvas unscaledSize];
   v8 = v6 / v7;
-  [v4 minimumPinchViewScale];
+  [canvasLayer minimumPinchViewScale];
   v10 = v9;
-  [v4 maximumPinchViewScale];
+  [canvasLayer maximumPinchViewScale];
   v12 = sub_1004C3240(v8, v10, v11);
 
   return v12;
@@ -5151,45 +5151,45 @@ LABEL_6:
     if (objc_opt_respondsToSelector())
     {
       v5 = objc_loadWeakRetained(&self->mDelegate);
-      v6 = [v5 shouldResizeCanvasToScrollView];
+      shouldResizeCanvasToScrollView = [v5 shouldResizeCanvasToScrollView];
     }
 
     else
     {
-      v6 = 0;
+      shouldResizeCanvasToScrollView = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    shouldResizeCanvasToScrollView = 0;
   }
 
-  return v6;
+  return shouldResizeCanvasToScrollView;
 }
 
-- (void)setViewScale:(double)a3 contentOffset:(CGPoint)a4 animated:(BOOL)a5 source:(id)a6
+- (void)setViewScale:(double)scale contentOffset:(CGPoint)offset animated:(BOOL)animated source:(id)source
 {
-  v6 = a5;
-  y = a4.y;
-  x = a4.x;
-  v11 = [a6 copy];
+  animatedCopy = animated;
+  y = offset.y;
+  x = offset.x;
+  v11 = [source copy];
   mCurrentInteractionSource = self->mCurrentInteractionSource;
   self->mCurrentInteractionSource = v11;
 
-  [(CRLInteractiveCanvasController *)self setViewScale:v6 contentOffset:0 animated:a3 completionHandler:x, y];
+  [(CRLInteractiveCanvasController *)self setViewScale:animatedCopy contentOffset:0 animated:scale completionHandler:x, y];
   v13 = self->mCurrentInteractionSource;
   self->mCurrentInteractionSource = 0;
 }
 
-- (void)setViewScale:(double)a3 contentOffset:(CGPoint)a4 animated:(BOOL)a5 completionHandler:(id)a6
+- (void)setViewScale:(double)scale contentOffset:(CGPoint)offset animated:(BOOL)animated completionHandler:(id)handler
 {
-  v6 = a5;
-  y = a4.y;
-  x = a4.x;
-  v28 = a6;
+  animatedCopy = animated;
+  y = offset.y;
+  x = offset.x;
+  handlerCopy = handler;
   v11 = 0.0;
-  if (v6)
+  if (animatedCopy)
   {
     [objc_opt_class() defaultAutoZoomAnimationDuration];
     v11 = v12;
@@ -5204,12 +5204,12 @@ LABEL_6:
     }
   }
 
-  [(CRLInteractiveCanvasController *)self clampedUnscaledContentOffset:x forViewScale:y, a3];
+  [(CRLInteractiveCanvasController *)self clampedUnscaledContentOffset:x forViewScale:y, scale];
   v18 = v17;
   v20 = v19;
-  v21 = [(CRLInteractiveCanvasController *)self canvasView];
-  v22 = [v21 window];
-  [v22 bounds];
+  canvasView = [(CRLInteractiveCanvasController *)self canvasView];
+  window = [canvasView window];
+  [window bounds];
   v24 = v23;
   v26 = v25;
 
@@ -5223,26 +5223,26 @@ LABEL_6:
     v27 = 4;
   }
 
-  [(CRLInteractiveCanvasController *)self animateToViewScale:v27 contentOffset:v28 duration:a3 orientation:v18 completionHandler:v20, v11];
+  [(CRLInteractiveCanvasController *)self animateToViewScale:v27 contentOffset:handlerCopy duration:scale orientation:v18 completionHandler:v20, v11];
 }
 
-- (CGPoint)clampedUnscaledContentOffset:(CGPoint)a3 forViewScale:(double)a4
+- (CGPoint)clampedUnscaledContentOffset:(CGPoint)offset forViewScale:(double)scale
 {
-  v6 = [(CRLInteractiveCanvasController *)self layerHost];
-  v7 = [v6 canvasLayer];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
 
   [(CRLInteractiveCanvasController *)self unobscuredScrollViewFrame];
-  v8 = 1.0 / a4;
+  v8 = 1.0 / scale;
   v11 = sub_10011F340(v9, v10, v8);
   v64 = v12;
-  [v7 contentInset];
+  [canvasLayer contentInset];
   v14 = v13;
   v16 = v15;
   v18 = v8 * v17;
   v20 = v8 * v19;
   if ([(CRLInteractiveCanvasController *)self shouldCanvasScrollingSizeGrowToFitBoardContent])
   {
-    [v7 bounds];
+    [canvasLayer bounds];
     v22 = v21;
     v24 = v23;
     v26 = v25;
@@ -5259,15 +5259,15 @@ LABEL_6:
     v63 = v8 * v16;
     v37 = v11;
     v38 = v8 * v14;
-    [v7 unscaledSize];
+    [canvasLayer unscaledSize];
     v39 = sub_10011ECB4();
     v41 = v40;
     v43 = v42;
     v45 = v44;
-    v46 = [(CRLInteractiveCanvasController *)self canvas];
-    v47 = [v46 isAnchoredAtRight];
+    canvas = [(CRLInteractiveCanvasController *)self canvas];
+    isAnchoredAtRight = [canvas isAnchoredAtRight];
 
-    if (v47)
+    if (isAnchoredAtRight)
     {
       v39 = v39 - v43;
     }
@@ -5287,10 +5287,10 @@ LABEL_6:
   v67.size.width = v34;
   v67.size.height = v36;
   MaxY = CGRectGetMaxY(v67);
-  v52 = [(CRLInteractiveCanvasController *)self canvas];
-  v53 = [v52 isAnchoredAtRight];
+  canvas2 = [(CRLInteractiveCanvasController *)self canvas];
+  isAnchoredAtRight2 = [canvas2 isAnchoredAtRight];
 
-  if (v53)
+  if (isAnchoredAtRight2)
   {
     v54 = -(v11 + v20);
     if (v30 > v54)
@@ -5306,7 +5306,7 @@ LABEL_6:
     v68.size.width = v34;
     v68.size.height = v36;
     v55 = CGRectGetMaxX(v68) - v11;
-    v56 = [(CRLInteractiveCanvasController *)self shouldCanvasScrollingSizeGrowToFitBoardContent];
+    shouldCanvasScrollingSizeGrowToFitBoardContent = [(CRLInteractiveCanvasController *)self shouldCanvasScrollingSizeGrowToFitBoardContent];
     if (v55 >= v20)
     {
       v57 = v55;
@@ -5317,7 +5317,7 @@ LABEL_6:
       v57 = v20;
     }
 
-    if (v56)
+    if (shouldCanvasScrollingSizeGrowToFitBoardContent)
     {
       v54 = v55;
     }
@@ -5338,8 +5338,8 @@ LABEL_6:
     v58 = v18;
   }
 
-  v59 = sub_1004C3240(a3.x, v30, v54);
-  v60 = sub_1004C3240(a3.y, v32, v58);
+  v59 = sub_1004C3240(offset.x, v30, v54);
+  v60 = sub_1004C3240(offset.y, v32, v58);
 
   v61 = v59;
   v62 = v60;
@@ -5348,33 +5348,33 @@ LABEL_6:
   return result;
 }
 
-- (void)setViewScale:(double)a3 andScrollViewFrame:(CGRect)a4 maintainPosition:(BOOL)a5 animated:(BOOL)a6
+- (void)setViewScale:(double)scale andScrollViewFrame:(CGRect)frame maintainPosition:(BOOL)position animated:(BOOL)animated
 {
-  v6 = a6;
-  v7 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = [(CRLInteractiveCanvasController *)self layerHost];
-  v13 = [v14 canvasLayer];
-  [v13 setViewScale:v7 andScrollViewFrame:v6 maintainPosition:a3 animated:{x, y, width, height}];
+  animatedCopy = animated;
+  positionCopy = position;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
+  [canvasLayer setViewScale:positionCopy andScrollViewFrame:animatedCopy maintainPosition:scale animated:{x, y, width, height}];
 }
 
-- (void)setViewScale:(double)a3 andScrollViewFrame:(CGRect)a4 animated:(BOOL)a5
+- (void)setViewScale:(double)scale andScrollViewFrame:(CGRect)frame animated:(BOOL)animated
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = [(CRLInteractiveCanvasController *)self delegate];
+  animatedCopy = animated;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  delegate = [(CRLInteractiveCanvasController *)self delegate];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(CRLInteractiveCanvasController *)self delegate];
-    v15 = [v14 interactiveCanvasControllerShouldMaintainPositionOnSetViewScale:self];
+    delegate2 = [(CRLInteractiveCanvasController *)self delegate];
+    v15 = [delegate2 interactiveCanvasControllerShouldMaintainPositionOnSetViewScale:self];
   }
 
   else
@@ -5382,14 +5382,14 @@ LABEL_6:
     v15 = 1;
   }
 
-  v17 = [(CRLInteractiveCanvasController *)self layerHost];
-  v16 = [v17 canvasLayer];
-  [v16 setViewScale:v15 andScrollViewFrame:v5 maintainPosition:a3 animated:{x, y, width, height}];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
+  [canvasLayer setViewScale:v15 andScrollViewFrame:animatedCopy maintainPosition:scale animated:{x, y, width, height}];
 }
 
-- (CGRect)unobscuredFrameOfView:(id)a3
+- (CGRect)unobscuredFrameOfView:(id)view
 {
-  [(CRLInteractiveCanvasController *)self p_unosbcuredFrameOfView:a3 includingObscuringRectangles:1];
+  [(CRLInteractiveCanvasController *)self p_unosbcuredFrameOfView:view includingObscuringRectangles:1];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -5397,11 +5397,11 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)p_unosbcuredFrameOfView:(id)a3 includingObscuringRectangles:(BOOL)a4
+- (CGRect)p_unosbcuredFrameOfView:(id)view includingObscuringRectangles:(BOOL)rectangles
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  rectanglesCopy = rectangles;
+  viewCopy = view;
+  if (!viewCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -5430,33 +5430,33 @@ LABEL_6:
     [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:2997 isFatal:0 description:"Cannot calculate unobscured frame without view"];
   }
 
-  [v6 frame];
+  [viewCopy frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(CRLInteractiveCanvasController *)self delegate];
+  delegate = [(CRLInteractiveCanvasController *)self delegate];
   v19 = objc_opt_respondsToSelector();
 
   if (v19)
   {
-    v20 = [(CRLInteractiveCanvasController *)self delegate];
-    [v20 safeAreaLayoutFrameForInteractiveCanvasController:self];
+    delegate2 = [(CRLInteractiveCanvasController *)self delegate];
+    [delegate2 safeAreaLayoutFrameForInteractiveCanvasController:self];
     v11 = v21;
     v13 = v22;
     v15 = v23;
     v17 = v24;
   }
 
-  if (v4)
+  if (rectanglesCopy)
   {
-    v25 = [(CRLInteractiveCanvasController *)self delegate];
+    delegate3 = [(CRLInteractiveCanvasController *)self delegate];
     v26 = objc_opt_respondsToSelector();
 
     if (v26)
     {
-      v27 = [(CRLInteractiveCanvasController *)self delegate];
-      v28 = [v27 rectanglesObscuringView:v6];
+      delegate4 = [(CRLInteractiveCanvasController *)self delegate];
+      v28 = [delegate4 rectanglesObscuringView:viewCopy];
     }
 
     else
@@ -5510,14 +5510,14 @@ LABEL_6:
 
 - (void)p_updateUnobscuredFrame
 {
-  v3 = [(CRLInteractiveCanvasController *)self canvasView];
-  v4 = [v3 enclosingScrollView];
+  canvasView = [(CRLInteractiveCanvasController *)self canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
 
-  v5 = [v4 superview];
+  superview = [enclosingScrollView superview];
 
-  if (v5)
+  if (superview)
   {
-    [(CRLInteractiveCanvasController *)self unobscuredFrameOfView:v4];
+    [(CRLInteractiveCanvasController *)self unobscuredFrameOfView:enclosingScrollView];
     x = v29.origin.x;
     y = v29.origin.y;
     width = v29.size.width;
@@ -5545,7 +5545,7 @@ LABEL_6:
     }
 
     [(CRLInteractiveCanvasController *)self setUnobscuredScrollViewFrame:x, y, width, height];
-    [(CRLInteractiveCanvasController *)self p_unosbcuredFrameOfView:v4 includingObscuringRectangles:0];
+    [(CRLInteractiveCanvasController *)self p_unosbcuredFrameOfView:enclosingScrollView includingObscuringRectangles:0];
     self->mUnobscuredScrollViewFrameIgnoringObscuringRectangles.origin.x = v14;
     self->mUnobscuredScrollViewFrameIgnoringObscuringRectangles.origin.y = v15;
     self->mUnobscuredScrollViewFrameIgnoringObscuringRectangles.size.width = v16;
@@ -5554,8 +5554,8 @@ LABEL_6:
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v18 = [(CRLInteractiveCanvasController *)self i_decorators];
-    v19 = [v18 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    i_decorators = [(CRLInteractiveCanvasController *)self i_decorators];
+    v19 = [i_decorators countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v19)
     {
       v20 = v19;
@@ -5567,7 +5567,7 @@ LABEL_6:
         {
           if (*v25 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(i_decorators);
           }
 
           v23 = *(*(&v24 + 1) + 8 * v22);
@@ -5580,7 +5580,7 @@ LABEL_6:
         }
 
         while (v20 != v22);
-        v20 = [v18 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v20 = [i_decorators countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v20);
@@ -5590,7 +5590,7 @@ LABEL_6:
 
 - (void)unobscuredFrameDidChange
 {
-  v3 = [(CRLInteractiveCanvasController *)self delegate];
+  delegate = [(CRLInteractiveCanvasController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0 || (-[CRLInteractiveCanvasController unobscuredScrollViewFrame](self, "unobscuredScrollViewFrame"), v6 = v5, v8 = v7, v10 = v9, v12 = v11, -[CRLInteractiveCanvasController delegate](self, "delegate"), v13 = objc_claimAutoreleasedReturnValue(), [v13 interactiveCanvasControllerWillChangeUnobscuredFrame:self], v13, -[CRLInteractiveCanvasController unobscuredScrollViewFrame](self, "unobscuredScrollViewFrame"), v16.origin.x = v6, v16.origin.y = v8, v16.size.width = v10, v16.size.height = v12, CGRectEqualToRect(v15, v16)))
@@ -5608,9 +5608,9 @@ LABEL_6:
   v18.size.height = CGRectZero.size.height;
   if (CGRectEqualToRect(self->mUnobscuredScrollViewFrame, v18))
   {
-    v3 = [(CRLInteractiveCanvasController *)self canvasView];
-    v4 = [v3 enclosingScrollView];
-    [v4 frame];
+    canvasView = [(CRLInteractiveCanvasController *)self canvasView];
+    enclosingScrollView = [canvasView enclosingScrollView];
+    [enclosingScrollView frame];
     x = v5;
     y = v7;
     width = v9;
@@ -5644,9 +5644,9 @@ LABEL_6:
   v18.size.height = CGRectZero.size.height;
   if (CGRectEqualToRect(self->mUnobscuredScrollViewFrameIgnoringObscuringRectangles, v18))
   {
-    v3 = [(CRLInteractiveCanvasController *)self canvasView];
-    v4 = [v3 enclosingScrollView];
-    [v4 frame];
+    canvasView = [(CRLInteractiveCanvasController *)self canvasView];
+    enclosingScrollView = [canvasView enclosingScrollView];
+    [enclosingScrollView frame];
     x = v5;
     y = v7;
     width = v9;
@@ -5672,25 +5672,25 @@ LABEL_6:
   return result;
 }
 
-- (CGPoint)p_contentOffsetToScrollRectToVisible:(CGRect)a3 shouldCenterVertically:(BOOL)a4 forceCenteringVertically:(BOOL)a5 forceCenteringHorizontally:(BOOL)a6
+- (CGPoint)p_contentOffsetToScrollRectToVisible:(CGRect)visible shouldCenterVertically:(BOOL)vertically forceCenteringVertically:(BOOL)centeringVertically forceCenteringHorizontally:(BOOL)horizontally
 {
-  v6 = a6;
-  v7 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v14 = [(CRLInteractiveCanvasController *)self layerHost];
-  v15 = [v14 canvasLayer];
+  horizontallyCopy = horizontally;
+  centeringVerticallyCopy = centeringVertically;
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
 
-  [v15 contentInset];
+  [canvasLayer contentInset];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
   if ([(CRLInteractiveCanvasController *)self shouldCanvasScrollingSizeGrowToFitBoardContent])
   {
-    [v15 bounds];
+    [canvasLayer bounds];
     v25 = v24;
     v27 = v26;
     v29 = v28;
@@ -5704,7 +5704,7 @@ LABEL_6:
 
   else
   {
-    [v15 unscaledSize];
+    [canvasLayer unscaledSize];
     rect = x;
     rect_8 = y;
     v40 = height;
@@ -5713,10 +5713,10 @@ LABEL_6:
     v43 = v42;
     v45 = v44;
     r2 = v46;
-    v47 = [(CRLInteractiveCanvasController *)self canvas];
-    v48 = [v47 isAnchoredAtRight];
+    canvas = [(CRLInteractiveCanvasController *)self canvas];
+    isAnchoredAtRight = [canvas isAnchoredAtRight];
 
-    if (v48)
+    if (isAnchoredAtRight)
     {
       v41 = v41 - v45;
     }
@@ -5742,10 +5742,10 @@ LABEL_6:
   v52 = v198.origin.y;
   v53 = v198.size.width;
   v54 = v198.size.height;
-  v55 = [(CRLInteractiveCanvasController *)self layerHost];
-  v56 = [v55 canvasView];
+  layerHost2 = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasView = [layerHost2 canvasView];
 
-  v57 = [v56 enclosingScrollView];
+  enclosingScrollView = [canvasView enclosingScrollView];
   [(CRLInteractiveCanvasController *)self contentOffset];
   [(CRLInteractiveCanvasController *)self convertUnscaledToBoundsPoint:?];
   v59 = v58;
@@ -5761,16 +5761,16 @@ LABEL_6:
     v65 = v64;
     v67 = v66;
     v69 = v68;
-    v70 = [(CRLInteractiveCanvasController *)self canvas];
-    [v70 contentsScale];
+    canvas2 = [(CRLInteractiveCanvasController *)self canvas];
+    [canvas2 contentsScale];
     v72 = sub_1001221E8(v63, v65, v67, v69, v71);
     v74 = v73;
     v76 = v75;
     r2a = v77;
 
-    v78 = [v57 superview];
+    superview = [enclosingScrollView superview];
 
-    if (!v78)
+    if (!superview)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -5809,15 +5809,15 @@ LABEL_6:
     v85 = v84;
     v87 = v86;
     v89 = v88;
-    v90 = [v57 superview];
-    [v56 convertRect:v90 fromView:{v83, v85, v87, v89}];
+    superview2 = [enclosingScrollView superview];
+    [canvasView convertRect:superview2 fromView:{v83, v85, v87, v89}];
     v92 = v91;
     v94 = v93;
     v96 = v95;
     v98 = v97;
 
     [(CRLInteractiveCanvasController *)self p_safeAreaLayoutGuideLayoutFrame];
-    [v56 convertRect:v57 fromView:?];
+    [canvasView convertRect:enclosingScrollView fromView:?];
     v99 = v200.origin.x;
     v100 = v200.origin.y;
     v101 = v200.size.width;
@@ -5855,7 +5855,7 @@ LABEL_6:
     v173 = v92;
     v174 = v94;
     rect_8a = v104;
-    if (a4 || v7)
+    if (vertically || centeringVerticallyCopy)
     {
       v212.origin.x = v92;
       v212.origin.y = v94;
@@ -5866,7 +5866,7 @@ LABEL_6:
       v242.size.width = v105;
       v112 = r2a;
       v242.size.height = r2a;
-      if (!CGRectContainsRect(v212, v242) || v7)
+      if (!CGRectContainsRect(v212, v242) || centeringVerticallyCopy)
       {
         sub_100120414(v106, v178, v105, r2a);
         v107 = v118 + v104 * -0.5;
@@ -5879,13 +5879,13 @@ LABEL_6:
         else
         {
           v179 = v103;
-          [v15 unscaledSize];
+          [canvasLayer unscaledSize];
           [(CRLInteractiveCanvasController *)self convertUnscaledToBoundsRect:sub_10011ECB4()];
           v156 = v155;
           v158 = v157;
           v160 = v159;
           v162 = v161;
-          [v15 contentInset];
+          [canvasLayer contentInset];
           v164 = v158 + v163;
           v172 = v156;
           rect_16c = v160;
@@ -6030,7 +6030,7 @@ LABEL_6:
       }
     }
 
-    if (!v6)
+    if (!horizontallyCopy)
     {
       rect_16b = v61;
       v222.origin.x = v173;
@@ -6128,14 +6128,14 @@ LABEL_6:
     v59 = sub_100120414(v106, v107, v105, v112) + v103 * -0.5;
     if (![(CRLInteractiveCanvasController *)self shouldCanvasScrollingSizeGrowToFitBoardContent])
     {
-      [v15 unscaledSize];
+      [canvasLayer unscaledSize];
       [(CRLInteractiveCanvasController *)self convertUnscaledToBoundsRect:sub_10011ECB4()];
       r2b = v112;
       v127 = v126;
       v129 = v128;
       v131 = v130;
       v133 = v132;
-      [v15 contentInset];
+      [canvasLayer contentInset];
       rect_8b = v127 + v134;
       if (!sub_10011EF14(v127 + v134, v129, v131, v133, v59, v107, v103, r2b))
       {
@@ -6170,16 +6170,16 @@ LABEL_56:
   return result;
 }
 
-- (void)scrollRectToVisible:(CGRect)a3 scrollOptions:(unint64_t)a4
+- (void)scrollRectToVisible:(CGRect)visible scrollOptions:(unint64_t)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
   [(CRLInteractiveCanvasController *)self cancelScrollToCurrentSelectionPathAfterLayout];
-  if ((a4 & 2) == 0)
+  if ((options & 2) == 0)
   {
-    if ((a4 & 4) == 0)
+    if ((options & 4) == 0)
     {
       goto LABEL_3;
     }
@@ -6211,7 +6211,7 @@ LABEL_14:
     v16 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLInteractiveCanvasController.m"];
     [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:3228 isFatal:0 description:"Cannot tell scrollRectToVisible to zoom!"];
 
-    if ((a4 & 1) == 0)
+    if ((options & 1) == 0)
     {
       goto LABEL_4;
     }
@@ -6262,13 +6262,13 @@ LABEL_23:
   v13 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLInteractiveCanvasController.m"];
   [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:3227 isFatal:0 description:"Cannot tell scrollRectToVisible to zoom!"];
 
-  if ((a4 & 4) != 0)
+  if ((options & 4) != 0)
   {
     goto LABEL_14;
   }
 
 LABEL_3:
-  if (a4)
+  if (options)
   {
     goto LABEL_23;
   }
@@ -6276,7 +6276,7 @@ LABEL_3:
 LABEL_4:
   v10 = 0;
 LABEL_26:
-  [(CRLInteractiveCanvasController *)self p_contentOffsetToScrollRectToVisible:(a4 >> 3) & 1 shouldCenterVertically:(a4 >> 5) & 1 forceCenteringVertically:(a4 >> 6) & 1 forceCenteringHorizontally:x, y, width, height];
+  [(CRLInteractiveCanvasController *)self p_contentOffsetToScrollRectToVisible:(options >> 3) & 1 shouldCenterVertically:(options >> 5) & 1 forceCenteringVertically:(options >> 6) & 1 forceCenteringHorizontally:x, y, width, height];
   [(CRLInteractiveCanvasController *)self convertBoundsToUnscaledPoint:?];
   v22 = v21;
   v24 = v23;
@@ -6287,17 +6287,17 @@ LABEL_26:
   }
 }
 
-- (void)scrollRectToVisibleWithSelectionOutset:(CGRect)a3 scrollOptions:(unint64_t)a4
+- (void)scrollRectToVisibleWithSelectionOutset:(CGRect)outset scrollOptions:(unint64_t)options
 {
-  [(CRLInteractiveCanvasController *)self outsetSelectionRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CRLInteractiveCanvasController *)self outsetSelectionRect:outset.origin.x, outset.origin.y, outset.size.width, outset.size.height];
 
-  [(CRLInteractiveCanvasController *)self scrollRectToVisible:a4 scrollOptions:?];
+  [(CRLInteractiveCanvasController *)self scrollRectToVisible:options scrollOptions:?];
 }
 
-- (void)growCanvasAsNeededToRestoreContentOffset:(CGPoint)a3
+- (void)growCanvasAsNeededToRestoreContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   if (![(CRLInteractiveCanvasController *)self shouldCanvasScrollingSizeGrowToFitBoardContent])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -6330,68 +6330,68 @@ LABEL_26:
   [(CRLInteractiveCanvasController *)self growCanvasAsNeededToSetContentOffset:0 scrollOptions:x, y];
 }
 
-- (void)growCanvasAsNeededToSetContentOffset:(CGPoint)a3 scrollOptions:(unint64_t)a4
+- (void)growCanvasAsNeededToSetContentOffset:(CGPoint)offset scrollOptions:(unint64_t)options
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(CRLInteractiveCanvasController *)self visibleUnscaledRect];
-  v18 = SyncEvent.FetchedRecordZoneChanges.Deletion.init(recordID:recordType:)(v8, v9);
+  y = offset.y;
+  x = offset.x;
+  visibleUnscaledRect = [(CRLInteractiveCanvasController *)self visibleUnscaledRect];
+  v18 = SyncEvent.FetchedRecordZoneChanges.Deletion.init(recordID:recordType:)(visibleUnscaledRect, v9);
   self->mRectToIncludeWhenGrowingCanvasToFitContent.origin.x = v10;
   self->mRectToIncludeWhenGrowingCanvasToFitContent.origin.y = v11;
   self->mRectToIncludeWhenGrowingCanvasToFitContent.size.width = v12;
   self->mRectToIncludeWhenGrowingCanvasToFitContent.size.height = v13;
-  v14 = [(CRLInteractiveCanvasController *)self layerHost];
-  v15 = [v14 canvasLayer];
-  [v15 fixFrameAndScrollView];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
+  [canvasLayer fixFrameAndScrollView];
 
   size = CGRectZero.size;
   self->mRectToIncludeWhenGrowingCanvasToFitContent.origin = CGRectZero.origin;
   self->mRectToIncludeWhenGrowingCanvasToFitContent.size = size;
 
-  [(CRLInteractiveCanvasController *)self setContentOffset:a4 scrollOptions:x, y];
+  [(CRLInteractiveCanvasController *)self setContentOffset:options scrollOptions:x, y];
 }
 
-- (void)setContentOffset:(CGPoint)a3 source:(id)a4 scrollOptions:(unint64_t)a5
+- (void)setContentOffset:(CGPoint)offset source:(id)source scrollOptions:(unint64_t)options
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = [a4 copy];
+  y = offset.y;
+  x = offset.x;
+  v9 = [source copy];
   mCurrentInteractionSource = self->mCurrentInteractionSource;
   self->mCurrentInteractionSource = v9;
 
-  [(CRLInteractiveCanvasController *)self setContentOffset:a5 scrollOptions:x, y];
+  [(CRLInteractiveCanvasController *)self setContentOffset:options scrollOptions:x, y];
   v11 = self->mCurrentInteractionSource;
   self->mCurrentInteractionSource = 0;
 }
 
-- (void)setContentOffset:(CGPoint)a3 scrollOptions:(unint64_t)a4
+- (void)setContentOffset:(CGPoint)offset scrollOptions:(unint64_t)options
 {
-  v4 = a4;
-  [(CRLInteractiveCanvasController *)self convertUnscaledToBoundsPoint:a3.x, a3.y];
+  optionsCopy = options;
+  [(CRLInteractiveCanvasController *)self convertUnscaledToBoundsPoint:offset.x, offset.y];
   v7 = v6;
   v9 = v8;
-  v10 = [(CRLInteractiveCanvasController *)self layerHost];
-  v17 = [v10 canvasView];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasView = [layerHost canvasView];
 
-  v11 = [v17 enclosingScrollView];
-  [v17 convertPoint:v11 toView:{v7, v9}];
+  enclosingScrollView = [canvasView enclosingScrollView];
+  [canvasView convertPoint:enclosingScrollView toView:{v7, v9}];
   v13 = v12;
   v15 = v14;
-  [v11 scrollableAreaContentInsets];
-  [v11 setContentOffset:v4 & 1 animated:{sub_10011F31C(v13, v15, v16)}];
+  [enclosingScrollView scrollableAreaContentInsets];
+  [enclosingScrollView setContentOffset:optionsCopy & 1 animated:{sub_10011F31C(v13, v15, v16)}];
 }
 
 - (CGPoint)contentOffset
 {
-  v3 = [(CRLInteractiveCanvasController *)self layerHost];
-  v4 = [v3 canvasView];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasView = [layerHost canvasView];
 
-  v5 = [v4 enclosingScrollView];
-  v6 = v5;
-  if (v5)
+  enclosingScrollView = [canvasView enclosingScrollView];
+  v6 = enclosingScrollView;
+  if (enclosingScrollView)
   {
-    [v5 contentOffset];
-    [v6 convertPoint:v4 toView:?];
+    [enclosingScrollView contentOffset];
+    [v6 convertPoint:canvasView toView:?];
     v8 = v7;
     v10 = v9;
     [v6 scrollableAreaContentInsets];
@@ -6452,17 +6452,17 @@ LABEL_26:
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:3328 isFatal:0 description:"This operation must only be performed on the main thread."];
   }
 
-  v6 = [(CRLInteractiveCanvasController *)self layerHost];
-  v7 = [v6 canvasView];
-  v8 = [v7 enclosingScrollView];
-  [v8 scrollableAreaBounds];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasView = [layerHost canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
+  [enclosingScrollView scrollableAreaBounds];
   v10 = v9;
   v12 = v11;
 
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
-  LOBYTE(v7) = objc_opt_respondsToSelector();
+  LOBYTE(canvasView) = objc_opt_respondsToSelector();
 
-  if (v7)
+  if (canvasView)
   {
     v14 = objc_loadWeakRetained(&self->mDelegate);
     [v14 sizeOfScrollViewEnclosingCanvas];
@@ -6479,17 +6479,17 @@ LABEL_26:
 
 - (CGSize)p_sizeOfScrollViewEnclosingCanvasForVisibleCanvasCalculations
 {
-  v3 = [(CRLInteractiveCanvasController *)self layerHost];
-  v4 = [v3 canvasView];
-  v5 = [v4 enclosingScrollView];
-  [v5 scrollableAreaBounds];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasView = [layerHost canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
+  [enclosingScrollView scrollableAreaBounds];
   v7 = v6;
   v9 = v8;
 
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
-  LOBYTE(v4) = objc_opt_respondsToSelector();
+  LOBYTE(canvasView) = objc_opt_respondsToSelector();
 
-  if (v4)
+  if (canvasView)
   {
     v11 = objc_loadWeakRetained(&self->mDelegate);
     [v11 sizeOfScrollViewEnclosingCanvasForVisibleCanvasCalculations];
@@ -6506,33 +6506,33 @@ LABEL_26:
 
 - (void)updateCanvasViewSubviewFrames
 {
-  v2 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
-  [v2 updateLayerContainerFrames];
+  i_interactiveCanvasLayerHelper = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
+  [i_interactiveCanvasLayerHelper updateLayerContainerFrames];
 }
 
-- (void)setSelectionHighlightColor:(id)a3
+- (void)setSelectionHighlightColor:(id)color
 {
-  v4 = [a3 copy];
+  v4 = [color copy];
   mSelectionHighlightColor = self->mSelectionHighlightColor;
   self->mSelectionHighlightColor = v4;
 
   [(CRLInteractiveCanvasController *)self i_invalidateSelectionHighlightLayers];
 }
 
-- (void)setPrimaryFindResultSearchReference:(id)a3
+- (void)setPrimaryFindResultSearchReference:(id)reference
 {
-  v5 = a3;
-  if (self->_primaryFindResultSearchReference != v5)
+  referenceCopy = reference;
+  if (self->_primaryFindResultSearchReference != referenceCopy)
   {
-    objc_storeStrong(&self->_primaryFindResultSearchReference, a3);
+    objc_storeStrong(&self->_primaryFindResultSearchReference, reference);
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(CRLInteractiveCanvasController *)self canvas];
-    v7 = [v6 topLevelReps];
+    canvas = [(CRLInteractiveCanvasController *)self canvas];
+    topLevelReps = [canvas topLevelReps];
 
-    v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v8 = [topLevelReps countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -6543,13 +6543,13 @@ LABEL_26:
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(topLevelReps);
           }
 
-          [*(*(&v12 + 1) + 8 * i) recursivelyPerformSelectorIfImplemented:"i_primaryFindResultChanged:" withObject:v5];
+          [*(*(&v12 + 1) + 8 * i) recursivelyPerformSelectorIfImplemented:"i_primaryFindResultChanged:" withObject:referenceCopy];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [topLevelReps countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);
@@ -6557,20 +6557,20 @@ LABEL_26:
   }
 }
 
-- (void)setSearchReferencesToHighlight:(id)a3
+- (void)setSearchReferencesToHighlight:(id)highlight
 {
-  v5 = a3;
-  if (self->_searchReferencesToHighlight != v5)
+  highlightCopy = highlight;
+  if (self->_searchReferencesToHighlight != highlightCopy)
   {
-    objc_storeStrong(&self->_searchReferencesToHighlight, a3);
+    objc_storeStrong(&self->_searchReferencesToHighlight, highlight);
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(CRLInteractiveCanvasController *)self canvas];
-    v7 = [v6 topLevelReps];
+    canvas = [(CRLInteractiveCanvasController *)self canvas];
+    topLevelReps = [canvas topLevelReps];
 
-    v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v8 = [topLevelReps countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -6581,13 +6581,13 @@ LABEL_26:
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(topLevelReps);
           }
 
-          [*(*(&v12 + 1) + 8 * i) recursivelyPerformSelectorIfImplemented:"i_setSearchReferencesToHighlight:" withObject:v5];
+          [*(*(&v12 + 1) + 8 * i) recursivelyPerformSelectorIfImplemented:"i_setSearchReferencesToHighlight:" withObject:highlightCopy];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [topLevelReps countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);
@@ -6597,14 +6597,14 @@ LABEL_26:
 
 - (BOOL)hasMediaReplacer
 {
-  v3 = [(CRLInteractiveCanvasController *)self delegate];
+  delegate = [(CRLInteractiveCanvasController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
-  v5 = [(CRLInteractiveCanvasController *)self delegate];
-  v6 = v5;
+  delegate2 = [(CRLInteractiveCanvasController *)self delegate];
+  v6 = delegate2;
   if (v4)
   {
-    v7 = [v5 hasMediaReplacerForInteractiveCanvasController:self];
+    v7 = [delegate2 hasMediaReplacerForInteractiveCanvasController:self];
   }
 
   else
@@ -6619,13 +6619,13 @@ LABEL_26:
 
 - (CRLMediaReplacer)mediaReplacer
 {
-  v3 = [(CRLInteractiveCanvasController *)self delegate];
+  delegate = [(CRLInteractiveCanvasController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CRLInteractiveCanvasController *)self delegate];
-    v6 = [v5 mediaReplacerForInteractiveCanvasController:self];
+    delegate2 = [(CRLInteractiveCanvasController *)self delegate];
+    v6 = [delegate2 mediaReplacerForInteractiveCanvasController:self];
   }
 
   else
@@ -6652,53 +6652,53 @@ LABEL_26:
   if (objc_opt_respondsToSelector())
   {
     v4 = objc_loadWeakRetained(&self->mDelegate);
-    v5 = [v4 spellCheckingSupported];
+    spellCheckingSupported = [v4 spellCheckingSupported];
   }
 
   else
   {
-    v5 = 1;
+    spellCheckingSupported = 1;
   }
 
-  return v5 & 1;
+  return spellCheckingSupported & 1;
 }
 
 - (BOOL)spellCheckingSuppressed
 {
-  v3 = [(CRLInteractiveCanvasController *)self spellCheckingSupported];
-  if (v3)
+  spellCheckingSupported = [(CRLInteractiveCanvasController *)self spellCheckingSupported];
+  if (spellCheckingSupported)
   {
     WeakRetained = objc_loadWeakRetained(&self->mDelegate);
     if (objc_opt_respondsToSelector())
     {
       v5 = objc_loadWeakRetained(&self->mDelegate);
-      v6 = [v5 spellCheckingSuppressed];
+      spellCheckingSuppressed = [v5 spellCheckingSuppressed];
     }
 
     else
     {
-      v6 = 0;
+      spellCheckingSuppressed = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    spellCheckingSuppressed = 0;
   }
 
-  return v6 | v3 ^ 1;
+  return spellCheckingSuppressed | spellCheckingSupported ^ 1;
 }
 
-- (void)p_spellCheckerWordsDidChangeNotification:(id)a3
+- (void)p_spellCheckerWordsDidChangeNotification:(id)notification
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(CRLInteractiveCanvasController *)self canvas:a3];
-  v4 = [v3 topLevelReps];
+  v3 = [(CRLInteractiveCanvasController *)self canvas:notification];
+  topLevelReps = [v3 topLevelReps];
 
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [topLevelReps countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -6709,29 +6709,29 @@ LABEL_26:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(topLevelReps);
         }
 
         [*(*(&v9 + 1) + 8 * i) recursivelyPerformSelectorIfImplemented:"i_spellCheckerWordsDidChange"];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [topLevelReps countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)p_spellCheckingStateChangedNotification:(id)a3
+- (void)p_spellCheckingStateChangedNotification:(id)notification
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(CRLInteractiveCanvasController *)self canvas:a3];
-  v4 = [v3 topLevelReps];
+  v3 = [(CRLInteractiveCanvasController *)self canvas:notification];
+  topLevelReps = [v3 topLevelReps];
 
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [topLevelReps countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -6742,13 +6742,13 @@ LABEL_26:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(topLevelReps);
         }
 
         [*(*(&v9 + 1) + 8 * i) recursivelyPerformSelectorIfImplemented:"spellCheckingStateChanged"];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [topLevelReps countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -6773,19 +6773,19 @@ LABEL_26:
   }
 
   v7 = objc_loadWeakRetained(&self->mDelegate);
-  v8 = [v7 shouldShowTextOverflowGlyphs];
+  shouldShowTextOverflowGlyphs = [v7 shouldShowTextOverflowGlyphs];
 
-  return v8;
+  return shouldShowTextOverflowGlyphs;
 }
 
-- (BOOL)shouldShowInstructionalTextForLayout:(id)a3
+- (BOOL)shouldShowInstructionalTextForLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
   if (WeakRetained && (v6 = WeakRetained, v7 = objc_loadWeakRetained(&self->mDelegate), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
     v9 = objc_loadWeakRetained(&self->mDelegate);
-    v10 = [v9 shouldShowInstructionalTextForLayout:v4];
+    v10 = [v9 shouldShowInstructionalTextForLayout:layoutCopy];
   }
 
   else
@@ -6798,16 +6798,16 @@ LABEL_26:
 
 - (BOOL)shouldEnableToolbarDoneButton
 {
-  v3 = [(CRLInteractiveCanvasController *)self editorController];
-  v4 = [v3 textInputEditor];
-  v11 = sub_1003035DC(v4, 1, v5, v6, v7, v8, v9, v10, &OBJC_PROTOCOL____TtP8Freeform18CRLTextInputEditor_);
+  editorController = [(CRLInteractiveCanvasController *)self editorController];
+  textInputEditor = [editorController textInputEditor];
+  v11 = sub_1003035DC(textInputEditor, 1, v5, v6, v7, v8, v9, v10, &OBJC_PROTOCOL____TtP8Freeform18CRLTextInputEditor_);
 
-  v12 = [(CRLInteractiveCanvasController *)self editorController];
-  v13 = [v12 selectionPath];
-  v14 = [(CRLInteractiveCanvasController *)self modelsForSelectionPath:v13];
+  editorController2 = [(CRLInteractiveCanvasController *)self editorController];
+  selectionPath = [editorController2 selectionPath];
+  v14 = [(CRLInteractiveCanvasController *)self modelsForSelectionPath:selectionPath];
 
   v15 = [v14 count];
-  v16 = [v11 wantsDoneButtonWhenEditing];
+  wantsDoneButtonWhenEditing = [v11 wantsDoneButtonWhenEditing];
   if (v15)
   {
     v17 = 1;
@@ -6815,7 +6815,7 @@ LABEL_26:
 
   else
   {
-    v17 = v16;
+    v17 = wantsDoneButtonWhenEditing;
   }
 
   return v17;
@@ -6841,16 +6841,16 @@ LABEL_26:
     }
   }
 
-  v7 = [(CRLInteractiveCanvasController *)self layerHost];
-  v11 = [v7 canvasLayer];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
 
-  v8 = [v11 associatedBackgroundLayer];
-  v9 = [v8 enabled];
+  associatedBackgroundLayer = [canvasLayer associatedBackgroundLayer];
+  enabled = [associatedBackgroundLayer enabled];
 
-  if (WeakRetained != v9)
+  if (WeakRetained != enabled)
   {
-    v10 = [v11 associatedBackgroundLayer];
-    [v10 setEnabled:WeakRetained];
+    associatedBackgroundLayer2 = [canvasLayer associatedBackgroundLayer];
+    [associatedBackgroundLayer2 setEnabled:WeakRetained];
   }
 }
 
@@ -6881,8 +6881,8 @@ LABEL_26:
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(CRLCanvas *)self->mCanvas topLevelReps];
-    v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    topLevelReps = [(CRLCanvas *)self->mCanvas topLevelReps];
+    v8 = [topLevelReps countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -6893,13 +6893,13 @@ LABEL_26:
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(topLevelReps);
           }
 
           [*(*(&v12 + 1) + 8 * i) recursivelyPerformSelectorIfImplemented:"invalidateKnobs"];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [topLevelReps countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);
@@ -6926,18 +6926,18 @@ LABEL_26:
   }
 }
 
-- (void)setFreehandDrawingToolkit:(id)a3
+- (void)setFreehandDrawingToolkit:(id)toolkit
 {
-  objc_storeStrong(&self->mFreehandDrawingToolkit, a3);
-  v5 = [(CRLInteractiveCanvasController *)self layerHost];
-  v6 = [v5 asiOSCVC];
-  [v6 i_startObservingFreehandDrawingToolkit];
+  objc_storeStrong(&self->mFreehandDrawingToolkit, toolkit);
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
+  [asiOSCVC i_startObservingFreehandDrawingToolkit];
 
-  v7 = [(CRLInteractiveCanvasController *)self layerHost];
-  v8 = [v7 asUIKitHost];
-  v9 = [v8 freehandDrawingGestureRecognizer];
+  layerHost2 = [(CRLInteractiveCanvasController *)self layerHost];
+  asUIKitHost = [layerHost2 asUIKitHost];
+  freehandDrawingGestureRecognizer = [asUIKitHost freehandDrawingGestureRecognizer];
 
-  [v9 setEnabled:a3 != 0];
+  [freehandDrawingGestureRecognizer setEnabled:toolkit != 0];
 }
 
 - (BOOL)p_shouldTransformCurrentSelectionAsSingleEntity
@@ -6968,29 +6968,29 @@ LABEL_26:
   return mGuideController;
 }
 
-- (void)translateGuide:(id)a3 toContainerRect:(CGRect)a4
+- (void)translateGuide:(id)guide toContainerRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v18 = a3;
-  [v18 setInfinite:0];
-  v8 = [v18 guideType];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  guideCopy = guide;
+  [guideCopy setInfinite:0];
+  guideType = [guideCopy guideType];
   v9 = x;
   v10 = y;
   v11 = width;
   v12 = height;
-  if (v8)
+  if (guideType)
   {
     MinX = CGRectGetMinX(*&v9);
-    [v18 offset];
-    [v18 setOffset:MinX + v14];
+    [guideCopy offset];
+    [guideCopy setOffset:MinX + v14];
     v20.origin.x = x;
     v20.origin.y = y;
     v20.size.width = width;
     v20.size.height = height;
-    [v18 setStart:CGRectGetMinY(v20)];
+    [guideCopy setStart:CGRectGetMinY(v20)];
     v21.origin.x = x;
     v21.origin.y = y;
     v21.size.width = width;
@@ -7001,13 +7001,13 @@ LABEL_26:
   else
   {
     MinY = CGRectGetMinY(*&v9);
-    [v18 offset];
-    [v18 setOffset:MinY + v17];
+    [guideCopy offset];
+    [guideCopy setOffset:MinY + v17];
     v22.origin.x = x;
     v22.origin.y = y;
     v22.size.width = width;
     v22.size.height = height;
-    [v18 setStart:CGRectGetMinX(v22)];
+    [guideCopy setStart:CGRectGetMinX(v22)];
     v23.origin.x = x;
     v23.origin.y = y;
     v23.size.width = width;
@@ -7015,26 +7015,26 @@ LABEL_26:
     MaxY = CGRectGetMaxX(v23);
   }
 
-  [v18 setEnd:MaxY];
+  [guideCopy setEnd:MaxY];
 }
 
-- (void)clipGuideToContainer:(id)a3 atUnscaledPoint:(CGPoint)a4
+- (void)clipGuideToContainer:(id)container atUnscaledPoint:(CGPoint)point
 {
-  v19 = a3;
+  containerCopy = container;
   [(CRLInteractiveCanvasController *)self visibleUnscaledRect];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v19 setInfinite:0];
-  v13 = [v19 guideType];
+  [containerCopy setInfinite:0];
+  guideType = [containerCopy guideType];
   v14 = v6;
   v15 = v8;
   v16 = v10;
   v17 = v12;
-  if (v13)
+  if (guideType)
   {
-    [v19 setStart:CGRectGetMinY(*&v14)];
+    [containerCopy setStart:CGRectGetMinY(*&v14)];
     v21.origin.x = v6;
     v21.origin.y = v8;
     v21.size.width = v10;
@@ -7044,7 +7044,7 @@ LABEL_26:
 
   else
   {
-    [v19 setStart:CGRectGetMinX(*&v14)];
+    [containerCopy setStart:CGRectGetMinX(*&v14)];
     v22.origin.x = v6;
     v22.origin.y = v8;
     v22.size.width = v10;
@@ -7052,21 +7052,21 @@ LABEL_26:
     MaxY = CGRectGetMaxX(v22);
   }
 
-  [v19 setEnd:MaxY];
+  [containerCopy setEnd:MaxY];
 }
 
-- (void)translateGuides:(id)a3 toContainerRect:(CGRect)a4
+- (void)translateGuides:(id)guides toContainerRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  guidesCopy = guides;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v10 = [guidesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
     v11 = v10;
@@ -7078,7 +7078,7 @@ LABEL_26:
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(guidesCopy);
         }
 
         [(CRLInteractiveCanvasController *)self translateGuide:*(*(&v14 + 1) + 8 * v13) toContainerRect:x, y, width, height];
@@ -7086,14 +7086,14 @@ LABEL_26:
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v11 = [guidesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v11);
   }
 }
 
-- (CGRect)boundingRectForActiveGuidesForPoint:(CGPoint)a3
+- (CGRect)boundingRectForActiveGuidesForPoint:(CGPoint)point
 {
   x = CGRectInfinite.origin.x;
   y = CGRectInfinite.origin.y;
@@ -7106,23 +7106,23 @@ LABEL_26:
   return result;
 }
 
-- (void)setInfosToDisplay:(id)a3
+- (void)setInfosToDisplay:(id)display
 {
-  [(CRLCanvas *)self->mCanvas i_setInfosToDisplay:a3 updatingLayoutController:0];
+  [(CRLCanvas *)self->mCanvas i_setInfosToDisplay:display updatingLayoutController:0];
   [(CRLCanvasEditor *)self->mCanvasEditor canvasInfosDidChange];
   mCanvas = self->mCanvas;
 
   [(CRLCanvas *)mCanvas i_updateInfosInLayoutController];
 }
 
-- (void)setTemporaryAdditionalBoardItemsToDisplay:(id)a3
+- (void)setTemporaryAdditionalBoardItemsToDisplay:(id)display
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 | self->_temporaryAdditionalBoardItemsToDisplay)
+  displayCopy = display;
+  v5 = displayCopy;
+  if (displayCopy | self->_temporaryAdditionalBoardItemsToDisplay)
   {
-    v9 = v4;
-    v6 = [v4 isEqual:?];
+    v9 = displayCopy;
+    v6 = [displayCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -7139,13 +7139,13 @@ LABEL_26:
 - (CGRect)p_safeAreaLayoutGuideLayoutFrame
 {
   v3 = objc_opt_class();
-  v4 = [(CRLInteractiveCanvasController *)self layerHost];
-  v5 = [v4 canvasView];
-  v6 = [v5 enclosingScrollView];
-  v7 = sub_100014370(v3, v6);
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasView = [layerHost canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
+  v7 = sub_100014370(v3, enclosingScrollView);
 
-  v8 = [v7 safeAreaLayoutGuide];
-  [v8 layoutFrame];
+  safeAreaLayoutGuide = [v7 safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -7164,22 +7164,22 @@ LABEL_26:
 
 - (void)clearLayoutsForTopLevelContainerChange
 {
-  v2 = [(CRLInteractiveCanvasController *)self layoutController];
-  [v2 i_removeAllLayouts];
+  layoutController = [(CRLInteractiveCanvasController *)self layoutController];
+  [layoutController i_removeAllLayouts];
 }
 
-- (id)topLevelZOrderedSiblingsOfInfos:(id)a3
+- (id)topLevelZOrderedSiblingsOfInfos:(id)infos
 {
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v73 objects:v79 count:16];
+  infosCopy = infos;
+  v5 = [infosCopy countByEnumeratingWithState:&v73 objects:v79 count:16];
   if (v5)
   {
     v6 = v5;
-    v61 = self;
+    selfCopy = self;
     v63 = 0;
     v7 = 0;
     v8 = *v74;
@@ -7189,15 +7189,15 @@ LABEL_3:
     {
       if (*v74 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(infosCopy);
       }
 
       v10 = *(*(&v73 + 1) + 8 * v9);
-      v11 = [v10 parentInfo];
-      v12 = v11 == 0;
+      parentInfo = [v10 parentInfo];
+      v12 = parentInfo == 0;
 
-      v13 = [v10 parentInfo];
-      v14 = v13;
+      parentInfo2 = [v10 parentInfo];
+      v14 = parentInfo2;
       if (v63)
       {
 
@@ -7217,7 +7217,7 @@ LABEL_3:
       v7 |= v12;
       if (v6 == ++v9)
       {
-        v6 = [v4 countByEnumeratingWithState:&v73 objects:v79 count:16];
+        v6 = [infosCopy countByEnumeratingWithState:&v73 objects:v79 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -7257,7 +7257,7 @@ LABEL_3:
           v23 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLInteractiveCanvasController.m"];
           [CRLAssertionHandler handleFailureInFunction:v22 file:v23 lineNumber:3867 isFatal:0 description:"If we're given any info without a parent, we should have been given at least one info with a parent, too."];
 
-          v24 = [v4 allObjects];
+          allObjects = [infosCopy allObjects];
           goto LABEL_49;
         }
 
@@ -7268,8 +7268,8 @@ LABEL_23:
         v70 = 0u;
         v71 = 0u;
         v72 = 0u;
-        v60 = v4;
-        v26 = v4;
+        v60 = infosCopy;
+        v26 = infosCopy;
         v27 = [v26 countByEnumeratingWithState:&v69 objects:v78 count:16];
         if (v27)
         {
@@ -7285,12 +7285,12 @@ LABEL_23:
               }
 
               v31 = *(*(&v69 + 1) + 8 * i);
-              v32 = [v31 parentInfo];
-              if (v32 && (v33 = v32, [v31 parentInfo], v34 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v34, v33, (isKindOfClass & 1) == 0))
+              parentInfo3 = [v31 parentInfo];
+              if (parentInfo3 && (v33 = parentInfo3, [v31 parentInfo], v34 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v34, v33, (isKindOfClass & 1) == 0))
               {
-                v36 = [v31 parentInfo];
+                parentInfo4 = [v31 parentInfo];
                 v37 = objc_opt_class();
-                v43 = sub_1003038E0(v36, v37, 1, v38, v39, v40, v41, v42, &OBJC_PROTOCOL___CRLContainerInfo);
+                v43 = sub_1003038E0(parentInfo4, v37, 1, v38, v39, v40, v41, v42, &OBJC_PROTOCOL___CRLContainerInfo);
 
                 [v64 crl_addNonNilObject:v43];
               }
@@ -7308,16 +7308,16 @@ LABEL_23:
         }
 
         [v25 unionSet:v64];
-        v44 = v61;
+        v44 = selfCopy;
         v62 = v25;
         v59 = [(CRLInteractiveCanvasController *)v44 topLevelZOrderedSiblingsOfInfos:v25];
-        v24 = [v59 mutableCopy];
+        allObjects = [v59 mutableCopy];
         v65 = 0u;
         v66 = 0u;
         v67 = 0u;
         v68 = 0u;
-        v45 = v64;
-        v46 = [v45 countByEnumeratingWithState:&v65 objects:v77 count:16];
+        childInfos2 = v64;
+        v46 = [childInfos2 countByEnumeratingWithState:&v65 objects:v77 count:16];
         if (v46)
         {
           v47 = v46;
@@ -7328,29 +7328,29 @@ LABEL_23:
             {
               if (*v66 != v48)
               {
-                objc_enumerationMutation(v45);
+                objc_enumerationMutation(childInfos2);
               }
 
               v50 = *(*(&v65 + 1) + 8 * j);
-              v51 = [v24 indexOfObject:v50];
+              v51 = [allObjects indexOfObject:v50];
               if (v51 != 0x7FFFFFFFFFFFFFFFLL)
               {
                 v52 = v51;
                 v53 = objc_opt_class();
-                v54 = [v50 childInfos];
-                v55 = sub_100014370(v53, v54);
+                childInfos = [v50 childInfos];
+                v55 = sub_100014370(v53, childInfos);
 
-                [v24 replaceObjectsInRange:v52 withObjectsFromArray:1 range:{v55, 0, objc_msgSend(v55, "count")}];
+                [allObjects replaceObjectsInRange:v52 withObjectsFromArray:1 range:{v55, 0, objc_msgSend(v55, "count")}];
               }
             }
 
-            v47 = [v45 countByEnumeratingWithState:&v65 objects:v77 count:16];
+            v47 = [childInfos2 countByEnumeratingWithState:&v65 objects:v77 count:16];
           }
 
           while (v47);
         }
 
-        v4 = v60;
+        infosCopy = v60;
         v56 = v63;
         goto LABEL_46;
       }
@@ -7360,25 +7360,25 @@ LABEL_23:
   v56 = 0;
 LABEL_45:
   v57 = objc_opt_class();
-  v45 = [v56 childInfos];
-  v24 = sub_100014370(v57, v45);
+  childInfos2 = [v56 childInfos];
+  allObjects = sub_100014370(v57, childInfos2);
 LABEL_46:
 
-  if (!v24)
+  if (!allObjects)
   {
-    v24 = &__NSArray0__struct;
+    allObjects = &__NSArray0__struct;
   }
 
 LABEL_49:
 
-  return v24;
+  return allObjects;
 }
 
-- (id)repsForInfo:(id)a3
+- (id)repsForInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[NSMutableSet set];
-  v6 = [(CRLInteractiveCanvasController *)self layoutsForInfo:v4];
+  v6 = [(CRLInteractiveCanvasController *)self layoutsForInfo:infoCopy];
   v7 = v6;
   if (v6)
   {
@@ -7417,23 +7417,23 @@ LABEL_49:
   return v5;
 }
 
-- (id)repForInfo:(id)a3 createIfNeeded:(BOOL)a4
+- (id)repForInfo:(id)info createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CRLInteractiveCanvasController *)self layoutForInfo:v6];
+  neededCopy = needed;
+  infoCopy = info;
+  v7 = [(CRLInteractiveCanvasController *)self layoutForInfo:infoCopy];
   v8 = v7;
   if (!v7)
   {
     v8 = 0;
-    if (v4)
+    if (neededCopy)
     {
       [(CRLInteractiveCanvasController *)self layoutIfNeeded];
-      v8 = [(CRLInteractiveCanvasController *)self layoutForInfo:v6];
+      v8 = [(CRLInteractiveCanvasController *)self layoutForInfo:infoCopy];
     }
   }
 
-  v9 = !v4;
+  v9 = !neededCopy;
   if (v8)
   {
     v10 = [(CRLInteractiveCanvasController *)self repForLayout:v8];
@@ -7462,17 +7462,17 @@ LABEL_49:
 
   if (!v10)
   {
-    v12 = [(CRLInteractiveCanvasController *)self layoutsForInfo:v6];
-    v13 = [v12 allObjects];
-    v14 = [NSMutableArray arrayWithArray:v13];
+    v12 = [(CRLInteractiveCanvasController *)self layoutsForInfo:infoCopy];
+    allObjects = [v12 allObjects];
+    v14 = [NSMutableArray arrayWithArray:allObjects];
 
     [v14 sortUsingSelector:"orderedBefore:"];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v15 = [v14 reverseObjectEnumerator];
-    v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    reverseObjectEnumerator = [v14 reverseObjectEnumerator];
+    v16 = [reverseObjectEnumerator countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v16)
     {
       v17 = v16;
@@ -7483,7 +7483,7 @@ LABEL_49:
         {
           if (*v23 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v20 = [(CRLInteractiveCanvasController *)self repForLayout:*(*(&v22 + 1) + 8 * i)];
@@ -7494,7 +7494,7 @@ LABEL_49:
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v17 = [reverseObjectEnumerator countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v17)
         {
           continue;
@@ -7511,13 +7511,13 @@ LABEL_24:
   return v10;
 }
 
-- (id)p_repForLayout:(id)a3 createIfNeeded:(BOOL)a4
+- (id)p_repForLayout:(id)layout createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  neededCopy = needed;
+  layoutCopy = layout;
+  if (layoutCopy)
   {
-    v7 = [(CRLCanvas *)self->mCanvas repForLayout:v6];
+    v7 = [(CRLCanvas *)self->mCanvas repForLayout:layoutCopy];
     if (v7)
     {
       v8 = 1;
@@ -7525,13 +7525,13 @@ LABEL_24:
 
     else
     {
-      v8 = !v4;
+      v8 = !neededCopy;
     }
 
     if (!v8)
     {
       [(CRLInteractiveCanvasController *)self layoutIfNeeded];
-      v7 = [(CRLCanvas *)self->mCanvas repForLayout:v6];
+      v7 = [(CRLCanvas *)self->mCanvas repForLayout:layoutCopy];
     }
   }
 
@@ -7543,21 +7543,21 @@ LABEL_24:
   return v7;
 }
 
-- (id)renderableForRep:(id)a3
+- (id)renderableForRep:(id)rep
 {
-  v4 = a3;
-  v5 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
-  v6 = [v5 renderableForRep:v4];
+  repCopy = rep;
+  i_interactiveCanvasLayerHelper = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
+  v6 = [i_interactiveCanvasLayerHelper renderableForRep:repCopy];
 
   return v6;
 }
 
-- (id)containerRenderablesForRep:(id)a3
+- (id)containerRenderablesForRep:(id)rep
 {
-  v4 = a3;
-  v5 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
+  repCopy = rep;
+  i_interactiveCanvasLayerHelper = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
 
-  if (!v5)
+  if (!i_interactiveCanvasLayerHelper)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -7586,8 +7586,8 @@ LABEL_24:
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:4011 isFatal:0 description:"invalid nil value for '%{public}s'", "self.i_interactiveCanvasLayerHelper"];
   }
 
-  v9 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
-  v10 = [v9 containerRenderablesForRep:v4];
+  i_interactiveCanvasLayerHelper2 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
+  v10 = [i_interactiveCanvasLayerHelper2 containerRenderablesForRep:repCopy];
 
   return v10;
 }
@@ -7596,25 +7596,25 @@ LABEL_24:
 {
   [(CRLInteractiveCanvasController *)self endEditing];
   v3 = [(CRLCanvasEditor *)self->mCanvasEditor selectionPathWithInfos:0];
-  v4 = [(CRLInteractiveCanvasController *)self editorController];
-  [v4 setSelectionPath:v3];
+  editorController = [(CRLInteractiveCanvasController *)self editorController];
+  [editorController setSelectionPath:v3];
 
   mCanvas = self->mCanvas;
 
   [(CRLCanvas *)mCanvas recreateAllLayoutsAndReps];
 }
 
-- (void)discardRepForClassChange:(id)a3
+- (void)discardRepForClassChange:(id)change
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  changeCopy = change;
+  v5 = changeCopy;
+  if (changeCopy)
   {
-    v6 = [v4 parentRep];
-    v7 = v6;
-    if (v6)
+    parentRep = [changeCopy parentRep];
+    v7 = parentRep;
+    if (parentRep)
     {
-      if ([v6 conformsToProtocol:&OBJC_PROTOCOL___CRLCanvasMutableContainerRep])
+      if ([parentRep conformsToProtocol:&OBJC_PROTOCOL___CRLCanvasMutableContainerRep])
       {
         [v7 removeChildRep:v5];
       }
@@ -7649,8 +7649,8 @@ LABEL_24:
       }
     }
 
-    v13 = [(CRLInteractiveCanvasController *)self canvas];
-    [v13 i_unregisterRep:v5];
+    canvas = [(CRLInteractiveCanvasController *)self canvas];
+    [canvas i_unregisterRep:v5];
 
     [(CRLInteractiveCanvasController *)self layoutInvalidated];
   }
@@ -7726,20 +7726,20 @@ LABEL_24:
   return result;
 }
 
-- (CGRect)p_visibleBoundsRectUsingSizeOfEnclosingScrollView:(BOOL)a3 respectObscuredFrame:(BOOL)a4 respectSafeArea:(BOOL)a5 respectObscuringRects:(BOOL)a6 respectAreaPastScollViewLimit:(BOOL)a7
+- (CGRect)p_visibleBoundsRectUsingSizeOfEnclosingScrollView:(BOOL)view respectObscuredFrame:(BOOL)frame respectSafeArea:(BOOL)area respectObscuringRects:(BOOL)rects respectAreaPastScollViewLimit:(BOOL)limit
 {
-  v7 = a6;
-  v8 = a5;
+  rectsCopy = rects;
+  areaCopy = area;
   v11 = objc_opt_class();
-  v12 = [(CRLInteractiveCanvasController *)self layerHost];
-  v13 = [v12 canvasView];
-  v14 = [v13 enclosingScrollView];
-  v15 = sub_100014370(v11, v14);
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasView = [layerHost canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
+  v15 = sub_100014370(v11, enclosingScrollView);
 
-  v16 = [(CRLInteractiveCanvasController *)self layerHost];
-  v17 = [v16 canvasLayer];
+  layerHost2 = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost2 canvasLayer];
 
-  if (!v17)
+  if (!canvasLayer)
   {
     x = CGRectInfinite.origin.x;
     y = CGRectInfinite.origin.y;
@@ -7748,27 +7748,27 @@ LABEL_24:
     goto LABEL_15;
   }
 
-  v18 = [(CRLInteractiveCanvasController *)self layerHost];
-  v19 = [v18 canvasView];
-  v20 = [v19 window];
-  v21 = [v20 layer];
+  layerHost3 = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasView2 = [layerHost3 canvasView];
+  window = [canvasView2 window];
+  layer = [window layer];
 
-  [v17 bounds];
+  [canvasLayer bounds];
   x = v22;
   y = v24;
   width = v26;
   height = v28;
-  v30 = [v15 layer];
-  if (a3 || ([v15 window], v31 = objc_claimAutoreleasedReturnValue(), v31, !v31))
+  layer2 = [v15 layer];
+  if (view || ([v15 window], v31 = objc_claimAutoreleasedReturnValue(), v31, !v31))
   {
-    [v30 bounds];
-    v37 = [(CRLInteractiveCanvasController *)self p_sizeOfScrollViewEnclosingCanvasForVisibleCanvasCalculations];
-    v85 = SyncEvent.FetchedRecordZoneChanges.Deletion.init(recordID:recordType:)(v37, v38);
+    [layer2 bounds];
+    p_sizeOfScrollViewEnclosingCanvasForVisibleCanvasCalculations = [(CRLInteractiveCanvasController *)self p_sizeOfScrollViewEnclosingCanvasForVisibleCanvasCalculations];
+    v85 = SyncEvent.FetchedRecordZoneChanges.Deletion.init(recordID:recordType:)(p_sizeOfScrollViewEnclosingCanvasForVisibleCanvasCalculations, v38);
     v40 = v39;
     v42 = v41;
     v44 = v43;
     v46 = v45;
-    if (!v8)
+    if (!areaCopy)
     {
       goto LABEL_8;
     }
@@ -7776,8 +7776,8 @@ LABEL_24:
     goto LABEL_7;
   }
 
-  v32 = [v15 contentView];
-  if (v7)
+  contentView = [v15 contentView];
+  if (rectsCopy)
   {
     [(CRLInteractiveCanvasController *)self unobscuredScrollViewFrame];
   }
@@ -7791,14 +7791,14 @@ LABEL_24:
   v77 = v34;
   v78 = v35;
   v79 = v36;
-  v80 = [v15 superview];
-  [v32 convertRect:v80 fromView:{v76, v77, v78, v79}];
+  superview = [v15 superview];
+  [contentView convertRect:superview fromView:{v76, v77, v78, v79}];
   v40 = v81;
   v42 = v82;
   v44 = v83;
   v46 = v84;
 
-  if (v8)
+  if (areaCopy)
   {
 LABEL_7:
     [(CRLInteractiveCanvasController *)self p_safeAreaLayoutGuideLayoutFrame];
@@ -7818,14 +7818,14 @@ LABEL_7:
   }
 
 LABEL_8:
-  if (v30)
+  if (layer2)
   {
-    [v30 convertRect:v17 fromLayer:{x, y, width, height}];
+    [layer2 convertRect:canvasLayer fromLayer:{x, y, width, height}];
     v52 = v51;
     v54 = v53;
     v56 = v55;
     v58 = v57;
-    v59 = v30;
+    v59 = layer2;
 LABEL_13:
     v88.origin.x = v52;
     v88.origin.y = v54;
@@ -7836,7 +7836,7 @@ LABEL_13:
     v93.size.width = v44;
     v93.size.height = v46;
     v89 = CGRectIntersection(v88, v93);
-    [v59 convertRect:v17 toLayer:{v89.origin.x, v89.origin.y, v89.size.width, v89.size.height}];
+    [v59 convertRect:canvasLayer toLayer:{v89.origin.x, v89.origin.y, v89.size.width, v89.size.height}];
     x = v68;
     y = v69;
     width = v70;
@@ -7844,19 +7844,19 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (v21)
+  if (layer)
   {
-    [v21 convertRect:v17 fromLayer:{x, y, width, height}];
+    [layer convertRect:canvasLayer fromLayer:{x, y, width, height}];
     v52 = v60;
     v54 = v61;
     v56 = v62;
     v58 = v63;
-    [v21 bounds];
+    [layer bounds];
     v40 = v64;
     v42 = v65;
     v44 = v66;
     v46 = v67;
-    v59 = v21;
+    v59 = layer;
     goto LABEL_13;
   }
 
@@ -7973,14 +7973,14 @@ LABEL_15:
   return result;
 }
 
-- (CGRect)convertUnscaledToBoundsRect:(CGRect)a3
+- (CGRect)convertUnscaledToBoundsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(CRLInteractiveCanvasController *)self canvas];
-  [v7 convertUnscaledToBoundsRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  canvas = [(CRLInteractiveCanvasController *)self canvas];
+  [canvas convertUnscaledToBoundsRect:{x, y, width, height}];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -7997,14 +7997,14 @@ LABEL_15:
   return result;
 }
 
-- (CGRect)convertBoundsToUnscaledRect:(CGRect)a3
+- (CGRect)convertBoundsToUnscaledRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(CRLInteractiveCanvasController *)self canvas];
-  [v7 convertBoundsToUnscaledRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  canvas = [(CRLInteractiveCanvasController *)self canvas];
+  [canvas convertBoundsToUnscaledRect:{x, y, width, height}];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -8021,12 +8021,12 @@ LABEL_15:
   return result;
 }
 
-- (CGPoint)convertUnscaledToBoundsPoint:(CGPoint)a3
+- (CGPoint)convertUnscaledToBoundsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(CRLInteractiveCanvasController *)self canvas];
-  [v5 convertUnscaledToBoundsPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  canvas = [(CRLInteractiveCanvasController *)self canvas];
+  [canvas convertUnscaledToBoundsPoint:{x, y}];
   v7 = v6;
   v9 = v8;
 
@@ -8037,12 +8037,12 @@ LABEL_15:
   return result;
 }
 
-- (CGPoint)convertBoundsToUnscaledPoint:(CGPoint)a3
+- (CGPoint)convertBoundsToUnscaledPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(CRLInteractiveCanvasController *)self canvas];
-  [v5 convertBoundsToUnscaledPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  canvas = [(CRLInteractiveCanvasController *)self canvas];
+  [canvas convertBoundsToUnscaledPoint:{x, y}];
   v7 = v6;
   v9 = v8;
 
@@ -8053,12 +8053,12 @@ LABEL_15:
   return result;
 }
 
-- (CGSize)convertUnscaledToBoundsSize:(CGSize)a3
+- (CGSize)convertUnscaledToBoundsSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CRLInteractiveCanvasController *)self canvas];
-  [v5 convertUnscaledToBoundsSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  canvas = [(CRLInteractiveCanvasController *)self canvas];
+  [canvas convertUnscaledToBoundsSize:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -8069,12 +8069,12 @@ LABEL_15:
   return result;
 }
 
-- (CGSize)convertBoundsToUnscaledSize:(CGSize)a3
+- (CGSize)convertBoundsToUnscaledSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CRLInteractiveCanvasController *)self canvas];
-  [v5 convertBoundsToUnscaledSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  canvas = [(CRLInteractiveCanvasController *)self canvas];
+  [canvas convertBoundsToUnscaledSize:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -8085,13 +8085,13 @@ LABEL_15:
   return result;
 }
 
-- (CGRect)growUnscaledCanvasLayerRect:(CGRect)a3 withViewScale:(double)a4
+- (CGRect)growUnscaledCanvasLayerRect:(CGRect)rect withViewScale:(double)scale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if ([(CRLInteractiveCanvasController *)self shouldCanvasScrollingSizeGrowToFitBoardContent:a3.origin.x])
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if ([(CRLInteractiveCanvasController *)self shouldCanvasScrollingSizeGrowToFitBoardContent:rect.origin.x])
   {
     if (!self->mHasCanvasEverLaidOut)
     {
@@ -8103,15 +8103,15 @@ LABEL_15:
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [(CRLInteractiveCanvasController *)self board];
-    v18 = [v17 sceneInfos];
+    board = [(CRLInteractiveCanvasController *)self board];
+    sceneInfos = [board sceneInfos];
 
     v92 = 0u;
     v93 = 0u;
     v90 = 0u;
     v91 = 0u;
-    v19 = v18;
-    v20 = [v19 countByEnumeratingWithState:&v90 objects:v94 count:16];
+    canvas = sceneInfos;
+    v20 = [canvas countByEnumeratingWithState:&v90 objects:v94 count:16];
     if (v20)
     {
       v21 = v20;
@@ -8122,7 +8122,7 @@ LABEL_15:
         {
           if (*v91 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(canvas);
           }
 
           [*(*(&v90 + 1) + 8 * i) savedUnscaledRect];
@@ -8139,7 +8139,7 @@ LABEL_15:
           v16 = v42;
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v90 objects:v94 count:16];
+        v21 = [canvas countByEnumeratingWithState:&v90 objects:v94 count:16];
       }
 
       while (v21);
@@ -8182,8 +8182,8 @@ LABEL_15:
     v52 = v100.origin.y;
     v53 = v100.size.width;
     v54 = v100.size.height;
-    v55 = [(CRLInteractiveCanvasController *)self layerHost];
-    [v55 rectToIncludeWhenGrowingCanvasToFitContent];
+    layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+    [layerHost rectToIncludeWhenGrowingCanvasToFitContent];
     v110.origin.x = v56;
     v110.origin.y = v57;
     v110.size.width = v58;
@@ -8218,8 +8218,8 @@ LABEL_15:
     goto LABEL_25;
   }
 
-  v19 = [(CRLInteractiveCanvasController *)self canvas];
-  if ([v19 isAnchoredAtRight])
+  canvas = [(CRLInteractiveCanvasController *)self canvas];
+  if ([canvas isAnchoredAtRight])
   {
   }
 
@@ -8247,14 +8247,14 @@ LABEL_25:
     v67 = v66;
     v69 = v68;
     v71 = v70;
-    v72 = [(CRLInteractiveCanvasController *)self canvas];
-    v73 = [v72 isAnchoredAtRight];
+    canvas2 = [(CRLInteractiveCanvasController *)self canvas];
+    isAnchoredAtRight = [canvas2 isAnchoredAtRight];
 
     v74 = v65;
     v75 = v67;
     v76 = v69;
     v77 = v71;
-    if (v73)
+    if (isAnchoredAtRight)
     {
       MaxX = CGRectGetMaxX(*&v74);
       if (MaxX <= 0.0)
@@ -8326,10 +8326,10 @@ LABEL_26:
     return 1;
   }
 
-  v5 = [(CRLInteractiveCanvasController *)self canvas];
-  v6 = [v5 isAnchoredAtRight];
+  canvas = [(CRLInteractiveCanvasController *)self canvas];
+  isAnchoredAtRight = [canvas isAnchoredAtRight];
 
-  return v6;
+  return isAnchoredAtRight;
 }
 
 - (id)unitFormatter
@@ -8363,12 +8363,12 @@ LABEL_26:
   return mNumberFormatter;
 }
 
-- (id)unitStringForPoint:(CGPoint)a3
+- (id)unitStringForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = +[CRLRulerUnits instance];
-  v7 = [(CRLInteractiveCanvasController *)self unitFormatter];
+  unitFormatter = [(CRLInteractiveCanvasController *)self unitFormatter];
   [v6 convertPointsToRulerUnits:x];
   v9 = v8;
   [v6 convertPointsToRulerUnits:y];
@@ -8379,8 +8379,8 @@ LABEL_26:
   v15 = [NSNumber alloc];
   *&v16 = v11;
   v17 = [v15 initWithFloat:v16];
-  v18 = [v7 stringForObjectValue:v14];
-  v19 = [v7 stringForObjectValue:v17];
+  v18 = [unitFormatter stringForObjectValue:v14];
+  v19 = [unitFormatter stringForObjectValue:v17];
   v20 = +[NSBundle mainBundle];
   v21 = [v20 localizedStringForKey:@"x: %@  y: %@" value:0 table:0];
   v22 = [NSString localizedStringWithFormat:v21, v18, v19];
@@ -8388,13 +8388,13 @@ LABEL_26:
   return v22;
 }
 
-- (id)unitStringForSize:(CGSize)a3 forAccessibility:(BOOL)a4
+- (id)unitStringForSize:(CGSize)size forAccessibility:(BOOL)accessibility
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  accessibilityCopy = accessibility;
+  height = size.height;
+  width = size.width;
   v8 = +[CRLRulerUnits instance];
-  v9 = [(CRLInteractiveCanvasController *)self unitFormatter];
+  unitFormatter = [(CRLInteractiveCanvasController *)self unitFormatter];
   v10 = [NSNumber alloc];
   [v8 convertPointsToRulerUnits:width];
   *&v11 = v11;
@@ -8403,11 +8403,11 @@ LABEL_26:
   [v8 convertPointsToRulerUnits:height];
   *&v14 = v14;
   v15 = [v13 initWithFloat:v14];
-  v16 = [v9 stringForObjectValue:v12];
-  v17 = [v9 stringForObjectValue:v15];
+  v16 = [unitFormatter stringForObjectValue:v12];
+  v17 = [unitFormatter stringForObjectValue:v15];
   v18 = +[NSBundle mainBundle];
   v19 = v18;
-  if (v4)
+  if (accessibilityCopy)
   {
     v20 = @"width %@, height %@";
   }
@@ -8423,15 +8423,15 @@ LABEL_26:
   return v22;
 }
 
-- (id)unitStringForNumber:(double)a3
+- (id)unitStringForNumber:(double)number
 {
   v5 = +[CRLRulerUnits instance];
-  v6 = [(CRLInteractiveCanvasController *)self unitFormatter];
+  unitFormatter = [(CRLInteractiveCanvasController *)self unitFormatter];
   v7 = [NSNumber alloc];
-  [v5 convertPointsToRulerUnits:a3];
+  [v5 convertPointsToRulerUnits:number];
   *&v8 = v8;
   v9 = [v7 initWithFloat:v8];
-  v10 = [v6 stringForObjectValue:v9];
+  v10 = [unitFormatter stringForObjectValue:v9];
   v11 = +[NSBundle mainBundle];
   v12 = [v11 localizedStringForKey:@"%@" value:0 table:0];
   v13 = [NSString localizedStringWithFormat:v12, v10];
@@ -8439,55 +8439,55 @@ LABEL_26:
   return v13;
 }
 
-- (id)unitStringForAngle:(double)a3
+- (id)unitStringForAngle:(double)angle
 {
-  v4 = [(CRLInteractiveCanvasController *)self numberFormatter];
-  [v4 setMaximumFractionDigits:1];
-  [v4 setPositiveFormat:@"##0.#"];
+  numberFormatter = [(CRLInteractiveCanvasController *)self numberFormatter];
+  [numberFormatter setMaximumFractionDigits:1];
+  [numberFormatter setPositiveFormat:@"##0.#"];
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"%@°" value:0 table:0];
-  sub_1001208E0(a3);
+  sub_1001208E0(angle);
   v7 = [NSNumber numberWithDouble:?];
-  v8 = [v4 stringFromNumber:v7];
+  v8 = [numberFormatter stringFromNumber:v7];
   v9 = [NSString localizedStringWithFormat:v6, v8];
 
   return v9;
 }
 
-- (id)unitStringForAngle:(double)a3 shouldNormalize:(BOOL)a4
+- (id)unitStringForAngle:(double)angle shouldNormalize:(BOOL)normalize
 {
-  if (a4)
+  if (normalize)
   {
-    v5 = [(CRLInteractiveCanvasController *)self unitStringForAngle:a3];
+    v5 = [(CRLInteractiveCanvasController *)self unitStringForAngle:angle];
   }
 
   else
   {
-    v6 = [(CRLInteractiveCanvasController *)self numberFormatter];
-    [v6 setMaximumFractionDigits:1];
-    [v6 setPositiveFormat:@"##0.#"];
+    numberFormatter = [(CRLInteractiveCanvasController *)self numberFormatter];
+    [numberFormatter setMaximumFractionDigits:1];
+    [numberFormatter setPositiveFormat:@"##0.#"];
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"%@°" value:0 table:0];
-    v9 = [NSNumber numberWithDouble:a3];
-    v10 = [v6 stringFromNumber:v9];
+    v9 = [NSNumber numberWithDouble:angle];
+    v10 = [numberFormatter stringFromNumber:v9];
     v5 = [NSString localizedStringWithFormat:v8, v10];
   }
 
   return v5;
 }
 
-- (id)unitStringForAngle:(double)a3 andLength:(double)a4
+- (id)unitStringForAngle:(double)angle andLength:(double)length
 {
   v7 = +[CRLRulerUnits instance];
-  v8 = [(CRLInteractiveCanvasController *)self unitFormatter];
+  unitFormatter = [(CRLInteractiveCanvasController *)self unitFormatter];
   v9 = [NSNumber alloc];
-  [v7 convertPointsToRulerUnits:a4];
+  [v7 convertPointsToRulerUnits:length];
   *&v10 = v10;
   v11 = [v9 initWithFloat:v10];
-  v12 = [v8 stringForObjectValue:v11];
+  v12 = [unitFormatter stringForObjectValue:v11];
   v13 = +[NSBundle mainBundle];
   v14 = [v13 localizedStringForKey:@"%@  l: %@" value:0 table:0];
-  v15 = [(CRLInteractiveCanvasController *)self unitStringForAngle:a3];
+  v15 = [(CRLInteractiveCanvasController *)self unitStringForAngle:angle];
   v16 = [NSString localizedStringWithFormat:v14, v15, v12];
 
   return v16;
@@ -8495,9 +8495,9 @@ LABEL_26:
 
 - (CRLCanvasContainerRep)topLevelContainerRepForEditing
 {
-  v3 = [(CRLInteractiveCanvasController *)self topLevelContainerInfoForEditing];
+  topLevelContainerInfoForEditing = [(CRLInteractiveCanvasController *)self topLevelContainerInfoForEditing];
   v4 = objc_opt_class();
-  v10 = sub_100303920(v3, v4, 1, v5, v6, v7, v8, v9, &OBJC_PROTOCOL___CRLCanvasElementInfo);
+  v10 = sub_100303920(topLevelContainerInfoForEditing, v4, 1, v5, v6, v7, v8, v9, &OBJC_PROTOCOL___CRLCanvasElementInfo);
 
   if (v10)
   {
@@ -8516,10 +8516,10 @@ LABEL_26:
 
 - (CRLContainerInfo)topLevelContainerInfoForEditing
 {
-  v3 = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
-  v4 = [(CRLInteractiveCanvasController *)self editorController];
-  v5 = [v4 selectionPath];
-  v6 = [v3 containerToInsertIntoForSelectionPath:v5];
+  selectionModelTranslator = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
+  editorController = [(CRLInteractiveCanvasController *)self editorController];
+  selectionPath = [editorController selectionPath];
+  v6 = [selectionModelTranslator containerToInsertIntoForSelectionPath:selectionPath];
 
   if (v6)
   {
@@ -8537,28 +8537,28 @@ LABEL_26:
 
 - (NSArray)topLevelRepsForHitTesting
 {
-  v3 = [(CRLInteractiveCanvasController *)self hasSelectedInfosInMultipleContainers];
-  v4 = [(CRLInteractiveCanvasController *)self freehandDrawingToolkit];
-  v5 = [v4 isInDrawingMode];
+  hasSelectedInfosInMultipleContainers = [(CRLInteractiveCanvasController *)self hasSelectedInfosInMultipleContainers];
+  freehandDrawingToolkit = [(CRLInteractiveCanvasController *)self freehandDrawingToolkit];
+  isInDrawingMode = [freehandDrawingToolkit isInDrawingMode];
 
-  if ((v5 & 1) != 0 || v3)
+  if ((isInDrawingMode & 1) != 0 || hasSelectedInfosInMultipleContainers)
   {
-    v16 = [(CRLCanvas *)self->mCanvas allRepsOrdered];
-    v7 = [v16 crl_arrayOfObjectsPassingTest:&stru_101863E28];
+    allRepsOrdered = [(CRLCanvas *)self->mCanvas allRepsOrdered];
+    topLevelReps = [allRepsOrdered crl_arrayOfObjectsPassingTest:&stru_101863E28];
   }
 
   else
   {
-    v6 = [(CRLInteractiveCanvasController *)self topLevelContainerRepForEditing];
-    if (v6)
+    topLevelContainerRepForEditing = [(CRLInteractiveCanvasController *)self topLevelContainerRepForEditing];
+    if (topLevelContainerRepForEditing)
     {
-      v7 = +[NSMutableArray array];
+      topLevelReps = +[NSMutableArray array];
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v8 = [v6 childReps];
-      v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      childReps = [topLevelContainerRepForEditing childReps];
+      v9 = [childReps countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v9)
       {
         v10 = v9;
@@ -8569,16 +8569,16 @@ LABEL_26:
           {
             if (*v19 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(childReps);
             }
 
-            v13 = [*(*(&v18 + 1) + 8 * i) info];
-            v14 = [(CRLInteractiveCanvasController *)self repsForInfo:v13];
-            v15 = [v14 allObjects];
-            [v7 addObjectsFromArray:v15];
+            info = [*(*(&v18 + 1) + 8 * i) info];
+            v14 = [(CRLInteractiveCanvasController *)self repsForInfo:info];
+            allObjects = [v14 allObjects];
+            [topLevelReps addObjectsFromArray:allObjects];
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v10 = [childReps countByEnumeratingWithState:&v18 objects:v22 count:16];
         }
 
         while (v10);
@@ -8587,17 +8587,17 @@ LABEL_26:
 
     else
     {
-      v7 = [(CRLCanvas *)self->mCanvas topLevelReps];
+      topLevelReps = [(CRLCanvas *)self->mCanvas topLevelReps];
     }
   }
 
-  return v7;
+  return topLevelReps;
 }
 
-+ (double)smallRepOutsetForHitTestingWithPrecision:(BOOL)a3
++ (double)smallRepOutsetForHitTestingWithPrecision:(BOOL)precision
 {
   result = 20.0;
-  if (a3)
+  if (precision)
   {
     return 2.0;
   }
@@ -8605,31 +8605,31 @@ LABEL_26:
   return result;
 }
 
-- (id)hitRep:(CGPoint)a3 withPrecision:(BOOL)a4 passingTest:(id)a5
+- (id)hitRep:(CGPoint)rep withPrecision:(BOOL)precision passingTest:(id)test
 {
-  v5 = a4;
-  y = a3.y;
-  x = a3.x;
-  v9 = a5;
-  v10 = [(CRLInteractiveCanvasController *)self canvas];
-  v11 = [(CRLInteractiveCanvasController *)self topLevelRepsForHitTesting];
-  [objc_opt_class() smallRepOutsetForHitTestingWithPrecision:v5];
-  v13 = [v10 hitRep:v5 withPrecision:v11 inTopLevelReps:0 smallRepOutset:v9 unscaledPointTransformForRep:x passingTest:{y, v12}];
+  precisionCopy = precision;
+  y = rep.y;
+  x = rep.x;
+  testCopy = test;
+  canvas = [(CRLInteractiveCanvasController *)self canvas];
+  topLevelRepsForHitTesting = [(CRLInteractiveCanvasController *)self topLevelRepsForHitTesting];
+  [objc_opt_class() smallRepOutsetForHitTestingWithPrecision:precisionCopy];
+  v13 = [canvas hitRep:precisionCopy withPrecision:topLevelRepsForHitTesting inTopLevelReps:0 smallRepOutset:testCopy unscaledPointTransformForRep:x passingTest:{y, v12}];
 
   return v13;
 }
 
-- (id)hitRepIgnoringClickThrough:(CGPoint)a3
+- (id)hitRepIgnoringClickThrough:(CGPoint)through
 {
-  y = a3.y;
-  x = a3.x;
+  y = through.y;
+  x = through.x;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = sub_100451AD0;
   v14 = sub_100451AE0;
   v15 = 0;
-  v6 = [(CRLInteractiveCanvasController *)self canvas];
+  canvas = [(CRLInteractiveCanvasController *)self canvas];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100451AE8;
@@ -8638,7 +8638,7 @@ LABEL_26:
   v9[5] = &v10;
   *&v9[6] = x;
   *&v9[7] = y;
-  [v6 i_performBlockWhileIgnoringClickThrough:v9];
+  [canvas i_performBlockWhileIgnoringClickThrough:v9];
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -8646,17 +8646,17 @@ LABEL_26:
   return v7;
 }
 
-- (id)hitRepsAtPoint:(CGPoint)a3 withSlop:(CGSize)a4
+- (id)hitRepsAtPoint:(CGPoint)point withSlop:(CGSize)slop
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v7 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [(CRLCanvas *)self->mCanvas topLevelReps];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  topLevelReps = [(CRLCanvas *)self->mCanvas topLevelReps];
+  v9 = [topLevelReps countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -8667,7 +8667,7 @@ LABEL_26:
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(topLevelReps);
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
@@ -8679,7 +8679,7 @@ LABEL_26:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [topLevelReps countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);
@@ -8688,19 +8688,19 @@ LABEL_26:
   return v7;
 }
 
-- (void)p_recursiveHitKnobAtPoint:(CGPoint)a3 inputType:(int64_t)a4 inRep:(id)a5 minDistance:(double *)a6 hitKnob:(id *)a7 hitRep:(id *)a8
+- (void)p_recursiveHitKnobAtPoint:(CGPoint)point inputType:(int64_t)type inRep:(id)rep minDistance:(double *)distance hitKnob:(id *)knob hitRep:(id *)hitRep
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v32 = a5;
-  v13 = [v32 knobs];
-  v14 = [v13 reverseObjectEnumerator];
+  repCopy = rep;
+  knobs = [repCopy knobs];
+  reverseObjectEnumerator = [knobs reverseObjectEnumerator];
 
-  v15 = [v14 countByEnumeratingWithState:&v39 objects:v44 count:16];
+  v15 = [reverseObjectEnumerator countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v15)
   {
     v16 = v15;
@@ -8712,36 +8712,36 @@ LABEL_26:
       {
         if (*v40 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v19 = *(*(&v39 + 1) + 8 * v18);
         v38 = 0.0;
-        if (!*a7 || ![v19 overlapsWithKnob:?])
+        if (!*knob || ![v19 overlapsWithKnob:?])
         {
-          if (([v19 isHitByUnscaledPoint:a4 inputType:&v38 returningDistance:{x, y}] & 1) == 0)
+          if (([v19 isHitByUnscaledPoint:type inputType:&v38 returningDistance:{x, y}] & 1) == 0)
           {
             goto LABEL_14;
           }
 
 LABEL_12:
           v22 = v38;
-          if (v38 >= *a6)
+          if (v38 >= *distance)
           {
             goto LABEL_14;
           }
 
 LABEL_13:
-          *a6 = v22;
+          *distance = v22;
           v23 = v19;
-          *a7 = v19;
-          *a8 = [v23 rep];
+          *knob = v19;
+          *hitRep = [v23 rep];
           goto LABEL_14;
         }
 
-        v20 = [*a7 obscuresKnob:v19];
-        v21 = [v19 obscuresKnob:*a7];
-        if (([v19 isHitByUnscaledPoint:a4 inputType:&v38 returningDistance:{x, y}] & 1) == 0)
+        v20 = [*knob obscuresKnob:v19];
+        v21 = [v19 obscuresKnob:*knob];
+        if (([v19 isHitByUnscaledPoint:type inputType:&v38 returningDistance:{x, y}] & 1) == 0)
         {
           goto LABEL_14;
         }
@@ -8762,22 +8762,22 @@ LABEL_14:
       }
 
       while (v16 != v18);
-      v24 = [v14 countByEnumeratingWithState:&v39 objects:v44 count:{16, v22}];
+      v24 = [reverseObjectEnumerator countByEnumeratingWithState:&v39 objects:v44 count:{16, v22}];
       v16 = v24;
     }
 
     while (v24);
   }
 
-  v25 = v32;
-  if ([v32 shouldHitTestChildKnobs])
+  v25 = repCopy;
+  if ([repCopy shouldHitTestChildKnobs])
   {
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v26 = [v32 childReps];
-    v27 = [v26 countByEnumeratingWithState:&v34 objects:v43 count:16];
+    childReps = [repCopy childReps];
+    v27 = [childReps countByEnumeratingWithState:&v34 objects:v43 count:16];
     if (v27)
     {
       v28 = v27;
@@ -8788,33 +8788,33 @@ LABEL_14:
         {
           if (*v35 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(childReps);
           }
 
-          [(CRLInteractiveCanvasController *)self p_recursiveHitKnobAtPoint:a4 inputType:*(*(&v34 + 1) + 8 * i) inRep:a6 minDistance:a7 hitKnob:a8 hitRep:x, y];
+          [(CRLInteractiveCanvasController *)self p_recursiveHitKnobAtPoint:type inputType:*(*(&v34 + 1) + 8 * i) inRep:distance minDistance:knob hitKnob:hitRep hitRep:x, y];
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v34 objects:v43 count:16];
+        v28 = [childReps countByEnumeratingWithState:&v34 objects:v43 count:16];
       }
 
       while (v28);
     }
 
-    v25 = v32;
+    v25 = repCopy;
   }
 }
 
-- (id)hitKnobAtPoint:(CGPoint)a3 inputType:(int64_t)a4 returningRep:(id *)a5
+- (id)hitKnobAtPoint:(CGPoint)point inputType:(int64_t)type returningRep:(id *)rep
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v28 = 0x47EFFFFFE0000000;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = [(CRLCanvas *)self->mCanvas topLevelReps];
-  v10 = [v9 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  topLevelReps = [(CRLCanvas *)self->mCanvas topLevelReps];
+  v10 = [topLevelReps countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v10)
   {
     v11 = v10;
@@ -8830,13 +8830,13 @@ LABEL_14:
       {
         if (*v25 != v14)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(topLevelReps);
         }
 
         v18 = *(*(&v24 + 1) + 8 * v15);
         v22 = v16;
         v23 = v17;
-        [(CRLInteractiveCanvasController *)self p_recursiveHitKnobAtPoint:a4 inputType:v18 inRep:&v28 minDistance:&v23 hitKnob:&v22 hitRep:x, y];
+        [(CRLInteractiveCanvasController *)self p_recursiveHitKnobAtPoint:type inputType:v18 inRep:&v28 minDistance:&v23 hitKnob:&v22 hitRep:x, y];
         v13 = v23;
 
         v12 = v22;
@@ -8846,7 +8846,7 @@ LABEL_14:
       }
 
       while (v11 != v15);
-      v11 = [v9 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v11 = [topLevelReps countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v11);
@@ -8858,38 +8858,38 @@ LABEL_14:
     v13 = 0;
   }
 
-  if (a5)
+  if (rep)
   {
     v19 = v12;
-    *a5 = v12;
+    *rep = v12;
   }
 
   return v13;
 }
 
-- (id)validatedLayoutForInfo:(id)a3
+- (id)validatedLayoutForInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(CRLInteractiveCanvasController *)self layoutController];
-  v6 = [v5 validatedLayoutForInfo:v4];
+  infoCopy = info;
+  layoutController = [(CRLInteractiveCanvasController *)self layoutController];
+  v6 = [layoutController validatedLayoutForInfo:infoCopy];
 
   return v6;
 }
 
-- (id)layoutsForInfo:(id)a3
+- (id)layoutsForInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(CRLInteractiveCanvasController *)self layoutController];
-  v6 = [v5 layoutsForInfo:v4];
+  infoCopy = info;
+  layoutController = [(CRLInteractiveCanvasController *)self layoutController];
+  v6 = [layoutController layoutsForInfo:infoCopy];
 
   return v6;
 }
 
-- (id)layoutsForSelectionPath:(id)a3
+- (id)layoutsForSelectionPath:(id)path
 {
-  v4 = a3;
-  v26 = self;
-  v5 = [(CRLInteractiveCanvasController *)self infosForSelectionPath:v4];
+  pathCopy = path;
+  selfCopy = self;
+  v5 = [(CRLInteractiveCanvasController *)self infosForSelectionPath:pathCopy];
   if ([v5 count])
   {
     v33 = 0u;
@@ -8913,7 +8913,7 @@ LABEL_14:
             objc_enumerationMutation(obj);
           }
 
-          v10 = [(CRLInteractiveCanvasController *)v26 layoutsForInfo:*(*(&v31 + 1) + 8 * i), v23];
+          v10 = [(CRLInteractiveCanvasController *)selfCopy layoutsForInfo:*(*(&v31 + 1) + 8 * i), v23];
           v11 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v10 count]);
           v27 = 0u;
           v28 = 0u;
@@ -8934,7 +8934,7 @@ LABEL_14:
                   objc_enumerationMutation(v12);
                 }
 
-                v17 = [*(*(&v27 + 1) + 8 * j) layoutForSelectionPath:v4];
+                v17 = [*(*(&v27 + 1) + 8 * j) layoutForSelectionPath:pathCopy];
                 if (v17)
                 {
                   [v11 addObject:v17];
@@ -8994,42 +8994,42 @@ LABEL_14:
   return v21;
 }
 
-- (id)layoutForInfo:(id)a3
+- (id)layoutForInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(CRLInteractiveCanvasController *)self layoutController];
-  v6 = [v5 layoutForInfo:v4];
+  infoCopy = info;
+  layoutController = [(CRLInteractiveCanvasController *)self layoutController];
+  v6 = [layoutController layoutForInfo:infoCopy];
 
   return v6;
 }
 
-- (id)layoutForSelectionPath:(id)a3
+- (id)layoutForSelectionPath:(id)path
 {
-  v3 = [(CRLInteractiveCanvasController *)self layoutsForSelectionPath:a3];
-  v4 = [v3 anyObject];
+  v3 = [(CRLInteractiveCanvasController *)self layoutsForSelectionPath:path];
+  anyObject = [v3 anyObject];
 
-  return v4;
+  return anyObject;
 }
 
-- (id)layoutsForInfo:(id)a3 intersectingSelectionPath:(id)a4
+- (id)layoutsForInfo:(id)info intersectingSelectionPath:(id)path
 {
-  v6 = a4;
-  v7 = [(CRLInteractiveCanvasController *)self layoutsForInfo:a3];
+  pathCopy = path;
+  v7 = [(CRLInteractiveCanvasController *)self layoutsForInfo:info];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100452644;
   v11[3] = &unk_101863E50;
-  v12 = v6;
-  v8 = v6;
+  v12 = pathCopy;
+  v8 = pathCopy;
   v9 = [v7 objectsPassingTest:v11];
 
   return v9;
 }
 
-- (id)layoutForInfoNearestVisibleRect:(id)a3
+- (id)layoutForInfoNearestVisibleRect:(id)rect
 {
-  v4 = a3;
-  v5 = [(CRLInteractiveCanvasController *)self layoutsForInfo:v4];
+  rectCopy = rect;
+  v5 = [(CRLInteractiveCanvasController *)self layoutsForInfo:rectCopy];
   [(CRLInteractiveCanvasController *)self visibleUnscaledRect];
   v7 = v6;
   v9 = v8;
@@ -9103,11 +9103,11 @@ LABEL_14:
   return v17;
 }
 
-- (id)layoutForInfoNearestVisibleRect:(id)a3 intersectingSelectionPath:(id)a4
+- (id)layoutForInfoNearestVisibleRect:(id)rect intersectingSelectionPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRLInteractiveCanvasController *)self layoutsForInfo:v6 intersectingSelectionPath:v7];
+  rectCopy = rect;
+  pathCopy = path;
+  v8 = [(CRLInteractiveCanvasController *)self layoutsForInfo:rectCopy intersectingSelectionPath:pathCopy];
   [(CRLInteractiveCanvasController *)self visibleUnscaledRect];
   v10 = v9;
   v12 = v11;
@@ -9137,7 +9137,7 @@ LABEL_14:
         }
 
         v24 = *(*(&v40 + 1) + 8 * i);
-        [v24 rectInRootForSelectionPath:v7];
+        [v24 rectInRootForSelectionPath:pathCopy];
         [(CRLInteractiveCanvasController *)self outsetSelectionRect:?];
         v26 = v25;
         v28 = v27;
@@ -9184,12 +9184,12 @@ LABEL_14:
   return v20;
 }
 
-- (id)parentForFreehandDrawingLayoutsAtPoint:(CGPoint)a3
+- (id)parentForFreehandDrawingLayoutsAtPoint:(CGPoint)point
 {
-  v3 = [(CRLInteractiveCanvasController *)self layoutController:a3.x];
-  v4 = [v3 rootLayout];
+  v3 = [(CRLInteractiveCanvasController *)self layoutController:point.x];
+  rootLayout = [v3 rootLayout];
 
-  return v4;
+  return rootLayout;
 }
 
 - (id)mostVisibleParentForFreehandDrawingLayouts
@@ -9200,15 +9200,15 @@ LABEL_14:
   return [(CRLInteractiveCanvasController *)self parentForFreehandDrawingLayoutsAtPoint:v7];
 }
 
-- (void)setShouldSuppressFreehandContent:(BOOL)a3
+- (void)setShouldSuppressFreehandContent:(BOOL)content
 {
-  self->_shouldSuppressFreehandContent = a3;
+  self->_shouldSuppressFreehandContent = content;
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(CRLCanvas *)self->mCanvas topLevelReps];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  topLevelReps = [(CRLCanvas *)self->mCanvas topLevelReps];
+  v4 = [topLevelReps countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -9219,13 +9219,13 @@ LABEL_14:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(topLevelReps);
         }
 
         [*(*(&v8 + 1) + 8 * i) recursivelyPerformSelectorIfImplemented:"suppressionOfFreehandContentDidChange"];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [topLevelReps countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -9234,11 +9234,11 @@ LABEL_14:
 
 - (void)layoutIfNeeded
 {
-  v3 = [(CRLInteractiveCanvasController *)self layerHost];
-  v4 = [v3 canvasLayer];
-  v5 = [v4 isLayoutDisabled];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
+  isLayoutDisabled = [canvasLayer isLayoutDisabled];
 
-  if ((v5 & 1) == 0)
+  if ((isLayoutDisabled & 1) == 0)
   {
     mCanvas = self->mCanvas;
 
@@ -9246,16 +9246,16 @@ LABEL_14:
   }
 }
 
-- (void)performBlockOnMainThreadAfterLayoutIfNecessary:(id)a3
+- (void)performBlockOnMainThreadAfterLayoutIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  necessaryCopy = necessary;
+  v5 = necessaryCopy;
+  if (necessaryCopy)
   {
     v8 = sub_100452E0C;
     v9 = &unk_10183FC10;
-    v10 = self;
-    v11 = v4;
+    selfCopy = self;
+    v11 = necessaryCopy;
     if ([NSThread isMainThread:_NSConcreteStackBlock])
     {
       v8(&v7);
@@ -9272,30 +9272,30 @@ LABEL_14:
 
 - (CALayer)repContainerLayer
 {
-  v2 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
-  v3 = [v2 repContainerLayer];
+  i_interactiveCanvasLayerHelper = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
+  repContainerLayer = [i_interactiveCanvasLayerHelper repContainerLayer];
 
-  return v3;
+  return repContainerLayer;
 }
 
 - (CALayer)overlayLayer
 {
-  v2 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
-  v3 = [v2 overlayLayer];
+  i_interactiveCanvasLayerHelper = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
+  overlayLayer = [i_interactiveCanvasLayerHelper overlayLayer];
 
-  return v3;
+  return overlayLayer;
 }
 
-- (void)setOverlayLayerSuppressed:(BOOL)a3
+- (void)setOverlayLayerSuppressed:(BOOL)suppressed
 {
-  if (self->mOverlayLayerSuppressed != a3)
+  if (self->mOverlayLayerSuppressed != suppressed)
   {
-    self->mOverlayLayerSuppressed = a3;
-    if (a3)
+    self->mOverlayLayerSuppressed = suppressed;
+    if (suppressed)
     {
       WeakRetained = objc_loadWeakRetained(&self->mLayerHost);
-      v6 = [WeakRetained imageHUDController];
-      [v6 closeHUDWithAnimation:0];
+      imageHUDController = [WeakRetained imageHUDController];
+      [imageHUDController closeHUDWithAnimation:0];
     }
 
     [(CRLInteractiveCanvasController *)self layoutInvalidated];
@@ -9305,21 +9305,21 @@ LABEL_14:
 - (void)closeOverlays
 {
   WeakRetained = objc_loadWeakRetained(&self->mLayerHost);
-  v4 = [WeakRetained imageHUDController];
-  [v4 closeHUDWithAnimation:1];
+  imageHUDController = [WeakRetained imageHUDController];
+  [imageHUDController closeHUDWithAnimation:1];
 
   [(CRLInteractiveCanvasController *)self layoutInvalidated];
 }
 
-- (void)addDecorator:(id)a3
+- (void)addDecorator:(id)decorator
 {
-  v4 = a3;
-  if (v4)
+  decoratorCopy = decorator;
+  if (decoratorCopy)
   {
-    if (([(NSMutableArray *)self->mDecorators containsObject:v4]& 1) == 0)
+    if (([(NSMutableArray *)self->mDecorators containsObject:decoratorCopy]& 1) == 0)
     {
-      [(NSMutableArray *)self->mDecorators addObject:v4];
-      [(CRLInteractiveCanvasController *)self invalidateLayersForDecorator:v4];
+      [(NSMutableArray *)self->mDecorators addObject:decoratorCopy];
+      [(CRLInteractiveCanvasController *)self invalidateLayersForDecorator:decoratorCopy];
     }
   }
 
@@ -9353,17 +9353,17 @@ LABEL_14:
   }
 }
 
-- (void)removeDecorator:(id)a3
+- (void)removeDecorator:(id)decorator
 {
-  v4 = a3;
-  if (v4)
+  decoratorCopy = decorator;
+  if (decoratorCopy)
   {
-    if ([(NSMutableArray *)self->mDecorators containsObject:v4])
+    if ([(NSMutableArray *)self->mDecorators containsObject:decoratorCopy])
     {
-      [(NSMutableArray *)self->mDecorators removeObject:v4];
-      [(CRLInteractiveCanvasController *)self invalidateLayersForDecorator:v4];
-      v5 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
-      [v5 decoratorWasRemoved:v4];
+      [(NSMutableArray *)self->mDecorators removeObject:decoratorCopy];
+      [(CRLInteractiveCanvasController *)self invalidateLayersForDecorator:decoratorCopy];
+      i_interactiveCanvasLayerHelper = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
+      [i_interactiveCanvasLayerHelper decoratorWasRemoved:decoratorCopy];
     }
   }
 
@@ -9404,21 +9404,21 @@ LABEL_14:
   return v2;
 }
 
-- (id)p_repsForCollaboratorCursorSelectionPath:(id)a3
+- (id)p_repsForCollaboratorCursorSelectionPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = +[NSMutableSet set];
-  if (v4)
+  if (pathCopy)
   {
-    v6 = [v4 mostSpecificSelectionOfClass:objc_opt_class()];
+    v6 = [pathCopy mostSpecificSelectionOfClass:objc_opt_class()];
     if ([v6 itemCount] < 2)
     {
-      v7 = [(CRLInteractiveCanvasController *)self layoutsForSelectionPath:v4];
+      boardItems = [(CRLInteractiveCanvasController *)self layoutsForSelectionPath:pathCopy];
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v13 = [v7 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v13 = [boardItems countByEnumeratingWithState:&v20 objects:v28 count:16];
       if (v13)
       {
         v14 = v13;
@@ -9429,7 +9429,7 @@ LABEL_14:
           {
             if (*v21 != v15)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(boardItems);
             }
 
             v17 = [(CRLInteractiveCanvasController *)self repForLayout:*(*(&v20 + 1) + 8 * i)];
@@ -9439,7 +9439,7 @@ LABEL_14:
             }
           }
 
-          v14 = [v7 countByEnumeratingWithState:&v20 objects:v28 count:16];
+          v14 = [boardItems countByEnumeratingWithState:&v20 objects:v28 count:16];
         }
 
         while (v14);
@@ -9452,8 +9452,8 @@ LABEL_14:
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v7 = [v6 boardItems];
-      v8 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      boardItems = [v6 boardItems];
+      v8 = [boardItems countByEnumeratingWithState:&v24 objects:v29 count:16];
       if (v8)
       {
         v9 = v8;
@@ -9464,14 +9464,14 @@ LABEL_14:
           {
             if (*v25 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(boardItems);
             }
 
             v12 = [(CRLInteractiveCanvasController *)self repsForInfo:*(*(&v24 + 1) + 8 * j)];
             [v5 unionSet:v12];
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+          v9 = [boardItems countByEnumeratingWithState:&v24 objects:v29 count:16];
         }
 
         while (v9);
@@ -9484,10 +9484,10 @@ LABEL_14:
   return v18;
 }
 
-- (id)i_collaboratorPresenceSelectingLayout:(id)a3
+- (id)i_collaboratorPresenceSelectingLayout:(id)layout
 {
-  v23 = a3;
-  v4 = [(CRLInteractiveCanvasController *)self collaboratorCursorDelegate];
+  layoutCopy = layout;
+  collaboratorCursorDelegate = [(CRLInteractiveCanvasController *)self collaboratorCursorDelegate];
   v21 = objc_alloc_init(NSMutableSet);
   v25 = 0u;
   v26 = 0u;
@@ -9508,7 +9508,7 @@ LABEL_14:
         }
 
         v7 = *(*(&v25 + 1) + 8 * i);
-        v8 = [v4 collaboratorCursorSelectionPathForRenderer:self collaboratorPresence:v7];
+        v8 = [collaboratorCursorDelegate collaboratorCursorSelectionPathForRenderer:self collaboratorPresence:v7];
         v9 = [v8 mostSpecificSelectionOfClass:objc_opt_class()];
         v10 = v9;
         if (v8)
@@ -9516,7 +9516,7 @@ LABEL_14:
           if ([v9 itemCount] < 2)
           {
             v17 = [(CRLInteractiveCanvasController *)self layoutsForSelectionPath:v8];
-            v18 = [v17 containsObject:v23];
+            v18 = [v17 containsObject:layoutCopy];
 
             if (!v18)
             {
@@ -9530,13 +9530,13 @@ LABEL_11:
 
           [v10 boardItems];
           v11 = v5;
-          v12 = self;
-          v14 = v13 = v4;
-          v15 = [v23 info];
-          v16 = [v14 containsObject:v15];
+          selfCopy = self;
+          v14 = v13 = collaboratorCursorDelegate;
+          info = [layoutCopy info];
+          v16 = [v14 containsObject:info];
 
-          v4 = v13;
-          self = v12;
+          collaboratorCursorDelegate = v13;
+          self = selfCopy;
           v5 = v11;
           if (v16)
           {
@@ -9558,19 +9558,19 @@ LABEL_12:
   return v19;
 }
 
-- (id)p_topCollaboratorPresenceOfPresences:(id)a3
+- (id)p_topCollaboratorPresenceOfPresences:(id)presences
 {
-  v4 = a3;
-  if ([v4 count] > 1)
+  presencesCopy = presences;
+  if ([presencesCopy count] > 1)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = [(CRLInteractiveCanvasController *)self i_decorators];
-    v7 = [v6 reverseObjectEnumerator];
+    i_decorators = [(CRLInteractiveCanvasController *)self i_decorators];
+    reverseObjectEnumerator = [i_decorators reverseObjectEnumerator];
 
-    v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
       v9 = v8;
@@ -9581,7 +9581,7 @@ LABEL_12:
         {
           if (*v20 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v12 = *(*(&v19 + 1) + 8 * i);
@@ -9590,19 +9590,19 @@ LABEL_12:
           v15 = v14;
           if (v14)
           {
-            v16 = [v14 collaboratorPresence];
-            v17 = [v4 containsObject:v16];
+            collaboratorPresence = [v14 collaboratorPresence];
+            v17 = [presencesCopy containsObject:collaboratorPresence];
 
             if (v17)
             {
-              v5 = [v15 collaboratorPresence];
+              collaboratorPresence2 = [v15 collaboratorPresence];
 
               goto LABEL_14;
             }
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v9)
         {
           continue;
@@ -9612,44 +9612,44 @@ LABEL_12:
       }
     }
 
-    v5 = 0;
+    collaboratorPresence2 = 0;
   }
 
   else
   {
-    v5 = [v4 anyObject];
+    collaboratorPresence2 = [presencesCopy anyObject];
   }
 
 LABEL_14:
 
-  return v5;
+  return collaboratorPresence2;
 }
 
-- (BOOL)i_shouldShowCollaboratorCursorForLayout:(id)a3
+- (BOOL)i_shouldShowCollaboratorCursorForLayout:(id)layout
 {
   if (self->mLayoutsShowingCollabCursorsDuringLayerUpdate)
   {
     mLayoutsShowingCollabCursorsDuringLayerUpdate = self->mLayoutsShowingCollabCursorsDuringLayerUpdate;
 
-    return [(NSSet *)mLayoutsShowingCollabCursorsDuringLayerUpdate containsObject:a3];
+    return [(NSSet *)mLayoutsShowingCollabCursorsDuringLayerUpdate containsObject:layout];
   }
 
   else
   {
-    v6 = [(CRLInteractiveCanvasController *)self i_collaboratorPresenceSelectingLayout:a3];
+    v6 = [(CRLInteractiveCanvasController *)self i_collaboratorPresenceSelectingLayout:layout];
     v7 = v6 != 0;
 
     return v7;
   }
 }
 
-- (void)p_performBlockWithCachedLayoutsForCollaboratorCursors:(id)a3
+- (void)p_performBlockWithCachedLayoutsForCollaboratorCursors:(id)cursors
 {
-  v4 = a3;
+  cursorsCopy = cursors;
   [(CRLInteractiveCanvasController *)self p_beginCachingLayoutsForCollaboratorCursors];
-  if (v4)
+  if (cursorsCopy)
   {
-    v4[2]();
+    cursorsCopy[2]();
   }
 
   [(CRLInteractiveCanvasController *)self p_endCachingLayoutsForCollaboratorCursors];
@@ -9658,20 +9658,20 @@ LABEL_14:
 - (void)p_beginCachingLayoutsForCollaboratorCursors
 {
   v3 = +[NSMutableSet set];
-  v4 = [(CRLInteractiveCanvasController *)self collaboratorCursorDelegate];
+  collaboratorCursorDelegate = [(CRLInteractiveCanvasController *)self collaboratorCursorDelegate];
   if (objc_opt_respondsToSelector())
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v5 = [(CRLInteractiveCanvasController *)self currentCollaboratorPresences];
-    v22 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    currentCollaboratorPresences = [(CRLInteractiveCanvasController *)self currentCollaboratorPresences];
+    v22 = [currentCollaboratorPresences countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v22)
     {
       v6 = *v28;
-      v20 = v5;
-      v21 = v4;
+      v20 = currentCollaboratorPresences;
+      v21 = collaboratorCursorDelegate;
       v19 = *v28;
       do
       {
@@ -9679,18 +9679,18 @@ LABEL_14:
         {
           if (*v28 != v6)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(currentCollaboratorPresences);
           }
 
-          v8 = [v4 collaboratorCursorSelectionPathForRenderer:self collaboratorPresence:{*(*(&v27 + 1) + 8 * i), v19, v20, v21}];
+          v8 = [collaboratorCursorDelegate collaboratorCursorSelectionPathForRenderer:self collaboratorPresence:{*(*(&v27 + 1) + 8 * i), v19, v20, v21}];
           v9 = [v8 mostSpecificSelectionOfClass:objc_opt_class()];
           v10 = v9;
           if (v8)
           {
             if ([v9 itemCount] < 2)
             {
-              v11 = [(CRLInteractiveCanvasController *)self layoutsForSelectionPath:v8];
-              [v3 unionSet:v11];
+              boardItems = [(CRLInteractiveCanvasController *)self layoutsForSelectionPath:v8];
+              [v3 unionSet:boardItems];
             }
 
             else
@@ -9699,8 +9699,8 @@ LABEL_14:
               v26 = 0u;
               v23 = 0u;
               v24 = 0u;
-              v11 = [v10 boardItems];
-              v12 = [v11 countByEnumeratingWithState:&v23 objects:v31 count:16];
+              boardItems = [v10 boardItems];
+              v12 = [boardItems countByEnumeratingWithState:&v23 objects:v31 count:16];
               if (v12)
               {
                 v13 = v12;
@@ -9711,26 +9711,26 @@ LABEL_14:
                   {
                     if (*v24 != v14)
                     {
-                      objc_enumerationMutation(v11);
+                      objc_enumerationMutation(boardItems);
                     }
 
                     v16 = [(CRLInteractiveCanvasController *)self layoutsForInfo:*(*(&v23 + 1) + 8 * j)];
                     [v3 unionSet:v16];
                   }
 
-                  v13 = [v11 countByEnumeratingWithState:&v23 objects:v31 count:16];
+                  v13 = [boardItems countByEnumeratingWithState:&v23 objects:v31 count:16];
                 }
 
                 while (v13);
-                v5 = v20;
-                v4 = v21;
+                currentCollaboratorPresences = v20;
+                collaboratorCursorDelegate = v21;
                 v6 = v19;
               }
             }
           }
         }
 
-        v22 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v22 = [currentCollaboratorPresences countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v22);
@@ -9748,11 +9748,11 @@ LABEL_14:
   self->mLayoutsShowingCollabCursorsDuringLayerUpdate = 0;
 }
 
-- (void)collaboratorCursorSelectionPathChangedFromSelectionPath:(id)a3 toSelectionPath:(id)a4 collaboratorPresence:(id)a5
+- (void)collaboratorCursorSelectionPathChangedFromSelectionPath:(id)path toSelectionPath:(id)selectionPath collaboratorPresence:(id)presence
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  selectionPathCopy = selectionPath;
+  presenceCopy = presence;
   if (!self->mCurrentCollaboratorPresences)
   {
     v11 = objc_alloc_init(NSMutableSet);
@@ -9761,12 +9761,12 @@ LABEL_14:
   }
 
   v13 = self->mCurrentCollaboratorPresences;
-  if (v9)
+  if (selectionPathCopy)
   {
-    [(NSMutableSet *)v13 addObject:v10];
-    v14 = [(CRLInteractiveCanvasController *)self collaboratorCursorDelegate];
+    [(NSMutableSet *)v13 addObject:presenceCopy];
+    collaboratorCursorDelegate = [(CRLInteractiveCanvasController *)self collaboratorCursorDelegate];
 
-    if (!v14)
+    if (!collaboratorCursorDelegate)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -9798,11 +9798,11 @@ LABEL_14:
 
   else
   {
-    [(NSMutableSet *)v13 removeObject:v10];
+    [(NSMutableSet *)v13 removeObject:presenceCopy];
   }
 
   self->mCollaboratorCursorsInvalidated = 1;
-  v18 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary objectForKeyedSubscript:v10];
+  v18 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary objectForKeyedSubscript:presenceCopy];
   if (v18)
   {
     [(CRLInteractiveCanvasController *)self invalidateLayersForDecorator:v18];
@@ -9813,25 +9813,25 @@ LABEL_14:
     [(CRLCanvas *)self->mCanvas i_setLayersInvalidWithoutInvalidatingAnySpecificLayers];
   }
 
-  v19 = [(CRLInteractiveCanvasController *)self canvas];
+  canvas = [(CRLInteractiveCanvasController *)self canvas];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100454134;
   v23[3] = &unk_10185B8A8;
   v23[4] = self;
-  v24 = v10;
-  v25 = v8;
-  v26 = v9;
-  v20 = v9;
-  v21 = v8;
-  v22 = v10;
-  [v19 performBlockAfterLayoutIfNecessary:v23];
+  v24 = presenceCopy;
+  v25 = pathCopy;
+  v26 = selectionPathCopy;
+  v20 = selectionPathCopy;
+  v21 = pathCopy;
+  v22 = presenceCopy;
+  [canvas performBlockAfterLayoutIfNecessary:v23];
 }
 
-- (void)scrollToCollaborator:(id)a3 withSelectionPath:(id)a4
+- (void)scrollToCollaborator:(id)collaborator withSelectionPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  collaboratorCopy = collaborator;
+  pathCopy = path;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -9866,21 +9866,21 @@ LABEL_14:
     goto LABEL_23;
   }
 
-  v11 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-  v12 = [v11 followCoordinator];
-  v13 = [v12 followingParticipant];
-  v14 = [v13 presences];
-  v15 = [v14 containsObject:v6];
+  editingCoordinator = [(CRLInteractiveCanvasController *)self editingCoordinator];
+  followCoordinator = [editingCoordinator followCoordinator];
+  followingParticipant = [followCoordinator followingParticipant];
+  presences = [followingParticipant presences];
+  v15 = [presences containsObject:collaboratorCopy];
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v16 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-  v17 = [v16 followCoordinator];
-  v18 = [v17 participantsFollowingLocalParticipant];
+  editingCoordinator2 = [(CRLInteractiveCanvasController *)self editingCoordinator];
+  followCoordinator2 = [editingCoordinator2 followCoordinator];
+  participantsFollowingLocalParticipant = [followCoordinator2 participantsFollowingLocalParticipant];
 
-  v19 = [v18 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  v19 = [participantsFollowingLocalParticipant countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v19)
   {
     v20 = v19;
@@ -9891,11 +9891,11 @@ LABEL_14:
       {
         if (*v36 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(participantsFollowingLocalParticipant);
         }
 
-        v23 = [*(*(&v35 + 1) + 8 * i) presences];
-        v24 = [v23 containsObject:v6];
+        presences2 = [*(*(&v35 + 1) + 8 * i) presences];
+        v24 = [presences2 containsObject:collaboratorCopy];
 
         if (v24)
         {
@@ -9904,7 +9904,7 @@ LABEL_14:
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v20 = [participantsFollowingLocalParticipant countByEnumeratingWithState:&v35 objects:v39 count:16];
       if (v20)
       {
         continue;
@@ -9916,19 +9916,19 @@ LABEL_14:
 
   if ((v15 & 1) == 0)
   {
-    v25 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-    v26 = [v25 followCoordinator];
-    [v26 endFollowSessionForLocalParticipantWithShouldShowRefollowPlacard:1];
+    editingCoordinator3 = [(CRLInteractiveCanvasController *)self editingCoordinator];
+    followCoordinator3 = [editingCoordinator3 followCoordinator];
+    [followCoordinator3 endFollowSessionForLocalParticipantWithShouldShowRefollowPlacard:1];
 
-    v27 = [v6 presenceUUID];
-    LODWORD(v26) = [(CRLInteractiveCanvasController *)self sendViewportRequestMessageTo:v27];
+    presenceUUID = [collaboratorCopy presenceUUID];
+    LODWORD(followCoordinator3) = [(CRLInteractiveCanvasController *)self sendViewportRequestMessageTo:presenceUUID];
 
-    if (v26)
+    if (followCoordinator3)
     {
-      v28 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-      v29 = [v28 followCoordinator];
-      v30 = [v6 presenceUUID];
-      [v29 setExpectingViewportForOneTimeScrollFrom:v30];
+      editingCoordinator4 = [(CRLInteractiveCanvasController *)self editingCoordinator];
+      followCoordinator4 = [editingCoordinator4 followCoordinator];
+      presenceUUID2 = [collaboratorCopy presenceUUID];
+      [followCoordinator4 setExpectingViewportForOneTimeScrollFrom:presenceUUID2];
 
       v31 = dispatch_time(0, 500000000);
       block[0] = _NSConcreteStackBlock;
@@ -9936,24 +9936,24 @@ LABEL_14:
       block[2] = sub_100454B6C;
       block[3] = &unk_10183AE00;
       block[4] = self;
-      v33 = v6;
-      v34 = v7;
+      v33 = collaboratorCopy;
+      v34 = pathCopy;
       dispatch_after(v31, &_dispatch_main_q, block);
 
       goto LABEL_25;
     }
 
 LABEL_23:
-    [(CRLInteractiveCanvasController *)self scrollToSelectionPath:v7 scrollOptions:9];
-    [(CRLInteractiveCanvasController *)self showCollaboratorHUDForCollaborator:v6 withSelectionPath:v7 allowScroll:1];
+    [(CRLInteractiveCanvasController *)self scrollToSelectionPath:pathCopy scrollOptions:9];
+    [(CRLInteractiveCanvasController *)self showCollaboratorHUDForCollaborator:collaboratorCopy withSelectionPath:pathCopy allowScroll:1];
   }
 
 LABEL_25:
 }
 
-- (id)adjustedSelectionPathForRenderingCursorPath:(id)a3
+- (id)adjustedSelectionPathForRenderingCursorPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v4 = [(CRLInteractiveCanvasController *)self adjustReceivedCollaboratorCursorSelectionPath:?];
   }
@@ -9968,53 +9968,53 @@ LABEL_25:
 
 - (void)collapseAllExpandedCollaboratorHUDs
 {
-  v3 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-  v4 = [v3 enableCollaboratorCursors];
+  editingCoordinator = [(CRLInteractiveCanvasController *)self editingCoordinator];
+  enableCollaboratorCursors = [editingCoordinator enableCollaboratorCursors];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary crl_allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  crl_allObjects = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary crl_allObjects];
+  v6 = [crl_allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v15;
-    v9 = v4 ^ 1;
+    v9 = enableCollaboratorCursors ^ 1;
     do
     {
       for (i = 0; i != v7; i = i + 1)
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(crl_allObjects);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 shouldAutoHide];
-        v13 = [v11 hudSize];
-        if ((v12 | v9))
+        shouldAutoHide = [v11 shouldAutoHide];
+        hudSize = [v11 hudSize];
+        if ((shouldAutoHide | v9))
         {
           [v11 teardown];
         }
 
-        else if (!v13)
+        else if (!hudSize)
         {
           [(CRLInteractiveCanvasController *)self toggleSizeForCollaboratorHUDController:v11];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [crl_allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)updateCollaboratorHUDForBeginFollowingCollaborator:(id)a3
+- (void)updateCollaboratorHUDForBeginFollowingCollaborator:(id)collaborator
 {
-  v4 = a3;
+  collaboratorCopy = collaborator;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -10046,20 +10046,20 @@ LABEL_25:
 
   if (![(CRLInteractiveCanvasController *)self suppressesCollaboratorHUD])
   {
-    v8 = [(CRLInteractiveCanvasController *)self collaboratorCursorDelegate];
-    v9 = [v8 collaboratorCursorSelectionPathForRenderer:self collaboratorPresence:v4];
+    collaboratorCursorDelegate = [(CRLInteractiveCanvasController *)self collaboratorCursorDelegate];
+    v9 = [collaboratorCursorDelegate collaboratorCursorSelectionPathForRenderer:self collaboratorPresence:collaboratorCopy];
 
-    v10 = [v9 orderedSelections];
-    v11 = [v10 lastObject];
+    orderedSelections = [v9 orderedSelections];
+    lastObject = [orderedSelections lastObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v13 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-    v14 = [v13 enableCollaboratorCursors];
+    editingCoordinator = [(CRLInteractiveCanvasController *)self editingCoordinator];
+    enableCollaboratorCursors = [editingCoordinator enableCollaboratorCursors];
 
-    v15 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary objectForKeyedSubscript:v4];
+    v15 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary objectForKeyedSubscript:collaboratorCopy];
     v16 = v15;
-    if (v15 && (isKindOfClass & 1) == 0 && v14)
+    if (v15 && (isKindOfClass & 1) == 0 && enableCollaboratorCursors)
     {
       if (![v15 hudSize])
       {
@@ -10074,9 +10074,9 @@ LABEL_25:
   }
 }
 
-- (void)updateCollaboratorHUDForStopFollowingCollaborator:(id)a3
+- (void)updateCollaboratorHUDForStopFollowingCollaborator:(id)collaborator
 {
-  v4 = a3;
+  collaboratorCopy = collaborator;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -10108,7 +10108,7 @@ LABEL_25:
 
   if (![(CRLInteractiveCanvasController *)self suppressesCollaboratorHUD])
   {
-    v8 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary objectForKeyedSubscript:v4];
+    v8 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary objectForKeyedSubscript:collaboratorCopy];
     v9 = v8;
     if (v8 && ![v8 hudSize])
     {
@@ -10117,11 +10117,11 @@ LABEL_25:
   }
 }
 
-- (void)p_showCollaboratorHUDForCollaborator:(id)a3 withSelectionPath:(id)a4 allowScroll:(BOOL)a5 hudSize:(unint64_t)a6
+- (void)p_showCollaboratorHUDForCollaborator:(id)collaborator withSelectionPath:(id)path allowScroll:(BOOL)scroll hudSize:(unint64_t)size
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  scrollCopy = scroll;
+  collaboratorCopy = collaborator;
+  pathCopy = path;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -10153,20 +10153,20 @@ LABEL_25:
 
   if (![(CRLInteractiveCanvasController *)self suppressesCollaboratorHUD])
   {
-    if (!v11)
+    if (!pathCopy)
     {
-      v15 = [(CRLInteractiveCanvasController *)self collaboratorCursorDelegate];
-      v11 = [v15 collaboratorCursorSelectionPathForRenderer:self collaboratorPresence:v10];
+      collaboratorCursorDelegate = [(CRLInteractiveCanvasController *)self collaboratorCursorDelegate];
+      pathCopy = [collaboratorCursorDelegate collaboratorCursorSelectionPathForRenderer:self collaboratorPresence:collaboratorCopy];
     }
 
-    v16 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary objectForKeyedSubscript:v10];
+    v16 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary objectForKeyedSubscript:collaboratorCopy];
     if (!v16)
     {
       goto LABEL_37;
     }
 
-    v17 = [v11 orderedSelections];
-    v18 = [v17 lastObject];
+    orderedSelections = [pathCopy orderedSelections];
+    lastObject = [orderedSelections lastObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -10175,7 +10175,7 @@ LABEL_25:
       [v16 setShouldFadeOutUnconditionally:isKindOfClass & 1];
     }
 
-    if ([v16 hudSize] == a6)
+    if ([v16 hudSize] == size)
     {
       if (![(CRLInteractiveCanvasController *)self p_followEnabled])
       {
@@ -10191,7 +10191,7 @@ LABEL_25:
 LABEL_37:
           if ([(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary count])
           {
-            v32 = v7;
+            v32 = scrollCopy;
             v35 = 0u;
             v36 = 0u;
             v33 = 0u;
@@ -10212,10 +10212,10 @@ LABEL_37:
                     objc_enumerationMutation(v23);
                   }
 
-                  if (*(*(&v33 + 1) + 8 * v27) != v10)
+                  if (*(*(&v33 + 1) + 8 * v27) != collaboratorCopy)
                   {
                     v28 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary objectForKeyedSubscript:?];
-                    if (!([v28 hudSize] | a6))
+                    if (!([v28 hudSize] | size))
                     {
                       if (-[CRLInteractiveCanvasController p_followEnabled](self, "p_followEnabled") && ![v28 shouldAutoHide])
                       {
@@ -10243,17 +10243,17 @@ LABEL_37:
               while (v29);
             }
 
-            v7 = v32;
+            scrollCopy = v32;
           }
 
-          [(CRLInteractiveCanvasController *)self p_collaboratorHUDPositionForSelectionPath:v11 collaboratorPresence:v10 allowScroll:v7 hudSize:a6];
+          [(CRLInteractiveCanvasController *)self p_collaboratorHUDPositionForSelectionPath:pathCopy collaboratorPresence:collaboratorCopy allowScroll:scrollCopy hudSize:size];
           if (!v16)
           {
-            v30 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary objectForKeyedSubscript:v10];
+            v30 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary objectForKeyedSubscript:collaboratorCopy];
 
             if (v30)
             {
-              v31 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary objectForKeyedSubscript:v10];
+              v31 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary objectForKeyedSubscript:collaboratorCopy];
               [v31 teardown];
             }
 
@@ -10277,7 +10277,7 @@ LABEL_37:
     {
       [v16 teardown];
 
-      v16 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary objectForKeyedSubscript:v10];
+      v16 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary objectForKeyedSubscript:collaboratorCopy];
 
       if (!v16)
       {
@@ -10318,9 +10318,9 @@ LABEL_37:
 LABEL_60:
 }
 
-- (void)hideCollaboratorHUDForCollaborator:(id)a3
+- (void)hideCollaboratorHUDForCollaborator:(id)collaborator
 {
-  v4 = a3;
+  collaboratorCopy = collaborator;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -10350,9 +10350,9 @@ LABEL_60:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:5305 isFatal:0 description:"This operation must only be performed on the main thread."];
   }
 
-  if (v4)
+  if (collaboratorCopy)
   {
-    v8 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary objectForKeyedSubscript:v4];
+    v8 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary objectForKeyedSubscript:collaboratorCopy];
     v9 = v8;
     if (v8)
     {
@@ -10361,11 +10361,11 @@ LABEL_60:
   }
 }
 
-- ($BCFEF2EB514CD33A670EC6D7ECA04AF1)p_collaboratorHUDPositionForSelectionPath:(SEL)a3 collaboratorPresence:(id)a4 allowScroll:(id)a5 hudSize:(BOOL)a6
+- ($BCFEF2EB514CD33A670EC6D7ECA04AF1)p_collaboratorHUDPositionForSelectionPath:(SEL)path collaboratorPresence:(id)presence allowScroll:(id)scroll hudSize:(BOOL)size
 {
-  v8 = a6;
-  v11 = a4;
-  v12 = a5;
+  sizeCopy = size;
+  presenceCopy = presence;
+  scrollCopy = scroll;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -10395,22 +10395,22 @@ LABEL_60:
     [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:5321 isFatal:0 description:"Should only update HUD on the layout thread."];
   }
 
-  v16 = [(CRLInteractiveCanvasController *)self p_layoutForShowingCollaboratorCursorHUDAtSelectionPath:v11];
+  v16 = [(CRLInteractiveCanvasController *)self p_layoutForShowingCollaboratorCursorHUDAtSelectionPath:presenceCopy];
   if (!v16)
   {
-    v17 = [v11 mostSpecificSelectionOfClass:objc_opt_class()];
+    v17 = [presenceCopy mostSpecificSelectionOfClass:objc_opt_class()];
     v18 = v17;
     if (v17)
     {
       obj = a7;
-      v179 = v12;
-      v182 = v11;
+      v179 = scrollCopy;
+      v182 = presenceCopy;
       v199 = 0u;
       v200 = 0u;
       v197 = 0u;
       v198 = 0u;
-      v19 = [v17 boardItems];
-      v20 = [v19 countByEnumeratingWithState:&v197 objects:v215 count:16];
+      boardItems = [v17 boardItems];
+      v20 = [boardItems countByEnumeratingWithState:&v197 objects:v215 count:16];
       if (v20)
       {
         v21 = v20;
@@ -10424,7 +10424,7 @@ LABEL_60:
           {
             if (*v198 != v24)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(boardItems);
             }
 
             v26 = [(CRLInteractiveCanvasController *)self layoutForInfoNearestVisibleRect:*(*(&v197 + 1) + 8 * i)];
@@ -10453,7 +10453,7 @@ LABEL_60:
             }
           }
 
-          v21 = [v19 countByEnumeratingWithState:&v197 objects:v215 count:16];
+          v21 = [boardItems countByEnumeratingWithState:&v197 objects:v215 count:16];
         }
 
         while (v21);
@@ -10464,8 +10464,8 @@ LABEL_60:
         v16 = 0;
       }
 
-      v11 = v182;
-      v12 = v179;
+      presenceCopy = v182;
+      scrollCopy = v179;
       a7 = obj;
     }
 
@@ -10475,11 +10475,11 @@ LABEL_60:
     }
   }
 
-  v36 = [(CRLInteractiveCanvasController *)self canvasView];
-  v37 = [v36 enclosingScrollView];
-  if (v8)
+  canvasView = [(CRLInteractiveCanvasController *)self canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
+  if (sizeCopy)
   {
-    [(CRLInteractiveCanvasController *)self p_scaledRectToScrollToForSelectionPath:v11 shouldCenterVertically:1];
+    [(CRLInteractiveCanvasController *)self p_scaledRectToScrollToForSelectionPath:presenceCopy shouldCenterVertically:1];
     v39 = v38;
     v41 = v40;
     v43 = v42;
@@ -10493,15 +10493,15 @@ LABEL_60:
     v49 = v48;
     v51 = v50;
     v53 = v52;
-    v54 = [v37 superview];
-    [v36 convertRect:v54 fromView:{v47, v49, v51, v53}];
+    superview = [enclosingScrollView superview];
+    [canvasView convertRect:superview fromView:{v47, v49, v51, v53}];
     v39 = v55;
     v41 = v56;
     v43 = v57;
     v45 = v58;
   }
 
-  [v37 safeAreaInsets];
+  [enclosingScrollView safeAreaInsets];
   [(CRLInteractiveCanvasController *)self convertBoundsToUnscaledRect:v39 + v62, v41 + v59, v43 - (v62 + v60), v45 - (v59 + v61)];
   v64 = v63;
   v66 = v65;
@@ -10509,7 +10509,7 @@ LABEL_60:
   v70 = v69;
   if (v16)
   {
-    v177 = v37;
+    v177 = enclosingScrollView;
     mCollaboratorPresenceToCollaboratorHUDControllerDictionaryForFastSizing = self->mCollaboratorPresenceToCollaboratorHUDControllerDictionaryForFastSizing;
     if (!mCollaboratorPresenceToCollaboratorHUDControllerDictionaryForFastSizing)
     {
@@ -10520,59 +10520,59 @@ LABEL_60:
       mCollaboratorPresenceToCollaboratorHUDControllerDictionaryForFastSizing = self->mCollaboratorPresenceToCollaboratorHUDControllerDictionaryForFastSizing;
     }
 
-    v74 = [(NSMapTable *)mCollaboratorPresenceToCollaboratorHUDControllerDictionaryForFastSizing objectForKeyedSubscript:v12];
+    v74 = [(NSMapTable *)mCollaboratorPresenceToCollaboratorHUDControllerDictionaryForFastSizing objectForKeyedSubscript:scrollCopy];
     v75 = v74;
-    v178 = v36;
-    v180 = v12;
-    if (!v74 || -[CRLCollaboratorCursorHUDController hudSize](v74, "hudSize") != a7 || (-[CRLCollaboratorCursorHUDController string](v75, "string"), v76 = objc_claimAutoreleasedReturnValue(), [v12 displayName], v77 = objc_claimAutoreleasedReturnValue(), v78 = objc_msgSend(v76, "isEqualToString:", v77), v77, v76, (v78 & 1) == 0))
+    v178 = canvasView;
+    v180 = scrollCopy;
+    if (!v74 || -[CRLCollaboratorCursorHUDController hudSize](v74, "hudSize") != a7 || (-[CRLCollaboratorCursorHUDController string](v75, "string"), v76 = objc_claimAutoreleasedReturnValue(), [scrollCopy displayName], v77 = objc_claimAutoreleasedReturnValue(), v78 = objc_msgSend(v76, "isEqualToString:", v77), v77, v76, (v78 & 1) == 0))
     {
       if ([(CRLInteractiveCanvasController *)self p_followEnabled])
       {
-        v79 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-        v80 = [v79 followCoordinator];
-        [v80 followingParticipant];
+        editingCoordinator = [(CRLInteractiveCanvasController *)self editingCoordinator];
+        followCoordinator = [editingCoordinator followCoordinator];
+        [followCoordinator followingParticipant];
         objb = a7;
         v81 = v75;
-        v83 = v82 = v11;
-        v84 = [v12 owner];
-        v85 = v83 == v84;
+        v83 = v82 = presenceCopy;
+        owner = [scrollCopy owner];
+        v85 = v83 == owner;
 
-        v86 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-        v87 = [v86 followCoordinator];
-        v88 = [v87 localParticipant];
-        v89 = [v12 owner];
-        v90 = v88 == v89;
+        editingCoordinator2 = [(CRLInteractiveCanvasController *)self editingCoordinator];
+        followCoordinator2 = [editingCoordinator2 followCoordinator];
+        localParticipant = [followCoordinator2 localParticipant];
+        owner2 = [scrollCopy owner];
+        v90 = localParticipant == owner2;
 
-        v11 = v82;
+        presenceCopy = v82;
         v91 = v81;
 
         LOBYTE(v176) = v90;
-        v92 = [[CRLCollaboratorCursorHUDController alloc] initWithCollaboratorPresence:v12 delegate:self hudSize:objb shouldAutoShrink:0 shouldAutoHide:0 isFollowing:v85 isLocalParticipant:v176];
+        v92 = [[CRLCollaboratorCursorHUDController alloc] initWithCollaboratorPresence:scrollCopy delegate:self hudSize:objb shouldAutoShrink:0 shouldAutoHide:0 isFollowing:v85 isLocalParticipant:v176];
       }
 
       else
       {
         v93 = [CRLCollaboratorCursorHUDController alloc];
-        v94 = [v12 displayName];
-        v92 = [(CRLCollaboratorCursorHUDController *)v93 initWithCollaboratorPresence:v12 delegate:self string:v94 hudSize:a7 shouldAutoTimeout:[(CRLInteractiveCanvasController *)self p_shouldTimeoutCollabCursor]];
+        displayName = [scrollCopy displayName];
+        v92 = [(CRLCollaboratorCursorHUDController *)v93 initWithCollaboratorPresence:scrollCopy delegate:self string:displayName hudSize:a7 shouldAutoTimeout:[(CRLInteractiveCanvasController *)self p_shouldTimeoutCollabCursor]];
 
-        v91 = v94;
+        v91 = displayName;
       }
 
-      [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionaryForFastSizing setObject:v92 forKey:v12];
+      [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionaryForFastSizing setObject:v92 forKey:scrollCopy];
       v75 = v92;
     }
 
-    v95 = [(CRLInteractiveCanvasController *)self layerHost];
-    v96 = [v95 miniFormatterPresenter];
-    v97 = [v96 isPresentingMiniFormatter];
+    layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+    miniFormatterPresenter = [layerHost miniFormatterPresenter];
+    isPresentingMiniFormatter = [miniFormatterPresenter isPresentingMiniFormatter];
 
-    v98 = [(CRLInteractiveCanvasController *)self layerHost];
-    v99 = [v98 miniFormatterPresenter];
-    v184 = [v99 isPinnedToTopOfRep];
+    layerHost2 = [(CRLInteractiveCanvasController *)self layerHost];
+    miniFormatterPresenter2 = [layerHost2 miniFormatterPresenter];
+    isPinnedToTopOfRep = [miniFormatterPresenter2 isPinnedToTopOfRep];
 
-    v183 = v11;
-    [v16 unscaledPositionsForCollaboratorHUDForSelectionPath:v11];
+    v183 = presenceCopy;
+    [v16 unscaledPositionsForCollaboratorHUDForSelectionPath:presenceCopy];
     v193 = 0u;
     v194 = 0u;
     v195 = 0u;
@@ -10648,13 +10648,13 @@ LABEL_60:
           v117 = v116;
           v119 = v118;
           v121 = v120;
-          if (v97)
+          if (isPresentingMiniFormatter)
           {
-            v122 = [v105 direction];
+            direction = [v105 direction];
             v123 = [v105 direction] == 1;
-            if (v184)
+            if (isPinnedToTopOfRep)
             {
-              v124 = v122 == 2;
+              v124 = direction == 2;
             }
 
             else
@@ -10681,13 +10681,13 @@ LABEL_60:
             [v105 position];
             v155 = v154;
             v157 = v156;
-            v144 = [v105 direction];
+            direction2 = [v105 direction];
 
 LABEL_102:
-            v11 = v183;
-            v36 = v178;
-            v12 = v180;
-            v37 = v177;
+            presenceCopy = v183;
+            canvasView = v178;
+            scrollCopy = v180;
+            enclosingScrollView = v177;
             goto LABEL_103;
           }
         }
@@ -10715,7 +10715,7 @@ LABEL_72:
     {
       v131 = v130;
       v132 = *v190;
-      if (v184)
+      if (isPinnedToTopOfRep)
       {
         v133 = 2;
       }
@@ -10787,16 +10787,16 @@ LABEL_72:
               goto LABEL_99;
             }
 
-            v144 = sub_10050D01C([v135 direction]);
-            [(CRLCollaboratorCursorHUDController *)v185 scaledFrameForHUDAtPoint:v144 withDirection:v141, v143];
+            direction2 = sub_10050D01C([v135 direction]);
+            [(CRLCollaboratorCursorHUDController *)v185 scaledFrameForHUDAtPoint:direction2 withDirection:v141, v143];
             [(CRLInteractiveCanvasController *)self convertBoundsToUnscaledRect:?];
             v146 = v145;
             v148 = v147;
             v150 = v149;
             v152 = v151;
-            if (v144 == v133)
+            if (direction2 == v133)
             {
-              v153 = v97;
+              v153 = isPresentingMiniFormatter;
             }
 
             else
@@ -10831,37 +10831,37 @@ LABEL_72:
 
 LABEL_99:
 
-    v11 = v183;
-    v36 = v178;
-    v12 = v180;
-    v37 = v177;
+    presenceCopy = v183;
+    canvasView = v178;
+    scrollCopy = v180;
+    enclosingScrollView = v177;
   }
 
   v155 = sub_100120414(v64, v66, v68, v70);
   v157 = v163;
-  v144 = 0;
+  direction2 = 0;
 LABEL_103:
   [(CRLInteractiveCanvasController *)self viewScale];
   v167 = sub_10011F340(v155, v157, v166);
   v169 = v168;
-  v170 = [(CRLInteractiveCanvasController *)self canvas];
-  [v170 contentsScale];
+  canvas = [(CRLInteractiveCanvasController *)self canvas];
+  [canvas contentsScale];
   v172 = sub_10012218C(v167, v169, v171);
   v174 = v173;
 
   retstr->var0.x = v172;
   retstr->var0.y = v174;
-  retstr->var1 = v144;
+  retstr->var1 = direction2;
   *&retstr->var2 = 0;
   retstr->var2 = 1;
 
   return result;
 }
 
-- (id)p_layoutForShowingCollaboratorCursorHUDAtSelectionPath:(id)a3
+- (id)p_layoutForShowingCollaboratorCursorHUDAtSelectionPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CRLInteractiveCanvasController *)self modelsForSelectionPath:v4];
+  pathCopy = path;
+  v5 = [(CRLInteractiveCanvasController *)self modelsForSelectionPath:pathCopy];
   v6 = objc_alloc_init(NSMutableSet);
   v15 = 0u;
   v16 = 0u;
@@ -10882,7 +10882,7 @@ LABEL_103:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [(CRLInteractiveCanvasController *)self layoutForInfoNearestVisibleRect:*(*(&v15 + 1) + 8 * i) intersectingSelectionPath:v4, v15];
+        v12 = [(CRLInteractiveCanvasController *)self layoutForInfoNearestVisibleRect:*(*(&v15 + 1) + 8 * i) intersectingSelectionPath:pathCopy, v15];
         if (v12)
         {
           [v6 addObject:v12];
@@ -10895,9 +10895,9 @@ LABEL_103:
     while (v9);
   }
 
-  v13 = [v6 anyObject];
+  anyObject = [v6 anyObject];
 
-  return v13;
+  return anyObject;
 }
 
 - (void)removeAllCollaboratorHUDControllers
@@ -10906,8 +10906,8 @@ LABEL_103:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary crl_allObjects];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  crl_allObjects = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary crl_allObjects];
+  v3 = [crl_allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -10918,7 +10918,7 @@ LABEL_103:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(crl_allObjects);
         }
 
         v7 = *(*(&v8 + 1) + 8 * i);
@@ -10928,26 +10928,26 @@ LABEL_103:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [crl_allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)setShouldSuppressesCollaboratorHUD:(BOOL)a3
+- (void)setShouldSuppressesCollaboratorHUD:(BOOL)d
 {
-  if (self->mSuppressesCollaboratorHUD != a3)
+  if (self->mSuppressesCollaboratorHUD != d)
   {
-    self->mSuppressesCollaboratorHUD = a3;
-    if (a3)
+    self->mSuppressesCollaboratorHUD = d;
+    if (d)
     {
       v10 = 0u;
       v11 = 0u;
       v8 = 0u;
       v9 = 0u;
-      v3 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary crl_allObjects];
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      crl_allObjects = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary crl_allObjects];
+      v4 = [crl_allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         v5 = v4;
@@ -10959,7 +10959,7 @@ LABEL_103:
           {
             if (*v9 != v6)
             {
-              objc_enumerationMutation(v3);
+              objc_enumerationMutation(crl_allObjects);
             }
 
             [*(*(&v8 + 1) + 8 * v7) teardown];
@@ -10967,7 +10967,7 @@ LABEL_103:
           }
 
           while (v5 != v7);
-          v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+          v5 = [crl_allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
         }
 
         while (v5);
@@ -10976,9 +10976,9 @@ LABEL_103:
   }
 }
 
-- (void)addCollaboratorHUDController:(id)a3
+- (void)addCollaboratorHUDController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -11018,8 +11018,8 @@ LABEL_103:
     mCollaboratorPresenceToCollaboratorHUDControllerDictionary = self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary;
   }
 
-  v11 = [v4 collaboratorPresence];
-  v12 = [(NSMapTable *)mCollaboratorPresenceToCollaboratorHUDControllerDictionary objectForKeyedSubscript:v11];
+  collaboratorPresence = [controllerCopy collaboratorPresence];
+  v12 = [(NSMapTable *)mCollaboratorPresenceToCollaboratorHUDControllerDictionary objectForKeyedSubscript:collaboratorPresence];
 
   if (v12)
   {
@@ -11051,15 +11051,15 @@ LABEL_103:
   }
 
   v16 = self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary;
-  v17 = [v4 collaboratorPresence];
-  [(NSMapTable *)v16 setObject:v4 forKey:v17];
+  collaboratorPresence2 = [controllerCopy collaboratorPresence];
+  [(NSMapTable *)v16 setObject:controllerCopy forKey:collaboratorPresence2];
 
-  [(CRLInteractiveCanvasController *)self addDecorator:v4];
+  [(CRLInteractiveCanvasController *)self addDecorator:controllerCopy];
 }
 
-- (void)removeCollaboratorHUDController:(id)a3
+- (void)removeCollaboratorHUDController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -11090,15 +11090,15 @@ LABEL_103:
   }
 
   mCollaboratorPresenceToCollaboratorHUDControllerDictionary = self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary;
-  v9 = [v4 collaboratorPresence];
-  [(NSMapTable *)mCollaboratorPresenceToCollaboratorHUDControllerDictionary removeObjectForKey:v9];
+  collaboratorPresence = [controllerCopy collaboratorPresence];
+  [(NSMapTable *)mCollaboratorPresenceToCollaboratorHUDControllerDictionary removeObjectForKey:collaboratorPresence];
 
-  [(CRLInteractiveCanvasController *)self removeDecorator:v4];
+  [(CRLInteractiveCanvasController *)self removeDecorator:controllerCopy];
 }
 
-- (void)updatePositionForCollaboratorHUDController:(id)a3
+- (void)updatePositionForCollaboratorHUDController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -11128,12 +11128,12 @@ LABEL_103:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:5549 isFatal:0 description:"Should only update HUD on the layout thread."];
   }
 
-  v8 = [(CRLInteractiveCanvasController *)self collaboratorCursorDelegate];
-  v9 = [v4 collaboratorPresence];
-  v10 = [v8 collaboratorCursorSelectionPathForRenderer:self collaboratorPresence:v9];
+  collaboratorCursorDelegate = [(CRLInteractiveCanvasController *)self collaboratorCursorDelegate];
+  collaboratorPresence = [controllerCopy collaboratorPresence];
+  v10 = [collaboratorCursorDelegate collaboratorCursorSelectionPathForRenderer:self collaboratorPresence:collaboratorPresence];
 
-  v11 = [v4 collaboratorPresence];
-  if ([v4 hudSize])
+  collaboratorPresence2 = [controllerCopy collaboratorPresence];
+  if ([controllerCopy hudSize])
   {
     mCurrentlyScrolling = 0;
   }
@@ -11143,14 +11143,14 @@ LABEL_103:
     mCurrentlyScrolling = self->mCurrentlyScrolling;
   }
 
-  -[CRLInteractiveCanvasController p_collaboratorHUDPositionForSelectionPath:collaboratorPresence:allowScroll:hudSize:](self, "p_collaboratorHUDPositionForSelectionPath:collaboratorPresence:allowScroll:hudSize:", v10, v11, mCurrentlyScrolling, [v4 hudSize]);
+  -[CRLInteractiveCanvasController p_collaboratorHUDPositionForSelectionPath:collaboratorPresence:allowScroll:hudSize:](self, "p_collaboratorHUDPositionForSelectionPath:collaboratorPresence:allowScroll:hudSize:", v10, collaboratorPresence2, mCurrentlyScrolling, [controllerCopy hudSize]);
 
-  [v4 hideHUD];
+  [controllerCopy hideHUD];
 }
 
-- (void)positionDidUpdateForCollaboratorHUDController:(id)a3
+- (void)positionDidUpdateForCollaboratorHUDController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -11180,41 +11180,41 @@ LABEL_103:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:5562 isFatal:0 description:"Should only update HUD on the layout thread."];
   }
 
-  [(CRLInteractiveCanvasController *)self invalidateLayersForDecorator:v4];
+  [(CRLInteractiveCanvasController *)self invalidateLayersForDecorator:controllerCopy];
 }
 
-- (void)beginFollowing:(id)a3 forHUDController:(id)a4
+- (void)beginFollowing:(id)following forHUDController:(id)controller
 {
-  v5 = a3;
-  v6 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-  v7 = [v6 followCoordinator];
-  v8 = [v5 owner];
+  followingCopy = following;
+  editingCoordinator = [(CRLInteractiveCanvasController *)self editingCoordinator];
+  followCoordinator = [editingCoordinator followCoordinator];
+  owner = [followingCopy owner];
 
-  [v7 localParticipantWantsToStartFollowingCollaborator:v8];
+  [followCoordinator localParticipantWantsToStartFollowingCollaborator:owner];
 
   [(CRLInteractiveCanvasController *)self donateTipEventParticipantFollowed];
 }
 
-- (void)endFollowing:(id)a3 forHUDController:(id)a4
+- (void)endFollowing:(id)following forHUDController:(id)controller
 {
-  v5 = [(CRLInteractiveCanvasController *)self editingCoordinator:a3];
-  v4 = [v5 followCoordinator];
-  [v4 endFollowSessionForLocalParticipantWithShouldShowRefollowPlacard:0];
+  v5 = [(CRLInteractiveCanvasController *)self editingCoordinator:following];
+  followCoordinator = [v5 followCoordinator];
+  [followCoordinator endFollowSessionForLocalParticipantWithShouldShowRefollowPlacard:0];
 }
 
-- (void)toggleSizeForCollaboratorHUDController:(id)a3
+- (void)toggleSizeForCollaboratorHUDController:(id)controller
 {
-  v4 = a3;
-  v6 = [v4 collaboratorPresence];
-  v5 = [v4 hudSize];
+  controllerCopy = controller;
+  collaboratorPresence = [controllerCopy collaboratorPresence];
+  hudSize = [controllerCopy hudSize];
 
-  [(CRLInteractiveCanvasController *)self p_showCollaboratorHUDForCollaborator:v6 withSelectionPath:0 allowScroll:0 hudSize:v5 == 0];
+  [(CRLInteractiveCanvasController *)self p_showCollaboratorHUDForCollaborator:collaboratorPresence withSelectionPath:0 allowScroll:0 hudSize:hudSize == 0];
 }
 
 - (double)contentsScale
 {
-  v2 = [(CRLInteractiveCanvasController *)self canvas];
-  [v2 contentsScale];
+  canvas = [(CRLInteractiveCanvasController *)self canvas];
+  [canvas contentsScale];
   v4 = v3;
 
   return v4;
@@ -11222,11 +11222,11 @@ LABEL_103:
 
 - (UITraitCollection)currentTraitCollection
 {
-  v2 = [(CRLInteractiveCanvasController *)self canvasView];
-  v3 = [v2 window];
-  v4 = [v3 traitCollection];
+  canvasView = [(CRLInteractiveCanvasController *)self canvasView];
+  window = [canvasView window];
+  traitCollection = [window traitCollection];
 
-  return v4;
+  return traitCollection;
 }
 
 - (void)beginDynamicOperation
@@ -11298,13 +11298,13 @@ LABEL_103:
     [v12 dynamicOperationWillBegin];
   }
 
-  v13 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-  [v13 suspendCollaborationWithReason:@"CRLDynamicOperation"];
+  editingCoordinator = [(CRLInteractiveCanvasController *)self editingCoordinator];
+  [editingCoordinator suspendCollaborationWithReason:@"CRLDynamicOperation"];
 
   self->mDynamicOperationState = 1;
-  v14 = [(CRLInteractiveCanvasController *)self layerHost];
-  v15 = [v14 canvasLayer];
-  [v15 bounds];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
+  [canvasLayer bounds];
   [(CRLInteractiveCanvasController *)self convertBoundsToUnscaledRect:?];
   self->mUnscaledRectToGrowCanvasDuringDynamicOperation.origin.x = v16;
   self->mUnscaledRectToGrowCanvasDuringDynamicOperation.origin.y = v17;
@@ -11315,8 +11315,8 @@ LABEL_103:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v20 = [(CRLInteractiveCanvasController *)self i_decorators];
-  v21 = [v20 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  i_decorators = [(CRLInteractiveCanvasController *)self i_decorators];
+  v21 = [i_decorators countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v21)
   {
     v22 = v21;
@@ -11327,7 +11327,7 @@ LABEL_103:
       {
         if (*v37 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(i_decorators);
         }
 
         v25 = *(*(&v36 + 1) + 8 * i);
@@ -11337,24 +11337,24 @@ LABEL_103:
         }
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      v22 = [i_decorators countByEnumeratingWithState:&v36 objects:v40 count:16];
     }
 
     while (v22);
   }
 
-  v26 = [(CRLInteractiveCanvasController *)self tmCoordinator];
-  v27 = [v26 controllingTM];
-  v28 = [v27 tracker];
+  tmCoordinator = [(CRLInteractiveCanvasController *)self tmCoordinator];
+  controllingTM = [tmCoordinator controllingTM];
+  tracker = [controllingTM tracker];
 
-  if (!v28)
+  if (!tracker)
   {
     goto LABEL_42;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v29 = [v28 shouldAllowScroll] ^ 1;
+    v29 = [tracker shouldAllowScroll] ^ 1;
   }
 
   else
@@ -11362,25 +11362,25 @@ LABEL_103:
     v29 = 1;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v28 allowPopoverToRemainOpenDuringDynamicOperation] & 1) == 0)
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([tracker allowPopoverToRemainOpenDuringDynamicOperation] & 1) == 0)
   {
-    v30 = [(CRLInteractiveCanvasController *)self layerHost];
-    v31 = [v30 asiOSCVC];
+    layerHost2 = [(CRLInteractiveCanvasController *)self layerHost];
+    asiOSCVC = [layerHost2 asiOSCVC];
 
-    v32 = [v31 delegate];
+    delegate = [asiOSCVC delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v32 dismissPresentedViewController];
+      [delegate dismissPresentedViewController];
     }
   }
 
   if (v29)
   {
 LABEL_42:
-    v33 = [(CRLInteractiveCanvasController *)self layerHost];
-    v34 = [v33 canvasView];
-    v35 = [v34 enclosingScrollView];
-    [v35 setScrollEnabled:0];
+    layerHost3 = [(CRLInteractiveCanvasController *)self layerHost];
+    canvasView = [layerHost3 canvasView];
+    enclosingScrollView = [canvasView enclosingScrollView];
+    [enclosingScrollView setScrollEnabled:0];
   }
 }
 
@@ -11479,15 +11479,15 @@ LABEL_42:
   }
 
   self->mDynamicOperationState = 0;
-  v10 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-  [v10 resumeCollaborationWithReason:@"CRLDynamicOperation"];
+  editingCoordinator = [(CRLInteractiveCanvasController *)self editingCoordinator];
+  [editingCoordinator resumeCollaborationWithReason:@"CRLDynamicOperation"];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = [(CRLInteractiveCanvasController *)self i_decorators];
-  v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  i_decorators = [(CRLInteractiveCanvasController *)self i_decorators];
+  v12 = [i_decorators countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
     v13 = v12;
@@ -11498,7 +11498,7 @@ LABEL_42:
       {
         if (*v24 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(i_decorators);
         }
 
         v16 = *(*(&v23 + 1) + 8 * i);
@@ -11508,7 +11508,7 @@ LABEL_42:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v13 = [i_decorators countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v13);
@@ -11524,10 +11524,10 @@ LABEL_42:
   }
 
   [(CRLCanvas *)self->mCanvas layoutInvalidated];
-  v20 = [(CRLInteractiveCanvasController *)self layerHost];
-  v21 = [v20 canvasView];
-  v22 = [v21 enclosingScrollView];
-  [v22 setScrollEnabled:1];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasView = [layerHost canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
+  [enclosingScrollView setScrollEnabled:1];
 }
 
 - (BOOL)isInDynamicOperation
@@ -11544,7 +11544,7 @@ LABEL_42:
 - (BOOL)shouldSupportedDynamicOperationsEnqueueCommandsInRealTime
 {
   v3 = +[NSProcessInfo processInfo];
-  v4 = [v3 thermalState];
+  thermalState = [v3 thermalState];
 
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = [v5 BOOLForKey:@"CRLForceEnableRealTimeCommands"];
@@ -11554,22 +11554,22 @@ LABEL_42:
     return 1;
   }
 
-  if (v4 > 1)
+  if (thermalState > 1)
   {
     return 0;
   }
 
-  v8 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-  v9 = [v8 isInRealTimeSyncSession];
+  editingCoordinator = [(CRLInteractiveCanvasController *)self editingCoordinator];
+  isInRealTimeSyncSession = [editingCoordinator isInRealTimeSyncSession];
 
-  return v9;
+  return isInRealTimeSyncSession;
 }
 
 - (void)beginPossiblyParallelInspectorDynamicOperation
 {
   atomic_fetch_add(&self->mDynamicOperationCounter, 1u);
-  v2 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-  [v2 suspendCollaborationWithReason:@"CRLPossiblyParallelInspectorDynamicOperation"];
+  editingCoordinator = [(CRLInteractiveCanvasController *)self editingCoordinator];
+  [editingCoordinator suspendCollaborationWithReason:@"CRLPossiblyParallelInspectorDynamicOperation"];
 }
 
 - (void)endPossiblyParallelInspectorDynamicOperation
@@ -11603,25 +11603,25 @@ LABEL_42:
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:5782 isFatal:0 description:"Ended more dynamic operations than you began!"];
   }
 
-  v6 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-  [v6 resumeCollaborationWithReason:@"CRLPossiblyParallelInspectorDynamicOperation"];
+  editingCoordinator = [(CRLInteractiveCanvasController *)self editingCoordinator];
+  [editingCoordinator resumeCollaborationWithReason:@"CRLPossiblyParallelInspectorDynamicOperation"];
 }
 
 - (BOOL)shouldAllowKeyCommands
 {
-  v3 = [(CRLInteractiveCanvasController *)self textInputResponder];
-  v4 = [v3 isIgnoringKeyboardInput];
+  textInputResponder = [(CRLInteractiveCanvasController *)self textInputResponder];
+  isIgnoringKeyboardInput = [textInputResponder isIgnoringKeyboardInput];
 
-  if (v4)
+  if (isIgnoringKeyboardInput)
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v6 = [(CRLInteractiveCanvasController *)self layerHost];
-    v7 = [v6 asiOSCVC];
-    if ([v7 shouldIgnoreKeyboardInput])
+    layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+    asiOSCVC = [layerHost asiOSCVC];
+    if ([asiOSCVC shouldIgnoreKeyboardInput])
     {
       LOBYTE(v5) = 0;
     }
@@ -11637,47 +11637,47 @@ LABEL_42:
 
 - (BOOL)p_areAnyCollaboratorsPresent
 {
-  v2 = [(CRLInteractiveCanvasController *)self currentCollaboratorPresences];
-  v3 = [v2 count] != 0;
+  currentCollaboratorPresences = [(CRLInteractiveCanvasController *)self currentCollaboratorPresences];
+  v3 = [currentCollaboratorPresences count] != 0;
 
   return v3;
 }
 
-- (void)copyEditabilityPropertiesFromInteractiveCanvasController:(id)a3
+- (void)copyEditabilityPropertiesFromInteractiveCanvasController:(id)controller
 {
-  v4 = [a3 documentIsSharedReadOnly];
+  documentIsSharedReadOnly = [controller documentIsSharedReadOnly];
 
-  [(CRLInteractiveCanvasController *)self setDocumentIsSharedReadOnly:v4];
+  [(CRLInteractiveCanvasController *)self setDocumentIsSharedReadOnly:documentIsSharedReadOnly];
 }
 
-- (void)setDocumentIsSharedReadOnly:(BOOL)a3
+- (void)setDocumentIsSharedReadOnly:(BOOL)only
 {
-  if (self->mDocumentIsSharedReadOnly != a3)
+  if (self->mDocumentIsSharedReadOnly != only)
   {
     v15[5] = v6;
     v15[6] = v5;
     v15[11] = v3;
     v15[12] = v4;
-    v7 = a3;
-    self->mDocumentIsSharedReadOnly = a3;
+    onlyCopy = only;
+    self->mDocumentIsSharedReadOnly = only;
     [(CRLInteractiveCanvasController *)self documentEditabilityDidChange];
-    if (v7)
+    if (onlyCopy)
     {
-      v9 = [(CRLInteractiveCanvasController *)self layerHost];
-      v10 = [v9 miniFormatterPresenter];
-      [v10 dismissMiniFormatter];
+      layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+      miniFormatterPresenter = [layerHost miniFormatterPresenter];
+      [miniFormatterPresenter dismissMiniFormatter];
 
-      v11 = [(CRLInteractiveCanvasController *)self layerHost];
-      v12 = [v11 asiOSCVC];
-      [v12 resetGesturesForContextSwitch];
+      layerHost2 = [(CRLInteractiveCanvasController *)self layerHost];
+      asiOSCVC = [layerHost2 asiOSCVC];
+      [asiOSCVC resetGesturesForContextSwitch];
 
-      v13 = [(CRLInteractiveCanvasController *)self editorController];
+      editorController = [(CRLInteractiveCanvasController *)self editorController];
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_100458DDC;
       v15[3] = &unk_1018644A0;
       v15[4] = self;
-      [v13 enumerateEditorsOnStackLeastToMostSpecificUsingBlock:v15];
+      [editorController enumerateEditorsOnStackLeastToMostSpecificUsingBlock:v15];
 
       if (+[UIKeyboard isInHardwareKeyboardMode])
       {
@@ -11694,19 +11694,19 @@ LABEL_42:
 
 - (void)documentEditabilityDidChange
 {
-  v3 = [(CRLInteractiveCanvasController *)self p_editingDisabledReasons];
-  v4 = [(CRLInteractiveCanvasController *)self editorController];
-  [v4 setEditingDisabledReasons:v3];
+  p_editingDisabledReasons = [(CRLInteractiveCanvasController *)self p_editingDisabledReasons];
+  editorController = [(CRLInteractiveCanvasController *)self editorController];
+  [editorController setEditingDisabledReasons:p_editingDisabledReasons];
 
-  v5 = [(CRLInteractiveCanvasController *)self editorController];
-  [v5 enumerateEditorsOnStackUsingBlock:&stru_1018644E0];
+  editorController2 = [(CRLInteractiveCanvasController *)self editorController];
+  [editorController2 enumerateEditorsOnStackUsingBlock:&stru_1018644E0];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(CRLCanvas *)self->mCanvas topLevelReps];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  topLevelReps = [(CRLCanvas *)self->mCanvas topLevelReps];
+  v7 = [topLevelReps countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -11717,30 +11717,30 @@ LABEL_42:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(topLevelReps);
         }
 
         [*(*(&v11 + 1) + 8 * i) recursivelyPerformSelectorIfImplemented:"documentEditabilityDidChange"];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [topLevelReps countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)setUsesAlternateDrawableSelectionHighlight:(BOOL)a3
+- (void)setUsesAlternateDrawableSelectionHighlight:(BOOL)highlight
 {
-  if (self->mUsesAlternateDrawableSelectionHighlight != a3)
+  if (self->mUsesAlternateDrawableSelectionHighlight != highlight)
   {
-    self->mUsesAlternateDrawableSelectionHighlight = a3;
+    self->mUsesAlternateDrawableSelectionHighlight = highlight;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(CRLCanvas *)self->mCanvas topLevelReps];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    topLevelReps = [(CRLCanvas *)self->mCanvas topLevelReps];
+    v5 = [topLevelReps countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -11751,7 +11751,7 @@ LABEL_42:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(topLevelReps);
           }
 
           v9 = *(*(&v10 + 1) + 8 * i);
@@ -11759,7 +11759,7 @@ LABEL_42:
           [v9 recursivelyPerformSelectorIfImplemented:"invalidateKnobs"];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [topLevelReps countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -11769,22 +11769,22 @@ LABEL_42:
   }
 }
 
-- (BOOL)shouldSuppressSelectionKnobsForRep:(id)a3
+- (BOOL)shouldSuppressSelectionKnobsForRep:(id)rep
 {
   mMultiselectResizeInfo = self->mMultiselectResizeInfo;
-  v4 = a3;
-  v5 = [(CRLMultiselectResizeInfo *)mMultiselectResizeInfo representedSelectedBoardItems];
-  v6 = [v4 info];
+  repCopy = rep;
+  representedSelectedBoardItems = [(CRLMultiselectResizeInfo *)mMultiselectResizeInfo representedSelectedBoardItems];
+  info = [repCopy info];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(repCopy) = [representedSelectedBoardItems containsObject:info];
+  return repCopy;
 }
 
-- (id)additionalDependentLayoutsForBoardItem:(id)a3
+- (id)additionalDependentLayoutsForBoardItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   mMultiselectResizeInfo = self->mMultiselectResizeInfo;
-  if (mMultiselectResizeInfo && (-[CRLMultiselectResizeInfo representedSelectedBoardItems](mMultiselectResizeInfo, "representedSelectedBoardItems"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 containsObject:v4], v6, v7))
+  if (mMultiselectResizeInfo && (-[CRLMultiselectResizeInfo representedSelectedBoardItems](mMultiselectResizeInfo, "representedSelectedBoardItems"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 containsObject:itemCopy], v6, v7))
   {
     v8 = [(CRLInteractiveCanvasController *)self layoutForInfo:self->mMultiselectResizeInfo];
     if (v8)
@@ -11806,11 +11806,11 @@ LABEL_42:
   return v9;
 }
 
-- (id)additionalChildInfosForLayout:(id)a3
+- (id)additionalChildInfosForLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   mMultiselectResizeInfo = self->mMultiselectResizeInfo;
-  if (mMultiselectResizeInfo && (-[CRLMultiselectResizeInfo parentInfo](mMultiselectResizeInfo, "parentInfo"), v6 = objc_claimAutoreleasedReturnValue(), [v4 info], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v6 == v7))
+  if (mMultiselectResizeInfo && (-[CRLMultiselectResizeInfo parentInfo](mMultiselectResizeInfo, "parentInfo"), v6 = objc_claimAutoreleasedReturnValue(), [layoutCopy info], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v6 == v7))
   {
     v10 = self->mMultiselectResizeInfo;
     v8 = [NSArray arrayWithObjects:&v10 count:1];
@@ -11830,8 +11830,8 @@ LABEL_42:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(CRLCanvas *)self->mCanvas topLevelReps];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  topLevelReps = [(CRLCanvas *)self->mCanvas topLevelReps];
+  v4 = [topLevelReps countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -11842,13 +11842,13 @@ LABEL_42:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(topLevelReps);
         }
 
         [*(*(&v8 + 1) + 8 * i) recursivelyPerformSelectorIfImplemented:"i_invalidateSelectionHighlightRenderable"];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [topLevelReps countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -11863,8 +11863,8 @@ LABEL_42:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(CRLInteractiveCanvasController *)self i_decorators];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  i_decorators = [(CRLInteractiveCanvasController *)self i_decorators];
+  v3 = [i_decorators countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -11876,7 +11876,7 @@ LABEL_42:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(i_decorators);
         }
 
         v7 = *(*(&v8 + 1) + 8 * v6);
@@ -11889,7 +11889,7 @@ LABEL_42:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [i_decorators countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -11902,8 +11902,8 @@ LABEL_42:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(CRLInteractiveCanvasController *)self i_decorators];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  i_decorators = [(CRLInteractiveCanvasController *)self i_decorators];
+  v3 = [i_decorators countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -11915,7 +11915,7 @@ LABEL_42:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(i_decorators);
         }
 
         v7 = *(*(&v8 + 1) + 8 * v6);
@@ -11928,7 +11928,7 @@ LABEL_42:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [i_decorators countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -11941,8 +11941,8 @@ LABEL_42:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(CRLInteractiveCanvasController *)self i_decorators];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  i_decorators = [(CRLInteractiveCanvasController *)self i_decorators];
+  v4 = [i_decorators countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -11954,7 +11954,7 @@ LABEL_42:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(i_decorators);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -11967,7 +11967,7 @@ LABEL_42:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [i_decorators countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -11982,8 +11982,8 @@ LABEL_42:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(CRLInteractiveCanvasController *)self i_decorators];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  i_decorators = [(CRLInteractiveCanvasController *)self i_decorators];
+  v4 = [i_decorators countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -11995,7 +11995,7 @@ LABEL_42:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(i_decorators);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
@@ -12008,15 +12008,15 @@ LABEL_42:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [i_decorators countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [(CRLInteractiveCanvasController *)self layerHost];
-  v10 = [v9 canvasLayer];
-  [v10 layoutIfNeededIgnoringDisabledLayout];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
+  [canvasLayer layoutIfNeededIgnoringDisabledLayout];
 
   [(CRLInteractiveCanvasController *)self p_fadeInForZoomOperation];
 }
@@ -12031,9 +12031,9 @@ LABEL_42:
   [v3 setRemovedOnCompletion:0];
   [v3 setFillMode:kCAFillModeForwards];
   v5 = [NSMutableArray alloc];
-  v6 = [(CRLInteractiveCanvasController *)self overlayLayer];
-  v7 = [v6 sublayers];
-  v8 = [v5 initWithCapacity:{objc_msgSend(v7, "count")}];
+  overlayLayer = [(CRLInteractiveCanvasController *)self overlayLayer];
+  sublayers = [overlayLayer sublayers];
+  v8 = [v5 initWithCapacity:{objc_msgSend(sublayers, "count")}];
   mLayersWithZoomFadeAnimation = self->mLayersWithZoomFadeAnimation;
   self->mLayersWithZoomFadeAnimation = v8;
 
@@ -12041,10 +12041,10 @@ LABEL_42:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v10 = [(CRLInteractiveCanvasController *)self overlayLayer];
-  v11 = [v10 sublayers];
+  overlayLayer2 = [(CRLInteractiveCanvasController *)self overlayLayer];
+  sublayers2 = [overlayLayer2 sublayers];
 
-  v12 = [v11 countByEnumeratingWithState:&v37 objects:v43 count:16];
+  v12 = [sublayers2 countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (v12)
   {
     v13 = v12;
@@ -12055,7 +12055,7 @@ LABEL_42:
       {
         if (*v38 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(sublayers2);
         }
 
         v16 = *(*(&v37 + 1) + 8 * i);
@@ -12066,7 +12066,7 @@ LABEL_42:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v37 objects:v43 count:16];
+      v13 = [sublayers2 countByEnumeratingWithState:&v37 objects:v43 count:16];
     }
 
     while (v13);
@@ -12093,12 +12093,12 @@ LABEL_42:
 
         v20 = *(*(&v33 + 1) + 8 * j);
         [v20 handleFadeOutForZoom];
-        v21 = [v20 additionalRenderablesToFadeDuringZoom];
+        additionalRenderablesToFadeDuringZoom = [v20 additionalRenderablesToFadeDuringZoom];
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v22 = [v21 countByEnumeratingWithState:&v29 objects:v41 count:16];
+        v22 = [additionalRenderablesToFadeDuringZoom countByEnumeratingWithState:&v29 objects:v41 count:16];
         if (v22)
         {
           v23 = v22;
@@ -12109,15 +12109,15 @@ LABEL_42:
             {
               if (*v30 != v24)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(additionalRenderablesToFadeDuringZoom);
               }
 
-              v26 = [*(*(&v29 + 1) + 8 * k) layer];
-              [v26 addAnimation:v3 forKey:@"CRLInteractiveCanvasControllerBeginZoomingOperation"];
-              [(NSMutableArray *)self->mLayersWithZoomFadeAnimation addObject:v26];
+              layer = [*(*(&v29 + 1) + 8 * k) layer];
+              [layer addAnimation:v3 forKey:@"CRLInteractiveCanvasControllerBeginZoomingOperation"];
+              [(NSMutableArray *)self->mLayersWithZoomFadeAnimation addObject:layer];
             }
 
-            v23 = [v21 countByEnumeratingWithState:&v29 objects:v41 count:16];
+            v23 = [additionalRenderablesToFadeDuringZoom countByEnumeratingWithState:&v29 objects:v41 count:16];
           }
 
           while (v23);
@@ -12137,8 +12137,8 @@ LABEL_42:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v3 = [(CRLCanvas *)self->mCanvas allReps];
-  v4 = [v3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  allReps = [(CRLCanvas *)self->mCanvas allReps];
+  v4 = [allReps countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v4)
   {
     v5 = v4;
@@ -12149,13 +12149,13 @@ LABEL_42:
       {
         if (*v23 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allReps);
         }
 
         [*(*(&v22 + 1) + 8 * i) handleFadeInForZoom];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v5 = [allReps countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v5);
@@ -12205,11 +12205,11 @@ LABEL_42:
   self->mLayersWithZoomFadeAnimation = 0;
 }
 
-- (void)setShowInvisibleObjects:(BOOL)a3
+- (void)setShowInvisibleObjects:(BOOL)objects
 {
-  if (self->mShowInvisibleObjects != a3)
+  if (self->mShowInvisibleObjects != objects)
   {
-    self->mShowInvisibleObjects = a3;
+    self->mShowInvisibleObjects = objects;
     [(CRLInteractiveCanvasController *)self layoutInvalidated];
   }
 }
@@ -12253,8 +12253,8 @@ LABEL_42:
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = [(CRLInteractiveCanvasController *)self infosForCurrentSelectionPath];
-    v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    infosForCurrentSelectionPath = [(CRLInteractiveCanvasController *)self infosForCurrentSelectionPath];
+    v5 = [infosForCurrentSelectionPath countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
       v6 = v5;
@@ -12265,23 +12265,23 @@ LABEL_42:
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(infosForCurrentSelectionPath);
           }
 
           v9 = [(CRLInteractiveCanvasController *)self repForInfo:*(*(&v14 + 1) + 8 * i)];
           v10 = v9;
           if (v9)
           {
-            v11 = [v9 repForRotating];
+            repForRotating = [v9 repForRotating];
 
-            if (v11 == v10)
+            if (repForRotating == v10)
             {
               [v3 addObject:v10];
             }
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [infosForCurrentSelectionPath countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v6);
@@ -12298,7 +12298,7 @@ LABEL_42:
   return v12;
 }
 
-- (id)repDragTrackerDelegateForRep:(id)a3
+- (id)repDragTrackerDelegateForRep:(id)rep
 {
   mRepDragTrackerDelegateWrapper = self->mRepDragTrackerDelegateWrapper;
   if (!mRepDragTrackerDelegateWrapper)
@@ -12328,99 +12328,99 @@ LABEL_42:
   return mGestureDispatcher;
 }
 
-- (void)updateSelectionForTapAtPoint:(CGPoint)a3 extendingSelection:(BOOL)a4
+- (void)updateSelectionForTapAtPoint:(CGPoint)point extendingSelection:(BOOL)selection
 {
-  v4 = a4;
-  v6 = [(CRLInteractiveCanvasController *)self hitRep:a3.x, a3.y];
-  [(CRLInteractiveCanvasController *)self updateSelectionForInteractionWithRep:v6 extendingSelection:v4];
+  selectionCopy = selection;
+  v6 = [(CRLInteractiveCanvasController *)self hitRep:point.x, point.y];
+  [(CRLInteractiveCanvasController *)self updateSelectionForInteractionWithRep:v6 extendingSelection:selectionCopy];
 }
 
-- (void)updateSelectionForInteractionWithRep:(id)a3 extendingSelection:(BOOL)a4
+- (void)updateSelectionForInteractionWithRep:(id)rep extendingSelection:(BOOL)selection
 {
-  v4 = a4;
-  v6 = a3;
-  v19 = [(CRLInteractiveCanvasController *)self canvasEditor];
-  v7 = [v6 repForSelecting];
+  selectionCopy = selection;
+  repCopy = rep;
+  canvasEditor = [(CRLInteractiveCanvasController *)self canvasEditor];
+  repForSelecting = [repCopy repForSelecting];
 
-  if (v7)
+  if (repForSelecting)
   {
-    v8 = [v7 parentRepToPerformSelecting];
-    if (v8)
+    parentRepToPerformSelecting = [repForSelecting parentRepToPerformSelecting];
+    if (parentRepToPerformSelecting)
     {
       [(CRLInteractiveCanvasController *)self endEditing];
-      [v8 selectChildRep:v7 extendingSelection:v4];
+      [parentRepToPerformSelecting selectChildRep:repForSelecting extendingSelection:selectionCopy];
     }
 
-    else if (v4)
+    else if (selectionCopy)
     {
       [(CRLInteractiveCanvasController *)self endEditing];
-      v10 = [v7 info];
-      v11 = [v7 isSelectedIgnoringLocking];
-      v12 = [v19 canvasEditorHelper];
-      v13 = v12;
-      if (v11)
+      info = [repForSelecting info];
+      isSelectedIgnoringLocking = [repForSelecting isSelectedIgnoringLocking];
+      canvasEditorHelper = [canvasEditor canvasEditorHelper];
+      v13 = canvasEditorHelper;
+      if (isSelectedIgnoringLocking)
       {
-        [v12 canvasSelectionPathExcludingInfo:v10];
+        [canvasEditorHelper canvasSelectionPathExcludingInfo:info];
       }
 
       else
       {
-        [v12 canvasSelectionPathIncludingInfo:v10];
+        [canvasEditorHelper canvasSelectionPathIncludingInfo:info];
       }
       v14 = ;
-      v15 = [(CRLInteractiveCanvasController *)self editorController];
-      [v15 setSelectionPath:v14];
+      editorController = [(CRLInteractiveCanvasController *)self editorController];
+      [editorController setSelectionPath:v14];
     }
 
-    else if ([v7 isSelectedIgnoringLocking])
+    else if ([repForSelecting isSelectedIgnoringLocking])
     {
-      [(CRLInteractiveCanvasController *)self updateSelectionForTapOnSelectedRep:v7];
+      [(CRLInteractiveCanvasController *)self updateSelectionForTapOnSelectedRep:repForSelecting];
     }
 
     else
     {
       [(CRLInteractiveCanvasController *)self endEditing];
-      v16 = [v7 info];
-      v17 = [v19 selectionPathWithInfo:v16];
+      info2 = [repForSelecting info];
+      v17 = [canvasEditor selectionPathWithInfo:info2];
 
-      v18 = [(CRLInteractiveCanvasController *)self editorController];
-      [v18 setSelectionPath:v17];
+      editorController2 = [(CRLInteractiveCanvasController *)self editorController];
+      [editorController2 setSelectionPath:v17];
     }
   }
 
   else
   {
-    if (v4)
+    if (selectionCopy)
     {
       goto LABEL_15;
     }
 
     [(CRLInteractiveCanvasController *)self endEditing];
-    v8 = [v19 selectionPathWithInfos:0];
-    v9 = [(CRLInteractiveCanvasController *)self editorController];
-    [v9 setSelectionPath:v8];
+    parentRepToPerformSelecting = [canvasEditor selectionPathWithInfos:0];
+    editorController3 = [(CRLInteractiveCanvasController *)self editorController];
+    [editorController3 setSelectionPath:parentRepToPerformSelecting];
   }
 
 LABEL_15:
 }
 
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3 extendingSelection:(BOOL)a4 inputType:(int64_t)a5
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point extendingSelection:(BOOL)selection inputType:(int64_t)type
 {
-  v6 = a4;
-  y = a3.y;
-  x = a3.x;
+  selectionCopy = selection;
+  y = point.y;
+  x = point.x;
   v10 = [(CRLInteractiveCanvasController *)self hitRep:?];
-  v11 = [v10 repForHandleSingleTap];
-  v12 = v11;
-  if (!v6)
+  repForHandleSingleTap = [v10 repForHandleSingleTap];
+  v12 = repForHandleSingleTap;
+  if (!selectionCopy)
   {
-    if (!v11)
+    if (!repForHandleSingleTap)
     {
       v14 = 0;
       goto LABEL_12;
     }
 
-    if (![v10 isLocked] || objc_msgSend(v10, "wantsToHandleTapsWhenLocked")) && (objc_msgSend(v12, "handleSingleTapAtPoint:inputType:", a5, x, y))
+    if (![v10 isLocked] || objc_msgSend(v10, "wantsToHandleTapsWhenLocked")) && (objc_msgSend(v12, "handleSingleTapAtPoint:inputType:", type, x, y))
     {
       goto LABEL_10;
     }
@@ -12428,12 +12428,12 @@ LABEL_15:
     goto LABEL_9;
   }
 
-  v13 = [v11 handleSingleTapsWhileExtendingSelectionAtPoint:a5 inputType:{x, y}];
+  v13 = [repForHandleSingleTap handleSingleTapsWhileExtendingSelectionAtPoint:type inputType:{x, y}];
   v14 = (v12 != 0) | v13;
   if (v12 && (v13 & 1) == 0)
   {
 LABEL_9:
-    [(CRLInteractiveCanvasController *)self updateSelectionForTapAtPoint:v6 extendingSelection:x, y];
+    [(CRLInteractiveCanvasController *)self updateSelectionForTapAtPoint:selectionCopy extendingSelection:x, y];
 LABEL_10:
     v14 = 1;
   }
@@ -12443,125 +12443,125 @@ LABEL_12:
   return v14 & 1;
 }
 
-- (BOOL)handleDoubleTapAtPoint:(CGPoint)a3 inputType:(int64_t)a4
+- (BOOL)handleDoubleTapAtPoint:(CGPoint)point inputType:(int64_t)type
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v8 = [(CRLInteractiveCanvasController *)self hitRep:?];
-  v9 = [v8 repForSelecting];
+  repForSelecting = [v8 repForSelecting];
 
-  if (v9)
+  if (repForSelecting)
   {
-    v10 = [v9 info];
+    info = [repForSelecting info];
 
-    if (v10)
+    if (info)
     {
-      v11 = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
-      v12 = [(CRLInteractiveCanvasController *)self editorController];
-      v13 = [v12 selectionPath];
-      v14 = [v11 boardItemsForSelectionPath:v13];
+      selectionModelTranslator = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
+      editorController = [(CRLInteractiveCanvasController *)self editorController];
+      selectionPath = [editorController selectionPath];
+      v14 = [selectionModelTranslator boardItemsForSelectionPath:selectionPath];
 
-      if ([v14 count] != 1 || (objc_msgSend(v9, "info"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "containsObject:", v15), v15, (v16 & 1) == 0))
+      if ([v14 count] != 1 || (objc_msgSend(repForSelecting, "info"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "containsObject:", v15), v15, (v16 & 1) == 0))
       {
-        v17 = [(CRLInteractiveCanvasController *)self canvasEditor];
-        v18 = [v9 info];
-        v19 = [v17 selectionPathWithInfo:v18];
-        v20 = [(CRLInteractiveCanvasController *)self editorController];
-        [v20 setSelectionPath:v19];
+        canvasEditor = [(CRLInteractiveCanvasController *)self canvasEditor];
+        info2 = [repForSelecting info];
+        v19 = [canvasEditor selectionPathWithInfo:info2];
+        editorController2 = [(CRLInteractiveCanvasController *)self editorController];
+        [editorController2 setSelectionPath:v19];
       }
     }
 
-    if (![v9 isLocked] || objc_msgSend(v9, "wantsToHandleDoubleTapsWhenLocked"))
+    if (![repForSelecting isLocked] || objc_msgSend(repForSelecting, "wantsToHandleDoubleTapsWhenLocked"))
     {
-      [v9 handleDoubleTapAtPoint:a4 inputType:{x, y}];
+      [repForSelecting handleDoubleTapAtPoint:type inputType:{x, y}];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = [(CRLInteractiveCanvasController *)self canvasView];
-      v22 = [v21 layerHost];
-      v23 = [v22 miniFormatterPresenter];
-      v24 = [(CRLInteractiveCanvasController *)self editorController];
-      v25 = [v24 selectionPath];
-      [v23 presentMiniFormatterForSelectionPath:v25];
+      canvasView = [(CRLInteractiveCanvasController *)self canvasView];
+      layerHost = [canvasView layerHost];
+      miniFormatterPresenter = [layerHost miniFormatterPresenter];
+      editorController3 = [(CRLInteractiveCanvasController *)self editorController];
+      selectionPath2 = [editorController3 selectionPath];
+      [miniFormatterPresenter presentMiniFormatterForSelectionPath:selectionPath2];
     }
   }
 
   else
   {
-    v26 = [(CRLInteractiveCanvasController *)self layerHost];
-    v27 = [v26 asUIKitHost];
-    v28 = [v27 isCurrentlyInQuickSelectMode];
+    layerHost2 = [(CRLInteractiveCanvasController *)self layerHost];
+    asUIKitHost = [layerHost2 asUIKitHost];
+    isCurrentlyInQuickSelectMode = [asUIKitHost isCurrentlyInQuickSelectMode];
 
-    if (v28)
+    if (isCurrentlyInQuickSelectMode)
     {
       [(CRLInteractiveCanvasController *)self updateSelectionForTapAtPoint:0 extendingSelection:x, y];
     }
   }
 
-  return v9 != 0;
+  return repForSelecting != 0;
 }
 
-- (BOOL)handleMultipleTapAtPoint:(CGPoint)a3
+- (BOOL)handleMultipleTapAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = [(CRLInteractiveCanvasController *)self hitRep:?];
-  v7 = [v6 repForSelecting];
+  repForSelecting = [v6 repForSelecting];
 
-  if (v7)
+  if (repForSelecting)
   {
-    v8 = [v7 info];
+    info = [repForSelecting info];
 
-    if (v8)
+    if (info)
     {
-      v9 = [(CRLInteractiveCanvasController *)self canvasEditor];
-      v10 = [v7 info];
-      v11 = [v9 selectionPathWithInfo:v10];
-      v12 = [(CRLInteractiveCanvasController *)self editorController];
-      [v12 setSelectionPath:v11];
+      canvasEditor = [(CRLInteractiveCanvasController *)self canvasEditor];
+      info2 = [repForSelecting info];
+      v11 = [canvasEditor selectionPathWithInfo:info2];
+      editorController = [(CRLInteractiveCanvasController *)self editorController];
+      [editorController setSelectionPath:v11];
     }
 
-    if (([v7 isLocked] & 1) == 0)
+    if (([repForSelecting isLocked] & 1) == 0)
     {
-      [v7 handleMultipleTapAtPoint:{x, y}];
+      [repForSelecting handleMultipleTapAtPoint:{x, y}];
     }
   }
 
-  return v7 != 0;
+  return repForSelecting != 0;
 }
 
-- (void)tappedCanvasBackgroundAtPoint:(CGPoint)a3 inputType:(int64_t)a4
+- (void)tappedCanvasBackgroundAtPoint:(CGPoint)point inputType:(int64_t)type
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(CRLInteractiveCanvasController *)self layerHost];
-  v30 = [v7 asUIKitHost];
+  y = point.y;
+  x = point.x;
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  asUIKitHost = [layerHost asUIKitHost];
 
-  v8 = [v30 isCurrentlyInQuickSelectMode];
-  v9 = [(CRLInteractiveCanvasController *)self editorController];
-  v10 = [v9 selectionPath];
-  v11 = [(CRLInteractiveCanvasController *)self infosForSelectionPath:v10];
+  isCurrentlyInQuickSelectMode = [asUIKitHost isCurrentlyInQuickSelectMode];
+  editorController = [(CRLInteractiveCanvasController *)self editorController];
+  selectionPath = [editorController selectionPath];
+  v11 = [(CRLInteractiveCanvasController *)self infosForSelectionPath:selectionPath];
   v12 = [v11 count];
 
-  if ((v8 & 1) == 0)
+  if ((isCurrentlyInQuickSelectMode & 1) == 0)
   {
-    v13 = [(CRLInteractiveCanvasController *)self canvasEditor];
-    v14 = [v13 selectionPathWithInfos:0];
+    canvasEditor = [(CRLInteractiveCanvasController *)self canvasEditor];
+    v14 = [canvasEditor selectionPathWithInfos:0];
 
-    v15 = [(CRLInteractiveCanvasController *)self editorController];
-    [v15 setSelectionPath:v14 withFlags:0x2000];
+    editorController2 = [(CRLInteractiveCanvasController *)self editorController];
+    [editorController2 setSelectionPath:v14 withFlags:0x2000];
   }
 
-  v16 = [(CRLInteractiveCanvasController *)self layerHost];
-  v17 = [v16 asiOSCVC];
+  layerHost2 = [(CRLInteractiveCanvasController *)self layerHost];
+  asiOSCVC = [layerHost2 asiOSCVC];
 
-  [v17 becomeFirstResponderIfAppropriate];
-  v18 = [v17 delegate];
+  [asiOSCVC becomeFirstResponderIfAppropriate];
+  delegate = [asiOSCVC delegate];
   v19 = objc_opt_respondsToSelector();
 
-  if ((v19 & 1) == 0 || ([v17 delegate], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "currentDocumentMode"), v21 = objc_claimAutoreleasedReturnValue(), v20, LOBYTE(v20) = objc_msgSend(v21, "handleTapOnCanvasBackgroundAtUnscaledPoint:", x, y), v21, (v20 & 1) == 0))
+  if ((v19 & 1) == 0 || ([asiOSCVC delegate], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "currentDocumentMode"), v21 = objc_claimAutoreleasedReturnValue(), v20, LOBYTE(v20) = objc_msgSend(v21, "handleTapOnCanvasBackgroundAtUnscaledPoint:", x, y), v21, (v20 & 1) == 0))
   {
     WeakRetained = objc_loadWeakRetained(&self->mDelegate);
     v23 = objc_opt_respondsToSelector();
@@ -12571,32 +12571,32 @@ LABEL_12:
       v24 = objc_loadWeakRetained(&self->mDelegate);
       v25 = [v24 tappedCanvasBackgroundAtPoint:{x, y}];
 
-      if ((v25 | v8))
+      if ((v25 | isCurrentlyInQuickSelectMode))
       {
         goto LABEL_15;
       }
     }
 
-    else if (v8)
+    else if (isCurrentlyInQuickSelectMode)
     {
       goto LABEL_15;
     }
 
-    v26 = [(CRLInteractiveCanvasController *)self editorController];
-    v27 = [v26 selectionPath];
-    v28 = [(CRLInteractiveCanvasController *)self infosForSelectionPath:v27];
+    editorController3 = [(CRLInteractiveCanvasController *)self editorController];
+    selectionPath2 = [editorController3 selectionPath];
+    v28 = [(CRLInteractiveCanvasController *)self infosForSelectionPath:selectionPath2];
     v29 = [v28 count];
 
     if (!v29)
     {
-      if (([v30 contextMenuMightBeDisplayed] & 1) != 0 || v12)
+      if (([asUIKitHost contextMenuMightBeDisplayed] & 1) != 0 || v12)
       {
-        [v30 hideEditMenu];
+        [asUIKitHost hideEditMenu];
       }
 
       else if (![(CRLInteractiveCanvasController *)self editingDisabled])
       {
-        [v30 showDefaultEditUIForCurrentSelection];
+        [asUIKitHost showDefaultEditUIForCurrentSelection];
       }
     }
   }
@@ -12604,15 +12604,15 @@ LABEL_12:
 LABEL_15:
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
   mCurrentAnimation = self->mCurrentAnimation;
   if (mCurrentAnimation)
   {
-    v6 = [(CRLCanvasAnimation *)mCurrentAnimation actionForLayer:a3 forKey:a4];
+    v6 = [(CRLCanvasAnimation *)mCurrentAnimation actionForLayer:layer forKey:key];
   }
 
-  else if ([(CRLInteractiveCanvasLayerUpdater *)self->mLayerUpdater isCanvasContentLayer:a3, a4])
+  else if ([(CRLInteractiveCanvasLayerUpdater *)self->mLayerUpdater isCanvasContentLayer:layer, key])
   {
     v6 = +[NSNull null];
   }
@@ -12625,16 +12625,16 @@ LABEL_15:
   return v6;
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
-  v6 = a3;
-  v7 = v6;
+  layerCopy = layer;
+  v7 = layerCopy;
   if (self->mShouldSuppressRendering)
   {
     goto LABEL_36;
   }
 
-  if (!v6)
+  if (!layerCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -12662,7 +12662,7 @@ LABEL_15:
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLInteractiveCanvasController.m"];
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:6391 isFatal:0 description:"invalid nil value for '%{public}s'", "layer"];
 
-    if (a4)
+    if (context)
     {
       goto LABEL_23;
     }
@@ -12670,7 +12670,7 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  if (!a4)
+  if (!context)
   {
 LABEL_14:
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -12701,9 +12701,9 @@ LABEL_14:
   }
 
 LABEL_23:
-  v14 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
+  i_interactiveCanvasLayerHelper = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
 
-  if (!v14)
+  if (!i_interactiveCanvasLayerHelper)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -12732,30 +12732,30 @@ LABEL_23:
     [CRLAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:6394 isFatal:0 description:"invalid nil value for '%{public}s'", "self.i_interactiveCanvasLayerHelper"];
   }
 
-  v18 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
-  v19 = [v18 repForLayer:v7];
+  i_interactiveCanvasLayerHelper2 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
+  v19 = [i_interactiveCanvasLayerHelper2 repForLayer:v7];
 
   if (v19)
   {
-    [(CRLInteractiveCanvasController *)self i_drawRepWithReadLock:v19 inContext:a4 forLayer:v7];
+    [(CRLInteractiveCanvasController *)self i_drawRepWithReadLock:v19 inContext:context forLayer:v7];
   }
 
 LABEL_36:
 }
 
-- (BOOL)shouldLayoutTilingLayer:(id)a3
+- (BOOL)shouldLayoutTilingLayer:(id)layer
 {
-  v4 = [(CRLInteractiveCanvasController *)self layerHost];
-  v5 = [v4 canvasLayer];
-  v6 = ([v5 isLayoutDisabled] & 1) == 0 && !self->mAnimatingViewScale;
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
+  v6 = ([canvasLayer isLayoutDisabled] & 1) == 0 && !self->mAnimatingViewScale;
 
   return v6;
 }
 
-- (CGRect)visibleBoundsForTilingLayer:(id)a3
+- (CGRect)visibleBoundsForTilingLayer:(id)layer
 {
-  v4 = a3;
-  if (!v4)
+  layerCopy = layer;
+  if (!layerCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -12784,38 +12784,38 @@ LABEL_36:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:6408 isFatal:0 description:"invalid nil value for '%{public}s'", "layer"];
   }
 
-  v8 = [(CRLInteractiveCanvasController *)self layerHost];
-  v9 = [v8 canvasLayer];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
 
-  v10 = v4;
-  v11 = [v10 superlayer];
+  v10 = layerCopy;
+  superlayer = [v10 superlayer];
 
-  v12 = v10;
-  if (v11)
+  superlayer2 = v10;
+  if (superlayer)
   {
-    v12 = v10;
-    if (v9 != v10)
+    superlayer2 = v10;
+    if (canvasLayer != v10)
     {
-      v12 = v10;
+      superlayer2 = v10;
       do
       {
-        v13 = v12;
-        v12 = [v12 superlayer];
+        v13 = superlayer2;
+        superlayer2 = [superlayer2 superlayer];
 
-        v14 = [v12 superlayer];
+        v12Superlayer = [superlayer2 superlayer];
       }
 
-      while (v14 && v12 != v9);
+      while (v12Superlayer && superlayer2 != canvasLayer);
     }
   }
 
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
   height = CGRectNull.size.height;
-  v18 = [v12 superlayer];
-  if (v18)
+  v12Superlayer2 = [superlayer2 superlayer];
+  if (v12Superlayer2)
   {
-    v19 = v18;
+    canvasView = v12Superlayer2;
     goto LABEL_18;
   }
 
@@ -12823,19 +12823,19 @@ LABEL_36:
   if (objc_opt_isKindOfClass())
   {
     [v10 bounds];
-    [v12 convertRect:v10 fromLayer:?];
+    [superlayer2 convertRect:v10 fromLayer:?];
     v40 = v39;
     v42 = v41;
     v44 = v43;
     v46 = v45;
     v47 = objc_opt_class();
-    v48 = [v12 delegate];
-    v20 = sub_100013F00(v47, v48);
+    delegate = [superlayer2 delegate];
+    v20 = sub_100013F00(v47, delegate);
 
     if (v20)
     {
-      v19 = [(CRLInteractiveCanvasController *)self canvasView];
-      [v20 convertRect:v19 toView:{v40, v42, v44, v46}];
+      canvasView = [(CRLInteractiveCanvasController *)self canvasView];
+      [v20 convertRect:canvasView toView:{v40, v42, v44, v46}];
       x = v49;
       v23 = v50;
       v22 = v51;
@@ -12865,9 +12865,9 @@ LABEL_36:
       sub_10130F3A8(v65);
     }
 
-    v19 = [NSString stringWithUTF8String:"[CRLInteractiveCanvasController visibleBoundsForTilingLayer:]"];
+    canvasView = [NSString stringWithUTF8String:"[CRLInteractiveCanvasController visibleBoundsForTilingLayer:]"];
     v66 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLInteractiveCanvasController.m"];
-    [CRLAssertionHandler handleFailureInFunction:v19 file:v66 lineNumber:6431 isFatal:0 description:"invalid nil value for '%{public}s'", "canvasSubview"];
+    [CRLAssertionHandler handleFailureInFunction:canvasView file:v66 lineNumber:6431 isFatal:0 description:"invalid nil value for '%{public}s'", "canvasSubview"];
 
 LABEL_18:
     v20 = 0;
@@ -12897,7 +12897,7 @@ LABEL_20:
   if (CGRectEqualToRect(v67, v71))
   {
     [v10 bounds];
-    [v9 convertRect:v10 fromLayer:?];
+    [canvasLayer convertRect:v10 fromLayer:?];
     x = v25;
     v23 = v26;
     v22 = v27;
@@ -12916,19 +12916,19 @@ LABEL_20:
   v32 = v69.size.height;
   if (v20)
   {
-    v33 = [(CRLInteractiveCanvasController *)self canvasView];
-    [v20 convertRect:v33 fromView:{v29, v30, v31, v32}];
+    canvasView2 = [(CRLInteractiveCanvasController *)self canvasView];
+    [v20 convertRect:canvasView2 fromView:{v29, v30, v31, v32}];
     v29 = v34;
     v30 = v35;
     v31 = v36;
     v32 = v37;
 
-    v38 = v12;
+    v38 = superlayer2;
   }
 
   else
   {
-    v38 = v9;
+    v38 = canvasLayer;
   }
 
   [v38 convertRect:v10 toLayer:{v29, v30, v31, v32}];
@@ -12948,51 +12948,51 @@ LABEL_20:
   return result;
 }
 
-- (BOOL)scrollViewShouldOptOutOfUIScrollViewContentOffsetAnimationForScrollView:(id)a3
+- (BOOL)scrollViewShouldOptOutOfUIScrollViewContentOffsetAnimationForScrollView:(id)view
 {
-  v3 = [(CRLInteractiveCanvasController *)self layerHost];
-  v4 = [v3 asiOSCVC];
-  v5 = [v4 shouldOptOutOfUIScrollViewContentOffsetAnimation];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
+  shouldOptOutOfUIScrollViewContentOffsetAnimation = [asiOSCVC shouldOptOutOfUIScrollViewContentOffsetAnimation];
 
-  return v5;
+  return shouldOptOutOfUIScrollViewContentOffsetAnimation;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   [(CRLInteractiveCanvasController *)self i_canvasDidUpdateVisibleBounds];
-  v5 = ([v4 isDragging] & 1) != 0 || (objc_msgSend(v4, "isDecelerating") & 1) != 0 || self->mAnimatingScroll;
+  v5 = ([scrollCopy isDragging] & 1) != 0 || (objc_msgSend(scrollCopy, "isDecelerating") & 1) != 0 || self->mAnimatingScroll;
   [(CRLInteractiveCanvasController *)self p_setCurrentlyScrolling:v5];
-  v6 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
-  v7 = [v6 popoutLayer];
+  i_interactiveCanvasLayerHelper = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
+  popoutLayer = [i_interactiveCanvasLayerHelper popoutLayer];
 
-  if (v7)
+  if (popoutLayer)
   {
-    v8 = [(CRLInteractiveCanvasController *)self layerHost];
-    v9 = [v8 canvasLayer];
-    [v9 bounds];
+    layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+    canvasLayer = [layerHost canvasLayer];
+    [canvasLayer bounds];
     v11 = v10;
     v13 = v12;
 
-    v14 = [(CRLInteractiveCanvasController *)self layerHost];
-    v15 = [v14 canvasView];
-    v16 = [v15 canvasLayer];
-    [v16 contentInset];
+    layerHost2 = [(CRLInteractiveCanvasController *)self layerHost];
+    canvasView = [layerHost2 canvasView];
+    canvasLayer2 = [canvasView canvasLayer];
+    [canvasLayer2 contentInset];
     v18 = v17;
     v20 = v19;
 
-    [v4 frame];
+    [scrollCopy frame];
     v22 = v21;
-    [v4 contentOffset];
+    [scrollCopy contentOffset];
     v24 = v11 + v22 - v23 - v20;
-    [v4 frame];
+    [scrollCopy frame];
     v26 = v25;
-    [v4 contentOffset];
+    [scrollCopy contentOffset];
     v28 = v13 + v26 - v27 - v18;
-    [v7 position];
+    [popoutLayer position];
     if (v30 != v24 || v29 != v28)
     {
-      [v7 setPosition:{v24, v28}];
+      [popoutLayer setPosition:{v24, v28}];
     }
 
     [(CRLInteractiveCanvasController *)self visibleBoundsRect];
@@ -13004,8 +13004,8 @@ LABEL_20:
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v40 = [v7 sublayers];
-    v41 = [v40 countByEnumeratingWithState:&v65 objects:v72 count:16];
+    sublayers = [popoutLayer sublayers];
+    v41 = [sublayers countByEnumeratingWithState:&v65 objects:v72 count:16];
     if (v41)
     {
       v42 = v41;
@@ -13016,7 +13016,7 @@ LABEL_20:
         {
           if (*v66 != v43)
           {
-            objc_enumerationMutation(v40);
+            objc_enumerationMutation(sublayers);
           }
 
           v45 = *(*(&v65 + 1) + 8 * i);
@@ -13028,32 +13028,32 @@ LABEL_20:
           [v45 setHidden:{!CGRectIntersectsRect(v73, v74)}];
         }
 
-        v42 = [v40 countByEnumeratingWithState:&v65 objects:v72 count:16];
+        v42 = [sublayers countByEnumeratingWithState:&v65 objects:v72 count:16];
       }
 
       while (v42);
     }
   }
 
-  v46 = [(CRLInteractiveCanvasController *)self delegate];
+  delegate = [(CRLInteractiveCanvasController *)self delegate];
   v47 = objc_opt_respondsToSelector();
 
   if (v47)
   {
-    v48 = [(CRLInteractiveCanvasController *)self delegate];
-    [v48 interactiveCanvasControllerDidScroll:self];
+    delegate2 = [(CRLInteractiveCanvasController *)self delegate];
+    [delegate2 interactiveCanvasControllerDidScroll:self];
   }
 
   v49 = +[NSNotificationCenter defaultCenter];
   v70 = @"CRLInteractiveCanvasControllerInteractionSourceKey";
-  v50 = [(CRLInteractiveCanvasController *)self p_sourceInteractionSourceForNotficiationUserInfo];
-  v71 = v50;
+  p_sourceInteractionSourceForNotficiationUserInfo = [(CRLInteractiveCanvasController *)self p_sourceInteractionSourceForNotficiationUserInfo];
+  v71 = p_sourceInteractionSourceForNotficiationUserInfo;
   v51 = [NSDictionary dictionaryWithObjects:&v71 forKeys:&v70 count:1];
   [v49 postNotificationName:@"CRLCanvasUpdateScrollNotification" object:self userInfo:v51];
 
-  v52 = [(CRLInteractiveCanvasController *)self layerHost];
-  v53 = [v52 asUIKitHost];
-  [v53 scrollViewDidScroll];
+  layerHost3 = [(CRLInteractiveCanvasController *)self layerHost];
+  asUIKitHost = [layerHost3 asUIKitHost];
+  [asUIKitHost scrollViewDidScroll];
 
   [(CRLInteractiveCanvasController *)self i_viewScrollDidChange];
   if ([(CRLInteractiveCanvasController *)self p_collaboratorOverlaysNeedUpdateForScroll])
@@ -13062,8 +13062,8 @@ LABEL_20:
     v64 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v54 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary crl_allObjects];
-    v55 = [v54 countByEnumeratingWithState:&v61 objects:v69 count:16];
+    crl_allObjects = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary crl_allObjects];
+    v55 = [crl_allObjects countByEnumeratingWithState:&v61 objects:v69 count:16];
     if (v55)
     {
       v56 = v55;
@@ -13074,13 +13074,13 @@ LABEL_20:
         {
           if (*v62 != v57)
           {
-            objc_enumerationMutation(v54);
+            objc_enumerationMutation(crl_allObjects);
           }
 
           [(CRLInteractiveCanvasController *)self invalidateLayersForDecorator:*(*(&v61 + 1) + 8 * j)];
         }
 
-        v56 = [v54 countByEnumeratingWithState:&v61 objects:v69 count:16];
+        v56 = [crl_allObjects countByEnumeratingWithState:&v61 objects:v69 count:16];
       }
 
       while (v56);
@@ -13094,9 +13094,9 @@ LABEL_20:
 
   if (self->mCreateRepsForOffscreenLayouts)
   {
-    v59 = [(CRLInteractiveCanvasController *)self layerHost];
-    v60 = [v59 canvasLayer];
-    [v60 crl_setNeedsLayoutForTilingLayers];
+    layerHost4 = [(CRLInteractiveCanvasController *)self layerHost];
+    canvasLayer3 = [layerHost4 canvasLayer];
+    [canvasLayer3 crl_setNeedsLayoutForTilingLayers];
   }
 
   else
@@ -13117,7 +13117,7 @@ LABEL_20:
     return 1;
   }
 
-  v4 = [(CRLInteractiveCanvasController *)self collaboratorCursorDelegate];
+  collaboratorCursorDelegate = [(CRLInteractiveCanvasController *)self collaboratorCursorDelegate];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -13137,12 +13137,12 @@ LABEL_20:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [v4 collaboratorCursorSelectionPathForRenderer:self collaboratorPresence:{*(*(&v16 + 1) + 8 * i), v16}];
+        v10 = [collaboratorCursorDelegate collaboratorCursorSelectionPathForRenderer:self collaboratorPresence:{*(*(&v16 + 1) + 8 * i), v16}];
         if (v10)
         {
           v11 = v10;
-          v12 = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
-          v13 = [v12 boardItemsForSelectionPath:v11];
+          selectionModelTranslator = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
+          v13 = [selectionModelTranslator boardItemsForSelectionPath:v11];
           v14 = [v13 count];
 
           if (v14)
@@ -13169,21 +13169,21 @@ LABEL_14:
   return v3;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   [(CRLInteractiveCanvasController *)self p_setCurrentlyScrolling:1];
   [(CRLInteractiveCanvasController *)self beginScrollingOperation];
   v4 = +[NSNotificationCenter defaultCenter];
   v7 = @"CRLInteractiveCanvasControllerInteractionSourceKey";
-  v5 = [(CRLInteractiveCanvasController *)self p_sourceInteractionSourceForNotficiationUserInfo];
-  v8 = v5;
+  p_sourceInteractionSourceForNotficiationUserInfo = [(CRLInteractiveCanvasController *)self p_sourceInteractionSourceForNotficiationUserInfo];
+  v8 = p_sourceInteractionSourceForNotficiationUserInfo;
   v6 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
   [v4 postNotificationName:@"CRLCanvasWillScrollNotification" object:self userInfo:v6];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(CRLInteractiveCanvasController *)self p_setCurrentlyScrolling:0];
     [(CRLInteractiveCanvasController *)self p_viewScrollingEnded];
@@ -13193,7 +13193,7 @@ LABEL_14:
   [v5 postNotificationName:@"CRLCanvasWillEndDraggingNotification" object:self];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   if ([(CRLInteractiveCanvasController *)self currentlyScrolling])
   {
@@ -13203,28 +13203,28 @@ LABEL_14:
   }
 }
 
-- (void)contentInsetsDidChangeForScrollView:(id)a3
+- (void)contentInsetsDidChangeForScrollView:(id)view
 {
-  v4 = [(CRLInteractiveCanvasController *)self layerHost];
-  v3 = [v4 canvasLayer];
-  [v3 fixFrameAndScrollView];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
+  [canvasLayer fixFrameAndScrollView];
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   self->mAnimatingScroll = 0;
-  [(CRLInteractiveCanvasController *)self performSelector:"p_scrollViewDidEndScrollingAnimation:" withObject:v4 afterDelay:0.0];
+  [(CRLInteractiveCanvasController *)self performSelector:"p_scrollViewDidEndScrollingAnimation:" withObject:animationCopy afterDelay:0.0];
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, animationCopy);
   if (v6 && [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary count]&& ![(CRLInteractiveCanvasController *)self scrollViewShouldOptOutOfUIScrollViewContentOffsetAnimationForScrollView:v6])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary crl_allObjects];
-    v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    crl_allObjects = [(NSMapTable *)self->mCollaboratorPresenceToCollaboratorHUDControllerDictionary crl_allObjects];
+    v8 = [crl_allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -13236,7 +13236,7 @@ LABEL_14:
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(crl_allObjects);
           }
 
           [(CRLInteractiveCanvasController *)self invalidateLayersForDecorator:*(*(&v12 + 1) + 8 * v11)];
@@ -13244,7 +13244,7 @@ LABEL_14:
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [crl_allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);
@@ -13252,25 +13252,25 @@ LABEL_14:
   }
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
-  v3 = a3;
+  topCopy = top;
   v4 = +[NSNotificationCenter defaultCenter];
-  [v4 postNotificationName:@"CRLiOSScrollViewWillScrollToTopNotification" object:v3];
+  [v4 postNotificationName:@"CRLiOSScrollViewWillScrollToTopNotification" object:topCopy];
 
   return 1;
 }
 
-- (void)p_scrollViewDidEndScrollingAnimation:(id)a3
+- (void)p_scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v5 = a3;
+  animationCopy = animation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(CRLInteractiveCanvasController *)self scrollViewDidScroll:v5];
+    [(CRLInteractiveCanvasController *)self scrollViewDidScroll:animationCopy];
   }
 
-  v4 = ([v5 isDragging] & 1) != 0 || (objc_msgSend(v5, "isDecelerating") & 1) != 0 || self->mAnimatingScroll;
+  v4 = ([animationCopy isDragging] & 1) != 0 || (objc_msgSend(animationCopy, "isDecelerating") & 1) != 0 || self->mAnimatingScroll;
   [(CRLInteractiveCanvasController *)self p_setCurrentlyScrolling:v4];
   if (!self->mCurrentlyScrolling)
   {
@@ -13278,9 +13278,9 @@ LABEL_14:
   }
 }
 
-- (void)p_setCurrentlyScrolling:(BOOL)a3
+- (void)p_setCurrentlyScrolling:(BOOL)scrolling
 {
-  v3 = a3;
+  scrollingCopy = scrolling;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -13310,13 +13310,13 @@ LABEL_14:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:6668 isFatal:0 description:"This operation must only be performed on the main thread."];
   }
 
-  if (self->mCurrentlyScrolling != v3)
+  if (self->mCurrentlyScrolling != scrollingCopy)
   {
-    self->mCurrentlyScrolling = v3;
-    if (v3)
+    self->mCurrentlyScrolling = scrollingCopy;
+    if (scrollingCopy)
     {
-      v8 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-      [v8 suspendCollaborationWithReason:@"CRLCanvasScrolling"];
+      editingCoordinator = [(CRLInteractiveCanvasController *)self editingCoordinator];
+      [editingCoordinator suspendCollaborationWithReason:@"CRLCanvasScrolling"];
     }
 
     else
@@ -13326,18 +13326,18 @@ LABEL_14:
         self->mSelectionIsCurrentlyOnscreen = [(CRLInteractiveCanvasController *)self p_currentSelectionIsOnscreen];
       }
 
-      v8 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-      [v8 resumeCollaborationWithReason:@"CRLCanvasScrolling"];
+      editingCoordinator = [(CRLInteractiveCanvasController *)self editingCoordinator];
+      [editingCoordinator resumeCollaborationWithReason:@"CRLCanvasScrolling"];
     }
   }
 }
 
-- (void)preprocessChanges:(id)a3 forChangeSource:(id)a4
+- (void)preprocessChanges:(id)changes forChangeSource:(id)source
 {
-  v8 = a3;
-  v6 = a4;
+  changesCopy = changes;
+  sourceCopy = source;
   mSelectionPathToScrollTo = self->mSelectionPathToScrollTo;
-  if (mSelectionPathToScrollTo && [(CRLInteractiveCanvasController *)self shouldCancelScrollingToSelectionPath:mSelectionPathToScrollTo forChanges:v8 withChangeSource:v6])
+  if (mSelectionPathToScrollTo && [(CRLInteractiveCanvasController *)self shouldCancelScrollingToSelectionPath:mSelectionPathToScrollTo forChanges:changesCopy withChangeSource:sourceCopy])
   {
     self->mSelectionShouldBeClearedInDidProcessAllChanges = 1;
   }
@@ -13371,28 +13371,28 @@ LABEL_14:
 
 - (void)p_updateInfosToDisplayIfNeeded
 {
-  v3 = [(CRLInteractiveCanvasController *)self delegate];
-  v4 = [v3 infosToDisplayForInteractiveCanvasController:self];
+  delegate = [(CRLInteractiveCanvasController *)self delegate];
+  v4 = [delegate infosToDisplayForInteractiveCanvasController:self];
   v5 = [v4 mutableCopy];
 
   mMultiselectResizeInfo = self->mMultiselectResizeInfo;
   if (mMultiselectResizeInfo)
   {
-    v7 = [(CRLMultiselectResizeInfo *)mMultiselectResizeInfo parentInfo];
+    parentInfo = [(CRLMultiselectResizeInfo *)mMultiselectResizeInfo parentInfo];
 
-    if (!v7)
+    if (!parentInfo)
     {
       [v5 addObject:self->mMultiselectResizeInfo];
     }
   }
 
-  v8 = [(CRLInteractiveCanvasController *)self temporaryAdditionalBoardItemsToDisplay];
-  v9 = [v8 count];
+  temporaryAdditionalBoardItemsToDisplay = [(CRLInteractiveCanvasController *)self temporaryAdditionalBoardItemsToDisplay];
+  v9 = [temporaryAdditionalBoardItemsToDisplay count];
 
   if (v9)
   {
-    v10 = [(CRLInteractiveCanvasController *)self temporaryAdditionalBoardItemsToDisplay];
-    v11 = [v5 crl_intersectionWithArray:v10];
+    temporaryAdditionalBoardItemsToDisplay2 = [(CRLInteractiveCanvasController *)self temporaryAdditionalBoardItemsToDisplay];
+    v11 = [v5 crl_intersectionWithArray:temporaryAdditionalBoardItemsToDisplay2];
     v12 = [v11 count];
 
     if (v12)
@@ -13424,12 +13424,12 @@ LABEL_14:
       [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:6753 isFatal:0 description:"Temporary additional board items should not already be in our model!"];
     }
 
-    v16 = [(CRLInteractiveCanvasController *)self temporaryAdditionalBoardItemsToDisplay];
-    [v5 addObjectsFromArray:v16];
+    temporaryAdditionalBoardItemsToDisplay3 = [(CRLInteractiveCanvasController *)self temporaryAdditionalBoardItemsToDisplay];
+    [v5 addObjectsFromArray:temporaryAdditionalBoardItemsToDisplay3];
   }
 
-  v17 = [(CRLInteractiveCanvasController *)self infosToDisplay];
-  v18 = [v17 isEqual:v5];
+  infosToDisplay = [(CRLInteractiveCanvasController *)self infosToDisplay];
+  v18 = [infosToDisplay isEqual:v5];
 
   if ((v18 & 1) == 0)
   {
@@ -13437,10 +13437,10 @@ LABEL_14:
   }
 }
 
-- (void)processChanges:(id)a3 forChangeSource:(id)a4
+- (void)processChanges:(id)changes forChangeSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  changesCopy = changes;
+  sourceCopy = source;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -13471,7 +13471,7 @@ LABEL_14:
   }
 
   [(CRLInteractiveCanvasController *)self p_updateInfosToDisplayIfNeeded];
-  if ([v6 crl_containsObjectPassingTest:&stru_101864740])
+  if ([changesCopy crl_containsObjectPassingTest:&stru_101864740])
   {
     [(CRLInteractiveCanvasController *)self recreateAllLayoutsAndReps];
   }
@@ -13479,39 +13479,39 @@ LABEL_14:
   mMultiselectResizeInfo = self->mMultiselectResizeInfo;
   if (mMultiselectResizeInfo)
   {
-    v12 = [(CRLMultiselectResizeInfo *)mMultiselectResizeInfo representedSelectedBoardItems];
-    if ([v12 containsObject:v7])
+    representedSelectedBoardItems = [(CRLMultiselectResizeInfo *)mMultiselectResizeInfo representedSelectedBoardItems];
+    if ([representedSelectedBoardItems containsObject:sourceCopy])
     {
-      v13 = [v6 crl_containsObjectPassingTest:&stru_101864760];
+      v13 = [changesCopy crl_containsObjectPassingTest:&stru_101864760];
 
       if (!v13)
       {
         goto LABEL_18;
       }
 
-      v12 = [(CRLInteractiveCanvasController *)self repForInfo:self->mMultiselectResizeInfo];
-      [v12 invalidateKnobs];
+      representedSelectedBoardItems = [(CRLInteractiveCanvasController *)self repForInfo:self->mMultiselectResizeInfo];
+      [representedSelectedBoardItems invalidateKnobs];
     }
   }
 
 LABEL_18:
   if ([(CRLCanvas *)self->mCanvas i_needsLayout])
   {
-    v14 = [(CRLInteractiveCanvasController *)self layerHost];
-    v15 = [v14 canvasLayer];
-    [v15 setNeedsLayout];
+    layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+    canvasLayer = [layerHost canvasLayer];
+    [canvasLayer setNeedsLayout];
   }
 
   v16 = objc_opt_class();
-  v22 = sub_1003038E0(v7, v16, 1, v17, v18, v19, v20, v21, &OBJC_PROTOCOL___CRLCanvasElementInfo);
+  v22 = sub_1003038E0(sourceCopy, v16, 1, v17, v18, v19, v20, v21, &OBJC_PROTOCOL___CRLCanvasElementInfo);
   if (v22)
   {
     v23 = [(CRLInteractiveCanvasController *)self repsForInfo:v22];
-    [v23 makeObjectsPerformSelector:"processChanges:" withObject:v6];
+    [v23 makeObjectsPerformSelector:"processChanges:" withObject:changesCopy];
   }
 }
 
-- (void)i_acquireLockAndPerformAction:(id)a3
+- (void)i_acquireLockAndPerformAction:(id)action
 {
   v13 = 0;
   v14 = &v13;
@@ -13522,8 +13522,8 @@ LABEL_18:
   v10[2] = sub_10045CEF8;
   v10[3] = &unk_101864788;
   v10[4] = self;
-  v3 = a3;
-  v11 = v3;
+  actionCopy = action;
+  v11 = actionCopy;
   v12 = &v13;
   v4 = objc_retainBlock(v10);
   (v4[2])();
@@ -13560,44 +13560,44 @@ LABEL_18:
   _Block_object_dispose(&v13, 8);
 }
 
-- (void)makeEditorPerformAction:(SEL)a3 withSender:(id)a4
+- (void)makeEditorPerformAction:(SEL)action withSender:(id)sender
 {
-  v8 = a4;
-  v6 = [(CRLInteractiveCanvasController *)self editorController];
-  v7 = [v6 editorForEditAction:a3 withSender:v8];
+  senderCopy = sender;
+  editorController = [(CRLInteractiveCanvasController *)self editorController];
+  v7 = [editorController editorForEditAction:action withSender:senderCopy];
 
   if (v7)
   {
-    [v7 performSelector:a3 withObject:v8];
+    [v7 performSelector:action withObject:senderCopy];
   }
 }
 
-- (BOOL)canPerformInteractiveAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformInteractiveAction:(SEL)action withSender:(id)sender
 {
   v10 = 0;
-  v6 = a4;
-  v7 = [(CRLInteractiveCanvasController *)self editorController];
-  v8 = [v7 editorForEditAction:a3 withSender:v6 response:&v10];
+  senderCopy = sender;
+  editorController = [(CRLInteractiveCanvasController *)self editorController];
+  v8 = [editorController editorForEditAction:action withSender:senderCopy response:&v10];
 
   return v8 != 0;
 }
 
-- (void)performDiscreteFrameChangingOperationOnDrawables:(id)a3 withBlock:(id)a4
+- (void)performDiscreteFrameChangingOperationOnDrawables:(id)drawables withBlock:(id)block
 {
-  if (a4)
+  if (block)
   {
-    (*(a4 + 2))(a4);
+    (*(block + 2))(block);
   }
 }
 
-- (void)setTextResponderEditorTo:(id)a3 withFlags:(unint64_t)a4
+- (void)setTextResponderEditorTo:(id)to withFlags:(unint64_t)flags
 {
-  v6 = a3;
-  if (v6 || !self->mPreventSettingNilEditorOnTextResponder && (!self->mTextInputResponderShareCount || ([(CRLTextInputResponder *)self->mTextInputResponder editor], v7 = objc_claimAutoreleasedReturnValue(), v7, v6 = 0, !v7)))
+  toCopy = to;
+  if (toCopy || !self->mPreventSettingNilEditorOnTextResponder && (!self->mTextInputResponderShareCount || ([(CRLTextInputResponder *)self->mTextInputResponder editor], v7 = objc_claimAutoreleasedReturnValue(), v7, toCopy = 0, !v7)))
   {
-    v8 = v6;
-    [(CRLTextInputResponder *)self->mTextInputResponder setEditor:v6 withFlags:a4];
-    v6 = v8;
+    v8 = toCopy;
+    [(CRLTextInputResponder *)self->mTextInputResponder setEditor:toCopy withFlags:flags];
+    toCopy = v8;
   }
 }
 
@@ -13675,9 +13675,9 @@ LABEL_18:
   }
 }
 
-- (void)beginAnimations:(id)a3
+- (void)beginAnimations:(id)animations
 {
-  v4 = a3;
+  animationsCopy = animations;
   if (self->mCurrentAnimation)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -13709,7 +13709,7 @@ LABEL_18:
 
   +[CATransaction flush];
   +[CATransaction begin];
-  v8 = [[CRLCanvasAnimation alloc] initWithAnimationID:v4];
+  v8 = [[CRLCanvasAnimation alloc] initWithAnimationID:animationsCopy];
   mCurrentAnimation = self->mCurrentAnimation;
   self->mCurrentAnimation = v8;
 }
@@ -13768,12 +13768,12 @@ LABEL_18:
   return mMathCalculationController;
 }
 
-- (void)i_canvasWillLayout:(id)a3
+- (void)i_canvasWillLayout:(id)layout
 {
   v4 = objc_opt_class();
-  v5 = [(CRLInteractiveCanvasController *)self freehandDrawingToolkit];
-  v6 = [v5 currentTool];
-  v7 = sub_100014370(v4, v6);
+  freehandDrawingToolkit = [(CRLInteractiveCanvasController *)self freehandDrawingToolkit];
+  currentTool = [freehandDrawingToolkit currentTool];
+  v7 = sub_100014370(v4, currentTool);
 
   if ([v7 isCurrentlyTracking])
   {
@@ -13804,8 +13804,8 @@ LABEL_18:
         v15 = v14;
         if (v14)
         {
-          v16 = [v14 layer];
-          [(CRLInteractiveCanvasController *)self setNeedsDisplayOnLayer:v16];
+          layer = [v14 layer];
+          [(CRLInteractiveCanvasController *)self setNeedsDisplayOnLayer:layer];
         }
 
         [(NSMapTable *)self->mRepsToRectsToInvalidate removeObjectForKey:v13];
@@ -13860,8 +13860,8 @@ LABEL_18:
               y = v43.origin.y;
               width = v43.size.width;
               height = v43.size.height;
-              v30 = [v23 layer];
-              [(CRLInteractiveCanvasController *)self setNeedsDisplayInRect:v30 onLayer:x, y, width, height];
+              layer2 = [v23 layer];
+              [(CRLInteractiveCanvasController *)self setNeedsDisplayInRect:layer2 onLayer:x, y, width, height];
 
               ++v25;
             }
@@ -13921,19 +13921,19 @@ LABEL_18:
   self->mDynamicViewScale = v3;
   self->mDynamicallyZooming = 1;
   [(CRLInteractiveCanvasController *)self p_beginZoomingOperation];
-  v4 = [(CRLInteractiveCanvasController *)self delegate];
+  delegate = [(CRLInteractiveCanvasController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CRLInteractiveCanvasController *)self delegate];
-    [v6 interactiveCanvasControllerWillZoom:self];
+    delegate2 = [(CRLInteractiveCanvasController *)self delegate];
+    [delegate2 interactiveCanvasControllerWillZoom:self];
   }
 
   v7 = +[NSNotificationCenter defaultCenter];
   v25 = @"CRLInteractiveCanvasControllerInteractionSourceKey";
-  v8 = [(CRLInteractiveCanvasController *)self p_sourceInteractionSourceForNotficiationUserInfo];
-  v26 = v8;
+  p_sourceInteractionSourceForNotficiationUserInfo = [(CRLInteractiveCanvasController *)self p_sourceInteractionSourceForNotficiationUserInfo];
+  v26 = p_sourceInteractionSourceForNotficiationUserInfo;
   v9 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
   [v7 postNotificationName:@"CRLCanvasWillZoomNotification" object:self userInfo:v9];
 
@@ -13941,8 +13941,8 @@ LABEL_18:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [(CRLCanvas *)self->mCanvas topLevelReps];
-  v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  topLevelReps = [(CRLCanvas *)self->mCanvas topLevelReps];
+  v11 = [topLevelReps countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
     v12 = v11;
@@ -13953,69 +13953,69 @@ LABEL_18:
       {
         if (*v21 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(topLevelReps);
         }
 
         [*(*(&v20 + 1) + 8 * i) recursivelyPerformSelectorIfImplemented:"willBeginZooming"];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v12 = [topLevelReps countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v12);
   }
 
-  v15 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-  [v15 suspendCollaborationWithReason:@"CRLCanvasZooming"];
+  editingCoordinator = [(CRLInteractiveCanvasController *)self editingCoordinator];
+  [editingCoordinator suspendCollaborationWithReason:@"CRLCanvasZooming"];
 
-  v16 = [(CRLInteractiveCanvasController *)self layerHost];
-  v17 = [v16 canvasLayer];
-  [v17 layoutIfNeeded];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
+  [canvasLayer layoutIfNeeded];
 
-  v18 = [(CRLInteractiveCanvasController *)self layerHost];
-  v19 = [v18 canvasLayer];
-  [v19 updateCanvasEdgeLayersIfNecessary];
+  layerHost2 = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer2 = [layerHost2 canvasLayer];
+  [canvasLayer2 updateCanvasEdgeLayersIfNecessary];
 }
 
-- (void)i_viewDidZoomToViewScale:(double)a3 notify:(BOOL)a4
+- (void)i_viewDidZoomToViewScale:(double)scale notify:(BOOL)notify
 {
-  v4 = a4;
-  v7 = [(CRLInteractiveCanvasController *)self delegate];
+  notifyCopy = notify;
+  delegate = [(CRLInteractiveCanvasController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CRLInteractiveCanvasController *)self delegate];
-    [v9 interactiveCanvasControllerIsZooming:self];
+    delegate2 = [(CRLInteractiveCanvasController *)self delegate];
+    [delegate2 interactiveCanvasControllerIsZooming:self];
   }
 
-  if (v4)
+  if (notifyCopy)
   {
     v10 = +[NSNotificationCenter defaultCenter];
     v14[0] = @"CRLInteractiveCanvasControllerInteractionSourceKey";
-    v11 = [(CRLInteractiveCanvasController *)self p_sourceInteractionSourceForNotficiationUserInfo];
+    p_sourceInteractionSourceForNotficiationUserInfo = [(CRLInteractiveCanvasController *)self p_sourceInteractionSourceForNotficiationUserInfo];
     v14[1] = @"CRLInteractiveCanvasControllerViewScaleKey";
-    v15[0] = v11;
-    v12 = [NSNumber numberWithDouble:a3];
+    v15[0] = p_sourceInteractionSourceForNotficiationUserInfo;
+    v12 = [NSNumber numberWithDouble:scale];
     v15[1] = v12;
     v13 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
     [v10 postNotificationName:@"CRLCanvasUpdateZoomNotification" object:self userInfo:v13];
   }
 
   [(CRLInteractiveCanvasController *)self willChangeValueForKey:@"currentViewScale"];
-  self->mDynamicViewScale = a3;
+  self->mDynamicViewScale = scale;
   [(CRLInteractiveCanvasController *)self didChangeValueForKey:@"currentViewScale"];
 }
 
-- (void)i_viewDidEndZoomingWithUserInfo:(id)a3
+- (void)i_viewDidEndZoomingWithUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [(CRLCanvas *)self->mCanvas topLevelReps];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  topLevelReps = [(CRLCanvas *)self->mCanvas topLevelReps];
+  v6 = [topLevelReps countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -14026,46 +14026,46 @@ LABEL_18:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(topLevelReps);
         }
 
         [*(*(&v19 + 1) + 8 * i) recursivelyPerformSelectorIfImplemented:"didEndZooming"];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [topLevelReps countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [(CRLInteractiveCanvasController *)self editingCoordinator];
-  [v10 resumeCollaborationWithReason:@"CRLCanvasZooming"];
+  editingCoordinator = [(CRLInteractiveCanvasController *)self editingCoordinator];
+  [editingCoordinator resumeCollaborationWithReason:@"CRLCanvasZooming"];
 
   if ([(CRLInteractiveCanvasController *)self shouldCanvasScrollingSizeGrowToFitBoardContent])
   {
-    v11 = [(CRLInteractiveCanvasController *)self layerHost];
-    v12 = [v11 canvasLayer];
-    [v12 fixFrameAndScrollView];
+    layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+    canvasLayer = [layerHost canvasLayer];
+    [canvasLayer fixFrameAndScrollView];
   }
 
   self->mDynamicallyZooming = 0;
   [(CRLInteractiveCanvasController *)self invalidateVisibleBounds];
   [(CRLInteractiveCanvasController *)self p_endZoomingOperation];
-  v13 = [(CRLInteractiveCanvasController *)self delegate];
+  delegate = [(CRLInteractiveCanvasController *)self delegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(CRLInteractiveCanvasController *)self delegate];
-    [v15 interactiveCanvasControllerDidZoom:self];
+    delegate2 = [(CRLInteractiveCanvasController *)self delegate];
+    [delegate2 interactiveCanvasControllerDidZoom:self];
   }
 
   v16 = +[NSNotificationCenter defaultCenter];
-  [v16 postNotificationName:@"CRLCanvasDidZoomNotification" object:self userInfo:v4];
+  [v16 postNotificationName:@"CRLCanvasDidZoomNotification" object:self userInfo:infoCopy];
 
-  v17 = [(CRLInteractiveCanvasController *)self layerHost];
-  v18 = [v17 canvasLayer];
-  [v18 updateCanvasEdgeLayersIfNecessary];
+  layerHost2 = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer2 = [layerHost2 canvasLayer];
+  [canvasLayer2 updateCanvasEdgeLayersIfNecessary];
 }
 
 - (void)i_canvasContentsScaleDidChange
@@ -14074,8 +14074,8 @@ LABEL_18:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(CRLInteractiveCanvasController *)self i_decorators];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  i_decorators = [(CRLInteractiveCanvasController *)self i_decorators];
+  v4 = [i_decorators countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -14086,7 +14086,7 @@ LABEL_18:
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(i_decorators);
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
@@ -14096,7 +14096,7 @@ LABEL_18:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v5 = [i_decorators countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v5);
@@ -14106,8 +14106,8 @@ LABEL_18:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = [(CRLCanvas *)self->mCanvas topLevelReps];
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v22 count:16];
+  topLevelReps = [(CRLCanvas *)self->mCanvas topLevelReps];
+  v10 = [topLevelReps countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -14118,13 +14118,13 @@ LABEL_18:
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(topLevelReps);
         }
 
         [*(*(&v14 + 1) + 8 * j) recursivelyPerformSelector:"screenScaleDidChange"];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v14 objects:v22 count:16];
+      v11 = [topLevelReps countByEnumeratingWithState:&v14 objects:v22 count:16];
     }
 
     while (v11);
@@ -14137,8 +14137,8 @@ LABEL_18:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(CRLCanvas *)self->mCanvas topLevelReps];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  topLevelReps = [(CRLCanvas *)self->mCanvas topLevelReps];
+  v3 = [topLevelReps countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -14149,13 +14149,13 @@ LABEL_18:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(topLevelReps);
         }
 
         [*(*(&v7 + 1) + 8 * i) recursivelyPerformSelector:"wideGamutValueDidChange"];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [topLevelReps countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -14169,8 +14169,8 @@ LABEL_18:
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(CRLCanvas *)self->mCanvas topLevelReps];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  topLevelReps = [(CRLCanvas *)self->mCanvas topLevelReps];
+  v4 = [topLevelReps countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -14181,13 +14181,13 @@ LABEL_18:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(topLevelReps);
         }
 
         [*(*(&v8 + 1) + 8 * i) recursivelyPerformSelector:"viewScaleDidChange"];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [topLevelReps countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -14197,9 +14197,9 @@ LABEL_18:
   [(CRLInteractiveCanvasController *)self invalidateAllLayers];
 }
 
-- (double)i_viewScaleForProposedViewScale:(double)a3 originalViewScale:(double)a4 isFastPinch:(BOOL)a5
+- (double)i_viewScaleForProposedViewScale:(double)scale originalViewScale:(double)viewScale isFastPinch:(BOOL)pinch
 {
-  v5 = a5;
+  pinchCopy = pinch;
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
   v10 = objc_opt_respondsToSelector();
 
@@ -14207,8 +14207,8 @@ LABEL_18:
   v12 = v11;
   if (v10)
   {
-    [v11 canvasViewScaleForProposedViewScale:a3 originalViewScale:a4];
-    a3 = v13;
+    [v11 canvasViewScaleForProposedViewScale:scale originalViewScale:viewScale];
+    scale = v13;
   }
 
   else
@@ -14218,7 +14218,7 @@ LABEL_18:
     if (v14)
     {
       v15 = objc_loadWeakRetained(&self->mDelegate);
-      v16 = [v15 canvasViewScaleDetentsForInteractiveCanvasController:self isFastPinch:v5];
+      v16 = [v15 canvasViewScaleDetentsForInteractiveCanvasController:self isFastPinch:pinchCopy];
       v17 = [v16 sortedArrayUsingSelector:"compare:"];
 
       if ([v17 count] < 2)
@@ -14246,7 +14246,7 @@ LABEL_18:
             v28 = (v27 - v24) * 0.5;
             if (v28 <= 0.02)
             {
-              if (vabdd_f64(a3, v24) >= vabdd_f64(a3, v27))
+              if (vabdd_f64(scale, v24) >= vabdd_f64(scale, v27))
               {
                 v29 = i - 1;
               }
@@ -14295,9 +14295,9 @@ LABEL_18:
             }
 
             [*(*(&v38 + 1) + 8 * j) crl_CGFloatValue];
-            if (vabdd_f64(a3, v36) < v20)
+            if (vabdd_f64(scale, v36) < v20)
             {
-              a3 = v36;
+              scale = v36;
               goto LABEL_29;
             }
           }
@@ -14316,10 +14316,10 @@ LABEL_29:
     }
   }
 
-  return a3;
+  return scale;
 }
 
-- (CGSize)i_canvasCenterOffsetForProposedViewScale:(double)a3 originalViewScale:(double)a4
+- (CGSize)i_canvasCenterOffsetForProposedViewScale:(double)scale originalViewScale:(double)viewScale
 {
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
   v8 = objc_opt_respondsToSelector();
@@ -14327,7 +14327,7 @@ LABEL_29:
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->mDelegate);
-    [v9 canvasCenterOffsetForProposedViewScale:a3 originalViewScale:a4];
+    [v9 canvasCenterOffsetForProposedViewScale:scale originalViewScale:viewScale];
     width = v10;
     height = v12;
   }
@@ -14345,10 +14345,10 @@ LABEL_29:
   return result;
 }
 
-- (double)i_nextCanvasViewScaleDetentForProposedViewScale:(double)a3 greater:(BOOL)a4 isFastPinch:(BOOL)a5
+- (double)i_nextCanvasViewScaleDetentForProposedViewScale:(double)scale greater:(BOOL)greater isFastPinch:(BOOL)pinch
 {
-  v5 = a5;
-  v6 = a4;
+  pinchCopy = pinch;
+  greaterCopy = greater;
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
   v10 = objc_opt_respondsToSelector();
 
@@ -14356,7 +14356,7 @@ LABEL_29:
   v12 = v11;
   if (v10)
   {
-    [v11 nextCanvasViewScaleDetentForProposedViewScale:v6 greater:a3];
+    [v11 nextCanvasViewScaleDetentForProposedViewScale:greaterCopy greater:scale];
     v14 = v13;
 
     return v14;
@@ -14366,17 +14366,17 @@ LABEL_29:
 
   if ((v15 & 1) == 0)
   {
-    v37 = [(CRLInteractiveCanvasController *)self layerHost];
-    v38 = [v37 canvasLayer];
-    v39 = v38;
-    if (v6)
+    layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+    canvasLayer = [layerHost canvasLayer];
+    v39 = canvasLayer;
+    if (greaterCopy)
     {
-      [v38 maximumPinchViewScale];
+      [canvasLayer maximumPinchViewScale];
     }
 
     else
     {
-      [v38 minimumPinchViewScale];
+      [canvasLayer minimumPinchViewScale];
     }
 
     v14 = v40;
@@ -14385,16 +14385,16 @@ LABEL_29:
   }
 
   v16 = objc_loadWeakRetained(&self->mDelegate);
-  v17 = [v16 canvasViewScaleDetentsForInteractiveCanvasController:self isFastPinch:v5];
+  v17 = [v16 canvasViewScaleDetentsForInteractiveCanvasController:self isFastPinch:pinchCopy];
 
-  v18 = [(CRLInteractiveCanvasController *)self layerHost];
-  v19 = [v18 canvasLayer];
-  [v19 minimumPinchViewScale];
+  layerHost2 = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer2 = [layerHost2 canvasLayer];
+  [canvasLayer2 minimumPinchViewScale];
   v20 = [NSNumber numberWithDouble:?];
   v47[0] = v20;
-  v21 = [(CRLInteractiveCanvasController *)self layerHost];
-  v22 = [v21 canvasLayer];
-  [v22 maximumPinchViewScale];
+  layerHost3 = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer3 = [layerHost3 canvasLayer];
+  [canvasLayer3 maximumPinchViewScale];
   v23 = [NSNumber numberWithDouble:?];
   v47[1] = v23;
   v24 = [NSArray arrayWithObjects:v47 count:2];
@@ -14429,15 +14429,15 @@ LABEL_29:
 
         [*(*(&v42 + 1) + 8 * v34) crl_CGFloatValue];
         v29 = v36;
-        if (v6)
+        if (greaterCopy)
         {
-          if (v36 > a3)
+          if (v36 > scale)
           {
             goto LABEL_18;
           }
         }
 
-        else if (v36 >= a3)
+        else if (v36 >= scale)
         {
           goto LABEL_19;
         }
@@ -14468,17 +14468,17 @@ LABEL_19:
 - (void)i_viewScrollDidChange
 {
   [(CRLInteractiveCanvasController *)self i_canvasDidUpdateVisibleBounds];
-  v3 = [(CRLInteractiveCanvasController *)self layerHost];
-  v4 = [v3 canvasLayer];
-  v5 = [v4 associatedBackgroundLayer];
-  [v5 setNeedsLayout];
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
+  associatedBackgroundLayer = [canvasLayer associatedBackgroundLayer];
+  [associatedBackgroundLayer setNeedsLayout];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(CRLCanvas *)self->mCanvas topLevelReps];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  topLevelReps = [(CRLCanvas *)self->mCanvas topLevelReps];
+  v7 = [topLevelReps countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -14489,22 +14489,22 @@ LABEL_19:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(topLevelReps);
         }
 
         [*(*(&v11 + 1) + 8 * i) recursivelyPerformSelector:"viewScrollDidChange"];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [topLevelReps countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)i_viewScrollingEndedWithUserInfo:(id)a3
+- (void)i_viewScrollingEndedWithUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   [(CRLInteractiveCanvasController *)self endScrollingOperation];
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
   v6 = objc_opt_respondsToSelector();
@@ -14519,8 +14519,8 @@ LABEL_19:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(CRLCanvas *)self->mCanvas topLevelReps];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  topLevelReps = [(CRLCanvas *)self->mCanvas topLevelReps];
+  v9 = [topLevelReps countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -14531,32 +14531,32 @@ LABEL_19:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(topLevelReps);
         }
 
         [*(*(&v14 + 1) + 8 * i) recursivelyPerformSelector:"viewScrollingEnded"];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [topLevelReps countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 
   v13 = +[NSNotificationCenter defaultCenter];
-  [v13 postNotificationName:@"CRLCanvasDidScrollNotification" object:self userInfo:v4];
+  [v13 postNotificationName:@"CRLCanvasDidScrollNotification" object:self userInfo:infoCopy];
 }
 
 - (void)i_recordUserViewScale
 {
-  v11 = [(CRLEditorController *)self->mEditorController textInputEditor];
+  textInputEditor = [(CRLEditorController *)self->mEditorController textInputEditor];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(CRLInteractiveCanvasController *)self canvas];
-    [v3 viewScale];
+    canvas = [(CRLInteractiveCanvasController *)self canvas];
+    [canvas viewScale];
     v5 = v4;
 
-    [v11 targetPointSizeForSelectionWithViewScale:v5];
+    [textInputEditor targetPointSizeForSelectionWithViewScale:v5];
     if (v6 >= 12.0 && v6 <= 72.0)
     {
       [(CRLInteractiveCanvasController *)self p_setTargetPointSize:?];
@@ -14573,77 +14573,77 @@ LABEL_19:
   }
 }
 
-- (void)i_repNeedsDisplay:(id)a3
+- (void)i_repNeedsDisplay:(id)display
 {
-  v8 = a3;
-  v4 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
+  displayCopy = display;
+  i_interactiveCanvasLayerHelper = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
 
-  if (v4)
+  if (i_interactiveCanvasLayerHelper)
   {
-    v5 = [(CRLInteractiveCanvasController *)self renderableForRep:v8];
-    if (v5 && ([v8 directlyManagesLayerContent] & 1) == 0)
+    v5 = [(CRLInteractiveCanvasController *)self renderableForRep:displayCopy];
+    if (v5 && ([displayCopy directlyManagesLayerContent] & 1) == 0)
     {
-      [(NSMutableSet *)self->mRepsToSetNeedsDisplay addObject:v8];
-      v6 = [(CRLInteractiveCanvasController *)self layerHost];
-      v7 = [v6 canvasLayer];
-      [v7 setNeedsLayout];
+      [(NSMutableSet *)self->mRepsToSetNeedsDisplay addObject:displayCopy];
+      layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+      canvasLayer = [layerHost canvasLayer];
+      [canvasLayer setNeedsLayout];
     }
 
     else
     {
-      [(CRLInteractiveCanvasController *)self i_setNeedsDisplayIfNeededForAncestorRepOf:v8];
+      [(CRLInteractiveCanvasController *)self i_setNeedsDisplayIfNeededForAncestorRepOf:displayCopy];
     }
   }
 }
 
-- (void)i_repNeedsDisplay:(id)a3 inRect:(CGRect)a4
+- (void)i_repNeedsDisplay:(id)display inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a3;
-  v9 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  displayCopy = display;
+  i_interactiveCanvasLayerHelper = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
 
-  if (v9)
+  if (i_interactiveCanvasLayerHelper)
   {
-    v10 = [(CRLInteractiveCanvasController *)self renderableForRep:v14];
-    if (v10 && ([v14 directlyManagesLayerContent] & 1) == 0)
+    v10 = [(CRLInteractiveCanvasController *)self renderableForRep:displayCopy];
+    if (v10 && ([displayCopy directlyManagesLayerContent] & 1) == 0)
     {
-      v11 = [(NSMapTable *)self->mRepsToRectsToInvalidate objectForKey:v14];
+      v11 = [(NSMapTable *)self->mRepsToRectsToInvalidate objectForKey:displayCopy];
       if (!v11)
       {
         v11 = objc_alloc_init(CRLMutableRectList);
-        [(NSMapTable *)self->mRepsToRectsToInvalidate setObject:v11 forKey:v14];
+        [(NSMapTable *)self->mRepsToRectsToInvalidate setObject:v11 forKey:displayCopy];
       }
 
       [(CRLMutableRectList *)v11 addRect:x, y, width, height];
-      v12 = [(CRLInteractiveCanvasController *)self layerHost];
-      v13 = [v12 canvasLayer];
-      [v13 setNeedsLayout];
+      layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+      canvasLayer = [layerHost canvasLayer];
+      [canvasLayer setNeedsLayout];
     }
 
     else
     {
-      [(CRLInteractiveCanvasController *)self p_setNeedsDisplayIfNeededForAncestorRepOf:v14 inRect:x, y, width, height];
+      [(CRLInteractiveCanvasController *)self p_setNeedsDisplayIfNeededForAncestorRepOf:displayCopy inRect:x, y, width, height];
     }
   }
 
   _objc_release_x2();
 }
 
-- (id)i_descriptionForViewScale:(double)a3 zoomMethod:(int64_t)a4
+- (id)i_descriptionForViewScale:(double)scale zoomMethod:(int64_t)method
 {
-  v7 = [(CRLInteractiveCanvasController *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || (WeakRetained = objc_loadWeakRetained(&self->mDelegate), [WeakRetained descriptionForCanvasViewScale:a4 zoomMethod:a3], v9 = objc_claimAutoreleasedReturnValue(), WeakRetained, !v9))
+  delegate = [(CRLInteractiveCanvasController *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || (WeakRetained = objc_loadWeakRetained(&self->mDelegate), [WeakRetained descriptionForCanvasViewScale:method zoomMethod:scale], v9 = objc_claimAutoreleasedReturnValue(), WeakRetained, !v9))
   {
     if (objc_opt_respondsToSelector())
     {
-      [v7 viewScaleToDisplayForCanvasViewScale:a3];
-      a3 = v10;
+      [delegate viewScaleToDisplayForCanvasViewScale:scale];
+      scale = v10;
     }
 
-    v11 = [NSNumber numberWithDouble:a3];
+    v11 = [NSNumber numberWithDouble:scale];
     v9 = [NSNumberFormatter localizedStringFromNumber:v11 numberStyle:3];
   }
 
@@ -14657,10 +14657,10 @@ LABEL_19:
   v5 = v4;
   v7 = v6;
   v9 = v8;
-  v10 = [(CRLInteractiveCanvasController *)self canvas];
-  v11 = [v10 isAnchoredAtRight];
+  canvas = [(CRLInteractiveCanvasController *)self canvas];
+  isAnchoredAtRight = [canvas isAnchoredAtRight];
 
-  if (v11)
+  if (isAnchoredAtRight)
   {
     v3 = v3 - v7;
     v12 = -1.79769313e308;
@@ -14693,9 +14693,9 @@ LABEL_19:
   v22 = v21;
   if ([(CRLInteractiveCanvasController *)self isInDynamicOperation])
   {
-    v23 = [(CRLInteractiveCanvasController *)self layerHost];
-    v24 = [v23 canvasLayer];
-    [v24 unscaledSize];
+    layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+    canvasLayer = [layerHost canvasLayer];
+    [canvasLayer unscaledSize];
     v26 = v25;
 
     if (v26 >= v20)
@@ -14703,9 +14703,9 @@ LABEL_19:
       v20 = v26;
     }
 
-    v27 = [(CRLInteractiveCanvasController *)self layerHost];
-    v28 = [v27 canvasLayer];
-    [v28 unscaledSize];
+    layerHost2 = [(CRLInteractiveCanvasController *)self layerHost];
+    canvasLayer2 = [layerHost2 canvasLayer];
+    [canvasLayer2 unscaledSize];
     v30 = v29;
 
     if (v30 >= v22)
@@ -14714,17 +14714,17 @@ LABEL_19:
     }
   }
 
-  v32 = [(CRLInteractiveCanvasController *)self layerHost];
-  v31 = [v32 canvasLayer];
-  [v31 setUnscaledSize:{v20, v22}];
+  layerHost3 = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer3 = [layerHost3 canvasLayer];
+  [canvasLayer3 setUnscaledSize:{v20, v22}];
 }
 
-- (BOOL)i_isRepContentPlatformView:(id)a3
+- (BOOL)i_isRepContentPlatformView:(id)view
 {
-  v4 = a3;
-  v5 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
+  viewCopy = view;
+  i_interactiveCanvasLayerHelper = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
 
-  if (!v5)
+  if (!i_interactiveCanvasLayerHelper)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -14753,19 +14753,19 @@ LABEL_19:
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:7352 isFatal:0 description:"invalid nil value for '%{public}s'", "self.i_interactiveCanvasLayerHelper"];
   }
 
-  v9 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
-  v10 = [v9 isRepContentPlatformView:v4];
+  i_interactiveCanvasLayerHelper2 = [(CRLInteractiveCanvasController *)self i_interactiveCanvasLayerHelper];
+  v10 = [i_interactiveCanvasLayerHelper2 isRepContentPlatformView:viewCopy];
 
   return v10;
 }
 
-- (void)i_drawRepWithReadLock:(id)a3 inContext:(CGContext *)a4 forLayer:(id)a5
+- (void)i_drawRepWithReadLock:(id)lock inContext:(CGContext *)context forLayer:(id)layer
 {
-  v7 = a3;
-  v8 = a5;
-  if (v7)
+  lockCopy = lock;
+  layerCopy = layer;
+  if (lockCopy)
   {
-    if (a4)
+    if (context)
     {
       goto LABEL_22;
     }
@@ -14799,7 +14799,7 @@ LABEL_19:
   v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLInteractiveCanvasController.m"];
   [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:7357 isFatal:0 description:"invalid nil value for '%{public}s'", "rep"];
 
-  if (!a4)
+  if (!context)
   {
 LABEL_13:
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -14830,17 +14830,17 @@ LABEL_13:
   }
 
 LABEL_22:
-  CGContextSaveGState(a4);
-  [v7 setupForDrawingInLayer:v8 context:a4];
-  if ([v7 drawsDescendantsIntoLayer])
+  CGContextSaveGState(context);
+  [lockCopy setupForDrawingInLayer:layerCopy context:context];
+  if ([lockCopy drawsDescendantsIntoLayer])
   {
-    CGContextSaveGState(a4);
-    v15 = [v7 layout];
-    v16 = [v15 geometry];
-    v17 = v16;
-    if (v16)
+    CGContextSaveGState(context);
+    layout = [lockCopy layout];
+    geometry = [layout geometry];
+    v17 = geometry;
+    if (geometry)
     {
-      [v16 transform];
+      [geometry transform];
     }
 
     else
@@ -14849,43 +14849,43 @@ LABEL_22:
     }
 
     CGAffineTransformInvert(&transform, &v20);
-    CGContextConcatCTM(a4, &transform);
+    CGContextConcatCTM(context, &transform);
 
-    v18 = [v7 childrenToExcludeWhenDrawingDescendantsIntoLayer];
+    childrenToExcludeWhenDrawingDescendantsIntoLayer = [lockCopy childrenToExcludeWhenDrawingDescendantsIntoLayer];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_10045FE1C;
     v19[3] = &unk_10183F5F8;
-    v19[4] = v18;
-    [v7 recursivelyDrawInContext:a4 keepingChildrenPassingTest:v19];
-    CGContextRestoreGState(a4);
+    v19[4] = childrenToExcludeWhenDrawingDescendantsIntoLayer;
+    [lockCopy recursivelyDrawInContext:context keepingChildrenPassingTest:v19];
+    CGContextRestoreGState(context);
   }
 
   else
   {
-    [v7 drawInLayerContext:a4];
+    [lockCopy drawInLayerContext:context];
   }
 
-  [v7 didDrawInLayer:v8 context:a4];
-  CGContextRestoreGState(a4);
+  [lockCopy didDrawInLayer:layerCopy context:context];
+  CGContextRestoreGState(context);
 }
 
 - (void)p_viewScrollingEnded
 {
   v5 = @"CRLInteractiveCanvasControllerInteractionSourceKey";
-  v3 = [(CRLInteractiveCanvasController *)self p_sourceInteractionSourceForNotficiationUserInfo];
-  v6 = v3;
+  p_sourceInteractionSourceForNotficiationUserInfo = [(CRLInteractiveCanvasController *)self p_sourceInteractionSourceForNotficiationUserInfo];
+  v6 = p_sourceInteractionSourceForNotficiationUserInfo;
   v4 = [NSDictionary dictionaryWithObjects:&v6 forKeys:&v5 count:1];
   [(CRLInteractiveCanvasController *)self performSelector:"i_viewScrollingEndedWithUserInfo:" withObject:v4 afterDelay:0.0];
 }
 
-- (void)p_textGesturesWillBeginNotification:(id)a3
+- (void)p_textGesturesWillBeginNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_opt_class();
-  v6 = [v4 userInfo];
+  userInfo = [notificationCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:@"CRLTextGesturesICC"];
+  v7 = [userInfo objectForKeyedSubscript:@"CRLTextGesturesICC"];
   v8 = sub_100014370(v5, v7);
 
   if (v8 == self)
@@ -14894,12 +14894,12 @@ LABEL_22:
   }
 }
 
-- (void)p_textGesturesDidEndNotification:(id)a3
+- (void)p_textGesturesDidEndNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_opt_class();
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"CRLTextGesturesICC"];
+  userInfo = [notificationCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"CRLTextGesturesICC"];
   v8 = sub_100014370(v5, v7);
 
   if (v8 == self)
@@ -14913,10 +14913,10 @@ LABEL_22:
 
       if ((v10 & 1) == 0 || (v11 = objc_loadWeakRetained(&self->mDelegate), v12 = [v11 allowTextEditingToBegin], v11, v12))
       {
-        v13 = [(CRLInteractiveCanvasController *)self layerHost];
-        v14 = [v13 asiOSCVC];
+        layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+        asiOSCVC = [layerHost asiOSCVC];
 
-        if ([v14 preserveEditorSelection])
+        if ([asiOSCVC preserveEditorSelection])
         {
           v15 = 128;
         }
@@ -14932,9 +14932,9 @@ LABEL_22:
       if (self->mDidSuppressScrollToSelectionDuringTextGestures)
       {
         mSelectionPathToScrollTo = self->mSelectionPathToScrollTo;
-        v17 = [(CRLInteractiveCanvasController *)self editorController];
-        v18 = [v17 selectionPath];
-        LODWORD(mSelectionPathToScrollTo) = [(CRLSelectionPath *)mSelectionPathToScrollTo isEqual:v18];
+        editorController = [(CRLInteractiveCanvasController *)self editorController];
+        selectionPath = [editorController selectionPath];
+        LODWORD(mSelectionPathToScrollTo) = [(CRLSelectionPath *)mSelectionPathToScrollTo isEqual:selectionPath];
 
         if (mSelectionPathToScrollTo)
         {
@@ -14960,9 +14960,9 @@ LABEL_22:
         }
 
         [(CRLInteractiveCanvasController *)self layoutInvalidated];
-        v20 = [(CRLInteractiveCanvasController *)self editorController];
-        v21 = [v20 selectionPath];
-        [(CRLInteractiveCanvasController *)self scrollToSelectionPath:v21 scrollOptions:v19];
+        editorController2 = [(CRLInteractiveCanvasController *)self editorController];
+        selectionPath2 = [editorController2 selectionPath];
+        [(CRLInteractiveCanvasController *)self scrollToSelectionPath:selectionPath2 scrollOptions:v19];
       }
     }
 
@@ -14970,8 +14970,8 @@ LABEL_22:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v22 = [(CRLCanvas *)self->mCanvas topLevelReps];
-    v23 = [v22 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    topLevelReps = [(CRLCanvas *)self->mCanvas topLevelReps];
+    v23 = [topLevelReps countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v23)
     {
       v24 = v23;
@@ -14982,13 +14982,13 @@ LABEL_22:
         {
           if (*v28 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(topLevelReps);
           }
 
-          [*(*(&v27 + 1) + 8 * i) recursivelyPerformSelectorIfImplemented:"gesturesDidEnd:" withObject:v4];
+          [*(*(&v27 + 1) + 8 * i) recursivelyPerformSelectorIfImplemented:"gesturesDidEnd:" withObject:notificationCopy];
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v24 = [topLevelReps countByEnumeratingWithState:&v27 objects:v31 count:16];
       }
 
       while (v24);
@@ -14996,15 +14996,15 @@ LABEL_22:
   }
 }
 
-- (void)p_selectionPathDidChangeFromSelectionPath:(id)a3 toSelectionPath:(id)a4
+- (void)p_selectionPathDidChangeFromSelectionPath:(id)path toSelectionPath:(id)selectionPath
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
-  v9 = v8;
-  if (v6)
+  pathCopy = path;
+  selectionPathCopy = selectionPath;
+  selectionModelTranslator = [(CRLInteractiveCanvasController *)self selectionModelTranslator];
+  v9 = selectionModelTranslator;
+  if (pathCopy)
   {
-    [v8 infosForSelectionPath:v6];
+    [selectionModelTranslator infosForSelectionPath:pathCopy];
   }
 
   else
@@ -15012,12 +15012,12 @@ LABEL_22:
     +[NSSet set];
   }
   v10 = ;
-  v28 = v7;
-  v29 = v6;
+  v28 = selectionPathCopy;
+  v29 = pathCopy;
   v27 = v9;
-  if (v7)
+  if (selectionPathCopy)
   {
-    [v9 infosForSelectionPath:v7];
+    [v9 infosForSelectionPath:selectionPathCopy];
   }
 
   else
@@ -15093,15 +15093,15 @@ LABEL_22:
   [(CRLInteractiveCanvasController *)self sendSelectionPathToPeersIfNecessary];
 }
 
-- (id)p_infosByAddingAllAncestors:(id)a3
+- (id)p_infosByAddingAllAncestors:(id)ancestors
 {
-  v3 = a3;
+  ancestorsCopy = ancestors;
   v4 = +[NSMutableSet set];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = v3;
+  v5 = ancestorsCopy;
   v6 = [v5 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v6)
   {
@@ -15116,18 +15116,18 @@ LABEL_22:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v28 + 1) + 8 * i) parentInfo];
+        parentInfo = [*(*(&v28 + 1) + 8 * i) parentInfo];
         v11 = objc_opt_class();
-        v17 = sub_100303920(v10, v11, 1, v12, v13, v14, v15, v16, &OBJC_PROTOCOL___CRLCanvasElementInfo);
+        v17 = sub_100303920(parentInfo, v11, 1, v12, v13, v14, v15, v16, &OBJC_PROTOCOL___CRLCanvasElementInfo);
 
         if (v17)
         {
           do
           {
             [v4 addObject:v17];
-            v18 = [v17 parentInfo];
+            parentInfo2 = [v17 parentInfo];
             v19 = objc_opt_class();
-            v25 = sub_100303920(v18, v19, 1, v20, v21, v22, v23, v24, &OBJC_PROTOCOL___CRLCanvasElementInfo);
+            v25 = sub_100303920(parentInfo2, v19, 1, v20, v21, v22, v23, v24, &OBJC_PROTOCOL___CRLCanvasElementInfo);
 
             v17 = v25;
           }
@@ -15147,7 +15147,7 @@ LABEL_22:
   return v26;
 }
 
-- (void)p_selectionDoneChangingWithFlags:(unint64_t)a3
+- (void)p_selectionDoneChangingWithFlags:(unint64_t)flags
 {
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
   v6 = objc_opt_respondsToSelector();
@@ -15155,7 +15155,7 @@ LABEL_22:
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->mDelegate);
-    [v7 selectionPathDidChangeWithFlags:a3];
+    [v7 selectionPathDidChangeWithFlags:flags];
   }
 }
 
@@ -15183,20 +15183,20 @@ LABEL_22:
   return result;
 }
 
-- (void)p_setTargetPointSize:(double)a3
+- (void)p_setTargetPointSize:(double)size
 {
   v5 = +[NSUserDefaults standardUserDefaults];
-  *&v4 = a3;
+  *&v4 = size;
   [v5 setFloat:@"TSDTargetPointSize" forKey:v4];
 }
 
-- (CGRect)outsetSelectionRect:(CGRect)a3
+- (CGRect)outsetSelectionRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectIsNull(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectIsNull(rect))
   {
     v15.origin.x = CGRectZero.origin.x;
     v15.origin.y = CGRectZero.origin.y;
@@ -15231,47 +15231,47 @@ LABEL_22:
   return result;
 }
 
-- (void)i_setNeedsDisplayIfNeededForAncestorRepOf:(id)a3
+- (void)i_setNeedsDisplayIfNeededForAncestorRepOf:(id)of
 {
-  v4 = a3;
-  [v4 clipRect];
-  if ([(CRLInteractiveCanvasController *)self p_setNeedsDisplayIfNeededForAncestorRepOf:v4 inRect:?])
+  ofCopy = of;
+  [ofCopy clipRect];
+  if ([(CRLInteractiveCanvasController *)self p_setNeedsDisplayIfNeededForAncestorRepOf:ofCopy inRect:?])
   {
-    [(NSMutableSet *)self->mRepsDrawnIntoAncestorToSetNeedsDisplayOnUpdatedGeometry addObject:v4];
+    [(NSMutableSet *)self->mRepsDrawnIntoAncestorToSetNeedsDisplayOnUpdatedGeometry addObject:ofCopy];
   }
 }
 
-- (BOOL)p_setNeedsDisplayIfNeededForAncestorRepOf:(id)a3 inRect:(CGRect)a4
+- (BOOL)p_setNeedsDisplayIfNeededForAncestorRepOf:(id)of inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [v9 ancestorRepForDrawingIntoLayer];
-  if (v10)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  ofCopy = of;
+  ancestorRepForDrawingIntoLayer = [ofCopy ancestorRepForDrawingIntoLayer];
+  if (ancestorRepForDrawingIntoLayer)
   {
-    [(CRLInteractiveCanvasController *)self p_convertNeedsDisplayRect:v9 fromRep:v10 toRepForDrawing:x, y, width, height];
-    [(CRLInteractiveCanvasController *)self i_repNeedsDisplay:v10 inRect:?];
+    [(CRLInteractiveCanvasController *)self p_convertNeedsDisplayRect:ofCopy fromRep:ancestorRepForDrawingIntoLayer toRepForDrawing:x, y, width, height];
+    [(CRLInteractiveCanvasController *)self i_repNeedsDisplay:ancestorRepForDrawingIntoLayer inRect:?];
   }
 
-  return v10 != 0;
+  return ancestorRepForDrawingIntoLayer != 0;
 }
 
-- (CGRect)p_convertNeedsDisplayRect:(CGRect)a3 fromRep:(id)a4 toRepForDrawing:(id)a5
+- (CGRect)p_convertNeedsDisplayRect:(CGRect)rect fromRep:(id)rep toRepForDrawing:(id)drawing
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   memset(&v33, 0, sizeof(v33));
-  v10 = a5;
-  v11 = a4;
-  v12 = [v11 layout];
-  v13 = v12;
-  if (v12)
+  drawingCopy = drawing;
+  repCopy = rep;
+  layout = [repCopy layout];
+  v13 = layout;
+  if (layout)
   {
-    [v12 transform];
+    [layout transform];
   }
 
   else
@@ -15279,17 +15279,17 @@ LABEL_22:
     memset(&v33, 0, sizeof(v33));
   }
 
-  v14 = [v11 parentRep];
+  parentRep = [repCopy parentRep];
 
-  if (v14)
+  if (parentRep)
   {
-    v15 = [v14 layout];
-    v16 = [v15 geometryInRoot];
-    v17 = v16;
-    if (v16)
+    layout2 = [parentRep layout];
+    geometryInRoot = [layout2 geometryInRoot];
+    v17 = geometryInRoot;
+    if (geometryInRoot)
     {
       v31 = v33;
-      [v16 transformByConcatenatingTransformTo:&v31];
+      [geometryInRoot transformByConcatenatingTransformTo:&v31];
     }
 
     else
@@ -15310,11 +15310,11 @@ LABEL_22:
   v19 = v35.origin.y;
   v20 = v35.size.width;
   v21 = v35.size.height;
-  v22 = [v10 layout];
+  layout3 = [drawingCopy layout];
 
-  if (v22)
+  if (layout3)
   {
-    [v22 transformInRoot];
+    [layout3 transformInRoot];
   }
 
   else
@@ -15367,20 +15367,20 @@ LABEL_22:
         }
 
         v9 = *(*(&v39 + 1) + 8 * i);
-        v10 = [v9 ancestorRepForDrawingIntoLayer];
-        if (v10)
+        ancestorRepForDrawingIntoLayer = [v9 ancestorRepForDrawingIntoLayer];
+        if (ancestorRepForDrawingIntoLayer)
         {
           [v9 clipRect];
-          [(CRLInteractiveCanvasController *)self p_convertNeedsDisplayRect:v9 fromRep:v10 toRepForDrawing:?];
+          [(CRLInteractiveCanvasController *)self p_convertNeedsDisplayRect:v9 fromRep:ancestorRepForDrawingIntoLayer toRepForDrawing:?];
           v12 = v11;
           v14 = v13;
           v16 = v15;
           v18 = v17;
-          v19 = [v3 objectForKey:v10];
+          v19 = [v3 objectForKey:ancestorRepForDrawingIntoLayer];
           if (!v19)
           {
             v19 = objc_alloc_init(CRLMutableRectList);
-            [v3 setObject:v19 forKey:v10];
+            [v3 setObject:v19 forKey:ancestorRepForDrawingIntoLayer];
           }
 
           [(CRLMutableRectList *)v19 addRect:v12, v14, v16, v18];
@@ -15435,8 +15435,8 @@ LABEL_22:
               y = v46.origin.y;
               width = v46.size.width;
               height = v46.size.height;
-              v33 = [v26 layer];
-              [(CRLInteractiveCanvasController *)self setNeedsDisplayInRect:v33 onLayer:x, y, width, height];
+              layer = [v26 layer];
+              [(CRLInteractiveCanvasController *)self setNeedsDisplayInRect:layer onLayer:x, y, width, height];
 
               ++v28;
             }
@@ -15455,15 +15455,15 @@ LABEL_22:
   [(NSMutableSet *)self->mRepsDrawnIntoAncestorToSetNeedsDisplayOnUpdatedGeometry removeAllObjects];
 }
 
-- (void)animateToViewScale:(double)a3 contentOffset:(CGPoint)a4 duration:(double)a5 orientation:(int64_t)a6 completionHandler:(id)a7
+- (void)animateToViewScale:(double)scale contentOffset:(CGPoint)offset duration:(double)duration orientation:(int64_t)orientation completionHandler:(id)handler
 {
-  y = a4.y;
-  x = a4.x;
-  v12 = a7;
-  v13 = [(CRLInteractiveCanvasController *)self layerHost];
-  v14 = [v13 canvasLayer];
-  [v14 viewScale];
-  if (v15 == a3)
+  y = offset.y;
+  x = offset.x;
+  handlerCopy = handler;
+  layerHost = [(CRLInteractiveCanvasController *)self layerHost];
+  canvasLayer = [layerHost canvasLayer];
+  [canvasLayer viewScale];
+  if (v15 == scale)
   {
     [(CRLInteractiveCanvasController *)self contentOffset];
     v17 = v16;
@@ -15471,9 +15471,9 @@ LABEL_22:
 
     if (x == v17 && y == v19)
     {
-      if (v12)
+      if (handlerCopy)
       {
-        v12[2](v12, 1);
+        handlerCopy[2](handlerCopy, 1);
       }
 
       goto LABEL_28;
@@ -15484,7 +15484,7 @@ LABEL_22:
   {
   }
 
-  [(CRLInteractiveCanvasController *)self clampedUnscaledContentOffset:x forViewScale:y, a3];
+  [(CRLInteractiveCanvasController *)self clampedUnscaledContentOffset:x forViewScale:y, scale];
   v22 = v21;
   v23 = v20;
   if (v21 == x && v20 == y)
@@ -15524,62 +15524,62 @@ LABEL_22:
 
   if (self->mAnimatingViewScale)
   {
-    if (v12)
+    if (handlerCopy)
     {
-      v12[2](v12, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
   else
   {
-    v57 = a5;
+    durationCopy = duration;
     self->mAnimatingViewScale = 1;
-    v27 = [(CRLInteractiveCanvasController *)self layerHost];
-    v28 = [v27 canvasView];
+    layerHost2 = [(CRLInteractiveCanvasController *)self layerHost];
+    canvasView = [layerHost2 canvasView];
 
-    v29 = [v28 canvasLayer];
-    v30 = [v28 enclosingScrollView];
+    canvasLayer2 = [canvasView canvasLayer];
+    enclosingScrollView = [canvasView enclosingScrollView];
     [(CRLInteractiveCanvasController *)self i_viewWillBeginZooming];
-    v31 = [v29 beginAnimatingViewScaleExternally];
-    [v29 bounds];
+    beginAnimatingViewScaleExternally = [canvasLayer2 beginAnimatingViewScaleExternally];
+    [canvasLayer2 bounds];
     v33 = v32;
     v35 = v34;
-    [v29 contentInset];
+    [canvasLayer2 contentInset];
     v37 = v36;
     v39 = v38;
     v55 = v41;
     v56 = v40;
-    v42 = [(CRLInteractiveCanvasController *)self canvas];
-    v43 = [v42 isAnchoredAtRight];
+    canvas = [(CRLInteractiveCanvasController *)self canvas];
+    isAnchoredAtRight = [canvas isAnchoredAtRight];
 
-    if ((v43 & 1) == 0)
+    if ((isAnchoredAtRight & 1) == 0)
     {
       memset(&v84, 0, sizeof(v84));
       CGAffineTransformMakeTranslation(&v84, -v33, -v35);
       v82 = v84;
       CGAffineTransformTranslate(&v83, &v82, v39, v37);
       v84 = v83;
-      [v28 setTransform:&v83];
-      [v29 bounds];
+      [canvasView setTransform:&v83];
+      [canvasLayer2 bounds];
       v45 = v44;
-      [v29 bounds];
-      [v29 setBounds:{v39, v37, v45}];
+      [canvasLayer2 bounds];
+      [canvasLayer2 setBounds:{v39, v37, v45}];
     }
 
-    v46 = [(CRLInteractiveCanvasController *)self p_sourceInteractionSourceForNotficiationUserInfo];
+    p_sourceInteractionSourceForNotficiationUserInfo = [(CRLInteractiveCanvasController *)self p_sourceInteractionSourceForNotficiationUserInfo];
     v67[0] = _NSConcreteStackBlock;
     v67[1] = 3221225472;
     v67[2] = sub_100461534;
     v67[3] = &unk_101864A30;
     v67[4] = self;
-    v72 = a3;
-    v47 = v30;
+    scaleCopy = scale;
+    v47 = enclosingScrollView;
     v68 = v47;
-    v48 = v28;
+    v48 = canvasView;
     v69 = v48;
     v73 = v33;
     v74 = v35;
-    v49 = v29;
+    v49 = canvasLayer2;
     v70 = v49;
     v75 = v22;
     v76 = v23;
@@ -15587,8 +15587,8 @@ LABEL_22:
     v78 = v39;
     v79 = v56;
     v80 = v55;
-    v81 = v57;
-    v50 = v46;
+    v81 = durationCopy;
+    v50 = p_sourceInteractionSourceForNotficiationUserInfo;
     v71 = v50;
     v51 = objc_retainBlock(v67);
     v58[0] = _NSConcreteStackBlock;
@@ -15599,14 +15599,14 @@ LABEL_22:
     v59 = v52;
     v53 = v49;
     v60 = v53;
-    v61 = self;
-    v62 = v31;
-    v64 = a3;
+    selfCopy = self;
+    v62 = beginAnimatingViewScaleExternally;
+    scaleCopy2 = scale;
     v65 = v22;
     v66 = v23;
-    v63 = v12;
+    v63 = handlerCopy;
     v54 = objc_retainBlock(v58);
-    if (v57 <= 0.0)
+    if (durationCopy <= 0.0)
     {
       (v51[2])(v51);
       (v54[2])(v54, 1);
@@ -15614,17 +15614,17 @@ LABEL_22:
 
     else
     {
-      [UIView animateWithDuration:v51 animations:v54 completion:v57];
+      [UIView animateWithDuration:v51 animations:v54 completion:durationCopy];
     }
   }
 
 LABEL_28:
 }
 
-- (void)doubleTappedCanvasBackgroundAtPoint:(CGPoint)a3
+- (void)doubleTappedCanvasBackgroundAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
   v7 = objc_opt_respondsToSelector();
 
@@ -15686,7 +15686,7 @@ LABEL_28:
 
 - (CRLCanvasRep)repForTextEditingInspecting
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100F22C98();
 
   return v3;
@@ -15694,7 +15694,7 @@ LABEL_28:
 
 - (BOOL)anyConnectorKnobVisible
 {
-  v2 = self;
+  selfCopy = self;
   CRLInteractiveCanvasController.anyConnectorKnobVisible.getter();
   v4 = v3;
 
@@ -15703,13 +15703,13 @@ LABEL_28:
 
 - (void)animateIntoConnectorMode
 {
-  v2 = self;
+  selfCopy = self;
   sub_1010671C0();
 }
 
 - (CRLConnectionLineAbstractLayout)highestZOrderConnectionLineLayoutAcrossBoard
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_101067810();
 
   return v3;
@@ -15717,21 +15717,21 @@ LABEL_28:
 
 - (void)sendSelectionPathToPeersIfNecessary
 {
-  v2 = self;
+  selfCopy = self;
   sub_101067B38();
 }
 
 - (void)sendRealTimeEnterToPeersIfNecessary
 {
-  v2 = self;
+  selfCopy = self;
   sub_101069418();
 }
 
-- (id)adjustReceivedCollaboratorCursorSelectionPath:(id)a3
+- (id)adjustReceivedCollaboratorCursorSelectionPath:(id)path
 {
-  v4 = a3;
-  v5 = self;
-  sub_101069BB4(v4);
+  pathCopy = path;
+  selfCopy = self;
+  sub_101069BB4(pathCopy);
   v7 = v6;
 
   return v7;
@@ -15739,11 +15739,11 @@ LABEL_28:
 
 - (BOOL)wantsToSuppressMultiselectionForPenTool
 {
-  v2 = self;
-  v3 = [(CRLInteractiveCanvasController *)v2 editorController];
-  if (v3)
+  selfCopy = self;
+  editorController = [(CRLInteractiveCanvasController *)selfCopy editorController];
+  if (editorController)
   {
-    v4 = v3;
+    v4 = editorController;
     sub_100006370(0, &qword_101A28AC0);
     v5 = [(CRLEditorController *)v4 mostSpecificCurrentEditorOfClass:swift_getObjCClassFromMetadata()];
 
@@ -15761,23 +15761,23 @@ LABEL_28:
   return 0;
 }
 
-- (BOOL)sendViewportRequestMessageTo:(id)a3
+- (BOOL)sendViewportRequestMessageTo:(id)to
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_10106A06C(v7);
 
   (*(v5 + 8))(v7, v4);
   return v9 & 1;
 }
 
-- (void)updateTipsWithConnectorKnobsEnabled:(BOOL)a3
+- (void)updateTipsWithConnectorKnobsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     if (qword_1019F1DB8 != -1)
     {

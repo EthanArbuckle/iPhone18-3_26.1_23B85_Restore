@@ -5,14 +5,14 @@
 - (SBApplicationServerMultiwindowDelegate)multiwindowDelegate;
 - (SBApplicationServerShortcutDelegate)shortcutDelegate;
 - (id)_init;
-- (void)_handleDeleteApplicationSnapshots:(void *)a3 fromClient:;
-- (void)_handleHarmonyFetchWhitePointAdaptivityStyleMessage:(void *)a3 fromClient:;
-- (void)_handleMultiwindowShortcutRequestShelfPresentationMessage:(void *)a3 fromClient:;
-- (void)_handleMultiwindowShortcutShowAllWindowsMessage:(void *)a3 fromClient:;
-- (void)_handleShortcutFetchApplicationShortcutItemsMessage:(void *)a3 fromClient:;
-- (void)_handleShortcutUpdateDynamicApplicationShortcutItemsMessage:(void *)a3 fromClient:;
+- (void)_handleDeleteApplicationSnapshots:(void *)snapshots fromClient:;
+- (void)_handleHarmonyFetchWhitePointAdaptivityStyleMessage:(void *)message fromClient:;
+- (void)_handleMultiwindowShortcutRequestShelfPresentationMessage:(void *)message fromClient:;
+- (void)_handleMultiwindowShortcutShowAllWindowsMessage:(void *)message fromClient:;
+- (void)_handleShortcutFetchApplicationShortcutItemsMessage:(void *)message fromClient:;
+- (void)_handleShortcutUpdateDynamicApplicationShortcutItemsMessage:(void *)message fromClient:;
 - (void)dealloc;
-- (void)noteDidReceiveMessage:(id)a3 withType:(int64_t)a4 fromClient:(id)a5;
+- (void)noteDidReceiveMessage:(id)message withType:(int64_t)type fromClient:(id)client;
 @end
 
 @implementation SBApplicationServer
@@ -38,46 +38,46 @@ void __37__SBApplicationServer_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBApplicationServer.m" lineNumber:40 description:@"you can't deallocate the server"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBApplicationServer.m" lineNumber:40 description:@"you can't deallocate the server"];
 
   v5.receiver = self;
   v5.super_class = SBApplicationServer;
   [(FBSServiceFacility *)&v5 dealloc];
 }
 
-- (void)noteDidReceiveMessage:(id)a3 withType:(int64_t)a4 fromClient:(id)a5
+- (void)noteDidReceiveMessage:(id)message withType:(int64_t)type fromClient:(id)client
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 > 2)
+  messageCopy = message;
+  clientCopy = client;
+  if (type > 2)
   {
-    switch(a4)
+    switch(type)
     {
       case 5:
-        [(SBApplicationServer *)self _handleMultiwindowShortcutRequestShelfPresentationMessage:v8 fromClient:v9];
+        [(SBApplicationServer *)self _handleMultiwindowShortcutRequestShelfPresentationMessage:messageCopy fromClient:clientCopy];
         goto LABEL_12;
       case 4:
-        [(SBApplicationServer *)self _handleMultiwindowShortcutShowAllWindowsMessage:v8 fromClient:v9];
+        [(SBApplicationServer *)self _handleMultiwindowShortcutShowAllWindowsMessage:messageCopy fromClient:clientCopy];
         goto LABEL_12;
       case 3:
-        [(SBApplicationServer *)self _handleDeleteApplicationSnapshots:v8 fromClient:v9];
+        [(SBApplicationServer *)self _handleDeleteApplicationSnapshots:messageCopy fromClient:clientCopy];
         goto LABEL_12;
     }
   }
 
   else
   {
-    switch(a4)
+    switch(type)
     {
       case 0:
-        [(SBApplicationServer *)self _handleHarmonyFetchWhitePointAdaptivityStyleMessage:v8 fromClient:v9];
+        [(SBApplicationServer *)self _handleHarmonyFetchWhitePointAdaptivityStyleMessage:messageCopy fromClient:clientCopy];
         goto LABEL_12;
       case 1:
-        [(SBApplicationServer *)self _handleShortcutFetchApplicationShortcutItemsMessage:v8 fromClient:v9];
+        [(SBApplicationServer *)self _handleShortcutFetchApplicationShortcutItemsMessage:messageCopy fromClient:clientCopy];
         goto LABEL_12;
       case 2:
-        [(SBApplicationServer *)self _handleShortcutUpdateDynamicApplicationShortcutItemsMessage:v8 fromClient:v9];
+        [(SBApplicationServer *)self _handleShortcutUpdateDynamicApplicationShortcutItemsMessage:messageCopy fromClient:clientCopy];
         goto LABEL_12;
     }
   }
@@ -85,7 +85,7 @@ void __37__SBApplicationServer_sharedInstance__block_invoke()
   v10 = SBLogCommon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    [SBApplicationServer noteDidReceiveMessage:v9 withType:v10 fromClient:?];
+    [SBApplicationServer noteDidReceiveMessage:clientCopy withType:v10 fromClient:?];
   }
 
 LABEL_12:
@@ -145,30 +145,30 @@ void __86__SBApplicationServer__handleShortcutFetchApplicationShortcutItemsMessa
 
 - (id)_init
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = MEMORY[0x277D0AE00];
     Serial = BSDispatchQueueCreateSerial();
     v4 = [v2 queueWithDispatchQueue:Serial];
 
     v5 = *MEMORY[0x277D66EA0];
-    v7.receiver = v1;
+    v7.receiver = selfCopy;
     v7.super_class = SBApplicationServer;
-    v1 = objc_msgSendSuper2(&v7, sel_initWithIdentifier_queue_, v5, v4);
+    selfCopy = objc_msgSendSuper2(&v7, sel_initWithIdentifier_queue_, v5, v4);
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)_handleDeleteApplicationSnapshots:(void *)a3 fromClient:
+- (void)_handleDeleteApplicationSnapshots:(void *)snapshots fromClient:
 {
-  v9 = OUTLINED_FUNCTION_4_5(a1, a2, a3);
+  v9 = OUTLINED_FUNCTION_4_5(self, a2, snapshots);
   if (v4)
   {
-    v6 = [v3 payload];
-    v7 = v6;
-    if (v6 && object_getClass(v6) == MEMORY[0x277D86468])
+    payload = [v3 payload];
+    v7 = payload;
+    if (payload && object_getClass(payload) == MEMORY[0x277D86468])
     {
       WeakRetained = objc_loadWeakRetained((v4 + 56));
       if (WeakRetained)
@@ -181,11 +181,11 @@ void __86__SBApplicationServer__handleShortcutFetchApplicationShortcutItemsMessa
   }
 }
 
-- (void)_handleHarmonyFetchWhitePointAdaptivityStyleMessage:(void *)a3 fromClient:
+- (void)_handleHarmonyFetchWhitePointAdaptivityStyleMessage:(void *)message fromClient:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  messageCopy = message;
+  if (self)
   {
     OUTLINED_FUNCTION_1_4();
     v17 = 3221225472;
@@ -194,11 +194,11 @@ void __86__SBApplicationServer__handleShortcutFetchApplicationShortcutItemsMessa
     v7 = v5;
     v20 = v7;
     v8 = MEMORY[0x223D6F7F0](v16);
-    v9 = [v7 payload];
-    v10 = v9;
-    if (v9 && object_getClass(v9) == MEMORY[0x277D86468])
+    payload = [v7 payload];
+    v10 = payload;
+    if (payload && object_getClass(payload) == MEMORY[0x277D86468])
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 64));
+      WeakRetained = objc_loadWeakRetained((self + 64));
       if (WeakRetained)
       {
         xpc_dictionary_get_uint64(v10, *MEMORY[0x277D676A8]);
@@ -220,11 +220,11 @@ void __86__SBApplicationServer__handleShortcutFetchApplicationShortcutItemsMessa
   }
 }
 
-- (void)_handleShortcutFetchApplicationShortcutItemsMessage:(void *)a3 fromClient:
+- (void)_handleShortcutFetchApplicationShortcutItemsMessage:(void *)message fromClient:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  messageCopy = message;
+  if (self)
   {
     OUTLINED_FUNCTION_1_4();
     v18 = 3221225472;
@@ -233,11 +233,11 @@ void __86__SBApplicationServer__handleShortcutFetchApplicationShortcutItemsMessa
     v7 = v5;
     v21 = v7;
     v8 = MEMORY[0x223D6F7F0](v17);
-    v9 = [v7 payload];
-    v10 = v9;
-    if (v9 && object_getClass(v9) == MEMORY[0x277D86468])
+    payload = [v7 payload];
+    v10 = payload;
+    if (payload && object_getClass(payload) == MEMORY[0x277D86468])
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 72));
+      WeakRetained = objc_loadWeakRetained((self + 72));
       if (WeakRetained)
       {
         v14 = BSDeserializeStringFromXPCDictionaryWithKey();
@@ -260,14 +260,14 @@ void __86__SBApplicationServer__handleShortcutFetchApplicationShortcutItemsMessa
   }
 }
 
-- (void)_handleShortcutUpdateDynamicApplicationShortcutItemsMessage:(void *)a3 fromClient:
+- (void)_handleShortcutUpdateDynamicApplicationShortcutItemsMessage:(void *)message fromClient:
 {
-  v10 = OUTLINED_FUNCTION_4_5(a1, a2, a3);
+  v10 = OUTLINED_FUNCTION_4_5(self, a2, message);
   if (v4)
   {
-    v5 = [v3 payload];
-    v6 = v5;
-    if (v5 && object_getClass(v5) == MEMORY[0x277D86468])
+    payload = [v3 payload];
+    v6 = payload;
+    if (payload && object_getClass(payload) == MEMORY[0x277D86468])
     {
       WeakRetained = objc_loadWeakRetained((v4 + 72));
       if (WeakRetained)
@@ -280,14 +280,14 @@ void __86__SBApplicationServer__handleShortcutFetchApplicationShortcutItemsMessa
   }
 }
 
-- (void)_handleMultiwindowShortcutShowAllWindowsMessage:(void *)a3 fromClient:
+- (void)_handleMultiwindowShortcutShowAllWindowsMessage:(void *)message fromClient:
 {
-  v9 = OUTLINED_FUNCTION_4_5(a1, a2, a3);
+  v9 = OUTLINED_FUNCTION_4_5(self, a2, message);
   if (v4)
   {
-    v6 = [v3 payload];
-    v7 = v6;
-    if (v6 && object_getClass(v6) == MEMORY[0x277D86468])
+    payload = [v3 payload];
+    v7 = payload;
+    if (payload && object_getClass(payload) == MEMORY[0x277D86468])
     {
       WeakRetained = objc_loadWeakRetained((v4 + 80));
       if (WeakRetained)
@@ -300,14 +300,14 @@ void __86__SBApplicationServer__handleShortcutFetchApplicationShortcutItemsMessa
   }
 }
 
-- (void)_handleMultiwindowShortcutRequestShelfPresentationMessage:(void *)a3 fromClient:
+- (void)_handleMultiwindowShortcutRequestShelfPresentationMessage:(void *)message fromClient:
 {
-  v9 = OUTLINED_FUNCTION_4_5(a1, a2, a3);
+  v9 = OUTLINED_FUNCTION_4_5(self, a2, message);
   if (v4)
   {
-    v6 = [v3 payload];
-    v7 = v6;
-    if (v6 && object_getClass(v6) == MEMORY[0x277D86468])
+    payload = [v3 payload];
+    v7 = payload;
+    if (payload && object_getClass(payload) == MEMORY[0x277D86468])
     {
       WeakRetained = objc_loadWeakRetained((v4 + 80));
       if (WeakRetained)

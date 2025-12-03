@@ -1,9 +1,9 @@
 @interface OBLinkableTemplateLabel
 - (OBLinkableTemplateLabel)init;
-- (void)_linkTapped:(id)a3;
-- (void)_setLinkText:(id)a3 withFormat:(id)a4 withAction:(id)a5;
-- (void)setInstructionsForUseTextWithAction:(id)a3;
-- (void)setLearnMoreURL:(id)a3;
+- (void)_linkTapped:(id)tapped;
+- (void)_setLinkText:(id)text withFormat:(id)format withAction:(id)action;
+- (void)setInstructionsForUseTextWithAction:(id)action;
+- (void)setLearnMoreURL:(id)l;
 @end
 
 @implementation OBLinkableTemplateLabel
@@ -25,20 +25,20 @@
   return v2;
 }
 
-- (void)_linkTapped:(id)a3
+- (void)_linkTapped:(id)tapped
 {
-  v3 = [(OBLinkableTemplateLabel *)self tapAction];
-  [v3 performButtonTrayLinkAction];
+  tapAction = [(OBLinkableTemplateLabel *)self tapAction];
+  [tapAction performButtonTrayLinkAction];
 }
 
-- (void)setLearnMoreURL:(id)a3
+- (void)setLearnMoreURL:(id)l
 {
-  v4 = a3;
-  v13 = v4;
-  if (v4)
+  lCopy = l;
+  v13 = lCopy;
+  if (lCopy)
   {
-    v5 = [v4 scheme];
-    v6 = [v5 containsString:@"http"];
+    scheme = [lCopy scheme];
+    v6 = [scheme containsString:@"http"];
 
     if ((v6 & 1) == 0)
     {
@@ -62,10 +62,10 @@
   }
 }
 
-- (void)setInstructionsForUseTextWithAction:(id)a3
+- (void)setInstructionsForUseTextWithAction:(id)action
 {
-  v4 = a3;
-  v9 = [[OBButtonTrayLinkCallbackAction alloc] initWithCallback:v4];
+  actionCopy = action;
+  v9 = [[OBButtonTrayLinkCallbackAction alloc] initWithCallback:actionCopy];
 
   v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v6 = [OBUtilities localizedString:@"INSTRUCTIONS_FOR_USE_CAPTION_LINK_TEXT" forTable:@"Localizable" inBundle:v5 forLanguage:0];
@@ -75,26 +75,26 @@
   [(OBLinkableTemplateLabel *)self _setLinkText:v6 withFormat:v8 withAction:v9];
 }
 
-- (void)_setLinkText:(id)a3 withFormat:(id)a4 withAction:(id)a5
+- (void)_setLinkText:(id)text withFormat:(id)format withAction:(id)action
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  actionCopy = action;
+  formatCopy = format;
+  textCopy = text;
   [(OBLinkableTemplateLabel *)self setUserInteractionEnabled:1];
-  v11 = [(OBLinkableTemplateLabel *)self text];
-  v12 = [OBUtilities stringWithFormat:v9, v11, v10];
+  text = [(OBLinkableTemplateLabel *)self text];
+  textCopy = [OBUtilities stringWithFormat:formatCopy, text, textCopy];
 
-  [(OBTemplateLabel *)self setText:v12];
-  v13 = [(OBLinkableTemplateLabel *)self text];
-  v14 = [v13 rangeOfString:v10];
+  [(OBTemplateLabel *)self setText:textCopy];
+  text2 = [(OBLinkableTemplateLabel *)self text];
+  v14 = [text2 rangeOfString:textCopy];
   v16 = v15;
 
-  v17 = [(OBLinkableTemplateLabel *)self attributedText];
-  v18 = [v17 mutableCopy];
+  attributedText = [(OBLinkableTemplateLabel *)self attributedText];
+  v18 = [attributedText mutableCopy];
 
   [v18 addAttribute:*MEMORY[0x1E69DB670] value:&stru_1F2CE9518 range:{v14, v16}];
   [(OBLinkableTemplateLabel *)self setAttributedText:v18];
-  [(OBLinkableTemplateLabel *)self setTapAction:v8];
+  [(OBLinkableTemplateLabel *)self setTapAction:actionCopy];
 }
 
 @end

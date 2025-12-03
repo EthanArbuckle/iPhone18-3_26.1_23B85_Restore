@@ -5,75 +5,75 @@
 - (PFAssertionHandler)init;
 - (id)defaultPolicy;
 - (id)defaultTestingPolicy;
-- (id)newAssertionInfoInMethod:(SEL)a3 object:(id)a4 function:(id)a5 file:(id)a6 lineNumber:(int64_t)a7 description:(id)a8 arguments:(char *)a9;
+- (id)newAssertionInfoInMethod:(SEL)method object:(id)object function:(id)function file:(id)file lineNumber:(int64_t)number description:(id)description arguments:(char *)arguments;
 - (void)_install;
-- (void)continueAfterAssertInFunction:(id)a3 file:(id)a4 lineNumber:(int64_t)a5 description:(id)a6 arguments:(char *)a7;
-- (void)handleFailureInFunction:(id)a3 file:(id)a4 lineNumber:(int64_t)a5 description:(id)a6;
-- (void)handleFailureInFunction:(id)a3 file:(id)a4 lineNumber:(int64_t)a5 description:(id)a6 arguments:(char *)a7;
-- (void)handleFailureInMethod:(SEL)a3 object:(id)a4 file:(id)a5 lineNumber:(int64_t)a6 description:(id)a7;
+- (void)continueAfterAssertInFunction:(id)function file:(id)file lineNumber:(int64_t)number description:(id)description arguments:(char *)arguments;
+- (void)handleFailureInFunction:(id)function file:(id)file lineNumber:(int64_t)number description:(id)description;
+- (void)handleFailureInFunction:(id)function file:(id)file lineNumber:(int64_t)number description:(id)description arguments:(char *)arguments;
+- (void)handleFailureInMethod:(SEL)method object:(id)object file:(id)file lineNumber:(int64_t)number description:(id)description;
 @end
 
 @implementation PFAssertionHandler
 
-- (void)handleFailureInFunction:(id)a3 file:(id)a4 lineNumber:(int64_t)a5 description:(id)a6
+- (void)handleFailureInFunction:(id)function file:(id)file lineNumber:(int64_t)number description:(id)description
 {
-  v7 = [(PFAssertionHandler *)self newAssertionInfoInMethod:0 object:0 function:a3 file:a4 lineNumber:a5 description:a6 arguments:&v9, &v9];
+  v7 = [(PFAssertionHandler *)self newAssertionInfoInMethod:0 object:0 function:function file:file lineNumber:number description:description arguments:&v9, &v9];
   [v7 setIsFatal:1];
-  v8 = [(PFAssertionHandler *)self policy];
-  [v8 notifyAssertion:v7];
+  policy = [(PFAssertionHandler *)self policy];
+  [policy notifyAssertion:v7];
 
   abort();
 }
 
-- (void)handleFailureInMethod:(SEL)a3 object:(id)a4 file:(id)a5 lineNumber:(int64_t)a6 description:(id)a7
+- (void)handleFailureInMethod:(SEL)method object:(id)object file:(id)file lineNumber:(int64_t)number description:(id)description
 {
-  v8 = [(PFAssertionHandler *)self newAssertionInfoInMethod:a3 object:a4 function:0 file:a5 lineNumber:a6 description:a7 arguments:&v10, &v10];
+  v8 = [(PFAssertionHandler *)self newAssertionInfoInMethod:method object:object function:0 file:file lineNumber:number description:description arguments:&v10, &v10];
   [v8 setIsFatal:1];
-  v9 = [(PFAssertionHandler *)self policy];
-  [v9 notifyAssertion:v8];
+  policy = [(PFAssertionHandler *)self policy];
+  [policy notifyAssertion:v8];
 
   abort();
 }
 
-- (void)continueAfterAssertInFunction:(id)a3 file:(id)a4 lineNumber:(int64_t)a5 description:(id)a6 arguments:(char *)a7
+- (void)continueAfterAssertInFunction:(id)function file:(id)file lineNumber:(int64_t)number description:(id)description arguments:(char *)arguments
 {
-  v9 = [(PFAssertionHandler *)self newAssertionInfoInMethod:0 object:0 function:a3 file:a4 lineNumber:a5 description:a6 arguments:a7];
+  v9 = [(PFAssertionHandler *)self newAssertionInfoInMethod:0 object:0 function:function file:file lineNumber:number description:description arguments:arguments];
   [v9 setIsFatal:0];
-  v8 = [(PFAssertionHandler *)self policy];
-  [v8 notifyAssertion:v9];
+  policy = [(PFAssertionHandler *)self policy];
+  [policy notifyAssertion:v9];
 }
 
-- (void)handleFailureInFunction:(id)a3 file:(id)a4 lineNumber:(int64_t)a5 description:(id)a6 arguments:(char *)a7
+- (void)handleFailureInFunction:(id)function file:(id)file lineNumber:(int64_t)number description:(id)description arguments:(char *)arguments
 {
-  v8 = [(PFAssertionHandler *)self newAssertionInfoInMethod:0 object:0 function:a3 file:a4 lineNumber:a5 description:a6 arguments:a7];
+  v8 = [(PFAssertionHandler *)self newAssertionInfoInMethod:0 object:0 function:function file:file lineNumber:number description:description arguments:arguments];
   [v8 setIsFatal:1];
-  v9 = [(PFAssertionHandler *)self policy];
-  [v9 notifyAssertion:v8];
+  policy = [(PFAssertionHandler *)self policy];
+  [policy notifyAssertion:v8];
 
   abort();
 }
 
-- (id)newAssertionInfoInMethod:(SEL)a3 object:(id)a4 function:(id)a5 file:(id)a6 lineNumber:(int64_t)a7 description:(id)a8 arguments:(char *)a9
+- (id)newAssertionInfoInMethod:(SEL)method object:(id)object function:(id)function file:(id)file lineNumber:(int64_t)number description:(id)description arguments:(char *)arguments
 {
-  v14 = a8;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
+  descriptionCopy = description;
+  fileCopy = file;
+  functionCopy = function;
+  objectCopy = object;
   v18 = objc_alloc_init(PFAssertionInfo);
-  [(PFAssertionInfo *)v18 setSelector:a3];
+  [(PFAssertionInfo *)v18 setSelector:method];
   [(PFAssertionInfo *)v18 setObjectClass:objc_opt_class()];
-  [(PFAssertionInfo *)v18 setFunctionName:v16];
+  [(PFAssertionInfo *)v18 setFunctionName:functionCopy];
 
-  v19 = objc_opt_class() == v17;
+  v19 = objc_opt_class() == objectCopy;
   [(PFAssertionInfo *)v18 setIsClassMethod:v19];
-  [(PFAssertionInfo *)v18 setFileName:v15];
+  [(PFAssertionInfo *)v18 setFileName:fileCopy];
 
-  [(PFAssertionInfo *)v18 setLineNumber:a7];
-  v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v14 arguments:a9];
+  [(PFAssertionInfo *)v18 setLineNumber:number];
+  v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:descriptionCopy arguments:arguments];
 
   [(PFAssertionInfo *)v18 setMessage:v20];
-  v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-  v22 = [v21 subarrayWithRange:{0, objc_msgSend(v21, "count") - 2}];
+  callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+  v22 = [callStackSymbols subarrayWithRange:{0, objc_msgSend(callStackSymbols, "count") - 2}];
   [(PFAssertionInfo *)v18 setBacktrace:v22];
 
   return v18;
@@ -106,29 +106,29 @@
 {
   if (+[PFAssertionHandler runningUnitTests])
   {
-    v3 = [(PFAssertionHandler *)self defaultTestingPolicy];
+    defaultTestingPolicy = [(PFAssertionHandler *)self defaultTestingPolicy];
   }
 
   else
   {
-    v3 = objc_alloc_init(PFAssertionPolicyUnique);
+    defaultTestingPolicy = objc_alloc_init(PFAssertionPolicyUnique);
     v4 = objc_alloc_init(PFAssertionPolicyLog);
-    [(PFAssertionPolicyComposite *)v3 addPolicy:v4];
+    [(PFAssertionPolicyComposite *)defaultTestingPolicy addPolicy:v4];
 
     v5 = objc_alloc_init(PFAssertionPolicyDebuggerWarning);
-    [(PFAssertionPolicyComposite *)v3 addPolicy:v5];
+    [(PFAssertionPolicyComposite *)defaultTestingPolicy addPolicy:v5];
 
     v6 = objc_alloc_init(PFAssertionPolicyDebuggerFatal);
-    [(PFAssertionPolicyComposite *)v3 addPolicy:v6];
+    [(PFAssertionPolicyComposite *)defaultTestingPolicy addPolicy:v6];
 
     v7 = objc_alloc_init(PFAssertionPolicyCrashReport);
-    [(PFAssertionPolicyComposite *)v3 addPolicy:v7];
+    [(PFAssertionPolicyComposite *)defaultTestingPolicy addPolicy:v7];
 
     v8 = objc_alloc_init(PFAssertionPolicyAbort);
-    [(PFAssertionPolicyComposite *)v3 addPolicy:v8];
+    [(PFAssertionPolicyComposite *)defaultTestingPolicy addPolicy:v8];
   }
 
-  return v3;
+  return defaultTestingPolicy;
 }
 
 - (PFAssertionHandler)init
@@ -136,9 +136,9 @@
   v6.receiver = self;
   v6.super_class = PFAssertionHandler;
   v2 = [(PFAssertionHandler *)&v6 init];
-  v3 = [(PFAssertionHandler *)v2 defaultPolicy];
+  defaultPolicy = [(PFAssertionHandler *)v2 defaultPolicy];
   policy = v2->_policy;
-  v2->_policy = v3;
+  v2->_policy = defaultPolicy;
 
   return v2;
 }

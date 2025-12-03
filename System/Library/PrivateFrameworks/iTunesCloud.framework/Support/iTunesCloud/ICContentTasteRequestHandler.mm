@@ -1,30 +1,30 @@
 @interface ICContentTasteRequestHandler
-- (ICContentTasteRequestHandler)initWithConfiguration:(id)a3;
+- (ICContentTasteRequestHandler)initWithConfiguration:(id)configuration;
 - (id)description;
-- (void)_postContentTasteChanges:(id)a3 withCompletionHandler:(id)a4;
-- (void)_postPendingContentTasteChangesByAddingChange:(id)a3 completionHandler:(id)a4;
+- (void)_postContentTasteChanges:(id)changes withCompletionHandler:(id)handler;
+- (void)_postPendingContentTasteChangesByAddingChange:(id)change completionHandler:(id)handler;
 - (void)_schedulePostingContentTasteForFailedItems;
 - (void)_scheduleUpdatingContentTasteWithNewExpirationDate;
-- (void)cancelAllOperationsAndClearPendingChangesWithCompletionHandler:(id)a3;
-- (void)updateContentTasteForItem:(id)a3 invalidatingLocalCache:(BOOL)a4 completionHandler:(id)a5;
-- (void)updateContentTasteForReason:(int64_t)a3 invalidatingLocalCache:(BOOL)a4 completionHandler:(id)a5;
+- (void)cancelAllOperationsAndClearPendingChangesWithCompletionHandler:(id)handler;
+- (void)updateContentTasteForItem:(id)item invalidatingLocalCache:(BOOL)cache completionHandler:(id)handler;
+- (void)updateContentTasteForReason:(int64_t)reason invalidatingLocalCache:(BOOL)cache completionHandler:(id)handler;
 @end
 
 @implementation ICContentTasteRequestHandler
 
-- (void)_postContentTasteChanges:(id)a3 withCompletionHandler:(id)a4
+- (void)_postContentTasteChanges:(id)changes withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  changesCopy = changes;
+  handlerCopy = handler;
   v8 = os_log_create("com.apple.amp.itunescloudd", "ContentTaste_Oversize");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v67 = self;
+    selfCopy6 = self;
     v68 = 1024;
-    *v69 = [v6 count];
+    *v69 = [changesCopy count];
     *&v69[4] = 2114;
-    *&v69[6] = v6;
+    *&v69[6] = changesCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ change count=%d, contentTasteChange=%{public}@", buf, 0x1Cu);
   }
 
@@ -32,7 +32,7 @@
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v9 = v6;
+  v9 = changesCopy;
   v58 = [v9 countByEnumeratingWithState:&v62 objects:v74 count:16];
   if (!v58)
   {
@@ -51,7 +51,7 @@
   obj = v9;
   *&v10 = 138543874;
   v48 = v10;
-  v56 = v7;
+  v56 = handlerCopy;
   do
   {
     v12 = 0;
@@ -69,7 +69,7 @@
 
       v17 = [v13 objectForKey:@"ContentTastePendingChangesCoordinatorPendingChangesKey"];
       v18 = [v17 objectForKey:@"ContentTastePendingChangesCoordinatorInvalidateCacheKey"];
-      v19 = [v18 BOOLValue];
+      bOOLValue = [v18 BOOLValue];
 
       if (v11)
       {
@@ -81,15 +81,15 @@
         v11 = [v14 isEqualToString:@"ICContentTasteRequestHandlerRetryTaskIdentifier"];
       }
 
-      v20 = [[ICCloudContentTasteUpdateOperation alloc] initWithContentTasteUpdateItem:v16 invalidateLocalCache:v19 configuration:self->_configuration operationIdentifier:v14];
+      v20 = [[ICCloudContentTasteUpdateOperation alloc] initWithContentTasteUpdateItem:v16 invalidateLocalCache:bOOLValue configuration:self->_configuration operationIdentifier:v14];
       [(ICCloudContentTasteUpdateOperation *)v20 main];
-      v21 = [(ICCloudContentTasteUpdateOperation *)v20 error];
+      error = [(ICCloudContentTasteUpdateOperation *)v20 error];
       v22 = os_log_create("com.apple.amp.itunescloudd", "ContentTaste");
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = objc_retainBlock(v7);
+        v23 = objc_retainBlock(handlerCopy);
         *buf = 138544386;
-        v67 = self;
+        selfCopy6 = self;
         v68 = 2048;
         *v69 = v20;
         *&v69[8] = 2114;
@@ -97,17 +97,17 @@
         v70 = 2048;
         v71 = v23;
         v72 = 2114;
-        v73 = v21;
+        v73 = error;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%{public}@  Operation=%p (identifier=%{public}@ finished with completion=%p, error=%{public}@", buf, 0x34u);
 
-        v7 = v56;
+        handlerCopy = v56;
       }
 
-      [(ICContentTastePendingChangesCoordinator *)self->_pendingChangesCoordinator contentTasteUpdateOperation:v20 finishedByInvalidatingCache:v19 error:v21];
-      if (v21)
+      [(ICContentTastePendingChangesCoordinator *)self->_pendingChangesCoordinator contentTasteUpdateOperation:v20 finishedByInvalidatingCache:bOOLValue error:error];
+      if (error)
       {
         v53 = 1;
-        if (!v7)
+        if (!handlerCopy)
         {
           goto LABEL_16;
         }
@@ -118,25 +118,25 @@ LABEL_15:
         block[1] = 3221225472;
         block[2] = sub_1000A9B78;
         block[3] = &unk_1001DF5A0;
-        v61 = v7;
-        v60 = v21;
+        v61 = handlerCopy;
+        v60 = error;
         dispatch_async(v24, block);
 
         goto LABEL_16;
       }
 
-      v25 = [(ICCloudContentTasteUpdateOperation *)v20 contentTasteUpdateResponse];
-      v26 = [v25 expirationDate];
+      contentTasteUpdateResponse = [(ICCloudContentTasteUpdateOperation *)v20 contentTasteUpdateResponse];
+      expirationDate = [contentTasteUpdateResponse expirationDate];
 
       v27 = v54;
       if (v54)
       {
-        if (v26)
+        if (expirationDate)
         {
-          [v26 timeIntervalSinceDate:v54];
+          [expirationDate timeIntervalSinceDate:v54];
           if (v28 > 3600.0)
           {
-            v27 = v26;
+            v27 = expirationDate;
 
             v29 = os_log_create("com.apple.amp.itunescloudd", "ContentTaste");
             if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -146,7 +146,7 @@ LABEL_15:
               v50 = +[NSLocale currentLocale];
               v49 = [v27 descriptionWithLocale:v50];
               *buf = v48;
-              v67 = self;
+              selfCopy6 = self;
               v68 = 2114;
               *v69 = v55;
               *&v69[8] = 2114;
@@ -159,11 +159,11 @@ LABEL_15:
 
       else
       {
-        v27 = v26;
+        v27 = expirationDate;
       }
 
       v54 = v27;
-      v7 = v56;
+      handlerCopy = v56;
       if (v56)
       {
         goto LABEL_15;
@@ -195,14 +195,14 @@ LABEL_16:
       v38 = +[NSLocale currentLocale];
       v39 = [v54 descriptionWithLocale:v38];
       *buf = v48;
-      v67 = self;
+      selfCopy6 = self;
       v68 = 2114;
       *v69 = v37;
       *&v69[8] = 2114;
       *&v69[10] = v39;
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "%{public}@  response expiration date changed. old date = %{public}@, new date = %{public}@", buf, 0x20u);
 
-      v7 = v56;
+      handlerCopy = v56;
     }
 
     objc_storeStrong(&self->_responseExpirationDate, v54);
@@ -224,7 +224,7 @@ LABEL_38:
       {
         v46 = self->_backOffIndex;
         *buf = 138544130;
-        v67 = self;
+        selfCopy6 = self;
         v68 = 1024;
         *v69 = 1;
         *&v69[4] = 1024;
@@ -248,7 +248,7 @@ LABEL_35:
       v42 = +[NSLocale currentLocale];
       v43 = [(NSDate *)v41 descriptionWithLocale:v42];
       *buf = 138543618;
-      v67 = self;
+      selfCopy6 = self;
       v68 = 2114;
       *v69 = v43;
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "%{public}@  retaining _responseExpirationDate=%{public}@", buf, 0x16u);
@@ -261,21 +261,21 @@ LABEL_35:
   }
 }
 
-- (void)_postPendingContentTasteChangesByAddingChange:(id)a3 completionHandler:(id)a4
+- (void)_postPendingContentTasteChangesByAddingChange:(id)change completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  changeCopy = change;
+  handlerCopy = handler;
   v9 = [ICAsyncBlockOperation alloc];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_1000A9C80;
   v16 = &unk_1001DC900;
-  v17 = v7;
-  v18 = self;
-  v19 = v8;
+  v17 = changeCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
   v20 = a2;
-  v10 = v8;
-  v11 = v7;
+  v10 = handlerCopy;
+  v11 = changeCopy;
   v12 = [v9 initWithStartHandler:&v13];
   [(NSOperationQueue *)self->_operationQueue addOperation:v12, v13, v14, v15, v16];
 }
@@ -288,7 +288,7 @@ LABEL_35:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v12 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@  we already have a retry operation scheduled", buf, 0xCu);
     }
   }
@@ -303,7 +303,7 @@ LABEL_35:
       v6 = dword_10016AF68[backOffIndex];
       retryState = self->_retryState;
       *buf = 138544130;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 1024;
       v14 = retryState;
       v15 = 1024;
@@ -343,77 +343,77 @@ LABEL_35:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
-  v6 = [v5 accountDSID];
-  v7 = [NSString stringWithFormat:@"%@ %p [dsid=%@]", v4, self, v6];
+  userIdentity = [(ICConnectionConfiguration *)self->_configuration userIdentity];
+  accountDSID = [userIdentity accountDSID];
+  v7 = [NSString stringWithFormat:@"%@ %p [dsid=%@]", v4, self, accountDSID];
 
   return v7;
 }
 
-- (void)cancelAllOperationsAndClearPendingChangesWithCompletionHandler:(id)a3
+- (void)cancelAllOperationsAndClearPendingChangesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000AA630;
   v7[3] = &unk_1001DF5A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)updateContentTasteForItem:(id)a3 invalidatingLocalCache:(BOOL)a4 completionHandler:(id)a5
+- (void)updateContentTasteForItem:(id)item invalidatingLocalCache:(BOOL)cache completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  itemCopy = item;
+  handlerCopy = handler;
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000AA954;
   v13[3] = &unk_1001DC8D8;
-  v16 = a4;
+  cacheCopy = cache;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = itemCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = itemCopy;
   dispatch_async(queue, v13);
 }
 
-- (void)updateContentTasteForReason:(int64_t)a3 invalidatingLocalCache:(BOOL)a4 completionHandler:(id)a5
+- (void)updateContentTasteForReason:(int64_t)reason invalidatingLocalCache:(BOOL)cache completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000AABAC;
   v11[3] = &unk_1001DC8B0;
-  v14 = a4;
-  v12 = v8;
-  v13 = a3;
+  cacheCopy = cache;
+  v12 = handlerCopy;
+  reasonCopy = reason;
   v11[4] = self;
-  v10 = v8;
+  v10 = handlerCopy;
   dispatch_async(queue, v11);
 }
 
-- (ICContentTasteRequestHandler)initWithConfiguration:(id)a3
+- (ICContentTasteRequestHandler)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v23.receiver = self;
   v23.super_class = ICContentTasteRequestHandler;
   v5 = [(ICContentTasteRequestHandler *)&v23 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     configuration = v5->_configuration;
     v5->_configuration = v6;
 
-    v8 = [(ICConnectionConfiguration *)v5->_configuration userIdentity];
-    v9 = [v8 accountDSID];
+    userIdentity = [(ICConnectionConfiguration *)v5->_configuration userIdentity];
+    accountDSID = [userIdentity accountDSID];
 
-    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.amp.iTunesCloud.ICContentTasteRequestHandler-%lu", [v9 hash]);
+    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.amp.iTunesCloud.ICContentTasteRequestHandler-%lu", [accountDSID hash]);
     v11 = [NSString stringWithFormat:@"%@.default", v10];
     defaultContentTasteRefreshIdentifier = v5->_defaultContentTasteRefreshIdentifier;
     v5->_defaultContentTasteRefreshIdentifier = v11;
@@ -434,7 +434,7 @@ LABEL_35:
     [(NSOperationQueue *)v5->_operationQueue setMaxConcurrentOperationCount:1];
     [(NSOperationQueue *)v5->_operationQueue setQualityOfService:25];
     [(NSOperationQueue *)v5->_operationQueue setUnderlyingQueue:v5->_queue];
-    v20 = [[ICContentTastePendingChangesCoordinator alloc] initWithConfiguration:v4];
+    v20 = [[ICContentTastePendingChangesCoordinator alloc] initWithConfiguration:configurationCopy];
     pendingChangesCoordinator = v5->_pendingChangesCoordinator;
     v5->_pendingChangesCoordinator = v20;
 

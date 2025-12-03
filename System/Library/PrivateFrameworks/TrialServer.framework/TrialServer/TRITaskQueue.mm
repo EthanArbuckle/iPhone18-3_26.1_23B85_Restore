@@ -1,55 +1,55 @@
 @interface TRITaskQueue
-- ($A5A652246548B43F8BC05201A1C72A70)_addTask:(id)a3 options:(id)a4 guardedData:(id)a5 taskId:(id *)a6 tryRunningEligibleTasksImmediately:(BOOL)a7;
-- ($A5A652246548B43F8BC05201A1C72A70)_addTask:(id)a3 options:(id)a4 guardedData:(id)a5 taskIdOut:(id *)a6 accumulatedNewTaskRecords:(id)a7;
-- ($A5A652246548B43F8BC05201A1C72A70)_addTask:(id)a3 options:(id)a4 taskId:(id *)a5 tryRunningEligibleTasksImmediately:(BOOL)a6;
-- (BOOL)_cancelDependenciesAndTaskWithId:(id)a3 guardedData:(id)a4;
-- (BOOL)_cancelTask:(id)a3 guardedData:(id)a4;
-- (BOOL)_isTaskWithId:(id)a3 inTaskGroup:(id)a4 runnableGivenCapabilities:(unint64_t)a5 atDate:(id)a6 cachedRunnability:(id)a7 visitedPath:(id)a8 topoSortedRunnable:(id)a9 allowOnlyRootTasksRunnable:(BOOL)a10;
-- (BOOL)_removeTaskWithId:(id)a3 guardedData:(id)a4 persistRemove:(BOOL)a5;
-- (BOOL)addTaskAfterOperationsFinish:(id)a3;
-- (BOOL)cancelTask:(id)a3;
-- (BOOL)cancelTasksWithTag:(id)a3;
-- (BOOL)cancelTasksWithTag:(id)a3 excludingTasks:(id)a4;
-- (BOOL)enumerateTasksWithTagsIntersectingTagSet:(id)a3 block:(id)a4;
-- (BOOL)finishXPCActivitiesWithGuardedData:(id)a3;
-- (BOOL)ifNotPresentAddTask:(id)a3;
-- (BOOL)updateActivity:(id)a3 withStartDate:(id)a4;
-- (TRITaskQueue)initWithServerContext:(id)a3 operationQueue:(id)a4 operationGroup:(id)a5 asyncQueue:(id)a6;
-- (id)_addTask:(id)a3 withDependencies:(id)a4 guardedData:(id)a5;
-- (id)_createOperationWithTask:(id)a3 withId:(id)a4 dependencies:(id)a5 taskMap:(id)a6;
-- (id)_earliestStartDateFromTaskList:(id)a3;
-- (id)_runTask:(id)a3;
-- (id)activeActivityDescriptorGrantingCapability:(unint64_t)a3;
-- (id)activeActivityGrantingCapability:(unint64_t)a3;
+- ($A5A652246548B43F8BC05201A1C72A70)_addTask:(id)task options:(id)options guardedData:(id)data taskId:(id *)id tryRunningEligibleTasksImmediately:(BOOL)immediately;
+- ($A5A652246548B43F8BC05201A1C72A70)_addTask:(id)task options:(id)options guardedData:(id)data taskIdOut:(id *)out accumulatedNewTaskRecords:(id)records;
+- ($A5A652246548B43F8BC05201A1C72A70)_addTask:(id)task options:(id)options taskId:(id *)id tryRunningEligibleTasksImmediately:(BOOL)immediately;
+- (BOOL)_cancelDependenciesAndTaskWithId:(id)id guardedData:(id)data;
+- (BOOL)_cancelTask:(id)task guardedData:(id)data;
+- (BOOL)_isTaskWithId:(id)id inTaskGroup:(id)group runnableGivenCapabilities:(unint64_t)capabilities atDate:(id)date cachedRunnability:(id)runnability visitedPath:(id)path topoSortedRunnable:(id)runnable allowOnlyRootTasksRunnable:(BOOL)self0;
+- (BOOL)_removeTaskWithId:(id)id guardedData:(id)data persistRemove:(BOOL)remove;
+- (BOOL)addTaskAfterOperationsFinish:(id)finish;
+- (BOOL)cancelTask:(id)task;
+- (BOOL)cancelTasksWithTag:(id)tag;
+- (BOOL)cancelTasksWithTag:(id)tag excludingTasks:(id)tasks;
+- (BOOL)enumerateTasksWithTagsIntersectingTagSet:(id)set block:(id)block;
+- (BOOL)finishXPCActivitiesWithGuardedData:(id)data;
+- (BOOL)ifNotPresentAddTask:(id)task;
+- (BOOL)updateActivity:(id)activity withStartDate:(id)date;
+- (TRITaskQueue)initWithServerContext:(id)context operationQueue:(id)queue operationGroup:(id)group asyncQueue:(id)asyncQueue;
+- (id)_addTask:(id)task withDependencies:(id)dependencies guardedData:(id)data;
+- (id)_createOperationWithTask:(id)task withId:(id)id dependencies:(id)dependencies taskMap:(id)map;
+- (id)_earliestStartDateFromTaskList:(id)list;
+- (id)_runTask:(id)task;
+- (id)activeActivityDescriptorGrantingCapability:(unint64_t)capability;
+- (id)activeActivityGrantingCapability:(unint64_t)capability;
 - (id)debugDescription;
 - (unint64_t)count;
-- (void)_evaluateRunConditionsWithGuardedData:(id)a3 shouldContinueWork:(BOOL *)a4;
-- (void)_finalizeTask:(id)a3 withId:(id)a4 runResult:(id)a5;
-- (void)_partitionTaskGroup:(id)a3 byRunnabilityGivenCapabilities:(unint64_t)a4 runnableAtDate:(id)a5 topoSortedCurrentlyRunnable:(id *)a6 blocked:(id *)a7 allowOnlyRootTasksRunnable:(BOOL)a8;
-- (void)_registerRetryActivityForDate:(id)a3;
-- (void)_registerTaskQueueActivityForDate:(id)a3;
-- (void)_scheduleDeactivationBGST:(id)a3;
-- (void)_scheduleFutureActivitiesWithGuardedData:(id)a3;
-- (void)_startImmediateTasksIfNotAlreadyQueued:(id)a3 guardedData:(id)a4 didStartNewWork:(BOOL *)a5;
-- (void)_startRunnableTasksIfNecessaryWithGuardedData:(id)a3;
-- (void)registerFinalizeBlock:(id)a3;
-- (void)registerFinalizeBlockToRetryWithBlock:(id)a3;
-- (void)resumeWithBGST:(id)a3 executeWhenSuspended:(id)a4;
-- (void)resumeWithXPCActivityDescriptor:(id)a3 executeWhenSuspended:(id)a4;
+- (void)_evaluateRunConditionsWithGuardedData:(id)data shouldContinueWork:(BOOL *)work;
+- (void)_finalizeTask:(id)task withId:(id)id runResult:(id)result;
+- (void)_partitionTaskGroup:(id)group byRunnabilityGivenCapabilities:(unint64_t)capabilities runnableAtDate:(id)date topoSortedCurrentlyRunnable:(id *)runnable blocked:(id *)blocked allowOnlyRootTasksRunnable:(BOOL)tasksRunnable;
+- (void)_registerRetryActivityForDate:(id)date;
+- (void)_registerTaskQueueActivityForDate:(id)date;
+- (void)_scheduleDeactivationBGST:(id)t;
+- (void)_scheduleFutureActivitiesWithGuardedData:(id)data;
+- (void)_startImmediateTasksIfNotAlreadyQueued:(id)queued guardedData:(id)data didStartNewWork:(BOOL *)work;
+- (void)_startRunnableTasksIfNecessaryWithGuardedData:(id)data;
+- (void)registerFinalizeBlock:(id)block;
+- (void)registerFinalizeBlockToRetryWithBlock:(id)block;
+- (void)resumeWithBGST:(id)t executeWhenSuspended:(id)suspended;
+- (void)resumeWithXPCActivityDescriptor:(id)descriptor executeWhenSuspended:(id)suspended;
 - (void)waitForAsyncQueue;
 @end
 
 @implementation TRITaskQueue
 
-- (TRITaskQueue)initWithServerContext:(id)a3 operationQueue:(id)a4 operationGroup:(id)a5 asyncQueue:(id)a6
+- (TRITaskQueue)initWithServerContext:(id)context operationQueue:(id)queue operationGroup:(id)group asyncQueue:(id)asyncQueue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  contextCopy = context;
+  queueCopy = queue;
+  groupCopy = group;
+  asyncQueueCopy = asyncQueue;
+  if (contextCopy)
   {
-    if (v13)
+    if (groupCopy)
     {
       goto LABEL_3;
     }
@@ -57,22 +57,22 @@
 
   else
   {
-    v33 = [MEMORY[0x277CCA890] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"TRITaskQueue.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRITaskQueue.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
-    if (v13)
+    if (groupCopy)
     {
 LABEL_3:
-      if (v12)
+      if (queueCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
-      v35 = [MEMORY[0x277CCA890] currentHandler];
-      [v35 handleFailureInMethod:a2 object:self file:@"TRITaskQueue.m" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"operationQueue"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRITaskQueue.m" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"operationQueue"}];
 
-      if (v14)
+      if (asyncQueueCopy)
       {
         goto LABEL_5;
       }
@@ -81,23 +81,23 @@ LABEL_10:
     }
   }
 
-  v34 = [MEMORY[0x277CCA890] currentHandler];
-  [v34 handleFailureInMethod:a2 object:self file:@"TRITaskQueue.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"operationGroup"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRITaskQueue.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"operationGroup"}];
 
-  if (!v12)
+  if (!queueCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v14)
+  if (asyncQueueCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_11:
-  v36 = [MEMORY[0x277CCA890] currentHandler];
-  [v36 handleFailureInMethod:a2 object:self file:@"TRITaskQueue.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"asyncQueue"}];
+  currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"TRITaskQueue.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"asyncQueue"}];
 
 LABEL_5:
   v37.receiver = self;
@@ -106,15 +106,15 @@ LABEL_5:
   v16 = v15;
   if (v15)
   {
-    objc_storeWeak(&v15->_serverContext, v11);
-    objc_storeStrong(&v16->_opQueue, a4);
-    objc_storeStrong(&v16->_opGroup, a5);
-    objc_storeStrong(&v16->_asyncQueue, a6);
+    objc_storeWeak(&v15->_serverContext, contextCopy);
+    objc_storeStrong(&v16->_opQueue, queue);
+    objc_storeStrong(&v16->_opGroup, group);
+    objc_storeStrong(&v16->_asyncQueue, asyncQueue);
     v17 = objc_opt_new();
     *(v17 + 8) = 0;
-    v18 = [v11 taskDatabase];
+    taskDatabase = [contextCopy taskDatabase];
     v19 = *(v17 + 16);
-    *(v17 + 16) = v18;
+    *(v17 + 16) = taskDatabase;
 
     v20 = objc_opt_new();
     v21 = *(v17 + 24);
@@ -129,7 +129,7 @@ LABEL_5:
     v25 = *(v17 + 64);
     *(v17 + 64) = v24;
 
-    v26 = [[TRIBGSTManager alloc] initWithServerContext:v11 asyncQueue:v14];
+    v26 = [[TRIBGSTManager alloc] initWithServerContext:contextCopy asyncQueue:asyncQueueCopy];
     v27 = *(v17 + 72);
     *(v17 + 72) = v26;
 
@@ -137,24 +137,24 @@ LABEL_5:
     lock = v16->_lock;
     v16->_lock = v28;
 
-    v30 = [v11 client];
+    client = [contextCopy client];
     client = v16->_client;
-    v16->_client = v30;
+    v16->_client = client;
   }
 
   return v16;
 }
 
-- (void)registerFinalizeBlock:(id)a3
+- (void)registerFinalizeBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__TRITaskQueue_registerFinalizeBlock___block_invoke;
   v7[3] = &unk_279DE3528;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -165,10 +165,10 @@ void __38__TRITaskQueue_registerFinalizeBlock___block_invoke(uint64_t a1, uint64
   [v2 addObject:v3];
 }
 
-- (BOOL)finishXPCActivitiesWithGuardedData:(id)a3
+- (BOOL)finishXPCActivitiesWithGuardedData:(id)data
 {
-  v4 = a3;
-  v5 = [v4[3] count];
+  dataCopy = data;
+  v5 = [dataCopy[3] count];
   v6 = TRILogCategory_Server();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
   if (v5)
@@ -196,19 +196,19 @@ void __38__TRITaskQueue_registerFinalizeBlock___block_invoke(uint64_t a1, uint64
       _os_log_impl(&dword_26F567000, v8, OS_LOG_TYPE_DEFAULT, "Remove all finalizeBlocks", buf, 2u);
     }
 
-    [v4[8] removeAllObjects];
+    [dataCopy[8] removeAllObjects];
     v9 = [(TRIClient *)self->_client _refresh:0];
-    v10 = v4[6];
+    v10 = dataCopy[6];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __51__TRITaskQueue_finishXPCActivitiesWithGuardedData___block_invoke;
     v12[3] = &unk_279DE3550;
     v12[4] = self;
     [v10 enumerateKeysAndObjectsUsingBlock:v12];
-    [v4[9] markAllBGSTsAsCompleted];
-    v4[5] = 0;
-    [v4[6] removeAllObjects];
-    [(TRITaskQueue *)self _scheduleFutureActivitiesWithGuardedData:v4];
+    [dataCopy[9] markAllBGSTsAsCompleted];
+    dataCopy[5] = 0;
+    [dataCopy[6] removeAllObjects];
+    [(TRITaskQueue *)self _scheduleFutureActivitiesWithGuardedData:dataCopy];
   }
 
   return v5 == 0;
@@ -235,10 +235,10 @@ void __51__TRITaskQueue_finishXPCActivitiesWithGuardedData___block_invoke_2(uint
   v2[2](v2, *(a1 + 40));
 }
 
-- (void)_scheduleFutureActivitiesWithGuardedData:(id)a3
+- (void)_scheduleFutureActivitiesWithGuardedData:(id)data
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -265,18 +265,18 @@ void __51__TRITaskQueue_finishXPCActivitiesWithGuardedData___block_invoke_2(uint
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
-        v13 = v4[2];
-        v14 = [v12 supportedTaskCapabilities];
-        v15 = [MEMORY[0x277CBEAA8] distantFuture];
-        v16 = [v13 dependencyFreeTasksForAllowedCapabilities:v14 dateForRunnability:v15];
+        v13 = dataCopy[2];
+        supportedTaskCapabilities = [v12 supportedTaskCapabilities];
+        distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+        v16 = [v13 dependencyFreeTasksForAllowedCapabilities:supportedTaskCapabilities dateForRunnability:distantFuture];
 
         v24 = 0;
         v25 = 0;
         if (v16)
         {
-          v17 = [v12 supportedTaskCapabilities];
-          v18 = [MEMORY[0x277CBEAA8] distantFuture];
-          [(TRITaskQueue *)self _partitionTaskGroup:v16 byRunnabilityGivenCapabilities:v17 runnableAtDate:v18 topoSortedCurrentlyRunnable:&v25 blocked:&v24 allowOnlyRootTasksRunnable:1];
+          supportedTaskCapabilities2 = [v12 supportedTaskCapabilities];
+          distantFuture2 = [MEMORY[0x277CBEAA8] distantFuture];
+          [(TRITaskQueue *)self _partitionTaskGroup:v16 byRunnabilityGivenCapabilities:supportedTaskCapabilities2 runnableAtDate:distantFuture2 topoSortedCurrentlyRunnable:&v25 blocked:&v24 allowOnlyRootTasksRunnable:1];
 
           if ([v25 count])
           {
@@ -303,26 +303,26 @@ void __51__TRITaskQueue_finishXPCActivitiesWithGuardedData___block_invoke_2(uint
     while (v9);
   }
 
-  [(TRITaskQueue *)self _scheduleDeactivationBGST:v4];
+  [(TRITaskQueue *)self _scheduleDeactivationBGST:dataCopy];
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_scheduleDeactivationBGST:(id)a3
+- (void)_scheduleDeactivationBGST:(id)t
 {
-  v4 = a3;
-  v5 = *(v4 + 2);
-  v6 = [MEMORY[0x277CBEAA8] distantFuture];
-  v7 = [v5 dependencyFreeTasksForAllowedCapabilities:0 dateForRunnability:v6];
+  tCopy = t;
+  v5 = *(tCopy + 2);
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v7 = [v5 dependencyFreeTasksForAllowedCapabilities:0 dateForRunnability:distantFuture];
 
   if (v7)
   {
-    v8 = [v7 allValues];
-    v9 = [v8 _pas_filteredArrayWithTest:&__block_literal_global_36];
+    allValues = [v7 allValues];
+    v9 = [allValues _pas_filteredArrayWithTest:&__block_literal_global_36];
 
     v10 = [(TRITaskQueue *)self _earliestStartDateFromTaskList:v9];
     if (v10)
     {
-      [*(v4 + 9) scheduleDeactivationBGSTWithEarliestDeactivationTaskScheduledDate:v10 gracePeriodInSeconds:1800];
+      [*(tCopy + 9) scheduleDeactivationBGSTWithEarliestDeactivationTaskScheduledDate:v10 gracePeriodInSeconds:1800];
     }
 
     else
@@ -355,15 +355,15 @@ BOOL __42__TRITaskQueue__scheduleDeactivationBGST___block_invoke(uint64_t a1, vo
   return v3;
 }
 
-- (id)_earliestStartDateFromTaskList:(id)a3
+- (id)_earliestStartDateFromTaskList:(id)list
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  listCopy = list;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v4 = [listCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -375,22 +375,22 @@ BOOL __42__TRITaskQueue__scheduleDeactivationBGST___block_invoke(uint64_t a1, vo
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(listCopy);
         }
 
-        v9 = [*(*(&v16 + 1) + 8 * i) startDate];
-        if (v9)
+        startDate = [*(*(&v16 + 1) + 8 * i) startDate];
+        if (startDate)
         {
-          if (!v6 || ([v6 timeIntervalSinceReferenceDate], v11 = v10, objc_msgSend(v9, "timeIntervalSinceReferenceDate"), v11 > v12))
+          if (!v6 || ([v6 timeIntervalSinceReferenceDate], v11 = v10, objc_msgSend(startDate, "timeIntervalSinceReferenceDate"), v11 > v12))
           {
-            v13 = v9;
+            v13 = startDate;
 
             v6 = v13;
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [listCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
@@ -406,20 +406,20 @@ BOOL __42__TRITaskQueue__scheduleDeactivationBGST___block_invoke(uint64_t a1, vo
   return v6;
 }
 
-- (void)_evaluateRunConditionsWithGuardedData:(id)a3 shouldContinueWork:(BOOL *)a4
+- (void)_evaluateRunConditionsWithGuardedData:(id)data shouldContinueWork:(BOOL *)work
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (*(v5 + 8) != 1)
+  dataCopy = data;
+  if (*(dataCopy + 8) != 1)
   {
-    v36 = a4;
-    *a4 = 1;
+    workCopy = work;
+    *work = 1;
     v6 = objc_opt_new();
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v7 = v5[6];
+    v7 = dataCopy[6];
     v8 = [v7 countByEnumeratingWithState:&v41 objects:v50 count:16];
     if (v8)
     {
@@ -435,17 +435,17 @@ BOOL __42__TRITaskQueue__scheduleDeactivationBGST___block_invoke(uint64_t a1, vo
           }
 
           v12 = *(*(&v41 + 1) + 8 * i);
-          v13 = [v12 shouldDefer];
-          v14 = v13[2]();
+          shouldDefer = [v12 shouldDefer];
+          v14 = shouldDefer[2]();
 
           if (v14)
           {
             v15 = TRILogCategory_Server();
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
             {
-              v16 = [v12 name];
+              name = [v12 name];
               *buf = 138543362;
-              v46 = v16;
+              v46 = name;
               _os_log_impl(&dword_26F567000, v15, OS_LOG_TYPE_DEFAULT, "Deferral requested for activity %{public}@", buf, 0xCu);
             }
 
@@ -462,9 +462,9 @@ BOOL __42__TRITaskQueue__scheduleDeactivationBGST___block_invoke(uint64_t a1, vo
     if ([v6 count])
     {
       v17 = [v6 count];
-      if (v17 == [v5[6] count])
+      if (v17 == [dataCopy[6] count])
       {
-        *v36 = 0;
+        *workCopy = 0;
       }
     }
 
@@ -488,9 +488,9 @@ BOOL __42__TRITaskQueue__scheduleDeactivationBGST___block_invoke(uint64_t a1, vo
           }
 
           v23 = *(*(&v37 + 1) + 8 * j);
-          v24 = [v5[6] objectForKeyedSubscript:v23];
+          v24 = [dataCopy[6] objectForKeyedSubscript:v23];
           v25 = [v24 copyWithReplacementFutureCompletionStatus:0];
-          [v5[6] setObject:v25 forKeyedSubscript:v23];
+          [dataCopy[6] setObject:v25 forKeyedSubscript:v23];
         }
 
         v20 = [v18 countByEnumeratingWithState:&v37 objects:v49 count:16];
@@ -499,7 +499,7 @@ BOOL __42__TRITaskQueue__scheduleDeactivationBGST___block_invoke(uint64_t a1, vo
       while (v20);
     }
 
-    if (!*v36)
+    if (!*workCopy)
     {
       goto LABEL_48;
     }
@@ -521,25 +521,25 @@ BOOL __42__TRITaskQueue__scheduleDeactivationBGST___block_invoke(uint64_t a1, vo
           goto LABEL_47;
         }
 
-        v28 = [v27 firstObject];
+        firstObject = [v27 firstObject];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v29 = [v28 BOOLValue];
+          bOOLValue = [firstObject BOOLValue];
           v30 = TRILogCategory_Server();
           v31 = os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT);
-          if (v29)
+          if (bOOLValue)
           {
             if (v31)
             {
               *buf = 138412546;
               v46 = @"com.apple.triald.tests.taskQueueDeferralSequence";
               v47 = 2112;
-              v48 = v28;
+              v48 = firstObject;
               _os_log_impl(&dword_26F567000, v30, OS_LOG_TYPE_DEFAULT, "Requesting task queue deferral due to NSUserDefaults %@[0] ==> %@", buf, 0x16u);
             }
 
-            *v36 = 0;
+            *workCopy = 0;
           }
 
           else
@@ -549,7 +549,7 @@ BOOL __42__TRITaskQueue__scheduleDeactivationBGST___block_invoke(uint64_t a1, vo
               *buf = 138412546;
               v46 = @"com.apple.triald.tests.taskQueueDeferralSequence";
               v47 = 2112;
-              v48 = v28;
+              v48 = firstObject;
               _os_log_impl(&dword_26F567000, v30, OS_LOG_TYPE_DEFAULT, "Omitting task queue deferral due to NSUserDefaults %@[0] ==> %@", buf, 0x16u);
             }
           }
@@ -583,30 +583,30 @@ BOOL __42__TRITaskQueue__scheduleDeactivationBGST___block_invoke(uint64_t a1, vo
 
       else
       {
-        v28 = TRILogCategory_Server();
-        if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+        firstObject = TRILogCategory_Server();
+        if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
           v46 = @"com.apple.triald.tests.taskQueueDeferralSequence";
-          _os_log_error_impl(&dword_26F567000, v28, OS_LOG_TYPE_ERROR, "Expected NSArray<NSNumber*> under NSUserDefaults %@", buf, 0xCu);
+          _os_log_error_impl(&dword_26F567000, firstObject, OS_LOG_TYPE_ERROR, "Expected NSArray<NSNumber*> under NSUserDefaults %@", buf, 0xCu);
         }
       }
     }
 
 LABEL_47:
 
-    if (*v36)
+    if (*workCopy)
     {
       goto LABEL_49;
     }
 
 LABEL_48:
-    *(v5 + 8) = 1;
-    [v5[3] enumerateKeysAndObjectsUsingBlock:&__block_literal_global_106];
+    *(dataCopy + 8) = 1;
+    [dataCopy[3] enumerateKeysAndObjectsUsingBlock:&__block_literal_global_106];
     goto LABEL_49;
   }
 
-  *a4 = 0;
+  *work = 0;
 LABEL_49:
 
   v35 = *MEMORY[0x277D85DE8];
@@ -622,20 +622,20 @@ void __73__TRITaskQueue__evaluateRunConditionsWithGuardedData_shouldContinueWork
   objc_autoreleasePoolPop(v0);
 }
 
-- (void)resumeWithXPCActivityDescriptor:(id)a3 executeWhenSuspended:(id)a4
+- (void)resumeWithXPCActivityDescriptor:(id)descriptor executeWhenSuspended:(id)suspended
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  suspendedCopy = suspended;
   lock = self->_lock;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __69__TRITaskQueue_resumeWithXPCActivityDescriptor_executeWhenSuspended___block_invoke;
   v11[3] = &unk_279DE3600;
-  v12 = v6;
-  v13 = v7;
+  v12 = descriptorCopy;
+  v13 = suspendedCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = descriptorCopy;
+  v10 = suspendedCopy;
   [(_PASLock *)lock runWithLockAcquired:v11];
 }
 
@@ -813,48 +813,48 @@ BOOL __69__TRITaskQueue_resumeWithXPCActivityDescriptor_executeWhenSuspended___b
   return v5;
 }
 
-- (void)resumeWithBGST:(id)a3 executeWhenSuspended:(id)a4
+- (void)resumeWithBGST:(id)t executeWhenSuspended:(id)suspended
 {
-  v7 = a3;
+  tCopy = t;
   lock = self->_lock;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __52__TRITaskQueue_resumeWithBGST_executeWhenSuspended___block_invoke;
   v15[3] = &unk_279DE3628;
-  v9 = v7;
+  v9 = tCopy;
   v16 = v9;
-  v10 = a4;
+  suspendedCopy = suspended;
   [(_PASLock *)lock runWithLockAcquired:v15];
-  v11 = [v9 identifier];
-  v12 = [v11 isEqualToString:@"com.apple.triald.deactivation"];
+  identifier = [v9 identifier];
+  v12 = [identifier isEqualToString:@"com.apple.triald.deactivation"];
 
   if ((v12 & 1) == 0)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRITaskQueue.m" lineNumber:416 description:{@"New BGST added, need to update task queue capabilities"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRITaskQueue.m" lineNumber:416 description:{@"New BGST added, need to update task queue capabilities"}];
   }
 
   v13 = [[TRIRunningXPCActivityDescriptor alloc] initForImmediateWorkWithCapabilities:0];
-  [(TRITaskQueue *)self resumeWithXPCActivityDescriptor:v13 executeWhenSuspended:v10];
+  [(TRITaskQueue *)self resumeWithXPCActivityDescriptor:v13 executeWhenSuspended:suspendedCopy];
 }
 
-- (void)_finalizeTask:(id)a3 withId:(id)a4 runResult:(id)a5
+- (void)_finalizeTask:(id)task withId:(id)id runResult:(id)result
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  taskCopy = task;
+  idCopy = id;
+  resultCopy = result;
   lock = self->_lock;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __47__TRITaskQueue__finalizeTask_withId_runResult___block_invoke;
   v15[3] = &unk_279DE36A0;
-  v16 = v10;
-  v17 = v8;
-  v18 = v9;
-  v19 = self;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = resultCopy;
+  v17 = taskCopy;
+  v18 = idCopy;
+  selfCopy = self;
+  v12 = idCopy;
+  v13 = taskCopy;
+  v14 = resultCopy;
   [(_PASLock *)lock runWithLockAcquired:v15];
 }
 
@@ -1162,30 +1162,30 @@ void __47__TRITaskQueue__finalizeTask_withId_runResult___block_invoke_222(uint64
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_runTask:(id)a3
+- (id)_runTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = os_transaction_create();
   WeakRetained = objc_loadWeakRetained(&self->_serverContext);
-  v7 = [v4 runUsingContext:WeakRetained withTaskQueue:self];
+  v7 = [taskCopy runUsingContext:WeakRetained withTaskQueue:self];
 
   return v7;
 }
 
-- (id)_createOperationWithTask:(id)a3 withId:(id)a4 dependencies:(id)a5 taskMap:(id)a6
+- (id)_createOperationWithTask:(id)task withId:(id)id dependencies:(id)dependencies taskMap:(id)map
 {
   v38 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v25 = a4;
-  v10 = a5;
-  v11 = a6;
+  taskCopy = task;
+  idCopy = id;
+  dependenciesCopy = dependencies;
+  mapCopy = map;
   v12 = objc_opt_new();
-  [v12 setTask:v9];
+  [v12 setTask:taskCopy];
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v13 = v10;
+  v13 = dependenciesCopy;
   v14 = [v13 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v14)
   {
@@ -1200,11 +1200,11 @@ void __47__TRITaskQueue__finalizeTask_withId_runResult___block_invoke_222(uint64
         }
 
         v17 = *(*(&v33 + 1) + 8 * i);
-        v18 = [v11 objectForKeyedSubscript:v17];
+        v18 = [mapCopy objectForKeyedSubscript:v17];
         if (!v18)
         {
-          v19 = [MEMORY[0x277CCA890] currentHandler];
-          [v19 handleFailureInMethod:a2 object:self file:@"TRITaskQueue.m" lineNumber:537 description:{@"Creating operation for task %@ with unknown dependency id %@", v9, v17}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"TRITaskQueue.m" lineNumber:537 description:{@"Creating operation for task %@ with unknown dependency id %@", taskCopy, v17}];
         }
 
         [v12 addDependency:v18];
@@ -1222,11 +1222,11 @@ void __47__TRITaskQueue__finalizeTask_withId_runResult___block_invoke_222(uint64
   v27[2] = __69__TRITaskQueue__createOperationWithTask_withId_dependencies_taskMap___block_invoke;
   v27[3] = &unk_279DE36C8;
   objc_copyWeak(&v31, &location);
-  v20 = v9;
+  v20 = taskCopy;
   v28 = v20;
-  v21 = v25;
+  v21 = idCopy;
   v29 = v21;
-  v30 = self;
+  selfCopy = self;
   [v12 addExecutionBlock:v27];
 
   objc_destroyWeak(&v31);
@@ -1399,26 +1399,26 @@ void __69__TRITaskQueue__createOperationWithTask_withId_dependencies_taskMap___b
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startImmediateTasksIfNotAlreadyQueued:(id)a3 guardedData:(id)a4 didStartNewWork:(BOOL *)a5
+- (void)_startImmediateTasksIfNotAlreadyQueued:(id)queued guardedData:(id)data didStartNewWork:(BOOL *)work
 {
   v80 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  queuedCopy = queued;
+  dataCopy = data;
   buf[0] = 0;
-  v58 = self;
-  [(TRITaskQueue *)self _evaluateRunConditionsWithGuardedData:v8 shouldContinueWork:buf];
+  selfCopy = self;
+  [(TRITaskQueue *)self _evaluateRunConditionsWithGuardedData:dataCopy shouldContinueWork:buf];
   if (buf[0] == 1)
   {
     v52 = os_transaction_create();
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v10 = v9;
-    v59 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v7, "count")}];
+    v59 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(queuedCopy, "count")}];
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v53 = v7;
-    obj = v7;
+    v53 = queuedCopy;
+    obj = queuedCopy;
     v11 = [obj countByEnumeratingWithState:&v70 objects:v79 count:16];
     if (v11)
     {
@@ -1438,32 +1438,32 @@ void __69__TRITaskQueue__createOperationWithTask_withId_dependencies_taskMap___b
 
           v15 = *(*(&v70 + 1) + 8 * v14);
           v16 = objc_autoreleasePoolPush();
-          v17 = v8[3];
-          v18 = [v15 taskId];
-          v19 = [v17 objectForKeyedSubscript:v18];
+          v17 = dataCopy[3];
+          taskId = [v15 taskId];
+          v19 = [v17 objectForKeyedSubscript:taskId];
 
           if (v19)
           {
-            v20 = [v15 taskId];
-            [v59 setObject:v19 forKeyedSubscript:v20];
+            taskId2 = [v15 taskId];
+            [v59 setObject:v19 forKeyedSubscript:taskId2];
           }
 
           else
           {
-            v20 = [v15 copy];
-            v21 = [v15 startDate];
-            v22 = v21;
-            if (v21)
+            taskId2 = [v15 copy];
+            startDate = [v15 startDate];
+            v22 = startDate;
+            if (startDate)
             {
-              [v21 timeIntervalSinceReferenceDate];
+              [startDate timeIntervalSinceReferenceDate];
               if (v23 > v10)
               {
                 v24 = TRILogCategory_Server();
                 if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
                 {
-                  v29 = [v15 taskId];
+                  taskId3 = [v15 taskId];
                   *buf = 138412546;
-                  v76 = v29;
+                  v76 = taskId3;
                   v77 = 2112;
                   v78 = v22;
                   _os_log_error_impl(&dword_26F567000, v24, OS_LOG_TYPE_ERROR, "asked to start task [tid:%@] with future start date %@", buf, 0x16u);
@@ -1471,13 +1471,13 @@ void __69__TRITaskQueue__createOperationWithTask_withId_dependencies_taskMap___b
               }
             }
 
-            v25 = [v20 task];
-            v26 = [v20 taskId];
-            v27 = [v20 dependencies];
-            v19 = [(TRITaskQueue *)v58 _createOperationWithTask:v25 withId:v26 dependencies:v27 taskMap:v59];
+            task = [taskId2 task];
+            v20TaskId = [taskId2 taskId];
+            dependencies = [taskId2 dependencies];
+            v19 = [(TRITaskQueue *)selfCopy _createOperationWithTask:task withId:v20TaskId dependencies:dependencies taskMap:v59];
 
-            v28 = [v20 taskId];
-            [v59 setObject:v19 forKeyedSubscript:v28];
+            v20TaskId2 = [taskId2 taskId];
+            [v59 setObject:v19 forKeyedSubscript:v20TaskId2];
 
             v13 = v55;
             v12 = v56;
@@ -1514,60 +1514,60 @@ void __69__TRITaskQueue__createOperationWithTask_withId_dependencies_taskMap___b
           }
 
           v35 = *(*(&v66 + 1) + 8 * i);
-          v36 = v8[3];
-          v37 = [v35 taskId];
-          v38 = [v36 objectForKeyedSubscript:v37];
+          v36 = dataCopy[3];
+          taskId4 = [v35 taskId];
+          v38 = [v36 objectForKeyedSubscript:taskId4];
 
           if (!v38)
           {
-            v39 = [v35 taskId];
-            v40 = [v59 objectForKeyedSubscript:v39];
+            taskId5 = [v35 taskId];
+            v40 = [v59 objectForKeyedSubscript:taskId5];
 
             if (v40)
             {
-              if (a5)
+              if (work)
               {
-                *a5 = 1;
+                *work = 1;
               }
 
-              v41 = v8[3];
-              v42 = [v35 taskId];
-              [v41 setObject:v40 forKeyedSubscript:v42];
+              v41 = dataCopy[3];
+              taskId6 = [v35 taskId];
+              [v41 setObject:v40 forKeyedSubscript:taskId6];
 
               v43 = TRILogCategory_Server();
               if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
               {
-                v44 = [v35 task];
-                v45 = [v35 taskId];
+                task2 = [v35 task];
+                taskId7 = [v35 taskId];
                 *buf = 138543618;
-                v76 = v44;
+                v76 = task2;
                 v77 = 2112;
-                v78 = v45;
+                v78 = taskId7;
                 _os_log_impl(&dword_26F567000, v43, OS_LOG_TYPE_DEFAULT, "Enqueueing eligible task %{public}@ [tid:%@]", buf, 0x16u);
               }
 
-              opQueue = v58->_opQueue;
-              opGroup = v58->_opGroup;
+              opQueue = selfCopy->_opQueue;
+              opGroup = selfCopy->_opGroup;
               block[0] = MEMORY[0x277D85DD0];
               block[1] = 3221225472;
               block[2] = __83__TRITaskQueue__startImmediateTasksIfNotAlreadyQueued_guardedData_didStartNewWork___block_invoke;
               block[3] = &unk_279DE0080;
               v63 = v40;
-              v64 = v58;
+              v64 = selfCopy;
               v65 = v35;
               dispatch_group_async(opGroup, opQueue, block);
-              if (!v8[7])
+              if (!dataCopy[7])
               {
                 v60[0] = MEMORY[0x277D85DD0];
                 v60[1] = 3221225472;
                 v60[2] = __83__TRITaskQueue__startImmediateTasksIfNotAlreadyQueued_guardedData_didStartNewWork___block_invoke_3;
                 v60[3] = &unk_279DDF7A0;
-                v60[4] = v58;
-                v61 = v8;
+                v60[4] = selfCopy;
+                v61 = dataCopy;
                 v48 = MEMORY[0x2743948D0](v60);
                 v49 = [v48 copy];
-                v50 = v8[7];
-                v8[7] = v49;
+                v50 = dataCopy[7];
+                dataCopy[7] = v49;
 
                 v48[2](v48);
               }
@@ -1581,7 +1581,7 @@ void __69__TRITaskQueue__createOperationWithTask_withId_dependencies_taskMap___b
       while (v32);
     }
 
-    v7 = v53;
+    queuedCopy = v53;
   }
 
   v51 = *MEMORY[0x277D85DE8];
@@ -1682,30 +1682,30 @@ void __83__TRITaskQueue__startImmediateTasksIfNotAlreadyQueued_guardedData_didSt
   }
 }
 
-- (BOOL)_removeTaskWithId:(id)a3 guardedData:(id)a4 persistRemove:(BOOL)a5
+- (BOOL)_removeTaskWithId:(id)id guardedData:(id)data persistRemove:(BOOL)remove
 {
-  v5 = a5;
+  removeCopy = remove;
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  idCopy = id;
+  dataCopy = data;
   v10 = TRILogCategory_Server();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v19 = v8;
+    v19 = idCopy;
     _os_log_debug_impl(&dword_26F567000, v10, OS_LOG_TYPE_DEBUG, "removing task with [tid:%@]", buf, 0xCu);
   }
 
-  [v9[3] setObject:0 forKeyedSubscript:v8];
-  if (v5)
+  [dataCopy[3] setObject:0 forKeyedSubscript:idCopy];
+  if (removeCopy)
   {
-    v11 = v9[2];
+    v11 = dataCopy[2];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __60__TRITaskQueue__removeTaskWithId_guardedData_persistRemove___block_invoke;
     v15[3] = &unk_279DE3718;
-    v16 = v8;
-    v17 = self;
+    v16 = idCopy;
+    selfCopy = self;
     v12 = [v11 removeTaskWithId:v16 cleanupBlock:v15];
   }
 
@@ -1739,29 +1739,29 @@ void __60__TRITaskQueue__removeTaskWithId_guardedData_persistRemove___block_invo
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)ifNotPresentAddTask:(id)a3
+- (BOOL)ifNotPresentAddTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = +[TRITaskQueuingOptions defaultOptionsWithIgnoreDuplicates];
-  LODWORD(self) = [(TRITaskQueue *)self _addTask:v4 options:v5 taskId:0 tryRunningEligibleTasksImmediately:0];
+  LODWORD(self) = [(TRITaskQueue *)self _addTask:taskCopy options:v5 taskId:0 tryRunningEligibleTasksImmediately:0];
 
   return self != 2;
 }
 
-- (BOOL)addTaskAfterOperationsFinish:(id)a3
+- (BOOL)addTaskAfterOperationsFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   v5 = +[TRITaskQueuingOptions defaultOptionsWithIgnoreDuplicates];
   dispatch_group_wait(self->_opGroup, 0xFFFFFFFFFFFFFFFFLL);
-  LODWORD(self) = [(TRITaskQueue *)self _addTask:v4 options:v5 taskId:0 tryRunningEligibleTasksImmediately:0];
+  LODWORD(self) = [(TRITaskQueue *)self _addTask:finishCopy options:v5 taskId:0 tryRunningEligibleTasksImmediately:0];
 
   return self != 2;
 }
 
-- ($A5A652246548B43F8BC05201A1C72A70)_addTask:(id)a3 options:(id)a4 taskId:(id *)a5 tryRunningEligibleTasksImmediately:(BOOL)a6
+- ($A5A652246548B43F8BC05201A1C72A70)_addTask:(id)task options:(id)options taskId:(id *)id tryRunningEligibleTasksImmediately:(BOOL)immediately
 {
-  v10 = a3;
-  v11 = a4;
+  taskCopy = task;
+  optionsCopy = options;
   v12 = os_transaction_create();
   v24 = 0;
   v25 = &v24;
@@ -1775,12 +1775,12 @@ void __60__TRITaskQueue__removeTaskWithId_guardedData_persistRemove___block_invo
   v18[3] = &unk_279DE3740;
   v21 = &v24;
   v18[4] = self;
-  v14 = v10;
+  v14 = taskCopy;
   v19 = v14;
-  v15 = v11;
+  v15 = optionsCopy;
   v20 = v15;
-  v22 = a5;
-  v23 = a6;
+  idCopy = id;
+  immediatelyCopy = immediately;
   [(_PASLock *)lock runWithLockAcquired:v18];
   v16.var0 = *(v25 + 32);
 
@@ -1795,47 +1795,47 @@ uint64_t __75__TRITaskQueue__addTask_options_taskId_tryRunningEligibleTasksImmed
   return result;
 }
 
-- ($A5A652246548B43F8BC05201A1C72A70)_addTask:(id)a3 options:(id)a4 guardedData:(id)a5 taskId:(id *)a6 tryRunningEligibleTasksImmediately:(BOOL)a7
+- ($A5A652246548B43F8BC05201A1C72A70)_addTask:(id)task options:(id)options guardedData:(id)data taskId:(id *)id tryRunningEligibleTasksImmediately:(BOOL)immediately
 {
-  v7 = a7;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  immediatelyCopy = immediately;
+  dataCopy = data;
+  optionsCopy = options;
+  taskCopy = task;
   v15 = os_transaction_create();
   v16 = objc_opt_new();
   obj = 0;
-  v17.var0 = [(TRITaskQueue *)self _addTask:v14 options:v13 guardedData:v12 taskIdOut:&obj accumulatedNewTaskRecords:v16];
+  v17.var0 = [(TRITaskQueue *)self _addTask:taskCopy options:optionsCopy guardedData:dataCopy taskIdOut:&obj accumulatedNewTaskRecords:v16];
 
-  if (v17.var0 != 2 && [v16 count] && v7)
+  if (v17.var0 != 2 && [v16 count] && immediatelyCopy)
   {
-    [(TRITaskQueue *)self _startRunnableTasksIfNecessaryWithGuardedData:v12];
+    [(TRITaskQueue *)self _startRunnableTasksIfNecessaryWithGuardedData:dataCopy];
   }
 
-  if (a6)
+  if (id)
   {
-    objc_storeStrong(a6, obj);
+    objc_storeStrong(id, obj);
   }
 
   return v17;
 }
 
-- (void)_startRunnableTasksIfNecessaryWithGuardedData:(id)a3
+- (void)_startRunnableTasksIfNecessaryWithGuardedData:(id)data
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4[2];
-  v6 = v4[5];
+  dataCopy = data;
+  v5 = dataCopy[2];
+  v6 = dataCopy[5];
   v7 = objc_opt_new();
   v8 = [v5 dependencyFreeTasksForAllowedCapabilities:v6 dateForRunnability:v7];
 
-  v9 = [v8 allKeys];
-  v10 = [v9 _pas_mappedArrayWithTransform:&__block_literal_global_256];
+  allKeys = [v8 allKeys];
+  v10 = [allKeys _pas_mappedArrayWithTransform:&__block_literal_global_256];
 
   v11 = TRILogCategory_Server();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = [v8 count];
-    v13 = v4[5];
+    v13 = dataCopy[5];
     *buf = 134218498;
     *&buf[4] = v12;
     v19 = 2048;
@@ -1849,11 +1849,11 @@ uint64_t __75__TRITaskQueue__addTask_options_taskId_tryRunningEligibleTasksImmed
   {
     v17 = 0;
     *buf = 0;
-    v14 = v4[5];
+    v14 = dataCopy[5];
     v15 = [MEMORY[0x277CBEAA8] now];
     [(TRITaskQueue *)self _partitionTaskGroup:v8 byRunnabilityGivenCapabilities:v14 runnableAtDate:v15 topoSortedCurrentlyRunnable:buf blocked:&v17 allowOnlyRootTasksRunnable:1];
 
-    [(TRITaskQueue *)self _startImmediateTasksIfNotAlreadyQueued:*buf guardedData:v4 didStartNewWork:0];
+    [(TRITaskQueue *)self _startImmediateTasksIfNotAlreadyQueued:*buf guardedData:dataCopy didStartNewWork:0];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -1868,37 +1868,37 @@ id __62__TRITaskQueue__startRunnableTasksIfNecessaryWithGuardedData___block_invo
   return v4;
 }
 
-- (BOOL)_isTaskWithId:(id)a3 inTaskGroup:(id)a4 runnableGivenCapabilities:(unint64_t)a5 atDate:(id)a6 cachedRunnability:(id)a7 visitedPath:(id)a8 topoSortedRunnable:(id)a9 allowOnlyRootTasksRunnable:(BOOL)a10
+- (BOOL)_isTaskWithId:(id)id inTaskGroup:(id)group runnableGivenCapabilities:(unint64_t)capabilities atDate:(id)date cachedRunnability:(id)runnability visitedPath:(id)path topoSortedRunnable:(id)runnable allowOnlyRootTasksRunnable:(BOOL)self0
 {
   v78 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v19 = v17;
-  v66 = v18;
-  v64 = a6;
-  v20 = a7;
-  v21 = a8;
-  v65 = a9;
+  idCopy = id;
+  groupCopy = group;
+  v19 = idCopy;
+  v66 = groupCopy;
+  dateCopy = date;
+  runnabilityCopy = runnability;
+  pathCopy = path;
+  runnableCopy = runnable;
   v22 = objc_autoreleasePoolPush();
-  v23 = [v20 objectForKeyedSubscript:v17];
+  v23 = [runnabilityCopy objectForKeyedSubscript:idCopy];
   v24 = v23;
   if (!v23)
   {
     v62 = v22;
-    if ([v21 containsObject:v17])
+    if ([pathCopy containsObject:idCopy])
     {
-      v58 = [MEMORY[0x277CCA890] currentHandler];
-      [v58 handleFailureInMethod:a2 object:self file:@"TRITaskQueue.m" lineNumber:816 description:@"Dependency graph contains a cycle"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"TRITaskQueue.m" lineNumber:816 description:@"Dependency graph contains a cycle"];
     }
 
-    v26 = [v21 setByAddingObject:v17];
+    v26 = [pathCopy setByAddingObject:idCopy];
 
     v63 = v19;
     v27 = [v66 objectForKeyedSubscript:v19];
     if (!v27)
     {
-      v59 = [MEMORY[0x277CCA890] currentHandler];
-      [v59 handleFailureInMethod:a2 object:self file:@"TRITaskQueue.m" lineNumber:820 description:{@"Invalid parameter not satisfying: %@", @"record"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRITaskQueue.m" lineNumber:820 description:{@"Invalid parameter not satisfying: %@", @"record"}];
     }
 
     v69 = 0u;
@@ -1906,8 +1906,8 @@ id __62__TRITaskQueue__startRunnableTasksIfNecessaryWithGuardedData___block_invo
     v67 = 0u;
     v68 = 0u;
     v61 = v27;
-    v28 = [v27 dependencies];
-    v29 = [v28 countByEnumeratingWithState:&v67 objects:v77 count:16];
+    dependencies = [v27 dependencies];
+    v29 = [dependencies countByEnumeratingWithState:&v67 objects:v77 count:16];
     if (v29)
     {
       v30 = v29;
@@ -1918,33 +1918,33 @@ id __62__TRITaskQueue__startRunnableTasksIfNecessaryWithGuardedData___block_invo
         {
           if (*v68 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(dependencies);
           }
 
           v33 = *(*(&v67 + 1) + 8 * i);
-          LOBYTE(v60) = a10;
-          if (![(TRITaskQueue *)self _isTaskWithId:v33 inTaskGroup:v66 runnableGivenCapabilities:a5 atDate:v64 cachedRunnability:v20 visitedPath:v26 topoSortedRunnable:v65 allowOnlyRootTasksRunnable:v60])
+          LOBYTE(v60) = tasksRunnable;
+          if (![(TRITaskQueue *)self _isTaskWithId:v33 inTaskGroup:v66 runnableGivenCapabilities:capabilities atDate:dateCopy cachedRunnability:runnabilityCopy visitedPath:v26 topoSortedRunnable:runnableCopy allowOnlyRootTasksRunnable:v60])
           {
             v41 = TRILogCategory_Server();
             v34 = v61;
             if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
             {
-              v42 = [v61 task];
+              task = [v61 task];
               *buf = 138543618;
-              v72 = v42;
+              v72 = task;
               v73 = 2112;
               v74 = v33;
               _os_log_impl(&dword_26F567000, v41, OS_LOG_TYPE_DEFAULT, "%{public}@ not runnable, dependency with [tid:%@] is not runnable", buf, 0x16u);
             }
 
             v19 = v63;
-            [v20 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:v63];
+            [runnabilityCopy setObject:MEMORY[0x277CBEC28] forKeyedSubscript:v63];
 
             goto LABEL_23;
           }
         }
 
-        v30 = [v28 countByEnumeratingWithState:&v67 objects:v77 count:16];
+        v30 = [dependencies countByEnumeratingWithState:&v67 objects:v77 count:16];
         if (v30)
         {
           continue;
@@ -1955,10 +1955,10 @@ id __62__TRITaskQueue__startRunnableTasksIfNecessaryWithGuardedData___block_invo
     }
 
     v34 = v61;
-    if (a10)
+    if (tasksRunnable)
     {
-      v35 = [v61 dependencies];
-      v36 = [v35 count];
+      dependencies2 = [v61 dependencies];
+      v36 = [dependencies2 count];
 
       if (v36)
       {
@@ -1966,62 +1966,62 @@ id __62__TRITaskQueue__startRunnableTasksIfNecessaryWithGuardedData___block_invo
         v19 = v63;
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
         {
-          v38 = [v61 task];
-          v39 = [v61 dependencies];
-          v40 = [v39 count];
+          task2 = [v61 task];
+          dependencies3 = [v61 dependencies];
+          v40 = [dependencies3 count];
           *buf = 138543618;
-          v72 = v38;
+          v72 = task2;
           v73 = 2048;
           v74 = v40;
           _os_log_impl(&dword_26F567000, v37, OS_LOG_TYPE_DEFAULT, "%{public}@ not runnable, waiting on %tu dependency/dependencies", buf, 0x16u);
         }
 
-        [v20 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:v63];
+        [runnabilityCopy setObject:MEMORY[0x277CBEC28] forKeyedSubscript:v63];
 LABEL_23:
-        v25 = 0;
+        bOOLValue = 0;
         v24 = 0;
         goto LABEL_24;
       }
     }
 
-    v45 = [v61 task];
-    v46 = [v45 requiredCapabilities];
+    task3 = [v61 task];
+    requiredCapabilities = [task3 requiredCapabilities];
 
     v19 = v63;
-    if ([TRITaskCapabilityUtilities requiredCapabilities:v46 areSupportedByAllowedCapabilities:a5])
+    if ([TRITaskCapabilityUtilities requiredCapabilities:requiredCapabilities areSupportedByAllowedCapabilities:capabilities])
     {
-      v47 = [v61 startDate];
+      startDate = [v61 startDate];
       v24 = 0;
-      if (!v47)
+      if (!startDate)
       {
         goto LABEL_34;
       }
 
-      v48 = v47;
-      v49 = [v61 startDate];
-      [v49 timeIntervalSinceReferenceDate];
+      v48 = startDate;
+      startDate2 = [v61 startDate];
+      [startDate2 timeIntervalSinceReferenceDate];
       v51 = v50;
-      [v64 timeIntervalSinceReferenceDate];
+      [dateCopy timeIntervalSinceReferenceDate];
       v53 = v52;
 
       if (v51 <= v53)
       {
 LABEL_34:
-        [v20 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v63];
-        [v65 addObject:v61];
-        v25 = 1;
+        [runnabilityCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v63];
+        [runnableCopy addObject:v61];
+        bOOLValue = 1;
         goto LABEL_24;
       }
 
       v54 = TRILogCategory_Server();
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
       {
-        v55 = [v61 task];
-        v56 = [v61 startDate];
+        task4 = [v61 task];
+        startDate3 = [v61 startDate];
         *buf = 138543618;
-        v72 = v55;
+        v72 = task4;
         v73 = 2112;
-        v74 = v56;
+        v74 = startDate3;
         _os_log_impl(&dword_26F567000, v54, OS_LOG_TYPE_DEFAULT, "%{public}@ not runnable, start date %@ in the future", buf, 0x16u);
       }
     }
@@ -2032,39 +2032,39 @@ LABEL_34:
       v24 = 0;
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
       {
-        v57 = [v61 task];
+        task5 = [v61 task];
         *buf = 138543874;
-        v72 = v57;
+        v72 = task5;
         v73 = 2048;
-        v74 = v46;
+        v74 = requiredCapabilities;
         v75 = 2048;
-        v76 = a5;
+        capabilitiesCopy = capabilities;
         _os_log_impl(&dword_26F567000, v54, OS_LOG_TYPE_DEFAULT, "%{public}@ not runnable, capabilities required: %llu, supported: %llu", buf, 0x20u);
       }
     }
 
-    [v20 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:v63];
-    v25 = 0;
+    [runnabilityCopy setObject:MEMORY[0x277CBEC28] forKeyedSubscript:v63];
+    bOOLValue = 0;
 LABEL_24:
 
     v22 = v62;
     goto LABEL_25;
   }
 
-  v25 = [v23 BOOLValue];
-  v26 = v21;
+  bOOLValue = [v23 BOOLValue];
+  v26 = pathCopy;
 LABEL_25:
 
   objc_autoreleasePoolPop(v22);
   v43 = *MEMORY[0x277D85DE8];
-  return v25;
+  return bOOLValue;
 }
 
-- (void)_partitionTaskGroup:(id)a3 byRunnabilityGivenCapabilities:(unint64_t)a4 runnableAtDate:(id)a5 topoSortedCurrentlyRunnable:(id *)a6 blocked:(id *)a7 allowOnlyRootTasksRunnable:(BOOL)a8
+- (void)_partitionTaskGroup:(id)group byRunnabilityGivenCapabilities:(unint64_t)capabilities runnableAtDate:(id)date topoSortedCurrentlyRunnable:(id *)runnable blocked:(id *)blocked allowOnlyRootTasksRunnable:(BOOL)tasksRunnable
 {
   v52 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
+  groupCopy = group;
+  dateCopy = date;
   context = objc_autoreleasePoolPush();
   v14 = objc_opt_new();
   v15 = objc_opt_new();
@@ -2074,7 +2074,7 @@ LABEL_25:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v49 = a4;
+    capabilitiesCopy = capabilities;
     _os_log_impl(&dword_26F567000, v18, OS_LOG_TYPE_DEFAULT, "Partitioning task group into runnable/blocked for capabilities %llu", buf, 0xCu);
   }
 
@@ -2083,16 +2083,16 @@ LABEL_25:
   v39[2] = __145__TRITaskQueue__partitionTaskGroup_byRunnabilityGivenCapabilities_runnableAtDate_topoSortedCurrentlyRunnable_blocked_allowOnlyRootTasksRunnable___block_invoke;
   v39[3] = &unk_279DE3768;
   v39[4] = self;
-  v19 = v12;
+  v19 = groupCopy;
   v40 = v19;
-  v46 = a4;
-  v20 = v13;
+  capabilitiesCopy2 = capabilities;
+  v20 = dateCopy;
   v41 = v20;
   v42 = v14;
   v43 = v17;
   v21 = v15;
   v44 = v21;
-  v47 = a8;
+  tasksRunnableCopy = tasksRunnable;
   v22 = v16;
   v45 = v22;
   v23 = v17;
@@ -2105,7 +2105,7 @@ LABEL_25:
   {
     v28 = [v25 count];
     *buf = 134218242;
-    v49 = v28;
+    capabilitiesCopy = v28;
     v50 = 2114;
     v51 = v25;
     _os_log_impl(&dword_26F567000, v27, OS_LOG_TYPE_DEFAULT, "Found %lu runnable tasks: %{public}@", buf, 0x16u);
@@ -2116,18 +2116,18 @@ LABEL_25:
   {
     v30 = [v26 count];
     *buf = 134218242;
-    v49 = v30;
+    capabilitiesCopy = v30;
     v50 = 2114;
     v51 = v26;
     _os_log_impl(&dword_26F567000, v29, OS_LOG_TYPE_DEFAULT, "Found %lu blocked tasks: %{public}@", buf, 0x16u);
   }
 
-  v31 = *a6;
-  *a6 = v21;
+  v31 = *runnable;
+  *runnable = v21;
   v32 = v21;
 
-  v33 = *a7;
-  *a7 = v22;
+  v33 = *blocked;
+  *blocked = v22;
   v34 = v22;
 
   objc_autoreleasePoolPop(context);
@@ -2168,23 +2168,23 @@ id __145__TRITaskQueue__partitionTaskGroup_byRunnabilityGivenCapabilities_runnab
   return v6;
 }
 
-- ($A5A652246548B43F8BC05201A1C72A70)_addTask:(id)a3 options:(id)a4 guardedData:(id)a5 taskIdOut:(id *)a6 accumulatedNewTaskRecords:(id)a7
+- ($A5A652246548B43F8BC05201A1C72A70)_addTask:(id)task options:(id)options guardedData:(id)data taskIdOut:(id *)out accumulatedNewTaskRecords:(id)records
 {
   v69 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v50 = a4;
-  v13 = a5;
-  v49 = a7;
-  v14 = [v13[2] idForTask:v12];
+  taskCopy = task;
+  optionsCopy = options;
+  dataCopy = data;
+  recordsCopy = records;
+  v14 = [dataCopy[2] idForTask:taskCopy];
   if (!v14)
   {
     goto LABEL_17;
   }
 
-  v15 = [v50 duplicateTaskResolution];
-  if (v15 == 1)
+  duplicateTaskResolution = [optionsCopy duplicateTaskResolution];
+  if (duplicateTaskResolution == 1)
   {
-    v17 = [v13[3] objectForKeyedSubscript:v14];
+    v17 = [dataCopy[3] objectForKeyedSubscript:v14];
     v18 = v17;
     if (v17 && [v17 inProgress])
     {
@@ -2194,7 +2194,7 @@ id __145__TRITaskQueue__partitionTaskGroup_byRunnabilityGivenCapabilities_runnab
         *buf = 138412546;
         *&buf[4] = v14;
         *&buf[12] = 2112;
-        *&buf[14] = v12;
+        *&buf[14] = taskCopy;
         _os_log_impl(&dword_26F567000, v19, OS_LOG_TYPE_DEFAULT, "task with [tid:%@] is already running. Not replacing it with: %@", buf, 0x16u);
       }
 
@@ -2207,26 +2207,26 @@ id __145__TRITaskQueue__partitionTaskGroup_byRunnabilityGivenCapabilities_runnab
       *buf = 138412546;
       *&buf[4] = v14;
       *&buf[12] = 2112;
-      *&buf[14] = v12;
+      *&buf[14] = taskCopy;
       _os_log_impl(&dword_26F567000, v22, OS_LOG_TYPE_DEFAULT, "replacing existing task with [tid:%@]: %@", buf, 0x16u);
     }
 
-    [(TRITaskQueue *)self _cancelDependenciesAndTaskWithId:v14 guardedData:v13];
+    [(TRITaskQueue *)self _cancelDependenciesAndTaskWithId:v14 guardedData:dataCopy];
 LABEL_17:
     v23 = TRILogCategory_Server();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v12;
+      *&buf[4] = taskCopy;
       _os_log_impl(&dword_26F567000, v23, OS_LOG_TYPE_DEFAULT, "adding task to task queue: %@", buf, 0xCu);
     }
 
-    v24 = [v12 dependencies];
-    v25 = v24;
+    dependencies = [taskCopy dependencies];
+    v25 = dependencies;
     v26 = MEMORY[0x277CBEBF8];
-    if (v24)
+    if (dependencies)
     {
-      v26 = v24;
+      v26 = dependencies;
     }
 
     v27 = v26;
@@ -2244,7 +2244,7 @@ LABEL_17:
       if (v31)
       {
         *v63 = 138412290;
-        v64 = v12;
+        v64 = taskCopy;
         _os_log_debug_impl(&dword_26F567000, v30, OS_LOG_TYPE_DEBUG, "checking dependencies for task: %@", v63, 0xCu);
       }
 
@@ -2256,19 +2256,19 @@ LABEL_17:
       v55[4] = self;
       v30 = v32;
       v56 = v30;
-      v57 = v13;
-      v58 = v49;
+      v57 = dataCopy;
+      v58 = recordsCopy;
       v62 = a2;
       v59 = v28;
       v61 = buf;
-      v60 = v12;
+      v60 = taskCopy;
       [v27 enumerateObjectsUsingBlock:v55];
     }
 
     else if (v31)
     {
       *v63 = 138412290;
-      v64 = v12;
+      v64 = taskCopy;
       _os_log_debug_impl(&dword_26F567000, v30, OS_LOG_TYPE_DEBUG, "task %@ has no dependencies", v63, 0xCu);
     }
 
@@ -2281,22 +2281,22 @@ LABEL_17:
         *v63 = 134218242;
         v64 = v34;
         v65 = 2112;
-        v66 = v12;
+        v66 = taskCopy;
         _os_log_impl(&dword_26F567000, v33, OS_LOG_TYPE_DEFAULT, "adding task with %tu dependencies to task queue: %@", v63, 0x16u);
       }
 
-      v35 = [(TRITaskQueue *)self _addTask:v12 withDependencies:v28 guardedData:v13];
+      v35 = [(TRITaskQueue *)self _addTask:taskCopy withDependencies:v28 guardedData:dataCopy];
 
       if (v35)
       {
         v36 = [TRITaskRecord alloc];
-        v37 = [v12 startTime];
-        v38 = [v12 requiredCapabilities];
-        v39 = [v12 tags];
-        v40 = v39;
-        if (v39)
+        startTime = [taskCopy startTime];
+        requiredCapabilities = [taskCopy requiredCapabilities];
+        tags = [taskCopy tags];
+        v40 = tags;
+        if (tags)
         {
-          v41 = v39;
+          v41 = tags;
         }
 
         else
@@ -2304,9 +2304,9 @@ LABEL_17:
           v41 = MEMORY[0x277CBEBF8];
         }
 
-        v42 = [(TRITaskRecord *)v36 initWithTaskId:v35 task:v12 startDate:v37 dependencies:v28 capabilities:v38 tags:v41];
+        v42 = [(TRITaskRecord *)v36 initWithTaskId:v35 task:taskCopy startDate:startTime dependencies:v28 capabilities:requiredCapabilities tags:v41];
 
-        [v49 addObject:v42];
+        [recordsCopy addObject:v42];
         v20.var0 = 0;
       }
 
@@ -2316,8 +2316,8 @@ LABEL_17:
       }
 
       v14 = v35;
-      v45 = *a6;
-      *a6 = v14;
+      v45 = *out;
+      *out = v14;
     }
 
     else
@@ -2338,7 +2338,7 @@ LABEL_43:
         *v63 = 134218242;
         v64 = v44;
         v65 = 2112;
-        v66 = v12;
+        v66 = taskCopy;
         _os_log_impl(&dword_26F567000, v43, OS_LOG_TYPE_DEFAULT, "cancelling %tu dependencies of task: %@", v63, 0x16u);
       }
 
@@ -2346,9 +2346,9 @@ LABEL_43:
       v51[1] = 3221225472;
       v51[2] = __81__TRITaskQueue__addTask_options_guardedData_taskIdOut_accumulatedNewTaskRecords___block_invoke_277;
       v51[3] = &unk_279DE37D8;
-      v52 = v12;
-      v53 = self;
-      v54 = v13;
+      v52 = taskCopy;
+      selfCopy = self;
+      v54 = dataCopy;
       [v28 enumerateObjectsUsingBlock:v51];
 
       v20.var0 = 2;
@@ -2358,10 +2358,10 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  if (v15)
+  if (duplicateTaskResolution)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"TRITaskQueue.m" lineNumber:935 description:{@"failed to handle duplicate task resolution: %u", objc_msgSend(v50, "duplicateTaskResolution")}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRITaskQueue.m" lineNumber:935 description:{@"failed to handle duplicate task resolution: %u", objc_msgSend(optionsCopy, "duplicateTaskResolution")}];
 
     goto LABEL_17;
   }
@@ -2372,11 +2372,11 @@ LABEL_43:
     *buf = 138412546;
     *&buf[4] = v14;
     *&buf[12] = 2112;
-    *&buf[14] = v12;
+    *&buf[14] = taskCopy;
     _os_log_impl(&dword_26F567000, v16, OS_LOG_TYPE_DEFAULT, "task already exists with id [tid:%@]: %@", buf, 0x16u);
   }
 
-  objc_storeStrong(a6, v14);
+  objc_storeStrong(out, v14);
 LABEL_12:
   v20.var0 = 1;
 LABEL_44:
@@ -2439,18 +2439,18 @@ void __81__TRITaskQueue__addTask_options_guardedData_taskIdOut_accumulatedNewTas
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_addTask:(id)a3 withDependencies:(id)a4 guardedData:(id)a5
+- (id)_addTask:(id)task withDependencies:(id)dependencies guardedData:(id)data
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 tags];
-  v12 = [v8 startTime];
-  v13 = v9[2];
+  taskCopy = task;
+  dataCopy = data;
+  dependenciesCopy = dependencies;
+  tags = [taskCopy tags];
+  startTime = [taskCopy startTime];
+  v13 = dataCopy[2];
 
   v21 = 0;
-  v14 = [v13 addTask:v8 startTime:v12 tags:v11 dependencies:v10 error:&v21];
+  v14 = [v13 addTask:taskCopy startTime:startTime tags:tags dependencies:dependenciesCopy error:&v21];
 
   v15 = v21;
   if (!v14)
@@ -2462,14 +2462,14 @@ void __81__TRITaskQueue__addTask_options_guardedData_taskIdOut_accumulatedNewTas
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v23 = v8;
+    v23 = taskCopy;
     v24 = 2112;
     v25 = v14;
     _os_log_debug_impl(&dword_26F567000, v16, OS_LOG_TYPE_DEBUG, "Running enqueue handler for %@ [tid:%@]", buf, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_serverContext);
-  [v8 runEnqueueHandlerUsingContext:WeakRetained];
+  [taskCopy runEnqueueHandlerUsingContext:WeakRetained];
 
   if (v15)
   {
@@ -2478,9 +2478,9 @@ LABEL_5:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v23 = v8;
+      v23 = taskCopy;
       v24 = 2112;
-      v25 = v12;
+      v25 = startTime;
       v26 = 2112;
       v27 = v15;
       _os_log_error_impl(&dword_26F567000, v18, OS_LOG_TYPE_ERROR, "failed to add %@ with start time %@: %@", buf, 0x20u);
@@ -2494,9 +2494,9 @@ LABEL_5:
   return v14;
 }
 
-- (BOOL)cancelTask:(id)a3
+- (BOOL)cancelTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -2508,7 +2508,7 @@ LABEL_5:
   v8[3] = &unk_279DE3828;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = taskCopy;
   v9 = v6;
   [(_PASLock *)lock runWithLockAcquired:v8];
   LOBYTE(lock) = *(v12 + 24);
@@ -2524,12 +2524,12 @@ uint64_t __27__TRITaskQueue_cancelTask___block_invoke(uint64_t a1, uint64_t a2)
   return result;
 }
 
-- (BOOL)_cancelDependenciesAndTaskWithId:(id)a3 guardedData:(id)a4
+- (BOOL)_cancelDependenciesAndTaskWithId:(id)id guardedData:(id)data
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7[2] tasksDependentOnTask:v6];
+  idCopy = id;
+  dataCopy = data;
+  v8 = [dataCopy[2] tasksDependentOnTask:idCopy];
   v9 = v8;
   if (v8 && [v8 count])
   {
@@ -2537,7 +2537,7 @@ uint64_t __27__TRITaskQueue_cancelTask___block_invoke(uint64_t a1, uint64_t a2)
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v24 = v6;
+      v24 = idCopy;
       v25 = 2112;
       v26 = v9;
       _os_log_impl(&dword_26F567000, v10, OS_LOG_TYPE_DEFAULT, "cannot cancel task with [tid:%@] since other tasks depend on it: %@", buf, 0x16u);
@@ -2548,8 +2548,8 @@ uint64_t __27__TRITaskQueue_cancelTask___block_invoke(uint64_t a1, uint64_t a2)
 
   else
   {
-    v10 = [v7[2] directDependenciesOfTaskWithId:v6];
-    v11 = [(TRITaskQueue *)self _cancelTaskWithId:v6 guardedData:v7 persistCancel:1];
+    v10 = [dataCopy[2] directDependenciesOfTaskWithId:idCopy];
+    v11 = [(TRITaskQueue *)self _cancelTaskWithId:idCopy guardedData:dataCopy persistCancel:1];
     if (v10)
     {
       v20 = 0u;
@@ -2571,7 +2571,7 @@ uint64_t __27__TRITaskQueue_cancelTask___block_invoke(uint64_t a1, uint64_t a2)
               objc_enumerationMutation(v10);
             }
 
-            [(TRITaskQueue *)self _cancelDependenciesAndTaskWithId:*(*(&v18 + 1) + 8 * i) guardedData:v7, v18];
+            [(TRITaskQueue *)self _cancelDependenciesAndTaskWithId:*(*(&v18 + 1) + 8 * i) guardedData:dataCopy, v18];
           }
 
           v13 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -2586,26 +2586,26 @@ uint64_t __27__TRITaskQueue_cancelTask___block_invoke(uint64_t a1, uint64_t a2)
   return v11;
 }
 
-- (BOOL)_cancelTask:(id)a3 guardedData:(id)a4
+- (BOOL)_cancelTask:(id)task guardedData:(id)data
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7[2] idForTask:v6];
+  taskCopy = task;
+  dataCopy = data;
+  v8 = [dataCopy[2] idForTask:taskCopy];
   if (!v8)
   {
     v10 = TRILogCategory_Server();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v15 = 138412290;
-      v16 = v6;
+      v16 = taskCopy;
       _os_log_debug_impl(&dword_26F567000, v10, OS_LOG_TYPE_DEBUG, "cannot cancel task since it is not queued: %@", &v15, 0xCu);
     }
 
     goto LABEL_7;
   }
 
-  v9 = [(TRITaskQueue *)self _cancelDependenciesAndTaskWithId:v8 guardedData:v7];
+  v9 = [(TRITaskQueue *)self _cancelDependenciesAndTaskWithId:v8 guardedData:dataCopy];
   v10 = TRILogCategory_Server();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
   if (v9)
@@ -2615,7 +2615,7 @@ uint64_t __27__TRITaskQueue_cancelTask___block_invoke(uint64_t a1, uint64_t a2)
       v15 = 138412546;
       v16 = v8;
       v17 = 2112;
-      v18 = v6;
+      v18 = taskCopy;
       _os_log_impl(&dword_26F567000, v10, OS_LOG_TYPE_DEFAULT, "cancelled task with [tid:%@]: %@", &v15, 0x16u);
     }
 
@@ -2629,7 +2629,7 @@ LABEL_7:
     v15 = 138412546;
     v16 = v8;
     v17 = 2112;
-    v18 = v6;
+    v18 = taskCopy;
     _os_log_impl(&dword_26F567000, v10, OS_LOG_TYPE_DEFAULT, "could not cancel task with [tid:%@]: %@", &v15, 0x16u);
   }
 
@@ -2640,9 +2640,9 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)cancelTasksWithTag:(id)a3
+- (BOOL)cancelTasksWithTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -2652,9 +2652,9 @@ LABEL_11:
   v8[1] = 3221225472;
   v8[2] = __35__TRITaskQueue_cancelTasksWithTag___block_invoke;
   v8[3] = &unk_279DE3828;
-  v6 = v4;
+  v6 = tagCopy;
   v9 = v6;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   [(_PASLock *)lock runWithLockAcquired:v8];
   LOBYTE(self) = *(v13 + 24);
@@ -2686,11 +2686,11 @@ uint64_t __35__TRITaskQueue_cancelTasksWithTag___block_invoke_2(uint64_t a1, uin
   return result;
 }
 
-- (BOOL)cancelTasksWithTag:(id)a3 excludingTasks:(id)a4
+- (BOOL)cancelTasksWithTag:(id)tag excludingTasks:(id)tasks
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 _pas_mappedArrayWithTransform:&__block_literal_global_283];
+  tagCopy = tag;
+  tasksCopy = tasks;
+  v8 = [tasksCopy _pas_mappedArrayWithTransform:&__block_literal_global_283];
   v9 = [MEMORY[0x277CBEB98] setWithArray:v8];
   v19 = 0;
   v20 = &v19;
@@ -2701,11 +2701,11 @@ uint64_t __35__TRITaskQueue_cancelTasksWithTag___block_invoke_2(uint64_t a1, uin
   v14[1] = 3221225472;
   v14[2] = __50__TRITaskQueue_cancelTasksWithTag_excludingTasks___block_invoke_2;
   v14[3] = &unk_279DE3898;
-  v11 = v6;
+  v11 = tagCopy;
   v15 = v11;
   v12 = v9;
   v16 = v12;
-  v17 = self;
+  selfCopy = self;
   v18 = &v19;
   [(_PASLock *)lock runWithLockAcquired:v14];
   LOBYTE(self) = *(v20 + 24);
@@ -2778,10 +2778,10 @@ uint64_t __50__TRITaskQueue_cancelTasksWithTag_excludingTasks___block_invoke_4(u
   return result;
 }
 
-- (BOOL)enumerateTasksWithTagsIntersectingTagSet:(id)a3 block:(id)a4
+- (BOOL)enumerateTasksWithTagsIntersectingTagSet:(id)set block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  setCopy = set;
+  blockCopy = block;
   v8 = objc_opt_new();
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -2801,7 +2801,7 @@ uint64_t __50__TRITaskQueue_cancelTasksWithTag_excludingTasks___block_invoke_4(u
   v18[2] = __63__TRITaskQueue_enumerateTasksWithTagsIntersectingTagSet_block___block_invoke_2;
   v18[3] = &unk_279DE38E8;
   v21 = &v22;
-  v12 = v6;
+  v12 = setCopy;
   v19 = v12;
   v13 = v10;
   v20 = v13;
@@ -2812,7 +2812,7 @@ uint64_t __50__TRITaskQueue_cancelTasksWithTag_excludingTasks___block_invoke_4(u
     v16[1] = 3221225472;
     v16[2] = __63__TRITaskQueue_enumerateTasksWithTagsIntersectingTagSet_block___block_invoke_3;
     v16[3] = &unk_279DE3910;
-    v17 = v7;
+    v17 = blockCopy;
     [v9 enumerateObjectsUsingBlock:v16];
 
     v14 = *(v23 + 24);
@@ -2900,19 +2900,19 @@ uint64_t __21__TRITaskQueue_count__block_invoke(uint64_t a1, uint64_t a2)
   return result;
 }
 
-- (BOOL)updateActivity:(id)a3 withStartDate:(id)a4
+- (BOOL)updateActivity:(id)activity withStartDate:(id)date
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
-  v7 = xpc_activity_copy_criteria(v6);
+  dateCopy = date;
+  activityCopy = activity;
+  v7 = xpc_activity_copy_criteria(activityCopy);
   if (!v7)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
   }
 
   v8 = objc_opt_new();
-  [v5 timeIntervalSinceDate:v8];
+  [dateCopy timeIntervalSinceDate:v8];
   v10 = v9;
 
   if (v10 <= 10)
@@ -2928,8 +2928,8 @@ uint64_t __21__TRITaskQueue_count__block_invoke(uint64_t a1, uint64_t a2)
   xpc_dictionary_set_BOOL(v7, *MEMORY[0x277D86360], 0);
   xpc_dictionary_set_int64(v7, *MEMORY[0x277D86250], v11);
   xpc_dictionary_set_int64(v7, *MEMORY[0x277D86270], 1800);
-  xpc_activity_set_criteria(v6, v7);
-  state = xpc_activity_get_state(v6);
+  xpc_activity_set_criteria(activityCopy, v7);
+  state = xpc_activity_get_state(activityCopy);
 
   v13 = TRILogCategory_Server();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -2947,11 +2947,11 @@ uint64_t __21__TRITaskQueue_count__block_invoke(uint64_t a1, uint64_t a2)
   return 1;
 }
 
-- (void)_registerRetryActivityForDate:(id)a3
+- (void)_registerRetryActivityForDate:(id)date
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  dateCopy = date;
+  if (!dateCopy)
   {
     v5 = TRILogCategory_Server();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2960,30 +2960,30 @@ uint64_t __21__TRITaskQueue_count__block_invoke(uint64_t a1, uint64_t a2)
       _os_log_impl(&dword_26F567000, v5, OS_LOG_TYPE_DEFAULT, "no date specified to retry, defaulting to 24 hours", buf, 2u);
     }
 
-    v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:86400.0];
+    dateCopy = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:86400.0];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_serverContext);
-  v7 = [WeakRetained keyValueStore];
+  keyValueStore = [WeakRetained keyValueStore];
   v24 = 0;
-  v8 = [TRISetupAssistantFetchUtils getValueInKeyValueStore:v7 key:@"post-upgrade-activity-in-progress" error:&v24];
+  v8 = [TRISetupAssistantFetchUtils getValueInKeyValueStore:keyValueStore key:@"post-upgrade-activity-in-progress" error:&v24];
   v9 = v24;
 
-  v10 = [WeakRetained keyValueStore];
+  keyValueStore2 = [WeakRetained keyValueStore];
   v23 = v9;
-  v11 = [TRISetupAssistantFetchUtils getValueInKeyValueStore:v10 key:@"post-upgrade-require-inexpensive-networking-activity-in-progress" error:&v23];
+  v11 = [TRISetupAssistantFetchUtils getValueInKeyValueStore:keyValueStore2 key:@"post-upgrade-require-inexpensive-networking-activity-in-progress" error:&v23];
   v12 = v23;
 
   if (([v8 isEqualToNumber:&unk_287FC4BE8] & 1) != 0 || objc_msgSend(v11, "isEqualToNumber:", &unk_287FC4BE8))
   {
-    [v4 timeIntervalSinceNow];
+    [dateCopy timeIntervalSinceNow];
     if (v13 > 7200.0)
     {
       v14 = TRILogCategory_Server();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v26 = v4;
+        v26 = dateCopy;
         v27 = 2048;
         v28 = 7200;
         _os_log_impl(&dword_26F567000, v14, OS_LOG_TYPE_DEFAULT, "One of the tasks enqueued during post upgrade resulted in a retry. The original retry date is set to: %@. Modifying it to be %lld seconds from now", buf, 0x16u);
@@ -2991,7 +2991,7 @@ uint64_t __21__TRITaskQueue_count__block_invoke(uint64_t a1, uint64_t a2)
 
       v15 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:7200.0];
 
-      v4 = v15;
+      dateCopy = v15;
     }
   }
 
@@ -2999,7 +2999,7 @@ uint64_t __21__TRITaskQueue_count__block_invoke(uint64_t a1, uint64_t a2)
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v4;
+    v26 = dateCopy;
     _os_log_impl(&dword_26F567000, v16, OS_LOG_TYPE_DEFAULT, "registering retry activity for date: %@", buf, 0xCu);
   }
 
@@ -3008,9 +3008,9 @@ uint64_t __21__TRITaskQueue_count__block_invoke(uint64_t a1, uint64_t a2)
   v20[1] = 3221225472;
   v20[2] = __46__TRITaskQueue__registerRetryActivityForDate___block_invoke;
   v20[3] = &unk_279DDF7A0;
-  v21 = v4;
-  v22 = self;
-  v18 = v4;
+  v21 = dateCopy;
+  selfCopy = self;
+  v18 = dateCopy;
   dispatch_async(asyncQueue, v20);
 
   v19 = *MEMORY[0x277D85DE8];
@@ -3070,17 +3070,17 @@ void __46__TRITaskQueue__registerRetryActivityForDate___block_invoke_3(uint64_t 
   [*(a1 + 32) resumeWithXPCActivityDescriptor:v3 executeWhenSuspended:0];
 }
 
-- (void)_registerTaskQueueActivityForDate:(id)a3
+- (void)_registerTaskQueueActivityForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   asyncQueue = self->_asyncQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__TRITaskQueue__registerTaskQueueActivityForDate___block_invoke;
   v7[3] = &unk_279DDF7A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dateCopy;
+  selfCopy = self;
+  v6 = dateCopy;
   dispatch_async(asyncQueue, v7);
 }
 
@@ -3175,9 +3175,9 @@ void __50__TRITaskQueue__registerTaskQueueActivityForDate___block_invoke_294(uin
   [*(a1 + 32) resumeWithXPCActivityDescriptor:v3 executeWhenSuspended:0];
 }
 
-- (void)registerFinalizeBlockToRetryWithBlock:(id)a3
+- (void)registerFinalizeBlockToRetryWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x2020000000;
@@ -3187,7 +3187,7 @@ void __50__TRITaskQueue__registerTaskQueueActivityForDate___block_invoke_294(uin
   v9 = __54__TRITaskQueue_registerFinalizeBlockToRetryWithBlock___block_invoke;
   v10 = &unk_279DE3988;
   v12 = v13;
-  v5 = v4;
+  v5 = blockCopy;
   v11 = v5;
   v6 = MEMORY[0x2743948D0](&v7);
   [(TRITaskQueue *)self registerFinalizeBlock:v6, v7, v8, v9, v10];
@@ -3281,15 +3281,15 @@ id __32__TRITaskQueue_debugDescription__block_invoke_2(uint64_t a1, void *a2)
   return v10;
 }
 
-- (id)activeActivityGrantingCapability:(unint64_t)a3
+- (id)activeActivityGrantingCapability:(unint64_t)capability
 {
-  v3 = [(TRITaskQueue *)self activeActivityDescriptorGrantingCapability:a3];
-  v4 = [v3 activity];
+  v3 = [(TRITaskQueue *)self activeActivityDescriptorGrantingCapability:capability];
+  activity = [v3 activity];
 
-  return v4;
+  return activity;
 }
 
-- (id)activeActivityDescriptorGrantingCapability:(unint64_t)a3
+- (id)activeActivityDescriptorGrantingCapability:(unint64_t)capability
 {
   v23 = *MEMORY[0x277D85DE8];
   v13 = 0;
@@ -3304,7 +3304,7 @@ id __32__TRITaskQueue_debugDescription__block_invoke_2(uint64_t a1, void *a2)
   v12[2] = __59__TRITaskQueue_activeActivityDescriptorGrantingCapability___block_invoke;
   v12[3] = &unk_279DE39D8;
   v12[4] = &v13;
-  v12[5] = a3;
+  v12[5] = capability;
   [(_PASLock *)lock runWithLockAcquired:v12];
   v5 = v14[5];
   v6 = TRILogCategory_Server();
@@ -3313,11 +3313,11 @@ id __32__TRITaskQueue_debugDescription__block_invoke_2(uint64_t a1, void *a2)
   {
     if (v7)
     {
-      v8 = [v14[5] name];
+      name = [v14[5] name];
       *buf = 134218242;
-      v20 = a3;
+      capabilityCopy2 = capability;
       v21 = 2114;
-      v22 = v8;
+      v22 = name;
       _os_log_impl(&dword_26F567000, v6, OS_LOG_TYPE_DEFAULT, "Found Active XPC activity with capability %llu: %{public}@", buf, 0x16u);
     }
   }
@@ -3325,7 +3325,7 @@ id __32__TRITaskQueue_debugDescription__block_invoke_2(uint64_t a1, void *a2)
   else if (v7)
   {
     *buf = 134217984;
-    v20 = a3;
+    capabilityCopy2 = capability;
     _os_log_impl(&dword_26F567000, v6, OS_LOG_TYPE_DEFAULT, "No active XPC activity with capability %llu", buf, 0xCu);
   }
 

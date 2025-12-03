@@ -1,9 +1,9 @@
 @interface FCMultiAccessChecker
-- (BOOL)canSynchronouslyCheckAccessToItem:(id)a3;
-- (BOOL)hasAccessToItem:(id)a3 blockedReason:(unint64_t *)a4 error:(id *)a5;
+- (BOOL)canSynchronouslyCheckAccessToItem:(id)item;
+- (BOOL)hasAccessToItem:(id)item blockedReason:(unint64_t *)reason error:(id *)error;
 - (FCMultiAccessChecker)init;
-- (FCMultiAccessChecker)initWithAccessCheckers:(id)a3;
-- (void)checkAccessToItem:(id)a3 withQualityOfService:(int64_t)a4 completion:(id)a5;
+- (FCMultiAccessChecker)initWithAccessCheckers:(id)checkers;
+- (void)checkAccessToItem:(id)item withQualityOfService:(int64_t)service completion:(id)completion;
 @end
 
 @implementation FCMultiAccessChecker
@@ -34,11 +34,11 @@
   objc_exception_throw(v6);
 }
 
-- (FCMultiAccessChecker)initWithAccessCheckers:(id)a3
+- (FCMultiAccessChecker)initWithAccessCheckers:(id)checkers
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  checkersCopy = checkers;
+  if (!checkersCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "accessCheckers != nil"];
     *buf = 136315906;
@@ -57,7 +57,7 @@
   v5 = [(FCAccessChecker *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [checkersCopy copy];
     accessCheckers = v5->_accessCheckers;
     v5->_accessCheckers = v6;
   }
@@ -66,44 +66,44 @@
   return v5;
 }
 
-- (BOOL)canSynchronouslyCheckAccessToItem:(id)a3
+- (BOOL)canSynchronouslyCheckAccessToItem:(id)item
 {
-  v4 = a3;
-  v5 = [(FCMultiAccessChecker *)self accessCheckers];
+  itemCopy = item;
+  accessCheckers = [(FCMultiAccessChecker *)self accessCheckers];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__FCMultiAccessChecker_canSynchronouslyCheckAccessToItem___block_invoke;
   v9[3] = &unk_1E7C45AB0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 fc_containsObjectPassingTest:v9];
+  v10 = itemCopy;
+  v6 = itemCopy;
+  v7 = [accessCheckers fc_containsObjectPassingTest:v9];
 
   return v7 ^ 1;
 }
 
-- (BOOL)hasAccessToItem:(id)a3 blockedReason:(unint64_t *)a4 error:(id *)a5
+- (BOOL)hasAccessToItem:(id)item blockedReason:(unint64_t *)reason error:(id *)error
 {
-  v8 = a3;
+  itemCopy = item;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 1;
-  v9 = [(FCMultiAccessChecker *)self accessCheckers];
+  accessCheckers = [(FCMultiAccessChecker *)self accessCheckers];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __60__FCMultiAccessChecker_hasAccessToItem_blockedReason_error___block_invoke;
   v12[3] = &unk_1E7C45AD8;
   v14 = &v17;
-  v10 = v8;
+  v10 = itemCopy;
   v13 = v10;
-  v15 = a4;
-  v16 = a5;
-  [v9 enumerateObjectsUsingBlock:v12];
+  reasonCopy = reason;
+  errorCopy = error;
+  [accessCheckers enumerateObjectsUsingBlock:v12];
 
-  LOBYTE(a5) = *(v18 + 24);
+  LOBYTE(error) = *(v18 + 24);
   _Block_object_dispose(&v17, 8);
 
-  return a5;
+  return error;
 }
 
 uint64_t __60__FCMultiAccessChecker_hasAccessToItem_blockedReason_error___block_invoke(void *a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -118,12 +118,12 @@ uint64_t __60__FCMultiAccessChecker_hasAccessToItem_blockedReason_error___block_
   return result;
 }
 
-- (void)checkAccessToItem:(id)a3 withQualityOfService:(int64_t)a4 completion:(id)a5
+- (void)checkAccessToItem:(id)item withQualityOfService:(int64_t)service completion:(id)completion
 {
   v52 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  itemCopy = item;
+  completionCopy = completion;
+  if (!itemCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v24 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "item != nil"];
     *buf = 136315906;
@@ -137,8 +137,8 @@ uint64_t __60__FCMultiAccessChecker_hasAccessToItem_blockedReason_error___block_
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v27 = v9;
-  if (!v9 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  v27 = completionCopy;
+  if (!completionCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v25 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "completion != nil"];
     *buf = 136315906;
@@ -155,21 +155,21 @@ uint64_t __60__FCMultiAccessChecker_hasAccessToItem_blockedReason_error___block_
   v10 = objc_opt_new();
   v11 = objc_opt_new();
   v12 = dispatch_group_create();
-  v13 = [(FCMultiAccessChecker *)self accessCheckers];
+  accessCheckers = [(FCMultiAccessChecker *)self accessCheckers];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __74__FCMultiAccessChecker_checkAccessToItem_withQualityOfService_completion___block_invoke;
   v38[3] = &unk_1E7C45B28;
   v14 = v12;
   v39 = v14;
-  v26 = v8;
+  v26 = itemCopy;
   v40 = v26;
-  v43 = a4;
+  serviceCopy = service;
   v15 = v10;
   v41 = v15;
   v16 = v11;
   v42 = v16;
-  [v13 enumerateObjectsUsingBlock:v38];
+  [accessCheckers enumerateObjectsUsingBlock:v38];
   if (FCDispatchGroupIsEmpty(v14))
   {
     v33[0] = MEMORY[0x1E69E9820];
@@ -177,7 +177,7 @@ uint64_t __60__FCMultiAccessChecker_hasAccessToItem_blockedReason_error___block_
     v33[2] = __74__FCMultiAccessChecker_checkAccessToItem_withQualityOfService_completion___block_invoke_3;
     v33[3] = &unk_1E7C43498;
     v17 = &v34;
-    v34 = v13;
+    v34 = accessCheckers;
     v18 = &v35;
     v35 = v15;
     v19 = &v36;
@@ -190,13 +190,13 @@ uint64_t __60__FCMultiAccessChecker_hasAccessToItem_blockedReason_error___block_
 
   else
   {
-    v22 = FCDispatchQueueForQualityOfService(a4);
+    v22 = FCDispatchQueueForQualityOfService(service);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __74__FCMultiAccessChecker_checkAccessToItem_withQualityOfService_completion___block_invoke_4;
     block[3] = &unk_1E7C43498;
     v17 = &v29;
-    v29 = v13;
+    v29 = accessCheckers;
     v18 = &v30;
     v30 = v15;
     v19 = &v31;

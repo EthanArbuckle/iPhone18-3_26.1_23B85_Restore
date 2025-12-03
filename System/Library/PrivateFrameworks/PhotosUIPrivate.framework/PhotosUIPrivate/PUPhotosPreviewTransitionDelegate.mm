@@ -1,6 +1,6 @@
 @interface PUPhotosPreviewTransitionDelegate
 - (PUPhotosPreviewPresentationControllerDelegate)photosPreviewingDelegate;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 @end
 
 @implementation PUPhotosPreviewTransitionDelegate
@@ -12,14 +12,14 @@
   return WeakRetained;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(_UIPreviewPresentationController *)[PUPhotosPreviewPresentationController alloc] initWithPresentedViewController:v8 presentingViewController:v7];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  v9 = [(_UIPreviewPresentationController *)[PUPhotosPreviewPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
-  v10 = [(PUPhotosPreviewTransitionDelegate *)self photosPreviewingDelegate];
-  [(PUPhotosPreviewPresentationController *)v9 setPhotosPreviewingDelegate:v10];
+  photosPreviewingDelegate = [(PUPhotosPreviewTransitionDelegate *)self photosPreviewingDelegate];
+  [(PUPhotosPreviewPresentationController *)v9 setPhotosPreviewingDelegate:photosPreviewingDelegate];
 
   return v9;
 }

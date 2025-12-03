@@ -1,73 +1,73 @@
 @interface _SBIconGridImageWrapperView
 - (SBFolderIconImageView)folderIconImageView;
-- (void)positionAtRow:(unint64_t)a3;
+- (void)positionAtRow:(unint64_t)row;
 - (void)reposition;
-- (void)setElement:(id)a3;
+- (void)setElement:(id)element;
 @end
 
 @implementation _SBIconGridImageWrapperView
 
-- (void)setElement:(id)a3
+- (void)setElement:(id)element
 {
-  v5 = a3;
-  if (self->_element != v5)
+  elementCopy = element;
+  if (self->_element != elementCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_element, a3);
-    v6 = [(_SBFolderPageElement *)v10 gridImage];
-    if (!v6)
+    v10 = elementCopy;
+    objc_storeStrong(&self->_element, element);
+    gridImage = [(_SBFolderPageElement *)v10 gridImage];
+    if (!gridImage)
     {
       if ([(_SBFolderPageElement *)v10 isGridImagePossible])
       {
-        v7 = [(_SBIconGridImageWrapperView *)self folderIconImageView];
-        [v7 fulfillGridImageForPageElement:v10];
-        v6 = [(_SBFolderPageElement *)v10 gridImage];
+        folderIconImageView = [(_SBIconGridImageWrapperView *)self folderIconImageView];
+        [folderIconImageView fulfillGridImageForPageElement:v10];
+        gridImage = [(_SBFolderPageElement *)v10 gridImage];
       }
 
       else
       {
-        v6 = 0;
+        gridImage = 0;
       }
     }
 
-    [(_SBIconGridImageWrapperView *)self setImage:v6];
-    [v6 size];
+    [(_SBIconGridImageWrapperView *)self setImage:gridImage];
+    [gridImage size];
     [(_SBIconGridImageWrapperView *)self setBounds:0.0, 0.0, v8, v9];
     [(_SBIconGridImageWrapperView *)self reposition];
 
-    v5 = v10;
+    elementCopy = v10;
   }
 }
 
 - (void)reposition
 {
-  v3 = [(_SBIconGridImageWrapperView *)self element];
+  element = [(_SBIconGridImageWrapperView *)self element];
 
-  if (v3)
+  if (element)
   {
-    v4 = [(_SBIconGridImageWrapperView *)self element];
-    v16 = [v4 gridImage];
+    element2 = [(_SBIconGridImageWrapperView *)self element];
+    gridImage = [element2 gridImage];
 
-    [v16 size];
+    [gridImage size];
     v6 = v5;
-    v7 = [v16 listLayout];
+    listLayout = [gridImage listLayout];
     v8 = objc_opt_class();
-    v9 = [(_SBIconGridImageWrapperView *)self element];
-    [v8 rectAtIndex:objc_msgSend(v9 inLayout:"firstVisibleMiniIconIndex") maxCount:{v7, objc_msgSend(v16, "numberOfCells")}];
+    element3 = [(_SBIconGridImageWrapperView *)self element];
+    [v8 rectAtIndex:objc_msgSend(element3 inLayout:"firstVisibleMiniIconIndex") maxCount:{listLayout, objc_msgSend(gridImage, "numberOfCells")}];
     v11 = v10;
 
-    [objc_opt_class() sizeForLayout:v7];
+    [objc_opt_class() sizeForLayout:listLayout];
     v12 = fmax(fmin(v11 / v6, 1.0), 0.0);
     v14 = fmax(fmin(v13 / v6, 1.0), 0.0);
-    v15 = [(_SBIconGridImageWrapperView *)self layer];
-    [v15 setContentsRect:{0.0, v12, 1.0, v14}];
+    layer = [(_SBIconGridImageWrapperView *)self layer];
+    [layer setContentsRect:{0.0, v12, 1.0, v14}];
   }
 }
 
-- (void)positionAtRow:(unint64_t)a3
+- (void)positionAtRow:(unint64_t)row
 {
-  v5 = [(_SBIconGridImageWrapperView *)self element];
-  [v5 setVisibleRow:a3];
+  element = [(_SBIconGridImageWrapperView *)self element];
+  [element setVisibleRow:row];
 
   [(_SBIconGridImageWrapperView *)self reposition];
 }

@@ -1,34 +1,34 @@
 @interface ATXUserNotificationResolution
-- (ATXUserNotificationResolution)initWithNotificationUUID:(id)a3 numExpansions:(unint64_t)a4 resolutionType:(int64_t)a5 resolutionTimestamp:(id)a6;
+- (ATXUserNotificationResolution)initWithNotificationUUID:(id)d numExpansions:(unint64_t)expansions resolutionType:(int64_t)type resolutionTimestamp:(id)timestamp;
 @end
 
 @implementation ATXUserNotificationResolution
 
-- (ATXUserNotificationResolution)initWithNotificationUUID:(id)a3 numExpansions:(unint64_t)a4 resolutionType:(int64_t)a5 resolutionTimestamp:(id)a6
+- (ATXUserNotificationResolution)initWithNotificationUUID:(id)d numExpansions:(unint64_t)expansions resolutionType:(int64_t)type resolutionTimestamp:(id)timestamp
 {
-  v11 = a3;
-  v12 = a6;
+  dCopy = d;
+  timestampCopy = timestamp;
   v18.receiver = self;
   v18.super_class = ATXUserNotificationResolution;
   v13 = [(ATXUserNotificationResolution *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_notificationUUID, a3);
-    v14->_numExpansions = a4;
-    v14->_resolutionType = a5;
-    if (a5 == 3)
+    objc_storeStrong(&v13->_notificationUUID, d);
+    v14->_numExpansions = expansions;
+    v14->_resolutionType = type;
+    if (type == 3)
     {
-      v15 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
     else
     {
-      v15 = v12;
+      date = timestampCopy;
     }
 
     resolutionTimestamp = v14->_resolutionTimestamp;
-    v14->_resolutionTimestamp = v15;
+    v14->_resolutionTimestamp = date;
   }
 
   return v14;

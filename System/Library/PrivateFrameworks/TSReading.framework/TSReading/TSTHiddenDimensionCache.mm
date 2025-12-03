@@ -1,24 +1,24 @@
 @interface TSTHiddenDimensionCache
-- (TSTHiddenDimensionCache)initWithUserHiddenInformation:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSTHiddenDimensionCache)initWithUserHiddenInformation:(BOOL)information;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (unint64_t)findNthNextVisibleIndex:(unint64_t)a3 fromIndex:(unint64_t)a4;
-- (unint64_t)findNthPreviousVisibleIndex:(unint64_t)a3 fromIndex:(unint64_t)a4;
-- (unsigned)numberOfVisibleIndicesToMarkIndexFrom:(unint64_t)a3;
+- (unint64_t)findNthNextVisibleIndex:(unint64_t)index fromIndex:(unint64_t)fromIndex;
+- (unint64_t)findNthPreviousVisibleIndex:(unint64_t)index fromIndex:(unint64_t)fromIndex;
+- (unsigned)numberOfVisibleIndicesToMarkIndexFrom:(unint64_t)from;
 - (void)dealloc;
-- (void)deleteRange:(_NSRange)a3;
-- (void)insertRange:(_NSRange)a3;
-- (void)moveRangeFrom:(_NSRange)a3 toIndex:(unint64_t)a4;
-- (void)setAllInvalidValuesUsingBlock:(id)a3;
+- (void)deleteRange:(_NSRange)range;
+- (void)insertRange:(_NSRange)range;
+- (void)moveRangeFrom:(_NSRange)from toIndex:(unint64_t)index;
+- (void)setAllInvalidValuesUsingBlock:(id)block;
 - (void)setAllValuesToZero;
-- (void)setCount:(unint64_t)a3;
+- (void)setCount:(unint64_t)count;
 @end
 
 @implementation TSTHiddenDimensionCache
 
-- (TSTHiddenDimensionCache)initWithUserHiddenInformation:(BOOL)a3
+- (TSTHiddenDimensionCache)initWithUserHiddenInformation:(BOOL)information
 {
-  v3 = a3;
+  informationCopy = information;
   v7.receiver = self;
   v7.super_class = TSTHiddenDimensionCache;
   v4 = [(TSTHiddenDimensionCache *)&v7 init];
@@ -27,7 +27,7 @@
   {
     v4->mCount = 0;
     v4->mCachedVisible = objc_alloc_init(MEMORY[0x277CCAB58]);
-    if (v3)
+    if (informationCopy)
     {
       v5->mCachedUserVisible = objc_alloc_init(MEMORY[0x277CCAB58]);
     }
@@ -50,7 +50,7 @@
   [(TSTHiddenDimensionCache *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TSTHiddenDimensionCache allocWithZone:?]];
   v4->mCount = self->mCount;
@@ -61,30 +61,30 @@
   return v4;
 }
 
-- (void)setCount:(unint64_t)a3
+- (void)setCount:(unint64_t)count
 {
-  if (a3 != self->mCount)
+  if (count != self->mCount)
   {
     [(TSTHiddenDimensionCache *)self invalidate:?];
-    self->mCount = a3;
-    [(NSMutableIndexSet *)self->mInvalidRanges removeIndexesInRange:a3, ~a3];
-    [(NSMutableIndexSet *)self->mCachedVisible removeIndexesInRange:a3, ~a3];
+    self->mCount = count;
+    [(NSMutableIndexSet *)self->mInvalidRanges removeIndexesInRange:count, ~count];
+    [(NSMutableIndexSet *)self->mCachedVisible removeIndexesInRange:count, ~count];
     mCachedUserVisible = self->mCachedUserVisible;
 
-    [(NSMutableIndexSet *)mCachedUserVisible removeIndexesInRange:a3, ~a3];
+    [(NSMutableIndexSet *)mCachedUserVisible removeIndexesInRange:count, ~count];
   }
 }
 
-- (unint64_t)findNthPreviousVisibleIndex:(unint64_t)a3 fromIndex:(unint64_t)a4
+- (unint64_t)findNthPreviousVisibleIndex:(unint64_t)index fromIndex:(unint64_t)fromIndex
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
-  v12 = a4;
+  fromIndexCopy = fromIndex;
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x2020000000;
-  v8[3] = a3;
+  v8[3] = index;
   mCachedVisible = self->mCachedVisible;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -92,7 +92,7 @@
   v7[3] = &unk_279D4A9C8;
   v7[4] = v8;
   v7[5] = &v9;
-  [(NSMutableIndexSet *)mCachedVisible enumerateRangesInRange:0 options:a4 usingBlock:2, v7];
+  [(NSMutableIndexSet *)mCachedVisible enumerateRangesInRange:0 options:fromIndex usingBlock:2, v7];
   v5 = v10[3];
   _Block_object_dispose(v8, 8);
   _Block_object_dispose(&v9, 8);
@@ -130,17 +130,17 @@ uint64_t __65__TSTHiddenDimensionCache_findNthPreviousVisibleIndex_fromIndex___b
   return result;
 }
 
-- (unint64_t)findNthNextVisibleIndex:(unint64_t)a3 fromIndex:(unint64_t)a4
+- (unint64_t)findNthNextVisibleIndex:(unint64_t)index fromIndex:(unint64_t)fromIndex
 {
-  v7 = [(NSMutableIndexSet *)self->mCachedVisible lastIndex];
+  lastIndex = [(NSMutableIndexSet *)self->mCachedVisible lastIndex];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
-  v19 = a4;
+  fromIndexCopy = fromIndex;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
-  v15 = a3;
+  indexCopy = index;
   mCachedVisible = self->mCachedVisible;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -148,7 +148,7 @@ uint64_t __65__TSTHiddenDimensionCache_findNthPreviousVisibleIndex_fromIndex___b
   v11[3] = &unk_279D4A9C8;
   v11[4] = &v12;
   v11[5] = &v16;
-  [(NSMutableIndexSet *)mCachedVisible enumerateRangesInRange:a4 options:v7 + 1 usingBlock:0, v11];
+  [(NSMutableIndexSet *)mCachedVisible enumerateRangesInRange:fromIndex options:lastIndex + 1 usingBlock:0, v11];
   if (v13[3])
   {
     v9 = 0x7FFFFFFFFFFFFFFFLL;
@@ -189,9 +189,9 @@ uint64_t __61__TSTHiddenDimensionCache_findNthNextVisibleIndex_fromIndex___block
   return result;
 }
 
-- (unsigned)numberOfVisibleIndicesToMarkIndexFrom:(unint64_t)a3
+- (unsigned)numberOfVisibleIndicesToMarkIndexFrom:(unint64_t)from
 {
-  if (self->mMarkIndex <= a3)
+  if (self->mMarkIndex <= from)
   {
     return [(NSMutableIndexSet *)self->mCachedVisible countOfIndexesInRange:v3, v4];
   }
@@ -211,7 +211,7 @@ uint64_t __61__TSTHiddenDimensionCache_findNthNextVisibleIndex_fromIndex___block
   [(NSMutableIndexSet *)mInvalidRanges removeAllIndexes];
 }
 
-- (void)setAllInvalidValuesUsingBlock:(id)a3
+- (void)setAllInvalidValuesUsingBlock:(id)block
 {
   mInvalidRanges = self->mInvalidRanges;
   v5[0] = MEMORY[0x277D85DD0];
@@ -219,7 +219,7 @@ uint64_t __61__TSTHiddenDimensionCache_findNthNextVisibleIndex_fromIndex___block
   v5[2] = __57__TSTHiddenDimensionCache_setAllInvalidValuesUsingBlock___block_invoke;
   v5[3] = &unk_279D4A9F0;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = block;
   [(NSMutableIndexSet *)mInvalidRanges enumerateIndexesWithOptions:0 usingBlock:v5];
   [(NSMutableIndexSet *)self->mInvalidRanges removeAllIndexes];
 }
@@ -263,32 +263,32 @@ void *__57__TSTHiddenDimensionCache_setAllInvalidValuesUsingBlock___block_invoke
   return [result addIndex:a2];
 }
 
-- (void)moveRangeFrom:(_NSRange)a3 toIndex:(unint64_t)a4
+- (void)moveRangeFrom:(_NSRange)from toIndex:(unint64_t)index
 {
-  length = a3.length;
-  location = a3.location;
+  length = from.length;
+  location = from.location;
   [NSMutableIndexSet tsu_moveIndexesInRange:"tsu_moveIndexesInRange:toOffset:" toOffset:?];
   mCachedUserVisible = self->mCachedUserVisible;
 
-  [(NSMutableIndexSet *)mCachedUserVisible tsu_moveIndexesInRange:location toOffset:length, a4];
+  [(NSMutableIndexSet *)mCachedUserVisible tsu_moveIndexesInRange:location toOffset:length, index];
 }
 
-- (void)deleteRange:(_NSRange)a3
+- (void)deleteRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = -a3.length;
-  [(NSMutableIndexSet *)self->mCachedVisible shiftIndexesStartingAtIndex:a3.location + a3.length by:-a3.length];
+  length = range.length;
+  location = range.location;
+  v6 = -range.length;
+  [(NSMutableIndexSet *)self->mCachedVisible shiftIndexesStartingAtIndex:range.location + range.length by:-range.length];
   [(NSMutableIndexSet *)self->mCachedUserVisible shiftIndexesStartingAtIndex:location + length by:v6];
   mInvalidRanges = self->mInvalidRanges;
 
   [(NSMutableIndexSet *)mInvalidRanges shiftIndexesStartingAtIndex:location + length by:v6];
 }
 
-- (void)insertRange:(_NSRange)a3
+- (void)insertRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   [NSMutableIndexSet shiftIndexesStartingAtIndex:"shiftIndexesStartingAtIndex:by:" by:?];
   [(NSMutableIndexSet *)self->mCachedUserVisible shiftIndexesStartingAtIndex:location by:length];
   [(NSMutableIndexSet *)self->mInvalidRanges shiftIndexesStartingAtIndex:location by:length];

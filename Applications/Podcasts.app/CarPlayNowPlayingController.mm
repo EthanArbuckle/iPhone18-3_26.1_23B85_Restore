@@ -1,7 +1,7 @@
 @interface CarPlayNowPlayingController
 - (void)dealloc;
-- (void)nowPlayingTemplateAlbumArtistButtonTapped:(id)a3;
-- (void)nowPlayingTemplateUpNextButtonTapped:(id)a3;
+- (void)nowPlayingTemplateAlbumArtistButtonTapped:(id)tapped;
+- (void)nowPlayingTemplateUpNextButtonTapped:(id)tapped;
 @end
 
 @implementation CarPlayNowPlayingController
@@ -10,24 +10,24 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC8Podcasts27CarPlayNowPlayingController_template);
-  v5 = self;
-  [v4 removeObserver:v5];
-  v6.receiver = v5;
+  selfCopy = self;
+  [v4 removeObserver:selfCopy];
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(CarPlayNowPlayingController *)&v6 dealloc];
 }
 
-- (void)nowPlayingTemplateAlbumArtistButtonTapped:(id)a3
+- (void)nowPlayingTemplateAlbumArtistButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   sub_1002E82D0();
 }
 
-- (void)nowPlayingTemplateUpNextButtonTapped:(id)a3
+- (void)nowPlayingTemplateUpNextButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   sub_1002E8D9C();
 }
 

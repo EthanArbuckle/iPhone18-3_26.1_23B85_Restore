@@ -1,17 +1,17 @@
 @interface ATXBlendingModelUICacheUpdate
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXBlendingModelUICacheUpdate)initWithCoder:(id)a3;
-- (ATXBlendingModelUICacheUpdate)initWithProto:(id)a3;
-- (ATXBlendingModelUICacheUpdate)initWithProtoData:(id)a3;
-- (ATXBlendingModelUICacheUpdate)initWithUICache:(id)a3 consumerSubType:(unsigned __int8)a4 clientModelCacheUpdateUUIDs:(id)a5 uuid:(id)a6 cacheCreationDate:(id)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededForint:(int)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXBlendingModelUICacheUpdate:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXBlendingModelUICacheUpdate)initWithCoder:(id)coder;
+- (ATXBlendingModelUICacheUpdate)initWithProto:(id)proto;
+- (ATXBlendingModelUICacheUpdate)initWithProtoData:(id)data;
+- (ATXBlendingModelUICacheUpdate)initWithUICache:(id)cache consumerSubType:(unsigned __int8)type clientModelCacheUpdateUUIDs:(id)ds uuid:(id)uuid cacheCreationDate:(id)date;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)checkAndReportDecodingFailureIfNeededForint:(int)forint key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXBlendingModelUICacheUpdate:(id)update;
 - (NSDate)cacheCreationDate;
-- (id)_initWithCoder:(id)a3;
-- (id)clientModelCacheUpdateUUIDsDictionaryFromProto:(id)a3;
-- (id)clientModelCacheUpdateUUIDsFromCacheUpdates:(id)a3;
+- (id)_initWithCoder:(id)coder;
+- (id)clientModelCacheUpdateUUIDsDictionaryFromProto:(id)proto;
+- (id)clientModelCacheUpdateUUIDsFromCacheUpdates:(id)updates;
 - (id)encodeAsProto;
 - (id)encodeAsProtoForBiome;
 - (id)json;
@@ -19,27 +19,27 @@
 - (id)proto;
 - (id)protoForBiome;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setClientModelCacheUpdateUUIDsDictionaryOnProto:(id)a3;
-- (void)setUICacheObjectOnProto:(id)a3;
-- (void)setUICacheObjectOnProtoForBiome:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setClientModelCacheUpdateUUIDsDictionaryOnProto:(id)proto;
+- (void)setUICacheObjectOnProto:(id)proto;
+- (void)setUICacheObjectOnProtoForBiome:(id)biome;
 @end
 
 @implementation ATXBlendingModelUICacheUpdate
 
 - (id)encodeAsProtoForBiome
 {
-  v2 = [(ATXBlendingModelUICacheUpdate *)self protoForBiome];
-  v3 = [v2 data];
+  protoForBiome = [(ATXBlendingModelUICacheUpdate *)self protoForBiome];
+  data = [protoForBiome data];
 
-  return v3;
+  return data;
 }
 
 - (id)protoForBiome
 {
   v3 = objc_opt_new();
-  v4 = [(NSUUID *)self->_uuid UUIDString];
-  [(ATXPBBlendingModelUICacheUpdate *)v3 setUuidString:v4];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  [(ATXPBBlendingModelUICacheUpdate *)v3 setUuidString:uUIDString];
 
   v5 = [MEMORY[0x1E698B028] stringForConsumerSubtype:self->_consumerSubType];
   [(ATXPBBlendingModelUICacheUpdate *)v3 setConsumerSubTypeString:v5];
@@ -51,9 +51,9 @@
   return v3;
 }
 
-- (id)clientModelCacheUpdateUUIDsFromCacheUpdates:(id)a3
+- (id)clientModelCacheUpdateUUIDsFromCacheUpdates:(id)updates
 {
-  v3 = a3;
+  updatesCopy = updates;
   v4 = objc_opt_new();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -61,7 +61,7 @@
   v7[3] = &unk_1E86A4D08;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateKeysAndObjectsUsingBlock:v7];
+  [updatesCopy enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -73,24 +73,24 @@ void __77__ATXBlendingModelUICacheUpdate_clientModelCacheUpdateUUIDsFromCacheUpd
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (ATXBlendingModelUICacheUpdate)initWithUICache:(id)a3 consumerSubType:(unsigned __int8)a4 clientModelCacheUpdateUUIDs:(id)a5 uuid:(id)a6 cacheCreationDate:(id)a7
+- (ATXBlendingModelUICacheUpdate)initWithUICache:(id)cache consumerSubType:(unsigned __int8)type clientModelCacheUpdateUUIDs:(id)ds uuid:(id)uuid cacheCreationDate:(id)date
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  cacheCopy = cache;
+  dsCopy = ds;
+  uuidCopy = uuid;
+  dateCopy = date;
   v23.receiver = self;
   v23.super_class = ATXBlendingModelUICacheUpdate;
   v17 = [(ATXBlendingModelUICacheUpdate *)&v23 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_uiCache, a3);
-    v18->_consumerSubType = a4;
-    objc_storeStrong(&v18->_clientModelCacheUpdateUUIDs, a5);
-    if (v15)
+    objc_storeStrong(&v17->_uiCache, cache);
+    v18->_consumerSubType = type;
+    objc_storeStrong(&v18->_clientModelCacheUpdateUUIDs, ds);
+    if (uuidCopy)
     {
-      v19 = v15;
+      v19 = uuidCopy;
     }
 
     else
@@ -101,7 +101,7 @@ void __77__ATXBlendingModelUICacheUpdate_clientModelCacheUpdateUUIDsFromCacheUpd
     uuid = v18->_uuid;
     v18->_uuid = v19;
 
-    [v16 timeIntervalSince1970];
+    [dateCopy timeIntervalSince1970];
     v18->_absoluteCacheCreationDate = v21;
   }
 
@@ -115,33 +115,33 @@ void __77__ATXBlendingModelUICacheUpdate_clientModelCacheUpdateUUIDsFromCacheUpd
   return v2;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -153,33 +153,33 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForint:(int)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForint:(int)forint key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forint)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -191,17 +191,17 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXBlendingModelUICacheUpdate *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXBlendingModelUICacheUpdate *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXBlendingModelUICacheUpdate)initWithCoder:(id)a3
+- (ATXBlendingModelUICacheUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
   if (v5)
   {
     v6 = [(ATXBlendingModelUICacheUpdate *)self initWithProtoData:v5];
@@ -209,7 +209,7 @@ LABEL_7:
 
   else
   {
-    v6 = [(ATXBlendingModelUICacheUpdate *)self _initWithCoder:v4];
+    v6 = [(ATXBlendingModelUICacheUpdate *)self _initWithCoder:coderCopy];
   }
 
   v7 = v6;
@@ -217,20 +217,20 @@ LABEL_7:
   return v7;
 }
 
-- (id)_initWithCoder:(id)a3
+- (id)_initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc(MEMORY[0x1E695DFD8]);
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = [v6 initWithObjects:{v7, v8, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v5);
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"codingKeyForUICache"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"codingKeyForUICache"];
 
-  if (-[ATXBlendingModelUICacheUpdate checkAndReportDecodingFailureIfNeededForid:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededForid:key:coder:errorDomain:errorCode:", v10, @"codingKeyForUICache", v4, @"com.apple.proactive.BlendingModelUICacheUpdate", -1) || (v11 = [v4 decodeIntForKey:@"codingKeyForFeedbackMetadata"], -[ATXBlendingModelUICacheUpdate checkAndReportDecodingFailureIfNeededForint:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededForint:key:coder:errorDomain:errorCode:", v11, @"codingKeyForFeedbackMetadata", v4, @"com.apple.proactive.BlendingModelUICacheUpdate", -1)))
+  if (-[ATXBlendingModelUICacheUpdate checkAndReportDecodingFailureIfNeededForid:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededForid:key:coder:errorDomain:errorCode:", v10, @"codingKeyForUICache", coderCopy, @"com.apple.proactive.BlendingModelUICacheUpdate", -1) || (v11 = [coderCopy decodeIntForKey:@"codingKeyForFeedbackMetadata"], -[ATXBlendingModelUICacheUpdate checkAndReportDecodingFailureIfNeededForint:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededForint:key:coder:errorDomain:errorCode:", v11, @"codingKeyForFeedbackMetadata", coderCopy, @"com.apple.proactive.BlendingModelUICacheUpdate", -1)))
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -241,19 +241,19 @@ LABEL_7:
     v16 = objc_opt_class();
     v17 = [v14 initWithObjects:{v15, v16, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v13);
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"codingKeyForClientModelCacheUpdateUUIDs"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"codingKeyForClientModelCacheUpdateUUIDs"];
 
-    if ([(ATXBlendingModelUICacheUpdate *)self checkAndReportDecodingFailureIfNeededForid:v18 key:@"codingKeyForClientModelCacheUpdateUUIDs" coder:v4 errorDomain:@"com.apple.proactive.BlendingModelUICacheUpdate" errorCode:-1])
+    if ([(ATXBlendingModelUICacheUpdate *)self checkAndReportDecodingFailureIfNeededForid:v18 key:@"codingKeyForClientModelCacheUpdateUUIDs" coder:coderCopy errorDomain:@"com.apple.proactive.BlendingModelUICacheUpdate" errorCode:-1])
     {
-      v12 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"codingKeyForUUID"];
-      if ([(ATXBlendingModelUICacheUpdate *)self checkAndReportDecodingFailureIfNeededForid:v19 key:@"codingKeyForUUID" coder:v4 errorDomain:@"com.apple.proactive.BlendingModelUICacheUpdate" errorCode:-1])
+      v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"codingKeyForUUID"];
+      if ([(ATXBlendingModelUICacheUpdate *)self checkAndReportDecodingFailureIfNeededForid:v19 key:@"codingKeyForUUID" coder:coderCopy errorDomain:@"com.apple.proactive.BlendingModelUICacheUpdate" errorCode:-1])
       {
-        v12 = 0;
+        selfCopy = 0;
       }
 
       else
@@ -261,45 +261,45 @@ LABEL_7:
         v20 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:0.0];
         self = [(ATXBlendingModelUICacheUpdate *)self initWithUICache:v10 consumerSubType:v11 clientModelCacheUpdateUUIDs:v18 uuid:v19 cacheCreationDate:v20];
 
-        v12 = self;
+        selfCopy = self;
       }
     }
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXBlendingModelUICacheUpdate *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXBlendingModelUICacheUpdate *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXBlendingModelUICacheUpdate)initWithProtoData:(id)a3
+- (ATXBlendingModelUICacheUpdate)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBBlendingModelUICacheUpdate alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBBlendingModelUICacheUpdate alloc] initWithData:dataCopy];
 
     self = [(ATXBlendingModelUICacheUpdate *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXBlendingModelUICacheUpdate)initWithProto:(id)a3
+- (ATXBlendingModelUICacheUpdate)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -310,21 +310,21 @@ LABEL_7:
         [ATXBlendingModelUICacheUpdate initWithProto:];
       }
 
-      v12 = 0;
+      selfCopy = 0;
       goto LABEL_36;
     }
 
-    v5 = v4;
+    v5 = protoCopy;
     v6 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v7 = [(ATXPBBlendingModelUICacheUpdate *)v5 uuidString];
-    v8 = [v6 initWithUUIDString:v7];
+    uuidString = [(ATXPBBlendingModelUICacheUpdate *)v5 uuidString];
+    v8 = [v6 initWithUUIDString:uuidString];
 
-    v9 = [(ATXPBBlendingModelUICacheUpdate *)v5 consumerSubTypeString];
+    consumerSubTypeString = [(ATXPBBlendingModelUICacheUpdate *)v5 consumerSubTypeString];
     v53 = 0;
-    v10 = [MEMORY[0x1E698B028] consumerSubtypeForString:v9 found:&v53];
+    v10 = [MEMORY[0x1E698B028] consumerSubtypeForString:consumerSubTypeString found:&v53];
     if (v53 != 1)
     {
-      v12 = 0;
+      selfCopy = 0;
 LABEL_35:
 
 LABEL_36:
@@ -332,7 +332,7 @@ LABEL_36:
     }
 
     v11 = v10;
-    v12 = 0;
+    selfCopy = 0;
     if (!v10 || v10 == 50)
     {
       goto LABEL_35;
@@ -362,12 +362,12 @@ LABEL_36:
       if (![(ATXPBBlendingModelUICacheUpdate *)v5 hasHomeScreenCachedSuggestion]|| ![(ATXPBBlendingModelUICacheUpdate *)v5 hasSpotlightSuggestionLayout])
       {
         v52 = v13;
-        v36 = [(ATXPBBlendingModelUICacheUpdate *)v5 suggestionLayout];
-        if (v36)
+        suggestionLayout = [(ATXPBBlendingModelUICacheUpdate *)v5 suggestionLayout];
+        if (suggestionLayout)
         {
           v37 = [ATXSuggestionLayout alloc];
-          v38 = [(ATXPBBlendingModelUICacheUpdate *)v5 suggestionLayout];
-          v14 = [(ATXSuggestionLayout *)v37 initWithProto:v38];
+          suggestionLayout2 = [(ATXPBBlendingModelUICacheUpdate *)v5 suggestionLayout];
+          v14 = [(ATXSuggestionLayout *)v37 initWithProto:suggestionLayout2];
         }
 
         else
@@ -375,40 +375,40 @@ LABEL_36:
           v14 = 0;
         }
 
-        v39 = [(ATXPBBlendingModelUICacheUpdate *)v5 homeScreenCachedSuggestion];
-        if (v39)
+        homeScreenCachedSuggestion = [(ATXPBBlendingModelUICacheUpdate *)v5 homeScreenCachedSuggestion];
+        if (homeScreenCachedSuggestion)
         {
           v40 = [ATXHomeScreenCachedSuggestions alloc];
-          v41 = [(ATXPBBlendingModelUICacheUpdate *)v5 homeScreenCachedSuggestion];
-          v42 = [(ATXHomeScreenCachedSuggestions *)v40 initWithProto:v41];
+          homeScreenCachedSuggestion2 = [(ATXPBBlendingModelUICacheUpdate *)v5 homeScreenCachedSuggestion];
+          v42 = [(ATXHomeScreenCachedSuggestions *)v40 initWithProto:homeScreenCachedSuggestion2];
 
           v14 = v42;
         }
 
-        v43 = [(ATXPBBlendingModelUICacheUpdate *)v5 spotlightSuggestionLayout];
-        if (v43)
+        spotlightSuggestionLayout = [(ATXPBBlendingModelUICacheUpdate *)v5 spotlightSuggestionLayout];
+        if (spotlightSuggestionLayout)
         {
           v44 = [ATXSpotlightSuggestionLayout alloc];
-          v45 = [(ATXPBBlendingModelUICacheUpdate *)v5 spotlightSuggestionLayout];
-          v46 = [(ATXSpotlightSuggestionLayout *)v44 initWithProto:v45];
+          spotlightSuggestionLayout2 = [(ATXPBBlendingModelUICacheUpdate *)v5 spotlightSuggestionLayout];
+          v46 = [(ATXSpotlightSuggestionLayout *)v44 initWithProto:spotlightSuggestionLayout2];
 
           v14 = v46;
         }
 
         v13 = v52;
 
-        v47 = [(ATXPBBlendingModelUICacheUpdate *)v5 hasCacheCreationDate];
+        hasCacheCreationDate = [(ATXPBBlendingModelUICacheUpdate *)v5 hasCacheCreationDate];
         v48 = MEMORY[0x1E695DF00];
-        v49 = 0.0;
-        if (v47)
+        cacheCreationDate = 0.0;
+        if (hasCacheCreationDate)
         {
-          v49 = [(ATXPBBlendingModelUICacheUpdate *)v5 cacheCreationDate];
+          cacheCreationDate = [(ATXPBBlendingModelUICacheUpdate *)v5 cacheCreationDate];
         }
 
-        v50 = [v48 dateWithTimeIntervalSince1970:{v49, v52}];
+        v50 = [v48 dateWithTimeIntervalSince1970:{cacheCreationDate, v52}];
         self = [(ATXBlendingModelUICacheUpdate *)self initWithUICache:v14 consumerSubType:v11 clientModelCacheUpdateUUIDs:v13 uuid:v8 cacheCreationDate:v50];
 
-        v12 = self;
+        selfCopy = self;
         goto LABEL_34;
       }
 
@@ -419,23 +419,23 @@ LABEL_36:
       }
     }
 
-    v12 = 0;
+    selfCopy = 0;
 LABEL_34:
 
     goto LABEL_35;
   }
 
-  v12 = 0;
+  selfCopy = 0;
 LABEL_37:
 
-  return v12;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(NSUUID *)self->_uuid UUIDString];
-  [(ATXPBBlendingModelUICacheUpdate *)v3 setUuidString:v4];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  [(ATXPBBlendingModelUICacheUpdate *)v3 setUuidString:uUIDString];
 
   v5 = [MEMORY[0x1E698B028] stringForConsumerSubtype:self->_consumerSubType];
   [(ATXPBBlendingModelUICacheUpdate *)v3 setConsumerSubTypeString:v5];
@@ -447,20 +447,20 @@ LABEL_37:
   return v3;
 }
 
-- (id)clientModelCacheUpdateUUIDsDictionaryFromProto:(id)a3
+- (id)clientModelCacheUpdateUUIDsDictionaryFromProto:(id)proto
 {
-  v3 = a3;
+  protoCopy = proto;
   v4 = objc_opt_new();
-  v5 = [(ATXPBBlendingModelUICacheUpdate *)v3 clientModelIds];
+  clientModelIds = [(ATXPBBlendingModelUICacheUpdate *)protoCopy clientModelIds];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __80__ATXBlendingModelUICacheUpdate_clientModelCacheUpdateUUIDsDictionaryFromProto___block_invoke;
   v13 = &unk_1E86A47C0;
-  v14 = v3;
+  v14 = protoCopy;
   v15 = v4;
   v6 = v4;
-  v7 = v3;
-  [v5 enumerateObjectsUsingBlock:&v10];
+  v7 = protoCopy;
+  [clientModelIds enumerateObjectsUsingBlock:&v10];
 
   v8 = [v6 copy];
 
@@ -490,23 +490,23 @@ void __80__ATXBlendingModelUICacheUpdate_clientModelCacheUpdateUUIDsDictionaryFr
   }
 }
 
-- (void)setClientModelCacheUpdateUUIDsDictionaryOnProto:(id)a3
+- (void)setClientModelCacheUpdateUUIDsDictionaryOnProto:(id)proto
 {
   clientModelCacheUpdateUUIDs = self->_clientModelCacheUpdateUUIDs;
-  v5 = a3;
-  v6 = [(NSDictionary *)clientModelCacheUpdateUUIDs allKeys];
-  v7 = [v6 mutableCopy];
-  [(ATXPBBlendingModelUICacheUpdate *)v5 setClientModelIds:v7];
+  protoCopy = proto;
+  allKeys = [(NSDictionary *)clientModelCacheUpdateUUIDs allKeys];
+  v7 = [allKeys mutableCopy];
+  [(ATXPBBlendingModelUICacheUpdate *)protoCopy setClientModelIds:v7];
 
-  v10 = [(NSDictionary *)self->_clientModelCacheUpdateUUIDs allValues];
-  v8 = [v10 _pas_mappedArrayWithTransform:&__block_literal_global_17];
+  allValues = [(NSDictionary *)self->_clientModelCacheUpdateUUIDs allValues];
+  v8 = [allValues _pas_mappedArrayWithTransform:&__block_literal_global_17];
   v9 = [v8 mutableCopy];
-  [(ATXPBBlendingModelUICacheUpdate *)v5 setClientModelCacheUpdateUUIDStrings:v9];
+  [(ATXPBBlendingModelUICacheUpdate *)protoCopy setClientModelCacheUpdateUUIDStrings:v9];
 }
 
-- (void)setUICacheObjectOnProto:(id)a3
+- (void)setUICacheObjectOnProto:(id)proto
 {
-  v4 = a3;
+  protoCopy = proto;
   uiCache = self->_uiCache;
   p_uiCache = &self->_uiCache;
   if (uiCache)
@@ -516,8 +516,8 @@ void __80__ATXBlendingModelUICacheUpdate_clientModelCacheUpdateUUIDsDictionaryFr
     v8 = *p_uiCache;
     if (isKindOfClass)
     {
-      v9 = [*p_uiCache proto];
-      [(ATXPBBlendingModelUICacheUpdate *)v4 setHomeScreenCachedSuggestion:v9];
+      proto = [*p_uiCache proto];
+      [(ATXPBBlendingModelUICacheUpdate *)protoCopy setHomeScreenCachedSuggestion:proto];
 LABEL_8:
 
       goto LABEL_9;
@@ -528,16 +528,16 @@ LABEL_8:
     v11 = *p_uiCache;
     if (v10)
     {
-      v9 = [*p_uiCache proto];
-      [(ATXPBBlendingModelUICacheUpdate *)v4 setSuggestionLayout:v9];
+      proto = [*p_uiCache proto];
+      [(ATXPBBlendingModelUICacheUpdate *)protoCopy setSuggestionLayout:proto];
       goto LABEL_8;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [*p_uiCache proto];
-      [(ATXPBBlendingModelUICacheUpdate *)v4 setSpotlightSuggestionLayout:v9];
+      proto = [*p_uiCache proto];
+      [(ATXPBBlendingModelUICacheUpdate *)protoCopy setSpotlightSuggestionLayout:proto];
       goto LABEL_8;
     }
 
@@ -551,9 +551,9 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setUICacheObjectOnProtoForBiome:(id)a3
+- (void)setUICacheObjectOnProtoForBiome:(id)biome
 {
-  v4 = a3;
+  biomeCopy = biome;
   uiCache = self->_uiCache;
   p_uiCache = &self->_uiCache;
   if (uiCache)
@@ -563,8 +563,8 @@ LABEL_9:
     v8 = *p_uiCache;
     if (isKindOfClass)
     {
-      v9 = [*p_uiCache protoForBiome];
-      [(ATXPBBlendingModelUICacheUpdate *)v4 setHomeScreenCachedSuggestion:v9];
+      protoForBiome = [*p_uiCache protoForBiome];
+      [(ATXPBBlendingModelUICacheUpdate *)biomeCopy setHomeScreenCachedSuggestion:protoForBiome];
 LABEL_8:
 
       goto LABEL_9;
@@ -575,16 +575,16 @@ LABEL_8:
     v11 = *p_uiCache;
     if (v10)
     {
-      v9 = [*p_uiCache proto];
-      [(ATXPBBlendingModelUICacheUpdate *)v4 setSuggestionLayout:v9];
+      protoForBiome = [*p_uiCache proto];
+      [(ATXPBBlendingModelUICacheUpdate *)biomeCopy setSuggestionLayout:protoForBiome];
       goto LABEL_8;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [*p_uiCache proto];
-      [(ATXPBBlendingModelUICacheUpdate *)v4 setSpotlightSuggestionLayout:v9];
+      protoForBiome = [*p_uiCache proto];
+      [(ATXPBBlendingModelUICacheUpdate *)biomeCopy setSpotlightSuggestionLayout:protoForBiome];
       goto LABEL_8;
     }
 
@@ -598,29 +598,29 @@ LABEL_8:
 LABEL_9:
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXBlendingModelUICacheUpdate *)self isEqualToATXBlendingModelUICacheUpdate:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXBlendingModelUICacheUpdate *)self isEqualToATXBlendingModelUICacheUpdate:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXBlendingModelUICacheUpdate:(id)a3
+- (BOOL)isEqualToATXBlendingModelUICacheUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = self->_uiCache;
   v6 = v5;
-  if (v5 == v4[3])
+  if (v5 == updateCopy[3])
   {
   }
 
@@ -634,11 +634,11 @@ LABEL_9:
     }
   }
 
-  if (self->_consumerSubType == *(v4 + 16))
+  if (self->_consumerSubType == *(updateCopy + 16))
   {
     v8 = self->_clientModelCacheUpdateUUIDs;
     v9 = v8;
-    if (v8 == v4[4])
+    if (v8 == updateCopy[4])
     {
     }
 
@@ -654,7 +654,7 @@ LABEL_9:
 
     v11 = self->_uuid;
     v12 = v11;
-    if (v11 == v4[5])
+    if (v11 == updateCopy[5])
     {
     }
 
@@ -668,7 +668,7 @@ LABEL_9:
       }
     }
 
-    v14 = self->_absoluteCacheCreationDate == *(v4 + 1);
+    v14 = self->_absoluteCacheCreationDate == *(updateCopy + 1);
     goto LABEL_13;
   }
 
@@ -688,19 +688,19 @@ LABEL_13:
   return self->_absoluteCacheCreationDate - (v6 - v5 + 32 * v5) + 32 * (v6 - v5 + 32 * v5);
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4)
+  dataCopy = data;
+  if (version)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
     v12 = 0;
-    v9 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:a1 fromData:v6 error:&v12];
+    v9 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:self fromData:dataCopy error:&v12];
     v10 = v12;
     objc_autoreleasePoolPop(v8);
     v7 = 0;
@@ -738,8 +738,8 @@ LABEL_13:
 
         v9 = *(*(&v19 + 1) + 8 * i);
         v10 = [(NSDictionary *)self->_clientModelCacheUpdateUUIDs objectForKeyedSubscript:v9, v19];
-        v11 = [v10 UUIDString];
-        [v3 setObject:v11 forKeyedSubscript:v9];
+        uUIDString = [v10 UUIDString];
+        [v3 setObject:uUIDString forKeyedSubscript:v9];
       }
 
       v6 = [(NSDictionary *)v4 countByEnumeratingWithState:&v19 objects:v25 count:16];
@@ -760,8 +760,8 @@ LABEL_13:
   }
 
   v23[0] = @"uuid";
-  v14 = [(NSUUID *)self->_uuid UUIDString];
-  v24[0] = v14;
+  uUIDString2 = [(NSUUID *)self->_uuid UUIDString];
+  v24[0] = uUIDString2;
   v23[1] = @"consumerSubType";
   v15 = [MEMORY[0x1E698B028] stringForConsumerSubtype:self->_consumerSubType];
   v24[1] = v15;
@@ -779,8 +779,8 @@ LABEL_13:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(ATXBlendingModelUICacheUpdate *)self jsonRawData];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonRawData = [(ATXBlendingModelUICacheUpdate *)self jsonRawData];
+  v4 = [v2 dataWithJSONObject:jsonRawData options:1 error:0];
 
   return v4;
 }

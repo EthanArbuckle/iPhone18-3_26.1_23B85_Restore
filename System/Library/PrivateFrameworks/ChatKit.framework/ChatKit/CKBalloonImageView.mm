@@ -1,15 +1,15 @@
 @interface CKBalloonImageView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CKBalloonImageView)init;
-- (CKBalloonImageView)initWithFrame:(CGRect)a3;
+- (CKBalloonImageView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)alignmentRectInsets;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setImage:(id)a3;
-- (void)setImageHidden:(BOOL)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setImage:(id)image;
+- (void)setImageHidden:(BOOL)hidden;
 @end
 
 @implementation CKBalloonImageView
@@ -25,11 +25,11 @@
   return result;
 }
 
-- (CKBalloonImageView)initWithFrame:(CGRect)a3
+- (CKBalloonImageView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = CKBalloonImageView;
-  result = [(CKBalloonImageView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(CKBalloonImageView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_contentsTransformAnimationEnabled = 0;
@@ -38,10 +38,10 @@
   return result;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"contentsTransform"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"contentsTransform"])
   {
     contentsTransformAnimationEnabled = self->_contentsTransformAnimationEnabled;
   }
@@ -50,18 +50,18 @@
   {
     v7.receiver = self;
     v7.super_class = CKBalloonImageView;
-    contentsTransformAnimationEnabled = [(CKBalloonImageView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    contentsTransformAnimationEnabled = [(CKBalloonImageView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return contentsTransformAnimationEnabled;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(CKBalloonImageView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -74,12 +74,12 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(CKBalloonImageView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -94,9 +94,9 @@
 
 - (UIEdgeInsets)alignmentRectInsets
 {
-  v2 = [(CKBalloonImageView *)self image];
-  v3 = v2;
-  if (!v2)
+  image = [(CKBalloonImageView *)self image];
+  v3 = image;
+  if (!image)
   {
     v5 = *MEMORY[0x1E69DDCE0];
     v14 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -105,25 +105,25 @@
     goto LABEL_8;
   }
 
-  [v2 alignmentRectInsets];
+  [image alignmentRectInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [v3 imageOrientation];
-  if (!v12)
+  imageOrientation = [v3 imageOrientation];
+  if (!imageOrientation)
   {
 LABEL_7:
     v14 = v7;
     goto LABEL_8;
   }
 
-  v13 = v12;
-  if (v12 != 4)
+  v13 = imageOrientation;
+  if (imageOrientation != 4)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"UIEdgeInsets CKEdgeInsetsWithImageOrientation(UIEdgeInsets, UIImageOrientation)"}];
-    [v15 handleFailureInFunction:v16 file:@"CKGeometry.h" lineNumber:443 description:{@"CKEdgeInsetsWithImageOrientation %ld hasn't been implemented", v13}];
+    [currentHandler handleFailureInFunction:v16 file:@"CKGeometry.h" lineNumber:443 description:{@"CKEdgeInsetsWithImageOrientation %ld hasn't been implemented", v13}];
 
     goto LABEL_7;
   }
@@ -148,26 +148,26 @@ LABEL_8:
   v22.receiver = self;
   v22.super_class = CKBalloonImageView;
   [(CKBalloonImageView *)&v22 layoutSubviews];
-  v3 = [(CKBalloonImageView *)self layer];
-  v4 = [(CKBalloonImageView *)self image];
+  layer = [(CKBalloonImageView *)self layer];
+  image = [(CKBalloonImageView *)self image];
   if ([(CKBalloonImageView *)self imageHidden]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    [v3 setContents:0];
+    [layer setContents:0];
   }
 
   else
   {
-    [v3 setContents:{objc_msgSend(v4, "CGImage")}];
-    [v4 scale];
-    [v3 setContentsScale:?];
+    [layer setContents:{objc_msgSend(image, "CGImage")}];
+    [image scale];
+    [layer setContentsScale:?];
   }
 
-  [v4 size];
+  [image size];
   v6 = v5;
   v8 = v7;
-  [v4 capInsets];
-  [v3 setContentsCenter:{v12 / v6, v9 / v8, (v6 - v12 - v10) / v6, (v8 - v9 - v11) / v8}];
-  if ([v4 imageOrientation] == 4)
+  [image capInsets];
+  [layer setContentsCenter:{v12 / v6, v9 / v8, (v6 - v12 - v10) / v6, (v8 - v9 - v11) / v8}];
+  if ([image imageOrientation] == 4)
   {
     [(CKBalloonImageView *)self bounds];
     v21 = 0uLL;
@@ -188,12 +188,12 @@ LABEL_8:
   v18 = v21;
   v19 = v16;
   v20 = v14;
-  [v3 setContentsTransform:&v17];
+  [layer setContentsTransform:&v17];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(CKBalloonImageView *)self image:a3.width];
+  v3 = [(CKBalloonImageView *)self image:fits.width];
   [v3 size];
   v5 = v4;
   v7 = v6;
@@ -212,26 +212,26 @@ LABEL_8:
   [(CKBalloonImageView *)self setCurrentFrameIndex:0x7FFFFFFFFFFFFFFFLL];
 }
 
-- (void)setImageHidden:(BOOL)a3
+- (void)setImageHidden:(BOOL)hidden
 {
-  if (self->_imageHidden != a3)
+  if (self->_imageHidden != hidden)
   {
-    self->_imageHidden = a3;
+    self->_imageHidden = hidden;
     [(CKBalloonImageView *)self setNeedsLayout];
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  if (self->_image != v4)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v6 = v4;
-    v5 = [(UIImage *)v4 copy];
+    v6 = imageCopy;
+    v5 = [(UIImage *)imageCopy copy];
 
     objc_storeStrong(&self->_image, v5);
     [(CKBalloonImageView *)self setNeedsLayout];
-    v4 = v5;
+    imageCopy = v5;
   }
 }
 

@@ -25,7 +25,7 @@ LABEL_8:
 LABEL_9:
     v23.receiver = self;
     v23.super_class = SUUIWebDocumentViewAccessibility;
-    v12 = [(SUUIWebDocumentViewAccessibility *)&v23 accessibilityScrollRightPage];
+    accessibilityScrollRightPage = [(SUUIWebDocumentViewAccessibility *)&v23 accessibilityScrollRightPage];
     goto LABEL_10;
   }
 
@@ -48,9 +48,9 @@ LABEL_7:
 
   v14 = v11;
   v15 = [v9 safeValueForKey:@"_selectedViewControllerIndex"];
-  v16 = [v15 integerValue];
+  integerValue = [v15 integerValue];
 
-  v17 = [v10 objectAtIndex:v16];
+  v17 = [v10 objectAtIndex:integerValue];
   [v9 dismissOverlay:v17 animated:1];
 
   if (v14 == 2)
@@ -69,10 +69,10 @@ LABEL_7:
 
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7EF0], v18);
 
-  v12 = 1;
+  accessibilityScrollRightPage = 1;
 LABEL_10:
 
-  return v12;
+  return accessibilityScrollRightPage;
 }
 
 @end

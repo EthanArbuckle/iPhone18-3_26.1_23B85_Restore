@@ -1,31 +1,31 @@
 @interface _UIActivityContentTitleView
-- (_UIActivityContentTitleView)initWithFrame:(CGRect)a3;
-- (int64_t)preferredContentSizeForSize:(int64_t)a3;
+- (_UIActivityContentTitleView)initWithFrame:(CGRect)frame;
+- (int64_t)preferredContentSizeForSize:(int64_t)size;
 - (void)_updateViewConfiguration;
 - (void)contentDidChange;
 - (void)layoutSubviews;
-- (void)setHasCloseButton:(BOOL)a3;
-- (void)setIsCloseButtonOnLeadingEdge:(BOOL)a3;
-- (void)setIsPresentedInPopover:(BOOL)a3;
-- (void)setLinkView:(id)a3;
-- (void)setPhotosCarouselMode:(BOOL)a3;
+- (void)setHasCloseButton:(BOOL)button;
+- (void)setIsCloseButtonOnLeadingEdge:(BOOL)edge;
+- (void)setIsPresentedInPopover:(BOOL)popover;
+- (void)setLinkView:(id)view;
+- (void)setPhotosCarouselMode:(BOOL)mode;
 - (void)updateConstraints;
 @end
 
 @implementation _UIActivityContentTitleView
 
-- (_UIActivityContentTitleView)initWithFrame:(CGRect)a3
+- (_UIActivityContentTitleView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _UIActivityContentTitleView;
-  v3 = [(_UINavigationBarTitleView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_UINavigationBarTitleView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     if ([(_UIActivityContentTitleView *)v3 isPresentedInPopover])
     {
-      v5 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v5 userInterfaceIdiom])
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice userInterfaceIdiom])
       {
         v6 = 0;
       }
@@ -47,11 +47,11 @@
   return v4;
 }
 
-- (void)setLinkView:(id)a3
+- (void)setLinkView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v6 = self->_linkView;
-  v7 = v5;
+  v7 = viewCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -70,7 +70,7 @@
   if ((v8 & 1) == 0)
   {
 LABEL_7:
-    objc_storeStrong(&self->_linkView, a3);
+    objc_storeStrong(&self->_linkView, view);
     [(_UIActivityContentTitleView *)self _updateViewConfiguration];
     [(_UIActivityContentTitleView *)self setNeedsUpdateConstraints];
   }
@@ -81,13 +81,13 @@ LABEL_8:
 - (void)updateConstraints
 {
   v45[4] = *MEMORY[0x1E69E9840];
-  v3 = [(_UIActivityContentTitleView *)self activeConstraints];
+  activeConstraints = [(_UIActivityContentTitleView *)self activeConstraints];
 
-  if (v3)
+  if (activeConstraints)
   {
     v4 = MEMORY[0x1E696ACD8];
-    v5 = [(_UIActivityContentTitleView *)self activeConstraints];
-    [v4 deactivateConstraints:v5];
+    activeConstraints2 = [(_UIActivityContentTitleView *)self activeConstraints];
+    [v4 deactivateConstraints:activeConstraints2];
   }
 
   if ([(_UIActivityContentTitleView *)self photosCarouselMode])
@@ -99,15 +99,15 @@ LABEL_8:
 
   else
   {
-    v6 = [(_UIActivityContentTitleView *)self linkView];
-    v7 = [v6 heightAnchor];
-    v8 = [(_UIActivityContentTitleView *)self heightAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    linkView = [(_UIActivityContentTitleView *)self linkView];
+    heightAnchor = [linkView heightAnchor];
+    heightAnchor2 = [(_UIActivityContentTitleView *)self heightAnchor];
+    v9 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
 
-    v10 = [(_UIActivityContentTitleView *)self linkView];
-    v11 = [v10 centerYAnchor];
-    v12 = [(_UIActivityContentTitleView *)self centerYAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    linkView2 = [(_UIActivityContentTitleView *)self linkView];
+    centerYAnchor = [linkView2 centerYAnchor];
+    centerYAnchor2 = [(_UIActivityContentTitleView *)self centerYAnchor];
+    v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
     v14 = v9;
     v15 = v13;
@@ -115,17 +115,17 @@ LABEL_8:
     v17 = v15;
     if (_ShareSheetSolariumEnabled())
     {
-      v18 = [(_UIActivityContentTitleView *)self linkView];
-      v19 = [v18 topAnchor];
-      v20 = [(_UIActivityContentTitleView *)self layoutMarginsGuide];
-      v21 = [v20 topAnchor];
-      v22 = [v19 constraintEqualToAnchor:v21];
+      linkView3 = [(_UIActivityContentTitleView *)self linkView];
+      topAnchor = [linkView3 topAnchor];
+      layoutMarginsGuide = [(_UIActivityContentTitleView *)self layoutMarginsGuide];
+      topAnchor2 = [layoutMarginsGuide topAnchor];
+      v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-      v23 = [(_UIActivityContentTitleView *)self linkView];
-      v24 = [v23 bottomAnchor];
-      v25 = [(_UIActivityContentTitleView *)self layoutMarginsGuide];
-      v26 = [v25 bottomAnchor];
-      v17 = [v24 constraintEqualToAnchor:v26];
+      linkView4 = [(_UIActivityContentTitleView *)self linkView];
+      bottomAnchor = [linkView4 bottomAnchor];
+      layoutMarginsGuide2 = [(_UIActivityContentTitleView *)self layoutMarginsGuide];
+      bottomAnchor2 = [layoutMarginsGuide2 bottomAnchor];
+      v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
       v16 = v22;
       [(_UIActivityContentTitleView *)self setTopConstraint:v22];
@@ -133,19 +133,19 @@ LABEL_8:
     }
 
     v37 = v16;
-    v40 = [(_UIActivityContentTitleView *)self linkView];
-    v38 = [v40 leadingAnchor];
+    linkView5 = [(_UIActivityContentTitleView *)self linkView];
+    leadingAnchor = [linkView5 leadingAnchor];
     [(_UIActivityContentTitleView *)self layoutMarginsGuide];
     v39 = v42 = v15;
-    v27 = [v39 leadingAnchor];
-    v28 = [v38 constraintEqualToAnchor:v27];
+    leadingAnchor2 = [v39 leadingAnchor];
+    v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v45[0] = v28;
-    v29 = [(_UIActivityContentTitleView *)self linkView];
-    v30 = [v29 trailingAnchor];
+    linkView6 = [(_UIActivityContentTitleView *)self linkView];
+    trailingAnchor = [linkView6 trailingAnchor];
     [(_UIActivityContentTitleView *)self layoutMarginsGuide];
     v31 = v41 = v14;
-    v32 = [v31 trailingAnchor];
-    v33 = [v30 constraintEqualToAnchor:v32];
+    trailingAnchor2 = [v31 trailingAnchor];
+    v33 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v45[1] = v33;
     v45[2] = v16;
     v45[3] = v17;
@@ -153,8 +153,8 @@ LABEL_8:
     [(_UIActivityContentTitleView *)self setActiveConstraints:v34];
 
     v35 = MEMORY[0x1E696ACD8];
-    v36 = [(_UIActivityContentTitleView *)self activeConstraints];
-    [v35 activateConstraints:v36];
+    activeConstraints3 = [(_UIActivityContentTitleView *)self activeConstraints];
+    [v35 activateConstraints:activeConstraints3];
 
     v43.receiver = self;
     v43.super_class = _UIActivityContentTitleView;
@@ -162,23 +162,23 @@ LABEL_8:
   }
 }
 
-- (void)setHasCloseButton:(BOOL)a3
+- (void)setHasCloseButton:(BOOL)button
 {
-  if (self->_hasCloseButton != a3)
+  if (self->_hasCloseButton != button)
   {
-    v4 = a3;
-    self->_hasCloseButton = a3;
+    buttonCopy = button;
+    self->_hasCloseButton = button;
     if ([(_UIActivityContentTitleView *)self isPresentedInPopover])
     {
-      v6 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v6 userInterfaceIdiom])
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice userInterfaceIdiom])
       {
         v7 = 0;
       }
 
       else
       {
-        v7 = !v4;
+        v7 = !buttonCopy;
       }
 
       [(_UINavigationBarTitleView *)self setDisallowNavigationBarMinimumTopPadding:v7];
@@ -193,11 +193,11 @@ LABEL_8:
   }
 }
 
-- (void)setPhotosCarouselMode:(BOOL)a3
+- (void)setPhotosCarouselMode:(BOOL)mode
 {
-  if (self->_photosCarouselMode != a3)
+  if (self->_photosCarouselMode != mode)
   {
-    self->_photosCarouselMode = a3;
+    self->_photosCarouselMode = mode;
     [(_UIActivityContentTitleView *)self _updateViewConfiguration];
     [(_UIActivityContentTitleView *)self setNeedsUpdateConstraints];
     [(_UIActivityContentTitleView *)self setNeedsLayout];
@@ -206,26 +206,26 @@ LABEL_8:
   }
 }
 
-- (void)setIsCloseButtonOnLeadingEdge:(BOOL)a3
+- (void)setIsCloseButtonOnLeadingEdge:(BOOL)edge
 {
-  if (self->_isCloseButtonOnLeadingEdge != a3)
+  if (self->_isCloseButtonOnLeadingEdge != edge)
   {
-    self->_isCloseButtonOnLeadingEdge = a3;
+    self->_isCloseButtonOnLeadingEdge = edge;
     [(_UIActivityContentTitleView *)self setNeedsLayout];
   }
 }
 
-- (void)setIsPresentedInPopover:(BOOL)a3
+- (void)setIsPresentedInPopover:(BOOL)popover
 {
-  if (self->_isPresentedInPopover != a3)
+  if (self->_isPresentedInPopover != popover)
   {
     v10 = v4;
     v11 = v3;
-    self->_isPresentedInPopover = a3;
-    if (a3)
+    self->_isPresentedInPopover = popover;
+    if (popover)
     {
-      v8 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v8 userInterfaceIdiom])
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice userInterfaceIdiom])
       {
         v9 = 0;
       }
@@ -249,22 +249,22 @@ LABEL_8:
 
 - (void)_updateViewConfiguration
 {
-  v3 = [(_UIActivityContentTitleView *)self photosCarouselMode];
-  v4 = [(_UIActivityContentTitleView *)self linkView];
-  v5 = v4;
-  if (v3)
+  photosCarouselMode = [(_UIActivityContentTitleView *)self photosCarouselMode];
+  linkView = [(_UIActivityContentTitleView *)self linkView];
+  v5 = linkView;
+  if (photosCarouselMode)
   {
-    [v4 removeFromSuperview];
+    [linkView removeFromSuperview];
   }
 
   else
   {
-    [(_UIActivityContentTitleView *)self addSubview:v4];
+    [(_UIActivityContentTitleView *)self addSubview:linkView];
   }
 
-  v6 = [(_UIActivityContentTitleView *)self photosCarouselMode];
-  v7 = [(_UIActivityContentTitleView *)self linkView];
-  [v7 setHidden:v6];
+  photosCarouselMode2 = [(_UIActivityContentTitleView *)self photosCarouselMode];
+  linkView2 = [(_UIActivityContentTitleView *)self linkView];
+  [linkView2 setHidden:photosCarouselMode2];
 
   v8 = [(_UIActivityContentTitleView *)self photosCarouselMode]^ 1;
 
@@ -279,11 +279,11 @@ LABEL_8:
   [(_UIActivityContentTitleView *)self setNeedsLayout];
 }
 
-- (int64_t)preferredContentSizeForSize:(int64_t)a3
+- (int64_t)preferredContentSizeForSize:(int64_t)size
 {
   if ([(_UIActivityContentTitleView *)self photosCarouselMode])
   {
-    return a3;
+    return size;
   }
 
   else
@@ -304,17 +304,17 @@ LABEL_8:
   v6 = *(MEMORY[0x1E69DDCE0] + 24);
   if ([(_UIActivityContentTitleView *)self hasCloseButton]&& ![(_UIActivityContentTitleView *)self photosCarouselMode])
   {
-    v7 = [(_UIActivityContentTitleView *)self isCloseButtonOnLeadingEdge];
-    v8 = [(_UINavigationBarTitleView *)self overlays];
-    v9 = v8;
-    if (v7)
+    isCloseButtonOnLeadingEdge = [(_UIActivityContentTitleView *)self isCloseButtonOnLeadingEdge];
+    overlays = [(_UINavigationBarTitleView *)self overlays];
+    v9 = overlays;
+    if (isCloseButtonOnLeadingEdge)
     {
-      [v8 leadingRect];
+      [overlays leadingRect];
     }
 
     else
     {
-      [v8 trailingRect];
+      [overlays trailingRect];
     }
 
     v14 = v10;
@@ -352,18 +352,18 @@ LABEL_8:
         goto LABEL_23;
       }
 
-      v23 = [(_UIActivityContentTitleView *)self linkView];
-      v24 = [v23 effectiveUserInterfaceLayoutDirection];
+      linkView = [(_UIActivityContentTitleView *)self linkView];
+      effectiveUserInterfaceLayoutDirection = [linkView effectiveUserInterfaceLayoutDirection];
 
       v25 = v19;
       if ([(_UIActivityContentTitleView *)self isCloseButtonOnLeadingEdge])
       {
         v26 = v66;
-        if (v24 == 1)
+        if (effectiveUserInterfaceLayoutDirection == 1)
         {
 LABEL_19:
-          v27 = [(_UIActivityContentTitleView *)self linkView];
-          [v27 frame];
+          linkView2 = [(_UIActivityContentTitleView *)self linkView];
+          [linkView2 frame];
           MaxX = CGRectGetMaxX(v73);
 LABEL_22:
           v75.origin.x = v25;
@@ -374,12 +374,12 @@ LABEL_22:
 
           v22 = v32 + 15.0;
 LABEL_23:
-          v33 = [(_UIActivityContentTitleView *)self linkView];
-          v34 = [v33 effectiveUserInterfaceLayoutDirection];
+          linkView3 = [(_UIActivityContentTitleView *)self linkView];
+          effectiveUserInterfaceLayoutDirection2 = [linkView3 effectiveUserInterfaceLayoutDirection];
 
-          v35 = [(_UIActivityContentTitleView *)self isCloseButtonOnLeadingEdge];
-          v36 = [(_UIActivityContentTitleView *)self isCloseButtonOnLeadingEdge];
-          if (v35)
+          isCloseButtonOnLeadingEdge2 = [(_UIActivityContentTitleView *)self isCloseButtonOnLeadingEdge];
+          isCloseButtonOnLeadingEdge3 = [(_UIActivityContentTitleView *)self isCloseButtonOnLeadingEdge];
+          if (isCloseButtonOnLeadingEdge2)
           {
             v37 = v22;
           }
@@ -389,7 +389,7 @@ LABEL_23:
             v37 = v4;
           }
 
-          if (v36)
+          if (isCloseButtonOnLeadingEdge3)
           {
             v38 = v6;
           }
@@ -399,7 +399,7 @@ LABEL_23:
             v38 = v22;
           }
 
-          if (v35)
+          if (isCloseButtonOnLeadingEdge2)
           {
             v39 = v4;
           }
@@ -409,7 +409,7 @@ LABEL_23:
             v39 = v22;
           }
 
-          if (v36)
+          if (isCloseButtonOnLeadingEdge3)
           {
             v40 = v22;
           }
@@ -419,7 +419,7 @@ LABEL_23:
             v40 = v6;
           }
 
-          if (v34 == 1)
+          if (effectiveUserInterfaceLayoutDirection2 == 1)
           {
             v6 = v40;
           }
@@ -429,7 +429,7 @@ LABEL_23:
             v6 = v38;
           }
 
-          if (v34 == 1)
+          if (effectiveUserInterfaceLayoutDirection2 == 1)
           {
             v4 = v39;
           }
@@ -446,7 +446,7 @@ LABEL_23:
       else
       {
         v26 = v66;
-        if (v24 != 1)
+        if (effectiveUserInterfaceLayoutDirection != 1)
         {
           goto LABEL_19;
         }
@@ -457,8 +457,8 @@ LABEL_23:
       v74.size.width = v16;
       v74.size.height = v17;
       MaxX = CGRectGetMaxX(v74);
-      v27 = [(_UIActivityContentTitleView *)self linkView];
-      [v27 frame];
+      linkView2 = [(_UIActivityContentTitleView *)self linkView];
+      [linkView2 frame];
       v25 = v28;
       v26 = v29;
       v16 = v30;
@@ -468,8 +468,8 @@ LABEL_23:
   }
 
 LABEL_41:
-  v41 = [(_UIActivityContentTitleView *)self linkView];
-  [v41 _setTextSafeAreaInset:{v3, v4, v5, v6}];
+  linkView4 = [(_UIActivityContentTitleView *)self linkView];
+  [linkView4 _setTextSafeAreaInset:{v3, v4, v5, v6}];
 
   if (!_ShareSheetSolariumEnabled())
   {
@@ -479,12 +479,12 @@ LABEL_41:
     v46 = v45;
     [(_UIActivityContentTitleView *)self layoutMargins];
     v48 = v47;
-    v49 = [(_UIActivityContentTitleView *)self photosCarouselMode];
+    photosCarouselMode = [(_UIActivityContentTitleView *)self photosCarouselMode];
     v42 = 0.0;
-    if (!v49)
+    if (!photosCarouselMode)
     {
-      v50 = [(_UIActivityContentTitleView *)self linkView];
-      [v50 sizeThatFits:{v44 - (v46 + v48), 1.79769313e308}];
+      linkView5 = [(_UIActivityContentTitleView *)self linkView];
+      [linkView5 sizeThatFits:{v44 - (v46 + v48), 1.79769313e308}];
       v52 = v51;
 
       v42 = 72.0;
@@ -505,9 +505,9 @@ LABEL_47:
     goto LABEL_49;
   }
 
-  v53 = [(_UIActivityContentTitleView *)self linkView];
+  linkView6 = [(_UIActivityContentTitleView *)self linkView];
   [(_UIActivityContentTitleView *)self bounds];
-  [v53 sizeThatFits:{v54, 1.79769313e308}];
+  [linkView6 sizeThatFits:{v54, 1.79769313e308}];
   v56 = v55;
   [(_UIActivityContentTitleView *)self layoutMargins];
   v58 = v56 + v57;
@@ -520,8 +520,8 @@ LABEL_49:
   {
     [(_UINavigationBarTitleView *)self height];
     v62 = v61;
-    v63 = [(_UIActivityContentTitleView *)self linkView];
-    [v63 frame];
+    linkView7 = [(_UIActivityContentTitleView *)self linkView];
+    [linkView7 frame];
     v64 = NSStringFromCGRect(v76);
     *buf = 134218242;
     v69 = v62;

@@ -1,30 +1,30 @@
 @interface ICTTTextEdit
-- (BOOL)isEqual:(id)a3;
-- (ICTTTextEdit)initWithAttributes:(id)a3 range:(_NSRange)a4;
-- (ICTTTextEdit)initWithTimestamp:(id)a3 replicaID:(id)a4 range:(_NSRange)a5;
+- (BOOL)isEqual:(id)equal;
+- (ICTTTextEdit)initWithAttributes:(id)attributes range:(_NSRange)range;
+- (ICTTTextEdit)initWithTimestamp:(id)timestamp replicaID:(id)d range:(_NSRange)range;
 - (_NSRange)range;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)descriptionWithNote:(id)a3;
+- (id)descriptionWithNote:(id)note;
 - (unint64_t)hash;
 @end
 
 @implementation ICTTTextEdit
 
-- (ICTTTextEdit)initWithTimestamp:(id)a3 replicaID:(id)a4 range:(_NSRange)a5
+- (ICTTTextEdit)initWithTimestamp:(id)timestamp replicaID:(id)d range:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v10 = a3;
-  v11 = a4;
+  length = range.length;
+  location = range.location;
+  timestampCopy = timestamp;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = ICTTTextEdit;
   v12 = [(ICTTTextEdit *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_timestamp, a3);
-    objc_storeStrong(&v13->_replicaID, a4);
+    objc_storeStrong(&v12->_timestamp, timestamp);
+    objc_storeStrong(&v13->_replicaID, d);
     v13->_range.location = location;
     v13->_range.length = length;
   }
@@ -32,15 +32,15 @@
   return v13;
 }
 
-- (ICTTTextEdit)initWithAttributes:(id)a3 range:(_NSRange)a4
+- (ICTTTextEdit)initWithAttributes:(id)attributes range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:ICTTAttributeNameReplicaID];
+  length = range.length;
+  location = range.location;
+  attributesCopy = attributes;
+  v8 = [attributesCopy objectForKeyedSubscript:ICTTAttributeNameReplicaID];
   if (v8)
   {
-    v9 = [v7 objectForKeyedSubscript:ICTTAttributeNameTimestamp];
+    v9 = [attributesCopy objectForKeyedSubscript:ICTTAttributeNameTimestamp];
     v10 = v9;
     if (v9)
     {
@@ -56,15 +56,15 @@
 
     self = [(ICTTTextEdit *)self initWithTimestamp:v12 replicaID:v8 range:location, length];
 
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)description
@@ -72,35 +72,35 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ICTTTextEdit *)self timestamp];
-  v7 = [(ICTTTextEdit *)self replicaID];
+  timestamp = [(ICTTTextEdit *)self timestamp];
+  replicaID = [(ICTTTextEdit *)self replicaID];
   v12.location = [(ICTTTextEdit *)self range];
   v8 = NSStringFromRange(v12);
-  v9 = [v3 stringWithFormat:@"<%@: %p, timestamp: %@, replicaID: %@, range: %@>", v5, self, v6, v7, v8];
+  v9 = [v3 stringWithFormat:@"<%@: %p, timestamp: %@, replicaID: %@, range: %@>", v5, self, timestamp, replicaID, v8];
 
   return v9;
 }
 
-- (id)descriptionWithNote:(id)a3
+- (id)descriptionWithNote:(id)note
 {
-  v4 = a3;
+  noteCopy = note;
   v5 = MEMORY[0x277CBC6A0];
-  v6 = [(ICTTTextEdit *)self replicaID];
-  v7 = [v4 userIDForReplicaID:v6];
-  v8 = [v5 ic_participantNameOrFallbackForUserRecordName:v7 note:v4];
+  replicaID = [(ICTTTextEdit *)self replicaID];
+  v7 = [noteCopy userIDForReplicaID:replicaID];
+  v8 = [v5 ic_participantNameOrFallbackForUserRecordName:v7 note:noteCopy];
 
-  v9 = [(ICTTTextEdit *)self timestamp];
+  timestamp = [(ICTTTextEdit *)self timestamp];
 
-  if (v9)
+  if (timestamp)
   {
     v10 = MEMORY[0x277CCA968];
-    v11 = [(ICTTTextEdit *)self timestamp];
-    v12 = [v10 localizedStringFromDate:v11 dateStyle:1 timeStyle:1];
+    timestamp2 = [(ICTTTextEdit *)self timestamp];
+    v12 = [v10 localizedStringFromDate:timestamp2 dateStyle:1 timeStyle:1];
 
-    v13 = [(ICTTTextEdit *)self replicaID];
-    LODWORD(v11) = [v4 trustsTimestampsFromReplicaID:v13];
+    replicaID2 = [(ICTTTextEdit *)self replicaID];
+    LODWORD(timestamp2) = [noteCopy trustsTimestampsFromReplicaID:replicaID2];
 
-    if (v11)
+    if (timestamp2)
     {
       v14 = @"%@ edited at %@";
     }
@@ -121,43 +121,43 @@
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 != self)
+  if (equal != self)
   {
-    v4 = a3;
+    equalCopy = equal;
     objc_opt_class();
     v5 = ICDynamicCast();
 
-    v6 = [(ICTTTextEdit *)self timestamp];
-    v7 = [v5 timestamp];
+    timestamp = [(ICTTTextEdit *)self timestamp];
+    timestamp2 = [v5 timestamp];
     v8 = *MEMORY[0x277CBEEE8];
-    if (*MEMORY[0x277CBEEE8] == v6)
+    if (*MEMORY[0x277CBEEE8] == timestamp)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = v6;
+      v9 = timestamp;
     }
 
-    v10 = v9;
-    if (v8 == v7)
+    replicaID = v9;
+    if (v8 == timestamp2)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = v7;
+      v11 = timestamp2;
     }
 
     v12 = v11;
-    if (v10 | v12)
+    if (replicaID | v12)
     {
-      v13 = v12;
-      if (v10)
+      replicaID2 = v12;
+      if (replicaID)
       {
         v14 = v12 == 0;
       }
@@ -172,7 +172,7 @@
         goto LABEL_22;
       }
 
-      v15 = [v10 isEqual:v12];
+      v15 = [replicaID isEqual:v12];
 
       if (!v15)
       {
@@ -181,13 +181,13 @@
       }
     }
 
-    v10 = [v5 replicaID];
-    v13 = [(ICTTTextEdit *)self replicaID];
-    if ([v10 isEqual:v13])
+    replicaID = [v5 replicaID];
+    replicaID2 = [(ICTTTextEdit *)self replicaID];
+    if ([replicaID isEqual:replicaID2])
     {
-      v16 = [v5 range];
+      range = [v5 range];
       v18 = v17;
-      v21 = v16 == [(ICTTTextEdit *)self range]&& v18 == v19;
+      v21 = range == [(ICTTTextEdit *)self range]&& v18 == v19;
       goto LABEL_23;
     }
 
@@ -207,16 +207,16 @@ LABEL_24:
   result = self->_hash;
   if (!result)
   {
-    v4 = [(ICTTTextEdit *)self timestamp];
-    v5 = [v4 hash];
+    timestamp = [(ICTTTextEdit *)self timestamp];
+    v5 = [timestamp hash];
     if (!v5)
     {
-      v6 = [MEMORY[0x277CBEB68] null];
-      v5 = [v6 hash];
+      null = [MEMORY[0x277CBEB68] null];
+      v5 = [null hash];
     }
 
-    v7 = [(ICTTTextEdit *)self replicaID];
-    v8 = [v7 hash];
+    replicaID = [(ICTTTextEdit *)self replicaID];
+    v8 = [replicaID hash];
     [(ICTTTextEdit *)self range];
     [(ICTTTextEdit *)self range];
     self->_hash = ICHashWithHashKeys(v5, v9, v10, v11, v12, v13, v14, v15, v8);
@@ -227,13 +227,13 @@ LABEL_24:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ICTTTextEdit allocWithZone:a3];
-  v5 = [(ICTTTextEdit *)self timestamp];
-  v6 = [(ICTTTextEdit *)self replicaID];
-  v7 = [(ICTTTextEdit *)self range];
-  v9 = [(ICTTTextEdit *)v4 initWithTimestamp:v5 replicaID:v6 range:v7, v8];
+  v4 = [ICTTTextEdit allocWithZone:zone];
+  timestamp = [(ICTTTextEdit *)self timestamp];
+  replicaID = [(ICTTTextEdit *)self replicaID];
+  range = [(ICTTTextEdit *)self range];
+  v9 = [(ICTTTextEdit *)v4 initWithTimestamp:timestamp replicaID:replicaID range:range, v8];
 
   return v9;
 }

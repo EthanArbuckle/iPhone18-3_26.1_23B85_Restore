@@ -1,15 +1,15 @@
 @interface DebugFormatInspectorResizingCell
-- (_TtC8NewsFeed32DebugFormatInspectorResizingCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC8NewsFeed32DebugFormatInspectorResizingCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation DebugFormatInspectorResizingCell
 
-- (_TtC8NewsFeed32DebugFormatInspectorResizingCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC8NewsFeed32DebugFormatInspectorResizingCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_1D726207C();
+    identifier = sub_1D726207C();
     v6 = v5;
   }
 
@@ -18,12 +18,12 @@
     v6 = 0;
   }
 
-  return sub_1D5F43794(a3, a4, v6);
+  return sub_1D5F43794(style, identifier, v6);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D5F43D54();
 }
 

@@ -1,25 +1,25 @@
 @interface UIDocumentInteractionController
 + (UIDocumentInteractionController)interactionControllerWithURL:(NSURL *)url;
 + (id)_archiveDecompressQueue;
-- (BOOL)__presentPreviewAnimated:(BOOL)a3;
+- (BOOL)__presentPreviewAnimated:(BOOL)animated;
 - (BOOL)_canPreviewDecompressedArchive;
 - (BOOL)_canSaveToCameraRollForType;
-- (BOOL)_delegateCanPerformAction:(SEL)a3;
-- (BOOL)_delegateExistsAndImplementsRequiredMethods:(id *)a3;
-- (BOOL)_delegatePerformAction:(SEL)a3;
+- (BOOL)_delegateCanPerformAction:(SEL)action;
+- (BOOL)_delegateExistsAndImplementsRequiredMethods:(id *)methods;
+- (BOOL)_delegatePerformAction:(SEL)action;
 - (BOOL)_documentNeedsHelpDecompressingArchiveForPreview;
-- (BOOL)_isFilenameValidForDecompressing:(id)a3 allowsPreviewingArchive:(BOOL)a4;
+- (BOOL)_isFilenameValidForDecompressing:(id)decompressing allowsPreviewingArchive:(BOOL)archive;
 - (BOOL)_isImage;
-- (BOOL)_isPackageArchive:(id)a3;
-- (BOOL)_isValidURL:(id)a3;
-- (BOOL)_presentOpenInMenuAnimated:(BOOL)a3 willPresentBlock:(id)a4;
-- (BOOL)_presentOptionsMenuAnimated:(BOOL)a3 willPresentBlock:(id)a4;
+- (BOOL)_isPackageArchive:(id)archive;
+- (BOOL)_isValidURL:(id)l;
+- (BOOL)_presentOpenInMenuAnimated:(BOOL)animated willPresentBlock:(id)block;
+- (BOOL)_presentOptionsMenuAnimated:(BOOL)animated willPresentBlock:(id)block;
 - (BOOL)_setupForOpenInMenu;
 - (BOOL)_setupForOptionsMenu;
 - (BOOL)_setupPreviewController;
 - (BOOL)_shouldAutoDecompressIfArchive;
 - (BOOL)_shouldAutoDecompressIfArchiveForPreview;
-- (BOOL)_shouldIncludeActivityForLegacyDelegatingWithAction:(SEL)a3;
+- (BOOL)_shouldIncludeActivityForLegacyDelegatingWithAction:(SEL)action;
 - (BOOL)_shouldIncludePreviewActivity;
 - (BOOL)_shouldReturnDefaultApplication;
 - (BOOL)isArchive;
@@ -28,66 +28,66 @@
 - (BOOL)presentOptionsMenuFromBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated;
 - (BOOL)presentOptionsMenuFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated;
 - (BOOL)presentPreviewAnimated:(BOOL)animated;
-- (BOOL)previewController:(id)a3 canEditItem:(id)a4;
-- (CGRect)previewController:(id)a3 frameForPreviewItem:(id)a4 inSourceView:(id *)a5;
+- (BOOL)previewController:(id)controller canEditItem:(id)item;
+- (CGRect)previewController:(id)controller frameForPreviewItem:(id)item inSourceView:(id *)view;
 - (NSArray)gestureRecognizers;
 - (NSArray)icons;
 - (NSString)UTI;
 - (NSString)name;
 - (NSURL)URL;
 - (QLPreviewController)previewController;
-- (UIDocumentInteractionController)initWithURL:(id)a3;
+- (UIDocumentInteractionController)initWithURL:(id)l;
 - (_UIDICPreviewItem)previewControllerItem;
-- (id)__decompressArchiveAndSetupPayload:(id)a3 completion:(id)a4;
+- (id)__decompressArchiveAndSetupPayload:(id)payload completion:(id)completion;
 - (id)_appOpeningDocumentProxy;
 - (id)_decompressedArchiveDocumentURL;
 - (id)_defaultApplication;
 - (id)_documentProxy;
-- (id)_documentProxyWithIsContentManaged:(BOOL)a3 usingURL:(id)a4;
-- (id)_newActivityIfNecessaryForLegacyActionDelegatingWithAction:(SEL)a3;
+- (id)_documentProxyWithIsContentManaged:(BOOL)managed usingURL:(id)l;
+- (id)_newActivityIfNecessaryForLegacyActionDelegatingWithAction:(SEL)action;
 - (id)_newPreviewActivity;
-- (id)_pathsInArchive:(id)a3;
+- (id)_pathsInArchive:(id)archive;
 - (id)_preferredApplicationForDocumentOpening;
-- (id)_preparedActivityViewControllerWithItems:(id)a3 activities:(id)a4 options:(unint64_t)a5;
-- (id)additionalActivitiesTypesForPreviewController:(id)a3;
+- (id)_preparedActivityViewControllerWithItems:(id)items activities:(id)activities options:(unint64_t)options;
+- (id)additionalActivitiesTypesForPreviewController:(id)controller;
 - (id)delegate;
-- (id)dismissActionsForPreviewController:(id)a3;
-- (id)excludedActivityTypesForPreviewController:(id)a3;
-- (id)extractSubitemFromArchive:(id)a3 completion:(id)a4;
+- (id)dismissActionsForPreviewController:(id)controller;
+- (id)excludedActivityTypesForPreviewController:(id)controller;
+- (id)extractSubitemFromArchive:(id)archive completion:(id)completion;
 - (id)physicalURL;
 - (id)presentingNavigationController;
-- (id)previewController:(id)a3 transitionImageForPreviewItem:(id)a4 contentRect:(CGRect *)a5;
-- (void)__openUsingDefaultCopyMechanismToTransferDocumentToApplication:(id)a3;
-- (void)__openUsingInPlaceMechanismToTransferDocumentToApplication:(id)a3;
-- (void)__performLaunchServiceDocumentOpenWithApplication:(id)a3 launchServiceOptions:(id)a4;
+- (id)previewController:(id)controller transitionImageForPreviewItem:(id)item contentRect:(CGRect *)rect;
+- (void)__openUsingDefaultCopyMechanismToTransferDocumentToApplication:(id)application;
+- (void)__openUsingInPlaceMechanismToTransferDocumentToApplication:(id)application;
+- (void)__performLaunchServiceDocumentOpenWithApplication:(id)application launchServiceOptions:(id)options;
 - (void)_clearPreviousPresentationContext;
-- (void)_decompressArchiveAndSetupPayload:(id)a3;
-- (void)_dismissEverythingWithExtremePrejudiceAnimated:(BOOL)a3;
+- (void)_decompressArchiveAndSetupPayload:(id)payload;
+- (void)_dismissEverythingWithExtremePrejudiceAnimated:(BOOL)animated;
 - (void)_fixupFileExtensionIfNeeded;
 - (void)_invalidate;
-- (void)_invokeDelegateDidFinishOpenWithApplicationIdentifier:(id)a3;
-- (void)_invokeDelegateWillBeginOpenWithApplicationIdentifier:(id)a3;
-- (void)_openDocumentWithApplication:(id)a3;
-- (void)_presentOptionsMenu:(id)a3;
-- (void)_presentPreview:(id)a3;
-- (void)_setDecompressedArchiveDocumentURL:(id)a3;
+- (void)_invokeDelegateDidFinishOpenWithApplicationIdentifier:(id)identifier;
+- (void)_invokeDelegateWillBeginOpenWithApplicationIdentifier:(id)identifier;
+- (void)_openDocumentWithApplication:(id)application;
+- (void)_presentOptionsMenu:(id)menu;
+- (void)_presentPreview:(id)preview;
+- (void)_setDecompressedArchiveDocumentURL:(id)l;
 - (void)_setupPreviewController;
 - (void)_updateURLIsContentManaged;
-- (void)activityViewController:(id)a3 didFinishPerformingActivityType:(id)a4 completed:(BOOL)a5 items:(id)a6 error:(id)a7;
-- (void)activityViewController:(id)a3 didFinishPresentingActivityType:(id)a4;
+- (void)activityViewController:(id)controller didFinishPerformingActivityType:(id)type completed:(BOOL)completed items:(id)items error:(id)error;
+- (void)activityViewController:(id)controller didFinishPresentingActivityType:(id)type;
 - (void)dealloc;
 - (void)dismissMenuAnimated:(BOOL)animated;
 - (void)dismissPreviewAnimated:(BOOL)animated;
-- (void)markupAction:(id)a3;
+- (void)markupAction:(id)action;
 - (void)openDocumentWithDefaultApplication;
-- (void)openResourceOperation:(id)a3 didFinishCopyingResource:(id)a4;
-- (void)popoverController:(id)a3 animationCompleted:(int64_t)a4;
-- (void)previewControllerDidDismiss:(id)a3;
+- (void)openResourceOperation:(id)operation didFinishCopyingResource:(id)resource;
+- (void)popoverController:(id)controller animationCompleted:(int64_t)completed;
+- (void)previewControllerDidDismiss:(id)dismiss;
 - (void)setDelegate:(id)delegate;
-- (void)setIsContentManaged:(BOOL)a3;
+- (void)setIsContentManaged:(BOOL)managed;
 - (void)setName:(NSString *)name;
-- (void)setPreviewURLOverride:(id)a3;
-- (void)setShouldUnzipDocument:(BOOL)a3;
+- (void)setPreviewURLOverride:(id)override;
+- (void)setShouldUnzipDocument:(BOOL)document;
 - (void)setURL:(NSURL *)URL;
 - (void)setUTI:(NSString *)UTI;
 @end
@@ -97,36 +97,36 @@
 + (UIDocumentInteractionController)interactionControllerWithURL:(NSURL *)url
 {
   v4 = url;
-  v5 = [[a1 alloc] initWithURL:v4];
+  v5 = [[self alloc] initWithURL:v4];
 
   return v5;
 }
 
-- (UIDocumentInteractionController)initWithURL:(id)a3
+- (UIDocumentInteractionController)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = UIDocumentInteractionController;
   v5 = [(UIDocumentInteractionController *)&v15 init];
   if (v5)
   {
-    -[UIDocumentInteractionController setIsContentManaged:](v5, "setIsContentManaged:", [v4 ui_isContentManaged]);
-    [(UIDocumentInteractionController *)v5 setURL:v4];
+    -[UIDocumentInteractionController setIsContentManaged:](v5, "setIsContentManaged:", [lCopy ui_isContentManaged]);
+    [(UIDocumentInteractionController *)v5 setURL:lCopy];
     v5->_shouldDecompressArchiveIfNecessary = 0;
     v5->_excludeDotFilesFromArchiveListings = 1;
     decompressedArchiveDocumentURL = v5->_decompressedArchiveDocumentURL;
     v5->_decompressedArchiveDocumentURL = 0;
 
     objc_initWeak(&location, v5);
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    v8 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     v9 = *MEMORY[0x1E69DDBB8];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __47__UIDocumentInteractionController_initWithURL___block_invoke;
     v12[3] = &unk_1E71FAFC0;
     objc_copyWeak(&v13, &location);
-    v10 = [v7 addObserverForName:v9 object:0 queue:v8 usingBlock:v12];
+    v10 = [defaultCenter addObserverForName:v9 object:0 queue:mainQueue usingBlock:v12];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -377,19 +377,19 @@ void __47__UIDocumentInteractionController_initWithURL___block_invoke(uint64_t a
   }
 }
 
-- (void)setIsContentManaged:(BOOL)a3
+- (void)setIsContentManaged:(BOOL)managed
 {
-  v3 = a3;
+  managedCopy = managed;
   v7 = *MEMORY[0x1E69E9840];
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = managedCopy;
     _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "setIsContentManaged: %i", v6, 8u);
   }
 
-  self->_isContentManaged = v3;
+  self->_isContentManaged = managedCopy;
   [(UIDocumentInteractionController *)self _updateURLIsContentManaged];
 }
 
@@ -402,137 +402,137 @@ void __47__UIDocumentInteractionController_initWithURL___block_invoke(uint64_t a
 - (void)setURL:(NSURL *)URL
 {
   v9 = URL;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(UIDocumentInteractionController *)v4 previewControllerItem];
-  v6 = [v5 previewItemURL];
-  v7 = [(NSURL *)v9 isEqual:v6];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  previewControllerItem = [(UIDocumentInteractionController *)selfCopy previewControllerItem];
+  previewItemURL = [previewControllerItem previewItemURL];
+  v7 = [(NSURL *)v9 isEqual:previewItemURL];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [(UIDocumentInteractionController *)v4 previewControllerItem];
-    [v8 setPreviewItemURL:v9];
+    previewControllerItem2 = [(UIDocumentInteractionController *)selfCopy previewControllerItem];
+    [previewControllerItem2 setPreviewItemURL:v9];
 
-    [(UIDocumentInteractionController *)v4 _invalidate];
-    [(UIDocumentInteractionController *)v4 _updateURLIsContentManaged];
+    [(UIDocumentInteractionController *)selfCopy _invalidate];
+    [(UIDocumentInteractionController *)selfCopy _updateURLIsContentManaged];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSURL)URL
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(UIDocumentInteractionController *)v2 previewControllerItem];
-  v4 = [v3 previewItemURL];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  previewControllerItem = [(UIDocumentInteractionController *)selfCopy previewControllerItem];
+  previewItemURL = [previewControllerItem previewItemURL];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return previewItemURL;
 }
 
 - (void)setUTI:(NSString *)UTI
 {
   v9 = UTI;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(UIDocumentInteractionController *)v4 previewControllerItem];
-  v6 = [v5 previewItemContentType];
-  v7 = [(NSString *)v9 isEqual:v6];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  previewControllerItem = [(UIDocumentInteractionController *)selfCopy previewControllerItem];
+  previewItemContentType = [previewControllerItem previewItemContentType];
+  v7 = [(NSString *)v9 isEqual:previewItemContentType];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [(UIDocumentInteractionController *)v4 previewControllerItem];
-    [v8 setPreviewItemContentType:v9];
+    previewControllerItem2 = [(UIDocumentInteractionController *)selfCopy previewControllerItem];
+    [previewControllerItem2 setPreviewItemContentType:v9];
 
-    [(UIDocumentInteractionController *)v4 _invalidate];
+    [(UIDocumentInteractionController *)selfCopy _invalidate];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)UTI
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(UIDocumentInteractionController *)v2 previewControllerItem];
-  v4 = [v3 _primitive_previewItemContentType];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  previewControllerItem = [(UIDocumentInteractionController *)selfCopy previewControllerItem];
+  _primitive_previewItemContentType = [previewControllerItem _primitive_previewItemContentType];
 
-  if (!v4)
+  if (!_primitive_previewItemContentType)
   {
-    v5 = [(UIDocumentInteractionController *)v2 name];
-    if (v5)
+    name = [(UIDocumentInteractionController *)selfCopy name];
+    if (name)
     {
-      v6 = [(UIDocumentInteractionController *)v2 URL];
-      if (v2->_shouldDecompressArchiveIfNecessary && [(UIDocumentInteractionController *)v2 _isFilenameValidForDecompressing:v5 allowsPreviewingArchive:0])
+      v6 = [(UIDocumentInteractionController *)selfCopy URL];
+      if (selfCopy->_shouldDecompressArchiveIfNecessary && [(UIDocumentInteractionController *)selfCopy _isFilenameValidForDecompressing:name allowsPreviewingArchive:0])
       {
-        v7 = [v6 path];
-        v8 = [v7 stringByDeletingPathExtension];
+        path = [v6 path];
+        stringByDeletingPathExtension = [path stringByDeletingPathExtension];
 
-        v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:v8];
+        v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:stringByDeletingPathExtension];
 
         v6 = v9;
       }
 
-      v4 = [UIDocumentInteractionController _UTIForFileURL:v6];
+      _primitive_previewItemContentType = [UIDocumentInteractionController _UTIForFileURL:v6];
     }
 
     else
     {
-      v4 = 0;
+      _primitive_previewItemContentType = 0;
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return _primitive_previewItemContentType;
 }
 
 - (void)setName:(NSString *)name
 {
   v9 = name;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(UIDocumentInteractionController *)v4 previewControllerItem];
-  v6 = [v5 previewItemTitle];
-  v7 = [(NSString *)v9 isEqual:v6];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  previewControllerItem = [(UIDocumentInteractionController *)selfCopy previewControllerItem];
+  previewItemTitle = [previewControllerItem previewItemTitle];
+  v7 = [(NSString *)v9 isEqual:previewItemTitle];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [(UIDocumentInteractionController *)v4 previewControllerItem];
-    [v8 setPreviewItemTitle:v9];
+    previewControllerItem2 = [(UIDocumentInteractionController *)selfCopy previewControllerItem];
+    [previewControllerItem2 setPreviewItemTitle:v9];
 
-    [(UIDocumentInteractionController *)v4 _invalidate];
+    [(UIDocumentInteractionController *)selfCopy _invalidate];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)name
 {
   v3 = [(UIDocumentInteractionController *)self URL];
-  v4 = [v3 path];
-  v5 = [v4 lastPathComponent];
+  path = [v3 path];
+  lastPathComponent = [path lastPathComponent];
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(UIDocumentInteractionController *)v6 previewControllerItem];
-  v8 = [v7 previewItemTitle];
-  v9 = v8;
-  if (v8)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  previewControllerItem = [(UIDocumentInteractionController *)selfCopy previewControllerItem];
+  previewItemTitle = [previewControllerItem previewItemTitle];
+  v9 = previewItemTitle;
+  if (previewItemTitle)
   {
-    v10 = v8;
+    v10 = previewItemTitle;
   }
 
   else
   {
-    v10 = v5;
+    v10 = lastPathComponent;
   }
 
   v11 = v10;
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   return v11;
 }
@@ -543,12 +543,12 @@ void __47__UIDocumentInteractionController_initWithURL___block_invoke(uint64_t a
   icons = self->_icons;
   if (!icons)
   {
-    v4 = [(UIDocumentInteractionController *)self _documentProxy];
-    v5 = v4;
-    if (v4)
+    _documentProxy = [(UIDocumentInteractionController *)self _documentProxy];
+    v5 = _documentProxy;
+    if (_documentProxy)
     {
-      v6 = [v4 typeIdentifier];
-      if ([(__CFString *)v6 length]&& (UTTypeConformsTo(v6, *MEMORY[0x1E69636D8]) || UTTypeConformsTo(v6, *MEMORY[0x1E69636E0])))
+      typeIdentifier = [_documentProxy typeIdentifier];
+      if ([(__CFString *)typeIdentifier length]&& (UTTypeConformsTo(typeIdentifier, *MEMORY[0x1E69636D8]) || UTTypeConformsTo(typeIdentifier, *MEMORY[0x1E69636E0])))
       {
         if (passKitIconsIfIsPassKitDocument_onceToken != -1)
         {
@@ -652,43 +652,43 @@ void __47__UIDocumentInteractionController_initWithURL___block_invoke(uint64_t a
   return v5;
 }
 
-- (id)_documentProxyWithIsContentManaged:(BOOL)a3 usingURL:(id)a4
+- (id)_documentProxyWithIsContentManaged:(BOOL)managed usingURL:(id)l
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIDocumentInteractionController *)self delegate];
-  v8 = [(UIDocumentInteractionController *)self name];
-  if (v8)
+  managedCopy = managed;
+  lCopy = l;
+  delegate = [(UIDocumentInteractionController *)self delegate];
+  name = [(UIDocumentInteractionController *)self name];
+  if (name)
   {
     if ([(UIDocumentInteractionController *)self _shouldAutoDecompressIfArchive])
     {
-      v9 = [v8 stringByDeletingPathExtension];
+      stringByDeletingPathExtension = [name stringByDeletingPathExtension];
 
-      v8 = v9;
+      name = stringByDeletingPathExtension;
     }
 
     v10 = [(UIDocumentInteractionController *)self UTI];
-    v11 = [(UIDocumentInteractionController *)self previewControllerItem];
+    previewControllerItem = [(UIDocumentInteractionController *)self previewControllerItem];
     if (![(UIDocumentInteractionController *)self _shouldAutoDecompressIfArchive])
     {
-      v12 = [v11 previewItemTitle];
-      if (v12)
+      previewItemTitle = [previewControllerItem previewItemTitle];
+      if (previewItemTitle)
       {
       }
 
       else
       {
-        v16 = [v11 _primitive_previewItemContentType];
+        _primitive_previewItemContentType = [previewControllerItem _primitive_previewItemContentType];
 
-        if (v6 && !v16)
+        if (lCopy && !_primitive_previewItemContentType)
         {
-          v13 = [MEMORY[0x1E6963658] documentProxyForURL:v6 isContentManaged:v4 sourceAuditToken:0];
+          v13 = [MEMORY[0x1E6963658] documentProxyForURL:lCopy isContentManaged:managedCopy sourceAuditToken:0];
           goto LABEL_8;
         }
       }
     }
 
-    v13 = [MEMORY[0x1E6963658] documentProxyForName:v8 type:v10 MIMEType:0 isContentManaged:v4 sourceAuditToken:0];
+    v13 = [MEMORY[0x1E6963658] documentProxyForName:name type:v10 MIMEType:0 isContentManaged:managedCopy sourceAuditToken:0];
 LABEL_8:
     v14 = v13;
 
@@ -701,10 +701,10 @@ LABEL_10:
   return v14;
 }
 
-- (BOOL)_delegateExistsAndImplementsRequiredMethods:(id *)a3
+- (BOOL)_delegateExistsAndImplementsRequiredMethods:(id *)methods
 {
-  v5 = [(UIDocumentInteractionController *)self delegate];
-  if (v5)
+  delegate = [(UIDocumentInteractionController *)self delegate];
+  if (delegate)
   {
     if (*&self->_documentInteractionControllerFlags)
     {
@@ -721,9 +721,9 @@ LABEL_10:
   }
 
   v7 = 0;
-  if (a3)
+  if (methods)
   {
-    *a3 = v6;
+    *methods = v6;
   }
 
 LABEL_8:
@@ -731,24 +731,24 @@ LABEL_8:
   return v7;
 }
 
-- (void)setPreviewURLOverride:(id)a3
+- (void)setPreviewURLOverride:(id)override
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(UIDocumentInteractionController *)v4 previewControllerItem];
-  v6 = [v5 previewItemURLOverride];
-  v7 = [v9 isEqual:v6];
+  overrideCopy = override;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  previewControllerItem = [(UIDocumentInteractionController *)selfCopy previewControllerItem];
+  previewItemURLOverride = [previewControllerItem previewItemURLOverride];
+  v7 = [overrideCopy isEqual:previewItemURLOverride];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [(UIDocumentInteractionController *)v4 previewControllerItem];
-    [v8 setPreviewItemURLOverride:v9];
+    previewControllerItem2 = [(UIDocumentInteractionController *)selfCopy previewControllerItem];
+    [previewControllerItem2 setPreviewItemURLOverride:overrideCopy];
 
-    [(UIDocumentInteractionController *)v4 _invalidate];
+    [(UIDocumentInteractionController *)selfCopy _invalidate];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)_shouldReturnDefaultApplication
@@ -784,8 +784,8 @@ LABEL_8:
 
         if (UTTypeConformsTo(v6, *(*(&v15 + 1) + 8 * i)))
         {
-          v13 = [(UIDocumentInteractionController *)self previewControllerItem];
-          v12 = _UIQLCanPreviewItem(v13) ^ 1;
+          previewControllerItem = [(UIDocumentInteractionController *)self previewControllerItem];
+          v12 = _UIQLCanPreviewItem(previewControllerItem) ^ 1;
 
           goto LABEL_11;
         }
@@ -811,24 +811,24 @@ LABEL_11:
 {
   if ([(UIDocumentInteractionController *)self _shouldReturnDefaultApplication])
   {
-    v3 = [(UIDocumentInteractionController *)self _preferredApplicationForDocumentOpening];
+    _preferredApplicationForDocumentOpening = [(UIDocumentInteractionController *)self _preferredApplicationForDocumentOpening];
   }
 
   else
   {
-    v3 = 0;
+    _preferredApplicationForDocumentOpening = 0;
   }
 
-  return v3;
+  return _preferredApplicationForDocumentOpening;
 }
 
-- (void)_dismissEverythingWithExtremePrejudiceAnimated:(BOOL)a3
+- (void)_dismissEverythingWithExtremePrejudiceAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ((_UIAppUseModernRotationAndPresentationBehaviors() & 1) != 0 || ([MEMORY[0x1E69DC938] currentDevice], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "userInterfaceIdiom"), v5, (v6 & 0xFFFFFFFFFFFFFFFBLL) != 1))
   {
-    v7 = [(UIDocumentInteractionController *)self activityViewController];
-    [v7 dismissViewControllerAnimated:v3 completion:0];
+    activityViewController = [(UIDocumentInteractionController *)self activityViewController];
+    [activityViewController dismissViewControllerAnimated:animatedCopy completion:0];
   }
 
   else
@@ -838,7 +838,7 @@ LABEL_11:
     block[2] = __82__UIDocumentInteractionController__dismissEverythingWithExtremePrejudiceAnimated___block_invoke;
     block[3] = &unk_1E71F9908;
     block[4] = self;
-    v9 = v3;
+    v9 = animatedCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -852,9 +852,9 @@ void __82__UIDocumentInteractionController__dismissEverythingWithExtremePrejudic
 - (BOOL)isArchive
 {
   v3 = [(UIDocumentInteractionController *)self URL];
-  v4 = [v3 path];
-  v5 = [v4 lastPathComponent];
-  if ([(UIDocumentInteractionController *)self _isFilenameValidForDecompressing:v5 allowsPreviewingArchive:1])
+  path = [v3 path];
+  lastPathComponent = [path lastPathComponent];
+  if ([(UIDocumentInteractionController *)self _isFilenameValidForDecompressing:lastPathComponent allowsPreviewingArchive:1])
   {
     v6 = [(UIDocumentInteractionController *)self URL];
     v7 = ![(UIDocumentInteractionController *)self _isPackageArchive:v6];
@@ -868,16 +868,16 @@ void __82__UIDocumentInteractionController__dismissEverythingWithExtremePrejudic
   return v7;
 }
 
-- (id)extractSubitemFromArchive:(id)a3 completion:(id)a4
+- (id)extractSubitemFromArchive:(id)archive completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__UIDocumentInteractionController_extractSubitemFromArchive_completion___block_invoke;
   v10[3] = &unk_1E71FAFE8;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(UIDocumentInteractionController *)self __decompressArchiveAndSetupPayload:a3 completion:v10];
+  v11 = completionCopy;
+  v7 = completionCopy;
+  v8 = [(UIDocumentInteractionController *)self __decompressArchiveAndSetupPayload:archive completion:v10];
 
   return v8;
 }
@@ -913,9 +913,9 @@ void __82__UIDocumentInteractionController__dismissEverythingWithExtremePrejudic
   return previewControllerItem;
 }
 
-- (CGRect)previewController:(id)a3 frameForPreviewItem:(id)a4 inSourceView:(id *)a5
+- (CGRect)previewController:(id)controller frameForPreviewItem:(id)item inSourceView:(id *)view
 {
-  *a5 = self->_presentView;
+  *view = self->_presentView;
   x = self->_presentRect.origin.x;
   y = self->_presentRect.origin.y;
   width = self->_presentRect.size.width;
@@ -927,7 +927,7 @@ void __82__UIDocumentInteractionController__dismissEverythingWithExtremePrejudic
   return result;
 }
 
-- (void)previewControllerDidDismiss:(id)a3
+- (void)previewControllerDidDismiss:(id)dismiss
 {
   if ((*(self + 108) & 0x10) != 0)
   {
@@ -942,12 +942,12 @@ void __82__UIDocumentInteractionController__dismissEverythingWithExtremePrejudic
   self->_previewController = 0;
 }
 
-- (id)previewController:(id)a3 transitionImageForPreviewItem:(id)a4 contentRect:(CGRect *)a5
+- (id)previewController:(id)controller transitionImageForPreviewItem:(id)item contentRect:(CGRect *)rect
 {
   if ((*(&self->_documentInteractionControllerFlags + 2) & 2) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v5 = [WeakRetained documentInteractionControllerTransitionImageForPreview:self contentRect:a5];
+    v5 = [WeakRetained documentInteractionControllerTransitionImageForPreview:self contentRect:rect];
   }
 
   else
@@ -958,12 +958,12 @@ void __82__UIDocumentInteractionController__dismissEverythingWithExtremePrejudic
   return v5;
 }
 
-- (BOOL)previewController:(id)a3 canEditItem:(id)a4
+- (BOOL)previewController:(id)controller canEditItem:(id)item
 {
-  v5 = a3;
+  controllerCopy = controller;
   if ([(UIDocumentInteractionController *)self previewsPresentWithMarkup])
   {
-    v6 = [(UIDocumentInteractionController *)self dismissActionsForPreviewController:v5];
+    v6 = [(UIDocumentInteractionController *)self dismissActionsForPreviewController:controllerCopy];
     v7 = [v6 count] != 0;
   }
 
@@ -975,18 +975,18 @@ void __82__UIDocumentInteractionController__dismissEverythingWithExtremePrejudic
   return v7;
 }
 
-- (id)dismissActionsForPreviewController:(id)a3
+- (id)dismissActionsForPreviewController:(id)controller
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = [(UIDocumentInteractionController *)self delegate];
+  delegate = [(UIDocumentInteractionController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UIDocumentInteractionController *)self delegate];
-    v7 = [v6 documentInteractionControllerMarkupDismissActions:self];
+    delegate2 = [(UIDocumentInteractionController *)self delegate];
+    v7 = [delegate2 documentInteractionControllerMarkupDismissActions:self];
 
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -1008,16 +1008,16 @@ void __82__UIDocumentInteractionController__dismissEverythingWithExtremePrejudic
 
           v13 = *(*(&v22 + 1) + 8 * i);
           v14 = _UIQLDismissActionClass();
-          v15 = [v13 title];
-          v16 = [v13 image];
+          title = [v13 title];
+          image = [v13 image];
           v21[0] = MEMORY[0x1E69E9820];
           v21[1] = 3221225472;
           v21[2] = __70__UIDocumentInteractionController_dismissActionsForPreviewController___block_invoke;
           v21[3] = &unk_1E71FB010;
           v21[4] = v13;
-          v17 = [(objc_class *)v14 actionWithTitle:v15 image:v16 handler:v21];
+          v17 = [(objc_class *)v14 actionWithTitle:title image:image handler:v21];
 
-          [v8 addObject:v17];
+          [array addObject:v17];
         }
 
         v10 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -1026,9 +1026,9 @@ void __82__UIDocumentInteractionController__dismissEverythingWithExtremePrejudic
       while (v10);
     }
 
-    if ([v8 count])
+    if ([array count])
     {
-      v18 = v8;
+      v18 = array;
     }
 
     else
@@ -1115,22 +1115,22 @@ void __70__UIDocumentInteractionController_dismissActionsForPreviewController___
   }
 }
 
-- (void)markupAction:(id)a3
+- (void)markupAction:(id)action
 {
-  v4 = [(UIDocumentInteractionController *)self delegate];
+  delegate = [(UIDocumentInteractionController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v9 = [(UIDocumentInteractionController *)self delegate];
+    delegate2 = [(UIDocumentInteractionController *)self delegate];
     previewController = self->_previewController;
-    v7 = [(QLPreviewController *)previewController currentPreviewItem];
-    v8 = [v7 previewItemURL];
-    [v9 previewController:previewController willMarkUpAtURL:v8];
+    currentPreviewItem = [(QLPreviewController *)previewController currentPreviewItem];
+    previewItemURL = [currentPreviewItem previewItemURL];
+    [delegate2 previewController:previewController willMarkUpAtURL:previewItemURL];
   }
 }
 
-- (id)excludedActivityTypesForPreviewController:(id)a3
+- (id)excludedActivityTypesForPreviewController:(id)controller
 {
   if ((*(&self->_documentInteractionControllerFlags + 1) & 0x20) != 0)
   {
@@ -1146,7 +1146,7 @@ void __70__UIDocumentInteractionController_dismissActionsForPreviewController___
   return v3;
 }
 
-- (id)additionalActivitiesTypesForPreviewController:(id)a3
+- (id)additionalActivitiesTypesForPreviewController:(id)controller
 {
   if ((*(&self->_documentInteractionControllerFlags + 1) & 0x40) != 0)
   {
@@ -1165,29 +1165,29 @@ void __70__UIDocumentInteractionController_dismissActionsForPreviewController___
 - (BOOL)_canPreviewDecompressedArchive
 {
   v3 = [(UIDocumentInteractionController *)self URL];
-  v4 = [v3 path];
+  path = [v3 path];
 
-  if ([(UIDocumentInteractionController *)self _isFilenameValidForDecompressing:v4 allowsPreviewingArchive:0])
+  if ([(UIDocumentInteractionController *)self _isFilenameValidForDecompressing:path allowsPreviewingArchive:0])
   {
-    v5 = [v4 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [path stringByDeletingPathExtension];
   }
 
   else
   {
-    v5 = v4;
+    stringByDeletingPathExtension = path;
   }
 
-  v6 = v5;
-  v7 = [(UIDocumentInteractionController *)self previewControllerItem];
-  v8 = [v7 _primitive_previewItemContentType];
+  v6 = stringByDeletingPathExtension;
+  previewControllerItem = [(UIDocumentInteractionController *)self previewControllerItem];
+  _primitive_previewItemContentType = [previewControllerItem _primitive_previewItemContentType];
 
-  if (!v8)
+  if (!_primitive_previewItemContentType)
   {
     v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6];
-    v8 = _UIQLPreviewUTIForURLAndMimeType(v9, 0);
+    _primitive_previewItemContentType = _UIQLPreviewUTIForURLAndMimeType(v9, 0);
   }
 
-  v10 = _UIQLCanPreviewContentWithUTI(v8);
+  v10 = _UIQLCanPreviewContentWithUTI(_primitive_previewItemContentType);
 
   return v10;
 }
@@ -1201,10 +1201,10 @@ void __70__UIDocumentInteractionController_dismissActionsForPreviewController___
   self->_presentItem = 0;
 }
 
-- (BOOL)_presentOptionsMenuAnimated:(BOOL)a3 willPresentBlock:(id)a4
+- (BOOL)_presentOptionsMenuAnimated:(BOOL)animated willPresentBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  blockCopy = block;
   [(UIDocumentInteractionController *)self _clearPreviousPresentationContext];
   if ([(UIDocumentInteractionController *)self _shouldAutoDecompressIfArchive])
   {
@@ -1214,8 +1214,8 @@ void __70__UIDocumentInteractionController_dismissActionsForPreviewController___
     v8[2] = __80__UIDocumentInteractionController__presentOptionsMenuAnimated_willPresentBlock___block_invoke;
     v8[3] = &unk_1E71FB038;
     objc_copyWeak(&v10, &location);
-    v9 = v6;
-    v11 = v4;
+    v9 = blockCopy;
+    v11 = animatedCopy;
     [(UIDocumentInteractionController *)self _decompressArchiveAndSetupPayload:v8];
 
     objc_destroyWeak(&v10);
@@ -1224,8 +1224,8 @@ void __70__UIDocumentInteractionController_dismissActionsForPreviewController___
 
   else if ([(UIDocumentInteractionController *)self _setupForOptionsMenu])
   {
-    (*(v6 + 2))(v6, self);
-    _UIDocumentInteractionControllerPresentPopoverOrShowActivityViewController(self, v4);
+    (*(blockCopy + 2))(blockCopy, self);
+    _UIDocumentInteractionControllerPresentPopoverOrShowActivityViewController(self, animatedCopy);
   }
 
   return 1;
@@ -1315,33 +1315,33 @@ __n128 __78__UIDocumentInteractionController_presentOptionsMenuFromRect_inView_a
 - (BOOL)presentPreviewAnimated:(BOOL)animated
 {
   v3 = animated;
-  v5 = [(UIDocumentInteractionController *)self previewController];
-  [v5 setAdditionalRightBarButtonItems:MEMORY[0x1E695E0F0]];
+  previewController = [(UIDocumentInteractionController *)self previewController];
+  [previewController setAdditionalRightBarButtonItems:MEMORY[0x1E695E0F0]];
 
   return [(UIDocumentInteractionController *)self __presentPreviewAnimated:v3];
 }
 
-- (BOOL)__presentPreviewAnimated:(BOOL)a3
+- (BOOL)__presentPreviewAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(UIDocumentInteractionController *)self _setupPreviewController];
-  if (v5)
+  animatedCopy = animated;
+  _setupPreviewController = [(UIDocumentInteractionController *)self _setupPreviewController];
+  if (_setupPreviewController)
   {
-    v6 = [(UIDocumentInteractionController *)self previewController];
-    _UIShimSetIsContentManaged(v6, [(UIDocumentInteractionController *)self isContentManaged]);
+    previewController = [(UIDocumentInteractionController *)self previewController];
+    _UIShimSetIsContentManaged(previewController, [(UIDocumentInteractionController *)self isContentManaged]);
 
-    v7 = [(UIDocumentInteractionController *)self previewController];
-    v8 = [(UIDocumentInteractionController *)self previewControllerItem];
-    [v7 presentPreviewItem:v8 onViewController:self->_presentingViewController withDelegate:self animated:v3];
+    previewController2 = [(UIDocumentInteractionController *)self previewController];
+    previewControllerItem = [(UIDocumentInteractionController *)self previewControllerItem];
+    [previewController2 presentPreviewItem:previewControllerItem onViewController:self->_presentingViewController withDelegate:self animated:animatedCopy];
   }
 
-  return v5;
+  return _setupPreviewController;
 }
 
-- (BOOL)_presentOpenInMenuAnimated:(BOOL)a3 willPresentBlock:(id)a4
+- (BOOL)_presentOpenInMenuAnimated:(BOOL)animated willPresentBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  blockCopy = block;
   [(UIDocumentInteractionController *)self _clearPreviousPresentationContext];
   if ([(UIDocumentInteractionController *)self _shouldAutoDecompressIfArchive])
   {
@@ -1351,8 +1351,8 @@ __n128 __78__UIDocumentInteractionController_presentOptionsMenuFromRect_inView_a
     v8[2] = __79__UIDocumentInteractionController__presentOpenInMenuAnimated_willPresentBlock___block_invoke;
     v8[3] = &unk_1E71FB038;
     objc_copyWeak(&v10, &location);
-    v9 = v6;
-    v11 = v4;
+    v9 = blockCopy;
+    v11 = animatedCopy;
     [(UIDocumentInteractionController *)self _decompressArchiveAndSetupPayload:v8];
 
     objc_destroyWeak(&v10);
@@ -1361,8 +1361,8 @@ __n128 __78__UIDocumentInteractionController_presentOptionsMenuFromRect_inView_a
 
   else if ([(UIDocumentInteractionController *)self _setupForOpenInMenu])
   {
-    (*(v6 + 2))(v6, self);
-    _UIDocumentInteractionControllerPresentPopoverOrShowActivityViewController(self, v4);
+    (*(blockCopy + 2))(blockCopy, self);
+    _UIDocumentInteractionControllerPresentPopoverOrShowActivityViewController(self, animatedCopy);
   }
 
   return 1;
@@ -1436,8 +1436,8 @@ __n128 __77__UIDocumentInteractionController_presentOpenInMenuFromRect_inView_an
 - (void)dismissPreviewAnimated:(BOOL)animated
 {
   v3 = animated;
-  v4 = [(UIDocumentInteractionController *)self previewController];
-  [v4 dismissModalViewControllerAnimated:v3];
+  previewController = [(UIDocumentInteractionController *)self previewController];
+  [previewController dismissModalViewControllerAnimated:v3];
 }
 
 - (void)dismissMenuAnimated:(BOOL)animated
@@ -1450,41 +1450,41 @@ __n128 __77__UIDocumentInteractionController_presentOpenInMenuFromRect_inView_an
   }
 }
 
-- (void)_presentPreview:(id)a3
+- (void)_presentPreview:(id)preview
 {
-  v5 = a3;
+  previewCopy = preview;
   if (![(UIDocumentInteractionController *)self presentPreviewAnimated:1])
   {
-    v4 = [v5 view];
-    [v4 bounds];
-    [(UIDocumentInteractionController *)self presentOptionsMenuFromRect:v4 inView:1 animated:?];
+    view = [previewCopy view];
+    [view bounds];
+    [(UIDocumentInteractionController *)self presentOptionsMenuFromRect:view inView:1 animated:?];
   }
 }
 
-- (void)_presentOptionsMenu:(id)a3
+- (void)_presentOptionsMenu:(id)menu
 {
-  v5 = a3;
-  if ([v5 state] == 1)
+  menuCopy = menu;
+  if ([menuCopy state] == 1)
   {
-    v4 = [v5 view];
-    [v4 bounds];
-    [(UIDocumentInteractionController *)self presentOptionsMenuFromRect:v4 inView:1 animated:?];
+    view = [menuCopy view];
+    [view bounds];
+    [(UIDocumentInteractionController *)self presentOptionsMenuFromRect:view inView:1 animated:?];
   }
 }
 
 - (void)openDocumentWithDefaultApplication
 {
-  v3 = [(UIDocumentInteractionController *)self _preferredApplicationForDocumentOpening];
-  [(UIDocumentInteractionController *)self _openDocumentWithApplication:v3];
+  _preferredApplicationForDocumentOpening = [(UIDocumentInteractionController *)self _preferredApplicationForDocumentOpening];
+  [(UIDocumentInteractionController *)self _openDocumentWithApplication:_preferredApplicationForDocumentOpening];
 }
 
-- (void)_openDocumentWithApplication:(id)a3
+- (void)_openDocumentWithApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   v5 = [(UIDocumentInteractionController *)self URL];
-  CanOpenInPlaceByReferenceOriginalFile = _UIApplicationCanOpenInPlaceByReferenceOriginalFile(v4, v5);
+  CanOpenInPlaceByReferenceOriginalFile = _UIApplicationCanOpenInPlaceByReferenceOriginalFile(applicationCopy, v5);
 
-  v7 = [(UIDocumentInteractionController *)self _shouldAutoDecompressIfArchive];
+  _shouldAutoDecompressIfArchive = [(UIDocumentInteractionController *)self _shouldAutoDecompressIfArchive];
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -1492,11 +1492,11 @@ __n128 __77__UIDocumentInteractionController_presentOpenInMenuFromRect_inView_an
   v13[3] = &unk_1E71FB0B0;
   objc_copyWeak(&v15, &location);
   v16 = CanOpenInPlaceByReferenceOriginalFile;
-  v8 = v4;
+  v8 = applicationCopy;
   v14 = v8;
   v9 = MEMORY[0x18CFF58E0](v13);
   v10 = v9;
-  if (v7)
+  if (_shouldAutoDecompressIfArchive)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -1531,15 +1531,15 @@ void __64__UIDocumentInteractionController__openDocumentWithApplication___block_
   }
 }
 
-- (void)__openUsingDefaultCopyMechanismToTransferDocumentToApplication:(id)a3
+- (void)__openUsingDefaultCopyMechanismToTransferDocumentToApplication:(id)application
 {
-  v4 = a3;
-  v5 = [v4 applicationIdentifier];
-  [(UIDocumentInteractionController *)self _invokeDelegateWillBeginOpenWithApplicationIdentifier:v5];
+  applicationCopy = application;
+  applicationIdentifier = [applicationCopy applicationIdentifier];
+  [(UIDocumentInteractionController *)self _invokeDelegateWillBeginOpenWithApplicationIdentifier:applicationIdentifier];
 
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v7 = [(UIDocumentInteractionController *)self URL];
-  v8 = _UIApplicationCanOpenInPlaceByCopyingFromOriginalFile(v4, v7);
+  v8 = _UIApplicationCanOpenInPlaceByCopyingFromOriginalFile(applicationCopy, v7);
 
   if (v8)
   {
@@ -1547,36 +1547,36 @@ void __64__UIDocumentInteractionController__openDocumentWithApplication___block_
     v13 = 0;
     v10 = [v9 ui_bookmarkForExportWithError:&v13];
     v11 = v13;
-    [v6 setValue:v10 forKey:*MEMORY[0x1E6963568]];
+    [dictionary setValue:v10 forKey:*MEMORY[0x1E6963568]];
 
-    [v6 setValue:MEMORY[0x1E695E110] forKey:*MEMORY[0x1E69635A0]];
-    [(UIDocumentInteractionController *)self __performLaunchServiceDocumentOpenWithApplication:v4 launchServiceOptions:v6];
-    v12 = [v4 applicationIdentifier];
-    [(UIDocumentInteractionController *)self _invokeDelegateDidFinishOpenWithApplicationIdentifier:v12];
+    [dictionary setValue:MEMORY[0x1E695E110] forKey:*MEMORY[0x1E69635A0]];
+    [(UIDocumentInteractionController *)self __performLaunchServiceDocumentOpenWithApplication:applicationCopy launchServiceOptions:dictionary];
+    applicationIdentifier2 = [applicationCopy applicationIdentifier];
+    [(UIDocumentInteractionController *)self _invokeDelegateDidFinishOpenWithApplicationIdentifier:applicationIdentifier2];
   }
 
   else
   {
-    [(UIDocumentInteractionController *)self __performLaunchServiceDocumentOpenWithApplication:v4 launchServiceOptions:v6];
+    [(UIDocumentInteractionController *)self __performLaunchServiceDocumentOpenWithApplication:applicationCopy launchServiceOptions:dictionary];
   }
 }
 
-- (void)__openUsingInPlaceMechanismToTransferDocumentToApplication:(id)a3
+- (void)__openUsingInPlaceMechanismToTransferDocumentToApplication:(id)application
 {
-  v4 = a3;
-  v5 = [v4 applicationIdentifier];
-  [(UIDocumentInteractionController *)self _invokeDelegateWillBeginOpenWithApplicationIdentifier:v5];
+  applicationCopy = application;
+  applicationIdentifier = [applicationCopy applicationIdentifier];
+  [(UIDocumentInteractionController *)self _invokeDelegateWillBeginOpenWithApplicationIdentifier:applicationIdentifier];
   v6 = [(UIDocumentInteractionController *)self URL];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __94__UIDocumentInteractionController___openUsingInPlaceMechanismToTransferDocumentToApplication___block_invoke;
   v10[3] = &unk_1E71FB0D8;
   v10[4] = self;
-  v11 = v4;
-  v12 = v5;
+  v11 = applicationCopy;
+  v12 = applicationIdentifier;
   v7 = softLinkFPExtendBookmarkForDocumentURL;
-  v8 = v5;
-  v9 = v4;
+  v8 = applicationIdentifier;
+  v9 = applicationCopy;
   v7(v6, v8, v10);
 }
 
@@ -1613,30 +1613,30 @@ void __94__UIDocumentInteractionController___openUsingInPlaceMechanismToTransfer
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
-- (void)__performLaunchServiceDocumentOpenWithApplication:(id)a3 launchServiceOptions:(id)a4
+- (void)__performLaunchServiceDocumentOpenWithApplication:(id)application launchServiceOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIDocumentInteractionController *)self annotation];
-  v9 = [v6 applicationIdentifier];
+  applicationCopy = application;
+  optionsCopy = options;
+  annotation = [(UIDocumentInteractionController *)self annotation];
+  applicationIdentifier = [applicationCopy applicationIdentifier];
   v10 = [(UIDocumentInteractionController *)self URL];
   decompressedArchiveDocumentURL = self->_decompressedArchiveDocumentURL;
   if (decompressedArchiveDocumentURL)
   {
-    v12 = decompressedArchiveDocumentURL;
+    physicalURL = decompressedArchiveDocumentURL;
 LABEL_5:
-    v15 = v12;
+    v15 = physicalURL;
 
     v10 = v15;
     goto LABEL_6;
   }
 
   v13 = [(UIDocumentInteractionController *)self URL];
-  v14 = _UIApplicationCanOpenInPlaceByCopyingFromOriginalFile(v6, v13);
+  v14 = _UIApplicationCanOpenInPlaceByCopyingFromOriginalFile(applicationCopy, v13);
 
   if (v14)
   {
-    v12 = [(UIDocumentInteractionController *)self physicalURL];
+    physicalURL = [(UIDocumentInteractionController *)self physicalURL];
     goto LABEL_5;
   }
 
@@ -1644,26 +1644,26 @@ LABEL_6:
   v16 = _UIActivityDefaultOpenApplicationLaunchServiceOptions();
   v17 = [v16 mutableCopy];
 
-  [v17 addEntriesFromDictionary:v7];
+  [v17 addEntriesFromDictionary:optionsCopy];
   memset(v20, 0, sizeof(v20));
   _SharingUIAuditTokenForCurrentProcess(v20);
-  v18 = [MEMORY[0x1E6963608] defaultWorkspace];
-  v19 = [v18 operationToOpenResource:v10 usingApplication:v9 uniqueDocumentIdentifier:self->_uniqueIdentifier isContentManaged:self->_isContentManaged sourceAuditToken:v20 userInfo:v8 options:v17 delegate:self];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  v19 = [defaultWorkspace operationToOpenResource:v10 usingApplication:applicationIdentifier uniqueDocumentIdentifier:self->_uniqueIdentifier isContentManaged:self->_isContentManaged sourceAuditToken:v20 userInfo:annotation options:v17 delegate:self];
 
-  objc_setAssociatedObject(v19, "_UIDICLaunchApplicationOperationTargetApplicationIdentifierProperty", v9, 0x303);
+  objc_setAssociatedObject(v19, "_UIDICLaunchApplicationOperationTargetApplicationIdentifierProperty", applicationIdentifier, 0x303);
   [v19 start];
 }
 
-- (void)openResourceOperation:(id)a3 didFinishCopyingResource:(id)a4
+- (void)openResourceOperation:(id)operation didFinishCopyingResource:(id)resource
 {
-  v5 = a3;
+  operationCopy = operation;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __82__UIDocumentInteractionController_openResourceOperation_didFinishCopyingResource___block_invoke;
   v7[3] = &unk_1E71F91A0;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = operationCopy;
+  v6 = operationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -1685,18 +1685,18 @@ void __82__UIDocumentInteractionController_openResourceOperation_didFinishCopyin
   v12 = __Block_byref_object_copy__5;
   v13 = __Block_byref_object_dispose__5;
   v14 = 0;
-  v2 = [(UIDocumentInteractionController *)self _appOpeningDocumentProxy];
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  _appOpeningDocumentProxy = [(UIDocumentInteractionController *)self _appOpeningDocumentProxy];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v15[0] = v4;
+  v15[0] = bundleIdentifier;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __74__UIDocumentInteractionController__preferredApplicationForDocumentOpening__block_invoke;
   v8[3] = &unk_1E71FB100;
   v8[4] = &v9;
-  _UIEnumerateApplicationsInPreferredOrderForOpeningDocument(v2, v5, v8);
+  _UIEnumerateApplicationsInPreferredOrderForOpeningDocument(_appOpeningDocumentProxy, v5, v8);
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -1710,16 +1710,16 @@ void __82__UIDocumentInteractionController_openResourceOperation_didFinishCopyin
 
   if (v3)
   {
-    v4 = [(UIDocumentInteractionController *)self physicalURL];
-    v5 = [(UIDocumentInteractionController *)self _documentProxyWithIsContentManaged:self->_isContentManaged usingURL:v4];
+    physicalURL = [(UIDocumentInteractionController *)self physicalURL];
+    _documentProxy = [(UIDocumentInteractionController *)self _documentProxyWithIsContentManaged:self->_isContentManaged usingURL:physicalURL];
   }
 
   else
   {
-    v5 = [(UIDocumentInteractionController *)self _documentProxy];
+    _documentProxy = [(UIDocumentInteractionController *)self _documentProxy];
   }
 
-  return v5;
+  return _documentProxy;
 }
 
 - (id)physicalURL
@@ -1741,48 +1741,48 @@ void __82__UIDocumentInteractionController_openResourceOperation_didFinishCopyin
   return v3;
 }
 
-- (void)_invokeDelegateWillBeginOpenWithApplicationIdentifier:(id)a3
+- (void)_invokeDelegateWillBeginOpenWithApplicationIdentifier:(id)identifier
 {
   if ((*(&self->_documentInteractionControllerFlags + 1) & 2) != 0)
   {
-    v5 = a3;
+    identifierCopy = identifier;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained documentInteractionController:self willBeginSendingToApplication:v5];
+    [WeakRetained documentInteractionController:self willBeginSendingToApplication:identifierCopy];
   }
 }
 
-- (void)_invokeDelegateDidFinishOpenWithApplicationIdentifier:(id)a3
+- (void)_invokeDelegateDidFinishOpenWithApplicationIdentifier:(id)identifier
 {
   if ((*(&self->_documentInteractionControllerFlags + 1) & 4) != 0)
   {
-    v5 = a3;
+    identifierCopy = identifier;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained documentInteractionController:self didEndSendingToApplication:v5];
+    [WeakRetained documentInteractionController:self didEndSendingToApplication:identifierCopy];
   }
 }
 
-- (id)_preparedActivityViewControllerWithItems:(id)a3 activities:(id)a4 options:(unint64_t)a5
+- (id)_preparedActivityViewControllerWithItems:(id)items activities:(id)activities options:(unint64_t)options
 {
   isContentManaged = self->_isContentManaged;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[_UIDICActivityViewController alloc] initWithActivityItems:v10 applicationActivities:v9 options:isContentManaged | a5];
+  activitiesCopy = activities;
+  itemsCopy = items;
+  options = [[_UIDICActivityViewController alloc] initWithActivityItems:itemsCopy applicationActivities:activitiesCopy options:isContentManaged | options];
 
-  [(_UIDICActivityViewController *)v11 setDocumentInteractionActivityDelegate:self];
-  [(UIDocumentInteractionController *)self setActivityViewController:v11];
+  [(_UIDICActivityViewController *)options setDocumentInteractionActivityDelegate:self];
+  [(UIDocumentInteractionController *)self setActivityViewController:options];
 
-  return v11;
+  return options;
 }
 
 - (BOOL)_setupForOptionsMenu
 {
   v39[3] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(UIDocumentInteractionController *)self _fixupFileExtensionIfNeeded];
   if ([(UIDocumentInteractionController *)self _shouldIncludePreviewActivity])
   {
-    v4 = [(UIDocumentInteractionController *)self _newPreviewActivity];
-    [v3 addObject:v4];
+    _newPreviewActivity = [(UIDocumentInteractionController *)self _newPreviewActivity];
+    [array addObject:_newPreviewActivity];
   }
 
   if ((*(&self->_documentInteractionControllerFlags + 1) & 0x40) != 0)
@@ -1792,7 +1792,7 @@ void __82__UIDocumentInteractionController_openResourceOperation_didFinishCopyin
 
     if ([v6 count])
     {
-      [v3 addObjectsFromArray:v6];
+      [array addObjectsFromArray:v6];
     }
   }
 
@@ -1805,7 +1805,7 @@ void __82__UIDocumentInteractionController_openResourceOperation_didFinishCopyin
     v8 = [(UIDocumentInteractionController *)self _newActivityIfNecessaryForLegacyActionDelegatingWithAction:v39[v7]];
     if (v8)
     {
-      [v3 addObject:v8];
+      [array addObject:v8];
     }
 
     ++v7;
@@ -1850,23 +1850,23 @@ void __82__UIDocumentInteractionController_openResourceOperation_didFinishCopyin
 
   else
   {
-    v18 = [MEMORY[0x1E69C5A10] printInfo];
-    v19 = [(UIDocumentInteractionController *)self name];
-    [v18 setJobName:v19];
+    printInfo = [MEMORY[0x1E69C5A10] printInfo];
+    name = [(UIDocumentInteractionController *)self name];
+    [printInfo setJobName:name];
 
-    [v18 setOutputType:{-[UIDocumentInteractionController _isImage](self, "_isImage")}];
-    [v12 addObject:v18];
+    [printInfo setOutputType:{-[UIDocumentInteractionController _isImage](self, "_isImage")}];
+    [v12 addObject:printInfo];
 
     v17 = 0;
   }
 
-  v20 = [(UIDocumentInteractionController *)self _preparedActivityViewControllerWithItems:v12 activities:v3 options:0];
-  v21 = [MEMORY[0x1E695DF70] array];
+  v20 = [(UIDocumentInteractionController *)self _preparedActivityViewControllerWithItems:v12 activities:array options:0];
+  array2 = [MEMORY[0x1E695DF70] array];
   if ((*(&self->_documentInteractionControllerFlags + 1) & 0x20) != 0)
   {
     v22 = objc_loadWeakRetained(&self->_delegate);
     v23 = [v22 excludedActivityTypesForDocumentInteractionController:self];
-    [v21 addObjectsFromArray:v23];
+    [array2 addObjectsFromArray:v23];
   }
 
   if ([(UIDocumentInteractionController *)self _delegateImplementsLegacyActions])
@@ -1875,29 +1875,29 @@ void __82__UIDocumentInteractionController_openResourceOperation_didFinishCopyin
     v36[1] = @"com.apple.UIKit.activity.Print";
     v36[2] = @"com.apple.UIKit.activity.CopyToPasteboard";
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:3];
-    [v21 addObjectsFromArray:v24];
+    [array2 addObjectsFromArray:v24];
   }
 
   v25 = share_sheet_log();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v38 = v21;
+    v38 = array2;
     _os_log_impl(&dword_18B359000, v25, OS_LOG_TYPE_DEFAULT, "excludedActivityTypes: %@", buf, 0xCu);
   }
 
-  [v20 setExcludedActivityTypes:v21];
+  [v20 setExcludedActivityTypes:array2];
   if ((_UIAppUseModernRotationAndPresentationBehaviors() & 1) == 0)
   {
-    v26 = [MEMORY[0x1E69DC938] currentDevice];
-    v27 = [v26 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v27 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       [(UIPopoverController *)self->_popoverController dismissPopoverAnimated:1];
       v28 = objc_alloc(MEMORY[0x1E69DCDD8]);
-      v29 = [(UIDocumentInteractionController *)self activityViewController];
-      v30 = [v28 initWithContentViewController:v29];
+      activityViewController = [(UIDocumentInteractionController *)self activityViewController];
+      v30 = [v28 initWithContentViewController:activityViewController];
       popoverController = self->_popoverController;
       self->_popoverController = v30;
 
@@ -1923,7 +1923,7 @@ void __82__UIDocumentInteractionController_openResourceOperation_didFinishCopyin
 - (BOOL)_setupForOpenInMenu
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(UIDocumentInteractionController *)self _fixupFileExtensionIfNeeded];
   v4 = [_UIDICActivityItemProvider alloc];
   v5 = [(UIDocumentInteractionController *)self URL];
@@ -1931,7 +1931,7 @@ void __82__UIDocumentInteractionController_openResourceOperation_didFinishCopyin
 
   v20[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-  v8 = [(UIDocumentInteractionController *)self _preparedActivityViewControllerWithItems:v7 activities:v3 options:2];
+  v8 = [(UIDocumentInteractionController *)self _preparedActivityViewControllerWithItems:v7 activities:array options:2];
 
   if ((*(&self->_documentInteractionControllerFlags + 1) & 0x20) != 0)
   {
@@ -1942,15 +1942,15 @@ void __82__UIDocumentInteractionController_openResourceOperation_didFinishCopyin
 
   if ((_UIAppUseModernRotationAndPresentationBehaviors() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E69DC938] currentDevice];
-    v12 = [v11 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v12 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       [(UIPopoverController *)self->_popoverController dismissPopoverAnimated:1];
       v13 = objc_alloc(MEMORY[0x1E69DCDD8]);
-      v14 = [(UIDocumentInteractionController *)self activityViewController];
-      v15 = [v13 initWithContentViewController:v14];
+      activityViewController = [(UIDocumentInteractionController *)self activityViewController];
+      v15 = [v13 initWithContentViewController:activityViewController];
       popoverController = self->_popoverController;
       self->_popoverController = v15;
 
@@ -1975,8 +1975,8 @@ void __82__UIDocumentInteractionController_openResourceOperation_didFinishCopyin
 - (BOOL)_setupPreviewController
 {
   [(UIDocumentInteractionController *)self _fixupFileExtensionIfNeeded];
-  v3 = [(UIDocumentInteractionController *)self previewControllerItem];
-  v4 = _UIQLCanPreviewItem(v3);
+  previewControllerItem = [(UIDocumentInteractionController *)self previewControllerItem];
+  v4 = _UIQLCanPreviewItem(previewControllerItem);
 
   if (v4)
   {
@@ -2072,8 +2072,8 @@ LABEL_18:
     return 0;
   }
 
-  v3 = [(UIDocumentInteractionController *)self previewControllerItem];
-  v4 = _UIQLCanPreviewItem(v3);
+  previewControllerItem = [(UIDocumentInteractionController *)self previewControllerItem];
+  v4 = _UIQLCanPreviewItem(previewControllerItem);
 
   return v4;
 }
@@ -2099,35 +2099,35 @@ void __54__UIDocumentInteractionController__newPreviewActivity__block_invoke(uin
   [WeakRetained presentPreviewAnimated:1];
 }
 
-- (BOOL)_shouldIncludeActivityForLegacyDelegatingWithAction:(SEL)a3
+- (BOOL)_shouldIncludeActivityForLegacyDelegatingWithAction:(SEL)action
 {
-  v5 = [(UIDocumentInteractionController *)self _delegateImplementsLegacyActions];
-  if (v5)
+  _delegateImplementsLegacyActions = [(UIDocumentInteractionController *)self _delegateImplementsLegacyActions];
+  if (_delegateImplementsLegacyActions)
   {
 
-    LOBYTE(v5) = [(UIDocumentInteractionController *)self _delegateCanPerformAction:a3];
+    LOBYTE(_delegateImplementsLegacyActions) = [(UIDocumentInteractionController *)self _delegateCanPerformAction:action];
   }
 
-  return v5;
+  return _delegateImplementsLegacyActions;
 }
 
-- (id)_newActivityIfNecessaryForLegacyActionDelegatingWithAction:(SEL)a3
+- (id)_newActivityIfNecessaryForLegacyActionDelegatingWithAction:(SEL)action
 {
   if ([(UIDocumentInteractionController *)self _shouldIncludeActivityForLegacyDelegatingWithAction:?])
   {
-    if (sel_print_ == a3)
+    if (sel_print_ == action)
     {
       v6 = +[_UIDICActionActivity newLegacyDelegationActionActivityForPrint];
     }
 
-    else if (sel_copy_ == a3)
+    else if (sel_copy_ == action)
     {
       v6 = +[_UIDICActionActivity newLegacyDelegationActionActivityForCopy];
     }
 
     else
     {
-      if (sel_saveToCameraRoll_ != a3)
+      if (sel_saveToCameraRoll_ != action)
       {
         v5 = 0;
 LABEL_11:
@@ -2137,7 +2137,7 @@ LABEL_11:
         v8[2] = __94__UIDocumentInteractionController__newActivityIfNecessaryForLegacyActionDelegatingWithAction___block_invoke;
         v8[3] = &unk_1E71FB150;
         objc_copyWeak(v9, &location);
-        v9[1] = a3;
+        v9[1] = action;
         [v5 setActivityPerformingHandler:v8];
         objc_destroyWeak(v9);
         objc_destroyWeak(&location);
@@ -2162,11 +2162,11 @@ uint64_t __94__UIDocumentInteractionController__newActivityIfNecessaryForLegacyA
   return v3;
 }
 
-- (void)setShouldUnzipDocument:(BOOL)a3
+- (void)setShouldUnzipDocument:(BOOL)document
 {
-  if (self->_shouldDecompressArchiveIfNecessary != a3)
+  if (self->_shouldDecompressArchiveIfNecessary != document)
   {
-    self->_shouldDecompressArchiveIfNecessary = a3;
+    self->_shouldDecompressArchiveIfNecessary = document;
     [(UIDocumentInteractionController *)self _invalidate];
   }
 }
@@ -2195,20 +2195,20 @@ uint64_t __58__UIDocumentInteractionController__archiveDecompressQueue__block_in
   return [v2 setName:@"com.apple.archiveDecompressQueue"];
 }
 
-- (id)_pathsInArchive:(id)a3
+- (id)_pathsInArchive:(id)archive
 {
-  v4 = a3;
+  archiveCopy = archive;
   v5 = [(UIDocumentInteractionController *)self URL];
-  v6 = [(UIDocumentInteractionController *)self _archiveExtractionOptions];
+  _archiveExtractionOptions = [(UIDocumentInteractionController *)self _archiveExtractionOptions];
   v7 = MEMORY[0x1E696AAE0];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __51__UIDocumentInteractionController__pathsInArchive___block_invoke;
   v13[3] = &unk_1E71FA140;
   v14 = v5;
-  v15 = v4;
-  v16 = v6;
-  v8 = v4;
+  v15 = archiveCopy;
+  v16 = _archiveExtractionOptions;
+  v8 = archiveCopy;
   v9 = v5;
   v10 = [v7 blockOperationWithBlock:v13];
   v11 = +[UIDocumentInteractionController _archiveDecompressQueue];
@@ -2217,24 +2217,24 @@ uint64_t __58__UIDocumentInteractionController__archiveDecompressQueue__block_in
   return v10;
 }
 
-- (id)__decompressArchiveAndSetupPayload:(id)a3 completion:(id)a4
+- (id)__decompressArchiveAndSetupPayload:(id)payload completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  completionCopy = completion;
   v8 = [(UIDocumentInteractionController *)self URL];
-  v9 = [(UIDocumentInteractionController *)self _archiveExtractionOptions];
+  _archiveExtractionOptions = [(UIDocumentInteractionController *)self _archiveExtractionOptions];
   v10 = MEMORY[0x1E696AAE0];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __81__UIDocumentInteractionController___decompressArchiveAndSetupPayload_completion___block_invoke;
   v17[3] = &unk_1E71FB178;
   v18 = v8;
-  v19 = v6;
-  v20 = self;
-  v21 = v7;
-  v22 = v9;
-  v11 = v7;
-  v12 = v6;
+  v19 = payloadCopy;
+  selfCopy = self;
+  v21 = completionCopy;
+  v22 = _archiveExtractionOptions;
+  v11 = completionCopy;
+  v12 = payloadCopy;
   v13 = v8;
   v14 = [v10 blockOperationWithBlock:v17];
   v15 = +[UIDocumentInteractionController _archiveDecompressQueue];
@@ -2251,24 +2251,24 @@ void __81__UIDocumentInteractionController___decompressArchiveAndSetupPayload_co
   _UIDICArchiveExtractArchiveSubpathToRoot(v2, v3, v4, *(a1 + 56), *(a1 + 64));
 }
 
-- (void)_decompressArchiveAndSetupPayload:(id)a3
+- (void)_decompressArchiveAndSetupPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
   v11[3] = __Block_byref_object_copy__5;
   v11[4] = __Block_byref_object_dispose__5;
-  v5 = self;
-  v12 = v5;
+  selfCopy = self;
+  v12 = selfCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __69__UIDocumentInteractionController__decompressArchiveAndSetupPayload___block_invoke;
   v8[3] = &unk_1E71FB1C8;
   v10 = v11;
-  v6 = v4;
+  v6 = payloadCopy;
   v9 = v6;
-  v7 = [(UIDocumentInteractionController *)v5 __decompressArchiveAndSetupPayload:0 completion:v8];
+  v7 = [(UIDocumentInteractionController *)selfCopy __decompressArchiveAndSetupPayload:0 completion:v8];
 
   _Block_object_dispose(v11, 8);
 }
@@ -2300,25 +2300,25 @@ void __69__UIDocumentInteractionController__decompressArchiveAndSetupPayload___b
   dispatch_async(MEMORY[0x1E69E96A0], v15);
 }
 
-- (void)_setDecompressedArchiveDocumentURL:(id)a3
+- (void)_setDecompressedArchiveDocumentURL:(id)l
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_decompressedArchiveDocumentURL != v6)
+  lCopy = l;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_decompressedArchiveDocumentURL != lCopy)
   {
-    objc_storeStrong(&v5->_decompressedArchiveDocumentURL, a3);
+    objc_storeStrong(&selfCopy->_decompressedArchiveDocumentURL, l);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)_decompressedArchiveDocumentURL
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_decompressedArchiveDocumentURL;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_decompressedArchiveDocumentURL;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -2330,12 +2330,12 @@ void __69__UIDocumentInteractionController__decompressArchiveAndSetupPayload___b
     return 0;
   }
 
-  v2 = self;
+  selfCopy = self;
   v3 = [(UIDocumentInteractionController *)self URL];
-  v4 = [v3 lastPathComponent];
-  LOBYTE(v2) = [(UIDocumentInteractionController *)v2 _isFilenameValidForDecompressing:v4 allowsPreviewingArchive:0];
+  lastPathComponent = [v3 lastPathComponent];
+  LOBYTE(selfCopy) = [(UIDocumentInteractionController *)selfCopy _isFilenameValidForDecompressing:lastPathComponent allowsPreviewingArchive:0];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_shouldAutoDecompressIfArchiveForPreview
@@ -2345,12 +2345,12 @@ void __69__UIDocumentInteractionController__decompressArchiveAndSetupPayload___b
     return 0;
   }
 
-  v2 = self;
+  selfCopy = self;
   v3 = [(UIDocumentInteractionController *)self URL];
-  v4 = [v3 lastPathComponent];
-  LOBYTE(v2) = [(UIDocumentInteractionController *)v2 _isFilenameValidForDecompressing:v4 allowsPreviewingArchive:1];
+  lastPathComponent = [v3 lastPathComponent];
+  LOBYTE(selfCopy) = [(UIDocumentInteractionController *)selfCopy _isFilenameValidForDecompressing:lastPathComponent allowsPreviewingArchive:1];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_documentNeedsHelpDecompressingArchiveForPreview
@@ -2361,19 +2361,19 @@ void __69__UIDocumentInteractionController__decompressArchiveAndSetupPayload___b
   return v3;
 }
 
-- (BOOL)_isPackageArchive:(id)a3
+- (BOOL)_isPackageArchive:(id)archive
 {
-  v4 = a3;
-  v5 = [v4 lastPathComponent];
-  v6 = [v5 stringByDeletingPathExtension];
-  v7 = [v6 pathExtension];
+  archiveCopy = archive;
+  lastPathComponent = [archiveCopy lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  pathExtension = [stringByDeletingPathExtension pathExtension];
 
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v8 = [(UIDocumentInteractionController *)self _isFilenameValidForDecompressing:v5 allowsPreviewingArchive:0];
-  if (v7)
+  v8 = [(UIDocumentInteractionController *)self _isFilenameValidForDecompressing:lastPathComponent allowsPreviewingArchive:0];
+  if (pathExtension)
   {
     v9 = v8;
   }
@@ -2383,10 +2383,10 @@ void __69__UIDocumentInteractionController__decompressArchiveAndSetupPayload___b
     v9 = 0;
   }
 
-  if (v9 && ([(__CFString *)v7 isEqualToString:&stru_1EFE999E0]& 1) == 0)
+  if (v9 && ([(__CFString *)pathExtension isEqualToString:&stru_1EFE999E0]& 1) == 0)
   {
     v10 = *MEMORY[0x1E6963710];
-    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x1E6963710], v7, *MEMORY[0x1E69637A8]);
+    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x1E6963710], pathExtension, *MEMORY[0x1E69637A8]);
     v12 = PreferredIdentifierForTag;
     if (PreferredIdentifierForTag)
     {
@@ -2397,21 +2397,21 @@ void __69__UIDocumentInteractionController__decompressArchiveAndSetupPayload___b
 
     if (*(v23 + 24) == 1)
     {
-      v14 = UTTypeCreatePreferredIdentifierForTag(v10, v7, 0);
+      v14 = UTTypeCreatePreferredIdentifierForTag(v10, pathExtension, 0);
       v15 = v14;
       if (v14)
       {
         if (!UTTypeConformsTo(v14, *MEMORY[0x1E6963868]))
         {
           *(v23 + 24) = 0;
-          v16 = [(UIDocumentInteractionController *)self _archiveExtractionOptions];
+          _archiveExtractionOptions = [(UIDocumentInteractionController *)self _archiveExtractionOptions];
           v19[0] = MEMORY[0x1E69E9820];
           v19[1] = 3221225472;
           v19[2] = __53__UIDocumentInteractionController__isPackageArchive___block_invoke;
           v19[3] = &unk_1E71FB1F0;
-          v20 = v7;
+          v20 = pathExtension;
           v21 = &v22;
-          _UIDICArchiveEnumerateFilePaths(v4, v19, v16);
+          _UIDICArchiveEnumerateFilePaths(archiveCopy, v19, _archiveExtractionOptions);
         }
 
         CFRelease(v15);
@@ -2471,21 +2471,21 @@ void __53__UIDocumentInteractionController__isPackageArchive___block_invoke(uint
 LABEL_11:
 }
 
-- (BOOL)_isFilenameValidForDecompressing:(id)a3 allowsPreviewingArchive:(BOOL)a4
+- (BOOL)_isFilenameValidForDecompressing:(id)decompressing allowsPreviewingArchive:(BOOL)archive
 {
-  v6 = a3;
-  v7 = [v6 pathExtension];
-  if (_UIIsArchiveExtension(v7))
+  decompressingCopy = decompressing;
+  pathExtension = [decompressingCopy pathExtension];
+  if (_UIIsArchiveExtension(pathExtension))
   {
-    v8 = _UIStringByDeletingArchiveExtensions(v6);
-    v9 = [v8 pathExtension];
-    v10 = [(UIDocumentInteractionController *)self previewControllerItem];
-    v11 = [v10 previewItemContentType];
+    v8 = _UIStringByDeletingArchiveExtensions(decompressingCopy);
+    pathExtension2 = [v8 pathExtension];
+    previewControllerItem = [(UIDocumentInteractionController *)self previewControllerItem];
+    previewItemContentType = [previewControllerItem previewItemContentType];
 
-    if (!a4 && UTTypeConformsTo(v11, *MEMORY[0x1E6963740]) && ([v9 isEqualToString:&stru_1EFE999E0] & 1) != 0)
+    if (!archive && UTTypeConformsTo(previewItemContentType, *MEMORY[0x1E6963740]) && ([pathExtension2 isEqualToString:&stru_1EFE999E0] & 1) != 0)
     {
       v12 = 0;
-      if (!v11)
+      if (!previewItemContentType)
       {
         goto LABEL_10;
       }
@@ -2494,7 +2494,7 @@ LABEL_11:
     else
     {
       v12 = 1;
-      if (!v11)
+      if (!previewItemContentType)
       {
 LABEL_10:
 
@@ -2502,7 +2502,7 @@ LABEL_10:
       }
     }
 
-    CFRelease(v11);
+    CFRelease(previewItemContentType);
     goto LABEL_10;
   }
 
@@ -2512,15 +2512,15 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)_isValidURL:(id)a3
+- (BOOL)_isValidURL:(id)l
 {
   v3 = MEMORY[0x1E696AC08];
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 path];
+  path = [lCopy path];
 
-  LOBYTE(v4) = [v5 isWritableFileAtPath:v6];
-  return v4;
+  LOBYTE(lCopy) = [v5 isWritableFileAtPath:path];
+  return lCopy;
 }
 
 - (BOOL)_canSaveToCameraRollForType
@@ -2547,7 +2547,7 @@ LABEL_3:
   return v3;
 }
 
-- (BOOL)_delegateCanPerformAction:(SEL)a3
+- (BOOL)_delegateCanPerformAction:(SEL)action
 {
   if ((*(&self->_documentInteractionControllerFlags + 1) & 8) == 0)
   {
@@ -2555,12 +2555,12 @@ LABEL_3:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(a3) = [WeakRetained documentInteractionController:self canPerformAction:a3];
+  LOBYTE(action) = [WeakRetained documentInteractionController:self canPerformAction:action];
 
-  return a3;
+  return action;
 }
 
-- (BOOL)_delegatePerformAction:(SEL)a3
+- (BOOL)_delegatePerformAction:(SEL)action
 {
   if ((*(&self->_documentInteractionControllerFlags + 1) & 0x10) == 0)
   {
@@ -2568,18 +2568,18 @@ LABEL_3:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(a3) = [WeakRetained documentInteractionController:self performAction:a3];
+  LOBYTE(action) = [WeakRetained documentInteractionController:self performAction:action];
 
-  return a3;
+  return action;
 }
 
-- (void)popoverController:(id)a3 animationCompleted:(int64_t)a4
+- (void)popoverController:(id)controller animationCompleted:(int64_t)completed
 {
-  v6 = [(UIDocumentInteractionController *)self delegate];
-  if (a4 == 1)
+  delegate = [(UIDocumentInteractionController *)self delegate];
+  if (completed == 1)
   {
-    v10 = v6;
-    v7 = self;
+    v10 = delegate;
+    selfCopy = self;
     documentInteractionControllerFlags = self->_documentInteractionControllerFlags;
     if ((*&documentInteractionControllerFlags & 0x80000) != 0)
     {
@@ -2590,12 +2590,12 @@ LABEL_3:
       }
 
       v9 = *&documentInteractionControllerFlags & 0xFFF7FFFF;
-      v6 = v10;
+      delegate = v10;
     }
 
     else
     {
-      v6 = v10;
+      delegate = v10;
       if ((*&documentInteractionControllerFlags & 0x40000) == 0)
       {
         goto LABEL_11;
@@ -2604,7 +2604,7 @@ LABEL_3:
       if ((*&documentInteractionControllerFlags & 0x40) != 0)
       {
         [v10 documentInteractionControllerDidDismissOptionsMenu:self];
-        v6 = v10;
+        delegate = v10;
         documentInteractionControllerFlags = self->_documentInteractionControllerFlags;
       }
 
@@ -2617,11 +2617,11 @@ LABEL_3:
 LABEL_11:
 }
 
-- (void)activityViewController:(id)a3 didFinishPresentingActivityType:(id)a4
+- (void)activityViewController:(id)controller didFinishPresentingActivityType:(id)type
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = self;
+  controllerCopy = controller;
+  typeCopy = type;
+  selfCopy = self;
   documentInteractionControllerFlags = self->_documentInteractionControllerFlags;
   if ((*&documentInteractionControllerFlags & 0x80000) != 0)
   {
@@ -2658,12 +2658,12 @@ LABEL_11:
 LABEL_10:
 }
 
-- (void)activityViewController:(id)a3 didFinishPerformingActivityType:(id)a4 completed:(BOOL)a5 items:(id)a6 error:(id)a7
+- (void)activityViewController:(id)controller didFinishPerformingActivityType:(id)type completed:(BOOL)completed items:(id)items error:(id)error
 {
   completionWithItemsHandler = self->_completionWithItemsHandler;
   if (completionWithItemsHandler)
   {
-    completionWithItemsHandler[2](completionWithItemsHandler, a4, a5, a6, a7);
+    completionWithItemsHandler[2](completionWithItemsHandler, type, completed, items, error);
     v9 = self->_completionWithItemsHandler;
     self->_completionWithItemsHandler = 0;
   }
@@ -2672,11 +2672,11 @@ LABEL_10:
 - (void)_fixupFileExtensionIfNeeded
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = [a2 localizedDescription];
+  localizedDescription = [a2 localizedDescription];
   v6 = 138412546;
-  v7 = a1;
+  selfCopy = self;
   v8 = 2112;
-  v9 = v5;
+  v9 = localizedDescription;
   _os_log_error_impl(&dword_18B359000, a3, OS_LOG_TYPE_ERROR, "ERROR: Couldn't create temporary folder at: %@. Error: %@", &v6, 0x16u);
 }
 
@@ -2691,7 +2691,7 @@ LABEL_10:
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_18B359000, a2, OS_LOG_TYPE_ERROR, "ERROR: %@", &v2, 0xCu);
 }
 

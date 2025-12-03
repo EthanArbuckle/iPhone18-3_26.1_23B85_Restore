@@ -1,14 +1,14 @@
 @interface NUImageTransform
-- (BOOL)isEqual:(id)a3;
-- (id)transformByRotateX:(double)a3 y:(double)a4 z:(double)a5;
-- (id)transformByRotateZ:(double)a3;
-- (id)transformByScaleX:(double)a3 scaleY:(double)a4;
-- (id)transformByTranslateX:(double)a3 translateY:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (id)transformByRotateX:(double)x y:(double)y z:(double)z;
+- (id)transformByRotateZ:(double)z;
+- (id)transformByScaleX:(double)x scaleY:(double)y;
+- (id)transformByTranslateX:(double)x translateY:(double)y;
 @end
 
 @implementation NUImageTransform
 
-- (id)transformByRotateX:(double)a3 y:(double)a4 z:(double)a5
+- (id)transformByRotateX:(double)x y:(double)y z:(double)z
 {
   v34 = *MEMORY[0x1E69E9840];
   if (_NULogOnceToken != -1)
@@ -53,8 +53,8 @@ LABEL_8:
     {
       v13 = MEMORY[0x1E696AF00];
       v14 = v12;
-      v15 = [v13 callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v13 callStackSymbols];
+      v16 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v16;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -70,8 +70,8 @@ LABEL_8:
     v19 = MEMORY[0x1E696AF00];
     v20 = specific;
     v21 = v17;
-    v22 = [v19 callStackSymbols];
-    v23 = [v22 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v19 callStackSymbols];
+    v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v31 = specific;
     v32 = 2114;
@@ -85,7 +85,7 @@ LABEL_14:
   _NUAssertFailHandler("[NUImageTransform transformByRotateX:y:z:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/transforms/NUGeometryTransform.m", 127, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v26, v27, v28, v29, v25);
 }
 
-- (id)transformByRotateZ:(double)a3
+- (id)transformByRotateZ:(double)z
 {
   v32 = *MEMORY[0x1E69E9840];
   if (_NULogOnceToken != -1)
@@ -130,8 +130,8 @@ LABEL_8:
     {
       v11 = MEMORY[0x1E696AF00];
       v12 = v10;
-      v13 = [v11 callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v11 callStackSymbols];
+      v14 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v14;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -147,8 +147,8 @@ LABEL_8:
     v17 = MEMORY[0x1E696AF00];
     v18 = specific;
     v19 = v15;
-    v20 = [v17 callStackSymbols];
-    v21 = [v20 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v17 callStackSymbols];
+    v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v29 = specific;
     v30 = 2114;
@@ -162,7 +162,7 @@ LABEL_14:
   _NUAssertFailHandler("[NUImageTransform transformByRotateZ:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/transforms/NUGeometryTransform.m", 122, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v24, v25, v26, v27, v23);
 }
 
-- (id)transformByTranslateX:(double)a3 translateY:(double)a4
+- (id)transformByTranslateX:(double)x translateY:(double)y
 {
   v33 = *MEMORY[0x1E69E9840];
   if (_NULogOnceToken != -1)
@@ -207,8 +207,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -224,8 +224,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -239,7 +239,7 @@ LABEL_14:
   _NUAssertFailHandler("[NUImageTransform transformByTranslateX:translateY:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/transforms/NUGeometryTransform.m", 117, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v25, v26, v27, v28, v24);
 }
 
-- (id)transformByScaleX:(double)a3 scaleY:(double)a4
+- (id)transformByScaleX:(double)x scaleY:(double)y
 {
   v33 = *MEMORY[0x1E69E9840];
   if (_NULogOnceToken != -1)
@@ -284,8 +284,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -301,8 +301,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -316,9 +316,9 @@ LABEL_14:
   _NUAssertFailHandler("[NUImageTransform transformByScaleX:scaleY:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/transforms/NUGeometryTransform.m", 112, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v25, v26, v27, v28, v24);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }

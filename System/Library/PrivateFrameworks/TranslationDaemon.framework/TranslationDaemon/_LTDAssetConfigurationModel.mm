@@ -1,5 +1,5 @@
 @interface _LTDAssetConfigurationModel
-- (_LTDAssetConfigurationModel)initWithDictionary:(id)a3;
+- (_LTDAssetConfigurationModel)initWithDictionary:(id)dictionary;
 - (id)currentAssetDirectoryName;
 - (id)currentEndpointAssetType;
 - (id)currentSpeechTranslationAssetType;
@@ -8,15 +8,15 @@
 
 @implementation _LTDAssetConfigurationModel
 
-- (_LTDAssetConfigurationModel)initWithDictionary:(id)a3
+- (_LTDAssetConfigurationModel)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = _LTDAssetConfigurationModel;
   v5 = [(_LTDAssetConfigurationModel *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"ManagedAssetTypes"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"ManagedAssetTypes"];
     root = v5->_root;
     v5->_root = v6;
 
@@ -100,52 +100,52 @@
   v3 = _LTPreferencesOverrideDefaultCatalog();
   if (v3)
   {
-    v4 = v3;
+    lastObject = v3;
     v5 = _LTOSLogAssets();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      [(_LTDAssetConfigurationModel *)v4 currentSpeechTranslationAssetType];
+      [(_LTDAssetConfigurationModel *)lastObject currentSpeechTranslationAssetType];
     }
   }
 
   else
   {
-    v6 = [(_LTDAssetConfigurationModel *)self speechTranslationAssetTypes];
-    v4 = [v6 lastObject];
+    speechTranslationAssetTypes = [(_LTDAssetConfigurationModel *)self speechTranslationAssetTypes];
+    lastObject = [speechTranslationAssetTypes lastObject];
 
     v7 = _LTOSLogAssets();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(_LTDAssetConfigurationModel *)v4 currentSpeechTranslationAssetType];
+      [(_LTDAssetConfigurationModel *)lastObject currentSpeechTranslationAssetType];
     }
   }
 
-  v8 = v4;
+  v8 = lastObject;
 
   return v8;
 }
 
 - (id)currentEndpointAssetType
 {
-  v2 = [(_LTDAssetConfigurationModel *)self speechEndpointAssetTypes];
-  v3 = [v2 lastObject];
+  speechEndpointAssetTypes = [(_LTDAssetConfigurationModel *)self speechEndpointAssetTypes];
+  lastObject = [speechEndpointAssetTypes lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (id)currentAssetDirectoryName
 {
-  v2 = [(_LTDAssetConfigurationModel *)self assetDirectoryNames];
-  v3 = [v2 lastObject];
+  assetDirectoryNames = [(_LTDAssetConfigurationModel *)self assetDirectoryNames];
+  lastObject = [assetDirectoryNames lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (void)currentSpeechTranslationAssetType
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_232E53000, a2, OS_LOG_TYPE_DEBUG, "Current translation asset catalog is %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

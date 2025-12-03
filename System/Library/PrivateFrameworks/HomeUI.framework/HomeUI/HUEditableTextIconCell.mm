@@ -1,9 +1,9 @@
 @interface HUEditableTextIconCell
 - (HFItem)item;
 - (void)prepareForReuse;
-- (void)setItem:(id)a3;
+- (void)setItem:(id)item;
 - (void)updateConstraints;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUEditableTextIconCell
@@ -15,13 +15,13 @@
   return *(&self->super.super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
   v5 = OBJC_IVAR___HUEditableTextIconCell_item;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.super.super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.super.super.super.super.super.isa + v5) = item;
+  itemCopy = item;
 }
 
 - (void)prepareForReuse
@@ -37,15 +37,15 @@
   [v4 updateWithIconDescriptor:0 displayStyle:*&v2[v3] animated:0];
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v4 = self;
-  sub_20D0290D8(a3);
+  selfCopy = self;
+  sub_20D0290D8(animation);
 }
 
 - (void)updateConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_20D02955C();
 }
 

@@ -1,44 +1,44 @@
 @interface NMRAppLaunchInfo
-- (NMRAppLaunchInfo)initWithPlayerResponse:(id)a3;
-- (id)_launchURLForScheme:(id)a3 requestedPlayerPath:(id)a4;
+- (NMRAppLaunchInfo)initWithPlayerResponse:(id)response;
+- (id)_launchURLForScheme:(id)scheme requestedPlayerPath:(id)path;
 @end
 
 @implementation NMRAppLaunchInfo
 
-- (NMRAppLaunchInfo)initWithPlayerResponse:(id)a3
+- (NMRAppLaunchInfo)initWithPlayerResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v37.receiver = self;
   v37.super_class = NMRAppLaunchInfo;
   v5 = [(NMRAppLaunchInfo *)&v37 init];
   if (v5)
   {
-    v6 = [v4 playerPath];
-    v7 = [v6 isNativeMusicPath];
+    playerPath = [responseCopy playerPath];
+    isNativeMusicPath = [playerPath isNativeMusicPath];
 
-    if (v7)
+    if (isNativeMusicPath)
     {
       v8 = @"music";
       v9 = @"com.apple.NanoMusic";
       goto LABEL_20;
     }
 
-    v10 = [v4 playerPath];
-    v11 = [v10 isNativePodcastsPath];
+    playerPath2 = [responseCopy playerPath];
+    isNativePodcastsPath = [playerPath2 isNativePodcastsPath];
 
-    if (v11)
+    if (isNativePodcastsPath)
     {
       v8 = @"podcasts";
       v9 = @"com.apple.podcasts";
       goto LABEL_20;
     }
 
-    v12 = [v4 playerPath];
-    if ([v12 isNativeBooksPath])
+    playerPath3 = [responseCopy playerPath];
+    if ([playerPath3 isNativeBooksPath])
     {
-      v13 = [v4 playerPath];
-      v14 = [v13 route];
-      if ([v14 isDeviceRoute])
+      playerPath4 = [responseCopy playerPath];
+      route = [playerPath4 route];
+      if ([route isDeviceRoute])
       {
 
 LABEL_15:
@@ -47,11 +47,11 @@ LABEL_15:
         goto LABEL_20;
       }
 
-      v19 = [v4 playerPath];
-      v20 = [v19 route];
-      v21 = [v20 isPhoneRoute];
+      playerPath5 = [responseCopy playerPath];
+      route2 = [playerPath5 route];
+      isPhoneRoute = [route2 isPhoneRoute];
 
-      if (v21)
+      if (isPhoneRoute)
       {
         goto LABEL_15;
       }
@@ -61,10 +61,10 @@ LABEL_15:
     {
     }
 
-    v15 = [v4 playerPath];
-    v16 = [v15 nmr_isSystemWorkoutPath];
+    playerPath6 = [responseCopy playerPath];
+    nmr_isSystemWorkoutPath = [playerPath6 nmr_isSystemWorkoutPath];
 
-    if (v16)
+    if (nmr_isSystemWorkoutPath)
     {
       v8 = @"SessionTrackerApp";
       v9 = @"com.apple.SessionTrackerApp";
@@ -72,10 +72,10 @@ LABEL_15:
 
     else
     {
-      v17 = [v4 playerPath];
-      v18 = [v17 nmr_isSystemMindfulnessPath];
+      playerPath7 = [responseCopy playerPath];
+      nmr_isSystemMindfulnessPath = [playerPath7 nmr_isSystemMindfulnessPath];
 
-      if (v18)
+      if (nmr_isSystemMindfulnessPath)
       {
         v8 = @"Mind";
         v9 = @"com.apple.Mind";
@@ -83,11 +83,11 @@ LABEL_15:
 
       else
       {
-        v22 = [v4 playerPath];
-        v23 = [v22 route];
-        v24 = [v23 isDeviceRoute];
+        playerPath8 = [responseCopy playerPath];
+        route3 = [playerPath8 route];
+        isDeviceRoute = [route3 isDeviceRoute];
 
-        if (v24 && ([v4 playerPath], v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "representedBundleID"), v9 = objc_claimAutoreleasedReturnValue(), v25, v9))
+        if (isDeviceRoute && ([responseCopy playerPath], v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "representedBundleID"), v9 = objc_claimAutoreleasedReturnValue(), v25, v9))
         {
           v8 = 0;
         }
@@ -101,27 +101,27 @@ LABEL_15:
     }
 
 LABEL_20:
-    v26 = [v4 request];
-    v27 = [v26 playerPath];
+    request = [responseCopy request];
+    playerPath9 = [request playerPath];
 
-    v28 = [v4 playerPath];
-    if ([v28 nmr_isSystemPodcastsPath])
+    playerPath10 = [responseCopy playerPath];
+    if ([playerPath10 nmr_isSystemPodcastsPath])
     {
     }
 
     else
     {
-      v29 = [v4 playerPath];
-      v30 = [v29 nmr_isSystemBooksPath];
+      playerPath11 = [responseCopy playerPath];
+      nmr_isSystemBooksPath = [playerPath11 nmr_isSystemBooksPath];
 
-      if (!v30)
+      if (!nmr_isSystemBooksPath)
       {
 LABEL_24:
         bundleID = v5->_bundleID;
         v5->_bundleID = &v9->isa;
         v33 = v9;
 
-        v34 = [(NMRAppLaunchInfo *)v5 _launchURLForScheme:v8 requestedPlayerPath:v27];
+        v34 = [(NMRAppLaunchInfo *)v5 _launchURLForScheme:v8 requestedPlayerPath:playerPath9];
         URL = v5->_URL;
         v5->_URL = v34;
 
@@ -129,9 +129,9 @@ LABEL_24:
       }
     }
 
-    v31 = [v4 playerPath];
+    playerPath12 = [responseCopy playerPath];
 
-    v27 = v31;
+    playerPath9 = playerPath12;
     goto LABEL_24;
   }
 
@@ -140,31 +140,31 @@ LABEL_25:
   return v5;
 }
 
-- (id)_launchURLForScheme:(id)a3 requestedPlayerPath:(id)a4
+- (id)_launchURLForScheme:(id)scheme requestedPlayerPath:(id)path
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  pathCopy = path;
   v6 = MEMORY[0x277CCACE0];
-  v7 = a3;
+  schemeCopy = scheme;
   v8 = objc_alloc_init(v6);
-  [v8 setScheme:v7];
+  [v8 setScheme:schemeCopy];
 
   [v8 setHost:@"now-playing"];
   v9 = MEMORY[0x277CCAD18];
-  v10 = [v5 route];
-  v11 = [v10 designatedGroupLeaderRouteUID];
-  v12 = v11;
-  if (!v11)
+  route = [pathCopy route];
+  designatedGroupLeaderRouteUID = [route designatedGroupLeaderRouteUID];
+  deviceUID = designatedGroupLeaderRouteUID;
+  if (!designatedGroupLeaderRouteUID)
   {
-    v12 = [v5 deviceUID];
+    deviceUID = [pathCopy deviceUID];
   }
 
-  v13 = [v9 queryItemWithName:@"deviceUID" value:v12];
+  v13 = [v9 queryItemWithName:@"deviceUID" value:deviceUID];
   v18[0] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
   [v8 setQueryItems:v14];
 
-  if (!v11)
+  if (!designatedGroupLeaderRouteUID)
   {
   }
 

@@ -7,17 +7,17 @@
 
 - (uint64_t)isInternalScheduled
 {
-  v1 = [a1 source];
-  v2 = [v1 clientIdentifier];
-  v3 = [v2 hasSuffix:@".private.schedule"];
+  source = [self source];
+  clientIdentifier = [source clientIdentifier];
+  v3 = [clientIdentifier hasSuffix:@".private.schedule"];
 
   return v3;
 }
 
 - (BOOL)isUserInvalidated
 {
-  [a1 reason];
-  [a1 reasonOverride];
+  [self reason];
+  [self reasonOverride];
   return DNDResolvedModeAssertionInvalidationReason() == 2;
 }
 

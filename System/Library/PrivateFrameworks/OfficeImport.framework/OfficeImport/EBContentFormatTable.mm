@@ -1,18 +1,18 @@
 @interface EBContentFormatTable
-+ (void)readWithState:(id)a3;
++ (void)readWithState:(id)state;
 @end
 
 @implementation EBContentFormatTable
 
-+ (void)readWithState:(id)a3
++ (void)readWithState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 resources];
-  v5 = [v4 contentFormats];
+  stateCopy = state;
+  resources = [stateCopy resources];
+  contentFormats = [resources contentFormats];
 
   XlContentFormatTable::XlContentFormatTable(&v12);
-  v6 = [v3 xlReader];
-  (*(*v6 + 176))(v6, &v12);
+  xlReader = [stateCopy xlReader];
+  (*(*xlReader + 176))(xlReader, &v12);
   if (((v14 - v13) & 0x7FFFFFFF8) != 0)
   {
     v7 = 0;
@@ -25,10 +25,10 @@
       }
 
       v9 = *(v13 + 8 * v7);
-      v10 = [v3 resources];
-      v11 = [EBContentFormat edContentFormatFromXlFormat:v9 edResources:v10];
+      resources2 = [stateCopy resources];
+      v11 = [EBContentFormat edContentFormatFromXlFormat:v9 edResources:resources2];
 
-      [v5 addOrEquivalentObject:v11];
+      [contentFormats addOrEquivalentObject:v11];
       ++v7;
     }
 

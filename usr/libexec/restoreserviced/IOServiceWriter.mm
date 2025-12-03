@@ -1,45 +1,45 @@
 @interface IOServiceWriter
 - (BOOL)finished;
-- (IOServiceWriter)initWithService:(unsigned int)a3;
+- (IOServiceWriter)initWithService:(unsigned int)service;
 - (int)openService;
-- (int)writeBytes:(char *)a3 ofLength:(unint64_t)a4 withError:(id *)a5;
-- (int)writeData:(id)a3 withError:(id *)a4;
+- (int)writeBytes:(char *)bytes ofLength:(unint64_t)length withError:(id *)error;
+- (int)writeData:(id)data withError:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation IOServiceWriter
 
-- (IOServiceWriter)initWithService:(unsigned int)a3
+- (IOServiceWriter)initWithService:(unsigned int)service
 {
   v6.receiver = self;
   v6.super_class = IOServiceWriter;
   v4 = [(IOServiceWriter *)&v6 init];
   if (v4)
   {
-    IOObjectRetain(a3);
-    v4->_service = a3;
+    IOObjectRetain(service);
+    v4->_service = service;
   }
 
   return v4;
 }
 
-- (int)writeBytes:(char *)a3 ofLength:(unint64_t)a4 withError:(id *)a5
+- (int)writeBytes:(char *)bytes ofLength:(unint64_t)length withError:(id *)error
 {
-  v7 = [NSData dataWithBytes:a3 length:a4];
+  v7 = [NSData dataWithBytes:bytes length:length];
 
-  return [(IOServiceWriter *)self writeData:v7 withError:a5];
+  return [(IOServiceWriter *)self writeData:v7 withError:error];
 }
 
-- (int)writeData:(id)a3 withError:(id *)a4
+- (int)writeData:(id)data withError:(id *)error
 {
-  v6 = IORegistryEntrySetCFProperty([(IOServiceWriter *)self service], @"FLASH", a3);
+  v6 = IORegistryEntrySetCFProperty([(IOServiceWriter *)self service], @"FLASH", data);
   if (v6)
   {
-    v7 = [a3 length];
+    v7 = [data length];
     v13 = MSUBootFirmwareError(v6, 0, @"writeData: Failed writing %d bytes with error %d", v8, v9, v10, v11, v12, v7);
-    if (a4)
+    if (error)
     {
-      *a4 = MSUBootFirmwareError(3, v13, @"FLASH operation failed while writing to single SPI.", v14, v15, v16, v17, v18, v20);
+      *error = MSUBootFirmwareError(3, v13, @"FLASH operation failed while writing to single SPI.", v14, v15, v16, v17, v18, v20);
     }
   }
 
@@ -48,10 +48,10 @@
 
 - (int)openService
 {
-  v3 = [(IOServiceWriter *)self service];
+  service = [(IOServiceWriter *)self service];
   v4 = mach_task_self_;
 
-  return IOServiceOpen(v3, v4, 0, &self->_serviceConnect);
+  return IOServiceOpen(service, v4, 0, &self->_serviceConnect);
 }
 
 - (BOOL)finished

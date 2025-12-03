@@ -1,29 +1,29 @@
 @interface HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addNetworkInfo:(id)a3;
-- (void)addNetworkServiceInfo:(id)a3;
-- (void)addNetworkVisibleDeviceInfos:(id)a3;
-- (void)addProximityVisibleDeviceInfos:(id)a3;
-- (void)addVisibleAccessoriesInfo:(id)a3;
-- (void)addVisibleIDSDevices:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumResidents:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addNetworkInfo:(id)info;
+- (void)addNetworkServiceInfo:(id)info;
+- (void)addNetworkVisibleDeviceInfos:(id)infos;
+- (void)addProximityVisibleDeviceInfos:(id)infos;
+- (void)addVisibleAccessoriesInfo:(id)info;
+- (void)addVisibleIDSDevices:(id)devices;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumResidents:(BOOL)residents;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v71 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   wifiInfo = self->_wifiInfo;
-  v6 = *(v4 + 10);
+  v6 = *(fromCopy + 10);
   if (wifiInfo)
   {
     if (v6)
@@ -41,7 +41,7 @@
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v7 = *(v4 + 4);
+  v7 = *(fromCopy + 4);
   v8 = [v7 countByEnumeratingWithState:&v61 objects:v70 count:16];
   if (v8)
   {
@@ -69,7 +69,7 @@
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v12 = *(v4 + 5);
+  v12 = *(fromCopy + 5);
   v13 = [v12 countByEnumeratingWithState:&v57 objects:v69 count:16];
   if (v13)
   {
@@ -94,7 +94,7 @@
   }
 
   eventRouterServerInfo = self->_eventRouterServerInfo;
-  v18 = *(v4 + 3);
+  v18 = *(fromCopy + 3);
   if (eventRouterServerInfo)
   {
     if (v18)
@@ -112,7 +112,7 @@
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v19 = *(v4 + 8);
+  v19 = *(fromCopy + 8);
   v20 = [v19 countByEnumeratingWithState:&v53 objects:v68 count:16];
   if (v20)
   {
@@ -140,7 +140,7 @@
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v24 = *(v4 + 9);
+  v24 = *(fromCopy + 9);
   v25 = [v24 countByEnumeratingWithState:&v49 objects:v67 count:16];
   if (v25)
   {
@@ -168,7 +168,7 @@
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v29 = *(v4 + 6);
+  v29 = *(fromCopy + 6);
   v30 = [v29 countByEnumeratingWithState:&v45 objects:v66 count:16];
   if (v30)
   {
@@ -196,7 +196,7 @@
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v34 = *(v4 + 7);
+  v34 = *(fromCopy + 7);
   v35 = [v34 countByEnumeratingWithState:&v41 objects:v65 count:16];
   if (v35)
   {
@@ -220,17 +220,17 @@
     while (v36);
   }
 
-  v39 = *(v4 + 88);
+  v39 = *(fromCopy + 88);
   if (v39)
   {
-    self->_numAppleMediaAccessories = *(v4 + 1);
+    self->_numAppleMediaAccessories = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v39 = *(v4 + 88);
+    v39 = *(fromCopy + 88);
   }
 
   if ((v39 & 2) != 0)
   {
-    self->_numResidents = *(v4 + 2);
+    self->_numResidents = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
@@ -271,16 +271,16 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
   wifiInfo = self->_wifiInfo;
-  if (wifiInfo | *(v4 + 10))
+  if (wifiInfo | *(equalCopy + 10))
   {
     if (![(HMAccessoryInfoProtoWifiNetworkInfoEvent *)wifiInfo isEqual:?])
     {
@@ -289,7 +289,7 @@ LABEL_3:
   }
 
   networkInfos = self->_networkInfos;
-  if (networkInfos | *(v4 + 4))
+  if (networkInfos | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)networkInfos isEqual:?])
     {
@@ -298,7 +298,7 @@ LABEL_3:
   }
 
   networkServiceInfos = self->_networkServiceInfos;
-  if (networkServiceInfos | *(v4 + 5))
+  if (networkServiceInfos | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)networkServiceInfos isEqual:?])
     {
@@ -307,7 +307,7 @@ LABEL_3:
   }
 
   eventRouterServerInfo = self->_eventRouterServerInfo;
-  if (eventRouterServerInfo | *(v4 + 3))
+  if (eventRouterServerInfo | *(equalCopy + 3))
   {
     if (![(HMRemoteEventRouterProtoServerDiagnosticInfo *)eventRouterServerInfo isEqual:?])
     {
@@ -316,7 +316,7 @@ LABEL_3:
   }
 
   visibleAccessoriesInfos = self->_visibleAccessoriesInfos;
-  if (visibleAccessoriesInfos | *(v4 + 8))
+  if (visibleAccessoriesInfos | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)visibleAccessoriesInfos isEqual:?])
     {
@@ -325,7 +325,7 @@ LABEL_3:
   }
 
   visibleIDSDevices = self->_visibleIDSDevices;
-  if (visibleIDSDevices | *(v4 + 9))
+  if (visibleIDSDevices | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)visibleIDSDevices isEqual:?])
     {
@@ -334,7 +334,7 @@ LABEL_3:
   }
 
   networkVisibleDeviceInfos = self->_networkVisibleDeviceInfos;
-  if (networkVisibleDeviceInfos | *(v4 + 6))
+  if (networkVisibleDeviceInfos | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)networkVisibleDeviceInfos isEqual:?])
     {
@@ -343,7 +343,7 @@ LABEL_3:
   }
 
   proximityVisibleDeviceInfos = self->_proximityVisibleDeviceInfos;
-  if (proximityVisibleDeviceInfos | *(v4 + 7))
+  if (proximityVisibleDeviceInfos | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)proximityVisibleDeviceInfos isEqual:?])
     {
@@ -353,23 +353,23 @@ LABEL_3:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 88) & 1) == 0 || self->_numAppleMediaAccessories != *(v4 + 1))
+    if ((*(equalCopy + 88) & 1) == 0 || self->_numAppleMediaAccessories != *(equalCopy + 1))
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 88))
+  else if (*(equalCopy + 88))
   {
 LABEL_27:
     v13 = 0;
     goto LABEL_28;
   }
 
-  v13 = (*(v4 + 88) & 2) == 0;
+  v13 = (*(equalCopy + 88) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 88) & 2) == 0 || self->_numResidents != *(v4 + 2))
+    if ((*(equalCopy + 88) & 2) == 0 || self->_numResidents != *(equalCopy + 2))
     {
       goto LABEL_27;
     }
@@ -382,11 +382,11 @@ LABEL_28:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v79 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)self->_wifiInfo copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)self->_wifiInfo copyWithZone:zone];
   v7 = *(v5 + 80);
   *(v5 + 80) = v6;
 
@@ -409,7 +409,7 @@ LABEL_28:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v69 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v69 + 1) + 8 * i) copyWithZone:zone];
         [v5 addNetworkInfo:v13];
       }
 
@@ -438,7 +438,7 @@ LABEL_28:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v65 + 1) + 8 * j) copyWithZone:a3];
+        v19 = [*(*(&v65 + 1) + 8 * j) copyWithZone:zone];
         [v5 addNetworkServiceInfo:v19];
       }
 
@@ -448,7 +448,7 @@ LABEL_28:
     while (v16);
   }
 
-  v20 = [(HMRemoteEventRouterProtoServerDiagnosticInfo *)self->_eventRouterServerInfo copyWithZone:a3];
+  v20 = [(HMRemoteEventRouterProtoServerDiagnosticInfo *)self->_eventRouterServerInfo copyWithZone:zone];
   v21 = *(v5 + 24);
   *(v5 + 24) = v20;
 
@@ -471,7 +471,7 @@ LABEL_28:
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v61 + 1) + 8 * k) copyWithZone:a3];
+        v27 = [*(*(&v61 + 1) + 8 * k) copyWithZone:zone];
         [v5 addVisibleAccessoriesInfo:v27];
       }
 
@@ -500,7 +500,7 @@ LABEL_28:
           objc_enumerationMutation(v28);
         }
 
-        v33 = [*(*(&v57 + 1) + 8 * m) copyWithZone:a3];
+        v33 = [*(*(&v57 + 1) + 8 * m) copyWithZone:zone];
         [v5 addVisibleIDSDevices:v33];
       }
 
@@ -529,7 +529,7 @@ LABEL_28:
           objc_enumerationMutation(v34);
         }
 
-        v39 = [*(*(&v53 + 1) + 8 * n) copyWithZone:a3];
+        v39 = [*(*(&v53 + 1) + 8 * n) copyWithZone:zone];
         [v5 addNetworkVisibleDeviceInfos:v39];
       }
 
@@ -558,7 +558,7 @@ LABEL_28:
           objc_enumerationMutation(v40);
         }
 
-        v45 = [*(*(&v49 + 1) + 8 * ii) copyWithZone:{a3, v49}];
+        v45 = [*(*(&v49 + 1) + 8 * ii) copyWithZone:{zone, v49}];
         [v5 addProximityVisibleDeviceInfos:v45];
       }
 
@@ -586,105 +586,105 @@ LABEL_28:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v29 = a3;
+  toCopy = to;
   if (self->_wifiInfo)
   {
-    [v29 setWifiInfo:?];
+    [toCopy setWifiInfo:?];
   }
 
   if ([(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self networkInfosCount])
   {
-    [v29 clearNetworkInfos];
-    v4 = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self networkInfosCount];
-    if (v4)
+    [toCopy clearNetworkInfos];
+    networkInfosCount = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self networkInfosCount];
+    if (networkInfosCount)
     {
-      v5 = v4;
+      v5 = networkInfosCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self networkInfoAtIndex:i];
-        [v29 addNetworkInfo:v7];
+        [toCopy addNetworkInfo:v7];
       }
     }
   }
 
   if ([(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self networkServiceInfosCount])
   {
-    [v29 clearNetworkServiceInfos];
-    v8 = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self networkServiceInfosCount];
-    if (v8)
+    [toCopy clearNetworkServiceInfos];
+    networkServiceInfosCount = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self networkServiceInfosCount];
+    if (networkServiceInfosCount)
     {
-      v9 = v8;
+      v9 = networkServiceInfosCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self networkServiceInfoAtIndex:j];
-        [v29 addNetworkServiceInfo:v11];
+        [toCopy addNetworkServiceInfo:v11];
       }
     }
   }
 
   if (self->_eventRouterServerInfo)
   {
-    [v29 setEventRouterServerInfo:?];
+    [toCopy setEventRouterServerInfo:?];
   }
 
   if ([(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self visibleAccessoriesInfosCount])
   {
-    [v29 clearVisibleAccessoriesInfos];
-    v12 = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self visibleAccessoriesInfosCount];
-    if (v12)
+    [toCopy clearVisibleAccessoriesInfos];
+    visibleAccessoriesInfosCount = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self visibleAccessoriesInfosCount];
+    if (visibleAccessoriesInfosCount)
     {
-      v13 = v12;
+      v13 = visibleAccessoriesInfosCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self visibleAccessoriesInfoAtIndex:k];
-        [v29 addVisibleAccessoriesInfo:v15];
+        [toCopy addVisibleAccessoriesInfo:v15];
       }
     }
   }
 
   if ([(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self visibleIDSDevicesCount])
   {
-    [v29 clearVisibleIDSDevices];
-    v16 = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self visibleIDSDevicesCount];
-    if (v16)
+    [toCopy clearVisibleIDSDevices];
+    visibleIDSDevicesCount = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self visibleIDSDevicesCount];
+    if (visibleIDSDevicesCount)
     {
-      v17 = v16;
+      v17 = visibleIDSDevicesCount;
       for (m = 0; m != v17; ++m)
       {
         v19 = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self visibleIDSDevicesAtIndex:m];
-        [v29 addVisibleIDSDevices:v19];
+        [toCopy addVisibleIDSDevices:v19];
       }
     }
   }
 
   if ([(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self networkVisibleDeviceInfosCount])
   {
-    [v29 clearNetworkVisibleDeviceInfos];
-    v20 = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self networkVisibleDeviceInfosCount];
-    if (v20)
+    [toCopy clearNetworkVisibleDeviceInfos];
+    networkVisibleDeviceInfosCount = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self networkVisibleDeviceInfosCount];
+    if (networkVisibleDeviceInfosCount)
     {
-      v21 = v20;
+      v21 = networkVisibleDeviceInfosCount;
       for (n = 0; n != v21; ++n)
       {
         v23 = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self networkVisibleDeviceInfosAtIndex:n];
-        [v29 addNetworkVisibleDeviceInfos:v23];
+        [toCopy addNetworkVisibleDeviceInfos:v23];
       }
     }
   }
 
   if ([(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self proximityVisibleDeviceInfosCount])
   {
-    [v29 clearProximityVisibleDeviceInfos];
-    v24 = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self proximityVisibleDeviceInfosCount];
-    if (v24)
+    [toCopy clearProximityVisibleDeviceInfos];
+    proximityVisibleDeviceInfosCount = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self proximityVisibleDeviceInfosCount];
+    if (proximityVisibleDeviceInfosCount)
     {
-      v25 = v24;
+      v25 = proximityVisibleDeviceInfosCount;
       for (ii = 0; ii != v25; ++ii)
       {
         v27 = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self proximityVisibleDeviceInfosAtIndex:ii];
-        [v29 addProximityVisibleDeviceInfos:v27];
+        [toCopy addProximityVisibleDeviceInfos:v27];
       }
     }
   }
@@ -692,22 +692,22 @@ LABEL_28:
   has = self->_has;
   if (has)
   {
-    *(v29 + 1) = self->_numAppleMediaAccessories;
-    *(v29 + 88) |= 1u;
+    *(toCopy + 1) = self->_numAppleMediaAccessories;
+    *(toCopy + 88) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v29 + 2) = self->_numResidents;
-    *(v29 + 88) |= 2u;
+    *(toCopy + 2) = self->_numResidents;
+    *(toCopy + 88) |= 2u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v75 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_wifiInfo)
   {
     PBDataWriterWriteSubmessage();
@@ -912,12 +912,12 @@ LABEL_28:
 - (id)dictionaryRepresentation
 {
   v74 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   wifiInfo = self->_wifiInfo;
   if (wifiInfo)
   {
-    v5 = [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)wifiInfo dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"wifiInfo"];
+    dictionaryRepresentation = [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)wifiInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"wifiInfo"];
   }
 
   if ([(NSMutableArray *)self->_networkInfos count])
@@ -942,8 +942,8 @@ LABEL_28:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v65 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v65 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v65 objects:v73 count:16];
@@ -952,7 +952,7 @@ LABEL_28:
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"networkInfo"];
+    [dictionary setObject:v6 forKey:@"networkInfo"];
   }
 
   if ([(NSMutableArray *)self->_networkServiceInfos count])
@@ -977,8 +977,8 @@ LABEL_28:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v61 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation3 = [*(*(&v61 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation3];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v61 objects:v72 count:16];
@@ -987,14 +987,14 @@ LABEL_28:
       while (v16);
     }
 
-    [v3 setObject:v13 forKey:@"networkServiceInfo"];
+    [dictionary setObject:v13 forKey:@"networkServiceInfo"];
   }
 
   eventRouterServerInfo = self->_eventRouterServerInfo;
   if (eventRouterServerInfo)
   {
-    v21 = [(HMRemoteEventRouterProtoServerDiagnosticInfo *)eventRouterServerInfo dictionaryRepresentation];
-    [v3 setObject:v21 forKey:@"eventRouterServerInfo"];
+    dictionaryRepresentation4 = [(HMRemoteEventRouterProtoServerDiagnosticInfo *)eventRouterServerInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"eventRouterServerInfo"];
   }
 
   if ([(NSMutableArray *)self->_visibleAccessoriesInfos count])
@@ -1019,8 +1019,8 @@ LABEL_28:
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v57 + 1) + 8 * k) dictionaryRepresentation];
-          [v22 addObject:v28];
+          dictionaryRepresentation5 = [*(*(&v57 + 1) + 8 * k) dictionaryRepresentation];
+          [v22 addObject:dictionaryRepresentation5];
         }
 
         v25 = [(NSMutableArray *)v23 countByEnumeratingWithState:&v57 objects:v71 count:16];
@@ -1029,13 +1029,13 @@ LABEL_28:
       while (v25);
     }
 
-    [v3 setObject:v22 forKey:@"visibleAccessoriesInfo"];
+    [dictionary setObject:v22 forKey:@"visibleAccessoriesInfo"];
   }
 
   visibleIDSDevices = self->_visibleIDSDevices;
   if (visibleIDSDevices)
   {
-    [v3 setObject:visibleIDSDevices forKey:@"visibleIDSDevices"];
+    [dictionary setObject:visibleIDSDevices forKey:@"visibleIDSDevices"];
   }
 
   if ([(NSMutableArray *)self->_networkVisibleDeviceInfos count])
@@ -1060,8 +1060,8 @@ LABEL_28:
             objc_enumerationMutation(v31);
           }
 
-          v36 = [*(*(&v53 + 1) + 8 * m) dictionaryRepresentation];
-          [v30 addObject:v36];
+          dictionaryRepresentation6 = [*(*(&v53 + 1) + 8 * m) dictionaryRepresentation];
+          [v30 addObject:dictionaryRepresentation6];
         }
 
         v33 = [(NSMutableArray *)v31 countByEnumeratingWithState:&v53 objects:v70 count:16];
@@ -1070,7 +1070,7 @@ LABEL_28:
       while (v33);
     }
 
-    [v3 setObject:v30 forKey:@"networkVisibleDeviceInfos"];
+    [dictionary setObject:v30 forKey:@"networkVisibleDeviceInfos"];
   }
 
   if ([(NSMutableArray *)self->_proximityVisibleDeviceInfos count])
@@ -1095,8 +1095,8 @@ LABEL_28:
             objc_enumerationMutation(v38);
           }
 
-          v43 = [*(*(&v49 + 1) + 8 * n) dictionaryRepresentation];
-          [v37 addObject:v43];
+          dictionaryRepresentation7 = [*(*(&v49 + 1) + 8 * n) dictionaryRepresentation];
+          [v37 addObject:dictionaryRepresentation7];
         }
 
         v40 = [(NSMutableArray *)v38 countByEnumeratingWithState:&v49 objects:v69 count:16];
@@ -1105,14 +1105,14 @@ LABEL_28:
       while (v40);
     }
 
-    [v3 setObject:v37 forKey:@"proximityVisibleDeviceInfos"];
+    [dictionary setObject:v37 forKey:@"proximityVisibleDeviceInfos"];
   }
 
   has = self->_has;
   if (has)
   {
     v45 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_numAppleMediaAccessories];
-    [v3 setObject:v45 forKey:@"numAppleMediaAccessories"];
+    [dictionary setObject:v45 forKey:@"numAppleMediaAccessories"];
 
     has = self->_has;
   }
@@ -1120,12 +1120,12 @@ LABEL_28:
   if ((has & 2) != 0)
   {
     v46 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_numResidents];
-    [v3 setObject:v46 forKey:@"numResidents"];
+    [dictionary setObject:v46 forKey:@"numResidents"];
   }
 
   v47 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -1134,15 +1134,15 @@ LABEL_28:
   v8.receiver = self;
   v8.super_class = HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo;
   v4 = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)&v8 description];
-  v5 = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasNumResidents:(BOOL)a3
+- (void)setHasNumResidents:(BOOL)residents
 {
-  if (a3)
+  if (residents)
   {
     v3 = 2;
   }
@@ -1155,112 +1155,112 @@ LABEL_28:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addProximityVisibleDeviceInfos:(id)a3
+- (void)addProximityVisibleDeviceInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   proximityVisibleDeviceInfos = self->_proximityVisibleDeviceInfos;
-  v8 = v4;
+  v8 = infosCopy;
   if (!proximityVisibleDeviceInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_proximityVisibleDeviceInfos;
     self->_proximityVisibleDeviceInfos = v6;
 
-    v4 = v8;
+    infosCopy = v8;
     proximityVisibleDeviceInfos = self->_proximityVisibleDeviceInfos;
   }
 
-  [(NSMutableArray *)proximityVisibleDeviceInfos addObject:v4];
+  [(NSMutableArray *)proximityVisibleDeviceInfos addObject:infosCopy];
 }
 
-- (void)addNetworkVisibleDeviceInfos:(id)a3
+- (void)addNetworkVisibleDeviceInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   networkVisibleDeviceInfos = self->_networkVisibleDeviceInfos;
-  v8 = v4;
+  v8 = infosCopy;
   if (!networkVisibleDeviceInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_networkVisibleDeviceInfos;
     self->_networkVisibleDeviceInfos = v6;
 
-    v4 = v8;
+    infosCopy = v8;
     networkVisibleDeviceInfos = self->_networkVisibleDeviceInfos;
   }
 
-  [(NSMutableArray *)networkVisibleDeviceInfos addObject:v4];
+  [(NSMutableArray *)networkVisibleDeviceInfos addObject:infosCopy];
 }
 
-- (void)addVisibleIDSDevices:(id)a3
+- (void)addVisibleIDSDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   visibleIDSDevices = self->_visibleIDSDevices;
-  v8 = v4;
+  v8 = devicesCopy;
   if (!visibleIDSDevices)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_visibleIDSDevices;
     self->_visibleIDSDevices = v6;
 
-    v4 = v8;
+    devicesCopy = v8;
     visibleIDSDevices = self->_visibleIDSDevices;
   }
 
-  [(NSMutableArray *)visibleIDSDevices addObject:v4];
+  [(NSMutableArray *)visibleIDSDevices addObject:devicesCopy];
 }
 
-- (void)addVisibleAccessoriesInfo:(id)a3
+- (void)addVisibleAccessoriesInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   visibleAccessoriesInfos = self->_visibleAccessoriesInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!visibleAccessoriesInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_visibleAccessoriesInfos;
     self->_visibleAccessoriesInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     visibleAccessoriesInfos = self->_visibleAccessoriesInfos;
   }
 
-  [(NSMutableArray *)visibleAccessoriesInfos addObject:v4];
+  [(NSMutableArray *)visibleAccessoriesInfos addObject:infoCopy];
 }
 
-- (void)addNetworkServiceInfo:(id)a3
+- (void)addNetworkServiceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   networkServiceInfos = self->_networkServiceInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!networkServiceInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_networkServiceInfos;
     self->_networkServiceInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     networkServiceInfos = self->_networkServiceInfos;
   }
 
-  [(NSMutableArray *)networkServiceInfos addObject:v4];
+  [(NSMutableArray *)networkServiceInfos addObject:infoCopy];
 }
 
-- (void)addNetworkInfo:(id)a3
+- (void)addNetworkInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   networkInfos = self->_networkInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!networkInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_networkInfos;
     self->_networkInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     networkInfos = self->_networkInfos;
   }
 
-  [(NSMutableArray *)networkInfos addObject:v4];
+  [(NSMutableArray *)networkInfos addObject:infoCopy];
 }
 
 @end

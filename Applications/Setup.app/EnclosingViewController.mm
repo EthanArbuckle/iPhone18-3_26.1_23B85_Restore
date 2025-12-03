@@ -1,28 +1,28 @@
 @interface EnclosingViewController
 - (BOOL)hasBlackBackground;
 - (BOOL)usesWhiteBackButton;
-- (_TtC5Setup23EnclosingViewController)initWithCoder:(id)a3;
-- (_TtC5Setup23EnclosingViewController)initWithEnclosedViewController:(id)a3 spinnerDelegate:(id)a4 overrideBackButton:(BOOL)a5;
-- (_TtC5Setup23EnclosingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5Setup23EnclosingViewController)initWithCoder:(id)coder;
+- (_TtC5Setup23EnclosingViewController)initWithEnclosedViewController:(id)controller spinnerDelegate:(id)delegate overrideBackButton:(BOOL)button;
+- (_TtC5Setup23EnclosingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)customDescription;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation EnclosingViewController
 
-- (_TtC5Setup23EnclosingViewController)initWithEnclosedViewController:(id)a3 spinnerDelegate:(id)a4 overrideBackButton:(BOOL)a5
+- (_TtC5Setup23EnclosingViewController)initWithEnclosedViewController:(id)controller spinnerDelegate:(id)delegate overrideBackButton:(BOOL)button
 {
   swift_getObjectType();
-  v9 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v10 = sub_100068AA0(v9, a4, a5, self);
+  v10 = sub_100068AA0(controllerCopy, delegate, button, self);
 
   swift_unknownObjectRelease();
   return v10;
 }
 
-- (_TtC5Setup23EnclosingViewController)initWithCoder:(id)a3
+- (_TtC5Setup23EnclosingViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -32,7 +32,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000681BC();
 }
 
@@ -41,9 +41,9 @@
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
-    v3 = [Strong hasBlackBackground];
+    hasBlackBackground = [Strong hasBlackBackground];
     swift_unknownObjectRelease();
-    LOBYTE(Strong) = v3;
+    LOBYTE(Strong) = hasBlackBackground;
   }
 
   return Strong;
@@ -60,28 +60,28 @@
   v3 = Strong;
   if ([Strong respondsToSelector:"usesWhiteBackButton"])
   {
-    v4 = [v3 usesWhiteBackButton];
+    usesWhiteBackButton = [v3 usesWhiteBackButton];
   }
 
   else
   {
-    v4 = 0;
+    usesWhiteBackButton = 0;
   }
 
   swift_unknownObjectRelease();
-  return v4;
+  return usesWhiteBackButton;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000687BC(a3);
+  selfCopy = self;
+  sub_1000687BC(appear);
 }
 
 - (id)customDescription
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC5Setup23EnclosingViewController_enclosedViewController);
-  v3 = self;
+  selfCopy = self;
   v4 = [v2 description];
   if (!v4)
   {
@@ -92,7 +92,7 @@
   return v4;
 }
 
-- (_TtC5Setup23EnclosingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Setup23EnclosingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,14 +1,14 @@
 @interface PKLongPressGestureRecognizer
-- (PKLongPressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (PKLongPressGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation PKLongPressGestureRecognizer
 
-- (PKLongPressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (PKLongPressGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
@@ -20,13 +20,13 @@
     memset(v6, 0, sizeof(v6));
   }
 
-  return PKLongPressGestureRecognizer.init(target:action:)(v6, a4);
+  return PKLongPressGestureRecognizer.init(target:action:)(v6, action);
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = self;
-  if ([(PKLongPressGestureRecognizer *)v5 state]== 2)
+  selfCopy = self;
+  if ([(PKLongPressGestureRecognizer *)selfCopy state]== 2)
   {
     v4 = 3;
   }
@@ -36,13 +36,13 @@
     v4 = 5;
   }
 
-  [(PKLongPressGestureRecognizer *)v5 setState:v4];
+  [(PKLongPressGestureRecognizer *)selfCopy setState:v4];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v5 = self;
-  if ([(PKLongPressGestureRecognizer *)v5 state]== 2)
+  selfCopy = self;
+  if ([(PKLongPressGestureRecognizer *)selfCopy state]== 2)
   {
     v4 = 4;
   }
@@ -52,7 +52,7 @@
     v4 = 5;
   }
 
-  [(PKLongPressGestureRecognizer *)v5 setState:v4];
+  [(PKLongPressGestureRecognizer *)selfCopy setState:v4];
 }
 
 @end

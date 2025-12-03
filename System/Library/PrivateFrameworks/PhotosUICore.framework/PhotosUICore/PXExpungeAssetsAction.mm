@@ -1,13 +1,13 @@
 @interface PXExpungeAssetsAction
-- (void)executeWithUndoManager:(id)a3 completionHandler:(id)a4;
+- (void)executeWithUndoManager:(id)manager completionHandler:(id)handler;
 @end
 
 @implementation PXExpungeAssetsAction
 
-- (void)executeWithUndoManager:(id)a3 completionHandler:(id)a4
+- (void)executeWithUndoManager:(id)manager completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  managerCopy = manager;
   v8 = PLUIActionsGetLog();
   v9 = os_signpost_id_generate(v8);
   v10 = v8;
@@ -18,23 +18,23 @@
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "ExpungeAssets", "", buf, 2u);
   }
 
-  [(PXAction *)self removeAllActionsFromUndoManager:v7];
+  [(PXAction *)self removeAllActionsFromUndoManager:managerCopy];
   v12 = objc_alloc_init(MEMORY[0x1E69786A0]);
   [v12 setExpungeSource:3];
   v13 = MEMORY[0x1E6978648];
-  v14 = [(PXAssetsAction *)self assets];
-  v15 = [(PXPhotosAction *)self photoLibrary];
+  assets = [(PXAssetsAction *)self assets];
+  photoLibrary = [(PXPhotosAction *)self photoLibrary];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __66__PXExpungeAssetsAction_executeWithUndoManager_completionHandler___block_invoke;
   v18[3] = &unk_1E7746F80;
   v19 = v11;
-  v20 = self;
-  v21 = v6;
+  selfCopy = self;
+  v21 = handlerCopy;
   v22 = v9;
-  v16 = v6;
+  v16 = handlerCopy;
   v17 = v11;
-  [v13 performBatchExpungeWithAssets:v14 deleteOptions:v12 photoLibrary:v15 completionHandler:v18];
+  [v13 performBatchExpungeWithAssets:assets deleteOptions:v12 photoLibrary:photoLibrary completionHandler:v18];
 }
 
 void __66__PXExpungeAssetsAction_executeWithUndoManager_completionHandler___block_invoke(uint64_t a1, char a2, void *a3)

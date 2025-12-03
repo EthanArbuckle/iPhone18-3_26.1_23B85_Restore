@@ -1,26 +1,26 @@
 @interface PKSpendingSummaryAccountUserCell
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKSpendingSummaryAccountUserCell)initWithFrame:(CGRect)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKSpendingSummaryAccountUserCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setAmount:(id)a3;
-- (void)setAvatar:(id)a3;
-- (void)setName:(id)a3;
+- (void)setAmount:(id)amount;
+- (void)setAvatar:(id)avatar;
+- (void)setName:(id)name;
 @end
 
 @implementation PKSpendingSummaryAccountUserCell
 
-- (PKSpendingSummaryAccountUserCell)initWithFrame:(CGRect)a3
+- (PKSpendingSummaryAccountUserCell)initWithFrame:(CGRect)frame
 {
   v40.receiver = self;
   v40.super_class = PKSpendingSummaryAccountUserCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v40 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v40 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AFB0] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v3->_identifier;
-    v3->_identifier = v5;
+    v3->_identifier = uUIDString;
 
     v7 = objc_alloc(MEMORY[0x1E69DCC10]);
     v8 = *MEMORY[0x1E695F058];
@@ -33,8 +33,8 @@
 
     [(UILabel *)v3->_amountLabel setNumberOfLines:1];
     v14 = v3->_amountLabel;
-    v15 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v14 setTextColor:v15];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v14 setTextColor:labelColor];
 
     v16 = PKUIGetMinScreenWidthType();
     v17 = v3->_amountLabel;
@@ -63,8 +63,8 @@
     v22 = PKFontForDefaultDesign(v19, *MEMORY[0x1E69DDC90], 0x8000, 0);
     [(UILabel *)v17 setFont:v22];
 
-    v23 = [(PKSpendingSummaryAccountUserCell *)v3 contentView];
-    [v23 addSubview:v3->_amountLabel];
+    contentView = [(PKSpendingSummaryAccountUserCell *)v3 contentView];
+    [contentView addSubview:v3->_amountLabel];
 
     v24 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v8, v9, v10, v11}];
     nameLabel = v3->_nameLabel;
@@ -72,35 +72,35 @@
 
     [(UILabel *)v3->_nameLabel setNumberOfLines:1];
     v26 = v3->_nameLabel;
-    v27 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v26 setTextColor:v27];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v26 setTextColor:secondaryLabelColor];
 
     v28 = v3->_nameLabel;
     v29 = PKFontForDefaultDesign(v21, v20, 0x8000, 0);
     [(UILabel *)v28 setFont:v29];
 
-    v30 = [(PKSpendingSummaryAccountUserCell *)v3 contentView];
-    [v30 addSubview:v3->_nameLabel];
+    contentView2 = [(PKSpendingSummaryAccountUserCell *)v3 contentView];
+    [contentView2 addSubview:v3->_nameLabel];
 
     v31 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{v8, v9, v10, v11}];
     avatarView = v3->_avatarView;
     v3->_avatarView = v31;
 
-    v33 = [(UIImageView *)v3->_avatarView layer];
-    v34 = [MEMORY[0x1E69DC888] systemGray6Color];
-    [v33 setBorderColor:{objc_msgSend(v34, "CGColor")}];
+    layer = [(UIImageView *)v3->_avatarView layer];
+    systemGray6Color = [MEMORY[0x1E69DC888] systemGray6Color];
+    [layer setBorderColor:{objc_msgSend(systemGray6Color, "CGColor")}];
 
-    v35 = [(UIImageView *)v3->_avatarView layer];
-    [v35 setBorderWidth:1.0];
+    layer2 = [(UIImageView *)v3->_avatarView layer];
+    [layer2 setBorderWidth:1.0];
 
-    v36 = [(UIImageView *)v3->_avatarView layer];
-    [v36 setMasksToBounds:1];
+    layer3 = [(UIImageView *)v3->_avatarView layer];
+    [layer3 setMasksToBounds:1];
 
-    v37 = [(UIImageView *)v3->_avatarView layer];
-    [v37 setCornerRadius:12.0];
+    layer4 = [(UIImageView *)v3->_avatarView layer];
+    [layer4 setCornerRadius:12.0];
 
-    v38 = [(PKSpendingSummaryAccountUserCell *)v3 contentView];
-    [v38 addSubview:v3->_avatarView];
+    contentView3 = [(PKSpendingSummaryAccountUserCell *)v3 contentView];
+    [contentView3 addSubview:v3->_avatarView];
 
     [(PKDashboardCollectionViewCell *)v3 setMaskType:3];
     [(UILabel *)v3->_nameLabel setText:@" "];
@@ -119,22 +119,22 @@
   [(PKSpendingSummaryAccountUserCell *)self _layoutWithBounds:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_isTemplateLayout = 1;
-  [(PKSpendingSummaryAccountUserCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKSpendingSummaryAccountUserCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   self->_isTemplateLayout = 0;
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  width = a3.size.width;
-  v5 = a3.origin.x + 12.0;
-  v6 = a3.origin.y + 11.0;
-  v7 = a3.size.height + -18.0;
+  width = bounds.size.width;
+  v5 = bounds.origin.x + 12.0;
+  v6 = bounds.origin.y + 11.0;
+  v7 = bounds.size.height + -18.0;
   memset(&slice, 0, sizeof(slice));
   [(PKSpendingSummaryAccountUserCell *)self _shouldReverseLayoutDirection];
   v17.origin.x = v5;
@@ -186,12 +186,12 @@
   return result;
 }
 
-- (void)setAmount:(id)a3
+- (void)setAmount:(id)amount
 {
-  v4 = a3;
-  v5 = [(UILabel *)self->_amountLabel text];
-  v8 = v4;
-  v6 = v5;
+  amountCopy = amount;
+  text = [(UILabel *)self->_amountLabel text];
+  v8 = amountCopy;
+  v6 = text;
   if (v6 == v8)
   {
 
@@ -216,12 +216,12 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  v5 = [(UILabel *)self->_nameLabel text];
-  v8 = v4;
-  v6 = v5;
+  nameCopy = name;
+  text = [(UILabel *)self->_nameLabel text];
+  v8 = nameCopy;
+  v6 = text;
   if (v6 == v8)
   {
 
@@ -246,15 +246,15 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setAvatar:(id)a3
+- (void)setAvatar:(id)avatar
 {
-  v6 = a3;
-  v4 = [(UIImageView *)self->_avatarView image];
+  avatarCopy = avatar;
+  image = [(UIImageView *)self->_avatarView image];
   v5 = PKEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    [(UIImageView *)self->_avatarView setImage:v6];
+    [(UIImageView *)self->_avatarView setImage:avatarCopy];
     [(PKSpendingSummaryAccountUserCell *)self setNeedsLayout];
   }
 }

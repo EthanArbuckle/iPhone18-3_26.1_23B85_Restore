@@ -5,8 +5,8 @@
 - (id)debugDescription;
 - (void)dealloc;
 - (void)encodeToCommandBuffer:(id)commandBuffer inputMatrix:(MPSMatrix *)inputMatrix weightMatrix:(MPSMatrix *)weightMatrix biasVector:(MPSVector *)biasVector resultMatrix:(MPSMatrix *)resultMatrix;
-- (void)encodeWithCoder:(id)a3;
-- (void)setNeuronToPReLUWithParametersA:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setNeuronToPReLUWithParametersA:(id)a;
 - (void)setNeuronType:(MPSCNNNeuronType)neuronType parameterA:(float)parameterA parameterB:(float)parameterB parameterC:(float)parameterC;
 @end
 
@@ -348,28 +348,28 @@ LABEL_7:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v66.receiver = self;
   v66.super_class = MPSMatrixFullyConnected;
   [(MPSMatrixBinaryKernel *)&v66 encodeWithCoder:?];
-  objc_msgSend_encodeDouble_forKey_(a3, v5, @"MPSMatrixFullyConnected._alpha;", v6, v7, v8, v9, v10, self->_alpha);
-  objc_msgSend_encodeInt64_forKey_(a3, v11, self->_sourceNumberOfFeatureVectors, @"MPSMatrixFullyConnected._sourceNumberOfFeatureVectors;", v12, v13, v14, v15);
-  objc_msgSend_encodeInt64_forKey_(a3, v16, self->_sourceInputFeatureChannels, @"MPSMatrixFullyConnected._sourceInputFeatureChannels;", v17, v18, v19, v20);
-  objc_msgSend_encodeInt64_forKey_(a3, v21, self->_sourceOutputFeatureChannels, @"MPSMatrixFullyConnected._sourceOutputFeatureChannels;", v22, v23, v24, v25);
-  objc_msgSend_encodeInt32_forKey_(a3, v26, self->_neuronType, @"MPSMatrixFullyConnected._neuronType;", v27, v28, v29, v30);
+  objc_msgSend_encodeDouble_forKey_(coder, v5, @"MPSMatrixFullyConnected._alpha;", v6, v7, v8, v9, v10, self->_alpha);
+  objc_msgSend_encodeInt64_forKey_(coder, v11, self->_sourceNumberOfFeatureVectors, @"MPSMatrixFullyConnected._sourceNumberOfFeatureVectors;", v12, v13, v14, v15);
+  objc_msgSend_encodeInt64_forKey_(coder, v16, self->_sourceInputFeatureChannels, @"MPSMatrixFullyConnected._sourceInputFeatureChannels;", v17, v18, v19, v20);
+  objc_msgSend_encodeInt64_forKey_(coder, v21, self->_sourceOutputFeatureChannels, @"MPSMatrixFullyConnected._sourceOutputFeatureChannels;", v22, v23, v24, v25);
+  objc_msgSend_encodeInt32_forKey_(coder, v26, self->_neuronType, @"MPSMatrixFullyConnected._neuronType;", v27, v28, v29, v30);
   *&v31 = self->_neuronA;
-  objc_msgSend_encodeFloat_forKey_(a3, v32, @"MPSMatrixFullyConnected._neuronA;", v33, v34, v35, v36, v37, v31);
+  objc_msgSend_encodeFloat_forKey_(coder, v32, @"MPSMatrixFullyConnected._neuronA;", v33, v34, v35, v36, v37, v31);
   *&v38 = self->_neuronB;
-  objc_msgSend_encodeFloat_forKey_(a3, v39, @"MPSMatrixFullyConnected._neuronB;", v40, v41, v42, v43, v44, v38);
+  objc_msgSend_encodeFloat_forKey_(coder, v39, @"MPSMatrixFullyConnected._neuronB;", v40, v41, v42, v43, v44, v38);
   *&v45 = self->_neuronC;
-  objc_msgSend_encodeFloat_forKey_(a3, v46, @"MPSMatrixFullyConnected._neuronC;", v47, v48, v49, v50, v51, v45);
+  objc_msgSend_encodeFloat_forKey_(coder, v46, @"MPSMatrixFullyConnected._neuronC;", v47, v48, v49, v50, v51, v45);
   if (self->_neuronType == 10)
   {
     neuronAParamBuf = self->neuronAParamBuf;
     v60 = objc_msgSend_length(neuronAParamBuf, v52, v53, v54, v55, v56, v57, v58);
-    sub_239BF605C(a3, neuronAParamBuf, v60 >> 2, v61, v62, v63, v64, v65);
+    sub_239BF605C(coder, neuronAParamBuf, v60 >> 2, v61, v62, v63, v64, v65);
   }
 }
 
@@ -390,7 +390,7 @@ LABEL_7:
   self->_neuronC = parameterC;
 }
 
-- (void)setNeuronToPReLUWithParametersA:(id)a3
+- (void)setNeuronToPReLUWithParametersA:(id)a
 {
   self->_neuronType = 10;
   self->_neuronA = 0.0;
@@ -408,7 +408,7 @@ LABEL_7:
     v12 = 0;
   }
 
-  v13 = objc_msgSend_length(a3, a2, a3, v3, v4, v5, v6, v7);
+  v13 = objc_msgSend_length(a, a2, a, v3, v4, v5, v6, v7);
   v14 = (*(**(&self->super.super.super.isa + v10) + 40))(*(&self->super.super.super.isa + v10));
   v15 = (*(**(&self->super.super.super.isa + v10) + 24))(*(&self->super.super.super.isa + v10));
   v21 = objc_msgSend_newBufferWithLength_options_(v12, v16, v13, v14 | (16 * v15), v17, v18, v19, v20);
@@ -416,8 +416,8 @@ LABEL_7:
   if (v21)
   {
     v29 = objc_msgSend_contents(v21, v22, v23, v24, v25, v26, v27, v28);
-    v37 = objc_msgSend_bytes(a3, v30, v31, v32, v33, v34, v35, v36);
-    v45 = objc_msgSend_length(a3, v38, v39, v40, v41, v42, v43, v44);
+    v37 = objc_msgSend_bytes(a, v30, v31, v32, v33, v34, v35, v36);
+    v45 = objc_msgSend_length(a, v38, v39, v40, v41, v42, v43, v44);
 
     memcpy(v29, v37, v45);
   }

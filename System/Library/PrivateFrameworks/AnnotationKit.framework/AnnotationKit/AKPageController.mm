@@ -1,69 +1,69 @@
 @interface AKPageController
-+ (AKPageController)pageControllerWithController:(id)a3 andPageModelController:(id)a4;
++ (AKPageController)pageControllerWithController:(id)controller andPageModelController:(id)modelController;
 - (AKController)controller;
 - (AKControllerDelegateProtocol)delegate;
 - (BOOL)relinquishablesAreLoaded;
-- (CGPoint)convertPointFromModelToOverlay:(CGPoint)a3;
-- (CGPoint)convertPointFromOverlayToModel:(CGPoint)a3;
-- (CGRect)convertRectFromModelToOverlay:(CGRect)a3;
-- (CGRect)convertRectFromOverlayToModel:(CGRect)a3;
+- (CGPoint)convertPointFromModelToOverlay:(CGPoint)overlay;
+- (CGPoint)convertPointFromOverlayToModel:(CGPoint)model;
+- (CGRect)convertRectFromModelToOverlay:(CGRect)overlay;
+- (CGRect)convertRectFromOverlayToModel:(CGRect)model;
 - (CGRect)maxPageRect;
-- (CGRect)stickyViewFrameForNoteEditor:(id)a3;
+- (CGRect)stickyViewFrameForNoteEditor:(id)editor;
 - (CGRect)visibleRectOfOverlay;
 - (double)currentModelToScreenScaleFactor;
 - (double)modelBaseScaleFactor;
-- (id)_initWithController:(id)a3 andPageModelController:(id)a4;
+- (id)_initWithController:(id)controller andPageModelController:(id)modelController;
 - (id)_popoverPresentingViewController;
-- (id)annotationsBeneathLoupe:(id)a3;
+- (id)annotationsBeneathLoupe:(id)loupe;
 - (id)initForTesting;
-- (id)newContentSnapshotPDFDataAtScale:(double)a3 inRect:(CGRect)a4 forLoupeAnnotation:(id)a5;
-- (id)stickyContainerForNoteEditor:(id)a3;
+- (id)newContentSnapshotPDFDataAtScale:(double)scale inRect:(CGRect)rect forLoupeAnnotation:(id)annotation;
+- (id)stickyContainerForNoteEditor:(id)editor;
 - (int64_t)currentModelToScreenExifOrientation;
-- (void)_updateOverlayVisibilityWithToolPicker:(id)a3 visible:(BOOL)a4;
-- (void)addPopupToAnnotation:(id)a3 openPopup:(BOOL)a4;
-- (void)editorController:(id)a3 deleteAnnotation:(id)a4;
-- (void)editorController:(id)a3 editNote:(id)a4;
-- (void)editorController:(id)a3 setTheme:(id)a4 forAnnotation:(id)a5;
-- (void)noteEditorDidFinishEditing:(id)a3;
-- (void)noteEditorWillDismissFromFullScreen:(id)a3;
-- (void)noteEditorWillPresentFullScreen:(id)a3;
-- (void)openPopoverForHighlightAnnotation:(id)a3;
-- (void)openPopupAnnotation:(id)a3;
+- (void)_updateOverlayVisibilityWithToolPicker:(id)picker visible:(BOOL)visible;
+- (void)addPopupToAnnotation:(id)annotation openPopup:(BOOL)popup;
+- (void)editorController:(id)controller deleteAnnotation:(id)annotation;
+- (void)editorController:(id)controller editNote:(id)note;
+- (void)editorController:(id)controller setTheme:(id)theme forAnnotation:(id)annotation;
+- (void)noteEditorDidFinishEditing:(id)editing;
+- (void)noteEditorWillDismissFromFullScreen:(id)screen;
+- (void)noteEditorWillPresentFullScreen:(id)screen;
+- (void)openPopoverForHighlightAnnotation:(id)annotation;
+- (void)openPopupAnnotation:(id)annotation;
 - (void)overlayWasAddedToSuperview;
 - (void)releaseRelinquishables;
-- (void)removeNoteFromAnnotation:(id)a3;
+- (void)removeNoteFromAnnotation:(id)annotation;
 - (void)setupRelinquishables;
 - (void)teardown;
-- (void)unregisterFromUndoManager:(id)a3;
+- (void)unregisterFromUndoManager:(id)manager;
 - (void)updateOverlayViewLayers;
-- (void)updateScaleFactor:(double)a3 isLiveUpdate:(BOOL)a4 forceUpdate:(BOOL)a5;
+- (void)updateScaleFactor:(double)factor isLiveUpdate:(BOOL)update forceUpdate:(BOOL)forceUpdate;
 @end
 
 @implementation AKPageController
 
-+ (AKPageController)pageControllerWithController:(id)a3 andPageModelController:(id)a4
++ (AKPageController)pageControllerWithController:(id)controller andPageModelController:(id)modelController
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] _initWithController:v7 andPageModelController:v6];
+  modelControllerCopy = modelController;
+  controllerCopy = controller;
+  v8 = [[self alloc] _initWithController:controllerCopy andPageModelController:modelControllerCopy];
 
   return v8;
 }
 
-- (id)_initWithController:(id)a3 andPageModelController:(id)a4
+- (id)_initWithController:(id)controller andPageModelController:(id)modelController
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  modelControllerCopy = modelController;
   v14.receiver = self;
   v14.super_class = AKPageController;
   v8 = [(AKPageController *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    [(AKPageController *)v8 setController:v6];
-    [(AKPageController *)v9 setPageModelController:v7];
-    v10 = [v6 statisticsLogger];
-    [v7 setStatisticsLogger:v10];
+    [(AKPageController *)v8 setController:controllerCopy];
+    [(AKPageController *)v9 setPageModelController:modelControllerCopy];
+    statisticsLogger = [controllerCopy statisticsLogger];
+    [modelControllerCopy setStatisticsLogger:statisticsLogger];
 
     [(AKPageController *)v9 setPageIndex:0x7FFFFFFFFFFFFFFFLL];
     v11 = objc_opt_new();
@@ -88,15 +88,15 @@
   return [(AKPageController *)&v3 init];
 }
 
-- (void)unregisterFromUndoManager:(id)a3
+- (void)unregisterFromUndoManager:(id)manager
 {
-  v6 = a3;
-  v4 = [(AKPageController *)self inkOverlayDrawingUndoTarget];
+  managerCopy = manager;
+  inkOverlayDrawingUndoTarget = [(AKPageController *)self inkOverlayDrawingUndoTarget];
 
-  if (v4)
+  if (inkOverlayDrawingUndoTarget)
   {
-    v5 = [(AKPageController *)self inkOverlayDrawingUndoTarget];
-    [v6 removeAllActionsWithTarget:v5];
+    inkOverlayDrawingUndoTarget2 = [(AKPageController *)self inkOverlayDrawingUndoTarget];
+    [managerCopy removeAllActionsWithTarget:inkOverlayDrawingUndoTarget2];
   }
 }
 
@@ -109,9 +109,9 @@
 
 - (void)setupRelinquishables
 {
-  v3 = [(AKPageController *)self geometryHelper];
+  geometryHelper = [(AKPageController *)self geometryHelper];
 
-  if (!v3)
+  if (!geometryHelper)
   {
     v4 = [[AKGeometryHelper alloc] initWithPageController:self];
     [(AKPageController *)self setGeometryHelper:v4];
@@ -120,9 +120,9 @@
     v5 = [[AKLayerPresentationManager alloc] initWithPageController:self];
     [(AKPageController *)self setLayerPresentationManager:v5];
 
-    v6 = [(AKPageController *)self shouldPixelate];
-    v7 = [(AKPageController *)self layerPresentationManager];
-    [v7 setShouldPixelate:v6];
+    shouldPixelate = [(AKPageController *)self shouldPixelate];
+    layerPresentationManager = [(AKPageController *)self layerPresentationManager];
+    [layerPresentationManager setShouldPixelate:shouldPixelate];
 
     v8 = [[AKOverlayView alloc] initWithPageController:self];
     [(AKPageController *)self setOverlayView:v8];
@@ -134,30 +134,30 @@
 
 - (void)releaseRelinquishables
 {
-  v11 = [(AKPageController *)self controller];
-  v3 = [v11 textEditorController];
-  v4 = [v3 annotation];
+  controller = [(AKPageController *)self controller];
+  textEditorController = [controller textEditorController];
+  annotation = [textEditorController annotation];
 
-  if (v4)
+  if (annotation)
   {
-    v5 = [(AKPageController *)self pageModelController];
-    v6 = [v5 annotations];
-    v7 = [v6 containsObject:v4];
+    pageModelController = [(AKPageController *)self pageModelController];
+    annotations = [pageModelController annotations];
+    v7 = [annotations containsObject:annotation];
 
     if (v7)
     {
-      v8 = [v11 textEditorController];
-      [v8 endEditing];
+      textEditorController2 = [controller textEditorController];
+      [textEditorController2 endEditing];
     }
   }
 
   if ([(AKPageController *)self superviewDependentThingsWereSetUp])
   {
-    v9 = [(AKPageController *)self layerPresentationManager];
-    [v9 teardown];
+    layerPresentationManager = [(AKPageController *)self layerPresentationManager];
+    [layerPresentationManager teardown];
 
-    v10 = [(AKPageController *)self inkPageOverlayController];
-    [v10 teardown];
+    inkPageOverlayController = [(AKPageController *)self inkPageOverlayController];
+    [inkPageOverlayController teardown];
 
     [(AKPageController *)self setSuperviewDependentThingsWereSetUp:0];
   }
@@ -170,8 +170,8 @@
 
 - (BOOL)relinquishablesAreLoaded
 {
-  v2 = [(AKPageController *)self overlayView];
-  v3 = v2 != 0;
+  overlayView = [(AKPageController *)self overlayView];
+  v3 = overlayView != 0;
 
   return v3;
 }
@@ -180,11 +180,11 @@
 {
   if (![(AKPageController *)self superviewDependentThingsWereSetUp])
   {
-    v3 = [(AKPageController *)self layerPresentationManager];
-    [v3 setup];
+    layerPresentationManager = [(AKPageController *)self layerPresentationManager];
+    [layerPresentationManager setup];
 
-    v4 = [(AKPageController *)self inkPageOverlayController];
-    [v4 setup];
+    inkPageOverlayController = [(AKPageController *)self inkPageOverlayController];
+    [inkPageOverlayController setup];
 
     [(AKPageController *)self setSuperviewDependentThingsWereSetUp:1];
   }
@@ -192,33 +192,33 @@
 
 - (void)updateOverlayViewLayers
 {
-  v2 = [(AKPageController *)self overlayView];
-  [v2 updateLayers];
+  overlayView = [(AKPageController *)self overlayView];
+  [overlayView updateLayers];
 }
 
-- (void)updateScaleFactor:(double)a3 isLiveUpdate:(BOOL)a4 forceUpdate:(BOOL)a5
+- (void)updateScaleFactor:(double)factor isLiveUpdate:(BOOL)update forceUpdate:(BOOL)forceUpdate
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = [(AKPageController *)self layerPresentationManager];
-  [v8 updateScaleFactor:v6 isLiveUpdate:v5 forceUpdate:a3];
+  forceUpdateCopy = forceUpdate;
+  updateCopy = update;
+  layerPresentationManager = [(AKPageController *)self layerPresentationManager];
+  [layerPresentationManager updateScaleFactor:updateCopy isLiveUpdate:forceUpdateCopy forceUpdate:factor];
 }
 
 - (int64_t)currentModelToScreenExifOrientation
 {
-  v3 = [(AKPageController *)self overlayView];
-  v4 = [v3 window];
+  overlayView = [(AKPageController *)self overlayView];
+  window = [overlayView window];
 
-  if (v4)
+  if (window)
   {
-    v5 = [(AKPageController *)self overlayView];
+    overlayView2 = [(AKPageController *)self overlayView];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = sub_23F46B500;
     v9[3] = &unk_278C7BFD8;
     v9[4] = self;
-    v10 = v5;
-    v6 = v5;
+    v10 = overlayView2;
+    v6 = overlayView2;
     v7 = [AKGeometryHelper exifOrientationWithConversionBlock:v9];
   }
 
@@ -238,10 +238,10 @@
 
 - (double)currentModelToScreenScaleFactor
 {
-  v3 = [(AKPageController *)self overlayView];
-  v4 = [v3 window];
+  overlayView = [(AKPageController *)self overlayView];
+  window = [overlayView window];
 
-  if (!v4)
+  if (!window)
   {
     v5 = os_log_create("com.apple.annotationkit", "Page Controller");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -255,17 +255,17 @@
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(AKPageController *)self overlayView];
-  v15 = [v14 superview];
-  [v14 convertRect:v15 toView:{v7, v9, v11, v13}];
+  overlayView2 = [(AKPageController *)self overlayView];
+  superview = [overlayView2 superview];
+  [overlayView2 convertRect:superview toView:{v7, v9, v11, v13}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v24 = [v15 window];
-  v25 = [v24 screen];
-  v26 = [v25 coordinateSpace];
-  [v15 convertRect:v26 toCoordinateSpace:{v17, v19, v21, v23}];
+  window2 = [superview window];
+  screen = [window2 screen];
+  coordinateSpace = [screen coordinateSpace];
+  [superview convertRect:coordinateSpace toCoordinateSpace:{v17, v19, v21, v23}];
   v28 = v27;
   v30 = v29;
   v32 = v31;
@@ -296,23 +296,23 @@
 
 - (AKControllerDelegateProtocol)delegate
 {
-  v2 = [(AKPageController *)self controller];
-  v3 = [v2 delegate];
+  controller = [(AKPageController *)self controller];
+  delegate = [controller delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (CGPoint)convertPointFromOverlayToModel:(CGPoint)a3
+- (CGPoint)convertPointFromOverlayToModel:(CGPoint)model
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AKPageController *)self pageIndex];
-  v7 = [(AKPageController *)self controller];
-  v8 = [v7 delegate];
-  v9 = v8;
-  if (v8)
+  y = model.y;
+  x = model.x;
+  pageIndex = [(AKPageController *)self pageIndex];
+  controller = [(AKPageController *)self controller];
+  delegate = [controller delegate];
+  v9 = delegate;
+  if (delegate)
   {
-    [v8 convertPoint:v6 fromOverlayToModelWithPageIndex:v7 forAnnotationController:{x, y}];
+    [delegate convertPoint:pageIndex fromOverlayToModelWithPageIndex:controller forAnnotationController:{x, y}];
     x = v10;
     y = v11;
   }
@@ -334,17 +334,17 @@
   return result;
 }
 
-- (CGPoint)convertPointFromModelToOverlay:(CGPoint)a3
+- (CGPoint)convertPointFromModelToOverlay:(CGPoint)overlay
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AKPageController *)self pageIndex];
-  v7 = [(AKPageController *)self controller];
-  v8 = [v7 delegate];
-  v9 = v8;
-  if (v8)
+  y = overlay.y;
+  x = overlay.x;
+  pageIndex = [(AKPageController *)self pageIndex];
+  controller = [(AKPageController *)self controller];
+  delegate = [controller delegate];
+  v9 = delegate;
+  if (delegate)
   {
-    [v8 convertPoint:v6 fromModelToOverlayWithPageIndex:v7 forAnnotationController:{x, y}];
+    [delegate convertPoint:pageIndex fromModelToOverlayWithPageIndex:controller forAnnotationController:{x, y}];
     x = v10;
     y = v11;
   }
@@ -366,16 +366,16 @@
   return result;
 }
 
-- (CGRect)convertRectFromOverlayToModel:(CGRect)a3
+- (CGRect)convertRectFromOverlayToModel:(CGRect)model
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(AKPageController *)self pageIndex];
-  v9 = [(AKPageController *)self controller];
-  v10 = [v9 delegate];
-  if (v10)
+  height = model.size.height;
+  width = model.size.width;
+  y = model.origin.y;
+  x = model.origin.x;
+  pageIndex = [(AKPageController *)self pageIndex];
+  controller = [(AKPageController *)self controller];
+  delegate = [controller delegate];
+  if (delegate)
   {
     v27.origin.x = x;
     v27.origin.y = y;
@@ -397,10 +397,10 @@
     v30.size.width = width;
     v30.size.height = height;
     MaxY = CGRectGetMaxY(v30);
-    [v10 convertPoint:v8 fromOverlayToModelWithPageIndex:v9 forAnnotationController:{MinX, MinY}];
+    [delegate convertPoint:pageIndex fromOverlayToModelWithPageIndex:controller forAnnotationController:{MinX, MinY}];
     v16 = v15;
     v18 = v17;
-    [v10 convertPoint:v8 fromOverlayToModelWithPageIndex:v9 forAnnotationController:{MaxX, MaxY}];
+    [delegate convertPoint:pageIndex fromOverlayToModelWithPageIndex:controller forAnnotationController:{MaxX, MaxY}];
     v31.size.width = v19 - v16;
     v31.size.height = v20 - v18;
     v31.origin.x = v16;
@@ -433,16 +433,16 @@
   return result;
 }
 
-- (CGRect)convertRectFromModelToOverlay:(CGRect)a3
+- (CGRect)convertRectFromModelToOverlay:(CGRect)overlay
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(AKPageController *)self pageIndex];
-  v9 = [(AKPageController *)self controller];
-  v10 = [v9 delegate];
-  if (v10)
+  height = overlay.size.height;
+  width = overlay.size.width;
+  y = overlay.origin.y;
+  x = overlay.origin.x;
+  pageIndex = [(AKPageController *)self pageIndex];
+  controller = [(AKPageController *)self controller];
+  delegate = [controller delegate];
+  if (delegate)
   {
     v27.origin.x = x;
     v27.origin.y = y;
@@ -464,10 +464,10 @@
     v30.size.width = width;
     v30.size.height = height;
     MaxY = CGRectGetMaxY(v30);
-    [v10 convertPoint:v8 fromModelToOverlayWithPageIndex:v9 forAnnotationController:{MinX, MinY}];
+    [delegate convertPoint:pageIndex fromModelToOverlayWithPageIndex:controller forAnnotationController:{MinX, MinY}];
     v16 = v15;
     v18 = v17;
-    [v10 convertPoint:v8 fromModelToOverlayWithPageIndex:v9 forAnnotationController:{MaxX, MaxY}];
+    [delegate convertPoint:pageIndex fromModelToOverlayWithPageIndex:controller forAnnotationController:{MaxX, MaxY}];
     v31.size.width = v19 - v16;
     v31.size.height = v20 - v18;
     v31.origin.x = v16;
@@ -502,9 +502,9 @@
 
 - (CGRect)maxPageRect
 {
-  v3 = [(AKPageController *)self controller];
-  v4 = [v3 delegate];
-  [v4 maxPageRectWithPageIndex:-[AKPageController pageIndex](self forAnnotationController:{"pageIndex"), v3}];
+  controller = [(AKPageController *)self controller];
+  delegate = [controller delegate];
+  [delegate maxPageRectWithPageIndex:-[AKPageController pageIndex](self forAnnotationController:{"pageIndex"), controller}];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -521,18 +521,18 @@
   return result;
 }
 
-- (id)newContentSnapshotPDFDataAtScale:(double)a3 inRect:(CGRect)a4 forLoupeAnnotation:(id)a5
+- (id)newContentSnapshotPDFDataAtScale:(double)scale inRect:(CGRect)rect forLoupeAnnotation:(id)annotation
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v56 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = [(AKPageController *)self controller];
-  v13 = [v12 delegate];
-  v14 = [v13 newContentSnapshotPDFDataIncludingAdornments:1 atScale:-[AKPageController pageIndex](self inRect:"pageIndex") onOverlayAtPageIndex:v12 forAnnotationController:{a3, x, y, width, height}];
-  v15 = [(AKPageController *)self annotationsBeneathLoupe:v11];
+  annotationCopy = annotation;
+  controller = [(AKPageController *)self controller];
+  delegate = [controller delegate];
+  v14 = [delegate newContentSnapshotPDFDataIncludingAdornments:1 atScale:-[AKPageController pageIndex](self inRect:"pageIndex") onOverlayAtPageIndex:controller forAnnotationController:{scale, x, y, width, height}];
+  v15 = [(AKPageController *)self annotationsBeneathLoupe:annotationCopy];
   if (![v15 count])
   {
     v17 = v14;
@@ -566,8 +566,8 @@ LABEL_13:
           {
             v27 = v26;
             v44 = v14;
-            v45 = v13;
-            v46 = v11;
+            v45 = delegate;
+            v46 = annotationCopy;
             CGPDFContextBeginPage(v26, 0);
             CGContextSaveGState(v27);
             if ((v24 & 1) == 0)
@@ -625,8 +625,8 @@ LABEL_13:
             CGPDFContextEndPage(v27);
             CGPDFContextClose(v27);
             CGContextRelease(v27);
-            v13 = v45;
-            v11 = v46;
+            delegate = v45;
+            annotationCopy = v46;
             v14 = v44;
           }
 
@@ -672,19 +672,19 @@ LABEL_30:
   return v42;
 }
 
-- (id)annotationsBeneathLoupe:(id)a3
+- (id)annotationsBeneathLoupe:(id)loupe
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB40] orderedSet];
-  v6 = [(AKPageController *)self pageModelController];
-  v7 = [v6 annotations];
+  loupeCopy = loupe;
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  pageModelController = [(AKPageController *)self pageModelController];
+  annotations = [pageModelController annotations];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = v7;
+  v8 = annotations;
   v9 = [v8 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v9)
   {
@@ -700,7 +700,7 @@ LABEL_3:
       }
 
       v13 = *(*(&v27 + 1) + 8 * v12);
-      if (v13 == v4)
+      if (v13 == loupeCopy)
       {
         break;
       }
@@ -716,7 +716,7 @@ LABEL_3:
           v17 = v16;
           v19 = v18;
           v21 = v20;
-          [v4 drawingBounds];
+          [loupeCopy drawingBounds];
           v35.origin.x = v22;
           v35.origin.y = v23;
           v35.size.width = v24;
@@ -727,7 +727,7 @@ LABEL_3:
           v34.size.height = v21;
           if (CGRectIntersectsRect(v34, v35))
           {
-            [v5 addObject:v13];
+            [orderedSet addObject:v13];
           }
         }
       }
@@ -745,18 +745,18 @@ LABEL_3:
     }
   }
 
-  return v5;
+  return orderedSet;
 }
 
 - (double)modelBaseScaleFactor
 {
-  v3 = [(AKPageController *)self pageIndex];
-  v4 = [(AKPageController *)self controller];
-  v5 = [v4 delegate];
+  pageIndex = [(AKPageController *)self pageIndex];
+  controller = [(AKPageController *)self controller];
+  delegate = [controller delegate];
   v6 = 1.0;
   if (objc_opt_respondsToSelector())
   {
-    [v5 modelBaseScaleFactorOfPageAtIndex:v3 forAnnotationController:v4];
+    [delegate modelBaseScaleFactorOfPageAtIndex:pageIndex forAnnotationController:controller];
     v6 = v7;
   }
 
@@ -765,10 +765,10 @@ LABEL_3:
 
 - (CGRect)visibleRectOfOverlay
 {
-  v3 = [(AKPageController *)self controller];
-  v4 = [v3 delegate];
-  v5 = [(AKPageController *)self overlayView];
-  [v5 akVisibleRect];
+  controller = [(AKPageController *)self controller];
+  delegate = [controller delegate];
+  overlayView = [(AKPageController *)self overlayView];
+  [overlayView akVisibleRect];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -790,7 +790,7 @@ LABEL_3:
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 visibleRectOfOverlayAtPageIndex:-[AKPageController pageIndex](self forAnnotationController:{"pageIndex"), v3}];
+    [delegate visibleRectOfOverlayAtPageIndex:-[AKPageController pageIndex](self forAnnotationController:{"pageIndex"), controller}];
     v27 = v26;
     v29 = v28;
     v31 = v30;
@@ -824,11 +824,11 @@ LABEL_3:
   return result;
 }
 
-- (void)openPopoverForHighlightAnnotation:(id)a3
+- (void)openPopoverForHighlightAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [v4 color];
-  v6 = [AKHighlightAppearanceHelper attributeTagForHighlightOfColor:v5];
+  annotationCopy = annotation;
+  color = [annotationCopy color];
+  v6 = [AKHighlightAppearanceHelper attributeTagForHighlightOfColor:color];
 
   v7 = [AKHighlightAppearanceHelper annotationStyleForHighlightAttributeWithTag:v6];
   if (v7)
@@ -841,17 +841,17 @@ LABEL_3:
     v8 = 3;
   }
 
-  v29 = +[AKAnnotationTheme themeForAnnotationStyle:pageTheme:isUnderline:](AKAnnotationTheme, "themeForAnnotationStyle:pageTheme:isUnderline:", v8, 0, [v4 style] == 2);
-  v9 = [(AKPageController *)self _popoverPresentingViewController];
-  v10 = [v9 view];
-  [v4 integralDrawingBounds];
+  v29 = +[AKAnnotationTheme themeForAnnotationStyle:pageTheme:isUnderline:](AKAnnotationTheme, "themeForAnnotationStyle:pageTheme:isUnderline:", v8, 0, [annotationCopy style] == 2);
+  _popoverPresentingViewController = [(AKPageController *)self _popoverPresentingViewController];
+  view = [_popoverPresentingViewController view];
+  [annotationCopy integralDrawingBounds];
   [(AKPageController *)self convertRectFromModelToOverlay:?];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(AKPageController *)self overlayView];
-  [v19 convertRect:v10 toView:{v12, v14, v16, v18}];
+  overlayView = [(AKPageController *)self overlayView];
+  [overlayView convertRect:view toView:{v12, v14, v16, v18}];
   v21 = v20;
   v23 = v22;
   v25 = v24;
@@ -861,20 +861,20 @@ LABEL_3:
   [(AKHighlightColorEditorController *)v28 setDelegate:self];
   [(AKAnnotationPopoverViewController *)v28 setAnnotationTheme:v29];
   [(AKHighlightColorEditorController *)v28 setPageTheme:0];
-  [(AKAnnotationPopoverViewController *)v28 setAnnotation:v4];
+  [(AKAnnotationPopoverViewController *)v28 setAnnotation:annotationCopy];
 
   [(AKAnnotationPopoverViewController *)v28 setAnnotationPageController:self];
-  [(AKHighlightColorEditorController *)v28 presentFromRect:v10 view:v21, v23, v25, v27];
+  [(AKHighlightColorEditorController *)v28 presentFromRect:view view:v21, v23, v25, v27];
 }
 
-- (void)editorController:(id)a3 editNote:(id)a4
+- (void)editorController:(id)controller editNote:(id)note
 {
-  v5 = a4;
-  v6 = [v5 childAnnotation];
-  if (!v6)
+  noteCopy = note;
+  childAnnotation = [noteCopy childAnnotation];
+  if (!childAnnotation)
   {
-    [(AKPageController *)self addPopupToAnnotation:v5 openPopup:0];
-    v6 = [v5 childAnnotation];
+    [(AKPageController *)self addPopupToAnnotation:noteCopy openPopup:0];
+    childAnnotation = [noteCopy childAnnotation];
   }
 
   v8[0] = MEMORY[0x277D85DD0];
@@ -882,15 +882,15 @@ LABEL_3:
   v8[2] = sub_23F46C808;
   v8[3] = &unk_278C7B810;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = childAnnotation;
+  v7 = childAnnotation;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
-- (void)editorController:(id)a3 setTheme:(id)a4 forAnnotation:(id)a5
+- (void)editorController:(id)controller setTheme:(id)theme forAnnotation:(id)annotation
 {
   v6 = 765200;
-  v21 = a4;
+  themeCopy = theme;
   v7 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -952,44 +952,44 @@ LABEL_3:
   }
 
   v19 = [[AKMinimalUserInterfaceItem alloc] initWithTag:v6];
-  v20 = [(AKPageController *)self controller];
-  [v20 performActionForSender:v19];
+  controller = [(AKPageController *)self controller];
+  [controller performActionForSender:v19];
 
 LABEL_13:
 }
 
-- (void)editorController:(id)a3 deleteAnnotation:(id)a4
+- (void)editorController:(id)controller deleteAnnotation:(id)annotation
 {
-  v9 = a4;
-  v5 = [(AKPageController *)self pageModelController];
-  v6 = [v5 mutableArrayValueForKey:@"annotations"];
-  [v6 removeObject:v9];
+  annotationCopy = annotation;
+  pageModelController = [(AKPageController *)self pageModelController];
+  v6 = [pageModelController mutableArrayValueForKey:@"annotations"];
+  [v6 removeObject:annotationCopy];
 
-  if ([v9 conformsToAKParentAnnotationProtocol])
+  if ([annotationCopy conformsToAKParentAnnotationProtocol])
   {
-    v7 = [v9 childAnnotation];
-    if (v7)
+    childAnnotation = [annotationCopy childAnnotation];
+    if (childAnnotation)
     {
-      v8 = [v5 mutableArrayValueForKey:@"annotations"];
-      [v8 removeObject:v7];
+      v8 = [pageModelController mutableArrayValueForKey:@"annotations"];
+      [v8 removeObject:childAnnotation];
     }
   }
 }
 
-- (void)addPopupToAnnotation:(id)a3 openPopup:(BOOL)a4
+- (void)addPopupToAnnotation:(id)annotation openPopup:(BOOL)popup
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [AKNoteAnnotationHelper newPopupAnnotationWithParent:v6 onPageController:self];
+  popupCopy = popup;
+  annotationCopy = annotation;
+  v7 = [AKNoteAnnotationHelper newPopupAnnotationWithParent:annotationCopy onPageController:self];
   if (v7)
   {
-    v8 = [(AKPageController *)self controller];
-    v9 = [v8 toolController];
-    [v9 addNewAnnotation:v7 onPageController:self shouldSelect:0 shouldCascade:0];
+    controller = [(AKPageController *)self controller];
+    toolController = [controller toolController];
+    [toolController addNewAnnotation:v7 onPageController:self shouldSelect:0 shouldCascade:0];
 
-    [v7 setParentAnnotation:v6];
-    [v6 setChildAnnotation:v7];
-    if (v4)
+    [v7 setParentAnnotation:annotationCopy];
+    [annotationCopy setChildAnnotation:v7];
+    if (popupCopy)
     {
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
@@ -1002,35 +1002,35 @@ LABEL_13:
   }
 }
 
-- (void)removeNoteFromAnnotation:(id)a3
+- (void)removeNoteFromAnnotation:(id)annotation
 {
-  v7 = a3;
-  v4 = [v7 childAnnotation];
-  if (v4)
+  annotationCopy = annotation;
+  childAnnotation = [annotationCopy childAnnotation];
+  if (childAnnotation)
   {
-    v5 = [(AKPageController *)self pageModelController];
-    v6 = [v5 mutableArrayValueForKey:@"annotations"];
-    [v6 removeObject:v4];
+    pageModelController = [(AKPageController *)self pageModelController];
+    v6 = [pageModelController mutableArrayValueForKey:@"annotations"];
+    [v6 removeObject:childAnnotation];
 
-    [v7 setChildAnnotation:0];
+    [annotationCopy setChildAnnotation:0];
   }
 }
 
-- (void)openPopupAnnotation:(id)a3
+- (void)openPopupAnnotation:(id)annotation
 {
-  v9 = a3;
-  v4 = [(AKPageController *)self noteEditors];
-  v5 = [v9 UUID];
-  v6 = [v4 objectForKey:v5];
+  annotationCopy = annotation;
+  noteEditors = [(AKPageController *)self noteEditors];
+  uUID = [annotationCopy UUID];
+  v6 = [noteEditors objectForKey:uUID];
 
   if (!v6)
   {
     v6 = objc_alloc_init(AKNoteEditorController);
-    v7 = [(AKPageController *)self noteEditors];
-    v8 = [v9 UUID];
-    [v7 setObject:v6 forKey:v8];
+    noteEditors2 = [(AKPageController *)self noteEditors];
+    uUID2 = [annotationCopy UUID];
+    [noteEditors2 setObject:v6 forKey:uUID2];
 
-    [(AKNoteEditorController *)v6 setAnnotation:v9];
+    [(AKNoteEditorController *)v6 setAnnotation:annotationCopy];
     [(AKNoteEditorController *)v6 setDelegate:self];
   }
 
@@ -1038,45 +1038,45 @@ LABEL_13:
   [(AKNoteEditorController *)v6 beginEditing:1];
 }
 
-- (void)noteEditorDidFinishEditing:(id)a3
+- (void)noteEditorDidFinishEditing:(id)editing
 {
-  v11 = a3;
-  v4 = [v11 annotation];
-  v5 = [v11 editedText];
-  [v4 setContents:v5];
+  editingCopy = editing;
+  annotation = [editingCopy annotation];
+  editedText = [editingCopy editedText];
+  [annotation setContents:editedText];
 
-  v6 = [v4 contents];
-  v7 = [v6 length];
+  contents = [annotation contents];
+  v7 = [contents length];
 
   if (!v7)
   {
-    v8 = [v4 parentAnnotation];
-    [(AKPageController *)self removeNoteFromAnnotation:v8];
+    parentAnnotation = [annotation parentAnnotation];
+    [(AKPageController *)self removeNoteFromAnnotation:parentAnnotation];
   }
 
-  v9 = [(AKPageController *)self noteEditors];
-  v10 = [v4 UUID];
-  [v9 removeObjectForKey:v10];
+  noteEditors = [(AKPageController *)self noteEditors];
+  uUID = [annotation UUID];
+  [noteEditors removeObjectForKey:uUID];
 
-  [v11 hide];
+  [editingCopy hide];
 }
 
-- (id)stickyContainerForNoteEditor:(id)a3
+- (id)stickyContainerForNoteEditor:(id)editor
 {
-  v3 = [(AKPageController *)self _popoverPresentingViewController];
-  v4 = [v3 view];
+  _popoverPresentingViewController = [(AKPageController *)self _popoverPresentingViewController];
+  view = [_popoverPresentingViewController view];
 
-  return v4;
+  return view;
 }
 
-- (CGRect)stickyViewFrameForNoteEditor:(id)a3
+- (CGRect)stickyViewFrameForNoteEditor:(id)editor
 {
-  v4 = a3;
-  v5 = [v4 annotation];
-  v6 = [v5 parentAnnotation];
-  v7 = [v5 visualStyle];
-  v8 = v5;
-  if (v7 || (objc_opt_self(), v9 = objc_claimAutoreleasedReturnValue(), isKindOfClass = objc_opt_isKindOfClass(), v9, v8 = v6, (isKindOfClass & 1) != 0))
+  editorCopy = editor;
+  annotation = [editorCopy annotation];
+  parentAnnotation = [annotation parentAnnotation];
+  visualStyle = [annotation visualStyle];
+  v8 = annotation;
+  if (visualStyle || (objc_opt_self(), v9 = objc_claimAutoreleasedReturnValue(), isKindOfClass = objc_opt_isKindOfClass(), v9, v8 = parentAnnotation, (isKindOfClass & 1) != 0))
   {
     [v8 rectangle];
   }
@@ -1086,10 +1086,10 @@ LABEL_13:
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(AKPageController *)self overlayView];
-  v20 = [(AKPageController *)self stickyContainerForNoteEditor:v4];
+  overlayView = [(AKPageController *)self overlayView];
+  v20 = [(AKPageController *)self stickyContainerForNoteEditor:editorCopy];
 
-  [v19 convertRect:v20 toView:{v12, v14, v16, v18}];
+  [overlayView convertRect:v20 toView:{v12, v14, v16, v18}];
   v22 = v21;
   v24 = v23;
   v26 = v25;
@@ -1106,55 +1106,55 @@ LABEL_13:
   return result;
 }
 
-- (void)noteEditorWillPresentFullScreen:(id)a3
+- (void)noteEditorWillPresentFullScreen:(id)screen
 {
-  v4 = [(AKPageController *)self controller];
-  v3 = [v4 delegate];
+  controller = [(AKPageController *)self controller];
+  delegate = [controller delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 controllerWillShowSignatureCaptureView:v4];
+    [delegate controllerWillShowSignatureCaptureView:controller];
   }
 }
 
-- (void)noteEditorWillDismissFromFullScreen:(id)a3
+- (void)noteEditorWillDismissFromFullScreen:(id)screen
 {
-  v4 = [(AKPageController *)self controller];
-  v3 = [v4 delegate];
+  controller = [(AKPageController *)self controller];
+  delegate = [controller delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 controllerWillDismissSignatureCaptureView:v4];
+    [delegate controllerWillDismissSignatureCaptureView:controller];
   }
 }
 
-- (void)_updateOverlayVisibilityWithToolPicker:(id)a3 visible:(BOOL)a4
+- (void)_updateOverlayVisibilityWithToolPicker:(id)picker visible:(BOOL)visible
 {
-  v4 = a4;
+  visibleCopy = visible;
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [(AKPageController *)self overlayView];
+  pickerCopy = picker;
+  array = [MEMORY[0x277CBEB18] array];
+  overlayView = [(AKPageController *)self overlayView];
 
-  if (v8)
+  if (overlayView)
   {
-    v9 = [(AKPageController *)self overlayView];
-    [v7 addObject:v9];
+    overlayView2 = [(AKPageController *)self overlayView];
+    [array addObject:overlayView2];
   }
 
-  v10 = [(AKPageController *)self inkPageOverlayController];
-  v11 = [v10 inkOverlayView];
+  inkPageOverlayController = [(AKPageController *)self inkPageOverlayController];
+  inkOverlayView = [inkPageOverlayController inkOverlayView];
 
-  if (v11)
+  if (inkOverlayView)
   {
-    v12 = [(AKPageController *)self inkPageOverlayController];
-    v13 = [v12 inkOverlayView];
-    [v7 addObject:v13];
+    inkPageOverlayController2 = [(AKPageController *)self inkPageOverlayController];
+    inkOverlayView2 = [inkPageOverlayController2 inkOverlayView];
+    [array addObject:inkOverlayView2];
   }
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v14 = v7;
+  v14 = array;
   v15 = [v14 countByEnumeratingWithState:&v23 objects:v33 count:16];
   if (v15)
   {
@@ -1172,16 +1172,16 @@ LABEL_13:
         }
 
         v20 = *(*(&v23 + 1) + 8 * i);
-        [v6 setVisible:v4 forFirstResponder:{v20, v22, v23}];
+        [pickerCopy setVisible:visibleCopy forFirstResponder:{v20, v22, v23}];
         v21 = os_log_create("com.apple.annotationkit", "AKPageController");
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v22;
           v28 = v20;
           v29 = 2112;
-          v30 = v6;
+          v30 = pickerCopy;
           v31 = 1024;
-          v32 = v4;
+          v32 = visibleCopy;
           _os_log_impl(&dword_23F3EC000, v21, OS_LOG_TYPE_DEFAULT, "Updated visibility for overlay: %@, with toolpicker: %@, to visible: %d", buf, 0x1Cu);
         }
       }
@@ -1195,9 +1195,9 @@ LABEL_13:
 
 - (id)_popoverPresentingViewController
 {
-  v2 = [(AKPageController *)self controller];
-  v3 = [v2 delegate];
-  v4 = [v3 popoverPresentingViewControllerForAnnotationController:v2];
+  controller = [(AKPageController *)self controller];
+  delegate = [controller delegate];
+  v4 = [delegate popoverPresentingViewControllerForAnnotationController:controller];
 
   return v4;
 }

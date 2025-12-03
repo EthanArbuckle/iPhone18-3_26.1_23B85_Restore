@@ -1,38 +1,38 @@
 @interface ATSession
-+ (id)_remoteSessionsWithTypeIdentifier:(id)a3;
++ (id)_remoteSessionsWithTypeIdentifier:(id)identifier;
 + (id)allSessions;
-+ (id)sessionsWithSessionTypeIdentifier:(id)a3;
-+ (id)sessionsWithSessionTypeIdentifier:(id)a3 dataClass:(id)a4;
-+ (unint64_t)_remoteActiveSessionCountWithTypeIdentifier:(id)a3;
-+ (unint64_t)activeSessionCountWithSessionTypeIdentifier:(id)a3;
-+ (void)_cancelSessionWithIdentifier:(id)a3;
++ (id)sessionsWithSessionTypeIdentifier:(id)identifier;
++ (id)sessionsWithSessionTypeIdentifier:(id)identifier dataClass:(id)class;
++ (unint64_t)_remoteActiveSessionCountWithTypeIdentifier:(id)identifier;
++ (unint64_t)activeSessionCountWithSessionTypeIdentifier:(id)identifier;
++ (void)_cancelSessionWithIdentifier:(id)identifier;
 + (void)initialize;
 - (ATMessageLink)messageLink;
 - (ATSession)init;
-- (ATSession)initWithCoder:(id)a3;
-- (ATSession)initWithSessionIdentifier:(id)a3 sessionTypeIdentifier:(id)a4;
+- (ATSession)initWithCoder:(id)coder;
+- (ATSession)initWithSessionIdentifier:(id)identifier sessionTypeIdentifier:(id)typeIdentifier;
 - (BOOL)isSuspended;
 - (NSString)debugDescription;
 - (NSString)description;
 - (double)duration;
 - (id)sessionTasks;
-- (id)sessionTasksWithGroupingKey:(id)a3;
-- (void)_beginTasks:(id)a3;
-- (void)_finishWithError:(id)a3;
-- (void)_observeKeysForTask:(id)a3;
-- (void)_performSelectorOnObservers:(SEL)a3 object:(id)a4;
-- (void)_performSelectorOnObservers:(SEL)a3 object:(id)a4 object:(id)a5;
-- (void)_stopObservingKeysForTask:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)addSessionTasks:(id)a3;
-- (void)beginSessionTask:(id)a3;
+- (id)sessionTasksWithGroupingKey:(id)key;
+- (void)_beginTasks:(id)tasks;
+- (void)_finishWithError:(id)error;
+- (void)_observeKeysForTask:(id)task;
+- (void)_performSelectorOnObservers:(SEL)observers object:(id)object;
+- (void)_performSelectorOnObservers:(SEL)observers object:(id)object object:(id)a5;
+- (void)_stopObservingKeysForTask:(id)task;
+- (void)addObserver:(id)observer;
+- (void)addSessionTasks:(id)tasks;
+- (void)beginSessionTask:(id)task;
 - (void)cancel;
-- (void)encodeWithCoder:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeObserver:(id)a3;
-- (void)setSuspended:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeObserver:(id)observer;
+- (void)setSuspended:(BOOL)suspended;
 - (void)start;
-- (void)updateSessionTask:(id)a3;
+- (void)updateSessionTask:(id)task;
 @end
 
 @implementation ATSession
@@ -44,21 +44,21 @@
   return WeakRetained;
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = os_log_create("com.apple.amp.AirTraffic", "Framework");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23EC61000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Finishing.", &v8, 0xCu);
   }
 
   [(ATSession *)self setFinished:1];
   [(ATSession *)self setRunning:0];
-  [(ATSession *)self setError:v4];
+  [(ATSession *)self setError:errorCopy];
   self->_finishTime = CFAbsoluteTimeGetCurrent();
   if (__sessionHost == 1)
   {
@@ -74,10 +74,10 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performSelectorOnObservers:(SEL)a3 object:(id)a4 object:(id)a5
+- (void)_performSelectorOnObservers:(SEL)observers object:(id)object object:(id)a5
 {
   v27 = *MEMORY[0x277D85DE8];
-  v17 = a4;
+  objectCopy = object;
   v8 = a5;
   v22 = 0u;
   v23 = 0u;
@@ -108,8 +108,8 @@
           block[2] = __55__ATSession__performSelectorOnObservers_object_object___block_invoke;
           block[3] = &unk_278C6D7B0;
           block[4] = v14;
-          v21 = a3;
-          v19 = v17;
+          observersCopy = observers;
+          v19 = objectCopy;
           v20 = v8;
           dispatch_async(callbackQueue, block);
         }
@@ -127,10 +127,10 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performSelectorOnObservers:(SEL)a3 object:(id)a4
+- (void)_performSelectorOnObservers:(SEL)observers object:(id)object
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  objectCopy = object;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -160,8 +160,8 @@
           block[2] = __48__ATSession__performSelectorOnObservers_object___block_invoke;
           block[3] = &unk_278C6D788;
           block[4] = v12;
-          v17 = a3;
-          v16 = v6;
+          observersCopy = observers;
+          v16 = objectCopy;
           dispatch_async(callbackQueue, block);
         }
 
@@ -178,14 +178,14 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_beginTasks:(id)a3
+- (void)_beginTasks:(id)tasks
 {
   v23 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  obj = a3;
+  obj = tasks;
   v4 = [obj countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v4)
   {
@@ -208,7 +208,7 @@
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v12;
-          v19 = self;
+          selfCopy = self;
           v20 = 2114;
           v21 = v9;
           _os_log_impl(&dword_23EC61000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting %{public}@", buf, 0x16u);
@@ -227,18 +227,18 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_stopObservingKeysForTask:(id)a3
+- (void)_stopObservingKeysForTask:(id)task
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(NSMutableSet *)self->_observing containsObject:v4])
+  taskCopy = task;
+  if ([(NSMutableSet *)self->_observing containsObject:taskCopy])
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(ATSession *)self _keysToObserve];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    _keysToObserve = [(ATSession *)self _keysToObserve];
+    v6 = [_keysToObserve countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -250,36 +250,36 @@
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_keysToObserve);
           }
 
-          [v4 removeObserver:self forKeyPath:*(*(&v11 + 1) + 8 * v9++) context:0];
+          [taskCopy removeObserver:self forKeyPath:*(*(&v11 + 1) + 8 * v9++) context:0];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [_keysToObserve countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
     }
 
-    [(NSMutableSet *)self->_observing removeObject:v4];
+    [(NSMutableSet *)self->_observing removeObject:taskCopy];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_observeKeysForTask:(id)a3
+- (void)_observeKeysForTask:(id)task
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(NSMutableSet *)self->_observing addObject:v4];
+  taskCopy = task;
+  [(NSMutableSet *)self->_observing addObject:taskCopy];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(ATSession *)self _keysToObserve];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _keysToObserve = [(ATSession *)self _keysToObserve];
+  v6 = [_keysToObserve countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -291,14 +291,14 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_keysToObserve);
         }
 
-        [v4 addObserver:self forKeyPath:*(*(&v11 + 1) + 8 * v9++) options:1 context:0];
+        [taskCopy addObserver:self forKeyPath:*(*(&v11 + 1) + 8 * v9++) options:1 context:0];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [_keysToObserve countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -307,17 +307,17 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateSessionTask:(id)a3
+- (void)updateSessionTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __31__ATSession_updateSessionTask___block_invoke;
   v7[3] = &unk_278C6DC30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = taskCopy;
+  v6 = taskCopy;
   dispatch_async(queue, v7);
 }
 
@@ -446,17 +446,17 @@ LABEL_25:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)beginSessionTask:(id)a3
+- (void)beginSessionTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __30__ATSession_beginSessionTask___block_invoke;
   v7[3] = &unk_278C6DC30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = taskCopy;
+  v6 = taskCopy;
   dispatch_async(queue, v7);
 }
 
@@ -481,23 +481,23 @@ void __30__ATSession_beginSessionTask___block_invoke(uint64_t a1)
   [v6 setRunning:1];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   queue = self->_queue;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __60__ATSession_observeValueForKeyPath_ofObject_change_context___block_invoke;
   v16[3] = &unk_278C6D760;
   v16[4] = self;
-  v17 = v10;
-  v18 = v9;
-  v19 = v11;
-  v13 = v11;
-  v14 = v9;
-  v15 = v10;
+  v17 = objectCopy;
+  v18 = pathCopy;
+  v19 = changeCopy;
+  v13 = changeCopy;
+  v14 = pathCopy;
+  v15 = objectCopy;
   dispatch_async(queue, v16);
 }
 
@@ -582,38 +582,38 @@ LABEL_16:
   [v8 _performSelectorOnObservers:sel_session_didUpdateSessionTask_ object:v8 object:v9];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ATSession *)self sessionIdentifier];
-  [v4 encodeObject:v5 forKey:@"sessionIdentifier"];
+  coderCopy = coder;
+  sessionIdentifier = [(ATSession *)self sessionIdentifier];
+  [coderCopy encodeObject:sessionIdentifier forKey:@"sessionIdentifier"];
 
-  v6 = [(ATSession *)self sessionTypeIdentifier];
-  [v4 encodeObject:v6 forKey:@"sessionTypeIdentifier"];
+  sessionTypeIdentifier = [(ATSession *)self sessionTypeIdentifier];
+  [coderCopy encodeObject:sessionTypeIdentifier forKey:@"sessionTypeIdentifier"];
 
-  v7 = [(ATSession *)self localizedDescription];
-  [v4 encodeObject:v7 forKey:@"localizedDescription"];
+  localizedDescription = [(ATSession *)self localizedDescription];
+  [coderCopy encodeObject:localizedDescription forKey:@"localizedDescription"];
 
-  v8 = [(ATSession *)self dataClass];
-  [v4 encodeObject:v8 forKey:@"dataClass"];
+  dataClass = [(ATSession *)self dataClass];
+  [coderCopy encodeObject:dataClass forKey:@"dataClass"];
 
-  v9 = [(ATSession *)self error];
-  v10 = [v9 msv_errorByRemovingUnsafeUserInfo];
-  [v4 encodeObject:v10 forKey:@"error"];
+  error = [(ATSession *)self error];
+  msv_errorByRemovingUnsafeUserInfo = [error msv_errorByRemovingUnsafeUserInfo];
+  [coderCopy encodeObject:msv_errorByRemovingUnsafeUserInfo forKey:@"error"];
 
   [(ATSession *)self progress];
-  [v4 encodeDouble:@"progress" forKey:?];
-  [v4 encodeBool:-[ATSession isRunning](self forKey:{"isRunning"), @"running"}];
-  [v4 encodeBool:-[ATSession isFinished](self forKey:{"isFinished"), @"finished"}];
-  [v4 encodeBool:-[ATSession isCancelled](self forKey:{"isCancelled"), @"cancelled"}];
+  [coderCopy encodeDouble:@"progress" forKey:?];
+  [coderCopy encodeBool:-[ATSession isRunning](self forKey:{"isRunning"), @"running"}];
+  [coderCopy encodeBool:-[ATSession isFinished](self forKey:{"isFinished"), @"finished"}];
+  [coderCopy encodeBool:-[ATSession isCancelled](self forKey:{"isCancelled"), @"cancelled"}];
   v11 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = [(ATSession *)self sessionTasks];
-  v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  sessionTasks = [(ATSession *)self sessionTasks];
+  v13 = [sessionTasks countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v13)
   {
     v14 = v13;
@@ -625,52 +625,52 @@ LABEL_16:
       {
         if (*v21 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(sessionTasks);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) baseClassRepresentation];
-        [v11 addObject:v17];
+        baseClassRepresentation = [*(*(&v20 + 1) + 8 * v16) baseClassRepresentation];
+        [v11 addObject:baseClassRepresentation];
 
         ++v16;
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v14 = [sessionTasks countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v14);
   }
 
-  [v4 encodeObject:v11 forKey:@"sessionTasks"];
-  v18 = [(ATSession *)self endpoint];
-  [v4 encodeObject:v18 forKey:@"endpoint"];
+  [coderCopy encodeObject:v11 forKey:@"sessionTasks"];
+  endpoint = [(ATSession *)self endpoint];
+  [coderCopy encodeObject:endpoint forKey:@"endpoint"];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (ATSession)initWithCoder:(id)a3
+- (ATSession)initWithCoder:(id)coder
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ATSession *)self initWithSessionTypeIdentifier:0];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
     sessionIdentifier = v5->_sessionIdentifier;
     v5->_sessionIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionTypeIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionTypeIdentifier"];
     sessionTypeIdentifier = v5->_sessionTypeIdentifier;
     v5->_sessionTypeIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dataClass"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dataClass"];
     dataClass = v5->_dataClass;
     v5->_dataClass = v10;
 
     v12 = MEMORY[0x277CBEB98];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"sessionTasks"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"sessionTasks"];
 
     v38 = 0u;
     v39 = 0u;
@@ -696,8 +696,8 @@ LABEL_16:
           if (([v21 isFinished] & 1) == 0)
           {
             sessionTasksByIdentifier = v5->_sessionTasksByIdentifier;
-            v23 = [v21 sessionTaskIdentifier];
-            [(NSMutableDictionary *)sessionTasksByIdentifier setObject:v21 forKeyedSubscript:v23];
+            sessionTaskIdentifier = [v21 sessionTaskIdentifier];
+            [(NSMutableDictionary *)sessionTasksByIdentifier setObject:v21 forKeyedSubscript:sessionTaskIdentifier];
           }
         }
 
@@ -707,21 +707,21 @@ LABEL_16:
       while (v18);
     }
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
     localizedDescription = v5->_localizedDescription;
     v5->_localizedDescription = v24;
 
-    [v4 decodeDoubleForKey:@"progress"];
+    [coderCopy decodeDoubleForKey:@"progress"];
     v5->_progress = v26;
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
     error = v5->_error;
     v5->_error = v27;
 
-    v5->_running = [v4 decodeBoolForKey:@"running"];
-    v5->_cancelled = [v4 decodeBoolForKey:@"cancelled"];
-    v5->_finished = [v4 decodeBoolForKey:@"finished"];
+    v5->_running = [coderCopy decodeBoolForKey:@"running"];
+    v5->_cancelled = [coderCopy decodeBoolForKey:@"cancelled"];
+    v5->_finished = [coderCopy decodeBoolForKey:@"finished"];
     dispatch_group_enter(v5->_group);
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endpoint"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endpoint"];
     if (v29)
     {
       v30 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:v29];
@@ -755,8 +755,8 @@ LABEL_16:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(ATSession *)self sessionTasks];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  sessionTasks = [(ATSession *)self sessionTasks];
+  v7 = [sessionTasks countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -767,7 +767,7 @@ LABEL_16:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sessionTasks);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -778,7 +778,7 @@ LABEL_16:
         [v5 appendString:@"\n"];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [sessionTasks countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -793,10 +793,10 @@ LABEL_16:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(ATSession *)self sessionIdentifier];
-  v6 = [(ATSession *)self sessionTypeIdentifier];
-  v7 = [(ATSession *)self dataClass];
-  v8 = [v3 stringWithFormat:@"<%@ %@ %@/%@: running=%d finished=%d cancelled=%d>", v4, v5, v6, v7, -[ATSession isRunning](self, "isRunning"), -[ATSession isFinished](self, "isFinished"), -[ATSession isCancelled](self, "isCancelled")];
+  sessionIdentifier = [(ATSession *)self sessionIdentifier];
+  sessionTypeIdentifier = [(ATSession *)self sessionTypeIdentifier];
+  dataClass = [(ATSession *)self dataClass];
+  v8 = [v3 stringWithFormat:@"<%@ %@ %@/%@: running=%d finished=%d cancelled=%d>", v4, sessionIdentifier, sessionTypeIdentifier, dataClass, -[ATSession isRunning](self, "isRunning"), -[ATSession isFinished](self, "isFinished"), -[ATSession isCancelled](self, "isCancelled")];
 
   return v8;
 }
@@ -816,31 +816,31 @@ LABEL_16:
   return finishTime - self->_startTime;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __28__ATSession_removeObserver___block_invoke;
   v7[3] = &unk_278C6DC30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __25__ATSession_addObserver___block_invoke;
   v7[3] = &unk_278C6DC30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -855,9 +855,9 @@ void __25__ATSession_addObserver___block_invoke(uint64_t a1)
   }
 }
 
-- (id)sessionTasksWithGroupingKey:(id)a3
+- (id)sessionTasksWithGroupingKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -869,10 +869,10 @@ void __25__ATSession_addObserver___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __41__ATSession_sessionTasksWithGroupingKey___block_invoke;
   block[3] = &unk_278C6DB18;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -934,17 +934,17 @@ void __41__ATSession_sessionTasksWithGroupingKey___block_invoke(void *a1)
   return v2;
 }
 
-- (void)addSessionTasks:(id)a3
+- (void)addSessionTasks:(id)tasks
 {
-  v4 = a3;
+  tasksCopy = tasks;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__ATSession_addSessionTasks___block_invoke;
   v7[3] = &unk_278C6DC30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = tasksCopy;
+  v6 = tasksCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -1018,7 +1018,7 @@ void __29__ATSession_addSessionTasks___block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1026,7 +1026,7 @@ void __29__ATSession_addSessionTasks___block_invoke(uint64_t a1)
   v4[2] = __26__ATSession_setSuspended___block_invoke;
   v4[3] = &unk_278C6D738;
   v4[4] = self;
-  v5 = a3;
+  suspendedCopy = suspended;
   dispatch_sync(queue, v4);
 }
 
@@ -1140,11 +1140,11 @@ void __26__ATSession_setSuspended___block_invoke_26(uint64_t a1)
   {
     if (v5)
     {
-      v6 = [(ATSession *)self error];
+      error = [(ATSession *)self error];
       *buf = 138543618;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2114;
-      v14 = v6;
+      v14 = error;
       _os_log_impl(&dword_23EC61000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Cancelling. err=%{public}@", buf, 0x16u);
     }
 
@@ -1162,12 +1162,12 @@ void __26__ATSession_setSuspended___block_invoke_26(uint64_t a1)
     if (v5)
     {
       *buf = 138543362;
-      v12 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_23EC61000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Cancelling remote session.", buf, 0xCu);
     }
 
-    v8 = [(ATSession *)self sessionIdentifier];
-    [ATSession _cancelSessionWithIdentifier:v8];
+    sessionIdentifier = [(ATSession *)self sessionIdentifier];
+    [ATSession _cancelSessionWithIdentifier:sessionIdentifier];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -1236,7 +1236,7 @@ void __19__ATSession_cancel__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23EC61000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting.", buf, 0xCu);
   }
 
@@ -1279,18 +1279,18 @@ _BYTE *__18__ATSession_start__block_invoke(uint64_t a1)
   return result;
 }
 
-- (ATSession)initWithSessionIdentifier:(id)a3 sessionTypeIdentifier:(id)a4
+- (ATSession)initWithSessionIdentifier:(id)identifier sessionTypeIdentifier:(id)typeIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
   v31.receiver = self;
   v31.super_class = ATSession;
   v8 = [(ATSession *)&v31 init];
   if (v8)
   {
-    if (v6)
+    if (identifierCopy)
     {
-      v9 = [v6 copy];
+      v9 = [identifierCopy copy];
       sessionIdentifier = v8->_sessionIdentifier;
       v8->_sessionIdentifier = v9;
     }
@@ -1298,30 +1298,30 @@ _BYTE *__18__ATSession_start__block_invoke(uint64_t a1)
     else
     {
       sessionIdentifier = [MEMORY[0x277CCAD78] UUID];
-      v11 = [sessionIdentifier UUIDString];
+      uUIDString = [sessionIdentifier UUIDString];
       v12 = v8->_sessionIdentifier;
-      v8->_sessionIdentifier = v11;
+      v8->_sessionIdentifier = uUIDString;
     }
 
-    v13 = [v7 copy];
+    v13 = [typeIdentifierCopy copy];
     sessionTypeIdentifier = v8->_sessionTypeIdentifier;
     v8->_sessionTypeIdentifier = v13;
 
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sessionTasksByIdentifier = v8->_sessionTasksByIdentifier;
-    v8->_sessionTasksByIdentifier = v15;
+    v8->_sessionTasksByIdentifier = dictionary;
 
-    v17 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     sessionTasks = v8->_sessionTasks;
-    v8->_sessionTasks = v17;
+    v8->_sessionTasks = array;
 
     v19 = [MEMORY[0x277CBEB58] set];
     observing = v8->_observing;
     v8->_observing = v19;
 
-    v21 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v8->_observers;
-    v8->_observers = v21;
+    v8->_observers = weakObjectsHashTable;
 
     v23 = dispatch_queue_create("com.apple.AirTraffic.ATSession.accessQueue", 0);
     queue = v8->_queue;
@@ -1356,9 +1356,9 @@ _BYTE *__18__ATSession_start__block_invoke(uint64_t a1)
   return 0;
 }
 
-+ (unint64_t)_remoteActiveSessionCountWithTypeIdentifier:(id)a3
++ (unint64_t)_remoteActiveSessionCountWithTypeIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.atc.xpc.sessions" options:0];
   v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_285162CD8];
   [v4 setRemoteObjectInterface:v5];
@@ -1382,7 +1382,7 @@ _BYTE *__18__ATSession_start__block_invoke(uint64_t a1)
   v18[1] = 3221225472;
   v18[2] = __57__ATSession__remoteActiveSessionCountWithTypeIdentifier___block_invoke_2;
   v18[3] = &unk_278C6D8A0;
-  v7 = v3;
+  v7 = identifierCopy;
   v19 = v7;
   v8 = v6;
   v20 = v8;
@@ -1435,10 +1435,10 @@ void __57__ATSession__remoteActiveSessionCountWithTypeIdentifier___block_invoke_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_cancelSessionWithIdentifier:(id)a3
++ (void)_cancelSessionWithIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.atc.xpc.sessions" options:0];
   v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_285162CD8];
   v6 = MEMORY[0x277CBEB98];
@@ -1462,7 +1462,7 @@ void __57__ATSession__remoteActiveSessionCountWithTypeIdentifier___block_invoke_
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v26 = v3;
+    v26 = identifierCopy;
     _os_log_impl(&dword_23EC61000, v9, OS_LOG_TYPE_DEFAULT, "cancelling session. id=%{public}@", buf, 0xCu);
   }
 
@@ -1480,7 +1480,7 @@ void __57__ATSession__remoteActiveSessionCountWithTypeIdentifier___block_invoke_
   v16[3] = &unk_278C6D9C0;
   v13 = v11;
   v17 = v13;
-  [v12 cancelSessionWithIdentifier:v3 completion:v16];
+  [v12 cancelSessionWithIdentifier:identifierCopy completion:v16];
 
   dispatch_semaphore_wait(v13, 0xFFFFFFFFFFFFFFFFLL);
   if (*(v22 + 24) == 1)
@@ -1534,9 +1534,9 @@ void __42__ATSession__cancelSessionWithIdentifier___block_invoke_173(uint64_t a1
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_remoteSessionsWithTypeIdentifier:(id)a3
++ (id)_remoteSessionsWithTypeIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.atc.xpc.sessions" options:0];
   v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_285162CD8];
   v6 = MEMORY[0x277CBEB98];
@@ -1577,7 +1577,7 @@ void __42__ATSession__cancelSessionWithIdentifier___block_invoke_173(uint64_t a1
   v19 = &v22;
   v12 = v10;
   v18 = v12;
-  [v11 fetchSessionsWithTypeIdentifier:v3 completion:v17];
+  [v11 fetchSessionsWithTypeIdentifier:identifierCopy completion:v17];
 
   dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
   if (*(v30 + 24) == 1)
@@ -1641,10 +1641,10 @@ void __47__ATSession__remoteSessionsWithTypeIdentifier___block_invoke_170(uint64
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)activeSessionCountWithSessionTypeIdentifier:(id)a3
++ (unint64_t)activeSessionCountWithSessionTypeIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   if (__sessionHost == 1)
   {
     v5 = __allSessionsList;
@@ -1669,8 +1669,8 @@ void __47__ATSession__remoteSessionsWithTypeIdentifier___block_invoke_170(uint64
           }
 
           v11 = *(*(&v17 + 1) + 8 * i);
-          v12 = [v11 sessionTypeIdentifier];
-          v13 = [v12 isEqualToString:v4];
+          sessionTypeIdentifier = [v11 sessionTypeIdentifier];
+          v13 = [sessionTypeIdentifier isEqualToString:identifierCopy];
 
           if (v13 && ([v11 isCancelled] & 1) == 0)
           {
@@ -1689,7 +1689,7 @@ void __47__ATSession__remoteSessionsWithTypeIdentifier___block_invoke_170(uint64
 
   else
   {
-    v7 = [a1 _remoteActiveSessionCountWithTypeIdentifier:v4];
+    v7 = [self _remoteActiveSessionCountWithTypeIdentifier:identifierCopy];
   }
 
   v14 = os_log_create("com.apple.amp.AirTraffic", "Framework");
@@ -1698,7 +1698,7 @@ void __47__ATSession__remoteSessionsWithTypeIdentifier___block_invoke_170(uint64
     *buf = 134218242;
     v22 = v7;
     v23 = 2114;
-    v24 = v4;
+    v24 = identifierCopy;
     _os_log_impl(&dword_23EC61000, v14, OS_LOG_TYPE_DEFAULT, "Found %lu active sessions for identifier %{public}@", buf, 0x16u);
   }
 
@@ -1706,13 +1706,13 @@ void __47__ATSession__remoteSessionsWithTypeIdentifier___block_invoke_170(uint64
   return v7;
 }
 
-+ (id)sessionsWithSessionTypeIdentifier:(id)a3 dataClass:(id)a4
++ (id)sessionsWithSessionTypeIdentifier:(id)identifier dataClass:(id)class
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  classCopy = class;
   v7 = objc_opt_new();
-  v8 = [ATSession sessionsWithSessionTypeIdentifier:v5];
+  v8 = [ATSession sessionsWithSessionTypeIdentifier:identifierCopy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -1732,10 +1732,10 @@ void __47__ATSession__remoteSessionsWithTypeIdentifier___block_invoke_170(uint64
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        if (v6)
+        if (classCopy)
         {
-          v14 = [*(*(&v18 + 1) + 8 * i) dataClass];
-          v15 = [v14 isEqualToString:v6];
+          dataClass = [*(*(&v18 + 1) + 8 * i) dataClass];
+          v15 = [dataClass isEqualToString:classCopy];
 
           if (!v15)
           {
@@ -1757,10 +1757,10 @@ void __47__ATSession__remoteSessionsWithTypeIdentifier___block_invoke_170(uint64
   return v7;
 }
 
-+ (id)sessionsWithSessionTypeIdentifier:(id)a3
++ (id)sessionsWithSessionTypeIdentifier:(id)identifier
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_opt_new();
   if (__sessionHost == 1)
   {
@@ -1785,8 +1785,8 @@ void __47__ATSession__remoteSessionsWithTypeIdentifier___block_invoke_170(uint64
           }
 
           v11 = *(*(&v21 + 1) + 8 * i);
-          v12 = [v11 sessionTypeIdentifier];
-          v13 = [v12 isEqualToString:v4];
+          sessionTypeIdentifier = [v11 sessionTypeIdentifier];
+          v13 = [sessionTypeIdentifier isEqualToString:identifierCopy];
 
           if (v13)
           {
@@ -1805,7 +1805,7 @@ void __47__ATSession__remoteSessionsWithTypeIdentifier___block_invoke_170(uint64
 
   else
   {
-    v14 = [a1 _remoteSessionsWithTypeIdentifier:v4];
+    v14 = [self _remoteSessionsWithTypeIdentifier:identifierCopy];
     v15 = [v14 copy];
 
     v5 = v15;
@@ -1818,7 +1818,7 @@ void __47__ATSession__remoteSessionsWithTypeIdentifier___block_invoke_170(uint64
     *buf = 134218242;
     v26 = v17;
     v27 = 2114;
-    v28 = v4;
+    v28 = identifierCopy;
     _os_log_impl(&dword_23EC61000, v16, OS_LOG_TYPE_DEFAULT, "Found %lu sessions for identifier %{public}@", buf, 0x16u);
   }
 
@@ -1847,7 +1847,7 @@ void __47__ATSession__remoteSessionsWithTypeIdentifier___block_invoke_170(uint64
 
   else
   {
-    v3 = [a1 _remoteSessionsWithTypeIdentifier:0];
+    v3 = [self _remoteSessionsWithTypeIdentifier:0];
   }
 
   return v3;
@@ -1855,13 +1855,13 @@ void __47__ATSession__remoteSessionsWithTypeIdentifier___block_invoke_170(uint64
 
 + (void)initialize
 {
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v3 = __allSessionsList;
-  __allSessionsList = v2;
+  __allSessionsList = array;
 
-  v4 = [@"ATSessionsDidChangeNotification" UTF8String];
+  uTF8String = [@"ATSessionsDidChangeNotification" UTF8String];
   v5 = dispatch_get_global_queue(0, 0);
-  notify_register_dispatch(v4, &__dispatchToken, v5, &__block_literal_global_306);
+  notify_register_dispatch(uTF8String, &__dispatchToken, v5, &__block_literal_global_306);
 }
 
 void __23__ATSession_initialize__block_invoke()

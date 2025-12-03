@@ -1,22 +1,22 @@
 @interface SBHostProxyClientComponent
-- (void)_setSceneRenderingEnvironmentParticipant:(id)a3;
-- (void)_windowManagementStyleDidChange:(id)a3;
-- (void)continuitySessionDidUpdateScreenRecordingState:(id)a3;
+- (void)_setSceneRenderingEnvironmentParticipant:(id)participant;
+- (void)_windowManagementStyleDidChange:(id)change;
+- (void)continuitySessionDidUpdateScreenRecordingState:(id)state;
 - (void)invalidate;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
-- (void)sceneManager:(id)a3 didUpdateUserInterfaceStyle:(int64_t)a4 withAnimationSettings:(id)a5 fence:(id)a6;
-- (void)sceneWillInvalidate:(id)a3;
-- (void)setScene:(id)a3;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
+- (void)sceneManager:(id)manager didUpdateUserInterfaceStyle:(int64_t)style withAnimationSettings:(id)settings fence:(id)fence;
+- (void)sceneWillInvalidate:(id)invalidate;
+- (void)setScene:(id)scene;
 @end
 
 @implementation SBHostProxyClientComponent
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
   v12.receiver = self;
   v12.super_class = SBHostProxyClientComponent;
-  v5 = a3;
-  [(FBSSceneComponent *)&v12 setScene:v5];
+  sceneCopy = scene;
+  [(FBSSceneComponent *)&v12 setScene:sceneCopy];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__SBHostProxyClientComponent_setScene___block_invoke;
@@ -24,12 +24,12 @@
   block[4] = self;
   block[5] = a2;
   dispatch_async(MEMORY[0x277D85CD0], block);
-  v6 = [v5 settings];
+  settings = [sceneCopy settings];
 
-  v7 = [v6 displayIdentity];
-  LODWORD(v5) = [v7 isContinuityDisplay];
+  displayIdentity = [settings displayIdentity];
+  LODWORD(sceneCopy) = [displayIdentity isContinuityDisplay];
 
-  if (v5)
+  if (sceneCopy)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -111,21 +111,21 @@ void __39__SBHostProxyClientComponent_setScene___block_invoke_2(uint64_t a1, voi
   [(FBSSceneComponent *)&v5 invalidate];
 }
 
-- (void)_setSceneRenderingEnvironmentParticipant:(id)a3
+- (void)_setSceneRenderingEnvironmentParticipant:(id)participant
 {
-  v5 = a3;
+  participantCopy = participant;
   sceneRenderingEnvironmentParticipant = self->_sceneRenderingEnvironmentParticipant;
-  if (sceneRenderingEnvironmentParticipant != v5)
+  if (sceneRenderingEnvironmentParticipant != participantCopy)
   {
     [(SBSceneRenderingEnvironmentParticipant *)sceneRenderingEnvironmentParticipant invalidate];
-    objc_storeStrong(&self->_sceneRenderingEnvironmentParticipant, a3);
-    v7 = [(FBSSceneComponent *)self clientScene];
+    objc_storeStrong(&self->_sceneRenderingEnvironmentParticipant, participant);
+    clientScene = [(FBSSceneComponent *)self clientScene];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __71__SBHostProxyClientComponent__setSceneRenderingEnvironmentParticipant___block_invoke;
     v8[3] = &unk_2783BF928;
-    v9 = v5;
-    [v7 updateClientSettings:v8];
+    v9 = participantCopy;
+    [clientScene updateClientSettings:v8];
   }
 }
 
@@ -137,30 +137,30 @@ void __71__SBHostProxyClientComponent__setSceneRenderingEnvironmentParticipant__
   [v3 setHostProxySceneRenderingEnvironmentIdentifier:v4];
 }
 
-- (void)_windowManagementStyleDidChange:(id)a3
+- (void)_windowManagementStyleDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = objc_opt_class();
-  v6 = [v4 object];
+  object = [changeCopy object];
 
-  v7 = SBSafeCast(v5, v6);
+  v7 = SBSafeCast(v5, object);
 
-  v8 = [v7 windowScene];
-  v9 = [v8 _fbsDisplayIdentity];
-  v10 = [(FBSSceneComponent *)self scene];
-  v11 = [v10 settings];
-  v12 = [v11 displayIdentity];
-  v13 = [v9 isEqual:v12];
+  windowScene = [v7 windowScene];
+  _fbsDisplayIdentity = [windowScene _fbsDisplayIdentity];
+  scene = [(FBSSceneComponent *)self scene];
+  settings = [scene settings];
+  displayIdentity = [settings displayIdentity];
+  v13 = [_fbsDisplayIdentity isEqual:displayIdentity];
 
   if (v13)
   {
-    v14 = [(FBSSceneComponent *)self clientScene];
+    clientScene = [(FBSSceneComponent *)self clientScene];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __62__SBHostProxyClientComponent__windowManagementStyleDidChange___block_invoke;
     v15[3] = &unk_2783BF928;
     v16 = v7;
-    [v14 updateClientSettings:v15];
+    [clientScene updateClientSettings:v15];
   }
 }
 
@@ -172,21 +172,21 @@ void __62__SBHostProxyClientComponent__windowManagementStyleDidChange___block_in
   [v3 setHostProxyEnhancedWindowingEnabled:{objc_msgSend(v4, "isChamoisOrFlexibleWindowing")}];
 }
 
-- (void)sceneManager:(id)a3 didUpdateUserInterfaceStyle:(int64_t)a4 withAnimationSettings:(id)a5 fence:(id)a6
+- (void)sceneManager:(id)manager didUpdateUserInterfaceStyle:(int64_t)style withAnimationSettings:(id)settings fence:(id)fence
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [(FBSSceneComponent *)self clientScene];
+  settingsCopy = settings;
+  fenceCopy = fence;
+  clientScene = [(FBSSceneComponent *)self clientScene];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __99__SBHostProxyClientComponent_sceneManager_didUpdateUserInterfaceStyle_withAnimationSettings_fence___block_invoke;
   v14[3] = &unk_2783BF950;
-  v16 = v10;
-  v17 = a4;
-  v15 = v9;
-  v12 = v10;
-  v13 = v9;
-  [v11 updateClientSettings:v14];
+  v16 = fenceCopy;
+  styleCopy = style;
+  v15 = settingsCopy;
+  v12 = fenceCopy;
+  v13 = settingsCopy;
+  [clientScene updateClientSettings:v14];
 }
 
 void __99__SBHostProxyClientComponent_sceneManager_didUpdateUserInterfaceStyle_withAnimationSettings_fence___block_invoke(void *a1, void *a2, void *a3)
@@ -204,23 +204,23 @@ void __99__SBHostProxyClientComponent_sceneManager_didUpdateUserInterfaceStyle_w
   }
 }
 
-- (void)continuitySessionDidUpdateScreenRecordingState:(id)a3
+- (void)continuitySessionDidUpdateScreenRecordingState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = SBLogContinuitySession();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(SBHostProxyClientComponent *)self continuitySessionDidUpdateScreenRecordingState:v4, v5];
+    [(SBHostProxyClientComponent *)self continuitySessionDidUpdateScreenRecordingState:stateCopy, v5];
   }
 
-  v6 = [(FBSSceneComponent *)self clientScene];
+  clientScene = [(FBSSceneComponent *)self clientScene];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __77__SBHostProxyClientComponent_continuitySessionDidUpdateScreenRecordingState___block_invoke;
   v8[3] = &unk_2783BF928;
-  v9 = v4;
-  v7 = v4;
-  [v6 updateClientSettings:v8];
+  v9 = stateCopy;
+  v7 = stateCopy;
+  [clientScene updateClientSettings:v8];
 }
 
 void __77__SBHostProxyClientComponent_continuitySessionDidUpdateScreenRecordingState___block_invoke(uint64_t a1, void *a2)
@@ -230,35 +230,35 @@ void __77__SBHostProxyClientComponent_continuitySessionDidUpdateScreenRecordingS
   [v3 setHostProxyIsCapturingContentForAdditionalRenderingDestination:{objc_msgSend(v2, "isActivelyScreenRecording")}];
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
-  v6 = a4;
-  v7 = [v6 settings];
-  v15 = [v7 displayConfiguration];
+  settingsCopy = settings;
+  settings = [settingsCopy settings];
+  displayConfiguration = [settings displayConfiguration];
 
-  v8 = [v6 previousSettings];
+  previousSettings = [settingsCopy previousSettings];
 
-  v9 = [v8 displayConfiguration];
+  displayConfiguration2 = [previousSettings displayConfiguration];
 
-  v10 = v15;
-  if (v15 != v9)
+  v10 = displayConfiguration;
+  if (displayConfiguration != displayConfiguration2)
   {
-    v11 = [SBApp sceneRenderingEnvironmentManager];
-    if (!v11)
+    sceneRenderingEnvironmentManager = [SBApp sceneRenderingEnvironmentManager];
+    if (!sceneRenderingEnvironmentManager)
     {
       [SBHostProxyClientComponent scene:a2 didUpdateSettings:self];
     }
 
-    v12 = [(FBSSceneComponent *)self clientScene];
-    v13 = [v12 loggingIdentifier];
-    v14 = [v11 registerParticipantForSceneWithIdentifier:v13 displayConfiguration:v15];
+    clientScene = [(FBSSceneComponent *)self clientScene];
+    loggingIdentifier = [clientScene loggingIdentifier];
+    v14 = [sceneRenderingEnvironmentManager registerParticipantForSceneWithIdentifier:loggingIdentifier displayConfiguration:displayConfiguration];
     [(SBHostProxyClientComponent *)self _setSceneRenderingEnvironmentParticipant:v14];
 
-    v10 = v15;
+    v10 = displayConfiguration;
   }
 }
 
-- (void)sceneWillInvalidate:(id)a3
+- (void)sceneWillInvalidate:(id)invalidate
 {
   [(SBSceneRenderingEnvironmentParticipant *)self->_sceneRenderingEnvironmentParticipant invalidate];
   sceneRenderingEnvironmentParticipant = self->_sceneRenderingEnvironmentParticipant;

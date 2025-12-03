@@ -1,6 +1,6 @@
 @interface MTRElectricalGridConditionsClusterElectricalGridConditionsStruct
 - (MTRElectricalGridConditionsClusterElectricalGridConditionsStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -36,26 +36,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct);
-  v5 = [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)self periodStart];
-  [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)v4 setPeriodStart:v5];
+  periodStart = [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)self periodStart];
+  [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)v4 setPeriodStart:periodStart];
 
-  v6 = [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)self periodEnd];
-  [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)v4 setPeriodEnd:v6];
+  periodEnd = [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)self periodEnd];
+  [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)v4 setPeriodEnd:periodEnd];
 
-  v7 = [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)self gridCarbonIntensity];
-  [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)v4 setGridCarbonIntensity:v7];
+  gridCarbonIntensity = [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)self gridCarbonIntensity];
+  [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)v4 setGridCarbonIntensity:gridCarbonIntensity];
 
-  v8 = [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)self gridCarbonLevel];
-  [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)v4 setGridCarbonLevel:v8];
+  gridCarbonLevel = [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)self gridCarbonLevel];
+  [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)v4 setGridCarbonLevel:gridCarbonLevel];
 
-  v9 = [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)self localCarbonIntensity];
-  [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)v4 setLocalCarbonIntensity:v9];
+  localCarbonIntensity = [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)self localCarbonIntensity];
+  [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)v4 setLocalCarbonIntensity:localCarbonIntensity];
 
-  v10 = [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)self localCarbonLevel];
-  [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)v4 setLocalCarbonLevel:v10];
+  localCarbonLevel = [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)self localCarbonLevel];
+  [(MTRElectricalGridConditionsClusterElectricalGridConditionsStruct *)v4 setLocalCarbonLevel:localCarbonLevel];
 
   return v4;
 }

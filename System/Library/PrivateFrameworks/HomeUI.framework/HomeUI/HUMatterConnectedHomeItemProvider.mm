@@ -1,5 +1,5 @@
 @interface HUMatterConnectedHomeItemProvider
-- (HUMatterConnectedHomeItemProvider)initWithAccessory:(id)a3;
+- (HUMatterConnectedHomeItemProvider)initWithAccessory:(id)accessory;
 - (NAFuture)accessoryConnectedHomeToCHIPAccessoryPairingFuture;
 - (NAFuture)connectedCHIPAccessoryPairingsFuture;
 - (NAFuture)connectedHomesFuture;
@@ -8,16 +8,16 @@
 
 @implementation HUMatterConnectedHomeItemProvider
 
-- (HUMatterConnectedHomeItemProvider)initWithAccessory:(id)a3
+- (HUMatterConnectedHomeItemProvider)initWithAccessory:(id)accessory
 {
-  v5 = a3;
+  accessoryCopy = accessory;
   v11.receiver = self;
   v11.super_class = HUMatterConnectedHomeItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accessory, a3);
+    objc_storeStrong(&v6->_accessory, accessory);
     v8 = [MEMORY[0x277CBEB58] set];
     connectedHomeItems = v7->_connectedHomeItems;
     v7->_connectedHomeItems = v8;
@@ -31,10 +31,10 @@
   accessoryConnectedHomeToCHIPAccessoryPairingFuture = self->_accessoryConnectedHomeToCHIPAccessoryPairingFuture;
   if (!accessoryConnectedHomeToCHIPAccessoryPairingFuture)
   {
-    v4 = [(HUMatterConnectedHomeItemProvider *)self accessory];
-    v5 = [v4 hf_allConnectedHomeToCHIPAccessoryPairingFuture];
+    accessory = [(HUMatterConnectedHomeItemProvider *)self accessory];
+    hf_allConnectedHomeToCHIPAccessoryPairingFuture = [accessory hf_allConnectedHomeToCHIPAccessoryPairingFuture];
     v6 = self->_accessoryConnectedHomeToCHIPAccessoryPairingFuture;
-    self->_accessoryConnectedHomeToCHIPAccessoryPairingFuture = v5;
+    self->_accessoryConnectedHomeToCHIPAccessoryPairingFuture = hf_allConnectedHomeToCHIPAccessoryPairingFuture;
 
     accessoryConnectedHomeToCHIPAccessoryPairingFuture = self->_accessoryConnectedHomeToCHIPAccessoryPairingFuture;
   }
@@ -44,8 +44,8 @@
 
 - (NAFuture)connectedHomesFuture
 {
-  v2 = [(HUMatterConnectedHomeItemProvider *)self accessoryConnectedHomeToCHIPAccessoryPairingFuture];
-  v3 = [v2 flatMap:&__block_literal_global_301];
+  accessoryConnectedHomeToCHIPAccessoryPairingFuture = [(HUMatterConnectedHomeItemProvider *)self accessoryConnectedHomeToCHIPAccessoryPairingFuture];
+  v3 = [accessoryConnectedHomeToCHIPAccessoryPairingFuture flatMap:&__block_literal_global_301];
 
   return v3;
 }
@@ -61,8 +61,8 @@ id __57__HUMatterConnectedHomeItemProvider_connectedHomesFuture__block_invoke(ui
 
 - (NAFuture)connectedCHIPAccessoryPairingsFuture
 {
-  v2 = [(HUMatterConnectedHomeItemProvider *)self accessoryConnectedHomeToCHIPAccessoryPairingFuture];
-  v3 = [v2 flatMap:&__block_literal_global_3_6];
+  accessoryConnectedHomeToCHIPAccessoryPairingFuture = [(HUMatterConnectedHomeItemProvider *)self accessoryConnectedHomeToCHIPAccessoryPairingFuture];
+  v3 = [accessoryConnectedHomeToCHIPAccessoryPairingFuture flatMap:&__block_literal_global_3_6];
 
   return v3;
 }
@@ -79,13 +79,13 @@ id __73__HUMatterConnectedHomeItemProvider_connectedCHIPAccessoryPairingsFuture_
 - (id)reloadItems
 {
   objc_initWeak(&location, self);
-  v3 = [(HUMatterConnectedHomeItemProvider *)self accessoryConnectedHomeToCHIPAccessoryPairingFuture];
+  accessoryConnectedHomeToCHIPAccessoryPairingFuture = [(HUMatterConnectedHomeItemProvider *)self accessoryConnectedHomeToCHIPAccessoryPairingFuture];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__HUMatterConnectedHomeItemProvider_reloadItems__block_invoke;
   v6[3] = &unk_277DBB720;
   objc_copyWeak(&v7, &location);
-  v4 = [v3 flatMap:v6];
+  v4 = [accessoryConnectedHomeToCHIPAccessoryPairingFuture flatMap:v6];
   objc_destroyWeak(&v7);
 
   objc_destroyWeak(&location);

@@ -1,17 +1,17 @@
 @interface PLBackgroundJobWorkerCoordinator
-- (BOOL)_isValidWorkerClass:(Class)a3 bundle:(id)a4;
-- (PLBackgroundJobWorkerCoordinator)initWithWorkerClassesAsStrings:(id)a3 workerMode:(signed __int16)a4 statusCenter:(id)a5;
-- (PLBackgroundJobWorkerCoordinator)initWithWorkerCoordinatorWorkerMode:(signed __int16)a3 statusCenter:(id)a4;
+- (BOOL)_isValidWorkerClass:(Class)class bundle:(id)bundle;
+- (PLBackgroundJobWorkerCoordinator)initWithWorkerClassesAsStrings:(id)strings workerMode:(signed __int16)mode statusCenter:(id)center;
+- (PLBackgroundJobWorkerCoordinator)initWithWorkerCoordinatorWorkerMode:(signed __int16)mode statusCenter:(id)center;
 - (PLBackgroundJobWorkerCoordinatorDelegate)delegate;
-- (id)_workersForBundle:(id)a3;
-- (id)pendingJobsForBundle:(id)a3;
-- (id)pendingJobsForBundle:(id)a3 workerTypes:(id)a4;
+- (id)_workersForBundle:(id)bundle;
+- (id)pendingJobsForBundle:(id)bundle;
+- (id)pendingJobsForBundle:(id)bundle workerTypes:(id)types;
 - (void)_handleAllWorkersCompleted;
-- (void)_inq_timerQueue_timerEventHandlerWithTimer:(id)a3 workerType:(unint64_t)a4;
-- (void)_processNextWorkerInLibraryBundle:(id)a3 reportProgressUsingBlock:(id)a4;
-- (void)_signalWorkerAtDate:(id)a3 workerType:(unint64_t)a4 bundle:(id)a5;
+- (void)_inq_timerQueue_timerEventHandlerWithTimer:(id)timer workerType:(unint64_t)type;
+- (void)_processNextWorkerInLibraryBundle:(id)bundle reportProgressUsingBlock:(id)block;
+- (void)_signalWorkerAtDate:(id)date workerType:(unint64_t)type bundle:(id)bundle;
 - (void)stopAllBackgroundJobs;
-- (void)submitBundleForProcessing:(id)a3 withCriteria:(id)a4 reportProgressUsingBlock:(id)a5;
+- (void)submitBundleForProcessing:(id)processing withCriteria:(id)criteria reportProgressUsingBlock:(id)block;
 @end
 
 @implementation PLBackgroundJobWorkerCoordinator
@@ -23,19 +23,19 @@
   return WeakRetained;
 }
 
-- (void)_inq_timerQueue_timerEventHandlerWithTimer:(id)a3 workerType:(unint64_t)a4
+- (void)_inq_timerQueue_timerEventHandlerWithTimer:(id)timer workerType:(unint64_t)type
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  timerCopy = timer;
   v6 = PLBackgroundJobServiceGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v9 = a4;
+    typeCopy = type;
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEBUG, "Signal again timer fired for worker type: %lu", buf, 0xCu);
   }
 
-  v7 = v5;
+  v7 = timerCopy;
   PLSafeRunWithUnfairLock();
 }
 
@@ -54,20 +54,20 @@ void __90__PLBackgroundJobWorkerCoordinator__inq_timerQueue_timerEventHandlerWit
   }
 }
 
-- (void)_signalWorkerAtDate:(id)a3 workerType:(unint64_t)a4 bundle:(id)a5
+- (void)_signalWorkerAtDate:(id)date workerType:(unint64_t)type bundle:(id)bundle
 {
   v21 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  if (!v9)
+  dateCopy = date;
+  bundleCopy = bundle;
+  if (!dateCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobWorkerCoordinator.m" lineNumber:449 description:{@"Invalid parameter not satisfying: %@", @"date"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobWorkerCoordinator.m" lineNumber:449 description:{@"Invalid parameter not satisfying: %@", @"date"}];
   }
 
-  v11 = v9;
-  v16 = v10;
-  v12 = v10;
+  v11 = dateCopy;
+  v16 = bundleCopy;
+  v12 = bundleCopy;
   v13 = PLSafeResultWithUnfairLock();
   if (v13)
   {
@@ -75,7 +75,7 @@ void __90__PLBackgroundJobWorkerCoordinator__inq_timerQueue_timerEventHandlerWit
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218242;
-      v18 = a4;
+      typeCopy = type;
       v19 = 2112;
       v20 = v11;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEBUG, "Starting signal again timer for worker type: %lu with date: %@", buf, 0x16u);
@@ -159,34 +159,34 @@ void __62__PLBackgroundJobWorkerCoordinator__handleAllWorkersCompleted__block_in
   }
 }
 
-- (void)_processNextWorkerInLibraryBundle:(id)a3 reportProgressUsingBlock:(id)a4
+- (void)_processNextWorkerInLibraryBundle:(id)bundle reportProgressUsingBlock:(id)block
 {
   v65 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  bundleCopy = bundle;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
-  v9 = [(NSMutableArray *)self->_pendingWorkers firstObject];
+  firstObject = [(NSMutableArray *)self->_pendingWorkers firstObject];
   currentWorker = self->_currentWorker;
-  self->_currentWorker = v9;
+  self->_currentWorker = firstObject;
 
-  v11 = [(PLBackgroundJobWorkerCriteriaTuple *)self->_currentWorker worker];
-  v41 = [(PLBackgroundJobWorkerCriteriaTuple *)self->_currentWorker criteria];
+  worker = [(PLBackgroundJobWorkerCriteriaTuple *)self->_currentWorker worker];
+  criteria = [(PLBackgroundJobWorkerCriteriaTuple *)self->_currentWorker criteria];
   v12 = [(NSMutableArray *)self->_pendingWorkers count];
   WeakRetained = objc_loadWeakRetained(&self->_statusCenter);
-  [v11 setStatusCenter:WeakRetained];
+  [worker setStatusCenter:WeakRetained];
 
   os_unfair_lock_unlock(&self->_lock);
   if (v12)
   {
-    v14 = [v7 libraryServicesManager];
-    v15 = [v14 databaseContext];
+    libraryServicesManager = [bundleCopy libraryServicesManager];
+    databaseContext = [libraryServicesManager databaseContext];
 
-    v16 = [v11 photoLibraryWithDatabaseContext:v15];
+    v16 = [worker photoLibraryWithDatabaseContext:databaseContext];
     if (!v16)
     {
       if (MEMORY[0x19EAEE520]())
       {
-        v16 = [PLDatabaseContext newShortLivedLibraryWithName:"[PLBackgroundJobWorkerCoordinator _processNextWorkerInLibraryBundle:reportProgressUsingBlock:]" bundle:v7];
+        v16 = [PLDatabaseContext newShortLivedLibraryWithName:"[PLBackgroundJobWorkerCoordinator _processNextWorkerInLibraryBundle:reportProgressUsingBlock:]" bundle:bundleCopy];
       }
 
       else
@@ -201,7 +201,7 @@ void __62__PLBackgroundJobWorkerCoordinator__handleAllWorkersCompleted__block_in
     aBlock[3] = &unk_1E75724D8;
     aBlock[4] = self;
     v54 = a2;
-    v40 = v15;
+    v40 = databaseContext;
     v53 = v40;
     v17 = _Block_copy(aBlock);
     if (!v16)
@@ -209,19 +209,19 @@ void __62__PLBackgroundJobWorkerCoordinator__handleAllWorkersCompleted__block_in
       v21 = PLBackgroundJobServiceGetLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v11 workerName];
+        workerName = [worker workerName];
         workerMode = self->_workerMode;
         *buf = 138543874;
-        *&buf[4] = v22;
+        *&buf[4] = workerName;
         *&buf[12] = 2112;
-        *&buf[14] = v7;
+        *&buf[14] = bundleCopy;
         *&buf[22] = 1024;
         LODWORD(v62) = workerMode;
         _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "_processNextWorkerInLibraryBundle: library is nil for worker %{public}@ bundle %@. workerCoordinatorMode: %d", buf, 0x1Cu);
       }
 
-      v17[2](v17, v11, 1);
-      [(PLBackgroundJobWorkerCoordinator *)self _processNextWorkerInLibraryBundle:v7 reportProgressUsingBlock:v8];
+      v17[2](v17, worker, 1);
+      [(PLBackgroundJobWorkerCoordinator *)self _processNextWorkerInLibraryBundle:bundleCopy reportProgressUsingBlock:blockCopy];
       goto LABEL_28;
     }
 
@@ -236,11 +236,11 @@ void __62__PLBackgroundJobWorkerCoordinator__handleAllWorkersCompleted__block_in
     v47[2] = __95__PLBackgroundJobWorkerCoordinator__processNextWorkerInLibraryBundle_reportProgressUsingBlock___block_invoke_129;
     v47[3] = &unk_1E75778C0;
     v51 = buf;
-    v18 = v11;
+    v18 = worker;
     v48 = v18;
     v19 = v16;
     v49 = v19;
-    v20 = v41;
+    v20 = criteria;
     v50 = v20;
     v39 = _Block_copy(v47);
     if ([objc_opt_class() usesMultipleLibrariesConcurrently])
@@ -254,19 +254,19 @@ void __62__PLBackgroundJobWorkerCoordinator__handleAllWorkersCompleted__block_in
       [v24 sync:v39 identifyingBlock:0 library:v19];
     }
 
-    v38 = [*(*&buf[8] + 40) workItemsNeedingProcessing];
+    workItemsNeedingProcessing = [*(*&buf[8] + 40) workItemsNeedingProcessing];
     if ([*(*&buf[8] + 40) zeroWorkItemsForValidCriteria])
     {
       v25 = PLBackgroundJobServiceGetLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
-        v26 = [v18 workerDetailedName];
-        v27 = [v20 name];
+        workerDetailedName = [v18 workerDetailedName];
+        name = [v20 name];
         v28 = self->_workerMode;
         *v55 = 138412802;
-        v56 = v26;
+        v56 = workerDetailedName;
         v57 = 2112;
-        v58 = v27;
+        v58 = name;
         v59 = 1024;
         v60 = v28;
         _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_DEBUG, "Worker %@ reports it has no work at current criteria %@; removing it from pending workers queue. workerCoordinatorMode: %d", v55, 0x1Cu);
@@ -275,7 +275,7 @@ void __62__PLBackgroundJobWorkerCoordinator__handleAllWorkersCompleted__block_in
 
     else
     {
-      if ([v38 count])
+      if ([workItemsNeedingProcessing count])
       {
         if (!v20 || ([*(*&buf[8] + 40) criteria], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v20, "isEqual:", v29), v29, (v30 & 1) != 0))
         {
@@ -298,9 +298,9 @@ void __62__PLBackgroundJobWorkerCoordinator__handleAllWorkersCompleted__block_in
           objc_copyWeak(&v46, v55);
           v42[4] = self;
           v44 = v17;
-          v43 = v7;
-          v45 = v8;
-          [v18 startWorkInLibrary:v19 withWorkItemsNeedingProcessing:v38 reportProgressUsingBlock:v45 withCompletion:v42];
+          v43 = bundleCopy;
+          v45 = blockCopy;
+          [v18 startWorkInLibrary:v19 withWorkItemsNeedingProcessing:workItemsNeedingProcessing reportProgressUsingBlock:v45 withCompletion:v42];
 
           objc_destroyWeak(&v46);
           objc_destroyWeak(v55);
@@ -310,10 +310,10 @@ void __62__PLBackgroundJobWorkerCoordinator__handleAllWorkersCompleted__block_in
         v25 = PLBackgroundJobServiceGetLog();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
-          v36 = [v18 workerDetailedName];
+          workerDetailedName2 = [v18 workerDetailedName];
           v37 = self->_workerMode;
           *v55 = 138543618;
-          v56 = v36;
+          v56 = workerDetailedName2;
           v57 = 1024;
           LODWORD(v58) = v37;
           _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_ERROR, "Worker %{public}@ reports it has work to do with invalid criteria, nonfatal; removing it from pending workers queue. workerCoordinatorMode: %d", v55, 0x12u);
@@ -323,7 +323,7 @@ void __62__PLBackgroundJobWorkerCoordinator__handleAllWorkersCompleted__block_in
 LABEL_26:
 
         v17[2](v17, v18, v35);
-        [(PLBackgroundJobWorkerCoordinator *)self _processNextWorkerInLibraryBundle:v7 reportProgressUsingBlock:v8];
+        [(PLBackgroundJobWorkerCoordinator *)self _processNextWorkerInLibraryBundle:bundleCopy reportProgressUsingBlock:blockCopy];
 LABEL_27:
 
         _Block_object_dispose(buf, 8);
@@ -335,10 +335,10 @@ LABEL_28:
       v25 = PLBackgroundJobServiceGetLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
-        v33 = [v18 workerDetailedName];
+        workerDetailedName3 = [v18 workerDetailedName];
         v34 = self->_workerMode;
         *v55 = 138412546;
-        v56 = v33;
+        v56 = workerDetailedName3;
         v57 = 1024;
         LODWORD(v58) = v34;
         _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_DEBUG, "Worker %@ reports it has no work to do; removing it from pending workers queue. workerCoordinatorMode: %d", v55, 0x12u);
@@ -449,23 +449,23 @@ void __95__PLBackgroundJobWorkerCoordinator__processNextWorkerInLibraryBundle_re
   v6 = [(NSMutableArray *)self->_pendingWorkers count];
   [(NSMutableArray *)self->_pendingWorkers removeAllObjects];
   [(NSMutableDictionary *)self->_cachedCriteriaForPendingWorkers removeAllObjects];
-  v7 = [(PLBackgroundJobWorkerCriteriaTuple *)self->_currentWorker worker];
+  worker = [(PLBackgroundJobWorkerCriteriaTuple *)self->_currentWorker worker];
   os_unfair_lock_unlock(&self->_lock);
   if (v6)
   {
-    [v7 stopAllWork];
+    [worker stopAllWork];
   }
 }
 
-- (void)submitBundleForProcessing:(id)a3 withCriteria:(id)a4 reportProgressUsingBlock:(id)a5
+- (void)submitBundleForProcessing:(id)processing withCriteria:(id)criteria reportProgressUsingBlock:(id)block
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  processingCopy = processing;
+  criteriaCopy = criteria;
+  blockCopy = block;
+  if (blockCopy)
   {
-    v11 = v10;
+    v11 = blockCopy;
   }
 
   else
@@ -473,7 +473,7 @@ void __95__PLBackgroundJobWorkerCoordinator__processNextWorkerInLibraryBundle_re
     v11 = &__block_literal_global_80030;
   }
 
-  v12 = [(PLBackgroundJobWorkerCoordinator *)self _workersForBundle:v8];
+  v12 = [(PLBackgroundJobWorkerCoordinator *)self _workersForBundle:processingCopy];
   os_unfair_lock_lock(&self->_lock);
   atomic_store(0, &self->_shouldDeferTask);
   v23 = [(NSMutableArray *)self->_pendingWorkers count];
@@ -497,7 +497,7 @@ void __95__PLBackgroundJobWorkerCoordinator__processNextWorkerInLibraryBundle_re
           objc_enumerationMutation(v13);
         }
 
-        v18 = [[PLBackgroundJobWorkerCriteriaTuple alloc] initWithWorker:*(*(&v24 + 1) + 8 * v17) withCriteria:v9];
+        v18 = [[PLBackgroundJobWorkerCriteriaTuple alloc] initWithWorker:*(*(&v24 + 1) + 8 * v17) withCriteria:criteriaCopy];
         [(NSMutableArray *)self->_pendingWorkers addObject:v18];
 
         ++v17;
@@ -526,32 +526,32 @@ void __95__PLBackgroundJobWorkerCoordinator__processNextWorkerInLibraryBundle_re
   os_unfair_lock_unlock(&self->_lock);
   if (!v19)
   {
-    [(PLBackgroundJobWorkerCoordinator *)self _processNextWorkerInLibraryBundle:v8 reportProgressUsingBlock:v11];
+    [(PLBackgroundJobWorkerCoordinator *)self _processNextWorkerInLibraryBundle:processingCopy reportProgressUsingBlock:v11];
   }
 }
 
-- (id)pendingJobsForBundle:(id)a3 workerTypes:(id)a4
+- (id)pendingJobsForBundle:(id)bundle workerTypes:(id)types
 {
   v85 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(__CFString *)v6 pathManager];
-  v9 = [v8 libraryURL];
-  v70 = [v9 absoluteString];
+  bundleCopy = bundle;
+  typesCopy = types;
+  pathManager = [(__CFString *)bundleCopy pathManager];
+  libraryURL = [pathManager libraryURL];
+  absoluteString = [libraryURL absoluteString];
 
-  v10 = [(__CFString *)v6 libraryServicesManager];
-  v11 = [v10 databaseContext];
-  v12 = [v11 newShortLivedLibraryWithName:"-[PLBackgroundJobWorkerCoordinator pendingJobsForBundle:workerTypes:]"];
+  libraryServicesManager = [(__CFString *)bundleCopy libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v12 = [databaseContext newShortLivedLibraryWithName:"-[PLBackgroundJobWorkerCoordinator pendingJobsForBundle:workerTypes:]"];
 
   v71 = v12;
-  if (!v12 && (!MEMORY[0x19EAEE520]() || (v71 = [PLDatabaseContext newShortLivedLibraryWithName:"[PLBackgroundJobWorkerCoordinator pendingJobsForBundle:workerTypes:]" bundle:v6]) == 0))
+  if (!v12 && (!MEMORY[0x19EAEE520]() || (v71 = [PLDatabaseContext newShortLivedLibraryWithName:"[PLBackgroundJobWorkerCoordinator pendingJobsForBundle:workerTypes:]" bundle:bundleCopy]) == 0))
   {
     v58 = PLBackgroundJobServiceGetLog();
     v71 = v58;
     if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v80 = v6;
+      v80 = bundleCopy;
       _os_log_impl(&dword_19BF1F000, v58, OS_LOG_TYPE_ERROR, "pendingJobsForBundle: library is nil for bundle %@", buf, 0xCu);
     }
 
@@ -564,7 +564,7 @@ void __95__PLBackgroundJobWorkerCoordinator__processNextWorkerInLibraryBundle_re
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v80 = v6;
+      v80 = bundleCopy;
       v14 = "pendingJobsForBundle: ignoring jobs for unit testing bundle %@";
 LABEL_44:
       v15 = v13;
@@ -581,7 +581,7 @@ LABEL_44:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v80 = v6;
+      v80 = bundleCopy;
       v14 = "pendingJobsForBundle: ignoring background jobs during unit testing for bundle %@";
       v15 = v13;
       v16 = OS_LOG_TYPE_DEFAULT;
@@ -599,7 +599,7 @@ LABEL_45:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v80 = v6;
+      v80 = bundleCopy;
       v14 = "pendingJobsForBundle: library create options indicate no background jobs for bundle %@";
       goto LABEL_44;
     }
@@ -612,13 +612,13 @@ LABEL_47:
   }
 
   v17 = objc_alloc(MEMORY[0x1E696AD60]);
-  v18 = [(__CFString *)v6 libraryServicesManager];
-  [v18 wellKnownPhotoLibraryIdentifier];
+  libraryServicesManager2 = [(__CFString *)bundleCopy libraryServicesManager];
+  [libraryServicesManager2 wellKnownPhotoLibraryIdentifier];
   v19 = PLStringFromWellKnownPhotoLibraryIdentifier();
   v73 = [v17 initWithFormat:@"Workers that reported pending jobs on well known library identifier %@:\n", v19];
 
   v20 = +[PLBackgroundJobWorkerTypes allTypesMask];
-  v21 = [v20 isEqual:v7];
+  v21 = [v20 isEqual:typesCopy];
   v22 = @"some workers";
   if (v21)
   {
@@ -633,9 +633,9 @@ LABEL_47:
     *buf = 138412802;
     v80 = v23;
     v81 = 2112;
-    v82 = v70;
+    v82 = absoluteString;
     v83 = 2112;
-    v84 = v7;
+    v84 = typesCopy;
     _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_DEBUG, "Checking %@ of library %@ for pending jobs with signaled worker types: %@", buf, 0x20u);
   }
 
@@ -647,15 +647,15 @@ LABEL_47:
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v68 = v6;
-  obj = [(PLBackgroundJobWorkerCoordinator *)self _workersForBundle:v6];
+  v68 = bundleCopy;
+  obj = [(PLBackgroundJobWorkerCoordinator *)self _workersForBundle:bundleCopy];
   v26 = [obj countByEnumeratingWithState:&v74 objects:v78 count:16];
   v27 = v71;
   if (v26)
   {
     v28 = v26;
     v29 = *v75;
-    v69 = v7;
+    v69 = typesCopy;
     while (2)
     {
       for (i = 0; i != v28; ++i)
@@ -667,35 +667,35 @@ LABEL_47:
 
         v31 = *(*(&v74 + 1) + 8 * i);
         cachedCriteriaForPendingWorkers = self->_cachedCriteriaForPendingWorkers;
-        v33 = [v31 workerDetailedName];
-        v34 = [(NSMutableDictionary *)cachedCriteriaForPendingWorkers objectForKeyedSubscript:v33];
+        workerDetailedName = [v31 workerDetailedName];
+        v34 = [(NSMutableDictionary *)cachedCriteriaForPendingWorkers objectForKeyedSubscript:workerDetailedName];
 
         if (v34)
         {
           v35 = self->_cachedCriteriaForPendingWorkers;
-          v36 = [v31 workerDetailedName];
-          v37 = [(NSMutableDictionary *)v35 objectForKeyedSubscript:v36];
+          workerDetailedName2 = [v31 workerDetailedName];
+          v37 = [(NSMutableDictionary *)v35 objectForKeyedSubscript:workerDetailedName2];
 
           [v25 addObject:v37];
-          v38 = [v31 workerName];
-          v39 = [v37 name];
-          [(__CFString *)v73 appendFormat:@"\t W: %@ C: %@ Cache hit: YES\n", v38, v39];
+          workerName = [v31 workerName];
+          name = [v37 name];
+          [(__CFString *)v73 appendFormat:@"\t W: %@ C: %@ Cache hit: YES\n", workerName, name];
         }
 
         else
         {
-          v40 = [v7 containsWorker:v31];
+          v40 = [typesCopy containsWorker:v31];
           os_unfair_lock_unlock(&self->_lock);
           if (v40)
           {
             v41 = PLBackgroundJobServiceGetLog();
             if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
             {
-              v42 = [v31 workerName];
+              workerName2 = [v31 workerName];
               *buf = 138412546;
-              v80 = v42;
+              v80 = workerName2;
               v81 = 2112;
-              v82 = v70;
+              v82 = absoluteString;
               _os_log_impl(&dword_19BF1F000, v41, OS_LOG_TYPE_DEBUG, "Checking pending jobs for %@ for library %@", buf, 0x16u);
             }
 
@@ -703,23 +703,23 @@ LABEL_47:
             os_unfair_lock_lock(&self->_lock);
             if (v37)
             {
-              v43 = [v37 workItemsNeedingProcessing];
-              v44 = [v43 count];
+              workItemsNeedingProcessing = [v37 workItemsNeedingProcessing];
+              v44 = [workItemsNeedingProcessing count];
 
               if (v44)
               {
-                v45 = [v31 workerName];
-                v46 = [v37 criteria];
-                v47 = [v46 name];
-                [(__CFString *)v73 appendFormat:@"\t W: %@ C: %@ Cache hit: NO\n", v45, v47];
+                workerName3 = [v31 workerName];
+                criteria = [v37 criteria];
+                name2 = [criteria name];
+                [(__CFString *)v73 appendFormat:@"\t W: %@ C: %@ Cache hit: NO\n", workerName3, name2];
 
-                v48 = [v37 criteria];
-                [v25 addObject:v48];
+                criteria2 = [v37 criteria];
+                [v25 addObject:criteria2];
 
                 v49 = self->_cachedCriteriaForPendingWorkers;
-                v50 = [v37 criteria];
-                v51 = [v31 workerDetailedName];
-                [(NSMutableDictionary *)v49 setObject:v50 forKey:v51];
+                criteria3 = [v37 criteria];
+                workerDetailedName3 = [v31 workerDetailedName];
+                [(NSMutableDictionary *)v49 setObject:criteria3 forKey:workerDetailedName3];
 
                 WeakRetained = objc_loadWeakRetained(&self->_statusCenter);
                 [WeakRetained recordWorkerHasPendingJobs:v31];
@@ -727,45 +727,45 @@ LABEL_47:
                 if ([objc_opt_class() avoidCheckingOtherWorkersIfThisWorkerHasPendingWork])
                 {
                   v60 = PLBackgroundJobServiceGetLog();
-                  v7 = v69;
+                  typesCopy = v69;
                   if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
                   {
-                    v61 = [v31 workerName];
+                    workerName4 = [v31 workerName];
                     *buf = 138543362;
-                    v80 = v61;
+                    v80 = workerName4;
                     _os_log_impl(&dword_19BF1F000, v60, OS_LOG_TYPE_DEFAULT, "Ignoring all other workers in the pending jobs queue since worker %{public}@ returned YES for avoidCheckingOtherWorkersIfThisWorkerHasPendingWork and has pending work to do", buf, 0xCu);
                   }
 
                   goto LABEL_51;
                 }
 
-                v7 = v69;
+                typesCopy = v69;
               }
 
               else
               {
-                v53 = [v37 signalAgainDate];
+                signalAgainDate = [v37 signalAgainDate];
 
-                if (v53)
+                if (signalAgainDate)
                 {
                   v54 = PLBackgroundJobServiceGetLog();
                   if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
                   {
-                    v55 = [v31 workerName];
-                    v56 = [v37 signalAgainDate];
+                    workerName5 = [v31 workerName];
+                    signalAgainDate2 = [v37 signalAgainDate];
                     *buf = 138543874;
-                    v80 = v55;
+                    v80 = workerName5;
                     v81 = 2112;
-                    v82 = v70;
+                    v82 = absoluteString;
                     v83 = 2114;
-                    v84 = v56;
+                    v84 = signalAgainDate2;
                     _os_log_impl(&dword_19BF1F000, v54, OS_LOG_TYPE_DEFAULT, "Worker %{public}@ for library %@ has no immediate work items, but wants to be signaled later at %{public}@", buf, 0x20u);
 
-                    v7 = v69;
+                    typesCopy = v69;
                   }
 
-                  v57 = [v37 signalAgainDate];
-                  -[PLBackgroundJobWorkerCoordinator _signalWorkerAtDate:workerType:bundle:](self, "_signalWorkerAtDate:workerType:bundle:", v57, [v31 type], v68);
+                  signalAgainDate3 = [v37 signalAgainDate];
+                  -[PLBackgroundJobWorkerCoordinator _signalWorkerAtDate:workerType:bundle:](self, "_signalWorkerAtDate:workerType:bundle:", signalAgainDate3, [v31 type], v68);
                 }
               }
 
@@ -805,7 +805,7 @@ LABEL_51:
     }
 
     *buf = 138412546;
-    v80 = v70;
+    v80 = absoluteString;
     v81 = 2112;
     v82 = v64;
     _os_log_impl(&dword_19BF1F000, v62, OS_LOG_TYPE_DEBUG, "Checked workers of library %@ for pending jobs. Result: %@", buf, 0x16u);
@@ -829,29 +829,29 @@ LABEL_51:
     v59 = 0;
   }
 
-  v6 = v68;
+  bundleCopy = v68;
 
 LABEL_61:
 
   return v59;
 }
 
-- (id)pendingJobsForBundle:(id)a3
+- (id)pendingJobsForBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = +[PLBackgroundJobWorkerTypes allTypesMask];
-  v6 = [(PLBackgroundJobWorkerCoordinator *)self pendingJobsForBundle:v4 workerTypes:v5];
+  v6 = [(PLBackgroundJobWorkerCoordinator *)self pendingJobsForBundle:bundleCopy workerTypes:v5];
 
   return v6;
 }
 
-- (BOOL)_isValidWorkerClass:(Class)a3 bundle:(id)a4
+- (BOOL)_isValidWorkerClass:(Class)class bundle:(id)bundle
 {
-  v5 = a4;
-  v6 = [v5 libraryServicesManager];
-  if (-[objc_class supportsWellKnownPhotoLibraryIdentifier:](a3, "supportsWellKnownPhotoLibraryIdentifier:", [v6 wellKnownPhotoLibraryIdentifier]))
+  bundleCopy = bundle;
+  libraryServicesManager = [bundleCopy libraryServicesManager];
+  if (-[objc_class supportsWellKnownPhotoLibraryIdentifier:](class, "supportsWellKnownPhotoLibraryIdentifier:", [libraryServicesManager wellKnownPhotoLibraryIdentifier]))
   {
-    v7 = [(objc_class *)a3 isEnabledForBundle:v5];
+    v7 = [(objc_class *)class isEnabledForBundle:bundleCopy];
   }
 
   else
@@ -862,14 +862,14 @@ LABEL_61:
   return v7;
 }
 
-- (id)_workersForBundle:(id)a3
+- (id)_workersForBundle:(id)bundle
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [v4 libraryServicesManager];
-  v7 = [v6 readyForAnalysis];
-  v8 = [v7 isReadyForAnalysis];
+  libraryServicesManager = [bundleCopy libraryServicesManager];
+  readyForAnalysis = [libraryServicesManager readyForAnalysis];
+  isReadyForAnalysis = [readyForAnalysis isReadyForAnalysis];
 
   v20 = 0u;
   v21 = 0u;
@@ -891,9 +891,9 @@ LABEL_61:
         }
 
         v14 = NSClassFromString(*(*(&v18 + 1) + 8 * i));
-        if ([(PLBackgroundJobWorkerCoordinator *)self _isValidWorkerClass:v14 bundle:v4, v18]&& ((v8 & 1) != 0 || [(objc_class *)v14 allowWorkerToRunDuringCPLInitialSync]))
+        if ([(PLBackgroundJobWorkerCoordinator *)self _isValidWorkerClass:v14 bundle:bundleCopy, v18]&& ((isReadyForAnalysis & 1) != 0 || [(objc_class *)v14 allowWorkerToRunDuringCPLInitialSync]))
         {
-          v15 = [[v14 alloc] initWithLibraryBundle:v4];
+          v15 = [[v14 alloc] initWithLibraryBundle:bundleCopy];
           [v5 addObject:v15];
         }
       }
@@ -909,19 +909,19 @@ LABEL_61:
   return v16;
 }
 
-- (PLBackgroundJobWorkerCoordinator)initWithWorkerClassesAsStrings:(id)a3 workerMode:(signed __int16)a4 statusCenter:(id)a5
+- (PLBackgroundJobWorkerCoordinator)initWithWorkerClassesAsStrings:(id)strings workerMode:(signed __int16)mode statusCenter:(id)center
 {
-  v9 = a3;
-  v10 = a5;
+  stringsCopy = strings;
+  centerCopy = center;
   v25.receiver = self;
   v25.super_class = PLBackgroundJobWorkerCoordinator;
   v11 = [(PLBackgroundJobWorkerCoordinator *)&v25 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_statusCenter, v10);
-    v12->_workerMode = a4;
-    objc_storeStrong(&v12->_workerClassesAsStrings, a3);
+    objc_storeWeak(&v11->_statusCenter, centerCopy);
+    v12->_workerMode = mode;
+    objc_storeStrong(&v12->_workerClassesAsStrings, strings);
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     pendingWorkers = v12->_pendingWorkers;
     v12->_pendingWorkers = v13;
@@ -931,9 +931,9 @@ LABEL_61:
     v12->_cachedCriteriaForPendingWorkers = v15;
 
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.photolibraryd.workercoordinator.timer"];
-    v18 = [v17 UTF8String];
+    uTF8String = [v17 UTF8String];
     v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v20 = dispatch_queue_create(v18, v19);
+    v20 = dispatch_queue_create(uTF8String, v19);
     timerQueue = v12->_timerQueue;
     v12->_timerQueue = v20;
 
@@ -946,16 +946,16 @@ LABEL_61:
   return v12;
 }
 
-- (PLBackgroundJobWorkerCoordinator)initWithWorkerCoordinatorWorkerMode:(signed __int16)a3 statusCenter:(id)a4
+- (PLBackgroundJobWorkerCoordinator)initWithWorkerCoordinatorWorkerMode:(signed __int16)mode statusCenter:(id)center
 {
-  v4 = a3;
+  modeCopy = mode;
   v73[5] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695DF70];
-  v7 = a4;
+  centerCopy = center;
   v8 = objc_alloc_init(v6);
-  if (v4)
+  if (modeCopy)
   {
-    if (v4 != 1)
+    if (modeCopy != 1)
     {
       goto LABEL_8;
     }
@@ -981,8 +981,8 @@ LABEL_61:
 
   else
   {
-    v67 = v7;
-    v68 = self;
+    v67 = centerCopy;
+    selfCopy = self;
     v20 = objc_opt_class();
     v66 = NSStringFromClass(v20);
     v72[0] = v66;
@@ -1052,9 +1052,9 @@ LABEL_61:
     v51 = objc_opt_class();
     v10 = NSStringFromClass(v51);
     [v8 addObject:v10];
-    v4 = 0;
-    v7 = v67;
-    self = v68;
+    modeCopy = 0;
+    centerCopy = v67;
+    self = selfCopy;
   }
 
 LABEL_8:
@@ -1073,7 +1073,7 @@ LABEL_8:
   }
 
   v55 = [v8 copy];
-  v56 = [(PLBackgroundJobWorkerCoordinator *)self initWithWorkerClassesAsStrings:v55 workerMode:v4 statusCenter:v7];
+  v56 = [(PLBackgroundJobWorkerCoordinator *)self initWithWorkerClassesAsStrings:v55 workerMode:modeCopy statusCenter:centerCopy];
 
   return v56;
 }

@@ -1,21 +1,21 @@
 @interface HMDHAPAccessoryRemoteOperationTask
-- (BOOL)_appendServiceListWithRequest:(id)a3 serviceList:(id)a4;
-- (BOOL)_buildMessageAccessoryListFromAccessoryRequestMap:(id)a3 accessoryList:(id)a4;
-- (BOOL)_buildMessageAccessoryListFromRequests:(id)a3 accessoryList:(id)a4;
-- (HMDHAPAccessoryRemoteOperationTask)initWithContext:(id)a3 remoteMessageName:(id)a4 requests:(id)a5 delegateDevice:(id)a6 timeout:(double)a7 completion:(id)a8;
-- (id)_remoteMessageFromAccessoryRequestMap:(id)a3;
+- (BOOL)_appendServiceListWithRequest:(id)request serviceList:(id)list;
+- (BOOL)_buildMessageAccessoryListFromAccessoryRequestMap:(id)map accessoryList:(id)list;
+- (BOOL)_buildMessageAccessoryListFromRequests:(id)requests accessoryList:(id)list;
+- (HMDHAPAccessoryRemoteOperationTask)initWithContext:(id)context remoteMessageName:(id)name requests:(id)requests delegateDevice:(id)device timeout:(double)timeout completion:(id)completion;
+- (id)_remoteMessageFromAccessoryRequestMap:(id)map;
 - (id)activityRequestEventName;
-- (void)_receivedRemotelyChangedCharacteristicResponses:(id)a3 message:(id)a4;
-- (void)_updateLastKnownStateForAccessoriesWithPayload:(id)a3;
+- (void)_receivedRemotelyChangedCharacteristicResponses:(id)responses message:(id)message;
+- (void)_updateLastKnownStateForAccessoriesWithPayload:(id)payload;
 - (void)execute;
 @end
 
 @implementation HMDHAPAccessoryRemoteOperationTask
 
-- (BOOL)_appendServiceListWithRequest:(id)a3 serviceList:(id)a4
+- (BOOL)_appendServiceListWithRequest:(id)request serviceList:(id)list
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  listCopy = list;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -27,11 +27,11 @@
   objc_exception_throw(v13);
 }
 
-- (BOOL)_buildMessageAccessoryListFromRequests:(id)a3 accessoryList:(id)a4
+- (BOOL)_buildMessageAccessoryListFromRequests:(id)requests accessoryList:(id)list
 {
   v47 = *MEMORY[0x277D85DE8];
-  obj = a3;
-  v38 = a4;
+  obj = requests;
+  listCopy = list;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -44,7 +44,7 @@
     v9 = *v43;
     v32 = *MEMORY[0x277CD2678];
     v34 = *v43;
-    v35 = self;
+    selfCopy = self;
     do
     {
       v10 = 0;
@@ -57,13 +57,13 @@
         }
 
         v11 = *(*(&v42 + 1) + 8 * v10);
-        v12 = [v11 characteristic];
-        v13 = [v11 service];
-        v14 = [v11 accessory];
-        v15 = v14;
-        if (v14)
+        characteristic = [v11 characteristic];
+        service = [v11 service];
+        accessory = [v11 accessory];
+        v15 = accessory;
+        if (accessory)
         {
-          v16 = v13 == 0;
+          v16 = service == 0;
         }
 
         else
@@ -71,26 +71,26 @@
           v16 = 1;
         }
 
-        if (!v16 && v12 != 0)
+        if (!v16 && characteristic != 0)
         {
           v18 = v8;
-          v19 = [v14 uuid];
-          v20 = [v19 UUIDString];
+          uuid = [accessory uuid];
+          uUIDString = [uuid UUIDString];
 
-          v21 = [v38 hmf_mutableDictionaryForKey:v20];
-          if (!v21)
+          dictionary = [listCopy hmf_mutableDictionaryForKey:uUIDString];
+          if (!dictionary)
           {
-            v21 = [MEMORY[0x277CBEB38] dictionary];
-            [v38 setObject:v21 forKeyedSubscript:v20];
+            dictionary = [MEMORY[0x277CBEB38] dictionary];
+            [listCopy setObject:dictionary forKeyedSubscript:uUIDString];
           }
 
-          v22 = [(HMDHAPAccessoryTask *)self context];
-          v23 = [v22 isShortActionOperation];
+          context = [(HMDHAPAccessoryTask *)self context];
+          isShortActionOperation = [context isShortActionOperation];
 
           v24 = v18;
-          if (v23)
+          if (isShortActionOperation)
           {
-            [v38 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v32];
+            [listCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v32];
             v24 = 1;
           }
 
@@ -98,25 +98,25 @@
           {
             v41 = 0;
             v40 = 5;
-            v25 = [v15 home];
-            v26 = [v15 identifier];
+            home = [v15 home];
+            identifier = [v15 identifier];
             v39 = 0;
-            [v25 retrieveStateForTrackedAccessory:v26 stateNumber:0 isReachable:&v41 linkQuality:&v40 lastSeen:&v39];
+            [home retrieveStateForTrackedAccessory:identifier stateNumber:0 isReachable:&v41 linkQuality:&v40 lastSeen:&v39];
             v33 = v39;
 
             if (v41 == 1)
             {
               v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v40];
-              v28 = [v38 objectForKeyedSubscript:v20];
+              v28 = [listCopy objectForKeyedSubscript:uUIDString];
               [v28 setObject:v27 forKeyedSubscript:@"kAccessoryLinkQuality"];
 
-              v29 = [v38 objectForKeyedSubscript:v20];
+              v29 = [listCopy objectForKeyedSubscript:uUIDString];
               [v29 setObject:v33 forKeyedSubscript:@"kAccessoryLastSeen"];
             }
           }
 
-          self = v35;
-          v8 = [(HMDHAPAccessoryRemoteOperationTask *)v35 _appendServiceListWithRequest:v11 serviceList:v21]| v24;
+          self = selfCopy;
+          v8 = [(HMDHAPAccessoryRemoteOperationTask *)selfCopy _appendServiceListWithRequest:v11 serviceList:dictionary]| v24;
 
           v9 = v34;
           v7 = v36;
@@ -141,16 +141,16 @@
   return v8 & 1;
 }
 
-- (BOOL)_buildMessageAccessoryListFromAccessoryRequestMap:(id)a3 accessoryList:(id)a4
+- (BOOL)_buildMessageAccessoryListFromAccessoryRequestMap:(id)map accessoryList:(id)list
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  listCopy = list;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [mapCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -162,14 +162,14 @@
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(mapCopy);
         }
 
-        v13 = [v6 objectForKey:*(*(&v16 + 1) + 8 * i)];
-        v10 |= [(HMDHAPAccessoryRemoteOperationTask *)self _buildMessageAccessoryListFromRequests:v13 accessoryList:v7];
+        v13 = [mapCopy objectForKey:*(*(&v16 + 1) + 8 * i)];
+        v10 |= [(HMDHAPAccessoryRemoteOperationTask *)self _buildMessageAccessoryListFromRequests:v13 accessoryList:listCopy];
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [mapCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -184,15 +184,15 @@
   return v10 & 1;
 }
 
-- (id)_remoteMessageFromAccessoryRequestMap:(id)a3
+- (id)_remoteMessageFromAccessoryRequestMap:(id)map
 {
   v59[5] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
-  v6 = [v4 dictionary];
-  v7 = [(HMDHAPAccessoryRemoteOperationTask *)self _buildMessageAccessoryListFromAccessoryRequestMap:v5 accessoryList:v6];
+  mapCopy = map;
+  dictionary = [v4 dictionary];
+  v7 = [(HMDHAPAccessoryRemoteOperationTask *)self _buildMessageAccessoryListFromAccessoryRequestMap:mapCopy accessoryList:dictionary];
 
-  if ([v6 count])
+  if ([dictionary count])
   {
     if (v7)
     {
@@ -202,78 +202,78 @@
 
     else
     {
-      v11 = [(HMDHAPAccessoryTask *)self context];
-      v12 = [v11 requestMessage];
+      context = [(HMDHAPAccessoryTask *)self context];
+      requestMessage = [context requestMessage];
       v8 = *MEMORY[0x277CD2678];
-      v9 = [v12 BOOLForKey:*MEMORY[0x277CD2678]];
+      v9 = [requestMessage BOOLForKey:*MEMORY[0x277CD2678]];
     }
 
-    v13 = [(HMDHAPAccessoryTask *)self context];
-    v14 = [v13 requestMessage];
-    v15 = [v14 uuidForKey:*MEMORY[0x277CD2050]];
+    context2 = [(HMDHAPAccessoryTask *)self context];
+    requestMessage2 = [context2 requestMessage];
+    v15 = [requestMessage2 uuidForKey:*MEMORY[0x277CD2050]];
 
     v16 = (v15 != 0) | v9;
     v17 = MEMORY[0x277CBEB38];
-    v57 = v6;
+    v57 = dictionary;
     v58[0] = *MEMORY[0x277CCE7A8];
-    v56 = [v6 copy];
+    v56 = [dictionary copy];
     v59[0] = v56;
     v58[1] = *MEMORY[0x277CD0640];
-    v55 = [(HMDHAPAccessoryTask *)self context];
-    v18 = [v55 homeUniqueIdentifier];
-    v19 = [v18 UUIDString];
-    v59[1] = v19;
+    context3 = [(HMDHAPAccessoryTask *)self context];
+    homeUniqueIdentifier = [context3 homeUniqueIdentifier];
+    uUIDString = [homeUniqueIdentifier UUIDString];
+    v59[1] = uUIDString;
     v58[2] = v8;
     v20 = [MEMORY[0x277CCABB0] numberWithBool:v16 & 1];
     v59[2] = v20;
     v58[3] = @"kDoNotForwardMessageKey";
     v21 = MEMORY[0x277CCABB0];
-    v22 = [(HMDHAPAccessoryRemoteOperationTask *)self delegateDevice];
-    v23 = [v21 numberWithInt:v22 != 0];
+    delegateDevice = [(HMDHAPAccessoryRemoteOperationTask *)self delegateDevice];
+    v23 = [v21 numberWithInt:delegateDevice != 0];
     v59[3] = v23;
     v58[4] = @"kRequestIdentifierKey";
-    v24 = [(HMDHAPAccessoryTask *)self requestIdentifier];
-    v25 = [v24 UUIDString];
-    v59[4] = v25;
+    requestIdentifier = [(HMDHAPAccessoryTask *)self requestIdentifier];
+    uUIDString2 = [requestIdentifier UUIDString];
+    v59[4] = uUIDString2;
     v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v59 forKeys:v58 count:5];
     v27 = [v17 dictionaryWithDictionary:v26];
 
-    v28 = [(HMDHAPAccessoryTask *)self context];
-    v29 = [v28 requestMessage];
-    v30 = [v29 numberForKey:@"kMessageOriginalSourceKey"];
+    context4 = [(HMDHAPAccessoryTask *)self context];
+    requestMessage3 = [context4 requestMessage];
+    v30 = [requestMessage3 numberForKey:@"kMessageOriginalSourceKey"];
 
     if (v30)
     {
       [v27 setObject:v30 forKeyedSubscript:@"kMessageOriginalSourceKey"];
     }
 
-    v31 = [(HMDHAPAccessoryTask *)self context];
-    v32 = [v31 requestMessage];
-    v33 = [v32 stringForKey:@"kMessageUserOverrideKey"];
+    context5 = [(HMDHAPAccessoryTask *)self context];
+    requestMessage4 = [context5 requestMessage];
+    v33 = [requestMessage4 stringForKey:@"kMessageUserOverrideKey"];
 
     if (v33)
     {
       [v27 setObject:v33 forKeyedSubscript:@"kMessageUserOverrideKey"];
     }
 
-    v34 = [(HMDHAPAccessoryRemoteOperationTask *)self remoteMessageName];
-    v35 = [(HMDHAPAccessoryTask *)self context];
-    v36 = [v35 requestMessage];
-    v37 = [v36 name];
-    v38 = [v37 isEqualToString:@"kCharacteristicReadRequestKey"];
+    remoteMessageName = [(HMDHAPAccessoryRemoteOperationTask *)self remoteMessageName];
+    context6 = [(HMDHAPAccessoryTask *)self context];
+    requestMessage5 = [context6 requestMessage];
+    name = [requestMessage5 name];
+    v38 = [name isEqualToString:@"kCharacteristicReadRequestKey"];
 
     if (v38)
     {
-      v39 = [(HMDHAPAccessoryTask *)self context];
-      v40 = [v39 requestMessage];
-      v41 = [v40 name];
+      context7 = [(HMDHAPAccessoryTask *)self context];
+      requestMessage6 = [context7 requestMessage];
+      name2 = [requestMessage6 name];
 
-      v42 = [(HMDHAPAccessoryTask *)self context];
-      v43 = [v42 requestMessage];
-      v44 = [v43 messagePayload];
-      [v27 addEntriesFromDictionary:v44];
+      context8 = [(HMDHAPAccessoryTask *)self context];
+      requestMessage7 = [context8 requestMessage];
+      messagePayload = [requestMessage7 messagePayload];
+      [v27 addEntriesFromDictionary:messagePayload];
 
-      v34 = v41;
+      remoteMessageName = name2;
     }
 
     if ([(HMDHAPAccessoryTask *)self supportsMultiPartResponse])
@@ -282,26 +282,26 @@
       [v27 setObject:v45 forKeyedSubscript:@"kMultiPartResponseKey"];
     }
 
-    v46 = [(HMDHAPAccessoryTask *)self context];
-    v47 = [v46 qualityOfService];
+    context9 = [(HMDHAPAccessoryTask *)self context];
+    qualityOfService = [context9 qualityOfService];
 
-    if (v47 <= 17)
+    if (qualityOfService <= 17)
     {
       v48 = 17;
     }
 
     else
     {
-      v48 = v47;
+      v48 = qualityOfService;
     }
 
     v49 = MEMORY[0x277D0F848];
-    v50 = [(HMDHAPAccessoryTask *)self context];
-    v51 = [v50 homeMessageDestination];
+    context10 = [(HMDHAPAccessoryTask *)self context];
+    homeMessageDestination = [context10 homeMessageDestination];
     v52 = [v27 copy];
-    v10 = [v49 messageWithName:v34 qualityOfService:v48 destination:v51 payload:v52];
+    v10 = [v49 messageWithName:remoteMessageName qualityOfService:v48 destination:homeMessageDestination payload:v52];
 
-    v6 = v57;
+    dictionary = v57;
   }
 
   else
@@ -317,24 +317,24 @@
 - (id)activityRequestEventName
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDHAPAccessoryTask *)self operationName];
-  v4 = [v3 capitalizedString];
-  v5 = [v2 stringWithFormat:@"HMDHAPAccessoryRemoteOperationTask.Forward%@sToResident", v4];
+  operationName = [(HMDHAPAccessoryTask *)self operationName];
+  capitalizedString = [operationName capitalizedString];
+  v5 = [v2 stringWithFormat:@"HMDHAPAccessoryRemoteOperationTask.Forward%@sToResident", capitalizedString];
 
   return v5;
 }
 
-- (void)_receivedRemotelyChangedCharacteristicResponses:(id)a3 message:(id)a4
+- (void)_receivedRemotelyChangedCharacteristicResponses:(id)responses message:(id)message
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(HMDHAPAccessoryTask *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  responsesCopy = responses;
+  messageCopy = message;
+  workQueue = [(HMDHAPAccessoryTask *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if ([v14 count] && -[HMDHAPAccessoryTask supportsMultiPartResponse](self, "supportsMultiPartResponse") && !-[HMDHAPAccessoryRemoteOperationTask isFinished](self, "isFinished"))
+  if ([responsesCopy count] && -[HMDHAPAccessoryTask supportsMultiPartResponse](self, "supportsMultiPartResponse") && !-[HMDHAPAccessoryRemoteOperationTask isFinished](self, "isFinished"))
   {
-    v8 = [(HMDHAPAccessoryTask *)self completion];
-    (v8)[2](v8, v14);
+    completion = [(HMDHAPAccessoryTask *)self completion];
+    (completion)[2](completion, responsesCopy);
 
     if ([(HMDHAPAccessoryTask *)self allResponsesReceived])
     {
@@ -342,34 +342,34 @@
     }
 
     v9 = objc_opt_class();
-    v10 = [(HMDHAPAccessoryRemoteOperationTask *)self logEvents];
-    v11 = [v6 userInfo];
-    v12 = [(HMDHAPAccessoryTask *)self requestIdentifier];
-    v13 = [v12 UUIDString];
-    [v9 updateLogEvents:v10 withResponses:v14 remoteMessageResponse:v11 forTaskID:v13 shouldSubmit:1];
+    logEvents = [(HMDHAPAccessoryRemoteOperationTask *)self logEvents];
+    userInfo = [messageCopy userInfo];
+    requestIdentifier = [(HMDHAPAccessoryTask *)self requestIdentifier];
+    uUIDString = [requestIdentifier UUIDString];
+    [v9 updateLogEvents:logEvents withResponses:responsesCopy remoteMessageResponse:userInfo forTaskID:uUIDString shouldSubmit:1];
   }
 }
 
-- (void)_updateLastKnownStateForAccessoriesWithPayload:(id)a3
+- (void)_updateLastKnownStateForAccessoriesWithPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(HMDHAPAccessoryTask *)self context];
-  v6 = [v5 home];
+  payloadCopy = payload;
+  context = [(HMDHAPAccessoryTask *)self context];
+  home = [context home];
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v8 = [v4 objectForKeyedSubscript:*MEMORY[0x277CD1FB0]];
+  v8 = [payloadCopy objectForKeyedSubscript:*MEMORY[0x277CD1FB0]];
   if (v8)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __85__HMDHAPAccessoryRemoteOperationTask__updateLastKnownStateForAccessoriesWithPayload___block_invoke;
     v16[3] = &unk_278689488;
-    v17 = v6;
+    v17 = home;
     v18 = v7;
     [v8 enumerateKeysAndObjectsUsingBlock:v16];
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"kModifiedCharacteristicsForAccessoryKey"];
+  v9 = [payloadCopy objectForKeyedSubscript:@"kModifiedCharacteristicsForAccessoryKey"];
   if (v9)
   {
     v10 = MEMORY[0x277D85DD0];
@@ -377,7 +377,7 @@
     v12 = __85__HMDHAPAccessoryRemoteOperationTask__updateLastKnownStateForAccessoriesWithPayload___block_invoke_2;
     v13 = &unk_278689488;
     v14 = v7;
-    v15 = v6;
+    v15 = home;
     [v9 enumerateKeysAndObjectsUsingBlock:&v10];
   }
 
@@ -476,21 +476,21 @@ void __85__HMDHAPAccessoryRemoteOperationTask__updateLastKnownStateForAccessorie
 - (void)execute
 {
   v52 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [(HMDHAPAccessoryTask *)self setExecutionTime:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(HMDHAPAccessoryTask *)self setExecutionTime:date];
 
-  v32 = [MEMORY[0x277CBEB18] array];
-  v4 = [(HMDHAPAccessoryTask *)self requests];
-  v5 = [(HMDHAPAccessoryTask *)self context];
-  v6 = [v5 user];
-  v7 = accessoryRequestMapFromRequests(v4, v32, v6);
+  array = [MEMORY[0x277CBEB18] array];
+  requests = [(HMDHAPAccessoryTask *)self requests];
+  context = [(HMDHAPAccessoryTask *)self context];
+  user = [context user];
+  v7 = accessoryRequestMapFromRequests(requests, array, user);
 
-  [(HMDHAPAccessoryTask *)self addCharacteristicResponses:v32 isRemote:0];
+  [(HMDHAPAccessoryTask *)self addCharacteristicResponses:array isRemote:0];
   v8 = [(HMDHAPAccessoryRemoteOperationTask *)self _remoteMessageFromAccessoryRequestMap:v7];
   [(HMDHAPAccessoryRemoteOperationTask *)self remoteMessageTimeout];
   [v8 setTimeout:?];
-  v9 = [v8 messagePayload];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCE7A8]];
+  messagePayload = [v8 messagePayload];
+  v10 = [messagePayload objectForKeyedSubscript:*MEMORY[0x277CCE7A8]];
   obj = [(HMDHAPAccessoryTask *)self logEventsFromAccessoryRequestMap:v7 accessoryList:v10];
 
   v41 = 0u;
@@ -513,7 +513,7 @@ void __85__HMDHAPAccessoryRemoteOperationTask__updateLastKnownStateForAccessorie
         }
 
         v15 = *(*(&v39 + 1) + 8 * v14);
-        v16 = [(HMDHAPAccessoryTask *)self activity];
+        activity = [(HMDHAPAccessoryTask *)self activity];
         [(HMDHAPAccessoryRemoteOperationTask *)self activityRequestEventName];
 
         [(HMDHAPAccessoryTask *)self operationName];
@@ -544,37 +544,37 @@ void __85__HMDHAPAccessoryRemoteOperationTask__updateLastKnownStateForAccessorie
   [v8 setResponseHandler:v34];
   objc_storeStrong(&self->_logEvents, obj);
   v20 = objc_autoreleasePoolPush();
-  v21 = self;
+  selfCopy = self;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     v23 = HMFGetLogIdentifier();
-    v24 = [v8 shortDescription];
-    v25 = [(HMDHAPAccessoryRemoteOperationTask *)v21 delegateDevice];
-    v26 = [v25 shortDescription];
+    shortDescription = [v8 shortDescription];
+    delegateDevice = [(HMDHAPAccessoryRemoteOperationTask *)selfCopy delegateDevice];
+    shortDescription2 = [delegateDevice shortDescription];
     *buf = 138544130;
     v44 = v23;
     v45 = 2114;
-    v46 = v21;
+    v46 = selfCopy;
     v47 = 2114;
-    v48 = v24;
+    v48 = shortDescription;
     v49 = 2114;
-    v50 = v26;
+    v50 = shortDescription2;
     _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@[%{public}@] Dispatching message: %{public}@ to device: %{public}@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v20);
-  v27 = [(HMDHAPAccessoryTask *)v21 context];
-  v28 = [(HMDHAPAccessoryRemoteOperationTask *)v21 delegateDevice];
-  [v27 dispatchMessage:v8 delegateDevice:v28];
+  context2 = [(HMDHAPAccessoryTask *)selfCopy context];
+  delegateDevice2 = [(HMDHAPAccessoryRemoteOperationTask *)selfCopy delegateDevice];
+  [context2 dispatchMessage:v8 delegateDevice:delegateDevice2];
 
-  v29 = [(HMDHAPAccessoryTask *)v21 workQueue];
+  workQueue = [(HMDHAPAccessoryTask *)selfCopy workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__HMDHAPAccessoryRemoteOperationTask_execute__block_invoke_306;
   block[3] = &unk_27868A728;
-  block[4] = v21;
-  dispatch_group_notify(v19, v29, block);
+  block[4] = selfCopy;
+  dispatch_group_notify(v19, workQueue, block);
 
   objc_destroyWeak(&v37);
   objc_destroyWeak(&location);
@@ -749,19 +749,19 @@ void __45__HMDHAPAccessoryRemoteOperationTask_execute__block_invoke_306(uint64_t
   }
 }
 
-- (HMDHAPAccessoryRemoteOperationTask)initWithContext:(id)a3 remoteMessageName:(id)a4 requests:(id)a5 delegateDevice:(id)a6 timeout:(double)a7 completion:(id)a8
+- (HMDHAPAccessoryRemoteOperationTask)initWithContext:(id)context remoteMessageName:(id)name requests:(id)requests delegateDevice:(id)device timeout:(double)timeout completion:(id)completion
 {
-  v15 = a4;
-  v16 = a6;
+  nameCopy = name;
+  deviceCopy = device;
   v20.receiver = self;
   v20.super_class = HMDHAPAccessoryRemoteOperationTask;
-  v17 = [(HMDHAPAccessoryTask *)&v20 initWithContext:a3 requests:a5 completion:a8];
+  v17 = [(HMDHAPAccessoryTask *)&v20 initWithContext:context requests:requests completion:completion];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_remoteMessageName, a4);
-    objc_storeStrong(&v18->_delegateDevice, a6);
-    v18->_remoteMessageTimeout = a7;
+    objc_storeStrong(&v17->_remoteMessageName, name);
+    objc_storeStrong(&v18->_delegateDevice, device);
+    v18->_remoteMessageTimeout = timeout;
   }
 
   return v18;

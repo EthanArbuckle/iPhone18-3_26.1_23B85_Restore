@@ -1,20 +1,20 @@
 @interface QOSAlertMessage
-- (QOSAlertMessage)initWithTitle:(id)a3 body:(id)a4;
+- (QOSAlertMessage)initWithTitle:(id)title body:(id)body;
 - (id)body;
 - (id)title;
 @end
 
 @implementation QOSAlertMessage
 
-- (QOSAlertMessage)initWithTitle:(id)a3 body:(id)a4
+- (QOSAlertMessage)initWithTitle:(id)title body:(id)body
 {
   v12.receiver = self;
   v12.super_class = QOSAlertMessage;
-  v5 = a4;
-  v6 = a3;
+  bodyCopy = body;
+  titleCopy = title;
   v7 = [(QOSAlertMessage *)&v12 init];
   v8 = [QOSAlertMessageInternal alloc];
-  v9 = [(QOSAlertMessageInternal *)v8 initWithTitle:v6 body:v5, v12.receiver, v12.super_class];
+  v9 = [(QOSAlertMessageInternal *)v8 initWithTitle:titleCopy body:bodyCopy, v12.receiver, v12.super_class];
 
   underlyingObject = v7->_underlyingObject;
   v7->_underlyingObject = v9;
@@ -24,18 +24,18 @@
 
 - (id)title
 {
-  v2 = [(QOSAlertMessage *)self underlyingObject];
-  v3 = [v2 title];
+  underlyingObject = [(QOSAlertMessage *)self underlyingObject];
+  title = [underlyingObject title];
 
-  return v3;
+  return title;
 }
 
 - (id)body
 {
-  v2 = [(QOSAlertMessage *)self underlyingObject];
-  v3 = [v2 body];
+  underlyingObject = [(QOSAlertMessage *)self underlyingObject];
+  body = [underlyingObject body];
 
-  return v3;
+  return body;
 }
 
 @end

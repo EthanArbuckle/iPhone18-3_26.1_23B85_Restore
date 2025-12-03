@@ -1,8 +1,8 @@
 @interface PLComputeCachePolicyDataSource
-- (BOOL)hasAtLeastExpungedAssetCount:(unint64_t)a3;
+- (BOOL)hasAtLeastExpungedAssetCount:(unint64_t)count;
 - (BOOL)isEnabled;
 - (NSDate)lastSnapshotDate;
-- (PLComputeCachePolicyDataSource)initWithPhotoLibrary:(id)a3 restoreState:(int64_t)a4;
+- (PLComputeCachePolicyDataSource)initWithPhotoLibrary:(id)library restoreState:(int64_t)state;
 @end
 
 @implementation PLComputeCachePolicyDataSource
@@ -15,8 +15,8 @@
   v14 = __Block_byref_object_copy__48476;
   v15 = __Block_byref_object_dispose__48477;
   v16 = 0;
-  v2 = [(PLPhotoLibrary *)self->_photoLibrary pathManager];
-  v3 = [PLComputeCacheManager baseURLFromPathManager:v2];
+  pathManager = [(PLPhotoLibrary *)self->_photoLibrary pathManager];
+  v3 = [PLComputeCacheManager baseURLFromPathManager:pathManager];
 
   v4 = +[PLComputeCacheManager payloadClasses];
   v8[0] = MEMORY[0x1E69E9820];
@@ -49,9 +49,9 @@ void __50__PLComputeCachePolicyDataSource_lastSnapshotDate__block_invoke(uint64_
   }
 }
 
-- (BOOL)hasAtLeastExpungedAssetCount:(unint64_t)a3
+- (BOOL)hasAtLeastExpungedAssetCount:(unint64_t)count
 {
-  if (a3)
+  if (count)
   {
     *buf = 0;
     v25 = buf;
@@ -62,8 +62,8 @@ void __50__PLComputeCachePolicyDataSource_lastSnapshotDate__block_invoke(uint64_
     v23[2] = 0x2020000000;
     v23[3] = 0;
     v4 = self->_photoLibrary;
-    v5 = [(PLPhotoLibrary *)v4 pathManager];
-    v6 = [PLComputeCacheManager baseURLFromPathManager:v5];
+    pathManager = [(PLPhotoLibrary *)v4 pathManager];
+    v6 = [PLComputeCacheManager baseURLFromPathManager:pathManager];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -73,7 +73,7 @@ void __50__PLComputeCachePolicyDataSource_lastSnapshotDate__block_invoke(uint64_
     v19 = v7;
     v20 = v23;
     v21 = buf;
-    v22 = a3;
+    countCopy = count;
     v8 = _Block_copy(aBlock);
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -183,19 +183,19 @@ void __63__PLComputeCachePolicyDataSource_hasAtLeastExpungedAssetCount___block_i
 
 - (BOOL)isEnabled
 {
-  v2 = [(PLPhotoLibrary *)self->_photoLibrary pathManager];
-  v3 = [PLComputeCacheManager isEnabledWithPathManager:v2 error:0];
+  pathManager = [(PLPhotoLibrary *)self->_photoLibrary pathManager];
+  v3 = [PLComputeCacheManager isEnabledWithPathManager:pathManager error:0];
 
   return v3;
 }
 
-- (PLComputeCachePolicyDataSource)initWithPhotoLibrary:(id)a3 restoreState:(int64_t)a4
+- (PLComputeCachePolicyDataSource)initWithPhotoLibrary:(id)library restoreState:(int64_t)state
 {
-  v8 = a3;
-  if (!v8)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLComputeCachePolicyDataSource.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLComputeCachePolicyDataSource.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
   v13.receiver = self;
@@ -204,8 +204,8 @@ void __63__PLComputeCachePolicyDataSource_hasAtLeastExpungedAssetCount___block_i
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_photoLibrary, a3);
-    v10->_restoreState = a4;
+    objc_storeStrong(&v9->_photoLibrary, library);
+    v10->_restoreState = state;
   }
 
   return v10;

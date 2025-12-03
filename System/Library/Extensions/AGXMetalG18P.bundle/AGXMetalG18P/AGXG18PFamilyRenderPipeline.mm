@@ -1,35 +1,35 @@
 @interface AGXG18PFamilyRenderPipeline
-- (AGXG18PFamilyRenderPipeline)initWithDevice:(id)a3 meshRenderPipelineStateDescriptor:(id)a4 objectThreadExecutionWidth:(unint64_t)a5 meshThreadExecutionWidth:(unint64_t)a6;
-- (AGXG18PFamilyRenderPipeline)initWithDevice:(id)a3 meshRenderPipelineStateDescriptor:(id)a4 objectThreadExecutionWidth:(unint64_t)a5 meshThreadExecutionWidth:(unint64_t)a6 maxTotalThreadgroupsPerMeshGrid:(unint64_t)a7;
-- (AGXG18PFamilyRenderPipeline)initWithDevice:(id)a3 pipelineStateDescriptor:(id)a4;
-- (AGXG18PFamilyRenderPipeline)initWithParent:(id)a3;
-- (AGXG18PFamilyRenderPipeline)initWithUnretainedParent:(id)a3;
-- (id)_newRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 vertexFunctionResourceIndices:(const unint64_t *)a4 fragmentAdditionalBinaryFunctions:(id)a5 fragmentFunctionResourceIndices:(const unint64_t *)a6 error:(id *)a7;
-- (id)fragmentFunctionHandleWithFunction:(id)a3;
-- (id)functionHandleWithBinaryFunction:(id)a3 stage:(unint64_t)a4;
-- (id)functionHandleWithName:(id)a3 stage:(unint64_t)a4;
-- (id)functionReflectionWithFunctionDescriptor:(id)a3 stage:(unint64_t)a4;
-- (id)meshFunctionHandleWithFunction:(id)a3;
+- (AGXG18PFamilyRenderPipeline)initWithDevice:(id)device meshRenderPipelineStateDescriptor:(id)descriptor objectThreadExecutionWidth:(unint64_t)width meshThreadExecutionWidth:(unint64_t)executionWidth;
+- (AGXG18PFamilyRenderPipeline)initWithDevice:(id)device meshRenderPipelineStateDescriptor:(id)descriptor objectThreadExecutionWidth:(unint64_t)width meshThreadExecutionWidth:(unint64_t)executionWidth maxTotalThreadgroupsPerMeshGrid:(unint64_t)grid;
+- (AGXG18PFamilyRenderPipeline)initWithDevice:(id)device pipelineStateDescriptor:(id)descriptor;
+- (AGXG18PFamilyRenderPipeline)initWithParent:(id)parent;
+- (AGXG18PFamilyRenderPipeline)initWithUnretainedParent:(id)parent;
+- (id)_newRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions vertexFunctionResourceIndices:(const unint64_t *)indices fragmentAdditionalBinaryFunctions:(id)binaryFunctions fragmentFunctionResourceIndices:(const unint64_t *)resourceIndices error:(id *)error;
+- (id)fragmentFunctionHandleWithFunction:(id)function;
+- (id)functionHandleWithBinaryFunction:(id)function stage:(unint64_t)stage;
+- (id)functionHandleWithName:(id)name stage:(unint64_t)stage;
+- (id)functionReflectionWithFunctionDescriptor:(id)descriptor stage:(unint64_t)stage;
+- (id)meshFunctionHandleWithFunction:(id)function;
 - (id)newFragmentShaderDebugInfo;
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3 stage:(unint64_t)a4;
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor stage:(unint64_t)stage;
 - (id)newMeshShaderDebugInfo;
 - (id)newObjectShaderDebugInfo;
 - (id)newRenderPipelineDescriptorForSpecialization;
-- (id)newRenderPipelineStateBySpecializationWithDescriptor:(id)a3 pipeline:(id)a4 completionHandler:(id)a5 error:(id *)a6;
-- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4;
-- (id)newRenderPipelineStateWithBinaryFunctions:(id)a3 error:(id *)a4;
+- (id)newRenderPipelineStateBySpecializationWithDescriptor:(id)descriptor pipeline:(id)pipeline completionHandler:(id)handler error:(id *)error;
+- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error;
+- (id)newRenderPipelineStateWithBinaryFunctions:(id)functions error:(id *)error;
 - (id)newVertexShaderDebugInfo;
-- (id)newVisibleFunctionTableFromFragmentStageWithDescriptor:(id)a3;
-- (id)newVisibleFunctionTableFromTileStageWithDescriptor:(id)a3;
-- (id)newVisibleFunctionTableFromVertexStageWithDescriptor:(id)a3;
-- (id)objectFunctionHandleWithFunction:(id)a3;
+- (id)newVisibleFunctionTableFromFragmentStageWithDescriptor:(id)descriptor;
+- (id)newVisibleFunctionTableFromTileStageWithDescriptor:(id)descriptor;
+- (id)newVisibleFunctionTableFromVertexStageWithDescriptor:(id)descriptor;
+- (id)objectFunctionHandleWithFunction:(id)function;
 - (id)pipelineBinaries;
-- (id)tileFunctionHandleWithFunction:(id)a3;
-- (id)vertexFunctionHandleWithFunction:(id)a3;
+- (id)tileFunctionHandleWithFunction:(id)function;
+- (id)vertexFunctionHandleWithFunction:(id)function;
 - (unint64_t)allocatedSize;
-- (unint64_t)imageBlockMemoryLengthForDimensions:(id *)a3;
+- (unint64_t)imageBlockMemoryLengthForDimensions:(id *)dimensions;
 - (unint64_t)imageBlockSampleLength;
-- (unint64_t)imageblockMemoryLengthForDimensions:(id *)a3;
+- (unint64_t)imageblockMemoryLengthForDimensions:(id *)dimensions;
 - (unint64_t)imageblockSampleLength;
 - (unint64_t)maxTotalThreadsPerMeshThreadgroup;
 - (unint64_t)maxTotalThreadsPerObjectThreadgroup;
@@ -42,62 +42,62 @@
 
 @implementation AGXG18PFamilyRenderPipeline
 
-- (id)functionReflectionWithFunctionDescriptor:(id)a3 stage:(unint64_t)a4
+- (id)functionReflectionWithFunctionDescriptor:(id)descriptor stage:(unint64_t)stage
 {
-  if (a4 <= 3)
+  if (stage <= 3)
   {
-    if (a4 == 1)
+    if (stage == 1)
     {
-      v6 = [(_MTLRenderPipelineState *)self device];
-      v7 = [(AGXG18PFamilyRenderPipeline *)self vertexReflectionData];
+      device = [(_MTLRenderPipelineState *)self device];
+      vertexReflectionData = [(AGXG18PFamilyRenderPipeline *)self vertexReflectionData];
       goto LABEL_12;
     }
 
-    if (a4 == 2)
+    if (stage == 2)
     {
-      v6 = [(_MTLRenderPipelineState *)self device];
-      v7 = [(AGXG18PFamilyRenderPipeline *)self fragmentReflectionData];
+      device = [(_MTLRenderPipelineState *)self device];
+      vertexReflectionData = [(AGXG18PFamilyRenderPipeline *)self fragmentReflectionData];
       goto LABEL_12;
     }
 
     return 0;
   }
 
-  if (a4 == 4)
+  if (stage == 4)
   {
-    v6 = [(_MTLRenderPipelineState *)self device];
-    v7 = [(AGXG18PFamilyRenderPipeline *)self tileReflectionData];
+    device = [(_MTLRenderPipelineState *)self device];
+    vertexReflectionData = [(AGXG18PFamilyRenderPipeline *)self tileReflectionData];
     goto LABEL_12;
   }
 
-  if (a4 == 8)
+  if (stage == 8)
   {
-    v6 = [(_MTLRenderPipelineState *)self device];
-    v7 = [(AGXG18PFamilyRenderPipeline *)self objectReflectionData];
+    device = [(_MTLRenderPipelineState *)self device];
+    vertexReflectionData = [(AGXG18PFamilyRenderPipeline *)self objectReflectionData];
     goto LABEL_12;
   }
 
-  if (a4 != 16)
+  if (stage != 16)
   {
     return 0;
   }
 
-  v6 = [(_MTLRenderPipelineState *)self device];
-  v7 = [(AGXG18PFamilyRenderPipeline *)self meshReflectionData];
+  device = [(_MTLRenderPipelineState *)self device];
+  vertexReflectionData = [(AGXG18PFamilyRenderPipeline *)self meshReflectionData];
 LABEL_12:
 
-  return MEMORY[0x2A1C5C358](a3, v6, v7);
+  return MEMORY[0x2A1C5C358](descriptor, device, vertexReflectionData);
 }
 
-- (id)newRenderPipelineStateWithBinaryFunctions:(id)a3 error:(id *)a4
+- (id)newRenderPipelineStateWithBinaryFunctions:(id)functions error:(id *)error
 {
   v50 = *MEMORY[0x29EDCA608];
   v6 = objc_opt_new();
-  v7 = [a3 vertexAdditionalBinaryFunctions];
-  v8 = v7;
-  if (v7)
+  vertexAdditionalBinaryFunctions = [functions vertexAdditionalBinaryFunctions];
+  v8 = vertexAdditionalBinaryFunctions;
+  if (vertexAdditionalBinaryFunctions)
   {
-    v9 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+    v9 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:{objc_msgSend(vertexAdditionalBinaryFunctions, "count")}];
   }
 
   else
@@ -133,11 +133,11 @@ LABEL_12:
   }
 
   [v6 setVertexAdditionalBinaryFunctions:v9];
-  v14 = [a3 fragmentAdditionalBinaryFunctions];
-  v15 = v14;
-  if (v14)
+  fragmentAdditionalBinaryFunctions = [functions fragmentAdditionalBinaryFunctions];
+  v15 = fragmentAdditionalBinaryFunctions;
+  if (fragmentAdditionalBinaryFunctions)
   {
-    v16 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:{objc_msgSend(v14, "count")}];
+    v16 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:{objc_msgSend(fragmentAdditionalBinaryFunctions, "count")}];
   }
 
   else
@@ -173,11 +173,11 @@ LABEL_12:
   }
 
   [v6 setFragmentAdditionalBinaryFunctions:v16];
-  v21 = [a3 tileAdditionalBinaryFunctions];
-  v22 = v21;
-  if (v21)
+  tileAdditionalBinaryFunctions = [functions tileAdditionalBinaryFunctions];
+  v22 = tileAdditionalBinaryFunctions;
+  if (tileAdditionalBinaryFunctions)
   {
-    v23 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:{objc_msgSend(v21, "count")}];
+    v23 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:{objc_msgSend(tileAdditionalBinaryFunctions, "count")}];
   }
 
   else
@@ -213,11 +213,11 @@ LABEL_12:
   }
 
   [v6 setTileAdditionalBinaryFunctions:v23];
-  v28 = [a3 meshAdditionalBinaryFunctions];
-  v29 = v28;
-  if (v28)
+  meshAdditionalBinaryFunctions = [functions meshAdditionalBinaryFunctions];
+  v29 = meshAdditionalBinaryFunctions;
+  if (meshAdditionalBinaryFunctions)
   {
-    v30 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:{objc_msgSend(v28, "count")}];
+    v30 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:{objc_msgSend(meshAdditionalBinaryFunctions, "count")}];
   }
 
   else
@@ -253,11 +253,11 @@ LABEL_12:
   }
 
   [v6 setMeshAdditionalBinaryFunctions:v30];
-  v35 = [a3 objectAdditionalBinaryFunctions];
-  v36 = v35;
-  if (v35)
+  objectAdditionalBinaryFunctions = [functions objectAdditionalBinaryFunctions];
+  v36 = objectAdditionalBinaryFunctions;
+  if (objectAdditionalBinaryFunctions)
   {
-    v37 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:{objc_msgSend(v35, "count")}];
+    v37 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:{objc_msgSend(objectAdditionalBinaryFunctions, "count")}];
   }
 
   else
@@ -293,19 +293,19 @@ LABEL_12:
   }
 
   [v6 setObjectAdditionalBinaryFunctions:v37];
-  v42 = [(AGXG18PFamilyRenderPipeline *)self newRenderPipelineStateWithAdditionalBinaryFunctions:v6 error:a4];
+  v42 = [(AGXG18PFamilyRenderPipeline *)self newRenderPipelineStateWithAdditionalBinaryFunctions:v6 error:error];
 
   return v42;
 }
 
-- (id)functionHandleWithBinaryFunction:(id)a3 stage:(unint64_t)a4
+- (id)functionHandleWithBinaryFunction:(id)function stage:(unint64_t)stage
 {
-  if (a4 <= 3)
+  if (stage <= 3)
   {
-    if (a4 == 1)
+    if (stage == 1)
     {
       v4 = 0;
-      if (a3)
+      if (function)
       {
         goto LABEL_16;
       }
@@ -313,10 +313,10 @@ LABEL_12:
       return 0;
     }
 
-    if (a4 == 2)
+    if (stage == 2)
     {
       v4 = 1;
-      if (!a3)
+      if (!function)
       {
         return 0;
       }
@@ -326,7 +326,7 @@ LABEL_12:
 
 LABEL_19:
     v4 = -1;
-    if (a3)
+    if (function)
     {
       goto LABEL_16;
     }
@@ -334,10 +334,10 @@ LABEL_19:
     return 0;
   }
 
-  if (a4 == 4)
+  if (stage == 4)
   {
     v4 = 2;
-    if (!a3)
+    if (!function)
     {
       return 0;
     }
@@ -345,10 +345,10 @@ LABEL_19:
     goto LABEL_16;
   }
 
-  if (a4 == 8)
+  if (stage == 8)
   {
     v4 = 3;
-    if (!a3)
+    if (!function)
     {
       return 0;
     }
@@ -356,19 +356,19 @@ LABEL_19:
     goto LABEL_16;
   }
 
-  if (a4 != 16)
+  if (stage != 16)
   {
     goto LABEL_19;
   }
 
   v4 = 4;
-  if (!a3)
+  if (!function)
   {
     return 0;
   }
 
 LABEL_16:
-  result = std::__hash_table<std::__hash_value_type<objc_object  {objcproto11MTLFunction}*,RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>,std::__unordered_map_hasher<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::hash<objc_object  {objcproto11MTLFunction}>,std::equal_to<objc_object  {objcproto11MTLFunction}>,true>,std::__unordered_map_equal<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::equal_to,std::hash,true>,std::allocator<RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>>::find<objc_object  {objcproto11MTLFunction}>(&self->_anon_228[40 * v4 + 2400], *(a3 + 10));
+  result = std::__hash_table<std::__hash_value_type<objc_object  {objcproto11MTLFunction}*,RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>,std::__unordered_map_hasher<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::hash<objc_object  {objcproto11MTLFunction}>,std::equal_to<objc_object  {objcproto11MTLFunction}>,true>,std::__unordered_map_equal<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::equal_to,std::hash,true>,std::allocator<RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>>::find<objc_object  {objcproto11MTLFunction}>(&self->_anon_228[40 * v4 + 2400], *(function + 10));
   if (result)
   {
     return *(result + 3);
@@ -377,14 +377,14 @@ LABEL_16:
   return result;
 }
 
-- (id)functionHandleWithName:(id)a3 stage:(unint64_t)a4
+- (id)functionHandleWithName:(id)name stage:(unint64_t)stage
 {
-  if (a4 <= 3)
+  if (stage <= 3)
   {
-    if (a4 == 1)
+    if (stage == 1)
     {
       v5 = 0;
-      if (!a3)
+      if (!name)
       {
         return 0;
       }
@@ -392,10 +392,10 @@ LABEL_16:
       goto LABEL_18;
     }
 
-    if (a4 == 2)
+    if (stage == 2)
     {
       v5 = 1;
-      if (!a3)
+      if (!name)
       {
         return 0;
       }
@@ -406,11 +406,11 @@ LABEL_16:
 
   else
   {
-    switch(a4)
+    switch(stage)
     {
       case 4uLL:
         v5 = 2;
-        if (!a3)
+        if (!name)
         {
           return 0;
         }
@@ -418,7 +418,7 @@ LABEL_16:
         goto LABEL_18;
       case 8uLL:
         v5 = 3;
-        if (!a3)
+        if (!name)
         {
           return 0;
         }
@@ -426,7 +426,7 @@ LABEL_16:
         goto LABEL_18;
       case 0x10uLL:
         v5 = 4;
-        if (!a3)
+        if (!name)
         {
           return 0;
         }
@@ -436,14 +436,14 @@ LABEL_16:
   }
 
   v5 = -1;
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
 
 LABEL_18:
-  v6 = [a3 UTF8String];
-  v7 = strlen(v6);
+  uTF8String = [name UTF8String];
+  v7 = strlen(uTF8String);
   if (v7 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::__throw_bad_array_new_length[abi:nn200100]();
@@ -459,7 +459,7 @@ LABEL_18:
   v14 = v7;
   if (v7)
   {
-    memmove(&__dst, v6, v7);
+    memmove(&__dst, uTF8String, v7);
   }
 
   *(&__dst + v8) = 0;
@@ -491,13 +491,13 @@ LABEL_26:
   return result;
 }
 
-- (id)newRenderPipelineStateBySpecializationWithDescriptor:(id)a3 pipeline:(id)a4 completionHandler:(id)a5 error:(id *)a6
+- (id)newRenderPipelineStateBySpecializationWithDescriptor:(id)descriptor pipeline:(id)pipeline completionHandler:(id)handler error:(id *)error
 {
   v34[1] = *MEMORY[0x29EDCA608];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a6)
+    if (error)
     {
       v15 = MEMORY[0x29EDB9FA0];
       v33 = *MEMORY[0x29EDB9ED8];
@@ -511,13 +511,13 @@ LABEL_26:
     return 0;
   }
 
-  v9 = a4;
-  v10 = a4 + 240;
-  v11 = *(a4 + 491);
+  pipelineCopy2 = pipeline;
+  v10 = pipeline + 240;
+  v11 = *(pipeline + 491);
   if (v11)
   {
     hasAnyUnspecialized = AGX::SpecializableRenderPipelineState::hasAnyUnspecialized(v11);
-    v9 = a4;
+    pipelineCopy2 = pipeline;
     if (hasAnyUnspecialized)
     {
       objc_opt_class();
@@ -526,7 +526,7 @@ LABEL_26:
       v14 = objc_opt_isKindOfClass();
       if ((isKindOfClass & 1) == 0 && (v14 & 1) == 0)
       {
-        if (a6)
+        if (error)
         {
           v15 = MEMORY[0x29EDB9FA0];
           v31 = *MEMORY[0x29EDB9ED8];
@@ -535,19 +535,19 @@ LABEL_26:
           v17 = &v32;
           v18 = &v31;
 LABEL_10:
-          v19 = [v15 errorWithDomain:@"AGXMetalG18P" code:1 userInfo:{objc_msgSend(v16, "dictionaryWithObjects:forKeys:count:", v17, v18, 1, a4)}];
+          v19 = [v15 errorWithDomain:@"AGXMetalG18P" code:1 userInfo:{objc_msgSend(v16, "dictionaryWithObjects:forKeys:count:", v17, v18, 1, pipeline)}];
           result = 0;
-          *a6 = v19;
+          *error = v19;
           return result;
         }
 
         return 0;
       }
 
-      v21 = [[AGXG18PFamilyRenderPipeline alloc] initWithUnretainedParent:a4];
+      v21 = [[AGXG18PFamilyRenderPipeline alloc] initWithUnretainedParent:pipeline];
       if (!v21)
       {
-        if (a6)
+        if (error)
         {
           v15 = MEMORY[0x29EDB9FA0];
           v29 = *MEMORY[0x29EDB9ED8];
@@ -563,15 +563,15 @@ LABEL_10:
 
       v22 = v21;
       p_impl = &v21->_impl;
-      v24 = [(_MTLRenderPipelineState *)self device];
-      v25 = *(a4 + 491);
+      device = [(_MTLRenderPipelineState *)self device];
+      v25 = *(pipeline + 491);
       if (isKindOfClass)
       {
         if (v25)
         {
-          if (v22 != a4)
+          if (v22 != pipeline)
           {
-            AGX::RenderPipeline<AGX::HAL300::ObjClasses,AGX::HAL300::Classes,AGX::HAL300::Encoders>::copyStateAndFunctionsFromOriginal(p_impl, v24, v10, 0);
+            AGX::RenderPipeline<AGX::HAL300::ObjClasses,AGX::HAL300::Classes,AGX::HAL300::Encoders>::copyStateAndFunctionsFromOriginal(p_impl, device, v10, 0);
           }
 
           goto LABEL_25;
@@ -580,31 +580,31 @@ LABEL_10:
 
       else if (v25)
       {
-        if (v22 != a4)
+        if (v22 != pipeline)
         {
-          AGX::RenderPipeline<AGX::HAL300::ObjClasses,AGX::HAL300::Classes,AGX::HAL300::Encoders>::copyStateAndFunctionsFromOriginal(p_impl, v24, v10, 0);
+          AGX::RenderPipeline<AGX::HAL300::ObjClasses,AGX::HAL300::Classes,AGX::HAL300::Encoders>::copyStateAndFunctionsFromOriginal(p_impl, device, v10, 0);
         }
 
 LABEL_25:
-        AGX::SpecializableRenderPipelineState::specialize<MTL4RenderPipelineDescriptor>(*(p_impl + 3688), a3);
-        if (AGX::RenderPipeline<AGX::HAL300::ObjClasses,AGX::HAL300::Classes,AGX::HAL300::Encoders>::linkSpecialization(p_impl, v24))
+        AGX::SpecializableRenderPipelineState::specialize<MTL4RenderPipelineDescriptor>(*(p_impl + 3688), descriptor);
+        if (AGX::RenderPipeline<AGX::HAL300::ObjClasses,AGX::HAL300::Classes,AGX::HAL300::Encoders>::linkSpecialization(p_impl, device))
         {
           return v22;
         }
       }
 
-      if (a6)
+      if (error)
       {
         v27 = *MEMORY[0x29EDB9ED8];
         v28 = @"Specialization failed";
-        *a6 = [MEMORY[0x29EDB9FA0] errorWithDomain:@"AGXMetalG18P" code:1 userInfo:{objc_msgSend(MEMORY[0x29EDB8DC0], "dictionaryWithObjects:forKeys:count:", &v28, &v27, 1)}];
+        *error = [MEMORY[0x29EDB9FA0] errorWithDomain:@"AGXMetalG18P" code:1 userInfo:{objc_msgSend(MEMORY[0x29EDB8DC0], "dictionaryWithObjects:forKeys:count:", &v28, &v27, 1)}];
       }
 
       return 0;
     }
   }
 
-  return v9;
+  return pipelineCopy2;
 }
 
 - (id)newRenderPipelineDescriptorForSpecialization
@@ -629,39 +629,39 @@ LABEL_25:
   }
 }
 
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3 stage:(unint64_t)a4
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor stage:(unint64_t)stage
 {
-  v7 = [(_MTLRenderPipelineState *)self device];
-  if ([(MTLDevice *)v7 requiresRaytracingEmulation])
+  device = [(_MTLRenderPipelineState *)self device];
+  if ([(MTLDevice *)device requiresRaytracingEmulation])
   {
     v8 = objc_alloc_init(MEMORY[0x29EDBB688]);
-    [v8 setFunctionCount:{objc_msgSend(a3, "functionCount")}];
-    [v8 setResourceIndex:{objc_msgSend(a3, "resourceIndex")}];
-    [v8 setForceResourceIndex:{objc_msgSend(a3, "forceResourceIndex")}];
+    [v8 setFunctionCount:{objc_msgSend(descriptor, "functionCount")}];
+    [v8 setResourceIndex:{objc_msgSend(descriptor, "resourceIndex")}];
+    [v8 setForceResourceIndex:{objc_msgSend(descriptor, "forceResourceIndex")}];
     v9 = 0;
-    if (a4 <= 0x10 && ((1 << a4) & 0x10116) != 0)
+    if (stage <= 0x10 && ((1 << stage) & 0x10116) != 0)
     {
-      v9 = [(AGXG18PFamilyRenderPipeline *)self newVisibleFunctionTableWithDescriptor:v8 stage:a4];
+      v9 = [(AGXG18PFamilyRenderPipeline *)self newVisibleFunctionTableWithDescriptor:v8 stage:stage];
     }
 
     v10 = [objc_alloc(MEMORY[0x29EDC55A8]) initWithVisibleFunctionTable:v9];
     return v10;
   }
 
-  if (a4 > 0x10 || ((1 << a4) & 0x10116) == 0)
+  if (stage > 0x10 || ((1 << stage) & 0x10116) == 0)
   {
     return 0;
   }
 
-  if (a4 <= 3)
+  if (stage <= 3)
   {
-    if (a4 == 1)
+    if (stage == 1)
     {
       v12 = 0;
       goto LABEL_20;
     }
 
-    if (a4 == 2)
+    if (stage == 2)
     {
       v12 = 1;
       goto LABEL_20;
@@ -670,19 +670,19 @@ LABEL_25:
     return 0;
   }
 
-  if (a4 == 4)
+  if (stage == 4)
   {
     v12 = 2;
     goto LABEL_20;
   }
 
-  if (a4 == 8)
+  if (stage == 8)
   {
     v12 = 3;
     goto LABEL_20;
   }
 
-  if (a4 != 16)
+  if (stage != 16)
   {
     return 0;
   }
@@ -690,42 +690,42 @@ LABEL_25:
   v12 = 4;
 LABEL_20:
   v13 = &self->_impl + 24 * v12;
-  v14 = __clz(__rbit32(a4));
-  if ([a3 forceResourceIndex])
+  v14 = __clz(__rbit32(stage));
+  if ([descriptor forceResourceIndex])
   {
-    v15 = [a3 resourceIndex];
+    resourceIndex = [descriptor resourceIndex];
   }
 
   else
   {
-    v15 = 0;
+    resourceIndex = 0;
   }
 
   v16 = [AGXG18PFamilyUserIntersectionFunctionTable alloc];
-  v17 = [a3 functionCount];
+  functionCount = [descriptor functionCount];
 
-  return [(AGXG18PFamilyUserIntersectionFunctionTable *)v16 initWithDevice:v7 numTableFnSlots:v17 pipelineSets:v13 + 3408 pipeline:self stage:v14 + 1 resourceIndex:v15];
+  return [(AGXG18PFamilyUserIntersectionFunctionTable *)v16 initWithDevice:device numTableFnSlots:functionCount pipelineSets:v13 + 3408 pipeline:self stage:v14 + 1 resourceIndex:resourceIndex];
 }
 
-- (id)newVisibleFunctionTableFromTileStageWithDescriptor:(id)a3
+- (id)newVisibleFunctionTableFromTileStageWithDescriptor:(id)descriptor
 {
-  v5 = [(_MTLRenderPipelineState *)self device];
+  device = [(_MTLRenderPipelineState *)self device];
   LODWORD(v7) = 3;
-  return -[AGXG18PFamilyVisibleFunctionTable initWithDevice:functionCount:options:isSuballocDisabled:resourceIndex:pipelineState:type:]([AGXG18PFamilyVisibleFunctionTable alloc], "initWithDevice:functionCount:options:isSuballocDisabled:resourceIndex:pipelineState:type:", v5, [a3 functionCount], 0, *(*(v5 + 106) + 16989), objc_msgSend(a3, "resourceIndex"), self, v7);
+  return -[AGXG18PFamilyVisibleFunctionTable initWithDevice:functionCount:options:isSuballocDisabled:resourceIndex:pipelineState:type:]([AGXG18PFamilyVisibleFunctionTable alloc], "initWithDevice:functionCount:options:isSuballocDisabled:resourceIndex:pipelineState:type:", device, [descriptor functionCount], 0, *(*(device + 106) + 16989), objc_msgSend(descriptor, "resourceIndex"), self, v7);
 }
 
-- (id)newVisibleFunctionTableFromFragmentStageWithDescriptor:(id)a3
+- (id)newVisibleFunctionTableFromFragmentStageWithDescriptor:(id)descriptor
 {
-  v5 = [(_MTLRenderPipelineState *)self device];
+  device = [(_MTLRenderPipelineState *)self device];
   LODWORD(v7) = 2;
-  return -[AGXG18PFamilyVisibleFunctionTable initWithDevice:functionCount:options:isSuballocDisabled:resourceIndex:pipelineState:type:]([AGXG18PFamilyVisibleFunctionTable alloc], "initWithDevice:functionCount:options:isSuballocDisabled:resourceIndex:pipelineState:type:", v5, [a3 functionCount], 0, *(*(v5 + 106) + 16989), objc_msgSend(a3, "resourceIndex"), self, v7);
+  return -[AGXG18PFamilyVisibleFunctionTable initWithDevice:functionCount:options:isSuballocDisabled:resourceIndex:pipelineState:type:]([AGXG18PFamilyVisibleFunctionTable alloc], "initWithDevice:functionCount:options:isSuballocDisabled:resourceIndex:pipelineState:type:", device, [descriptor functionCount], 0, *(*(device + 106) + 16989), objc_msgSend(descriptor, "resourceIndex"), self, v7);
 }
 
-- (id)newVisibleFunctionTableFromVertexStageWithDescriptor:(id)a3
+- (id)newVisibleFunctionTableFromVertexStageWithDescriptor:(id)descriptor
 {
-  v5 = [(_MTLRenderPipelineState *)self device];
+  device = [(_MTLRenderPipelineState *)self device];
   LODWORD(v7) = 1;
-  return -[AGXG18PFamilyVisibleFunctionTable initWithDevice:functionCount:options:isSuballocDisabled:resourceIndex:pipelineState:type:]([AGXG18PFamilyVisibleFunctionTable alloc], "initWithDevice:functionCount:options:isSuballocDisabled:resourceIndex:pipelineState:type:", v5, [a3 functionCount], 0, *(*(v5 + 106) + 16989), objc_msgSend(a3, "resourceIndex"), self, v7);
+  return -[AGXG18PFamilyVisibleFunctionTable initWithDevice:functionCount:options:isSuballocDisabled:resourceIndex:pipelineState:type:]([AGXG18PFamilyVisibleFunctionTable alloc], "initWithDevice:functionCount:options:isSuballocDisabled:resourceIndex:pipelineState:type:", device, [descriptor functionCount], 0, *(*(device + 106) + 16989), objc_msgSend(descriptor, "resourceIndex"), self, v7);
 }
 
 - (id)pipelineBinaries
@@ -997,7 +997,7 @@ LABEL_59:
   return [v3 copy];
 }
 
-- (id)_newRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 vertexFunctionResourceIndices:(const unint64_t *)a4 fragmentAdditionalBinaryFunctions:(id)a5 fragmentFunctionResourceIndices:(const unint64_t *)a6 error:(id *)a7
+- (id)_newRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions vertexFunctionResourceIndices:(const unint64_t *)indices fragmentAdditionalBinaryFunctions:(id)binaryFunctions fragmentFunctionResourceIndices:(const unint64_t *)resourceIndices error:(id *)error
 {
   v65 = *MEMORY[0x29EDCA608];
   if (self->_basePipeline)
@@ -1011,7 +1011,7 @@ LABEL_59:
   }
 
   v13 = [[AGXG18PFamilyRenderPipeline alloc] initWithParent:basePipeline];
-  v14 = [(_MTLRenderPipelineState *)self device];
+  device = [(_MTLRenderPipelineState *)self device];
   v15 = @"Failed to allocate a new pipeline";
   v56 = @"Failed to allocate a new pipeline";
   v52 = v13;
@@ -1021,11 +1021,11 @@ LABEL_59:
   }
 
   p_impl = &v13->_impl;
-  v54 = v14;
+  v54 = device;
   v51 = &self->_impl;
-  AGX::RenderPipeline<AGX::HAL300::ObjClasses,AGX::HAL300::Classes,AGX::HAL300::Encoders>::copyStateAndFunctionsFromOriginal(p_impl, v14, &self->_impl, [a5 count] + objc_msgSend(a3, "count"));
+  AGX::RenderPipeline<AGX::HAL300::ObjClasses,AGX::HAL300::Classes,AGX::HAL300::Encoders>::copyStateAndFunctionsFromOriginal(p_impl, device, &self->_impl, [binaryFunctions count] + objc_msgSend(functions, "count"));
   v55 = p_impl;
-  prime = vcvtps_u32_f32(([a3 count] + *(p_impl + 2736)) / *(p_impl + 2744));
+  prime = vcvtps_u32_f32(([functions count] + *(p_impl + 2736)) / *(p_impl + 2744));
   if (prime == 1)
   {
     prime = 2;
@@ -1075,7 +1075,7 @@ LABEL_10:
     }
   }
 
-  v24 = vcvtps_u32_f32(([a5 count] + *(v55 + 2776)) / *(v55 + 2784));
+  v24 = vcvtps_u32_f32(([binaryFunctions count] + *(v55 + 2776)) / *(v55 + 2784));
   if (v24 == 1)
   {
     v24 = 2;
@@ -1123,7 +1123,7 @@ LABEL_28:
     }
   }
 
-  v30 = AGX::mergeAndInsertAdditionalBinaryLinkedFunctions<AGX::HAL300::ObjClasses,AGX::HAL300::Classes>(v54, a3, a4, (v55 + 2712), v55 + 3408, &v51[10].resource_info[24].iosurface, LODWORD(v51[3].resource_info[9].iosurface), &v56) ^ 1;
+  v30 = AGX::mergeAndInsertAdditionalBinaryLinkedFunctions<AGX::HAL300::ObjClasses,AGX::HAL300::Classes>(v54, functions, indices, (v55 + 2712), v55 + 3408, &v51[10].resource_info[24].iosurface, LODWORD(v51[3].resource_info[9].iosurface), &v56) ^ 1;
   if (!*v55 || (v30 & 1) != 0)
   {
     if (*v55)
@@ -1142,7 +1142,7 @@ LABEL_28:
     }
   }
 
-  else if ((AGX::mergeAndInsertAdditionalBinaryLinkedFunctions<AGX::HAL300::ObjClasses,AGX::HAL300::Classes>(v54, a5, a6, (v55 + 2752), v55 + 3432, &v51[11].fragment_variant, LODWORD(v51[4].resource_info[9].iosurface), &v56) & 1) == 0)
+  else if ((AGX::mergeAndInsertAdditionalBinaryLinkedFunctions<AGX::HAL300::ObjClasses,AGX::HAL300::Classes>(v54, binaryFunctions, resourceIndices, (v55 + 2752), v55 + 3432, &v51[11].fragment_variant, LODWORD(v51[4].resource_info[9].iosurface), &v56) & 1) == 0)
   {
     goto LABEL_74;
   }
@@ -1154,7 +1154,7 @@ LABEL_28:
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v32 = [a3 countByEnumeratingWithState:&v57 objects:v64 count:16];
+  v32 = [functions countByEnumeratingWithState:&v57 objects:v64 count:16];
   if (!v32)
   {
     v39 = 0;
@@ -1175,7 +1175,7 @@ LABEL_49:
   {
     if (*v58 != v33)
     {
-      objc_enumerationMutation(a3);
+      objc_enumerationMutation(functions);
     }
 
     v35 = *(*(&v57 + 1) + 8 * v34);
@@ -1196,19 +1196,19 @@ LABEL_49:
       break;
     }
 
-    v36 = [v35 vendorPrivate];
-    v37 = v36;
-    if (!v36)
+    vendorPrivate = [v35 vendorPrivate];
+    v37 = vendorPrivate;
+    if (!vendorPrivate)
     {
       break;
     }
 
-    AGX::applySPIRelocations<AGX::HAL300::ObjClasses,AGX::HAL300::DynamicLibrary>(v36[7], [v36 relocations]);
+    AGX::applySPIRelocations<AGX::HAL300::ObjClasses,AGX::HAL300::DynamicLibrary>(vendorPrivate[7], [vendorPrivate relocations]);
     std::vector<std::shared_ptr<AGX::HAL300::DynamicLibrary>>::push_back[abi:nn200100](&v61, (v37 + 7));
 LABEL_50:
     if (v32 == ++v34)
     {
-      v32 = [a3 countByEnumeratingWithState:&v57 objects:v64 count:16];
+      v32 = [functions countByEnumeratingWithState:&v57 objects:v64 count:16];
       if (!v32)
       {
         v39 = v61;
@@ -1286,16 +1286,16 @@ LABEL_74:
   *(v55 + 1024) = v54;
   v15 = v56;
 LABEL_92:
-  if (a7 && v15)
+  if (error && v15)
   {
     v47 = [MEMORY[0x29EDB8DC0] dictionaryWithObject:v15 forKey:*MEMORY[0x29EDB9ED8]];
-    *a7 = [objc_alloc(MEMORY[0x29EDB9FA0]) initWithDomain:@"AGXMetalG18P" code:1 userInfo:v47];
+    *error = [objc_alloc(MEMORY[0x29EDB9FA0]) initWithDomain:@"AGXMetalG18P" code:1 userInfo:v47];
   }
 
   return 0;
 }
 
-- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4
+- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error
 {
   if (self->_impl.mesh_variant)
   {
@@ -1310,15 +1310,15 @@ LABEL_92:
     }
 
     v8 = [[AGXG18PFamilyRenderPipeline alloc] initWithParent:basePipeline];
-    v9 = [(_MTLRenderPipelineState *)self device];
+    device = [(_MTLRenderPipelineState *)self device];
     v10 = @"Failed to allocate a new mesh pipeline";
     v22 = @"Failed to allocate a new mesh pipeline";
-    v11 = [a3 meshAdditionalBinaryFunctionResourceIndices];
-    v12 = [a3 objectAdditionalBinaryFunctionResourceIndices];
-    v13 = [a3 fragmentAdditionalBinaryFunctionResourceIndices];
+    meshAdditionalBinaryFunctionResourceIndices = [functions meshAdditionalBinaryFunctionResourceIndices];
+    objectAdditionalBinaryFunctionResourceIndices = [functions objectAdditionalBinaryFunctionResourceIndices];
+    fragmentAdditionalBinaryFunctionResourceIndices = [functions fragmentAdditionalBinaryFunctionResourceIndices];
     if (v8)
     {
-      if (AGX::RenderPipeline<AGX::HAL300::ObjClasses,AGX::HAL300::Classes,AGX::HAL300::Encoders>::setPipelineStateWithAdditionalMeshObjectFragmentFunctions(&v8->_impl, v9, self, [a3 meshAdditionalBinaryFunctions], v11, objc_msgSend(a3, "objectAdditionalBinaryFunctions"), v12, objc_msgSend(a3, "fragmentAdditionalBinaryFunctions"), v13, &v22))
+      if (AGX::RenderPipeline<AGX::HAL300::ObjClasses,AGX::HAL300::Classes,AGX::HAL300::Encoders>::setPipelineStateWithAdditionalMeshObjectFragmentFunctions(&v8->_impl, device, self, [functions meshAdditionalBinaryFunctions], meshAdditionalBinaryFunctionResourceIndices, objc_msgSend(functions, "objectAdditionalBinaryFunctions"), objectAdditionalBinaryFunctionResourceIndices, objc_msgSend(functions, "fragmentAdditionalBinaryFunctions"), fragmentAdditionalBinaryFunctionResourceIndices, &v22))
       {
         return v8;
       }
@@ -1326,12 +1326,12 @@ LABEL_92:
       v10 = v22;
     }
 
-    if (a4)
+    if (error)
     {
       if (v10)
       {
         v14 = [MEMORY[0x29EDB8DC0] dictionaryWithObject:v10 forKey:*MEMORY[0x29EDB9ED8]];
-        *a4 = [objc_alloc(MEMORY[0x29EDB9FA0]) initWithDomain:@"AGXMetalG18P" code:1 userInfo:v14];
+        *error = [objc_alloc(MEMORY[0x29EDB9FA0]) initWithDomain:@"AGXMetalG18P" code:1 userInfo:v14];
       }
     }
 
@@ -1340,26 +1340,26 @@ LABEL_92:
 
   if (self->_impl.tile_variant)
   {
-    v16 = [a3 tileAdditionalBinaryFunctions];
-    v17 = [a3 tileAdditionalBinaryFunctionResourceIndices];
+    tileAdditionalBinaryFunctions = [functions tileAdditionalBinaryFunctions];
+    tileAdditionalBinaryFunctionResourceIndices = [functions tileAdditionalBinaryFunctionResourceIndices];
 
-    return [(AGXG18PFamilyRenderPipeline *)self _newTileRenderPipelineStateWithAdditionalBinaryFunctions:v16 tileFunctionResourceIndices:v17 error:a4];
+    return [(AGXG18PFamilyRenderPipeline *)self _newTileRenderPipelineStateWithAdditionalBinaryFunctions:tileAdditionalBinaryFunctions tileFunctionResourceIndices:tileAdditionalBinaryFunctionResourceIndices error:error];
   }
 
   else
   {
-    v18 = [a3 vertexAdditionalBinaryFunctions];
-    v19 = [a3 vertexAdditionalBinaryFunctionResourceIndices];
-    v20 = [a3 fragmentAdditionalBinaryFunctions];
-    v21 = [a3 fragmentAdditionalBinaryFunctionResourceIndices];
+    vertexAdditionalBinaryFunctions = [functions vertexAdditionalBinaryFunctions];
+    vertexAdditionalBinaryFunctionResourceIndices = [functions vertexAdditionalBinaryFunctionResourceIndices];
+    fragmentAdditionalBinaryFunctions = [functions fragmentAdditionalBinaryFunctions];
+    fragmentAdditionalBinaryFunctionResourceIndices2 = [functions fragmentAdditionalBinaryFunctionResourceIndices];
 
-    return [(AGXG18PFamilyRenderPipeline *)self _newRenderPipelineStateWithAdditionalBinaryFunctions:v18 vertexFunctionResourceIndices:v19 fragmentAdditionalBinaryFunctions:v20 fragmentFunctionResourceIndices:v21 error:a4];
+    return [(AGXG18PFamilyRenderPipeline *)self _newRenderPipelineStateWithAdditionalBinaryFunctions:vertexAdditionalBinaryFunctions vertexFunctionResourceIndices:vertexAdditionalBinaryFunctionResourceIndices fragmentAdditionalBinaryFunctions:fragmentAdditionalBinaryFunctions fragmentFunctionResourceIndices:fragmentAdditionalBinaryFunctionResourceIndices2 error:error];
   }
 }
 
-- (id)meshFunctionHandleWithFunction:(id)a3
+- (id)meshFunctionHandleWithFunction:(id)function
 {
-  result = std::__hash_table<std::__hash_value_type<objc_object  {objcproto11MTLFunction}*,RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>,std::__unordered_map_hasher<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::hash<objc_object  {objcproto11MTLFunction}>,std::equal_to<objc_object  {objcproto11MTLFunction}>,true>,std::__unordered_map_equal<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::equal_to,std::hash,true>,std::allocator<RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>>::find<objc_object  {objcproto11MTLFunction}>(&self->_anon_228[2560], a3);
+  result = std::__hash_table<std::__hash_value_type<objc_object  {objcproto11MTLFunction}*,RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>,std::__unordered_map_hasher<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::hash<objc_object  {objcproto11MTLFunction}>,std::equal_to<objc_object  {objcproto11MTLFunction}>,true>,std::__unordered_map_equal<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::equal_to,std::hash,true>,std::allocator<RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>>::find<objc_object  {objcproto11MTLFunction}>(&self->_anon_228[2560], function);
   if (result)
   {
     return *(result + 3);
@@ -1368,9 +1368,9 @@ LABEL_92:
   return result;
 }
 
-- (id)objectFunctionHandleWithFunction:(id)a3
+- (id)objectFunctionHandleWithFunction:(id)function
 {
-  result = std::__hash_table<std::__hash_value_type<objc_object  {objcproto11MTLFunction}*,RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>,std::__unordered_map_hasher<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::hash<objc_object  {objcproto11MTLFunction}>,std::equal_to<objc_object  {objcproto11MTLFunction}>,true>,std::__unordered_map_equal<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::equal_to,std::hash,true>,std::allocator<RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>>::find<objc_object  {objcproto11MTLFunction}>(&self->_anon_228[2520], a3);
+  result = std::__hash_table<std::__hash_value_type<objc_object  {objcproto11MTLFunction}*,RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>,std::__unordered_map_hasher<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::hash<objc_object  {objcproto11MTLFunction}>,std::equal_to<objc_object  {objcproto11MTLFunction}>,true>,std::__unordered_map_equal<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::equal_to,std::hash,true>,std::allocator<RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>>::find<objc_object  {objcproto11MTLFunction}>(&self->_anon_228[2520], function);
   if (result)
   {
     return *(result + 3);
@@ -1379,9 +1379,9 @@ LABEL_92:
   return result;
 }
 
-- (id)tileFunctionHandleWithFunction:(id)a3
+- (id)tileFunctionHandleWithFunction:(id)function
 {
-  result = std::__hash_table<std::__hash_value_type<objc_object  {objcproto11MTLFunction}*,RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>,std::__unordered_map_hasher<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::hash<objc_object  {objcproto11MTLFunction}>,std::equal_to<objc_object  {objcproto11MTLFunction}>,true>,std::__unordered_map_equal<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::equal_to,std::hash,true>,std::allocator<RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>>::find<objc_object  {objcproto11MTLFunction}>(&self->_anon_228[2480], a3);
+  result = std::__hash_table<std::__hash_value_type<objc_object  {objcproto11MTLFunction}*,RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>,std::__unordered_map_hasher<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::hash<objc_object  {objcproto11MTLFunction}>,std::equal_to<objc_object  {objcproto11MTLFunction}>,true>,std::__unordered_map_equal<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::equal_to,std::hash,true>,std::allocator<RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>>::find<objc_object  {objcproto11MTLFunction}>(&self->_anon_228[2480], function);
   if (result)
   {
     return *(result + 3);
@@ -1390,9 +1390,9 @@ LABEL_92:
   return result;
 }
 
-- (id)fragmentFunctionHandleWithFunction:(id)a3
+- (id)fragmentFunctionHandleWithFunction:(id)function
 {
-  result = std::__hash_table<std::__hash_value_type<objc_object  {objcproto11MTLFunction}*,RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>,std::__unordered_map_hasher<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::hash<objc_object  {objcproto11MTLFunction}>,std::equal_to<objc_object  {objcproto11MTLFunction}>,true>,std::__unordered_map_equal<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::equal_to,std::hash,true>,std::allocator<RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>>::find<objc_object  {objcproto11MTLFunction}>(&self->_anon_228[2440], a3);
+  result = std::__hash_table<std::__hash_value_type<objc_object  {objcproto11MTLFunction}*,RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>,std::__unordered_map_hasher<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::hash<objc_object  {objcproto11MTLFunction}>,std::equal_to<objc_object  {objcproto11MTLFunction}>,true>,std::__unordered_map_equal<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::equal_to,std::hash,true>,std::allocator<RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>>::find<objc_object  {objcproto11MTLFunction}>(&self->_anon_228[2440], function);
   if (result)
   {
     return *(result + 3);
@@ -1401,9 +1401,9 @@ LABEL_92:
   return result;
 }
 
-- (id)vertexFunctionHandleWithFunction:(id)a3
+- (id)vertexFunctionHandleWithFunction:(id)function
 {
-  result = std::__hash_table<std::__hash_value_type<objc_object  {objcproto11MTLFunction}*,RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>,std::__unordered_map_hasher<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::hash<objc_object  {objcproto11MTLFunction}>,std::equal_to<objc_object  {objcproto11MTLFunction}>,true>,std::__unordered_map_equal<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::equal_to,std::hash,true>,std::allocator<RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>>::find<objc_object  {objcproto11MTLFunction}>(&self->_anon_228[2400], a3);
+  result = std::__hash_table<std::__hash_value_type<objc_object  {objcproto11MTLFunction}*,RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>,std::__unordered_map_hasher<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::hash<objc_object  {objcproto11MTLFunction}>,std::equal_to<objc_object  {objcproto11MTLFunction}>,true>,std::__unordered_map_equal<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::equal_to,std::hash,true>,std::allocator<RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>>::find<objc_object  {objcproto11MTLFunction}>(&self->_anon_228[2400], function);
   if (result)
   {
     return *(result + 3);
@@ -1478,18 +1478,18 @@ LABEL_92:
   }
 }
 
-- (unint64_t)imageblockMemoryLengthForDimensions:(id *)a3
+- (unint64_t)imageblockMemoryLengthForDimensions:(id *)dimensions
 {
   fragment_variant = self->_impl.fragment_variant;
   if (fragment_variant)
   {
-    return fragment_variant[948] * a3->var1 * a3->var0 * *&self->_anon_228[444];
+    return fragment_variant[948] * dimensions->var1 * dimensions->var0 * *&self->_anon_228[444];
   }
 
   fragment_variant = self->_impl.tile_variant;
   if (fragment_variant)
   {
-    return fragment_variant[948] * a3->var1 * a3->var0 * *&self->_anon_228[444];
+    return fragment_variant[948] * dimensions->var1 * dimensions->var0 * *&self->_anon_228[444];
   }
 
   else
@@ -1498,18 +1498,18 @@ LABEL_92:
   }
 }
 
-- (unint64_t)imageBlockMemoryLengthForDimensions:(id *)a3
+- (unint64_t)imageBlockMemoryLengthForDimensions:(id *)dimensions
 {
   fragment_variant = self->_impl.fragment_variant;
   if (fragment_variant)
   {
-    return fragment_variant[948] * a3->var1 * a3->var0 * *&self->_anon_228[444];
+    return fragment_variant[948] * dimensions->var1 * dimensions->var0 * *&self->_anon_228[444];
   }
 
   fragment_variant = self->_impl.tile_variant;
   if (fragment_variant)
   {
-    return fragment_variant[948] * a3->var1 * a3->var0 * *&self->_anon_228[444];
+    return fragment_variant[948] * dimensions->var1 * dimensions->var0 * *&self->_anon_228[444];
   }
 
   else
@@ -1813,32 +1813,32 @@ LABEL_4:
   [(_MTLRenderPipelineState *)&v8 dealloc];
 }
 
-- (AGXG18PFamilyRenderPipeline)initWithUnretainedParent:(id)a3
+- (AGXG18PFamilyRenderPipeline)initWithUnretainedParent:(id)parent
 {
   v10.receiver = self;
   v10.super_class = AGXG18PFamilyRenderPipeline;
   v4 = [(_MTLRenderPipelineState *)&v10 initWithParent:?];
   if (v4)
   {
-    v5 = *(a3 + 494);
+    v5 = *(parent + 494);
     if (v5)
     {
       v4->_fp = v5;
     }
 
-    v6 = *(a3 + 495);
+    v6 = *(parent + 495);
     if (v6)
     {
       v4->_vp = v6;
     }
 
-    v7 = *(a3 + 497);
+    v7 = *(parent + 497);
     if (v7)
     {
       v4->_op = v7;
     }
 
-    v8 = *(a3 + 498);
+    v8 = *(parent + 498);
     if (v8)
     {
       v4->_mp = v8;
@@ -1848,7 +1848,7 @@ LABEL_4:
   return v4;
 }
 
-- (AGXG18PFamilyRenderPipeline)initWithParent:(id)a3
+- (AGXG18PFamilyRenderPipeline)initWithParent:(id)parent
 {
   v7.receiver = self;
   v7.super_class = AGXG18PFamilyRenderPipeline;
@@ -1856,28 +1856,28 @@ LABEL_4:
   if (result)
   {
     v5 = result;
-    v6 = a3;
+    parentCopy = parent;
     result = v5;
-    v5->_basePipeline = v6;
+    v5->_basePipeline = parentCopy;
   }
 
   return result;
 }
 
-- (AGXG18PFamilyRenderPipeline)initWithDevice:(id)a3 meshRenderPipelineStateDescriptor:(id)a4 objectThreadExecutionWidth:(unint64_t)a5 meshThreadExecutionWidth:(unint64_t)a6 maxTotalThreadgroupsPerMeshGrid:(unint64_t)a7
+- (AGXG18PFamilyRenderPipeline)initWithDevice:(id)device meshRenderPipelineStateDescriptor:(id)descriptor objectThreadExecutionWidth:(unint64_t)width meshThreadExecutionWidth:(unint64_t)executionWidth maxTotalThreadgroupsPerMeshGrid:(unint64_t)grid
 {
   v16.receiver = self;
   v16.super_class = AGXG18PFamilyRenderPipeline;
-  v8 = [(_MTLRenderPipelineState *)&v16 initWithDevice:a3 meshRenderPipelineStateDescriptor:a4 objectThreadExecutionWidth:a5 meshThreadExecutionWidth:a6 maxTotalThreadgroupsPerMeshGrid:a7];
+  v8 = [(_MTLRenderPipelineState *)&v16 initWithDevice:device meshRenderPipelineStateDescriptor:descriptor objectThreadExecutionWidth:width meshThreadExecutionWidth:executionWidth maxTotalThreadgroupsPerMeshGrid:grid];
   if (v8)
   {
-    v9 = [objc_msgSend(a4 "fragmentFunction")];
+    v9 = [objc_msgSend(descriptor "fragmentFunction")];
     v8->_fp = v9;
     v10 = v9;
-    v11 = [objc_msgSend(a4 "objectFunction")];
+    v11 = [objc_msgSend(descriptor "objectFunction")];
     v8->_op = v11;
     v12 = v11;
-    v13 = [objc_msgSend(a4 "meshFunction")];
+    v13 = [objc_msgSend(descriptor "meshFunction")];
     v8->_mp = v13;
     v14 = v13;
   }
@@ -1885,20 +1885,20 @@ LABEL_4:
   return v8;
 }
 
-- (AGXG18PFamilyRenderPipeline)initWithDevice:(id)a3 meshRenderPipelineStateDescriptor:(id)a4 objectThreadExecutionWidth:(unint64_t)a5 meshThreadExecutionWidth:(unint64_t)a6
+- (AGXG18PFamilyRenderPipeline)initWithDevice:(id)device meshRenderPipelineStateDescriptor:(id)descriptor objectThreadExecutionWidth:(unint64_t)width meshThreadExecutionWidth:(unint64_t)executionWidth
 {
   v15.receiver = self;
   v15.super_class = AGXG18PFamilyRenderPipeline;
-  v7 = [(_MTLRenderPipelineState *)&v15 initWithDevice:a3 meshRenderPipelineStateDescriptor:a4 objectThreadExecutionWidth:a5 meshThreadExecutionWidth:a6];
+  v7 = [(_MTLRenderPipelineState *)&v15 initWithDevice:device meshRenderPipelineStateDescriptor:descriptor objectThreadExecutionWidth:width meshThreadExecutionWidth:executionWidth];
   if (v7)
   {
-    v8 = [objc_msgSend(a4 "fragmentFunction")];
+    v8 = [objc_msgSend(descriptor "fragmentFunction")];
     v7->_fp = v8;
     v9 = v8;
-    v10 = [objc_msgSend(a4 "objectFunction")];
+    v10 = [objc_msgSend(descriptor "objectFunction")];
     v7->_op = v10;
     v11 = v10;
-    v12 = [objc_msgSend(a4 "meshFunction")];
+    v12 = [objc_msgSend(descriptor "meshFunction")];
     v7->_mp = v12;
     v13 = v12;
   }
@@ -1906,23 +1906,23 @@ LABEL_4:
   return v7;
 }
 
-- (AGXG18PFamilyRenderPipeline)initWithDevice:(id)a3 pipelineStateDescriptor:(id)a4
+- (AGXG18PFamilyRenderPipeline)initWithDevice:(id)device pipelineStateDescriptor:(id)descriptor
 {
   v15.receiver = self;
   v15.super_class = AGXG18PFamilyRenderPipeline;
-  v5 = [(_MTLRenderPipelineState *)&v15 initWithDevice:a3 pipelineStateDescriptor:?];
+  v5 = [(_MTLRenderPipelineState *)&v15 initWithDevice:device pipelineStateDescriptor:?];
   if (v5)
   {
-    v6 = [objc_msgSend(a4 "fragmentFunction")];
+    v6 = [objc_msgSend(descriptor "fragmentFunction")];
     v5->_fp = v6;
     v7 = v6;
-    v8 = [objc_msgSend(a4 "vertexFunction")];
+    v8 = [objc_msgSend(descriptor "vertexFunction")];
     v5->_vp = v8;
     v9 = v8;
-    v10 = [objc_msgSend(a4 "objectFunction")];
+    v10 = [objc_msgSend(descriptor "objectFunction")];
     v5->_op = v10;
     v11 = v10;
-    v12 = [objc_msgSend(a4 "meshFunction")];
+    v12 = [objc_msgSend(descriptor "meshFunction")];
     v5->_mp = v12;
     v13 = v12;
   }

@@ -1,11 +1,11 @@
 @interface CLKTreatedImageCache
 + (id)sharedInstance;
 - (CLKTreatedImageCache)init;
-- (id)_imageForKey:(id)a3;
-- (id)imageForRawImage:(id)a3 maxSDKSize:(CGSize)a4 maxDeviceSize:(CGSize)a5 cornerRadius:(double)a6;
-- (id)imageForRawImage:(id)a3 maxSDKSize:(CGSize)a4 maxDeviceSize:(CGSize)a5 maskMode:(int64_t)a6;
-- (id)imageForRawImage:(id)a3 scale:(double)a4 sdkDeviceScale:(double)a5 cornerRadius:(double)a6;
-- (id)imageForRawImage:(id)a3 scale:(double)a4 sdkDeviceScale:(double)a5 maskMode:(int64_t)a6;
+- (id)_imageForKey:(id)key;
+- (id)imageForRawImage:(id)image maxSDKSize:(CGSize)size maxDeviceSize:(CGSize)deviceSize cornerRadius:(double)radius;
+- (id)imageForRawImage:(id)image maxSDKSize:(CGSize)size maxDeviceSize:(CGSize)deviceSize maskMode:(int64_t)mode;
+- (id)imageForRawImage:(id)image scale:(double)scale sdkDeviceScale:(double)deviceScale cornerRadius:(double)radius;
+- (id)imageForRawImage:(id)image scale:(double)scale sdkDeviceScale:(double)deviceScale maskMode:(int64_t)mode;
 - (void)_queue_pruneCacheIfNecessary;
 - (void)purgeCache;
 @end
@@ -65,11 +65,11 @@ void __38__CLKTreatedImageCache_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)imageForRawImage:(id)a3 scale:(double)a4 sdkDeviceScale:(double)a5 maskMode:(int64_t)a6
+- (id)imageForRawImage:(id)image scale:(double)scale sdkDeviceScale:(double)deviceScale maskMode:(int64_t)mode
 {
-  v10 = a3;
-  v11 = v10;
-  if (!v10 || ([v10 size], v12 <= 0.0))
+  imageCopy = image;
+  v11 = imageCopy;
+  if (!imageCopy || ([imageCopy size], v12 <= 0.0))
   {
     v16 = 0;
     v15 = v11;
@@ -81,7 +81,7 @@ void __38__CLKTreatedImageCache_sharedInstance__block_invoke()
 
   if (v14 > 0.0)
   {
-    v15 = [CLKTreatedImageKey keyWithRawImage:v11 scale:a6 sdkDeviceScale:a4 maskMode:a5];
+    v15 = [CLKTreatedImageKey keyWithRawImage:v11 scale:mode sdkDeviceScale:scale maskMode:deviceScale];
     v16 = [(CLKTreatedImageCache *)self _imageForKey:v15];
 LABEL_6:
 
@@ -94,11 +94,11 @@ LABEL_7:
   return v16;
 }
 
-- (id)imageForRawImage:(id)a3 scale:(double)a4 sdkDeviceScale:(double)a5 cornerRadius:(double)a6
+- (id)imageForRawImage:(id)image scale:(double)scale sdkDeviceScale:(double)deviceScale cornerRadius:(double)radius
 {
-  v10 = a3;
-  v11 = v10;
-  if (!v10 || ([v10 size], v12 <= 0.0))
+  imageCopy = image;
+  v11 = imageCopy;
+  if (!imageCopy || ([imageCopy size], v12 <= 0.0))
   {
     v16 = 0;
     v15 = v11;
@@ -110,7 +110,7 @@ LABEL_7:
 
   if (v14 > 0.0)
   {
-    v15 = [CLKTreatedImageKey keyWithRawImage:v11 scale:a4 sdkDeviceScale:a5 cornerRadius:a6];
+    v15 = [CLKTreatedImageKey keyWithRawImage:v11 scale:scale sdkDeviceScale:deviceScale cornerRadius:radius];
     v16 = [(CLKTreatedImageCache *)self _imageForKey:v15];
 LABEL_6:
 
@@ -123,18 +123,18 @@ LABEL_7:
   return v16;
 }
 
-- (id)imageForRawImage:(id)a3 maxSDKSize:(CGSize)a4 maxDeviceSize:(CGSize)a5 maskMode:(int64_t)a6
+- (id)imageForRawImage:(id)image maxSDKSize:(CGSize)size maxDeviceSize:(CGSize)deviceSize maskMode:(int64_t)mode
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a4.height;
-  v10 = a4.width;
-  v12 = a3;
-  v13 = v12;
-  if (!v12 || ([v12 size], v14 <= 0.0))
+  height = deviceSize.height;
+  width = deviceSize.width;
+  v9 = size.height;
+  v10 = size.width;
+  imageCopy = image;
+  v13 = imageCopy;
+  if (!imageCopy || ([imageCopy size], v14 <= 0.0))
   {
     v18 = 0;
-    v17 = v13;
+    height = v13;
     goto LABEL_6;
   }
 
@@ -143,8 +143,8 @@ LABEL_7:
 
   if (v16 > 0.0)
   {
-    v17 = [CLKTreatedImageKey keyWithRawImage:v13 maxSDKSize:a6 maxDeviceSize:v10 maskMode:v9, width, height];
-    v18 = [(CLKTreatedImageCache *)self _imageForKey:v17];
+    height = [CLKTreatedImageKey keyWithRawImage:v13 maxSDKSize:mode maxDeviceSize:v10 maskMode:v9, width, height];
+    v18 = [(CLKTreatedImageCache *)self _imageForKey:height];
 LABEL_6:
 
     goto LABEL_7;
@@ -156,18 +156,18 @@ LABEL_7:
   return v18;
 }
 
-- (id)imageForRawImage:(id)a3 maxSDKSize:(CGSize)a4 maxDeviceSize:(CGSize)a5 cornerRadius:(double)a6
+- (id)imageForRawImage:(id)image maxSDKSize:(CGSize)size maxDeviceSize:(CGSize)deviceSize cornerRadius:(double)radius
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a4.height;
-  v10 = a4.width;
-  v12 = a3;
-  v13 = v12;
-  if (!v12 || ([v12 size], v14 <= 0.0))
+  height = deviceSize.height;
+  width = deviceSize.width;
+  v9 = size.height;
+  v10 = size.width;
+  imageCopy = image;
+  v13 = imageCopy;
+  if (!imageCopy || ([imageCopy size], v14 <= 0.0))
   {
     v18 = 0;
-    v17 = v13;
+    radius = v13;
     goto LABEL_6;
   }
 
@@ -176,8 +176,8 @@ LABEL_7:
 
   if (v16 > 0.0)
   {
-    v17 = [CLKTreatedImageKey keyWithRawImage:v13 maxSDKSize:v10 maxDeviceSize:v9 cornerRadius:width, height, a6];
-    v18 = [(CLKTreatedImageCache *)self _imageForKey:v17];
+    radius = [CLKTreatedImageKey keyWithRawImage:v13 maxSDKSize:v10 maxDeviceSize:v9 cornerRadius:width, height, radius];
+    v18 = [(CLKTreatedImageCache *)self _imageForKey:radius];
 LABEL_6:
 
     goto LABEL_7;
@@ -195,10 +195,10 @@ LABEL_7:
   {
     do
     {
-      v3 = [(NSMutableArray *)self->_recentlyUsedKeys firstObject];
-      if (v3)
+      firstObject = [(NSMutableArray *)self->_recentlyUsedKeys firstObject];
+      if (firstObject)
       {
-        [(NSMutableDictionary *)self->_cache removeObjectForKey:v3];
+        [(NSMutableDictionary *)self->_cache removeObjectForKey:firstObject];
         [(NSMutableArray *)self->_recentlyUsedKeys removeObjectAtIndex:0];
       }
     }
@@ -207,9 +207,9 @@ LABEL_7:
   }
 }
 
-- (id)_imageForKey:(id)a3
+- (id)_imageForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -221,10 +221,10 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __37__CLKTreatedImageCache__imageForKey___block_invoke;
   block[3] = &unk_278A1FED0;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(internalQueue, block);
   v7 = v13[5];
 

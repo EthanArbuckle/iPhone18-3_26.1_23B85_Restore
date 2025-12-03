@@ -1,25 +1,25 @@
 @interface EQKitBox
-- (BOOL)containsPoint:(CGPoint)a3;
-- (CGAffineTransform)transformFromDescendant:(SEL)a3;
-- (CGRect)boundsWithRoot:(id)a3;
+- (BOOL)containsPoint:(CGPoint)point;
+- (CGAffineTransform)transformFromDescendant:(SEL)descendant;
+- (CGRect)boundsWithRoot:(id)root;
 - (CGRect)erasableBounds;
 - (double)layoutVSize;
 - (double)vsize;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)hitTest:(CGPoint)a3;
-- (void)renderIntoContext:(id)a3 offset:(CGPoint)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)hitTest:(CGPoint)test;
+- (void)renderIntoContext:(id)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitBox
 
-- (CGRect)boundsWithRoot:(id)a3
+- (CGRect)boundsWithRoot:(id)root
 {
-  v4 = a3;
-  v5 = v4;
+  rootCopy = root;
+  v5 = rootCopy;
   memset(&v19[1], 0, sizeof(CGAffineTransform));
-  if (v4)
+  if (rootCopy)
   {
-    [v4 transformFromDescendant:self];
+    [rootCopy transformFromDescendant:self];
   }
 
   [(EQKitBox *)self height];
@@ -49,9 +49,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_opt_class() allocWithZone:a3];
+  v3 = [objc_opt_class() allocWithZone:zone];
 
   return [v3 init];
 }
@@ -108,13 +108,13 @@
   return result;
 }
 
-- (void)renderIntoContext:(id)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(id)context offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v25 = a3;
-  v7 = [v25 cgContext];
-  if (v7)
+  y = offset.y;
+  x = offset.x;
+  contextCopy = context;
+  cgContext = [contextCopy cgContext];
+  if (cgContext)
   {
     [(EQKitBox *)self width];
     v9 = v8;
@@ -150,23 +150,23 @@
           v17 = v16;
         }
 
-        v18 = [v25 selection];
-        v19 = [v18 containsBox:self];
+        selection = [contextCopy selection];
+        v19 = [selection containsBox:self];
 
-        if ((v19 & 1) != 0 || [v25 rendersDebugRects])
+        if ((v19 & 1) != 0 || [contextCopy rendersDebugRects])
         {
-          CGContextSaveGState(v7);
+          CGContextSaveGState(cgContext);
           if (v19)
           {
-            v20 = [v25 highlightColor];
-            if (v20)
+            highlightColor = [contextCopy highlightColor];
+            if (highlightColor)
             {
-              CGContextSetFillColorWithColor(v7, v20);
+              CGContextSetFillColorWithColor(cgContext, highlightColor);
               v27.origin.x = v15;
               v27.origin.y = v17;
               v27.size.width = v9;
               v27.size.height = v11;
-              CGContextFillRect(v7, v27);
+              CGContextFillRect(cgContext, v27);
             }
           }
 
@@ -178,37 +178,37 @@
           v21 = 0;
         }
 
-        if ([v25 rendersDebugRects])
+        if ([contextCopy rendersDebugRects])
         {
           GenericRGB = CGColorCreateGenericRGB(1.0, 0.5, 0.5, 1.0);
           v23 = CGColorCreateGenericRGB(0.5, 0.5, 1.0, 1.0);
-          v24 = EQKitBox_ContextScale(v7);
-          CGContextSetLineWidth(v7, 1.0 / v24);
-          CGContextSetStrokeColorWithColor(v7, GenericRGB);
-          CGContextBeginPath(v7);
-          CGContextMoveToPoint(v7, x, y);
-          CGContextAddLineToPoint(v7, v14, y);
-          CGContextStrokePath(v7);
-          CGContextSetStrokeColorWithColor(v7, v23);
+          v24 = EQKitBox_ContextScale(cgContext);
+          CGContextSetLineWidth(cgContext, 1.0 / v24);
+          CGContextSetStrokeColorWithColor(cgContext, GenericRGB);
+          CGContextBeginPath(cgContext);
+          CGContextMoveToPoint(cgContext, x, y);
+          CGContextAddLineToPoint(cgContext, v14, y);
+          CGContextStrokePath(cgContext);
+          CGContextSetStrokeColorWithColor(cgContext, v23);
           v28.origin.x = v15;
           v28.origin.y = v17;
           v28.size.width = v9;
           v28.size.height = v11;
-          CGContextStrokeRect(v7, v28);
+          CGContextStrokeRect(cgContext, v28);
           CGColorRelease(v23);
           CGColorRelease(GenericRGB);
         }
 
         if (v21)
         {
-          CGContextRestoreGState(v7);
+          CGContextRestoreGState(cgContext);
         }
       }
     }
   }
 }
 
-- (CGAffineTransform)transformFromDescendant:(SEL)a3
+- (CGAffineTransform)transformFromDescendant:(SEL)descendant
 {
   v5 = MEMORY[0x277CBF2C0];
   v6 = *(MEMORY[0x277CBF2C0] + 16);
@@ -218,15 +218,15 @@
   return [EQKitBox p_getTransform:"p_getTransform:fromDescendant:" fromDescendant:?];
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
-  if (a3.x < 0.0)
+  if (point.x < 0.0)
   {
     return 0;
   }
 
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(EQKitBox *)self width];
   if (x > v7)
   {
@@ -243,19 +243,19 @@
   return y <= v9;
 }
 
-- (id)hitTest:(CGPoint)a3
+- (id)hitTest:(CGPoint)test
 {
-  if ([(EQKitBox *)self containsPoint:a3.x, a3.y])
+  if ([(EQKitBox *)self containsPoint:test.x, test.y])
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 @end

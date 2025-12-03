@@ -7,30 +7,30 @@
 
 - (__CFString)_stringByRemovingOffensiveOrVulgarWords
 {
-  if ([a1 isEqualToString:@"মাং"])
+  if ([self isEqualToString:@"মাং"])
   {
-    v2 = @" ং";
+    selfCopy = @" ং";
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (__CFString)_lastConjunctInLanguage:()IndicUtils
 {
   ScriptCodeForLanguage = GetScriptCodeForLanguage(a3);
-  v5 = [a1 _lastGrapheme];
-  if (![v5 _contentsExclusivelyInScript:ScriptCodeForLanguage])
+  _lastGrapheme = [self _lastGrapheme];
+  if (![_lastGrapheme _contentsExclusivelyInScript:ScriptCodeForLanguage])
   {
     v6 = &stru_283FDFAF8;
     goto LABEL_21;
   }
 
-  v6 = v5;
+  v6 = _lastGrapheme;
   v7 = [(__CFString *)v6 length]- 1;
   if (v7 < 0)
   {

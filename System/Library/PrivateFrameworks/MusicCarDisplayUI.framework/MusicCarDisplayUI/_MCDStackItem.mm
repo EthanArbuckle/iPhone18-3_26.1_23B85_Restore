@@ -1,22 +1,22 @@
 @interface _MCDStackItem
-+ (id)stackItemWithContainer:(id)a3;
++ (id)stackItemWithContainer:(id)container;
 - (id)description;
 @end
 
 @implementation _MCDStackItem
 
-+ (id)stackItemWithContainer:(id)a3
++ (id)stackItemWithContainer:(id)container
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v4 indexPath];
-  v7 = [v6 copy];
+  containerCopy = container;
+  v5 = objc_alloc_init(self);
+  indexPath = [containerCopy indexPath];
+  v7 = [indexPath copy];
   v8 = v5[2];
   v5[2] = v7;
 
-  v9 = [v4 identifier];
+  identifier = [containerCopy identifier];
 
-  v10 = [v9 copy];
+  v10 = [identifier copy];
   v11 = v5[1];
   v5[1] = v10;
 

@@ -1,6 +1,6 @@
 @interface CNContactClassifiedHandleStringInterpreter
 - (CNContactClassifiedHandleStringInterpreter)init;
-- (CNContactClassifiedHandleStringInterpreter)initWithHandleStringClassification:(id)a3;
+- (CNContactClassifiedHandleStringInterpreter)initWithHandleStringClassification:(id)classification;
 - (NSArray)emailAddresses;
 - (NSArray)phoneNumbers;
 - (id)description;
@@ -14,21 +14,21 @@
 
 - (CNContactClassifiedHandleStringInterpreter)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNContactClassifiedHandleStringInterpreter)initWithHandleStringClassification:(id)a3
+- (CNContactClassifiedHandleStringInterpreter)initWithHandleStringClassification:(id)classification
 {
-  v5 = a3;
+  classificationCopy = classification;
   v16.receiver = self;
   v16.super_class = CNContactClassifiedHandleStringInterpreter;
   v6 = [(CNContactClassifiedHandleStringInterpreter *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_classification, a3);
+    objc_storeStrong(&v6->_classification, classification);
     v7->_hasBeenInterpreted = 0;
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     emailAddressesImpl = v7->_emailAddressesImpl;
@@ -52,9 +52,9 @@
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"classification" object:self->_classification];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 - (void)interpretValues
@@ -73,8 +73,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(CNHandleStringClassification *)self->_classification emailAddresses];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  emailAddresses = [(CNHandleStringClassification *)self->_classification emailAddresses];
+  v4 = [emailAddresses countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -86,7 +86,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(emailAddresses);
         }
 
         v8 = [CNLabeledValue labeledValueWithLabel:0 value:*(*(&v9 + 1) + 8 * v7)];
@@ -96,7 +96,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [emailAddresses countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -110,8 +110,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(CNHandleStringClassification *)self->_classification phoneNumbers];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  phoneNumbers = [(CNHandleStringClassification *)self->_classification phoneNumbers];
+  v4 = [phoneNumbers countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v4)
   {
     v6 = v4;
@@ -124,7 +124,7 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(phoneNumbers);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -149,7 +149,7 @@
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      v6 = [phoneNumbers countByEnumeratingWithState:&v14 objects:v20 count:16];
     }
 
     while (v6);
@@ -159,21 +159,21 @@
 - (void)interpretUnknownsAsEmailAddresses
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v3 = [(CNHandleStringClassification *)self->_classification unknown];
-  [v3 _cn_each:&__block_literal_global_95];
+  unknown = [(CNHandleStringClassification *)self->_classification unknown];
+  [unknown _cn_each:&__block_literal_global_95];
 
-  v4 = [(CNHandleStringClassification *)self->_classification unknown];
+  unknown2 = [(CNHandleStringClassification *)self->_classification unknown];
   unconvertableHandles = self->_unconvertableHandles;
-  v19[0] = v4;
+  v19[0] = unknown2;
   v19[1] = unconvertableHandles;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
-  v7 = [v6 _cn_flatten];
+  _cn_flatten = [v6 _cn_flatten];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = v7;
+  v8 = _cn_flatten;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {

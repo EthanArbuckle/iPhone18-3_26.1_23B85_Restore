@@ -1,32 +1,32 @@
 @interface TRAArbitrationDeviceOrientationInputs
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDeviceOrientationInputs:(id)a3;
-- (TRAArbitrationDeviceOrientationInputs)initWithCurrentDeviceOrientation:(int64_t)a3 nonFlatDeviceOrientation:(int64_t)a4;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDeviceOrientationInputs:(id)inputs;
+- (TRAArbitrationDeviceOrientationInputs)initWithCurrentDeviceOrientation:(int64_t)orientation nonFlatDeviceOrientation:(int64_t)deviceOrientation;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation TRAArbitrationDeviceOrientationInputs
 
-- (TRAArbitrationDeviceOrientationInputs)initWithCurrentDeviceOrientation:(int64_t)a3 nonFlatDeviceOrientation:(int64_t)a4
+- (TRAArbitrationDeviceOrientationInputs)initWithCurrentDeviceOrientation:(int64_t)orientation nonFlatDeviceOrientation:(int64_t)deviceOrientation
 {
   v7.receiver = self;
   v7.super_class = TRAArbitrationDeviceOrientationInputs;
   result = [(TRAArbitrationDeviceOrientationInputs *)&v7 init];
   if (result)
   {
-    result->_currentDeviceOrientation = a3;
-    result->_nonFlatDeviceOrientation = a4;
+    result->_currentDeviceOrientation = orientation;
+    result->_nonFlatDeviceOrientation = deviceOrientation;
   }
 
   return result;
 }
 
-- (BOOL)isEqualToDeviceOrientationInputs:(id)a3
+- (BOOL)isEqualToDeviceOrientationInputs:(id)inputs
 {
-  v4 = a3;
-  if (!v4)
+  inputsCopy = inputs;
+  if (!inputsCopy)
   {
     goto LABEL_7;
   }
@@ -37,17 +37,17 @@
     [TRAArbitrationDeviceOrientationInputs isEqualToDeviceOrientationInputs:];
   }
 
-  if (self == v4)
+  if (self == inputsCopy)
   {
     v7 = 1;
     goto LABEL_9;
   }
 
   currentDeviceOrientation = self->_currentDeviceOrientation;
-  if (currentDeviceOrientation == [(TRAArbitrationDeviceOrientationInputs *)v4 currentDeviceOrientation])
+  if (currentDeviceOrientation == [(TRAArbitrationDeviceOrientationInputs *)inputsCopy currentDeviceOrientation])
   {
     nonFlatDeviceOrientation = self->_nonFlatDeviceOrientation;
-    v7 = nonFlatDeviceOrientation == [(TRAArbitrationDeviceOrientationInputs *)v4 nonFlatDeviceOrientation];
+    v7 = nonFlatDeviceOrientation == [(TRAArbitrationDeviceOrientationInputs *)inputsCopy nonFlatDeviceOrientation];
   }
 
   else
@@ -61,10 +61,10 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -72,7 +72,7 @@ LABEL_9:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRAArbitrationDeviceOrientationInputs *)self isEqualToDeviceOrientationInputs:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRAArbitrationDeviceOrientationInputs *)self isEqualToDeviceOrientationInputs:equalCopy];
   }
 
   return v5;
@@ -80,10 +80,10 @@ LABEL_9:
 
 - (id)succinctDescription
 {
-  v2 = [(TRAArbitrationDeviceOrientationInputs *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(TRAArbitrationDeviceOrientationInputs *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -95,7 +95,7 @@ LABEL_9:
   v7[3] = &unk_279DD48D0;
   v4 = v3;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   [v4 appendBodySectionWithName:0 multilinePrefix:@"\t\t" block:v7];
   v5 = v4;
 
@@ -113,12 +113,12 @@ void __67__TRAArbitrationDeviceOrientationInputs_succinctDescriptionBuilder__blo
   [v4 appendString:v5 withName:@"nonFlat"];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(TRAArbitrationDeviceOrientationInputs *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(TRAArbitrationDeviceOrientationInputs *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (void)isEqualToDeviceOrientationInputs:.cold.1()

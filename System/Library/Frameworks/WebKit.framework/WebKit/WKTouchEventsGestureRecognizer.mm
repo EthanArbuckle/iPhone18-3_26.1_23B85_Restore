@@ -1,27 +1,27 @@
 @interface WKTouchEventsGestureRecognizer
 + (void)initialize;
-- (BOOL)_hasActiveTouchesForEvent:(id)a3;
-- (WKTouchEvent)_touchEventForChildTouch:(SEL)a3 withParent:(id)a4;
-- (WKTouchEventsGestureRecognizer)initWithContentView:(id)a3;
+- (BOOL)_hasActiveTouchesForEvent:(id)event;
+- (WKTouchEvent)_touchEventForChildTouch:(SEL)touch withParent:(id)parent;
+- (WKTouchEventsGestureRecognizer)initWithContentView:(id)view;
 - (id).cxx_construct;
-- (void)_processTouches:(id)a3 withEvent:(id)a4 type:(unsigned __int8)a5;
-- (void)_recordTouches:(id)a3 ofType:(unsigned __int8)a4 forEvent:(id)a5;
-- (void)_updateTapStateWithTouches:(id)a3;
-- (void)_updateTapStateWithTouches:(id)a3 type:(unsigned __int8)a4;
+- (void)_processTouches:(id)touches withEvent:(id)event type:(unsigned __int8)type;
+- (void)_recordTouches:(id)touches ofType:(unsigned __int8)type forEvent:(id)event;
+- (void)_updateTapStateWithTouches:(id)touches;
+- (void)_updateTapStateWithTouches:(id)touches type:(unsigned __int8)type;
 - (void)cancel;
 - (void)performAction;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation WKTouchEventsGestureRecognizer
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     do
     {
@@ -190,18 +190,18 @@
   }
 }
 
-- (WKTouchEventsGestureRecognizer)initWithContentView:(id)a3
+- (WKTouchEventsGestureRecognizer)initWithContentView:(id)view
 {
   v10.receiver = self;
   v10.super_class = WKTouchEventsGestureRecognizer;
   v4 = [(WKTouchEventsGestureRecognizer *)&v10 initWithTarget:0 action:0];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
-    v6 = v5;
-    if (v5)
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    v6 = strongToWeakObjectsMapTable;
+    if (strongToWeakObjectsMapTable)
     {
-      v7 = v5;
+      v7 = strongToWeakObjectsMapTable;
     }
 
     m_ptr = v4->_activeTouchesByIdentifier.m_ptr;
@@ -210,7 +210,7 @@
     {
     }
 
-    objc_storeWeak(&v4->_contentView, a3);
+    objc_storeWeak(&v4->_contentView, view);
     [(WKTouchEventsGestureRecognizer *)v4 reset];
   }
 
@@ -220,24 +220,24 @@
 - (void)cancel
 {
   self->_wasExplicitlyCancelled = 0;
-  v3 = [(WKTouchEventsGestureRecognizer *)self state];
-  if (v3 <= 2)
+  state = [(WKTouchEventsGestureRecognizer *)self state];
+  if (state <= 2)
   {
-    v4 = qword_19E703DD8[v3];
+    v4 = qword_19E703DD8[state];
     self->_wasExplicitlyCancelled = 1;
 
     [(WKTouchEventsGestureRecognizer *)self setState:v4];
   }
 }
 
-- (void)_updateTapStateWithTouches:(id)a3
+- (void)_updateTapStateWithTouches:(id)touches
 {
-  if ([a3 count] == 1)
+  if ([touches count] == 1)
   {
-    v5 = [a3 anyObject];
+    anyObject = [touches anyObject];
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v7 = v6;
-    [v5 locationInView:{-[WKTouchEventsGestureRecognizer view](self, "view")}];
+    [anyObject locationInView:{-[WKTouchEventsGestureRecognizer view](self, "view")}];
     p_lastTouchesBeganLocation = &self->_lastTouchesBeganLocation;
     if (!self->_lastTouchesBeganLocation.__engaged_)
     {
@@ -262,13 +262,13 @@ LABEL_7:
   self->_isPotentialTap = v11;
 }
 
-- (void)_updateTapStateWithTouches:(id)a3 type:(unsigned __int8)a4
+- (void)_updateTapStateWithTouches:(id)touches type:(unsigned __int8)type
 {
-  if (a4 > 1)
+  if (type > 1)
   {
-    if (a4 != 2)
+    if (type != 2)
     {
-      if (a4 == 3)
+      if (type == 3)
       {
         self->_lastTouchEvent.isPotentialTap = 0;
         self->_isPotentialTap = 0;
@@ -280,14 +280,14 @@ LABEL_7:
 
   else
   {
-    if (!a4)
+    if (!type)
     {
 LABEL_9:
-      [(WKTouchEventsGestureRecognizer *)self _updateTapStateWithTouches:a3];
+      [(WKTouchEventsGestureRecognizer *)self _updateTapStateWithTouches:touches];
       return;
     }
 
-    if (a4 != 1)
+    if (type != 1)
     {
       return;
     }
@@ -299,44 +299,44 @@ LABEL_9:
   }
 }
 
-- (WKTouchEvent)_touchEventForChildTouch:(SEL)a3 withParent:(id)a4
+- (WKTouchEvent)_touchEventForChildTouch:(SEL)touch withParent:(id)parent
 {
-  [a4 locationInView:0];
+  [parent locationInView:0];
   [-[WKTouchEventsGestureRecognizer view](self "view")];
   v12 = v11;
   v14 = v13;
-  v15 = [(WKTouchEventsGestureRecognizer *)self contentView];
-  v42 = v15;
-  if (v15)
+  contentView = [(WKTouchEventsGestureRecognizer *)self contentView];
+  v42 = contentView;
+  if (contentView)
   {
-    v16 = v15;
-    v15 = v42;
+    v16 = contentView;
+    contentView = v42;
   }
 
   v41 = v12;
   v44.x = v12;
   v44.y = v14;
-  v17 = mapRootViewToViewport(v44, v15);
+  v17 = mapRootViewToViewport(v44, contentView);
   v19 = v18;
   var2 = a5->var2;
-  v21 = [a4 phase];
-  [a4 majorRadius];
+  phase = [parent phase];
+  [parent majorRadius];
   v23 = v22;
-  [a4 maximumPossibleForce];
+  [parent maximumPossibleForce];
   v24 = 0.0;
   if (v25 > 0.0)
   {
-    [a4 force];
+    [parent force];
     v27 = v26;
-    [a4 maximumPossibleForce];
+    [parent maximumPossibleForce];
     v24 = v27 / v28;
   }
 
-  if ([a4 type] == 2)
+  if ([parent type] == 2)
   {
-    [a4 altitudeAngle];
+    [parent altitudeAngle];
     v40 = v29;
-    [a4 azimuthAngleInView:{objc_msgSend(-[WKTouchEventsGestureRecognizer view](self, "view"), "window")}];
+    [parent azimuthAngleInView:{objc_msgSend(-[WKTouchEventsGestureRecognizer view](self, "view"), "window")}];
     v31 = v30;
     v32 = v19;
     v33 = v17;
@@ -361,7 +361,7 @@ LABEL_9:
   retstr->predictedEvents = 0u;
   retstr->isPotentialTap = 0;
   retstr->type = 1;
-  [a4 timestamp];
+  [parent timestamp];
   v36 = v35;
   v37 = CACurrentMediaTime();
   retstr->timestamp = *MEMORY[0x1E695E468] + CFAbsoluteTimeGetCurrent() - (v37 - v36);
@@ -373,7 +373,7 @@ LABEL_9:
   *(v38 + 16) = v33;
   *(v38 + 24) = v32;
   *(v38 + 32) = var2;
-  *(v38 + 40) = v21;
+  *(v38 + 40) = phase;
   *(v38 + 48) = v23;
   *(v38 + 56) = v24;
   *(v38 + 64) = v40;
@@ -389,17 +389,17 @@ LABEL_9:
   return result;
 }
 
-- (void)_recordTouches:(id)a3 ofType:(unsigned __int8)a4 forEvent:(id)a5
+- (void)_recordTouches:(id)touches ofType:(unsigned __int8)type forEvent:(id)event
 {
-  v5 = a4;
+  typeCopy = type;
   v143 = *MEMORY[0x1E69E9840];
   p_lastTouchEvent = &self->_lastTouchEvent;
-  self->_lastTouchEvent.type = a4;
+  self->_lastTouchEvent.type = type;
   self->_lastTouchEvent.inJavaScriptGesture = 0;
   v9 = *MEMORY[0x1E695EFF8];
   v8 = *(MEMORY[0x1E695EFF8] + 8);
   self->_dispatchingTouchEvents = 1;
-  v10 = [a3 count];
+  v10 = [touches count];
   v11 = v10;
   m_size = p_lastTouchEvent->touchPoints.m_size;
   if (v10 != m_size)
@@ -491,7 +491,7 @@ LABEL_116:
     p_lastTouchEvent->touchPoints.m_size = v11;
   }
 
-  [objc_msgSend(a3 "anyObject")];
+  [objc_msgSend(touches "anyObject")];
   v28 = CACurrentMediaTime() - v27;
   v29 = *MEMORY[0x1E695E468];
   p_lastTouchEvent->timestamp = v29 + CFAbsoluteTimeGetCurrent() - v28;
@@ -579,10 +579,10 @@ LABEL_116:
   v127[0] = 0uLL;
   *&p_lastTouchEvent->predictedEvents.m_capacity = v47;
   WTF::Vector<WebKit::WKTouchEvent,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(v127, v40);
-  v115 = [(WKTouchEventsGestureRecognizer *)self contentView];
-  if (v115)
+  contentView = [(WKTouchEventsGestureRecognizer *)self contentView];
+  if (contentView)
   {
-    v48 = v115;
+    v48 = contentView;
   }
 
   [(NSMapTable *)self->_activeTouchesByIdentifier.m_ptr removeAllObjects];
@@ -590,7 +590,7 @@ LABEL_116:
   v139 = 0u;
   v136 = 0u;
   v137 = 0u;
-  v49 = [a3 countByEnumeratingWithState:&v136 objects:v142 count:16];
+  v49 = [touches countByEnumeratingWithState:&v136 objects:v142 count:16];
   v120 = v8;
   v121 = v9;
   if (!v49)
@@ -607,7 +607,7 @@ LABEL_116:
   v53 = v9;
   v54 = v8;
   v119 = v8;
-  v112 = v5;
+  v112 = typeCopy;
   do
   {
     v55 = 0;
@@ -616,22 +616,22 @@ LABEL_116:
     {
       if (*v137 != v113)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(touches);
       }
 
       v118 = v55;
       v56 = *(*(&v136 + 1) + 8 * v55);
       AssociatedObject = objc_getAssociatedObject(v56, &associatedTouchIdentifierKey);
       v58 = WTF::dynamic_objc_cast<NSNumber>(AssociatedObject);
-      v59 = [v56 _isPointerTouch];
-      if (v5)
+      _isPointerTouch = [v56 _isPointerTouch];
+      if (typeCopy)
       {
         v60 = 0;
       }
 
       else
       {
-        v60 = v59;
+        v60 = _isPointerTouch;
       }
 
       if ((v60 & 1) != 0 || !v58)
@@ -665,7 +665,7 @@ LABEL_116:
       y = v144.y;
       v67 = &v62[v122];
       v67->var0 = v144;
-      v67->var1.x = mapRootViewToViewport(v144, v115);
+      v67->var1.x = mapRootViewToViewport(v144, contentView);
       v67->var1.y = v68;
       v67->var2 = [v58 unsignedIntValue];
       v67->var3 = [v56 phase];
@@ -699,13 +699,13 @@ LABEL_116:
         v67->var8 = 0;
       }
 
-      if (v5 == 1 && !v122)
+      if (typeCopy == 1 && !v122)
       {
         v134 = 0u;
         v135 = 0u;
         v132 = 0u;
         v133 = 0u;
-        v77 = [a5 coalescedTouchesForTouch:v56];
+        v77 = [event coalescedTouchesForTouch:v56];
         v78 = [v77 countByEnumeratingWithState:&v132 objects:v141 count:16];
         if (v78)
         {
@@ -753,7 +753,7 @@ LABEL_116:
         v126 = 0u;
         v123 = 0u;
         v124 = 0u;
-        v86 = [a5 predictedTouchesForTouch:v56];
+        v86 = [event predictedTouchesForTouch:v56];
         v87 = [v86 countByEnumeratingWithState:&v123 objects:v140 count:16];
         if (v87)
         {
@@ -879,11 +879,11 @@ LABEL_116:
 
       v119 = v103;
       v55 = v118 + 1;
-      v5 = v112;
+      typeCopy = v112;
     }
 
     while (v118 + 1 != v116);
-    v49 = [a3 countByEnumeratingWithState:&v136 objects:v142 count:{16, v96, v97}];
+    v49 = [touches countByEnumeratingWithState:&v136 objects:v142 count:{16, v96, v97}];
   }
 
   while (v49);
@@ -914,8 +914,8 @@ LABEL_110:
   }
 
 LABEL_111:
-  [(WKTouchEventsGestureRecognizer *)self _updateTapStateWithTouches:a3 type:v5];
-  if (v115)
+  [(WKTouchEventsGestureRecognizer *)self _updateTapStateWithTouches:touches type:typeCopy];
+  if (contentView)
   {
   }
 }
@@ -927,14 +927,14 @@ LABEL_111:
   [Weak _touchEventsRecognized];
 }
 
-- (BOOL)_hasActiveTouchesForEvent:(id)a3
+- (BOOL)_hasActiveTouchesForEvent:(id)event
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [a3 touchesForGestureRecognizer:{self, 0}];
+  v3 = [event touchesForGestureRecognizer:{self, 0}];
   v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
@@ -974,15 +974,15 @@ LABEL_111:
   return v4;
 }
 
-- (void)_processTouches:(id)a3 withEvent:(id)a4 type:(unsigned __int8)a5
+- (void)_processTouches:(id)touches withEvent:(id)event type:(unsigned __int8)type
 {
-  v5 = a5;
+  typeCopy = type;
   v26 = *MEMORY[0x1E69E9840];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = [a3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v9 = [touches countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -994,21 +994,21 @@ LABEL_111:
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(touches);
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
         if ([v14 phase] != 2)
         {
-          v15 = [v14 phase];
-          if (v11 <= v15)
+          phase = [v14 phase];
+          if (v11 <= phase)
           {
-            v11 = v15;
+            v11 = phase;
           }
         }
       }
 
-      v10 = [a3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v10 = [touches countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v10);
@@ -1028,9 +1028,9 @@ LABEL_111:
     v16 = 0;
   }
 
-  if (v5 == v16)
+  if (typeCopy == v16)
   {
-    [(WKTouchEventsGestureRecognizer *)self _recordTouches:a3 ofType:v5 forEvent:a4];
+    [(WKTouchEventsGestureRecognizer *)self _recordTouches:touches ofType:typeCopy forEvent:event];
     [(WKTouchEventsGestureRecognizer *)self performAction];
     if (self->_defaultPrevented)
     {
@@ -1047,16 +1047,16 @@ LABEL_111:
       [(WKTouchEventsGestureRecognizer *)self setState:v17];
     }
 
-    if (v5 >= 2 && ![(WKTouchEventsGestureRecognizer *)self _hasActiveTouchesForEvent:a4])
+    if (typeCopy >= 2 && ![(WKTouchEventsGestureRecognizer *)self _hasActiveTouchesForEvent:event])
     {
-      v18 = [(WKTouchEventsGestureRecognizer *)self state];
+      state = [(WKTouchEventsGestureRecognizer *)self state];
       v19 = 3;
-      if (v5 != 2)
+      if (typeCopy != 2)
       {
         v19 = 4;
       }
 
-      if (v18)
+      if (state)
       {
         v20 = v19;
       }
@@ -1071,18 +1071,18 @@ LABEL_111:
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = [a4 touchesForGestureRecognizer:self];
-  v8 = [(WKTouchEventsGestureRecognizer *)self contentView];
-  if (v8)
+  v6 = [event touchesForGestureRecognizer:self];
+  contentView = [(WKTouchEventsGestureRecognizer *)self contentView];
+  if (contentView)
   {
-    v7 = v8;
+    v7 = contentView;
   }
 
   if (!self->_passedHitTest)
   {
-    if ([(WKContentView *)v8 _shouldIgnoreTouchEvent:a4])
+    if ([(WKContentView *)contentView _shouldIgnoreTouchEvent:event])
     {
       [(WKTouchEventsGestureRecognizer *)self setState:5];
       goto LABEL_8;
@@ -1091,32 +1091,32 @@ LABEL_111:
     self->_passedHitTest = 1;
   }
 
-  [(WKTouchEventsGestureRecognizer *)self _processTouches:v6 withEvent:a4 type:0];
+  [(WKTouchEventsGestureRecognizer *)self _processTouches:v6 withEvent:event type:0];
 LABEL_8:
-  if (v8)
+  if (contentView)
   {
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = [a4 touchesForGestureRecognizer:self];
+  v6 = [event touchesForGestureRecognizer:self];
 
-  [(WKTouchEventsGestureRecognizer *)self _processTouches:v6 withEvent:a4 type:1];
+  [(WKTouchEventsGestureRecognizer *)self _processTouches:v6 withEvent:event type:1];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = [a4 touchesForGestureRecognizer:self];
+  v6 = [event touchesForGestureRecognizer:self];
 
-  [(WKTouchEventsGestureRecognizer *)self _processTouches:v6 withEvent:a4 type:2];
+  [(WKTouchEventsGestureRecognizer *)self _processTouches:v6 withEvent:event type:2];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = [a4 touchesForGestureRecognizer:self];
+  v6 = [event touchesForGestureRecognizer:self];
 
-  [(WKTouchEventsGestureRecognizer *)self _processTouches:v6 withEvent:a4 type:3];
+  [(WKTouchEventsGestureRecognizer *)self _processTouches:v6 withEvent:event type:3];
 }
 
 @end

@@ -8,7 +8,7 @@
 - (id)setBySubtractingSet:()_SetOperable
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   v6 = v4;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -31,12 +31,12 @@
   else
   {
     v9 = MEMORY[0x277CBEB98];
-    v10 = [v6 allObjects];
+    allObjects = [v6 allObjects];
 
-    v11 = [v9 setWithArray:v10];
+    v11 = [v9 setWithArray:allObjects];
     [v5 minusSet:v11];
 
-    v8 = v10;
+    v8 = allObjects;
   }
 
   v12 = [v5 copy];
@@ -47,7 +47,7 @@
 - (id)setByIntersectingSet:()_SetOperable
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   v6 = v4;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -70,12 +70,12 @@
   else
   {
     v9 = MEMORY[0x277CBEB98];
-    v10 = [v6 allObjects];
+    allObjects = [v6 allObjects];
 
-    v11 = [v9 setWithArray:v10];
+    v11 = [v9 setWithArray:allObjects];
     [v5 intersectSet:v11];
 
-    v8 = v10;
+    v8 = allObjects;
   }
 
   v12 = [v5 copy];

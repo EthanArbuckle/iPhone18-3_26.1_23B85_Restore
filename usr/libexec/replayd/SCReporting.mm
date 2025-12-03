@@ -1,37 +1,37 @@
 @interface SCReporting
-+ (id)createScreenshotReportWithScreenshotProperties:(id)a3 mainBundleID:(id)a4 bundleID:(id)a5 isSLContentStream:(BOOL)a6;
-- (BOOL)shouldReportBundleID:(id)a3;
-- (SCReporting)initWithClientBundleID:(id)a3 clientMainBundleID:(id)a4 streamID:(id)a5;
++ (id)createScreenshotReportWithScreenshotProperties:(id)properties mainBundleID:(id)d bundleID:(id)iD isSLContentStream:(BOOL)stream;
+- (BOOL)shouldReportBundleID:(id)d;
+- (SCReporting)initWithClientBundleID:(id)d clientMainBundleID:(id)iD streamID:(id)streamID;
 - (id)collectSummaryEventMetrics;
 - (id)collectSummaryRecordingEventMetrics;
 - (id)thermalDescription;
-- (int64_t)getColorFromRGBA:(double)a3 withGreen:(double)a4 withBlue:(double)a5 withAlpha:(double)a6;
+- (int64_t)getColorFromRGBA:(double)a withGreen:(double)green withBlue:(double)blue withAlpha:(double)alpha;
 - (int64_t)getCurrentStreamScreenConfiguration;
-- (int64_t)intToSCReportingAudioSampleRate:(int64_t)a3;
-- (int64_t)stringToSCReportingColorMatrix:(id)a3;
-- (int64_t)stringToSCReportingColorSpace:(id)a3;
-- (int64_t)stringToSCReportingPixelFormat:(id)a3;
-- (int64_t)stringToSCReportingRecordingFileType:(id)a3;
-- (int64_t)stringToSCReportingRecordingVideoCodecType:(id)a3;
-- (void)addToThermalResultsWithLevel:(int64_t)a3;
-- (void)reportRTCEvent:(id)a3 withStreamID:(id)a4;
-- (void)reportRecordingRTCEvent:(id)a3 withStreamID:(id)a4;
+- (int64_t)intToSCReportingAudioSampleRate:(int64_t)rate;
+- (int64_t)stringToSCReportingColorMatrix:(id)matrix;
+- (int64_t)stringToSCReportingColorSpace:(id)space;
+- (int64_t)stringToSCReportingPixelFormat:(id)format;
+- (int64_t)stringToSCReportingRecordingFileType:(id)type;
+- (int64_t)stringToSCReportingRecordingVideoCodecType:(id)type;
+- (void)addToThermalResultsWithLevel:(int64_t)level;
+- (void)reportRTCEvent:(id)event withStreamID:(id)d;
+- (void)reportRecordingRTCEvent:(id)event withStreamID:(id)d;
 - (void)resetReportingMetrics;
 - (void)resetThermalResults;
-- (void)thermalPressureDidChangeWithLevel:(int64_t)a3;
-- (void)updateReportWithClientProperties:(id)a3;
-- (void)updateReportWithContentFilterDictionary:(id)a3;
-- (void)updateReportWithRecordingFinishDuration:(int64_t)a3 fileSize:(int64_t)a4;
-- (void)updateReportWithRecordingStartConfiguration:(id)a3 recordingPreset:(int64_t)a4;
+- (void)thermalPressureDidChangeWithLevel:(int64_t)level;
+- (void)updateReportWithClientProperties:(id)properties;
+- (void)updateReportWithContentFilterDictionary:(id)dictionary;
+- (void)updateReportWithRecordingFinishDuration:(int64_t)duration fileSize:(int64_t)size;
+- (void)updateReportWithRecordingStartConfiguration:(id)configuration recordingPreset:(int64_t)preset;
 @end
 
 @implementation SCReporting
 
-- (SCReporting)initWithClientBundleID:(id)a3 clientMainBundleID:(id)a4 streamID:(id)a5
+- (SCReporting)initWithClientBundleID:(id)d clientMainBundleID:(id)iD streamID:(id)streamID
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  streamIDCopy = streamID;
   v21.receiver = self;
   v21.super_class = SCReporting;
   v11 = [(SCReporting *)&v21 init];
@@ -56,12 +56,12 @@
     captureStartTime = v11->_captureStartTime;
     v11->_captureStartTime = v12;
 
-    v14 = [v9 copy];
+    v14 = [iDCopy copy];
     [(SCReporting *)v11 setCanonicalBundleID:v14];
 
-    -[SCReporting setIsClientScreenCapture:](v11, "setIsClientScreenCapture:", [v8 hasPrefix:@"/usr/sbin/screencapture"]);
-    -[SCReporting setIsHostSystemUIServer:](v11, "setIsHostSystemUIServer:", [v9 isEqualToString:@"com.apple.systemuiserver"]);
-    v15 = [v10 copy];
+    -[SCReporting setIsClientScreenCapture:](v11, "setIsClientScreenCapture:", [dCopy hasPrefix:@"/usr/sbin/screencapture"]);
+    -[SCReporting setIsHostSystemUIServer:](v11, "setIsHostSystemUIServer:", [iDCopy isEqualToString:@"com.apple.systemuiserver"]);
+    v15 = [streamIDCopy copy];
     [(SCReporting *)v11 setStreamID:v15];
 
     v16 = objc_alloc_init(RPThermalPressure);
@@ -79,14 +79,14 @@
   return v11;
 }
 
-- (int64_t)stringToSCReportingPixelFormat:(id)a3
+- (int64_t)stringToSCReportingPixelFormat:(id)format
 {
-  v3 = [a3 integerValue];
-  if (v3 > 1111970368)
+  integerValue = [format integerValue];
+  if (integerValue > 1111970368)
   {
-    if (v3 != 1111970369)
+    if (integerValue != 1111970369)
     {
-      if (v3 == 1815162994)
+      if (integerValue == 1815162994)
       {
         return 2;
       }
@@ -99,9 +99,9 @@
 
   else
   {
-    if (v3 != 875704422)
+    if (integerValue != 875704422)
     {
-      if (v3 == 875704438)
+      if (integerValue == 875704438)
       {
         return 3;
       }
@@ -113,141 +113,141 @@
   }
 }
 
-- (int64_t)stringToSCReportingColorMatrix:(id)a3
+- (int64_t)stringToSCReportingColorMatrix:(id)matrix
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ITU_R_601_4"])
+  matrixCopy = matrix;
+  if ([matrixCopy isEqualToString:@"ITU_R_601_4"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SMPTE_240M_1995"])
+  else if ([matrixCopy isEqualToString:@"SMPTE_240M_1995"])
   {
     v4 = 3;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"ITU_R_709_2"];
+    v4 = [matrixCopy isEqualToString:@"ITU_R_709_2"];
   }
 
   return v4;
 }
 
-- (int64_t)stringToSCReportingColorSpace:(id)a3
+- (int64_t)stringToSCReportingColorSpace:(id)space
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"kCGColorSpaceDisplayP3"])
+  spaceCopy = space;
+  if ([spaceCopy isEqualToString:@"kCGColorSpaceDisplayP3"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceDisplayP3_HLG"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceDisplayP3_HLG"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceExtendedLinearDisplayP3"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceExtendedLinearDisplayP3"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceSRGB"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceSRGB"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceLinearSRGB"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceLinearSRGB"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceExtendedSRGB"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceExtendedSRGB"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceExtendedLinearSRGB"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceExtendedLinearSRGB"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceGenericGrayGamma2_2"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceGenericGrayGamma2_2"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceLinearGray"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceLinearGray"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceExtendedGray"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceExtendedGray"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceExtendedLinearGray"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceExtendedLinearGray"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceGenericRGBLinear"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceGenericRGBLinear"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceGenericCMYK"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceGenericCMYK"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceGenericXYZ"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceGenericXYZ"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceGenericLab"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceGenericLab"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceACESCGLinear"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceACESCGLinear"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceAdobeRGB1998"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceAdobeRGB1998"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceDCIP3"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceDCIP3"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceITUR_709"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceITUR_709"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceROMMRGB"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceROMMRGB"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceITUR_2020"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceITUR_2020"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceExtendedLinearITUR_2020"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceExtendedLinearITUR_2020"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"kCGColorSpaceGenericRGB"])
+  else if ([spaceCopy isEqualToString:@"kCGColorSpaceGenericRGB"])
   {
     v4 = 23;
   }
@@ -260,13 +260,13 @@
   return v4;
 }
 
-- (int64_t)intToSCReportingAudioSampleRate:(int64_t)a3
+- (int64_t)intToSCReportingAudioSampleRate:(int64_t)rate
 {
-  if (a3 > 23999)
+  if (rate > 23999)
   {
-    if (a3 != 24000)
+    if (rate != 24000)
     {
-      if (a3 == 48000)
+      if (rate == 48000)
       {
         return 4;
       }
@@ -279,9 +279,9 @@
 
   else
   {
-    if (a3 != 8000)
+    if (rate != 8000)
     {
-      if (a3 == 16000)
+      if (rate == 16000)
       {
         return 2;
       }
@@ -330,23 +330,23 @@
   }
 }
 
-- (int64_t)getColorFromRGBA:(double)a3 withGreen:(double)a4 withBlue:(double)a5 withAlpha:(double)a6
+- (int64_t)getColorFromRGBA:(double)a withGreen:(double)green withBlue:(double)blue withAlpha:(double)alpha
 {
-  if (a3 > 1.0 && a4 > 1.0 && a5 > 1.0)
+  if (a > 1.0 && green > 1.0 && blue > 1.0)
   {
-    a3 = a3 / 255.0;
-    a4 = a4 / 255.0;
-    a5 = a5 / 255.0;
+    a = a / 255.0;
+    green = green / 255.0;
+    blue = blue / 255.0;
   }
 
-  v8 = a3 == 0.0;
-  if (a4 != 0.0)
+  v8 = a == 0.0;
+  if (green != 0.0)
   {
     v8 = 0;
   }
 
-  v9 = a5 == 0.0 && v8;
-  if (a6 == 0.0 && v9)
+  v9 = blue == 0.0 && v8;
+  if (alpha == 0.0 && v9)
   {
     result = 16;
   }
@@ -358,63 +358,63 @@
 
   if (!v9)
   {
-    if (a3 == 0.333 && a4 == 0.333 && a5 == 0.333)
+    if (a == 0.333 && green == 0.333 && blue == 0.333)
     {
       return 3;
     }
 
-    else if (a3 == 0.667 && a4 == 0.667 && a5 == 0.667)
+    else if (a == 0.667 && green == 0.667 && blue == 0.667)
     {
       return 4;
     }
 
-    else if (a3 == 0.5 && a4 == 0.5 && a5 == 0.5)
+    else if (a == 0.5 && green == 0.5 && blue == 0.5)
     {
       return 6;
     }
 
     else
     {
-      v11 = a3 == 1.0;
-      if (a4 != 1.0)
+      v11 = a == 1.0;
+      if (green != 1.0)
       {
         v11 = 0;
       }
 
-      if (v11 && a5 == 1.0)
+      if (v11 && blue == 1.0)
       {
         return 5;
       }
 
       else
       {
-        v12 = a3 == 1.0;
-        if (a4 != 0.0)
+        v12 = a == 1.0;
+        if (green != 0.0)
         {
           v12 = 0;
         }
 
-        if (v12 && a5 == 0.0)
+        if (v12 && blue == 0.0)
         {
           return 7;
         }
 
         else
         {
-          v13 = a3 == 0.0;
-          if (a4 != 1.0)
+          v13 = a == 0.0;
+          if (green != 1.0)
           {
             v13 = 0;
           }
 
-          if (v13 && a5 == 0.0)
+          if (v13 && blue == 0.0)
           {
             return 8;
           }
 
           else
           {
-            if (a5 != 1.0)
+            if (blue != 1.0)
             {
               v8 = 0;
             }
@@ -424,32 +424,32 @@
               return 9;
             }
 
-            else if (a5 == 1.0 && v13)
+            else if (blue == 1.0 && v13)
             {
               return 10;
             }
 
-            else if (a5 == 0.0 && v11)
+            else if (blue == 0.0 && v11)
             {
               return 11;
             }
 
-            else if (a5 == 1.0 && v12)
+            else if (blue == 1.0 && v12)
             {
               return 12;
             }
 
-            else if (a3 == 1.0 && a4 == 0.5 && a5 == 0.0)
+            else if (a == 1.0 && green == 0.5 && blue == 0.0)
             {
               return 13;
             }
 
-            else if (a3 == 0.5 && a4 == 0.0 && a5 == 0.5)
+            else if (a == 0.5 && green == 0.0 && blue == 0.5)
             {
               return 14;
             }
 
-            else if (a5 == 0.2 && a4 == 0.4 && a3 == 0.6)
+            else if (blue == 0.2 && green == 0.4 && a == 0.6)
             {
               return 15;
             }
@@ -472,19 +472,19 @@
   [(SCReporting *)self addToThermalResultsWithLevel:[(RPThermalPressure *)self->_thermalPressureMonitor getCurrentPressureLevel]];
   v89 = [NSMutableDictionary alloc];
   v109[0] = @"SID";
-  v102 = [(SCReporting *)self streamID];
-  if (v102)
+  streamID = [(SCReporting *)self streamID];
+  if (streamID)
   {
-    v3 = [(SCReporting *)self streamID];
+    streamID2 = [(SCReporting *)self streamID];
   }
 
   else
   {
-    v3 = &stru_1000A2FB8;
+    streamID2 = &stru_1000A2FB8;
   }
 
-  v38 = v3;
-  v110[0] = v3;
+  v38 = streamID2;
+  v110[0] = streamID2;
   v109[1] = @"CVCW";
   v101 = [NSNumber numberWithUnsignedLongLong:sub_1000226CC(llroundf([(SCReporting *)self frameWidth]), 0x32uLL)];
   v110[1] = v101;
@@ -498,25 +498,25 @@
   v98 = [NSNumber numberWithUnsignedLongLong:sub_1000226EC(llroundf([(SCReporting *)self totalFrameCount]), 2uLL)];
   v110[4] = v98;
   v109[5] = @"CBID";
-  v97 = [(SCReporting *)self canonicalBundleID];
+  canonicalBundleID = [(SCReporting *)self canonicalBundleID];
   v96 = [(SCReporting *)self shouldReportBundleID:?];
   if (v96)
   {
-    v4 = [(SCReporting *)self canonicalBundleID];
+    canonicalBundleID2 = [(SCReporting *)self canonicalBundleID];
   }
 
   else
   {
-    v4 = &stru_1000A2FB8;
+    canonicalBundleID2 = &stru_1000A2FB8;
   }
 
-  v34 = v4;
-  v110[5] = v4;
+  v34 = canonicalBundleID2;
+  v110[5] = canonicalBundleID2;
   v109[6] = @"CPF";
-  v5 = [(SCReporting *)self pixelFormat];
-  if (v5)
+  pixelFormat = [(SCReporting *)self pixelFormat];
+  if (pixelFormat)
   {
-    v33 = [(SCReporting *)self pixelFormat];
+    pixelFormat2 = [(SCReporting *)self pixelFormat];
     v6 = [NSNumber numberWithInteger:[(SCReporting *)self stringToSCReportingPixelFormat:?]];
   }
 
@@ -555,10 +555,10 @@
   v84 = [NSNumber numberWithInteger:[(SCReporting *)self frameQueueSize]];
   v110[15] = v84;
   v109[16] = @"CCM";
-  v7 = [(SCReporting *)self colorMatrix];
-  if (v7)
+  colorMatrix = [(SCReporting *)self colorMatrix];
+  if (colorMatrix)
   {
-    v32 = [(SCReporting *)self colorMatrix];
+    colorMatrix2 = [(SCReporting *)self colorMatrix];
     v8 = [NSNumber numberWithInteger:[(SCReporting *)self stringToSCReportingColorMatrix:?]];
   }
 
@@ -570,12 +570,12 @@
   v36 = v8;
   v110[16] = v8;
   v109[17] = @"CCS";
-  v82 = [(SCReporting *)self colorSpace];
-  v83 = v7;
-  v95 = v5;
-  if (v82)
+  colorSpace = [(SCReporting *)self colorSpace];
+  v83 = colorMatrix;
+  v95 = pixelFormat;
+  if (colorSpace)
   {
-    v31 = [(SCReporting *)self colorSpace];
+    colorSpace2 = [(SCReporting *)self colorSpace];
     v9 = [NSNumber numberWithInteger:[(SCReporting *)self stringToSCReportingColorSpace:?]];
   }
 
@@ -760,12 +760,12 @@
   v27 = [NSNumber numberWithUnsignedLongLong:sub_1000226EC(llroundf([(SCReporting *)self totalMicFrameCount]), 2uLL)];
   v110[68] = v27;
   v109[69] = @"TPL";
-  v28 = [(SCReporting *)self thermalDescription];
-  v110[69] = v28;
+  thermalDescription = [(SCReporting *)self thermalDescription];
+  v110[69] = thermalDescription;
   v29 = [NSDictionary dictionaryWithObjects:v110 forKeys:v109 count:70];
   v90 = [v89 initWithDictionary:v29];
 
-  if (v82)
+  if (colorSpace)
   {
   }
 
@@ -781,7 +781,7 @@
   {
   }
 
-  if (v102)
+  if (streamID)
   {
   }
 
@@ -859,10 +859,10 @@
   return v4;
 }
 
-- (void)updateReportWithContentFilterDictionary:(id)a3
+- (void)updateReportWithContentFilterDictionary:(id)dictionary
 {
-  v18 = a3;
-  v4 = [v18 objectForKeyedSubscript:@"SCStreamContentFilterIndividualWindowID"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"SCStreamContentFilterIndividualWindowID"];
 
   if (v4)
   {
@@ -871,57 +871,57 @@
 
   else
   {
-    v5 = [v18 objectForKeyedSubscript:@"SCStreamContentFilterIncludedWindows"];
+    v5 = [dictionaryCopy objectForKeyedSubscript:@"SCStreamContentFilterIncludedWindows"];
     self->_includedWindowsCount = [v5 count];
 
-    v6 = [v18 objectForKeyedSubscript:@"SCStreamContentFilterExcludedWindows"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"SCStreamContentFilterExcludedWindows"];
     self->_excludedWindowsCount = [v6 count];
 
-    v7 = [v18 objectForKeyedSubscript:@"SCStreamContentFilterIncludedBundleIDs"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"SCStreamContentFilterIncludedBundleIDs"];
     v8 = [v7 count];
-    v9 = [v18 objectForKeyedSubscript:@"SCStreamContentFilterIncludedVideoPIDs"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"SCStreamContentFilterIncludedVideoPIDs"];
     self->_includedApplicationsCount = v8 + [v9 count];
 
-    v10 = [v18 objectForKeyedSubscript:@"SCStreamContentFilterExcludedBundleIDs"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"SCStreamContentFilterExcludedBundleIDs"];
     v11 = [v10 count];
-    v12 = [v18 objectForKeyedSubscript:@"SCStreamContentFilterExcludedVideoPIDs"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"SCStreamContentFilterExcludedVideoPIDs"];
     self->_excludedApplicationsCount = v11 + [v12 count];
   }
 
-  v13 = [v18 objectForKeyedSubscript:@"SCStreamPreservedContentFilterCompositeConfig"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"SCStreamPreservedContentFilterCompositeConfig"];
   v14 = [v13 objectForKeyedSubscript:@"SCStreamPropertiesCompositeSessionMode"];
-  v15 = 0;
+  integerValue = 0;
   if (v13 && v14)
   {
-    v15 = [v14 integerValue];
+    integerValue = [v14 integerValue];
   }
 
-  self->_startWithCompositeMode = v15;
-  v16 = [v18 objectForKeyedSubscript:@"SCStreamContentFilterSource"];
-  v17 = v16;
-  if (v16)
+  self->_startWithCompositeMode = integerValue;
+  integerValue2 = [dictionaryCopy objectForKeyedSubscript:@"SCStreamContentFilterSource"];
+  v17 = integerValue2;
+  if (integerValue2)
   {
-    v16 = [v16 integerValue];
+    integerValue2 = [integerValue2 integerValue];
   }
 
-  self->_filterSource = v16;
+  self->_filterSource = integerValue2;
 }
 
-- (void)updateReportWithClientProperties:(id)a3
+- (void)updateReportWithClientProperties:(id)properties
 {
-  v107 = a3;
-  v4 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesWidth"];
+  propertiesCopy = properties;
+  v4 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesWidth"];
   if (v4)
   {
     v5 = v4;
-    v6 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesHeight"];
+    v6 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesHeight"];
 
     if (v6)
     {
-      v7 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesWidth"];
+      v7 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesWidth"];
       [v7 floatValue];
       v9 = v8;
-      v10 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesHeight"];
+      v10 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesHeight"];
       [v10 floatValue];
       v12 = v11;
 
@@ -930,72 +930,72 @@
     }
   }
 
-  v13 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesPixelFormat"];
+  v13 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesPixelFormat"];
 
   if (v13)
   {
-    v14 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesPixelFormat"];
+    v14 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesPixelFormat"];
     pixelFormat = self->_pixelFormat;
     self->_pixelFormat = v14;
   }
 
-  v16 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesFrameRate"];
+  v16 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesFrameRate"];
   if (v16)
   {
     v17 = v16;
-    v18 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesFrameRate"];
+    v18 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesFrameRate"];
     [v18 doubleValue];
     v20 = v19;
 
     if (v20 > 0.0)
     {
-      v21 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesFrameRate"];
+      v21 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesFrameRate"];
       [v21 doubleValue];
       self->_targetFrameRate = (1.0 / v22);
     }
   }
 
-  v23 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesScaleToFit"];
+  v23 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesScaleToFit"];
 
   if (v23)
   {
-    v24 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesScaleToFit"];
+    v24 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesScaleToFit"];
     self->_scaleToFit = [v24 BOOLValue];
   }
 
-  v25 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesPreserveAspectRatio"];
+  v25 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesPreserveAspectRatio"];
 
   if (v25)
   {
-    v26 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesPreserveAspectRatio"];
+    v26 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesPreserveAspectRatio"];
     self->_preserveAspectRatio = [v26 BOOLValue];
   }
 
-  v27 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesQueueDepth"];
-  v28 = v107;
+  v27 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesQueueDepth"];
+  v28 = propertiesCopy;
   if (v27)
   {
-    v29 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesQueueDepth"];
+    v29 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesQueueDepth"];
     if ([v29 longValue] <= 0)
     {
     }
 
     else
     {
-      v30 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesQueueDepth"];
-      v31 = [v30 longValue];
+      v30 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesQueueDepth"];
+      longValue = [v30 longValue];
 
-      v28 = v107;
-      if (v31 > 8)
+      v28 = propertiesCopy;
+      if (longValue > 8)
       {
         goto LABEL_19;
       }
 
-      v27 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesQueueDepth"];
+      v27 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesQueueDepth"];
       self->_frameQueueSize = [v27 longValue];
     }
 
-    v28 = v107;
+    v28 = propertiesCopy;
   }
 
 LABEL_19:
@@ -1003,47 +1003,47 @@ LABEL_19:
 
   if (v32)
   {
-    v33 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesShowCursor"];
+    v33 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesShowCursor"];
     self->_showCursor = [v33 BOOLValue];
   }
 
-  v34 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesBackgroundColorR"];
+  v34 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesBackgroundColorR"];
   [v34 doubleValue];
   v36 = v35;
-  v37 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesBackgroundColorG"];
+  v37 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesBackgroundColorG"];
   [v37 doubleValue];
   v39 = v38;
-  v40 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesBackgroundColorB"];
+  v40 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesBackgroundColorB"];
   [v40 doubleValue];
   v42 = v41;
-  v43 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesBackgroundColorA"];
+  v43 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesBackgroundColorA"];
   [v43 doubleValue];
   self->_backgroundColor = [(SCReporting *)self getColorFromRGBA:v36 withGreen:v39 withBlue:v42 withAlpha:v44];
 
-  v45 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesSourceRectX"];
+  v45 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesSourceRectX"];
   if (v45)
   {
     v46 = v45;
-    v47 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesSourceRectY"];
+    v47 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesSourceRectY"];
     if (v47)
     {
       v48 = v47;
-      v49 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesSourceRectWidth"];
+      v49 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesSourceRectWidth"];
       if (v49)
       {
         v50 = v49;
-        v51 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesSourceRectHeight"];
+        v51 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesSourceRectHeight"];
 
         if (v51)
         {
-          v52 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesSourceRectX"];
+          v52 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesSourceRectX"];
           [v52 floatValue];
-          v53 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesSourceRectY"];
+          v53 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesSourceRectY"];
           [v53 floatValue];
-          v54 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesSourceRectWidth"];
+          v54 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesSourceRectWidth"];
           [v54 floatValue];
           v56 = v55;
-          v57 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesSourceRectHeight"];
+          v57 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesSourceRectHeight"];
           [v57 floatValue];
           v59 = v58;
 
@@ -1057,21 +1057,21 @@ LABEL_19:
   }
 
 LABEL_28:
-  v60 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesDestinationRectX"];
+  v60 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesDestinationRectX"];
   if (!v60)
   {
     goto LABEL_35;
   }
 
   v61 = v60;
-  v62 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesDestinationRectY"];
+  v62 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesDestinationRectY"];
   if (!v62)
   {
     goto LABEL_34;
   }
 
   v63 = v62;
-  v64 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesDestinationRectWidth"];
+  v64 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesDestinationRectWidth"];
   if (!v64)
   {
 
@@ -1080,18 +1080,18 @@ LABEL_34:
   }
 
   v65 = v64;
-  v66 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesDestinationRectHeight"];
+  v66 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesDestinationRectHeight"];
 
   if (v66)
   {
-    v67 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesDestinationRectX"];
+    v67 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesDestinationRectX"];
     [v67 floatValue];
-    v68 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesDestinationRectY"];
+    v68 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesDestinationRectY"];
     [v68 floatValue];
-    v69 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesDestinationRectWidth"];
+    v69 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesDestinationRectWidth"];
     [v69 floatValue];
     v71 = v70;
-    v72 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesDestinationRectHeight"];
+    v72 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesDestinationRectHeight"];
     [v72 floatValue];
     v74 = v73;
 
@@ -1100,72 +1100,72 @@ LABEL_34:
   }
 
 LABEL_35:
-  v75 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesColorSpace"];
+  v75 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesColorSpace"];
 
   if (v75)
   {
-    v76 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesColorSpace"];
+    v76 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesColorSpace"];
     colorSpace = self->_colorSpace;
     self->_colorSpace = v76;
   }
 
-  v78 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesColorMatrix"];
+  v78 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesColorMatrix"];
 
   if (v78)
   {
-    v79 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesColorMatrix"];
+    v79 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesColorMatrix"];
     colorMatrix = self->_colorMatrix;
     self->_colorMatrix = v79;
   }
 
-  v81 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesContentScale"];
+  v81 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesContentScale"];
 
   if (v81)
   {
-    v82 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesContentScale"];
+    v82 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesContentScale"];
     [v82 floatValue];
     self->_contentScale = v83;
   }
 
-  v84 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesAudioEnabled"];
+  v84 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesAudioEnabled"];
 
   if (v84)
   {
-    v85 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesAudioEnabled"];
+    v85 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesAudioEnabled"];
     self->_audioEnabled = [v85 BOOLValue];
   }
 
-  v86 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesSampleRate"];
+  v86 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesSampleRate"];
 
   if (v86)
   {
-    v87 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesSampleRate"];
+    v87 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesSampleRate"];
     self->_audioSampleRate = [v87 intValue];
   }
 
-  v88 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesChannelCount"];
+  v88 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesChannelCount"];
 
   if (v88)
   {
-    v89 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesChannelCount"];
+    v89 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesChannelCount"];
     self->_audioChannelCount = [v89 intValue];
   }
 
-  v90 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesExcludeCallingClientAudio"];
+  v90 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesExcludeCallingClientAudio"];
 
   if (v90)
   {
-    v91 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesExcludeCallingClientAudio"];
+    v91 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesExcludeCallingClientAudio"];
     self->_excludeCallingClientAudio = [v91 BOOLValue];
   }
 
-  v92 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesBestResolution"];
+  v92 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesBestResolution"];
   if ([v92 BOOLValue])
   {
-    v93 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesNominalResolution"];
-    v94 = [v93 BOOLValue];
+    v93 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesNominalResolution"];
+    bOOLValue = [v93 BOOLValue];
 
-    if (!v94)
+    if (!bOOLValue)
     {
       v95 = 2;
       goto LABEL_58;
@@ -1176,13 +1176,13 @@ LABEL_35:
   {
   }
 
-  v96 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesNominalResolution"];
+  v96 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesNominalResolution"];
   if ([v96 BOOLValue])
   {
-    v97 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesBestResolution"];
-    v98 = [v97 BOOLValue];
+    v97 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesBestResolution"];
+    bOOLValue2 = [v97 BOOLValue];
 
-    if (!v98)
+    if (!bOOLValue2)
     {
       v95 = 3;
       goto LABEL_58;
@@ -1196,48 +1196,48 @@ LABEL_35:
   v95 = 1;
 LABEL_58:
   self->_captureResolutionType = v95;
-  v99 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesCaptureDynamicRange"];
+  v99 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesCaptureDynamicRange"];
 
   if (v99)
   {
-    v100 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesCaptureDynamicRange"];
+    v100 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesCaptureDynamicRange"];
     self->_captureDynamicRange = [v100 unsignedIntValue];
   }
 
-  v101 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesMicrophoneEnabled"];
+  v101 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesMicrophoneEnabled"];
 
   if (v101)
   {
-    v102 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesMicrophoneEnabled"];
+    v102 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesMicrophoneEnabled"];
     self->_micEnabled = [v102 BOOLValue];
   }
 
-  v103 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesShowMouseClicks"];
+  v103 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesShowMouseClicks"];
 
   if (v103)
   {
-    v104 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesShowMouseClicks"];
+    v104 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesShowMouseClicks"];
     self->_showMouseClicks = [v104 BOOLValue];
   }
 
-  v105 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesRecordingPreset"];
+  v105 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesRecordingPreset"];
 
   if (v105)
   {
-    v106 = [v107 objectForKeyedSubscript:@"SCStreamPropertiesRecordingPreset"];
+    v106 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesRecordingPreset"];
     self->_recordingPreset = [v106 unsignedIntValue];
   }
 }
 
-- (int64_t)stringToSCReportingRecordingFileType:(id)a3
+- (int64_t)stringToSCReportingRecordingFileType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:AVFileTypeMPEG4])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:AVFileTypeMPEG4])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:AVFileTypeQuickTimeMovie])
+  else if ([typeCopy isEqualToString:AVFileTypeQuickTimeMovie])
   {
     v4 = 2;
   }
@@ -1250,15 +1250,15 @@ LABEL_58:
   return v4;
 }
 
-- (int64_t)stringToSCReportingRecordingVideoCodecType:(id)a3
+- (int64_t)stringToSCReportingRecordingVideoCodecType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:AVVideoCodecTypeH264])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:AVVideoCodecTypeH264])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:AVVideoCodecTypeHEVC])
+  else if ([typeCopy isEqualToString:AVVideoCodecTypeHEVC])
   {
     v4 = 2;
   }
@@ -1271,45 +1271,45 @@ LABEL_58:
   return v4;
 }
 
-- (void)updateReportWithRecordingStartConfiguration:(id)a3 recordingPreset:(int64_t)a4
+- (void)updateReportWithRecordingStartConfiguration:(id)configuration recordingPreset:(int64_t)preset
 {
   recordingOutputCount = self->_recordingOutputCount;
   self->_recordingOutputDuration = 0;
   self->_recordingOutputFileSize = 0;
   self->_recordingOutputCount = recordingOutputCount + 1;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:@"SCRecordingOutputConfigOutputFileType"];
+  configurationCopy = configuration;
+  v8 = [configurationCopy objectForKeyedSubscript:@"SCRecordingOutputConfigOutputFileType"];
   self->_recordingOutputFileType = [(SCReporting *)self stringToSCReportingRecordingFileType:v8];
 
-  v9 = [v7 objectForKeyedSubscript:@"SCRecordingOutputConfigVideoCodecType"];
+  v9 = [configurationCopy objectForKeyedSubscript:@"SCRecordingOutputConfigVideoCodecType"];
 
   self->_recordingOutputVideoCodecType = [(SCReporting *)self stringToSCReportingRecordingVideoCodecType:v9];
-  self->_recordingPreset = a4;
+  self->_recordingPreset = preset;
 }
 
-- (void)updateReportWithRecordingFinishDuration:(int64_t)a3 fileSize:(int64_t)a4
+- (void)updateReportWithRecordingFinishDuration:(int64_t)duration fileSize:(int64_t)size
 {
-  self->_recordingOutputDuration = a3;
-  self->_recordingOutputFileSize = a4;
-  self->_recordingTotalDuration += a3;
-  self->_recordingTotalFileSize += a4;
+  self->_recordingOutputDuration = duration;
+  self->_recordingOutputFileSize = size;
+  self->_recordingTotalDuration += duration;
+  self->_recordingTotalFileSize += size;
 }
 
 - (id)collectSummaryRecordingEventMetrics
 {
   v13[0] = @"SID";
-  v3 = [(SCReporting *)self streamID];
-  if (v3)
+  streamID = [(SCReporting *)self streamID];
+  if (streamID)
   {
-    v4 = [(SCReporting *)self streamID];
+    streamID2 = [(SCReporting *)self streamID];
   }
 
   else
   {
-    v4 = &stru_1000A2FB8;
+    streamID2 = &stru_1000A2FB8;
   }
 
-  v14[0] = v4;
+  v14[0] = streamID2;
   v13[1] = @"RED";
   v5 = [NSNumber numberWithUnsignedLongLong:sub_1000226EC([(SCReporting *)self recordingOutputDuration], 2uLL)];
   v14[1] = v5;
@@ -1330,18 +1330,18 @@ LABEL_58:
   v14[6] = v10;
   v11 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:7];
 
-  if (v3)
+  if (streamID)
   {
   }
 
   return v11;
 }
 
-- (void)reportRecordingRTCEvent:(id)a3 withStreamID:(id)a4
+- (void)reportRecordingRTCEvent:(id)event withStreamID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCReporting *)self collectSummaryRecordingEventMetrics];
+  eventCopy = event;
+  dCopy = d;
+  collectSummaryRecordingEventMetrics = [(SCReporting *)self collectSummaryRecordingEventMetrics];
   if (!dword_1000B6840 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136446722;
@@ -1349,11 +1349,11 @@ LABEL_58:
     v11 = 1024;
     v12 = 526;
     v13 = 2112;
-    v14 = v8;
+    v14 = collectSummaryRecordingEventMetrics;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [DEBUG] %{public}s:%d reportingMetric=%@", &v9, 0x1Cu);
   }
 
-  [v6 reportSCEventWithType:4 dictionary:v8 streamID:v7];
+  [eventCopy reportSCEventWithType:4 dictionary:collectSummaryRecordingEventMetrics streamID:dCopy];
 }
 
 - (void)resetReportingMetrics
@@ -1391,10 +1391,10 @@ LABEL_58:
   [(RPThermalPressure *)thermalPressureMonitor startMonitoring];
 }
 
-- (void)reportRTCEvent:(id)a3 withStreamID:(id)a4
+- (void)reportRTCEvent:(id)event withStreamID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  dCopy = d;
   v8 = +[NSDate date];
   [v8 timeIntervalSinceDate:self->_captureStartTime];
   self->_activeDuration = v9;
@@ -1418,7 +1418,7 @@ LABEL_58:
 
   else
   {
-    v10 = [(SCReporting *)self collectSummaryEventMetrics];
+    collectSummaryEventMetrics = [(SCReporting *)self collectSummaryEventMetrics];
     if (!dword_1000B6840 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 136446722;
@@ -1426,21 +1426,21 @@ LABEL_58:
       v14 = 1024;
       v15 = 562;
       v16 = 2112;
-      v17 = *&v10;
+      v17 = *&collectSummaryEventMetrics;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [DEBUG] %{public}s:%d reportingMetric=%@", &v12, 0x1Cu);
     }
 
-    [v6 reportSCEventWithType:1 dictionary:v10 streamID:v7];
+    [eventCopy reportSCEventWithType:1 dictionary:collectSummaryEventMetrics streamID:dCopy];
     [(SCReporting *)self resetReportingMetrics];
   }
 
   [(SCReporting *)self resetReportingMetrics];
 }
 
-- (BOOL)shouldReportBundleID:(id)a3
+- (BOOL)shouldReportBundleID:(id)d
 {
-  v3 = a3;
-  if ([v3 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     if (qword_1000B68D8 != -1)
     {
@@ -1457,11 +1457,11 @@ LABEL_58:
     CC_SHA256_Init(&v8);
     CC_SHA256_Update(&v8, &unk_1000B68C8, 0x10u);
     CC_SHA256_Update(&v8, &data, 4u);
-    if (v3)
+    if (dCopy)
     {
-      v4 = [v3 UTF8String];
-      v5 = strlen(v4);
-      CC_SHA256_Update(&v8, v4, v5);
+      uTF8String = [dCopy UTF8String];
+      v5 = strlen(uTF8String);
+      CC_SHA256_Update(&v8, uTF8String, v5);
     }
 
     CC_SHA256_Final(md, &v8);
@@ -1476,7 +1476,7 @@ LABEL_58:
   return v6;
 }
 
-- (void)thermalPressureDidChangeWithLevel:(int64_t)a3
+- (void)thermalPressureDidChangeWithLevel:(int64_t)level
 {
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -1485,14 +1485,14 @@ LABEL_58:
     v7 = 1024;
     v8 = 604;
     v9 = 2048;
-    v10 = a3;
+    levelCopy = level;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d level=%ld", &v5, 0x1Cu);
   }
 
-  [(SCReporting *)self addToThermalResultsWithLevel:a3];
+  [(SCReporting *)self addToThermalResultsWithLevel:level];
 }
 
-- (void)addToThermalResultsWithLevel:(int64_t)a3
+- (void)addToThermalResultsWithLevel:(int64_t)level
 {
   v5 = +[NSDate date];
   [v5 timeIntervalSinceDate:self->_thermalLevelIntervalStartTime];
@@ -1500,14 +1500,14 @@ LABEL_58:
   v7 = llroundf(*&v6);
 
   thermalResults = self->_thermalResults;
-  v9 = [NSNumber numberWithInteger:a3];
+  v9 = [NSNumber numberWithInteger:level];
   v10 = [(NSMutableDictionary *)thermalResults objectForKeyedSubscript:v9];
   [v10 doubleValue];
   v12 = v11 + v7;
 
   v13 = [NSNumber numberWithDouble:v12];
   v14 = self->_thermalResults;
-  v15 = [NSNumber numberWithInteger:a3];
+  v15 = [NSNumber numberWithInteger:level];
   [(NSMutableDictionary *)v14 setObject:v13 forKeyedSubscript:v15];
 
   v16 = +[NSDate date];
@@ -1517,12 +1517,12 @@ LABEL_58:
   _objc_release_x1();
 }
 
-+ (id)createScreenshotReportWithScreenshotProperties:(id)a3 mainBundleID:(id)a4 bundleID:(id)a5 isSLContentStream:(BOOL)a6
++ (id)createScreenshotReportWithScreenshotProperties:(id)properties mainBundleID:(id)d bundleID:(id)iD isSLContentStream:(BOOL)stream
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  streamCopy = stream;
+  propertiesCopy = properties;
+  dCopy = d;
+  iDCopy = iD;
   v12 = objc_alloc_init(NSMutableDictionary);
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -1533,20 +1533,20 @@ LABEL_58:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d ", &v21, 0x12u);
   }
 
-  if (v10)
+  if (dCopy)
   {
-    [v12 setObject:v10 forKeyedSubscript:@"CBID"];
-    v13 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 isEqualToString:@"com.apple.systemuiserver"]);
+    [v12 setObject:dCopy forKeyedSubscript:@"CBID"];
+    v13 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [dCopy isEqualToString:@"com.apple.systemuiserver"]);
     [v12 setObject:v13 forKeyedSubscript:@"HSUS"];
   }
 
-  if (v11)
+  if (iDCopy)
   {
-    v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v11 hasPrefix:@"/usr/sbin/screencapture"]);
+    v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [iDCopy hasPrefix:@"/usr/sbin/screencapture"]);
     [v12 setObject:v14 forKeyedSubscript:@"CSS"];
   }
 
-  if (v6)
+  if (streamCopy)
   {
     v15 = &off_1000A6B90;
   }
@@ -1557,19 +1557,19 @@ LABEL_58:
   }
 
   [v12 setObject:v15 forKeyedSubscript:@"SSV"];
-  v16 = [v9 objectForKeyedSubscript:@"SCScreenshotPropertiesDynamicRange"];
+  v16 = [propertiesCopy objectForKeyedSubscript:@"SCScreenshotPropertiesDynamicRange"];
 
   if (v16)
   {
     v17 = @"SCScreenshotPropertiesDynamicRange";
 LABEL_15:
-    v19 = [v9 objectForKeyedSubscript:v17];
+    v19 = [propertiesCopy objectForKeyedSubscript:v17];
     [v12 setObject:v19 forKeyedSubscript:@"SDR"];
 
     goto LABEL_16;
   }
 
-  v18 = [v9 objectForKeyedSubscript:@"SCStreamPropertiesCaptureDynamicRange"];
+  v18 = [propertiesCopy objectForKeyedSubscript:@"SCStreamPropertiesCaptureDynamicRange"];
 
   if (v18)
   {

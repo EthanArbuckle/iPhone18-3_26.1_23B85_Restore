@@ -7,9 +7,9 @@
 - (id)mf_replyPrefixForSender:()Goodies
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF58] currentLocale];
-  v6 = [v5 localeIdentifier];
-  v7 = [@"ja_JP_TRADITIONAL" caseInsensitiveCompare:v6];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v7 = [@"ja_JP_TRADITIONAL" caseInsensitiveCompare:localeIdentifier];
 
   if (!v7)
   {
@@ -19,14 +19,14 @@
     {
       v10 = v8;
 
-      v5 = v10;
+      currentLocale = v10;
     }
   }
 
-  v11 = CFDateFormatterCreate(0, v5, kCFDateFormatterMediumStyle, kCFDateFormatterNoStyle);
+  v11 = CFDateFormatterCreate(0, currentLocale, kCFDateFormatterMediumStyle, kCFDateFormatterNoStyle);
   if (v11)
   {
-    StringWithDate = CFDateFormatterCreateStringWithDate(0, v11, a1);
+    StringWithDate = CFDateFormatterCreateStringWithDate(0, v11, self);
     CFRelease(v11);
   }
 
@@ -42,10 +42,10 @@
     StringWithDate = 0;
   }
 
-  v14 = CFDateFormatterCreate(0, v5, kCFDateFormatterNoStyle, kCFDateFormatterShortStyle);
+  v14 = CFDateFormatterCreate(0, currentLocale, kCFDateFormatterNoStyle, kCFDateFormatterShortStyle);
   if (v14)
   {
-    v15 = CFDateFormatterCreateStringWithDate(0, v14, a1);
+    v15 = CFDateFormatterCreateStringWithDate(0, v14, self);
     CFRelease(v14);
   }
 
@@ -62,36 +62,36 @@
   }
 
   v17 = v4;
-  v18 = [v17 emailAddressValue];
-  v19 = [v18 displayName];
-  v20 = v19;
-  if (v19)
+  emailAddressValue = [v17 emailAddressValue];
+  displayName = [emailAddressValue displayName];
+  v20 = displayName;
+  if (displayName)
   {
-    v21 = v19;
+    stringValue = displayName;
   }
 
   else
   {
-    v21 = [v17 stringValue];
+    stringValue = [v17 stringValue];
   }
 
-  v22 = v21;
+  v22 = stringValue;
 
   v23 = v17;
-  v24 = [v23 emailAddressValue];
-  v25 = [v24 simpleAddress];
-  v26 = v25;
-  if (v25)
+  emailAddressValue2 = [v23 emailAddressValue];
+  simpleAddress = [emailAddressValue2 simpleAddress];
+  v26 = simpleAddress;
+  if (simpleAddress)
   {
-    v27 = v25;
+    stringValue2 = simpleAddress;
   }
 
   else
   {
-    v27 = [v23 stringValue];
+    stringValue2 = [v23 stringValue];
   }
 
-  v28 = v27;
+  v28 = stringValue2;
 
   v29 = v23;
   if (v22)

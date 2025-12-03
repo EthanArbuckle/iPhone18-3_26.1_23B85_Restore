@@ -1,11 +1,11 @@
 @interface OADSubBlip
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isLoaded;
 - (CGRect)frame;
 - (CGSize)sizeInPoints;
-- (OADSubBlip)initWithData:(id)a3 type:(int)a4;
+- (OADSubBlip)initWithData:(id)data type:(int)type;
 - (unint64_t)hash;
-- (void)setData:(id)a3;
+- (void)setData:(id)data;
 @end
 
 @implementation OADSubBlip
@@ -22,35 +22,35 @@
   return [(OCDDelayedNode *)&v3 isLoaded];
 }
 
-- (OADSubBlip)initWithData:(id)a3 type:(int)a4
+- (OADSubBlip)initWithData:(id)data type:(int)type
 {
-  v7 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = OADSubBlip;
   v8 = [(OADSubBlip *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 3, a3);
-    *(&v9->super.super.mLoaded + 1) = a4;
-    if (v7)
+    objc_storeStrong(v8 + 3, data);
+    *(&v9->super.super.mLoaded + 1) = type;
+    if (dataCopy)
     {
-      LODWORD(v9->mSizeInPoints.height) = [v7 length];
+      LODWORD(v9->mSizeInPoints.height) = [dataCopy length];
     }
   }
 
   return v9;
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
-  v6 = a3;
-  objc_storeStrong(&self->mType, a3);
-  v5 = v6;
-  if (v6)
+  dataCopy = data;
+  objc_storeStrong(&self->mType, data);
+  v5 = dataCopy;
+  if (dataCopy)
   {
-    LODWORD(self->mSizeInPoints.height) = [v6 length];
-    v5 = v6;
+    LODWORD(self->mSizeInPoints.height) = [dataCopy length];
+    v5 = dataCopy;
   }
 }
 
@@ -84,9 +84,9 @@
   return *&veor_s8(*v5.i8, *&vextq_s8(v5, v5, 8uLL)) ^ *&self->mSizeInBytes ^ self->mFrame.origin.x ^ v3 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -96,7 +96,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = v5;
   if (!v5)
   {

@@ -1,36 +1,36 @@
 @interface DODMLASRSchemaDODMLASRLanguageModelMetrics
-- (BOOL)isEqual:(id)a3;
-- (DODMLASRSchemaDODMLASRLanguageModelMetrics)initWithDictionary:(id)a3;
-- (DODMLASRSchemaDODMLASRLanguageModelMetrics)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DODMLASRSchemaDODMLASRLanguageModelMetrics)initWithDictionary:(id)dictionary;
+- (DODMLASRSchemaDODMLASRLanguageModelMetrics)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addNgramHits:(id)a3;
-- (void)setHasNumInvalidTokens:(BOOL)a3;
-- (void)setHasNumInvalidUtterances:(BOOL)a3;
-- (void)setHasNumOutOfVocabularyWords:(BOOL)a3;
-- (void)setHasNumUtterances:(BOOL)a3;
-- (void)setHasNumWords:(BOOL)a3;
-- (void)setHasPerplexity:(BOOL)a3;
-- (void)setHasPerplexityOne:(BOOL)a3;
-- (void)setHasTotalDurationInMs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addNgramHits:(id)hits;
+- (void)setHasNumInvalidTokens:(BOOL)tokens;
+- (void)setHasNumInvalidUtterances:(BOOL)utterances;
+- (void)setHasNumOutOfVocabularyWords:(BOOL)words;
+- (void)setHasNumUtterances:(BOOL)utterances;
+- (void)setHasNumWords:(BOOL)words;
+- (void)setHasPerplexity:(BOOL)perplexity;
+- (void)setHasPerplexityOne:(BOOL)one;
+- (void)setHasTotalDurationInMs:(BOOL)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLASRSchemaDODMLASRLanguageModelMetrics
 
-- (DODMLASRSchemaDODMLASRLanguageModelMetrics)initWithDictionary:(id)a3
+- (DODMLASRSchemaDODMLASRLanguageModelMetrics)initWithDictionary:(id)dictionary
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v38.receiver = self;
   v38.super_class = DODMLASRSchemaDODMLASRLanguageModelMetrics;
   v5 = [(DODMLASRSchemaDODMLASRLanguageModelMetrics *)&v38 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linearInterpolationWeight"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linearInterpolationWeight"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
       [(DODMLASRSchemaDODMLASRLanguageModelMetrics *)v5 setLinearInterpolationWeight:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"totalDurationInMs"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"totalDurationInMs"];
     objc_opt_class();
     v33 = v7;
     if (objc_opt_isKindOfClass())
@@ -46,28 +46,28 @@
       -[DODMLASRSchemaDODMLASRLanguageModelMetrics setTotalDurationInMs:](v5, "setTotalDurationInMs:", [v7 unsignedLongLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"numUtterances"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"numUtterances"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRLanguageModelMetrics setNumUtterances:](v5, "setNumUtterances:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"numWords"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"numWords"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRLanguageModelMetrics setNumWords:](v5, "setNumWords:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"numOutOfVocabularyWords"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"numOutOfVocabularyWords"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRLanguageModelMetrics setNumOutOfVocabularyWords:](v5, "setNumOutOfVocabularyWords:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"numInvalidTokens"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"numInvalidTokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,14 +75,14 @@
     }
 
     v12 = v6;
-    v13 = [v4 objectForKeyedSubscript:@"numInvalidUtterances"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"numInvalidUtterances"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRLanguageModelMetrics setNumInvalidUtterances:](v5, "setNumInvalidUtterances:", [v13 unsignedIntValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"perplexity"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"perplexity"];
     objc_opt_class();
     v32 = v14;
     if (objc_opt_isKindOfClass())
@@ -91,7 +91,7 @@
       [(DODMLASRSchemaDODMLASRLanguageModelMetrics *)v5 setPerplexity:?];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"perplexityOne"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"perplexityOne"];
     objc_opt_class();
     v31 = v15;
     v16 = v33;
@@ -101,7 +101,7 @@
       [(DODMLASRSchemaDODMLASRLanguageModelMetrics *)v5 setPerplexityOne:?];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"ngramHits"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"ngramHits"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -156,30 +156,30 @@
   return v5;
 }
 
-- (DODMLASRSchemaDODMLASRLanguageModelMetrics)initWithJSON:(id)a3
+- (DODMLASRSchemaDODMLASRLanguageModelMetrics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLASRSchemaDODMLASRLanguageModelMetrics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLASRSchemaDODMLASRLanguageModelMetrics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLASRSchemaDODMLASRLanguageModelMetrics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -193,18 +193,18 @@
 - (id)dictionaryRepresentation
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = MEMORY[0x1E696AD98];
     [(DODMLASRSchemaDODMLASRLanguageModelMetrics *)self linearInterpolationWeight];
     v5 = [v4 numberWithFloat:?];
-    [v3 setObject:v5 forKeyedSubscript:@"linearInterpolationWeight"];
+    [dictionary setObject:v5 forKeyedSubscript:@"linearInterpolationWeight"];
   }
 
   if ([(NSArray *)self->_ngramHits count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -224,16 +224,16 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
-          if (v12)
+          dictionaryRepresentation = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v6 addObject:v12];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v13 = [MEMORY[0x1E695DFB0] null];
-            [v6 addObject:v13];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -243,14 +243,14 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"ngramHits"];
+    [dictionary setObject:array forKeyedSubscript:@"ngramHits"];
   }
 
   has = self->_has;
   if ((has & 0x20) != 0)
   {
     v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRLanguageModelMetrics numInvalidTokens](self, "numInvalidTokens")}];
-    [v3 setObject:v17 forKeyedSubscript:@"numInvalidTokens"];
+    [dictionary setObject:v17 forKeyedSubscript:@"numInvalidTokens"];
 
     has = self->_has;
     if ((has & 0x40) == 0)
@@ -271,7 +271,7 @@ LABEL_17:
   }
 
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRLanguageModelMetrics numInvalidUtterances](self, "numInvalidUtterances")}];
-  [v3 setObject:v18 forKeyedSubscript:@"numInvalidUtterances"];
+  [dictionary setObject:v18 forKeyedSubscript:@"numInvalidUtterances"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -287,7 +287,7 @@ LABEL_18:
 
 LABEL_29:
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRLanguageModelMetrics numOutOfVocabularyWords](self, "numOutOfVocabularyWords")}];
-  [v3 setObject:v19 forKeyedSubscript:@"numOutOfVocabularyWords"];
+  [dictionary setObject:v19 forKeyedSubscript:@"numOutOfVocabularyWords"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -303,7 +303,7 @@ LABEL_19:
 
 LABEL_30:
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRLanguageModelMetrics numUtterances](self, "numUtterances")}];
-  [v3 setObject:v20 forKeyedSubscript:@"numUtterances"];
+  [dictionary setObject:v20 forKeyedSubscript:@"numUtterances"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -319,7 +319,7 @@ LABEL_20:
 
 LABEL_31:
   v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRLanguageModelMetrics numWords](self, "numWords")}];
-  [v3 setObject:v21 forKeyedSubscript:@"numWords"];
+  [dictionary setObject:v21 forKeyedSubscript:@"numWords"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -337,7 +337,7 @@ LABEL_32:
   v22 = MEMORY[0x1E696AD98];
   [(DODMLASRSchemaDODMLASRLanguageModelMetrics *)self perplexity];
   v23 = [v22 numberWithFloat:?];
-  [v3 setObject:v23 forKeyedSubscript:@"perplexity"];
+  [dictionary setObject:v23 forKeyedSubscript:@"perplexity"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -355,19 +355,19 @@ LABEL_33:
   v24 = MEMORY[0x1E696AD98];
   [(DODMLASRSchemaDODMLASRLanguageModelMetrics *)self perplexityOne];
   v25 = [v24 numberWithFloat:?];
-  [v3 setObject:v25 forKeyedSubscript:@"perplexityOne"];
+  [dictionary setObject:v25 forKeyedSubscript:@"perplexityOne"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_23:
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[DODMLASRSchemaDODMLASRLanguageModelMetrics totalDurationInMs](self, "totalDurationInMs")}];
-    [v3 setObject:v15 forKeyedSubscript:@"totalDurationInMs"];
+    [dictionary setObject:v15 forKeyedSubscript:@"totalDurationInMs"];
   }
 
 LABEL_24:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -575,16 +575,16 @@ LABEL_29:
   return v14 ^ v9 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v24 ^ v25 ^ [(NSArray *)self->_ngramHits hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_42;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_42;
@@ -593,14 +593,14 @@ LABEL_29:
   if (*&has)
   {
     linearInterpolationWeight = self->_linearInterpolationWeight;
-    [v4 linearInterpolationWeight];
+    [equalCopy linearInterpolationWeight];
     if (linearInterpolationWeight != v8)
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -609,13 +609,13 @@ LABEL_29:
     if (v9)
     {
       totalDurationInMs = self->_totalDurationInMs;
-      if (totalDurationInMs != [v4 totalDurationInMs])
+      if (totalDurationInMs != [equalCopy totalDurationInMs])
       {
         goto LABEL_42;
       }
 
       has = self->_has;
-      v6 = v4[32];
+      v6 = equalCopy[32];
     }
 
     v11 = (*&has >> 2) & 1;
@@ -624,13 +624,13 @@ LABEL_29:
       if (v11)
       {
         numUtterances = self->_numUtterances;
-        if (numUtterances != [v4 numUtterances])
+        if (numUtterances != [equalCopy numUtterances])
         {
           goto LABEL_42;
         }
 
         has = self->_has;
-        v6 = v4[32];
+        v6 = equalCopy[32];
       }
 
       v13 = (*&has >> 3) & 1;
@@ -639,13 +639,13 @@ LABEL_29:
         if (v13)
         {
           numWords = self->_numWords;
-          if (numWords != [v4 numWords])
+          if (numWords != [equalCopy numWords])
           {
             goto LABEL_42;
           }
 
           has = self->_has;
-          v6 = v4[32];
+          v6 = equalCopy[32];
         }
 
         v15 = (*&has >> 4) & 1;
@@ -654,13 +654,13 @@ LABEL_29:
           if (v15)
           {
             numOutOfVocabularyWords = self->_numOutOfVocabularyWords;
-            if (numOutOfVocabularyWords != [v4 numOutOfVocabularyWords])
+            if (numOutOfVocabularyWords != [equalCopy numOutOfVocabularyWords])
             {
               goto LABEL_42;
             }
 
             has = self->_has;
-            v6 = v4[32];
+            v6 = equalCopy[32];
           }
 
           v17 = (*&has >> 5) & 1;
@@ -669,13 +669,13 @@ LABEL_29:
             if (v17)
             {
               numInvalidTokens = self->_numInvalidTokens;
-              if (numInvalidTokens != [v4 numInvalidTokens])
+              if (numInvalidTokens != [equalCopy numInvalidTokens])
               {
                 goto LABEL_42;
               }
 
               has = self->_has;
-              v6 = v4[32];
+              v6 = equalCopy[32];
             }
 
             v19 = (*&has >> 6) & 1;
@@ -684,13 +684,13 @@ LABEL_29:
               if (v19)
               {
                 numInvalidUtterances = self->_numInvalidUtterances;
-                if (numInvalidUtterances != [v4 numInvalidUtterances])
+                if (numInvalidUtterances != [equalCopy numInvalidUtterances])
                 {
                   goto LABEL_42;
                 }
 
                 has = self->_has;
-                v6 = v4[32];
+                v6 = equalCopy[32];
               }
 
               v21 = (*&has >> 7) & 1;
@@ -699,28 +699,28 @@ LABEL_29:
                 if (v21)
                 {
                   perplexity = self->_perplexity;
-                  [v4 perplexity];
+                  [equalCopy perplexity];
                   if (perplexity != v23)
                   {
                     goto LABEL_42;
                   }
 
                   has = self->_has;
-                  v6 = v4[32];
+                  v6 = equalCopy[32];
                 }
 
                 v24 = (*&has >> 8) & 1;
                 if (v24 == ((v6 >> 8) & 1))
                 {
-                  if (!v24 || (perplexityOne = self->_perplexityOne, [v4 perplexityOne], perplexityOne == v26))
+                  if (!v24 || (perplexityOne = self->_perplexityOne, [equalCopy perplexityOne], perplexityOne == v26))
                   {
-                    v27 = [(DODMLASRSchemaDODMLASRLanguageModelMetrics *)self ngramHits];
-                    v28 = [v4 ngramHits];
-                    v29 = v28;
-                    if ((v27 != 0) != (v28 == 0))
+                    ngramHits = [(DODMLASRSchemaDODMLASRLanguageModelMetrics *)self ngramHits];
+                    ngramHits2 = [equalCopy ngramHits];
+                    v29 = ngramHits2;
+                    if ((ngramHits != 0) != (ngramHits2 == 0))
                     {
-                      v30 = [(DODMLASRSchemaDODMLASRLanguageModelMetrics *)self ngramHits];
-                      if (!v30)
+                      ngramHits3 = [(DODMLASRSchemaDODMLASRLanguageModelMetrics *)self ngramHits];
+                      if (!ngramHits3)
                       {
 
 LABEL_45:
@@ -728,10 +728,10 @@ LABEL_45:
                         goto LABEL_43;
                       }
 
-                      v31 = v30;
-                      v32 = [(DODMLASRSchemaDODMLASRLanguageModelMetrics *)self ngramHits];
-                      v33 = [v4 ngramHits];
-                      v34 = [v32 isEqual:v33];
+                      v31 = ngramHits3;
+                      ngramHits4 = [(DODMLASRSchemaDODMLASRLanguageModelMetrics *)self ngramHits];
+                      ngramHits5 = [equalCopy ngramHits];
+                      v34 = [ngramHits4 isEqual:ngramHits5];
 
                       if (v34)
                       {
@@ -759,10 +759,10 @@ LABEL_43:
   return v35;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -909,27 +909,27 @@ LABEL_11:
   }
 }
 
-- (void)addNgramHits:(id)a3
+- (void)addNgramHits:(id)hits
 {
-  v4 = a3;
+  hitsCopy = hits;
   ngramHits = self->_ngramHits;
-  v8 = v4;
+  v8 = hitsCopy;
   if (!ngramHits)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_ngramHits;
-    self->_ngramHits = v6;
+    self->_ngramHits = array;
 
-    v4 = v8;
+    hitsCopy = v8;
     ngramHits = self->_ngramHits;
   }
 
-  [(NSArray *)ngramHits addObject:v4];
+  [(NSArray *)ngramHits addObject:hitsCopy];
 }
 
-- (void)setHasPerplexityOne:(BOOL)a3
+- (void)setHasPerplexityOne:(BOOL)one
 {
-  if (a3)
+  if (one)
   {
     v3 = 256;
   }
@@ -942,9 +942,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasPerplexity:(BOOL)a3
+- (void)setHasPerplexity:(BOOL)perplexity
 {
-  if (a3)
+  if (perplexity)
   {
     v3 = 128;
   }
@@ -957,9 +957,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasNumInvalidUtterances:(BOOL)a3
+- (void)setHasNumInvalidUtterances:(BOOL)utterances
 {
-  if (a3)
+  if (utterances)
   {
     v3 = 64;
   }
@@ -972,9 +972,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasNumInvalidTokens:(BOOL)a3
+- (void)setHasNumInvalidTokens:(BOOL)tokens
 {
-  if (a3)
+  if (tokens)
   {
     v3 = 32;
   }
@@ -987,9 +987,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasNumOutOfVocabularyWords:(BOOL)a3
+- (void)setHasNumOutOfVocabularyWords:(BOOL)words
 {
-  if (a3)
+  if (words)
   {
     v3 = 16;
   }
@@ -1002,9 +1002,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasNumWords:(BOOL)a3
+- (void)setHasNumWords:(BOOL)words
 {
-  if (a3)
+  if (words)
   {
     v3 = 8;
   }
@@ -1017,9 +1017,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasNumUtterances:(BOOL)a3
+- (void)setHasNumUtterances:(BOOL)utterances
 {
-  if (a3)
+  if (utterances)
   {
     v3 = 4;
   }
@@ -1032,9 +1032,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasTotalDurationInMs:(BOOL)a3
+- (void)setHasTotalDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2;
   }
@@ -1047,14 +1047,14 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = DODMLASRSchemaDODMLASRLanguageModelMetrics;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(DODMLASRSchemaDODMLASRLanguageModelMetrics *)self ngramHits:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(DODMLASRSchemaDODMLASRLanguageModelMetrics *)self setNgramHits:v7];
 

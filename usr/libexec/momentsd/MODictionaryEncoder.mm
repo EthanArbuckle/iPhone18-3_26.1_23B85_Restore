@@ -1,14 +1,14 @@
 @interface MODictionaryEncoder
-+ (id)decodeToDictionary:(id)a3;
-+ (id)encodeDictionary:(id)a3;
++ (id)decodeToDictionary:(id)dictionary;
++ (id)encodeDictionary:(id)dictionary;
 @end
 
 @implementation MODictionaryEncoder
 
-+ (id)encodeDictionary:(id)a3
++ (id)encodeDictionary:(id)dictionary
 {
-  v5 = a3;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     goto LABEL_10;
   }
@@ -23,14 +23,14 @@
     }
 
     v7 = +[NSAssertionHandler currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"MODictionaryEncoder.m" lineNumber:23 description:{@"Object is not of dictionary type (in %s:%d)", "+[MODictionaryEncoder encodeDictionary:]", 23}];
+    [v7 handleFailureInMethod:a2 object:self file:@"MODictionaryEncoder.m" lineNumber:23 description:{@"Object is not of dictionary type (in %s:%d)", "+[MODictionaryEncoder encodeDictionary:]", 23}];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v13 = 0;
-    v8 = [NSJSONSerialization dataWithJSONObject:v5 options:0 error:&v13];
+    v8 = [NSJSONSerialization dataWithJSONObject:dictionaryCopy options:0 error:&v13];
     v9 = v13;
     if (v9 || !v8)
     {
@@ -58,10 +58,10 @@ LABEL_10:
   return v10;
 }
 
-+ (id)decodeToDictionary:(id)a3
++ (id)decodeToDictionary:(id)dictionary
 {
-  v5 = a3;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     goto LABEL_10;
   }
@@ -76,14 +76,14 @@ LABEL_10:
     }
 
     v7 = +[NSAssertionHandler currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"MODictionaryEncoder.m" lineNumber:46 description:{@"Object is not of data type (in %s:%d)", "+[MODictionaryEncoder decodeToDictionary:]", 46}];
+    [v7 handleFailureInMethod:a2 object:self file:@"MODictionaryEncoder.m" lineNumber:46 description:{@"Object is not of data type (in %s:%d)", "+[MODictionaryEncoder decodeToDictionary:]", 46}];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v13 = 0;
-    v8 = [NSJSONSerialization JSONObjectWithData:v5 options:0 error:&v13];
+    v8 = [NSJSONSerialization JSONObjectWithData:dictionaryCopy options:0 error:&v13];
     v9 = v13;
     if (v9 || !v8)
     {

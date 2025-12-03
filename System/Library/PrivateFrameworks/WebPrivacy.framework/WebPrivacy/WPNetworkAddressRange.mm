@@ -1,9 +1,9 @@
 @interface WPNetworkAddressRange
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (WPNetworkAddressRange)init;
-- (WPNetworkAddressRange)initWithAddress:(const sockaddr_in6 *)a3 netMaskLength:(unint64_t)a4 owner:(id)a5 host:(id)a6;
+- (WPNetworkAddressRange)initWithAddress:(const sockaddr_in6 *)address netMaskLength:(unint64_t)length owner:(id)owner host:(id)host;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (int64_t)version;
 - (unint64_t)_addressLength;
 @end
@@ -19,22 +19,22 @@
   return self;
 }
 
-- (WPNetworkAddressRange)initWithAddress:(const sockaddr_in6 *)a3 netMaskLength:(unint64_t)a4 owner:(id)a5 host:(id)a6
+- (WPNetworkAddressRange)initWithAddress:(const sockaddr_in6 *)address netMaskLength:(unint64_t)length owner:(id)owner host:(id)host
 {
-  v11 = a5;
-  v12 = a6;
+  ownerCopy = owner;
+  hostCopy = host;
   v18.receiver = self;
   v18.super_class = WPNetworkAddressRange;
   v13 = [(WPNetworkAddressRange *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    v15 = *&a3->sin6_len;
-    *(v13 + 20) = *(&a3->sin6_addr + 4);
+    v15 = *&address->sin6_len;
+    *(v13 + 20) = *(&address->sin6_addr + 4);
     *(v13 + 8) = v15;
-    *(v13 + 5) = a4;
-    objc_storeStrong(v13 + 6, a5);
-    objc_storeStrong(&v14->_host, a6);
+    *(v13 + 5) = length;
+    objc_storeStrong(v13 + 6, owner);
+    objc_storeStrong(&v14->_host, host);
     v16 = v14;
   }
 
@@ -88,13 +88,13 @@
   return result;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(WPNetworkAddressRange *)self version];
-  if (v5 == [v4 version])
+  compareCopy = compare;
+  version = [(WPNetworkAddressRange *)self version];
+  if (version == [compareCopy version])
   {
-    v6 = memcmp(-[WPNetworkAddressRange _addressPointer](self, "_addressPointer"), [v4 _addressPointer], -[WPNetworkAddressRange _addressLength](self, "_addressLength"));
+    v6 = memcmp(-[WPNetworkAddressRange _addressPointer](self, "_addressPointer"), [compareCopy _addressPointer], -[WPNetworkAddressRange _addressLength](self, "_addressLength"));
     if ((v6 & 0x80000000) == 0)
     {
       if (v6)
@@ -103,11 +103,11 @@
         goto LABEL_11;
       }
 
-      v8 = [(WPNetworkAddressRange *)self netMaskLength];
-      if (v8 >= [v4 netMaskLength])
+      netMaskLength = [(WPNetworkAddressRange *)self netMaskLength];
+      if (netMaskLength >= [compareCopy netMaskLength])
       {
-        v9 = [(WPNetworkAddressRange *)self netMaskLength];
-        v7 = v9 > [v4 netMaskLength];
+        netMaskLength2 = [(WPNetworkAddressRange *)self netMaskLength];
+        v7 = netMaskLength2 > [compareCopy netMaskLength];
         goto LABEL_11;
       }
     }
@@ -115,7 +115,7 @@
     v7 = -1;
   }
 
-  else if (v5 == 4)
+  else if (version == 4)
   {
     v7 = -1;
   }
@@ -130,40 +130,40 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v8 = 0;
     v7 = 0;
-    v9 = v4;
+    owner = equalCopy;
 LABEL_8:
 
     goto LABEL_10;
   }
 
-  if (!v4)
+  if (!equalCopy)
   {
     v8 = 0;
     v7 = 0;
     goto LABEL_10;
   }
 
-  v5 = [(WPNetworkAddressRange *)self version];
-  if (v5 == [v4 version])
+  version = [(WPNetworkAddressRange *)self version];
+  if (version == [equalCopy version])
   {
-    v6 = [(WPNetworkAddressRange *)self netMaskLength];
-    if (v6 == [v4 netMaskLength] && !memcmp(-[WPNetworkAddressRange _addressPointer](self, "_addressPointer"), objc_msgSend(v4, "_addressPointer"), -[WPNetworkAddressRange _addressLength](self, "_addressLength")))
+    netMaskLength = [(WPNetworkAddressRange *)self netMaskLength];
+    if (netMaskLength == [equalCopy netMaskLength] && !memcmp(-[WPNetworkAddressRange _addressPointer](self, "_addressPointer"), objc_msgSend(equalCopy, "_addressPointer"), -[WPNetworkAddressRange _addressLength](self, "_addressLength")))
     {
-      v9 = [(WPNetworkAddressRange *)self owner];
-      v11 = [v4 owner];
-      if ([v9 isEqualToString:v11])
+      owner = [(WPNetworkAddressRange *)self owner];
+      owner2 = [equalCopy owner];
+      if ([owner isEqualToString:owner2])
       {
-        v12 = [(WPNetworkAddressRange *)self host];
-        v13 = [v4 host];
-        v7 = [v12 isEqualToString:v13];
+        host = [(WPNetworkAddressRange *)self host];
+        host2 = [equalCopy host];
+        v7 = [host isEqualToString:host2];
       }
 
       else
@@ -171,13 +171,13 @@ LABEL_8:
         v7 = 0;
       }
 
-      v8 = v4;
+      v8 = equalCopy;
       goto LABEL_8;
     }
   }
 
   v7 = 0;
-  v8 = v4;
+  v8 = equalCopy;
 LABEL_10:
 
   return v7;

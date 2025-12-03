@@ -1,15 +1,15 @@
 @interface CanonicalFooterSectionView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 - (VUILabel)accessibilityHeaderView;
 @end
 
 @implementation CanonicalFooterSectionView
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  width = a3.width;
-  v6 = self;
-  sub_1E3F00F60(a4, width);
+  width = subviews.width;
+  selfCopy = self;
+  sub_1E3F00F60(only, width);
   v8 = v7;
   v10 = v9;
 
@@ -22,7 +22,7 @@
 
 - (VUILabel)accessibilityHeaderView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3F01D44();
 
   return v3;

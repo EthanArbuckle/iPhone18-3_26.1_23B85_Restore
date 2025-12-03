@@ -1,24 +1,24 @@
 @interface PKHandwritingSynthesisGenerationLogEntry
-- (PKHandwritingSynthesisGenerationLogEntry)initWithSynthesizedStrokeGroups:(id)a3 debugInfo:(id)a4;
+- (PKHandwritingSynthesisGenerationLogEntry)initWithSynthesizedStrokeGroups:(id)groups debugInfo:(id)info;
 - (id)synthesizedStrokes;
 @end
 
 @implementation PKHandwritingSynthesisGenerationLogEntry
 
-- (PKHandwritingSynthesisGenerationLogEntry)initWithSynthesizedStrokeGroups:(id)a3 debugInfo:(id)a4
+- (PKHandwritingSynthesisGenerationLogEntry)initWithSynthesizedStrokeGroups:(id)groups debugInfo:(id)info
 {
-  v7 = a3;
+  groupsCopy = groups;
   v12.receiver = self;
   v12.super_class = PKHandwritingSynthesisGenerationLogEntry;
-  v8 = [(PKHandwritingSynthesisLogEntry *)&v12 initWithDebugInfo:a4];
+  v8 = [(PKHandwritingSynthesisLogEntry *)&v12 initWithDebugInfo:info];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_strokegroups, a3);
+    objc_storeStrong(&v8->_strokegroups, groups);
   }
 
-  v10 = [(PKHandwritingSynthesisLogEntry *)v9 debugInfo];
-  [v10 setObject:@"generation" forKeyedSubscript:@"type"];
+  debugInfo = [(PKHandwritingSynthesisLogEntry *)v9 debugInfo];
+  [debugInfo setObject:@"generation" forKeyedSubscript:@"type"];
 
   return v9;
 }
@@ -26,7 +26,7 @@
 - (id)synthesizedStrokes
 {
   v65 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
@@ -157,7 +157,7 @@
               v40 = [*(*(&v48 + 1) + 8 * k) copy];
               v52 = v53;
               [v40 _applyTransform:&v52];
-              [v3 addObject:v40];
+              [array addObject:v40];
               [v40 _bounds];
               v38 = fmax(v38, CGRectGetMaxY(v71));
             }
@@ -181,7 +181,7 @@
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface CKSyncEngineFetchedDatabaseChangesEvent
-- (CKSyncEngineFetchedDatabaseChangesEvent)initWithModifications:(id)a3 deletions:(id)a4;
-- (void)CKDescribePropertiesUsing:(id)a3;
+- (CKSyncEngineFetchedDatabaseChangesEvent)initWithModifications:(id)modifications deletions:(id)deletions;
+- (void)CKDescribePropertiesUsing:(id)using;
 @end
 
 @implementation CKSyncEngineFetchedDatabaseChangesEvent
 
-- (CKSyncEngineFetchedDatabaseChangesEvent)initWithModifications:(id)a3 deletions:(id)a4
+- (CKSyncEngineFetchedDatabaseChangesEvent)initWithModifications:(id)modifications deletions:(id)deletions
 {
-  v6 = a3;
-  v7 = a4;
+  modificationsCopy = modifications;
+  deletionsCopy = deletions;
   v34 = 0;
-  v8 = _CKCheckArgument("modifications", v6, 0, 0, 0, &v34);
+  v8 = _CKCheckArgument("modifications", modificationsCopy, 0, 0, 0, &v34);
   v9 = v34;
-  if ((v8 & 1) == 0 || (v9, v33 = 0, v10 = _CKCheckArgument("deletions", v7, 0, 0, 0, &v33), v9 = v33, (v10 & 1) == 0))
+  if ((v8 & 1) == 0 || (v9, v33 = 0, v10 = _CKCheckArgument("deletions", deletionsCopy, 0, 0, 0, &v33), v9 = v33, (v10 & 1) == 0))
   {
     v21 = v9;
     v22 = [CKException alloc];
@@ -26,32 +26,32 @@
 
   v32.receiver = self;
   v32.super_class = CKSyncEngineFetchedDatabaseChangesEvent;
-  v13 = [(CKSyncEngineEvent *)&v32 initInternal];
-  if (v13)
+  initInternal = [(CKSyncEngineEvent *)&v32 initInternal];
+  if (initInternal)
   {
-    v14 = objc_msgSend_copy(v6, v11, v12);
-    modifications = v13->_modifications;
-    v13->_modifications = v14;
+    v14 = objc_msgSend_copy(modificationsCopy, v11, v12);
+    modifications = initInternal->_modifications;
+    initInternal->_modifications = v14;
 
-    v18 = objc_msgSend_copy(v7, v16, v17);
-    deletions = v13->_deletions;
-    v13->_deletions = v18;
+    v18 = objc_msgSend_copy(deletionsCopy, v16, v17);
+    deletions = initInternal->_deletions;
+    initInternal->_deletions = v18;
   }
 
-  return v13;
+  return initInternal;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
   v13.receiver = self;
   v13.super_class = CKSyncEngineFetchedDatabaseChangesEvent;
-  v4 = a3;
-  [(CKSyncEngineEvent *)&v13 CKDescribePropertiesUsing:v4];
+  usingCopy = using;
+  [(CKSyncEngineEvent *)&v13 CKDescribePropertiesUsing:usingCopy];
   v7 = objc_msgSend_modifications(self, v5, v6, v13.receiver, v13.super_class);
-  objc_msgSend_addProperty_value_shouldRedact_(v4, v8, @"modifications", v7, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v8, @"modifications", v7, 0);
 
   v11 = objc_msgSend_deletions(self, v9, v10);
-  objc_msgSend_addProperty_value_shouldRedact_(v4, v12, @"deletions", v11, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v12, @"deletions", v11, 0);
 }
 
 @end

@@ -1,89 +1,89 @@
 @interface SplitViewWindowRootViewController
-+ (double)sidebarWidthForViewHierarchy:(id)a3;
-+ (id)sanitizeCalSubCal:(id)a3;
++ (double)sidebarWidthForViewHierarchy:(id)hierarchy;
++ (id)sanitizeCalSubCal:(id)cal;
 - (BOOL)_shouldUseSideBar;
 - (BOOL)_viewControllerExistsInPresentationChainThatShouldNotRotate;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)canShowAvatarViewWithTraitCollection:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)canShowAvatarViewWithTraitCollection:(id)collection;
 - (BOOL)isPopoverCurrentlyVisible;
 - (BOOL)paletteShouldShowAvatarView;
-- (BOOL)showsSearchBarForTraitCollection:(id)a3;
+- (BOOL)showsSearchBarForTraitCollection:(id)collection;
 - (CGSize)mainContentSize;
-- (SplitViewWindowRootViewController)initWithRootNavigationController:(id)a3;
+- (SplitViewWindowRootViewController)initWithRootNavigationController:(id)controller;
 - (double)searchFieldWidth;
 - (id)primarySidebarViewController;
 - (id)startSearch;
-- (id)traitCollectionToUseWhileLoadingViewsDuringTransitioningToTraitCollection:(id)a3;
-- (id)viewControllerForSidebarState:(unint64_t)a3;
-- (int64_t)preferredSplitBehaviorForSize:(CGSize)a3;
-- (int64_t)splitViewController:(id)a3 displayModeForExpandingToProposedDisplayMode:(int64_t)a4;
+- (id)traitCollectionToUseWhileLoadingViewsDuringTransitioningToTraitCollection:(id)collection;
+- (id)viewControllerForSidebarState:(unint64_t)state;
+- (int64_t)preferredSplitBehaviorForSize:(CGSize)size;
+- (int64_t)splitViewController:(id)controller displayModeForExpandingToProposedDisplayMode:(int64_t)mode;
 - (unint64_t)focusFilterMode;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_delegatesChanged:(id)a3;
-- (void)_identityChanged:(id)a3;
-- (void)_updateAfterExtendedLaunch:(id)a3;
-- (void)_updateNavigationAdditionalBarButtonsWithTraitCollection:(id)a3;
-- (void)_updateNavigationBarButtonsWithTraitCollection:(id)a3;
-- (void)_updatePreferredSplitBehaviorForSize:(CGSize)a3;
+- (void)_delegatesChanged:(id)changed;
+- (void)_identityChanged:(id)changed;
+- (void)_updateAfterExtendedLaunch:(id)launch;
+- (void)_updateNavigationAdditionalBarButtonsWithTraitCollection:(id)collection;
+- (void)_updateNavigationBarButtonsWithTraitCollection:(id)collection;
+- (void)_updatePreferredSplitBehaviorForSize:(CGSize)size;
 - (void)activateSearchBarConstraints;
 - (void)activateSearchButtonConstraints;
 - (void)attemptDisplayReviewPrompt;
-- (void)continueSearchWithTerm:(id)a3;
+- (void)continueSearchWithTerm:(id)term;
 - (void)createSearchBarIfNeeded;
 - (void)dealloc;
-- (void)dismissPresentedViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)emptySearchBarNeedsResign:(id)a3;
-- (void)endSearch:(BOOL)a3;
-- (void)handleURL:(id)a3 context:(id)a4;
-- (void)hideColumn:(int64_t)a3;
+- (void)dismissPresentedViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)emptySearchBarNeedsResign:(id)resign;
+- (void)endSearch:(BOOL)search;
+- (void)handleURL:(id)l context:(id)context;
+- (void)hideColumn:(int64_t)column;
 - (void)hideInspectorColumnWithoutLosingSearchBarFocus;
 - (void)inboxWillDismiss;
-- (void)keyboardWillShow:(id)a3;
+- (void)keyboardWillShow:(id)show;
 - (void)layoutSearchControl;
 - (void)layoutSegmentedControl;
-- (void)newEventButtonTapped:(id)a3;
-- (void)paletteAvatarViewTapped:(id)a3;
-- (void)paletteTodayButtonTapped:(id)a3;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
+- (void)newEventButtonTapped:(id)tapped;
+- (void)paletteAvatarViewTapped:(id)tapped;
+- (void)paletteTodayButtonTapped:(id)tapped;
+- (void)pressesBegan:(id)began withEvent:(id)event;
 - (void)resetSearchBar;
 - (void)routeNewEventKeyCommand;
 - (void)routeSearchKeyCommand;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
+- (void)searchBar:(id)bar textDidChange:(id)change;
 - (void)searchBegan;
-- (void)searchButtonTappedCreateAndAddSearchBar:(BOOL)a3;
+- (void)searchButtonTappedCreateAndAddSearchBar:(BOOL)bar;
 - (void)searchEnded;
 - (void)searchEnding;
-- (void)searchResultsViewController:(id)a3 didSelectEvent:(id)a4;
+- (void)searchResultsViewController:(id)controller didSelectEvent:(id)event;
 - (void)searchTapped;
 - (void)segmentedControlAddedToWindow;
-- (void)setCurrentSidebarState:(unint64_t)a3 completion:(id)a4;
-- (void)setFocusFilterMode:(unint64_t)a3;
-- (void)setNavigationItems:(id)a3 additionalItems:(id)a4;
-- (void)setSearchStateToSearching:(BOOL)a3;
-- (void)setupSearch:(BOOL)a3;
-- (void)setupSearchControlForTraitCollection:(id)a3;
+- (void)setCurrentSidebarState:(unint64_t)state completion:(id)completion;
+- (void)setFocusFilterMode:(unint64_t)mode;
+- (void)setNavigationItems:(id)items additionalItems:(id)additionalItems;
+- (void)setSearchStateToSearching:(BOOL)searching;
+- (void)setupSearch:(BOOL)search;
+- (void)setupSearchControlForTraitCollection:(id)collection;
 - (void)setupSearchNavBarHeight;
 - (void)showAddEvent;
-- (void)showAddEventWithTitle:(id)a3 startDate:(id)a4 endDate:(id)a5 location:(id)a6 suggestionsKey:(id)a7 allDay:(BOOL)a8;
-- (void)showCalendarsSideBarWithCompletion:(id)a3;
-- (void)showCalendarsViewWithCompletion:(id)a3;
-- (void)showColumn:(int64_t)a3;
+- (void)showAddEventWithTitle:(id)title startDate:(id)date endDate:(id)endDate location:(id)location suggestionsKey:(id)key allDay:(BOOL)day;
+- (void)showCalendarsSideBarWithCompletion:(id)completion;
+- (void)showCalendarsViewWithCompletion:(id)completion;
+- (void)showColumn:(int64_t)column;
 - (void)showDayView;
-- (void)showEventAndCloseSidebarIfNeeded:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5;
-- (void)showIdentitySwitcherFromSourceView:(id)a3;
-- (void)showInboxSideBarWithCompletion:(id)a3;
+- (void)showEventAndCloseSidebarIfNeeded:(id)needed animated:(BOOL)animated showMode:(unint64_t)mode;
+- (void)showIdentitySwitcherFromSourceView:(id)view;
+- (void)showInboxSideBarWithCompletion:(id)completion;
 - (void)showInboxView;
-- (void)showInspectorForCalendar:(id)a3 enableDoneInitially:(BOOL)a4;
-- (void)showListSideBarWithCompletion:(id)a3;
+- (void)showInspectorForCalendar:(id)calendar enableDoneInitially:(BOOL)initially;
+- (void)showListSideBarWithCompletion:(id)completion;
 - (void)showListView;
 - (void)showSearchView;
 - (void)showSplitMonthView;
-- (void)splitViewController:(id)a3 willChangeToProposedDisplayMode:(int64_t *)a4;
-- (void)splitViewController:(id)a3 willHideColumn:(int64_t)a4;
-- (void)splitViewController:(id)a3 willShowColumn:(int64_t)a4;
+- (void)splitViewController:(id)controller willChangeToProposedDisplayMode:(int64_t *)mode;
+- (void)splitViewController:(id)controller willHideColumn:(int64_t)column;
+- (void)splitViewController:(id)controller willShowColumn:(int64_t)column;
 - (void)teardownSearch;
 - (void)todayToolbarItemPressed;
-- (void)toggleSidebar:(id)a3;
+- (void)toggleSidebar:(id)sidebar;
 - (void)updateErrorState;
 - (void)updateInboxCount;
 - (void)updateNavigationAdditionalBarButtons;
@@ -92,13 +92,13 @@
 - (void)updatePrimaryViewControllerNavBar;
 - (void)updatePrimaryViewControllerToolbar;
 - (void)updateSidebarPalette;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)willEnterForeground;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SplitViewWindowRootViewController
@@ -108,8 +108,8 @@
   v126.receiver = self;
   v126.super_class = SplitViewWindowRootViewController;
   [(SplitViewWindowRootViewController *)&v126 viewDidLoad];
-  v3 = [(SplitViewWindowRootViewController *)self view];
-  [v3 setAutoresizingMask:18];
+  view = [(SplitViewWindowRootViewController *)self view];
+  [view setAutoresizingMask:18];
 
   v4 = [[UISplitViewController alloc] initWithStyle:1];
   splitViewController = self->_splitViewController;
@@ -119,37 +119,37 @@
   [(UISplitViewController *)self->_splitViewController setPresentsWithGesture:0];
   [(UISplitViewController *)self->_splitViewController setDisplayModeButtonVisibility:1];
   [(SplitViewWindowRootViewController *)self addChildViewController:self->_splitViewController];
-  v6 = [(SplitViewWindowRootViewController *)self view];
-  v7 = [(UISplitViewController *)self->_splitViewController view];
-  [v6 addSubview:v7];
+  view2 = [(SplitViewWindowRootViewController *)self view];
+  view3 = [(UISplitViewController *)self->_splitViewController view];
+  [view2 addSubview:view3];
 
   [(UISplitViewController *)self->_splitViewController didMoveToParentViewController:self];
-  v8 = [(UISplitViewController *)self->_splitViewController view];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view4 = [(UISplitViewController *)self->_splitViewController view];
+  [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v124 = [(UISplitViewController *)self->_splitViewController view];
-  v121 = [v124 topAnchor];
-  v123 = [(SplitViewWindowRootViewController *)self view];
-  v118 = [v123 topAnchor];
-  v115 = [v121 constraintEqualToAnchor:v118];
+  view5 = [(UISplitViewController *)self->_splitViewController view];
+  topAnchor = [view5 topAnchor];
+  view6 = [(SplitViewWindowRootViewController *)self view];
+  topAnchor2 = [view6 topAnchor];
+  v115 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v131[0] = v115;
-  v112 = [(UISplitViewController *)self->_splitViewController view];
-  v106 = [v112 bottomAnchor];
-  v109 = [(SplitViewWindowRootViewController *)self view];
-  v104 = [v109 bottomAnchor];
-  v101 = [v106 constraintEqualToAnchor:v104];
+  view7 = [(UISplitViewController *)self->_splitViewController view];
+  bottomAnchor = [view7 bottomAnchor];
+  view8 = [(SplitViewWindowRootViewController *)self view];
+  bottomAnchor2 = [view8 bottomAnchor];
+  v101 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v131[1] = v101;
-  v99 = [(UISplitViewController *)self->_splitViewController view];
-  v96 = [v99 leadingAnchor];
-  v97 = [(SplitViewWindowRootViewController *)self view];
-  v9 = [v97 leadingAnchor];
-  v10 = [v96 constraintEqualToAnchor:v9];
+  view9 = [(UISplitViewController *)self->_splitViewController view];
+  leadingAnchor = [view9 leadingAnchor];
+  view10 = [(SplitViewWindowRootViewController *)self view];
+  leadingAnchor2 = [view10 leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v131[2] = v10;
-  v11 = [(UISplitViewController *)self->_splitViewController view];
-  v12 = [v11 trailingAnchor];
-  v13 = [(SplitViewWindowRootViewController *)self view];
-  v14 = [v13 trailingAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  view11 = [(UISplitViewController *)self->_splitViewController view];
+  trailingAnchor = [view11 trailingAnchor];
+  view12 = [(SplitViewWindowRootViewController *)self view];
+  trailingAnchor2 = [view12 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v131[3] = v15;
   v16 = [NSArray arrayWithObjects:v131 count:4];
   [NSLayoutConstraint activateConstraints:v16];
@@ -159,37 +159,37 @@
   self->_primaryVC = v17;
 
   v19 = +[UIColor secondarySystemBackgroundColor];
-  v20 = [(UINavigationController *)self->_primaryVC navigationBar];
-  [v20 setBarTintColor:v19];
+  navigationBar = [(UINavigationController *)self->_primaryVC navigationBar];
+  [navigationBar setBarTintColor:v19];
 
-  v21 = [(UINavigationController *)self->_primaryVC navigationBar];
-  [v21 setForceFullHeightInLandscape:1];
+  navigationBar2 = [(UINavigationController *)self->_primaryVC navigationBar];
+  [navigationBar2 setForceFullHeightInLandscape:1];
 
   [(UISplitViewController *)self->_splitViewController setViewController:self->_primaryVC forColumn:0];
   [(UISplitViewController *)self->_splitViewController hideColumn:0];
-  v22 = [(SplitViewWindowRootViewController *)self EKUI_viewHierarchy];
-  [SplitViewWindowRootViewController sidebarWidthForViewHierarchy:v22];
+  eKUI_viewHierarchy = [(SplitViewWindowRootViewController *)self EKUI_viewHierarchy];
+  [SplitViewWindowRootViewController sidebarWidthForViewHierarchy:eKUI_viewHierarchy];
   [(UISplitViewController *)self->_splitViewController setMinimumPrimaryColumnWidth:?];
-  v125 = v22;
-  [SplitViewWindowRootViewController sidebarWidthForViewHierarchy:v22];
+  v125 = eKUI_viewHierarchy;
+  [SplitViewWindowRootViewController sidebarWidthForViewHierarchy:eKUI_viewHierarchy];
   [(UISplitViewController *)self->_splitViewController setMaximumPrimaryColumnWidth:?];
   v23 = objc_alloc_init(UIViewController);
   containerViewController = self->_containerViewController;
   self->_containerViewController = v23;
 
-  v25 = [(UIViewController *)self->_containerViewController view];
-  [v25 setAutoresizingMask:18];
+  view13 = [(UIViewController *)self->_containerViewController view];
+  [view13 setAutoresizingMask:18];
 
   v26 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"keyboardBackgroundTapped:"];
   [v26 setCancelsTouchesInView:0];
-  v27 = [(UIViewController *)self->_containerViewController view];
+  view14 = [(UIViewController *)self->_containerViewController view];
   v122 = v26;
-  [v27 addGestureRecognizer:v26];
+  [view14 addGestureRecognizer:v26];
 
   [(UIViewController *)self->_containerViewController addChildViewController:self->_rootNavigationController];
-  v28 = [(UIViewController *)self->_containerViewController view];
-  v29 = [(RootNavigationController *)self->_rootNavigationController view];
-  [v28 addSubview:v29];
+  view15 = [(UIViewController *)self->_containerViewController view];
+  view16 = [(RootNavigationController *)self->_rootNavigationController view];
+  [view15 addSubview:view16];
 
   [(RootNavigationController *)self->_rootNavigationController didMoveToParentViewController:self->_containerViewController];
   if (CalUIKitNavBarEnabled())
@@ -209,86 +209,86 @@
     [(UISplitViewController *)self->_splitViewController setViewController:v30 forColumn:2];
   }
 
-  v33 = [(RootNavigationController *)self->_rootNavigationController view];
-  [v33 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view17 = [(RootNavigationController *)self->_rootNavigationController view];
+  [view17 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  LOBYTE(v33) = CalUIKitNavBarEnabled();
-  v119 = [(RootNavigationController *)self->_rootNavigationController view];
-  v34 = [v119 topAnchor];
-  v113 = [(UIViewController *)self->_containerViewController view];
-  [v113 topAnchor];
-  v110 = v116 = v34;
-  v35 = [v34 constraintEqualToAnchor:?];
+  LOBYTE(view17) = CalUIKitNavBarEnabled();
+  view18 = [(RootNavigationController *)self->_rootNavigationController view];
+  topAnchor3 = [view18 topAnchor];
+  view19 = [(UIViewController *)self->_containerViewController view];
+  [view19 topAnchor];
+  v110 = v116 = topAnchor3;
+  v35 = [topAnchor3 constraintEqualToAnchor:?];
   v107 = v35;
-  if (v33)
+  if (view17)
   {
     v128[0] = v35;
-    v105 = [(RootNavigationController *)self->_rootNavigationController view];
-    v36 = [v105 bottomAnchor];
-    v102 = [(UIViewController *)self->_containerViewController view];
-    [v102 bottomAnchor];
-    v100 = v103 = v36;
-    v98 = [v36 constraintEqualToAnchor:?];
+    view20 = [(RootNavigationController *)self->_rootNavigationController view];
+    bottomAnchor3 = [view20 bottomAnchor];
+    view21 = [(UIViewController *)self->_containerViewController view];
+    [view21 bottomAnchor];
+    v100 = v103 = bottomAnchor3;
+    v98 = [bottomAnchor3 constraintEqualToAnchor:?];
     v128[1] = v98;
-    v95 = [(RootNavigationController *)self->_rootNavigationController view];
-    v37 = [v95 leadingAnchor];
-    v93 = [(UIViewController *)self->_containerViewController view];
-    [v93 leadingAnchor];
-    v92 = v94 = v37;
-    v91 = [v37 constraintEqualToAnchor:?];
+    view22 = [(RootNavigationController *)self->_rootNavigationController view];
+    leadingAnchor3 = [view22 leadingAnchor];
+    view23 = [(UIViewController *)self->_containerViewController view];
+    [view23 leadingAnchor];
+    safeAreaLayoutGuide = v94 = leadingAnchor3;
+    v91 = [leadingAnchor3 constraintEqualToAnchor:?];
     v128[2] = v91;
-    v90 = [(RootNavigationController *)self->_rootNavigationController view];
-    v38 = [v90 trailingAnchor];
-    v39 = [(UIViewController *)self->_containerViewController view];
-    v40 = [v39 trailingAnchor];
-    v41 = [v38 constraintEqualToAnchor:v40];
-    v128[3] = v41;
-    v42 = [NSArray arrayWithObjects:v128 count:4];
-    [NSLayoutConstraint activateConstraints:v42];
+    view24 = [(RootNavigationController *)self->_rootNavigationController view];
+    trailingAnchor3 = [view24 trailingAnchor];
+    view25 = [(UIViewController *)self->_containerViewController view];
+    trailingAnchor4 = [view25 trailingAnchor];
+    safeAreaLayoutGuide2 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
+    v128[3] = safeAreaLayoutGuide2;
+    trailingAnchor5 = [NSArray arrayWithObjects:v128 count:4];
+    [NSLayoutConstraint activateConstraints:trailingAnchor5];
   }
 
   else
   {
     v129[0] = v35;
-    v105 = [(RootNavigationController *)self->_rootNavigationController view];
-    v43 = [v105 bottomAnchor];
-    v102 = [(UIViewController *)self->_containerViewController view];
-    [v102 bottomAnchor];
-    v100 = v103 = v43;
-    v98 = [v43 constraintEqualToAnchor:?];
+    view20 = [(RootNavigationController *)self->_rootNavigationController view];
+    bottomAnchor4 = [view20 bottomAnchor];
+    view21 = [(UIViewController *)self->_containerViewController view];
+    [view21 bottomAnchor];
+    v100 = v103 = bottomAnchor4;
+    v98 = [bottomAnchor4 constraintEqualToAnchor:?];
     v129[1] = v98;
-    v95 = [(RootNavigationController *)self->_rootNavigationController view];
-    v44 = [v95 leadingAnchor];
-    v93 = [(UIViewController *)self->_containerViewController view];
-    v92 = [v93 safeAreaLayoutGuide];
-    [v92 leadingAnchor];
-    v91 = v94 = v44;
-    v90 = [v44 constraintEqualToAnchor:?];
-    v129[2] = v90;
-    v38 = [(RootNavigationController *)self->_rootNavigationController view];
-    v39 = [v38 trailingAnchor];
-    v40 = [(UIViewController *)self->_containerViewController view];
-    v41 = [v40 safeAreaLayoutGuide];
-    v42 = [v41 trailingAnchor];
-    v45 = [v39 constraintEqualToAnchor:v42];
+    view22 = [(RootNavigationController *)self->_rootNavigationController view];
+    leadingAnchor4 = [view22 leadingAnchor];
+    view23 = [(UIViewController *)self->_containerViewController view];
+    safeAreaLayoutGuide = [view23 safeAreaLayoutGuide];
+    [safeAreaLayoutGuide leadingAnchor];
+    v91 = v94 = leadingAnchor4;
+    view24 = [leadingAnchor4 constraintEqualToAnchor:?];
+    v129[2] = view24;
+    trailingAnchor3 = [(RootNavigationController *)self->_rootNavigationController view];
+    view25 = [trailingAnchor3 trailingAnchor];
+    trailingAnchor4 = [(UIViewController *)self->_containerViewController view];
+    safeAreaLayoutGuide2 = [trailingAnchor4 safeAreaLayoutGuide];
+    trailingAnchor5 = [safeAreaLayoutGuide2 trailingAnchor];
+    v45 = [view25 constraintEqualToAnchor:trailingAnchor5];
     v129[3] = v45;
     v46 = [NSArray arrayWithObjects:v129 count:4];
     [NSLayoutConstraint activateConstraints:v46];
   }
 
-  v47 = [(SplitViewWindowRootViewController *)self traitCollection];
-  v48 = [v47 horizontalSizeClass];
+  traitCollection = [(SplitViewWindowRootViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v48 == 2)
+  if (horizontalSizeClass == 2)
   {
-    v49 = [(RootNavigationController *)self->_rootNavigationController viewSwitcher];
+    viewSwitcher = [(RootNavigationController *)self->_rootNavigationController viewSwitcher];
     segmentedControl = self->_segmentedControl;
-    self->_segmentedControl = v49;
+    self->_segmentedControl = viewSwitcher;
 
     if ((CalUIKitNavBarEnabled() & 1) == 0)
     {
-      v51 = [(UIViewController *)self->_containerViewController view];
-      [v51 addSubview:self->_segmentedControl];
+      view26 = [(UIViewController *)self->_containerViewController view];
+      [view26 addSubview:self->_segmentedControl];
     }
   }
 
@@ -302,49 +302,49 @@
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v56 = [(MainWindowControlHeaderView *)v52 initWithFrame:CGRectZero.origin.x, y, width, height];
+  height = [(MainWindowControlHeaderView *)v52 initWithFrame:CGRectZero.origin.x, y, width, height];
   headerView = self->_headerView;
-  self->_headerView = v56;
+  self->_headerView = height;
 
   [(MainWindowControlHeaderView *)self->_headerView setDelegate:self];
   [(SplitViewWindowRootViewController *)self updateInboxCount];
-  v58 = [[MasterNavigationPaletteView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  height2 = [[MasterNavigationPaletteView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
   paletteView = self->_paletteView;
-  self->_paletteView = v58;
+  self->_paletteView = height2;
 
   [(MasterNavigationPaletteView *)self->_paletteView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v60 = [(RootNavigationController *)self->_rootNavigationController model];
-  [(MasterNavigationPaletteView *)self->_paletteView setModel:v60];
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  [(MasterNavigationPaletteView *)self->_paletteView setModel:model];
 
   [(MasterNavigationPaletteView *)self->_paletteView setDelegate:self];
-  v61 = [(RootNavigationController *)self->_rootNavigationController model];
-  -[MasterNavigationPaletteView setShowIdentity:](self->_paletteView, "setShowIdentity:", [v61 containsDelegateSources]);
+  model2 = [(RootNavigationController *)self->_rootNavigationController model];
+  -[MasterNavigationPaletteView setShowIdentity:](self->_paletteView, "setShowIdentity:", [model2 containsDelegateSources]);
 
   [(MasterNavigationPaletteView *)self->_paletteView setHideTitle:1];
   v62 = self->_paletteView;
-  v63 = [(SplitViewWindowRootViewController *)self view];
-  [v63 bounds];
+  view27 = [(SplitViewWindowRootViewController *)self view];
+  [view27 bounds];
   [(MasterNavigationPaletteView *)v62 sizeThatFits:v64, v65];
   v67 = v66;
   v69 = v68;
 
   v70 = [[UIView alloc] initWithFrame:{0.0, 0.0, v67, v69}];
   [v70 addSubview:self->_paletteView];
-  v120 = [(MasterNavigationPaletteView *)self->_paletteView leadingAnchor];
-  v117 = [v70 leadingAnchor];
-  v114 = [v120 constraintEqualToAnchor:v117];
+  leadingAnchor5 = [(MasterNavigationPaletteView *)self->_paletteView leadingAnchor];
+  leadingAnchor6 = [v70 leadingAnchor];
+  v114 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v127[0] = v114;
-  v111 = [(MasterNavigationPaletteView *)self->_paletteView trailingAnchor];
-  v108 = [v70 trailingAnchor];
-  v71 = [v111 constraintEqualToAnchor:v108];
+  trailingAnchor6 = [(MasterNavigationPaletteView *)self->_paletteView trailingAnchor];
+  trailingAnchor7 = [v70 trailingAnchor];
+  v71 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
   v127[1] = v71;
-  v72 = [(MasterNavigationPaletteView *)self->_paletteView topAnchor];
-  v73 = [v70 topAnchor];
-  v74 = [v72 constraintEqualToAnchor:v73];
+  topAnchor4 = [(MasterNavigationPaletteView *)self->_paletteView topAnchor];
+  topAnchor5 = [v70 topAnchor];
+  v74 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   v127[2] = v74;
-  v75 = [(MasterNavigationPaletteView *)self->_paletteView bottomAnchor];
-  v76 = [v70 bottomAnchor];
-  v77 = [v75 constraintEqualToAnchor:v76];
+  bottomAnchor5 = [(MasterNavigationPaletteView *)self->_paletteView bottomAnchor];
+  bottomAnchor6 = [v70 bottomAnchor];
+  v77 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v127[3] = v77;
   v78 = [NSArray arrayWithObjects:v127 count:4];
   [NSLayoutConstraint activateConstraints:v78];
@@ -354,23 +354,23 @@
   self->_palette = v79;
 
   [(_UINavigationBarPalette *)self->_palette setPreferredHeight:v69];
-  v81 = [(RootNavigationController *)self->_rootNavigationController paletteView];
-  [v81 setDelegate:self];
+  paletteView = [(RootNavigationController *)self->_rootNavigationController paletteView];
+  [paletteView setDelegate:self];
 
-  v82 = [(SplitViewWindowRootViewController *)self ekui_futureTraitCollection];
-  v83 = [v82 horizontalSizeClass];
+  ekui_futureTraitCollection = [(SplitViewWindowRootViewController *)self ekui_futureTraitCollection];
+  horizontalSizeClass2 = [ekui_futureTraitCollection horizontalSizeClass];
 
-  if (v83 == 2)
+  if (horizontalSizeClass2 == 2)
   {
     if ((CalUIKitNavBarEnabled() & 1) == 0)
     {
-      v84 = [(SplitViewWindowRootViewController *)self view];
-      [v84 addSubview:self->_headerView];
+      view28 = [(SplitViewWindowRootViewController *)self view];
+      [view28 addSubview:self->_headerView];
     }
 
     rootNavigationController = self->_rootNavigationController;
-    v86 = [(SplitViewWindowRootViewController *)self ekui_futureTraitCollection];
-    [(RootNavigationController *)rootNavigationController setAvatarViewVisible:[(SplitViewWindowRootViewController *)self canShowAvatarViewWithTraitCollection:v86]];
+    ekui_futureTraitCollection2 = [(SplitViewWindowRootViewController *)self ekui_futureTraitCollection];
+    [(RootNavigationController *)rootNavigationController setAvatarViewVisible:[(SplitViewWindowRootViewController *)self canShowAvatarViewWithTraitCollection:ekui_futureTraitCollection2]];
   }
 
   else
@@ -380,14 +380,14 @@
   }
 
   v87 = [objc_opt_class() shouldHideInlineFocusBannerForSidebarState:self->_currentSidebarState];
-  v88 = [(RootNavigationController *)self->_rootNavigationController paletteView];
-  [v88 setShouldHideInlineFocusBanner:v87];
+  paletteView2 = [(RootNavigationController *)self->_rootNavigationController paletteView];
+  [paletteView2 setShouldHideInlineFocusBanner:v87];
 }
 
 - (void)updateNavigationBarButtons
 {
-  v3 = [(RootNavigationController *)self->_rootNavigationController ekui_futureTraitCollection];
-  [(SplitViewWindowRootViewController *)self _updateNavigationBarButtonsWithTraitCollection:v3];
+  ekui_futureTraitCollection = [(RootNavigationController *)self->_rootNavigationController ekui_futureTraitCollection];
+  [(SplitViewWindowRootViewController *)self _updateNavigationBarButtonsWithTraitCollection:ekui_futureTraitCollection];
 }
 
 - (void)updateInboxCount
@@ -412,28 +412,28 @@
 
 - (void)updateNavigationAdditionalBarButtons
 {
-  v3 = [(RootNavigationController *)self->_rootNavigationController ekui_futureTraitCollection];
-  [(SplitViewWindowRootViewController *)self _updateNavigationAdditionalBarButtonsWithTraitCollection:v3];
+  ekui_futureTraitCollection = [(RootNavigationController *)self->_rootNavigationController ekui_futureTraitCollection];
+  [(SplitViewWindowRootViewController *)self _updateNavigationAdditionalBarButtonsWithTraitCollection:ekui_futureTraitCollection];
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [(SplitViewWindowRootViewController *)self presentedViewController];
+  presentedViewController = [(SplitViewWindowRootViewController *)self presentedViewController];
   v4 = EKUIUseLargeFormatPhoneUI();
   objc_opt_class();
   if (((objc_opt_isKindOfClass() & 1) != 0 || v4 && self->_isSearching || -[SplitViewWindowRootViewController _viewControllerExistsInPresentationChainThatShouldNotRotate](self, "_viewControllerExistsInPresentationChainThatShouldNotRotate")) && (-[SplitViewWindowRootViewController view](self, "view"), v5 = objc_claimAutoreleasedReturnValue(), [v5 window], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "windowScene"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "interfaceOrientation"), v7, v6, v5, v8))
   {
-    v9 = 1 << v8;
+    supportedInterfaceOrientations = 1 << v8;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = SplitViewWindowRootViewController;
-    v9 = [(SplitViewWindowRootViewController *)&v11 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [(SplitViewWindowRootViewController *)&v11 supportedInterfaceOrientations];
   }
 
-  return v9;
+  return supportedInterfaceOrientations;
 }
 
 - (BOOL)_viewControllerExistsInPresentationChainThatShouldNotRotate
@@ -445,10 +445,10 @@
     [v3 addObject:v4];
   }
 
-  v5 = [(SplitViewWindowRootViewController *)self presentedViewController];
-  if (v5)
+  presentedViewController = [(SplitViewWindowRootViewController *)self presentedViewController];
+  if (presentedViewController)
   {
-    v6 = v5;
+    v6 = presentedViewController;
     do
     {
       v7 = [v3 containsObject:objc_opt_class()];
@@ -457,12 +457,12 @@
         break;
       }
 
-      v8 = [v6 presentedViewController];
+      presentedViewController2 = [v6 presentedViewController];
 
-      v6 = v8;
+      v6 = presentedViewController2;
     }
 
-    while (v8);
+    while (presentedViewController2);
   }
 
   else
@@ -487,29 +487,29 @@
   else
   {
     [(SplitViewWindowRootViewController *)self layoutSegmentedControl];
-    v3 = [(MainWindowControlHeaderView *)self->_headerView superview];
+    superview = [(MainWindowControlHeaderView *)self->_headerView superview];
 
-    if (v3)
+    if (superview)
     {
-      v23 = [(RootNavigationController *)self->_rootNavigationController viewSwitcher];
-      v4 = [(SplitViewWindowRootViewController *)self view];
-      [v23 bounds];
-      [v4 convertRect:v23 fromView:?];
+      viewSwitcher = [(RootNavigationController *)self->_rootNavigationController viewSwitcher];
+      view = [(SplitViewWindowRootViewController *)self view];
+      [viewSwitcher bounds];
+      [view convertRect:viewSwitcher fromView:?];
       MidY = CGRectGetMidY(v26);
 
-      v6 = [(SplitViewWindowRootViewController *)self view];
-      [v6 bounds];
+      view2 = [(SplitViewWindowRootViewController *)self view];
+      [view2 bounds];
       v8 = v7;
       +[SplitViewWindowRootViewController minimumStandardWindowWidth];
       v10 = dbl_1001F81B0[v8 < v9];
 
-      LODWORD(v6) = CalInterfaceIsLeftToRight();
-      v11 = [(SplitViewWindowRootViewController *)self view];
-      [v11 safeAreaInsets];
+      LODWORD(view2) = CalInterfaceIsLeftToRight();
+      view3 = [(SplitViewWindowRootViewController *)self view];
+      [view3 safeAreaInsets];
       v13 = v12;
       v15 = v14;
 
-      if (v6)
+      if (view2)
       {
         v16 = v13;
       }
@@ -530,8 +530,8 @@
 
       else
       {
-        v11 = [(SplitViewWindowRootViewController *)self view];
-        [v11 bounds];
+        view3 = [(SplitViewWindowRootViewController *)self view];
+        [view3 bounds];
         v21 = v22 - v17;
       }
 
@@ -553,17 +553,17 @@
   if ((CalUIKitNavBarEnabled() & 1) == 0)
   {
     segmentedControl = self->_segmentedControl;
-    v4 = [(UIViewController *)self->_containerViewController view];
-    [v4 bounds];
+    view = [(UIViewController *)self->_containerViewController view];
+    [view bounds];
     [(UISegmentedControl *)segmentedControl sizeThatFits:v5, v6];
     v8 = v7;
     v10 = v9;
 
-    v11 = [(SplitViewWindowRootViewController *)self view];
-    v12 = [v11 window];
-    v13 = [(UIViewController *)self->_containerViewController view];
-    [v12 bounds];
-    [v13 convertPoint:v12 fromView:{CGRectGetWidth(v24) * 0.5, 0.0}];
+    view2 = [(SplitViewWindowRootViewController *)self view];
+    window = [view2 window];
+    view3 = [(UIViewController *)self->_containerViewController view];
+    [window bounds];
+    [view3 convertPoint:window fromView:{CGRectGetWidth(v24) * 0.5, 0.0}];
     v15 = v14;
 
     IsCompact = EKUICurrentHeightSizeClassIsCompact();
@@ -586,13 +586,13 @@
     v18 = objc_retainBlock(v23);
     if (self->_animatingSidebar && ([(UISplitViewController *)self->_splitViewController transitionCoordinator], v19 = objc_claimAutoreleasedReturnValue(), v19, v19))
     {
-      v20 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
+      transitionCoordinator = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_100041B24;
       v21[3] = &unk_10020F1C8;
       v22 = v18;
-      [v20 animateAlongsideTransition:v21 completion:0];
+      [transitionCoordinator animateAlongsideTransition:v21 completion:0];
     }
 
     else
@@ -605,16 +605,16 @@
 - (void)layoutSearchControl
 {
   p_searchBar = &self->_searchBar;
-  v4 = [(MainWindowSearchBar *)self->_searchBar superview];
-  if (v4)
+  superview = [(MainWindowSearchBar *)self->_searchBar superview];
+  if (superview)
   {
   }
 
   else
   {
-    v5 = [(UIButton *)self->_searchButton superview];
+    superview2 = [(UIButton *)self->_searchButton superview];
 
-    if (!v5)
+    if (!superview2)
     {
       return;
     }
@@ -622,17 +622,17 @@
 
   if ((CalUIKitNavBarEnabled() & 1) == 0)
   {
-    v6 = [(RootNavigationController *)self->_rootNavigationController viewSwitcher];
-    [v6 frame];
+    viewSwitcher = [(RootNavigationController *)self->_rootNavigationController viewSwitcher];
+    [viewSwitcher frame];
     MidY = CGRectGetMidY(v41);
 
-    LODWORD(v6) = CalInterfaceIsLeftToRight();
-    v8 = [(SplitViewWindowRootViewController *)self view];
-    [v8 safeAreaInsets];
+    LODWORD(viewSwitcher) = CalInterfaceIsLeftToRight();
+    view = [(SplitViewWindowRootViewController *)self view];
+    [view safeAreaInsets];
     v10 = v9;
     v12 = v11;
 
-    if (v6)
+    if (viewSwitcher)
     {
       v13 = v12;
     }
@@ -653,8 +653,8 @@
       v21 = v20;
       if (self->_isSearching)
       {
-        v22 = [(SplitViewWindowRootViewController *)self EKUI_viewHierarchy];
-        [SplitViewWindowRootViewController sidebarWidthForViewHierarchy:v22];
+        eKUI_viewHierarchy = [(SplitViewWindowRootViewController *)self EKUI_viewHierarchy];
+        [SplitViewWindowRootViewController sidebarWidthForViewHierarchy:eKUI_viewHierarchy];
         v17 = v23 - (v14 + 16.0);
       }
 
@@ -668,8 +668,8 @@
       v26 = v25;
       if (CalInterfaceIsLeftToRight())
       {
-        v27 = [(SplitViewWindowRootViewController *)self view];
-        [v27 bounds];
+        view2 = [(SplitViewWindowRootViewController *)self view];
+        [view2 bounds];
         v14 = v28 - v24 - (v14 - v21);
       }
 
@@ -678,11 +678,11 @@
         v14 = v14 - v19;
       }
 
-      v36 = [(SplitViewWindowRootViewController *)self traitCollection];
+      traitCollection = [(SplitViewWindowRootViewController *)self traitCollection];
       if (EKUIUsesLargeTextLayout())
       {
-        v37 = [(SplitViewWindowRootViewController *)self view];
-        [v37 safeAreaInsets];
+        view3 = [(SplitViewWindowRootViewController *)self view];
+        [view3 safeAreaInsets];
         v35 = v38;
       }
 
@@ -701,9 +701,9 @@
         return;
       }
 
-      v30 = [(UIButton *)searchButton superview];
+      superview3 = [(UIButton *)searchButton superview];
 
-      if (!v30)
+      if (!superview3)
       {
         return;
       }
@@ -714,8 +714,8 @@
       v26 = v32;
       if (CalInterfaceIsLeftToRight())
       {
-        v33 = [(SplitViewWindowRootViewController *)self view];
-        [v33 bounds];
+        view4 = [(SplitViewWindowRootViewController *)self view];
+        [view4 bounds];
         v14 = v34 - v24 - v14;
       }
 
@@ -730,13 +730,13 @@
 
 - (unint64_t)focusFilterMode
 {
-  v2 = [(RootNavigationController *)self->_rootNavigationController model];
-  v3 = [v2 focusFilterMode];
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  focusFilterMode = [model focusFilterMode];
 
-  return v3;
+  return focusFilterMode;
 }
 
-+ (double)sidebarWidthForViewHierarchy:(id)a3
++ (double)sidebarWidthForViewHierarchy:(id)hierarchy
 {
   v3 = EKUICurrentWindowInterfaceParadigm_RequiresPageSheetEventEditors();
   result = 320.0;
@@ -748,41 +748,41 @@
   return result;
 }
 
-- (SplitViewWindowRootViewController)initWithRootNavigationController:(id)a3
+- (SplitViewWindowRootViewController)initWithRootNavigationController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v22.receiver = self;
   v22.super_class = SplitViewWindowRootViewController;
   v6 = [(SplitViewWindowRootViewController *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rootNavigationController, a3);
+    objc_storeStrong(&v6->_rootNavigationController, controller);
     [(RootNavigationController *)v7->_rootNavigationController setSplitViewRootDelegate:v7];
     v8 = +[NSNotificationCenter defaultCenter];
     v9 = CUIKCalendarModelNotificationCountsChangedNotification;
-    v10 = [(RootNavigationController *)v7->_rootNavigationController model];
-    [v8 addObserver:v7 selector:"_notificationCountChanged:" name:v9 object:v10];
+    model = [(RootNavigationController *)v7->_rootNavigationController model];
+    [v8 addObserver:v7 selector:"_notificationCountChanged:" name:v9 object:model];
 
     v11 = CUIKCalendarModelIdentityChangedNotification;
-    v12 = [(RootNavigationController *)v7->_rootNavigationController model];
-    [v8 addObserver:v7 selector:"_identityChanged:" name:v11 object:v12];
+    model2 = [(RootNavigationController *)v7->_rootNavigationController model];
+    [v8 addObserver:v7 selector:"_identityChanged:" name:v11 object:model2];
 
     v13 = CUIKCalendarModelDelegatesChangedNotification;
-    v14 = [(RootNavigationController *)v7->_rootNavigationController model];
-    [v8 addObserver:v7 selector:"_delegatesChanged:" name:v13 object:v14];
+    model3 = [(RootNavigationController *)v7->_rootNavigationController model];
+    [v8 addObserver:v7 selector:"_delegatesChanged:" name:v13 object:model3];
 
     v15 = CUIKCalendarModelCalendarsChangedNotification;
-    v16 = [(RootNavigationController *)v7->_rootNavigationController model];
-    [v8 addObserver:v7 selector:"_calendarsChanged:" name:v15 object:v16];
+    model4 = [(RootNavigationController *)v7->_rootNavigationController model];
+    [v8 addObserver:v7 selector:"_calendarsChanged:" name:v15 object:model4];
 
     v17 = CUIKCalendarModelAccountErrorCountChangedNotification;
-    v18 = [(RootNavigationController *)v7->_rootNavigationController model];
-    [v8 addObserver:v7 selector:"_calendarErrorCountChanged:" name:v17 object:v18];
+    model5 = [(RootNavigationController *)v7->_rootNavigationController model];
+    [v8 addObserver:v7 selector:"_calendarErrorCountChanged:" name:v17 object:model5];
 
     v19 = CUIKCalendarModelDisplayedOccurrencesChangedForTheFirstTimeNotification;
-    v20 = [(RootNavigationController *)v7->_rootNavigationController model];
-    [v8 addObserver:v7 selector:"_updateAfterExtendedLaunch:" name:v19 object:v20];
+    model6 = [(RootNavigationController *)v7->_rootNavigationController model];
+    [v8 addObserver:v7 selector:"_updateAfterExtendedLaunch:" name:v19 object:model6];
 
     [v8 addObserver:v7 selector:"_updateAfterExtendedLaunch:" name:@"MainViewControllerDidCompleteExtendedLaunchNotification" object:0];
     [v8 addObserver:v7 selector:"_focusModeChanged:" name:CUIKCalendarModelFocusModeConfigurationChangedNotification object:0];
@@ -803,10 +803,10 @@
   [(SplitViewWindowRootViewController *)&v4 dealloc];
 }
 
-- (void)emptySearchBarNeedsResign:(id)a3
+- (void)emptySearchBarNeedsResign:(id)resign
 {
-  v4 = [(MainWindowSearchBar *)self->_searchBar text];
-  v5 = [v4 isEqual:&stru_1002133B8];
+  text = [(MainWindowSearchBar *)self->_searchBar text];
+  v5 = [text isEqual:&stru_1002133B8];
 
   if (v5)
   {
@@ -816,88 +816,88 @@
   }
 }
 
-- (void)_updateNavigationBarButtonsWithTraitCollection:(id)a3
+- (void)_updateNavigationBarButtonsWithTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_splitViewButtonGroup && [v4 horizontalSizeClass] != 1)
+  collectionCopy = collection;
+  v5 = collectionCopy;
+  if (self->_splitViewButtonGroup && [collectionCopy horizontalSizeClass] != 1)
   {
     splitViewButtonGroup = self->_splitViewButtonGroup;
     v9 = [NSArray arrayWithObjects:&splitViewButtonGroup count:1];
     [(UISplitViewController *)self->_splitViewController _setPrimaryEdgeAdditionalBarButtonItemGroups:v9];
 
-    v6 = [(UISplitViewController *)self->_splitViewController navigationController];
-    v7 = v6;
+    navigationController = [(UISplitViewController *)self->_splitViewController navigationController];
+    v7 = navigationController;
     v8 = 0;
   }
 
   else
   {
     [(UISplitViewController *)self->_splitViewController _setPrimaryEdgeAdditionalBarButtonItemGroups:&__NSArray0__struct];
-    v6 = [(UISplitViewController *)self->_splitViewController navigationController];
-    v7 = v6;
+    navigationController = [(UISplitViewController *)self->_splitViewController navigationController];
+    v7 = navigationController;
     v8 = 1;
   }
 
-  [v6 setNavigationBarHidden:v8];
+  [navigationController setNavigationBarHidden:v8];
 
   [(SplitViewWindowRootViewController *)self _updateNavigationAdditionalBarButtonsWithTraitCollection:v5];
 }
 
-- (void)_updateNavigationAdditionalBarButtonsWithTraitCollection:(id)a3
+- (void)_updateNavigationAdditionalBarButtonsWithTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   if (CalUIKitNavBarEnabled())
   {
-    v5 = [(RootNavigationController *)self->_rootNavigationController topViewController];
-    v6 = [v5 navigationItem];
+    topViewController = [(RootNavigationController *)self->_rootNavigationController topViewController];
+    navigationItem = [topViewController navigationItem];
   }
 
   else
   {
-    v6 = [(UIViewController *)self->_containerViewController navigationItem];
+    navigationItem = [(UIViewController *)self->_containerViewController navigationItem];
   }
 
-  if (self->_additionalItemsButtonGroup && [v4 horizontalSizeClass] != 1)
+  if (self->_additionalItemsButtonGroup && [collectionCopy horizontalSizeClass] != 1)
   {
     additionalItemsButtonGroup = self->_additionalItemsButtonGroup;
     v10 = [NSArray arrayWithObjects:&additionalItemsButtonGroup count:1];
-    [v6 setLeadingItemGroups:v10];
+    [navigationItem setLeadingItemGroups:v10];
 
-    v7 = [(UIViewController *)self->_containerViewController navigationController];
-    v8 = v7;
+    navigationController = [(UIViewController *)self->_containerViewController navigationController];
+    v8 = navigationController;
     v9 = 0;
   }
 
   else
   {
-    [v6 setLeadingItemGroups:&__NSArray0__struct];
-    v7 = [(UIViewController *)self->_containerViewController navigationController];
-    v8 = v7;
+    [navigationItem setLeadingItemGroups:&__NSArray0__struct];
+    navigationController = [(UIViewController *)self->_containerViewController navigationController];
+    v8 = navigationController;
     v9 = 1;
   }
 
-  [v7 setNavigationBarHidden:v9];
+  [navigationController setNavigationBarHidden:v9];
 }
 
 - (void)willEnterForeground
 {
-  v3 = [(SplitViewWindowRootViewController *)self traitCollection];
-  [(SplitViewWindowRootViewController *)self setupSearchControlForTraitCollection:v3];
+  traitCollection = [(SplitViewWindowRootViewController *)self traitCollection];
+  [(SplitViewWindowRootViewController *)self setupSearchControlForTraitCollection:traitCollection];
 
   [(SplitViewWindowRootViewController *)self layoutSegmentedControl];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v6 = [(SplitViewWindowRootViewController *)self view];
-  [v6 bounds];
+  view = [(SplitViewWindowRootViewController *)self view];
+  [view bounds];
   [(SplitViewWindowRootViewController *)self _updatePreferredSplitBehaviorForSize:v4, v5];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   self->_didAppear = 1;
   if (self->_needsSidebarSetup)
   {
@@ -920,35 +920,35 @@
     self->_urlLaunchContext = 0;
   }
 
-  v8 = [(SplitViewWindowRootViewController *)self traitCollection];
-  [(SplitViewWindowRootViewController *)self setupSearchControlForTraitCollection:v8];
+  traitCollection = [(SplitViewWindowRootViewController *)self traitCollection];
+  [(SplitViewWindowRootViewController *)self setupSearchControlForTraitCollection:traitCollection];
 
   [(SplitViewWindowRootViewController *)self layoutSearchControl];
   if ((CalUIKitNavBarEnabled() & 1) == 0)
   {
     headerView = self->_headerView;
-    v10 = [(SplitViewWindowRootViewController *)self view];
-    [v10 bounds];
+    view = [(SplitViewWindowRootViewController *)self view];
+    [view bounds];
     [(MainWindowControlHeaderView *)headerView layoutForWidth:v11];
   }
 
   [(SplitViewWindowRootViewController *)self updateNewEventButtonEnabledness];
   v12.receiver = self;
   v12.super_class = SplitViewWindowRootViewController;
-  [(SplitViewWindowRootViewController *)&v12 viewDidAppear:v3];
+  [(SplitViewWindowRootViewController *)&v12 viewDidAppear:appearCopy];
 }
 
-- (id)traitCollectionToUseWhileLoadingViewsDuringTransitioningToTraitCollection:(id)a3
+- (id)traitCollectionToUseWhileLoadingViewsDuringTransitioningToTraitCollection:(id)collection
 {
-  v3 = a3;
-  if ([v3 horizontalSizeClass] == 1 && objc_msgSend(v3, "verticalSizeClass") == 1)
+  collectionCopy = collection;
+  if ([collectionCopy horizontalSizeClass] == 1 && objc_msgSend(collectionCopy, "verticalSizeClass") == 1)
   {
-    v4 = [v3 traitCollectionByModifyingTraits:&stru_10020F348];
+    v4 = [collectionCopy traitCollectionByModifyingTraits:&stru_10020F348];
   }
 
   else
   {
-    v4 = v3;
+    v4 = collectionCopy;
   }
 
   v5 = v4;
@@ -956,67 +956,67 @@
   return v5;
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v72 = a4;
+  collectionCopy = collection;
+  coordinatorCopy = coordinator;
   if (([(SplitViewWindowRootViewController *)self isViewLoaded]& 1) == 0)
   {
-    v7 = v6;
-    v8 = [(SplitViewWindowRootViewController *)self traitCollectionToUseWhileLoadingViewsDuringTransitioningToTraitCollection:v6];
+    v7 = collectionCopy;
+    v8 = [(SplitViewWindowRootViewController *)self traitCollectionToUseWhileLoadingViewsDuringTransitioningToTraitCollection:collectionCopy];
     if (v8)
     {
       [(SplitViewWindowRootViewController *)self setEkui_futureTraitCollection:v8];
-      v9 = [(SplitViewWindowRootViewController *)self view];
-      [v9 setNeedsLayout];
+      view = [(SplitViewWindowRootViewController *)self view];
+      [view setNeedsLayout];
 
       [(SplitViewWindowRootViewController *)self setEkui_futureTraitCollection:0];
     }
 
     else
     {
-      v10 = [(SplitViewWindowRootViewController *)self view];
-      [v10 setNeedsLayout];
+      view2 = [(SplitViewWindowRootViewController *)self view];
+      [view2 setNeedsLayout];
     }
 
-    v6 = v7;
+    collectionCopy = v7;
   }
 
-  v73 = v6;
-  v11 = [v6 horizontalSizeClass];
-  v12 = [(SplitViewWindowRootViewController *)self traitCollection];
-  v13 = [v12 horizontalSizeClass];
+  v73 = collectionCopy;
+  horizontalSizeClass = [collectionCopy horizontalSizeClass];
+  traitCollection = [(SplitViewWindowRootViewController *)self traitCollection];
+  horizontalSizeClass2 = [traitCollection horizontalSizeClass];
 
-  v71 = [v73 horizontalSizeClass];
-  v14 = [(SplitViewWindowRootViewController *)self view];
-  v15 = [v14 window];
-  v16 = [v15 windowScene];
-  v17 = [v16 activationState];
+  horizontalSizeClass3 = [v73 horizontalSizeClass];
+  view3 = [(SplitViewWindowRootViewController *)self view];
+  window = [view3 window];
+  windowScene = [window windowScene];
+  activationState = [windowScene activationState];
 
   v89 = 0;
   v90 = &v89;
   v91 = 0x2020000000;
   v92 = 0;
-  [(UINavigationController *)self->_primaryVC setNavigationBarHidden:v71 != 2 animated:0];
-  if (v17 == 2)
+  [(UINavigationController *)self->_primaryVC setNavigationBarHidden:horizontalSizeClass3 != 2 animated:0];
+  if (activationState == 2)
   {
-    v68 = 0;
+    firstResponder = 0;
   }
 
   else
   {
-    v68 = [(SplitViewWindowRootViewController *)self firstResponder];
+    firstResponder = [(SplitViewWindowRootViewController *)self firstResponder];
   }
 
-  if (v11 == v13 || v71 != 2)
+  if (horizontalSizeClass == horizontalSizeClass2 || horizontalSizeClass3 != 2)
   {
-    if (v11 == v13)
+    if (horizontalSizeClass == horizontalSizeClass2)
     {
-      v22 = 0;
+      displayedDetailViewControllers = 0;
       goto LABEL_32;
     }
 
-    v18 = [(SplitViewWindowRootViewController *)self presentedViewController];
+    presentedViewController = [(SplitViewWindowRootViewController *)self presentedViewController];
     if ([(SplitViewWindowRootViewController *)self currentSidebarState]!= 1)
     {
       goto LABEL_28;
@@ -1028,8 +1028,8 @@
       goto LABEL_28;
     }
 
-    v23 = [v18 viewControllers];
-    v24 = [v23 firstObject];
+    viewControllers = [presentedViewController viewControllers];
+    firstObject = [viewControllers firstObject];
     NSClassFromString(@"EKCalendarEditor");
     if (objc_opt_isKindOfClass())
     {
@@ -1037,8 +1037,8 @@
 
     else
     {
-      v26 = [v18 viewControllers];
-      v27 = [v26 firstObject];
+      viewControllers2 = [presentedViewController viewControllers];
+      firstObject2 = [viewControllers2 firstObject];
       NSClassFromString(@"EKSubscribedCalendarEditor");
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1050,37 +1050,37 @@ LABEL_28:
           [(MainWindowControlHeaderView *)self->_headerView removeFromSuperview];
         }
 
-        v22 = 0;
+        displayedDetailViewControllers = 0;
         goto LABEL_31;
       }
     }
 
-    v29 = [(SplitViewWindowRootViewController *)self primarySidebarViewController];
-    v30 = [v29 preservedState];
+    primarySidebarViewController = [(SplitViewWindowRootViewController *)self primarySidebarViewController];
+    preservedState = [primarySidebarViewController preservedState];
     calendarsPreservedState = self->_calendarsPreservedState;
-    self->_calendarsPreservedState = v30;
+    self->_calendarsPreservedState = preservedState;
 
     [(SplitViewWindowRootViewController *)self dismissViewControllerAnimated:0 completion:0];
     goto LABEL_28;
   }
 
-  v18 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
-  if (!v18)
+  presentedViewController = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
+  if (!presentedViewController)
   {
-    v18 = [(SplitViewWindowRootViewController *)self presentedViewController];
+    presentedViewController = [(SplitViewWindowRootViewController *)self presentedViewController];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v19 = [v18 preservedState];
+    preservedState2 = [presentedViewController preservedState];
     v20 = self->_calendarsPreservedState;
-    self->_calendarsPreservedState = v19;
+    self->_calendarsPreservedState = preservedState2;
 
-    v21 = [v18 presentingViewController];
-    [v21 dismissViewControllerAnimated:0 completion:0];
+    presentingViewController = [presentedViewController presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:0 completion:0];
 
-    v22 = 0;
+    displayedDetailViewControllers = 0;
     v90[3] = 1;
   }
 
@@ -1091,20 +1091,20 @@ LABEL_28:
     {
       [(RootNavigationController *)self->_rootNavigationController dismissViewControllerAnimated:0 completion:0];
       v90[3] = 2;
-      objc_storeStrong(&self->_presentedInboxVC, v18);
-      v22 = [(InboxViewController *)self->_presentedInboxVC displayedDetailViewControllers];
+      objc_storeStrong(&self->_presentedInboxVC, presentedViewController);
+      displayedDetailViewControllers = [(InboxViewController *)self->_presentedInboxVC displayedDetailViewControllers];
     }
 
     else
     {
-      v22 = 0;
+      displayedDetailViewControllers = 0;
     }
   }
 
   if ((CalUIKitNavBarEnabled() & 1) == 0)
   {
-    v25 = [(SplitViewWindowRootViewController *)self view];
-    [v25 addSubview:self->_headerView];
+    view4 = [(SplitViewWindowRootViewController *)self view];
+    [view4 addSubview:self->_headerView];
   }
 
 LABEL_31:
@@ -1112,19 +1112,19 @@ LABEL_31:
 LABEL_32:
   if (!self->_searchResultsController)
   {
-    v32 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
+    presentedViewController2 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
     objc_opt_class();
     v33 = objc_opt_isKindOfClass();
 
     if (v33)
     {
-      v34 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
-      v35 = [v34 searchResultsUpdater];
+      presentedViewController3 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
+      searchResultsUpdater = [presentedViewController3 searchResultsUpdater];
 
-      [v35 setShouldLeaveSearchString:1];
-      v36 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
-      v37 = [v36 searchBar];
-      v38 = [v37 text];
+      [searchResultsUpdater setShouldLeaveSearchString:1];
+      presentedViewController4 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
+      searchBar = [presentedViewController4 searchBar];
+      text = [searchBar text];
 
       [(RootNavigationController *)self->_rootNavigationController dismissViewControllerAnimated:0 completion:0];
       goto LABEL_39;
@@ -1137,21 +1137,21 @@ LABEL_32:
   {
     [(UISplitViewController *)self->_splitViewController setViewController:0 forColumn:4];
 LABEL_37:
-    v38 = 0;
+    text = 0;
     goto LABEL_39;
   }
 
-  v38 = [(MainWindowSearchBar *)self->_searchBar text];
+  text = [(MainWindowSearchBar *)self->_searchBar text];
   [(SplitViewWindowRootViewController *)self endSearch:0];
 LABEL_39:
   v39 = [(UISplitViewController *)self->_splitViewController overrideTraitCollectionForChildViewController:self->_primaryVC];
   [(UISplitViewController *)self->_splitViewController setOverrideTraitCollection:0 forChildViewController:self->_primaryVC];
   v88.receiver = self;
   v88.super_class = SplitViewWindowRootViewController;
-  [(SplitViewWindowRootViewController *)&v88 willTransitionToTraitCollection:v73 withTransitionCoordinator:v72];
-  if (v72)
+  [(SplitViewWindowRootViewController *)&v88 willTransitionToTraitCollection:v73 withTransitionCoordinator:coordinatorCopy];
+  if (coordinatorCopy)
   {
-    [v72 targetTransform];
+    [coordinatorCopy targetTransform];
   }
 
   else
@@ -1163,35 +1163,35 @@ LABEL_39:
   v83[1] = 3221225472;
   v83[2] = sub_10003BA40;
   v83[3] = &unk_10020F398;
-  v84 = v71 == 2;
+  v84 = horizontalSizeClass3 == 2;
   v85 = !CGAffineTransformIsIdentity(&v87);
-  v86 = v17 == 2;
+  v86 = activationState == 2;
   v83[4] = self;
   v83[5] = &v89;
   v74[0] = _NSConcreteStackBlock;
   v74[1] = 3221225472;
   v74[2] = sub_10003BC08;
   v74[3] = &unk_10020F3E8;
-  v69 = v68;
+  v69 = firstResponder;
   v75 = v69;
-  v76 = self;
+  selfCopy = self;
   v40 = v39;
   v77 = v40;
   v80 = &v89;
-  v81 = v17 == 2;
-  v70 = v22;
+  v81 = activationState == 2;
+  v70 = displayedDetailViewControllers;
   v78 = v70;
-  v41 = v38;
+  v41 = text;
   v79 = v41;
-  v82 = v71 == 2;
-  [v72 animateAlongsideTransition:v83 completion:v74];
-  if (v71 == 2)
+  v82 = horizontalSizeClass3 == 2;
+  [coordinatorCopy animateAlongsideTransition:v83 completion:v74];
+  if (horizontalSizeClass3 == 2)
   {
     if (!self->_segmentedControl)
     {
-      v42 = [(RootNavigationController *)self->_rootNavigationController viewSwitcher];
+      viewSwitcher = [(RootNavigationController *)self->_rootNavigationController viewSwitcher];
       segmentedControl = self->_segmentedControl;
-      self->_segmentedControl = v42;
+      self->_segmentedControl = viewSwitcher;
     }
 
     v44 = CalUIKitNavBarEnabled();
@@ -1199,35 +1199,35 @@ LABEL_39:
     if (!v44)
     {
       [(UISegmentedControl *)v45 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v67 = [(UISplitViewController *)self->_splitViewController view];
-      v65 = [v67 topAnchor];
-      v66 = [(SplitViewWindowRootViewController *)self view];
-      v64 = [v66 topAnchor];
-      v63 = [v65 constraintEqualToAnchor:v64];
+      view5 = [(UISplitViewController *)self->_splitViewController view];
+      topAnchor = [view5 topAnchor];
+      view6 = [(SplitViewWindowRootViewController *)self view];
+      topAnchor2 = [view6 topAnchor];
+      v63 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v93[0] = v63;
-      v62 = [(UISplitViewController *)self->_splitViewController view];
-      v60 = [v62 bottomAnchor];
-      v61 = [(SplitViewWindowRootViewController *)self view];
-      v59 = [v61 bottomAnchor];
-      v58 = [v60 constraintEqualToAnchor:v59];
+      view7 = [(UISplitViewController *)self->_splitViewController view];
+      bottomAnchor = [view7 bottomAnchor];
+      view8 = [(SplitViewWindowRootViewController *)self view];
+      bottomAnchor2 = [view8 bottomAnchor];
+      v58 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v93[1] = v58;
-      v57 = [(UISplitViewController *)self->_splitViewController view];
-      v55 = [v57 leadingAnchor];
-      v56 = [(SplitViewWindowRootViewController *)self view];
-      v54 = [v56 leadingAnchor];
-      v46 = [v55 constraintEqualToAnchor:v54];
+      view9 = [(UISplitViewController *)self->_splitViewController view];
+      leadingAnchor = [view9 leadingAnchor];
+      view10 = [(SplitViewWindowRootViewController *)self view];
+      leadingAnchor2 = [view10 leadingAnchor];
+      v46 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v93[2] = v46;
-      v47 = [(UISplitViewController *)self->_splitViewController view];
-      v48 = [v47 trailingAnchor];
-      v49 = [(SplitViewWindowRootViewController *)self view];
-      v50 = [v49 trailingAnchor];
-      v51 = [v48 constraintEqualToAnchor:v50];
+      view11 = [(UISplitViewController *)self->_splitViewController view];
+      trailingAnchor = [view11 trailingAnchor];
+      view12 = [(SplitViewWindowRootViewController *)self view];
+      trailingAnchor2 = [view12 trailingAnchor];
+      v51 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v93[3] = v51;
       v52 = [NSArray arrayWithObjects:v93 count:4];
       [NSLayoutConstraint activateConstraints:v52];
 
-      v53 = [(UIViewController *)self->_containerViewController view];
-      [v53 addSubview:self->_segmentedControl];
+      view13 = [(UIViewController *)self->_containerViewController view];
+      [view13 addSubview:self->_segmentedControl];
 
       goto LABEL_51;
     }
@@ -1248,21 +1248,21 @@ LABEL_51:
   _Block_object_dispose(&v89, 8);
 }
 
-- (int64_t)preferredSplitBehaviorForSize:(CGSize)a3
+- (int64_t)preferredSplitBehaviorForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SplitViewWindowRootViewController *)self EKUI_viewHierarchy];
-  [SplitViewWindowRootViewController sidebarWidthForViewHierarchy:v6];
+  height = size.height;
+  width = size.width;
+  eKUI_viewHierarchy = [(SplitViewWindowRootViewController *)self EKUI_viewHierarchy];
+  [SplitViewWindowRootViewController sidebarWidthForViewHierarchy:eKUI_viewHierarchy];
   v8 = v7;
 
   if (CalUIKitNavBarEnabled())
   {
     [MainWindowControlHeaderView spacerWidthForWindowWidth:width];
     v10 = v8 + v9 * 2.0;
-    v11 = [(MainWindowControlHeaderView *)self->_headerView newEventBarButtonItem];
-    v12 = [v11 image];
-    [v12 size];
+    newEventBarButtonItem = [(MainWindowControlHeaderView *)self->_headerView newEventBarButtonItem];
+    image = [newEventBarButtonItem image];
+    [image size];
     v14 = v10 + v13 > width * 0.5 - v8 * 0.5;
   }
 
@@ -1282,9 +1282,9 @@ LABEL_51:
   }
 }
 
-- (void)_updatePreferredSplitBehaviorForSize:(CGSize)a3
+- (void)_updatePreferredSplitBehaviorForSize:(CGSize)size
 {
-  v4 = [(SplitViewWindowRootViewController *)self preferredSplitBehaviorForSize:a3.width, a3.height];
+  v4 = [(SplitViewWindowRootViewController *)self preferredSplitBehaviorForSize:size.width, size.height];
   if (v4 != [(UISplitViewController *)self->_splitViewController preferredSplitBehavior])
   {
     [(UISplitViewController *)self->_splitViewController setPreferredSplitBehavior:v4];
@@ -1292,8 +1292,8 @@ LABEL_51:
 
   if (v4 != 2)
   {
-    v5 = [(MainWindowSearchBar *)self->_searchBar text];
-    v6 = [v5 isEqual:&stru_1002133B8];
+    text = [(MainWindowSearchBar *)self->_searchBar text];
+    v6 = [text isEqual:&stru_1002133B8];
 
     if (v6)
     {
@@ -1302,20 +1302,20 @@ LABEL_51:
   }
 
   rootNavigationController = self->_rootNavigationController;
-  v8 = [(SplitViewWindowRootViewController *)self paletteShouldShowAvatarView];
+  paletteShouldShowAvatarView = [(SplitViewWindowRootViewController *)self paletteShouldShowAvatarView];
 
-  [(RootNavigationController *)rootNavigationController setAvatarViewVisible:v8];
+  [(RootNavigationController *)rootNavigationController setAvatarViewVisible:paletteShouldShowAvatarView];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  v8 = coordinatorCopy;
+  if (coordinatorCopy)
   {
-    [v7 targetTransform];
+    [coordinatorCopy targetTransform];
     IsIdentity = CGAffineTransformIsIdentity(&v22);
     [v8 targetTransform];
     v10 = *(&v19 + 1);
@@ -1352,40 +1352,40 @@ LABEL_51:
   [(SplitViewWindowRootViewController *)&v13 viewWillTransitionToSize:v8 withTransitionCoordinator:width, height];
 }
 
-- (int64_t)splitViewController:(id)a3 displayModeForExpandingToProposedDisplayMode:(int64_t)a4
+- (int64_t)splitViewController:(id)controller displayModeForExpandingToProposedDisplayMode:(int64_t)mode
 {
   if (!self->_currentSidebarState && !self->_preferredSidebarState)
   {
     return 1;
   }
 
-  if ([(UISplitViewController *)self->_splitViewController preferredSplitBehavior]== 2 && a4 == 2)
+  if ([(UISplitViewController *)self->_splitViewController preferredSplitBehavior]== 2 && mode == 2)
   {
     return 3;
   }
 
   else
   {
-    return a4;
+    return mode;
   }
 }
 
-- (void)splitViewController:(id)a3 willChangeToProposedDisplayMode:(int64_t *)a4
+- (void)splitViewController:(id)controller willChangeToProposedDisplayMode:(int64_t *)mode
 {
   if (self->_currentSidebarState)
   {
-    [(SplitViewWindowRootViewController *)self updatePrimaryViewControllerToolbar:a3];
+    [(SplitViewWindowRootViewController *)self updatePrimaryViewControllerToolbar:controller];
   }
 }
 
-- (void)splitViewController:(id)a3 willShowColumn:(int64_t)a4
+- (void)splitViewController:(id)controller willShowColumn:(int64_t)column
 {
-  if (!a4 && ![(SplitViewWindowRootViewController *)self currentSidebarState])
+  if (!column && ![(SplitViewWindowRootViewController *)self currentSidebarState])
   {
-    v5 = [(SplitViewWindowRootViewController *)self ekui_futureTraitCollection];
-    v6 = [v5 horizontalSizeClass];
+    ekui_futureTraitCollection = [(SplitViewWindowRootViewController *)self ekui_futureTraitCollection];
+    horizontalSizeClass = [ekui_futureTraitCollection horizontalSizeClass];
 
-    if (v6 == 2)
+    if (horizontalSizeClass == 2)
     {
       self->_currentSidebarState = self->_lastOpenSidebarState;
       [(MainWindowControlHeaderView *)self->_headerView updateButtonStateForSidebar:?];
@@ -1397,30 +1397,30 @@ LABEL_51:
   }
 }
 
-- (void)splitViewController:(id)a3 willHideColumn:(int64_t)a4
+- (void)splitViewController:(id)controller willHideColumn:(int64_t)column
 {
-  v6 = a3;
-  if (a4 == 4)
+  controllerCopy = controller;
+  if (column == 4)
   {
-    v14 = v6;
+    v14 = controllerCopy;
     [(SplitViewWindowRootViewController *)self searchEnding];
     [(SplitViewWindowRootViewController *)self teardownSearch];
     [(SplitViewWindowRootViewController *)self searchEnded];
 LABEL_10:
-    v6 = v14;
+    controllerCopy = v14;
     goto LABEL_11;
   }
 
-  if (!a4 && self->_currentSidebarState)
+  if (!column && self->_currentSidebarState)
   {
-    v14 = v6;
-    v7 = [(SplitViewWindowRootViewController *)self view];
-    v8 = [v7 window];
-    v9 = [v8 windowScene];
-    v10 = [v9 activationState];
+    v14 = controllerCopy;
+    view = [(SplitViewWindowRootViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
+    activationState = [windowScene activationState];
 
     currentSidebarState = self->_currentSidebarState;
-    if (v10 != 2)
+    if (activationState != 2)
     {
       if (currentSidebarState == 2)
       {
@@ -1434,8 +1434,8 @@ LABEL_10:
     [(MainWindowControlHeaderView *)self->_headerView updateButtonStateForSidebar:currentSidebarState];
     [(RootNavigationController *)self->_rootNavigationController setAvatarViewVisible:[(SplitViewWindowRootViewController *)self paletteShouldShowAvatarView]];
     v12 = [objc_opt_class() shouldHideInlineFocusBannerForSidebarState:0];
-    v13 = [(RootNavigationController *)self->_rootNavigationController paletteView];
-    [v13 setShouldHideInlineFocusBanner:v12];
+    paletteView = [(RootNavigationController *)self->_rootNavigationController paletteView];
+    [paletteView setShouldHideInlineFocusBanner:v12];
 
     goto LABEL_10;
   }
@@ -1452,26 +1452,26 @@ LABEL_11:
     goto LABEL_5;
   }
 
-  v4 = [(RootNavigationController *)self->_rootNavigationController topMainViewControllerContainer];
-  v5 = [v4 currentChildViewController];
-  v6 = [v5 view];
-  [v6 frame];
+  topMainViewControllerContainer = [(RootNavigationController *)self->_rootNavigationController topMainViewControllerContainer];
+  currentChildViewController = [topMainViewControllerContainer currentChildViewController];
+  view = [currentChildViewController view];
+  [view frame];
   v8 = v7;
 
   if (v8 <= 0.0)
   {
 LABEL_5:
-    v9 = [(RootNavigationController *)self->_rootNavigationController view];
-    [v9 bounds];
+    view2 = [(RootNavigationController *)self->_rootNavigationController view];
+    [view2 bounds];
     v13 = v16;
     v15 = v17;
     goto LABEL_6;
   }
 
-  v9 = [(RootNavigationController *)self->_rootNavigationController topMainViewControllerContainer];
-  v10 = [v9 currentChildViewController];
-  v11 = [v10 view];
-  [v11 bounds];
+  view2 = [(RootNavigationController *)self->_rootNavigationController topMainViewControllerContainer];
+  currentChildViewController2 = [view2 currentChildViewController];
+  view3 = [currentChildViewController2 view];
+  [view3 bounds];
   v13 = v12;
   v15 = v14;
 
@@ -1486,51 +1486,51 @@ LABEL_6:
 - (void)showAddEvent
 {
   rootNavigationController = self->_rootNavigationController;
-  v3 = [(MainWindowControlHeaderView *)self->_headerView newEventBarButtonItem];
-  [(RootNavigationController *)rootNavigationController showAddEventAnimated:0 fromBarButtonItem:v3];
+  newEventBarButtonItem = [(MainWindowControlHeaderView *)self->_headerView newEventBarButtonItem];
+  [(RootNavigationController *)rootNavigationController showAddEventAnimated:0 fromBarButtonItem:newEventBarButtonItem];
 }
 
-- (void)showAddEventWithTitle:(id)a3 startDate:(id)a4 endDate:(id)a5 location:(id)a6 suggestionsKey:(id)a7 allDay:(BOOL)a8
+- (void)showAddEventWithTitle:(id)title startDate:(id)date endDate:(id)endDate location:(id)location suggestionsKey:(id)key allDay:(BOOL)day
 {
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [(SplitViewWindowRootViewController *)self traitCollection];
-  if ([v19 horizontalSizeClass] == 2)
+  keyCopy = key;
+  locationCopy = location;
+  endDateCopy = endDate;
+  dateCopy = date;
+  titleCopy = title;
+  traitCollection = [(SplitViewWindowRootViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 2)
   {
-    v21 = [(MainWindowControlHeaderView *)self->_headerView newEventBarButtonItem];
+    newEventBarButtonItem = [(MainWindowControlHeaderView *)self->_headerView newEventBarButtonItem];
   }
 
   else
   {
-    v21 = 0;
+    newEventBarButtonItem = 0;
   }
 
-  LOBYTE(v20) = a8;
-  [(RootNavigationController *)self->_rootNavigationController showAddEventAnimated:1 fromBarButtonItem:v21 withTitle:v18 startDate:0 exactStartDate:v17 endDate:v16 location:v15 suggestionKey:v14 allDay:v20 completion:0];
+  LOBYTE(v20) = day;
+  [(RootNavigationController *)self->_rootNavigationController showAddEventAnimated:1 fromBarButtonItem:newEventBarButtonItem withTitle:titleCopy startDate:0 exactStartDate:dateCopy endDate:endDateCopy location:locationCopy suggestionKey:keyCopy allDay:v20 completion:0];
 }
 
-+ (id)sanitizeCalSubCal:(id)a3
++ (id)sanitizeCalSubCal:(id)cal
 {
-  v3 = a3;
-  v4 = [v3 scheme];
-  v5 = [v4 isEqualToString:@"calsubcal"];
+  calCopy = cal;
+  scheme = [calCopy scheme];
+  v5 = [scheme isEqualToString:@"calsubcal"];
 
   if (v5)
   {
-    v6 = [v3 resourceSpecifier];
-    v7 = [v6 stringByRemovingPercentEncoding];
+    resourceSpecifier = [calCopy resourceSpecifier];
+    stringByRemovingPercentEncoding = [resourceSpecifier stringByRemovingPercentEncoding];
 
-    if (v7)
+    if (stringByRemovingPercentEncoding)
     {
-      v8 = [NSURL URLWithString:v7];
+      v8 = [NSURL URLWithString:stringByRemovingPercentEncoding];
     }
 
     else
     {
-      v8 = v3;
+      v8 = calCopy;
     }
 
     v9 = v8;
@@ -1538,30 +1538,30 @@ LABEL_6:
 
   else
   {
-    v9 = v3;
+    v9 = calCopy;
   }
 
   return v9;
 }
 
-- (void)handleURL:(id)a3 context:(id)a4
+- (void)handleURL:(id)l context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  contextCopy = context;
   if (self->_didAppear)
   {
-    v9 = [v7 scheme];
-    v10 = [(SplitViewWindowRootViewController *)self traitCollection];
-    v11 = [v10 horizontalSizeClass];
+    scheme = [lCopy scheme];
+    traitCollection = [(SplitViewWindowRootViewController *)self traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    if (v11 == 2)
+    if (horizontalSizeClass == 2)
     {
-      if ([v9 isEqualToString:@"calinvitelist"])
+      if ([scheme isEqualToString:@"calinvitelist"])
       {
-        v12 = [(RootNavigationController *)self->_rootNavigationController model];
-        v13 = [v12 allEventNotificationsCount];
+        model = [(RootNavigationController *)self->_rootNavigationController model];
+        allEventNotificationsCount = [model allEventNotificationsCount];
 
-        if (v13)
+        if (allEventNotificationsCount)
         {
           [(SplitViewWindowRootViewController *)self setCurrentSidebarState:2];
 LABEL_17:
@@ -1570,23 +1570,23 @@ LABEL_17:
         }
       }
 
-      if (([v9 isEqualToString:@"calsubcal"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"webcal"))
+      if (([scheme isEqualToString:@"calsubcal"] & 1) != 0 || objc_msgSend(scheme, "isEqualToString:", @"webcal"))
       {
         v17[0] = _NSConcreteStackBlock;
         v17[1] = 3221225472;
         v17[2] = sub_10003CC08;
         v17[3] = &unk_10020F438;
-        v18 = v7;
-        v19 = self;
+        v18 = lCopy;
+        selfCopy = self;
         [(SplitViewWindowRootViewController *)self showCalendarsViewWithCompletion:v17];
 
         goto LABEL_17;
       }
 
-      if ([v9 isEqualToString:@"calshow"])
+      if ([scheme isEqualToString:@"calshow"])
       {
-        v14 = [v7 host];
-        v15 = [v14 isEqualToString:@"familyCalendar"];
+        host = [lCopy host];
+        v15 = [host isEqualToString:@"familyCalendar"];
 
         if (v15)
         {
@@ -1607,23 +1607,23 @@ LABEL_17:
     }
 
     [(SplitViewWindowRootViewController *)self cancelSearch];
-    [(RootNavigationController *)self->_rootNavigationController handleURL:v7 context:v8];
+    [(RootNavigationController *)self->_rootNavigationController handleURL:lCopy context:contextCopy];
     goto LABEL_17;
   }
 
-  objc_storeStrong(&self->_urlToLaunch, a3);
-  objc_storeStrong(&self->_urlLaunchContext, a4);
+  objc_storeStrong(&self->_urlToLaunch, l);
+  objc_storeStrong(&self->_urlLaunchContext, context);
 LABEL_18:
 }
 
-- (BOOL)showsSearchBarForTraitCollection:(id)a3
+- (BOOL)showsSearchBarForTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(SplitViewWindowRootViewController *)self view];
+  collectionCopy = collection;
+  view = [(SplitViewWindowRootViewController *)self view];
   EKUICurrentWindowWidthWithViewHierarchy();
   v7 = v6;
 
-  v8 = v7 > 750.0 && (EKUIUsesLargeTextLayout() & 1) == 0 && [v4 userInterfaceIdiom] != 0;
+  v8 = v7 > 750.0 && (EKUIUsesLargeTextLayout() & 1) == 0 && [collectionCopy userInterfaceIdiom] != 0;
   return v8;
 }
 
@@ -1642,18 +1642,18 @@ LABEL_18:
     [(MainWindowSearchBar *)self->_searchBar setDrawsBackground:0];
     [(MainWindowSearchBar *)self->_searchBar setDelegate:self];
     [(MainWindowSearchBar *)self->_searchBar _setAutoDisableCancelButton:0];
-    v7 = [(MainWindowSearchBar *)self->_searchBar searchField];
-    [v7 setAccessibilityIdentifier:@"searchbar-button"];
+    searchField = [(MainWindowSearchBar *)self->_searchBar searchField];
+    [searchField setAccessibilityIdentifier:@"searchbar-button"];
 
     [(MainWindowSearchBar *)self->_searchBar setHeightObserver:self];
     if (CalUIKitNavBarEnabled())
     {
-      v8 = [(MainWindowSearchBar *)self->_searchBar searchField];
-      [v8 setClearButtonMode:3];
+      searchField2 = [(MainWindowSearchBar *)self->_searchBar searchField];
+      [searchField2 setClearButtonMode:3];
 
       [(MainWindowSearchBar *)self->_searchBar setTranslatesAutoresizingMaskIntoConstraints:0];
-      v9 = [(MainWindowSearchBar *)self->_searchBar widthAnchor];
-      v10 = [v9 constraintEqualToConstant:223.0];
+      widthAnchor = [(MainWindowSearchBar *)self->_searchBar widthAnchor];
+      v10 = [widthAnchor constraintEqualToConstant:223.0];
       searchBarWidthConstraint = self->_searchBarWidthConstraint;
       self->_searchBarWidthConstraint = v10;
 
@@ -1668,19 +1668,19 @@ LABEL_18:
 
 - (void)activateSearchBarConstraints
 {
-  v3 = [(MainWindowSearchBar *)self->_searchBar window];
-  if (v3)
+  window = [(MainWindowSearchBar *)self->_searchBar window];
+  if (window)
   {
-    v4 = v3;
-    v5 = [(UISegmentedControl *)self->_segmentedControl window];
+    v4 = window;
+    window2 = [(UISegmentedControl *)self->_segmentedControl window];
 
-    if (v5)
+    if (window2)
     {
       if (!self->_searchBarLeadingConstraint)
       {
-        v7 = [(MainWindowSearchBar *)self->_searchBar leadingAnchor];
-        v8 = [(UISegmentedControl *)self->_segmentedControl trailingAnchor];
-        v9 = [v7 constraintGreaterThanOrEqualToAnchor:v8];
+        leadingAnchor = [(MainWindowSearchBar *)self->_searchBar leadingAnchor];
+        trailingAnchor = [(UISegmentedControl *)self->_segmentedControl trailingAnchor];
+        v9 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor];
         searchBarLeadingConstraint = self->_searchBarLeadingConstraint;
         self->_searchBarLeadingConstraint = v9;
       }
@@ -1707,18 +1707,18 @@ LABEL_18:
       }
 
       [(NSLayoutConstraint *)self->_searchBarLeadingConstraint setPriority:v11];
-      v22 = [(MainWindowSearchBar *)self->_searchBar trailingAnchor];
-      v23 = [(SplitViewWindowRootViewController *)self view];
-      v21 = [v23 safeAreaLayoutGuide];
-      v12 = [v21 trailingAnchor];
-      v13 = [v22 constraintEqualToAnchor:v12 constant:-1.5];
+      trailingAnchor2 = [(MainWindowSearchBar *)self->_searchBar trailingAnchor];
+      view = [(SplitViewWindowRootViewController *)self view];
+      safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+      trailingAnchor3 = [safeAreaLayoutGuide trailingAnchor];
+      v13 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-1.5];
       v24[0] = v13;
-      v14 = [(MainWindowSearchBar *)self->_searchBar heightAnchor];
-      v15 = [v14 constraintEqualToConstant:44.0];
+      heightAnchor = [(MainWindowSearchBar *)self->_searchBar heightAnchor];
+      v15 = [heightAnchor constraintEqualToConstant:44.0];
       v24[1] = v15;
-      v16 = [(MainWindowSearchBar *)self->_searchBar centerYAnchor];
-      v17 = [(UISegmentedControl *)self->_segmentedControl centerYAnchor];
-      v18 = [v16 constraintEqualToAnchor:v17];
+      centerYAnchor = [(MainWindowSearchBar *)self->_searchBar centerYAnchor];
+      centerYAnchor2 = [(UISegmentedControl *)self->_segmentedControl centerYAnchor];
+      v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v19 = self->_searchBarLeadingConstraint;
       v24[2] = v18;
       v24[3] = v19;
@@ -1730,70 +1730,70 @@ LABEL_18:
 
 - (void)activateSearchButtonConstraints
 {
-  v3 = [(UIToolbar *)self->_searchToolBarButton window];
-  if (v3)
+  window = [(UIToolbar *)self->_searchToolBarButton window];
+  if (window)
   {
-    v4 = v3;
-    v5 = [(UISegmentedControl *)self->_segmentedControl window];
+    v4 = window;
+    window2 = [(UISegmentedControl *)self->_segmentedControl window];
 
-    if (v5)
+    if (window2)
     {
       v6 = CalUIKitNavBarEnabled();
-      v7 = [(UIToolbar *)self->_searchToolBarButton trailingAnchor];
-      v8 = [(SplitViewWindowRootViewController *)self view];
-      v9 = [v8 safeAreaLayoutGuide];
-      v10 = [v9 trailingAnchor];
+      trailingAnchor = [(UIToolbar *)self->_searchToolBarButton trailingAnchor];
+      view = [(SplitViewWindowRootViewController *)self view];
+      safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+      trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
       if (v6)
       {
-        v11 = [v7 constraintEqualToAnchor:v10 constant:-1.5];
+        v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-1.5];
         v31[0] = v11;
-        v12 = [(UIToolbar *)self->_searchToolBarButton heightAnchor];
-        v29 = [v12 constraintEqualToConstant:60.0];
-        v31[1] = v29;
-        v28 = [(UIToolbar *)self->_searchToolBarButton widthAnchor];
-        v27 = [v28 constraintEqualToConstant:60.0];
+        heightAnchor = [(UIToolbar *)self->_searchToolBarButton heightAnchor];
+        navigationBar = [heightAnchor constraintEqualToConstant:60.0];
+        v31[1] = navigationBar;
+        widthAnchor = [(UIToolbar *)self->_searchToolBarButton widthAnchor];
+        v27 = [widthAnchor constraintEqualToConstant:60.0];
         v31[2] = v27;
-        v13 = [(UIToolbar *)self->_searchToolBarButton topAnchor];
-        v14 = [(UISegmentedControl *)self->_segmentedControl topAnchor];
-        v15 = [v13 constraintEqualToAnchor:v14];
-        v31[3] = v15;
-        v16 = [NSArray arrayWithObjects:v31 count:4];
-        [NSLayoutConstraint activateConstraints:v16];
+        topAnchor = [(UIToolbar *)self->_searchToolBarButton topAnchor];
+        topAnchor2 = [(UISegmentedControl *)self->_segmentedControl topAnchor];
+        topAnchor3 = [topAnchor constraintEqualToAnchor:topAnchor2];
+        v31[3] = topAnchor3;
+        navigationBar2 = [NSArray arrayWithObjects:v31 count:4];
+        [NSLayoutConstraint activateConstraints:navigationBar2];
       }
 
       else
       {
-        v26 = [v7 constraintEqualToAnchor:v10 constant:-10.0];
+        v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
         v30[0] = v26;
-        v25 = [(UIToolbar *)self->_searchToolBarButton heightAnchor];
-        v29 = [(RootNavigationController *)self->_rootNavigationController navigationBar];
-        v28 = [v29 heightAnchor];
-        v27 = [v25 constraintEqualToAnchor:?];
+        heightAnchor2 = [(UIToolbar *)self->_searchToolBarButton heightAnchor];
+        navigationBar = [(RootNavigationController *)self->_rootNavigationController navigationBar];
+        widthAnchor = [navigationBar heightAnchor];
+        v27 = [heightAnchor2 constraintEqualToAnchor:?];
         v30[1] = v27;
-        v24 = [(UIToolbar *)self->_searchToolBarButton widthAnchor];
-        v14 = [v24 constraintEqualToConstant:60.0];
-        v30[2] = v14;
-        v15 = [(UIToolbar *)self->_searchToolBarButton topAnchor];
-        v16 = [(RootNavigationController *)self->_rootNavigationController navigationBar];
-        v17 = [v16 topAnchor];
-        [v15 constraintEqualToAnchor:v17];
-        v18 = v10;
-        v19 = v9;
-        v21 = v20 = v7;
+        widthAnchor2 = [(UIToolbar *)self->_searchToolBarButton widthAnchor];
+        topAnchor2 = [widthAnchor2 constraintEqualToConstant:60.0];
+        v30[2] = topAnchor2;
+        topAnchor3 = [(UIToolbar *)self->_searchToolBarButton topAnchor];
+        navigationBar2 = [(RootNavigationController *)self->_rootNavigationController navigationBar];
+        topAnchor4 = [navigationBar2 topAnchor];
+        [topAnchor3 constraintEqualToAnchor:topAnchor4];
+        v18 = trailingAnchor2;
+        v19 = safeAreaLayoutGuide;
+        v21 = v20 = trailingAnchor;
         v30[3] = v21;
         [NSArray arrayWithObjects:v30 count:4];
-        v23 = v22 = v8;
+        v23 = v22 = view;
         [NSLayoutConstraint activateConstraints:v23];
 
-        v8 = v22;
-        v12 = v25;
+        view = v22;
+        heightAnchor = heightAnchor2;
 
-        v7 = v20;
-        v9 = v19;
-        v10 = v18;
+        trailingAnchor = v20;
+        safeAreaLayoutGuide = v19;
+        trailingAnchor2 = v18;
         v11 = v26;
 
-        v13 = v24;
+        topAnchor = widthAnchor2;
       }
     }
   }
@@ -1803,21 +1803,21 @@ LABEL_18:
 {
   if (CalUIKitNavBarEnabled())
   {
-    v3 = [(UISegmentedControl *)self->_segmentedControl window];
+    window = [(UISegmentedControl *)self->_segmentedControl window];
 
-    if (v3)
+    if (window)
     {
-      v4 = [(SplitViewWindowRootViewController *)self traitCollection];
-      [(SplitViewWindowRootViewController *)self setupSearchControlForTraitCollection:v4];
+      traitCollection = [(SplitViewWindowRootViewController *)self traitCollection];
+      [(SplitViewWindowRootViewController *)self setupSearchControlForTraitCollection:traitCollection];
 
-      v5 = [(SplitViewWindowRootViewController *)self traitCollection];
-      v6 = [v5 horizontalSizeClass];
+      traitCollection2 = [(SplitViewWindowRootViewController *)self traitCollection];
+      horizontalSizeClass = [traitCollection2 horizontalSizeClass];
 
-      if (v6 == 2)
+      if (horizontalSizeClass == 2)
       {
-        v7 = [(MainWindowSearchBar *)self->_searchBar window];
+        window2 = [(MainWindowSearchBar *)self->_searchBar window];
 
-        if (v7)
+        if (window2)
         {
 
           [(SplitViewWindowRootViewController *)self activateSearchBarConstraints];
@@ -1833,17 +1833,17 @@ LABEL_18:
   }
 }
 
-- (void)setupSearchControlForTraitCollection:(id)a3
+- (void)setupSearchControlForTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   if (CalUIKitNavBarEnabled())
   {
-    v5 = [(UISegmentedControl *)self->_segmentedControl window];
-    if (v5)
+    window = [(UISegmentedControl *)self->_segmentedControl window];
+    if (window)
     {
     }
 
-    else if ([v4 horizontalSizeClass] == 2)
+    else if ([collectionCopy horizontalSizeClass] == 2)
     {
       v6 = 0;
       v7 = 0;
@@ -1851,7 +1851,7 @@ LABEL_18:
     }
   }
 
-  if ([(SplitViewWindowRootViewController *)self showsSearchBarForTraitCollection:v4]|| self->_isSearching)
+  if ([(SplitViewWindowRootViewController *)self showsSearchBarForTraitCollection:collectionCopy]|| self->_isSearching)
   {
     [(SplitViewWindowRootViewController *)self createSearchBarIfNeeded];
     v7 = self->_searchBar;
@@ -1916,15 +1916,15 @@ LABEL_16:
   v10 = 88;
 LABEL_18:
   v6 = *(&self->super.super.super.isa + v10);
-  if ([v4 horizontalSizeClass] == 2)
+  if ([collectionCopy horizontalSizeClass] == 2)
   {
     [v6 removeFromSuperview];
-    v22 = [(MainWindowSearchBar *)v7 superview];
+    superview = [(MainWindowSearchBar *)v7 superview];
 
-    if (!v22)
+    if (!superview)
     {
-      v23 = [(SplitViewWindowRootViewController *)self view];
-      [v23 addSubview:v7];
+      view = [(SplitViewWindowRootViewController *)self view];
+      [view addSubview:v7];
 
       if (CalUIKitNavBarEnabled())
       {
@@ -1953,7 +1953,7 @@ LABEL_24:
 
 - (double)searchFieldWidth
 {
-  v2 = [(SplitViewWindowRootViewController *)self view];
+  view = [(SplitViewWindowRootViewController *)self view];
   EKUICurrentWindowWidthWithViewHierarchy();
   v4 = v3;
 
@@ -1979,20 +1979,20 @@ LABEL_24:
   return result;
 }
 
-- (void)setSearchStateToSearching:(BOOL)a3
+- (void)setSearchStateToSearching:(BOOL)searching
 {
-  if (self->_isSearching != a3)
+  if (self->_isSearching != searching)
   {
-    self->_isSearching = a3;
+    self->_isSearching = searching;
     searchBarWidthConstraint = self->_searchBarWidthConstraint;
-    if (a3)
+    if (searching)
     {
       LODWORD(v3) = 1148846080;
       [(NSLayoutConstraint *)searchBarWidthConstraint setPriority:v3];
       LODWORD(v6) = 1140457472;
       [(NSLayoutConstraint *)self->_searchBarLeadingConstraint setPriority:v6];
-      v9 = [(SplitViewWindowRootViewController *)self EKUI_viewHierarchy];
-      [SplitViewWindowRootViewController sidebarWidthForViewHierarchy:v9];
+      eKUI_viewHierarchy = [(SplitViewWindowRootViewController *)self EKUI_viewHierarchy];
+      [SplitViewWindowRootViewController sidebarWidthForViewHierarchy:eKUI_viewHierarchy];
       [(NSLayoutConstraint *)self->_searchBarWidthConstraint setConstant:?];
     }
 
@@ -2009,18 +2009,18 @@ LABEL_24:
   }
 }
 
-- (void)searchButtonTappedCreateAndAddSearchBar:(BOOL)a3
+- (void)searchButtonTappedCreateAndAddSearchBar:(BOOL)bar
 {
   if (!self->_isEndingSearch)
   {
-    v3 = a3;
+    barCopy = bar;
     [(UIButton *)self->_searchButton removeFromSuperview];
     [(UIToolbar *)self->_searchToolBarButton removeFromSuperview];
-    if (v3)
+    if (barCopy)
     {
       [(SplitViewWindowRootViewController *)self createSearchBarIfNeeded];
-      v5 = [(SplitViewWindowRootViewController *)self view];
-      [v5 addSubview:self->_searchBar];
+      view = [(SplitViewWindowRootViewController *)self view];
+      [view addSubview:self->_searchBar];
 
       [(SplitViewWindowRootViewController *)self activateSearchBarConstraints];
       [(SplitViewWindowRootViewController *)self setSearchStateToSearching:1];
@@ -2034,8 +2034,8 @@ LABEL_24:
         v11 = v10;
         if (CalInterfaceIsLeftToRight())
         {
-          v12 = [(SplitViewWindowRootViewController *)self view];
-          [v12 bounds];
+          view2 = [(SplitViewWindowRootViewController *)self view];
+          [view2 bounds];
           v14 = v13;
         }
 
@@ -2053,7 +2053,7 @@ LABEL_24:
       [(SplitViewWindowRootViewController *)self setSearchStateToSearching:1];
     }
 
-    v15 = [(SplitViewWindowRootViewController *)self startSearch];
+    startSearch = [(SplitViewWindowRootViewController *)self startSearch];
     v16[4] = self;
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -2064,27 +2064,27 @@ LABEL_24:
     v16[1] = 3221225472;
     v16[2] = sub_10003DDC0;
     v16[3] = &unk_10020F240;
-    [v15 animateAlongsideTransition:v17 completion:v16];
+    [startSearch animateAlongsideTransition:v17 completion:v16];
   }
 }
 
 - (void)updatePrimaryViewControllerNavBar
 {
-  v3 = [(SplitViewWindowRootViewController *)self primarySidebarViewController];
-  v4 = [(SplitViewWindowRootViewController *)self traitCollection];
-  v5 = [v4 horizontalSizeClass];
+  primarySidebarViewController = [(SplitViewWindowRootViewController *)self primarySidebarViewController];
+  traitCollection = [(SplitViewWindowRootViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v5 == 2)
+  if (horizontalSizeClass == 2)
   {
     [(MasterNavigationPaletteView *)self->_paletteView sizeToFit];
     [(MasterNavigationPaletteView *)self->_paletteView frame];
     [(_UINavigationBarPalette *)self->_palette setPreferredHeight:v6];
     palette = self->_palette;
-    v8 = [v3 navigationItem];
-    [v8 _setBottomPalette:palette];
+    navigationItem = [primarySidebarViewController navigationItem];
+    [navigationItem _setBottomPalette:palette];
 
-    v9 = objc_opt_new();
-    [v9 configureWithDefaultBackground];
+    navigationItem4 = objc_opt_new();
+    [navigationItem4 configureWithDefaultBackground];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2092,48 +2092,48 @@ LABEL_24:
       block[1] = 3221225472;
       block[2] = sub_10003DFA4;
       block[3] = &unk_10020EB00;
-      v13 = v3;
+      v13 = primarySidebarViewController;
       dispatch_async(&_dispatch_main_q, block);
     }
 
-    v10 = [v3 navigationItem];
-    [v10 setStandardAppearance:v9];
+    navigationItem2 = [primarySidebarViewController navigationItem];
+    [navigationItem2 setStandardAppearance:navigationItem4];
 
-    v11 = [v3 navigationItem];
-    [v11 setScrollEdgeAppearance:v9];
+    navigationItem3 = [primarySidebarViewController navigationItem];
+    [navigationItem3 setScrollEdgeAppearance:navigationItem4];
   }
 
   else
   {
-    v9 = [v3 navigationItem];
-    [v9 _setBottomPalette:0];
+    navigationItem4 = [primarySidebarViewController navigationItem];
+    [navigationItem4 _setBottomPalette:0];
   }
 }
 
 - (void)updatePrimaryViewControllerToolbar
 {
-  v5 = [(SplitViewWindowRootViewController *)self primarySidebarViewController];
-  if ([v5 conformsToProtocol:&OBJC_PROTOCOL___SideBarViewController] && (objc_opt_respondsToSelector() & 1) != 0)
+  primarySidebarViewController = [(SplitViewWindowRootViewController *)self primarySidebarViewController];
+  if ([primarySidebarViewController conformsToProtocol:&OBJC_PROTOCOL___SideBarViewController] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [v5 toolbarVisibleInSplitBehavior:{-[UISplitViewController preferredSplitBehavior](self->_splitViewController, "preferredSplitBehavior")}];
+    v3 = [primarySidebarViewController toolbarVisibleInSplitBehavior:{-[UISplitViewController preferredSplitBehavior](self->_splitViewController, "preferredSplitBehavior")}];
   }
 
   else
   {
-    v4 = [v5 toolbarItems];
-    v3 = v4 != 0;
+    toolbarItems = [primarySidebarViewController toolbarItems];
+    v3 = toolbarItems != 0;
   }
 
   [(UINavigationController *)self->_primaryVC setToolbarHidden:v3 ^ 1];
 }
 
-- (BOOL)canShowAvatarViewWithTraitCollection:(id)a3
+- (BOOL)canShowAvatarViewWithTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(RootNavigationController *)self->_rootNavigationController model];
-  if ([v5 containsDelegateSources])
+  collectionCopy = collection;
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  if ([model containsDelegateSources])
   {
-    v6 = [v4 horizontalSizeClass] == 2;
+    v6 = [collectionCopy horizontalSizeClass] == 2;
   }
 
   else
@@ -2144,33 +2144,33 @@ LABEL_24:
   return v6;
 }
 
-- (id)viewControllerForSidebarState:(unint64_t)a3
+- (id)viewControllerForSidebarState:(unint64_t)state
 {
-  switch(a3)
+  switch(state)
   {
     case 3uLL:
       v10 = [CompactListViewController alloc];
-      v11 = [(RootNavigationController *)self->_rootNavigationController model];
-      v12 = [(SplitViewWindowRootViewController *)self view];
-      v13 = [v12 window];
-      v6 = [(ListViewController *)v10 initWithModel:v11 window:v13];
+      model = [(RootNavigationController *)self->_rootNavigationController model];
+      view = [(SplitViewWindowRootViewController *)self view];
+      window = [view window];
+      switcherViewController = [(ListViewController *)v10 initWithModel:model window:window];
 
-      [(ListViewController *)v6 setDelegate:self];
-      [(ListViewController *)v6 setOverrideExtendedEdges:0];
-      [(ListViewController *)v6 setDestination:2];
+      [(ListViewController *)switcherViewController setDelegate:self];
+      [(ListViewController *)switcherViewController setOverrideExtendedEdges:0];
+      [(ListViewController *)switcherViewController setDestination:2];
       goto LABEL_8;
     case 2uLL:
       presentedInboxVC = self->_presentedInboxVC;
       if (presentedInboxVC)
       {
-        v6 = [(InboxViewController *)presentedInboxVC switcherViewController];
-        [(CompactListViewController *)v6 willMoveToParentViewController:0];
-        v8 = [(CompactListViewController *)v6 view];
-        [v8 removeFromSuperview];
+        switcherViewController = [(InboxViewController *)presentedInboxVC switcherViewController];
+        [(CompactListViewController *)switcherViewController willMoveToParentViewController:0];
+        view2 = [(CompactListViewController *)switcherViewController view];
+        [view2 removeFromSuperview];
 
-        [(CompactListViewController *)v6 removeFromParentViewController];
-        [(CompactListViewController *)v6 setSwitcherDelegate:self];
-        [(ListViewController *)v6 setDestination:2];
+        [(CompactListViewController *)switcherViewController removeFromParentViewController];
+        [(CompactListViewController *)switcherViewController setSwitcherDelegate:self];
+        [(ListViewController *)switcherViewController setDestination:2];
         v9 = self->_presentedInboxVC;
         self->_presentedInboxVC = 0;
       }
@@ -2178,36 +2178,36 @@ LABEL_24:
       else
       {
         v15 = [InboxSwitcherViewController alloc];
-        v16 = [(RootNavigationController *)self->_rootNavigationController model];
-        v6 = [(InboxSwitcherViewController *)v15 initWithModel:v16 destination:2];
+        model2 = [(RootNavigationController *)self->_rootNavigationController model];
+        switcherViewController = [(InboxSwitcherViewController *)v15 initWithModel:model2 destination:2];
 
-        [(CompactListViewController *)v6 setSwitcherDelegate:self];
+        [(CompactListViewController *)switcherViewController setSwitcherDelegate:self];
       }
 
-      v14 = [(CompactListViewController *)v6 segmentedControl];
+      segmentedControl = [(CompactListViewController *)switcherViewController segmentedControl];
       goto LABEL_12;
     case 1uLL:
       v4 = [CalendarsViewController alloc];
-      v5 = [(RootNavigationController *)self->_rootNavigationController model];
-      v6 = [(CalendarsViewController *)v4 initWithModel:v5 destination:2];
+      model3 = [(RootNavigationController *)self->_rootNavigationController model];
+      switcherViewController = [(CalendarsViewController *)v4 initWithModel:model3 destination:2];
 
 LABEL_8:
-      v14 = 0;
+      segmentedControl = 0;
       goto LABEL_12;
   }
 
-  v14 = 0;
-  v6 = 0;
+  segmentedControl = 0;
+  switcherViewController = 0;
 LABEL_12:
-  [(MasterNavigationPaletteView *)self->_paletteView setSegmentedControl:v14];
+  [(MasterNavigationPaletteView *)self->_paletteView setSegmentedControl:segmentedControl];
   [(SplitViewWindowRootViewController *)self updateSidebarPalette];
-  v17 = [(CompactListViewController *)v6 navigationItem];
-  [v17 _setAutoScrollEdgeTransitionDistance:16.0];
+  navigationItem = [(CompactListViewController *)switcherViewController navigationItem];
+  [navigationItem _setAutoScrollEdgeTransitionDistance:16.0];
 
-  v18 = [(CompactListViewController *)v6 navigationItem];
-  [v18 _setManualScrollEdgeAppearanceEnabled:1];
+  navigationItem2 = [(CompactListViewController *)switcherViewController navigationItem];
+  [navigationItem2 _setManualScrollEdgeAppearanceEnabled:1];
 
-  return v6;
+  return switcherViewController;
 }
 
 - (void)updateSidebarPalette
@@ -2221,7 +2221,7 @@ LABEL_12:
   [(_UINavigationBarPalette *)palette setPreferredHeight:v3];
 }
 
-- (void)showColumn:(int64_t)a3
+- (void)showColumn:(int64_t)column
 {
   [(UISplitViewController *)self->_splitViewController showColumn:?];
   v20[0] = _NSConcreteStackBlock;
@@ -2229,35 +2229,35 @@ LABEL_12:
   v20[2] = sub_10003E668;
   v20[3] = &unk_10020F488;
   v20[4] = self;
-  v20[5] = a3;
+  v20[5] = column;
   v5 = objc_retainBlock(v20);
-  v6 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
-  if (v6)
+  transitionCoordinator = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
+  if (transitionCoordinator)
   {
     self->_animatingSidebar = [(UISplitViewController *)self->_splitViewController splitBehavior]== 1;
-    self->_primaryColumnAnimationInProgress = a3 == 0;
-    v7 = [(SplitViewWindowRootViewController *)self EKUI_viewHierarchy];
-    v8 = [(RootNavigationController *)self->_rootNavigationController view];
-    [v8 bounds];
+    self->_primaryColumnAnimationInProgress = column == 0;
+    eKUI_viewHierarchy = [(SplitViewWindowRootViewController *)self EKUI_viewHierarchy];
+    view = [(RootNavigationController *)self->_rootNavigationController view];
+    [view bounds];
     v10 = v9;
-    [SplitViewWindowRootViewController sidebarWidthForViewHierarchy:v7];
+    [SplitViewWindowRootViewController sidebarWidthForViewHierarchy:eKUI_viewHierarchy];
     v12 = v10 - v11;
-    v13 = [(RootNavigationController *)self->_rootNavigationController view];
-    [v13 bounds];
+    view2 = [(RootNavigationController *)self->_rootNavigationController view];
+    [view2 bounds];
     v15 = v14;
 
-    v16 = [(RootNavigationController *)self->_rootNavigationController topViewController];
-    v17 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
-    [v16 viewWillTransitionToSize:v17 withTransitionCoordinator:{v12, v15}];
+    topViewController = [(RootNavigationController *)self->_rootNavigationController topViewController];
+    transitionCoordinator2 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
+    [topViewController viewWillTransitionToSize:transitionCoordinator2 withTransitionCoordinator:{v12, v15}];
 
-    v18 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
+    transitionCoordinator3 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_10003E750;
     v19[3] = &unk_10020F488;
     v19[4] = self;
-    v19[5] = a3;
-    [v18 animateAlongsideTransition:v5 completion:v19];
+    v19[5] = column;
+    [transitionCoordinator3 animateAlongsideTransition:v5 completion:v19];
   }
 
   else
@@ -2280,40 +2280,40 @@ LABEL_12:
   [(SplitViewWindowRootViewController *)self searchEnded];
 }
 
-- (void)hideColumn:(int64_t)a3
+- (void)hideColumn:(int64_t)column
 {
-  if (a3 != 4 || !self->_isHidingInspectorColumn)
+  if (column != 4 || !self->_isHidingInspectorColumn)
   {
-    self->_isHidingInspectorColumn = a3 == 4;
-    [(UISplitViewController *)self->_splitViewController hideColumn:a3];
+    self->_isHidingInspectorColumn = column == 4;
+    [(UISplitViewController *)self->_splitViewController hideColumn:column];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10003EAB4;
     v16[3] = &unk_10020F488;
     v16[4] = self;
-    v16[5] = a3;
+    v16[5] = column;
     v5 = objc_retainBlock(v16);
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10003EBB8;
     v15[3] = &unk_10020F488;
     v15[4] = self;
-    v15[5] = a3;
+    v15[5] = column;
     v6 = objc_retainBlock(v15);
-    v7 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
-    if (v7)
+    transitionCoordinator = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
+    if (transitionCoordinator)
     {
       self->_animatingSidebar = [(UISplitViewController *)self->_splitViewController splitBehavior]== 1;
-      self->_primaryColumnAnimationInProgress = a3 == 0;
-      v8 = [(RootNavigationController *)self->_rootNavigationController topViewController];
-      v9 = [(RootNavigationController *)self->_rootNavigationController view];
-      [v9 bounds];
+      self->_primaryColumnAnimationInProgress = column == 0;
+      topViewController = [(RootNavigationController *)self->_rootNavigationController topViewController];
+      view = [(RootNavigationController *)self->_rootNavigationController view];
+      [view bounds];
       v11 = v10;
       v13 = v12;
-      v14 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
-      [v8 viewWillTransitionToSize:v14 withTransitionCoordinator:{v11, v13}];
+      transitionCoordinator2 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
+      [topViewController viewWillTransitionToSize:transitionCoordinator2 withTransitionCoordinator:{v11, v13}];
 
-      [v7 animateAlongsideTransition:v5 completion:v6];
+      [transitionCoordinator animateAlongsideTransition:v5 completion:v6];
     }
 
     else
@@ -2324,7 +2324,7 @@ LABEL_12:
   }
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
   if ([(SplitViewWindowRootViewController *)self isPopoverCurrentlyVisible])
   {
@@ -2336,48 +2336,48 @@ LABEL_12:
 
 - (BOOL)isPopoverCurrentlyVisible
 {
-  v2 = [(SplitViewWindowRootViewController *)self presentedViewController];
-  v3 = [v2 modalPresentationStyle] == 7;
+  presentedViewController = [(SplitViewWindowRootViewController *)self presentedViewController];
+  v3 = [presentedViewController modalPresentationStyle] == 7;
 
   return v3;
 }
 
-- (void)setCurrentSidebarState:(unint64_t)a3 completion:(id)a4
+- (void)setCurrentSidebarState:(unint64_t)state completion:(id)completion
 {
-  v6 = a4;
-  if (a3)
+  completionCopy = completion;
+  if (state)
   {
-    self->_lastOpenSidebarState = a3;
+    self->_lastOpenSidebarState = state;
   }
 
   if (!self->_didAppear || [(UISplitViewController *)self->_splitViewController isCollapsed])
   {
-    if (self->_currentSidebarState != a3)
+    if (self->_currentSidebarState != state)
     {
       self->_needsSidebarSetup = 1;
-      self->_pendingState = a3;
+      self->_pendingState = state;
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     goto LABEL_42;
   }
 
-  if (a3 != 1)
+  if (state != 1)
   {
-    if (!a3)
+    if (!state)
     {
       goto LABEL_19;
     }
 
     currentSidebarState = self->_currentSidebarState;
 LABEL_18:
-    if (currentSidebarState != a3)
+    if (currentSidebarState != state)
     {
-      v10 = [(SplitViewWindowRootViewController *)self viewControllerForSidebarState:a3];
+      v10 = [(SplitViewWindowRootViewController *)self viewControllerForSidebarState:state];
       if (v10)
       {
         if (self->_currentSidebarState == 2)
@@ -2392,16 +2392,16 @@ LABEL_18:
 
         if (self->_currentSidebarState)
         {
-          v13 = [objc_opt_class() shouldHideInlineFocusBannerForSidebarState:a3];
-          v14 = [(RootNavigationController *)self->_rootNavigationController paletteView];
-          [v14 setShouldHideInlineFocusBanner:v13];
+          v13 = [objc_opt_class() shouldHideInlineFocusBannerForSidebarState:state];
+          paletteView = [(RootNavigationController *)self->_rootNavigationController paletteView];
+          [paletteView setShouldHideInlineFocusBanner:v13];
         }
 
         else
         {
           if (self->_primaryColumnAnimationInProgress)
           {
-            [(MainWindowControlHeaderView *)self->_headerView updateButtonStateForSidebar:a3];
+            [(MainWindowControlHeaderView *)self->_headerView updateButtonStateForSidebar:state];
 
             goto LABEL_41;
           }
@@ -2409,7 +2409,7 @@ LABEL_18:
           [(SplitViewWindowRootViewController *)self showColumn:0];
         }
 
-        if (a3 == 3)
+        if (state == 3)
         {
           v16 = [UIBarButtonItem alloc];
           v17 = +[NSBundle mainBundle];
@@ -2428,16 +2428,16 @@ LABEL_18:
         [(SplitViewWindowRootViewController *)self updatePrimaryViewControllerToolbar];
       }
 
-      self->_preferredSidebarState = a3;
-      self->_currentSidebarState = a3;
+      self->_preferredSidebarState = state;
+      self->_currentSidebarState = state;
 
       v15 = self->_currentSidebarState;
 LABEL_39:
       self->_animatingSidebar = 0;
       [(MainWindowControlHeaderView *)self->_headerView updateButtonStateForSidebar:v15];
-      if (v6)
+      if (completionCopy)
       {
-        (v6)[2](v6, v10);
+        (completionCopy)[2](completionCopy, v10);
       }
 
       goto LABEL_41;
@@ -2485,32 +2485,32 @@ LABEL_41:
     goto LABEL_18;
   }
 
-  v8 = [(SplitViewWindowRootViewController *)self primarySidebarViewController];
-  [v8 restorePreservedState:self->_calendarsPreservedState];
+  primarySidebarViewController = [(SplitViewWindowRootViewController *)self primarySidebarViewController];
+  [primarySidebarViewController restorePreservedState:self->_calendarsPreservedState];
   calendarsPreservedState = self->_calendarsPreservedState;
   self->_calendarsPreservedState = 0;
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_42:
 }
 
-- (void)showCalendarsSideBarWithCompletion:(id)a3
+- (void)showCalendarsSideBarWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(SplitViewWindowRootViewController *)self currentSidebarState]== 1)
   {
-    v5 = [(SplitViewWindowRootViewController *)self primarySidebarViewController];
+    primarySidebarViewController = [(SplitViewWindowRootViewController *)self primarySidebarViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (v4)
+    if (completionCopy)
     {
       if (isKindOfClass)
       {
-        v7 = v5;
+        v7 = primarySidebarViewController;
       }
 
       else
@@ -2518,7 +2518,7 @@ LABEL_42:
         v7 = 0;
       }
 
-      (v4)[2](v4, v7);
+      (completionCopy)[2](completionCopy, v7);
     }
   }
 
@@ -2528,24 +2528,24 @@ LABEL_42:
     v8[1] = 3221225472;
     v8[2] = sub_10003F204;
     v8[3] = &unk_10020F4B0;
-    v9 = v4;
+    v9 = completionCopy;
     [(SplitViewWindowRootViewController *)self setCurrentSidebarState:1 completion:v8];
   }
 }
 
-- (void)showInboxSideBarWithCompletion:(id)a3
+- (void)showInboxSideBarWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(SplitViewWindowRootViewController *)self currentSidebarState]== 2)
   {
-    v5 = [(SplitViewWindowRootViewController *)self primarySidebarViewController];
+    primarySidebarViewController = [(SplitViewWindowRootViewController *)self primarySidebarViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (v4)
+    if (completionCopy)
     {
       if (isKindOfClass)
       {
-        v7 = v5;
+        v7 = primarySidebarViewController;
       }
 
       else
@@ -2553,7 +2553,7 @@ LABEL_42:
         v7 = 0;
       }
 
-      (v4)[2](v4, v7);
+      (completionCopy)[2](completionCopy, v7);
     }
   }
 
@@ -2563,24 +2563,24 @@ LABEL_42:
     v8[1] = 3221225472;
     v8[2] = sub_10003F380;
     v8[3] = &unk_10020F4B0;
-    v9 = v4;
+    v9 = completionCopy;
     [(SplitViewWindowRootViewController *)self setCurrentSidebarState:2 completion:v8];
   }
 }
 
-- (void)showListSideBarWithCompletion:(id)a3
+- (void)showListSideBarWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(SplitViewWindowRootViewController *)self currentSidebarState]== 3)
   {
-    v5 = [(SplitViewWindowRootViewController *)self primarySidebarViewController];
+    primarySidebarViewController = [(SplitViewWindowRootViewController *)self primarySidebarViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (v4)
+    if (completionCopy)
     {
       if (isKindOfClass)
       {
-        v7 = v5;
+        v7 = primarySidebarViewController;
       }
 
       else
@@ -2588,7 +2588,7 @@ LABEL_42:
         v7 = 0;
       }
 
-      (v4)[2](v4, v7);
+      (completionCopy)[2](completionCopy, v7);
     }
   }
 
@@ -2598,39 +2598,39 @@ LABEL_42:
     v8[1] = 3221225472;
     v8[2] = sub_10003F4FC;
     v8[3] = &unk_10020F4B0;
-    v9 = v4;
+    v9 = completionCopy;
     [(SplitViewWindowRootViewController *)self setCurrentSidebarState:3 completion:v8];
   }
 }
 
-- (void)newEventButtonTapped:(id)a3
+- (void)newEventButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   if (self->_isSearching)
   {
     [(SplitViewWindowRootViewController *)self cancelSearch];
   }
 
-  [(RootNavigationController *)self->_rootNavigationController showAddEventAnimated:1 fromBarButtonItem:v4];
+  [(RootNavigationController *)self->_rootNavigationController showAddEventAnimated:1 fromBarButtonItem:tappedCopy];
 }
 
-- (void)setNavigationItems:(id)a3 additionalItems:(id)a4
+- (void)setNavigationItems:(id)items additionalItems:(id)additionalItems
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v11 count];
+  itemsCopy = items;
+  additionalItemsCopy = additionalItems;
+  v7 = [itemsCopy count];
   if (v7)
   {
-    v7 = [[UIBarButtonItemGroup alloc] initWithBarButtonItems:v11 representativeItem:0];
+    v7 = [[UIBarButtonItemGroup alloc] initWithBarButtonItems:itemsCopy representativeItem:0];
   }
 
   splitViewButtonGroup = self->_splitViewButtonGroup;
   self->_splitViewButtonGroup = v7;
 
-  v9 = [v6 count];
+  v9 = [additionalItemsCopy count];
   if (v9)
   {
-    v9 = [[UIBarButtonItemGroup alloc] initWithBarButtonItems:v6 representativeItem:0];
+    v9 = [[UIBarButtonItemGroup alloc] initWithBarButtonItems:additionalItemsCopy representativeItem:0];
   }
 
   additionalItemsButtonGroup = self->_additionalItemsButtonGroup;
@@ -2643,28 +2643,28 @@ LABEL_42:
 {
   if (self->_currentSidebarState == 3)
   {
-    v4 = [(SplitViewWindowRootViewController *)self primarySidebarViewController];
+    primarySidebarViewController = [(SplitViewWindowRootViewController *)self primarySidebarViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v4;
+      primarySidebarViewController = primarySidebarViewController;
       v2 = CUIKTodayDate();
-      [v4 scrollToDate:v2 animated:1];
+      [primarySidebarViewController scrollToDate:v2 animated:1];
     }
   }
 
   else
   {
     searchResultsController = self->_searchResultsController;
-    v4 = CUIKTodayDate();
+    primarySidebarViewController = CUIKTodayDate();
     [SearchResultsViewController scrollToDate:"scrollToDate:animated:" animated:?];
   }
 }
 
-- (void)showEventAndCloseSidebarIfNeeded:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5
+- (void)showEventAndCloseSidebarIfNeeded:(id)needed animated:(BOOL)animated showMode:(unint64_t)mode
 {
-  v6 = a4;
-  v8 = a3;
+  animatedCopy = animated;
+  neededCopy = needed;
   if (self->_currentSidebarState && [(UISplitViewController *)self->_splitViewController preferredSplitBehavior]== 2 && ([(SplitViewWindowRootViewController *)self setCurrentSidebarState:0], [(UISplitViewController *)self->_splitViewController transitionCoordinator], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v9;
@@ -2673,46 +2673,46 @@ LABEL_42:
     v11[2] = sub_10003F8C8;
     v11[3] = &unk_10020F4D8;
     v11[4] = self;
-    v14 = v6;
-    v12 = v8;
-    v13 = a5;
+    v14 = animatedCopy;
+    v12 = neededCopy;
+    modeCopy = mode;
     [v10 animateAlongsideTransition:v11 completion:0];
   }
 
   else
   {
-    [(RootNavigationController *)self->_rootNavigationController showEvent:v8 animated:v6 showMode:a5 context:0];
+    [(RootNavigationController *)self->_rootNavigationController showEvent:neededCopy animated:animatedCopy showMode:mode context:0];
   }
 }
 
 - (void)inboxWillDismiss
 {
-  v3 = [(SplitViewWindowRootViewController *)self primarySidebarViewController];
-  v2 = [v3 view];
-  [v2 endEditing:1];
+  primarySidebarViewController = [(SplitViewWindowRootViewController *)self primarySidebarViewController];
+  view = [primarySidebarViewController view];
+  [view endEditing:1];
 
-  [v3 inboxWillDismiss];
+  [primarySidebarViewController inboxWillDismiss];
 }
 
 - (void)attemptDisplayReviewPrompt
 {
-  v6 = [(SplitViewWindowRootViewController *)self view];
-  v3 = [v6 window];
-  v4 = [v3 windowScene];
-  v5 = [(RootNavigationController *)self->_rootNavigationController model];
-  [EKUIAppReviewUtils displayReviewPromptIfNeededInScene:v4 calendarModel:v5];
+  view = [(SplitViewWindowRootViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  [EKUIAppReviewUtils displayReviewPromptIfNeededInScene:windowScene calendarModel:model];
 }
 
-- (void)showIdentitySwitcherFromSourceView:(id)a3
+- (void)showIdentitySwitcherFromSourceView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [IdentitySwitcherViewController alloc];
-  v6 = [(RootNavigationController *)self->_rootNavigationController model];
-  v7 = [(IdentitySwitcherViewController *)v5 initWithModel:v6];
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  v7 = [(IdentitySwitcherViewController *)v5 initWithModel:model];
 
   [(IdentitySwitcherViewController *)v7 setModalPresentationStyle:7];
-  v8 = [(IdentitySwitcherViewController *)v7 popoverPresentationController];
-  [v8 setSourceView:v4];
+  popoverPresentationController = [(IdentitySwitcherViewController *)v7 popoverPresentationController];
+  [popoverPresentationController setSourceView:viewCopy];
 
   if (CalInterfaceIsLeftToRight())
   {
@@ -2724,7 +2724,7 @@ LABEL_42:
     v9 = 8;
   }
 
-  [v8 setPermittedArrowDirections:v9];
+  [popoverPresentationController setPermittedArrowDirections:v9];
   v10 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEFAULT))
   {
@@ -2735,7 +2735,7 @@ LABEL_42:
   [(SplitViewWindowRootViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)paletteTodayButtonTapped:(id)a3
+- (void)paletteTodayButtonTapped:(id)tapped
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:@"EmptySearchBarNeedsResignFirstResponderNotification" object:self];
@@ -2745,16 +2745,16 @@ LABEL_42:
   [(SplitViewWindowRootViewController *)self todayToolbarItemPressed];
 }
 
-- (void)paletteAvatarViewTapped:(id)a3
+- (void)paletteAvatarViewTapped:(id)tapped
 {
-  v4 = [a3 avatarView];
-  [(SplitViewWindowRootViewController *)self showIdentitySwitcherFromSourceView:v4];
+  avatarView = [tapped avatarView];
+  [(SplitViewWindowRootViewController *)self showIdentitySwitcherFromSourceView:avatarView];
 }
 
 - (BOOL)paletteShouldShowAvatarView
 {
-  v3 = [(RootNavigationController *)self->_rootNavigationController ekui_futureTraitCollection];
-  if ([(SplitViewWindowRootViewController *)self canShowAvatarViewWithTraitCollection:v3])
+  ekui_futureTraitCollection = [(RootNavigationController *)self->_rootNavigationController ekui_futureTraitCollection];
+  if ([(SplitViewWindowRootViewController *)self canShowAvatarViewWithTraitCollection:ekui_futureTraitCollection])
   {
     v4 = self->_currentSidebarState == 0;
   }
@@ -2767,10 +2767,10 @@ LABEL_42:
   return v4;
 }
 
-- (void)setFocusFilterMode:(unint64_t)a3
+- (void)setFocusFilterMode:(unint64_t)mode
 {
-  v4 = [(RootNavigationController *)self->_rootNavigationController model];
-  [v4 setFocusFilterMode:a3];
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  [model setFocusFilterMode:mode];
 }
 
 - (void)updateNewEventButtonEnabledness
@@ -2801,22 +2801,22 @@ LABEL_42:
 
 - (void)updateErrorState
 {
-  v3 = [(RootNavigationController *)self->_rootNavigationController model];
-  v4 = [(RootNavigationController *)self->_rootNavigationController model];
-  v5 = [v4 sourceForSelectedIdentity];
-  v6 = [v3 displayableAccountErrorsForSource:v5] > 0;
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  model2 = [(RootNavigationController *)self->_rootNavigationController model];
+  sourceForSelectedIdentity = [model2 sourceForSelectedIdentity];
+  v6 = [model displayableAccountErrorsForSource:sourceForSelectedIdentity] > 0;
 
   headerView = self->_headerView;
 
   [(MainWindowControlHeaderView *)headerView updateErrorState:v6];
 }
 
-- (void)_identityChanged:(id)a3
+- (void)_identityChanged:(id)changed
 {
   paletteView = self->_paletteView;
-  v5 = [(RootNavigationController *)self->_rootNavigationController model];
-  v6 = [v5 sourceForSelectedIdentity];
-  [(MasterNavigationPaletteView *)paletteView updateIdentity:v6];
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  sourceForSelectedIdentity = [model sourceForSelectedIdentity];
+  [(MasterNavigationPaletteView *)paletteView updateIdentity:sourceForSelectedIdentity];
 
   [(SplitViewWindowRootViewController *)self updateSidebarPalette];
   [(SplitViewWindowRootViewController *)self updateNewEventButtonEnabledness];
@@ -2825,19 +2825,19 @@ LABEL_42:
   [(SplitViewWindowRootViewController *)self updateInboxCount];
 }
 
-- (void)_delegatesChanged:(id)a3
+- (void)_delegatesChanged:(id)changed
 {
-  v4 = [(RootNavigationController *)self->_rootNavigationController model];
-  -[MasterNavigationPaletteView setShowIdentity:](self->_paletteView, "setShowIdentity:", [v4 containsDelegateSources]);
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  -[MasterNavigationPaletteView setShowIdentity:](self->_paletteView, "setShowIdentity:", [model containsDelegateSources]);
 
   rootNavigationController = self->_rootNavigationController;
-  v6 = [(SplitViewWindowRootViewController *)self traitCollection];
-  [(RootNavigationController *)rootNavigationController setAvatarViewVisible:[(SplitViewWindowRootViewController *)self canShowAvatarViewWithTraitCollection:v6]];
+  traitCollection = [(SplitViewWindowRootViewController *)self traitCollection];
+  [(RootNavigationController *)rootNavigationController setAvatarViewVisible:[(SplitViewWindowRootViewController *)self canShowAvatarViewWithTraitCollection:traitCollection]];
 
   [(SplitViewWindowRootViewController *)self updateNewEventButtonEnabledness];
 }
 
-- (void)_updateAfterExtendedLaunch:(id)a3
+- (void)_updateAfterExtendedLaunch:(id)launch
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2847,20 +2847,20 @@ LABEL_42:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   rootNavigationController = self->_rootNavigationController;
-  v7 = a4;
-  if ([(RootNavigationController *)rootNavigationController shouldHandleCanPerformActionForSelector:a3])
+  senderCopy = sender;
+  if ([(RootNavigationController *)rootNavigationController shouldHandleCanPerformActionForSelector:action])
   {
-    v8 = [(RootNavigationController *)self->_rootNavigationController canPerformAction:a3 withSender:v7];
+    v8 = [(RootNavigationController *)self->_rootNavigationController canPerformAction:action withSender:senderCopy];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = SplitViewWindowRootViewController;
-    v8 = [(SplitViewWindowRootViewController *)&v11 canPerformAction:a3 withSender:v7];
+    v8 = [(SplitViewWindowRootViewController *)&v11 canPerformAction:action withSender:senderCopy];
   }
 
   v9 = v8;
@@ -2870,14 +2870,14 @@ LABEL_42:
 
 - (void)routeNewEventKeyCommand
 {
-  v3 = [(SplitViewWindowRootViewController *)self traitCollection];
-  if ([v3 horizontalSizeClass] != 2)
+  traitCollection = [(SplitViewWindowRootViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] != 2)
   {
     goto LABEL_4;
   }
 
-  v4 = [(SplitViewWindowRootViewController *)self presentedViewController];
-  if (v4)
+  presentedViewController = [(SplitViewWindowRootViewController *)self presentedViewController];
+  if (presentedViewController)
   {
 
 LABEL_4:
@@ -2888,17 +2888,17 @@ LABEL_5:
     return;
   }
 
-  v6 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
+  presentedViewController2 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
 
-  if (v6)
+  if (presentedViewController2)
   {
     goto LABEL_5;
   }
 
-  v7 = [(RootNavigationController *)self->_rootNavigationController addEventBarButtonItem];
-  v8 = [v7 isEnabled];
+  addEventBarButtonItem = [(RootNavigationController *)self->_rootNavigationController addEventBarButtonItem];
+  isEnabled = [addEventBarButtonItem isEnabled];
 
-  if (v8)
+  if (isEnabled)
   {
 
     [(SplitViewWindowRootViewController *)self showAddEvent];
@@ -2907,14 +2907,14 @@ LABEL_5:
 
 - (void)routeSearchKeyCommand
 {
-  v3 = [(SplitViewWindowRootViewController *)self traitCollection];
-  if ([v3 horizontalSizeClass] != 2)
+  traitCollection = [(SplitViewWindowRootViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] != 2)
   {
     goto LABEL_4;
   }
 
-  v4 = [(SplitViewWindowRootViewController *)self presentedViewController];
-  if (v4)
+  presentedViewController = [(SplitViewWindowRootViewController *)self presentedViewController];
+  if (presentedViewController)
   {
 
 LABEL_4:
@@ -2925,9 +2925,9 @@ LABEL_5:
     return;
   }
 
-  v6 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
+  presentedViewController2 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
 
-  if (v6)
+  if (presentedViewController2)
   {
     goto LABEL_5;
   }
@@ -2938,11 +2938,11 @@ LABEL_5:
   [(MainWindowSearchBar *)searchBar becomeFirstResponder];
 }
 
-- (void)toggleSidebar:(id)a3
+- (void)toggleSidebar:(id)sidebar
 {
   if ([(SplitViewWindowRootViewController *)self currentSidebarState])
   {
-    v4 = self;
+    selfCopy2 = self;
     lastOpenSidebarState = 0;
   }
 
@@ -2955,31 +2955,31 @@ LABEL_5:
       self->_lastOpenSidebarState = 1;
     }
 
-    v4 = self;
+    selfCopy2 = self;
   }
 
-  [(SplitViewWindowRootViewController *)v4 setCurrentSidebarState:lastOpenSidebarState];
+  [(SplitViewWindowRootViewController *)selfCopy2 setCurrentSidebarState:lastOpenSidebarState];
 }
 
 - (BOOL)_shouldUseSideBar
 {
-  v2 = [(SplitViewWindowRootViewController *)self traitCollection];
-  v3 = [v2 horizontalSizeClass] == 2;
+  traitCollection = [(SplitViewWindowRootViewController *)self traitCollection];
+  v3 = [traitCollection horizontalSizeClass] == 2;
 
   return v3;
 }
 
-- (void)showCalendarsViewWithCompletion:(id)a3
+- (void)showCalendarsViewWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(SplitViewWindowRootViewController *)self _shouldUseSideBar])
   {
-    [(SplitViewWindowRootViewController *)self showCalendarsSideBarWithCompletion:v4];
+    [(SplitViewWindowRootViewController *)self showCalendarsSideBarWithCompletion:completionCopy];
   }
 
   else
   {
-    [(RootNavigationController *)self->_rootNavigationController showCalendarsAnimated:1 completion:v4];
+    [(RootNavigationController *)self->_rootNavigationController showCalendarsAnimated:1 completion:completionCopy];
   }
 }
 
@@ -3007,9 +3007,9 @@ LABEL_5:
 
   else
   {
-    v3 = [(RootNavigationController *)self->_rootNavigationController resetToDayView];
+    resetToDayView = [(RootNavigationController *)self->_rootNavigationController resetToDayView];
 
-    if (v3)
+    if (resetToDayView)
     {
       rootNavigationController = self->_rootNavigationController;
 
@@ -3034,9 +3034,9 @@ LABEL_5:
 
 - (void)showSplitMonthView
 {
-  v3 = [(RootNavigationController *)self->_rootNavigationController resetToMonthView];
+  resetToMonthView = [(RootNavigationController *)self->_rootNavigationController resetToMonthView];
 
-  if (v3)
+  if (resetToMonthView)
   {
     if ([(SplitViewWindowRootViewController *)self _shouldUseSideBar])
     {
@@ -3053,9 +3053,9 @@ LABEL_5:
 
 - (void)showDayView
 {
-  v3 = [(RootNavigationController *)self->_rootNavigationController resetToDayView];
+  resetToDayView = [(RootNavigationController *)self->_rootNavigationController resetToDayView];
 
-  if (v3)
+  if (resetToDayView)
   {
     rootNavigationController = self->_rootNavigationController;
 
@@ -3063,39 +3063,39 @@ LABEL_5:
   }
 }
 
-- (void)showInspectorForCalendar:(id)a3 enableDoneInitially:(BOOL)a4
+- (void)showInspectorForCalendar:(id)calendar enableDoneInitially:(BOOL)initially
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100040A48;
   v7[3] = &unk_10020F528;
-  v8 = a3;
-  v9 = a4;
-  v6 = v8;
+  calendarCopy = calendar;
+  initiallyCopy = initially;
+  v6 = calendarCopy;
   [(SplitViewWindowRootViewController *)self showCalendarsViewWithCompletion:v7];
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(SplitViewWindowRootViewController *)self isFirstResponder];
-  v48 = self;
-  v10 = [(RootNavigationController *)self->_rootNavigationController topMainViewControllerContainer];
-  v11 = [v10 wantsToRespondToLinearNavigationCommandsWhenNotFirstResponder];
+  beganCopy = began;
+  eventCopy = event;
+  isFirstResponder = [(SplitViewWindowRootViewController *)self isFirstResponder];
+  selfCopy = self;
+  topMainViewControllerContainer = [(RootNavigationController *)self->_rootNavigationController topMainViewControllerContainer];
+  wantsToRespondToLinearNavigationCommandsWhenNotFirstResponder = [topMainViewControllerContainer wantsToRespondToLinearNavigationCommandsWhenNotFirstResponder];
 
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v12 = v7;
+  v12 = beganCopy;
   v13 = [v12 countByEnumeratingWithState:&v51 objects:v55 count:16];
   if (v13)
   {
     v14 = v13;
-    v44 = v8;
+    v44 = eventCopy;
     v49 = *v52;
-    v15 = v9 | v11;
+    v15 = isFirstResponder | wantsToRespondToLinearNavigationCommandsWhenNotFirstResponder;
     v45 = 1;
     v47 = v12;
     while (1)
@@ -3113,12 +3113,12 @@ LABEL_5:
         {
           [v17 key];
           v20 = v19 = v4;
-          v21 = [v20 modifierFlags];
+          modifierFlags = [v20 modifierFlags];
 
           v4 = v19;
-          if (!v21)
+          if (!modifierFlags)
           {
-            [(RootNavigationController *)v48->_rootNavigationController handleSpaceBarKeyCommand];
+            [(RootNavigationController *)selfCopy->_rootNavigationController handleSpaceBarKeyCommand];
           }
         }
 
@@ -3128,21 +3128,21 @@ LABEL_5:
 
         if (v15)
         {
-          v22 = [(SplitViewWindowRootViewController *)v48 presentedViewController];
+          presentedViewController = [(SplitViewWindowRootViewController *)selfCopy presentedViewController];
 
-          if (!v22)
+          if (!presentedViewController)
           {
             v23 = [v17 key];
             if ([v23 keyCode] == 43)
             {
               [v17 key];
               v25 = v24 = v4;
-              v26 = [v25 modifierFlags];
+              modifierFlags2 = [v25 modifierFlags];
 
               v4 = v24;
-              if (v26 == 0x20000)
+              if (modifierFlags2 == 0x20000)
               {
-                v27 = [(SplitViewWindowRootViewController *)v48 targetForAction:"handleSelectPreviousEventCommand" withSender:0];
+                v27 = [(SplitViewWindowRootViewController *)selfCopy targetForAction:"handleSelectPreviousEventCommand" withSender:0];
                 v28 = v27;
                 if (v27)
                 {
@@ -3163,12 +3163,12 @@ LABEL_5:
             {
               [v17 key];
               v31 = v30 = v4;
-              v32 = [v31 modifierFlags];
+              modifierFlags3 = [v31 modifierFlags];
 
               v4 = v30;
-              if (!v32)
+              if (!modifierFlags3)
               {
-                v33 = [(SplitViewWindowRootViewController *)v48 targetForAction:"handleSelectNextEventCommand" withSender:0];
+                v33 = [(SplitViewWindowRootViewController *)selfCopy targetForAction:"handleSelectNextEventCommand" withSender:0];
                 v28 = v33;
                 if (v33)
                 {
@@ -3188,21 +3188,21 @@ LABEL_43:
             }
 
             v34 = [v17 key];
-            v35 = [v34 keyCode];
-            if (v35 == 82 || ([v17 key], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "keyCode") == 80))
+            keyCode = [v34 keyCode];
+            if (keyCode == 82 || ([v17 key], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "keyCode") == 80))
             {
               v36 = v4;
               v37 = [v17 key];
-              v38 = [v37 modifierFlags];
+              modifierFlags4 = [v37 modifierFlags];
 
-              if (v35 != 82)
+              if (keyCode != 82)
               {
               }
 
               v12 = v47;
-              if (!v38)
+              if (!modifierFlags4)
               {
-                v39 = [(SplitViewWindowRootViewController *)v48 targetForAction:"handleSelectPreviousEventCommand" withSender:0];
+                v39 = [(SplitViewWindowRootViewController *)selfCopy targetForAction:"handleSelectPreviousEventCommand" withSender:0];
                 v28 = v39;
                 if (v39)
                 {
@@ -3222,25 +3222,25 @@ LABEL_43:
             }
 
             v28 = [v17 key];
-            v40 = [v28 keyCode];
-            if (v40 == 81 || ([v17 key], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "keyCode") == 79))
+            keyCode2 = [v28 keyCode];
+            if (keyCode2 == 81 || ([v17 key], eventCopy = objc_claimAutoreleasedReturnValue(), objc_msgSend(eventCopy, "keyCode") == 79))
             {
               v46 = v4;
               v41 = [v17 key];
-              v42 = [v41 modifierFlags];
+              modifierFlags5 = [v41 modifierFlags];
 
-              if (v40 != 81)
+              if (keyCode2 != 81)
               {
               }
 
               v12 = v47;
-              if (v42)
+              if (modifierFlags5)
               {
                 v4 = v46;
                 continue;
               }
 
-              v43 = [(SplitViewWindowRootViewController *)v48 targetForAction:"handleSelectNextEventCommand" withSender:0];
+              v43 = [(SplitViewWindowRootViewController *)selfCopy targetForAction:"handleSelectNextEventCommand" withSender:0];
               v28 = v43;
               if (v43)
               {
@@ -3264,7 +3264,7 @@ LABEL_43:
       if (!v14)
       {
 
-        v8 = v44;
+        eventCopy = v44;
         if ((v45 & 1) == 0)
         {
           goto LABEL_50;
@@ -3276,52 +3276,52 @@ LABEL_43:
   }
 
 LABEL_49:
-  v50.receiver = v48;
+  v50.receiver = selfCopy;
   v50.super_class = SplitViewWindowRootViewController;
-  [(SplitViewWindowRootViewController *)&v50 pressesBegan:v12 withEvent:v8];
+  [(SplitViewWindowRootViewController *)&v50 pressesBegan:v12 withEvent:eventCopy];
 LABEL_50:
 }
 
-- (void)dismissPresentedViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissPresentedViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(SplitViewWindowRootViewController *)self presentedViewController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  presentedViewController = [(SplitViewWindowRootViewController *)self presentedViewController];
 
-  if (v7)
+  if (presentedViewController)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100040FC0;
     v8[3] = &unk_10020F550;
     v8[4] = self;
-    v10 = v4;
-    v9 = v6;
-    [(SplitViewWindowRootViewController *)self dismissViewControllerAnimated:v4 completion:v8];
+    v10 = animatedCopy;
+    v9 = completionCopy;
+    [(SplitViewWindowRootViewController *)self dismissViewControllerAnimated:animatedCopy completion:v8];
   }
 
   else
   {
-    [(RootNavigationController *)self->_rootNavigationController dismissPresentedViewControllerAnimated:v4 completion:v6];
+    [(RootNavigationController *)self->_rootNavigationController dismissPresentedViewControllerAnimated:animatedCopy completion:completionCopy];
   }
 }
 
 - (id)primarySidebarViewController
 {
-  v2 = [(UINavigationController *)self->_primaryVC viewControllers];
-  v3 = [v2 firstObject];
+  viewControllers = [(UINavigationController *)self->_primaryVC viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (void)setupSearch:(BOOL)a3
+- (void)setupSearch:(BOOL)search
 {
   if (!self->_searchResultsNavController)
   {
     v4 = [SearchResultsViewController alloc];
-    v5 = [(RootNavigationController *)self->_rootNavigationController model];
-    v6 = [(RootNavigationController *)self->_rootNavigationController window];
-    v7 = [(SearchResultsViewController *)v4 initWithModel:v5 window:v6];
+    model = [(RootNavigationController *)self->_rootNavigationController model];
+    window = [(RootNavigationController *)self->_rootNavigationController window];
+    v7 = [(SearchResultsViewController *)v4 initWithModel:model window:window];
     searchResultsController = self->_searchResultsController;
     self->_searchResultsController = v7;
 
@@ -3347,8 +3347,8 @@ LABEL_50:
     self->_searchResultsNavController = v15;
 
     v17 = CalendarAppBarButtonItemTintColor();
-    v18 = [(UINavigationController *)self->_searchResultsNavController toolbar];
-    [v18 setTintColor:v17];
+    toolbar = [(UINavigationController *)self->_searchResultsNavController toolbar];
+    [toolbar setTintColor:v17];
 
     [(SplitViewWindowRootViewController *)self setCurrentSidebarState:0];
     [(UISplitViewController *)self->_splitViewController setViewController:self->_searchResultsNavController forColumn:4];
@@ -3366,11 +3366,11 @@ LABEL_50:
     v3 = v5;
   }
 
-  v6 = [(SearchResultsViewController *)self->_searchResultsController navigationItem];
-  [v6 _setMinimumDesiredHeight:0 forBarMetrics:v3];
+  navigationItem = [(SearchResultsViewController *)self->_searchResultsController navigationItem];
+  [navigationItem _setMinimumDesiredHeight:0 forBarMetrics:v3];
 
-  v7 = [(SearchResultsViewController *)self->_searchResultsController navigationItem];
-  [v7 _setMinimumDesiredHeight:1 forBarMetrics:v3];
+  navigationItem2 = [(SearchResultsViewController *)self->_searchResultsController navigationItem];
+  [navigationItem2 _setMinimumDesiredHeight:1 forBarMetrics:v3];
 }
 
 - (id)startSearch
@@ -3384,8 +3384,8 @@ LABEL_50:
 - (void)searchTapped
 {
   [(SplitViewWindowRootViewController *)self setCurrentSidebarState:0];
-  v3 = [(MainWindowSearchBar *)self->_searchBar superview];
-  [(SplitViewWindowRootViewController *)self searchButtonTappedCreateAndAddSearchBar:v3 == 0];
+  superview = [(MainWindowSearchBar *)self->_searchBar superview];
+  [(SplitViewWindowRootViewController *)self searchButtonTappedCreateAndAddSearchBar:superview == 0];
 }
 
 - (void)searchBegan
@@ -3400,8 +3400,8 @@ LABEL_50:
 {
   [(SplitViewWindowRootViewController *)self setSearchStateToSearching:0];
   self->_isEndingSearch = 1;
-  v3 = [(SplitViewWindowRootViewController *)self traitCollection];
-  v4 = [(SplitViewWindowRootViewController *)self showsSearchBarForTraitCollection:v3];
+  traitCollection = [(SplitViewWindowRootViewController *)self traitCollection];
+  v4 = [(SplitViewWindowRootViewController *)self showsSearchBarForTraitCollection:traitCollection];
 
   if (v4)
   {
@@ -3425,8 +3425,8 @@ LABEL_50:
       v10 = v9;
       if (CalInterfaceIsLeftToRight())
       {
-        v11 = [(SplitViewWindowRootViewController *)self view];
-        [v11 bounds];
+        view = [(SplitViewWindowRootViewController *)self view];
+        [view bounds];
         v13 = v12;
       }
 
@@ -3470,32 +3470,32 @@ LABEL_50:
 - (void)searchEnded
 {
   self->_isEndingSearch = 0;
-  v3 = [(SplitViewWindowRootViewController *)self traitCollection];
-  v4 = [(SplitViewWindowRootViewController *)self showsSearchBarForTraitCollection:v3];
+  traitCollection = [(SplitViewWindowRootViewController *)self traitCollection];
+  v4 = [(SplitViewWindowRootViewController *)self showsSearchBarForTraitCollection:traitCollection];
 
   if ((v4 & 1) == 0)
   {
     [(NSLayoutConstraint *)self->_searchBarWidthConstraint setConstant:223.0];
     [(MainWindowSearchBar *)self->_searchBar setAlpha:1.0];
-    v5 = [(SplitViewWindowRootViewController *)self traitCollection];
-    [(SplitViewWindowRootViewController *)self setupSearchControlForTraitCollection:v5];
+    traitCollection2 = [(SplitViewWindowRootViewController *)self traitCollection];
+    [(SplitViewWindowRootViewController *)self setupSearchControlForTraitCollection:traitCollection2];
   }
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v11 = a3;
-  v6 = a4;
-  if ([v6 length])
+  barCopy = bar;
+  changeCopy = change;
+  if ([changeCopy length])
   {
     [(SplitViewWindowRootViewController *)self setupSearch:1];
-    [(SearchResultsViewController *)self->_searchResultsController searchBar:v11 textDidChange:v6];
+    [(SearchResultsViewController *)self->_searchResultsController searchBar:barCopy textDidChange:changeCopy];
   }
 
   else
   {
-    v7 = [(SplitViewWindowRootViewController *)self view];
-    [v7 bounds];
+    view = [(SplitViewWindowRootViewController *)self view];
+    [view bounds];
     v10 = [(SplitViewWindowRootViewController *)self preferredSplitBehaviorForSize:v8, v9];
 
     if (v10 != 2)
@@ -3505,7 +3505,7 @@ LABEL_50:
   }
 }
 
-- (void)endSearch:(BOOL)a3
+- (void)endSearch:(BOOL)search
 {
   [(SplitViewWindowRootViewController *)self hideColumn:4];
 
@@ -3530,46 +3530,46 @@ LABEL_50:
   self->_searchResultsController = 0;
 }
 
-- (void)continueSearchWithTerm:(id)a3
+- (void)continueSearchWithTerm:(id)term
 {
-  v6 = a3;
-  v4 = [(SplitViewWindowRootViewController *)self ekui_futureTraitCollection];
-  v5 = [v4 horizontalSizeClass];
+  termCopy = term;
+  ekui_futureTraitCollection = [(SplitViewWindowRootViewController *)self ekui_futureTraitCollection];
+  horizontalSizeClass = [ekui_futureTraitCollection horizontalSizeClass];
 
-  if (v5 == 1)
+  if (horizontalSizeClass == 1)
   {
-    [(RootNavigationController *)self->_rootNavigationController continueSearchWithTerm:v6 animated:1 removeViewControllersIncapableOfSearchIfNeeded:1];
+    [(RootNavigationController *)self->_rootNavigationController continueSearchWithTerm:termCopy animated:1 removeViewControllersIncapableOfSearchIfNeeded:1];
   }
 
   else
   {
     [(SplitViewWindowRootViewController *)self searchTapped];
-    [(MainWindowSearchBar *)self->_searchBar setText:v6];
-    [(SplitViewWindowRootViewController *)self searchBar:self->_searchBar textDidChange:v6];
+    [(MainWindowSearchBar *)self->_searchBar setText:termCopy];
+    [(SplitViewWindowRootViewController *)self searchBar:self->_searchBar textDidChange:termCopy];
   }
 }
 
-- (void)searchResultsViewController:(id)a3 didSelectEvent:(id)a4
+- (void)searchResultsViewController:(id)controller didSelectEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  eventCopy = event;
   if ([(UISplitViewController *)self->_splitViewController preferredSplitBehavior]== 2)
   {
     [(SplitViewWindowRootViewController *)self cancelSearch];
-    v8 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
+    transitionCoordinator = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100041C48;
     v9[3] = &unk_10020F268;
     v9[4] = self;
-    v10 = v6;
-    v11 = v7;
-    [v8 animateAlongsideTransition:v9 completion:0];
+    v10 = controllerCopy;
+    v11 = eventCopy;
+    [transitionCoordinator animateAlongsideTransition:v9 completion:0];
   }
 
   else
   {
-    [(RootNavigationController *)self->_rootNavigationController searchResultsViewController:v6 didSelectEvent:v7];
+    [(RootNavigationController *)self->_rootNavigationController searchResultsViewController:controllerCopy didSelectEvent:eventCopy];
   }
 }
 

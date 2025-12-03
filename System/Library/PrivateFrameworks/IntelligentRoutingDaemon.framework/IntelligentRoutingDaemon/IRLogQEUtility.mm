@@ -1,110 +1,110 @@
 @interface IRLogQEUtility
-+ (id)BOOLPropertyToString:(BOOL)a3;
-+ (id)datePropertyToString:(id)a3 timeZone:(int64_t)a4;
-+ (id)getCandidateAsString:(id)a3;
-+ (id)getContextAsString:(id)a3;
-+ (id)getEventAsString:(id)a3;
-+ (id)getSystemStateAsString:(id)a3;
-+ (id)stringPropertyToString:(id)a3;
++ (id)BOOLPropertyToString:(BOOL)string;
++ (id)datePropertyToString:(id)string timeZone:(int64_t)zone;
++ (id)getCandidateAsString:(id)string;
++ (id)getContextAsString:(id)string;
++ (id)getEventAsString:(id)string;
++ (id)getSystemStateAsString:(id)string;
++ (id)stringPropertyToString:(id)string;
 @end
 
 @implementation IRLogQEUtility
 
-+ (id)getEventAsString:(id)a3
++ (id)getEventAsString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 name];
-  v5 = [IRLogQEUtility stringPropertyToString:v4];
+  stringCopy = string;
+  name = [stringCopy name];
+  v5 = [IRLogQEUtility stringPropertyToString:name];
 
   v6 = MEMORY[0x277CCACA8];
-  v7 = [MEMORY[0x277D212B0] eventTypeStringEventDO:v3];
-  v8 = [MEMORY[0x277D212B0] eventSubTypeStringEventDO:v3];
-  v9 = [v3 bundleID];
-  v10 = [v3 contextIdentifier];
+  v7 = [MEMORY[0x277D212B0] eventTypeStringEventDO:stringCopy];
+  v8 = [MEMORY[0x277D212B0] eventSubTypeStringEventDO:stringCopy];
+  bundleID = [stringCopy bundleID];
+  contextIdentifier = [stringCopy contextIdentifier];
 
-  v11 = [v6 stringWithFormat:@"eventType: %@ eventSubType: %@ name: %@ bundleID: %@ contextIdentifier: %@", v7, v8, v5, v9, v10];
+  v11 = [v6 stringWithFormat:@"eventType: %@ eventSubType: %@ name: %@ bundleID: %@ contextIdentifier: %@", v7, v8, v5, bundleID, contextIdentifier];
 
   return v11;
 }
 
-+ (id)getSystemStateAsString:(id)a3
++ (id)getSystemStateAsString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 appInFocusBundleID];
-  v38 = [IRLogQEUtility stringPropertyToString:v4];
+  stringCopy = string;
+  appInFocusBundleID = [stringCopy appInFocusBundleID];
+  v38 = [IRLogQEUtility stringPropertyToString:appInFocusBundleID];
 
-  v37 = +[IRLogQEUtility BOOLPropertyToString:](IRLogQEUtility, "BOOLPropertyToString:", [v3 appInFocusWindowValid]);
-  v5 = [v3 deviceWiFiSSID];
-  v36 = [IRLogQEUtility stringPropertyToString:v5];
+  v37 = +[IRLogQEUtility BOOLPropertyToString:](IRLogQEUtility, "BOOLPropertyToString:", [stringCopy appInFocusWindowValid]);
+  deviceWiFiSSID = [stringCopy deviceWiFiSSID];
+  v36 = [IRLogQEUtility stringPropertyToString:deviceWiFiSSID];
 
-  v6 = [v3 locationSemanticLoiIdentifier];
-  v35 = [IRLogQEUtility stringPropertyToString:v6];
+  locationSemanticLoiIdentifier = [stringCopy locationSemanticLoiIdentifier];
+  v35 = [IRLogQEUtility stringPropertyToString:locationSemanticLoiIdentifier];
 
-  v7 = [v3 iCloudId];
-  v34 = [IRLogQEUtility stringPropertyToString:v7];
+  iCloudId = [stringCopy iCloudId];
+  v34 = [IRLogQEUtility stringPropertyToString:iCloudId];
 
-  v8 = [v3 avInitialRouteSharingPolicy];
-  v33 = [IRLogQEUtility stringPropertyToString:v8];
+  avInitialRouteSharingPolicy = [stringCopy avInitialRouteSharingPolicy];
+  v33 = [IRLogQEUtility stringPropertyToString:avInitialRouteSharingPolicy];
 
-  v9 = [v3 mediaRouteGroupLeaderOutputDeviceID];
-  v32 = [IRLogQEUtility stringPropertyToString:v9];
+  mediaRouteGroupLeaderOutputDeviceID = [stringCopy mediaRouteGroupLeaderOutputDeviceID];
+  v32 = [IRLogQEUtility stringPropertyToString:mediaRouteGroupLeaderOutputDeviceID];
 
-  v10 = [v3 outputDeviceName];
-  v31 = [IRLogQEUtility stringPropertyToString:v10];
+  outputDeviceName = [stringCopy outputDeviceName];
+  v31 = [IRLogQEUtility stringPropertyToString:outputDeviceName];
 
-  v11 = IRAVOutputDeviceTypeToString([v3 outputDeviceType]);
+  v11 = IRAVOutputDeviceTypeToString([stringCopy outputDeviceType]);
   v30 = [IRLogQEUtility stringPropertyToString:v11];
 
-  v12 = IRAVOutputDeviceSubTypeToString([v3 outputDeviceSubType]);
+  v12 = IRAVOutputDeviceSubTypeToString([stringCopy outputDeviceSubType]);
   v29 = [IRLogQEUtility stringPropertyToString:v12];
 
-  v13 = [v3 predictedOutputDeviceName];
-  v28 = [IRLogQEUtility stringPropertyToString:v13];
+  predictedOutputDeviceName = [stringCopy predictedOutputDeviceName];
+  v28 = [IRLogQEUtility stringPropertyToString:predictedOutputDeviceName];
 
-  v14 = IRAVOutputDeviceTypeToString([v3 predictedOutputDeviceType]);
+  v14 = IRAVOutputDeviceTypeToString([stringCopy predictedOutputDeviceType]);
   v24 = [IRLogQEUtility stringPropertyToString:v14];
 
-  v15 = IRAVOutputDeviceSubTypeToString([v3 predictedOutputDeviceSubType]);
+  v15 = IRAVOutputDeviceSubTypeToString([stringCopy predictedOutputDeviceSubType]);
   v23 = [IRLogQEUtility stringPropertyToString:v15];
 
-  v27 = IRLocationSemanticUserSpecificPlaceTypeToString([v3 locationSemanticUserSpecificPlaceType]);
-  v26 = +[IRLogQEUtility BOOLPropertyToString:](IRLogQEUtility, "BOOLPropertyToString:", [v3 appInFocusWindowScreenUnlockEvent]);
-  v22 = +[IRLogQEUtility BOOLPropertyToString:](IRLogQEUtility, "BOOLPropertyToString:", [v3 pdrFenceActive]);
-  v16 = [v3 latestPickerChoiceDate];
-  v17 = +[IRLogQEUtility datePropertyToString:timeZone:](IRLogQEUtility, "datePropertyToString:timeZone:", v16, [v3 timeZoneSeconds]);
+  v27 = IRLocationSemanticUserSpecificPlaceTypeToString([stringCopy locationSemanticUserSpecificPlaceType]);
+  v26 = +[IRLogQEUtility BOOLPropertyToString:](IRLogQEUtility, "BOOLPropertyToString:", [stringCopy appInFocusWindowScreenUnlockEvent]);
+  v22 = +[IRLogQEUtility BOOLPropertyToString:](IRLogQEUtility, "BOOLPropertyToString:", [stringCopy pdrFenceActive]);
+  latestPickerChoiceDate = [stringCopy latestPickerChoiceDate];
+  v17 = +[IRLogQEUtility datePropertyToString:timeZone:](IRLogQEUtility, "datePropertyToString:timeZone:", latestPickerChoiceDate, [stringCopy timeZoneSeconds]);
 
-  v18 = +[IRLogQEUtility BOOLPropertyToString:](IRLogQEUtility, "BOOLPropertyToString:", [v3 isContinuityDisplay]);
-  v19 = [v3 displayOn];
+  v18 = +[IRLogQEUtility BOOLPropertyToString:](IRLogQEUtility, "BOOLPropertyToString:", [stringCopy isContinuityDisplay]);
+  displayOn = [stringCopy displayOn];
 
-  v20 = [IRLogQEUtility BOOLPropertyToString:v19];
+  v20 = [IRLogQEUtility BOOLPropertyToString:displayOn];
   v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"appInFocusBundleID: %@\n appInFocusWindowValid: %@\n appInFocusWindowScreenUnlockEvent: %@\n deviceWiFiSSID: %@\n locationSemanticLoiIdentifier: %@\n iCloudId: %@\n locationSemanticUserSpecificPlaceType: %@\n avInitialRouteSharingPolicy: %@\n mediaRouteGroupLeaderOutputDeviceID: %@\n outputDevice: Name - %@, Type - %@, SubType - %@\n predictedOutputDevice: Name - %@, Type - %@, SubType - %@\n pdrFenceActive: %@\n latestPickerChoiceDate: %@\n isContinuityDisplay: %@\n displayOn: %@\n", v38, v37, v26, v36, v35, v34, v27, v33, v32, v31, v30, v29, v28, v24, v23, v22, v17, v18, v20];
 
   return v25;
 }
 
-+ (id)getCandidateAsString:(id)a3
++ (id)getCandidateAsString:(id)string
 {
   v57 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 candidateIdentifier];
-  v5 = [IRLogQEUtility stringPropertyToString:v4];
+  stringCopy = string;
+  candidateIdentifier = [stringCopy candidateIdentifier];
+  v5 = [IRLogQEUtility stringPropertyToString:candidateIdentifier];
 
-  v6 = +[IRLogQEUtility BOOLPropertyToString:](IRLogQEUtility, "BOOLPropertyToString:", [v3 isSameWiFi]);
+  v6 = +[IRLogQEUtility BOOLPropertyToString:](IRLogQEUtility, "BOOLPropertyToString:", [stringCopy isSameWiFi]);
   v7 = MEMORY[0x277CCACA8];
-  v8 = [v3 lastSeenDate];
-  v9 = [v3 lastUsedDate];
-  v10 = [v3 firstSeenDate];
-  v11 = [v3 name];
+  lastSeenDate = [stringCopy lastSeenDate];
+  lastUsedDate = [stringCopy lastUsedDate];
+  firstSeenDate = [stringCopy firstSeenDate];
+  name = [stringCopy name];
   v36 = v6;
   v37 = v5;
-  v12 = [v7 stringWithFormat:@"candidateIdentifier: %@\nlastSeen: %@\nlastUsed: %@\nfirstSeen: %@\nname: %@\nisSameWiFi: %@\n", v5, v8, v9, v10, v11, v6];
+  v12 = [v7 stringWithFormat:@"candidateIdentifier: %@\nlastSeen: %@\nlastUsed: %@\nfirstSeen: %@\nname: %@\nisSameWiFi: %@\n", v5, lastSeenDate, lastUsedDate, firstSeenDate, name, v6];
 
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v38 = v3;
-  obj = [v3 nodes];
+  v38 = stringCopy;
+  obj = [stringCopy nodes];
   v41 = [obj countByEnumeratingWithState:&v52 objects:v56 count:16];
   if (v41)
   {
@@ -123,30 +123,30 @@
         }
 
         v17 = *(*(&v52 + 1) + 8 * v14);
-        v18 = [v17 avOutpuDeviceIdentifier];
-        v47 = [IRLogQEUtility stringPropertyToString:v18];
+        avOutpuDeviceIdentifier = [v17 avOutpuDeviceIdentifier];
+        v47 = [IRLogQEUtility stringPropertyToString:avOutpuDeviceIdentifier];
 
-        v19 = [v17 rapportIdentifier];
-        v51 = [IRLogQEUtility stringPropertyToString:v19];
+        rapportIdentifier = [v17 rapportIdentifier];
+        v51 = [IRLogQEUtility stringPropertyToString:rapportIdentifier];
 
-        v20 = [v17 idsIdentifier];
-        v50 = [IRLogQEUtility stringPropertyToString:v20];
+        idsIdentifier = [v17 idsIdentifier];
+        v50 = [IRLogQEUtility stringPropertyToString:idsIdentifier];
 
-        v21 = [v17 avOutputDevice];
-        v22 = [v21 modelID];
-        v49 = [IRLogQEUtility stringPropertyToString:v22];
+        avOutputDevice = [v17 avOutputDevice];
+        modelID = [avOutputDevice modelID];
+        v49 = [IRLogQEUtility stringPropertyToString:modelID];
 
-        v23 = [v17 avOutputDevice];
-        v24 = [v23 deviceName];
-        v48 = [IRLogQEUtility stringPropertyToString:v24];
+        avOutputDevice2 = [v17 avOutputDevice];
+        deviceName = [avOutputDevice2 deviceName];
+        v48 = [IRLogQEUtility stringPropertyToString:deviceName];
 
         v46 = MEMORY[0x277CCACA8];
-        v25 = [v15 stringValue];
-        v26 = [v17 avOutputDevice];
-        if (v26)
+        stringValue = [v15 stringValue];
+        avOutputDevice3 = [v17 avOutputDevice];
+        if (avOutputDevice3)
         {
-          v45 = [v17 avOutputDevice];
-          v27 = IRAVOutputDeviceTypeToString([v45 deviceType]);
+          avOutputDevice4 = [v17 avOutputDevice];
+          v27 = IRAVOutputDeviceTypeToString([avOutputDevice4 deviceType]);
           v43 = v27;
         }
 
@@ -155,11 +155,11 @@
           v27 = @"Invalid";
         }
 
-        v28 = [v17 avOutputDevice];
-        if (v28)
+        avOutputDevice5 = [v17 avOutputDevice];
+        if (avOutputDevice5)
         {
-          v44 = [v17 avOutputDevice];
-          v29 = IRAVOutputDeviceSubTypeToString([v44 deviceSubType]);
+          avOutputDevice6 = [v17 avOutputDevice];
+          v29 = IRAVOutputDeviceSubTypeToString([avOutputDevice6 deviceSubType]);
           v42 = v29;
         }
 
@@ -168,15 +168,15 @@
           v29 = @"Invalid";
         }
 
-        v30 = [v17 rapportDevice];
-        v31 = [v30 iCloudId];
-        v32 = [v46 stringWithFormat:@" device%@:\n  avOutpuDeviceIdentifier: %@\n  rapportIdentifier: %@\n  idsIdentifier: %@\n  modelID: %@\n  deviceName: %@\n  deviceType: %@\n  deviceSubType: %@\n  iCloudId: %@\n", v25, v47, v51, v50, v49, v48, v27, v29, v31];
+        rapportDevice = [v17 rapportDevice];
+        iCloudId = [rapportDevice iCloudId];
+        v32 = [v46 stringWithFormat:@" device%@:\n  avOutpuDeviceIdentifier: %@\n  rapportIdentifier: %@\n  idsIdentifier: %@\n  modelID: %@\n  deviceName: %@\n  deviceType: %@\n  deviceSubType: %@\n  iCloudId: %@\n", stringValue, v47, v51, v50, v49, v48, v27, v29, iCloudId];
 
-        if (v28)
+        if (avOutputDevice5)
         {
         }
 
-        if (v26)
+        if (avOutputDevice3)
         {
         }
 
@@ -207,11 +207,11 @@
   return v12;
 }
 
-+ (id)stringPropertyToString:(id)a3
++ (id)stringPropertyToString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    return a3;
+    return string;
   }
 
   else
@@ -220,9 +220,9 @@
   }
 }
 
-+ (id)BOOLPropertyToString:(BOOL)a3
++ (id)BOOLPropertyToString:(BOOL)string
 {
-  if (a3)
+  if (string)
   {
     return @"YES";
   }
@@ -233,18 +233,18 @@
   }
 }
 
-+ (id)datePropertyToString:(id)a3 timeZone:(int64_t)a4
++ (id)datePropertyToString:(id)string timeZone:(int64_t)zone
 {
-  if (a3)
+  if (string)
   {
     v5 = MEMORY[0x277CCA968];
-    v6 = a3;
+    stringCopy = string;
     v7 = objc_alloc_init(v5);
     [v7 setDateFormat:@"yyyy-MM-dd HH:mm:ss (Z)"];
-    v8 = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:a4];
+    v8 = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:zone];
     [v7 setTimeZone:v8];
 
-    v9 = [v7 stringFromDate:v6];
+    v9 = [v7 stringFromDate:stringCopy];
   }
 
   else
@@ -255,15 +255,15 @@
   return v9;
 }
 
-+ (id)getContextAsString:(id)a3
++ (id)getContextAsString:(id)string
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [a3 candidateResults];
-  v4 = [v3 allObjects];
-  v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_19];
+  candidateResults = [string candidateResults];
+  allObjects = [candidateResults allObjects];
+  v5 = [allObjects sortedArrayUsingComparator:&__block_literal_global_19];
 
-  v6 = [MEMORY[0x277CCAB68] string];
-  [v6 appendString:@"{\n"];
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendString:@"{\n"];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
@@ -285,22 +285,22 @@
 
         v29 = v7;
         v8 = *(*(&v34 + 1) + 8 * v7);
-        [v6 appendString:@"    {\n"];
-        v9 = [v8 candidate];
-        v10 = [v9 candidateIdentifier];
+        [string appendString:@"    {\n"];
+        candidate = [v8 candidate];
+        candidateIdentifier = [candidate candidateIdentifier];
         [v8 classification];
         v11 = IRCandidateClassificationToString();
-        v12 = [v8 classificationDescription];
-        [v6 appendFormat:@"        candidateIdentifier: %@, classification: %@, desc: %@\n", v10, v11, v12];
+        classificationDescription = [v8 classificationDescription];
+        [string appendFormat:@"        candidateIdentifier: %@, classification: %@, desc: %@\n", candidateIdentifier, v11, classificationDescription];
 
         v32 = 0u;
         v33 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v13 = [v8 candidate];
-        v14 = [v13 nodes];
+        candidate2 = [v8 candidate];
+        nodes = [candidate2 nodes];
 
-        v15 = [v14 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        v15 = [nodes countByEnumeratingWithState:&v30 objects:v38 count:16];
         if (v15)
         {
           v16 = v15;
@@ -311,24 +311,24 @@
             {
               if (*v31 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(nodes);
               }
 
               v19 = *(*(&v30 + 1) + 8 * i);
-              v20 = [v19 name];
-              v21 = [v19 avOutpuDeviceIdentifier];
-              v22 = [v19 rapportIdentifier];
-              v23 = [v19 idsIdentifier];
-              [v6 appendFormat:@"        node: name: %@, avOutpuDeviceIdentifier: %@, rapportIdentifier: %@, idsIdentifier: %@\n", v20, v21, v22, v23];
+              name = [v19 name];
+              avOutpuDeviceIdentifier = [v19 avOutpuDeviceIdentifier];
+              rapportIdentifier = [v19 rapportIdentifier];
+              idsIdentifier = [v19 idsIdentifier];
+              [string appendFormat:@"        node: name: %@, avOutpuDeviceIdentifier: %@, rapportIdentifier: %@, idsIdentifier: %@\n", name, avOutpuDeviceIdentifier, rapportIdentifier, idsIdentifier];
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v30 objects:v38 count:16];
+            v16 = [nodes countByEnumeratingWithState:&v30 objects:v38 count:16];
           }
 
           while (v16);
         }
 
-        [v6 appendString:@"    \n    }\n"];
+        [string appendString:@"    \n    }\n"];
         v7 = v29 + 1;
       }
 
@@ -339,10 +339,10 @@
     while (v28);
   }
 
-  [v6 appendString:@"}\n"];
+  [string appendString:@"}\n"];
   v24 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return string;
 }
 
 uint64_t __37__IRLogQEUtility_getContextAsString___block_invoke(uint64_t a1, void *a2, void *a3)

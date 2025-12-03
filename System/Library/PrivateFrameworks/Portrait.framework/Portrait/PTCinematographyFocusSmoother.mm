@@ -6,9 +6,9 @@
 - (float)_lastAddedSample;
 - (float)nextSmoothedSample;
 - (void)_advanceToNextSmoothedSample;
-- (void)_padByCount:(unint64_t)a3;
+- (void)_padByCount:(unint64_t)count;
 - (void)_padToFill;
-- (void)addSample:(float)a3;
+- (void)addSample:(float)sample;
 @end
 
 @implementation PTCinematographyFocusSmoother
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (void)addSample:(float)a3
+- (void)addSample:(float)sample
 {
   if (self->_didEndSamples || (v5 = self->_cachedSamples) == 0)
   {
@@ -35,7 +35,7 @@
     cachedSamples = self->_cachedSamples;
     self->_cachedSamples = v7;
 
-    *&v9 = a3;
+    *&v9 = sample;
     [(MutableFloatArray *)self->_cachedSamples setFloat:0 inRange:v6, v9];
     self->_unprocessedSampleCount = 1;
     self->_didEndSamples = 0;
@@ -43,7 +43,7 @@
 
   else
   {
-    [(MutableFloatArray *)v5 appendFloat:*&a3];
+    [(MutableFloatArray *)v5 appendFloat:*&sample];
     ++self->_unprocessedSampleCount;
   }
 }
@@ -76,29 +76,29 @@
 
 - (PTCinematographyFocusSmoother)lastFocusSmoother
 {
-  v2 = self;
-  v3 = [(PTCinematographyFocusSmoother *)v2 nextFocusSmoother];
+  selfCopy = self;
+  nextFocusSmoother = [(PTCinematographyFocusSmoother *)selfCopy nextFocusSmoother];
 
-  if (v3)
+  if (nextFocusSmoother)
   {
     do
     {
-      v4 = [(PTCinematographyFocusSmoother *)v2 nextFocusSmoother];
+      nextFocusSmoother2 = [(PTCinematographyFocusSmoother *)selfCopy nextFocusSmoother];
 
-      v5 = [(PTCinematographyFocusSmoother *)v4 nextFocusSmoother];
+      v4NextFocusSmoother = [(PTCinematographyFocusSmoother *)nextFocusSmoother2 nextFocusSmoother];
 
-      v2 = v4;
+      selfCopy = nextFocusSmoother2;
     }
 
-    while (v5);
+    while (v4NextFocusSmoother);
   }
 
   else
   {
-    v4 = v2;
+    nextFocusSmoother2 = selfCopy;
   }
 
-  return v4;
+  return nextFocusSmoother2;
 }
 
 - (float)_getSmoothedSample
@@ -146,20 +146,20 @@
   }
 }
 
-- (void)_padByCount:(unint64_t)a3
+- (void)_padByCount:(unint64_t)count
 {
   [(PTCinematographyFocusSmoother *)self _lastAddedSample];
-  if (a3)
+  if (count)
   {
     v6 = LODWORD(v5);
     do
     {
       LODWORD(v5) = v6;
       [(MutableFloatArray *)self->_cachedSamples appendFloat:v5];
-      --a3;
+      --count;
     }
 
-    while (a3);
+    while (count);
   }
 }
 

@@ -1,7 +1,7 @@
 @interface VCPFaceUtils
-+ (BOOL)isBestResourceForFaceProcessing:(id)a3 fromResources:(id)a4;
-+ (CGRect)faceRectFromNormalizedCenterX:(double)a3 normalizedCenterY:(double)a4 normalizedSize:(double)a5 sourceWidth:(double)a6 sourceHeight:(double)a7;
-+ (id)_firstLocallyAvailableResourceFromResources:(id)a3;
++ (BOOL)isBestResourceForFaceProcessing:(id)processing fromResources:(id)resources;
++ (CGRect)faceRectFromNormalizedCenterX:(double)x normalizedCenterY:(double)y normalizedSize:(double)size sourceWidth:(double)width sourceHeight:(double)height;
++ (id)_firstLocallyAvailableResourceFromResources:(id)resources;
 + (id)_vnFaceAttributeAgeToPHFaceAgeTypeMap;
 + (id)_vnFaceAttributeEthnicityToPHFaceEthnicityType;
 + (id)_vnFaceAttributeEyesToPHEyesStateMap;
@@ -17,30 +17,30 @@
 + (id)_vnFaceAttributeSmileToPHFaceSmileTypeMap;
 + (id)_vnFaceGazeDirectionToPHFaceGazeType;
 + (id)imageCreationOptions;
-+ (id)mad_PHFaceGazeTypeDescription:(unsigned __int16)a3;
-+ (id)mad_VNFaceGazeDirectionDescription:(int64_t)a3;
-+ (id)phFaceFromVCPPhotosFace:(id)a3 withFetchOptions:(id)a4;
-+ (id)phFacesFromVCPPhotosFaces:(id)a3 withFetchOptions:(id)a4;
-+ (id)preferredResourcesForFaceProcessingWithAsset:(id)a3;
-+ (id)resourceForFaceProcessing:(id)a3 allowStreaming:(BOOL)a4;
-+ (id)resourceForFaceProcessingWithAsset:(id)a3 allowStreaming:(BOOL)a4;
-+ (int)configureVNRequest:(id *)a3 withClass:(Class)a4 andProcessingVersion:(int)a5;
-+ (int)configureVNRequest:(id *)a3 withClass:(Class)a4 andVisionRevision:(unint64_t)a5;
-+ (unsigned)mad_PHValueFromVNAgeCategoryLabel:(id)a3;
-+ (unsigned)mad_PHValueFromVNEthnicityCategoryLabel:(id)a3;
-+ (unsigned)mad_PHValueFromVNExpressionCategoryLabel:(id)a3;
-+ (unsigned)mad_PHValueFromVNEyesCategoryLabel:(id)a3;
-+ (unsigned)mad_PHValueFromVNFaceGazeDirection:(int64_t)a3;
-+ (unsigned)mad_PHValueFromVNFaceHairCategoryLabel:(id)a3;
-+ (unsigned)mad_PHValueFromVNFaceHairCategoryV2Label:(id)a3;
-+ (unsigned)mad_PHValueFromVNGlassesCategoryLabel:(id)a3;
-+ (unsigned)mad_PHValueFromVNHairColorCategoryLabel:(id)a3;
-+ (unsigned)mad_PHValueFromVNHeadgearCategoryLabel:(id)a3;
-+ (unsigned)mad_PHValueFromVNPoseCategoryLabel:(id)a3;
-+ (unsigned)mad_PHValueFromVNSexCategoryLabel:(id)a3;
-+ (unsigned)mad_PHValueFromVNSkintoneCategoryLabel:(id)a3;
-+ (unsigned)mad_PHValueFromVNSmilingCategoryLabel:(id)a3;
-+ (void)assignPropertiesOfVCPPhotosFace:(id)a3 toPHFaceChangeRequest:(id)a4;
++ (id)mad_PHFaceGazeTypeDescription:(unsigned __int16)description;
++ (id)mad_VNFaceGazeDirectionDescription:(int64_t)description;
++ (id)phFaceFromVCPPhotosFace:(id)face withFetchOptions:(id)options;
++ (id)phFacesFromVCPPhotosFaces:(id)faces withFetchOptions:(id)options;
++ (id)preferredResourcesForFaceProcessingWithAsset:(id)asset;
++ (id)resourceForFaceProcessing:(id)processing allowStreaming:(BOOL)streaming;
++ (id)resourceForFaceProcessingWithAsset:(id)asset allowStreaming:(BOOL)streaming;
++ (int)configureVNRequest:(id *)request withClass:(Class)class andProcessingVersion:(int)version;
++ (int)configureVNRequest:(id *)request withClass:(Class)class andVisionRevision:(unint64_t)revision;
++ (unsigned)mad_PHValueFromVNAgeCategoryLabel:(id)label;
++ (unsigned)mad_PHValueFromVNEthnicityCategoryLabel:(id)label;
++ (unsigned)mad_PHValueFromVNExpressionCategoryLabel:(id)label;
++ (unsigned)mad_PHValueFromVNEyesCategoryLabel:(id)label;
++ (unsigned)mad_PHValueFromVNFaceGazeDirection:(int64_t)direction;
++ (unsigned)mad_PHValueFromVNFaceHairCategoryLabel:(id)label;
++ (unsigned)mad_PHValueFromVNFaceHairCategoryV2Label:(id)label;
++ (unsigned)mad_PHValueFromVNGlassesCategoryLabel:(id)label;
++ (unsigned)mad_PHValueFromVNHairColorCategoryLabel:(id)label;
++ (unsigned)mad_PHValueFromVNHeadgearCategoryLabel:(id)label;
++ (unsigned)mad_PHValueFromVNPoseCategoryLabel:(id)label;
++ (unsigned)mad_PHValueFromVNSexCategoryLabel:(id)label;
++ (unsigned)mad_PHValueFromVNSkintoneCategoryLabel:(id)label;
++ (unsigned)mad_PHValueFromVNSmilingCategoryLabel:(id)label;
++ (void)assignPropertiesOfVCPPhotosFace:(id)face toPHFaceChangeRequest:(id)request;
 @end
 
 @implementation VCPFaceUtils
@@ -72,17 +72,17 @@ void __36__VCPFaceUtils_imageCreationOptions__block_invoke()
   +[VCPFaceUtils imageCreationOptions]::kImageCreationOptions = v1;
 }
 
-+ (id)phFacesFromVCPPhotosFaces:(id)a3 withFetchOptions:(id)a4
++ (id)phFacesFromVCPPhotosFaces:(id)faces withFetchOptions:(id)options
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  facesCopy = faces;
+  optionsCopy = options;
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(facesCopy, "count")}];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v5;
+  v8 = facesCopy;
   v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
@@ -97,13 +97,13 @@ void __36__VCPFaceUtils_imageCreationOptions__block_invoke()
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
-        v13 = [v12 localIdentifier];
-        v14 = v13 == 0;
+        localIdentifier = [v12 localIdentifier];
+        v14 = localIdentifier == 0;
 
         if (!v14)
         {
-          v15 = [v12 localIdentifier];
-          [v7 addObject:v15];
+          localIdentifier2 = [v12 localIdentifier];
+          [v7 addObject:localIdentifier2];
         }
       }
 
@@ -115,7 +115,7 @@ void __36__VCPFaceUtils_imageCreationOptions__block_invoke()
 
   if ([v7 count])
   {
-    v16 = [MEMORY[0x1E69787D0] fetchFacesWithLocalIdentifiers:v7 options:v6];
+    v16 = [MEMORY[0x1E69787D0] fetchFacesWithLocalIdentifiers:v7 options:optionsCopy];
     v17 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v16, "count")}];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
@@ -166,23 +166,23 @@ void __53__VCPFaceUtils__vnFaceAttributeAgeToPHFaceAgeTypeMap__block_invoke()
   +[VCPFaceUtils _vnFaceAttributeAgeToPHFaceAgeTypeMap]::categoryMap = v2;
 }
 
-+ (unsigned)mad_PHValueFromVNAgeCategoryLabel:(id)a3
++ (unsigned)mad_PHValueFromVNAgeCategoryLabel:(id)label
 {
-  v4 = a3;
-  v5 = [a1 _vnFaceAttributeAgeToPHFaceAgeTypeMap];
-  v6 = [v5 valueForKey:v4];
+  labelCopy = label;
+  _vnFaceAttributeAgeToPHFaceAgeTypeMap = [self _vnFaceAttributeAgeToPHFaceAgeTypeMap];
+  v6 = [_vnFaceAttributeAgeToPHFaceAgeTypeMap valueForKey:labelCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
-  return v8;
+  return integerValue;
 }
 
 + (id)_vnFaceAttributeSexToPHFaceSexTypeMap
@@ -210,23 +210,23 @@ void __53__VCPFaceUtils__vnFaceAttributeSexToPHFaceSexTypeMap__block_invoke()
   +[VCPFaceUtils _vnFaceAttributeSexToPHFaceSexTypeMap]::categoryMap = v1;
 }
 
-+ (unsigned)mad_PHValueFromVNSexCategoryLabel:(id)a3
++ (unsigned)mad_PHValueFromVNSexCategoryLabel:(id)label
 {
-  v4 = a3;
-  v5 = [a1 _vnFaceAttributeSexToPHFaceSexTypeMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  labelCopy = label;
+  _vnFaceAttributeSexToPHFaceSexTypeMap = [self _vnFaceAttributeSexToPHFaceSexTypeMap];
+  v6 = [_vnFaceAttributeSexToPHFaceSexTypeMap objectForKeyedSubscript:labelCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
-  return v8;
+  return integerValue;
 }
 
 + (id)_vnFaceAttributeEyesToPHEyesStateMap
@@ -254,23 +254,23 @@ void __52__VCPFaceUtils__vnFaceAttributeEyesToPHEyesStateMap__block_invoke()
   +[VCPFaceUtils _vnFaceAttributeEyesToPHEyesStateMap]::categoryMap = v1;
 }
 
-+ (unsigned)mad_PHValueFromVNEyesCategoryLabel:(id)a3
++ (unsigned)mad_PHValueFromVNEyesCategoryLabel:(id)label
 {
-  v4 = a3;
-  v5 = [a1 _vnFaceAttributeEyesToPHEyesStateMap];
-  v6 = [v5 valueForKey:v4];
+  labelCopy = label;
+  _vnFaceAttributeEyesToPHEyesStateMap = [self _vnFaceAttributeEyesToPHEyesStateMap];
+  v6 = [_vnFaceAttributeEyesToPHEyesStateMap valueForKey:labelCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
-  return v8;
+  return integerValue;
 }
 
 + (id)_vnFaceAttributeSmileToPHFaceSmileTypeMap
@@ -298,23 +298,23 @@ void __57__VCPFaceUtils__vnFaceAttributeSmileToPHFaceSmileTypeMap__block_invoke(
   +[VCPFaceUtils _vnFaceAttributeSmileToPHFaceSmileTypeMap]::categoryMap = v1;
 }
 
-+ (unsigned)mad_PHValueFromVNSmilingCategoryLabel:(id)a3
++ (unsigned)mad_PHValueFromVNSmilingCategoryLabel:(id)label
 {
-  v4 = a3;
-  v5 = [a1 _vnFaceAttributeSmileToPHFaceSmileTypeMap];
-  v6 = [v5 valueForKey:v4];
+  labelCopy = label;
+  _vnFaceAttributeSmileToPHFaceSmileTypeMap = [self _vnFaceAttributeSmileToPHFaceSmileTypeMap];
+  v6 = [_vnFaceAttributeSmileToPHFaceSmileTypeMap valueForKey:labelCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
-  return v8;
+  return integerValue;
 }
 
 + (id)_vnFaceAttributeFacialHairToPHFacialHairTypeMap
@@ -367,23 +367,23 @@ void __63__VCPFaceUtils__vnFaceAttributeFacialHairToPHFacialHairTypeMap__block_i
   +[VCPFaceUtils _vnFaceAttributeFacialHairToPHFacialHairTypeMap]::categoryMap = v6;
 }
 
-+ (unsigned)mad_PHValueFromVNFaceHairCategoryLabel:(id)a3
++ (unsigned)mad_PHValueFromVNFaceHairCategoryLabel:(id)label
 {
-  v4 = a3;
-  v5 = [a1 _vnFaceAttributeFacialHairToPHFacialHairTypeMap];
-  v6 = [v5 valueForKey:v4];
+  labelCopy = label;
+  _vnFaceAttributeFacialHairToPHFacialHairTypeMap = [self _vnFaceAttributeFacialHairToPHFacialHairTypeMap];
+  v6 = [_vnFaceAttributeFacialHairToPHFacialHairTypeMap valueForKey:labelCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
-  return v8;
+  return integerValue;
 }
 
 + (id)_vnFaceAttributeHairColorToPHFaceHairColorTypeMap
@@ -421,23 +421,23 @@ void __65__VCPFaceUtils__vnFaceAttributeHairColorToPHFaceHairColorTypeMap__block
   +[VCPFaceUtils _vnFaceAttributeHairColorToPHFaceHairColorTypeMap]::categoryMap = v3;
 }
 
-+ (unsigned)mad_PHValueFromVNHairColorCategoryLabel:(id)a3
++ (unsigned)mad_PHValueFromVNHairColorCategoryLabel:(id)label
 {
-  v4 = a3;
-  v5 = [a1 _vnFaceAttributeHairColorToPHFaceHairColorTypeMap];
-  v6 = [v5 valueForKey:v4];
+  labelCopy = label;
+  _vnFaceAttributeHairColorToPHFaceHairColorTypeMap = [self _vnFaceAttributeHairColorToPHFaceHairColorTypeMap];
+  v6 = [_vnFaceAttributeHairColorToPHFaceHairColorTypeMap valueForKey:labelCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
-  return v8;
+  return integerValue;
 }
 
 + (id)_vnFaceAttributeGlassesToPHFaceGlassesTypeMap
@@ -467,23 +467,23 @@ void __61__VCPFaceUtils__vnFaceAttributeGlassesToPHFaceGlassesTypeMap__block_inv
   +[VCPFaceUtils _vnFaceAttributeGlassesToPHFaceGlassesTypeMap]::categoryMap = v1;
 }
 
-+ (unsigned)mad_PHValueFromVNGlassesCategoryLabel:(id)a3
++ (unsigned)mad_PHValueFromVNGlassesCategoryLabel:(id)label
 {
-  v4 = a3;
-  v5 = [a1 _vnFaceAttributeGlassesToPHFaceGlassesTypeMap];
-  v6 = [v5 valueForKey:v4];
+  labelCopy = label;
+  _vnFaceAttributeGlassesToPHFaceGlassesTypeMap = [self _vnFaceAttributeGlassesToPHFaceGlassesTypeMap];
+  v6 = [_vnFaceAttributeGlassesToPHFaceGlassesTypeMap valueForKey:labelCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
-  return v8;
+  return integerValue;
 }
 
 + (id)_vnFaceAttributeFacialHairToPHFaceExpressionType
@@ -521,23 +521,23 @@ void __64__VCPFaceUtils__vnFaceAttributeFacialHairToPHFaceExpressionType__block_
   +[VCPFaceUtils _vnFaceAttributeFacialHairToPHFaceExpressionType]::categoryMap = v3;
 }
 
-+ (unsigned)mad_PHValueFromVNExpressionCategoryLabel:(id)a3
++ (unsigned)mad_PHValueFromVNExpressionCategoryLabel:(id)label
 {
-  v4 = a3;
-  v5 = [a1 _vnFaceAttributeFacialHairToPHFaceExpressionType];
-  v6 = [v5 valueForKey:v4];
+  labelCopy = label;
+  _vnFaceAttributeFacialHairToPHFaceExpressionType = [self _vnFaceAttributeFacialHairToPHFaceExpressionType];
+  v6 = [_vnFaceAttributeFacialHairToPHFaceExpressionType valueForKey:labelCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
-  return v8;
+  return integerValue;
 }
 
 + (id)_vnFaceAttributeHeadGearToPHFaceHeadGearType
@@ -572,23 +572,23 @@ void __60__VCPFaceUtils__vnFaceAttributeHeadGearToPHFaceHeadGearType__block_invo
   +[VCPFaceUtils _vnFaceAttributeHeadGearToPHFaceHeadGearType]::categoryMap = v2;
 }
 
-+ (unsigned)mad_PHValueFromVNHeadgearCategoryLabel:(id)a3
++ (unsigned)mad_PHValueFromVNHeadgearCategoryLabel:(id)label
 {
-  v4 = a3;
-  v5 = [a1 _vnFaceAttributeHeadGearToPHFaceHeadGearType];
-  v6 = [v5 valueForKey:v4];
+  labelCopy = label;
+  _vnFaceAttributeHeadGearToPHFaceHeadGearType = [self _vnFaceAttributeHeadGearToPHFaceHeadGearType];
+  v6 = [_vnFaceAttributeHeadGearToPHFaceHeadGearType valueForKey:labelCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
-  return v8;
+  return integerValue;
 }
 
 + (id)_vnFaceAttributeHairTypeToPHFaceHairType
@@ -630,23 +630,23 @@ void __56__VCPFaceUtils__vnFaceAttributeHairTypeToPHFaceHairType__block_invoke()
   +[VCPFaceUtils _vnFaceAttributeHairTypeToPHFaceHairType]::categoryMap = v3;
 }
 
-+ (unsigned)mad_PHValueFromVNFaceHairCategoryV2Label:(id)a3
++ (unsigned)mad_PHValueFromVNFaceHairCategoryV2Label:(id)label
 {
-  v4 = a3;
-  v5 = [a1 _vnFaceAttributeHairTypeToPHFaceHairType];
-  v6 = [v5 valueForKey:v4];
+  labelCopy = label;
+  _vnFaceAttributeHairTypeToPHFaceHairType = [self _vnFaceAttributeHairTypeToPHFaceHairType];
+  v6 = [_vnFaceAttributeHairTypeToPHFaceHairType valueForKey:labelCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
-  return v8;
+  return integerValue;
 }
 
 + (id)_vnFaceAttributePoseToPHFacePoseType
@@ -681,23 +681,23 @@ void __52__VCPFaceUtils__vnFaceAttributePoseToPHFacePoseType__block_invoke()
   +[VCPFaceUtils _vnFaceAttributePoseToPHFacePoseType]::categoryMap = v2;
 }
 
-+ (unsigned)mad_PHValueFromVNPoseCategoryLabel:(id)a3
++ (unsigned)mad_PHValueFromVNPoseCategoryLabel:(id)label
 {
-  v4 = a3;
-  v5 = [a1 _vnFaceAttributePoseToPHFacePoseType];
-  v6 = [v5 valueForKey:v4];
+  labelCopy = label;
+  _vnFaceAttributePoseToPHFacePoseType = [self _vnFaceAttributePoseToPHFacePoseType];
+  v6 = [_vnFaceAttributePoseToPHFacePoseType valueForKey:labelCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
-  return v8;
+  return integerValue;
 }
 
 + (id)_vnFaceAttributeSkintoneToPHFaceSkintoneType
@@ -735,23 +735,23 @@ void __60__VCPFaceUtils__vnFaceAttributeSkintoneToPHFaceSkintoneType__block_invo
   +[VCPFaceUtils _vnFaceAttributeSkintoneToPHFaceSkintoneType]::categoryMap = v3;
 }
 
-+ (unsigned)mad_PHValueFromVNSkintoneCategoryLabel:(id)a3
++ (unsigned)mad_PHValueFromVNSkintoneCategoryLabel:(id)label
 {
-  v4 = a3;
-  v5 = [a1 _vnFaceAttributeSkintoneToPHFaceSkintoneType];
-  v6 = [v5 valueForKey:v4];
+  labelCopy = label;
+  _vnFaceAttributeSkintoneToPHFaceSkintoneType = [self _vnFaceAttributeSkintoneToPHFaceSkintoneType];
+  v6 = [_vnFaceAttributeSkintoneToPHFaceSkintoneType valueForKey:labelCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
-  return v8;
+  return integerValue;
 }
 
 + (id)_vnFaceAttributeEthnicityToPHFaceEthnicityType
@@ -786,23 +786,23 @@ void __62__VCPFaceUtils__vnFaceAttributeEthnicityToPHFaceEthnicityType__block_in
   +[VCPFaceUtils _vnFaceAttributeEthnicityToPHFaceEthnicityType]::categoryMap = v2;
 }
 
-+ (unsigned)mad_PHValueFromVNEthnicityCategoryLabel:(id)a3
++ (unsigned)mad_PHValueFromVNEthnicityCategoryLabel:(id)label
 {
-  v4 = a3;
-  v5 = [a1 _vnFaceAttributeEthnicityToPHFaceEthnicityType];
-  v6 = [v5 valueForKey:v4];
+  labelCopy = label;
+  _vnFaceAttributeEthnicityToPHFaceEthnicityType = [self _vnFaceAttributeEthnicityToPHFaceEthnicityType];
+  v6 = [_vnFaceAttributeEthnicityToPHFaceEthnicityType valueForKey:labelCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
-  return v8;
+  return integerValue;
 }
 
 + (id)_vnFaceGazeDirectionToPHFaceGazeType
@@ -837,181 +837,181 @@ void __52__VCPFaceUtils__vnFaceGazeDirectionToPHFaceGazeType__block_invoke()
   +[VCPFaceUtils _vnFaceGazeDirectionToPHFaceGazeType]::categoryMap = v0;
 }
 
-+ (id)mad_VNFaceGazeDirectionDescription:(int64_t)a3
++ (id)mad_VNFaceGazeDirectionDescription:(int64_t)description
 {
-  if (a3 >= 6)
+  if (description >= 6)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error VNFaceGazeDirection: %lu", a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error VNFaceGazeDirection: %lu", description];
   }
 
   else
   {
-    v4 = off_1E834D198[a3];
+    v4 = off_1E834D198[description];
   }
 
   return v4;
 }
 
-+ (id)mad_PHFaceGazeTypeDescription:(unsigned __int16)a3
++ (id)mad_PHFaceGazeTypeDescription:(unsigned __int16)description
 {
-  if ((a3 - 1) >= 5)
+  if ((description - 1) >= 5)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error PHFaceGazeType: %d", a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error PHFaceGazeType: %d", description];
   }
 
   else
   {
-    v4 = off_1E834D1C8[(a3 - 1)];
+    v4 = off_1E834D1C8[(description - 1)];
   }
 
   return v4;
 }
 
-+ (unsigned)mad_PHValueFromVNFaceGazeDirection:(int64_t)a3
++ (unsigned)mad_PHValueFromVNFaceGazeDirection:(int64_t)direction
 {
-  v4 = [a1 _vnFaceGazeDirectionToPHFaceGazeType];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  _vnFaceGazeDirectionToPHFaceGazeType = [self _vnFaceGazeDirectionToPHFaceGazeType];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:direction];
+  v6 = [_vnFaceGazeDirectionToPHFaceGazeType objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  return v7;
+  return integerValue;
 }
 
-+ (void)assignPropertiesOfVCPPhotosFace:(id)a3 toPHFaceChangeRequest:(id)a4
++ (void)assignPropertiesOfVCPPhotosFace:(id)face toPHFaceChangeRequest:(id)request
 {
-  v14 = a3;
-  v5 = a4;
-  [v5 setSourceWidth:{objc_msgSend(v14, "sourceWidth")}];
-  [v5 setSourceHeight:{objc_msgSend(v14, "sourceHeight")}];
-  [v5 setDetectionType:{objc_msgSend(v14, "detectionType")}];
-  [v14 centerX];
-  [v5 setCenterX:?];
-  [v14 centerY];
-  [v5 setCenterY:?];
-  [v14 size];
-  [v5 setSize:?];
-  [v14 bodyCenterX];
-  [v5 setBodyCenterX:?];
-  [v14 bodyCenterY];
-  [v5 setBodyCenterY:?];
-  [v14 bodyWidth];
-  [v5 setBodyWidth:?];
-  [v14 bodyHeight];
-  [v5 setBodyHeight:?];
-  [v5 setHasSmile:{objc_msgSend(v14, "hasSmile")}];
-  [v14 blurScore];
-  [v5 setBlurScore:?];
-  [v5 setLeftEyeClosed:{objc_msgSend(v14, "isLeftEyeClosed")}];
-  [v5 setRightEyeClosed:{objc_msgSend(v14, "isRightEyeClosed")}];
-  [v14 poseYaw];
-  [v5 setPoseYaw:?];
-  [v5 setFaceAlgorithmVersion:{objc_msgSend(v14, "algorithmVersion")}];
-  [v5 setQualityMeasure:{objc_msgSend(v14, "qualityMeasure")}];
-  [v5 setAgeType:{objc_msgSend(v14, "ageType")}];
-  [v5 setSexType:{objc_msgSend(v14, "sexType")}];
-  [v5 setEyesState:{objc_msgSend(v14, "eyesState")}];
-  [v5 setSmileType:{objc_msgSend(v14, "smileType")}];
-  [v5 setFacialHairType:{objc_msgSend(v14, "facialHairType")}];
-  [v5 setHairColorType:{objc_msgSend(v14, "hairColorType")}];
-  [v5 setGlassesType:{objc_msgSend(v14, "glassesType")}];
-  [v5 setFaceExpressionType:{objc_msgSend(v14, "expressionType")}];
-  [v5 setHeadgearType:{objc_msgSend(v14, "headgearType")}];
-  [v5 setHairType:{objc_msgSend(v14, "hairType")}];
-  [v5 setPoseType:{objc_msgSend(v14, "poseType")}];
-  [v5 setSkintoneType:{objc_msgSend(v14, "skintoneType")}];
-  [v5 setEthnicityType:{objc_msgSend(v14, "ethnicityType")}];
-  [v14 roll];
-  [v5 setRoll:?];
-  [v14 quality];
-  [v5 setQuality:?];
-  [v5 setGazeType:{objc_msgSend(v14, "gazeType")}];
-  [v5 setHasFaceMask:{objc_msgSend(v14, "hasFaceMask")}];
-  [v14 gazeCenterX];
-  [v5 setGazeCenterX:?];
-  [v14 gazeCenterY];
-  [v5 setGazeCenterY:?];
-  [v14 gazeRect];
-  [v5 setGazeRect:?];
-  [v14 gazeAngle];
-  [v5 setGazeAngle:?];
-  [v14 gazeConfidence];
-  [v5 setGazeConfidence:?];
-  [v5 setHidden:{objc_msgSend(v14, "hidden")}];
-  [v5 setInTrash:{objc_msgSend(v14, "isInTrash")}];
-  [v5 setManual:{objc_msgSend(v14, "manual")}];
-  v6 = [v14 adjustmentVersion];
-  [v5 setAdjustmentVersion:v6];
+  faceCopy = face;
+  requestCopy = request;
+  [requestCopy setSourceWidth:{objc_msgSend(faceCopy, "sourceWidth")}];
+  [requestCopy setSourceHeight:{objc_msgSend(faceCopy, "sourceHeight")}];
+  [requestCopy setDetectionType:{objc_msgSend(faceCopy, "detectionType")}];
+  [faceCopy centerX];
+  [requestCopy setCenterX:?];
+  [faceCopy centerY];
+  [requestCopy setCenterY:?];
+  [faceCopy size];
+  [requestCopy setSize:?];
+  [faceCopy bodyCenterX];
+  [requestCopy setBodyCenterX:?];
+  [faceCopy bodyCenterY];
+  [requestCopy setBodyCenterY:?];
+  [faceCopy bodyWidth];
+  [requestCopy setBodyWidth:?];
+  [faceCopy bodyHeight];
+  [requestCopy setBodyHeight:?];
+  [requestCopy setHasSmile:{objc_msgSend(faceCopy, "hasSmile")}];
+  [faceCopy blurScore];
+  [requestCopy setBlurScore:?];
+  [requestCopy setLeftEyeClosed:{objc_msgSend(faceCopy, "isLeftEyeClosed")}];
+  [requestCopy setRightEyeClosed:{objc_msgSend(faceCopy, "isRightEyeClosed")}];
+  [faceCopy poseYaw];
+  [requestCopy setPoseYaw:?];
+  [requestCopy setFaceAlgorithmVersion:{objc_msgSend(faceCopy, "algorithmVersion")}];
+  [requestCopy setQualityMeasure:{objc_msgSend(faceCopy, "qualityMeasure")}];
+  [requestCopy setAgeType:{objc_msgSend(faceCopy, "ageType")}];
+  [requestCopy setSexType:{objc_msgSend(faceCopy, "sexType")}];
+  [requestCopy setEyesState:{objc_msgSend(faceCopy, "eyesState")}];
+  [requestCopy setSmileType:{objc_msgSend(faceCopy, "smileType")}];
+  [requestCopy setFacialHairType:{objc_msgSend(faceCopy, "facialHairType")}];
+  [requestCopy setHairColorType:{objc_msgSend(faceCopy, "hairColorType")}];
+  [requestCopy setGlassesType:{objc_msgSend(faceCopy, "glassesType")}];
+  [requestCopy setFaceExpressionType:{objc_msgSend(faceCopy, "expressionType")}];
+  [requestCopy setHeadgearType:{objc_msgSend(faceCopy, "headgearType")}];
+  [requestCopy setHairType:{objc_msgSend(faceCopy, "hairType")}];
+  [requestCopy setPoseType:{objc_msgSend(faceCopy, "poseType")}];
+  [requestCopy setSkintoneType:{objc_msgSend(faceCopy, "skintoneType")}];
+  [requestCopy setEthnicityType:{objc_msgSend(faceCopy, "ethnicityType")}];
+  [faceCopy roll];
+  [requestCopy setRoll:?];
+  [faceCopy quality];
+  [requestCopy setQuality:?];
+  [requestCopy setGazeType:{objc_msgSend(faceCopy, "gazeType")}];
+  [requestCopy setHasFaceMask:{objc_msgSend(faceCopy, "hasFaceMask")}];
+  [faceCopy gazeCenterX];
+  [requestCopy setGazeCenterX:?];
+  [faceCopy gazeCenterY];
+  [requestCopy setGazeCenterY:?];
+  [faceCopy gazeRect];
+  [requestCopy setGazeRect:?];
+  [faceCopy gazeAngle];
+  [requestCopy setGazeAngle:?];
+  [faceCopy gazeConfidence];
+  [requestCopy setGazeConfidence:?];
+  [requestCopy setHidden:{objc_msgSend(faceCopy, "hidden")}];
+  [requestCopy setInTrash:{objc_msgSend(faceCopy, "isInTrash")}];
+  [requestCopy setManual:{objc_msgSend(faceCopy, "manual")}];
+  adjustmentVersion = [faceCopy adjustmentVersion];
+  [requestCopy setAdjustmentVersion:adjustmentVersion];
 
-  v7 = [v14 groupingIdentifier];
-  [v5 setGroupingIdentifier:v7];
+  groupingIdentifier = [faceCopy groupingIdentifier];
+  [requestCopy setGroupingIdentifier:groupingIdentifier];
 
-  [v5 setNameSource:{objc_msgSend(v14, "nameSource")}];
-  [v5 setVuObservationID:{objc_msgSend(v14, "vuObservationID")}];
-  v8 = [v14 imageprintWrapper];
+  [requestCopy setNameSource:{objc_msgSend(faceCopy, "nameSource")}];
+  [requestCopy setVuObservationID:{objc_msgSend(faceCopy, "vuObservationID")}];
+  imageprintWrapper = [faceCopy imageprintWrapper];
 
-  if (v8)
+  if (imageprintWrapper)
   {
     v9 = objc_alloc(MEMORY[0x1E6978818]);
-    v10 = [v14 imageprintWrapper];
-    v11 = [v10 data];
-    v12 = [v14 imageprintWrapper];
-    v13 = [v9 initWithFaceprintData:v11 faceprintVersion:{objc_msgSend(v12, "version")}];
+    imageprintWrapper2 = [faceCopy imageprintWrapper];
+    data = [imageprintWrapper2 data];
+    imageprintWrapper3 = [faceCopy imageprintWrapper];
+    v13 = [v9 initWithFaceprintData:data faceprintVersion:{objc_msgSend(imageprintWrapper3, "version")}];
 
-    [v5 setFaceprint:v13];
+    [requestCopy setFaceprint:v13];
   }
 }
 
-+ (id)phFaceFromVCPPhotosFace:(id)a3 withFetchOptions:(id)a4
++ (id)phFaceFromVCPPhotosFace:(id)face withFetchOptions:(id)options
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 localIdentifier];
-  v8 = v7;
-  if (v7)
+  faceCopy = face;
+  optionsCopy = options;
+  localIdentifier = [faceCopy localIdentifier];
+  v8 = localIdentifier;
+  if (localIdentifier)
   {
     v9 = MEMORY[0x1E69787D0];
-    v14[0] = v7;
+    v14[0] = localIdentifier;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-    v11 = [v9 fetchFacesWithLocalIdentifiers:v10 options:v6];
+    v11 = [v9 fetchFacesWithLocalIdentifiers:v10 options:optionsCopy];
 
     if ([v11 count] == 1)
     {
-      v12 = [v11 firstObject];
+      firstObject = [v11 firstObject];
     }
 
     else
     {
-      v12 = 0;
+      firstObject = 0;
     }
   }
 
   else
   {
-    v12 = 0;
+    firstObject = 0;
   }
 
-  return v12;
+  return firstObject;
 }
 
-+ (id)_firstLocallyAvailableResourceFromResources:(id)a3
++ (id)_firstLocallyAvailableResourceFromResources:(id)resources
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  resourcesCopy = resources;
+  v4 = [resourcesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -1021,7 +1021,7 @@ void __52__VCPFaceUtils__vnFaceGazeDirectionToPHFaceGazeType__block_invoke()
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(resourcesCopy);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -1032,7 +1032,7 @@ void __52__VCPFaceUtils__vnFaceGazeDirectionToPHFaceGazeType__block_invoke()
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [resourcesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -1047,28 +1047,28 @@ LABEL_11:
   return v4;
 }
 
-+ (id)resourceForFaceProcessing:(id)a3 allowStreaming:(BOOL)a4
++ (id)resourceForFaceProcessing:(id)processing allowStreaming:(BOOL)streaming
 {
-  v4 = a4;
+  streamingCopy = streaming;
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 count])
+  processingCopy = processing;
+  if ([processingCopy count])
   {
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v32 = v6;
+      v32 = processingCopy;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "Choosing asset resource from preferred list: %@", buf, 0xCu);
     }
 
-    if (v4)
+    if (streamingCopy)
     {
-      v7 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v8 = v6;
+      v8 = processingCopy;
       v9 = [v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
       if (v9)
       {
@@ -1085,7 +1085,7 @@ LABEL_11:
             v12 = *(*(&v25 + 1) + 8 * i);
             if ([v12 analysisType] == 2 || objc_msgSend(v12, "analysisType") == 1)
             {
-              [v7 addObject:v12];
+              [array addObject:v12];
             }
           }
 
@@ -1095,27 +1095,27 @@ LABEL_11:
         while (v9);
       }
 
-      if (![v7 count])
+      if (![array count])
       {
-        v13 = [v8 firstObject];
-        [v7 addObject:v13];
+        firstObject = [v8 firstObject];
+        [array addObject:firstObject];
       }
 
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v32 = v7;
+        v32 = array;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "Network is available, filtering list to remove the CPL Thumb, new list is: %@", buf, 0xCu);
       }
 
-      v14 = [a1 _firstLocallyAvailableResourceFromResources:v7];
-      if (!v14)
+      firstObject2 = [self _firstLocallyAvailableResourceFromResources:array];
+      if (!firstObject2)
       {
         v23 = 0u;
         v24 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v15 = v7;
+        v15 = array;
         v16 = [v15 countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v16)
         {
@@ -1147,9 +1147,9 @@ LABEL_24:
             }
           }
 
-          v14 = v19;
+          firstObject2 = v19;
 
-          if (v14)
+          if (firstObject2)
           {
             goto LABEL_35;
           }
@@ -1160,12 +1160,12 @@ LABEL_24:
 LABEL_30:
         }
 
-        v14 = [v15 firstObject];
+        firstObject2 = [v15 firstObject];
 LABEL_35:
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v32 = v14;
+          v32 = firstObject2;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "No resources locally available, returning a downloadable hi-res resource: %@", buf, 0xCu);
         }
       }
@@ -1173,37 +1173,37 @@ LABEL_35:
 
     else
     {
-      v14 = [a1 _firstLocallyAvailableResourceFromResources:v6];
+      firstObject2 = [self _firstLocallyAvailableResourceFromResources:processingCopy];
     }
   }
 
   else
   {
-    v14 = 0;
+    firstObject2 = 0;
   }
 
-  return v14;
+  return firstObject2;
 }
 
-+ (id)preferredResourcesForFaceProcessingWithAsset:(id)a3
++ (id)preferredResourcesForFaceProcessingWithAsset:(id)asset
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v16 = v3;
-  if (v3)
+  assetCopy = asset;
+  v16 = assetCopy;
+  if (assetCopy)
   {
-    if ([v3 hasAdjustments])
+    if ([assetCopy hasAdjustments])
     {
       LOBYTE(v4) = 0;
     }
 
     else
     {
-      v6 = [v16 photoLibrary];
-      v4 = [v6 vcp_isSyndicationLibrary] ^ 1;
+      photoLibrary = [v16 photoLibrary];
+      v4 = [photoLibrary vcp_isSyndicationLibrary] ^ 1;
     }
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     [MEMORY[0x1E69786D0] vcp_allAcceptableResourcesForAsset:v16];
     v19 = 0u;
     v20 = 0u;
@@ -1229,14 +1229,14 @@ LABEL_35:
             {
               if ([v11 type] != 13 && objc_msgSend(v11, "type") != 8)
               {
-                v12 = [v11 vcp_uniformTypeIdentifier];
-                v13 = [VCPImageManager canDecodeAcceleratedUniformTypeIdentifier:v12];
+                vcp_uniformTypeIdentifier = [v11 vcp_uniformTypeIdentifier];
+                v13 = [VCPImageManager canDecodeAcceleratedUniformTypeIdentifier:vcp_uniformTypeIdentifier];
 
                 if (v13)
                 {
                   if (([v11 type] != 1) | v4 & 1)
                   {
-                    [v5 addObject:v11];
+                    [array addObject:v11];
                   }
                 }
               }
@@ -1250,64 +1250,64 @@ LABEL_35:
       while (v8);
     }
 
-    v14 = [MEMORY[0x1E69786D0] vcp_descendingSizeComparator];
-    [v5 sortUsingComparator:v14];
+    vcp_descendingSizeComparator = [MEMORY[0x1E69786D0] vcp_descendingSizeComparator];
+    [array sortUsingComparator:vcp_descendingSizeComparator];
   }
 
   else
   {
-    v5 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v5;
+  return array;
 }
 
-+ (id)resourceForFaceProcessingWithAsset:(id)a3 allowStreaming:(BOOL)a4
++ (id)resourceForFaceProcessingWithAsset:(id)asset allowStreaming:(BOOL)streaming
 {
-  v4 = a4;
-  v6 = [a1 preferredResourcesForFaceProcessingWithAsset:a3];
-  v7 = [a1 resourceForFaceProcessing:v6 allowStreaming:v4];
+  streamingCopy = streaming;
+  v6 = [self preferredResourcesForFaceProcessingWithAsset:asset];
+  v7 = [self resourceForFaceProcessing:v6 allowStreaming:streamingCopy];
 
   return v7;
 }
 
-+ (BOOL)isBestResourceForFaceProcessing:(id)a3 fromResources:(id)a4
++ (BOOL)isBestResourceForFaceProcessing:(id)processing fromResources:(id)resources
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69786D0] vcp_descendingSizeComparator];
-  v8 = [v6 sortedArrayUsingComparator:v7];
+  processingCopy = processing;
+  resourcesCopy = resources;
+  vcp_descendingSizeComparator = [MEMORY[0x1E69786D0] vcp_descendingSizeComparator];
+  v8 = [resourcesCopy sortedArrayUsingComparator:vcp_descendingSizeComparator];
 
-  v9 = [v8 firstObject];
-  v10 = v9 == v5 || [v5 analysisType] == 2 || objc_msgSend(v5, "analysisType") == 1;
+  firstObject = [v8 firstObject];
+  v10 = firstObject == processingCopy || [processingCopy analysisType] == 2 || objc_msgSend(processingCopy, "analysisType") == 1;
 
   return v10;
 }
 
-+ (int)configureVNRequest:(id *)a3 withClass:(Class)a4 andVisionRevision:(unint64_t)a5
++ (int)configureVNRequest:(id *)request withClass:(Class)class andVisionRevision:(unint64_t)revision
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = objc_alloc_init(a4);
-  *a3 = v8;
-  if (a5 < 0xDECAF000)
+  v8 = objc_alloc_init(class);
+  *request = v8;
+  if (revision < 0xDECAF000)
   {
-    [v8 setRevision:a5];
+    [v8 setRevision:revision];
   }
 
   else
   {
     v14 = 0;
-    v9 = [v8 setRevision:a5 error:&v14];
+    v9 = [v8 setRevision:revision error:&v14];
     v10 = v14;
-    v11 = v10;
+    defaultANEDevice = v10;
     if ((v9 & 1) == 0)
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v16 = a4;
+        classCopy = class;
         v17 = 2112;
-        v18 = v11;
+        v18 = defaultANEDevice;
         v19 = 1024;
         v20 = 15;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[Face] Failed setting %@ private revision: %@, umbrellaVersion: %d", buf, 0x1Cu);
@@ -1318,12 +1318,12 @@ LABEL_35:
     }
   }
 
-  [*a3 setMetalContextPriority:1];
-  [*a3 setPreferBackgroundProcessing:1];
+  [*request setMetalContextPriority:1];
+  [*request setPreferBackgroundProcessing:1];
   if (DeviceHasANE())
   {
-    v11 = [MEMORY[0x1E6984608] defaultANEDevice];
-    [*a3 setProcessingDevice:v11];
+    defaultANEDevice = [MEMORY[0x1E6984608] defaultANEDevice];
+    [*request setProcessingDevice:defaultANEDevice];
     v12 = 0;
 LABEL_12:
 
@@ -1333,34 +1333,34 @@ LABEL_12:
   return 0;
 }
 
-+ (int)configureVNRequest:(id *)a3 withClass:(Class)a4 andProcessingVersion:(int)a5
++ (int)configureVNRequest:(id *)request withClass:(Class)class andProcessingVersion:(int)version
 {
-  v8 = VCPMAGetRevisionForVisionModel(a4, *&a5);
+  v8 = VCPMAGetRevisionForVisionModel(class, *&version);
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return -23807;
   }
 
-  return [a1 configureVNRequest:a3 withClass:a4 andVisionRevision:v8];
+  return [self configureVNRequest:request withClass:class andVisionRevision:v8];
 }
 
-+ (CGRect)faceRectFromNormalizedCenterX:(double)a3 normalizedCenterY:(double)a4 normalizedSize:(double)a5 sourceWidth:(double)a6 sourceHeight:(double)a7
++ (CGRect)faceRectFromNormalizedCenterX:(double)x normalizedCenterY:(double)y normalizedSize:(double)size sourceWidth:(double)width sourceHeight:(double)height
 {
-  if (a6 >= a7)
+  if (width >= height)
   {
-    v7 = a6;
+    heightCopy = width;
   }
 
   else
   {
-    v7 = a7;
+    heightCopy = height;
   }
 
-  v8 = v7 * a5;
-  v9 = v8 / a6;
-  v10 = v8 / a7;
-  v11 = a3 - v9 * 0.5;
-  v12 = a4 - v8 / a7 * 0.5;
+  v8 = heightCopy * size;
+  v9 = v8 / width;
+  v10 = v8 / height;
+  v11 = x - v9 * 0.5;
+  v12 = y - v8 / height * 0.5;
   result.size.height = v10;
   result.size.width = v9;
   result.origin.y = v12;

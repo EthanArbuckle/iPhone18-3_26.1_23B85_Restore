@@ -1,38 +1,38 @@
 @interface EKUISendInviteAlertController
-+ (id)newAlertControllerWithCompletionHandler:(id)a3;
-+ (id)presentInviteAlertWithOptions:(unint64_t)a3 sourceView:(id)a4 sourceRect:(CGRect)a5 sourceItem:(id)a6 viewController:(id)a7 withCompletionHandler:(id)a8;
-- (BOOL)_useSheetForViewController:(id)a3;
++ (id)newAlertControllerWithCompletionHandler:(id)handler;
++ (id)presentInviteAlertWithOptions:(unint64_t)options sourceView:(id)view sourceRect:(CGRect)rect sourceItem:(id)item viewController:(id)controller withCompletionHandler:(id)handler;
+- (BOOL)_useSheetForViewController:(id)controller;
 - (id)alertIconImage;
 - (void)_cleanup;
-- (void)_completeWithSelection:(int)a3;
-- (void)_presentAlertWithOptions:(unint64_t)a3 sourceView:(id)a4 sourceRect:(CGRect)a5 sourceItem:(id)a6 viewController:(id)a7;
-- (void)cancelAnimated:(BOOL)a3;
+- (void)_completeWithSelection:(int)selection;
+- (void)_presentAlertWithOptions:(unint64_t)options sourceView:(id)view sourceRect:(CGRect)rect sourceItem:(id)item viewController:(id)controller;
+- (void)cancelAnimated:(BOOL)animated;
 - (void)dealloc;
 @end
 
 @implementation EKUISendInviteAlertController
 
-+ (id)newAlertControllerWithCompletionHandler:(id)a3
++ (id)newAlertControllerWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = objc_opt_new();
-  [v4 setCompletionHandler:v3];
+  [v4 setCompletionHandler:handlerCopy];
 
   [v4 setStrongSelf:v4];
   return v4;
 }
 
-+ (id)presentInviteAlertWithOptions:(unint64_t)a3 sourceView:(id)a4 sourceRect:(CGRect)a5 sourceItem:(id)a6 viewController:(id)a7 withCompletionHandler:(id)a8
++ (id)presentInviteAlertWithOptions:(unint64_t)options sourceView:(id)view sourceRect:(CGRect)rect sourceItem:(id)item viewController:(id)controller withCompletionHandler:(id)handler
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v17 = a7;
-  v18 = a6;
-  v19 = a4;
-  v20 = [a1 newAlertControllerWithCompletionHandler:a8];
-  [v20 _presentAlertWithOptions:a3 sourceView:v19 sourceRect:v18 sourceItem:v17 viewController:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  itemCopy = item;
+  viewCopy = view;
+  v20 = [self newAlertControllerWithCompletionHandler:handler];
+  [v20 _presentAlertWithOptions:options sourceView:viewCopy sourceRect:itemCopy sourceItem:controllerCopy viewController:{x, y, width, height}];
 
   return v20;
 }
@@ -45,17 +45,17 @@
   [(EKUISendInviteAlertController *)&v3 dealloc];
 }
 
-- (BOOL)_useSheetForViewController:(id)a3
+- (BOOL)_useSheetForViewController:(id)controller
 {
-  v3 = a3;
-  v4 = [v3 view];
-  if (EKUICurrentHeightSizeClassIsCompact(v4))
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  if (EKUICurrentHeightSizeClassIsCompact(view))
   {
     goto LABEL_4;
   }
 
-  v5 = [v3 view];
-  if (EKUICurrentWidthSizeClassIsCompactInViewHierarchy(v5))
+  view2 = [controllerCopy view];
+  if (EKUICurrentWidthSizeClassIsCompactInViewHierarchy(view2))
   {
 
 LABEL_4:
@@ -64,15 +64,15 @@ LABEL_4:
   }
 
   v6 = 1;
-  v8 = [v3 _isInContextOfPresentationControllerOfClass:objc_opt_class() effective:1];
+  v8 = [controllerCopy _isInContextOfPresentationControllerOfClass:objc_opt_class() effective:1];
 
   if (v8)
   {
     goto LABEL_6;
   }
 
-  v4 = [v3 _popoverController];
-  v6 = v4 != 0;
+  view = [controllerCopy _popoverController];
+  v6 = view != 0;
 LABEL_5:
 
 LABEL_6:
@@ -83,8 +83,8 @@ LABEL_6:
 {
   v2 = objc_alloc(MEMORY[0x1E69A8A00]);
   v3 = [v2 initWithBundleIdentifier:*MEMORY[0x1E69930E8]];
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v6 = v5;
 
   v7 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:100.0 scale:{100.0, v6}];
@@ -101,27 +101,27 @@ LABEL_6:
   return v10;
 }
 
-- (void)_presentAlertWithOptions:(unint64_t)a3 sourceView:(id)a4 sourceRect:(CGRect)a5 sourceItem:(id)a6 viewController:(id)a7
+- (void)_presentAlertWithOptions:(unint64_t)options sourceView:(id)view sourceRect:(CGRect)rect sourceItem:(id)item viewController:(id)controller
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  if (v17)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  optionsCopy = options;
+  viewCopy = view;
+  itemCopy = item;
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v18 = [(EKUISendInviteAlertController *)self _useSheetForViewController:v17]^ 1;
-    if ((v13 & 0x10) != 0)
+    v18 = [(EKUISendInviteAlertController *)self _useSheetForViewController:controllerCopy]^ 1;
+    if ((optionsCopy & 0x10) != 0)
     {
       v19 = EventKitUIBundle();
       v20 = v19;
       v21 = @"Send invitations to all attendees?";
     }
 
-    else if ((v13 & 8) != 0)
+    else if ((optionsCopy & 8) != 0)
     {
       v19 = EventKitUIBundle();
       v20 = v19;
@@ -130,7 +130,7 @@ LABEL_6:
 
     else
     {
-      if ((v13 & 4) != 0)
+      if ((optionsCopy & 4) != 0)
       {
         v45 = EventKitUIBundle();
         v23 = [v45 localizedStringForKey:@"Time was changed" value:&stru_1F4EF6790 table:0];
@@ -144,8 +144,8 @@ LABEL_13:
         alertController = self->_alertController;
         self->_alertController = v25;
 
-        v27 = [(EKUISendInviteAlertController *)self alertIconImage];
-        [(UIAlertController *)self->_alertController setImage:v27];
+        alertIconImage = [(EKUISendInviteAlertController *)self alertIconImage];
+        [(UIAlertController *)self->_alertController setImage:alertIconImage];
 
         objc_initWeak(buf, self);
         v28 = self->_alertController;
@@ -160,7 +160,7 @@ LABEL_13:
         v32 = [v29 actionWithTitle:v31 style:0 handler:v51];
         [(UIAlertController *)v28 addAction:v32];
 
-        if ((v13 & 0x10) == 0)
+        if ((optionsCopy & 0x10) == 0)
         {
           v33 = self->_alertController;
           v34 = MEMORY[0x1E69DC648];
@@ -189,21 +189,21 @@ LABEL_13:
         v42 = [v39 actionWithTitle:v41 style:1 handler:v47];
         [(UIAlertController *)v38 addAction:v42];
 
-        if (v15)
+        if (viewCopy)
         {
-          v43 = [(UIAlertController *)self->_alertController popoverPresentationController];
-          [v43 setSourceView:v15];
+          popoverPresentationController = [(UIAlertController *)self->_alertController popoverPresentationController];
+          [popoverPresentationController setSourceView:viewCopy];
 
-          v44 = [(UIAlertController *)self->_alertController popoverPresentationController];
-          [v44 setSourceRect:{x, y, width, height}];
+          popoverPresentationController2 = [(UIAlertController *)self->_alertController popoverPresentationController];
+          [popoverPresentationController2 setSourceRect:{x, y, width, height}];
         }
 
         else
         {
-          if (!v16)
+          if (!itemCopy)
           {
 LABEL_20:
-            [v17 presentViewController:self->_alertController animated:1 completion:0];
+            [controllerCopy presentViewController:self->_alertController animated:1 completion:0];
             objc_destroyWeak(&v48);
             objc_destroyWeak(&v52);
             objc_destroyWeak(buf);
@@ -211,8 +211,8 @@ LABEL_20:
             goto LABEL_21;
           }
 
-          v44 = [(UIAlertController *)self->_alertController popoverPresentationController];
-          [v44 setSourceItem:v16];
+          popoverPresentationController2 = [(UIAlertController *)self->_alertController popoverPresentationController];
+          [popoverPresentationController2 setSourceItem:itemCopy];
         }
 
         goto LABEL_20;
@@ -220,9 +220,9 @@ LABEL_20:
 
       v19 = EventKitUIBundle();
       v20 = v19;
-      if ((v13 & 2) != 0)
+      if ((optionsCopy & 2) != 0)
       {
-        if (v13)
+        if (optionsCopy)
         {
           v21 = @"You have removed an invitee";
         }
@@ -233,7 +233,7 @@ LABEL_20:
         }
       }
 
-      else if (v13)
+      else if (optionsCopy)
       {
         v21 = @"You have pending invitees";
       }
@@ -277,23 +277,23 @@ void __106__EKUISendInviteAlertController__presentAlertWithOptions_sourceView_so
   [WeakRetained _completeWithSelection:2];
 }
 
-- (void)cancelAnimated:(BOOL)a3
+- (void)cancelAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (([(UIAlertController *)self->_alertController isBeingDismissed]& 1) == 0)
   {
     alertController = self->_alertController;
 
-    [(UIAlertController *)alertController dismissViewControllerAnimated:v3 completion:0];
+    [(UIAlertController *)alertController dismissViewControllerAnimated:animatedCopy completion:0];
   }
 }
 
-- (void)_completeWithSelection:(int)a3
+- (void)_completeWithSelection:(int)selection
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, *&a3);
+    completionHandler[2](completionHandler, *&selection);
   }
 
   [(EKUISendInviteAlertController *)self _cleanup];

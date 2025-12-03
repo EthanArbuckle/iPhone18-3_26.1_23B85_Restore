@@ -1,8 +1,8 @@
 @interface RAPDisplayCategoryTableViewCell
-- (RAPDisplayCategoryTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 itemKind:(int64_t)a5;
+- (RAPDisplayCategoryTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier itemKind:(int64_t)kind;
 - (void)_configureTokenView;
 - (void)_contentSizeDidChange;
-- (void)setCategoryText:(id)a3;
+- (void)setCategoryText:(id)text;
 @end
 
 @implementation RAPDisplayCategoryTableViewCell
@@ -12,30 +12,30 @@
   v3 = +[UIFont system17];
   [(UILabel *)self->_tokenLabel setFont:v3];
 
-  v4 = [(UILabel *)self->_tokenLabel font];
-  [v4 _scaledValueForValue:24.0];
+  font = [(UILabel *)self->_tokenLabel font];
+  [font _scaledValueForValue:24.0];
   [(NSLayoutConstraint *)self->_firstBaselineConstraint setConstant:?];
 
-  v5 = [(UILabel *)self->_tokenLabel font];
-  [v5 _scaledValueForValue:-12.0];
+  font2 = [(UILabel *)self->_tokenLabel font];
+  [font2 _scaledValueForValue:-12.0];
   [(NSLayoutConstraint *)self->_lastBaselineConstraint setConstant:?];
 }
 
-- (void)setCategoryText:(id)a3
+- (void)setCategoryText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   if (![(NSString *)self->_categoryText isEqualToString:?])
   {
-    objc_storeStrong(&self->_categoryText, a3);
+    objc_storeStrong(&self->_categoryText, text);
     [(UILabel *)self->_tokenLabel setText:self->_categoryText];
   }
 }
 
-- (RAPDisplayCategoryTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 itemKind:(int64_t)a5
+- (RAPDisplayCategoryTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier itemKind:(int64_t)kind
 {
   v9.receiver = self;
   v9.super_class = RAPDisplayCategoryTableViewCell;
-  v5 = [(RAPCancellableTableViewCell *)&v9 initWithStyle:a3 reuseIdentifier:a4 itemKind:a5];
+  v5 = [(RAPCancellableTableViewCell *)&v9 initWithStyle:style reuseIdentifier:identifier itemKind:kind];
   v6 = v5;
   if (v5)
   {
@@ -50,7 +50,7 @@
 
 - (void)_configureTokenView
 {
-  v3 = [(RAPDisplayCategoryTableViewCell *)self contentView];
+  contentView = [(RAPDisplayCategoryTableViewCell *)self contentView];
   v4 = objc_alloc_init(UIView);
   tokenView = self->_tokenView;
   self->_tokenView = v4;
@@ -71,54 +71,54 @@
 
   [(UILabel *)self->_tokenLabel setAdjustsFontSizeToFitWidth:1];
   [(UIView *)self->_tokenView addSubview:self->_tokenLabel];
-  [v3 addSubview:self->_tokenView];
+  [contentView addSubview:self->_tokenView];
   [(UIView *)self->_tokenView _setContinuousCornerRadius:10.0];
   [(UILabel *)self->_tokenLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_tokenView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [(UILabel *)self->_tokenLabel firstBaselineAnchor];
-  v12 = [(UIView *)self->_tokenView topAnchor];
-  v13 = [(UILabel *)self->_tokenLabel font];
-  [v13 _scaledValueForValue:24.0];
-  v14 = [v11 constraintEqualToAnchor:v12 constant:?];
+  firstBaselineAnchor = [(UILabel *)self->_tokenLabel firstBaselineAnchor];
+  topAnchor = [(UIView *)self->_tokenView topAnchor];
+  font = [(UILabel *)self->_tokenLabel font];
+  [font _scaledValueForValue:24.0];
+  v14 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
   firstBaselineConstraint = self->_firstBaselineConstraint;
   self->_firstBaselineConstraint = v14;
 
-  v16 = [(UILabel *)self->_tokenLabel lastBaselineAnchor];
-  v17 = [(UIView *)self->_tokenView bottomAnchor];
-  v18 = [(UILabel *)self->_tokenLabel font];
-  [v18 _scaledValueForValue:-12.0];
-  v19 = [v16 constraintEqualToAnchor:v17 constant:?];
+  lastBaselineAnchor = [(UILabel *)self->_tokenLabel lastBaselineAnchor];
+  bottomAnchor = [(UIView *)self->_tokenView bottomAnchor];
+  font2 = [(UILabel *)self->_tokenLabel font];
+  [font2 _scaledValueForValue:-12.0];
+  v19 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:?];
   lastBaselineConstraint = self->_lastBaselineConstraint;
   self->_lastBaselineConstraint = v19;
 
-  v42 = [(UIView *)self->_tokenView leadingAnchor];
-  v41 = [(UILabel *)self->_tokenLabel leadingAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41 constant:-15.0];
+  leadingAnchor = [(UIView *)self->_tokenView leadingAnchor];
+  leadingAnchor2 = [(UILabel *)self->_tokenLabel leadingAnchor];
+  v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:-15.0];
   v43[0] = v40;
-  v39 = [(UIView *)self->_tokenView trailingAnchor];
-  v38 = [(UILabel *)self->_tokenLabel trailingAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38 constant:15.0];
+  trailingAnchor = [(UIView *)self->_tokenView trailingAnchor];
+  trailingAnchor2 = [(UILabel *)self->_tokenLabel trailingAnchor];
+  v37 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:15.0];
   v21 = self->_firstBaselineConstraint;
   v43[1] = v37;
   v43[2] = v21;
   v43[3] = self->_lastBaselineConstraint;
-  v36 = [v3 leadingAnchor];
-  v35 = [(UIView *)self->_tokenView leadingAnchor];
-  v33 = [v36 constraintEqualToAnchor:v35 constant:-15.0];
+  leadingAnchor3 = [contentView leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_tokenView leadingAnchor];
+  v33 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:-15.0];
   v43[4] = v33;
-  v22 = [(UIView *)self->_tokenView trailingAnchor];
-  v23 = [(RAPCancellableTableViewCell *)self leadingAnchorForAccessoryView];
-  v24 = [v22 constraintLessThanOrEqualToAnchor:v23 constant:-15.0];
+  trailingAnchor3 = [(UIView *)self->_tokenView trailingAnchor];
+  leadingAnchorForAccessoryView = [(RAPCancellableTableViewCell *)self leadingAnchorForAccessoryView];
+  v24 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:leadingAnchorForAccessoryView constant:-15.0];
   v43[5] = v24;
-  v25 = v3;
-  v34 = v3;
-  v26 = [v3 topAnchor];
-  v27 = [(UIView *)self->_tokenView topAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27 constant:-10.0];
+  v25 = contentView;
+  v34 = contentView;
+  topAnchor2 = [contentView topAnchor];
+  topAnchor3 = [(UIView *)self->_tokenView topAnchor];
+  v28 = [topAnchor2 constraintEqualToAnchor:topAnchor3 constant:-10.0];
   v43[6] = v28;
-  v29 = [v25 bottomAnchor];
-  v30 = [(UIView *)self->_tokenView bottomAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30 constant:9.0];
+  bottomAnchor2 = [v25 bottomAnchor];
+  bottomAnchor3 = [(UIView *)self->_tokenView bottomAnchor];
+  v31 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:9.0];
   v43[7] = v31;
   v32 = [NSArray arrayWithObjects:v43 count:8];
 

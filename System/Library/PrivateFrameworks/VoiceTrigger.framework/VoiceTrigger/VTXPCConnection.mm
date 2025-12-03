@@ -1,28 +1,28 @@
 @interface VTXPCConnection
 + (void)initialize;
 - (VTXPCConnection)init;
-- (void)_setPhraseSpotterBypassing:(BOOL)a3;
+- (void)_setPhraseSpotterBypassing:(BOOL)bypassing;
 - (void)clearVoiceTriggerCount;
-- (void)enableTriggerEventXPCNotification:(BOOL)a3;
-- (void)enableVoiceTrigger:(BOOL)a3 withAssertion:(id)a4 timestamp:(double)a5;
-- (void)getFirstChanceAudioBufferWithReply:(id)a3;
-- (void)getFirstChanceTriggeredDateWithReply:(id)a3;
-- (void)getFirstChanceVTEventInfoWithReply:(id)a3;
-- (void)getTestResponse:(id)a3;
-- (void)getVoiceTriggerCountWithReply:(id)a3;
+- (void)enableTriggerEventXPCNotification:(BOOL)notification;
+- (void)enableVoiceTrigger:(BOOL)trigger withAssertion:(id)assertion timestamp:(double)timestamp;
+- (void)getFirstChanceAudioBufferWithReply:(id)reply;
+- (void)getFirstChanceTriggeredDateWithReply:(id)reply;
+- (void)getFirstChanceVTEventInfoWithReply:(id)reply;
+- (void)getTestResponse:(id)response;
+- (void)getVoiceTriggerCountWithReply:(id)reply;
 - (void)handleDisconnect;
-- (void)isLastTriggerFollowedBySpeechWithReply:(id)a3;
+- (void)isLastTriggerFollowedBySpeechWithReply:(id)reply;
 - (void)notifySecondChanceRequest;
 - (void)notifyTriggerEventRequest;
-- (void)notifyVoiceTriggeredSiriSessionCancelled:(id)a3;
-- (void)queryLastTriggerEventTypeWithReply:(id)a3;
-- (void)requestAudioCapture:(double)a3;
-- (void)requestCurrentBuiltInRTModelDictionaryWithReply:(id)a3;
-- (void)requestCurrentVoiceTriggerAssetDictionaryWithReply:(id)a3;
+- (void)notifyVoiceTriggeredSiriSessionCancelled:(id)cancelled;
+- (void)queryLastTriggerEventTypeWithReply:(id)reply;
+- (void)requestAudioCapture:(double)capture;
+- (void)requestCurrentBuiltInRTModelDictionaryWithReply:(id)reply;
+- (void)requestCurrentVoiceTriggerAssetDictionaryWithReply:(id)reply;
 - (void)resetAssertions;
-- (void)setCurrentBuiltInRTModelDictionary:(id)a3;
-- (void)setPhraseSpotterBypassing:(BOOL)a3 timeout:(double)a4 timestamp:(double)a5;
-- (void)setRaiseToSpeakBypassing:(BOOL)a3 timeout:(double)a4 timestamp:(double)a5;
+- (void)setCurrentBuiltInRTModelDictionary:(id)dictionary;
+- (void)setPhraseSpotterBypassing:(BOOL)bypassing timeout:(double)timeout timestamp:(double)timestamp;
+- (void)setRaiseToSpeakBypassing:(BOOL)bypassing timeout:(double)timeout timestamp:(double)timestamp;
 @end
 
 @implementation VTXPCConnection
@@ -78,8 +78,8 @@
           }
 
           v10 = *(*(&v15 + 1) + 8 * v9);
-          v11 = [MEMORY[0x277CCAC38] processInfo];
-          [v11 systemUptime];
+          processInfo = [MEMORY[0x277CCAC38] processInfo];
+          [processInfo systemUptime];
           [(VTXPCConnection *)self enableVoiceTrigger:0 withAssertion:v10 timestamp:?];
 
           ++v9;
@@ -95,8 +95,8 @@
 
   if (self->_isPhraseSpotterBypassed)
   {
-    v12 = [MEMORY[0x277CCAC38] processInfo];
-    [v12 systemUptime];
+    processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo2 systemUptime];
     [(VTXPCConnection *)self setPhraseSpotterBypassing:0 timeout:0.0 timestamp:v13];
 
     self->_isPhraseSpotterBypassed = 0;
@@ -111,98 +111,98 @@
   }
 }
 
-- (void)enableTriggerEventXPCNotification:(BOOL)a3
+- (void)enableTriggerEventXPCNotification:(BOOL)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v8 = *MEMORY[0x277D85DE8];
   v4 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67240192;
-    v7[1] = v3;
+    v7[1] = notificationCopy;
     _os_log_impl(&dword_223A31000, v4, OS_LOG_TYPE_DEFAULT, "EnableTriggerEventXPCNotification: %{public}d", v7, 8u);
   }
 
   v5 = +[VTTriggerEventMonitorManager sharedManager];
-  v6 = [MEMORY[0x277CCAE80] currentConnection];
-  if (v3)
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  if (notificationCopy)
   {
-    [v5 addConnection:v6];
+    [v5 addConnection:currentConnection];
   }
 
   else
   {
-    [v5 removeConnection:v6];
+    [v5 removeConnection:currentConnection];
   }
 }
 
-- (void)setCurrentBuiltInRTModelDictionary:(id)a3
+- (void)setCurrentBuiltInRTModelDictionary:(id)dictionary
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v3;
+    v7 = dictionaryCopy;
     _os_log_impl(&dword_223A31000, v4, OS_LOG_TYPE_DEFAULT, "Setting builtIn RTModel dictionary : %{public}@", &v6, 0xCu);
   }
 
   v5 = +[VTBuiltInRTModel sharedInstance];
-  [v5 setBuiltInRTModelDictionary:v3];
+  [v5 setBuiltInRTModelDictionary:dictionaryCopy];
 }
 
-- (void)requestCurrentBuiltInRTModelDictionaryWithReply:(id)a3
+- (void)requestCurrentBuiltInRTModelDictionaryWithReply:(id)reply
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  replyCopy = reply;
   v4 = +[VTBuiltInRTModel sharedInstance];
-  v5 = [v4 builtInRTModelDictionary];
+  builtInRTModelDictionary = [v4 builtInRTModelDictionary];
 
-  if (v3)
+  if (replyCopy)
   {
     v6 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = v5;
+      v8 = builtInRTModelDictionary;
       _os_log_impl(&dword_223A31000, v6, OS_LOG_TYPE_DEFAULT, "returning builtIn RTModel dictionary : %{public}@", &v7, 0xCu);
     }
 
-    v3[2](v3, v5);
+    replyCopy[2](replyCopy, builtInRTModelDictionary);
   }
 }
 
-- (void)requestCurrentVoiceTriggerAssetDictionaryWithReply:(id)a3
+- (void)requestCurrentVoiceTriggerAssetDictionaryWithReply:(id)reply
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  replyCopy = reply;
   v4 = +[VTPhraseSpotter currentSpotter];
-  v5 = [v4 assetDictionary];
-  if (v3)
+  assetDictionary = [v4 assetDictionary];
+  if (replyCopy)
   {
     v6 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = v5;
+      v8 = assetDictionary;
       _os_log_impl(&dword_223A31000, v6, OS_LOG_TYPE_DEFAULT, "returning asset dictionary : %{public}@", &v7, 0xCu);
     }
 
-    v3[2](v3, v5);
+    replyCopy[2](replyCopy, assetDictionary);
   }
 }
 
-- (void)requestAudioCapture:(double)a3
+- (void)requestAudioCapture:(double)capture
 {
   location[3] = *MEMORY[0x277D85DE8];
-  if (a3 <= 0.0)
+  if (capture <= 0.0)
   {
     v8 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(location[0]) = 134349056;
-      *(location + 4) = *&a3;
+      *(location + 4) = *&capture;
       _os_log_impl(&dword_223A31000, v8, OS_LOG_TYPE_DEFAULT, "::: Not capturing given wrong duration: %{public}.3f", location, 0xCu);
     }
   }
@@ -221,9 +221,9 @@
     v9[1] = 3221225472;
     v9[2] = __39__VTXPCConnection_requestAudioCapture___block_invoke_2;
     v9[3] = &unk_2784ECE48;
-    v12[1] = *&a3;
+    v12[1] = *&capture;
     v10 = v5;
-    v11 = self;
+    selfCopy = self;
     v7 = v5;
     objc_copyWeak(v12, location);
     dispatch_sync(v6, v9);
@@ -303,18 +303,18 @@ uint64_t __39__VTXPCConnection_requestAudioCapture___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)isLastTriggerFollowedBySpeechWithReply:(id)a3
+- (void)isLastTriggerFollowedBySpeechWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = +[VTPhraseSpotter currentSpotter];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 isFollowedBySpeech];
-    if (v3)
+    isFollowedBySpeech = [v4 isFollowedBySpeech];
+    if (replyCopy)
     {
 LABEL_3:
-      v3[2](v3, v6);
+      replyCopy[2](replyCopy, isFollowedBySpeech);
     }
   }
 
@@ -327,26 +327,26 @@ LABEL_3:
       _os_log_error_impl(&dword_223A31000, v7, OS_LOG_TYPE_ERROR, "No VoiceTrigger PhraseSpotter avail for trigger followed by speech", v8, 2u);
     }
 
-    v6 = 0;
-    if (v3)
+    isFollowedBySpeech = 0;
+    if (replyCopy)
     {
       goto LABEL_3;
     }
   }
 }
 
-- (void)getFirstChanceTriggeredDateWithReply:(id)a3
+- (void)getFirstChanceTriggeredDateWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = +[VTPhraseSpotter currentSpotter];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 firstChanceTriggeredDate];
-    if (v3)
+    firstChanceTriggeredDate = [v4 firstChanceTriggeredDate];
+    if (replyCopy)
     {
 LABEL_3:
-      v3[2](v3, v6);
+      replyCopy[2](replyCopy, firstChanceTriggeredDate);
     }
   }
 
@@ -359,26 +359,26 @@ LABEL_3:
       _os_log_error_impl(&dword_223A31000, v7, OS_LOG_TYPE_ERROR, "No VoiceTrigger PhraseSpotter avail for first chance triggered date", v8, 2u);
     }
 
-    v6 = 0;
-    if (v3)
+    firstChanceTriggeredDate = 0;
+    if (replyCopy)
     {
       goto LABEL_3;
     }
   }
 }
 
-- (void)getFirstChanceVTEventInfoWithReply:(id)a3
+- (void)getFirstChanceVTEventInfoWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = +[VTPhraseSpotter currentSpotter];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 firstChanceVTEventInfo];
-    if (v3)
+    firstChanceVTEventInfo = [v4 firstChanceVTEventInfo];
+    if (replyCopy)
     {
 LABEL_3:
-      v3[2](v3, v6);
+      replyCopy[2](replyCopy, firstChanceVTEventInfo);
     }
   }
 
@@ -391,26 +391,26 @@ LABEL_3:
       _os_log_error_impl(&dword_223A31000, v7, OS_LOG_TYPE_ERROR, "No VoiceTrigger PhraseSpotter avail for first chance voicetrigger event info", v8, 2u);
     }
 
-    v6 = 0;
-    if (v3)
+    firstChanceVTEventInfo = 0;
+    if (replyCopy)
     {
       goto LABEL_3;
     }
   }
 }
 
-- (void)getFirstChanceAudioBufferWithReply:(id)a3
+- (void)getFirstChanceAudioBufferWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = +[VTPhraseSpotter currentSpotter];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 firstChanceAudioBuffer];
-    if (v3)
+    firstChanceAudioBuffer = [v4 firstChanceAudioBuffer];
+    if (replyCopy)
     {
 LABEL_3:
-      v3[2](v3, v6);
+      replyCopy[2](replyCopy, firstChanceAudioBuffer);
     }
   }
 
@@ -423,23 +423,23 @@ LABEL_3:
       _os_log_error_impl(&dword_223A31000, v7, OS_LOG_TYPE_ERROR, "No VoiceTrigger PhraseSpotter avail for first chance audio buffer", v8, 2u);
     }
 
-    v6 = 0;
-    if (v3)
+    firstChanceAudioBuffer = 0;
+    if (replyCopy)
     {
       goto LABEL_3;
     }
   }
 }
 
-- (void)getVoiceTriggerCountWithReply:(id)a3
+- (void)getVoiceTriggerCountWithReply:(id)reply
 {
-  v6 = a3;
+  replyCopy = reply;
   v3 = +[VTPhraseSpotter currentSpotter];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 triggerCount];
-    if (!v6)
+    triggerCount = [v3 triggerCount];
+    if (!replyCopy)
     {
       goto LABEL_4;
     }
@@ -447,11 +447,11 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v5 = 0;
-  if (v6)
+  triggerCount = 0;
+  if (replyCopy)
   {
 LABEL_3:
-    v6[2](v6, v5);
+    replyCopy[2](replyCopy, triggerCount);
   }
 
 LABEL_4:
@@ -475,15 +475,15 @@ LABEL_4:
   }
 }
 
-- (void)queryLastTriggerEventTypeWithReply:(id)a3
+- (void)queryLastTriggerEventTypeWithReply:(id)reply
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  replyCopy = reply;
   v4 = +[VTPhraseSpotter currentSpotter];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 lastTriggerType];
+    lastTriggerType = [v4 lastTriggerType];
   }
 
   else
@@ -495,20 +495,20 @@ LABEL_4:
       _os_log_error_impl(&dword_223A31000, v7, OS_LOG_TYPE_ERROR, "No VTPhraseSpotter available to query last trigger event type", v9, 2u);
     }
 
-    v6 = 0;
+    lastTriggerType = 0;
   }
 
   v8 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67240192;
-    v9[1] = v6;
+    v9[1] = lastTriggerType;
     _os_log_impl(&dword_223A31000, v8, OS_LOG_TYPE_DEFAULT, "Requesting LastTriggerType : %{public}d", v9, 8u);
   }
 
-  if (v3)
+  if (replyCopy)
   {
-    v3[2](v3, v6);
+    replyCopy[2](replyCopy, lastTriggerType);
   }
 }
 
@@ -524,16 +524,16 @@ LABEL_4:
   [v2 requestSecondChance];
 }
 
-- (void)notifyVoiceTriggeredSiriSessionCancelled:(id)a3
+- (void)notifyVoiceTriggeredSiriSessionCancelled:(id)cancelled
 {
-  v3 = a3;
+  cancelledCopy = cancelled;
   v4 = +[VTPhraseSpotter currentSpotter];
-  [v4 didReceiveSiriSessionCancellation:v3];
+  [v4 didReceiveSiriSessionCancellation:cancelledCopy];
 }
 
-- (void)setRaiseToSpeakBypassing:(BOOL)a3 timeout:(double)a4 timestamp:(double)a5
+- (void)setRaiseToSpeakBypassing:(BOOL)bypassing timeout:(double)timeout timestamp:(double)timestamp
 {
-  v6 = a3;
+  bypassingCopy = bypassing;
   v18 = *MEMORY[0x277D85DE8];
   if (setRaiseToSpeakBypassing_timeout_timestamp__onceToken != -1)
   {
@@ -544,7 +544,7 @@ LABEL_4:
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"NOT bypassed";
-    if (v6)
+    if (bypassingCopy)
     {
       v9 = @"bypassed";
     }
@@ -552,7 +552,7 @@ LABEL_4:
     *buf = 138543618;
     v15 = v9;
     v16 = 2050;
-    v17 = a4;
+    timeoutCopy = timeout;
     _os_log_impl(&dword_223A31000, v8, OS_LOG_TYPE_DEFAULT, "::: Asserting that RaiseToSpeak should be %{public}@, timeout: %{public}f", buf, 0x16u);
   }
 
@@ -563,8 +563,8 @@ LABEL_4:
   v11[2] = __62__VTXPCConnection_setRaiseToSpeakBypassing_timeout_timestamp___block_invoke_25;
   v11[3] = &unk_2784ECE20;
   v11[4] = self;
-  v13 = v6;
-  v12[1] = *&a4;
+  v13 = bypassingCopy;
+  v12[1] = *&timeout;
   objc_copyWeak(v12, buf);
   dispatch_sync(v10, v11);
   objc_destroyWeak(v12);
@@ -625,22 +625,22 @@ uint64_t __62__VTXPCConnection_setRaiseToSpeakBypassing_timeout_timestamp___bloc
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_setPhraseSpotterBypassing:(BOOL)a3
+- (void)_setPhraseSpotterBypassing:(BOOL)bypassing
 {
-  v3 = a3;
+  bypassingCopy = bypassing;
   v5 = +[VTPhraseSpotter currentSpotter];
-  if (self->_isPhraseSpotterBypassed != v3)
+  if (self->_isPhraseSpotterBypassed != bypassingCopy)
   {
-    self->_isPhraseSpotterBypassed = v3;
+    self->_isPhraseSpotterBypassed = bypassingCopy;
     v6 = v5;
-    [v5 setBypass:v3];
+    [v5 setBypass:bypassingCopy];
     v5 = v6;
   }
 }
 
-- (void)setPhraseSpotterBypassing:(BOOL)a3 timeout:(double)a4 timestamp:(double)a5
+- (void)setPhraseSpotterBypassing:(BOOL)bypassing timeout:(double)timeout timestamp:(double)timestamp
 {
-  v6 = a3;
+  bypassingCopy = bypassing;
   v18 = *MEMORY[0x277D85DE8];
   if (setPhraseSpotterBypassing_timeout_timestamp__onceToken != -1)
   {
@@ -651,7 +651,7 @@ uint64_t __62__VTXPCConnection_setRaiseToSpeakBypassing_timeout_timestamp___bloc
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"NOT bypassed";
-    if (v6)
+    if (bypassingCopy)
     {
       v9 = @"bypassed";
     }
@@ -659,7 +659,7 @@ uint64_t __62__VTXPCConnection_setRaiseToSpeakBypassing_timeout_timestamp___bloc
     *buf = 138543618;
     v15 = v9;
     v16 = 2050;
-    v17 = a4;
+    timeoutCopy = timeout;
     _os_log_impl(&dword_223A31000, v8, OS_LOG_TYPE_DEFAULT, "::: Asserting that PhraseSpotter should be %{public}@, timeout: %{public}f", buf, 0x16u);
   }
 
@@ -670,8 +670,8 @@ uint64_t __62__VTXPCConnection_setRaiseToSpeakBypassing_timeout_timestamp___bloc
   v11[2] = __63__VTXPCConnection_setPhraseSpotterBypassing_timeout_timestamp___block_invoke_20;
   v11[3] = &unk_2784ECE20;
   v11[4] = self;
-  v13 = v6;
-  v12[1] = *&a4;
+  v13 = bypassingCopy;
+  v12[1] = *&timeout;
   objc_copyWeak(v12, buf);
   dispatch_sync(v10, v11);
   objc_destroyWeak(v12);
@@ -732,26 +732,26 @@ uint64_t __63__VTXPCConnection_setPhraseSpotterBypassing_timeout_timestamp___blo
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)enableVoiceTrigger:(BOOL)a3 withAssertion:(id)a4 timestamp:(double)a5
+- (void)enableVoiceTrigger:(BOOL)trigger withAssertion:(id)assertion timestamp:(double)timestamp
 {
-  v6 = a3;
+  triggerCopy = trigger;
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  assertionCopy = assertion;
   v9 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
     v18 = "[VTXPCConnection enableVoiceTrigger:withAssertion:timestamp:]";
     v19 = 1026;
-    v20 = v6;
+    v20 = triggerCopy;
     v21 = 2114;
-    v22 = v8;
+    v22 = assertionCopy;
     _os_log_impl(&dword_223A31000, v9, OS_LOG_TYPE_DEFAULT, "::: %{public}s enable: %{public}d reason: %{public}@", buf, 0x1Cu);
   }
 
   if (enableVoiceTrigger_withAssertion_timestamp__onceToken == -1)
   {
-    if (v8)
+    if (assertionCopy)
     {
 LABEL_5:
       v10 = enableVoiceTrigger_withAssertion_timestamp___queue;
@@ -759,10 +759,10 @@ LABEL_5:
       v12[1] = 3221225472;
       v12[2] = __62__VTXPCConnection_enableVoiceTrigger_withAssertion_timestamp___block_invoke_4;
       v12[3] = &unk_2784ECDD0;
-      v16 = v6;
-      v15 = a5;
-      v13 = v8;
-      v14 = self;
+      v16 = triggerCopy;
+      timestampCopy = timestamp;
+      v13 = assertionCopy;
+      selfCopy = self;
       dispatch_sync(v10, v12);
 
       goto LABEL_9;
@@ -772,7 +772,7 @@ LABEL_5:
   else
   {
     dispatch_once(&enableVoiceTrigger_withAssertion_timestamp__onceToken, &__block_literal_global_6407);
-    if (v8)
+    if (assertionCopy)
     {
       goto LABEL_5;
     }
@@ -884,12 +884,12 @@ uint64_t __62__VTXPCConnection_enableVoiceTrigger_withAssertion_timestamp___bloc
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)getTestResponse:(id)a3
+- (void)getTestResponse:(id)response
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAD78] UUID];
-  v5 = [v4 UUIDString];
+  responseCopy = response;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
   v6 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
@@ -899,9 +899,9 @@ uint64_t __62__VTXPCConnection_enableVoiceTrigger_withAssertion_timestamp___bloc
     _os_log_impl(&dword_223A31000, v6, OS_LOG_TYPE_DEFAULT, "::: %{public}s", &v7, 0xCu);
   }
 
-  if (v3)
+  if (responseCopy)
   {
-    v3[2](v3, v5);
+    responseCopy[2](responseCopy, uUIDString);
   }
 }
 

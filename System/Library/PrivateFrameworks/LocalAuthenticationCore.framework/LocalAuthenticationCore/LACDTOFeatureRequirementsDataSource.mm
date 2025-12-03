@@ -1,31 +1,31 @@
 @interface LACDTOFeatureRequirementsDataSource
-- (LACDTOFeatureRequirementsDataSource)initWithDevice:(id)a3 replyQueue:(id)a4;
-- (void)hasHSA2AccountWithCompletion:(id)a3;
-- (void)hasLocationServicesEnabledWithCompletion:(id)a3;
+- (LACDTOFeatureRequirementsDataSource)initWithDevice:(id)device replyQueue:(id)queue;
+- (void)hasHSA2AccountWithCompletion:(id)completion;
+- (void)hasLocationServicesEnabledWithCompletion:(id)completion;
 @end
 
 @implementation LACDTOFeatureRequirementsDataSource
 
-- (LACDTOFeatureRequirementsDataSource)initWithDevice:(id)a3 replyQueue:(id)a4
+- (LACDTOFeatureRequirementsDataSource)initWithDevice:(id)device replyQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = LACDTOFeatureRequirementsDataSource;
   v9 = [(LACDTOFeatureRequirementsDataSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_device, a3);
-    objc_storeStrong(&v10->_replyQueue, a4);
+    objc_storeStrong(&v9->_device, device);
+    objc_storeStrong(&v10->_replyQueue, queue);
   }
 
   return v10;
 }
 
-- (void)hasHSA2AccountWithCompletion:(id)a3
+- (void)hasHSA2AccountWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (getAKAccountManagerClass_0())
   {
     objc_initWeak(&location, self);
@@ -42,7 +42,7 @@
     v11[2] = __68__LACDTOFeatureRequirementsDataSource_hasHSA2AccountWithCompletion___block_invoke_2;
     v11[3] = &unk_1E7A958F8;
     objc_copyWeak(&v14, &location);
-    v13 = v4;
+    v13 = completionCopy;
     v8 = v6;
     v12 = v8;
     [(LACBackgroundTask *)v8 runWithTimeout:replyQueue queue:v11 completion:1.0];
@@ -61,7 +61,7 @@
       [(LACDTOFeatureRequirementsDataSource *)v9 hasHSA2AccountWithCompletion:v10];
     }
 
-    (*(v4 + 2))(v4, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
   }
 }
 
@@ -95,9 +95,9 @@ void __68__LACDTOFeatureRequirementsDataSource_hasHSA2AccountWithCompletion___bl
   }
 }
 
-- (void)hasLocationServicesEnabledWithCompletion:(id)a3
+- (void)hasLocationServicesEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (getCLLocationManagerClass())
   {
     objc_initWeak(&location, self);
@@ -114,7 +114,7 @@ void __68__LACDTOFeatureRequirementsDataSource_hasHSA2AccountWithCompletion___bl
     v11[2] = __80__LACDTOFeatureRequirementsDataSource_hasLocationServicesEnabledWithCompletion___block_invoke_2;
     v11[3] = &unk_1E7A958F8;
     objc_copyWeak(&v14, &location);
-    v13 = v4;
+    v13 = completionCopy;
     v8 = v6;
     v12 = v8;
     [(LACBackgroundTask *)v8 runWithTimeout:replyQueue queue:v11 completion:1.0];
@@ -133,7 +133,7 @@ void __68__LACDTOFeatureRequirementsDataSource_hasHSA2AccountWithCompletion___bl
       [(LACDTOFeatureRequirementsDataSource *)v9 hasLocationServicesEnabledWithCompletion:v10];
     }
 
-    (*(v4 + 2))(v4, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
   }
 }
 

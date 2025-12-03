@@ -10,28 +10,28 @@
 - (id)bodyTextFont
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 replyBalloonTextFont];
+  replyBalloonTextFont = [v2 replyBalloonTextFont];
 
-  return v3;
+  return replyBalloonTextFont;
 }
 
 - (char)color
 {
-  v3 = [(CKChatItem *)self IMChatItem];
-  v4 = [v3 isFromMe];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  isFromMe = [iMChatItem isFromMe];
 
-  if (!v4)
+  if (!isFromMe)
   {
     return 9;
   }
 
   v5 = MEMORY[0x1E69A5C90];
-  v6 = [(CKChatItem *)self IMChatItem];
-  v7 = [v6 serviceName];
-  v8 = [v5 serviceWithName:v7];
-  v9 = [v8 __ck_displayReplyColor];
+  iMChatItem2 = [(CKChatItem *)self IMChatItem];
+  serviceName = [iMChatItem2 serviceName];
+  v8 = [v5 serviceWithName:serviceName];
+  __ck_displayReplyColor = [v8 __ck_displayReplyColor];
 
-  return v9;
+  return __ck_displayReplyColor;
 }
 
 - (CKBalloonDescriptor_t)balloonDescriptor
@@ -52,8 +52,8 @@
   retstr->var13 = 1;
   retstr->var6 = [(CKReplyContextAggregateMessagePartChatItem *)self color];
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 theme];
-  v7 = [v6 unfilledBalloonColorForColorType:{-[CKReplyContextAggregateMessagePartChatItem color](self, "color")}];
+  theme = [v5 theme];
+  v7 = [theme unfilledBalloonColorForColorType:{-[CKReplyContextAggregateMessagePartChatItem color](self, "color")}];
   [v7 ck_imColorComponents];
   retstr->var8.red = v8;
   retstr->var8.green = v9;
@@ -68,10 +68,10 @@
 
 - (BOOL)replyIsFromMe
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 replyIsFromMe];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  replyIsFromMe = [iMChatItem replyIsFromMe];
 
-  return v3;
+  return replyIsFromMe;
 }
 
 @end

@@ -7,12 +7,12 @@
 - (NSString)placeItemNote;
 - (NSUUID)identifier;
 - (_TtC4Maps19FavoriteItemWrapper)init;
-- (void)setCreateTime:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setLatitude:(id)a3;
-- (void)setLongitude:(id)a3;
-- (void)setMapItemStorage:(id)a3;
-- (void)setPlaceItemNote:(id)a3;
+- (void)setCreateTime:(id)time;
+- (void)setIdentifier:(id)identifier;
+- (void)setLatitude:(id)latitude;
+- (void)setLongitude:(id)longitude;
+- (void)setMapItemStorage:(id)storage;
+- (void)setPlaceItemNote:(id)note;
 @end
 
 @implementation FavoriteItemWrapper
@@ -35,9 +35,9 @@
   return v3;
 }
 
-- (void)setPlaceItemNote:(id)a3
+- (void)setPlaceItemNote:(id)note
 {
-  if (a3)
+  if (note)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -60,7 +60,7 @@
   v3 = sub_1000CE6B8(&unk_101918E50);
   __chkstk_darwin(v3 - 8);
   v5 = &v13 - v4;
-  v6 = self;
+  selfCopy = self;
   dispatch thunk of MapsSyncObject.identifier.getter();
 
   v7 = type metadata accessor for UUID();
@@ -77,14 +77,14 @@
   return v10;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   v5 = sub_1000CE6B8(&unk_101918E50);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v8);
   v10 = &v14 - v9;
-  if (a3)
+  if (identifier)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v11 = type metadata accessor for UUID();
@@ -98,23 +98,23 @@
   }
 
   sub_1000D2DFC(v10, v7, &unk_101918E50);
-  v13 = self;
+  selfCopy = self;
   dispatch thunk of MapsSyncObject.identifier.setter();
   sub_100024F64(v10, &unk_101918E50);
 }
 
 - (GEOMapItemStorage)mapItemStorage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = dispatch thunk of FavoriteItem.mapItemStorage.getter();
 
   return v3;
 }
 
-- (void)setMapItemStorage:(id)a3
+- (void)setMapItemStorage:(id)storage
 {
-  v4 = a3;
-  v5 = self;
+  storageCopy = storage;
+  selfCopy = self;
   dispatch thunk of FavoriteItem.mapItemStorage.setter();
 }
 
@@ -123,7 +123,7 @@
   v3 = sub_1000CE6B8(&qword_10190EBD0);
   __chkstk_darwin(v3 - 8);
   v5 = &v13 - v4;
-  v6 = self;
+  selfCopy = self;
   dispatch thunk of MapsSyncObject.createTime.getter();
 
   v7 = type metadata accessor for Date();
@@ -140,14 +140,14 @@
   return v10;
 }
 
-- (void)setCreateTime:(id)a3
+- (void)setCreateTime:(id)time
 {
   v5 = sub_1000CE6B8(&qword_10190EBD0);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v8);
   v10 = &v14 - v9;
-  if (a3)
+  if (time)
   {
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     v11 = type metadata accessor for Date();
@@ -161,46 +161,46 @@
   }
 
   sub_1000D2DFC(v10, v7, &qword_10190EBD0);
-  v13 = self;
+  selfCopy = self;
   dispatch thunk of MapsSyncObject.createTime.setter();
   sub_100024F64(v10, &qword_10190EBD0);
 }
 
 - (NSNumber)latitude
 {
-  v2 = self;
+  selfCopy = self;
   v3 = dispatch thunk of FavoriteItem.latitude.getter();
 
   return v3;
 }
 
-- (void)setLatitude:(id)a3
+- (void)setLatitude:(id)latitude
 {
-  v4 = a3;
-  v5 = self;
+  latitudeCopy = latitude;
+  selfCopy = self;
   dispatch thunk of FavoriteItem.latitude.setter();
 }
 
 - (NSNumber)longitude
 {
-  v2 = self;
+  selfCopy = self;
   v3 = dispatch thunk of FavoriteItem.longitude.getter();
 
   return v3;
 }
 
-- (void)setLongitude:(id)a3
+- (void)setLongitude:(id)longitude
 {
-  v4 = a3;
-  v5 = self;
+  longitudeCopy = longitude;
+  selfCopy = self;
   dispatch thunk of FavoriteItem.longitude.setter();
 }
 
 - (GEOFeatureStyleAttributes)styleAttributes
 {
-  v2 = [*(self + OBJC_IVAR____TtC4Maps19FavoriteItemWrapper_object) styleAttributes];
+  styleAttributes = [*(self + OBJC_IVAR____TtC4Maps19FavoriteItemWrapper_object) styleAttributes];
 
-  return v2;
+  return styleAttributes;
 }
 
 - (_TtC4Maps19FavoriteItemWrapper)init

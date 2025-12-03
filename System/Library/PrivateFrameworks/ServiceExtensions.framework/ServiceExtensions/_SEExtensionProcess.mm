@@ -1,13 +1,13 @@
 @interface _SEExtensionProcess
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
 - (_SEExtensionProcess)init;
-- (id)makeLibXPCConnectionError:(id *)a3;
+- (id)makeLibXPCConnectionError:(id *)error;
 - (void)invalidate;
 @end
 
 @implementation _SEExtensionProcess
 
-- (id)makeLibXPCConnectionError:(id *)a3
+- (id)makeLibXPCConnectionError:(id *)error
 {
   (*((*MEMORY[0x277D85000] & self->super.isa) + 0x50))(v7);
   v3 = v8;

@@ -1,28 +1,28 @@
 @interface EDSearchableIndexState
-- (BOOL)didPreprocessItem:(id)a3;
+- (BOOL)didPreprocessItem:(id)item;
 - (BOOL)needsImmediateProcessing;
 - (BOOL)needsToScheduleRefresh;
 - (BOOL)needsToScheduleVerification;
 - (BOOL)queueContentsAllowsRefresh;
-- (EDSearchableIndexState)initWithPendingIdentifierRemovals:(id)a3;
+- (EDSearchableIndexState)initWithPendingIdentifierRemovals:(id)removals;
 - (NSArray)pendingIdentifiers;
-- (id)prepareToIndexItems:(id)a3;
-- (id)processBatchOfSize:(unint64_t)a3;
+- (id)prepareToIndexItems:(id)items;
+- (id)processBatchOfSize:(unint64_t)size;
 - (id)removePendingDomainRemovals;
-- (int64_t)indexItem:(id)a3;
+- (int64_t)indexItem:(id)item;
 - (int64_t)resume;
 - (int64_t)suspend;
 - (unint64_t)countOfItemsInPendingQueues;
-- (void)removeIdentifiersFromPendingQueues:(id)a3 reasons:(id)a4;
-- (void)removeItemsForDomainIdentifier:(id)a3;
+- (void)removeIdentifiersFromPendingQueues:(id)queues reasons:(id)reasons;
+- (void)removeItemsForDomainIdentifier:(id)identifier;
 - (void)startReindex;
 @end
 
 @implementation EDSearchableIndexState
 
-- (EDSearchableIndexState)initWithPendingIdentifierRemovals:(id)a3
+- (EDSearchableIndexState)initWithPendingIdentifierRemovals:(id)removals
 {
-  v5 = a3;
+  removalsCopy = removals;
   v20.receiver = self;
   v20.super_class = EDSearchableIndexState;
   v6 = [(EDSearchableIndexState *)&v20 init];
@@ -52,7 +52,7 @@
     pendingDomainRemovals = v6->_pendingDomainRemovals;
     v6->_pendingDomainRemovals = v17;
 
-    objc_storeStrong(&v6->_pendingIdentifierRemovals, a3);
+    objc_storeStrong(&v6->_pendingIdentifierRemovals, removals);
   }
 
   return v6;
@@ -60,12 +60,12 @@
 
 - (unint64_t)countOfItemsInPendingQueues
 {
-  v3 = [(EDSearchableIndexState *)self pendingItems];
-  v4 = [v3 count];
-  v5 = [(EDSearchableIndexState *)self pendingIdentifierRemovals];
-  v6 = [v5 count];
-  v7 = [(EDSearchableIndexState *)self pendingDomainRemovals];
-  v8 = [v7 count];
+  pendingItems = [(EDSearchableIndexState *)self pendingItems];
+  v4 = [pendingItems count];
+  pendingIdentifierRemovals = [(EDSearchableIndexState *)self pendingIdentifierRemovals];
+  v6 = [pendingIdentifierRemovals count];
+  pendingDomainRemovals = [(EDSearchableIndexState *)self pendingDomainRemovals];
+  v8 = [pendingDomainRemovals count];
 
   return v6 + v4 + v8;
 }
@@ -78,8 +78,8 @@
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v4 = [(EDSearchableIndexState *)self pendingItems];
-  v5 = [v4 countByEnumeratingWithState:&v31 objects:v37 count:16];
+  pendingItems = [(EDSearchableIndexState *)self pendingItems];
+  v5 = [pendingItems countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v5)
   {
     v6 = *v32;
@@ -89,14 +89,14 @@
       {
         if (*v32 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(pendingItems);
         }
 
-        v8 = [*(*(&v31 + 1) + 8 * i) identifier];
-        [v3 addObject:v8];
+        identifier = [*(*(&v31 + 1) + 8 * i) identifier];
+        [v3 addObject:identifier];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v31 objects:v37 count:16];
+      v5 = [pendingItems countByEnumeratingWithState:&v31 objects:v37 count:16];
     }
 
     while (v5);
@@ -106,8 +106,8 @@
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = [(EDSearchableIndexState *)self preprocessingItems];
-  v10 = [v9 countByEnumeratingWithState:&v27 objects:v36 count:16];
+  preprocessingItems = [(EDSearchableIndexState *)self preprocessingItems];
+  v10 = [preprocessingItems countByEnumeratingWithState:&v27 objects:v36 count:16];
   if (v10)
   {
     v11 = *v28;
@@ -117,14 +117,14 @@
       {
         if (*v28 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(preprocessingItems);
         }
 
-        v13 = [*(*(&v27 + 1) + 8 * j) identifier];
-        [v3 addObject:v13];
+        identifier2 = [*(*(&v27 + 1) + 8 * j) identifier];
+        [v3 addObject:identifier2];
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v27 objects:v36 count:16];
+      v10 = [preprocessingItems countByEnumeratingWithState:&v27 objects:v36 count:16];
     }
 
     while (v10);
@@ -134,8 +134,8 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v14 = [(EDSearchableIndexState *)self processingItems];
-  v15 = [v14 countByEnumeratingWithState:&v23 objects:v35 count:16];
+  processingItems = [(EDSearchableIndexState *)self processingItems];
+  v15 = [processingItems countByEnumeratingWithState:&v23 objects:v35 count:16];
   if (v15)
   {
     v16 = *v24;
@@ -145,43 +145,43 @@
       {
         if (*v24 != v16)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(processingItems);
         }
 
-        v18 = [*(*(&v23 + 1) + 8 * k) identifier];
-        [v3 addObject:v18];
+        identifier3 = [*(*(&v23 + 1) + 8 * k) identifier];
+        [v3 addObject:identifier3];
       }
 
-      v15 = [v14 countByEnumeratingWithState:&v23 objects:v35 count:16];
+      v15 = [processingItems countByEnumeratingWithState:&v23 objects:v35 count:16];
     }
 
     while (v15);
   }
 
-  v19 = [(EDSearchableIndexState *)self removedIdentifiers];
-  [v3 unionSet:v19];
+  removedIdentifiers = [(EDSearchableIndexState *)self removedIdentifiers];
+  [v3 unionSet:removedIdentifiers];
 
-  v20 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v20;
+  return allObjects;
 }
 
 - (BOOL)needsToScheduleRefresh
 {
-  v3 = [(EDSearchableIndexState *)self needsRefresh];
-  if (v3)
+  needsRefresh = [(EDSearchableIndexState *)self needsRefresh];
+  if (needsRefresh)
   {
-    LOBYTE(v3) = ![(EDSearchableIndexState *)self scheduledRefresh];
+    LOBYTE(needsRefresh) = ![(EDSearchableIndexState *)self scheduledRefresh];
   }
 
-  return v3;
+  return needsRefresh;
 }
 
 - (BOOL)needsToScheduleVerification
 {
-  v3 = [(EDSearchableIndexState *)self countOfItemsInPendingQueues];
+  countOfItemsInPendingQueues = [(EDSearchableIndexState *)self countOfItemsInPendingQueues];
   if ([(EDSearchableIndexState *)self needsVerification])
   {
     v4 = ![(EDSearchableIndexState *)self scheduledVerification];
@@ -192,24 +192,24 @@
     LOBYTE(v4) = 0;
   }
 
-  return !v3 && v4;
+  return !countOfItemsInPendingQueues && v4;
 }
 
 - (BOOL)needsImmediateProcessing
 {
-  v3 = [(EDSearchableIndexState *)self countOfItemsInPendingQueues];
-  v4 = [(EDSearchableIndexState *)self pendingDomainRemovals];
-  if ([v4 count])
+  countOfItemsInPendingQueues = [(EDSearchableIndexState *)self countOfItemsInPendingQueues];
+  pendingDomainRemovals = [(EDSearchableIndexState *)self pendingDomainRemovals];
+  if ([pendingDomainRemovals count])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(EDSearchableIndexState *)self indexImmediately];
-    if (v3)
+    indexImmediately = [(EDSearchableIndexState *)self indexImmediately];
+    if (countOfItemsInPendingQueues)
     {
-      v5 = v6;
+      v5 = indexImmediately;
     }
 
     else
@@ -223,14 +223,14 @@
 
 - (BOOL)queueContentsAllowsRefresh
 {
-  v3 = [(EDSearchableIndexState *)self preprocessingItems];
-  v4 = [v3 ef_countObjectsPassingTest:&__block_literal_global_82];
+  preprocessingItems = [(EDSearchableIndexState *)self preprocessingItems];
+  v4 = [preprocessingItems ef_countObjectsPassingTest:&__block_literal_global_82];
 
-  v5 = [(EDSearchableIndexState *)self countOfItemsInPendingQueues];
-  v6 = [(EDSearchableIndexState *)self preprocessingItems];
-  v7 = [v6 count];
+  countOfItemsInPendingQueues = [(EDSearchableIndexState *)self countOfItemsInPendingQueues];
+  preprocessingItems2 = [(EDSearchableIndexState *)self preprocessingItems];
+  v7 = [preprocessingItems2 count];
 
-  return v4 <= 0xC && v7 + v5 == 0;
+  return v4 <= 0xC && v7 + countOfItemsInPendingQueues == 0;
 }
 
 BOOL __52__EDSearchableIndexState_queueContentsAllowsRefresh__block_invoke(uint64_t a1, void *a2)
@@ -251,24 +251,24 @@ BOOL __52__EDSearchableIndexState_queueContentsAllowsRefresh__block_invoke(uint6
 
 - (int64_t)resume
 {
-  v3 = [(EDSearchableIndexState *)self resumeCount];
-  [(EDSearchableIndexState *)self setResumeCount:v3 + 1];
-  return v3 + 1;
+  resumeCount = [(EDSearchableIndexState *)self resumeCount];
+  [(EDSearchableIndexState *)self setResumeCount:resumeCount + 1];
+  return resumeCount + 1;
 }
 
-- (id)prepareToIndexItems:(id)a3
+- (id)prepareToIndexItems:(id)items
 {
-  v4 = a3;
-  [(NSMutableArray *)self->_preparingItems addObjectsFromArray:v4];
+  itemsCopy = items;
+  [(NSMutableArray *)self->_preparingItems addObjectsFromArray:itemsCopy];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__EDSearchableIndexState_prepareToIndexItems___block_invoke;
   v8[3] = &unk_1E8257290;
   v8[4] = self;
-  v5 = [v4 indexesOfObjectsPassingTest:v8];
+  v5 = [itemsCopy indexesOfObjectsPassingTest:v8];
   if ([v5 count])
   {
-    v6 = [v4 objectsAtIndexes:v5];
+    v6 = [itemsCopy objectsAtIndexes:v5];
     [(NSMutableArray *)self->_preparingItems removeObjectsInArray:v6];
   }
 
@@ -290,10 +290,10 @@ uint64_t __46__EDSearchableIndexState_prepareToIndexItems___block_invoke(uint64_
   return v6;
 }
 
-- (BOOL)didPreprocessItem:(id)a3
+- (BOOL)didPreprocessItem:(id)item
 {
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->_preprocessingItems indexOfObject:v4];
+  itemCopy = item;
+  v5 = [(NSMutableArray *)self->_preprocessingItems indexOfObject:itemCopy];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(NSMutableArray *)self->_preprocessingItems removeObjectAtIndex:v5];
@@ -302,33 +302,33 @@ uint64_t __46__EDSearchableIndexState_prepareToIndexItems___block_invoke(uint64_
   return v5 != 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (int64_t)indexItem:(id)a3
+- (int64_t)indexItem:(id)item
 {
-  v4 = a3;
-  v5 = [(EDSearchableIndexState *)self preprocessingItems];
-  v6 = [v5 indexOfObject:v4];
+  itemCopy = item;
+  preprocessingItems = [(EDSearchableIndexState *)self preprocessingItems];
+  v6 = [preprocessingItems indexOfObject:itemCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if ([v4 requiresPreprocessing])
+    if ([itemCopy requiresPreprocessing])
     {
-      [(NSMutableArray *)self->_preprocessingItems addObject:v4];
+      [(NSMutableArray *)self->_preprocessingItems addObject:itemCopy];
       v7 = 0;
     }
 
     else
     {
-      v11 = [(EDSearchableIndexState *)self pendingItems];
-      v12 = [v11 indexOfObject:v4];
+      pendingItems = [(EDSearchableIndexState *)self pendingItems];
+      v12 = [pendingItems indexOfObject:itemCopy];
 
       if (v12 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v13 = [(EDSearchableIndexState *)self pendingItems];
-        v14 = [v13 ef_indexWhereObjectWouldBeInserted:v4 usingComparator:&__block_literal_global_6_0];
+        pendingItems2 = [(EDSearchableIndexState *)self pendingItems];
+        v14 = [pendingItems2 ef_indexWhereObjectWouldBeInserted:itemCopy usingComparator:&__block_literal_global_6_0];
 
-        [(NSMutableArray *)self->_pendingItems insertObject:v4 atIndex:v14];
-        v15 = [(EDSearchableIndexState *)self pendingItems];
-        v16 = [v15 count];
+        [(NSMutableArray *)self->_pendingItems insertObject:itemCopy atIndex:v14];
+        pendingItems3 = [(EDSearchableIndexState *)self pendingItems];
+        v16 = [pendingItems3 count];
 
         if (v16 >= 0x800 && (-[NSMutableArray removeLastObject](self->_pendingItems, "removeLastObject"), -[EDSearchableIndexState pendingItems](self, "pendingItems"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 count], v17, v14 == v18))
         {
@@ -343,10 +343,10 @@ uint64_t __46__EDSearchableIndexState_prepareToIndexItems___block_invoke(uint64_
 
       else
       {
-        v19 = [(EDSearchableIndexState *)self pendingItems];
-        v20 = [v19 objectAtIndexedSubscript:v12];
+        pendingItems4 = [(EDSearchableIndexState *)self pendingItems];
+        v20 = [pendingItems4 objectAtIndexedSubscript:v12];
 
-        [v20 addPendingItem:v4];
+        [v20 addPendingItem:itemCopy];
         v7 = 2;
       }
     }
@@ -354,45 +354,45 @@ uint64_t __46__EDSearchableIndexState_prepareToIndexItems___block_invoke(uint64_
 
   else
   {
-    v8 = [(EDSearchableIndexState *)self preprocessingItems];
-    v9 = [v8 objectAtIndexedSubscript:v6];
+    preprocessingItems2 = [(EDSearchableIndexState *)self preprocessingItems];
+    v9 = [preprocessingItems2 objectAtIndexedSubscript:v6];
 
-    [v9 addPendingItem:v4];
+    [v9 addPendingItem:itemCopy];
     v7 = 1;
   }
 
   return v7;
 }
 
-- (void)removeIdentifiersFromPendingQueues:(id)a3 reasons:(id)a4
+- (void)removeIdentifiersFromPendingQueues:(id)queues reasons:(id)reasons
 {
   v34 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v23 = a4;
-  if ([v24 count])
+  queuesCopy = queues;
+  reasonsCopy = reasons;
+  if ([queuesCopy count])
   {
-    [(NSMutableSet *)self->_removedIdentifiers addObjectsFromArray:v24];
-    v21 = [MEMORY[0x1E695DFD8] setWithArray:v24];
-    v6 = [(EDSearchableIndexState *)self pendingItems];
+    [(NSMutableSet *)self->_removedIdentifiers addObjectsFromArray:queuesCopy];
+    v21 = [MEMORY[0x1E695DFD8] setWithArray:queuesCopy];
+    pendingItems = [(EDSearchableIndexState *)self pendingItems];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __69__EDSearchableIndexState_removeIdentifiersFromPendingQueues_reasons___block_invoke;
     v31[3] = &unk_1E82572D8;
     v7 = v21;
     v32 = v7;
-    v22 = [v6 indexesOfObjectsPassingTest:v31];
+    v22 = [pendingItems indexesOfObjectsPassingTest:v31];
 
     [(NSMutableArray *)self->_pendingItems removeObjectsAtIndexes:v22];
-    v8 = [(EDSearchableIndexState *)self pendingIdentifierRemovals];
-    [v8 addIdentifiers:v24 withReasons:v23];
+    pendingIdentifierRemovals = [(EDSearchableIndexState *)self pendingIdentifierRemovals];
+    [pendingIdentifierRemovals addIdentifiers:queuesCopy withReasons:reasonsCopy];
 
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v10 = [(EDSearchableIndexState *)self preprocessingItems];
-    v11 = [v10 countByEnumeratingWithState:&v27 objects:v33 count:16];
+    preprocessingItems = [(EDSearchableIndexState *)self preprocessingItems];
+    v11 = [preprocessingItems countByEnumeratingWithState:&v27 objects:v33 count:16];
     if (v11)
     {
       v12 = *v28;
@@ -402,12 +402,12 @@ uint64_t __46__EDSearchableIndexState_prepareToIndexItems___block_invoke(uint64_
         {
           if (*v28 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(preprocessingItems);
           }
 
           v14 = *(*(&v27 + 1) + 8 * i);
-          v15 = [v14 identifier];
-          v16 = [v7 containsObject:v15];
+          identifier = [v14 identifier];
+          v16 = [v7 containsObject:identifier];
 
           if (v16)
           {
@@ -415,7 +415,7 @@ uint64_t __46__EDSearchableIndexState_prepareToIndexItems___block_invoke(uint64_
           }
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v27 objects:v33 count:16];
+        v11 = [preprocessingItems countByEnumeratingWithState:&v27 objects:v33 count:16];
       }
 
       while (v11);
@@ -426,14 +426,14 @@ uint64_t __46__EDSearchableIndexState_prepareToIndexItems___block_invoke(uint64_
       [(NSMutableArray *)self->_preprocessingItems removeObjectsInArray:v9];
     }
 
-    v17 = [(EDSearchableIndexState *)self preparingItems];
+    preparingItems = [(EDSearchableIndexState *)self preparingItems];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __69__EDSearchableIndexState_removeIdentifiersFromPendingQueues_reasons___block_invoke_2;
     v25[3] = &unk_1E8257290;
     v18 = v7;
     v26 = v18;
-    v19 = [v17 indexesOfObjectsPassingTest:v25];
+    v19 = [preparingItems indexesOfObjectsPassingTest:v25];
 
     [(NSMutableArray *)self->_preparingItems removeObjectsAtIndexes:v19];
   }
@@ -459,18 +459,18 @@ uint64_t __69__EDSearchableIndexState_removeIdentifiersFromPendingQueues_reasons
   return v4;
 }
 
-- (void)removeItemsForDomainIdentifier:(id)a3
+- (void)removeItemsForDomainIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v3 = [(EDSearchableIndexState *)self pendingItems];
+  identifierCopy = identifier;
+  pendingItems = [(EDSearchableIndexState *)self pendingItems];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __57__EDSearchableIndexState_removeItemsForDomainIdentifier___block_invoke;
   v22[3] = &unk_1E82572D8;
-  v4 = v15;
+  v4 = identifierCopy;
   v23 = v4;
-  v16 = [v3 indexesOfObjectsPassingTest:v22];
+  v16 = [pendingItems indexesOfObjectsPassingTest:v22];
 
   [(NSMutableArray *)self->_pendingItems removeObjectsAtIndexes:v16];
   [(NSMutableSet *)self->_pendingDomainRemovals addObject:v4];
@@ -479,8 +479,8 @@ uint64_t __69__EDSearchableIndexState_removeIdentifiersFromPendingQueues_reasons
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(EDSearchableIndexState *)self preprocessingItems];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  preprocessingItems = [(EDSearchableIndexState *)self preprocessingItems];
+  v7 = [preprocessingItems countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v7)
   {
     v8 = *v19;
@@ -490,13 +490,13 @@ uint64_t __69__EDSearchableIndexState_removeIdentifiersFromPendingQueues_reasons
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(preprocessingItems);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 referenceItem];
-        v12 = [v11 domainIdentifier];
-        v13 = [v12 hasPrefix:v4];
+        referenceItem = [v10 referenceItem];
+        domainIdentifier = [referenceItem domainIdentifier];
+        v13 = [domainIdentifier hasPrefix:v4];
 
         if (v13)
         {
@@ -504,7 +504,7 @@ uint64_t __69__EDSearchableIndexState_removeIdentifiersFromPendingQueues_reasons
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      v7 = [preprocessingItems countByEnumeratingWithState:&v18 objects:v24 count:16];
     }
 
     while (v7);
@@ -527,32 +527,32 @@ uint64_t __57__EDSearchableIndexState_removeItemsForDomainIdentifier___block_inv
   return v5;
 }
 
-- (id)processBatchOfSize:(unint64_t)a3
+- (id)processBatchOfSize:(unint64_t)size
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = [(EDSearchableIndexState *)self pendingItems];
-  v5 = [v4 count];
+  pendingItems = [(EDSearchableIndexState *)self pendingItems];
+  v5 = [pendingItems count];
 
-  if (v5 >= a3)
+  if (v5 >= size)
   {
-    v6 = a3;
+    sizeCopy = size;
   }
 
   else
   {
-    v6 = v5;
+    sizeCopy = v5;
   }
 
-  if (v6)
+  if (sizeCopy)
   {
-    v22 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
+    v22 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:size];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v7 = [(EDSearchableIndexState *)self pendingItems];
-    obj = v7;
-    v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    pendingItems2 = [(EDSearchableIndexState *)self pendingItems];
+    obj = pendingItems2;
+    v8 = [pendingItems2 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v8)
     {
       v9 = 0;
@@ -571,10 +571,10 @@ uint64_t __57__EDSearchableIndexState_removeItemsForDomainIdentifier___block_inv
           }
 
           v13 = *(*(&v23 + 1) + 8 * v11);
-          v14 = [v13 estimatedSizeInBytes];
-          if (v14 <= 0x2000000)
+          estimatedSizeInBytes = [v13 estimatedSizeInBytes];
+          if (estimatedSizeInBytes <= 0x2000000)
           {
-            v15 = v14;
+            v15 = estimatedSizeInBytes;
           }
 
           else
@@ -582,13 +582,13 @@ uint64_t __57__EDSearchableIndexState_removeItemsForDomainIdentifier___block_inv
             v15 = 0;
           }
 
-          v16 = [v13 items];
-          [v22 addObjectsFromArray:v16];
+          items = [v13 items];
+          [v22 addObjectsFromArray:items];
 
-          if (v12 >= v6 || (v9 += v15, v9 >= 0x2000000))
+          if (v12 >= sizeCopy || (v9 += v15, v9 >= 0x2000000))
           {
             v20 = v12;
-            v7 = obj;
+            pendingItems2 = obj;
             goto LABEL_21;
           }
 
@@ -597,7 +597,7 @@ uint64_t __57__EDSearchableIndexState_removeItemsForDomainIdentifier___block_inv
         }
 
         while (v8 != v11);
-        v7 = obj;
+        pendingItems2 = obj;
         v8 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v8)
         {
@@ -631,12 +631,12 @@ LABEL_21:
 
 - (id)removePendingDomainRemovals
 {
-  v3 = [(EDSearchableIndexState *)self pendingDomainRemovals];
+  pendingDomainRemovals = [(EDSearchableIndexState *)self pendingDomainRemovals];
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   pendingDomainRemovals = self->_pendingDomainRemovals;
   self->_pendingDomainRemovals = v4;
 
-  return v3;
+  return pendingDomainRemovals;
 }
 
 - (void)startReindex
@@ -647,8 +647,8 @@ LABEL_21:
   [(NSMutableArray *)self->_pendingItems removeAllObjects];
   [(NSMutableArray *)self->_preprocessingItems removeAllObjects];
   [(NSMutableSet *)self->_pendingDomainRemovals removeAllObjects];
-  v3 = [(EDSearchableIndexState *)self pendingIdentifierRemovals];
-  [v3 removeAllIdentifiers];
+  pendingIdentifierRemovals = [(EDSearchableIndexState *)self pendingIdentifierRemovals];
+  [pendingIdentifierRemovals removeAllIdentifiers];
 }
 
 @end

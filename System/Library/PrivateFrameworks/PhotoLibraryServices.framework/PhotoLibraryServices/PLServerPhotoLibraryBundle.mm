@@ -1,144 +1,144 @@
 @interface PLServerPhotoLibraryBundle
-- (BOOL)impl_bindAssetsdService:(id)a3 error:(id *)a4;
-- (BOOL)impl_calculateTotalSizeWithResult:(id)a3;
-- (BOOL)shouldRelinquishToWriterOfSubitemAtURL:(id)a3;
-- (PLServerPhotoLibraryBundle)initWithLibraryURL:(id)a3 bundleController:(id)a4 backgroundJobService:(id)a5 libraryServicesDelegateClass:(Class)a6;
+- (BOOL)impl_bindAssetsdService:(id)service error:(id *)error;
+- (BOOL)impl_calculateTotalSizeWithResult:(id)result;
+- (BOOL)shouldRelinquishToWriterOfSubitemAtURL:(id)l;
+- (PLServerPhotoLibraryBundle)initWithLibraryURL:(id)l bundleController:(id)controller backgroundJobService:(id)service libraryServicesDelegateClass:(Class)class;
 - (id)_newTouchCoalescer;
 - (id)boundAssetsdServices;
 - (id)invalidateClientsReason;
 - (id)newAssetsdClient;
 - (id)newLibraryServicesManager;
-- (id)transferAssets:(id)a3 toBundle:(id)a4 options:(id)a5 completion:(id)a6;
-- (id)transferPersons:(id)a3 toBundle:(id)a4 options:(id)a5 completion:(id)a6;
+- (id)transferAssets:(id)assets toBundle:(id)bundle options:(id)options completion:(id)completion;
+- (id)transferPersons:(id)persons toBundle:(id)bundle options:(id)options completion:(id)completion;
 - (void)_touch;
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3;
-- (void)accommodatePresentedSubitemDeletionAtURL:(id)a3 completionHandler:(id)a4;
-- (void)closeWithReason:(id)a3;
-- (void)impl_setCloudPhotoLibraryEnabled:(BOOL)a3;
-- (void)impl_setCloudPhotoLibraryEnabledSync:(BOOL)a3;
-- (void)impl_setPhotoStreamEnabled:(BOOL)a3;
-- (void)impl_setSharedAlbumEnabled:(BOOL)a3;
-- (void)impl_unbindAssetsdService:(id)a3;
-- (void)invalidateClientConnectionsWithReason:(id)a3;
-- (void)presentedItemDidMoveToURL:(id)a3;
-- (void)relinquishPresentedItemToReader:(id)a3;
-- (void)relinquishPresentedItemToWriter:(id)a3;
-- (void)savePresentedItemChangesWithCompletionHandler:(id)a3;
-- (void)shutdownWithReason:(id)a3;
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler;
+- (void)accommodatePresentedSubitemDeletionAtURL:(id)l completionHandler:(id)handler;
+- (void)closeWithReason:(id)reason;
+- (void)impl_setCloudPhotoLibraryEnabled:(BOOL)enabled;
+- (void)impl_setCloudPhotoLibraryEnabledSync:(BOOL)sync;
+- (void)impl_setPhotoStreamEnabled:(BOOL)enabled;
+- (void)impl_setSharedAlbumEnabled:(BOOL)enabled;
+- (void)impl_unbindAssetsdService:(id)service;
+- (void)invalidateClientConnectionsWithReason:(id)reason;
+- (void)presentedItemDidMoveToURL:(id)l;
+- (void)relinquishPresentedItemToReader:(id)reader;
+- (void)relinquishPresentedItemToWriter:(id)writer;
+- (void)savePresentedItemChangesWithCompletionHandler:(id)handler;
+- (void)shutdownWithReason:(id)reason;
 @end
 
 @implementation PLServerPhotoLibraryBundle
 
-- (void)impl_setSharedAlbumEnabled:(BOOL)a3
+- (void)impl_setSharedAlbumEnabled:(BOOL)enabled
 {
-  v3 = self;
+  selfCopy = self;
   v4 = PLMethodNotImplementedException();
   objc_exception_throw(v4);
 }
 
-- (void)impl_setPhotoStreamEnabled:(BOOL)a3
+- (void)impl_setPhotoStreamEnabled:(BOOL)enabled
 {
-  v3 = self;
+  selfCopy = self;
   v4 = PLMethodNotImplementedException();
   objc_exception_throw(v4);
 }
 
-- (void)impl_setCloudPhotoLibraryEnabledSync:(BOOL)a3
+- (void)impl_setCloudPhotoLibraryEnabledSync:(BOOL)sync
 {
-  v3 = self;
+  selfCopy = self;
   v4 = PLMethodNotImplementedException();
   objc_exception_throw(v4);
 }
 
-- (void)accommodatePresentedSubitemDeletionAtURL:(id)a3 completionHandler:(id)a4
+- (void)accommodatePresentedSubitemDeletionAtURL:(id)l completionHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = PLLibraryBundleGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(PLPhotoLibraryBundle *)self libraryURL];
-    v10 = [v9 lastPathComponent];
+    libraryURL = [(PLPhotoLibraryBundle *)self libraryURL];
+    lastPathComponent = [libraryURL lastPathComponent];
     v11 = 138412546;
-    v12 = v10;
+    v12 = lastPathComponent;
     v13 = 2112;
-    v14 = v6;
+    v14 = lCopy;
     _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "Library: %@ accommodatePresentedSubitemDeletionAtURL: %@", &v11, 0x16u);
   }
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)presentedItemDidMoveToURL:(id)a3
+- (void)presentedItemDidMoveToURL:(id)l
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v5 = PLLibraryBundleGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PLPhotoLibraryBundle *)self libraryURL];
+    libraryURL = [(PLPhotoLibraryBundle *)self libraryURL];
     v7 = 138412546;
-    v8 = v6;
+    v8 = libraryURL;
     v9 = 2112;
-    v10 = v4;
+    v10 = lCopy;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "Library: %@ moved, presentedItemDidMoveToURL: %@", &v7, 0x16u);
   }
 }
 
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = PLLibraryBundleGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PLPhotoLibraryBundle *)self libraryURL];
-    v7 = [v6 lastPathComponent];
+    libraryURL = [(PLPhotoLibraryBundle *)self libraryURL];
+    lastPathComponent = [libraryURL lastPathComponent];
     v9 = 138412290;
-    v10 = v7;
+    v10 = lastPathComponent;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "Library: %@ accommodatePresentedItemDeletionWithCompletionHandler: called sending error", &v9, 0xCu);
   }
 
   v8 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:41005 userInfo:0];
-  v4[2](v4, v8);
+  handlerCopy[2](handlerCopy, v8);
 }
 
-- (void)savePresentedItemChangesWithCompletionHandler:(id)a3
+- (void)savePresentedItemChangesWithCompletionHandler:(id)handler
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = PLLibraryBundleGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PLPhotoLibraryBundle *)self libraryURL];
-    v7 = [v6 lastPathComponent];
+    libraryURL = [(PLPhotoLibraryBundle *)self libraryURL];
+    lastPathComponent = [libraryURL lastPathComponent];
     v8 = 138412290;
-    v9 = v7;
+    v9 = lastPathComponent;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "Library: %@ savePresentedItemChangesWithCompletionHandler: called", &v8, 0xCu);
   }
 
-  v4[2](v4, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)relinquishPresentedItemToWriter:(id)a3
+- (void)relinquishPresentedItemToWriter:(id)writer
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  writerCopy = writer;
   v5 = PLLibraryBundleGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PLPhotoLibraryBundle *)self libraryURL];
-    v7 = [v6 lastPathComponent];
+    libraryURL = [(PLPhotoLibraryBundle *)self libraryURL];
+    lastPathComponent = [libraryURL lastPathComponent];
     *buf = 138412290;
-    v20 = v7;
+    v20 = lastPathComponent;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "Begin relinquishing library bundle %@ to writer", buf, 0xCu);
   }
 
-  v8 = [(PLPhotoLibraryBundle *)self bundleController];
-  v9 = [(PLPhotoLibraryBundle *)self libraryURL];
+  bundleController = [(PLPhotoLibraryBundle *)self bundleController];
+  libraryURL2 = [(PLPhotoLibraryBundle *)self libraryURL];
   v10 = *MEMORY[0x1E696A578];
-  v18[0] = v9;
+  v18[0] = libraryURL2;
   v18[1] = @"Relinquishing photo library to writer";
   v11 = *MEMORY[0x1E696A588];
   v17[1] = v10;
@@ -147,34 +147,34 @@
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:3];
 
   v13 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:41018 userInfo:v12];
-  [v8 shutdownBundle:self reason:v13];
+  [bundleController shutdownBundle:self reason:v13];
   v14 = PLLibraryBundleGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(PLPhotoLibraryBundle *)self libraryURL];
-    v16 = [v15 lastPathComponent];
+    libraryURL3 = [(PLPhotoLibraryBundle *)self libraryURL];
+    lastPathComponent2 = [libraryURL3 lastPathComponent];
     *buf = 138412290;
-    v20 = v16;
+    v20 = lastPathComponent2;
     _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "shutdownBundle for %@ has completed. Relinquishing to writer.", buf, 0xCu);
   }
 
-  v4[2](v4, 0);
+  writerCopy[2](writerCopy, 0);
 }
 
-- (BOOL)shouldRelinquishToWriterOfSubitemAtURL:(id)a3
+- (BOOL)shouldRelinquishToWriterOfSubitemAtURL:(id)l
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v4 URLByStandardizingPath];
-  v7 = [(PLPhotoLibraryBundle *)self pathManager];
-  v8 = [v7 pathsForExternalWriters];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  uRLByStandardizingPath = [lCopy URLByStandardizingPath];
+  pathManager = [(PLPhotoLibraryBundle *)self pathManager];
+  pathsForExternalWriters = [pathManager pathsForExternalWriters];
 
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v8;
+  obj = pathsForExternalWriters;
   v40 = [obj countByEnumeratingWithState:&v44 objects:v53 count:16];
   if (!v40)
   {
@@ -182,13 +182,13 @@
     goto LABEL_23;
   }
 
-  v36 = self;
-  v37 = v4;
+  selfCopy = self;
+  v37 = lCopy;
   v39 = *v45;
   v9 = *MEMORY[0x1E696A250];
   v41 = *MEMORY[0x1E696A998];
   v10 = 0x1E695D000uLL;
-  v11 = v6;
+  uRLByDeletingLastPathComponent = uRLByStandardizingPath;
 LABEL_3:
   v12 = 0;
   while (1)
@@ -200,8 +200,8 @@ LABEL_3:
 
     v42 = v12;
     v13 = *(*(&v44 + 1) + 8 * v12);
-    v14 = [v11 path];
-    v15 = [v14 hasPrefix:v13];
+    path = [uRLByDeletingLastPathComponent path];
+    v15 = [path hasPrefix:v13];
 
     if (v15)
     {
@@ -215,7 +215,7 @@ LABEL_17:
       v40 = [obj countByEnumeratingWithState:&v44 objects:v53 count:16];
       if (!v40)
       {
-        v6 = v11;
+        uRLByStandardizingPath = uRLByDeletingLastPathComponent;
         v30 = 0;
         goto LABEL_21;
       }
@@ -229,31 +229,31 @@ LABEL_17:
     v16 = [*(v10 + 4088) fileURLWithPath:v13 isDirectory:1];
     *buf = 0;
     v43 = 0;
-    v17 = [v5 getRelationship:buf ofDirectoryAtURL:v16 toItemAtURL:v11 error:&v43];
+    v17 = [defaultManager getRelationship:buf ofDirectoryAtURL:v16 toItemAtURL:uRLByDeletingLastPathComponent error:&v43];
     v18 = v43;
     v19 = v18;
     if (!v17)
     {
-      v20 = [v18 domain];
-      if ([v20 isEqualToString:v9] && objc_msgSend(v19, "code") == 260)
+      domain = [v18 domain];
+      if ([domain isEqualToString:v9] && objc_msgSend(v19, "code") == 260)
       {
         v21 = v9;
-        v22 = v5;
-        v23 = [v19 userInfo];
-        v24 = [v23 objectForKeyedSubscript:v41];
-        v25 = v11;
-        v26 = [v24 isEqual:v11];
+        v22 = defaultManager;
+        userInfo = [v19 userInfo];
+        v24 = [userInfo objectForKeyedSubscript:v41];
+        v25 = uRLByDeletingLastPathComponent;
+        v26 = [v24 isEqual:uRLByDeletingLastPathComponent];
 
         if (!v26)
         {
-          v5 = v22;
+          defaultManager = v22;
           v9 = v21;
           v10 = 0x1E695D000;
-          v11 = v25;
+          uRLByDeletingLastPathComponent = v25;
 LABEL_13:
 
-          v27 = [v11 path];
-          v28 = [v27 hasPrefix:v13];
+          path2 = [uRLByDeletingLastPathComponent path];
+          v28 = [path2 hasPrefix:v13];
 
           if ((v28 & 1) == 0)
           {
@@ -263,9 +263,9 @@ LABEL_13:
           continue;
         }
 
-        v11 = [v25 URLByDeletingLastPathComponent];
-        v20 = v25;
-        v5 = v22;
+        uRLByDeletingLastPathComponent = [v25 URLByDeletingLastPathComponent];
+        domain = v25;
+        defaultManager = v22;
         v9 = v21;
         v10 = 0x1E695D000;
       }
@@ -283,21 +283,21 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  v6 = v11;
+  uRLByStandardizingPath = uRLByDeletingLastPathComponent;
   v30 = 1;
 LABEL_21:
-  self = v36;
-  v4 = v37;
+  self = selfCopy;
+  lCopy = v37;
 LABEL_23:
 
   v31 = PLLibraryBundleGetLog();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
-    v32 = [(PLPhotoLibraryBundle *)self libraryURL];
-    v33 = [v32 lastPathComponent];
+    libraryURL = [(PLPhotoLibraryBundle *)self libraryURL];
+    lastPathComponent = [libraryURL lastPathComponent];
     v34 = @" ";
     *buf = 138412802;
-    *&buf[4] = v33;
+    *&buf[4] = lastPathComponent;
     v49 = 2112;
     if (v30)
     {
@@ -306,58 +306,58 @@ LABEL_23:
 
     v50 = v34;
     v51 = 2112;
-    v52 = v4;
+    v52 = lCopy;
     _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_DEFAULT, "Library: %@ should%@RelinquishToWriterOfSubitemAtURL: %@", buf, 0x20u);
   }
 
   return v30 ^ 1;
 }
 
-- (void)relinquishPresentedItemToReader:(id)a3
+- (void)relinquishPresentedItemToReader:(id)reader
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  readerCopy = reader;
   v5 = PLLibraryBundleGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PLPhotoLibraryBundle *)self libraryURL];
-    v7 = [v6 lastPathComponent];
+    libraryURL = [(PLPhotoLibraryBundle *)self libraryURL];
+    lastPathComponent = [libraryURL lastPathComponent];
     v8 = 138412290;
-    v9 = v7;
+    v9 = lastPathComponent;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "NSFilePresenter: %@ relinquish to reader", &v8, 0xCu);
   }
 
-  v4[2](v4, 0);
+  readerCopy[2](readerCopy, 0);
 }
 
-- (void)impl_setCloudPhotoLibraryEnabled:(BOOL)a3
+- (void)impl_setCloudPhotoLibraryEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if (a3)
+  enabledCopy = enabled;
+  if (enabled)
   {
     PLCPLRecordEnableForCurrentAccount();
   }
 
-  v5 = [(PLPhotoLibraryBundle *)self libraryServicesManager];
-  [v5 setICloudPhotosEnabledInternal:v3];
+  libraryServicesManager = [(PLPhotoLibraryBundle *)self libraryServicesManager];
+  [libraryServicesManager setICloudPhotosEnabledInternal:enabledCopy];
 
-  v7 = [(PLPhotoLibraryBundle *)self libraryServicesManager];
-  v6 = [v7 cplReadiness];
-  [v6 processCloudPhotosLibraryStateChange:v3];
+  libraryServicesManager2 = [(PLPhotoLibraryBundle *)self libraryServicesManager];
+  cplReadiness = [libraryServicesManager2 cplReadiness];
+  [cplReadiness processCloudPhotosLibraryStateChange:enabledCopy];
 }
 
-- (BOOL)impl_calculateTotalSizeWithResult:(id)a3
+- (BOOL)impl_calculateTotalSizeWithResult:(id)result
 {
   v36 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v4 = [(PLPhotoLibraryBundle *)self pathManager];
-  v5 = [v4 pathsForLibraryFilesystemSizeCalculation];
+  resultCopy = result;
+  pathManager = [(PLPhotoLibraryBundle *)self pathManager];
+  pathsForLibraryFilesystemSizeCalculation = [pathManager pathsForLibraryFilesystemSizeCalculation];
 
   v6 = PLLibraryBundleGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v5;
+    *(&buf + 4) = pathsForLibraryFilesystemSizeCalculation;
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_INFO, "calculateTotalSizeWithResult for paths %@", &buf, 0xCu);
   }
 
@@ -381,7 +381,7 @@ LABEL_23:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  obj = v5;
+  obj = pathsForLibraryFilesystemSizeCalculation;
   v7 = [obj countByEnumeratingWithState:&v16 objects:v32 count:16];
   if (v7)
   {
@@ -418,7 +418,7 @@ LABEL_23:
     while (v7);
   }
 
-  (*(v13 + 2))(v13, *(*(&buf + 1) + 24), v29[3], v25[3], v21[3], 0);
+  (*(resultCopy + 2))(resultCopy, *(*(&buf + 1) + 24), v29[3], v25[3], v21[3], 0);
   _Block_object_dispose(&v20, 8);
   _Block_object_dispose(&v24, 8);
   _Block_object_dispose(&v28, 8);
@@ -436,10 +436,10 @@ void *__64__PLServerPhotoLibraryBundle_impl_calculateTotalSizeWithResult___block
   return result;
 }
 
-- (void)impl_unbindAssetsdService:(id)a3
+- (void)impl_unbindAssetsdService:(id)service
 {
-  v4 = a3;
-  v3 = v4;
+  serviceCopy = service;
+  v3 = serviceCopy;
   PLSafeRunWithUnfairLock();
 }
 
@@ -449,7 +449,7 @@ void __56__PLServerPhotoLibraryBundle_impl_unbindAssetsdService___block_invoke(u
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (BOOL)impl_bindAssetsdService:(id)a3 error:(id *)a4
+- (BOOL)impl_bindAssetsdService:(id)service error:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -461,12 +461,12 @@ void __56__PLServerPhotoLibraryBundle_impl_unbindAssetsdService___block_invoke(u
   v11 = __Block_byref_object_copy__23523;
   v12 = __Block_byref_object_dispose__23524;
   v13 = 0;
-  v5 = a3;
+  serviceCopy = service;
   PLSafeRunWithUnfairLock();
   v6 = *(v15 + 24);
-  if (a4 && (v15[3] & 1) == 0)
+  if (error && (v15[3] & 1) == 0)
   {
-    *a4 = v9[5];
+    *error = v9[5];
     v6 = *(v15 + 24);
   }
 
@@ -521,36 +521,36 @@ void __50__PLServerPhotoLibraryBundle_boundAssetsdServices__block_invoke(uint64_
   *(v3 + 40) = v2;
 }
 
-- (void)shutdownWithReason:(id)a3
+- (void)shutdownWithReason:(id)reason
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = PLPhotosObjectLifecycleGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
     v29 = objc_opt_class();
     v30 = 2048;
-    v31 = self;
+    selfCopy = self;
     v32 = 2080;
     v33 = "[PLServerPhotoLibraryBundle shutdownWithReason:]";
     v34 = 2112;
-    v35 = v4;
+    v35 = reasonCopy;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEBUG, "%@ %p %s %@", buf, 0x2Au);
   }
 
   v6 = PLLibraryBundleGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(PLPhotoLibraryBundle *)self libraryURL];
-    v8 = [v7 lastPathComponent];
-    v9 = [v4 code];
+    libraryURL = [(PLPhotoLibraryBundle *)self libraryURL];
+    lastPathComponent = [libraryURL lastPathComponent];
+    code = [reasonCopy code];
     *buf = 138412802;
-    v29 = v8;
+    v29 = lastPathComponent;
     v30 = 2048;
-    v31 = v9;
+    selfCopy = code;
     v32 = 2112;
-    v33 = v4;
+    v33 = reasonCopy;
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "Shutting down bundle %@ with reason code %td, full reason %@", buf, 0x20u);
   }
 
@@ -558,50 +558,50 @@ void __50__PLServerPhotoLibraryBundle_boundAssetsdServices__block_invoke(uint64_
   v23 = 3221225472;
   v24 = __49__PLServerPhotoLibraryBundle_shutdownWithReason___block_invoke;
   v25 = &unk_1E7578848;
-  v26 = self;
-  v10 = v4;
+  selfCopy2 = self;
+  v10 = reasonCopy;
   v27 = v10;
   PLSafeRunWithUnfairLock();
   [(PLServerPhotoLibraryBundle *)self invalidateClientConnectionsWithReason:v10];
-  v11 = [(PLPhotoLibraryBundle *)self libraryServicesManager];
-  v12 = [v11 preRunningProgress];
+  libraryServicesManager = [(PLPhotoLibraryBundle *)self libraryServicesManager];
+  preRunningProgress = [libraryServicesManager preRunningProgress];
 
-  v13 = [v12 totalUnitCount];
-  if (v13 != [v12 completedUnitCount])
+  totalUnitCount = [preRunningProgress totalUnitCount];
+  if (totalUnitCount != [preRunningProgress completedUnitCount])
   {
     v14 = PLLibraryBundleGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v29 = v12;
+      v29 = preRunningProgress;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "Cancelling libraryServicesManager.preRunningProgress %@", buf, 0xCu);
     }
 
-    [v12 cancel];
+    [preRunningProgress cancel];
   }
 
-  v15 = [(PLPhotoLibraryBundle *)self libraryServicesManager];
-  v16 = [v15 postRunningProgress];
+  libraryServicesManager2 = [(PLPhotoLibraryBundle *)self libraryServicesManager];
+  postRunningProgress = [libraryServicesManager2 postRunningProgress];
 
   v17 = PLLibraryBundleGetLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v16;
+    v29 = postRunningProgress;
     _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "Cancelling libraryServicesManager.postRunningProgress %@", buf, 0xCu);
   }
 
-  [v16 cancel];
+  [postRunningProgress cancel];
   v21.receiver = self;
   v21.super_class = PLServerPhotoLibraryBundle;
   [(PLPhotoLibraryBundle *)&v21 shutdownWithReason:v10];
   v18 = PLLibraryBundleGetLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [(PLPhotoLibraryBundle *)self libraryURL];
-    v20 = [v19 lastPathComponent];
+    libraryURL2 = [(PLPhotoLibraryBundle *)self libraryURL];
+    lastPathComponent2 = [libraryURL2 lastPathComponent];
     *buf = 138412290;
-    v29 = v20;
+    v29 = lastPathComponent2;
     _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "Finished shutting down bundle %@", buf, 0xCu);
   }
 }
@@ -631,34 +631,34 @@ void __58__PLServerPhotoLibraryBundle_clearInvalidateClientsReason__block_invoke
   *(v5 + 256) = 0;
 }
 
-- (void)invalidateClientConnectionsWithReason:(id)a3
+- (void)invalidateClientConnectionsWithReason:(id)reason
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __68__PLServerPhotoLibraryBundle_invalidateClientConnectionsWithReason___block_invoke;
   v21 = &unk_1E7578848;
-  v22 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = reasonCopy;
   v23 = v5;
   PLSafeRunWithUnfairLock();
   v6 = PLLibraryBundleGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(PLPhotoLibraryBundle *)self libraryURL];
-    v8 = [v7 lastPathComponent];
+    libraryURL = [(PLPhotoLibraryBundle *)self libraryURL];
+    lastPathComponent = [libraryURL lastPathComponent];
     *buf = 138412290;
-    v26 = v8;
+    v26 = lastPathComponent;
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "Invalidating all client connections to bundle %@", buf, 0xCu);
   }
 
-  v9 = [(PLServerPhotoLibraryBundle *)self boundAssetsdServices];
+  boundAssetsdServices = [(PLServerPhotoLibraryBundle *)self boundAssetsdServices];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v24 count:16];
+  v10 = [boundAssetsdServices countByEnumeratingWithState:&v14 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
@@ -669,13 +669,13 @@ void __58__PLServerPhotoLibraryBundle_clearInvalidateClientsReason__block_invoke
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(boundAssetsdServices);
         }
 
         [*(*(&v14 + 1) + 8 * i) invalidateConnectionWithReason:v5];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v14 objects:v24 count:16];
+      v11 = [boundAssetsdServices countByEnumeratingWithState:&v14 objects:v24 count:16];
     }
 
     while (v11);
@@ -719,38 +719,38 @@ void __68__PLServerPhotoLibraryBundle_invalidateClientConnectionsWithReason___bl
 
 - (void)_touch
 {
-  v2 = [(PLPhotoLibraryBundle *)self pathManager];
-  v3 = [v2 photoDirectoryWithType:1];
-  v4 = [v3 fileSystemRepresentation];
+  pathManager = [(PLPhotoLibraryBundle *)self pathManager];
+  v3 = [pathManager photoDirectoryWithType:1];
+  fileSystemRepresentation = [v3 fileSystemRepresentation];
 
-  if (v4)
+  if (fileSystemRepresentation)
   {
 
-    utimes(v4, 0);
+    utimes(fileSystemRepresentation, 0);
   }
 }
 
-- (void)closeWithReason:(id)a3
+- (void)closeWithReason:(id)reason
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = PLPhotosObjectLifecycleGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
     v21 = objc_opt_class();
     v22 = 2048;
-    v23 = self;
+    selfCopy = self;
     v24 = 2080;
     v25 = "[PLServerPhotoLibraryBundle closeWithReason:]";
     v26 = 2112;
-    v27 = v4;
+    v27 = reasonCopy;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEBUG, "%@ %p %s %@", buf, 0x2Au);
   }
 
-  v6 = [(PLPhotoLibraryBundle *)self libraryServicesManager];
+  libraryServicesManager = [(PLPhotoLibraryBundle *)self libraryServicesManager];
   v19 = 0;
-  v7 = [v6 finalize:&v19];
+  v7 = [libraryServicesManager finalize:&v19];
   v8 = v19;
 
   if ((v7 & 1) == 0)
@@ -758,29 +758,29 @@ void __68__PLServerPhotoLibraryBundle_invalidateClientConnectionsWithReason___bl
     v9 = PLLibraryBundleGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(PLPhotoLibraryBundle *)self libraryServicesManager];
+      libraryServicesManager2 = [(PLPhotoLibraryBundle *)self libraryServicesManager];
       *buf = 138412546;
-      v21 = v10;
+      v21 = libraryServicesManager2;
       v22 = 2112;
-      v23 = v8;
+      selfCopy = v8;
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "Failed to finalize library services manager %@: %@", buf, 0x16u);
     }
 
-    v11 = [(PLPhotoLibraryBundle *)self libraryServicesManager];
-    [v11 deactivateWithInvalidationError:v8];
+    libraryServicesManager3 = [(PLPhotoLibraryBundle *)self libraryServicesManager];
+    [libraryServicesManager3 deactivateWithInvalidationError:v8];
   }
 
-  v12 = [(PLPhotoLibraryBundle *)self pathManager];
+  pathManager = [(PLPhotoLibraryBundle *)self pathManager];
   v13 = PLLibraryIDFromPathManager();
   PLUnregisterDataStoresForLibraryID(v13);
 
   v14 = MEMORY[0x1E69BF310];
-  v15 = [(PLPhotoLibraryBundle *)self pathManager];
-  [v14 invalidateIsSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:v15];
+  pathManager2 = [(PLPhotoLibraryBundle *)self pathManager];
+  [v14 invalidateIsSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:pathManager2];
 
   v18.receiver = self;
   v18.super_class = PLServerPhotoLibraryBundle;
-  [(PLPhotoLibraryBundle *)&v18 closeWithReason:v4];
+  [(PLPhotoLibraryBundle *)&v18 closeWithReason:reasonCopy];
   lazyTouchCoalescer = self->_lazyTouchCoalescer;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -798,41 +798,41 @@ uint64_t __46__PLServerPhotoLibraryBundle_closeWithReason___block_invoke(uint64_
   return [v3 _touch];
 }
 
-- (id)transferPersons:(id)a3 toBundle:(id)a4 options:(id)a5 completion:(id)a6
+- (id)transferPersons:(id)persons toBundle:(id)bundle options:(id)options completion:(id)completion
 {
   v50 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = self;
-  v13 = a5;
-  v14 = a4;
-  v15 = [[PLInterLibraryTransfer alloc] initWithSourceBundle:v12 destinationBundle:v14 options:v13];
+  personsCopy = persons;
+  completionCopy = completion;
+  selfCopy = self;
+  optionsCopy = options;
+  bundleCopy = bundle;
+  v15 = [[PLInterLibraryTransfer alloc] initWithSourceBundle:selfCopy destinationBundle:bundleCopy options:optionsCopy];
 
-  v16 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:{objc_msgSend(v10, "count")}];
+  v16 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:{objc_msgSend(personsCopy, "count")}];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __74__PLServerPhotoLibraryBundle_transferPersons_toBundle_options_completion___block_invoke;
   aBlock[3] = &unk_1E7573C00;
-  v17 = v10;
+  v17 = personsCopy;
   v44 = v17;
   v18 = v16;
   v45 = v18;
   v19 = v15;
   v46 = v19;
-  v20 = v11;
+  v20 = completionCopy;
   v47 = v20;
   v21 = _Block_copy(aBlock);
   v22 = PLInterLibraryTransferGetLog();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v49 = v12;
+    v49 = selfCopy;
     _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_INFO, "Waiting for running state on source bundle %@", buf, 0xCu);
   }
 
-  v23 = [(PLPhotoLibraryBundle *)v12 libraryServicesManager];
+  libraryServicesManager = [(PLPhotoLibraryBundle *)selfCopy libraryServicesManager];
   v42 = 0;
-  v24 = [v23 awaitLibraryState:7 error:&v42];
+  v24 = [libraryServicesManager awaitLibraryState:7 error:&v42];
   v25 = v42;
 
   if (v24)
@@ -841,13 +841,13 @@ uint64_t __46__PLServerPhotoLibraryBundle_closeWithReason___block_invoke(uint64_
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v49 = v12;
+      v49 = selfCopy;
       _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_INFO, "Waiting for running state on dest bundle %@", buf, 0xCu);
     }
 
-    v27 = [(PLPhotoLibraryBundle *)v12 libraryServicesManager];
+    libraryServicesManager2 = [(PLPhotoLibraryBundle *)selfCopy libraryServicesManager];
     v41 = v25;
-    v28 = [v27 awaitLibraryState:7 error:&v41];
+    v28 = [libraryServicesManager2 awaitLibraryState:7 error:&v41];
     v29 = v41;
 
     if (v28)
@@ -861,13 +861,13 @@ uint64_t __46__PLServerPhotoLibraryBundle_closeWithReason___block_invoke(uint64_
       }
 
       v31 = MEMORY[0x1E696AEC0];
-      v32 = [v17 anyObject];
-      v33 = [v31 stringWithFormat:@"InterLibraryTransfer %@ (%tu)", v32, objc_msgSend(v17, "count")];
+      anyObject = [v17 anyObject];
+      v33 = [v31 stringWithFormat:@"InterLibraryTransfer %@ (%tu)", anyObject, objc_msgSend(v17, "count")];
 
-      v34 = [v33 UTF8String];
+      uTF8String = [v33 UTF8String];
       v35 = qos_class_self();
       v36 = dispatch_queue_attr_make_with_qos_class(0, v35, 0);
-      v37 = dispatch_queue_create(v34, v36);
+      v37 = dispatch_queue_create(uTF8String, v36);
 
       dispatch_async(v37, block);
       v38 = v18;
@@ -968,41 +968,41 @@ LABEL_15:
   (*(*(a1 + 56) + 16))();
 }
 
-- (id)transferAssets:(id)a3 toBundle:(id)a4 options:(id)a5 completion:(id)a6
+- (id)transferAssets:(id)assets toBundle:(id)bundle options:(id)options completion:(id)completion
 {
   v50 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = self;
-  v13 = a5;
-  v14 = a4;
-  v15 = [[PLInterLibraryTransfer alloc] initWithSourceBundle:v12 destinationBundle:v14 options:v13];
+  assetsCopy = assets;
+  completionCopy = completion;
+  selfCopy = self;
+  optionsCopy = options;
+  bundleCopy = bundle;
+  v15 = [[PLInterLibraryTransfer alloc] initWithSourceBundle:selfCopy destinationBundle:bundleCopy options:optionsCopy];
 
-  v16 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:{objc_msgSend(v10, "count")}];
+  v16 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:{objc_msgSend(assetsCopy, "count")}];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __73__PLServerPhotoLibraryBundle_transferAssets_toBundle_options_completion___block_invoke;
   aBlock[3] = &unk_1E7573C00;
-  v17 = v10;
+  v17 = assetsCopy;
   v44 = v17;
   v18 = v16;
   v45 = v18;
   v19 = v15;
   v46 = v19;
-  v20 = v11;
+  v20 = completionCopy;
   v47 = v20;
   v21 = _Block_copy(aBlock);
   v22 = PLInterLibraryTransferGetLog();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v49 = v12;
+    v49 = selfCopy;
     _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_INFO, "Waiting for running state on source bundle %@", buf, 0xCu);
   }
 
-  v23 = [(PLPhotoLibraryBundle *)v12 libraryServicesManager];
+  libraryServicesManager = [(PLPhotoLibraryBundle *)selfCopy libraryServicesManager];
   v42 = 0;
-  v24 = [v23 awaitLibraryState:7 error:&v42];
+  v24 = [libraryServicesManager awaitLibraryState:7 error:&v42];
   v25 = v42;
 
   if (v24)
@@ -1011,13 +1011,13 @@ LABEL_15:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v49 = v12;
+      v49 = selfCopy;
       _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_INFO, "Waiting for running state on dest bundle %@", buf, 0xCu);
     }
 
-    v27 = [(PLPhotoLibraryBundle *)v12 libraryServicesManager];
+    libraryServicesManager2 = [(PLPhotoLibraryBundle *)selfCopy libraryServicesManager];
     v41 = v25;
-    v28 = [v27 awaitLibraryState:7 error:&v41];
+    v28 = [libraryServicesManager2 awaitLibraryState:7 error:&v41];
     v29 = v41;
 
     if (v28)
@@ -1031,13 +1031,13 @@ LABEL_15:
       }
 
       v31 = MEMORY[0x1E696AEC0];
-      v32 = [v17 anyObject];
-      v33 = [v31 stringWithFormat:@"InterLibraryTransfer %@ (%tu)", v32, objc_msgSend(v17, "count")];
+      anyObject = [v17 anyObject];
+      v33 = [v31 stringWithFormat:@"InterLibraryTransfer %@ (%tu)", anyObject, objc_msgSend(v17, "count")];
 
-      v34 = [v33 UTF8String];
+      uTF8String = [v33 UTF8String];
       v35 = qos_class_self();
       v36 = dispatch_queue_attr_make_with_qos_class(0, v35, 0);
-      v37 = dispatch_queue_create(v34, v36);
+      v37 = dispatch_queue_create(uTF8String, v36);
 
       dispatch_async(v37, block);
       v38 = v18;
@@ -1170,9 +1170,9 @@ void __48__PLServerPhotoLibraryBundle__newTouchCoalescer__block_invoke(uint64_t 
 {
   v3 = [PLLibraryServicesManager alloc];
   backgroundJobService = self->_backgroundJobService;
-  v5 = [(PLPhotoLibraryBundle *)self bundleController];
-  v6 = [v5 cacheDeleteRegistration];
-  v7 = [(PLLibraryServicesManager *)v3 initWithLibraryBundle:self backgroundJobService:backgroundJobService cacheDeleteRegistration:v6 delegateClass:self->_libraryServicesDelegateClass];
+  bundleController = [(PLPhotoLibraryBundle *)self bundleController];
+  cacheDeleteRegistration = [bundleController cacheDeleteRegistration];
+  v7 = [(PLLibraryServicesManager *)v3 initWithLibraryBundle:self backgroundJobService:backgroundJobService cacheDeleteRegistration:cacheDeleteRegistration delegateClass:self->_libraryServicesDelegateClass];
 
   return v7;
 }
@@ -1183,19 +1183,19 @@ void __48__PLServerPhotoLibraryBundle__newTouchCoalescer__block_invoke(uint64_t 
   objc_exception_throw(v2);
 }
 
-- (PLServerPhotoLibraryBundle)initWithLibraryURL:(id)a3 bundleController:(id)a4 backgroundJobService:(id)a5 libraryServicesDelegateClass:(Class)a6
+- (PLServerPhotoLibraryBundle)initWithLibraryURL:(id)l bundleController:(id)controller backgroundJobService:(id)service libraryServicesDelegateClass:(Class)class
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  lCopy = l;
+  controllerCopy = controller;
+  serviceCopy = service;
   v26.receiver = self;
   v26.super_class = PLServerPhotoLibraryBundle;
-  v13 = [(PLPhotoLibraryBundle *)&v26 initWithLibraryURL:v10 bundleController:v11];
+  v13 = [(PLPhotoLibraryBundle *)&v26 initWithLibraryURL:lCopy bundleController:controllerCopy];
   v14 = v13;
   if (v13)
   {
-    v13->_libraryServicesDelegateClass = a6;
-    objc_storeStrong(&v13->_backgroundJobService, a5);
+    v13->_libraryServicesDelegateClass = class;
+    objc_storeStrong(&v13->_backgroundJobService, service);
     v15 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     presentedItemOperationQueue = v14->_presentedItemOperationQueue;
     v14->_presentedItemOperationQueue = v15;

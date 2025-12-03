@@ -1,45 +1,45 @@
 @interface TKVibrationRecorderContentViewController
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (BOOL)vibrationRecorderViewDidEnterRecordingMode:(id)a3;
-- (TKVibrationRecorderContentViewController)initWithVibratorController:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (BOOL)vibrationRecorderViewDidEnterRecordingMode:(id)mode;
+- (TKVibrationRecorderContentViewController)initWithVibratorController:(id)controller;
 - (TKVibrationRecorderViewController)parentVibrationRecorderViewController;
 - (TKVibrationRecorderViewControllerDelegate)delegate;
 - (id)_indefiniteVibrationPattern;
-- (void)_accessibilityMakeAnnouncementWithStringForLocalizationIdentifier:(id)a3;
-- (void)_cancelButtonTapped:(id)a3;
+- (void)_accessibilityMakeAnnouncementWithStringForLocalizationIdentifier:(id)identifier;
+- (void)_cancelButtonTapped:(id)tapped;
 - (void)_cleanUpVibrationNameAlertController;
 - (void)_finishedWithRecorder;
-- (void)_saveButtonInAlertTapped:(id)a3;
-- (void)_saveButtonTapped:(id)a3;
-- (void)_startVibratingWithVibrationPattern:(id)a3;
+- (void)_saveButtonInAlertTapped:(id)tapped;
+- (void)_saveButtonTapped:(id)tapped;
+- (void)_startVibratingWithVibrationPattern:(id)pattern;
 - (void)_stopRecordingOrPlayingForApplicationSuspension;
 - (void)_updateStateSaveButtonInAlert;
 - (void)applicationWillSuspend;
 - (void)dealloc;
 - (void)loadView;
-- (void)vibrationComponentDidEndForVibrationRecorderView:(id)a3;
-- (void)vibrationComponentDidStartForVibrationRecorderView:(id)a3;
-- (void)vibrationRecorderView:(id)a3 buttonTappedWithIdentifier:(int)a4;
-- (void)vibrationRecorderView:(id)a3 didExitRecordingModeWithContextObject:(id)a4;
-- (void)vibrationRecorderViewDidFinishReplayingVibration:(id)a3;
-- (void)vibrationRecorderViewDidReachVibrationRecordingMaximumDuration:(id)a3;
+- (void)vibrationComponentDidEndForVibrationRecorderView:(id)view;
+- (void)vibrationComponentDidStartForVibrationRecorderView:(id)view;
+- (void)vibrationRecorderView:(id)view buttonTappedWithIdentifier:(int)identifier;
+- (void)vibrationRecorderView:(id)view didExitRecordingModeWithContextObject:(id)object;
+- (void)vibrationRecorderViewDidFinishReplayingVibration:(id)vibration;
+- (void)vibrationRecorderViewDidReachVibrationRecordingMaximumDuration:(id)duration;
 @end
 
 @implementation TKVibrationRecorderContentViewController
 
-- (TKVibrationRecorderContentViewController)initWithVibratorController:(id)a3
+- (TKVibrationRecorderContentViewController)initWithVibratorController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = [(TKVibrationRecorderContentViewController *)self initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_vibratorController, a3);
+    objc_storeStrong(&v6->_vibratorController, controller);
     v8 = TLLocalizedString();
     [(TKVibrationRecorderContentViewController *)v7 setTitle:v8];
 
-    v9 = [(TKVibrationRecorderContentViewController *)v7 navigationItem];
+    navigationItem = [(TKVibrationRecorderContentViewController *)v7 navigationItem];
     v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v7 action:sel__cancelButtonTapped_];
     cancelButton = v7->_cancelButton;
     v7->_cancelButton = v10;
@@ -50,12 +50,12 @@
     saveButton = v7->_saveButton;
     v7->_saveButton = v14;
 
-    [v9 setLeftBarButtonItem:v7->_cancelButton];
-    [v9 setRightBarButtonItem:v7->_saveButton];
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
+    [navigationItem setLeftBarButtonItem:v7->_cancelButton];
+    [navigationItem setRightBarButtonItem:v7->_saveButton];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v17 = *MEMORY[0x277D76660];
-    v18 = [MEMORY[0x277D75128] sharedApplication];
-    [v16 addObserver:v7 selector:sel__handleApplicationDidEnterBackgroundNotification_ name:v17 object:v18];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [defaultCenter addObserver:v7 selector:sel__handleApplicationDidEnterBackgroundNotification_ name:v17 object:mEMORY[0x277D75128]];
   }
 
   return v7;
@@ -63,10 +63,10 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = *MEMORY[0x277D76660];
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  [v3 removeObserver:self name:v4 object:v5];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [defaultCenter removeObserver:self name:v4 object:mEMORY[0x277D75128]];
 
   [(TKVibrationRecorderContentViewController *)self _cleanUpVibrationNameAlertController];
   v6.receiver = self;
@@ -115,42 +115,42 @@
   [(TKVibrationRecorderContentViewController *)self setView:v5];
 }
 
-- (void)_cancelButtonTapped:(id)a3
+- (void)_cancelButtonTapped:(id)tapped
 {
   [(TKVibrationRecorderContentViewController *)self _finishedWithRecorder];
   [(TKVibrationRecorderContentViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v5 = [(TKVibrationRecorderContentViewController *)self delegate];
-  v4 = [(TKVibrationRecorderContentViewController *)self parentVibrationRecorderViewController];
-  [v5 vibrationRecorderViewControllerWasDismissedWithoutSavingRecordedVibrationPattern:v4];
+  delegate = [(TKVibrationRecorderContentViewController *)self delegate];
+  parentVibrationRecorderViewController = [(TKVibrationRecorderContentViewController *)self parentVibrationRecorderViewController];
+  [delegate vibrationRecorderViewControllerWasDismissedWithoutSavingRecordedVibrationPattern:parentVibrationRecorderViewController];
 }
 
-- (void)_saveButtonTapped:(id)a3
+- (void)_saveButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
   v24[3] = __Block_byref_object_copy__0;
   v24[4] = __Block_byref_object_dispose__0;
-  v5 = self;
-  v25 = v5;
+  selfCopy = self;
+  v25 = selfCopy;
   v6 = MEMORY[0x277D75110];
   v7 = TLLocalizedString();
   v8 = [v6 alertControllerWithTitle:v7 message:0 preferredStyle:1];
-  vibrationNameAlertController = v5->_vibrationNameAlertController;
-  v5->_vibrationNameAlertController = v8;
+  vibrationNameAlertController = selfCopy->_vibrationNameAlertController;
+  selfCopy->_vibrationNameAlertController = v8;
 
-  [(UIAlertController *)v5->_vibrationNameAlertController addTextFieldWithConfigurationHandler:&__block_literal_global_0];
-  v10 = [(UIAlertController *)v5->_vibrationNameAlertController textFields];
-  v11 = [v10 firstObject];
-  vibrationNameAlertTextField = v5->_vibrationNameAlertTextField;
-  v5->_vibrationNameAlertTextField = v11;
+  [(UIAlertController *)selfCopy->_vibrationNameAlertController addTextFieldWithConfigurationHandler:&__block_literal_global_0];
+  textFields = [(UIAlertController *)selfCopy->_vibrationNameAlertController textFields];
+  firstObject = [textFields firstObject];
+  vibrationNameAlertTextField = selfCopy->_vibrationNameAlertTextField;
+  selfCopy->_vibrationNameAlertTextField = firstObject;
 
-  [(UITextField *)v5->_vibrationNameAlertTextField setDelegate:v5];
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v13 addObserver:v5 selector:sel__vibrationNameTextFieldContentsDidChange_ name:*MEMORY[0x277D770B0] object:v5->_vibrationNameAlertTextField];
+  [(UITextField *)selfCopy->_vibrationNameAlertTextField setDelegate:selfCopy];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:selfCopy selector:sel__vibrationNameTextFieldContentsDidChange_ name:*MEMORY[0x277D770B0] object:selfCopy->_vibrationNameAlertTextField];
 
-  v14 = v5->_vibrationNameAlertController;
+  v14 = selfCopy->_vibrationNameAlertController;
   v15 = MEMORY[0x277D750F8];
   v16 = TLLocalizedString();
   v23[0] = MEMORY[0x277D85DD0];
@@ -169,22 +169,22 @@
   v22[3] = &unk_278316768;
   v22[4] = v24;
   v20 = [v18 actionWithTitle:v19 style:0 handler:v22];
-  vibrationNameAlertSaveAction = v5->_vibrationNameAlertSaveAction;
-  v5->_vibrationNameAlertSaveAction = v20;
+  vibrationNameAlertSaveAction = selfCopy->_vibrationNameAlertSaveAction;
+  selfCopy->_vibrationNameAlertSaveAction = v20;
 
-  [(UIAlertController *)v5->_vibrationNameAlertController addAction:v5->_vibrationNameAlertSaveAction];
-  [(TKVibrationRecorderContentViewController *)v5 _updateStateSaveButtonInAlert];
-  [(TKVibrationRecorderContentViewController *)v5 presentViewController:v5->_vibrationNameAlertController animated:1 completion:0];
+  [(UIAlertController *)selfCopy->_vibrationNameAlertController addAction:selfCopy->_vibrationNameAlertSaveAction];
+  [(TKVibrationRecorderContentViewController *)selfCopy _updateStateSaveButtonInAlert];
+  [(TKVibrationRecorderContentViewController *)selfCopy presentViewController:selfCopy->_vibrationNameAlertController animated:1 completion:0];
   _Block_object_dispose(v24, 8);
 }
 
-- (void)_saveButtonInAlertTapped:(id)a3
+- (void)_saveButtonInAlertTapped:(id)tapped
 {
-  v4 = [(TKVibrationRecorderContentViewController *)self delegate];
-  v5 = [(TKVibrationRecorderContentViewController *)self parentVibrationRecorderViewController];
-  v6 = [(TLVibrationPattern *)self->_recordedVibrationPattern propertyListRepresentation];
-  v7 = [(UITextField *)self->_vibrationNameAlertTextField text];
-  [v4 vibrationRecorderViewController:v5 didFinishRecordingVibrationPattern:v6 name:v7];
+  delegate = [(TKVibrationRecorderContentViewController *)self delegate];
+  parentVibrationRecorderViewController = [(TKVibrationRecorderContentViewController *)self parentVibrationRecorderViewController];
+  propertyListRepresentation = [(TLVibrationPattern *)self->_recordedVibrationPattern propertyListRepresentation];
+  text = [(UITextField *)self->_vibrationNameAlertTextField text];
+  [delegate vibrationRecorderViewController:parentVibrationRecorderViewController didFinishRecordingVibrationPattern:propertyListRepresentation name:text];
 
   [(TKVibrationRecorderContentViewController *)self _finishedWithRecorder];
   [(TKVibrationRecorderContentViewController *)self dismissViewControllerAnimated:1 completion:0];
@@ -195,16 +195,16 @@
 - (void)_updateStateSaveButtonInAlert
 {
   vibrationNameAlertSaveAction = self->_vibrationNameAlertSaveAction;
-  v3 = [(UITextField *)self->_vibrationNameAlertTextField text];
-  -[UIAlertAction setEnabled:](vibrationNameAlertSaveAction, "setEnabled:", [v3 length] != 0);
+  text = [(UITextField *)self->_vibrationNameAlertTextField text];
+  -[UIAlertAction setEnabled:](vibrationNameAlertSaveAction, "setEnabled:", [text length] != 0);
 }
 
 - (void)_cleanUpVibrationNameAlertController
 {
   if (self->_vibrationNameAlertTextField)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self name:*MEMORY[0x277D770B0] object:self->_vibrationNameAlertTextField];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D770B0] object:self->_vibrationNameAlertTextField];
 
     [(UITextField *)self->_vibrationNameAlertTextField setDelegate:0];
     vibrationNameAlertTextField = self->_vibrationNameAlertTextField;
@@ -218,9 +218,9 @@
   self->_vibrationNameAlertController = 0;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  if (self->_vibrationNameAlertTextField != a3)
+  if (self->_vibrationNameAlertTextField != field)
   {
     return 1;
   }
@@ -230,15 +230,15 @@
   return v7;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  if (self->_vibrationNameAlertTextField != a3)
+  if (self->_vibrationNameAlertTextField != return)
   {
     return 1;
   }
 
-  v4 = [a3 text];
-  v3 = [v4 length] != 0;
+  text = [return text];
+  v3 = [text length] != 0;
 
   return v3;
 }
@@ -249,9 +249,9 @@
   if (!indefiniteVibrationPattern)
   {
     v4 = [MEMORY[0x277D71F90] simpleVibrationPatternWithVibrationDuration:10.0 pauseDuration:1.0];
-    v5 = [v4 propertyListRepresentation];
+    propertyListRepresentation = [v4 propertyListRepresentation];
     v6 = self->_indefiniteVibrationPattern;
-    self->_indefiniteVibrationPattern = v5;
+    self->_indefiniteVibrationPattern = propertyListRepresentation;
 
     indefiniteVibrationPattern = self->_indefiniteVibrationPattern;
   }
@@ -259,19 +259,19 @@
   return indefiniteVibrationPattern;
 }
 
-- (void)_startVibratingWithVibrationPattern:(id)a3
+- (void)_startVibratingWithVibrationPattern:(id)pattern
 {
-  v4 = a3;
+  patternCopy = pattern;
   [(TKVibrationRecorderContentViewController *)self _stopVibrating];
-  [(TKVibratorController *)self->_vibratorController turnOnWithVibrationPattern:v4];
+  [(TKVibratorController *)self->_vibratorController turnOnWithVibrationPattern:patternCopy];
 }
 
-- (void)vibrationComponentDidStartForVibrationRecorderView:(id)a3
+- (void)vibrationComponentDidStartForVibrationRecorderView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (self->_mode == 1)
   {
-    v9 = v4;
+    v9 = viewCopy;
     if (self->_recordedVibrationPattern)
     {
       [(TKVibrationRecorderContentViewController *)self _storeVibrationComponentOfTypePause:1];
@@ -288,14 +288,14 @@
       [v9 startAnimatingProgress];
     }
 
-    v8 = [(TKVibrationRecorderContentViewController *)self _indefiniteVibrationPattern];
-    [(TKVibrationRecorderContentViewController *)self _startVibratingWithVibrationPattern:v8];
+    _indefiniteVibrationPattern = [(TKVibrationRecorderContentViewController *)self _indefiniteVibrationPattern];
+    [(TKVibrationRecorderContentViewController *)self _startVibratingWithVibrationPattern:_indefiniteVibrationPattern];
 
-    v4 = v9;
+    viewCopy = v9;
   }
 }
 
-- (void)vibrationComponentDidEndForVibrationRecorderView:(id)a3
+- (void)vibrationComponentDidEndForVibrationRecorderView:(id)view
 {
   if (self->_mode == 1)
   {
@@ -305,19 +305,19 @@
   }
 }
 
-- (void)vibrationRecorderView:(id)a3 buttonTappedWithIdentifier:(int)a4
+- (void)vibrationRecorderView:(id)view buttonTappedWithIdentifier:(int)identifier
 {
-  v6 = a3;
+  viewCopy = view;
   mode = self->_mode;
   if (mode == 2)
   {
-    if (a4 != 4)
+    if (identifier != 4)
     {
       goto LABEL_14;
     }
 
     self->_mode = 0;
-    v11 = v6;
+    v11 = viewCopy;
     [(UIBarButtonItem *)self->_cancelButton setEnabled:1];
     [(UIBarButtonItem *)self->_saveButton setEnabled:1];
     [(TKVibrationRecorderContentViewController *)self _stopVibrating];
@@ -327,7 +327,7 @@
 
   else if (mode == 1)
   {
-    v11 = v6;
+    v11 = viewCopy;
     [(TKVibrationRecorderContentViewController *)self _stopVibrating];
     if (self->_isWaitingForEndOfCurrentVibrationComponent)
     {
@@ -351,12 +351,12 @@
       goto LABEL_14;
     }
 
-    if (a4 == 1)
+    if (identifier == 1)
     {
       self->_mode = 1;
       recordedVibrationPattern = self->_recordedVibrationPattern;
       self->_recordedVibrationPattern = 0;
-      v11 = v6;
+      v11 = viewCopy;
 
       [(UIBarButtonItem *)self->_cancelButton setEnabled:0];
       [(UIBarButtonItem *)self->_saveButton setEnabled:0];
@@ -366,28 +366,28 @@
 
     else
     {
-      if (a4 != 3)
+      if (identifier != 3)
       {
         goto LABEL_14;
       }
 
       self->_mode = 2;
-      v11 = v6;
+      v11 = viewCopy;
       [(UIBarButtonItem *)self->_cancelButton setEnabled:0];
       [(UIBarButtonItem *)self->_saveButton setEnabled:0];
       [v11 enterReplayModeWithVibrationPattern:self->_recordedVibrationPattern];
-      v8 = [(TLVibrationPattern *)self->_recordedVibrationPattern propertyListRepresentation];
-      [(TKVibrationRecorderContentViewController *)self _startVibratingWithVibrationPattern:v8];
+      propertyListRepresentation = [(TLVibrationPattern *)self->_recordedVibrationPattern propertyListRepresentation];
+      [(TKVibrationRecorderContentViewController *)self _startVibratingWithVibrationPattern:propertyListRepresentation];
 
       [(TKVibrationRecorderContentViewController *)self _accessibilityDidEnterReplayMode];
     }
   }
 
-  v6 = v11;
+  viewCopy = v11;
 LABEL_14:
 }
 
-- (void)vibrationRecorderViewDidFinishReplayingVibration:(id)a3
+- (void)vibrationRecorderViewDidFinishReplayingVibration:(id)vibration
 {
   self->_mode = 0;
   [(UIBarButtonItem *)self->_cancelButton setEnabled:1];
@@ -396,9 +396,9 @@ LABEL_14:
   [(TKVibrationRecorderContentViewController *)self _accessibilityDidExitReplayMode];
 }
 
-- (BOOL)vibrationRecorderViewDidEnterRecordingMode:(id)a3
+- (BOOL)vibrationRecorderViewDidEnterRecordingMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   if (self->_mode || self->_recordedVibrationPattern)
   {
     v5 = 0;
@@ -407,28 +407,28 @@ LABEL_14:
   else
   {
     v5 = 1;
-    [(TKVibrationRecorderContentViewController *)self vibrationRecorderView:v4 buttonTappedWithIdentifier:1];
+    [(TKVibrationRecorderContentViewController *)self vibrationRecorderView:modeCopy buttonTappedWithIdentifier:1];
   }
 
   return v5;
 }
 
-- (void)vibrationRecorderView:(id)a3 didExitRecordingModeWithContextObject:(id)a4
+- (void)vibrationRecorderView:(id)view didExitRecordingModeWithContextObject:(id)object
 {
-  v6 = a4;
-  v5 = [(TLVibrationPattern *)self->_recordedVibrationPattern contextObject];
+  objectCopy = object;
+  contextObject = [(TLVibrationPattern *)self->_recordedVibrationPattern contextObject];
 
-  if (!v5)
+  if (!contextObject)
   {
-    [(TLVibrationPattern *)self->_recordedVibrationPattern setContextObject:v6];
+    [(TLVibrationPattern *)self->_recordedVibrationPattern setContextObject:objectCopy];
   }
 }
 
-- (void)vibrationRecorderViewDidReachVibrationRecordingMaximumDuration:(id)a3
+- (void)vibrationRecorderViewDidReachVibrationRecordingMaximumDuration:(id)duration
 {
   if (self->_mode == 1)
   {
-    [(TKVibrationRecorderContentViewController *)self vibrationRecorderView:a3 buttonTappedWithIdentifier:2];
+    [(TKVibrationRecorderContentViewController *)self vibrationRecorderView:duration buttonTappedWithIdentifier:2];
   }
 }
 
@@ -441,10 +441,10 @@ LABEL_14:
   [(TKVibrationRecorderContentViewController *)self _stopVibrating];
 }
 
-- (void)_accessibilityMakeAnnouncementWithStringForLocalizationIdentifier:(id)a3
+- (void)_accessibilityMakeAnnouncementWithStringForLocalizationIdentifier:(id)identifier
 {
   v3 = *MEMORY[0x277D76488];
-  v4 = a3;
+  identifierCopy = identifier;
   UIAccessibilityPostNotification(v3, 0);
   argument = TLLocalizedString();
 

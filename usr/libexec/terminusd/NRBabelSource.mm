@@ -1,8 +1,8 @@
 @interface NRBabelSource
-- (BOOL)isDeepEqual:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isNewDistanceUnfeasibleWithSeqno:(unsigned __int16)a3 metric:(unsigned __int16)a4;
-- (BOOL)matchesPrefix:(id)a3 routerID:(unint64_t)a4;
+- (BOOL)isDeepEqual:(id)equal;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isNewDistanceUnfeasibleWithSeqno:(unsigned __int16)seqno metric:(unsigned __int16)metric;
+- (BOOL)matchesPrefix:(id)prefix routerID:(unint64_t)d;
 - (NRBabelInstance)instance;
 - (id)description;
 - (id)descriptionWithoutMetric;
@@ -31,9 +31,9 @@
 - (void)setupGCTimer
 {
   objc_initWeak(&location, self);
-  v3 = [(NRBabelSource *)self instance];
-  v4 = [v3 queue];
-  v5 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v4);
+  instance = [(NRBabelSource *)self instance];
+  queue = [instance queue];
+  v5 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
   gcTimer = self->_gcTimer;
   self->_gcTimer = v5;
 
@@ -50,19 +50,19 @@
   objc_destroyWeak(&location);
 }
 
-- (BOOL)isNewDistanceUnfeasibleWithSeqno:(unsigned __int16)a3 metric:(unsigned __int16)a4
+- (BOOL)isNewDistanceUnfeasibleWithSeqno:(unsigned __int16)seqno metric:(unsigned __int16)metric
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(NRBabelSource *)self seqno];
-  if (v7 == v5)
+  metricCopy = metric;
+  seqnoCopy = seqno;
+  seqno = [(NRBabelSource *)self seqno];
+  if (seqno == seqnoCopy)
   {
     goto LABEL_2;
   }
 
-  if (v7 >= v5)
+  if (seqno >= seqnoCopy)
   {
-    if ((v7 - v5) >= 0)
+    if ((seqno - seqnoCopy) >= 0)
     {
       LOBYTE(v11) = -1;
     }
@@ -72,29 +72,29 @@
       LOBYTE(v11) = 1;
     }
 
-    if ((v7 - v5) != 0x8000)
+    if ((seqno - seqnoCopy) != 0x8000)
     {
       return (v11 & 0x80u) != 0;
     }
   }
 
-  else if ((v5 - v7) != 0x8000)
+  else if ((seqnoCopy - seqno) != 0x8000)
   {
-    v11 = ((v5 - v7) >> 15) | 1;
+    v11 = ((seqnoCopy - seqno) >> 15) | 1;
     return (v11 & 0x80u) != 0;
   }
 
 LABEL_2:
   metric = self->_metric;
-  v9 = metric - v4;
-  if (metric == v4)
+  v9 = metric - metricCopy;
+  if (metric == metricCopy)
   {
     LOBYTE(v10) = 0;
   }
 
-  else if (metric >= v4)
+  else if (metric >= metricCopy)
   {
-    v15 = (metric - v4);
+    v15 = (metric - metricCopy);
     if (v9 >= 0)
     {
       v16 = -1;
@@ -118,7 +118,7 @@ LABEL_2:
 
   else
   {
-    v12 = v4 - metric;
+    v12 = metricCopy - metric;
     v13 = v12;
     v10 = (v12 >> 15) | 1;
     if (v13 == 0x8000)
@@ -130,13 +130,13 @@ LABEL_2:
   return (v10 & 0x80u) == 0;
 }
 
-- (BOOL)isDeepEqual:(id)a3
+- (BOOL)isDeepEqual:(id)equal
 {
-  v4 = a3;
-  if (-[NRBabelSource isEqual:](self, "isEqual:", v4) && (v5 = -[NRBabelSource seqno](self, "seqno"), v5 == [v4 seqno]))
+  equalCopy = equal;
+  if (-[NRBabelSource isEqual:](self, "isEqual:", equalCopy) && (v5 = -[NRBabelSource seqno](self, "seqno"), v5 == [equalCopy seqno]))
   {
     metric = self->_metric;
-    v7 = metric == [v4 metric];
+    v7 = metric == [equalCopy metric];
   }
 
   else
@@ -147,19 +147,19 @@ LABEL_2:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     routerID = self->_routerID;
     if (routerID == [v5 routerID])
     {
       bPrefix = self->_bPrefix;
-      v8 = [v5 bPrefix];
-      v9 = [(NRBabelPrefix *)bPrefix isEqual:v8];
+      bPrefix = [v5 bPrefix];
+      v9 = [(NRBabelPrefix *)bPrefix isEqual:bPrefix];
     }
 
     else
@@ -224,11 +224,11 @@ LABEL_2:
   return v11;
 }
 
-- (BOOL)matchesPrefix:(id)a3 routerID:(unint64_t)a4
+- (BOOL)matchesPrefix:(id)prefix routerID:(unint64_t)d
 {
-  if (self->_routerID == a4)
+  if (self->_routerID == d)
   {
-    return [a3 isEqual:self->_bPrefix];
+    return [prefix isEqual:self->_bPrefix];
   }
 
   else

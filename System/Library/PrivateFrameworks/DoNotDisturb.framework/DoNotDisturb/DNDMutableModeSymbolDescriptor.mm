@@ -1,30 +1,30 @@
 @interface DNDMutableModeSymbolDescriptor
-- (DNDMutableModeSymbolDescriptor)initWithTintStyle:(unint64_t)a3 tintColorNames:(id)a4 imageName:(id)a5;
-- (void)setImageName:(id)a3;
-- (void)setTintColorNames:(id)a3;
+- (DNDMutableModeSymbolDescriptor)initWithTintStyle:(unint64_t)style tintColorNames:(id)names imageName:(id)name;
+- (void)setImageName:(id)name;
+- (void)setTintColorNames:(id)names;
 @end
 
 @implementation DNDMutableModeSymbolDescriptor
 
-- (DNDMutableModeSymbolDescriptor)initWithTintStyle:(unint64_t)a3 tintColorNames:(id)a4 imageName:(id)a5
+- (DNDMutableModeSymbolDescriptor)initWithTintStyle:(unint64_t)style tintColorNames:(id)names imageName:(id)name
 {
   v6.receiver = self;
   v6.super_class = DNDMutableModeSymbolDescriptor;
-  return [(DNDModeSymbolDescriptor *)&v6 initWithTintStyle:a3 tintColorNames:a4 imageName:a5];
+  return [(DNDModeSymbolDescriptor *)&v6 initWithTintStyle:style tintColorNames:names imageName:name];
 }
 
-- (void)setTintColorNames:(id)a3
+- (void)setTintColorNames:(id)names
 {
-  v4 = [a3 copy];
+  v4 = [names copy];
   tintColorNames = self->super._tintColorNames;
   self->super._tintColorNames = v4;
 
   MEMORY[0x2821F96F8](v4, tintColorNames);
 }
 
-- (void)setImageName:(id)a3
+- (void)setImageName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   imageName = self->super._imageName;
   self->super._imageName = v4;
 

@@ -1,12 +1,12 @@
 @interface UIControl.ControlEventObserver
-- (void)handleEventFrom:(id)a3;
+- (void)handleEventFrom:(id)from;
 @end
 
 @implementation UIControl.ControlEventObserver
 
-- (void)handleEventFrom:(id)a3
+- (void)handleEventFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   sub_257ECC3F0();
   sub_257ECDD00();
 }

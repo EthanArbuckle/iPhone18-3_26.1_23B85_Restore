@@ -4,22 +4,22 @@
 - (id)_configureTextEntryCell;
 - (id)placeholderText;
 - (id)specifiers;
-- (void)animatePasscodeFieldLeft:(BOOL)a3;
+- (void)animatePasscodeFieldLeft:(BOOL)left;
 - (void)dealloc;
-- (void)didFinishEnteringText:(id)a3;
+- (void)didFinishEnteringText:(id)text;
 - (void)dismissAlerts;
 - (void)forgotSecurityCode;
 - (void)generateRandomCode;
-- (void)keyboardWillShow:(id)a3;
-- (void)setFirstPasscodeEntry:(id)a3;
-- (void)setMode:(int)a3;
-- (void)setSecurityCodeType:(int)a3;
+- (void)keyboardWillShow:(id)show;
+- (void)setFirstPasscodeEntry:(id)entry;
+- (void)setMode:(int)mode;
+- (void)setSecurityCodeType:(int)type;
 - (void)showAdvancedOptions;
-- (void)textEntryViewDidChange:(id)a3;
+- (void)textEntryViewDidChange:(id)change;
 - (void)updateNextButton;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PSKeychainSyncSecurityCodeController
@@ -36,8 +36,8 @@
     [(PSKeychainSyncTextEntryController *)v3 setSecureTextEntry:1];
     [(PSKeychainSyncTextEntryController *)v3 setHidesNextButton:1];
     [(PSKeychainSyncSecurityCodeController *)v3 setMode:1];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
   }
 
   return v3;
@@ -45,8 +45,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PSKeychainSyncSecurityCodeController;
@@ -59,29 +59,29 @@
   {
     v5.receiver = self;
     v5.super_class = PSKeychainSyncSecurityCodeController;
-    v3 = [(PSKeychainSyncTextEntryController *)&v5 textEntryCellClass];
+    textEntryCellClass = [(PSKeychainSyncTextEntryController *)&v5 textEntryCellClass];
   }
 
   else
   {
-    v3 = objc_opt_class();
+    textEntryCellClass = objc_opt_class();
   }
 
-  return v3;
+  return textEntryCellClass;
 }
 
 - (id)_configureTextEntryCell
 {
   v14.receiver = self;
   v14.super_class = PSKeychainSyncSecurityCodeController;
-  v3 = [(PSKeychainSyncTextEntryController *)&v14 textEntryCell];
+  textEntryCell = [(PSKeychainSyncTextEntryController *)&v14 textEntryCell];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 setMode:{-[PSKeychainSyncSecurityCodeController mode](self, "mode")}];
-    [v3 setSecurityCodeType:{-[PSKeychainSyncSecurityCodeController securityCodeType](self, "securityCodeType")}];
-    v4 = [(PSKeychainSyncSecurityCodeController *)self firstPasscodeEntry];
-    [v3 setFirstPasscodeEntry:v4];
+    [textEntryCell setMode:{-[PSKeychainSyncSecurityCodeController mode](self, "mode")}];
+    [textEntryCell setSecurityCodeType:{-[PSKeychainSyncSecurityCodeController securityCodeType](self, "securityCodeType")}];
+    firstPasscodeEntry = [(PSKeychainSyncSecurityCodeController *)self firstPasscodeEntry];
+    [textEntryCell setFirstPasscodeEntry:firstPasscodeEntry];
 
     if (self->_securityCodeType == 1)
     {
@@ -102,9 +102,9 @@
       v6 = 0;
     }
 
-    [v3 setBulletText:v6];
-    v7 = [v3 textField];
-    v8 = v7;
+    [textEntryCell setBulletText:v6];
+    textField = [textEntryCell textField];
+    v8 = textField;
     if (self->_securityCodeType == 2)
     {
       if (self->_firstPasscodeEntry)
@@ -123,22 +123,22 @@
       v9 = 4;
     }
 
-    [v7 setTextAlignment:v9];
+    [textField setTextAlignment:v9];
 
-    v10 = [v3 textField];
-    [v10 setAdjustsFontSizeToFitWidth:1];
+    textField2 = [textEntryCell textField];
+    [textField2 setAdjustsFontSizeToFitWidth:1];
 
-    v11 = [v3 textField];
-    [v11 setMinimumFontSize:8.0];
+    textField3 = [textEntryCell textField];
+    [textField3 setMinimumFontSize:8.0];
 
     if (self->_securityCodeType == 2)
     {
-      v12 = [v3 textField];
-      [v12 setDisplaySecureTextUsingPlainText:1];
+      textField4 = [textEntryCell textField];
+      [textField4 setDisplaySecureTextUsingPlainText:1];
     }
   }
 
-  return v3;
+  return textEntryCell;
 }
 
 - (void)viewDidLoad
@@ -158,15 +158,15 @@
     v5 = 0;
   }
 
-  v6 = [(PSKeychainSyncSecurityCodeController *)self navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  navigationItem = [(PSKeychainSyncSecurityCodeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v5];
 
-  v7 = [(PSKeychainSyncViewController *)self headerView];
-  v8 = v7;
+  headerView = [(PSKeychainSyncViewController *)self headerView];
+  v8 = headerView;
   if (self->_mode == 1)
   {
-    v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v9 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
     if (v10 == 480.0)
     {
       v11 = +[PSKeychainSyncManager sharedManager];
@@ -181,28 +181,28 @@
 
   else
   {
-    [v7 setUsesCompactLayout:0];
+    [headerView setUsesCompactLayout:0];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PSKeychainSyncSecurityCodeController;
-  [(PSKeychainSyncTextEntryController *)&v4 viewWillAppear:a3];
+  [(PSKeychainSyncTextEntryController *)&v4 viewWillAppear:appear];
   [(PSKeychainSyncTextEntryController *)self becomeFirstResponder];
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
   [v5 CGRectValue];
   v7 = v6;
 
   self->_keyboardHeight = v7;
-  v8 = [(PSKeychainSyncSecurityCodeController *)self view];
-  [v8 setNeedsLayout];
+  view = [(PSKeychainSyncSecurityCodeController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)viewDidLayoutSubviews
@@ -214,8 +214,8 @@
   v3 = 5.0;
   if (self->_mode == 1)
   {
-    v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v4 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
     if (v5 == 480.0)
     {
       v6 = +[PSKeychainSyncManager sharedManager];
@@ -232,14 +232,14 @@
 
     if (self->_mode == 1)
     {
-      v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen2 _referenceBounds];
       if (v8 == 480.0)
       {
         v9 = +[PSKeychainSyncManager sharedManager];
-        v10 = [v9 isRunningInBuddy];
+        isRunningInBuddy = [v9 isRunningInBuddy];
         v11 = 25.0;
-        if (v10)
+        if (isRunningInBuddy)
         {
           v11 = 15.0;
         }
@@ -254,12 +254,12 @@
     }
   }
 
-  v12 = [(PSListController *)self table];
+  table = [(PSListController *)self table];
   v13 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:0];
-  v14 = [v12 cellForRowAtIndexPath:v13];
+  v14 = [table cellForRowAtIndexPath:v13];
 
-  v15 = [(PSListController *)self table];
-  [v15 bounds];
+  table2 = [(PSListController *)self table];
+  [table2 bounds];
   v56 = v17;
   v57 = v16;
   v19 = v18;
@@ -276,10 +276,10 @@
   v27 = v25;
   [(UILabel *)self->_footerLabel setFrame:v25, v26, v22, v24];
   v28 = MEMORY[0x1E695DF90];
-  v29 = [MEMORY[0x1E69DC888] _systemInteractionTintColor];
+  _systemInteractionTintColor = [MEMORY[0x1E69DC888] _systemInteractionTintColor];
   v30 = *MEMORY[0x1E69DB650];
   v31 = [MEMORY[0x1E69DB878] systemFontOfSize:14.0];
-  v32 = [v28 dictionaryWithObjectsAndKeys:{v29, v30, v31, *MEMORY[0x1E69DB648], 0}];
+  v32 = [v28 dictionaryWithObjectsAndKeys:{_systemInteractionTintColor, v30, v31, *MEMORY[0x1E69DB648], 0}];
 
   if (self->_mode == 2)
   {
@@ -294,8 +294,8 @@
   v34 = PS_LocalizedStringForKeychainSync(v33);
   v35 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v34 attributes:v32];
   [(UIButton *)self->_footerButton setAttributedTitle:v35 forState:0];
-  v36 = [MEMORY[0x1E69DC888] blackColor];
-  [v32 setObject:v36 forKey:v30];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [v32 setObject:blackColor forKey:v30];
 
   v37 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v34 attributes:v32];
   [(UIButton *)self->_footerButton setAttributedTitle:v37 forState:1];
@@ -326,8 +326,8 @@
   }
 
   [(UIButton *)self->_footerButton setFrame:v53, v45, v39, v41];
-  v46 = [(PSListController *)self table];
-  [v46 contentSize];
+  table3 = [(PSListController *)self table];
+  [table3 contentSize];
   v48 = v47;
   v50 = v49;
 
@@ -338,8 +338,8 @@
   v51 = v58 + v41 + CGRectGetMaxY(v63) + 10.0;
   if (v50 < v51)
   {
-    v52 = [(PSListController *)self table];
-    [v52 setContentSize:{v48, v51}];
+    table4 = [(PSListController *)self table];
+    [table4 setContentSize:{v48, v51}];
   }
 }
 
@@ -347,15 +347,15 @@
 {
   v62.receiver = self;
   v62.super_class = PSKeychainSyncSecurityCodeController;
-  v3 = [(PSKeychainSyncTextEntryController *)&v62 specifiers];
+  specifiers = [(PSKeychainSyncTextEntryController *)&v62 specifiers];
   if (!self->_footerButton)
   {
     v4 = [MEMORY[0x1E69DC738] buttonWithType:0];
     footerButton = self->_footerButton;
     self->_footerButton = v4;
 
-    v6 = [(PSListController *)self table];
-    [v6 addSubview:self->_footerButton];
+    table = [(PSListController *)self table];
+    [table addSubview:self->_footerButton];
   }
 
   if (!self->_footerLabel)
@@ -370,26 +370,26 @@
 
     [(UILabel *)self->_footerLabel setTextAlignment:1];
     [(UILabel *)self->_footerLabel setNumberOfLines:0];
-    v11 = [(PSListController *)self table];
-    [v11 addSubview:self->_footerLabel];
+    table2 = [(PSListController *)self table];
+    [table2 addSubview:self->_footerLabel];
   }
 
   [(UIButton *)self->_footerButton setAlpha:0.0];
   [(UIButton *)self->_footerButton removeTarget:self action:0 forControlEvents:64];
   v12 = +[PSKeychainSyncManager sharedManager];
-  v13 = [v12 isRunningInBuddy];
+  isRunningInBuddy = [v12 isRunningInBuddy];
 
   mode = self->_mode;
   if (mode == 2)
   {
     [(UILabel *)self->_footerLabel setText:0];
-    v26 = [(PSKeychainSyncViewController *)self headerView];
-    [v26 setDetailText:0];
+    headerView = [(PSKeychainSyncViewController *)self headerView];
+    [headerView setDetailText:0];
 
-    v27 = [(PSKeychainSyncViewController *)self groupSpecifier];
-    [v27 setProperty:0 forKey:@"footerText"];
+    groupSpecifier = [(PSKeychainSyncViewController *)self groupSpecifier];
+    [groupSpecifier setProperty:0 forKey:@"footerText"];
 
-    if (v13)
+    if (isRunningInBuddy)
     {
       v28 = @"ICLOUD_SECURITY_CODE";
     }
@@ -399,7 +399,7 @@
       v28 = @"SECURITY_CODE";
     }
 
-    if (v13)
+    if (isRunningInBuddy)
     {
       v29 = @"ENTER_YOUR_SECURITY_CODE";
     }
@@ -412,9 +412,9 @@
     v30 = PS_LocalizedStringForKeychainSync(v28);
     [(PSKeychainSyncViewController *)self setTitle:v30];
 
-    v31 = [(PSKeychainSyncViewController *)self headerView];
+    headerView2 = [(PSKeychainSyncViewController *)self headerView];
     v32 = PS_LocalizedStringForKeychainSync(v29);
-    [v31 setDetailText:v32];
+    [headerView2 setDetailText:v32];
 
     [(UIButton *)self->_footerButton addTarget:self action:sel_forgotSecurityCode forControlEvents:64];
     [(UIButton *)self->_footerButton setAlpha:1.0];
@@ -424,13 +424,13 @@
   if (mode == 1)
   {
     v15 = +[PSKeychainSyncManager sharedManager];
-    v16 = [v15 isRunningInBuddy];
+    isRunningInBuddy2 = [v15 isRunningInBuddy];
 
-    if ((v16 & 1) == 0)
+    if ((isRunningInBuddy2 & 1) == 0)
     {
-      v17 = [(PSKeychainSyncSecurityCodeController *)self navigationItem];
+      navigationItem = [(PSKeychainSyncSecurityCodeController *)self navigationItem];
       v18 = PS_LocalizedStringForKeychainSync(@"KEYCHAIN_SETUP");
-      [v17 setTitle:v18];
+      [navigationItem setTitle:v18];
     }
 
     if (self->_showsAdvancedSettings && !self->_firstPasscodeEntry)
@@ -474,7 +474,7 @@
         v21 = @"CONFIRM_SECURITY_CODE_BUDDY";
       }
 
-      if (v13)
+      if (isRunningInBuddy)
       {
         v23 = 0;
       }
@@ -502,7 +502,7 @@
         v25 = @"COMPLEX_CODE";
       }
 
-      if (v13)
+      if (isRunningInBuddy)
       {
         v34 = v33;
       }
@@ -512,7 +512,7 @@
         v34 = 0;
       }
 
-      if (v13)
+      if (isRunningInBuddy)
       {
         v23 = 0;
       }
@@ -535,39 +535,39 @@
         v38 = 0;
         v60 = 0;
 LABEL_53:
-        v39 = [(PSKeychainSyncTextEntryController *)self textEntryView];
+        textEntryView = [(PSKeychainSyncTextEntryController *)self textEntryView];
         if (self->_firstPasscodeEntry || self->_securityCodeType != 2)
         {
-          v40 = v3;
+          v40 = specifiers;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             v44 = [MEMORY[0x1E69DB878] systemFontOfSize:16.0];
-            [v39 setFont:v44];
+            [textEntryView setFont:v44];
           }
 
-          v42 = [(PSKeychainSyncSecurityCodeController *)self textEntryCell];
-          v43 = [MEMORY[0x1E69DC888] whiteColor];
+          textEntryCell = [(PSKeychainSyncSecurityCodeController *)self textEntryCell];
+          whiteColor = [MEMORY[0x1E69DC888] whiteColor];
         }
 
         else
         {
-          v40 = v3;
+          v40 = specifiers;
           [(PSKeychainSyncSecurityCodeController *)self generateRandomCode];
           v41 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:16.0];
-          [v39 setFont:v41];
+          [textEntryView setFont:v41];
 
-          v42 = [(PSKeychainSyncSecurityCodeController *)self textEntryCell];
-          v43 = [MEMORY[0x1E69DC888] clearColor];
+          textEntryCell = [(PSKeychainSyncSecurityCodeController *)self textEntryCell];
+          whiteColor = [MEMORY[0x1E69DC888] clearColor];
         }
 
-        v45 = v43;
-        [v42 setBackgroundColor:v43];
+        v45 = whiteColor;
+        [textEntryCell setBackgroundColor:whiteColor];
 
-        if (v13)
+        if (isRunningInBuddy)
         {
           v46 = self->_securityCodeType;
-          v3 = v40;
+          specifiers = v40;
           if (v46 == 1)
           {
             v48 = 1;
@@ -582,50 +582,50 @@ LABEL_53:
 
           v49 = v61;
           [(PSKeychainSyncTextEntryController *)self setTextFieldHasRoundBorder:v48];
-          if (((v60 != 0) & v13) == 1)
+          if (((v60 != 0) & isRunningInBuddy) == 1)
           {
-            v50 = [(PSKeychainSyncViewController *)self headerView];
+            headerView3 = [(PSKeychainSyncViewController *)self headerView];
             v51 = PS_LocalizedStringForKeychainSync(v60);
-            [v50 setTitleText:v51];
+            [headerView3 setTitleText:v51];
           }
         }
 
         else
         {
           [(PSKeychainSyncTextEntryController *)self setTextFieldHasRoundBorder:0];
-          v3 = v40;
+          specifiers = v40;
           v47 = v24;
           v49 = v61;
         }
 
         if (v47)
         {
-          v52 = [(PSKeychainSyncViewController *)self headerView];
+          headerView4 = [(PSKeychainSyncViewController *)self headerView];
           v53 = PS_LocalizedStringForKeychainSync(v47);
-          [v52 setDetailText:v53];
+          [headerView4 setDetailText:v53];
         }
 
-        if (!((v49 == 0) | v13 & 1))
+        if (!((v49 == 0) | isRunningInBuddy & 1))
         {
-          v54 = [(PSKeychainSyncSecurityCodeController *)self navigationItem];
+          navigationItem2 = [(PSKeychainSyncSecurityCodeController *)self navigationItem];
           v55 = PS_LocalizedStringForKeychainSync(v49);
-          [v54 setTitle:v55];
+          [navigationItem2 setTitle:v55];
         }
 
         if (v38)
         {
-          if (v13)
+          if (isRunningInBuddy)
           {
             v56 = self->_footerLabel;
-            v57 = PS_LocalizedStringForKeychainSync(v38);
-            [(UILabel *)v56 setText:v57];
+            groupSpecifier2 = PS_LocalizedStringForKeychainSync(v38);
+            [(UILabel *)v56 setText:groupSpecifier2];
           }
 
           else
           {
-            v57 = [(PSKeychainSyncViewController *)self groupSpecifier];
+            groupSpecifier2 = [(PSKeychainSyncViewController *)self groupSpecifier];
             v58 = PS_LocalizedStringForKeychainSync(v38);
-            [v57 setProperty:v58 forKey:@"footerText"];
+            [groupSpecifier2 setProperty:v58 forKey:@"footerText"];
           }
         }
 
@@ -641,7 +641,7 @@ LABEL_53:
         v22 = @"SECURITY_CODE_DESCRIPTION";
       }
 
-      if (v13)
+      if (isRunningInBuddy)
       {
         v20 = 0;
         v23 = v22;
@@ -665,7 +665,7 @@ LABEL_53:
 LABEL_78:
   [(PSKeychainSyncSecurityCodeController *)self updateNextButton];
 
-  return v3;
+  return specifiers;
 }
 
 - (id)placeholderText
@@ -685,9 +685,9 @@ LABEL_78:
     }
 
     v4 = +[PSKeychainSyncManager sharedManager];
-    v5 = [v4 isRunningInBuddy];
+    isRunningInBuddy = [v4 isRunningInBuddy];
 
-    if (v5)
+    if (isRunningInBuddy)
     {
       v6 = @"REQUIRED_LOWERCASE";
     }
@@ -709,21 +709,21 @@ LABEL_11:
   return v7;
 }
 
-- (void)animatePasscodeFieldLeft:(BOOL)a3
+- (void)animatePasscodeFieldLeft:(BOOL)left
 {
-  v3 = a3;
-  v5 = [(PSListController *)self table];
-  [v5 bounds];
+  leftCopy = left;
+  table = [(PSListController *)self table];
+  [table bounds];
   v7 = v6;
   UIKeyboardDisableAutomaticAppearance();
   v8 = objc_alloc_init(MEMORY[0x1E69DCF70]);
-  [v5 frame];
+  [table frame];
   [v8 setFrame:?];
-  [v8 captureSnapshotOfView:v5 withSnapshotType:1];
-  v9 = [v5 superview];
-  [v9 addSubview:v8];
+  [v8 captureSnapshotOfView:table withSnapshotType:1];
+  superview = [table superview];
+  [superview addSubview:v8];
 
-  if (v3 || self->_securityCodeType != 2)
+  if (leftCopy || self->_securityCodeType != 2)
   {
     generatedCode = &stru_1EFE45030;
   }
@@ -734,7 +734,7 @@ LABEL_11:
   }
 
   [(PSKeychainSyncTextEntryController *)self setTextEntryText:generatedCode];
-  if (v3)
+  if (leftCopy)
   {
     v11 = 1.0;
   }
@@ -745,8 +745,8 @@ LABEL_11:
   }
 
   [(PSListController *)self reloadSpecifiers];
-  [v5 frame];
-  [v5 setFrame:v12 + v11 * v7];
+  [table frame];
+  [table setFrame:v12 + v11 * v7];
   v13 = MEMORY[0x1E69DD250];
   [MEMORY[0x1E69DD228] defaultDurationForTransition:1];
   v15 = v14;
@@ -754,7 +754,7 @@ LABEL_11:
   v21[1] = 3221225472;
   v21[2] = __65__PSKeychainSyncSecurityCodeController_animatePasscodeFieldLeft___block_invoke;
   v21[3] = &unk_1E71DC210;
-  v22 = v5;
+  v22 = table;
   v24 = v11;
   v25 = v7;
   v23 = v8;
@@ -763,9 +763,9 @@ LABEL_11:
   v18[2] = __65__PSKeychainSyncSecurityCodeController_animatePasscodeFieldLeft___block_invoke_2;
   v18[3] = &unk_1E71DD758;
   v19 = v23;
-  v20 = self;
+  selfCopy = self;
   v16 = v23;
-  v17 = v5;
+  v17 = table;
   [v13 animateWithDuration:v21 animations:v18 completion:v15];
 }
 
@@ -791,21 +791,21 @@ uint64_t __65__PSKeychainSyncSecurityCodeController_animatePasscodeFieldLeft___b
   return [v2 becomeFirstResponder];
 }
 
-- (void)didFinishEnteringText:(id)a3
+- (void)didFinishEnteringText:(id)text
 {
   v39[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  textCopy = text;
   securityCodeType = self->_securityCodeType;
   if (!securityCodeType)
   {
-    v6 = [MEMORY[0x1E69DC938] currentDevice];
-    v7 = [v6 sf_isiPad];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    sf_isiPad = [currentDevice sf_isiPad];
 
-    if (v7)
+    if (sf_isiPad)
     {
       v8 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"0123456789"];
-      v9 = [v8 invertedSet];
-      v10 = [v4 rangeOfCharacterFromSet:v9];
+      invertedSet = [v8 invertedSet];
+      v10 = [textCopy rangeOfCharacterFromSet:invertedSet];
 
       if (v10 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -814,7 +814,7 @@ uint64_t __65__PSKeychainSyncSecurityCodeController_animatePasscodeFieldLeft___b
     }
   }
 
-  v39[0] = v4;
+  v39[0] = textCopy;
   v38[0] = @"securityCode";
   v38[1] = @"securityCodeType";
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_securityCodeType];
@@ -823,8 +823,8 @@ uint64_t __65__PSKeychainSyncSecurityCodeController_animatePasscodeFieldLeft___b
 
   if (self->_mode == 2)
   {
-    v13 = [(PSKeychainSyncViewController *)self delegate];
-    [(NSString *)v13 keychainSyncController:self didFinishWithResult:v12 error:0];
+    delegate = [(PSKeychainSyncViewController *)self delegate];
+    [(NSString *)delegate keychainSyncController:self didFinishWithResult:v12 error:0];
   }
 
   else
@@ -832,23 +832,23 @@ uint64_t __65__PSKeychainSyncSecurityCodeController_animatePasscodeFieldLeft___b
     firstPasscodeEntry = self->_firstPasscodeEntry;
     if (firstPasscodeEntry)
     {
-      v13 = firstPasscodeEntry;
+      delegate = firstPasscodeEntry;
       if (securityCodeType == 2)
       {
-        v15 = [v4 uppercaseString];
+        uppercaseString = [textCopy uppercaseString];
 
-        v16 = [(NSString *)v13 uppercaseString];
+        uppercaseString2 = [(NSString *)delegate uppercaseString];
 
-        v13 = v16;
-        v4 = v15;
+        delegate = uppercaseString2;
+        textCopy = uppercaseString;
       }
 
-      v17 = [v4 isEqualToString:v13];
+      v17 = [textCopy isEqualToString:delegate];
       [(PSKeychainSyncSecurityCodeController *)self setFirstPasscodeEntry:0];
       if (v17)
       {
-        v18 = [(PSKeychainSyncViewController *)self delegate];
-        [v18 keychainSyncController:self didFinishWithResult:v12 error:0];
+        delegate2 = [(PSKeychainSyncViewController *)self delegate];
+        [delegate2 keychainSyncController:self didFinishWithResult:v12 error:0];
       }
 
       else
@@ -863,10 +863,10 @@ uint64_t __65__PSKeychainSyncSecurityCodeController_animatePasscodeFieldLeft___b
           v28 = @"SECURITY_CODES_DID_NOT_MATCH";
         }
 
-        v18 = PS_LocalizedStringForKeychainSync(v28);
+        delegate2 = PS_LocalizedStringForKeychainSync(v28);
         v29 = MEMORY[0x1E69DC650];
         v30 = PS_LocalizedStringForKeychainSync(@"ENTER_SECURITY_CODE_AGAIN");
-        v31 = [v29 alertControllerWithTitle:v18 message:v30 preferredStyle:1];
+        v31 = [v29 alertControllerWithTitle:delegate2 message:v30 preferredStyle:1];
 
         v32 = MEMORY[0x1E69DC648];
         v33 = PS_LocalizedStringForKeychainSync(@"OK");
@@ -884,8 +884,8 @@ uint64_t __65__PSKeychainSyncSecurityCodeController_animatePasscodeFieldLeft___b
 
     else
     {
-      [(PSKeychainSyncSecurityCodeController *)self setFirstPasscodeEntry:v4];
-      if ([v4 length] >= 6 && (securityCodeType == 2 || !SecPasswordIsPasswordWeak2()))
+      [(PSKeychainSyncSecurityCodeController *)self setFirstPasscodeEntry:textCopy];
+      if ([textCopy length] >= 6 && (securityCodeType == 2 || !SecPasswordIsPasswordWeak2()))
       {
         [(PSKeychainSyncSecurityCodeController *)self animatePasscodeFieldLeft:1];
         goto LABEL_20;
@@ -894,7 +894,7 @@ uint64_t __65__PSKeychainSyncSecurityCodeController_animatePasscodeFieldLeft___b
       v19 = MEMORY[0x1E69DC650];
       v20 = PS_LocalizedStringForKeychainSync(@"WEAK_SECURITY_CODE");
       v21 = PS_LocalizedStringForKeychainSync(@"WEAK_SECURITY_CODE_DETAILS");
-      v13 = [v19 alertControllerWithTitle:v20 message:v21 preferredStyle:1];
+      delegate = [v19 alertControllerWithTitle:v20 message:v21 preferredStyle:1];
 
       v22 = MEMORY[0x1E69DC648];
       v23 = PS_LocalizedStringForKeychainSync(@"CHANGE");
@@ -904,7 +904,7 @@ uint64_t __65__PSKeychainSyncSecurityCodeController_animatePasscodeFieldLeft___b
       v37[3] = &unk_1E71DC288;
       v37[4] = self;
       v24 = [v22 actionWithTitle:v23 style:0 handler:v37];
-      [(NSString *)v13 addAction:v24];
+      [(NSString *)delegate addAction:v24];
 
       v25 = MEMORY[0x1E69DC648];
       v26 = PS_LocalizedStringForKeychainSync(@"USE_CODE");
@@ -914,9 +914,9 @@ uint64_t __65__PSKeychainSyncSecurityCodeController_animatePasscodeFieldLeft___b
       v36[3] = &unk_1E71DC288;
       v36[4] = self;
       v27 = [v25 actionWithTitle:v26 style:0 handler:v36];
-      [(NSString *)v13 addAction:v27];
+      [(NSString *)delegate addAction:v27];
 
-      [(PSKeychainSyncSecurityCodeController *)self presentViewController:v13 animated:1 completion:0];
+      [(PSKeychainSyncSecurityCodeController *)self presentViewController:delegate animated:1 completion:0];
     }
   }
 
@@ -933,15 +933,15 @@ uint64_t __62__PSKeychainSyncSecurityCodeController_didFinishEnteringText___bloc
 
 - (void)updateNextButton
 {
-  v3 = [(PSKeychainSyncSecurityCodeController *)self navigationItem];
-  v13 = [v3 rightBarButtonItem];
+  navigationItem = [(PSKeychainSyncSecurityCodeController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
 
   securityCodeType = self->_securityCodeType;
   if (securityCodeType == 2)
   {
     if (self->_mode == 1 && !self->_firstPasscodeEntry)
     {
-      [v13 setEnabled:1];
+      [rightBarButtonItem setEnabled:1];
     }
 
     else
@@ -950,67 +950,67 @@ uint64_t __62__PSKeychainSyncSecurityCodeController_didFinishEnteringText___bloc
       if (generatedCode)
       {
         v10 = [(NSString *)generatedCode length];
-        v11 = [(PSKeychainSyncTextEntryController *)self textEntryText];
-        v12 = [v11 length] == v10;
+        textEntryText = [(PSKeychainSyncTextEntryController *)self textEntryText];
+        v12 = [textEntryText length] == v10;
       }
 
       else
       {
-        v11 = [(PSKeychainSyncTextEntryController *)self textEntryText];
-        v12 = [v11 length] != 0;
+        textEntryText = [(PSKeychainSyncTextEntryController *)self textEntryText];
+        v12 = [textEntryText length] != 0;
       }
 
-      [v13 setEnabled:v12];
+      [rightBarButtonItem setEnabled:v12];
     }
   }
 
   else
   {
-    v5 = v13;
+    v5 = rightBarButtonItem;
     if (securityCodeType != 1)
     {
       goto LABEL_13;
     }
 
-    v6 = [(PSKeychainSyncTextEntryController *)self textEntryText];
-    v7 = [v6 length];
+    textEntryText2 = [(PSKeychainSyncTextEntryController *)self textEntryText];
+    v7 = [textEntryText2 length];
     v8 = 6;
     if (self->_mode != 1)
     {
       v8 = 1;
     }
 
-    [v13 setEnabled:v7 >= v8];
+    [rightBarButtonItem setEnabled:v7 >= v8];
   }
 
-  v5 = v13;
+  v5 = rightBarButtonItem;
 LABEL_13:
 }
 
-- (void)setFirstPasscodeEntry:(id)a3
+- (void)setFirstPasscodeEntry:(id)entry
 {
-  v5 = a3;
-  if (self->_firstPasscodeEntry != v5)
+  entryCopy = entry;
+  if (self->_firstPasscodeEntry != entryCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_firstPasscodeEntry, a3);
-    v6 = [(PSKeychainSyncSecurityCodeController *)self textEntryCell];
+    v7 = entryCopy;
+    objc_storeStrong(&self->_firstPasscodeEntry, entry);
+    textEntryCell = [(PSKeychainSyncSecurityCodeController *)self textEntryCell];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v6 setFirstPasscodeEntry:v7];
+      [textEntryCell setFirstPasscodeEntry:v7];
     }
 
-    v5 = v7;
+    entryCopy = v7;
   }
 }
 
-- (void)setMode:(int)a3
+- (void)setMode:(int)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
-    v4 = [(PSKeychainSyncSecurityCodeController *)self _configureTextEntryCell];
+    self->_mode = mode;
+    _configureTextEntryCell = [(PSKeychainSyncSecurityCodeController *)self _configureTextEntryCell];
     if (self->_mode == 1)
     {
 
@@ -1019,23 +1019,23 @@ LABEL_13:
   }
 }
 
-- (void)setSecurityCodeType:(int)a3
+- (void)setSecurityCodeType:(int)type
 {
-  self->_securityCodeType = a3;
-  if (a3 <= 2)
+  self->_securityCodeType = type;
+  if (type <= 2)
   {
-    [(PSKeychainSyncTextEntryController *)self setTextEntryType:dword_18B103D38[a3]];
+    [(PSKeychainSyncTextEntryController *)self setTextEntryType:dword_18B103D38[type]];
   }
 
   if ([(PSKeychainSyncSecurityCodeController *)self isViewLoaded])
   {
-    v4 = [(PSKeychainSyncSecurityCodeController *)self view];
-    [v4 setNeedsLayout];
+    view = [(PSKeychainSyncSecurityCodeController *)self view];
+    [view setNeedsLayout];
 
     [(PSKeychainSyncTextEntryController *)self becomeFirstResponder];
   }
 
-  v5 = [(PSKeychainSyncSecurityCodeController *)self _configureTextEntryCell];
+  _configureTextEntryCell = [(PSKeychainSyncSecurityCodeController *)self _configureTextEntryCell];
 }
 
 - (void)generateRandomCode
@@ -1045,9 +1045,9 @@ LABEL_13:
   {
     v4 = SecPasswordGenerate();
     objc_storeStrong(&self->_generatedCode, v4);
-    v5 = [(PSKeychainSyncSecurityCodeController *)self navigationItem];
-    v6 = [v5 rightBarButtonItem];
-    [v6 setEnabled:1];
+    navigationItem = [(PSKeychainSyncSecurityCodeController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:1];
 
     generatedCode = self->_generatedCode;
   }
@@ -1055,19 +1055,19 @@ LABEL_13:
   [(PSKeychainSyncTextEntryController *)self setTextEntryText:generatedCode];
 }
 
-- (void)textEntryViewDidChange:(id)a3
+- (void)textEntryViewDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PSKeychainSyncSecurityCodeController;
-  [(PSKeychainSyncTextEntryController *)&v4 textEntryViewDidChange:a3];
+  [(PSKeychainSyncTextEntryController *)&v4 textEntryViewDidChange:change];
   [(PSKeychainSyncSecurityCodeController *)self updateNextButton];
 }
 
 - (void)showAdvancedOptions
 {
   [(PSKeychainSyncSecurityCodeController *)self setFirstPasscodeEntry:0];
-  v3 = [(PSKeychainSyncViewController *)self delegate];
-  [v3 keychainSyncController:self didFinishWithResult:@"advancedOptions" error:0];
+  delegate = [(PSKeychainSyncViewController *)self delegate];
+  [delegate keychainSyncController:self didFinishWithResult:@"advancedOptions" error:0];
 }
 
 - (void)forgotSecurityCode
@@ -1255,7 +1255,7 @@ void __58__PSKeychainSyncSecurityCodeController_forgotSecurityCode__block_invoke
 
 - (void)dismissAlerts
 {
-  v3 = [(PSKeychainSyncSecurityCodeController *)self presentedViewController];
+  presentedViewController = [(PSKeychainSyncSecurityCodeController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

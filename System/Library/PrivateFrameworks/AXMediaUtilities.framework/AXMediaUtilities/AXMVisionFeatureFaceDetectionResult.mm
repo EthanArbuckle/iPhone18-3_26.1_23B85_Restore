@@ -1,46 +1,46 @@
 @interface AXMVisionFeatureFaceDetectionResult
-+ (id)localizedStringFormatterForExpression:(id)a3;
-+ (id)nameForFaceExpression:(int64_t)a3;
-- (AXMVisionFeatureFaceDetectionResult)initWithCoder:(id)a3;
++ (id)localizedStringFormatterForExpression:(id)expression;
++ (id)nameForFaceExpression:(int64_t)expression;
+- (AXMVisionFeatureFaceDetectionResult)initWithCoder:(id)coder;
 - (CGRect)frame;
-- (__n128)setPose:(__n128)a3;
-- (double)confidenceForExpression:(int64_t)a3;
+- (__n128)setPose:(__n128)pose;
+- (double)confidenceForExpression:(int64_t)expression;
 - (id)_init;
-- (id)descriptionForExpression:(int64_t)a3;
-- (int64_t)_expressionForString:(id)a3;
+- (id)descriptionForExpression:(int64_t)expression;
+- (int64_t)_expressionForString:(id)string;
 - (int64_t)likelyExpression;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXMVisionFeatureFaceDetectionResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AXMVisionFeatureFaceDetectionResult *)self uuid];
-  [v4 encodeObject:v5 forKey:@"AXMFeatureFaceUUID"];
+  coderCopy = coder;
+  uuid = [(AXMVisionFeatureFaceDetectionResult *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"AXMFeatureFaceUUID"];
 
   [(AXMVisionFeatureFaceDetectionResult *)self frame];
-  [v4 axmEncodeRect:@"AXMFeatureFaceRectangles" forKey:?];
+  [coderCopy axmEncodeRect:@"AXMFeatureFaceRectangles" forKey:?];
   [(AXMVisionFeatureFaceDetectionResult *)self rectanglesConfidence];
   *&v6 = v6;
-  [v4 encodeFloat:@"AXMFeatureFaceRectanglesConfidence" forKey:v6];
-  v7 = [(AXMVisionFeatureFaceDetectionResult *)self name];
-  [v4 encodeObject:v7 forKey:@"AXMFeatureFaceName"];
+  [coderCopy encodeFloat:@"AXMFeatureFaceRectanglesConfidence" forKey:v6];
+  name = [(AXMVisionFeatureFaceDetectionResult *)self name];
+  [coderCopy encodeObject:name forKey:@"AXMFeatureFaceName"];
 
   [(AXMVisionFeatureFaceDetectionResult *)self nameConfidence];
   *&v8 = v8;
-  [v4 encodeFloat:@"AXMFeatureFaceNameConfidence " forKey:v8];
-  v9 = [(AXMVisionFeatureFaceDetectionResult *)self attributes];
-  [v4 encodeObject:v9 forKey:@"AXMFeatureFaceAttributes"];
+  [coderCopy encodeFloat:@"AXMFeatureFaceNameConfidence " forKey:v8];
+  attributes = [(AXMVisionFeatureFaceDetectionResult *)self attributes];
+  [coderCopy encodeObject:attributes forKey:@"AXMFeatureFaceAttributes"];
 
   [(AXMVisionFeatureFaceDetectionResult *)self attributesConfidence];
   *&v10 = v10;
-  [v4 encodeFloat:@"AXMFeatureFaceAttributesConfidence" forKey:v10];
+  [coderCopy encodeFloat:@"AXMFeatureFaceAttributesConfidence" forKey:v10];
   v11 = MEMORY[0x1E696ACC8];
-  v12 = [(AXMVisionFeatureFaceDetectionResult *)self expressionsAndConfidence];
+  expressionsAndConfidence = [(AXMVisionFeatureFaceDetectionResult *)self expressionsAndConfidence];
   v24 = 0;
-  v13 = [v11 archivedDataWithRootObject:v12 requiringSecureCoding:1 error:&v24];
+  v13 = [v11 archivedDataWithRootObject:expressionsAndConfidence requiringSecureCoding:1 error:&v24];
   v14 = v24;
 
   if (v14)
@@ -52,52 +52,52 @@
     }
   }
 
-  [v4 encodeObject:v13 forKey:@"AXMFeatureFaceExpressions"];
-  [v4 encodeObject:self->_landmarks forKey:@"AXMFeatureFaceLandmarks"];
-  [v4 encodeObject:self->_landmarks3d forKey:@"AXMFeatureFaceLandmarks3d"];
+  [coderCopy encodeObject:v13 forKey:@"AXMFeatureFaceExpressions"];
+  [coderCopy encodeObject:self->_landmarks forKey:@"AXMFeatureFaceLandmarks"];
+  [coderCopy encodeObject:self->_landmarks3d forKey:@"AXMFeatureFaceLandmarks3d"];
   [(AXMVisionFeatureFaceDetectionResult *)self landmarksConfidence];
   *&v16 = v16;
-  [v4 encodeFloat:@"AXMFeatureFaceLandmarksConfidence" forKey:v16];
+  [coderCopy encodeFloat:@"AXMFeatureFaceLandmarksConfidence" forKey:v16];
   [(AXMVisionFeatureFaceDetectionResult *)self pose];
   v23[0] = v17;
   v23[1] = v18;
   v23[2] = v19;
   v23[3] = v20;
   v21 = [MEMORY[0x1E695DEF0] dataWithBytes:v23 length:64];
-  [v4 encodeObject:v21 forKey:@"AXMFeatureFacePose"];
+  [coderCopy encodeObject:v21 forKey:@"AXMFeatureFacePose"];
   [(AXMVisionFeatureFaceDetectionResult *)self poseConfidence];
   *&v22 = v22;
-  [v4 encodeFloat:@"AXMVisionFeatureCodingKeyFacePoseConfidence" forKey:v22];
+  [coderCopy encodeFloat:@"AXMVisionFeatureCodingKeyFacePoseConfidence" forKey:v22];
 }
 
-- (AXMVisionFeatureFaceDetectionResult)initWithCoder:(id)a3
+- (AXMVisionFeatureFaceDetectionResult)initWithCoder:(id)coder
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = AXMVisionFeatureFaceDetectionResult;
   v5 = [(AXMVisionFeatureFaceDetectionResult *)&v27 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AXMFeatureFaceUUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AXMFeatureFaceUUID"];
     [(AXMVisionFeatureFaceDetectionResult *)v5 setUuid:v6];
 
-    [v4 axmDecodeRectForKey:@"AXMFeatureFaceRectangles"];
+    [coderCopy axmDecodeRectForKey:@"AXMFeatureFaceRectangles"];
     [(AXMVisionFeatureFaceDetectionResult *)v5 setFrame:?];
-    [v4 decodeFloatForKey:@"AXMFeatureFaceRectanglesConfidence"];
+    [coderCopy decodeFloatForKey:@"AXMFeatureFaceRectanglesConfidence"];
     [(AXMVisionFeatureFaceDetectionResult *)v5 setRectanglesConfidence:v7];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AXMFeatureFaceName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AXMFeatureFaceName"];
     [(AXMVisionFeatureFaceDetectionResult *)v5 setName:v8];
 
-    [v4 decodeFloatForKey:@"AXMFeatureFaceNameConfidence "];
+    [coderCopy decodeFloatForKey:@"AXMFeatureFaceNameConfidence "];
     [(AXMVisionFeatureFaceDetectionResult *)v5 setNameConfidence:v9];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AXMFeatureFaceAttributes"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AXMFeatureFaceAttributes"];
     [(AXMVisionFeatureFaceDetectionResult *)v5 setAttributes:v10];
 
-    [v4 decodeFloatForKey:@"AXMFeatureFaceAttributesConfidence"];
+    [coderCopy decodeFloatForKey:@"AXMFeatureFaceAttributesConfidence"];
     [(AXMVisionFeatureFaceDetectionResult *)v5 setAttributesConfidence:v11];
     v12 = AXMSecureCodingClasses();
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"AXMFeatureFaceExpressions"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"AXMFeatureFaceExpressions"];
 
     if (v13)
     {
@@ -125,22 +125,22 @@
       }
     }
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AXMFeatureFaceLandmarks"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AXMFeatureFaceLandmarks"];
     [(AXMVisionFeatureFaceDetectionResult *)v5 setLandmarks:v20];
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AXMFeatureFaceLandmarks3d"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AXMFeatureFaceLandmarks3d"];
     [(AXMVisionFeatureFaceDetectionResult *)v5 setLandmarks3d:v21];
 
-    [v4 decodeFloatForKey:@"AXMFeatureFaceLandmarksConfidence"];
+    [coderCopy decodeFloatForKey:@"AXMFeatureFaceLandmarksConfidence"];
     [(AXMVisionFeatureFaceDetectionResult *)v5 setLandmarksConfidence:v22];
     v30 = 0u;
     *v31 = 0u;
     *buf = 0u;
     v29 = 0u;
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AXMFeatureFacePose"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AXMFeatureFacePose"];
     [v23 getBytes:buf length:64];
     [(AXMVisionFeatureFaceDetectionResult *)v5 setPose:*buf, *&v29, *&v30, v31[0]];
-    [v4 decodeFloatForKey:@"AXMVisionFeatureCodingKeyFacePoseConfidence"];
+    [coderCopy decodeFloatForKey:@"AXMVisionFeatureCodingKeyFacePoseConfidence"];
     [(AXMVisionFeatureFaceDetectionResult *)v5 setPoseConfidence:v24];
   }
 
@@ -160,26 +160,26 @@
   return result;
 }
 
-+ (id)nameForFaceExpression:(int64_t)a3
++ (id)nameForFaceExpression:(int64_t)expression
 {
-  if ((a3 - 1) > 5)
+  if ((expression - 1) > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E7A1D6B0[a3 - 1];
+    return off_1E7A1D6B0[expression - 1];
   }
 }
 
-- (double)confidenceForExpression:(int64_t)a3
+- (double)confidenceForExpression:(int64_t)expression
 {
-  v4 = [(AXMVisionFeatureFaceDetectionResult *)self descriptionForExpression:a3];
+  v4 = [(AXMVisionFeatureFaceDetectionResult *)self descriptionForExpression:expression];
   if (v4)
   {
-    v5 = [(AXMVisionFeatureFaceDetectionResult *)self expressionsAndConfidence];
-    v6 = [v5 objectForKey:v4];
+    expressionsAndConfidence = [(AXMVisionFeatureFaceDetectionResult *)self expressionsAndConfidence];
+    v6 = [expressionsAndConfidence objectForKey:v4];
     [v6 floatValue];
     v8 = v7;
   }
@@ -202,10 +202,10 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v4 = [(AXMVisionFeatureFaceDetectionResult *)self expressionsAndConfidence];
-    v5 = [v4 allKeys];
+    expressionsAndConfidence = [(AXMVisionFeatureFaceDetectionResult *)self expressionsAndConfidence];
+    allKeys = [expressionsAndConfidence allKeys];
 
-    v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v6 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
       v7 = v6;
@@ -218,12 +218,12 @@
         {
           if (*v18 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allKeys);
           }
 
           v11 = *(*(&v17 + 1) + 8 * i);
-          v12 = [(AXMVisionFeatureFaceDetectionResult *)self expressionsAndConfidence];
-          v13 = [v12 objectForKey:v11];
+          expressionsAndConfidence2 = [(AXMVisionFeatureFaceDetectionResult *)self expressionsAndConfidence];
+          v13 = [expressionsAndConfidence2 objectForKey:v11];
           [v13 floatValue];
           v15 = v14;
 
@@ -234,7 +234,7 @@
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v7 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v7);
@@ -251,9 +251,9 @@
   return likelyExpression;
 }
 
-+ (id)localizedStringFormatterForExpression:(id)a3
++ (id)localizedStringFormatterForExpression:(id)expression
 {
-  v3 = [a3 integerValue] - 1;
+  v3 = [expression integerValue] - 1;
   if (v3 <= 5 && ((0x3Du >> v3) & 1) != 0)
   {
     v4 = off_1E7A1D680[v3];
@@ -269,48 +269,48 @@
   return v6;
 }
 
-- (id)descriptionForExpression:(int64_t)a3
+- (id)descriptionForExpression:(int64_t)expression
 {
-  if ((a3 - 1) > 5)
+  if ((expression - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7A1D6B0[a3 - 1];
+    return off_1E7A1D6B0[expression - 1];
   }
 }
 
-- (int64_t)_expressionForString:(id)a3
+- (int64_t)_expressionForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Disgust"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"Disgust"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Neutral"])
+  else if ([stringCopy isEqualToString:@"Neutral"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Scream"])
+  else if ([stringCopy isEqualToString:@"Scream"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Smile"])
+  else if ([stringCopy isEqualToString:@"Smile"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Surprise"])
+  else if ([stringCopy isEqualToString:@"Surprise"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Suspicious"])
+  else if ([stringCopy isEqualToString:@"Suspicious"])
   {
     v4 = 6;
   }
@@ -336,10 +336,10 @@
   return result;
 }
 
-- (__n128)setPose:(__n128)a3
+- (__n128)setPose:(__n128)pose
 {
   result[9] = a2;
-  result[10] = a3;
+  result[10] = pose;
   result[11] = a4;
   result[12] = a5;
   return result;

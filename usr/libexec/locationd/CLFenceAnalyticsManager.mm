@@ -1,24 +1,24 @@
 @interface CLFenceAnalyticsManager
 + (BOOL)isSupported;
 + (id)getSilo;
-+ (id)regionForFence:(Fence *)a3;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
-- (BOOL)updateHistoricalFenceStateWithNotificationData:(NotificationData *)a3;
++ (id)regionForFence:(Fence *)fence;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
+- (BOOL)updateHistoricalFenceStateWithNotificationData:(NotificationData *)data;
 - (CLFenceAnalyticsManager)init;
-- (CLStepDistance)fetchStepCountInInterval:(SEL)a3;
+- (CLStepDistance)fetchStepCountInInterval:(SEL)interval;
 - (id).cxx_construct;
-- (id)historicalFenceStateForFence:(Fence *)a3;
-- (id)historicalFenceStateForFenceName:(id)a3;
+- (id)historicalFenceStateForFence:(Fence *)fence;
+- (id)historicalFenceStateForFenceName:(id)name;
 - (id)queue;
 - (void)beginService;
 - (void)endService;
-- (void)fetchDominantMotionActivityInInterval:(id)a3 handler:(id)a4;
-- (void)fetchLocationOfInterestForFence:(Fence *)a3 handler:;
-- (void)fetchLocationOfInterestForRegion:(id)a3 handler:(id)a4;
-- (void)fetchLocationSystemStateWithHandler:(id)a3;
-- (void)fetchMotionActivitiesInInterval:(id)a3 handler:(id)a4;
-- (void)onMonitorNotification:(int)a3 data:(NotificationData *)a4;
-- (void)updateTimeToInitialStateChangeForFence:(CLFenceAnalyticsManager *)self previousStatus:(SEL)a2 timeOfStateChange:(Fence *)a3;
+- (void)fetchDominantMotionActivityInInterval:(id)interval handler:(id)handler;
+- (void)fetchLocationOfInterestForFence:(Fence *)fence handler:;
+- (void)fetchLocationOfInterestForRegion:(id)region handler:(id)handler;
+- (void)fetchLocationSystemStateWithHandler:(id)handler;
+- (void)fetchMotionActivitiesInInterval:(id)interval handler:(id)handler;
+- (void)onMonitorNotification:(int)notification data:(NotificationData *)data;
+- (void)updateTimeToInitialStateChangeForFence:(CLFenceAnalyticsManager *)self previousStatus:(SEL)status timeOfStateChange:(Fence *)change;
 @end
 
 @implementation CLFenceAnalyticsManager
@@ -33,12 +33,12 @@
   return byte_10265A730;
 }
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -126,31 +126,31 @@
   return [v2 queue];
 }
 
-- (void)fetchMotionActivitiesInInterval:(id)a3 handler:(id)a4
+- (void)fetchMotionActivitiesInInterval:(id)interval handler:(id)handler
 {
-  if (!a4)
+  if (!handler)
   {
     sub_101955924();
   }
 
   v7 = [[CLOSTransaction alloc] initWithDescription:"CLFenceAnalyticsManager.MotionActivityQuery"];
   motionStateProxy = self->_motionStateProxy;
-  [objc_msgSend(a3 "startDate")];
+  [objc_msgSend(interval "startDate")];
   v10 = v9;
-  [objc_msgSend(a3 "endDate")];
+  [objc_msgSend(interval "endDate")];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10084F150;
   v12[3] = &unk_102476E58;
   v12[5] = v7;
-  v12[6] = a4;
+  v12[6] = handler;
   v12[4] = self;
   [(CLMotionStateProtocol *)motionStateProxy queryMotionStatesWithStartTime:1 endTime:v12 isFromInternalClient:v10 withReply:v11];
 }
 
-- (void)fetchDominantMotionActivityInInterval:(id)a3 handler:(id)a4
+- (void)fetchDominantMotionActivityInInterval:(id)interval handler:(id)handler
 {
-  if (!a4)
+  if (!handler)
   {
     sub_101955980();
   }
@@ -160,12 +160,12 @@
   v7[2] = sub_10084F250;
   v7[3] = &unk_102476E80;
   v7[4] = self;
-  v7[5] = a3;
-  v7[6] = a4;
-  [(CLFenceAnalyticsManager *)self fetchMotionActivitiesInInterval:a3 handler:v7];
+  v7[5] = interval;
+  v7[6] = handler;
+  [(CLFenceAnalyticsManager *)self fetchMotionActivitiesInInterval:interval handler:v7];
 }
 
-- (CLStepDistance)fetchStepCountInInterval:(SEL)a3
+- (CLStepDistance)fetchStepCountInInterval:(SEL)interval
 {
   *&retstr->var7 = 0;
   *&retstr->var2 = 0u;
@@ -180,30 +180,30 @@
   return result;
 }
 
-+ (id)regionForFence:(Fence *)a3
++ (id)regionForFence:(Fence *)fence
 {
-  if (*(&a3[9].var0.__rep_.__l + 2) != a3[9].var0.__rep_.__l.__size_)
+  if (*(&fence[9].var0.__rep_.__l + 2) != fence[9].var0.__rep_.__l.__size_)
   {
     return 0;
   }
 
   v17 = v3;
   v11 = [NSString alloc];
-  data = a3 + 1;
-  if (*(&a3[1].var0.__rep_.__l + 23) < 0)
+  data = fence + 1;
+  if (*(&fence[1].var0.__rep_.__l + 23) < 0)
   {
     data = data->var0.__rep_.__l.__data_;
   }
 
   v13 = [v11 initWithCString:data encoding:{4, v6, v5, v4, v17, v7}];
   v14 = [CLCircularRegion alloc];
-  v15 = CLLocationCoordinate2DMake(*&a3[3].var0.__rep_.__l.__data_, *&a3[3].var0.__rep_.__l.__size_);
-  v16 = [v14 initWithCenter:v13 radius:v15.latitude identifier:{v15.longitude, *(&a3[3].var0.__rep_.__l + 2)}];
+  v15 = CLLocationCoordinate2DMake(*&fence[3].var0.__rep_.__l.__data_, *&fence[3].var0.__rep_.__l.__size_);
+  v16 = [v14 initWithCenter:v13 radius:v15.latitude identifier:{v15.longitude, *(&fence[3].var0.__rep_.__l + 2)}];
 
   return v16;
 }
 
-- (void)fetchLocationOfInterestForFence:(Fence *)a3 handler:
+- (void)fetchLocationOfInterestForFence:(Fence *)fence handler:
 {
   v4 = v3;
   if (!v3)
@@ -212,7 +212,7 @@
   }
 
   v7 = objc_opt_class();
-  sub_1004BF718(__dst, a3->var0.__rep_.__s.__data_);
+  sub_1004BF718(__dst, fence->var0.__rep_.__s.__data_);
   -[CLFenceAnalyticsManager fetchLocationOfInterestForRegion:handler:](self, "fetchLocationOfInterestForRegion:handler:", [v7 regionForFence:__dst], v4);
   if (__p)
   {
@@ -241,9 +241,9 @@
   }
 }
 
-- (void)fetchLocationOfInterestForRegion:(id)a3 handler:(id)a4
+- (void)fetchLocationOfInterestForRegion:(id)region handler:(id)handler
 {
-  if (!a4)
+  if (!handler)
   {
     sub_101955A38();
   }
@@ -256,30 +256,30 @@
     v9[2] = sub_10084F5F8;
     v9[3] = &unk_102476EA8;
     v9[4] = self;
-    v9[5] = a4;
-    [(CLRoutineMonitorServiceProtocol *)routineMonitor fetchLocationOfInterestForRegion:a3 withReply:v9];
+    v9[5] = handler;
+    [(CLRoutineMonitorServiceProtocol *)routineMonitor fetchLocationOfInterestForRegion:region withReply:v9];
   }
 
   else
   {
-    v8 = *(a4 + 2);
+    v8 = *(handler + 2);
 
-    v8(a4, 0);
+    v8(handler, 0);
   }
 }
 
-- (BOOL)updateHistoricalFenceStateWithNotificationData:(NotificationData *)a3
+- (BOOL)updateHistoricalFenceStateWithNotificationData:(NotificationData *)data
 {
   v6 = [NSString alloc];
-  v7 = (a3 + 24);
-  if (*(a3 + 47) < 0)
+  v7 = (data + 24);
+  if (*(data + 47) < 0)
   {
     v7 = *v7;
   }
 
   v8 = [v6 initWithCString:v7 encoding:4];
-  v9 = *(a3 + 318);
-  v10 = *(a3 + 163);
+  v9 = *(data + 318);
+  v10 = *(data + 163);
   if (v9 == -1)
   {
     v11 = 3;
@@ -290,16 +290,16 @@
     v11 = v9;
   }
 
-  v23 = *(a3 + 56);
-  v24 = *(a3 + 57);
-  *v25 = *(a3 + 58);
-  *&v25[12] = *(a3 + 940);
-  v19 = *(a3 + 52);
-  v20 = *(a3 + 53);
-  v21 = *(a3 + 54);
-  v22 = *(a3 + 55);
-  v17 = *(a3 + 50);
-  v18 = *(a3 + 51);
+  v23 = *(data + 56);
+  v24 = *(data + 57);
+  *v25 = *(data + 58);
+  *&v25[12] = *(data + 940);
+  v19 = *(data + 52);
+  v20 = *(data + 53);
+  v21 = *(data + 54);
+  v22 = *(data + 55);
+  v17 = *(data + 50);
+  v18 = *(data + 51);
   if (qword_1025D4640 != -1)
   {
     sub_101955810();
@@ -308,7 +308,7 @@
   v12 = off_1025D4648;
   if (os_log_type_enabled(off_1025D4648, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = *(a3 + 99);
+    v13 = *(data + 99);
     *buf = 138413058;
     *&buf[4] = v8;
     *&buf[12] = 1024;
@@ -352,21 +352,21 @@
   v29 = v22;
   *buf = v17;
   *&buf[16] = v18;
-  [v14 updateCurrentState:v10 previousState:v11 location:buf locationReceivedTime:*(a3 + 99)];
+  [v14 updateCurrentState:v10 previousState:v11 location:buf locationReceivedTime:*(data + 99)];
   return 1;
 }
 
-- (void)updateTimeToInitialStateChangeForFence:(CLFenceAnalyticsManager *)self previousStatus:(SEL)a2 timeOfStateChange:(Fence *)a3
+- (void)updateTimeToInitialStateChangeForFence:(CLFenceAnalyticsManager *)self previousStatus:(SEL)status timeOfStateChange:(Fence *)change
 {
   if (v3 == -1)
   {
     v17 = v9;
     v18 = v5;
     v19 = v4;
-    v13 = v8 - *&a3[5].var0.__rep_.__l.__data_;
+    v13 = v8 - *&change[5].var0.__rep_.__l.__data_;
     v14 = [NSString alloc];
-    data = a3 + 1;
-    if (*(&a3[1].var0.__rep_.__l + 23) < 0)
+    data = change + 1;
+    if (*(&change[1].var0.__rep_.__l + 23) < 0)
     {
       data = data->var0.__rep_.__l.__data_;
     }
@@ -377,9 +377,9 @@
   }
 }
 
-- (void)fetchLocationSystemStateWithHandler:(id)a3
+- (void)fetchLocationSystemStateWithHandler:(id)handler
 {
-  if (!a3)
+  if (!handler)
   {
     sub_101955ABC();
   }
@@ -389,15 +389,15 @@
   v5[2] = sub_10084FA60;
   v5[3] = &unk_102476ED0;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = handler;
   sub_100047D60([(CLFenceAnalyticsManager *)self universe], v5);
 }
 
-- (id)historicalFenceStateForFence:(Fence *)a3
+- (id)historicalFenceStateForFence:(Fence *)fence
 {
   v5 = [NSString alloc];
-  data = a3 + 1;
-  if (*(&a3[1].var0.__rep_.__l + 23) < 0)
+  data = fence + 1;
+  if (*(&fence[1].var0.__rep_.__l + 23) < 0)
   {
     data = data->var0.__rep_.__l.__data_;
   }
@@ -407,14 +407,14 @@
   return [(CLFenceAnalyticsManager *)self historicalFenceStateForFenceName:v7];
 }
 
-- (id)historicalFenceStateForFenceName:(id)a3
+- (id)historicalFenceStateForFenceName:(id)name
 {
-  v4 = [(CLFenceAnalyticsManager *)self historicalFenceStates];
+  historicalFenceStates = [(CLFenceAnalyticsManager *)self historicalFenceStates];
 
-  return [(NSMutableDictionary *)v4 objectForKey:a3];
+  return [(NSMutableDictionary *)historicalFenceStates objectForKey:name];
 }
 
-- (void)onMonitorNotification:(int)a3 data:(NotificationData *)a4
+- (void)onMonitorNotification:(int)notification data:(NotificationData *)data
 {
   v5 = __chkstk_darwin(self);
   v7 = v6;

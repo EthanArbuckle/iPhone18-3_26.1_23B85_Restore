@@ -1,15 +1,15 @@
 @interface SVXAFConnectionFactory
-- (id)createWithDispatchQueue:(id)a3 instanceContext:(id)a4;
+- (id)createWithDispatchQueue:(id)queue instanceContext:(id)context;
 @end
 
 @implementation SVXAFConnectionFactory
 
-- (id)createWithDispatchQueue:(id)a3 instanceContext:(id)a4
+- (id)createWithDispatchQueue:(id)queue instanceContext:(id)context
 {
   v5 = MEMORY[0x277CEF218];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithTargetQueue:v7 instanceContext:v6];
+  contextCopy = context;
+  queueCopy = queue;
+  v8 = [[v5 alloc] initWithTargetQueue:queueCopy instanceContext:contextCopy];
 
   return v8;
 }

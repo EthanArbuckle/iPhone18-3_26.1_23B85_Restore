@@ -7,10 +7,10 @@
 - (id)preferredFocusEnvironments
 {
   objc_opt_class();
-  v3 = [(CARTableView *)self dataSource];
-  if (v3 && (objc_opt_isKindOfClass() & 1) != 0)
+  dataSource = [(CARTableView *)self dataSource];
+  if (dataSource && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = dataSource;
   }
 
   else
@@ -22,17 +22,17 @@
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    preferredFocusEnvironments = v5;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = CARTableView;
-    v7 = [(CARTableView *)&v10 preferredFocusEnvironments];
+    preferredFocusEnvironments = [(CARTableView *)&v10 preferredFocusEnvironments];
   }
 
-  v8 = v7;
+  v8 = preferredFocusEnvironments;
 
   return v8;
 }

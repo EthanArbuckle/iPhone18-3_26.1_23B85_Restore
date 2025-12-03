@@ -51,7 +51,7 @@
   block[1] = 3221225472;
   block[2] = __87__NSAttributedString_NSAttributedStringUIFoundationAdditions___isAttributedStringAgent__block_invoke;
   block[3] = &unk_1E72657B8;
-  block[4] = a1;
+  block[4] = self;
   if (_isAttributedStringAgent_onceToken != -1)
   {
     dispatch_once(&_isAttributedStringAgent_onceToken, block);
@@ -72,23 +72,23 @@
 
 - (uint64_t)doubleClickAtIndex:()NSAttributedStringUIFoundationAdditions
 {
-  v5 = [a1 length];
+  v5 = [self length];
 
-  return [a1 doubleClickAtIndex:a3 inRange:{0, v5}];
+  return [self doubleClickAtIndex:a3 inRange:{0, v5}];
 }
 
 - (unint64_t)doubleClickAtIndex:()NSAttributedStringUIFoundationAdditions inRange:
 {
   v70 = *MEMORY[0x1E69E9840];
-  v9 = [a1 string];
-  v10 = [a1 length];
+  string = [self string];
+  v10 = [self length];
   if (!v10)
   {
     return 0;
   }
 
   v11 = v10;
-  v12 = [(__CFString *)v9 characterAtIndex:a3];
+  v12 = [(__CFString *)string characterAtIndex:a3];
   v13 = v12;
   if (v12 > 132)
   {
@@ -98,7 +98,7 @@
     }
 
 LABEL_12:
-    if (a3 && v12 == 10 && [(__CFString *)v9 characterAtIndex:a3 - 1]== 13)
+    if (a3 && v12 == 10 && [(__CFString *)string characterAtIndex:a3 - 1]== 13)
     {
       --a3;
     }
@@ -113,11 +113,11 @@ LABEL_12:
 
   if (v12 == 13)
   {
-    if (a3 + 1 >= [(__CFString *)v9 length]|| [(__CFString *)v9 characterAtIndex:a3 + 1]!= 10)
+    if (a3 + 1 >= [(__CFString *)string length]|| [(__CFString *)string characterAtIndex:a3 + 1]!= 10)
     {
       if (a3 + 1 < v11)
       {
-        [(__CFString *)v9 characterAtIndex:a3 + 1];
+        [(__CFString *)string characterAtIndex:a3 + 1];
       }
 
       return a3;
@@ -131,7 +131,7 @@ LABEL_12:
 LABEL_16:
   if ((v12 & 0xFC00) == 0xD800 && a3 + 1 < v11)
   {
-    v15 = [(__CFString *)v9 characterAtIndex:?];
+    v15 = [(__CFString *)string characterAtIndex:?];
     v14 = (v15 & 0xFC00) != 56320;
     if ((v15 & 0xFC00) == 0xDC00)
     {
@@ -148,7 +148,7 @@ LABEL_16:
   {
     if ((v13 & 0xFC00) == 0xDC00)
     {
-      v16 = [(__CFString *)v9 characterAtIndex:a3 - 1];
+      v16 = [(__CFString *)string characterAtIndex:a3 - 1];
       if ((v16 & 0xFC00) == 0xD800)
       {
         v13 = (v13 & 0xDFFF) + (v16 << 10) - 56613888;
@@ -170,14 +170,14 @@ LABEL_25:
       }
 
       v19 = v18--;
-      v20 = [(__CFString *)v9 characterAtIndex:v18];
+      v20 = [(__CFString *)string characterAtIndex:v18];
       v21 = v20;
       if (v18)
       {
         if ((v20 & 0xFC00) == 0xDC00)
         {
           v22 = v19 - 2;
-          v23 = [(__CFString *)v9 characterAtIndex:v22];
+          v23 = [(__CFString *)string characterAtIndex:v22];
           if ((v23 & 0xFC00) == 0xD800)
           {
             v18 = v22;
@@ -204,10 +204,10 @@ LABEL_45:
 
     for (i = v31 + a3; i < v11; i += v36)
     {
-      v33 = [(__CFString *)v9 characterAtIndex:i];
+      v33 = [(__CFString *)string characterAtIndex:i];
       if ((v33 & 0xFC00) == 0xD800 && i + 1 < v11)
       {
-        v35 = [(__CFString *)v9 characterAtIndex:?];
+        v35 = [(__CFString *)string characterAtIndex:?];
         if ((v35 & 0xFC00) != 0xDC00)
         {
           return v25;
@@ -227,8 +227,8 @@ LABEL_45:
     return v25;
   }
 
-  v27 = [a1 attribute:NSLanguageAttributeName atIndex:a3 - (v11 == a3) effectiveRange:0];
-  CharactersPtr = CFStringGetCharactersPtr(v9);
+  v27 = [self attribute:NSLanguageAttributeName atIndex:a3 - (v11 == a3) effectiveRange:0];
+  CharactersPtr = CFStringGetCharactersPtr(string);
   if (CharactersPtr)
   {
     v29 = 0;
@@ -261,7 +261,7 @@ LABEL_45:
 LABEL_66:
     v71.location = v39;
     v71.length = v38;
-    CFStringGetCharacters(v9, v71, buffer);
+    CFStringGetCharacters(string, v71, buffer);
     v40 = &buffer[v38];
     do
     {
@@ -361,7 +361,7 @@ LABEL_85:
     v51 = buffer;
     v72.location = v49;
     v72.length = v50;
-    CFStringGetCharacters(v9, v72, buffer);
+    CFStringGetCharacters(string, v72, buffer);
     v65 = v50;
     v52 = &buffer[v50];
     while (1)
@@ -435,7 +435,7 @@ LABEL_111:
 LABEL_112:
   if (a5 >= 0x100)
   {
-    v30 = NSZoneMalloc([a1 zone], 2 * a5);
+    v30 = NSZoneMalloc([self zone], 2 * a5);
     v29 = 1;
   }
 
@@ -448,7 +448,7 @@ LABEL_113:
 
   v73.location = a4;
   v73.length = a5;
-  CFStringGetCharacters(v9, v73, v30);
+  CFStringGetCharacters(string, v73, v30);
 LABEL_116:
   if (a5 == 1)
   {
@@ -503,7 +503,7 @@ LABEL_131:
 LABEL_132:
   if (v29)
   {
-    NSZoneFree([a1 zone], v30);
+    NSZoneFree([self zone], v30);
   }
 
   return v60;
@@ -511,8 +511,8 @@ LABEL_132:
 
 - (uint64_t)_lineBreakBeforeIndex:()NSAttributedStringUIFoundationAdditions withinRange:lineBreakStrategy:
 {
-  v7 = [a1 string];
-  v8 = [a1 length];
+  string = [self string];
+  v8 = [self length];
   if (!v8)
   {
     return 0;
@@ -534,10 +534,10 @@ LABEL_132:
         v11 = v8;
       }
 
-      theString = v7;
+      theString = string;
       v66 = a4;
       v67 = v8 - a4;
-      CharactersPtr = CFStringGetCharactersPtr(v7);
+      CharactersPtr = CFStringGetCharactersPtr(string);
       if (CharactersPtr)
       {
         CStringPtr = 0;
@@ -545,7 +545,7 @@ LABEL_132:
 
       else
       {
-        CStringPtr = CFStringGetCStringPtr(v7, 0x600u);
+        CStringPtr = CFStringGetCStringPtr(string, 0x600u);
       }
 
       v13 = 0;
@@ -749,7 +749,7 @@ LABEL_65:
             if (v16 + v14 > v67)
             {
 LABEL_66:
-              v30 = NSZoneMalloc([a1 zone], 2 * v16);
+              v30 = NSZoneMalloc([self zone], 2 * v16);
               v28 = v30;
               if (CharactersPtr)
               {
@@ -881,7 +881,7 @@ LABEL_71:
             v27 = 0;
             v28 = &buffer[v14 - v68];
 LABEL_115:
-            v49 = [a1 attribute:NSLanguageAttributeName atIndex:v11 - (v10 <= a3) effectiveRange:0];
+            v49 = [self attribute:NSLanguageAttributeName atIndex:v11 - (v10 <= a3) effectiveRange:0];
             v50 = _NSCopyBreakIterator(v49, v28, v16, 0);
             if (!v50 || (v51 = v50, v52 = ubrk_preceding(), _NSDisposeBreakIterator(v51, v49, 0), v52 == -1))
             {
@@ -901,7 +901,7 @@ LABEL_115:
               }
             }
 
-            NSZoneFree([a1 zone], v27);
+            NSZoneFree([self zone], v27);
             return v9;
           }
         }
@@ -919,14 +919,14 @@ LABEL_115:
 
 - (CFIndex)lineBreakByHyphenatingBeforeIndex:()NSAttributedStringUIFoundationAdditions withinRange:
 {
-  v9 = [a1 length];
+  v9 = [self length];
   if (!v9)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   v10 = v9 <= a3 ? v9 - 1 : a3;
-  v11 = [a1 attribute:NSLanguageAttributeName atIndex:v10 effectiveRange:0];
+  v11 = [self attribute:NSLanguageAttributeName atIndex:v10 effectiveRange:0];
   if (!v11 || (v12 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v11]) == 0)
   {
     if (lineBreakByHyphenatingBeforeIndex_withinRange__onceToken != -1)
@@ -941,10 +941,10 @@ LABEL_115:
     }
   }
 
-  v13 = [a1 string];
+  string = [self string];
   v15.location = a4;
   v15.length = a5;
-  result = CFStringGetHyphenationLocationBeforeIndex(v13, a3, v15, 0, v12, 0);
+  result = CFStringGetHyphenationLocationBeforeIndex(string, a3, v15, 0, v12, 0);
   if (result == -1)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -956,8 +956,8 @@ LABEL_115:
 - (unint64_t)nextWordFromIndex:()NSAttributedStringUIFoundationAdditions forward:
 {
   v51 = *MEMORY[0x1E69E9840];
-  v7 = [a1 string];
-  v8 = [a1 length];
+  string = [self string];
+  v8 = [self length];
   if (!v8)
   {
     return 0;
@@ -965,8 +965,8 @@ LABEL_115:
 
   v9 = v8;
   v10 = v8 - a3;
-  v48 = [a1 attribute:NSLanguageAttributeName atIndex:a3 - (v8 == a3) effectiveRange:0];
-  theString = v7;
+  v48 = [self attribute:NSLanguageAttributeName atIndex:a3 - (v8 == a3) effectiveRange:0];
+  theString = string;
   if (a4)
   {
     if (v9 <= a3 + 1)
@@ -986,7 +986,7 @@ LABEL_115:
 
     v52.location = a3;
     v52.length = v11;
-    CFStringGetCharacters(v7, v52, buffer);
+    CFStringGetCharacters(string, v52, buffer);
     v12 = a3;
     while (1)
     {
@@ -996,14 +996,14 @@ LABEL_115:
       {
         if (a3 > 0 || v13)
         {
-          [(__CFString *)v7 characterAtIndex:v12 - 1];
+          [(__CFString *)string characterAtIndex:v12 - 1];
         }
       }
 
       else if (v14 == 55296 && v12 + 1 < v9)
       {
         ++v13;
-        [(__CFString *)v7 characterAtIndex:?];
+        [(__CFString *)string characterAtIndex:?];
       }
 
       if (CFUniCharIsMemberOf())
@@ -1030,7 +1030,7 @@ LABEL_115:
 
             v53.location = a3;
             v53.length = v11;
-            CFStringGetCharacters(v7, v53, buffer);
+            CFStringGetCharacters(string, v53, buffer);
             v13 = 0;
           }
 
@@ -1041,7 +1041,7 @@ LABEL_115:
               return v9;
             }
 
-            if (([(__CFString *)v7 characterAtIndex:v13 + a3 + 1]& 0xFC00) == 0xDC00)
+            if (([(__CFString *)string characterAtIndex:v13 + a3 + 1]& 0xFC00) == 0xDC00)
             {
               ++v13;
             }
@@ -1099,7 +1099,7 @@ LABEL_115:
               }
 
               while (v13 + 1 < v11);
-              v7 = theString;
+              string = theString;
               if (IsMemberOf)
               {
                 break;
@@ -1125,7 +1125,7 @@ LABEL_115:
 
             v54.location = a3;
             v54.length = v11;
-            CFStringGetCharacters(v7, v54, buffer);
+            CFStringGetCharacters(string, v54, buffer);
             v13 = 0;
           }
 
@@ -1148,7 +1148,7 @@ LABEL_52:
 
         v55.location = a3;
         v55.length = v11;
-        CFStringGetCharacters(v7, v55, v20);
+        CFStringGetCharacters(string, v55, v20);
       }
 
       v22 = _NSCopyBreakIterator(v21, v20, v11, 1u);
@@ -1196,7 +1196,7 @@ LABEL_52:
           v11 = v9 - v12;
         }
 
-        v7 = theString;
+        string = theString;
         v56.location = v12;
         v56.length = v11;
         CFStringGetCharacters(theString, v56, buffer);
@@ -1207,7 +1207,7 @@ LABEL_52:
 
 LABEL_72:
       LOBYTE(v22) = 0;
-      v7 = theString;
+      string = theString;
 LABEL_73:
       if (v46)
       {
@@ -1239,7 +1239,7 @@ LABEL_73:
   v27 = a3 - v26;
   v57.location = a3 - v26;
   v57.length = v26;
-  CFStringGetCharacters(v7, v57, buffer);
+  CFStringGetCharacters(string, v57, buffer);
   while (1)
   {
     v28 = a3 + ~v27;
@@ -1251,7 +1251,7 @@ LABEL_73:
         return 0;
       }
 
-      v29 = [(__CFString *)v7 characterAtIndex:--v28];
+      v29 = [(__CFString *)string characterAtIndex:--v28];
     }
 
     if ((v29 & 0xFC00) == 0xDC00 && (buffer[v28 - 1] & 0xFC00) == 0xD800)
@@ -1286,7 +1286,7 @@ LABEL_73:
             v27 -= v26;
             v58.location = v27;
             v58.length = v26;
-            CFStringGetCharacters(v7, v58, buffer);
+            CFStringGetCharacters(string, v58, buffer);
             v30 = v26;
           }
 
@@ -1350,7 +1350,7 @@ LABEL_106:
 
         v59.location = v27;
         v59.length = v26;
-        CFStringGetCharacters(v7, v59, buffer);
+        CFStringGetCharacters(string, v59, buffer);
         v28 = v26;
       }
     }
@@ -1429,7 +1429,7 @@ LABEL_143:
 
             v62.location = v27;
             v62.length = a3 - v27 + v34;
-            CFStringGetCharacters(v7, v62, v36);
+            CFStringGetCharacters(string, v62, v36);
             goto LABEL_147;
           }
 
@@ -1452,7 +1452,7 @@ LABEL_133:
           v27 -= v28;
           v60.location = v27;
           v60.length = v28;
-          CFStringGetCharacters(v7, v60, buffer);
+          CFStringGetCharacters(string, v60, buffer);
         }
       }
     }
@@ -1472,7 +1472,7 @@ LABEL_133:
     v36 = buffer;
     v61.location = 0;
     v61.length = v27;
-    CFStringGetCharacters(v7, v61, buffer);
+    CFStringGetCharacters(string, v61, buffer);
     v47 = 0;
     v27 = 0;
 LABEL_147:
@@ -1554,7 +1554,7 @@ LABEL_147:
 LABEL_172:
     if (v40)
     {
-      v7 = theString;
+      string = theString;
       if (v47)
       {
         if (a3 >= 0x100)
@@ -1597,7 +1597,7 @@ LABEL_172:
       }
 
       v27 -= v26;
-      v7 = theString;
+      string = theString;
       v64.location = v27;
       v64.length = v26;
       CFStringGetCharacters(theString, v64, buffer);
@@ -1627,7 +1627,7 @@ LABEL_185:
   if (containsAttachmentsInRange__checksImageGlyphs == 1)
   {
 
-    return [a1 prefersRTFDInRange:{a3, a4}];
+    return [self prefersRTFDInRange:{a3, a4}];
   }
 
   else
@@ -1641,7 +1641,7 @@ LABEL_185:
     v9[2] = __90__NSAttributedString_NSAttributedStringUIFoundationAdditions__containsAttachmentsInRange___block_invoke_2;
     v9[3] = &unk_1E7266970;
     v9[4] = &v10;
-    [a1 enumerateAttribute:@"NSAttachment" inRange:a3 options:a4 usingBlock:{0, v9}];
+    [self enumerateAttribute:@"NSAttachment" inRange:a3 options:a4 usingBlock:{0, v9}];
     v8 = *(v11 + 24);
     _Block_object_dispose(&v10, 8);
     return v8;
@@ -1650,9 +1650,9 @@ LABEL_185:
 
 - (uint64_t)containsAttachments
 {
-  v2 = [a1 length];
+  v2 = [self length];
 
-  return [a1 containsAttachmentsInRange:{0, v2}];
+  return [self containsAttachmentsInRange:{0, v2}];
 }
 
 + (uint64_t)_documentTypeForFileType:()NSAttributedStringUIFoundationAdditions
@@ -1669,9 +1669,9 @@ LABEL_185:
 
 - (__CFString)stringByStrippingAttachmentCharactersAndConvertingWritingDirectionToBidiControlCharactersFromRange:()NSAttributedStringUIFoundationAdditions
 {
-  v7 = [a1 string];
-  v48 = a1;
-  v8 = [a1 length];
+  string = [self string];
+  selfCopy = self;
+  v8 = [self length];
   v9 = _NSAttachmentCharacterSet();
   v10 = a3 + a4;
   v52 = a3 + a4;
@@ -1687,7 +1687,7 @@ LABEL_185:
   v53 = 0;
   v54 = 0;
   v46 = a3;
-  v47 = v7;
+  v47 = string;
   if (a3 < v10)
   {
     v12 = 0;
@@ -1696,19 +1696,19 @@ LABEL_185:
     {
       v50 = 0;
       v51 = 0;
-      v13 = [v48 attribute:@"NSParagraphStyle" atIndex:a3 effectiveRange:0];
+      v13 = [selfCopy attribute:@"NSParagraphStyle" atIndex:a3 effectiveRange:0];
       if (v13)
       {
-        v14 = [v13 baseWritingDirection];
+        baseWritingDirection = [v13 baseWritingDirection];
       }
 
       else
       {
-        v14 = -1;
+        baseWritingDirection = -1;
       }
 
       v49 = 0;
-      [(__CFString *)v7 getParagraphStart:&v51 end:&v52 contentsEnd:&v50 forRange:a3, 0];
+      [(__CFString *)string getParagraphStart:&v51 end:&v52 contentsEnd:&v50 forRange:a3, 0];
       v15 = v51;
       if (v51 < a3)
       {
@@ -1746,12 +1746,12 @@ LABEL_185:
         v52 = v10;
       }
 
-      if (v14 != -1 && v17 > v15)
+      if (baseWritingDirection != -1 && v17 > v15)
       {
-        v18 = _NSStringImputedBaseWritingDirectionAtIndex(v7, v15, v15, v17 - v15);
-        if (v18 != -1 && v18 != v14)
+        v18 = _NSStringImputedBaseWritingDirectionAtIndex(string, v15, v15, v17 - v15);
+        if (v18 != -1 && v18 != baseWritingDirection)
         {
-          if (v14 == 1)
+          if (baseWritingDirection == 1)
           {
             v20 = 8207;
           }
@@ -1764,7 +1764,7 @@ LABEL_185:
           v49 = v20;
           if (!v12)
           {
-            v12 = [MEMORY[0x1E696AD60] stringWithString:{-[__CFString substringWithRange:](v7, "substringWithRange:", v46, v51 - v46)}];
+            v12 = [MEMORY[0x1E696AD60] stringWithString:{-[__CFString substringWithRange:](string, "substringWithRange:", v46, v51 - v46)}];
           }
 
           [v12 appendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithCharacters:length:", &v49, 1)}];
@@ -1784,7 +1784,7 @@ LABEL_185:
 LABEL_67:
         if (v52 > v21)
         {
-          [v12 appendString:{-[__CFString substringWithRange:](v7, "substringWithRange:")}];
+          [v12 appendString:{-[__CFString substringWithRange:](string, "substringWithRange:")}];
         }
 
         v11 = v12;
@@ -1808,7 +1808,7 @@ LABEL_71:
     {
       while (1)
       {
-        v25 = [v48 attribute:@"NSWritingDirection" atIndex:v22 longestEffectiveRange:&v53 inRange:{v22, v21 - v22}];
+        v25 = [selfCopy attribute:@"NSWritingDirection" atIndex:v22 longestEffectiveRange:&v53 inRange:{v22, v21 - v22}];
         v26 = [v25 count];
         v27 = v26;
         v28 = 0;
@@ -1833,7 +1833,7 @@ LABEL_71:
             }
           }
 
-          v7 = v47;
+          string = v47;
         }
 
         if (v24 | v27)
@@ -1848,7 +1848,7 @@ LABEL_71:
 
         if (v30)
         {
-          v12 = [MEMORY[0x1E696AD60] stringWithString:{-[__CFString substringWithRange:](v7, "substringWithRange:", v46, v22 - v46)}];
+          v12 = [MEMORY[0x1E696AD60] stringWithString:{-[__CFString substringWithRange:](string, "substringWithRange:", v46, v22 - v46)}];
         }
 
         v49 = 8236;
@@ -1904,7 +1904,7 @@ LABEL_71:
         }
       }
 
-      [v12 appendString:{-[__CFString substringWithRange:](v7, "substringWithRange:", v53, v54)}];
+      [v12 appendString:{-[__CFString substringWithRange:](string, "substringWithRange:", v53, v54)}];
       v22 += v54;
       v21 = v50;
       v23 = v25;
@@ -1929,7 +1929,7 @@ LABEL_71:
   }
 
 LABEL_72:
-  if ([(__CFString *)v7 rangeOfCharacterFromSet:v44 options:0 range:v46, v43]== 0x7FFFFFFFFFFFFFFFLL || !v34)
+  if ([(__CFString *)string rangeOfCharacterFromSet:v44 options:0 range:v46, v43]== 0x7FFFFFFFFFFFFFFFLL || !v34)
   {
     if (!v11)
     {
@@ -1990,9 +1990,9 @@ LABEL_72:
 {
   v32 = 0;
   v11 = [a5 objectForKey:@"DocumentType"];
-  if (a3 || (v12 = a1, a4 != [a1 length]))
+  if (a3 || (v12 = self, a4 != [self length]))
   {
-    v12 = [a1 attributedSubstringFromRange:{a3, a4}];
+    v12 = [self attributedSubstringFromRange:{a3, a4}];
   }
 
   v31 = 0;
@@ -2031,7 +2031,7 @@ LABEL_72:
           -[NSRTFWriter _setTextScalingConversionTarget:](v24, [v25 integerValue]);
         }
 
-        v27 = [(NSRTFWriter *)v24 RTF];
+        rTFD = [(NSRTFWriter *)v24 RTF];
         goto LABEL_48;
       }
 
@@ -2062,7 +2062,7 @@ LABEL_50:
         -[NSRTFWriter _setTextScalingConversionTarget:](v24, [v28 integerValue]);
       }
 
-      v27 = [(NSRTFWriter *)v24 RTFD];
+      rTFD = [(NSRTFWriter *)v24 RTFD];
     }
 
     else if ([@"NSHTML" isEqual:v11])
@@ -2079,7 +2079,7 @@ LABEL_50:
         [(NSHTMLWriter *)v18 setDocumentAttributes:a5];
       }
 
-      v27 = [(NSHTMLWriter *)v24 HTMLData];
+      rTFD = [(NSHTMLWriter *)v24 HTMLData];
     }
 
     else
@@ -2109,11 +2109,11 @@ LABEL_50:
         [(NSHTMLWriter *)v18 setDocumentAttributes:a5];
       }
 
-      v27 = [(NSHTMLWriter *)v24 webArchiveData];
+      rTFD = [(NSHTMLWriter *)v24 webArchiveData];
     }
 
 LABEL_48:
-    v19 = v27;
+    v19 = rTFD;
     v32 = v19;
 
     v18 = 0;
@@ -2125,16 +2125,16 @@ LABEL_48:
     goto LABEL_52;
   }
 
-  v14 = [objc_msgSend(a5 objectForKey:{@"CharacterEncoding", "unsignedIntegerValue"}];
-  if (!v14)
+  defaultCStringEncoding = [objc_msgSend(a5 objectForKey:{@"CharacterEncoding", "unsignedIntegerValue"}];
+  if (!defaultCStringEncoding)
   {
-    v14 = [MEMORY[0x1E696AEC0] defaultCStringEncoding];
+    defaultCStringEncoding = [MEMORY[0x1E696AEC0] defaultCStringEncoding];
   }
 
-  v15 = CFStringConvertNSStringEncodingToEncoding(v14);
-  if (v15 != 1586 && (v15 & 0xFFF) != 0x100 || (v16 = [a1 stringByStrippingAttachmentCharactersAndConvertingWritingDirectionToBidiControlCharactersFromRange:{a3, a4}]) == 0)
+  v15 = CFStringConvertNSStringEncodingToEncoding(defaultCStringEncoding);
+  if (v15 != 1586 && (v15 & 0xFFF) != 0x100 || (string = [self stringByStrippingAttachmentCharactersAndConvertingWritingDirectionToBidiControlCharactersFromRange:{a3, a4}]) == 0)
   {
-    v16 = [v12 string];
+    string = [v12 string];
   }
 
   if (a6)
@@ -2147,7 +2147,7 @@ LABEL_48:
     v17 = 0;
   }
 
-  [v16 getExternalRepresentation:&v32 extendedAttributes:0 forWritingToURLOrPath:0 usingEncoding:v14 error:v17];
+  [string getExternalRepresentation:&v32 extendedAttributes:0 forWritingToURLOrPath:0 usingEncoding:defaultCStringEncoding error:v17];
   v18 = v31;
   v19 = v32;
   if (!a6 || v32 || v31)
@@ -2164,7 +2164,7 @@ LABEL_51:
   v20 = MEMORY[0x1E696ABC0];
   v21 = *MEMORY[0x1E696A250];
   v22 = MEMORY[0x1E695DF20];
-  v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v14];
+  v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:defaultCStringEncoding];
   v18 = [v20 errorWithDomain:v21 code:517 userInfo:{objc_msgSend(v22, "dictionaryWithObjectsAndKeys:", v23, *MEMORY[0x1E696A8F8], 0)}];
   v31 = v18;
   v19 = v32;
@@ -2191,9 +2191,9 @@ LABEL_52:
 - (id)fileWrapperFromRange:()NSAttributedStringUIFoundationAdditions documentAttributes:error:
 {
   v11 = [a5 objectForKey:@"DocumentType"];
-  if (a3 || (v12 = a1, a4 != [a1 length]))
+  if (a3 || (v12 = self, a4 != [self length]))
   {
-    v12 = [a1 attributedSubstringFromRange:{a3, a4}];
+    v12 = [self attributedSubstringFromRange:{a3, a4}];
   }
 
   v37 = 0;
@@ -2215,16 +2215,16 @@ LABEL_52:
   {
     v35 = 0;
     v36 = 0;
-    v14 = [objc_msgSend(a5 objectForKey:{@"CharacterEncoding", "unsignedIntegerValue"}];
-    if (!v14)
+    defaultCStringEncoding = [objc_msgSend(a5 objectForKey:{@"CharacterEncoding", "unsignedIntegerValue"}];
+    if (!defaultCStringEncoding)
     {
-      v14 = [MEMORY[0x1E696AEC0] defaultCStringEncoding];
+      defaultCStringEncoding = [MEMORY[0x1E696AEC0] defaultCStringEncoding];
     }
 
-    v15 = CFStringConvertNSStringEncodingToEncoding(v14);
-    if (v15 != 1586 && (v15 & 0xFFF) != 0x100 || (v16 = [a1 stringByStrippingAttachmentCharactersAndConvertingWritingDirectionToBidiControlCharactersFromRange:{a3, a4}]) == 0)
+    v15 = CFStringConvertNSStringEncodingToEncoding(defaultCStringEncoding);
+    if (v15 != 1586 && (v15 & 0xFFF) != 0x100 || (string = [self stringByStrippingAttachmentCharactersAndConvertingWritingDirectionToBidiControlCharactersFromRange:{a3, a4}]) == 0)
     {
-      v16 = [v12 string];
+      string = [v12 string];
     }
 
     if (a6)
@@ -2238,7 +2238,7 @@ LABEL_52:
     }
 
     v18 = 0;
-    if ([v16 getExternalRepresentation:&v36 extendedAttributes:&v35 forWritingToURLOrPath:0 usingEncoding:v14 error:v17])
+    if ([string getExternalRepresentation:&v36 extendedAttributes:&v35 forWritingToURLOrPath:0 usingEncoding:defaultCStringEncoding error:v17])
     {
       v19 = objc_alloc(MEMORY[0x1E696AC38]);
       v20 = [v19 initRegularFileWithContents:v36];
@@ -2256,7 +2256,7 @@ LABEL_52:
       v22 = MEMORY[0x1E696ABC0];
       v23 = *MEMORY[0x1E696A250];
       v24 = MEMORY[0x1E695DF20];
-      v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v14];
+      v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:defaultCStringEncoding];
       v37 = [v22 errorWithDomain:v23 code:517 userInfo:{objc_msgSend(v24, "dictionaryWithObjectsAndKeys:", v25, *MEMORY[0x1E696A8F8], 0)}];
     }
 
@@ -2282,9 +2282,9 @@ LABEL_52:
         -[NSRTFWriter _setTextScalingConversionTarget:](v27, [v28 integerValue]);
       }
 
-      v30 = [(NSRTFWriter *)v27 RTFDFileWrapper];
+      rTFDFileWrapper = [(NSRTFWriter *)v27 RTFDFileWrapper];
 LABEL_38:
-      v18 = v30;
+      v18 = rTFDFileWrapper;
 
       goto LABEL_45;
     }
@@ -2303,7 +2303,7 @@ LABEL_38:
         [(NSHTMLWriter *)v31 setDocumentAttributes:a5];
       }
 
-      v30 = [(NSHTMLWriter *)v27 HTMLFileWrapper];
+      rTFDFileWrapper = [(NSHTMLWriter *)v27 HTMLFileWrapper];
       goto LABEL_38;
     }
 
@@ -2322,7 +2322,7 @@ LABEL_39:
     v32 = 0;
   }
 
-  v18 = [a1 dataFromRange:a3 documentAttributes:a4 error:{a5, v32}];
+  v18 = [self dataFromRange:a3 documentAttributes:a4 error:{a5, v32}];
   if (v18)
   {
     v18 = [objc_alloc(MEMORY[0x1E696AC38]) initRegularFileWithContents:v18];
@@ -2348,7 +2348,7 @@ LABEL_45:
   v8 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a5];
   [v8 setObject:@"NSRTF" forKey:@"DocumentType"];
 
-  return [a1 dataFromRange:a3 documentAttributes:a4 error:{v8, 0}];
+  return [self dataFromRange:a3 documentAttributes:a4 error:{v8, 0}];
 }
 
 - (uint64_t)RTFDFromRange:()NSAttributedStringUIFoundationAdditions documentAttributes:
@@ -2356,7 +2356,7 @@ LABEL_45:
   v8 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a5];
   [v8 setObject:@"NSRTFD" forKey:@"DocumentType"];
 
-  return [a1 dataFromRange:a3 documentAttributes:a4 error:{v8, 0}];
+  return [self dataFromRange:a3 documentAttributes:a4 error:{v8, 0}];
 }
 
 - (uint64_t)RTFDFileWrapperFromRange:()NSAttributedStringUIFoundationAdditions documentAttributes:
@@ -2364,18 +2364,18 @@ LABEL_45:
   v8 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a5];
   [v8 setObject:@"NSRTFD" forKey:@"DocumentType"];
 
-  return [a1 fileWrapperFromRange:a3 documentAttributes:a4 error:{v8, 0}];
+  return [self fileWrapperFromRange:a3 documentAttributes:a4 error:{v8, 0}];
 }
 
 - (uint64_t)_htmlDocumentFragmentString:()NSAttributedStringUIFoundationAdditions documentAttributes:subresources:
 {
-  v10 = a1;
-  if (a3 || a4 != [a1 length])
+  selfCopy = self;
+  if (a3 || a4 != [self length])
   {
-    v10 = [v10 attributedSubstringFromRange:{a3, a4}];
+    selfCopy = [selfCopy attributedSubstringFromRange:{a3, a4}];
   }
 
-  v11 = [[NSHTMLWriter alloc] initWithAttributedString:v10];
+  v11 = [[NSHTMLWriter alloc] initWithAttributedString:selfCopy];
   if (!v11)
   {
     return 0;
@@ -2387,24 +2387,24 @@ LABEL_45:
     [(NSHTMLWriter *)v11 setDocumentAttributes:a5];
   }
 
-  v13 = [(NSHTMLWriter *)v12 documentFragmentString];
+  documentFragmentString = [(NSHTMLWriter *)v12 documentFragmentString];
   if (a6)
   {
     *a6 = [(NSHTMLWriter *)v12 subresources];
   }
 
-  return v13;
+  return documentFragmentString;
 }
 
 - (uint64_t)_documentFromRange:()NSAttributedStringUIFoundationAdditions document:documentAttributes:subresources:
 {
-  v12 = a1;
-  if (a3 || a4 != [a1 length])
+  selfCopy = self;
+  if (a3 || a4 != [self length])
   {
-    v12 = [v12 attributedSubstringFromRange:{a3, a4}];
+    selfCopy = [selfCopy attributedSubstringFromRange:{a3, a4}];
   }
 
-  v13 = [[NSHTMLWriter alloc] initWithAttributedString:v12];
+  v13 = [[NSHTMLWriter alloc] initWithAttributedString:selfCopy];
   if (!v13)
   {
     return 0;
@@ -2427,7 +2427,7 @@ LABEL_45:
 
 - (id)initWithData:()NSAttributedStringUIFoundationAdditions options:documentAttributes:error:
 {
-  v17.receiver = a1;
+  v17.receiver = self;
   v17.super_class = NSAttributedString_0;
   v10 = objc_msgSendSuper2(&v17, sel_init);
   if (v10)
@@ -2471,7 +2471,7 @@ LABEL_9:
 
 - (void)_initWithRTFSelector:()NSAttributedStringUIFoundationAdditions argument:documentAttributes:
 {
-  v19.receiver = a1;
+  v19.receiver = self;
   v19.super_class = NSAttributedString_0;
   v8 = objc_msgSendSuper2(&v19, sel_init);
   v9 = v8;
@@ -2488,11 +2488,11 @@ LABEL_9:
         [v11 setMutableAttributedString:v9];
       }
 
-      v12 = [v11 attributedString];
-      if (v12)
+      attributedString = [v11 attributedString];
+      if (attributedString)
       {
-        v13 = v12;
-        if (v12 != v9)
+        v13 = attributedString;
+        if (attributedString != v9)
         {
           v14 = objc_opt_class();
           if (v14 == objc_opt_class())
@@ -2511,18 +2511,18 @@ LABEL_9:
 
         if (a5)
         {
-          v16 = [v11 documentAttributes];
-          if (v16)
+          documentAttributes = [v11 documentAttributes];
+          if (documentAttributes)
           {
-            v17 = [v16 mutableCopy];
+            dictionary = [documentAttributes mutableCopy];
           }
 
           else
           {
-            v17 = [MEMORY[0x1E695DF90] dictionary];
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
           }
 
-          *a5 = v17;
+          *a5 = dictionary;
         }
 
         goto LABEL_18;
@@ -2541,19 +2541,19 @@ LABEL_18:
 {
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"NSRTF", @"DocumentType", 0}];
 
-  return [a1 initWithData:a3 options:v7 documentAttributes:a4 error:0];
+  return [self initWithData:a3 options:v7 documentAttributes:a4 error:0];
 }
 
 - (uint64_t)initWithRTFD:()NSAttributedStringUIFoundationAdditions documentAttributes:
 {
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"NSRTFD", @"DocumentType", 0}];
 
-  return [a1 initWithData:a3 options:v7 documentAttributes:a4 error:0];
+  return [self initWithData:a3 options:v7 documentAttributes:a4 error:0];
 }
 
 - (id)initWithURL:()NSAttributedStringUIFoundationAdditions options:documentAttributes:error:
 {
-  v19.receiver = a1;
+  v19.receiver = self;
   v19.super_class = NSAttributedString_0;
   v10 = objc_msgSendSuper2(&v19, sel_init);
   if (v10)
@@ -2606,7 +2606,7 @@ LABEL_12:
 {
   v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:?];
 
-  return [a1 initWithURL:v6 options:0 documentAttributes:a4 error:0];
+  return [self initWithURL:v6 options:0 documentAttributes:a4 error:0];
 }
 
 - (uint64_t)initWithHTML:()NSAttributedStringUIFoundationAdditions options:documentAttributes:
@@ -2614,7 +2614,7 @@ LABEL_12:
   v8 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a4];
   [v8 setObject:@"NSHTML" forKey:@"DocumentType"];
 
-  return [a1 initWithData:a3 options:v8 documentAttributes:a5 error:0];
+  return [self initWithData:a3 options:v8 documentAttributes:a5 error:0];
 }
 
 - (uint64_t)initWithHTML:()NSAttributedStringUIFoundationAdditions baseURL:documentAttributes:
@@ -2624,7 +2624,7 @@ LABEL_12:
     a4 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{a4, @"BaseURL", 0}];
   }
 
-  return [a1 initWithHTML:a3 options:a4 documentAttributes:a5];
+  return [self initWithHTML:a3 options:a4 documentAttributes:a5];
 }
 
 + (_NSAttributedStringAsyncReadReply)readFromURL:()NSAttributedStringUIFoundationAdditions options:completionHandler:
@@ -2633,7 +2633,7 @@ LABEL_12:
   v6[1] = 3221225472;
   v6[2] = __101__NSAttributedString_NSAttributedStringUIFoundationAdditions__readFromURL_options_completionHandler___block_invoke;
   v6[3] = &unk_1E7266998;
-  v6[4] = a1;
+  v6[4] = self;
   v6[5] = a5;
   return _NSReadAttributedStringFromURLOrDataAsync(a3, 0, a4, v6);
 }
@@ -2644,14 +2644,14 @@ LABEL_12:
   v6[1] = 3221225472;
   v6[2] = __102__NSAttributedString_NSAttributedStringUIFoundationAdditions__readFromData_options_completionHandler___block_invoke;
   v6[3] = &unk_1E7266998;
-  v6[4] = a1;
+  v6[4] = self;
   v6[5] = a5;
   return _NSReadAttributedStringFromURLOrDataAsync(0, a3, a4, v6);
 }
 
 - (id)_initWithHTMLData:()NSAttributedStringUIFoundationAdditions options:documentAttributes:error:
 {
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = NSAttributedString_0;
   v10 = objc_msgSendSuper2(&v14, sel_init);
   if (v10)
@@ -2717,13 +2717,13 @@ LABEL_12:
 - (id)fontAttributesInRange:()NSAttributedStringUIFoundationAdditions
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [a1 attributesAtIndex:a3 effectiveRange:0];
+  v3 = [self attributesAtIndex:a3 effectiveRange:0];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [objc_opt_class() fontStyleAttributeNames];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  fontStyleAttributeNames = [objc_opt_class() fontStyleAttributeNames];
+  v5 = [fontStyleAttributeNames countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2735,7 +2735,7 @@ LABEL_12:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(fontStyleAttributeNames);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -2752,7 +2752,7 @@ LABEL_12:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [fontStyleAttributeNames countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -2776,7 +2776,7 @@ LABEL_12:
 
 - (id)rulerAttributesInRange:()NSAttributedStringUIFoundationAdditions
 {
-  v3 = [objc_msgSend(a1 attributesAtIndex:a3 effectiveRange:{0), "objectForKey:", @"NSParagraphStyle"}];
+  v3 = [objc_msgSend(self attributesAtIndex:a3 effectiveRange:{0), "objectForKey:", @"NSParagraphStyle"}];
   if (v3)
   {
     return [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v3, @"NSParagraphStyle", 0}];
@@ -2789,17 +2789,17 @@ LABEL_12:
 {
   v35 = 0;
   v36 = 0;
-  v6 = [a1 attribute:@"NSParagraphStyle" atIndex:a4 effectiveRange:&v35];
+  v6 = [self attribute:@"NSParagraphStyle" atIndex:a4 effectiveRange:&v35];
   if (!v6)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   v7 = v6;
-  v8 = [v6 textBlocks];
-  v9 = [v8 indexOfObjectIdenticalTo:a3];
+  textBlocks = [v6 textBlocks];
+  v9 = [textBlocks indexOfObjectIdenticalTo:a3];
   v10 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v8)
+  if (textBlocks)
   {
     v11 = v9 == 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -2814,13 +2814,13 @@ LABEL_12:
     v12 = v9;
     v10 = v35;
     v34 = v36 + v35;
-    v33 = [a1 length];
+    v33 = [self length];
     if (v10)
     {
       v13 = v7;
       do
       {
-        v14 = [a1 attribute:@"NSParagraphStyle" atIndex:v10 - 1 effectiveRange:&v35];
+        v14 = [self attribute:@"NSParagraphStyle" atIndex:v10 - 1 effectiveRange:&v35];
         if (v14 != v13)
         {
           v15 = v14;
@@ -2829,14 +2829,14 @@ LABEL_12:
             break;
           }
 
-          v16 = [v14 textBlocks];
-          if (!v16)
+          textBlocks2 = [v14 textBlocks];
+          if (!textBlocks2)
           {
             break;
           }
 
-          v17 = v16;
-          if ([v16 count] <= v12)
+          v17 = textBlocks2;
+          if ([textBlocks2 count] <= v12)
           {
             break;
           }
@@ -2844,7 +2844,7 @@ LABEL_12:
           v18 = 1;
           do
           {
-            v19 = [v8 objectAtIndex:v18 - 1];
+            v19 = [textBlocks objectAtIndex:v18 - 1];
             v20 = [v17 objectAtIndex:v18 - 1];
             v21 = v19 == v20;
           }
@@ -2866,7 +2866,7 @@ LABEL_12:
     for (i = v34; i < v33; i = v36 + v35)
     {
       v24 = v7;
-      v25 = [a1 attribute:@"NSParagraphStyle" atIndex:i effectiveRange:&v35];
+      v25 = [self attribute:@"NSParagraphStyle" atIndex:i effectiveRange:&v35];
       v7 = v25;
       if (v25 != v24)
       {
@@ -2875,14 +2875,14 @@ LABEL_12:
           break;
         }
 
-        v26 = [v25 textBlocks];
-        if (!v26)
+        textBlocks3 = [v25 textBlocks];
+        if (!textBlocks3)
         {
           break;
         }
 
-        v27 = v26;
-        if ([v26 count] <= v12)
+        v27 = textBlocks3;
+        if ([textBlocks3 count] <= v12)
         {
           break;
         }
@@ -2890,7 +2890,7 @@ LABEL_12:
         v28 = 1;
         do
         {
-          v29 = [v8 objectAtIndex:v28 - 1];
+          v29 = [textBlocks objectAtIndex:v28 - 1];
           v30 = [v27 objectAtIndex:v28 - 1];
         }
 
@@ -2908,18 +2908,18 @@ LABEL_12:
 
 - (uint64_t)rangeOfTextTable:()NSAttributedStringUIFoundationAdditions atIndex:
 {
-  v5 = a1;
+  selfCopy = self;
   v45 = 0;
   v46 = 0;
-  v6 = [a1 attribute:@"NSParagraphStyle" atIndex:a4 effectiveRange:&v45];
+  v6 = [self attribute:@"NSParagraphStyle" atIndex:a4 effectiveRange:&v45];
   if (!v6)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   v7 = v6;
-  v8 = [v6 textBlocks];
-  v9 = [v8 count];
+  textBlocks = [v6 textBlocks];
+  v9 = [textBlocks count];
   v10 = 0x7FFFFFFFFFFFFFFFLL;
   if (v9)
   {
@@ -2928,7 +2928,7 @@ LABEL_12:
     do
     {
       v13 = v12 - 1;
-      v14 = [v8 objectAtIndex:v12 - 1];
+      v14 = [textBlocks objectAtIndex:v12 - 1];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -2953,19 +2953,19 @@ LABEL_12:
 
     while (v13 == 0x7FFFFFFFFFFFFFFFLL);
     v10 = 0x7FFFFFFFFFFFFFFFLL;
-    if (v8 && v13 != 0x7FFFFFFFFFFFFFFFLL)
+    if (textBlocks && v13 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = v45;
       v15 = v46 + v45;
-      v43 = v5;
-      v44 = [v5 length];
+      v43 = selfCopy;
+      v44 = [selfCopy length];
       v42 = v7;
       if (v10)
       {
         v16 = v7;
         do
         {
-          v17 = [v5 attribute:@"NSParagraphStyle" atIndex:v10 - 1 effectiveRange:{&v45, v42}];
+          v17 = [selfCopy attribute:@"NSParagraphStyle" atIndex:v10 - 1 effectiveRange:{&v45, v42}];
           if (v17 != v16)
           {
             v18 = v17;
@@ -2974,14 +2974,14 @@ LABEL_12:
               break;
             }
 
-            v19 = [v17 textBlocks];
-            if (!v19)
+            textBlocks2 = [v17 textBlocks];
+            if (!textBlocks2)
             {
               break;
             }
 
-            v20 = v19;
-            if ([v19 count] <= v13)
+            v20 = textBlocks2;
+            if ([textBlocks2 count] <= v13)
             {
               break;
             }
@@ -2991,12 +2991,12 @@ LABEL_12:
               v21 = 1;
               do
               {
-                v22 = [v8 objectAtIndex:v21 - 1];
+                v22 = [textBlocks objectAtIndex:v21 - 1];
                 v23 = v22 == [v20 objectAtIndex:v21 - 1];
               }
 
               while (v23 && v21++ < v13);
-              v5 = v43;
+              selfCopy = v43;
             }
 
             else
@@ -3011,9 +3011,9 @@ LABEL_12:
               break;
             }
 
-            v26 = [v25 table];
+            table = [v25 table];
             v27 = !v23;
-            if (v26 != a3)
+            if (table != a3)
             {
               v27 = 1;
             }
@@ -3037,7 +3037,7 @@ LABEL_12:
         do
         {
           v29 = v28;
-          v30 = [v5 attribute:@"NSParagraphStyle" atIndex:v15 effectiveRange:{&v45, v42}];
+          v30 = [selfCopy attribute:@"NSParagraphStyle" atIndex:v15 effectiveRange:{&v45, v42}];
           v28 = v30;
           if (v30 != v29)
           {
@@ -3046,14 +3046,14 @@ LABEL_12:
               break;
             }
 
-            v31 = [v30 textBlocks];
-            if (!v31)
+            textBlocks3 = [v30 textBlocks];
+            if (!textBlocks3)
             {
               break;
             }
 
-            v32 = v31;
-            if ([v31 count] <= v13)
+            v32 = textBlocks3;
+            if ([textBlocks3 count] <= v13)
             {
               break;
             }
@@ -3063,13 +3063,13 @@ LABEL_12:
               v33 = 1;
               do
               {
-                v34 = [v8 objectAtIndex:v33 - 1];
+                v34 = [textBlocks objectAtIndex:v33 - 1];
                 v35 = [v32 objectAtIndex:v33 - 1];
                 v36 = v34 == v35;
               }
 
               while (v34 == v35 && v33++ < v13);
-              v5 = v43;
+              selfCopy = v43;
             }
 
             else
@@ -3084,9 +3084,9 @@ LABEL_12:
               break;
             }
 
-            v39 = [v38 table];
+            table2 = [v38 table];
             v40 = !v36;
-            if (v39 != a3)
+            if (table2 != a3)
             {
               v40 = 1;
             }
@@ -3112,7 +3112,7 @@ LABEL_12:
 {
   v25[0] = 0;
   v25[1] = 0;
-  v7 = [a1 attribute:@"NSParagraphStyle" atIndex:a4 effectiveRange:v25];
+  v7 = [self attribute:@"NSParagraphStyle" atIndex:a4 effectiveRange:v25];
   if (v7)
   {
     v8 = v25[0] == a4;
@@ -3129,8 +3129,8 @@ LABEL_12:
   }
 
   v10 = v7;
-  v11 = [v7 textBlocks];
-  result = [v11 count];
+  textBlocks = [v7 textBlocks];
+  result = [textBlocks count];
   if (result)
   {
     v12 = result;
@@ -3138,7 +3138,7 @@ LABEL_12:
     do
     {
       v14 = v13 - 1;
-      v15 = [v11 objectAtIndex:v13 - 1];
+      v15 = [textBlocks objectAtIndex:v13 - 1];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -3163,13 +3163,13 @@ LABEL_12:
 
     while (v14 == 0x7FFFFFFFFFFFFFFFLL);
     result = 0;
-    if (v11)
+    if (textBlocks)
     {
       if (v14 != 0x7FFFFFFFFFFFFFFFLL)
       {
         if (v25[0])
         {
-          v16 = [a1 attribute:@"NSParagraphStyle" atIndex:v25[0] - 1 effectiveRange:v25];
+          v16 = [self attribute:@"NSParagraphStyle" atIndex:v25[0] - 1 effectiveRange:v25];
           if (v16 == v10)
           {
             v22 = 1;
@@ -3178,18 +3178,18 @@ LABEL_12:
 
           if (v16)
           {
-            v17 = [v16 textBlocks];
-            if (v17)
+            textBlocks2 = [v16 textBlocks];
+            if (textBlocks2)
             {
-              v18 = v17;
-              if ([v17 count] > v14)
+              v18 = textBlocks2;
+              if ([textBlocks2 count] > v14)
               {
                 if (v14)
                 {
                   v19 = 1;
                   do
                   {
-                    v20 = [v11 objectAtIndex:v19 - 1];
+                    v20 = [textBlocks objectAtIndex:v19 - 1];
                     v21 = [v18 objectAtIndex:v19 - 1];
                     v22 = v20 == v21;
                   }
@@ -3226,7 +3226,7 @@ LABEL_12:
 {
   v24 = 0;
   v25 = 0;
-  result = [a1 attribute:@"NSParagraphStyle" atIndex:a4 effectiveRange:&v24];
+  result = [self attribute:@"NSParagraphStyle" atIndex:a4 effectiveRange:&v24];
   if (result)
   {
     if (a4 + 1 != v25 + v24)
@@ -3235,8 +3235,8 @@ LABEL_12:
     }
 
     v8 = result;
-    v9 = [result textBlocks];
-    result = [v9 count];
+    textBlocks = [result textBlocks];
+    result = [textBlocks count];
     if (result)
     {
       v10 = result;
@@ -3244,7 +3244,7 @@ LABEL_12:
       do
       {
         v12 = v11 - 1;
-        v13 = [v9 objectAtIndex:v11 - 1];
+        v13 = [textBlocks objectAtIndex:v11 - 1];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -3269,14 +3269,14 @@ LABEL_12:
 
       while (v12 == 0x7FFFFFFFFFFFFFFFLL);
       result = 0;
-      if (v9)
+      if (textBlocks)
       {
         if (v12 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v14 = v25 + v24;
-          if (v14 < [a1 length])
+          if (v14 < [self length])
           {
-            v15 = [a1 attribute:@"NSParagraphStyle" atIndex:v14 effectiveRange:&v24];
+            v15 = [self attribute:@"NSParagraphStyle" atIndex:v14 effectiveRange:&v24];
             if (v15 == v8)
             {
               v21 = 1;
@@ -3285,18 +3285,18 @@ LABEL_12:
 
             if (v15)
             {
-              v16 = [v15 textBlocks];
-              if (v16)
+              textBlocks2 = [v15 textBlocks];
+              if (textBlocks2)
               {
-                v17 = v16;
-                if ([v16 count] > v12)
+                v17 = textBlocks2;
+                if ([textBlocks2 count] > v12)
                 {
                   if (v12)
                   {
                     v18 = 1;
                     do
                     {
-                      v19 = [v9 objectAtIndex:v18 - 1];
+                      v19 = [textBlocks objectAtIndex:v18 - 1];
                       v20 = [v17 objectAtIndex:v18 - 1];
                       v21 = v19 == v20;
                     }
@@ -3332,11 +3332,11 @@ LABEL_12:
 
 - (uint64_t)_rangeOfTextTableRow:()NSAttributedStringUIFoundationAdditions atIndex:completeRow:
 {
-  v7 = a1;
+  selfCopy = self;
   v43 = 0;
   v44 = 0;
-  v8 = [a1 attribute:? atIndex:? effectiveRange:?];
-  v9 = [a3 numberOfColumns];
+  v8 = [self attribute:? atIndex:? effectiveRange:?];
+  numberOfColumns = [a3 numberOfColumns];
   if (!v8)
   {
     v13 = 0x7FFFFFFFFFFFFFFFLL;
@@ -3350,10 +3350,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v10 = v9;
+  v10 = numberOfColumns;
   v39 = v8;
-  v11 = [v8 textBlocks];
-  v12 = [v11 count];
+  textBlocks = [v8 textBlocks];
+  v12 = [textBlocks count];
   v13 = 0x7FFFFFFFFFFFFFFFLL;
   if (!v12)
   {
@@ -3363,19 +3363,19 @@ LABEL_15:
   v14 = v12;
   v35 = v10;
   v36 = a5;
-  v42 = 0;
-  v15 = 0;
+  startingRow = 0;
+  columnSpan = 0;
   v16 = 1;
   v17 = 1;
   do
   {
     v18 = v16 - 1;
-    v19 = [v11 objectAtIndex:v16 - 1];
+    v19 = [textBlocks objectAtIndex:v16 - 1];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v19 table] == a3)
     {
-      v42 = [v19 startingRow];
-      v15 = [v19 columnSpan];
+      startingRow = [v19 startingRow];
+      columnSpan = [v19 columnSpan];
       v17 &= [v19 rowSpan] < 2;
     }
 
@@ -3394,22 +3394,22 @@ LABEL_15:
 
   while (v18 == 0x7FFFFFFFFFFFFFFFLL);
   v13 = 0x7FFFFFFFFFFFFFFFLL;
-  if (!v11 || v18 == 0x7FFFFFFFFFFFFFFFLL)
+  if (!textBlocks || v18 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_44;
   }
 
-  v41 = v15;
+  v41 = columnSpan;
   v13 = v43;
-  v38 = [v7 length];
-  [v11 objectAtIndex:v18];
-  v37 = v7;
-  v21 = [v11 objectAtIndex:v18];
+  v38 = [selfCopy length];
+  [textBlocks objectAtIndex:v18];
+  v37 = selfCopy;
+  v21 = [textBlocks objectAtIndex:v18];
   v22 = v44 + v43;
   if (v44 + v43 >= v38)
   {
 LABEL_42:
-    v15 = v41;
+    columnSpan = v41;
     goto LABEL_43;
   }
 
@@ -3418,8 +3418,8 @@ LABEL_42:
   while (1)
   {
     v25 = v24;
-    v24 = [v7 attribute:@"NSParagraphStyle" atIndex:v22 effectiveRange:&v43];
-    v41 = v15;
+    v24 = [selfCopy attribute:@"NSParagraphStyle" atIndex:v22 effectiveRange:&v43];
+    v41 = columnSpan;
     if (v24 == v25)
     {
       v34 = v23;
@@ -3432,14 +3432,14 @@ LABEL_42:
     }
 
     v40 = v24;
-    v26 = [v24 textBlocks];
-    if (!v26)
+    textBlocks2 = [v24 textBlocks];
+    if (!textBlocks2)
     {
       goto LABEL_43;
     }
 
-    v27 = v26;
-    if ([v26 count] <= v18)
+    v27 = textBlocks2;
+    if ([textBlocks2 count] <= v18)
     {
       goto LABEL_43;
     }
@@ -3449,16 +3449,16 @@ LABEL_42:
       v28 = 1;
       do
       {
-        v29 = [v11 objectAtIndex:v28 - 1];
+        v29 = [textBlocks objectAtIndex:v28 - 1];
         v30 = [v27 objectAtIndex:v28 - 1];
       }
 
       while (v29 == v30 && v28++ < v18);
       v32 = v29 == v30;
-      v7 = v37;
+      selfCopy = v37;
       if (!v32)
       {
-        v15 = v41;
+        columnSpan = v41;
         goto LABEL_43;
       }
     }
@@ -3478,7 +3478,7 @@ LABEL_42:
       break;
     }
 
-    if ([v34 table] != a3 || objc_msgSend(v34, "startingRow") != v42)
+    if ([v34 table] != a3 || objc_msgSend(v34, "startingRow") != startingRow)
     {
       goto LABEL_42;
     }
@@ -3489,16 +3489,16 @@ LABEL_42:
 LABEL_40:
     v22 = v44 + v43;
     v23 = v34;
-    v15 = v41;
+    columnSpan = v41;
     if (v44 + v43 >= v38)
     {
       goto LABEL_43;
     }
   }
 
-  v15 = v41;
+  columnSpan = v41;
 LABEL_43:
-  v17 &= v15 == v35;
+  v17 &= columnSpan == v35;
 LABEL_44:
   a5 = v36;
   if (v36)
@@ -3514,7 +3514,7 @@ LABEL_16:
 {
   v27[0] = 0;
   v27[1] = 0;
-  v7 = [a1 attribute:@"NSParagraphStyle" atIndex:a4 effectiveRange:v27];
+  v7 = [self attribute:@"NSParagraphStyle" atIndex:a4 effectiveRange:v27];
   if (v7)
   {
     v8 = v27[0] == a4;
@@ -3531,22 +3531,22 @@ LABEL_16:
   }
 
   v10 = v7;
-  v11 = [v7 textBlocks];
-  result = [v11 count];
+  textBlocks = [v7 textBlocks];
+  result = [textBlocks count];
   if (result)
   {
     v12 = result;
-    v25 = a1;
-    v26 = 0;
+    selfCopy = self;
+    startingRow = 0;
     v13 = 1;
     do
     {
       v14 = v13 - 1;
-      v15 = [v11 objectAtIndex:{v13 - 1, v25}];
+      v15 = [textBlocks objectAtIndex:{v13 - 1, selfCopy}];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && [v15 table] == a3)
       {
-        v26 = [v15 startingRow];
+        startingRow = [v15 startingRow];
       }
 
       else
@@ -3564,13 +3564,13 @@ LABEL_16:
 
     while (v14 == 0x7FFFFFFFFFFFFFFFLL);
     result = 0;
-    if (v11)
+    if (textBlocks)
     {
       if (v14 != 0x7FFFFFFFFFFFFFFFLL)
       {
         if (v27[0])
         {
-          v16 = [v25 attribute:@"NSParagraphStyle" atIndex:v27[0] - 1 effectiveRange:v27];
+          v16 = [selfCopy attribute:@"NSParagraphStyle" atIndex:v27[0] - 1 effectiveRange:v27];
           if (v16 == v10)
           {
             v22 = 1;
@@ -3579,18 +3579,18 @@ LABEL_16:
 
           if (v16)
           {
-            v17 = [v16 textBlocks];
-            if (v17)
+            textBlocks2 = [v16 textBlocks];
+            if (textBlocks2)
             {
-              v18 = v17;
-              if ([v17 count] > v14)
+              v18 = textBlocks2;
+              if ([textBlocks2 count] > v14)
               {
                 if (v14)
                 {
                   v19 = 1;
                   do
                   {
-                    v20 = [v11 objectAtIndex:v19 - 1];
+                    v20 = [textBlocks objectAtIndex:v19 - 1];
                     v21 = [v18 objectAtIndex:v19 - 1];
                     v22 = v20 == v21;
                   }
@@ -3605,7 +3605,7 @@ LABEL_16:
 
                 v24 = [v18 objectAtIndex:v14];
                 objc_opt_class();
-                if ((objc_opt_isKindOfClass() & 1) != 0 && [v24 table] == a3 && objc_msgSend(v24, "startingRow") == v26)
+                if ((objc_opt_isKindOfClass() & 1) != 0 && [v24 table] == a3 && objc_msgSend(v24, "startingRow") == startingRow)
                 {
                   return !v22;
                 }
@@ -3627,7 +3627,7 @@ LABEL_16:
 {
   v26 = 0;
   v27 = 0;
-  result = [a1 attribute:@"NSParagraphStyle" atIndex:a4 effectiveRange:&v26];
+  result = [self attribute:@"NSParagraphStyle" atIndex:a4 effectiveRange:&v26];
   if (result)
   {
     if (a4 + 1 != v27 + v26)
@@ -3636,22 +3636,22 @@ LABEL_16:
     }
 
     v8 = result;
-    v9 = [result textBlocks];
-    result = [v9 count];
+    textBlocks = [result textBlocks];
+    result = [textBlocks count];
     if (result)
     {
       v10 = result;
       v24 = @"NSParagraphStyle";
-      v25 = 0;
+      startingRow = 0;
       v11 = 1;
       do
       {
         v12 = v11 - 1;
-        v13 = [v9 objectAtIndex:{v11 - 1, v24}];
+        v13 = [textBlocks objectAtIndex:{v11 - 1, v24}];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && [v13 table] == a3)
         {
-          v25 = [v13 startingRow];
+          startingRow = [v13 startingRow];
         }
 
         else
@@ -3669,14 +3669,14 @@ LABEL_16:
 
       while (v12 == 0x7FFFFFFFFFFFFFFFLL);
       result = 0;
-      if (v9)
+      if (textBlocks)
       {
         if (v12 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v14 = v27 + v26;
-          if (v14 < [a1 length])
+          if (v14 < [self length])
           {
-            v15 = [a1 attribute:v24 atIndex:v14 effectiveRange:&v26];
+            v15 = [self attribute:v24 atIndex:v14 effectiveRange:&v26];
             if (v15 == v8)
             {
               v21 = 1;
@@ -3685,18 +3685,18 @@ LABEL_16:
 
             if (v15)
             {
-              v16 = [v15 textBlocks];
-              if (v16)
+              textBlocks2 = [v15 textBlocks];
+              if (textBlocks2)
               {
-                v17 = v16;
-                if ([v16 count] > v12)
+                v17 = textBlocks2;
+                if ([textBlocks2 count] > v12)
                 {
                   if (v12)
                   {
                     v18 = 1;
                     do
                     {
-                      v19 = [v9 objectAtIndex:v18 - 1];
+                      v19 = [textBlocks objectAtIndex:v18 - 1];
                       v20 = [v17 objectAtIndex:v18 - 1];
                       v21 = v19 == v20;
                     }
@@ -3711,7 +3711,7 @@ LABEL_16:
 
                   v23 = [v17 objectAtIndex:v12];
                   objc_opt_class();
-                  if ((objc_opt_isKindOfClass() & 1) != 0 && [v23 table] == a3 && objc_msgSend(v23, "startingRow") == v25)
+                  if ((objc_opt_isKindOfClass() & 1) != 0 && [v23 table] == a3 && objc_msgSend(v23, "startingRow") == startingRow)
                   {
                     return !v21;
                   }
@@ -3732,28 +3732,28 @@ LABEL_16:
 
 - (uint64_t)rangeOfTextList:()NSAttributedStringUIFoundationAdditions atIndex:
 {
-  v6 = a1;
-  v7 = [a1 string];
-  if ([v7 length] <= a4)
+  selfCopy = self;
+  string = [self string];
+  if ([string length] <= a4)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   v41 = 0;
   v42 = 0;
-  [v7 getParagraphStart:&v41 end:0 contentsEnd:0 forRange:{a4, 1}];
+  [string getParagraphStart:&v41 end:0 contentsEnd:0 forRange:{a4, 1}];
   v8 = v41 >= a4 ? a4 : v41;
-  v9 = [v6 attribute:@"NSParagraphStyle" atIndex:v8 effectiveRange:&v41];
+  v9 = [selfCopy attribute:@"NSParagraphStyle" atIndex:v8 effectiveRange:&v41];
   if (!v9)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   v10 = v9;
-  v11 = [v9 textLists];
-  v12 = [v11 indexOfObjectIdenticalTo:a3];
+  textLists = [v9 textLists];
+  v12 = [textLists indexOfObjectIdenticalTo:a3];
   v13 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v11)
+  if (textLists)
   {
     v14 = v12 == 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -3768,15 +3768,15 @@ LABEL_16:
     v16 = v12;
     v13 = v41;
     v36 = v42 + v41;
-    v37 = v7;
-    v38 = [v6 length];
-    v39 = v6;
+    v37 = string;
+    v38 = [selfCopy length];
+    v39 = selfCopy;
     if (v13)
     {
       v17 = v10;
       do
       {
-        v18 = [v6 attribute:@"NSParagraphStyle" atIndex:v13 - 1 effectiveRange:&v41];
+        v18 = [selfCopy attribute:@"NSParagraphStyle" atIndex:v13 - 1 effectiveRange:&v41];
         if (v18 == v17)
         {
           v25 = 1;
@@ -3795,17 +3795,17 @@ LABEL_16:
             break;
           }
 
-          v20 = [v18 textLists];
-          if (!v20 || (v21 = v20, [v20 count] <= v16))
+          textLists2 = [v18 textLists];
+          if (!textLists2 || (v21 = textLists2, [textLists2 count] <= v16))
           {
-            v6 = v39;
+            selfCopy = v39;
             break;
           }
 
           v22 = 1;
           do
           {
-            v23 = [v11 objectAtIndex:v22 - 1];
+            v23 = [textLists objectAtIndex:v22 - 1];
             v24 = [v21 objectAtIndex:v22 - 1];
             v25 = v23 == v24;
           }
@@ -3817,7 +3817,7 @@ LABEL_16:
             v17 = v19;
           }
 
-          v6 = v39;
+          selfCopy = v39;
           if (!v13)
           {
             break;
@@ -3834,7 +3834,7 @@ LABEL_16:
       do
       {
         v28 = v10;
-        v29 = [v6 attribute:@"NSParagraphStyle" atIndex:v27 effectiveRange:&v41];
+        v29 = [selfCopy attribute:@"NSParagraphStyle" atIndex:v27 effectiveRange:&v41];
         v10 = v29;
         if (v29 != v28)
         {
@@ -3843,14 +3843,14 @@ LABEL_16:
             break;
           }
 
-          v30 = [v29 textLists];
-          if (!v30)
+          textLists3 = [v29 textLists];
+          if (!textLists3)
           {
             break;
           }
 
-          v31 = v30;
-          if ([v30 count] <= v16)
+          v31 = textLists3;
+          if ([textLists3 count] <= v16)
           {
             break;
           }
@@ -3858,12 +3858,12 @@ LABEL_16:
           v32 = 1;
           do
           {
-            v33 = [v11 objectAtIndex:v32 - 1];
+            v33 = [textLists objectAtIndex:v32 - 1];
             v34 = [v31 objectAtIndex:v32 - 1];
           }
 
           while (v33 == v34 && v32++ <= v16);
-          v6 = v39;
+          selfCopy = v39;
           if (v33 != v34)
           {
             break;
@@ -3888,23 +3888,23 @@ LABEL_16:
 
 - (char)itemNumberInTextList:()NSAttributedStringUIFoundationAdditions atIndex:
 {
-  v6 = a1;
+  selfCopy = self;
   v38 = 0;
   v39 = 0;
-  v7 = [a1 string];
+  string = [self string];
   v8 = @"NSParagraphStyle";
-  v9 = [v6 attribute:@"NSParagraphStyle" atIndex:a4 effectiveRange:&v38];
+  v9 = [selfCopy attribute:@"NSParagraphStyle" atIndex:a4 effectiveRange:&v38];
   v10 = v9;
   if (!v9)
   {
     return v10;
   }
 
-  v35 = v7;
+  v35 = string;
   v36 = a4;
-  v11 = [v9 textLists];
-  v12 = [v11 indexOfObjectIdenticalTo:a3];
-  if (v11)
+  textLists = [v9 textLists];
+  v12 = [textLists indexOfObjectIdenticalTo:a3];
+  if (textLists)
   {
     v13 = v12 == 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -3921,16 +3921,16 @@ LABEL_16:
 
   v14 = v12;
   v15 = v38;
-  v34 = [v6 length];
+  v34 = [selfCopy length];
   if (!v15)
   {
     goto LABEL_29;
   }
 
-  v37 = v6;
+  v37 = selfCopy;
   while (1)
   {
-    v16 = v6;
+    v16 = selfCopy;
     v17 = v8;
     v18 = [v16 attribute:v8 atIndex:v15 - 1 effectiveRange:{&v38, v34}];
     if (v18 == v10)
@@ -3946,14 +3946,14 @@ LABEL_16:
       break;
     }
 
-    v20 = [v18 textLists];
-    if (!v20)
+    textLists2 = [v18 textLists];
+    if (!textLists2)
     {
       break;
     }
 
-    v21 = v20;
-    if ([v20 count] <= v14)
+    v21 = textLists2;
+    if ([textLists2 count] <= v14)
     {
       break;
     }
@@ -3961,7 +3961,7 @@ LABEL_16:
     v22 = 1;
     do
     {
-      v23 = [v11 objectAtIndex:v22 - 1];
+      v23 = [textLists objectAtIndex:v22 - 1];
       v24 = [v21 objectAtIndex:v22 - 1];
       v25 = v23 == v24;
     }
@@ -3980,7 +3980,7 @@ LABEL_24:
       goto LABEL_28;
     }
 
-    v6 = v37;
+    selfCopy = v37;
     if (!v25)
     {
       goto LABEL_29;
@@ -3989,7 +3989,7 @@ LABEL_24:
 
   v8 = v17;
 LABEL_28:
-  v6 = v37;
+  selfCopy = v37;
 LABEL_29:
   v10 = 0;
   if (v15 <= v36)
@@ -4003,7 +4003,7 @@ LABEL_29:
       {
         v29 = [v35 paragraphRangeForRange:{v15, 0, v34}];
         v31 = v30;
-        if ([objc_msgSend(objc_msgSend(v6 attribute:v8 atIndex:v15 effectiveRange:{&v38), "textLists"), "count"}] == v28)
+        if ([objc_msgSend(objc_msgSend(selfCopy attribute:v8 atIndex:v15 effectiveRange:{&v38), "textLists"), "count"}] == v28)
         {
           v15 = v29 + v31;
           ++v10;
@@ -4031,7 +4031,7 @@ LABEL_29:
 
   v12 = 0;
   v13 = 0;
-  v7 = [a1 attributesAtIndex:a3 longestEffectiveRange:&v12 inRange:{a3, a4}];
+  v7 = [self attributesAtIndex:a3 longestEffectiveRange:&v12 inRange:{a3, a4}];
   if (![v7 objectForKeyedSubscript:@"NSAttachment"])
   {
     v9 = a3 + a4;
@@ -4046,7 +4046,7 @@ LABEL_29:
 
       v12 = 0;
       v13 = 0;
-      v7 = [a1 attributesAtIndex:v10 longestEffectiveRange:&v12 inRange:{v10, v11}];
+      v7 = [self attributesAtIndex:v10 longestEffectiveRange:&v12 inRange:{v10, v11}];
       if ([v7 objectForKeyedSubscript:@"NSAttachment"])
       {
         return 1;

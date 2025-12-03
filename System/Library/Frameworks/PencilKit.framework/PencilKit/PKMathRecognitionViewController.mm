@@ -1,81 +1,81 @@
 @interface PKMathRecognitionViewController
-- (PKMathRecognitionViewController)initWithController:(id)a3 view:(id)a4 delegate:(id)a5;
+- (PKMathRecognitionViewController)initWithController:(id)controller view:(id)view delegate:(id)delegate;
 - (UIViewController)viewControllerForPresentingUI;
-- (double)mathRecognitionControllerTimestampForLatestUserInteraction:(id)a3;
-- (id)adjustedSelectedStrokes:(id)a3 selectionPath:(id)a4;
-- (id)contextMenuController:(id)a3 imageForItemUUID:(id)a4;
+- (double)mathRecognitionControllerTimestampForLatestUserInteraction:(id)interaction;
+- (id)adjustedSelectedStrokes:(id)strokes selectionPath:(id)path;
+- (id)contextMenuController:(id)controller imageForItemUUID:(id)d;
 - (id)drawing;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
-- (id)hitTest:(CGPoint)a3;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
+- (id)hitTest:(CGPoint)test;
 - (id)overlayDrawingController;
 - (id)overlayViews;
 - (id)recognitionManager;
-- (id)resultViewForItemUUID:(id)a3;
+- (id)resultViewForItemUUID:(id)d;
 - (id)tiledView;
 - (id)view;
-- (uint64_t)_handleSingleTapAtDrawingLocation:(int)a3 fromHover:(CGFloat)a4 fromTapStroke:(CGFloat)a5;
+- (uint64_t)_handleSingleTapAtDrawingLocation:(int)location fromHover:(CGFloat)hover fromTapStroke:(CGFloat)stroke;
 - (uint64_t)cancelOpenPopoverForAddingGraph;
 - (uint64_t)cancelOpenPopoverForHint;
 - (void)_cleanupAfterScrubbing;
 - (void)_cleanupTypesetViewController;
-- (void)_commitSetShouldSolve:(uint64_t)a3 undoable:(void *)a4 item:;
-- (void)_emitMathUsageForItem:(uint64_t)a3 usage:(uint64_t)a4 recognitionLatency:(uint64_t)a5 synthesisLatency:(uint64_t)a6 hadOldResult:;
-- (void)_imageViewForStrokes:(void *)a3 drawing:(void *)a4 completion:;
-- (void)_presentResult:(void *)a3 mathItem:(void *)a4 defaultAnimationType:(int)a5 fromHint:(char)a6 hadOldResult:;
-- (void)_scrubVariable:(void *)a3 item:(uint64_t)a4 openAsCompact:;
-- (void)_sendUpdatedResult:(void *)a3 strokes:(void *)a4 uuid:;
-- (void)_showDetectionAnimationForItem:(void *)a1;
-- (void)_triggerAlternativesMenuForToken:(uint64_t)a1;
-- (void)_triggerPopupToAddGraphForItem:(uint64_t)a1;
-- (void)_triggerPopupToSolveItem:(char)a3 supportCopy:;
+- (void)_commitSetShouldSolve:(uint64_t)solve undoable:(void *)undoable item:;
+- (void)_emitMathUsageForItem:(uint64_t)item usage:(uint64_t)usage recognitionLatency:(uint64_t)latency synthesisLatency:(uint64_t)synthesisLatency hadOldResult:;
+- (void)_imageViewForStrokes:(void *)strokes drawing:(void *)drawing completion:;
+- (void)_presentResult:(void *)result mathItem:(void *)item defaultAnimationType:(int)type fromHint:(char)hint hadOldResult:;
+- (void)_scrubVariable:(void *)variable item:(uint64_t)item openAsCompact:;
+- (void)_sendUpdatedResult:(void *)result strokes:(void *)strokes uuid:;
+- (void)_showDetectionAnimationForItem:(void *)item;
+- (void)_triggerAlternativesMenuForToken:(uint64_t)token;
+- (void)_triggerPopupToAddGraphForItem:(uint64_t)item;
+- (void)_triggerPopupToSolveItem:(char)item supportCopy:;
 - (void)_updateDrawingOverlayCache;
-- (void)contextMenuController:(id)a3 addGraphForItemUUID:(id)a4 addToExisting:(BOOL)a5 graphableVariable:(id)a6;
-- (void)contextMenuController:(id)a3 dismissErrorForItem:(id)a4 token:(id)a5;
-- (void)contextMenuController:(id)a3 removeResultForItemUUID:(id)a4;
-- (void)contextMenuController:(id)a3 solveItemUUID:(id)a4;
+- (void)contextMenuController:(id)controller addGraphForItemUUID:(id)d addToExisting:(BOOL)existing graphableVariable:(id)variable;
+- (void)contextMenuController:(id)controller dismissErrorForItem:(id)item token:(id)token;
+- (void)contextMenuController:(id)controller removeResultForItemUUID:(id)d;
+- (void)contextMenuController:(id)controller solveItemUUID:(id)d;
 - (void)dealloc;
 - (void)didBeginDrawing;
-- (void)didEraseStrokes:(id)a3;
+- (void)didEraseStrokes:(id)strokes;
 - (void)dismissPopovers;
 - (void)drawingTransform;
 - (void)drawingTransformFromDelegate;
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)eraserMovedToLocation:(CGPoint)a3;
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)eraserMovedToLocation:(CGPoint)location;
 - (void)hideMathFloatingLabelView;
 - (void)hideScrubber;
-- (void)hoverController:(id)a3 holdGestureMeanInputPoint:(id *)a4 latestInputPoint:(id *)a5;
+- (void)hoverController:(id)controller holdGestureMeanInputPoint:(id *)point latestInputPoint:(id *)inputPoint;
 - (void)layoutSubviews;
-- (void)mathRecognitionController:(id)a3 didEraseStrokesInExpressions:(id)a4;
-- (void)mathRecognitionController:(id)a3 didUpdateExpressions:(id)a4 newItems:(id)a5 removedItems:(id)a6 mathItems:(id)a7;
-- (void)mathRecognitionController:(id)a3 solveStateChangedForExpressions:(id)a4 mathItems:(id)a5;
-- (void)mathResult:(id)a3 itemUUID:(id)a4;
-- (void)mathResultAttributionImage:(id)a3 darkModeImage:(id)a4 string:(id)a5 date:(id)a6 itemUUID:(id)a7;
+- (void)mathRecognitionController:(id)controller didEraseStrokesInExpressions:(id)expressions;
+- (void)mathRecognitionController:(id)controller didUpdateExpressions:(id)expressions newItems:(id)items removedItems:(id)removedItems mathItems:(id)mathItems;
+- (void)mathRecognitionController:(id)controller solveStateChangedForExpressions:(id)expressions mathItems:(id)items;
+- (void)mathResult:(id)result itemUUID:(id)d;
+- (void)mathResultAttributionImage:(id)image darkModeImage:(id)modeImage string:(id)string date:(id)date itemUUID:(id)d;
 - (void)openPopoverForAddingGraph;
 - (void)openPopoverForHint;
-- (void)overlayController:(id)a3 imageViewForStrokes:(id)a4 completion:(id)a5;
-- (void)overlayController:(id)a3 willUpdateView:(id)a4 animationDuration:(double)a5;
+- (void)overlayController:(id)controller imageViewForStrokes:(id)strokes completion:(id)completion;
+- (void)overlayController:(id)controller willUpdateView:(id)view animationDuration:(double)duration;
 - (void)redrawSubviews;
 - (void)regenerateResultsIfNecessary;
-- (void)registerRecentlyCreatedLocalStroke:(id)a3;
+- (void)registerRecentlyCreatedLocalStroke:(id)stroke;
 - (void)removedFromView;
-- (void)scrubberController:(id)a3 valueDidChange:(id)a4;
-- (void)setContextMenuController:(uint64_t)a1;
-- (void)setItemAttributes:(id)a3 forItemUUID:(id)a4;
-- (void)setItemAttributes:(void *)a3 forItem:;
-- (void)setSolvingStyle:(int64_t)a3;
-- (void)setTokens:(id)a3 forItemUUID:(id)a4 graphable:(BOOL)a5 graphableVariables:(id)a6;
-- (void)setTokens:(void *)a3 forItem:(int)a4 graphable:(void *)a5 graphableVariables:;
-- (void)setupPreferredUpdatesIntervalForSolvingStyle:(uint64_t)a1;
+- (void)scrubberController:(id)controller valueDidChange:(id)change;
+- (void)setContextMenuController:(uint64_t)controller;
+- (void)setItemAttributes:(id)attributes forItemUUID:(id)d;
+- (void)setItemAttributes:(void *)attributes forItem:;
+- (void)setSolvingStyle:(int64_t)style;
+- (void)setTokens:(id)tokens forItemUUID:(id)d graphable:(BOOL)graphable graphableVariables:(id)variables;
+- (void)setTokens:(void *)tokens forItem:(int)item graphable:(void *)graphable graphableVariables:;
+- (void)setupPreferredUpdatesIntervalForSolvingStyle:(uint64_t)style;
 @end
 
 @implementation PKMathRecognitionViewController
 
-- (PKMathRecognitionViewController)initWithController:(id)a3 view:(id)a4 delegate:(id)a5
+- (PKMathRecognitionViewController)initWithController:(id)controller view:(id)view delegate:(id)delegate
 {
   v65 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  viewCopy = view;
+  delegateCopy = delegate;
   v62.receiver = self;
   v62.super_class = PKMathRecognitionViewController;
   v12 = [(PKMathRecognitionViewController *)&v62 init];
@@ -85,29 +85,29 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v64 = v9;
+      v64 = controllerCopy;
       _os_log_impl(&dword_1C7CCA000, v13, OS_LOG_TYPE_DEFAULT, "Creating PKMathRecognitionViewController for: %p", buf, 0xCu);
     }
 
-    v14 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v12[105] = [v14 BOOLForKey:@"internalSettings.drawing.disableMathAlternatives"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v12[105] = [standardUserDefaults BOOLForKey:@"internalSettings.drawing.disableMathAlternatives"];
 
-    v15 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v12[106] = [v15 BOOLForKey:@"internalSettings.drawing.disableMathErrors"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v12[106] = [standardUserDefaults2 BOOLForKey:@"internalSettings.drawing.disableMathErrors"];
 
-    v16 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v17 = *(v12 + 2);
-    *(v12 + 2) = v16;
+    *(v12 + 2) = dictionary;
 
-    v18 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v19 = *(v12 + 4);
-    *(v12 + 4) = v18;
+    *(v12 + 4) = dictionary2;
 
-    v20 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     v21 = *(v12 + 3);
-    *(v12 + 3) = v20;
+    *(v12 + 3) = dictionary3;
 
-    [v10 bounds];
+    [viewCopy bounds];
     *(v12 + 18) = v22;
     *(v12 + 19) = v23;
     *(v12 + 20) = v24;
@@ -122,13 +122,13 @@
 
     [v12 setSolvingStyle:0];
     [v12 setShouldCacheDrawingForResults:1];
-    objc_storeWeak(v12 + 30, v11);
-    objc_storeWeak(v12 + 31, v10);
-    objc_storeStrong(v12 + 32, a3);
-    v30 = [v10 effectiveUserInterfaceLayoutDirection];
-    if (v9)
+    objc_storeWeak(v12 + 30, delegateCopy);
+    objc_storeWeak(v12 + 31, viewCopy);
+    objc_storeStrong(v12 + 32, controller);
+    effectiveUserInterfaceLayoutDirection = [viewCopy effectiveUserInterfaceLayoutDirection];
+    if (controllerCopy)
     {
-      v9[88] = v30 == 1;
+      controllerCopy[88] = effectiveUserInterfaceLayoutDirection == 1;
     }
 
     [*(v12 + 32) setDelegate:v12];
@@ -359,13 +359,13 @@
     v60[3] = &unk_1E82D7C88;
     objc_copyWeak(&v61, buf);
     [PKHoverSettings checkIfHoverIsSupported:v60];
-    v55 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+    systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
     v58[0] = MEMORY[0x1E69E9820];
     v58[1] = 3221225472;
     v58[2] = __68__PKMathRecognitionViewController_initWithController_view_delegate___block_invoke_2;
     v58[3] = &unk_1E82D7FB0;
     objc_copyWeak(&v59, buf);
-    v56 = [v10 registerForTraitChanges:v55 withHandler:v58];
+    v56 = [viewCopy registerForTraitChanges:systemTraitsAffectingColorAppearance withHandler:v58];
 
     [(PKMathRecognitionViewController *)v12 setupPreferredUpdatesIntervalForSolvingStyle:?];
     objc_destroyWeak(&v59);
@@ -399,14 +399,14 @@ void __68__PKMathRecognitionViewController_initWithController_view_delegate___bl
 
 - (id)tiledView
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 30);
-    v1 = [WeakRetained mathViewControllerTiledView:v1];
+    WeakRetained = objc_loadWeakRetained(self + 30);
+    selfCopy = [WeakRetained mathViewControllerTiledView:selfCopy];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 void __68__PKMathRecognitionViewController_initWithController_view_delegate___block_invoke_2(uint64_t a1)
@@ -424,10 +424,10 @@ void __68__PKMathRecognitionViewController_initWithController_view_delegate___bl
   }
 }
 
-- (void)setupPreferredUpdatesIntervalForSolvingStyle:(uint64_t)a1
+- (void)setupPreferredUpdatesIntervalForSolvingStyle:(uint64_t)style
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (style)
   {
     v3 = 0.0;
     if (a2 == 1)
@@ -453,8 +453,8 @@ void __68__PKMathRecognitionViewController_initWithController_view_delegate___bl
       _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "Update preferred updates interval: %g", &v7, 0xCu);
     }
 
-    v6 = [(PKMathRecognitionViewController *)*(a1 + 256) recognitionManager];
-    [(PKRecognitionSessionManager *)v6 setMathPreferredUpdatesInterval:v4];
+    recognitionManager = [(PKMathRecognitionViewController *)*(style + 256) recognitionManager];
+    [(PKRecognitionSessionManager *)recognitionManager setMathPreferredUpdatesInterval:v4];
   }
 }
 
@@ -498,39 +498,39 @@ void __68__PKMathRecognitionViewController_initWithController_view_delegate___bl
 
 - (id)overlayDrawingController
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    if (a1[33] || [a1 solvingStyle] == 2)
+    selfCopy = self;
+    if (self[33] || [self solvingStyle] == 2)
     {
-      v3 = [v2 solvingStyle];
-      v4 = v2[33];
-      if (v3 != 2 || !v4)
+      solvingStyle = [selfCopy solvingStyle];
+      v4 = selfCopy[33];
+      if (solvingStyle != 2 || !v4)
       {
         goto LABEL_9;
       }
 
       [(PKOverlayDrawingController *)v4 removedFromView];
-      WeakRetained = v2[33];
-      v2[33] = 0;
+      WeakRetained = selfCopy[33];
+      selfCopy[33] = 0;
     }
 
     else
     {
       v6 = [PKOverlayDrawingController alloc];
-      WeakRetained = objc_loadWeakRetained(v2 + 31);
-      v7 = [(PKOverlayDrawingController *)&v6->super.isa initForView:v2 delegate:?];
-      v8 = v2[33];
-      v2[33] = v7;
+      WeakRetained = objc_loadWeakRetained(selfCopy + 31);
+      v7 = [(PKOverlayDrawingController *)&v6->super.isa initForView:selfCopy delegate:?];
+      v8 = selfCopy[33];
+      selfCopy[33] = v7;
     }
 
-    v4 = v2[33];
+    v4 = selfCopy[33];
 LABEL_9:
-    a1 = v4;
+    self = v4;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)recognitionManager
@@ -544,23 +544,23 @@ LABEL_9:
   return WeakRetained;
 }
 
-- (void)setSolvingStyle:(int64_t)a3
+- (void)setSolvingStyle:(int64_t)style
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (self->_solvingStyle != a3)
+  if (self->_solvingStyle != style)
   {
-    [(PKMathRecognitionViewController *)self setupPreferredUpdatesIntervalForSolvingStyle:a3];
+    [(PKMathRecognitionViewController *)self setupPreferredUpdatesIntervalForSolvingStyle:style];
   }
 
-  self->_solvingStyle = a3;
+  self->_solvingStyle = style;
   if ([(PKMathRecognitionViewController *)self solvingStyle]!= 2 && !self->_overlayDrawingController)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(NSMutableDictionary *)self->_currentMathItemsLookup allValues];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    allValues = [(NSMutableDictionary *)self->_currentMathItemsLookup allValues];
+    v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -571,13 +571,13 @@ LABEL_9:
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
           currentResultsLookup = self->_currentResultsLookup;
-          v12 = [v10 uuid];
-          v13 = [(NSMutableDictionary *)currentResultsLookup objectForKeyedSubscript:v12];
+          uuid = [v10 uuid];
+          v13 = [(NSMutableDictionary *)currentResultsLookup objectForKeyedSubscript:uuid];
 
           if (v13 && [v10 shouldSolveMathFlagIsSet])
           {
@@ -585,7 +585,7 @@ LABEL_9:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
@@ -601,30 +601,30 @@ LABEL_9:
   }
 }
 
-- (void)_presentResult:(void *)a3 mathItem:(void *)a4 defaultAnimationType:(int)a5 fromHint:(char)a6 hadOldResult:
+- (void)_presentResult:(void *)result mathItem:(void *)item defaultAnimationType:(int)type fromHint:(char)hint hadOldResult:
 {
-  HIDWORD(v48) = a5;
+  HIDWORD(v48) = type;
   v77 = *MEMORY[0x1E69E9840];
   newValue = a2;
-  v56 = a3;
-  if (a1)
+  resultCopy = result;
+  if (self)
   {
     v8 = os_log_create("com.apple.pencilkit", "Math");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v56 expression];
+      expression = [resultCopy expression];
       *buf = 138478083;
-      v74 = v9;
+      v74 = expression;
       v75 = 2113;
       v76 = newValue;
       _os_log_impl(&dword_1C7CCA000, v8, OS_LOG_TYPE_DEFAULT, "Presenting result for expression: %{private}@, result: %{private}@", buf, 0x16u);
     }
 
-    v54 = [(PKMathRecognitionViewController *)a1 tiledView];
-    v53 = [v56 uuid];
-    v10 = [(PKMathRecognitionViewController *)a1 overlayDrawingController];
-    [v56 bounds];
-    v15 = [(PKOverlayDrawingController *)v10 viewForUUID:v53 estimatedFrameForNewView:v11, v12, v13, v14];
+    tiledView = [(PKMathRecognitionViewController *)self tiledView];
+    uuid = [resultCopy uuid];
+    overlayDrawingController = [(PKMathRecognitionViewController *)self overlayDrawingController];
+    [resultCopy bounds];
+    v15 = [(PKOverlayDrawingController *)overlayDrawingController viewForUUID:uuid estimatedFrameForNewView:v11, v12, v13, v14];
 
     if (v15)
     {
@@ -655,7 +655,7 @@ LABEL_9:
         v19 = 0.0;
       }
 
-      [v56 boundsForTriggerStrokes];
+      [resultCopy boundsForTriggerStrokes];
       v79.origin.x = v22;
       v79.origin.y = v23;
       v79.size.width = v24;
@@ -671,9 +671,9 @@ LABEL_9:
         v28 = os_log_create("com.apple.pencilkit", "Math");
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
-          v29 = [v56 expression];
+          expression2 = [resultCopy expression];
           *buf = 138478083;
-          v74 = v29;
+          v74 = expression2;
           v75 = 2113;
           v76 = newValue;
           _os_log_impl(&dword_1C7CCA000, v28, OS_LOG_TYPE_DEFAULT, "Already had correct result for expression: %{private}@, result: %{private}@", buf, 0x16u);
@@ -692,7 +692,7 @@ LABEL_19:
     if (v15)
     {
       objc_setProperty_nonatomic_copy(v15, v30, newValue, 424);
-      [v56 boundsForTriggerStrokes];
+      [resultCopy boundsForTriggerStrokes];
       *(v15 + 54) = v31;
       *(v15 + 55) = v32;
       *(v15 + 56) = v33;
@@ -701,12 +701,12 @@ LABEL_19:
 
     else
     {
-      [v56 boundsForTriggerStrokes];
+      [resultCopy boundsForTriggerStrokes];
     }
 
-    LODWORD(v48) = *(a1 + 88) != 0;
-    objc_initWeak(buf, a1);
-    [v54 inputScale];
+    LODWORD(v48) = *(self + 88) != 0;
+    objc_initWeak(buf, self);
+    [tiledView inputScale];
     v36 = v35;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -715,16 +715,16 @@ LABEL_19:
     v37 = newValue;
     v72 = v37;
     v38 = _Block_copy(aBlock);
-    if ((*(a1 + 194) & 0x10) != 0)
+    if ((*(self + 194) & 0x10) != 0)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 240));
+      WeakRetained = objc_loadWeakRetained((self + 240));
       v67[0] = MEMORY[0x1E69E9820];
       v67[1] = 3221225472;
       v67[2] = __102__PKMathRecognitionViewController__presentResult_mathItem_defaultAnimationType_fromHint_hadOldResult___block_invoke_2;
       v67[3] = &unk_1E82DAF88;
       v68 = WeakRetained;
-      v69 = a1;
-      v70 = v53;
+      selfCopy = self;
+      v70 = uuid;
       v40 = WeakRetained;
       v41 = _Block_copy(v67);
 
@@ -733,26 +733,26 @@ LABEL_19:
 
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v43 = v42;
-    v44 = [(PKMathRecognitionViewController *)*(a1 + 256) recognitionManager];
-    v45 = [(PKMathRecognitionViewController *)a1 drawing];
-    v46 = objc_loadWeakRetained((a1 + 248));
-    v47 = [v46 tintColor];
+    recognitionManager = [(PKMathRecognitionViewController *)*(self + 256) recognitionManager];
+    drawing = [(PKMathRecognitionViewController *)self drawing];
+    v46 = objc_loadWeakRetained((self + 248));
+    tintColor = [v46 tintColor];
     v57[0] = MEMORY[0x1E69E9820];
     v57[1] = 3221225472;
     v57[2] = __102__PKMathRecognitionViewController__presentResult_mathItem_defaultAnimationType_fromHint_hadOldResult___block_invoke_3;
     v57[3] = &unk_1E82DB050;
     objc_copyWeak(v63, buf);
-    v58 = v56;
+    v58 = resultCopy;
     v59 = v37;
-    v60 = a1;
+    selfCopy2 = self;
     v64 = v49;
     v65 = v50;
-    v61 = v54;
+    v61 = tiledView;
     v62 = v15;
-    v63[1] = a4;
-    v66 = a6;
+    v63[1] = item;
+    hintCopy = hint;
     v63[2] = v43;
-    [(PKRecognitionSessionManager *)v44 synthesizeDrawingForMathResultBlock:v38 fallbackText:v59 drawing:v45 mathItem:v58 inkColor:v47 inputScale:v57 completion:v36];
+    [(PKRecognitionSessionManager *)recognitionManager synthesizeDrawingForMathResultBlock:v38 fallbackText:v59 drawing:drawing mathItem:v58 inkColor:tintColor inputScale:v57 completion:v36];
 
     objc_destroyWeak(v63);
     objc_destroyWeak(buf);
@@ -764,14 +764,14 @@ LABEL_20:
 
 - (id)drawing
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 30);
-    v1 = [WeakRetained mathViewControllerDrawing:v1];
+    WeakRetained = objc_loadWeakRetained(self + 30);
+    selfCopy = [WeakRetained mathViewControllerDrawing:selfCopy];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)drawingTransformFromDelegate
@@ -786,34 +786,34 @@ LABEL_20:
 
   else
   {
-    a1[1] = 0u;
-    a1[2] = 0u;
-    *a1 = 0u;
+    self[1] = 0u;
+    self[2] = 0u;
+    *self = 0u;
   }
 }
 
 - (void)drawingTransform
 {
-  a1[1] = 0u;
-  a1[2] = 0u;
-  *a1 = 0u;
+  self[1] = 0u;
+  self[2] = 0u;
+  *self = 0u;
   if (a2)
   {
-    [(PKMathRecognitionViewController *)a1 drawingTransformFromDelegate];
+    [(PKMathRecognitionViewController *)self drawingTransformFromDelegate];
     if ((*(a2 + 192) & 0x20) != 0)
     {
       WeakRetained = objc_loadWeakRetained((a2 + 240));
-      v5 = [(PKMathRecognitionViewController *)a2 drawing];
-      v8 = [WeakRetained mathViewController:a2 coordinateSpaceForDrawing:v5];
+      drawing = [(PKMathRecognitionViewController *)a2 drawing];
+      v8 = [WeakRetained mathViewController:a2 coordinateSpaceForDrawing:drawing];
 
       if (v8)
       {
         v6 = objc_loadWeakRetained((a2 + 248));
         PK_transformToConvertFromCoordinateSpaceToCoordinateSpace(v8, v6, v9);
         v7 = v9[1];
-        *a1 = v9[0];
-        a1[1] = v7;
-        a1[2] = v9[2];
+        *self = v9[0];
+        self[1] = v7;
+        self[2] = v9[2];
       }
     }
   }
@@ -822,8 +822,8 @@ LABEL_20:
 - (void)layoutSubviews
 {
   width = self->_currentViewBounds.size.width;
-  v4 = [(PKMathRecognitionViewController *)&self->super.isa view];
-  [v4 bounds];
+  view = [(PKMathRecognitionViewController *)&self->super.isa view];
+  [view bounds];
   self->_currentViewBounds.origin.x = v5;
   self->_currentViewBounds.origin.y = v6;
   self->_currentViewBounds.size.width = v7;
@@ -834,38 +834,38 @@ LABEL_20:
     [(PKMathRecognitionViewController *)self dismissPopovers];
   }
 
-  v9 = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
-  [(PKOverlayDrawingController *)v9 viewDidLayout];
+  overlayDrawingController = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
+  [(PKOverlayDrawingController *)overlayDrawingController viewDidLayout];
 }
 
 - (void)redrawSubviews
 {
-  v2 = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
-  if (v2)
+  overlayDrawingController = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
+  if (overlayDrawingController)
   {
-    v3 = v2;
-    [v2 _updateDrawingViews];
-    v2 = v3;
+    v3 = overlayDrawingController;
+    [overlayDrawingController _updateDrawingViews];
+    overlayDrawingController = v3;
   }
 }
 
 - (id)overlayViews
 {
-  v2 = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
-  v3 = [(PKOverlayDrawingController *)v2 allViews];
+  overlayDrawingController = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
+  allViews = [(PKOverlayDrawingController *)overlayDrawingController allViews];
 
-  return v3;
+  return allViews;
 }
 
-- (id)resultViewForItemUUID:(id)a3
+- (id)resultViewForItemUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
-  v6 = [(PKOverlayDrawingController *)v5 existingViewForUUID:v4];
+  dCopy = d;
+  overlayDrawingController = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
+  v6 = [(PKOverlayDrawingController *)overlayDrawingController existingViewForUUID:dCopy];
 
-  v7 = [(PKOverlayDrawingView *)v6 imageView];
+  imageView = [(PKOverlayDrawingView *)v6 imageView];
 
-  return v7;
+  return imageView;
 }
 
 - (void)removedFromView
@@ -873,8 +873,8 @@ LABEL_20:
   alternativedEditMenuInteraction = self->_alternativedEditMenuInteraction;
   if (alternativedEditMenuInteraction)
   {
-    v4 = [(UIEditMenuInteraction *)alternativedEditMenuInteraction view];
-    [v4 removeInteraction:self->_alternativedEditMenuInteraction];
+    view = [(UIEditMenuInteraction *)alternativedEditMenuInteraction view];
+    [view removeInteraction:self->_alternativedEditMenuInteraction];
 
     v5 = self->_alternativedEditMenuInteraction;
     self->_alternativedEditMenuInteraction = 0;
@@ -910,22 +910,22 @@ LABEL_20:
 
 - (void)_cleanupTypesetViewController
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 48);
-    if (v2 && (*(a1 + 194) & 8) != 0)
+    v2 = *(self + 48);
+    if (v2 && (*(self + 194) & 8) != 0)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 240));
-      [WeakRetained mathViewControllerDidDismissPopoverUI:a1];
+      WeakRetained = objc_loadWeakRetained((self + 240));
+      [WeakRetained mathViewControllerDidDismissPopoverUI:self];
 
-      v2 = *(a1 + 48);
+      v2 = *(self + 48);
     }
 
-    *(a1 + 48) = 0;
+    *(self + 48) = 0;
 
-    [*(a1 + 56) _setVisibilityUpdatesEnabled:1];
-    v4 = *(a1 + 56);
-    *(a1 + 56) = 0;
+    [*(self + 56) _setVisibilityUpdatesEnabled:1];
+    v4 = *(self + 56);
+    *(self + 56) = 0;
   }
 }
 
@@ -965,79 +965,79 @@ LABEL_20:
 {
   if ([(PKMathRecognitionViewController *)self shouldCacheDrawingForResults])
   {
-    v3 = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
-    v4 = [(PKMathRecognitionViewController *)&self->super.isa drawing];
-    v8 = [(PKOverlayDrawingController *)v3 drawingForAllResultsForSourceDrawing:v4];
+    overlayDrawingController = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
+    drawing = [(PKMathRecognitionViewController *)&self->super.isa drawing];
+    v8 = [(PKOverlayDrawingController *)overlayDrawingController drawingForAllResultsForSourceDrawing:drawing];
 
     v5 = +[PKDrawingOverlayCache sharedCache];
-    v6 = [(PKMathRecognitionViewController *)&self->super.isa drawing];
-    v7 = [v6 uuid];
-    [(PKDrawingOverlayCache *)v5 setOverlayDrawing:v8 forDrawingUUID:v7];
+    drawing2 = [(PKMathRecognitionViewController *)&self->super.isa drawing];
+    uuid = [drawing2 uuid];
+    [(PKDrawingOverlayCache *)v5 setOverlayDrawing:v8 forDrawingUUID:uuid];
   }
 }
 
-- (void)setTokens:(void *)a3 forItem:(int)a4 graphable:(void *)a5 graphableVariables:
+- (void)setTokens:(void *)tokens forItem:(int)item graphable:(void *)graphable graphableVariables:
 {
-  v9 = a5;
-  if (a1)
+  graphableCopy = graphable;
+  if (self)
   {
-    v13 = v9;
-    v10 = a3;
+    v13 = graphableCopy;
+    tokensCopy = tokens;
     v11 = a2;
     v12 = objc_alloc_init(PKMathRecognitionItemAttributes);
     [(PKMathRecognitionItemAttributes *)v12 setTokens:v11];
 
-    if (a4)
+    if (item)
     {
       [(PKMathRecognitionItemAttributes *)v12 setExpressionFeatures:1];
     }
 
     [(PKMathRecognitionItemAttributes *)v12 setGraphableVariables:v13];
-    [(PKMathRecognitionViewController *)a1 setItemAttributes:v12 forItem:v10];
+    [(PKMathRecognitionViewController *)self setItemAttributes:v12 forItem:tokensCopy];
 
-    v9 = v13;
+    graphableCopy = v13;
   }
 }
 
-- (void)setTokens:(id)a3 forItemUUID:(id)a4 graphable:(BOOL)a5 graphableVariables:(id)a6
+- (void)setTokens:(id)tokens forItemUUID:(id)d graphable:(BOOL)graphable graphableVariables:(id)variables
 {
-  v7 = a5;
-  v12 = a3;
-  v10 = a6;
-  v11 = [(NSMutableDictionary *)self->_currentMathItemsLookup objectForKeyedSubscript:a4];
+  graphableCopy = graphable;
+  tokensCopy = tokens;
+  variablesCopy = variables;
+  v11 = [(NSMutableDictionary *)self->_currentMathItemsLookup objectForKeyedSubscript:d];
   if (v11)
   {
-    [(PKMathRecognitionViewController *)&self->super.isa setTokens:v12 forItem:v11 graphable:v7 graphableVariables:v10];
+    [(PKMathRecognitionViewController *)&self->super.isa setTokens:tokensCopy forItem:v11 graphable:graphableCopy graphableVariables:variablesCopy];
   }
 }
 
-- (void)setItemAttributes:(id)a3 forItemUUID:(id)a4
+- (void)setItemAttributes:(id)attributes forItemUUID:(id)d
 {
-  v7 = a3;
-  v6 = [(NSMutableDictionary *)self->_currentMathItemsLookup objectForKeyedSubscript:a4];
+  attributesCopy = attributes;
+  v6 = [(NSMutableDictionary *)self->_currentMathItemsLookup objectForKeyedSubscript:d];
   if (v6)
   {
-    [(PKMathRecognitionViewController *)&self->super.isa setItemAttributes:v7 forItem:v6];
+    [(PKMathRecognitionViewController *)&self->super.isa setItemAttributes:attributesCopy forItem:v6];
   }
 }
 
-- (void)setItemAttributes:(void *)a3 forItem:
+- (void)setItemAttributes:(void *)attributes forItem:
 {
   v106[1] = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  attributesCopy = attributes;
+  v7 = attributesCopy;
+  if (self)
   {
     v83 = v5;
-    if ([v6 isLowConfidenceMath])
+    if ([attributesCopy isLowConfidenceMath])
     {
       v9 = os_log_create("com.apple.pencilkit", "Math");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v7 expression];
+        expression = [v7 expression];
         *buf = 138477827;
-        *&buf[4] = v10;
+        *&buf[4] = expression;
         _os_log_impl(&dword_1C7CCA000, v9, OS_LOG_TYPE_DEFAULT, "Set low confidence math for: %{private}@", buf, 0xCu);
       }
 
@@ -1051,11 +1051,11 @@ LABEL_20:
       [(PKMathRecognitionItem *)v13 _setIsGraphable:MEMORY[0x1E695E0F0] graphableVariables:?];
       v14 = objc_alloc_init(PKMathRecognitionToken);
       [(PKMathRecognitionToken *)v14 setItem:v13];
-      v15 = [v13 expression];
-      [(PKMathRecognitionToken *)v14 setText:v15];
+      expression2 = [v13 expression];
+      [(PKMathRecognitionToken *)v14 setText:expression2];
 
-      v16 = [v13 expression];
-      -[PKMathRecognitionToken setCharacterRange:](v14, "setCharacterRange:", 0, [v16 length]);
+      expression3 = [v13 expression];
+      -[PKMathRecognitionToken setCharacterRange:](v14, "setCharacterRange:", 0, [expression3 length]);
 
       [v13 bounds];
       [(PKMathRecognitionToken *)v14 setBounds:?];
@@ -1068,12 +1068,12 @@ LABEL_20:
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:buf count:1];
       [(PKMathRecognitionToken *)v14 setErrors:v20];
 
-      v21 = [(PKMathRecognitionItem *)v13 characterRangeForTriggerSymbol];
-      if (v21 != 0x7FFFFFFFFFFFFFFFLL)
+      characterRangeForTriggerSymbol = [(PKMathRecognitionItem *)v13 characterRangeForTriggerSymbol];
+      if (characterRangeForTriggerSymbol != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v23 = v21;
+        v23 = characterRangeForTriggerSymbol;
         v24 = v22;
-        v25 = [(PKMathRecognitionItem *)v13 _strokeIndexesForCharacterRange:v21, v22];
+        v25 = [(PKMathRecognitionItem *)v13 _strokeIndexesForCharacterRange:characterRangeForTriggerSymbol, v22];
         v107.origin.x = [(PKMathRecognitionItem *)v13 _boundsForStrokeIndexes:v25];
         x = v107.origin.x;
         y = v107.origin.y;
@@ -1093,9 +1093,9 @@ LABEL_20:
         objc_setProperty_nonatomic_copy(v13, v30, v31, 104);
       }
 
-      if ((![a1 solvingStyle] || objc_msgSend(a1, "solvingStyle") == 1) && ((-[PKMathRecognitionItem isRecentlyModified](v13) & 1) != 0 || (-[PKMathRecognitionViewController overlayDrawingController](a1), v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "uuid"), v33 = objc_claimAutoreleasedReturnValue(), v34 = -[PKOverlayDrawingController hasVisibleTokensForItem:](v32, v33), v33, v32, v34)))
+      if ((![self solvingStyle] || objc_msgSend(self, "solvingStyle") == 1) && ((-[PKMathRecognitionItem isRecentlyModified](v13) & 1) != 0 || (-[PKMathRecognitionViewController overlayDrawingController](self), v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "uuid"), v33 = objc_claimAutoreleasedReturnValue(), v34 = -[PKOverlayDrawingController hasVisibleTokensForItem:](v32, v33), v33, v32, v34)))
       {
-        v35 = [(PKMathRecognitionViewController *)a1 overlayDrawingController];
+        overlayDrawingController = [(PKMathRecognitionViewController *)self overlayDrawingController];
         if (v13)
         {
           v36 = v13[13];
@@ -1107,13 +1107,13 @@ LABEL_20:
         }
 
         v37 = v36;
-        [(PKOverlayDrawingController *)v35 setTokens:v37 item:v13];
+        [(PKOverlayDrawingController *)overlayDrawingController setTokens:v37 item:v13];
       }
 
       else
       {
-        v35 = [(PKMathRecognitionViewController *)a1 overlayDrawingController];
-        [(PKOverlayDrawingController *)v35 removeTokensFor:v13];
+        overlayDrawingController = [(PKMathRecognitionViewController *)self overlayDrawingController];
+        [(PKOverlayDrawingController *)overlayDrawingController removeTokensFor:v13];
       }
 
       v5 = v83;
@@ -1126,16 +1126,16 @@ LABEL_20:
         objc_setProperty_nonatomic_copy(v7, v8, v5, 144);
       }
 
-      v86 = a1;
-      v85 = [MEMORY[0x1E696AD50] indexSet];
-      v38 = [v5 tokens];
-      v81 = [v5 graphableVariables];
-      v82 = [v5 isGraphable];
+      selfCopy = self;
+      indexSet = [MEMORY[0x1E696AD50] indexSet];
+      tokens = [v5 tokens];
+      graphableVariables = [v5 graphableVariables];
+      isGraphable = [v5 isGraphable];
       v91 = 0u;
       v92 = 0u;
       v93 = 0u;
       v94 = 0u;
-      obj = v38;
+      obj = tokens;
       v39 = [obj countByEnumeratingWithState:&v91 objects:v105 count:16];
       if (v39)
       {
@@ -1153,26 +1153,26 @@ LABEL_20:
 
             v44 = *(*(&v91 + 1) + 8 * i);
             [v44 setItem:v7];
-            v46 = [v44 characterRange];
+            characterRange = [v44 characterRange];
             v47 = v45;
             if (v45)
             {
-              v48 = [(PKMathRecognitionItem *)v7 _strokeIndexesForCharacterRange:v46, v45];
+              v48 = [(PKMathRecognitionItem *)v7 _strokeIndexesForCharacterRange:characterRange, v45];
               [v44 setBounds:{-[PKMathRecognitionItem _boundsForStrokeIndexes:](v7, v48)}];
             }
 
-            if ((*(v86 + 106) & 1) != 0 || ([v7 isEvaluationExpected] & 1) == 0)
+            if ((*(selfCopy + 106) & 1) != 0 || ([v7 isEvaluationExpected] & 1) == 0)
             {
               [v44 setErrors:0];
             }
 
-            v49 = [v44 errors];
-            v50 = [v49 count];
+            errors = [v44 errors];
+            v50 = [errors count];
 
             if (v50)
             {
               ++v41;
-              if (!v47 || v46 == 0x7FFFFFFFFFFFFFFFLL)
+              if (!v47 || characterRange == 0x7FFFFFFFFFFFFFFFLL)
               {
                 v53 = os_log_create("com.apple.pencilkit", "Math");
                 if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
@@ -1184,8 +1184,8 @@ LABEL_20:
 
               else
               {
-                v51 = [v44 characterRange];
-                [v85 addIndexesInRange:{v51, v52}];
+                characterRange2 = [v44 characterRange];
+                [indexSet addIndexesInRange:{characterRange2, v52}];
               }
             }
           }
@@ -1202,18 +1202,18 @@ LABEL_20:
       }
 
       v54 = os_log_create("com.apple.pencilkit", "Math");
-      v55 = v81;
+      v55 = graphableVariables;
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
       {
         v56 = [obj count];
-        v57 = [v7 expression];
-        v58 = [v81 count];
+        expression4 = [v7 expression];
+        v58 = [graphableVariables count];
         *buf = 134219011;
         *&buf[4] = v56;
         v97 = 2113;
-        v98 = v57;
+        v98 = expression4;
         v99 = 1024;
-        v100 = v82;
+        v100 = isGraphable;
         v101 = 2048;
         v102 = v58;
         v103 = 2048;
@@ -1221,24 +1221,24 @@ LABEL_20:
         _os_log_impl(&dword_1C7CCA000, v54, OS_LOG_TYPE_DEFAULT, "Set tokens: %lu, %{private}@, graphable: %{BOOL}d, variables: %lu, num errors: %lu", buf, 0x30u);
       }
 
-      v60 = v86;
-      if (*(v86 + 105))
+      v60 = selfCopy;
+      if (*(selfCopy + 105))
       {
         v5 = v83;
       }
 
       else
       {
-        v61 = [(PKMathRecognitionItem *)v7 alternativesTokens];
+        alternativesTokens = [(PKMathRecognitionItem *)v7 alternativesTokens];
         v5 = v83;
-        if ([v61 count])
+        if ([alternativesTokens count])
         {
-          v62 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
           v87 = 0u;
           v88 = 0u;
           v89 = 0u;
           v90 = 0u;
-          v63 = v61;
+          v63 = alternativesTokens;
           v64 = [v63 countByEnumeratingWithState:&v87 objects:v95 count:16];
           if (v64)
           {
@@ -1254,10 +1254,10 @@ LABEL_20:
                 }
 
                 v68 = *(*(&v87 + 1) + 8 * j);
-                v69 = [v68 characterRange];
-                if (([v85 containsIndexesInRange:{v69, v70}] & 1) == 0)
+                characterRange3 = [v68 characterRange];
+                if (([indexSet containsIndexesInRange:{characterRange3, v70}] & 1) == 0)
                 {
-                  [v62 addObject:v68];
+                  [array addObject:v68];
                 }
               }
 
@@ -1267,15 +1267,15 @@ LABEL_20:
             while (v65);
           }
 
-          if ([v62 count])
+          if ([array count])
           {
-            v71 = [obj arrayByAddingObjectsFromArray:v62];
+            v71 = [obj arrayByAddingObjectsFromArray:array];
 
             obj = v71;
           }
 
-          v60 = v86;
-          v55 = v81;
+          v60 = selfCopy;
+          v55 = graphableVariables;
         }
       }
 
@@ -1286,22 +1286,22 @@ LABEL_20:
 
       if ((![v60 solvingStyle] || objc_msgSend(v60, "solvingStyle") == 1) && ((-[PKMathRecognitionItem isRecentlyModified](v7) & 1) != 0 || (-[PKMathRecognitionViewController overlayDrawingController](v60), v72 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "uuid"), v73 = objc_claimAutoreleasedReturnValue(), v74 = -[PKOverlayDrawingController hasVisibleTokensForItem:](v72, v73), v73, v72, v74)))
       {
-        v75 = [(PKMathRecognitionViewController *)v60 overlayDrawingController];
-        [(PKOverlayDrawingController *)v75 setTokens:v7 item:?];
+        overlayDrawingController2 = [(PKMathRecognitionViewController *)v60 overlayDrawingController];
+        [(PKOverlayDrawingController *)overlayDrawingController2 setTokens:v7 item:?];
       }
 
       else
       {
-        v75 = [(PKMathRecognitionViewController *)v60 overlayDrawingController];
-        [(PKOverlayDrawingController *)v75 removeTokensFor:v7];
+        overlayDrawingController2 = [(PKMathRecognitionViewController *)v60 overlayDrawingController];
+        [(PKOverlayDrawingController *)overlayDrawingController2 removeTokensFor:v7];
       }
 
-      [(PKMathRecognitionItem *)v7 _setIsGraphable:v82 graphableVariables:v55];
-      if (v82 && ![v55 count] && -[PKMathRecognitionItem isRecentlyModified](v7) && -[PKMathRecognitionItem isRecentlyCreated](v7) && (!objc_msgSend(v60, "solvingStyle") || objc_msgSend(v60, "solvingStyle") == 1))
+      [(PKMathRecognitionItem *)v7 _setIsGraphable:isGraphable graphableVariables:v55];
+      if (isGraphable && ![v55 count] && -[PKMathRecognitionItem isRecentlyModified](v7) && -[PKMathRecognitionItem isRecentlyCreated](v7) && (!objc_msgSend(v60, "solvingStyle") || objc_msgSend(v60, "solvingStyle") == 1))
       {
         v76 = v60[23];
-        v77 = [v7 uuid];
-        LOBYTE(v76) = [v76 containsObject:v77];
+        uuid = [v7 uuid];
+        LOBYTE(v76) = [v76 containsObject:uuid];
 
         if ((v76 & 1) == 0)
         {
@@ -1309,9 +1309,9 @@ LABEL_20:
           v60[16] = 0;
 
           [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:v60 selector:sel_openPopoverForAddingGraph object:0];
-          v79 = [v7 uuid];
+          uuid2 = [v7 uuid];
           v80 = v60[16];
-          v60[16] = v79;
+          v60[16] = uuid2;
 
           [v60 performSelector:sel_openPopoverForAddingGraph withObject:0 afterDelay:{-[PKMathRecognitionItem _remainingDelayForTargetDelay:](v7, 1.0)}];
         }
@@ -1320,16 +1320,16 @@ LABEL_20:
   }
 }
 
-- (void)_scrubVariable:(void *)a3 item:(uint64_t)a4 openAsCompact:
+- (void)_scrubVariable:(void *)variable item:(uint64_t)item openAsCompact:
 {
   v83 = *MEMORY[0x1E69E9840];
   v8 = a2;
-  v9 = a3;
-  if (a1)
+  variableCopy = variable;
+  if (self)
   {
-    [a1 hideScrubber];
-    v10 = [v9 expression];
-    v11 = v10;
+    [self hideScrubber];
+    expression = [variableCopy expression];
+    v11 = expression;
     if (v8)
     {
       v12 = v8[5];
@@ -1342,14 +1342,14 @@ LABEL_20:
       v12 = 0;
     }
 
-    v14 = [v10 substringWithRange:{v12, v13}];
+    v14 = [expression substringWithRange:{v12, v13}];
 
     v15 = os_log_create("com.apple.pencilkit", "Math");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v9 expression];
+      expression2 = [variableCopy expression];
       LODWORD(buf.a) = 138478083;
-      *(&buf.a + 4) = v16;
+      *(&buf.a + 4) = expression2;
       WORD2(buf.b) = 2113;
       *(&buf.b + 6) = v14;
       _os_log_impl(&dword_1C7CCA000, v15, OS_LOG_TYPE_DEFAULT, "Opening scrubber for expression: %{private}@, variable: %{private}@", &buf, 0x16u);
@@ -1369,7 +1369,7 @@ LABEL_20:
     }
 
     v18 = v17;
-    v19 = [(PKMathRecognitionItem *)v9 _boundsForStrokeIndexes:v18];
+    v19 = [(PKMathRecognitionItem *)variableCopy _boundsForStrokeIndexes:v18];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -1384,47 +1384,47 @@ LABEL_20:
     y = v85.origin.y;
     width = v85.size.width;
     height = v85.size.height;
-    WeakRetained = objc_loadWeakRetained((a1 + 248));
-    v31 = [WeakRetained window];
-    v32 = [v31 rootViewController];
-    v33 = [v32 view];
+    WeakRetained = objc_loadWeakRetained((self + 248));
+    window = [WeakRetained window];
+    rootViewController = [window rootViewController];
+    view = [rootViewController view];
 
-    v34 = objc_loadWeakRetained((a1 + 240));
-    v35 = [v34 mathViewController:a1 createScrubberControllerForView:v33 delegate:a1];
+    v34 = objc_loadWeakRetained((self + 240));
+    v35 = [v34 mathViewController:self createScrubberControllerForView:view delegate:self];
 
-    v36 = objc_loadWeakRetained((a1 + 248));
-    v80 = v33;
-    [v36 convertRect:v33 toView:{x, y, width, height}];
+    v36 = objc_loadWeakRetained((self + 248));
+    v80 = view;
+    [v36 convertRect:view toView:{x, y, width, height}];
     v38 = v37;
     v40 = v39;
     v42 = v41;
     v44 = v43;
 
     v79 = v35;
-    objc_storeStrong((a1 + 64), v35);
-    *(a1 + 72) = a4;
-    if ((*(a1 + 194) & 4) != 0)
+    objc_storeStrong((self + 64), v35);
+    *(self + 72) = item;
+    if ((*(self + 194) & 4) != 0)
     {
-      v45 = objc_loadWeakRetained((a1 + 240));
-      [v45 mathViewController:a1 willPresentPopoverUI:0];
+      v45 = objc_loadWeakRetained((self + 240));
+      [v45 mathViewController:self willPresentPopoverUI:0];
     }
 
-    v46 = objc_loadWeakRetained((a1 + 248));
-    v47 = [v46 window];
-    v48 = [PKToolPicker activeToolPickerForWindow:v47];
-    v49 = *(a1 + 56);
-    *(a1 + 56) = v48;
+    v46 = objc_loadWeakRetained((self + 248));
+    window2 = [v46 window];
+    v48 = [PKToolPicker activeToolPickerForWindow:window2];
+    v49 = *(self + 56);
+    *(self + 56) = v48;
 
-    [*(a1 + 56) _setVisibilityUpdatesEnabled:0];
-    v50 = *(a1 + 64);
-    v51 = [(PKMathRecognitionItem *)v9 _stringForVariable:v8];
-    [v50 showScrubberFor:v51 frame:a4 compact:{v38, v40, v42, v44}];
+    [*(self + 56) _setVisibilityUpdatesEnabled:0];
+    v50 = *(self + 64);
+    v51 = [(PKMathRecognitionItem *)variableCopy _stringForVariable:v8];
+    [v50 showScrubberFor:v51 frame:item compact:{v38, v40, v42, v44}];
 
     v52 = [PKLiveMathVariable alloc];
-    v53 = [(PKMathRecognitionViewController *)a1 drawing];
-    v54 = v53;
+    drawing = [(PKMathRecognitionViewController *)self drawing];
+    v54 = drawing;
     v55 = v8;
-    v56 = v9;
+    v56 = variableCopy;
     if (v52)
     {
       *&v81.a = v52;
@@ -1433,16 +1433,16 @@ LABEL_20:
       v52 = v57;
       if (v57)
       {
-        objc_storeStrong(v57 + 2, v53);
+        objc_storeStrong(v57 + 2, drawing);
         objc_storeStrong(&v52->_variable, obj);
-        objc_storeStrong(&v52->_mathItem, a3);
+        objc_storeStrong(&v52->_mathItem, variable);
         v58 = *MEMORY[0x1E695F050];
         v59 = *(MEMORY[0x1E695F050] + 16);
         v52->_calculatedFitBounds.origin = *MEMORY[0x1E695F050];
         v52->_calculatedFitBounds.size = v59;
         v52->_calculatedFitBoundsForExtraLeadingSlack.origin = v58;
         v52->_calculatedFitBoundsForExtraLeadingSlack.size = v59;
-        v77 = v9;
+        v77 = variableCopy;
         v60 = v14;
         if (v8)
         {
@@ -1476,21 +1476,21 @@ LABEL_20:
         v52->_originalStrokesBounds.size.width = v73;
         v52->_originalStrokesBounds.size.height = v75;
         v14 = v60;
-        v9 = v77;
+        variableCopy = v77;
       }
     }
 
-    v76 = *(a1 + 88);
-    *(a1 + 88) = v52;
+    v76 = *(self + 88);
+    *(self + 88) = v52;
 
-    if (*(a1 + 72) == 1)
+    if (*(self + 72) == 1)
     {
-      [a1 performSelector:sel_hideScrubber withObject:0 afterDelay:3.0];
+      [self performSelector:sel_hideScrubber withObject:0 afterDelay:3.0];
     }
   }
 }
 
-- (void)_triggerAlternativesMenuForToken:(uint64_t)a1
+- (void)_triggerAlternativesMenuForToken:(uint64_t)token
 {
   v4 = a2;
   [v4 bounds];
@@ -1514,24 +1514,24 @@ LABEL_20:
     v22.size.width = width;
     v22.size.height = height;
     v9 = [MEMORY[0x1E69DC9D8] configurationWithIdentifier:@"token" sourcePoint:{vaddq_f64(v19, vmlaq_n_f64(vmulq_n_f64(v18, CGRectGetMinY(v22)), v17, MidX))}];
-    objc_storeStrong((a1 + 96), a2);
-    if ((*(a1 + 194) & 4) != 0)
+    objc_storeStrong((token + 96), a2);
+    if ((*(token + 194) & 4) != 0)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 240));
-      [WeakRetained mathViewController:a1 willPresentPopoverUI:2];
+      WeakRetained = objc_loadWeakRetained((token + 240));
+      [WeakRetained mathViewController:token willPresentPopoverUI:2];
     }
 
-    v11 = *(a1 + 272);
+    v11 = *(token + 272);
     if (!v11)
     {
-      v12 = [objc_alloc(MEMORY[0x1E69DC9E0]) initWithDelegate:a1];
-      v13 = *(a1 + 272);
-      *(a1 + 272) = v12;
+      v12 = [objc_alloc(MEMORY[0x1E69DC9E0]) initWithDelegate:token];
+      v13 = *(token + 272);
+      *(token + 272) = v12;
 
-      v14 = objc_loadWeakRetained((a1 + 248));
-      [v14 addInteraction:*(a1 + 272)];
+      v14 = objc_loadWeakRetained((token + 248));
+      [v14 addInteraction:*(token + 272)];
 
-      v11 = *(a1 + 272);
+      v11 = *(token + 272);
     }
 
     v15 = v11;
@@ -1539,20 +1539,20 @@ LABEL_20:
   }
 }
 
-- (void)_triggerPopupToAddGraphForItem:(uint64_t)a1
+- (void)_triggerPopupToAddGraphForItem:(uint64_t)item
 {
   v42 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (item)
   {
-    v4 = *(a1 + 128);
-    *(a1 + 128) = 0;
+    v4 = *(item + 128);
+    *(item + 128) = 0;
 
-    [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:a1 selector:sel_openPopoverForAddingGraph object:0];
-    WeakRetained = objc_loadWeakRetained((a1 + 248));
-    v6 = [WeakRetained window];
+    [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:item selector:sel_openPopoverForAddingGraph object:0];
+    WeakRetained = objc_loadWeakRetained((item + 248));
+    window = [WeakRetained window];
 
-    if (!v6)
+    if (!window)
     {
       v18 = os_log_create("com.apple.pencilkit", "Math");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -1564,21 +1564,21 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    if ((*(a1 + 192) & 8) != 0)
+    if ((*(item + 192) & 8) != 0)
     {
       v43.origin.x = [(PKMathRecognitionItem *)v3 boundsForAnyEqualSign];
       x = v43.origin.x;
       y = v43.origin.y;
       width = v43.size.width;
       height = v43.size.height;
-      if (CGRectIsNull(v43) || (-[PKMathRecognitionViewController drawing](a1), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v3 isValidForDrawing:v11], v11, (v12 & 1) == 0))
+      if (CGRectIsNull(v43) || (-[PKMathRecognitionViewController drawing](item), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v3 isValidForDrawing:v11], v11, (v12 & 1) == 0))
       {
         v18 = os_log_create("com.apple.pencilkit", "Math");
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [v3 expression];
+          expression = [v3 expression];
           *buf = 138477827;
-          *&buf[4] = v19;
+          *&buf[4] = expression;
           _os_log_impl(&dword_1C7CCA000, v18, OS_LOG_TYPE_DEFAULT, "Expression is not valid anymore: %{private}@", buf, 0xCu);
         }
       }
@@ -1588,9 +1588,9 @@ LABEL_20:
         v13 = os_log_create("com.apple.pencilkit", "Math");
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [v3 expression];
+          expression2 = [v3 expression];
           *buf = 138477827;
-          *&buf[4] = v14;
+          *&buf[4] = expression2;
           _os_log_impl(&dword_1C7CCA000, v13, OS_LOG_TYPE_DEFAULT, "Open popover to graph: %{private}@", buf, 0xCu);
         }
 
@@ -1613,7 +1613,7 @@ LABEL_20:
         v36 = *buf;
         v15 = v3;
         v16 = v15;
-        if ((*(a1 + 192) & 2) != 0)
+        if ((*(item + 192) & 2) != 0)
         {
           v46.origin.x = [(PKMathRecognitionItem *)v15 boundsForAnyEqualSign];
           v20 = v46.origin.x;
@@ -1626,15 +1626,15 @@ LABEL_20:
           v47.size.width = v22;
           v47.size.height = v23;
           MidY = CGRectGetMidY(v47);
-          v25 = objc_loadWeakRetained((a1 + 240));
-          v26 = [v16 uuid];
-          v27 = [v25 mathViewController:a1 expressionIdentifiersForCompatibleGraphNearLocation:v26 expressionUUID:{v33, MidY}];
+          v25 = objc_loadWeakRetained((item + 240));
+          uuid = [v16 uuid];
+          v27 = [v25 mathViewController:item expressionIdentifiersForCompatibleGraphNearLocation:uuid expressionUUID:{v33, MidY}];
 
           if (v27)
           {
-            v28 = [v16 uuid];
-            v29 = [v28 UUIDString];
-            v17 = [v27 containsObject:v29] ^ 1;
+            uuid2 = [v16 uuid];
+            uUIDString = [uuid2 UUIDString];
+            v17 = [v27 containsObject:uUIDString] ^ 1;
           }
 
           else
@@ -1648,12 +1648,12 @@ LABEL_20:
           v17 = 0;
         }
 
-        v30 = objc_loadWeakRetained((a1 + 248));
-        v31 = [(PKMathContextMenuController *)x insertGraphControllerForItem:width tapBounds:height alsoShowAddToExisiting:PKMathContextMenuController view:v16 delegate:v17, v30, a1];
+        v30 = objc_loadWeakRetained((item + 248));
+        item = [(PKMathContextMenuController *)x insertGraphControllerForItem:width tapBounds:height alsoShowAddToExisiting:PKMathContextMenuController view:v16 delegate:v17, v30, item];
 
-        v32 = *(a1 + 280);
-        *(a1 + 280) = v31;
-        v18 = v31;
+        v32 = *(item + 280);
+        *(item + 280) = item;
+        v18 = item;
 
         if (v18)
         {
@@ -1666,11 +1666,11 @@ LABEL_21:
   }
 }
 
-- (void)setContextMenuController:(uint64_t)a1
+- (void)setContextMenuController:(uint64_t)controller
 {
-  if (a1)
+  if (controller)
   {
-    objc_storeStrong((a1 + 280), a2);
+    objc_storeStrong((controller + 280), a2);
   }
 }
 
@@ -1726,8 +1726,8 @@ LABEL_21:
         }
 
         expressionsWeCreatedGraphsFor = self->_expressionsWeCreatedGraphsFor;
-        v14 = [v3 uuid];
-        [(NSMutableSet *)expressionsWeCreatedGraphsFor addObject:v14];
+        uuid = [v3 uuid];
+        [(NSMutableSet *)expressionsWeCreatedGraphsFor addObject:uuid];
 
         [(PKMathRecognitionViewController *)self _triggerPopupToAddGraphForItem:v3];
         [(PKMathRecognitionViewController *)self _emitMathUsageForItem:v3 usage:2 recognitionLatency:(v9 * 1000.0) synthesisLatency:0 hadOldResult:0];
@@ -1736,39 +1736,39 @@ LABEL_21:
   }
 }
 
-- (void)_emitMathUsageForItem:(uint64_t)a3 usage:(uint64_t)a4 recognitionLatency:(uint64_t)a5 synthesisLatency:(uint64_t)a6 hadOldResult:
+- (void)_emitMathUsageForItem:(uint64_t)item usage:(uint64_t)usage recognitionLatency:(uint64_t)latency synthesisLatency:(uint64_t)synthesisLatency hadOldResult:
 {
   v25[4] = *MEMORY[0x1E69E9840];
   v11 = a2;
   v12 = v11;
-  if (a1)
+  if (self)
   {
-    v13 = [(PKMathRecognitionItem *)v11 hasAnyErrors];
-    v14 = [v12 isVerticalExpression];
+    hasAnyErrors = [(PKMathRecognitionItem *)v11 hasAnyErrors];
+    isVerticalExpression = [v12 isVerticalExpression];
     v24[0] = @"error_state";
-    v15 = [MEMORY[0x1E696AD98] numberWithBool:v13];
+    v15 = [MEMORY[0x1E696AD98] numberWithBool:hasAnyErrors];
     v25[0] = v15;
     v24[1] = @"event_type";
-    v16 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v16 = [MEMORY[0x1E696AD98] numberWithInteger:item];
     v25[1] = v16;
     v24[2] = @"expression_edit_after_result";
-    v17 = [MEMORY[0x1E696AD98] numberWithBool:a6];
+    v17 = [MEMORY[0x1E696AD98] numberWithBool:synthesisLatency];
     v25[2] = v17;
     v24[3] = @"expression_is_vertical";
-    v18 = [MEMORY[0x1E696AD98] numberWithBool:v14];
+    v18 = [MEMORY[0x1E696AD98] numberWithBool:isVerticalExpression];
     v25[3] = v18;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:4];
     v20 = [v19 mutableCopy];
 
-    if (a4 >= 1 && [(PKMathRecognitionItem *)v12 isRecentlyModified])
+    if (usage >= 1 && [(PKMathRecognitionItem *)v12 isRecentlyModified])
     {
-      v21 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+      v21 = [MEMORY[0x1E696AD98] numberWithInteger:usage];
       [v20 setObject:v21 forKeyedSubscript:@"recognition_latency"];
     }
 
-    if (a5 >= 1)
+    if (latency >= 1)
     {
-      v22 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+      v22 = [MEMORY[0x1E696AD98] numberWithInteger:latency];
       [v20 setObject:v22 forKeyedSubscript:@"synthesis_latency"];
     }
 
@@ -1802,12 +1802,12 @@ LABEL_21:
       {
         [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
         v7 = v6;
-        v8 = [(PKMathRecognitionItem *)v3 mostRecentStrokeTimestamp];
+        mostRecentStrokeTimestamp = [(PKMathRecognitionItem *)v3 mostRecentStrokeTimestamp];
         v9 = _PKSignpostLog();
         if (os_signpost_enabled(v9))
         {
           v11 = 134217984;
-          v12 = v7 - v8;
+          v12 = v7 - mostRecentStrokeTimestamp;
           _os_signpost_emit_with_name_impl(&dword_1C7CCA000, v9, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "MathRecognitionToHint", "%f", &v11, 0xCu);
         }
 
@@ -1825,41 +1825,41 @@ LABEL_21:
   }
 }
 
-- (void)_showDetectionAnimationForItem:(void *)a1
+- (void)_showDetectionAnimationForItem:(void *)item
 {
   v3 = a2;
-  if (a1)
+  if (item)
   {
-    objc_initWeak(&location, a1);
-    v4 = [(PKMathRecognitionViewController *)a1 tiledView];
-    v5 = [v3 strokes];
-    if ([v5 count] && objc_msgSend(v3, "shouldBeSolved") && -[PKMathRecognitionItem isRecentlyModified](v3))
+    objc_initWeak(&location, item);
+    tiledView = [(PKMathRecognitionViewController *)item tiledView];
+    strokes = [v3 strokes];
+    if ([strokes count] && objc_msgSend(v3, "shouldBeSolved") && -[PKMathRecognitionItem isRecentlyModified](v3))
     {
-      v6 = [(PKMathRecognitionViewController *)a1 drawing];
+      drawing = [(PKMathRecognitionViewController *)item drawing];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __66__PKMathRecognitionViewController__showDetectionAnimationForItem___block_invoke;
       v15[3] = &unk_1E82DAF38;
       objc_copyWeak(&v17, &location);
-      v15[4] = a1;
-      v16 = v4;
-      v7 = v5;
-      v8 = v6;
+      v15[4] = item;
+      v16 = tiledView;
+      v7 = strokes;
+      v8 = drawing;
       v9 = v15;
-      v10 = [(PKMathRecognitionViewController *)a1 tiledView];
+      tiledView2 = [(PKMathRecognitionViewController *)item tiledView];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __75__PKMathRecognitionViewController__maskImageForStrokes_drawing_completion___block_invoke;
       v19[3] = &unk_1E82DAF10;
-      v20 = v10;
+      v20 = tiledView2;
       v11 = v7;
       v21 = v11;
       v12 = v8;
       v22 = v12;
       v13 = v9;
       v23 = v13;
-      v14 = v10;
-      [(PKMathRecognitionViewController *)a1 _imageViewForStrokes:v11 drawing:v12 completion:v19];
+      v14 = tiledView2;
+      [(PKMathRecognitionViewController *)item _imageViewForStrokes:v11 drawing:v12 completion:v19];
 
       objc_destroyWeak(&v17);
     }
@@ -1868,29 +1868,29 @@ LABEL_21:
   }
 }
 
-- (void)_triggerPopupToSolveItem:(char)a3 supportCopy:
+- (void)_triggerPopupToSolveItem:(char)item supportCopy:
 {
   v30 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 120);
-    *(a1 + 120) = 0;
+    v6 = *(self + 120);
+    *(self + 120) = 0;
 
-    [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:a1 selector:sel_openPopoverForHint object:0];
-    WeakRetained = objc_loadWeakRetained((a1 + 248));
-    v8 = [WeakRetained window];
+    [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel_openPopoverForHint object:0];
+    WeakRetained = objc_loadWeakRetained((self + 248));
+    window = [WeakRetained window];
 
     v9 = os_log_create("com.apple.pencilkit", "Math");
     v10 = v9;
-    if (v8)
+    if (window)
     {
       v11 = v9;
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v5 expression];
+        expression = [v5 expression];
         LODWORD(buf.a) = 138477827;
-        *(&buf.a + 4) = v12;
+        *(&buf.a + 4) = expression;
         _os_log_impl(&dword_1C7CCA000, v11, OS_LOG_TYPE_DEFAULT, "Trigger popover to solve: %{private}@", &buf, 0xCu);
       }
 
@@ -1899,14 +1899,14 @@ LABEL_21:
       y = v31.origin.y;
       width = v31.size.width;
       height = v31.size.height;
-      if (CGRectIsNull(v31) || (-[PKMathRecognitionViewController drawing](a1), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v5 isValidForDrawing:v17], v17, (v18 & 1) == 0))
+      if (CGRectIsNull(v31) || (-[PKMathRecognitionViewController drawing](self), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v5 isValidForDrawing:v17], v17, (v18 & 1) == 0))
       {
         v10 = os_log_create("com.apple.pencilkit", "Math");
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v27 = [v5 expression];
+          expression2 = [v5 expression];
           LODWORD(buf.a) = 138477827;
-          *(&buf.a + 4) = v27;
+          *(&buf.a + 4) = expression2;
           _os_log_impl(&dword_1C7CCA000, v10, OS_LOG_TYPE_DEFAULT, "Expression is not valid anymore: %{private}@", &buf, 0xCu);
         }
       }
@@ -1929,11 +1929,11 @@ LABEL_21:
         v34.size.width = v21;
         v34.size.height = v22;
         MidY = CGRectGetMidY(v34);
-        v24 = objc_loadWeakRetained((a1 + 248));
-        v25 = [(PKMathContextMenuController *)x mathSolvingControllerForItem:width tapBounds:height supportCopy:PKMathContextMenuController view:v5 delegate:a3, v24, a1];
+        v24 = objc_loadWeakRetained((self + 248));
+        v25 = [(PKMathContextMenuController *)x mathSolvingControllerForItem:width tapBounds:height supportCopy:PKMathContextMenuController view:v5 delegate:item, v24, self];
 
-        v26 = *(a1 + 280);
-        *(a1 + 280) = v25;
+        v26 = *(self + 280);
+        *(self + 280) = v25;
         v10 = v25;
 
         if (v10)
@@ -1951,7 +1951,7 @@ LABEL_21:
   }
 }
 
-- (uint64_t)_handleSingleTapAtDrawingLocation:(int)a3 fromHover:(CGFloat)a4 fromTapStroke:(CGFloat)a5
+- (uint64_t)_handleSingleTapAtDrawingLocation:(int)location fromHover:(CGFloat)hover fromTapStroke:(CGFloat)stroke
 {
   v223 = *MEMORY[0x1E69E9840];
   if (!result)
@@ -1965,13 +1965,13 @@ LABEL_21:
     return 0;
   }
 
-  v8 = [(PKMathRecognitionViewController *)v7 tiledView];
-  v9 = [v8 ink];
+  tiledView = [(PKMathRecognitionViewController *)v7 tiledView];
+  v9 = [tiledView ink];
   if ([v9 _isEraserInk])
   {
 
     result = 0;
-    if (a2 & 1) != 0 || (a3)
+    if (a2 & 1) != 0 || (location)
     {
       return result;
     }
@@ -2025,8 +2025,8 @@ LABEL_10:
   v213 = 0u;
   v214 = 0u;
   v215 = 0u;
-  v11 = [*(v7 + 8) allValues];
-  v12 = [v11 countByEnumeratingWithState:&v212 objects:v221 count:16];
+  allValues = [*(v7 + 8) allValues];
+  v12 = [allValues countByEnumeratingWithState:&v212 objects:v221 count:16];
   v191 = v7;
   v187 = a2;
   if (!v12)
@@ -2042,32 +2042,32 @@ LABEL_10:
   v192 = 0;
   v14 = 0;
   v15 = a + a;
-  v16 = a2 | a3;
+  v16 = a2 | location;
   v17 = *v213;
   v18 = a * -6.0;
   v19 = v15 + v15;
   v188 = *v213;
-  v189 = v11;
+  v189 = allValues;
   while (2)
   {
     for (i = 0; i != v13; ++i)
     {
       if (*v213 != v17)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(allValues);
       }
 
       v21 = *(*(&v212 + 1) + 8 * i);
-      v22 = [(PKMathRecognitionViewController *)v7 drawing];
-      v23 = [v21 isValidForDrawing:v22];
+      drawing = [(PKMathRecognitionViewController *)v7 drawing];
+      v23 = [v21 isValidForDrawing:drawing];
 
       if (!v23)
       {
         continue;
       }
 
-      v24 = [v21 tappableStrokes];
-      [PKDrawing _boundingBoxForStrokeArray:v24];
+      tappableStrokes = [v21 tappableStrokes];
+      [PKDrawing _boundingBoxForStrokeArray:tappableStrokes];
       x = v25;
       y = v27;
       width = v29;
@@ -2114,8 +2114,8 @@ LABEL_22:
         v228.origin.y = y;
         v228.size.width = width;
         v228.size.height = height;
-        v224.y = a5;
-        v224.x = a4;
+        v224.y = stroke;
+        v224.x = hover;
         if (CGRectContainsPoint(v228, v224))
         {
           v56 = v21;
@@ -2131,8 +2131,8 @@ LABEL_22:
         v211 = 0u;
         v208 = 0u;
         v209 = 0u;
-        v39 = [v21 scrubbableVariables];
-        v40 = [v39 countByEnumeratingWithState:&v208 objects:v220 count:16];
+        scrubbableVariables = [v21 scrubbableVariables];
+        v40 = [scrubbableVariables countByEnumeratingWithState:&v208 objects:v220 count:16];
         if (v40)
         {
           v41 = v40;
@@ -2144,7 +2144,7 @@ LABEL_29:
           {
             if (*v209 != v42)
             {
-              objc_enumerationMutation(v39);
+              objc_enumerationMutation(scrubbableVariables);
             }
 
             v44 = *(*(&v208 + 1) + 8 * v43);
@@ -2181,8 +2181,8 @@ LABEL_29:
             v231.origin.y = v49;
             v231.size.width = v51;
             v231.size.height = v53;
-            v225.y = a5;
-            v225.x = a4;
+            v225.y = stroke;
+            v225.x = hover;
             if (CGRectContainsPoint(v231, v225))
             {
               break;
@@ -2190,7 +2190,7 @@ LABEL_29:
 
             if (v41 == ++v43)
             {
-              v54 = [v39 countByEnumeratingWithState:&v208 objects:v220 count:16];
+              v54 = [scrubbableVariables countByEnumeratingWithState:&v208 objects:v220 count:16];
               v41 = v54;
               if (!v54)
               {
@@ -2209,12 +2209,12 @@ LABEL_29:
 LABEL_45:
           v7 = v191;
           v17 = v188;
-          v11 = v189;
+          allValues = v189;
         }
       }
     }
 
-    v13 = [v11 countByEnumeratingWithState:&v212 objects:v221 count:16];
+    v13 = [allValues countByEnumeratingWithState:&v212 objects:v221 count:16];
     if (v13)
     {
       continue;
@@ -2247,17 +2247,17 @@ LABEL_55:
   }
 
 LABEL_60:
-  pointa = vaddq_f64(v185, vmlaq_n_f64(vmulq_n_f64(v184, a5), v186, a4));
-  v60 = [(PKMathRecognitionViewController *)v7 overlayDrawingController];
+  pointa = vaddq_f64(v185, vmlaq_n_f64(vmulq_n_f64(v184, stroke), v186, hover));
+  overlayDrawingController = [(PKMathRecognitionViewController *)v7 overlayDrawingController];
   v61 = pointa.y;
-  v62 = [(PKOverlayDrawingController *)v60 tokenAtLocation:pointa.y];
+  v62 = [(PKOverlayDrawingController *)overlayDrawingController tokenAtLocation:pointa.y];
 
   if (v62)
   {
-    v63 = [v62 errors];
-    v64 = [v63 firstObject];
-    v65 = [v64 errorString];
-    v66 = [v65 length];
+    errors = [v62 errors];
+    firstObject = [errors firstObject];
+    errorString = [firstObject errorString];
+    v66 = [errorString length];
 
     if (v66)
     {
@@ -2291,22 +2291,22 @@ LABEL_60:
         v61 = pointa.y;
       }
 
-      v73 = [v62 errors];
-      v74 = [v73 firstObject];
-      v75 = [v74 errorString];
+      errors2 = [v62 errors];
+      firstObject2 = [errors2 firstObject];
+      errorString2 = [firstObject2 errorString];
 
-      v76 = [v62 errors];
-      v77 = [v76 firstObject];
-      v78 = [v77 errorReasonString];
+      errors3 = [v62 errors];
+      firstObject3 = [errors3 firstObject];
+      errorReasonString = [firstObject3 errorReasonString];
 
-      v79 = [v62 item];
+      item = [v62 item];
       [v62 bounds];
       v81 = v80;
       v83 = v82;
       v85 = v84;
       v87 = v86;
-      v88 = [(PKMathRecognitionViewController *)v70 view];
-      v89 = [(PKMathContextMenuController *)v81 mathErrorControllerForItem:v83 token:v85 tapBounds:v87 errorString:PKMathContextMenuController errorReasonString:v79 view:v62 delegate:v75, v78, v88, v70];
+      view = [(PKMathRecognitionViewController *)v70 view];
+      v89 = [(PKMathContextMenuController *)v81 mathErrorControllerForItem:v83 token:v85 tapBounds:v87 errorString:PKMathContextMenuController errorReasonString:item view:v62 delegate:errorString2, errorReasonString, view, v70];
 
       [(PKMathRecognitionViewController *)v70 setContextMenuController:v89];
       if (v89)
@@ -2323,8 +2323,8 @@ LABEL_60:
 
     if ([v62 type] == 4)
     {
-      v71 = [v62 alternatives];
-      v72 = [v71 count];
+      alternatives = [v62 alternatives];
+      v72 = [alternatives count];
 
       if (v72)
       {
@@ -2370,25 +2370,25 @@ LABEL_116:
         v128 = os_log_create("com.apple.pencilkit", "Math");
         if (os_log_type_enabled(v128, OS_LOG_TYPE_DEFAULT))
         {
-          v129 = [v57 expression];
+          expression = [v57 expression];
           LODWORD(buf.a) = 138477827;
-          *(&buf.a + 4) = v129;
+          *(&buf.a + 4) = expression;
           _os_log_impl(&dword_1C7CCA000, v128, OS_LOG_TYPE_DEFAULT, "Tapped on expression: %{private}@", &buf, 0xCu);
         }
 
         [v191 hideMathFloatingLabelView];
-        v92 = [v57 expressionToPresent];
-        if ([v92 length])
+        expressionToPresent = [v57 expressionToPresent];
+        if ([expressionToPresent length])
         {
           if ([(PKMathRecognitionItem *)v57 hasAnyErrorsOrAlternatives])
           {
-            v130 = [(PKMathRecognitionViewController *)v191 overlayDrawingController];
-            v131 = [v57 uuid];
-            v132 = [(PKOverlayDrawingController *)v130 hasVisibleTokensForItem:v131];
+            overlayDrawingController2 = [(PKMathRecognitionViewController *)v191 overlayDrawingController];
+            uuid = [v57 uuid];
+            v132 = [(PKOverlayDrawingController *)overlayDrawingController2 hasVisibleTokensForItem:uuid];
 
             if (!v132)
             {
-              v133 = [(PKMathRecognitionViewController *)v191 overlayDrawingController];
+              overlayDrawingController3 = [(PKMathRecognitionViewController *)v191 overlayDrawingController];
               if (v57)
               {
                 v134 = *(v57 + 104);
@@ -2400,13 +2400,13 @@ LABEL_116:
               }
 
               v135 = v134;
-              [(PKOverlayDrawingController *)v133 setTokens:v135 item:v57];
+              [(PKOverlayDrawingController *)overlayDrawingController3 setTokens:v135 item:v57];
             }
           }
 
           v136 = *(v191 + 16);
-          v137 = [v57 uuid];
-          v138 = [v136 objectForKeyedSubscript:v137];
+          uuid2 = [v57 uuid];
+          v138 = [v136 objectForKeyedSubscript:uuid2];
 
           if (([v57 shouldSolveMathFlagIsSet] & 1) == 0 && objc_msgSend(v57, "shouldBeSolved") && objc_msgSend(v138, "length"))
           {
@@ -2416,9 +2416,9 @@ LABEL_116:
 
           else
           {
-            v139 = [(PKMathRecognitionViewController *)v191 overlayDrawingController];
-            v140 = [v57 uuid];
-            v141 = [(PKOverlayDrawingController *)v139 existingViewForUUID:v140];
+            overlayDrawingController4 = [(PKMathRecognitionViewController *)v191 overlayDrawingController];
+            uuid3 = [v57 uuid];
+            v141 = [(PKOverlayDrawingController *)overlayDrawingController4 existingViewForUUID:uuid3];
 
             v193 = v57;
             if (v138 && [v57 shouldSolveMathFlagIsSet])
@@ -2437,25 +2437,25 @@ LABEL_116:
 
               if ([v57 isVerticalExpression])
               {
-                v143 = [(PKMathRecognitionItem *)v57 boundsForVerticalExpressionLine];
+                boundsForVerticalExpressionLine = [(PKMathRecognitionItem *)v57 boundsForVerticalExpressionLine];
               }
 
               else
               {
-                v143 = [(PKMathRecognitionItem *)v57 boundsForAnyEqualSign];
+                boundsForVerticalExpressionLine = [(PKMathRecognitionItem *)v57 boundsForAnyEqualSign];
               }
 
-              v179 = v143;
+              v179 = boundsForVerticalExpressionLine;
               v180 = v144;
               v181 = v145;
               v182 = v146;
-              v183 = [(PKMathRecognitionViewController *)v191 view];
-              v155 = [(PKMathContextMenuController *)v179 mathResultControllerForItem:v180 tapBounds:v181 view:v182 delegate:PKMathContextMenuController, v57, v183, v191];
+              view2 = [(PKMathRecognitionViewController *)v191 view];
+              v191 = [(PKMathContextMenuController *)v179 mathResultControllerForItem:v180 tapBounds:v181 view:v182 delegate:PKMathContextMenuController, v57, view2, v191];
 
-              objc_storeStrong((v191 + 280), v155);
-              if (v155)
+              objc_storeStrong((v191 + 280), v191);
+              if (v191)
               {
-                [v155[2] _presentMenuAtLocation:pointa];
+                [v191[2] _presentMenuAtLocation:pointa];
               }
 
               v148 = v62;
@@ -2463,33 +2463,33 @@ LABEL_116:
 
             else
             {
-              v147 = [(PKMathRecognitionViewController *)v191 overlayDrawingController];
-              v148 = [(PKOverlayDrawingController *)v147 tokenAtLocation:pointa.y];
+              overlayDrawingController5 = [(PKMathRecognitionViewController *)v191 overlayDrawingController];
+              v148 = [(PKOverlayDrawingController *)overlayDrawingController5 tokenAtLocation:pointa.y];
 
               if (v148 && ([v148 errors], v149 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v149, "firstObject"), v150 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v150, "errorString"), v151 = objc_claimAutoreleasedReturnValue(), v152 = objc_msgSend(v151, "length"), v151, v150, v149, v152))
               {
                 v196 = v141;
-                v153 = [v148 errors];
-                v154 = [v153 firstObject];
-                v155 = [v154 errorString];
+                errors4 = [v148 errors];
+                firstObject4 = [errors4 firstObject];
+                v191 = [firstObject4 errorString];
 
-                v156 = [v148 errors];
-                v157 = [v156 firstObject];
-                v158 = [v157 errorReasonString];
+                errors5 = [v148 errors];
+                firstObject5 = [errors5 firstObject];
+                errorReasonString2 = [firstObject5 errorReasonString];
 
-                v159 = [v148 item];
+                item2 = [v148 item];
                 [v148 bounds];
                 v161 = v160;
                 v163 = v162;
                 v165 = v164;
                 v167 = v166;
-                v168 = [(PKMathRecognitionViewController *)v191 view];
-                v169 = [(PKMathContextMenuController *)v161 mathErrorControllerForItem:v163 token:v165 tapBounds:v167 errorString:PKMathContextMenuController errorReasonString:v159 view:v148 delegate:v155, v158, v168, v191];
+                view3 = [(PKMathRecognitionViewController *)v191 view];
+                v1912 = [(PKMathContextMenuController *)v161 mathErrorControllerForItem:v163 token:v165 tapBounds:v167 errorString:PKMathContextMenuController errorReasonString:item2 view:v148 delegate:v191, errorReasonString2, view3, v191];
 
-                objc_storeStrong((v191 + 280), v169);
-                if (v169)
+                objc_storeStrong((v191 + 280), v1912);
+                if (v1912)
                 {
-                  [v169[2] _presentMenuAtLocation:pointa];
+                  [v1912[2] _presentMenuAtLocation:pointa];
                 }
 
                 v141 = v196;
@@ -2499,25 +2499,25 @@ LABEL_116:
               {
                 if ([v193 isVerticalExpression])
                 {
-                  v170 = [(PKMathRecognitionItem *)v193 boundsForVerticalExpressionLine];
+                  boundsForVerticalExpressionLine2 = [(PKMathRecognitionItem *)v193 boundsForVerticalExpressionLine];
                 }
 
                 else
                 {
-                  v170 = [(PKMathRecognitionItem *)v193 boundsForAnyEqualSign];
+                  boundsForVerticalExpressionLine2 = [(PKMathRecognitionItem *)v193 boundsForAnyEqualSign];
                 }
 
-                v174 = v170;
+                v174 = boundsForVerticalExpressionLine2;
                 v175 = v171;
                 v176 = v172;
                 v177 = v173;
-                v178 = [(PKMathRecognitionViewController *)v191 view];
-                v155 = [(PKMathContextMenuController *)v174 mathCopyControllerForItem:v175 tapBounds:v176 view:v177 delegate:PKMathContextMenuController, v193, v178, v191];
+                view4 = [(PKMathRecognitionViewController *)v191 view];
+                v191 = [(PKMathContextMenuController *)v174 mathCopyControllerForItem:v175 tapBounds:v176 view:v177 delegate:PKMathContextMenuController, v193, view4, v191];
 
-                objc_storeStrong((v191 + 280), v155);
-                if (v155)
+                objc_storeStrong((v191 + 280), v191);
+                if (v191)
                 {
-                  [v155[2] _presentMenuAtLocation:pointa];
+                  [v191[2] _presentMenuAtLocation:pointa];
                 }
               }
             }
@@ -2541,8 +2541,8 @@ LABEL_153:
 
     else
     {
-      v126 = [(PKMathRecognitionItem *)v57 graphableVariables];
-      if (![v126 count])
+      graphableVariables = [(PKMathRecognitionItem *)v57 graphableVariables];
+      if (![graphableVariables count])
       {
 
         goto LABEL_116;
@@ -2564,10 +2564,10 @@ LABEL_153:
   v203 = 0u;
   v200 = 0u;
   v201 = 0u;
-  v91 = [(PKMathRecognitionViewController *)v191 overlayDrawingController];
-  v92 = [(PKOverlayDrawingController *)v91 allViews];
+  overlayDrawingController6 = [(PKMathRecognitionViewController *)v191 overlayDrawingController];
+  expressionToPresent = [(PKOverlayDrawingController *)overlayDrawingController6 allViews];
 
-  v93 = [v92 countByEnumeratingWithState:&v200 objects:v219 count:16];
+  v93 = [expressionToPresent countByEnumeratingWithState:&v200 objects:v219 count:16];
   if (!v93)
   {
     goto LABEL_128;
@@ -2582,7 +2582,7 @@ LABEL_153:
 LABEL_90:
     if (*v201 != v96)
     {
-      objc_enumerationMutation(v92);
+      objc_enumerationMutation(expressionToPresent);
     }
 
     v98 = *(*(&v200 + 1) + 8 * v97);
@@ -2592,7 +2592,7 @@ LABEL_90:
 LABEL_97:
       if (v94 == ++v97)
       {
-        v101 = [v92 countByEnumeratingWithState:&v200 objects:v219 count:16];
+        v101 = [expressionToPresent countByEnumeratingWithState:&v200 objects:v219 count:16];
         v94 = v101;
         if (!v101)
         {
@@ -2629,8 +2629,8 @@ LABEL_96:
   v106 = v105;
   v108 = v107;
   v110 = v109;
-  v111 = [(PKMathRecognitionViewController *)v191 view];
-  [v98 convertRect:v111 toView:{v104, v106, v108, v110}];
+  view5 = [(PKMathRecognitionViewController *)v191 view];
+  [v98 convertRect:view5 toView:{v104, v106, v108, v110}];
   v113 = v112;
   v115 = v114;
   v117 = v116;
@@ -2649,13 +2649,13 @@ LABEL_96:
   v121 = v237.origin.y;
   v122 = v237.size.width;
   v123 = v237.size.height;
-  v124 = [(PKMathRecognitionViewController *)v191 view];
-  v125 = [(PKMathContextMenuController *)v120 mathResultControllerForItem:v121 tapBounds:v122 view:v123 delegate:PKMathContextMenuController, v102, v124, v191];
+  view6 = [(PKMathRecognitionViewController *)v191 view];
+  v1913 = [(PKMathContextMenuController *)v120 mathResultControllerForItem:v121 tapBounds:v122 view:v123 delegate:PKMathContextMenuController, v102, view6, v191];
 
-  objc_storeStrong((v191 + 280), v125);
-  if (v125)
+  objc_storeStrong((v191 + 280), v1913);
+  if (v1913)
   {
-    [v125[2] _presentMenuAtLocation:pointa];
+    [v1913[2] _presentMenuAtLocation:pointa];
   }
 
   v217 = 1;
@@ -2668,16 +2668,16 @@ LABEL_112:
   return v217;
 }
 
-- (void)didEraseStrokes:(id)a3
+- (void)didEraseStrokes:(id)strokes
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v4, "count")}];
+  strokesCopy = strokes;
+  v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(strokesCopy, "count")}];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = v4;
+  v6 = strokesCopy;
   v7 = [v6 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v7)
   {
@@ -2692,8 +2692,8 @@ LABEL_112:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v28 + 1) + 8 * i) _strokeUUID];
-        [v5 addObject:v11];
+        _strokeUUID = [*(*(&v28 + 1) + 8 * i) _strokeUUID];
+        [v5 addObject:_strokeUUID];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -2714,8 +2714,8 @@ LABEL_112:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v12 = [(NSMutableDictionary *)self->_currentMathItemsLookup allValues];
-  v13 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  allValues = [(NSMutableDictionary *)self->_currentMathItemsLookup allValues];
+  v13 = [allValues countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (!v13)
   {
     goto LABEL_20;
@@ -2729,16 +2729,16 @@ LABEL_112:
     {
       if (*v25 != v15)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(allValues);
       }
 
       v17 = *(*(&v24 + 1) + 8 * j);
       expressionsWithActiveAnimations = self->_expressionsWithActiveAnimations;
-      v19 = [v17 uuid];
-      if (([(NSMutableSet *)expressionsWithActiveAnimations containsObject:v19]& 1) == 0)
+      uuid = [v17 uuid];
+      if (([(NSMutableSet *)expressionsWithActiveAnimations containsObject:uuid]& 1) == 0)
       {
-        v20 = [(PKMathRecognitionItem *)v17 strokeUUIDs];
-        v21 = [v5 intersectsSet:v20];
+        strokeUUIDs = [(PKMathRecognitionItem *)v17 strokeUUIDs];
+        v21 = [v5 intersectsSet:strokeUUIDs];
 
         if (!v21)
         {
@@ -2746,12 +2746,12 @@ LABEL_112:
         }
 
         overlayDrawingController = self->_overlayDrawingController;
-        v19 = [v17 uuid];
-        [(PKOverlayDrawingController *)&overlayDrawingController->super.isa removeViewForUUID:v19 animated:1];
+        uuid = [v17 uuid];
+        [(PKOverlayDrawingController *)&overlayDrawingController->super.isa removeViewForUUID:uuid animated:1];
       }
     }
 
-    v14 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
+    v14 = [allValues countByEnumeratingWithState:&v24 objects:v32 count:16];
   }
 
   while (v14);
@@ -2768,8 +2768,8 @@ LABEL_22:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = [(NSMutableDictionary *)self->_currentMathItemsLookup allValues];
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  allValues = [(NSMutableDictionary *)self->_currentMathItemsLookup allValues];
+  v4 = [allValues countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v4)
   {
     v6 = v4;
@@ -2782,17 +2782,17 @@ LABEL_22:
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
         currentResultsLookup = self->_currentResultsLookup;
-        v11 = [v9 uuid];
-        v12 = [(NSMutableDictionary *)currentResultsLookup objectForKeyedSubscript:v11];
+        uuid = [v9 uuid];
+        v12 = [(NSMutableDictionary *)currentResultsLookup objectForKeyedSubscript:uuid];
 
-        v13 = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
-        v14 = [v9 uuid];
-        v15 = [(PKOverlayDrawingController *)v13 existingViewForUUID:v14];
+        overlayDrawingController = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
+        uuid2 = [v9 uuid];
+        v15 = [(PKOverlayDrawingController *)overlayDrawingController existingViewForUUID:uuid2];
 
         if ([v12 length])
         {
@@ -2801,9 +2801,9 @@ LABEL_22:
             v17 = os_log_create("com.apple.pencilkit", "Math");
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
             {
-              v18 = [v9 expression];
+              expression = [v9 expression];
               *buf = v19;
-              v25 = v18;
+              v25 = expression;
               _os_log_impl(&dword_1C7CCA000, v17, OS_LOG_TYPE_DEFAULT, "Regenerating missing results view for: %{private}@", buf, 0xCu);
             }
 
@@ -2812,24 +2812,24 @@ LABEL_22:
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)eraserMovedToLocation:(CGPoint)a3
+- (void)eraserMovedToLocation:(CGPoint)location
 {
   v17 = *MEMORY[0x1E69E9840];
   if ((*(&self->_delegateFlags + 1) & 0x80) != 0)
   {
-    y = a3.y;
-    x = a3.x;
+    y = location.y;
+    x = location.x;
     [(PKMathRecognitionViewController *)buf drawingTransform];
     v13 = vaddq_f64(v16, vmlaq_n_f64(vmulq_n_f64(v15, y), *buf, x));
-    v4 = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
-    v5 = [(PKOverlayDrawingController *)v4 drawingViewAtLocation:v13.f64[1]];
+    overlayDrawingController = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
+    v5 = [(PKOverlayDrawingController *)overlayDrawingController drawingViewAtLocation:v13.f64[1]];
 
     if (v5)
     {
@@ -2843,9 +2843,9 @@ LABEL_22:
           v9 = os_log_create("com.apple.pencilkit", "Math");
           if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
           {
-            v10 = [v8 expression];
+            expression = [v8 expression];
             *buf = 138477827;
-            *&buf[4] = v10;
+            *&buf[4] = expression;
             _os_log_impl(&dword_1C7CCA000, v9, OS_LOG_TYPE_DEFAULT, "Remove result for: %{private}@", buf, 0xCu);
           }
 
@@ -2866,38 +2866,38 @@ LABEL_11:
   }
 }
 
-- (void)_commitSetShouldSolve:(uint64_t)a3 undoable:(void *)a4 item:
+- (void)_commitSetShouldSolve:(uint64_t)solve undoable:(void *)undoable item:
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = v7;
-  if (a1 && (*(a1 + 193) & 0x80) != 0)
+  undoableCopy = undoable;
+  v8 = undoableCopy;
+  if (self && (*(self + 193) & 0x80) != 0)
   {
-    v9 = [(PKMathRecognitionItem *)v7 heroStroke];
-    if (v9)
+    heroStroke = [(PKMathRecognitionItem *)undoableCopy heroStroke];
+    if (heroStroke)
     {
       v10 = os_log_create("com.apple.pencilkit", "Math");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [v8 expression];
+        expression = [v8 expression];
         v15[0] = 67109379;
         v15[1] = a2;
         v16 = 2113;
-        v17 = v11;
+        v17 = expression;
         _os_log_impl(&dword_1C7CCA000, v10, OS_LOG_TYPE_DEFAULT, "Commit set should solve: %{BOOL}d, for: %{private}@", v15, 0x12u);
       }
 
-      v12 = *(a1 + 192);
-      WeakRetained = objc_loadWeakRetained((a1 + 240));
+      v12 = *(self + 192);
+      WeakRetained = objc_loadWeakRetained((self + 240));
       v14 = WeakRetained;
       if ((v12 & 0x4000) != 0)
       {
-        [WeakRetained mathViewController:a1 setShouldSolve:a2 item:v8 heroStroke:v9 flag:0x20000000000 undoable:a3];
+        [WeakRetained mathViewController:self setShouldSolve:a2 item:v8 heroStroke:heroStroke flag:0x20000000000 undoable:solve];
       }
 
       else
       {
-        [WeakRetained mathViewController:a1 setShouldSolve:a2 item:v8 heroStroke:v9 flag:0x20000000000];
+        [WeakRetained mathViewController:self setShouldSolve:a2 item:v8 heroStroke:heroStroke flag:0x20000000000];
       }
     }
   }
@@ -2907,8 +2907,8 @@ LABEL_11:
 {
   [(PKMathRecognitionViewController *)self cancelOpenPopoverForHint];
   [(PKMathRecognitionViewController *)self cancelOpenPopoverForAddingGraph];
-  v3 = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
-  [(PKOverlayDrawingController *)v3 didBeginDrawing];
+  overlayDrawingController = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
+  [(PKOverlayDrawingController *)overlayDrawingController didBeginDrawing];
 }
 
 - (void)dismissPopovers
@@ -3014,19 +3014,19 @@ LABEL_16:
   }
 }
 
-- (id)hitTest:(CGPoint)a3
+- (id)hitTest:(CGPoint)test
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(PKCalculateScrubberController *)self->_scrubberController activeScrubberView];
-  if (v6)
+  y = test.y;
+  x = test.x;
+  activeScrubberView = [(PKCalculateScrubberController *)self->_scrubberController activeScrubberView];
+  if (activeScrubberView)
   {
     WeakRetained = objc_loadWeakRetained(&self->_parentView);
-    [WeakRetained convertPoint:v6 toView:{x, y}];
+    [WeakRetained convertPoint:activeScrubberView toView:{x, y}];
     v9 = v8;
     v11 = v10;
 
-    v12 = [v6 hitTest:0 withEvent:{v9, v11}];
+    v12 = [activeScrubberView hitTest:0 withEvent:{v9, v11}];
     v13 = v12;
     if (v12)
     {
@@ -3041,7 +3041,7 @@ LABEL_16:
       block[3] = &unk_1E82D7148;
       block[4] = self;
       dispatch_async(MEMORY[0x1E69E96A0], block);
-      v14 = v6;
+      v14 = activeScrubberView;
     }
 
     v15 = v14;
@@ -3055,17 +3055,17 @@ LABEL_16:
   return v15;
 }
 
-- (id)adjustedSelectedStrokes:(id)a3 selectionPath:(id)a4
+- (id)adjustedSelectedStrokes:(id)strokes selectionPath:(id)path
 {
   v75 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  strokesCopy = strokes;
+  pathCopy = path;
   v8 = [MEMORY[0x1E695DFA8] set];
-  if ([v7 CGPath])
+  if ([pathCopy CGPath])
   {
-    v58 = v7;
-    v59 = v6;
-    [v7 bounds];
+    v58 = pathCopy;
+    v59 = strokesCopy;
+    [pathCopy bounds];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -3077,16 +3077,16 @@ LABEL_16:
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v17 = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
-    v18 = [(PKOverlayDrawingController *)v17 allViews];
+    overlayDrawingController = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
+    allViews = [(PKOverlayDrawingController *)overlayDrawingController allViews];
 
-    v19 = [v18 countByEnumeratingWithState:&v67 objects:v74 count:16];
+    v19 = [allViews countByEnumeratingWithState:&v67 objects:v74 count:16];
     if (v19)
     {
       v20 = v19;
       v62 = *v68;
-      v60 = v18;
-      v61 = self;
+      v60 = allViews;
+      selfCopy = self;
       do
       {
         v21 = 0;
@@ -3094,23 +3094,23 @@ LABEL_16:
         {
           if (*v68 != v62)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(allViews);
           }
 
           v22 = *(*(&v67 + 1) + 8 * v21);
-          v23 = [(PKOverlayDrawingView *)v22 imageView];
+          imageView = [(PKOverlayDrawingView *)v22 imageView];
 
-          if (v23)
+          if (imageView)
           {
-            v24 = [(PKMathRecognitionViewController *)&self->super.isa view];
-            v25 = [(PKOverlayDrawingView *)v22 imageView];
-            [v25 bounds];
+            view = [(PKMathRecognitionViewController *)&self->super.isa view];
+            imageView2 = [(PKOverlayDrawingView *)v22 imageView];
+            [imageView2 bounds];
             v27 = v26;
             v29 = v28;
             v31 = v30;
             v33 = v32;
-            v34 = [(PKOverlayDrawingView *)v22 imageView];
-            [v24 convertRect:v34 fromView:{v27, v29, v31, v33}];
+            imageView3 = [(PKOverlayDrawingView *)v22 imageView];
+            [view convertRect:imageView3 fromView:{v27, v29, v31, v33}];
             v36 = v35;
             v38 = v37;
             v40 = v39;
@@ -3149,8 +3149,8 @@ LABEL_16:
                   v66 = 0u;
                   v63 = 0u;
                   v64 = 0u;
-                  v47 = [v45 strokes];
-                  v48 = [v47 countByEnumeratingWithState:&v63 objects:v73 count:16];
+                  strokes = [v45 strokes];
+                  v48 = [strokes countByEnumeratingWithState:&v63 objects:v73 count:16];
                   if (v48)
                   {
                     v49 = v48;
@@ -3161,21 +3161,21 @@ LABEL_16:
                       {
                         if (*v64 != v50)
                         {
-                          objc_enumerationMutation(v47);
+                          objc_enumerationMutation(strokes);
                         }
 
-                        v52 = [*(*(&v63 + 1) + 8 * i) _strokeUUID];
-                        [v8 addObject:v52];
+                        _strokeUUID = [*(*(&v63 + 1) + 8 * i) _strokeUUID];
+                        [v8 addObject:_strokeUUID];
                       }
 
-                      v49 = [v47 countByEnumeratingWithState:&v63 objects:v73 count:16];
+                      v49 = [strokes countByEnumeratingWithState:&v63 objects:v73 count:16];
                     }
 
                     while (v49);
                   }
 
-                  self = v61;
-                  v18 = v60;
+                  self = selfCopy;
+                  allViews = v60;
                 }
               }
             }
@@ -3185,28 +3185,28 @@ LABEL_16:
         }
 
         while (v21 != v20);
-        v53 = [v18 countByEnumeratingWithState:&v67 objects:v74 count:16];
+        v53 = [allViews countByEnumeratingWithState:&v67 objects:v74 count:16];
         v20 = v53;
       }
 
       while (v53);
     }
 
-    v7 = v58;
-    v6 = v59;
+    pathCopy = v58;
+    strokesCopy = v59;
   }
 
   if ([v8 count])
   {
-    v54 = [v6 allObjects];
-    [v8 addObjectsFromArray:v54];
+    allObjects = [strokesCopy allObjects];
+    [v8 addObjectsFromArray:allObjects];
 
     v55 = [v8 copy];
   }
 
   else
   {
-    v55 = v6;
+    v55 = strokesCopy;
   }
 
   v56 = v55;
@@ -3214,22 +3214,22 @@ LABEL_16:
   return v56;
 }
 
-- (void)overlayController:(id)a3 imageViewForStrokes:(id)a4 completion:(id)a5
+- (void)overlayController:(id)controller imageViewForStrokes:(id)strokes completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(PKMathRecognitionViewController *)&self->super.isa tiledView];
-  v10 = [(PKMathRecognitionViewController *)&self->super.isa drawing];
+  completionCopy = completion;
+  strokesCopy = strokes;
+  tiledView = [(PKMathRecognitionViewController *)&self->super.isa tiledView];
+  drawing = [(PKMathRecognitionViewController *)&self->super.isa drawing];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __84__PKMathRecognitionViewController_overlayController_imageViewForStrokes_completion___block_invoke;
   v13[3] = &unk_1E82DAEE8;
-  v14 = v9;
-  v15 = self;
-  v16 = v7;
-  v11 = v7;
-  v12 = v9;
-  [(PKMathRecognitionViewController *)self _imageViewForStrokes:v8 drawing:v10 completion:v13];
+  v14 = tiledView;
+  selfCopy = self;
+  v16 = completionCopy;
+  v11 = completionCopy;
+  v12 = tiledView;
+  [(PKMathRecognitionViewController *)self _imageViewForStrokes:strokesCopy drawing:drawing completion:v13];
 }
 
 void __84__PKMathRecognitionViewController_overlayController_imageViewForStrokes_completion___block_invoke(uint64_t a1, void *a2)
@@ -3252,39 +3252,39 @@ void __84__PKMathRecognitionViewController_overlayController_imageViewForStrokes
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_imageViewForStrokes:(void *)a3 drawing:(void *)a4 completion:
+- (void)_imageViewForStrokes:(void *)strokes drawing:(void *)drawing completion:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  strokesCopy = strokes;
+  drawingCopy = drawing;
+  if (self)
   {
-    v10 = [(PKMathRecognitionViewController *)a1 tiledView];
-    if ((*(a1 + 192) & 0x20) != 0 && (WeakRetained = objc_loadWeakRetained((a1 + 240)), [WeakRetained mathViewController:a1 coordinateSpaceForDrawing:v8], v12 = objc_claimAutoreleasedReturnValue(), WeakRetained, v12))
+    tiledView = [(PKMathRecognitionViewController *)self tiledView];
+    if ((*(self + 192) & 0x20) != 0 && (WeakRetained = objc_loadWeakRetained((self + 240)), [WeakRetained mathViewController:self coordinateSpaceForDrawing:strokesCopy], v12 = objc_claimAutoreleasedReturnValue(), WeakRetained, v12))
     {
       v17 = 0u;
       v18 = 0u;
       v16 = 0u;
       [(PKMathRecognitionViewController *)&v16 drawingTransformFromDelegate];
-      v13 = [v10 selectionController];
+      selectionController = [tiledView selectionController];
       v15[0] = v16;
       v15[1] = v17;
       v15[2] = v18;
-      [(PKSelectionController *)v13 _imageViewForStrokes:v7 drawing:v8 drawingTransform:v15 coordinateSpace:v12 completion:v9];
+      [(PKSelectionController *)selectionController _imageViewForStrokes:v7 drawing:strokesCopy drawingTransform:v15 coordinateSpace:v12 completion:drawingCopy];
     }
 
     else
     {
-      v14 = [v10 selectionController];
-      [(PKSelectionController *)v14 _imageViewForStrokes:v7 drawing:v8 completion:v9];
+      selectionController2 = [tiledView selectionController];
+      [(PKSelectionController *)selectionController2 _imageViewForStrokes:v7 drawing:strokesCopy completion:drawingCopy];
     }
   }
 }
 
-- (void)overlayController:(id)a3 willUpdateView:(id)a4 animationDuration:(double)a5
+- (void)overlayController:(id)controller willUpdateView:(id)view animationDuration:(double)duration
 {
-  v5 = [(PKMathRecognitionViewController *)&self->super.isa tiledView];
-  [v5 _pauseHoverPreviewForTimeInterval:0.5];
+  tiledView = [(PKMathRecognitionViewController *)&self->super.isa tiledView];
+  [tiledView _pauseHoverPreviewForTimeInterval:0.5];
 }
 
 void __75__PKMathRecognitionViewController__maskImageForStrokes_drawing_completion___block_invoke(uint64_t a1, void *a2)
@@ -3295,23 +3295,23 @@ void __75__PKMathRecognitionViewController__maskImageForStrokes_drawing_completi
   [(PKSelectionController *)v5 _maskImageForStrokes:*(a1 + 48) drawing:v4 imageView:*(a1 + 56) completion:?];
 }
 
-- (void)mathRecognitionController:(id)a3 didUpdateExpressions:(id)a4 newItems:(id)a5 removedItems:(id)a6 mathItems:(id)a7
+- (void)mathRecognitionController:(id)controller didUpdateExpressions:(id)expressions newItems:(id)items removedItems:(id)removedItems mathItems:(id)mathItems
 {
   v86 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v66 = a5;
-  v62 = a6;
-  v12 = a7;
+  expressionsCopy = expressions;
+  itemsCopy = items;
+  removedItemsCopy = removedItems;
+  mathItemsCopy = mathItems;
   [(PKMathRecognitionViewController *)self cancelOpenPopoverForHint];
   [(PKMathRecognitionViewController *)self cancelOpenPopoverForAddingGraph];
-  v13 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v12, "count")}];
+  v13 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(mathItemsCopy, "count")}];
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  obj = v12;
+  obj = mathItemsCopy;
   v14 = [obj countByEnumeratingWithState:&v75 objects:v85 count:16];
-  v63 = v11;
+  v63 = expressionsCopy;
   if (v14)
   {
     v15 = v14;
@@ -3327,25 +3327,25 @@ void __75__PKMathRecognitionViewController__maskImageForStrokes_drawing_completi
 
         v18 = *(*(&v75 + 1) + 8 * i);
         currentMathItemsLookup = self->_currentMathItemsLookup;
-        v20 = [v18 uuid];
-        v21 = [(NSMutableDictionary *)currentMathItemsLookup objectForKeyedSubscript:v20];
+        uuid = [v18 uuid];
+        v21 = [(NSMutableDictionary *)currentMathItemsLookup objectForKeyedSubscript:uuid];
 
-        v22 = [v18 uuid];
-        [v13 setObject:v18 forKeyedSubscript:v22];
+        uuid2 = [v18 uuid];
+        [v13 setObject:v18 forKeyedSubscript:uuid2];
 
         if (v21)
         {
-          v23 = [v18 uuid];
-          if ([v11 containsObject:v23])
+          uuid3 = [v18 uuid];
+          if ([expressionsCopy containsObject:uuid3])
           {
           }
 
           else
           {
-            v24 = [v18 uuid];
-            v25 = [v66 containsObject:v24];
+            uuid4 = [v18 uuid];
+            v25 = [itemsCopy containsObject:uuid4];
 
-            v11 = v63;
+            expressionsCopy = v63;
             if ((v25 & 1) == 0)
             {
               [(PKMathRecognitionItem *)v18 _updateFromOldItem:v21];
@@ -3364,10 +3364,10 @@ void __75__PKMathRecognitionViewController__maskImageForStrokes_drawing_completi
   v27 = self->_currentMathItemsLookup;
   self->_currentMathItemsLookup = v26;
 
-  v28 = [v66 setByAddingObjectsFromSet:v11];
+  v28 = [itemsCopy setByAddingObjectsFromSet:expressionsCopy];
   v29 = [v28 mutableCopy];
 
-  v30 = [v62 mutableCopy];
+  v30 = [removedItemsCopy mutableCopy];
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
@@ -3395,17 +3395,17 @@ void __75__PKMathRecognitionViewController__maskImageForStrokes_drawing_completi
           goto LABEL_31;
         }
 
-        v37 = [v66 containsObject:v35];
+        v37 = [itemsCopy containsObject:v35];
         v38 = os_log_create("com.apple.pencilkit", "Math");
         v39 = os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT);
         if (v37)
         {
           if (v39)
           {
-            v40 = [v36 expression];
+            expression = [v36 expression];
             [v36 sortIndex];
             *buf = 138478083;
-            v81 = v40;
+            v81 = expression;
             v82 = 2048;
             v83 = v41;
             v42 = v38;
@@ -3417,10 +3417,10 @@ LABEL_24:
 
         else if (v39)
         {
-          v40 = [v36 expression];
+          expression = [v36 expression];
           [v36 sortIndex];
           *buf = 138478083;
-          v81 = v40;
+          v81 = expression;
           v82 = 2048;
           v83 = v44;
           v42 = v38;
@@ -3430,17 +3430,17 @@ LABEL_24:
 
         if (![v36 shouldBeSolved] || (-[PKMathRecognitionViewController drawing](&self->super.isa), v45 = objc_claimAutoreleasedReturnValue(), v46 = objc_msgSend(v36, "isValidForDrawing:", v45), v45, (v46 & 1) == 0))
         {
-          v47 = [(PKMathRecognitionViewController *)&self->super.isa drawing];
-          v48 = [v36 isValidForDrawing:v47];
+          drawing = [(PKMathRecognitionViewController *)&self->super.isa drawing];
+          v48 = [v36 isValidForDrawing:drawing];
 
           if ((v48 & 1) == 0)
           {
             v49 = os_log_create("com.apple.pencilkit", "Math");
             if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
             {
-              v50 = [v36 expression];
+              expression2 = [v36 expression];
               *buf = 138477827;
-              v81 = v50;
+              v81 = expression2;
               _os_log_impl(&dword_1C7CCA000, v49, OS_LOG_TYPE_DEFAULT, "Detected stale item: %{private}@", buf, 0xCu);
             }
           }
@@ -3476,8 +3476,8 @@ LABEL_31:
         }
 
         v56 = *(*(&v67 + 1) + 8 * k);
-        v57 = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
-        [(PKOverlayDrawingController *)v57 removeViewForUUID:v56 animated:1];
+        overlayDrawingController = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
+        [(PKOverlayDrawingController *)overlayDrawingController removeViewForUUID:v56 animated:1];
       }
 
       v53 = [v51 countByEnumeratingWithState:&v67 objects:v79 count:16];
@@ -3496,20 +3496,20 @@ LABEL_31:
     WeakRetained = 0;
   }
 
-  [WeakRetained mathViewController:self didUpdateExpressions:v63 newExpressions:v66 removedExpressions:v62 mathItems:obj];
+  [WeakRetained mathViewController:self didUpdateExpressions:v63 newExpressions:itemsCopy removedExpressions:removedItemsCopy mathItems:obj];
 
-  v59 = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
-  v60 = v59;
-  if (v59)
+  overlayDrawingController2 = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
+  v60 = overlayDrawingController2;
+  if (overlayDrawingController2)
   {
-    [(PKOverlayDrawingController *)v59 _removeOldTokenViewsExcludeItems:v63];
+    [(PKOverlayDrawingController *)overlayDrawingController2 _removeOldTokenViewsExcludeItems:v63];
   }
 }
 
-- (double)mathRecognitionControllerTimestampForLatestUserInteraction:(id)a3
+- (double)mathRecognitionControllerTimestampForLatestUserInteraction:(id)interaction
 {
-  v4 = [(PKMathRecognitionViewController *)&self->super.isa tiledView];
-  [v4 timestampForLatestUserInteraction];
+  tiledView = [(PKMathRecognitionViewController *)&self->super.isa tiledView];
+  [tiledView timestampForLatestUserInteraction];
   v6 = v5;
 
   if ((*(&self->_delegateFlags + 2) & 2) != 0)
@@ -3522,17 +3522,17 @@ LABEL_31:
   return v6;
 }
 
-- (void)mathRecognitionController:(id)a3 solveStateChangedForExpressions:(id)a4 mathItems:(id)a5
+- (void)mathRecognitionController:(id)controller solveStateChangedForExpressions:(id)expressions mathItems:(id)items
 {
   v47 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
+  expressionsCopy = expressions;
+  itemsCopy = items;
+  v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v10 = v8;
+  v10 = itemsCopy;
   v11 = [v10 countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v11)
   {
@@ -3548,12 +3548,12 @@ LABEL_31:
         }
 
         v15 = *(*(&v41 + 1) + 8 * i);
-        v16 = [v15 uuid];
-        [v9 setObject:v15 forKeyedSubscript:v16];
+        uuid = [v15 uuid];
+        [v9 setObject:v15 forKeyedSubscript:uuid];
 
         currentMathItemsLookup = self->_currentMathItemsLookup;
-        v18 = [v15 uuid];
-        v19 = [(NSMutableDictionary *)currentMathItemsLookup objectForKeyedSubscript:v18];
+        uuid2 = [v15 uuid];
+        v19 = [(NSMutableDictionary *)currentMathItemsLookup objectForKeyedSubscript:uuid2];
 
         if (v19)
         {
@@ -3575,7 +3575,7 @@ LABEL_31:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v22 = v7;
+  v22 = expressionsCopy;
   v23 = [v22 countByEnumeratingWithState:&v37 objects:v45 count:16];
   if (!v23)
   {
@@ -3601,9 +3601,9 @@ LABEL_27:
       v28 = [v9 objectForKeyedSubscript:v27];
       if ([v28 shouldSolveMathFlagIsSet])
       {
-        v29 = [(NSMutableDictionary *)self->_currentResultsLookup objectForKeyedSubscript:v27];
-        v30 = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
-        v31 = [(PKOverlayDrawingController *)v30 existingViewForUUID:v27];
+        overlayDrawingController2 = [(NSMutableDictionary *)self->_currentResultsLookup objectForKeyedSubscript:v27];
+        overlayDrawingController = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
+        v31 = [(PKOverlayDrawingController *)overlayDrawingController existingViewForUUID:v27];
 
         if (v31)
         {
@@ -3612,19 +3612,19 @@ LABEL_27:
 
         else
         {
-          v32 = v29 == 0;
+          v32 = overlayDrawingController2 == 0;
         }
 
         if (!v32)
         {
-          [(PKMathRecognitionViewController *)self _presentResult:v29 mathItem:v28 defaultAnimationType:2 fromHint:0 hadOldResult:0];
+          [(PKMathRecognitionViewController *)self _presentResult:overlayDrawingController2 mathItem:v28 defaultAnimationType:2 fromHint:0 hadOldResult:0];
         }
       }
 
       else
       {
-        v29 = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
-        [(PKOverlayDrawingController *)v29 removeViewForUUID:v27 animated:1];
+        overlayDrawingController2 = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
+        [(PKOverlayDrawingController *)overlayDrawingController2 removeViewForUUID:v27 animated:1];
       }
     }
 
@@ -3646,15 +3646,15 @@ LABEL_28:
   [WeakRetained mathViewController:self didUpdateExpressions:v22 newExpressions:v34 removedExpressions:v35 mathItems:v10];
 }
 
-- (void)mathRecognitionController:(id)a3 didEraseStrokesInExpressions:(id)a4
+- (void)mathRecognitionController:(id)controller didEraseStrokesInExpressions:(id)expressions
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  expressionsCopy = expressions;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [expressionsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3666,7 +3666,7 @@ LABEL_28:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(expressionsCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
@@ -3684,7 +3684,7 @@ LABEL_28:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [expressionsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -3727,53 +3727,53 @@ void __66__PKMathRecognitionViewController__showDetectionAnimationForItem___bloc
   }
 }
 
-- (void)_sendUpdatedResult:(void *)a3 strokes:(void *)a4 uuid:
+- (void)_sendUpdatedResult:(void *)result strokes:(void *)strokes uuid:
 {
   v10 = a2;
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  resultCopy = result;
+  strokesCopy = strokes;
+  if (self)
   {
-    if (*(a1 + 193))
+    if (*(self + 193))
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 240));
-      [WeakRetained mathViewController:a1 updatedResult:v10 strokes:v7 expressionUUID:v8];
+      WeakRetained = objc_loadWeakRetained((self + 240));
+      [WeakRetained mathViewController:self updatedResult:v10 strokes:resultCopy expressionUUID:strokesCopy];
     }
 
-    if ([a1 shouldCacheDrawingForResults])
+    if ([self shouldCacheDrawingForResults])
     {
-      [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:a1 selector:sel__updateDrawingOverlayCache object:0];
-      [a1 performSelector:sel__updateDrawingOverlayCache withObject:0 afterDelay:0.1];
+      [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__updateDrawingOverlayCache object:0];
+      [self performSelector:sel__updateDrawingOverlayCache withObject:0 afterDelay:0.1];
     }
   }
 }
 
-- (void)mathResult:(id)a3 itemUUID:(id)a4
+- (void)mathResult:(id)result itemUUID:(id)d
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_currentMathItemsLookup objectForKeyedSubscript:v7];
+  resultCopy = result;
+  dCopy = d;
+  v8 = [(NSMutableDictionary *)self->_currentMathItemsLookup objectForKeyedSubscript:dCopy];
   v9 = v8;
-  if (v8 && -[NSObject shouldBeSolved](v8, "shouldBeSolved") && [v6 length])
+  if (v8 && -[NSObject shouldBeSolved](v8, "shouldBeSolved") && [resultCopy length])
   {
-    v10 = [(PKMathRecognitionViewController *)&self->super.isa drawing];
-    if (([v9 isValidForDrawing:v10]& 1) != 0)
+    drawing = [(PKMathRecognitionViewController *)&self->super.isa drawing];
+    if (([v9 isValidForDrawing:drawing]& 1) != 0)
     {
-      v11 = [v9 isLowConfidenceMath];
+      isLowConfidenceMath = [v9 isLowConfidenceMath];
 
-      if (!v11)
+      if (!isLowConfidenceMath)
       {
         currentResultsLookup = self->_currentResultsLookup;
-        v13 = [v9 uuid];
-        v14 = [(NSMutableDictionary *)currentResultsLookup objectForKeyedSubscript:v13];
+        uuid = [v9 uuid];
+        v14 = [(NSMutableDictionary *)currentResultsLookup objectForKeyedSubscript:uuid];
 
         v15 = self->_currentResultsLookup;
-        v16 = [v9 uuid];
-        [(NSMutableDictionary *)v15 setObject:v6 forKeyedSubscript:v16];
+        uuid2 = [v9 uuid];
+        [(NSMutableDictionary *)v15 setObject:resultCopy forKeyedSubscript:uuid2];
 
-        v17 = [(PKMathRecognitionViewController *)&self->super.isa drawing];
-        v18 = [(PKMathRecognitionItem *)v9 _heroStrokeInDrawing:v17];
+        drawing2 = [(PKMathRecognitionViewController *)&self->super.isa drawing];
+        v18 = [(PKMathRecognitionItem *)v9 _heroStrokeInDrawing:drawing2];
 
         if ([(PKMathRecognitionViewController *)self solvingStyle])
         {
@@ -3781,9 +3781,9 @@ void __66__PKMathRecognitionViewController__showDetectionAnimationForItem___bloc
           {
             if ([(PKMathRecognitionItem *)v9 isRecentlyModified]&& [(PKMathRecognitionViewController *)self solvingStyle]== 1)
             {
-              v19 = [v9 uuid];
+              uuid3 = [v9 uuid];
               popoverHintItemUUID = self->_popoverHintItemUUID;
-              self->_popoverHintItemUUID = v19;
+              self->_popoverHintItemUUID = uuid3;
 
               [(PKMathRecognitionViewController *)self performSelector:sel_openPopoverForHint withObject:0 afterDelay:[(PKMathRecognitionItem *)v9 _remainingDelayForTargetDelay:?]];
             }
@@ -3794,9 +3794,9 @@ void __66__PKMathRecognitionViewController__showDetectionAnimationForItem___bloc
 
         else
         {
-          v30 = [(PKMathRecognitionItem *)v9 isRecentlyModified];
-          v31 = v30;
-          if ((*(&self->_delegateFlags + 1) & 0x80) != 0 && v30 && v18 && ([v9 shouldSolveMathFlagIsSet]& 1) == 0)
+          isRecentlyModified = [(PKMathRecognitionItem *)v9 isRecentlyModified];
+          v31 = isRecentlyModified;
+          if ((*(&self->_delegateFlags + 1) & 0x80) != 0 && isRecentlyModified && v18 && ([v9 shouldSolveMathFlagIsSet]& 1) == 0)
           {
             [(PKMathRecognitionViewController *)self _commitSetShouldSolve:0 undoable:v9 item:?];
           }
@@ -3807,24 +3807,24 @@ LABEL_37:
             v32 = os_log_create("com.apple.pencilkit", "Math");
             if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
             {
-              v33 = [v9 expression];
+              expression = [v9 expression];
               v35 = 138478083;
-              v36 = v33;
+              v36 = expression;
               v37 = 2113;
-              v38 = v6;
+              v38 = resultCopy;
               _os_log_impl(&dword_1C7CCA000, v32, OS_LOG_TYPE_DEFAULT, "Should not show results for expression: %{private}@, result: %{private}@", &v35, 0x16u);
             }
 
             [(PKMathRecognitionItem *)v9 _logRecentlyModifiedAndCreated];
-            v34 = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
-            [(PKOverlayDrawingController *)v34 hideImageForUUID:v7];
+            overlayDrawingController = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
+            [(PKOverlayDrawingController *)overlayDrawingController hideImageForUUID:dCopy];
 
-            [(PKMathRecognitionViewController *)self _sendUpdatedResult:MEMORY[0x1E695E0F0] strokes:v7 uuid:?];
+            [(PKMathRecognitionViewController *)self _sendUpdatedResult:MEMORY[0x1E695E0F0] strokes:dCopy uuid:?];
             goto LABEL_42;
           }
         }
 
-        [(PKMathRecognitionViewController *)self _presentResult:v6 mathItem:v9 defaultAnimationType:2 fromHint:0 hadOldResult:v14 != 0];
+        [(PKMathRecognitionViewController *)self _presentResult:resultCopy mathItem:v9 defaultAnimationType:2 fromHint:0 hadOldResult:v14 != 0];
 LABEL_42:
 
         goto LABEL_29;
@@ -3841,24 +3841,24 @@ LABEL_42:
     v21 = os_log_create("com.apple.pencilkit", "Math");
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v9 expression];
-      v23 = [(PKMathRecognitionViewController *)&self->super.isa drawing];
+      expression2 = [v9 expression];
+      drawing3 = [(PKMathRecognitionViewController *)&self->super.isa drawing];
       v35 = 138478595;
-      v36 = v22;
+      v36 = expression2;
       v37 = 2113;
-      v38 = v6;
+      v38 = resultCopy;
       v39 = 1024;
-      v40 = [v9 isValidForDrawing:v23];
+      v40 = [v9 isValidForDrawing:drawing3];
       v41 = 1024;
-      v42 = [v9 isLowConfidenceMath];
+      isLowConfidenceMath2 = [v9 isLowConfidenceMath];
       _os_log_impl(&dword_1C7CCA000, v21, OS_LOG_TYPE_DEFAULT, "Skipping presenting result for expression: %{private}@, result: %{private}@, valid: %{BOOL}d, lowConfidence: %{BOOL}d", &v35, 0x22u);
     }
   }
 
-  v24 = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
-  [(PKOverlayDrawingController *)v24 hideImageForUUID:v7];
+  overlayDrawingController2 = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
+  [(PKOverlayDrawingController *)overlayDrawingController2 hideImageForUUID:dCopy];
 
-  [(PKMathRecognitionViewController *)self _sendUpdatedResult:MEMORY[0x1E695E0F0] strokes:v7 uuid:?];
+  [(PKMathRecognitionViewController *)self _sendUpdatedResult:MEMORY[0x1E695E0F0] strokes:dCopy uuid:?];
   if (v9)
   {
     liveVariable = self->_liveVariable;
@@ -3873,7 +3873,7 @@ LABEL_42:
       goto LABEL_27;
     }
 
-    v27 = [(NSMutableDictionary *)self->_currentResultsLookup objectForKeyedSubscript:v7];
+    v27 = [(NSMutableDictionary *)self->_currentResultsLookup objectForKeyedSubscript:dCopy];
     if (v27)
     {
     }
@@ -3887,9 +3887,9 @@ LABEL_27:
         goto LABEL_28;
       }
 
-      v29 = [v9 shouldBeSolved];
+      shouldBeSolved = [v9 shouldBeSolved];
 
-      if (!v29)
+      if (!shouldBeSolved)
       {
         goto LABEL_28;
       }
@@ -3898,9 +3898,9 @@ LABEL_27:
     v26 = os_log_create("com.apple.pencilkit", "Math");
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [v9 expression];
+      expression3 = [v9 expression];
       v35 = 138477827;
-      v36 = v28;
+      v36 = expression3;
       _os_log_impl(&dword_1C7CCA000, v26, OS_LOG_TYPE_DEFAULT, "Detected math item with no result and no error: %{private}@", &v35, 0xCu);
     }
 
@@ -3908,34 +3908,34 @@ LABEL_27:
   }
 
 LABEL_28:
-  [(NSMutableDictionary *)self->_currentResultsLookup setObject:0 forKeyedSubscript:v7];
-  [(NSMutableDictionary *)self->_currentResultsAttributionLookup setObject:0 forKeyedSubscript:v7];
-  [(NSMutableDictionary *)self->_currentResultsDrawings setObject:0 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)self->_currentResultsLookup setObject:0 forKeyedSubscript:dCopy];
+  [(NSMutableDictionary *)self->_currentResultsAttributionLookup setObject:0 forKeyedSubscript:dCopy];
+  [(NSMutableDictionary *)self->_currentResultsDrawings setObject:0 forKeyedSubscript:dCopy];
 LABEL_29:
 }
 
-- (void)mathResultAttributionImage:(id)a3 darkModeImage:(id)a4 string:(id)a5 date:(id)a6 itemUUID:(id)a7
+- (void)mathResultAttributionImage:(id)image darkModeImage:(id)modeImage string:(id)string date:(id)date itemUUID:(id)d
 {
-  v18 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v18 && v12)
+  imageCopy = image;
+  modeImageCopy = modeImage;
+  stringCopy = string;
+  dateCopy = date;
+  if (imageCopy && modeImageCopy)
   {
-    v15 = a7;
-    v16 = objc_alloc_init(PKMathResultAttribution);
-    [(PKMathResultAttribution *)v16 setImage:v18];
-    [(PKMathResultAttribution *)v16 setDarkModeImage:v12];
-    [(PKMathResultAttribution *)v16 setDate:v14];
-    [(PKMathResultAttribution *)v16 setString:v13];
-    [(NSMutableDictionary *)self->_currentResultsAttributionLookup setObject:v16 forKeyedSubscript:v15];
+    dCopy = d;
+    dCopy2 = objc_alloc_init(PKMathResultAttribution);
+    [(PKMathResultAttribution *)dCopy2 setImage:imageCopy];
+    [(PKMathResultAttribution *)dCopy2 setDarkModeImage:modeImageCopy];
+    [(PKMathResultAttribution *)dCopy2 setDate:dateCopy];
+    [(PKMathResultAttribution *)dCopy2 setString:stringCopy];
+    [(NSMutableDictionary *)self->_currentResultsAttributionLookup setObject:dCopy2 forKeyedSubscript:dCopy];
   }
 
   else
   {
     currentResultsAttributionLookup = self->_currentResultsAttributionLookup;
-    v16 = a7;
-    [(NSMutableDictionary *)currentResultsAttributionLookup setObject:0 forKeyedSubscript:v16];
+    dCopy2 = d;
+    [(NSMutableDictionary *)currentResultsAttributionLookup setObject:0 forKeyedSubscript:dCopy2];
   }
 }
 
@@ -4346,25 +4346,25 @@ void __102__PKMathRecognitionViewController__presentResult_mathItem_defaultAnima
   }
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E695DF70] array];
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  actionsCopy = actions;
+  array = [MEMORY[0x1E695DF70] array];
   objc_initWeak(&location, self);
-  if (self->_alternativedEditMenuInteraction == v8)
+  if (self->_alternativedEditMenuInteraction == interactionCopy)
   {
-    v12 = [(PKMathRecognitionToken *)self->_currentMenuToken alternatives];
-    v13 = [v12 count];
+    alternatives = [(PKMathRecognitionToken *)self->_currentMenuToken alternatives];
+    v13 = [alternatives count];
 
     if (v13)
     {
-      v35 = v10;
-      v36 = v9;
-      v37 = v8;
+      v35 = actionsCopy;
+      v36 = configurationCopy;
+      v37 = interactionCopy;
       v14 = self->_currentMenuToken;
-      v39 = [(PKMathRecognitionToken *)v14 item];
+      item = [(PKMathRecognitionToken *)v14 item];
       v15 = 0;
       v38 = v41;
       while (1)
@@ -4377,18 +4377,18 @@ void __102__PKMathRecognitionViewController__presentResult_mathItem_defaultAnima
           break;
         }
 
-        v18 = [(PKMathRecognitionToken *)self->_currentMenuToken alternatives];
-        v19 = [v18 objectAtIndexedSubscript:v15];
+        alternatives2 = [(PKMathRecognitionToken *)self->_currentMenuToken alternatives];
+        v19 = [alternatives2 objectAtIndexedSubscript:v15];
 
         v20 = v19;
-        v21 = [(PKMathRecognitionToken *)self->_currentMenuToken renderableAlternatives];
-        v22 = [v21 count];
+        renderableAlternatives = [(PKMathRecognitionToken *)self->_currentMenuToken renderableAlternatives];
+        v22 = [renderableAlternatives count];
 
         v23 = v20;
         if (v15 < v22)
         {
-          v24 = [(PKMathRecognitionToken *)self->_currentMenuToken renderableAlternatives];
-          v23 = [v24 objectAtIndexedSubscript:v15];
+          renderableAlternatives2 = [(PKMathRecognitionToken *)self->_currentMenuToken renderableAlternatives];
+          v23 = [renderableAlternatives2 objectAtIndexedSubscript:v15];
         }
 
         v25 = v23;
@@ -4421,23 +4421,23 @@ void __102__PKMathRecognitionViewController__presentResult_mathItem_defaultAnima
         v41[1] = &unk_1E82DB078;
         objc_copyWeak(&v45, &location);
         v42 = v14;
-        v43 = v39;
+        v43 = item;
         v31 = v20;
         v44 = v31;
         v32 = [v29 actionWithTitle:v30 image:v26 identifier:0 handler:v40];
-        [v11 addObject:v32];
+        [array addObject:v32];
 
         objc_destroyWeak(&v45);
         ++v15;
       }
 
-      v9 = v36;
-      v8 = v37;
-      v10 = v35;
+      configurationCopy = v36;
+      interactionCopy = v37;
+      actionsCopy = v35;
     }
   }
 
-  v33 = [MEMORY[0x1E69DCC60] menuWithChildren:v11];
+  v33 = [MEMORY[0x1E69DCC60] menuWithChildren:array];
   objc_destroyWeak(&location);
 
   return v33;
@@ -4524,14 +4524,14 @@ void __93__PKMathRecognitionViewController_editMenuInteraction_menuForConfigurat
   [(PKOverlayDrawingController *)v28 removeToken:?];
 }
 
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __96__PKMathRecognitionViewController_editMenuInteraction_willDismissMenuForConfiguration_animator___block_invoke;
   v7[3] = &unk_1E82D7148;
   v7[4] = self;
-  [a5 addCompletion:{v7, a4}];
+  [animator addCompletion:{v7, configuration}];
   currentMenuToken = self->_currentMenuToken;
   self->_currentMenuToken = 0;
 }
@@ -4576,23 +4576,23 @@ BOOL __79__PKMathRecognitionViewController__fitBoundsForVariable_needExtraLeadin
   return v9 < a4;
 }
 
-- (void)scrubberController:(id)a3 valueDidChange:(id)a4
+- (void)scrubberController:(id)controller valueDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  changeCopy = change;
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel_hideScrubber object:0];
   if (!self->_scrubberController)
   {
     goto LABEL_62;
   }
 
-  v8 = [(PKMathRecognitionViewController *)&self->super.isa tiledView];
-  [v8 _pauseHoverPreviewForTimeInterval:0.5];
-  v117 = v8;
-  [v8 inputScale];
+  tiledView = [(PKMathRecognitionViewController *)&self->super.isa tiledView];
+  [tiledView _pauseHoverPreviewForTimeInterval:0.5];
+  v117 = tiledView;
+  [tiledView inputScale];
   v125 = v9;
   objc_initWeak(&location, self);
-  v126 = [v7 hasPrefix:@"-"];
+  v126 = [changeCopy hasPrefix:@"-"];
   v10 = self->_controller;
   v124 = v10;
   if (v10)
@@ -4613,8 +4613,8 @@ BOOL __79__PKMathRecognitionViewController__fitBoundsForVariable_needExtraLeadin
 
   v118 = liveVariable;
   v12 = self->_liveVariable;
-  v127 = v7;
-  v128 = self;
+  v127 = changeCopy;
+  selfCopy = self;
   if (v12)
   {
     width = v12->_originalStrokesBounds.size.width;
@@ -4672,7 +4672,7 @@ LABEL_14:
       mathItem = 0;
     }
 
-    v115 = [(PKMathRecognitionItem *)mathItem strokes];
+    strokes = [(PKMathRecognitionItem *)mathItem strokes];
     if (v12)
     {
       [(PKMathRecognitionItem *)v12->_mathItem bounds];
@@ -4710,7 +4710,7 @@ LABEL_14:
       v37 = v36;
     }
 
-    v116 = [v115 mutableCopy];
+    v116 = [strokes mutableCopy];
     [v116 removeObjectsInArray:v114];
     memset(&v141, 0, sizeof(v141));
     [(PKMathRecognitionViewController *)&v141 drawingTransform];
@@ -4734,8 +4734,8 @@ LABEL_14:
     v42 = v147.size.width;
     v43 = v147.size.height;
     v44 = objc_loadWeakRetained(&self->_parentView);
-    v45 = [v44 traitCollection];
-    [v45 displayScale];
+    traitCollection = [v44 traitCollection];
+    [traitCollection displayScale];
     v47 = v46;
 
     v48 = fmax(v47, 1.0);
@@ -4752,9 +4752,9 @@ LABEL_14:
     v138[3] = &unk_1E82DB0A0;
     v138[4] = &v139;
     [v49 renderStrokes:v116 clippedToStrokeSpaceRect:v138 scale:v40 completion:{v41, v42, v43, v48}];
-    v50 = [*(*&v139.b + 40) CGImage];
-    v51 = CGImageGetWidth(v50);
-    v52 = CGImageGetHeight(v50);
+    cGImage = [*(*&v139.b + 40) CGImage];
+    v51 = CGImageGetWidth(cGImage);
+    v52 = CGImageGetHeight(cGImage);
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
     v54 = 4 * v51;
     v112 = malloc_type_calloc(v52 * 4 * v51, 1uLL, 0x100004077774924uLL);
@@ -4765,7 +4765,7 @@ LABEL_14:
     v148.origin.x = 0.0;
     v148.origin.y = 0.0;
     v148.size.width = v113;
-    CGContextDrawImage(v55, v148, v50);
+    CGContextDrawImage(v55, v148, cGImage);
     CGContextRelease(v55);
     memset(&v137, 0, sizeof(v137));
     CGAffineTransformMakeScale(&t1, v42 / v113, v42 / v113);
@@ -4835,7 +4835,7 @@ LABEL_14:
     v153.size.width = v60;
     v153.size.height = v62;
     v105 = v49;
-    v107 = v6;
+    v107 = controllerCopy;
     v70 = MinX;
     recta = v67;
     MaxY = CGRectGetMaxY(v153);
@@ -4915,7 +4915,7 @@ LABEL_42:
     }
 
 LABEL_52:
-    self = v128;
+    self = selfCopy;
     free(v112);
     v155.origin.x = v74;
     v155.size.width = (v81 - v74);
@@ -4935,7 +4935,7 @@ LABEL_52:
     }
 
     _Block_object_dispose(&v139, 8);
-    v6 = v107;
+    controllerCopy = v107;
     goto LABEL_55;
   }
 
@@ -4999,26 +4999,26 @@ LABEL_55:
   v92 = v91;
   [(PKMathRecognitionItem *)v90 _updateVariable:v92 valueString:v127];
 
-  v93 = v128->_liveVariable;
+  v93 = selfCopy->_liveVariable;
   if (v93)
   {
     v93 = v93->_mathItem;
   }
 
   v94 = v93;
-  v95 = [(PKLiveMathVariable *)v94 uuid];
-  v96 = [MEMORY[0x1E695DFD8] setWithObject:v95];
-  v97 = objc_loadWeakRetained(&v128->_delegate);
+  uuid = [(PKLiveMathVariable *)v94 uuid];
+  v96 = [MEMORY[0x1E695DFD8] setWithObject:uuid];
+  v97 = objc_loadWeakRetained(&selfCopy->_delegate);
   v98 = [MEMORY[0x1E695DFD8] set];
   v99 = [MEMORY[0x1E695DFD8] set];
-  v100 = [(NSMutableDictionary *)v128->_currentMathItemsLookup allValues];
-  [v97 mathViewController:v128 didUpdateExpressions:v96 newExpressions:v98 removedExpressions:v99 mathItems:v100];
+  allValues = [(NSMutableDictionary *)selfCopy->_currentMathItemsLookup allValues];
+  [v97 mathViewController:selfCopy didUpdateExpressions:v96 newExpressions:v98 removedExpressions:v99 mathItems:allValues];
 
   objc_destroyWeak(&v130);
   objc_destroyWeak(&location);
 
-  v7 = v127;
-  self = v128;
+  changeCopy = v127;
+  self = selfCopy;
 LABEL_62:
   if (self->_shouldAutohideScrubber)
   {
@@ -5059,31 +5059,31 @@ void __69__PKMathRecognitionViewController_scrubberController_valueDidChange___b
 
 - (void)_cleanupAfterScrubbing
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 64);
-    if (v2 && (*(a1 + 194) & 8) != 0)
+    v2 = *(self + 64);
+    if (v2 && (*(self + 194) & 8) != 0)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 240));
-      [WeakRetained mathViewControllerDidDismissPopoverUI:a1];
+      WeakRetained = objc_loadWeakRetained((self + 240));
+      [WeakRetained mathViewControllerDidDismissPopoverUI:self];
 
-      v2 = *(a1 + 64);
+      v2 = *(self + 64);
     }
 
-    *(a1 + 64) = 0;
+    *(self + 64) = 0;
 
-    [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:a1 selector:sel_hideScrubber object:0];
-    [*(a1 + 56) _setVisibilityUpdatesEnabled:1];
-    v4 = *(a1 + 56);
-    *(a1 + 56) = 0;
+    [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel_hideScrubber object:0];
+    [*(self + 56) _setVisibilityUpdatesEnabled:1];
+    v4 = *(self + 56);
+    *(self + 56) = 0;
 
-    v5 = *(a1 + 88);
+    v5 = *(self + 88);
     if (!v5)
     {
       goto LABEL_40;
     }
 
-    if ((*(v5 + 8) != 1 || (v6 = objc_loadWeakRetained((a1 + 240)), [v6 mathViewController:a1 setHiddenStrokes:MEMORY[0x1E695E0F0]], v6, (v7 = *(a1 + 88)) != 0) && (*(v7 + 8) = 0, (v5 = *(a1 + 88)) != 0)) && ((v8 = *(v5 + 32)) == 0 || (v9 = *(v8 + 32), *(v8 + 32) = 0, v9, (v5 = *(a1 + 88)) != 0)))
+    if ((*(v5 + 8) != 1 || (v6 = objc_loadWeakRetained((self + 240)), [v6 mathViewController:self setHiddenStrokes:MEMORY[0x1E695E0F0]], v6, (v7 = *(self + 88)) != 0) && (*(v7 + 8) = 0, (v5 = *(self + 88)) != 0)) && ((v8 = *(v5 + 32)) == 0 || (v9 = *(v8 + 32), *(v8 + 32) = 0, v9, (v5 = *(self + 88)) != 0)))
     {
       v10 = *(v5 + 56);
     }
@@ -5093,27 +5093,27 @@ void __69__PKMathRecognitionViewController_scrubberController_valueDidChange___b
       v10 = 0;
     }
 
-    v11 = [v10 strokes];
-    v12 = [v11 count];
+    strokes = [v10 strokes];
+    v12 = [strokes count];
 
     if (!v12)
     {
       goto LABEL_38;
     }
 
-    v13 = *(a1 + 88);
+    v13 = *(self + 88);
     if (v13)
     {
       v13 = v13[4];
     }
 
     v14 = v13;
-    v15 = [v14 uuid];
-    v16 = *(a1 + 80);
-    *(a1 + 80) = v15;
+    uuid = [v14 uuid];
+    v16 = *(self + 80);
+    *(self + 80) = uuid;
 
-    v17 = objc_loadWeakRetained((a1 + 240));
-    v18 = *(a1 + 88);
+    v17 = objc_loadWeakRetained((self + 240));
+    v18 = *(self + 88);
     if (v18)
     {
       v19 = v18[5];
@@ -5127,30 +5127,30 @@ void __69__PKMathRecognitionViewController_scrubberController_valueDidChange___b
 
     v20 = v18;
     v21 = v19;
-    v22 = [v20 strokes];
-    [v17 mathViewController:a1 replaceStrokes:v21 withStrokes:v22];
+    strokes2 = [v20 strokes];
+    [v17 mathViewController:self replaceStrokes:v21 withStrokes:strokes2];
 
-    v23 = *(a1 + 88);
+    v23 = *(self + 88);
     if (v23)
     {
       v23 = v23[4];
     }
 
     v24 = v23;
-    v25 = [(PKMathRecognitionItem *)v24 mathResult];
+    mathResult = [(PKMathRecognitionItem *)v24 mathResult];
     v26 = objc_opt_respondsToSelector();
 
     if ((v26 & 1) == 0)
     {
 LABEL_38:
-      v54 = *(a1 + 88);
+      v54 = *(self + 88);
       if (v54)
       {
         v55 = *(v54 + 64);
 LABEL_41:
         [v55 removeFromSuperview];
-        v56 = *(a1 + 88);
-        *(a1 + 88) = 0;
+        v56 = *(self + 88);
+        *(self + 88) = 0;
 
         return;
       }
@@ -5160,15 +5160,15 @@ LABEL_40:
       goto LABEL_41;
     }
 
-    v27 = *(a1 + 88);
+    v27 = *(self + 88);
     if (v27)
     {
       v27 = v27[4];
     }
 
     v28 = v27;
-    v29 = [(PKMathRecognitionItem *)v28 mathResult];
-    v30 = *(a1 + 88);
+    mathResult2 = [(PKMathRecognitionItem *)v28 mathResult];
+    v30 = *(self + 88);
     if (v30)
     {
       v31 = *(v30 + 24);
@@ -5178,7 +5178,7 @@ LABEL_40:
         v33 = *(v31 + 4);
 LABEL_25:
         v34 = v33;
-        v35 = *(a1 + 88);
+        v35 = *(self + 88);
         if (v35)
         {
           v36 = v35[9];
@@ -5195,12 +5195,12 @@ LABEL_25:
         v38 = v35;
         v39 = v37;
         v40 = v36;
-        v41 = [v38 CHDrawing];
-        v42 = [v29 newResultWithScrubbedStrokes:v34 scrubbedValueTokens:v40 scrubbedValueStrokeIndexes:v39 scrubbedValueDrawing:v41];
+        cHDrawing = [v38 CHDrawing];
+        v42 = [mathResult2 newResultWithScrubbedStrokes:v34 scrubbedValueTokens:v40 scrubbedValueStrokeIndexes:v39 scrubbedValueDrawing:cHDrawing];
 
         if (v42)
         {
-          v43 = *(a1 + 88);
+          v43 = *(self + 88);
           if (v43)
           {
             v44 = *(v43 + 32);
@@ -5211,10 +5211,10 @@ LABEL_25:
             v44 = 0;
           }
 
-          v45 = [v44 strokes];
-          v46 = [v45 mutableCopy];
+          strokes3 = [v44 strokes];
+          v46 = [strokes3 mutableCopy];
 
-          v47 = *(a1 + 88);
+          v47 = *(self + 88);
           if (v47)
           {
             v48 = *(v47 + 40);
@@ -5226,7 +5226,7 @@ LABEL_25:
           }
 
           [v46 removeObjectsInArray:v48];
-          v49 = *(a1 + 88);
+          v49 = *(self + 88);
           if (v49)
           {
             v50 = *(v49 + 56);
@@ -5237,12 +5237,12 @@ LABEL_25:
             v50 = 0;
           }
 
-          v51 = [v50 strokes];
-          [v46 addObjectsFromArray:v51];
+          strokes4 = [v50 strokes];
+          [v46 addObjectsFromArray:strokes4];
 
-          v52 = [(PKMathRecognitionViewController *)*(a1 + 256) recognitionManager];
+          recognitionManager = [(PKMathRecognitionViewController *)*(self + 256) recognitionManager];
           v53 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v46];
-          [(PKRecognitionSessionManager *)v52 cacheTranscription:v42 strokeGroup:v53];
+          [(PKRecognitionSessionManager *)recognitionManager cacheTranscription:v42 strokeGroup:v53];
         }
 
         else
@@ -5356,11 +5356,11 @@ void __98__PKMathRecognitionViewController__updateLiveVariableWithDrawing_tokenS
   [(PKMathRecognitionViewController *)self _cleanupAfterScrubbing];
 }
 
-- (void)hoverController:(id)a3 holdGestureMeanInputPoint:(id *)a4 latestInputPoint:(id *)a5
+- (void)hoverController:(id)controller holdGestureMeanInputPoint:(id *)point latestInputPoint:(id *)inputPoint
 {
-  x = a5->var0.var0.x;
-  y = a5->var0.var0.y;
-  v8 = [(PKMathRecognitionViewController *)&self->super.isa tiledView];
+  x = inputPoint->var0.var0.x;
+  y = inputPoint->var0.var0.y;
+  tiledView = [(PKMathRecognitionViewController *)&self->super.isa tiledView];
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_parentView);
@@ -5371,7 +5371,7 @@ void __98__PKMathRecognitionViewController__updateLiveVariableWithDrawing_tokenS
     WeakRetained = 0;
   }
 
-  [v8 convertPoint:WeakRetained toView:{x, y}];
+  [tiledView convertPoint:WeakRetained toView:{x, y}];
   v16 = v11;
   v18 = v10;
 
@@ -5398,31 +5398,31 @@ void __98__PKMathRecognitionViewController__updateLiveVariableWithDrawing_tokenS
     v14 = vaddq_f64(*&v21.tx, vmlaq_n_f64(vmulq_n_f64(*&v21.c, v17), *&v21.a, v19));
     if ([(PKMathRecognitionViewController *)self _handleSingleTapAtDrawingLocation:0 fromHover:v14.f64[0] fromTapStroke:v14.f64[1]])
     {
-      v15 = [(PKMathRecognitionViewController *)&self->super.isa tiledView];
-      [v15 _pauseHoverPreviewForTimeInterval:0.5];
+      tiledView2 = [(PKMathRecognitionViewController *)&self->super.isa tiledView];
+      [tiledView2 _pauseHoverPreviewForTimeInterval:0.5];
     }
   }
 }
 
-- (void)contextMenuController:(id)a3 removeResultForItemUUID:(id)a4
+- (void)contextMenuController:(id)controller removeResultForItemUUID:(id)d
 {
   v12 = *MEMORY[0x1E69E9840];
   if (self)
   {
-    v5 = [(NSMutableDictionary *)self->_currentMathItemsLookup objectForKeyedSubscript:a4];
+    v5 = [(NSMutableDictionary *)self->_currentMathItemsLookup objectForKeyedSubscript:d];
     if (v5)
     {
-      v6 = [(PKMathRecognitionViewController *)&self->super.isa drawing];
-      v7 = [(PKMathRecognitionItem *)v5 _heroStrokeInDrawing:v6];
+      drawing = [(PKMathRecognitionViewController *)&self->super.isa drawing];
+      v7 = [(PKMathRecognitionItem *)v5 _heroStrokeInDrawing:drawing];
 
       if (v7)
       {
         v8 = os_log_create("com.apple.pencilkit", "Math");
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [v5 expression];
+          expression = [v5 expression];
           v10 = 138477827;
-          v11 = v9;
+          v11 = expression;
           _os_log_impl(&dword_1C7CCA000, v8, OS_LOG_TYPE_DEFAULT, "Remove result for: %{private}@", &v10, 0xCu);
         }
 
@@ -5438,15 +5438,15 @@ void __98__PKMathRecognitionViewController__updateLiveVariableWithDrawing_tokenS
   }
 }
 
-- (void)contextMenuController:(id)a3 solveItemUUID:(id)a4
+- (void)contextMenuController:(id)controller solveItemUUID:(id)d
 {
-  v9 = a4;
+  dCopy = d;
   v5 = [(NSMutableDictionary *)self->_currentResultsLookup objectForKeyedSubscript:?];
   v6 = v5;
   if (v5)
   {
     v7 = v5;
-    v8 = [(NSMutableDictionary *)self->_currentMathItemsLookup objectForKeyedSubscript:v9];
+    v8 = [(NSMutableDictionary *)self->_currentMathItemsLookup objectForKeyedSubscript:dCopy];
     if (v8)
     {
       [(PKMathRecognitionViewController *)self _commitSetShouldSolve:1 undoable:v8 item:?];
@@ -5455,9 +5455,9 @@ void __98__PKMathRecognitionViewController__updateLiveVariableWithDrawing_tokenS
   }
 }
 
-- (id)contextMenuController:(id)a3 imageForItemUUID:(id)a4
+- (id)contextMenuController:(id)controller imageForItemUUID:(id)d
 {
-  v5 = [(NSMutableDictionary *)self->_currentMathItemsLookup objectForKeyedSubscript:a4];
+  v5 = [(NSMutableDictionary *)self->_currentMathItemsLookup objectForKeyedSubscript:d];
   v6 = v5;
   if (!v5 || (*(&self->_delegateFlags + 1) & 0x18) == 0)
   {
@@ -5467,8 +5467,8 @@ void __98__PKMathRecognitionViewController__updateLiveVariableWithDrawing_tokenS
 
   v7 = v5;
   currentResultsLookup = self->_currentResultsLookup;
-  v9 = [v7 uuid];
-  v10 = [(NSMutableDictionary *)currentResultsLookup objectForKeyedSubscript:v9];
+  uuid = [v7 uuid];
+  v10 = [(NSMutableDictionary *)currentResultsLookup objectForKeyedSubscript:uuid];
 
   v11 = +[PKMathTypesetViewController fontSize];
   delegateFlags = self->_delegateFlags;
@@ -5479,17 +5479,17 @@ void __98__PKMathRecognitionViewController__updateLiveVariableWithDrawing_tokenS
 
   if ([v10 length])
   {
-    v13 = [v7 shouldSolveMathFlagIsSet];
+    shouldSolveMathFlagIsSet = [v7 shouldSolveMathFlagIsSet];
   }
 
   else
   {
-    v13 = 0;
+    shouldSolveMathFlagIsSet = 0;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v16 = [v7 uuid];
-  v14 = [WeakRetained mathViewController:self createTypesetImageForItemUUID:v16 showResult:v13 fontSize:v11];
+  uuid2 = [v7 uuid];
+  v14 = [WeakRetained mathViewController:self createTypesetImageForItemUUID:uuid2 showResult:shouldSolveMathFlagIsSet fontSize:v11];
 
   if (!v14)
   {
@@ -5497,16 +5497,16 @@ void __98__PKMathRecognitionViewController__updateLiveVariableWithDrawing_tokenS
 LABEL_10:
     if ((*&delegateFlags & 0x800) != 0)
     {
-      v17 = [v7 expressionToPresent];
+      expressionToPresent = [v7 expressionToPresent];
       if ([v10 length] && (objc_msgSend(v7, "isVerticalExpression") & 1) == 0 && objc_msgSend(v7, "shouldSolveMathFlagIsSet"))
       {
-        v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ = %@", v17, v10];
+        v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ = %@", expressionToPresent, v10];
 
-        v17 = v18;
+        expressionToPresent = v18;
       }
 
       v19 = objc_loadWeakRetained(&self->_delegate);
-      v14 = [v19 mathViewController:self createTypesetImageForExpression:v17 latex:1 fontSize:v11];
+      v14 = [v19 mathViewController:self createTypesetImageForExpression:expressionToPresent latex:1 fontSize:v11];
     }
 
     else
@@ -5520,32 +5520,32 @@ LABEL_18:
   return v14;
 }
 
-- (void)contextMenuController:(id)a3 dismissErrorForItem:(id)a4 token:(id)a5
+- (void)contextMenuController:(id)controller dismissErrorForItem:(id)item token:(id)token
 {
-  v6 = a5;
-  v7 = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
-  [(PKOverlayDrawingController *)v7 removeToken:v6];
+  tokenCopy = token;
+  overlayDrawingController = [(PKMathRecognitionViewController *)&self->super.isa overlayDrawingController];
+  [(PKOverlayDrawingController *)overlayDrawingController removeToken:tokenCopy];
 }
 
-- (void)contextMenuController:(id)a3 addGraphForItemUUID:(id)a4 addToExisting:(BOOL)a5 graphableVariable:(id)a6
+- (void)contextMenuController:(id)controller addGraphForItemUUID:(id)d addToExisting:(BOOL)existing graphableVariable:(id)variable
 {
-  v6 = a5;
+  existingCopy = existing;
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a6;
-  v31 = [a4 UUIDString];
-  v10 = v9;
+  variableCopy = variable;
+  uUIDString = [d UUIDString];
+  v10 = variableCopy;
   if (self)
   {
-    v11 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v31];
+    v11 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:uUIDString];
     if (v11 && (*&self->_delegateFlags & 8) != 0)
     {
-      v30 = v6;
+      v30 = existingCopy;
       v34 = 0u;
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v12 = [(NSMutableDictionary *)self->_currentMathItemsLookup allValues];
-      v13 = [v12 countByEnumeratingWithState:&v32 objects:v38 count:16];
+      allValues = [(NSMutableDictionary *)self->_currentMathItemsLookup allValues];
+      v13 = [allValues countByEnumeratingWithState:&v32 objects:v38 count:16];
       if (v13)
       {
         v14 = v13;
@@ -5556,12 +5556,12 @@ LABEL_18:
           {
             if (*v33 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(allValues);
             }
 
             v17 = *(*(&v32 + 1) + 8 * i);
-            v18 = [v17 uuid];
-            v19 = [v18 isEqual:v11];
+            uuid = [v17 uuid];
+            v19 = [uuid isEqual:v11];
 
             if (v19)
             {
@@ -5579,21 +5579,21 @@ LABEL_18:
               v26 = os_log_create("com.apple.pencilkit", "Math");
               if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
               {
-                v27 = [v17 expression];
+                expression = [v17 expression];
                 *buf = 138477827;
-                v37 = v27;
+                v37 = expression;
                 _os_log_impl(&dword_1C7CCA000, v26, OS_LOG_TYPE_DEFAULT, "Adding graph for expression: %{private}@", buf, 0xCu);
               }
 
               WeakRetained = objc_loadWeakRetained(&self->_delegate);
-              v29 = [v17 expression];
-              [WeakRetained mathViewController:self addGraphForExpression:v29 variable:v10 range:v31 identifier:v30 expressionLocation:*MEMORY[0x1E695F058] addToExisting:{*(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), MidX, MidY}];
+              expression2 = [v17 expression];
+              [WeakRetained mathViewController:self addGraphForExpression:expression2 variable:v10 range:uUIDString identifier:v30 expressionLocation:*MEMORY[0x1E695F058] addToExisting:{*(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), MidX, MidY}];
 
               goto LABEL_16;
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v32 objects:v38 count:16];
+          v14 = [allValues countByEnumeratingWithState:&v32 objects:v38 count:16];
           if (v14)
           {
             continue;
@@ -5608,11 +5608,11 @@ LABEL_16:
   }
 }
 
-- (void)registerRecentlyCreatedLocalStroke:(id)a3
+- (void)registerRecentlyCreatedLocalStroke:(id)stroke
 {
-  v3 = a3;
+  strokeCopy = stroke;
   v4 = +[PKLocalStrokeTracker sharedInstance];
-  [(PKLocalStrokeTracker *)v4 addStroke:v3];
+  [(PKLocalStrokeTracker *)v4 addStroke:strokeCopy];
 }
 
 - (UIViewController)viewControllerForPresentingUI

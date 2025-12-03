@@ -1,24 +1,24 @@
 @interface DYExtension
-- (id)_initWithDictionary:(id)a3 bundle:(id)a4;
+- (id)_initWithDictionary:(id)dictionary bundle:(id)bundle;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation DYExtension
 
-- (id)_initWithDictionary:(id)a3 bundle:(id)a4
+- (id)_initWithDictionary:(id)dictionary bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = DYExtension;
   v6 = [(DYExtension *)&v10 init];
   if (v6)
   {
-    v7 = [a3 objectForKey:@"slot"];
+    v7 = [dictionary objectForKey:@"slot"];
     v6->_slot = v7;
-    if (v7 && (v8 = [a3 objectForKey:@"identifier"], (v6->_identifier = v8) != 0))
+    if (v7 && (v8 = [dictionary objectForKey:@"identifier"], (v6->_identifier = v8) != 0))
     {
-      v6->_dictionary = a3;
-      v6->_bundle = a4;
+      v6->_dictionary = dictionary;
+      v6->_bundle = bundle;
     }
 
     else

@@ -2,52 +2,52 @@
 + (MPNowPlayingInfoCenter)defaultCenter;
 + (NSArray)supportedAnimatedArtworkKeys;
 + (OS_dispatch_queue)serviceQueue;
-+ (id)infoCenterForPlayerID:(id)a3;
-+ (id)infoCenterForPlayerPath:(id)a3;
++ (id)infoCenterForPlayerID:(id)d;
++ (id)infoCenterForPlayerPath:(id)path;
 - (BOOL)isInvalidated;
 - (BOOL)supportsArtworkCatalogLoading;
 - (MPNowPlayingContentItem)nowPlayingContentItem;
 - (MPNowPlayingInfoCenter)init;
-- (MPNowPlayingInfoCenter)initWithPlayerID:(id)a3;
-- (MPNowPlayingInfoCenter)initWithPlayerPath:(id)a3;
+- (MPNowPlayingInfoCenter)initWithPlayerID:(id)d;
+- (MPNowPlayingInfoCenter)initWithPlayerPath:(id)path;
 - (MPNowPlayingInfoLyricsDelegate)lyricsDelegate;
 - (MPNowPlayingPlaybackQueueDataSource)playbackQueueDataSource;
 - (MPNowPlayingPlaybackQueueDelegate)playbackQueueDelegate;
 - (MPNowPlayingPlaybackState)playbackState;
 - (NSDictionary)nowPlayingInfo;
 - (NSString)playerID;
-- (id)_artworkCatalogForContentItem:(id)a3;
-- (id)_childContentItemForContentItem:(id)a3 index:(int64_t)a4;
+- (id)_artworkCatalogForContentItem:(id)item;
+- (id)_childContentItemForContentItem:(id)item index:(int64_t)index;
 - (id)_onQueue_stateDictionary;
-- (id)artworkCatalogBlockForContentItem:(id)a3;
-- (void)_becomeActiveIfPossibleWithCompletion:(id)a3;
-- (void)_becomeActiveWithCompletion:(id)a3;
-- (void)_contentItemChangedNotification:(id)a3;
-- (void)_contentItemForIdentifier:(int)a3 alreadyOnDataSourceQueue:;
-- (void)_contentItemForIdentifier:(void *)a1;
-- (void)_getMetadataForContentItem:(id)a3 completion:(id)a4;
-- (void)_getTransportablePlaybackSessionRepresentationWithRequest:(id)a3 completion:(id)a4;
+- (id)artworkCatalogBlockForContentItem:(id)item;
+- (void)_becomeActiveIfPossibleWithCompletion:(id)completion;
+- (void)_becomeActiveWithCompletion:(id)completion;
+- (void)_contentItemChangedNotification:(id)notification;
+- (void)_contentItemForIdentifier:(int)identifier alreadyOnDataSourceQueue:;
+- (void)_contentItemForIdentifier:(void *)identifier;
+- (void)_getMetadataForContentItem:(id)item completion:(id)completion;
+- (void)_getTransportablePlaybackSessionRepresentationWithRequest:(id)request completion:(id)completion;
 - (void)_initializeNowPlayingInfo;
-- (void)_invalidatePlaybackQueueBoundaryWithExpectedQueueSize:(int64_t)a3;
-- (void)_invalidatePlaybackQueueImmediatelyWithCompletion:(uint64_t)a1;
-- (void)_onDataSourceQueue_getContentItemIDsInRange:(uint64_t)a3 completion:(void *)a4;
+- (void)_invalidatePlaybackQueueBoundaryWithExpectedQueueSize:(int64_t)size;
+- (void)_invalidatePlaybackQueueImmediatelyWithCompletion:(uint64_t)completion;
+- (void)_onDataSourceQueue_getContentItemIDsInRange:(uint64_t)range completion:(void *)completion;
 - (void)_onQueue_clearPlaybackQueueDataSourceCallbacks;
 - (void)_onQueue_ensureContentItemStorageInitialized;
 - (void)_onQueue_pushContentItemsUpdate;
-- (void)_onQueue_pushNowPlayingInfoAndRetry:(BOOL)a3;
-- (void)_updateBloomFilterWithContentItemID:(uint64_t)a1;
+- (void)_onQueue_pushNowPlayingInfoAndRetry:(BOOL)retry;
+- (void)_updateBloomFilterWithContentItemID:(uint64_t)d;
 - (void)becomeActiveSystemFallback;
 - (void)dealloc;
 - (void)invalidate;
-- (void)invalidatePlaybackQueueWithCompletion:(id)a3;
+- (void)invalidatePlaybackQueueWithCompletion:(id)completion;
 - (void)resignActiveSystemFallback;
-- (void)setDataSourceQueue:(id)a3;
-- (void)setLyricsDelegate:(id)a3;
-- (void)setNowPlayingContentItem:(id)a3;
+- (void)setDataSourceQueue:(id)queue;
+- (void)setLyricsDelegate:(id)delegate;
+- (void)setNowPlayingContentItem:(id)item;
 - (void)setNowPlayingInfo:(NSDictionary *)nowPlayingInfo;
-- (void)setPlaybackQueueDataSource:(id)a3;
+- (void)setPlaybackQueueDataSource:(id)source;
 - (void)setPlaybackState:(MPNowPlayingPlaybackState)playbackState;
-- (void)setRepresentedApplicationBundleIdentifier:(id)a3;
+- (void)setRepresentedApplicationBundleIdentifier:(id)identifier;
 @end
 
 @implementation MPNowPlayingInfoCenter
@@ -61,27 +61,27 @@
 
 - (void)_onQueue_clearPlaybackQueueDataSourceCallbacks
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 40));
-    if ((*(a1 + 288) & 1) == 0)
+    dispatch_assert_queue_V2(*(self + 40));
+    if ((*(self + 288) & 1) == 0)
     {
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __72__MPNowPlayingInfoCenter__onQueue_clearPlaybackQueueDataSourceCallbacks__block_invoke;
       aBlock[3] = &unk_1E76814F0;
-      aBlock[4] = a1;
+      aBlock[4] = self;
       v2 = _Block_copy(aBlock);
-      v2[2](v2, a1 + 200);
-      v2[2](v2, a1 + 208);
-      v2[2](v2, a1 + 216);
-      v2[2](v2, a1 + 224);
-      v2[2](v2, a1 + 232);
-      v2[2](v2, a1 + 240);
-      v2[2](v2, a1 + 248);
-      v2[2](v2, a1 + 256);
-      v2[2](v2, a1 + 264);
-      v2[2](v2, a1 + 272);
+      v2[2](v2, self + 200);
+      v2[2](v2, self + 208);
+      v2[2](v2, self + 216);
+      v2[2](v2, self + 224);
+      v2[2](v2, self + 232);
+      v2[2](v2, self + 240);
+      v2[2](v2, self + 248);
+      v2[2](v2, self + 256);
+      v2[2](v2, self + 264);
+      v2[2](v2, self + 272);
       MRMediaRemotePlaybackSessionSetRequestCallback();
     }
   }
@@ -179,15 +179,15 @@ void __49__MPNowPlayingInfoCenter_playbackQueueDataSource__block_invoke(uint64_t
   return WeakRetained;
 }
 
-- (void)_contentItemChangedNotification:(id)a3
+- (void)_contentItemChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:@"_MPContentItemDidChangeUserInfoKeyDeltaItem"];
+    userInfo = [notificationCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:@"_MPContentItemDidChangeUserInfoKeyDeltaItem"];
 
     if (v7)
     {
@@ -197,9 +197,9 @@ void __49__MPNowPlayingInfoCenter_playbackQueueDataSource__block_invoke(uint64_t
       v9[2] = __58__MPNowPlayingInfoCenter__contentItemChangedNotification___block_invoke;
       v9[3] = &unk_1E76819B8;
       v9[4] = self;
-      v10 = v5;
+      v10 = object;
       v12 = v7;
-      v11 = v4;
+      v11 = notificationCopy;
       dispatch_sync(accessQueue, v9);
     }
   }
@@ -442,32 +442,32 @@ LABEL_37:
 
 - (void)_onQueue_ensureContentItemStorageInitialized
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 40));
-    if (!*(a1 + 120))
+    dispatch_assert_queue_V2(*(self + 40));
+    if (!*(self + 120))
     {
-      v2 = [MEMORY[0x1E695DF70] array];
-      v3 = *(a1 + 112);
-      *(a1 + 112) = v2;
+      array = [MEMORY[0x1E695DF70] array];
+      v3 = *(self + 112);
+      *(self + 112) = array;
 
       v4 = [objc_alloc(MEMORY[0x1E69B1430]) initWithMaximumCapacity:101];
-      v5 = *(a1 + 120);
-      *(a1 + 120) = v4;
+      v5 = *(self + 120);
+      *(self + 120) = v4;
 
-      v6 = [MEMORY[0x1E695DF90] dictionary];
-      v7 = *(a1 + 64);
-      *(a1 + 64) = v6;
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      v7 = *(self + 64);
+      *(self + 64) = dictionary;
 
-      v8 = [MEMORY[0x1E695DF90] dictionary];
-      v9 = *(a1 + 72);
-      *(a1 + 72) = v8;
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+      v9 = *(self + 72);
+      *(self + 72) = dictionary2;
 
       v10 = objc_alloc(MEMORY[0x1E69B13F8]);
       LODWORD(v11) = 1008981770;
       v12 = [v10 initWithCapacity:5000 falsePositiveTolerance:v11];
-      v13 = *(a1 + 136);
-      *(a1 + 136) = v12;
+      v13 = *(self + 136);
+      *(self + 136) = v12;
     }
   }
 }
@@ -475,18 +475,18 @@ LABEL_37:
 - (void)_onQueue_pushContentItemsUpdate
 {
   v65 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 40));
-    if ((*(a1 + 288) & 1) == 0)
+    dispatch_assert_queue_V2(*(self + 40));
+    if ((*(self + 288) & 1) == 0)
     {
-      [(MPNowPlayingInfoCenter *)a1 _onQueue_ensureContentItemStorageInitialized];
-      if ([*(a1 + 64) count])
+      [(MPNowPlayingInfoCenter *)self _onQueue_ensureContentItemStorageInitialized];
+      if ([*(self + 64) count])
       {
-        v44 = [MEMORY[0x1E695DF70] array];
-        v41 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
         v2 = [MEMORY[0x1E695DFA8] set];
-        [*(a1 + 64) allValues];
+        [*(self + 64) allValues];
         v52 = 0u;
         v53 = 0u;
         v54 = 0u;
@@ -508,23 +508,23 @@ LABEL_37:
               }
 
               v7 = *(*(&v52 + 1) + 8 * i);
-              [v44 addObject:{objc_msgSend(v7, "_mediaRemoteContentItem")}];
-              v8 = *(a1 + 120);
-              v9 = [v7 identifier];
-              v10 = [v8 objectForKeyedSubscript:v9];
+              [array addObject:{objc_msgSend(v7, "_mediaRemoteContentItem")}];
+              v8 = *(self + 120);
+              identifier = [v7 identifier];
+              v10 = [v8 objectForKeyedSubscript:identifier];
 
-              v11 = [v7 artworkIdentifier];
-              if (v11)
+              artworkIdentifier = [v7 artworkIdentifier];
+              if (artworkIdentifier)
               {
-                v12 = v11;
-                v13 = [v7 artworkIdentifier];
-                v14 = [v10 artworkIdentifier];
-                v15 = [v13 isEqualToString:v14];
+                v12 = artworkIdentifier;
+                artworkIdentifier2 = [v7 artworkIdentifier];
+                artworkIdentifier3 = [v10 artworkIdentifier];
+                v15 = [artworkIdentifier2 isEqualToString:artworkIdentifier3];
 
                 if ((v15 & 1) == 0)
                 {
-                  v16 = [v7 identifier];
-                  [v2 addObject:v16];
+                  identifier2 = [v7 identifier];
+                  [v2 addObject:identifier2];
                 }
               }
 
@@ -533,70 +533,70 @@ LABEL_37:
                 v17 = [v10 copy];
 
                 [v17 _mergeContentItem:v7];
-                v18 = *(a1 + 120);
-                v19 = [v7 identifier];
-                [v18 setObject:v17 forKeyedSubscript:v19];
+                v18 = *(self + 120);
+                identifier3 = [v7 identifier];
+                [v18 setObject:v17 forKeyedSubscript:identifier3];
               }
 
-              v20 = [*(a1 + 128) identifier];
-              v21 = [v7 identifier];
-              v22 = [v20 isEqual:v21];
+              identifier4 = [*(self + 128) identifier];
+              identifier5 = [v7 identifier];
+              v22 = [identifier4 isEqual:identifier5];
 
               if (v22)
               {
-                v23 = [*(a1 + 128) copy];
+                v23 = [*(self + 128) copy];
                 [v23 _mergeContentItem:v7];
-                v24 = *(a1 + 128);
-                *(a1 + 128) = v23;
+                v24 = *(self + 128);
+                *(self + 128) = v23;
               }
 
-              v25 = *(a1 + 72);
-              v26 = [v7 identifier];
-              v27 = [v25 objectForKeyedSubscript:v26];
+              v25 = *(self + 72);
+              identifier6 = [v7 identifier];
+              v27 = [v25 objectForKeyedSubscript:identifier6];
 
               if (v27)
               {
                 MRPlaybackQueueRequestSetIncludeMetadata();
                 CFRetain(v27);
-                v28 = [objc_opt_class() serviceQueue];
+                serviceQueue = [objc_opt_class() serviceQueue];
                 block[0] = MEMORY[0x1E69E9820];
                 block[1] = 3221225472;
                 block[2] = __57__MPNowPlayingInfoCenter__onQueue_pushContentItemsUpdate__block_invoke;
                 block[3] = &unk_1E76819B8;
                 v51 = v27;
-                block[4] = a1;
+                block[4] = self;
                 block[5] = v7;
                 v50 = v2;
-                dispatch_async(v28, block);
+                dispatch_async(serviceQueue, block);
               }
 
               else
               {
-                v29 = [v7 _mediaRemoteContentItem];
-                v30 = [v7 identifier];
-                v31 = [v2 containsObject:v30];
+                _mediaRemoteContentItem = [v7 _mediaRemoteContentItem];
+                identifier7 = [v7 identifier];
+                v31 = [v2 containsObject:identifier7];
 
                 if ((v31 & 1) == 0)
                 {
                   MRContentItemSetArtworkIdentifier();
                 }
 
-                [v41 addObject:v29];
+                [array2 addObject:_mediaRemoteContentItem];
                 v32 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
                 if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
                 {
                   v33 = objc_opt_class();
-                  v34 = *(a1 + 312);
+                  v34 = *(self + 312);
                   v35 = v33;
-                  v36 = [v7 identifier];
+                  identifier8 = [v7 identifier];
                   *buf = v40;
                   v57 = v33;
                   v58 = 2048;
-                  v59 = a1;
+                  selfCopy = self;
                   v60 = 2112;
                   v61 = v34;
                   v62 = 2114;
-                  v63 = v36;
+                  v63 = identifier8;
                   _os_log_impl(&dword_1A238D000, v32, OS_LOG_TYPE_DEFAULT, "[InfoCenter] <%@: %p (%@)> Content item mutated | pushed [metadata] contentItemID=%{public}@", buf, 0x2Au);
                 }
               }
@@ -608,29 +608,29 @@ LABEL_37:
           while (v5);
         }
 
-        if ([v41 count])
+        if ([array2 count])
         {
-          v37 = [objc_opt_class() serviceQueue];
+          serviceQueue2 = [objc_opt_class() serviceQueue];
           v47[0] = MEMORY[0x1E69E9820];
           v47[1] = 3221225472;
           v47[2] = __57__MPNowPlayingInfoCenter__onQueue_pushContentItemsUpdate__block_invoke_237;
           v47[3] = &unk_1E76823C0;
-          v47[4] = a1;
-          v48 = v41;
-          dispatch_async(v37, v47);
+          v47[4] = self;
+          v48 = array2;
+          dispatch_async(serviceQueue2, v47);
         }
 
-        v38 = *(a1 + 48);
+        v38 = *(self + 48);
         v45[0] = MEMORY[0x1E69E9820];
         v45[1] = 3221225472;
         v45[2] = __57__MPNowPlayingInfoCenter__onQueue_pushContentItemsUpdate__block_invoke_244;
         v45[3] = &unk_1E76823C0;
-        v45[4] = a1;
-        v46 = v44;
-        v39 = v44;
+        v45[4] = self;
+        v46 = array;
+        v39 = array;
         dispatch_async(v38, v45);
-        [*(a1 + 64) removeAllObjects];
-        [*(a1 + 72) removeAllObjects];
+        [*(self + 64) removeAllObjects];
+        [*(self + 72) removeAllObjects];
       }
     }
   }
@@ -747,7 +747,7 @@ void __57__MPNowPlayingInfoCenter__onQueue_pushContentItemsUpdate__block_invoke_
   [v2 postNotificationName:@"_MPNowPlayingContentItemsDidChangeNotification" object:0 userInfo:v6];
 }
 
-- (void)_invalidatePlaybackQueueBoundaryWithExpectedQueueSize:(int64_t)a3
+- (void)_invalidatePlaybackQueueBoundaryWithExpectedQueueSize:(int64_t)size
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -755,7 +755,7 @@ void __57__MPNowPlayingInfoCenter__onQueue_pushContentItemsUpdate__block_invoke_
   v4[2] = __80__MPNowPlayingInfoCenter__invalidatePlaybackQueueBoundaryWithExpectedQueueSize___block_invoke;
   v4[3] = &unk_1E7682398;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = size;
   dispatch_async(accessQueue, v4);
 }
 
@@ -887,24 +887,24 @@ void __80__MPNowPlayingInfoCenter__invalidatePlaybackQueueBoundaryWithExpectedQu
   }
 }
 
-- (void)_invalidatePlaybackQueueImmediatelyWithCompletion:(uint64_t)a1
+- (void)_invalidatePlaybackQueueImmediatelyWithCompletion:(uint64_t)completion
 {
   v44 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (completion)
   {
-    dispatch_assert_queue_V2(*(a1 + 328));
-    if ([a1 isInvalidated])
+    dispatch_assert_queue_V2(*(completion + 328));
+    if ([completion isInvalidated])
     {
       v4 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
         v5 = objc_opt_class();
-        v6 = *(a1 + 312);
+        v6 = *(completion + 312);
         *buf = 138412802;
         *&buf[4] = v5;
         *&buf[12] = 2048;
-        *&buf[14] = a1;
+        *&buf[14] = completion;
         *&buf[22] = 2112;
         v41 = v6;
         v7 = v5;
@@ -916,10 +916,10 @@ void __80__MPNowPlayingInfoCenter__invalidatePlaybackQueueBoundaryWithExpectedQu
 
     else
     {
-      v8 = [a1 playbackQueueDataSource];
+      playbackQueueDataSource = [completion playbackQueueDataSource];
       if (objc_opt_respondsToSelector())
       {
-        v9 = [v8 playbackQueueIdentifierForNowPlayingInfoCenter:a1];
+        v9 = [playbackQueueDataSource playbackQueueIdentifierForNowPlayingInfoCenter:completion];
       }
 
       else
@@ -954,7 +954,7 @@ void __80__MPNowPlayingInfoCenter__invalidatePlaybackQueueBoundaryWithExpectedQu
       v23 = 3221225472;
       v24 = __76__MPNowPlayingInfoCenter__invalidatePlaybackQueueImmediatelyWithCompletion___block_invoke;
       v25 = &unk_1E76813D0;
-      v26 = a1;
+      completionCopy = completion;
       v27 = v36;
       v28 = buf;
       v29 = v38;
@@ -967,16 +967,16 @@ void __80__MPNowPlayingInfoCenter__invalidatePlaybackQueueBoundaryWithExpectedQu
       v13[3] = &unk_1E7681478;
       v17 = v36;
       v18 = buf;
-      v13[4] = a1;
+      v13[4] = completion;
       v19 = v38;
       v20 = &v31;
-      v11 = v8;
+      v11 = playbackQueueDataSource;
       v14 = v11;
       v21 = sel__invalidatePlaybackQueueImmediatelyWithCompletion_;
       v12 = v9;
       v15 = v12;
       v16 = v3;
-      [(MPNowPlayingInfoCenter *)a1 _onDataSourceQueue_getContentItemIDsInRange:v10[5] completion:v13];
+      [(MPNowPlayingInfoCenter *)completion _onDataSourceQueue_getContentItemIDsInRange:v10[5] completion:v13];
 
       _Block_object_dispose(&v31, 8);
       _Block_object_dispose(v36, 8);
@@ -1190,35 +1190,35 @@ LABEL_13:
 LABEL_25:
 }
 
-- (void)_onDataSourceQueue_getContentItemIDsInRange:(uint64_t)a3 completion:(void *)a4
+- (void)_onDataSourceQueue_getContentItemIDsInRange:(uint64_t)range completion:(void *)completion
 {
-  v7 = a4;
-  if (a1)
+  completionCopy = completion;
+  if (self)
   {
-    dispatch_assert_queue_V2(a1[41]);
+    dispatch_assert_queue_V2(self[41]);
     MSVSignedIntersectionRange();
     if (!v8)
     {
       MSVSignedUnionRange();
       a2 = MSVSignedSubtractedRange();
-      a3 = v9;
+      range = v9;
     }
 
-    v10 = [a1 playbackQueueDataSource];
+    playbackQueueDataSource = [self playbackQueueDataSource];
     if (objc_opt_respondsToSelector())
     {
       v27 = 0x7FFFFFFFFFFFFFFFLL;
-      if (a3 <= 1)
+      if (range <= 1)
       {
-        v11 = 1;
+        rangeCopy = 1;
       }
 
       else
       {
-        v11 = a3;
+        rangeCopy = range;
       }
 
-      v12 = [v10 nowPlayingInfoCenter:a1 contentItemIDsFromOffset:a2 toOffset:a2 + v11 - 1 nowPlayingIndex:&v27];
+      v12 = [playbackQueueDataSource nowPlayingInfoCenter:self contentItemIDsFromOffset:a2 toOffset:a2 + rangeCopy - 1 nowPlayingIndex:&v27];
       v13 = v12;
       if (v12)
       {
@@ -1230,7 +1230,7 @@ LABEL_25:
         v14 = MEMORY[0x1E695E0F0];
       }
 
-      v7[2](v7, v14, v27);
+      completionCopy[2](completionCopy, v14, v27);
 
       goto LABEL_33;
     }
@@ -1242,25 +1242,25 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:a3];
-    v20 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:a3];
-    if (a3 < 1)
+    v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:range];
+    v20 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:range];
+    if (range < 1)
     {
       v19 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_30:
       if ([v20 count])
       {
-        v18 = a1[5];
+        v18 = self[5];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __81__MPNowPlayingInfoCenter__onDataSourceQueue_getContentItemIDsInRange_completion___block_invoke_2;
         block[3] = &unk_1E76823C0;
-        block[4] = a1;
+        block[4] = self;
         v22 = v20;
         dispatch_async(v18, block);
       }
 
-      (v7)[2](v7, v15, v19);
+      (completionCopy)[2](completionCopy, v15, v19);
 
       goto LABEL_33;
     }
@@ -1270,8 +1270,8 @@ LABEL_30:
     {
       if (objc_opt_respondsToSelector())
       {
-        v16 = [v10 nowPlayingInfoCenter:a1 contentItemIDForOffset:a2];
-        if (!v16)
+        identifier2 = [playbackQueueDataSource nowPlayingInfoCenter:self contentItemIDForOffset:a2];
+        if (!identifier2)
         {
           goto LABEL_26;
         }
@@ -1295,20 +1295,20 @@ LABEL_30:
         v23[2] = __81__MPNowPlayingInfoCenter__onDataSourceQueue_getContentItemIDsInRange_completion___block_invoke_111;
         v23[3] = &unk_1E76814A0;
         v25 = &v27;
-        v24 = v10;
+        v24 = playbackQueueDataSource;
         v26 = a2;
         [MPContentItem performSuppressingChangeNotifications:v23];
-        v16 = v28[5];
-        if (v16)
+        identifier2 = v28[5];
+        if (identifier2)
         {
-          v17 = [v28[5] identifier];
-          [v20 setObject:v16 forKeyedSubscript:v17];
+          identifier = [v28[5] identifier];
+          [v20 setObject:identifier2 forKeyedSubscript:identifier];
 
-          v16 = [v28[5] identifier];
+          identifier2 = [v28[5] identifier];
         }
 
         _Block_object_dispose(&v27, 8);
-        if (!v16)
+        if (!identifier2)
         {
 LABEL_26:
           if ([v15 count])
@@ -1325,11 +1325,11 @@ LABEL_26:
         v19 = [v15 count];
       }
 
-      [v15 addObject:v16];
+      [v15 addObject:identifier2];
 LABEL_27:
 
       ++a2;
-      if (!--a3)
+      if (!--range)
       {
         goto LABEL_30;
       }
@@ -1382,19 +1382,19 @@ void __76__MPNowPlayingInfoCenter__invalidatePlaybackQueueImmediatelyWithComplet
   }
 }
 
-- (void)_contentItemForIdentifier:(int)a3 alreadyOnDataSourceQueue:
+- (void)_contentItemForIdentifier:(int)identifier alreadyOnDataSourceQueue:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    if (a3)
+    if (identifier)
     {
-      MEMORY[0x1E69E9740](a1[41]);
+      MEMORY[0x1E69E9740](self[41]);
     }
 
     else
     {
-      MEMORY[0x1E69E9748](a1[41]);
+      MEMORY[0x1E69E9748](self[41]);
     }
 
     v22 = 0;
@@ -1407,14 +1407,14 @@ void __76__MPNowPlayingInfoCenter__invalidatePlaybackQueueImmediatelyWithComplet
     v16 = 3221225472;
     v17 = __77__MPNowPlayingInfoCenter__contentItemForIdentifier_alreadyOnDataSourceQueue___block_invoke;
     v18 = &unk_1E7681330;
-    v19 = a1;
+    selfCopy = self;
     v21 = &v22;
     v6 = v5;
     v20 = v6;
     msv_dispatch_sync_on_queue();
     if (!v23[5])
     {
-      v7 = [a1 playbackQueueDataSource];
+      playbackQueueDataSource = [self playbackQueueDataSource];
       v8 = objc_opt_respondsToSelector();
 
       if (v8)
@@ -1424,11 +1424,11 @@ void __76__MPNowPlayingInfoCenter__invalidatePlaybackQueueImmediatelyWithComplet
         v12[2] = __77__MPNowPlayingInfoCenter__contentItemForIdentifier_alreadyOnDataSourceQueue___block_invoke_2;
         v12[3] = &unk_1E7681330;
         v14 = &v22;
-        v12[4] = a1;
+        v12[4] = self;
         v13 = v6;
         v9 = _Block_copy(v12);
         v10 = v9;
-        if (a3)
+        if (identifier)
         {
           (*(v9 + 2))(v9);
         }
@@ -1440,12 +1440,12 @@ void __76__MPNowPlayingInfoCenter__invalidatePlaybackQueueImmediatelyWithComplet
       }
     }
 
-    a1 = v23[5];
+    self = v23[5];
 
     _Block_object_dispose(&v22, 8);
   }
 
-  return a1;
+  return self;
 }
 
 void __76__MPNowPlayingInfoCenter__invalidatePlaybackQueueImmediatelyWithCompletion___block_invoke_4(uint64_t a1)
@@ -1601,16 +1601,16 @@ uint64_t __76__MPNowPlayingInfoCenter__invalidatePlaybackQueueImmediatelyWithCom
   return result;
 }
 
-- (void)_updateBloomFilterWithContentItemID:(uint64_t)a1
+- (void)_updateBloomFilterWithContentItemID:(uint64_t)d
 {
   v3 = a2;
-  if (a1)
+  if (d)
   {
-    dispatch_assert_queue_V2(*(a1 + 40));
+    dispatch_assert_queue_V2(*(d + 40));
     if (v3)
     {
-      [(MPNowPlayingInfoCenter *)a1 _onQueue_ensureContentItemStorageInitialized];
-      [*(a1 + 136) addObject:v3];
+      [(MPNowPlayingInfoCenter *)d _onQueue_ensureContentItemStorageInitialized];
+      [*(d + 136) addObject:v3];
     }
   }
 }
@@ -1734,11 +1734,11 @@ void __77__MPNowPlayingInfoCenter__contentItemForIdentifier_alreadyOnDataSourceQ
   v8 = NSStringFromMSVSignedRange();
   v24[4] = v8;
   v23[5] = @"cachedContentItems";
-  v9 = [(MSVLRUDictionary *)self->_contentItems allKeys];
-  v10 = v9;
-  if (v9)
+  allKeys = [(MSVLRUDictionary *)self->_contentItems allKeys];
+  v10 = allKeys;
+  if (allKeys)
   {
-    v11 = v9;
+    v11 = allKeys;
   }
 
   else
@@ -1748,11 +1748,11 @@ void __77__MPNowPlayingInfoCenter__contentItemForIdentifier_alreadyOnDataSourceQ
 
   v24[5] = v11;
   v23[6] = @"mutatedContentItems";
-  v12 = [(NSMutableDictionary *)self->_mutatedContentItems allKeys];
-  v13 = v12;
-  if (v12)
+  allKeys2 = [(NSMutableDictionary *)self->_mutatedContentItems allKeys];
+  v13 = allKeys2;
+  if (allKeys2)
   {
-    v14 = v12;
+    v14 = allKeys2;
   }
 
   else
@@ -1762,11 +1762,11 @@ void __77__MPNowPlayingInfoCenter__contentItemForIdentifier_alreadyOnDataSourceQ
 
   v24[6] = v14;
   v23[7] = @"mutatedPlaybackQueueRequests";
-  v15 = [(NSMutableDictionary *)self->_mutatedPlaybackQueueRequests allKeys];
-  v16 = v15;
-  if (v15)
+  allKeys3 = [(NSMutableDictionary *)self->_mutatedPlaybackQueueRequests allKeys];
+  v16 = allKeys3;
+  if (allKeys3)
   {
-    v17 = v15;
+    v17 = allKeys3;
   }
 
   else
@@ -1808,21 +1808,21 @@ void __77__MPNowPlayingInfoCenter__contentItemForIdentifier_alreadyOnDataSourceQ
   return v19;
 }
 
-- (void)_getTransportablePlaybackSessionRepresentationWithRequest:(id)a3 completion:(id)a4
+- (void)_getTransportablePlaybackSessionRepresentationWithRequest:(id)request completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   dataSourceQueue = self->_dataSourceQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __95__MPNowPlayingInfoCenter__getTransportablePlaybackSessionRepresentationWithRequest_completion___block_invoke;
   v12[3] = &unk_1E7681E88;
-  v14 = v8;
+  v14 = completionCopy;
   v15 = a2;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  v11 = v8;
+  v13 = requestCopy;
+  v10 = requestCopy;
+  v11 = completionCopy;
   dispatch_async(dataSourceQueue, v12);
 }
 
@@ -1921,22 +1921,22 @@ void __95__MPNowPlayingInfoCenter__getTransportablePlaybackSessionRepresentation
   (*(a1[6] + 16))();
 }
 
-- (void)_getMetadataForContentItem:(id)a3 completion:(id)a4
+- (void)_getMetadataForContentItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__54662;
   v16 = __Block_byref_object_dispose__54663;
   v17 = 0;
-  v8 = [v6 identifier];
+  identifier = [itemCopy identifier];
   msv_dispatch_sync_on_queue();
   v9 = v13[5];
-  if (!v9 && v8)
+  if (!v9 && identifier)
   {
-    v10 = [(MPNowPlayingInfoCenter *)self _contentItemForIdentifier:v8];
+    v10 = [(MPNowPlayingInfoCenter *)self _contentItemForIdentifier:identifier];
     v11 = v13[5];
     v13[5] = v10;
 
@@ -1945,10 +1945,10 @@ void __95__MPNowPlayingInfoCenter__getTransportablePlaybackSessionRepresentation
 
   if (v9)
   {
-    [v6 _mergeContentItem:?];
+    [itemCopy _mergeContentItem:?];
   }
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 
   _Block_object_dispose(&v12, 8);
 }
@@ -1962,24 +1962,24 @@ void __64__MPNowPlayingInfoCenter__getMetadataForContentItem_completion___block_
   *(v3 + 40) = v2;
 }
 
-- (void)_contentItemForIdentifier:(void *)a1
+- (void)_contentItemForIdentifier:(void *)identifier
 {
-  if (a1)
+  if (identifier)
   {
-    a1 = [(MPNowPlayingInfoCenter *)a1 _contentItemForIdentifier:a2 alreadyOnDataSourceQueue:0];
+    identifier = [(MPNowPlayingInfoCenter *)identifier _contentItemForIdentifier:a2 alreadyOnDataSourceQueue:0];
     v2 = vars8;
   }
 
-  return a1;
+  return identifier;
 }
 
-- (id)_childContentItemForContentItem:(id)a3 index:(int64_t)a4
+- (id)_childContentItemForContentItem:(id)item index:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(MPNowPlayingInfoCenter *)self playbackQueueDataSource];
+  itemCopy = item;
+  playbackQueueDataSource = [(MPNowPlayingInfoCenter *)self playbackQueueDataSource];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 nowPlayingInfoCenter:self childContentItemIDAtIndex:a4 ofItem:v6];
+    v8 = [playbackQueueDataSource nowPlayingInfoCenter:self childContentItemIDAtIndex:index ofItem:itemCopy];
     if (v8)
     {
       v9 = [(MPContentItem *)[MPNowPlayingContentItem alloc] initWithIdentifier:v8];
@@ -1999,18 +1999,18 @@ void __64__MPNowPlayingInfoCenter__getMetadataForContentItem_completion___block_
   return v9;
 }
 
-- (void)_becomeActiveIfPossibleWithCompletion:(id)a3
+- (void)_becomeActiveIfPossibleWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(MPNowPlayingInfoCenter *)self isInvalidated])
   {
     v5 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPErrorDomain" code:6 debugDescription:@"MPNowPlayingInfoCenter was invalidated"];
-    v4[2](v4, v5);
+    completionCopy[2](completionCopy, v5);
   }
 
   else
   {
-    v6 = v4;
+    v6 = completionCopy;
     MRMediaRemoteSetNowPlayingPlayerIfPossible();
   }
 }
@@ -2050,21 +2050,21 @@ void __64__MPNowPlayingInfoCenter__becomeActiveIfPossibleWithCompletion___block_
   }
 }
 
-- (void)_becomeActiveWithCompletion:(id)a3
+- (void)_becomeActiveWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(MPNowPlayingInfoCenter *)self isInvalidated])
   {
-    if (v4)
+    if (completionCopy)
     {
       v5 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPErrorDomain" code:6 debugDescription:@"MPNowPlayingInfoCenter was invalidated"];
-      v4[2](v4, v5);
+      completionCopy[2](completionCopy, v5);
     }
   }
 
   else
   {
-    v6 = v4;
+    v6 = completionCopy;
     MRMediaRemoteSetNowPlayingPlayer();
   }
 }
@@ -2104,7 +2104,7 @@ void __54__MPNowPlayingInfoCenter__becomeActiveWithCompletion___block_invoke(uin
   }
 }
 
-- (id)_artworkCatalogForContentItem:(id)a3
+- (id)_artworkCatalogForContentItem:(id)item
 {
   v6 = 0;
   v7 = &v6;
@@ -2112,7 +2112,7 @@ void __54__MPNowPlayingInfoCenter__becomeActiveWithCompletion___block_invoke(uin
   v9 = __Block_byref_object_copy__54662;
   v10 = __Block_byref_object_dispose__54663;
   v11 = 0;
-  v5 = a3;
+  itemCopy = item;
   msv_dispatch_sync_on_queue();
   v3 = v7[5];
 
@@ -2163,9 +2163,9 @@ void __55__MPNowPlayingInfoCenter_supportsArtworkCatalogLoading__block_invoke(ui
   *(*(*(a1 + 40) + 8) + 24) = objc_opt_respondsToSelector() & 1;
 }
 
-- (id)artworkCatalogBlockForContentItem:(id)a3
+- (id)artworkCatalogBlockForContentItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if ([(MPNowPlayingInfoCenter *)self supportsArtworkCatalogLoading])
   {
     v8[0] = MEMORY[0x1E69E9820];
@@ -2173,7 +2173,7 @@ void __55__MPNowPlayingInfoCenter_supportsArtworkCatalogLoading__block_invoke(ui
     v8[2] = __60__MPNowPlayingInfoCenter_artworkCatalogBlockForContentItem___block_invoke;
     v8[3] = &unk_1E7681240;
     v8[4] = self;
-    v9 = v4;
+    v9 = itemCopy;
     v5 = _Block_copy(v8);
     v6 = _Block_copy(v5);
   }
@@ -2186,15 +2186,15 @@ void __55__MPNowPlayingInfoCenter_supportsArtworkCatalogLoading__block_invoke(ui
   return v6;
 }
 
-- (void)setDataSourceQueue:(id)a3
+- (void)setDataSourceQueue:(id)queue
 {
-  v4 = a3;
-  if (self->_dataSourceQueue != v4)
+  queueCopy = queue;
+  if (self->_dataSourceQueue != queueCopy)
   {
-    v8 = v4;
-    if (v4)
+    v8 = queueCopy;
+    if (queueCopy)
     {
-      v5 = v4;
+      v5 = queueCopy;
     }
 
     else
@@ -2206,21 +2206,21 @@ void __55__MPNowPlayingInfoCenter_supportsArtworkCatalogLoading__block_invoke(ui
     dataSourceQueue = self->_dataSourceQueue;
     self->_dataSourceQueue = v5;
 
-    v4 = v8;
+    queueCopy = v8;
   }
 }
 
-- (void)setNowPlayingContentItem:(id)a3
+- (void)setNowPlayingContentItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__MPNowPlayingInfoCenter_setNowPlayingContentItem___block_invoke;
   v7[3] = &unk_1E76823C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = itemCopy;
+  v6 = itemCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -2260,17 +2260,17 @@ void __51__MPNowPlayingInfoCenter_setNowPlayingContentItem___block_invoke(uint64
   return v2;
 }
 
-- (void)invalidatePlaybackQueueWithCompletion:(id)a3
+- (void)invalidatePlaybackQueueWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dataSourceQueue = self->_dataSourceQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__MPNowPlayingInfoCenter_invalidatePlaybackQueueWithCompletion___block_invoke;
   v7[3] = &unk_1E76824C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dataSourceQueue, v7);
 }
 
@@ -2297,17 +2297,17 @@ void __40__MPNowPlayingInfoCenter_lyricsDelegate__block_invoke(uint64_t a1)
   *(v3 + 40) = WeakRetained;
 }
 
-- (void)setLyricsDelegate:(id)a3
+- (void)setLyricsDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__MPNowPlayingInfoCenter_setLyricsDelegate___block_invoke;
   v7[3] = &unk_1E76823C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -2431,17 +2431,17 @@ void __67__MPNowPlayingInfoCenter__onQueue_registerLyricsDelegateCallbacks___blo
   }
 }
 
-- (void)setPlaybackQueueDataSource:(id)a3
+- (void)setPlaybackQueueDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__MPNowPlayingInfoCenter_setPlaybackQueueDataSource___block_invoke;
   v7[3] = &unk_1E76823C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sourceCopy;
+  v6 = sourceCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -3795,12 +3795,12 @@ uint64_t __76__MPNowPlayingInfoCenter__onQueue_registerPlaybackQueueDataSourceCa
   return v3();
 }
 
-- (void)setRepresentedApplicationBundleIdentifier:(id)a3
+- (void)setRepresentedApplicationBundleIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if (![(MPNowPlayingInfoCenter *)self isInvalidated])
   {
-    v4 = [v6 copy];
+    v4 = [identifierCopy copy];
     representedApplicationBundleIdentifier = self->_representedApplicationBundleIdentifier;
     self->_representedApplicationBundleIdentifier = v4;
 
@@ -3894,9 +3894,9 @@ void __52__MPNowPlayingInfoCenter_becomeActiveSystemFallback__block_invoke(uint6
 
 - (NSString)playerID
 {
-  v2 = [(MRPlayerPath *)self->_playerPath player];
-  v3 = [v2 identifier];
-  v4 = [v3 copy];
+  player = [(MRPlayerPath *)self->_playerPath player];
+  identifier = [player identifier];
+  v4 = [identifier copy];
 
   return v4;
 }
@@ -3994,7 +3994,7 @@ LABEL_15:
     *buf = 138412802;
     v9 = v4;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = playerPath;
     v6 = v4;
@@ -4034,9 +4034,9 @@ LABEL_15:
   return 0;
 }
 
-- (MPNowPlayingInfoCenter)initWithPlayerPath:(id)a3
+- (MPNowPlayingInfoCenter)initWithPlayerPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v29.receiver = self;
   v29.super_class = MPNowPlayingInfoCenter;
   v6 = [(MPNowPlayingInfoCenter *)&v29 init];
@@ -4055,7 +4055,7 @@ LABEL_15:
   if (initWithPlayerPath__onceToken != -1)
   {
     dispatch_once(&initWithPlayerPath__onceToken, block);
-    if (v5)
+    if (pathCopy)
     {
       goto LABEL_5;
     }
@@ -4063,14 +4063,14 @@ LABEL_15:
     goto LABEL_4;
   }
 
-  if (!v5)
+  if (!pathCopy)
   {
 LABEL_4:
-    v5 = [MEMORY[0x1E69B0AD0] localPlayerPath];
+    pathCopy = [MEMORY[0x1E69B0AD0] localPlayerPath];
   }
 
 LABEL_5:
-  v9 = [v5 copy];
+  v9 = [pathCopy copy];
   playerPath = v8->_playerPath;
   v8->_playerPath = v9;
 
@@ -4078,8 +4078,8 @@ LABEL_5:
 
   if (v11)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:v8 file:@"MPNowPlayingInfoCenter.m" lineNumber:138 description:{@"Cannot have two MPNowPlayingInfoCenters for the same playerPath: %@", v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v8 file:@"MPNowPlayingInfoCenter.m" lineNumber:138 description:{@"Cannot have two MPNowPlayingInfoCenters for the same playerPath: %@", pathCopy}];
   }
 
   v12 = objc_opt_class();
@@ -4105,8 +4105,8 @@ LABEL_5:
   artworkResizeUtility = v8->_artworkResizeUtility;
   v8->_artworkResizeUtility = v20;
 
-  v22 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v22 addObserver:v8 selector:sel__contentItemChangedNotification_ name:@"_MPContentItemDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v8 selector:sel__contentItemChangedNotification_ name:@"_MPContentItemDidChangeNotification" object:0];
 
   [(MPNowPlayingInfoCenter *)v8 _initializeNowPlayingInfo];
   v25[0] = MEMORY[0x1E69E9820];
@@ -4168,59 +4168,59 @@ uint64_t __45__MPNowPlayingInfoCenter_initWithPlayerPath___block_invoke_3(uint64
   return v9;
 }
 
-- (MPNowPlayingInfoCenter)initWithPlayerID:(id)a3
+- (MPNowPlayingInfoCenter)initWithPlayerID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x1E69B0AC8]) initWithIdentifier:v4 displayName:v4];
+    defaultPlayer = [objc_alloc(MEMORY[0x1E69B0AC8]) initWithIdentifier:dCopy displayName:dCopy];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69B0AC8] defaultPlayer];
+    defaultPlayer = [MEMORY[0x1E69B0AC8] defaultPlayer];
   }
 
-  v6 = v5;
+  v6 = defaultPlayer;
   v7 = objc_alloc(MEMORY[0x1E69B0AD0]);
-  v8 = [MEMORY[0x1E69B0AA0] localOrigin];
-  v9 = [MEMORY[0x1E69B09D8] localClient];
-  v10 = [v7 initWithOrigin:v8 client:v9 player:v6];
+  localOrigin = [MEMORY[0x1E69B0AA0] localOrigin];
+  localClient = [MEMORY[0x1E69B09D8] localClient];
+  v10 = [v7 initWithOrigin:localOrigin client:localClient player:v6];
 
   v11 = [(MPNowPlayingInfoCenter *)self initWithPlayerPath:v10];
   return v11;
 }
 
-+ (id)infoCenterForPlayerPath:(id)a3
++ (id)infoCenterForPlayerPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = objc_opt_class();
   objc_sync_enter(v4);
-  v5 = [__infoCenterMap objectForKey:v3];
+  v5 = [__infoCenterMap objectForKey:pathCopy];
   objc_sync_exit(v4);
 
   return v5;
 }
 
-+ (id)infoCenterForPlayerID:(id)a3
++ (id)infoCenterForPlayerID:(id)d
 {
   v3 = MEMORY[0x1E69B0AC8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithIdentifier:v4 displayName:v4];
+  dCopy = d;
+  v5 = [[v3 alloc] initWithIdentifier:dCopy displayName:dCopy];
 
   v6 = objc_alloc(MEMORY[0x1E69B0AD0]);
-  v7 = [MEMORY[0x1E69B0AA0] localOrigin];
-  v8 = [MEMORY[0x1E69B09D8] localClient];
-  v9 = [v6 initWithOrigin:v7 client:v8 player:v5];
+  localOrigin = [MEMORY[0x1E69B0AA0] localOrigin];
+  localClient = [MEMORY[0x1E69B09D8] localClient];
+  v9 = [v6 initWithOrigin:localOrigin client:localClient player:v5];
 
   v10 = [objc_opt_class() infoCenterForPlayerPath:v9];
 
   return v10;
 }
 
-- (void)_onQueue_pushNowPlayingInfoAndRetry:(BOOL)a3
+- (void)_onQueue_pushNowPlayingInfoAndRetry:(BOOL)retry
 {
-  v3 = a3;
+  retryCopy = retry;
   dispatch_assert_queue_V2(self->_accessQueue);
   if (self->_nowPlayingInfo != self->_queuedNowPlayingInfo)
   {
@@ -4233,9 +4233,9 @@ uint64_t __45__MPNowPlayingInfoCenter_initWithPlayerPath___block_invoke_3(uint64
     if (!pushDate || (_onQueue_pushNowPlayingInfoAndRetry____isSystemApp & 1) != 0 || ([(NSDate *)pushDate timeIntervalSinceNow], fabs(v6) >= 0.5))
     {
       objc_storeStrong(&self->_nowPlayingInfo, self->_queuedNowPlayingInfo);
-      v9 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       v10 = self->_pushDate;
-      self->_pushDate = v9;
+      self->_pushDate = date;
 
       v11 = _MPToMRNowPlayingInfoDictionary(self->_nowPlayingInfo, self->_publishedContext);
       convertedNowPlayingInfo = self->_convertedNowPlayingInfo;
@@ -4257,11 +4257,11 @@ uint64_t __45__MPNowPlayingInfoCenter_initWithPlayerPath___block_invoke_3(uint64
         _os_log_impl(&dword_1A238D000, v16, OS_LOG_TYPE_DEFAULT, "NPIC: setNowPlayingInfo: sending to MediaRemote", v18, 2u);
       }
 
-      v17 = [(MPNowPlayingInfoCenter *)self playerPath];
+      playerPath = [(MPNowPlayingInfoCenter *)self playerPath];
       MRMediaRemoteSetNowPlayingInfoForPlayer();
     }
 
-    else if (v3)
+    else if (retryCopy)
     {
       v7 = dispatch_time(0, 500000000);
       calloutQueue = self->_calloutQueue;

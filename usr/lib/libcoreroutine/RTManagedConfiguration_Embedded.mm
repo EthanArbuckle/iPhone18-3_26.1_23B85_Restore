@@ -1,64 +1,64 @@
 @interface RTManagedConfiguration_Embedded
-- (BOOL)effectiveBoolValueForSetting:(id)a3;
+- (BOOL)effectiveBoolValueForSetting:(id)setting;
 - (BOOL)isDiagnosticsAndUsageAllowed;
 - (BOOL)isFindMyCarAllowed;
 - (BOOL)isHealthDataSubmissionAllowed;
-- (id)stringToManagedConfigurationKey:(id)a3;
+- (id)stringToManagedConfigurationKey:(id)key;
 - (void)dealloc;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)setDelegate:(id)a3;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation RTManagedConfiguration_Embedded
 
-- (BOOL)effectiveBoolValueForSetting:(id)a3
+- (BOOL)effectiveBoolValueForSetting:(id)setting
 {
   v4 = MEMORY[0x277D262A0];
-  v5 = a3;
-  v6 = [v4 sharedConnection];
-  v7 = [(RTManagedConfiguration_Embedded *)self stringToManagedConfigurationKey:v5];
+  settingCopy = setting;
+  sharedConnection = [v4 sharedConnection];
+  v7 = [(RTManagedConfiguration_Embedded *)self stringToManagedConfigurationKey:settingCopy];
 
-  LOBYTE(v5) = [v6 effectiveBoolValueForSetting:v7] == 1;
-  return v5;
+  LOBYTE(settingCopy) = [sharedConnection effectiveBoolValueForSetting:v7] == 1;
+  return settingCopy;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(RTManagedConfiguration *)self delegate];
-  if (v5 != v4)
+  delegateCopy = delegate;
+  delegate = [(RTManagedConfiguration *)self delegate];
+  if (delegate != delegateCopy)
   {
     v8.receiver = self;
     v8.super_class = RTManagedConfiguration_Embedded;
-    [(RTManagedConfiguration *)&v8 setDelegate:v4];
-    v6 = [MEMORY[0x277D262A0] sharedConnection];
-    v7 = v6;
-    if (v4)
+    [(RTManagedConfiguration *)&v8 setDelegate:delegateCopy];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v7 = mEMORY[0x277D262A0];
+    if (delegateCopy)
     {
-      [v6 registerObserver:self];
+      [mEMORY[0x277D262A0] registerObserver:self];
     }
 
     else
     {
-      [v6 unregisterObserver:self];
+      [mEMORY[0x277D262A0] unregisterObserver:self];
     }
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  [v3 unregisterObserver:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unregisterObserver:self];
 
   v4.receiver = self;
   v4.super_class = RTManagedConfiguration_Embedded;
   [(RTManagedConfiguration_Embedded *)&v4 dealloc];
 }
 
-- (id)stringToManagedConfigurationKey:(id)a3
+- (id)stringToManagedConfigurationKey:(id)key
 {
-  v3 = a3;
-  if ([@"RTFeatureDiagnosticsSubmissionAllowed" isEqualToString:v3])
+  keyCopy = key;
+  if ([@"RTFeatureDiagnosticsSubmissionAllowed" isEqualToString:keyCopy])
   {
     v4 = MEMORY[0x277D25E58];
 LABEL_5:
@@ -66,7 +66,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([@"RTFeatureFindMyCarAllowed" isEqualToString:v3])
+  if ([@"RTFeatureFindMyCarAllowed" isEqualToString:keyCopy])
   {
     v4 = MEMORY[0x277D25E98];
     goto LABEL_5;
@@ -78,9 +78,9 @@ LABEL_7:
   return v5;
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  v4 = [(RTManagedConfiguration *)self delegate:a3];
+  v4 = [(RTManagedConfiguration *)self delegate:notification];
   if (objc_opt_respondsToSelector())
   {
     [v4 didReceiveEffectiveSettingsChangedNotification];
@@ -89,26 +89,26 @@ LABEL_7:
 
 - (BOOL)isDiagnosticsAndUsageAllowed
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isDiagnosticSubmissionAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isDiagnosticSubmissionAllowed = [mEMORY[0x277D262A0] isDiagnosticSubmissionAllowed];
 
-  return v3;
+  return isDiagnosticSubmissionAllowed;
 }
 
 - (BOOL)isFindMyCarAllowed
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isFindMyCarAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isFindMyCarAllowed = [mEMORY[0x277D262A0] isFindMyCarAllowed];
 
-  return v3;
+  return isFindMyCarAllowed;
 }
 
 - (BOOL)isHealthDataSubmissionAllowed
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isHealthDataSubmissionAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isHealthDataSubmissionAllowed = [mEMORY[0x277D262A0] isHealthDataSubmissionAllowed];
 
-  return v3;
+  return isHealthDataSubmissionAllowed;
 }
 
 @end

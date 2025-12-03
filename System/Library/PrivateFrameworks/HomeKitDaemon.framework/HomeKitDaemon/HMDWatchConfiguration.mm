@@ -1,36 +1,36 @@
 @interface HMDWatchConfiguration
-- (HMDWatchConfiguration)initWithUniqueID:(id)a3;
+- (HMDWatchConfiguration)initWithUniqueID:(id)d;
 - (id)description;
-- (void)setConfigVersion:(id)a3 forHome:(id)a4;
-- (void)setHomeConfiguration:(id)a3;
+- (void)setConfigVersion:(id)version forHome:(id)home;
+- (void)setHomeConfiguration:(id)configuration;
 @end
 
 @implementation HMDWatchConfiguration
 
-- (void)setConfigVersion:(id)a3 forHome:(id)a4
+- (void)setConfigVersion:(id)version forHome:(id)home
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDWatchConfiguration *)self homeConfig];
-  v10 = [v8 mutableCopy];
+  homeCopy = home;
+  versionCopy = version;
+  homeConfig = [(HMDWatchConfiguration *)self homeConfig];
+  v10 = [homeConfig mutableCopy];
 
-  [v10 setObject:v7 forKeyedSubscript:v6];
+  [v10 setObject:versionCopy forKeyedSubscript:homeCopy];
   v9 = [v10 copy];
   [(HMDWatchConfiguration *)self setHomeConfig:v9];
 }
 
-- (void)setHomeConfiguration:(id)a3
+- (void)setHomeConfiguration:(id)configuration
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = v4;
+    v6 = configurationCopy;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
@@ -49,7 +49,7 @@
           v12 = objc_alloc(MEMORY[0x277CCAD78]);
           v13 = [v12 initWithUUIDString:{v11, v17}];
           v14 = [v6 objectForKeyedSubscript:v11];
-          [v5 setObject:v14 forKeyedSubscript:v13];
+          [dictionary setObject:v14 forKeyedSubscript:v13];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -58,14 +58,14 @@
       while (v8);
     }
 
-    v15 = [v5 copy];
+    v15 = [dictionary copy];
     [(HMDWatchConfiguration *)self setHomeConfig:v15];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEAC0] dictionary];
-    [(HMDWatchConfiguration *)self setHomeConfig:v5];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
+    [(HMDWatchConfiguration *)self setHomeConfig:dictionary];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -74,29 +74,29 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(HMDWatchConfiguration *)self uniqueId];
-  v5 = [(HMDWatchConfiguration *)self metadataConfig];
-  v6 = [(HMDWatchConfiguration *)self homeConfig];
-  v7 = [v3 initWithFormat:@"<HMDWatchConfiguration: Watch ID: %@, Metadata Config: %@, Homedata Config: %@>", v4, v5, v6];
+  uniqueId = [(HMDWatchConfiguration *)self uniqueId];
+  metadataConfig = [(HMDWatchConfiguration *)self metadataConfig];
+  homeConfig = [(HMDWatchConfiguration *)self homeConfig];
+  v7 = [v3 initWithFormat:@"<HMDWatchConfiguration: Watch ID: %@, Metadata Config: %@, Homedata Config: %@>", uniqueId, metadataConfig, homeConfig];
 
   return v7;
 }
 
-- (HMDWatchConfiguration)initWithUniqueID:(id)a3
+- (HMDWatchConfiguration)initWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = HMDWatchConfiguration;
   v5 = [(HMDWatchConfiguration *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     uniqueId = v5->_uniqueId;
     v5->_uniqueId = v6;
 
-    v8 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
     homeConfig = v5->_homeConfig;
-    v5->_homeConfig = v8;
+    v5->_homeConfig = dictionary;
   }
 
   return v5;

@@ -1,7 +1,7 @@
 @interface AVTEditingPreviewMode
 + (id)defaultPreviewMode;
-+ (id)stringForPreviewModeType:(unint64_t)a3;
-- (AVTEditingPreviewMode)initWithType:(unint64_t)a3 options:(id)a4;
++ (id)stringForPreviewModeType:(unint64_t)type;
+- (AVTEditingPreviewMode)initWithType:(unint64_t)type options:(id)options;
 - (id)description;
 @end
 
@@ -16,9 +16,9 @@
   return v4;
 }
 
-+ (id)stringForPreviewModeType:(unint64_t)a3
++ (id)stringForPreviewModeType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return @"body";
   }
@@ -29,17 +29,17 @@
   }
 }
 
-- (AVTEditingPreviewMode)initWithType:(unint64_t)a3 options:(id)a4
+- (AVTEditingPreviewMode)initWithType:(unint64_t)type options:(id)options
 {
-  v7 = a4;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = AVTEditingPreviewMode;
   v8 = [(AVTEditingPreviewMode *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_options, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_options, options);
   }
 
   return v9;
@@ -55,8 +55,8 @@
   v5 = [objc_opt_class() stringForPreviewModeType:{-[AVTEditingPreviewMode type](self, "type")}];
   [v4 appendFormat:@" type: %@\n", v5];
 
-  v6 = [(AVTEditingPreviewMode *)self options];
-  [v4 appendFormat:@" options: %@\n", v6];
+  options = [(AVTEditingPreviewMode *)self options];
+  [v4 appendFormat:@" options: %@\n", options];
 
   v7 = [v4 copy];
 

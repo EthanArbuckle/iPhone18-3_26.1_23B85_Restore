@@ -1,14 +1,14 @@
 @interface _UIDragLiftPointerWithEarlyStartGestureRecognizer
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _UIDragLiftPointerWithEarlyStartGestureRecognizer
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v14.receiver = self;
   v14.super_class = _UIDragLiftPointerWithEarlyStartGestureRecognizer;
-  [(_UIDragLiftGestureRecognizer *)&v14 touchesMoved:a3 withEvent:a4];
+  [(_UIDragLiftGestureRecognizer *)&v14 touchesMoved:moved withEvent:event];
   [(_UIDragLiftPointerWithEarlyStartGestureRecognizer *)self liftMoveHysteresis];
   if (v5 > 0.0)
   {

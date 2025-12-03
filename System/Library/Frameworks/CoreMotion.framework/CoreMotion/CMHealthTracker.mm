@@ -3,8 +3,8 @@
 + (BOOL)isVO2MaxDataAvailable;
 - (CMHealthTracker)init;
 - (void)dealloc;
-- (void)queryMetMinutesFromDate:(id)a3 toDate:(id)a4 handler:(id)a5;
-- (void)queryVO2MaxInputsFromRecord:(id)a3 handler:(id)a4;
+- (void)queryMetMinutesFromDate:(id)date toDate:(id)toDate handler:(id)handler;
+- (void)queryVO2MaxInputsFromRecord:(id)record handler:(id)handler;
 @end
 
 @implementation CMHealthTracker
@@ -47,19 +47,19 @@
   return 0;
 }
 
-- (void)queryMetMinutesFromDate:(id)a3 toDate:(id)a4 handler:(id)a5
+- (void)queryMetMinutesFromDate:(id)date toDate:(id)toDate handler:(id)handler
 {
-  if (a3)
+  if (date)
   {
-    if (a4)
+    if (toDate)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v13 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v13 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, date);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v13, v14, a2, self, @"CMHealthTracker.mm", 221, @"Invalid parameter not satisfying: %@", @"toDate");
-    if (a5)
+    if (handler)
     {
       goto LABEL_4;
     }
@@ -69,24 +69,24 @@ LABEL_8:
 
   v11 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v11, v12, a2, self, @"CMHealthTracker.mm", 220, @"Invalid parameter not satisfying: %@", @"fromDate");
-  if (!a4)
+  if (!toDate)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (a5)
+  if (handler)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v15 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+  v15 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, date);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v15, v16, a2, self, @"CMHealthTracker.mm", 222, @"Invalid parameter not satisfying: %@", @"handler");
 LABEL_4:
-  v10 = objc_msgSend__internal(self, a2, a3);
+  v10 = objc_msgSend__internal(self, a2, date);
 
-  MEMORY[0x1EEE66B58](v10, sel__queryMetMinutesFromDate_toDate_handler_, a3);
+  MEMORY[0x1EEE66B58](v10, sel__queryMetMinutesFromDate_toDate_handler_, date);
 }
 
 + (BOOL)isVO2MaxDataAvailable
@@ -99,17 +99,17 @@ LABEL_4:
   return 0;
 }
 
-- (void)queryVO2MaxInputsFromRecord:(id)a3 handler:(id)a4
+- (void)queryVO2MaxInputsFromRecord:(id)record handler:(id)handler
 {
-  if (!a4)
+  if (!handler)
   {
-    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, record);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, self, @"CMHealthTracker.mm", 244, @"Invalid parameter not satisfying: %@", @"handler");
   }
 
-  v6 = objc_msgSend__internal(self, a2, a3);
+  v6 = objc_msgSend__internal(self, a2, record);
 
-  MEMORY[0x1EEE66B58](v6, sel__queryVO2MaxInputsFromRecord_handler_, a3);
+  MEMORY[0x1EEE66B58](v6, sel__queryVO2MaxInputsFromRecord_handler_, record);
 }
 
 @end

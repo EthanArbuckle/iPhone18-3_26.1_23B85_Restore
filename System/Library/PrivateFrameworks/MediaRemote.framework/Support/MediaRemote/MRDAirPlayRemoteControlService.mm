@@ -2,15 +2,15 @@
 - (MRDAirPlayRemoteControlService)init;
 - (MRDAirPlayRemoteControlServiceDelegate)delegate;
 - (NSString)debugDescription;
-- (void)_didCloseCommunicationChannel:(id)a3 error:(id)a4;
-- (void)_didReceiveData:(id)a3 fromCommunicationChannel:(id)a4 connectionFactory:(id)a5;
-- (void)_handleNewConnection:(id)a3 forServiceType:(int64_t)a4;
+- (void)_didCloseCommunicationChannel:(id)channel error:(id)error;
+- (void)_didReceiveData:(id)data fromCommunicationChannel:(id)channel connectionFactory:(id)factory;
+- (void)_handleNewConnection:(id)connection forServiceType:(int64_t)type;
 - (void)_startImmediately;
 - (void)dealloc;
-- (void)didCloseCommunicationChannel:(id)a3;
-- (void)didReceiveData:(id)a3 fromCommunicationChannel:(id)a4;
-- (void)outputContext:(id)a3 didCloseCommunicationChannel:(id)a4;
-- (void)outputContext:(id)a3 didReceiveData:(id)a4 fromCommunicationChannel:(id)a5;
+- (void)didCloseCommunicationChannel:(id)channel;
+- (void)didReceiveData:(id)data fromCommunicationChannel:(id)channel;
+- (void)outputContext:(id)context didCloseCommunicationChannel:(id)channel;
+- (void)outputContext:(id)context didReceiveData:(id)data fromCommunicationChannel:(id)channel;
 - (void)start;
 - (void)stop;
 @end
@@ -52,15 +52,15 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = objc_alloc_init(NSMutableArray);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(NSMapTable *)v2->_connections objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  objectEnumerator = [(NSMapTable *)selfCopy->_connections objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = *v17;
@@ -70,13 +70,13 @@
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [v3 addObject:*(*(&v16 + 1) + 8 * i)];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
@@ -84,7 +84,7 @@
 
   v8 = [NSString alloc];
   v9 = objc_opt_class();
-  if (v2->_started)
+  if (selfCopy->_started)
   {
     v10 = @"YES";
   }
@@ -95,11 +95,11 @@
   }
 
   v11 = MRCreateIndentedDebugDescriptionFromArray();
-  mrRelayConnectionManager = v2->_mrRelayConnectionManager;
+  mrRelayConnectionManager = selfCopy->_mrRelayConnectionManager;
   v13 = MRCreateIndentedDebugDescriptionFromObject();
-  v14 = [v8 initWithFormat:@"<%@:%p {\n  started = %@\n  connections = %@\n  relayConnectionManager = %@\n}>", v9, v2, v10, v11, v13];
+  v14 = [v8 initWithFormat:@"<%@:%p {\n  started = %@\n  connections = %@\n  relayConnectionManager = %@\n}>", v9, selfCopy, v10, v11, v13];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v14;
 }
@@ -213,102 +213,102 @@ LABEL_13:
   self->_started = 0;
 }
 
-- (void)outputContext:(id)a3 didReceiveData:(id)a4 fromCommunicationChannel:(id)a5
+- (void)outputContext:(id)context didReceiveData:(id)data fromCommunicationChannel:(id)channel
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  dataCopy = data;
+  channelCopy = channel;
   workerQueue = self->_workerQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100142350;
   v15[3] = &unk_1004B7310;
   v15[4] = self;
-  v16 = v9;
-  v17 = v10;
-  v18 = v8;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v16 = dataCopy;
+  v17 = channelCopy;
+  v18 = contextCopy;
+  v12 = contextCopy;
+  v13 = channelCopy;
+  v14 = dataCopy;
   dispatch_async(workerQueue, v15);
 }
 
-- (void)outputContext:(id)a3 didCloseCommunicationChannel:(id)a4
+- (void)outputContext:(id)context didCloseCommunicationChannel:(id)channel
 {
-  v5 = a4;
+  channelCopy = channel;
   workerQueue = self->_workerQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001424E4;
   v8[3] = &unk_1004B68F0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = channelCopy;
+  v7 = channelCopy;
   dispatch_async(workerQueue, v8);
 }
 
-- (void)didReceiveData:(id)a3 fromCommunicationChannel:(id)a4
+- (void)didReceiveData:(id)data fromCommunicationChannel:(id)channel
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  channelCopy = channel;
   workerQueue = self->_workerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100142610;
   block[3] = &unk_1004B69D0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dataCopy;
+  v13 = channelCopy;
+  v9 = channelCopy;
+  v10 = dataCopy;
   dispatch_async(workerQueue, block);
 }
 
-- (void)didCloseCommunicationChannel:(id)a3
+- (void)didCloseCommunicationChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   workerQueue = self->_workerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100142780;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = channelCopy;
+  v6 = channelCopy;
   dispatch_async(workerQueue, v7);
 }
 
-- (void)_didReceiveData:(id)a3 fromCommunicationChannel:(id)a4 connectionFactory:(id)a5
+- (void)_didReceiveData:(id)data fromCommunicationChannel:(id)channel connectionFactory:(id)factory
 {
-  v34 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  channelCopy = channel;
+  factoryCopy = factory;
   dispatch_assert_queue_V2(self->_workerQueue);
   if (self->_started)
   {
-    v10 = self;
-    objc_sync_enter(v10);
-    v11 = [(NSMapTable *)v10->_connections objectForKey:v8];
-    if (v11 || (v9[2](v9), (v12 = objc_claimAutoreleasedReturnValue()) == 0))
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v11 = [(NSMapTable *)selfCopy->_connections objectForKey:channelCopy];
+    if (v11 || (factoryCopy[2](factoryCopy), (v12 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      objc_sync_exit(v10);
+      objc_sync_exit(selfCopy);
       v12 = v11;
     }
 
     else
     {
-      [(NSMapTable *)v10->_connections setObject:v12 forKey:v8];
-      objc_sync_exit(v10);
+      [(NSMapTable *)selfCopy->_connections setObject:v12 forKey:channelCopy];
+      objc_sync_exit(selfCopy);
 
       v13 = objc_alloc_init(MRDeviceInfo);
-      v14 = [MRProtocolMessage protocolMessageWithProtobufData:v34 error:0];
+      v14 = [MRProtocolMessage protocolMessageWithProtobufData:dataCopy error:0];
       v15 = v14;
       if (v14 && [v14 type] == 133)
       {
         v16 = v15;
-        v17 = [v16 serviceType];
-        v33 = v17;
-        if ([v17 isEqualToString:@"RemoteControl"])
+        serviceType = [v16 serviceType];
+        v33 = serviceType;
+        if ([serviceType isEqualToString:@"RemoteControl"])
         {
           v18 = 0;
           v19 = 0;
@@ -316,21 +316,21 @@ LABEL_13:
 
         else
         {
-          v18 = [v17 isEqualToString:@"MRRelay"];
+          v18 = [serviceType isEqualToString:@"MRRelay"];
           v19 = v18;
         }
 
-        v21 = [v16 destinationGroupUID];
-        [v12 setDestinationGroupUID:v21];
+        destinationGroupUID = [v16 destinationGroupUID];
+        [v12 setDestinationGroupUID:destinationGroupUID];
 
-        v22 = [v16 destinationOutputDeviceUID];
-        [v12 setDestinationOutputDeviceUID:v22];
+        destinationOutputDeviceUID = [v16 destinationOutputDeviceUID];
+        [v12 setDestinationOutputDeviceUID:destinationOutputDeviceUID];
 
-        v23 = [v16 sourceOutputDeviceUID];
-        [(MRDAirPlayRemoteControlService *)v13 setDeviceUID:v23];
+        sourceOutputDeviceUID = [v16 sourceOutputDeviceUID];
+        [(MRDAirPlayRemoteControlService *)v13 setDeviceUID:sourceOutputDeviceUID];
 
-        v24 = [v16 sourceOutputDeviceName];
-        [(MRDAirPlayRemoteControlService *)v13 setName:v24];
+        sourceOutputDeviceName = [v16 sourceOutputDeviceName];
+        [(MRDAirPlayRemoteControlService *)v13 setName:sourceOutputDeviceName];
 
         v32 = v19;
         if (v19)
@@ -349,70 +349,70 @@ LABEL_13:
         if (v18)
         {
           v27 = objc_alloc_init(MRProtocolMessage);
-          v28 = [v16 replyIdentifier];
-          [v27 setReplyIdentifier:v28];
+          replyIdentifier = [v16 replyIdentifier];
+          [v27 setReplyIdentifier:replyIdentifier];
 
-          v29 = [v27 protobufData];
-          [v12 sendTransportData:v29 options:0];
+          protobufData = [v27 protobufData];
+          [v12 sendTransportData:protobufData options:0];
 
           v30 = +[MRProtocolMessageLogger sharedLogger];
           [v30 logMessage:@"Message Sent:" label:v25 deviceInfo:v13 protocolMessage:v27];
         }
 
         v31 = [[MRExternalDeviceTransportConnectionHandle alloc] initWithConnection:v12 deviceInfo:v13];
-        [(MRDAirPlayRemoteControlService *)v10 _handleNewConnection:v31 forServiceType:v32];
+        [(MRDAirPlayRemoteControlService *)selfCopy _handleNewConnection:v31 forServiceType:v32];
 
         goto LABEL_5;
       }
 
       v20 = [[MRExternalDeviceTransportConnectionHandle alloc] initWithConnection:v12 deviceInfo:v13];
-      [(MRDAirPlayRemoteControlService *)v10 _handleNewConnection:v20 forServiceType:0];
+      [(MRDAirPlayRemoteControlService *)selfCopy _handleNewConnection:v20 forServiceType:0];
 
-      v10 = v13;
+      selfCopy = v13;
       v11 = v12;
     }
 
-    [v11 ingestData:v34];
+    [v11 ingestData:dataCopy];
 LABEL_5:
   }
 }
 
-- (void)_didCloseCommunicationChannel:(id)a3 error:(id)a4
+- (void)_didCloseCommunicationChannel:(id)channel error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
+  channelCopy = channel;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_workerQueue);
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(NSMapTable *)v7->_connections objectForKey:v9];
-  objc_sync_exit(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(NSMapTable *)selfCopy->_connections objectForKey:channelCopy];
+  objc_sync_exit(selfCopy);
 
-  [v8 closeWithError:v6];
+  [v8 closeWithError:errorCopy];
 }
 
-- (void)_handleNewConnection:(id)a3 forServiceType:(int64_t)a4
+- (void)_handleNewConnection:(id)connection forServiceType:(int64_t)type
 {
-  v6 = a3;
-  if (a4 == 1)
+  connectionCopy = connection;
+  if (type == 1)
   {
-    v9 = v6;
-    [(MRDMRRelayConnectionManager *)self->_mrRelayConnectionManager ingestConnection:v6];
+    v9 = connectionCopy;
+    [(MRDMRRelayConnectionManager *)self->_mrRelayConnectionManager ingestConnection:connectionCopy];
   }
 
   else
   {
-    if (a4)
+    if (type)
     {
       goto LABEL_6;
     }
 
-    v9 = v6;
+    v9 = connectionCopy;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v8 = [v9 connection];
-    [WeakRetained airPlayRemoteControlService:self didAcceptConnection:v8];
+    connection = [v9 connection];
+    [WeakRetained airPlayRemoteControlService:self didAcceptConnection:connection];
   }
 
-  v6 = v9;
+  connectionCopy = v9;
 LABEL_6:
 }
 

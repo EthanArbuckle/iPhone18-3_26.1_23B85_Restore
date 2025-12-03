@@ -1,19 +1,19 @@
 @interface HUCheckmarkCell
-- (HUCheckmarkCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUCheckmarkCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIImage)checkedImage;
 - (UIImage)uncheckedImage;
 - (id)description;
 - (void)prepareForReuse;
-- (void)setChecked:(BOOL)a3;
+- (void)setChecked:(BOOL)checked;
 @end
 
 @implementation HUCheckmarkCell
 
-- (HUCheckmarkCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUCheckmarkCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = HUCheckmarkCell;
-  v4 = [(HUActivityIndicatorCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUActivityIndicatorCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -36,15 +36,15 @@
   checkedImage = self->_checkedImage;
   if (checkedImage)
   {
-    v3 = checkedImage;
+    hu_cellCheckmarkImage = checkedImage;
   }
 
   else
   {
-    v3 = [MEMORY[0x277D755B8] hu_cellCheckmarkImage];
+    hu_cellCheckmarkImage = [MEMORY[0x277D755B8] hu_cellCheckmarkImage];
   }
 
-  return v3;
+  return hu_cellCheckmarkImage;
 }
 
 - (UIImage)uncheckedImage
@@ -52,23 +52,23 @@
   uncheckedImage = self->_uncheckedImage;
   if (uncheckedImage)
   {
-    v3 = uncheckedImage;
+    hu_emptyCheckmarkPlaceholderImage = uncheckedImage;
   }
 
   else
   {
-    v3 = [objc_opt_class() hu_emptyCheckmarkPlaceholderImage];
+    hu_emptyCheckmarkPlaceholderImage = [objc_opt_class() hu_emptyCheckmarkPlaceholderImage];
   }
 
-  return v3;
+  return hu_emptyCheckmarkPlaceholderImage;
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  if (self->_checked != a3)
+  if (self->_checked != checked)
   {
-    self->_checked = a3;
-    if (a3)
+    self->_checked = checked;
+    if (checked)
     {
       [(HUCheckmarkCell *)self checkedImage];
     }
@@ -87,8 +87,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HUActivityIndicatorCell *)self titleText];
-  v7 = [v3 stringWithFormat:@"<%@ %p %@ (animating=%d, checked=%d)>", v5, self, v6, -[HUActivityIndicatorCell isAnimating](self, "isAnimating"), -[HUCheckmarkCell checked](self, "checked")];
+  titleText = [(HUActivityIndicatorCell *)self titleText];
+  v7 = [v3 stringWithFormat:@"<%@ %p %@ (animating=%d, checked=%d)>", v5, self, titleText, -[HUActivityIndicatorCell isAnimating](self, "isAnimating"), -[HUCheckmarkCell checked](self, "checked")];
 
   return v7;
 }

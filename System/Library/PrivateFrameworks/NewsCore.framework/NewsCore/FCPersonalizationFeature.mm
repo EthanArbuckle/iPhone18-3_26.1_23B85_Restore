@@ -1,35 +1,35 @@
 @interface FCPersonalizationFeature
-+ (id)featureForIdentifier:(char)a3 allowFreeValued:;
-+ (id)featureFromTagID:(id)a3;
-+ (id)featuresFromIssue:(id)a3;
-+ (id)featuresFromPersonalizingItem:(id)a3 personalizationTreatment:(id)a4;
-+ (id)featuresFromTag:(id)a3;
-+ (id)featuresFromTodayPersonalizationEvent:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)featureForIdentifier:(char)identifier allowFreeValued:;
++ (id)featureFromTagID:(id)d;
++ (id)featuresFromIssue:(id)issue;
++ (id)featuresFromPersonalizingItem:(id)item personalizationTreatment:(id)treatment;
++ (id)featuresFromTag:(id)tag;
++ (id)featuresFromTodayPersonalizationEvent:(id)event;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
-- (void)initWithIdentifier:(void *)a1;
+- (void)initWithIdentifier:(void *)identifier;
 @end
 
 @implementation FCPersonalizationFeature
 
-+ (id)featuresFromIssue:(id)a3
++ (id)featuresFromIssue:(id)issue
 {
-  v3 = a3;
+  issueCopy = issue;
   v4 = objc_opt_new();
-  v5 = [v3 sourceChannel];
-  v6 = [v5 identifier];
+  sourceChannel = [issueCopy sourceChannel];
+  identifier = [sourceChannel identifier];
 
-  v7 = [v3 topicTagIDs];
+  topicTagIDs = [issueCopy topicTagIDs];
 
-  if (v6 && v7)
+  if (identifier && topicTagIDs)
   {
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __46__FCPersonalizationFeature_featuresFromIssue___block_invoke;
     v19[3] = &unk_1E7C3CA58;
-    v20 = v6;
-    v8 = [v7 fc_arrayByTransformingWithBlock:v19];
+    v20 = identifier;
+    v8 = [topicTagIDs fc_arrayByTransformingWithBlock:v19];
     [v4 addObjectsFromArray:v8];
   }
 
@@ -38,10 +38,10 @@
   v16[1] = 3221225472;
   v16[2] = __46__FCPersonalizationFeature_featuresFromIssue___block_invoke_2;
   v16[3] = &unk_1E7C3B110;
-  v17 = v6;
-  v18 = v7;
-  v10 = v7;
-  v11 = v6;
+  v17 = identifier;
+  v18 = topicTagIDs;
+  v10 = topicTagIDs;
+  v11 = identifier;
   v12 = [v9 fc_array:v16];
   v13 = [v12 fc_arrayByTransformingWithBlock:&__block_literal_global_58_2];
   [v4 addObjectsFromArray:v13];
@@ -75,16 +75,16 @@ FCTagIDFeature *__46__FCPersonalizationFeature_featuresFromIssue___block_invoke_
   return v3;
 }
 
-+ (id)featuresFromTodayPersonalizationEvent:(id)a3
++ (id)featuresFromTodayPersonalizationEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = MEMORY[0x1E695DEC8];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __66__FCPersonalizationFeature_featuresFromTodayPersonalizationEvent___block_invoke;
   v8[3] = &unk_1E7C36D40;
-  v9 = v3;
-  v5 = v3;
+  v9 = eventCopy;
+  v5 = eventCopy;
   v6 = [v4 fc_array:v8];
 
   return v6;
@@ -169,26 +169,26 @@ FCTagIDFeature *__66__FCPersonalizationFeature_featuresFromTodayPersonalizationE
   return v3;
 }
 
-+ (id)featuresFromPersonalizingItem:(id)a3 personalizationTreatment:(id)a4
++ (id)featuresFromPersonalizingItem:(id)item personalizationTreatment:(id)treatment
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v31 = a4;
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [v5 publisherID];
-  if (v7)
+  itemCopy = item;
+  treatmentCopy = treatment;
+  array = [MEMORY[0x1E695DF70] array];
+  publisherID = [itemCopy publisherID];
+  if (publisherID)
   {
-    v8 = [[FCTagIDFeature alloc] initWithTagID:v7];
-    [v6 addObject:v8];
+    v8 = [[FCTagIDFeature alloc] initWithTagID:publisherID];
+    [array addObject:v8];
   }
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v32 = v5;
-  v9 = [v5 topicIDs];
-  v10 = [v9 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  v32 = itemCopy;
+  topicIDs = [itemCopy topicIDs];
+  v10 = [topicIDs countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v10)
   {
     v11 = v10;
@@ -199,21 +199,21 @@ FCTagIDFeature *__66__FCPersonalizationFeature_featuresFromTodayPersonalizationE
       {
         if (*v34 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(topicIDs);
         }
 
         v14 = *(*(&v33 + 1) + 8 * i);
         v15 = [[FCTagIDFeature alloc] initWithTagID:v14];
-        [v6 addObject:v15];
+        [array addObject:v15];
 
-        if (v7)
+        if (publisherID)
         {
-          v16 = [[FCPublisherTopicFeature alloc] initWithPublisherTagID:v7 topicTagID:v14];
-          [v6 addObject:v16];
+          v16 = [[FCPublisherTopicFeature alloc] initWithPublisherTagID:publisherID topicTagID:v14];
+          [array addObject:v16];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v11 = [topicIDs countByEnumeratingWithState:&v33 objects:v37 count:16];
     }
 
     while (v11);
@@ -229,23 +229,23 @@ FCTagIDFeature *__66__FCPersonalizationFeature_featuresFromTodayPersonalizationE
     +[FCHeadlineFeatureArticleTypeNonFlint articleTypeNonFlintFeature];
   }
   v17 = ;
-  [v6 addObject:v17];
+  [array addObject:v17];
 
   v18 = objc_opt_respondsToSelector();
-  if (v31 && (v18 & 1) != 0 && [v32 bodyTextLength] >= 1)
+  if (treatmentCopy && (v18 & 1) != 0 && [v32 bodyTextLength] >= 1)
   {
-    v19 = [v32 bodyTextLength];
-    [v31 articleLengthMediumThreshold];
-    if (v19 <= v20)
+    bodyTextLength = [v32 bodyTextLength];
+    [treatmentCopy articleLengthMediumThreshold];
+    if (bodyTextLength <= v20)
     {
       v23 = +[FCArticleLengthFeature shortLengthFeature];
     }
 
     else
     {
-      v21 = [v32 bodyTextLength];
-      [v31 articleLengthLongThreshold];
-      if (v21 <= v22)
+      bodyTextLength2 = [v32 bodyTextLength];
+      [treatmentCopy articleLengthLongThreshold];
+      if (bodyTextLength2 <= v22)
       {
         +[FCArticleLengthFeature mediumLengthFeature];
       }
@@ -258,31 +258,31 @@ FCTagIDFeature *__66__FCPersonalizationFeature_featuresFromTodayPersonalizationE
     }
 
     v24 = v23;
-    [v6 addObject:v23];
+    [array addObject:v23];
   }
 
-  if (v7 && [v32 isPaid])
+  if (publisherID && [v32 isPaid])
   {
-    v25 = [[FCPublisherPremiumFeature alloc] initWithTagID:v7];
-    [v6 addObject:v25];
+    v25 = [[FCPublisherPremiumFeature alloc] initWithTagID:publisherID];
+    [array addObject:v25];
   }
 
   if ([v32 hasVideo])
   {
     v26 = +[FCHeadlineFeatureArticleWithVideoContent articleWithVideoContentFeature];
-    [v6 addObject:v26];
+    [array addObject:v26];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v27 = [v32 iAdCategories];
-    v28 = [v27 fc_arrayByTransformingWithBlock:&__block_literal_global_75_2];
-    [v6 addObjectsFromArray:v28];
+    iAdCategories = [v32 iAdCategories];
+    v28 = [iAdCategories fc_arrayByTransformingWithBlock:&__block_literal_global_75_2];
+    [array addObjectsFromArray:v28];
   }
 
   v29 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return array;
 }
 
 FCAdCategoryFeature *__83__FCPersonalizationFeature_featuresFromPersonalizingItem_personalizationTreatment___block_invoke(uint64_t a1, void *a2)
@@ -293,14 +293,14 @@ FCAdCategoryFeature *__83__FCPersonalizationFeature_featuresFromPersonalizingIte
   return v3;
 }
 
-+ (id)featuresFromTag:(id)a3
++ (id)featuresFromTag:(id)tag
 {
-  v3 = a3;
+  tagCopy = tag;
   v4 = objc_opt_new();
   v5 = [FCTagIDFeature alloc];
-  v6 = [v3 identifier];
+  identifier = [tagCopy identifier];
 
-  v7 = [(FCTagIDFeature *)v5 initWithTagID:v6];
+  v7 = [(FCTagIDFeature *)v5 initWithTagID:identifier];
   [v4 fc_safelyAddObject:v7];
 
   v8 = [v4 copy];
@@ -316,23 +316,23 @@ FCTagIDFeature *__47__FCPersonalizationFeature_featuresFromTagIDs___block_invoke
   return v3;
 }
 
-+ (id)featureFromTagID:(id)a3
++ (id)featureFromTagID:(id)d
 {
   v12 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  dCopy = d;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v11 count:1];
+  dCopy2 = d;
+  v6 = [v4 arrayWithObjects:&dCopy count:1];
 
-  v7 = [a1 featuresFromTagIDs:{v6, v11, v12}];
-  v8 = [v7 firstObject];
+  v7 = [self featuresFromTagIDs:{v6, dCopy, v12}];
+  firstObject = [v7 firstObject];
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return firstObject;
 }
 
-+ (id)featureForIdentifier:(char)a3 allowFreeValued:
++ (id)featureForIdentifier:(char)identifier allowFreeValued:
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a2;
@@ -419,7 +419,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (v4 && (a3 & 1) != 0)
+  if (v4 && (identifier & 1) != 0)
   {
     v5 = [[FCPersonalizationFeature alloc] initWithIdentifier:v4];
     goto LABEL_18;
@@ -455,12 +455,12 @@ LABEL_19:
   return v7;
 }
 
-- (void)initWithIdentifier:(void *)a1
+- (void)initWithIdentifier:(void *)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (identifier)
   {
     if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -476,19 +476,19 @@ LABEL_19:
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    v10.receiver = a1;
+    v10.receiver = identifier;
     v10.super_class = FCPersonalizationFeature;
-    a1 = objc_msgSendSuper2(&v10, sel_init);
-    if (a1)
+    identifier = objc_msgSendSuper2(&v10, sel_init);
+    if (identifier)
     {
       v5 = [v4 copy];
-      v6 = a1[2];
-      a1[2] = v5;
+      v6 = identifier[2];
+      identifier[2] = v5;
     }
   }
 
   v7 = *MEMORY[0x1E69E9840];
-  return a1;
+  return identifier;
 }
 
 - (id)description
@@ -496,25 +496,25 @@ LABEL_19:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(FCPersonalizationFeature *)self personalizationIdentifier];
-  v7 = [v3 stringWithFormat:@"FCPersonalizationFeature with type %@ and personalizationIdentifier %@", v5, v6];
+  personalizationIdentifier = [(FCPersonalizationFeature *)self personalizationIdentifier];
+  v7 = [v3 stringWithFormat:@"FCPersonalizationFeature with type %@ and personalizationIdentifier %@", v5, personalizationIdentifier];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(FCPersonalizationFeature *)self personalizationIdentifier];
+  personalizationIdentifier = [(FCPersonalizationFeature *)self personalizationIdentifier];
 
-  return [(NSString *)v2 hash];
+  return [(NSString *)personalizationIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = [(FCPersonalizationFeature *)self personalizationIdentifier];
-  v5 = [a3 personalizationIdentifier];
+  personalizationIdentifier = [(FCPersonalizationFeature *)self personalizationIdentifier];
+  personalizationIdentifier2 = [equal personalizationIdentifier];
 
-  return [(NSString *)v4 isEqual:v5];
+  return [(NSString *)personalizationIdentifier isEqual:personalizationIdentifier2];
 }
 
 @end

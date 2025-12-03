@@ -1,38 +1,38 @@
 @interface PUMutableAssetExplorerReviewScreenAssetsDataSourceManagerImplementation
-- (PUMutableAssetExplorerReviewScreenAssetsDataSourceManagerImplementation)initWithReplacementAssetsByUUID:(id)a3;
-- (void)removeReplacementAssetInDataSourceForUUID:(id)a3;
-- (void)replaceAssetInDataSourceWithAsset:(id)a3;
+- (PUMutableAssetExplorerReviewScreenAssetsDataSourceManagerImplementation)initWithReplacementAssetsByUUID:(id)d;
+- (void)removeReplacementAssetInDataSourceForUUID:(id)d;
+- (void)replaceAssetInDataSourceWithAsset:(id)asset;
 @end
 
 @implementation PUMutableAssetExplorerReviewScreenAssetsDataSourceManagerImplementation
 
-- (void)removeReplacementAssetInDataSourceForUUID:(id)a3
+- (void)removeReplacementAssetInDataSourceForUUID:(id)d
 {
-  if (a3)
+  if (d)
   {
     [(NSMutableDictionary *)self->_replacementAssetsByUUID removeObjectForKey:?];
   }
 }
 
-- (void)replaceAssetInDataSourceWithAsset:(id)a3
+- (void)replaceAssetInDataSourceWithAsset:(id)asset
 {
-  v5 = a3;
-  v4 = [v5 uuid];
-  if (v4)
+  assetCopy = asset;
+  uuid = [assetCopy uuid];
+  if (uuid)
   {
-    [(NSMutableDictionary *)self->_replacementAssetsByUUID setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_replacementAssetsByUUID setObject:assetCopy forKeyedSubscript:uuid];
   }
 }
 
-- (PUMutableAssetExplorerReviewScreenAssetsDataSourceManagerImplementation)initWithReplacementAssetsByUUID:(id)a3
+- (PUMutableAssetExplorerReviewScreenAssetsDataSourceManagerImplementation)initWithReplacementAssetsByUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = PUMutableAssetExplorerReviewScreenAssetsDataSourceManagerImplementation;
   v5 = [(PUMutableAssetExplorerReviewScreenAssetsDataSourceManagerImplementation *)&v10 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v4];
+    v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:dCopy];
     replacementAssetsByUUID = v5->_replacementAssetsByUUID;
     v5->_replacementAssetsByUUID = v6;
 

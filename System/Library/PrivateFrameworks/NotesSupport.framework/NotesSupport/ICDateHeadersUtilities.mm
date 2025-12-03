@@ -1,16 +1,16 @@
 @interface ICDateHeadersUtilities
-+ (BOOL)isShowingQueryDateHeadersForDateHeadersType:(int64_t)a3;
++ (BOOL)isShowingQueryDateHeadersForDateHeadersType:(int64_t)type;
 + (BOOL)showsQueryDateHeaders;
 + (BOOL)supportsQueryDateHeaders;
-+ (id)actionItemTitleWithDateHeadersType:(int64_t)a3;
-+ (id)stringForDateHeadersType:(int64_t)a3;
++ (id)actionItemTitleWithDateHeadersType:(int64_t)type;
++ (id)stringForDateHeadersType:(int64_t)type;
 + (int64_t)defaultDateHeadersType;
 + (int64_t)queryDateHeadersType;
 + (void)clearCache;
-+ (void)setDateHeadersOn:(BOOL)a3;
-+ (void)setDateHeadersUserPreference:(int64_t)a3 forKey:(id)a4 postNotificationName:(id)a5;
-+ (void)setDefaultDateHeadersType:(int64_t)a3;
-+ (void)setQueryDateHeadersType:(int64_t)a3;
++ (void)setDateHeadersOn:(BOOL)on;
++ (void)setDateHeadersUserPreference:(int64_t)preference forKey:(id)key postNotificationName:(id)name;
++ (void)setDefaultDateHeadersType:(int64_t)type;
++ (void)setQueryDateHeadersType:(int64_t)type;
 @end
 
 @implementation ICDateHeadersUtilities
@@ -46,13 +46,13 @@
   cachedQueryDateHeadersType = 0;
 }
 
-+ (void)setDefaultDateHeadersType:(int64_t)a3
++ (void)setDefaultDateHeadersType:(int64_t)type
 {
-  if ([a1 defaultDateHeadersType] != a3)
+  if ([self defaultDateHeadersType] != type)
   {
-    if ((a3 - 1) >= 2)
+    if ((type - 1) >= 2)
     {
-      if (!a3)
+      if (!type)
       {
 
         +[ICAssert handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:](ICAssert, "handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:", "__objc_no", "+[ICDateHeadersUtilities setDefaultDateHeadersType:]", 1, 0, @"Default should never be stored as user preference. Ignore.");
@@ -61,11 +61,11 @@
 
     else
     {
-      v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v5 = [MEMORY[0x1E696AD98] numberWithInteger:type];
       v6 = cachedDefaultDateHeadersType;
       cachedDefaultDateHeadersType = v5;
 
-      [a1 setDateHeadersUserPreference:a3 forKey:@"kICSettingsNoteDateHeadersTypeKey" postNotificationName:@"kICDateHeadersUtilitiesDidChangeDefaultDateHeadersTypeNotification"];
+      [self setDateHeadersUserPreference:type forKey:@"kICSettingsNoteDateHeadersTypeKey" postNotificationName:@"kICDateHeadersUtilitiesDidChangeDefaultDateHeadersTypeNotification"];
     }
   }
 }
@@ -87,24 +87,24 @@
   }
 }
 
-+ (void)setQueryDateHeadersType:(int64_t)a3
++ (void)setQueryDateHeadersType:(int64_t)type
 {
-  v5 = [a1 queryDateHeadersType];
-  if (a3 <= 2 && v5 != a3)
+  queryDateHeadersType = [self queryDateHeadersType];
+  if (type <= 2 && queryDateHeadersType != type)
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     v7 = cachedQueryDateHeadersType;
     cachedQueryDateHeadersType = v6;
 
-    [a1 setDateHeadersUserPreference:a3 forKey:@"kICQueryDateHeadersTypeKey" postNotificationName:@"kICDateHeadersUtilitiesDidChangeQueryDateHeadersTypeNotification"];
+    [self setDateHeadersUserPreference:type forKey:@"kICQueryDateHeadersTypeKey" postNotificationName:@"kICDateHeadersUtilitiesDidChangeQueryDateHeadersTypeNotification"];
   }
 }
 
 + (BOOL)showsQueryDateHeaders
 {
-  v3 = [a1 queryDateHeadersType];
+  queryDateHeadersType = [self queryDateHeadersType];
 
-  return [a1 isShowingQueryDateHeadersForDateHeadersType:v3];
+  return [self isShowingQueryDateHeadersForDateHeadersType:queryDateHeadersType];
 }
 
 + (BOOL)supportsQueryDateHeaders
@@ -115,9 +115,9 @@
   return v3;
 }
 
-+ (id)actionItemTitleWithDateHeadersType:(int64_t)a3
++ (id)actionItemTitleWithDateHeadersType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 2:
       v3 = @"On";
@@ -125,33 +125,33 @@
     case 1:
       v3 = @"Off";
 LABEL_7:
-      a1 = __ICLocalizedFrameworkString_impl(v3, v3, 0, 1);
+      self = __ICLocalizedFrameworkString_impl(v3, v3, 0, 1);
       break;
     case 0:
-      a1 = [a1 stringForDateHeadersType:?];
+      self = [self stringForDateHeadersType:?];
       break;
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)stringForDateHeadersType:(int64_t)a3
++ (id)stringForDateHeadersType:(int64_t)type
 {
-  v4 = [a1 defaultDateHeadersType];
-  if (a3 != 2)
+  defaultDateHeadersType = [self defaultDateHeadersType];
+  if (type != 2)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v6 = @"Off";
       goto LABEL_10;
     }
 
-    if (a3)
+    if (type)
     {
       goto LABEL_11;
     }
 
-    switch(v4)
+    switch(defaultDateHeadersType)
     {
       case 2:
         v6 = @"Default (On)";
@@ -174,9 +174,9 @@ LABEL_11:
   return v5;
 }
 
-+ (void)setDateHeadersOn:(BOOL)a3
++ (void)setDateHeadersOn:(BOOL)on
 {
-  if (a3)
+  if (on)
   {
     v3 = 2;
   }
@@ -189,26 +189,26 @@ LABEL_11:
   [ICDateHeadersUtilities setDefaultDateHeadersType:v3];
 }
 
-+ (void)setDateHeadersUserPreference:(int64_t)a3 forKey:(id)a4 postNotificationName:(id)a5
++ (void)setDateHeadersUserPreference:(int64_t)preference forKey:(id)key postNotificationName:(id)name
 {
   v7 = MEMORY[0x1E696AD98];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 numberWithInteger:a3];
-  [ICSettingsUtilities setObject:v10 forKey:v9];
+  nameCopy = name;
+  keyCopy = key;
+  v10 = [v7 numberWithInteger:preference];
+  [ICSettingsUtilities setObject:v10 forKey:keyCopy];
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 postNotificationName:v8 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:nameCopy object:0];
 }
 
-+ (BOOL)isShowingQueryDateHeadersForDateHeadersType:(int64_t)a3
++ (BOOL)isShowingQueryDateHeadersForDateHeadersType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
 
-      return [a1 supportsQueryDateHeaders];
+      return [self supportsQueryDateHeaders];
     }
 
     else
@@ -219,9 +219,9 @@ LABEL_11:
 
   else
   {
-    v5 = [a1 defaultDateHeadersType];
+    defaultDateHeadersType = [self defaultDateHeadersType];
 
-    return [a1 isShowingQueryDateHeadersForDateHeadersType:v5];
+    return [self isShowingQueryDateHeadersForDateHeadersType:defaultDateHeadersType];
   }
 }
 

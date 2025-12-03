@@ -1,13 +1,13 @@
 @interface CatalogWorkoutDetailViewController
-- (_TtC9SeymourUI34CatalogWorkoutDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)moreOptionsButtonTapped:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC9SeymourUI34CatalogWorkoutDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)moreOptionsButtonTapped:(id)tapped;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CatalogWorkoutDetailViewController
@@ -25,36 +25,36 @@
   sub_20BF003BC();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_20BF00540(a3);
+  selfCopy = self;
+  sub_20BF00540(appear);
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v7.receiver = self;
   v7.super_class = type metadata accessor for CatalogWorkoutDetailViewController();
   v4 = v7.receiver;
-  [(CatalogWorkoutDetailViewController *)&v7 viewIsAppearing:v3];
+  [(CatalogWorkoutDetailViewController *)&v7 viewIsAppearing:appearingCopy];
   [*(*(*&v4[OBJC_IVAR____TtC9SeymourUI34CatalogWorkoutDetailViewController_dataProvider] + OBJC_IVAR____TtC9SeymourUI30CatalogWorkoutPageDataProvider_page) + OBJC_IVAR____TtC9SeymourUI11CatalogPage_collectionView) contentOffset];
   sub_20BE835D8(v5, v6);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_20BF007D0(a3);
+  selfCopy = self;
+  sub_20BF007D0(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for CatalogWorkoutDetailViewController();
   v4 = v7.receiver;
-  [(CatalogWorkoutDetailViewController *)&v7 viewDidDisappear:v3];
+  [(CatalogWorkoutDetailViewController *)&v7 viewDidDisappear:disappearCopy];
   sub_20BF02C58(&unk_27C770518, v5, type metadata accessor for CatalogWorkoutDetailViewController);
   sub_20BF02C58(&unk_27C770530, v6, type metadata accessor for CatalogWorkoutDetailViewController);
   sub_20C139374();
@@ -74,16 +74,16 @@
   sub_20B9D8614(v6, v7, v8, v9);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_20BF00C94(a3);
+  selfCopy = self;
+  sub_20BF00C94(disappear);
 }
 
-- (void)moreOptionsButtonTapped:(id)a3
+- (void)moreOptionsButtonTapped:(id)tapped
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_20C13DA64();
   swift_unknownObjectRelease();
   v5 = swift_allocObject();
@@ -94,7 +94,7 @@
   __swift_destroy_boxed_opaque_existential_1(&v6);
 }
 
-- (_TtC9SeymourUI34CatalogWorkoutDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI34CatalogWorkoutDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

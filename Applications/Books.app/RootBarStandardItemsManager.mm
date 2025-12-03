@@ -1,22 +1,22 @@
 @interface RootBarStandardItemsManager
 - (_TtC5Books27RootBarStandardItemsManager)init;
 - (void)loadFromCache;
-- (void)processBagItems:(id)a3;
+- (void)processBagItems:(id)items;
 @end
 
 @implementation RootBarStandardItemsManager
 
 - (void)loadFromCache
 {
-  v2 = self;
+  selfCopy = self;
   RootBarStandardItemsManager.loadFromCache()();
 }
 
-- (void)processBagItems:(id)a3
+- (void)processBagItems:(id)items
 {
   type metadata accessor for RootBarItem();
   v4 = sub_1007A25E4();
-  v5 = self;
+  selfCopy = self;
   RootBarStandardItemsManager.processBagItems(_:)(v4);
 }
 

@@ -1,6 +1,6 @@
 @interface DMCNextNag
 - (DMCNextNag)init;
-- (DMCNextNag)initWithDate:(id)a3 nearDeadline:(BOOL)a4;
+- (DMCNextNag)initWithDate:(id)date nearDeadline:(BOOL)deadline;
 - (NSString)date;
 @end
 
@@ -16,14 +16,14 @@
   return v4;
 }
 
-- (DMCNextNag)initWithDate:(id)a3 nearDeadline:(BOOL)a4
+- (DMCNextNag)initWithDate:(id)date nearDeadline:(BOOL)deadline
 {
   v5 = sub_247F23DEC();
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_247F23DCC();
-  return DMCNextNag.init(date:nearDeadline:)(v8, a4);
+  return DMCNextNag.init(date:nearDeadline:)(v8, deadline);
 }
 
 - (DMCNextNag)init

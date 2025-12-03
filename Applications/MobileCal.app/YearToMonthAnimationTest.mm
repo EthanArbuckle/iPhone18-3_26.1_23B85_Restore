@@ -7,20 +7,20 @@
 
 - (void)setUp
 {
-  v3 = [(ApplicationTest *)self application];
-  v6 = [v3 rootNavigationController];
+  application = [(ApplicationTest *)self application];
+  rootNavigationController = [application rootNavigationController];
 
-  v4 = [v6 resetToYearView];
+  resetToYearView = [rootNavigationController resetToYearView];
   yearViewController = self->_yearViewController;
-  self->_yearViewController = v4;
+  self->_yearViewController = resetToYearView;
 }
 
 - (void)kickOffAnimation
 {
   yearViewController = self->_yearViewController;
-  v5 = [(ApplicationTest *)self model];
-  v3 = [v5 selectedDate];
-  v4 = [(YearViewController *)yearViewController pushedMonthViewControllerWithDate:v3 animated:1];
+  model = [(ApplicationTest *)self model];
+  selectedDate = [model selectedDate];
+  v4 = [(YearViewController *)yearViewController pushedMonthViewControllerWithDate:selectedDate animated:1];
 }
 
 @end

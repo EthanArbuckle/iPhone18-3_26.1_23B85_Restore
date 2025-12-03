@@ -15,12 +15,12 @@
     dispatch_once(&qword_280AFC598, &__block_literal_global_3);
   }
 
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = v2 - 8;
   if (v2 > 8)
   {
     v5 = v2;
-    v6 = [a1 subdataWithRange:{0, 8}];
+    v6 = [self subdataWithRange:{0, 8}];
     v7 = [v6 length];
     v8 = 0;
     v9 = v5 - v7;
@@ -46,7 +46,7 @@
         v11 = v5 - v7;
       }
 
-      v8 = [a1 subdataWithRange:{v10, v11}];
+      v8 = [self subdataWithRange:{v10, v11}];
     }
 
     v12 = MEMORY[0x277CCACA8];
@@ -78,7 +78,7 @@
 
   else
   {
-    v4 = [a1 description];
+    v4 = [self description];
   }
 
   return v4;
@@ -102,7 +102,7 @@
   v3[2] = __36__NSData_HMFoundation__hmf_isZeroed__block_invoke;
   v3[3] = &unk_2786E6E08;
   v3[4] = &v4;
-  [a1 enumerateByteRangesUsingBlock:v3];
+  [self enumerateByteRangesUsingBlock:v3];
   v1 = *(v5 + 24);
   _Block_object_dispose(&v4, 8);
   return v1;
@@ -240,7 +240,7 @@ LABEL_35:
       while (v9 < v11);
     }
 
-    v26 = [a1 initWithBytesNoCopy:v14 length:v12 freeWhenDone:1];
+    v26 = [self initWithBytesNoCopy:v14 length:v12 freeWhenDone:1];
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -251,7 +251,7 @@ LABEL_35:
 - (__CFString)hmf_hexadecimalStringWithOptions:()HMFoundation
 {
   v5 = a3 & 1;
-  v6 = [a1 length];
+  v6 = [self length];
   if (v6)
   {
     v7 = 2 * (v6 + v5);
@@ -274,7 +274,7 @@ LABEL_35:
     v13[3] = &unk_2786E6E30;
     v13[4] = v15;
     v14 = (a3 & 2) != 0;
-    [a1 enumerateByteRangesUsingBlock:v13];
+    [self enumerateByteRangesUsingBlock:v13];
     v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytesNoCopy:v9 length:v7 encoding:1 freeWhenDone:1];
     _Block_object_dispose(v15, 8);
   }

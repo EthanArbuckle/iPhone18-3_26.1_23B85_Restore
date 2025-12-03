@@ -1,18 +1,18 @@
 @interface HCBurstTrie
-+ (id)burstTrieFromFile:(id)a3;
-- (BOOL)writeToFile:(id)a3;
++ (id)burstTrieFromFile:(id)file;
+- (BOOL)writeToFile:(id)file;
 - (HCBurstTrie)init;
-- (id)payloadForKey:(id)a3;
+- (id)payloadForKey:(id)key;
 - (unint64_t)count;
 - (void)dealloc;
 @end
 
 @implementation HCBurstTrie
 
-- (BOOL)writeToFile:(id)a3
+- (BOOL)writeToFile:(id)file
 {
-  v4 = [a3 path];
-  v5 = fopen([v4 UTF8String], "wb+");
+  path = [file path];
+  v5 = fopen([path UTF8String], "wb+");
 
   fileno(v5);
   burstTrie = self->_burstTrie;
@@ -32,9 +32,9 @@
   return result;
 }
 
-- (id)payloadForKey:(id)a3
+- (id)payloadForKey:(id)key
 {
-  if (self->_burstTrie && (v3 = a3, [v3 length], v4 = CFBurstTrieContains(), v3, v4))
+  if (self->_burstTrie && (v3 = key, [v3 length], v4 = CFBurstTrieContains(), v3, v4))
   {
     v5 = [MEMORY[0x277CCABB0] numberWithInt:0];
   }
@@ -74,12 +74,12 @@
   return v3;
 }
 
-+ (id)burstTrieFromFile:(id)a3
++ (id)burstTrieFromFile:(id)file
 {
   v3 = MEMORY[0x277CBEA90];
-  v4 = [a3 path];
+  path = [file path];
   v11 = 0;
-  v5 = [v3 dataWithContentsOfFile:v4 options:8 error:&v11];
+  v5 = [v3 dataWithContentsOfFile:path options:8 error:&v11];
   v6 = v11;
 
   [v5 bytes];

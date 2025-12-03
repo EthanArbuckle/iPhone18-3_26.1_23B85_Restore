@@ -1,18 +1,18 @@
 @interface TonePicker.Delegate
 - (_TtCV16_ToneKit_SwiftUI10TonePicker8Delegate)init;
-- (void)tonePickerController:(id)a3 selectedToneWithIdentifier:(id)a4;
-- (void)tonePickerControllerDidReloadTones:(id)a3;
+- (void)tonePickerController:(id)controller selectedToneWithIdentifier:(id)identifier;
+- (void)tonePickerControllerDidReloadTones:(id)tones;
 @end
 
 @implementation TonePicker.Delegate
 
-- (void)tonePickerControllerDidReloadTones:(id)a3
+- (void)tonePickerControllerDidReloadTones:(id)tones
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtCV16_ToneKit_SwiftUI10TonePicker8Delegate_onTonesReload);
   if (v3)
   {
     v4 = *&self->onTonesReload[OBJC_IVAR____TtCV16_ToneKit_SwiftUI10TonePicker8Delegate_onTonesReload];
-    v5 = self;
+    selfCopy = self;
     v6 = sub_275497154(v3);
     v3(v6);
 
@@ -20,9 +20,9 @@
   }
 }
 
-- (void)tonePickerController:(id)a3 selectedToneWithIdentifier:(id)a4
+- (void)tonePickerController:(id)controller selectedToneWithIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v5 = sub_2754983D8();
     v7 = v6;
@@ -38,7 +38,7 @@
   if (v8)
   {
     v9 = *&self->onTonesReload[OBJC_IVAR____TtCV16_ToneKit_SwiftUI10TonePicker8Delegate_onToneSelected];
-    v10 = self;
+    selfCopy = self;
     sub_275497154(v8);
     v8(v5, v7);
 

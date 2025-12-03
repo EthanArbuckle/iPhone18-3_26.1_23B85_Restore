@@ -1,34 +1,34 @@
 @interface NTKZeusAnalogNumeralsView
-+ (id)_digitImageNameForNumber:(unint64_t)a3 style:(unint64_t)a4 outlined:(BOOL)a5;
-+ (id)_digitImageWithName:(id)a3;
-- (CGPoint)_labelPositionForIndex:(unint64_t)a3 status:(BOOL)a4;
-- (NTKZeusAnalogNumeralsView)initWithDevice:(id)a3 palette:(id)a4 style:(unint64_t)a5 density:(unint64_t)a6;
++ (id)_digitImageNameForNumber:(unint64_t)number style:(unint64_t)style outlined:(BOOL)outlined;
++ (id)_digitImageWithName:(id)name;
+- (CGPoint)_labelPositionForIndex:(unint64_t)index status:(BOOL)status;
+- (NTKZeusAnalogNumeralsView)initWithDevice:(id)device palette:(id)palette style:(unint64_t)style density:(unint64_t)density;
 - (void)_updateImages;
 - (void)layoutSubviews;
-- (void)setDensity:(unint64_t)a3;
-- (void)setPalette:(id)a3;
-- (void)setStatusIndicatorVisibleFraction:(double)a3;
-- (void)setStyle:(unint64_t)a3;
-- (void)setTintColor:(id)a3;
+- (void)setDensity:(unint64_t)density;
+- (void)setPalette:(id)palette;
+- (void)setStatusIndicatorVisibleFraction:(double)fraction;
+- (void)setStyle:(unint64_t)style;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation NTKZeusAnalogNumeralsView
 
-- (NTKZeusAnalogNumeralsView)initWithDevice:(id)a3 palette:(id)a4 style:(unint64_t)a5 density:(unint64_t)a6
+- (NTKZeusAnalogNumeralsView)initWithDevice:(id)device palette:(id)palette style:(unint64_t)style density:(unint64_t)density
 {
-  v11 = a3;
-  v12 = a4;
-  [v11 screenBounds];
+  deviceCopy = device;
+  paletteCopy = palette;
+  [deviceCopy screenBounds];
   v16.receiver = self;
   v16.super_class = NTKZeusAnalogNumeralsView;
   v13 = [(NTKZeusAnalogNumeralsView *)&v16 initWithFrame:?];
   v14 = v13;
   if (v13)
   {
-    v13->_style = a5;
-    v13->_density = a6;
-    v13->_bleed = [v12 bleed];
-    objc_storeStrong(&v14->_device, a3);
+    v13->_style = style;
+    v13->_density = density;
+    v13->_bleed = [paletteCopy bleed];
+    objc_storeStrong(&v14->_device, device);
     v14->_outlined = [NTKZeusAnalogNumeralsView _outlinedForBleed:v14->_bleed style:v14->_style];
     [(NTKZeusAnalogNumeralsView *)v14 _updateImages];
   }
@@ -36,24 +36,24 @@
   return v14;
 }
 
-- (void)setPalette:(id)a3
+- (void)setPalette:(id)palette
 {
-  v10 = a3;
-  v5 = +[NTKZeusAnalogNumeralsView _outlinedForBleed:style:](NTKZeusAnalogNumeralsView, "_outlinedForBleed:style:", [v10 bleed], self->_style);
+  paletteCopy = palette;
+  v5 = +[NTKZeusAnalogNumeralsView _outlinedForBleed:style:](NTKZeusAnalogNumeralsView, "_outlinedForBleed:style:", [paletteCopy bleed], self->_style);
   outlined = self->_outlined;
-  objc_storeStrong(&self->_palette, a3);
-  self->_bleed = [v10 bleed];
+  objc_storeStrong(&self->_palette, palette);
+  self->_bleed = [paletteCopy bleed];
   self->_outlined = v5;
   if (outlined == v5)
   {
     v7 = 12;
-    v8 = self;
+    selfCopy = self;
     do
     {
-      v9 = [(NTKZeusAnalogColorPalette *)self->_palette dial];
-      [(UIImageView *)v8->_digitViews[0] setTintColor:v9];
+      dial = [(NTKZeusAnalogColorPalette *)self->_palette dial];
+      [(UIImageView *)selfCopy->_digitViews[0] setTintColor:dial];
 
-      v8 = (v8 + 8);
+      selfCopy = (selfCopy + 8);
       --v7;
     }
 
@@ -66,30 +66,30 @@
   }
 }
 
-- (void)setDensity:(unint64_t)a3
+- (void)setDensity:(unint64_t)density
 {
-  if (self->_density != a3)
+  if (self->_density != density)
   {
-    self->_density = a3;
+    self->_density = density;
     [(NTKZeusAnalogNumeralsView *)self _updateImages];
   }
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
-    self->_outlined = [NTKZeusAnalogNumeralsView _outlinedForBleed:self->_bleed style:a3];
+    self->_style = style;
+    self->_outlined = [NTKZeusAnalogNumeralsView _outlinedForBleed:self->_bleed style:style];
 
     [(NTKZeusAnalogNumeralsView *)self _updateImages];
   }
 }
 
-- (void)setStatusIndicatorVisibleFraction:(double)a3
+- (void)setStatusIndicatorVisibleFraction:(double)fraction
 {
-  v5 = fabs(a3);
-  v6 = fabs(a3 + -1.0);
+  v5 = fabs(fraction);
+  v6 = fabs(fraction + -1.0);
   if (v5 < 0.00000011920929 || v6 < 0.00000011920929)
   {
 
@@ -156,17 +156,17 @@
 
       v8 = [NTKZeusAnalogNumeralsView _digitImageNameForNumber:v5 style:self->_style outlined:self->_outlined];
       v11 = [NTKZeusAnalogNumeralsView _digitImageWithName:v8];
-      v12 = [*(&self->super.super.super.isa + v6) image];
+      image = [*(&self->super.super.super.isa + v6) image];
 
-      if (v12 != v11)
+      if (image != v11)
       {
         [*(&self->super.super.super.isa + v6) setImage:v11];
       }
 
       [*(&self->super.super.super.isa + v6) sizeToFit];
       v13 = *(&self->super.super.super.isa + v6);
-      v14 = [(NTKZeusAnalogColorPalette *)self->_palette dial];
-      [v13 setTintColor:v14];
+      dial = [(NTKZeusAnalogColorPalette *)self->_palette dial];
+      [v13 setTintColor:dial];
     }
 
     v6 += 8;
@@ -178,72 +178,72 @@
   [(NTKZeusAnalogNumeralsView *)self setNeedsLayout];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v4 = 0;
   digitViews = self->_digitViews;
   do
   {
-    [(UIImageView *)digitViews[v4++] setTintColor:a3];
+    [(UIImageView *)digitViews[v4++] setTintColor:color];
   }
 
   while (v4 != 12);
 }
 
-+ (id)_digitImageNameForNumber:(unint64_t)a3 style:(unint64_t)a4 outlined:(BOOL)a5
++ (id)_digitImageNameForNumber:(unint64_t)number style:(unint64_t)style outlined:(BOOL)outlined
 {
   v5 = @"espace";
   v6 = @"carrick";
-  if (a4 != 3)
+  if (style != 3)
   {
     v6 = 0;
   }
 
-  if (a4 != 2)
+  if (style != 2)
   {
     v5 = v6;
   }
 
   v7 = @"clipper";
   v8 = @"capecod-filled";
-  if (a5)
+  if (outlined)
   {
     v8 = @"capecod-outlined";
   }
 
-  if (a4 != 1)
+  if (style != 1)
   {
     v8 = 0;
   }
 
-  if (a4)
+  if (style)
   {
     v7 = v8;
   }
 
-  if (a4 <= 1)
+  if (style <= 1)
   {
     v5 = v7;
   }
 
-  return [NSString stringWithFormat:@"ZeusAnalog-digits-%@-%i", v5, a3];
+  return [NSString stringWithFormat:@"ZeusAnalog-digits-%@-%i", v5, number];
 }
 
-+ (id)_digitImageWithName:(id)a3
++ (id)_digitImageWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   if (qword_58BD0 != -1)
   {
     sub_2EE78();
   }
 
-  v4 = [qword_58BC8 objectForKey:v3];
+  v4 = [qword_58BC8 objectForKey:nameCopy];
   if (!v4)
   {
-    v5 = [NTKZeusAnalogFaceBundle imageWithName:v3];
+    v5 = [NTKZeusAnalogFaceBundle imageWithName:nameCopy];
     v4 = [v5 imageWithRenderingMode:2];
 
-    [qword_58BC8 setObject:v4 forKey:v3];
+    [qword_58BC8 setObject:v4 forKey:nameCopy];
   }
 
   return v4;
@@ -272,16 +272,16 @@
   }
 }
 
-- (CGPoint)_labelPositionForIndex:(unint64_t)a3 status:(BOOL)a4
+- (CGPoint)_labelPositionForIndex:(unint64_t)index status:(BOOL)status
 {
-  v4 = a4;
+  statusCopy = status;
   memset(v15, 0, 128);
   memset(v14, 0, sizeof(v14));
   memset(v13, 0, sizeof(v13));
   sub_20E20(self->_device, v13);
   bleed = self->_bleed;
   style = self->_style;
-  if (bleed && v4)
+  if (bleed && statusCopy)
   {
     if (style > 1)
     {
@@ -310,7 +310,7 @@
       {
         v11 = &v26;
 LABEL_41:
-        v12 = &v11[2 * a3];
+        v12 = &v11[2 * index];
         v7 = *v12;
         v8 = v12[1];
       }
@@ -350,7 +350,7 @@ LABEL_41:
     }
   }
 
-  else if (v4)
+  else if (statusCopy)
   {
     if (style > 1)
     {

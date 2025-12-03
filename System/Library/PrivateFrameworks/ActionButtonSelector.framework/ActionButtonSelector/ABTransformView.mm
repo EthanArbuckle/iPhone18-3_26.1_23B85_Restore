@@ -6,13 +6,13 @@
 
 - (id)transformLayer
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1 layer];
+    self = [self layer];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

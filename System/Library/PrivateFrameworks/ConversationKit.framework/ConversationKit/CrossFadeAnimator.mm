@@ -1,14 +1,14 @@
 @interface CrossFadeAnimator
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation CrossFadeAnimator
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  CrossFadeAnimator.animateTransition(using:)(a3);
+  selfCopy = self;
+  CrossFadeAnimator.animateTransition(using:)(transition);
   swift_unknownObjectRelease();
 }
 

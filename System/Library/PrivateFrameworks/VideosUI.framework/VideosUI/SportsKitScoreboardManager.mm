@@ -1,10 +1,10 @@
 @interface SportsKitScoreboardManager
-- (void)handleApplicationNotification:(id)a3;
+- (void)handleApplicationNotification:(id)notification;
 @end
 
 @implementation SportsKitScoreboardManager
 
-- (void)handleApplicationNotification:(id)a3
+- (void)handleApplicationNotification:(id)notification
 {
   sub_1E41FDF34();
   OUTLINED_FUNCTION_0_10();

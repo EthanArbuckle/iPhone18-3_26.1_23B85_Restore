@@ -1,57 +1,57 @@
 @interface MKDIDevice
-- (BOOL)partitionDiskWithGPTTypeID:(unint64_t)a3 error:(id *)a4;
-- (BOOL)resizeDataPartitionWithPartitionUUID:(id)a3 partitionNumBlocks:(unint64_t)a4 error:(id *)a5;
-- (BOOL)updatePartitionMapWithError:(id *)a3;
-- (MKDIDevice)initWithBSDName:(id)a3 numBlocks:(unint64_t)a4 blockSize:(int)a5 error:(id *)a6;
+- (BOOL)partitionDiskWithGPTTypeID:(unint64_t)d error:(id *)error;
+- (BOOL)resizeDataPartitionWithPartitionUUID:(id)d partitionNumBlocks:(unint64_t)blocks error:(id *)error;
+- (BOOL)updatePartitionMapWithError:(id *)error;
+- (MKDIDevice)initWithBSDName:(id)name numBlocks:(unint64_t)blocks blockSize:(int)size error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation MKDIDevice
 
-- (MKDIDevice)initWithBSDName:(id)a3 numBlocks:(unint64_t)a4 blockSize:(int)a5 error:(id *)a6
+- (MKDIDevice)initWithBSDName:(id)name numBlocks:(unint64_t)blocks blockSize:(int)size error:(id *)error
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  nameCopy = name;
   v34.receiver = self;
   v34.super_class = MKDIDevice;
   v11 = [(MKDIDevice *)&v34 init];
   v12 = v11;
   if (v11)
   {
-    v32 = a6;
-    v11->_blockSize = a5;
+    errorCopy = error;
+    v11->_blockSize = size;
     v45 = @"Writable";
     v46[0] = MEMORY[0x277CBEC38];
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:&v45 count:1];
-    v33 = v10;
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"/dev/%@", v10];
+    v33 = nameCopy;
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"/dev/%@", nameCopy];
     v15 = 0;
-    v16 = a5 + 511;
-    if (a5 >= 0)
+    sizeCopy = size + 511;
+    if (size >= 0)
     {
-      v16 = a5;
+      sizeCopy = size;
     }
 
-    v17 = (v16 >> 9) * a4;
+    v17 = (sizeCopy >> 9) * blocks;
     v18 = *MEMORY[0x277CBECE8];
     while (1)
     {
       v19 = malloc_type_calloc(1uLL, 0x10uLL, 0x10200405730B0C9uLL);
       if (!v19)
       {
-        v28 = [DIError nilWithPOSIXCode:12 verboseInfo:@"Failed to allocate refcon" error:v32];
+        v28 = [DIError nilWithPOSIXCode:12 verboseInfo:@"Failed to allocate refcon" error:errorCopy];
         goto LABEL_22;
       }
 
       v20 = v19;
       *v19 = v17;
-      [v14 fileSystemRepresentation];
+      [nameCopy fileSystemRepresentation];
       v21 = MKCreateMediaDeviceRefcon();
       if (v21)
       {
         v29 = v21;
         free(v20);
-        v28 = [DIError nilWithOSStatus:v29 verboseInfo:@"Failed creating MediaKit device refcon" error:v32];
+        v28 = [DIError nilWithOSStatus:v29 verboseInfo:@"Failed creating MediaKit device refcon" error:errorCopy];
         goto LABEL_22;
       }
 
@@ -115,7 +115,7 @@
       *__error() = v23;
       if (v15 == 3)
       {
-        [DIError failWithOSStatus:0 verboseInfo:@"Failed creating MediaKit object" error:v32];
+        [DIError failWithOSStatus:0 verboseInfo:@"Failed creating MediaKit object" error:errorCopy];
         v27 = 0;
         goto LABEL_23;
       }
@@ -126,7 +126,7 @@ LABEL_22:
     v27 = v28;
 LABEL_23:
 
-    v10 = v33;
+    nameCopy = v33;
   }
 
   else
@@ -138,7 +138,7 @@ LABEL_23:
   return v27;
 }
 
-- (BOOL)partitionDiskWithGPTTypeID:(unint64_t)a3 error:(id *)a4
+- (BOOL)partitionDiskWithGPTTypeID:(unint64_t)d error:(id *)error
 {
   v25[1] = *MEMORY[0x277D85DE8];
   v18 = 0;
@@ -151,12 +151,12 @@ LABEL_23:
 
   v8 = MKCFCreateMedia();
   [(MKDIDevice *)self blockSize];
-  v16 = [(MKDIDevice *)self mediaRef];
+  mediaRef = [(MKDIDevice *)self mediaRef];
   v17 = &v18;
   MKCFCreateMap();
   if (!v18)
   {
-    [(MKDIDevice *)self mediaRef:v16];
+    [(MKDIDevice *)self mediaRef:mediaRef];
     v18 = MKCFWriteMedia();
     if (!v18)
     {
@@ -170,7 +170,7 @@ LABEL_23:
         v21 = 2080;
         v22 = "[MKDIDevice partitionDiskWithGPTTypeID:error:]";
         LODWORD(v17) = 18;
-        v16 = buf;
+        mediaRef = buf;
         v11 = _os_log_send_and_compose_impl();
 
         if (v11)
@@ -204,7 +204,7 @@ LABEL_23:
 
   if (v18)
   {
-    v13 = [DIError failWithOSStatus:v16 verboseInfo:v17 error:?];
+    v13 = [DIError failWithOSStatus:mediaRef verboseInfo:v17 error:?];
   }
 
   else
@@ -216,10 +216,10 @@ LABEL_23:
   return v13;
 }
 
-- (BOOL)resizeDataPartitionWithPartitionUUID:(id)a3 partitionNumBlocks:(unint64_t)a4 error:(id *)a5
+- (BOOL)resizeDataPartitionWithPartitionUUID:(id)d partitionNumBlocks:(unint64_t)blocks error:(id *)error
 {
   v54 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  dCopy = d;
   v46 = 0;
   [(MKDIDevice *)self mediaRef];
   v9 = MKCFReadMedia();
@@ -234,7 +234,7 @@ LABEL_23:
   {
     v10 = v46;
 LABEL_8:
-    v14 = [DIError failWithOSStatus:v10 verboseInfo:@"MediaKit read error" error:a5];
+    v14 = [DIError failWithOSStatus:v10 verboseInfo:@"MediaKit read error" error:error];
     goto LABEL_34;
   }
 
@@ -284,7 +284,7 @@ LABEL_8:
   v16 = [v9 objectForKeyedSubscript:{@"Schemes", v36, v37}];
   if (!v16 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [v16 count] != 1)
   {
-    v14 = [DIError failWithEnumValue:150 verboseInfo:@"Invalid schemes returned by MediaKit" error:a5];
+    v14 = [DIError failWithEnumValue:150 verboseInfo:@"Invalid schemes returned by MediaKit" error:error];
 LABEL_33:
 
     goto LABEL_34;
@@ -295,7 +295,7 @@ LABEL_33:
 
   if (!v18 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [v18 count] != 1)
   {
-    v14 = [DIError failWithEnumValue:150 verboseInfo:@"Invalid sections returned by MediaKit" error:a5];
+    v14 = [DIError failWithEnumValue:150 verboseInfo:@"Invalid sections returned by MediaKit" error:error];
 LABEL_36:
 
     goto LABEL_33;
@@ -306,7 +306,7 @@ LABEL_36:
 
   if (!v20 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v14 = [DIError failWithEnumValue:150 verboseInfo:@"Invalid partitions returned by MediaKit" error:a5];
+    v14 = [DIError failWithEnumValue:150 verboseInfo:@"Invalid partitions returned by MediaKit" error:error];
 
     goto LABEL_36;
   }
@@ -324,7 +324,7 @@ LABEL_31:
     v26 = obj;
 
 LABEL_41:
-    v14 = [DIError failWithEnumValue:150 verboseInfo:@"Cannot find the data partition" error:a5];
+    v14 = [DIError failWithEnumValue:150 verboseInfo:@"Cannot find the data partition" error:error];
 
     goto LABEL_33;
   }
@@ -345,7 +345,7 @@ LABEL_23:
     if (v25)
     {
       objc_opt_class();
-      if (objc_opt_isKindOfClass() & 1) != 0 && ([v25 isEqual:v8])
+      if (objc_opt_isKindOfClass() & 1) != 0 && ([v25 isEqual:dCopy])
       {
         break;
       }
@@ -371,7 +371,7 @@ LABEL_23:
     goto LABEL_41;
   }
 
-  v30 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+  v30 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:blocks];
   [v29 setObject:v30 forKeyedSubscript:@"Size"];
 
   [(MKDIDevice *)self mediaRef];
@@ -379,7 +379,7 @@ LABEL_23:
   v46 = v31;
   if (v31)
   {
-    v14 = [DIError failWithOSStatus:v31 verboseInfo:@"MediaKit write error" error:a5];
+    v14 = [DIError failWithOSStatus:v31 verboseInfo:@"MediaKit write error" error:error];
 
     goto LABEL_33;
   }
@@ -425,7 +425,7 @@ LABEL_34:
   return v14;
 }
 
-- (BOOL)updatePartitionMapWithError:(id *)a3
+- (BOOL)updatePartitionMapWithError:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
   [(MKDIDevice *)self mediaRef];
@@ -452,7 +452,7 @@ LABEL_6:
     v6 = v7;
     v8 = @"MediaKit write error";
 LABEL_7:
-    v9 = [DIError failWithOSStatus:v6 verboseInfo:v8 error:a3];
+    v9 = [DIError failWithOSStatus:v6 verboseInfo:v8 error:error];
     goto LABEL_8;
   }
 

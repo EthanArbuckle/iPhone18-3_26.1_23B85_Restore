@@ -1,6 +1,6 @@
 @interface SBLockScreenNowPlayingController
 - (BOOL)_isMediaRecentlyActive;
-- (SBLockScreenNowPlayingController)initWithMediaController:(id)a3;
+- (SBLockScreenNowPlayingController)initWithMediaController:(id)controller;
 - (SBLockScreenNowPlayingControllerDelegate)delegate;
 - (double)_timeoutInterval;
 - (void)_addObservers;
@@ -9,27 +9,27 @@
 - (void)_removeObservers;
 - (void)_startDisableTimer;
 - (void)_updateNowPlayingPlugin;
-- (void)_updateToState:(int64_t)a3;
+- (void)_updateToState:(int64_t)state;
 - (void)dealloc;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation SBLockScreenNowPlayingController
 
-- (SBLockScreenNowPlayingController)initWithMediaController:(id)a3
+- (SBLockScreenNowPlayingController)initWithMediaController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v19.receiver = self;
   v19.super_class = SBLockScreenNowPlayingController;
   v6 = [(SBLockScreenNowPlayingController *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaController, a3);
+    objc_storeStrong(&v6->_mediaController, controller);
     v7->_currentState = 0;
-    v8 = [MEMORY[0x277D02C20] rootSettings];
+    rootSettings = [MEMORY[0x277D02C20] rootSettings];
     testSettings = v7->_testSettings;
-    v7->_testSettings = v8;
+    v7->_testSettings = rootSettings;
 
     [(CSLockScreenSettings *)v7->_testSettings addKeyObserver:v7];
     objc_initWeak(&location, v7);
@@ -73,8 +73,8 @@ void __60__SBLockScreenNowPlayingController_initWithMediaController___block_invo
 {
   [(CSLockScreenSettings *)self->_testSettings removeKeyObserver:self];
   [(PTToggleTestRecipe *)self->_testRecipe invalidate];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(SBLockScreenNowPlayingController *)self _invalidateDisableTimer];
   v4.receiver = self;
@@ -82,17 +82,17 @@ void __60__SBLockScreenNowPlayingController_initWithMediaController___block_invo
   [(SBLockScreenNowPlayingController *)&v4 dealloc];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
     v11 = v3;
     v12 = v4;
-    v5 = a3;
-    self->_enabled = a3;
+    enabledCopy = enabled;
+    self->_enabled = enabled;
     v7 = SBLogLockScreenNowPlaying();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (enabledCopy)
     {
       if (v8)
       {
@@ -122,8 +122,8 @@ void __60__SBLockScreenNowPlayingController_initWithMediaController___block_invo
 - (double)_timeoutInterval
 {
   v2 = +[SBDefaults localDefaults];
-  v3 = [v2 lockScreenDefaults];
-  [v3 nowPlayingTimeout];
+  lockScreenDefaults = [v2 lockScreenDefaults];
+  [lockScreenDefaults nowPlayingTimeout];
   v5 = v4;
 
   result = 480.0;
@@ -138,20 +138,20 @@ void __60__SBLockScreenNowPlayingController_initWithMediaController___block_invo
 - (BOOL)_isMediaRecentlyActive
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(SBMediaController *)self->_mediaController lastActivityDate];
+  lastActivityDate = [(SBMediaController *)self->_mediaController lastActivityDate];
   v4 = SBLogLockScreenNowPlaying();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    [v3 timeIntervalSince1970];
+    [lastActivityDate timeIntervalSince1970];
     v12 = 134217984;
     v13 = v5;
     _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "media last activity date is %{time_t}ld", &v12, 0xCu);
   }
 
-  if (v3)
+  if (lastActivityDate)
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
-    [v6 timeIntervalSinceDate:v3];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:lastActivityDate];
     v8 = v7;
 
     [(SBLockScreenNowPlayingController *)self _timeoutInterval];
@@ -168,20 +168,20 @@ void __60__SBLockScreenNowPlayingController_initWithMediaController___block_invo
 
 - (void)_addObservers
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__updateNowPlayingPlugin name:@"SBMediaNowPlayingChangedNotification" object:0];
-  [v3 addObserver:self selector:sel__updateNowPlayingPlugin name:@"SBMediaNowPlayingAppChangedNotification" object:0];
-  [v3 addObserver:self selector:sel__updateNowPlayingPlugin name:@"SBMediaApplicationActivityDidBeginNotification" object:0];
-  [v3 addObserver:self selector:sel__updateNowPlayingPlugin name:@"SBMediaApplicationActivityDidEndNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__updateNowPlayingPlugin name:@"SBMediaNowPlayingChangedNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__updateNowPlayingPlugin name:@"SBMediaNowPlayingAppChangedNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__updateNowPlayingPlugin name:@"SBMediaApplicationActivityDidBeginNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__updateNowPlayingPlugin name:@"SBMediaApplicationActivityDidEndNotification" object:0];
 }
 
 - (void)_removeObservers
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"SBMediaNowPlayingChangedNotification" object:0];
-  [v3 removeObserver:self name:@"SBMediaNowPlayingAppChangedNotification" object:0];
-  [v3 removeObserver:self name:@"SBMediaApplicationActivityDidBeginNotification" object:0];
-  [v3 removeObserver:self name:@"SBMediaApplicationActivityDidEndNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SBMediaNowPlayingChangedNotification" object:0];
+  [defaultCenter removeObserver:self name:@"SBMediaNowPlayingAppChangedNotification" object:0];
+  [defaultCenter removeObserver:self name:@"SBMediaApplicationActivityDidBeginNotification" object:0];
+  [defaultCenter removeObserver:self name:@"SBMediaApplicationActivityDidEndNotification" object:0];
 }
 
 - (void)_updateNowPlayingPlugin
@@ -206,10 +206,10 @@ void __60__SBLockScreenNowPlayingController_initWithMediaController___block_invo
 
   if (![(SBMediaController *)self->_mediaController isPaused]|| ![(SBLockScreenNowPlayingController *)self _isMediaRecentlyActive])
   {
-    v5 = [(SBMediaController *)self->_mediaController isPaused];
+    isPaused = [(SBMediaController *)self->_mediaController isPaused];
     v3 = SBLogLockScreenNowPlaying();
     v6 = os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (isPaused)
     {
       if (v6)
       {
@@ -246,12 +246,12 @@ LABEL_8:
   [(SBLockScreenNowPlayingController *)self _updateToState:v4];
 }
 
-- (void)_updateToState:(int64_t)a3
+- (void)_updateToState:(int64_t)state
 {
-  if (self->_currentState != a3)
+  if (self->_currentState != state)
   {
-    self->_currentState = a3;
-    if (a3 == 1)
+    self->_currentState = state;
+    if (state == 1)
     {
       [(SBLockScreenNowPlayingController *)self _startDisableTimer];
     }
@@ -261,8 +261,8 @@ LABEL_8:
       [(SBLockScreenNowPlayingController *)self _invalidateDisableTimer];
     }
 
-    v5 = [(SBLockScreenNowPlayingController *)self delegate];
-    [v5 nowPlayingController:self didChangeToState:self->_currentState];
+    delegate = [(SBLockScreenNowPlayingController *)self delegate];
+    [delegate nowPlayingController:self didChangeToState:self->_currentState];
   }
 }
 
@@ -276,8 +276,8 @@ LABEL_8:
   self->_disableTimer = v4;
 
   v6 = self->_disableTimer;
-  v7 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [(PCPersistentTimer *)v6 scheduleInRunLoop:v7];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [(PCPersistentTimer *)v6 scheduleInRunLoop:currentRunLoop];
 }
 
 - (void)_invalidateDisableTimer

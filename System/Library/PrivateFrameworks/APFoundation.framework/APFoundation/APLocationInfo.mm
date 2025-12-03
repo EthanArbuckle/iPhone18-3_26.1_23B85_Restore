@@ -1,19 +1,19 @@
 @interface APLocationInfo
-- (APLocationInfo)initWithCoder:(id)a3;
+- (APLocationInfo)initWithCoder:(id)coder;
 - (BOOL)isEmpty;
-- (BOOL)isEqualToAPLocationInfo:(id)a3;
+- (BOOL)isEqualToAPLocationInfo:(id)info;
 - (id)description;
-- (id)jsonRepresentationWithOptions:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)jsonRepresentationWithOptions:(unint64_t)options;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation APLocationInfo
 
-- (id)jsonRepresentationWithOptions:(unint64_t)a3
+- (id)jsonRepresentationWithOptions:(unint64_t)options
 {
   v35[5] = *MEMORY[0x1E69E9840];
   v34[0] = @"locality";
-  v5 = objc_msgSend_locality(self, a2, a3, v3);
+  v5 = objc_msgSend_locality(self, a2, options, v3);
   v9 = v5;
   if (!v5)
   {
@@ -82,53 +82,53 @@
   return @"<redacted>";
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8 = objc_msgSend_locality(self, v5, v6, v7);
-  objc_msgSend_encodeObject_forKey_(v4, v9, v8, @"locality");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, v8, @"locality");
 
   v13 = objc_msgSend_administrativeArea(self, v10, v11, v12);
-  objc_msgSend_encodeObject_forKey_(v4, v14, v13, @"administrativeArea");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v14, v13, @"administrativeArea");
 
   v18 = objc_msgSend_subAdministrativeArea(self, v15, v16, v17);
-  objc_msgSend_encodeObject_forKey_(v4, v19, v18, @"subAdministrativeArea");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v19, v18, @"subAdministrativeArea");
 
   v23 = objc_msgSend_isoCountryCode(self, v20, v21, v22);
-  objc_msgSend_encodeObject_forKey_(v4, v24, v23, @"isoCountryCode");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v24, v23, @"isoCountryCode");
 
   v29 = objc_msgSend_postalCode(self, v25, v26, v27);
-  objc_msgSend_encodeObject_forKey_(v4, v28, v29, @"postalCode");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v28, v29, @"postalCode");
 }
 
-- (APLocationInfo)initWithCoder:(id)a3
+- (APLocationInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8 = objc_msgSend_init(self, v5, v6, v7);
   if (v8)
   {
     v9 = objc_opt_class();
-    v11 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v10, v9, @"locality");
+    v11 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v10, v9, @"locality");
     locality = v8->_locality;
     v8->_locality = v11;
 
     v13 = objc_opt_class();
-    v15 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v14, v13, @"administrativeArea");
+    v15 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v14, v13, @"administrativeArea");
     administrativeArea = v8->_administrativeArea;
     v8->_administrativeArea = v15;
 
     v17 = objc_opt_class();
-    v19 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v18, v17, @"subAdministrativeArea");
+    v19 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v18, v17, @"subAdministrativeArea");
     subAdministrativeArea = v8->_subAdministrativeArea;
     v8->_subAdministrativeArea = v19;
 
     v21 = objc_opt_class();
-    v23 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v22, v21, @"isoCountryCode");
+    v23 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v22, v21, @"isoCountryCode");
     isoCountryCode = v8->_isoCountryCode;
     v8->_isoCountryCode = v23;
 
     v25 = objc_opt_class();
-    v27 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v26, v25, @"postalCode");
+    v27 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v26, v25, @"postalCode");
     postalCode = v8->_postalCode;
     v8->_postalCode = v27;
   }
@@ -136,14 +136,14 @@
   return v8;
 }
 
-- (BOOL)isEqualToAPLocationInfo:(id)a3
+- (BOOL)isEqualToAPLocationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8 = objc_msgSend_description(self, v5, v6, v7);
-    v12 = objc_msgSend_description(v4, v9, v10, v11);
+    v12 = objc_msgSend_description(infoCopy, v9, v10, v11);
     isEqualToString = objc_msgSend_isEqualToString_(v8, v13, v12, v14);
   }
 

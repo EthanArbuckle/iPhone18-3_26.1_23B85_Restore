@@ -1,33 +1,33 @@
 @interface SBWallpaperServer
 + (id)sharedInstance;
-- (BOOL)_clientPermittedToModifyWallpaper:(id)a3;
+- (BOOL)_clientPermittedToModifyWallpaper:(id)wallpaper;
 - (SBWallpaperServerDelegate)delegate;
 - (id)_init;
-- (int64_t)_deviceOrientationFromXPCDictionary:(id)a3;
-- (int64_t)_wallpaperModeFromXPCDictionary:(id)a3;
-- (int64_t)_wallpaperVariantFromXPCDictionary:(id)a3;
-- (void)_handleFetchAdaptiveTimeBoundsForHeightMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleFetchAdaptiveTimeHeightLimitsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleFetchContentCutoutBoundsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleFetchLimitedOcclusionBoundsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleFetchLockScreenContentCutoutBoundsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleFetchLockScreenExtendedContentCutoutBoundsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleFetchLockScreenForegroundBoundsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleFetchLockScreenMaximalContentCutoutBoundsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleFetchLockScreenSubtitleBoundsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleFetchLockScreenTimeBoundsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleFetchOriginalImageMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleFetchOriginalVideoURLMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleFetchPosterSignificantEventsCounterMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleFetchThumbnailMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleQuickActionConfigurationRequest:(id)a3 fromClient:(id)a4;
-- (void)_handleRestoreDefaultWallpaperMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetColorMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetColorNameMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetGradientMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetVideoMessageWithWallpaperMode:(id)a3 fromClient:(id)a4;
-- (void)_handleTriggerPosterSignificantEventMessage:(id)a3 fromClient:(id)a4;
-- (void)noteDidReceiveMessage:(id)a3 withType:(int64_t)a4 fromClient:(id)a5;
+- (int64_t)_deviceOrientationFromXPCDictionary:(id)dictionary;
+- (int64_t)_wallpaperModeFromXPCDictionary:(id)dictionary;
+- (int64_t)_wallpaperVariantFromXPCDictionary:(id)dictionary;
+- (void)_handleFetchAdaptiveTimeBoundsForHeightMessage:(id)message fromClient:(id)client;
+- (void)_handleFetchAdaptiveTimeHeightLimitsMessage:(id)message fromClient:(id)client;
+- (void)_handleFetchContentCutoutBoundsMessage:(id)message fromClient:(id)client;
+- (void)_handleFetchLimitedOcclusionBoundsMessage:(id)message fromClient:(id)client;
+- (void)_handleFetchLockScreenContentCutoutBoundsMessage:(id)message fromClient:(id)client;
+- (void)_handleFetchLockScreenExtendedContentCutoutBoundsMessage:(id)message fromClient:(id)client;
+- (void)_handleFetchLockScreenForegroundBoundsMessage:(id)message fromClient:(id)client;
+- (void)_handleFetchLockScreenMaximalContentCutoutBoundsMessage:(id)message fromClient:(id)client;
+- (void)_handleFetchLockScreenSubtitleBoundsMessage:(id)message fromClient:(id)client;
+- (void)_handleFetchLockScreenTimeBoundsMessage:(id)message fromClient:(id)client;
+- (void)_handleFetchOriginalImageMessage:(id)message fromClient:(id)client;
+- (void)_handleFetchOriginalVideoURLMessage:(id)message fromClient:(id)client;
+- (void)_handleFetchPosterSignificantEventsCounterMessage:(id)message fromClient:(id)client;
+- (void)_handleFetchThumbnailMessage:(id)message fromClient:(id)client;
+- (void)_handleQuickActionConfigurationRequest:(id)request fromClient:(id)client;
+- (void)_handleRestoreDefaultWallpaperMessage:(id)message fromClient:(id)client;
+- (void)_handleSetColorMessage:(id)message fromClient:(id)client;
+- (void)_handleSetColorNameMessage:(id)message fromClient:(id)client;
+- (void)_handleSetGradientMessage:(id)message fromClient:(id)client;
+- (void)_handleSetVideoMessageWithWallpaperMode:(id)mode fromClient:(id)client;
+- (void)_handleTriggerPosterSignificantEventMessage:(id)message fromClient:(id)client;
+- (void)noteDidReceiveMessage:(id)message withType:(int64_t)type fromClient:(id)client;
 @end
 
 @implementation SBWallpaperServer
@@ -68,89 +68,89 @@ uint64_t __35__SBWallpaperServer_sharedInstance__block_invoke()
   return v7;
 }
 
-- (void)noteDidReceiveMessage:(id)a3 withType:(int64_t)a4 fromClient:(id)a5
+- (void)noteDidReceiveMessage:(id)message withType:(int64_t)type fromClient:(id)client
 {
-  v8 = a3;
-  v9 = a5;
-  switch(a4)
+  messageCopy = message;
+  clientCopy = client;
+  switch(type)
   {
     case 0:
-      [(SBWallpaperServer *)self _handleFetchThumbnailMessage:v8 fromClient:v9];
+      [(SBWallpaperServer *)self _handleFetchThumbnailMessage:messageCopy fromClient:clientCopy];
       break;
     case 1:
-      [(SBWallpaperServer *)self _handleFetchOriginalImageMessage:v8 fromClient:v9];
+      [(SBWallpaperServer *)self _handleFetchOriginalImageMessage:messageCopy fromClient:clientCopy];
       break;
     case 2:
-      [(SBWallpaperServer *)self _handleFetchOriginalVideoURLMessage:v8 fromClient:v9];
+      [(SBWallpaperServer *)self _handleFetchOriginalVideoURLMessage:messageCopy fromClient:clientCopy];
       break;
     case 3:
-      [(SBWallpaperServer *)self _handleFetchContentCutoutBoundsMessage:v8 fromClient:v9];
+      [(SBWallpaperServer *)self _handleFetchContentCutoutBoundsMessage:messageCopy fromClient:clientCopy];
       break;
     case 4:
-      [(SBWallpaperServer *)self _handleFetchLockScreenContentCutoutBoundsMessage:v8 fromClient:v9];
+      [(SBWallpaperServer *)self _handleFetchLockScreenContentCutoutBoundsMessage:messageCopy fromClient:clientCopy];
       break;
     case 5:
-      [(SBWallpaperServer *)self _handleFetchLockScreenMaximalContentCutoutBoundsMessage:v8 fromClient:v9];
+      [(SBWallpaperServer *)self _handleFetchLockScreenMaximalContentCutoutBoundsMessage:messageCopy fromClient:clientCopy];
       break;
     case 6:
-      [(SBWallpaperServer *)self _handleFetchLockScreenExtendedContentCutoutBoundsMessage:v8 fromClient:v9];
+      [(SBWallpaperServer *)self _handleFetchLockScreenExtendedContentCutoutBoundsMessage:messageCopy fromClient:clientCopy];
       break;
     case 7:
-      [(SBWallpaperServer *)self _handleFetchLockScreenForegroundBoundsMessage:v8 fromClient:v9];
+      [(SBWallpaperServer *)self _handleFetchLockScreenForegroundBoundsMessage:messageCopy fromClient:clientCopy];
       break;
     case 8:
-      [(SBWallpaperServer *)self _handleFetchLimitedOcclusionBoundsMessage:v8 fromClient:v9];
+      [(SBWallpaperServer *)self _handleFetchLimitedOcclusionBoundsMessage:messageCopy fromClient:clientCopy];
       break;
     case 9:
-      [(SBWallpaperServer *)self _handleFetchLockScreenTimeBoundsMessage:v8 fromClient:v9];
+      [(SBWallpaperServer *)self _handleFetchLockScreenTimeBoundsMessage:messageCopy fromClient:clientCopy];
       break;
     case 10:
-      [(SBWallpaperServer *)self _handleFetchLockScreenSubtitleBoundsMessage:v8 fromClient:v9];
+      [(SBWallpaperServer *)self _handleFetchLockScreenSubtitleBoundsMessage:messageCopy fromClient:clientCopy];
       break;
     case 11:
-      [(SBWallpaperServer *)self _handleSetVideoMessageWithWallpaperMode:v8 fromClient:v9];
+      [(SBWallpaperServer *)self _handleSetVideoMessageWithWallpaperMode:messageCopy fromClient:clientCopy];
       break;
     case 12:
-      [(SBWallpaperServer *)self _handleSetColorNameMessage:v8 fromClient:v9];
+      [(SBWallpaperServer *)self _handleSetColorNameMessage:messageCopy fromClient:clientCopy];
       break;
     case 13:
-      [(SBWallpaperServer *)self _handleSetColorMessage:v8 fromClient:v9];
+      [(SBWallpaperServer *)self _handleSetColorMessage:messageCopy fromClient:clientCopy];
       break;
     case 14:
-      [(SBWallpaperServer *)self _handleSetGradientMessage:v8 fromClient:v9];
+      [(SBWallpaperServer *)self _handleSetGradientMessage:messageCopy fromClient:clientCopy];
       break;
     case 15:
-      [(SBWallpaperServer *)self _handleRestoreDefaultWallpaperMessage:v8 fromClient:v9];
+      [(SBWallpaperServer *)self _handleRestoreDefaultWallpaperMessage:messageCopy fromClient:clientCopy];
       break;
     case 16:
-      [(SBWallpaperServer *)self _handleTriggerPosterSignificantEventMessage:v8 fromClient:v9];
+      [(SBWallpaperServer *)self _handleTriggerPosterSignificantEventMessage:messageCopy fromClient:clientCopy];
       break;
     case 17:
-      [(SBWallpaperServer *)self _handleFetchPosterSignificantEventsCounterMessage:v8 fromClient:v9];
+      [(SBWallpaperServer *)self _handleFetchPosterSignificantEventsCounterMessage:messageCopy fromClient:clientCopy];
       break;
     case 18:
-      [(SBWallpaperServer *)self _handleQuickActionConfigurationRequest:v8 fromClient:v9];
+      [(SBWallpaperServer *)self _handleQuickActionConfigurationRequest:messageCopy fromClient:clientCopy];
       break;
     case 19:
-      [(SBWallpaperServer *)self _handleFetchAdaptiveTimeHeightLimitsMessage:v8 fromClient:v9];
+      [(SBWallpaperServer *)self _handleFetchAdaptiveTimeHeightLimitsMessage:messageCopy fromClient:clientCopy];
       break;
     case 20:
-      [(SBWallpaperServer *)self _handleFetchAdaptiveTimeBoundsForHeightMessage:v8 fromClient:v9];
+      [(SBWallpaperServer *)self _handleFetchAdaptiveTimeBoundsForHeightMessage:messageCopy fromClient:clientCopy];
       break;
     default:
       v10 = SBLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [SBApplicationServer noteDidReceiveMessage:v9 withType:v10 fromClient:?];
+        [SBApplicationServer noteDidReceiveMessage:clientCopy withType:v10 fromClient:?];
       }
 
       break;
   }
 }
 
-- (int64_t)_wallpaperVariantFromXPCDictionary:(id)a3
+- (int64_t)_wallpaperVariantFromXPCDictionary:(id)dictionary
 {
-  LODWORD(result) = xpc_dictionary_get_uint64(a3, *MEMORY[0x277D67910]);
+  LODWORD(result) = xpc_dictionary_get_uint64(dictionary, *MEMORY[0x277D67910]);
   if ((result & 0xFFFFFFFE) != 0)
   {
     return -1;
@@ -162,9 +162,9 @@ uint64_t __35__SBWallpaperServer_sharedInstance__block_invoke()
   }
 }
 
-- (int64_t)_deviceOrientationFromXPCDictionary:(id)a3
+- (int64_t)_deviceOrientationFromXPCDictionary:(id)dictionary
 {
-  LODWORD(result) = xpc_dictionary_get_uint64(a3, *MEMORY[0x277D678E8]);
+  LODWORD(result) = xpc_dictionary_get_uint64(dictionary, *MEMORY[0x277D678E8]);
   if (result - 1 >= 4)
   {
     return 0;
@@ -176,31 +176,31 @@ uint64_t __35__SBWallpaperServer_sharedInstance__block_invoke()
   }
 }
 
-- (void)_handleFetchThumbnailMessage:(id)a3 fromClient:(id)a4
+- (void)_handleFetchThumbnailMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __61__SBWallpaperServer__handleFetchThumbnailMessage_fromClient___block_invoke;
   v17[3] = &unk_2783BDA28;
-  v8 = v6;
+  v8 = messageCopy;
   v18 = v8;
   v9 = MEMORY[0x223D6F7F0](v17);
-  v10 = [v8 payload];
-  v11 = v10;
-  if (!v10)
+  payload = [v8 payload];
+  v11 = payload;
+  if (!payload)
   {
     goto LABEL_8;
   }
 
-  if (object_getClass(v10) != MEMORY[0x277D86468])
+  if (object_getClass(payload) != MEMORY[0x277D86468])
   {
     goto LABEL_8;
   }
 
-  v12 = [v7 processHandle];
-  v13 = [v12 hasEntitlement:*MEMORY[0x277D67230]];
+  processHandle = [clientCopy processHandle];
+  v13 = [processHandle hasEntitlement:*MEMORY[0x277D67230]];
 
   if (!v13)
   {
@@ -208,9 +208,9 @@ uint64_t __35__SBWallpaperServer_sharedInstance__block_invoke()
   }
 
   v14 = [(SBWallpaperServer *)self _wallpaperVariantFromXPCDictionary:v11];
-  v15 = [(SBWallpaperServer *)self delegate];
-  v16 = v15;
-  if (!v15 || v14 == -1)
+  delegate = [(SBWallpaperServer *)self delegate];
+  v16 = delegate;
+  if (!delegate || v14 == -1)
   {
 
 LABEL_8:
@@ -218,7 +218,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  [v15 wallpaperServer:self fetchThumbnailDataForVariant:v14 completionHandler:v9];
+  [delegate wallpaperServer:self fetchThumbnailDataForVariant:v14 completionHandler:v9];
 
 LABEL_9:
 }
@@ -258,31 +258,31 @@ void __61__SBWallpaperServer__handleFetchThumbnailMessage_fromClient___block_inv
   }
 }
 
-- (void)_handleFetchOriginalImageMessage:(id)a3 fromClient:(id)a4
+- (void)_handleFetchOriginalImageMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __65__SBWallpaperServer__handleFetchOriginalImageMessage_fromClient___block_invoke;
   v17[3] = &unk_2783BDA28;
-  v8 = v6;
+  v8 = messageCopy;
   v18 = v8;
   v9 = MEMORY[0x223D6F7F0](v17);
-  v10 = [v8 payload];
-  v11 = v10;
-  if (!v10)
+  payload = [v8 payload];
+  v11 = payload;
+  if (!payload)
   {
     goto LABEL_8;
   }
 
-  if (object_getClass(v10) != MEMORY[0x277D86468])
+  if (object_getClass(payload) != MEMORY[0x277D86468])
   {
     goto LABEL_8;
   }
 
-  v12 = [v7 processHandle];
-  v13 = [v12 hasEntitlement:*MEMORY[0x277D67230]];
+  processHandle = [clientCopy processHandle];
+  v13 = [processHandle hasEntitlement:*MEMORY[0x277D67230]];
 
   if (!v13)
   {
@@ -290,9 +290,9 @@ void __61__SBWallpaperServer__handleFetchThumbnailMessage_fromClient___block_inv
   }
 
   v14 = [(SBWallpaperServer *)self _wallpaperVariantFromXPCDictionary:v11];
-  v15 = [(SBWallpaperServer *)self delegate];
-  v16 = v15;
-  if (!v15 || v14 == -1)
+  delegate = [(SBWallpaperServer *)self delegate];
+  v16 = delegate;
+  if (!delegate || v14 == -1)
   {
 
 LABEL_8:
@@ -300,7 +300,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  [v15 wallpaperServer:self fetchOriginalImageDataForVariant:v14 completionHandler:v9];
+  [delegate wallpaperServer:self fetchOriginalImageDataForVariant:v14 completionHandler:v9];
 
 LABEL_9:
 }
@@ -340,31 +340,31 @@ void __65__SBWallpaperServer__handleFetchOriginalImageMessage_fromClient___block
   }
 }
 
-- (void)_handleFetchOriginalVideoURLMessage:(id)a3 fromClient:(id)a4
+- (void)_handleFetchOriginalVideoURLMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __68__SBWallpaperServer__handleFetchOriginalVideoURLMessage_fromClient___block_invoke;
   v17[3] = &unk_2783BDA28;
-  v8 = v6;
+  v8 = messageCopy;
   v18 = v8;
   v9 = MEMORY[0x223D6F7F0](v17);
-  v10 = [v8 payload];
-  v11 = v10;
-  if (!v10)
+  payload = [v8 payload];
+  v11 = payload;
+  if (!payload)
   {
     goto LABEL_8;
   }
 
-  if (object_getClass(v10) != MEMORY[0x277D86468])
+  if (object_getClass(payload) != MEMORY[0x277D86468])
   {
     goto LABEL_8;
   }
 
-  v12 = [v7 processHandle];
-  v13 = [v12 hasEntitlement:*MEMORY[0x277D67230]];
+  processHandle = [clientCopy processHandle];
+  v13 = [processHandle hasEntitlement:*MEMORY[0x277D67230]];
 
   if (!v13)
   {
@@ -372,9 +372,9 @@ void __65__SBWallpaperServer__handleFetchOriginalImageMessage_fromClient___block
   }
 
   v14 = [(SBWallpaperServer *)self _wallpaperVariantFromXPCDictionary:v11];
-  v15 = [(SBWallpaperServer *)self delegate];
-  v16 = v15;
-  if (!v15 || v14)
+  delegate = [(SBWallpaperServer *)self delegate];
+  v16 = delegate;
+  if (!delegate || v14)
   {
 
 LABEL_8:
@@ -382,7 +382,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  [v15 wallpaperServer:self fetchOriginalVideoURLDataForVariant:0 completionHandler:v9];
+  [delegate wallpaperServer:self fetchOriginalVideoURLDataForVariant:0 completionHandler:v9];
 
 LABEL_9:
 }
@@ -422,14 +422,14 @@ void __68__SBWallpaperServer__handleFetchOriginalVideoURLMessage_fromClient___bl
   }
 }
 
-- (void)_handleFetchContentCutoutBoundsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleFetchContentCutoutBoundsMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __71__SBWallpaperServer__handleFetchContentCutoutBoundsMessage_fromClient___block_invoke;
   v21[3] = &unk_2783B4CF0;
-  v6 = v5;
+  v6 = messageCopy;
   v22 = v6;
   v7 = MEMORY[0x223D6F7F0](v21);
   v16 = MEMORY[0x277D85DD0];
@@ -439,18 +439,18 @@ void __68__SBWallpaperServer__handleFetchOriginalVideoURLMessage_fromClient___bl
   v8 = v6;
   v20 = v8;
   v9 = MEMORY[0x223D6F7F0](&v16);
-  v10 = [v8 payload];
-  v11 = v10;
-  if (!v10 || object_getClass(v10) != MEMORY[0x277D86468])
+  payload = [v8 payload];
+  v11 = payload;
+  if (!payload || object_getClass(payload) != MEMORY[0x277D86468])
   {
     goto LABEL_8;
   }
 
   v12 = [(SBWallpaperServer *)self _wallpaperVariantFromXPCDictionary:v11];
   v13 = [(SBWallpaperServer *)self _deviceOrientationFromXPCDictionary:v11];
-  v14 = [(SBWallpaperServer *)self delegate];
-  v15 = v14;
-  if (!v14 || v12 || (v13 - 1) > 3)
+  delegate = [(SBWallpaperServer *)self delegate];
+  v15 = delegate;
+  if (!delegate || v12 || (v13 - 1) > 3)
   {
 
 LABEL_8:
@@ -458,7 +458,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  [v14 wallpaperServer:self fetchContentCutoutBoundsForVariant:0 orientation:v13 completionHandler:v7];
+  [delegate wallpaperServer:self fetchContentCutoutBoundsForVariant:0 orientation:v13 completionHandler:v7];
 
 LABEL_9:
 }
@@ -477,14 +477,14 @@ uint64_t __71__SBWallpaperServer__handleFetchContentCutoutBoundsMessage_fromClie
   return [v5 sendReplyMessageWithPacker:v7];
 }
 
-- (void)_handleFetchLockScreenContentCutoutBoundsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleFetchLockScreenContentCutoutBoundsMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __81__SBWallpaperServer__handleFetchLockScreenContentCutoutBoundsMessage_fromClient___block_invoke;
   v20[3] = &unk_2783B4CF0;
-  v6 = v5;
+  v6 = messageCopy;
   v21 = v6;
   v7 = MEMORY[0x223D6F7F0](v20);
   v15 = MEMORY[0x277D85DD0];
@@ -494,17 +494,17 @@ uint64_t __71__SBWallpaperServer__handleFetchContentCutoutBoundsMessage_fromClie
   v8 = v6;
   v19 = v8;
   v9 = MEMORY[0x223D6F7F0](&v15);
-  v10 = [v8 payload];
-  v11 = v10;
-  if (!v10 || object_getClass(v10) != MEMORY[0x277D86468])
+  payload = [v8 payload];
+  v11 = payload;
+  if (!payload || object_getClass(payload) != MEMORY[0x277D86468])
   {
     goto LABEL_7;
   }
 
   v12 = [(SBWallpaperServer *)self _deviceOrientationFromXPCDictionary:v11];
-  v13 = [(SBWallpaperServer *)self delegate];
-  v14 = v13;
-  if (!v13 || (v12 - 1) > 3)
+  delegate = [(SBWallpaperServer *)self delegate];
+  v14 = delegate;
+  if (!delegate || (v12 - 1) > 3)
   {
 
 LABEL_7:
@@ -512,7 +512,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  [v13 wallpaperServer:self fetchLockScreenContentCutoutBoundsForOrientation:v12 completionHandler:v7];
+  [delegate wallpaperServer:self fetchLockScreenContentCutoutBoundsForOrientation:v12 completionHandler:v7];
 
 LABEL_8:
 }
@@ -531,14 +531,14 @@ uint64_t __81__SBWallpaperServer__handleFetchLockScreenContentCutoutBoundsMessag
   return [v5 sendReplyMessageWithPacker:v7];
 }
 
-- (void)_handleFetchLockScreenMaximalContentCutoutBoundsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleFetchLockScreenMaximalContentCutoutBoundsMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __88__SBWallpaperServer__handleFetchLockScreenMaximalContentCutoutBoundsMessage_fromClient___block_invoke;
   v20[3] = &unk_2783B4CF0;
-  v6 = v5;
+  v6 = messageCopy;
   v21 = v6;
   v7 = MEMORY[0x223D6F7F0](v20);
   v15 = MEMORY[0x277D85DD0];
@@ -548,17 +548,17 @@ uint64_t __81__SBWallpaperServer__handleFetchLockScreenContentCutoutBoundsMessag
   v8 = v6;
   v19 = v8;
   v9 = MEMORY[0x223D6F7F0](&v15);
-  v10 = [v8 payload];
-  v11 = v10;
-  if (!v10 || object_getClass(v10) != MEMORY[0x277D86468])
+  payload = [v8 payload];
+  v11 = payload;
+  if (!payload || object_getClass(payload) != MEMORY[0x277D86468])
   {
     goto LABEL_7;
   }
 
   v12 = [(SBWallpaperServer *)self _deviceOrientationFromXPCDictionary:v11];
-  v13 = [(SBWallpaperServer *)self delegate];
-  v14 = v13;
-  if (!v13 || (v12 - 1) > 3)
+  delegate = [(SBWallpaperServer *)self delegate];
+  v14 = delegate;
+  if (!delegate || (v12 - 1) > 3)
   {
 
 LABEL_7:
@@ -566,7 +566,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  [v13 wallpaperServer:self fetchLockScreenMaximalContentCutoutBoundsForOrientation:v12 completionHandler:v7];
+  [delegate wallpaperServer:self fetchLockScreenMaximalContentCutoutBoundsForOrientation:v12 completionHandler:v7];
 
 LABEL_8:
 }
@@ -585,14 +585,14 @@ uint64_t __88__SBWallpaperServer__handleFetchLockScreenMaximalContentCutoutBound
   return [v5 sendReplyMessageWithPacker:v7];
 }
 
-- (void)_handleFetchLockScreenExtendedContentCutoutBoundsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleFetchLockScreenExtendedContentCutoutBoundsMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __89__SBWallpaperServer__handleFetchLockScreenExtendedContentCutoutBoundsMessage_fromClient___block_invoke;
   v20[3] = &unk_2783B4CF0;
-  v6 = v5;
+  v6 = messageCopy;
   v21 = v6;
   v7 = MEMORY[0x223D6F7F0](v20);
   v15 = MEMORY[0x277D85DD0];
@@ -602,17 +602,17 @@ uint64_t __88__SBWallpaperServer__handleFetchLockScreenMaximalContentCutoutBound
   v8 = v6;
   v19 = v8;
   v9 = MEMORY[0x223D6F7F0](&v15);
-  v10 = [v8 payload];
-  v11 = v10;
-  if (!v10 || object_getClass(v10) != MEMORY[0x277D86468])
+  payload = [v8 payload];
+  v11 = payload;
+  if (!payload || object_getClass(payload) != MEMORY[0x277D86468])
   {
     goto LABEL_7;
   }
 
   v12 = [(SBWallpaperServer *)self _deviceOrientationFromXPCDictionary:v11];
-  v13 = [(SBWallpaperServer *)self delegate];
-  v14 = v13;
-  if (!v13 || (v12 - 1) > 3)
+  delegate = [(SBWallpaperServer *)self delegate];
+  v14 = delegate;
+  if (!delegate || (v12 - 1) > 3)
   {
 
 LABEL_7:
@@ -620,7 +620,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  [v13 wallpaperServer:self fetchLockScreenExtendedContentCutoutBoundsForOrientation:v12 completionHandler:v7];
+  [delegate wallpaperServer:self fetchLockScreenExtendedContentCutoutBoundsForOrientation:v12 completionHandler:v7];
 
 LABEL_8:
 }
@@ -639,14 +639,14 @@ uint64_t __89__SBWallpaperServer__handleFetchLockScreenExtendedContentCutoutBoun
   return [v5 sendReplyMessageWithPacker:v7];
 }
 
-- (void)_handleFetchLockScreenForegroundBoundsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleFetchLockScreenForegroundBoundsMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __78__SBWallpaperServer__handleFetchLockScreenForegroundBoundsMessage_fromClient___block_invoke;
   v20[3] = &unk_2783B4CF0;
-  v6 = v5;
+  v6 = messageCopy;
   v21 = v6;
   v7 = MEMORY[0x223D6F7F0](v20);
   v15 = MEMORY[0x277D85DD0];
@@ -656,17 +656,17 @@ uint64_t __89__SBWallpaperServer__handleFetchLockScreenExtendedContentCutoutBoun
   v8 = v6;
   v19 = v8;
   v9 = MEMORY[0x223D6F7F0](&v15);
-  v10 = [v8 payload];
-  v11 = v10;
-  if (!v10 || object_getClass(v10) != MEMORY[0x277D86468])
+  payload = [v8 payload];
+  v11 = payload;
+  if (!payload || object_getClass(payload) != MEMORY[0x277D86468])
   {
     goto LABEL_7;
   }
 
   v12 = [(SBWallpaperServer *)self _deviceOrientationFromXPCDictionary:v11];
-  v13 = [(SBWallpaperServer *)self delegate];
-  v14 = v13;
-  if (!v13 || (v12 - 1) > 3)
+  delegate = [(SBWallpaperServer *)self delegate];
+  v14 = delegate;
+  if (!delegate || (v12 - 1) > 3)
   {
 
 LABEL_7:
@@ -674,7 +674,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  [v13 wallpaperServer:self fetchObscurableBoundsForOrientation:v12 completionHandler:v7];
+  [delegate wallpaperServer:self fetchObscurableBoundsForOrientation:v12 completionHandler:v7];
 
 LABEL_8:
 }
@@ -693,14 +693,14 @@ uint64_t __78__SBWallpaperServer__handleFetchLockScreenForegroundBoundsMessage_f
   return [v5 sendReplyMessageWithPacker:v7];
 }
 
-- (void)_handleFetchLimitedOcclusionBoundsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleFetchLimitedOcclusionBoundsMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __74__SBWallpaperServer__handleFetchLimitedOcclusionBoundsMessage_fromClient___block_invoke;
   v20[3] = &unk_2783B4CF0;
-  v6 = v5;
+  v6 = messageCopy;
   v21 = v6;
   v7 = MEMORY[0x223D6F7F0](v20);
   v15 = MEMORY[0x277D85DD0];
@@ -710,17 +710,17 @@ uint64_t __78__SBWallpaperServer__handleFetchLockScreenForegroundBoundsMessage_f
   v8 = v6;
   v19 = v8;
   v9 = MEMORY[0x223D6F7F0](&v15);
-  v10 = [v8 payload];
-  v11 = v10;
-  if (!v10 || object_getClass(v10) != MEMORY[0x277D86468])
+  payload = [v8 payload];
+  v11 = payload;
+  if (!payload || object_getClass(payload) != MEMORY[0x277D86468])
   {
     goto LABEL_7;
   }
 
   v12 = [(SBWallpaperServer *)self _deviceOrientationFromXPCDictionary:v11];
-  v13 = [(SBWallpaperServer *)self delegate];
-  v14 = v13;
-  if (!v13 || (v12 - 1) > 3)
+  delegate = [(SBWallpaperServer *)self delegate];
+  v14 = delegate;
+  if (!delegate || (v12 - 1) > 3)
   {
 
 LABEL_7:
@@ -728,7 +728,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  [v13 wallpaperServer:self fetchLimitedOcclusionBoundsForOrientation:v12 completionHandler:v7];
+  [delegate wallpaperServer:self fetchLimitedOcclusionBoundsForOrientation:v12 completionHandler:v7];
 
 LABEL_8:
 }
@@ -747,14 +747,14 @@ uint64_t __74__SBWallpaperServer__handleFetchLimitedOcclusionBoundsMessage_fromC
   return [v5 sendReplyMessageWithPacker:v7];
 }
 
-- (void)_handleFetchLockScreenTimeBoundsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleFetchLockScreenTimeBoundsMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __72__SBWallpaperServer__handleFetchLockScreenTimeBoundsMessage_fromClient___block_invoke;
   v20[3] = &unk_2783B4CF0;
-  v6 = v5;
+  v6 = messageCopy;
   v21 = v6;
   v7 = MEMORY[0x223D6F7F0](v20);
   v15 = MEMORY[0x277D85DD0];
@@ -764,17 +764,17 @@ uint64_t __74__SBWallpaperServer__handleFetchLimitedOcclusionBoundsMessage_fromC
   v8 = v6;
   v19 = v8;
   v9 = MEMORY[0x223D6F7F0](&v15);
-  v10 = [v8 payload];
-  v11 = v10;
-  if (!v10 || object_getClass(v10) != MEMORY[0x277D86468])
+  payload = [v8 payload];
+  v11 = payload;
+  if (!payload || object_getClass(payload) != MEMORY[0x277D86468])
   {
     goto LABEL_7;
   }
 
   v12 = [(SBWallpaperServer *)self _deviceOrientationFromXPCDictionary:v11];
-  v13 = [(SBWallpaperServer *)self delegate];
-  v14 = v13;
-  if (!v13 || (v12 - 1) > 3)
+  delegate = [(SBWallpaperServer *)self delegate];
+  v14 = delegate;
+  if (!delegate || (v12 - 1) > 3)
   {
 
 LABEL_7:
@@ -782,7 +782,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  [v13 wallpaperServer:self fetchLockScreenTimeBoundsForOrientation:v12 completionHandler:v7];
+  [delegate wallpaperServer:self fetchLockScreenTimeBoundsForOrientation:v12 completionHandler:v7];
 
 LABEL_8:
 }
@@ -801,14 +801,14 @@ uint64_t __72__SBWallpaperServer__handleFetchLockScreenTimeBoundsMessage_fromCli
   return [v5 sendReplyMessageWithPacker:v7];
 }
 
-- (void)_handleFetchLockScreenSubtitleBoundsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleFetchLockScreenSubtitleBoundsMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __76__SBWallpaperServer__handleFetchLockScreenSubtitleBoundsMessage_fromClient___block_invoke;
   v20[3] = &unk_2783B4CF0;
-  v6 = v5;
+  v6 = messageCopy;
   v21 = v6;
   v7 = MEMORY[0x223D6F7F0](v20);
   v15 = MEMORY[0x277D85DD0];
@@ -818,17 +818,17 @@ uint64_t __72__SBWallpaperServer__handleFetchLockScreenTimeBoundsMessage_fromCli
   v8 = v6;
   v19 = v8;
   v9 = MEMORY[0x223D6F7F0](&v15);
-  v10 = [v8 payload];
-  v11 = v10;
-  if (!v10 || object_getClass(v10) != MEMORY[0x277D86468])
+  payload = [v8 payload];
+  v11 = payload;
+  if (!payload || object_getClass(payload) != MEMORY[0x277D86468])
   {
     goto LABEL_7;
   }
 
   v12 = [(SBWallpaperServer *)self _deviceOrientationFromXPCDictionary:v11];
-  v13 = [(SBWallpaperServer *)self delegate];
-  v14 = v13;
-  if (!v13 || (v12 - 1) > 3)
+  delegate = [(SBWallpaperServer *)self delegate];
+  v14 = delegate;
+  if (!delegate || (v12 - 1) > 3)
   {
 
 LABEL_7:
@@ -836,7 +836,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  [v13 wallpaperServer:self fetchLockScreenSubtitleBoundsForOrientation:v12 completionHandler:v7];
+  [delegate wallpaperServer:self fetchLockScreenSubtitleBoundsForOrientation:v12 completionHandler:v7];
 
 LABEL_8:
 }
@@ -855,15 +855,15 @@ uint64_t __76__SBWallpaperServer__handleFetchLockScreenSubtitleBoundsMessage_fro
   return [v5 sendReplyMessageWithPacker:v7];
 }
 
-- (void)_handleFetchAdaptiveTimeHeightLimitsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleFetchAdaptiveTimeHeightLimitsMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __76__SBWallpaperServer__handleFetchAdaptiveTimeHeightLimitsMessage_fromClient___block_invoke;
   v23[3] = &unk_2783BE490;
-  v8 = v6;
+  v8 = messageCopy;
   v24 = v8;
   v9 = MEMORY[0x223D6F7F0](v23);
   v18 = MEMORY[0x277D85DD0];
@@ -873,16 +873,16 @@ uint64_t __76__SBWallpaperServer__handleFetchLockScreenSubtitleBoundsMessage_fro
   v10 = v8;
   v22 = v10;
   v11 = MEMORY[0x223D6F7F0](&v18);
-  v12 = [v10 payload];
-  v13 = v12;
-  if (!v12 || object_getClass(v12) != MEMORY[0x277D86468])
+  payload = [v10 payload];
+  v13 = payload;
+  if (!payload || object_getClass(payload) != MEMORY[0x277D86468])
   {
     goto LABEL_9;
   }
 
   v14 = BSDeserializeBSXPCEncodableObjectFromXPCDictionaryWithKey();
-  v15 = [v7 processHandle];
-  v16 = [v15 hasEntitlement:*MEMORY[0x277D67230]];
+  processHandle = [clientCopy processHandle];
+  v16 = [processHandle hasEntitlement:*MEMORY[0x277D67230]];
 
   if (!v16)
   {
@@ -893,14 +893,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v17 = [(SBWallpaperServer *)self delegate];
-  if (!v17 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  delegate = [(SBWallpaperServer *)self delegate];
+  if (!delegate || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
     goto LABEL_8;
   }
 
-  [v17 wallpaperServer:self fetchAdaptiveTimeHeightLimitsForContext:v14 completionHandler:v9];
+  [delegate wallpaperServer:self fetchAdaptiveTimeHeightLimitsForContext:v14 completionHandler:v9];
 
 LABEL_10:
 }
@@ -925,15 +925,15 @@ void __76__SBWallpaperServer__handleFetchAdaptiveTimeHeightLimitsMessage_fromCli
   MEMORY[0x223D6B340](v4, *MEMORY[0x277D678C8], *(a1 + 40));
 }
 
-- (void)_handleFetchAdaptiveTimeBoundsForHeightMessage:(id)a3 fromClient:(id)a4
+- (void)_handleFetchAdaptiveTimeBoundsForHeightMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __79__SBWallpaperServer__handleFetchAdaptiveTimeBoundsForHeightMessage_fromClient___block_invoke;
   v24[3] = &unk_2783B4CF0;
-  v8 = v6;
+  v8 = messageCopy;
   v25 = v8;
   v9 = MEMORY[0x223D6F7F0](v24);
   v19 = MEMORY[0x277D85DD0];
@@ -943,17 +943,17 @@ void __76__SBWallpaperServer__handleFetchAdaptiveTimeHeightLimitsMessage_fromCli
   v10 = v8;
   v23 = v10;
   v11 = MEMORY[0x223D6F7F0](&v19);
-  v12 = [v10 payload];
-  v13 = v12;
-  if (!v12 || object_getClass(v12) != MEMORY[0x277D86468])
+  payload = [v10 payload];
+  v13 = payload;
+  if (!payload || object_getClass(payload) != MEMORY[0x277D86468])
   {
     goto LABEL_9;
   }
 
   v14 = BSDeserializeBSXPCEncodableObjectFromXPCDictionaryWithKey();
   v15 = MEMORY[0x223D6AEA0](v13, *MEMORY[0x277D678C0]);
-  v16 = [v7 processHandle];
-  v17 = [v16 hasEntitlement:*MEMORY[0x277D67230]];
+  processHandle = [clientCopy processHandle];
+  v17 = [processHandle hasEntitlement:*MEMORY[0x277D67230]];
 
   if (!v17)
   {
@@ -964,14 +964,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v18 = [(SBWallpaperServer *)self delegate];
-  if (!v18 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  delegate = [(SBWallpaperServer *)self delegate];
+  if (!delegate || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
     goto LABEL_8;
   }
 
-  [v18 wallpaperServer:self fetchAdaptiveTimeBoundsForContext:v14 timeHeight:v9 completionHandler:v15];
+  [delegate wallpaperServer:self fetchAdaptiveTimeBoundsForContext:v14 timeHeight:v9 completionHandler:v15];
 
 LABEL_10:
 }
@@ -990,9 +990,9 @@ uint64_t __79__SBWallpaperServer__handleFetchAdaptiveTimeBoundsForHeightMessage_
   return [v5 sendReplyMessageWithPacker:v7];
 }
 
-- (int64_t)_wallpaperModeFromXPCDictionary:(id)a3
+- (int64_t)_wallpaperModeFromXPCDictionary:(id)dictionary
 {
-  LOBYTE(result) = xpc_dictionary_get_uint64(a3, *MEMORY[0x277D67920]);
+  LOBYTE(result) = xpc_dictionary_get_uint64(dictionary, *MEMORY[0x277D67920]);
   if (result - 1 >= 2)
   {
     return 0;
@@ -1004,15 +1004,15 @@ uint64_t __79__SBWallpaperServer__handleFetchAdaptiveTimeBoundsForHeightMessage_
   }
 }
 
-- (void)_handleSetVideoMessageWithWallpaperMode:(id)a3 fromClient:(id)a4
+- (void)_handleSetVideoMessageWithWallpaperMode:(id)mode fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBWallpaperServer *)self delegate];
-  v9 = [v6 payload];
-  v10 = [(SBWallpaperServer *)self _clientPermittedToModifyWallpaper:v7];
+  modeCopy = mode;
+  clientCopy = client;
+  delegate = [(SBWallpaperServer *)self delegate];
+  payload = [modeCopy payload];
+  v10 = [(SBWallpaperServer *)self _clientPermittedToModifyWallpaper:clientCopy];
 
-  if (v10 && [(SBWallpaperServer *)self _xpcObjectIsDictionary:v9])
+  if (v10 && [(SBWallpaperServer *)self _xpcObjectIsDictionary:payload])
   {
     v11 = BSDeserializeStringFromXPCDictionaryWithKey();
     BSDeserializeCGRectFromXPCDictionaryWithKey();
@@ -1020,7 +1020,7 @@ uint64_t __79__SBWallpaperServer__handleFetchAdaptiveTimeBoundsForHeightMessage_
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v20 = [(SBWallpaperServer *)self _wallpaperModeFromXPCDictionary:v9];
+    v20 = [(SBWallpaperServer *)self _wallpaperModeFromXPCDictionary:payload];
     if (v11)
     {
       v21 = v20;
@@ -1028,19 +1028,19 @@ uint64_t __79__SBWallpaperServer__handleFetchAdaptiveTimeBoundsForHeightMessage_
       v22[1] = 3221225472;
       v22[2] = __72__SBWallpaperServer__handleSetVideoMessageWithWallpaperMode_fromClient___block_invoke;
       v22[3] = &unk_2783A9398;
-      v23 = v6;
-      [v8 wallpaperServer:self setWallpaperVideoWithWallpaperMode:v11 cropRect:v21 wallpaperMode:v22 completionHandler:{v13, v15, v17, v19}];
+      v23 = modeCopy;
+      [delegate wallpaperServer:self setWallpaperVideoWithWallpaperMode:v11 cropRect:v21 wallpaperMode:v22 completionHandler:{v13, v15, v17, v19}];
     }
 
     else
     {
-      [v6 sendReplyMessageWithPacker:&__block_literal_global_35_2];
+      [modeCopy sendReplyMessageWithPacker:&__block_literal_global_35_2];
     }
   }
 
   else
   {
-    [v6 sendReplyMessageWithPacker:&__block_literal_global_37_4];
+    [modeCopy sendReplyMessageWithPacker:&__block_literal_global_37_4];
   }
 }
 
@@ -1055,20 +1055,20 @@ uint64_t __72__SBWallpaperServer__handleSetVideoMessageWithWallpaperMode_fromCli
   return [v2 sendReplyMessageWithPacker:v4];
 }
 
-- (void)_handleSetColorNameMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetColorNameMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBWallpaperServer *)self delegate];
-  v9 = [v6 payload];
-  v10 = [(SBWallpaperServer *)self _clientPermittedToModifyWallpaper:v7];
+  messageCopy = message;
+  clientCopy = client;
+  delegate = [(SBWallpaperServer *)self delegate];
+  payload = [messageCopy payload];
+  v10 = [(SBWallpaperServer *)self _clientPermittedToModifyWallpaper:clientCopy];
 
-  if (v10 && [(SBWallpaperServer *)self _xpcObjectIsDictionary:v9])
+  if (v10 && [(SBWallpaperServer *)self _xpcObjectIsDictionary:payload])
   {
     v11 = BSDeserializeStringFromXPCDictionaryWithKey();
     v12 = objc_opt_self();
     v13 = BSDeserializeNSSecureEncodableObjectOfClassFromXPCDictionaryWithKey();
-    v14 = [v13 unsignedIntegerValue];
+    unsignedIntegerValue = [v13 unsignedIntegerValue];
 
     if (v11)
     {
@@ -1076,19 +1076,19 @@ uint64_t __72__SBWallpaperServer__handleSetVideoMessageWithWallpaperMode_fromCli
       v15[1] = 3221225472;
       v15[2] = __59__SBWallpaperServer__handleSetColorNameMessage_fromClient___block_invoke;
       v15[3] = &unk_2783A9398;
-      v16 = v6;
-      [v8 wallpaperServer:self setWallpaperColorName:v11 forVariants:v14 completionHandler:v15];
+      v16 = messageCopy;
+      [delegate wallpaperServer:self setWallpaperColorName:v11 forVariants:unsignedIntegerValue completionHandler:v15];
     }
 
     else
     {
-      [v6 sendReplyMessageWithPacker:&__block_literal_global_42_4];
+      [messageCopy sendReplyMessageWithPacker:&__block_literal_global_42_4];
     }
   }
 
   else
   {
-    [v6 sendReplyMessageWithPacker:&__block_literal_global_44_1];
+    [messageCopy sendReplyMessageWithPacker:&__block_literal_global_44_1];
   }
 }
 
@@ -1103,15 +1103,15 @@ uint64_t __59__SBWallpaperServer__handleSetColorNameMessage_fromClient___block_i
   return [v2 sendReplyMessageWithPacker:v4];
 }
 
-- (void)_handleSetColorMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetColorMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBWallpaperServer *)self delegate];
-  v9 = [v6 payload];
-  v10 = [(SBWallpaperServer *)self _clientPermittedToModifyWallpaper:v7];
+  messageCopy = message;
+  clientCopy = client;
+  delegate = [(SBWallpaperServer *)self delegate];
+  payload = [messageCopy payload];
+  v10 = [(SBWallpaperServer *)self _clientPermittedToModifyWallpaper:clientCopy];
 
-  if (v10 && [(SBWallpaperServer *)self _xpcObjectIsDictionary:v9])
+  if (v10 && [(SBWallpaperServer *)self _xpcObjectIsDictionary:payload])
   {
     objc_opt_class();
     v11 = BSDeserializeNSSecureEncodableObjectOfClassFromXPCDictionaryWithKey();
@@ -1119,7 +1119,7 @@ uint64_t __59__SBWallpaperServer__handleSetColorNameMessage_fromClient___block_i
     v12 = BSDeserializeNSSecureEncodableObjectOfClassFromXPCDictionaryWithKey();
     v13 = objc_opt_self();
     v14 = BSDeserializeNSSecureEncodableObjectOfClassFromXPCDictionaryWithKey();
-    v15 = [v14 unsignedIntegerValue];
+    unsignedIntegerValue = [v14 unsignedIntegerValue];
 
     if (v11)
     {
@@ -1127,19 +1127,19 @@ uint64_t __59__SBWallpaperServer__handleSetColorNameMessage_fromClient___block_i
       v16[1] = 3221225472;
       v16[2] = __55__SBWallpaperServer__handleSetColorMessage_fromClient___block_invoke;
       v16[3] = &unk_2783A9398;
-      v17 = v6;
-      [v8 wallpaperServer:self setWallpaperColor:v11 darkColor:v12 forVariants:v15 completionHandler:v16];
+      v17 = messageCopy;
+      [delegate wallpaperServer:self setWallpaperColor:v11 darkColor:v12 forVariants:unsignedIntegerValue completionHandler:v16];
     }
 
     else
     {
-      [v6 sendReplyMessageWithPacker:&__block_literal_global_49_4];
+      [messageCopy sendReplyMessageWithPacker:&__block_literal_global_49_4];
     }
   }
 
   else
   {
-    [v6 sendReplyMessageWithPacker:&__block_literal_global_51_4];
+    [messageCopy sendReplyMessageWithPacker:&__block_literal_global_51_4];
   }
 }
 
@@ -1154,22 +1154,22 @@ uint64_t __55__SBWallpaperServer__handleSetColorMessage_fromClient___block_invok
   return [v2 sendReplyMessageWithPacker:v4];
 }
 
-- (void)_handleSetGradientMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetGradientMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBWallpaperServer *)self delegate];
-  v9 = [v6 payload];
-  v10 = [(SBWallpaperServer *)self _clientPermittedToModifyWallpaper:v7];
+  messageCopy = message;
+  clientCopy = client;
+  delegate = [(SBWallpaperServer *)self delegate];
+  payload = [messageCopy payload];
+  v10 = [(SBWallpaperServer *)self _clientPermittedToModifyWallpaper:clientCopy];
 
-  if (v10 && [(SBWallpaperServer *)self _xpcObjectIsDictionary:v9])
+  if (v10 && [(SBWallpaperServer *)self _xpcObjectIsDictionary:payload])
   {
     v11 = objc_opt_self();
     v12 = BSDeserializeNSSecureEncodableObjectOfClassFromXPCDictionaryWithKey();
 
     v13 = objc_opt_self();
     v14 = BSDeserializeNSSecureEncodableObjectOfClassFromXPCDictionaryWithKey();
-    v15 = [v14 unsignedIntegerValue];
+    unsignedIntegerValue = [v14 unsignedIntegerValue];
 
     if (v12)
     {
@@ -1177,19 +1177,19 @@ uint64_t __55__SBWallpaperServer__handleSetColorMessage_fromClient___block_invok
       v16[1] = 3221225472;
       v16[2] = __58__SBWallpaperServer__handleSetGradientMessage_fromClient___block_invoke;
       v16[3] = &unk_2783A9398;
-      v17 = v6;
-      [v8 wallpaperServer:self setWallpaperGradient:v12 forVariants:v15 completionHandler:v16];
+      v17 = messageCopy;
+      [delegate wallpaperServer:self setWallpaperGradient:v12 forVariants:unsignedIntegerValue completionHandler:v16];
     }
 
     else
     {
-      [v6 sendReplyMessageWithPacker:&__block_literal_global_55_1];
+      [messageCopy sendReplyMessageWithPacker:&__block_literal_global_55_1];
     }
   }
 
   else
   {
-    [v6 sendReplyMessageWithPacker:&__block_literal_global_57_2];
+    [messageCopy sendReplyMessageWithPacker:&__block_literal_global_57_2];
   }
 }
 
@@ -1204,12 +1204,12 @@ uint64_t __58__SBWallpaperServer__handleSetGradientMessage_fromClient___block_in
   return [v2 sendReplyMessageWithPacker:v4];
 }
 
-- (void)_handleRestoreDefaultWallpaperMessage:(id)a3 fromClient:(id)a4
+- (void)_handleRestoreDefaultWallpaperMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBWallpaperServer *)self delegate];
-  v9 = [(SBWallpaperServer *)self _clientPermittedToModifyWallpaper:v7];
+  messageCopy = message;
+  clientCopy = client;
+  delegate = [(SBWallpaperServer *)self delegate];
+  v9 = [(SBWallpaperServer *)self _clientPermittedToModifyWallpaper:clientCopy];
 
   if (v9)
   {
@@ -1217,13 +1217,13 @@ uint64_t __58__SBWallpaperServer__handleSetGradientMessage_fromClient___block_in
     v10[1] = 3221225472;
     v10[2] = __70__SBWallpaperServer__handleRestoreDefaultWallpaperMessage_fromClient___block_invoke;
     v10[3] = &unk_2783A9398;
-    v11 = v6;
-    [v8 wallpaperServer:self restoreDefaultWallpaperWithCompletionHandler:v10];
+    v11 = messageCopy;
+    [delegate wallpaperServer:self restoreDefaultWallpaperWithCompletionHandler:v10];
   }
 
   else
   {
-    [v6 sendReplyMessageWithPacker:&__block_literal_global_59_3];
+    [messageCopy sendReplyMessageWithPacker:&__block_literal_global_59_3];
   }
 }
 
@@ -1238,17 +1238,17 @@ uint64_t __70__SBWallpaperServer__handleRestoreDefaultWallpaperMessage_fromClien
   return [v2 sendReplyMessageWithPacker:v4];
 }
 
-- (void)_handleTriggerPosterSignificantEventMessage:(id)a3 fromClient:(id)a4
+- (void)_handleTriggerPosterSignificantEventMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  v6 = [(SBWallpaperServer *)self delegate];
+  messageCopy = message;
+  delegate = [(SBWallpaperServer *)self delegate];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__SBWallpaperServer__handleTriggerPosterSignificantEventMessage_fromClient___block_invoke;
   v8[3] = &unk_2783A9398;
-  v9 = v5;
-  v7 = v5;
-  [v6 wallpaperServer:self triggerPosterSignificantEventCompletionHandler:v8];
+  v9 = messageCopy;
+  v7 = messageCopy;
+  [delegate wallpaperServer:self triggerPosterSignificantEventCompletionHandler:v8];
 }
 
 uint64_t __76__SBWallpaperServer__handleTriggerPosterSignificantEventMessage_fromClient___block_invoke(uint64_t a1, char a2)
@@ -1262,17 +1262,17 @@ uint64_t __76__SBWallpaperServer__handleTriggerPosterSignificantEventMessage_fro
   return [v2 sendReplyMessageWithPacker:v4];
 }
 
-- (void)_handleFetchPosterSignificantEventsCounterMessage:(id)a3 fromClient:(id)a4
+- (void)_handleFetchPosterSignificantEventsCounterMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBWallpaperServer *)self delegate];
-  v9 = [v6 payload];
-  v10 = v9;
-  if (v9 && object_getClass(v9) == MEMORY[0x277D86468])
+  messageCopy = message;
+  clientCopy = client;
+  delegate = [(SBWallpaperServer *)self delegate];
+  payload = [messageCopy payload];
+  v10 = payload;
+  if (payload && object_getClass(payload) == MEMORY[0x277D86468])
   {
-    v11 = [v7 processHandle];
-    v12 = [v11 hasEntitlement:*MEMORY[0x277D67230]];
+    processHandle = [clientCopy processHandle];
+    v12 = [processHandle hasEntitlement:*MEMORY[0x277D67230]];
 
     if (v12)
     {
@@ -1283,14 +1283,14 @@ uint64_t __76__SBWallpaperServer__handleTriggerPosterSignificantEventMessage_fro
       v15[1] = 3221225472;
       v15[2] = __82__SBWallpaperServer__handleFetchPosterSignificantEventsCounterMessage_fromClient___block_invoke;
       v15[3] = &unk_2783AD9C8;
-      v16 = v6;
-      [v8 wallpaperServer:self fetchSignificantEventsCounterForPosterWithIdentifier:v14 completionHandler:v15];
+      v16 = messageCopy;
+      [delegate wallpaperServer:self fetchSignificantEventsCounterForPosterWithIdentifier:v14 completionHandler:v15];
     }
   }
 
   else
   {
-    [v6 sendReplyMessageWithPacker:&__block_literal_global_64];
+    [messageCopy sendReplyMessageWithPacker:&__block_literal_global_64];
   }
 }
 
@@ -1305,21 +1305,21 @@ uint64_t __82__SBWallpaperServer__handleFetchPosterSignificantEventsCounterMessa
   return [v2 sendReplyMessageWithPacker:v4];
 }
 
-- (void)_handleQuickActionConfigurationRequest:(id)a3 fromClient:(id)a4
+- (void)_handleQuickActionConfigurationRequest:(id)request fromClient:(id)client
 {
   v23[5] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 processHandle];
-  v9 = [v8 hasEntitlement:*MEMORY[0x277D67230]];
+  requestCopy = request;
+  clientCopy = client;
+  processHandle = [clientCopy processHandle];
+  v9 = [processHandle hasEntitlement:*MEMORY[0x277D67230]];
 
   if (v9)
   {
-    v10 = [v6 payload];
-    v11 = v10;
-    if (v10 && object_getClass(v10) == MEMORY[0x277D86468])
+    payload = [requestCopy payload];
+    v11 = payload;
+    if (payload && object_getClass(payload) == MEMORY[0x277D86468])
     {
-      v12 = [(SBWallpaperServer *)self delegate];
+      delegate = [(SBWallpaperServer *)self delegate];
       v13 = BSDeserializeDataFromXPCDictionaryWithKey();
       v14 = MEMORY[0x277CCAAC8];
       v15 = MEMORY[0x277CBEB98];
@@ -1338,14 +1338,14 @@ uint64_t __82__SBWallpaperServer__handleFetchPosterSignificantEventsCounterMessa
         v19[1] = 3221225472;
         v19[2] = __71__SBWallpaperServer__handleQuickActionConfigurationRequest_fromClient___block_invoke_2;
         v19[3] = &unk_2783B0F28;
-        v20 = v6;
-        [v12 wallpaperServer:self handleQuickActionConfigurationRequest:v18 completionHandler:v19];
+        v20 = requestCopy;
+        [delegate wallpaperServer:self handleQuickActionConfigurationRequest:v18 completionHandler:v19];
       }
     }
 
     else
     {
-      [v6 sendReplyMessageWithPacker:&__block_literal_global_77_0];
+      [requestCopy sendReplyMessageWithPacker:&__block_literal_global_77_0];
     }
   }
 
@@ -1355,8 +1355,8 @@ uint64_t __82__SBWallpaperServer__handleFetchPosterSignificantEventsCounterMessa
     v21[1] = 3221225472;
     v21[2] = __71__SBWallpaperServer__handleQuickActionConfigurationRequest_fromClient___block_invoke;
     v21[3] = &unk_2783B07B8;
-    v22 = v7;
-    [v6 sendReplyMessageWithPacker:v21];
+    v22 = clientCopy;
+    [requestCopy sendReplyMessageWithPacker:v21];
     v11 = v22;
   }
 }
@@ -1405,16 +1405,16 @@ void __71__SBWallpaperServer__handleQuickActionConfigurationRequest_fromClient__
   xpc_dictionary_set_string(xdict, v2, [@"payload is nil or payload != XPC_TYPE_DICTIONARY" UTF8String]);
 }
 
-- (BOOL)_clientPermittedToModifyWallpaper:(id)a3
+- (BOOL)_clientPermittedToModifyWallpaper:(id)wallpaper
 {
-  v4 = a3;
-  v5 = [(SBWallpaperServer *)self accessAuthenticator];
-  v6 = [v5 authenticateClient:v4];
+  wallpaperCopy = wallpaper;
+  accessAuthenticator = [(SBWallpaperServer *)self accessAuthenticator];
+  v6 = [accessAuthenticator authenticateClient:wallpaperCopy];
 
-  v7 = [MEMORY[0x277D262A0] sharedConnection];
-  LOBYTE(v4) = [v7 isWallpaperModificationAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  LOBYTE(wallpaperCopy) = [mEMORY[0x277D262A0] isWallpaperModificationAllowed];
 
-  return v6 & v4;
+  return v6 & wallpaperCopy;
 }
 
 - (SBWallpaperServerDelegate)delegate

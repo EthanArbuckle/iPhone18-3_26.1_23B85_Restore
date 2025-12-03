@@ -1,23 +1,23 @@
 @interface OSLastLockPredictionServiceXPCProxy
 - (NSObject)target;
-- (OSLastLockPredictionServiceXPCProxy)initWithObserver:(id)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (OSLastLockPredictionServiceXPCProxy)initWithObserver:(id)observer;
+- (id)forwardingTargetForSelector:(SEL)selector;
 @end
 
 @implementation OSLastLockPredictionServiceXPCProxy
 
-- (OSLastLockPredictionServiceXPCProxy)initWithObserver:(id)a3
+- (OSLastLockPredictionServiceXPCProxy)initWithObserver:(id)observer
 {
   v6.receiver = self;
   v6.super_class = OSLastLockPredictionServiceXPCProxy;
-  v3 = a3;
+  observerCopy = observer;
   v4 = [(OSLastLockPredictionServiceXPCProxy *)&v6 init];
-  objc_storeWeak(&v4->_target, v3);
+  objc_storeWeak(&v4->_target, observerCopy);
 
   return v4;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   WeakRetained = objc_loadWeakRetained(&self->_target);
 

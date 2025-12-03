@@ -1,27 +1,27 @@
 @interface BWSingleCameraPortraitSceneMonitor
-- (BOOL)resolveSDOFStatusWithSampleBuffer:(opaqueCMSampleBuffer *)a3 frameStatisticsByPortType:(id)a4 sceneFlags:(unint64_t)a5 flashOrTorchWillBeActive:(BOOL)a6 digitalFlashWillFire:(BOOL)a7 thermalPressureLevel:(int)a8 peakPowerPressureLevel:(int)a9 effectStatus:(int *)a10 stagePreviewStatus:(int *)a11;
-- (BWSingleCameraPortraitSceneMonitor)initWithTuningParameters:(id)a3 attachDebugFrameStatistics:(BOOL)a4;
-- (double)_focusDistanceFromAPSMetadata:(uint64_t)a1;
-- (double)_focusDistanceFromFacesAttachedToSampleBuffer:(uint64_t)a1;
+- (BOOL)resolveSDOFStatusWithSampleBuffer:(opaqueCMSampleBuffer *)buffer frameStatisticsByPortType:(id)type sceneFlags:(unint64_t)flags flashOrTorchWillBeActive:(BOOL)active digitalFlashWillFire:(BOOL)fire thermalPressureLevel:(int)level peakPowerPressureLevel:(int)pressureLevel effectStatus:(int *)self0 stagePreviewStatus:(int *)self1;
+- (BWSingleCameraPortraitSceneMonitor)initWithTuningParameters:(id)parameters attachDebugFrameStatistics:(BOOL)statistics;
+- (double)_focusDistanceFromAPSMetadata:(uint64_t)metadata;
+- (double)_focusDistanceFromFacesAttachedToSampleBuffer:(uint64_t)buffer;
 - (void)dealloc;
 - (void)focusScanDidComplete;
-- (void)setAutoFocusInProgress:(BOOL)a3 focusLocked:(BOOL)a4 oneShotFocusScanInProgress:(BOOL)a5;
-- (void)setSDOFBackgroundShiftSum:(float)a3 invalidShiftRatio:(float)a4 closeCanonicalDisparityAverage:(float)a5 faceCanonicalDisparityAverages:(id)a6 erodedForegroundRatio:(float)a7 foregroundRatio:(float)a8 occluded:(BOOL)a9 faces:(id)a10 personSegmentationRatio:(float)a11;
+- (void)setAutoFocusInProgress:(BOOL)progress focusLocked:(BOOL)locked oneShotFocusScanInProgress:(BOOL)inProgress;
+- (void)setSDOFBackgroundShiftSum:(float)sum invalidShiftRatio:(float)ratio closeCanonicalDisparityAverage:(float)average faceCanonicalDisparityAverages:(id)averages erodedForegroundRatio:(float)foregroundRatio foregroundRatio:(float)a8 occluded:(BOOL)occluded faces:(id)self0 personSegmentationRatio:(float)self1;
 @end
 
 @implementation BWSingleCameraPortraitSceneMonitor
 
-- (BWSingleCameraPortraitSceneMonitor)initWithTuningParameters:(id)a3 attachDebugFrameStatistics:(BOOL)a4
+- (BWSingleCameraPortraitSceneMonitor)initWithTuningParameters:(id)parameters attachDebugFrameStatistics:(BOOL)statistics
 {
   v12.receiver = self;
   v12.super_class = BWSingleCameraPortraitSceneMonitor;
-  v5 = [(BWSingleCameraPortraitSceneMonitor *)&v12 init:a3];
+  v5 = [(BWSingleCameraPortraitSceneMonitor *)&v12 init:parameters];
   v6 = v5;
   if (v5)
   {
     v5->_useAPSFocusDistance = 0;
     v5->_subjectTooCloseMonitoringEnabled = 1;
-    v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"TooCloseFocusDistanceThreshold", "intValue"}];
+    v7 = [objc_msgSend(parameters objectForKeyedSubscript:{@"TooCloseFocusDistanceThreshold", "intValue"}];
     if (v6->_useAPSFocusDistance)
     {
       v8 = 10.0;
@@ -35,7 +35,7 @@
     v6->_subjectTooCloseFocusDistanceThreshold = v7;
     v6->_subjectTooCloseFocusDistanceHysteresisLag = v8;
     v6->_subjectTooFarMonitoringEnabled = 1;
-    v9 = [objc_msgSend(a3 objectForKeyedSubscript:{@"TooFarFocusDistanceThreshold", "intValue"}];
+    v9 = [objc_msgSend(parameters objectForKeyedSubscript:{@"TooFarFocusDistanceThreshold", "intValue"}];
     if (v6->_useAPSFocusDistance)
     {
       v10 = 10.0;
@@ -48,7 +48,7 @@
 
     v6->_subjectTooFarFocusDistanceThreshold = v9;
     v6->_subjectTooFarFocusDistanceHysteresisLag = v10;
-    v6->_sceneTooDarkMonitoringEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"EnableLowLightGating", "BOOLValue"}];
+    v6->_sceneTooDarkMonitoringEnabled = [objc_msgSend(parameters objectForKeyedSubscript:{@"EnableLowLightGating", "BOOLValue"}];
     v6->_stageFaceNumberOfFramesSinceLastFaceThreshold = 6;
     v6->_enabled = 1;
   }
@@ -63,20 +63,20 @@
   [(BWSingleCameraPortraitSceneMonitor *)&v3 dealloc];
 }
 
-- (void)setAutoFocusInProgress:(BOOL)a3 focusLocked:(BOOL)a4 oneShotFocusScanInProgress:(BOOL)a5
+- (void)setAutoFocusInProgress:(BOOL)progress focusLocked:(BOOL)locked oneShotFocusScanInProgress:(BOOL)inProgress
 {
-  if (a3)
+  if (progress)
   {
     *&self->_oneShotFocusScanInProgress = 0;
   }
 
-  else if (a4)
+  else if (locked)
   {
     *&self->_oneShotFocusScanInProgress = 256;
     self->_numFramesSinceFocusLocked = 0;
   }
 
-  else if (a5)
+  else if (inProgress)
   {
     *&self->_oneShotFocusScanInProgress = 1;
   }
@@ -91,7 +91,7 @@
   }
 }
 
-- (void)setSDOFBackgroundShiftSum:(float)a3 invalidShiftRatio:(float)a4 closeCanonicalDisparityAverage:(float)a5 faceCanonicalDisparityAverages:(id)a6 erodedForegroundRatio:(float)a7 foregroundRatio:(float)a8 occluded:(BOOL)a9 faces:(id)a10 personSegmentationRatio:(float)a11
+- (void)setSDOFBackgroundShiftSum:(float)sum invalidShiftRatio:(float)ratio closeCanonicalDisparityAverage:(float)average faceCanonicalDisparityAverages:(id)averages erodedForegroundRatio:(float)foregroundRatio foregroundRatio:(float)a8 occluded:(BOOL)occluded faces:(id)self0 personSegmentationRatio:(float)self1
 {
   v14 = 1.0;
   v15 = 0.35;
@@ -132,26 +132,26 @@ LABEL_11:
   }
 
 LABEL_13:
-  self->_backgroundShiftSumFiltered = BWModifiedMovingAverage(a3, self->_backgroundShiftSumFiltered, v15);
-  self->_invalidShiftRatioFiltered = BWModifiedMovingAverage(a4, self->_invalidShiftRatioFiltered, v14);
-  self->_numFacesDetectedFiltered = BWModifiedMovingAverage([a10 count], self->_numFacesDetectedFiltered, 0.33);
-  v17 = [a10 count];
+  self->_backgroundShiftSumFiltered = BWModifiedMovingAverage(sum, self->_backgroundShiftSumFiltered, v15);
+  self->_invalidShiftRatioFiltered = BWModifiedMovingAverage(ratio, self->_invalidShiftRatioFiltered, v14);
+  self->_numFacesDetectedFiltered = BWModifiedMovingAverage([faces count], self->_numFacesDetectedFiltered, 0.33);
+  v17 = [faces count];
   self->_stageMostRecentFacesCount = v17;
   self->_stageFaceHasBeenSeen |= v17 > 0;
 }
 
-- (BOOL)resolveSDOFStatusWithSampleBuffer:(opaqueCMSampleBuffer *)a3 frameStatisticsByPortType:(id)a4 sceneFlags:(unint64_t)a5 flashOrTorchWillBeActive:(BOOL)a6 digitalFlashWillFire:(BOOL)a7 thermalPressureLevel:(int)a8 peakPowerPressureLevel:(int)a9 effectStatus:(int *)a10 stagePreviewStatus:(int *)a11
+- (BOOL)resolveSDOFStatusWithSampleBuffer:(opaqueCMSampleBuffer *)buffer frameStatisticsByPortType:(id)type sceneFlags:(unint64_t)flags flashOrTorchWillBeActive:(BOOL)active digitalFlashWillFire:(BOOL)fire thermalPressureLevel:(int)level peakPowerPressureLevel:(int)pressureLevel effectStatus:(int *)self0 stagePreviewStatus:(int *)self1
 {
   if (self->_enabled)
   {
-    v15 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+    v15 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
     if (!v15)
     {
       return v15;
     }
 
     v16 = v15;
-    v17 = [a4 objectForKeyedSubscript:{objc_msgSend(v15, "objectForKeyedSubscript:", *off_1E798B540)}];
+    v17 = [type objectForKeyedSubscript:{objc_msgSend(v15, "objectForKeyedSubscript:", *off_1E798B540)}];
     if (self->_focusLocked)
     {
       numFramesSinceFocusLocked = self->_numFramesSinceFocusLocked;
@@ -164,7 +164,7 @@ LABEL_13:
       v19 = 0;
     }
 
-    CMSetAttachment(a3, @"SDOFFocusLocked", [MEMORY[0x1E696AD98] numberWithBool:{v19, a5}], 1u);
+    CMSetAttachment(buffer, @"SDOFFocusLocked", [MEMORY[0x1E696AD98] numberWithBool:{v19, flags}], 1u);
     v49 = [objc_msgSend(v16 objectForKeyedSubscript:{*off_1E798B4A8), "intValue"}];
     if (self->_useAPSFocusDistance)
     {
@@ -173,7 +173,7 @@ LABEL_13:
 
     else
     {
-      v22 = [(BWSingleCameraPortraitSceneMonitor *)self _focusDistanceFromFacesAttachedToSampleBuffer:a3];
+      v22 = [(BWSingleCameraPortraitSceneMonitor *)self _focusDistanceFromFacesAttachedToSampleBuffer:buffer];
     }
 
     v23 = *&v22;
@@ -296,7 +296,7 @@ LABEL_45:
 LABEL_70:
         if (self->_sceneTooDarkMonitoringEnabled)
         {
-          self->_sceneIsTooDark = !a6 & (v48 >> 5);
+          self->_sceneIsTooDark = !active & (v48 >> 5);
         }
 
         if (self->_numFacesDetectedFiltered < 0.5)
@@ -377,7 +377,7 @@ LABEL_87:
         numFramesSinceAEBecameStable = self->_numFramesSinceAEBecameStable;
         if (numFramesSinceAEBecameStable <= 4)
         {
-          v31 = [a4 frameCount] > 0x13;
+          v31 = [type frameCount] > 0x13;
           numFramesSinceAEBecameStable = self->_numFramesSinceAEBecameStable;
         }
 
@@ -391,9 +391,9 @@ LABEL_87:
 
       else
       {
-        v32 = [a4 frameCount];
+        frameCount = [type frameCount];
         v33 = 0;
-        v31 = v32 > 0x13;
+        v31 = frameCount > 0x13;
       }
 
       self->_numFramesSinceAEBecameStable = v33;
@@ -421,7 +421,7 @@ LABEL_87:
 
     else
     {
-      v34 = [a4 frameCount] > 0x1F;
+      v34 = [type frameCount] > 0x1F;
     }
 
     self->_focusAdjusting = v26;
@@ -440,23 +440,23 @@ LABEL_87:
   v20 = 0;
   v21 = 1;
 LABEL_6:
-  if (a10)
+  if (status)
   {
-    *a10 = v21;
+    *status = v21;
   }
 
-  if (a11)
+  if (previewStatus)
   {
-    *a11 = v20;
+    *previewStatus = v20;
   }
 
   LOBYTE(v15) = 1;
   return v15;
 }
 
-- (double)_focusDistanceFromAPSMetadata:(uint64_t)a1
+- (double)_focusDistanceFromAPSMetadata:(uint64_t)metadata
 {
-  if (!a1)
+  if (!metadata)
   {
     return 0.0;
   }
@@ -464,7 +464,7 @@ LABEL_6:
   [objc_msgSend(a2 objectForKeyedSubscript:{*off_1E798B2F0), "floatValue"}];
   if (*&result == 0.0)
   {
-    v4 = *(a1 + 88);
+    v4 = *(metadata + 88);
     v5 = v4;
   }
 
@@ -476,7 +476,7 @@ LABEL_6:
       v5 = *&result;
     }
 
-    v4 = *(a1 + 88);
+    v4 = *(metadata + 88);
   }
 
   if (v4 == 0.0)
@@ -492,9 +492,9 @@ LABEL_6:
   return result;
 }
 
-- (double)_focusDistanceFromFacesAttachedToSampleBuffer:(uint64_t)a1
+- (double)_focusDistanceFromFacesAttachedToSampleBuffer:(uint64_t)buffer
 {
-  if (!a1)
+  if (!buffer)
   {
     return 0.0;
   }
@@ -566,8 +566,8 @@ LABEL_6:
   v22 = *(v3 + 16);
   rect.origin = *v3;
   rect.size = v22;
-  v23 = [v21 firstObject];
-  [v23 objectForKeyedSubscript:getkCVAFaceTracking_SmoothData()];
+  firstObject = [v21 firstObject];
+  [firstObject objectForKeyedSubscript:getkCVAFaceTracking_SmoothData()];
   getkCVAFaceTracking_Pose();
   [OUTLINED_FUNCTION_8() objectForKeyedSubscript:?];
   getkCVAFaceTracking_Translation();
@@ -581,8 +581,8 @@ LABEL_6:
     v29 = v28;
     [objc_msgSend(v25 objectAtIndexedSubscript:{2), "floatValue"}];
     v31 = sqrtf(((v29 * v29) + (v27 * v27)) + (v30 * v30)) / 10.0;
-    v25 = [v23 objectForKeyedSubscript:getkCVAFaceTracking_FaceID()];
-    v32 = [v23 objectForKeyedSubscript:getkCVAFaceTracking_DetectedFaceRect()];
+    v25 = [firstObject objectForKeyedSubscript:getkCVAFaceTracking_FaceID()];
+    v32 = [firstObject objectForKeyedSubscript:getkCVAFaceTracking_DetectedFaceRect()];
     CGRectMakeWithDictionaryRepresentation(v32, &rect);
   }
 
@@ -593,11 +593,11 @@ LABEL_6:
 
   if (v10)
   {
-    v33 = *(a1 + 96);
+    v33 = *(buffer + 96);
     if (v33)
     {
       v34 = [objc_msgSend(v33 "detectionID")];
-      v35 = *(a1 + 96);
+      v35 = *(buffer + 96);
       if (v34)
       {
         if (v35)
@@ -611,23 +611,23 @@ LABEL_24:
       else
       {
 
-        *(a1 + 96) = 0;
+        *(buffer + 96) = 0;
       }
     }
 
     v35 = [[BWTrackedFace alloc] initWithDetectionID:v10];
-    *(a1 + 96) = v35;
+    *(buffer + 96) = v35;
     goto LABEL_24;
   }
 
 LABEL_25:
   if (v25)
   {
-    v36 = *(a1 + 96);
+    v36 = *(buffer + 96);
     if (v36)
     {
       v37 = [objc_msgSend(v36 "trackingID")];
-      v36 = *(a1 + 96);
+      v36 = *(buffer + 96);
       if ((v37 & 1) == 0)
       {
         [v36 detectionRect];
@@ -636,11 +636,11 @@ LABEL_25:
         v53.size.width = v40;
         v53.size.height = v41;
         v42 = CGRectContainsRect(rect, v53);
-        v36 = *(a1 + 96);
+        v36 = *(buffer + 96);
         if (v42)
         {
           [v36 setTrackingID:v25];
-          v36 = *(a1 + 96);
+          v36 = *(buffer + 96);
         }
       }
     }
@@ -649,12 +649,12 @@ LABEL_25:
     if ([OUTLINED_FUNCTION_8() isEqual:?])
     {
       *&v43 = v31;
-      [*(a1 + 96) setTrackingDistance:v43];
-      [*(a1 + 96) setTrackingRect:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
+      [*(buffer + 96) setTrackingDistance:v43];
+      [*(buffer + 96) setTrackingRect:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
     }
   }
 
-  [*(a1 + 96) distance];
+  [*(buffer + 96) distance];
   return result;
 }
 

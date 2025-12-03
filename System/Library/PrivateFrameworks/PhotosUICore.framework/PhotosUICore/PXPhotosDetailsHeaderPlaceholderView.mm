@@ -1,9 +1,9 @@
 @interface PXPhotosDetailsHeaderPlaceholderView
-- (PXPhotosDetailsHeaderPlaceholderView)initWithRegionOfInterest:(id)a3;
+- (PXPhotosDetailsHeaderPlaceholderView)initWithRegionOfInterest:(id)interest;
 - (void)_layoutImageTile;
 - (void)_layoutLabelForLastBaselineLayout;
 - (void)_layoutTextTile;
-- (void)_layoutTile:(id)a3 withGeometry:(PXTileGeometry *)a4 userData:(id)a5;
+- (void)_layoutTile:(id)tile withGeometry:(PXTileGeometry *)geometry userData:(id)data;
 - (void)layoutSubviews;
 @end
 
@@ -12,11 +12,11 @@
 - (void)_layoutLabelForLastBaselineLayout
 {
   v3 = *MEMORY[0x1E695EFF8];
-  v4 = [(PXTitleSubtitleUILabelTile *)self->_textTile view];
-  [v4 bounds];
+  view = [(PXTitleSubtitleUILabelTile *)self->_textTile view];
+  [view bounds];
   MinY = CGRectGetMinY(v10);
   [(PXTitleSubtitleUILabelTile *)self->_textTile lastBaseline];
-  [(PXPhotosDetailsHeaderPlaceholderView *)self convertPoint:v4 fromView:v3, MinY + v6];
+  [(PXPhotosDetailsHeaderPlaceholderView *)self convertPoint:view fromView:v3, MinY + v6];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __73__PXPhotosDetailsHeaderPlaceholderView__layoutLabelForLastBaselineLayout__block_invoke;
@@ -40,38 +40,38 @@ void __73__PXPhotosDetailsHeaderPlaceholderView__layoutLabelForLastBaselineLayou
   [v3 layoutView:*(*(a1 + 32) + 1024) withAttributes:&v6];
 }
 
-- (void)_layoutTile:(id)a3 withGeometry:(PXTileGeometry *)a4 userData:(id)a5
+- (void)_layoutTile:(id)tile withGeometry:(PXTileGeometry *)geometry userData:(id)data
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 view];
-  v11 = [v10 superview];
+  tileCopy = tile;
+  dataCopy = data;
+  view = [tileCopy view];
+  superview = [view superview];
 
-  if (v11 != self)
+  if (superview != self)
   {
-    [(PXPhotosDetailsHeaderPlaceholderView *)self addSubview:v10];
+    [(PXPhotosDetailsHeaderPlaceholderView *)self addSubview:view];
   }
 
   tileAnimator = self->_tileAnimator;
-  v13 = *&a4->contentSize.height;
-  v19[8] = *&a4->hidden;
+  v13 = *&geometry->contentSize.height;
+  v19[8] = *&geometry->hidden;
   v19[9] = v13;
-  v14 = *&a4->contentsRect.size.height;
-  v19[10] = *&a4->contentsRect.origin.y;
+  v14 = *&geometry->contentsRect.size.height;
+  v19[10] = *&geometry->contentsRect.origin.y;
   v19[11] = v14;
-  v15 = *&a4->transform.c;
-  v19[4] = *&a4->transform.a;
+  v15 = *&geometry->transform.c;
+  v19[4] = *&geometry->transform.a;
   v19[5] = v15;
-  v16 = *&a4->alpha;
-  v19[6] = *&a4->transform.tx;
+  v16 = *&geometry->alpha;
+  v19[6] = *&geometry->transform.tx;
   v19[7] = v16;
-  size = a4->frame.size;
-  v19[0] = a4->frame.origin;
+  size = geometry->frame.size;
+  v19[0] = geometry->frame.origin;
   v19[1] = size;
-  v18 = a4->size;
-  v19[2] = a4->center;
+  v18 = geometry->size;
+  v19[2] = geometry->center;
   v19[3] = v18;
-  [(PXBasicUIViewTileAnimator *)tileAnimator animateTile:v8 toGeometry:v19 userData:v9 withOptions:0 completionHandler:&__block_literal_global_2628];
+  [(PXBasicUIViewTileAnimator *)tileAnimator animateTile:tileCopy toGeometry:v19 userData:dataCopy withOptions:0 completionHandler:&__block_literal_global_2628];
 }
 
 - (void)_layoutTextTile
@@ -137,11 +137,11 @@ void __73__PXPhotosDetailsHeaderPlaceholderView__layoutLabelForLastBaselineLayou
   PXRectGetCenter();
 }
 
-- (PXPhotosDetailsHeaderPlaceholderView)initWithRegionOfInterest:(id)a3
+- (PXPhotosDetailsHeaderPlaceholderView)initWithRegionOfInterest:(id)interest
 {
-  v4 = a3;
-  v5 = [v4 coordinateSpace];
-  [v4 rectInCoordinateSpace:v5];
+  interestCopy = interest;
+  coordinateSpace = [interestCopy coordinateSpace];
+  [interestCopy rectInCoordinateSpace:coordinateSpace];
   v7 = v6;
   v9 = v8;
   v11 = v10;

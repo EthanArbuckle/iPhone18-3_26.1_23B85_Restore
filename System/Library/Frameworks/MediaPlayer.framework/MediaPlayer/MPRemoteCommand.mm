@@ -1,21 +1,21 @@
 @interface MPRemoteCommand
 - (BOOL)hasTargets;
 - (BOOL)isSupportedAndEnabled;
-- (MPRemoteCommand)initWithMediaRemoteCommandType:(unsigned int)a3;
+- (MPRemoteCommand)initWithMediaRemoteCommandType:(unsigned int)type;
 - (MPRemoteCommandCenter)commandCenter;
 - (NSString)description;
 - (id)_mediaRemoteCommandInfo;
 - (id)_stateDumpObject;
 - (id)addTargetWithHandler:(void *)handler;
 - (id)commandInfoRepresentations;
-- (id)newCommandEventWithContentItemIdentifier:(id)a3;
-- (id)newCommandEventWithPlaybackQueueOffset:(int64_t)a3;
-- (id)newSeekCommandEventWithType:(unint64_t)a3;
-- (void)addTarget:(id)a3 action:(SEL)a4 usingExtendedStatus:(BOOL)a5;
-- (void)invokeCommandWithEvent:(id)a3 completion:(id)a4;
+- (id)newCommandEventWithContentItemIdentifier:(id)identifier;
+- (id)newCommandEventWithPlaybackQueueOffset:(int64_t)offset;
+- (id)newSeekCommandEventWithType:(unint64_t)type;
+- (void)addTarget:(id)target action:(SEL)action usingExtendedStatus:(BOOL)status;
+- (void)invokeCommandWithEvent:(id)event completion:(id)completion;
 - (void)notifyPropagatablePropertyChanged;
 - (void)removeTarget:(id)target action:(SEL)action;
-- (void)setDisabledReason:(int64_t)a3;
+- (void)setDisabledReason:(int64_t)reason;
 - (void)setEnabled:(BOOL)enabled;
 @end
 
@@ -48,9 +48,9 @@
     v7 = @"NO";
   }
 
-  v8 = [(NSMutableDictionary *)self->_handlers allKeys];
-  v9 = [v8 msv_compactDescription];
-  v10 = [v3 stringWithFormat:@"<%@: %p type=%@ (%ld) enabled=%@ handlers=[%@]>", v4, self, v5, mediaRemoteCommandType, v7, v9];
+  allKeys = [(NSMutableDictionary *)self->_handlers allKeys];
+  msv_compactDescription = [allKeys msv_compactDescription];
+  v10 = [v3 stringWithFormat:@"<%@: %p type=%@ (%ld) enabled=%@ handlers=[%@]>", v4, self, v5, mediaRemoteCommandType, v7, msv_compactDescription];
 
   return v10;
 }
@@ -66,15 +66,15 @@
 - (id)commandInfoRepresentations
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v3 = [(MPRemoteCommand *)self _mediaRemoteCommandInfo];
-  v4 = v3;
+  _mediaRemoteCommandInfo = [(MPRemoteCommand *)self _mediaRemoteCommandInfo];
+  v4 = _mediaRemoteCommandInfo;
   mediaRemoteCommandType = self->_mediaRemoteCommandType;
   if (mediaRemoteCommandType == 10)
   {
-    v6 = [(MPRemoteCommand *)self _mediaRemoteCommandInfo];
-    [v6 setCommand:11];
+    _mediaRemoteCommandInfo2 = [(MPRemoteCommand *)self _mediaRemoteCommandInfo];
+    [_mediaRemoteCommandInfo2 setCommand:11];
     v12[0] = v4;
-    v12[1] = v6;
+    v12[1] = _mediaRemoteCommandInfo2;
     v7 = MEMORY[0x1E695DEC8];
     v8 = v12;
     goto LABEL_5;
@@ -82,10 +82,10 @@
 
   if (mediaRemoteCommandType == 8)
   {
-    v6 = [(MPRemoteCommand *)self _mediaRemoteCommandInfo];
-    [v6 setCommand:9];
+    _mediaRemoteCommandInfo2 = [(MPRemoteCommand *)self _mediaRemoteCommandInfo];
+    [_mediaRemoteCommandInfo2 setCommand:9];
     v13[0] = v4;
-    v13[1] = v6;
+    v13[1] = _mediaRemoteCommandInfo2;
     v7 = MEMORY[0x1E695DEC8];
     v8 = v13;
 LABEL_5:
@@ -94,7 +94,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v11 = v3;
+  v11 = _mediaRemoteCommandInfo;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v11 count:1];
 LABEL_7:
 
@@ -116,12 +116,12 @@ LABEL_7:
   }
 
   [v3 setEnabled:v4];
-  v5 = [(MPRemoteCommand *)self _mediaRemoteCommandInfoOptions];
-  v6 = v5;
+  _mediaRemoteCommandInfoOptions = [(MPRemoteCommand *)self _mediaRemoteCommandInfoOptions];
+  v6 = _mediaRemoteCommandInfoOptions;
   v7 = MEMORY[0x1E695E0F8];
-  if (v5)
+  if (_mediaRemoteCommandInfoOptions)
   {
-    v7 = v5;
+    v7 = _mediaRemoteCommandInfoOptions;
   }
 
   v8 = v7;
@@ -170,12 +170,12 @@ LABEL_7:
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[MPRemoteCommand isSupported](self, "isSupported")}];
   v13[3] = v6;
   v12[4] = @"options";
-  v7 = [(MPRemoteCommand *)self _mediaRemoteCommandInfoOptions];
-  v8 = v7;
+  _mediaRemoteCommandInfoOptions = [(MPRemoteCommand *)self _mediaRemoteCommandInfoOptions];
+  v8 = _mediaRemoteCommandInfoOptions;
   v9 = MEMORY[0x1E695E0F8];
-  if (v7)
+  if (_mediaRemoteCommandInfoOptions)
   {
-    v9 = v7;
+    v9 = _mediaRemoteCommandInfoOptions;
   }
 
   v13[4] = v9;
@@ -184,7 +184,7 @@ LABEL_7:
   return v10;
 }
 
-- (id)newSeekCommandEventWithType:(unint64_t)a3
+- (id)newSeekCommandEventWithType:(unint64_t)type
 {
   mediaRemoteCommandType = self->_mediaRemoteCommandType;
   if (mediaRemoteCommandType == 8)
@@ -207,7 +207,7 @@ LABEL_7:
     v5 = v4;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v6 = v5;
   }
@@ -221,11 +221,11 @@ LABEL_7:
   return objc_claimAutoreleasedReturnValue();
 }
 
-- (id)newCommandEventWithPlaybackQueueOffset:(int64_t)a3
+- (id)newCommandEventWithPlaybackQueueOffset:(int64_t)offset
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = *MEMORY[0x1E69B1180];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:offset];
   v9[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
@@ -233,14 +233,14 @@ LABEL_7:
   return v6;
 }
 
-- (id)newCommandEventWithContentItemIdentifier:(id)a3
+- (id)newCommandEventWithContentItemIdentifier:(id)identifier
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     v8 = *MEMORY[0x1E69B10C8];
-    v9[0] = v4;
+    v9[0] = identifierCopy;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   }
 
@@ -254,11 +254,11 @@ LABEL_7:
   return v6;
 }
 
-- (void)invokeCommandWithEvent:(id)a3 completion:(id)a4
+- (void)invokeCommandWithEvent:(id)event completion:(id)completion
 {
   v61 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   v9 = [(NSMutableDictionary *)self->_handlers copy];
   os_unfair_lock_unlock(&self->_lock);
@@ -266,16 +266,16 @@ LABEL_7:
   if (v10 == 1)
   {
     v35 = a2;
-    v17 = [v9 allKeys];
-    v18 = [v17 firstObject];
+    allKeys = [v9 allKeys];
+    firstObject = [allKeys firstObject];
 
-    v19 = [v9 allValues];
-    v14 = [v19 firstObject];
+    allValues = [v9 allValues];
+    firstObject2 = [allValues firstObject];
 
-    v36 = v7;
-    v20 = v7;
+    v36 = eventCopy;
+    v20 = eventCopy;
     v21 = MEMORY[0x1E69B13F0];
-    v22 = v18;
+    v22 = firstObject;
     v23 = [v21 alloc];
     *buf = MEMORY[0x1E69E9820];
     *&buf[8] = 3221225472;
@@ -288,9 +288,9 @@ LABEL_7:
     v26 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [v24 commandID];
+      commandID = [v24 commandID];
       *buf = 138543618;
-      *&buf[4] = v27;
+      *&buf[4] = commandID;
       *&buf[12] = 2114;
       *&buf[14] = v22;
       _os_log_impl(&dword_1A238D000, v26, OS_LOG_TYPE_DEFAULT, "[RCE:%{public}@] invoke | handler start [] handler=%{public}@", buf, 0x16u);
@@ -302,16 +302,16 @@ LABEL_7:
     v48[3] = &unk_1E7681E10;
     v54 = v35;
     v49 = v25;
-    v50 = self;
+    selfCopy = self;
     v51 = v24;
     v52 = v22;
-    v53 = v8;
-    isa = v14[2].isa;
+    v53 = completionCopy;
+    isa = firstObject2[2].isa;
     v16 = v22;
     v15 = v25;
-    isa(v14, v51, v48);
+    isa(firstObject2, v51, v48);
 
-    v7 = v36;
+    eventCopy = v36;
   }
 
   else
@@ -324,9 +324,9 @@ LABEL_7:
       v31 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
-        v32 = [v7 commandID];
+        commandID2 = [eventCopy commandID];
         *buf = 138543618;
-        *&buf[4] = v32;
+        *&buf[4] = commandID2;
         *&buf[12] = 2048;
         *&buf[14] = v11;
         _os_log_impl(&dword_1A238D000, v31, OS_LOG_TYPE_DEFAULT, "[RCE:%{public}@] invoke | fan-out [%ld handlers]", buf, 0x16u);
@@ -337,13 +337,13 @@ LABEL_7:
       v42[2] = __53__MPRemoteCommand_invokeCommandWithEvent_completion___block_invoke_49;
       v42[3] = &unk_1E7681E60;
       v43 = v29;
-      v33 = v7;
+      v33 = eventCopy;
       v47 = a2;
       v44 = v33;
-      v45 = self;
+      selfCopy2 = self;
       v34 = v30;
       v46 = v34;
-      v14 = v29;
+      firstObject2 = v29;
       [v9 enumerateKeysAndObjectsUsingBlock:v42];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -352,9 +352,9 @@ LABEL_7:
       v41 = v11;
       v38 = v33;
       v39 = v34;
-      v40 = v8;
+      v40 = completionCopy;
       v15 = v34;
-      dispatch_group_notify(v14, MEMORY[0x1E69E96A0], block);
+      dispatch_group_notify(firstObject2, MEMORY[0x1E69E96A0], block);
 
       v16 = v43;
     }
@@ -363,14 +363,14 @@ LABEL_7:
     {
       v12 = MEMORY[0x1E696ABC0];
       v56 = @"event";
-      v57 = v7;
+      v57 = eventCopy;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
-      v14 = [v12 errorWithDomain:@"MPErrorDomain" code:5 userInfo:v13];
+      firstObject2 = [v12 errorWithDomain:@"MPErrorDomain" code:5 userInfo:v13];
 
-      v15 = [MPRemoteCommandStatus statusWithCode:404 error:v14];
+      v15 = [MPRemoteCommandStatus statusWithCode:404 error:firstObject2];
       v55 = v15;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v55 count:1];
-      (*(v8 + 2))(v8, v16);
+      (*(completionCopy + 2))(completionCopy, v16);
     }
   }
 }
@@ -504,28 +504,28 @@ void __53__MPRemoteCommand_invokeCommandWithEvent_completion___block_invoke_50(u
   dispatch_group_leave(*(a1 + 72));
 }
 
-- (void)setDisabledReason:(int64_t)a3
+- (void)setDisabledReason:(int64_t)reason
 {
-  if (self->_disabledReason != a3)
+  if (self->_disabledReason != reason)
   {
-    self->_disabledReason = a3;
+    self->_disabledReason = reason;
     [(MPRemoteCommand *)self notifyPropagatablePropertyChanged];
   }
 }
 
 - (BOOL)isSupportedAndEnabled
 {
-  v3 = [(MPRemoteCommand *)self isSupported];
-  if (v3)
+  isSupported = [(MPRemoteCommand *)self isSupported];
+  if (isSupported)
   {
-    v3 = [(MPRemoteCommand *)self isEnabled];
-    if (v3)
+    isSupported = [(MPRemoteCommand *)self isEnabled];
+    if (isSupported)
     {
-      LOBYTE(v3) = ![(MPRemoteCommand *)self isForceDisabled];
+      LOBYTE(isSupported) = ![(MPRemoteCommand *)self isForceDisabled];
     }
   }
 
-  return v3;
+  return isSupported;
 }
 
 - (id)addTargetWithHandler:(void *)handler
@@ -546,8 +546,8 @@ void __53__MPRemoteCommand_invokeCommandWithEvent_completion___block_invoke_50(u
   [(NSMutableDictionary *)self->_handlers setObject:v9 forKeyedSubscript:v7];
 
   os_unfair_lock_unlock(&self->_lock);
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 postNotificationName:@"MPRemoteCommandTargetsDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MPRemoteCommandTargetsDidChangeNotification" object:self];
 
   return v7;
 }
@@ -572,9 +572,9 @@ void __40__MPRemoteCommand_addTargetWithHandler___block_invoke(uint64_t a1, uint
     {
       v7 = MEMORY[0x1E696AEC0];
       v8 = v6;
-      v9 = [v7 stringWithFormat:@"%p:%s", v8, sel_getName(action)];
+      allKeys = [v7 stringWithFormat:@"%p:%s", v8, sel_getName(action)];
 
-      [(NSMutableDictionary *)self->_handlers setObject:0 forKeyedSubscript:v9];
+      [(NSMutableDictionary *)self->_handlers setObject:0 forKeyedSubscript:allKeys];
     }
 
     else
@@ -583,8 +583,8 @@ void __40__MPRemoteCommand_addTargetWithHandler___block_invoke(uint64_t a1, uint
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v9 = [(NSMutableDictionary *)self->_handlers allKeys];
-      v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      allKeys = [(NSMutableDictionary *)self->_handlers allKeys];
+      v10 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v10)
       {
         v11 = v10;
@@ -596,7 +596,7 @@ void __40__MPRemoteCommand_addTargetWithHandler___block_invoke(uint64_t a1, uint
           {
             if (*v18 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(allKeys);
             }
 
             v14 = *(*(&v17 + 1) + 8 * v13);
@@ -610,7 +610,7 @@ void __40__MPRemoteCommand_addTargetWithHandler___block_invoke(uint64_t a1, uint
           }
 
           while (v11 != v13);
-          v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v11 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
         }
 
         while (v11);
@@ -624,19 +624,19 @@ void __40__MPRemoteCommand_addTargetWithHandler___block_invoke(uint64_t a1, uint
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v16 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v16 postNotificationName:@"MPRemoteCommandTargetsDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MPRemoteCommandTargetsDidChangeNotification" object:self];
 }
 
-- (void)addTarget:(id)a3 action:(SEL)a4 usingExtendedStatus:(BOOL)a5
+- (void)addTarget:(id)target action:(SEL)action usingExtendedStatus:(BOOL)status
 {
-  v5 = a5;
-  v8 = a3;
+  statusCopy = status;
+  targetCopy = target;
   v9 = MEMORY[0x1E696AEC0];
-  v10 = v8;
-  v11 = [v9 stringWithFormat:@"%p:%s", v10, sel_getName(a4)];
+  v10 = targetCopy;
+  v11 = [v9 stringWithFormat:@"%p:%s", v10, sel_getName(action)];
 
-  v12 = [v10 methodSignatureForSelector:a4];
+  v12 = [v10 methodSignatureForSelector:action];
   objc_initWeak(location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -668,9 +668,9 @@ void __40__MPRemoteCommand_addTargetWithHandler___block_invoke(uint64_t a1, uint
     v18 = v33;
     objc_copyWeak(v33, &from);
     v32[4] = v14;
-    v34 = v5;
+    v34 = statusCopy;
 LABEL_11:
-    v17[6] = a4;
+    v17[6] = action;
     v19 = _Block_copy(v17);
 
     objc_destroyWeak(v18);
@@ -687,8 +687,8 @@ LABEL_12:
 
     if (v20 == 1)
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v23 handleFailureInMethod:a2 object:self file:@"MPRemoteCommand.m" lineNumber:131 description:@"Unsupported action method signature. Must return MPRemoteCommandHandlerStatus or take a completion handler as the second argument."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPRemoteCommand.m" lineNumber:131 description:@"Unsupported action method signature. Must return MPRemoteCommandHandlerStatus or take a completion handler as the second argument."];
 
       v19 = 0;
     }
@@ -698,10 +698,10 @@ LABEL_12:
 
   if (v16 == 113 || v16 == 105)
   {
-    if (v5)
+    if (statusCopy)
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:a2 object:self file:@"MPRemoteCommand.m" lineNumber:106 description:@"Cannot use extended status with synchronous target/action"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPRemoteCommand.m" lineNumber:106 description:@"Cannot use extended status with synchronous target/action"];
     }
 
     v17 = v30;
@@ -721,10 +721,10 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (v5)
+  if (statusCopy)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"MPRemoteCommand.m" lineNumber:118 description:@"Cannot use extended status with synchronous target/action"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"MPRemoteCommand.m" lineNumber:118 description:@"Cannot use extended status with synchronous target/action"];
   }
 
   v27[0] = MEMORY[0x1E69E9820];
@@ -733,7 +733,7 @@ LABEL_12:
   v27[3] = &unk_1E7681DC0;
   objc_copyWeak(v29, &from);
   v28 = v14;
-  v29[1] = a4;
+  v29[1] = action;
   v19 = _Block_copy(v27);
 
   objc_destroyWeak(v29);
@@ -743,8 +743,8 @@ LABEL_17:
   [(NSMutableDictionary *)self->_handlers setObject:v21 forKeyedSubscript:v13];
 
   os_unfair_lock_unlock(&self->_lock);
-  v22 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v22 postNotificationName:@"MPRemoteCommandTargetsDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MPRemoteCommandTargetsDidChangeNotification" object:self];
 
   objc_destroyWeak(&from);
   objc_destroyWeak(&v38);
@@ -859,7 +859,7 @@ void __56__MPRemoteCommand_addTarget_action_usingExtendedStatus___block_invoke_3
   }
 }
 
-- (MPRemoteCommand)initWithMediaRemoteCommandType:(unsigned int)a3
+- (MPRemoteCommand)initWithMediaRemoteCommandType:(unsigned int)type
 {
   v9.receiver = self;
   v9.super_class = MPRemoteCommand;
@@ -872,7 +872,7 @@ void __56__MPRemoteCommand_addTarget_action_usingExtendedStatus___block_invoke_3
     handlers = v5->_handlers;
     v5->_handlers = v6;
 
-    v5->_mediaRemoteCommandType = a3;
+    v5->_mediaRemoteCommandType = type;
     v5->_enabled = 1;
     v5->_timeout = 9.0;
   }

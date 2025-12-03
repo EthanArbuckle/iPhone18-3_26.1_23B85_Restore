@@ -26,10 +26,10 @@
     return 1;
   }
 
-  v4 = [(SPUISSectionBuilder *)self queryContext];
-  v5 = [v4 searchEntities];
-  v6 = [v5 firstObject];
-  if ([v6 isContactEntitySearch])
+  queryContext = [(SPUISSectionBuilder *)self queryContext];
+  searchEntities = [queryContext searchEntities];
+  firstObject = [searchEntities firstObject];
+  if ([firstObject isContactEntitySearch])
   {
     v3 = [(SPUISSectionBuilder *)self renderState]!= 4;
   }
@@ -44,61 +44,61 @@
 
 - (id)buildCardSections
 {
-  v2 = self;
+  selfCopy = self;
   v54 = *MEMORY[0x277D85DE8];
-  v3 = [(SPUISSectionBuilder *)self queryContext];
-  v4 = [v3 searchEntities];
-  v5 = [v4 firstObject];
+  queryContext = [(SPUISSectionBuilder *)self queryContext];
+  searchEntities = [queryContext searchEntities];
+  firstObject = [searchEntities firstObject];
 
-  v6 = [v3 searchString];
-  if (![(__CFString *)v6 length])
+  searchString = [queryContext searchString];
+  if (![(__CFString *)searchString length])
   {
-    v7 = [v5 searchString];
+    searchString2 = [firstObject searchString];
 
-    v6 = v7;
+    searchString = searchString2;
   }
 
-  v8 = [v5 tokenText];
-  v44 = v3;
-  if ([v8 length] && -[__CFString length](v6, "length") && (-[__CFString isEqualToString:](v6, "isEqualToString:", v8) & 1) == 0 && (objc_msgSend(v5, "isPhotosEntitySearch") & 1) == 0)
+  tokenText = [firstObject tokenText];
+  v44 = queryContext;
+  if ([tokenText length] && -[__CFString length](searchString, "length") && (-[__CFString isEqualToString:](searchString, "isEqualToString:", tokenText) & 1) == 0 && (objc_msgSend(firstObject, "isPhotosEntitySearch") & 1) == 0)
   {
     v10 = MEMORY[0x277CCACA8];
     v11 = [SPUISUtilities localizedStringForKey:@"SEARCH_CONTINUATION_STRING_FORMAT"];
-    v9 = [v10 localizedStringWithFormat:v11, v8, v6];
+    v9 = [v10 localizedStringWithFormat:v11, tokenText, searchString];
 
-    v6 = v11;
+    searchString = v11;
     goto LABEL_12;
   }
 
-  if ([v8 length] && !-[__CFString length](v6, "length") && (objc_msgSend(v5, "isPhotosEntitySearch") & 1) == 0)
+  if ([tokenText length] && !-[__CFString length](searchString, "length") && (objc_msgSend(firstObject, "isPhotosEntitySearch") & 1) == 0)
   {
-    v9 = v8;
+    v9 = tokenText;
 LABEL_12:
 
-    v6 = v9;
+    searchString = v9;
   }
 
-  v43 = v8;
-  if (!v6)
+  v43 = tokenText;
+  if (!searchString)
   {
-    v6 = &stru_287C50EE8;
+    searchString = &stru_287C50EE8;
   }
 
-  v12 = [(SPUISSectionBuilder *)v2 section];
-  v13 = [v12 resultSet];
-  v14 = [v13 array];
+  section = [(SPUISSectionBuilder *)selfCopy section];
+  resultSet = [section resultSet];
+  array = [resultSet array];
 
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v15 = v14;
+  v15 = array;
   v16 = [v15 countByEnumeratingWithState:&v47 objects:v53 count:16];
-  v45 = v5;
+  v45 = firstObject;
   if (v16)
   {
     v17 = v16;
-    v42 = v2;
+    v42 = selfCopy;
     v18 = *v48;
     while (2)
     {
@@ -110,14 +110,14 @@ LABEL_12:
         }
 
         v20 = *(*(&v47 + 1) + 8 * i);
-        v21 = [v20 inlineCard];
-        v22 = [v21 cardSections];
-        v23 = [v22 firstObject];
-        v24 = [v23 command];
+        inlineCard = [v20 inlineCard];
+        cardSections = [inlineCard cardSections];
+        firstObject2 = [cardSections firstObject];
+        command = [firstObject2 command];
 
-        v25 = [v20 title];
-        v26 = [v25 text];
-        if ([v26 isEqualToString:v6])
+        title = [v20 title];
+        text = [title text];
+        if ([text isEqualToString:searchString])
         {
 
 LABEL_29:
@@ -128,8 +128,8 @@ LABEL_29:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v27 = [v24 searchString];
-          v28 = [v27 isEqualToString:v6];
+          searchString3 = [command searchString];
+          v28 = [searchString3 isEqualToString:searchString];
 
           if (v28)
           {
@@ -153,8 +153,8 @@ LABEL_29:
 
     v29 = 0;
 LABEL_30:
-    v5 = v45;
-    v2 = v42;
+    firstObject = v45;
+    selfCopy = v42;
   }
 
   else
@@ -162,23 +162,23 @@ LABEL_30:
     v29 = 0;
   }
 
-  v46.receiver = v2;
+  v46.receiver = selfCopy;
   v46.super_class = SPUISRelatedSearchesSectionBuilder;
-  v30 = [(SPUISSectionBuilder *)&v46 buildCardSections];
-  v31 = [v5 isContactEntitySearch];
+  buildCardSections = [(SPUISSectionBuilder *)&v46 buildCardSections];
+  isContactEntitySearch = [firstObject isContactEntitySearch];
   if ((v29 & 1) == 0)
   {
-    if (v31)
+    if (isContactEntitySearch)
     {
       v32 = @"rs: contactAsTypedSuggestion";
     }
 
     else
     {
-      v32 = [@"rs:" stringByAppendingString:v6];
+      v32 = [@"rs:" stringByAppendingString:searchString];
     }
 
-    v33 = [MEMORY[0x277D4C3A0] textWithString:v6];
+    v33 = [MEMORY[0x277D4C3A0] textWithString:searchString];
     [v33 setIsEmphasized:1];
     v34 = objc_opt_new();
     v52 = v33;
@@ -186,7 +186,7 @@ LABEL_30:
     [v34 setFormattedTextPieces:v35];
 
     v36 = objc_opt_new();
-    [v36 setSearchString:v6];
+    [v36 setSearchString:searchString];
     v37 = objc_opt_new();
     [v37 setSuggestionText:v34];
     [v37 setSuggestionType:4];
@@ -195,15 +195,15 @@ LABEL_30:
     [v37 setCommand:v36];
     v51 = v37;
     v38 = [MEMORY[0x277CBEA60] arrayWithObjects:&v51 count:1];
-    v39 = [v38 arrayByAddingObjectsFromArray:v30];
+    v39 = [v38 arrayByAddingObjectsFromArray:buildCardSections];
 
-    v30 = v39;
-    v5 = v45;
+    buildCardSections = v39;
+    firstObject = v45;
   }
 
   v40 = *MEMORY[0x277D85DE8];
 
-  return v30;
+  return buildCardSections;
 }
 
 - (id)buildTitle

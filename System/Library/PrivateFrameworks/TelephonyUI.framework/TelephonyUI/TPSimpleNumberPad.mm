@@ -1,11 +1,11 @@
 @interface TPSimpleNumberPad
 + (id)_numberPadCharacters;
-- (TPSimpleNumberPad)initWithButtons:(id)a3;
-- (TPSimpleNumberPad)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (void)_deleteButtonClicked:(id)a3 withEvent:(id)a4;
+- (TPSimpleNumberPad)initWithButtons:(id)buttons;
+- (TPSimpleNumberPad)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (void)_deleteButtonClicked:(id)clicked withEvent:(id)event;
 - (void)_updateDeleteButton;
-- (void)buttonUp:(id)a3;
-- (void)setShowsDeleteButton:(BOOL)a3;
+- (void)buttonUp:(id)up;
+- (void)setShowsDeleteButton:(BOOL)button;
 @end
 
 @implementation TPSimpleNumberPad
@@ -56,26 +56,26 @@ void __41__TPSimpleNumberPad__numberPadCharacters__block_invoke()
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (TPSimpleNumberPad)initWithButtons:(id)a3
+- (TPSimpleNumberPad)initWithButtons:(id)buttons
 {
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Please call -[PHVoicemailSetupPINNumberPad initWithFrame:]"];
   NSLog(&cfstr_TuassertionFai.isa, v5);
 
   if (_TUAssertShouldCrashApplication())
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TPSimpleNumberPad.m" lineNumber:59 description:@"Please call -[PHVoicemailSetupPINNumberPad initWithFrame:]"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TPSimpleNumberPad.m" lineNumber:59 description:@"Please call -[PHVoicemailSetupPINNumberPad initWithFrame:]"];
   }
 
   return 0;
 }
 
-- (TPSimpleNumberPad)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (TPSimpleNumberPad)initWithFrame:(CGRect)frame style:(int64_t)style
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v52 = *MEMORY[0x1E69E9840];
   v10 = +[TPSimpleNumberPad _numberPadCharacters];
   v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v10, "count")}];
@@ -124,8 +124,8 @@ void __41__TPSimpleNumberPad__numberPadCharacters__block_invoke()
     v19->_deleteButton = v20;
 
     [(UIButton *)v19->_deleteButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v22 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIButton *)v19->_deleteButton setBackgroundColor:v22];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIButton *)v19->_deleteButton setBackgroundColor:clearColor];
 
     LODWORD(v23) = 1148846080;
     [(UIButton *)v19->_deleteButton setContentCompressionResistancePriority:0 forAxis:v23];
@@ -136,8 +136,8 @@ void __41__TPSimpleNumberPad__numberPadCharacters__block_invoke()
     LODWORD(v26) = 1148846080;
     [(UIButton *)v19->_deleteButton setContentHuggingPriority:1 forAxis:v26];
     v27 = [MEMORY[0x1E69DB878] systemFontOfSize:18.0];
-    v28 = [(UIButton *)v19->_deleteButton titleLabel];
-    [v28 setFont:v27];
+    titleLabel = [(UIButton *)v19->_deleteButton titleLabel];
+    [titleLabel setFont:v27];
 
     v29 = v19->_deleteButton;
     v30 = TelephonyUIBundle();
@@ -145,12 +145,12 @@ void __41__TPSimpleNumberPad__numberPadCharacters__block_invoke()
     [(UIButton *)v29 setTitle:v31 forState:0];
 
     v32 = v19->_deleteButton;
-    v33 = [MEMORY[0x1E69DC888] dynamicLabelColor];
-    [(UIButton *)v32 setTintColor:v33];
+    dynamicLabelColor = [MEMORY[0x1E69DC888] dynamicLabelColor];
+    [(UIButton *)v32 setTintColor:dynamicLabelColor];
 
     v34 = v19->_deleteButton;
-    v35 = [MEMORY[0x1E69DC888] dynamicLabelColor];
-    [(UIButton *)v34 setTitleColor:v35 forState:0];
+    dynamicLabelColor2 = [MEMORY[0x1E69DC888] dynamicLabelColor];
+    [(UIButton *)v34 setTitleColor:dynamicLabelColor2 forState:0];
 
     [(UIButton *)v19->_deleteButton addTarget:v19 action:sel__deleteButtonClicked_withEvent_ forControlEvents:64];
     [(TPSimpleNumberPad *)v19 addSubview:v19->_deleteButton];
@@ -173,52 +173,52 @@ void __41__TPSimpleNumberPad__numberPadCharacters__block_invoke()
   return v19;
 }
 
-- (void)buttonUp:(id)a3
+- (void)buttonUp:(id)up
 {
-  v7 = a3;
-  v4 = [(TPSimpleNumberPad *)self delegate];
+  upCopy = up;
+  delegate = [(TPSimpleNumberPad *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(TPSimpleNumberPad *)self delegate];
-    v6 = TPStringForNumberPadCharacter([v7 character]);
-    [v5 simpleNumberPad:self buttonPressedWithCharacter:v6];
+    delegate2 = [(TPSimpleNumberPad *)self delegate];
+    v6 = TPStringForNumberPadCharacter([upCopy character]);
+    [delegate2 simpleNumberPad:self buttonPressedWithCharacter:v6];
   }
 }
 
-- (void)_deleteButtonClicked:(id)a3 withEvent:(id)a4
+- (void)_deleteButtonClicked:(id)clicked withEvent:(id)event
 {
-  v5 = [(TPSimpleNumberPad *)self delegate:a3];
+  v5 = [(TPSimpleNumberPad *)self delegate:clicked];
 
   if (v5)
   {
-    v6 = [(TPSimpleNumberPad *)self delegate];
-    [v6 simpleNumberPadDeletePressed:self];
+    delegate = [(TPSimpleNumberPad *)self delegate];
+    [delegate simpleNumberPadDeletePressed:self];
   }
 }
 
 - (void)_updateDeleteButton
 {
   deleteButton = self->_deleteButton;
-  v4 = [(TPSimpleNumberPad *)self showsDeleteButton];
+  showsDeleteButton = [(TPSimpleNumberPad *)self showsDeleteButton];
   v5 = 0.0;
-  if (v4)
+  if (showsDeleteButton)
   {
     v5 = 1.0;
   }
 
   [(UIButton *)deleteButton setAlpha:v5];
   v6 = self->_deleteButton;
-  v7 = [(TPSimpleNumberPad *)self showsDeleteButton];
+  showsDeleteButton2 = [(TPSimpleNumberPad *)self showsDeleteButton];
 
-  [(UIButton *)v6 setEnabled:v7];
+  [(UIButton *)v6 setEnabled:showsDeleteButton2];
 }
 
-- (void)setShowsDeleteButton:(BOOL)a3
+- (void)setShowsDeleteButton:(BOOL)button
 {
-  if (self->_showsDeleteButton != a3)
+  if (self->_showsDeleteButton != button)
   {
-    self->_showsDeleteButton = a3;
+    self->_showsDeleteButton = button;
     [(TPSimpleNumberPad *)self _updateDeleteButton];
   }
 }

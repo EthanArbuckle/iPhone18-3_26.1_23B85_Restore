@@ -1,7 +1,7 @@
 @interface SessionRingsView
-- (_TtC9SeymourUI16SessionRingsView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI16SessionRingsView)initWithFrame:(CGRect)frame;
 - (void)didMoveToSuperview;
-- (void)displayHighlightWithDuration:(double)a3;
+- (void)displayHighlightWithDuration:(double)duration;
 - (void)layoutSubviews;
 - (void)safeAreaInsetsDidChange;
 @end
@@ -10,27 +10,27 @@
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B810FC4();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B812020();
 }
 
-- (_TtC9SeymourUI16SessionRingsView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI16SessionRingsView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)displayHighlightWithDuration:(double)a3
+- (void)displayHighlightWithDuration:(double)duration
 {
-  v4 = self;
-  sub_20B813C5C(a3);
+  selfCopy = self;
+  sub_20B813C5C(duration);
 }
 
 - (void)safeAreaInsetsDidChange

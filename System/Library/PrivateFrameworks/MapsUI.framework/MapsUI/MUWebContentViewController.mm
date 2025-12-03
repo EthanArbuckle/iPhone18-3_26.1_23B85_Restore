@@ -1,32 +1,32 @@
 @interface MUWebContentViewController
-+ (id)resolvedURLForRelativeURL:(id)a3;
++ (id)resolvedURLForRelativeURL:(id)l;
 - (BOOL)shouldAddLoadingIndicator;
-- (MUWebContentViewController)initWithURL:(id)a3;
-- (MUWebContentViewController)initWithURL:(id)a3 traits:(id)a4;
+- (MUWebContentViewController)initWithURL:(id)l;
+- (MUWebContentViewController)initWithURL:(id)l traits:(id)traits;
 - (MUWebContentViewControllerDelegate)delegate;
 - (void)_addLoadingSpinner;
 - (void)_cancel;
 - (void)_finishLoading;
-- (void)_getAnalyticsShortSessionSnapshotWithCallbackHandler:(id)a3;
-- (void)_invokeAction:(id)a3 callbackHandler:(id)a4;
-- (void)_layoutAction:(id)a3 callbackHandler:(id)a4;
+- (void)_getAnalyticsShortSessionSnapshotWithCallbackHandler:(id)handler;
+- (void)_invokeAction:(id)action callbackHandler:(id)handler;
+- (void)_layoutAction:(id)action callbackHandler:(id)handler;
 - (void)_propogateUserInterfaceStyleToWebModule;
 - (void)_removeLoadingSpinner;
-- (void)_removeModuleWithArguments:(id)a3 callbackHandler:(id)a4;
+- (void)_removeModuleWithArguments:(id)arguments callbackHandler:(id)handler;
 - (void)_resetBridge;
-- (void)_setHeight:(double)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_setHeight:(id)a3 callbackHandler:(id)a4;
+- (void)_setHeight:(double)height animated:(BOOL)animated completion:(id)completion;
+- (void)_setHeight:(id)height callbackHandler:(id)handler;
 - (void)_startLoading;
-- (void)configureWithHTML:(id)a3 actionManager:(id)a4 initialDefaultHeight:(double)a5;
+- (void)configureWithHTML:(id)l actionManager:(id)manager initialDefaultHeight:(double)height;
 - (void)dealloc;
-- (void)updateActionOverBridge:(id)a3;
+- (void)updateActionOverBridge:(id)bridge;
 - (void)viewDidLoad;
-- (void)webBridgeDidConnect:(id)a3;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 decidePolicyForNavigationResponse:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didCommitNavigation:(id)a4;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5;
+- (void)webBridgeDidConnect:(id)connect;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view decidePolicyForNavigationResponse:(id)response decisionHandler:(id)handler;
+- (void)webView:(id)view didCommitNavigation:(id)navigation;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error;
 @end
 
 @implementation MUWebContentViewController
@@ -38,20 +38,20 @@
   return WeakRetained;
 }
 
-- (void)_layoutAction:(id)a3 callbackHandler:(id)a4
+- (void)_layoutAction:(id)action callbackHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MUWebContentViewController *)self actionManager];
+  actionCopy = action;
+  handlerCopy = handler;
+  actionManager = [(MUWebContentViewController *)self actionManager];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __60__MUWebContentViewController__layoutAction_callbackHandler___block_invoke;
   v11[3] = &unk_1E821A780;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
-  [v8 layoutActionsUsingArguments:v9 completion:v11];
+  v12 = actionCopy;
+  v13 = handlerCopy;
+  v9 = actionCopy;
+  v10 = handlerCopy;
+  [actionManager layoutActionsUsingArguments:v9 completion:v11];
 }
 
 void __60__MUWebContentViewController__layoutAction_callbackHandler___block_invoke(uint64_t a1, int a2)
@@ -75,20 +75,20 @@ void __60__MUWebContentViewController__layoutAction_callbackHandler___block_invo
   }
 }
 
-- (void)_invokeAction:(id)a3 callbackHandler:(id)a4
+- (void)_invokeAction:(id)action callbackHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MUWebContentViewController *)self actionManager];
+  actionCopy = action;
+  handlerCopy = handler;
+  actionManager = [(MUWebContentViewController *)self actionManager];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __60__MUWebContentViewController__invokeAction_callbackHandler___block_invoke;
   v11[3] = &unk_1E821A780;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
-  [v8 performActionUsingArguments:v9 contextMenu:0 completion:v11];
+  v12 = actionCopy;
+  v13 = handlerCopy;
+  v9 = actionCopy;
+  v10 = handlerCopy;
+  [actionManager performActionUsingArguments:v9 contextMenu:0 completion:v11];
 }
 
 void __60__MUWebContentViewController__invokeAction_callbackHandler___block_invoke(uint64_t a1, int a2)
@@ -112,27 +112,27 @@ void __60__MUWebContentViewController__invokeAction_callbackHandler___block_invo
   }
 }
 
-- (void)_removeModuleWithArguments:(id)a3 callbackHandler:(id)a4
+- (void)_removeModuleWithArguments:(id)arguments callbackHandler:(id)handler
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [(MUWebContentViewController *)self delegate];
-  [v7 removeWebContentViewController:self arguments:v6];
+  handlerCopy = handler;
+  argumentsCopy = arguments;
+  delegate = [(MUWebContentViewController *)self delegate];
+  [delegate removeWebContentViewController:self arguments:argumentsCopy];
 
-  (*(v8 + 2))(v8, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0);
 }
 
-- (void)_getAnalyticsShortSessionSnapshotWithCallbackHandler:(id)a3
+- (void)_getAnalyticsShortSessionSnapshotWithCallbackHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69A2710] sharedInstance];
+  handlerCopy = handler;
+  mEMORY[0x1E69A2710] = [MEMORY[0x1E69A2710] sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __83__MUWebContentViewController__getAnalyticsShortSessionSnapshotWithCallbackHandler___block_invoke;
   v6[3] = &unk_1E821A758;
-  v7 = v3;
-  v5 = v3;
-  [v4 shortSessionValues:v6];
+  v7 = handlerCopy;
+  v5 = handlerCopy;
+  [mEMORY[0x1E69A2710] shortSessionValues:v6];
 }
 
 void __83__MUWebContentViewController__getAnalyticsShortSessionSnapshotWithCallbackHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, double a5, double a6, double a7)
@@ -161,11 +161,11 @@ void __83__MUWebContentViewController__getAnalyticsShortSessionSnapshotWithCallb
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setHeight:(id)a3 callbackHandler:(id)a4
+- (void)_setHeight:(id)height callbackHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"height"];
+  heightCopy = height;
+  handlerCopy = handler;
+  v8 = [heightCopy objectForKeyedSubscript:@"height"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -173,23 +173,23 @@ void __83__MUWebContentViewController__getAnalyticsShortSessionSnapshotWithCallb
     goto LABEL_5;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"animated"];
+  v9 = [heightCopy objectForKeyedSubscript:@"animated"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
 LABEL_5:
-    v7[2](v7, 0, @"invalid arguments");
+    handlerCopy[2](handlerCopy, 0, @"invalid arguments");
     goto LABEL_6;
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"height"];
+  v11 = [heightCopy objectForKeyedSubscript:@"height"];
   [v11 doubleValue];
   v13 = v12;
 
-  v14 = [v6 objectForKeyedSubscript:@"animated"];
-  v15 = [v14 BOOLValue];
+  v14 = [heightCopy objectForKeyedSubscript:@"animated"];
+  bOOLValue = [v14 BOOLValue];
 
   v16 = *MEMORY[0x1E696F168];
   v17 = *(MEMORY[0x1E696F168] + 8);
@@ -199,44 +199,44 @@ LABEL_5:
   v20[1] = 3221225472;
   v20[2] = __57__MUWebContentViewController__setHeight_callbackHandler___block_invoke;
   v20[3] = &unk_1E821A730;
-  v21 = v7;
-  [(MUWebContentViewController *)self _setHeight:v15 animated:v20 completion:v19];
+  v21 = handlerCopy;
+  [(MUWebContentViewController *)self _setHeight:bOOLValue animated:v20 completion:v19];
 
 LABEL_6:
 }
 
-- (void)_setHeight:(double)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_setHeight:(double)height animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
+  animatedCopy = animated;
+  completionCopy = completion;
   [(NSLayoutConstraint *)self->_heightConstraint constant];
-  if (v9 == a3)
+  if (v9 == height)
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
   else
   {
-    v10 = [(MUWebContentViewController *)self delegate];
-    v11 = [v10 isWebContentViewControllerParentPlacecardLoading:self];
+    delegate = [(MUWebContentViewController *)self delegate];
+    v11 = [delegate isWebContentViewControllerParentPlacecardLoading:self];
 
     objc_initWeak(&location, self);
-    v12 = [(MUWebContentViewController *)self delegate];
+    delegate2 = [(MUWebContentViewController *)self delegate];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __61__MUWebContentViewController__setHeight_animated_completion___block_invoke;
     v15[3] = &unk_1E821A708;
     objc_copyWeak(v16, &location);
-    v16[1] = *&a3;
+    v16[1] = *&height;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __61__MUWebContentViewController__setHeight_animated_completion___block_invoke_74;
     v13[3] = &unk_1E821A730;
-    v14 = v8;
-    [v12 webContentViewController:self performHeightChangeWithBlock:v15 animated:v5 & (v11 ^ 1u) completion:v13];
+    v14 = completionCopy;
+    [delegate2 webContentViewController:self performHeightChangeWithBlock:v15 animated:animatedCopy & (v11 ^ 1u) completion:v13];
 
     objc_destroyWeak(v16);
     objc_destroyWeak(&location);
@@ -281,19 +281,19 @@ uint64_t __61__MUWebContentViewController__setHeight_animated_completion___block
   if ([(MUWebBridge *)self->_bridge connectionState]== 1)
   {
     bridge = self->_bridge;
-    v4 = [(MUWebContentViewController *)self mk_theme];
-    v5 = [v4 javaScriptName];
-    v6 = v5;
-    if (!v5)
+    mk_theme = [(MUWebContentViewController *)self mk_theme];
+    javaScriptName = [mk_theme javaScriptName];
+    null = javaScriptName;
+    if (!javaScriptName)
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v9[0] = v6;
+    v9[0] = null;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
     [(MUWebBridge *)bridge callMethod:@"setTheme" arguments:v7 callbackHandler:0];
 
-    if (!v5)
+    if (!javaScriptName)
     {
     }
   }
@@ -301,35 +301,35 @@ uint64_t __61__MUWebContentViewController__setHeight_animated_completion___block
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)webBridgeDidConnect:(id)a3
+- (void)webBridgeDidConnect:(id)connect
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  connectCopy = connect;
   objc_initWeak(&location, self);
   bridge = self->_bridge;
-  v6 = [(MUWebContentViewController *)self mk_theme];
-  v7 = [v6 javaScriptName];
-  v8 = v7;
-  if (!v7)
+  mk_theme = [(MUWebContentViewController *)self mk_theme];
+  javaScriptName = [mk_theme javaScriptName];
+  null = javaScriptName;
+  if (!javaScriptName)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[0] = v8;
+  v29[0] = null;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
   [(MUWebBridge *)bridge callMethod:@"setTheme" arguments:v9 callbackHandler:0];
 
-  if (!v7)
+  if (!javaScriptName)
   {
   }
 
   if (MapsFeature_IsEnabled_PlaceCardShowcase())
   {
-    v10 = [(MUWebContentViewController *)self actionManager];
-    v11 = [v10 supportedPlaceEnrichmentActions];
+    actionManager = [(MUWebContentViewController *)self actionManager];
+    supportedPlaceEnrichmentActions = [actionManager supportedPlaceEnrichmentActions];
 
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if ([v11 count])
+    if ([supportedPlaceEnrichmentActions count])
     {
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
@@ -338,7 +338,7 @@ uint64_t __61__MUWebContentViewController__setHeight_animated_completion___block
       v25[4] = self;
       v13 = v12;
       v26 = v13;
-      [v11 enumerateObjectsUsingBlock:v25];
+      [supportedPlaceEnrichmentActions enumerateObjectsUsingBlock:v25];
       v14 = objc_alloc(MEMORY[0x1E695DEC8]);
       v15 = objc_alloc(MEMORY[0x1E695DF20]);
       v16 = [v13 copy];
@@ -416,96 +416,96 @@ void __50__MUWebContentViewController_webBridgeDidConnect___block_invoke_2(uint6
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  actionCopy = action;
+  handlerCopy = handler;
   v10 = MUGetMUWebContentLog_22854();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v16 = 134218242;
-    v17 = v7;
+    v17 = viewCopy;
     v18 = 2112;
-    v19 = v8;
+    v19 = actionCopy;
     _os_log_impl(&dword_1C5620000, v10, OS_LOG_TYPE_DEBUG, "<WKWebView: %p> decide policy for action %@", &v16, 0x16u);
   }
 
-  if ([v8 navigationType])
+  if ([actionCopy navigationType])
   {
     v11 = 1;
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696F3B8] sharedInstance];
-    v13 = [v8 request];
-    v14 = [v13 URL];
-    [v12 openURL:v14 completionHandler:0];
+    mEMORY[0x1E696F3B8] = [MEMORY[0x1E696F3B8] sharedInstance];
+    request = [actionCopy request];
+    v14 = [request URL];
+    [mEMORY[0x1E696F3B8] openURL:v14 completionHandler:0];
 
     v11 = 0;
   }
 
-  v9[2](v9, v11);
+  handlerCopy[2](handlerCopy, v11);
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationResponse:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationResponse:(id)response decisionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  responseCopy = response;
+  handlerCopy = handler;
   v10 = MUGetMUWebContentLog_22854();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v15 = 134218242;
-    v16 = v7;
+    v16 = viewCopy;
     v17 = 2112;
-    v18 = v8;
+    v18 = responseCopy;
     _os_log_impl(&dword_1C5620000, v10, OS_LOG_TYPE_DEBUG, "<WKWebView: %p> decide policy for response %@", &v15, 0x16u);
   }
 
-  if ([v8 isForMainFrame])
+  if ([responseCopy isForMainFrame])
   {
-    v11 = [v8 response];
+    response = [responseCopy response];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v13 = [v8 response];
-      if (([v13 statusCode] - 200) >= 0x64)
+      response2 = [responseCopy response];
+      if (([response2 statusCode] - 200) >= 0x64)
       {
-        v9[2](v9, 0);
+        handlerCopy[2](handlerCopy, 0);
 
         goto LABEL_8;
       }
     }
   }
 
-  v9[2](v9, 1);
+  handlerCopy[2](handlerCopy, 1);
 LABEL_8:
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (self->_currentWebNavigation == a4)
+  viewCopy = view;
+  errorCopy = error;
+  if (self->_currentWebNavigation == navigation)
   {
     v10 = MUGetMUWebContentLog_22854();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v12 = 134218242;
-      v13 = v8;
+      v13 = viewCopy;
       v14 = 2112;
-      v15 = v9;
+      v15 = errorCopy;
       _os_log_impl(&dword_1C5620000, v10, OS_LOG_TYPE_ERROR, "<WKWebView: %p> failed to load content with error %@", &v12, 0x16u);
     }
 
@@ -515,20 +515,20 @@ LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (self->_currentWebNavigation == a4)
+  viewCopy = view;
+  errorCopy = error;
+  if (self->_currentWebNavigation == navigation)
   {
     v10 = MUGetMUWebContentLog_22854();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v12 = 134218242;
-      v13 = v8;
+      v13 = viewCopy;
       v14 = 2112;
-      v15 = v9;
+      v15 = errorCopy;
       _os_log_impl(&dword_1C5620000, v10, OS_LOG_TYPE_ERROR, "<WKWebView: %p> failed to load content with error %@", &v12, 0x16u);
     }
 
@@ -538,24 +538,24 @@ LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)webView:(id)a3 didCommitNavigation:(id)a4
+- (void)webView:(id)view didCommitNavigation:(id)navigation
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  navigationCopy = navigation;
   v8 = MUGetMUWebContentLog_22854();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 URL];
+    v9 = [viewCopy URL];
     v12 = 134218242;
-    v13 = v6;
+    v13 = viewCopy;
     v14 = 2112;
     v15 = v9;
     _os_log_impl(&dword_1C5620000, v8, OS_LOG_TYPE_INFO, "<WKWebView: %p> starting to load content with at url %@", &v12, 0x16u);
   }
 
   currentWebNavigation = self->_currentWebNavigation;
-  self->_currentWebNavigation = v7;
+  self->_currentWebNavigation = navigationCopy;
 
   [(MUWebContentViewController *)self _startLoading];
   [(MUWebContentViewController *)self _resetBridge];
@@ -563,24 +563,24 @@ LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateActionOverBridge:(id)a3
+- (void)updateActionOverBridge:(id)bridge
 {
-  v4 = a3;
+  bridgeCopy = bridge;
   if (MapsFeature_IsEnabled_PlaceCardShowcase())
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if ([v4 count])
+    if ([bridgeCopy count])
     {
       v6 = MEMORY[0x1E69E9820];
       v7 = 3221225472;
       v8 = __53__MUWebContentViewController_updateActionOverBridge___block_invoke;
       v9 = &unk_1E821A698;
-      v10 = self;
+      selfCopy = self;
       v11 = v5;
-      [v4 enumerateObjectsUsingBlock:&v6];
+      [bridgeCopy enumerateObjectsUsingBlock:&v6];
     }
 
-    [(MUWebBridge *)self->_bridge callMethod:@"updateActions" arguments:v5 callbackHandler:&__block_literal_global_22887, v6, v7, v8, v9, v10];
+    [(MUWebBridge *)self->_bridge callMethod:@"updateActions" arguments:v5 callbackHandler:&__block_literal_global_22887, v6, v7, v8, v9, selfCopy];
   }
 }
 
@@ -754,19 +754,19 @@ void __42__MUWebContentViewController__resetBridge__block_invoke_5(uint64_t a1, 
     [(UIActivityIndicatorView *)self->_activityIndicatorView setActivityIndicatorViewStyle:100];
     [(UIActivityIndicatorView *)self->_activityIndicatorView startAnimating];
     v6 = self->_activityIndicatorView;
-    v7 = [(MUWebContentViewController *)self view];
-    [v7 _mapkit_insertSubviewAboveAllOtherSubviews:v6];
+    view = [(MUWebContentViewController *)self view];
+    [view _mapkit_insertSubviewAboveAllOtherSubviews:v6];
 
     v18 = MEMORY[0x1E696ACD8];
-    v8 = [(UIActivityIndicatorView *)v6 centerXAnchor];
-    v9 = [(MUWebContentViewController *)self view];
-    v10 = [v9 centerXAnchor];
-    v11 = [v8 constraintEqualToAnchor:v10];
+    centerXAnchor = [(UIActivityIndicatorView *)v6 centerXAnchor];
+    view2 = [(MUWebContentViewController *)self view];
+    centerXAnchor2 = [view2 centerXAnchor];
+    v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v19[0] = v11;
-    v12 = [(UIActivityIndicatorView *)v6 centerYAnchor];
-    v13 = [(MUWebContentViewController *)self view];
-    v14 = [v13 centerYAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    centerYAnchor = [(UIActivityIndicatorView *)v6 centerYAnchor];
+    view3 = [(MUWebContentViewController *)self view];
+    centerYAnchor2 = [view3 centerYAnchor];
+    v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v19[1] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
     [v18 activateConstraints:v16];
@@ -783,12 +783,12 @@ void __42__MUWebContentViewController__resetBridge__block_invoke_5(uint64_t a1, 
   {
     self->_loading = 0;
     [(MUWebContentViewController *)self _removeLoadingSpinner];
-    v3 = [(MUWebContentViewController *)self delegate];
-    [v3 webContentViewControllerDidStopLoading:self];
+    delegate = [(MUWebContentViewController *)self delegate];
+    [delegate webContentViewControllerDidStopLoading:self];
   }
 
-  v4 = [(MUWebContentViewController *)self delegate];
-  [v4 removeWebContentViewController:self arguments:0];
+  delegate2 = [(MUWebContentViewController *)self delegate];
+  [delegate2 removeWebContentViewController:self arguments:0];
 }
 
 - (void)_finishLoading
@@ -798,8 +798,8 @@ void __42__MUWebContentViewController__resetBridge__block_invoke_5(uint64_t a1, 
     [(WKWebView *)self->_webView alpha];
     if (v3 != 1.0)
     {
-      v4 = [(MUWebContentViewController *)self delegate];
-      v5 = [v4 isWebContentViewControllerParentPlacecardLoading:self];
+      delegate = [(MUWebContentViewController *)self delegate];
+      v5 = [delegate isWebContentViewControllerParentPlacecardLoading:self];
 
       if (v5)
       {
@@ -821,11 +821,11 @@ void __42__MUWebContentViewController__resetBridge__block_invoke_5(uint64_t a1, 
 
     self->_loading = 0;
     [(MUWebContentViewController *)self _removeLoadingSpinner];
-    v8 = [(MUWebContentViewController *)self delegate];
-    [v8 webContentViewControllerDidStopLoading:self];
+    delegate2 = [(MUWebContentViewController *)self delegate];
+    [delegate2 webContentViewControllerDidStopLoading:self];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 postNotificationName:@"MUWebContentViewControllerDidFinishLoadingNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MUWebContentViewControllerDidFinishLoadingNotification" object:self];
   }
 }
 
@@ -844,8 +844,8 @@ void __42__MUWebContentViewController__resetBridge__block_invoke_5(uint64_t a1, 
   v45.super_class = MUWebContentViewController;
   [(MUWebContentViewController *)&v45 viewDidLoad];
   v3 = MEMORY[0x1E696ACD8];
-  v4 = [(MUWebContentViewController *)self view];
-  v5 = [v3 constraintWithItem:v4 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:self->_defaultHeight];
+  view = [(MUWebContentViewController *)self view];
+  v5 = [v3 constraintWithItem:view attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:self->_defaultHeight];
   heightConstraint = self->_heightConstraint;
   self->_heightConstraint = v5;
 
@@ -856,36 +856,36 @@ void __42__MUWebContentViewController__resetBridge__block_invoke_5(uint64_t a1, 
   webViewFactoryItem = self->_webViewFactoryItem;
   self->_webViewFactoryItem = v9;
 
-  v11 = [(MUWebViewFactoryItem *)self->_webViewFactoryItem webView];
+  webView = [(MUWebViewFactoryItem *)self->_webViewFactoryItem webView];
   webView = self->_webView;
-  self->_webView = v11;
+  self->_webView = webView;
 
   [(WKWebView *)self->_webView setNavigationDelegate:self];
   [(WKWebView *)self->_webView setUIDelegate:self];
   [(WKWebView *)self->_webView setAccessibilityIdentifier:@"MUWebContentView"];
-  v13 = [(MUWebContentViewController *)self view];
-  [v13 addSubview:self->_webView];
+  view2 = [(MUWebContentViewController *)self view];
+  [view2 addSubview:self->_webView];
 
   v36 = MEMORY[0x1E696ACD8];
-  v42 = [(WKWebView *)self->_webView leadingAnchor];
-  v43 = [(MUWebContentViewController *)self view];
-  v41 = [v43 leadingAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  leadingAnchor = [(WKWebView *)self->_webView leadingAnchor];
+  view3 = [(MUWebContentViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v46[0] = v40;
-  v38 = [(WKWebView *)self->_webView trailingAnchor];
-  v39 = [(MUWebContentViewController *)self view];
-  v37 = [v39 trailingAnchor];
-  v35 = [v38 constraintEqualToAnchor:v37];
+  trailingAnchor = [(WKWebView *)self->_webView trailingAnchor];
+  view4 = [(MUWebContentViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v46[1] = v35;
-  v34 = [(WKWebView *)self->_webView topAnchor];
-  v14 = [(MUWebContentViewController *)self view];
-  v15 = [v14 topAnchor];
-  v16 = [v34 constraintEqualToAnchor:v15];
+  topAnchor = [(WKWebView *)self->_webView topAnchor];
+  view5 = [(MUWebContentViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v46[2] = v16;
-  v17 = [(WKWebView *)self->_webView bottomAnchor];
-  v18 = [(MUWebContentViewController *)self view];
-  v19 = [v18 bottomAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  bottomAnchor = [(WKWebView *)self->_webView bottomAnchor];
+  view6 = [(MUWebContentViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v21 = self->_heightConstraint;
   v46[3] = v20;
   v46[4] = v21;
@@ -895,9 +895,9 @@ void __42__MUWebContentViewController__resetBridge__block_invoke_5(uint64_t a1, 
   if (self->_html)
   {
     v23 = GEOGetURL();
-    v24 = [(MUWebContentTraits *)self->_webContentTraits queryItems];
+    queryItems = [(MUWebContentTraits *)self->_webContentTraits queryItems];
     v25 = v44;
-    v26 = [MUWebBridge URLByAddingConfiguration:v44 toURL:v23 additionalQueryItems:v24];
+    v26 = [MUWebBridge URLByAddingConfiguration:v44 toURL:v23 additionalQueryItems:queryItems];
 
     v27 = [(WKWebView *)self->_webView loadHTMLString:self->_html baseURL:v26];
     currentWebNavigation = self->_currentWebNavigation;
@@ -913,8 +913,8 @@ LABEL_3:
     resolvedURL = self->_resolvedURL;
     if (resolvedURL)
     {
-      v31 = [(MUWebContentTraits *)self->_webContentTraits queryItems];
-      v26 = [MUWebBridge URLByAddingConfiguration:v44 toURL:resolvedURL additionalQueryItems:v31];
+      queryItems2 = [(MUWebContentTraits *)self->_webContentTraits queryItems];
+      v26 = [MUWebBridge URLByAddingConfiguration:v44 toURL:resolvedURL additionalQueryItems:queryItems2];
 
       currentWebNavigation = [MEMORY[0x1E696AF68] requestWithURL:v26];
       v32 = [(WKWebView *)self->_webView loadRequest:currentWebNavigation];
@@ -944,12 +944,12 @@ LABEL_4:
   [(MUWebContentViewController *)&v4 dealloc];
 }
 
-- (MUWebContentViewController)initWithURL:(id)a3 traits:(id)a4
+- (MUWebContentViewController)initWithURL:(id)l traits:(id)traits
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_opt_class() resolvedURLForRelativeURL:v7];
+  lCopy = l;
+  traitsCopy = traits;
+  v9 = [objc_opt_class() resolvedURLForRelativeURL:lCopy];
   if (!v9)
   {
     goto LABEL_7;
@@ -963,10 +963,10 @@ LABEL_4:
     goto LABEL_7;
   }
 
-  v12 = [MEMORY[0x1E69A22B0] sharedNetworkObserver];
-  v13 = [v12 isNetworkReachable];
+  mEMORY[0x1E69A22B0] = [MEMORY[0x1E69A22B0] sharedNetworkObserver];
+  isNetworkReachable = [mEMORY[0x1E69A22B0] isNetworkReachable];
 
-  if (v13)
+  if (isNetworkReachable)
   {
     v25.receiver = self;
     v25.super_class = MUWebContentViewController;
@@ -974,9 +974,9 @@ LABEL_4:
     v15 = v14;
     if (v14)
     {
-      objc_storeStrong(&v14->_url, a3);
+      objc_storeStrong(&v14->_url, l);
       objc_storeStrong(&v15->_resolvedURL, v9);
-      objc_storeStrong(&v15->_webContentTraits, a4);
+      objc_storeStrong(&v15->_webContentTraits, traits);
       v16 = *MEMORY[0x1E696F160];
       v17 = *(MEMORY[0x1E696F160] + 8);
       GEOConfigGetDouble();
@@ -988,46 +988,46 @@ LABEL_4:
     }
 
     self = v15;
-    v22 = self;
+    selfCopy = self;
   }
 
   else
   {
 LABEL_7:
-    v22 = 0;
+    selfCopy = 0;
   }
 
   v23 = *MEMORY[0x1E69E9840];
-  return v22;
+  return selfCopy;
 }
 
-- (MUWebContentViewController)initWithURL:(id)a3
+- (MUWebContentViewController)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_opt_new();
-  v6 = [(MUWebContentViewController *)self initWithURL:v4 traits:v5];
+  v6 = [(MUWebContentViewController *)self initWithURL:lCopy traits:v5];
 
   return v6;
 }
 
-- (void)configureWithHTML:(id)a3 actionManager:(id)a4 initialDefaultHeight:(double)a5
+- (void)configureWithHTML:(id)l actionManager:(id)manager initialDefaultHeight:(double)height
 {
-  v14 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x1E69A22B0] sharedNetworkObserver];
-  if ([v10 isNetworkReachable])
+  lCopy = l;
+  managerCopy = manager;
+  mEMORY[0x1E69A22B0] = [MEMORY[0x1E69A22B0] sharedNetworkObserver];
+  if ([mEMORY[0x1E69A22B0] isNetworkReachable])
   {
     IsEnabled_PlaceCardShowcase = MapsFeature_IsEnabled_PlaceCardShowcase();
 
     if (IsEnabled_PlaceCardShowcase)
     {
-      objc_storeStrong(&self->_html, a3);
-      objc_storeStrong(&self->_actionManager, a4);
+      objc_storeStrong(&self->_html, l);
+      objc_storeStrong(&self->_actionManager, manager);
       v12 = objc_opt_new();
       webContentTraits = self->_webContentTraits;
       self->_webContentTraits = v12;
 
-      self->_defaultHeight = a5;
+      self->_defaultHeight = height;
     }
   }
 
@@ -1036,25 +1036,25 @@ LABEL_7:
   }
 }
 
-+ (id)resolvedURLForRelativeURL:(id)a3
++ (id)resolvedURLForRelativeURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v3 = a3;
+    lCopy = l;
     v4 = GEOGetURL();
     v5 = MEMORY[0x1E695DFF8];
-    v6 = [v3 relativeString];
+    relativeString = [lCopy relativeString];
 
-    v7 = [v5 URLWithString:v6 relativeToURL:v4];
-    v8 = [v7 absoluteURL];
+    v7 = [v5 URLWithString:relativeString relativeToURL:v4];
+    absoluteURL = [v7 absoluteURL];
   }
 
   else
   {
-    v8 = 0;
+    absoluteURL = 0;
   }
 
-  return v8;
+  return absoluteURL;
 }
 
 @end

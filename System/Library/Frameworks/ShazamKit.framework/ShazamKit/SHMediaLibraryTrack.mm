@@ -1,52 +1,52 @@
 @interface SHMediaLibraryTrack
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualTrack:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualTrack:(id)track;
 - (CLLocation)location;
 - (CLLocationCoordinate2D)locationCoordinate;
 - (NSSet)labels;
 - (SHMediaItem)mediaItemValue;
-- (SHMediaLibraryTrack)initWithCoder:(id)a3;
-- (SHMediaLibraryTrack)initWithIdentifier:(id)a3 builder:(id)a4;
-- (SHMediaLibraryTrack)initWithIdentifier:(id)a3 metadata:(id)a4 builder:(id)a5;
-- (SHMediaLibraryTrack)initWithMediaItem:(id)a3;
-- (SHMediaLibraryTrack)initWithTrackSyncID:(id)a3 creationDate:(id)a4 releaseDate:(id)a5 groupSyncID:(id)a6 labels:(id)a7 lastUpdatedDate:(id)a8 providerIdentifier:(id)a9 trackMetadata:(id)a10 providerName:(id)a11 shazamKey:(id)a12 recognitionID:(id)a13 title:(id)a14 subtitle:(id)a15 artworkURL:(id)a16 appleMusicID:(id)a17 appleMusicURL:(id)a18 shazamURL:(id)a19 videoURL:(id)a20 isExplicit:(BOOL)a21 albumName:(id)a22 isrc:(id)a23 shazamCount:(int64_t)a24 locationCoordinate:(CLLocationCoordinate2D)a25 genres:(id)a26 rawSongResponse:(id)a27;
-- (id)_initWithIdentifier:(id)a3 metadata:(id)a4 labels:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SHMediaLibraryTrack)initWithCoder:(id)coder;
+- (SHMediaLibraryTrack)initWithIdentifier:(id)identifier builder:(id)builder;
+- (SHMediaLibraryTrack)initWithIdentifier:(id)identifier metadata:(id)metadata builder:(id)builder;
+- (SHMediaLibraryTrack)initWithMediaItem:(id)item;
+- (SHMediaLibraryTrack)initWithTrackSyncID:(id)d creationDate:(id)date releaseDate:(id)releaseDate groupSyncID:(id)iD labels:(id)labels lastUpdatedDate:(id)updatedDate providerIdentifier:(id)identifier trackMetadata:(id)self0 providerName:(id)self1 shazamKey:(id)self2 recognitionID:(id)self3 title:(id)self4 subtitle:(id)self5 artworkURL:(id)self6 appleMusicID:(id)self7 appleMusicURL:(id)self8 shazamURL:(id)self9 videoURL:(id)videoURL isExplicit:(BOOL)explicit albumName:(id)albumName isrc:(id)isrc shazamCount:(int64_t)count locationCoordinate:(CLLocationCoordinate2D)coordinate genres:(id)genres rawSongResponse:(id)response;
+- (id)_initWithIdentifier:(id)identifier metadata:(id)metadata labels:(id)labels;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)platformLabel;
 - (unint64_t)hash;
-- (void)addLabel:(id)a3;
+- (void)addLabel:(id)label;
 - (void)addPlatformLabel;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithBuilderBlock:(id)a3;
-- (void)updateWithMediaItem:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithBuilderBlock:(id)block;
+- (void)updateWithMediaItem:(id)item;
 @end
 
 @implementation SHMediaLibraryTrack
 
-- (SHMediaLibraryTrack)initWithIdentifier:(id)a3 builder:(id)a4
+- (SHMediaLibraryTrack)initWithIdentifier:(id)identifier builder:(id)builder
 {
-  v6 = a4;
-  v7 = [(SHMediaLibraryTrack *)self _initWithIdentifier:a3 metadata:0 labels:MEMORY[0x277CBEBF8]];
-  [(SHMediaLibraryTrack *)v7 updateWithBuilderBlock:v6];
+  builderCopy = builder;
+  v7 = [(SHMediaLibraryTrack *)self _initWithIdentifier:identifier metadata:0 labels:MEMORY[0x277CBEBF8]];
+  [(SHMediaLibraryTrack *)v7 updateWithBuilderBlock:builderCopy];
 
   return v7;
 }
 
-- (SHMediaLibraryTrack)initWithIdentifier:(id)a3 metadata:(id)a4 builder:(id)a5
+- (SHMediaLibraryTrack)initWithIdentifier:(id)identifier metadata:(id)metadata builder:(id)builder
 {
-  v8 = a5;
-  v9 = [(SHMediaLibraryTrack *)self _initWithIdentifier:a3 metadata:a4 labels:MEMORY[0x277CBEBF8]];
-  [(SHMediaLibraryTrack *)v9 updateWithBuilderBlock:v8];
+  builderCopy = builder;
+  v9 = [(SHMediaLibraryTrack *)self _initWithIdentifier:identifier metadata:metadata labels:MEMORY[0x277CBEBF8]];
+  [(SHMediaLibraryTrack *)v9 updateWithBuilderBlock:builderCopy];
 
   return v9;
 }
 
-- (SHMediaLibraryTrack)initWithMediaItem:(id)a3
+- (SHMediaLibraryTrack)initWithMediaItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 shazamID];
+  itemCopy = item;
+  shazamID = [itemCopy shazamID];
 
-  if (!v5)
+  if (!shazamID)
   {
     v8 = sh_log_object();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -59,8 +59,8 @@
   }
 
   v6 = [SHShazamKey alloc];
-  v7 = [v4 shazamID];
-  v8 = [(SHShazamKey *)v6 initWithKey:v7];
+  shazamID2 = [itemCopy shazamID];
+  v8 = [(SHShazamKey *)v6 initWithKey:shazamID2];
 
   if (!v8)
   {
@@ -72,79 +72,79 @@
     }
 
 LABEL_13:
-    v18 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
-  v9 = [v4 identifier];
-  v10 = [v9 UUIDString];
-  self = [(SHMediaLibraryTrack *)self _initWithIdentifier:v10 metadata:0 labels:MEMORY[0x277CBEBF8]];
+  identifier = [itemCopy identifier];
+  uUIDString = [identifier UUIDString];
+  self = [(SHMediaLibraryTrack *)self _initWithIdentifier:uUIDString metadata:0 labels:MEMORY[0x277CBEBF8]];
 
   [(SHMediaLibraryTrack *)self setShazamKey:v8];
-  v11 = [MEMORY[0x277CCAD78] UUID];
-  v12 = [v11 UUIDString];
-  [(SHMediaLibraryTrack *)self setRecognitionIdentifier:v12];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString2 = [uUID UUIDString];
+  [(SHMediaLibraryTrack *)self setRecognitionIdentifier:uUIDString2];
 
-  v13 = [v4 providerIdentifier];
-  [(SHMediaLibraryTrack *)self setProviderIdentifier:v13];
+  providerIdentifier = [itemCopy providerIdentifier];
+  [(SHMediaLibraryTrack *)self setProviderIdentifier:providerIdentifier];
 
-  v14 = [v4 creationDate];
+  creationDate = [itemCopy creationDate];
 
-  if (v14)
+  if (creationDate)
   {
-    v15 = [v4 creationDate];
-    [(SHMediaLibraryTrack *)self setCreationDate:v15];
+    creationDate2 = [itemCopy creationDate];
+    [(SHMediaLibraryTrack *)self setCreationDate:creationDate2];
   }
 
-  v16 = [v4 matchLocation];
-  [SHLocationTransformer coordinateFromLocation:v16];
+  matchLocation = [itemCopy matchLocation];
+  [SHLocationTransformer coordinateFromLocation:matchLocation];
   [(SHMediaLibraryTrack *)self setLocationCoordinate:?];
 
-  [(SHMediaLibraryTrack *)self updateWithMediaItem:v4];
+  [(SHMediaLibraryTrack *)self updateWithMediaItem:itemCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [MEMORY[0x277CBEAA8] date];
-    [(SHMediaLibraryTrack *)self setLastUpdatedDate:v17];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(SHMediaLibraryTrack *)self setLastUpdatedDate:date];
   }
 
-  v18 = self;
+  selfCopy = self;
 LABEL_14:
 
-  return v18;
+  return selfCopy;
 }
 
-- (SHMediaLibraryTrack)initWithTrackSyncID:(id)a3 creationDate:(id)a4 releaseDate:(id)a5 groupSyncID:(id)a6 labels:(id)a7 lastUpdatedDate:(id)a8 providerIdentifier:(id)a9 trackMetadata:(id)a10 providerName:(id)a11 shazamKey:(id)a12 recognitionID:(id)a13 title:(id)a14 subtitle:(id)a15 artworkURL:(id)a16 appleMusicID:(id)a17 appleMusicURL:(id)a18 shazamURL:(id)a19 videoURL:(id)a20 isExplicit:(BOOL)a21 albumName:(id)a22 isrc:(id)a23 shazamCount:(int64_t)a24 locationCoordinate:(CLLocationCoordinate2D)a25 genres:(id)a26 rawSongResponse:(id)a27
+- (SHMediaLibraryTrack)initWithTrackSyncID:(id)d creationDate:(id)date releaseDate:(id)releaseDate groupSyncID:(id)iD labels:(id)labels lastUpdatedDate:(id)updatedDate providerIdentifier:(id)identifier trackMetadata:(id)self0 providerName:(id)self1 shazamKey:(id)self2 recognitionID:(id)self3 title:(id)self4 subtitle:(id)self5 artworkURL:(id)self6 appleMusicID:(id)self7 appleMusicURL:(id)self8 shazamURL:(id)self9 videoURL:(id)videoURL isExplicit:(BOOL)explicit albumName:(id)albumName isrc:(id)isrc shazamCount:(int64_t)count locationCoordinate:(CLLocationCoordinate2D)coordinate genres:(id)genres rawSongResponse:(id)response
 {
-  longitude = a25.longitude;
-  latitude = a25.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v76 = *MEMORY[0x277D85DE8];
-  v69 = a3;
-  v68 = a4;
-  v67 = a5;
-  v66 = a6;
-  v34 = a7;
-  v59 = a8;
-  v35 = a9;
-  v36 = a10;
-  v37 = a11;
-  v70 = a12;
-  v65 = a13;
-  v64 = a14;
-  v63 = a15;
-  v62 = a16;
-  v61 = a17;
-  v57 = a18;
-  v60 = a19;
-  v56 = a20;
-  v55 = a22;
-  v54 = a23;
-  v53 = a26;
-  v52 = a27;
-  v58 = v36;
-  if (v36)
+  dCopy = d;
+  dateCopy = date;
+  releaseDateCopy = releaseDate;
+  iDCopy = iD;
+  labelsCopy = labels;
+  updatedDateCopy = updatedDate;
+  identifierCopy = identifier;
+  metadataCopy = metadata;
+  nameCopy = name;
+  keyCopy = key;
+  recognitionIDCopy = recognitionID;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  lCopy = l;
+  musicIDCopy = musicID;
+  rLCopy = rL;
+  uRLCopy = uRL;
+  videoURLCopy = videoURL;
+  albumNameCopy = albumName;
+  isrcCopy = isrc;
+  genresCopy = genres;
+  responseCopy = response;
+  v58 = metadataCopy;
+  if (metadataCopy)
   {
-    v38 = [[SHMediaLibraryItemMetadata alloc] initWithEncodedSystemData:v36];
+    v38 = [[SHMediaLibraryItemMetadata alloc] initWithEncodedSystemData:metadataCopy];
   }
 
   else
@@ -152,12 +152,12 @@ LABEL_14:
     v38 = 0;
   }
 
-  v39 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v34, "count")}];
+  v39 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(labelsCopy, "count")}];
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v40 = v34;
+  v40 = labelsCopy;
   v41 = [v40 countByEnumeratingWithState:&v71 objects:v75 count:16];
   if (v41)
   {
@@ -183,60 +183,60 @@ LABEL_14:
   }
 
   v46 = [v39 copy];
-  v47 = [(SHMediaLibraryTrack *)self _initWithIdentifier:v69 metadata:v38 labels:v46];
+  v47 = [(SHMediaLibraryTrack *)self _initWithIdentifier:dCopy metadata:v38 labels:v46];
 
-  if (v70)
+  if (keyCopy)
   {
-    v48 = [[SHShazamKey alloc] initWithKey:v70];
+    v48 = [[SHShazamKey alloc] initWithKey:keyCopy];
     [(SHMediaLibraryTrack *)v47 setShazamKey:v48];
   }
 
-  [(SHMediaLibraryTrack *)v47 setProviderIdentifier:v35];
-  [(SHMediaLibraryTrack *)v47 setProviderName:v37];
-  [(SHMediaLibraryTrack *)v47 setCreationDate:v68];
-  [(SHMediaLibraryTrack *)v47 setRecognitionIdentifier:v65];
-  [(SHMediaLibraryTrack *)v47 setTitle:v64];
-  [(SHMediaLibraryTrack *)v47 setSubtitle:v63];
-  [(SHMediaLibraryTrack *)v47 setArtworkURL:v62];
-  [(SHMediaLibraryTrack *)v47 setShazamURL:v60];
-  [(SHMediaLibraryTrack *)v47 setAssociatedGroupIdentifier:v66];
+  [(SHMediaLibraryTrack *)v47 setProviderIdentifier:identifierCopy];
+  [(SHMediaLibraryTrack *)v47 setProviderName:nameCopy];
+  [(SHMediaLibraryTrack *)v47 setCreationDate:dateCopy];
+  [(SHMediaLibraryTrack *)v47 setRecognitionIdentifier:recognitionIDCopy];
+  [(SHMediaLibraryTrack *)v47 setTitle:titleCopy];
+  [(SHMediaLibraryTrack *)v47 setSubtitle:subtitleCopy];
+  [(SHMediaLibraryTrack *)v47 setArtworkURL:lCopy];
+  [(SHMediaLibraryTrack *)v47 setShazamURL:uRLCopy];
+  [(SHMediaLibraryTrack *)v47 setAssociatedGroupIdentifier:iDCopy];
   [(SHMediaLibraryTrack *)v47 setLocationCoordinate:latitude, longitude];
-  [(SHMediaLibraryTrack *)v47 setAlbumName:v55];
-  [(SHMediaLibraryTrack *)v47 setAppleMusicID:v61];
-  [(SHMediaLibraryTrack *)v47 setAppleMusicURL:v57];
-  [(SHMediaLibraryTrack *)v47 setExplicitContent:a21];
-  [(SHMediaLibraryTrack *)v47 setGenres:v53];
-  [(SHMediaLibraryTrack *)v47 setIsrc:v54];
-  [(SHMediaLibraryTrack *)v47 setRawSongResponse:v52];
-  [(SHMediaLibraryTrack *)v47 setReleaseDate:v67];
-  [(SHMediaLibraryTrack *)v47 setShazamCount:a24];
-  [(SHMediaLibraryTrack *)v47 setVideoURL:v56];
-  [(SHMediaLibraryTrack *)v47 setLastUpdatedDate:v59];
+  [(SHMediaLibraryTrack *)v47 setAlbumName:albumNameCopy];
+  [(SHMediaLibraryTrack *)v47 setAppleMusicID:musicIDCopy];
+  [(SHMediaLibraryTrack *)v47 setAppleMusicURL:rLCopy];
+  [(SHMediaLibraryTrack *)v47 setExplicitContent:explicit];
+  [(SHMediaLibraryTrack *)v47 setGenres:genresCopy];
+  [(SHMediaLibraryTrack *)v47 setIsrc:isrcCopy];
+  [(SHMediaLibraryTrack *)v47 setRawSongResponse:responseCopy];
+  [(SHMediaLibraryTrack *)v47 setReleaseDate:releaseDateCopy];
+  [(SHMediaLibraryTrack *)v47 setShazamCount:count];
+  [(SHMediaLibraryTrack *)v47 setVideoURL:videoURLCopy];
+  [(SHMediaLibraryTrack *)v47 setLastUpdatedDate:updatedDateCopy];
 
   v49 = *MEMORY[0x277D85DE8];
   return v47;
 }
 
-- (id)_initWithIdentifier:(id)a3 metadata:(id)a4 labels:(id)a5
+- (id)_initWithIdentifier:(id)identifier metadata:(id)metadata labels:(id)labels
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  metadataCopy = metadata;
+  labelsCopy = labels;
   v19.receiver = self;
   v19.super_class = SHMediaLibraryTrack;
   v11 = [(SHMediaLibraryTrack *)&v19 init];
   if (v11)
   {
-    v12 = [v8 precomposedStringWithCanonicalMapping];
+    precomposedStringWithCanonicalMapping = [identifierCopy precomposedStringWithCanonicalMapping];
     v13 = *(v11 + 2);
-    *(v11 + 2) = v12;
+    *(v11 + 2) = precomposedStringWithCanonicalMapping;
 
-    objc_storeStrong(v11 + 3, a4);
-    v14 = [MEMORY[0x277CBEAA8] date];
+    objc_storeStrong(v11 + 3, metadata);
+    date = [MEMORY[0x277CBEAA8] date];
     v15 = *(v11 + 4);
-    *(v11 + 4) = v14;
+    *(v11 + 4) = date;
 
-    v16 = [MEMORY[0x277CBEB58] setWithArray:v10];
+    v16 = [MEMORY[0x277CBEB58] setWithArray:labelsCopy];
     v17 = *(v11 + 14);
     *(v11 + 14) = v16;
 
@@ -247,63 +247,63 @@ LABEL_14:
   return v11;
 }
 
-- (void)updateWithBuilderBlock:(id)a3
+- (void)updateWithBuilderBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [SHMediaLibraryTrackBuilder alloc];
-  v6 = [(SHMediaLibraryTrack *)self creationDate];
-  v20 = [(SHMediaLibraryTrackBuilder *)v5 initWithCreationDate:v6];
+  creationDate = [(SHMediaLibraryTrack *)self creationDate];
+  v20 = [(SHMediaLibraryTrackBuilder *)v5 initWithCreationDate:creationDate];
 
-  v4[2](v4, v20);
-  v7 = [(SHMediaLibraryTrackBuilder *)v20 creationDate];
-  [(SHMediaLibraryTrack *)self setCreationDate:v7];
+  blockCopy[2](blockCopy, v20);
+  creationDate2 = [(SHMediaLibraryTrackBuilder *)v20 creationDate];
+  [(SHMediaLibraryTrack *)self setCreationDate:creationDate2];
 
-  v8 = [(SHMediaLibraryTrackBuilder *)v20 title];
-  [(SHMediaLibraryTrack *)self setTitle:v8];
+  title = [(SHMediaLibraryTrackBuilder *)v20 title];
+  [(SHMediaLibraryTrack *)self setTitle:title];
 
-  v9 = [(SHMediaLibraryTrackBuilder *)v20 subtitle];
-  [(SHMediaLibraryTrack *)self setSubtitle:v9];
+  subtitle = [(SHMediaLibraryTrackBuilder *)v20 subtitle];
+  [(SHMediaLibraryTrack *)self setSubtitle:subtitle];
 
-  v10 = [(SHMediaLibraryTrackBuilder *)v20 providerName];
-  [(SHMediaLibraryTrack *)self setProviderName:v10];
+  providerName = [(SHMediaLibraryTrackBuilder *)v20 providerName];
+  [(SHMediaLibraryTrack *)self setProviderName:providerName];
 
-  v11 = [(SHMediaLibraryTrackBuilder *)v20 providerIdentifier];
-  [(SHMediaLibraryTrack *)self setProviderIdentifier:v11];
+  providerIdentifier = [(SHMediaLibraryTrackBuilder *)v20 providerIdentifier];
+  [(SHMediaLibraryTrack *)self setProviderIdentifier:providerIdentifier];
 
-  v12 = [(SHMediaLibraryTrackBuilder *)v20 recognitionIdentifier];
-  [(SHMediaLibraryTrack *)self setRecognitionIdentifier:v12];
+  recognitionIdentifier = [(SHMediaLibraryTrackBuilder *)v20 recognitionIdentifier];
+  [(SHMediaLibraryTrack *)self setRecognitionIdentifier:recognitionIdentifier];
 
-  v13 = [(SHMediaLibraryTrackBuilder *)v20 shazamKey];
-  [(SHMediaLibraryTrack *)self setShazamKey:v13];
+  shazamKey = [(SHMediaLibraryTrackBuilder *)v20 shazamKey];
+  [(SHMediaLibraryTrack *)self setShazamKey:shazamKey];
 
-  v14 = [(SHMediaLibraryTrackBuilder *)v20 location];
-  [SHLocationTransformer coordinateFromLocation:v14];
+  location = [(SHMediaLibraryTrackBuilder *)v20 location];
+  [SHLocationTransformer coordinateFromLocation:location];
   [(SHMediaLibraryTrack *)self setLocationCoordinate:?];
 
   v15 = MEMORY[0x277CBEB58];
-  v16 = [(SHMediaLibraryTrackBuilder *)v20 labels];
-  v17 = [v15 setWithSet:v16];
+  labels = [(SHMediaLibraryTrackBuilder *)v20 labels];
+  v17 = [v15 setWithSet:labels];
   [(SHMediaLibraryTrack *)self setLabelSet:v17];
 
-  v18 = [(SHMediaLibraryTrackBuilder *)v20 artworkURL];
-  [(SHMediaLibraryTrack *)self setArtworkURL:v18];
+  artworkURL = [(SHMediaLibraryTrackBuilder *)v20 artworkURL];
+  [(SHMediaLibraryTrack *)self setArtworkURL:artworkURL];
 
-  v19 = [(SHMediaLibraryTrackBuilder *)v20 shazamURL];
-  [(SHMediaLibraryTrack *)self setShazamURL:v19];
+  shazamURL = [(SHMediaLibraryTrackBuilder *)v20 shazamURL];
+  [(SHMediaLibraryTrack *)self setShazamURL:shazamURL];
 
   [(SHMediaLibraryTrack *)self addPlatformLabel];
 }
 
-- (void)updateWithMediaItem:(id)a3
+- (void)updateWithMediaItem:(id)item
 {
-  v21 = a3;
-  v4 = [v21 shazamID];
+  itemCopy = item;
+  shazamID = [itemCopy shazamID];
 
-  if (v4)
+  if (shazamID)
   {
     v5 = [SHShazamKey alloc];
-    v6 = [v21 shazamID];
-    v7 = [(SHShazamKey *)v5 initWithKey:v6];
+    shazamID2 = [itemCopy shazamID];
+    v7 = [(SHShazamKey *)v5 initWithKey:shazamID2];
 
     if (v7)
     {
@@ -311,58 +311,58 @@ LABEL_14:
     }
   }
 
-  v8 = [v21 title];
-  [(SHMediaLibraryTrack *)self setTitle:v8];
+  title = [itemCopy title];
+  [(SHMediaLibraryTrack *)self setTitle:title];
 
-  v9 = [v21 subtitle];
-  if (v9)
+  subtitle = [itemCopy subtitle];
+  if (subtitle)
   {
-    [(SHMediaLibraryTrack *)self setSubtitle:v9];
+    [(SHMediaLibraryTrack *)self setSubtitle:subtitle];
   }
 
   else
   {
-    v10 = [v21 artist];
-    [(SHMediaLibraryTrack *)self setSubtitle:v10];
+    artist = [itemCopy artist];
+    [(SHMediaLibraryTrack *)self setSubtitle:artist];
   }
 
-  v11 = [v21 artworkURL];
-  [(SHMediaLibraryTrack *)self setArtworkURL:v11];
+  artworkURL = [itemCopy artworkURL];
+  [(SHMediaLibraryTrack *)self setArtworkURL:artworkURL];
 
-  v12 = [v21 webURL];
-  [(SHMediaLibraryTrack *)self setShazamURL:v12];
+  webURL = [itemCopy webURL];
+  [(SHMediaLibraryTrack *)self setShazamURL:webURL];
 
-  v13 = [v21 albumName];
-  [(SHMediaLibraryTrack *)self setAlbumName:v13];
+  albumName = [itemCopy albumName];
+  [(SHMediaLibraryTrack *)self setAlbumName:albumName];
 
-  v14 = [v21 appleMusicID];
-  [(SHMediaLibraryTrack *)self setAppleMusicID:v14];
+  appleMusicID = [itemCopy appleMusicID];
+  [(SHMediaLibraryTrack *)self setAppleMusicID:appleMusicID];
 
-  v15 = [v21 appleMusicURL];
-  [(SHMediaLibraryTrack *)self setAppleMusicURL:v15];
+  appleMusicURL = [itemCopy appleMusicURL];
+  [(SHMediaLibraryTrack *)self setAppleMusicURL:appleMusicURL];
 
-  -[SHMediaLibraryTrack setExplicitContent:](self, "setExplicitContent:", [v21 explicitContent]);
-  v16 = [v21 genres];
-  [(SHMediaLibraryTrack *)self setGenres:v16];
+  -[SHMediaLibraryTrack setExplicitContent:](self, "setExplicitContent:", [itemCopy explicitContent]);
+  genres = [itemCopy genres];
+  [(SHMediaLibraryTrack *)self setGenres:genres];
 
-  v17 = [v21 isrc];
-  [(SHMediaLibraryTrack *)self setIsrc:v17];
+  isrc = [itemCopy isrc];
+  [(SHMediaLibraryTrack *)self setIsrc:isrc];
 
-  v18 = [v21 _rawResponseSongsData];
-  [(SHMediaLibraryTrack *)self setRawSongResponse:v18];
+  _rawResponseSongsData = [itemCopy _rawResponseSongsData];
+  [(SHMediaLibraryTrack *)self setRawSongResponse:_rawResponseSongsData];
 
-  v19 = [v21 releaseDate];
-  [(SHMediaLibraryTrack *)self setReleaseDate:v19];
+  releaseDate = [itemCopy releaseDate];
+  [(SHMediaLibraryTrack *)self setReleaseDate:releaseDate];
 
-  -[SHMediaLibraryTrack setShazamCount:](self, "setShazamCount:", [v21 shazamCount]);
-  v20 = [v21 videoURL];
-  [(SHMediaLibraryTrack *)self setVideoURL:v20];
+  -[SHMediaLibraryTrack setShazamCount:](self, "setShazamCount:", [itemCopy shazamCount]);
+  videoURL = [itemCopy videoURL];
+  [(SHMediaLibraryTrack *)self setVideoURL:videoURL];
 }
 
 - (NSSet)labels
 {
-  v2 = [(SHMediaLibraryTrack *)self labelSet];
-  v3 = [v2 copy];
+  labelSet = [(SHMediaLibraryTrack *)self labelSet];
+  v3 = [labelSet copy];
 
   return v3;
 }
@@ -376,87 +376,87 @@ LABEL_14:
 
 - (SHMediaItem)mediaItemValue
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = objc_alloc(MEMORY[0x277CCAD78]);
-  v5 = [(SHMediaLibraryTrack *)self identifier];
-  v6 = [v4 initWithUUIDString:v5];
-  [v3 setValue:v6 forKey:@"sh_identifier"];
+  identifier = [(SHMediaLibraryTrack *)self identifier];
+  v6 = [v4 initWithUUIDString:identifier];
+  [dictionary setValue:v6 forKey:@"sh_identifier"];
 
-  v7 = [(SHMediaLibraryTrack *)self creationDate];
-  [v3 setValue:v7 forKey:@"sh_creationDate"];
+  creationDate = [(SHMediaLibraryTrack *)self creationDate];
+  [dictionary setValue:creationDate forKey:@"sh_creationDate"];
 
-  v8 = [(SHMediaLibraryTrack *)self shazamKey];
-  v9 = [v8 validatedKey];
-  [v3 setValue:v9 forKey:@"sh_shazamID"];
+  shazamKey = [(SHMediaLibraryTrack *)self shazamKey];
+  validatedKey = [shazamKey validatedKey];
+  [dictionary setValue:validatedKey forKey:@"sh_shazamID"];
 
-  v10 = [(SHMediaLibraryTrack *)self title];
-  [v3 setValue:v10 forKey:@"sh_title"];
+  title = [(SHMediaLibraryTrack *)self title];
+  [dictionary setValue:title forKey:@"sh_title"];
 
-  v11 = [(SHMediaLibraryTrack *)self subtitle];
-  [v3 setValue:v11 forKey:@"sh_subtitle"];
+  subtitle = [(SHMediaLibraryTrack *)self subtitle];
+  [dictionary setValue:subtitle forKey:@"sh_subtitle"];
 
-  v12 = [(SHMediaLibraryTrack *)self subtitle];
-  [v3 setValue:v12 forKey:@"sh_artist"];
+  subtitle2 = [(SHMediaLibraryTrack *)self subtitle];
+  [dictionary setValue:subtitle2 forKey:@"sh_artist"];
 
-  v13 = [(SHMediaLibraryTrack *)self artworkURL];
-  [v3 setValue:v13 forKey:@"sh_artworkURL"];
+  artworkURL = [(SHMediaLibraryTrack *)self artworkURL];
+  [dictionary setValue:artworkURL forKey:@"sh_artworkURL"];
 
-  v14 = [(SHMediaLibraryTrack *)self shazamURL];
-  [v3 setValue:v14 forKey:@"sh_webURL"];
+  shazamURL = [(SHMediaLibraryTrack *)self shazamURL];
+  [dictionary setValue:shazamURL forKey:@"sh_webURL"];
 
-  v15 = [(SHMediaLibraryTrack *)self providerIdentifier];
-  [v3 setValue:v15 forKey:@"sh_providerIdentifier"];
+  providerIdentifier = [(SHMediaLibraryTrack *)self providerIdentifier];
+  [dictionary setValue:providerIdentifier forKey:@"sh_providerIdentifier"];
 
-  v16 = [(SHMediaLibraryTrack *)self albumName];
-  [v3 setValue:v16 forKey:@"sh_albumName"];
+  albumName = [(SHMediaLibraryTrack *)self albumName];
+  [dictionary setValue:albumName forKey:@"sh_albumName"];
 
-  v17 = [(SHMediaLibraryTrack *)self appleMusicID];
-  [v3 setValue:v17 forKey:@"sh_appleMusicID"];
+  appleMusicID = [(SHMediaLibraryTrack *)self appleMusicID];
+  [dictionary setValue:appleMusicID forKey:@"sh_appleMusicID"];
 
-  v18 = [(SHMediaLibraryTrack *)self appleMusicURL];
-  [v3 setValue:v18 forKey:@"sh_appleMusicURL"];
+  appleMusicURL = [(SHMediaLibraryTrack *)self appleMusicURL];
+  [dictionary setValue:appleMusicURL forKey:@"sh_appleMusicURL"];
 
-  v19 = [(SHMediaLibraryTrack *)self genres];
-  [v3 setValue:v19 forKey:@"sh_genres"];
+  genres = [(SHMediaLibraryTrack *)self genres];
+  [dictionary setValue:genres forKey:@"sh_genres"];
 
-  v20 = [(SHMediaLibraryTrack *)self isrc];
-  [v3 setValue:v20 forKey:@"sh_isrc"];
+  isrc = [(SHMediaLibraryTrack *)self isrc];
+  [dictionary setValue:isrc forKey:@"sh_isrc"];
 
   v21 = [MEMORY[0x277CCABB0] numberWithBool:{-[SHMediaLibraryTrack explicitContent](self, "explicitContent")}];
-  [v3 setValue:v21 forKey:@"sh_explicitContent"];
+  [dictionary setValue:v21 forKey:@"sh_explicitContent"];
 
   v22 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[SHMediaLibraryTrack shazamCount](self, "shazamCount")}];
-  [v3 setValue:v22 forKey:@"sh_shazamCount"];
+  [dictionary setValue:v22 forKey:@"sh_shazamCount"];
 
-  v23 = [(SHMediaLibraryTrack *)self releaseDate];
-  [v3 setValue:v23 forKey:@"sh_releaseDate"];
+  releaseDate = [(SHMediaLibraryTrack *)self releaseDate];
+  [dictionary setValue:releaseDate forKey:@"sh_releaseDate"];
 
-  v24 = [(SHMediaLibraryTrack *)self videoURL];
-  [v3 setValue:v24 forKey:@"sh_videoURL"];
+  videoURL = [(SHMediaLibraryTrack *)self videoURL];
+  [dictionary setValue:videoURL forKey:@"sh_videoURL"];
 
   [(SHMediaLibraryTrack *)self locationCoordinate];
   v25 = [SHLocationTransformer valueForCoordinate:?];
-  [v3 setValue:v25 forKey:@"sh_matchLocationCoordinate"];
+  [dictionary setValue:v25 forKey:@"sh_matchLocationCoordinate"];
 
-  v26 = [v3 copy];
+  v26 = [dictionary copy];
   v27 = [SHMediaItem mediaItemWithProperties:v26];
 
-  v28 = [(SHMediaLibraryTrack *)self rawSongResponse];
-  [v27 set_rawResponseSongsData:v28];
+  rawSongResponse = [(SHMediaLibraryTrack *)self rawSongResponse];
+  [v27 set_rawResponseSongsData:rawSongResponse];
 
   return v27;
 }
 
-- (SHMediaLibraryTrack)initWithCoder:(id)a3
+- (SHMediaLibraryTrack)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v64.receiver = self;
   v64.super_class = SHMediaLibraryTrack;
   v5 = [(SHMediaLibraryTrack *)&v64 init];
   if (v5)
   {
     context = objc_autoreleasePoolPush();
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackMetadata"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackMetadata"];
     if (v6)
     {
       v7 = [[SHMediaLibraryItemMetadata alloc] initWithEncodedSystemData:v6];
@@ -464,7 +464,7 @@ LABEL_14:
       v5->_metadata = v7;
     }
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackShazamKey"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackShazamKey"];
     if (v9)
     {
       v10 = [[SHShazamKey alloc] initWithKey:v9];
@@ -472,96 +472,96 @@ LABEL_14:
       v5->_shazamKey = v10;
     }
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackRecognitionIdentifierKey"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackRecognitionIdentifierKey"];
     recognitionIdentifier = v5->_recognitionIdentifier;
     v5->_recognitionIdentifier = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackProviderIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackProviderIdentifier"];
     providerIdentifier = v5->_providerIdentifier;
     v5->_providerIdentifier = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackProviderName"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackProviderName"];
     providerName = v5->_providerName;
     v5->_providerName = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackDate"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackTitle"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackTitle"];
     title = v5->_title;
     v5->_title = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackSubtitle"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackSubtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackAssociatedGroupIdentifier"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackAssociatedGroupIdentifier"];
     associatedGroupIdentifier = v5->_associatedGroupIdentifier;
     v5->_associatedGroupIdentifier = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackArtworkURL"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackArtworkURL"];
     artworkURL = v5->_artworkURL;
     v5->_artworkURL = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackShazamURL"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHLibraryTrackShazamURL"];
     shazamURL = v5->_shazamURL;
     v5->_shazamURL = v30;
 
-    [v4 decodeDoubleForKey:@"SHLibraryTrackLocationLatitude"];
+    [coderCopy decodeDoubleForKey:@"SHLibraryTrackLocationLatitude"];
     v33 = v32;
-    [v4 decodeDoubleForKey:@"SHLibraryTrackLocationLongitude"];
+    [coderCopy decodeDoubleForKey:@"SHLibraryTrackLocationLongitude"];
     v5->_locationCoordinate = CLLocationCoordinate2DMake(v33, v34);
     v35 = MEMORY[0x277CBEB98];
     v36 = objc_opt_class();
     v37 = [v35 setWithObjects:{v36, objc_opt_class(), 0}];
-    v38 = [v4 decodeObjectOfClasses:v37 forKey:@"SHLibraryTrackLibrarySet"];
+    v38 = [coderCopy decodeObjectOfClasses:v37 forKey:@"SHLibraryTrackLibrarySet"];
     v39 = [v38 mutableCopy];
     labelSet = v5->_labelSet;
     v5->_labelSet = v39;
 
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaLibraryTrackAlbumName"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaLibraryTrackAlbumName"];
     albumName = v5->_albumName;
     v5->_albumName = v41;
 
-    v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaLibraryTrackAppleMusicURL"];
+    v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaLibraryTrackAppleMusicURL"];
     appleMusicURL = v5->_appleMusicURL;
     v5->_appleMusicURL = v43;
 
-    v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaLibraryTrackAppleMusicID"];
+    v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaLibraryTrackAppleMusicID"];
     appleMusicID = v5->_appleMusicID;
     v5->_appleMusicID = v45;
 
-    v47 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaLibraryTrackISRC"];
+    v47 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaLibraryTrackISRC"];
     isrc = v5->_isrc;
     v5->_isrc = v47;
 
-    v49 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaLibraryTrackReleaseDate"];
+    v49 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaLibraryTrackReleaseDate"];
     releaseDate = v5->_releaseDate;
     v5->_releaseDate = v49;
 
-    v51 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaLibraryTrackVideoURL"];
+    v51 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaLibraryTrackVideoURL"];
     videoURL = v5->_videoURL;
     v5->_videoURL = v51;
 
-    v5->_explicitContent = [v4 decodeBoolForKey:@"SHMediaLibraryTrackExplicitContent"];
-    v5->_shazamCount = [v4 decodeInt64ForKey:@"SHMediaLibraryTrackShazamCount"];
-    v53 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaLibraryTrackLastUpdatedDate"];
+    v5->_explicitContent = [coderCopy decodeBoolForKey:@"SHMediaLibraryTrackExplicitContent"];
+    v5->_shazamCount = [coderCopy decodeInt64ForKey:@"SHMediaLibraryTrackShazamCount"];
+    v53 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaLibraryTrackLastUpdatedDate"];
     lastUpdatedDate = v5->_lastUpdatedDate;
     v5->_lastUpdatedDate = v53;
 
-    v55 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaLibraryTrackRawSongResponseData"];
+    v55 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaLibraryTrackRawSongResponseData"];
     rawSongResponse = v5->_rawSongResponse;
     v5->_rawSongResponse = v55;
 
     v57 = MEMORY[0x277CBEB98];
     v58 = objc_opt_class();
     v59 = [v57 setWithObjects:{v58, objc_opt_class(), 0}];
-    v60 = [v4 decodeObjectOfClasses:v59 forKey:@"SHMediaLibraryTrackGenres"];
+    v60 = [coderCopy decodeObjectOfClasses:v59 forKey:@"SHMediaLibraryTrackGenres"];
     genres = v5->_genres;
     v5->_genres = v60;
 
@@ -571,144 +571,144 @@ LABEL_14:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  [v8 encodeObject:self->_identifier forKey:@"SHLibraryTrackIdentifier"];
-  [v8 encodeObject:self->_recognitionIdentifier forKey:@"SHLibraryTrackRecognitionIdentifierKey"];
-  v5 = [(SHShazamKey *)self->_shazamKey validatedKey];
-  [v8 encodeObject:v5 forKey:@"SHLibraryTrackShazamKey"];
+  [coderCopy encodeObject:self->_identifier forKey:@"SHLibraryTrackIdentifier"];
+  [coderCopy encodeObject:self->_recognitionIdentifier forKey:@"SHLibraryTrackRecognitionIdentifierKey"];
+  validatedKey = [(SHShazamKey *)self->_shazamKey validatedKey];
+  [coderCopy encodeObject:validatedKey forKey:@"SHLibraryTrackShazamKey"];
 
-  v6 = [(SHMediaLibraryItemMetadata *)self->_metadata encodedSystemData];
-  [v8 encodeObject:v6 forKey:@"SHLibraryTrackMetadata"];
+  encodedSystemData = [(SHMediaLibraryItemMetadata *)self->_metadata encodedSystemData];
+  [coderCopy encodeObject:encodedSystemData forKey:@"SHLibraryTrackMetadata"];
 
-  [v8 encodeObject:self->_providerIdentifier forKey:@"SHLibraryTrackProviderIdentifier"];
-  [v8 encodeObject:self->_providerName forKey:@"SHLibraryTrackProviderName"];
-  [v8 encodeObject:self->_creationDate forKey:@"SHLibraryTrackDate"];
-  [v8 encodeObject:self->_title forKey:@"SHLibraryTrackTitle"];
-  [v8 encodeObject:self->_subtitle forKey:@"SHLibraryTrackSubtitle"];
-  [v8 encodeObject:self->_associatedGroupIdentifier forKey:@"SHLibraryTrackAssociatedGroupIdentifier"];
+  [coderCopy encodeObject:self->_providerIdentifier forKey:@"SHLibraryTrackProviderIdentifier"];
+  [coderCopy encodeObject:self->_providerName forKey:@"SHLibraryTrackProviderName"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"SHLibraryTrackDate"];
+  [coderCopy encodeObject:self->_title forKey:@"SHLibraryTrackTitle"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"SHLibraryTrackSubtitle"];
+  [coderCopy encodeObject:self->_associatedGroupIdentifier forKey:@"SHLibraryTrackAssociatedGroupIdentifier"];
   v7 = [(NSMutableSet *)self->_labelSet copy];
-  [v8 encodeObject:v7 forKey:@"SHLibraryTrackLibrarySet"];
+  [coderCopy encodeObject:v7 forKey:@"SHLibraryTrackLibrarySet"];
 
-  [v8 encodeObject:self->_artworkURL forKey:@"SHLibraryTrackArtworkURL"];
-  [v8 encodeObject:self->_shazamURL forKey:@"SHLibraryTrackShazamURL"];
-  [v8 encodeDouble:@"SHLibraryTrackLocationLatitude" forKey:self->_locationCoordinate.latitude];
-  [v8 encodeDouble:@"SHLibraryTrackLocationLongitude" forKey:self->_locationCoordinate.longitude];
-  [v8 encodeObject:self->_albumName forKey:@"SHMediaLibraryTrackAlbumName"];
-  [v8 encodeObject:self->_appleMusicURL forKey:@"SHMediaLibraryTrackAppleMusicURL"];
-  [v8 encodeObject:self->_appleMusicID forKey:@"SHMediaLibraryTrackAppleMusicID"];
-  [v8 encodeObject:self->_genres forKey:@"SHMediaLibraryTrackGenres"];
-  [v8 encodeObject:self->_isrc forKey:@"SHMediaLibraryTrackISRC"];
-  [v8 encodeObject:self->_rawSongResponse forKey:@"SHMediaLibraryTrackRawSongResponseData"];
-  [v8 encodeObject:self->_releaseDate forKey:@"SHMediaLibraryTrackReleaseDate"];
-  [v8 encodeObject:self->_videoURL forKey:@"SHMediaLibraryTrackVideoURL"];
-  [v8 encodeBool:self->_explicitContent forKey:@"SHMediaLibraryTrackExplicitContent"];
-  [v8 encodeInt64:self->_shazamCount forKey:@"SHMediaLibraryTrackShazamCount"];
-  [v8 encodeObject:self->_lastUpdatedDate forKey:@"SHMediaLibraryTrackLastUpdatedDate"];
+  [coderCopy encodeObject:self->_artworkURL forKey:@"SHLibraryTrackArtworkURL"];
+  [coderCopy encodeObject:self->_shazamURL forKey:@"SHLibraryTrackShazamURL"];
+  [coderCopy encodeDouble:@"SHLibraryTrackLocationLatitude" forKey:self->_locationCoordinate.latitude];
+  [coderCopy encodeDouble:@"SHLibraryTrackLocationLongitude" forKey:self->_locationCoordinate.longitude];
+  [coderCopy encodeObject:self->_albumName forKey:@"SHMediaLibraryTrackAlbumName"];
+  [coderCopy encodeObject:self->_appleMusicURL forKey:@"SHMediaLibraryTrackAppleMusicURL"];
+  [coderCopy encodeObject:self->_appleMusicID forKey:@"SHMediaLibraryTrackAppleMusicID"];
+  [coderCopy encodeObject:self->_genres forKey:@"SHMediaLibraryTrackGenres"];
+  [coderCopy encodeObject:self->_isrc forKey:@"SHMediaLibraryTrackISRC"];
+  [coderCopy encodeObject:self->_rawSongResponse forKey:@"SHMediaLibraryTrackRawSongResponseData"];
+  [coderCopy encodeObject:self->_releaseDate forKey:@"SHMediaLibraryTrackReleaseDate"];
+  [coderCopy encodeObject:self->_videoURL forKey:@"SHMediaLibraryTrackVideoURL"];
+  [coderCopy encodeBool:self->_explicitContent forKey:@"SHMediaLibraryTrackExplicitContent"];
+  [coderCopy encodeInt64:self->_shazamCount forKey:@"SHMediaLibraryTrackShazamCount"];
+  [coderCopy encodeObject:self->_lastUpdatedDate forKey:@"SHMediaLibraryTrackLastUpdatedDate"];
   objc_autoreleasePoolPop(v4);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [SHMediaLibraryTrack allocWithZone:?];
-  v6 = [(SHMediaLibraryTrack *)self identifier];
-  v7 = [v6 copyWithZone:a3];
-  v8 = [(SHMediaLibraryTrack *)self metadata];
-  v9 = [v8 copyWithZone:a3];
-  v10 = [(SHMediaLibraryTrack *)self labels];
-  v11 = [v10 allObjects];
-  v12 = [v11 copyWithZone:a3];
+  identifier = [(SHMediaLibraryTrack *)self identifier];
+  v7 = [identifier copyWithZone:zone];
+  metadata = [(SHMediaLibraryTrack *)self metadata];
+  v9 = [metadata copyWithZone:zone];
+  labels = [(SHMediaLibraryTrack *)self labels];
+  allObjects = [labels allObjects];
+  v12 = [allObjects copyWithZone:zone];
   v13 = [(SHMediaLibraryTrack *)v5 _initWithIdentifier:v7 metadata:v9 labels:v12];
 
-  v14 = [(SHMediaLibraryTrack *)self recognitionIdentifier];
-  v15 = [v14 copyWithZone:a3];
+  recognitionIdentifier = [(SHMediaLibraryTrack *)self recognitionIdentifier];
+  v15 = [recognitionIdentifier copyWithZone:zone];
   [v13 setRecognitionIdentifier:v15];
 
-  v16 = [(SHMediaLibraryTrack *)self shazamKey];
-  v17 = [v16 copyWithZone:a3];
+  shazamKey = [(SHMediaLibraryTrack *)self shazamKey];
+  v17 = [shazamKey copyWithZone:zone];
   [v13 setShazamKey:v17];
 
-  v18 = [(SHMediaLibraryTrack *)self creationDate];
-  v19 = [v18 copyWithZone:a3];
+  creationDate = [(SHMediaLibraryTrack *)self creationDate];
+  v19 = [creationDate copyWithZone:zone];
   [v13 setCreationDate:v19];
 
-  v20 = [(SHMediaLibraryTrack *)self providerIdentifier];
-  v21 = [v20 copyWithZone:a3];
+  providerIdentifier = [(SHMediaLibraryTrack *)self providerIdentifier];
+  v21 = [providerIdentifier copyWithZone:zone];
   [v13 setProviderIdentifier:v21];
 
-  v22 = [(SHMediaLibraryTrack *)self providerName];
-  v23 = [v22 copyWithZone:a3];
+  providerName = [(SHMediaLibraryTrack *)self providerName];
+  v23 = [providerName copyWithZone:zone];
   [v13 setProviderName:v23];
 
-  v24 = [(SHMediaLibraryTrack *)self title];
-  v25 = [v24 copyWithZone:a3];
+  title = [(SHMediaLibraryTrack *)self title];
+  v25 = [title copyWithZone:zone];
   [v13 setTitle:v25];
 
-  v26 = [(SHMediaLibraryTrack *)self subtitle];
-  v27 = [v26 copyWithZone:a3];
+  subtitle = [(SHMediaLibraryTrack *)self subtitle];
+  v27 = [subtitle copyWithZone:zone];
   [v13 setSubtitle:v27];
 
-  v28 = [(SHMediaLibraryTrack *)self associatedGroupIdentifier];
-  v29 = [v28 copyWithZone:a3];
+  associatedGroupIdentifier = [(SHMediaLibraryTrack *)self associatedGroupIdentifier];
+  v29 = [associatedGroupIdentifier copyWithZone:zone];
   [v13 setAssociatedGroupIdentifier:v29];
 
-  v30 = [(SHMediaLibraryTrack *)self artworkURL];
-  v31 = [v30 copyWithZone:a3];
+  artworkURL = [(SHMediaLibraryTrack *)self artworkURL];
+  v31 = [artworkURL copyWithZone:zone];
   [v13 setArtworkURL:v31];
 
-  v32 = [(SHMediaLibraryTrack *)self shazamURL];
-  v33 = [v32 copyWithZone:a3];
+  shazamURL = [(SHMediaLibraryTrack *)self shazamURL];
+  v33 = [shazamURL copyWithZone:zone];
   [v13 setShazamURL:v33];
 
   [(SHMediaLibraryTrack *)self locationCoordinate];
   [v13 setLocationCoordinate:?];
-  v34 = [(SHMediaLibraryTrack *)self albumName];
-  v35 = [v34 copyWithZone:a3];
+  albumName = [(SHMediaLibraryTrack *)self albumName];
+  v35 = [albumName copyWithZone:zone];
   [v13 setAlbumName:v35];
 
-  v36 = [(SHMediaLibraryTrack *)self appleMusicID];
-  v37 = [v36 copyWithZone:a3];
+  appleMusicID = [(SHMediaLibraryTrack *)self appleMusicID];
+  v37 = [appleMusicID copyWithZone:zone];
   [v13 setAppleMusicID:v37];
 
-  v38 = [(SHMediaLibraryTrack *)self appleMusicURL];
-  v39 = [v38 copyWithZone:a3];
+  appleMusicURL = [(SHMediaLibraryTrack *)self appleMusicURL];
+  v39 = [appleMusicURL copyWithZone:zone];
   [v13 setAppleMusicURL:v39];
 
   [v13 setExplicitContent:{-[SHMediaLibraryTrack explicitContent](self, "explicitContent")}];
-  v40 = [(SHMediaLibraryTrack *)self genres];
-  v41 = [v40 copyWithZone:a3];
+  genres = [(SHMediaLibraryTrack *)self genres];
+  v41 = [genres copyWithZone:zone];
   [v13 setGenres:v41];
 
-  v42 = [(SHMediaLibraryTrack *)self isrc];
-  v43 = [v42 copyWithZone:a3];
+  isrc = [(SHMediaLibraryTrack *)self isrc];
+  v43 = [isrc copyWithZone:zone];
   [v13 setIsrc:v43];
 
-  v44 = [(SHMediaLibraryTrack *)self rawSongResponse];
-  v45 = [v44 copyWithZone:a3];
+  rawSongResponse = [(SHMediaLibraryTrack *)self rawSongResponse];
+  v45 = [rawSongResponse copyWithZone:zone];
   [v13 setRawSongResponse:v45];
 
-  v46 = [(SHMediaLibraryTrack *)self releaseDate];
-  v47 = [v46 copyWithZone:a3];
+  releaseDate = [(SHMediaLibraryTrack *)self releaseDate];
+  v47 = [releaseDate copyWithZone:zone];
   [v13 setReleaseDate:v47];
 
   [v13 setShazamCount:{-[SHMediaLibraryTrack shazamCount](self, "shazamCount")}];
-  v48 = [(SHMediaLibraryTrack *)self videoURL];
-  v49 = [v48 copyWithZone:a3];
+  videoURL = [(SHMediaLibraryTrack *)self videoURL];
+  v49 = [videoURL copyWithZone:zone];
   [v13 setVideoURL:v49];
 
-  v50 = [(SHMediaLibraryTrack *)self lastUpdatedDate];
-  v51 = [v50 copyWithZone:a3];
+  lastUpdatedDate = [(SHMediaLibraryTrack *)self lastUpdatedDate];
+  v51 = [lastUpdatedDate copyWithZone:zone];
   [v13 setLastUpdatedDate:v51];
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -716,26 +716,26 @@ LABEL_14:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SHMediaLibraryTrack *)self isEqualTrack:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SHMediaLibraryTrack *)self isEqualTrack:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualTrack:(id)a3
+- (BOOL)isEqualTrack:(id)track
 {
-  v4 = a3;
-  v5 = [(SHMediaLibraryTrack *)self identifier];
-  v6 = [v4 identifier];
+  trackCopy = track;
+  identifier = [(SHMediaLibraryTrack *)self identifier];
+  identifier2 = [trackCopy identifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(trackCopy) = [identifier isEqualToString:identifier2];
+  return trackCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(SHMediaLibraryTrack *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(SHMediaLibraryTrack *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -756,8 +756,8 @@ LABEL_14:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(SHMediaLibraryTrack *)self labels];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  labels = [(SHMediaLibraryTrack *)self labels];
+  v4 = [labels countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -768,7 +768,7 @@ LABEL_3:
     {
       if (*v10 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(labels);
       }
 
       if (![*(*(&v9 + 1) + 8 * v7) type])
@@ -778,7 +778,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [labels countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -793,18 +793,18 @@ LABEL_3:
   {
 LABEL_9:
 
-    v3 = [(SHMediaLibraryTrack *)self platformLabel];
-    [(SHMediaLibraryTrack *)self addLabel:v3];
+    labels = [(SHMediaLibraryTrack *)self platformLabel];
+    [(SHMediaLibraryTrack *)self addLabel:labels];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addLabel:(id)a3
+- (void)addLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(SHMediaLibraryTrack *)self labelSet];
-  [v5 addObject:v4];
+  labelCopy = label;
+  labelSet = [(SHMediaLibraryTrack *)self labelSet];
+  [labelSet addObject:labelCopy];
 }
 
 - (CLLocationCoordinate2D)locationCoordinate

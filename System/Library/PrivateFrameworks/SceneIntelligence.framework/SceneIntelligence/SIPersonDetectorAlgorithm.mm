@@ -1,44 +1,44 @@
 @interface SIPersonDetectorAlgorithm
-- (SIPersonDetectorAlgorithm)initWithNetworkConfiguration:(id)a3;
-- (int64_t)_preprocessingInputData:(id)a3;
-- (int64_t)switchConfiguration:(unint64_t)a3;
-- (void)runWithInput:(__CVBuffer *)a3 output:(id)a4;
+- (SIPersonDetectorAlgorithm)initWithNetworkConfiguration:(id)configuration;
+- (int64_t)_preprocessingInputData:(id)data;
+- (int64_t)switchConfiguration:(unint64_t)configuration;
+- (void)runWithInput:(__CVBuffer *)input output:(id)output;
 @end
 
 @implementation SIPersonDetectorAlgorithm
 
-- (void)runWithInput:(__CVBuffer *)a3 output:(id)a4
+- (void)runWithInput:(__CVBuffer *)input output:(id)output
 {
-  v6 = a4;
+  outputCopy = output;
   v7 = objc_alloc_init(SIImageInputData);
-  [(SIImageInputData *)v7 setInputImageBuffer:a3];
+  [(SIImageInputData *)v7 setInputImageBuffer:input];
   v8 = objc_alloc_init(SIPersonDetectorData);
-  [(SIPersonDetectorData *)v8 setBoundingBoxes:v6];
+  [(SIPersonDetectorData *)v8 setBoundingBoxes:outputCopy];
 
   v9.receiver = self;
   v9.super_class = SIPersonDetectorAlgorithm;
   [(SIAlgorithm *)&v9 runWithInput:v7 output:v8];
 }
 
-- (SIPersonDetectorAlgorithm)initWithNetworkConfiguration:(id)a3
+- (SIPersonDetectorAlgorithm)initWithNetworkConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v21.receiver = self;
   v21.super_class = SIPersonDetectorAlgorithm;
-  v5 = [(SIAlgorithm *)&v21 initWithNetworkConfiguration:v4];
+  v5 = [(SIAlgorithm *)&v21 initWithNetworkConfiguration:configurationCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(SIAlgorithm *)v5 model];
+    model = [(SIAlgorithm *)v5 model];
     model = v6->_model;
-    v6->_model = v7;
+    v6->_model = model;
 
     v9 = [SIVideoToolboxScaler alloc];
     [(SIPersonDetector *)v6->_model getInputResolution];
     v11 = v10;
     v13 = v12;
-    v14 = [v4 imageScalerIdentifier];
-    v15 = [(SIBaseScaler *)v9 initForOutputResolution:1111970369 outputPixelFormat:0 mode:v14 algorithmKey:v11, v13];
+    imageScalerIdentifier = [configurationCopy imageScalerIdentifier];
+    v15 = [(SIBaseScaler *)v9 initForOutputResolution:1111970369 outputPixelFormat:0 mode:imageScalerIdentifier algorithmKey:v11, v13];
     scaler = v6->_scaler;
     v6->_scaler = v15;
 
@@ -52,17 +52,17 @@
   return v6;
 }
 
-- (int64_t)switchConfiguration:(unint64_t)a3
+- (int64_t)switchConfiguration:(unint64_t)configuration
 {
   v4.receiver = self;
   v4.super_class = SIPersonDetectorAlgorithm;
-  return [(SIAlgorithm *)&v4 switchConfiguration:a3];
+  return [(SIAlgorithm *)&v4 switchConfiguration:configuration];
 }
 
-- (int64_t)_preprocessingInputData:(id)a3
+- (int64_t)_preprocessingInputData:(id)data
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = -[SIVideoToolboxScaler createScaledImage:](self->_scaler, "createScaledImage:", [a3 inputImageBuffer]);
+  v4 = -[SIVideoToolboxScaler createScaledImage:](self->_scaler, "createScaledImage:", [data inputImageBuffer]);
   [(SIImageInputData *)self->_inputData setInputImageBuffer:v4];
   CVPixelBufferRelease(v4);
   if ([(SIImageInputData *)self->_inputData inputImageBuffer])

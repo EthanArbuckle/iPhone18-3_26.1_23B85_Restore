@@ -1,10 +1,10 @@
 @interface _LTSpeechTranslationResultsBuffer
 - (_LTSpeechTranslationDelegate)delegate;
 - (_LTSpeechTranslationResultsBuffer)init;
-- (void)speechRecognitionResult:(id)a3;
+- (void)speechRecognitionResult:(id)result;
 - (void)stopBuffering;
-- (void)translationDidFinishWithError:(id)a3;
-- (void)translatorDidTranslate:(id)a3;
+- (void)translationDidFinishWithError:(id)error;
+- (void)translatorDidTranslate:(id)translate;
 @end
 
 @implementation _LTSpeechTranslationResultsBuffer
@@ -30,7 +30,7 @@
 
 - (void)stopBuffering
 {
-  v3 = [(_LTSpeechTranslationResultsBuffer *)self delegate];
+  delegate = [(_LTSpeechTranslationResultsBuffer *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
@@ -46,25 +46,25 @@
 
   if (self->_translationResult)
   {
-    v6 = [(_LTSpeechTranslationResultsBuffer *)self delegate];
+    delegate2 = [(_LTSpeechTranslationResultsBuffer *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(_LTSpeechTranslationResultsBuffer *)self delegate];
-      [v8 translatorDidTranslate:self->_translationResult];
+      delegate3 = [(_LTSpeechTranslationResultsBuffer *)self delegate];
+      [delegate3 translatorDidTranslate:self->_translationResult];
     }
   }
 
   if (self->_didFinish)
   {
-    v9 = [(_LTSpeechTranslationResultsBuffer *)self delegate];
+    delegate4 = [(_LTSpeechTranslationResultsBuffer *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(_LTSpeechTranslationResultsBuffer *)self delegate];
-      [v11 translationDidFinishWithError:self->_error];
+      delegate5 = [(_LTSpeechTranslationResultsBuffer *)self delegate];
+      [delegate5 translationDidFinishWithError:self->_error];
     }
   }
 
@@ -72,56 +72,56 @@
   self->_signalDelegateWhenFinished = 1;
 }
 
-- (void)speechRecognitionResult:(id)a3
+- (void)speechRecognitionResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   if (self->_isBuffering)
   {
-    if (!v4)
+    if (!resultCopy)
     {
       goto LABEL_7;
     }
 
     lastASRResults = self->_lastASRResults;
-    v9 = v4;
-    v6 = [v4 locale];
-    [(NSMutableDictionary *)lastASRResults setObject:v9 forKeyedSubscript:v6];
+    v9 = resultCopy;
+    locale = [resultCopy locale];
+    [(NSMutableDictionary *)lastASRResults setObject:v9 forKeyedSubscript:locale];
   }
 
   else
   {
-    v9 = v4;
-    v7 = [(_LTSpeechTranslationResultsBuffer *)self delegate];
+    v9 = resultCopy;
+    delegate = [(_LTSpeechTranslationResultsBuffer *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
-    v4 = v9;
+    resultCopy = v9;
     if ((v8 & 1) == 0)
     {
       goto LABEL_7;
     }
 
-    v6 = [(_LTSpeechTranslationResultsBuffer *)self delegate];
-    [v6 speechRecognitionResult:v9];
+    locale = [(_LTSpeechTranslationResultsBuffer *)self delegate];
+    [locale speechRecognitionResult:v9];
   }
 
-  v4 = v9;
+  resultCopy = v9;
 LABEL_7:
 }
 
-- (void)translatorDidTranslate:(id)a3
+- (void)translatorDidTranslate:(id)translate
 {
-  v4 = a3;
-  v9 = v4;
+  translateCopy = translate;
+  v9 = translateCopy;
   if (self->_isBuffering)
   {
-    v5 = v4;
+    v5 = translateCopy;
     translationResult = self->_translationResult;
     self->_translationResult = v5;
   }
 
   else
   {
-    v7 = [(_LTSpeechTranslationResultsBuffer *)self delegate];
+    delegate = [(_LTSpeechTranslationResultsBuffer *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if ((v8 & 1) == 0)
@@ -136,9 +136,9 @@ LABEL_7:
 LABEL_6:
 }
 
-- (void)translationDidFinishWithError:(id)a3
+- (void)translationDidFinishWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   if (self->_signalDelegateWhenFinished)
   {
     v6 = _LTOSLogTranslationEngine();
@@ -148,14 +148,14 @@ LABEL_6:
       _os_log_impl(&dword_232E53000, v6, OS_LOG_TYPE_INFO, "Offline translation finished, informing delegate that we are all done.", v13, 2u);
     }
 
-    v7 = [(_LTSpeechTranslationResultsBuffer *)self delegate];
+    delegate = [(_LTSpeechTranslationResultsBuffer *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
       isBuffering = self->_isBuffering;
-      v10 = [(_LTSpeechTranslationResultsBuffer *)self delegate];
-      v11 = v10;
+      delegate2 = [(_LTSpeechTranslationResultsBuffer *)self delegate];
+      v11 = delegate2;
       if (isBuffering)
       {
         v12 = 0;
@@ -163,17 +163,17 @@ LABEL_6:
 
       else
       {
-        v12 = v5;
+        v12 = errorCopy;
       }
 
-      [v10 translationDidFinishWithError:v12];
+      [delegate2 translationDidFinishWithError:v12];
     }
   }
 
   else
   {
     self->_didFinish = 1;
-    objc_storeStrong(&self->_error, a3);
+    objc_storeStrong(&self->_error, error);
   }
 }
 

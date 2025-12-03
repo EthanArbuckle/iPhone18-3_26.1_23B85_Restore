@@ -1,7 +1,7 @@
 @interface ANSTForegroundSegmentationResult
 + (id)new;
 - (ANSTForegroundSegmentationResult)init;
-- (ANSTForegroundSegmentationResult)initWithMask:(__CVBuffer *)a3;
+- (ANSTForegroundSegmentationResult)initWithMask:(__CVBuffer *)mask;
 - (void)dealloc;
 @end
 
@@ -9,7 +9,7 @@
 
 + (id)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
@@ -21,17 +21,17 @@
   return result;
 }
 
-- (ANSTForegroundSegmentationResult)initWithMask:(__CVBuffer *)a3
+- (ANSTForegroundSegmentationResult)initWithMask:(__CVBuffer *)mask
 {
   v6.receiver = self;
   v6.super_class = ANSTForegroundSegmentationResult;
-  v4 = [(ANSTResult *)&v6 _init];
-  if (v4)
+  _init = [(ANSTResult *)&v6 _init];
+  if (_init)
   {
-    v4->_semanticMap = CVBufferRetain(a3);
+    _init->_semanticMap = CVBufferRetain(mask);
   }
 
-  return v4;
+  return _init;
 }
 
 - (void)dealloc

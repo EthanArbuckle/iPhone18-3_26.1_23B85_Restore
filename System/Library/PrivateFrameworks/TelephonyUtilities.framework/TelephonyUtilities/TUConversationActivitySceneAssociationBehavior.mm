@@ -1,13 +1,13 @@
 @interface TUConversationActivitySceneAssociationBehavior
 + (TUConversationActivitySceneAssociationBehavior)defaultBehavior;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalentToSceneAssociationBehavior:(id)a3;
-- (TUConversationActivitySceneAssociationBehavior)initWithCoder:(id)a3;
-- (TUConversationActivitySceneAssociationBehavior)initWithTargetContentIdentifier:(id)a3 shouldAssociateScene:(BOOL)a4 preferredSceneSessionRole:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalentToSceneAssociationBehavior:(id)behavior;
+- (TUConversationActivitySceneAssociationBehavior)initWithCoder:(id)coder;
+- (TUConversationActivitySceneAssociationBehavior)initWithTargetContentIdentifier:(id)identifier shouldAssociateScene:(BOOL)scene preferredSceneSessionRole:(id)role;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUConversationActivitySceneAssociationBehavior
@@ -19,21 +19,21 @@
   return v2;
 }
 
-- (TUConversationActivitySceneAssociationBehavior)initWithTargetContentIdentifier:(id)a3 shouldAssociateScene:(BOOL)a4 preferredSceneSessionRole:(id)a5
+- (TUConversationActivitySceneAssociationBehavior)initWithTargetContentIdentifier:(id)identifier shouldAssociateScene:(BOOL)scene preferredSceneSessionRole:(id)role
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  roleCopy = role;
   v16.receiver = self;
   v16.super_class = TUConversationActivitySceneAssociationBehavior;
   v10 = [(TUConversationActivitySceneAssociationBehavior *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     targetContentIdentifier = v10->_targetContentIdentifier;
     v10->_targetContentIdentifier = v11;
 
-    v10->_shouldAssociateScene = a4;
-    v13 = [v9 copy];
+    v10->_shouldAssociateScene = scene;
+    v13 = [roleCopy copy];
     preferredSceneSessionRole = v10->_preferredSceneSessionRole;
     v10->_preferredSceneSessionRole = v13;
   }
@@ -44,12 +44,12 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(TUConversationActivitySceneAssociationBehavior *)self targetContentIdentifier];
-  [v3 appendFormat:@" targetContentIdentifier=%@", v4];
+  targetContentIdentifier = [(TUConversationActivitySceneAssociationBehavior *)self targetContentIdentifier];
+  [v3 appendFormat:@" targetContentIdentifier=%@", targetContentIdentifier];
 
   [v3 appendFormat:@" shouldAssociateScene=%d", -[TUConversationActivitySceneAssociationBehavior shouldAssociateScene](self, "shouldAssociateScene")];
-  v5 = [(TUConversationActivitySceneAssociationBehavior *)self preferredSceneSessionRole];
-  [v3 appendFormat:@" preferredSceneSessionRole=%@", v5];
+  preferredSceneSessionRole = [(TUConversationActivitySceneAssociationBehavior *)self preferredSceneSessionRole];
+  [v3 appendFormat:@" preferredSceneSessionRole=%@", preferredSceneSessionRole];
 
   [v3 appendString:@">"];
   v6 = [v3 copy];
@@ -57,25 +57,25 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationActivitySceneAssociationBehavior *)self isEquivalentToSceneAssociationBehavior:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationActivitySceneAssociationBehavior *)self isEquivalentToSceneAssociationBehavior:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEquivalentToSceneAssociationBehavior:(id)a3
+- (BOOL)isEquivalentToSceneAssociationBehavior:(id)behavior
 {
-  v4 = a3;
-  v5 = [(TUConversationActivitySceneAssociationBehavior *)self targetContentIdentifier];
-  v6 = [v4 targetContentIdentifier];
-  if (TUObjectsAreEqualOrNil(v5, v6) && (v7 = -[TUConversationActivitySceneAssociationBehavior shouldAssociateScene](self, "shouldAssociateScene"), v7 == [v4 shouldAssociateScene]))
+  behaviorCopy = behavior;
+  targetContentIdentifier = [(TUConversationActivitySceneAssociationBehavior *)self targetContentIdentifier];
+  targetContentIdentifier2 = [behaviorCopy targetContentIdentifier];
+  if (TUObjectsAreEqualOrNil(targetContentIdentifier, targetContentIdentifier2) && (v7 = -[TUConversationActivitySceneAssociationBehavior shouldAssociateScene](self, "shouldAssociateScene"), v7 == [behaviorCopy shouldAssociateScene]))
   {
-    v9 = [(TUConversationActivitySceneAssociationBehavior *)self preferredSceneSessionRole];
-    v10 = [v4 preferredSceneSessionRole];
-    v8 = TUObjectsAreEqualOrNil(v9, v10);
+    preferredSceneSessionRole = [(TUConversationActivitySceneAssociationBehavior *)self preferredSceneSessionRole];
+    preferredSceneSessionRole2 = [behaviorCopy preferredSceneSessionRole];
+    v8 = TUObjectsAreEqualOrNil(preferredSceneSessionRole, preferredSceneSessionRole2);
   }
 
   else
@@ -88,8 +88,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TUConversationActivitySceneAssociationBehavior *)self targetContentIdentifier];
-  v4 = [v3 hash];
+  targetContentIdentifier = [(TUConversationActivitySceneAssociationBehavior *)self targetContentIdentifier];
+  v4 = [targetContentIdentifier hash];
   if ([(TUConversationActivitySceneAssociationBehavior *)self shouldAssociateScene])
   {
     v5 = 1231;
@@ -100,55 +100,55 @@
     v5 = 1237;
   }
 
-  v6 = [(TUConversationActivitySceneAssociationBehavior *)self preferredSceneSessionRole];
-  v7 = v4 ^ [v6 hash];
+  preferredSceneSessionRole = [(TUConversationActivitySceneAssociationBehavior *)self preferredSceneSessionRole];
+  v7 = v4 ^ [preferredSceneSessionRole hash];
 
   return v5 ^ v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(TUConversationActivitySceneAssociationBehavior *)self targetContentIdentifier];
-  v6 = [(TUConversationActivitySceneAssociationBehavior *)self shouldAssociateScene];
-  v7 = [(TUConversationActivitySceneAssociationBehavior *)self preferredSceneSessionRole];
-  v8 = [v4 initWithTargetContentIdentifier:v5 shouldAssociateScene:v6 preferredSceneSessionRole:v7];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  targetContentIdentifier = [(TUConversationActivitySceneAssociationBehavior *)self targetContentIdentifier];
+  shouldAssociateScene = [(TUConversationActivitySceneAssociationBehavior *)self shouldAssociateScene];
+  preferredSceneSessionRole = [(TUConversationActivitySceneAssociationBehavior *)self preferredSceneSessionRole];
+  v8 = [v4 initWithTargetContentIdentifier:targetContentIdentifier shouldAssociateScene:shouldAssociateScene preferredSceneSessionRole:preferredSceneSessionRole];
 
   return v8;
 }
 
-- (TUConversationActivitySceneAssociationBehavior)initWithCoder:(id)a3
+- (TUConversationActivitySceneAssociationBehavior)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_targetContentIdentifier);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = NSStringFromSelector(sel_shouldAssociateScene);
-  v9 = [v4 decodeBoolForKey:v8];
+  v9 = [coderCopy decodeBoolForKey:v8];
 
   v10 = objc_opt_class();
   v11 = NSStringFromSelector(sel_preferredSceneSessionRole);
-  v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+  v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
 
   v13 = [(TUConversationActivitySceneAssociationBehavior *)self initWithTargetContentIdentifier:v7 shouldAssociateScene:v9 preferredSceneSessionRole:v12];
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUConversationActivitySceneAssociationBehavior *)self targetContentIdentifier];
+  coderCopy = coder;
+  targetContentIdentifier = [(TUConversationActivitySceneAssociationBehavior *)self targetContentIdentifier];
   v6 = NSStringFromSelector(sel_targetContentIdentifier);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:targetContentIdentifier forKey:v6];
 
-  v7 = [(TUConversationActivitySceneAssociationBehavior *)self shouldAssociateScene];
+  shouldAssociateScene = [(TUConversationActivitySceneAssociationBehavior *)self shouldAssociateScene];
   v8 = NSStringFromSelector(sel_shouldAssociateScene);
-  [v4 encodeBool:v7 forKey:v8];
+  [coderCopy encodeBool:shouldAssociateScene forKey:v8];
 
-  v10 = [(TUConversationActivitySceneAssociationBehavior *)self preferredSceneSessionRole];
+  preferredSceneSessionRole = [(TUConversationActivitySceneAssociationBehavior *)self preferredSceneSessionRole];
   v9 = NSStringFromSelector(sel_preferredSceneSessionRole);
-  [v4 encodeObject:v10 forKey:v9];
+  [coderCopy encodeObject:preferredSceneSessionRole forKey:v9];
 }
 
 @end

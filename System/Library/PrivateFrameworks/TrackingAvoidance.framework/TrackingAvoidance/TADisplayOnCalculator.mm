@@ -1,25 +1,25 @@
 @interface TADisplayOnCalculator
-- (BOOL)isEqual:(id)a3;
-- (TADisplayOnCalculator)initWithCoder:(id)a3;
-- (TADisplayOnCalculator)initWithStartTime:(id)a3;
-- (TADisplayOnCalculator)initWithStartTime:(id)a3 budget:(double)a4;
-- (double)calculateDisplayOnWithEvents:(id)a3 advertisements:(id)a4 endDate:(id)a5;
-- (void)completeDisplayOnWithEndDate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (TADisplayOnCalculator)initWithCoder:(id)coder;
+- (TADisplayOnCalculator)initWithStartTime:(id)time;
+- (TADisplayOnCalculator)initWithStartTime:(id)time budget:(double)budget;
+- (double)calculateDisplayOnWithEvents:(id)events advertisements:(id)advertisements endDate:(id)date;
+- (void)completeDisplayOnWithEndDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TADisplayOnCalculator
 
-- (TADisplayOnCalculator)initWithStartTime:(id)a3
+- (TADisplayOnCalculator)initWithStartTime:(id)time
 {
-  v5 = a3;
+  timeCopy = time;
   v9.receiver = self;
   v9.super_class = TADisplayOnCalculator;
   v6 = [(TADisplayOnCalculator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_startTime, a3);
+    objc_storeStrong(&v6->_startTime, time);
     v7->_useBudget = 0;
     objc_storeStrong(&v7->_evaluatedUntil, v7->_startTime);
   }
@@ -27,21 +27,21 @@
   return v7;
 }
 
-- (TADisplayOnCalculator)initWithStartTime:(id)a3 budget:(double)a4
+- (TADisplayOnCalculator)initWithStartTime:(id)time budget:(double)budget
 {
-  result = [(TADisplayOnCalculator *)self initWithStartTime:a3];
+  result = [(TADisplayOnCalculator *)self initWithStartTime:time];
   if (result)
   {
     result->_useBudget = 1;
-    result->_budgetRemaining = a4;
+    result->_budgetRemaining = budget;
   }
 
   return result;
 }
 
-- (void)completeDisplayOnWithEndDate:(id)a3
+- (void)completeDisplayOnWithEndDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   if (!self->_useBudget)
   {
     v6 = TAStatusLog;
@@ -53,36 +53,36 @@
 
   if (self->_budgetRemaining > 0.0)
   {
-    if ([(NSDate *)self->_evaluatedUntil compare:v5]== NSOrderedAscending)
+    if ([(NSDate *)self->_evaluatedUntil compare:dateCopy]== NSOrderedAscending)
     {
-      objc_storeStrong(&self->_evaluatedUntil, a3);
+      objc_storeStrong(&self->_evaluatedUntil, date);
     }
 
     self->_budgetRemaining = 0.0;
   }
 }
 
-- (double)calculateDisplayOnWithEvents:(id)a3 advertisements:(id)a4 endDate:(id)a5
+- (double)calculateDisplayOnWithEvents:(id)events advertisements:(id)advertisements endDate:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventsCopy = events;
+  advertisementsCopy = advertisements;
+  dateCopy = date;
   v11 = 0.0;
-  if ([(NSDate *)self->_evaluatedUntil compare:v10]!= NSOrderedAscending || self->_useBudget && self->_budgetRemaining <= 0.0)
+  if ([(NSDate *)self->_evaluatedUntil compare:dateCopy]!= NSOrderedAscending || self->_useBudget && self->_budgetRemaining <= 0.0)
   {
     goto LABEL_49;
   }
 
   v12 = self->_evaluatedUntil;
-  if (![v8 count])
+  if (![eventsCopy count])
   {
-    if ([v9 count])
+    if ([advertisementsCopy count])
     {
-      [v10 timeIntervalSinceDate:self->_startTime];
+      [dateCopy timeIntervalSinceDate:self->_startTime];
       v11 = v23;
       if (v23 >= 0.0)
       {
-        objc_storeStrong(&self->_evaluatedUntil, a5);
+        objc_storeStrong(&self->_evaluatedUntil, date);
         if (self->_useBudget)
         {
           budgetRemaining = self->_budgetRemaining;
@@ -113,12 +113,12 @@
   }
 
   p_evaluatedUntil = &self->_evaluatedUntil;
-  v60 = v9;
-  v13 = [v8 lastObject];
-  v14 = [v13 getDate];
-  v15 = [v14 compare:v12];
+  v60 = advertisementsCopy;
+  lastObject = [eventsCopy lastObject];
+  getDate = [lastObject getDate];
+  v15 = [getDate compare:v12];
 
-  v16 = [v8 count];
+  v16 = [eventsCopy count];
   if (v15 != 1)
   {
     LODWORD(v17) = v16 - 1;
@@ -131,9 +131,9 @@
     v17 = 0;
     while (1)
     {
-      v18 = [v8 objectAtIndexedSubscript:v17];
-      v19 = [v18 getDate];
-      v20 = [v19 compare:v12];
+      v18 = [eventsCopy objectAtIndexedSubscript:v17];
+      getDate2 = [v18 getDate];
+      v20 = [getDate2 compare:v12];
 
       if (v20 == 1)
       {
@@ -142,12 +142,12 @@
 
       if (!v20)
       {
-        v33 = v8;
+        v33 = eventsCopy;
         v32 = v17;
         goto LABEL_18;
       }
 
-      if ([v8 count] <= ++v17)
+      if ([eventsCopy count] <= ++v17)
       {
         goto LABEL_11;
       }
@@ -155,8 +155,8 @@
 
     if (!v17)
     {
-      v34 = [v8 objectAtIndexedSubscript:0];
-      v21 = [v34 isOn] ^ 1;
+      v34 = [eventsCopy objectAtIndexedSubscript:0];
+      isOn = [v34 isOn] ^ 1;
       LODWORD(v17) = -1;
 LABEL_19:
 
@@ -167,15 +167,15 @@ LABEL_19:
     LODWORD(v17) = v17 - 1;
     v32 = v17;
 LABEL_17:
-    v33 = v8;
+    v33 = eventsCopy;
 LABEL_18:
     v34 = [v33 objectAtIndexedSubscript:v32];
-    v21 = [v34 isOn];
+    isOn = [v34 isOn];
     goto LABEL_19;
   }
 
 LABEL_11:
-  v21 = 0;
+  isOn = 0;
   v22 = -1;
 LABEL_20:
   v35 = 0;
@@ -183,56 +183,56 @@ LABEL_20:
   v11 = 0.0;
   while (1)
   {
-    v37 = [v8 count];
+    v37 = [eventsCopy count];
     v38 = v37 > v36;
     if (v37 <= v36)
     {
       goto LABEL_24;
     }
 
-    v39 = [v8 objectAtIndexedSubscript:v36];
-    v40 = [v39 getDate];
+    v39 = [eventsCopy objectAtIndexedSubscript:v36];
+    getDate3 = [v39 getDate];
 
-    if ([(NSDate *)v40 compare:v10]== NSOrderedAscending)
+    if ([(NSDate *)getDate3 compare:dateCopy]== NSOrderedAscending)
     {
       break;
     }
 
-    v35 = v40;
+    v35 = getDate3;
 LABEL_24:
-    v40 = v10;
+    getDate3 = dateCopy;
 
-    if (v21)
+    if (isOn)
     {
       goto LABEL_25;
     }
 
 LABEL_34:
-    if (v38 || v36 == [v8 count] || self->_useBudget && self->_budgetRemaining <= 0.0)
+    if (v38 || v36 == [eventsCopy count] || self->_useBudget && self->_budgetRemaining <= 0.0)
     {
       goto LABEL_47;
     }
 
-    v46 = [v8 objectAtIndexedSubscript:v36];
-    v21 = [v46 isOn];
+    v46 = [eventsCopy objectAtIndexedSubscript:v36];
+    isOn = [v46 isOn];
 
-    v35 = v40;
+    v35 = getDate3;
     ++v36;
     v12 = v35;
   }
 
   v38 = 0;
-  if ((v21 & 1) == 0)
+  if ((isOn & 1) == 0)
   {
     goto LABEL_34;
   }
 
 LABEL_25:
-  [(NSDate *)v40 timeIntervalSinceDate:v12];
+  [(NSDate *)getDate3 timeIntervalSinceDate:v12];
   if (!self->_useBudget)
   {
 LABEL_33:
-    [(NSDate *)v40 timeIntervalSinceDate:v12];
+    [(NSDate *)getDate3 timeIntervalSinceDate:v12];
     v11 = v11 + v45;
     goto LABEL_34;
   }
@@ -250,7 +250,7 @@ LABEL_33:
       v43 = [(NSDate *)v12 dateByAddingTimeInterval:self->_budgetRemaining];
 
       v44 = 0.0;
-      v40 = v43;
+      getDate3 = v43;
     }
 
     self->_budgetRemaining = v44;
@@ -265,20 +265,20 @@ LABEL_33:
 
 LABEL_47:
   v56 = *p_evaluatedUntil;
-  *p_evaluatedUntil = v40;
-  v57 = v40;
+  *p_evaluatedUntil = getDate3;
+  v57 = getDate3;
 
-  v9 = v60;
+  advertisementsCopy = v60;
 LABEL_48:
 
 LABEL_49:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -288,9 +288,9 @@ LABEL_49:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(TADisplayOnCalculator *)self useBudget];
-      if (v7 != [(TADisplayOnCalculator *)v6 useBudget]|| ([(TADisplayOnCalculator *)self budgetRemaining], v9 = v8, [(TADisplayOnCalculator *)v6 budgetRemaining], v9 != v10))
+      v6 = equalCopy;
+      useBudget = [(TADisplayOnCalculator *)self useBudget];
+      if (useBudget != [(TADisplayOnCalculator *)v6 useBudget]|| ([(TADisplayOnCalculator *)self budgetRemaining], v9 = v8, [(TADisplayOnCalculator *)v6 budgetRemaining], v9 != v10))
       {
         v14 = 0;
 LABEL_18:
@@ -298,13 +298,13 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v11 = [(TADisplayOnCalculator *)self startTime];
-      v12 = [(TADisplayOnCalculator *)v6 startTime];
-      if (v11 != v12)
+      startTime = [(TADisplayOnCalculator *)self startTime];
+      startTime2 = [(TADisplayOnCalculator *)v6 startTime];
+      if (startTime != startTime2)
       {
-        v13 = [(TADisplayOnCalculator *)self startTime];
-        v3 = [(TADisplayOnCalculator *)v6 startTime];
-        if (![v13 isEqual:v3])
+        startTime3 = [(TADisplayOnCalculator *)self startTime];
+        startTime4 = [(TADisplayOnCalculator *)v6 startTime];
+        if (![startTime3 isEqual:startTime4])
         {
           v14 = 0;
 LABEL_16:
@@ -313,13 +313,13 @@ LABEL_17:
           goto LABEL_18;
         }
 
-        v21 = v13;
+        v21 = startTime3;
       }
 
-      v15 = [(TADisplayOnCalculator *)self evaluatedUntil];
-      v16 = [(TADisplayOnCalculator *)v6 evaluatedUntil];
-      v17 = v16;
-      if (v15 == v16)
+      evaluatedUntil = [(TADisplayOnCalculator *)self evaluatedUntil];
+      evaluatedUntil2 = [(TADisplayOnCalculator *)v6 evaluatedUntil];
+      v17 = evaluatedUntil2;
+      if (evaluatedUntil == evaluatedUntil2)
       {
 
         v14 = 1;
@@ -327,13 +327,13 @@ LABEL_17:
 
       else
       {
-        v18 = [(TADisplayOnCalculator *)self evaluatedUntil];
-        v19 = [(TADisplayOnCalculator *)v6 evaluatedUntil];
-        v14 = [v18 isEqual:v19];
+        evaluatedUntil3 = [(TADisplayOnCalculator *)self evaluatedUntil];
+        evaluatedUntil4 = [(TADisplayOnCalculator *)v6 evaluatedUntil];
+        v14 = [evaluatedUntil3 isEqual:evaluatedUntil4];
       }
 
-      v13 = v21;
-      if (v11 == v12)
+      startTime3 = v21;
+      if (startTime == startTime2)
       {
         goto LABEL_17;
       }
@@ -349,22 +349,22 @@ LABEL_19:
   return v14;
 }
 
-- (TADisplayOnCalculator)initWithCoder:(id)a3
+- (TADisplayOnCalculator)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = TADisplayOnCalculator;
   v5 = [(TADisplayOnCalculator *)&v12 init];
   if (v5)
   {
-    v5->_useBudget = [v4 decodeBoolForKey:@"UseBudget"];
-    [v4 decodeDoubleForKey:@"BudgetRemaining"];
+    v5->_useBudget = [coderCopy decodeBoolForKey:@"UseBudget"];
+    [coderCopy decodeDoubleForKey:@"BudgetRemaining"];
     v5->_budgetRemaining = v6;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"StartTime"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StartTime"];
     startTime = v5->_startTime;
     v5->_startTime = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EvalUntil"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EvalUntil"];
     evaluatedUntil = v5->_evaluatedUntil;
     v5->_evaluatedUntil = v9;
   }
@@ -372,14 +372,14 @@ LABEL_19:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   useBudget = self->_useBudget;
-  v5 = a3;
-  [v5 encodeBool:useBudget forKey:@"UseBudget"];
-  [v5 encodeDouble:@"BudgetRemaining" forKey:self->_budgetRemaining];
-  [v5 encodeObject:self->_startTime forKey:@"StartTime"];
-  [v5 encodeObject:self->_evaluatedUntil forKey:@"EvalUntil"];
+  coderCopy = coder;
+  [coderCopy encodeBool:useBudget forKey:@"UseBudget"];
+  [coderCopy encodeDouble:@"BudgetRemaining" forKey:self->_budgetRemaining];
+  [coderCopy encodeObject:self->_startTime forKey:@"StartTime"];
+  [coderCopy encodeObject:self->_evaluatedUntil forKey:@"EvalUntil"];
 }
 
 @end

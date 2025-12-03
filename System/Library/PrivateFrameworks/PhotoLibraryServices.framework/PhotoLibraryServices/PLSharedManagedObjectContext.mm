@@ -1,18 +1,18 @@
 @interface PLSharedManagedObjectContext
-- (BOOL)_hasChangesForCloudShared:(id)a3;
-- (BOOL)shouldMergeFromRemoteContextWithChanges:(id)a3;
-- (void)_mergeChangesFromDidSaveDictionary:(id)a3 usingObjectIDs:(BOOL)a4;
+- (BOOL)_hasChangesForCloudShared:(id)shared;
+- (BOOL)shouldMergeFromRemoteContextWithChanges:(id)changes;
+- (void)_mergeChangesFromDidSaveDictionary:(id)dictionary usingObjectIDs:(BOOL)ds;
 - (void)setupLocalChangeNotifications;
 - (void)tearDownLocalChangeNotifications;
 @end
 
 @implementation PLSharedManagedObjectContext
 
-- (void)_mergeChangesFromDidSaveDictionary:(id)a3 usingObjectIDs:(BOOL)a4
+- (void)_mergeChangesFromDidSaveDictionary:(id)dictionary usingObjectIDs:(BOOL)ds
 {
-  v4 = a4;
+  dsCopy = ds;
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v7 = objc_autoreleasePoolPush();
   if ([(PLSharedManagedObjectContext *)self isUserInterfaceContext])
   {
@@ -21,8 +21,8 @@
 
     if (v9)
     {
-      v26 = v4;
-      v27 = self;
+      v26 = dsCopy;
+      selfCopy = self;
       v28 = v7;
       v40 = 0u;
       v41 = 0u;
@@ -48,8 +48,8 @@
             v35 = 0u;
             v36 = 0u;
             v37 = 0u;
-            v13 = v6;
-            v14 = [v6 objectForKey:v12];
+            v13 = dictionaryCopy;
+            v14 = [dictionaryCopy objectForKey:v12];
             v15 = [v14 countByEnumeratingWithState:&v34 objects:v42 count:16];
             if (v15)
             {
@@ -64,8 +64,8 @@
                     objc_enumerationMutation(v14);
                   }
 
-                  v19 = [*(*(&v34 + 1) + 8 * j) entity];
-                  v20 = [v19 isKindOfEntity:v9];
+                  entity = [*(*(&v34 + 1) + 8 * j) entity];
+                  v20 = [entity isKindOfEntity:v9];
 
                   v10 += v20;
                 }
@@ -76,7 +76,7 @@
               while (v16);
             }
 
-            v6 = v13;
+            dictionaryCopy = v13;
           }
 
           v31 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
@@ -85,35 +85,35 @@
         while (v31);
       }
 
-      v21 = [(PLManagedObjectContext *)v27 _tooManyAssetChangesToHandle:v10];
+      v21 = [(PLManagedObjectContext *)selfCopy _tooManyAssetChangesToHandle:v10];
       v22 = +[PLChangeNotificationCenter defaultCenter];
       v23 = v22;
       if (v21)
       {
-        [v22 managedObjectContextWillBeOverloaded:v27 withNotificationData:v6 usingObjectIDs:v26];
+        [v22 managedObjectContextWillBeOverloaded:selfCopy withNotificationData:dictionaryCopy usingObjectIDs:v26];
 
-        v33.receiver = v27;
+        v33.receiver = selfCopy;
         v33.super_class = PLSharedManagedObjectContext;
-        [(PLManagedObjectContext *)&v33 _mergeChangesFromDidSaveDictionary:v6 usingObjectIDs:v26];
+        [(PLManagedObjectContext *)&v33 _mergeChangesFromDidSaveDictionary:dictionaryCopy usingObjectIDs:v26];
         v24 = +[PLChangeNotificationCenter defaultCenter];
-        [v24 managedObjectContextWasOverloaded:v27 withNotificationData:v6 usingObjectIDs:v26];
+        [v24 managedObjectContextWasOverloaded:selfCopy withNotificationData:dictionaryCopy usingObjectIDs:v26];
       }
 
       else
       {
-        [v22 managedObjectContext:v27 willProcessRemoteContextSave:v6 usingObjectIDs:v26 isCoalescedEvent:{-[PLChangeHandlingContainer isMergingCoalescedSaveNotification](v27->super._changeHandlingContainer, "isMergingCoalescedSaveNotification")}];
+        [v22 managedObjectContext:selfCopy willProcessRemoteContextSave:dictionaryCopy usingObjectIDs:v26 isCoalescedEvent:{-[PLChangeHandlingContainer isMergingCoalescedSaveNotification](selfCopy->super._changeHandlingContainer, "isMergingCoalescedSaveNotification")}];
 
-        v32.receiver = v27;
+        v32.receiver = selfCopy;
         v32.super_class = PLSharedManagedObjectContext;
-        [(PLManagedObjectContext *)&v32 _mergeChangesFromDidSaveDictionary:v6 usingObjectIDs:v26];
+        [(PLManagedObjectContext *)&v32 _mergeChangesFromDidSaveDictionary:dictionaryCopy usingObjectIDs:v26];
         v24 = +[PLChangeNotificationCenter defaultCenter];
-        [v24 managedObjectContext:v27 didProcessRemoteContextSave:v6 usingObjectIDs:v26];
+        [v24 managedObjectContext:selfCopy didProcessRemoteContextSave:dictionaryCopy usingObjectIDs:v26];
       }
 
       v7 = v28;
 
-      v25 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v25 postNotificationName:@"PLManagedObjectContextFinishedRemoteMergeNotification" object:v27];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"PLManagedObjectContextFinishedRemoteMergeNotification" object:selfCopy];
     }
   }
 
@@ -121,7 +121,7 @@
   {
     v32.receiver = self;
     v32.super_class = PLSharedManagedObjectContext;
-    [(PLManagedObjectContext *)&v32 _mergeChangesFromDidSaveDictionary:v6 usingObjectIDs:v4];
+    [(PLManagedObjectContext *)&v32 _mergeChangesFromDidSaveDictionary:dictionaryCopy usingObjectIDs:dsCopy];
   }
 
   objc_autoreleasePoolPop(v7);
@@ -129,12 +129,12 @@
 
 - (void)tearDownLocalChangeNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  v4 = v3;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  v4 = defaultCenter;
   changeNotificationObserver = self->_changeNotificationObserver;
   if (changeNotificationObserver)
   {
-    [v3 removeObserver:changeNotificationObserver name:*MEMORY[0x1E695D360] object:self];
+    [defaultCenter removeObserver:changeNotificationObserver name:*MEMORY[0x1E695D360] object:self];
     v6 = self->_changeNotificationObserver;
     self->_changeNotificationObserver = 0;
 
@@ -153,8 +153,8 @@
   {
     if (!self->_changeNotificationObserver)
     {
-      v3 = [MEMORY[0x1E696AD88] defaultCenter];
-      v4 = [v3 addObserverForName:*MEMORY[0x1E695D360] object:self queue:0 usingBlock:&__block_literal_global_551];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      v4 = [defaultCenter addObserverForName:*MEMORY[0x1E695D360] object:self queue:0 usingBlock:&__block_literal_global_551];
       changeNotificationObserver = self->_changeNotificationObserver;
       self->_changeNotificationObserver = v4;
     }
@@ -168,12 +168,12 @@ void __61__PLSharedManagedObjectContext_setupLocalChangeNotifications__block_inv
   [v3 processContextDidChangeNotification:v2];
 }
 
-- (BOOL)shouldMergeFromRemoteContextWithChanges:(id)a3
+- (BOOL)shouldMergeFromRemoteContextWithChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   if ([(PLSharedManagedObjectContext *)self isUserInterfaceContext])
   {
-    v5 = [(PLSharedManagedObjectContext *)self _hasChangesForCloudShared:v4];
+    v5 = [(PLSharedManagedObjectContext *)self _hasChangesForCloudShared:changesCopy];
   }
 
   else
@@ -184,9 +184,9 @@ void __61__PLSharedManagedObjectContext_setupLocalChangeNotifications__block_inv
   return v5;
 }
 
-- (BOOL)_hasChangesForCloudShared:(id)a3
+- (BOOL)_hasChangesForCloudShared:(id)shared
 {
-  v3 = a3;
+  sharedCopy = shared;
   pl_dispatch_once();
   v4 = _hasChangesForCloudShared__pl_once_object_48;
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -196,17 +196,17 @@ void __61__PLSharedManagedObjectContext_setupLocalChangeNotifications__block_inv
   v15 = v4;
   v5 = v4;
   v6 = _Block_copy(aBlock);
-  v7 = [v3 objectForKeyedSubscript:*MEMORY[0x1E695D320]];
+  v7 = [sharedCopy objectForKeyedSubscript:*MEMORY[0x1E695D320]];
   v8 = v6[2](v6, v7);
 
-  if (v8 & 1) != 0 || ([v3 objectForKeyedSubscript:*MEMORY[0x1E695D4C8]], v9 = objc_claimAutoreleasedReturnValue(), v10 = v6[2](v6, v9), v9, (v10))
+  if (v8 & 1) != 0 || ([sharedCopy objectForKeyedSubscript:*MEMORY[0x1E695D4C8]], v9 = objc_claimAutoreleasedReturnValue(), v10 = v6[2](v6, v9), v9, (v10))
   {
     v11 = 1;
   }
 
   else
   {
-    v12 = [v3 objectForKeyedSubscript:*MEMORY[0x1E695D2F0]];
+    v12 = [sharedCopy objectForKeyedSubscript:*MEMORY[0x1E695D2F0]];
     v11 = v6[2](v6, v12);
   }
 

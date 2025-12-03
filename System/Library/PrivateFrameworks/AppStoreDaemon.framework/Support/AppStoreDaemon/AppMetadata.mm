@@ -1,7 +1,7 @@
 @interface AppMetadata
 - (AppMetadata)init;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,10 +27,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v8 = a3;
-  if (![v8 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     v10 = 0;
     goto LABEL_63;
@@ -39,7 +39,7 @@
   v9 = sub_100382084(self);
   if (!v9)
   {
-    v6 = sub_100382084(v8);
+    v6 = sub_100382084(equalCopy);
     if (!v6)
     {
       v47 = 0;
@@ -48,16 +48,16 @@
   }
 
   v3 = sub_100382084(self);
-  v4 = sub_100382084(v8);
+  v4 = sub_100382084(equalCopy);
   if ([v3 isEqual:v4])
   {
     v47 = 1;
 LABEL_9:
     v11 = sub_100382668(self);
-    if (v11 || (sub_100382668(v8), (v44 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v11 || (sub_100382668(equalCopy), (v44 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v12 = sub_100382668(self);
-      v46 = sub_100382668(v8);
+      v46 = sub_100382668(equalCopy);
       if (![v12 isEqual:?])
       {
         v10 = 0;
@@ -75,10 +75,10 @@ LABEL_9:
     }
 
     v13 = sub_1003820BC(self);
-    if (v13 || (sub_1003820BC(v8), (v36 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v13 || (sub_1003820BC(equalCopy), (v36 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v14 = sub_1003820BC(self);
-      v15 = sub_1003820BC(v8);
+      v15 = sub_1003820BC(equalCopy);
       v43 = v14;
       v16 = v14;
       v5 = v15;
@@ -122,11 +122,11 @@ LABEL_56:
     }
 
     v42 = sub_1003820F4(self);
-    if (v42 || (sub_1003820F4(v8), (v32 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v42 || (sub_1003820F4(equalCopy), (v32 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v17 = v6;
       v18 = sub_1003820F4(self);
-      v37 = sub_1003820F4(v8);
+      v37 = sub_1003820F4(equalCopy);
       v38 = v18;
       if (![v18 isEqual:v37])
       {
@@ -146,10 +146,10 @@ LABEL_56:
     }
 
     v39 = sub_1003821D8(self);
-    if (v39 || (sub_1003821D8(v8), (v28 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v39 || (sub_1003821D8(equalCopy), (v28 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v19 = sub_1003821D8(self);
-      v33 = sub_1003821D8(v8);
+      v33 = sub_1003821D8(equalCopy);
       v34 = v19;
       if (![v19 isEqual:v33])
       {
@@ -196,12 +196,12 @@ LABEL_46:
     }
 
     v21 = sub_10038212C(self);
-    if (v21 || (sub_10038212C(v8), (v27 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v21 || (sub_10038212C(equalCopy), (v27 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v29 = v20;
       v30 = v6;
       v22 = sub_10038212C(self);
-      v23 = sub_10038212C(v8);
+      v23 = sub_10038212C(equalCopy);
       v10 = [v22 isEqual:v23];
 
       if (v21)
@@ -249,11 +249,11 @@ LABEL_63:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = AppMetadata;
-  return [(SQLiteMemoryEntity *)&v4 copyWithZone:a3];
+  return [(SQLiteMemoryEntity *)&v4 copyWithZone:zone];
 }
 
 @end

@@ -17,7 +17,7 @@
   v8[2] = __35__NAFuture_HMDUtilities__hmfFuture__block_invoke;
   v8[3] = &unk_279734090;
   v9 = v10;
-  v3 = [a1 addSuccessBlock:v8];
+  v3 = [self addSuccessBlock:v8];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35__NAFuture_HMDUtilities__hmfFuture__block_invoke_2;
@@ -33,8 +33,8 @@
   v3 = MEMORY[0x277D2C900];
   v4 = MEMORY[0x277D2C938];
   v5 = a3;
-  v6 = [v4 immediateScheduler];
-  v7 = [v3 combineAllFutures:v5 scheduler:v6];
+  immediateScheduler = [v4 immediateScheduler];
+  v7 = [v3 combineAllFutures:v5 scheduler:immediateScheduler];
 
   v8 = [v7 flatMap:&__block_literal_global_758];
 
@@ -46,8 +46,8 @@
   v3 = MEMORY[0x277D2C900];
   v4 = MEMORY[0x277D2C938];
   v5 = a3;
-  v6 = [v4 immediateScheduler];
-  v7 = [v3 combineAllFutures:v5 scheduler:v6];
+  immediateScheduler = [v4 immediateScheduler];
+  v7 = [v3 combineAllFutures:v5 scheduler:immediateScheduler];
 
   v8 = [v7 flatMap:&__block_literal_global_753];
 
@@ -80,7 +80,7 @@
   v27 = v17;
   v28 = v9;
   v29 = v10;
-  v30 = a1;
+  selfCopy = self;
   v18 = v10;
   v19 = v9;
   v20 = v8;
@@ -116,7 +116,7 @@
   v30 = a2;
   v26 = v18;
   v27 = v10;
-  v31 = a1;
+  selfCopy = self;
   v28 = v11;
   v19 = v11;
   v20 = v10;

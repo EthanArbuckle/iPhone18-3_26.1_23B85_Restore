@@ -2,11 +2,11 @@
 - (OSAAccumulator)init;
 - (id)aggregatedTotalsAsDouble;
 - (id)aggregatedTotalsAsUnsignedInteger;
-- (id)keyForDate:(id)a3;
-- (id)numberForKey:(id)a3 onDate:(id)a4;
-- (void)addDouble:(double)a3 forKey:(id)a4 onDate:(id)a5;
-- (void)addUnsignedInteger:(unint64_t)a3 forKey:(id)a4 onDate:(id)a5;
-- (void)setNumber:(id)a3 forKey:(id)a4 onDate:(id)a5;
+- (id)keyForDate:(id)date;
+- (id)numberForKey:(id)key onDate:(id)date;
+- (void)addDouble:(double)double forKey:(id)key onDate:(id)date;
+- (void)addUnsignedInteger:(unint64_t)integer forKey:(id)key onDate:(id)date;
+- (void)setNumber:(id)number forKey:(id)key onDate:(id)date;
 @end
 
 @implementation OSAAccumulator
@@ -183,66 +183,66 @@
   return v18;
 }
 
-- (id)keyForDate:(id)a3
+- (id)keyForDate:(id)date
 {
-  v4 = a3;
-  v5 = [(OSAAccumulator *)self calendar];
-  v6 = [v5 startOfDayForDate:v4];
+  dateCopy = date;
+  calendar = [(OSAAccumulator *)self calendar];
+  v6 = [calendar startOfDayForDate:dateCopy];
 
   return v6;
 }
 
-- (id)numberForKey:(id)a3 onDate:(id)a4
+- (id)numberForKey:(id)key onDate:(id)date
 {
-  v6 = a3;
-  v7 = [(OSAAccumulator *)self keyForDate:a4];
-  v8 = [(NSMutableDictionary *)self->_totals objectForKeyedSubscript:v6];
+  keyCopy = key;
+  v7 = [(OSAAccumulator *)self keyForDate:date];
+  v8 = [(NSMutableDictionary *)self->_totals objectForKeyedSubscript:keyCopy];
 
   v9 = [v8 objectForKeyedSubscript:v7];
 
   return v9;
 }
 
-- (void)setNumber:(id)a3 forKey:(id)a4 onDate:(id)a5
+- (void)setNumber:(id)number forKey:(id)key onDate:(id)date
 {
-  v15 = a4;
-  v8 = a5;
+  keyCopy = key;
+  dateCopy = date;
   totals = self->_totals;
-  v10 = a3;
-  v11 = [(NSMutableDictionary *)totals objectForKeyedSubscript:v15];
+  numberCopy = number;
+  v11 = [(NSMutableDictionary *)totals objectForKeyedSubscript:keyCopy];
 
   if (!v11)
   {
     v12 = +[NSMutableDictionary dictionary];
-    [(NSMutableDictionary *)self->_totals setObject:v12 forKeyedSubscript:v15];
+    [(NSMutableDictionary *)self->_totals setObject:v12 forKeyedSubscript:keyCopy];
   }
 
-  v13 = [(OSAAccumulator *)self keyForDate:v8];
-  v14 = [(NSMutableDictionary *)self->_totals objectForKeyedSubscript:v15];
-  [v14 setObject:v10 forKeyedSubscript:v13];
+  v13 = [(OSAAccumulator *)self keyForDate:dateCopy];
+  v14 = [(NSMutableDictionary *)self->_totals objectForKeyedSubscript:keyCopy];
+  [v14 setObject:numberCopy forKeyedSubscript:v13];
 }
 
-- (void)addUnsignedInteger:(unint64_t)a3 forKey:(id)a4 onDate:(id)a5
+- (void)addUnsignedInteger:(unint64_t)integer forKey:(id)key onDate:(id)date
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(OSAAccumulator *)self numberForKey:v9 onDate:v8];
-  v11 = [v10 unsignedIntegerValue];
+  dateCopy = date;
+  keyCopy = key;
+  v10 = [(OSAAccumulator *)self numberForKey:keyCopy onDate:dateCopy];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-  v12 = [NSNumber numberWithUnsignedInteger:&v11[a3]];
-  [(OSAAccumulator *)self setNumber:v12 forKey:v9 onDate:v8];
+  v12 = [NSNumber numberWithUnsignedInteger:&unsignedIntegerValue[integer]];
+  [(OSAAccumulator *)self setNumber:v12 forKey:keyCopy onDate:dateCopy];
 }
 
-- (void)addDouble:(double)a3 forKey:(id)a4 onDate:(id)a5
+- (void)addDouble:(double)double forKey:(id)key onDate:(id)date
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(OSAAccumulator *)self numberForKey:v9 onDate:v8];
+  dateCopy = date;
+  keyCopy = key;
+  v10 = [(OSAAccumulator *)self numberForKey:keyCopy onDate:dateCopy];
   [v10 doubleValue];
-  v12 = v11 + a3;
+  v12 = v11 + double;
 
   v13 = [NSNumber numberWithDouble:v12];
-  [(OSAAccumulator *)self setNumber:v13 forKey:v9 onDate:v8];
+  [(OSAAccumulator *)self setNumber:v13 forKey:keyCopy onDate:dateCopy];
 }
 
 @end

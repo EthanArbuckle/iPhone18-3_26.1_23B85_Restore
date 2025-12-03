@@ -1,10 +1,10 @@
 @interface KNRecordingCorrectionHistory
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (KNRecordingCorrectionHistory)correctionHistoryWithAddedMissingEventsForRadar49654305;
 - (KNRecordingCorrectionHistory)init;
-- (KNRecordingCorrectionHistory)initWithMessage:(const void *)a3 unarchiver:(id)a4;
+- (KNRecordingCorrectionHistory)initWithMessage:(const void *)message unarchiver:(id)unarchiver;
 - (id)description;
-- (void)saveToMessage:(void *)a3 archiver:(id)a4;
+- (void)saveToMessage:(void *)message archiver:(id)archiver;
 @end
 
 @implementation KNRecordingCorrectionHistory
@@ -30,10 +30,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -64,24 +64,24 @@
   return v2;
 }
 
-- (KNRecordingCorrectionHistory)initWithMessage:(const void *)a3 unarchiver:(id)a4
+- (KNRecordingCorrectionHistory)initWithMessage:(const void *)message unarchiver:(id)unarchiver
 {
   v6.receiver = self;
   v6.super_class = KNRecordingCorrectionHistory;
-  result = [(KNRecordingCorrectionHistory *)&v6 init:a3];
+  result = [(KNRecordingCorrectionHistory *)&v6 init:message];
   if (result)
   {
-    result->_didAddMissingEventsForRadar49654305 = *(a3 + 24);
+    result->_didAddMissingEventsForRadar49654305 = *(message + 24);
   }
 
   return result;
 }
 
-- (void)saveToMessage:(void *)a3 archiver:(id)a4
+- (void)saveToMessage:(void *)message archiver:(id)archiver
 {
   didAddMissingEventsForRadar49654305 = self->_didAddMissingEventsForRadar49654305;
-  *(a3 + 4) |= 1u;
-  *(a3 + 24) = didAddMissingEventsForRadar49654305;
+  *(message + 4) |= 1u;
+  *(message + 24) = didAddMissingEventsForRadar49654305;
 }
 
 @end

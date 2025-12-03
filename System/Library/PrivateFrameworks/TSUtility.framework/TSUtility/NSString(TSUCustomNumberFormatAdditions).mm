@@ -35,42 +35,42 @@
 
 - (BOOL)isSpecialCustomNumberFormatToken
 {
-  if ([a1 length] < 2)
+  if ([self length] < 2)
   {
     return 0;
   }
 
-  v3 = [a1 characterAtIndex:0];
+  v3 = [self characterAtIndex:0];
   return TSUCustomNumberFormatSentinelCharacter == v3;
 }
 
 - (BOOL)isSpecialCustomNumberFormatTokenOfType:()TSUCustomNumberFormatAdditions
 {
-  if ([a1 length] < 2)
+  if ([self length] < 2)
   {
     return 0;
   }
 
-  v5 = [a1 characterAtIndex:0];
+  v5 = [self characterAtIndex:0];
   if (TSUCustomNumberFormatSentinelCharacter != v5)
   {
     return 0;
   }
 
-  v6 = [a1 characterAtIndex:1];
+  v6 = [self characterAtIndex:1];
   return TSUCustomNumberFormatTokenIdentifierCharacterForTokenType(a3) == v6;
 }
 
 - (uint64_t)numberOfDigitsInCustomNumberFormatIntegerToken
 {
-  if (([a1 isSpecialCustomNumberFormatTokenOfType:1] & 1) == 0)
+  if (([self isSpecialCustomNumberFormatTokenOfType:1] & 1) == 0)
   {
     v2 = +[TSUAssertionHandler currentHandler];
     v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSString(TSUCustomNumberFormatAdditions) numberOfDigitsInCustomNumberFormatIntegerToken]"];
     [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUCustomFormatNumberTokenDelegate.m"), 135, @"Wrong token type!"}];
   }
 
-  if ([a1 length] < 3)
+  if ([self length] < 3)
   {
     return 0;
   }
@@ -80,7 +80,7 @@
   v6 = 2;
   do
   {
-    if ([a1 characterAtIndex:v6] == 44)
+    if ([self characterAtIndex:v6] == 44)
     {
       v4 = v4;
     }
@@ -93,37 +93,37 @@
     v6 = v5;
   }
 
-  while ([a1 length] > v5++);
+  while ([self length] > v5++);
   return v4;
 }
 
 - (BOOL)customFormatIntegerTokenUsesSeparator
 {
-  if (([a1 isSpecialCustomNumberFormatTokenOfType:1] & 1) == 0)
+  if (([self isSpecialCustomNumberFormatTokenOfType:1] & 1) == 0)
   {
     v2 = +[TSUAssertionHandler currentHandler];
     v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSString(TSUCustomNumberFormatAdditions) customFormatIntegerTokenUsesSeparator]"];
     [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUCustomFormatNumberTokenDelegate.m"), 146, @"Wrong token type!"}];
   }
 
-  return [a1 characterAtIndex:{objc_msgSend(a1, "length") - 1}] == 44;
+  return [self characterAtIndex:{objc_msgSend(self, "length") - 1}] == 44;
 }
 
 - (void)stringByInsertingFormatGroupingSeparators
 {
-  v2 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v3 = TSUNumberFormatterGroupingSizeForLocale(0);
-  v4 = [a1 length];
+  v4 = [self length];
   v5 = v4 - 1;
   if (v4 >= 1)
   {
     v6 = 1;
     do
     {
-      [v2 insertString:objc_msgSend(MEMORY[0x277CCACA8] atIndex:{"stringWithFormat:", @"%C", objc_msgSend(a1, "characterAtIndex:", v5)), 0}];
+      [string insertString:objc_msgSend(MEMORY[0x277CCACA8] atIndex:{"stringWithFormat:", @"%C", objc_msgSend(self, "characterAtIndex:", v5)), 0}];
       if (v5 && v3 && !(v6 % v3))
       {
-        [v2 insertString:@" atIndex:{", 0}];
+        [string insertString:@" atIndex:{", 0}];
       }
 
       --v5;
@@ -133,12 +133,12 @@
     while (v5 != -1);
   }
 
-  return v2;
+  return string;
 }
 
 + (void)customNumberFormatIntegerTokenDisplayStringWithDigits:()TSUCustomNumberFormatAdditions separator:digitString:
 {
-  v8 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v9 = TSUNumberFormatterGroupingSizeForLocale(0);
   if (a3)
   {
@@ -161,11 +161,11 @@
 
         if (!v13)
         {
-          [v8 appendString:{objc_msgSend(objc_msgSend(MEMORY[0x277CBEAF8], "currentLocale"), "objectForKey:", v12)}];
+          [string appendString:{objc_msgSend(objc_msgSend(MEMORY[0x277CBEAF8], "currentLocale"), "objectForKey:", v12)}];
         }
       }
 
-      [v8 appendString:a5];
+      [string appendString:a5];
       ++v11;
       --a3;
     }
@@ -173,7 +173,7 @@
     while (a3);
   }
 
-  return v8;
+  return string;
 }
 
 + (uint64_t)customNumberFormatIntegerTokenRepresentedStringWithDigits:()TSUCustomNumberFormatAdditions separator:digitString:
@@ -213,34 +213,34 @@
 
 - (uint64_t)numberOfDigitsInCustomNumberFormatDecimalToken
 {
-  if (([a1 isSpecialCustomNumberFormatTokenOfType:2] & 1) == 0)
+  if (([self isSpecialCustomNumberFormatTokenOfType:2] & 1) == 0)
   {
     v2 = +[TSUAssertionHandler currentHandler];
     v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSString(TSUCustomNumberFormatAdditions) numberOfDigitsInCustomNumberFormatDecimalToken]"];
     [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUCustomFormatNumberTokenDelegate.m"), 209, @"Wrong token type!"}];
   }
 
-  if ([a1 length] <= 2)
+  if ([self length] <= 2)
   {
     v4 = +[TSUAssertionHandler currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSString(TSUCustomNumberFormatAdditions) numberOfDigitsInCustomNumberFormatDecimalToken]"];
     [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUCustomFormatNumberTokenDelegate.m"), 212, @"Bad token format"}];
   }
 
-  return [a1 length] - 3;
+  return [self length] - 3;
 }
 
 + (void)customNumberFormatDecimalTokenDisplayStringWithDigits:()TSUCustomNumberFormatAdditions digitString:
 {
-  v6 = [MEMORY[0x277CCAB68] string];
-  v7 = [MEMORY[0x277CBEAF8] currentLocale];
-  [v6 appendString:{objc_msgSend(v7, "objectForKey:", *MEMORY[0x277CBE6A8])}];
+  string = [MEMORY[0x277CCAB68] string];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  [string appendString:{objc_msgSend(currentLocale, "objectForKey:", *MEMORY[0x277CBE6A8])}];
   for (; a3; --a3)
   {
-    [v6 appendString:a4];
+    [string appendString:a4];
   }
 
-  return v6;
+  return string;
 }
 
 + (uint64_t)customNumberFormatDecimalTokenRepresentedStringWithDigits:()TSUCustomNumberFormatAdditions digitString:
@@ -265,11 +265,11 @@
 
 + (void)customNumberFormatDecimalFormatStringWithDigits:()TSUCustomNumberFormatAdditions digitString:includeDecimalSeparator:
 {
-  v8 = [MEMORY[0x277CCAB68] string];
-  v9 = v8;
+  string = [MEMORY[0x277CCAB68] string];
+  v9 = string;
   if (a5)
   {
-    [v8 appendString:@"."];
+    [string appendString:@"."];
   }
 
   if (a3 >= 1)
@@ -290,10 +290,10 @@
 - (__CFString)digitPlaceholderStringInDigitToken
 {
   v2 = @"0";
-  if ([a1 rangeOfString:@"0"] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self rangeOfString:@"0"] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v2 = @"#";
-    if ([a1 rangeOfString:@"#"] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([self rangeOfString:@"#"] == 0x7FFFFFFFFFFFFFFFLL)
     {
       return @"?";
     }
@@ -304,7 +304,7 @@
 
 - (id)currencyCodeFromCustomNumberFormatCurrencyToken
 {
-  if ([a1 length] < 3)
+  if ([self length] < 3)
   {
 
     return +[TSUNumberFormatter currentLocaleCurrencyCode];
@@ -313,13 +313,13 @@
   else
   {
 
-    return [a1 substringFromIndex:2];
+    return [self substringFromIndex:2];
   }
 }
 
 - (uint64_t)fractionAccuracyFromCustomNumberFormatFractionToken
 {
-  v1 = [a1 substringFromIndex:2];
+  v1 = [self substringFromIndex:2];
 
   return [v1 intValue];
 }

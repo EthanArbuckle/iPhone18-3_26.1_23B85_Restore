@@ -1,35 +1,35 @@
 @interface SBUIButtonAction
-- (SBUIButtonAction)initWithButtonEvents:(unint64_t)a3 withHandler:(id)a4;
-- (id)settings:(id)a3 keyDescriptionForSetting:(unint64_t)a4;
-- (id)settings:(id)a3 valueDescriptionForFlag:(int64_t)a4 object:(id)a5 ofSetting:(unint64_t)a6;
+- (SBUIButtonAction)initWithButtonEvents:(unint64_t)events withHandler:(id)handler;
+- (id)settings:(id)settings keyDescriptionForSetting:(unint64_t)setting;
+- (id)settings:(id)settings valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (unint64_t)buttonEvents;
-- (void)sendResponse:(id)a3 withCompletion:(id)a4;
-- (void)sendResponseWithUnHandledButtonEvents:(unint64_t)a3;
+- (void)sendResponse:(id)response withCompletion:(id)completion;
+- (void)sendResponseWithUnHandledButtonEvents:(unint64_t)events;
 @end
 
 @implementation SBUIButtonAction
 
-- (SBUIButtonAction)initWithButtonEvents:(unint64_t)a3 withHandler:(id)a4
+- (SBUIButtonAction)initWithButtonEvents:(unint64_t)events withHandler:(id)handler
 {
-  v7 = a4;
-  if (!v7)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [SBUIButtonAction initWithButtonEvents:a2 withHandler:self];
   }
 
   v8 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:events];
   [v8 setObject:v9 forSetting:1];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __53__SBUIButtonAction_initWithButtonEvents_withHandler___block_invoke;
   v14[3] = &unk_1E789E6D8;
-  v15 = v7;
-  v16 = a3;
+  v15 = handlerCopy;
+  eventsCopy = events;
   v13.receiver = self;
   v13.super_class = SBUIButtonAction;
-  v10 = v7;
+  v10 = handlerCopy;
   v11 = [(SBUIButtonAction *)&v13 initWithInfo:v8 timeout:MEMORY[0x1E69E96A0] forResponseOnQueue:v14 withHandler:10.0];
 
   return v11;
@@ -95,10 +95,10 @@ LABEL_14:
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)sendResponse:(id)a3 withCompletion:(id)a4
+- (void)sendResponse:(id)response withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  responseCopy = response;
+  completionCopy = completion;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -107,13 +107,13 @@ LABEL_14:
 
   v9.receiver = self;
   v9.super_class = SBUIButtonAction;
-  [(SBUIButtonAction *)&v9 sendResponse:v7 withCompletion:v8];
+  [(SBUIButtonAction *)&v9 sendResponse:responseCopy withCompletion:completionCopy];
 }
 
 - (unint64_t)buttonEvents
 {
-  v2 = [(SBUIButtonAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(SBUIButtonAction *)self info];
+  v3 = [info objectForSetting:1];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -138,36 +138,36 @@ LABEL_14:
 
   if (v7)
   {
-    v8 = [v7 integerValue];
+    integerValue = [v7 integerValue];
   }
 
   else
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
-  return v8;
+  return integerValue;
 }
 
-- (void)sendResponseWithUnHandledButtonEvents:(unint64_t)a3
+- (void)sendResponseWithUnHandledButtonEvents:(unint64_t)events
 {
-  if ((a3 & ~[(SBUIButtonAction *)self buttonEvents]) != 0)
+  if ((events & ~[(SBUIButtonAction *)self buttonEvents]) != 0)
   {
-    [(SBUIButtonAction *)a3 sendResponseWithUnHandledButtonEvents:a2, self];
+    [(SBUIButtonAction *)events sendResponseWithUnHandledButtonEvents:a2, self];
   }
 
   if ([(SBUIButtonAction *)self _expectsResponse])
   {
-    v6 = [[SBUIButtonActionResponse alloc] initWithUnHandledButtonEvents:a3];
+    v6 = [[SBUIButtonActionResponse alloc] initWithUnHandledButtonEvents:events];
     v7.receiver = self;
     v7.super_class = SBUIButtonAction;
     [(SBUIButtonAction *)&v7 sendResponse:v6];
   }
 }
 
-- (id)settings:(id)a3 keyDescriptionForSetting:(unint64_t)a4
+- (id)settings:(id)settings keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a4 == 1)
+  if (setting == 1)
   {
     return @"events";
   }
@@ -178,13 +178,13 @@ LABEL_14:
   }
 }
 
-- (id)settings:(id)a3 valueDescriptionForFlag:(int64_t)a4 object:(id)a5 ofSetting:(unint64_t)a6
+- (id)settings:(id)settings valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v7 = a5;
-  v8 = v7;
-  if (a6 == 1)
+  objectCopy = object;
+  v8 = objectCopy;
+  if (setting == 1)
   {
-    v9 = v7;
+    v9 = objectCopy;
     v10 = objc_opt_class();
     v11 = v9;
     if (v10)
@@ -209,15 +209,15 @@ LABEL_14:
 
     if (v14)
     {
-      v15 = [v14 integerValue];
+      integerValue = [v14 integerValue];
     }
 
     else
     {
-      v15 = 0;
+      integerValue = 0;
     }
 
-    v13 = SBUIServiceButtonEventDescription(v15);
+    v13 = SBUIServiceButtonEventDescription(integerValue);
   }
 
   else

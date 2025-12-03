@@ -1,16 +1,16 @@
 @interface SCRO2DBrailleString
-+ (id)brailleStringsFromBrailleData:(id)a3;
-- (SCRO2DBrailleString)initWithText:(id)a3;
-- (_NSRange)_wordRangeAtIndex:(unint64_t)a3 inBraille:(id)a4;
-- (id)brailleLinesForWidth:(unint64_t)a3 indent:(unint64_t)a4 focused:(BOOL)a5 wordWrap:(BOOL)a6;
++ (id)brailleStringsFromBrailleData:(id)data;
+- (SCRO2DBrailleString)initWithText:(id)text;
+- (_NSRange)_wordRangeAtIndex:(unint64_t)index inBraille:(id)braille;
+- (id)brailleLinesForWidth:(unint64_t)width indent:(unint64_t)indent focused:(BOOL)focused wordWrap:(BOOL)wrap;
 @end
 
 @implementation SCRO2DBrailleString
 
-- (SCRO2DBrailleString)initWithText:(id)a3
+- (SCRO2DBrailleString)initWithText:(id)text
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  textCopy = text;
   v22.receiver = self;
   v22.super_class = SCRO2DBrailleString;
   v5 = [(SCRO2DBrailleString *)&v22 init];
@@ -22,7 +22,7 @@
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = [v4 componentsSeparatedByString:@"\n"];
+    v8 = [textCopy componentsSeparatedByString:@"\n"];
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v9)
     {
@@ -61,19 +61,19 @@
   return v5;
 }
 
-+ (id)brailleStringsFromBrailleData:(id)a3
++ (id)brailleStringsFromBrailleData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_opt_new();
-  v5 = [v3 strings];
-  v6 = [v5 count];
+  strings = [dataCopy strings];
+  v6 = [strings count];
 
   if (v6)
   {
     for (i = 0; i != v6; ++i)
     {
-      v8 = [v3 strings];
-      v9 = [v8 objectAtIndex:i];
+      strings2 = [dataCopy strings];
+      v9 = [strings2 objectAtIndex:i];
 
       v10 = [[SCRO2DBrailleString alloc] initWithText:v9];
       [v4 addObject:v10];
@@ -83,12 +83,12 @@
   return v4;
 }
 
-- (id)brailleLinesForWidth:(unint64_t)a3 indent:(unint64_t)a4 focused:(BOOL)a5 wordWrap:(BOOL)a6
+- (id)brailleLinesForWidth:(unint64_t)width indent:(unint64_t)indent focused:(BOOL)focused wordWrap:(BOOL)wrap
 {
   v39 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (width)
   {
-    v6 = a5;
+    focusedCopy = focused;
     v9 = objc_opt_new();
     v34 = 0u;
     v35 = 0u;
@@ -99,9 +99,9 @@
     if (v32)
     {
       v30 = *v35;
-      if (a4)
+      if (indent)
       {
-        v10 = v6;
+        v10 = focusedCopy;
       }
 
       else
@@ -131,7 +131,7 @@
             v14 = &stru_28763D5C8;
           }
 
-          v33 = [(__CFString *)v14 stringByPaddingToLength:a4 withString:@"⠀" startingAtIndex:0];
+          v33 = [(__CFString *)v14 stringByPaddingToLength:indent withString:@"⠀" startingAtIndex:0];
           v15 = [v33 stringByAppendingString:v13];
           v16 = v15;
           if ([v15 length])
@@ -139,18 +139,18 @@
             v17 = v15;
             do
             {
-              if ([v17 length] < a3)
+              if ([v17 length] < width)
               {
-                v18 = [v17 stringByPaddingToLength:a3 withString:@"⠀" startingAtIndex:0];
+                v18 = [v17 stringByPaddingToLength:width withString:@"⠀" startingAtIndex:0];
 
                 v17 = v18;
               }
 
-              v19 = [(SCRO2DBrailleString *)self _wordRangeAtIndex:a3 inBraille:v17];
-              if (v19 < a3 && (v21 = v19) != 0 && v19 + v20 > a3)
+              v19 = [(SCRO2DBrailleString *)self _wordRangeAtIndex:width inBraille:v17];
+              if (v19 < width && (v21 = v19) != 0 && v19 + v20 > width)
               {
                 v22 = [v17 substringToIndex:v19];
-                v23 = [v22 stringByPaddingToLength:a3 withString:@"⠀" startingAtIndex:0];
+                v23 = [v22 stringByPaddingToLength:width withString:@"⠀" startingAtIndex:0];
 
                 [v9 addObject:v23];
                 v16 = [v17 substringFromIndex:v21];
@@ -160,10 +160,10 @@
 
               else
               {
-                v24 = [v17 substringToIndex:a3];
+                v24 = [v17 substringToIndex:width];
                 [v9 addObject:v24];
 
-                v16 = [v17 substringFromIndex:a3];
+                v16 = [v17 substringFromIndex:width];
               }
 
               v17 = v16;
@@ -195,33 +195,33 @@
   return v25;
 }
 
-- (_NSRange)_wordRangeAtIndex:(unint64_t)a3 inBraille:(id)a4
+- (_NSRange)_wordRangeAtIndex:(unint64_t)index inBraille:(id)braille
 {
-  v5 = a4;
-  if ([v5 length] >= a3)
+  brailleCopy = braille;
+  if ([brailleCopy length] >= index)
   {
-    v8 = a3;
+    indexCopy = index;
     do
     {
-      v7 = v8;
-      if (!v8)
+      v7 = indexCopy;
+      if (!indexCopy)
       {
         break;
       }
 
-      --v8;
+      --indexCopy;
     }
 
-    while ([v5 characterAtIndex:v7 - 1] != 10240);
-    for (; a3 < [v5 length]; ++a3)
+    while ([brailleCopy characterAtIndex:v7 - 1] != 10240);
+    for (; index < [brailleCopy length]; ++index)
     {
-      if ([v5 characterAtIndex:a3] == 10240)
+      if ([brailleCopy characterAtIndex:index] == 10240)
       {
         break;
       }
     }
 
-    v6 = a3 - v7;
+    v6 = index - v7;
   }
 
   else

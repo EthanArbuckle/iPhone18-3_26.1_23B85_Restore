@@ -1,63 +1,63 @@
 @interface CAMZoomButton
-+ (BOOL)shouldUseLargeButtonSizeForContentSize:(id)a3;
++ (BOOL)shouldUseLargeButtonSizeForContentSize:(id)size;
 + (NSNumberFormatter)zoomFactorFormatter;
-+ (id)textForZoomFactor:(double)a3 showZoomFactorSymbol:(BOOL)a4 useLeadingZero:(BOOL)a5;
++ (id)textForZoomFactor:(double)factor showZoomFactorSymbol:(BOOL)symbol useLeadingZero:(BOOL)zero;
 - (BOOL)useLeadingZero;
-- (CAMZoomButton)initWithCoder:(id)a3;
-- (CAMZoomButton)initWithFrame:(CGRect)a3;
-- (CGAffineTransform)_highlightingTransformForHighlighted:(SEL)a3;
-- (CGAffineTransform)_transformForEnlargeText:(SEL)a3 orientation:(BOOL)a4;
+- (CAMZoomButton)initWithCoder:(id)coder;
+- (CAMZoomButton)initWithFrame:(CGRect)frame;
+- (CGAffineTransform)_highlightingTransformForHighlighted:(SEL)highlighted;
+- (CGAffineTransform)_transformForEnlargeText:(SEL)text orientation:(BOOL)orientation;
 - (CGAffineTransform)highlightingTransform;
 - (CGRect)accessoryFrame;
 - (CGSize)intrinsicContentSize;
 - (UIEdgeInsets)tappableEdgeInsets;
-- (id)_imageForZoomSymbol:(int64_t)a3;
-- (id)initForPlatter:(BOOL)a3;
+- (id)_imageForZoomSymbol:(int64_t)symbol;
+- (id)initForPlatter:(BOOL)platter;
 - (int64_t)textShadowStrength;
-- (void)_commonCAMZoomButtonInitializationForPlatter:(BOOL)a3;
+- (void)_commonCAMZoomButtonInitializationForPlatter:(BOOL)platter;
 - (void)_createFocalLengthLabelIfNeeded;
 - (void)_createZoomSymbolViewIfNecessary;
 - (void)_ensureBackgroundViewOrdering;
 - (void)_installBackgroundEffectContainerView;
 - (void)_layoutFocalLengthLabel;
-- (void)_layoutFocalLengthLabelForAlignmentRectBounds:(CGRect)a3 contentTransform:(CGAffineTransform *)a4;
+- (void)_layoutFocalLengthLabelForAlignmentRectBounds:(CGRect)bounds contentTransform:(CGAffineTransform *)transform;
 - (void)_performHighlightAnimation;
-- (void)_setHighlightingTransform:(CGAffineTransform *)a3;
+- (void)_setHighlightingTransform:(CGAffineTransform *)transform;
 - (void)_updateAccessoryAlphas;
 - (void)_updateBackgroundEffectContainerViewAlpha;
 - (void)_updateBackgroundEffectViewContents;
-- (void)_updateBackgroundViewDeferRemovalForAnimations:(BOOL)a3;
+- (void)_updateBackgroundViewDeferRemovalForAnimations:(BOOL)animations;
 - (void)_updateZoomFactorLabelIfNeeded;
-- (void)_updateZoomSymbolViewAnimated:(BOOL)a3;
+- (void)_updateZoomSymbolViewAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)setAccessoryPosition:(int64_t)a3 animated:(BOOL)a4;
-- (void)setAccessoryState:(int64_t)a3 animated:(BOOL)a4;
-- (void)setContentType:(int64_t)a3 animated:(BOOL)a4;
-- (void)setEnlargeText:(BOOL)a3;
-- (void)setFocalLength:(int64_t)a3 animated:(BOOL)a4;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setOverPlatter:(BOOL)a3;
-- (void)setShouldHideBackground:(BOOL)a3 animationDuration:(double)a4;
-- (void)setShowZoomFactorSymbol:(BOOL)a3;
-- (void)setTappableEdgeInsets:(UIEdgeInsets)a3;
-- (void)setTextShadowStrength:(int64_t)a3;
-- (void)setUseLeadingZero:(BOOL)a3;
-- (void)setZoomFactor:(double)a3;
-- (void)setZoomSymbol:(int64_t)a3 animated:(BOOL)a4;
+- (void)setAccessoryPosition:(int64_t)position animated:(BOOL)animated;
+- (void)setAccessoryState:(int64_t)state animated:(BOOL)animated;
+- (void)setContentType:(int64_t)type animated:(BOOL)animated;
+- (void)setEnlargeText:(BOOL)text;
+- (void)setFocalLength:(int64_t)length animated:(BOOL)animated;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setOverPlatter:(BOOL)platter;
+- (void)setShouldHideBackground:(BOOL)background animationDuration:(double)duration;
+- (void)setShowZoomFactorSymbol:(BOOL)symbol;
+- (void)setTappableEdgeInsets:(UIEdgeInsets)insets;
+- (void)setTextShadowStrength:(int64_t)strength;
+- (void)setUseLeadingZero:(BOOL)zero;
+- (void)setZoomFactor:(double)factor;
+- (void)setZoomSymbol:(int64_t)symbol animated:(BOOL)animated;
 - (void)tintColorDidChange;
 @end
 
 @implementation CAMZoomButton
 
-- (void)_commonCAMZoomButtonInitializationForPlatter:(BOOL)a3
+- (void)_commonCAMZoomButtonInitializationForPlatter:(BOOL)platter
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  [(CAMZoomButton *)self setTintColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(CAMZoomButton *)self setTintColor:whiteColor];
 
   self->_showZoomFactorSymbol = 1;
-  self->_overPlatter = a3;
+  self->_overPlatter = platter;
   v6 = objc_alloc(MEMORY[0x1E69DD250]);
   v7 = *MEMORY[0x1E695F058];
   v8 = *(MEMORY[0x1E695F058] + 8);
@@ -76,8 +76,8 @@
 
   [(CAMZoomFactorLabel *)self->__zoomFactorLabel setShowZoomFactorSymbol:1];
   [(CAMZoomFactorLabel *)self->__zoomFactorLabel setUseLeadingZero:1];
-  v15 = [(CAMZoomButton *)self tintColor];
-  [(CAMZoomFactorLabel *)self->__zoomFactorLabel setTintColor:v15];
+  tintColor = [(CAMZoomButton *)self tintColor];
+  [(CAMZoomFactorLabel *)self->__zoomFactorLabel setTintColor:tintColor];
 
   [(UIView *)self->__contentContainerView addSubview:self->__zoomFactorLabel];
   self->_zoomFactor = 1.0;
@@ -92,27 +92,27 @@
   v19 = [(CAMZoomButton *)self registerForTraitChanges:v18 withAction:sel__preferredContentSizeCategoryChanged];
 }
 
-- (id)initForPlatter:(BOOL)a3
+- (id)initForPlatter:(BOOL)platter
 {
-  v3 = a3;
+  platterCopy = platter;
   v8.receiver = self;
   v8.super_class = CAMZoomButton;
   v4 = [(CAMZoomButton *)&v8 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v5 = v4;
   if (v4)
   {
-    [(CAMZoomButton *)v4 _commonCAMZoomButtonInitializationForPlatter:v3];
+    [(CAMZoomButton *)v4 _commonCAMZoomButtonInitializationForPlatter:platterCopy];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (CAMZoomButton)initWithFrame:(CGRect)a3
+- (CAMZoomButton)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CAMZoomButton;
-  v3 = [(CAMZoomButton *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMZoomButton *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -123,11 +123,11 @@
   return v4;
 }
 
-- (CAMZoomButton)initWithCoder:(id)a3
+- (CAMZoomButton)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CAMZoomButton;
-  v3 = [(CAMZoomButton *)&v7 initWithCoder:a3];
+  v3 = [(CAMZoomButton *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -138,32 +138,32 @@
   return v4;
 }
 
-- (void)setContentType:(int64_t)a3 animated:(BOOL)a4
+- (void)setContentType:(int64_t)type animated:(BOOL)animated
 {
-  if (self->_contentType != a3)
+  if (self->_contentType != type)
   {
     v15 = v4;
     v16 = v5;
-    v6 = a4;
-    self->_contentType = a3;
-    if (a3 == 2)
+    animatedCopy = animated;
+    self->_contentType = type;
+    if (type == 2)
     {
       [(CAMZoomButton *)self _createFocalLengthLabelIfNeeded];
       v9 = 0;
       v8 = 1;
     }
 
-    else if (a3 == 1)
+    else if (type == 1)
     {
       [(CAMZoomButton *)self _createZoomSymbolViewIfNecessary];
-      [(CAMZoomButton *)self _updateZoomSymbolViewAnimated:v6];
+      [(CAMZoomButton *)self _updateZoomSymbolViewAnimated:animatedCopy];
       v8 = 0;
       v9 = 1;
     }
 
     else
     {
-      if (!a3)
+      if (!type)
       {
         [(CAMZoomButton *)self _updateZoomFactorLabelIfNeeded];
       }
@@ -177,7 +177,7 @@
     v11[0] = MEMORY[0x1E69E9820];
     v11[2] = __41__CAMZoomButton_setContentType_animated___block_invoke;
     v11[3] = &unk_1E76FB4D8;
-    if (!v6)
+    if (!animatedCopy)
     {
       v10 = 0.0;
     }
@@ -208,21 +208,21 @@ void __41__CAMZoomButton_setContentType_animated___block_invoke(uint64_t a1, dou
   [v10 setAlpha:v9];
 }
 
-- (void)setZoomFactor:(double)a3
+- (void)setZoomFactor:(double)factor
 {
-  if (self->_zoomFactor != a3)
+  if (self->_zoomFactor != factor)
   {
-    self->_zoomFactor = a3;
+    self->_zoomFactor = factor;
     [(CAMZoomButton *)self _updateZoomFactorLabelIfNeeded];
   }
 }
 
-- (void)setZoomSymbol:(int64_t)a3 animated:(BOOL)a4
+- (void)setZoomSymbol:(int64_t)symbol animated:(BOOL)animated
 {
-  if (self->_zoomSymbol != a3)
+  if (self->_zoomSymbol != symbol)
   {
-    self->_zoomSymbol = a3;
-    [(CAMZoomButton *)self _updateZoomSymbolViewAnimated:a4];
+    self->_zoomSymbol = symbol;
+    [(CAMZoomButton *)self _updateZoomSymbolViewAnimated:animated];
   }
 }
 
@@ -241,16 +241,16 @@ void __41__CAMZoomButton_setContentType_animated___block_invoke(uint64_t a1, dou
   }
 }
 
-- (id)_imageForZoomSymbol:(int64_t)a3
+- (id)_imageForZoomSymbol:(int64_t)symbol
 {
-  if (a3 > 2)
+  if (symbol > 2)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_1E76FB4F8[a3];
+    v3 = off_1E76FB4F8[symbol];
   }
 
   v4 = MEMORY[0x1E69DCAB8];
@@ -260,13 +260,13 @@ void __41__CAMZoomButton_setContentType_animated___block_invoke(uint64_t a1, dou
   return v6;
 }
 
-- (void)_updateZoomSymbolViewAnimated:(BOOL)a3
+- (void)_updateZoomSymbolViewAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CAMZoomButton *)self contentType];
-  if (v5 && v5 != 2)
+  animatedCopy = animated;
+  contentType = [(CAMZoomButton *)self contentType];
+  if (contentType && contentType != 2)
   {
-    if (v5 == 1)
+    if (contentType == 1)
     {
       v6 = [(CAMZoomButton *)self _imageForZoomSymbol:[(CAMZoomButton *)self zoomSymbol]];
     }
@@ -280,7 +280,7 @@ void __41__CAMZoomButton_setContentType_animated___block_invoke(uint64_t a1, dou
     v9[0] = MEMORY[0x1E69E9820];
     v9[2] = __47__CAMZoomButton__updateZoomSymbolViewAnimated___block_invoke;
     v9[3] = &unk_1E76F7960;
-    if (v3)
+    if (animatedCopy)
     {
       v7 = 0.2;
     }
@@ -304,21 +304,21 @@ void __47__CAMZoomButton__updateZoomSymbolViewAnimated___block_invoke(uint64_t a
   [v2 setImage:v1];
 }
 
-- (void)setFocalLength:(int64_t)a3 animated:(BOOL)a4
+- (void)setFocalLength:(int64_t)length animated:(BOOL)animated
 {
-  if (self->_focalLength != a3)
+  if (self->_focalLength != length)
   {
-    self->_focalLength = a3;
-    v6 = [(CAMZoomButton *)self _focalLengthLabel];
-    [v6 setFocalLength:a3];
+    self->_focalLength = length;
+    _focalLengthLabel = [(CAMZoomButton *)self _focalLengthLabel];
+    [_focalLengthLabel setFocalLength:length];
   }
 }
 
 - (void)_createFocalLengthLabelIfNeeded
 {
-  v3 = [(CAMZoomButton *)self _focalLengthLabel];
+  _focalLengthLabel = [(CAMZoomButton *)self _focalLengthLabel];
 
-  if (!v3)
+  if (!_focalLengthLabel)
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
@@ -343,26 +343,26 @@ void __48__CAMZoomButton__createFocalLengthLabelIfNeeded__block_invoke(uint64_t 
   [v3 layoutIfNeeded];
 }
 
-- (void)setAccessoryState:(int64_t)a3 animated:(BOOL)a4
+- (void)setAccessoryState:(int64_t)state animated:(BOOL)animated
 {
-  if (self->_accessoryState == a3)
+  if (self->_accessoryState == state)
   {
     return;
   }
 
-  v4 = a4;
-  v7 = [(CAMZoomButton *)self _accessoryBackgroundView];
-  v8 = [(CAMZoomButton *)self _accessoryImageView];
-  v9 = v8;
-  if (!v7)
+  animatedCopy = animated;
+  _accessoryBackgroundView = [(CAMZoomButton *)self _accessoryBackgroundView];
+  _accessoryImageView = [(CAMZoomButton *)self _accessoryImageView];
+  v9 = _accessoryImageView;
+  if (!_accessoryBackgroundView)
   {
-    v7 = objc_alloc_init(MEMORY[0x1E69DD250]);
-    [v7 installThinMaterial];
-    [v7 setClipsToBounds:1];
-    v20 = [(CAMZoomButton *)self _contentContainerView];
-    [v20 insertSubview:v7 atIndex:0];
+    _accessoryBackgroundView = objc_alloc_init(MEMORY[0x1E69DD250]);
+    [_accessoryBackgroundView installThinMaterial];
+    [_accessoryBackgroundView setClipsToBounds:1];
+    _contentContainerView = [(CAMZoomButton *)self _contentContainerView];
+    [_contentContainerView insertSubview:_accessoryBackgroundView atIndex:0];
 
-    [(CAMZoomButton *)self set_accessoryBackgroundView:v7];
+    [(CAMZoomButton *)self set_accessoryBackgroundView:_accessoryBackgroundView];
     [(CAMZoomButton *)self _ensureBackgroundViewOrdering];
     [(CAMZoomButton *)self setNeedsLayout];
     if (v9)
@@ -372,11 +372,11 @@ void __48__CAMZoomButton__createFocalLengthLabelIfNeeded__block_invoke(uint64_t 
 
 LABEL_11:
     v9 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
-    v21 = [MEMORY[0x1E69DC888] whiteColor];
-    [v9 setTintColor:v21];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [v9 setTintColor:whiteColor];
 
-    v22 = [(CAMZoomButton *)self _contentContainerView];
-    [v22 insertSubview:v9 atIndex:1];
+    _contentContainerView2 = [(CAMZoomButton *)self _contentContainerView];
+    [_contentContainerView2 insertSubview:v9 atIndex:1];
 
     [(CAMZoomButton *)self set_accessoryImageView:v9];
     [(CAMZoomButton *)self _updateAccessoryAlphas];
@@ -384,13 +384,13 @@ LABEL_11:
     goto LABEL_4;
   }
 
-  if (!v8)
+  if (!_accessoryImageView)
   {
     goto LABEL_11;
   }
 
 LABEL_4:
-  if (a3 == 1)
+  if (state == 1)
   {
     v10 = MEMORY[0x1E69DCAB8];
     v11 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:16.0];
@@ -399,10 +399,10 @@ LABEL_4:
     [v9 setImage:v13];
   }
 
-  if (v4)
+  if (animatedCopy)
   {
     [(CAMZoomButton *)self layoutIfNeeded];
-    self->_accessoryState = a3;
+    self->_accessoryState = state;
     [(CAMZoomButton *)self setNeedsLayout];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
@@ -445,20 +445,20 @@ LABEL_4:
 
   else
   {
-    self->_accessoryState = a3;
+    self->_accessoryState = state;
     [(CAMZoomButton *)self setNeedsLayout];
     [(CAMZoomButton *)self _updateAccessoryAlphas];
   }
 }
 
-- (void)setAccessoryPosition:(int64_t)a3 animated:(BOOL)a4
+- (void)setAccessoryPosition:(int64_t)position animated:(BOOL)animated
 {
-  if (self->_accessoryPosition != a3)
+  if (self->_accessoryPosition != position)
   {
-    if (a4)
+    if (animated)
     {
       [(CAMZoomButton *)self layoutIfNeeded];
-      self->_accessoryPosition = a3;
+      self->_accessoryPosition = position;
       [(CAMZoomButton *)self setNeedsLayout];
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
@@ -470,7 +470,7 @@ LABEL_4:
 
     else
     {
-      self->_accessoryPosition = a3;
+      self->_accessoryPosition = position;
 
       [(CAMZoomButton *)self setNeedsLayout];
     }
@@ -483,24 +483,24 @@ LABEL_4:
   v3 = *(MEMORY[0x1E695F058] + 8);
   v5 = *(MEMORY[0x1E695F058] + 16);
   v6 = *(MEMORY[0x1E695F058] + 24);
-  v7 = [(CAMZoomButton *)self _accessoryBackgroundView];
-  if (v7 && [(CAMZoomButton *)self accessoryState])
+  _accessoryBackgroundView = [(CAMZoomButton *)self _accessoryBackgroundView];
+  if (_accessoryBackgroundView && [(CAMZoomButton *)self accessoryState])
   {
-    [v7 bounds];
-    [(CAMZoomButton *)self convertRect:v7 fromView:?];
+    [_accessoryBackgroundView bounds];
+    [(CAMZoomButton *)self convertRect:_accessoryBackgroundView fromView:?];
     v4 = v8;
     v3 = v9;
     v5 = v10;
     v6 = v11;
-    v12 = [(CAMZoomButton *)self _backgroundEffectContainerView];
-    [v12 bounds];
-    [(CAMZoomButton *)self convertRect:v12 fromView:?];
+    _backgroundEffectContainerView = [(CAMZoomButton *)self _backgroundEffectContainerView];
+    [_backgroundEffectContainerView bounds];
+    [(CAMZoomButton *)self convertRect:_backgroundEffectContainerView fromView:?];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [(CAMZoomButton *)self accessoryPosition];
-    if (v21 == 1)
+    accessoryPosition = [(CAMZoomButton *)self accessoryPosition];
+    if (accessoryPosition == 1)
     {
       v29.origin.x = v4;
       v29.origin.y = v3;
@@ -514,7 +514,7 @@ LABEL_4:
       v5 = v5 - (MaxX - CGRectGetMinX(v30));
     }
 
-    else if (!v21)
+    else if (!accessoryPosition)
     {
       v28.origin.x = v14;
       v28.origin.y = v16;
@@ -549,20 +549,20 @@ LABEL_4:
     v3 = 0.0;
   }
 
-  v4 = [(CAMZoomButton *)self _accessoryBackgroundView];
-  [v4 setAlpha:v3];
+  _accessoryBackgroundView = [(CAMZoomButton *)self _accessoryBackgroundView];
+  [_accessoryBackgroundView setAlpha:v3];
 
-  v5 = [(CAMZoomButton *)self _accessoryImageView];
-  [v5 setAlpha:v3];
+  _accessoryImageView = [(CAMZoomButton *)self _accessoryImageView];
+  [_accessoryImageView setAlpha:v3];
 
   [(CAMZoomButton *)self _updateBackgroundEffectViewContents];
 }
 
 - (void)_updateBackgroundEffectViewContents
 {
-  v3 = [(CAMZoomButton *)self _backgroundVisualEffectView];
+  _backgroundVisualEffectView = [(CAMZoomButton *)self _backgroundVisualEffectView];
 
-  if (v3)
+  if (_backgroundVisualEffectView)
   {
     if ([(CAMZoomButton *)self accessoryState])
     {
@@ -575,45 +575,45 @@ LABEL_4:
     }
 
     v6 = [MEMORY[0x1E69DC730] effectWithStyle:v4];
-    v5 = [(CAMZoomButton *)self _backgroundVisualEffectView];
-    [v5 setEffect:v6];
+    _backgroundVisualEffectView2 = [(CAMZoomButton *)self _backgroundVisualEffectView];
+    [_backgroundVisualEffectView2 setEffect:v6];
   }
 }
 
-- (void)setTappableEdgeInsets:(UIEdgeInsets)a3
+- (void)setTappableEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_tappableEdgeInsets.top), vceqq_f64(v4, *&self->_tappableEdgeInsets.bottom)))) & 1) == 0)
   {
-    self->_tappableEdgeInsets = a3;
+    self->_tappableEdgeInsets = insets;
     [(CAMZoomButton *)self setNeedsLayout];
   }
 }
 
-- (void)setOverPlatter:(BOOL)a3
+- (void)setOverPlatter:(BOOL)platter
 {
-  if (self->_overPlatter != a3)
+  if (self->_overPlatter != platter)
   {
-    self->_overPlatter = a3;
+    self->_overPlatter = platter;
     [(CAMZoomButton *)self _updateBackgroundView];
 
     [(CAMZoomButton *)self _updateBackgroundEffectContainerViewAlpha];
   }
 }
 
-- (void)_updateBackgroundViewDeferRemovalForAnimations:(BOOL)a3
+- (void)_updateBackgroundViewDeferRemovalForAnimations:(BOOL)animations
 {
-  v5 = [(CAMZoomButton *)self shouldHideBackground];
-  v6 = [(CAMZoomButton *)self _backgroundEffectContainerView];
-  v7 = v6;
-  if (v5 || v6)
+  shouldHideBackground = [(CAMZoomButton *)self shouldHideBackground];
+  _backgroundEffectContainerView = [(CAMZoomButton *)self _backgroundEffectContainerView];
+  v7 = _backgroundEffectContainerView;
+  if (shouldHideBackground || _backgroundEffectContainerView)
   {
-    if (v6)
+    if (_backgroundEffectContainerView)
     {
-      v8 = v5;
+      v8 = shouldHideBackground;
     }
 
     else
@@ -621,9 +621,9 @@ LABEL_4:
       v8 = 0;
     }
 
-    if (v8 && !a3)
+    if (v8 && !animations)
     {
-      [v6 removeFromSuperview];
+      [_backgroundEffectContainerView removeFromSuperview];
       [(CAMZoomButton *)self set_backgroundEffectContainerView:0];
       [(CAMZoomButton *)self set_backgroundVisualEffectView:0];
     }
@@ -646,13 +646,13 @@ LABEL_4:
   if (!self->__backgroundEffectContainerView)
   {
     v3 = objc_opt_class();
-    v4 = [(CAMZoomButton *)self traitCollection];
-    v5 = [v4 preferredContentSizeCategory];
-    [v3 circleDiameterForContentSize:v5];
+    traitCollection = [(CAMZoomButton *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    [v3 circleDiameterForContentSize:preferredContentSizeCategory];
     v7 = v6;
 
-    v8 = [(CAMZoomButton *)self traitCollection];
-    [v8 displayScale];
+    traitCollection2 = [(CAMZoomButton *)self traitCollection];
+    [traitCollection2 displayScale];
     v10 = v9;
 
     [(UIView *)self->__contentContainerView bounds];
@@ -661,8 +661,8 @@ LABEL_4:
     backgroundEffectContainerView = self->__backgroundEffectContainerView;
     self->__backgroundEffectContainerView = v15;
 
-    v17 = [(UIView *)self->__backgroundEffectContainerView layer];
-    [v17 setCornerRadius:v7 * 0.5];
+    layer = [(UIView *)self->__backgroundEffectContainerView layer];
+    [layer setCornerRadius:v7 * 0.5];
 
     [(UIView *)self->__backgroundEffectContainerView setClipsToBounds:1];
     [(UIView *)self->__backgroundEffectContainerView setAlpha:0.0];
@@ -686,32 +686,32 @@ LABEL_4:
 {
   if (self->__backgroundEffectContainerView && self->__accessoryBackgroundView)
   {
-    v7 = [(CAMZoomButton *)self _contentContainerView];
-    v3 = [v7 subviews];
-    v4 = [v3 indexOfObject:self->__backgroundEffectContainerView];
+    _contentContainerView = [(CAMZoomButton *)self _contentContainerView];
+    subviews = [_contentContainerView subviews];
+    v4 = [subviews indexOfObject:self->__backgroundEffectContainerView];
 
-    v5 = [v7 subviews];
-    v6 = [v5 indexOfObject:self->__accessoryBackgroundView];
+    subviews2 = [_contentContainerView subviews];
+    v6 = [subviews2 indexOfObject:self->__accessoryBackgroundView];
 
     if (v4 < v6)
     {
-      [v7 exchangeSubviewAtIndex:v4 withSubviewAtIndex:v6];
+      [_contentContainerView exchangeSubviewAtIndex:v4 withSubviewAtIndex:v6];
     }
   }
 }
 
-- (void)setShouldHideBackground:(BOOL)a3 animationDuration:(double)a4
+- (void)setShouldHideBackground:(BOOL)background animationDuration:(double)duration
 {
-  if (self->_shouldHideBackground != a3)
+  if (self->_shouldHideBackground != background)
   {
     v13[5] = v7;
     v13[6] = v6;
     v13[9] = v4;
     v13[10] = v5;
-    v9 = a3;
-    self->_shouldHideBackground = a3;
-    [(CAMZoomButton *)self _updateBackgroundViewDeferRemovalForAnimations:a4 != 0.0];
-    if (v9)
+    backgroundCopy = background;
+    self->_shouldHideBackground = background;
+    [(CAMZoomButton *)self _updateBackgroundViewDeferRemovalForAnimations:duration != 0.0];
+    if (backgroundCopy)
     {
       v11 = 2.0;
     }
@@ -731,26 +731,26 @@ LABEL_4:
     v12[2] = __59__CAMZoomButton_setShouldHideBackground_animationDuration___block_invoke_2;
     v12[3] = &unk_1E76F7988;
     v12[4] = self;
-    [CAMView animateIfNeededWithDuration:4 usingSpringWithDamping:v13 initialSpringVelocity:v12 options:a4 animations:1.0 completion:v11];
+    [CAMView animateIfNeededWithDuration:4 usingSpringWithDamping:v13 initialSpringVelocity:v12 options:duration animations:1.0 completion:v11];
   }
 }
 
-- (void)_setHighlightingTransform:(CGAffineTransform *)a3
+- (void)_setHighlightingTransform:(CGAffineTransform *)transform
 {
   p_highlightingTransform = &self->_highlightingTransform;
   v6 = *&self->_highlightingTransform.c;
   *&t1.a = *&self->_highlightingTransform.a;
   *&t1.c = v6;
   *&t1.tx = *&self->_highlightingTransform.tx;
-  v7 = *&a3->c;
-  *&v10.a = *&a3->a;
+  v7 = *&transform->c;
+  *&v10.a = *&transform->a;
   *&v10.c = v7;
-  *&v10.tx = *&a3->tx;
+  *&v10.tx = *&transform->tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v10))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_highlightingTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_highlightingTransform->c = *&transform->c;
     *&p_highlightingTransform->tx = v9;
     *&p_highlightingTransform->a = v8;
     [(CAMZoomButton *)self setNeedsLayout];
@@ -759,10 +759,10 @@ LABEL_4:
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(CAMZoomButton *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
+  traitCollection = [(CAMZoomButton *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  [objc_opt_class() circleDiameterForContentSize:v3];
+  [objc_opt_class() circleDiameterForContentSize:preferredContentSizeCategory];
   v5 = v4;
 
   v6 = v5;
@@ -783,9 +783,9 @@ LABEL_4:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CAMZoomButton *)self _contentContainerView];
-  v12 = [(CAMZoomButton *)self _zoomFactorLabel];
-  v13 = [(CAMZoomButton *)self _zoomSymbolView];
+  _contentContainerView = [(CAMZoomButton *)self _contentContainerView];
+  _zoomFactorLabel = [(CAMZoomButton *)self _zoomFactorLabel];
+  _zoomSymbolView = [(CAMZoomButton *)self _zoomSymbolView];
   v59.origin.x = v4;
   v59.origin.y = v6;
   v59.size.width = v8;
@@ -800,12 +800,12 @@ LABEL_4:
   v57 = 0u;
   v55 = 0u;
   [(CAMZoomButton *)self _highlightingTransformForHighlighted:[(CAMZoomButton *)self isHighlighted]];
-  [v11 setBounds:{0.0, 0.0, v8, v10}];
-  [v11 setCenter:{MidX, MidY}];
+  [_contentContainerView setBounds:{0.0, 0.0, v8, v10}];
+  [_contentContainerView setCenter:{MidX, MidY}];
   v52 = v55;
   v53 = v56;
   v54 = v57;
-  [v11 setTransform:&v52];
+  [_contentContainerView setTransform:&v52];
   v61.origin.x = 0.0;
   v61.origin.y = 0.0;
   v61.size.width = v8;
@@ -826,20 +826,20 @@ LABEL_4:
   v52 = 0u;
   [(CAMZoomButton *)self _transformForEnlargeText:[(CAMZoomButton *)self enlargeText] orientation:[(CAMZoomButton *)self orientation]];
   [CAMView convertRect:&v50 toCeiledBounds:&v49 andRoundedCenter:self toViewScale:0.0, 0.0, v8, v10];
-  [v12 setBounds:{v50, v51}];
-  [v12 setCenter:v49];
+  [_zoomFactorLabel setBounds:{v50, v51}];
+  [_zoomFactorLabel setCenter:v49];
   v46 = v52;
   v47 = v53;
   v48 = v54;
-  [v12 setTransform:&v46];
-  v18 = [(CAMZoomButton *)self traitCollection];
-  [v18 displayScale];
+  [_zoomFactorLabel setTransform:&v46];
+  traitCollection = [(CAMZoomButton *)self traitCollection];
+  [traitCollection displayScale];
   v20 = v19;
 
   v22 = *v16;
   v21 = v16[1];
-  v23 = [v13 image];
-  [v23 size];
+  image = [_zoomSymbolView image];
+  [image size];
   v25 = v24;
   v27 = v26;
 
@@ -848,37 +848,37 @@ LABEL_4:
   UIRectGetCenter();
   v29 = v28;
   v31 = v30;
-  [v13 setBounds:{v22, v21, v25, v27, v20}];
-  [v13 setCenter:{v29, v31}];
+  [_zoomSymbolView setBounds:{v22, v21, v25, v27, v20}];
+  [_zoomSymbolView setCenter:{v29, v31}];
   v46 = v52;
   v47 = v53;
   v48 = v54;
-  [v13 setTransform:&v46];
+  [_zoomSymbolView setTransform:&v46];
   v32 = objc_opt_class();
-  v33 = [(CAMZoomButton *)self traitCollection];
-  v34 = [v33 preferredContentSizeCategory];
-  [v32 circleDiameterForContentSize:v34];
+  traitCollection2 = [(CAMZoomButton *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection2 preferredContentSizeCategory];
+  [v32 circleDiameterForContentSize:preferredContentSizeCategory];
   v36 = v35;
 
   if (self->__backgroundEffectContainerView)
   {
-    v37 = [(CAMZoomButton *)self _backgroundEffectContainerView];
+    _backgroundEffectContainerView = [(CAMZoomButton *)self _backgroundEffectContainerView];
     UIRectCenteredAboutPointScale();
-    [v37 setFrame:?];
-    v38 = [v37 layer];
-    [v38 setCornerRadius:v36 * 0.5];
+    [_backgroundEffectContainerView setFrame:?];
+    layer = [_backgroundEffectContainerView layer];
+    [layer setCornerRadius:v36 * 0.5];
   }
 
   v46 = v52;
   v47 = v53;
   v48 = v54;
   [(CAMZoomButton *)self _layoutFocalLengthLabelForAlignmentRectBounds:&v46 contentTransform:0.0, 0.0, v45, v10];
-  v39 = [(CAMZoomButton *)self _accessoryBackgroundView];
-  v40 = [(CAMZoomButton *)self _accessoryImageView];
-  if (v40 | v39)
+  _accessoryBackgroundView = [(CAMZoomButton *)self _accessoryBackgroundView];
+  _accessoryImageView = [(CAMZoomButton *)self _accessoryImageView];
+  if (_accessoryImageView | _accessoryBackgroundView)
   {
     UIRectCenteredAboutPoint();
-    v41 = CAMViewAlignmentSize(v40);
+    v41 = CAMViewAlignmentSize(_accessoryImageView);
     v43 = v42;
     if ([(CAMZoomButton *)self accessoryState])
     {
@@ -887,43 +887,43 @@ LABEL_4:
 
     UIRectCenteredAboutPointScale();
     UIRectGetCenter();
-    [v40 setCenter:?];
-    [v40 setBounds:{v22, v21, v41, v43}];
+    [_accessoryImageView setCenter:?];
+    [_accessoryImageView setBounds:{v22, v21, v41, v43}];
     v46 = v52;
     v47 = v53;
     v48 = v54;
-    [v40 setTransform:&v46];
+    [_accessoryImageView setTransform:&v46];
     UIRectIntegralWithScale();
-    [v39 setFrame:?];
-    v44 = [v39 layer];
-    [v44 setCornerRadius:v36 * 0.5];
+    [_accessoryBackgroundView setFrame:?];
+    layer2 = [_accessoryBackgroundView layer];
+    [layer2 setCornerRadius:v36 * 0.5];
   }
 }
 
-- (void)_layoutFocalLengthLabelForAlignmentRectBounds:(CGRect)a3 contentTransform:(CGAffineTransform *)a4
+- (void)_layoutFocalLengthLabelForAlignmentRectBounds:(CGRect)bounds contentTransform:(CGAffineTransform *)transform
 {
-  v6 = [(CAMZoomButton *)self _focalLengthLabel];
-  if (v6)
+  _focalLengthLabel = [(CAMZoomButton *)self _focalLengthLabel];
+  if (_focalLengthLabel)
   {
-    v7 = [(CAMZoomButton *)self traitCollection];
-    [v7 displayScale];
+    traitCollection = [(CAMZoomButton *)self traitCollection];
+    [traitCollection displayScale];
     v9 = v8;
 
-    [v6 intrinsicContentSize];
+    [_focalLengthLabel intrinsicContentSize];
     CEKRectWithSize();
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
     UIRectCenteredIntegralRectScale();
-    [v6 setBounds:{v11, v13, v15, v17, v9}];
+    [_focalLengthLabel setBounds:{v11, v13, v15, v17, v9}];
     UIRectGetCenter();
-    [v6 setCenter:?];
-    v18 = *&a4->c;
-    v19[0] = *&a4->a;
+    [_focalLengthLabel setCenter:?];
+    v18 = *&transform->c;
+    v19[0] = *&transform->a;
     v19[1] = v18;
-    v19[2] = *&a4->tx;
-    [v6 setTransform:v19];
+    v19[2] = *&transform->tx;
+    [_focalLengthLabel setTransform:v19];
   }
 }
 
@@ -946,20 +946,20 @@ LABEL_4:
 - (void)tintColorDidChange
 {
   zoomFactorLabel = self->__zoomFactorLabel;
-  v3 = [(CAMZoomButton *)self tintColor];
-  [(CAMZoomFactorLabel *)zoomFactorLabel setTextColor:v3];
+  tintColor = [(CAMZoomButton *)self tintColor];
+  [(CAMZoomFactorLabel *)zoomFactorLabel setTextColor:tintColor];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(CAMZoomButton *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(CAMZoomButton *)self isHighlighted];
   v7.receiver = self;
   v7.super_class = CAMZoomButton;
-  [(CAMZoomButton *)&v7 setHighlighted:v3];
-  if (v5 != v3)
+  [(CAMZoomButton *)&v7 setHighlighted:highlightedCopy];
+  if (isHighlighted != highlightedCopy)
   {
-    [(CAMZoomButton *)self _highlightingTransformForHighlighted:v3];
+    [(CAMZoomButton *)self _highlightingTransformForHighlighted:highlightedCopy];
     v6[0] = v6[3];
     v6[1] = v6[4];
     v6[2] = v6[5];
@@ -968,7 +968,7 @@ LABEL_4:
   }
 }
 
-- (CGAffineTransform)_highlightingTransformForHighlighted:(SEL)a3
+- (CGAffineTransform)_highlightingTransformForHighlighted:(SEL)highlighted
 {
   v4 = 0.85;
   if (!a4)
@@ -982,11 +982,11 @@ LABEL_4:
   return CGAffineTransformMakeScale(retstr, v4, v4);
 }
 
-- (CGAffineTransform)_transformForEnlargeText:(SEL)a3 orientation:(BOOL)a4
+- (CGAffineTransform)_transformForEnlargeText:(SEL)text orientation:(BOOL)orientation
 {
   v7 = 1.3;
   memset(&v12.c, 0, 32);
-  if (!a4)
+  if (!orientation)
   {
     v7 = 1.0;
   }
@@ -1005,9 +1005,9 @@ LABEL_4:
 
 - (void)_updateBackgroundEffectContainerViewAlpha
 {
-  v3 = [(CAMZoomButton *)self _backgroundEffectContainerView];
+  _backgroundEffectContainerView = [(CAMZoomButton *)self _backgroundEffectContainerView];
 
-  if (v3)
+  if (_backgroundEffectContainerView)
   {
     if ([(CAMZoomButton *)self shouldHideBackground])
     {
@@ -1019,16 +1019,16 @@ LABEL_4:
       v4 = 1.0;
     }
 
-    v5 = [(CAMZoomButton *)self _backgroundEffectContainerView];
-    [v5 setAlpha:v4];
+    _backgroundEffectContainerView2 = [(CAMZoomButton *)self _backgroundEffectContainerView];
+    [_backgroundEffectContainerView2 setAlpha:v4];
   }
 }
 
 - (void)_performHighlightAnimation
 {
-  v3 = [(CAMZoomButton *)self isHighlighted];
+  isHighlighted = [(CAMZoomButton *)self isHighlighted];
   v4 = 0.1;
-  if (v3)
+  if (isHighlighted)
   {
     v5 = 131078;
   }
@@ -1059,14 +1059,14 @@ LABEL_4:
   v12 = [MEMORY[0x1E69793D0] functionWithControlPoints:v9 :0.0 :v10 :v11];
   [v8 setTimingFunction:v12];
 
-  v13 = [(CAMZoomButton *)self _contentContainerView];
-  v14 = [v13 layer];
-  v15 = [v14 presentationLayer];
-  v16 = [v15 valueForKeyPath:@"transform"];
+  _contentContainerView = [(CAMZoomButton *)self _contentContainerView];
+  layer = [_contentContainerView layer];
+  presentationLayer = [layer presentationLayer];
+  v16 = [presentationLayer valueForKeyPath:@"transform"];
   [v8 setFromValue:v16];
 
   memset(&v25, 0, sizeof(v25));
-  [(CAMZoomButton *)self _highlightingTransformForHighlighted:v3];
+  [(CAMZoomButton *)self _highlightingTransformForHighlighted:isHighlighted];
   memset(&v24, 0, sizeof(v24));
   v18 = v25;
   CATransform3DMakeAffineTransform(&v24, &v18);
@@ -1081,7 +1081,7 @@ LABEL_4:
   v17 = [MEMORY[0x1E696B098] valueWithCATransform3D:&v18];
   [v8 setToValue:v17];
 
-  [v14 addAnimation:v8 forKey:@"highlightAnimation"];
+  [layer addAnimation:v8 forKey:@"highlightAnimation"];
   v20 = *&v24.m31;
   v21 = *&v24.m33;
   v22 = *&v24.m41;
@@ -1090,7 +1090,7 @@ LABEL_4:
   *&v18.c = *&v24.m13;
   *&v18.tx = *&v24.m21;
   v19 = *&v24.m23;
-  [v14 setTransform:&v18];
+  [layer setTransform:&v18];
 }
 
 + (NSNumberFormatter)zoomFactorFormatter
@@ -1125,24 +1125,24 @@ uint64_t __36__CAMZoomButton_zoomFactorFormatter__block_invoke()
 {
   if (![(CAMZoomButton *)self contentType])
   {
-    v3 = [(CAMZoomButton *)self _zoomFactorLabel];
+    _zoomFactorLabel = [(CAMZoomButton *)self _zoomFactorLabel];
     [(CAMZoomButton *)self zoomFactor];
-    [v3 setZoomFactor:?];
-    [v3 setShowZoomFactorSymbol:{-[CAMZoomButton showZoomFactorSymbol](self, "showZoomFactorSymbol")}];
+    [_zoomFactorLabel setZoomFactor:?];
+    [_zoomFactorLabel setShowZoomFactorSymbol:{-[CAMZoomButton showZoomFactorSymbol](self, "showZoomFactorSymbol")}];
   }
 }
 
-+ (id)textForZoomFactor:(double)a3 showZoomFactorSymbol:(BOOL)a4 useLeadingZero:(BOOL)a5
++ (id)textForZoomFactor:(double)factor showZoomFactorSymbol:(BOOL)symbol useLeadingZero:(BOOL)zero
 {
-  v5 = a5;
+  zeroCopy = zero;
   v8 = +[CAMZoomButton zoomFactorFormatter];
   v9 = v8;
-  v10 = a3 >= 1.0 || v5;
+  v10 = factor >= 1.0 || zeroCopy;
   [v8 setMinimumIntegerDigits:v10];
-  v11 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v11 = [MEMORY[0x1E696AD98] numberWithDouble:factor];
   v12 = [v9 stringFromNumber:v11];
 
-  if (a4)
+  if (symbol)
   {
     v13 = CAMLocalizedFrameworkString(@"ZOOM_FACTOR_SYMBOL", @"The multiplication symbol used for indicating zoom factor.");
     v14 = CAMLocalizedFrameworkString(@"ZOOM_FACTOR_TEXT", 0);
@@ -1157,67 +1157,67 @@ uint64_t __36__CAMZoomButton_zoomFactorFormatter__block_invoke()
   return v15;
 }
 
-- (void)setEnlargeText:(BOOL)a3
+- (void)setEnlargeText:(BOOL)text
 {
-  if (self->_enlargeText != a3)
+  if (self->_enlargeText != text)
   {
-    self->_enlargeText = a3;
+    self->_enlargeText = text;
     [(CAMZoomButton *)self _updateZoomFactorLabelIfNeeded];
 
     [(CAMZoomButton *)self setNeedsLayout];
   }
 }
 
-- (void)setShowZoomFactorSymbol:(BOOL)a3
+- (void)setShowZoomFactorSymbol:(BOOL)symbol
 {
-  if (self->_showZoomFactorSymbol != a3)
+  if (self->_showZoomFactorSymbol != symbol)
   {
-    self->_showZoomFactorSymbol = a3;
+    self->_showZoomFactorSymbol = symbol;
     [(CAMZoomButton *)self _updateZoomFactorLabelIfNeeded];
 
     [(CAMZoomButton *)self setNeedsLayout];
   }
 }
 
-- (void)setUseLeadingZero:(BOOL)a3
+- (void)setUseLeadingZero:(BOOL)zero
 {
-  v3 = a3;
-  v4 = [(CAMZoomButton *)self _zoomFactorLabel];
-  [v4 setUseLeadingZero:v3];
+  zeroCopy = zero;
+  _zoomFactorLabel = [(CAMZoomButton *)self _zoomFactorLabel];
+  [_zoomFactorLabel setUseLeadingZero:zeroCopy];
 }
 
 - (BOOL)useLeadingZero
 {
-  v2 = [(CAMZoomButton *)self _zoomFactorLabel];
-  v3 = [v2 useLeadingZero];
+  _zoomFactorLabel = [(CAMZoomButton *)self _zoomFactorLabel];
+  useLeadingZero = [_zoomFactorLabel useLeadingZero];
 
-  return v3;
+  return useLeadingZero;
 }
 
-- (void)setTextShadowStrength:(int64_t)a3
+- (void)setTextShadowStrength:(int64_t)strength
 {
-  v4 = [(CAMZoomButton *)self _zoomFactorLabel];
-  [v4 setShadowStrength:a3];
+  _zoomFactorLabel = [(CAMZoomButton *)self _zoomFactorLabel];
+  [_zoomFactorLabel setShadowStrength:strength];
 }
 
 - (int64_t)textShadowStrength
 {
-  v2 = [(CAMZoomButton *)self _zoomFactorLabel];
-  v3 = [v2 shadowStrength];
+  _zoomFactorLabel = [(CAMZoomButton *)self _zoomFactorLabel];
+  shadowStrength = [_zoomFactorLabel shadowStrength];
 
-  return v3;
+  return shadowStrength;
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
     v8[7] = v4;
     v8[8] = v5;
-    v6 = a4;
-    self->_orientation = a3;
+    animatedCopy = animated;
+    self->_orientation = orientation;
     [(CAMZoomButton *)self setNeedsLayout];
-    if (v6)
+    if (animatedCopy)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
@@ -1229,17 +1229,17 @@ uint64_t __36__CAMZoomButton_zoomFactorFormatter__block_invoke()
   }
 }
 
-+ (BOOL)shouldUseLargeButtonSizeForContentSize:(id)a3
++ (BOOL)shouldUseLargeButtonSizeForContentSize:(id)size
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E69DDC68]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC88]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC78]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC70]))
+  sizeCopy = size;
+  if ([sizeCopy isEqualToString:*MEMORY[0x1E69DDC68]] & 1) != 0 || (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC88]) & 1) != 0 || (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC78]) & 1) != 0 || (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC70]))
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:*MEMORY[0x1E69DDC60]] ^ 1;
+    v4 = [sizeCopy isEqualToString:*MEMORY[0x1E69DDC60]] ^ 1;
   }
 
   return v4;

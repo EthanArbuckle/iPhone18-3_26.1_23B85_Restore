@@ -1,18 +1,18 @@
 @interface HKCodableSummaryTrendTileViewModel
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)diagramStyleAsString:(int)a3;
+- (id)diagramStyleAsString:(int)string;
 - (id)dictionaryRepresentation;
-- (int)StringAsDiagramStyle:(id)a3;
+- (int)StringAsDiagramStyle:(id)style;
 - (int)diagramStyle;
 - (unint64_t)hash;
-- (void)addVisualizationPoints:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDiagramStyle:(BOOL)a3;
-- (void)setHasOriginalEventDateData:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addVisualizationPoints:(id)points;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDiagramStyle:(BOOL)style;
+- (void)setHasOriginalEventDateData:(BOOL)data;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableSummaryTrendTileViewModel
@@ -30,9 +30,9 @@
   }
 }
 
-- (void)setHasDiagramStyle:(BOOL)a3
+- (void)setHasDiagramStyle:(BOOL)style
 {
-  if (a3)
+  if (style)
   {
     v3 = 4;
   }
@@ -45,45 +45,45 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (id)diagramStyleAsString:(int)a3
+- (id)diagramStyleAsString:(int)string
 {
-  if (a3 >= 5)
+  if (string >= 5)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E81B5C70[a3];
+    v4 = off_1E81B5C70[string];
   }
 
   return v4;
 }
 
-- (int)StringAsDiagramStyle:(id)a3
+- (int)StringAsDiagramStyle:(id)style
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"bar"])
+  styleCopy = style;
+  if ([styleCopy isEqualToString:@"bar"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"line"])
+  else if ([styleCopy isEqualToString:@"line"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"minMax"])
+  else if ([styleCopy isEqualToString:@"minMax"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"distribution"])
+  else if ([styleCopy isEqualToString:@"distribution"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"bloodPressure"])
+  else if ([styleCopy isEqualToString:@"bloodPressure"])
   {
     v4 = 4;
   }
@@ -96,27 +96,27 @@
   return v4;
 }
 
-- (void)addVisualizationPoints:(id)a3
+- (void)addVisualizationPoints:(id)points
 {
-  v4 = a3;
+  pointsCopy = points;
   visualizationPoints = self->_visualizationPoints;
-  v8 = v4;
+  v8 = pointsCopy;
   if (!visualizationPoints)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_visualizationPoints;
     self->_visualizationPoints = v6;
 
-    v4 = v8;
+    pointsCopy = v8;
     visualizationPoints = self->_visualizationPoints;
   }
 
-  [(NSMutableArray *)visualizationPoints addObject:v4];
+  [(NSMutableArray *)visualizationPoints addObject:pointsCopy];
 }
 
-- (void)setHasOriginalEventDateData:(BOOL)a3
+- (void)setHasOriginalEventDateData:(BOOL)data
 {
-  if (a3)
+  if (data)
   {
     v3 = 2;
   }
@@ -135,8 +135,8 @@
   v8.receiver = self;
   v8.super_class = HKCodableSummaryTrendTileViewModel;
   v4 = [(HKCodableSummaryTrendTileViewModel *)&v8 description];
-  v5 = [(HKCodableSummaryTrendTileViewModel *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableSummaryTrendTileViewModel *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -144,12 +144,12 @@
 - (id)dictionaryRepresentation
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   trendDescription = self->_trendDescription;
   if (trendDescription)
   {
-    [v3 setObject:trendDescription forKey:@"trendDescription"];
+    [dictionary setObject:trendDescription forKey:@"trendDescription"];
   }
 
   changeTypeRawValue = self->_changeTypeRawValue;
@@ -189,15 +189,15 @@
   baseTrendLine = self->_baseTrendLine;
   if (baseTrendLine)
   {
-    v12 = [(HKCodableSummaryTrendLineViewModel *)baseTrendLine dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"baseTrendLine"];
+    dictionaryRepresentation = [(HKCodableSummaryTrendLineViewModel *)baseTrendLine dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"baseTrendLine"];
   }
 
   changeTrendLine = self->_changeTrendLine;
   if (changeTrendLine)
   {
-    v14 = [(HKCodableSummaryTrendLineViewModel *)changeTrendLine dictionaryRepresentation];
-    [v4 setObject:v14 forKey:@"changeTrendLine"];
+    dictionaryRepresentation2 = [(HKCodableSummaryTrendLineViewModel *)changeTrendLine dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"changeTrendLine"];
   }
 
   if ([(NSMutableArray *)self->_visualizationPoints count])
@@ -222,8 +222,8 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation3 = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation3];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -265,8 +265,8 @@
   cellHeaderViewModel = self->_cellHeaderViewModel;
   if (cellHeaderViewModel)
   {
-    v28 = [(HKCodableCellHeaderViewModel *)cellHeaderViewModel dictionaryRepresentation];
-    [v4 setObject:v28 forKey:@"cellHeaderViewModel"];
+    dictionaryRepresentation4 = [(HKCodableCellHeaderViewModel *)cellHeaderViewModel dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"cellHeaderViewModel"];
   }
 
   pregnancyLabelValue = self->_pregnancyLabelValue;
@@ -278,10 +278,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_trendDescription)
   {
     PBDataWriterWriteStringField();
@@ -379,26 +379,26 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_trendDescription)
   {
-    [v4 setTrendDescription:?];
-    v4 = v10;
+    [toCopy setTrendDescription:?];
+    toCopy = v10;
   }
 
   if (self->_changeTypeRawValue)
   {
     [v10 setChangeTypeRawValue:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 16) = self->_diagramStyle;
-    *(v4 + 120) |= 4u;
+    *(toCopy + 16) = self->_diagramStyle;
+    *(toCopy + 120) |= 4u;
   }
 
   if (self->_objectTypeIdentifier)
@@ -424,10 +424,10 @@
   if ([(HKCodableSummaryTrendTileViewModel *)self visualizationPointsCount])
   {
     [v10 clearVisualizationPoints];
-    v5 = [(HKCodableSummaryTrendTileViewModel *)self visualizationPointsCount];
-    if (v5)
+    visualizationPointsCount = [(HKCodableSummaryTrendTileViewModel *)self visualizationPointsCount];
+    if (visualizationPointsCount)
     {
-      v6 = v5;
+      v6 = visualizationPointsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(HKCodableSummaryTrendTileViewModel *)self visualizationPointsAtIndex:i];
@@ -473,15 +473,15 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_trendDescription copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_trendDescription copyWithZone:zone];
   v7 = *(v5 + 96);
   *(v5 + 96) = v6;
 
-  v8 = [(NSString *)self->_changeTypeRawValue copyWithZone:a3];
+  v8 = [(NSString *)self->_changeTypeRawValue copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
@@ -491,19 +491,19 @@
     *(v5 + 120) |= 4u;
   }
 
-  v10 = [(NSString *)self->_objectTypeIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_objectTypeIdentifier copyWithZone:zone];
   v11 = *(v5 + 80);
   *(v5 + 80) = v10;
 
-  v12 = [(NSString *)self->_coveredDateRangeRawValue copyWithZone:a3];
+  v12 = [(NSString *)self->_coveredDateRangeRawValue copyWithZone:zone];
   v13 = *(v5 + 56);
   *(v5 + 56) = v12;
 
-  v14 = [(HKCodableSummaryTrendLineViewModel *)self->_baseTrendLine copyWithZone:a3];
+  v14 = [(HKCodableSummaryTrendLineViewModel *)self->_baseTrendLine copyWithZone:zone];
   v15 = *(v5 + 24);
   *(v5 + 24) = v14;
 
-  v16 = [(HKCodableSummaryTrendLineViewModel *)self->_changeTrendLine copyWithZone:a3];
+  v16 = [(HKCodableSummaryTrendLineViewModel *)self->_changeTrendLine copyWithZone:zone];
   v17 = *(v5 + 40);
   *(v5 + 40) = v16;
 
@@ -527,7 +527,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v33 + 1) + 8 * v22) copyWithZone:{a3, v33}];
+        v23 = [*(*(&v33 + 1) + 8 * v22) copyWithZone:{zone, v33}];
         [v5 addVisualizationPoints:v23];
 
         ++v22;
@@ -540,7 +540,7 @@
     while (v20);
   }
 
-  v24 = [(NSString *)self->_notificationIdentifier copyWithZone:a3];
+  v24 = [(NSString *)self->_notificationIdentifier copyWithZone:zone];
   v25 = *(v5 + 72);
   *(v5 + 72) = v24;
 
@@ -550,11 +550,11 @@
     *(v5 + 120) |= 1u;
   }
 
-  v26 = [(NSString *)self->_trendDescriptionSharingPreviewOverride copyWithZone:a3, v33];
+  v26 = [(NSString *)self->_trendDescriptionSharingPreviewOverride copyWithZone:zone, v33];
   v27 = *(v5 + 104);
   *(v5 + 104) = v26;
 
-  v28 = [(HKCodableCellHeaderViewModel *)self->_cellHeaderViewModel copyWithZone:a3];
+  v28 = [(HKCodableCellHeaderViewModel *)self->_cellHeaderViewModel copyWithZone:zone];
   v29 = *(v5 + 32);
   *(v5 + 32) = v28;
 
@@ -564,23 +564,23 @@
     *(v5 + 120) |= 2u;
   }
 
-  v30 = [(NSString *)self->_pregnancyLabelValue copyWithZone:a3];
+  v30 = [(NSString *)self->_pregnancyLabelValue copyWithZone:zone];
   v31 = *(v5 + 88);
   *(v5 + 88) = v30;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_39;
   }
 
   trendDescription = self->_trendDescription;
-  if (trendDescription | *(v4 + 12))
+  if (trendDescription | *(equalCopy + 12))
   {
     if (![(NSString *)trendDescription isEqual:?])
     {
@@ -589,7 +589,7 @@
   }
 
   changeTypeRawValue = self->_changeTypeRawValue;
-  if (changeTypeRawValue | *(v4 + 6))
+  if (changeTypeRawValue | *(equalCopy + 6))
   {
     if (![(NSString *)changeTypeRawValue isEqual:?])
     {
@@ -599,13 +599,13 @@
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 120) & 4) == 0 || self->_diagramStyle != *(v4 + 16))
+    if ((*(equalCopy + 120) & 4) == 0 || self->_diagramStyle != *(equalCopy + 16))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 120) & 4) != 0)
+  else if ((*(equalCopy + 120) & 4) != 0)
   {
 LABEL_39:
     v16 = 0;
@@ -613,13 +613,13 @@ LABEL_39:
   }
 
   objectTypeIdentifier = self->_objectTypeIdentifier;
-  if (objectTypeIdentifier | *(v4 + 10) && ![(NSString *)objectTypeIdentifier isEqual:?])
+  if (objectTypeIdentifier | *(equalCopy + 10) && ![(NSString *)objectTypeIdentifier isEqual:?])
   {
     goto LABEL_39;
   }
 
   coveredDateRangeRawValue = self->_coveredDateRangeRawValue;
-  if (coveredDateRangeRawValue | *(v4 + 7))
+  if (coveredDateRangeRawValue | *(equalCopy + 7))
   {
     if (![(NSString *)coveredDateRangeRawValue isEqual:?])
     {
@@ -628,7 +628,7 @@ LABEL_39:
   }
 
   baseTrendLine = self->_baseTrendLine;
-  if (baseTrendLine | *(v4 + 3))
+  if (baseTrendLine | *(equalCopy + 3))
   {
     if (![(HKCodableSummaryTrendLineViewModel *)baseTrendLine isEqual:?])
     {
@@ -637,7 +637,7 @@ LABEL_39:
   }
 
   changeTrendLine = self->_changeTrendLine;
-  if (changeTrendLine | *(v4 + 5))
+  if (changeTrendLine | *(equalCopy + 5))
   {
     if (![(HKCodableSummaryTrendLineViewModel *)changeTrendLine isEqual:?])
     {
@@ -646,7 +646,7 @@ LABEL_39:
   }
 
   visualizationPoints = self->_visualizationPoints;
-  if (visualizationPoints | *(v4 + 14))
+  if (visualizationPoints | *(equalCopy + 14))
   {
     if (![(NSMutableArray *)visualizationPoints isEqual:?])
     {
@@ -655,7 +655,7 @@ LABEL_39:
   }
 
   notificationIdentifier = self->_notificationIdentifier;
-  if (notificationIdentifier | *(v4 + 9))
+  if (notificationIdentifier | *(equalCopy + 9))
   {
     if (![(NSString *)notificationIdentifier isEqual:?])
     {
@@ -665,25 +665,25 @@ LABEL_39:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 120) & 1) == 0 || self->_discoveryDateData != *(v4 + 1))
+    if ((*(equalCopy + 120) & 1) == 0 || self->_discoveryDateData != *(equalCopy + 1))
     {
       goto LABEL_39;
     }
   }
 
-  else if (*(v4 + 120))
+  else if (*(equalCopy + 120))
   {
     goto LABEL_39;
   }
 
   trendDescriptionSharingPreviewOverride = self->_trendDescriptionSharingPreviewOverride;
-  if (trendDescriptionSharingPreviewOverride | *(v4 + 13) && ![(NSString *)trendDescriptionSharingPreviewOverride isEqual:?])
+  if (trendDescriptionSharingPreviewOverride | *(equalCopy + 13) && ![(NSString *)trendDescriptionSharingPreviewOverride isEqual:?])
   {
     goto LABEL_39;
   }
 
   cellHeaderViewModel = self->_cellHeaderViewModel;
-  if (cellHeaderViewModel | *(v4 + 4))
+  if (cellHeaderViewModel | *(equalCopy + 4))
   {
     if (![(HKCodableCellHeaderViewModel *)cellHeaderViewModel isEqual:?])
     {
@@ -693,19 +693,19 @@ LABEL_39:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 120) & 2) == 0 || self->_originalEventDateData != *(v4 + 2))
+    if ((*(equalCopy + 120) & 2) == 0 || self->_originalEventDateData != *(equalCopy + 2))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 120) & 2) != 0)
+  else if ((*(equalCopy + 120) & 2) != 0)
   {
     goto LABEL_39;
   }
 
   pregnancyLabelValue = self->_pregnancyLabelValue;
-  if (pregnancyLabelValue | *(v4 + 11))
+  if (pregnancyLabelValue | *(equalCopy + 11))
   {
     v16 = [(NSString *)pregnancyLabelValue isEqual:?];
   }
@@ -811,38 +811,38 @@ LABEL_40:
   return v25 ^ v26 ^ v24 ^ v23 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v10 ^ v14 ^ v15 ^ v18 ^ [(NSString *)self->_pregnancyLabelValue hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 12))
+  fromCopy = from;
+  if (*(fromCopy + 12))
   {
     [(HKCodableSummaryTrendTileViewModel *)self setTrendDescription:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(HKCodableSummaryTrendTileViewModel *)self setChangeTypeRawValue:?];
   }
 
-  if ((*(v4 + 120) & 4) != 0)
+  if ((*(fromCopy + 120) & 4) != 0)
   {
-    self->_diagramStyle = *(v4 + 16);
+    self->_diagramStyle = *(fromCopy + 16);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(HKCodableSummaryTrendTileViewModel *)self setObjectTypeIdentifier:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(HKCodableSummaryTrendTileViewModel *)self setCoveredDateRangeRawValue:?];
   }
 
   baseTrendLine = self->_baseTrendLine;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (baseTrendLine)
   {
     if (v6)
@@ -857,7 +857,7 @@ LABEL_40:
   }
 
   changeTrendLine = self->_changeTrendLine;
-  v8 = *(v4 + 5);
+  v8 = *(fromCopy + 5);
   if (changeTrendLine)
   {
     if (v8)
@@ -875,7 +875,7 @@ LABEL_40:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = *(v4 + 14);
+  v9 = *(fromCopy + 14);
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -899,24 +899,24 @@ LABEL_40:
     while (v11);
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(HKCodableSummaryTrendTileViewModel *)self setNotificationIdentifier:?];
   }
 
-  if (*(v4 + 120))
+  if (*(fromCopy + 120))
   {
-    self->_discoveryDateData = *(v4 + 1);
+    self->_discoveryDateData = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(HKCodableSummaryTrendTileViewModel *)self setTrendDescriptionSharingPreviewOverride:?];
   }
 
   cellHeaderViewModel = self->_cellHeaderViewModel;
-  v15 = *(v4 + 4);
+  v15 = *(fromCopy + 4);
   if (cellHeaderViewModel)
   {
     if (v15)
@@ -930,13 +930,13 @@ LABEL_40:
     [(HKCodableSummaryTrendTileViewModel *)self setCellHeaderViewModel:?];
   }
 
-  if ((*(v4 + 120) & 2) != 0)
+  if ((*(fromCopy + 120) & 2) != 0)
   {
-    self->_originalEventDateData = *(v4 + 2);
+    self->_originalEventDateData = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(HKCodableSummaryTrendTileViewModel *)self setPregnancyLabelValue:?];
   }

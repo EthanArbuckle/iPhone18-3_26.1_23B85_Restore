@@ -1,20 +1,20 @@
 @interface TSPSupportManager
-+ (BOOL)isSupportAtURLValid:(id)a3 documentUUID:(id)a4 versionUUID:(id)a5 documentProperties:(id *)a6;
++ (BOOL)isSupportAtURLValid:(id)valid documentUUID:(id)d versionUUID:(id)iD documentProperties:(id *)properties;
 + (id)defaultSupportDirectoryURL;
-+ (id)supportBundleURLForDocumentUUID:(id)a3 delegate:(id)a4;
-+ (id)supportDirectoryURLWithDelegate:(id)a3 isUnique:(BOOL *)a4;
-- (BOOL)copyOrMoveSupportAtURL:(id)a3 originalDocumentProperties:(id)a4 toURL:(id)a5 isCopying:(BOOL)a6 newDocumentProperties:(id)a7 error:(id *)a8;
-- (BOOL)endSaveWithSuccess:(BOOL)a3 packageWriter:(id)a4 newURL:(id *)a5 writtenPackage:(id *)a6;
-- (BOOL)writeSupportForDocumentUUID:(id)a3 error:(id *)a4 writer:(id)a5;
++ (id)supportBundleURLForDocumentUUID:(id)d delegate:(id)delegate;
++ (id)supportDirectoryURLWithDelegate:(id)delegate isUnique:(BOOL *)unique;
+- (BOOL)copyOrMoveSupportAtURL:(id)l originalDocumentProperties:(id)properties toURL:(id)rL isCopying:(BOOL)copying newDocumentProperties:(id)documentProperties error:(id *)error;
+- (BOOL)endSaveWithSuccess:(BOOL)success packageWriter:(id)writer newURL:(id *)l writtenPackage:(id *)package;
+- (BOOL)writeSupportForDocumentUUID:(id)d error:(id *)error writer:(id)writer;
 - (NSURL)presentedSupportURL;
 - (TSPSupportManager)init;
-- (TSPSupportManager)initWithContext:(id)a3;
-- (id)supportURLWithDocumentUUID:(id)a3;
-- (void)beginSaveWithDocumentUUID:(id)a3 versionUUID:(id)a4 originalURL:(id)a5 updateType:(int64_t)a6;
-- (void)performReadUsingAccessor:(id)a3;
-- (void)presentedItemDidMoveToURL:(id)a3;
+- (TSPSupportManager)initWithContext:(id)context;
+- (id)supportURLWithDocumentUUID:(id)d;
+- (void)beginSaveWithDocumentUUID:(id)d versionUUID:(id)iD originalURL:(id)l updateType:(int64_t)type;
+- (void)performReadUsingAccessor:(id)accessor;
+- (void)presentedItemDidMoveToURL:(id)l;
 - (void)removeFilePresenter;
-- (void)setPresentedSupportURL:(id)a3;
+- (void)setPresentedSupportURL:(id)l;
 @end
 
 @implementation TSPSupportManager
@@ -35,16 +35,16 @@
   objc_exception_throw(v13);
 }
 
-- (TSPSupportManager)initWithContext:(id)a3
+- (TSPSupportManager)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = TSPSupportManager;
   v5 = [(TSPSupportManager *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_context, v4);
+    objc_storeWeak(&v5->_context, contextCopy);
     v7 = objc_alloc_init(MEMORY[0x277CCABD8]);
     presentedItemQueue = v6->_presentedItemQueue;
     v6->_presentedItemQueue = v7;
@@ -62,11 +62,11 @@
   return v6;
 }
 
-- (void)beginSaveWithDocumentUUID:(id)a3 versionUUID:(id)a4 originalURL:(id)a5 updateType:(int64_t)a6
+- (void)beginSaveWithDocumentUUID:(id)d versionUUID:(id)iD originalURL:(id)l updateType:(int64_t)type
 {
-  v22 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  lCopy = l;
   if (UnsafePointer != -1)
   {
     sub_276BD646C();
@@ -85,15 +85,15 @@
   }
 
   v12 = [TSPSupportSaveOperationState alloc];
-  updated = objc_msgSend_initWithOriginalDocumentUUID_originalVersionUUID_originalURL_updateType_(v12, v13, v22, v10, v11, a6);
+  updated = objc_msgSend_initWithOriginalDocumentUUID_originalVersionUUID_originalURL_updateType_(v12, v13, dCopy, iDCopy, lCopy, type);
   saveOperationState = self->_saveOperationState;
   self->_saveOperationState = updated;
 }
 
-- (BOOL)writeSupportForDocumentUUID:(id)a3 error:(id *)a4 writer:(id)a5
+- (BOOL)writeSupportForDocumentUUID:(id)d error:(id *)error writer:(id)writer
 {
-  v8 = a3;
-  v10 = a5;
+  dCopy = d;
+  writerCopy = writer;
   saveOperationState = self->_saveOperationState;
   if (!saveOperationState)
   {
@@ -107,10 +107,10 @@
     abort();
   }
 
-  objc_msgSend_setDocumentUUID_(saveOperationState, v9, v8);
-  v13 = objc_msgSend_supportURLWithDocumentUUID_(self, v12, v8);
+  objc_msgSend_setDocumentUUID_(saveOperationState, v9, dCopy);
+  v13 = objc_msgSend_supportURLWithDocumentUUID_(self, v12, dCopy);
   objc_msgSend_setURL_(self->_saveOperationState, v14, v13);
-  v66 = a4;
+  errorCopy = error;
   v75 = 0;
   v76 = &v75;
   v77 = 0x2020000000;
@@ -164,14 +164,14 @@
     aBlock[3] = &unk_27A6E69C8;
     v72 = &v75;
     aBlock[4] = self;
-    v71 = v10;
+    v71 = writerCopy;
     v34 = _Block_copy(aBlock);
     v37 = objc_msgSend_originalURL(self->_saveOperationState, v35, v36);
 
     v40 = self->_saveOperationState;
     if (v37)
     {
-      v65 = v10;
+      v65 = writerCopy;
       v41 = MEMORY[0x277CCA9E8];
       v42 = objc_msgSend_originalURL(v40, v38, v39);
       v69 = 0;
@@ -198,7 +198,7 @@
       }
 
       v53 = v68;
-      v10 = v65;
+      writerCopy = v65;
     }
 
     else
@@ -210,10 +210,10 @@
   }
 
   v56 = *(v76 + 24);
-  if (v66 && (v76[3] & 1) == 0)
+  if (errorCopy && (v76[3] & 1) == 0)
   {
     v57 = v32;
-    *v66 = v32;
+    *errorCopy = v32;
     v56 = *(v76 + 24);
   }
 
@@ -221,11 +221,11 @@
   return v56 & 1;
 }
 
-- (BOOL)endSaveWithSuccess:(BOOL)a3 packageWriter:(id)a4 newURL:(id *)a5 writtenPackage:(id *)a6
+- (BOOL)endSaveWithSuccess:(BOOL)success packageWriter:(id)writer newURL:(id *)l writtenPackage:(id *)package
 {
-  v8 = a3;
+  successCopy = success;
   v111[1] = *MEMORY[0x277D85DE8];
-  v12 = a4;
+  writerCopy = writer;
   if (UnsafePointer != -1)
   {
     sub_276BD6520();
@@ -248,7 +248,7 @@
   v106 = 0;
   v107 = &v106;
   v108 = 0x2020000000;
-  if (v8)
+  if (successCopy)
   {
     v15 = objc_msgSend_didWriteSupportBundleSuccessfuly(saveOperationState, v10, v11);
     v14 = v107;
@@ -336,7 +336,7 @@
         v84 = &v100;
         v85 = &v94;
         v86 = &v88;
-        v82 = v12;
+        v82 = writerCopy;
         v51 = objc_msgSend_tsp_coordinateWritingItemAtURL_options_writingItemAtURL_options_filePresenter_error_byAccessor_(v59, v64, v71, 2, v62, 8, self, &v87, v80);
         objc_storeStrong(v63 + 5, v87);
       }
@@ -358,7 +358,7 @@ LABEL_15:
         v76 = &v100;
         v77 = &v94;
         v78 = &v88;
-        v74 = v12;
+        v74 = writerCopy;
         v51 = objc_msgSend_tsp_coordinateWritingItemAtURL_options_filePresenter_error_byAccessor_(v47, v50, v48, 0, self, &obj, v72);
         objc_storeStrong(v49 + 5, obj);
       }
@@ -380,19 +380,19 @@ LABEL_15:
     }
   }
 
-  if (v8 && (v107[3] & 1) == 0)
+  if (successCopy && (v107[3] & 1) == 0)
   {
     objc_msgSend_removeFilePresenter(self, v10, v11);
   }
 
-  if (a5)
+  if (l)
   {
-    *a5 = objc_msgSend_copy(v95[5], v10, v11);
+    *l = objc_msgSend_copy(v95[5], v10, v11);
   }
 
-  if (a6)
+  if (package)
   {
-    *a6 = v89[5];
+    *package = v89[5];
   }
 
   if (objc_msgSend_shouldLeavePendingEndSave(self->_saveOperationState, v10, v11))
@@ -414,19 +414,19 @@ LABEL_15:
   return v56 & 1;
 }
 
-- (id)supportURLWithDocumentUUID:(id)a3
+- (id)supportURLWithDocumentUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  v8 = objc_msgSend_supportBundleURLForDocumentUUID_delegate_(v5, v7, v4, WeakRetained);
+  v8 = objc_msgSend_supportBundleURLForDocumentUUID_delegate_(v5, v7, dCopy, WeakRetained);
 
   return v8;
 }
 
-- (void)performReadUsingAccessor:(id)a3
+- (void)performReadUsingAccessor:(id)accessor
 {
-  v4 = a3;
+  accessorCopy = accessor;
   WeakRetained = objc_loadWeakRetained(&self->_context);
   if (objc_msgSend_ignoreDocumentSupport(WeakRetained, v6, v7))
   {
@@ -453,7 +453,7 @@ LABEL_15:
   v29[2] = sub_276ABC108;
   v29[3] = &unk_27A6E2EF8;
   v29[4] = self;
-  v27 = v4;
+  v27 = accessorCopy;
   v30 = v27;
   objc_msgSend_performReadUsingAccessorImpl_(WeakRetained, v28, v29);
 }
@@ -474,11 +474,11 @@ LABEL_15:
   return v6;
 }
 
-- (void)setPresentedSupportURL:(id)a3
+- (void)setPresentedSupportURL:(id)l
 {
-  v28 = a3;
+  lCopy = l;
   objc_msgSend_lock(self->_presentedSupportURLLock, v4, v5);
-  if ((objc_msgSend_isEqual_(self->_presentedSupportURL, v6, v28) & 1) == 0)
+  if ((objc_msgSend_isEqual_(self->_presentedSupportURL, v6, lCopy) & 1) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_context);
     isDocumentSupportTemporary = objc_msgSend_isDocumentSupportTemporary(WeakRetained, v10, v11);
@@ -487,11 +487,11 @@ LABEL_15:
       objc_msgSend_tsp_removeFilePresenter_(MEMORY[0x277CCA9E8], v12, self);
     }
 
-    v15 = objc_msgSend_copy(v28, v12, v13);
+    v15 = objc_msgSend_copy(lCopy, v12, v13);
     presentedSupportURL = self->_presentedSupportURL;
     self->_presentedSupportURL = v15;
 
-    if (v28)
+    if (lCopy)
     {
       v19 = isDocumentSupportTemporary;
     }
@@ -520,51 +520,51 @@ LABEL_15:
   objc_msgSend_unlock(self->_presentedSupportURLLock, v7, v8);
 }
 
-- (void)presentedItemDidMoveToURL:(id)a3
+- (void)presentedItemDidMoveToURL:(id)l
 {
-  v14 = a3;
+  lCopy = l;
   objc_msgSend_lock(self->_presentedSupportURLLock, v4, v5);
-  v8 = objc_msgSend_copy(v14, v6, v7);
+  v8 = objc_msgSend_copy(lCopy, v6, v7);
   presentedSupportURL = self->_presentedSupportURL;
   self->_presentedSupportURL = v8;
 
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  objc_msgSend_didMoveSupportToURL_(WeakRetained, v11, v14);
+  objc_msgSend_didMoveSupportToURL_(WeakRetained, v11, lCopy);
 
   objc_msgSend_unlock(self->_presentedSupportURLLock, v12, v13);
 }
 
-+ (BOOL)isSupportAtURLValid:(id)a3 documentUUID:(id)a4 versionUUID:(id)a5 documentProperties:(id *)a6
++ (BOOL)isSupportAtURLValid:(id)valid documentUUID:(id)d versionUUID:(id)iD documentProperties:(id *)properties
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!objc_msgSend_isNativeDirectoryFormatURL_(TSPObjectContext, v12, v9))
+  validCopy = valid;
+  dCopy = d;
+  iDCopy = iD;
+  if (!objc_msgSend_isNativeDirectoryFormatURL_(TSPObjectContext, v12, validCopy))
   {
     isEqual = 0;
     v15 = 0;
-    if (!a6)
+    if (!properties)
     {
       goto LABEL_7;
     }
 
 LABEL_6:
     v26 = v15;
-    *a6 = v15;
+    *properties = v15;
     goto LABEL_7;
   }
 
   v13 = [TSPDocumentProperties alloc];
   v28 = 0;
-  v15 = objc_msgSend_initWithDocumentURL_error_(v13, v14, v9, &v28);
+  v15 = objc_msgSend_initWithDocumentURL_error_(v13, v14, validCopy, &v28);
   v18 = v28;
   if (v15)
   {
     v19 = objc_msgSend_documentUUID(v15, v16, v17);
-    if (objc_msgSend_isEqual_(v10, v20, v19))
+    if (objc_msgSend_isEqual_(dCopy, v20, v19))
     {
       v23 = objc_msgSend_versionUUID(v15, v21, v22);
-      isEqual = objc_msgSend_isEqual_(v11, v24, v23);
+      isEqual = objc_msgSend_isEqual_(iDCopy, v24, v23);
     }
 
     else
@@ -583,7 +583,7 @@ LABEL_6:
     isEqual = 0;
   }
 
-  if (a6)
+  if (properties)
   {
     goto LABEL_6;
   }
@@ -593,14 +593,14 @@ LABEL_7:
   return isEqual;
 }
 
-- (BOOL)copyOrMoveSupportAtURL:(id)a3 originalDocumentProperties:(id)a4 toURL:(id)a5 isCopying:(BOOL)a6 newDocumentProperties:(id)a7 error:(id *)a8
+- (BOOL)copyOrMoveSupportAtURL:(id)l originalDocumentProperties:(id)properties toURL:(id)rL isCopying:(BOOL)copying newDocumentProperties:(id)documentProperties error:(id *)error
 {
-  v10 = a6;
-  v14 = a3;
-  v41 = a4;
-  v15 = a5;
-  v17 = a7;
-  if (!v14)
+  copyingCopy = copying;
+  lCopy = l;
+  propertiesCopy = properties;
+  rLCopy = rL;
+  documentPropertiesCopy = documentProperties;
+  if (!lCopy)
   {
     v18 = MEMORY[0x277D81150];
     v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, "[TSPSupportManager copyOrMoveSupportAtURL:originalDocumentProperties:toURL:isCopying:newDocumentProperties:error:]");
@@ -610,7 +610,7 @@ LABEL_7:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24);
   }
 
-  if (!v15)
+  if (!rLCopy)
   {
     v25 = MEMORY[0x277D81150];
     v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, "[TSPSupportManager copyOrMoveSupportAtURL:originalDocumentProperties:toURL:isCopying:newDocumentProperties:error:]");
@@ -630,28 +630,28 @@ LABEL_7:
   aBlock[3] = &unk_27A6E6A68;
   v47 = &v50;
   aBlock[4] = self;
-  v32 = v41;
+  v32 = propertiesCopy;
   v45 = v32;
-  v48 = a8;
-  v49 = v10;
-  v33 = v17;
+  errorCopy = error;
+  v49 = copyingCopy;
+  v33 = documentPropertiesCopy;
   v46 = v33;
   v34 = _Block_copy(aBlock);
   v36 = v34;
   v37 = MEMORY[0x277CCA9E8];
-  if (v10)
+  if (copyingCopy)
   {
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = sub_276ABCE5C;
     v42[3] = &unk_27A6E6A90;
     v43 = v34;
-    objc_msgSend_tsp_coordinateReadingItemAtURL_urlType_options_writingItemAtURL_options_filePresenter_error_byAccessor_(v37, v38, v14, 1, 1, v15, 8, self, a8, v42);
+    objc_msgSend_tsp_coordinateReadingItemAtURL_urlType_options_writingItemAtURL_options_filePresenter_error_byAccessor_(v37, v38, lCopy, 1, 1, rLCopy, 8, self, error, v42);
   }
 
   else
   {
-    objc_msgSend_tsp_coordinateWritingItemAtURL_options_writingItemAtURL_options_filePresenter_error_byAccessor_(MEMORY[0x277CCA9E8], v35, v14, 1, v15, 8, self, a8, v34);
+    objc_msgSend_tsp_coordinateWritingItemAtURL_options_writingItemAtURL_options_filePresenter_error_byAccessor_(MEMORY[0x277CCA9E8], v35, lCopy, 1, rLCopy, 8, self, error, v34);
   }
 
   v39 = *(v51 + 24);
@@ -672,13 +672,13 @@ LABEL_7:
   return v3;
 }
 
-+ (id)supportDirectoryURLWithDelegate:(id)a3 isUnique:(BOOL *)a4
++ (id)supportDirectoryURLWithDelegate:(id)delegate isUnique:(BOOL *)unique
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v12 = 0;
   if (objc_opt_respondsToSelector())
   {
-    v10 = objc_msgSend_supportDirectoryURLReturningIsBundleURL_(v6, v7, &v12);
+    v10 = objc_msgSend_supportDirectoryURLReturningIsBundleURL_(delegateCopy, v7, &v12);
     if (v10)
     {
       goto LABEL_7;
@@ -688,26 +688,26 @@ LABEL_7:
     goto LABEL_6;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) == 0 || (objc_msgSend_supportDirectoryURL(v6, v8, v9), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((objc_opt_respondsToSelector() & 1) == 0 || (objc_msgSend_supportDirectoryURL(delegateCopy, v8, v9), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_6:
-    v10 = objc_msgSend_defaultSupportDirectoryURL(a1, v8, v9);
+    v10 = objc_msgSend_defaultSupportDirectoryURL(self, v8, v9);
   }
 
 LABEL_7:
-  if (a4)
+  if (unique)
   {
-    *a4 = v12;
+    *unique = v12;
   }
 
   return v10;
 }
 
-+ (id)supportBundleURLForDocumentUUID:(id)a3 delegate:(id)a4
++ (id)supportBundleURLForDocumentUUID:(id)d delegate:(id)delegate
 {
-  v6 = a3;
+  dCopy = d;
   v18 = 0;
-  v8 = objc_msgSend_supportDirectoryURLWithDelegate_isUnique_(a1, v7, a4, &v18);
+  v8 = objc_msgSend_supportDirectoryURLWithDelegate_isUnique_(self, v7, delegate, &v18);
   v11 = v8;
   if (v8)
   {
@@ -717,9 +717,9 @@ LABEL_7:
       goto LABEL_10;
     }
 
-    if (v6)
+    if (dCopy)
     {
-      v13 = objc_msgSend_UUIDString(v6, v9, v10);
+      v13 = objc_msgSend_UUIDString(dCopy, v9, v10);
       v15 = objc_msgSend_stringByAppendingPathExtension_(v13, v14, @"bundle");
       v12 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(v11, v16, v15, 1);
 

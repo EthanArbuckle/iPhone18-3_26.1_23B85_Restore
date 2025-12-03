@@ -1,38 +1,38 @@
 @interface SUStructuredPageGroupedTableDataSource
-- (BOOL)canShowItemOfferButtonForItem:(id)a3;
-- (Class)cellClassForItem:(id)a3 reuseIdentifier:(id *)a4;
-- (Class)cellConfigurationClassForItem:(id)a3;
-- (double)heightForFooterInSection:(int64_t)a3;
-- (id)_subtitleForSectionIndex:(int64_t)a3;
-- (id)newHeaderViewForSection:(int64_t)a3;
+- (BOOL)canShowItemOfferButtonForItem:(id)item;
+- (Class)cellClassForItem:(id)item reuseIdentifier:(id *)identifier;
+- (Class)cellConfigurationClassForItem:(id)item;
+- (double)heightForFooterInSection:(int64_t)section;
+- (id)_subtitleForSectionIndex:(int64_t)index;
+- (id)newHeaderViewForSection:(int64_t)section;
 - (int64_t)tableViewStyle;
-- (void)configureCell:(id)a3 forIndexPath:(id)a4;
+- (void)configureCell:(id)cell forIndexPath:(id)path;
 - (void)reloadCellContexts;
 @end
 
 @implementation SUStructuredPageGroupedTableDataSource
 
-- (BOOL)canShowItemOfferButtonForItem:(id)a3
+- (BOOL)canShowItemOfferButtonForItem:(id)item
 {
-  v5 = [a3 itemType];
-  v6 = (v5 - 1005) > 6 || v5 == 1010;
-  if (v6 && v5 != 4000 && v5 != 11)
+  itemType = [item itemType];
+  v6 = (itemType - 1005) > 6 || itemType == 1010;
+  if (v6 && itemType != 4000 && itemType != 11)
   {
     return 0;
   }
 
   v8.receiver = self;
   v8.super_class = SUStructuredPageGroupedTableDataSource;
-  return [(SUStructuredPageTableDataSource *)&v8 canShowItemOfferButtonForItem:a3];
+  return [(SUStructuredPageTableDataSource *)&v8 canShowItemOfferButtonForItem:item];
 }
 
-- (Class)cellClassForItem:(id)a3 reuseIdentifier:(id *)a4
+- (Class)cellClassForItem:(id)item reuseIdentifier:(id *)identifier
 {
-  if ([a3 itemType] == 1008 && objc_msgSend(a3, "itemDisplayType") == 2)
+  if ([item itemType] == 1008 && objc_msgSend(item, "itemDisplayType") == 2)
   {
-    if (a4)
+    if (identifier)
     {
-      *a4 = @"sunp";
+      *identifier = @"sunp";
     }
 
     return objc_opt_class();
@@ -42,35 +42,35 @@
   {
     v8.receiver = self;
     v8.super_class = SUStructuredPageGroupedTableDataSource;
-    return [(SUStructuredPageTableDataSource *)&v8 cellClassForItem:a3 reuseIdentifier:a4];
+    return [(SUStructuredPageTableDataSource *)&v8 cellClassForItem:item reuseIdentifier:identifier];
   }
 }
 
-- (Class)cellConfigurationClassForItem:(id)a3
+- (Class)cellConfigurationClassForItem:(id)item
 {
-  v5 = [a3 itemType];
-  if (v5 <= 1003)
+  itemType = [item itemType];
+  if (itemType <= 1003)
   {
-    if (v5 > 5)
+    if (itemType > 5)
     {
-      if ((v5 - 1000) < 4 || v5 == 6)
+      if ((itemType - 1000) < 4 || itemType == 6)
       {
         goto LABEL_24;
       }
 
-      if (v5 == 11)
+      if (itemType == 11)
       {
 LABEL_5:
         if (self->super._style != 1)
         {
-          [a3 itemDisplayType];
+          [item itemDisplayType];
         }
 
         goto LABEL_24;
       }
     }
 
-    else if ((v5 - 4) < 2 || v5 == 1 || v5 == 3)
+    else if ((itemType - 4) < 2 || itemType == 1 || itemType == 3)
     {
       goto LABEL_24;
     }
@@ -78,12 +78,12 @@ LABEL_5:
 LABEL_23:
     v7.receiver = self;
     v7.super_class = SUStructuredPageGroupedTableDataSource;
-    return [(SUStructuredPageTableDataSource *)&v7 cellConfigurationClassForItem:a3];
+    return [(SUStructuredPageTableDataSource *)&v7 cellConfigurationClassForItem:item];
   }
 
-  if (v5 > 1999)
+  if (itemType > 1999)
   {
-    if (v5 == 4000 || v5 == 3000 || v5 == 2000)
+    if (itemType == 4000 || itemType == 3000 || itemType == 2000)
     {
       goto LABEL_24;
     }
@@ -91,9 +91,9 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if ((v5 - 1005) > 6)
+  if ((itemType - 1005) > 6)
   {
-    if (v5 == 1004)
+    if (itemType == 1004)
     {
       goto LABEL_24;
     }
@@ -101,7 +101,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (((1 << (v5 + 19)) & 0x4D) != 0)
+  if (((1 << (itemType + 19)) & 0x4D) != 0)
   {
     goto LABEL_5;
   }
@@ -111,7 +111,7 @@ LABEL_24:
   return objc_opt_class();
 }
 
-- (void)configureCell:(id)a3 forIndexPath:(id)a4
+- (void)configureCell:(id)cell forIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = SUStructuredPageGroupedTableDataSource;
@@ -121,16 +121,16 @@ LABEL_24:
   {
     if (v7 == 6)
     {
-      [a3 setBackgroundView:0];
+      [cell setBackgroundView:0];
     }
   }
 
   else if (self->super._style != 2)
   {
-    v8 = [a3 configuration];
-    if ([a4 row])
+    configuration = [cell configuration];
+    if ([path row])
     {
-      -[SUStructuredPageTableDataSource cellHeightForIndexPath:](self, "cellHeightForIndexPath:", [MEMORY[0x1E696AC88] indexPathForRow:objc_msgSend(a4 inSection:{"row") - 1, objc_msgSend(a4, "section")}]);
+      -[SUStructuredPageTableDataSource cellHeightForIndexPath:](self, "cellHeightForIndexPath:", [MEMORY[0x1E696AC88] indexPathForRow:objc_msgSend(path inSection:{"row") - 1, objc_msgSend(path, "section")}]);
     }
 
     else
@@ -138,28 +138,28 @@ LABEL_24:
       v9 = 0.0;
     }
 
-    [v8 setPreviousCellHeight:v9];
+    [configuration setPreviousCellHeight:v9];
   }
 }
 
-- (double)heightForFooterInSection:(int64_t)a3
+- (double)heightForFooterInSection:(int64_t)section
 {
   v13.receiver = self;
   v13.super_class = SUStructuredPageGroupedTableDataSource;
   [(SUTableDataSource *)&v13 heightForFooterInSection:?];
   v6 = v5;
-  v7 = [(SUStructuredPage *)self->super._structuredPage itemList];
-  if ([(SUItemList *)v7 numberOfSections]- 1 > a3 && [(SUStructuredPageGroupedTableDataSource *)self tableViewStyle]== 1)
+  itemList = [(SUStructuredPage *)self->super._structuredPage itemList];
+  if ([(SUItemList *)itemList numberOfSections]- 1 > section && [(SUStructuredPageGroupedTableDataSource *)self tableViewStyle]== 1)
   {
-    v8 = [(SUItemList *)v7 itemsForSectionAtIndex:a3];
-    v9 = [(SUItemList *)v7 itemsForSectionAtIndex:a3 + 1];
+    v8 = [(SUItemList *)itemList itemsForSectionAtIndex:section];
+    v9 = [(SUItemList *)itemList itemsForSectionAtIndex:section + 1];
     if ([v8 count])
     {
       if ([v9 count])
       {
-        v10 = [v8 lastObject];
+        lastObject = [v8 lastObject];
         v11 = [v9 objectAtIndex:0];
-        if ([v10 itemType] == 8 && objc_msgSend(v11, "itemType") == 8)
+        if ([lastObject itemType] == 8 && objc_msgSend(v11, "itemType") == 8)
         {
           return 1.0;
         }
@@ -170,7 +170,7 @@ LABEL_24:
   return v6;
 }
 
-- (id)newHeaderViewForSection:(int64_t)a3
+- (id)newHeaderViewForSection:(int64_t)section
 {
   if (![(SUStructuredPageGroupedTableDataSource *)self tableViewStyle])
   {
@@ -178,7 +178,7 @@ LABEL_24:
   }
 
   v5 = [-[SUItemList sectionItemForSectionAtIndex:](-[SUStructuredPage itemList](self->super._structuredPage "itemList")];
-  v6 = [(SUStructuredPageGroupedTableDataSource *)self _subtitleForSectionIndex:a3];
+  v6 = [(SUStructuredPageGroupedTableDataSource *)self _subtitleForSectionIndex:section];
   if (![v5 length] && !objc_msgSend(v6, "length"))
   {
     return 0;
@@ -188,7 +188,7 @@ LABEL_24:
   [objc_msgSend(MEMORY[0x1E69DCEB0] "mainScreen")];
   v8 = [(SUTableHeaderView *)v7 initWithFrame:?];
   -[SUTableHeaderView setBackgroundColor:](v8, "setBackgroundColor:", [MEMORY[0x1E69DC888] clearColor]);
-  [(SUTableHeaderView *)v8 setIndex:a3];
+  [(SUTableHeaderView *)v8 setIndex:section];
   [(SUTableHeaderView *)v8 setSubtitle:v6];
   [(SUTableHeaderView *)v8 setTitle:v5];
   [(SUTableHeaderView *)v8 setUserInteractionEnabled:0];
@@ -198,29 +198,29 @@ LABEL_24:
 
 - (void)reloadCellContexts
 {
-  v2 = self;
+  selfCopy = self;
   v72 = *MEMORY[0x1E69E9840];
   v68.receiver = self;
   v68.super_class = SUStructuredPageGroupedTableDataSource;
   [(SUStructuredPageTableDataSource *)&v68 reloadCellContexts];
-  v3 = [(SUVariableCellConfigurationCache *)v2->super.super._configurationCache caches];
-  v52 = [(SUStructuredPage *)v2->super._structuredPage artworkShouldFitWidth];
+  caches = [(SUVariableCellConfigurationCache *)selfCopy->super.super._configurationCache caches];
+  artworkShouldFitWidth = [(SUStructuredPage *)selfCopy->super._structuredPage artworkShouldFitWidth];
   v55 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  v42 = v2;
-  if (v2->super._style == 1)
+  v42 = selfCopy;
+  if (selfCopy->super._style == 1)
   {
     v4 = 0;
     v5 = 2;
     goto LABEL_45;
   }
 
-  v6 = [(SUItemList *)[(SUStructuredPage *)v2->super._structuredPage itemList] copyItems];
+  copyItems = [(SUItemList *)[(SUStructuredPage *)selfCopy->super._structuredPage itemList] copyItems];
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  obj = v6;
-  v48 = [v6 countByEnumeratingWithState:&v64 objects:v71 count:16];
+  obj = copyItems;
+  v48 = [copyItems countByEnumeratingWithState:&v64 objects:v71 count:16];
   v4 = 0;
   if (!v48)
   {
@@ -244,8 +244,8 @@ LABEL_24:
       }
 
       v10 = *(*(&v64 + 1) + 8 * v9);
-      v11 = [v10 itemMediaKind];
-      v12 = v11;
+      itemMediaKind = [v10 itemMediaKind];
+      v12 = itemMediaKind;
       if (v8)
       {
         v13 = 1;
@@ -257,7 +257,7 @@ LABEL_24:
 
       else
       {
-        v13 = [v11 isEqualToString:v45];
+        v13 = [itemMediaKind isEqualToString:v45];
         if ((v7 & 1) == 0)
         {
 LABEL_10:
@@ -268,18 +268,18 @@ LABEL_10:
 
       v50 = 1;
 LABEL_13:
-      v14 = [v10 itemImageCollection];
-      v15 = v14;
+      itemImageCollection = [v10 itemImageCollection];
+      v15 = itemImageCollection;
       v49 = v13;
-      v16 = (v4 & 1) != 0 || [objc_msgSend(v14 "itemImages")] != 0;
+      v16 = (v4 & 1) != 0 || [objc_msgSend(itemImageCollection "itemImages")] != 0;
       v53 = v16;
-      if (v52)
+      if (artworkShouldFitWidth)
       {
         v62 = 0u;
         v63 = 0u;
         v60 = 0u;
         v61 = 0u;
-        v17 = [(NSArray *)v3 countByEnumeratingWithState:&v60 objects:v70 count:16];
+        v17 = [(NSArray *)caches countByEnumeratingWithState:&v60 objects:v70 count:16];
         if (v17)
         {
           v18 = v17;
@@ -290,46 +290,46 @@ LABEL_13:
             {
               if (*v61 != v19)
               {
-                objc_enumerationMutation(v3);
+                objc_enumerationMutation(caches);
               }
 
-              v21 = [*(*(&v60 + 1) + 8 * i) cellContext];
+              cellContext = [*(*(&v60 + 1) + 8 * i) cellContext];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v22 = [v21 imageProvider];
-                if (v22)
+                imageProvider = [cellContext imageProvider];
+                if (imageProvider)
                 {
-                  [v22 finalSize];
+                  [imageProvider finalSize];
                   v23 = [v15 bestImageForSize:?];
                   if (v23)
                   {
                     v24 = v23;
-                    [v21 artworkWidth];
+                    [cellContext artworkWidth];
                     v26 = v25;
-                    v27 = [v24 width];
-                    if (v26 >= v27)
+                    width = [v24 width];
+                    if (v26 >= width)
                     {
-                      v27 = v26;
+                      width = v26;
                     }
 
-                    [v21 setArtworkWidth:v27];
+                    [cellContext setArtworkWidth:width];
                   }
                 }
               }
             }
 
-            v18 = [(NSArray *)v3 countByEnumeratingWithState:&v60 objects:v70 count:16];
+            v18 = [(NSArray *)caches countByEnumeratingWithState:&v60 objects:v70 count:16];
           }
 
           while (v18);
         }
       }
 
-      v28 = [v10 itemType];
-      if (SUItemTypeIsMediaType(v28) || v28 == 11 || v28 == 4000 || v28 == 3000)
+      itemType = [v10 itemType];
+      if (SUItemTypeIsMediaType(itemType) || itemType == 11 || itemType == 4000 || itemType == 3000)
       {
-        [v55 addIndex:v28];
+        [v55 addIndex:itemType];
       }
 
       ++v9;
@@ -354,7 +354,7 @@ LABEL_13:
     v5 = 2;
   }
 
-  v2 = v42;
+  selfCopy = v42;
 LABEL_44:
 
 LABEL_45:
@@ -362,7 +362,7 @@ LABEL_45:
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v30 = [(NSArray *)v3 countByEnumeratingWithState:&v56 objects:v69 count:16, v42];
+  v30 = [(NSArray *)caches countByEnumeratingWithState:&v56 objects:v69 count:16, v42];
   if (v30)
   {
     v31 = v30;
@@ -375,14 +375,14 @@ LABEL_45:
       {
         if (*v57 != v32)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(caches);
         }
 
-        v34 = [*(*(&v56 + 1) + 8 * j) cellContext];
+        cellContext2 = [*(*(&v56 + 1) + 8 * j) cellContext];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if (v2->super._style == 1)
+          if (selfCopy->super._style == 1)
           {
             v35 = 0;
           }
@@ -392,44 +392,44 @@ LABEL_45:
             v35 = v5;
           }
 
-          [v34 setHiddenMediaIconTypes:v35];
-          [v34 setItemsHaveArtwork:v4];
+          [cellContext2 setHiddenMediaIconTypes:v35];
+          [cellContext2 setItemsHaveArtwork:v4];
           if ([v55 count] == 1)
           {
-            v36 = [v55 firstIndex];
-            if (v36 == 3000)
+            firstIndex = [v55 firstIndex];
+            if (firstIndex == 3000)
             {
               v37 = @"PlaceholderBookPoster.png";
 LABEL_59:
-              v38 = [v34 imageProvider];
-              [v38 setFinalSize:{58.0, 88.0}];
-              v39 = [v38 newImageFromImage:{objc_msgSend(MEMORY[0x1E69DCAB8], "imageNamed:inBundle:", v37, objc_msgSend(MEMORY[0x1E696AAE8], "bundleForClass:", objc_opt_class()))}];
-              [v34 setPlaceholderImage:v39];
+              imageProvider2 = [cellContext2 imageProvider];
+              [imageProvider2 setFinalSize:{58.0, 88.0}];
+              v39 = [imageProvider2 newImageFromImage:{objc_msgSend(MEMORY[0x1E69DCAB8], "imageNamed:inBundle:", v37, objc_msgSend(MEMORY[0x1E696AAE8], "bundleForClass:", objc_opt_class()))}];
+              [cellContext2 setPlaceholderImage:v39];
 
-              v2 = v43;
+              selfCopy = v43;
               v4 = v54;
               v5 = v51;
             }
 
-            else if (v36 == 1002)
+            else if (firstIndex == 1002)
             {
               v37 = @"PlaceholderVideoPoster.png";
               goto LABEL_59;
             }
           }
 
-          [(SUStructuredPage *)v2->super._structuredPage artworkWidth];
-          v41 = v40 <= 0.00000011920929 || v52;
+          [(SUStructuredPage *)selfCopy->super._structuredPage artworkWidth];
+          v41 = v40 <= 0.00000011920929 || artworkShouldFitWidth;
           if ((v41 & 1) == 0)
           {
-            [v34 setArtworkWidth:?];
+            [cellContext2 setArtworkWidth:?];
           }
 
           continue;
         }
       }
 
-      v31 = [(NSArray *)v3 countByEnumeratingWithState:&v56 objects:v69 count:16];
+      v31 = [(NSArray *)caches countByEnumeratingWithState:&v56 objects:v69 count:16];
     }
 
     while (v31);
@@ -448,10 +448,10 @@ LABEL_59:
   return [(SUStructuredPageTableDataSource *)&v4 tableViewStyle];
 }
 
-- (id)_subtitleForSectionIndex:(int64_t)a3
+- (id)_subtitleForSectionIndex:(int64_t)index
 {
-  v5 = [(SUStructuredPage *)self->super._structuredPage itemList];
-  v6 = [(SUItemList *)v5 itemsForSectionAtIndex:a3];
+  itemList = [(SUStructuredPage *)self->super._structuredPage itemList];
+  v6 = [(SUItemList *)itemList itemsForSectionAtIndex:index];
   v7 = [v6 count];
   if (v7 < 1)
   {
@@ -464,7 +464,7 @@ LABEL_59:
   v11 = 0x7FFFFFFFFFFFFFFFLL;
   do
   {
-    v12 = [MEMORY[0x1E696AC88] indexPathForRow:v9 inSection:a3];
+    v12 = [MEMORY[0x1E696AC88] indexPathForRow:v9 inSection:index];
     v10 = v10 || [(SUTableDataSource *)self canDoubleTapIndexPath:v12];
     v13 = [objc_msgSend(v6 objectAtIndex:{v9), "itemType"}];
     IsMediaType = SUItemTypeIsMediaType(v13);
@@ -507,7 +507,7 @@ LABEL_59:
     v16 = @"ringtone";
     if (v11 != 1011 && v11 != 1005)
     {
-      result = [(SUItemList *)v5 hintTextForKey:@"*"];
+      result = [(SUItemList *)itemList hintTextForKey:@"*"];
       if (result)
       {
         return result;
@@ -519,13 +519,13 @@ LABEL_26:
     }
   }
 
-  result = [(SUItemList *)v5 hintTextForKey:v16];
+  result = [(SUItemList *)itemList hintTextForKey:v16];
   if (result)
   {
     return result;
   }
 
-  result = [(SUItemList *)v5 hintTextForKey:@"*"];
+  result = [(SUItemList *)itemList hintTextForKey:@"*"];
   if (result)
   {
     return result;

@@ -1,13 +1,13 @@
 @interface SXImageDecodingTools
 + (id)sharedInstance;
-- (BOOL)dataIsAnimatedImage:(id)a3;
+- (BOOL)dataIsAnimatedImage:(id)image;
 - (CGColorSpace)P3ColorSpace;
 - (CGColorSpace)RGBColorSpace;
-- (CGImage)newImageByDecodingImage:(CGImage *)a3 size:(CGSize)a4;
-- (__CFString)contentTypeForImageData:(id)a3;
-- (id)decodeImage:(CGImage *)a3;
-- (id)imageFromData:(id)a3;
-- (id)imageFromData:(id)a3 size:(CGSize)a4;
+- (CGImage)newImageByDecodingImage:(CGImage *)image size:(CGSize)size;
+- (__CFString)contentTypeForImageData:(id)data;
+- (id)decodeImage:(CGImage *)image;
+- (id)imageFromData:(id)data;
+- (id)imageFromData:(id)data size:(CGSize)size;
 @end
 
 @implementation SXImageDecodingTools
@@ -31,16 +31,16 @@ uint64_t __38__SXImageDecodingTools_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)imageFromData:(id)a3 size:(CGSize)a4
+- (id)imageFromData:(id)data size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v7 = MEMORY[0x1E69DCAB8];
-  v8 = a3;
-  v9 = [[v7 alloc] initWithData:v8];
+  dataCopy = data;
+  v9 = [[v7 alloc] initWithData:dataCopy];
 
-  v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v10 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v12 = v11;
 
   v13 = -[SXImageDecodingTools newImageByDecodingImage:size:](self, "newImageByDecodingImage:size:", [v9 CGImage], width * v12, height * v12);
@@ -50,12 +50,12 @@ uint64_t __38__SXImageDecodingTools_sharedInstance__block_invoke()
   return v14;
 }
 
-- (id)imageFromData:(id)a3
+- (id)imageFromData:(id)data
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (data)
   {
-    v3 = CGImageSourceCreateWithData(a3, 0);
+    v3 = CGImageSourceCreateWithData(data, 0);
     v8 = *MEMORY[0x1E696E0B8];
     v9[0] = *MEMORY[0x1E695E4D0];
     v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
@@ -73,12 +73,12 @@ uint64_t __38__SXImageDecodingTools_sharedInstance__block_invoke()
   return v6;
 }
 
-- (id)decodeImage:(CGImage *)a3
+- (id)decodeImage:(CGImage *)image
 {
-  v3 = [(SXImageDecodingTools *)self newImageByDecodingImage:a3 size:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  v3 = [(SXImageDecodingTools *)self newImageByDecodingImage:image size:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   v4 = objc_alloc(MEMORY[0x1E69DCAB8]);
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v5 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v6 = [v4 initWithCGImage:v3 scale:0 orientation:?];
 
   CGImageRelease(v3);
@@ -86,20 +86,20 @@ uint64_t __38__SXImageDecodingTools_sharedInstance__block_invoke()
   return v6;
 }
 
-- (CGImage)newImageByDecodingImage:(CGImage *)a3 size:(CGSize)a4
+- (CGImage)newImageByDecodingImage:(CGImage *)image size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  CGImageRetain(a3);
-  v8 = CGImageGetWidth(a3);
-  v9 = CGImageGetHeight(a3);
-  v10 = [(SXImageDecodingTools *)self RGBColorSpace];
+  height = size.height;
+  width = size.width;
+  CGImageRetain(image);
+  v8 = CGImageGetWidth(image);
+  v9 = CGImageGetHeight(image);
+  rGBColorSpace = [(SXImageDecodingTools *)self RGBColorSpace];
   if ([MEMORY[0x1E69DC938] sx_isSpectreDevice])
   {
-    ColorSpace = CGImageGetColorSpace(a3);
+    ColorSpace = CGImageGetColorSpace(image);
     if (CGColorSpaceIsWideGamutRGB(ColorSpace))
     {
-      v10 = [(SXImageDecodingTools *)self P3ColorSpace];
+      rGBColorSpace = [(SXImageDecodingTools *)self P3ColorSpace];
     }
   }
 
@@ -109,22 +109,22 @@ uint64_t __38__SXImageDecodingTools_sharedInstance__block_invoke()
     width = v8;
   }
 
-  v12 = CGBitmapContextCreate(0, width, height, 8uLL, 0, v10, 2u);
+  v12 = CGBitmapContextCreate(0, width, height, 8uLL, 0, rGBColorSpace, 2u);
   v15.origin.x = 0.0;
   v15.origin.y = 0.0;
   v15.size.width = width;
   v15.size.height = height;
-  CGContextDrawImage(v12, v15, a3);
+  CGContextDrawImage(v12, v15, image);
   Image = CGBitmapContextCreateImage(v12);
   CGContextRelease(v12);
-  CGImageRelease(a3);
+  CGImageRelease(image);
   return Image;
 }
 
-- (__CFString)contentTypeForImageData:(id)a3
+- (__CFString)contentTypeForImageData:(id)data
 {
   v5 = 0;
-  [a3 getBytes:&v5 length:1];
+  [data getBytes:&v5 length:1];
   result = 0;
   if (v5 <= 0x4Cu)
   {
@@ -164,13 +164,13 @@ uint64_t __38__SXImageDecodingTools_sharedInstance__block_invoke()
   return *v4;
 }
 
-- (BOOL)dataIsAnimatedImage:(id)a3
+- (BOOL)dataIsAnimatedImage:(id)image
 {
-  v4 = a3;
-  v5 = [(SXImageDecodingTools *)self contentTypeForImageData:v4];
+  imageCopy = image;
+  v5 = [(SXImageDecodingTools *)self contentTypeForImageData:imageCopy];
   if (v5 == *MEMORY[0x1E6963860] || v5 == *MEMORY[0x1E69637D8])
   {
-    v7 = CGImageSourceCreateWithData(v4, 0);
+    v7 = CGImageSourceCreateWithData(imageCopy, 0);
     v8 = CGImageSourceGetCount(v7) > 1;
     CFRelease(v7);
   }

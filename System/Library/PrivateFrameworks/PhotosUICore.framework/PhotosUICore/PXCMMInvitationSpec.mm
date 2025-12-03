@@ -1,5 +1,5 @@
 @interface PXCMMInvitationSpec
-+ (id)specForLayoutVariant:(int64_t)a3;
++ (id)specForLayoutVariant:(int64_t)variant;
 - (PXCMMInvitationSpec)init;
 - (double)aspectRatio;
 - (double)bulletSize;
@@ -8,7 +8,7 @@
 - (double)subtitleSpacing;
 - (double)titleSpacing;
 - (double)verticalPadding;
-- (id)_initWithLayoutVariant:(int64_t)a3;
+- (id)_initWithLayoutVariant:(int64_t)variant;
 - (int64_t)posterTitleTextStyle;
 - (int64_t)titleTextStyle;
 @end
@@ -21,8 +21,8 @@
   {
     v12 = v3;
     v13 = v2;
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXCMMInvitationSpec.m" lineNumber:251 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMInvitationSpec.m" lineNumber:251 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -37,8 +37,8 @@
   {
     v13 = v3;
     v14 = v2;
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXCMMInvitationSpec.m" lineNumber:240 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMInvitationSpec.m" lineNumber:240 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -53,8 +53,8 @@
   {
     v13 = v3;
     v14 = v2;
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXCMMInvitationSpec.m" lineNumber:122 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMInvitationSpec.m" lineNumber:122 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -72,8 +72,8 @@
     {
       v13 = v3;
       v14 = v2;
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXCMMInvitationSpec.m" lineNumber:108 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMInvitationSpec.m" lineNumber:108 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -90,8 +90,8 @@
   {
     v12 = v3;
     v13 = v2;
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXCMMInvitationSpec.m" lineNumber:95 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMInvitationSpec.m" lineNumber:95 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -109,8 +109,8 @@
     {
       v13 = v3;
       v14 = v2;
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXCMMInvitationSpec.m" lineNumber:83 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMInvitationSpec.m" lineNumber:83 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -128,8 +128,8 @@
   {
     v13 = v3;
     v14 = v2;
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXCMMInvitationSpec.m" lineNumber:70 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMInvitationSpec.m" lineNumber:70 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -144,8 +144,8 @@
   {
     v13 = v3;
     v14 = v2;
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXCMMInvitationSpec.m" lineNumber:56 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMInvitationSpec.m" lineNumber:56 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -160,8 +160,8 @@
   {
     v13 = v3;
     v14 = v2;
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXCMMInvitationSpec.m" lineNumber:43 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMInvitationSpec.m" lineNumber:43 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -169,14 +169,14 @@
   return dbl_1A5383280[layoutVariant];
 }
 
-- (id)_initWithLayoutVariant:(int64_t)a3
+- (id)_initWithLayoutVariant:(int64_t)variant
 {
   v5.receiver = self;
   v5.super_class = PXCMMInvitationSpec;
   result = [(PXCMMInvitationSpec *)&v5 init];
   if (result)
   {
-    *(result + 1) = a3;
+    *(result + 1) = variant;
   }
 
   return result;
@@ -184,24 +184,24 @@
 
 - (PXCMMInvitationSpec)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCMMInvitationSpec.m" lineNumber:21 description:{@"%s is not available as initializer", "-[PXCMMInvitationSpec init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMInvitationSpec.m" lineNumber:21 description:{@"%s is not available as initializer", "-[PXCMMInvitationSpec init]"}];
 
   abort();
 }
 
-+ (id)specForLayoutVariant:(int64_t)a3
++ (id)specForLayoutVariant:(int64_t)variant
 {
   if (specForLayoutVariant__predicate != -1)
   {
     dispatch_once(&specForLayoutVariant__predicate, &__block_literal_global_223886);
   }
 
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:variant];
   v5 = [specForLayoutVariant__specs objectForKeyedSubscript:v4];
   if (!v5)
   {
-    v5 = [[PXCMMInvitationSpec alloc] _initWithLayoutVariant:a3];
+    v5 = [[PXCMMInvitationSpec alloc] _initWithLayoutVariant:variant];
     [specForLayoutVariant__specs setObject:v5 forKeyedSubscript:v4];
   }
 

@@ -1,24 +1,24 @@
 @interface VSDeveloperSettingsViewController_iOS
 - (NSArray)providerSpecifiers;
-- (VSDeveloperSettingsViewController_iOS)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)providerForUniqueID:(id)a3;
+- (VSDeveloperSettingsViewController_iOS)initWithNibName:(id)name bundle:(id)bundle;
+- (id)providerForUniqueID:(id)d;
 - (id)specifiers;
 - (void)addProviderSelected;
 - (void)dealloc;
 - (void)developerProvidersDidChange;
 - (void)developerSettingsDidChange;
-- (void)setDisableRequestTimeouts:(id)a3;
-- (void)setEnableCacheBuster:(id)a3;
-- (void)setSimulateExpiredToken:(id)a3;
+- (void)setDisableRequestTimeouts:(id)timeouts;
+- (void)setEnableCacheBuster:(id)buster;
+- (void)setSimulateExpiredToken:(id)token;
 @end
 
 @implementation VSDeveloperSettingsViewController_iOS
 
-- (VSDeveloperSettingsViewController_iOS)initWithNibName:(id)a3 bundle:(id)a4
+- (VSDeveloperSettingsViewController_iOS)initWithNibName:(id)name bundle:(id)bundle
 {
   v15.receiver = self;
   v15.super_class = VSDeveloperSettingsViewController_iOS;
-  v4 = [(VSDeveloperSettingsViewController_iOS *)&v15 initWithNibName:a3 bundle:a4];
+  v4 = [(VSDeveloperSettingsViewController_iOS *)&v15 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = +[NSNotificationCenter defaultCenter];
@@ -53,20 +53,20 @@
   [(VSDeveloperSettingsViewController_iOS *)&v2 dealloc];
 }
 
-- (void)setEnableCacheBuster:(id)a3
+- (void)setEnableCacheBuster:(id)buster
 {
-  v4 = a3;
+  busterCopy = buster;
   v5 = [(NSNumber *)self->_enableCacheBuster copy];
   enableCacheBuster = self->_enableCacheBuster;
-  self->_enableCacheBuster = v4;
-  v7 = v4;
+  self->_enableCacheBuster = busterCopy;
+  v7 = busterCopy;
 
-  v8 = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
-  v9 = [v8 settings];
-  v10 = [v9 copy];
+  settingsFacade = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
+  settings = [settingsFacade settings];
+  v10 = [settings copy];
 
   [v10 setCacheBusterEnabled:{-[NSNumber BOOLValue](v7, "BOOLValue")}];
-  v11 = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
+  settingsFacade2 = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_5408;
@@ -74,23 +74,23 @@
   v13[4] = self;
   v14 = v5;
   v12 = v5;
-  [v11 updateDeveloperSettings:v10 withCompletionHandler:v13];
+  [settingsFacade2 updateDeveloperSettings:v10 withCompletionHandler:v13];
 }
 
-- (void)setDisableRequestTimeouts:(id)a3
+- (void)setDisableRequestTimeouts:(id)timeouts
 {
-  v4 = a3;
+  timeoutsCopy = timeouts;
   v5 = [(NSNumber *)self->_disableRequestTimeouts copy];
   disableRequestTimeouts = self->_disableRequestTimeouts;
-  self->_disableRequestTimeouts = v4;
-  v7 = v4;
+  self->_disableRequestTimeouts = timeoutsCopy;
+  v7 = timeoutsCopy;
 
-  v8 = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
-  v9 = [v8 settings];
-  v10 = [v9 copy];
+  settingsFacade = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
+  settings = [settingsFacade settings];
+  v10 = [settings copy];
 
   [v10 setRequestTimeoutsDisabled:{-[NSNumber BOOLValue](v7, "BOOLValue")}];
-  v11 = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
+  settingsFacade2 = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_56B4;
@@ -98,23 +98,23 @@
   v13[4] = self;
   v14 = v5;
   v12 = v5;
-  [v11 updateDeveloperSettings:v10 withCompletionHandler:v13];
+  [settingsFacade2 updateDeveloperSettings:v10 withCompletionHandler:v13];
 }
 
-- (void)setSimulateExpiredToken:(id)a3
+- (void)setSimulateExpiredToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = [(NSNumber *)self->_simulateExpiredToken copy];
   simulateExpiredToken = self->_simulateExpiredToken;
-  self->_simulateExpiredToken = v4;
-  v7 = v4;
+  self->_simulateExpiredToken = tokenCopy;
+  v7 = tokenCopy;
 
-  v8 = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
-  v9 = [v8 settings];
-  v10 = [v9 copy];
+  settingsFacade = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
+  settings = [settingsFacade settings];
+  v10 = [settings copy];
 
   [v10 setSimulateExpiredToken:{-[NSNumber BOOLValue](v7, "BOOLValue")}];
-  v11 = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
+  settingsFacade2 = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_5960;
@@ -122,7 +122,7 @@
   v13[4] = self;
   v14 = v5;
   v12 = v5;
-  [v11 updateDeveloperSettings:v10 withCompletionHandler:v13];
+  [settingsFacade2 updateDeveloperSettings:v10 withCompletionHandler:v13];
 }
 
 - (void)addProviderSelected
@@ -137,17 +137,17 @@
   [(VSDeveloperSettingsViewController_iOS *)self presentViewController:v5 animated:1 completion:0];
 }
 
-- (id)providerForUniqueID:(id)a3
+- (id)providerForUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
-  v6 = [v5 providers];
+  settingsFacade = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
+  providers = [settingsFacade providers];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [providers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -157,13 +157,13 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(providers);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 uniqueID];
-        v12 = [v11 forceUnwrapObject];
-        v13 = [v12 isEqualToString:v4];
+        uniqueID = [v10 uniqueID];
+        forceUnwrapObject = [uniqueID forceUnwrapObject];
+        v13 = [forceUnwrapObject isEqualToString:dCopy];
 
         if (v13)
         {
@@ -172,7 +172,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [providers countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -196,10 +196,10 @@ LABEL_11:
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v4 = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
-    v5 = [v4 providers];
+    settingsFacade = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
+    providers = [settingsFacade providers];
 
-    v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v6 = [providers countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v6)
     {
       v7 = v6;
@@ -210,22 +210,22 @@ LABEL_11:
         {
           if (*v20 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(providers);
           }
 
           v10 = *(*(&v19 + 1) + 8 * i);
-          v11 = [v10 displayName];
-          v12 = [v11 forceUnwrapObject];
+          displayName = [v10 displayName];
+          forceUnwrapObject = [displayName forceUnwrapObject];
 
-          v13 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
-          v14 = [v10 uniqueID];
-          v15 = [v14 forceUnwrapObject];
-          [v13 setIdentifier:v15];
+          v13 = [PSSpecifier preferenceSpecifierNamed:forceUnwrapObject target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
+          uniqueID = [v10 uniqueID];
+          forceUnwrapObject2 = [uniqueID forceUnwrapObject];
+          [v13 setIdentifier:forceUnwrapObject2];
 
           [(NSArray *)v3 addObject:v13];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v7 = [providers countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v7);
@@ -317,10 +317,10 @@ LABEL_11:
 
     v33 = [PSSpecifier groupSpecifierWithName:v32];
     [v4 addObject:v33];
-    v34 = [(VSDeveloperSettingsViewController_iOS *)self providerSpecifiers];
-    if ([v34 count])
+    providerSpecifiers = [(VSDeveloperSettingsViewController_iOS *)self providerSpecifiers];
+    if ([providerSpecifiers count])
     {
-      [v4 addObjectsFromArray:v34];
+      [v4 addObjectsFromArray:providerSpecifiers];
       v35 = [PSSpecifier groupSpecifierWithName:0];
       [v4 addObject:v35];
     }
@@ -351,42 +351,42 @@ LABEL_11:
   }
 
   [(VSDeveloperSettingsViewController_iOS *)self setHasLoadedInitialSettings:1];
-  v4 = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
-  v5 = [v4 settings];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 cacheBusterEnabled]);
+  settingsFacade = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
+  settings = [settingsFacade settings];
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [settings cacheBusterEnabled]);
   enableCacheBuster = self->_enableCacheBuster;
   self->_enableCacheBuster = v6;
 
-  v8 = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
-  v9 = [v8 settings];
-  v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v9 requestTimeoutsDisabled]);
+  settingsFacade2 = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
+  settings2 = [settingsFacade2 settings];
+  v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [settings2 requestTimeoutsDisabled]);
   disableRequestTimeouts = self->_disableRequestTimeouts;
   self->_disableRequestTimeouts = v10;
 
-  v12 = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
-  v13 = [v12 settings];
-  v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v13 simulateExpiredToken]);
+  settingsFacade3 = [(VSDeveloperSettingsViewController_iOS *)self settingsFacade];
+  settings3 = [settingsFacade3 settings];
+  v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [settings3 simulateExpiredToken]);
   simulateExpiredToken = self->_simulateExpiredToken;
   self->_simulateExpiredToken = v14;
 
-  v16 = [(VSDeveloperSettingsViewController_iOS *)self cacheBusterSpecifier];
+  cacheBusterSpecifier = [(VSDeveloperSettingsViewController_iOS *)self cacheBusterSpecifier];
   v17 = PSControlIsLoadingKey;
-  [v16 setProperty:&__kCFBooleanFalse forKey:PSControlIsLoadingKey];
+  [cacheBusterSpecifier setProperty:&__kCFBooleanFalse forKey:PSControlIsLoadingKey];
 
-  v18 = [(VSDeveloperSettingsViewController_iOS *)self cacheBusterSpecifier];
-  [(VSDeveloperSettingsViewController_iOS *)self reloadSpecifier:v18];
+  cacheBusterSpecifier2 = [(VSDeveloperSettingsViewController_iOS *)self cacheBusterSpecifier];
+  [(VSDeveloperSettingsViewController_iOS *)self reloadSpecifier:cacheBusterSpecifier2];
 
-  v19 = [(VSDeveloperSettingsViewController_iOS *)self requestTimeoutsSpecifier];
-  [v19 setProperty:&__kCFBooleanFalse forKey:v17];
+  requestTimeoutsSpecifier = [(VSDeveloperSettingsViewController_iOS *)self requestTimeoutsSpecifier];
+  [requestTimeoutsSpecifier setProperty:&__kCFBooleanFalse forKey:v17];
 
-  v20 = [(VSDeveloperSettingsViewController_iOS *)self requestTimeoutsSpecifier];
-  [(VSDeveloperSettingsViewController_iOS *)self reloadSpecifier:v20];
+  requestTimeoutsSpecifier2 = [(VSDeveloperSettingsViewController_iOS *)self requestTimeoutsSpecifier];
+  [(VSDeveloperSettingsViewController_iOS *)self reloadSpecifier:requestTimeoutsSpecifier2];
 
-  v21 = [(VSDeveloperSettingsViewController_iOS *)self simulateExpiredTokenSpecifier];
-  [v21 setProperty:&__kCFBooleanFalse forKey:v17];
+  simulateExpiredTokenSpecifier = [(VSDeveloperSettingsViewController_iOS *)self simulateExpiredTokenSpecifier];
+  [simulateExpiredTokenSpecifier setProperty:&__kCFBooleanFalse forKey:v17];
 
-  v22 = [(VSDeveloperSettingsViewController_iOS *)self simulateExpiredTokenSpecifier];
-  [(VSDeveloperSettingsViewController_iOS *)self reloadSpecifier:v22];
+  simulateExpiredTokenSpecifier2 = [(VSDeveloperSettingsViewController_iOS *)self simulateExpiredTokenSpecifier];
+  [(VSDeveloperSettingsViewController_iOS *)self reloadSpecifier:simulateExpiredTokenSpecifier2];
 }
 
 - (void)developerProvidersDidChange

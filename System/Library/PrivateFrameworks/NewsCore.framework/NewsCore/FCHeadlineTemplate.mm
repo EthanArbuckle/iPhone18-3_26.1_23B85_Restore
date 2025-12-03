@@ -1,35 +1,35 @@
 @interface FCHeadlineTemplate
 + (id)_defaultBackgroundColor;
 + (id)_defaultTitleTextColor;
-+ (id)_headlineTemplateWithJSON:(id)a3 versionNumber:(id)a4 URLGenerator:(id)a5;
-+ (id)templateByMergingTemplate:(id)a3 intoTemplate:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)_headlineTemplateWithJSON:(id)n versionNumber:(id)number URLGenerator:(id)generator;
++ (id)templateByMergingTemplate:(id)template intoTemplate:(id)intoTemplate;
+- (BOOL)isEqual:(id)equal;
 - (FCHeadlineTemplate)init;
-- (FCHeadlineTemplate)initWithJSONDictionary:(id)a3 versionNumber:(int64_t)a4 URLGenerator:(id)a5;
+- (FCHeadlineTemplate)initWithJSONDictionary:(id)dictionary versionNumber:(int64_t)number URLGenerator:(id)generator;
 - (NSArray)loadableFonts;
 - (id)_allThemePropertyNames;
 - (unint64_t)hash;
-- (void)mergeFromTemplate:(id)a3;
+- (void)mergeFromTemplate:(id)template;
 @end
 
 @implementation FCHeadlineTemplate
 
 - (FCHeadlineTemplate)init
 {
-  v3 = [@"2" integerValue];
+  integerValue = [@"2" integerValue];
 
-  return [(FCHeadlineTemplate *)self initWithJSONDictionary:0 versionNumber:v3 URLGenerator:0];
+  return [(FCHeadlineTemplate *)self initWithJSONDictionary:0 versionNumber:integerValue URLGenerator:0];
 }
 
-+ (id)_headlineTemplateWithJSON:(id)a3 versionNumber:(id)a4 URLGenerator:(id)a5
++ (id)_headlineTemplateWithJSON:(id)n versionNumber:(id)number URLGenerator:(id)generator
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 length])
+  nCopy = n;
+  numberCopy = number;
+  generatorCopy = generator;
+  if ([nCopy length])
   {
-    v10 = [v7 dataUsingEncoding:4];
+    v10 = [nCopy dataUsingEncoding:4];
     v21 = 0;
     v11 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v10 options:0 error:&v21];
     v12 = v21;
@@ -47,11 +47,11 @@
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    v13 = [v11 objectForKeyedSubscript:v8];
+    v13 = [v11 objectForKeyedSubscript:numberCopy];
     v14 = v13;
     if (v13 && ([v13 objectForKeyedSubscript:@"templateType"], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqualToString:", @"Image On Top"), v15, v16))
     {
-      v17 = -[FCImageOnTopPremiumHeadlineTemplate initWithJSONDictionary:versionNumber:URLGenerator:]([FCImageOnTopPremiumHeadlineTemplate alloc], "initWithJSONDictionary:versionNumber:URLGenerator:", v14, [v8 integerValue], v9);
+      v17 = -[FCImageOnTopPremiumHeadlineTemplate initWithJSONDictionary:versionNumber:URLGenerator:]([FCImageOnTopPremiumHeadlineTemplate alloc], "initWithJSONDictionary:versionNumber:URLGenerator:", v14, [numberCopy integerValue], generatorCopy);
     }
 
     else
@@ -70,28 +70,28 @@
   return v17;
 }
 
-+ (id)templateByMergingTemplate:(id)a3 intoTemplate:(id)a4
++ (id)templateByMergingTemplate:(id)template intoTemplate:(id)intoTemplate
 {
-  v5 = a4;
-  v6 = a3;
+  intoTemplateCopy = intoTemplate;
+  templateCopy = template;
   v7 = objc_alloc_init(objc_opt_class());
-  [v7 mergeFromTemplate:v5];
+  [v7 mergeFromTemplate:intoTemplateCopy];
 
-  [v7 mergeFromTemplate:v6];
+  [v7 mergeFromTemplate:templateCopy];
 
   return v7;
 }
 
-- (void)mergeFromTemplate:(id)a3
+- (void)mergeFromTemplate:(id)template
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  templateCopy = template;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 _allThemePropertyNames];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _allThemePropertyNames = [templateCopy _allThemePropertyNames];
+  v6 = [_allThemePropertyNames countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -102,14 +102,14 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_allThemePropertyNames);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
         NSSelectorFromString(v10);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [v4 valueForKey:v10];
+          v11 = [templateCopy valueForKey:v10];
           if (v11)
           {
             [(FCHeadlineTemplate *)self setValue:v11 forKey:v10];
@@ -117,7 +117,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [_allThemePropertyNames countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -126,29 +126,29 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (FCHeadlineTemplate)initWithJSONDictionary:(id)a3 versionNumber:(int64_t)a4 URLGenerator:(id)a5
+- (FCHeadlineTemplate)initWithJSONDictionary:(id)dictionary versionNumber:(int64_t)number URLGenerator:(id)generator
 {
-  v8 = a3;
-  v9 = a5;
+  dictionaryCopy = dictionary;
+  generatorCopy = generator;
   v42.receiver = self;
   v42.super_class = FCHeadlineTemplate;
   v10 = [(FCHeadlineTemplate *)&v42 init];
   v11 = v10;
-  if (v8 && v10)
+  if (dictionaryCopy && v10)
   {
-    if (a4 == 2)
+    if (number == 2)
     {
-      v22 = [v8 objectForKeyedSubscript:@"titleFontAttributes"];
-      v23 = [FCTextInfo textInfoFromJSONValues:v22 URLGenerator:v9];
+      v22 = [dictionaryCopy objectForKeyedSubscript:@"titleFontAttributes"];
+      v23 = [FCTextInfo textInfoFromJSONValues:v22 URLGenerator:generatorCopy];
       headlineTitleTextInfo = v11->_headlineTitleTextInfo;
       v11->_headlineTitleTextInfo = v23;
 
-      v25 = [v8 objectForKeyedSubscript:@"bylineFontAttributes"];
-      v26 = [FCTextInfo textInfoFromJSONValues:v25 URLGenerator:v9];
+      v25 = [dictionaryCopy objectForKeyedSubscript:@"bylineFontAttributes"];
+      v26 = [FCTextInfo textInfoFromJSONValues:v25 URLGenerator:generatorCopy];
       headlineBylineTextInfo = v11->_headlineBylineTextInfo;
       v11->_headlineBylineTextInfo = v26;
 
-      v28 = [v8 objectForKeyedSubscript:@"backgroundColor"];
+      v28 = [dictionaryCopy objectForKeyedSubscript:@"backgroundColor"];
       if (v28)
       {
         [FCColor colorWithHexString:v28];
@@ -165,15 +165,15 @@
       goto LABEL_16;
     }
 
-    if (a4 == 1)
+    if (number == 1)
     {
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __72__FCHeadlineTemplate_initWithJSONDictionary_versionNumber_URLGenerator___block_invoke;
       aBlock[3] = &unk_1E7C428D0;
-      v12 = v8;
+      v12 = dictionaryCopy;
       v40 = v12;
-      v41 = v9;
+      v41 = generatorCopy;
       v13 = _Block_copy(aBlock);
       v37[0] = MEMORY[0x1E69E9820];
       v37[1] = 3221225472;
@@ -207,16 +207,16 @@
       v32 = v31;
       if (v31)
       {
-        v33 = v31;
+        _defaultBackgroundColor = v31;
       }
 
       else
       {
-        v33 = [objc_opt_class() _defaultBackgroundColor];
+        _defaultBackgroundColor = [objc_opt_class() _defaultBackgroundColor];
       }
 
       v34 = v11->_backgroundColor;
-      v11->_backgroundColor = v33;
+      v11->_backgroundColor = _defaultBackgroundColor;
 
       v28 = v40;
 LABEL_16:
@@ -260,48 +260,48 @@ id __72__FCHeadlineTemplate_initWithJSONDictionary_versionNumber_URLGenerator___
 
 - (NSArray)loadableFonts
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(FCHeadlineTemplate *)self headlineTitleTextInfo];
-  v5 = [v4 font];
+  array = [MEMORY[0x1E695DF70] array];
+  headlineTitleTextInfo = [(FCHeadlineTemplate *)self headlineTitleTextInfo];
+  font = [headlineTitleTextInfo font];
 
-  if (v5)
+  if (font)
   {
-    v6 = [(FCHeadlineTemplate *)self headlineTitleTextInfo];
-    v7 = [v6 font];
-    [v3 addObject:v7];
+    headlineTitleTextInfo2 = [(FCHeadlineTemplate *)self headlineTitleTextInfo];
+    font2 = [headlineTitleTextInfo2 font];
+    [array addObject:font2];
   }
 
-  v8 = [(FCHeadlineTemplate *)self headlineBylineTextInfo];
-  v9 = [v8 font];
+  headlineBylineTextInfo = [(FCHeadlineTemplate *)self headlineBylineTextInfo];
+  font3 = [headlineBylineTextInfo font];
 
-  if (v9)
+  if (font3)
   {
-    v10 = [(FCHeadlineTemplate *)self headlineBylineTextInfo];
-    v11 = [v10 font];
-    [v3 addObject:v11];
+    headlineBylineTextInfo2 = [(FCHeadlineTemplate *)self headlineBylineTextInfo];
+    font4 = [headlineBylineTextInfo2 font];
+    [array addObject:font4];
   }
 
-  v12 = [(FCHeadlineTemplate *)self headlineExcerptTextInfo];
-  v13 = [v12 font];
+  headlineExcerptTextInfo = [(FCHeadlineTemplate *)self headlineExcerptTextInfo];
+  font5 = [headlineExcerptTextInfo font];
 
-  if (v13)
+  if (font5)
   {
-    v14 = [(FCHeadlineTemplate *)self headlineExcerptTextInfo];
-    v15 = [v14 font];
-    [v3 addObject:v15];
+    headlineExcerptTextInfo2 = [(FCHeadlineTemplate *)self headlineExcerptTextInfo];
+    font6 = [headlineExcerptTextInfo2 font];
+    [array addObject:font6];
   }
 
-  return v3;
+  return array;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  if (self == v4)
+  if (self == equalCopy)
   {
     v8 = 1;
     v16 = 1;
@@ -310,11 +310,11 @@ id __72__FCHeadlineTemplate_initWithJSONDictionary_versionNumber_URLGenerator___
   else
   {
     objc_opt_class();
-    if (v4 && (objc_opt_isKindOfClass() & 1) != 0)
+    if (equalCopy && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v5 = v4;
+      v5 = equalCopy;
       *(v14 + 24) = 1;
-      v6 = [(FCHeadlineTemplate *)self _allThemePropertyNames];
+      _allThemePropertyNames = [(FCHeadlineTemplate *)self _allThemePropertyNames];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __30__FCHeadlineTemplate_isEqual___block_invoke;
@@ -323,7 +323,7 @@ id __72__FCHeadlineTemplate_initWithJSONDictionary_versionNumber_URLGenerator___
       v7 = v5;
       v11 = v7;
       v12 = &v13;
-      [v6 enumerateObjectsUsingBlock:v10];
+      [_allThemePropertyNames enumerateObjectsUsingBlock:v10];
     }
 
     else
@@ -361,8 +361,8 @@ void __30__FCHeadlineTemplate_isEqual___block_invoke(uint64_t a1, void *a2, uint
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(FCHeadlineTemplate *)self _allThemePropertyNames];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _allThemePropertyNames = [(FCHeadlineTemplate *)self _allThemePropertyNames];
+  v4 = [_allThemePropertyNames countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -374,14 +374,14 @@ void __30__FCHeadlineTemplate_isEqual___block_invoke(uint64_t a1, void *a2, uint
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_allThemePropertyNames);
         }
 
         v9 = [(FCHeadlineTemplate *)self valueForKey:*(*(&v12 + 1) + 8 * i)];
         v6 ^= [v9 hash];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [_allThemePropertyNames countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);

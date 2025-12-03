@@ -1,63 +1,63 @@
 @interface SBRecentDisplayItemsController
-- (BOOL)_displayItem:(id)a3 matchesBundleID:(id)a4;
-- (BOOL)_displayItemIsExecutableOnCurrentPlatform:(id)a3;
-- (BOOL)_displayItemRepresentsAppClip:(id)a3;
-- (BOOL)_isDisallowedDisplayItem:(id)a3;
-- (SBRecentDisplayItemsController)initWithRemovalPersonality:(int64_t)a3 movePersonality:(int64_t)a4 transitionFromSources:(id)a5 maxDisplayItems:(unint64_t)a6 eventSource:(id)a7 applicationController:(id)a8 iconModelProvider:(id)a9;
+- (BOOL)_displayItem:(id)item matchesBundleID:(id)d;
+- (BOOL)_displayItemIsExecutableOnCurrentPlatform:(id)platform;
+- (BOOL)_displayItemRepresentsAppClip:(id)clip;
+- (BOOL)_isDisallowedDisplayItem:(id)item;
+- (SBRecentDisplayItemsController)initWithRemovalPersonality:(int64_t)personality movePersonality:(int64_t)movePersonality transitionFromSources:(id)sources maxDisplayItems:(unint64_t)items eventSource:(id)source applicationController:(id)controller iconModelProvider:(id)provider;
 - (SBRecentDisplayItemsControllerDelegate)delegate;
 - (id)_addStateCaptureHandler;
-- (id)_allDisplayItemsForBundleID:(id)a3;
-- (id)_allDisplayItemsForUniqueID:(id)a3;
-- (id)_allDisplayItemsForWebClipID:(id)a3;
-- (id)_allDisplayItemsPassingTest:(id)a3;
-- (id)_associatedWebClipIdentifierForAppClipIdentifier:(id)a3 sceneIdentifier:(id)a4;
-- (id)_displayItemForLayoutElement:(id)a3;
-- (id)_firstDisplayItemForBundleID:(id)a3;
-- (id)_firstDisplayItemForUniqueID:(id)a3;
-- (id)_webClipForIdentifier:(id)a3;
-- (void)_addDisplayItemToFront:(id)a3;
-- (void)_addOrMoveDisplayItemToFront:(id)a3;
-- (void)_applicationsBecameHidden:(id)a3;
+- (id)_allDisplayItemsForBundleID:(id)d;
+- (id)_allDisplayItemsForUniqueID:(id)d;
+- (id)_allDisplayItemsForWebClipID:(id)d;
+- (id)_allDisplayItemsPassingTest:(id)test;
+- (id)_associatedWebClipIdentifierForAppClipIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier;
+- (id)_displayItemForLayoutElement:(id)element;
+- (id)_firstDisplayItemForBundleID:(id)d;
+- (id)_firstDisplayItemForUniqueID:(id)d;
+- (id)_webClipForIdentifier:(id)identifier;
+- (void)_addDisplayItemToFront:(id)front;
+- (void)_addOrMoveDisplayItemToFront:(id)front;
+- (void)_applicationsBecameHidden:(id)hidden;
 - (void)_clearDelayAfterTransitionTimer;
-- (void)_disallowAppFromAppearingWhileHidden:(id)a3;
-- (void)_moveDisplayItemToFront:(id)a3;
-- (void)_removeDisplayItem:(id)a3;
-- (void)_setupDelayAfterTransitionTimerForActivatingElement:(id)a3;
+- (void)_disallowAppFromAppearingWhileHidden:(id)hidden;
+- (void)_moveDisplayItemToFront:(id)front;
+- (void)_removeDisplayItem:(id)item;
+- (void)_setupDelayAfterTransitionTimerForActivatingElement:(id)element;
 - (void)dealloc;
-- (void)eventSource:(id)a3 didBeginTransitionToMode:(int64_t)a4 withLayoutState:(id)a5 activatingElement:(id)a6 triggeredBy:(int64_t)a7;
-- (void)eventSource:(id)a3 keyboardFocusChangedToApplication:(id)a4;
-- (void)eventSource:(id)a3 userDeletedApplications:(id)a4;
-- (void)eventSource:(id)a3 userDeletedWebBookmark:(id)a4;
-- (void)eventSource:(id)a3 userQuitApplicationInSwitcher:(id)a4;
-- (void)eventSource:(id)a3 userRemovedSuggestions:(id)a4;
-- (void)eventSource:(id)a3 userTouchedApplication:(id)a4;
-- (void)setRecentDisplayItems:(id)a3;
+- (void)eventSource:(id)source didBeginTransitionToMode:(int64_t)mode withLayoutState:(id)state activatingElement:(id)element triggeredBy:(int64_t)by;
+- (void)eventSource:(id)source keyboardFocusChangedToApplication:(id)application;
+- (void)eventSource:(id)source userDeletedApplications:(id)applications;
+- (void)eventSource:(id)source userDeletedWebBookmark:(id)bookmark;
+- (void)eventSource:(id)source userQuitApplicationInSwitcher:(id)switcher;
+- (void)eventSource:(id)source userRemovedSuggestions:(id)suggestions;
+- (void)eventSource:(id)source userTouchedApplication:(id)application;
+- (void)setRecentDisplayItems:(id)items;
 @end
 
 @implementation SBRecentDisplayItemsController
 
-- (SBRecentDisplayItemsController)initWithRemovalPersonality:(int64_t)a3 movePersonality:(int64_t)a4 transitionFromSources:(id)a5 maxDisplayItems:(unint64_t)a6 eventSource:(id)a7 applicationController:(id)a8 iconModelProvider:(id)a9
+- (SBRecentDisplayItemsController)initWithRemovalPersonality:(int64_t)personality movePersonality:(int64_t)movePersonality transitionFromSources:(id)sources maxDisplayItems:(unint64_t)items eventSource:(id)source applicationController:(id)controller iconModelProvider:(id)provider
 {
-  v26 = a5;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  sourcesCopy = sources;
+  sourceCopy = source;
+  controllerCopy = controller;
+  providerCopy = provider;
   v27.receiver = self;
   v27.super_class = SBRecentDisplayItemsController;
   v19 = [(SBRecentDisplayItemsController *)&v27 init];
   v20 = v19;
   if (v19)
   {
-    v19->_removalPersonality = a3;
-    v19->_movePersonality = a4;
-    objc_storeStrong(&v19->_relevantTransitionFromSources, a5);
-    v20->_maxDisplayItems = a6;
-    objc_storeStrong(&v20->_appController, a8);
-    objc_storeStrong(&v20->_iconModelProvider, a9);
-    [v16 addObserver:v20];
-    v21 = [(SBRecentDisplayItemsController *)v20 _addStateCaptureHandler];
+    v19->_removalPersonality = personality;
+    v19->_movePersonality = movePersonality;
+    objc_storeStrong(&v19->_relevantTransitionFromSources, sources);
+    v20->_maxDisplayItems = items;
+    objc_storeStrong(&v20->_appController, controller);
+    objc_storeStrong(&v20->_iconModelProvider, provider);
+    [sourceCopy addObserver:v20];
+    _addStateCaptureHandler = [(SBRecentDisplayItemsController *)v20 _addStateCaptureHandler];
     stateCaptureInvalidatable = v20->_stateCaptureInvalidatable;
-    v20->_stateCaptureInvalidatable = v21;
+    v20->_stateCaptureInvalidatable = _addStateCaptureHandler;
 
     v23 = +[SBHomeGestureDomain rootSettings];
     homeGestureSettings = v20->_homeGestureSettings;
@@ -67,9 +67,9 @@
   return v20;
 }
 
-- (void)setRecentDisplayItems:(id)a3
+- (void)setRecentDisplayItems:(id)items
 {
-  v4 = [MEMORY[0x277CBEB40] orderedSetWithOrderedSet:a3];
+  v4 = [MEMORY[0x277CBEB40] orderedSetWithOrderedSet:items];
   recentDisplayItems = self->_recentDisplayItems;
   self->_recentDisplayItems = v4;
 }
@@ -82,10 +82,10 @@
   [(SBRecentDisplayItemsController *)&v3 dealloc];
 }
 
-- (void)eventSource:(id)a3 userRemovedSuggestions:(id)a4
+- (void)eventSource:(id)source userRemovedSuggestions:(id)suggestions
 {
   v27 = *MEMORY[0x277D85DE8];
-  obj = a4;
+  obj = suggestions;
   if ((self->_removalPersonality & 8) != 0)
   {
     v23 = 0u;
@@ -173,18 +173,18 @@ uint64_t __69__SBRecentDisplayItemsController_eventSource_userRemovedSuggestions
   return v5;
 }
 
-- (void)eventSource:(id)a3 userDeletedApplications:(id)a4
+- (void)eventSource:(id)source userDeletedApplications:(id)applications
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = v5;
+  applicationsCopy = applications;
+  v6 = applicationsCopy;
   if ((self->_removalPersonality & 4) != 0)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    v7 = [applicationsCopy countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v7)
     {
       v8 = v7;
@@ -242,33 +242,33 @@ uint64_t __69__SBRecentDisplayItemsController_eventSource_userRemovedSuggestions
   }
 }
 
-- (void)eventSource:(id)a3 userTouchedApplication:(id)a4
+- (void)eventSource:(id)source userTouchedApplication:(id)application
 {
   if ((self->_movePersonality & 2) != 0)
   {
-    v6 = a4;
+    applicationCopy = application;
     [(SBRecentDisplayItemsController *)self _clearDelayAfterTransitionTimer];
-    v7 = [(SBRecentDisplayItemsController *)self _firstDisplayItemForBundleID:v6];
+    v7 = [(SBRecentDisplayItemsController *)self _firstDisplayItemForBundleID:applicationCopy];
 
     [(SBRecentDisplayItemsController *)self _moveDisplayItemToFront:v7];
   }
 }
 
-- (void)eventSource:(id)a3 keyboardFocusChangedToApplication:(id)a4
+- (void)eventSource:(id)source keyboardFocusChangedToApplication:(id)application
 {
   if ((self->_movePersonality & 4) != 0)
   {
-    v6 = [(SBRecentDisplayItemsController *)self _firstDisplayItemForBundleID:a4];
+    v6 = [(SBRecentDisplayItemsController *)self _firstDisplayItemForBundleID:application];
     [(SBRecentDisplayItemsController *)self _moveDisplayItemToFront:v6];
   }
 }
 
-- (void)eventSource:(id)a3 didBeginTransitionToMode:(int64_t)a4 withLayoutState:(id)a5 activatingElement:(id)a6 triggeredBy:(int64_t)a7
+- (void)eventSource:(id)source didBeginTransitionToMode:(int64_t)mode withLayoutState:(id)state activatingElement:(id)element triggeredBy:(int64_t)by
 {
-  v28 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (a4 == 1)
+  sourceCopy = source;
+  stateCopy = state;
+  elementCopy = element;
+  if (mode == 1)
   {
     if ((self->_movePersonality & 1) == 0)
     {
@@ -280,21 +280,21 @@ uint64_t __69__SBRecentDisplayItemsController_eventSource_userRemovedSuggestions
     goto LABEL_17;
   }
 
-  if (a4 == 3)
+  if (mode == 3)
   {
     [(SBRecentDisplayItemsController *)self _clearDelayAfterTransitionTimer];
     movePersonality = self->_movePersonality;
     if ((movePersonality & 0x10) != 0)
     {
-      v15 = [v12 elementWithRole:3];
+      v15 = [stateCopy elementWithRole:3];
       v16 = [(SBRecentDisplayItemsController *)self _displayItemForLayoutElement:v15];
       [(SBRecentDisplayItemsController *)self _addOrMoveDisplayItemToFront:v16];
 
-      v17 = [v12 elementWithRole:2];
+      v17 = [stateCopy elementWithRole:2];
       v18 = [(SBRecentDisplayItemsController *)self _displayItemForLayoutElement:v17];
       [(SBRecentDisplayItemsController *)self _addOrMoveDisplayItemToFront:v18];
 
-      v19 = [v12 elementWithRole:1];
+      v19 = [stateCopy elementWithRole:1];
       v20 = [(SBRecentDisplayItemsController *)self _displayItemForLayoutElement:v19];
       [(SBRecentDisplayItemsController *)self _addOrMoveDisplayItemToFront:v20];
 
@@ -304,20 +304,20 @@ uint64_t __69__SBRecentDisplayItemsController_eventSource_userRemovedSuggestions
     if ((movePersonality & 8) != 0)
     {
       relevantTransitionFromSources = self->_relevantTransitionFromSources;
-      if (!relevantTransitionFromSources || ([MEMORY[0x277CCABB0] numberWithInteger:a7], v22 = objc_claimAutoreleasedReturnValue(), v23 = -[NSSet containsObject:](relevantTransitionFromSources, "containsObject:", v22), v22, v23))
+      if (!relevantTransitionFromSources || ([MEMORY[0x277CCABB0] numberWithInteger:by], v22 = objc_claimAutoreleasedReturnValue(), v23 = -[NSSet containsObject:](relevantTransitionFromSources, "containsObject:", v22), v22, v23))
       {
-        if (v13)
+        if (elementCopy)
         {
-          v24 = v13;
+          v24 = elementCopy;
         }
 
         else
         {
-          v24 = [v12 elementWithRole:1];
+          v24 = [stateCopy elementWithRole:1];
         }
 
         v25 = v24;
-        if (a7 == 11 && ([(SBHomeGestureSettings *)self->_homeGestureSettings secondsToResetSwitcherListAfterTransition], v26 > 0.0))
+        if (by == 11 && ([(SBHomeGestureSettings *)self->_homeGestureSettings secondsToResetSwitcherListAfterTransition], v26 > 0.0))
         {
           [(SBRecentDisplayItemsController *)self _setupDelayAfterTransitionTimerForActivatingElement:v25];
         }
@@ -336,7 +336,7 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)eventSource:(id)a3 userQuitApplicationInSwitcher:(id)a4
+- (void)eventSource:(id)source userQuitApplicationInSwitcher:(id)switcher
 {
   v15 = *MEMORY[0x277D85DE8];
   if (self->_removalPersonality)
@@ -345,7 +345,7 @@ LABEL_18:
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [(SBRecentDisplayItemsController *)self _allDisplayItemsForBundleID:a4, 0];
+    v5 = [(SBRecentDisplayItemsController *)self _allDisplayItemsForBundleID:switcher, 0];
     v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
@@ -373,7 +373,7 @@ LABEL_18:
   }
 }
 
-- (void)eventSource:(id)a3 userDeletedWebBookmark:(id)a4
+- (void)eventSource:(id)source userDeletedWebBookmark:(id)bookmark
 {
   v17 = *MEMORY[0x277D85DE8];
   if ((self->_removalPersonality & 4) != 0)
@@ -382,9 +382,9 @@ LABEL_18:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [a4 webClip];
-    v6 = [v5 identifier];
-    v7 = [(SBRecentDisplayItemsController *)self _allDisplayItemsForWebClipID:v6];
+    webClip = [bookmark webClip];
+    identifier = [webClip identifier];
+    v7 = [(SBRecentDisplayItemsController *)self _allDisplayItemsForWebClipID:identifier];
 
     v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
@@ -420,9 +420,9 @@ LABEL_18:
   self->_delayAfterTransitionTimer = 0;
 }
 
-- (void)_setupDelayAfterTransitionTimerForActivatingElement:(id)a3
+- (void)_setupDelayAfterTransitionTimerForActivatingElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x277CBEBB8];
   [(SBHomeGestureSettings *)self->_homeGestureSettings secondsToResetSwitcherListAfterTransition];
@@ -432,14 +432,14 @@ LABEL_18:
   v12[2] = __86__SBRecentDisplayItemsController__setupDelayAfterTransitionTimerForActivatingElement___block_invoke;
   v12[3] = &unk_2783AF5B0;
   objc_copyWeak(&v14, &location);
-  v8 = v4;
+  v8 = elementCopy;
   v13 = v8;
   v9 = [v5 timerWithTimeInterval:0 repeats:v12 block:v7];
   delayAfterTransitionTimer = self->_delayAfterTransitionTimer;
   self->_delayAfterTransitionTimer = v9;
 
-  v11 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [v11 addTimer:self->_delayAfterTransitionTimer forMode:*MEMORY[0x277CBE738]];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [currentRunLoop addTimer:self->_delayAfterTransitionTimer forMode:*MEMORY[0x277CBE738]];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -454,42 +454,42 @@ void __86__SBRecentDisplayItemsController__setupDelayAfterTransitionTimerForActi
   [WeakRetained _clearDelayAfterTransitionTimer];
 }
 
-- (BOOL)_displayItemIsExecutableOnCurrentPlatform:(id)a3
+- (BOOL)_displayItemIsExecutableOnCurrentPlatform:(id)platform
 {
-  v4 = a3;
-  if ([v4 type])
+  platformCopy = platform;
+  if ([platformCopy type])
   {
-    v5 = 1;
+    isAppClip = 1;
   }
 
   else
   {
     appController = self->_appController;
-    v7 = [v4 bundleIdentifier];
-    v8 = [(SBApplicationController *)appController applicationWithBundleIdentifier:v7];
+    bundleIdentifier = [platformCopy bundleIdentifier];
+    v8 = [(SBApplicationController *)appController applicationWithBundleIdentifier:bundleIdentifier];
 
-    v9 = [v8 info];
-    if ([v9 supports64Bit])
+    info = [v8 info];
+    if ([info supports64Bit])
     {
-      v5 = 1;
+      isAppClip = 1;
     }
 
     else
     {
       v10 = +[SBApplicationPlaceholderController sharedInstance];
-      v11 = [v4 bundleIdentifier];
-      v12 = [v10 placeholderForDisplayID:v11];
-      v5 = [v12 isAppClip];
+      bundleIdentifier2 = [platformCopy bundleIdentifier];
+      v12 = [v10 placeholderForDisplayID:bundleIdentifier2];
+      isAppClip = [v12 isAppClip];
     }
   }
 
-  return v5;
+  return isAppClip;
 }
 
-- (BOOL)_isDisallowedDisplayItem:(id)a3
+- (BOOL)_isDisallowedDisplayItem:(id)item
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemCopy = item;
   [MEMORY[0x277CBEA60] arrayWithObjects:{@"com.apple.purplebuddy", 0}];
   v11 = 0u;
   v12 = 0u;
@@ -509,8 +509,8 @@ void __86__SBRecentDisplayItemsController__setupDelayAfterTransitionTimerForActi
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [v3 bundleIdentifier];
-        LOBYTE(v8) = [v9 isEqualToString:v8];
+        bundleIdentifier = [itemCopy bundleIdentifier];
+        LOBYTE(v8) = [bundleIdentifier isEqualToString:v8];
 
         if (v8)
         {
@@ -534,10 +534,10 @@ LABEL_11:
   return v5;
 }
 
-- (id)_firstDisplayItemForUniqueID:(id)a3
+- (id)_firstDisplayItemForUniqueID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -557,8 +557,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 uniqueIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        uniqueIdentifier = [v9 uniqueIdentifier];
+        v11 = [uniqueIdentifier isEqualToString:dCopy];
 
         if (v11)
         {
@@ -582,33 +582,33 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)_displayItem:(id)a3 matchesBundleID:(id)a4
+- (BOOL)_displayItem:(id)item matchesBundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 type] == 5 && -[SBRecentDisplayItemsController _displayItemRepresentsAppClip:](self, "_displayItemRepresentsAppClip:", v6))
+  itemCopy = item;
+  dCopy = d;
+  if ([itemCopy type] == 5 && -[SBRecentDisplayItemsController _displayItemRepresentsAppClip:](self, "_displayItemRepresentsAppClip:", itemCopy))
   {
-    v8 = [v6 uniqueIdentifier];
-    v9 = [SBWebApplication _webClipIdentifierFromWebAppIdentifier:v8];
+    uniqueIdentifier = [itemCopy uniqueIdentifier];
+    bundleIdentifier = [SBWebApplication _webClipIdentifierFromWebAppIdentifier:uniqueIdentifier];
 
-    v10 = [(SBRecentDisplayItemsController *)self _webClipForIdentifier:v9];
-    v11 = [v10 applicationBundleIdentifier];
-    v12 = [v11 isEqualToString:v7];
+    v10 = [(SBRecentDisplayItemsController *)self _webClipForIdentifier:bundleIdentifier];
+    applicationBundleIdentifier = [v10 applicationBundleIdentifier];
+    v12 = [applicationBundleIdentifier isEqualToString:dCopy];
   }
 
   else
   {
-    v9 = [v6 bundleIdentifier];
-    v12 = [v9 isEqualToString:v7];
+    bundleIdentifier = [itemCopy bundleIdentifier];
+    v12 = [bundleIdentifier isEqualToString:dCopy];
   }
 
   return v12;
 }
 
-- (id)_firstDisplayItemForBundleID:(id)a3
+- (id)_firstDisplayItemForBundleID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -629,7 +629,7 @@ LABEL_11:
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([(SBRecentDisplayItemsController *)self _displayItem:v10 matchesBundleID:v4, v13])
+        if ([(SBRecentDisplayItemsController *)self _displayItem:v10 matchesBundleID:dCopy, v13])
         {
           v11 = v10;
           goto LABEL_11;
@@ -652,30 +652,30 @@ LABEL_11:
   return v11;
 }
 
-- (id)_allDisplayItemsForBundleID:(id)a3
+- (id)_allDisplayItemsForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__SBRecentDisplayItemsController__allDisplayItemsForBundleID___block_invoke;
   v8[3] = &unk_2783AF5D8;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = dCopy;
+  v5 = dCopy;
   v6 = [(SBRecentDisplayItemsController *)self _allDisplayItemsPassingTest:v8];
 
   return v6;
 }
 
-- (id)_allDisplayItemsForUniqueID:(id)a3
+- (id)_allDisplayItemsForUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__SBRecentDisplayItemsController__allDisplayItemsForUniqueID___block_invoke;
   v8[3] = &unk_2783A8C90;
-  v9 = v4;
-  v5 = v4;
+  v9 = dCopy;
+  v5 = dCopy;
   v6 = [(SBRecentDisplayItemsController *)self _allDisplayItemsPassingTest:v8];
 
   return v6;
@@ -689,15 +689,15 @@ uint64_t __62__SBRecentDisplayItemsController__allDisplayItemsForUniqueID___bloc
   return v4;
 }
 
-- (id)_allDisplayItemsForWebClipID:(id)a3
+- (id)_allDisplayItemsForWebClipID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__SBRecentDisplayItemsController__allDisplayItemsForWebClipID___block_invoke;
   v8[3] = &unk_2783A8C90;
-  v9 = v4;
-  v5 = v4;
+  v9 = dCopy;
+  v5 = dCopy;
   v6 = [(SBRecentDisplayItemsController *)self _allDisplayItemsPassingTest:v8];
 
   return v6;
@@ -721,10 +721,10 @@ uint64_t __63__SBRecentDisplayItemsController__allDisplayItemsForWebClipID___blo
   return v6;
 }
 
-- (id)_allDisplayItemsPassingTest:(id)a3
+- (id)_allDisplayItemsPassingTest:(id)test
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  testCopy = test;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -734,7 +734,7 @@ uint64_t __63__SBRecentDisplayItemsController__allDisplayItemsForWebClipID___blo
   if (v6)
   {
     v7 = v6;
-    v8 = 0;
+    array = 0;
     v9 = *v14;
     do
     {
@@ -746,14 +746,14 @@ uint64_t __63__SBRecentDisplayItemsController__allDisplayItemsForWebClipID___blo
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if (v4[2](v4, v11))
+        if (testCopy[2](testCopy, v11))
         {
-          if (!v8)
+          if (!array)
           {
-            v8 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
           }
 
-          [v8 addObject:{v11, v13}];
+          [array addObject:{v11, v13}];
         }
       }
 
@@ -765,46 +765,46 @@ uint64_t __63__SBRecentDisplayItemsController__allDisplayItemsForWebClipID___blo
 
   else
   {
-    v8 = 0;
+    array = 0;
   }
 
-  return v8;
+  return array;
 }
 
-- (id)_displayItemForLayoutElement:(id)a3
+- (id)_displayItemForLayoutElement:(id)element
 {
-  v3 = a3;
-  v4 = [v3 workspaceEntity];
-  if ([v4 isApplicationSceneEntity])
+  elementCopy = element;
+  workspaceEntity = [elementCopy workspaceEntity];
+  if ([workspaceEntity isApplicationSceneEntity])
   {
-    v5 = [v4 application];
-    if ([v5 isWebApplication])
+    application = [workspaceEntity application];
+    if ([application isWebApplication])
     {
-      v6 = [v3 uniqueIdentifier];
-      v7 = [SBDisplayItem webAppDisplayItemWithWebAppIdentifier:v6];
+      uniqueIdentifier = [elementCopy uniqueIdentifier];
+      v7 = [SBDisplayItem webAppDisplayItemWithWebAppIdentifier:uniqueIdentifier];
 LABEL_8:
 
       goto LABEL_9;
     }
 
-    v6 = [v5 bundleIdentifier];
-    v8 = [v3 uniqueIdentifier];
+    uniqueIdentifier = [application bundleIdentifier];
+    uniqueIdentifier2 = [elementCopy uniqueIdentifier];
 LABEL_7:
-    v9 = v8;
-    v7 = [SBDisplayItem applicationDisplayItemWithBundleIdentifier:v6 sceneIdentifier:v8];
+    v9 = uniqueIdentifier2;
+    v7 = [SBDisplayItem applicationDisplayItemWithBundleIdentifier:uniqueIdentifier sceneIdentifier:uniqueIdentifier2];
 
     goto LABEL_8;
   }
 
-  if ([v4 isAppClipPlaceholderEntity])
+  if ([workspaceEntity isAppClipPlaceholderEntity])
   {
-    v5 = [v4 appClipPlaceholderEntity];
-    v6 = [v5 bundleIdentifier];
-    v8 = [v5 futureSceneIdentifier];
+    application = [workspaceEntity appClipPlaceholderEntity];
+    uniqueIdentifier = [application bundleIdentifier];
+    uniqueIdentifier2 = [application futureSceneIdentifier];
     goto LABEL_7;
   }
 
-  if ([v4 isHomeScreenEntity])
+  if ([workspaceEntity isHomeScreenEntity])
   {
     v7 = +[SBDisplayItem homeScreenDisplayItem];
   }
@@ -819,18 +819,18 @@ LABEL_9:
   return v7;
 }
 
-- (void)_addOrMoveDisplayItemToFront:(id)a3
+- (void)_addOrMoveDisplayItemToFront:(id)front
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 type])
+  frontCopy = front;
+  if (![frontCopy type])
   {
-    v5 = [(SBRecentDisplayItemsController *)self delegate];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v5 recentDisplayItemsControllerShouldRepresentAppClipsAsWebClips:self] && -[SBRecentDisplayItemsController _displayItemRepresentsAppClip:](self, "_displayItemRepresentsAppClip:", v4))
+    delegate = [(SBRecentDisplayItemsController *)self delegate];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate recentDisplayItemsControllerShouldRepresentAppClipsAsWebClips:self] && -[SBRecentDisplayItemsController _displayItemRepresentsAppClip:](self, "_displayItemRepresentsAppClip:", frontCopy))
     {
-      v6 = [v4 bundleIdentifier];
-      v7 = [v4 uniqueIdentifier];
-      v8 = [(SBRecentDisplayItemsController *)self _associatedWebClipIdentifierForAppClipIdentifier:v6 sceneIdentifier:v7];
+      bundleIdentifier = [frontCopy bundleIdentifier];
+      uniqueIdentifier = [frontCopy uniqueIdentifier];
+      v8 = [(SBRecentDisplayItemsController *)self _associatedWebClipIdentifierForAppClipIdentifier:bundleIdentifier sceneIdentifier:uniqueIdentifier];
 
       if (!v8)
       {
@@ -841,25 +841,25 @@ LABEL_9:
       v9 = [SBWebApplication _webAppIdentifierFromWebClipIdentifier:v8];
       v10 = [SBDisplayItem webAppDisplayItemWithWebAppIdentifier:v9];
 
-      v4 = v10;
+      frontCopy = v10;
     }
   }
 
-  if ([(NSMutableOrderedSet *)self->_recentDisplayItems containsObject:v4])
+  if ([(NSMutableOrderedSet *)self->_recentDisplayItems containsObject:frontCopy])
   {
-    [(SBRecentDisplayItemsController *)self _moveDisplayItemToFront:v4];
+    [(SBRecentDisplayItemsController *)self _moveDisplayItemToFront:frontCopy];
   }
 
   else
   {
-    if (-[NSMutableOrderedSet count](self->_recentDisplayItems, "count") && ![v4 type])
+    if (-[NSMutableOrderedSet count](self->_recentDisplayItems, "count") && ![frontCopy type])
     {
       recentDisplayItems = self->_recentDisplayItems;
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __63__SBRecentDisplayItemsController__addOrMoveDisplayItemToFront___block_invoke;
       v22[3] = &unk_2783AF600;
-      v23 = v4;
+      v23 = frontCopy;
       v12 = [(NSMutableOrderedSet *)recentDisplayItems indexesOfObjectsPassingTest:v22];
       v18 = 0u;
       v19 = 0u;
@@ -892,7 +892,7 @@ LABEL_9:
       }
     }
 
-    [(SBRecentDisplayItemsController *)self _addDisplayItemToFront:v4];
+    [(SBRecentDisplayItemsController *)self _addDisplayItemToFront:frontCopy];
   }
 
 LABEL_21:
@@ -907,16 +907,16 @@ uint64_t __63__SBRecentDisplayItemsController__addOrMoveDisplayItemToFront___blo
   return v5;
 }
 
-- (void)_addDisplayItemToFront:(id)a3
+- (void)_addDisplayItemToFront:(id)front
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4 && [(SBRecentDisplayItemsController *)self _displayItemIsExecutableOnCurrentPlatform:v4]&& ![(SBRecentDisplayItemsController *)self _isDisallowedDisplayItem:v4])
+  frontCopy = front;
+  if (frontCopy && [(SBRecentDisplayItemsController *)self _displayItemIsExecutableOnCurrentPlatform:frontCopy]&& ![(SBRecentDisplayItemsController *)self _isDisallowedDisplayItem:frontCopy])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      v6 = [(NSMutableOrderedSet *)WeakRetained recentDisplayItemsController:self shouldAddItem:v4];
+      v6 = [(NSMutableOrderedSet *)WeakRetained recentDisplayItemsController:self shouldAddItem:frontCopy];
     }
 
     else
@@ -925,20 +925,20 @@ uint64_t __63__SBRecentDisplayItemsController__addOrMoveDisplayItemToFront___blo
     }
 
     v7 = MEMORY[0x277CEBE80];
-    v8 = [(NSMutableOrderedSet *)v4 bundleIdentifier];
-    v9 = [v7 applicationWithBundleIdentifier:v8];
+    bundleIdentifier = [(NSMutableOrderedSet *)frontCopy bundleIdentifier];
+    v9 = [v7 applicationWithBundleIdentifier:bundleIdentifier];
 
-    v10 = [v9 isHidden];
+    isHidden = [v9 isHidden];
     v11 = SBLogDockRecents();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_INFO);
-    if (v10 || !v6)
+    if (isHidden || !v6)
     {
       if (v12)
       {
         *buf = 138412546;
         v30 = WeakRetained;
         v31 = 2112;
-        v32 = v4;
+        v32 = frontCopy;
         _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_INFO, "delegate %@ returned NO for recentDisplayItemsController:shouldAddItem: %@", buf, 0x16u);
       }
     }
@@ -949,13 +949,13 @@ uint64_t __63__SBRecentDisplayItemsController__addOrMoveDisplayItemToFront___blo
       {
         recentDisplayItems = self->_recentDisplayItems;
         *buf = 138412546;
-        v30 = v4;
+        v30 = frontCopy;
         v31 = 2112;
         v32 = recentDisplayItems;
         _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_INFO, "will insertObject: %@; atIndex: 0; into: %@;", buf, 0x16u);
       }
 
-      [(NSMutableOrderedSet *)self->_recentDisplayItems insertObject:v4 atIndex:0];
+      [(NSMutableOrderedSet *)self->_recentDisplayItems insertObject:frontCopy atIndex:0];
       v14 = [(NSMutableOrderedSet *)self->_recentDisplayItems count];
       v11 = 0;
       maxDisplayItems = self->_maxDisplayItems;
@@ -1009,7 +1009,7 @@ uint64_t __63__SBRecentDisplayItemsController__addOrMoveDisplayItemToFront___blo
                   objc_enumerationMutation(v11);
                 }
 
-                [(NSMutableOrderedSet *)WeakRetained recentDisplayItemsController:self didAddItem:v4 andDropItem:*(*(&v24 + 1) + 8 * v23++), v24];
+                [(NSMutableOrderedSet *)WeakRetained recentDisplayItemsController:self didAddItem:frontCopy andDropItem:*(*(&v24 + 1) + 8 * v23++), v24];
               }
 
               while (v21 != v23);
@@ -1023,42 +1023,42 @@ uint64_t __63__SBRecentDisplayItemsController__addOrMoveDisplayItemToFront___blo
 
       else if (objc_opt_respondsToSelector())
       {
-        [(NSMutableOrderedSet *)WeakRetained recentDisplayItemsController:self didAddItem:v4];
+        [(NSMutableOrderedSet *)WeakRetained recentDisplayItemsController:self didAddItem:frontCopy];
       }
     }
   }
 }
 
-- (void)_moveDisplayItemToFront:(id)a3
+- (void)_moveDisplayItemToFront:(id)front
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4 && [(NSMutableOrderedSet *)self->_recentDisplayItems containsObject:v4]&& [(SBRecentDisplayItemsController *)self _displayItemIsExecutableOnCurrentPlatform:v4])
+  frontCopy = front;
+  if (frontCopy && [(NSMutableOrderedSet *)self->_recentDisplayItems containsObject:frontCopy]&& [(SBRecentDisplayItemsController *)self _displayItemIsExecutableOnCurrentPlatform:frontCopy])
   {
     v5 = SBLogDockRecents();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       recentDisplayItems = self->_recentDisplayItems;
       v10 = 138412546;
-      v11 = v4;
+      v11 = frontCopy;
       v12 = 2112;
       v13 = recentDisplayItems;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "will removeObject: %@; from: %@;", &v10, 0x16u);
     }
 
-    [(NSMutableOrderedSet *)self->_recentDisplayItems removeObject:v4];
+    [(NSMutableOrderedSet *)self->_recentDisplayItems removeObject:frontCopy];
     v7 = SBLogDockRecents();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = self->_recentDisplayItems;
       v10 = 138412546;
-      v11 = v4;
+      v11 = frontCopy;
       v12 = 2112;
       v13 = v8;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_INFO, "will insertObject: %@; atIndex 0; into: %@;", &v10, 0x16u);
     }
 
-    [(NSMutableOrderedSet *)self->_recentDisplayItems insertObject:v4 atIndex:0];
+    [(NSMutableOrderedSet *)self->_recentDisplayItems insertObject:frontCopy atIndex:0];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
@@ -1067,29 +1067,29 @@ uint64_t __63__SBRecentDisplayItemsController__addOrMoveDisplayItemToFront___blo
 
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained recentDisplayItemsController:self didMoveItemToFront:v4];
+      [WeakRetained recentDisplayItemsController:self didMoveItemToFront:frontCopy];
     }
   }
 }
 
-- (void)_removeDisplayItem:(id)a3
+- (void)_removeDisplayItem:(id)item
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4 && [(NSMutableOrderedSet *)self->_recentDisplayItems containsObject:v4])
+  itemCopy = item;
+  if (itemCopy && [(NSMutableOrderedSet *)self->_recentDisplayItems containsObject:itemCopy])
   {
     v5 = SBLogDockRecents();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       recentDisplayItems = self->_recentDisplayItems;
       v8 = 138412546;
-      v9 = v4;
+      v9 = itemCopy;
       v10 = 2112;
       v11 = recentDisplayItems;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "will removeObject: %@; from: %@;", &v8, 0x16u);
     }
 
-    [(NSMutableOrderedSet *)self->_recentDisplayItems removeObject:v4];
+    [(NSMutableOrderedSet *)self->_recentDisplayItems removeObject:itemCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
@@ -1098,76 +1098,76 @@ uint64_t __63__SBRecentDisplayItemsController__addOrMoveDisplayItemToFront___blo
 
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained recentDisplayItemsController:self didRemoveItem:v4];
+      [WeakRetained recentDisplayItemsController:self didRemoveItem:itemCopy];
     }
   }
 }
 
-- (void)_disallowAppFromAppearingWhileHidden:(id)a3
+- (void)_disallowAppFromAppearingWhileHidden:(id)hidden
 {
-  v4 = [MEMORY[0x277CBEB98] setWithObject:a3];
+  v4 = [MEMORY[0x277CBEB98] setWithObject:hidden];
   [(SBRecentDisplayItemsController *)self _applicationsBecameHidden:v4];
 }
 
-- (BOOL)_displayItemRepresentsAppClip:(id)a3
+- (BOOL)_displayItemRepresentsAppClip:(id)clip
 {
-  v4 = a3;
-  if (![v4 type])
+  clipCopy = clip;
+  if (![clipCopy type])
   {
-    v6 = [v4 bundleIdentifier];
-    v7 = [(SBApplicationController *)self->_appController applicationWithBundleIdentifier:v6];
-    v9 = [v7 info];
-    if ([v9 isAppClip])
+    bundleIdentifier = [clipCopy bundleIdentifier];
+    v7 = [(SBApplicationController *)self->_appController applicationWithBundleIdentifier:bundleIdentifier];
+    info = [v7 info];
+    if ([info isAppClip])
     {
-      v8 = 1;
+      isAppClip = 1;
     }
 
     else
     {
       v10 = +[SBApplicationPlaceholderController sharedInstance];
-      v11 = [v10 placeholderForDisplayID:v6];
-      v8 = [v11 isAppClip];
+      v11 = [v10 placeholderForDisplayID:bundleIdentifier];
+      isAppClip = [v11 isAppClip];
     }
 
     goto LABEL_9;
   }
 
-  if ([v4 type] == 5)
+  if ([clipCopy type] == 5)
   {
-    v5 = [v4 uniqueIdentifier];
-    v6 = [SBWebApplication _webClipIdentifierFromWebAppIdentifier:v5];
+    uniqueIdentifier = [clipCopy uniqueIdentifier];
+    bundleIdentifier = [SBWebApplication _webClipIdentifierFromWebAppIdentifier:uniqueIdentifier];
 
-    v7 = [(SBRecentDisplayItemsController *)self _webClipForIdentifier:v6];
-    v8 = [v7 isAppClip];
+    v7 = [(SBRecentDisplayItemsController *)self _webClipForIdentifier:bundleIdentifier];
+    isAppClip = [v7 isAppClip];
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v8 = 0;
+  isAppClip = 0;
 LABEL_10:
 
-  return v8;
+  return isAppClip;
 }
 
-- (id)_associatedWebClipIdentifierForAppClipIdentifier:(id)a3 sceneIdentifier:(id)a4
+- (id)_associatedWebClipIdentifierForAppClipIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier
 {
   v5 = MEMORY[0x277D0AC98];
-  v6 = a4;
-  v7 = [v5 storeForApplication:a3];
-  v8 = [v7 sceneStoreForIdentifier:v6 creatingIfNecessary:0];
+  sceneIdentifierCopy = sceneIdentifier;
+  v7 = [v5 storeForApplication:identifier];
+  v8 = [v7 sceneStoreForIdentifier:sceneIdentifierCopy creatingIfNecessary:0];
 
   v9 = [v8 objectForKey:@"appClipIdentifier"];
 
   return v9;
 }
 
-- (id)_webClipForIdentifier:(id)a3
+- (id)_webClipForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_opt_class();
-  v6 = [(SBIconModelProviding *)self->_iconModelProvider iconModel];
-  v7 = [v6 leafIconForIdentifier:v4];
+  iconModel = [(SBIconModelProviding *)self->_iconModelProvider iconModel];
+  v7 = [iconModel leafIconForIdentifier:identifierCopy];
   v8 = SBSafeCast(v5, v7);
 
   if (v8)
@@ -1177,7 +1177,7 @@ LABEL_10:
 
   else
   {
-    [MEMORY[0x277D75D70] webClipWithIdentifier:v4];
+    [MEMORY[0x277D75D70] webClipWithIdentifier:identifierCopy];
   }
   v9 = ;
 
@@ -1215,18 +1215,18 @@ __CFString *__57__SBRecentDisplayItemsController__addStateCaptureHandler__block_
   return v3;
 }
 
-- (void)_applicationsBecameHidden:(id)a3
+- (void)_applicationsBecameHidden:(id)hidden
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  hiddenCopy = hidden;
+  v5 = hiddenCopy;
   if ((self->_removalPersonality & 2) != 0)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    v6 = [hiddenCopy countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v6)
     {
       v7 = v6;

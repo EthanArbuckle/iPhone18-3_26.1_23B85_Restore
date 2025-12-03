@@ -9,12 +9,12 @@
 
 - (uint64_t)isEnterprise
 {
-  if ([a1 isEAP])
+  if ([self isEAP])
   {
     return 1;
   }
 
-  return [a1 isPSK];
+  return [self isPSK];
 }
 
 - (BOOL)isEquivalentRecord:()WiFiKitUIAdditions
@@ -24,12 +24,12 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
-    v6 = [a1 networkName];
-    v7 = [v5 networkName];
-    if ([v6 isEqualToString:v7])
+    networkName = [self networkName];
+    networkName2 = [v5 networkName];
+    if ([networkName isEqualToString:networkName2])
     {
-      v8 = [a1 uniqueIdentifier];
-      v9 = v8 == [v5 uniqueIdentifier];
+      uniqueIdentifier = [self uniqueIdentifier];
+      v9 = uniqueIdentifier == [v5 uniqueIdentifier];
     }
 
     else
@@ -48,42 +48,42 @@
 
 - (uint64_t)signalBars
 {
-  [a1 scaledRSSI];
+  [self scaledRSSI];
 
   return WFSignalBarsFromScaledRSSI();
 }
 
 - (id)title
 {
-  if (![a1 isPasspoint])
+  if (![self isPasspoint])
   {
     goto LABEL_6;
   }
 
-  v2 = [a1 displayedOperatorName];
+  displayedOperatorName = [self displayedOperatorName];
 
-  if (v2)
+  if (displayedOperatorName)
   {
-    v3 = [a1 displayedOperatorName];
+    displayedOperatorName2 = [self displayedOperatorName];
     goto LABEL_7;
   }
 
-  v4 = [a1 domainName];
+  domainName = [self domainName];
 
-  if (v4)
+  if (domainName)
   {
-    v3 = [a1 domainName];
+    displayedOperatorName2 = [self domainName];
   }
 
   else
   {
 LABEL_6:
-    v3 = [a1 ssid];
+    displayedOperatorName2 = [self ssid];
   }
 
 LABEL_7:
 
-  return v3;
+  return displayedOperatorName2;
 }
 
 @end

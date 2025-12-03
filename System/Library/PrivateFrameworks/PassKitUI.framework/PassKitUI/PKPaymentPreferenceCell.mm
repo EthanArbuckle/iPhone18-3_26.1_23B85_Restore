@@ -1,17 +1,17 @@
 @interface PKPaymentPreferenceCell
-- (PKPaymentPreferenceCell)initWithReuseIdentifier:(id)a3;
+- (PKPaymentPreferenceCell)initWithReuseIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)prepareForReuse;
-- (void)setHasError:(BOOL)a3;
+- (void)setHasError:(BOOL)error;
 @end
 
 @implementation PKPaymentPreferenceCell
 
-- (PKPaymentPreferenceCell)initWithReuseIdentifier:(id)a3
+- (PKPaymentPreferenceCell)initWithReuseIdentifier:(id)identifier
 {
   v4.receiver = self;
   v4.super_class = PKPaymentPreferenceCell;
-  return [(PKPaymentPreferenceCell *)&v4 initWithStyle:0 reuseIdentifier:a3];
+  return [(PKPaymentPreferenceCell *)&v4 initWithStyle:0 reuseIdentifier:identifier];
 }
 
 - (void)prepareForReuse
@@ -22,54 +22,54 @@
   [(PKPaymentPreferenceCell *)self setHasError:0];
 }
 
-- (void)setHasError:(BOOL)a3
+- (void)setHasError:(BOOL)error
 {
-  if (self->_hasError == a3)
+  if (self->_hasError == error)
   {
     return;
   }
 
-  v4 = a3;
-  self->_hasError = a3;
+  errorCopy = error;
+  self->_hasError = error;
   if (!self->_errorColor)
   {
-    v10 = [MEMORY[0x1E69DC888] pkui_osloErrorColor];
+    pkui_osloErrorColor = [MEMORY[0x1E69DC888] pkui_osloErrorColor];
     errorColor = self->_errorColor;
-    self->_errorColor = v10;
+    self->_errorColor = pkui_osloErrorColor;
 
-    if (v4)
+    if (errorCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_6:
     [(PKPaymentPreferenceCell *)self setAccessoryView:0];
-    v12 = [(PKPaymentPreferenceCell *)self detailTextLabel];
-    v13 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v12 setTextColor:v13];
+    detailTextLabel = [(PKPaymentPreferenceCell *)self detailTextLabel];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [detailTextLabel setTextColor:secondaryLabelColor];
 
-    v14 = [(PKPaymentPreferenceCell *)self textLabel];
-    v7 = [MEMORY[0x1E69DC888] labelColor];
-    [v14 setTextColor:v7];
+    textLabel = [(PKPaymentPreferenceCell *)self textLabel];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [textLabel setTextColor:labelColor];
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!error)
   {
     goto LABEL_6;
   }
 
 LABEL_4:
   v6 = PKUIImageNamed(@"Payment_AlertAccessory");
-  v14 = [v6 _flatImageWithColor:self->_errorColor];
+  textLabel = [v6 _flatImageWithColor:self->_errorColor];
 
-  v7 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v14];
-  [(PKPaymentPreferenceCell *)self setAccessoryView:v7];
-  v8 = [(PKPaymentPreferenceCell *)self detailTextLabel];
-  [v8 setTextColor:self->_errorColor];
+  labelColor = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:textLabel];
+  [(PKPaymentPreferenceCell *)self setAccessoryView:labelColor];
+  detailTextLabel2 = [(PKPaymentPreferenceCell *)self detailTextLabel];
+  [detailTextLabel2 setTextColor:self->_errorColor];
 
-  v9 = [(PKPaymentPreferenceCell *)self textLabel];
-  [v9 setTextColor:self->_errorColor];
+  textLabel2 = [(PKPaymentPreferenceCell *)self textLabel];
+  [textLabel2 setTextColor:self->_errorColor];
 
 LABEL_7:
 }

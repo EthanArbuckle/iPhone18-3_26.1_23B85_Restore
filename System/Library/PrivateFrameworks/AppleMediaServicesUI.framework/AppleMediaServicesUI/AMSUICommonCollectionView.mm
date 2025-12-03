@@ -1,7 +1,7 @@
 @interface AMSUICommonCollectionView
 - (AMSUICommonCollectionView)init;
 - (AMSUICommonCollectionViewDelegate)commonDelegate;
-- (void)setCommonDelegate:(id)a3;
+- (void)setCommonDelegate:(id)delegate;
 @end
 
 @implementation AMSUICommonCollectionView
@@ -14,8 +14,8 @@
   if (v4)
   {
     [(AMSUICommonCollectionView *)v4 setAlwaysBounceVertical:1];
-    v5 = [MEMORY[0x1E69DC888] ams_clear];
-    [(AMSUICommonCollectionView *)v4 setBackgroundColor:v5];
+    ams_clear = [MEMORY[0x1E69DC888] ams_clear];
+    [(AMSUICommonCollectionView *)v4 setBackgroundColor:ams_clear];
 
     v6 = [[AMSUICommonCollectionViewHandler alloc] initWithCollectionView:v4];
     handler = v4->_handler;
@@ -32,17 +32,17 @@
 
 - (AMSUICommonCollectionViewDelegate)commonDelegate
 {
-  v2 = [(AMSUICommonCollectionView *)self handler];
-  v3 = [v2 delegate];
+  handler = [(AMSUICommonCollectionView *)self handler];
+  delegate = [handler delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)setCommonDelegate:(id)a3
+- (void)setCommonDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(AMSUICommonCollectionView *)self handler];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  handler = [(AMSUICommonCollectionView *)self handler];
+  [handler setDelegate:delegateCopy];
 }
 
 @end

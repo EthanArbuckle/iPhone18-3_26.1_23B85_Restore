@@ -1,17 +1,17 @@
 @interface RRAnnotatedEntity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)data;
 - (NSDate)saliencyComputedAt;
 - (NSString)description;
-- (void)setDateAnnotationWithKey:(id)a3 value:(id)a4;
-- (void)setUserId:(id)a3;
+- (void)setDateAnnotationWithKey:(id)key value:(id)value;
+- (void)setUserId:(id)id;
 @end
 
 @implementation RRAnnotatedEntity
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_268C64C1C();
 
   v3 = sub_268C88C74();
@@ -56,9 +56,9 @@
   return v7;
 }
 
-- (void)setUserId:(id)a3
+- (void)setUserId:(id)id
 {
-  if (a3)
+  if (id)
   {
     v4 = sub_268C88C84();
     v6 = v5;
@@ -70,11 +70,11 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_268C74DBC(v4, v6);
 }
 
-- (void)setDateAnnotationWithKey:(id)a3 value:(id)a4
+- (void)setDateAnnotationWithKey:(id)key value:(id)value
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_2802D47B8, &unk_268C8A5B8);
   v7 = *(*(v6 - 8) + 64);
@@ -82,7 +82,7 @@
   v9 = &v16 - v8;
   v10 = sub_268C88C84();
   v12 = v11;
-  if (a4)
+  if (value)
   {
     sub_268C889D4();
     v13 = sub_268C889E4();
@@ -96,17 +96,17 @@
   }
 
   __swift_storeEnumTagSinglePayload(v9, v14, 1, v13);
-  v15 = self;
+  selfCopy = self;
   sub_268C679A4(v10, v12, v9);
 
   sub_268C65E88(v9, &qword_2802D47B8, &unk_268C8A5B8);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_268C88DC4();
     swift_unknownObjectRelease();
@@ -115,7 +115,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_268C77058(v8);

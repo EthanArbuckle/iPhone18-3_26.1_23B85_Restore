@@ -1,12 +1,12 @@
 @interface PKHowToUseWalletRequirements
-+ (id)requirementsToPrioritize:(id)a3 otherRequirements:(id)a4;
++ (id)requirementsToPrioritize:(id)prioritize otherRequirements:(id)requirements;
 - (BOOL)deviceMeetsRequirements;
 - (BOOL)explicitlyMatchesLanguage;
 - (BOOL)explicitlyMatchesRegion;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)supportsAllLanguages;
 - (BOOL)supportsAllRegions;
-- (PKHowToUseWalletRequirements)initWithDictionary:(id)a3;
+- (PKHowToUseWalletRequirements)initWithDictionary:(id)dictionary;
 @end
 
 @implementation PKHowToUseWalletRequirements
@@ -23,12 +23,12 @@
     }
 
     supportedRegions = self->_supportedRegions;
-    v13 = [MEMORY[0x1E695DF58] currentLocale];
-    v14 = [v13 regionCode];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    regionCode = [currentLocale regionCode];
     v18 = 138412546;
     v19 = supportedRegions;
     v20 = 2112;
-    v21 = v14;
+    v21 = regionCode;
     v15 = "PKHowToUseWalletRequirement not met: supportedRegions=%@ currentRegionCode=%@";
 LABEL_29:
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, v15, &v18, 0x16u);
@@ -45,12 +45,12 @@ LABEL_29:
     }
 
     supportedLanguages = self->_supportedLanguages;
-    v13 = [MEMORY[0x1E695DF58] currentLocale];
-    v14 = [v13 languageIdentifier];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    regionCode = [currentLocale languageIdentifier];
     v18 = 138412546;
     v19 = supportedLanguages;
     v20 = 2112;
-    v21 = v14;
+    v21 = regionCode;
     v15 = "PKHowToUseWalletRequirement not met: supportedLanguages=%@ currentLanguage=%@";
     goto LABEL_29;
   }
@@ -123,15 +123,15 @@ LABEL_30:
   return 0;
 }
 
-- (PKHowToUseWalletRequirements)initWithDictionary:(id)a3
+- (PKHowToUseWalletRequirements)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = PKHowToUseWalletRequirements;
   v5 = [(PKHowToUseWalletRequirements *)&v21 init];
   if (v5)
   {
-    v6 = [v4 PKDictionaryForKey:@"osVersions"];
+    v6 = [dictionaryCopy PKDictionaryForKey:@"osVersions"];
     v7 = v6;
     if (v6)
     {
@@ -141,24 +141,24 @@ LABEL_30:
     osVersions = v5->_osVersions;
     v5->_osVersions = v6;
 
-    v9 = [v4 PKArrayForKey:@"supportedLanguages"];
+    v9 = [dictionaryCopy PKArrayForKey:@"supportedLanguages"];
     v10 = [v9 pk_createSetByApplyingBlock:&__block_literal_global_83];
     supportedLanguages = v5->_supportedLanguages;
     v5->_supportedLanguages = v10;
 
-    v12 = [v4 PKArrayForKey:@"supportedRegions"];
-    v13 = [MEMORY[0x1E695DF58] ISOCountryCodes];
+    v12 = [dictionaryCopy PKArrayForKey:@"supportedRegions"];
+    iSOCountryCodes = [MEMORY[0x1E695DF58] ISOCountryCodes];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __51__PKHowToUseWalletRequirements_initWithDictionary___block_invoke_2;
     v19[3] = &unk_1E79CBFF0;
-    v20 = v13;
-    v14 = v13;
+    v20 = iSOCountryCodes;
+    v14 = iSOCountryCodes;
     v15 = [v12 pk_createSetByApplyingBlock:v19];
     supportedRegions = v5->_supportedRegions;
     v5->_supportedRegions = v15;
 
-    v17 = [v4 PKArrayForKey:@"capability"];
+    v17 = [dictionaryCopy PKArrayForKey:@"capability"];
     v5->_capability = PKHowToUseWalletCapabilityFromStrings(v17);
   }
 
@@ -201,7 +201,7 @@ id __51__PKHowToUseWalletRequirements_initWithDictionary___block_invoke_2(uint64
 
 - (BOOL)explicitlyMatchesLanguage
 {
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
   if ([(PKHowToUseWalletRequirements *)self supportsAllLanguages])
   {
     v4 = 0;
@@ -209,13 +209,13 @@ id __51__PKHowToUseWalletRequirements_initWithDictionary___block_invoke_2(uint64
 
   else
   {
-    v5 = [(PKHowToUseWalletRequirements *)self supportedLanguages];
+    supportedLanguages = [(PKHowToUseWalletRequirements *)self supportedLanguages];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __57__PKHowToUseWalletRequirements_explicitlyMatchesLanguage__block_invoke;
     v7[3] = &unk_1E79D1058;
-    v8 = v3;
-    v4 = [v5 pk_hasObjectPassingTest:v7];
+    v8 = currentLocale;
+    v4 = [supportedLanguages pk_hasObjectPassingTest:v7];
   }
 
   return v4;
@@ -280,8 +280,8 @@ LABEL_15:
 
 - (BOOL)explicitlyMatchesRegion
 {
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  v4 = [v3 regionCode];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  regionCode = [currentLocale regionCode];
 
   if ([(PKHowToUseWalletRequirements *)self supportsAllRegions])
   {
@@ -290,13 +290,13 @@ LABEL_15:
 
   else
   {
-    v6 = [(PKHowToUseWalletRequirements *)self supportedRegions];
+    supportedRegions = [(PKHowToUseWalletRequirements *)self supportedRegions];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __55__PKHowToUseWalletRequirements_explicitlyMatchesRegion__block_invoke;
     v8[3] = &unk_1E79CA4C8;
-    v9 = v4;
-    v5 = [v6 pk_hasObjectPassingTest:v8];
+    v9 = regionCode;
+    v5 = [supportedRegions pk_hasObjectPassingTest:v8];
   }
 
   return v5;
@@ -326,22 +326,22 @@ uint64_t __55__PKHowToUseWalletRequirements_explicitlyMatchesRegion__block_invok
   return v8;
 }
 
-+ (id)requirementsToPrioritize:(id)a3 otherRequirements:(id)a4
++ (id)requirementsToPrioritize:(id)prioritize otherRequirements:(id)requirements
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  v8 = v6;
-  if (v5)
+  prioritizeCopy = prioritize;
+  requirementsCopy = requirements;
+  v7 = requirementsCopy;
+  v8 = requirementsCopy;
+  if (prioritizeCopy)
   {
-    v8 = v5;
-    if (v6)
+    v8 = prioritizeCopy;
+    if (requirementsCopy)
     {
-      v9 = [v5 explicitlyMatchesRegion];
-      if (v9 == [v7 explicitlyMatchesRegion] && (v9 = objc_msgSend(v5, "explicitlyMatchesLanguage"), v9 == objc_msgSend(v7, "explicitlyMatchesLanguage")))
+      explicitlyMatchesRegion = [prioritizeCopy explicitlyMatchesRegion];
+      if (explicitlyMatchesRegion == [v7 explicitlyMatchesRegion] && (explicitlyMatchesRegion = objc_msgSend(prioritizeCopy, "explicitlyMatchesLanguage"), explicitlyMatchesRegion == objc_msgSend(v7, "explicitlyMatchesLanguage")))
       {
-        v12 = vcnt_s8([v5 capability]);
+        v12 = vcnt_s8([prioritizeCopy capability]);
         v12.i16[0] = vaddlv_u8(v12);
         v13 = v12.u32[0];
         v14 = vcnt_s8([v7 capability]);
@@ -351,13 +351,13 @@ uint64_t __55__PKHowToUseWalletRequirements_explicitlyMatchesRegion__block_invok
           v15 = PKLogFacilityTypeGetObject(0x11uLL);
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
-            v16 = [v5 description];
+            v16 = [prioritizeCopy description];
             v17 = 138412290;
             v18 = v16;
             _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "Requirements have equivalent parameters and audiences and cannot determine a difference. Using the first requirements as the priority. requirements=%@", &v17, 0xCu);
           }
 
-          v8 = v5;
+          v8 = prioritizeCopy;
         }
 
         else if (v13 <= v14.u32[0])
@@ -367,13 +367,13 @@ uint64_t __55__PKHowToUseWalletRequirements_explicitlyMatchesRegion__block_invok
 
         else
         {
-          v8 = v5;
+          v8 = prioritizeCopy;
         }
       }
 
-      else if (v9)
+      else if (explicitlyMatchesRegion)
       {
-        v8 = v5;
+        v8 = prioritizeCopy;
       }
 
       else
@@ -388,35 +388,35 @@ uint64_t __55__PKHowToUseWalletRequirements_explicitlyMatchesRegion__block_invok
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v6 = v5;
-        v7 = [(PKHowToUseWalletRequirements *)self osVersions];
-        v8 = [(PKHowToUseWalletRequirements *)v6 osVersions];
-        v9 = v8;
-        if (v7 == v8)
+        osVersions = [(PKHowToUseWalletRequirements *)self osVersions];
+        osVersions2 = [(PKHowToUseWalletRequirements *)v6 osVersions];
+        v9 = osVersions2;
+        if (osVersions == osVersions2)
         {
         }
 
         else
         {
-          v10 = [(PKHowToUseWalletRequirements *)self osVersions];
-          v11 = [(PKHowToUseWalletRequirements *)v6 osVersions];
-          v12 = [v10 isEqual:v11];
+          osVersions3 = [(PKHowToUseWalletRequirements *)self osVersions];
+          osVersions4 = [(PKHowToUseWalletRequirements *)v6 osVersions];
+          v12 = [osVersions3 isEqual:osVersions4];
 
           if (!v12)
           {
@@ -427,64 +427,64 @@ LABEL_31:
           }
         }
 
-        v14 = [(PKHowToUseWalletRequirements *)self supportedLanguages];
-        if (v14)
+        supportedLanguages = [(PKHowToUseWalletRequirements *)self supportedLanguages];
+        if (supportedLanguages)
         {
-          v15 = [(PKHowToUseWalletRequirements *)self supportedLanguages];
+          supportedLanguages2 = [(PKHowToUseWalletRequirements *)self supportedLanguages];
         }
 
         else
         {
-          v15 = objc_alloc_init(MEMORY[0x1E695DFD8]);
+          supportedLanguages2 = objc_alloc_init(MEMORY[0x1E695DFD8]);
         }
 
-        v16 = v15;
+        v16 = supportedLanguages2;
 
-        v17 = [(PKHowToUseWalletRequirements *)v6 supportedLanguages];
-        if (v17)
+        supportedLanguages3 = [(PKHowToUseWalletRequirements *)v6 supportedLanguages];
+        if (supportedLanguages3)
         {
-          v18 = [(PKHowToUseWalletRequirements *)v6 supportedLanguages];
+          supportedLanguages4 = [(PKHowToUseWalletRequirements *)v6 supportedLanguages];
         }
 
         else
         {
-          v18 = objc_alloc_init(MEMORY[0x1E695DFD8]);
+          supportedLanguages4 = objc_alloc_init(MEMORY[0x1E695DFD8]);
         }
 
-        v19 = v18;
+        v19 = supportedLanguages4;
 
         if (v16 == v19 || [v16 isEqualToSet:v19])
         {
-          v20 = [(PKHowToUseWalletRequirements *)self supportedRegions];
-          if (v20)
+          supportedRegions = [(PKHowToUseWalletRequirements *)self supportedRegions];
+          if (supportedRegions)
           {
-            v21 = [(PKHowToUseWalletRequirements *)self supportedRegions];
+            supportedRegions2 = [(PKHowToUseWalletRequirements *)self supportedRegions];
           }
 
           else
           {
-            v21 = objc_alloc_init(MEMORY[0x1E695DFD8]);
+            supportedRegions2 = objc_alloc_init(MEMORY[0x1E695DFD8]);
           }
 
-          v22 = v21;
+          v22 = supportedRegions2;
 
-          v23 = [(PKHowToUseWalletRequirements *)v6 supportedRegions];
-          if (v23)
+          supportedRegions3 = [(PKHowToUseWalletRequirements *)v6 supportedRegions];
+          if (supportedRegions3)
           {
-            v24 = [(PKHowToUseWalletRequirements *)v6 supportedRegions];
+            supportedRegions4 = [(PKHowToUseWalletRequirements *)v6 supportedRegions];
           }
 
           else
           {
-            v24 = objc_alloc_init(MEMORY[0x1E695DFD8]);
+            supportedRegions4 = objc_alloc_init(MEMORY[0x1E695DFD8]);
           }
 
-          v25 = v24;
+          v25 = supportedRegions4;
 
           if (v22 == v25 || [v22 isEqualToSet:v25])
           {
-            v26 = [(PKHowToUseWalletRequirements *)self capability];
-            v13 = v26 == [(PKHowToUseWalletRequirements *)v6 capability];
+            capability = [(PKHowToUseWalletRequirements *)self capability];
+            v13 = capability == [(PKHowToUseWalletRequirements *)v6 capability];
           }
 
           else
@@ -512,16 +512,16 @@ LABEL_32:
 
 - (BOOL)supportsAllLanguages
 {
-  v2 = [(PKHowToUseWalletRequirements *)self supportedLanguages];
-  v3 = [v2 count] == 0;
+  supportedLanguages = [(PKHowToUseWalletRequirements *)self supportedLanguages];
+  v3 = [supportedLanguages count] == 0;
 
   return v3;
 }
 
 - (BOOL)supportsAllRegions
 {
-  v2 = [(PKHowToUseWalletRequirements *)self supportedRegions];
-  v3 = [v2 count] == 0;
+  supportedRegions = [(PKHowToUseWalletRequirements *)self supportedRegions];
+  v3 = [supportedRegions count] == 0;
 
   return v3;
 }

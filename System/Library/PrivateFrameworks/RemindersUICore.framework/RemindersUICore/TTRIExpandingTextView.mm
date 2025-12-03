@@ -2,16 +2,16 @@
 - (BOOL)accessibilityActivate;
 - (BOOL)isScrollEnabled;
 - (CGPoint)contentOffset;
-- (CGSize)_layoutSizeThatFits:(CGSize)a3 fixedAxes:(unint64_t)a4;
+- (CGSize)_layoutSizeThatFits:(CGSize)fits fixedAxes:(unint64_t)axes;
 - (CGSize)contentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC15RemindersUICore21TTRIExpandingTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC15RemindersUICore21TTRIExpandingTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
 - (double)effectiveBaselineOffsetFromBottom;
 - (double)effectiveFirstBaselineOffsetFromTop;
 - (unint64_t)accessibilityTraits;
-- (void)setContentOffset:(CGPoint)a3;
-- (void)setContentSize:(CGSize)a3;
-- (void)setScrollEnabled:(BOOL)a3;
+- (void)setContentOffset:(CGPoint)offset;
+- (void)setContentSize:(CGSize)size;
+- (void)setScrollEnabled:(BOOL)enabled;
 @end
 
 @implementation TTRIExpandingTextView
@@ -23,30 +23,30 @@
   return [(TTRIExpandingTextView *)&v3 isScrollEnabled];
 }
 
-- (void)setScrollEnabled:(BOOL)a3
+- (void)setScrollEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = type metadata accessor for TTRIExpandingTextView();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(TTRIExpandingTextView *)&v9 isScrollEnabled];
-  v8.receiver = v6;
+  selfCopy = self;
+  isScrollEnabled = [(TTRIExpandingTextView *)&v9 isScrollEnabled];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(TTRIExpandingTextView *)&v8 setScrollEnabled:v3];
-  if (v7 != [(TTRIExpandingTextView *)v6 isScrollEnabled])
+  [(TTRIExpandingTextView *)&v8 setScrollEnabled:enabledCopy];
+  if (isScrollEnabled != [(TTRIExpandingTextView *)selfCopy isScrollEnabled])
   {
     sub_21DACB010();
   }
 }
 
-- (CGSize)_layoutSizeThatFits:(CGSize)a3 fixedAxes:(unint64_t)a4
+- (CGSize)_layoutSizeThatFits:(CGSize)fits fixedAxes:(unint64_t)axes
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v9.receiver = self;
   v9.super_class = type metadata accessor for TTRIExpandingTextView();
-  [(TTRIExpandingTextView *)&v9 _layoutSizeThatFits:a4 fixedAxes:width, height];
+  [(TTRIExpandingTextView *)&v9 _layoutSizeThatFits:axes fixedAxes:width, height];
   result.height = v8;
   result.width = v7;
   return result;
@@ -103,7 +103,7 @@
   return v4;
 }
 
-- (_TtC15RemindersUICore21TTRIExpandingTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC15RemindersUICore21TTRIExpandingTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -118,11 +118,11 @@
   return result;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   TTRIExpandingTextView.contentSize.setter(width, height);
 }
 
@@ -134,14 +134,14 @@
   return result;
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
-  if ([(TTRIExpandingTextView *)v5 isScrollEnabled])
+  y = offset.y;
+  x = offset.x;
+  selfCopy = self;
+  if ([(TTRIExpandingTextView *)selfCopy isScrollEnabled])
   {
-    v6.receiver = v5;
+    v6.receiver = selfCopy;
     v6.super_class = type metadata accessor for TTRIExpandingTextView();
     [(TTRIExpandingTextView *)&v6 setContentOffset:x, y];
   }
@@ -151,11 +151,11 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = TTRIExpandingTextView.sizeThatFits(_:)(__PAIR128__(*&height, *&width));
 
   v7 = v6.width;
@@ -167,14 +167,14 @@
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
-  v3 = [(TTRIExpandingTextView *)v2 canBecomeFirstResponder];
-  if (v3)
+  selfCopy = self;
+  canBecomeFirstResponder = [(TTRIExpandingTextView *)selfCopy canBecomeFirstResponder];
+  if (canBecomeFirstResponder)
   {
-    [(TTRIExpandingTextView *)v2 becomeFirstResponder];
+    [(TTRIExpandingTextView *)selfCopy becomeFirstResponder];
   }
 
-  return v3;
+  return canBecomeFirstResponder;
 }
 
 - (unint64_t)accessibilityTraits
@@ -182,16 +182,16 @@
   v7.receiver = self;
   v7.super_class = type metadata accessor for TTRIExpandingTextView();
   v2 = v7.receiver;
-  v3 = [(TTRIExpandingTextView *)&v7 accessibilityTraits];
-  v4 = [objc_opt_self() textArea];
+  accessibilityTraits = [(TTRIExpandingTextView *)&v7 accessibilityTraits];
+  textArea = [objc_opt_self() textArea];
 
   v5 = -1;
-  if ((v4 & v3) != 0)
+  if ((textArea & accessibilityTraits) != 0)
   {
-    v5 = ~v4;
+    v5 = ~textArea;
   }
 
-  return v5 & v3;
+  return v5 & accessibilityTraits;
 }
 
 @end

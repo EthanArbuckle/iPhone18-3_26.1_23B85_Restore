@@ -1,6 +1,6 @@
 @interface _HKAnnotationColumnLayout
 - (CGSize)intrinsicContentSize;
-- (_HKAnnotationColumnLayout)initWithContext:(int64_t)a3;
+- (_HKAnnotationColumnLayout)initWithContext:(int64_t)context;
 - (double)_columnSeparation;
 - (double)_largestColumnWidth;
 - (double)_minimumHeight;
@@ -15,19 +15,19 @@
 - (void)_invalidateLayout;
 - (void)_layoutColumnsEqually;
 - (void)_layoutColumnsPacked;
-- (void)_layoutColumnsWithWidth:(double)a3 columnSeparation:(double)a4 currentSize:(CGSize)a5;
-- (void)addColumnView:(id)a3;
+- (void)_layoutColumnsWithWidth:(double)width columnSeparation:(double)separation currentSize:(CGSize)size;
+- (void)addColumnView:(id)view;
 - (void)clearViews;
-- (void)clearViewsFromIndex:(unint64_t)a3;
+- (void)clearViewsFromIndex:(unint64_t)index;
 - (void)layoutSubviews;
-- (void)setColumnView:(id)a3 atIndex:(unint64_t)a4;
-- (void)setIncludeSeparators:(BOOL)a3;
-- (void)setReverseColumnsInRightToLeftLayoutDirection:(BOOL)a3;
+- (void)setColumnView:(id)view atIndex:(unint64_t)index;
+- (void)setIncludeSeparators:(BOOL)separators;
+- (void)setReverseColumnsInRightToLeftLayoutDirection:(BOOL)direction;
 @end
 
 @implementation _HKAnnotationColumnLayout
 
-- (_HKAnnotationColumnLayout)initWithContext:(int64_t)a3
+- (_HKAnnotationColumnLayout)initWithContext:(int64_t)context
 {
   v11.receiver = self;
   v11.super_class = _HKAnnotationColumnLayout;
@@ -35,7 +35,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_context = a3;
+    v4->_context = context;
     v4->_includeSeparators = 0;
     v4->_reverseColumnsInRightToLeftLayoutDirection = 1;
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -50,11 +50,11 @@
   return v5;
 }
 
-- (void)setIncludeSeparators:(BOOL)a3
+- (void)setIncludeSeparators:(BOOL)separators
 {
   if (self->_includeSeparators)
   {
-    if (!a3)
+    if (!separators)
     {
       [(_HKAnnotationColumnLayout *)self _clearSeparatorViews];
 LABEL_6:
@@ -62,75 +62,75 @@ LABEL_6:
     }
   }
 
-  else if (a3)
+  else if (separators)
   {
     [(_HKAnnotationColumnLayout *)self _addSeparatorViews];
     goto LABEL_6;
   }
 
-  self->_includeSeparators = a3;
+  self->_includeSeparators = separators;
 }
 
-- (void)setReverseColumnsInRightToLeftLayoutDirection:(BOOL)a3
+- (void)setReverseColumnsInRightToLeftLayoutDirection:(BOOL)direction
 {
-  if (self->_reverseColumnsInRightToLeftLayoutDirection != a3)
+  if (self->_reverseColumnsInRightToLeftLayoutDirection != direction)
   {
-    self->_reverseColumnsInRightToLeftLayoutDirection = a3;
+    self->_reverseColumnsInRightToLeftLayoutDirection = direction;
     [(_HKAnnotationColumnLayout *)self _invalidateLayout];
   }
 }
 
-- (void)addColumnView:(id)a3
+- (void)addColumnView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(_HKAnnotationColumnLayout *)self includeSeparators])
   {
-    v5 = [(_HKAnnotationColumnLayout *)self columnViews];
-    v6 = [v5 count];
+    columnViews = [(_HKAnnotationColumnLayout *)self columnViews];
+    v6 = [columnViews count];
 
     if (v6)
     {
-      v7 = [(_HKAnnotationColumnLayout *)self _makeSeparatorView];
-      v8 = [(_HKAnnotationColumnLayout *)self separatorViews];
-      [v8 addObject:v7];
+      _makeSeparatorView = [(_HKAnnotationColumnLayout *)self _makeSeparatorView];
+      separatorViews = [(_HKAnnotationColumnLayout *)self separatorViews];
+      [separatorViews addObject:_makeSeparatorView];
 
-      [(_HKAnnotationColumnLayout *)self addSubview:v7];
+      [(_HKAnnotationColumnLayout *)self addSubview:_makeSeparatorView];
     }
   }
 
-  v9 = [(_HKAnnotationColumnLayout *)self columnViews];
-  [v9 addObject:v4];
+  columnViews2 = [(_HKAnnotationColumnLayout *)self columnViews];
+  [columnViews2 addObject:viewCopy];
 
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:1];
-  [(_HKAnnotationColumnLayout *)self addSubview:v4];
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:1];
+  [(_HKAnnotationColumnLayout *)self addSubview:viewCopy];
 
   [(_HKAnnotationColumnLayout *)self _invalidateLayout];
 }
 
-- (void)setColumnView:(id)a3 atIndex:(unint64_t)a4
+- (void)setColumnView:(id)view atIndex:(unint64_t)index
 {
-  v11 = a3;
-  v6 = [(_HKAnnotationColumnLayout *)self columnViews];
-  v7 = [v6 count];
+  viewCopy = view;
+  columnViews = [(_HKAnnotationColumnLayout *)self columnViews];
+  v7 = [columnViews count];
 
-  if (v7 <= a4)
+  if (v7 <= index)
   {
-    [(_HKAnnotationColumnLayout *)self addColumnView:v11];
+    [(_HKAnnotationColumnLayout *)self addColumnView:viewCopy];
   }
 
   else
   {
-    v8 = [(_HKAnnotationColumnLayout *)self columnViews];
-    v9 = [v8 objectAtIndexedSubscript:a4];
+    columnViews2 = [(_HKAnnotationColumnLayout *)self columnViews];
+    v9 = [columnViews2 objectAtIndexedSubscript:index];
 
-    if (([v9 isEqual:v11] & 1) == 0)
+    if (([v9 isEqual:viewCopy] & 1) == 0)
     {
       [v9 removeFromSuperview];
-      v10 = [(_HKAnnotationColumnLayout *)self columnViews];
-      [v10 setObject:v11 atIndexedSubscript:a4];
+      columnViews3 = [(_HKAnnotationColumnLayout *)self columnViews];
+      [columnViews3 setObject:viewCopy atIndexedSubscript:index];
 
-      [v11 setTranslatesAutoresizingMaskIntoConstraints:1];
-      [(_HKAnnotationColumnLayout *)self addSubview:v11];
+      [viewCopy setTranslatesAutoresizingMaskIntoConstraints:1];
+      [(_HKAnnotationColumnLayout *)self addSubview:viewCopy];
       [(_HKAnnotationColumnLayout *)self _invalidateLayout];
     }
   }
@@ -143,30 +143,30 @@ LABEL_6:
   [(_HKAnnotationColumnLayout *)self _clearSeparatorViews];
 }
 
-- (void)clearViewsFromIndex:(unint64_t)a3
+- (void)clearViewsFromIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
-    if ([(NSMutableArray *)self->_columnViews count]> a3)
+    if ([(NSMutableArray *)self->_columnViews count]> index)
     {
-      if ([(NSMutableArray *)self->_columnViews count]> a3)
+      if ([(NSMutableArray *)self->_columnViews count]> index)
       {
-        v5 = a3;
+        indexCopy = index;
         do
         {
-          v6 = [(NSMutableArray *)self->_columnViews objectAtIndexedSubscript:v5];
+          v6 = [(NSMutableArray *)self->_columnViews objectAtIndexedSubscript:indexCopy];
           [v6 removeFromSuperview];
 
-          ++v5;
+          ++indexCopy;
         }
 
-        while (v5 < [(NSMutableArray *)self->_columnViews count]);
+        while (indexCopy < [(NSMutableArray *)self->_columnViews count]);
       }
 
-      [(NSMutableArray *)self->_columnViews removeObjectsInRange:a3, [(NSMutableArray *)self->_columnViews count]- a3];
+      [(NSMutableArray *)self->_columnViews removeObjectsInRange:index, [(NSMutableArray *)self->_columnViews count]- index];
       if (self->_includeSeparators && [(NSMutableArray *)self->_separatorViews count])
       {
-        v7 = a3 - 1;
+        v7 = index - 1;
         if (v7 < [(NSMutableArray *)self->_separatorViews count])
         {
           v8 = v7;
@@ -198,15 +198,15 @@ LABEL_6:
 
 - (void)layoutSubviews
 {
-  v3 = [(_HKAnnotationColumnLayout *)self columnViews];
-  v4 = [v3 count];
+  columnViews = [(_HKAnnotationColumnLayout *)self columnViews];
+  v4 = [columnViews count];
 
   if (v4)
   {
-    v5 = [(_HKAnnotationColumnLayout *)self context];
-    if ((v5 - 1) >= 2)
+    context = [(_HKAnnotationColumnLayout *)self context];
+    if ((context - 1) >= 2)
     {
-      if (!v5)
+      if (!context)
       {
 
         [(_HKAnnotationColumnLayout *)self _layoutColumnsEqually];
@@ -247,8 +247,8 @@ LABEL_6:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(_HKAnnotationColumnLayout *)self columnViews];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  columnViews = [(_HKAnnotationColumnLayout *)self columnViews];
+  v4 = [columnViews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -260,21 +260,21 @@ LABEL_6:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(columnViews);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) removeFromSuperview];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [columnViews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(_HKAnnotationColumnLayout *)self columnViews];
-  [v8 removeAllObjects];
+  columnViews2 = [(_HKAnnotationColumnLayout *)self columnViews];
+  [columnViews2 removeAllObjects];
 }
 
 - (void)_clearSeparatorViews
@@ -284,8 +284,8 @@ LABEL_6:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(_HKAnnotationColumnLayout *)self separatorViews];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  separatorViews = [(_HKAnnotationColumnLayout *)self separatorViews];
+  v4 = [separatorViews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -297,38 +297,38 @@ LABEL_6:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(separatorViews);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) removeFromSuperview];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [separatorViews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(_HKAnnotationColumnLayout *)self separatorViews];
-  [v8 removeAllObjects];
+  separatorViews2 = [(_HKAnnotationColumnLayout *)self separatorViews];
+  [separatorViews2 removeAllObjects];
 }
 
 - (void)_addSeparatorViews
 {
-  v3 = [(_HKAnnotationColumnLayout *)self columnViews];
-  v4 = [v3 count];
+  columnViews = [(_HKAnnotationColumnLayout *)self columnViews];
+  v4 = [columnViews count];
 
   if (v4 >= 2)
   {
     v5 = v4 - 1;
     do
     {
-      v6 = [(_HKAnnotationColumnLayout *)self _makeSeparatorView];
-      v7 = [(_HKAnnotationColumnLayout *)self separatorViews];
-      [v7 addObject:v6];
+      _makeSeparatorView = [(_HKAnnotationColumnLayout *)self _makeSeparatorView];
+      separatorViews = [(_HKAnnotationColumnLayout *)self separatorViews];
+      [separatorViews addObject:_makeSeparatorView];
 
-      [(_HKAnnotationColumnLayout *)self addSubview:v6];
+      [(_HKAnnotationColumnLayout *)self addSubview:_makeSeparatorView];
       --v5;
     }
 
@@ -338,8 +338,8 @@ LABEL_6:
 
 - (void)_layoutColumnsEqually
 {
-  v3 = [(_HKAnnotationColumnLayout *)self columnViews];
-  v4 = [v3 count];
+  columnViews = [(_HKAnnotationColumnLayout *)self columnViews];
+  v4 = [columnViews count];
 
   [(_HKAnnotationColumnLayout *)self frame];
   v6 = v5;
@@ -360,17 +360,17 @@ LABEL_6:
   [(_HKAnnotationColumnLayout *)self _layoutColumnsWithWidth:0.0 columnSeparation:v4 currentSize:?];
 }
 
-- (void)_layoutColumnsWithWidth:(double)a3 columnSeparation:(double)a4 currentSize:(CGSize)a5
+- (void)_layoutColumnsWithWidth:(double)width columnSeparation:(double)separation currentSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a3;
-  if (a3 == 0.0)
+  height = size.height;
+  width = size.width;
+  widthCopy = width;
+  if (width == 0.0)
   {
     [(_HKAnnotationColumnLayout *)self _minimumWidthForPackedLayout];
     v11 = v10 - width;
-    v12 = [(_HKAnnotationColumnLayout *)self columnViews];
-    v13 = v11 / [v12 count];
+    columnViews = [(_HKAnnotationColumnLayout *)self columnViews];
+    v13 = v11 / [columnViews count];
 
     v14 = fmax(v13, 0.0);
   }
@@ -381,25 +381,25 @@ LABEL_6:
   }
 
   v15 = 0;
-  v49 = a4 * 0.5;
+  v49 = separation * 0.5;
   v52 = 0;
   v53 = &v52;
   v54 = 0x2020000000;
   v55 = 0;
   v16 = 1.79769313e308;
-  v48 = v8;
+  v48 = widthCopy;
   while (1)
   {
-    v17 = [(_HKAnnotationColumnLayout *)self columnViews];
-    v18 = [v17 count];
+    columnViews2 = [(_HKAnnotationColumnLayout *)self columnViews];
+    v18 = [columnViews2 count];
 
     if (v15 >= v18)
     {
       break;
     }
 
-    v19 = [(_HKAnnotationColumnLayout *)self columnViews];
-    v20 = [v19 objectAtIndexedSubscript:v15];
+    columnViews3 = [(_HKAnnotationColumnLayout *)self columnViews];
+    v20 = [columnViews3 objectAtIndexedSubscript:v15];
 
     [v20 systemLayoutSizeFittingSize:{width, v16}];
     v22 = v21;
@@ -410,29 +410,29 @@ LABEL_6:
       {
         v25 = v16;
         v26 = v14;
-        v27 = width;
-        v28 = a4;
+        widthCopy2 = width;
+        separationCopy = separation;
         v29 = v53[3];
-        v30 = [(_HKAnnotationColumnLayout *)self separatorViews];
-        v31 = [v30 objectAtIndexedSubscript:v15 - 1];
+        separatorViews = [(_HKAnnotationColumnLayout *)self separatorViews];
+        v31 = [separatorViews objectAtIndexedSubscript:v15 - 1];
 
         [v31 setFrame:{v49 + v29, 0.0, 1.0, height}];
-        a4 = v28;
-        width = v27;
+        separation = separationCopy;
+        width = widthCopy2;
         v14 = v26;
         v16 = v25;
-        v8 = v48;
+        widthCopy = v48;
       }
 
-      v53[3] = v53[3] + a4;
-      if (v8 <= 0.0)
+      v53[3] = v53[3] + separation;
+      if (widthCopy <= 0.0)
       {
         v32 = v22;
       }
 
       else
       {
-        v32 = v8;
+        v32 = widthCopy;
       }
 
       v33 = v32 - v14;
@@ -440,13 +440,13 @@ LABEL_6:
 
     else
     {
-      if (v8 > 0.0)
+      if (widthCopy > 0.0)
       {
-        v22 = v8;
+        v22 = widthCopy;
       }
 
-      v34 = [(_HKAnnotationColumnLayout *)self columnViews];
-      v35 = [v34 count];
+      columnViews4 = [(_HKAnnotationColumnLayout *)self columnViews];
+      v35 = [columnViews4 count];
       v33 = v22 - v14;
 
       if (v35 == 1)
@@ -477,14 +477,14 @@ LABEL_6:
 
   if ([(_HKAnnotationColumnLayout *)self effectiveUserInterfaceLayoutDirection]== 1)
   {
-    v38 = [(_HKAnnotationColumnLayout *)self columnViews];
-    v39 = [v38 count];
+    columnViews5 = [(_HKAnnotationColumnLayout *)self columnViews];
+    v39 = [columnViews5 count];
 
     if (v39)
     {
-      v40 = [(_HKAnnotationColumnLayout *)self columnViews];
-      v41 = [(_HKAnnotationColumnLayout *)self columnViews];
-      v42 = [v40 objectAtIndexedSubscript:{objc_msgSend(v41, "count") - 1}];
+      columnViews6 = [(_HKAnnotationColumnLayout *)self columnViews];
+      columnViews7 = [(_HKAnnotationColumnLayout *)self columnViews];
+      v42 = [columnViews6 objectAtIndexedSubscript:{objc_msgSend(columnViews7, "count") - 1}];
 
       [v42 frame];
       v44 = v43;
@@ -502,7 +502,7 @@ LABEL_6:
       v53[3] = fmax(v46, 0.0);
       if ([(_HKAnnotationColumnLayout *)self reverseColumnsInRightToLeftLayoutDirection])
       {
-        v47 = [(_HKAnnotationColumnLayout *)self columnViews];
+        columnViews8 = [(_HKAnnotationColumnLayout *)self columnViews];
         v51[0] = MEMORY[0x1E69E9820];
         v51[1] = 3221225472;
         v51[2] = __82___HKAnnotationColumnLayout__layoutColumnsWithWidth_columnSeparation_currentSize___block_invoke;
@@ -510,13 +510,13 @@ LABEL_6:
         v51[4] = self;
         v51[5] = &v52;
         *&v51[6] = v49;
-        *&v51[7] = a4;
-        [v47 enumerateObjectsWithOptions:2 usingBlock:v51];
+        *&v51[7] = separation;
+        [columnViews8 enumerateObjectsWithOptions:2 usingBlock:v51];
       }
 
       else
       {
-        v47 = [(_HKAnnotationColumnLayout *)self columnViews];
+        columnViews8 = [(_HKAnnotationColumnLayout *)self columnViews];
         v50[0] = MEMORY[0x1E69E9820];
         v50[1] = 3221225472;
         v50[2] = __82___HKAnnotationColumnLayout__layoutColumnsWithWidth_columnSeparation_currentSize___block_invoke_2;
@@ -524,7 +524,7 @@ LABEL_6:
         v50[4] = self;
         *&v50[5] = v46;
         *&v50[6] = v49;
-        [v47 enumerateObjectsWithOptions:2 usingBlock:v50];
+        [columnViews8 enumerateObjectsWithOptions:2 usingBlock:v50];
       }
     }
   }
@@ -534,10 +534,10 @@ LABEL_6:
 
 - (double)_minimumWidth
 {
-  v3 = [(_HKAnnotationColumnLayout *)self context];
-  if ((v3 - 1) >= 2)
+  context = [(_HKAnnotationColumnLayout *)self context];
+  if ((context - 1) >= 2)
   {
-    if (!v3)
+    if (!context)
     {
 
       [(_HKAnnotationColumnLayout *)self _minimumWithForEqualLayout];
@@ -555,8 +555,8 @@ LABEL_6:
 
 - (double)_minimumWithForEqualLayout
 {
-  v3 = [(_HKAnnotationColumnLayout *)self columnViews];
-  v4 = [v3 count];
+  columnViews = [(_HKAnnotationColumnLayout *)self columnViews];
+  v4 = [columnViews count];
 
   [(_HKAnnotationColumnLayout *)self _columnSeparation];
   v6 = v5;
@@ -566,8 +566,8 @@ LABEL_6:
 
 - (double)_minimumWidthForPackedLayout
 {
-  v3 = [(_HKAnnotationColumnLayout *)self columnViews];
-  v4 = [v3 count];
+  columnViews = [(_HKAnnotationColumnLayout *)self columnViews];
+  v4 = [columnViews count];
 
   [(_HKAnnotationColumnLayout *)self _columnSeparation];
   v6 = v5;
@@ -582,8 +582,8 @@ LABEL_6:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(_HKAnnotationColumnLayout *)self columnViews];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  columnViews = [(_HKAnnotationColumnLayout *)self columnViews];
+  v3 = [columnViews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -595,7 +595,7 @@ LABEL_6:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(columnViews);
         }
 
         [*(*(&v10 + 1) + 8 * i) systemLayoutSizeFittingSize:{1.79769313e308, 1.79769313e308}];
@@ -605,7 +605,7 @@ LABEL_6:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [columnViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -621,9 +621,9 @@ LABEL_6:
 
 - (double)_columnSeparation
 {
-  v2 = [(_HKAnnotationColumnLayout *)self context];
+  context = [(_HKAnnotationColumnLayout *)self context];
   result = 10.0;
-  if (v2 == 2)
+  if (context == 2)
   {
     return 20.0;
   }
@@ -638,8 +638,8 @@ LABEL_6:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(_HKAnnotationColumnLayout *)self columnViews];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  columnViews = [(_HKAnnotationColumnLayout *)self columnViews];
+  v3 = [columnViews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -651,14 +651,14 @@ LABEL_6:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(columnViews);
         }
 
         [*(*(&v10 + 1) + 8 * i) systemLayoutSizeFittingSize:{1.79769313e308, 1.79769313e308}];
         v6 = v6 + v8;
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [columnViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -679,8 +679,8 @@ LABEL_6:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(_HKAnnotationColumnLayout *)self columnViews];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  columnViews = [(_HKAnnotationColumnLayout *)self columnViews];
+  v3 = [columnViews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -692,7 +692,7 @@ LABEL_6:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(columnViews);
         }
 
         [*(*(&v10 + 1) + 8 * i) systemLayoutSizeFittingSize:{1.79769313e308, 1.79769313e308}];
@@ -702,7 +702,7 @@ LABEL_6:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [columnViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -733,7 +733,7 @@ LABEL_6:
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E69DC888] hk_activitySeparatorDefaultColor];
+    hk_activitySeparatorDefaultColor = [MEMORY[0x1E69DC888] hk_activitySeparatorDefaultColor];
   }
 
   else
@@ -743,11 +743,11 @@ LABEL_6:
       goto LABEL_10;
     }
 
-    v6 = [MEMORY[0x1E69DC888] hk_activitySeparatorLollipopColor];
+    hk_activitySeparatorDefaultColor = [MEMORY[0x1E69DC888] hk_activitySeparatorLollipopColor];
   }
 
-  v7 = v6;
-  [v3 setBackgroundColor:v6];
+  v7 = hk_activitySeparatorDefaultColor;
+  [v3 setBackgroundColor:hk_activitySeparatorDefaultColor];
 
 LABEL_10:
 

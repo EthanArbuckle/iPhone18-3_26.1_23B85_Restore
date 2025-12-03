@@ -1,37 +1,37 @@
 @interface HFOccupancyAlarmStatusItem
-- (id)descriptionStringForTriggeredServices:(id)a3;
-- (id)iconDescriptorForRepresentedHomeKitObjects:(id)a3;
-- (id)titleStringForTriggeredServices:(id)a3;
+- (id)descriptionStringForTriggeredServices:(id)services;
+- (id)iconDescriptorForRepresentedHomeKitObjects:(id)objects;
+- (id)titleStringForTriggeredServices:(id)services;
 @end
 
 @implementation HFOccupancyAlarmStatusItem
 
-- (id)iconDescriptorForRepresentedHomeKitObjects:(id)a3
+- (id)iconDescriptorForRepresentedHomeKitObjects:(id)objects
 {
-  v3 = [MEMORY[0x277D755D0] configurationWithPointSize:{a3, 24.0}];
+  v3 = [MEMORY[0x277D755D0] configurationWithPointSize:{objects, 24.0}];
   v4 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:@"figure.walk" configuration:v3];
 
   return v4;
 }
 
-- (id)titleStringForTriggeredServices:(id)a3
+- (id)titleStringForTriggeredServices:(id)services
 {
-  v4 = [MEMORY[0x277CD1D90] hf_roomsForServices:a3];
-  v5 = [(HFStatusItem *)self room];
-  if (v5)
+  v4 = [MEMORY[0x277CD1D90] hf_roomsForServices:services];
+  room = [(HFStatusItem *)self room];
+  if (room)
   {
 
 LABEL_4:
     v10 = _HFLocalizedStringWithDefaultValue(@"HFStatusTitleOccupancyAlarm", @"HFStatusTitleOccupancyAlarm", 1);
 LABEL_5:
-    v11 = v10;
+    name = v10;
     goto LABEL_6;
   }
 
-  v6 = [v4 anyObject];
-  v7 = [(HFStatusItem *)self home];
-  v8 = [v7 roomForEntireHome];
-  v9 = [v6 isEqual:v8];
+  anyObject = [v4 anyObject];
+  home = [(HFStatusItem *)self home];
+  roomForEntireHome = [home roomForEntireHome];
+  v9 = [anyObject isEqual:roomForEntireHome];
 
   if (v9)
   {
@@ -45,20 +45,20 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v13 = [v4 anyObject];
-  v11 = [v13 name];
+  anyObject2 = [v4 anyObject];
+  name = [anyObject2 name];
 
 LABEL_6:
 
-  return v11;
+  return name;
 }
 
-- (id)descriptionStringForTriggeredServices:(id)a3
+- (id)descriptionStringForTriggeredServices:(id)services
 {
   v4 = MEMORY[0x277CD1D90];
-  v5 = a3;
-  v6 = [v4 hf_roomsForServices:v5];
-  v7 = [v5 count];
+  servicesCopy = services;
+  v6 = [v4 hf_roomsForServices:servicesCopy];
+  v7 = [servicesCopy count];
 
   if (!v7)
   {
@@ -66,8 +66,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v8 = [(HFStatusItem *)self room];
-  if (v8)
+  room = [(HFStatusItem *)self room];
+  if (room)
   {
 
 LABEL_6:
@@ -75,10 +75,10 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v10 = [v6 anyObject];
-  v11 = [(HFStatusItem *)self home];
-  v12 = [v11 roomForEntireHome];
-  v13 = [v10 isEqual:v12];
+  anyObject = [v6 anyObject];
+  home = [(HFStatusItem *)self home];
+  roomForEntireHome = [home roomForEntireHome];
+  v13 = [anyObject isEqual:roomForEntireHome];
 
   if (v13)
   {

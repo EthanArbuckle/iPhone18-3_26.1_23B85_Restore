@@ -1,28 +1,28 @@
 @interface HUUpgradeMultiUserDevicesOnboardingFlow
-- (HUUpgradeMultiUserDevicesOnboardingFlow)initWithUpgradeRequirements:(unint64_t)a3 home:(id)a4;
-- (id)processUserInput:(id)a3;
+- (HUUpgradeMultiUserDevicesOnboardingFlow)initWithUpgradeRequirements:(unint64_t)requirements home:(id)home;
+- (id)processUserInput:(id)input;
 @end
 
 @implementation HUUpgradeMultiUserDevicesOnboardingFlow
 
-- (HUUpgradeMultiUserDevicesOnboardingFlow)initWithUpgradeRequirements:(unint64_t)a3 home:(id)a4
+- (HUUpgradeMultiUserDevicesOnboardingFlow)initWithUpgradeRequirements:(unint64_t)requirements home:(id)home
 {
-  v7 = a4;
+  homeCopy = home;
   v17.receiver = self;
   v17.super_class = HUUpgradeMultiUserDevicesOnboardingFlow;
   v8 = [(HUUpgradeMultiUserDevicesOnboardingFlow *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a4);
+    objc_storeStrong(&v8->_home, home);
     objc_initWeak(&location, v9);
-    v10 = [objc_opt_class() needsOnboardingForHome:v7 options:MEMORY[0x277CBEC10]];
+    v10 = [objc_opt_class() needsOnboardingForHome:homeCopy options:MEMORY[0x277CBEC10]];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __76__HUUpgradeMultiUserDevicesOnboardingFlow_initWithUpgradeRequirements_home___block_invoke;
     v14[3] = &unk_277DB75D8;
     objc_copyWeak(v15, &location);
-    v15[1] = a3;
+    v15[1] = requirements;
     v11 = [v10 flatMap:v14];
     onboardingFuture = v9->_onboardingFuture;
     v9->_onboardingFuture = v11;
@@ -73,25 +73,25 @@ void __76__HUUpgradeMultiUserDevicesOnboardingFlow_initWithUpgradeRequirements_h
   }
 }
 
-- (id)processUserInput:(id)a3
+- (id)processUserInput:(id)input
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  inputCopy = input;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
     v10 = 138412802;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v7;
     v14 = 2112;
-    v15 = v5;
+    v15 = inputCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@ with input results: %@", &v10, 0x20u);
   }
 
-  v8 = [(HUUpgradeMultiUserDevicesOnboardingFlow *)self onboardingFuture];
-  [v8 finishWithNoResult];
+  onboardingFuture = [(HUUpgradeMultiUserDevicesOnboardingFlow *)self onboardingFuture];
+  [onboardingFuture finishWithNoResult];
 
   return 0;
 }

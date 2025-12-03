@@ -1,68 +1,68 @@
 @interface ISIconLayerGroup
-- (BOOL)hasOverlappingChildSpecularsCombinedForAppearance:(int64_t)a3;
-- (BOOL)hasSpecularForAppearance:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (ISIconLayerGroup)initWithCoder:(id)a3;
-- (ISIconLayerGroup)initWithLayers:(id)a3;
-- (double)blurForAppearance:(int64_t)a3;
-- (double)opacityForAppearance:(int64_t)a3;
-- (double)shadowForAppearance:(int64_t)a3;
-- (double)translucencyForAppearance:(int64_t)a3;
-- (id)cuiGroupForAppearance:(int64_t)a3;
+- (BOOL)hasOverlappingChildSpecularsCombinedForAppearance:(int64_t)appearance;
+- (BOOL)hasSpecularForAppearance:(int64_t)appearance;
+- (BOOL)isEqual:(id)equal;
+- (ISIconLayerGroup)initWithCoder:(id)coder;
+- (ISIconLayerGroup)initWithLayers:(id)layers;
+- (double)blurForAppearance:(int64_t)appearance;
+- (double)opacityForAppearance:(int64_t)appearance;
+- (double)shadowForAppearance:(int64_t)appearance;
+- (double)translucencyForAppearance:(int64_t)appearance;
+- (id)cuiGroupForAppearance:(int64_t)appearance;
 - (id)description;
 - (id)digest;
-- (int64_t)_IS_cuiShadowStyleFromStyle:(int64_t)a3;
-- (int64_t)shadowStyleForAppearance:(int64_t)a3;
+- (int64_t)_IS_cuiShadowStyleFromStyle:(int64_t)style;
+- (int64_t)shadowStyleForAppearance:(int64_t)appearance;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBlur:(double)a3 forAppearance:(int64_t)a4;
-- (void)setOpacity:(double)a3 forAppearance:(int64_t)a4;
-- (void)setShadow:(double)a3 forAppearance:(int64_t)a4;
-- (void)setShadowStyle:(int64_t)a3 forAppearance:(int64_t)a4;
-- (void)setTranslucency:(double)a3 forAppearance:(int64_t)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBlur:(double)blur forAppearance:(int64_t)appearance;
+- (void)setOpacity:(double)opacity forAppearance:(int64_t)appearance;
+- (void)setShadow:(double)shadow forAppearance:(int64_t)appearance;
+- (void)setShadowStyle:(int64_t)style forAppearance:(int64_t)appearance;
+- (void)setTranslucency:(double)translucency forAppearance:(int64_t)appearance;
 @end
 
 @implementation ISIconLayerGroup
 
-- (ISIconLayerGroup)initWithLayers:(id)a3
+- (ISIconLayerGroup)initWithLayers:(id)layers
 {
-  v5 = a3;
+  layersCopy = layers;
   v9.receiver = self;
   v9.super_class = ISIconLayerGroup;
   v6 = [(ISIconLayerGroup *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_layers, a3);
+    objc_storeStrong(&v6->_layers, layers);
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   layers = self->_layers;
-  v5 = a3;
-  [v5 encodeObject:layers forKey:@"layers"];
-  [v5 encodeObject:self->_opacities forKey:@"opacities"];
-  [v5 encodeObject:self->_speculars forKey:@"speculars"];
-  [v5 encodeObject:self->_combineSpeculars forKey:@"combineSpeculars"];
-  [v5 encodeObject:self->_blurs forKey:@"blurs"];
-  [v5 encodeObject:self->_translucencies forKey:@"translucencies"];
-  [v5 encodeObject:self->_shadowStyles forKey:@"shadowStyles"];
-  [v5 encodeObject:self->_shadows forKey:@"shadows"];
+  coderCopy = coder;
+  [coderCopy encodeObject:layers forKey:@"layers"];
+  [coderCopy encodeObject:self->_opacities forKey:@"opacities"];
+  [coderCopy encodeObject:self->_speculars forKey:@"speculars"];
+  [coderCopy encodeObject:self->_combineSpeculars forKey:@"combineSpeculars"];
+  [coderCopy encodeObject:self->_blurs forKey:@"blurs"];
+  [coderCopy encodeObject:self->_translucencies forKey:@"translucencies"];
+  [coderCopy encodeObject:self->_shadowStyles forKey:@"shadowStyles"];
+  [coderCopy encodeObject:self->_shadows forKey:@"shadows"];
 }
 
-- (ISIconLayerGroup)initWithCoder:(id)a3
+- (ISIconLayerGroup)initWithCoder:(id)coder
 {
   v54[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v54[0] = objc_opt_class();
   v54[1] = objc_opt_class();
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:2];
   v7 = [v5 setWithArray:v6];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"layers"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"layers"];
 
   v9 = [(ISIconLayerGroup *)self initWithLayers:v8];
   if (v9)
@@ -72,7 +72,7 @@
     v53[1] = objc_opt_class();
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:2];
     v12 = [v10 setWithArray:v11];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"opacities"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"opacities"];
     opacities = v9->_opacities;
     v9->_opacities = v13;
 
@@ -81,7 +81,7 @@
     v52[1] = objc_opt_class();
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:2];
     v17 = [v15 setWithArray:v16];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"speculars"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"speculars"];
     speculars = v9->_speculars;
     v9->_speculars = v18;
 
@@ -90,7 +90,7 @@
     v51[1] = objc_opt_class();
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:2];
     v22 = [v20 setWithArray:v21];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"combineSpeculars"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"combineSpeculars"];
     combineSpeculars = v9->_combineSpeculars;
     v9->_combineSpeculars = v23;
 
@@ -99,7 +99,7 @@
     v50[1] = objc_opt_class();
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:2];
     v27 = [v25 setWithArray:v26];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"blurs"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"blurs"];
     blurs = v9->_blurs;
     v9->_blurs = v28;
 
@@ -108,7 +108,7 @@
     v49[1] = objc_opt_class();
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:2];
     v32 = [v30 setWithArray:v31];
-    v33 = [v4 decodeObjectOfClasses:v32 forKey:@"translucencies"];
+    v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"translucencies"];
     translucencies = v9->_translucencies;
     v9->_translucencies = v33;
 
@@ -117,7 +117,7 @@
     v48[1] = objc_opt_class();
     v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:2];
     v37 = [v35 setWithArray:v36];
-    v38 = [v4 decodeObjectOfClasses:v37 forKey:@"shadowStyles"];
+    v38 = [coderCopy decodeObjectOfClasses:v37 forKey:@"shadowStyles"];
     shadowStyles = v9->_shadowStyles;
     v9->_shadowStyles = v38;
 
@@ -126,7 +126,7 @@
     v47[1] = objc_opt_class();
     v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:2];
     v42 = [v40 setWithArray:v41];
-    v43 = [v4 decodeObjectOfClasses:v42 forKey:@"shadows"];
+    v43 = [coderCopy decodeObjectOfClasses:v42 forKey:@"shadows"];
     shadows = v9->_shadows;
     v9->_shadows = v43;
   }
@@ -135,7 +135,7 @@
   return v9;
 }
 
-- (void)setOpacity:(double)a3 forAppearance:(int64_t)a4
+- (void)setOpacity:(double)opacity forAppearance:(int64_t)appearance
 {
   opacities = self->_opacities;
   if (!opacities)
@@ -147,14 +147,14 @@
     opacities = self->_opacities;
   }
 
-  v11 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v11 = [MEMORY[0x1E696AD98] numberWithDouble:opacity];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:appearance];
   [(NSMutableDictionary *)opacities setObject:v11 forKey:v10];
 }
 
-- (double)opacityForAppearance:(int64_t)a3
+- (double)opacityForAppearance:(int64_t)appearance
 {
-  v3 = [(NSMutableDictionary *)self->_opacities _IS_layerObjectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_opacities _IS_layerObjectForKey:appearance];
   v4 = v3;
   if (v3)
   {
@@ -170,41 +170,41 @@
   return v6;
 }
 
-- (BOOL)hasSpecularForAppearance:(int64_t)a3
+- (BOOL)hasSpecularForAppearance:(int64_t)appearance
 {
-  v3 = [(NSMutableDictionary *)self->_speculars _IS_layerObjectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_speculars _IS_layerObjectForKey:appearance];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)hasOverlappingChildSpecularsCombinedForAppearance:(int64_t)a3
+- (BOOL)hasOverlappingChildSpecularsCombinedForAppearance:(int64_t)appearance
 {
-  v3 = [(NSMutableDictionary *)self->_combineSpeculars _IS_layerObjectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_combineSpeculars _IS_layerObjectForKey:appearance];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setBlur:(double)a3 forAppearance:(int64_t)a4
+- (void)setBlur:(double)blur forAppearance:(int64_t)appearance
 {
   blurs = self->_blurs;
   if (!blurs)
@@ -216,14 +216,14 @@
     blurs = self->_blurs;
   }
 
-  v11 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v11 = [MEMORY[0x1E696AD98] numberWithDouble:blur];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:appearance];
   [(NSMutableDictionary *)blurs setObject:v11 forKey:v10];
 }
 
-- (double)blurForAppearance:(int64_t)a3
+- (double)blurForAppearance:(int64_t)appearance
 {
-  v3 = [(NSMutableDictionary *)self->_blurs _IS_layerObjectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_blurs _IS_layerObjectForKey:appearance];
   v4 = v3;
   if (v3)
   {
@@ -239,7 +239,7 @@
   return v6;
 }
 
-- (void)setTranslucency:(double)a3 forAppearance:(int64_t)a4
+- (void)setTranslucency:(double)translucency forAppearance:(int64_t)appearance
 {
   translucencies = self->_translucencies;
   if (!translucencies)
@@ -251,14 +251,14 @@
     translucencies = self->_translucencies;
   }
 
-  v11 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v11 = [MEMORY[0x1E696AD98] numberWithDouble:translucency];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:appearance];
   [(NSMutableDictionary *)translucencies setObject:v11 forKey:v10];
 }
 
-- (double)translucencyForAppearance:(int64_t)a3
+- (double)translucencyForAppearance:(int64_t)appearance
 {
-  v3 = [(NSMutableDictionary *)self->_translucencies _IS_layerObjectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_translucencies _IS_layerObjectForKey:appearance];
   v4 = v3;
   if (v3)
   {
@@ -274,7 +274,7 @@
   return v6;
 }
 
-- (void)setShadowStyle:(int64_t)a3 forAppearance:(int64_t)a4
+- (void)setShadowStyle:(int64_t)style forAppearance:(int64_t)appearance
 {
   shadowStyles = self->_shadowStyles;
   if (!shadowStyles)
@@ -286,29 +286,29 @@
     shadowStyles = self->_shadowStyles;
   }
 
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:style];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:appearance];
   [(NSMutableDictionary *)shadowStyles setObject:v11 forKey:v10];
 }
 
-- (int64_t)shadowStyleForAppearance:(int64_t)a3
+- (int64_t)shadowStyleForAppearance:(int64_t)appearance
 {
-  v3 = [(NSMutableDictionary *)self->_shadowStyles _IS_layerObjectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_shadowStyles _IS_layerObjectForKey:appearance];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
-- (void)setShadow:(double)a3 forAppearance:(int64_t)a4
+- (void)setShadow:(double)shadow forAppearance:(int64_t)appearance
 {
   shadows = self->_shadows;
   if (!shadows)
@@ -320,14 +320,14 @@
     shadows = self->_shadows;
   }
 
-  v11 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v11 = [MEMORY[0x1E696AD98] numberWithDouble:shadow];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:appearance];
   [(NSMutableDictionary *)shadows setObject:v11 forKey:v10];
 }
 
-- (double)shadowForAppearance:(int64_t)a3
+- (double)shadowForAppearance:(int64_t)appearance
 {
-  v3 = [(NSMutableDictionary *)self->_shadows _IS_layerObjectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_shadows _IS_layerObjectForKey:appearance];
   v4 = v3;
   if (v3)
   {
@@ -349,23 +349,23 @@
   v15.receiver = self;
   v15.super_class = ISIconLayerGroup;
   v4 = [(ISIconLayerGroup *)&v15 description];
-  v5 = [(ISIconLayerGroup *)self opacities];
-  v6 = [(ISIconLayerGroup *)self speculars];
-  v7 = [(ISIconLayerGroup *)self combineSpeculars];
-  v8 = [(ISIconLayerGroup *)self blurs];
-  v9 = [(ISIconLayerGroup *)self translucencies];
-  v10 = [(ISIconLayerGroup *)self shadowStyles];
-  v11 = [(ISIconLayerGroup *)self shadows];
-  v12 = [(ISIconLayerGroup *)self layers];
-  v13 = [v3 stringWithFormat:@"%@ O:%@, S:%@, CS:%@ B:%@ T:%@ SS:%@ S:%@ ElementLayers: %@", v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  opacities = [(ISIconLayerGroup *)self opacities];
+  speculars = [(ISIconLayerGroup *)self speculars];
+  combineSpeculars = [(ISIconLayerGroup *)self combineSpeculars];
+  blurs = [(ISIconLayerGroup *)self blurs];
+  translucencies = [(ISIconLayerGroup *)self translucencies];
+  shadowStyles = [(ISIconLayerGroup *)self shadowStyles];
+  shadows = [(ISIconLayerGroup *)self shadows];
+  layers = [(ISIconLayerGroup *)self layers];
+  v13 = [v3 stringWithFormat:@"%@ O:%@, S:%@, CS:%@ B:%@ T:%@ SS:%@ S:%@ ElementLayers: %@", v4, opacities, speculars, combineSpeculars, blurs, translucencies, shadowStyles, shadows, layers];
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -375,9 +375,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(ISIconLayerGroup *)self digest];
-      v6 = [(ISIconLayerGroup *)v4 digest];
-      v7 = [v5 isEqual:v6];
+      digest = [(ISIconLayerGroup *)self digest];
+      digest2 = [(ISIconLayerGroup *)equalCopy digest];
+      v7 = [digest isEqual:digest2];
     }
 
     else
@@ -393,32 +393,32 @@
 {
   v31[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(ISIconLayerGroup *)self opacities];
-  v5 = [(ISIconLayerGroup *)self speculars];
-  v6 = [(ISIconLayerGroup *)self combineSpeculars];
-  v7 = [(ISIconLayerGroup *)self blurs];
-  v8 = [(ISIconLayerGroup *)self translucencies];
-  v9 = [(ISIconLayerGroup *)self shadowStyles];
-  v10 = [(ISIconLayerGroup *)self shadows];
-  v11 = [v3 stringWithFormat:@"O:%@, S:%@, CS:%@ B:%@ T:%@ SS:%@ S:%@", v4, v5, v6, v7, v8, v9, v10];
+  opacities = [(ISIconLayerGroup *)self opacities];
+  speculars = [(ISIconLayerGroup *)self speculars];
+  combineSpeculars = [(ISIconLayerGroup *)self combineSpeculars];
+  blurs = [(ISIconLayerGroup *)self blurs];
+  translucencies = [(ISIconLayerGroup *)self translucencies];
+  shadowStyles = [(ISIconLayerGroup *)self shadowStyles];
+  shadows = [(ISIconLayerGroup *)self shadows];
+  v11 = [v3 stringWithFormat:@"O:%@, S:%@, CS:%@ B:%@ T:%@ SS:%@ S:%@", opacities, speculars, combineSpeculars, blurs, translucencies, shadowStyles, shadows];
 
   v30 = v11;
   v12 = [MEMORY[0x1E696AFB0] _IF_UUIDWithString:v11];
-  v13 = [(ISIconLayerGroup *)self layers];
-  v14 = [v13 count];
+  layers = [(ISIconLayerGroup *)self layers];
+  v14 = [layers count];
 
   if (v14)
   {
     v15 = 0;
     do
     {
-      v16 = [(ISIconLayerGroup *)self layers];
-      v17 = [v16 objectAtIndexedSubscript:v15];
+      layers2 = [(ISIconLayerGroup *)self layers];
+      v17 = [layers2 objectAtIndexedSubscript:v15];
 
       v18 = MEMORY[0x1E696AFB0];
       v19 = MEMORY[0x1E696AEC0];
-      v20 = [v17 digest];
-      v21 = [v19 stringWithFormat:@"%@_%d", v20, v15];
+      digest = [v17 digest];
+      v21 = [v19 stringWithFormat:@"%@_%d", digest, v15];
       v22 = [v18 _IF_UUIDWithString:v21];
 
       v23 = MEMORY[0x1E696AFB0];
@@ -428,8 +428,8 @@
       v25 = [v23 _IF_UUIDByXORingUUIDs:v24];
 
       ++v15;
-      v26 = [(ISIconLayerGroup *)self layers];
-      v27 = [v26 count];
+      layers3 = [(ISIconLayerGroup *)self layers];
+      v27 = [layers3 count];
 
       v12 = v25;
     }
@@ -449,17 +449,17 @@
 
 - (unint64_t)hash
 {
-  v2 = [(ISIconLayerGroup *)self digest];
-  v3 = [v2 hash];
+  digest = [(ISIconLayerGroup *)self digest];
+  v3 = [digest hash];
 
   return v3;
 }
 
-- (int64_t)_IS_cuiShadowStyleFromStyle:(int64_t)a3
+- (int64_t)_IS_cuiShadowStyleFromStyle:(int64_t)style
 {
-  if (a3 < 3)
+  if (style < 3)
   {
-    return qword_1A7825330[a3];
+    return qword_1A7825330[style];
   }
 
   v4 = _ISDefaultLog();
@@ -471,19 +471,19 @@
   return 0;
 }
 
-- (id)cuiGroupForAppearance:(int64_t)a3
+- (id)cuiGroupForAppearance:(int64_t)appearance
 {
   v5 = objc_alloc_init(MEMORY[0x1E69993B8]);
-  [(ISIconLayerGroup *)self opacityForAppearance:a3];
+  [(ISIconLayerGroup *)self opacityForAppearance:appearance];
   [v5 setOpacity:?];
-  [v5 setHasSpecular:{-[ISIconLayerGroup hasSpecularForAppearance:](self, "hasSpecularForAppearance:", a3)}];
-  [v5 setGathersSpecularByElement:{-[ISIconLayerGroup hasOverlappingChildSpecularsCombinedForAppearance:](self, "hasOverlappingChildSpecularsCombinedForAppearance:", a3)}];
-  [(ISIconLayerGroup *)self blurForAppearance:a3];
+  [v5 setHasSpecular:{-[ISIconLayerGroup hasSpecularForAppearance:](self, "hasSpecularForAppearance:", appearance)}];
+  [v5 setGathersSpecularByElement:{-[ISIconLayerGroup hasOverlappingChildSpecularsCombinedForAppearance:](self, "hasOverlappingChildSpecularsCombinedForAppearance:", appearance)}];
+  [(ISIconLayerGroup *)self blurForAppearance:appearance];
   [v5 setBlurStrength:?];
-  [(ISIconLayerGroup *)self translucencyForAppearance:a3];
+  [(ISIconLayerGroup *)self translucencyForAppearance:appearance];
   [v5 setTranslucency:?];
-  [v5 setShadowStyle:{-[ISIconLayerGroup _IS_cuiShadowStyleFromStyle:](self, "_IS_cuiShadowStyleFromStyle:", -[ISIconLayerGroup shadowStyleForAppearance:](self, "shadowStyleForAppearance:", a3))}];
-  [(ISIconLayerGroup *)self shadowForAppearance:a3];
+  [v5 setShadowStyle:{-[ISIconLayerGroup _IS_cuiShadowStyleFromStyle:](self, "_IS_cuiShadowStyleFromStyle:", -[ISIconLayerGroup shadowStyleForAppearance:](self, "shadowStyleForAppearance:", appearance))}];
+  [(ISIconLayerGroup *)self shadowForAppearance:appearance];
   [v5 setShadowOpacity:?];
 
   return v5;

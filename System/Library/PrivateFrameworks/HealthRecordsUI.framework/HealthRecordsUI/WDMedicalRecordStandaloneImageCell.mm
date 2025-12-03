@@ -3,9 +3,9 @@
 - (NSString)title;
 - (UIImage)titleImage;
 - (void)_updateForCurrentSizeCategory;
-- (void)setDetail:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleImage:(id)a3;
+- (void)setDetail:(id)detail;
+- (void)setTitle:(id)title;
+- (void)setTitleImage:(id)image;
 - (void)setupSubviews;
 @end
 
@@ -19,200 +19,200 @@
   v3 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
   [(WDMedicalRecordStandaloneImageCell *)self setDisclosureChevronView:v3];
 
-  v4 = [(WDMedicalRecordStandaloneImageCell *)self disclosureChevronView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  disclosureChevronView = [(WDMedicalRecordStandaloneImageCell *)self disclosureChevronView];
+  [disclosureChevronView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [MEMORY[0x1E69DCAB8] hk_disclosureChevronImage];
-  v6 = [(WDMedicalRecordStandaloneImageCell *)self disclosureChevronView];
-  [v6 setImage:v5];
+  hk_disclosureChevronImage = [MEMORY[0x1E69DCAB8] hk_disclosureChevronImage];
+  disclosureChevronView2 = [(WDMedicalRecordStandaloneImageCell *)self disclosureChevronView];
+  [disclosureChevronView2 setImage:hk_disclosureChevronImage];
 
-  v7 = [(WDMedicalRecordStandaloneImageCell *)self disclosureChevronView];
+  disclosureChevronView3 = [(WDMedicalRecordStandaloneImageCell *)self disclosureChevronView];
   LODWORD(v8) = 1144750080;
-  [v7 setContentHuggingPriority:0 forAxis:v8];
+  [disclosureChevronView3 setContentHuggingPriority:0 forAxis:v8];
 
-  v9 = [(WDMedicalRecordStandaloneImageCell *)self disclosureChevronView];
+  disclosureChevronView4 = [(WDMedicalRecordStandaloneImageCell *)self disclosureChevronView];
   LODWORD(v10) = 1148846080;
-  [v9 setContentCompressionResistancePriority:0 forAxis:v10];
+  [disclosureChevronView4 setContentCompressionResistancePriority:0 forAxis:v10];
 
-  v11 = [(WDMedicalRecordStandaloneImageCell *)self contentView];
-  v12 = [(WDMedicalRecordStandaloneImageCell *)self disclosureChevronView];
-  [v11 addSubview:v12];
+  contentView = [(WDMedicalRecordStandaloneImageCell *)self contentView];
+  disclosureChevronView5 = [(WDMedicalRecordStandaloneImageCell *)self disclosureChevronView];
+  [contentView addSubview:disclosureChevronView5];
 
   v13 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [(WDMedicalRecordStandaloneImageCell *)self setDetailLabel:v13];
 
-  v14 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  v15 = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
-  [v15 setTextColor:v14];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  detailLabel = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
+  [detailLabel setTextColor:tertiaryLabelColor];
 
-  v16 = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
-  [v16 setNumberOfLines:0];
+  detailLabel2 = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
+  [detailLabel2 setNumberOfLines:0];
 
-  v17 = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
-  [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+  detailLabel3 = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
+  [detailLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v18 = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
+  detailLabel4 = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
   LODWORD(v19) = 1148846080;
-  [v18 setContentCompressionResistancePriority:0 forAxis:v19];
+  [detailLabel4 setContentCompressionResistancePriority:0 forAxis:v19];
 
-  v20 = [(WDMedicalRecordStandaloneImageCell *)self contentView];
-  v21 = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
-  [v20 addSubview:v21];
+  contentView2 = [(WDMedicalRecordStandaloneImageCell *)self contentView];
+  detailLabel5 = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
+  [contentView2 addSubview:detailLabel5];
 
   v22 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [(WDMedicalRecordStandaloneImageCell *)self setTitleLabel:v22];
 
-  v23 = [MEMORY[0x1E69DC888] labelColor];
-  v24 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
-  [v24 setTextColor:v23];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  titleLabel = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
+  [titleLabel setTextColor:labelColor];
 
-  v25 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
-  [v25 setNumberOfLines:0];
+  titleLabel2 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
+  [titleLabel2 setNumberOfLines:0];
 
-  v26 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
-  [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel3 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
+  [titleLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v27 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
+  titleLabel4 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
   LODWORD(v28) = 1144750080;
-  [v27 setContentHuggingPriority:0 forAxis:v28];
+  [titleLabel4 setContentHuggingPriority:0 forAxis:v28];
 
-  v29 = [(WDMedicalRecordStandaloneImageCell *)self contentView];
-  v30 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
-  [v29 addSubview:v30];
+  contentView3 = [(WDMedicalRecordStandaloneImageCell *)self contentView];
+  titleLabel5 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
+  [contentView3 addSubview:titleLabel5];
 
   [(WDMedicalRecordStandaloneImageCell *)self _updateForCurrentSizeCategory];
   v31 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
   [(WDMedicalRecordStandaloneImageCell *)self setTitleImageView:v31];
 
-  v32 = [(WDMedicalRecordStandaloneImageCell *)self titleImageView];
-  [v32 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleImageView = [(WDMedicalRecordStandaloneImageCell *)self titleImageView];
+  [titleImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v33 = [(WDMedicalRecordStandaloneImageCell *)self titleImageView];
+  titleImageView2 = [(WDMedicalRecordStandaloneImageCell *)self titleImageView];
   LODWORD(v34) = 1144750080;
-  [v33 setContentHuggingPriority:0 forAxis:v34];
+  [titleImageView2 setContentHuggingPriority:0 forAxis:v34];
 
-  v35 = [(WDMedicalRecordStandaloneImageCell *)self titleImageView];
+  titleImageView3 = [(WDMedicalRecordStandaloneImageCell *)self titleImageView];
   LODWORD(v36) = 1148846080;
-  [v35 setContentCompressionResistancePriority:0 forAxis:v36];
+  [titleImageView3 setContentCompressionResistancePriority:0 forAxis:v36];
 
-  v37 = [(WDMedicalRecordStandaloneImageCell *)self contentView];
-  v38 = [(WDMedicalRecordStandaloneImageCell *)self titleImageView];
-  [v37 addSubview:v38];
+  contentView4 = [(WDMedicalRecordStandaloneImageCell *)self contentView];
+  titleImageView4 = [(WDMedicalRecordStandaloneImageCell *)self titleImageView];
+  [contentView4 addSubview:titleImageView4];
 
-  v39 = [(WDMedicalRecordStandaloneImageCell *)self disclosureChevronView];
-  v40 = [v39 trailingAnchor];
-  v41 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v42 = [v41 trailingAnchor];
-  v43 = [v40 constraintEqualToAnchor:v42 constant:-16.0];
+  disclosureChevronView6 = [(WDMedicalRecordStandaloneImageCell *)self disclosureChevronView];
+  trailingAnchor = [disclosureChevronView6 trailingAnchor];
+  pillBackgroundView = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  trailingAnchor2 = [pillBackgroundView trailingAnchor];
+  v43 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   [v43 setActive:1];
 
-  v44 = [(WDMedicalRecordStandaloneImageCell *)self disclosureChevronView];
-  v45 = [v44 centerYAnchor];
-  v46 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v47 = [v46 centerYAnchor];
-  v48 = [v45 constraintEqualToAnchor:v47];
+  disclosureChevronView7 = [(WDMedicalRecordStandaloneImageCell *)self disclosureChevronView];
+  centerYAnchor = [disclosureChevronView7 centerYAnchor];
+  pillBackgroundView2 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  centerYAnchor2 = [pillBackgroundView2 centerYAnchor];
+  v48 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v48 setActive:1];
 
-  v49 = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
-  v50 = [v49 leadingAnchor];
-  v51 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
-  v52 = [v51 trailingAnchor];
-  v53 = [v50 constraintGreaterThanOrEqualToAnchor:v52 constant:16.0];
+  detailLabel6 = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
+  leadingAnchor = [detailLabel6 leadingAnchor];
+  titleLabel6 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
+  trailingAnchor3 = [titleLabel6 trailingAnchor];
+  v53 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor3 constant:16.0];
   [v53 setActive:1];
 
-  v54 = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
-  v55 = [v54 trailingAnchor];
-  v56 = [(WDMedicalRecordStandaloneImageCell *)self disclosureChevronView];
-  v57 = [v56 leadingAnchor];
-  v58 = [v55 constraintEqualToAnchor:v57 constant:-16.0];
+  detailLabel7 = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
+  trailingAnchor4 = [detailLabel7 trailingAnchor];
+  disclosureChevronView8 = [(WDMedicalRecordStandaloneImageCell *)self disclosureChevronView];
+  leadingAnchor2 = [disclosureChevronView8 leadingAnchor];
+  v58 = [trailingAnchor4 constraintEqualToAnchor:leadingAnchor2 constant:-16.0];
   [v58 setActive:1];
 
-  v59 = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
-  v60 = [v59 firstBaselineAnchor];
-  v61 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
-  v62 = [v61 firstBaselineAnchor];
-  v63 = [v60 constraintEqualToAnchor:v62 constant:0.0];
+  detailLabel8 = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
+  firstBaselineAnchor = [detailLabel8 firstBaselineAnchor];
+  titleLabel7 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
+  firstBaselineAnchor2 = [titleLabel7 firstBaselineAnchor];
+  v63 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2 constant:0.0];
   [v63 setActive:1];
 
-  v64 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
-  v65 = [v64 leadingAnchor];
-  v66 = [(WDMedicalRecordStandaloneImageCell *)self titleImageView];
-  v67 = [v66 trailingAnchor];
-  v68 = [v65 constraintEqualToAnchor:v67 constant:16.0];
+  titleLabel8 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
+  leadingAnchor3 = [titleLabel8 leadingAnchor];
+  titleImageView5 = [(WDMedicalRecordStandaloneImageCell *)self titleImageView];
+  trailingAnchor5 = [titleImageView5 trailingAnchor];
+  v68 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor5 constant:16.0];
   [v68 setActive:1];
 
-  v69 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
-  v70 = [v69 topAnchor];
-  v71 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v72 = [v71 topAnchor];
-  v73 = [v70 constraintEqualToAnchor:v72 constant:16.0];
+  titleLabel9 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
+  topAnchor = [titleLabel9 topAnchor];
+  pillBackgroundView3 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  topAnchor2 = [pillBackgroundView3 topAnchor];
+  v73 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
   [v73 setActive:1];
 
-  v74 = [(WDMedicalRecordStandaloneImageCell *)self titleImageView];
-  v75 = [v74 leadingAnchor];
-  v76 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v77 = [v76 leadingAnchor];
-  v78 = [v75 constraintEqualToAnchor:v77 constant:16.0];
+  titleImageView6 = [(WDMedicalRecordStandaloneImageCell *)self titleImageView];
+  leadingAnchor4 = [titleImageView6 leadingAnchor];
+  pillBackgroundView4 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  leadingAnchor5 = [pillBackgroundView4 leadingAnchor];
+  v78 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:16.0];
   [v78 setActive:1];
 
-  v79 = [(WDMedicalRecordStandaloneImageCell *)self titleImageView];
-  v80 = [v79 centerYAnchor];
-  v81 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v82 = [v81 centerYAnchor];
-  v83 = [v80 constraintEqualToAnchor:v82];
+  titleImageView7 = [(WDMedicalRecordStandaloneImageCell *)self titleImageView];
+  centerYAnchor3 = [titleImageView7 centerYAnchor];
+  pillBackgroundView5 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  centerYAnchor4 = [pillBackgroundView5 centerYAnchor];
+  v83 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v83 setActive:1];
 
-  v84 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v85 = [v84 bottomAnchor];
-  v86 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
-  v87 = [v86 bottomAnchor];
-  v88 = [v85 constraintEqualToAnchor:v87 constant:16.0];
+  pillBackgroundView6 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  bottomAnchor = [pillBackgroundView6 bottomAnchor];
+  titleLabel10 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
+  bottomAnchor2 = [titleLabel10 bottomAnchor];
+  v88 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:16.0];
   [v88 setActive:1];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
-  [v5 setText:v4];
+  titleCopy = title;
+  titleLabel = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
+  [titleLabel setText:titleCopy];
 }
 
 - (NSString)title
 {
-  v2 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setDetail:(id)a3
+- (void)setDetail:(id)detail
 {
-  v4 = a3;
-  v5 = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
-  [v5 setText:v4];
+  detailCopy = detail;
+  detailLabel = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
+  [detailLabel setText:detailCopy];
 }
 
 - (NSString)detail
 {
-  v2 = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
-  v3 = [v2 text];
+  detailLabel = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
+  text = [detailLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setTitleImage:(id)a3
+- (void)setTitleImage:(id)image
 {
-  v4 = a3;
-  v5 = [(WDMedicalRecordStandaloneImageCell *)self titleImageView];
-  [v5 setImage:v4];
+  imageCopy = image;
+  titleImageView = [(WDMedicalRecordStandaloneImageCell *)self titleImageView];
+  [titleImageView setImage:imageCopy];
 }
 
 - (UIImage)titleImage
 {
-  v2 = [(WDMedicalRecordStandaloneImageCell *)self titleImageView];
-  v3 = [v2 image];
+  titleImageView = [(WDMedicalRecordStandaloneImageCell *)self titleImageView];
+  image = [titleImageView image];
 
-  return v3;
+  return image;
 }
 
 - (void)_updateForCurrentSizeCategory
@@ -222,12 +222,12 @@
   [(WDMedicalRecordGroupableCell *)&v8 _updateForCurrentSizeCategory];
   v3 = *MEMORY[0x1E69DDCF8];
   v4 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  v5 = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
-  [v5 setFont:v4];
+  detailLabel = [(WDMedicalRecordStandaloneImageCell *)self detailLabel];
+  [detailLabel setFont:v4];
 
   v6 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v3];
-  v7 = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
-  [v7 setFont:v6];
+  titleLabel = [(WDMedicalRecordStandaloneImageCell *)self titleLabel];
+  [titleLabel setFont:v6];
 }
 
 @end

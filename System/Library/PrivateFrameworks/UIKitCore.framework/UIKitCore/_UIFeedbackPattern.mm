@@ -1,26 +1,26 @@
 @interface _UIFeedbackPattern
 + (id)feedbackPattern;
 - (BOOL)canReuseCoreHapticsPlayer;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPlaying;
 - (CGPoint)_location;
 - (NSMutableArray)feedbacks;
-- (_UIFeedbackPattern)initWithDictionaryRepresentation:(id)a3;
+- (_UIFeedbackPattern)initWithDictionaryRepresentation:(id)representation;
 - (id)_allEventTypes;
 - (id)_allSystemSoundIDs;
 - (id)_debugDictionary;
 - (id)_individualFeedbacks;
 - (id)_playableProtocol;
 - (id)_view;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)_effectivePlayableFeedbackTypes;
 - (void)_playPattern;
-- (void)_setLocation:(CGPoint)a3;
-- (void)_setView:(id)a3;
-- (void)addFeedback:(id)a3 atTime:(double)a4;
+- (void)_setLocation:(CGPoint)location;
+- (void)_setView:(id)view;
+- (void)addFeedback:(id)feedback atTime:(double)time;
 - (void)play;
-- (void)setPosition:(float)a3;
+- (void)setPosition:(float)position;
 - (void)stop;
 @end
 
@@ -28,7 +28,7 @@
 
 + (id)feedbackPattern
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -38,9 +38,9 @@
   feedbacks = self->_feedbacks;
   if (!feedbacks)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = self->_feedbacks;
-    self->_feedbacks = v4;
+    self->_feedbacks = array;
 
     feedbacks = self->_feedbacks;
   }
@@ -71,8 +71,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) _individualFeedbacks];
-        [v3 addObjectsFromArray:v9];
+        _individualFeedbacks = [*(*(&v11 + 1) + 8 * i) _individualFeedbacks];
+        [v3 addObjectsFromArray:_individualFeedbacks];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -84,18 +84,18 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = _UIFeedbackPattern;
-  v4 = [(_UIFeedback *)&v16 copyWithZone:a3];
+  v4 = [(_UIFeedback *)&v16 copyWithZone:zone];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(_UIFeedbackPattern *)self feedbacks];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  feedbacks = [(_UIFeedbackPattern *)self feedbacks];
+  v6 = [feedbacks countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -106,7 +106,7 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(feedbacks);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -114,7 +114,7 @@
         [v4 addFeedback:v10 atTime:?];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v7 = [feedbacks countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v7);
@@ -123,14 +123,14 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _UIFeedbackPattern;
-  if ([(_UIFeedback *)&v7 isEqual:v4])
+  if ([(_UIFeedback *)&v7 isEqual:equalCopy])
   {
-    v5 = [(NSMutableArray *)self->_feedbacks isEqual:v4[18]];
+    v5 = [(NSMutableArray *)self->_feedbacks isEqual:equalCopy[18]];
   }
 
   else
@@ -141,26 +141,26 @@
   return v5;
 }
 
-- (_UIFeedbackPattern)initWithDictionaryRepresentation:(id)a3
+- (_UIFeedbackPattern)initWithDictionaryRepresentation:(id)representation
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  representationCopy = representation;
   v27.receiver = self;
   v27.super_class = _UIFeedbackPattern;
-  v5 = [(_UIFeedback *)&v27 initWithDictionaryRepresentation:v4];
+  v5 = [(_UIFeedback *)&v27 initWithDictionaryRepresentation:representationCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"duration"];
+    v6 = [representationCopy objectForKeyedSubscript:@"duration"];
     [v6 doubleValue];
     v5->_duration = v7;
 
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v22 = v4;
-    v9 = [v4 objectForKeyedSubscript:@"feedbacks"];
+    v22 = representationCopy;
+    v9 = [representationCopy objectForKeyedSubscript:@"feedbacks"];
     v10 = [v9 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v10)
     {
@@ -179,15 +179,15 @@
           v14 = [_UIFeedback feedbackWithDictionaryRepresentation:*(*(&v23 + 1) + 8 * v13)];
           if (v14)
           {
-            v15 = [(_UIFeedback *)v5 audioParameters];
-            v16 = [v14 audioParameters];
-            [v16 setParentParameters:v15];
+            audioParameters = [(_UIFeedback *)v5 audioParameters];
+            audioParameters2 = [v14 audioParameters];
+            [audioParameters2 setParentParameters:audioParameters];
 
-            v17 = [(_UIFeedback *)v5 hapticParameters];
-            v18 = [v14 hapticParameters];
-            [v18 setParentParameters:v17];
+            hapticParameters = [(_UIFeedback *)v5 hapticParameters];
+            hapticParameters2 = [v14 hapticParameters];
+            [hapticParameters2 setParentParameters:hapticParameters];
 
-            [v8 addObject:v14];
+            [array addObject:v14];
           }
 
           ++v13;
@@ -200,8 +200,8 @@
       while (v11);
     }
 
-    [(_UIFeedbackPattern *)v5 setFeedbacks:v8];
-    v4 = v22;
+    [(_UIFeedbackPattern *)v5 setFeedbacks:array];
+    representationCopy = v22;
     v19 = [v22 objectForKeyedSubscript:@"canReuseCoreHapticsPlayer"];
     v5->_canReuseCoreHapticsPlayer = [v19 BOOLValue];
 
@@ -216,19 +216,19 @@
   v21 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = _UIFeedbackPattern;
-  v3 = [(_UIFeedback *)&v19 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(_UIFeedback *)&v19 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_duration];
   [v4 setObject:v5 forKeyedSubscript:@"duration"];
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(_UIFeedbackPattern *)self feedbacks];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  feedbacks = [(_UIFeedbackPattern *)self feedbacks];
+  v8 = [feedbacks countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -239,20 +239,20 @@
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(feedbacks);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-        [v6 addObject:v12];
+        dictionaryRepresentation2 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+        [array addObject:dictionaryRepresentation2];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v9 = [feedbacks countByEnumeratingWithState:&v15 objects:v20 count:16];
     }
 
     while (v9);
   }
 
-  [v4 setObject:v6 forKeyedSubscript:@"feedbacks"];
+  [v4 setObject:array forKeyedSubscript:@"feedbacks"];
   v13 = [MEMORY[0x1E696AD98] numberWithBool:self->_canReuseCoreHapticsPlayer];
   [v4 setObject:v13 forKeyedSubscript:@"canReuseCoreHapticsPlayer"];
 
@@ -268,8 +268,8 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(_UIFeedbackPattern *)self feedbacks];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    feedbacks = [(_UIFeedbackPattern *)self feedbacks];
+    v4 = [feedbacks countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -280,12 +280,12 @@
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(feedbacks);
           }
 
-          v8 = [*(*(&v11 + 1) + 8 * i) _playableProtocol];
+          _playableProtocol = [*(*(&v11 + 1) + 8 * i) _playableProtocol];
 
-          if (v8 == &unk_1EFFA53B0)
+          if (_playableProtocol == &unk_1EFFA53B0)
           {
             v9 = &unk_1EFFA53B0;
 
@@ -293,7 +293,7 @@
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [feedbacks countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v5)
         {
           continue;
@@ -317,32 +317,32 @@ LABEL_14:
   return v9;
 }
 
-- (void)addFeedback:(id)a3 atTime:(double)a4
+- (void)addFeedback:(id)feedback atTime:(double)time
 {
-  v7 = a3;
-  v14 = v7;
-  if (v7 == self)
+  feedbackCopy = feedback;
+  v14 = feedbackCopy;
+  if (feedbackCopy == self)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UIFeedback.m" lineNumber:1306 description:@"Cannot add a feedback pattern to itself."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFeedback.m" lineNumber:1306 description:@"Cannot add a feedback pattern to itself."];
   }
 
   else
   {
-    v8 = [(_UIFeedbackPattern *)v7 copy];
+    v8 = [(_UIFeedbackPattern *)feedbackCopy copy];
 
-    v9 = [(_UIFeedback *)self audioParameters];
-    v10 = [(_UIFeedback *)v8 audioParameters];
-    [v10 setParentParameters:v9];
+    audioParameters = [(_UIFeedback *)self audioParameters];
+    audioParameters2 = [(_UIFeedback *)v8 audioParameters];
+    [audioParameters2 setParentParameters:audioParameters];
 
-    v11 = [(_UIFeedback *)self hapticParameters];
-    v12 = [(_UIFeedback *)v8 hapticParameters];
-    [v12 setParentParameters:v11];
+    hapticParameters = [(_UIFeedback *)self hapticParameters];
+    hapticParameters2 = [(_UIFeedback *)v8 hapticParameters];
+    [hapticParameters2 setParentParameters:hapticParameters];
 
     [(_UIFeedback *)v8 _setParentPattern:self];
-    [(_UIFeedback *)v8 _setDelay:a4];
-    v13 = [(_UIFeedbackPattern *)self feedbacks];
-    [v13 addObject:v8];
+    [(_UIFeedback *)v8 _setDelay:time];
+    currentHandler = [(_UIFeedbackPattern *)self feedbacks];
+    [currentHandler addObject:v8];
     v14 = v8;
   }
 }
@@ -390,7 +390,7 @@ LABEL_14:
 - (id)_allEventTypes
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -410,8 +410,8 @@ LABEL_14:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) _allEventTypes];
-        [v3 addIndexes:v9];
+        _allEventTypes = [*(*(&v11 + 1) + 8 * i) _allEventTypes];
+        [indexSet addIndexes:_allEventTypes];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -420,13 +420,13 @@ LABEL_14:
     while (v6);
   }
 
-  return v3;
+  return indexSet;
 }
 
 - (id)_allSystemSoundIDs
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -446,8 +446,8 @@ LABEL_14:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) _allSystemSoundIDs];
-        [v3 addIndexes:v9];
+        _allSystemSoundIDs = [*(*(&v11 + 1) + 8 * i) _allSystemSoundIDs];
+        [indexSet addIndexes:_allSystemSoundIDs];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -456,7 +456,7 @@ LABEL_14:
     while (v6);
   }
 
-  return v3;
+  return indexSet;
 }
 
 - (void)play
@@ -487,8 +487,8 @@ LABEL_14:
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = [(_UIFeedbackPattern *)self feedbacks];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+    feedbacks = [(_UIFeedbackPattern *)self feedbacks];
+    v5 = [feedbacks countByEnumeratingWithState:&v9 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -500,14 +500,14 @@ LABEL_14:
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(feedbacks);
           }
 
           [*(*(&v9 + 1) + 8 * v8++) play];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+        v6 = [feedbacks countByEnumeratingWithState:&v9 objects:v14 count:16];
       }
 
       while (v6);
@@ -539,8 +539,8 @@ LABEL_14:
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [(_UIFeedbackPattern *)self feedbacks];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+    feedbacks = [(_UIFeedbackPattern *)self feedbacks];
+    v6 = [feedbacks countByEnumeratingWithState:&v10 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -551,13 +551,13 @@ LABEL_14:
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(feedbacks);
           }
 
           [*(*(&v10 + 1) + 8 * i) stop];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+        v7 = [feedbacks countByEnumeratingWithState:&v10 objects:v15 count:16];
       }
 
       while (v7);
@@ -573,7 +573,7 @@ LABEL_14:
   {
     v15.receiver = self;
     v15.super_class = _UIFeedbackPattern;
-    v4 = [(_UIFeedback *)&v15 isPlaying];
+    isPlaying = [(_UIFeedback *)&v15 isPlaying];
   }
 
   else
@@ -582,8 +582,8 @@ LABEL_14:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(_UIFeedbackPattern *)self feedbacks];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+    feedbacks = [(_UIFeedbackPattern *)self feedbacks];
+    v6 = [feedbacks countByEnumeratingWithState:&v11 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -594,18 +594,18 @@ LABEL_14:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(feedbacks);
           }
 
           if ([*(*(&v11 + 1) + 8 * i) isPlaying])
           {
 
-            v4 = 1;
+            isPlaying = 1;
             goto LABEL_13;
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v7 = [feedbacks countByEnumeratingWithState:&v11 objects:v16 count:16];
         if (v7)
         {
           continue;
@@ -615,15 +615,15 @@ LABEL_14:
       }
     }
 
-    v4 = 0;
+    isPlaying = 0;
   }
 
 LABEL_13:
 
-  return v4;
+  return isPlaying;
 }
 
-- (void)setPosition:(float)a3
+- (void)setPosition:(float)position
 {
   v3.receiver = self;
   v3.super_class = _UIFeedbackPattern;
@@ -634,8 +634,8 @@ LABEL_13:
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v5 = @"feedbacks";
-  v2 = [(_UIFeedbackPattern *)self feedbacks];
-  v6[0] = v2;
+  feedbacks = [(_UIFeedbackPattern *)self feedbacks];
+  v6[0] = feedbacks;
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:&v5 count:1];
 
   return v3;
@@ -653,8 +653,8 @@ LABEL_13:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(_UIFeedbackPattern *)self feedbacks];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  feedbacks = [(_UIFeedbackPattern *)self feedbacks];
+  v3 = [feedbacks countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -665,7 +665,7 @@ LABEL_13:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(feedbacks);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -676,7 +676,7 @@ LABEL_13:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [feedbacks countByEnumeratingWithState:&v10 objects:v14 count:16];
       v8 = 1;
       if (v4)
       {
@@ -699,12 +699,12 @@ LABEL_15:
 
 - (CGPoint)_location
 {
-  v2 = [(_UIFeedbackPattern *)self feedbacks];
-  v3 = [v2 firstObject];
+  feedbacks = [(_UIFeedbackPattern *)self feedbacks];
+  firstObject = [feedbacks firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    [v3 _location];
+    [firstObject _location];
     v5 = v4;
     v7 = v6;
   }
@@ -722,17 +722,17 @@ LABEL_15:
   return result;
 }
 
-- (void)_setLocation:(CGPoint)a3
+- (void)_setLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(_UIFeedbackPattern *)self feedbacks];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  feedbacks = [(_UIFeedbackPattern *)self feedbacks];
+  v6 = [feedbacks countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -744,14 +744,14 @@ LABEL_15:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(feedbacks);
         }
 
         [*(*(&v10 + 1) + 8 * v9++) _setLocation:{x, y}];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [feedbacks countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -760,23 +760,23 @@ LABEL_15:
 
 - (id)_view
 {
-  v2 = [(_UIFeedbackPattern *)self feedbacks];
-  v3 = [v2 firstObject];
-  v4 = [v3 _view];
+  feedbacks = [(_UIFeedbackPattern *)self feedbacks];
+  firstObject = [feedbacks firstObject];
+  _view = [firstObject _view];
 
-  return v4;
+  return _view;
 }
 
-- (void)_setView:(id)a3
+- (void)_setView:(id)view
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(_UIFeedbackPattern *)self feedbacks];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  feedbacks = [(_UIFeedbackPattern *)self feedbacks];
+  v6 = [feedbacks countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -788,14 +788,14 @@ LABEL_15:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(feedbacks);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) _setView:v4];
+        [*(*(&v10 + 1) + 8 * v9++) _setView:viewCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [feedbacks countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);

@@ -1,98 +1,98 @@
 @interface BCSBusinessLinkContentItemModel
-- (BCSBusinessLinkContentItemModel)initWithBusinessLinkContent:(id)a3;
-- (BCSBusinessLinkContentItemModel)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)initWithTitle:(void *)a3 subtitle:(void *)a4 language:(char)a5 isDefault:;
+- (BCSBusinessLinkContentItemModel)initWithBusinessLinkContent:(id)content;
+- (BCSBusinessLinkContentItemModel)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)initWithTitle:(void *)title subtitle:(void *)subtitle language:(char)language isDefault:;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BCSBusinessLinkContentItemModel
 
-- (BCSBusinessLinkContentItemModel)initWithBusinessLinkContent:(id)a3
+- (BCSBusinessLinkContentItemModel)initWithBusinessLinkContent:(id)content
 {
-  v4 = a3;
-  v5 = [v4 title];
-  v6 = [v4 subtitle];
-  v7 = [v4 language];
-  v8 = [v4 isDefault];
+  contentCopy = content;
+  title = [contentCopy title];
+  subtitle = [contentCopy subtitle];
+  language = [contentCopy language];
+  isDefault = [contentCopy isDefault];
 
-  v9 = [(BCSBusinessLinkContentItemModel *)self initWithTitle:v5 subtitle:v6 language:v7 isDefault:v8];
+  v9 = [(BCSBusinessLinkContentItemModel *)self initWithTitle:title subtitle:subtitle language:language isDefault:isDefault];
   return v9;
 }
 
-- (id)initWithTitle:(void *)a3 subtitle:(void *)a4 language:(char)a5 isDefault:
+- (id)initWithTitle:(void *)title subtitle:(void *)subtitle language:(char)language isDefault:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (a1)
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  if (self)
   {
-    v19.receiver = a1;
+    v19.receiver = self;
     v19.super_class = BCSBusinessLinkContentItemModel;
-    a1 = objc_msgSendSuper2(&v19, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v19, sel_init);
+    if (self)
     {
       v12 = [v9 copy];
-      v13 = *(a1 + 1);
-      *(a1 + 1) = v12;
+      v13 = *(self + 1);
+      *(self + 1) = v12;
 
-      v14 = [v10 copy];
-      v15 = *(a1 + 2);
-      *(a1 + 2) = v14;
+      v14 = [titleCopy copy];
+      v15 = *(self + 2);
+      *(self + 2) = v14;
 
-      v16 = [v11 copy];
-      v17 = *(a1 + 3);
-      *(a1 + 3) = v16;
+      v16 = [subtitleCopy copy];
+      v17 = *(self + 3);
+      *(self + 3) = v16;
 
-      *(a1 + 32) = a5;
+      *(self + 32) = language;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"BCSBusinessLinkContentItemModelTitleKey"];
-  [v5 encodeObject:self->_subtitle forKey:@"BCSBusinessLinkContentItemModelSubtitleKey"];
-  [v5 encodeObject:self->_language forKey:@"BCSBusinessLinkContentItemModelLangaugeKey"];
-  [v5 encodeBool:self->_isDefault forKey:@"BCSBusinessLinkContentItemModelIsDefaultKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"BCSBusinessLinkContentItemModelTitleKey"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"BCSBusinessLinkContentItemModelSubtitleKey"];
+  [coderCopy encodeObject:self->_language forKey:@"BCSBusinessLinkContentItemModelLangaugeKey"];
+  [coderCopy encodeBool:self->_isDefault forKey:@"BCSBusinessLinkContentItemModelIsDefaultKey"];
 }
 
-- (BCSBusinessLinkContentItemModel)initWithCoder:(id)a3
+- (BCSBusinessLinkContentItemModel)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BCSBusinessLinkContentItemModelTitleKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BCSBusinessLinkContentItemModelSubtitleKey"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BCSBusinessLinkContentItemModelLangaugeKey"];
-  v8 = [v4 decodeBoolForKey:@"BCSBusinessLinkContentItemModelIsDefaultKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BCSBusinessLinkContentItemModelTitleKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BCSBusinessLinkContentItemModelSubtitleKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BCSBusinessLinkContentItemModelLangaugeKey"];
+  v8 = [coderCopy decodeBoolForKey:@"BCSBusinessLinkContentItemModelIsDefaultKey"];
 
   v9 = [(BCSBusinessLinkContentItemModel *)self initWithTitle:v5 subtitle:v6 language:v7 isDefault:v8];
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(BCSBusinessLinkContentItemModel *)self title];
-    v7 = [v6 copyWithZone:a3];
+    title = [(BCSBusinessLinkContentItemModel *)self title];
+    v7 = [title copyWithZone:zone];
     v8 = *(v5 + 8);
     *(v5 + 8) = v7;
 
-    v9 = [(BCSBusinessLinkContentItemModel *)self subtitle];
-    v10 = [v9 copyWithZone:a3];
+    subtitle = [(BCSBusinessLinkContentItemModel *)self subtitle];
+    v10 = [subtitle copyWithZone:zone];
     v11 = *(v5 + 16);
     *(v5 + 16) = v10;
 
-    v12 = [(BCSBusinessLinkContentItemModel *)self language];
-    v13 = [v12 copyWithZone:a3];
+    language = [(BCSBusinessLinkContentItemModel *)self language];
+    v13 = [language copyWithZone:zone];
     v14 = *(v5 + 24);
     *(v5 + 24) = v13;
 
@@ -114,10 +114,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(BCSBusinessLinkContentItemModel *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BCSBusinessLinkContentItemModel *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -131,12 +131,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BCSBusinessLinkContentItemModel *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BCSBusinessLinkContentItemModel *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

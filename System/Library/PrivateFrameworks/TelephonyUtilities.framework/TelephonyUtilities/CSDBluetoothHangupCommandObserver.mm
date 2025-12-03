@@ -1,5 +1,5 @@
 @interface CSDBluetoothHangupCommandObserver
-- (CSDBluetoothHangupCommandObserver)initWithQueue:(id)a3;
+- (CSDBluetoothHangupCommandObserver)initWithQueue:(id)queue;
 - (void)_ensureStarted;
 - (void)_ensureStopped;
 - (void)dealloc;
@@ -7,16 +7,16 @@
 
 @implementation CSDBluetoothHangupCommandObserver
 
-- (CSDBluetoothHangupCommandObserver)initWithQueue:(id)a3
+- (CSDBluetoothHangupCommandObserver)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = CSDBluetoothHangupCommandObserver;
   v6 = [(CSDBluetoothHangupCommandObserver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;
@@ -44,13 +44,13 @@
 
   else
   {
-    v4 = self;
+    selfCopy = self;
     v9 = sub_100264160;
     queue = self->_queue;
     v3 = BTSessionAttachWithQueue();
     if (v3)
     {
-      CFRelease(v4);
+      CFRelease(selfCopy);
     }
   }
 

@@ -1,14 +1,14 @@
 @interface DDSearchResultManageDictionariesResult
-- (DDSearchResultManageDictionariesResult)initWithQuery:(id)a3 queryId:(unint64_t)a4;
+- (DDSearchResultManageDictionariesResult)initWithQuery:(id)query queryId:(unint64_t)id;
 @end
 
 @implementation DDSearchResultManageDictionariesResult
 
-- (DDSearchResultManageDictionariesResult)initWithQuery:(id)a3 queryId:(unint64_t)a4
+- (DDSearchResultManageDictionariesResult)initWithQuery:(id)query queryId:(unint64_t)id
 {
   v17.receiver = self;
   v17.super_class = DDSearchResultManageDictionariesResult;
-  v4 = [(DDSearchResultSearchWebResult *)&v17 initWithQuery:a3 queryId:a4];
+  v4 = [(DDSearchResultSearchWebResult *)&v17 initWithQuery:query queryId:id];
   v5 = v4;
   if (v4)
   {
@@ -33,8 +33,8 @@
 
     v18 = v6;
     v14 = [NSArray arrayWithObjects:&v18 count:1];
-    v15 = [(DDSearchResultManageDictionariesResult *)v5 inlineCard];
-    [v15 setCardSections:v14];
+    inlineCard = [(DDSearchResultManageDictionariesResult *)v5 inlineCard];
+    [inlineCard setCardSections:v14];
   }
 
   return v5;

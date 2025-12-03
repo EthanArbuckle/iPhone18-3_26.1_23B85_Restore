@@ -1,15 +1,15 @@
 @interface _PASMutableDomainSelection
-- (BOOL)_addDomainsFrom:(id)a3;
-- (BOOL)_addDomainsFromOtherDictionary:(id)a3 toOwnDictionary:(id)a4 ownDictionaryIsPlaceholder:(BOOL)a5;
-- (BOOL)addDomain:(id)a3;
-- (BOOL)addDomainsFromSelection:(id)a3;
-- (BOOL)containsDomain:(id)a3;
-- (BOOL)isEqualToDomainSelection:(id)a3;
+- (BOOL)_addDomainsFrom:(id)from;
+- (BOOL)_addDomainsFromOtherDictionary:(id)dictionary toOwnDictionary:(id)ownDictionary ownDictionaryIsPlaceholder:(BOOL)placeholder;
+- (BOOL)addDomain:(id)domain;
+- (BOOL)addDomainsFromSelection:(id)selection;
+- (BOOL)containsDomain:(id)domain;
+- (BOOL)isEqualToDomainSelection:(id)selection;
 - (_PASMutableDomainSelection)init;
-- (id)_initWithNonOverlappingDomainSet:(id)a3;
+- (id)_initWithNonOverlappingDomainSet:(id)set;
 - (id)allDomains;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_decrementCountAndMaybePruneItems:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_decrementCountAndMaybePruneItems:(id)items;
 - (void)dealloc;
 @end
 
@@ -40,8 +40,8 @@
     [(_PASMutableDomainSelection *)self _decrementCountAndMaybePruneItems:self->_domains];
     if (self->_count)
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:a2 object:self file:@"_PASDomainSelection.m" lineNumber:309 description:{@"Invalid parameter not satisfying: %@", @"_count == 0"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASDomainSelection.m" lineNumber:309 description:{@"Invalid parameter not satisfying: %@", @"_count == 0"}];
     }
   }
 
@@ -50,23 +50,23 @@
   [(_PASMutableDomainSelection *)&v5 dealloc];
 }
 
-- (void)_decrementCountAndMaybePruneItems:(id)a3
+- (void)_decrementCountAndMaybePruneItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   count = self->_count;
   if (!count)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_PASDomainSelection.m" lineNumber:544 description:{@"Invalid parameter not satisfying: %@", @"beforeCount > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASDomainSelection.m" lineNumber:544 description:{@"Invalid parameter not satisfying: %@", @"beforeCount > 0"}];
   }
 
   v7 = objc_autoreleasePoolPush();
-  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v5, 0}];
+  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{itemsCopy, 0}];
   objc_autoreleasePoolPop(v7);
   do
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = [v8 lastObject];
+    lastObject = [v8 lastObject];
     [v8 removeLastObject];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -75,10 +75,10 @@
     v14[4] = self;
     v11 = v8;
     v15 = v11;
-    [v10 enumerateKeysAndObjectsUsingBlock:v14];
+    [lastObject enumerateKeysAndObjectsUsingBlock:v14];
     if (self->_taintedByDeepDomain)
     {
-      [v10 removeAllObjects];
+      [lastObject removeAllObjects];
     }
 
     objc_autoreleasePoolPop(v9);
@@ -87,25 +87,25 @@
   while ([v11 count]);
   if (self->_count > count)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_PASDomainSelection.m" lineNumber:564 description:{@"Invalid parameter not satisfying: %@", @"afterCount <= beforeCount"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_PASDomainSelection.m" lineNumber:564 description:{@"Invalid parameter not satisfying: %@", @"afterCount <= beforeCount"}];
   }
 }
 
-- (BOOL)isEqualToDomainSelection:(id)a3
+- (BOOL)isEqualToDomainSelection:(id)selection
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  selectionCopy = selection;
+  v5 = selectionCopy;
+  if (selectionCopy)
   {
     count = self->_count;
-    if (count == [v4 count])
+    if (count == [selectionCopy count])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v5;
-        v8 = v7;
+        allDomains = v7;
         if (!self->_taintedByDeepDomain && *(v7 + 24) != 1)
         {
           v9 = [(NSMutableDictionary *)self->_domains isEqual:*(v7 + 1)];
@@ -115,9 +115,9 @@ LABEL_10:
         }
       }
 
-      v8 = [(_PASMutableDomainSelection *)self allDomains];
-      v10 = [v5 allDomains];
-      v9 = [v8 isEqual:v10];
+      allDomains = [(_PASMutableDomainSelection *)self allDomains];
+      allDomains2 = [v5 allDomains];
+      v9 = [allDomains isEqual:allDomains2];
 
       goto LABEL_10;
     }
@@ -129,20 +129,20 @@ LABEL_11:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_PASDomainSelection alloc];
-  v5 = [(_PASMutableDomainSelection *)self allDomains];
-  v6 = [(_PASDomainSelection *)v4 _initWithNonOverlappingDomainSet:v5];
+  allDomains = [(_PASMutableDomainSelection *)self allDomains];
+  v6 = [(_PASDomainSelection *)v4 _initWithNonOverlappingDomainSet:allDomains];
 
   return v6;
 }
 
-- (BOOL)addDomainsFromSelection:(id)a3
+- (BOOL)addDomainsFromSelection:(id)selection
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isEmpty])
+  selectionCopy = selection;
+  if ([selectionCopy isEmpty])
   {
     LOBYTE(v5) = 0;
   }
@@ -150,14 +150,14 @@ LABEL_11:
   else
   {
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) == 0 || (*(v4 + 24))
+    if (objc_opt_isKindOfClass() & 1) == 0 || (*(selectionCopy + 24))
     {
       v16 = 0u;
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v7 = [v4 allDomains];
-      v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      allDomains = [selectionCopy allDomains];
+      v8 = [allDomains countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         v9 = v8;
@@ -169,13 +169,13 @@ LABEL_11:
           {
             if (*v15 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(allDomains);
             }
 
             v5 |= [(_PASMutableDomainSelection *)self addDomain:*(*(&v14 + 1) + 8 * i)];
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+          v9 = [allDomains countByEnumeratingWithState:&v14 objects:v18 count:16];
         }
 
         while (v9);
@@ -190,7 +190,7 @@ LABEL_11:
     else
     {
       v6 = objc_autoreleasePoolPush();
-      LOBYTE(v5) = [(_PASMutableDomainSelection *)self _addDomainsFromOtherDictionary:*(v4 + 1) toOwnDictionary:self->_domains ownDictionaryIsPlaceholder:1];
+      LOBYTE(v5) = [(_PASMutableDomainSelection *)self _addDomainsFromOtherDictionary:*(selectionCopy + 1) toOwnDictionary:self->_domains ownDictionaryIsPlaceholder:1];
       objc_autoreleasePoolPop(v6);
     }
   }
@@ -199,14 +199,14 @@ LABEL_11:
   return v5 & 1;
 }
 
-- (BOOL)_addDomainsFromOtherDictionary:(id)a3 toOwnDictionary:(id)a4 ownDictionaryIsPlaceholder:(BOOL)a5
+- (BOOL)_addDomainsFromOtherDictionary:(id)dictionary toOwnDictionary:(id)ownDictionary ownDictionaryIsPlaceholder:(BOOL)placeholder
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if ([v9 count] || v5)
+  placeholderCopy = placeholder;
+  dictionaryCopy = dictionary;
+  ownDictionaryCopy = ownDictionary;
+  if ([ownDictionaryCopy count] || placeholderCopy)
   {
-    if ([v8 count])
+    if ([dictionaryCopy count])
     {
       v16 = 0;
       v17 = &v16;
@@ -216,10 +216,10 @@ LABEL_11:
       v12[1] = 3221225472;
       v12[2] = __104___PASMutableDomainSelection__addDomainsFromOtherDictionary_toOwnDictionary_ownDictionaryIsPlaceholder___block_invoke;
       v12[3] = &unk_1E77F2180;
-      v14 = self;
+      selfCopy = self;
       v15 = &v16;
-      v13 = v9;
-      [v8 enumerateKeysAndObjectsUsingBlock:v12];
+      v13 = ownDictionaryCopy;
+      [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v12];
       v10 = *(v17 + 24);
 
       _Block_object_dispose(&v16, 8);
@@ -227,8 +227,8 @@ LABEL_11:
 
     else
     {
-      [(_PASMutableDomainSelection *)self _decrementCountAndMaybePruneItems:v9];
-      [v9 removeAllObjects];
+      [(_PASMutableDomainSelection *)self _decrementCountAndMaybePruneItems:ownDictionaryCopy];
+      [ownDictionaryCopy removeAllObjects];
       ++self->_count;
       v10 = 1;
     }
@@ -242,10 +242,10 @@ LABEL_11:
   return v10 & 1;
 }
 
-- (BOOL)_addDomainsFrom:(id)a3
+- (BOOL)_addDomainsFrom:(id)from
 {
   v55 = *MEMORY[0x1E69E9840];
-  v31 = a3;
+  fromCopy = from;
   v34 = 0;
   v3 = 1;
   while (1)
@@ -254,7 +254,7 @@ LABEL_11:
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v4 = v31;
+    v4 = fromCopy;
     v37 = [v4 countByEnumeratingWithState:&v50 objects:v54 count:16];
     if (!v37)
     {
@@ -434,15 +434,15 @@ LABEL_49:
   return v34 & 1;
 }
 
-- (BOOL)addDomain:(id)a3
+- (BOOL)addDomain:(id)domain
 {
-  v4 = a3;
-  v31 = self;
+  domainCopy = domain;
+  selfCopy = self;
   v5 = self->_domains;
-  v6 = [v4 length];
+  v6 = [domainCopy length];
   v7 = objc_autoreleasePoolPush();
-  v32 = v4;
-  v8 = [v4 rangeOfString:@"." options:2 range:{0, v6}];
+  v32 = domainCopy;
+  v8 = [domainCopy rangeOfString:@"." options:2 range:{0, v6}];
   if (v9)
   {
     v10 = v8;
@@ -450,7 +450,7 @@ LABEL_49:
     v12 = v7;
     v13 = 0;
     v14 = 0;
-    v15 = 0;
+    _pas_distilledString2 = 0;
     v16 = 0;
     v17 = v32;
     do
@@ -458,10 +458,10 @@ LABEL_49:
       v18 = objc_autoreleasePoolPush();
       v19 = [v17 substringWithRange:{v13, v10 - v13}];
       objc_autoreleasePoolPop(v18);
-      v20 = [v19 _pas_distilledString];
+      _pas_distilledString = [v19 _pas_distilledString];
 
-      v15 = v20;
-      v21 = [(NSMutableDictionary *)v5 objectForKeyedSubscript:v20];
+      _pas_distilledString2 = _pas_distilledString;
+      v21 = [(NSMutableDictionary *)v5 objectForKeyedSubscript:_pas_distilledString];
 
       if (v21)
       {
@@ -477,7 +477,7 @@ LABEL_49:
       else
       {
         v21 = objc_opt_new();
-        [(NSMutableDictionary *)v5 setObject:v21 forKeyedSubscript:v20];
+        [(NSMutableDictionary *)v5 setObject:v21 forKeyedSubscript:_pas_distilledString];
       }
 
       v14 = v21;
@@ -496,16 +496,16 @@ LABEL_49:
     while (v22);
     if (v16 >= 0x65)
     {
-      v23 = v31;
+      v23 = selfCopy;
       v29 = v32;
-      v31->_taintedByDeepDomain = 1;
+      selfCopy->_taintedByDeepDomain = 1;
       v5 = v14;
     }
 
     else
     {
       v5 = v14;
-      v23 = v31;
+      v23 = selfCopy;
       v29 = v32;
     }
 
@@ -516,18 +516,18 @@ LABEL_49:
   {
     v13 = 0;
     v14 = 0;
-    v15 = 0;
-    v23 = v31;
-    v29 = v4;
+    _pas_distilledString2 = 0;
+    v23 = selfCopy;
+    v29 = domainCopy;
   }
 
-  v24 = v15;
+  v24 = _pas_distilledString2;
   v25 = objc_autoreleasePoolPush();
   v26 = [v29 substringWithRange:{v13, v6}];
   objc_autoreleasePoolPop(v25);
-  v15 = [v26 _pas_distilledString];
+  _pas_distilledString2 = [v26 _pas_distilledString];
 
-  v21 = [(NSMutableDictionary *)v5 objectForKeyedSubscript:v15];
+  v21 = [(NSMutableDictionary *)v5 objectForKeyedSubscript:_pas_distilledString2];
 
   if (v21)
   {
@@ -541,7 +541,7 @@ LABEL_49:
   }
 
   v27 = objc_opt_new();
-  [(NSMutableDictionary *)v5 setObject:v27 forKeyedSubscript:v15];
+  [(NSMutableDictionary *)v5 setObject:v27 forKeyedSubscript:_pas_distilledString2];
 
   ++v23->_count;
   v28 = 1;
@@ -566,21 +566,21 @@ LABEL_17:
     do
     {
       v8 = objc_autoreleasePoolPush();
-      v9 = [v7 lastObject];
+      lastObject = [v7 lastObject];
       [v7 removeLastObject];
-      v10 = [v9 first];
-      v11 = [v9 second];
+      first = [lastObject first];
+      second = [lastObject second];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __40___PASMutableDomainSelection_allDomains__block_invoke;
       v19[3] = &unk_1E77F2158;
       v12 = v4;
       v20 = v12;
-      v21 = v11;
+      v21 = second;
       v13 = v7;
       v22 = v13;
-      v14 = v11;
-      [v10 enumerateKeysAndObjectsUsingBlock:v19];
+      v14 = second;
+      [first enumerateKeysAndObjectsUsingBlock:v19];
 
       objc_autoreleasePoolPop(v8);
     }
@@ -588,8 +588,8 @@ LABEL_17:
     while ([v13 count]);
     if ([v12 count] != self->_count)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v17 handleFailureInMethod:v18 object:self file:@"_PASDomainSelection.m" lineNumber:367 description:{@"Invalid parameter not satisfying: %@", @"allDomainsSet.count == _count"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:v18 object:self file:@"_PASDomainSelection.m" lineNumber:367 description:{@"Invalid parameter not satisfying: %@", @"allDomainsSet.count == _count"}];
     }
   }
 
@@ -603,27 +603,27 @@ LABEL_17:
   return v12;
 }
 
-- (BOOL)containsDomain:(id)a3
+- (BOOL)containsDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v5 = self->_domains;
-  v6 = [v4 length];
+  v6 = [domainCopy length];
   v7 = objc_autoreleasePoolPush();
-  v8 = [v4 rangeOfString:@"." options:2 range:{0, v6}];
+  v8 = [domainCopy rangeOfString:@"." options:2 range:{0, v6}];
   if (v9)
   {
     v10 = v8;
     v11 = v9;
     v12 = 0;
     v13 = 0;
-    v14 = 0;
+    _pas_distilledString = 0;
     while (1)
     {
-      v15 = v14;
-      v16 = [v4 substringWithRange:{v12, v10 - v12}];
-      v14 = [v16 _pas_distilledString];
+      v15 = _pas_distilledString;
+      v16 = [domainCopy substringWithRange:{v12, v10 - v12}];
+      _pas_distilledString = [v16 _pas_distilledString];
 
-      v17 = [(NSMutableDictionary *)v5 objectForKeyedSubscript:v14];
+      v17 = [(NSMutableDictionary *)v5 objectForKeyedSubscript:_pas_distilledString];
 
       v18 = v17 != 0;
       if (!v17)
@@ -639,10 +639,10 @@ LABEL_17:
       v13 = v17;
 
       v12 = v10 + v11;
-      v6 = [v4 length] - (v10 + v11);
+      v6 = [domainCopy length] - (v10 + v11);
       objc_autoreleasePoolPop(v7);
       v7 = objc_autoreleasePoolPush();
-      v10 = [v4 rangeOfString:@"." options:2 range:{v10 + v11, v6}];
+      v10 = [domainCopy rangeOfString:@"." options:2 range:{v10 + v11, v6}];
       v11 = v19;
       v5 = v13;
       if (!v19)
@@ -660,11 +660,11 @@ LABEL_17:
     v12 = 0;
 LABEL_8:
     v20 = objc_autoreleasePoolPush();
-    v21 = [v4 substringWithRange:{v12, v6}];
+    v21 = [domainCopy substringWithRange:{v12, v6}];
     objc_autoreleasePoolPop(v20);
-    v14 = [v21 _pas_distilledString];
+    _pas_distilledString = [v21 _pas_distilledString];
 
-    v17 = [(NSMutableDictionary *)v5 objectForKeyedSubscript:v14];
+    v17 = [(NSMutableDictionary *)v5 objectForKeyedSubscript:_pas_distilledString];
 
     if (v17 && ![v17 count])
     {
@@ -683,20 +683,20 @@ LABEL_11:
   return v18;
 }
 
-- (id)_initWithNonOverlappingDomainSet:(id)a3
+- (id)_initWithNonOverlappingDomainSet:(id)set
 {
-  v5 = a3;
+  setCopy = set;
   v6 = [(_PASMutableDomainSelection *)self init];
   if (v6)
   {
-    v7 = [[_PASDomainSelection alloc] _initWithNonOverlappingDomainSet:v5];
+    v7 = [[_PASDomainSelection alloc] _initWithNonOverlappingDomainSet:setCopy];
     [(_PASMutableDomainSelection *)v6 addDomainsFromSelection:v7];
 
     v8 = [(_PASMutableDomainSelection *)v6 count];
-    if (v8 != [v5 count])
+    if (v8 != [setCopy count])
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:v6 file:@"_PASDomainSelection.m" lineNumber:298 description:@"-[_PASMutableDomainSelection _initWithNonOverlappingDomainSet:] was invoked with overlapping domains"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"_PASDomainSelection.m" lineNumber:298 description:@"-[_PASMutableDomainSelection _initWithNonOverlappingDomainSet:] was invoked with overlapping domains"];
     }
   }
 

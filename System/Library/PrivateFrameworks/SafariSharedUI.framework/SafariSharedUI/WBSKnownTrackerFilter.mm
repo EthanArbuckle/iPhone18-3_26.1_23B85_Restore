@@ -1,29 +1,29 @@
 @interface WBSKnownTrackerFilter
 - (id)_createKnownTrackersDictionary;
 - (void)_createKnownTrackersDictionary;
-- (void)getKnownTrackersFromHighLevelDomains:(id)a3 completionHandler:(id)a4;
+- (void)getKnownTrackersFromHighLevelDomains:(id)domains completionHandler:(id)handler;
 @end
 
 @implementation WBSKnownTrackerFilter
 
-- (void)getKnownTrackersFromHighLevelDomains:(id)a3 completionHandler:(id)a4
+- (void)getKnownTrackersFromHighLevelDomains:(id)domains completionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  domainsCopy = domains;
+  handlerCopy = handler;
   if (SharedWebCredentialsLibraryCore())
   {
     get_SWCTrackingDomainInfoClass();
     v8 = objc_opt_respondsToSelector();
     SWCTrackingDomainInfoClass = get_SWCTrackingDomainInfoClass();
-    v10 = [MEMORY[0x1E695DFD8] setWithArray:v6];
+    v10 = [MEMORY[0x1E695DFD8] setWithArray:domainsCopy];
     if (v8)
     {
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = __80__WBSKnownTrackerFilter_getKnownTrackersFromHighLevelDomains_completionHandler___block_invoke;
       v30[3] = &unk_1E8285A40;
-      v31 = v7;
+      v31 = handlerCopy;
       [SWCTrackingDomainInfoClass getTrackingDomainInfoWithDomains:v10 sources:1 completion:v30];
     }
 
@@ -32,19 +32,19 @@
       v21 = [SWCTrackingDomainInfoClass trackingDomainInfoWithDomains:v10];
 
       v22 = [v21 safari_mapAndFilterKeysAndObjectsUsingBlock:&__block_literal_global_11];
-      (*(v7 + 2))(v7, v22);
+      (*(handlerCopy + 2))(handlerCopy, v22);
     }
   }
 
   else
   {
-    v11 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+    v11 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(domainsCopy, "count")}];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __80__WBSKnownTrackerFilter_getKnownTrackersFromHighLevelDomains_completionHandler___block_invoke_4;
     block[3] = &unk_1E8283080;
     block[4] = self;
-    v23 = v7;
+    v23 = handlerCopy;
     if (getKnownTrackersFromHighLevelDomains_completionHandler__onceToken != -1)
     {
       dispatch_once(&getKnownTrackersFromHighLevelDomains_completionHandler__onceToken, block);
@@ -54,8 +54,8 @@
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v24 = v6;
-    v12 = v6;
+    v24 = domainsCopy;
+    v12 = domainsCopy;
     v13 = [v12 countByEnumeratingWithState:&v25 objects:v34 count:16];
     if (v13)
     {
@@ -88,10 +88,10 @@
       while (v14);
     }
 
-    v7 = v23;
+    handlerCopy = v23;
     v23[2](v23, v11);
 
-    v6 = v24;
+    domainsCopy = v24;
   }
 }
 
@@ -142,8 +142,8 @@ void __80__WBSKnownTrackerFilter_getKnownTrackersFromHighLevelDomains_completion
 
 - (id)_createKnownTrackersDictionary
 {
-  v2 = [MEMORY[0x1E696AAE8] safari_safariSharedBundle];
-  v3 = [v2 URLForResource:@"WBSDuckDuckGoTDS" withExtension:@"json"];
+  safari_safariSharedBundle = [MEMORY[0x1E696AAE8] safari_safariSharedBundle];
+  v3 = [safari_safariSharedBundle URLForResource:@"WBSDuckDuckGoTDS" withExtension:@"json"];
 
   v12 = 0;
   v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v3 options:0 error:&v12];
@@ -174,11 +174,11 @@ void __80__WBSKnownTrackerFilter_getKnownTrackersFromHighLevelDomains_completion
 - (void)_createKnownTrackersDictionary
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = [a2 safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [a2 safari_privacyPreservingDescription];
   v5 = 138543362;
-  v6 = v4;
-  _os_log_error_impl(&dword_1C6968000, v3, OS_LOG_TYPE_ERROR, "Unable to read known tracker data %{public}@", &v5, 0xCu);
+  v6 = safari_privacyPreservingDescription;
+  _os_log_error_impl(&dword_1C6968000, selfCopy, OS_LOG_TYPE_ERROR, "Unable to read known tracker data %{public}@", &v5, 0xCu);
 }
 
 @end

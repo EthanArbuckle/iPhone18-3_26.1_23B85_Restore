@@ -6,12 +6,12 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  v3 = [(PHLivePhotoView *)v2 livePhoto];
-  if (v3)
+  selfCopy = self;
+  livePhoto = [(PHLivePhotoView *)selfCopy livePhoto];
+  if (livePhoto)
   {
-    v4 = v3;
-    [(PHLivePhoto *)v3 size];
+    v4 = livePhoto;
+    [(PHLivePhoto *)livePhoto size];
     v6 = v5;
     v8 = v7;
   }

@@ -1,39 +1,39 @@
 @interface ADFlowServiceListener
 - (ADFlowServiceListener)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)fetchSiriKitApplicationsWithNotificationPreviewRestrictionsWithCompletion:(id)a3;
-- (void)getPersonalSettingsForSharedUserID:(id)a3 completion:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)fetchSiriKitApplicationsWithNotificationPreviewRestrictionsWithCompletion:(id)completion;
+- (void)getPersonalSettingsForSharedUserID:(id)d completion:(id)completion;
 - (void)setupListener;
 @end
 
 @implementation ADFlowServiceListener
 
-- (void)getPersonalSettingsForSharedUserID:(id)a3 completion:(id)a4
+- (void)getPersonalSettingsForSharedUserID:(id)d completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v5 && AFSupportsMultiUser())
+    if (dCopy && AFSupportsMultiUser())
     {
-      v7 = +[ADMultiUserService sharedService];
-      [v7 getMultiUserSettingsForSharedUserID:v5 completion:v6];
+      _cachedAssistantData = +[ADMultiUserService sharedService];
+      [_cachedAssistantData getMultiUserSettingsForSharedUserID:dCopy completion:completionCopy];
     }
 
     else
     {
       v8 = +[ADAssistantDataManager sharedDataManager];
-      v7 = [v8 _cachedAssistantData];
+      _cachedAssistantData = [v8 _cachedAssistantData];
 
-      if (v7)
+      if (_cachedAssistantData)
       {
-        v9 = [v7 temperatureUnit];
-        v10 = [v7 twentyFourHourTimeDisplay];
-        v11 = [v10 BOOLValue];
+        temperatureUnit = [_cachedAssistantData temperatureUnit];
+        twentyFourHourTimeDisplay = [_cachedAssistantData twentyFourHourTimeDisplay];
+        bOOLValue = [twentyFourHourTimeDisplay BOOLValue];
 
-        v12 = [v7 region];
-        v13 = [v7 countryCode];
-        v14 = [v7 preferredLanguage];
+        region = [_cachedAssistantData region];
+        countryCode = [_cachedAssistantData countryCode];
+        preferredLanguage = [_cachedAssistantData preferredLanguage];
         v15 = AFSiriLogContextDaemon;
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
         {
@@ -43,12 +43,12 @@
         }
 
         v16 = objc_alloc_init(AFPersonalUserSettings);
-        [(AFPersonalUserSettings *)v16 setTemperatureUnit:v9];
-        [(AFPersonalUserSettings *)v16 setTwentyFourHourTimeDisplay:v11];
-        [(AFPersonalUserSettings *)v16 setRegion:v12];
-        [(AFPersonalUserSettings *)v16 setCountryCode:v13];
-        [(AFPersonalUserSettings *)v16 setPreferredLanguage:v14];
-        v6[2](v6, v16, 0);
+        [(AFPersonalUserSettings *)v16 setTemperatureUnit:temperatureUnit];
+        [(AFPersonalUserSettings *)v16 setTwentyFourHourTimeDisplay:bOOLValue];
+        [(AFPersonalUserSettings *)v16 setRegion:region];
+        [(AFPersonalUserSettings *)v16 setCountryCode:countryCode];
+        [(AFPersonalUserSettings *)v16 setPreferredLanguage:preferredLanguage];
+        completionCopy[2](completionCopy, v16, 0);
       }
 
       else
@@ -61,56 +61,56 @@
           _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "%s Settings not found", &v18, 0xCu);
         }
 
-        v9 = [AFError errorWithCode:0 description:@"User Settings unavailable"];
-        (v6)[2](v6, 0, v9);
+        temperatureUnit = [AFError errorWithCode:0 description:@"User Settings unavailable"];
+        (completionCopy)[2](completionCopy, 0, temperatureUnit);
       }
     }
   }
 }
 
-- (void)fetchSiriKitApplicationsWithNotificationPreviewRestrictionsWithCompletion:(id)a3
+- (void)fetchSiriKitApplicationsWithNotificationPreviewRestrictionsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[ADNotificationManager sharedManager];
-  [v4 fetchSiriRelatedNotificationPreviewRestrictedAppsWithCompletion:v3];
+  [v4 fetchSiriRelatedNotificationPreviewRestrictedAppsWithCompletion:completionCopy];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   HasEntitlement = AFConnectionHasEntitlement();
   if (HasEntitlement)
   {
-    v7 = [v5 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     v8 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       *buf = 136315650;
       v17 = "[ADFlowServiceListener listener:shouldAcceptNewConnection:]";
       v18 = 2112;
-      v19 = v5;
+      v19 = connectionCopy;
       v20 = 1024;
-      v21 = v7;
+      v21 = processIdentifier;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s %@ Flow Service Connection Connected (pid=%d])", buf, 0x1Cu);
     }
 
     v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___AFFlowService];
-    [v5 setExportedInterface:v9];
+    [connectionCopy setExportedInterface:v9];
 
-    [v5 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10015E9F8;
     v14[3] = &unk_10051A380;
-    v15 = v7;
-    [v5 setInvalidationHandler:v14];
+    v15 = processIdentifier;
+    [connectionCopy setInvalidationHandler:v14];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10015EAB4;
     v12[3] = &unk_10051A380;
-    v13 = v7;
-    [v5 setInterruptionHandler:v12];
-    [v5 resume];
+    v13 = processIdentifier;
+    [connectionCopy setInterruptionHandler:v12];
+    [connectionCopy resume];
   }
 
   else
@@ -121,7 +121,7 @@
       *buf = 136315394;
       v17 = "[ADFlowServiceListener listener:shouldAcceptNewConnection:]";
       v18 = 2112;
-      v19 = v5;
+      v19 = connectionCopy;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%s %@ Flow Service Connection does not have required entitlements.", buf, 0x16u);
     }
   }

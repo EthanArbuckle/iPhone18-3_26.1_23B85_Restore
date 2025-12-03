@@ -1,16 +1,16 @@
 @interface CalDAVCalendarServerChangesItem
-- (CalDAVCalendarServerChangesItem)initWithNameSpace:(id)a3 andName:(id)a4;
+- (CalDAVCalendarServerChangesItem)initWithNameSpace:(id)space andName:(id)name;
 - (id)copyParseRules;
-- (void)addChangedProperty:(id)a3;
+- (void)addChangedProperty:(id)property;
 @end
 
 @implementation CalDAVCalendarServerChangesItem
 
-- (CalDAVCalendarServerChangesItem)initWithNameSpace:(id)a3 andName:(id)a4
+- (CalDAVCalendarServerChangesItem)initWithNameSpace:(id)space andName:(id)name
 {
   v8.receiver = self;
   v8.super_class = CalDAVCalendarServerChangesItem;
-  v4 = [(CoreDAVItem *)&v8 initWithNameSpace:a3 andName:a4];
+  v4 = [(CoreDAVItem *)&v8 initWithNameSpace:space andName:name];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -21,11 +21,11 @@
   return v4;
 }
 
-- (void)addChangedProperty:(id)a3
+- (void)addChangedProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(CalDAVCalendarServerChangesItem *)self changedProperties];
-  [v5 addObject:v4];
+  propertyCopy = property;
+  changedProperties = [(CalDAVCalendarServerChangesItem *)self changedProperties];
+  [changedProperties addObject:propertyCopy];
 }
 
 - (id)copyParseRules

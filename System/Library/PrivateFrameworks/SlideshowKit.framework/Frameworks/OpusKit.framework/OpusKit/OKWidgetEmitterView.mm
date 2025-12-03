@@ -1,26 +1,26 @@
 @interface OKWidgetEmitterView
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
-- (BOOL)prepareForDisplay:(BOOL)a3;
-- (BOOL)prepareForUnload:(BOOL)a3;
-- (BOOL)prepareForWarmup:(BOOL)a3;
++ (void)setupJavascriptContext:(id)context;
+- (BOOL)prepareForDisplay:(BOOL)display;
+- (BOOL)prepareForUnload:(BOOL)unload;
+- (BOOL)prepareForWarmup:(BOOL)warmup;
 - (CGPoint)settingEmitterPosition;
 - (CGSize)settingEmitterSize;
-- (OKWidgetEmitterView)initWithWidget:(id)a3;
+- (OKWidgetEmitterView)initWithWidget:(id)widget;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)pauseEmitter;
 - (void)resumeEmitter;
-- (void)setSettingEmitterCells:(id)a3;
+- (void)setSettingEmitterCells:(id)cells;
 @end
 
 @implementation OKWidgetEmitterView
 
-- (OKWidgetEmitterView)initWithWidget:(id)a3
+- (OKWidgetEmitterView)initWithWidget:(id)widget
 {
   v7.receiver = self;
   v7.super_class = OKWidgetEmitterView;
-  v3 = [(OKWidgetViewProxy *)&v7 initWithWidget:a3];
+  v3 = [(OKWidgetViewProxy *)&v7 initWithWidget:widget];
   if (v3)
   {
     v3->_seed = rand();
@@ -69,34 +69,34 @@
 
 - (void)pauseEmitter
 {
-  v2 = [(OFEmitterView *)self->_emitterView layer];
-  [v2 convertTime:0 fromLayer:CACurrentMediaTime()];
+  layer = [(OFEmitterView *)self->_emitterView layer];
+  [layer convertTime:0 fromLayer:CACurrentMediaTime()];
   v4 = v3;
-  [v2 setSpeed:0.0];
+  [layer setSpeed:0.0];
 
-  [v2 setTimeOffset:v4];
+  [layer setTimeOffset:v4];
 }
 
 - (void)resumeEmitter
 {
-  v2 = [(OFEmitterView *)self->_emitterView layer];
-  [v2 timeOffset];
+  layer = [(OFEmitterView *)self->_emitterView layer];
+  [layer timeOffset];
   v4 = v3;
   LODWORD(v3) = 1.0;
-  [v2 setSpeed:v3];
-  [v2 setTimeOffset:0.0];
-  [v2 setBeginTime:0.0];
-  [v2 convertTime:0 fromLayer:CACurrentMediaTime()];
+  [layer setSpeed:v3];
+  [layer setTimeOffset:0.0];
+  [layer setBeginTime:0.0];
+  [layer convertTime:0 fromLayer:CACurrentMediaTime()];
   v6 = v5 - v4;
 
-  [v2 setBeginTime:v6];
+  [layer setBeginTime:v6];
 }
 
-- (BOOL)prepareForDisplay:(BOOL)a3
+- (BOOL)prepareForDisplay:(BOOL)display
 {
   v6.receiver = self;
   v6.super_class = OKWidgetEmitterView;
-  v4 = [(OKWidgetViewProxy *)&v6 prepareForDisplay:a3];
+  v4 = [(OKWidgetViewProxy *)&v6 prepareForDisplay:display];
   if (v4)
   {
     [(OKWidgetEmitterView *)self resumeEmitter];
@@ -105,11 +105,11 @@
   return v4;
 }
 
-- (BOOL)prepareForWarmup:(BOOL)a3
+- (BOOL)prepareForWarmup:(BOOL)warmup
 {
   v6.receiver = self;
   v6.super_class = OKWidgetEmitterView;
-  v4 = [(OKWidgetViewProxy *)&v6 prepareForWarmup:a3];
+  v4 = [(OKWidgetViewProxy *)&v6 prepareForWarmup:warmup];
   if (v4)
   {
     [(OKWidgetEmitterView *)self pauseEmitter];
@@ -118,11 +118,11 @@
   return v4;
 }
 
-- (BOOL)prepareForUnload:(BOOL)a3
+- (BOOL)prepareForUnload:(BOOL)unload
 {
   v6.receiver = self;
   v6.super_class = OKWidgetEmitterView;
-  v4 = [(OKWidgetViewProxy *)&v6 prepareForUnload:a3];
+  v4 = [(OKWidgetViewProxy *)&v6 prepareForUnload:unload];
   if (v4)
   {
     [(OKWidgetEmitterView *)self pauseEmitter];
@@ -134,7 +134,7 @@
 + (id)supportedSettings
 {
   v34[14] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKWidgetEmitterView;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v33[0] = @"birthRate";
@@ -227,23 +227,23 @@
   return v2;
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetEmitterView"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetEmitterView"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
-- (void)setSettingEmitterCells:(id)a3
+- (void)setSettingEmitterCells:(id)cells
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [cells countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -255,27 +255,27 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(cells);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
           [v10 parentLoaded:{-[OKPresentationViewControllerProxy presentation](-[OKWidgetViewProxy presentationViewController](self, "presentationViewController"), "presentation")}];
-          [v5 addObject:v10];
+          [array addObject:v10];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [cells countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 
-  [(OFEmitterView *)self->_emitterView setEmitterCells:v5];
+  [(OFEmitterView *)self->_emitterView setEmitterCells:array];
 }
 
 - (CGPoint)settingEmitterPosition

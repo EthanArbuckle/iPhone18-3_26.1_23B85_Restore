@@ -1,26 +1,26 @@
 @interface WGWidgetListEditViewTableViewCell
 - (UIButton)insertWidgetAccessoryButton;
-- (WGWidgetListEditViewTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WGWidgetListEditViewTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setWidgetEnabled:(BOOL)a3;
+- (void)setWidgetEnabled:(BOOL)enabled;
 @end
 
 @implementation WGWidgetListEditViewTableViewCell
 
-- (WGWidgetListEditViewTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WGWidgetListEditViewTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v16.receiver = self;
   v16.super_class = WGWidgetListEditViewTableViewCell;
-  v4 = [(WGWidgetListEditViewTableViewCell *)&v16 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(WGWidgetListEditViewTableViewCell *)&v16 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(WGWidgetListEditViewTableViewCell *)v4 contentView];
-    v7 = [MEMORY[0x277D75348] _systemGroupBackgroundCellColor];
-    [v6 setBackgroundColor:v7];
+    contentView = [(WGWidgetListEditViewTableViewCell *)v4 contentView];
+    _systemGroupBackgroundCellColor = [MEMORY[0x277D75348] _systemGroupBackgroundCellColor];
+    [contentView setBackgroundColor:_systemGroupBackgroundCellColor];
 
-    v8 = [(WGWidgetListEditViewTableViewCell *)v5 textLabel];
-    [v8 _setDrawsAsBackdropOverlay:0];
+    textLabel = [(WGWidgetListEditViewTableViewCell *)v5 textLabel];
+    [textLabel _setDrawsAsBackdropOverlay:0];
     v9 = [MEMORY[0x277D755B8] systemImageNamed:@"circle.fill"];
     v10 = [MEMORY[0x277D75348] colorWithRed:0.525490196 green:0.941176471 blue:1.0 alpha:1.0];
     v11 = [v9 _flatImageWithColor:v10];
@@ -30,17 +30,17 @@
     v5->_dotImageView = v12;
 
     [(UIImageView *)v5->_dotImageView setImage:v11];
-    v14 = [(WGWidgetListEditViewTableViewCell *)v5 contentView];
-    [v14 addSubview:v5->_dotImageView];
+    contentView2 = [(WGWidgetListEditViewTableViewCell *)v5 contentView];
+    [contentView2 addSubview:v5->_dotImageView];
   }
 
   return v5;
 }
 
-- (void)setWidgetEnabled:(BOOL)a3
+- (void)setWidgetEnabled:(BOOL)enabled
 {
-  self->_widgetEnabled = a3;
-  v4 = [(WGWidgetListEditViewTableViewCell *)self showsDot]& !a3;
+  self->_widgetEnabled = enabled;
+  v4 = [(WGWidgetListEditViewTableViewCell *)self showsDot]& !enabled;
 
   [(WGWidgetListEditViewTableViewCell *)self setShowsDot:v4];
 }
@@ -50,27 +50,27 @@
   v45.receiver = self;
   v45.super_class = WGWidgetListEditViewTableViewCell;
   [(WGWidgetListEditViewTableViewCell *)&v45 layoutSubviews];
-  v3 = [(WGWidgetListEditViewTableViewCell *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(WGWidgetListEditViewTableViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   IsAccessibilityContentSizeCategory = _UIContentSizeCategoryIsAccessibilityContentSizeCategory();
 
-  v6 = [(WGWidgetListEditViewTableViewCell *)self contentView];
-  [v6 bounds];
+  contentView = [(WGWidgetListEditViewTableViewCell *)self contentView];
+  [contentView bounds];
   v8 = v7;
   v43 = v10;
   v44 = v9;
   rect = v11;
 
-  v12 = [(WGWidgetListEditViewTableViewCell *)self imageView];
-  [v12 frame];
+  imageView = [(WGWidgetListEditViewTableViewCell *)self imageView];
+  [imageView frame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [v12 image];
+  image = [imageView image];
 
   v41 = v8;
-  if (v21)
+  if (image)
   {
     BSRectWithSize();
     if ([(WGWidgetListEditViewTableViewCell *)self _shouldReverseLayoutDirection])
@@ -91,8 +91,8 @@
       CGRectGetHeight(v47);
     }
 
-    v22 = [v12 image];
-    [v22 size];
+    image2 = [imageView image];
+    [image2 size];
     BSRectWithSize();
     v40 = _WGMainScreenScale();
     UIRectCenteredIntegralRectScale();
@@ -101,12 +101,12 @@
     v18 = v25;
     v20 = v26;
 
-    [v12 setContentMode:{9, *&v40}];
-    [v12 setFrame:{v14, v16, v18, v20}];
+    [imageView setContentMode:{9, *&v40}];
+    [imageView setFrame:{v14, v16, v18, v20}];
   }
 
-  v27 = [(WGWidgetListEditViewTableViewCell *)self textLabel];
-  [v27 frame];
+  textLabel = [(WGWidgetListEditViewTableViewCell *)self textLabel];
+  [textLabel frame];
   v29 = v28;
   v31 = v30;
   v33 = v32;
@@ -117,9 +117,9 @@
     v48.origin.y = v44;
     v48.size.height = rect;
     v34 = CGRectGetMaxX(v48) - v31 + -12.0;
-    v35 = [v12 image];
+    image3 = [imageView image];
 
-    if (v35)
+    if (image3)
     {
       v34 = v34 + -32.0;
     }
@@ -130,8 +130,8 @@
     v34 = 12.0;
     if ((IsAccessibilityContentSizeCategory & 1) == 0)
     {
-      v36 = [v12 image];
-      if (v36)
+      image4 = [imageView image];
+      if (image4)
       {
         v49.origin.x = v14;
         v49.origin.y = v16;
@@ -142,7 +142,7 @@
     }
   }
 
-  [v27 setFrame:{v34, v29, v31, v33}];
+  [textLabel setFrame:{v34, v29, v31, v33}];
   v37 = 5.0;
   if ([(WGWidgetListEditViewTableViewCell *)self _shouldReverseLayoutDirection])
   {

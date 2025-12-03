@@ -1,133 +1,133 @@
 @interface SXMutableConditionalObjectAnalysis
-- (void)addComponentIdentifier:(id)a3 conditionTypes:(id)a4;
-- (void)addComponentLayoutIdentifier:(id)a3 conditionTypes:(id)a4;
-- (void)addComponentStyleIdentifier:(id)a3 conditionTypes:(id)a4;
-- (void)addComponentTextStyleIdentifier:(id)a3 conditionTypes:(id)a4;
-- (void)addObject:(id)a3 keys:(id)a4 map:(id)a5;
-- (void)addObjects:(id)a3 key:(id)a4 map:(id)a5;
-- (void)addTextStyleIdentifier:(id)a3 conditionTypes:(id)a4;
-- (void)removeComponentIdentifier:(id)a3 conditionTypes:(id)a4;
-- (void)removeComponentLayoutIdentifier:(id)a3 conditionTypes:(id)a4;
-- (void)removeComponentStyleIdentifier:(id)a3 conditionTypes:(id)a4;
-- (void)removeComponentTextStyleIdentifier:(id)a3 conditionTypes:(id)a4;
-- (void)removeObject:(id)a3 keys:(id)a4 map:(id)a5;
-- (void)removeObjects:(id)a3 key:(id)a4 map:(id)a5;
-- (void)removeTextStyleIdentifier:(id)a3 conditionTypes:(id)a4;
-- (void)setDocumentStyleConditionTypes:(id)a3;
+- (void)addComponentIdentifier:(id)identifier conditionTypes:(id)types;
+- (void)addComponentLayoutIdentifier:(id)identifier conditionTypes:(id)types;
+- (void)addComponentStyleIdentifier:(id)identifier conditionTypes:(id)types;
+- (void)addComponentTextStyleIdentifier:(id)identifier conditionTypes:(id)types;
+- (void)addObject:(id)object keys:(id)keys map:(id)map;
+- (void)addObjects:(id)objects key:(id)key map:(id)map;
+- (void)addTextStyleIdentifier:(id)identifier conditionTypes:(id)types;
+- (void)removeComponentIdentifier:(id)identifier conditionTypes:(id)types;
+- (void)removeComponentLayoutIdentifier:(id)identifier conditionTypes:(id)types;
+- (void)removeComponentStyleIdentifier:(id)identifier conditionTypes:(id)types;
+- (void)removeComponentTextStyleIdentifier:(id)identifier conditionTypes:(id)types;
+- (void)removeObject:(id)object keys:(id)keys map:(id)map;
+- (void)removeObjects:(id)objects key:(id)key map:(id)map;
+- (void)removeTextStyleIdentifier:(id)identifier conditionTypes:(id)types;
+- (void)setDocumentStyleConditionTypes:(id)types;
 @end
 
 @implementation SXMutableConditionalObjectAnalysis
 
-- (void)addComponentIdentifier:(id)a3 conditionTypes:(id)a4
+- (void)addComponentIdentifier:(id)identifier conditionTypes:(id)types
 {
   conditionsToComponentsMap = self->super._conditionsToComponentsMap;
-  v7 = a4;
-  v8 = a3;
-  [(SXMutableConditionalObjectAnalysis *)self addObject:v8 keys:v7 map:conditionsToComponentsMap];
-  [(SXMutableConditionalObjectAnalysis *)self addObjects:v7 key:v8 map:self->super._componentsToConditionsMap];
+  typesCopy = types;
+  identifierCopy = identifier;
+  [(SXMutableConditionalObjectAnalysis *)self addObject:identifierCopy keys:typesCopy map:conditionsToComponentsMap];
+  [(SXMutableConditionalObjectAnalysis *)self addObjects:typesCopy key:identifierCopy map:self->super._componentsToConditionsMap];
 }
 
-- (void)removeComponentIdentifier:(id)a3 conditionTypes:(id)a4
+- (void)removeComponentIdentifier:(id)identifier conditionTypes:(id)types
 {
   conditionsToComponentsMap = self->super._conditionsToComponentsMap;
-  v7 = a4;
-  v8 = a3;
-  [(SXMutableConditionalObjectAnalysis *)self removeObject:v8 keys:v7 map:conditionsToComponentsMap];
-  [(SXMutableConditionalObjectAnalysis *)self removeObjects:v7 key:v8 map:self->super._componentsToConditionsMap];
+  typesCopy = types;
+  identifierCopy = identifier;
+  [(SXMutableConditionalObjectAnalysis *)self removeObject:identifierCopy keys:typesCopy map:conditionsToComponentsMap];
+  [(SXMutableConditionalObjectAnalysis *)self removeObjects:typesCopy key:identifierCopy map:self->super._componentsToConditionsMap];
 }
 
-- (void)addComponentStyleIdentifier:(id)a3 conditionTypes:(id)a4
+- (void)addComponentStyleIdentifier:(id)identifier conditionTypes:(id)types
 {
   conditionsToComponentStylesMap = self->super._conditionsToComponentStylesMap;
-  v7 = a4;
-  v8 = a3;
-  [(SXMutableConditionalObjectAnalysis *)self addObject:v8 keys:v7 map:conditionsToComponentStylesMap];
-  [(SXMutableConditionalObjectAnalysis *)self addObjects:v7 key:v8 map:self->super._componentStylesToConditionsMap];
+  typesCopy = types;
+  identifierCopy = identifier;
+  [(SXMutableConditionalObjectAnalysis *)self addObject:identifierCopy keys:typesCopy map:conditionsToComponentStylesMap];
+  [(SXMutableConditionalObjectAnalysis *)self addObjects:typesCopy key:identifierCopy map:self->super._componentStylesToConditionsMap];
 }
 
-- (void)removeComponentStyleIdentifier:(id)a3 conditionTypes:(id)a4
+- (void)removeComponentStyleIdentifier:(id)identifier conditionTypes:(id)types
 {
   conditionsToComponentStylesMap = self->super._conditionsToComponentStylesMap;
-  v7 = a4;
-  v8 = a3;
-  [(SXMutableConditionalObjectAnalysis *)self removeObject:v8 keys:v7 map:conditionsToComponentStylesMap];
-  [(SXMutableConditionalObjectAnalysis *)self removeObjects:v7 key:v8 map:self->super._componentStylesToConditionsMap];
+  typesCopy = types;
+  identifierCopy = identifier;
+  [(SXMutableConditionalObjectAnalysis *)self removeObject:identifierCopy keys:typesCopy map:conditionsToComponentStylesMap];
+  [(SXMutableConditionalObjectAnalysis *)self removeObjects:typesCopy key:identifierCopy map:self->super._componentStylesToConditionsMap];
 }
 
-- (void)addComponentTextStyleIdentifier:(id)a3 conditionTypes:(id)a4
+- (void)addComponentTextStyleIdentifier:(id)identifier conditionTypes:(id)types
 {
   conditionsToComponentTextStylesMap = self->super._conditionsToComponentTextStylesMap;
-  v7 = a4;
-  v8 = a3;
-  [(SXMutableConditionalObjectAnalysis *)self addObject:v8 keys:v7 map:conditionsToComponentTextStylesMap];
-  [(SXMutableConditionalObjectAnalysis *)self addObjects:v7 key:v8 map:self->super._componentTextStylesToConditionsMap];
+  typesCopy = types;
+  identifierCopy = identifier;
+  [(SXMutableConditionalObjectAnalysis *)self addObject:identifierCopy keys:typesCopy map:conditionsToComponentTextStylesMap];
+  [(SXMutableConditionalObjectAnalysis *)self addObjects:typesCopy key:identifierCopy map:self->super._componentTextStylesToConditionsMap];
 }
 
-- (void)removeComponentTextStyleIdentifier:(id)a3 conditionTypes:(id)a4
+- (void)removeComponentTextStyleIdentifier:(id)identifier conditionTypes:(id)types
 {
   conditionsToComponentTextStylesMap = self->super._conditionsToComponentTextStylesMap;
-  v7 = a4;
-  v8 = a3;
-  [(SXMutableConditionalObjectAnalysis *)self removeObject:v8 keys:v7 map:conditionsToComponentTextStylesMap];
-  [(SXMutableConditionalObjectAnalysis *)self removeObjects:v7 key:v8 map:self->super._componentTextStylesToConditionsMap];
+  typesCopy = types;
+  identifierCopy = identifier;
+  [(SXMutableConditionalObjectAnalysis *)self removeObject:identifierCopy keys:typesCopy map:conditionsToComponentTextStylesMap];
+  [(SXMutableConditionalObjectAnalysis *)self removeObjects:typesCopy key:identifierCopy map:self->super._componentTextStylesToConditionsMap];
 }
 
-- (void)addTextStyleIdentifier:(id)a3 conditionTypes:(id)a4
+- (void)addTextStyleIdentifier:(id)identifier conditionTypes:(id)types
 {
   conditionsToTextStylesMap = self->super._conditionsToTextStylesMap;
-  v7 = a4;
-  v8 = a3;
-  [(SXMutableConditionalObjectAnalysis *)self addObject:v8 keys:v7 map:conditionsToTextStylesMap];
-  [(SXMutableConditionalObjectAnalysis *)self addObjects:v7 key:v8 map:self->super._textStylesToConditionsMap];
+  typesCopy = types;
+  identifierCopy = identifier;
+  [(SXMutableConditionalObjectAnalysis *)self addObject:identifierCopy keys:typesCopy map:conditionsToTextStylesMap];
+  [(SXMutableConditionalObjectAnalysis *)self addObjects:typesCopy key:identifierCopy map:self->super._textStylesToConditionsMap];
 }
 
-- (void)removeTextStyleIdentifier:(id)a3 conditionTypes:(id)a4
+- (void)removeTextStyleIdentifier:(id)identifier conditionTypes:(id)types
 {
   conditionsToTextStylesMap = self->super._conditionsToTextStylesMap;
-  v7 = a4;
-  v8 = a3;
-  [(SXMutableConditionalObjectAnalysis *)self removeObject:v8 keys:v7 map:conditionsToTextStylesMap];
-  [(SXMutableConditionalObjectAnalysis *)self removeObjects:v7 key:v8 map:self->super._textStylesToConditionsMap];
+  typesCopy = types;
+  identifierCopy = identifier;
+  [(SXMutableConditionalObjectAnalysis *)self removeObject:identifierCopy keys:typesCopy map:conditionsToTextStylesMap];
+  [(SXMutableConditionalObjectAnalysis *)self removeObjects:typesCopy key:identifierCopy map:self->super._textStylesToConditionsMap];
 }
 
-- (void)addComponentLayoutIdentifier:(id)a3 conditionTypes:(id)a4
+- (void)addComponentLayoutIdentifier:(id)identifier conditionTypes:(id)types
 {
   conditionsToComponentLayoutsMap = self->super._conditionsToComponentLayoutsMap;
-  v7 = a4;
-  v8 = a3;
-  [(SXMutableConditionalObjectAnalysis *)self addObject:v8 keys:v7 map:conditionsToComponentLayoutsMap];
-  [(SXMutableConditionalObjectAnalysis *)self addObjects:v7 key:v8 map:self->super._componentLayoutsToConditionsMap];
+  typesCopy = types;
+  identifierCopy = identifier;
+  [(SXMutableConditionalObjectAnalysis *)self addObject:identifierCopy keys:typesCopy map:conditionsToComponentLayoutsMap];
+  [(SXMutableConditionalObjectAnalysis *)self addObjects:typesCopy key:identifierCopy map:self->super._componentLayoutsToConditionsMap];
 }
 
-- (void)removeComponentLayoutIdentifier:(id)a3 conditionTypes:(id)a4
+- (void)removeComponentLayoutIdentifier:(id)identifier conditionTypes:(id)types
 {
   conditionsToComponentLayoutsMap = self->super._conditionsToComponentLayoutsMap;
-  v7 = a4;
-  v8 = a3;
-  [(SXMutableConditionalObjectAnalysis *)self removeObject:v8 keys:v7 map:conditionsToComponentLayoutsMap];
-  [(SXMutableConditionalObjectAnalysis *)self removeObjects:v7 key:v8 map:self->super._componentLayoutsToConditionsMap];
+  typesCopy = types;
+  identifierCopy = identifier;
+  [(SXMutableConditionalObjectAnalysis *)self removeObject:identifierCopy keys:typesCopy map:conditionsToComponentLayoutsMap];
+  [(SXMutableConditionalObjectAnalysis *)self removeObjects:typesCopy key:identifierCopy map:self->super._componentLayoutsToConditionsMap];
 }
 
-- (void)setDocumentStyleConditionTypes:(id)a3
+- (void)setDocumentStyleConditionTypes:(id)types
 {
-  v4 = [a3 mutableCopy];
+  v4 = [types mutableCopy];
   documentStyleConditionTypes = self->super._documentStyleConditionTypes;
   self->super._documentStyleConditionTypes = v4;
 
   MEMORY[0x1EEE66BB8](v4, documentStyleConditionTypes);
 }
 
-- (void)addObject:(id)a3 keys:(id)a4 map:(id)a5
+- (void)addObject:(id)object keys:(id)keys map:(id)map
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  keysCopy = keys;
+  mapCopy = map;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v11 = [keysCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
     v12 = v11;
@@ -139,41 +139,41 @@
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(keysCopy);
         }
 
-        v15 = [(SXConditionalObjectAnalysis *)self objectsForKey:*(*(&v16 + 1) + 8 * v14) map:v10];
-        [v15 addObject:v8];
+        v15 = [(SXConditionalObjectAnalysis *)self objectsForKey:*(*(&v16 + 1) + 8 * v14) map:mapCopy];
+        [v15 addObject:objectCopy];
 
         ++v14;
       }
 
       while (v12 != v14);
-      v12 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v12 = [keysCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v12);
   }
 }
 
-- (void)addObjects:(id)a3 key:(id)a4 map:(id)a5
+- (void)addObjects:(id)objects key:(id)key map:(id)map
 {
-  v8 = a3;
-  v9 = [(SXConditionalObjectAnalysis *)self objectsForKey:a4 map:a5];
-  [v9 unionSet:v8];
+  objectsCopy = objects;
+  v9 = [(SXConditionalObjectAnalysis *)self objectsForKey:key map:map];
+  [v9 unionSet:objectsCopy];
 }
 
-- (void)removeObject:(id)a3 keys:(id)a4 map:(id)a5
+- (void)removeObject:(id)object keys:(id)keys map:(id)map
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  keysCopy = keys;
+  mapCopy = map;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v11 = [keysCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
     v12 = v11;
@@ -185,28 +185,28 @@
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(keysCopy);
         }
 
-        v15 = [(SXConditionalObjectAnalysis *)self objectsForKey:*(*(&v16 + 1) + 8 * v14) map:v10];
-        [v15 removeObject:v8];
+        v15 = [(SXConditionalObjectAnalysis *)self objectsForKey:*(*(&v16 + 1) + 8 * v14) map:mapCopy];
+        [v15 removeObject:objectCopy];
 
         ++v14;
       }
 
       while (v12 != v14);
-      v12 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v12 = [keysCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v12);
   }
 }
 
-- (void)removeObjects:(id)a3 key:(id)a4 map:(id)a5
+- (void)removeObjects:(id)objects key:(id)key map:(id)map
 {
-  v8 = a3;
-  v9 = [(SXConditionalObjectAnalysis *)self objectsForKey:a4 map:a5];
-  [v9 minusSet:v8];
+  objectsCopy = objects;
+  v9 = [(SXConditionalObjectAnalysis *)self objectsForKey:key map:map];
+  [v9 minusSet:objectsCopy];
 }
 
 @end

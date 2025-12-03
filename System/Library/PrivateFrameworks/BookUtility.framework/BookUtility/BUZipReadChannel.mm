@@ -1,31 +1,31 @@
 @interface BUZipReadChannel
-- (BOOL)processData:(id)a3 CRC:(unsigned int *)a4 isDone:(BOOL)a5 handler:(id)a6;
-- (BOOL)readFileHeaderFromData:(id)a3 headerLength:(unint64_t *)a4;
-- (BUZipReadChannel)initWithEntry:(id)a3 archive:(id)a4 validateCRC:(BOOL)a5;
+- (BOOL)processData:(id)data CRC:(unsigned int *)c isDone:(BOOL)done handler:(id)handler;
+- (BOOL)readFileHeaderFromData:(id)data headerLength:(unint64_t *)length;
+- (BUZipReadChannel)initWithEntry:(id)entry archive:(id)archive validateCRC:(BOOL)c;
 - (void)close;
 - (void)dealloc;
-- (void)handleFailureWithHandler:(id)a3 error:(id)a4;
-- (void)readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5;
-- (void)readWithFileHeaderLength:(unint64_t)a3 handler:(id)a4;
-- (void)readWithHandler:(id)a3;
+- (void)handleFailureWithHandler:(id)handler error:(id)error;
+- (void)readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler;
+- (void)readWithFileHeaderLength:(unint64_t)length handler:(id)handler;
+- (void)readWithHandler:(id)handler;
 @end
 
 @implementation BUZipReadChannel
 
-- (BUZipReadChannel)initWithEntry:(id)a3 archive:(id)a4 validateCRC:(BOOL)a5
+- (BUZipReadChannel)initWithEntry:(id)entry archive:(id)archive validateCRC:(BOOL)c
 {
-  v9 = a3;
-  v10 = a4;
+  entryCopy = entry;
+  archiveCopy = archive;
   v18.receiver = self;
   v18.super_class = BUZipReadChannel;
   v11 = [(BUZipReadChannel *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_entry, a3);
-    objc_storeStrong(&v12->_archive, a4);
-    v12->_validateCRC = a5;
-    Channel = objc_msgSend_newArchiveReadChannel(v10, v13, v14);
+    objc_storeStrong(&v11->_entry, entry);
+    objc_storeStrong(&v12->_archive, archive);
+    v12->_validateCRC = c;
+    Channel = objc_msgSend_newArchiveReadChannel(archiveCopy, v13, v14);
     archiveReadChannel = v12->_archiveReadChannel;
     v12->_archiveReadChannel = Channel;
 
@@ -47,14 +47,14 @@
   [(BUZipReadChannel *)&v4 dealloc];
 }
 
-- (void)readWithHandler:(id)a3
+- (void)readWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = objc_msgSend_compressedSize(self->_entry, v5, v6);
   v10 = objc_msgSend_fileHeaderLength(self->_entry, v8, v9);
   if (v10)
   {
-    objc_msgSend_readWithFileHeaderLength_handler_(self, v11, v10, v4);
+    objc_msgSend_readWithFileHeaderLength_handler_(self, v11, v10, handlerCopy);
   }
 
   else
@@ -89,7 +89,7 @@
     v24[3] = &unk_278D1D998;
     v26 = v33;
     v24[4] = self;
-    v25 = v4;
+    v25 = handlerCopy;
     v27 = v37;
     v28 = v35;
     v29 = v31;
@@ -103,13 +103,13 @@
   }
 }
 
-- (void)readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5
+- (void)readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  handlerCopy = handler;
   v11 = objc_msgSend_compressedSize(self->_entry, v9, v10);
   v14 = v11;
-  if (a3 < 0 || v11 < a3)
+  if (offset < 0 || v11 < offset)
   {
     v15 = BUZipLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -120,21 +120,21 @@
       v35 = 2048;
       v36 = v14;
       v37 = 2048;
-      v38 = a3;
+      offsetCopy = offset;
       _os_log_error_impl(&dword_241DA6000, v15, OS_LOG_TYPE_ERROR, "Requested range is not within the entry: %@. Size: %llu. Requested offset: %llu", buf, 0x20u);
     }
 
-    (*(v8 + 2))(v8, 1, MEMORY[0x277D85CC8], 0);
+    (*(handlerCopy + 2))(handlerCopy, 1, MEMORY[0x277D85CC8], 0);
   }
 
   else
   {
-    if (v11 - a3 < a4)
+    if (v11 - offset < length)
     {
-      a4 = v11 - a3;
+      length = v11 - offset;
     }
 
-    if (a3 || a4 != v11)
+    if (offset || length != v11)
     {
       v18 = objc_msgSend_fileHeaderLength(self->_entry, v12, v13);
       if (v18)
@@ -142,7 +142,7 @@
         v21 = v18;
         archiveReadChannel = self->_archiveReadChannel;
         v23 = objc_msgSend_offset(self->_entry, v19, v20);
-        objc_msgSend_readFromOffset_length_handler_(archiveReadChannel, v24, v21 + a3 + v23, a4, v8);
+        objc_msgSend_readFromOffset_length_handler_(archiveReadChannel, v24, v21 + offset + v23, length, handlerCopy);
       }
 
       else
@@ -154,33 +154,33 @@
         v29[2] = sub_241DC35C4;
         v29[3] = &unk_278D1D9C0;
         v29[4] = self;
-        v31 = a3;
-        v32 = a4;
-        v30 = v8;
+        offsetCopy2 = offset;
+        lengthCopy = length;
+        v30 = handlerCopy;
         objc_msgSend_readAllFromChannel_offset_length_completion_(BUIOUtils, v27, v25, v26, 30, v29);
       }
     }
 
     else
     {
-      objc_msgSend_readWithHandler_(self, v12, v8);
+      objc_msgSend_readWithHandler_(self, v12, handlerCopy);
     }
   }
 }
 
-- (BOOL)readFileHeaderFromData:(id)a3 headerLength:(unint64_t *)a4
+- (BOOL)readFileHeaderFromData:(id)data headerLength:(unint64_t *)length
 {
-  v6 = a3;
-  size = dispatch_data_get_size(v6);
+  dataCopy = data;
+  size = dispatch_data_get_size(dataCopy);
   if (size == 30)
   {
-    subrange = v6;
+    subrange = dataCopy;
     goto LABEL_5;
   }
 
   if (size >= 0x1F)
   {
-    subrange = dispatch_data_create_subrange(v6, 0, 0x1EuLL);
+    subrange = dispatch_data_create_subrange(dataCopy, 0, 0x1EuLL);
 LABEL_5:
     v9 = subrange;
     v24 = 0;
@@ -203,7 +203,7 @@ LABEL_5:
       if (v15 && (((v14 != BUZipDeflateCompressionMethod) ^ objc_msgSend_isCompressed(self->_entry, v10, v11)) & 1) != 0)
       {
         v17 = v13[13] + v13[14] + 30;
-        *a4 = v17;
+        *length = v17;
         objc_msgSend_setFileHeaderLength_(self->_entry, v16, v17);
         v18 = 1;
 LABEL_18:
@@ -243,9 +243,9 @@ LABEL_22:
   return v18;
 }
 
-- (void)readWithFileHeaderLength:(unint64_t)a3 handler:(id)a4
+- (void)readWithFileHeaderLength:(unint64_t)length handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x2020000000;
@@ -263,21 +263,21 @@ LABEL_22:
   v16[3] = &unk_278D1D9E8;
   v18 = v22;
   v16[4] = self;
-  v14 = v6;
+  v14 = handlerCopy;
   v17 = v14;
   v19 = v20;
-  objc_msgSend_readFromOffset_length_handler_(archiveReadChannel, v15, v10 + a3, v13, v16);
+  objc_msgSend_readFromOffset_length_handler_(archiveReadChannel, v15, v10 + length, v13, v16);
 
   _Block_object_dispose(v20, 8);
   _Block_object_dispose(v22, 8);
 }
 
-- (BOOL)processData:(id)a3 CRC:(unsigned int *)a4 isDone:(BOOL)a5 handler:(id)a6
+- (BOOL)processData:(id)data CRC:(unsigned int *)c isDone:(BOOL)done handler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
-  if (a4 && self->_validateCRC && (applier[0] = MEMORY[0x277D85DD0], applier[1] = 3221225472, applier[2] = sub_241DC3B90, applier[3] = &unk_278D1DA08, applier[4] = a4, dispatch_data_apply(v10, applier), v7) && objc_msgSend_CRC(self->_entry, v12, v13) != *a4)
+  doneCopy = done;
+  dataCopy = data;
+  handlerCopy = handler;
+  if (c && self->_validateCRC && (applier[0] = MEMORY[0x277D85DD0], applier[1] = 3221225472, applier[2] = sub_241DC3B90, applier[3] = &unk_278D1DA08, applier[4] = c, dispatch_data_apply(dataCopy, applier), doneCopy) && objc_msgSend_CRC(self->_entry, v12, v13) != *c)
   {
     v16 = BUZipLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -285,34 +285,34 @@ LABEL_22:
       sub_241DD0D68(&self->_entry, v16, v17);
     }
 
-    objc_msgSend_handleFailureWithHandler_error_(self, v18, v11, 0);
+    objc_msgSend_handleFailureWithHandler_error_(self, v18, handlerCopy, 0);
     v14 = 0;
   }
 
   else
   {
-    v11[2](v11, v7, v10, 0);
+    handlerCopy[2](handlerCopy, doneCopy, dataCopy, 0);
     v14 = 1;
   }
 
   return v14;
 }
 
-- (void)handleFailureWithHandler:(id)a3 error:(id)a4
+- (void)handleFailureWithHandler:(id)handler error:(id)error
 {
-  if (a4)
+  if (error)
   {
-    v5 = *(a3 + 2);
-    v9 = a3;
+    v5 = *(handler + 2);
+    handlerCopy = handler;
     v5();
   }
 
   else
   {
     v6 = MEMORY[0x277CCA9B8];
-    v7 = a3;
-    v9 = objc_msgSend_bu_fileReadCorruptedFileErrorWithUserInfo_(v6, v8, 0);
-    (*(a3 + 2))(v7, 1, 0);
+    handlerCopy2 = handler;
+    handlerCopy = objc_msgSend_bu_fileReadCorruptedFileErrorWithUserInfo_(v6, v8, 0);
+    (*(handler + 2))(handlerCopy2, 1, 0);
   }
 }
 

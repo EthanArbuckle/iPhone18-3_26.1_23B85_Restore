@@ -1,11 +1,11 @@
 @interface RDCoreDataCoreSpotlightDelegate
-+ (void)deleteAllIndicesIfVersionOutdatedWithCompletionHandler:(id)a3;
-- (id)attributeSetForObject:(id)a3;
-- (id)initForStoreWithDescription:(id)a3 coordinator:(id)a4;
++ (void)deleteAllIndicesIfVersionOutdatedWithCompletionHandler:(id)handler;
+- (id)attributeSetForObject:(id)object;
+- (id)initForStoreWithDescription:(id)description coordinator:(id)coordinator;
 - (id)protectionClass;
-- (void)deleteAllIndicesWithCompletionHandler:(id)a3;
-- (void)reindexAllSearchableItemsWithAcknowledgementHandler:(id)a3;
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3 acknowledgementHandler:(id)a4;
+- (void)deleteAllIndicesWithCompletionHandler:(id)handler;
+- (void)reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler;
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler;
 @end
 
 @implementation RDCoreDataCoreSpotlightDelegate
@@ -29,18 +29,18 @@
   return v4;
 }
 
-- (id)attributeSetForObject:(id)a3
+- (id)attributeSetForObject:(id)object
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1001EBC64(v4);
+  objectCopy = object;
+  selfCopy = self;
+  v6 = sub_1001EBC64(objectCopy);
 
   return v6;
 }
 
-+ (void)deleteAllIndicesIfVersionOutdatedWithCompletionHandler:(id)a3
++ (void)deleteAllIndicesIfVersionOutdatedWithCompletionHandler:(id)handler
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(handler);
   if (v3)
   {
     v4 = swift_allocObject();
@@ -58,18 +58,18 @@
   sub_10003E114(v3);
 }
 
-- (void)deleteAllIndicesWithCompletionHandler:(id)a3
+- (void)deleteAllIndicesWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_1001F57B8(sub_10003FE58, v5);
 }
 
-- (void)reindexAllSearchableItemsWithAcknowledgementHandler:(id)a3
+- (void)reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -84,14 +84,14 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1001F599C(v7, v6);
   sub_10003E114(v7);
 }
 
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3 acknowledgementHandler:(id)a4
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   if (v5)
   {
@@ -105,18 +105,18 @@
     v7 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1001F5BB4(v6, v5, v7);
   sub_10003E114(v5);
 }
 
-- (id)initForStoreWithDescription:(id)a3 coordinator:(id)a4
+- (id)initForStoreWithDescription:(id)description coordinator:(id)coordinator
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC7remindd31RDCoreDataCoreSpotlightDelegate____lazy_storage___contactStore) = 0;
   *(&self->super.super.isa + OBJC_IVAR____TtC7remindd31RDCoreDataCoreSpotlightDelegate_shouldStart) = 1;
   v7.receiver = self;
   v7.super_class = type metadata accessor for RDCoreDataCoreSpotlightDelegate();
-  return [(RDCoreDataCoreSpotlightDelegate *)&v7 initForStoreWithDescription:a3 coordinator:a4];
+  return [(RDCoreDataCoreSpotlightDelegate *)&v7 initForStoreWithDescription:description coordinator:coordinator];
 }
 
 @end

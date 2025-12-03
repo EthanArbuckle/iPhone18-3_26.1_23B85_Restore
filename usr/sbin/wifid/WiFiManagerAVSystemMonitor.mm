@@ -1,19 +1,19 @@
 @interface WiFiManagerAVSystemMonitor
 - (void)dealloc;
-- (void)dispatchAVSystemMonitorCallback:(id)a3;
-- (void)dispatchAVSystemServerCallIsActive:(id)a3;
-- (void)dispatchAVSystemServerDiedCallback:(id)a3;
+- (void)dispatchAVSystemMonitorCallback:(id)callback;
+- (void)dispatchAVSystemServerCallIsActive:(id)active;
+- (void)dispatchAVSystemServerDiedCallback:(id)callback;
 - (void)startMonitoringAVSystem;
 - (void)stopMonitoringAVSystem;
 @end
 
 @implementation WiFiManagerAVSystemMonitor
 
-- (void)dispatchAVSystemMonitorCallback:(id)a3
+- (void)dispatchAVSystemMonitorCallback:(id)callback
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [a3 userInfo];
-  v7 = [v6 objectForKey:AVSystemController_VoicePromptStyleDidChangeNotificationParameter];
+  userInfo = [callback userInfo];
+  v7 = [userInfo objectForKey:AVSystemController_VoicePromptStyleDidChangeNotificationParameter];
   v8 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
@@ -40,13 +40,13 @@
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)dispatchAVSystemServerDiedCallback:(id)a3
+- (void)dispatchAVSystemServerDiedCallback:(id)callback
 {
   v5 = objc_autoreleasePoolPush();
   v6 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: AVSystemServerDied %@", "-[WiFiManagerAVSystemMonitor dispatchAVSystemServerDiedCallback:]", a3}];
+    [off_100298C40 WFLog:3 message:{"%s: AVSystemServerDied %@", "-[WiFiManagerAVSystemMonitor dispatchAVSystemServerDiedCallback:]", callback}];
   }
 
   objc_autoreleasePoolPop(v6);
@@ -55,13 +55,13 @@
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)dispatchAVSystemServerCallIsActive:(id)a3
+- (void)dispatchAVSystemServerCallIsActive:(id)active
 {
   v5 = objc_autoreleasePoolPush();
   v6 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: AVSystemCallIsActiveNotificationReceived %@", "-[WiFiManagerAVSystemMonitor dispatchAVSystemServerCallIsActive:]", a3}];
+    [off_100298C40 WFLog:3 message:{"%s: AVSystemCallIsActiveNotificationReceived %@", "-[WiFiManagerAVSystemMonitor dispatchAVSystemServerCallIsActive:]", active}];
   }
 
   objc_autoreleasePoolPop(v6);
@@ -70,7 +70,7 @@
   block[2] = sub_1000A42B4;
   block[3] = &unk_100261330;
   block[4] = self;
-  block[5] = a3;
+  block[5] = active;
   dispatch_async([(WiFiManagerAVSystemMonitor *)self queue], block);
   objc_autoreleasePoolPop(v5);
 }

@@ -7,16 +7,16 @@
 + (id)_largeFavicon;
 + (id)_mainNavigationElement;
 + (id)_safariIcon;
-+ (id)_scriptElementWithLocation:(id)a3;
++ (id)_scriptElementWithLocation:(id)location;
 + (id)_smallFavicon;
-+ (id)_stylesheetElementWithLocation:(id)a3;
++ (id)_stylesheetElementWithLocation:(id)location;
 + (id)_viewportElement;
 - (REHTMLPageBuilder)init;
-- (id)pageWithTitle:(id)a3 content:(id)a4 backLocation:(id)a5;
-- (void)setLinks:(id)a3;
-- (void)setLoadingScripts:(id)a3;
-- (void)setPageDescription:(id)a3;
-- (void)setStylesheets:(id)a3;
+- (id)pageWithTitle:(id)title content:(id)content backLocation:(id)location;
+- (void)setLinks:(id)links;
+- (void)setLoadingScripts:(id)scripts;
+- (void)setPageDescription:(id)description;
+- (void)setStylesheets:(id)stylesheets;
 @end
 
 @implementation REHTMLPageBuilder
@@ -69,7 +69,7 @@ uint64_t __33__REHTMLPageBuilder__htmlElement__block_invoke()
   block[1] = 3221225472;
   block[2] = __33__REHTMLPageBuilder__headElement__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_headElement_onceToken != -1)
   {
     dispatch_once(&_headElement_onceToken, block);
@@ -128,16 +128,16 @@ void __33__REHTMLPageBuilder__headElement__block_invoke(uint64_t a1)
   _headElement_Element = v28;
 }
 
-+ (id)_stylesheetElementWithLocation:(id)a3
++ (id)_stylesheetElementWithLocation:(id)location
 {
   v3 = _stylesheetElementWithLocation__onceToken;
-  v4 = a3;
+  locationCopy = location;
   if (v3 != -1)
   {
     +[REHTMLPageBuilder _stylesheetElementWithLocation:];
   }
 
-  v5 = [_stylesheetElementWithLocation__Element elementByAddingAtttibute:@"href" value:v4];
+  v5 = [_stylesheetElementWithLocation__Element elementByAddingAtttibute:@"href" value:locationCopy];
 
   return v5;
 }
@@ -155,16 +155,16 @@ uint64_t __52__REHTMLPageBuilder__stylesheetElementWithLocation___block_invoke()
   return MEMORY[0x2821F96F8](v2, v3);
 }
 
-+ (id)_scriptElementWithLocation:(id)a3
++ (id)_scriptElementWithLocation:(id)location
 {
   v3 = _scriptElementWithLocation__onceToken;
-  v4 = a3;
+  locationCopy = location;
   if (v3 != -1)
   {
     +[REHTMLPageBuilder _scriptElementWithLocation:];
   }
 
-  v5 = [_scriptElementWithLocation__Element elementByAddingAtttibute:@"src" value:v4];
+  v5 = [_scriptElementWithLocation__Element elementByAddingAtttibute:@"src" value:locationCopy];
 
   return v5;
 }
@@ -281,14 +281,14 @@ void __43__REHTMLPageBuilder__mainNavigationElement__block_invoke()
   return v3;
 }
 
-- (void)setStylesheets:(id)a3
+- (void)setStylesheets:(id)stylesheets
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (self->_stylesheets != v5 && ([(NSArray *)v5 isEqual:?]& 1) == 0)
+  stylesheetsCopy = stylesheets;
+  v6 = stylesheetsCopy;
+  if (self->_stylesheets != stylesheetsCopy && ([(NSArray *)stylesheetsCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_stylesheets, a3);
+    objc_storeStrong(&self->_stylesheets, stylesheets);
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
@@ -354,14 +354,14 @@ LABEL_17:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLoadingScripts:(id)a3
+- (void)setLoadingScripts:(id)scripts
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (self->_loadingScripts != v5 && ([(NSArray *)v5 isEqual:?]& 1) == 0)
+  scriptsCopy = scripts;
+  v6 = scriptsCopy;
+  if (self->_loadingScripts != scriptsCopy && ([(NSArray *)scriptsCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_loadingScripts, a3);
+    objc_storeStrong(&self->_loadingScripts, scripts);
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
@@ -427,11 +427,11 @@ LABEL_17:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPageDescription:(id)a3
+- (void)setPageDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   pageDescription = self->_pageDescription;
-  v6 = v4;
+  v6 = descriptionCopy;
   v7 = v6;
   if (pageDescription == v6)
   {
@@ -472,17 +472,17 @@ LABEL_17:
   }
 }
 
-- (void)setLinks:(id)a3
+- (void)setLinks:(id)links
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (self->_links == v5 || ([(NSArray *)v5 isEqual:?]& 1) != 0)
+  linksCopy = links;
+  v6 = linksCopy;
+  if (self->_links == linksCopy || ([(NSArray *)linksCopy isEqual:?]& 1) != 0)
   {
     goto LABEL_20;
   }
 
-  objc_storeStrong(&self->_links, a3);
+  objc_storeStrong(&self->_links, links);
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -496,7 +496,7 @@ LABEL_17:
   }
 
   v9 = v8;
-  v23 = self;
+  selfCopy = self;
   v24 = v6;
   v10 = 0;
   v11 = *v28;
@@ -510,12 +510,12 @@ LABEL_17:
       }
 
       v13 = *(*(&v27 + 1) + 8 * i);
-      v14 = [v13 location];
-      v15 = [v13 title];
-      v16 = [REHTMLElement link:v14 title:v15];
+      location = [v13 location];
+      title = [v13 title];
+      v16 = [REHTMLElement link:location title:title];
 
-      v17 = [v13 location];
-      v18 = [v17 length];
+      location2 = [v13 location];
+      v18 = [location2 length];
 
       if (v18)
       {
@@ -549,7 +549,7 @@ LABEL_13:
 
   while (v9);
 
-  self = v23;
+  self = selfCopy;
   v6 = v24;
   if (!v10)
   {
@@ -570,22 +570,22 @@ LABEL_20:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)pageWithTitle:(id)a3 content:(id)a4 backLocation:(id)a5
+- (id)pageWithTitle:(id)title content:(id)content backLocation:(id)location
 {
   v72[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v46 = a4;
-  v9 = a5;
-  if (![(__CFString *)v8 length])
+  titleCopy = title;
+  contentCopy = content;
+  locationCopy = location;
+  if (![(__CFString *)titleCopy length])
   {
 
-    v8 = 0;
+    titleCopy = 0;
   }
 
-  v45 = v9;
-  if (!v46)
+  v45 = locationCopy;
+  if (!contentCopy)
   {
-    v46 = [REHTMLElement elementWithHTMLString:&stru_283B97458];
+    contentCopy = [REHTMLElement elementWithHTMLString:&stru_283B97458];
   }
 
   v66 = 0;
@@ -622,16 +622,16 @@ LABEL_20:
   v47[7] = &v54;
   v47[8] = &v48;
   REHTMLElementAccessLock(v47);
-  v10 = [objc_opt_class() _headElement];
+  _headElement = [objc_opt_class() _headElement];
   v11 = v67[5];
   v72[0] = v55[5];
   v72[1] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:2];
-  v13 = [v10 addChildren:v12];
+  v13 = [_headElement addChildren:v12];
 
-  if (v8)
+  if (titleCopy)
   {
-    v14 = v8;
+    v14 = titleCopy;
   }
 
   else
@@ -643,23 +643,23 @@ LABEL_20:
   v16 = [v13 addChild:v15];
   v43 = v15;
 
-  v17 = [objc_opt_class() _htmlElement];
-  v18 = [v17 addChild:v16];
+  _htmlElement = [objc_opt_class() _htmlElement];
+  v18 = [_htmlElement addChild:v16];
 
   v19 = [v18 addChild:v61[5]];
 
-  v20 = [objc_opt_class() _bodyElement];
-  v21 = [objc_opt_class() _mainNavigationElement];
-  v22 = [v21 addChild:v49[5]];
+  _bodyElement = [objc_opt_class() _bodyElement];
+  _mainNavigationElement = [objc_opt_class() _mainNavigationElement];
+  v22 = [_mainNavigationElement addChild:v49[5]];
 
-  v23 = [v20 addChild:v22];
+  v23 = [_bodyElement addChild:v22];
 
   v24 = +[REHTMLElement div];
   v25 = [v24 elementByAddingClass:@"content"];
 
   v26 = [v25 elementByAddingAtttibute:@"id" value:@"main-content"];
 
-  if (v8)
+  if (titleCopy)
   {
     v27 = +[REHTMLElement div];
     v28 = [v27 elementByAddingClass:@"header"];
@@ -676,7 +676,7 @@ LABEL_20:
       v29 = v32;
     }
 
-    v33 = [REHTMLElement h1:v8];
+    v33 = [REHTMLElement h1:titleCopy];
     v34 = [v29 addChild:v33];
 
     v35 = [v26 addChild:v34];
@@ -684,14 +684,14 @@ LABEL_20:
     v26 = v35;
   }
 
-  v36 = [v26 addChild:{v46, v43}];
+  v36 = [v26 addChild:{contentCopy, v43}];
 
   v37 = [v23 addChild:v36];
 
   v38 = [v19 addChild:v37];
 
-  v39 = [objc_opt_class() _docTypeElement];
-  v40 = [v39 append:v38];
+  _docTypeElement = [objc_opt_class() _docTypeElement];
+  v40 = [_docTypeElement append:v38];
 
   _Block_object_dispose(&v48, 8);
   _Block_object_dispose(&v54, 8);

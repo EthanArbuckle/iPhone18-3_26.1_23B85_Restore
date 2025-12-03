@@ -1,20 +1,20 @@
 @interface HKEnumeratedDisplayTypeNumberFormatter
-- (HKEnumeratedDisplayTypeNumberFormatter)initWithDisplayType:(id)a3;
+- (HKEnumeratedDisplayTypeNumberFormatter)initWithDisplayType:(id)type;
 @end
 
 @implementation HKEnumeratedDisplayTypeNumberFormatter
 
-- (HKEnumeratedDisplayTypeNumberFormatter)initWithDisplayType:(id)a3
+- (HKEnumeratedDisplayTypeNumberFormatter)initWithDisplayType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v9.receiver = self;
   v9.super_class = HKEnumeratedDisplayTypeNumberFormatter;
   v5 = [(HKEnumeratedDisplayTypeNumberFormatter *)&v9 init];
   if (v5)
   {
-    v6 = [v4 hk_enumeratedValueLabels];
+    hk_enumeratedValueLabels = [typeCopy hk_enumeratedValueLabels];
     valueLabels = v5->_valueLabels;
-    v5->_valueLabels = v6;
+    v5->_valueLabels = hk_enumeratedValueLabels;
   }
 
   return v5;

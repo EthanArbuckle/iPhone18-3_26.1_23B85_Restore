@@ -1,19 +1,19 @@
 @interface HMBLocalZoneLocalInput
-- (BOOL)stageAdditionForModel:(id)a3 error:(id *)a4;
-- (id)commitWithOptions:(id)a3 error:(id *)a4;
+- (BOOL)stageAdditionForModel:(id)model error:(id *)error;
+- (id)commitWithOptions:(id)options error:(id *)error;
 @end
 
 @implementation HMBLocalZoneLocalInput
 
-- (id)commitWithOptions:(id)a3 error:(id *)a4
+- (id)commitWithOptions:(id)options error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HMBLocalZoneLocalInput *)self additionConstraint];
-  if (v7 == 2)
+  optionsCopy = options;
+  additionConstraint = [(HMBLocalZoneLocalInput *)self additionConstraint];
+  if (additionConstraint == 2)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -21,18 +21,18 @@
       *buf = 138543618;
       v21 = v15;
       v22 = 2048;
-      v23 = [(HMBLocalZoneLocalInput *)v13 additionConstraint];
+      additionConstraint2 = [(HMBLocalZoneLocalInput *)selfCopy additionConstraint];
       _os_log_impl(&dword_22AD27000, v14, OS_LOG_TYPE_INFO, "%{public}@Setting disallowsModelCreation to YES because addition constraint is %ld", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v12);
-    [v6 setDisallowsModelCreation:1];
+    [optionsCopy setDisallowsModelCreation:1];
   }
 
-  else if (v7 == 1)
+  else if (additionConstraint == 1)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -40,29 +40,29 @@
       *buf = 138543618;
       v21 = v11;
       v22 = 2048;
-      v23 = [(HMBLocalZoneLocalInput *)v9 additionConstraint];
+      additionConstraint2 = [(HMBLocalZoneLocalInput *)selfCopy2 additionConstraint];
       _os_log_impl(&dword_22AD27000, v10, OS_LOG_TYPE_INFO, "%{public}@Setting requiresModelCreation to YES because addition constraint is %ld", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    [v6 setRequiresModelCreation:1];
+    [optionsCopy setRequiresModelCreation:1];
   }
 
   v19.receiver = self;
   v19.super_class = HMBLocalZoneLocalInput;
-  v16 = [(HMBLocalZoneInput *)&v19 commitWithOptions:v6 error:a4];
+  v16 = [(HMBLocalZoneInput *)&v19 commitWithOptions:optionsCopy error:error];
 
   v17 = *MEMORY[0x277D85DE8];
 
   return v16;
 }
 
-- (BOOL)stageAdditionForModel:(id)a3 error:(id *)a4
+- (BOOL)stageAdditionForModel:(id)model error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  modelCopy = model;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -70,48 +70,48 @@
     *buf = 138543618;
     v33 = v10;
     v34 = 2112;
-    v35 = v6;
+    v35 = modelCopy;
     _os_log_impl(&dword_22AD27000, v9, OS_LOG_TYPE_INFO, "%{public}@Staging addition for model: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v11 = [(HMBLocalZoneInput *)v8 localZone];
-  v12 = [v11 modelContainer];
-  v13 = [v12 bestModelEncodingForStorageLocation:3];
+  localZone = [(HMBLocalZoneInput *)selfCopy localZone];
+  modelContainer = [localZone modelContainer];
+  v13 = [modelContainer bestModelEncodingForStorageLocation:3];
 
-  v14 = [(HMBLocalZoneInput *)v8 localZone];
-  v15 = [v14 modelContainer];
+  localZone2 = [(HMBLocalZoneInput *)selfCopy localZone];
+  modelContainer2 = [localZone2 modelContainer];
   v31 = 0;
-  v16 = [v15 dataFromModel:v6 encoding:v13 storageLocation:3 updatedModelIDs:0 error:&v31];
+  v16 = [modelContainer2 dataFromModel:modelCopy encoding:v13 storageLocation:3 updatedModelIDs:0 error:&v31];
   v17 = v31;
 
   if (v16)
   {
-    v18 = [(HMBLocalZoneInput *)v8 inputBlock];
-    v19 = [MEMORY[0x277CCAD78] UUID];
-    v20 = [v19 data];
-    v21 = [v18 updateExternalID:v20 externalData:0 modelEncoding:v13 modelData:v16];
+    inputBlock = [(HMBLocalZoneInput *)selfCopy inputBlock];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    data = [uUID data];
+    v21 = [inputBlock updateExternalID:data externalData:0 modelEncoding:v13 modelData:v16];
 
     v22 = v21 == 0;
     if (v21)
     {
-      if (a4)
+      if (error)
       {
         v23 = v21;
-        *a4 = v21;
+        *error = v21;
       }
     }
 
     else
     {
-      [(HMBLocalZoneInput *)v8 setStagedChangesCount:[(HMBLocalZoneInput *)v8 stagedChangesCount]+ 1];
+      [(HMBLocalZoneInput *)selfCopy setStagedChangesCount:[(HMBLocalZoneInput *)selfCopy stagedChangesCount]+ 1];
     }
   }
 
   else
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = v8;
+    v25 = selfCopy;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -119,18 +119,18 @@
       *buf = 138543874;
       v33 = v27;
       v34 = 2112;
-      v35 = v6;
+      v35 = modelCopy;
       v36 = 2112;
       v37 = v17;
       _os_log_impl(&dword_22AD27000, v26, OS_LOG_TYPE_ERROR, "%{public}@Failed to encode model %@: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v24);
-    if (a4)
+    if (error)
     {
       v28 = v17;
       v22 = 0;
-      *a4 = v17;
+      *error = v17;
     }
 
     else

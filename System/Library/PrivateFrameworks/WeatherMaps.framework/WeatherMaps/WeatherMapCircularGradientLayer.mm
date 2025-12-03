@@ -1,11 +1,11 @@
 @interface WeatherMapCircularGradientLayer
-- (_TtC11WeatherMaps31WeatherMapCircularGradientLayer)initWithLayer:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
+- (_TtC11WeatherMaps31WeatherMapCircularGradientLayer)initWithLayer:(id)layer;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation WeatherMapCircularGradientLayer
 
-- (_TtC11WeatherMaps31WeatherMapCircularGradientLayer)initWithLayer:(id)a3
+- (_TtC11WeatherMaps31WeatherMapCircularGradientLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_220FC3410();
@@ -13,11 +13,11 @@
   return sub_220EC1364(v4);
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_220EC15F8(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_220EC15F8(contextCopy);
 }
 
 @end

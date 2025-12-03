@@ -1,15 +1,15 @@
 @interface _SFMultipleLineAlertActionView
-- (_SFMultipleLineAlertActionView)initWithFrame:(CGRect)a3;
+- (_SFMultipleLineAlertActionView)initWithFrame:(CGRect)frame;
 - (void)tintColorDidChange;
 @end
 
 @implementation _SFMultipleLineAlertActionView
 
-- (_SFMultipleLineAlertActionView)initWithFrame:(CGRect)a3
+- (_SFMultipleLineAlertActionView)initWithFrame:(CGRect)frame
 {
   v26.receiver = self;
   v26.super_class = _SFMultipleLineAlertActionView;
-  v3 = [(_SFMultipleLineAlertActionView *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SFMultipleLineAlertActionView *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -69,9 +69,9 @@
 
 - (void)tintColorDidChange
 {
-  v3 = [(_SFMultipleLineAlertActionView *)self tintColor];
-  [(UILabel *)self->_titleLabel setTextColor:v3];
-  [(UILabel *)self->_detailLabel setTextColor:v3];
+  tintColor = [(_SFMultipleLineAlertActionView *)self tintColor];
+  [(UILabel *)self->_titleLabel setTextColor:tintColor];
+  [(UILabel *)self->_detailLabel setTextColor:tintColor];
 }
 
 @end

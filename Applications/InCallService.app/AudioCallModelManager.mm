@@ -1,12 +1,12 @@
 @interface AudioCallModelManager
-- (void)callDisplayStyleDidChangeFromStyle:(int64_t)a3 toStyle:(int64_t)a4;
-- (void)callStatusChanged:(id)a3;
-- (void)secondTickNotification:(id)a3;
+- (void)callDisplayStyleDidChangeFromStyle:(int64_t)style toStyle:(int64_t)toStyle;
+- (void)callStatusChanged:(id)changed;
+- (void)secondTickNotification:(id)notification;
 @end
 
 @implementation AudioCallModelManager
 
-- (void)secondTickNotification:(id)a3
+- (void)secondTickNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);
@@ -16,7 +16,7 @@
   (*(v4 + 8))(v7, v3);
 }
 
-- (void)callStatusChanged:(id)a3
+- (void)callStatusChanged:(id)changed
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);
@@ -29,7 +29,7 @@
   (*(v4 + 8))(v7, v3);
 }
 
-- (void)callDisplayStyleDidChangeFromStyle:(int64_t)a3 toStyle:(int64_t)a4
+- (void)callDisplayStyleDidChangeFromStyle:(int64_t)style toStyle:(int64_t)toStyle
 {
 
   sub_1001D8E54();

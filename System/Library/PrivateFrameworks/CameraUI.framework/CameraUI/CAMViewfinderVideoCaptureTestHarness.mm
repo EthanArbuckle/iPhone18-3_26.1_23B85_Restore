@@ -1,25 +1,25 @@
 @interface CAMViewfinderVideoCaptureTestHarness
-- (CAMViewfinderVideoCaptureTestHarness)initWithTestName:(id)a3 viewfinderViewController:(id)a4 videoDurationInSeconds:(double)a5 initialDelayInSeconds:(double)a6 captureCTMVideo:(BOOL)a7;
-- (void)_endCaptureWithError:(id)a3;
+- (CAMViewfinderVideoCaptureTestHarness)initWithTestName:(id)name viewfinderViewController:(id)controller videoDurationInSeconds:(double)seconds initialDelayInSeconds:(double)inSeconds captureCTMVideo:(BOOL)video;
+- (void)_endCaptureWithError:(id)error;
 - (void)_startCapture;
 - (void)startTesting;
 @end
 
 @implementation CAMViewfinderVideoCaptureTestHarness
 
-- (CAMViewfinderVideoCaptureTestHarness)initWithTestName:(id)a3 viewfinderViewController:(id)a4 videoDurationInSeconds:(double)a5 initialDelayInSeconds:(double)a6 captureCTMVideo:(BOOL)a7
+- (CAMViewfinderVideoCaptureTestHarness)initWithTestName:(id)name viewfinderViewController:(id)controller videoDurationInSeconds:(double)seconds initialDelayInSeconds:(double)inSeconds captureCTMVideo:(BOOL)video
 {
-  v13 = a4;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = CAMViewfinderVideoCaptureTestHarness;
-  v14 = [(CAMPerformanceTestHarness *)&v17 initWithTestName:a3];
+  v14 = [(CAMPerformanceTestHarness *)&v17 initWithTestName:name];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->__viewfinderViewController, a4);
-    v15->__videoDurationInSeconds = a5;
-    v15->__initialDelayInSeconds = a6;
-    v15->__captureCTMVideo = a7;
+    objc_storeStrong(&v14->__viewfinderViewController, controller);
+    v15->__videoDurationInSeconds = seconds;
+    v15->__initialDelayInSeconds = inSeconds;
+    v15->__captureCTMVideo = video;
   }
 
   return v15;
@@ -69,14 +69,14 @@ void __52__CAMViewfinderVideoCaptureTestHarness_startTesting__block_invoke(uint6
 
 - (void)_startCapture
 {
-  v3 = [(CAMViewfinderVideoCaptureTestHarness *)self _viewfinderViewController];
+  _viewfinderViewController = [(CAMViewfinderVideoCaptureTestHarness *)self _viewfinderViewController];
   [(CAMPerformanceTestHarness *)self stopSubtestWithName:@"TimeToStartRecording"];
-  v4 = [(CAMViewfinderVideoCaptureTestHarness *)self startVideoHandler];
+  startVideoHandler = [(CAMViewfinderVideoCaptureTestHarness *)self startVideoHandler];
 
-  if (v4)
+  if (startVideoHandler)
   {
-    v5 = [(CAMViewfinderVideoCaptureTestHarness *)self startVideoHandler];
-    v5[2]();
+    startVideoHandler2 = [(CAMViewfinderVideoCaptureTestHarness *)self startVideoHandler];
+    startVideoHandler2[2]();
   }
 
   if (![(CAMViewfinderVideoCaptureTestHarness *)self _captureCTMVideo])
@@ -87,8 +87,8 @@ void __52__CAMViewfinderVideoCaptureTestHarness_startTesting__block_invoke(uint6
     v8[1] = 3221225472;
     v8[2] = __53__CAMViewfinderVideoCaptureTestHarness__startCapture__block_invoke;
     v8[3] = &unk_1E76F7960;
-    v9 = v3;
-    v10 = self;
+    v9 = _viewfinderViewController;
+    selfCopy = self;
     dispatch_after(v7, MEMORY[0x1E69E96A0], v8);
   }
 }
@@ -106,22 +106,22 @@ uint64_t __53__CAMViewfinderVideoCaptureTestHarness__startCapture__block_invoke(
   return result;
 }
 
-- (void)_endCaptureWithError:(id)a3
+- (void)_endCaptureWithError:(id)error
 {
-  v9 = a3;
-  v4 = [(CAMViewfinderVideoCaptureTestHarness *)self endVideoHandler];
+  errorCopy = error;
+  endVideoHandler = [(CAMViewfinderVideoCaptureTestHarness *)self endVideoHandler];
 
-  if (v4)
+  if (endVideoHandler)
   {
-    v5 = [(CAMViewfinderVideoCaptureTestHarness *)self endVideoHandler];
-    v5[2]();
+    endVideoHandler2 = [(CAMViewfinderVideoCaptureTestHarness *)self endVideoHandler];
+    endVideoHandler2[2]();
   }
 
-  if (v9)
+  if (errorCopy)
   {
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [v9 localizedDescription];
-    v8 = [v6 stringWithFormat:@"Error from videoRequestDidCompleteCapture: %@", v7];
+    localizedDescription = [errorCopy localizedDescription];
+    v8 = [v6 stringWithFormat:@"Error from videoRequestDidCompleteCapture: %@", localizedDescription];
     [(CAMPerformanceTestHarness *)self failedTestWithReason:v8];
   }
 

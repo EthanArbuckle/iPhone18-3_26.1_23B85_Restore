@@ -1,13 +1,13 @@
 @interface WFPlacardCell
-- (WFPlacardCell)initWithCoder:(id)a3;
-- (WFPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WFPlacardCell)initWithCoder:(id)coder;
+- (WFPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation WFPlacardCell
 
-- (WFPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WFPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = sub_2740517D8();
   }
@@ -21,7 +21,7 @@
   return sub_2740197E0(v4, v5);
 }
 
-- (WFPlacardCell)initWithCoder:(id)a3
+- (WFPlacardCell)initWithCoder:(id)coder
 {
   result = sub_274051A88();
   __break(1u);

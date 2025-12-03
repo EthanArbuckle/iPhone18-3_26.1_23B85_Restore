@@ -1,28 +1,28 @@
 @interface SIRINLUINTERNALRewriteInteraction
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addOriginalUtterances:(id)a3;
-- (void)addSiriResponse:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTap2edit:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addOriginalUtterances:(id)utterances;
+- (void)addSiriResponse:(id)response;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasTap2edit:(BOOL)tap2edit;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALRewriteInteraction
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v6)
   {
@@ -50,7 +50,7 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = *(v4 + 4);
+  v10 = *(fromCopy + 4);
   v11 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v11)
   {
@@ -74,22 +74,22 @@
     while (v12);
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(SIRINLUINTERNALRewriteInteraction *)self setLocale:?];
   }
 
-  v15 = *(v4 + 44);
+  v15 = *(fromCopy + 44);
   if ((v15 & 2) != 0)
   {
-    self->_tap2edit = *(v4 + 40);
+    self->_tap2edit = *(fromCopy + 40);
     *&self->_has |= 2u;
-    v15 = *(v4 + 44);
+    v15 = *(fromCopy + 44);
   }
 
   if (v15)
   {
-    self->_startTimestamp = *(v4 + 1);
+    self->_startTimestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -125,16 +125,16 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   originalUtterances = self->_originalUtterances;
-  if (originalUtterances | *(v4 + 3))
+  if (originalUtterances | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)originalUtterances isEqual:?])
     {
@@ -143,7 +143,7 @@ LABEL_3:
   }
 
   siriResponses = self->_siriResponses;
-  if (siriResponses | *(v4 + 4))
+  if (siriResponses | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)siriResponses isEqual:?])
     {
@@ -152,7 +152,7 @@ LABEL_3:
   }
 
   locale = self->_locale;
-  if (locale | *(v4 + 2))
+  if (locale | *(equalCopy + 2))
   {
     if (![(NSString *)locale isEqual:?])
     {
@@ -162,35 +162,35 @@ LABEL_3:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0)
+    if ((*(equalCopy + 44) & 2) == 0)
     {
       goto LABEL_15;
     }
 
-    v10 = *(v4 + 40);
+    v10 = *(equalCopy + 40);
     if (self->_tap2edit)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_15;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_15;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_15;
   }
 
-  v8 = (*(v4 + 44) & 1) == 0;
+  v8 = (*(equalCopy + 44) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) != 0 && self->_startTimestamp == *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) != 0 && self->_startTimestamp == *(equalCopy + 1))
     {
       v8 = 1;
       goto LABEL_16;
@@ -205,10 +205,10 @@ LABEL_16:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -228,7 +228,7 @@ LABEL_16:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v27 + 1) + 8 * i) copyWithZone:a3];
+        v11 = [*(*(&v27 + 1) + 8 * i) copyWithZone:zone];
         [v5 addOriginalUtterances:v11];
       }
 
@@ -257,7 +257,7 @@ LABEL_16:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v23 + 1) + 8 * j) copyWithZone:{a3, v23}];
+        v17 = [*(*(&v23 + 1) + 8 * j) copyWithZone:{zone, v23}];
         [v5 addSiriResponse:v17];
       }
 
@@ -267,7 +267,7 @@ LABEL_16:
     while (v14);
   }
 
-  v18 = [(NSString *)self->_locale copyWithZone:a3];
+  v18 = [(NSString *)self->_locale copyWithZone:zone];
   v19 = *(v5 + 16);
   *(v5 + 16) = v18;
 
@@ -289,63 +289,63 @@ LABEL_16:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   if ([(SIRINLUINTERNALRewriteInteraction *)self originalUtterancesCount])
   {
-    [v13 clearOriginalUtterances];
-    v4 = [(SIRINLUINTERNALRewriteInteraction *)self originalUtterancesCount];
-    if (v4)
+    [toCopy clearOriginalUtterances];
+    originalUtterancesCount = [(SIRINLUINTERNALRewriteInteraction *)self originalUtterancesCount];
+    if (originalUtterancesCount)
     {
-      v5 = v4;
+      v5 = originalUtterancesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUINTERNALRewriteInteraction *)self originalUtterancesAtIndex:i];
-        [v13 addOriginalUtterances:v7];
+        [toCopy addOriginalUtterances:v7];
       }
     }
   }
 
   if ([(SIRINLUINTERNALRewriteInteraction *)self siriResponsesCount])
   {
-    [v13 clearSiriResponses];
-    v8 = [(SIRINLUINTERNALRewriteInteraction *)self siriResponsesCount];
-    if (v8)
+    [toCopy clearSiriResponses];
+    siriResponsesCount = [(SIRINLUINTERNALRewriteInteraction *)self siriResponsesCount];
+    if (siriResponsesCount)
     {
-      v9 = v8;
+      v9 = siriResponsesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(SIRINLUINTERNALRewriteInteraction *)self siriResponseAtIndex:j];
-        [v13 addSiriResponse:v11];
+        [toCopy addSiriResponse:v11];
       }
     }
   }
 
   if (self->_locale)
   {
-    [v13 setLocale:?];
+    [toCopy setLocale:?];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v13 + 40) = self->_tap2edit;
-    *(v13 + 44) |= 2u;
+    *(toCopy + 40) = self->_tap2edit;
+    *(toCopy + 44) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v13 + 1) = self->_startTimestamp;
-    *(v13 + 44) |= 1u;
+    *(toCopy + 1) = self->_startTimestamp;
+    *(toCopy + 44) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -429,7 +429,7 @@ LABEL_16:
 - (id)dictionaryRepresentation
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_originalUtterances count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_originalUtterances, "count")}];
@@ -452,8 +452,8 @@ LABEL_16:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -462,7 +462,7 @@ LABEL_16:
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"original_utterances"];
+    [dictionary setObject:v4 forKey:@"original_utterances"];
   }
 
   if ([(NSMutableArray *)self->_siriResponses count])
@@ -487,8 +487,8 @@ LABEL_16:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v24 + 1) + 8 * j) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v24 + 1) + 8 * j) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -497,20 +497,20 @@ LABEL_16:
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"siri_response"];
+    [dictionary setObject:v11 forKey:@"siri_response"];
   }
 
   locale = self->_locale;
   if (locale)
   {
-    [v3 setObject:locale forKey:@"locale"];
+    [dictionary setObject:locale forKey:@"locale"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v20 = [MEMORY[0x1E696AD98] numberWithBool:self->_tap2edit];
-    [v3 setObject:v20 forKey:@"tap2edit"];
+    [dictionary setObject:v20 forKey:@"tap2edit"];
 
     has = self->_has;
   }
@@ -518,12 +518,12 @@ LABEL_16:
   if (has)
   {
     v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_startTimestamp];
-    [v3 setObject:v21 forKey:@"start_timestamp"];
+    [dictionary setObject:v21 forKey:@"start_timestamp"];
   }
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -532,15 +532,15 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALRewriteInteraction;
   v4 = [(SIRINLUINTERNALRewriteInteraction *)&v8 description];
-  v5 = [(SIRINLUINTERNALRewriteInteraction *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALRewriteInteraction *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasTap2edit:(BOOL)a3
+- (void)setHasTap2edit:(BOOL)tap2edit
 {
-  if (a3)
+  if (tap2edit)
   {
     v3 = 2;
   }
@@ -553,40 +553,40 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addSiriResponse:(id)a3
+- (void)addSiriResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   siriResponses = self->_siriResponses;
-  v8 = v4;
+  v8 = responseCopy;
   if (!siriResponses)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_siriResponses;
     self->_siriResponses = v6;
 
-    v4 = v8;
+    responseCopy = v8;
     siriResponses = self->_siriResponses;
   }
 
-  [(NSMutableArray *)siriResponses addObject:v4];
+  [(NSMutableArray *)siriResponses addObject:responseCopy];
 }
 
-- (void)addOriginalUtterances:(id)a3
+- (void)addOriginalUtterances:(id)utterances
 {
-  v4 = a3;
+  utterancesCopy = utterances;
   originalUtterances = self->_originalUtterances;
-  v8 = v4;
+  v8 = utterancesCopy;
   if (!originalUtterances)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_originalUtterances;
     self->_originalUtterances = v6;
 
-    v4 = v8;
+    utterancesCopy = v8;
     originalUtterances = self->_originalUtterances;
   }
 
-  [(NSMutableArray *)originalUtterances addObject:v4];
+  [(NSMutableArray *)originalUtterances addObject:utterancesCopy];
 }
 
 @end

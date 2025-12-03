@@ -1,45 +1,45 @@
 @interface ASDatabaseServer
-- (ASDatabaseServer)initWithUUID:(id)a3 client:(id)a4;
+- (ASDatabaseServer)initWithUUID:(id)d client:(id)client;
 - (void)connectionInvalidated;
-- (void)daemonReady:(id)a3;
-- (void)remote_activeDeviceUUIDWithCompletion:(id)a3;
-- (void)remote_allCodableDatabaseCompetitionListEntriesWithCompletion:(id)a3;
-- (void)remote_allCodableDatabaseCompetitionsWithCompletion:(id)a3;
-- (void)remote_deletedHealthKitWorkoutsWithinLastNumberOfDays:(unint64_t)a3 maxBatchSize:(unint64_t)a4 anchor:(id)a5 completion:(id)a6;
-- (void)remote_insertDataObjects:(id)a3 completion:(id)a4;
-- (void)remote_isActivityAlertSuppressionEnabledWithCompletion:(id)a3;
-- (void)remote_isDataProtectedByFirstUnlockAvailableWithCompletion:(id)a3;
-- (void)remote_isProtectedDataAvailableWithCompletion:(id)a3;
-- (void)remote_localSourceUUIDWithCompletion:(id)a3;
-- (void)remote_performWhenDaemonReady:(id)a3;
-- (void)remote_performWhenDataProtectedByFirstUnlockIsAvailable:(id)a3;
+- (void)daemonReady:(id)ready;
+- (void)remote_activeDeviceUUIDWithCompletion:(id)completion;
+- (void)remote_allCodableDatabaseCompetitionListEntriesWithCompletion:(id)completion;
+- (void)remote_allCodableDatabaseCompetitionsWithCompletion:(id)completion;
+- (void)remote_deletedHealthKitWorkoutsWithinLastNumberOfDays:(unint64_t)days maxBatchSize:(unint64_t)size anchor:(id)anchor completion:(id)completion;
+- (void)remote_insertDataObjects:(id)objects completion:(id)completion;
+- (void)remote_isActivityAlertSuppressionEnabledWithCompletion:(id)completion;
+- (void)remote_isDataProtectedByFirstUnlockAvailableWithCompletion:(id)completion;
+- (void)remote_isProtectedDataAvailableWithCompletion:(id)completion;
+- (void)remote_localSourceUUIDWithCompletion:(id)completion;
+- (void)remote_performWhenDaemonReady:(id)ready;
+- (void)remote_performWhenDataProtectedByFirstUnlockIsAvailable:(id)available;
 - (void)remote_registerFitnessAppBadgeProvider;
-- (void)remote_removeAllCodableDatabaseCompetitionListsWithCompletion:(id)a3;
-- (void)remote_removeAllCodableDatabaseCompetitionsWithCompletion:(id)a3;
-- (void)remote_removeCodableDatabaseCompetitionsWithFriendUUID:(id)a3 type:(int64_t)a4 completion:(id)a5;
-- (void)remote_saveCodableDatabaseCompetitionListEntry:(id)a3 completion:(id)a4;
-- (void)remote_saveCodableDatabaseCompetitions:(id)a3 completion:(id)a4;
-- (void)remote_todayActivitySummaryWithCompletion:(id)a3;
-- (void)remote_updateFitnessAppBadgeCount:(unint64_t)a3;
-- (void)remote_yesterdayActivitySummaryWithCompletion:(id)a3;
+- (void)remote_removeAllCodableDatabaseCompetitionListsWithCompletion:(id)completion;
+- (void)remote_removeAllCodableDatabaseCompetitionsWithCompletion:(id)completion;
+- (void)remote_removeCodableDatabaseCompetitionsWithFriendUUID:(id)d type:(int64_t)type completion:(id)completion;
+- (void)remote_saveCodableDatabaseCompetitionListEntry:(id)entry completion:(id)completion;
+- (void)remote_saveCodableDatabaseCompetitions:(id)competitions completion:(id)completion;
+- (void)remote_todayActivitySummaryWithCompletion:(id)completion;
+- (void)remote_updateFitnessAppBadgeCount:(unint64_t)count;
+- (void)remote_yesterdayActivitySummaryWithCompletion:(id)completion;
 @end
 
 @implementation ASDatabaseServer
 
-- (ASDatabaseServer)initWithUUID:(id)a3 client:(id)a4
+- (ASDatabaseServer)initWithUUID:(id)d client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  clientCopy = client;
   v20.receiver = self;
   v20.super_class = ASDatabaseServer;
   v8 = [(ASDatabaseServer *)&v20 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     taskUUID = v8->_taskUUID;
     v8->_taskUUID = v9;
 
-    objc_storeStrong(&v8->_client, a4);
+    objc_storeStrong(&v8->_client, client);
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
     v13 = HKCreateSerialDispatchQueue();
@@ -52,25 +52,25 @@
     v8->_queue_performWhenDaemonReadyBlocks = v15;
 
     v8->_fitnessAppBadgeCount = 0;
-    v17 = [(HDHealthStoreClient *)v8->_client profile];
-    v18 = [v17 daemon];
-    [v18 registerDaemonReadyObserver:v8 queue:v8->_serialQueue];
+    profile = [(HDHealthStoreClient *)v8->_client profile];
+    daemon = [profile daemon];
+    [daemon registerDaemonReadyObserver:v8 queue:v8->_serialQueue];
   }
 
   return v8;
 }
 
-- (void)remote_performWhenDaemonReady:(id)a3
+- (void)remote_performWhenDaemonReady:(id)ready
 {
-  v4 = a3;
+  readyCopy = ready;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__ASDatabaseServer_remote_performWhenDaemonReady___block_invoke;
   v7[3] = &unk_278C4B1B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = readyCopy;
+  v6 = readyCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -92,61 +92,61 @@ void __50__ASDatabaseServer_remote_performWhenDaemonReady___block_invoke(uint64_
   }
 }
 
-- (void)remote_isDataProtectedByFirstUnlockAvailableWithCompletion:(id)a3
+- (void)remote_isDataProtectedByFirstUnlockAvailableWithCompletion:(id)completion
 {
   client = self->_client;
-  v5 = a3;
-  v7 = [(HDHealthStoreClient *)client profile];
-  v6 = [v7 database];
-  (*(a3 + 2))(v5, [v6 isDataProtectedByFirstUnlockAvailable]);
+  completionCopy = completion;
+  profile = [(HDHealthStoreClient *)client profile];
+  database = [profile database];
+  (*(completion + 2))(completionCopy, [database isDataProtectedByFirstUnlockAvailable]);
 }
 
-- (void)remote_performWhenDataProtectedByFirstUnlockIsAvailable:(id)a3
+- (void)remote_performWhenDataProtectedByFirstUnlockIsAvailable:(id)available
 {
   client = self->_client;
-  v4 = a3;
-  v6 = [(HDHealthStoreClient *)client profile];
-  v5 = [v6 database];
-  [v5 performWhenDataProtectedByFirstUnlockIsAvailable:v4];
+  availableCopy = available;
+  profile = [(HDHealthStoreClient *)client profile];
+  database = [profile database];
+  [database performWhenDataProtectedByFirstUnlockIsAvailable:availableCopy];
 }
 
-- (void)remote_isProtectedDataAvailableWithCompletion:(id)a3
+- (void)remote_isProtectedDataAvailableWithCompletion:(id)completion
 {
   client = self->_client;
-  v5 = a3;
-  v7 = [(HDHealthStoreClient *)client profile];
-  v6 = [v7 database];
-  (*(a3 + 2))(v5, [v6 isProtectedDataAvailable]);
+  completionCopy = completion;
+  profile = [(HDHealthStoreClient *)client profile];
+  database = [profile database];
+  (*(completion + 2))(completionCopy, [database isProtectedDataAvailable]);
 }
 
-- (void)remote_yesterdayActivitySummaryWithCompletion:(id)a3
+- (void)remote_yesterdayActivitySummaryWithCompletion:(id)completion
 {
   client = self->_client;
-  v5 = a3;
-  v8 = [(HDHealthStoreClient *)client profile];
-  v6 = [v8 currentActivitySummaryHelper];
-  v7 = [v6 yesterdayActivitySummary];
-  (*(a3 + 2))(v5, v7);
+  completionCopy = completion;
+  profile = [(HDHealthStoreClient *)client profile];
+  currentActivitySummaryHelper = [profile currentActivitySummaryHelper];
+  yesterdayActivitySummary = [currentActivitySummaryHelper yesterdayActivitySummary];
+  (*(completion + 2))(completionCopy, yesterdayActivitySummary);
 }
 
-- (void)remote_todayActivitySummaryWithCompletion:(id)a3
+- (void)remote_todayActivitySummaryWithCompletion:(id)completion
 {
   client = self->_client;
-  v5 = a3;
-  v8 = [(HDHealthStoreClient *)client profile];
-  v6 = [v8 currentActivitySummaryHelper];
-  v7 = [v6 todayActivitySummary];
-  (*(a3 + 2))(v5, v7);
+  completionCopy = completion;
+  profile = [(HDHealthStoreClient *)client profile];
+  currentActivitySummaryHelper = [profile currentActivitySummaryHelper];
+  todayActivitySummary = [currentActivitySummaryHelper todayActivitySummary];
+  (*(completion + 2))(completionCopy, todayActivitySummary);
 }
 
-- (void)remote_deletedHealthKitWorkoutsWithinLastNumberOfDays:(unint64_t)a3 maxBatchSize:(unint64_t)a4 anchor:(id)a5 completion:(id)a6
+- (void)remote_deletedHealthKitWorkoutsWithinLastNumberOfDays:(unint64_t)days maxBatchSize:(unint64_t)size anchor:(id)anchor completion:(id)completion
 {
   v42[2] = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
-  v12 = [MEMORY[0x277CBEA80] currentCalendar];
-  v13 = [MEMORY[0x277CBEAA8] date];
-  v28 = [v12 dateByAddingUnit:16 value:-a3 toDate:v13 options:0];
+  anchorCopy = anchor;
+  completionCopy = completion;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v28 = [currentCalendar dateByAddingUnit:16 value:-days toDate:date options:0];
 
   v14 = [MEMORY[0x277D10B18] predicateWithProperty:*MEMORY[0x277D10408] greaterThanOrEqualToValue:v28];
   v15 = HDDataEntityPredicateForType();
@@ -157,13 +157,13 @@ void __50__ASDatabaseServer_remote_performWhenDaemonReady___block_invoke(uint64_
   v18 = [v16 predicateMatchingAllPredicates:v17];
 
   v19 = MEMORY[0x277D10848];
-  v20 = [MEMORY[0x277CCD720] workoutType];
-  v21 = [(HDHealthStoreClient *)self->_client profile];
-  v22 = [v19 entityEnumeratorWithType:v20 profile:v21];
+  workoutType = [MEMORY[0x277CCD720] workoutType];
+  profile = [(HDHealthStoreClient *)self->_client profile];
+  v22 = [v19 entityEnumeratorWithType:workoutType profile:profile];
 
   [v22 setPredicate:v18];
-  [v22 setAnchor:v10];
-  [v22 setLimitCount:a4];
+  [v22 setAnchor:anchorCopy];
+  [v22 setLimitCount:size];
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -173,17 +173,17 @@ void __50__ASDatabaseServer_remote_performWhenDaemonReady___block_invoke(uint64_
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
-  if (v10)
+  if (anchorCopy)
   {
-    v23 = [v10 longValue];
+    longValue = [anchorCopy longValue];
   }
 
   else
   {
-    v23 = 0;
+    longValue = 0;
   }
 
-  v35 = v23;
+  v35 = longValue;
   v30[5] = &v32;
   v31 = 0;
   v30[0] = MEMORY[0x277D85DD0];
@@ -195,7 +195,7 @@ void __50__ASDatabaseServer_remote_performWhenDaemonReady___block_invoke(uint64_
   v24 = v31;
   v25 = v37[5];
   v26 = [MEMORY[0x277CCABB0] numberWithLongLong:v33[3]];
-  v11[2](v11, v25, v26, v24);
+  completionCopy[2](completionCopy, v25, v26, v24);
 
   _Block_object_dispose(&v32, 8);
   _Block_object_dispose(&v36, 8);
@@ -221,79 +221,79 @@ uint64_t __105__ASDatabaseServer_remote_deletedHealthKitWorkoutsWithinLastNumber
   return 1;
 }
 
-- (void)remote_insertDataObjects:(id)a3 completion:(id)a4
+- (void)remote_insertDataObjects:(id)objects completion:(id)completion
 {
   client = self->_client;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(HDHealthStoreClient *)client profile];
-  v10 = [v9 dataManager];
-  v11 = [(HDHealthStoreClient *)self->_client profile];
-  v12 = [v11 dataProvenanceManager];
-  v13 = [v12 defaultLocalDataProvenance];
+  completionCopy = completion;
+  objectsCopy = objects;
+  profile = [(HDHealthStoreClient *)client profile];
+  dataManager = [profile dataManager];
+  profile2 = [(HDHealthStoreClient *)self->_client profile];
+  dataProvenanceManager = [profile2 dataProvenanceManager];
+  defaultLocalDataProvenance = [dataProvenanceManager defaultLocalDataProvenance];
   v16 = 0;
-  v14 = [v10 insertDataObjects:v8 withProvenance:v13 creationDate:1 skipInsertionFilter:&v16 error:CFAbsoluteTimeGetCurrent()];
+  v14 = [dataManager insertDataObjects:objectsCopy withProvenance:defaultLocalDataProvenance creationDate:1 skipInsertionFilter:&v16 error:CFAbsoluteTimeGetCurrent()];
 
   v15 = v16;
-  v7[2](v7, v14, v15);
+  completionCopy[2](completionCopy, v14, v15);
 }
 
-- (void)remote_allCodableDatabaseCompetitionsWithCompletion:(id)a3
+- (void)remote_allCodableDatabaseCompetitionsWithCompletion:(id)completion
 {
   client = self->_client;
-  v4 = a3;
-  v5 = [(HDHealthStoreClient *)client profile];
+  completionCopy = completion;
+  profile = [(HDHealthStoreClient *)client profile];
   v8 = 0;
-  v6 = [ASDatabaseCompetitionEntity allDatabaseCompetitionsWithProfile:v5 withError:&v8];
+  v6 = [ASDatabaseCompetitionEntity allDatabaseCompetitionsWithProfile:profile withError:&v8];
   v7 = v8;
 
-  v4[2](v4, v6, v7);
+  completionCopy[2](completionCopy, v6, v7);
 }
 
-- (void)remote_saveCodableDatabaseCompetitions:(id)a3 completion:(id)a4
+- (void)remote_saveCodableDatabaseCompetitions:(id)competitions completion:(id)completion
 {
   client = self->_client;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HDHealthStoreClient *)client profile];
+  completionCopy = completion;
+  competitionsCopy = competitions;
+  profile = [(HDHealthStoreClient *)client profile];
   v11 = 0;
-  v9 = [ASDatabaseCompetitionEntity saveCompetitions:v7 profile:v8 withError:&v11];
+  v9 = [ASDatabaseCompetitionEntity saveCompetitions:competitionsCopy profile:profile withError:&v11];
 
   v10 = v11;
-  v6[2](v6, v9, v10);
+  completionCopy[2](completionCopy, v9, v10);
 }
 
-- (void)remote_removeCodableDatabaseCompetitionsWithFriendUUID:(id)a3 type:(int64_t)a4 completion:(id)a5
+- (void)remote_removeCodableDatabaseCompetitionsWithFriendUUID:(id)d type:(int64_t)type completion:(id)completion
 {
   client = self->_client;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(HDHealthStoreClient *)client profile];
+  completionCopy = completion;
+  dCopy = d;
+  profile = [(HDHealthStoreClient *)client profile];
   v13 = 0;
-  v11 = [ASDatabaseCompetitionEntity removeCompetitionsForFriendUUID:v9 type:a4 profile:v10 withError:&v13];
+  v11 = [ASDatabaseCompetitionEntity removeCompetitionsForFriendUUID:dCopy type:type profile:profile withError:&v13];
 
   v12 = v13;
-  v8[2](v8, v11, v12);
+  completionCopy[2](completionCopy, v11, v12);
 }
 
-- (void)remote_removeAllCodableDatabaseCompetitionsWithCompletion:(id)a3
+- (void)remote_removeAllCodableDatabaseCompetitionsWithCompletion:(id)completion
 {
   client = self->_client;
-  v4 = a3;
-  v5 = [(HDHealthStoreClient *)client profile];
+  completionCopy = completion;
+  profile = [(HDHealthStoreClient *)client profile];
   v8 = 0;
-  v6 = [ASDatabaseCompetitionEntity removeAllCompetitionsWithProfile:v5 error:&v8];
+  v6 = [ASDatabaseCompetitionEntity removeAllCompetitionsWithProfile:profile error:&v8];
   v7 = v8;
 
-  v4[2](v4, v6, v7);
+  completionCopy[2](completionCopy, v6, v7);
 }
 
-- (void)remote_allCodableDatabaseCompetitionListEntriesWithCompletion:(id)a3
+- (void)remote_allCodableDatabaseCompetitionListEntriesWithCompletion:(id)completion
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
+  completionCopy = completion;
   v6 = objc_alloc_init(v4);
-  v7 = [(HDHealthStoreClient *)self->_client profile];
+  profile = [(HDHealthStoreClient *)self->_client profile];
   v11 = v6;
   v12 = 0;
   v10[0] = MEMORY[0x277D85DD0];
@@ -301,104 +301,104 @@ uint64_t __105__ASDatabaseServer_remote_deletedHealthKitWorkoutsWithinLastNumber
   v10[2] = __82__ASDatabaseServer_remote_allCodableDatabaseCompetitionListEntriesWithCompletion___block_invoke;
   v10[3] = &unk_278C4B5B8;
   v8 = v6;
-  [ASDatabaseCompetitionListEntryEntity enumerateAllCompetitionListsWithProfile:v7 error:&v12 handler:v10];
+  [ASDatabaseCompetitionListEntryEntity enumerateAllCompetitionListsWithProfile:profile error:&v12 handler:v10];
   v9 = v12;
 
-  v5[2](v5, v8, v9);
+  completionCopy[2](completionCopy, v8, v9);
 }
 
-- (void)remote_saveCodableDatabaseCompetitionListEntry:(id)a3 completion:(id)a4
+- (void)remote_saveCodableDatabaseCompetitionListEntry:(id)entry completion:(id)completion
 {
   client = self->_client;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HDHealthStoreClient *)client profile];
+  completionCopy = completion;
+  entryCopy = entry;
+  profile = [(HDHealthStoreClient *)client profile];
   v11 = 0;
-  v9 = [ASDatabaseCompetitionListEntryEntity saveCompetitionList:v7 profile:v8 withError:&v11];
+  v9 = [ASDatabaseCompetitionListEntryEntity saveCompetitionList:entryCopy profile:profile withError:&v11];
 
   v10 = v11;
-  v6[2](v6, v9, v10);
+  completionCopy[2](completionCopy, v9, v10);
 }
 
-- (void)remote_removeAllCodableDatabaseCompetitionListsWithCompletion:(id)a3
+- (void)remote_removeAllCodableDatabaseCompetitionListsWithCompletion:(id)completion
 {
   client = self->_client;
-  v4 = a3;
-  v5 = [(HDHealthStoreClient *)client profile];
+  completionCopy = completion;
+  profile = [(HDHealthStoreClient *)client profile];
   v8 = 0;
-  v6 = [ASDatabaseCompetitionListEntryEntity removeAllCompetitionListsWithProfile:v5 error:&v8];
+  v6 = [ASDatabaseCompetitionListEntryEntity removeAllCompetitionListsWithProfile:profile error:&v8];
   v7 = v8;
 
-  v4[2](v4, v6, v7);
+  completionCopy[2](completionCopy, v6, v7);
 }
 
-- (void)remote_localSourceUUIDWithCompletion:(id)a3
+- (void)remote_localSourceUUIDWithCompletion:(id)completion
 {
   client = self->_client;
-  v5 = a3;
-  v6 = [(HDHealthStoreClient *)client profile];
-  v7 = [v6 sourceManager];
+  completionCopy = completion;
+  profile = [(HDHealthStoreClient *)client profile];
+  sourceManager = [profile sourceManager];
   v14 = 0;
-  v8 = [v7 localDeviceSourceWithError:&v14];
+  v8 = [sourceManager localDeviceSourceWithError:&v14];
   v9 = v14;
 
-  v10 = [(HDHealthStoreClient *)self->_client profile];
+  profile2 = [(HDHealthStoreClient *)self->_client profile];
   v13 = v9;
-  v11 = [v8 sourceUUIDWithProfile:v10 error:&v13];
+  v11 = [v8 sourceUUIDWithProfile:profile2 error:&v13];
   v12 = v13;
 
-  v5[2](v5, v11, v12);
+  completionCopy[2](completionCopy, v11, v12);
 }
 
-- (void)remote_activeDeviceUUIDWithCompletion:(id)a3
+- (void)remote_activeDeviceUUIDWithCompletion:(id)completion
 {
   client = self->_client;
-  v5 = a3;
-  v6 = [(HDHealthStoreClient *)client profile];
-  v7 = [v6 nanoSyncManager];
-  v8 = [v7 pairedDevicesSnapshot];
-  v9 = [v8 activeDeviceInfo];
-  v10 = [v9 sourceBundleIdentifier];
+  completionCopy = completion;
+  profile = [(HDHealthStoreClient *)client profile];
+  nanoSyncManager = [profile nanoSyncManager];
+  pairedDevicesSnapshot = [nanoSyncManager pairedDevicesSnapshot];
+  activeDeviceInfo = [pairedDevicesSnapshot activeDeviceInfo];
+  sourceBundleIdentifier = [activeDeviceInfo sourceBundleIdentifier];
 
-  v11 = [(HDHealthStoreClient *)self->_client profile];
-  v12 = [v11 sourceManager];
+  profile2 = [(HDHealthStoreClient *)self->_client profile];
+  sourceManager = [profile2 sourceManager];
   v15 = 0;
-  v13 = [v12 sourceUUIDForBundleIdentifier:v10 error:&v15];
+  v13 = [sourceManager sourceUUIDForBundleIdentifier:sourceBundleIdentifier error:&v15];
   v14 = v15;
 
-  v5[2](v5, v13, v14);
+  completionCopy[2](completionCopy, v13, v14);
 }
 
-- (void)remote_isActivityAlertSuppressionEnabledWithCompletion:(id)a3
+- (void)remote_isActivityAlertSuppressionEnabledWithCompletion:(id)completion
 {
   client = self->_client;
-  v4 = a3;
-  v5 = [(HDHealthStoreClient *)client profile];
-  v6 = [v5 daemon];
-  v7 = [v6 alertSuppressionService];
+  completionCopy = completion;
+  profile = [(HDHealthStoreClient *)client profile];
+  daemon = [profile daemon];
+  alertSuppressionService = [daemon alertSuppressionService];
 
-  if (v7)
+  if (alertSuppressionService)
   {
-    [v7 fetchActivityAlertSuppressionStateWithCompletion:v4];
+    [alertSuppressionService fetchActivityAlertSuppressionStateWithCompletion:completionCopy];
   }
 
   else
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
 - (void)remote_registerFitnessAppBadgeProvider
 {
-  v4 = [(HDHealthStoreClient *)self->_client profile];
+  profile = [(HDHealthStoreClient *)self->_client profile];
   v3 = CHProfileExtensionForProfile();
   [v3 registerFitnessAppBadgeCountProvider:self];
 }
 
-- (void)remote_updateFitnessAppBadgeCount:(unint64_t)a3
+- (void)remote_updateFitnessAppBadgeCount:(unint64_t)count
 {
-  self->_fitnessAppBadgeCount = a3;
-  v4 = [(HDHealthStoreClient *)self->_client profile];
+  self->_fitnessAppBadgeCount = count;
+  profile = [(HDHealthStoreClient *)self->_client profile];
   v3 = CHProfileExtensionForProfile();
   [v3 requestFitnessAppBadgeCountUpdate];
 }
@@ -420,7 +420,7 @@ void __41__ASDatabaseServer_connectionInvalidated__block_invoke(uint64_t a1)
   [v1 invalidate];
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   v23 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_serialQueue);

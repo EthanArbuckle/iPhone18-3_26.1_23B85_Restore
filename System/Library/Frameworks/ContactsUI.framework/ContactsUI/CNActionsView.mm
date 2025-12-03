@@ -1,22 +1,22 @@
 @interface CNActionsView
-+ (int64_t)axisWithTitlesPresent:(BOOL)a3;
-- (BOOL)actionViewShouldPresentDisambiguationUI:(id)a3;
++ (int64_t)axisWithTitlesPresent:(BOOL)present;
+- (BOOL)actionViewShouldPresentDisambiguationUI:(id)i;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CNActionsView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CNActionsView)initWithFrame:(CGRect)frame;
 - (CNActionsViewProtocol)actionsDelegate;
-- (id)actionViewForType:(id)a3;
-- (unint64_t)insertionIndexForType:(id)a3;
-- (void)addActionItem:(id)a3;
-- (void)didPressActionView:(id)a3 longPress:(BOOL)a4;
-- (void)removeActionItem:(id)a3;
+- (id)actionViewForType:(id)type;
+- (unint64_t)insertionIndexForType:(id)type;
+- (void)addActionItem:(id)item;
+- (void)didPressActionView:(id)view longPress:(BOOL)press;
+- (void)removeActionItem:(id)item;
 - (void)resetActions;
-- (void)setPosterTintColor:(id)a3;
-- (void)setSortedActionTypes:(id)a3;
-- (void)setSpacing:(double)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setVisualEffectViewCaptureView:(id)a3;
-- (void)updateActionItem:(id)a3;
+- (void)setPosterTintColor:(id)color;
+- (void)setSortedActionTypes:(id)types;
+- (void)setSpacing:(double)spacing;
+- (void)setStyle:(int64_t)style;
+- (void)setVisualEffectViewCaptureView:(id)view;
+- (void)updateActionItem:(id)item;
 - (void)updateAxis;
 @end
 
@@ -29,21 +29,21 @@
   return WeakRetained;
 }
 
-- (BOOL)actionViewShouldPresentDisambiguationUI:(id)a3
+- (BOOL)actionViewShouldPresentDisambiguationUI:(id)i
 {
-  v4 = a3;
-  v5 = [(CNActionsView *)self actionItemsByType];
-  v6 = [v4 type];
+  iCopy = i;
+  actionItemsByType = [(CNActionsView *)self actionItemsByType];
+  type = [iCopy type];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [actionItemsByType objectForKeyedSubscript:type];
 
-  v8 = [(CNActionsView *)self actionsDelegate];
-  LOBYTE(v6) = objc_opt_respondsToSelector();
+  actionsDelegate = [(CNActionsView *)self actionsDelegate];
+  LOBYTE(type) = objc_opt_respondsToSelector();
 
-  if (v6)
+  if (type)
   {
-    v9 = [(CNActionsView *)self actionsDelegate];
-    v10 = [v9 actionsView:self shouldPresentDisambiguationUIForAction:v7];
+    actionsDelegate2 = [(CNActionsView *)self actionsDelegate];
+    v10 = [actionsDelegate2 actionsView:self shouldPresentDisambiguationUIForAction:v7];
   }
 
   else
@@ -54,30 +54,30 @@
   return v10;
 }
 
-- (void)didPressActionView:(id)a3 longPress:(BOOL)a4
+- (void)didPressActionView:(id)view longPress:(BOOL)press
 {
-  v4 = a4;
-  v11 = a3;
-  v6 = [(CNActionsView *)self actionItemsByType];
-  v7 = [v11 type];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  pressCopy = press;
+  viewCopy = view;
+  actionItemsByType = [(CNActionsView *)self actionItemsByType];
+  type = [viewCopy type];
+  v8 = [actionItemsByType objectForKeyedSubscript:type];
 
-  v9 = [(CNActionsView *)self actionsDelegate];
-  LOBYTE(v7) = objc_opt_respondsToSelector();
+  actionsDelegate = [(CNActionsView *)self actionsDelegate];
+  LOBYTE(type) = objc_opt_respondsToSelector();
 
-  if (v7)
+  if (type)
   {
-    v10 = [(CNActionsView *)self actionsDelegate];
-    [v10 didSelectAction:v8 withSourceView:v11 longPress:v4];
+    actionsDelegate2 = [(CNActionsView *)self actionsDelegate];
+    [actionsDelegate2 didSelectAction:v8 withSourceView:viewCopy longPress:pressCopy];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CNActionsView *)self containerView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  containerView = [(CNActionsView *)self containerView];
+  [containerView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -90,8 +90,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(CNActionsView *)self containerView];
-  [v2 effectiveLayoutSizeFittingSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+  containerView = [(CNActionsView *)self containerView];
+  [containerView effectiveLayoutSizeFittingSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
   v4 = v3;
   v6 = v5;
 
@@ -102,58 +102,58 @@
   return result;
 }
 
-- (void)setVisualEffectViewCaptureView:(id)a3
+- (void)setVisualEffectViewCaptureView:(id)view
 {
-  v5 = a3;
-  if (self->_visualEffectViewCaptureView != v5)
+  viewCopy = view;
+  if (self->_visualEffectViewCaptureView != viewCopy)
   {
-    objc_storeStrong(&self->_visualEffectViewCaptureView, a3);
-    v6 = [(CNActionsView *)self containerView];
-    v7 = [v6 arrangedSubviews];
+    objc_storeStrong(&self->_visualEffectViewCaptureView, view);
+    containerView = [(CNActionsView *)self containerView];
+    arrangedSubviews = [containerView arrangedSubviews];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __48__CNActionsView_setVisualEffectViewCaptureView___block_invoke;
     v8[3] = &unk_1E74E6848;
-    v9 = v5;
-    [v7 enumerateObjectsUsingBlock:v8];
+    v9 = viewCopy;
+    [arrangedSubviews enumerateObjectsUsingBlock:v8];
   }
 }
 
-- (void)setPosterTintColor:(id)a3
+- (void)setPosterTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_posterTintColor != v5)
+  colorCopy = color;
+  if (self->_posterTintColor != colorCopy)
   {
-    objc_storeStrong(&self->_posterTintColor, a3);
-    v6 = [(CNActionsView *)self containerView];
-    v7 = [v6 arrangedSubviews];
+    objc_storeStrong(&self->_posterTintColor, color);
+    containerView = [(CNActionsView *)self containerView];
+    arrangedSubviews = [containerView arrangedSubviews];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __36__CNActionsView_setPosterTintColor___block_invoke;
     v8[3] = &unk_1E74E6848;
-    v9 = v5;
-    [v7 enumerateObjectsUsingBlock:v8];
+    v9 = colorCopy;
+    [arrangedSubviews enumerateObjectsUsingBlock:v8];
   }
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  self->_style = a3;
-  v5 = (a3 - 6) & 0xFFFFFFFFFFFFFFFALL;
-  v6 = [(CNActionsView *)self containerView];
-  v7 = [v6 arrangedSubviews];
+  self->_style = style;
+  v5 = (style - 6) & 0xFFFFFFFFFFFFFFFALL;
+  containerView = [(CNActionsView *)self containerView];
+  arrangedSubviews = [containerView arrangedSubviews];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __26__CNActionsView_setStyle___block_invoke;
   v26[3] = &__block_descriptor_40_e29_v32__0__CNActionView_8Q16_B24l;
-  v26[4] = a3;
-  [v7 enumerateObjectsUsingBlock:v26];
+  v26[4] = style;
+  [arrangedSubviews enumerateObjectsUsingBlock:v26];
 
-  [CNActionView minimumSizeForStyle:a3];
+  [CNActionView minimumSizeForStyle:style];
   v9 = v8;
   v11 = v10;
-  v12 = [(CNActionsView *)self containerView];
-  [v12 setMinimumLayoutSize:{v9, v11}];
+  containerView2 = [(CNActionsView *)self containerView];
+  [containerView2 setMinimumLayoutSize:{v9, v11}];
 
   if (v5)
   {
@@ -166,10 +166,10 @@
   }
 
   [(CNActionsView *)self setSpacing:v13];
-  if (a3 == 10)
+  if (style == 10)
   {
-    v14 = [(CNActionsView *)self visualEffectViewCaptureView];
-    if (!v14)
+    visualEffectViewCaptureView = [(CNActionsView *)self visualEffectViewCaptureView];
+    if (!visualEffectViewCaptureView)
     {
       if (![(CNActionsView *)self enableVisualEffectViewCaptureView])
       {
@@ -179,22 +179,22 @@ LABEL_9:
         v20 = v19;
         v22 = v21;
         v24 = v23;
-        v25 = [(CNActionsView *)self visualEffectViewCaptureView];
-        [v25 setBounds:{v18, v20, v22, v24}];
+        visualEffectViewCaptureView2 = [(CNActionsView *)self visualEffectViewCaptureView];
+        [visualEffectViewCaptureView2 setBounds:{v18, v20, v22, v24}];
 
         return;
       }
 
       v15 = objc_alloc(MEMORY[0x1E69DD838]);
       [(CNActionsView *)self bounds];
-      v14 = [v15 initWithFrame:?];
-      [v14 setAutoresizingMask:18];
-      [(CNActionsView *)self insertSubview:v14 atIndex:0];
-      [v14 setRenderMode:1];
-      v16 = [v14 captureGroup];
-      [v16 setGroupName:@"CNQuickActionsCaptureGroup"];
+      visualEffectViewCaptureView = [v15 initWithFrame:?];
+      [visualEffectViewCaptureView setAutoresizingMask:18];
+      [(CNActionsView *)self insertSubview:visualEffectViewCaptureView atIndex:0];
+      [visualEffectViewCaptureView setRenderMode:1];
+      captureGroup = [visualEffectViewCaptureView captureGroup];
+      [captureGroup setGroupName:@"CNQuickActionsCaptureGroup"];
 
-      [(CNActionsView *)self setVisualEffectViewCaptureView:v14];
+      [(CNActionsView *)self setVisualEffectViewCaptureView:visualEffectViewCaptureView];
     }
 
     goto LABEL_9;
@@ -203,15 +203,15 @@ LABEL_9:
   [(CNActionsView *)self setVisualEffectViewCaptureView:0];
 }
 
-- (void)setSpacing:(double)a3
+- (void)setSpacing:(double)spacing
 {
-  if (self->_spacing != a3)
+  if (self->_spacing != spacing)
   {
-    if (a3 >= 0.0)
+    if (spacing >= 0.0)
     {
-      self->_spacing = a3;
-      v8 = [(CNActionsView *)self containerView];
-      [v8 setSpacing:a3];
+      self->_spacing = spacing;
+      containerView = [(CNActionsView *)self containerView];
+      [containerView setSpacing:spacing];
     }
 
     else
@@ -229,10 +229,10 @@ LABEL_9:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(CNActionsView *)self containerView];
-  v3 = [v2 arrangedSubviews];
+  containerView = [(CNActionsView *)self containerView];
+  arrangedSubviews = [containerView arrangedSubviews];
 
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [arrangedSubviews countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -244,14 +244,14 @@ LABEL_9:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) setHidden:1];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [arrangedSubviews countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -260,18 +260,18 @@ LABEL_9:
 
 - (void)updateAxis
 {
-  v3 = [(CNActionsView *)self containerView];
-  v4 = [v3 arrangedSubviews];
-  v5 = [v4 _cn_any:&__block_literal_global_11_63833];
+  containerView = [(CNActionsView *)self containerView];
+  arrangedSubviews = [containerView arrangedSubviews];
+  v5 = [arrangedSubviews _cn_any:&__block_literal_global_11_63833];
 
   v6 = [objc_opt_class() axisWithTitlesPresent:v5];
-  v7 = [(CNActionsView *)self containerView];
-  v8 = [v7 axis];
+  containerView2 = [(CNActionsView *)self containerView];
+  axis = [containerView2 axis];
 
-  if (v6 != v8)
+  if (v6 != axis)
   {
-    v9 = [(CNActionsView *)self containerView];
-    [v9 setAxis:v6];
+    containerView3 = [(CNActionsView *)self containerView];
+    [containerView3 setAxis:v6];
   }
 }
 
@@ -292,87 +292,87 @@ BOOL __27__CNActionsView_updateAxis__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (void)updateActionItem:(id)a3
+- (void)updateActionItem:(id)item
 {
-  v8 = a3;
-  v5 = [v8 type];
-  v6 = [(CNActionsView *)self actionViewForType:v5];
+  itemCopy = item;
+  type = [itemCopy type];
+  v6 = [(CNActionsView *)self actionViewForType:type];
 
   if ([v6 isHidden])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"CNActionsView.m" lineNumber:156 description:{@"If updating an existing action item, the action view can't be hidden"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNActionsView.m" lineNumber:156 description:{@"If updating an existing action item, the action view can't be hidden"}];
   }
 
-  sUpdateActionViewWithItem_block_invoke(&__block_literal_global_63839, v6, v8);
+  sUpdateActionViewWithItem_block_invoke(&__block_literal_global_63839, v6, itemCopy);
 }
 
-- (void)removeActionItem:(id)a3
+- (void)removeActionItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 type];
-  v8 = [(CNActionsView *)self actionViewForType:v5];
+  itemCopy = item;
+  type = [itemCopy type];
+  v8 = [(CNActionsView *)self actionViewForType:type];
 
-  v6 = [(CNActionsView *)self actionItemsByType];
-  v7 = [v4 type];
+  actionItemsByType = [(CNActionsView *)self actionItemsByType];
+  type2 = [itemCopy type];
 
-  [v6 removeObjectForKey:v7];
+  [actionItemsByType removeObjectForKey:type2];
   [v8 setHidden:1];
   [(CNActionsView *)self updateAxis];
 }
 
-- (void)addActionItem:(id)a3
+- (void)addActionItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 type];
-  v8 = [(CNActionsView *)self actionViewForType:v5];
+  itemCopy = item;
+  type = [itemCopy type];
+  v8 = [(CNActionsView *)self actionViewForType:type];
 
   [v8 setActionDelegate:self];
   [v8 setStyle:{-[CNActionsView style](self, "style")}];
-  sUpdateActionViewWithItem_block_invoke(&__block_literal_global_63839, v8, v4);
-  v6 = [(CNActionsView *)self actionItemsByType];
-  v7 = [v4 type];
-  [v6 setObject:v4 forKeyedSubscript:v7];
+  sUpdateActionViewWithItem_block_invoke(&__block_literal_global_63839, v8, itemCopy);
+  actionItemsByType = [(CNActionsView *)self actionItemsByType];
+  type2 = [itemCopy type];
+  [actionItemsByType setObject:itemCopy forKeyedSubscript:type2];
 
   [(CNActionsView *)self updateAxis];
 }
 
-- (id)actionViewForType:(id)a3
+- (id)actionViewForType:(id)type
 {
-  v4 = a3;
-  v5 = [(CNActionsView *)self actionViewsByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  actionViewsByType = [(CNActionsView *)self actionViewsByType];
+  v6 = [actionViewsByType objectForKeyedSubscript:typeCopy];
 
   if (!v6)
   {
-    v7 = [(CNActionsView *)self insertionIndexForType:v4];
-    v8 = [(CNActionsView *)self actionViewsByType];
-    v9 = [v8 mutableCopy];
+    v7 = [(CNActionsView *)self insertionIndexForType:typeCopy];
+    actionViewsByType2 = [(CNActionsView *)self actionViewsByType];
+    v9 = [actionViewsByType2 mutableCopy];
 
     v6 = objc_alloc_init(CNActionView);
     [(CNActionView *)v6 setHidden:1];
-    [v9 setObject:v6 forKeyedSubscript:v4];
-    v10 = [(CNActionsView *)self titleFont];
-    [(CNActionView *)v6 setTitleFont:v10];
+    [v9 setObject:v6 forKeyedSubscript:typeCopy];
+    titleFont = [(CNActionsView *)self titleFont];
+    [(CNActionView *)v6 setTitleFont:titleFont];
 
     [(CNActionsView *)self setActionViewsByType:v9];
-    v11 = [(CNActionsView *)self containerView];
-    [v11 insertArrangedSubview:v6 atIndex:v7];
+    containerView = [(CNActionsView *)self containerView];
+    [containerView insertArrangedSubview:v6 atIndex:v7];
   }
 
   return v6;
 }
 
-- (unint64_t)insertionIndexForType:(id)a3
+- (unint64_t)insertionIndexForType:(id)type
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(CNActionsView *)self sortedActionTypes];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  sortedActionTypes = [(CNActionsView *)self sortedActionTypes];
+  v6 = [sortedActionTypes countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -384,26 +384,26 @@ LABEL_3:
     {
       if (*v16 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(sortedActionTypes);
       }
 
       v11 = *(*(&v15 + 1) + 8 * v10);
-      v12 = [(CNActionsView *)self actionViewsByType];
-      v13 = [v12 objectForKeyedSubscript:v11];
+      actionViewsByType = [(CNActionsView *)self actionViewsByType];
+      v13 = [actionViewsByType objectForKeyedSubscript:v11];
 
       if (v13)
       {
         ++v8;
       }
 
-      if (v11 == v4)
+      if (v11 == typeCopy)
       {
         break;
       }
 
       if (v7 == ++v10)
       {
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [sortedActionTypes countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -422,14 +422,14 @@ LABEL_3:
   return v8;
 }
 
-- (void)setSortedActionTypes:(id)a3
+- (void)setSortedActionTypes:(id)types
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typesCopy = types;
   sortedActionTypes = self->_sortedActionTypes;
-  if (v4 | sortedActionTypes && ([(NSArray *)sortedActionTypes isEqual:v4]& 1) == 0)
+  if (typesCopy | sortedActionTypes && ([(NSArray *)sortedActionTypes isEqual:typesCopy]& 1) == 0)
   {
-    v6 = [v4 copy];
+    v6 = [typesCopy copy];
     v7 = self->_sortedActionTypes;
     self->_sortedActionTypes = v6;
 
@@ -437,7 +437,7 @@ LABEL_3:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = v4;
+    v8 = typesCopy;
     v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v9)
     {
@@ -454,22 +454,22 @@ LABEL_3:
           }
 
           v13 = *(*(&v20 + 1) + 8 * v12);
-          v14 = [(CNActionsView *)self actionViewsByType];
-          v15 = [v14 objectForKeyedSubscript:v13];
+          actionViewsByType = [(CNActionsView *)self actionViewsByType];
+          v15 = [actionViewsByType objectForKeyedSubscript:v13];
 
           if (v15)
           {
-            v16 = [(CNActionsView *)self actionViewsByType];
-            [v16 setObject:0 forKeyedSubscript:v13];
+            actionViewsByType2 = [(CNActionsView *)self actionViewsByType];
+            [actionViewsByType2 setObject:0 forKeyedSubscript:v13];
 
-            v17 = [(CNActionsView *)self containerView];
-            [v17 removeArrangedSubview:v15];
+            containerView = [(CNActionsView *)self containerView];
+            [containerView removeArrangedSubview:v15];
 
-            v18 = [(CNActionsView *)self containerView];
-            [v18 insertArrangedSubview:v15 atIndex:{-[CNActionsView insertionIndexForType:](self, "insertionIndexForType:", v13)}];
+            containerView2 = [(CNActionsView *)self containerView];
+            [containerView2 insertArrangedSubview:v15 atIndex:{-[CNActionsView insertionIndexForType:](self, "insertionIndexForType:", v13)}];
 
-            v19 = [(CNActionsView *)self actionViewsByType];
-            [v19 setObject:v15 forKeyedSubscript:v13];
+            actionViewsByType3 = [(CNActionsView *)self actionViewsByType];
+            [actionViewsByType3 setObject:v15 forKeyedSubscript:v13];
           }
 
           ++v12;
@@ -484,14 +484,14 @@ LABEL_3:
   }
 }
 
-- (CNActionsView)initWithFrame:(CGRect)a3
+- (CNActionsView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = CNActionsView;
-  v3 = [(CNActionsView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNActionsView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
+    ab_preferredContentSizeCategoryIsAccessibilityCategory = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
     v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
     actionItemsByType = v3->_actionItemsByType;
     v3->_actionItemsByType = v5;
@@ -501,7 +501,7 @@ LABEL_3:
     v3->_actionViewsByType = v7;
 
     v9 = 8.0;
-    if (v4)
+    if (ab_preferredContentSizeCategoryIsAccessibilityCategory)
     {
       v9 = 16.0;
     }
@@ -512,7 +512,7 @@ LABEL_3:
     v11 = [v10 initWithFrame:?];
     [v11 setAutoresizingMask:18];
     [v11 setAxis:{objc_msgSend(objc_opt_class(), "axisWithTitlesPresent:", 1)}];
-    [v11 setDistribution:v4 ^ 1u];
+    [v11 setDistribution:ab_preferredContentSizeCategoryIsAccessibilityCategory ^ 1u];
     [v11 setSpacing:v3->_spacing];
     [v11 setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
     [CNActionView minimumSizeForStyle:[(CNActionsView *)v3 style]];
@@ -530,9 +530,9 @@ LABEL_3:
   return v3;
 }
 
-+ (int64_t)axisWithTitlesPresent:(BOOL)a3
++ (int64_t)axisWithTitlesPresent:(BOOL)present
 {
-  if (a3)
+  if (present)
   {
     return [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
   }

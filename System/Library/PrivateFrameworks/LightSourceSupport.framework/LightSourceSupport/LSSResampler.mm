@@ -1,10 +1,10 @@
 @interface LSSResampler
 - (LSSProviderDelegate)delegate;
-- (LSSResampler)initWithProvider:(id)a3 inUpdateInterval:(double)a4 outUpdateInterval:(double)a5 delegate:(id)a6;
+- (LSSResampler)initWithProvider:(id)provider inUpdateInterval:(double)interval outUpdateInterval:(double)updateInterval delegate:(id)delegate;
 - (void)_fire;
 - (void)invalidate;
-- (void)provider:(id)a3 updatedLight:(id)a4;
-- (void)updateLightDirection:(id)a3;
+- (void)provider:(id)provider updatedLight:(id)light;
+- (void)updateLightDirection:(id)direction;
 @end
 
 @implementation LSSResampler
@@ -12,17 +12,17 @@
 - (void)_fire
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v2 = LSSMediaTime();
     bzero(__src, 0xD0uLL);
-    [(LSSSampleBuffer *)*(a1 + 24) intervalContaining:v2];
+    [(LSSSampleBuffer *)*(self + 24) intervalContaining:v2];
     if (*&__src[12])
     {
       memset(v7, 0, sizeof(v7));
       memcpy(v6, __src, sizeof(v6));
       LSSLightDirectionFromTimeInInterval(v6, v7, v2);
-      if (!DWORD1(v7[5]) && *&__src[12] == 1 && (*(a1 + 32) & 1) == 0)
+      if (!DWORD1(v7[5]) && *&__src[12] == 1 && (*(self + 32) & 1) == 0)
       {
         if (qword_280D2F4B0 != -1)
         {
@@ -36,36 +36,36 @@
           _os_log_impl(&dword_255E8B000, v3, OS_LOG_TYPE_DEFAULT, "pause", v6, 2u);
         }
 
-        dispatch_suspend(*(a1 + 16));
-        *(a1 + 32) = 1;
+        dispatch_suspend(*(self + 16));
+        *(self + 32) = 1;
       }
 
-      WeakRetained = objc_loadWeakRetained((a1 + 40));
+      WeakRetained = objc_loadWeakRetained((self + 40));
       memcpy(v6, v7, 0x60uLL);
-      [WeakRetained provider:a1 updatedLight:v6];
+      [WeakRetained provider:self updatedLight:v6];
     }
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (LSSResampler)initWithProvider:(id)a3 inUpdateInterval:(double)a4 outUpdateInterval:(double)a5 delegate:(id)a6
+- (LSSResampler)initWithProvider:(id)provider inUpdateInterval:(double)interval outUpdateInterval:(double)updateInterval delegate:(id)delegate
 {
   v26 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a6;
+  providerCopy = provider;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = LSSResampler;
   v13 = [(LSSResampler *)&v21 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_delegate, v12);
-    v14->_inUpdateInterval = a4;
-    v14->_outUpdateInterval = a5;
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    v14->_inUpdateInterval = interval;
+    v14->_outUpdateInterval = updateInterval;
     v14->_paused = 1;
-    objc_storeStrong(&v14->_provider, a3);
-    [v11 setDelegate:v14];
+    objc_storeStrong(&v14->_provider, provider);
+    [providerCopy setDelegate:v14];
     if (v14->_outUpdateInterval <= 0.0)
     {
       [LSSResampler initWithProvider:inUpdateInterval:outUpdateInterval:delegate:];
@@ -100,9 +100,9 @@ LABEL_6:
     }
 
     *buf = 134218240;
-    v23 = a4;
+    intervalCopy = interval;
     v24 = 2048;
-    v25 = a5;
+    updateIntervalCopy = updateInterval;
     _os_log_impl(&dword_255E8B000, v15, OS_LOG_TYPE_DEFAULT, "inUpdateInterval: %f outUpdateInterval: %f", buf, 0x16u);
     goto LABEL_6;
   }
@@ -113,11 +113,11 @@ LABEL_7:
   return v14;
 }
 
-- (void)updateLightDirection:(id)a3
+- (void)updateLightDirection:(id)direction
 {
-  var0 = a3.var0;
+  var0 = direction.var0;
   v26 = *MEMORY[0x277D85DE8];
-  v5 = [(LSSProvider *)self->_provider queue:*&a3.var0];
+  v5 = [(LSSProvider *)self->_provider queue:*&direction.var0];
   dispatch_assert_queue_V2(v5);
 
   inUpdateInterval = self->_inUpdateInterval;
@@ -153,8 +153,8 @@ LABEL_8:
         timer = self->_timer;
         if (!timer)
         {
-          v13 = [(LSSProvider *)self->_provider queue];
-          v14 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v13);
+          queue = [(LSSProvider *)self->_provider queue];
+          v14 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue);
           v15 = self->_timer;
           self->_timer = v14;
 
@@ -197,17 +197,17 @@ LABEL_11:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)provider:(id)a3 updatedLight:(id)a4
+- (void)provider:(id)provider updatedLight:(id)light
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = *(*&a4.var0 + 48);
-  v8[2] = *(*&a4.var0 + 32);
+  v4 = *(*&light.var0 + 48);
+  v8[2] = *(*&light.var0 + 32);
   v8[3] = v4;
-  v5 = *(*&a4.var0 + 80);
-  v8[4] = *(*&a4.var0 + 64);
+  v5 = *(*&light.var0 + 80);
+  v8[4] = *(*&light.var0 + 64);
   v8[5] = v5;
-  v6 = *(*&a4.var0 + 16);
-  v8[0] = **&a4.var0;
+  v6 = *(*&light.var0 + 16);
+  v8[0] = **&light.var0;
   v8[1] = v6;
   [(LSSResampler *)self updateLightDirection:v8];
   v7 = *MEMORY[0x277D85DE8];

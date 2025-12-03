@@ -6,8 +6,8 @@
 - (void)_iTunesStoreDialogWillDisplay;
 - (void)_passKitUIDismissed;
 - (void)_passKitUIPresented;
-- (void)_stickerDragEnded:(id)a3;
-- (void)_stickerDragStarted:(id)a3;
+- (void)_stickerDragEnded:(id)ended;
+- (void)_stickerDragStarted:(id)started;
 - (void)dealloc;
 - (void)prepareForResume;
 @end
@@ -57,11 +57,11 @@ void __48__CKPluginExtensionStateObserver_sharedInstance__block_invoke()
     CFNotificationCenterAddObserver(v8, v3, _iTunesStoreDialogWillDisplayCallBack, kITunesDaemonWillDisplayDialog, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
     v9 = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(v9, v3, _iTunesStoreDialogDidDismissCallBack, kITunesDaemonDidDismissDialog, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v3 selector:sel__stickerDragStarted_ name:@"CKPluginExtensionStateObserverStickerDragStarted" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__stickerDragStarted_ name:@"CKPluginExtensionStateObserverStickerDragStarted" object:0];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v3 selector:sel__stickerDragEnded_ name:@"CKPluginExtensionStateObserverStickerDragEnded" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v3 selector:sel__stickerDragEnded_ name:@"CKPluginExtensionStateObserverStickerDragEnded" object:0];
   }
 
   return v3;
@@ -167,14 +167,14 @@ void __48__CKPluginExtensionStateObserver_sharedInstance__block_invoke()
   }
 
   [(CKPluginExtensionStateObserver *)self setPassKitUIPresented:0];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"CKPluginExtensionStateObserverPassKitUIDismissed" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"CKPluginExtensionStateObserverPassKitUIDismissed" object:0];
 }
 
-- (void)_stickerDragStarted:(id)a3
+- (void)_stickerDragStarted:(id)started
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  startedCopy = started;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -189,10 +189,10 @@ void __48__CKPluginExtensionStateObserver_sharedInstance__block_invoke()
   [(CKPluginExtensionStateObserver *)self setStickerDragActiveInCurrentProcess:1];
 }
 
-- (void)_stickerDragEnded:(id)a3
+- (void)_stickerDragEnded:(id)ended
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  endedCopy = ended;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();

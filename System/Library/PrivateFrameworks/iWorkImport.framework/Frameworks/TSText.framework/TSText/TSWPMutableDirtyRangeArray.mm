@@ -1,22 +1,22 @@
 @interface TSWPMutableDirtyRangeArray
-- (void)addChangedRange:(_NSRange)a3 delta:(int64_t)a4 allowEmpty:(BOOL)a5;
-- (void)addRange:(id *)a3 allowEmpty:(BOOL)a4;
-- (void)removeRange:(_NSRange)a3;
-- (void)subtract:(id)a3;
+- (void)addChangedRange:(_NSRange)range delta:(int64_t)delta allowEmpty:(BOOL)empty;
+- (void)addRange:(id *)range allowEmpty:(BOOL)empty;
+- (void)removeRange:(_NSRange)range;
+- (void)subtract:(id)subtract;
 @end
 
 @implementation TSWPMutableDirtyRangeArray
 
-- (void)addRange:(id *)a3 allowEmpty:(BOOL)a4
+- (void)addRange:(id *)range allowEmpty:(BOOL)empty
 {
-  if (a3->var0.location != 0x7FFFFFFFFFFFFFFFLL && (a4 || a3->var0.length || a3->var1))
+  if (range->var0.location != 0x7FFFFFFFFFFFFFFFLL && (empty || range->var0.length || range->var1))
   {
     begin = self->super._rangeVector.__begin_;
     end = self->super._rangeVector.__end_;
     if (begin != end)
     {
-      var0 = a3->var0;
-      var1 = a3->var1;
+      var0 = range->var0;
+      var1 = range->var1;
       length = var0.length;
       location = var0.location;
       v9 = 0xAAAAAAAAAAAAAAABLL * ((end - begin) >> 3);
@@ -186,18 +186,18 @@ LABEL_51:
 
     p_rangeVector = &self->super._rangeVector;
 
-    sub_276E30510(p_rangeVector, a3);
+    sub_276E30510(p_rangeVector, range);
   }
 }
 
-- (void)removeRange:(_NSRange)a3
+- (void)removeRange:(_NSRange)range
 {
   begin = self->super._rangeVector.__begin_;
   end = self->super._rangeVector.__end_;
   p_rangeVector = &self->super._rangeVector;
   if (end == begin)
   {
-    v14 = a3.location + a3.length;
+    v14 = range.location + range.length;
     v9 = end;
     v20 = end;
     v15 = end;
@@ -215,7 +215,7 @@ LABEL_51:
       v13 = *v11;
       v12 = (v11 + 3);
       v8 += ~(v8 >> 1);
-      if (v13 > a3.location)
+      if (v13 > range.location)
       {
         v8 = v10;
       }
@@ -227,7 +227,7 @@ LABEL_51:
     }
 
     while (v8);
-    v14 = a3.location + a3.length;
+    v14 = range.location + range.length;
     v15 = begin;
     do
     {
@@ -256,12 +256,12 @@ LABEL_51:
   {
     v22 = v20[-2].n128_u64[1];
     v23 = v20[-1].n128_u64[0];
-    v24 = a3.location - v22;
-    if (a3.location < v22 || v24 >= v23)
+    v24 = range.location - v22;
+    if (range.location < v22 || v24 >= v23)
     {
       if (!v23)
       {
-        v26 = v22 - a3.location < a3.length && v22 >= a3.location;
+        v26 = v22 - range.location < range.length && v22 >= range.location;
         v27 = -24;
         if (!v26)
         {
@@ -275,7 +275,7 @@ LABEL_51:
 
     else
     {
-      if (a3.location == v22)
+      if (range.location == v22)
       {
         v9 = (v9 - 24);
       }
@@ -306,7 +306,7 @@ LABEL_51:
         v43.n128_u64[0] = v41;
         v43.n128_u64[1] = v42 - v41;
         v44 = 0;
-        if (a3.location == v22)
+        if (range.location == v22)
         {
           *v9 = v41;
           *(v9 + 1) = v42 - v41;
@@ -412,14 +412,14 @@ LABEL_36:
   }
 }
 
-- (void)addChangedRange:(_NSRange)a3 delta:(int64_t)a4 allowEmpty:(BOOL)a5
+- (void)addChangedRange:(_NSRange)range delta:(int64_t)delta allowEmpty:(BOOL)empty
 {
-  v5 = a5;
-  length = a3.length;
-  location = a3.location;
+  emptyCopy = empty;
+  length = range.length;
+  location = range.location;
   begin = self->super._rangeVector.__begin_;
   end = self->super._rangeVector.__end_;
-  range2 = a3.length;
+  range2 = range.length;
   v36 = objc_opt_new();
   v13 = end - begin;
   if (end == begin)
@@ -446,10 +446,10 @@ LABEL_36:
         break;
       }
 
-      if (v20.location <= v15 - a4)
+      if (v20.location <= v15 - delta)
       {
         v22 = v19[2];
-        if (a4 < 0 && v21 <= -a4)
+        if (delta < 0 && v21 <= -delta)
         {
           v23 = v18 + v16;
           v12 = (v18 + v16 + 24);
@@ -462,17 +462,17 @@ LABEL_36:
           }
 
           self->super._rangeVector.__end_ = &v23[v26];
-          a4 += v22;
+          delta += v22;
         }
 
         else
         {
-          v20.length = v21 + a4;
+          v20.length = v21 + delta;
           v42.location = location;
           v42.length = range2;
           v40 = NSUnionRange(v20, v42);
-          v41 = v22 + a4;
-          objc_msgSend_addRange_allowEmpty_(v36, v40.length, &v40, v5);
+          deltaCopy = v22 + delta;
+          objc_msgSend_addRange_allowEmpty_(v36, v40.length, &v40, emptyCopy);
           v27 = self->super._rangeVector.__begin_;
           v28 = self->super._rangeVector.__end_;
           v29 = v27 + v16;
@@ -484,7 +484,7 @@ LABEL_36:
             memmove(v29, v12, v17 + v30);
           }
 
-          a4 = 0;
+          delta = 0;
           self->super._rangeVector.__end_ = &v29[v31];
           v34 = 1;
         }
@@ -494,7 +494,7 @@ LABEL_36:
 
       else
       {
-        *v19 = v20.location + a4;
+        *v19 = v20.location + delta;
       }
 
       v16 -= 24;
@@ -509,33 +509,33 @@ LABEL_36:
   for (i = v36[2]; v32 != i; v32 = (v32 + 24))
   {
     v40 = *v32;
-    v41 = v32[1].location;
+    deltaCopy = v32[1].location;
     v38 = v40;
-    v39 = v41;
-    objc_msgSend_addRange_allowEmpty_(self, v12, &v38, v5);
+    v39 = deltaCopy;
+    objc_msgSend_addRange_allowEmpty_(self, v12, &v38, emptyCopy);
   }
 
   if ((v34 & 1) == 0)
   {
     v40.location = location;
     v40.length = range2;
-    v41 = a4;
-    objc_msgSend_addRange_allowEmpty_(self, v12, &v40, v5);
+    deltaCopy = delta;
+    objc_msgSend_addRange_allowEmpty_(self, v12, &v40, emptyCopy);
   }
 }
 
-- (void)subtract:(id)a3
+- (void)subtract:(id)subtract
 {
-  v25 = a3;
+  subtractCopy = subtract;
   if (self->super._rangeVector.__end_ != self->super._rangeVector.__begin_)
   {
-    v7 = objc_msgSend_count(v25, v4, v5);
+    v7 = objc_msgSend_count(subtractCopy, v4, v5);
     if (v7)
     {
       v8 = 0;
       do
       {
-        v9 = (v25[1] + v8);
+        v9 = (subtractCopy[1] + v8);
         v10 = objc_msgSend_indexForRange_(self, v6, *v9, v9[1]);
         v13 = objc_msgSend_count(self, v11, v12);
         v15 = *v9;

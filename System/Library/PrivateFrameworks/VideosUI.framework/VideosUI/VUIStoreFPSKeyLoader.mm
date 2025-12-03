@@ -1,30 +1,30 @@
 @interface VUIStoreFPSKeyLoader
-+ (void)_loadAndCacheCertificateDataForValidURL:(id)a3 completion:(id)a4;
-+ (void)_loadFPSURLsFromStoreBagWithCompletion:(id)a3;
++ (void)_loadAndCacheCertificateDataForValidURL:(id)l completion:(id)completion;
++ (void)_loadFPSURLsFromStoreBagWithCompletion:(id)completion;
 + (void)initialize;
 + (void)preFetchFPSCertificate;
-- (BOOL)_isVideoCurrentlyBeingPlayedForKeyRequest:(id)a3;
-- (VUIStoreFPSKeyLoader)initWithCertificateURL:(id)a3 keyServerURL:(id)a4;
+- (BOOL)_isVideoCurrentlyBeingPlayedForKeyRequest:(id)request;
+- (VUIStoreFPSKeyLoader)initWithCertificateURL:(id)l keyServerURL:(id)rL;
 - (VUIStoreFPSKeyLoaderDelegate)delegate;
-- (id)_bodyDictionaryForRequests:(id)a3 isStopRequest:(BOOL)a4 deviceLocation:(id)a5;
-- (id)_errorForStoreResponseStatus:(int64_t)a3 deviceLimit:(id)a4;
-- (id)_jsonDictionaryForRequest:(id)a3 isStopRequest:(BOOL)a4 deviceLocation:(id)a5;
-- (void)_failKeyRequests:(id)a3 withError:(id)a4;
-- (void)_generateKeyRequestDataForKeyRequests:(id)a3 completion:(id)a4;
-- (void)_generateSecureInvalidationDataForFirstRequest:(id)a3 completion:(id)a4;
-- (void)_handleResponseDict:(id)a3 forKeyRequest:(id)a4 completion:(id)a5;
-- (void)_handleResponseDicts:(id)a3 forKeyRequests:(id)a4 completion:(id)a5;
-- (void)_handleResponseForKeyRequests:(id)a3 responseData:(id)a4 URLResponse:(id)a5 error:(id)a6 completion:(id)a7;
-- (void)_initiateKeyRequests:(id)a3 completion:(id)a4;
-- (void)_invalidateValidKeyRequestsInBatches:(id)a3 completion:(id)a4;
-- (void)_loadCertificateDataWithCompletion:(id)a3;
-- (void)_loadNonceDataForRequests:(id)a3 completion:(id)a4;
-- (void)_sendKeyRequestsToServer:(id)a3 isStopRequest:(BOOL)a4 isSecureInvalidationRequest:(BOOL)a5 completion:(id)a6;
-- (void)_startKeyRequests:(id)a3 completion:(id)a4;
-- (void)_startKeyRequestsInBatches:(id)a3 completion:(id)a4;
+- (id)_bodyDictionaryForRequests:(id)requests isStopRequest:(BOOL)request deviceLocation:(id)location;
+- (id)_errorForStoreResponseStatus:(int64_t)status deviceLimit:(id)limit;
+- (id)_jsonDictionaryForRequest:(id)request isStopRequest:(BOOL)stopRequest deviceLocation:(id)location;
+- (void)_failKeyRequests:(id)requests withError:(id)error;
+- (void)_generateKeyRequestDataForKeyRequests:(id)requests completion:(id)completion;
+- (void)_generateSecureInvalidationDataForFirstRequest:(id)request completion:(id)completion;
+- (void)_handleResponseDict:(id)dict forKeyRequest:(id)request completion:(id)completion;
+- (void)_handleResponseDicts:(id)dicts forKeyRequests:(id)requests completion:(id)completion;
+- (void)_handleResponseForKeyRequests:(id)requests responseData:(id)data URLResponse:(id)response error:(id)error completion:(id)completion;
+- (void)_initiateKeyRequests:(id)requests completion:(id)completion;
+- (void)_invalidateValidKeyRequestsInBatches:(id)batches completion:(id)completion;
+- (void)_loadCertificateDataWithCompletion:(id)completion;
+- (void)_loadNonceDataForRequests:(id)requests completion:(id)completion;
+- (void)_sendKeyRequestsToServer:(id)server isStopRequest:(BOOL)request isSecureInvalidationRequest:(BOOL)invalidationRequest completion:(id)completion;
+- (void)_startKeyRequests:(id)requests completion:(id)completion;
+- (void)_startKeyRequestsInBatches:(id)batches completion:(id)completion;
 - (void)dealloc;
-- (void)invalidateKeysWithRequests:(id)a3 completion:(id)a4;
-- (void)loadFairPlayStreamingKeyRequests:(id)a3 completion:(id)a4;
+- (void)invalidateKeysWithRequests:(id)requests completion:(id)completion;
+- (void)loadFairPlayStreamingKeyRequests:(id)requests completion:(id)completion;
 - (void)removeAllEntriesFromKeyIdentifierPenaltyBox;
 - (void)sendStreamingStopRequestIfNecessary;
 @end
@@ -76,20 +76,20 @@ uint64_t __46__VUIStoreFPSKeyLoader_preFetchFPSCertificate__block_invoke(uint64_
   return result;
 }
 
-- (VUIStoreFPSKeyLoader)initWithCertificateURL:(id)a3 keyServerURL:(id)a4
+- (VUIStoreFPSKeyLoader)initWithCertificateURL:(id)l keyServerURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v22.receiver = self;
   v22.super_class = VUIStoreFPSKeyLoader;
   v8 = [(VUIStoreFPSKeyLoader *)&v22 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     certificateURL = v8->_certificateURL;
     v8->_certificateURL = v9;
 
-    v11 = [v7 copy];
+    v11 = [rLCopy copy];
     keyServerURL = v8->_keyServerURL;
     v8->_keyServerURL = v11;
 
@@ -103,12 +103,12 @@ uint64_t __46__VUIStoreFPSKeyLoader_preFetchFPSCertificate__block_invoke(uint64_
     v8->_keyIdentifierPenaltyBox = v15;
 
     v8->_state = 0;
-    v17 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v17 doubleForKey:*MEMORY[0x1E69DF818]];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults doubleForKey:*MEMORY[0x1E69DF818]];
     v8->_downloadExpirationPeriodOverrideInSeconds = v18;
 
-    v19 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v19 doubleForKey:*MEMORY[0x1E69DF808]];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults2 doubleForKey:*MEMORY[0x1E69DF808]];
     v8->_availabilityPeriodOverrideInSeconds = v20;
   }
 
@@ -129,43 +129,43 @@ uint64_t __46__VUIStoreFPSKeyLoader_preFetchFPSCertificate__block_invoke(uint64_
   [(VUIStoreFPSKeyLoader *)&v4 dealloc];
 }
 
-- (void)loadFairPlayStreamingKeyRequests:(id)a3 completion:(id)a4
+- (void)loadFairPlayStreamingKeyRequests:(id)requests completion:(id)completion
 {
   v74 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v49 = a4;
+  requestsCopy = requests;
+  completionCopy = completion;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v67 objects:v73 count:16];
+  obj = requestsCopy;
+  v7 = [requestsCopy countByEnumeratingWithState:&v67 objects:v73 count:16];
   if (v7)
   {
     v8 = *v68;
-    v4 = @"%@%@";
+    keyServerURL = @"%@%@";
     do
     {
       for (i = 0; i != v7; ++i)
       {
         if (*v68 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(requestsCopy);
         }
 
         v10 = *(*(&v67 + 1) + 8 * i);
-        v11 = [(VUIStoreFPSKeyLoader *)self eventCollection];
+        eventCollection = [(VUIStoreFPSKeyLoader *)self eventCollection];
         v12 = *MEMORY[0x1E69D5FC0];
         v13 = MEMORY[0x1E696AEC0];
-        v14 = [v10 eventReportingID];
-        v15 = [v13 stringWithFormat:@"%@%@", v12, v14];
-        [v11 addStartEventWithName:v12 identifier:v15];
+        eventReportingID = [v10 eventReportingID];
+        v15 = [v13 stringWithFormat:@"%@%@", v12, eventReportingID];
+        [eventCollection addStartEventWithName:v12 identifier:v15];
 
-        v16 = [MEMORY[0x1E695DF00] date];
-        [v10 setRequestStartDate:v16];
+        date = [MEMORY[0x1E695DF00] date];
+        [v10 setRequestStartDate:date];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v67 objects:v73 count:16];
+      v7 = [requestsCopy countByEnumeratingWithState:&v67 objects:v73 count:16];
     }
 
     while (v7);
@@ -173,10 +173,10 @@ uint64_t __46__VUIStoreFPSKeyLoader_preFetchFPSCertificate__block_invoke(uint64_
 
   if ([(VUIStoreFPSKeyLoader *)self state])
   {
-    v17 = [(VUIStoreFPSKeyLoader *)self state];
+    state = [(VUIStoreFPSKeyLoader *)self state];
     v18 = sLogObject_0;
     v19 = os_log_type_enabled(sLogObject_0, OS_LOG_TYPE_DEFAULT);
-    if (v17 == 1)
+    if (state == 1)
     {
       if (v19)
       {
@@ -188,7 +188,7 @@ uint64_t __46__VUIStoreFPSKeyLoader_preFetchFPSCertificate__block_invoke(uint64_
       v57 = 0u;
       v54 = 0u;
       v55 = 0u;
-      v50 = v6;
+      v50 = requestsCopy;
       v20 = [v50 countByEnumeratingWithState:&v54 objects:v71 count:16];
       if (v20)
       {
@@ -204,15 +204,15 @@ uint64_t __46__VUIStoreFPSKeyLoader_preFetchFPSCertificate__block_invoke(uint64_
             }
 
             v24 = *(*(&v54 + 1) + 8 * j);
-            v25 = [(VUIStoreFPSKeyLoader *)self requestsAwaitingCertFetch];
-            [v25 addObject:v24];
+            requestsAwaitingCertFetch = [(VUIStoreFPSKeyLoader *)self requestsAwaitingCertFetch];
+            [requestsAwaitingCertFetch addObject:v24];
 
-            v26 = [(VUIStoreFPSKeyLoader *)self eventCollection];
+            eventCollection2 = [(VUIStoreFPSKeyLoader *)self eventCollection];
             v27 = *v22;
             v28 = MEMORY[0x1E696AEC0];
-            v29 = [v24 eventReportingID];
-            v30 = [v28 stringWithFormat:@"%@%@", v27, v29];
-            [v26 addStartEventWithName:v27 identifier:v30];
+            eventReportingID2 = [v24 eventReportingID];
+            v30 = [v28 stringWithFormat:@"%@%@", v27, eventReportingID2];
+            [eventCollection2 addStartEventWithName:v27 identifier:v30];
           }
 
           v20 = [v50 countByEnumeratingWithState:&v54 objects:v71 count:16];
@@ -230,28 +230,28 @@ uint64_t __46__VUIStoreFPSKeyLoader_preFetchFPSCertificate__block_invoke(uint64_
         _os_log_impl(&dword_1E323F000, v18, OS_LOG_TYPE_DEFAULT, "Certificate data already loaded.  Loading key requests immediately", buf, 2u);
       }
 
-      [(VUIStoreFPSKeyLoader *)self _initiateKeyRequests:v6 completion:v49];
+      [(VUIStoreFPSKeyLoader *)self _initiateKeyRequests:requestsCopy completion:completionCopy];
     }
 
     goto LABEL_48;
   }
 
-  v31 = [(VUIStoreFPSKeyLoader *)self certificateURL];
-  if (!v31)
+  certificateURL = [(VUIStoreFPSKeyLoader *)self certificateURL];
+  if (!certificateURL)
   {
-    v4 = [(VUIStoreFPSKeyLoader *)self keyServerURL];
-    if (!v4)
+    keyServerURL = [(VUIStoreFPSKeyLoader *)self keyServerURL];
+    if (!keyServerURL)
     {
       goto LABEL_34;
     }
   }
 
-  v32 = [(VUIStoreFPSKeyLoader *)self certificateURL];
-  if (v32)
+  certificateURL2 = [(VUIStoreFPSKeyLoader *)self certificateURL];
+  if (certificateURL2)
   {
-    v33 = [(VUIStoreFPSKeyLoader *)self keyServerURL];
+    keyServerURL2 = [(VUIStoreFPSKeyLoader *)self keyServerURL];
 
-    if (v31)
+    if (certificateURL)
     {
     }
 
@@ -259,12 +259,12 @@ uint64_t __46__VUIStoreFPSKeyLoader_preFetchFPSCertificate__block_invoke(uint64_
     {
     }
 
-    if (v33)
+    if (keyServerURL2)
     {
 LABEL_34:
       [(VUIStoreFPSKeyLoader *)self setState:1];
-      v35 = [(VUIStoreFPSKeyLoader *)self requestsAwaitingCertFetch];
-      [v35 addObjectsFromArray:v6];
+      requestsAwaitingCertFetch2 = [(VUIStoreFPSKeyLoader *)self requestsAwaitingCertFetch];
+      [requestsAwaitingCertFetch2 addObjectsFromArray:requestsCopy];
 
       objc_initWeak(buf, self);
       v36 = sLogObject_0;
@@ -278,7 +278,7 @@ LABEL_34:
       v64 = 0u;
       v61 = 0u;
       v62 = 0u;
-      v51 = v6;
+      v51 = requestsCopy;
       v37 = [v51 countByEnumeratingWithState:&v61 objects:v72 count:16];
       if (v37)
       {
@@ -294,12 +294,12 @@ LABEL_34:
             }
 
             v41 = *(*(&v61 + 1) + 8 * k);
-            v42 = [(VUIStoreFPSKeyLoader *)self eventCollection];
+            eventCollection3 = [(VUIStoreFPSKeyLoader *)self eventCollection];
             v43 = *v39;
             v44 = MEMORY[0x1E696AEC0];
-            v45 = [v41 eventReportingID];
-            v46 = [v44 stringWithFormat:@"%@%@", v43, v45];
-            [v42 addStartEventWithName:v43 identifier:v46];
+            eventReportingID3 = [v41 eventReportingID];
+            v46 = [v44 stringWithFormat:@"%@%@", v43, eventReportingID3];
+            [eventCollection3 addStartEventWithName:v43 identifier:v46];
           }
 
           v37 = [v51 countByEnumeratingWithState:&v61 objects:v72 count:16];
@@ -313,7 +313,7 @@ LABEL_34:
       v58[2] = __68__VUIStoreFPSKeyLoader_loadFairPlayStreamingKeyRequests_completion___block_invoke;
       v58[3] = &unk_1E872DEA0;
       objc_copyWeak(&v60, buf);
-      v59 = v49;
+      v59 = completionCopy;
       [(VUIStoreFPSKeyLoader *)self _loadCertificateDataWithCompletion:v58];
 
       objc_destroyWeak(&v60);
@@ -325,14 +325,14 @@ LABEL_34:
   else
   {
 
-    if (v31)
+    if (certificateURL)
     {
-      v34 = v31;
+      v34 = certificateURL;
     }
 
     else
     {
-      v34 = v4;
+      v34 = keyServerURL;
     }
   }
 
@@ -343,11 +343,11 @@ LABEL_34:
 
   v47 = objc_alloc(MEMORY[0x1E696ABC0]);
   v48 = [v47 initWithDomain:*MEMORY[0x1E69D60E8] code:-345002 userInfo:0];
-  [(VUIStoreFPSKeyLoader *)self _failKeyRequests:v6 withError:v48];
+  [(VUIStoreFPSKeyLoader *)self _failKeyRequests:requestsCopy withError:v48];
 
-  if (v49)
+  if (completionCopy)
   {
-    v49[2]();
+    completionCopy[2]();
   }
 
 LABEL_48:
@@ -431,31 +431,31 @@ void __68__VUIStoreFPSKeyLoader_loadFairPlayStreamingKeyRequests_completion___bl
   }
 }
 
-- (void)invalidateKeysWithRequests:(id)a3 completion:(id)a4
+- (void)invalidateKeysWithRequests:(id)requests completion:(id)completion
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VUIStoreFPSKeyLoader *)self secureInvalidationNonceURL];
-  if (v8)
+  requestsCopy = requests;
+  completionCopy = completion;
+  secureInvalidationNonceURL = [(VUIStoreFPSKeyLoader *)self secureInvalidationNonceURL];
+  if (secureInvalidationNonceURL)
   {
-    v9 = v8;
-    v10 = [(VUIStoreFPSKeyLoader *)self keyServerURL];
-    if (v10)
+    v9 = secureInvalidationNonceURL;
+    keyServerURL = [(VUIStoreFPSKeyLoader *)self keyServerURL];
+    if (keyServerURL)
     {
-      v11 = v10;
-      v12 = [(VUIStoreFPSKeyLoader *)self secureInvalidationDSID];
+      v11 = keyServerURL;
+      secureInvalidationDSID = [(VUIStoreFPSKeyLoader *)self secureInvalidationDSID];
 
-      if (v12)
+      if (secureInvalidationDSID)
       {
-        v33 = v7;
+        v33 = completionCopy;
         v35 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v34 = v6;
-        v13 = v6;
+        v34 = requestsCopy;
+        v13 = requestsCopy;
         v14 = [v13 countByEnumeratingWithState:&v38 objects:v45 count:16];
         v15 = &unk_1EE28A000;
         if (!v14)
@@ -478,21 +478,21 @@ void __68__VUIStoreFPSKeyLoader_loadFairPlayStreamingKeyRequests_completion___bl
             }
 
             v20 = *(*(&v38 + 1) + 8 * v19);
-            v21 = [v20 offlineKeyData];
-            if (![v21 length])
+            offlineKeyData = [v20 offlineKeyData];
+            if (![offlineKeyData length])
             {
               goto LABEL_15;
             }
 
-            v22 = [v20 keyIdentifier];
-            if (!v22)
+            keyIdentifier = [v20 keyIdentifier];
+            if (!keyIdentifier)
             {
               goto LABEL_15;
             }
 
-            v23 = v22;
-            v24 = [v20 additionalRequestParams];
-            if (![v24 count])
+            v23 = keyIdentifier;
+            additionalRequestParams = [v20 additionalRequestParams];
+            if (![additionalRequestParams count])
             {
 
               v18 = 0x1E695D000uLL;
@@ -504,12 +504,12 @@ LABEL_15:
             [v20 contentID];
             v25 = v17;
             v26 = v15;
-            v27 = self;
+            selfCopy = self;
             v29 = v28 = v13;
             v37 = [v29 length];
 
             v13 = v28;
-            self = v27;
+            self = selfCopy;
             v15 = v26;
             v17 = v25;
             v16 = v36;
@@ -546,22 +546,22 @@ LABEL_21:
 
             if ([v35 count])
             {
-              v7 = v33;
+              completionCopy = v33;
               [(VUIStoreFPSKeyLoader *)self _invalidateValidKeyRequestsInBatches:v35 completion:v33];
-              v6 = v34;
+              requestsCopy = v34;
             }
 
             else
             {
               v32 = v15[292];
-              v7 = v33;
+              completionCopy = v33;
               if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 0;
                 _os_log_impl(&dword_1E323F000, v32, OS_LOG_TYPE_DEFAULT, "No key requests to invalidate.", buf, 2u);
               }
 
-              v6 = v34;
+              requestsCopy = v34;
               if (v33)
               {
                 v33[2](v33);
@@ -584,10 +584,10 @@ LABEL_21:
     [VUIStoreFPSKeyLoader invalidateKeysWithRequests:completion:];
   }
 
-  [(VUIStoreFPSKeyLoader *)self _failKeyRequests:v6 withError:0];
-  if (v7)
+  [(VUIStoreFPSKeyLoader *)self _failKeyRequests:requestsCopy withError:0];
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_33:
@@ -596,11 +596,11 @@ LABEL_33:
 - (void)sendStreamingStopRequestIfNecessary
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v3 = [(VUIStoreFPSKeyLoader *)self savedStreamingKeyRequestToUseForStopping];
-  v4 = v3;
-  if (v3)
+  savedStreamingKeyRequestToUseForStopping = [(VUIStoreFPSKeyLoader *)self savedStreamingKeyRequestToUseForStopping];
+  v4 = savedStreamingKeyRequestToUseForStopping;
+  if (savedStreamingKeyRequestToUseForStopping)
   {
-    v6[0] = v3;
+    v6[0] = savedStreamingKeyRequestToUseForStopping;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
     [(VUIStoreFPSKeyLoader *)self _sendKeyRequestsToServer:v5 isStopRequest:1 isSecureInvalidationRequest:0 completion:0];
 
@@ -617,34 +617,34 @@ LABEL_33:
     _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_DEFAULT, "Removing all entries from key identifier penalty box", v5, 2u);
   }
 
-  v4 = [(VUIStoreFPSKeyLoader *)self keyIdentifierPenaltyBox];
-  [v4 removeAllObjects];
+  keyIdentifierPenaltyBox = [(VUIStoreFPSKeyLoader *)self keyIdentifierPenaltyBox];
+  [keyIdentifierPenaltyBox removeAllObjects];
 }
 
-- (void)_loadCertificateDataWithCompletion:(id)a3
+- (void)_loadCertificateDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __59__VUIStoreFPSKeyLoader__loadCertificateDataWithCompletion___block_invoke;
   aBlock[3] = &unk_1E872DEF0;
   objc_copyWeak(&v16, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v15 = v5;
   v6 = _Block_copy(aBlock);
-  v7 = [(VUIStoreFPSKeyLoader *)self certificateURL];
+  certificateURL = [(VUIStoreFPSKeyLoader *)self certificateURL];
 
-  if (v7)
+  if (certificateURL)
   {
-    v8 = [(VUIStoreFPSKeyLoader *)self certificateURL];
-    v6[2](v6, v8);
+    certificateURL2 = [(VUIStoreFPSKeyLoader *)self certificateURL];
+    v6[2](v6, certificateURL2);
   }
 
   else
   {
-    v9 = [(VUIStoreFPSKeyLoader *)self eventCollection];
-    [v9 addStartEventWithName:*MEMORY[0x1E69D5FE0]];
+    eventCollection = [(VUIStoreFPSKeyLoader *)self eventCollection];
+    [eventCollection addStartEventWithName:*MEMORY[0x1E69D5FE0]];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -747,9 +747,9 @@ void __59__VUIStoreFPSKeyLoader__loadCertificateDataWithCompletion___block_invok
   }
 }
 
-+ (void)_loadFPSURLsFromStoreBagWithCompletion:(id)a3
++ (void)_loadFPSURLsFromStoreBagWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = sLogObject_0;
   if (os_log_type_enabled(sLogObject_0, OS_LOG_TYPE_DEFAULT))
   {
@@ -789,8 +789,8 @@ void __59__VUIStoreFPSKeyLoader__loadCertificateDataWithCompletion___block_invok
   block[3] = &unk_1E872DF40;
   v15 = v9;
   v16 = v10;
-  v17 = v3;
-  v11 = v3;
+  v17 = completionCopy;
+  v11 = completionCopy;
   v12 = v10;
   v13 = v9;
   dispatch_async(MEMORY[0x1E69E96A0], block);
@@ -816,23 +816,23 @@ uint64_t __63__VUIStoreFPSKeyLoader__loadFPSURLsFromStoreBagWithCompletion___blo
   return (*(a1[6] + 16))();
 }
 
-+ (void)_loadAndCacheCertificateDataForValidURL:(id)a3 completion:(id)a4
++ (void)_loadAndCacheCertificateDataForValidURL:(id)l completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x1E696AD68]) initWithURL:v5];
+  lCopy = l;
+  completionCopy = completion;
+  v7 = [objc_alloc(MEMORY[0x1E696AD68]) initWithURL:lCopy];
   [v7 setHTTPMethod:@"GET"];
   [v7 setTimeoutInterval:30.0];
-  v8 = [MEMORY[0x1E696AF78] sharedSession];
+  mEMORY[0x1E696AF78] = [MEMORY[0x1E696AF78] sharedSession];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __75__VUIStoreFPSKeyLoader__loadAndCacheCertificateDataForValidURL_completion___block_invoke;
   v15 = &unk_1E872DF90;
-  v16 = v5;
-  v17 = v6;
-  v9 = v6;
-  v10 = v5;
-  v11 = [v8 dataTaskWithURL:v10 completionHandler:&v12];
+  v16 = lCopy;
+  v17 = completionCopy;
+  v9 = completionCopy;
+  v10 = lCopy;
+  v11 = [mEMORY[0x1E696AF78] dataTaskWithURL:v10 completionHandler:&v12];
 
   [v11 resume];
 }
@@ -904,15 +904,15 @@ void __75__VUIStoreFPSKeyLoader__loadAndCacheCertificateDataForValidURL_completi
   }
 }
 
-- (void)_invalidateValidKeyRequestsInBatches:(id)a3 completion:(id)a4
+- (void)_invalidateValidKeyRequestsInBatches:(id)batches completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  batchesCopy = batches;
+  completionCopy = completion;
+  if ([batchesCopy count])
   {
     objc_initWeak(&location, self);
-    v8 = [v6 count];
+    v8 = [batchesCopy count];
     if (v8 >= 0x14)
     {
       v9 = 20;
@@ -923,8 +923,8 @@ void __75__VUIStoreFPSKeyLoader__loadAndCacheCertificateDataForValidURL_completi
       v9 = v8;
     }
 
-    v10 = [v6 subarrayWithRange:{0, v9}];
-    v11 = [v6 subarrayWithRange:{v9, objc_msgSend(v6, "count") - v9}];
+    v10 = [batchesCopy subarrayWithRange:{0, v9}];
+    v11 = [batchesCopy subarrayWithRange:{v9, objc_msgSend(batchesCopy, "count") - v9}];
     v12 = sLogObject_0;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -950,7 +950,7 @@ void __75__VUIStoreFPSKeyLoader__loadAndCacheCertificateDataForValidURL_completi
     v19 = v15;
     v16 = v11;
     v20 = v16;
-    v21 = v7;
+    v21 = completionCopy;
     [(VUIStoreFPSKeyLoader *)self _loadNonceDataForRequests:v15 completion:v18];
 
     objc_destroyWeak(&v22);
@@ -966,9 +966,9 @@ void __75__VUIStoreFPSKeyLoader__loadAndCacheCertificateDataForValidURL_completi
       _os_log_impl(&dword_1E323F000, v17, OS_LOG_TYPE_DEFAULT, "Done with all invalidation key request batches", buf, 2u);
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -1122,19 +1122,19 @@ void __72__VUIStoreFPSKeyLoader__invalidateValidKeyRequestsInBatches_completion_
   }
 }
 
-- (void)_loadNonceDataForRequests:(id)a3 completion:(id)a4
+- (void)_loadNonceDataForRequests:(id)requests completion:(id)completion
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v34 = a4;
+  requestsCopy = requests;
+  completionCopy = completion;
   v7 = objc_alloc(MEMORY[0x1E696AF20]);
   val = self;
-  v8 = [(VUIStoreFPSKeyLoader *)self secureInvalidationNonceURL];
-  v9 = [v7 initWithURL:v8 resolvingAgainstBaseURL:0];
+  secureInvalidationNonceURL = [(VUIStoreFPSKeyLoader *)self secureInvalidationNonceURL];
+  v9 = [v7 initWithURL:secureInvalidationNonceURL resolvingAgainstBaseURL:0];
 
   v36 = v9;
-  v10 = [v9 queryItems];
-  v11 = [v10 mutableCopy];
+  queryItems = [v9 queryItems];
+  v11 = [queryItems mutableCopy];
 
   v38 = v11;
   if (!v11)
@@ -1146,7 +1146,7 @@ void __72__VUIStoreFPSKeyLoader__invalidateValidKeyRequestsInBatches_completion_
   v48 = 0u;
   v49 = 0u;
   v47 = 0u;
-  obj = v6;
+  obj = requestsCopy;
   v12 = [obj countByEnumeratingWithState:&v47 objects:v53 count:16];
   if (v12)
   {
@@ -1163,8 +1163,8 @@ void __72__VUIStoreFPSKeyLoader__invalidateValidKeyRequestsInBatches_completion_
         v15 = *(*(&v47 + 1) + 8 * i);
         v16 = objc_alloc(MEMORY[0x1E696AF60]);
         v17 = MEMORY[0x1E696AEC0];
-        v18 = [v15 contentID];
-        v19 = [v17 stringWithFormat:@"%@", v18];
+        contentID = [v15 contentID];
+        v19 = [v17 stringWithFormat:@"%@", contentID];
         v20 = [v16 initWithName:@"contentId" value:v19];
 
         if (v20)
@@ -1186,13 +1186,13 @@ void __72__VUIStoreFPSKeyLoader__invalidateValidKeyRequestsInBatches_completion_
     objc_initWeak(&location, val);
     v22 = [objc_alloc(MEMORY[0x1E696AD68]) initWithURL:v21];
     [v22 setHTTPMethod:@"GET"];
-    v23 = [(VUIStoreFPSKeyLoader *)val secureInvalidationDSID];
-    v24 = [v23 stringValue];
-    [v22 setValue:v24 forHTTPHeaderField:@"X-Secure-Invalidation-Dsid"];
+    secureInvalidationDSID = [(VUIStoreFPSKeyLoader *)val secureInvalidationDSID];
+    stringValue = [secureInvalidationDSID stringValue];
+    [v22 setValue:stringValue forHTTPHeaderField:@"X-Secure-Invalidation-Dsid"];
 
     [v22 setTimeoutInterval:30.0];
-    v25 = [MEMORY[0x1E698C7D8] vui_defaultBag];
-    v26 = [objc_alloc(MEMORY[0x1E698CB88]) initWithBag:v25];
+    vui_defaultBag = [MEMORY[0x1E698C7D8] vui_defaultBag];
+    v26 = [objc_alloc(MEMORY[0x1E698CB88]) initWithBag:vui_defaultBag];
     [v26 setAnisetteType:2];
     v27 = [MEMORY[0x1E69D5920] activeAccountForMediaType:*MEMORY[0x1E698C4D0]];
     v28 = sLogObject_0;
@@ -1214,7 +1214,7 @@ void __72__VUIStoreFPSKeyLoader__invalidateValidKeyRequestsInBatches_completion_
     v42 = v30;
     objc_copyWeak(&v45, &location);
     v43 = val;
-    v44 = v34;
+    v44 = completionCopy;
     [v27 addFinishBlock:v39];
 
     objc_destroyWeak(&v45);
@@ -1234,9 +1234,9 @@ void __72__VUIStoreFPSKeyLoader__invalidateValidKeyRequestsInBatches_completion_
     v33 = [v32 initWithDomain:*MEMORY[0x1E69D60E8] code:-345007 userInfo:0];
     [(VUIStoreFPSKeyLoader *)val _failKeyRequests:obj withError:v33];
 
-    if (v34)
+    if (completionCopy)
     {
-      v34[2]();
+      completionCopy[2]();
     }
   }
 }
@@ -1490,14 +1490,14 @@ uint64_t __61__VUIStoreFPSKeyLoader__loadNonceDataForRequests_completion___block
   return result;
 }
 
-- (void)_generateSecureInvalidationDataForFirstRequest:(id)a3 completion:(id)a4
+- (void)_generateSecureInvalidationDataForFirstRequest:(id)request completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  requestCopy = request;
+  completionCopy = completion;
+  if ([requestCopy count])
   {
-    v8 = [v6 firstObject];
+    firstObject = [requestCopy firstObject];
     objc_initWeak(&location, self);
     v9 = [objc_alloc(MEMORY[0x1E69D5A08]) initWithContentKeyLoader:0 avAsset:0];
     [(VUIStoreFPSKeyLoader *)self setContentKeySession:v9];
@@ -1506,23 +1506,23 @@ uint64_t __61__VUIStoreFPSKeyLoader__loadNonceDataForRequests_completion___block
     if (os_log_type_enabled(sLogObject_0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v8;
+      v23 = firstObject;
       _os_log_impl(&dword_1E323F000, v10, OS_LOG_TYPE_DEFAULT, "Generating secure invalidation data for %@", buf, 0xCu);
     }
 
-    v11 = [(VUIStoreFPSKeyLoader *)self contentKeySession];
-    v12 = [v8 offlineKeyData];
-    v13 = [v8 secureInvalidationNonceData];
+    contentKeySession = [(VUIStoreFPSKeyLoader *)self contentKeySession];
+    offlineKeyData = [firstObject offlineKeyData];
+    secureInvalidationNonceData = [firstObject secureInvalidationNonceData];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __82__VUIStoreFPSKeyLoader__generateSecureInvalidationDataForFirstRequest_completion___block_invoke;
     v16[3] = &unk_1E872E080;
     objc_copyWeak(&v20, &location);
-    v14 = v8;
+    v14 = firstObject;
     v17 = v14;
-    v18 = v6;
-    v19 = v7;
-    [v11 makeSecureInvalidationDataForOfflineKeyData:v12 nonceData:v13 completion:v16];
+    v18 = requestCopy;
+    v19 = completionCopy;
+    [contentKeySession makeSecureInvalidationDataForOfflineKeyData:offlineKeyData nonceData:secureInvalidationNonceData completion:v16];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(&location);
@@ -1537,9 +1537,9 @@ uint64_t __61__VUIStoreFPSKeyLoader__loadNonceDataForRequests_completion___block
       _os_log_impl(&dword_1E323F000, v15, OS_LOG_TYPE_DEFAULT, "Done generating secure invalidation data", buf, 2u);
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -1581,27 +1581,27 @@ void __82__VUIStoreFPSKeyLoader__generateSecureInvalidationDataForFirstRequest_c
   [WeakRetained _generateSecureInvalidationDataForFirstRequest:v12 completion:*(a1 + 48)];
 }
 
-- (void)_initiateKeyRequests:(id)a3 completion:(id)a4
+- (void)_initiateKeyRequests:(id)requests completion:(id)completion
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v11 firstObject];
-  v8 = [v7 contentID];
+  requestsCopy = requests;
+  completionCopy = completion;
+  firstObject = [requestsCopy firstObject];
+  contentID = [firstObject contentID];
 
-  if (v8)
+  if (contentID)
   {
-    v9 = [v11 sortedArrayUsingComparator:&__block_literal_global_82];
+    v9 = [requestsCopy sortedArrayUsingComparator:&__block_literal_global_82];
 
     v10 = v9;
   }
 
   else
   {
-    v10 = v11;
+    v10 = requestsCopy;
   }
 
   v12 = v10;
-  [(VUIStoreFPSKeyLoader *)self _startKeyRequestsInBatches:v10 completion:v6];
+  [(VUIStoreFPSKeyLoader *)self _startKeyRequestsInBatches:v10 completion:completionCopy];
 }
 
 uint64_t __56__VUIStoreFPSKeyLoader__initiateKeyRequests_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1641,21 +1641,21 @@ uint64_t __56__VUIStoreFPSKeyLoader__initiateKeyRequests_completion___block_invo
   return v7;
 }
 
-- (void)_startKeyRequestsInBatches:(id)a3 completion:(id)a4
+- (void)_startKeyRequestsInBatches:(id)batches completion:(id)completion
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v36 = v5;
-  if ([v5 count])
+  batchesCopy = batches;
+  completionCopy = completion;
+  v36 = batchesCopy;
+  if ([batchesCopy count])
   {
-    v34 = v6;
+    v34 = completionCopy;
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    obj = v5;
+    obj = batchesCopy;
     v8 = [obj countByEnumeratingWithState:&v44 objects:v50 count:16];
     if (v8)
     {
@@ -1669,10 +1669,10 @@ uint64_t __56__VUIStoreFPSKeyLoader__initiateKeyRequests_completion___block_invo
             objc_enumerationMutation(obj);
           }
 
-          v11 = [*(*(&v44 + 1) + 8 * i) contentID];
-          if (v11)
+          contentID = [*(*(&v44 + 1) + 8 * i) contentID];
+          if (contentID)
           {
-            v12 = v11;
+            v12 = contentID;
           }
 
           else
@@ -1708,10 +1708,10 @@ uint64_t __56__VUIStoreFPSKeyLoader__initiateKeyRequests_completion___block_invo
       do
       {
         v18 = [obj objectAtIndex:{v17, v34}];
-        v19 = [v18 contentID];
-        if (v19)
+        contentID2 = [v18 contentID];
+        if (contentID2)
         {
-          v20 = v19;
+          v20 = contentID2;
         }
 
         else
@@ -1720,16 +1720,16 @@ uint64_t __56__VUIStoreFPSKeyLoader__initiateKeyRequests_completion___block_invo
         }
 
         v21 = [v7 objectForKey:v20];
-        v22 = [v21 integerValue];
+        integerValue = [v21 integerValue];
 
-        if (v22)
+        if (integerValue)
         {
-          if (([v16 count] + v22) < 0x15)
+          if (([v16 count] + integerValue) < 0x15)
           {
-            v24 = [obj subarrayWithRange:{v17, v22}];
+            v24 = [obj subarrayWithRange:{v17, integerValue}];
             [v16 addObjectsFromArray:v24];
 
-            v17 += v22;
+            v17 += integerValue;
           }
 
           else
@@ -1805,7 +1805,7 @@ uint64_t __56__VUIStoreFPSKeyLoader__initiateKeyRequests_completion___block_invo
     objc_destroyWeak(&v42);
     objc_destroyWeak(&location);
 
-    v6 = v35;
+    completionCopy = v35;
   }
 
   else
@@ -1817,9 +1817,9 @@ uint64_t __56__VUIStoreFPSKeyLoader__initiateKeyRequests_completion___block_invo
       _os_log_impl(&dword_1E323F000, v25, OS_LOG_TYPE_DEFAULT, "Done with all key request batches", buf, 2u);
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -1830,17 +1830,17 @@ void __62__VUIStoreFPSKeyLoader__startKeyRequestsInBatches_completion___block_in
   [WeakRetained _startKeyRequestsInBatches:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)_startKeyRequests:(id)a3 completion:(id)a4
+- (void)_startKeyRequests:(id)requests completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v22 = a4;
+  requestsCopy = requests;
+  completionCopy = completion;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = v6;
+  v8 = requestsCopy;
   v9 = [v8 countByEnumeratingWithState:&v27 objects:v34 count:16];
   if (v9)
   {
@@ -1855,11 +1855,11 @@ void __62__VUIStoreFPSKeyLoader__startKeyRequestsInBatches_completion___block_in
         }
 
         v12 = *(*(&v27 + 1) + 8 * i);
-        v13 = [v12 keyIdentifier];
-        v14 = [(VUIStoreFPSKeyLoader *)self keyIdentifierPenaltyBox];
-        v15 = [v14 objectForKey:v13];
+        keyIdentifier = [v12 keyIdentifier];
+        keyIdentifierPenaltyBox = [(VUIStoreFPSKeyLoader *)self keyIdentifierPenaltyBox];
+        v15 = [keyIdentifierPenaltyBox objectForKey:keyIdentifier];
 
-        if (v13)
+        if (keyIdentifier)
         {
           v16 = v15 == 0;
         }
@@ -1904,7 +1904,7 @@ void __62__VUIStoreFPSKeyLoader__startKeyRequestsInBatches_completion___block_in
   objc_copyWeak(&v26, buf);
   v20 = v7;
   v24 = v20;
-  v21 = v22;
+  v21 = completionCopy;
   v25 = v21;
   [(VUIStoreFPSKeyLoader *)self _generateKeyRequestDataForKeyRequests:v20 completion:v23];
 
@@ -1994,17 +1994,17 @@ void __53__VUIStoreFPSKeyLoader__startKeyRequests_completion___block_invoke(uint
   }
 }
 
-- (void)_generateKeyRequestDataForKeyRequests:(id)a3 completion:(id)a4
+- (void)_generateKeyRequestDataForKeyRequests:(id)requests completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v25 = a4;
+  requestsCopy = requests;
+  completionCopy = completion;
   v7 = dispatch_group_create();
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v6;
+  obj = requestsCopy;
   v8 = [obj countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v8)
   {
@@ -2019,10 +2019,10 @@ void __53__VUIStoreFPSKeyLoader__startKeyRequests_completion___block_invoke(uint
         }
 
         v11 = *(*(&v32 + 1) + 8 * i);
-        v12 = [v11 isCancelled];
+        isCancelled = [v11 isCancelled];
         v13 = sLogObject_0;
         v14 = os_log_type_enabled(sLogObject_0, OS_LOG_TYPE_DEFAULT);
-        if (v12)
+        if (isCancelled)
         {
           if (v14)
           {
@@ -2041,20 +2041,20 @@ void __53__VUIStoreFPSKeyLoader__startKeyRequests_completion___block_invoke(uint
             _os_log_impl(&dword_1E323F000, v13, OS_LOG_TYPE_DEFAULT, "Generating key request data for %@", buf, 0xCu);
           }
 
-          v15 = [(VUIStoreFPSKeyLoader *)self eventCollection];
+          eventCollection = [(VUIStoreFPSKeyLoader *)self eventCollection];
           v16 = *MEMORY[0x1E69D5FC8];
           v17 = MEMORY[0x1E696AEC0];
-          v18 = [v11 eventReportingID];
-          v19 = [v17 stringWithFormat:@"%@%@", v16, v18];
-          [v15 addStartEventWithName:v16 identifier:v19];
+          eventReportingID = [v11 eventReportingID];
+          v19 = [v17 stringWithFormat:@"%@%@", v16, eventReportingID];
+          [eventCollection addStartEventWithName:v16 identifier:v19];
 
-          v20 = [v11 keyIdentifier];
-          v21 = [v20 absoluteString];
-          v22 = [v21 dataUsingEncoding:4];
+          keyIdentifier = [v11 keyIdentifier];
+          absoluteString = [keyIdentifier absoluteString];
+          v22 = [absoluteString dataUsingEncoding:4];
 
           objc_initWeak(buf, self);
           dispatch_group_enter(v7);
-          v23 = [(VUIStoreFPSKeyLoader *)self certificateData];
+          certificateData = [(VUIStoreFPSKeyLoader *)self certificateData];
           v29[0] = MEMORY[0x1E69E9820];
           v29[1] = 3221225472;
           v29[2] = __73__VUIStoreFPSKeyLoader__generateKeyRequestDataForKeyRequests_completion___block_invoke;
@@ -2062,7 +2062,7 @@ void __53__VUIStoreFPSKeyLoader__startKeyRequests_completion___block_invoke(uint
           objc_copyWeak(&v31, buf);
           v29[4] = v11;
           v30 = v7;
-          [v11 makeKeyRequestDataForCertificateData:v23 assetIDData:v22 completion:v29];
+          [v11 makeKeyRequestDataForCertificateData:certificateData assetIDData:v22 completion:v29];
 
           objc_destroyWeak(&v31);
           objc_destroyWeak(buf);
@@ -2079,8 +2079,8 @@ void __53__VUIStoreFPSKeyLoader__startKeyRequests_completion___block_invoke(uint
   block[1] = 3221225472;
   block[2] = __73__VUIStoreFPSKeyLoader__generateKeyRequestDataForKeyRequests_completion___block_invoke_88;
   block[3] = &unk_1E872D7E0;
-  v28 = v25;
-  v24 = v25;
+  v28 = completionCopy;
+  v24 = completionCopy;
   dispatch_group_notify(v7, MEMORY[0x1E69E96A0], block);
 }
 
@@ -2112,17 +2112,17 @@ void __73__VUIStoreFPSKeyLoader__generateKeyRequestDataForKeyRequests_completion
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (void)_sendKeyRequestsToServer:(id)a3 isStopRequest:(BOOL)a4 isSecureInvalidationRequest:(BOOL)a5 completion:(id)a6
+- (void)_sendKeyRequestsToServer:(id)server isStopRequest:(BOOL)request isSecureInvalidationRequest:(BOOL)invalidationRequest completion:(id)completion
 {
   v57 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v30 = a6;
-  v31 = [MEMORY[0x1E695DF00] date];
+  serverCopy = server;
+  completionCopy = completion;
+  date = [MEMORY[0x1E695DF00] date];
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = v9;
+  obj = serverCopy;
   v10 = [obj countByEnumeratingWithState:&v52 objects:v56 count:16];
   if (v10)
   {
@@ -2137,10 +2137,10 @@ void __73__VUIStoreFPSKeyLoader__generateKeyRequestDataForKeyRequests_completion
         }
 
         v13 = *(*(&v52 + 1) + 8 * i);
-        if ((![v13 type] || objc_msgSend(v13, "type") == 1) && !a4)
+        if ((![v13 type] || objc_msgSend(v13, "type") == 1) && !request)
         {
-          v14 = [(VUIStoreFPSKeyLoader *)self savedStreamingKeyRequestToUseForStopping];
-          v15 = v14 == 0;
+          savedStreamingKeyRequestToUseForStopping = [(VUIStoreFPSKeyLoader *)self savedStreamingKeyRequestToUseForStopping];
+          v15 = savedStreamingKeyRequestToUseForStopping == 0;
 
           if (v15)
           {
@@ -2148,12 +2148,12 @@ void __73__VUIStoreFPSKeyLoader__generateKeyRequestDataForKeyRequests_completion
           }
         }
 
-        v16 = [(VUIStoreFPSKeyLoader *)self eventCollection];
+        eventCollection = [(VUIStoreFPSKeyLoader *)self eventCollection];
         v17 = *MEMORY[0x1E69D5FF0];
         v18 = MEMORY[0x1E696AEC0];
-        v19 = [v13 eventReportingID];
-        v20 = [v18 stringWithFormat:@"%@%@", v17, v19];
-        [v16 addStartEventWithName:v17 identifier:v20];
+        eventReportingID = [v13 eventReportingID];
+        v20 = [v18 stringWithFormat:@"%@%@", v17, eventReportingID];
+        [eventCollection addStartEventWithName:v17 identifier:v20];
       }
 
       v10 = [obj countByEnumeratingWithState:&v52 objects:v56 count:16];
@@ -2169,13 +2169,13 @@ void __73__VUIStoreFPSKeyLoader__generateKeyRequestDataForKeyRequests_completion
   aBlock[3] = &unk_1E872E1E0;
   v21 = obj;
   v44 = v21;
-  v45 = self;
-  v22 = v31;
+  selfCopy = self;
+  v22 = date;
   v46 = v22;
-  v49 = a4;
-  v50 = a5;
+  requestCopy = request;
+  invalidationRequestCopy = invalidationRequest;
   objc_copyWeak(&v48, &location);
-  v23 = v30;
+  v23 = completionCopy;
   v47 = v23;
   v24 = _Block_copy(aBlock);
   if ([(VUIStoreFPSKeyLoader *)self sendsLocationWhenOptedIn])
@@ -2206,16 +2206,16 @@ void __73__VUIStoreFPSKeyLoader__generateKeyRequestDataForKeyRequests_completion
       v37 = __102__VUIStoreFPSKeyLoader__sendKeyRequestsToServer_isStopRequest_isSecureInvalidationRequest_completion___block_invoke_2_113;
       v38 = &unk_1E872D7E0;
       v39 = v24;
-      v25 = v36;
+      defaultLocationManager = v36;
       v26 = &v39;
       if ([MEMORY[0x1E696AF00] isMainThread])
       {
-        v37(v25);
+        v37(defaultLocationManager);
       }
 
       else
       {
-        dispatch_async(MEMORY[0x1E69E96A0], v25);
+        dispatch_async(MEMORY[0x1E69E96A0], defaultLocationManager);
       }
     }
 
@@ -2228,13 +2228,13 @@ void __73__VUIStoreFPSKeyLoader__generateKeyRequestDataForKeyRequests_completion
         _os_log_impl(&dword_1E323F000, v28, OS_LOG_TYPE_DEFAULT, "Fetching location authorization status", buf, 2u);
       }
 
-      v25 = [MEMORY[0x1E69E1540] defaultLocationManager];
+      defaultLocationManager = [MEMORY[0x1E69E1540] defaultLocationManager];
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __102__VUIStoreFPSKeyLoader__sendKeyRequestsToServer_isStopRequest_isSecureInvalidationRequest_completion___block_invoke_115;
       v34[3] = &unk_1E872E258;
       v35 = v24;
-      [v25 fetchAuthorizationStatus:v34];
+      [defaultLocationManager fetchAuthorizationStatus:v34];
       v26 = &v35;
     }
 
@@ -2744,45 +2744,45 @@ void __102__VUIStoreFPSKeyLoader__sendKeyRequestsToServer_isStopRequest_isSecure
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_handleResponseForKeyRequests:(id)a3 responseData:(id)a4 URLResponse:(id)a5 error:(id)a6 completion:(id)a7
+- (void)_handleResponseForKeyRequests:(id)requests responseData:(id)data URLResponse:(id)response error:(id)error completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  requestsCopy = requests;
+  dataCopy = data;
+  responseCopy = response;
+  errorCopy = error;
+  completionCopy = completion;
   v17 = sLogObject_0;
   if (os_log_type_enabled(sLogObject_0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v36 = v12;
+    v36 = requestsCopy;
     _os_log_impl(&dword_1E323F000, v17, OS_LOG_TYPE_DEFAULT, "Received response for requests: %@", buf, 0xCu);
   }
 
-  v18 = [v14 allHeaderFields];
-  v19 = [v18 tvp_appleTimingAppHeaderValue];
+  allHeaderFields = [responseCopy allHeaderFields];
+  tvp_appleTimingAppHeaderValue = [allHeaderFields tvp_appleTimingAppHeaderValue];
 
-  if (v19 >= 1)
+  if (tvp_appleTimingAppHeaderValue >= 1)
   {
-    v20 = [(VUIStoreFPSKeyLoader *)self eventCollection];
+    eventCollection = [(VUIStoreFPSKeyLoader *)self eventCollection];
     v21 = *MEMORY[0x1E69D5FD8];
-    v22 = [MEMORY[0x1E696AD98] numberWithInteger:v19];
-    [v20 addSingleShotEventWithName:v21 value:v22];
+    v22 = [MEMORY[0x1E696AD98] numberWithInteger:tvp_appleTimingAppHeaderValue];
+    [eventCollection addSingleShotEventWithName:v21 value:v22];
   }
 
-  if (v14)
+  if (responseCopy)
   {
-    v23 = [v14 statusCode];
+    statusCode = [responseCopy statusCode];
   }
 
   else
   {
-    v23 = WLKHTTPStatusCodeForAMSError();
+    statusCode = WLKHTTPStatusCodeForAMSError();
   }
 
-  v24 = v23;
-  if (v23 != 200)
+  v24 = statusCode;
+  if (statusCode != 200)
   {
     if (os_log_type_enabled(sLogObject_0, OS_LOG_TYPE_ERROR))
     {
@@ -2795,21 +2795,21 @@ void __102__VUIStoreFPSKeyLoader__sendKeyRequestsToServer_isStopRequest_isSecure
     }
   }
 
-  if (!v13)
+  if (!dataCopy)
   {
-    [(VUIStoreFPSKeyLoader *)self _failKeyRequests:v12 withError:v15];
+    [(VUIStoreFPSKeyLoader *)self _failKeyRequests:requestsCopy withError:errorCopy];
     goto LABEL_21;
   }
 
-  if (![v13 length])
+  if (![dataCopy length])
   {
 LABEL_20:
     v30 = TVPSKDErrorWithCode();
-    [(VUIStoreFPSKeyLoader *)self _failKeyRequests:v12 withError:v30];
+    [(VUIStoreFPSKeyLoader *)self _failKeyRequests:requestsCopy withError:v30];
 
 LABEL_21:
     v29 = 1;
-    if (!v16)
+    if (!completionCopy)
     {
       goto LABEL_33;
     }
@@ -2818,7 +2818,7 @@ LABEL_21:
   }
 
   v34 = 0;
-  v25 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v13 options:0 error:&v34];
+  v25 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:0 error:&v34];
   v33 = v34;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2829,7 +2829,7 @@ LABEL_21:
     v28 = v27;
     if (v26 && v32 && [v27 count])
     {
-      [(VUIStoreFPSKeyLoader *)self _handleResponseDicts:v28 forKeyRequests:v12 completion:v16];
+      [(VUIStoreFPSKeyLoader *)self _handleResponseDicts:v28 forKeyRequests:requestsCopy completion:completionCopy];
       v29 = 0;
     }
 
@@ -2841,7 +2841,7 @@ LABEL_21:
       }
 
       v31 = TVPSKDErrorWithCode();
-      [(VUIStoreFPSKeyLoader *)self _failKeyRequests:v12 withError:v31];
+      [(VUIStoreFPSKeyLoader *)self _failKeyRequests:requestsCopy withError:v31];
 
       v29 = 1;
     }
@@ -2855,38 +2855,38 @@ LABEL_21:
     }
 
     v26 = TVPSKDErrorWithCode();
-    [(VUIStoreFPSKeyLoader *)self _failKeyRequests:v12 withError:v26];
+    [(VUIStoreFPSKeyLoader *)self _failKeyRequests:requestsCopy withError:v26];
     v29 = 1;
   }
 
-  if (v16)
+  if (completionCopy)
   {
 LABEL_31:
     if (v29)
     {
-      v16[2](v16);
+      completionCopy[2](completionCopy);
     }
   }
 
 LABEL_33:
 }
 
-- (void)_handleResponseDicts:(id)a3 forKeyRequests:(id)a4 completion:(id)a5
+- (void)_handleResponseDicts:(id)dicts forKeyRequests:(id)requests completion:(id)completion
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 count])
+  dictsCopy = dicts;
+  requestsCopy = requests;
+  completionCopy = completion;
+  if ([requestsCopy count])
   {
-    v11 = [v9 firstObject];
+    firstObject = [requestsCopy firstObject];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __71__VUIStoreFPSKeyLoader__handleResponseDicts_forKeyRequests_completion___block_invoke;
     v23[3] = &unk_1E872E280;
-    v12 = v11;
+    v12 = firstObject;
     v24 = v12;
-    v13 = [v8 indexOfObjectPassingTest:v23];
+    v13 = [dictsCopy indexOfObjectPassingTest:v23];
     if (v13 == 0x7FFFFFFFFFFFFFFFLL)
     {
       if (os_log_type_enabled(sLogObject_0, OS_LOG_TYPE_ERROR))
@@ -2899,22 +2899,22 @@ LABEL_33:
       v15 = TVPSKDErrorWithCode();
       [(VUIStoreFPSKeyLoader *)self _failKeyRequests:v14 withError:v15];
 
-      v16 = [v9 subarrayWithRange:{1, objc_msgSend(v9, "count") - 1}];
-      [(VUIStoreFPSKeyLoader *)self _handleResponseDicts:v8 forKeyRequests:v16 completion:v10];
+      v16 = [requestsCopy subarrayWithRange:{1, objc_msgSend(requestsCopy, "count") - 1}];
+      [(VUIStoreFPSKeyLoader *)self _handleResponseDicts:dictsCopy forKeyRequests:v16 completion:completionCopy];
     }
 
     else
     {
-      v16 = [v8 objectAtIndex:v13];
+      v16 = [dictsCopy objectAtIndex:v13];
       objc_initWeak(&location, self);
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __71__VUIStoreFPSKeyLoader__handleResponseDicts_forKeyRequests_completion___block_invoke_131;
       v17[3] = &unk_1E872DFB8;
       objc_copyWeak(&v21, &location);
-      v18 = v8;
-      v19 = v9;
-      v20 = v10;
+      v18 = dictsCopy;
+      v19 = requestsCopy;
+      v20 = completionCopy;
       [(VUIStoreFPSKeyLoader *)self _handleResponseDict:v16 forKeyRequest:v12 completion:v17];
 
       objc_destroyWeak(&v21);
@@ -2922,9 +2922,9 @@ LABEL_33:
     }
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    v10[2](v10);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -2977,13 +2977,13 @@ void __71__VUIStoreFPSKeyLoader__handleResponseDicts_forKeyRequests_completion__
   [WeakRetained _handleResponseDicts:v2 forKeyRequests:v3 completion:*(a1 + 48)];
 }
 
-- (void)_handleResponseDict:(id)a3 forKeyRequest:(id)a4 completion:(id)a5
+- (void)_handleResponseDict:(id)dict forKeyRequest:(id)request completion:(id)completion
 {
   v97 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 vui_numberForKey:@"status"];
+  dictCopy = dict;
+  requestCopy = request;
+  completionCopy = completion;
+  v11 = [dictCopy vui_numberForKey:@"status"];
   v12 = v11;
   if (!v11)
   {
@@ -2992,25 +2992,25 @@ void __71__VUIStoreFPSKeyLoader__handleResponseDicts_forKeyRequests_completion__
       [VUIStoreFPSKeyLoader _handleResponseDict:forKeyRequest:completion:];
     }
 
-    v91 = v9;
+    v91 = requestCopy;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v91 count:1];
     v84 = TVPSKDErrorWithCode();
     [(VUIStoreFPSKeyLoader *)self _failKeyRequests:v16 withError:v84];
     goto LABEL_9;
   }
 
-  v13 = [v11 integerValue];
-  if (v13)
+  integerValue = [v11 integerValue];
+  if (integerValue)
   {
-    v14 = v13;
+    v14 = integerValue;
     v15 = sLogObject_0;
     if (os_log_type_enabled(sLogObject_0, OS_LOG_TYPE_ERROR))
     {
-      [VUIStoreFPSKeyLoader _handleResponseDict:v9 forKeyRequest:v14 completion:v15];
+      [VUIStoreFPSKeyLoader _handleResponseDict:requestCopy forKeyRequest:v14 completion:v15];
     }
 
-    v16 = [v8 vui_numberForKey:@"device-limit"];
-    v92 = v9;
+    v16 = [dictCopy vui_numberForKey:@"device-limit"];
+    v92 = requestCopy;
     v84 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v92 count:1];
     v17 = [(VUIStoreFPSKeyLoader *)self _errorForStoreResponseStatus:v14 deviceLimit:v16];
     [(VUIStoreFPSKeyLoader *)self _failKeyRequests:v84 withError:v17];
@@ -3020,8 +3020,8 @@ LABEL_9:
     goto LABEL_77;
   }
 
-  v16 = [v8 vui_stringForKey:@"ckc"];
-  if ([v16 length] || objc_msgSend(v9, "type") == 3)
+  v16 = [dictCopy vui_stringForKey:@"ckc"];
+  if ([v16 length] || objc_msgSend(requestCopy, "type") == 3)
   {
     if ([v16 length])
     {
@@ -3033,45 +3033,45 @@ LABEL_9:
       v84 = 0;
     }
 
-    v82 = [v8 vui_numberForKey:@"renew-after"];
-    v79 = [v8 vui_numberForKey:@"expiration-time"];
-    v78 = [v8 vui_numberForKey:@"availability-ending-time"];
-    v77 = [v8 vui_numberForKey:@"playback-start-time"];
-    v75 = [v8 vui_stringForKey:@"content-id"];
-    v19 = [v8 vui_BOOLForKey:@"is-low-value" defaultValue:0];
-    v81 = [v8 vui_numberForKey:@"playback-duration"];
-    v20 = [v8 vui_BOOLForKey:@"allow-manual-renewal" defaultValue:0];
-    v74 = [v8 vui_dictionaryForKey:@"extra-server-parameters"];
-    v80 = [v8 vui_stringForKey:@"offline-key-renewal-policy"];
-    v76 = [v8 vui_stringForKey:@"stkn"];
-    v21 = [(VUIStoreFPSKeyLoader *)self savedStreamingKeyRequestToUseForStopping];
+    v82 = [dictCopy vui_numberForKey:@"renew-after"];
+    v79 = [dictCopy vui_numberForKey:@"expiration-time"];
+    v78 = [dictCopy vui_numberForKey:@"availability-ending-time"];
+    v77 = [dictCopy vui_numberForKey:@"playback-start-time"];
+    v75 = [dictCopy vui_stringForKey:@"content-id"];
+    v19 = [dictCopy vui_BOOLForKey:@"is-low-value" defaultValue:0];
+    v81 = [dictCopy vui_numberForKey:@"playback-duration"];
+    v20 = [dictCopy vui_BOOLForKey:@"allow-manual-renewal" defaultValue:0];
+    v74 = [dictCopy vui_dictionaryForKey:@"extra-server-parameters"];
+    v80 = [dictCopy vui_stringForKey:@"offline-key-renewal-policy"];
+    v76 = [dictCopy vui_stringForKey:@"stkn"];
+    savedStreamingKeyRequestToUseForStopping = [(VUIStoreFPSKeyLoader *)self savedStreamingKeyRequestToUseForStopping];
 
-    if (v21 && v76)
+    if (savedStreamingKeyRequestToUseForStopping && v76)
     {
-      v22 = [(VUIStoreFPSKeyLoader *)self savedStreamingKeyRequestToUseForStopping];
-      v23 = [v22 userInfo];
-      [v23 setObject:v76 forKey:@"stkn"];
+      savedStreamingKeyRequestToUseForStopping2 = [(VUIStoreFPSKeyLoader *)self savedStreamingKeyRequestToUseForStopping];
+      userInfo = [savedStreamingKeyRequestToUseForStopping2 userInfo];
+      [userInfo setObject:v76 forKey:@"stkn"];
     }
 
-    [v9 setContentID:v75];
-    [v9 setIsLowValueKey:v19];
-    [v9 setAllowManualRenewal:v20];
-    [v9 setAdditionalRequestParamsFromResponse:v74];
+    [requestCopy setContentID:v75];
+    [requestCopy setIsLowValueKey:v19];
+    [requestCopy setAllowManualRenewal:v20];
+    [requestCopy setAdditionalRequestParamsFromResponse:v74];
     if (v82)
     {
-      v24 = [v9 serverRequestStartDate];
-      v25 = v24;
-      if (v24)
+      serverRequestStartDate = [requestCopy serverRequestStartDate];
+      v25 = serverRequestStartDate;
+      if (serverRequestStartDate)
       {
-        v26 = v24;
+        date = serverRequestStartDate;
       }
 
       else
       {
-        v26 = [MEMORY[0x1E695DF00] date];
+        date = [MEMORY[0x1E695DF00] date];
       }
 
-      v27 = v26;
+      v27 = date;
 
       [v82 doubleValue];
       [v27 dateByAddingTimeInterval:?];
@@ -3084,8 +3084,8 @@ LABEL_9:
         _os_log_impl(&dword_1E323F000, v29, OS_LOG_TYPE_DEFAULT, "Key renewal date: %@", buf, 0xCu);
       }
 
-      [v9 setRenewalDate:*&v28];
-      [v9 setRenewalInterval:v82];
+      [requestCopy setRenewalDate:*&v28];
+      [requestCopy setRenewalInterval:v82];
     }
 
     if (v79)
@@ -3121,9 +3121,9 @@ LABEL_9:
         _os_log_impl(&dword_1E323F000, v37, OS_LOG_TYPE_DEFAULT, "Key expiration date: %@", buf, 0xCu);
       }
 
-      [v9 setExpirationDate:*&v32];
-      v38 = [(VUIStoreFPSKeyLoader *)self keyExpirationDate];
-      v39 = [*&v32 isEqualToDate:v38];
+      [requestCopy setExpirationDate:*&v32];
+      keyExpirationDate = [(VUIStoreFPSKeyLoader *)self keyExpirationDate];
+      v39 = [*&v32 isEqualToDate:keyExpirationDate];
 
       if ((v39 & 1) == 0)
       {
@@ -3168,7 +3168,7 @@ LABEL_9:
         _os_log_impl(&dword_1E323F000, v46, OS_LOG_TYPE_DEFAULT, "Availability end date: %@", buf, 0xCu);
       }
 
-      [v9 setAvailabilityEndDate:*&v41];
+      [requestCopy setAvailabilityEndDate:*&v41];
     }
 
     if (v77)
@@ -3184,8 +3184,8 @@ LABEL_9:
         _os_log_impl(&dword_1E323F000, v50, OS_LOG_TYPE_DEFAULT, "Rental playback start date: %@", buf, 0xCu);
       }
 
-      v51 = [(VUIStoreFPSKeyLoader *)self rentalPlaybackStartDate];
-      v52 = [*&v49 isEqualToDate:v51];
+      rentalPlaybackStartDate = [(VUIStoreFPSKeyLoader *)self rentalPlaybackStartDate];
+      v52 = [*&v49 isEqualToDate:rentalPlaybackStartDate];
 
       if ((v52 & 1) == 0)
       {
@@ -3212,7 +3212,7 @@ LABEL_9:
         _os_log_impl(&dword_1E323F000, v55, OS_LOG_TYPE_DEFAULT, "Playback duration: %f", buf, 0xCu);
       }
 
-      [v9 setPlaybackDuration:v81];
+      [requestCopy setPlaybackDuration:v81];
     }
 
     if ([v80 isEqualToString:@"auto"])
@@ -3235,27 +3235,27 @@ LABEL_9:
       v57 = 0;
     }
 
-    [v9 setOfflineKeyRenewalPolicy:v57];
+    [requestCopy setOfflineKeyRenewalPolicy:v57];
     if ((v73 | v53) == 1)
     {
-      v58 = [(VUIStoreFPSKeyLoader *)self delegate];
+      delegate = [(VUIStoreFPSKeyLoader *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        v59 = [(VUIStoreFPSKeyLoader *)self keyExpirationDate];
-        v60 = [(VUIStoreFPSKeyLoader *)self rentalPlaybackStartDate];
-        [v58 storeFPSKeyLoader:self didReceiveUpdatedRentalExpirationDate:v59 playbackStartDate:v60];
+        keyExpirationDate2 = [(VUIStoreFPSKeyLoader *)self keyExpirationDate];
+        rentalPlaybackStartDate2 = [(VUIStoreFPSKeyLoader *)self rentalPlaybackStartDate];
+        [delegate storeFPSKeyLoader:self didReceiveUpdatedRentalExpirationDate:keyExpirationDate2 playbackStartDate:rentalPlaybackStartDate2];
       }
     }
 
-    v61 = [(VUIStoreFPSKeyLoader *)self eventCollection];
+    eventCollection = [(VUIStoreFPSKeyLoader *)self eventCollection];
     v62 = *MEMORY[0x1E69D5FC0];
     v63 = MEMORY[0x1E696AEC0];
-    v64 = [v9 eventReportingID];
-    v65 = [v63 stringWithFormat:@"%@%@", v62, v64];
-    [v61 addEndEventWithName:v62 identifier:v65];
+    eventReportingID = [requestCopy eventReportingID];
+    v65 = [v63 stringWithFormat:@"%@%@", v62, eventReportingID];
+    [eventCollection addEndEventWithName:v62 identifier:v65];
 
-    v66 = [MEMORY[0x1E695DF00] date];
-    [v9 setRequestEndDate:v66];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [requestCopy setRequestEndDate:date2];
 
     objc_initWeak(buf, self);
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -3263,9 +3263,9 @@ LABEL_9:
     aBlock[2] = __69__VUIStoreFPSKeyLoader__handleResponseDict_forKeyRequest_completion___block_invoke;
     aBlock[3] = &unk_1E872E2A8;
     objc_copyWeak(&v90, buf);
-    v67 = v9;
+    v67 = requestCopy;
     v88 = v67;
-    v89 = v10;
+    v89 = completionCopy;
     v68 = _Block_copy(aBlock);
     if ([v67 type] == 2)
     {
@@ -3315,7 +3315,7 @@ LABEL_9:
       [VUIStoreFPSKeyLoader _handleResponseDict:forKeyRequest:completion:];
     }
 
-    v93 = v9;
+    v93 = requestCopy;
     v84 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v93 count:1];
     v83 = TVPSKDErrorWithCode();
     [(VUIStoreFPSKeyLoader *)self _failKeyRequests:v84 withError:v83];
@@ -3325,14 +3325,14 @@ LABEL_9:
 LABEL_77:
 
   v72 = v18 ^ 1;
-  if (!v10)
+  if (!completionCopy)
   {
     v72 = 1;
   }
 
   if ((v72 & 1) == 0)
   {
-    v10[2](v10);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -3382,24 +3382,24 @@ void __69__VUIStoreFPSKeyLoader__handleResponseDict_forKeyRequest_completion___b
   }
 }
 
-- (id)_errorForStoreResponseStatus:(int64_t)a3 deviceLimit:(id)a4
+- (id)_errorForStoreResponseStatus:(int64_t)status deviceLimit:(id)limit
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = v5;
-  if (a3 <= -1015)
+  limitCopy = limit;
+  v6 = limitCopy;
+  if (status <= -1015)
   {
-    if (a3 > -1018)
+    if (status > -1018)
     {
-      if (a3 == -1017 || a3 == -1016)
+      if (status == -1017 || status == -1016)
       {
         goto LABEL_26;
       }
 
-      if (v5)
+      if (limitCopy)
       {
         v18 = *MEMORY[0x1E69D60E0];
-        v19 = v5;
+        v19 = limitCopy;
         v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
       }
 
@@ -3414,7 +3414,7 @@ void __69__VUIStoreFPSKeyLoader__handleResponseDict_forKeyRequest_completion___b
       goto LABEL_34;
     }
 
-    if (a3 == -42606 || a3 == -42585)
+    if (status == -42606 || status == -42585)
     {
       goto LABEL_26;
     }
@@ -3422,11 +3422,11 @@ void __69__VUIStoreFPSKeyLoader__handleResponseDict_forKeyRequest_completion___b
 
   else
   {
-    if (a3 <= -1009)
+    if (status <= -1009)
     {
-      if (a3 != -1014)
+      if (status != -1014)
       {
-        if (a3 == -1013 || a3 == -1009)
+        if (status == -1013 || status == -1009)
         {
           goto LABEL_26;
         }
@@ -3434,10 +3434,10 @@ void __69__VUIStoreFPSKeyLoader__handleResponseDict_forKeyRequest_completion___b
         goto LABEL_27;
       }
 
-      if (v5)
+      if (limitCopy)
       {
         v20 = *MEMORY[0x1E69D60E0];
-        v21 = v5;
+        v21 = limitCopy;
         v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
       }
 
@@ -3454,15 +3454,15 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    switch(a3)
+    switch(status)
     {
       case -1008:
         goto LABEL_26;
       case -1004:
-        if (v5)
+        if (limitCopy)
         {
           v22 = *MEMORY[0x1E69D60E0];
-          v23[0] = v5;
+          v23[0] = limitCopy;
           v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
         }
 
@@ -3483,15 +3483,15 @@ LABEL_26:
   }
 
 LABEL_27:
-  v7 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"com.apple.fpsRequest" code:a3 userInfo:0];
+  v7 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"com.apple.fpsRequest" code:status userInfo:0];
   v9 = TVPSKDErrorWithCode();
-  v10 = [v9 userInfo];
-  v11 = [v10 mutableCopy];
+  userInfo = [v9 userInfo];
+  v11 = [userInfo mutableCopy];
 
   [v11 setObject:v7 forKey:*MEMORY[0x1E696AA08]];
   v12 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v13 = [v9 domain];
-  v8 = [v12 initWithDomain:v13 code:objc_msgSend(v9 userInfo:{"code"), v11}];
+  domain = [v9 domain];
+  v8 = [v12 initWithDomain:domain code:objc_msgSend(v9 userInfo:{"code"), v11}];
 
 LABEL_35:
 LABEL_36:
@@ -3499,22 +3499,22 @@ LABEL_36:
   return v8;
 }
 
-- (void)_failKeyRequests:(id)a3 withError:(id)a4
+- (void)_failKeyRequests:(id)requests withError:(id)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  errorCopy = error;
   v8 = MEMORY[0x1E69D60E8];
-  if (!v7)
+  if (!errorCopy)
   {
-    v7 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:*MEMORY[0x1E69D60E8] code:-345007 userInfo:0];
+    errorCopy = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:*MEMORY[0x1E69D60E8] code:-345007 userInfo:0];
   }
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v6;
+  obj = requestsCopy;
   v30 = [obj countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v30)
   {
@@ -3531,23 +3531,23 @@ LABEL_36:
         }
 
         v11 = *(*(&v31 + 1) + 8 * i);
-        v12 = [v7 domain];
-        if ([v12 isEqualToString:v28])
+        domain = [errorCopy domain];
+        if ([domain isEqualToString:v28])
         {
-          v13 = [v7 code];
+          code = [errorCopy code];
 
-          if (v13 != -345015)
+          if (code != -345015)
           {
             goto LABEL_17;
           }
 
-          v12 = [v11 keyIdentifier];
-          if (v12)
+          domain = [v11 keyIdentifier];
+          if (domain)
           {
             if ([(VUIStoreFPSKeyLoader *)self usesKeyIdentifierPenaltyBox])
             {
-              v14 = [(VUIStoreFPSKeyLoader *)self keyIdentifierPenaltyBox];
-              v15 = [v14 objectForKey:v12];
+              keyIdentifierPenaltyBox = [(VUIStoreFPSKeyLoader *)self keyIdentifierPenaltyBox];
+              v15 = [keyIdentifierPenaltyBox objectForKey:domain];
 
               if (!v15)
               {
@@ -3555,40 +3555,40 @@ LABEL_36:
                 if (os_log_type_enabled(sLogObject_0, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412290;
-                  v36 = v12;
+                  v36 = domain;
                   _os_log_impl(&dword_1E323F000, v16, OS_LOG_TYPE_DEFAULT, "Adding key identifier [%@] to penalty box since it is not owned or entitled", buf, 0xCu);
                 }
 
-                v17 = [(VUIStoreFPSKeyLoader *)self keyIdentifierPenaltyBox];
-                [v17 setObject:v7 forKey:v12];
+                keyIdentifierPenaltyBox2 = [(VUIStoreFPSKeyLoader *)self keyIdentifierPenaltyBox];
+                [keyIdentifierPenaltyBox2 setObject:errorCopy forKey:domain];
               }
             }
           }
         }
 
 LABEL_17:
-        [v11 setError:v7];
-        v18 = [MEMORY[0x1E695DF00] date];
-        [v11 setRequestEndDate:v18];
+        [v11 setError:errorCopy];
+        date = [MEMORY[0x1E695DF00] date];
+        [v11 setRequestEndDate:date];
 
-        v19 = [(VUIStoreFPSKeyLoader *)self delegate];
+        delegate = [(VUIStoreFPSKeyLoader *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          [v19 storeFPSKeyLoader:self willFailWithError:v7 forKeyRequest:v11];
+          [delegate storeFPSKeyLoader:self willFailWithError:errorCopy forKeyRequest:v11];
         }
 
-        v20 = [(VUIStoreFPSKeyLoader *)self eventCollection];
+        eventCollection = [(VUIStoreFPSKeyLoader *)self eventCollection];
         v21 = *v9;
         v22 = MEMORY[0x1E696AEC0];
-        v23 = [v11 eventReportingID];
-        v24 = [v22 stringWithFormat:@"%@%@", v21, v23];
-        [v20 addEndEventWithName:v21 identifier:v24];
+        eventReportingID = [v11 eventReportingID];
+        v24 = [v22 stringWithFormat:@"%@%@", v21, eventReportingID];
+        [eventCollection addEndEventWithName:v21 identifier:v24];
 
-        v25 = [(VUIStoreFPSKeyLoader *)self eventCollection];
-        [v25 addSingleShotEventWithName:*MEMORY[0x1E69D5FA8] value:v7];
+        eventCollection2 = [(VUIStoreFPSKeyLoader *)self eventCollection];
+        [eventCollection2 addSingleShotEventWithName:*MEMORY[0x1E69D5FA8] value:errorCopy];
 
-        v26 = [(VUIStoreFPSKeyLoader *)self eventCollection];
-        [v26 addSingleShotEventWithName:*MEMORY[0x1E69D5FB0] value:*v9];
+        eventCollection3 = [(VUIStoreFPSKeyLoader *)self eventCollection];
+        [eventCollection3 addSingleShotEventWithName:*MEMORY[0x1E69D5FB0] value:*v9];
 
         [v11 finish];
       }
@@ -3600,18 +3600,18 @@ LABEL_17:
   }
 }
 
-- (id)_bodyDictionaryForRequests:(id)a3 isStopRequest:(BOOL)a4 deviceLocation:(id)a5
+- (id)_bodyDictionaryForRequests:(id)requests isStopRequest:(BOOL)request deviceLocation:(id)location
 {
-  v6 = a4;
+  requestCopy = request;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  requestsCopy = requests;
+  locationCopy = location;
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = v8;
+  v11 = requestsCopy;
   v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v12)
   {
@@ -3626,7 +3626,7 @@ LABEL_17:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [(VUIStoreFPSKeyLoader *)self _jsonDictionaryForRequest:*(*(&v20 + 1) + 8 * i) isStopRequest:v6 deviceLocation:v9, v20];
+        v16 = [(VUIStoreFPSKeyLoader *)self _jsonDictionaryForRequest:*(*(&v20 + 1) + 8 * i) isStopRequest:requestCopy deviceLocation:locationCopy, v20];
         if (v16)
         {
           [v10 addObject:v16];
@@ -3648,42 +3648,42 @@ LABEL_17:
   return v18;
 }
 
-- (id)_jsonDictionaryForRequest:(id)a3 isStopRequest:(BOOL)a4 deviceLocation:(id)a5
+- (id)_jsonDictionaryForRequest:(id)request isStopRequest:(BOOL)stopRequest deviceLocation:(id)location
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  stopRequestCopy = stopRequest;
+  requestCopy = request;
+  locationCopy = location;
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v11 = [v8 keyRequestData];
-  v12 = [v11 base64EncodedStringWithOptions:0];
+  keyRequestData = [requestCopy keyRequestData];
+  v12 = [keyRequestData base64EncodedStringWithOptions:0];
 
   if (v12)
   {
     [v10 setObject:v12 forKey:@"spc"];
   }
 
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "requestID")}];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(requestCopy, "requestID")}];
   [v10 setObject:v13 forKey:@"id"];
 
-  v14 = [v8 keyIdentifier];
-  v15 = [v14 absoluteString];
+  keyIdentifier = [requestCopy keyIdentifier];
+  absoluteString = [keyIdentifier absoluteString];
 
-  if (v15)
+  if (absoluteString)
   {
-    [v10 setObject:v15 forKey:@"uri"];
+    [v10 setObject:absoluteString forKey:@"uri"];
   }
 
-  v16 = [(VUIStoreFPSKeyLoader *)self rentalID];
-  if (v16)
+  rentalID = [(VUIStoreFPSKeyLoader *)self rentalID];
+  if (rentalID)
   {
-    [v10 setObject:v16 forKey:@"rental-id"];
+    [v10 setObject:rentalID forKey:@"rental-id"];
   }
 
-  if (v6)
+  if (stopRequestCopy)
   {
     [v10 setObject:@"stop" forKey:@"lease-action"];
-    v17 = [v8 userInfo];
-    v18 = [v17 objectForKey:@"stkn"];
+    userInfo = [requestCopy userInfo];
+    v18 = [userInfo objectForKey:@"stkn"];
 
     if (v18)
     {
@@ -3693,7 +3693,7 @@ LABEL_17:
 
   else
   {
-    if ([v8 isRenewal])
+    if ([requestCopy isRenewal])
     {
       v19 = @"renew";
     }
@@ -3711,20 +3711,20 @@ LABEL_17:
     [v10 setObject:MEMORY[0x1E695E118] forKey:@"skipped-rental-checkout"];
   }
 
-  if ([v8 type] == 2 || objc_msgSend(v8, "type") == 3)
+  if ([requestCopy type] == 2 || objc_msgSend(requestCopy, "type") == 3)
   {
     [v10 setObject:MEMORY[0x1E695E118] forKey:@"offline"];
   }
 
-  if (v9)
+  if (locationCopy)
   {
     if (_os_feature_enabled_impl())
     {
       v20 = +[_TtC8VideosUI38VUILocationServiceProxyObjCLocationKey latitude];
-      v21 = [v9 objectForKey:v20];
+      v21 = [locationCopy objectForKey:v20];
 
       v22 = +[_TtC8VideosUI38VUILocationServiceProxyObjCLocationKey longitude];
-      v23 = [v9 objectForKey:v22];
+      v23 = [locationCopy objectForKey:v22];
 
       if (!v21)
       {
@@ -3734,8 +3734,8 @@ LABEL_17:
 
     else
     {
-      v21 = [v9 objectForKey:*MEMORY[0x1E69E16B8]];
-      v23 = [v9 objectForKey:*MEMORY[0x1E69E16C0]];
+      v21 = [locationCopy objectForKey:*MEMORY[0x1E69E16B8]];
+      v23 = [locationCopy objectForKey:*MEMORY[0x1E69E16C0]];
       if (!v21)
       {
 LABEL_27:
@@ -3754,28 +3754,28 @@ LABEL_27:
   }
 
 LABEL_28:
-  v24 = [v8 additionalRequestParams];
-  v25 = [v24 count];
+  additionalRequestParams = [requestCopy additionalRequestParams];
+  v25 = [additionalRequestParams count];
 
   if (v25)
   {
-    v26 = [v8 additionalRequestParams];
-    [v10 addEntriesFromDictionary:v26];
+    additionalRequestParams2 = [requestCopy additionalRequestParams];
+    [v10 addEntriesFromDictionary:additionalRequestParams2];
   }
 
-  v27 = [v10 objectForKey:@"adamId"];
-  if (!v27)
+  adamID2 = [v10 objectForKey:@"adamId"];
+  if (!adamID2)
   {
-    v28 = [v8 adamID];
-    v29 = [v28 length];
+    adamID = [requestCopy adamID];
+    v29 = [adamID length];
 
     if (!v29)
     {
       goto LABEL_34;
     }
 
-    v27 = [v8 adamID];
-    [v10 setObject:v27 forKey:@"adamId"];
+    adamID2 = [requestCopy adamID];
+    [v10 setObject:adamID2 forKey:@"adamId"];
   }
 
 LABEL_34:
@@ -3783,17 +3783,17 @@ LABEL_34:
   return v10;
 }
 
-- (BOOL)_isVideoCurrentlyBeingPlayedForKeyRequest:(id)a3
+- (BOOL)_isVideoCurrentlyBeingPlayedForKeyRequest:(id)request
 {
-  v3 = [a3 userInfo];
+  userInfo = [request userInfo];
   v4 = *MEMORY[0x1E69D5AE8];
-  v5 = [v3 objectForKey:*MEMORY[0x1E69D5AE8]];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69D5AE8]];
 
   if (v5 && (+[VUIPlaybackManager sharedInstance](VUIPlaybackManager, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isPlaybackUIBeingShown], v6, v7))
   {
     v8 = +[VUIPlaybackManager sharedInstance];
-    v9 = [v8 currentMediaItem];
-    v10 = [v9 mediaItemMetadataForProperty:v4];
+    currentMediaItem = [v8 currentMediaItem];
+    v10 = [currentMediaItem mediaItemMetadataForProperty:v4];
 
     if (v10)
     {

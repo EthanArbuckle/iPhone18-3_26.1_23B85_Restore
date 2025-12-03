@@ -1,12 +1,12 @@
 @interface POKeychainJWKSStorageProvider
-- (POKeychainJWKSStorageProvider)initWithSystem:(BOOL)a3;
-- (id)jwksCacheForExtensionIdentifier:(id)a3;
-- (void)setJwksCache:(id)a3 forExtensionIdentifier:(id)a4;
+- (POKeychainJWKSStorageProvider)initWithSystem:(BOOL)system;
+- (id)jwksCacheForExtensionIdentifier:(id)identifier;
+- (void)setJwksCache:(id)cache forExtensionIdentifier:(id)identifier;
 @end
 
 @implementation POKeychainJWKSStorageProvider
 
-- (POKeychainJWKSStorageProvider)initWithSystem:(BOOL)a3
+- (POKeychainJWKSStorageProvider)initWithSystem:(BOOL)system
 {
   v9.receiver = self;
   v9.super_class = POKeychainJWKSStorageProvider;
@@ -14,7 +14,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_isSystem = a3;
+    v4->_isSystem = system;
     v6 = objc_alloc_init(MEMORY[0x277D3D218]);
     keychainHelper = v5->_keychainHelper;
     v5->_keychainHelper = v6;
@@ -23,18 +23,18 @@
   return v5;
 }
 
-- (id)jwksCacheForExtensionIdentifier:(id)a3
+- (id)jwksCacheForExtensionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [POKeychainJWKSStorageProvider jwksCacheForExtensionIdentifier:];
   }
 
-  v6 = [(POKeychainJWKSStorageProvider *)self keychainHelper];
+  keychainHelper = [(POKeychainJWKSStorageProvider *)self keychainHelper];
   v12 = 0;
-  v7 = [v6 retrieveTokensFromKeychainForService:v4 username:@"com.apple.jwksCache" system:-[POKeychainJWKSStorageProvider isSystem](self returningTokens:"isSystem") metaData:{&v12, 0}];
+  v7 = [keychainHelper retrieveTokensFromKeychainForService:identifierCopy username:@"com.apple.jwksCache" system:-[POKeychainJWKSStorageProvider isSystem](self returningTokens:"isSystem") metaData:{&v12, 0}];
 
   v8 = v12;
   if (v7)
@@ -63,21 +63,21 @@ id __65__POKeychainJWKSStorageProvider_jwksCacheForExtensionIdentifier___block_i
   return v0;
 }
 
-- (void)setJwksCache:(id)a3 forExtensionIdentifier:(id)a4
+- (void)setJwksCache:(id)cache forExtensionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  cacheCopy = cache;
+  identifierCopy = identifier;
   v8 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [POKeychainJWKSStorageProvider setJwksCache:forExtensionIdentifier:];
   }
 
-  v9 = [(POKeychainJWKSStorageProvider *)self keychainHelper];
-  v10 = [(POKeychainJWKSStorageProvider *)self isSystem];
-  if (v6)
+  keychainHelper = [(POKeychainJWKSStorageProvider *)self keychainHelper];
+  isSystem = [(POKeychainJWKSStorageProvider *)self isSystem];
+  if (cacheCopy)
   {
-    v11 = [v9 addTokens:v6 metaData:0 toKeychainForService:v7 username:@"com.apple.jwksCache" system:v10];
+    v11 = [keychainHelper addTokens:cacheCopy metaData:0 toKeychainForService:identifierCopy username:@"com.apple.jwksCache" system:isSystem];
 
     if (v11)
     {
@@ -87,7 +87,7 @@ id __65__POKeychainJWKSStorageProvider_jwksCacheForExtensionIdentifier___block_i
 
   else
   {
-    v13 = [v9 removeTokensFromKeychainWithService:v7 username:@"com.apple.jwksCache" system:v10];
+    v13 = [keychainHelper removeTokensFromKeychainWithService:identifierCopy username:@"com.apple.jwksCache" system:isSystem];
 
     if (v13 != -25300 && v13)
     {

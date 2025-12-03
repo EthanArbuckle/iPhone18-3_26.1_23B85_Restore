@@ -1,11 +1,11 @@
 @interface CMCompanionRelativeElevationDataInternal
-- (CMCompanionRelativeElevationDataInternal)initWithCompanionRelativeElevation:(float)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMCompanionRelativeElevationDataInternal)initWithCompanionRelativeElevation:(float)elevation;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CMCompanionRelativeElevationDataInternal
 
-- (CMCompanionRelativeElevationDataInternal)initWithCompanionRelativeElevation:(float)a3
+- (CMCompanionRelativeElevationDataInternal)initWithCompanionRelativeElevation:(float)elevation
 {
   v10.receiver = self;
   v10.super_class = CMCompanionRelativeElevationDataInternal;
@@ -13,17 +13,17 @@
   v8 = v4;
   if (v4)
   {
-    *&v7 = a3;
+    *&v7 = elevation;
     objc_msgSend_setCompanionRelativeElevation_(v4, v5, v6, v7);
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   result = objc_msgSend_init(v7, v8, v9);
   if (result)
   {

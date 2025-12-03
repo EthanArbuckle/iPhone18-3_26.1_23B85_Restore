@@ -1,16 +1,16 @@
 @interface ML3SortMap
-- (BOOL)_insertSortedNameEntriesIntoSortMap:(id)a3;
-- (BOOL)attemptInsertStringsIntoSortMap:(id)a3;
-- (BOOL)commitFailedInsertedStrings:(id)a3;
+- (BOOL)_insertSortedNameEntriesIntoSortMap:(id)map;
+- (BOOL)attemptInsertStringsIntoSortMap:(id)map;
+- (BOOL)commitFailedInsertedStrings:(id)strings;
 - (BOOL)commitUpdates;
-- (BOOL)insertStringsIntoSortMap:(id)a3 didReSortMap:(BOOL *)a4;
+- (BOOL)insertStringsIntoSortMap:(id)map didReSortMap:(BOOL *)sortMap;
 - (BOOL)loadExistingSortedEntries;
-- (ML3SortMap)initWithConnection:(id)a3 library:(id)a4 preloadNames:(BOOL)a5;
-- (id)_maxSortKeyForEntry:(id)a3 iPhoneSortKeyBuilder:(iPhoneSortKeyBuilder *)a4;
-- (id)_minSortKeyForEntry:(id)a3 iPhoneSortKeyBuilder:(iPhoneSortKeyBuilder *)a4;
-- (id)_sortKeyString:(id)a3;
-- (id)_sortedNameEntriesToInsertForNames:(id)a3;
-- (int64_t)_sortKeyDistance:(id)a3 sortKey2:(id)a4 offset:(unint64_t)a5;
+- (ML3SortMap)initWithConnection:(id)connection library:(id)library preloadNames:(BOOL)names;
+- (id)_maxSortKeyForEntry:(id)entry iPhoneSortKeyBuilder:(iPhoneSortKeyBuilder *)builder;
+- (id)_minSortKeyForEntry:(id)entry iPhoneSortKeyBuilder:(iPhoneSortKeyBuilder *)builder;
+- (id)_sortKeyString:(id)string;
+- (id)_sortedNameEntriesToInsertForNames:(id)names;
+- (int64_t)_sortKeyDistance:(id)distance sortKey2:(id)key2 offset:(unint64_t)offset;
 @end
 
 @implementation ML3SortMap
@@ -22,8 +22,8 @@
   v67 = &v66;
   v68 = 0x2020000000;
   v69 = 1;
-  v3 = [MEMORY[0x277CCAB58] indexSet];
-  v4 = v3;
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  v4 = indexSet;
   entries = self->_entries;
   if (self->_preloadNames)
   {
@@ -31,7 +31,7 @@
     v64[1] = 3221225472;
     v64[2] = __27__ML3SortMap_commitUpdates__block_invoke;
     v64[3] = &unk_278761F08;
-    v65 = v3;
+    v65 = indexSet;
     [(NSMutableArray *)entries enumerateObjectsUsingBlock:v64];
     v6 = &v65;
   }
@@ -42,7 +42,7 @@
     v62[1] = 3221225472;
     v62[2] = __27__ML3SortMap_commitUpdates__block_invoke_2;
     v62[3] = &unk_278765D38;
-    v63 = v3;
+    v63 = indexSet;
     v7 = v62;
     v8 = v7;
     if (entries)
@@ -208,13 +208,13 @@ LABEL_40:
             _os_log_impl(&dword_22D2FA000, v28, OS_LOG_TYPE_ERROR, "Failed to merge into sort_map - attempting to repair and try again", &buf, 2u);
           }
 
-          v29 = [MEMORY[0x277CBEB38] dictionary];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
           v30 = [(ML3DatabaseConnection *)self->_connection executeQuery:@"SELECT ROWID, name, name_order, name_section, sort_key FROM sort_map_no_uniques WHERE name IN (SELECT name FROM sort_map_no_uniques GROUP BY name HAVING COUNT() > 1)"];
           v57[0] = MEMORY[0x277D85DD0];
           v57[1] = 3221225472;
           v57[2] = __27__ML3SortMap_commitUpdates__block_invoke_378;
           v57[3] = &unk_278766118;
-          v31 = v29;
+          v31 = dictionary;
           v58 = v31;
           [v30 enumerateRowsWithBlock:v57];
           v56[0] = MEMORY[0x277D85DD0];
@@ -223,14 +223,14 @@ LABEL_40:
           v56[3] = &unk_278761F80;
           v56[4] = self;
           [v31 enumerateKeysAndObjectsUsingBlock:v56];
-          v32 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
           v51 = [(ML3DatabaseConnection *)self->_connection executeQuery:@"SELECT sort_map_no_uniques.name, sort_map_no_uniques.name_order, sort_map_no_uniques.name_section, sort_map_no_uniques.sort_key, sort_map.name, sort_map.name_order, sort_map.name_section, sort_map.sort_key FROM sort_map_no_uniques JOIN sort_map USING (name) WHERE sort_map_no_uniques.name IN (SELECT name FROM sort_map)"];
 
           v54[0] = MEMORY[0x277D85DD0];
           v54[1] = 3221225472;
           v54[2] = __27__ML3SortMap_commitUpdates__block_invoke_2_387;
           v54[3] = &unk_278766118;
-          v33 = v32;
+          v33 = array;
           v55 = v33;
           [v51 enumerateRowsWithBlock:v54];
           v53[0] = MEMORY[0x277D85DD0];
@@ -497,34 +497,34 @@ void __27__ML3SortMap_commitUpdates__block_invoke_2_369(uint64_t a1, uint64_t a2
   objc_autoreleasePoolPop(v6);
 }
 
-- (id)_sortKeyString:(id)a3
+- (id)_sortKeyString:(id)string
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(v3, "length")}];
-  v5 = [v3 bytes];
-  if ([v3 length])
+  stringCopy = string;
+  v4 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(stringCopy, "length")}];
+  bytes = [stringCopy bytes];
+  if ([stringCopy length])
   {
     v6 = 0;
     do
     {
-      [v4 appendFormat:@"%02x", *(v5 + v6++)];
+      [v4 appendFormat:@"%02x", *(bytes + v6++)];
     }
 
-    while ([v3 length] > v6);
+    while ([stringCopy length] > v6);
   }
 
   return v4;
 }
 
-- (int64_t)_sortKeyDistance:(id)a3 sortKey2:(id)a4 offset:(unint64_t)a5
+- (int64_t)_sortKeyDistance:(id)distance sortKey2:(id)key2 offset:(unint64_t)offset
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 length];
-  v10 = [v8 length];
-  v11 = [v7 bytes];
-  v12 = [v8 bytes];
-  if (a5 > 0xFFFFFFFFFFFFFFF8)
+  distanceCopy = distance;
+  key2Copy = key2;
+  v9 = [distanceCopy length];
+  v10 = [key2Copy length];
+  bytes = [distanceCopy bytes];
+  bytes2 = [key2Copy bytes];
+  if (offset > 0xFFFFFFFFFFFFFFF8)
   {
     v13 = 0;
   }
@@ -535,28 +535,28 @@ void __27__ML3SortMap_commitUpdates__block_invoke_2_369(uint64_t a1, uint64_t a2
     v14 = 7;
     do
     {
-      if (a5 >= v9)
+      if (offset >= v9)
       {
         v15 = 0;
       }
 
       else
       {
-        v15 = *(v11 + a5);
+        v15 = *(bytes + offset);
       }
 
-      if (a5 >= v10)
+      if (offset >= v10)
       {
         v16 = 0;
       }
 
       else
       {
-        v16 = *(v12 + a5);
+        v16 = *(bytes2 + offset);
       }
 
       v13 = (v13 << 8) - v15 + v16;
-      ++a5;
+      ++offset;
       --v14;
     }
 
@@ -566,13 +566,13 @@ void __27__ML3SortMap_commitUpdates__block_invoke_2_369(uint64_t a1, uint64_t a2
   return v13;
 }
 
-- (id)_maxSortKeyForEntry:(id)a3 iPhoneSortKeyBuilder:(iPhoneSortKeyBuilder *)a4
+- (id)_maxSortKeyForEntry:(id)entry iPhoneSortKeyBuilder:(iPhoneSortKeyBuilder *)builder
 {
   v10[1] = *MEMORY[0x277D85DE8];
   maxSortKey = self->_maxSortKey;
   if (!maxSortKey)
   {
-    v9 = *(a4 + 32) + 48;
+    v9 = *(builder + 32) + 48;
     v6 = [MEMORY[0x277CBEB28] dataWithBytes:&v9 length:1];
     v10[0] = -1;
     [(NSData *)v6 appendBytes:v10 length:8];
@@ -585,12 +585,12 @@ void __27__ML3SortMap_commitUpdates__block_invoke_2_369(uint64_t a1, uint64_t a2
   return maxSortKey;
 }
 
-- (id)_minSortKeyForEntry:(id)a3 iPhoneSortKeyBuilder:(iPhoneSortKeyBuilder *)a4
+- (id)_minSortKeyForEntry:(id)entry iPhoneSortKeyBuilder:(iPhoneSortKeyBuilder *)builder
 {
   minSortKey = self->_minSortKey;
   if (!minSortKey)
   {
-    v6 = iPhoneSortKeyBuilderCopySectionSortKey(a4, 0, 0);
+    v6 = iPhoneSortKeyBuilderCopySectionSortKey(builder, 0, 0);
     v7 = self->_minSortKey;
     self->_minSortKey = v6;
 
@@ -600,18 +600,18 @@ void __27__ML3SortMap_commitUpdates__block_invoke_2_369(uint64_t a1, uint64_t a2
   return minSortKey;
 }
 
-- (BOOL)_insertSortedNameEntriesIntoSortMap:(id)a3
+- (BOOL)_insertSortedNameEntriesIntoSortMap:(id)map
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CCAB58] indexSet];
+  mapCopy = map;
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
   v40 = 1;
-  v7 = [(ML3SortMap *)self loadExistingSortedEntries];
-  *(v38 + 24) = v7;
-  if (v7)
+  loadExistingSortedEntries = [(ML3SortMap *)self loadExistingSortedEntries];
+  *(v38 + 24) = loadExistingSortedEntries;
+  if (loadExistingSortedEntries)
   {
     v8 = os_log_create("com.apple.amp.medialibrary", "SortMap");
     v9 = os_signpost_id_generate(v8);
@@ -627,12 +627,12 @@ void __27__ML3SortMap_commitUpdates__block_invoke_2_369(uint64_t a1, uint64_t a2
     v23 = v9 - 1;
     v24 = v9;
     v25 = a2;
-    v26 = v5;
+    v26 = mapCopy;
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v12 = v5;
+    v12 = mapCopy;
     v13 = [v12 countByEnumeratingWithState:&v32 objects:v41 count:16];
     if (v13)
     {
@@ -650,7 +650,7 @@ void __27__ML3SortMap_commitUpdates__block_invoke_2_369(uint64_t a1, uint64_t a2
           v17 = *(*(&v32 + 1) + 8 * i);
           v14 = [(NSMutableArray *)self->_entries indexOfObject:v17 inSortedRange:v14 options:[(NSMutableArray *)self->_entries count]- v14 usingComparator:1536, &__block_literal_global_6433];
           [(NSMutableArray *)self->_entries insertObject:v17 atIndex:v14];
-          [v6 addIndex:v14];
+          [indexSet addIndex:v14];
         }
 
         v13 = [v12 countByEnumeratingWithState:&v32 objects:v41 count:16];
@@ -659,7 +659,7 @@ void __27__ML3SortMap_commitUpdates__block_invoke_2_369(uint64_t a1, uint64_t a2
       while (v13);
     }
 
-    v5 = v26;
+    mapCopy = v26;
     v18 = os_log_create("com.apple.amp.medialibrary", "SortMap");
     v19 = v18;
     if (v23 < 0xFFFFFFFFFFFFFFFELL && os_signpost_enabled(v18))
@@ -673,8 +673,8 @@ void __27__ML3SortMap_commitUpdates__block_invoke_2_369(uint64_t a1, uint64_t a2
     v27[1] = 3221225472;
     v27[2] = __50__ML3SortMap__insertSortedNameEntriesIntoSortMap___block_invoke;
     v27[3] = &unk_278761EE0;
-    v28 = v6;
-    v29 = self;
+    v28 = indexSet;
+    selfCopy = self;
     v30 = &v37;
     v31 = v25;
     [(ML3MusicLibrary *)library accessSortKeyBuilder:v27];
@@ -998,22 +998,22 @@ LABEL_64:
 LABEL_84:
 }
 
-- (id)_sortedNameEntriesToInsertForNames:(id)a3
+- (id)_sortedNameEntriesToInsertForNames:(id)names
 {
-  v5 = a3;
+  namesCopy = names;
   [(ML3SortMap *)self loadExistingSortedEntries];
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   library = self->_library;
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __49__ML3SortMap__sortedNameEntriesToInsertForNames___block_invoke;
   v16 = &unk_278761EB8;
   v20 = a2;
-  v17 = v5;
-  v18 = self;
-  v8 = v6;
+  v17 = namesCopy;
+  selfCopy = self;
+  v8 = array;
   v19 = v8;
-  v9 = v5;
+  v9 = namesCopy;
   [(ML3MusicLibrary *)library accessSortKeyBuilder:&v13];
   [v8 sortUsingComparator:{&__block_literal_global_6433, v13, v14, v15, v16}];
   v10 = v19;
@@ -1086,10 +1086,10 @@ void __49__ML3SortMap__sortedNameEntriesToInsertForNames___block_invoke(uint64_t
   }
 }
 
-- (BOOL)commitFailedInsertedStrings:(id)a3
+- (BOOL)commitFailedInsertedStrings:(id)strings
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringsCopy = strings;
   [(ML3SortMap *)self loadExistingSortedEntries];
   if (![(ML3SortMap *)self commitUpdates])
   {
@@ -1100,7 +1100,7 @@ void __49__ML3SortMap__sortedNameEntriesToInsertForNames___block_invoke(uint64_t
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v4;
+  v5 = stringsCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
@@ -1154,9 +1154,9 @@ LABEL_13:
   return v17;
 }
 
-- (BOOL)attemptInsertStringsIntoSortMap:(id)a3
+- (BOOL)attemptInsertStringsIntoSortMap:(id)map
 {
-  v4 = [(ML3SortMap *)self _sortedNameEntriesToInsertForNames:a3];
+  v4 = [(ML3SortMap *)self _sortedNameEntriesToInsertForNames:map];
   v5 = [(ML3SortMap *)self _insertSortedNameEntriesIntoSortMap:v4];
   if (!v5)
   {
@@ -1171,16 +1171,16 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)insertStringsIntoSortMap:(id)a3 didReSortMap:(BOOL *)a4
+- (BOOL)insertStringsIntoSortMap:(id)map didReSortMap:(BOOL *)sortMap
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4)
+  mapCopy = map;
+  if (sortMap)
   {
-    *a4 = 0;
+    *sortMap = 0;
   }
 
-  v7 = [(ML3SortMap *)self _sortedNameEntriesToInsertForNames:v6];
+  v7 = [(ML3SortMap *)self _sortedNameEntriesToInsertForNames:mapCopy];
   if ([(ML3SortMap *)self _insertSortedNameEntriesIntoSortMap:v7])
   {
     v8 = 1;
@@ -1188,9 +1188,9 @@ LABEL_13:
 
   else
   {
-    if (a4)
+    if (sortMap)
     {
-      *a4 = 1;
+      *sortMap = 1;
     }
 
     v9 = os_log_create("com.apple.amp.medialibrary", "SortMap");
@@ -1206,8 +1206,8 @@ LABEL_13:
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v23 = v6;
-      v10 = v6;
+      v23 = mapCopy;
+      v10 = mapCopy;
       v11 = [v10 countByEnumeratingWithState:&v24 objects:v30 count:16];
       if (v11)
       {
@@ -1259,7 +1259,7 @@ LABEL_13:
         v8 = 0;
       }
 
-      v6 = v23;
+      mapCopy = v23;
     }
 
     else
@@ -1291,11 +1291,11 @@ LABEL_13:
 
       v8 = objc_autoreleasePoolPush();
       v9 = [(ML3DatabaseConnection *)self->_connection executeQuery:@"SELECT COUNT(*) FROM sort_map"];
-      v10 = [v9 int64ValueForFirstRowAndColumn];
-      if (v10)
+      int64ValueForFirstRowAndColumn = [v9 int64ValueForFirstRowAndColumn];
+      if (int64ValueForFirstRowAndColumn)
       {
-        v11 = v10;
-        v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:v10];
+        v11 = int64ValueForFirstRowAndColumn;
+        v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:int64ValueForFirstRowAndColumn];
         entries = self->_entries;
         self->_entries = v12;
 
@@ -1317,13 +1317,13 @@ LABEL_13:
 
       else
       {
-        v31 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         v32 = self->_nameOrders;
-        self->_nameOrders = v31;
+        self->_nameOrders = dictionary;
 
-        v33 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v34 = self->_entries;
-        self->_entries = v33;
+        self->_entries = array;
       }
 
       v35 = os_log_create("com.apple.amp.medialibrary", "SortMap");
@@ -1359,9 +1359,9 @@ LABEL_13:
         if (v20)
         {
           objc_storeStrong(&v20->_connection, connection);
-          v21 = [MEMORY[0x277CBEB38] dictionary];
+          dictionary2 = [MEMORY[0x277CBEB38] dictionary];
           dirtyInserts = v17->_dirtyInserts;
-          v17->_dirtyInserts = v21;
+          v17->_dirtyInserts = dictionary2;
         }
       }
 
@@ -1380,9 +1380,9 @@ LABEL_13:
         if (v27)
         {
           objc_storeStrong(&v27->_connection, v25);
-          v28 = [MEMORY[0x277CBEB38] dictionary];
+          dictionary3 = [MEMORY[0x277CBEB38] dictionary];
           v29 = v24->_dirtyInserts;
-          v24->_dirtyInserts = v28;
+          v24->_dirtyInserts = dictionary3;
         }
       }
 
@@ -1431,20 +1431,20 @@ LABEL_3:
   [*(*(a1 + 32) + 24) setObject:v8 forKey:v11];
 }
 
-- (ML3SortMap)initWithConnection:(id)a3 library:(id)a4 preloadNames:(BOOL)a5
+- (ML3SortMap)initWithConnection:(id)connection library:(id)library preloadNames:(BOOL)names
 {
-  v9 = a3;
-  v10 = a4;
+  connectionCopy = connection;
+  libraryCopy = library;
   v14.receiver = self;
   v14.super_class = ML3SortMap;
   v11 = [(ML3SortMap *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_connection, a3);
-    objc_storeStrong(&v12->_library, a4);
+    objc_storeStrong(&v11->_connection, connection);
+    objc_storeStrong(&v12->_library, library);
     v12->_smallestNameDelta = 0x7FFFFFFFFFFFFFFFLL;
-    v12->_preloadNames = a5;
+    v12->_preloadNames = names;
   }
 
   return v12;

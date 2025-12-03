@@ -1,14 +1,14 @@
 @interface OspreyConnectionConfiguration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation OspreyConnectionConfiguration
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -18,15 +18,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       connectionUrl = self->_connectionUrl;
-      v7 = [(OspreyConnectionConfiguration *)v5 connectionUrl];
+      connectionUrl = [(OspreyConnectionConfiguration *)v5 connectionUrl];
 
-      if (connectionUrl == v7)
+      if (connectionUrl == connectionUrl)
       {
         urlSessionConfiguration = self->_urlSessionConfiguration;
-        v10 = [(OspreyConnectionConfiguration *)v5 urlSessionConfiguration];
-        v8 = urlSessionConfiguration == v10;
+        urlSessionConfiguration = [(OspreyConnectionConfiguration *)v5 urlSessionConfiguration];
+        v8 = urlSessionConfiguration == urlSessionConfiguration;
       }
 
       else
@@ -44,7 +44,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(OspreyConnectionConfiguration);
   [(OspreyConnectionConfiguration *)v4 setConnectionUrl:self->_connectionUrl];

@@ -1,21 +1,21 @@
 @interface XPCConnectionInfo
-- (XPCConnectionInfo)initWithXPCConnection:(id)a3;
+- (XPCConnectionInfo)initWithXPCConnection:(id)connection;
 @end
 
 @implementation XPCConnectionInfo
 
-- (XPCConnectionInfo)initWithXPCConnection:(id)a3
+- (XPCConnectionInfo)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = XPCConnectionInfo;
   v6 = [(XPCConnectionInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (connectionCopy)
     {
-      objc_storeStrong(&v6->_XPCConnection, a3);
+      objc_storeStrong(&v6->_XPCConnection, connection);
     }
 
     else

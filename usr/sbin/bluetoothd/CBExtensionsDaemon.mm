@@ -1,22 +1,22 @@
 @interface CBExtensionsDaemon
-- (BOOL)remoteAlertAllowedAndReturnReason:(id *)a3 extension:(id)a4;
-- (BOOL)remoteAlertStartWithCBExtension:(id)a3 device:(id)a4 error:(id *)a5;
-- (BOOL)resetCBExtension:(id)a3 error:(id *)a4;
-- (id)descriptionWithLevel:(int)a3;
-- (id)diagnosticControl:(id)a3 error:(id *)a4;
-- (void)_appRegistrationNotification:(id)a3;
+- (BOOL)remoteAlertAllowedAndReturnReason:(id *)reason extension:(id)extension;
+- (BOOL)remoteAlertStartWithCBExtension:(id)extension device:(id)device error:(id *)error;
+- (BOOL)resetCBExtension:(id)extension error:(id *)error;
+- (id)descriptionWithLevel:(int)level;
+- (id)diagnosticControl:(id)control error:(id *)error;
+- (void)_appRegistrationNotification:(id)notification;
 - (void)_findExtensionsStart;
 - (void)_screenLockedChanged;
 - (void)_systemLockChanged;
-- (void)_updateExtensions:(id)a3;
+- (void)_updateExtensions:(id)extensions;
 - (void)activate;
 - (void)invalidate;
 - (void)prefsChanged;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 - (void)screenStateChanged;
-- (void)setAssertionFlags:(unsigned int)a3;
+- (void)setAssertionFlags:(unsigned int)flags;
 @end
 
 @implementation CBExtensionsDaemon
@@ -44,7 +44,7 @@
   [(NSMutableDictionary *)extensionMap enumerateKeysAndObjectsUsingBlock:&stru_100ADF660];
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v30 = 0;
   v31 = &v30;
@@ -53,7 +53,7 @@
   v34 = sub_100042554;
   v35 = 0;
   v29 = 12;
-  v5 = a3;
+  levelCopy = level;
   v28 = 0;
   v15 = [objc_opt_class() description];
   CUAppendF();
@@ -91,7 +91,7 @@
     objc_storeStrong(v9 + 5, v20);
   }
 
-  if (v5 <= 0x14)
+  if (levelCopy <= 0x14)
   {
     v10 = v31;
     v19 = v31[5];
@@ -103,7 +103,7 @@
     v17[2] = sub_1000EBA98;
     v17[3] = &unk_100ADF568;
     v17[4] = &v30;
-    v18 = a3;
+    levelCopy2 = level;
     [(NSMutableDictionary *)v11 enumerateKeysAndObjectsUsingBlock:v17];
   }
 
@@ -239,15 +239,15 @@
   self->_updateExtensionsCoalescer = 0;
 }
 
-- (id)diagnosticControl:(id)a3 error:(id *)a4
+- (id)diagnosticControl:(id)control error:(id *)error
 {
-  v6 = a3;
+  controlCopy = control;
   CFStringGetTypeID();
-  v7 = [CFDictionaryGetTypedValue() UTF8String];
-  if (v7)
+  uTF8String = [CFDictionaryGetTypedValue() UTF8String];
+  if (uTF8String)
   {
-    v8 = v7;
-    if (!strcasecmp(v7, "extension-found"))
+    v8 = uTF8String;
+    if (!strcasecmp(uTF8String, "extension-found"))
     {
       CFStringGetTypeID();
       v10 = CFDictionaryGetTypedValue();
@@ -269,10 +269,10 @@ LABEL_24:
         }
 
 LABEL_32:
-        if (a4)
+        if (error)
         {
           CBErrorF();
-          *a4 = v9 = 0;
+          *error = v9 = 0;
         }
 
         else
@@ -303,11 +303,11 @@ LABEL_32:
             v9 = &stru_100B0F9E0;
           }
 
-          else if (a4)
+          else if (error)
           {
             v15 = v15;
             v9 = 0;
-            *a4 = v15;
+            *error = v15;
           }
 
           else
@@ -333,7 +333,7 @@ LABEL_32:
           goto LABEL_25;
         }
 
-        if (a4)
+        if (error)
         {
           goto LABEL_7;
         }
@@ -363,10 +363,10 @@ LABEL_29:
       }
     }
 
-    if (a4)
+    if (error)
     {
       CBErrorF();
-      *a4 = v9 = 0;
+      *error = v9 = 0;
     }
 
     else
@@ -377,14 +377,14 @@ LABEL_29:
     goto LABEL_24;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_29;
   }
 
 LABEL_7:
   CBErrorF();
-  *a4 = v9 = 0;
+  *error = v9 = 0;
 LABEL_25:
 
   return v9;
@@ -392,26 +392,26 @@ LABEL_25:
 
 - (void)prefsChanged
 {
-  v3 = [(CBDaemonServer *)self->_daemonServer prefEnforceApprovedExtensions];
-  if (self->_prefEnforceApprovedExtensions != v3)
+  prefEnforceApprovedExtensions = [(CBDaemonServer *)self->_daemonServer prefEnforceApprovedExtensions];
+  if (self->_prefEnforceApprovedExtensions != prefEnforceApprovedExtensions)
   {
-    self->_prefEnforceApprovedExtensions = v3;
+    self->_prefEnforceApprovedExtensions = prefEnforceApprovedExtensions;
     updateExtensionsCoalescer = self->_updateExtensionsCoalescer;
 
     [(CUCoalescer *)updateExtensionsCoalescer trigger];
   }
 }
 
-- (BOOL)resetCBExtension:(id)a3 error:(id *)a4
+- (BOOL)resetCBExtension:(id)extension error:(id *)error
 {
-  v5 = a3;
+  extensionCopy = extension;
   extensionMap = self->_extensionMap;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000EC5F0;
   v9[3] = &unk_100ADF620;
-  v10 = v5;
-  v7 = v5;
+  v10 = extensionCopy;
+  v7 = extensionCopy;
   [(NSMutableDictionary *)extensionMap enumerateKeysAndObjectsUsingBlock:v9];
   [(CBExtensionsDaemon *)self _triggerPendingExtension];
 
@@ -420,17 +420,17 @@ LABEL_25:
 
 - (void)_screenLockedChanged
 {
-  v3 = [(CUSystemMonitor *)self->_systemMonitor screenLockedSync];
+  screenLockedSync = [(CUSystemMonitor *)self->_systemMonitor screenLockedSync];
   if (dword_100B50698 <= 30 && (dword_100B50698 != -1 || _LogCategory_Initialize()))
   {
     sub_1007FF090();
-    if (v3)
+    if (screenLockedSync)
     {
       return;
     }
   }
 
-  else if (v3)
+  else if (screenLockedSync)
   {
     return;
   }
@@ -440,13 +440,13 @@ LABEL_25:
 
 - (void)screenStateChanged
 {
-  v3 = [(CUSystemMonitor *)self->_systemMonitor screenState];
+  screenState = [(CUSystemMonitor *)self->_systemMonitor screenState];
   if (dword_100B50698 <= 30 && (dword_100B50698 != -1 || _LogCategory_Initialize()))
   {
     sub_1007FF0E0();
   }
 
-  if (v3 < 30)
+  if (screenState < 30)
   {
     extensionMap = self->_extensionMap;
 
@@ -460,15 +460,15 @@ LABEL_25:
   }
 }
 
-- (void)setAssertionFlags:(unsigned int)a3
+- (void)setAssertionFlags:(unsigned int)flags
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  self->_assertionFlags = a3;
+  self->_assertionFlags = flags;
 
   [(CBExtensionsDaemon *)self _triggerPendingExtension];
 }
 
-- (void)_appRegistrationNotification:(id)a3
+- (void)_appRegistrationNotification:(id)notification
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -513,13 +513,13 @@ LABEL_25:
   }
 }
 
-- (void)_updateExtensions:(id)a3
+- (void)_updateExtensions:(id)extensions
 {
-  v4 = a3;
+  extensionsCopy = extensions;
   p_info = &OBJC_METACLASS___BTVCDevice.info;
   if (dword_100B50698 <= 30 && (dword_100B50698 != -1 || _LogCategory_Initialize()))
   {
-    sub_1007FF24C(v4);
+    sub_1007FF24C(extensionsCopy);
   }
 
   [(NSMutableDictionary *)self->_extensionMap enumerateKeysAndObjectsUsingBlock:&stru_100ADF6C8];
@@ -527,7 +527,7 @@ LABEL_25:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v6 = v4;
+  v6 = extensionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v45 objects:v50 count:16];
   v37 = v6;
   if (v7)
@@ -549,11 +549,11 @@ LABEL_25:
 
         v11 = *(*(&v45 + 1) + 8 * v10);
         v12 = [v6 objectForKeyedSubscript:v11];
-        v13 = [v12 discoveryInfo];
-        v14 = [v12 xpcDiscoveryInfo];
-        if (v14)
+        discoveryInfo = [v12 discoveryInfo];
+        xpcDiscoveryInfo = [v12 xpcDiscoveryInfo];
+        if (xpcDiscoveryInfo)
         {
-          if ([(CBDaemonServer *)self->_daemonServer xpcEventAllowedInfo:v14])
+          if ([(CBDaemonServer *)self->_daemonServer xpcEventAllowedInfo:xpcDiscoveryInfo])
           {
             v15 = [(NSMutableDictionary *)self->_extensionMap objectForKeyedSubscript:v11];
             if (v15)
@@ -570,8 +570,8 @@ LABEL_25:
             else
             {
               v16 = objc_alloc_init(CBExtension);
-              v20 = [v12 bundleID];
-              [(CBExtension *)v16 setBundleID:v20];
+              bundleID = [v12 bundleID];
+              [(CBExtension *)v16 setBundleID:bundleID];
 
               [(CBExtension *)v16 setDispatchQueue:self->_dispatchQueue];
               [(CBExtension *)v16 setExtensionID:v11];
@@ -609,7 +609,7 @@ LABEL_27:
             [(CBExtension *)v16 setSystemUnlocked:CFDictionaryGetInt64() != 0];
             CFStringGetTypeID();
             [(CBExtension *)v16 setViewControllerClassName:CFDictionaryGetTypedValue()];
-            [(CBExtension *)v16 updateWithXPCDiscoveryInfo:v14];
+            [(CBExtension *)v16 updateWithXPCDiscoveryInfo:xpcDiscoveryInfo];
 
             v9 = v39;
             goto LABEL_30;
@@ -648,8 +648,8 @@ LABEL_30:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v26 = [(NSMutableDictionary *)self->_extensionMap allKeys];
-  v27 = [v26 countByEnumeratingWithState:&v41 objects:v49 count:16];
+  allKeys = [(NSMutableDictionary *)self->_extensionMap allKeys];
+  v27 = [allKeys countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (v27)
   {
     v28 = v27;
@@ -662,7 +662,7 @@ LABEL_30:
       {
         if (*v42 != v30)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(allKeys);
         }
 
         v32 = *(*(&v41 + 1) + 8 * v31);
@@ -682,7 +682,7 @@ LABEL_30:
       }
 
       while (v28 != v31);
-      v34 = [v26 countByEnumeratingWithState:&v41 objects:v49 count:16];
+      v34 = [allKeys countByEnumeratingWithState:&v41 objects:v49 count:16];
       v28 = v34;
     }
 
@@ -695,51 +695,51 @@ LABEL_30:
   }
 }
 
-- (BOOL)remoteAlertAllowedAndReturnReason:(id *)a3 extension:(id)a4
+- (BOOL)remoteAlertAllowedAndReturnReason:(id *)reason extension:(id)extension
 {
-  v6 = a4;
+  extensionCopy = extension;
   if ([(CUSystemMonitor *)self->_systemMonitor screenState]<= 29)
   {
-    if (!a3)
+    if (!reason)
     {
       goto LABEL_14;
     }
 
-    v11 = *a3;
+    v11 = *reason;
     v12 = @"Screen off";
     goto LABEL_25;
   }
 
-  if (([v6 screenLocked] & 1) == 0 && -[CUSystemMonitor screenLockedSync](self->_systemMonitor, "screenLockedSync"))
+  if (([extensionCopy screenLocked] & 1) == 0 && -[CUSystemMonitor screenLockedSync](self->_systemMonitor, "screenLockedSync"))
   {
-    if (!a3)
+    if (!reason)
     {
       goto LABEL_14;
     }
 
-    v11 = *a3;
+    v11 = *reason;
     v12 = @"Screen locked";
 LABEL_25:
-    *a3 = v12;
+    *reason = v12;
 LABEL_26:
 
 LABEL_27:
-    LOBYTE(a3) = 0;
+    LOBYTE(reason) = 0;
     goto LABEL_14;
   }
 
-  if ([v6 systemUnlocked])
+  if ([extensionCopy systemUnlocked])
   {
-    v7 = [(CUSystemMonitor *)self->_systemMonitor systemLockStateSync];
-    if (v7 != 1)
+    systemLockStateSync = [(CUSystemMonitor *)self->_systemMonitor systemLockStateSync];
+    if (systemLockStateSync != 1)
     {
-      v8 = v7;
-      if (v7 != 4)
+      v8 = systemLockStateSync;
+      if (systemLockStateSync != 4)
       {
-        if (a3)
+        if (reason)
         {
-          v9 = *a3;
-          *a3 = @"System locked";
+          v9 = *reason;
+          *reason = @"System locked";
         }
 
         if (v8 != 4)
@@ -752,70 +752,70 @@ LABEL_27:
 
   if (self->_remoteAlertActivated)
   {
-    if (!a3)
+    if (!reason)
     {
       goto LABEL_14;
     }
 
-    v11 = *a3;
+    v11 = *reason;
     v12 = @"UI already active";
     goto LABEL_25;
   }
 
   if ((self->_assertionFlags & 2) != 0)
   {
-    if (!a3)
+    if (!reason)
     {
       goto LABEL_14;
     }
 
-    v11 = *a3;
+    v11 = *reason;
     v12 = @"SuppressUIExtensions assertion";
     goto LABEL_25;
   }
 
   if (([(CUSystemMonitor *)self->_systemMonitor systemUIFlags]& 0x7E409) != 0)
   {
-    if (!a3)
+    if (!reason)
     {
       goto LABEL_14;
     }
 
     v11 = CUPrintFlags32();
     v13 = NSPrintF();
-    v14 = *a3;
-    *a3 = v13;
+    v14 = *reason;
+    *reason = v13;
 
     goto LABEL_26;
   }
 
-  LOBYTE(a3) = 1;
+  LOBYTE(reason) = 1;
 LABEL_14:
 
-  return a3;
+  return reason;
 }
 
-- (BOOL)remoteAlertStartWithCBExtension:(id)a3 device:(id)a4 error:(id *)a5
+- (BOOL)remoteAlertStartWithCBExtension:(id)extension device:(id)device error:(id *)error
 {
-  v8 = a3;
-  v34 = a4;
-  v9 = [v8 bundleID];
-  if (!v9)
+  extensionCopy = extension;
+  deviceCopy = device;
+  bundleID = [extensionCopy bundleID];
+  if (!bundleID)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_38;
     }
 
 LABEL_37:
     CBErrorF();
-    *a5 = v27 = 0;
+    *error = v27 = 0;
     goto LABEL_28;
   }
 
   if ([(CUSystemMonitor *)self->_systemMonitor screenState]<= 29)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_38;
     }
@@ -823,9 +823,9 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  if (([v8 screenLocked] & 1) == 0 && -[CUSystemMonitor screenLockedSync](self->_systemMonitor, "screenLockedSync"))
+  if (([extensionCopy screenLocked] & 1) == 0 && -[CUSystemMonitor screenLockedSync](self->_systemMonitor, "screenLockedSync"))
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_38;
     }
@@ -835,7 +835,7 @@ LABEL_37:
 
   if (self->_remoteAlertActivated)
   {
-    if (a5)
+    if (error)
     {
       goto LABEL_37;
     }
@@ -847,8 +847,8 @@ LABEL_38:
 
   if (dword_100B50698 <= 30 && (dword_100B50698 != -1 || _LogCategory_Initialize()))
   {
-    v29 = v8;
-    v31 = v34;
+    v29 = extensionCopy;
+    v31 = deviceCopy;
     LogPrintF_safe();
   }
 
@@ -864,27 +864,27 @@ LABEL_38:
     [(CBDaemonServer *)self->_daemonServer setSystemFlags:0 mask:1];
   }
 
-  v12 = [v8 bundleID];
-  v13 = [v8 sceneIdentifier];
-  v14 = v13;
-  if (!v12 || !v13)
+  bundleID2 = [extensionCopy bundleID];
+  sceneIdentifier = [extensionCopy sceneIdentifier];
+  v14 = sceneIdentifier;
+  if (!bundleID2 || !sceneIdentifier)
   {
-    v16 = [v8 viewControllerClassName];
-    if (v16)
+    viewControllerClassName = [extensionCopy viewControllerClassName];
+    if (viewControllerClassName)
     {
-      v15 = v16;
-      v17 = a5;
-      v18 = [[SBSRemoteAlertDefinition alloc] initWithServiceName:v9 viewControllerClassName:v16];
+      v15 = viewControllerClassName;
+      errorCopy2 = error;
+      v18 = [[SBSRemoteAlertDefinition alloc] initWithServiceName:bundleID viewControllerClassName:viewControllerClassName];
 LABEL_22:
       v19 = v18;
 
       v20 = objc_alloc_init(SBSRemoteAlertConfigurationContext);
-      v21 = [v34 dictionaryRepresentation];
-      v22 = v21;
-      if (v21)
+      dictionaryRepresentation = [deviceCopy dictionaryRepresentation];
+      v22 = dictionaryRepresentation;
+      if (dictionaryRepresentation)
       {
         v35 = @"device";
-        v36 = v21;
+        v36 = dictionaryRepresentation;
         v23 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
         [v20 setUserInfo:v23];
       }
@@ -903,13 +903,13 @@ LABEL_22:
 
       else
       {
-        sub_1007FF350(v17);
+        sub_1007FF350(errorCopy2);
       }
 
       goto LABEL_27;
     }
 
-    if (a5)
+    if (error)
     {
       goto LABEL_42;
     }
@@ -919,10 +919,10 @@ LABEL_43:
     goto LABEL_27;
   }
 
-  v15 = [RBSProcessIdentity identityForEmbeddedApplicationIdentifier:v12];
+  v15 = [RBSProcessIdentity identityForEmbeddedApplicationIdentifier:bundleID2];
   if (dword_100B50698 <= 30 && (dword_100B50698 != -1 || _LogCategory_Initialize()))
   {
-    v32 = v12;
+    v32 = bundleID2;
     v33 = v14;
     v30 = v15;
     LogPrintF_safe();
@@ -930,64 +930,64 @@ LABEL_43:
 
   if (v15)
   {
-    v17 = a5;
+    errorCopy2 = error;
     v18 = [[SBSRemoteAlertDefinition alloc] initWithSceneProvidingProcess:v15 configurationIdentifier:v14];
     goto LABEL_22;
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_43;
   }
 
 LABEL_42:
   CBErrorF();
-  *a5 = v27 = 0;
+  *error = v27 = 0;
 LABEL_27:
 
 LABEL_28:
   return v27;
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
-  v4 = a3;
+  activateCopy = activate;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000EDBF4;
   v7[3] = &unk_100ADF590;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = activateCopy;
+  selfCopy = self;
+  v6 = activateCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
+  deactivateCopy = deactivate;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000EDD3C;
   v7[3] = &unk_100ADF590;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = deactivateCopy;
+  selfCopy = self;
+  v6 = deactivateCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v5 = a3;
+  handleCopy = handle;
   dispatchQueue = self->_dispatchQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000EDE80;
   v8[3] = &unk_100ADF590;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = handleCopy;
+  selfCopy = self;
+  v7 = handleCopy;
   dispatch_async(dispatchQueue, v8);
 }
 

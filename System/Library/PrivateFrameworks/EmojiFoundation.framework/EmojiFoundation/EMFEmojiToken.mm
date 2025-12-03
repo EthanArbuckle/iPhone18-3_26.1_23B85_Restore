@@ -1,17 +1,17 @@
 @interface EMFEmojiToken
-+ (id)emojiTokenWithCEMEmojiToken:(__EmojiTokenWrapper *)a3;
-+ (id)emojiTokenWithLongCharacter:(unsigned int)a3 localeData:(id)a4;
-+ (id)emojiTokenWithString:(id)a3 localeData:(id)a4;
-+ (id)emojiTokensForCEMEmojiTokens:(__CFArray *)a3;
++ (id)emojiTokenWithCEMEmojiToken:(__EmojiTokenWrapper *)token;
++ (id)emojiTokenWithLongCharacter:(unsigned int)character localeData:(id)data;
++ (id)emojiTokenWithString:(id)string localeData:(id)data;
++ (id)emojiTokensForCEMEmojiTokens:(__CFArray *)tokens;
 - (BOOL)_shouldHighlightEmoji;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualIgnoringModifiers:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualIgnoringModifiers:(id)modifiers;
 - (BOOL)isValid;
 - (EMFEmojiLocaleData)localeData;
-- (EMFEmojiToken)initWithCEMEmojiToken:(__EmojiTokenWrapper *)a3;
-- (EMFEmojiToken)initWithCoder:(id)a3;
-- (EMFEmojiToken)initWithString:(id)a3 localeData:(id)a4;
-- (EMFEmojiToken)initWithString:(id)a3 localeIdentifier:(id)a4;
+- (EMFEmojiToken)initWithCEMEmojiToken:(__EmojiTokenWrapper *)token;
+- (EMFEmojiToken)initWithCoder:(id)coder;
+- (EMFEmojiToken)initWithString:(id)string localeData:(id)data;
+- (EMFEmojiToken)initWithString:(id)string localeIdentifier:(id)identifier;
 - (NSArray)_skinToneVariantStrings;
 - (NSArray)skinToneChooserVariants;
 - (NSArray)skinToneVariants;
@@ -19,14 +19,14 @@
 - (NSString)longFormEncodedStringVariantForMultiPersonGrouping;
 - (NSString)shortFormEncodedStringVariantForMultiPersonGrouping;
 - (NSString)string;
-- (id)copyWithPresentationStyle:(int)a3;
-- (id)copyWithSkinToneVariant:(int)a3;
-- (id)copyWithSkinToneVariantSpecifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithPresentationStyle:(int)style;
+- (id)copyWithSkinToneVariant:(int)variant;
+- (id)copyWithSkinToneVariantSpecifier:(id)specifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyWithoutModifiers;
 - (id)description;
-- (id)nameForType:(int)a3;
-- (id)relatedEmojiTokens:(unint64_t)a3;
+- (id)nameForType:(int)type;
+- (id)relatedEmojiTokens:(unint64_t)tokens;
 - (int)gender;
 - (int)presentationStyle;
 - (int)skinTone;
@@ -34,7 +34,7 @@
 - (unsigned)_emojiIndex;
 - (void)_createEmojiTokenRefIfNecessary;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMFEmojiToken
@@ -72,8 +72,8 @@
   v19 = *MEMORY[0x1E69E9840];
   if ([(EMFEmojiToken *)self supportsSkinToneVariants])
   {
-    v3 = [(EMFEmojiToken *)self string];
-    v4 = [EMFStringUtilities _skinToneVariantsForString:v3];
+    string = [(EMFEmojiToken *)self string];
+    v4 = [EMFStringUtilities _skinToneVariantsForString:string];
 
     v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
     v14 = 0u;
@@ -96,8 +96,8 @@
           }
 
           v11 = [EMFEmojiToken emojiTokenWithString:*(*(&v14 + 1) + 8 * i) localeData:0, v14];
-          v12 = [(EMFEmojiToken *)self localeIdentifier];
-          [v11 setLocaleIdentifier:v12];
+          localeIdentifier = [(EMFEmojiToken *)self localeIdentifier];
+          [v11 setLocaleIdentifier:localeIdentifier];
 
           [v5 addObject:v11];
         }
@@ -164,8 +164,8 @@
     return;
   }
 
-  v5 = [(EMFEmojiToken *)self localeData];
-  if (![v5 emojiLocaleDataRef] && self->_localeIdentifier)
+  localeData = [(EMFEmojiToken *)self localeData];
+  if (![localeData emojiLocaleDataRef] && self->_localeIdentifier)
   {
     v4 = CEMCreateEmojiLocaleData();
     self->_emojiTokenRef = CEMEmojiTokenCreateWithString();
@@ -189,24 +189,24 @@ LABEL_7:
 LABEL_8:
 }
 
-+ (id)emojiTokenWithCEMEmojiToken:(__EmojiTokenWrapper *)a3
++ (id)emojiTokenWithCEMEmojiToken:(__EmojiTokenWrapper *)token
 {
-  v3 = [[a1 alloc] initWithCEMEmojiToken:a3];
+  v3 = [[self alloc] initWithCEMEmojiToken:token];
 
   return v3;
 }
 
-+ (id)emojiTokensForCEMEmojiTokens:(__CFArray *)a3
++ (id)emojiTokensForCEMEmojiTokens:(__CFArray *)tokens
 {
-  if (a3)
+  if (tokens)
   {
-    Count = CFArrayGetCount(a3);
+    Count = CFArrayGetCount(tokens);
     v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:Count];
     if (Count)
     {
       for (i = 0; i != Count; ++i)
       {
-        v7 = [EMFEmojiToken emojiTokenWithCEMEmojiToken:CFArrayGetValueAtIndex(a3, i)];
+        v7 = [EMFEmojiToken emojiTokenWithCEMEmojiToken:CFArrayGetValueAtIndex(tokens, i)];
         [v5 addObject:v7];
       }
     }
@@ -220,52 +220,52 @@ LABEL_8:
   return v5;
 }
 
-+ (id)emojiTokenWithString:(id)a3 localeData:(id)a4
++ (id)emojiTokenWithString:(id)string localeData:(id)data
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithString:v7 localeData:v6];
+  dataCopy = data;
+  stringCopy = string;
+  v8 = [[self alloc] initWithString:stringCopy localeData:dataCopy];
 
   return v8;
 }
 
-+ (id)emojiTokenWithLongCharacter:(unsigned int)a3 localeData:(id)a4
++ (id)emojiTokenWithLongCharacter:(unsigned int)character localeData:(id)data
 {
-  v5 = a4;
-  [v5 emojiLocaleDataRef];
+  dataCopy = data;
+  [dataCopy emojiLocaleDataRef];
   v6 = CEMEmojiTokenCreateWithLongCharacter();
-  v7 = [a1 emojiTokenWithCEMEmojiToken:v6];
+  v7 = [self emojiTokenWithCEMEmojiToken:v6];
   if (v6)
   {
     CFRelease(v6);
   }
 
-  v8 = [v5 localeIdentifier];
-  [v7 setLocaleIdentifier:v8];
+  localeIdentifier = [dataCopy localeIdentifier];
+  [v7 setLocaleIdentifier:localeIdentifier];
 
   return v7;
 }
 
-- (EMFEmojiToken)initWithCEMEmojiToken:(__EmojiTokenWrapper *)a3
+- (EMFEmojiToken)initWithCEMEmojiToken:(__EmojiTokenWrapper *)token
 {
-  if (a3)
+  if (token)
   {
     v13.receiver = self;
     v13.super_class = EMFEmojiToken;
     v4 = [(EMFEmojiToken *)&v13 init];
     if (v4)
     {
-      v4->_emojiTokenRef = CFRetain(a3);
+      v4->_emojiTokenRef = CFRetain(token);
       v5 = [CEMEmojiTokenGetString() copy];
       string = v4->_string;
       v4->_string = v5;
 
-      v7 = [(EMFEmojiToken *)v4 localeData];
-      v8 = v7;
-      if (v7)
+      localeData = [(EMFEmojiToken *)v4 localeData];
+      v8 = localeData;
+      if (localeData)
       {
-        v9 = [v7 localeIdentifier];
-        v10 = [v9 copy];
+        localeIdentifier = [localeData localeIdentifier];
+        v10 = [localeIdentifier copy];
         localeIdentifier = v4->_localeIdentifier;
         v4->_localeIdentifier = v10;
 
@@ -283,45 +283,45 @@ LABEL_8:
   return v4;
 }
 
-- (EMFEmojiToken)initWithString:(id)a3 localeData:(id)a4
+- (EMFEmojiToken)initWithString:(id)string localeData:(id)data
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 localeIdentifier];
-  v10 = [(EMFEmojiToken *)self initWithString:v8 localeIdentifier:v9];
+  dataCopy = data;
+  stringCopy = string;
+  localeIdentifier = [dataCopy localeIdentifier];
+  v10 = [(EMFEmojiToken *)self initWithString:stringCopy localeIdentifier:localeIdentifier];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_localeData, a4);
+    objc_storeStrong(&v10->_localeData, data);
   }
 
   return v10;
 }
 
-- (EMFEmojiToken)initWithString:(id)a3 localeIdentifier:(id)a4
+- (EMFEmojiToken)initWithString:(id)string localeIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  stringCopy = string;
+  identifierCopy = identifier;
+  if ([stringCopy length])
   {
     v15.receiver = self;
     v15.super_class = EMFEmojiToken;
     v8 = [(EMFEmojiToken *)&v15 init];
     if (v8)
     {
-      if ([EMFStringUtilities _genderEmojiBaseStringNeedVariantSelector:v6])
+      if ([EMFStringUtilities _genderEmojiBaseStringNeedVariantSelector:stringCopy])
       {
-        v9 = [v6 stringByAppendingString:@"️"];
+        v9 = [stringCopy stringByAppendingString:@"️"];
 
-        v6 = v9;
+        stringCopy = v9;
       }
 
       v8->_emojiTokenRef = 0;
-      v10 = [v6 copy];
+      v10 = [stringCopy copy];
       string = v8->_string;
       v8->_string = v10;
 
-      v12 = [v7 copy];
+      v12 = [identifierCopy copy];
       localeIdentifier = v8->_localeIdentifier;
       v8->_localeIdentifier = v12;
     }
@@ -339,8 +339,8 @@ LABEL_8:
 - (id)description
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@: %p", objc_opt_class(), self];
-  v4 = [(EMFEmojiToken *)self string];
-  [v3 appendFormat:@"; string = %@", v4];
+  string = [(EMFEmojiToken *)self string];
+  [v3 appendFormat:@"; string = %@", string];
 
   if (self->_localeIdentifier)
   {
@@ -350,10 +350,10 @@ LABEL_8:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   emojiTokenRef = self->_emojiTokenRef;
-  v5 = [objc_opt_class() allocWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
   if (emojiTokenRef)
   {
     v6 = [v5 initWithCEMEmojiToken:self->_emojiTokenRef];
@@ -373,44 +373,44 @@ LABEL_8:
   }
 }
 
-- (EMFEmojiToken)initWithCoder:(id)a3
+- (EMFEmojiToken)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"emojiString"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localeIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"emojiString"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localeIdentifier"];
 
   v7 = [(EMFEmojiToken *)self initWithString:v5 localeIdentifier:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(EMFEmojiToken *)self string];
-  if (v4)
+  coderCopy = coder;
+  string = [(EMFEmojiToken *)self string];
+  if (string)
   {
-    [v6 encodeObject:v4 forKey:@"emojiString"];
+    [coderCopy encodeObject:string forKey:@"emojiString"];
   }
 
   localeIdentifier = self->_localeIdentifier;
   if (localeIdentifier)
   {
-    [v6 encodeObject:localeIdentifier forKey:@"localeIdentifier"];
+    [coderCopy encodeObject:localeIdentifier forKey:@"localeIdentifier"];
   }
 }
 
 - (unint64_t)hash
 {
-  v2 = [(EMFEmojiToken *)self string];
-  v3 = [v2 hash];
+  string = [(EMFEmojiToken *)self string];
+  v3 = [string hash];
 
   return v3;
 }
 
 - (NSString)_baseString
 {
-  v2 = [(EMFEmojiToken *)self string];
-  v3 = [EMFStringUtilities _baseStringForEmojiString:v2];
+  string = [(EMFEmojiToken *)self string];
+  v3 = [EMFStringUtilities _baseStringForEmojiString:string];
 
   return v3;
 }
@@ -454,10 +454,10 @@ LABEL_8:
   v30 = *MEMORY[0x1E69E9840];
   if ([(EMFEmojiToken *)self supportsSkinToneVariants])
   {
-    v3 = [(EMFEmojiToken *)self string];
-    v4 = [EMFStringUtilities _skinToneChooserVariantsForString:v3];
+    string = [(EMFEmojiToken *)self string];
+    v4 = [EMFStringUtilities _skinToneChooserVariantsForString:string];
 
-    v18 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -477,7 +477,7 @@ LABEL_8:
           }
 
           v6 = *(*(&v24 + 1) + 8 * i);
-          v7 = [MEMORY[0x1E695DF70] array];
+          array2 = [MEMORY[0x1E695DF70] array];
           v20 = 0u;
           v21 = 0u;
           v22 = 0u;
@@ -498,10 +498,10 @@ LABEL_8:
                 }
 
                 v13 = [EMFEmojiToken emojiTokenWithString:*(*(&v20 + 1) + 8 * j) localeData:0];
-                v14 = [(EMFEmojiToken *)self localeIdentifier];
-                [v13 setLocaleIdentifier:v14];
+                localeIdentifier = [(EMFEmojiToken *)self localeIdentifier];
+                [v13 setLocaleIdentifier:localeIdentifier];
 
-                [v7 addObject:v13];
+                [array2 addObject:v13];
               }
 
               v10 = [v8 countByEnumeratingWithState:&v20 objects:v28 count:16];
@@ -510,7 +510,7 @@ LABEL_8:
             while (v10);
           }
 
-          [v18 addObject:v7];
+          [array addObject:array2];
         }
 
         v19 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
@@ -522,18 +522,18 @@ LABEL_8:
 
   else
   {
-    v18 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v18;
+  return array;
 }
 
 - (NSArray)_skinToneVariantStrings
 {
   if ([(EMFEmojiToken *)self supportsSkinToneVariants])
   {
-    v3 = [(EMFEmojiToken *)self string];
-    v4 = [EMFStringUtilities _skinToneVariantsForString:v3];
+    string = [(EMFEmojiToken *)self string];
+    v4 = [EMFStringUtilities _skinToneVariantsForString:string];
   }
 
   else
@@ -544,12 +544,12 @@ LABEL_8:
   return v4;
 }
 
-- (id)copyWithSkinToneVariant:(int)a3
+- (id)copyWithSkinToneVariant:(int)variant
 {
-  v5 = [(EMFEmojiToken *)self string];
-  v6 = [EMFStringUtilities _skinToneVariantsForString:v5];
+  string = [(EMFEmojiToken *)self string];
+  v6 = [EMFStringUtilities _skinToneVariantsForString:string];
 
-  if (![v6 count] || objc_msgSend(v6, "count") > 0x18 || (a3 > 6 || ((0x7Bu >> a3) & 1) == 0 ? (v7 = 0) : (objc_msgSend(v6, "objectAtIndex:", qword_1AF0AB8F0[a3]), v7 = objc_claimAutoreleasedReturnValue()), +[EMFEmojiToken emojiTokenWithString:localeData:](EMFEmojiToken, "emojiTokenWithString:localeData:", v7, 0), v8 = objc_claimAutoreleasedReturnValue(), -[EMFEmojiToken localeIdentifier](self, "localeIdentifier"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "setLocaleIdentifier:", v9), v9, v7, !v8))
+  if (![v6 count] || objc_msgSend(v6, "count") > 0x18 || (variant > 6 || ((0x7Bu >> variant) & 1) == 0 ? (v7 = 0) : (objc_msgSend(v6, "objectAtIndex:", qword_1AF0AB8F0[variant]), v7 = objc_claimAutoreleasedReturnValue()), +[EMFEmojiToken emojiTokenWithString:localeData:](EMFEmojiToken, "emojiTokenWithString:localeData:", v7, 0), v8 = objc_claimAutoreleasedReturnValue(), -[EMFEmojiToken localeIdentifier](self, "localeIdentifier"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "setLocaleIdentifier:", v9), v9, v7, !v8))
   {
     v8 = [(EMFEmojiToken *)self copy];
   }
@@ -557,13 +557,13 @@ LABEL_8:
   return v8;
 }
 
-- (id)copyWithSkinToneVariantSpecifier:(id)a3
+- (id)copyWithSkinToneVariantSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  specifierCopy = specifier;
+  v5 = specifierCopy;
+  if (specifierCopy)
   {
-    [v4 count];
+    [specifierCopy count];
   }
 
   if ([v5 count] == 1)
@@ -586,12 +586,12 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    v9 = [(EMFEmojiToken *)self string];
-    v10 = [EMFStringUtilities _multiPersonStringForString:v9 skinToneVariantSpecifier:v5];
+    string = [(EMFEmojiToken *)self string];
+    v10 = [EMFStringUtilities _multiPersonStringForString:string skinToneVariantSpecifier:v5];
 
     v8 = [EMFEmojiToken emojiTokenWithString:v10 localeData:0];
-    v11 = [(EMFEmojiToken *)self localeIdentifier];
-    [v8 setLocaleIdentifier:v11];
+    localeIdentifier = [(EMFEmojiToken *)self localeIdentifier];
+    [v8 setLocaleIdentifier:localeIdentifier];
 
     if (!v8)
     {
@@ -604,16 +604,16 @@ LABEL_8:
 
 - (NSString)longFormEncodedStringVariantForMultiPersonGrouping
 {
-  v2 = [(EMFEmojiToken *)self string];
-  v3 = [EMFStringUtilities _normalizeMultiPersonGroupToLongFormEncoding:v2];
+  string = [(EMFEmojiToken *)self string];
+  v3 = [EMFStringUtilities _normalizeMultiPersonGroupToLongFormEncoding:string];
 
   return v3;
 }
 
 - (NSString)shortFormEncodedStringVariantForMultiPersonGrouping
 {
-  v2 = [(EMFEmojiToken *)self string];
-  v3 = [EMFStringUtilities _normalizeMultiPersonGroupToShortFormEncoding:v2];
+  string = [(EMFEmojiToken *)self string];
+  v3 = [EMFStringUtilities _normalizeMultiPersonGroupToShortFormEncoding:string];
 
   return v3;
 }
@@ -640,12 +640,12 @@ LABEL_8:
 
 - (int)presentationStyle
 {
-  v2 = [(EMFEmojiToken *)self emojiTokenRef];
+  emojiTokenRef = [(EMFEmojiToken *)self emojiTokenRef];
 
-  return MEMORY[0x1EEDF8FC0](v2);
+  return MEMORY[0x1EEDF8FC0](emojiTokenRef);
 }
 
-- (id)copyWithPresentationStyle:(int)a3
+- (id)copyWithPresentationStyle:(int)style
 {
   [(EMFEmojiToken *)self emojiTokenRef];
   PresentationVariant = CEMEmojiTokenCreatePresentationVariant();
@@ -672,54 +672,54 @@ LABEL_8:
 
   else
   {
-    v5 = [(EMFEmojiToken *)self _baseString];
-    v4 = [EMFEmojiToken emojiTokenWithString:v5 localeData:0];
+    _baseString = [(EMFEmojiToken *)self _baseString];
+    v4 = [EMFEmojiToken emojiTokenWithString:_baseString localeData:0];
 
-    v6 = [(EMFEmojiToken *)self localeIdentifier];
-    [v4 setLocaleIdentifier:v6];
+    localeIdentifier = [(EMFEmojiToken *)self localeIdentifier];
+    [v4 setLocaleIdentifier:localeIdentifier];
   }
 
   return v4;
 }
 
-- (BOOL)isEqualIgnoringModifiers:(id)a3
+- (BOOL)isEqualIgnoringModifiers:(id)modifiers
 {
-  v4 = a3;
-  v5 = [(EMFEmojiToken *)self _baseString];
-  v6 = [v4 _baseString];
+  modifiersCopy = modifiers;
+  _baseString = [(EMFEmojiToken *)self _baseString];
+  _baseString2 = [modifiersCopy _baseString];
 
-  if (v5 == v6)
+  if (_baseString == _baseString2)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = [v5 isEqualToString:v6];
+    v7 = [_baseString isEqualToString:_baseString2];
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(EMFEmojiToken *)self string];
-    v7 = [v5 string];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    string = [(EMFEmojiToken *)self string];
+    string2 = [v5 string];
+    v8 = string2;
+    if (string == string2)
     {
     }
 
     else
     {
-      v9 = [(EMFEmojiToken *)self string];
-      v10 = [v5 string];
-      v11 = [v9 isEqualToString:v10];
+      string3 = [(EMFEmojiToken *)self string];
+      string4 = [v5 string];
+      v11 = [string3 isEqualToString:string4];
 
       if (!v11)
       {
@@ -730,18 +730,18 @@ LABEL_11:
       }
     }
 
-    v13 = [(EMFEmojiToken *)self localeIdentifier];
-    v14 = [v5 localeIdentifier];
-    if (v13 == v14)
+    localeIdentifier = [(EMFEmojiToken *)self localeIdentifier];
+    localeIdentifier2 = [v5 localeIdentifier];
+    if (localeIdentifier == localeIdentifier2)
     {
       v12 = 1;
     }
 
     else
     {
-      v15 = [(EMFEmojiToken *)self localeIdentifier];
-      v16 = [v5 localeIdentifier];
-      v12 = [v15 isEqualToString:v16];
+      localeIdentifier3 = [(EMFEmojiToken *)self localeIdentifier];
+      localeIdentifier4 = [v5 localeIdentifier];
+      v12 = [localeIdentifier3 isEqualToString:localeIdentifier4];
     }
 
     goto LABEL_11;
@@ -753,7 +753,7 @@ LABEL_12:
   return v12;
 }
 
-- (id)relatedEmojiTokens:(unint64_t)a3
+- (id)relatedEmojiTokens:(unint64_t)tokens
 {
   [(EMFEmojiToken *)self emojiTokenRef];
   v3 = CEMEmojiTokenCopyRelatedEmoji();
@@ -766,7 +766,7 @@ LABEL_12:
   return v4;
 }
 
-- (id)nameForType:(int)a3
+- (id)nameForType:(int)type
 {
   [(EMFEmojiToken *)self emojiTokenRef];
   v3 = CEMEmojiTokenCopyName();
@@ -776,7 +776,7 @@ LABEL_12:
 
 - (BOOL)isValid
 {
-  v2 = [(EMFEmojiToken *)self string];
+  string = [(EMFEmojiToken *)self string];
   v3 = CEMStringIsSingleEmoji() != 0;
 
   return v3;

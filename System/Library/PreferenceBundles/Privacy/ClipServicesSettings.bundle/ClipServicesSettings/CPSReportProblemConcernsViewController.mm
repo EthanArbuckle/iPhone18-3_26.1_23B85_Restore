@@ -1,8 +1,8 @@
 @interface CPSReportProblemConcernsViewController
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)cancelTapped;
-- (void)setProblemTypes:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setProblemTypes:(id)types;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -17,18 +17,18 @@
   [(CPSReportProblemConcernsViewController *)self setTitle:v3];
 
   v4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"cancelTapped"];
-  v5 = [(CPSReportProblemConcernsViewController *)self navigationItem];
-  [v5 setLeftBarButtonItem:v4];
+  navigationItem = [(CPSReportProblemConcernsViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v4];
 
-  v6 = [(CPSReportProblemConcernsViewController *)self tableView];
-  [v6 registerClass:objc_opt_class() forCellReuseIdentifier:@"basicStyle"];
+  tableView = [(CPSReportProblemConcernsViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"basicStyle"];
 }
 
-- (void)setProblemTypes:(id)a3
+- (void)setProblemTypes:(id)types
 {
-  objc_storeStrong(&self->_problemTypes, a3);
-  v4 = [(CPSReportProblemConcernsViewController *)self tableView];
-  [v4 reloadData];
+  objc_storeStrong(&self->_problemTypes, types);
+  tableView = [(CPSReportProblemConcernsViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)cancelTapped
@@ -40,28 +40,28 @@
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   selectAction = self->_selectAction;
   if (selectAction)
   {
-    v5 = -[NSArray objectAtIndexedSubscript:](self->_problemTypes, "objectAtIndexedSubscript:", [a4 row]);
+    v5 = -[NSArray objectAtIndexedSubscript:](self->_problemTypes, "objectAtIndexedSubscript:", [path row]);
     selectAction[2](selectAction, v5);
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"basicStyle" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"basicStyle" forIndexPath:pathCopy];
   [v7 setAccessoryType:1];
   problemTypes = self->_problemTypes;
-  v9 = [v6 row];
+  v9 = [pathCopy row];
 
   v10 = [(NSArray *)problemTypes objectAtIndexedSubscript:v9];
-  v11 = [v10 localizedTitle];
-  v12 = [v7 textLabel];
-  [v12 setText:v11];
+  localizedTitle = [v10 localizedTitle];
+  textLabel = [v7 textLabel];
+  [textLabel setText:localizedTitle];
 
   return v7;
 }

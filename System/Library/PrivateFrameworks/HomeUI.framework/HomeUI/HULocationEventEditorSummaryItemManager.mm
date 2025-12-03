@@ -4,17 +4,17 @@
 - (BOOL)_canEditLocation;
 - (BOOL)_hasCustomLocation;
 - (BOOL)canChangeLocation;
-- (BOOL)isInstructionsItem:(id)a3;
-- (HULocationEventEditorSummaryItemManager)initWithDelegate:(id)a3 flow:(id)a4;
-- (HULocationEventEditorSummaryItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (id)_buildItemModulesForHome:(id)a3;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (BOOL)isInstructionsItem:(id)item;
+- (HULocationEventEditorSummaryItemManager)initWithDelegate:(id)delegate flow:(id)flow;
+- (HULocationEventEditorSummaryItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (id)_buildItemModulesForHome:(id)home;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)_userPickerOptions;
 - (id)home;
 - (id)locationEventRegion;
-- (void)updateLocationEventWithRegion:(id)a3;
-- (void)userPickerModule:(id)a3 didUpdatePresenceEvent:(id)a4;
+- (void)updateLocationEventWithRegion:(id)region;
+- (void)userPickerModule:(id)module didUpdatePresenceEvent:(id)event;
 @end
 
 @implementation HULocationEventEditorSummaryItemManager
@@ -55,33 +55,33 @@ void __60__HULocationEventEditorSummaryItemManager_locationSectionID__block_invo
   qword_281120D40 = @"location";
 }
 
-- (HULocationEventEditorSummaryItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HULocationEventEditorSummaryItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithDelegate_flow_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HULocationEventEditorSummaryItemManager.m" lineNumber:46 description:{@"%s is unavailable; use %@ instead", "-[HULocationEventEditorSummaryItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HULocationEventEditorSummaryItemManager.m" lineNumber:46 description:{@"%s is unavailable; use %@ instead", "-[HULocationEventEditorSummaryItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
-- (HULocationEventEditorSummaryItemManager)initWithDelegate:(id)a3 flow:(id)a4
+- (HULocationEventEditorSummaryItemManager)initWithDelegate:(id)delegate flow:(id)flow
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 eventBuilderItem];
-  v10 = [v9 locationEventBuilder];
+  flowCopy = flow;
+  delegateCopy = delegate;
+  eventBuilderItem = [flowCopy eventBuilderItem];
+  locationEventBuilder = [eventBuilderItem locationEventBuilder];
 
-  if (!v10)
+  if (!locationEventBuilder)
   {
     v11 = objc_alloc_init(MEMORY[0x277D14978]);
-    v12 = [v7 eventType];
-    if ((v12 - 1) <= 1)
+    eventType = [flowCopy eventType];
+    if ((eventType - 1) <= 1)
     {
-      [v11 setLocationEventType:v12];
+      [v11 setLocationEventType:eventType];
     }
 
-    v13 = [v7 eventBuilderItem];
-    [v13 setLocationEventBuilder:v11];
+    eventBuilderItem2 = [flowCopy eventBuilderItem];
+    [eventBuilderItem2 setLocationEventBuilder:v11];
   }
 
   v14 = objc_alloc(MEMORY[0x277D14B38]);
@@ -89,16 +89,16 @@ void __60__HULocationEventEditorSummaryItemManager_locationSectionID__block_invo
   v20[1] = 3221225472;
   v20[2] = __65__HULocationEventEditorSummaryItemManager_initWithDelegate_flow___block_invoke;
   v20[3] = &unk_277DB7478;
-  v15 = self;
-  v21 = v15;
+  selfCopy = self;
+  v21 = selfCopy;
   v16 = [v14 initWithResultsBlock:v20];
-  v19.receiver = v15;
+  v19.receiver = selfCopy;
   v19.super_class = HULocationEventEditorSummaryItemManager;
-  v17 = [(HFItemManager *)&v19 initWithDelegate:v8 sourceItem:v16];
+  v17 = [(HFItemManager *)&v19 initWithDelegate:delegateCopy sourceItem:v16];
 
   if (v17)
   {
-    objc_storeStrong(&v17->_flow, a4);
+    objc_storeStrong(&v17->_flow, flow);
   }
 
   return v17;
@@ -132,43 +132,43 @@ id __65__HULocationEventEditorSummaryItemManager_initWithDelegate_flow___block_i
 
 - (id)home
 {
-  v3 = [(HULocationEventEditorSummaryItemManager *)self flow];
-  v4 = [v3 triggerBuilder];
-  v5 = [v4 home];
-  v6 = v5;
-  if (v5)
+  flow = [(HULocationEventEditorSummaryItemManager *)self flow];
+  triggerBuilder = [flow triggerBuilder];
+  home = [triggerBuilder home];
+  v6 = home;
+  if (home)
   {
-    v7 = v5;
+    home2 = home;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = HULocationEventEditorSummaryItemManager;
-    v7 = [(HFItemManager *)&v10 home];
+    home2 = [(HFItemManager *)&v10 home];
   }
 
-  v8 = v7;
+  v8 = home2;
 
   return v8;
 }
 
-- (BOOL)isInstructionsItem:(id)a3
+- (BOOL)isInstructionsItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HULocationEventEditorSummaryItemManager *)self usersInstructionsItem];
+  itemCopy = item;
+  usersInstructionsItem = [(HULocationEventEditorSummaryItemManager *)self usersInstructionsItem];
 
-  return v5 == v4;
+  return usersInstructionsItem == itemCopy;
 }
 
 - (id)locationEventRegion
 {
-  v3 = [(HULocationEventEditorSummaryItemManager *)self flow];
-  v4 = [v3 eventBuilderItem];
-  v5 = [v4 locationEventBuilder];
+  flow = [(HULocationEventEditorSummaryItemManager *)self flow];
+  eventBuilderItem = [flow eventBuilderItem];
+  locationEventBuilder = [eventBuilderItem locationEventBuilder];
 
   objc_opt_class();
-  v6 = v5;
+  v6 = locationEventBuilder;
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -183,8 +183,8 @@ id __65__HULocationEventEditorSummaryItemManager_initWithDelegate_flow___block_i
 
   if (v8)
   {
-    v9 = [v8 region];
-    v10 = [HULocationTriggerRegion customRegionWithCircularRegion:v9];
+    region = [v8 region];
+    v10 = [HULocationTriggerRegion customRegionWithCircularRegion:region];
 LABEL_8:
     v11 = v10;
 
@@ -194,8 +194,8 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(HULocationEventEditorSummaryItemManager *)self home];
-    v10 = +[HULocationTriggerRegion homeRegionWithHome:eventType:](HULocationTriggerRegion, "homeRegionWithHome:eventType:", v9, [v6 locationEventType]);
+    region = [(HULocationEventEditorSummaryItemManager *)self home];
+    v10 = +[HULocationTriggerRegion homeRegionWithHome:eventType:](HULocationTriggerRegion, "homeRegionWithHome:eventType:", region, [v6 locationEventType]);
     goto LABEL_8;
   }
 
@@ -208,10 +208,10 @@ LABEL_9:
 - (BOOL)canChangeLocation
 {
   objc_opt_class();
-  v3 = [(HULocationEventEditorSummaryItemManager *)self locationItem];
+  locationItem = [(HULocationEventEditorSummaryItemManager *)self locationItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = locationItem;
   }
 
   else
@@ -225,19 +225,19 @@ LABEL_9:
   return v6;
 }
 
-- (void)updateLocationEventWithRegion:(id)a3
+- (void)updateLocationEventWithRegion:(id)region
 {
-  v20 = a3;
-  v5 = [v20 regionType];
-  if (v5 == 1)
+  regionCopy = region;
+  regionType = [regionCopy regionType];
+  if (regionType == 1)
   {
     objc_opt_class();
-    v10 = [(HULocationEventEditorSummaryItemManager *)self flow];
-    v11 = [v10 eventBuilderItem];
-    v6 = [v11 locationEventBuilder];
+    flow = [(HULocationEventEditorSummaryItemManager *)self flow];
+    eventBuilderItem = [flow eventBuilderItem];
+    locationEventBuilder = [eventBuilderItem locationEventBuilder];
     if (objc_opt_isKindOfClass())
     {
-      v12 = v6;
+      v12 = locationEventBuilder;
     }
 
     else
@@ -249,37 +249,37 @@ LABEL_9:
 
     if (!v13)
     {
-      v6 = objc_alloc_init(MEMORY[0x277D147B0]);
-      v14 = [(HULocationEventEditorSummaryItemManager *)self flow];
-      v15 = [v14 eventBuilderItem];
-      [v15 setLocationEventBuilder:v6];
+      locationEventBuilder = objc_alloc_init(MEMORY[0x277D147B0]);
+      flow2 = [(HULocationEventEditorSummaryItemManager *)self flow];
+      eventBuilderItem2 = [flow2 eventBuilderItem];
+      [eventBuilderItem2 setLocationEventBuilder:locationEventBuilder];
     }
 
-    v7 = [v20 circularRegion];
-    [v6 setRegion:v7];
+    circularRegion = [regionCopy circularRegion];
+    [locationEventBuilder setRegion:circularRegion];
   }
 
   else
   {
-    if (v5)
+    if (regionType)
     {
       goto LABEL_11;
     }
 
-    v6 = [(HULocationEventEditorSummaryItemManager *)self userPickerModule];
-    v7 = [v6 presenceEventBuilder];
-    v8 = [(HULocationEventEditorSummaryItemManager *)self flow];
-    v9 = [v8 eventBuilderItem];
-    [v9 setLocationEventBuilder:v7];
+    locationEventBuilder = [(HULocationEventEditorSummaryItemManager *)self userPickerModule];
+    circularRegion = [locationEventBuilder presenceEventBuilder];
+    flow3 = [(HULocationEventEditorSummaryItemManager *)self flow];
+    eventBuilderItem3 = [flow3 eventBuilderItem];
+    [eventBuilderItem3 setLocationEventBuilder:circularRegion];
   }
 
 LABEL_11:
-  v16 = [(HULocationEventEditorSummaryItemManager *)self _userPickerOptions];
-  v17 = [(HULocationEventEditorSummaryItemManager *)self userPickerModule];
-  [v17 setOptions:v16];
+  _userPickerOptions = [(HULocationEventEditorSummaryItemManager *)self _userPickerOptions];
+  userPickerModule = [(HULocationEventEditorSummaryItemManager *)self userPickerModule];
+  [userPickerModule setOptions:_userPickerOptions];
 
-  v18 = [(HFItemManager *)self allItems];
-  v19 = [(HFItemManager *)self updateResultsForItems:v18 senderSelector:a2];
+  allItems = [(HFItemManager *)self allItems];
+  v19 = [(HFItemManager *)self updateResultsForItems:allItems senderSelector:a2];
 }
 
 - (id)_userPickerOptions
@@ -330,7 +330,7 @@ id __61__HULocationEventEditorSummaryItemManager__userPickerOptions__block_invok
   return v6;
 }
 
-- (id)_buildItemModulesForHome:(id)a3
+- (id)_buildItemModulesForHome:(id)home
 {
   v29[2] = *MEMORY[0x277D85DE8];
   v27[0] = MEMORY[0x277D85DD0];
@@ -338,52 +338,52 @@ id __61__HULocationEventEditorSummaryItemManager__userPickerOptions__block_invok
   v27[2] = __68__HULocationEventEditorSummaryItemManager__buildItemModulesForHome___block_invoke;
   v27[3] = &unk_277DC0DC0;
   v27[4] = self;
-  v4 = a3;
+  homeCopy = home;
   v5 = __68__HULocationEventEditorSummaryItemManager__buildItemModulesForHome___block_invoke(v27);
   v6 = [HUPresenceUserPickerItemModule alloc];
-  v7 = [(HULocationEventEditorSummaryItemManager *)self flow];
-  v8 = [v7 triggerBuilder];
-  v9 = [v8 home];
-  v10 = v9;
-  if (v9)
+  flow = [(HULocationEventEditorSummaryItemManager *)self flow];
+  triggerBuilder = [flow triggerBuilder];
+  home = [triggerBuilder home];
+  v10 = home;
+  if (home)
   {
-    v11 = v9;
+    v11 = home;
   }
 
   else
   {
-    v11 = v4;
+    v11 = homeCopy;
   }
 
-  v12 = [(HULocationEventEditorSummaryItemManager *)self _userPickerOptions];
-  v13 = [(HUPresenceUserPickerItemModule *)v6 initWithItemUpdater:self home:v11 presenceEvent:v5 options:v12 delegate:self];
+  _userPickerOptions = [(HULocationEventEditorSummaryItemManager *)self _userPickerOptions];
+  v13 = [(HUPresenceUserPickerItemModule *)v6 initWithItemUpdater:self home:v11 presenceEvent:v5 options:_userPickerOptions delegate:self];
 
   userPickerModule = self->_userPickerModule;
   self->_userPickerModule = v13;
 
   if (_os_feature_enabled_impl())
   {
-    v15 = [(HULocationEventEditorSummaryItemManager *)self userPickerModule];
-    v28 = v15;
+    userPickerModule = [(HULocationEventEditorSummaryItemManager *)self userPickerModule];
+    v28 = userPickerModule;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
   }
 
   else
   {
     v17 = [HUTriggerConditionEditorItemModule alloc];
-    v18 = [(HULocationEventEditorSummaryItemManager *)self home];
-    v19 = [(HULocationEventEditorSummaryItemManager *)self flow];
-    v20 = [v19 triggerBuilder];
-    v21 = [v20 conditionCollection];
+    home2 = [(HULocationEventEditorSummaryItemManager *)self home];
+    flow2 = [(HULocationEventEditorSummaryItemManager *)self flow];
+    triggerBuilder2 = [flow2 triggerBuilder];
+    conditionCollection = [triggerBuilder2 conditionCollection];
     v22 = [MEMORY[0x277CBEB98] setWithObject:&unk_282491CE8];
-    v23 = [(HUTriggerConditionEditorItemModule *)v17 initWithItemUpdater:self home:v18 conditionCollection:v21 disallowedConditionTypes:v22];
+    v23 = [(HUTriggerConditionEditorItemModule *)v17 initWithItemUpdater:self home:home2 conditionCollection:conditionCollection disallowedConditionTypes:v22];
     conditionEditorModule = self->_conditionEditorModule;
     self->_conditionEditorModule = v23;
 
-    v15 = [(HULocationEventEditorSummaryItemManager *)self userPickerModule];
-    v29[0] = v15;
-    v25 = [(HULocationEventEditorSummaryItemManager *)self conditionEditorModule];
-    v29[1] = v25;
+    userPickerModule = [(HULocationEventEditorSummaryItemManager *)self userPickerModule];
+    v29[0] = userPickerModule;
+    conditionEditorModule = [(HULocationEventEditorSummaryItemManager *)self conditionEditorModule];
+    v29[1] = conditionEditorModule;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:2];
   }
 
@@ -448,31 +448,31 @@ LABEL_11:
   return v14;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v21[1] = *MEMORY[0x277D85DE8];
   v4 = [MEMORY[0x277CBEB58] set];
   v5 = [objc_alloc(MEMORY[0x277D14B38]) initWithResultsBlock:&__block_literal_global_50_0];
   [(HULocationEventEditorSummaryItemManager *)self setUsersInstructionsItem:v5];
 
-  v6 = [(HULocationEventEditorSummaryItemManager *)self usersInstructionsItem];
-  [v4 addObject:v6];
+  usersInstructionsItem = [(HULocationEventEditorSummaryItemManager *)self usersInstructionsItem];
+  [v4 addObject:usersInstructionsItem];
 
   v7 = [HULocationEventSelectedLocationItem alloc];
-  v8 = [(HULocationEventEditorSummaryItemManager *)self flow];
-  v9 = [v8 eventBuilderItem];
-  v10 = [v9 locationEventBuilder];
-  v11 = [(HULocationEventEditorSummaryItemManager *)self home];
-  v12 = [(HULocationEventSelectedLocationItem *)v7 initWithEvent:v10 inHome:v11];
+  flow = [(HULocationEventEditorSummaryItemManager *)self flow];
+  eventBuilderItem = [flow eventBuilderItem];
+  locationEventBuilder = [eventBuilderItem locationEventBuilder];
+  home = [(HULocationEventEditorSummaryItemManager *)self home];
+  v12 = [(HULocationEventSelectedLocationItem *)v7 initWithEvent:locationEventBuilder inHome:home];
 
-  v13 = [(HULocationEventEditorSummaryItemManager *)self flow];
-  v14 = [v13 triggerBuilder];
+  flow2 = [(HULocationEventEditorSummaryItemManager *)self flow];
+  triggerBuilder = [flow2 triggerBuilder];
 
-  if (v14)
+  if (triggerBuilder)
   {
-    v15 = [(HULocationEventEditorSummaryItemManager *)self flow];
-    v16 = [v15 triggerBuilder];
-    -[HULocationEventSelectedLocationItem setLocationCanBeEdited:](v12, "setLocationCanBeEdited:", [v16 isShortcutOwned] ^ 1);
+    flow3 = [(HULocationEventEditorSummaryItemManager *)self flow];
+    triggerBuilder2 = [flow3 triggerBuilder];
+    -[HULocationEventSelectedLocationItem setLocationCanBeEdited:](v12, "setLocationCanBeEdited:", [triggerBuilder2 isShortcutOwned] ^ 1);
   }
 
   else
@@ -481,8 +481,8 @@ LABEL_11:
   }
 
   [(HULocationEventEditorSummaryItemManager *)self setLocationItem:v12];
-  v17 = [(HULocationEventEditorSummaryItemManager *)self locationItem];
-  [v4 addObject:v17];
+  locationItem = [(HULocationEventEditorSummaryItemManager *)self locationItem];
+  [v4 addObject:locationItem];
 
   v18 = [objc_alloc(MEMORY[0x277D14B40]) initWithItems:v4];
   v21[0] = v18;
@@ -503,41 +503,41 @@ id __70__HULocationEventEditorSummaryItemManager__buildItemProvidersForHome___bl
   return v2;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
   v6 = objc_alloc(MEMORY[0x277D14850]);
   v7 = +[HULocationEventEditorSummaryItemManager usersHeaderSectionID];
   v8 = [v6 initWithIdentifier:v7];
 
-  v9 = [(HULocationEventEditorSummaryItemManager *)self usersInstructionsItem];
-  v23[0] = v9;
+  usersInstructionsItem = [(HULocationEventEditorSummaryItemManager *)self usersInstructionsItem];
+  v23[0] = usersInstructionsItem;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
-  [v8 setItems:v10 filteringToDisplayedItems:v4];
+  [v8 setItems:v10 filteringToDisplayedItems:itemsCopy];
 
   [v5 addObject:v8];
-  v11 = [(HULocationEventEditorSummaryItemManager *)self userPickerModule];
-  v12 = [v11 buildSectionsWithDisplayedItems:v4];
+  userPickerModule = [(HULocationEventEditorSummaryItemManager *)self userPickerModule];
+  v12 = [userPickerModule buildSectionsWithDisplayedItems:itemsCopy];
   [v5 addObjectsFromArray:v12];
 
   v13 = objc_alloc(MEMORY[0x277D14850]);
   v14 = +[HULocationEventEditorSummaryItemManager locationSectionID];
   v15 = [v13 initWithIdentifier:v14];
 
-  v16 = [(HULocationEventEditorSummaryItemManager *)self locationItem];
-  v22 = v16;
+  locationItem = [(HULocationEventEditorSummaryItemManager *)self locationItem];
+  v22 = locationItem;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:1];
-  [v15 setItems:v17 filteringToDisplayedItems:v4];
+  [v15 setItems:v17 filteringToDisplayedItems:itemsCopy];
 
   [v5 addObject:v15];
-  v18 = [(HULocationEventEditorSummaryItemManager *)self conditionEditorModule];
+  conditionEditorModule = [(HULocationEventEditorSummaryItemManager *)self conditionEditorModule];
 
-  if (v18)
+  if (conditionEditorModule)
   {
-    v19 = [(HULocationEventEditorSummaryItemManager *)self conditionEditorModule];
-    v20 = [v19 buildSectionsWithDisplayedItems:v4];
+    conditionEditorModule2 = [(HULocationEventEditorSummaryItemManager *)self conditionEditorModule];
+    v20 = [conditionEditorModule2 buildSectionsWithDisplayedItems:itemsCopy];
     [v5 addObjectsFromArray:v20];
   }
 
@@ -546,9 +546,9 @@ id __70__HULocationEventEditorSummaryItemManager__buildItemProvidersForHome___bl
 
 - (BOOL)_canEditLocation
 {
-  v3 = [(HULocationEventEditorSummaryItemManager *)self flow];
-  v4 = [v3 eventBuilderItem];
-  v5 = [v4 locationEventBuilder];
+  flow = [(HULocationEventEditorSummaryItemManager *)self flow];
+  eventBuilderItem = [flow eventBuilderItem];
+  locationEventBuilder = [eventBuilderItem locationEventBuilder];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -557,26 +557,26 @@ id __70__HULocationEventEditorSummaryItemManager__buildItemProvidersForHome___bl
     return 1;
   }
 
-  v8 = [(HULocationEventEditorSummaryItemManager *)self userPickerModule];
-  v9 = [v8 presenceEventBuilder];
-  v10 = [v9 users];
-  v11 = [(HULocationEventEditorSummaryItemManager *)self home];
-  v12 = [v10 resolveSelectedUsersWithHome:v11];
+  userPickerModule = [(HULocationEventEditorSummaryItemManager *)self userPickerModule];
+  presenceEventBuilder = [userPickerModule presenceEventBuilder];
+  users = [presenceEventBuilder users];
+  home = [(HULocationEventEditorSummaryItemManager *)self home];
+  v12 = [users resolveSelectedUsersWithHome:home];
 
   v13 = MEMORY[0x277CBEB98];
-  v14 = [(HULocationEventEditorSummaryItemManager *)self home];
-  v15 = [v14 currentUser];
-  v16 = [v13 setWithObject:v15];
-  LOBYTE(v10) = [v12 isEqualToSet:v16];
+  home2 = [(HULocationEventEditorSummaryItemManager *)self home];
+  currentUser = [home2 currentUser];
+  v16 = [v13 setWithObject:currentUser];
+  LOBYTE(users) = [v12 isEqualToSet:v16];
 
-  return v10;
+  return users;
 }
 
 - (BOOL)_hasCustomLocation
 {
-  v3 = [(HULocationEventEditorSummaryItemManager *)self flow];
-  v4 = [v3 eventBuilderItem];
-  v5 = [v4 locationEventBuilder];
+  flow = [(HULocationEventEditorSummaryItemManager *)self flow];
+  eventBuilderItem = [flow eventBuilderItem];
+  locationEventBuilder = [eventBuilderItem locationEventBuilder];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -586,12 +586,12 @@ id __70__HULocationEventEditorSummaryItemManager__buildItemProvidersForHome___bl
   }
 
   objc_opt_class();
-  v8 = [(HULocationEventEditorSummaryItemManager *)self flow];
-  v9 = [v8 eventBuilderItem];
-  v10 = [v9 locationEventBuilder];
+  flow2 = [(HULocationEventEditorSummaryItemManager *)self flow];
+  eventBuilderItem2 = [flow2 eventBuilderItem];
+  locationEventBuilder2 = [eventBuilderItem2 locationEventBuilder];
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = locationEventBuilder2;
   }
 
   else
@@ -601,48 +601,48 @@ id __70__HULocationEventEditorSummaryItemManager__buildItemProvidersForHome___bl
 
   v12 = v11;
 
-  v13 = [(HULocationEventEditorSummaryItemManager *)self home];
-  v14 = [v12 isRegionAtHome:v13];
+  home = [(HULocationEventEditorSummaryItemManager *)self home];
+  v14 = [v12 isRegionAtHome:home];
 
   v7 = v14 ^ 1;
   return v7;
 }
 
-- (void)userPickerModule:(id)a3 didUpdatePresenceEvent:(id)a4
+- (void)userPickerModule:(id)module didUpdatePresenceEvent:(id)event
 {
-  v25 = a4;
-  if (!-[HULocationEventEditorSummaryItemManager _hasCustomLocation](self, "_hasCustomLocation") || ([v25 users], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "type"), v6, v7 != 1))
+  eventCopy = event;
+  if (!-[HULocationEventEditorSummaryItemManager _hasCustomLocation](self, "_hasCustomLocation") || ([eventCopy users], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "type"), v6, v7 != 1))
   {
-    v8 = [(HULocationEventEditorSummaryItemManager *)self flow];
-    v9 = [v8 eventBuilderItem];
-    v10 = [v9 locationEventBuilder];
+    flow = [(HULocationEventEditorSummaryItemManager *)self flow];
+    eventBuilderItem = [flow eventBuilderItem];
+    locationEventBuilder = [eventBuilderItem locationEventBuilder];
 
-    if (v10)
+    if (locationEventBuilder)
     {
-      v11 = [(HULocationEventEditorSummaryItemManager *)self flow];
-      v12 = [v11 triggerBuilder];
-      v13 = [v12 eventBuilders];
-      v14 = [v13 containsObject:v10];
+      flow2 = [(HULocationEventEditorSummaryItemManager *)self flow];
+      triggerBuilder = [flow2 triggerBuilder];
+      eventBuilders = [triggerBuilder eventBuilders];
+      v14 = [eventBuilders containsObject:locationEventBuilder];
 
       if (v14)
       {
-        v15 = [(HULocationEventEditorSummaryItemManager *)self flow];
-        v16 = [v15 triggerBuilder];
-        [v16 removeEventBuilder:v10];
+        flow3 = [(HULocationEventEditorSummaryItemManager *)self flow];
+        triggerBuilder2 = [flow3 triggerBuilder];
+        [triggerBuilder2 removeEventBuilder:locationEventBuilder];
 
-        v17 = [(HULocationEventEditorSummaryItemManager *)self flow];
-        v18 = [v17 triggerBuilder];
-        [v18 addEventBuilder:v25];
+        flow4 = [(HULocationEventEditorSummaryItemManager *)self flow];
+        triggerBuilder3 = [flow4 triggerBuilder];
+        [triggerBuilder3 addEventBuilder:eventCopy];
       }
     }
 
-    v19 = [(HULocationEventEditorSummaryItemManager *)self flow];
-    v20 = [v19 eventBuilderItem];
-    [v20 setLocationEventBuilder:v25];
+    flow5 = [(HULocationEventEditorSummaryItemManager *)self flow];
+    eventBuilderItem2 = [flow5 eventBuilderItem];
+    [eventBuilderItem2 setLocationEventBuilder:eventCopy];
 
     v21 = MEMORY[0x277CBEB98];
-    v22 = [(HULocationEventEditorSummaryItemManager *)self locationItem];
-    v23 = [v21 setWithObject:v22];
+    locationItem = [(HULocationEventEditorSummaryItemManager *)self locationItem];
+    v23 = [v21 setWithObject:locationItem];
     v24 = [(HFItemManager *)self updateResultsForItems:v23 senderSelector:a2];
   }
 }

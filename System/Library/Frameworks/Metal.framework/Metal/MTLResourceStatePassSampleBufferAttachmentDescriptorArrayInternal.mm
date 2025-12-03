@@ -1,7 +1,7 @@
 @interface MTLResourceStatePassSampleBufferAttachmentDescriptorArrayInternal
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
 - (void)dealloc;
-- (void)setObject:(id)a3 atIndexedSubscript:(unint64_t)a4;
+- (void)setObject:(id)object atIndexedSubscript:(unint64_t)subscript;
 @end
 
 @implementation MTLResourceStatePassSampleBufferAttachmentDescriptorArrayInternal
@@ -20,47 +20,47 @@
   [(MTLResourceStatePassSampleBufferAttachmentDescriptorArrayInternal *)&v5 dealloc];
 }
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
-  if (a3 >= 4)
+  if (subscript >= 4)
   {
-    [(MTLResourceStatePassSampleBufferAttachmentDescriptorArrayInternal *)a3 objectAtIndexedSubscript:a2, a3, v3, v4, v5, v6, v7];
+    [(MTLResourceStatePassSampleBufferAttachmentDescriptorArrayInternal *)subscript objectAtIndexedSubscript:a2, subscript, v3, v4, v5, v6, v7];
   }
 
   sampleDescriptors = self->_sampleDescriptors;
-  result = sampleDescriptors[a3];
+  result = sampleDescriptors[subscript];
   if (!result)
   {
     result = objc_alloc_init(MTLResourceStatePassSampleBufferAttachmentDescriptorInternal);
     v12 = 0;
-    atomic_compare_exchange_strong(&sampleDescriptors[a3], &v12, result);
+    atomic_compare_exchange_strong(&sampleDescriptors[subscript], &v12, result);
     if (v12)
     {
 
-      return sampleDescriptors[a3];
+      return sampleDescriptors[subscript];
     }
 
     else
     {
-      sampleDescriptors[a3] = result;
+      sampleDescriptors[subscript] = result;
     }
   }
 
   return result;
 }
 
-- (void)setObject:(id)a3 atIndexedSubscript:(unint64_t)a4
+- (void)setObject:(id)object atIndexedSubscript:(unint64_t)subscript
 {
-  if (a4 >= 4)
+  if (subscript >= 4)
   {
-    [(MTLResourceStatePassSampleBufferAttachmentDescriptorArrayInternal *)a4 setObject:a2 atIndexedSubscript:a3, a4, v4, v5, v6, v7];
+    [(MTLResourceStatePassSampleBufferAttachmentDescriptorArrayInternal *)subscript setObject:a2 atIndexedSubscript:object, subscript, v4, v5, v6, v7];
   }
 
   sampleDescriptors = self->_sampleDescriptors;
-  if (sampleDescriptors[a4] != a3)
+  if (sampleDescriptors[subscript] != object)
   {
-    v12 = sampleDescriptors[a4];
-    sampleDescriptors[a4] = [a3 copy];
+    v12 = sampleDescriptors[subscript];
+    sampleDescriptors[subscript] = [object copy];
   }
 }
 

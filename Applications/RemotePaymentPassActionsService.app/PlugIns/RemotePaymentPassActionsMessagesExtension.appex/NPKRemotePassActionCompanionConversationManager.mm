@@ -2,14 +2,14 @@
 + (id)sharedInstance;
 - (NPKRemotePassActionCompanionConversationManager)init;
 - (PKContactResolver)contactResolver;
-- (id)_requestForIdentifier:(id)a3 withQueue:(id)a4;
-- (id)_urlForMessageIdentifier:(id)a3;
-- (id)cachedContactForConversation:(id)a3;
-- (void)_removeRequestForIdentifier:(id)a3 withQueue:(id)a4;
-- (void)_setRequest:(id)a3 forIdentifier:(id)a4 withQueue:(id)a5;
-- (void)contactsDidChangeForContactResolver:(id)a3;
+- (id)_requestForIdentifier:(id)identifier withQueue:(id)queue;
+- (id)_urlForMessageIdentifier:(id)identifier;
+- (id)cachedContactForConversation:(id)conversation;
+- (void)_removeRequestForIdentifier:(id)identifier withQueue:(id)queue;
+- (void)_setRequest:(id)request forIdentifier:(id)identifier withQueue:(id)queue;
+- (void)contactsDidChangeForContactResolver:(id)resolver;
 - (void)dealloc;
-- (void)fetchContactForConversation:(id)a3 completion:(id)a4;
+- (void)fetchContactForConversation:(id)conversation completion:(id)completion;
 @end
 
 @implementation NPKRemotePassActionCompanionConversationManager
@@ -81,27 +81,27 @@
   return v3;
 }
 
-- (id)cachedContactForConversation:(id)a3
+- (id)cachedContactForConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = [v4 recipientAddresses];
-  v6 = [v5 firstObject];
-  v7 = [v6 npkBaseAddress];
-  v8 = v7;
-  if (v7)
+  conversationCopy = conversation;
+  recipientAddresses = [conversationCopy recipientAddresses];
+  firstObject = [recipientAddresses firstObject];
+  npkBaseAddress = [firstObject npkBaseAddress];
+  v8 = npkBaseAddress;
+  if (npkBaseAddress)
   {
-    v9 = v7;
+    senderAddress = npkBaseAddress;
   }
 
   else
   {
-    v9 = [v4 senderAddress];
+    senderAddress = [conversationCopy senderAddress];
   }
 
-  v10 = v9;
+  v10 = senderAddress;
 
-  v11 = [(NPKRemotePassActionCompanionConversationManager *)self contactResolver];
-  v12 = [v11 hasCachedResultForHandle:v10];
+  contactResolver = [(NPKRemotePassActionCompanionConversationManager *)self contactResolver];
+  v12 = [contactResolver hasCachedResultForHandle:v10];
 
   if (v12)
   {
@@ -116,33 +116,33 @@
   return v13;
 }
 
-- (void)fetchContactForConversation:(id)a3 completion:(id)a4
+- (void)fetchContactForConversation:(id)conversation completion:(id)completion
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [v14 recipientAddresses];
-  v8 = [v7 firstObject];
-  v9 = [v8 npkBaseAddress];
-  v10 = v9;
-  if (v9)
+  conversationCopy = conversation;
+  completionCopy = completion;
+  recipientAddresses = [conversationCopy recipientAddresses];
+  firstObject = [recipientAddresses firstObject];
+  npkBaseAddress = [firstObject npkBaseAddress];
+  v10 = npkBaseAddress;
+  if (npkBaseAddress)
   {
-    v11 = v9;
+    senderAddress = npkBaseAddress;
   }
 
   else
   {
-    v11 = [v14 senderAddress];
+    senderAddress = [conversationCopy senderAddress];
   }
 
-  v12 = v11;
+  v12 = senderAddress;
 
-  v13 = [(NPKRemotePassActionCompanionConversationManager *)self contactResolver];
-  [v13 contactForHandle:v12 withCompletion:v6];
+  contactResolver = [(NPKRemotePassActionCompanionConversationManager *)self contactResolver];
+  [contactResolver contactForHandle:v12 withCompletion:completionCopy];
 }
 
-- (void)contactsDidChangeForContactResolver:(id)a3
+- (void)contactsDidChangeForContactResolver:(id)resolver
 {
-  v3 = a3;
+  resolverCopy = resolver;
   v4 = pk_RemotePassAction_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -152,32 +152,32 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v3;
+      v8 = resolverCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Notice: Note that contacts did change for contact resolver %@", &v7, 0xCu);
     }
   }
 }
 
-- (id)_requestForIdentifier:(id)a3 withQueue:(id)a4
+- (id)_requestForIdentifier:(id)identifier withQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  queueCopy = queue;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = sub_1000018A8;
   v21 = sub_1000018B8;
   v22 = 0;
-  if (v6)
+  if (identifierCopy)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000018C0;
     block[3] = &unk_1000144B8;
     block[4] = self;
-    v15 = v6;
+    v15 = identifierCopy;
     v16 = &v17;
-    dispatch_sync(v7, block);
+    dispatch_sync(queueCopy, block);
   }
 
   v8 = pk_RemotePassAction_log();
@@ -192,7 +192,7 @@
       *buf = 138412546;
       v24 = v11;
       v25 = 2112;
-      v26 = v6;
+      v26 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Debug: Returning object %@ for identifier %@", buf, 0x16u);
     }
   }
@@ -203,43 +203,43 @@
   return v12;
 }
 
-- (void)_setRequest:(id)a3 forIdentifier:(id)a4 withQueue:(id)a5
+- (void)_setRequest:(id)request forIdentifier:(id)identifier withQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v9)
+  requestCopy = request;
+  identifierCopy = identifier;
+  v10 = identifierCopy;
+  if (identifierCopy)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100001AC8;
     block[3] = &unk_1000144E0;
     block[4] = self;
-    v12 = v9;
-    v13 = v8;
-    dispatch_barrier_async(a5, block);
+    v12 = identifierCopy;
+    v13 = requestCopy;
+    dispatch_barrier_async(queue, block);
   }
 }
 
-- (void)_removeRequestForIdentifier:(id)a3 withQueue:(id)a4
+- (void)_removeRequestForIdentifier:(id)identifier withQueue:(id)queue
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (identifierCopy)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100001CF4;
     v8[3] = &unk_100014530;
     v8[4] = self;
-    v9 = v6;
-    dispatch_barrier_async(a4, v8);
+    v9 = identifierCopy;
+    dispatch_barrier_async(queue, v8);
   }
 }
 
-- (id)_urlForMessageIdentifier:(id)a3
+- (id)_urlForMessageIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -252,7 +252,7 @@
 
   if ([v10[5] length])
   {
-    v5 = [v10[5] stringByAppendingPathComponent:v3];
+    v5 = [v10[5] stringByAppendingPathComponent:identifierCopy];
     v6 = [v5 stringByAppendingPathExtension:@"archive"];
 
     v7 = [NSURL fileURLWithPath:v6];

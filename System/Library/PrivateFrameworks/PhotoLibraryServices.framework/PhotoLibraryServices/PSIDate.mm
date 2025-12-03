@@ -1,10 +1,10 @@
 @interface PSIDate
 + (id)distantFuture;
 + (id)distantPast;
-- (BOOL)isEqual:(id)a3;
-- (PSIDate)initWithDateComponents:(id)a3;
-- (PSIDate)initWithInt64Representation:(int64_t)a3;
-- (PSIDate)initWithUniversalDate:(id)a3 calendar:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (PSIDate)initWithDateComponents:(id)components;
+- (PSIDate)initWithInt64Representation:(int64_t)representation;
+- (PSIDate)initWithUniversalDate:(id)date calendar:(id)calendar;
 - (id)dateComponents;
 - (int64_t)day;
 - (int64_t)era;
@@ -141,14 +141,14 @@
   }
 }
 
-- (PSIDate)initWithInt64Representation:(int64_t)a3
+- (PSIDate)initWithInt64Representation:(int64_t)representation
 {
   v12.receiver = self;
   v12.super_class = PSIDate;
   result = [(PSIDate *)&v12 init];
   if (result)
   {
-    v5 = (a3 >> 24) & 0xFFF;
+    v5 = (representation >> 24) & 0xFFF;
     if (v5 - 1 <= 0xFFD)
     {
       v6 = vdupq_n_s64(0xFFF000000uLL);
@@ -156,7 +156,7 @@
       *&result->_int64Representation = vorrq_s8(*&result->_int64Representation, v6);
     }
 
-    v7 = (a3 >> 12) & 0xFFF;
+    v7 = (representation >> 12) & 0xFFF;
     if (v7 - 1 <= 0xFFD)
     {
       v8 = vdupq_n_s64(0xFFF000uLL);
@@ -164,7 +164,7 @@
       *&result->_int64Representation = vorrq_s8(*&result->_int64Representation, v8);
     }
 
-    v9 = (a3 >> 8) & 0xF;
+    v9 = (representation >> 8) & 0xF;
     if (v9 - 1 <= 0xD)
     {
       v10 = vdupq_n_s64(0xF00uLL);
@@ -172,10 +172,10 @@
       *&result->_int64Representation = vorrq_s8(*&result->_int64Representation, v10);
     }
 
-    if (a3 - 1 <= 0xFD)
+    if (representation - 1 <= 0xFD)
     {
       v11.i64[1] = 255;
-      v11.i64[0] = a3;
+      v11.i64[0] = representation;
       *&result->_int64Representation = vorrq_s8(*&result->_int64Representation, v11);
     }
   }
@@ -183,10 +183,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -194,33 +194,33 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && v4->_int64Representation == self->_int64Representation && v4->_int64RepresentationMask == self->_int64RepresentationMask;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && equalCopy->_int64Representation == self->_int64Representation && equalCopy->_int64RepresentationMask == self->_int64RepresentationMask;
   }
 
   return v5;
 }
 
-- (PSIDate)initWithDateComponents:(id)a3
+- (PSIDate)initWithDateComponents:(id)components
 {
-  v4 = a3;
-  v5 = [v4 year];
-  v6 = [v4 month];
-  v7 = [v4 day];
+  componentsCopy = components;
+  year = [componentsCopy year];
+  month = [componentsCopy month];
+  v7 = [componentsCopy day];
   v8 = v7;
-  if (v5 == 0x7FFFFFFFFFFFFFFFLL || v6 == 0x7FFFFFFFFFFFFFFFLL || v7 == 0x7FFFFFFFFFFFFFFFLL)
+  if (year == 0x7FFFFFFFFFFFFFFFLL || month == 0x7FFFFFFFFFFFFFFFLL || v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [v4 yearForWeekOfYear];
-    v10 = [v4 weekOfYear];
-    v11 = [v4 weekday];
-    v12 = v11;
-    if (v9 == 0x7FFFFFFFFFFFFFFFLL || v10 == 0x7FFFFFFFFFFFFFFFLL || v11 == 0x7FFFFFFFFFFFFFFFLL)
+    yearForWeekOfYear = [componentsCopy yearForWeekOfYear];
+    weekOfYear = [componentsCopy weekOfYear];
+    weekday = [componentsCopy weekday];
+    v12 = weekday;
+    if (yearForWeekOfYear == 0x7FFFFFFFFFFFFFFFLL || weekOfYear == 0x7FFFFFFFFFFFFFFFLL || weekday == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if ([v4 weekdayOrdinal] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "quarter") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "weekOfMonth") == 0x7FFFFFFFFFFFFFFFLL && v12 == 0x7FFFFFFFFFFFFFFFLL)
+      if ([componentsCopy weekdayOrdinal] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(componentsCopy, "quarter") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(componentsCopy, "weekOfMonth") == 0x7FFFFFFFFFFFFFFFLL && v12 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v27 = v10 != 0x7FFFFFFFFFFFFFFFLL;
-        v28 = v9 != 0x7FFFFFFFFFFFFFFFLL;
+        v27 = weekOfYear != 0x7FFFFFFFFFFFFFFFLL;
+        v28 = yearForWeekOfYear != 0x7FFFFFFFFFFFFFFFLL;
 
-        if (v5 != 0x7FFFFFFFFFFFFFFFLL || v6 != 0x7FFFFFFFFFFFFFFFLL || v8 != 0x7FFFFFFFFFFFFFFFLL || ((v28 ^ v27) & 1) == 0)
+        if (year != 0x7FFFFFFFFFFFFFFFLL || month != 0x7FFFFFFFFFFFFFFFLL || v8 != 0x7FFFFFFFFFFFFFFFLL || ((v28 ^ v27) & 1) == 0)
         {
           goto LABEL_8;
         }
@@ -230,18 +230,18 @@
       {
       }
 
-      v26 = 0;
+      selfCopy = 0;
       goto LABEL_38;
     }
   }
 
 LABEL_8:
-  v13 = v4;
+  v13 = componentsCopy;
   if ([v13 era] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v13, "year") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v13, "month") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v13, "day") == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v14 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v15 = [v14 dateFromComponents:v13];
-    v16 = [v14 components:30 fromDate:v15];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v15 = [currentCalendar dateFromComponents:v13];
+    v16 = [currentCalendar components:30 fromDate:v15];
   }
 
   else
@@ -264,19 +264,19 @@ LABEL_8:
         *(v17 + 8) = vorrq_s8(*(v17 + 8), v19);
       }
 
-      v20 = [v16 year];
-      if (v20 != 0x7FFFFFFFFFFFFFFFLL)
+      year2 = [v16 year];
+      if (year2 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v21 = vdupq_n_s64(0xFFF000uLL);
-        v21.i64[0] = (v20 & 0xFFF) << 12;
+        v21.i64[0] = (year2 & 0xFFF) << 12;
         *(v17 + 8) = vorrq_s8(*(v17 + 8), v21);
       }
 
-      v22 = [v16 month];
-      if (v22 != 0x7FFFFFFFFFFFFFFFLL)
+      month2 = [v16 month];
+      if (month2 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v23 = vdupq_n_s64(0xF00uLL);
-        v23.i64[0] = (v22 & 0xF) << 8;
+        v23.i64[0] = (month2 & 0xF) << 8;
         *(v17 + 8) = vorrq_s8(*(v17 + 8), v23);
       }
 
@@ -290,39 +290,39 @@ LABEL_8:
     }
 
     self = v17;
-    v26 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v26 = 0;
+    selfCopy = 0;
   }
 
 LABEL_38:
-  return v26;
+  return selfCopy;
 }
 
-- (PSIDate)initWithUniversalDate:(id)a3 calendar:(id)a4
+- (PSIDate)initWithUniversalDate:(id)date calendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  calendarCopy = calendar;
   v19.receiver = self;
   v19.super_class = PSIDate;
   v8 = [(PSIDate *)&v19 init];
   if (v8)
   {
-    v9 = [v7 components:30 fromDate:v6];
+    v9 = [calendarCopy components:30 fromDate:dateCopy];
     v10 = [v9 era];
     v11 = vdupq_n_s64(0xFFF000000uLL);
     v11.i64[0] = (v10 & 0xFFF) << 24;
     *(v8 + 8) = vorrq_s8(v11, *(v8 + 8));
-    v12 = [v9 year];
+    year = [v9 year];
     v13 = vdupq_n_s64(0xFFF000uLL);
-    v13.i64[0] = (v12 & 0xFFF) << 12;
+    v13.i64[0] = (year & 0xFFF) << 12;
     *(v8 + 8) = vorrq_s8(v13, *(v8 + 8));
-    v14 = [v9 month];
+    month = [v9 month];
     v15 = vdupq_n_s64(0xF00uLL);
-    v15.i64[0] = (v14 & 0xF) << 8;
+    v15.i64[0] = (month & 0xF) << 8;
     *(v8 + 8) = vorrq_s8(v15, *(v8 + 8));
     v16 = [v9 day];
     v17.i64[1] = 255;

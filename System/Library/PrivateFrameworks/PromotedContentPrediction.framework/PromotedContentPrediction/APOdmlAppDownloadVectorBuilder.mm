@@ -1,30 +1,30 @@
 @interface APOdmlAppDownloadVectorBuilder
-- (double)weightForEvents:(id)a3;
-- (id)eventsBetween:(id)a3 and:(id)a4;
+- (double)weightForEvents:(id)events;
+- (id)eventsBetween:(id)between and:(id)and;
 @end
 
 @implementation APOdmlAppDownloadVectorBuilder
 
-- (id)eventsBetween:(id)a3 and:(id)a4
+- (id)eventsBetween:(id)between and:(id)and
 {
-  v5 = a4;
-  v6 = a3;
+  andCopy = and;
+  betweenCopy = between;
   v7 = objc_alloc_init(APOdmlBiomeSQLQuery);
-  v9 = objc_msgSend_query_startDate_endDate_(v7, v8, @"App.Install", v6, v5);
+  v9 = objc_msgSend_query_startDate_endDate_(v7, v8, @"App.Install", betweenCopy, andCopy);
 
   return v9;
 }
 
-- (double)weightForEvents:(id)a3
+- (double)weightForEvents:(id)events
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventsCopy = events;
   v7 = objc_msgSend_date(MEMORY[0x277CBEAA8], v5, v6);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = v4;
+  v8 = eventsCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v31, v35, 16);
   if (v10)
   {

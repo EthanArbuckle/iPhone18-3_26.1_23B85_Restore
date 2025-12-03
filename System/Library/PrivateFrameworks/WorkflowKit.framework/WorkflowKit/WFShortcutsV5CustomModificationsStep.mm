@@ -1,46 +1,46 @@
 @interface WFShortcutsV5CustomModificationsStep
-- (BOOL)performModificationsWithContext:(id)a3 error:(id *)a4;
+- (BOOL)performModificationsWithContext:(id)context error:(id *)error;
 @end
 
 @implementation WFShortcutsV5CustomModificationsStep
 
-- (BOOL)performModificationsWithContext:(id)a3 error:(id *)a4
+- (BOOL)performModificationsWithContext:(id)context error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   v6 = objc_autoreleasePoolPush();
   v7 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"Shortcut"];
   [v7 setFetchLimit:5];
   [v7 setPropertiesToFetch:&unk_1F4A9B548];
   v39 = 0;
   v29 = v7;
-  v8 = [v5 executeFetchRequest:v7 error:&v39];
+  v8 = [contextCopy executeFetchRequest:v7 error:&v39];
   v9 = v39;
   if (![v8 count])
   {
 LABEL_13:
 
     objc_autoreleasePoolPop(v6);
-    if (a4)
+    if (error)
     {
       v22 = v9;
-      *a4 = v9;
+      *error = v9;
     }
 
     v23 = v9 == 0;
     goto LABEL_19;
   }
 
-  v10 = [MEMORY[0x1E695D5B8] entityForName:@"ShortcutActions" inManagedObjectContext:v5];
+  v10 = [MEMORY[0x1E695D5B8] entityForName:@"ShortcutActions" inManagedObjectContext:contextCopy];
   if (v10)
   {
     v11 = v10;
-    v27 = a4;
+    errorCopy = error;
     v28 = v6;
     do
     {
       v31 = v9;
-      v12 = v5;
+      v12 = contextCopy;
       context = objc_autoreleasePoolPush();
       v35 = 0u;
       v36 = 0u;
@@ -79,7 +79,7 @@ LABEL_13:
       }
 
       v34 = v31;
-      v5 = v12;
+      contextCopy = v12;
       [v12 save:&v34];
       v21 = v34;
 
@@ -94,7 +94,7 @@ LABEL_13:
 
     while ([v8 count]);
 
-    a4 = v27;
+    error = errorCopy;
     v6 = v28;
     goto LABEL_13;
   }

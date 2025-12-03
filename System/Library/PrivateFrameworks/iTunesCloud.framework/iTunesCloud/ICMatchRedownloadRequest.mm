@@ -1,23 +1,23 @@
 @interface ICMatchRedownloadRequest
 - (ICMatchRedownloadRequest)init;
-- (ICMatchRedownloadRequest)initWithRequestContext:(id)a3 itemSagaID:(unint64_t)a4;
+- (ICMatchRedownloadRequest)initWithRequestContext:(id)context itemSagaID:(unint64_t)d;
 @end
 
 @implementation ICMatchRedownloadRequest
 
-- (ICMatchRedownloadRequest)initWithRequestContext:(id)a3 itemSagaID:(unint64_t)a4
+- (ICMatchRedownloadRequest)initWithRequestContext:(id)context itemSagaID:(unint64_t)d
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v13 = @"sagaId";
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v8 = [v6 numberWithUnsignedLongLong:a4];
+  contextCopy = context;
+  v8 = [v6 numberWithUnsignedLongLong:d];
   v14[0] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
 
   v12.receiver = self;
   v12.super_class = ICMatchRedownloadRequest;
-  v10 = [(ICMediaRedownloadRequest *)&v12 initWithRequestContext:v7 redownloadParameters:v9];
+  v10 = [(ICMediaRedownloadRequest *)&v12 initWithRequestContext:contextCopy redownloadParameters:v9];
 
   return v10;
 }

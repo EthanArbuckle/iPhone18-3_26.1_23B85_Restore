@@ -1,8 +1,8 @@
 @interface ATXStackStateTrackerInternalState
 - (ATXStackStateTrackerInternalState)init;
-- (ATXStackStateTrackerInternalState)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateLastThreeUserVisitDatesIfNecessaryForPage:(id)a3 date:(id)a4;
+- (ATXStackStateTrackerInternalState)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateLastThreeUserVisitDatesIfNecessaryForPage:(id)page date:(id)date;
 @end
 
 @implementation ATXStackStateTrackerInternalState
@@ -37,19 +37,19 @@
   return v2;
 }
 
-- (void)updateLastThreeUserVisitDatesIfNecessaryForPage:(id)a3 date:(id)a4
+- (void)updateLastThreeUserVisitDatesIfNecessaryForPage:(id)page date:(id)date
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9 && v6)
+  pageCopy = page;
+  dateCopy = date;
+  if (pageCopy && dateCopy)
   {
-    v7 = [(NSMutableDictionary *)self->_lastThreeUserVisitDatesOfPages objectForKeyedSubscript:v9];
+    v7 = [(NSMutableDictionary *)self->_lastThreeUserVisitDatesOfPages objectForKeyedSubscript:pageCopy];
     if (v7)
     {
       v8 = v7;
-      if (([v7 containsObject:v6] & 1) == 0)
+      if (([v7 containsObject:dateCopy] & 1) == 0)
       {
-        [v8 addObject:v6];
+        [v8 addObject:dateCopy];
         [v8 sortUsingComparator:&__block_literal_global_120];
         if ([v8 count] >= 4)
         {
@@ -66,31 +66,31 @@
     else
     {
       v8 = objc_opt_new();
-      [v8 addObject:v6];
-      [(NSMutableDictionary *)self->_lastThreeUserVisitDatesOfPages setObject:v8 forKeyedSubscript:v9];
+      [v8 addObject:dateCopy];
+      [(NSMutableDictionary *)self->_lastThreeUserVisitDatesOfPages setObject:v8 forKeyedSubscript:pageCopy];
     }
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ATXStackStateTrackerInternalState *)self lastThreeUserVisitDatesOfPages];
-  [v4 encodeObject:v5 forKey:@"codingKeyForLastThreeUserVisitDatesOfPages"];
+  coderCopy = coder;
+  lastThreeUserVisitDatesOfPages = [(ATXStackStateTrackerInternalState *)self lastThreeUserVisitDatesOfPages];
+  [coderCopy encodeObject:lastThreeUserVisitDatesOfPages forKey:@"codingKeyForLastThreeUserVisitDatesOfPages"];
 
-  v6 = [(ATXStackStateTrackerInternalState *)self stackStateByStackId];
-  [v4 encodeObject:v6 forKey:@"codingKeyForStackStateByStackId"];
+  stackStateByStackId = [(ATXStackStateTrackerInternalState *)self stackStateByStackId];
+  [coderCopy encodeObject:stackStateByStackId forKey:@"codingKeyForStackStateByStackId"];
 
-  v7 = [(ATXStackStateTrackerInternalState *)self cachedStackLayoutsByBlendingUpdateUUID];
-  [v4 encodeObject:v7 forKey:@"codingKeyForBlendingCacheUpdateByBlendingUpdateUUID"];
+  cachedStackLayoutsByBlendingUpdateUUID = [(ATXStackStateTrackerInternalState *)self cachedStackLayoutsByBlendingUpdateUUID];
+  [coderCopy encodeObject:cachedStackLayoutsByBlendingUpdateUUID forKey:@"codingKeyForBlendingCacheUpdateByBlendingUpdateUUID"];
 
-  v8 = [(ATXStackStateTrackerInternalState *)self blendingCacheUpdateUUIDs];
-  [v4 encodeObject:v8 forKey:@"codingKeyForBlendingCacheUpdateUUIDs"];
+  blendingCacheUpdateUUIDs = [(ATXStackStateTrackerInternalState *)self blendingCacheUpdateUUIDs];
+  [coderCopy encodeObject:blendingCacheUpdateUUIDs forKey:@"codingKeyForBlendingCacheUpdateUUIDs"];
 
-  v9 = [(ATXStackStateTrackerInternalState *)self bookmark];
+  bookmark = [(ATXStackStateTrackerInternalState *)self bookmark];
   v16 = 0;
-  v10 = [v9 serializeBookmark:&v16];
+  v10 = [bookmark serializeBookmark:&v16];
   v11 = v16;
 
   if (v11)
@@ -112,16 +112,16 @@
 
   else
   {
-    [v4 encodeObject:v10 forKey:@"codingKeyForBookmark"];
+    [coderCopy encodeObject:v10 forKey:@"codingKeyForBookmark"];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (ATXStackStateTrackerInternalState)initWithCoder:(id)a3
+- (ATXStackStateTrackerInternalState)initWithCoder:(id)coder
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277D42620];
   v6 = objc_autoreleasePoolPush();
   v7 = objc_alloc(MEMORY[0x277CBEB98]);
@@ -131,11 +131,11 @@
   v11 = [v7 initWithObjects:{v8, v9, v10, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v6);
   v12 = __atxlog_handle_blending();
-  v13 = [v5 robustDecodeObjectOfClasses:v11 forKey:@"codingKeyForLastThreeUserVisitDatesOfPages" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXStackStateTracker" errorCode:-1 logHandle:v12];
+  v13 = [v5 robustDecodeObjectOfClasses:v11 forKey:@"codingKeyForLastThreeUserVisitDatesOfPages" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXStackStateTracker" errorCode:-1 logHandle:v12];
 
-  v14 = [v4 error];
+  error = [coderCopy error];
 
-  if (!v14)
+  if (!error)
   {
     v16 = MEMORY[0x277D42620];
     v17 = objc_autoreleasePoolPush();
@@ -145,11 +145,11 @@
     v21 = [v18 initWithObjects:{v19, v20, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v17);
     v22 = __atxlog_handle_blending();
-    v23 = [v16 robustDecodeObjectOfClasses:v21 forKey:@"codingKeyForStackStateByStackId" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXStackStateTracker" errorCode:-1 logHandle:v22];
+    v23 = [v16 robustDecodeObjectOfClasses:v21 forKey:@"codingKeyForStackStateByStackId" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXStackStateTracker" errorCode:-1 logHandle:v22];
 
-    v24 = [v4 error];
+    error2 = [coderCopy error];
 
-    if (v24)
+    if (error2)
     {
       v15 = [(ATXStackStateTrackerInternalState *)self init];
 LABEL_24:
@@ -164,11 +164,11 @@ LABEL_24:
     v29 = [v27 initWithObjects:{v28, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v26);
     v30 = __atxlog_handle_blending();
-    v31 = [v25 robustDecodeObjectOfClasses:v29 forKey:@"codingKeyForBlendingCacheUpdateByBlendingUpdateUUID" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXStackStateTracker" errorCode:-1 logHandle:v30];
+    v31 = [v25 robustDecodeObjectOfClasses:v29 forKey:@"codingKeyForBlendingCacheUpdateByBlendingUpdateUUID" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXStackStateTracker" errorCode:-1 logHandle:v30];
 
-    v32 = [v4 error];
+    error3 = [coderCopy error];
 
-    if (v32)
+    if (error3)
     {
       v15 = [(ATXStackStateTrackerInternalState *)self init];
 LABEL_23:
@@ -183,11 +183,11 @@ LABEL_23:
     v37 = [v35 initWithObjects:{v36, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v34);
     v38 = __atxlog_handle_blending();
-    v39 = [v33 robustDecodeObjectOfClasses:v37 forKey:@"codingKeyForBlendingCacheUpdateUUIDs" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXStackStateTracker" errorCode:-1 logHandle:v38];
+    v39 = [v33 robustDecodeObjectOfClasses:v37 forKey:@"codingKeyForBlendingCacheUpdateUUIDs" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXStackStateTracker" errorCode:-1 logHandle:v38];
 
-    v40 = [v4 error];
+    error4 = [coderCopy error];
 
-    if (v40)
+    if (error4)
     {
       v15 = [(ATXStackStateTrackerInternalState *)self init];
 LABEL_22:
@@ -198,11 +198,11 @@ LABEL_22:
     v41 = MEMORY[0x277D42620];
     v42 = objc_opt_class();
     v43 = __atxlog_handle_blending();
-    v44 = [v41 robustDecodeObjectOfClass:v42 forKey:@"codingKeyForBookmark" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXStackStateTracker" errorCode:-1 logHandle:v43];
+    v44 = [v41 robustDecodeObjectOfClass:v42 forKey:@"codingKeyForBookmark" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXStackStateTracker" errorCode:-1 logHandle:v43];
 
-    v45 = [v4 error];
+    error5 = [coderCopy error];
 
-    if (v45)
+    if (error5)
     {
       v46 = [(ATXStackStateTrackerInternalState *)self init];
 LABEL_11:

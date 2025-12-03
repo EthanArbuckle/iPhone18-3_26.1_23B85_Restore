@@ -1,13 +1,13 @@
 @interface PFMediaCapabilities
-+ (BOOL)setNewFormatsConfiguration:(int64_t)a3 fromSource:(int64_t)a4;
-+ (BOOL)videoCodecIsEligibleForBackwardsCompatibilityTranscoding:(unsigned int)a3;
-+ (BOOL)videoCodecIsProResEligibleForBackwardsCompatibilityTranscoding:(unsigned int)a3;
-+ (id)capabilitiesForCurrentDeviceWithOptions:(id)a3;
-+ (id)capabilitiesInformationForCurrentDeviceWithOptions:(id)a3;
++ (BOOL)setNewFormatsConfiguration:(int64_t)configuration fromSource:(int64_t)source;
++ (BOOL)videoCodecIsEligibleForBackwardsCompatibilityTranscoding:(unsigned int)transcoding;
++ (BOOL)videoCodecIsProResEligibleForBackwardsCompatibilityTranscoding:(unsigned int)transcoding;
++ (id)capabilitiesForCurrentDeviceWithOptions:(id)options;
++ (id)capabilitiesInformationForCurrentDeviceWithOptions:(id)options;
 + (id)legacyCapabilities;
-+ (id)recordSlomoConfigurationWithValidValues:(id)a3;
-+ (id)recordVideoConfigurationWithValidValues:(id)a3;
-+ (id)stringForSupport:(int64_t)a3;
++ (id)recordSlomoConfigurationWithValidValues:(id)values;
++ (id)recordVideoConfigurationWithValidValues:(id)values;
++ (id)stringForSupport:(int64_t)support;
 + (id)testCapabilitiesNotSupportingHEIF;
 + (id)testCapabilitiesNotSupportingHEVC;
 + (id)videoCodecTypesEligibleForBackwardsCompatibilityTranscoding;
@@ -16,23 +16,23 @@
 - (BOOL)sortSourceEnumerationAscending;
 - (BOOL)supportsHDR;
 - (BOOL)supportsTranscodeChoice;
-- (PFMediaCapabilities)initWithOpaqueRepresentation:(id)a3;
-- (PFMediaCapabilities)initWithPlatformInformation:(id)a3;
+- (PFMediaCapabilities)initWithOpaqueRepresentation:(id)representation;
+- (PFMediaCapabilities)initWithPlatformInformation:(id)information;
 - (id)description;
 - (id)opaqueRepresentation;
-- (int64_t)decodingSupportForAVAsset:(id)a3;
-- (int64_t)decodingSupportForFormatDescription:(opaqueCMFormatDescription *)a3;
+- (int64_t)decodingSupportForAVAsset:(id)asset;
+- (int64_t)decodingSupportForFormatDescription:(opaqueCMFormatDescription *)description;
 - (int64_t)supportForAdjustmentBaseResources;
-- (int64_t)supportForAssetBundleVersion:(id)a3;
-- (int64_t)supportForCodec:(unsigned int)a3;
-- (int64_t)supportForContainerTypeIdentifier:(id)a3;
-- (int64_t)supportForLivePhotoVersion:(id)a3;
-- (int64_t)supportValueByApplyingUserDefaultsPeerAssetBundleSupportOverrideToValue:(int64_t)a3 selector:(SEL)a4;
-- (int64_t)supportValueByApplyingUserDefaultsPeerOverrideToValue:(int64_t)a3 selector:(SEL)a4;
+- (int64_t)supportForAssetBundleVersion:(id)version;
+- (int64_t)supportForCodec:(unsigned int)codec;
+- (int64_t)supportForContainerTypeIdentifier:(id)identifier;
+- (int64_t)supportForLivePhotoVersion:(id)version;
+- (int64_t)supportValueByApplyingUserDefaultsPeerAssetBundleSupportOverrideToValue:(int64_t)value selector:(SEL)selector;
+- (int64_t)supportValueByApplyingUserDefaultsPeerOverrideToValue:(int64_t)value selector:(SEL)selector;
 - (int64_t)userDefaultsPeerAssetBundleSupportOverrideValue;
 - (int64_t)userDefaultsPeerOverrideValue;
-- (void)setSupportForAdjustmentBaseResources:(BOOL)a3;
-- (void)setSupportsTranscodeChoice:(BOOL)a3;
+- (void)setSupportForAdjustmentBaseResources:(BOOL)resources;
+- (void)setSupportsTranscodeChoice:(BOOL)choice;
 @end
 
 @implementation PFMediaCapabilities
@@ -51,17 +51,17 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendFormat:@"<%p: %@ capabilities info: %@>", self, objc_opt_class(), self->_capabilitiesInformation];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"<%p: %@ capabilities info: %@>", self, objc_opt_class(), self->_capabilitiesInformation];
 
-  return v3;
+  return string;
 }
 
 - (int64_t)userDefaultsPeerAssetBundleSupportOverrideValue
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PFMediaCapabilitiesPeerAssetBundleSupportOverride"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PFMediaCapabilitiesPeerAssetBundleSupportOverride"];
 
   if (!v3)
   {
@@ -82,12 +82,12 @@
     }
 
 LABEL_7:
-    v4 = 0;
+    integerValue = 0;
     goto LABEL_8;
   }
 
-  v4 = [v3 integerValue];
-  if ((v4 - 3) <= 0xFFFFFFFFFFFFFFFBLL)
+  integerValue = [v3 integerValue];
+  if ((integerValue - 3) <= 0xFFFFFFFFFFFFFFFBLL)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -107,23 +107,23 @@ LABEL_10:
 
 LABEL_8:
 
-  return v4;
+  return integerValue;
 }
 
-- (int64_t)supportValueByApplyingUserDefaultsPeerAssetBundleSupportOverrideToValue:(int64_t)a3 selector:(SEL)a4
+- (int64_t)supportValueByApplyingUserDefaultsPeerAssetBundleSupportOverrideToValue:(int64_t)value selector:(SEL)selector
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = [(PFMediaCapabilities *)self userDefaultsPeerAssetBundleSupportOverrideValue];
-  if (!v6)
+  userDefaultsPeerAssetBundleSupportOverrideValue = [(PFMediaCapabilities *)self userDefaultsPeerAssetBundleSupportOverrideValue];
+  if (!userDefaultsPeerAssetBundleSupportOverrideValue)
   {
-    return a3;
+    return value;
   }
 
-  v7 = v6;
+  v7 = userDefaultsPeerAssetBundleSupportOverrideValue;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    v8 = NSStringFromSelector(a4);
-    v9 = [objc_opt_class() stringForSupport:a3];
+    v8 = NSStringFromSelector(selector);
+    v9 = [objc_opt_class() stringForSupport:value];
     v10 = [objc_opt_class() stringForSupport:v7];
     v12 = 138413058;
     v13 = v8;
@@ -142,8 +142,8 @@ LABEL_8:
 - (int64_t)userDefaultsPeerOverrideValue
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PFMediaCapabilitiesPeerSupportOverride"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PFMediaCapabilitiesPeerSupportOverride"];
 
   if (!v3)
   {
@@ -164,12 +164,12 @@ LABEL_8:
     }
 
 LABEL_7:
-    v4 = 0;
+    integerValue = 0;
     goto LABEL_8;
   }
 
-  v4 = [v3 integerValue];
-  if ((v4 - 3) <= 0xFFFFFFFFFFFFFFFBLL)
+  integerValue = [v3 integerValue];
+  if ((integerValue - 3) <= 0xFFFFFFFFFFFFFFFBLL)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -189,23 +189,23 @@ LABEL_10:
 
 LABEL_8:
 
-  return v4;
+  return integerValue;
 }
 
-- (int64_t)supportValueByApplyingUserDefaultsPeerOverrideToValue:(int64_t)a3 selector:(SEL)a4
+- (int64_t)supportValueByApplyingUserDefaultsPeerOverrideToValue:(int64_t)value selector:(SEL)selector
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = [(PFMediaCapabilities *)self userDefaultsPeerOverrideValue];
-  if (!v6)
+  userDefaultsPeerOverrideValue = [(PFMediaCapabilities *)self userDefaultsPeerOverrideValue];
+  if (!userDefaultsPeerOverrideValue)
   {
-    return a3;
+    return value;
   }
 
-  v7 = v6;
+  v7 = userDefaultsPeerOverrideValue;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    v8 = NSStringFromSelector(a4);
-    v9 = [objc_opt_class() stringForSupport:a3];
+    v8 = NSStringFromSelector(selector);
+    v9 = [objc_opt_class() stringForSupport:value];
     v10 = [objc_opt_class() stringForSupport:v7];
     v12 = 138413058;
     v13 = v8;
@@ -257,10 +257,10 @@ LABEL_8:
 {
   v13 = *MEMORY[0x1E69E9840];
   v2 = [(NSDictionary *)self->_capabilitiesInformation objectForKeyedSubscript:@"TranscodeChoice"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 objectForKey:@"PFMediaCapabilitiesPeerTranscodeChoiceOverride"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults objectForKey:@"PFMediaCapabilitiesPeerTranscodeChoiceOverride"];
 
   if (v5)
   {
@@ -268,7 +268,7 @@ LABEL_8:
     {
       v6 = @"NO";
       *v8 = 138412802;
-      if (v3)
+      if (bOOLValue)
       {
         v6 = @"YES";
       }
@@ -281,24 +281,24 @@ LABEL_8:
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Overriding peer capabilities result of supportsTranscodeChoice from %@ to %@ because %@ user default is set", v8, 0x20u);
     }
 
-    LOBYTE(v3) = [v5 BOOLValue];
+    LOBYTE(bOOLValue) = [v5 BOOLValue];
   }
 
-  return v3;
+  return bOOLValue;
 }
 
-- (int64_t)decodingSupportForAVAsset:(id)a3
+- (int64_t)decodingSupportForAVAsset:(id)asset
 {
-  v5 = a3;
-  v6 = [[PFMetadata alloc] initWithAVAsset:v5 timeZoneLookup:0];
+  assetCopy = asset;
+  v6 = [[PFMetadata alloc] initWithAVAsset:assetCopy timeZoneLookup:0];
 
-  v7 = [(PFMetadata *)v6 firstVideoTrackCodec];
-  if ([objc_opt_class() videoCodecIsEligibleForBackwardsCompatibilityTranscoding:v7])
+  firstVideoTrackCodec = [(PFMetadata *)v6 firstVideoTrackCodec];
+  if ([objc_opt_class() videoCodecIsEligibleForBackwardsCompatibilityTranscoding:firstVideoTrackCodec])
   {
     v8 = [(PFMediaCapabilities *)self decodingSupportForFormatDescription:[(PFMetadata *)v6 videoTrackFormatDescription]];
   }
 
-  else if (v7 == 1635148593)
+  else if (firstVideoTrackCodec == 1635148593)
   {
     v8 = 2;
   }
@@ -313,16 +313,16 @@ LABEL_8:
   return v9;
 }
 
-- (int64_t)decodingSupportForFormatDescription:(opaqueCMFormatDescription *)a3
+- (int64_t)decodingSupportForFormatDescription:(opaqueCMFormatDescription *)description
 {
   v25 = *MEMORY[0x1E69E9840];
-  MediaSubType = CMFormatDescriptionGetMediaSubType(a3);
+  MediaSubType = CMFormatDescriptionGetMediaSubType(description);
   if (self->_capabilitiesInformation && [PFMediaCapabilities videoCodecIsEligibleForBackwardsCompatibilityTranscoding:MediaSubType])
   {
     v6 = [(NSDictionary *)self->_capabilitiesInformation objectForKeyedSubscript:@"Version"];
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
 
-    if (v7 < 3)
+    if (integerValue < 3)
     {
       if (MediaSubType != 1752589105)
       {
@@ -410,11 +410,11 @@ LABEL_15:
   return [(PFMediaCapabilities *)self supportValueByApplyingUserDefaultsPeerOverrideToValue:v14 selector:a2];
 }
 
-- (int64_t)supportForCodec:(unsigned int)a3
+- (int64_t)supportForCodec:(unsigned int)codec
 {
   v6 = [(NSDictionary *)self->_capabilitiesInformation objectForKeyedSubscript:@"Codecs"];
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%c%c%c%c", HIBYTE(a3), BYTE2(a3), BYTE1(a3), a3];
-  v8 = [v6 objectForKey:v7];
+  codec = [MEMORY[0x1E696AEC0] stringWithFormat:@"%c%c%c%c", HIBYTE(codec), BYTE2(codec), BYTE1(codec), codec];
+  v8 = [v6 objectForKey:codec];
 
   if (v8)
   {
@@ -445,23 +445,23 @@ LABEL_15:
   return v3;
 }
 
-- (int64_t)supportForAssetBundleVersion:(id)a3
+- (int64_t)supportForAssetBundleVersion:(id)version
 {
-  v5 = [a3 integerValue];
+  integerValue = [version integerValue];
   v6 = [(NSDictionary *)self->_capabilitiesInformation objectForKeyedSubscript:@"Vendor"];
   v7 = [v6 objectForKeyedSubscript:@"com.apple"];
   v8 = [v7 objectForKeyedSubscript:@"AssetBundleFormatVersion"];
 
   if (v8)
   {
-    v9 = [v8 integerValue];
+    integerValue2 = [v8 integerValue];
     v10 = -1;
-    if (v9 >= v5)
+    if (integerValue2 >= integerValue)
     {
       v10 = 1;
     }
 
-    if (v9)
+    if (integerValue2)
     {
       v11 = v10;
     }
@@ -482,23 +482,23 @@ LABEL_15:
   return v12;
 }
 
-- (int64_t)supportForLivePhotoVersion:(id)a3
+- (int64_t)supportForLivePhotoVersion:(id)version
 {
-  v5 = [a3 integerValue];
+  integerValue = [version integerValue];
   v6 = [(NSDictionary *)self->_capabilitiesInformation objectForKeyedSubscript:@"Vendor"];
   v7 = [v6 objectForKeyedSubscript:@"com.apple"];
   v8 = [v7 objectForKeyedSubscript:@"LivePhotoFormatVersion"];
 
   if (v8)
   {
-    v9 = [v8 integerValue];
+    integerValue2 = [v8 integerValue];
     v10 = -1;
-    if (v9 >= v5)
+    if (integerValue2 >= integerValue)
     {
       v10 = 1;
     }
 
-    if (v9)
+    if (integerValue2)
     {
       v11 = v10;
     }
@@ -519,12 +519,12 @@ LABEL_15:
   return v12;
 }
 
-- (int64_t)supportForContainerTypeIdentifier:(id)a3
+- (int64_t)supportForContainerTypeIdentifier:(id)identifier
 {
   capabilitiesInformation = self->_capabilitiesInformation;
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = [(NSDictionary *)capabilitiesInformation objectForKeyedSubscript:@"ContainerFormats"];
-  v8 = [v7 objectForKey:v6];
+  v8 = [v7 objectForKey:identifierCopy];
 
   if (v8)
   {
@@ -539,17 +539,17 @@ LABEL_15:
   return [(PFMediaCapabilities *)self supportValueByApplyingUserDefaultsPeerOverrideToValue:v9 selector:a2];
 }
 
-- (PFMediaCapabilities)initWithPlatformInformation:(id)a3
+- (PFMediaCapabilities)initWithPlatformInformation:(id)information
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  informationCopy = information;
   v9.receiver = self;
   v9.super_class = PFMediaCapabilities;
   v5 = [(PFMediaCapabilities *)&v9 init];
   if (v5)
   {
     v10 = @"PFMediaCapabilitiesPlatformInfoKey";
-    v11[0] = v4;
+    v11[0] = informationCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
     capabilitiesInformation = v5->_capabilitiesInformation;
     v5->_capabilitiesInformation = v6;
@@ -558,10 +558,10 @@ LABEL_15:
   return v5;
 }
 
-- (PFMediaCapabilities)initWithOpaqueRepresentation:(id)a3
+- (PFMediaCapabilities)initWithOpaqueRepresentation:(id)representation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  representationCopy = representation;
   v12.receiver = self;
   v12.super_class = PFMediaCapabilities;
   v5 = [(PFMediaCapabilities *)&v12 init];
@@ -571,7 +571,7 @@ LABEL_15:
   }
 
   v11 = 0;
-  v6 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v4 options:0 error:&v11];
+  v6 = [MEMORY[0x1E696ACB0] JSONObjectWithData:representationCopy options:0 error:&v11];
   v7 = v11;
   if (v6)
   {
@@ -604,15 +604,15 @@ LABEL_8:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (id)videoCodecTypesEligibleForBackwardsCompatibilityTranscoding
@@ -621,7 +621,7 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __82__PFMediaCapabilities_videoCodecTypesEligibleForBackwardsCompatibilityTranscoding__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (videoCodecTypesEligibleForBackwardsCompatibilityTranscoding_onceToken != -1)
   {
     dispatch_once(&videoCodecTypesEligibleForBackwardsCompatibilityTranscoding_onceToken, block);
@@ -643,22 +643,22 @@ void __82__PFMediaCapabilities_videoCodecTypesEligibleForBackwardsCompatibilityT
   [v4 addObjectsFromArray:v5];
 }
 
-+ (BOOL)videoCodecIsProResEligibleForBackwardsCompatibilityTranscoding:(unsigned int)a3
++ (BOOL)videoCodecIsProResEligibleForBackwardsCompatibilityTranscoding:(unsigned int)transcoding
 {
-  v3 = *&a3;
-  v4 = [a1 proResVideoCodecTypesEligibleForBackwardsCompatibilityTranscoding];
+  v3 = *&transcoding;
+  proResVideoCodecTypesEligibleForBackwardsCompatibilityTranscoding = [self proResVideoCodecTypesEligibleForBackwardsCompatibilityTranscoding];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3];
-  v6 = [v4 containsObject:v5];
+  v6 = [proResVideoCodecTypesEligibleForBackwardsCompatibilityTranscoding containsObject:v5];
 
   return v6;
 }
 
-+ (BOOL)videoCodecIsEligibleForBackwardsCompatibilityTranscoding:(unsigned int)a3
++ (BOOL)videoCodecIsEligibleForBackwardsCompatibilityTranscoding:(unsigned int)transcoding
 {
-  v3 = *&a3;
-  v4 = [a1 videoCodecTypesEligibleForBackwardsCompatibilityTranscoding];
+  v3 = *&transcoding;
+  videoCodecTypesEligibleForBackwardsCompatibilityTranscoding = [self videoCodecTypesEligibleForBackwardsCompatibilityTranscoding];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3];
-  v6 = [v4 containsObject:v5];
+  v6 = [videoCodecTypesEligibleForBackwardsCompatibilityTranscoding containsObject:v5];
 
   return v6;
 }
@@ -693,27 +693,27 @@ void __52__PFMediaCapabilities_currentDeviceHEVCCapabilities__block_invoke()
   }
 }
 
-+ (id)stringForSupport:(int64_t)a3
++ (id)stringForSupport:(int64_t)support
 {
-  if ((a3 + 1) > 3)
+  if ((support + 1) > 3)
   {
     return @"PFMediaCapabilitiesSupportUnknown";
   }
 
   else
   {
-    return off_1E7B64978[a3 + 1];
+    return off_1E7B64978[support + 1];
   }
 }
 
-+ (id)capabilitiesInformationForCurrentDeviceWithOptions:(id)a3
++ (id)capabilitiesInformationForCurrentDeviceWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = [[PFMediaCapabilitiesQuery alloc] initWithOptions:v3];
+  optionsCopy = options;
+  v4 = [[PFMediaCapabilitiesQuery alloc] initWithOptions:optionsCopy];
 
-  v5 = [(PFMediaCapabilitiesQuery *)v4 dictionaryRepresentation];
+  dictionaryRepresentation = [(PFMediaCapabilitiesQuery *)v4 dictionaryRepresentation];
 
-  return v5;
+  return dictionaryRepresentation;
 }
 
 + (id)legacyCapabilities
@@ -723,28 +723,28 @@ void __52__PFMediaCapabilities_currentDeviceHEVCCapabilities__block_invoke()
   return v2;
 }
 
-+ (id)capabilitiesForCurrentDeviceWithOptions:(id)a3
++ (id)capabilitiesForCurrentDeviceWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = objc_opt_new();
-  v6 = [a1 capabilitiesInformationForCurrentDeviceWithOptions:v4];
+  v6 = [self capabilitiesInformationForCurrentDeviceWithOptions:optionsCopy];
 
   [v5 setCapabilitiesInformation:v6];
 
   return v5;
 }
 
-- (void)setSupportsTranscodeChoice:(BOOL)a3
+- (void)setSupportsTranscodeChoice:(BOOL)choice
 {
-  v3 = a3;
-  v5 = [(NSDictionary *)self->_capabilitiesInformation mutableCopy];
-  if (!v5)
+  choiceCopy = choice;
+  dictionary = [(NSDictionary *)self->_capabilitiesInformation mutableCopy];
+  if (!dictionary)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v9 = v5;
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v9 = dictionary;
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:choiceCopy];
   [v9 setObject:v6 forKeyedSubscript:@"TranscodeChoice"];
 
   v7 = [v9 copy];
@@ -752,17 +752,17 @@ void __52__PFMediaCapabilities_currentDeviceHEVCCapabilities__block_invoke()
   self->_capabilitiesInformation = v7;
 }
 
-- (void)setSupportForAdjustmentBaseResources:(BOOL)a3
+- (void)setSupportForAdjustmentBaseResources:(BOOL)resources
 {
-  v3 = a3;
-  v5 = [(NSDictionary *)self->_capabilitiesInformation mutableCopy];
-  if (!v5)
+  resourcesCopy = resources;
+  dictionary = [(NSDictionary *)self->_capabilitiesInformation mutableCopy];
+  if (!dictionary)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v9 = v5;
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v9 = dictionary;
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:resourcesCopy];
   [v9 setObject:v6 forKeyedSubscript:@"SupportsAdjustmentBaseResources"];
 
   v7 = [v9 copy];
@@ -770,11 +770,11 @@ void __52__PFMediaCapabilities_currentDeviceHEVCCapabilities__block_invoke()
   self->_capabilitiesInformation = v7;
 }
 
-+ (id)recordSlomoConfigurationWithValidValues:(id)a3
++ (id)recordSlomoConfigurationWithValidValues:(id)values
 {
-  v3 = a3;
+  valuesCopy = values;
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:{CFPreferencesGetAppIntegerValue(@"CAMUserPreferenceSlomoConfiguration", @"com.apple.camera", 0)}];
-  v5 = [v3 containsObject:v4];
+  v5 = [valuesCopy containsObject:v4];
 
   if ((v5 & 1) == 0)
   {
@@ -785,11 +785,11 @@ void __52__PFMediaCapabilities_currentDeviceHEVCCapabilities__block_invoke()
   return v4;
 }
 
-+ (id)recordVideoConfigurationWithValidValues:(id)a3
++ (id)recordVideoConfigurationWithValidValues:(id)values
 {
-  v3 = a3;
+  valuesCopy = values;
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:{CFPreferencesGetAppIntegerValue(@"CAMUserPreferenceVideoConfiguration", @"com.apple.camera", 0)}];
-  v5 = [v3 containsObject:v4];
+  v5 = [valuesCopy containsObject:v4];
 
   if ((v5 & 1) == 0)
   {
@@ -800,26 +800,26 @@ void __52__PFMediaCapabilities_currentDeviceHEVCCapabilities__block_invoke()
   return v4;
 }
 
-+ (BOOL)setNewFormatsConfiguration:(int64_t)a3 fromSource:(int64_t)a4
++ (BOOL)setNewFormatsConfiguration:(int64_t)configuration fromSource:(int64_t)source
 {
   v17 = *MEMORY[0x1E69E9840];
   AppIntegerValue = CFPreferencesGetAppIntegerValue(@"CAMUserPreferenceCaptureEncodingBehaviorSource", @"com.apple.camera", 0);
   v8 = AppIntegerValue;
-  if (a4 == 2 || AppIntegerValue < a4)
+  if (source == 2 || AppIntegerValue < source)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
       v14 = v8;
       v15 = 2048;
-      v16 = a4;
+      configurationCopy = source;
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "overwriting encoding behavior from source %ld to source %ld", buf, 0x16u);
     }
 
-    CFPreferencesSetAppValue(@"CAMUserPreferenceCaptureEncodingBehaviorSource", [MEMORY[0x1E696AD98] numberWithInteger:a4], @"com.apple.camera");
+    CFPreferencesSetAppValue(@"CAMUserPreferenceCaptureEncodingBehaviorSource", [MEMORY[0x1E696AD98] numberWithInteger:source], @"com.apple.camera");
   }
 
-  if (a4 != 2 && v8 > a4)
+  if (source != 2 && v8 > source)
   {
     return 0;
   }
@@ -828,23 +828,23 @@ void __52__PFMediaCapabilities_currentDeviceHEVCCapabilities__block_invoke()
   v10 = CFPreferencesGetAppIntegerValue(@"CAMUserPreferenceCaptureEncodingBehavior", @"com.apple.camera", &keyExistsAndHasValidFormat);
   if (!keyExistsAndHasValidFormat)
   {
-    CFPreferencesSetAppValue(@"CAMUserPreferenceCaptureEncodingBehavior", [MEMORY[0x1E696AD98] numberWithInteger:a3], @"com.apple.camera");
+    CFPreferencesSetAppValue(@"CAMUserPreferenceCaptureEncodingBehavior", [MEMORY[0x1E696AD98] numberWithInteger:configuration], @"com.apple.camera");
   }
 
-  v9 = v10 != a3;
-  if (v10 != a3)
+  v9 = v10 != configuration;
+  if (v10 != configuration)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
       v14 = v10;
       v15 = 2048;
-      v16 = a3;
+      configurationCopy = configuration;
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "changing encoding behavior from %ld to %ld", buf, 0x16u);
     }
 
-    CFPreferencesSetAppValue(@"CAMUserPreferenceCaptureEncodingBehavior", [MEMORY[0x1E696AD98] numberWithInteger:a3], @"com.apple.camera");
-    if (a3 == 1)
+    CFPreferencesSetAppValue(@"CAMUserPreferenceCaptureEncodingBehavior", [MEMORY[0x1E696AD98] numberWithInteger:configuration], @"com.apple.camera");
+    if (configuration == 1)
     {
       if (CFPreferencesGetAppIntegerValue(@"CAMUserPreferenceSlomoConfiguration", @"com.apple.camera", 0) == 8)
       {
@@ -853,11 +853,11 @@ void __52__PFMediaCapabilities_currentDeviceHEVCCapabilities__block_invoke()
           *buf = 134218240;
           v14 = 8;
           v15 = 2048;
-          v16 = 0;
+          configurationCopy = 0;
           _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "changing slow-mo configuration from %ld to %ld", buf, 0x16u);
         }
 
-        [a1 setRecordSlomoConfiguration:&unk_1F2AAB368];
+        [self setRecordSlomoConfiguration:&unk_1F2AAB368];
       }
 
       if (CFPreferencesGetAppIntegerValue(@"CAMUserPreferenceVideoConfiguration", @"com.apple.camera", 0) == 9)
@@ -867,26 +867,26 @@ void __52__PFMediaCapabilities_currentDeviceHEVCCapabilities__block_invoke()
           *buf = 134218240;
           v14 = 9;
           v15 = 2048;
-          v16 = 1;
+          configurationCopy = 1;
           _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "changing video configuration from %ld to %ld", buf, 0x16u);
         }
 
-        [a1 setRecordVideoConfiguration:&unk_1F2AAB380];
+        [self setRecordVideoConfiguration:&unk_1F2AAB380];
       }
     }
 
-    else if (!a3 && v10 == 1 && CFPreferencesGetAppIntegerValue(@"CAMUserPreferenceSlomoConfiguration", @"com.apple.camera", 0) == 8)
+    else if (!configuration && v10 == 1 && CFPreferencesGetAppIntegerValue(@"CAMUserPreferenceSlomoConfiguration", @"com.apple.camera", 0) == 8)
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218240;
         v14 = 8;
         v15 = 2048;
-        v16 = 0;
+        configurationCopy = 0;
         _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "changing slow-mo configuration from %ld to %ld for change from MostCompatible back to Automatic", buf, 0x16u);
       }
 
-      [a1 setRecordSlomoConfiguration:&unk_1F2AAB368];
+      [self setRecordSlomoConfiguration:&unk_1F2AAB368];
     }
 
     CFPreferencesAppSynchronize(@"com.apple.camera");

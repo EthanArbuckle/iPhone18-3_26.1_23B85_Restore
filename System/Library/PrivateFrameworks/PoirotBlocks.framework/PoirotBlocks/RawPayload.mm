@@ -1,16 +1,16 @@
 @interface RawPayload
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 - (_TtC12PoirotBlocks10RawPayload)init;
-- (_TtC12PoirotBlocks10RawPayload)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (_TtC12PoirotBlocks10RawPayload)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (id)serialize;
 @end
 
 @implementation RawPayload
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
-  v6 = a3;
+  dataCopy = data;
   v7 = sub_21B20C6B8();
   v9 = v8;
 
@@ -44,7 +44,7 @@
   return result;
 }
 
-- (_TtC12PoirotBlocks10RawPayload)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (_TtC12PoirotBlocks10RawPayload)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

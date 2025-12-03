@@ -1,13 +1,13 @@
 @interface ICStorePlatformResponseGroup
-- (ICStorePlatformResponseGroup)initWithResponses:(id)a3;
+- (ICStorePlatformResponseGroup)initWithResponses:(id)responses;
 - (ICURLAggregatedPerformanceMetrics)performanceMetrics;
 - (NSArray)allItems;
 - (NSDate)expirationDate;
 - (NSNumber)accountIdentifier;
 - (NSNumber)enqueuerAccountIdentifier;
 - (NSString)storefrontIdentifier;
-- (id)itemForIdentifier:(id)a3;
-- (void)enumerateItemsUsingBlock:(id)a3;
+- (id)itemForIdentifier:(id)identifier;
+- (void)enumerateItemsUsingBlock:(id)block;
 @end
 
 @implementation ICStorePlatformResponseGroup
@@ -36,13 +36,13 @@
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 performanceMetrics];
+        performanceMetrics = [v9 performanceMetrics];
 
-        if (v10)
+        if (performanceMetrics)
         {
-          v11 = [v9 performanceMetrics];
-          v12 = [v11 urlMetrics];
-          [v3 addObjectsFromArray:v12];
+          performanceMetrics2 = [v9 performanceMetrics];
+          urlMetrics = [performanceMetrics2 urlMetrics];
+          [v3 addObjectsFromArray:urlMetrics];
         }
       }
 
@@ -87,10 +87,10 @@
           objc_enumerationMutation(v2);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) storefrontIdentifier];
-        if (v7)
+        storefrontIdentifier = [*(*(&v10 + 1) + 8 * i) storefrontIdentifier];
+        if (storefrontIdentifier)
         {
-          v8 = v7;
+          v8 = storefrontIdentifier;
           goto LABEL_11;
         }
       }
@@ -111,10 +111,10 @@ LABEL_11:
   return v8;
 }
 
-- (id)itemForIdentifier:(id)a3
+- (id)itemForIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -134,7 +134,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) itemForIdentifier:{v4, v13}];
+        v10 = [*(*(&v13 + 1) + 8 * i) itemForIdentifier:{identifierCopy, v13}];
         if (v10)
         {
           v11 = v10;
@@ -181,20 +181,20 @@ LABEL_11:
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) expirationDate];
-        v9 = v8;
-        if (v8)
+        expirationDate = [*(*(&v12 + 1) + 8 * i) expirationDate];
+        v9 = expirationDate;
+        if (expirationDate)
         {
           if (v5)
           {
-            v10 = [v5 earlierDate:v8];
+            v10 = [v5 earlierDate:expirationDate];
 
             v5 = v10;
           }
 
           else
           {
-            v5 = v8;
+            v5 = expirationDate;
           }
         }
       }
@@ -213,16 +213,16 @@ LABEL_11:
   return v5;
 }
 
-- (void)enumerateItemsUsingBlock:(id)a3
+- (void)enumerateItemsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   childResponses = self->_childResponses;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__ICStorePlatformResponseGroup_enumerateItemsUsingBlock___block_invoke;
   v7[3] = &unk_1E7BF7308;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSArray *)childResponses enumerateObjectsUsingBlock:v7];
 }
 
@@ -269,10 +269,10 @@ uint64_t __57__ICStorePlatformResponseGroup_enumerateItemsUsingBlock___block_inv
           objc_enumerationMutation(v2);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) enqueuerAccountIdentifier];
-        if (v7)
+        enqueuerAccountIdentifier = [*(*(&v10 + 1) + 8 * i) enqueuerAccountIdentifier];
+        if (enqueuerAccountIdentifier)
         {
-          v8 = v7;
+          v8 = enqueuerAccountIdentifier;
           goto LABEL_11;
         }
       }
@@ -295,15 +295,15 @@ LABEL_11:
 
 - (NSArray)allItems
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __40__ICStorePlatformResponseGroup_allItems__block_invoke;
   v5[3] = &unk_1E7BF8298;
-  v5[4] = v3;
+  v5[4] = array;
   [(ICStorePlatformResponseGroup *)self enumerateItemsUsingBlock:v5];
 
-  return v3;
+  return array;
 }
 
 - (NSNumber)accountIdentifier
@@ -328,10 +328,10 @@ LABEL_11:
           objc_enumerationMutation(v2);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) accountIdentifier];
-        if (v7)
+        accountIdentifier = [*(*(&v10 + 1) + 8 * i) accountIdentifier];
+        if (accountIdentifier)
         {
-          v8 = v7;
+          v8 = accountIdentifier;
           goto LABEL_11;
         }
       }
@@ -352,15 +352,15 @@ LABEL_11:
   return v8;
 }
 
-- (ICStorePlatformResponseGroup)initWithResponses:(id)a3
+- (ICStorePlatformResponseGroup)initWithResponses:(id)responses
 {
-  v4 = a3;
+  responsesCopy = responses;
   v9.receiver = self;
   v9.super_class = ICStorePlatformResponseGroup;
   v5 = [(ICStorePlatformResponseGroup *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [responsesCopy copy];
     childResponses = v5->_childResponses;
     v5->_childResponses = v6;
   }

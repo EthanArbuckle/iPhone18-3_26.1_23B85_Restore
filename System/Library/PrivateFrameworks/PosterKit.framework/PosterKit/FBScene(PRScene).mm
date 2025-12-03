@@ -15,7 +15,7 @@
   v11 = a3;
   v12 = a4;
   v13 = a5;
-  v14 = a6;
+  pf_defaultInstanceIdentifier = a6;
   v15 = v12;
   NSClassFromString(&cfstr_Pfserverposter_0.isa);
   if (!v15)
@@ -49,19 +49,19 @@
   if ([v24 count])
   {
     v25 = MEMORY[0x1E69C5158];
-    v26 = [v24 firstObject];
-    v13 = [v25 extensionWithIdentity:v26];
+    firstObject = [v24 firstObject];
+    v13 = [v25 extensionWithIdentity:firstObject];
 
     if (v13)
     {
 LABEL_4:
-      if (!v14)
+      if (!pf_defaultInstanceIdentifier)
       {
-        v14 = [MEMORY[0x1E696AFB0] pf_defaultInstanceIdentifier];
+        pf_defaultInstanceIdentifier = [MEMORY[0x1E696AFB0] pf_defaultInstanceIdentifier];
       }
 
-      v16 = [objc_alloc(MEMORY[0x1E69C5160]) initWithExtension:v13 instanceIdentifier:v14];
-      v17 = [a1 pr_createPosterSceneWithRole:v11 path:v15 instance:v16];
+      v16 = [objc_alloc(MEMORY[0x1E69C5160]) initWithExtension:v13 instanceIdentifier:pf_defaultInstanceIdentifier];
+      v17 = [self pr_createPosterSceneWithRole:v11 path:v15 instance:v16];
       objc_setAssociatedObject(v17, "instance", v16, 1);
 
       goto LABEL_16;
@@ -110,8 +110,8 @@ LABEL_16:
     [FBScene(PRScene) pr_createPosterSceneWithRole:a2 path:? instance:?];
   }
 
-  v13 = [v11 processIdentity];
-  v14 = [a1 _pr_createPosterSceneWithRole:v9 path:v10 processIdentity:v13];
+  processIdentity = [v11 processIdentity];
+  v14 = [self _pr_createPosterSceneWithRole:v9 path:v10 processIdentity:processIdentity];
 
   return v14;
 }
@@ -121,8 +121,8 @@ LABEL_16:
   v6 = MEMORY[0x1E69C75F0];
   v7 = a4;
   v8 = a3;
-  v9 = [v6 identityOfCurrentProcess];
-  v10 = [a1 _pr_createPosterSceneWithRole:v8 path:v7 processIdentity:v9];
+  identityOfCurrentProcess = [v6 identityOfCurrentProcess];
+  v10 = [self _pr_createPosterSceneWithRole:v8 path:v7 processIdentity:identityOfCurrentProcess];
 
   return v10;
 }
@@ -148,22 +148,22 @@ LABEL_16:
     [FBScene(PRScene) _pr_createPosterSceneWithRole:a2 path:? processIdentity:?];
   }
 
-  v13 = [MEMORY[0x1E696AFB0] UUID];
-  v14 = [v13 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v15 = [MEMORY[0x1E699F7F8] pui_posterWorkspace];
+  pui_posterWorkspace = [MEMORY[0x1E699F7F8] pui_posterWorkspace];
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
   v53[2] = __71__FBScene_PRScene___pr_createPosterSceneWithRole_path_processIdentity___block_invoke;
   v53[3] = &unk_1E7844268;
-  v43 = v14;
+  v43 = uUIDString;
   v54 = v43;
   v44 = v12;
   v55 = v44;
-  v16 = [v15 pui_createScene:v53];
+  v16 = [pui_posterWorkspace pui_createScene:v53];
 
-  v17 = [v10 role];
-  [v16 pr_setupSceneExtensionsForSceneRole:v9 posterRole:v17];
+  role = [v10 role];
+  [v16 pr_setupSceneExtensionsForSceneRole:v9 posterRole:role];
 
   v51[0] = 0;
   v51[1] = v51;
@@ -184,25 +184,25 @@ LABEL_16:
   v50 = v51;
   [v19 configureParameters:v46];
   v20 = objc_alloc(MEMORY[0x1E69635D0]);
-  v21 = [v18 serverIdentity];
-  v22 = [v21 provider];
-  v23 = [v20 initWithBundleIdentifier:v22 error:0];
+  serverIdentity = [v18 serverIdentity];
+  provider = [serverIdentity provider];
+  v23 = [v20 initWithBundleIdentifier:provider error:0];
 
-  v45 = [v23 infoDictionary];
-  v24 = [v23 entitlements];
-  v25 = [v18 serverIdentity];
-  v26 = [v25 provider];
-  v27 = [v26 componentsSeparatedByString:@"."];
-  v28 = [v27 lastObject];
+  infoDictionary = [v23 infoDictionary];
+  entitlements = [v23 entitlements];
+  serverIdentity2 = [v18 serverIdentity];
+  provider2 = [serverIdentity2 provider];
+  v27 = [provider2 componentsSeparatedByString:@"."];
+  lastObject = [v27 lastObject];
 
   v29 = MEMORY[0x1E696AEC0];
-  v30 = [v19 identifier];
-  v31 = [v30 componentsSeparatedByString:@"-"];
-  v32 = [v31 lastObject];
-  v33 = [v29 stringWithFormat:@"<%@: %p %@>", v28, a1, v32];;
+  identifier = [v19 identifier];
+  v31 = [identifier componentsSeparatedByString:@"-"];
+  lastObject2 = [v31 lastObject];
+  v33 = [v29 stringWithFormat:@"<%@: %p %@>", lastObject, self, lastObject2];;
   [v19 pui_setShortDescription:v33];
 
-  if ([v45 pf_wantsLocation])
+  if ([infoDictionary pf_wantsLocation])
   {
     v34 = 2;
   }
@@ -212,11 +212,11 @@ LABEL_16:
     v34 = 0;
   }
 
-  v35 = [v24 objectForKey:@"com.apple.posterkit.enhanced-memory-limits" ofClass:objc_opt_class()];
-  v36 = [v35 BOOLValue];
+  v35 = [entitlements objectForKey:@"com.apple.posterkit.enhanced-memory-limits" ofClass:objc_opt_class()];
+  bOOLValue = [v35 BOOLValue];
   v37 = objc_alloc(MEMORY[0x1E69C55A0]);
-  v38 = [v23 bundleIdentifier];
-  v39 = [v37 initWithScene:v19 bundleIdentifier:v38 processIdentity:v44 options:v34 | v36];
+  bundleIdentifier = [v23 bundleIdentifier];
+  v39 = [v37 initWithScene:v19 bundleIdentifier:bundleIdentifier processIdentity:v44 options:v34 | bOOLValue];
 
   [v19 pui_setPosterComponent:v39];
   v40 = v19;
@@ -259,14 +259,14 @@ LABEL_16:
   v12 = v20;
   if (!v11)
   {
-    [(FBScene(PRScene) *)a1 pr_applyPosterPath:v12 toSettings:a2];
+    [(FBScene(PRScene) *)self pr_applyPosterPath:v12 toSettings:a2];
   }
 
   v13 = [PRPosterPathModelObjectCache modelObjectCacheForPath:v11];
-  v14 = [v13 configuredProperties];
-  if (v14)
+  configuredProperties = [v13 configuredProperties];
+  if (configuredProperties)
   {
-    v15 = v14;
+    v15 = configuredProperties;
     v16 = 0;
 LABEL_11:
 
@@ -291,51 +291,51 @@ LABEL_11:
 LABEL_12:
   [v10 pui_setPosterContents:v11];
   [v10 pr_setPosterConfiguredProperties:v15];
-  v17 = [v15 titleStyleConfiguration];
-  [v10 pr_setPosterTitleStyleConfiguration:v17];
+  titleStyleConfiguration = [v15 titleStyleConfiguration];
+  [v10 pr_setPosterTitleStyleConfiguration:titleStyleConfiguration];
 
-  v18 = [v15 ambientConfiguration];
-  [v10 pr_setPosterAmbientConfiguration:v18];
+  ambientConfiguration = [v15 ambientConfiguration];
+  [v10 pr_setPosterAmbientConfiguration:ambientConfiguration];
 
-  [a1 pui_setPosterPath:v9];
+  [self pui_setPosterPath:v9];
 }
 
 - (void)pr_updateWithPath:()PRScene inSettings:
 {
   v13 = a3;
   v7 = a4;
-  v8 = [a1 pui_posterPath];
-  v9 = [v8 serverIdentity];
-  v10 = [v9 posterUUID];
+  pui_posterPath = [self pui_posterPath];
+  serverIdentity = [pui_posterPath serverIdentity];
+  posterUUID = [serverIdentity posterUUID];
 
-  v11 = [v13 serverIdentity];
-  v12 = [v11 posterUUID];
+  serverIdentity2 = [v13 serverIdentity];
+  posterUUID2 = [serverIdentity2 posterUUID];
 
-  if (([v10 isEqual:v12] & 1) == 0)
+  if (([posterUUID isEqual:posterUUID2] & 1) == 0)
   {
     [FBScene(PRScene) pr_updateWithPath:a2 inSettings:?];
   }
 
-  [a1 pr_applyPosterPath:v13 toSettings:v7];
+  [self pr_applyPosterPath:v13 toSettings:v7];
 }
 
 - (uint64_t)pr_setupSceneExtensionsForSceneRole:()PRScene posterRole:
 {
   v5 = a4;
-  [a1 addExtension:objc_opt_class()];
+  [self addExtension:objc_opt_class()];
   v6 = [v5 isEqual:*MEMORY[0x1E69C5208]];
 
   v7 = objc_opt_class();
   if (v6)
   {
 
-    return [a1 addExtension:v7];
+    return [self addExtension:v7];
   }
 
   else
   {
 
-    return [a1 removeExtension:v7];
+    return [self removeExtension:v7];
   }
 }
 

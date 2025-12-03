@@ -1,51 +1,51 @@
 @interface ALCity
-- (ALCity)initWithProperties:(id)a3;
-- (ALCity)initWithSQLRow:(char *)a3;
-- (BOOL)isEqual:(id)a3;
+- (ALCity)initWithProperties:(id)properties;
+- (ALCity)initWithSQLRow:(char *)row;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)properties;
 - (NSString)classicIdentifier;
 - (NSString)countryName;
 - (NSString)countryOverride;
 - (NSString)name;
 - (id)description;
-- (id)displayNameIncludingCountry:(BOOL)a3 withFormat:(id)a4;
+- (id)displayNameIncludingCountry:(BOOL)country withFormat:(id)format;
 - (void)dealloc;
 - (void)ensureLocalized;
-- (void)setCountryName:(id)a3;
-- (void)setCountryOverride:(id)a3;
-- (void)setName:(id)a3;
-- (void)setUnlocalizedCountryName:(id)a3;
-- (void)setUnlocalizedName:(id)a3;
+- (void)setCountryName:(id)name;
+- (void)setCountryOverride:(id)override;
+- (void)setName:(id)name;
+- (void)setUnlocalizedCountryName:(id)name;
+- (void)setUnlocalizedName:(id)name;
 @end
 
 @implementation ALCity
 
-- (ALCity)initWithProperties:(id)a3
+- (ALCity)initWithProperties:(id)properties
 {
   v15.receiver = self;
   v15.super_class = ALCity;
   v4 = [(ALCity *)&v15 init];
   v5 = v4;
-  if (!a3 || !v4)
+  if (!properties || !v4)
   {
     return v5;
   }
 
-  v4->_identifier = [objc_msgSend(a3 objectForKey:{@"identifier", "intValue"}];
-  v5->_localeCode = [a3 objectForKey:@"localeCode"];
-  v5->_timeZone = [a3 objectForKey:@"timeZone"];
-  [objc_msgSend(a3 objectForKey:{@"longitude", "floatValue"}];
+  v4->_identifier = [objc_msgSend(properties objectForKey:{@"identifier", "intValue"}];
+  v5->_localeCode = [properties objectForKey:@"localeCode"];
+  v5->_timeZone = [properties objectForKey:@"timeZone"];
+  [objc_msgSend(properties objectForKey:{@"longitude", "floatValue"}];
   v5->_longitude = v6;
-  [objc_msgSend(a3 objectForKey:{@"latitude", "floatValue"}];
+  [objc_msgSend(properties objectForKey:{@"latitude", "floatValue"}];
   v5->_latitude = v7;
-  v5->_unlocalizedName = [a3 objectForKey:@"unlocalizedName"];
-  v5->_unlocalizedCountryName = [a3 objectForKey:@"unlocalizedCountryName"];
-  v5->_yahooCode = [a3 objectForKey:@"yahooCode"];
-  v5->_name = [a3 objectForKey:@"name"];
-  v5->_countryName = [a3 objectForKey:@"countryName"];
-  v5->_countryOverride = [a3 objectForKey:@"countryOverride"];
-  v5->_unlocalizedCountryOverride = [a3 objectForKey:@"unlocalizedCountryOverride"];
-  v5->_displayNameIncludingCountryShowsOnlyCountry = [objc_msgSend(a3 objectForKey:{@"displayNameIncludingCountryUsesOnlyCountry", "BOOLValue"}];
+  v5->_unlocalizedName = [properties objectForKey:@"unlocalizedName"];
+  v5->_unlocalizedCountryName = [properties objectForKey:@"unlocalizedCountryName"];
+  v5->_yahooCode = [properties objectForKey:@"yahooCode"];
+  v5->_name = [properties objectForKey:@"name"];
+  v5->_countryName = [properties objectForKey:@"countryName"];
+  v5->_countryOverride = [properties objectForKey:@"countryOverride"];
+  v5->_unlocalizedCountryOverride = [properties objectForKey:@"unlocalizedCountryOverride"];
+  v5->_displayNameIncludingCountryShowsOnlyCountry = [objc_msgSend(properties objectForKey:{@"displayNameIncludingCountryUsesOnlyCountry", "BOOLValue"}];
   if (!v5->_unlocalizedName)
   {
     name = v5->_name;
@@ -102,32 +102,32 @@ LABEL_11:
   return v5;
 }
 
-- (ALCity)initWithSQLRow:(char *)a3
+- (ALCity)initWithSQLRow:(char *)row
 {
   v9.receiver = self;
   v9.super_class = ALCity;
   v4 = [(ALCity *)&v9 init];
   v5 = v4;
-  if (a3 && v4)
+  if (row && v4)
   {
-    v4->_identifier = atoi(a3[7]);
-    if (a3[8])
+    v4->_identifier = atoi(row[7]);
+    if (row[8])
     {
-      v5->_localeCode = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:a3[8]];
+      v5->_localeCode = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:row[8]];
     }
 
-    v5->_timeZone = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:a3[5]];
-    v5->_longitude = strtof(a3[3], 0);
-    v5->_latitude = strtof(a3[4], 0);
-    if (a3[6])
+    v5->_timeZone = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:row[5]];
+    v5->_longitude = strtof(row[3], 0);
+    v5->_latitude = strtof(row[4], 0);
+    if (row[6])
     {
-      v5->_yahooCode = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:a3[6]];
+      v5->_yahooCode = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:row[6]];
     }
 
-    v5->_unlocalizedName = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:*a3];
-    if (a3[1])
+    v5->_unlocalizedName = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:*row];
+    if (row[1])
     {
-      v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:a3[1]];
+      v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:row[1]];
     }
 
     else
@@ -136,9 +136,9 @@ LABEL_11:
     }
 
     v5->_unlocalizedCountryName = v6;
-    if (a3[2])
+    if (row[2])
     {
-      v5->_unlocalizedCountryOverride = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:a3[2]];
+      v5->_unlocalizedCountryOverride = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:row[2]];
     }
 
     if (v5->_identifier == 118)
@@ -164,12 +164,12 @@ LABEL_11:
   [(ALCity *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    LOBYTE(v5) = [a3 identifier] == self->_identifier;
+    LOBYTE(v5) = [equal identifier] == self->_identifier;
   }
 
   return v5;
@@ -185,33 +185,33 @@ LABEL_11:
   }
 }
 
-- (id)displayNameIncludingCountry:(BOOL)a3 withFormat:(id)a4
+- (id)displayNameIncludingCountry:(BOOL)country withFormat:(id)format
 {
-  v5 = a3;
-  v7 = [(ALCity *)self name];
-  if (!v5)
+  countryCopy = country;
+  name = [(ALCity *)self name];
+  if (!countryCopy)
   {
-    return v7;
+    return name;
   }
 
-  v8 = [(ALCity *)self countryOverride];
-  if (!v8)
+  countryOverride = [(ALCity *)self countryOverride];
+  if (!countryOverride)
   {
-    v8 = [(ALCity *)self countryName];
+    countryOverride = [(ALCity *)self countryName];
   }
 
-  if (![(NSString *)v8 length])
+  if (![(NSString *)countryOverride length])
   {
-    return v7;
+    return name;
   }
 
   v9 = MEMORY[0x1E696AEC0];
   if (!self->_displayNameIncludingCountryShowsOnlyCountry)
   {
-    return [MEMORY[0x1E696AEC0] stringWithFormat:a4, v7, v8];
+    return [MEMORY[0x1E696AEC0] stringWithFormat:format, name, countryOverride];
   }
 
-  return [v9 stringWithString:v8];
+  return [v9 stringWithString:countryOverride];
 }
 
 - (NSString)classicIdentifier
@@ -291,14 +291,14 @@ LABEL_11:
   return result;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   name = self->_name;
-  if (name != a3)
+  if (name != name)
   {
     self->_localizationAttempted = 1;
 
-    self->_name = a3;
+    self->_name = name;
   }
 }
 
@@ -315,14 +315,14 @@ LABEL_11:
   return result;
 }
 
-- (void)setCountryName:(id)a3
+- (void)setCountryName:(id)name
 {
   countryName = self->_countryName;
-  if (countryName != a3)
+  if (countryName != name)
   {
     self->_localizationAttempted = 1;
 
-    self->_countryName = a3;
+    self->_countryName = name;
   }
 }
 
@@ -339,35 +339,35 @@ LABEL_11:
   return result;
 }
 
-- (void)setCountryOverride:(id)a3
+- (void)setCountryOverride:(id)override
 {
   countryOverride = self->_countryOverride;
-  if (countryOverride != a3)
+  if (countryOverride != override)
   {
     self->_localizationAttempted = 1;
 
-    self->_countryOverride = a3;
+    self->_countryOverride = override;
   }
 }
 
-- (void)setUnlocalizedName:(id)a3
+- (void)setUnlocalizedName:(id)name
 {
   unlocalizedName = self->_unlocalizedName;
-  if (unlocalizedName != a3)
+  if (unlocalizedName != name)
   {
 
-    self->_unlocalizedName = a3;
+    self->_unlocalizedName = name;
     self->_identifierForCPCity = 0;
   }
 }
 
-- (void)setUnlocalizedCountryName:(id)a3
+- (void)setUnlocalizedCountryName:(id)name
 {
   unlocalizedCountryName = self->_unlocalizedCountryName;
-  if (unlocalizedCountryName != a3)
+  if (unlocalizedCountryName != name)
   {
 
-    self->_unlocalizedCountryName = a3;
+    self->_unlocalizedCountryName = name;
     self->_identifierForCPCity = 0;
   }
 }

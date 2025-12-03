@@ -1,37 +1,37 @@
 @interface LPCardHeadingPresentationProperties
-- (LPCardHeadingPresentationProperties)initWithStyle:(int64_t)a3 topCaption:(id)a4 attributedBottomCaption:(id)a5 icons:(id)a6;
-- (LPCardHeadingPresentationProperties)initWithStyle:(int64_t)a3 topCaption:(id)a4 bottomCaption:(id)a5 icon:(id)a6;
+- (LPCardHeadingPresentationProperties)initWithStyle:(int64_t)style topCaption:(id)caption attributedBottomCaption:(id)bottomCaption icons:(id)icons;
+- (LPCardHeadingPresentationProperties)initWithStyle:(int64_t)style topCaption:(id)caption bottomCaption:(id)bottomCaption icon:(id)icon;
 @end
 
 @implementation LPCardHeadingPresentationProperties
 
-- (LPCardHeadingPresentationProperties)initWithStyle:(int64_t)a3 topCaption:(id)a4 bottomCaption:(id)a5 icon:(id)a6
+- (LPCardHeadingPresentationProperties)initWithStyle:(int64_t)style topCaption:(id)caption bottomCaption:(id)bottomCaption icon:(id)icon
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  captionCopy = caption;
+  bottomCaptionCopy = bottomCaption;
+  iconCopy = icon;
   v25.receiver = self;
   v25.super_class = LPCardHeadingPresentationProperties;
   v13 = [(LPCardHeadingPresentationProperties *)&v25 init];
   v14 = v13;
   if (v13)
   {
-    [(LPWebLinkPresentationProperties *)v13 setStyle:a3];
+    [(LPWebLinkPresentationProperties *)v13 setStyle:style];
     v15 = objc_alloc_init(LPCaptionBarPresentationProperties);
     [(LPWebLinkPresentationProperties *)v14 setCaptionBar:v15];
 
-    v16 = [(LPWebLinkPresentationProperties *)v14 captionBar];
-    [v16 setLeadingIcon:v12];
+    captionBar = [(LPWebLinkPresentationProperties *)v14 captionBar];
+    [captionBar setLeadingIcon:iconCopy];
 
-    v17 = [(LPWebLinkPresentationProperties *)v14 captionBar];
-    v18 = [v17 top];
-    v19 = [v18 leading];
-    [v19 setText:v10];
+    captionBar2 = [(LPWebLinkPresentationProperties *)v14 captionBar];
+    v18 = [captionBar2 top];
+    leading = [v18 leading];
+    [leading setText:captionCopy];
 
-    v20 = [(LPWebLinkPresentationProperties *)v14 captionBar];
-    v21 = [v20 bottom];
-    v22 = [v21 leading];
-    [v22 setText:v11];
+    captionBar3 = [(LPWebLinkPresentationProperties *)v14 captionBar];
+    bottom = [captionBar3 bottom];
+    leading2 = [bottom leading];
+    [leading2 setText:bottomCaptionCopy];
 
     v23 = v14;
   }
@@ -39,41 +39,41 @@
   return v14;
 }
 
-- (LPCardHeadingPresentationProperties)initWithStyle:(int64_t)a3 topCaption:(id)a4 attributedBottomCaption:(id)a5 icons:(id)a6
+- (LPCardHeadingPresentationProperties)initWithStyle:(int64_t)style topCaption:(id)caption attributedBottomCaption:(id)bottomCaption icons:(id)icons
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  captionCopy = caption;
+  bottomCaptionCopy = bottomCaption;
+  iconsCopy = icons;
   v28.receiver = self;
   v28.super_class = LPCardHeadingPresentationProperties;
   v13 = [(LPCardHeadingPresentationProperties *)&v28 init];
   v14 = v13;
   if (v13)
   {
-    [(LPWebLinkPresentationProperties *)v13 setStyle:a3];
+    [(LPWebLinkPresentationProperties *)v13 setStyle:style];
     v15 = objc_alloc_init(LPCaptionBarPresentationProperties);
     [(LPWebLinkPresentationProperties *)v14 setCaptionBar:v15];
 
-    v16 = [v12 firstObject];
-    v17 = [(LPWebLinkPresentationProperties *)v14 captionBar];
-    [v17 setLeadingIcon:v16];
+    firstObject = [iconsCopy firstObject];
+    captionBar = [(LPWebLinkPresentationProperties *)v14 captionBar];
+    [captionBar setLeadingIcon:firstObject];
 
-    if ([v12 count] >= 2)
+    if ([iconsCopy count] >= 2)
     {
-      v18 = [v12 subarrayWithRange:{1, objc_msgSend(v12, "count") - 1}];
-      v19 = [(LPWebLinkPresentationProperties *)v14 captionBar];
-      [v19 setAdditionalLeadingIcons:v18];
+      v18 = [iconsCopy subarrayWithRange:{1, objc_msgSend(iconsCopy, "count") - 1}];
+      captionBar2 = [(LPWebLinkPresentationProperties *)v14 captionBar];
+      [captionBar2 setAdditionalLeadingIcons:v18];
     }
 
-    v20 = [(LPWebLinkPresentationProperties *)v14 captionBar];
-    v21 = [v20 top];
-    v22 = [v21 leading];
-    [v22 setText:v10];
+    captionBar3 = [(LPWebLinkPresentationProperties *)v14 captionBar];
+    v21 = [captionBar3 top];
+    leading = [v21 leading];
+    [leading setText:captionCopy];
 
-    v23 = [(LPWebLinkPresentationProperties *)v14 captionBar];
-    v24 = [v23 bottom];
-    v25 = [v24 leading];
-    [v25 setAttributedText:v11];
+    captionBar4 = [(LPWebLinkPresentationProperties *)v14 captionBar];
+    bottom = [captionBar4 bottom];
+    leading2 = [bottom leading];
+    [leading2 setAttributedText:bottomCaptionCopy];
 
     v26 = v14;
   }

@@ -1,15 +1,15 @@
 @interface PKCollectionHeaderView
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)heightOfHeaderWithoutText;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBottomPadding:(double)a3;
-- (void)setImage:(id)a3;
-- (void)setPrimaryText:(id)a3;
-- (void)setSecondaryText:(id)a3;
-- (void)setTertiaryText:(id)a3;
-- (void)setTopPadding:(double)a3;
+- (void)setBottomPadding:(double)padding;
+- (void)setImage:(id)image;
+- (void)setPrimaryText:(id)text;
+- (void)setSecondaryText:(id)text;
+- (void)setTertiaryText:(id)text;
+- (void)setTopPadding:(double)padding;
 @end
 
 @implementation PKCollectionHeaderView
@@ -19,22 +19,22 @@
   v4.receiver = self;
   v4.super_class = PKCollectionHeaderView;
   [(PKCollectionHeaderView *)&v4 layoutSubviews];
-  v3 = [(PKCollectionHeaderView *)self contentView];
-  [v3 bounds];
+  contentView = [(PKCollectionHeaderView *)self contentView];
+  [contentView bounds];
   [(PKCollectionHeaderView *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKCollectionHeaderView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKCollectionHeaderView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  width = a3.size.width;
+  width = bounds.size.width;
   v19 = 0;
   v20 = &v19;
   v6 = self->_topPadding + 0.0;
@@ -45,11 +45,11 @@
   v17[2] = __61__PKCollectionHeaderView__layoutWithBounds_isTemplateLayout___block_invoke;
   v17[3] = &unk_1E8012118;
   v17[4] = &v19;
-  *&v17[5] = a3.origin.x + 12.0;
-  *&v17[6] = a3.origin.y + 0.0;
-  *&v17[7] = a3.size.width + -24.0;
-  v17[8] = *&a3.size.height;
-  v18 = a4;
+  *&v17[5] = bounds.origin.x + 12.0;
+  *&v17[6] = bounds.origin.y + 0.0;
+  *&v17[7] = bounds.size.width + -24.0;
+  v17[8] = *&bounds.size.height;
+  layoutCopy = layout;
   v7 = _Block_copy(v17);
   v7[2](v7, self->_imageView, 90.0, 0.0);
   if (self->_imageView)
@@ -135,11 +135,11 @@ void __61__PKCollectionHeaderView__layoutWithBounds_isTemplateLayout___block_inv
   return CGRectGetMaxY(*&v2);
 }
 
-- (void)setPrimaryText:(id)a3
+- (void)setPrimaryText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   primaryText = self->_primaryText;
-  v18 = v5;
+  v18 = textCopy;
   v7 = primaryText;
   if (v7 == v18)
   {
@@ -161,7 +161,7 @@ LABEL_13:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_primaryText, a3);
+    objc_storeStrong(&self->_primaryText, text);
     v10 = [(NSString *)self->_primaryText length];
     primaryLabel = self->_primaryLabel;
     if (v10)
@@ -198,11 +198,11 @@ LABEL_8:
 LABEL_14:
 }
 
-- (void)setSecondaryText:(id)a3
+- (void)setSecondaryText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   secondaryText = self->_secondaryText;
-  v20 = v5;
+  v20 = textCopy;
   v7 = secondaryText;
   if (v7 == v20)
   {
@@ -224,7 +224,7 @@ LABEL_13:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_secondaryText, a3);
+    objc_storeStrong(&self->_secondaryText, text);
     v10 = [(NSString *)self->_secondaryText length];
     secondaryLabel = self->_secondaryLabel;
     if (v10)
@@ -243,8 +243,8 @@ LABEL_8:
         [(UILabel *)self->_secondaryLabel setNumberOfLines:0];
         [(UILabel *)self->_secondaryLabel setTextAlignment:1];
         v17 = self->_secondaryLabel;
-        v18 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-        [(UILabel *)v17 setTextColor:v18];
+        secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+        [(UILabel *)v17 setTextColor:secondaryLabelColor];
 
         [(PKCollectionHeaderView *)self addSubview:self->_secondaryLabel];
       }
@@ -265,11 +265,11 @@ LABEL_8:
 LABEL_14:
 }
 
-- (void)setTertiaryText:(id)a3
+- (void)setTertiaryText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   tertiaryText = self->_tertiaryText;
-  v20 = v5;
+  v20 = textCopy;
   v7 = tertiaryText;
   if (v7 == v20)
   {
@@ -291,7 +291,7 @@ LABEL_13:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_tertiaryText, a3);
+    objc_storeStrong(&self->_tertiaryText, text);
     v10 = [(NSString *)self->_tertiaryText length];
     tertiaryLabel = self->_tertiaryLabel;
     if (v10)
@@ -310,8 +310,8 @@ LABEL_8:
         [(UILabel *)self->_tertiaryLabel setNumberOfLines:0];
         [(UILabel *)self->_tertiaryLabel setTextAlignment:1];
         v17 = self->_tertiaryLabel;
-        v18 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-        [(UILabel *)v17 setTextColor:v18];
+        secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+        [(UILabel *)v17 setTextColor:secondaryLabelColor];
 
         [(PKCollectionHeaderView *)self addSubview:self->_tertiaryLabel];
       }
@@ -332,31 +332,31 @@ LABEL_8:
 LABEL_14:
 }
 
-- (void)setTopPadding:(double)a3
+- (void)setTopPadding:(double)padding
 {
-  if (self->_topPadding != a3)
+  if (self->_topPadding != padding)
   {
-    self->_topPadding = a3;
+    self->_topPadding = padding;
     [(PKCollectionHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setBottomPadding:(double)a3
+- (void)setBottomPadding:(double)padding
 {
-  if (self->_bottomPadding != a3)
+  if (self->_bottomPadding != padding)
   {
-    self->_bottomPadding = a3;
+    self->_bottomPadding = padding;
     [(PKCollectionHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_image, a3);
+    v11 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     imageView = self->_imageView;
     if (self->_image)
     {
@@ -383,7 +383,7 @@ LABEL_14:
 
     [(UIImageView *)self->_imageView setImage:self->_image];
     [(PKCollectionHeaderView *)self setNeedsLayout];
-    v5 = v11;
+    imageCopy = v11;
   }
 }
 

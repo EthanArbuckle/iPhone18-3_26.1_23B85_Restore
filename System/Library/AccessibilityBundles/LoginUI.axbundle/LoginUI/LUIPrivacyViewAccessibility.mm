@@ -1,17 +1,17 @@
 @interface LUIPrivacyViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityMungeMoreButtonLabel;
-- (void)setButtonTitle:(id)a3;
+- (void)setButtonTitle:(id)title;
 @end
 
 @implementation LUIPrivacyViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"LUIPrivacyView" hasInstanceMethod:@"setButtonTitle:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"LUIPrivacyView" hasInstanceVariable:@"_moreInfoButton" withType:"UIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"LUIPrivacyView" hasInstanceMethod:@"setButtonTitle:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"LUIPrivacyView" hasInstanceVariable:@"_moreInfoButton" withType:"UIButton"];
 }
 
 - (void)_accessibilityMungeMoreButtonLabel
@@ -29,11 +29,11 @@
   [(LUIPrivacyViewAccessibility *)self _accessibilityMungeMoreButtonLabel];
 }
 
-- (void)setButtonTitle:(id)a3
+- (void)setButtonTitle:(id)title
 {
   v4.receiver = self;
   v4.super_class = LUIPrivacyViewAccessibility;
-  [(LUIPrivacyViewAccessibility *)&v4 setButtonTitle:a3];
+  [(LUIPrivacyViewAccessibility *)&v4 setButtonTitle:title];
   [(LUIPrivacyViewAccessibility *)self _accessibilityMungeMoreButtonLabel];
 }
 

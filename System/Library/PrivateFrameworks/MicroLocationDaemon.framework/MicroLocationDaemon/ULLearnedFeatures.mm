@@ -1,6 +1,6 @@
 @interface ULLearnedFeatures
 + (id)learnedFeatures;
-+ (void)_writePhotoToDisk:(id)a3 requestId:(id)a4;
++ (void)_writePhotoToDisk:(id)disk requestId:(id)id;
 - (id)_init;
 - (int)_createLFV2HandleIfNeeded;
 - (void)dealloc;
@@ -44,9 +44,9 @@ void __86__ULLearnedFeatures_featuresArrayFutureWithPhotoPixelBuffer_andOrientat
 
 + (id)learnedFeatures
 {
-  v2 = [[ULLearnedFeatures alloc] _init];
+  _init = [[ULLearnedFeatures alloc] _init];
 
-  return v2;
+  return _init;
 }
 
 - (id)_init
@@ -82,47 +82,47 @@ void __86__ULLearnedFeatures_featuresArrayFutureWithPhotoPixelBuffer_andOrientat
   return result;
 }
 
-+ (void)_writePhotoToDisk:(id)a3 requestId:(id)a4
++ (void)_writePhotoToDisk:(id)disk requestId:(id)id
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  v5 = a4;
+  diskCopy = disk;
+  idCopy = id;
   v6 = +[ULDefaultsSingleton shared];
-  v7 = [v6 defaultsDictionary];
+  defaultsDictionary = [v6 defaultsDictionary];
 
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULSaveSensitiveImages"];
-  v9 = [v7 objectForKey:v8];
+  v9 = [defaultsDictionary objectForKey:v8];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CBEC28] BOOLValue];
+    bOOLValue = [MEMORY[0x277CBEC28] BOOLValue];
   }
 
-  v11 = v10;
+  v11 = bOOLValue;
 
   if (v11)
   {
     v12 = objc_alloc_init(MEMORY[0x277CCA968]);
     [v12 setDateFormat:@"yyyy-MM-dd_HH-mm-ss"];
-    v13 = [MEMORY[0x277CBEAA8] date];
-    v14 = [v12 stringFromDate:v13];
+    date = [MEMORY[0x277CBEAA8] date];
+    v14 = [v12 stringFromDate:date];
 
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"/tmp/ULLearnedFeatures_%@_%@.JPEG", v14, v5];
-    v16 = [MEMORY[0x277CBEBC0] fileURLWithPath:v15];
-    v17 = [MEMORY[0x277CBF740] context];
+    idCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"/tmp/ULLearnedFeatures_%@_%@.JPEG", v14, idCopy];
+    v16 = [MEMORY[0x277CBEBC0] fileURLWithPath:idCopy];
+    context = [MEMORY[0x277CBF740] context];
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
     v32 = *MEMORY[0x277CD2D48];
     v33[0] = &unk_286A73380;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:1];
     v27 = 0;
-    LODWORD(v13) = [v17 writeJPEGRepresentationOfImage:v26 toURL:v16 colorSpace:DeviceRGB options:v19 error:&v27];
+    LODWORD(date) = [context writeJPEGRepresentationOfImage:diskCopy toURL:v16 colorSpace:DeviceRGB options:v19 error:&v27];
     v20 = v27;
     CGColorSpaceRelease(DeviceRGB);
-    if (v13)
+    if (date)
     {
       if (onceToken_MicroLocation_Default != -1)
       {
@@ -133,11 +133,11 @@ void __86__ULLearnedFeatures_featuresArrayFutureWithPhotoPixelBuffer_andOrientat
       if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v29 = v15;
+        v29 = idCopy;
         _os_log_impl(&dword_258FE9000, v21, OS_LOG_TYPE_DEFAULT, "[ULLearnedFeatures]: transformed image written to: %@, ", buf, 0xCu);
       }
 
-      ULDiskUtils::trackTempFileWithCleanup(v15, v22);
+      ULDiskUtils::trackTempFileWithCleanup(idCopy, v22);
     }
 
     else
@@ -150,11 +150,11 @@ void __86__ULLearnedFeatures_featuresArrayFutureWithPhotoPixelBuffer_andOrientat
       v23 = logObject_MicroLocation_Default;
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [v20 localizedDescription];
+        localizedDescription = [v20 localizedDescription];
         *buf = 138412546;
-        v29 = v15;
+        v29 = idCopy;
         v30 = 2112;
-        v31 = v24;
+        v31 = localizedDescription;
         _os_log_impl(&dword_258FE9000, v23, OS_LOG_TYPE_DEFAULT, "[ULLearnedFeatures]: Failed to save file: %@, %@", buf, 0x16u);
       }
     }

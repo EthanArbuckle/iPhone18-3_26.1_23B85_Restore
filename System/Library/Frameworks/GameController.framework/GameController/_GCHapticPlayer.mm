@@ -1,64 +1,64 @@
 @interface _GCHapticPlayer
-- (BOOL)hasProcessedActiveEventsAfterTime:(double)a3;
-- (BOOL)hasScheduledEventsByTime:(double)a3;
+- (BOOL)hasProcessedActiveEventsAfterTime:(double)time;
+- (BOOL)hasScheduledEventsByTime:(double)time;
 - (BOOL)isMuted;
-- (BOOL)isMutedForReason:(unint64_t)a3;
+- (BOOL)isMutedForReason:(unint64_t)reason;
 - (BOOL)transientsEnqueuedSinceLastQuery;
 - (_GCHapticLogicalDevice)hapticLogicalDevice;
-- (_GCHapticPlayer)initWithIdentifier:(unint64_t)a3 actuators:(id)a4 client:(id)a5;
+- (_GCHapticPlayer)initWithIdentifier:(unint64_t)identifier actuators:(id)actuators client:(id)client;
 - (double)totalLifetimeInSeconds;
 - (float)continuousIntensity;
 - (float)continuousSharpness;
 - (void)clearParameters;
 - (void)dealloc;
-- (void)handleCommand:(id)a3;
-- (void)processSliceForLogicalDevice:(id)a3 startTime:(double)a4 endTime:(double)a5;
-- (void)scheduleCommand:(const void *)a3;
-- (void)setMute:(BOOL)a3 forReason:(unint64_t)a4;
-- (void)setRetainedByClient:(BOOL)a3;
+- (void)handleCommand:(id)command;
+- (void)processSliceForLogicalDevice:(id)device startTime:(double)time endTime:(double)endTime;
+- (void)scheduleCommand:(const void *)command;
+- (void)setMute:(BOOL)mute forReason:(unint64_t)reason;
+- (void)setRetainedByClient:(BOOL)client;
 - (void)teardown;
 @end
 
 @implementation _GCHapticPlayer
 
-- (_GCHapticPlayer)initWithIdentifier:(unint64_t)a3 actuators:(id)a4 client:(id)a5
+- (_GCHapticPlayer)initWithIdentifier:(unint64_t)identifier actuators:(id)actuators client:(id)client
 {
-  v8 = a4;
-  v9 = a5;
+  actuatorsCopy = actuators;
+  clientCopy = client;
   v26.receiver = self;
   v26.super_class = _GCHapticPlayer;
   v10 = [(_GCHapticPlayer *)&v26 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [actuatorsCopy copy];
     actuators = v10->_actuators;
     v10->_actuators = v11;
 
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     scheduledCommands = v10->_scheduledCommands;
-    v10->_scheduledCommands = v13;
+    v10->_scheduledCommands = array;
 
-    v15 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     activeHapticEvents = v10->_activeHapticEvents;
-    v10->_activeHapticEvents = v15;
+    v10->_activeHapticEvents = array2;
 
-    v17 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     eventsToRemove = v10->_eventsToRemove;
-    v10->_eventsToRemove = v17;
+    v10->_eventsToRemove = array3;
 
-    v19 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     intensityParamCurve = v10->_intensityParamCurve;
-    v10->_intensityParamCurve = v19;
+    v10->_intensityParamCurve = array4;
 
-    v21 = [MEMORY[0x1E695DF70] array];
+    array5 = [MEMORY[0x1E695DF70] array];
     sharpnessParamCurve = v10->_sharpnessParamCurve;
-    v10->_sharpnessParamCurve = v21;
+    v10->_sharpnessParamCurve = array5;
 
-    v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:identifier];
     identifier = v10->_identifier;
     v10->_identifier = v23;
 
-    objc_storeStrong(&v10->_client, a5);
+    objc_storeStrong(&v10->_client, client);
     v10->_retainedByClient = 1;
     v10->_initializationTime = mach_absolute_time() * 0.0000000416666667;
     [(_GCHapticPlayer *)v10 clearParameters];
@@ -74,10 +74,10 @@
   return transientsEnqueuedSinceLastQuery;
 }
 
-- (void)processSliceForLogicalDevice:(id)a3 startTime:(double)a4 endTime:(double)a5
+- (void)processSliceForLogicalDevice:(id)device startTime:(double)time endTime:(double)endTime
 {
   v93 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  deviceCopy = device;
   self->_continuousIntensity = 0.0;
   self->_continuousSharpness = 0.0;
   self->_activeEventThisSlice = 0;
@@ -86,8 +86,8 @@
     goto LABEL_71;
   }
 
-  v76 = self;
-  v70 = [MEMORY[0x1E696AD50] indexSet];
+  selfCopy = self;
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v73 = self->_intensityParamCurve;
   for (i = 0; ; ++i)
   {
@@ -103,14 +103,14 @@
     v8 = [(NSMutableArray *)v73 objectAtIndexedSubscript:i];
     [v8 getValue:buf];
     v9 = *&v88[12];
-    if (*&v88[12] < a4)
+    if (*&v88[12] < time)
     {
-      [v70 addIndex:i];
+      [indexSet addIndex:i];
       goto LABEL_7;
     }
 
     v10 = *&v88[4];
-    if (*&v88[4] <= a5)
+    if (*&v88[4] <= endTime)
     {
       break;
     }
@@ -118,20 +118,20 @@
 LABEL_7:
   }
 
-  v76->_activeEventThisSlice = 1;
+  selfCopy->_activeEventThisSlice = 1;
   v12 = v89;
   v11 = v90[0];
 
 LABEL_10:
-  [(NSMutableArray *)v73 removeObjectsAtIndexes:v70];
-  v13 = [MEMORY[0x1E696AD50] indexSet];
+  [(NSMutableArray *)v73 removeObjectsAtIndexes:indexSet];
+  indexSet2 = [MEMORY[0x1E696AD50] indexSet];
 
-  v14 = v76->_sharpnessParamCurve;
+  v14 = selfCopy->_sharpnessParamCurve;
   v15 = 0;
-  v71 = v13;
+  v71 = indexSet2;
   while (2)
   {
-    v16 = v76;
+    v16 = selfCopy;
     if ([(NSMutableArray *)v14 count]<= v15)
     {
       v19 = 0.0;
@@ -144,7 +144,7 @@ LABEL_10:
     v17 = [(NSMutableArray *)v14 objectAtIndexedSubscript:v15];
     [v17 getValue:buf];
     v18 = *&v88[12];
-    if (*&v88[12] < a4)
+    if (*&v88[12] < time)
     {
       [v71 addIndex:v15];
 LABEL_15:
@@ -157,7 +157,7 @@ LABEL_15:
   }
 
   v19 = *&v88[4];
-  if (*&v88[4] > a5)
+  if (*&v88[4] > endTime)
   {
     goto LABEL_15;
   }
@@ -165,7 +165,7 @@ LABEL_15:
   v20 = v89;
   v21 = v90[0];
 
-  v16 = v76;
+  v16 = selfCopy;
 LABEL_18:
   [(NSMutableArray *)v14 removeObjectsAtIndexes:v71];
   v85 = 0u;
@@ -180,9 +180,9 @@ LABEL_18:
   }
 
   v77 = *v84;
-  *&v23 = (a4 - v10) / (v9 - v10);
+  *&v23 = (time - v10) / (v9 - v10);
   v24 = v12 + *&v23 * (v11 - v12);
-  *&v23 = (a4 - v19) / (v18 - v19);
+  *&v23 = (time - v19) / (v18 - v19);
   v25 = v20 + *&v23 * (v21 - v20);
   *&v23 = 138413058;
   v67 = v23;
@@ -205,15 +205,15 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v28 = [v6[10] actuators];
-      v29 = [v28 firstObject];
-      v30 = [v29 type] == 0;
+      actuators = [deviceCopy[10] actuators];
+      firstObject = [actuators firstObject];
+      v30 = [firstObject type] == 0;
 
       if (v30)
       {
         [v27 startTime];
-        v16 = v76;
-        if (v35 + 0.1 <= a5)
+        v16 = selfCopy;
+        if (v35 + 0.1 <= endTime)
         {
           [v27 setStopped:1];
         }
@@ -221,21 +221,21 @@ LABEL_29:
         goto LABEL_29;
       }
 
-      v31 = [v6[10] actuators];
-      v32 = [v31 firstObject];
-      v33 = [v32 type] == 1;
+      actuators2 = [deviceCopy[10] actuators];
+      firstObject2 = [actuators2 firstObject];
+      v33 = [firstObject2 type] == 1;
 
       if (v33)
       {
         v34 = 1;
-        v16 = v76;
-        v76->_transientsEnqueuedSinceLastQuery = 1;
+        v16 = selfCopy;
+        selfCopy->_transientsEnqueuedSinceLastQuery = 1;
       }
 
       else
       {
         v34 = 0;
-        v16 = v76;
+        v16 = selfCopy;
       }
 
 LABEL_30:
@@ -282,21 +282,21 @@ LABEL_30:
 
           if ([v27 type] == 1)
           {
-            v48 = [v6[10] actuators];
-            v49 = [v48 firstObject];
-            v50 = [v49 type] == 0;
+            actuators3 = [deviceCopy[10] actuators];
+            firstObject3 = [actuators3 firstObject];
+            v50 = [firstObject3 type] == 0;
 
             if (v50)
             {
               [v27 setTransientBeganAsContinuousEvent:1];
-              v16 = v76;
+              v16 = selfCopy;
               [v27 setIntensity:v40];
               [v27 setSharpness:v38];
             }
 
             else
             {
-              v16 = v76;
+              v16 = selfCopy;
             }
           }
         }
@@ -342,15 +342,15 @@ LABEL_30:
                   v60 = getGCHapticsLogger();
                   if (os_log_type_enabled(v60, OS_LOG_TYPE_DEBUG))
                   {
-                    v69 = [(_GCHapticClientProxy *)v76->_client identifier];
-                    v68 = [v59 index];
+                    identifier = [(_GCHapticClientProxy *)selfCopy->_client identifier];
+                    index = [v59 index];
                     [v27 intensity];
                     v62 = v61;
                     [v27 sharpness];
                     *buf = v67;
-                    *v88 = v69;
+                    *v88 = identifier;
                     *&v88[8] = 2048;
-                    *&v88[10] = v68;
+                    *&v88[10] = index;
                     *&v88[18] = 2048;
                     v89 = v62;
                     LOWORD(v90[0]) = 2048;
@@ -359,7 +359,7 @@ LABEL_30:
                   }
                 }
 
-                [v6[9] enqueueTransient:v27 hapticMotor:{objc_msgSend(v59, "index")}];
+                [deviceCopy[9] enqueueTransient:v27 hapticMotor:{objc_msgSend(v59, "index")}];
                 ++v58;
               }
 
@@ -371,8 +371,8 @@ LABEL_30:
             while (v64);
           }
 
-          v16 = v76;
-          [(NSMutableArray *)v76->_eventsToRemove addObject:v27];
+          v16 = selfCopy;
+          [(NSMutableArray *)selfCopy->_eventsToRemove addObject:v27];
         }
 
         else
@@ -415,24 +415,24 @@ LABEL_30:
 
 LABEL_68:
 
-  if (v76->_activeEventThisSlice)
+  if (selfCopy->_activeEventThisSlice)
   {
-    v76->_activeLifetime = a5 - a4 + v76->_activeLifetime;
-    v76->_lastActiveTime = a5;
+    selfCopy->_activeLifetime = endTime - time + selfCopy->_activeLifetime;
+    selfCopy->_lastActiveTime = endTime;
   }
 
-  [(NSMutableArray *)v76->_activeHapticEvents removeObjectsInArray:v76->_eventsToRemove];
-  [(NSMutableArray *)v76->_eventsToRemove removeAllObjects];
+  [(NSMutableArray *)selfCopy->_activeHapticEvents removeObjectsInArray:selfCopy->_eventsToRemove];
+  [(NSMutableArray *)selfCopy->_eventsToRemove removeAllObjects];
 
 LABEL_71:
   v66 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setMute:(BOOL)a3 forReason:(unint64_t)a4
+- (void)setMute:(BOOL)mute forReason:(unint64_t)reason
 {
-  v4 = self + 4 * a4;
+  v4 = self + 4 * reason;
   v5 = *(v4 + 15);
-  if (a3)
+  if (mute)
   {
     v6 = v5 + 1;
   }
@@ -446,15 +446,15 @@ LABEL_71:
   self->_dirtyMuteState = 1;
 }
 
-- (BOOL)isMutedForReason:(unint64_t)a3
+- (BOOL)isMutedForReason:(unint64_t)reason
 {
-  if (a3 >= 5)
+  if (reason >= 5)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"GCHapticPlayer.mm" lineNumber:224 description:@"Attempting to check if player is muted for invalid reason"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"GCHapticPlayer.mm" lineNumber:224 description:@"Attempting to check if player is muted for invalid reason"];
   }
 
-  return self->_muteReasons[a3] != 0;
+  return self->_muteReasons[reason] != 0;
 }
 
 - (BOOL)isMuted
@@ -490,9 +490,9 @@ LABEL_71:
 
 - (float)continuousIntensity
 {
-  v3 = [(_GCHapticPlayer *)self isMuted];
+  isMuted = [(_GCHapticPlayer *)self isMuted];
   result = 0.0;
-  if (!v3)
+  if (!isMuted)
   {
     return self->_continuousIntensity;
   }
@@ -502,9 +502,9 @@ LABEL_71:
 
 - (float)continuousSharpness
 {
-  v3 = [(_GCHapticPlayer *)self isMuted];
+  isMuted = [(_GCHapticPlayer *)self isMuted];
   result = 0.0;
-  if (!v3)
+  if (!isMuted)
   {
     return self->_continuousSharpness;
   }
@@ -512,46 +512,46 @@ LABEL_71:
   return result;
 }
 
-- (BOOL)hasProcessedActiveEventsAfterTime:(double)a3
+- (BOOL)hasProcessedActiveEventsAfterTime:(double)time
 {
   v5 = [(NSMutableArray *)self->_activeHapticEvents count];
   if (v5)
   {
-    LOBYTE(v5) = self->_lastActiveTime > a3;
+    LOBYTE(v5) = self->_lastActiveTime > time;
   }
 
   return v5;
 }
 
-- (BOOL)hasScheduledEventsByTime:(double)a3
+- (BOOL)hasScheduledEventsByTime:(double)time
 {
   if (![(NSMutableArray *)self->_scheduledCommands count])
   {
     return 0;
   }
 
-  v5 = [(NSMutableArray *)self->_scheduledCommands lastObject];
-  [v5 time];
-  v7 = v6 <= a3;
+  lastObject = [(NSMutableArray *)self->_scheduledCommands lastObject];
+  [lastObject time];
+  v7 = v6 <= time;
 
   return v7;
 }
 
-- (void)setRetainedByClient:(BOOL)a3
+- (void)setRetainedByClient:(BOOL)client
 {
-  if (self->_retainedByClient && !a3)
+  if (self->_retainedByClient && !client)
   {
     v5 = +[_GCHapticServerManager sharedInstance];
     [v5 notifyPlayerNoLongerRetained:self];
   }
 
-  self->_retainedByClient = a3;
+  self->_retainedByClient = client;
 }
 
-- (void)scheduleCommand:(const void *)a3
+- (void)scheduleCommand:(const void *)command
 {
-  v5 = [[_GCHapticSyntheticCommand alloc] initWithHapticCommand:a3];
-  if (*(a3 + 1) == 1)
+  v5 = [[_GCHapticSyntheticCommand alloc] initWithHapticCommand:command];
+  if (*(command + 1) == 1)
   {
     [(_GCHapticClientProxy *)self->_client setComplete:0];
   }
@@ -571,19 +571,19 @@ LABEL_71:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleCommand:(id)a3
+- (void)handleCommand:(id)command
 {
   v84 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  commandCopy = command;
   ++self->_totalEventsProcessed;
-  v5 = [v4 type];
-  if (v5 > 11)
+  type = [commandCopy type];
+  if (type > 11)
   {
-    if ((v5 - 20) >= 4)
+    if ((type - 20) >= 4)
     {
-      if (v5 == 12)
+      if (type == 12)
       {
-        v30 = [v4 channelID];
+        channelID = [commandCopy channelID];
         v31 = [(NSMutableArray *)self->_scheduledCommands count];
         if (v31 < 1)
         {
@@ -601,10 +601,10 @@ LABEL_71:
             v35 = [(NSMutableArray *)self->_scheduledCommands objectAtIndexedSubscript:v34 - 2];
 
             v32 = v35;
-            if ([v35 channelID] == v30)
+            if ([v35 channelID] == channelID)
             {
-              v36 = [v35 serverID];
-              if (v36 <= [v4 serverID])
+              serverID = [v35 serverID];
+              if (serverID <= [commandCopy serverID])
               {
                 if ([v32 type] == 2)
                 {
@@ -676,16 +676,16 @@ LABEL_71:
           v56 = getGCHapticsLogger();
           if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
           {
-            v57 = [v4 channelID];
-            [v4 time];
-            [(_GCHapticPlayer *)buf handleCommand:v57, v58];
+            channelID2 = [commandCopy channelID];
+            [commandCopy time];
+            [(_GCHapticPlayer *)buf handleCommand:channelID2, v58];
           }
         }
 
         goto LABEL_23;
       }
 
-      if (v5 != 30)
+      if (type != 30)
       {
         goto LABEL_60;
       }
@@ -696,7 +696,7 @@ LABEL_71:
       v8 = getGCHapticsLogger();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        [v4 time];
+        [commandCopy time];
         [(_GCHapticPlayer *)buf handleCommand:v9];
       }
     }
@@ -709,23 +709,23 @@ LABEL_71:
     v15 = getGCHapticsLogger();
     if (os_log_type_enabled(&v15->super, OS_LOG_TYPE_DEBUG))
     {
-      [v4 time];
+      [commandCopy time];
       [(_GCHapticPlayer *)v82 handleCommand:v51];
     }
 
     goto LABEL_107;
   }
 
-  if (v5 > 3)
+  if (type > 3)
   {
-    if (v5 == 4)
+    if (type == 4)
     {
       if (gc_isInternalBuild())
       {
         v53 = getGCHapticsLogger();
         if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
         {
-          [v4 time];
+          [commandCopy time];
           [(_GCHapticPlayer *)buf handleCommand:v54];
         }
       }
@@ -745,12 +745,12 @@ LABEL_71:
           v20 = [(NSMutableArray *)self->_scheduledCommands objectAtIndexedSubscript:v19 - 2];
 
           v18 = v20;
-          v21 = [v20 channelID];
-          if (v21 == [v4 channelID])
+          channelID3 = [v20 channelID];
+          if (channelID3 == [commandCopy channelID])
           {
             [v18 time];
             v23 = v22;
-            [v4 time];
+            [commandCopy time];
             if (v23 >= v24 && [v18 type] != 5)
             {
               [v18 cancel];
@@ -793,23 +793,23 @@ LABEL_71:
       goto LABEL_23;
     }
 
-    if (v5 != 5)
+    if (type != 5)
     {
-      if (v5 == 10)
+      if (type == 10)
       {
         ++self->_parameterCurvesProcessed;
-        v10 = [v4 paramID];
-        if (v10 == 2001)
+        paramID = [commandCopy paramID];
+        if (paramID == 2001)
         {
           sharpnessParamCurve = self->_sharpnessParamCurve;
-          v12 = [v4 parameterCurve];
-          v13 = [v12 curve];
-          [(NSMutableArray *)sharpnessParamCurve addObjectsFromArray:v13];
+          parameterCurve = [commandCopy parameterCurve];
+          curve = [parameterCurve curve];
+          [(NSMutableArray *)sharpnessParamCurve addObjectsFromArray:curve];
         }
 
         else
         {
-          if (v10 != 2000)
+          if (paramID != 2000)
           {
 LABEL_95:
             if (!gc_isInternalBuild())
@@ -820,18 +820,18 @@ LABEL_95:
             v15 = getGCHapticsLogger();
             if (os_log_type_enabled(&v15->super, OS_LOG_TYPE_DEBUG))
             {
-              v49 = [v4 paramID];
-              [v4 time];
-              [(_GCHapticPlayer *)buf handleCommand:v49, v50];
+              paramID2 = [commandCopy paramID];
+              [commandCopy time];
+              [(_GCHapticPlayer *)buf handleCommand:paramID2, v50];
             }
 
             goto LABEL_107;
           }
 
           intensityParamCurve = self->_intensityParamCurve;
-          v12 = [v4 parameterCurve];
-          v13 = [v12 curve];
-          [(NSMutableArray *)intensityParamCurve addObjectsFromArray:v13];
+          parameterCurve = [commandCopy parameterCurve];
+          curve = [parameterCurve curve];
+          [(NSMutableArray *)intensityParamCurve addObjectsFromArray:curve];
         }
 
         goto LABEL_95;
@@ -846,13 +846,13 @@ LABEL_60:
       v15 = getGCHapticsLogger();
       if (os_log_type_enabled(&v15->super, OS_LOG_TYPE_ERROR))
       {
-        [v4 time];
+        [commandCopy time];
         *buf = 134218496;
         *v79 = v64;
         *&v79[8] = 1024;
-        *&v79[10] = [v4 type];
+        *&v79[10] = [commandCopy type];
         *&v79[14] = 1024;
-        *&v79[16] = [v4 channelID];
+        *&v79[16] = [commandCopy channelID];
         _os_log_error_impl(&dword_1D2CD5000, &v15->super, OS_LOG_TYPE_ERROR, "ERROR: read unrecognized command from client: time: %.3f type: %u chanID: %d", buf, 0x18u);
       }
 
@@ -867,7 +867,7 @@ LABEL_60:
     v15 = getGCHapticsLogger();
     if (os_log_type_enabled(&v15->super, OS_LOG_TYPE_DEBUG))
     {
-      [v4 time];
+      [commandCopy time];
       [(_GCHapticPlayer *)buf handleCommand:v29];
     }
 
@@ -876,27 +876,27 @@ LABEL_107:
     goto LABEL_23;
   }
 
-  if (v5 == 1)
+  if (type == 1)
   {
     if (gc_isInternalBuild())
     {
       v52 = getGCHapticsLogger();
       if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
       {
-        [v4 time];
+        [commandCopy time];
         v61 = v60;
-        v62 = [v4 tokenAndParams];
+        tokenAndParams = [commandCopy tokenAndParams];
         *buf = 134218496;
         *v79 = v61;
         *&v79[8] = 2048;
-        *&v79[10] = [v62 token];
+        *&v79[10] = [tokenAndParams token];
         *&v79[18] = 2048;
-        *&v79[20] = [v4 channelID];
+        *&v79[20] = [commandCopy channelID];
         _os_log_debug_impl(&dword_1D2CD5000, v52, OS_LOG_TYPE_DEBUG, "StartEvent at %f token %lu (ch=%lu)", buf, 0x20u);
       }
     }
 
-    v15 = [[_GCHapticEvent alloc] initWithSyntheticCommand:v4];
+    v15 = [[_GCHapticEvent alloc] initWithSyntheticCommand:commandCopy];
     [(NSMutableArray *)self->_activeHapticEvents addObject:v15];
     if ([(_GCHapticEvent *)v15 type]== 2)
     {
@@ -917,31 +917,31 @@ LABEL_107:
     goto LABEL_107;
   }
 
-  if (v5 != 2)
+  if (type != 2)
   {
-    if (v5 == 3)
+    if (type == 3)
     {
-      v6 = [v4 paramID];
-      if (v6 == 2014)
+      paramID3 = [commandCopy paramID];
+      if (paramID3 == 2014)
       {
         if (gc_isInternalBuild())
         {
           v59 = getGCHapticsLogger();
           if (os_log_type_enabled(v59, OS_LOG_TYPE_DEBUG))
           {
-            -[_GCHapticPlayer handleCommand:].cold.4(buf, [v4 channelID], v59);
+            -[_GCHapticPlayer handleCommand:].cold.4(buf, [commandCopy channelID], v59);
           }
         }
 
-        [v4 value];
+        [commandCopy value];
         [(_GCHapticPlayer *)self setMute:v7 != 0.0 forReason:2];
         goto LABEL_23;
       }
 
       v82[0] = 0;
       v81[0] = 0.0;
-      [v4 value];
-      clientParamToSynthParam(v6, v42, v82, v81);
+      [commandCopy value];
+      clientParamToSynthParam(paramID3, v42, v82, v81);
       if (v82[0] == 5002)
       {
         v43 = 32;
@@ -962,9 +962,9 @@ LABEL_101:
           {
             v65 = v82[0];
             v66 = v81[0];
-            [v4 time];
+            [commandCopy time];
             v68 = v67;
-            v69 = [v4 channelID];
+            channelID4 = [commandCopy channelID];
             *buf = 67109888;
             *v79 = v65;
             *&v79[4] = 2048;
@@ -972,7 +972,7 @@ LABEL_101:
             *&v79[14] = 2048;
             *&v79[16] = v68;
             *&v79[24] = 2048;
-            *&v79[26] = v69;
+            *&v79[26] = channelID4;
             _os_log_debug_impl(&dword_1D2CD5000, &v15->super, OS_LOG_TYPE_DEBUG, "CommandType::SetParam - type %d param with value %f at time %.3f on channel %lu", buf, 0x26u);
           }
 
@@ -994,11 +994,11 @@ LABEL_101:
     v55 = getGCHapticsLogger();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG))
     {
-      v63 = [v4 tokenAndParams];
+      tokenAndParams2 = [commandCopy tokenAndParams];
       *buf = 134218240;
-      *v79 = [v63 token];
+      *v79 = [tokenAndParams2 token];
       *&v79[8] = 2048;
-      *&v79[10] = [v4 channelID];
+      *&v79[10] = [commandCopy channelID];
       _os_log_debug_impl(&dword_1D2CD5000, v55, OS_LOG_TYPE_DEBUG, "Stop event token %lu (ch=%lu)", buf, 0x16u);
     }
   }
@@ -1006,11 +1006,11 @@ LABEL_101:
   for (k = 0; [(NSMutableArray *)self->_activeHapticEvents count]> k; ++k)
   {
     v26 = [(NSMutableArray *)self->_activeHapticEvents objectAtIndexedSubscript:k];
-    v27 = [v26 identifier];
-    v28 = [v4 tokenAndParams];
-    LODWORD(v27) = v27 == [v28 token];
+    identifier = [v26 identifier];
+    tokenAndParams3 = [commandCopy tokenAndParams];
+    LODWORD(identifier) = identifier == [tokenAndParams3 token];
 
-    if (v27)
+    if (identifier)
     {
       [v26 setStopped:1];
 
@@ -1036,20 +1036,20 @@ LABEL_23:
 - (void)dealloc
 {
   v3 = +[GCAnalytics instance];
-  v4 = [(_GCHapticPlayer *)self bundleIdentifier];
-  v5 = [v4 copy];
-  v6 = [(_GCHapticPlayer *)self controllerProductCategory];
-  v7 = [v6 copy];
-  v8 = [(_GCHapticPlayer *)self totalEventsProcessed];
-  v9 = [(_GCHapticPlayer *)self transientEventsProcessed];
-  v10 = [(_GCHapticPlayer *)self continuousEventsProcessed];
-  v11 = [(_GCHapticPlayer *)self parameterCurvesProcessed];
+  bundleIdentifier = [(_GCHapticPlayer *)self bundleIdentifier];
+  v5 = [bundleIdentifier copy];
+  controllerProductCategory = [(_GCHapticPlayer *)self controllerProductCategory];
+  v7 = [controllerProductCategory copy];
+  totalEventsProcessed = [(_GCHapticPlayer *)self totalEventsProcessed];
+  transientEventsProcessed = [(_GCHapticPlayer *)self transientEventsProcessed];
+  continuousEventsProcessed = [(_GCHapticPlayer *)self continuousEventsProcessed];
+  parameterCurvesProcessed = [(_GCHapticPlayer *)self parameterCurvesProcessed];
   [(_GCHapticPlayer *)self totalLifetimeInSeconds];
   v13 = v12;
   [(_GCHapticPlayer *)self activeLifetimeInSeconds];
   LODWORD(v15) = v13;
   HIDWORD(v15) = v14;
-  [v3 sendHapticsPlayerDestroyedEventForBundleID:v5 productCategory:v7 totalEventsProcessed:v8 transientEventsProcessed:v9 continuousEventsProcessed:v10 parameterCurvesProcessed:v11 sessionTotalDuration:v15 sessionActiveDuration:?];
+  [v3 sendHapticsPlayerDestroyedEventForBundleID:v5 productCategory:v7 totalEventsProcessed:totalEventsProcessed transientEventsProcessed:transientEventsProcessed continuousEventsProcessed:continuousEventsProcessed parameterCurvesProcessed:parameterCurvesProcessed sessionTotalDuration:v15 sessionActiveDuration:?];
 
   v16.receiver = self;
   v16.super_class = _GCHapticPlayer;

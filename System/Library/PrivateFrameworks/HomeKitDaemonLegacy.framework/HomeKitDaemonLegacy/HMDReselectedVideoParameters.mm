@@ -1,28 +1,28 @@
 @interface HMDReselectedVideoParameters
 - (BOOL)_parseFromTLVData;
-- (HMDReselectedVideoParameters)initWithAttribute:(id)a3 rtpParameter:(id)a4;
-- (HMDReselectedVideoParameters)initWithCoder:(id)a3;
+- (HMDReselectedVideoParameters)initWithAttribute:(id)attribute rtpParameter:(id)parameter;
+- (HMDReselectedVideoParameters)initWithCoder:(id)coder;
 - (NSData)tlvData;
-- (void)description:(id)a3 indent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)description:(id)description indent:(id)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDReselectedVideoParameters
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDReselectedVideoParameters *)self videoAttributes];
-  [v4 encodeObject:v5 forKey:@"kVideoParameters_Attributes"];
+  coderCopy = coder;
+  videoAttributes = [(HMDReselectedVideoParameters *)self videoAttributes];
+  [coderCopy encodeObject:videoAttributes forKey:@"kVideoParameters_Attributes"];
 
-  v6 = [(HMDReselectedVideoParameters *)self rtpParameters];
-  [v4 encodeObject:v6 forKey:@"kVideoParameters_RTPParameter"];
+  rtpParameters = [(HMDReselectedVideoParameters *)self rtpParameters];
+  [coderCopy encodeObject:rtpParameters forKey:@"kVideoParameters_RTPParameter"];
 }
 
-- (HMDReselectedVideoParameters)initWithCoder:(id)a3
+- (HMDReselectedVideoParameters)initWithCoder:(id)coder
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = HMDReselectedVideoParameters;
   v5 = [(HMDReselectedVideoParameters *)&v18 init];
@@ -32,7 +32,7 @@
     v20[0] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"kVideoParameters_Attributes"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kVideoParameters_Attributes"];
     videoAttributes = v5->_videoAttributes;
     v5->_videoAttributes = v9;
 
@@ -40,7 +40,7 @@
     v19 = objc_opt_class();
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
     v13 = [v11 setWithArray:v12];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"kVideoParameters_RTPParameter"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"kVideoParameters_RTPParameter"];
     rtpParameters = v5->_rtpParameters;
     v5->_rtpParameters = v14;
   }
@@ -49,20 +49,20 @@
   return v5;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HAPTLVBase *)self tlvDatablob];
-  [v7 appendFormat:@"\n %@ tlvDatablob = %@ ", v6, v8];
+  indentCopy = indent;
+  descriptionCopy = description;
+  tlvDatablob = [(HAPTLVBase *)self tlvDatablob];
+  [descriptionCopy appendFormat:@"\n %@ tlvDatablob = %@ ", indentCopy, tlvDatablob];
 
-  v9 = [(HMDReselectedVideoParameters *)self videoAttributes];
-  v10 = [v9 descriptionWithIndent:v6];
-  [v7 appendFormat:@"\n %@ attributes = %@ ", v6, v10];
+  videoAttributes = [(HMDReselectedVideoParameters *)self videoAttributes];
+  v10 = [videoAttributes descriptionWithIndent:indentCopy];
+  [descriptionCopy appendFormat:@"\n %@ attributes = %@ ", indentCopy, v10];
 
-  v12 = [(HMDReselectedVideoParameters *)self rtpParameters];
-  v11 = [v12 descriptionWithIndent:v6];
-  [v7 appendFormat:@"\n %@ rtpParameters = %@ ", v6, v11];
+  rtpParameters = [(HMDReselectedVideoParameters *)self rtpParameters];
+  v11 = [rtpParameters descriptionWithIndent:indentCopy];
+  [descriptionCopy appendFormat:@"\n %@ rtpParameters = %@ ", indentCopy, v11];
 }
 
 - (BOOL)_parseFromTLVData
@@ -76,14 +76,14 @@
   if ([(HAPTLVBase *)self _parse:v5])
   {
     v6 = [HMDVideoAttributes alloc];
-    v7 = [v3 field];
-    v8 = [(HAPTLVBase *)v6 initWithTLVData:v7];
+    field = [v3 field];
+    v8 = [(HAPTLVBase *)v6 initWithTLVData:field];
     videoAttributes = self->_videoAttributes;
     self->_videoAttributes = v8;
 
     v10 = [HMDReselectedRTPParameters alloc];
-    v11 = [v4 field];
-    v12 = [(HAPTLVBase *)v10 initWithTLVData:v11];
+    field2 = [v4 field];
+    v12 = [(HAPTLVBase *)v10 initWithTLVData:field2];
     rtpParameters = self->_rtpParameters;
     self->_rtpParameters = v12;
 
@@ -101,32 +101,32 @@
 
 - (NSData)tlvData
 {
-  v3 = [MEMORY[0x277CFEC80] creator];
-  v4 = [(HMDReselectedVideoParameters *)self videoAttributes];
-  v5 = [v4 tlvData];
+  creator = [MEMORY[0x277CFEC80] creator];
+  videoAttributes = [(HMDReselectedVideoParameters *)self videoAttributes];
+  tlvData = [videoAttributes tlvData];
 
-  [v3 addTLV:3 data:v5];
-  v6 = [(HMDReselectedVideoParameters *)self rtpParameters];
-  v7 = [v6 tlvData];
+  [creator addTLV:3 data:tlvData];
+  rtpParameters = [(HMDReselectedVideoParameters *)self rtpParameters];
+  tlvData2 = [rtpParameters tlvData];
 
-  [v3 addTLV:4 data:v7];
-  v8 = [v3 serialize];
+  [creator addTLV:4 data:tlvData2];
+  serialize = [creator serialize];
 
-  return v8;
+  return serialize;
 }
 
-- (HMDReselectedVideoParameters)initWithAttribute:(id)a3 rtpParameter:(id)a4
+- (HMDReselectedVideoParameters)initWithAttribute:(id)attribute rtpParameter:(id)parameter
 {
-  v7 = a3;
-  v8 = a4;
+  attributeCopy = attribute;
+  parameterCopy = parameter;
   v12.receiver = self;
   v12.super_class = HMDReselectedVideoParameters;
   v9 = [(HMDReselectedVideoParameters *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_videoAttributes, a3);
-    objc_storeStrong(&v10->_rtpParameters, a4);
+    objc_storeStrong(&v9->_videoAttributes, attribute);
+    objc_storeStrong(&v10->_rtpParameters, parameter);
   }
 
   return v10;

@@ -1,6 +1,6 @@
 @interface MTRPowerSourceClusterBatChargeFaultChangeEvent
 - (MTRPowerSourceClusterBatChargeFaultChangeEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,26 +13,26 @@
   v2 = [(MTRPowerSourceClusterBatChargeFaultChangeEvent *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     current = v2->_current;
-    v2->_current = v3;
+    v2->_current = array;
 
-    v5 = [MEMORY[0x277CBEA60] array];
+    array2 = [MEMORY[0x277CBEA60] array];
     previous = v2->_previous;
-    v2->_previous = v5;
+    v2->_previous = array2;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRPowerSourceClusterBatChargeFaultChangeEvent);
-  v5 = [(MTRPowerSourceClusterBatChargeFaultChangeEvent *)self current];
-  [(MTRPowerSourceClusterBatChargeFaultChangeEvent *)v4 setCurrent:v5];
+  current = [(MTRPowerSourceClusterBatChargeFaultChangeEvent *)self current];
+  [(MTRPowerSourceClusterBatChargeFaultChangeEvent *)v4 setCurrent:current];
 
-  v6 = [(MTRPowerSourceClusterBatChargeFaultChangeEvent *)self previous];
-  [(MTRPowerSourceClusterBatChargeFaultChangeEvent *)v4 setPrevious:v6];
+  previous = [(MTRPowerSourceClusterBatChargeFaultChangeEvent *)self previous];
+  [(MTRPowerSourceClusterBatChargeFaultChangeEvent *)v4 setPrevious:previous];
 
   return v4;
 }

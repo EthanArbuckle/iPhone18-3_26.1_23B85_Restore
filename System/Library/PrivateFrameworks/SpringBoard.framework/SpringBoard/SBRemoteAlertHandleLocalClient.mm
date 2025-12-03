@@ -1,21 +1,21 @@
 @interface SBRemoteAlertHandleLocalClient
-- (SBRemoteAlertHandleLocalClient)initWithSessionManager:(id)a3;
-- (id)createRemoteAlertHandleWithDefinition:(id)a3 configurationContext:(id)a4;
-- (id)remoteAlertHandlesForDefinition:(id)a3 allowsCreation:(BOOL)a4 configurationContext:(id)a5;
-- (void)_registerHandle:(id)a3 forSession:(id)a4;
-- (void)_unregisterHandle:(id)a3;
-- (void)activateRemoteAlertHandle:(id)a3 withContext:(id)a4;
-- (void)invalidateRemoteAlertHandle:(id)a3;
-- (void)remoteTransientOverlaySession:(id)a3 didInvalidateWithReason:(int64_t)a4 error:(id)a5;
-- (void)remoteTransientOverlaySessionDidActivate:(id)a3;
-- (void)remoteTransientOverlaySessionDidDeactivate:(id)a3;
+- (SBRemoteAlertHandleLocalClient)initWithSessionManager:(id)manager;
+- (id)createRemoteAlertHandleWithDefinition:(id)definition configurationContext:(id)context;
+- (id)remoteAlertHandlesForDefinition:(id)definition allowsCreation:(BOOL)creation configurationContext:(id)context;
+- (void)_registerHandle:(id)handle forSession:(id)session;
+- (void)_unregisterHandle:(id)handle;
+- (void)activateRemoteAlertHandle:(id)handle withContext:(id)context;
+- (void)invalidateRemoteAlertHandle:(id)handle;
+- (void)remoteTransientOverlaySession:(id)session didInvalidateWithReason:(int64_t)reason error:(id)error;
+- (void)remoteTransientOverlaySessionDidActivate:(id)activate;
+- (void)remoteTransientOverlaySessionDidDeactivate:(id)deactivate;
 @end
 
 @implementation SBRemoteAlertHandleLocalClient
 
-- (SBRemoteAlertHandleLocalClient)initWithSessionManager:(id)a3
+- (SBRemoteAlertHandleLocalClient)initWithSessionManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = SBRemoteAlertHandleLocalClient;
   v6 = [(SBRemoteAlertHandleLocalClient *)&v11 init];
@@ -26,16 +26,16 @@
     accessSerialQueue = v6->_accessSerialQueue;
     v6->_accessSerialQueue = v8;
 
-    objc_storeStrong(&v6->_sessionManager, a3);
+    objc_storeStrong(&v6->_sessionManager, manager);
   }
 
   return v6;
 }
 
-- (id)remoteAlertHandlesForDefinition:(id)a3 allowsCreation:(BOOL)a4 configurationContext:(id)a5
+- (id)remoteAlertHandlesForDefinition:(id)definition allowsCreation:(BOOL)creation configurationContext:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  definitionCopy = definition;
+  contextCopy = context;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -53,14 +53,14 @@
   block[1] = 3221225472;
   block[2] = __102__SBRemoteAlertHandleLocalClient_remoteAlertHandlesForDefinition_allowsCreation_configurationContext___block_invoke;
   block[3] = &unk_2783BC710;
-  v19 = a4;
+  creationCopy = creation;
   v17 = v20;
   block[4] = self;
-  v11 = v8;
+  v11 = definitionCopy;
   v16 = v11;
   v18 = &v22;
   dispatch_sync(accessSerialQueue, block);
-  v14 = v9;
+  v14 = contextCopy;
   BSDispatchMain();
   v12 = v23[5];
 
@@ -173,10 +173,10 @@ void __102__SBRemoteAlertHandleLocalClient_remoteAlertHandlesForDefinition_allow
   }
 }
 
-- (id)createRemoteAlertHandleWithDefinition:(id)a3 configurationContext:(id)a4
+- (id)createRemoteAlertHandleWithDefinition:(id)definition configurationContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  definitionCopy = definition;
+  contextCopy = context;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -196,11 +196,11 @@ void __102__SBRemoteAlertHandleLocalClient_remoteAlertHandlesForDefinition_allow
   block[3] = &unk_2783BC738;
   v15 = v17;
   block[4] = self;
-  v9 = v6;
+  v9 = definitionCopy;
   v14 = v9;
   v16 = &v19;
   dispatch_sync(accessSerialQueue, block);
-  v12 = v7;
+  v12 = contextCopy;
   BSDispatchMain();
   v10 = v20[5];
 
@@ -226,20 +226,20 @@ void __93__SBRemoteAlertHandleLocalClient_createRemoteAlertHandleWithDefinition_
   [*(a1 + 32) _registerHandle:*(*(*(a1 + 56) + 8) + 40) forSession:*(*(*(a1 + 48) + 8) + 40)];
 }
 
-- (void)activateRemoteAlertHandle:(id)a3 withContext:(id)a4
+- (void)activateRemoteAlertHandle:(id)handle withContext:(id)context
 {
-  v6 = a4;
-  v7 = [a3 handleID];
+  contextCopy = context;
+  handleID = [handle handleID];
   accessSerialQueue = self->_accessSerialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__SBRemoteAlertHandleLocalClient_activateRemoteAlertHandle_withContext___block_invoke;
   block[3] = &unk_2783A8ED8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = handleID;
+  v13 = contextCopy;
+  v9 = contextCopy;
+  v10 = handleID;
   dispatch_async(accessSerialQueue, block);
 }
 
@@ -251,17 +251,17 @@ void __72__SBRemoteAlertHandleLocalClient_activateRemoteAlertHandle_withContext_
   BSDispatchMain();
 }
 
-- (void)invalidateRemoteAlertHandle:(id)a3
+- (void)invalidateRemoteAlertHandle:(id)handle
 {
-  v4 = [a3 handleID];
+  handleID = [handle handleID];
   accessSerialQueue = self->_accessSerialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__SBRemoteAlertHandleLocalClient_invalidateRemoteAlertHandle___block_invoke;
   v7[3] = &unk_2783A92D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handleID;
+  v6 = handleID;
   dispatch_async(accessSerialQueue, v7);
 }
 
@@ -272,17 +272,17 @@ void __62__SBRemoteAlertHandleLocalClient_invalidateRemoteAlertHandle___block_in
   BSDispatchMain();
 }
 
-- (void)remoteTransientOverlaySessionDidActivate:(id)a3
+- (void)remoteTransientOverlaySessionDidActivate:(id)activate
 {
-  v4 = [a3 sessionID];
+  sessionID = [activate sessionID];
   accessSerialQueue = self->_accessSerialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__SBRemoteAlertHandleLocalClient_remoteTransientOverlaySessionDidActivate___block_invoke;
   v7[3] = &unk_2783A92D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sessionID;
+  v6 = sessionID;
   dispatch_async(accessSerialQueue, v7);
 }
 
@@ -292,17 +292,17 @@ void __75__SBRemoteAlertHandleLocalClient_remoteTransientOverlaySessionDidActiva
   [v1 _didActivate];
 }
 
-- (void)remoteTransientOverlaySessionDidDeactivate:(id)a3
+- (void)remoteTransientOverlaySessionDidDeactivate:(id)deactivate
 {
-  v4 = [a3 sessionID];
+  sessionID = [deactivate sessionID];
   accessSerialQueue = self->_accessSerialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __77__SBRemoteAlertHandleLocalClient_remoteTransientOverlaySessionDidDeactivate___block_invoke;
   v7[3] = &unk_2783A92D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sessionID;
+  v6 = sessionID;
   dispatch_async(accessSerialQueue, v7);
 }
 
@@ -312,21 +312,21 @@ void __77__SBRemoteAlertHandleLocalClient_remoteTransientOverlaySessionDidDeacti
   [v1 _didDeactivate];
 }
 
-- (void)remoteTransientOverlaySession:(id)a3 didInvalidateWithReason:(int64_t)a4 error:(id)a5
+- (void)remoteTransientOverlaySession:(id)session didInvalidateWithReason:(int64_t)reason error:(id)error
 {
-  v8 = a5;
-  v9 = [a3 sessionID];
+  errorCopy = error;
+  sessionID = [session sessionID];
   accessSerialQueue = self->_accessSerialQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __94__SBRemoteAlertHandleLocalClient_remoteTransientOverlaySession_didInvalidateWithReason_error___block_invoke;
   v13[3] = &unk_2783AB280;
   v13[4] = self;
-  v14 = v9;
-  v15 = v8;
-  v16 = a4;
-  v11 = v8;
-  v12 = v9;
+  v14 = sessionID;
+  v15 = errorCopy;
+  reasonCopy = reason;
+  v11 = errorCopy;
+  v12 = sessionID;
   dispatch_async(accessSerialQueue, v13);
 }
 
@@ -353,13 +353,13 @@ void __94__SBRemoteAlertHandleLocalClient_remoteTransientOverlaySession_didInval
   [*(a1 + 32) _unregisterHandle:v6];
 }
 
-- (void)_registerHandle:(id)a3 forSession:(id)a4
+- (void)_registerHandle:(id)handle forSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_accessSerialQueue);
-  v8 = [v7 sessionID];
-  v9 = [(NSMutableDictionary *)self->_sessionIDToRemoteAlertHandle objectForKey:v8];
+  sessionID = [sessionCopy sessionID];
+  v9 = [(NSMutableDictionary *)self->_sessionIDToRemoteAlertHandle objectForKey:sessionID];
 
   if (!v9)
   {
@@ -373,27 +373,27 @@ void __94__SBRemoteAlertHandleLocalClient_remoteTransientOverlaySession_didInval
       sessionIDToRemoteAlertHandle = self->_sessionIDToRemoteAlertHandle;
     }
 
-    [(NSMutableDictionary *)sessionIDToRemoteAlertHandle setObject:v6 forKey:v8];
-    v13 = v7;
+    [(NSMutableDictionary *)sessionIDToRemoteAlertHandle setObject:handleCopy forKey:sessionID];
+    v13 = sessionCopy;
     BSDispatchMain();
   }
 }
 
-- (void)_unregisterHandle:(id)a3
+- (void)_unregisterHandle:(id)handle
 {
   accessSerialQueue = self->_accessSerialQueue;
-  v5 = a3;
+  handleCopy = handle;
   dispatch_assert_queue_V2(accessSerialQueue);
-  v6 = [v5 handleID];
+  handleID = [handleCopy handleID];
 
-  v7 = [(SBRemoteTransientOverlaySessionManager *)self->_sessionManager existingSessionWithSessionID:v6 options:0];
+  v7 = [(SBRemoteTransientOverlaySessionManager *)self->_sessionManager existingSessionWithSessionID:handleID options:0];
   v10 = MEMORY[0x277D85DD0];
   v8 = v7;
   v11 = v8;
   BSDispatchMain();
   if (v8)
   {
-    [(NSMutableDictionary *)self->_sessionIDToRemoteAlertHandle removeObjectForKey:v6, v10, 3221225472, __52__SBRemoteAlertHandleLocalClient__unregisterHandle___block_invoke, &unk_2783A92D8, v8, self];
+    [(NSMutableDictionary *)self->_sessionIDToRemoteAlertHandle removeObjectForKey:handleID, v10, 3221225472, __52__SBRemoteAlertHandleLocalClient__unregisterHandle___block_invoke, &unk_2783A92D8, v8, self];
     if (![(NSMutableDictionary *)self->_sessionIDToRemoteAlertHandle count])
     {
       sessionIDToRemoteAlertHandle = self->_sessionIDToRemoteAlertHandle;

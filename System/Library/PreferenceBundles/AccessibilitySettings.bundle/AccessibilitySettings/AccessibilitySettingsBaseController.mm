@@ -1,22 +1,22 @@
 @interface AccessibilitySettingsBaseController
 - (AccessibilitySettingsBaseController)init;
-- (Class)detailClassForFeature:(int64_t)a3;
-- (id)imageForKey:(id)a3;
+- (Class)detailClassForFeature:(int64_t)feature;
+- (id)imageForKey:(id)key;
 - (void)dealloc;
 - (void)handleHACorNoiseCancellationToggle;
-- (void)reloadSpecifierFromID:(id)a3;
+- (void)reloadSpecifierFromID:(id)d;
 - (void)reloadSpecifiersFromNotification;
-- (void)setGizmoPref:(id)a3 forKey:(id)a4 domain:(id)a5;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setGizmoPref:(id)pref forKey:(id)key domain:(id)domain;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AccessibilitySettingsBaseController
 
-- (id)imageForKey:(id)a3
+- (id)imageForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = AXSettingsBundle();
-  v5 = [UIImage imageNamed:v3 inBundle:v4];
+  v5 = [UIImage imageNamed:keyCopy inBundle:v4];
 
   return v5;
 }
@@ -53,11 +53,11 @@
   [(AccessibilitySettingsBaseController *)&v6 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = AccessibilitySettingsBaseController;
-  [(AccessibilitySettingsBaseController *)&v9 viewWillAppear:a3];
+  [(AccessibilitySettingsBaseController *)&v9 viewWillAppear:appear];
   if (AXProcessIsSetup())
   {
     v11 = 0;
@@ -78,35 +78,35 @@
 
     v5 = v4;
     _Block_object_dispose(&v11, 8);
-    v6 = [v4 sharedStyle];
-    v7 = [v6 backgroundColor];
-    v8 = [(AccessibilitySettingsBaseController *)self table];
-    [v8 setBackgroundColor:v7];
+    sharedStyle = [v4 sharedStyle];
+    backgroundColor = [sharedStyle backgroundColor];
+    table = [(AccessibilitySettingsBaseController *)self table];
+    [table setBackgroundColor:backgroundColor];
   }
 }
 
-- (void)setGizmoPref:(id)a3 forKey:(id)a4 domain:(id)a5
+- (void)setGizmoPref:(id)pref forKey:(id)key domain:(id)domain
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  prefCopy = pref;
+  keyCopy = key;
+  domainCopy = domain;
   domainAccessor = self->_domainAccessor;
   if (!domainAccessor)
   {
-    v12 = [[NPSDomainAccessor alloc] initWithDomain:v10];
+    v12 = [[NPSDomainAccessor alloc] initWithDomain:domainCopy];
     v13 = self->_domainAccessor;
     self->_domainAccessor = v12;
 
     domainAccessor = self->_domainAccessor;
   }
 
-  [(NPSDomainAccessor *)domainAccessor setObject:v8 forKey:v9];
-  v14 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  [(NPSDomainAccessor *)domainAccessor setObject:prefCopy forKey:keyCopy];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
   v15 = objc_opt_new();
-  v18 = v9;
+  v18 = keyCopy;
   v16 = [NSArray arrayWithObjects:&v18 count:1];
   v17 = [NSSet setWithArray:v16];
-  [v15 synchronizeNanoDomain:v10 keys:v17];
+  [v15 synchronizeNanoDomain:domainCopy keys:v17];
 }
 
 - (void)handleHACorNoiseCancellationToggle
@@ -124,7 +124,7 @@
   [(AccessibilitySettingsBaseController *)self showConfirmationViewForSpecifier:v6];
 }
 
-- (Class)detailClassForFeature:(int64_t)a3
+- (Class)detailClassForFeature:(int64_t)feature
 {
   v4 = [NSBundle bundleWithPath:@"/System/Library/PreferenceBundles/HearingSettings.bundle"];
   [v4 load];
@@ -133,14 +133,14 @@
     [AccessibilitySettingsBaseController detailClassForFeature:];
   }
 
-  if ((a3 - 1) > 3)
+  if ((feature - 1) > 3)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [v4 objectForInfoDictionaryKey:off_258CF8[a3 - 1]];
+    v5 = [v4 objectForInfoDictionaryKey:off_258CF8[feature - 1]];
     v6 = [v4 classNamed:v5];
   }
 
@@ -160,17 +160,17 @@
   [(AXDispatchTimer *)coalesceTimer afterDelay:v3 processBlock:0.5];
 }
 
-- (void)reloadSpecifierFromID:(id)a3
+- (void)reloadSpecifierFromID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   coalesceTimer = self->_coalesceTimer;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __61__AccessibilitySettingsBaseController_reloadSpecifierFromID___block_invoke;
   v7[3] = &unk_255538;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   [(AXDispatchTimer *)coalesceTimer afterDelay:v7 processBlock:0.5];
 }
 

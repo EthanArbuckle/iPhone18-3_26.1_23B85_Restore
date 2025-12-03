@@ -1,34 +1,34 @@
 @interface OKCouchController
 - (BOOL)canStartPlayback;
-- (OKCouchController)initWithCouch:(id)a3 andDelegate:(id)a4;
-- (id)_nextCouchStep:(id)a3;
+- (OKCouchController)initWithCouch:(id)couch andDelegate:(id)delegate;
+- (id)_nextCouchStep:(id)step;
 - (void)_dispatchNextStep;
-- (void)_executeStep:(id)a3 forTargetPageViewController:(id)a4;
+- (void)_executeStep:(id)step forTargetPageViewController:(id)controller;
 - (void)_setupTimer;
 - (void)_timerEventHandler;
 - (void)allowPlayback;
 - (void)dealloc;
-- (void)overrideMode:(unint64_t)a3 andCurrentStepDuration:(double)defaultStepDuration;
+- (void)overrideMode:(unint64_t)mode andCurrentStepDuration:(double)defaultStepDuration;
 - (void)preventPlayback;
-- (void)setDefaultStepDuration:(double)a3;
-- (void)setLoops:(BOOL)a3;
+- (void)setDefaultStepDuration:(double)duration;
+- (void)setLoops:(BOOL)loops;
 - (void)startPlayback;
-- (void)startPlaybackAfterDelay:(double)a3;
+- (void)startPlaybackAfterDelay:(double)delay;
 - (void)stopPlayback;
 @end
 
 @implementation OKCouchController
 
-- (OKCouchController)initWithCouch:(id)a3 andDelegate:(id)a4
+- (OKCouchController)initWithCouch:(id)couch andDelegate:(id)delegate
 {
   v8.receiver = self;
   v8.super_class = OKCouchController;
   v6 = [(OKCouchController *)&v8 init];
   if (v6)
   {
-    v6->_couch = a3;
+    v6->_couch = couch;
     v6->_hasStartedToWait = 0;
-    objc_storeWeak(&v6->_delegate, a4);
+    objc_storeWeak(&v6->_delegate, delegate);
     [(OKCouchController *)v6 _setupTimer];
   }
 
@@ -58,25 +58,25 @@
   [(OKCouchController *)&v3 dealloc];
 }
 
-- (void)setDefaultStepDuration:(double)a3
+- (void)setDefaultStepDuration:(double)duration
 {
   [(OKCouchController *)self preventPlayback];
-  self->_defaultStepDuration = a3;
+  self->_defaultStepDuration = duration;
 
   [(OKCouchController *)self allowPlayback];
 }
 
-- (void)setLoops:(BOOL)a3
+- (void)setLoops:(BOOL)loops
 {
   [(OKCouchController *)self preventPlayback];
-  self->_loops = a3;
+  self->_loops = loops;
 
   [(OKCouchController *)self allowPlayback];
 }
 
-- (void)overrideMode:(unint64_t)a3 andCurrentStepDuration:(double)defaultStepDuration
+- (void)overrideMode:(unint64_t)mode andCurrentStepDuration:(double)defaultStepDuration
 {
-  self->_stepMode = a3;
+  self->_stepMode = mode;
   if (defaultStepDuration < 0.0)
   {
     defaultStepDuration = self->_defaultStepDuration;
@@ -94,21 +94,21 @@
 
   else
   {
-    v4 = [(OKCouchController *)self delegate];
-    if ((objc_opt_respondsToSelector() & 1) == 0 || (v2 = [(OKCouchControllerDelegate *)v4 couchControllerCanStartPlayback:self]) != 0)
+    delegate = [(OKCouchController *)self delegate];
+    if ((objc_opt_respondsToSelector() & 1) == 0 || (v2 = [(OKCouchControllerDelegate *)delegate couchControllerCanStartPlayback:self]) != 0)
     {
-      LOBYTE(v2) = -[OKPresentationCouch closestStepForPageName:](self->_couch, "closestStepForPageName:", [objc_msgSend(-[OKCouchControllerDelegate currentPageViewController](v4 "currentPageViewController")]) != 0;
+      LOBYTE(v2) = -[OKPresentationCouch closestStepForPageName:](self->_couch, "closestStepForPageName:", [objc_msgSend(-[OKCouchControllerDelegate currentPageViewController](delegate "currentPageViewController")]) != 0;
     }
   }
 
   return v2;
 }
 
-- (void)startPlaybackAfterDelay:(double)a3
+- (void)startPlaybackAfterDelay:(double)delay
 {
   v4 = self->_startValidityBarrier + 1;
   self->_startValidityBarrier = v4;
-  v5 = dispatch_time(0, (a3 * 1000000000.0));
+  v5 = dispatch_time(0, (delay * 1000000000.0));
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__OKCouchController_startPlaybackAfterDelay___block_invoke;
@@ -156,9 +156,9 @@ void *__45__OKCouchController_startPlaybackAfterDelay___block_invoke(uint64_t a1
     [(OKCouchController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v3 = [(OKCouchController *)self delegate];
+      delegate = [(OKCouchController *)self delegate];
 
-      [(OKCouchControllerDelegate *)v3 couchControllerDidStopPlayback:self];
+      [(OKCouchControllerDelegate *)delegate couchControllerDidStopPlayback:self];
     }
   }
 }
@@ -216,13 +216,13 @@ void *__45__OKCouchController_startPlaybackAfterDelay___block_invoke(uint64_t a1
 - (void)_timerEventHandler
 {
   lastStep = self->_lastStep;
-  v4 = [(OKPresentationCouch *)self->_couch loopStep];
-  v5 = [(OKCouchController *)self delegate];
-  v6 = [(OKCouchControllerDelegate *)v5 currentPageViewController];
-  v7 = [(OKCouchController *)self _nextCouchStep:v6];
+  loopStep = [(OKPresentationCouch *)self->_couch loopStep];
+  delegate = [(OKCouchController *)self delegate];
+  currentPageViewController = [(OKCouchControllerDelegate *)delegate currentPageViewController];
+  v7 = [(OKCouchController *)self _nextCouchStep:currentPageViewController];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(OKCouchControllerDelegate *)v5 thingsAreReadyInCurrentPageForCouchController:self];
+    v8 = [(OKCouchControllerDelegate *)delegate thingsAreReadyInCurrentPageForCouchController:self];
     if (v7 || (v8 & 1) == 0)
     {
       if ((v8 & 1) == 0)
@@ -243,7 +243,7 @@ LABEL_21:
     if (objc_opt_respondsToSelector())
     {
 
-      [(OKCouchControllerDelegate *)v5 couchControllerPlaybackCompleted:self];
+      [(OKCouchControllerDelegate *)delegate couchControllerPlaybackCompleted:self];
     }
 
     return;
@@ -255,11 +255,11 @@ LABEL_21:
   }
 
 LABEL_7:
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([(OKCouchControllerDelegate *)v5 couchController:self thingsAreReadyForNextStep:v7 withProgress:&self->_progress]& 1) == 0)
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([(OKCouchControllerDelegate *)delegate couchController:self thingsAreReadyForNextStep:v7 withProgress:&self->_progress]& 1) == 0)
   {
     if (self->_hasStartedToWait && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [(OKCouchControllerDelegate *)v5 couchControllerWaitingForReadiness:self withProgress:self->_progress];
+      [(OKCouchControllerDelegate *)delegate couchControllerWaitingForReadiness:self withProgress:self->_progress];
     }
 
     if (self->_readinessWaitStartTime <= 0.0)
@@ -272,7 +272,7 @@ LABEL_7:
 
     else if (!self->_hasStartedToWait && CFAbsoluteTimeGetCurrent() - self->_readinessWaitStartTime > self->_delayForReadinessWaitNotification && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [(OKCouchControllerDelegate *)v5 couchControllerStartsWaitingForReadiness:self];
+      [(OKCouchControllerDelegate *)delegate couchControllerStartsWaitingForReadiness:self];
       self->_hasStartedToWait = 1;
     }
 
@@ -283,7 +283,7 @@ LABEL_7:
   {
     if (objc_opt_respondsToSelector())
     {
-      [(OKCouchControllerDelegate *)v5 couchControllerStopsWaitingForReadiness:self];
+      [(OKCouchControllerDelegate *)delegate couchControllerStopsWaitingForReadiness:self];
     }
 
     self->_readinessWaitStartTime = 0.0;
@@ -291,9 +291,9 @@ LABEL_7:
 
   self->_progress = 0.0;
   self->_hasStartedToWait = 0;
-  if (lastStep == v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (lastStep == loopStep && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(OKCouchControllerDelegate *)v5 couchControllerPlaybackLooped:self];
+    [(OKCouchControllerDelegate *)delegate couchControllerPlaybackLooped:self];
   }
 
   if (*MEMORY[0x277D62808] >= 7)
@@ -303,7 +303,7 @@ LABEL_7:
     [v9 logMessageWithLevel:7 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Couch/OKCouchController.m" line:275 andFormat:@"executing couch step script with step duration: %f", v10];
   }
 
-  [(OKCouchController *)self _executeStep:v7 forTargetPageViewController:v6];
+  [(OKCouchController *)self _executeStep:v7 forTargetPageViewController:currentPageViewController];
 }
 
 - (void)_setupTimer
@@ -331,20 +331,20 @@ void *__32__OKCouchController__setupTimer__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_executeStep:(id)a3 forTargetPageViewController:(id)a4
+- (void)_executeStep:(id)step forTargetPageViewController:(id)controller
 {
-  [a3 duration];
+  [step duration];
   [(OKCouchController *)self overrideMode:0 andCurrentStepDuration:?];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   self->_currentStepStartTime = v7;
-  v8 = [a3 script];
+  script = [step script];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __62__OKCouchController__executeStep_forTargetPageViewController___block_invoke;
   v9[3] = &unk_279C916D8;
   v9[4] = self;
-  v9[5] = a3;
-  [a4 evaluateScript:v8 withInfoDictionary:MEMORY[0x277CBEC10] andCompletionBlock:v9 forWidgetView:0];
+  v9[5] = step;
+  [controller evaluateScript:script withInfoDictionary:MEMORY[0x277CBEC10] andCompletionBlock:v9 forWidgetView:0];
 }
 
 - (void)_dispatchNextStep
@@ -370,7 +370,7 @@ void *__32__OKCouchController__setupTimer__block_invoke(uint64_t a1)
   dispatch_source_set_timer(timer, v9, 0xFFFFFFFFFFFFFFFFLL, 0x989680uLL);
 }
 
-- (id)_nextCouchStep:(id)a3
+- (id)_nextCouchStep:(id)step
 {
   result = 0;
   stepMode = self->_stepMode;
@@ -379,7 +379,7 @@ void *__32__OKCouchController__setupTimer__block_invoke(uint64_t a1)
     if (stepMode == 2)
     {
       couch = self->_couch;
-      v10 = [objc_msgSend(a3 "page")];
+      v10 = [objc_msgSend(step "page")];
 
       return [(OKPresentationCouch *)couch closestStepForPageName:v10];
     }
@@ -399,7 +399,7 @@ void *__32__OKCouchController__setupTimer__block_invoke(uint64_t a1)
         return result;
       }
 
-      result = -[OKPresentationCouch lastStepForPageName:](self->_couch, "lastStepForPageName:", [objc_msgSend(a3 "page")]);
+      result = -[OKPresentationCouch lastStepForPageName:](self->_couch, "lastStepForPageName:", [objc_msgSend(step "page")]);
       lastStep = self->_lastStep;
       if (result)
       {

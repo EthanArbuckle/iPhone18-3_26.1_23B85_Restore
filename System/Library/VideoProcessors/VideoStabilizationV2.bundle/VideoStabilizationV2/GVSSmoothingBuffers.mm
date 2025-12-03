@@ -5,62 +5,62 @@
 - (GVSFaceSmoothingArrays)getFaceSmoothingArrays;
 - (GVSFaceStabilizationData)faceStabilizationDataInput;
 - (GVSQuaternionSmoothingArrays)getQuaternionSmoothingArrays;
-- (GVSRollSmoothingArrays)getRollSmoothingArraysForBaseTransform:(SEL)a3;
+- (GVSRollSmoothingArrays)getRollSmoothingArraysForBaseTransform:(SEL)transform;
 - (GVSSmoothingAnalysisArrays)getSmoothingAnalysisArrays;
-- (GVSSmoothingBuffers)initWithSize:(int)a3 options:(unsigned int)a4;
+- (GVSSmoothingBuffers)initWithSize:(int)size options:(unsigned int)options;
 - (GVSZoomSmoothingArrays)getZoomSmoothingArrays;
 - (RollPitch)rollPitchInput;
 - (ZoomSmoothingMetadata)zoomSmoothingMetadataInput;
-- (__n128)setHorizonQuaternionsInput:(uint64_t)a1;
-- (int)_allocateBuffersWithOptions:(unsigned int)a3;
+- (__n128)setHorizonQuaternionsInput:(uint64_t)input;
+- (int)_allocateBuffersWithOptions:(unsigned int)options;
 - (priorQuaternionAverage)precomputedAveragesInput;
 - (void)_purgeResources;
 - (void)_shiftBuffers;
 - (void)commitData;
 - (void)dealloc;
 - (void)openForNewData;
-- (void)setAppliedCenterAdjustmentInput:(id)a3;
-- (void)setCameraMetadataInput:(id *)a3;
-- (void)setDidHaveMotionDataInput:(BOOL)a3;
-- (void)setFaceStabilizationDataInput:(GVSFaceStabilizationData)a3;
-- (void)setFrameDurationInput:(float)a3;
-- (void)setFrameDurationPrevious:(float)a3;
-- (void)setIsLivePhotoKeyFrameInput:(BOOL)a3;
-- (void)setIsPhysicalTripodInput:(BOOL)a3;
-- (void)setMotionBlurAdjustmentInput:(id)a3;
+- (void)setAppliedCenterAdjustmentInput:(id)input;
+- (void)setCameraMetadataInput:(id *)input;
+- (void)setDidHaveMotionDataInput:(BOOL)input;
+- (void)setFaceStabilizationDataInput:(GVSFaceStabilizationData)input;
+- (void)setFrameDurationInput:(float)input;
+- (void)setFrameDurationPrevious:(float)previous;
+- (void)setIsLivePhotoKeyFrameInput:(BOOL)input;
+- (void)setIsPhysicalTripodInput:(BOOL)input;
+- (void)setMotionBlurAdjustmentInput:(id)input;
 - (void)setNormalizedInputShiftInput:(GVSSmoothingBuffers *)self;
 - (void)setNormalizedOutputShiftInput:(GVSSmoothingBuffers *)self;
-- (void)setOutputFrameTimeInput:(double)a3;
-- (void)setPrecomputedAveragesInput:(priorQuaternionAverage *)a3;
-- (void)setRollHorizonTargetInput:(float)a3;
-- (void)setRollPitchInput:(RollPitch)a3;
-- (void)setRotationRateInput:(float)a3;
-- (void)setSerialNumberInput:(unint64_t)a3;
-- (void)setZoomSmoothingMetadataInput:(ZoomSmoothingMetadata *)a3;
+- (void)setOutputFrameTimeInput:(double)input;
+- (void)setPrecomputedAveragesInput:(priorQuaternionAverage *)input;
+- (void)setRollHorizonTargetInput:(float)input;
+- (void)setRollPitchInput:(RollPitch)input;
+- (void)setRotationRateInput:(float)input;
+- (void)setSerialNumberInput:(unint64_t)input;
+- (void)setZoomSmoothingMetadataInput:(ZoomSmoothingMetadata *)input;
 @end
 
 @implementation GVSSmoothingBuffers
 
-- (GVSSmoothingBuffers)initWithSize:(int)a3 options:(unsigned int)a4
+- (GVSSmoothingBuffers)initWithSize:(int)size options:(unsigned int)options
 {
-  v4 = self;
-  if (a3 <= 0)
+  selfCopy = self;
+  if (size <= 0)
   {
     [GVSSmoothingBuffers initWithSize:options:];
     goto LABEL_9;
   }
 
-  v5 = *&a4;
+  v5 = *&options;
   v10.receiver = self;
   v10.super_class = GVSSmoothingBuffers;
   v7 = [(GVSSmoothingBuffers *)&v10 init];
-  v4 = v7;
+  selfCopy = v7;
   if (v7)
   {
-    v7->_size = a3;
+    v7->_size = size;
     if (![(GVSSmoothingBuffers *)v7 _allocateBuffersWithOptions:v5])
     {
-      [(GVSSmoothingBuffers *)v4 reset];
+      [(GVSSmoothingBuffers *)selfCopy reset];
       goto LABEL_5;
     }
 
@@ -71,8 +71,8 @@ LABEL_9:
   }
 
 LABEL_5:
-  v4 = v4;
-  v8 = v4;
+  selfCopy = selfCopy;
+  v8 = selfCopy;
 LABEL_6:
 
   return v8;
@@ -239,9 +239,9 @@ LABEL_6:
   self->_size = 0;
 }
 
-- (int)_allocateBuffersWithOptions:(unsigned int)a3
+- (int)_allocateBuffersWithOptions:(unsigned int)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v5 = 0;
   self->_quaternions[6] = 0;
   *&self->_quaternions[4] = 0u;
@@ -325,7 +325,7 @@ LABEL_6:
                           self->_serialNumber = v20;
                           if (v20)
                           {
-                            if (v3)
+                            if (optionsCopy)
                             {
                               v21 = malloc_type_calloc(self->_size, 8uLL, 0x100004000313F17uLL);
                               self->_rollPitch = v21;
@@ -360,9 +360,9 @@ LABEL_6:
                             else
                             {
 LABEL_22:
-                              if ((v3 & 2) == 0 || (v24 = malloc_type_malloc(20 * self->_size, 0x1000040A86A77D5uLL), (self->_zoomSmoothingMetadata = v24) != 0))
+                              if ((optionsCopy & 2) == 0 || (v24 = malloc_type_malloc(20 * self->_size, 0x1000040A86A77D5uLL), (self->_zoomSmoothingMetadata = v24) != 0))
                               {
-                                if ((v3 & 4) != 0)
+                                if ((optionsCopy & 4) != 0)
                                 {
                                   v25 = malloc_type_calloc(self->_size, 0x30uLL, 0x10000405457EBFFuLL);
                                   self->_faceStabilizationData = v25;
@@ -695,12 +695,12 @@ LABEL_22:
   return result;
 }
 
-- (void)setAppliedCenterAdjustmentInput:(id)a3
+- (void)setAppliedCenterAdjustmentInput:(id)input
 {
-  var3 = a3.var3;
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var3 = input.var3;
+  var2 = input.var2;
+  var1 = input.var1;
+  var0 = input.var0;
   if ([(GVSSmoothingBuffers *)self _checkInputIsWritable])
   {
     v8 = &self->_appliedCenterAdjustment[self->_inputIndex];
@@ -726,12 +726,12 @@ LABEL_22:
   return result;
 }
 
-- (void)setMotionBlurAdjustmentInput:(id)a3
+- (void)setMotionBlurAdjustmentInput:(id)input
 {
-  var3 = a3.var3;
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var3 = input.var3;
+  var2 = input.var2;
+  var1 = input.var1;
+  var0 = input.var0;
   if ([(GVSSmoothingBuffers *)self _checkInputIsWritable])
   {
     v8 = &self->_motionBlurAdjustment[self->_inputIndex];
@@ -742,11 +742,11 @@ LABEL_22:
   }
 }
 
-- (void)setFrameDurationInput:(float)a3
+- (void)setFrameDurationInput:(float)input
 {
   if ([(GVSSmoothingBuffers *)self _checkInputIsWritable])
   {
-    self->_frameDuration[self->_inputIndex] = a3;
+    self->_frameDuration[self->_inputIndex] = input;
   }
 }
 
@@ -788,66 +788,66 @@ LABEL_22:
   return result;
 }
 
-- (void)setCameraMetadataInput:(id *)a3
+- (void)setCameraMetadataInput:(id *)input
 {
   if ([(GVSSmoothingBuffers *)self _checkInputIsWritable])
   {
     v5 = &self->_cameraMetadata[self->_inputIndex];
-    v6 = *&a3->var11;
-    v8 = *&a3->var4;
-    v7 = *&a3->var7;
-    *&v5->var9 = *&a3->var9;
+    v6 = *&input->var11;
+    v8 = *&input->var4;
+    v7 = *&input->var7;
+    *&v5->var9 = *&input->var9;
     *&v5->var11 = v6;
     *&v5->var4 = v8;
     *&v5->var7 = v7;
-    v9 = *&a3->var15.size.height;
-    v11 = *&a3->var13.var0;
-    v10 = *&a3->var14.var1.var0;
-    *&v5->var15.origin.y = *&a3->var15.origin.y;
+    v9 = *&input->var15.size.height;
+    v11 = *&input->var13.var0;
+    v10 = *&input->var14.var1.var0;
+    *&v5->var15.origin.y = *&input->var15.origin.y;
     *&v5->var15.size.height = v9;
     *&v5->var13.var0 = v11;
     *&v5->var14.var1.var0 = v10;
-    *&v5->var0 = *&a3->var0;
+    *&v5->var0 = *&input->var0;
   }
 }
 
-- (void)setDidHaveMotionDataInput:(BOOL)a3
+- (void)setDidHaveMotionDataInput:(BOOL)input
 {
   if ([(GVSSmoothingBuffers *)self _checkInputIsWritable])
   {
-    self->_didHaveMotionData[self->_inputIndex] = a3;
+    self->_didHaveMotionData[self->_inputIndex] = input;
   }
 }
 
-- (void)setIsPhysicalTripodInput:(BOOL)a3
+- (void)setIsPhysicalTripodInput:(BOOL)input
 {
   if ([(GVSSmoothingBuffers *)self _checkInputIsWritable])
   {
-    self->_isPhysicalTripod[self->_inputIndex] = a3;
+    self->_isPhysicalTripod[self->_inputIndex] = input;
   }
 }
 
-- (void)setIsLivePhotoKeyFrameInput:(BOOL)a3
+- (void)setIsLivePhotoKeyFrameInput:(BOOL)input
 {
   if ([(GVSSmoothingBuffers *)self _checkInputIsWritable])
   {
-    self->_isLivePhotoKeyFrame[self->_inputIndex] = a3;
+    self->_isLivePhotoKeyFrame[self->_inputIndex] = input;
   }
 }
 
-- (void)setOutputFrameTimeInput:(double)a3
+- (void)setOutputFrameTimeInput:(double)input
 {
   if ([(GVSSmoothingBuffers *)self _checkInputIsWritable])
   {
-    self->_outputFrameTime[self->_inputIndex] = a3;
+    self->_outputFrameTime[self->_inputIndex] = input;
   }
 }
 
-- (void)setSerialNumberInput:(unint64_t)a3
+- (void)setSerialNumberInput:(unint64_t)input
 {
   if ([(GVSSmoothingBuffers *)self _checkInputIsWritable])
   {
-    self->_serialNumber[self->_inputIndex] = a3;
+    self->_serialNumber[self->_inputIndex] = input;
   }
 }
 
@@ -862,10 +862,10 @@ LABEL_22:
   return result;
 }
 
-- (void)setRollPitchInput:(RollPitch)a3
+- (void)setRollPitchInput:(RollPitch)input
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = input.var1;
+  var0 = input.var0;
   if ([(GVSSmoothingBuffers *)self _checkInputIsWritable])
   {
     v6 = &self->_rollPitch[self->_inputIndex];
@@ -874,11 +874,11 @@ LABEL_22:
   }
 }
 
-- (void)setRollHorizonTargetInput:(float)a3
+- (void)setRollHorizonTargetInput:(float)input
 {
   if ([(GVSSmoothingBuffers *)self _checkInputIsWritable])
   {
-    self->_rollHorizonTarget[self->_inputIndex] = a3;
+    self->_rollHorizonTarget[self->_inputIndex] = input;
   }
 }
 
@@ -896,19 +896,19 @@ LABEL_22:
   return result;
 }
 
-- (void)setPrecomputedAveragesInput:(priorQuaternionAverage *)a3
+- (void)setPrecomputedAveragesInput:(priorQuaternionAverage *)input
 {
   if ([(GVSSmoothingBuffers *)self _checkInputIsWritable])
   {
     v5 = (&self->_precomputedAverages->var0 + 20 * self->_inputIndex);
-    v6 = *&a3[1].var1.var1;
-    v8 = *&a3->var1.var1;
-    v7 = *&a3->var1.var3;
-    v5[3] = *&a3[1].var0;
+    v6 = *&input[1].var1.var1;
+    v8 = *&input->var1.var1;
+    v7 = *&input->var1.var3;
+    v5[3] = *&input[1].var0;
     v5[4] = v6;
     v5[1] = v8;
     v5[2] = v7;
-    *v5 = *&a3->var0;
+    *v5 = *&input->var0;
   }
 }
 
@@ -919,23 +919,23 @@ LABEL_22:
   return result;
 }
 
-- (void)setZoomSmoothingMetadataInput:(ZoomSmoothingMetadata *)a3
+- (void)setZoomSmoothingMetadataInput:(ZoomSmoothingMetadata *)input
 {
   if ([(GVSSmoothingBuffers *)self _checkInputIsWritable])
   {
     v5 = &self->_zoomSmoothingMetadata[self->_inputIndex];
-    v6 = *&a3->var0;
-    v5->var4 = a3->var4;
+    v6 = *&input->var0;
+    v5->var4 = input->var4;
     *&v5->var0 = v6;
   }
 }
 
-- (__n128)setHorizonQuaternionsInput:(uint64_t)a1
+- (__n128)setHorizonQuaternionsInput:(uint64_t)input
 {
-  if ([a1 _checkInputIsWritable])
+  if ([input _checkInputIsWritable])
   {
     result = a2;
-    *(*(a1 + 248) + 16 * *(a1 + 276)) = a2;
+    *(*(input + 248) + 16 * *(input + 276)) = a2;
   }
 
   return result;
@@ -954,7 +954,7 @@ LABEL_22:
   return v7;
 }
 
-- (void)setFaceStabilizationDataInput:(GVSFaceStabilizationData)a3
+- (void)setFaceStabilizationDataInput:(GVSFaceStabilizationData)input
 {
   v4 = v3;
   if ([(GVSSmoothingBuffers *)self _checkInputIsWritable])
@@ -968,19 +968,19 @@ LABEL_22:
   }
 }
 
-- (void)setRotationRateInput:(float)a3
+- (void)setRotationRateInput:(float)input
 {
   if ([(GVSSmoothingBuffers *)self _checkInputIsWritable])
   {
-    self->_rotationRate[self->_inputIndex] = a3;
+    self->_rotationRate[self->_inputIndex] = input;
   }
 }
 
-- (void)setFrameDurationPrevious:(float)a3
+- (void)setFrameDurationPrevious:(float)previous
 {
   if ([(GVSSmoothingBuffers *)self _checkInputIsWritable])
   {
-    self->_frameDuration[self->_inputIndex - 1] = a3;
+    self->_frameDuration[self->_inputIndex - 1] = previous;
   }
 }
 
@@ -1005,7 +1005,7 @@ LABEL_22:
   return self;
 }
 
-- (GVSRollSmoothingArrays)getRollSmoothingArraysForBaseTransform:(SEL)a3
+- (GVSRollSmoothingArrays)getRollSmoothingArraysForBaseTransform:(SEL)transform
 {
   *&retstr->var11 = 0;
   v4 = *(&self->var1 + a4);

@@ -1,24 +1,24 @@
 @interface GuidesHomeContext
 - (ChromeViewController)chromeViewController;
 - (_TtC4Maps17GuidesHomeContext)init;
-- (_TtC4Maps17GuidesHomeContext)initWithConfiguration:(id)a3;
+- (_TtC4Maps17GuidesHomeContext)initWithConfiguration:(id)configuration;
 - (id)desiredCards;
-- (void)citySelectorViewController:(id)a3 showGuidesHomeWithLocation:(id)a4;
-- (void)containeeViewControllerDidDismissExternally:(id)a3;
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4;
-- (void)guidesHomeViewController:(id)a3 showCitySelectorWithLocation:(id)a4;
-- (void)guidesHomeViewController:(id)a3 showGuidesHomeWithLocation:(id)a4;
-- (void)prepareToEnterStackInChromeViewController:(id)a3;
+- (void)citySelectorViewController:(id)controller showGuidesHomeWithLocation:(id)location;
+- (void)containeeViewControllerDidDismissExternally:(id)externally;
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender;
+- (void)guidesHomeViewController:(id)controller showCitySelectorWithLocation:(id)location;
+- (void)guidesHomeViewController:(id)controller showGuidesHomeWithLocation:(id)location;
+- (void)prepareToEnterStackInChromeViewController:(id)controller;
 @end
 
 @implementation GuidesHomeContext
 
-- (void)citySelectorViewController:(id)a3 showGuidesHomeWithLocation:(id)a4
+- (void)citySelectorViewController:(id)controller showGuidesHomeWithLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10010136C(v7);
+  controllerCopy = controller;
+  locationCopy = location;
+  selfCopy = self;
+  sub_10010136C(locationCopy);
 }
 
 - (id)desiredCards
@@ -31,9 +31,9 @@
   return v2.super.isa;
 }
 
-- (void)prepareToEnterStackInChromeViewController:(id)a3
+- (void)prepareToEnterStackInChromeViewController:(id)controller
 {
-  v3 = self;
+  selfCopy = self;
   sub_100250994();
 }
 
@@ -44,15 +44,15 @@
   return Strong;
 }
 
-- (_TtC4Maps17GuidesHomeContext)initWithConfiguration:(id)a3
+- (_TtC4Maps17GuidesHomeContext)initWithConfiguration:(id)configuration
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectWeakInit();
-  *(self + OBJC_IVAR____TtC4Maps17GuidesHomeContext_configuration) = a3;
+  *(self + OBJC_IVAR____TtC4Maps17GuidesHomeContext_configuration) = configuration;
   *(self + OBJC_IVAR____TtC4Maps17GuidesHomeContext_containees) = _swiftEmptyArrayStorage;
   v8.receiver = self;
   v8.super_class = ObjectType;
-  v6 = a3;
+  configurationCopy = configuration;
   return [(GuidesHomeContext *)&v8 init];
 }
 
@@ -63,28 +63,28 @@
   return result;
 }
 
-- (void)guidesHomeViewController:(id)a3 showGuidesHomeWithLocation:(id)a4
+- (void)guidesHomeViewController:(id)controller showGuidesHomeWithLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10025D338(v7);
+  controllerCopy = controller;
+  locationCopy = location;
+  selfCopy = self;
+  sub_10025D338(locationCopy);
 }
 
-- (void)guidesHomeViewController:(id)a3 showCitySelectorWithLocation:(id)a4
+- (void)guidesHomeViewController:(id)controller showCitySelectorWithLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10025D544(v7);
+  controllerCopy = controller;
+  locationCopy = location;
+  selfCopy = self;
+  sub_10025D544(locationCopy);
 }
 
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = a3;
-    v7 = self;
+    stateCopy = state;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -93,8 +93,8 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a3;
-    v9 = self;
+    stateCopy2 = state;
+    selfCopy2 = self;
   }
 
   sub_1002A1214();
@@ -102,10 +102,10 @@
   sub_1000DB2F4(v10);
 }
 
-- (void)containeeViewControllerDidDismissExternally:(id)a3
+- (void)containeeViewControllerDidDismissExternally:(id)externally
 {
-  v4 = a3;
-  v5 = self;
+  externallyCopy = externally;
+  selfCopy = self;
   sub_1002A1214();
 }
 

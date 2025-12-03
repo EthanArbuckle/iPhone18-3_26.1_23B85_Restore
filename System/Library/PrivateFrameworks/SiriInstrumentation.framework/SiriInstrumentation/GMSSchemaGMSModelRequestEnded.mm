@@ -1,34 +1,34 @@
 @interface GMSSchemaGMSModelRequestEnded
-- (BOOL)isEqual:(id)a3;
-- (GMSSchemaGMSModelRequestEnded)initWithDictionary:(id)a3;
-- (GMSSchemaGMSModelRequestEnded)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GMSSchemaGMSModelRequestEnded)initWithDictionary:(id)dictionary;
+- (GMSSchemaGMSModelRequestEnded)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasImageCount:(BOOL)a3;
-- (void)setHasImagePerSecond:(BOOL)a3;
-- (void)setHasKbPerSecond:(BOOL)a3;
-- (void)setHasResponseCharactersCount:(BOOL)a3;
-- (void)setHasResponseKbCount:(BOOL)a3;
-- (void)setHasResponseTimeInMilliseconds:(BOOL)a3;
-- (void)setHasResponseTokensCount:(BOOL)a3;
-- (void)setHasTimeToFirstTokenInSeconds:(BOOL)a3;
-- (void)setHasTimeToLastTokenInSeconds:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasImageCount:(BOOL)count;
+- (void)setHasImagePerSecond:(BOOL)second;
+- (void)setHasKbPerSecond:(BOOL)second;
+- (void)setHasResponseCharactersCount:(BOOL)count;
+- (void)setHasResponseKbCount:(BOOL)count;
+- (void)setHasResponseTimeInMilliseconds:(BOOL)milliseconds;
+- (void)setHasResponseTokensCount:(BOOL)count;
+- (void)setHasTimeToFirstTokenInSeconds:(BOOL)seconds;
+- (void)setHasTimeToLastTokenInSeconds:(BOOL)seconds;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GMSSchemaGMSModelRequestEnded
 
-- (GMSSchemaGMSModelRequestEnded)initWithDictionary:(id)a3
+- (GMSSchemaGMSModelRequestEnded)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = GMSSchemaGMSModelRequestEnded;
   v5 = [(GMSSchemaGMSModelRequestEnded *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"tokensPerSecond"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"tokensPerSecond"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,14 +36,14 @@
       [(GMSSchemaGMSModelRequestEnded *)v5 setTokensPerSecond:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"responseTokensCount"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"responseTokensCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GMSSchemaGMSModelRequestEnded setResponseTokensCount:](v5, "setResponseTokensCount:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"kbPerSecond"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"kbPerSecond"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       [(GMSSchemaGMSModelRequestEnded *)v5 setKbPerSecond:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"responseKbCount"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"responseKbCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,7 +59,7 @@
     }
 
     v19 = v9;
-    v10 = [v4 objectForKeyedSubscript:@"imagePerSecond"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"imagePerSecond"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,14 +67,14 @@
       [(GMSSchemaGMSModelRequestEnded *)v5 setImagePerSecond:?];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"imageCount"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"imageCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GMSSchemaGMSModelRequestEnded setImageCount:](v5, "setImageCount:", [v11 unsignedIntValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"timeToFirstTokenInSeconds"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"timeToFirstTokenInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -84,7 +84,7 @@
 
     v20 = v8;
     v21 = v6;
-    v13 = [v4 objectForKeyedSubscript:@"timeToLastTokenInSeconds"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"timeToLastTokenInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -93,14 +93,14 @@
     }
 
     v14 = v7;
-    v15 = [v4 objectForKeyedSubscript:@"responseCharactersCount"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"responseCharactersCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GMSSchemaGMSModelRequestEnded setResponseCharactersCount:](v5, "setResponseCharactersCount:", [v15 unsignedIntValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"responseTimeInMilliseconds"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"responseTimeInMilliseconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -113,30 +113,30 @@
   return v5;
 }
 
-- (GMSSchemaGMSModelRequestEnded)initWithJSON:(id)a3
+- (GMSSchemaGMSModelRequestEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(GMSSchemaGMSModelRequestEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(GMSSchemaGMSModelRequestEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(GMSSchemaGMSModelRequestEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -149,12 +149,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[GMSSchemaGMSModelRequestEnded imageCount](self, "imageCount")}];
-    [v3 setObject:v8 forKeyedSubscript:@"imageCount"];
+    [dictionary setObject:v8 forKeyedSubscript:@"imageCount"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -177,7 +177,7 @@ LABEL_3:
   v9 = MEMORY[0x1E696AD98];
   [(GMSSchemaGMSModelRequestEnded *)self imagePerSecond];
   v10 = [v9 numberWithFloat:?];
-  [v3 setObject:v10 forKeyedSubscript:@"imagePerSecond"];
+  [dictionary setObject:v10 forKeyedSubscript:@"imagePerSecond"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -195,7 +195,7 @@ LABEL_17:
   v11 = MEMORY[0x1E696AD98];
   [(GMSSchemaGMSModelRequestEnded *)self kbPerSecond];
   v12 = [v11 numberWithDouble:?];
-  [v3 setObject:v12 forKeyedSubscript:@"kbPerSecond"];
+  [dictionary setObject:v12 forKeyedSubscript:@"kbPerSecond"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -211,7 +211,7 @@ LABEL_5:
 
 LABEL_18:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[GMSSchemaGMSModelRequestEnded responseCharactersCount](self, "responseCharactersCount")}];
-  [v3 setObject:v13 forKeyedSubscript:@"responseCharactersCount"];
+  [dictionary setObject:v13 forKeyedSubscript:@"responseCharactersCount"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -227,7 +227,7 @@ LABEL_6:
 
 LABEL_19:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[GMSSchemaGMSModelRequestEnded responseKbCount](self, "responseKbCount")}];
-  [v3 setObject:v14 forKeyedSubscript:@"responseKbCount"];
+  [dictionary setObject:v14 forKeyedSubscript:@"responseKbCount"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -243,7 +243,7 @@ LABEL_7:
 
 LABEL_20:
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[GMSSchemaGMSModelRequestEnded responseTimeInMilliseconds](self, "responseTimeInMilliseconds")}];
-  [v3 setObject:v15 forKeyedSubscript:@"responseTimeInMilliseconds"];
+  [dictionary setObject:v15 forKeyedSubscript:@"responseTimeInMilliseconds"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -259,7 +259,7 @@ LABEL_8:
 
 LABEL_21:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[GMSSchemaGMSModelRequestEnded responseTokensCount](self, "responseTokensCount")}];
-  [v3 setObject:v16 forKeyedSubscript:@"responseTokensCount"];
+  [dictionary setObject:v16 forKeyedSubscript:@"responseTokensCount"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -277,7 +277,7 @@ LABEL_22:
   v17 = MEMORY[0x1E696AD98];
   [(GMSSchemaGMSModelRequestEnded *)self timeToFirstTokenInSeconds];
   v18 = [v17 numberWithDouble:?];
-  [v3 setObject:v18 forKeyedSubscript:@"timeToFirstTokenInSeconds"];
+  [dictionary setObject:v18 forKeyedSubscript:@"timeToFirstTokenInSeconds"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -295,7 +295,7 @@ LABEL_23:
   v19 = MEMORY[0x1E696AD98];
   [(GMSSchemaGMSModelRequestEnded *)self timeToLastTokenInSeconds];
   v20 = [v19 numberWithDouble:?];
-  [v3 setObject:v20 forKeyedSubscript:@"timeToLastTokenInSeconds"];
+  [dictionary setObject:v20 forKeyedSubscript:@"timeToLastTokenInSeconds"];
 
   if (*&self->_has)
   {
@@ -303,13 +303,13 @@ LABEL_11:
     v5 = MEMORY[0x1E696AD98];
     [(GMSSchemaGMSModelRequestEnded *)self tokensPerSecond];
     v6 = [v5 numberWithDouble:?];
-    [v3 setObject:v6 forKeyedSubscript:@"tokensPerSecond"];
+    [dictionary setObject:v6 forKeyedSubscript:@"tokensPerSecond"];
   }
 
 LABEL_12:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -552,16 +552,16 @@ LABEL_50:
   return v9 ^ v5 ^ v13 ^ v14 ^ v19 ^ v20 ^ v24 ^ v25 ^ v29 ^ v30;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_42;
   }
 
   has = self->_has;
-  v6 = v4[36];
+  v6 = equalCopy[36];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_42;
@@ -570,14 +570,14 @@ LABEL_50:
   if (*&has)
   {
     tokensPerSecond = self->_tokensPerSecond;
-    [v4 tokensPerSecond];
+    [equalCopy tokensPerSecond];
     if (tokensPerSecond != v8)
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -589,13 +589,13 @@ LABEL_50:
   if (v9)
   {
     responseTokensCount = self->_responseTokensCount;
-    if (responseTokensCount != [v4 responseTokensCount])
+    if (responseTokensCount != [equalCopy responseTokensCount])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v11 = (*&has >> 2) & 1;
@@ -607,14 +607,14 @@ LABEL_50:
   if (v11)
   {
     kbPerSecond = self->_kbPerSecond;
-    [v4 kbPerSecond];
+    [equalCopy kbPerSecond];
     if (kbPerSecond != v13)
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v14 = (*&has >> 3) & 1;
@@ -626,13 +626,13 @@ LABEL_50:
   if (v14)
   {
     responseKbCount = self->_responseKbCount;
-    if (responseKbCount != [v4 responseKbCount])
+    if (responseKbCount != [equalCopy responseKbCount])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v16 = (*&has >> 4) & 1;
@@ -644,14 +644,14 @@ LABEL_50:
   if (v16)
   {
     imagePerSecond = self->_imagePerSecond;
-    [v4 imagePerSecond];
+    [equalCopy imagePerSecond];
     if (imagePerSecond != v18)
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v19 = (*&has >> 5) & 1;
@@ -663,13 +663,13 @@ LABEL_50:
   if (v19)
   {
     imageCount = self->_imageCount;
-    if (imageCount != [v4 imageCount])
+    if (imageCount != [equalCopy imageCount])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v21 = (*&has >> 6) & 1;
@@ -681,14 +681,14 @@ LABEL_50:
   if (v21)
   {
     timeToFirstTokenInSeconds = self->_timeToFirstTokenInSeconds;
-    [v4 timeToFirstTokenInSeconds];
+    [equalCopy timeToFirstTokenInSeconds];
     if (timeToFirstTokenInSeconds != v23)
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v24 = (*&has >> 7) & 1;
@@ -700,14 +700,14 @@ LABEL_50:
   if (v24)
   {
     timeToLastTokenInSeconds = self->_timeToLastTokenInSeconds;
-    [v4 timeToLastTokenInSeconds];
+    [equalCopy timeToLastTokenInSeconds];
     if (timeToLastTokenInSeconds != v26)
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v27 = (*&has >> 8) & 1;
@@ -719,10 +719,10 @@ LABEL_50:
   if (v27)
   {
     responseCharactersCount = self->_responseCharactersCount;
-    if (responseCharactersCount == [v4 responseCharactersCount])
+    if (responseCharactersCount == [equalCopy responseCharactersCount])
     {
       has = self->_has;
-      v6 = v4[36];
+      v6 = equalCopy[36];
       goto LABEL_38;
     }
 
@@ -741,7 +741,7 @@ LABEL_38:
   if (v29)
   {
     responseTimeInMilliseconds = self->_responseTimeInMilliseconds;
-    if (responseTimeInMilliseconds != [v4 responseTimeInMilliseconds])
+    if (responseTimeInMilliseconds != [equalCopy responseTimeInMilliseconds])
     {
       goto LABEL_42;
     }
@@ -753,9 +753,9 @@ LABEL_43:
   return v31;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -886,9 +886,9 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)setHasResponseTimeInMilliseconds:(BOOL)a3
+- (void)setHasResponseTimeInMilliseconds:(BOOL)milliseconds
 {
-  if (a3)
+  if (milliseconds)
   {
     v3 = 512;
   }
@@ -901,9 +901,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasResponseCharactersCount:(BOOL)a3
+- (void)setHasResponseCharactersCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 256;
   }
@@ -916,9 +916,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasTimeToLastTokenInSeconds:(BOOL)a3
+- (void)setHasTimeToLastTokenInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 128;
   }
@@ -931,9 +931,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasTimeToFirstTokenInSeconds:(BOOL)a3
+- (void)setHasTimeToFirstTokenInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 64;
   }
@@ -946,9 +946,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasImageCount:(BOOL)a3
+- (void)setHasImageCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -961,9 +961,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasImagePerSecond:(BOOL)a3
+- (void)setHasImagePerSecond:(BOOL)second
 {
-  if (a3)
+  if (second)
   {
     v3 = 16;
   }
@@ -976,9 +976,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasResponseKbCount:(BOOL)a3
+- (void)setHasResponseKbCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -991,9 +991,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasKbPerSecond:(BOOL)a3
+- (void)setHasKbPerSecond:(BOOL)second
 {
-  if (a3)
+  if (second)
   {
     v3 = 4;
   }
@@ -1006,9 +1006,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasResponseTokensCount:(BOOL)a3
+- (void)setHasResponseTokensCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }

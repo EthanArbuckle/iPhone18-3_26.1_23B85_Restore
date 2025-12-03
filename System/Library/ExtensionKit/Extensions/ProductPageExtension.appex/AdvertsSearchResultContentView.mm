@@ -12,7 +12,7 @@
   v4 = *v3;
   if (*v3)
   {
-    v5 = self;
+    selfCopy = self;
     v6 = sub_10001CE50(v4);
     v4(v6);
 
@@ -22,7 +22,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100534634();
 }
 

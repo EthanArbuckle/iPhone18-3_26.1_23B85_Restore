@@ -7,13 +7,13 @@
 - (UIView)iconContainer;
 - (UIView)metadataContainer;
 - (void)awakeFromNib;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)setContainer:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIconContainer:(id)a3;
-- (void)setMetadataContainer:(id)a3;
-- (void)setTitleLabel:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)setContainer:(id)container;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIconContainer:(id)container;
+- (void)setMetadataContainer:(id)container;
+- (void)setTitleLabel:(id)label;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ChicletCell
@@ -25,10 +25,10 @@
   return v2;
 }
 
-- (void)setContainer:(id)a3
+- (void)setContainer:(id)container
 {
-  v4 = a3;
-  v5 = self;
+  containerCopy = container;
+  selfCopy = self;
   sub_100009300();
 }
 
@@ -39,10 +39,10 @@
   return v2;
 }
 
-- (void)setMetadataContainer:(id)a3
+- (void)setMetadataContainer:(id)container
 {
-  v4 = a3;
-  v5 = self;
+  containerCopy = container;
+  selfCopy = self;
   sub_1000093E0();
 }
 
@@ -53,10 +53,10 @@
   return v2;
 }
 
-- (void)setIconContainer:(id)a3
+- (void)setIconContainer:(id)container
 {
-  v4 = a3;
-  v5 = self;
+  containerCopy = container;
+  selfCopy = self;
   sub_1000094C0();
 }
 
@@ -67,46 +67,46 @@
   return v2;
 }
 
-- (void)setTitleLabel:(id)a3
+- (void)setTitleLabel:(id)label
 {
-  v4 = a3;
-  v5 = self;
+  labelCopy = label;
+  selfCopy = self;
   sub_1000095A0();
 }
 
 - (void)awakeFromNib
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000095E4();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_100009D40(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100009D40(change);
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10000B098(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_10000B098(contextCopy, coordinatorCopy);
 }
 
 - (BOOL)isHighlighted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000B444();
 
   return v3 & 1;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_10000B4CC(a3);
+  selfCopy = self;
+  sub_10000B4CC(highlighted);
 }
 
 - (UILabel)accessibilityTitleLabel

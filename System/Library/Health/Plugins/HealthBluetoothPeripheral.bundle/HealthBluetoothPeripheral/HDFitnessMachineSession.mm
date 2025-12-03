@@ -1,22 +1,22 @@
 @interface HDFitnessMachineSession
-+ (id)serviceFromRecoveryConfiguration:(id)a3;
++ (id)serviceFromRecoveryConfiguration:(id)configuration;
 - (BOOL)dataTransferRequirementsComplete;
 - (HDFitnessMachineSession)init;
-- (HDFitnessMachineSession)initWithNFCSessionIDData:(id)a3;
-- (HDFitnessMachineSession)initWithRecoveryConfiguration:(id)a3;
+- (HDFitnessMachineSession)initWithNFCSessionIDData:(id)data;
+- (HDFitnessMachineSession)initWithRecoveryConfiguration:(id)configuration;
 - (HDFitnessMachineSessionRecoveryConfiguration)recoveryConfiguration;
 - (NSArray)nfcConnectionHandoverData;
-- (void)setFitnessMachineName:(id)a3 type:(unint64_t)a4 identifier:(id)a5;
+- (void)setFitnessMachineName:(id)name type:(unint64_t)type identifier:(id)identifier;
 @end
 
 @implementation HDFitnessMachineSession
 
-- (HDFitnessMachineSession)initWithNFCSessionIDData:(id)a3
+- (HDFitnessMachineSession)initWithNFCSessionIDData:(id)data
 {
-  v4 = a3;
-  if ([v4 length] == &dword_8)
+  dataCopy = data;
+  if ([dataCopy length] == &dword_8)
   {
-    sub_3A928(&self->super.isa, v4, &v7);
+    sub_3A928(&self->super.isa, dataCopy, &v7);
     self = v7;
     v5 = v7;
   }
@@ -33,7 +33,7 @@
 {
   if (SecRandomCopyBytes(kSecRandomDefault, 8uLL, &v6))
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -41,20 +41,20 @@
     v4 = [[NSData alloc] initWithBytes:&v6 length:8];
     self = [(HDFitnessMachineSession *)self initWithNFCSessionIDData:v4];
 
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-+ (id)serviceFromRecoveryConfiguration:(id)a3
++ (id)serviceFromRecoveryConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = [HKHealthService alloc];
-  v5 = [v3 machineUUID];
-  v6 = [v3 machineName];
+  machineUUID = [configurationCopy machineUUID];
+  machineName = [configurationCopy machineName];
 
-  v7 = [v4 initWithType:1 identifier:v5 name:v6];
+  v7 = [v4 initWithType:1 identifier:machineUUID name:machineName];
 
   return v7;
 }
@@ -63,31 +63,31 @@
 {
   v3 = [HDFitnessMachineSessionRecoveryConfiguration alloc];
   fitnessMachineSessionUUID = self->_fitnessMachineSessionUUID;
-  v5 = [(_HKFitnessMachine *)self->_fitnessMachine identifier];
-  v6 = [(_HKFitnessMachine *)self->_fitnessMachine type];
-  v7 = [(_HKFitnessMachine *)self->_fitnessMachine device];
-  v8 = [v7 name];
-  v9 = [(_HKFitnessMachine *)self->_fitnessMachine brand];
-  v10 = [(_HKFitnessMachine *)self->_fitnessMachine activityType];
+  identifier = [(_HKFitnessMachine *)self->_fitnessMachine identifier];
+  type = [(_HKFitnessMachine *)self->_fitnessMachine type];
+  device = [(_HKFitnessMachine *)self->_fitnessMachine device];
+  name = [device name];
+  brand = [(_HKFitnessMachine *)self->_fitnessMachine brand];
+  activityType = [(_HKFitnessMachine *)self->_fitnessMachine activityType];
   machinePreferredUntilDate = self->_machinePreferredUntilDate;
-  v12 = [(HDFitnessMachineSessionRecoveryConfiguration *)v3 initWithSessionUUID:fitnessMachineSessionUUID machineUUID:v5 machineType:v6 machineName:v8 machineBrand:v9 activityType:v10 machineStartDate:self->_machineStartDate machinePreferredUntilDate:machinePreferredUntilDate nfcSessionIDData:self->_nfcSessionIDData];
+  v12 = [(HDFitnessMachineSessionRecoveryConfiguration *)v3 initWithSessionUUID:fitnessMachineSessionUUID machineUUID:identifier machineType:type machineName:name machineBrand:brand activityType:activityType machineStartDate:self->_machineStartDate machinePreferredUntilDate:machinePreferredUntilDate nfcSessionIDData:self->_nfcSessionIDData];
 
   return v12;
 }
 
-- (void)setFitnessMachineName:(id)a3 type:(unint64_t)a4 identifier:(id)a5
+- (void)setFitnessMachineName:(id)name type:(unint64_t)type identifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[_HKFitnessMachine alloc] initWithType:a4 identifier:v8];
+  identifierCopy = identifier;
+  nameCopy = name;
+  v10 = [[_HKFitnessMachine alloc] initWithType:type identifier:identifierCopy];
   [(HDFitnessMachineSession *)self setFitnessMachine:v10];
 
   v11 = [HKDevice alloc];
-  v12 = [v8 UUIDString];
+  uUIDString = [identifierCopy UUIDString];
 
-  v14 = [v11 initWithName:v9 manufacturer:0 model:0 hardwareVersion:0 firmwareVersion:0 softwareVersion:0 localIdentifier:v12 UDIDeviceIdentifier:0];
-  v13 = [(HDFitnessMachineSession *)self fitnessMachine];
-  [v13 _setDevice:v14];
+  v14 = [v11 initWithName:nameCopy manufacturer:0 model:0 hardwareVersion:0 firmwareVersion:0 softwareVersion:0 localIdentifier:uUIDString UDIDeviceIdentifier:0];
+  fitnessMachine = [(HDFitnessMachineSession *)self fitnessMachine];
+  [fitnessMachine _setDevice:v14];
 }
 
 - (BOOL)dataTransferRequirementsComplete
@@ -107,41 +107,41 @@
 {
   oobInfo = self->_oobInfo;
   v4 = self->_nfcSessionIDData;
-  v5 = [(HDHealthServiceOOBInfo *)oobInfo randomValue];
-  v6 = [(HDHealthServiceOOBInfo *)self->_oobInfo confirmationValue];
-  v7 = [(HDHealthServiceOOBInfo *)self->_oobInfo btAddress];
-  v8 = sub_3A654(self, v5, v6, v4, v7);
+  randomValue = [(HDHealthServiceOOBInfo *)oobInfo randomValue];
+  confirmationValue = [(HDHealthServiceOOBInfo *)self->_oobInfo confirmationValue];
+  btAddress = [(HDHealthServiceOOBInfo *)self->_oobInfo btAddress];
+  v8 = sub_3A654(self, randomValue, confirmationValue, v4, btAddress);
 
   return v8;
 }
 
-- (HDFitnessMachineSession)initWithRecoveryConfiguration:(id)a3
+- (HDFitnessMachineSession)initWithRecoveryConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 sessionUUID];
-  v6 = sub_3A448(&self->super.isa, v5);
+  configurationCopy = configuration;
+  sessionUUID = [configurationCopy sessionUUID];
+  v6 = sub_3A448(&self->super.isa, sessionUUID);
 
   if (v6)
   {
-    v7 = [objc_opt_class() serviceFromRecoveryConfiguration:v4];
+    v7 = [objc_opt_class() serviceFromRecoveryConfiguration:configurationCopy];
     healthService = v6->_healthService;
     v6->_healthService = v7;
 
-    v9 = [v4 machineName];
-    v10 = [v4 machineType];
-    v11 = [v4 machineUUID];
-    [(HDFitnessMachineSession *)v6 setFitnessMachineName:v9 type:v10 identifier:v11];
+    machineName = [configurationCopy machineName];
+    machineType = [configurationCopy machineType];
+    machineUUID = [configurationCopy machineUUID];
+    [(HDFitnessMachineSession *)v6 setFitnessMachineName:machineName type:machineType identifier:machineUUID];
 
     [(HDFitnessMachineSession *)v6 markDataTransferPermitted];
-    -[_HKFitnessMachine _setActivityType:](v6->_fitnessMachine, "_setActivityType:", [v4 activityType]);
+    -[_HKFitnessMachine _setActivityType:](v6->_fitnessMachine, "_setActivityType:", [configurationCopy activityType]);
     [(HDFitnessMachineSession *)v6 markActivityTypeProvided];
-    v12 = [v4 machineStartDate];
+    machineStartDate = [configurationCopy machineStartDate];
     machineStartDate = v6->_machineStartDate;
-    v6->_machineStartDate = v12;
+    v6->_machineStartDate = machineStartDate;
 
-    v14 = [v4 machinePreferredUntilDate];
+    machinePreferredUntilDate = [configurationCopy machinePreferredUntilDate];
     machinePreferredUntilDate = v6->_machinePreferredUntilDate;
-    v6->_machinePreferredUntilDate = v14;
+    v6->_machinePreferredUntilDate = machinePreferredUntilDate;
 
     if (v6->_machineStartDate)
     {
@@ -155,9 +155,9 @@
 
     v6->_waitingOnInitialMachineStatus = v16;
     v6->_waitingOnInitialMachineData = v16;
-    v17 = [v4 nfcSessionIDData];
+    nfcSessionIDData = [configurationCopy nfcSessionIDData];
     nfcSessionIDData = v6->_nfcSessionIDData;
-    v6->_nfcSessionIDData = v17;
+    v6->_nfcSessionIDData = nfcSessionIDData;
   }
 
   return v6;

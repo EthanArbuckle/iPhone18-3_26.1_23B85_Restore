@@ -1,6 +1,6 @@
 @interface OnboardingAddRegionWelcomeViewController
-- (_TtC28HealthExposureNotificationUI40OnboardingAddRegionWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC28HealthExposureNotificationUI40OnboardingAddRegionWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC28HealthExposureNotificationUI40OnboardingAddRegionWelcomeViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC28HealthExposureNotificationUI40OnboardingAddRegionWelcomeViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)didTapHowExposureNotificationsWork;
 - (void)didTapPrimaryButton;
 - (void)didTapSecondaryButton;
@@ -22,11 +22,11 @@
 {
   type metadata accessor for OnboardingInfoViewController();
   v3 = objc_allocWithZone(swift_getObjCClassFromMetadata());
-  v6 = self;
+  selfCopy = self;
   v4 = [v3 init];
-  v5 = [objc_allocWithZone(MEMORY[0x277D757A0]) initWithRootViewController_];
+  initWithRootViewController_ = [objc_allocWithZone(MEMORY[0x277D757A0]) initWithRootViewController_];
 
-  [(OnboardingAddRegionWelcomeViewController *)v6 presentViewController:v5 animated:1 completion:0];
+  [(OnboardingAddRegionWelcomeViewController *)selfCopy presentViewController:initWithRootViewController_ animated:1 completion:0];
 }
 
 - (void)didTapPrimaryButton
@@ -35,7 +35,7 @@
   v4 = *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC28HealthExposureNotificationUI40OnboardingAddRegionWelcomeViewController_flow);
   swift_getObjectType();
   v5 = *(v4 + 120);
-  v6 = self;
+  selfCopy = self;
   v5();
 }
 
@@ -45,18 +45,18 @@
   v4 = *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC28HealthExposureNotificationUI40OnboardingAddRegionWelcomeViewController_flow);
   swift_getObjectType();
   v5 = *(v4 + 128);
-  v6 = self;
+  selfCopy = self;
   v5();
 }
 
-- (_TtC28HealthExposureNotificationUI40OnboardingAddRegionWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC28HealthExposureNotificationUI40OnboardingAddRegionWelcomeViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC28HealthExposureNotificationUI40OnboardingAddRegionWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC28HealthExposureNotificationUI40OnboardingAddRegionWelcomeViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

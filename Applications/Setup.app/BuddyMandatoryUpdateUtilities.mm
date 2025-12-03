@@ -1,8 +1,8 @@
 @interface BuddyMandatoryUpdateUtilities
 + (BOOL)isUpdateRequired;
-+ (id)_humanReadableOSVersionWithProductVersion:(id)a3 buildVersion:(id)a4;
++ (id)_humanReadableOSVersionWithProductVersion:(id)version buildVersion:(id)buildVersion;
 + (id)humanReadableCurrentOSVersion;
-+ (id)humanReadableOSVersionFromScanOptions:(id)a3;
++ (id)humanReadableOSVersionFromScanOptions:(id)options;
 + (unint64_t)_mandatoryUpdateInformationFromActivation;
 + (void)removeInformation;
 @end
@@ -11,55 +11,55 @@
 
 + (BOOL)isUpdateRequired
 {
-  v3 = [objc_opt_class() _mandatoryUpdateInformationFromActivation];
+  _mandatoryUpdateInformationFromActivation = [objc_opt_class() _mandatoryUpdateInformationFromActivation];
   if ([objc_opt_class() deviceIsFromFactory])
   {
-    return (v3 & 1) != 0;
+    return (_mandatoryUpdateInformationFromActivation & 1) != 0;
   }
 
   else
   {
-    return (v3 & 4) != 0;
+    return (_mandatoryUpdateInformationFromActivation & 4) != 0;
   }
 }
 
 + (id)humanReadableCurrentOSVersion
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = MGCopyAnswer();
   v2 = MGCopyAnswer();
-  v3 = [v7 _humanReadableOSVersionWithProductVersion:location[0] buildVersion:{v2, v2}];
+  v3 = [selfCopy _humanReadableOSVersionWithProductVersion:location[0] buildVersion:{v2, v2}];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 
   return v3;
 }
 
-+ (id)humanReadableOSVersionFromScanOptions:(id)a3
++ (id)humanReadableOSVersionFromScanOptions:(id)options
 {
-  v8 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [location[0] requestedPMV];
-  v5 = [location[0] requestedBuild];
-  v3 = [v8 _humanReadableOSVersionWithProductVersion:v6 buildVersion:v5];
-  objc_storeStrong(&v5, 0);
-  objc_storeStrong(&v6, 0);
+  objc_storeStrong(location, options);
+  requestedPMV = [location[0] requestedPMV];
+  requestedBuild = [location[0] requestedBuild];
+  v3 = [selfCopy _humanReadableOSVersionWithProductVersion:requestedPMV buildVersion:requestedBuild];
+  objc_storeStrong(&requestedBuild, 0);
+  objc_storeStrong(&requestedPMV, 0);
   objc_storeStrong(location, 0);
 
   return v3;
 }
 
-+ (id)_humanReadableOSVersionWithProductVersion:(id)a3 buildVersion:(id)a4
++ (id)_humanReadableOSVersionWithProductVersion:(id)version buildVersion:(id)buildVersion
 {
-  v12 = a1;
+  selfCopy = self;
   v11 = a2;
   *(&v10 + 1) = 0;
-  objc_storeStrong(&v10 + 1, a3);
+  objc_storeStrong(&v10 + 1, version);
   *&v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, buildVersion);
   if (v10 == 0)
   {
     v5 = +[NSBundle mainBundle];
@@ -95,7 +95,7 @@
 
 + (void)removeInformation
 {
-  oslog[2] = a1;
+  oslog[2] = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v6 = OS_LOG_TYPE_DEFAULT;
@@ -115,7 +115,7 @@
 
 + (unint64_t)_mandatoryUpdateInformationFromActivation
 {
-  v18[2] = a1;
+  v18[2] = self;
   v18[1] = a2;
   v2 = dispatch_get_global_queue(0, 0);
   v18[0] = [BYSUManagerClient createWithQueue:v2 clientType:1];

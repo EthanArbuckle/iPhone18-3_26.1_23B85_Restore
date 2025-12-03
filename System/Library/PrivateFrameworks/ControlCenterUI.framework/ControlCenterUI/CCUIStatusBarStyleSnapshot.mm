@@ -1,47 +1,47 @@
 @interface CCUIStatusBarStyleSnapshot
-- (CCUIStatusBarStyleSnapshot)initWithHidden:(BOOL)a3 hiddenPartIdentifier:(id)a4 leadingStyleRequest:(id)a5 trailingStyleRequest:(id)a6 overlayData:(id)a7 actionsByPartIdentifier:(id)a8 statusBarInsets:(UIEdgeInsets)a9 avoidanceFrame:(CGRect)a10;
+- (CCUIStatusBarStyleSnapshot)initWithHidden:(BOOL)hidden hiddenPartIdentifier:(id)identifier leadingStyleRequest:(id)request trailingStyleRequest:(id)styleRequest overlayData:(id)data actionsByPartIdentifier:(id)partIdentifier statusBarInsets:(UIEdgeInsets)insets avoidanceFrame:(CGRect)self0;
 - (CGRect)avoidanceFrame;
 - (UIEdgeInsets)statusBarInsets;
 @end
 
 @implementation CCUIStatusBarStyleSnapshot
 
-- (CCUIStatusBarStyleSnapshot)initWithHidden:(BOOL)a3 hiddenPartIdentifier:(id)a4 leadingStyleRequest:(id)a5 trailingStyleRequest:(id)a6 overlayData:(id)a7 actionsByPartIdentifier:(id)a8 statusBarInsets:(UIEdgeInsets)a9 avoidanceFrame:(CGRect)a10
+- (CCUIStatusBarStyleSnapshot)initWithHidden:(BOOL)hidden hiddenPartIdentifier:(id)identifier leadingStyleRequest:(id)request trailingStyleRequest:(id)styleRequest overlayData:(id)data actionsByPartIdentifier:(id)partIdentifier statusBarInsets:(UIEdgeInsets)insets avoidanceFrame:(CGRect)self0
 {
-  height = a10.size.height;
-  width = a10.size.width;
-  y = a10.origin.y;
-  x = a10.origin.x;
-  right = a9.right;
-  bottom = a9.bottom;
-  left = a9.left;
-  top = a9.top;
-  v25 = a4;
-  v26 = a5;
-  v27 = a6;
-  v28 = a7;
-  v29 = a8;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  identifierCopy = identifier;
+  requestCopy = request;
+  styleRequestCopy = styleRequest;
+  dataCopy = data;
+  partIdentifierCopy = partIdentifier;
   v41.receiver = self;
   v41.super_class = CCUIStatusBarStyleSnapshot;
   v30 = [(CCUIStatusBarStyleSnapshot *)&v41 init];
   v31 = v30;
   if (v30)
   {
-    v30->_hidden = a3;
-    objc_storeStrong(&v30->_hiddenPartIdentifier, a4);
-    v32 = [v26 copy];
+    v30->_hidden = hidden;
+    objc_storeStrong(&v30->_hiddenPartIdentifier, identifier);
+    v32 = [requestCopy copy];
     leadingStyleRequest = v31->_leadingStyleRequest;
     v31->_leadingStyleRequest = v32;
 
-    v34 = [v27 copy];
+    v34 = [styleRequestCopy copy];
     trailingStyleRequest = v31->_trailingStyleRequest;
     v31->_trailingStyleRequest = v34;
 
-    v36 = [v28 copy];
+    v36 = [dataCopy copy];
     overlayData = v31->_overlayData;
     v31->_overlayData = v36;
 
-    v38 = [v29 copy];
+    v38 = [partIdentifierCopy copy];
     actionsByPartIdentifier = v31->_actionsByPartIdentifier;
     v31->_actionsByPartIdentifier = v38;
 

@@ -1,25 +1,25 @@
 @interface PXIDSAddressQueryController
 - (PXIDSAddressQueryController)init;
-- (void)_callResultsHandlerForQueries:(id)a3;
-- (void)_idStatusUpdatedForDestinations:(id)a3 service:(id)a4;
-- (void)_performBatchQueryForAddresses:(id)a3 resultHandler:(id)a4;
-- (void)batchQueryController:(id)a3 updatedDestinationsStatus:(id)a4 onService:(id)a5 error:(id)a6;
+- (void)_callResultsHandlerForQueries:(id)queries;
+- (void)_idStatusUpdatedForDestinations:(id)destinations service:(id)service;
+- (void)_performBatchQueryForAddresses:(id)addresses resultHandler:(id)handler;
+- (void)batchQueryController:(id)controller updatedDestinationsStatus:(id)status onService:(id)service error:(id)error;
 - (void)dealloc;
-- (void)performBatchQueryForAddresses:(id)a3 resultHandler:(id)a4;
+- (void)performBatchQueryForAddresses:(id)addresses resultHandler:(id)handler;
 @end
 
 @implementation PXIDSAddressQueryController
 
-- (void)_callResultsHandlerForQueries:(id)a3
+- (void)_callResultsHandlerForQueries:(id)queries
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  queriesCopy = queries;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = v3;
+  v4 = queriesCopy;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -35,11 +35,11 @@
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 popStashedResults];
-        if ([v10 count])
+        popStashedResults = [v9 popStashedResults];
+        if ([popStashedResults count])
         {
-          v11 = [v9 resultHandler];
-          (v11)[2](v11, v10, 0);
+          resultHandler = [v9 resultHandler];
+          (resultHandler)[2](resultHandler, popStashedResults, 0);
         }
       }
 
@@ -50,20 +50,20 @@
   }
 }
 
-- (void)_idStatusUpdatedForDestinations:(id)a3 service:(id)a4
+- (void)_idStatusUpdatedForDestinations:(id)destinations service:(id)service
 {
-  v7 = a3;
+  destinationsCopy = destinations;
   serialQueue = self->_serialQueue;
-  v9 = a4;
+  serviceCopy = service;
   dispatch_assert_queue_V2(serialQueue);
-  LODWORD(serialQueue) = [v9 isEqualToString:*MEMORY[0x1E69A4818]];
+  LODWORD(serialQueue) = [serviceCopy isEqualToString:*MEMORY[0x1E69A4818]];
 
   if (serialQueue)
   {
     if (![(NSMutableArray *)self->_queries count])
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"PXIDSAddressQueryController.m" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"_queries.count > 0"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXIDSAddressQueryController.m" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"_queries.count > 0"}];
     }
 
     v10 = [(NSMutableArray *)self->_queries copy];
@@ -73,8 +73,8 @@
     v18[3] = &unk_1E7734140;
     v11 = v10;
     v19 = v11;
-    v20 = self;
-    [v7 enumerateKeysAndObjectsUsingBlock:v18];
+    selfCopy = self;
+    [destinationsCopy enumerateKeysAndObjectsUsingBlock:v18];
     objc_initWeak(&location, self);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -173,43 +173,43 @@ void __71__PXIDSAddressQueryController__idStatusUpdatedForDestinations_service__
   [WeakRetained _callResultsHandlerForQueries:*(a1 + 32)];
 }
 
-- (void)batchQueryController:(id)a3 updatedDestinationsStatus:(id)a4 onService:(id)a5 error:(id)a6
+- (void)batchQueryController:(id)controller updatedDestinationsStatus:(id)status onService:(id)service error:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a6;
-  if (v10)
+  statusCopy = status;
+  errorCopy = error;
+  if (errorCopy)
   {
     v11 = PLUIGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = 138412546;
-      v13 = v9;
+      v13 = statusCopy;
       v14 = 2112;
-      v15 = v10;
+      v15 = errorCopy;
       _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_ERROR, "Error updating IDS destinations %@ : %@", &v12, 0x16u);
     }
   }
 
   else
   {
-    [(PXIDSAddressQueryController *)self _idStatusUpdatedForDestinations:v9 service:a5];
+    [(PXIDSAddressQueryController *)self _idStatusUpdatedForDestinations:statusCopy service:service];
   }
 }
 
-- (void)_performBatchQueryForAddresses:(id)a3 resultHandler:(id)a4
+- (void)_performBatchQueryForAddresses:(id)addresses resultHandler:(id)handler
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v36 = a4;
+  addressesCopy = addresses;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_serialQueue);
-  v37 = [MEMORY[0x1E695DF90] dictionary];
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(addressesCopy, "count")}];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v6;
+  obj = addressesCopy;
   v8 = [obj countByEnumeratingWithState:&v46 objects:v53 count:16];
   if (v8)
   {
@@ -232,16 +232,16 @@ void __71__PXIDSAddressQueryController__idStatusUpdatedForDestinations_service__
           goto LABEL_10;
         }
 
-        v15 = [v13 integerValue];
-        if ((v15 & 0xFFFFFFFFFFFFFFFELL) == 2)
+        integerValue = [v13 integerValue];
+        if ((integerValue & 0xFFFFFFFFFFFFFFFELL) == 2)
         {
-          v16 = [MEMORY[0x1E696AD98] numberWithBool:v15 == 2];
-          [v37 setObject:v16 forKeyedSubscript:v12];
+          v16 = [MEMORY[0x1E696AD98] numberWithBool:integerValue == 2];
+          [dictionary setObject:v16 forKeyedSubscript:v12];
 
           goto LABEL_12;
         }
 
-        if (!v15)
+        if (!integerValue)
         {
 LABEL_10:
           [(NSMutableDictionary *)self->_queryStateForAddress setObject:&unk_1F190B110 forKeyedSubscript:v12];
@@ -257,22 +257,22 @@ LABEL_12:
     while (v9);
   }
 
-  v17 = v37;
-  v18 = v36;
-  if ([v37 count])
+  v17 = dictionary;
+  v18 = handlerCopy;
+  if ([dictionary count])
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __76__PXIDSAddressQueryController__performBatchQueryForAddresses_resultHandler___block_invoke;
     block[3] = &unk_1E774C2F0;
-    v45 = v36;
-    v44 = v37;
+    v45 = handlerCopy;
+    v44 = dictionary;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
   if ([v7 count])
   {
-    v19 = [[PXIDSAddressQuery alloc] initWithDestinations:v7 resultHandler:v36];
+    v19 = [[PXIDSAddressQuery alloc] initWithDestinations:v7 resultHandler:handlerCopy];
     [(NSMutableArray *)self->_queries addObject:v19];
     if (![(NSMutableArray *)self->_queries count])
     {
@@ -302,12 +302,12 @@ LABEL_12:
           v26 = *(*(&v39 + 1) + 8 * j);
           if ([v26 isComplete])
           {
-            v28 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v28 handleFailureInMethod:a2 object:self file:@"PXIDSAddressQueryController.m" lineNumber:168 description:{@"Invalid parameter not satisfying: %@", @"!query.isComplete"}];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"PXIDSAddressQueryController.m" lineNumber:168 description:{@"Invalid parameter not satisfying: %@", @"!query.isComplete"}];
           }
 
-          v27 = [v26 remainingDestinations];
-          [v20 unionSet:v27];
+          remainingDestinations = [v26 remainingDestinations];
+          [v20 unionSet:remainingDestinations];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v39 objects:v52 count:16];
@@ -316,24 +316,24 @@ LABEL_12:
       while (v23);
     }
 
-    v18 = v36;
-    v17 = v37;
+    v18 = handlerCopy;
+    v17 = dictionary;
     if (v20)
     {
-      v29 = [v20 allObjects];
+      allObjects = [v20 allObjects];
     }
 
     else
     {
 LABEL_29:
-      v29 = v7;
+      allObjects = v7;
     }
 
     v30 = PLUIGetLog();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v51 = v29;
+      v51 = allObjects;
       _os_log_impl(&dword_1A3C1C000, v30, OS_LOG_TYPE_DEBUG, "Querying status for phone numbers/email addresses: %@", buf, 0xCu);
     }
 
@@ -348,19 +348,19 @@ LABEL_29:
       idsBatchIDQueryController = self->_idsBatchIDQueryController;
     }
 
-    [(IDSBatchIDQueryController *)idsBatchIDQueryController setDestinations:v29];
+    [(IDSBatchIDQueryController *)idsBatchIDQueryController setDestinations:allObjects];
   }
 }
 
-- (void)performBatchQueryForAddresses:(id)a3 resultHandler:(id)a4
+- (void)performBatchQueryForAddresses:(id)addresses resultHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  addressesCopy = addresses;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (!addressesCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXIDSAddressQueryController.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"addresses"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXIDSAddressQueryController.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"addresses"}];
 
     if (v9)
     {
@@ -368,13 +368,13 @@ LABEL_29:
     }
 
 LABEL_5:
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXIDSAddressQueryController.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"resultHandler"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXIDSAddressQueryController.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"resultHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
     goto LABEL_5;
   }
@@ -387,10 +387,10 @@ LABEL_3:
   block[2] = __75__PXIDSAddressQueryController_performBatchQueryForAddresses_resultHandler___block_invoke;
   block[3] = &unk_1E773F368;
   objc_copyWeak(&v18, &location);
-  v16 = v7;
+  v16 = addressesCopy;
   v17 = v9;
   v11 = v9;
-  v12 = v7;
+  v12 = addressesCopy;
   dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v18);

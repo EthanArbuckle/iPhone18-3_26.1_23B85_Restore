@@ -1,52 +1,52 @@
 @interface PFImageMetadataChangePolicySetLocation
-+ (id)policyWithLocation:(id)a3;
-- (BOOL)metadataNeedsProcessing:(id)a3;
-- (PFImageMetadataChangePolicySetLocation)initWithCoder:(id)a3;
-- (id)processMetadata:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)policyWithLocation:(id)location;
+- (BOOL)metadataNeedsProcessing:(id)processing;
+- (PFImageMetadataChangePolicySetLocation)initWithCoder:(id)coder;
+- (id)processMetadata:(id)metadata;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PFImageMetadataChangePolicySetLocation
 
-- (id)processMetadata:(id)a3
+- (id)processMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = v5;
-  if (v4)
+  metadataCopy = metadata;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v6 = dictionary;
+  if (metadataCopy)
   {
-    [v5 addEntriesFromDictionary:v4];
+    [dictionary addEntriesFromDictionary:metadataCopy];
   }
 
-  v7 = [(PFImageMetadataChangePolicySetLocation *)self location];
+  location = [(PFImageMetadataChangePolicySetLocation *)self location];
 
-  if (v7)
+  if (location)
   {
-    v8 = [(PFImageMetadataChangePolicySetLocation *)self location];
-    v9 = [PFSharingUtilities gpsDictionaryForLocation:v8];
+    location2 = [(PFImageMetadataChangePolicySetLocation *)self location];
+    null = [PFSharingUtilities gpsDictionaryForLocation:location2];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  [v6 setObject:v9 forKeyedSubscript:*MEMORY[0x1E696DBF0]];
+  [v6 setObject:null forKeyedSubscript:*MEMORY[0x1E696DBF0]];
 
   return v6;
 }
 
-- (BOOL)metadataNeedsProcessing:(id)a3
+- (BOOL)metadataNeedsProcessing:(id)processing
 {
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x1E696DBF0]];
-  v5 = [(PFImageMetadataChangePolicySetLocation *)self location];
+  v4 = [processing objectForKeyedSubscript:*MEMORY[0x1E696DBF0]];
+  location = [(PFImageMetadataChangePolicySetLocation *)self location];
 
-  if (v5)
+  if (location)
   {
-    v6 = [(PFImageMetadataChangePolicySetLocation *)self location];
-    v7 = [PFSharingUtilities gpsDictionaryForLocation:v6];
+    location2 = [(PFImageMetadataChangePolicySetLocation *)self location];
+    null = [PFSharingUtilities gpsDictionaryForLocation:location2];
 
-    v8 = [v7 isEqualToDictionary:v4];
+    v8 = [null isEqualToDictionary:v4];
   }
 
   else
@@ -57,8 +57,8 @@
       goto LABEL_6;
     }
 
-    v7 = [MEMORY[0x1E695DFB0] null];
-    v8 = [v4 isEqual:v7];
+    null = [MEMORY[0x1E695DFB0] null];
+    v8 = [v4 isEqual:null];
   }
 
   v9 = v8 ^ 1;
@@ -67,30 +67,30 @@ LABEL_6:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PFImageMetadataChangePolicySetLocation *)self location];
-  [v4 encodeObject:v5 forKey:@"location"];
+  coderCopy = coder;
+  location = [(PFImageMetadataChangePolicySetLocation *)self location];
+  [coderCopy encodeObject:location forKey:@"location"];
 }
 
-- (PFImageMetadataChangePolicySetLocation)initWithCoder:(id)a3
+- (PFImageMetadataChangePolicySetLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"location"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"location"])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
     [(PFImageMetadataChangePolicySetLocation *)self setLocation:v5];
   }
 
   return self;
 }
 
-+ (id)policyWithLocation:(id)a3
++ (id)policyWithLocation:(id)location
 {
-  v3 = a3;
+  locationCopy = location;
   v4 = objc_opt_new();
-  [v4 setLocation:v3];
+  [v4 setLocation:locationCopy];
 
   return v4;
 }

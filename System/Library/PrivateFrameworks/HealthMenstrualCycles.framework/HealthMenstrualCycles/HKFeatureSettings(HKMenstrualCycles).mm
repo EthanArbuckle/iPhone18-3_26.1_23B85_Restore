@@ -14,18 +14,18 @@
 
 - (uint64_t)menstruationProjectionsEnabled
 {
-  v1 = [a1 numberForKey:@"MenstruationProjectionsEnabled"];
-  v2 = [v1 BOOLValue];
+  v1 = [self numberForKey:@"MenstruationProjectionsEnabled"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)fertileWindowProjectionsEnabled
 {
-  v1 = [a1 numberForKey:@"FertileWindowProjectionsEnabled"];
-  v2 = [v1 BOOLValue];
+  v1 = [self numberForKey:@"FertileWindowProjectionsEnabled"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)isLoggingVisibleForDisplayTypeIdentifier:()HKMenstrualCycles
@@ -36,7 +36,7 @@
   }
 
   v4 = HKFeatureSettingsKeyForIsLoggingHiddenForDisplayTypeIdentifier(a3);
-  v5 = [a1 numberForKey:v4];
+  v5 = [self numberForKey:v4];
   v6 = [v5 isEqualToNumber:MEMORY[0x277CBEC38]] ^ 1;
 
   return v6;
@@ -45,11 +45,11 @@
 - (uint64_t)projectionsEnabledSettingsHaveChangedFromFeatureSettings:()HKMenstrualCycles
 {
   v4 = a3;
-  v5 = [a1 menstruationProjectionsEnabled];
-  if (v5 == [v4 menstruationProjectionsEnabled])
+  menstruationProjectionsEnabled = [self menstruationProjectionsEnabled];
+  if (menstruationProjectionsEnabled == [v4 menstruationProjectionsEnabled])
   {
-    v7 = [a1 fertileWindowProjectionsEnabled];
-    v6 = v7 ^ [v4 fertileWindowProjectionsEnabled];
+    fertileWindowProjectionsEnabled = [self fertileWindowProjectionsEnabled];
+    v6 = fertileWindowProjectionsEnabled ^ [v4 fertileWindowProjectionsEnabled];
   }
 
   else
@@ -109,7 +109,7 @@
   v22 = HKFeatureSettingsKeyForIsLoggingHiddenForDisplayTypeIdentifier(@"DisplayTypeIdentifierSexualActivity");
   [v10 setObject:v21 forKeyedSubscript:v22];
 
-  v23 = [a1 initWithDictionary:v10];
+  v23 = [self initWithDictionary:v10];
   v24 = *MEMORY[0x277D85DE8];
   return v23;
 }
@@ -117,7 +117,7 @@
 - (uint64_t)deviationDetectionEnabledForType:()HKMenstrualCycles
 {
   v4 = HKFeatureSettingsKeyForDeviationDetectionTypeEnabled(a3);
-  v5 = [a1 numberForKey:v4];
+  v5 = [self numberForKey:v4];
   v6 = [v5 isEqualToNumber:MEMORY[0x277CBEC28]];
 
   return v6 ^ 1u;
@@ -146,7 +146,7 @@
           objc_enumerationMutation(v2);
         }
 
-        if ([a1 deviationDetectionEnabledForType:{objc_msgSend(*(*(&v10 + 1) + 8 * v6), "integerValue", v10)}])
+        if ([self deviationDetectionEnabledForType:{objc_msgSend(*(*(&v10 + 1) + 8 * v6), "integerValue", v10)}])
         {
           v7 = 1;
           goto LABEL_11;
@@ -196,7 +196,7 @@ LABEL_11:
           objc_enumerationMutation(v2);
         }
 
-        if (![a1 deviationDetectionEnabledForType:{objc_msgSend(*(*(&v10 + 1) + 8 * v6), "integerValue", v10)}])
+        if (![self deviationDetectionEnabledForType:{objc_msgSend(*(*(&v10 + 1) + 8 * v6), "integerValue", v10)}])
         {
           v7 = 0;
           goto LABEL_11;
@@ -247,7 +247,7 @@ LABEL_11:
         }
 
         v7 = HKFeatureSettingsKeyForDeviationDetectionTypeEnabled([*(*(&v12 + 1) + 8 * v6) integerValue]);
-        v8 = [a1 numberForKey:v7];
+        v8 = [self numberForKey:v7];
 
         if (v8)
         {

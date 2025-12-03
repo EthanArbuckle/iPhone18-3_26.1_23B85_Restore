@@ -1,9 +1,9 @@
 @interface PFFaultingTransformedValue
 + (void)initialize;
-+ (void)transformedValueWithData:(uint64_t)a3 forAttribute:;
-- (PFFaultingTransformedValue)initWithStorage:(id)a3 attribute:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)valueWithRegistry:(uint64_t)a1;
++ (void)transformedValueWithData:(uint64_t)data forAttribute:;
+- (PFFaultingTransformedValue)initWithStorage:(id)storage attribute:(id)attribute;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)valueWithRegistry:(uint64_t)registry;
 - (os_unfair_lock_s)setValue:(os_unfair_lock_s *)result;
 - (void)dealloc;
 @end
@@ -22,20 +22,20 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    PFFaultingTransformedValue_Encoded = objc_allocateClassPair(a1, "PFFaultingTransformedValue_Encoded", 0);
+    PFFaultingTransformedValue_Encoded = objc_allocateClassPair(self, "PFFaultingTransformedValue_Encoded", 0);
     objc_registerClassPair(PFFaultingTransformedValue_Encoded);
-    PFFaultingTransformedValue_Decoded = objc_allocateClassPair(a1, "PFFaultingTransformedValue_Decoded", 0);
+    PFFaultingTransformedValue_Decoded = objc_allocateClassPair(self, "PFFaultingTransformedValue_Decoded", 0);
     objc_registerClassPair(PFFaultingTransformedValue_Decoded);
-    ClassPair = objc_allocateClassPair(a1, "PFFaultingTransformedValue_Decoded_Dirty", 0);
+    ClassPair = objc_allocateClassPair(self, "PFFaultingTransformedValue_Decoded_Dirty", 0);
     PFFaultingTransformedValue_Decoded_Dirty = ClassPair;
 
     objc_registerClassPair(ClassPair);
   }
 }
 
-- (PFFaultingTransformedValue)initWithStorage:(id)a3 attribute:(id)a4
+- (PFFaultingTransformedValue)initWithStorage:(id)storage attribute:(id)attribute
 {
   v9.receiver = self;
   v9.super_class = PFFaultingTransformedValue;
@@ -44,17 +44,17 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    v6->_storage = a3;
-    v7->_attributeDescription = a4;
+    v6->_storage = storage;
+    v7->_attributeDescription = attribute;
   }
 
   return v7;
 }
 
-+ (void)transformedValueWithData:(uint64_t)a3 forAttribute:
++ (void)transformedValueWithData:(uint64_t)data forAttribute:
 {
   objc_opt_self();
-  v5 = [[PFFaultingTransformedValue_Encoded alloc] initWithStorage:a2 attribute:a3];
+  v5 = [[PFFaultingTransformedValue_Encoded alloc] initWithStorage:a2 attribute:data];
   object_setClass(v5, PFFaultingTransformedValue_Encoded);
   if ((byte_1ED4BEECF & 1) == 0)
   {
@@ -64,27 +64,27 @@
   return v5;
 }
 
-- (id)valueWithRegistry:(uint64_t)a1
+- (id)valueWithRegistry:(uint64_t)registry
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (registry)
   {
-    os_unfair_lock_lock((a1 + 8));
+    os_unfair_lock_lock((registry + 8));
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v12 = __48__PFFaultingTransformedValue_valueWithRegistry___block_invoke;
     v13 = &unk_1E6EC16F0;
-    v14 = a1;
-    if (object_getClass(a1) == PFFaultingTransformedValue_Encoded)
+    registryCopy = registry;
+    if (object_getClass(registry) == PFFaultingTransformedValue_Encoded)
     {
-      if ([*(a1 + 24) attributeType] == 2200)
+      if ([*(registry + 24) attributeType] == 2200)
       {
         v10 = 0;
-        v4 = [*(a1 + 24) decode:*(a1 + 16) withRegistry:a2 error:&v10];
+        v4 = [*(registry + 24) decode:*(registry + 16) withRegistry:a2 error:&v10];
         if (!v4)
         {
           v5 = MEMORY[0x1E695DF30];
-          v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to decode for %@: %@", *(a1 + 24), v10];
+          v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to decode for %@: %@", *(registry + 24), v10];
           v15 = *MEMORY[0x1E696AA08];
           v16[0] = v10;
           v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
@@ -94,16 +94,16 @@
 
       else
       {
-        v4 = [_PFRoutines retainedDecodeValue:*(a1 + 24) forTransformableAttribute:?];
+        v4 = [_PFRoutines retainedDecodeValue:*(registry + 24) forTransformableAttribute:?];
       }
 
-      *(a1 + 16) = v4;
-      object_setClass(a1, PFFaultingTransformedValue_Decoded);
+      *(registry + 16) = v4;
+      object_setClass(registry, PFFaultingTransformedValue_Decoded);
     }
 
     else
     {
-      v4 = *(a1 + 16);
+      v4 = *(registry + 16);
     }
 
     v12(v11);
@@ -138,15 +138,15 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock(&self->_lock);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v8 = __43__PFFaultingTransformedValue_copyWithZone___block_invoke;
   v9 = &unk_1E6EC16F0;
-  v10 = self;
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  selfCopy = self;
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[2] = self->_storage;
   v5[3] = self->_attributeDescription;
   v8(v7);

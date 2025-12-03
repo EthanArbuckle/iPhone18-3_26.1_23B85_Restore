@@ -10,7 +10,7 @@
   columns = self->_columns;
   if (!columns)
   {
-    v35 = self;
+    selfCopy = self;
     v45 = [ML3DatabaseColumn columnWithName:@"item_pid" datatype:2 constraints:1 defaultValue:0];
     v46[0] = v45;
     v44 = [ML3DatabaseColumn columnWithName:@"media_type" datatype:2 constraints:16 defaultValue:&unk_2840C9410];
@@ -88,10 +88,10 @@
     v12 = [ML3DatabaseColumn columnWithName:@"download_source_container_pid" datatype:2 constraints:16 defaultValue:&unk_2840C9410];
     v46[37] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:38];
-    v14 = v35->_columns;
-    v35->_columns = v13;
+    v14 = selfCopy->_columns;
+    selfCopy->_columns = v13;
 
-    columns = v35->_columns;
+    columns = selfCopy->_columns;
   }
 
   return columns;

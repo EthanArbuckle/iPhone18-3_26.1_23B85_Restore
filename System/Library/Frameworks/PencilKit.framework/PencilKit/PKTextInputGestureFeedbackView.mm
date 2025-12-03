@@ -1,5 +1,5 @@
 @interface PKTextInputGestureFeedbackView
-- (PKTextInputGestureFeedbackView)initWithFrame:(CGRect)a3;
+- (PKTextInputGestureFeedbackView)initWithFrame:(CGRect)frame;
 - (id)dataSourceController;
 - (void)beginShowingReserveSpaceIntro;
 - (void)cancelShowingReserveSpaceIntro;
@@ -9,17 +9,17 @@
 
 @implementation PKTextInputGestureFeedbackView
 
-- (PKTextInputGestureFeedbackView)initWithFrame:(CGRect)a3
+- (PKTextInputGestureFeedbackView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PKTextInputGestureFeedbackView;
-  v3 = [(PKTextInputGestureFeedbackView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKTextInputGestureFeedbackView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(PKTextInputGestureFeedbackView *)v3 setUserInteractionEnabled:0];
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    [(PKTextInputGestureFeedbackView *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PKTextInputGestureFeedbackView *)v4 setBackgroundColor:clearColor];
   }
 
   return v4;
@@ -27,19 +27,19 @@
 
 - (void)setNeedsRefreshFeedbackViews
 {
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 408) & 1) == 0)
+    if ((*(self + 408) & 1) == 0)
     {
-      *(a1 + 408) = 1;
-      [a1 setNeedsLayout];
-      WeakRetained = objc_loadWeakRetained((a1 + 416));
-      v3 = [WeakRetained feedbackType];
+      *(self + 408) = 1;
+      [self setNeedsLayout];
+      WeakRetained = objc_loadWeakRetained((self + 416));
+      feedbackType = [WeakRetained feedbackType];
 
-      if (v3 != 3)
+      if (feedbackType != 3)
       {
 
-        [(PKTextInputGestureFeedbackView *)a1 cancelShowingReserveSpaceIntro];
+        [(PKTextInputGestureFeedbackView *)self cancelShowingReserveSpaceIntro];
       }
     }
   }
@@ -58,16 +58,16 @@
 
 - (void)cancelShowingReserveSpaceIntro
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[54];
-    v3 = [v2 superview];
-    v4 = v3;
-    if (v3 == a1)
+    v2 = self[54];
+    superview = [v2 superview];
+    v4 = superview;
+    if (superview == self)
     {
-      v5 = [v2 layer];
-      v6 = [v5 animationKeys];
-      v7 = [v6 count];
+      layer = [v2 layer];
+      animationKeys = [layer animationKeys];
+      v7 = [animationKeys count];
 
       if (v7)
       {
@@ -77,7 +77,7 @@
         v11[2] = __64__PKTextInputGestureFeedbackView_cancelShowingReserveSpaceIntro__block_invoke;
         v11[3] = &unk_1E82D6E70;
         v12 = v2;
-        v13 = a1;
+        selfCopy = self;
         v9[0] = MEMORY[0x1E69E9820];
         v9[1] = 3221225472;
         v9[2] = __64__PKTextInputGestureFeedbackView_cancelShowingReserveSpaceIntro__block_invoke_2;
@@ -99,19 +99,19 @@
   v111.receiver = self;
   v111.super_class = PKTextInputGestureFeedbackView;
   [(PKTextInputGestureFeedbackView *)&v111 layoutSubviews];
-  v3 = [(PKTextInputGestureFeedbackView *)&self->super.super.super.isa dataSourceController];
-  v4 = [v3 referenceElementContent];
+  dataSourceController = [(PKTextInputGestureFeedbackView *)&self->super.super.super.isa dataSourceController];
+  referenceElementContent = [dataSourceController referenceElementContent];
 
-  v5 = [(PKTextInputGestureFeedbackView *)&self->super.super.super.isa dataSourceController];
-  v6 = [v5 referenceTextRange];
+  dataSourceController2 = [(PKTextInputGestureFeedbackView *)&self->super.super.super.isa dataSourceController];
+  referenceTextRange = [dataSourceController2 referenceTextRange];
   v8 = v7;
 
-  v9 = [(PKTextInputGestureFeedbackView *)&self->super.super.super.isa dataSourceController];
-  v10 = [v9 feedbackType];
+  dataSourceController3 = [(PKTextInputGestureFeedbackView *)&self->super.super.super.isa dataSourceController];
+  feedbackType = [dataSourceController3 feedbackType];
 
   if (!self)
   {
-    v103 = v4;
+    v103 = referenceElementContent;
     v15 = 0;
     v11 = 0.0;
     v12 = 0.0;
@@ -120,10 +120,10 @@
     goto LABEL_57;
   }
 
-  if (v10 == 5)
+  if (feedbackType == 5)
   {
     v11 = 1.0;
-    if (!v4)
+    if (!referenceElementContent)
     {
       v15 = 0;
       v12 = 1.0;
@@ -144,18 +144,18 @@
     v11 = *MEMORY[0x1E69DDCE0];
     v12 = *(MEMORY[0x1E69DDCE0] + 8);
     v15 = 0;
-    if (!v4 || v6 == 0x7FFFFFFFFFFFFFFFLL)
+    if (!referenceElementContent || referenceTextRange == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_57;
     }
   }
 
-  v16 = v4[1];
-  v17 = [(PKTextInputElement *)v16 coordinateSpace];
+  v16 = referenceElementContent[1];
+  coordinateSpace = [(PKTextInputElement *)v16 coordinateSpace];
 
-  if (v17)
+  if (coordinateSpace)
   {
-    if (v10 == 5)
+    if (feedbackType == 5)
     {
       v104 = v14;
       v18 = v13;
@@ -164,7 +164,7 @@
       width = self->__reserveSpaceCaretRect.size.width;
       height = self->__reserveSpaceCaretRect.size.height;
       WeakRetained = objc_loadWeakRetained(&self->_dataSourceController);
-      v24 = [WeakRetained referenceElementContent];
+      referenceElementContent2 = [WeakRetained referenceElementContent];
 
       v109 = y;
       v110 = x;
@@ -175,15 +175,15 @@
       v118.size.height = height;
       if (!CGRectIsNull(v118))
       {
-        v26 = v24 ? v24[1] : 0;
+        v26 = referenceElementContent2 ? referenceElementContent2[1] : 0;
         v27 = v26;
-        v28 = [(PKTextInputElement *)v27 coordinateSpace];
+        coordinateSpace2 = [(PKTextInputElement *)v27 coordinateSpace];
 
-        if (v28)
+        if (coordinateSpace2)
         {
-          if (v24)
+          if (referenceElementContent2)
           {
-            v29 = v24[1];
+            v29 = referenceElementContent2[1];
           }
 
           else
@@ -192,8 +192,8 @@
           }
 
           v30 = v29;
-          v31 = [(PKTextInputElement *)v30 coordinateSpace];
-          v32 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(self, v31, x, y, width, height);
+          coordinateSpace3 = [(PKTextInputElement *)v30 coordinateSpace];
+          v32 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(self, coordinateSpace3, x, y, width, height);
           v109 = v33;
           v110 = v32;
           v25 = v34;
@@ -206,14 +206,14 @@
       v107 = v11;
       v36 = [MEMORY[0x1E695DF70] arrayWithCapacity:1];
       v37 = objc_loadWeakRetained(&self->_dataSourceController);
-      v38 = [v37 reserveSpacePlaceholder];
+      reserveSpacePlaceholder = [v37 reserveSpacePlaceholder];
 
       v114 = 0u;
       v115 = 0u;
       v112 = 0u;
       v113 = 0u;
-      v39 = [v38 rects];
-      v40 = [v39 countByEnumeratingWithState:&v112 objects:v116 count:16];
+      rects = [reserveSpacePlaceholder rects];
+      v40 = [rects countByEnumeratingWithState:&v112 objects:v116 count:16];
       if (v40)
       {
         v41 = v40;
@@ -225,7 +225,7 @@
           {
             if (*v113 != v42)
             {
-              objc_enumerationMutation(v39);
+              objc_enumerationMutation(rects);
             }
 
             v45 = *(*(&v112 + 1) + 8 * i);
@@ -236,8 +236,8 @@
             v49 = v119.size.height;
             if (!CGRectIsNull(v119))
             {
-              v50 = [v38 shouldIgnoreOrigin];
-              if (v50)
+              shouldIgnoreOrigin = [reserveSpacePlaceholder shouldIgnoreOrigin];
+              if (shouldIgnoreOrigin)
               {
                 v51 = v110;
               }
@@ -247,7 +247,7 @@
                 v51 = v46;
               }
 
-              if (v50)
+              if (shouldIgnoreOrigin)
               {
                 v52 = v109;
               }
@@ -269,9 +269,9 @@
                   v54 = height + v49;
                 }
 
-                v55 = [v45 writingDirection];
+                writingDirection = [v45 writingDirection];
                 v56 = 0.0;
-                if (v55 != 1)
+                if (writingDirection != 1)
                 {
                   [(PKTextInputGestureFeedbackView *)self bounds];
                   v56 = v51;
@@ -335,30 +335,30 @@
                   v53 = v51;
                 }
 
-                v64 = [(PKTextInputFeedbackRect *)v53 rectWithFrame:v52, v48, height];
-                [v36 addObject:v64];
+                height = [(PKTextInputFeedbackRect *)v53 rectWithFrame:v52, v48, height];
+                [v36 addObject:height];
               }
             }
           }
 
-          v41 = [v39 countByEnumeratingWithState:&v112 objects:v116 count:16];
+          v41 = [rects countByEnumeratingWithState:&v112 objects:v116 count:16];
         }
 
         while (v41);
       }
 
-      v15 = [(PKTextInputElementContent *)v4 rectValuesForSelectionRects:v36 inCoordinateSpace:self visibleOnly:1];
+      v15 = [(PKTextInputElementContent *)referenceElementContent rectValuesForSelectionRects:v36 inCoordinateSpace:self visibleOnly:1];
 
       v12 = v106;
       v11 = v107;
       v14 = v104;
       v13 = v105;
-      v10 = 5;
+      feedbackType = 5;
     }
 
     else
     {
-      v15 = [(PKTextInputElementContent *)v4 selectionRectsForRange:v6 inCoordinateSpace:v8 visibleOnly:self, 1];
+      v15 = [(PKTextInputElementContent *)referenceElementContent selectionRectsForRange:referenceTextRange inCoordinateSpace:v8 visibleOnly:self, 1];
     }
   }
 
@@ -387,8 +387,8 @@ LABEL_57:
 
     while ([(NSArray *)v69 count]> v66)
     {
-      v70 = [(NSArray *)v69 lastObject];
-      [v70 removeFromSuperview];
+      lastObject = [(NSArray *)v69 lastObject];
+      [lastObject removeFromSuperview];
 
       [(NSArray *)v69 removeLastObject];
     }
@@ -413,9 +413,9 @@ LABEL_57:
     self->__highlightViews = v69;
   }
 
-  if (v4)
+  if (referenceElementContent)
   {
-    v77 = v4[1];
+    v77 = referenceElementContent[1];
   }
 
   else
@@ -427,33 +427,33 @@ LABEL_57:
   v79 = v78;
   if (self)
   {
-    v108 = v4;
-    if (v10 == 5)
+    v108 = referenceElementContent;
+    if (feedbackType == 5)
     {
-      v82 = [MEMORY[0x1E69DC888] pk_textInputReserveSpaceColor];
+      pk_textInputReserveSpaceColor = [MEMORY[0x1E69DC888] pk_textInputReserveSpaceColor];
       v80 = 5.0;
     }
 
     else
     {
       v80 = 0.0;
-      if (v10 == 2)
+      if (feedbackType == 2)
       {
-        v81 = [v78 selectionHighlightColor];
+        selectionHighlightColor = [v78 selectionHighlightColor];
       }
 
       else
       {
-        if (v10 != 1)
+        if (feedbackType != 1)
         {
-          v82 = 0;
+          pk_textInputReserveSpaceColor = 0;
           goto LABEL_79;
         }
 
-        v81 = [MEMORY[0x1E69DC888] pk_textInputDeletionPreviewColor];
+        selectionHighlightColor = [MEMORY[0x1E69DC888] pk_textInputDeletionPreviewColor];
       }
 
-      v82 = v81;
+      pk_textInputReserveSpaceColor = selectionHighlightColor;
     }
 
 LABEL_79:
@@ -477,7 +477,7 @@ LABEL_79:
           }
 
           v88 = *(*(&v112 + 1) + 8 * j);
-          [v88 setBackgroundColor:v82];
+          [v88 setBackgroundColor:pk_textInputReserveSpaceColor];
           [v88 _setCornerRadius:v80];
         }
 
@@ -487,7 +487,7 @@ LABEL_79:
       while (v85);
     }
 
-    v4 = v108;
+    referenceElementContent = v108;
   }
 
   if ([v15 count])
@@ -594,32 +594,32 @@ void __67__PKTextInputGestureFeedbackView__prepareForReserveSpaceAnimations__blo
 - (void)beginShowingReserveSpaceIntro
 {
   v75 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 432);
+    v2 = *(self + 432);
     if (!v2)
     {
       v3 = objc_alloc(MEMORY[0x1E69DD250]);
       v4 = [v3 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-      v5 = *(a1 + 432);
-      *(a1 + 432) = v4;
+      v5 = *(self + 432);
+      *(self + 432) = v4;
 
-      v2 = *(a1 + 432);
+      v2 = *(self + 432);
     }
 
     v6 = v2;
-    v7 = [v6 superview];
+    superview = [v6 superview];
 
-    if (v7 != a1)
+    if (superview != self)
     {
-      [a1 addSubview:*(a1 + 432)];
+      [self addSubview:*(self + 432)];
     }
 
     v72 = 0u;
     v73 = 0u;
     v70 = 0u;
     v71 = 0u;
-    v8 = *(a1 + 424);
+    v8 = *(self + 424);
     v9 = [v8 countByEnumeratingWithState:&v70 objects:v74 count:16];
     if (v9)
     {
@@ -643,14 +643,14 @@ void __67__PKTextInputGestureFeedbackView__prepareForReserveSpaceAnimations__blo
       while (v10);
     }
 
-    v13 = [*(a1 + 432) layer];
-    [v13 removeAllAnimations];
+    layer = [*(self + 432) layer];
+    [layer removeAllAnimations];
 
-    WeakRetained = objc_loadWeakRetained((a1 + 416));
-    v15 = [WeakRetained referenceElementContent];
+    WeakRetained = objc_loadWeakRetained((self + 416));
+    referenceElementContent = [WeakRetained referenceElementContent];
 
-    v16 = objc_loadWeakRetained((a1 + 416));
-    v17 = [v16 referenceTextRange];
+    v16 = objc_loadWeakRetained((self + 416));
+    referenceTextRange = [v16 referenceTextRange];
 
     v18 = *(MEMORY[0x1E695F050] + 16);
     v19 = *(MEMORY[0x1E695F050] + 24);
@@ -660,46 +660,46 @@ void __67__PKTextInputGestureFeedbackView__prepareForReserveSpaceAnimations__blo
     v23 = v18;
     v24 = v22;
     v25 = *MEMORY[0x1E695F050];
-    if (v17 != 0x7FFFFFFFFFFFFFFFLL)
+    if (referenceTextRange != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v26 = v15 ? v15[1] : 0;
+      v26 = referenceElementContent ? referenceElementContent[1] : 0;
       v27 = v26;
-      v28 = [(PKTextInputElement *)v27 coordinateSpace];
+      coordinateSpace = [(PKTextInputElement *)v27 coordinateSpace];
 
       v20 = v19;
       v23 = v18;
       v24 = v22;
       v25 = v21;
-      if (v28)
+      if (coordinateSpace)
       {
-        v25 = [(PKTextInputElementContent *)v15 caretRectForCharacterIndex:v17 inCoordinateSpace:a1];
+        v25 = [(PKTextInputElementContent *)referenceElementContent caretRectForCharacterIndex:referenceTextRange inCoordinateSpace:self];
       }
     }
 
-    *(a1 + 440) = v25;
-    *(a1 + 448) = v24;
-    *(a1 + 456) = v23;
-    *(a1 + 464) = v20;
+    *(self + 440) = v25;
+    *(self + 448) = v24;
+    *(self + 456) = v23;
+    *(self + 464) = v20;
     v69[0] = MEMORY[0x1E69E9820];
     v69[1] = 3221225472;
     v69[2] = __67__PKTextInputGestureFeedbackView__prepareForReserveSpaceAnimations__block_invoke;
     v69[3] = &unk_1E82D7148;
-    v69[4] = a1;
+    v69[4] = self;
     [MEMORY[0x1E69DD250] performWithoutAnimation:v69];
 
-    v29 = *(a1 + 432);
+    v29 = *(self + 432);
     [v29 frame];
     UIRectInset();
     x = v30;
     y = v32;
     width = v34;
     height = v36;
-    v38 = objc_loadWeakRetained((a1 + 416));
-    v39 = [v38 referenceElementContent];
+    v38 = objc_loadWeakRetained((self + 416));
+    referenceElementContent2 = [v38 referenceElementContent];
 
-    if (v39)
+    if (referenceElementContent2)
     {
-      v40 = v39[1];
+      v40 = referenceElementContent2[1];
     }
 
     else
@@ -711,7 +711,7 @@ void __67__PKTextInputGestureFeedbackView__prepareForReserveSpaceAnimations__blo
     v42 = v41;
     if (v41)
     {
-      [v41 selectionClipRectInCoordinateSpace:a1];
+      [v41 selectionClipRectInCoordinateSpace:self];
       v21 = v43;
       v22 = v44;
       v18 = v45;

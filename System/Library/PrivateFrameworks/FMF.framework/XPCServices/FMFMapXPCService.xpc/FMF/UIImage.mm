@@ -2,7 +2,7 @@
 - (id)applyDarkEffect;
 - (id)applyExtraLightEffect;
 - (id)applyLightEffect;
-- (id)applyTintEffectWithColor:(id)a3;
+- (id)applyTintEffectWithColor:(id)color;
 @end
 
 @implementation UIImage
@@ -31,14 +31,14 @@
   return v4;
 }
 
-- (id)applyTintEffectWithColor:(id)a3
+- (id)applyTintEffectWithColor:(id)color
 {
-  v4 = a3;
-  if (CGColorGetNumberOfComponents([v4 CGColor]) == 2)
+  colorCopy = color;
+  if (CGColorGetNumberOfComponents([colorCopy CGColor]) == 2)
   {
     v11 = 0.0;
-    v5 = v4;
-    if (![v4 getWhite:&v11 alpha:0])
+    v5 = colorCopy;
+    if (![colorCopy getWhite:&v11 alpha:0])
     {
       goto LABEL_7;
     }
@@ -51,8 +51,8 @@
     v10 = 0.0;
     v11 = 0.0;
     v9 = 0.0;
-    v5 = v4;
-    if (![v4 getRed:&v11 green:&v10 blue:&v9 alpha:0])
+    v5 = colorCopy;
+    if (![colorCopy getRed:&v11 green:&v10 blue:&v9 alpha:0])
     {
       goto LABEL_7;
     }

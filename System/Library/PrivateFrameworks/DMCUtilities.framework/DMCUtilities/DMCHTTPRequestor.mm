@@ -1,52 +1,52 @@
 @interface DMCHTTPRequestor
-+ (BOOL)_parsePairingTokenMissingErrorWithMessage:(id)a3 details:(id)a4 outError:(id *)a5;
-+ (BOOL)_parsePlatformSSORequiredErrorWithMessage:(id)a3 details:(id)a4 outError:(id *)a5;
-+ (BOOL)_parseSoftwareUpdateRequiredErrorWithMessage:(id)a3 details:(id)a4 outError:(id *)a5;
-+ (BOOL)_parseUnrecognizedDeviceErrorWithMessage:(id)a3 details:(id)a4 outError:(id *)a5;
-+ (BOOL)_parseWellKnownFailedErrorWithMessage:(id)a3 details:(id)a4 outError:(id *)a5;
-+ (BOOL)parse403ErrorWithResponseDictionary:(id)a3 outError:(id *)a4;
-+ (BOOL)parsePredefined403ErrorWithResponseDictionary:(id)a3 outError:(id *)a4;
-+ (id)_getServerErrorCodeFromResponseDictionary:(id)a3;
-+ (id)_getServerErrorDetailsFromResponseDictionary:(id)a3;
-+ (id)_getServerErrorMessageFromResponseDictionary:(id)a3;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)startWithRequest:(id)a3 username:(id)a4 password:(id)a5 anchorCertificateRefs:(id)a6 completionBlock:(id)a7;
++ (BOOL)_parsePairingTokenMissingErrorWithMessage:(id)message details:(id)details outError:(id *)error;
++ (BOOL)_parsePlatformSSORequiredErrorWithMessage:(id)message details:(id)details outError:(id *)error;
++ (BOOL)_parseSoftwareUpdateRequiredErrorWithMessage:(id)message details:(id)details outError:(id *)error;
++ (BOOL)_parseUnrecognizedDeviceErrorWithMessage:(id)message details:(id)details outError:(id *)error;
++ (BOOL)_parseWellKnownFailedErrorWithMessage:(id)message details:(id)details outError:(id *)error;
++ (BOOL)parse403ErrorWithResponseDictionary:(id)dictionary outError:(id *)error;
++ (BOOL)parsePredefined403ErrorWithResponseDictionary:(id)dictionary outError:(id *)error;
++ (id)_getServerErrorCodeFromResponseDictionary:(id)dictionary;
++ (id)_getServerErrorDetailsFromResponseDictionary:(id)dictionary;
++ (id)_getServerErrorMessageFromResponseDictionary:(id)dictionary;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)startWithRequest:(id)request username:(id)username password:(id)password anchorCertificateRefs:(id)refs completionBlock:(id)block;
 @end
 
 @implementation DMCHTTPRequestor
 
-- (void)startWithRequest:(id)a3 username:(id)a4 password:(id)a5 anchorCertificateRefs:(id)a6 completionBlock:(id)a7
+- (void)startWithRequest:(id)request username:(id)username password:(id)password anchorCertificateRefs:(id)refs completionBlock:(id)block
 {
   v47 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  [(DMCHTTPRequestor *)self setUsername:a4];
-  [(DMCHTTPRequestor *)self setPassword:v15];
+  requestCopy = request;
+  blockCopy = block;
+  refsCopy = refs;
+  passwordCopy = password;
+  [(DMCHTTPRequestor *)self setUsername:username];
+  [(DMCHTTPRequestor *)self setPassword:passwordCopy];
 
-  [(DMCHTTPRequestor *)self setAnchorCertificateRefs:v14];
+  [(DMCHTTPRequestor *)self setAnchorCertificateRefs:refsCopy];
   [(DMCHTTPRequestor *)self setSelfReference:self];
   [(DMCHTTPRequestor *)self setDidFailDueToMissingCredentials:0];
   [(DMCHTTPRequestor *)self setDidFailDueToCertNotTrusted:0];
-  v16 = [v12 valueForHTTPHeaderField:@"User-Agent"];
+  v16 = [requestCopy valueForHTTPHeaderField:@"User-Agent"];
 
   if (!v16)
   {
-    [v12 setValue:@"DeviceManagementClient/1.0" forHTTPHeaderField:@"User-Agent"];
+    [requestCopy setValue:@"DeviceManagementClient/1.0" forHTTPHeaderField:@"User-Agent"];
   }
 
-  v17 = [MEMORY[0x1E696AF80] ephemeralSessionConfiguration];
-  [v17 setRequestCachePolicy:1];
-  [v17 setTimeoutIntervalForRequest:90.0];
-  [v17 setTLSMinimumSupportedProtocolVersion:771];
-  v18 = [(DMCHTTPRequestor *)self authenticator];
+  ephemeralSessionConfiguration = [MEMORY[0x1E696AF80] ephemeralSessionConfiguration];
+  [ephemeralSessionConfiguration setRequestCachePolicy:1];
+  [ephemeralSessionConfiguration setTimeoutIntervalForRequest:90.0];
+  [ephemeralSessionConfiguration setTLSMinimumSupportedProtocolVersion:771];
+  authenticator = [(DMCHTTPRequestor *)self authenticator];
 
-  if (v18)
+  if (authenticator)
   {
-    v19 = [(DMCHTTPRequestor *)self authenticator];
+    authenticator2 = [(DMCHTTPRequestor *)self authenticator];
     v42 = 0;
-    v20 = [v19 authenticateRequest:v12 error:&v42];
+    v20 = [authenticator2 authenticateRequest:requestCopy error:&v42];
     v21 = v42;
 
     if ((v20 & 1) == 0)
@@ -55,31 +55,31 @@
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v44 = v21;
+        selfCopy2 = v21;
         _os_log_impl(&dword_1B1630000, v22, OS_LOG_TYPE_ERROR, "Failed to authenticate request with error: %{public}@", buf, 0xCu);
       }
     }
   }
 
-  v23 = [MEMORY[0x1E696AF78] sessionWithConfiguration:v17 delegate:self delegateQueue:0];
+  v23 = [MEMORY[0x1E696AF78] sessionWithConfiguration:ephemeralSessionConfiguration delegate:self delegateQueue:0];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __93__DMCHTTPRequestor_startWithRequest_username_password_anchorCertificateRefs_completionBlock___block_invoke;
   v38[3] = &unk_1E7ADCB48;
-  v24 = v12;
+  v24 = requestCopy;
   v39 = v24;
-  v40 = self;
-  v25 = v13;
+  selfCopy = self;
+  v25 = blockCopy;
   v41 = v25;
   v26 = [v23 dataTaskWithRequest:v24 completionHandler:v38];
-  v27 = [(DMCHTTPRequestor *)self authenticator];
+  authenticator3 = [(DMCHTTPRequestor *)self authenticator];
   v28 = objc_opt_respondsToSelector();
 
   if (v28)
   {
-    v29 = [(DMCHTTPRequestor *)self authenticator];
+    authenticator4 = [(DMCHTTPRequestor *)self authenticator];
     v37 = 0;
-    v30 = [v29 prepareTask:v26 error:&v37];
+    v30 = [authenticator4 prepareTask:v26 error:&v37];
     v31 = v37;
 
     if ((v30 & 1) == 0)
@@ -88,7 +88,7 @@
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v44 = v31;
+        selfCopy2 = v31;
         _os_log_impl(&dword_1B1630000, v32, OS_LOG_TYPE_ERROR, "Failed to prepare task with error: %{public}@", buf, 0xCu);
       }
     }
@@ -100,7 +100,7 @@
     v34 = v33;
     v35 = [v24 URL];
     *buf = 138543618;
-    v44 = self;
+    selfCopy2 = self;
     v45 = 2114;
     v46 = v35;
     _os_log_impl(&dword_1B1630000, v34, OS_LOG_TYPE_INFO, "%{public}@ Starting request to %{public}@", buf, 0x16u);
@@ -256,9 +256,9 @@ LABEL_26:
   v56 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_getServerErrorMessageFromResponseDictionary:(id)a3
++ (id)_getServerErrorMessageFromResponseDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"message"];
+  v3 = [dictionary objectForKeyedSubscript:@"message"];
   if ([v3 length])
   {
     v4 = v3;
@@ -279,9 +279,9 @@ LABEL_26:
   return v4;
 }
 
-+ (id)_getServerErrorCodeFromResponseDictionary:(id)a3
++ (id)_getServerErrorCodeFromResponseDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"code"];
+  v3 = [dictionary objectForKeyedSubscript:@"code"];
   if ([v3 length])
   {
     v4 = v3;
@@ -302,9 +302,9 @@ LABEL_26:
   return v4;
 }
 
-+ (id)_getServerErrorDetailsFromResponseDictionary:(id)a3
++ (id)_getServerErrorDetailsFromResponseDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"details"];
+  v3 = [dictionary objectForKeyedSubscript:@"details"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 count])
   {
@@ -326,15 +326,15 @@ LABEL_26:
   return v4;
 }
 
-+ (BOOL)parse403ErrorWithResponseDictionary:(id)a3 outError:(id *)a4
++ (BOOL)parse403ErrorWithResponseDictionary:(id)dictionary outError:(id *)error
 {
-  v5 = a3;
-  if (![DMCHTTPRequestor parsePredefined403ErrorWithResponseDictionary:v5 outError:a4])
+  dictionaryCopy = dictionary;
+  if (![DMCHTTPRequestor parsePredefined403ErrorWithResponseDictionary:dictionaryCopy outError:error])
   {
-    v7 = [DMCHTTPRequestor _getServerErrorMessageFromResponseDictionary:v5];
+    v7 = [DMCHTTPRequestor _getServerErrorMessageFromResponseDictionary:dictionaryCopy];
     if ([v7 length])
     {
-      if (!a4)
+      if (!error)
       {
         v6 = 1;
         goto LABEL_12;
@@ -342,22 +342,22 @@ LABEL_26:
 
       v15 = MEMORY[0x1E696ABC0];
       v16 = DMCErrorArray(@"HTTP_ERROR_403_RESPONSE_FROM_SERVER_WITH_MESSAGE_%@", v8, v9, v10, v11, v12, v13, v14, v7);
-      *a4 = [v15 DMCErrorWithDomain:@"DMCHTTPTransactionErrorDomain" code:23004 descriptionArray:v16 errorType:@"DMCFatalError"];
+      *error = [v15 DMCErrorWithDomain:@"DMCHTTPTransactionErrorDomain" code:23004 descriptionArray:v16 errorType:@"DMCFatalError"];
     }
 
     else
     {
-      v16 = [DMCHTTPRequestor _getServerErrorCodeFromResponseDictionary:v5];
+      v16 = [DMCHTTPRequestor _getServerErrorCodeFromResponseDictionary:dictionaryCopy];
       v17 = [v16 length];
       v6 = v17 != 0;
-      if (!a4 || !v17)
+      if (!error || !v17)
       {
         goto LABEL_10;
       }
 
       v25 = MEMORY[0x1E696ABC0];
       v26 = DMCErrorArray(@"HTTP_ERROR_403_RESPONSE_FROM_SERVER_NO_MESSAGE_%@", v18, v19, v20, v21, v22, v23, v24, v16);
-      *a4 = [v25 DMCErrorWithDomain:@"DMCHTTPTransactionErrorDomain" code:23005 descriptionArray:v26 errorType:@"DMCFatalError"];
+      *error = [v25 DMCErrorWithDomain:@"DMCHTTPTransactionErrorDomain" code:23005 descriptionArray:v26 errorType:@"DMCFatalError"];
     }
 
     v6 = 1;
@@ -373,31 +373,31 @@ LABEL_13:
   return v6;
 }
 
-+ (BOOL)parsePredefined403ErrorWithResponseDictionary:(id)a3 outError:(id *)a4
++ (BOOL)parsePredefined403ErrorWithResponseDictionary:(id)dictionary outError:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 _getServerErrorCodeFromResponseDictionary:v6];
-  v8 = [a1 _getServerErrorMessageFromResponseDictionary:v6];
-  v9 = [a1 _getServerErrorDetailsFromResponseDictionary:v6];
+  dictionaryCopy = dictionary;
+  v7 = [self _getServerErrorCodeFromResponseDictionary:dictionaryCopy];
+  v8 = [self _getServerErrorMessageFromResponseDictionary:dictionaryCopy];
+  v9 = [self _getServerErrorDetailsFromResponseDictionary:dictionaryCopy];
 
   if ([v7 isEqualToString:@"com.apple.softwareupdate.required"])
   {
-    v10 = [a1 _parseSoftwareUpdateRequiredErrorWithMessage:v8 details:v9 outError:a4];
+    v10 = [self _parseSoftwareUpdateRequiredErrorWithMessage:v8 details:v9 outError:error];
   }
 
   else if ([v7 isEqualToString:@"com.apple.watch.pairing.token.missing"])
   {
-    v10 = [a1 _parsePairingTokenMissingErrorWithMessage:v8 details:v9 outError:a4];
+    v10 = [self _parsePairingTokenMissingErrorWithMessage:v8 details:v9 outError:error];
   }
 
   else if ([v7 isEqualToString:@"com.apple.unrecognized.device"])
   {
-    v10 = [a1 _parseUnrecognizedDeviceErrorWithMessage:v8 details:v9 outError:a4];
+    v10 = [self _parseUnrecognizedDeviceErrorWithMessage:v8 details:v9 outError:error];
   }
 
   else if ([v7 isEqualToString:@"com.apple.well-known.failed"])
   {
-    v10 = [a1 _parseWellKnownFailedErrorWithMessage:v8 details:v9 outError:a4];
+    v10 = [self _parseWellKnownFailedErrorWithMessage:v8 details:v9 outError:error];
   }
 
   else
@@ -408,7 +408,7 @@ LABEL_13:
       goto LABEL_12;
     }
 
-    v10 = [a1 _parsePlatformSSORequiredErrorWithMessage:v8 details:v9 outError:a4];
+    v10 = [self _parsePlatformSSORequiredErrorWithMessage:v8 details:v9 outError:error];
   }
 
   v11 = v10;
@@ -417,18 +417,18 @@ LABEL_12:
   return v11;
 }
 
-+ (BOOL)_parsePairingTokenMissingErrorWithMessage:(id)a3 details:(id)a4 outError:(id *)a5
++ (BOOL)_parsePairingTokenMissingErrorWithMessage:(id)message details:(id)details outError:(id *)error
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [a4 objectForKeyedSubscript:@"security-token"];
+  messageCopy = message;
+  v8 = [details objectForKeyedSubscript:@"security-token"];
   v16 = [v8 length];
   if (v16)
   {
-    if (a5)
+    if (error)
     {
       v24 = MEMORY[0x1E696ABC0];
-      v17 = DMCErrorArray(@"HTTP_ERROR_403_RESPONSE_PAIRING_TOKEN_MISSING_%@", v9, v10, v11, v12, v13, v14, v15, v7);
+      v17 = DMCErrorArray(@"HTTP_ERROR_403_RESPONSE_PAIRING_TOKEN_MISSING_%@", v9, v10, v11, v12, v13, v14, v15, messageCopy);
       v28 = @"PairingParameters";
       v26[0] = @"SecurityToken";
       v26[1] = @"WatchUDID";
@@ -438,7 +438,7 @@ LABEL_12:
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
       v29[0] = v19;
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
-      *a5 = [v24 DMCErrorWithDomain:@"DMCHTTPTransactionErrorDomain" code:23007 descriptionArray:v17 suggestion:0 USEnglishSuggestion:0 underlyingError:0 errorType:@"DMCFatalError" addtionalUserInfo:v20];
+      *error = [v24 DMCErrorWithDomain:@"DMCHTTPTransactionErrorDomain" code:23007 descriptionArray:v17 suggestion:0 USEnglishSuggestion:0 underlyingError:0 errorType:@"DMCFatalError" addtionalUserInfo:v20];
     }
   }
 
@@ -456,20 +456,20 @@ LABEL_12:
   return v16 != 0;
 }
 
-+ (BOOL)_parseSoftwareUpdateRequiredErrorWithMessage:(id)a3 details:(id)a4 outError:(id *)a5
++ (BOOL)_parseSoftwareUpdateRequiredErrorWithMessage:(id)message details:(id)details outError:(id *)error
 {
-  v6 = a4;
-  v7 = [v6 count];
+  detailsCopy = details;
+  v7 = [detailsCopy count];
   if (v7)
   {
     v8 = objc_opt_new();
-    [v8 setObject:v6 forKeyedSubscript:@"SoftwareUpdateInfo"];
-    if (a5)
+    [v8 setObject:detailsCopy forKeyedSubscript:@"SoftwareUpdateInfo"];
+    if (error)
     {
       v16 = MEMORY[0x1E696ABC0];
       v17 = DMCErrorArray(@"HTTP_ERROR_403_RESPONSE_SOFTWARE_UPDATE_REQUIRED", v9, v10, v11, v12, v13, v14, v15, 0);
       v18 = [v8 copy];
-      *a5 = [v16 DMCErrorWithDomain:@"DMCHTTPTransactionErrorDomain" code:23006 descriptionArray:v17 suggestion:0 USEnglishSuggestion:0 underlyingError:0 errorType:@"DMCFatalError" addtionalUserInfo:v18];
+      *error = [v16 DMCErrorWithDomain:@"DMCHTTPTransactionErrorDomain" code:23006 descriptionArray:v17 suggestion:0 USEnglishSuggestion:0 underlyingError:0 errorType:@"DMCFatalError" addtionalUserInfo:v18];
     }
   }
 
@@ -486,28 +486,28 @@ LABEL_12:
   return v7 != 0;
 }
 
-+ (BOOL)_parseUnrecognizedDeviceErrorWithMessage:(id)a3 details:(id)a4 outError:(id *)a5
++ (BOOL)_parseUnrecognizedDeviceErrorWithMessage:(id)message details:(id)details outError:(id *)error
 {
-  if (a5)
+  if (error)
   {
     v9 = MEMORY[0x1E696ABC0];
-    v10 = DMCErrorArray(@"HTTP_ERROR_403_RESPONSE_UNRECOGNIZED_DEVICE", a2, a3, a4, a5, v5, v6, v7, 0);
-    *a5 = [v9 DMCErrorWithDomain:@"DMCHTTPTransactionErrorDomain" code:23008 descriptionArray:v10 suggestion:0 USEnglishSuggestion:0 underlyingError:0 errorType:@"DMCFatalError"];
+    v10 = DMCErrorArray(@"HTTP_ERROR_403_RESPONSE_UNRECOGNIZED_DEVICE", a2, message, details, error, v5, v6, v7, 0);
+    *error = [v9 DMCErrorWithDomain:@"DMCHTTPTransactionErrorDomain" code:23008 descriptionArray:v10 suggestion:0 USEnglishSuggestion:0 underlyingError:0 errorType:@"DMCFatalError"];
   }
 
   return 1;
 }
 
-+ (BOOL)_parseWellKnownFailedErrorWithMessage:(id)a3 details:(id)a4 outError:(id *)a5
++ (BOOL)_parseWellKnownFailedErrorWithMessage:(id)message details:(id)details outError:(id *)error
 {
-  v7 = a3;
-  v15 = a4;
-  if (a5)
+  messageCopy = message;
+  detailsCopy = details;
+  if (error)
   {
     v16 = MEMORY[0x1E696ABC0];
-    if (v7)
+    if (messageCopy)
     {
-      DMCUnformattedErrorArray(v7, v8, v9, v10, v11, v12, v13, v14, 0);
+      DMCUnformattedErrorArray(messageCopy, v8, v9, v10, v11, v12, v13, v14, 0);
     }
 
     else
@@ -515,23 +515,23 @@ LABEL_12:
       DMCErrorArray(@"HTTP_ERROR_403_RESPONSE_WELLKNOWN_FAILED", v8, v9, v10, v11, v12, v13, v14, 0);
     }
     v17 = ;
-    *a5 = [v16 DMCErrorWithDomain:@"DMCHTTPTransactionErrorDomain" code:23009 descriptionArray:v17 suggestion:0 USEnglishSuggestion:0 underlyingError:0 errorType:@"DMCFatalError"];
+    *error = [v16 DMCErrorWithDomain:@"DMCHTTPTransactionErrorDomain" code:23009 descriptionArray:v17 suggestion:0 USEnglishSuggestion:0 underlyingError:0 errorType:@"DMCFatalError"];
   }
 
   return 1;
 }
 
-+ (BOOL)_parsePlatformSSORequiredErrorWithMessage:(id)a3 details:(id)a4 outError:(id *)a5
++ (BOOL)_parsePlatformSSORequiredErrorWithMessage:(id)message details:(id)details outError:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v15 = a4;
-  if (a5)
+  messageCopy = message;
+  detailsCopy = details;
+  if (error)
   {
     v16 = MEMORY[0x1E696ABC0];
-    if (v7)
+    if (messageCopy)
     {
-      DMCUnformattedErrorArray(v7, v8, v9, v10, v11, v12, v13, v14, 0);
+      DMCUnformattedErrorArray(messageCopy, v8, v9, v10, v11, v12, v13, v14, 0);
     }
 
     else
@@ -539,10 +539,10 @@ LABEL_12:
       DMCErrorArray(@"HTTP_ERROR_403_RESPONSE_PLATFORM_SSO_REQUIRED", v8, v9, v10, v11, v12, v13, v14, 0);
     }
     v17 = ;
-    if (v15)
+    if (detailsCopy)
     {
       v21 = @"ErrorDetails";
-      v22[0] = v15;
+      v22[0] = detailsCopy;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     }
 
@@ -551,8 +551,8 @@ LABEL_12:
       v18 = 0;
     }
 
-    *a5 = [v16 DMCErrorWithDomain:@"DMCHTTPTransactionErrorDomain" code:23011 descriptionArray:v17 suggestion:0 USEnglishSuggestion:0 underlyingError:0 errorType:@"DMCFatalError" addtionalUserInfo:v18];
-    if (v15)
+    *error = [v16 DMCErrorWithDomain:@"DMCHTTPTransactionErrorDomain" code:23011 descriptionArray:v17 suggestion:0 USEnglishSuggestion:0 underlyingError:0 errorType:@"DMCFatalError" addtionalUserInfo:v18];
+    if (detailsCopy)
     {
     }
   }
@@ -561,36 +561,36 @@ LABEL_12:
   return 1;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   v62 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a6;
-  v10 = [v8 protectionSpace];
-  v11 = [v10 authenticationMethod];
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
 
   v12 = *DMCLogObjects();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v58 = v11;
+    selfCopy2 = authenticationMethod;
     _os_log_impl(&dword_1B1630000, v12, OS_LOG_TYPE_INFO, "Handling challenge for protection space %{public}@", buf, 0xCu);
   }
 
-  if ([v8 previousFailureCount] < 1)
+  if ([challengeCopy previousFailureCount] < 1)
   {
-    if ([(DMCHTTPRequestor *)v11 isEqualToString:*MEMORY[0x1E696A968]])
+    if ([(DMCHTTPRequestor *)authenticationMethod isEqualToString:*MEMORY[0x1E696A968]])
     {
-      v15 = [v8 protectionSpace];
-      v16 = [v15 serverTrust];
+      protectionSpace2 = [challengeCopy protectionSpace];
+      serverTrust = [protectionSpace2 serverTrust];
 
-      if (!v16)
+      if (!serverTrust)
       {
         goto LABEL_48;
       }
 
-      v50 = self;
-      v51 = v9;
+      selfCopy = self;
+      v51 = handlerCopy;
       v17 = *DMCLogObjects();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
@@ -598,12 +598,12 @@ LABEL_12:
         _os_log_impl(&dword_1B1630000, v17, OS_LOG_TYPE_DEBUG, "Server Trust certificates:", buf, 2u);
       }
 
-      trust = v16;
+      trust = serverTrust;
       v53 = 0u;
       v54 = 0u;
       v55 = 0u;
       v56 = 0u;
-      v18 = SecTrustCopyCertificateChain(v16);
+      v18 = SecTrustCopyCertificateChain(serverTrust);
       v19 = [(__CFArray *)v18 countByEnumeratingWithState:&v53 objects:v61 count:16];
       if (v19)
       {
@@ -626,7 +626,7 @@ LABEL_12:
               if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138543362;
-                v58 = v24;
+                selfCopy2 = v24;
                 _os_log_impl(&dword_1B1630000, v25, OS_LOG_TYPE_DEBUG, "  %{public}@", buf, 0xCu);
               }
 
@@ -640,14 +640,14 @@ LABEL_12:
         while (v20);
       }
 
-      self = v50;
-      v26 = [(DMCHTTPRequestor *)v50 anchorCertificateRefs];
-      v27 = [v26 count];
+      self = selfCopy;
+      anchorCertificateRefs = [(DMCHTTPRequestor *)selfCopy anchorCertificateRefs];
+      v27 = [anchorCertificateRefs count];
 
       if (v27)
       {
-        v28 = [(DMCHTTPRequestor *)v50 anchorCertificateRefs];
-        v29 = SecTrustSetAnchorCertificates(trust, v28);
+        anchorCertificateRefs2 = [(DMCHTTPRequestor *)selfCopy anchorCertificateRefs];
+        v29 = SecTrustSetAnchorCertificates(trust, anchorCertificateRefs2);
 
         if (v29)
         {
@@ -655,7 +655,7 @@ LABEL_12:
           if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
           {
             *buf = 67109120;
-            LODWORD(v58) = v29;
+            LODWORD(selfCopy2) = v29;
             v31 = "Could not set anchor certificates for trust evaluation. Status: %d";
 LABEL_39:
             _os_log_impl(&dword_1B1630000, v30, OS_LOG_TYPE_ERROR, v31, buf, 8u);
@@ -673,14 +673,14 @@ LABEL_39:
           if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
           {
             *buf = 67109120;
-            LODWORD(v58) = v39;
+            LODWORD(selfCopy2) = v39;
             v31 = "Could not use exclude system default anchor certificates for trust evaluation. Status: %d";
             goto LABEL_39;
           }
 
 LABEL_47:
 
-          v9 = v51;
+          handlerCopy = v51;
 LABEL_48:
           v47 = *DMCLogObjects();
           if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
@@ -693,7 +693,7 @@ LABEL_48:
           }
 
 LABEL_52:
-          v9[2](v9, 2, 0);
+          handlerCopy[2](handlerCopy, 2, 0);
           goto LABEL_53;
         }
       }
@@ -706,18 +706,18 @@ LABEL_52:
         if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v58 = v45;
+          selfCopy2 = v45;
           _os_log_impl(&dword_1B1630000, v46, OS_LOG_TYPE_ERROR, "Handle challenge, trust evaluation failed: %{public}@", buf, 0xCu);
         }
 
-        [(DMCHTTPRequestor *)v50 setDidFailDueToCertNotTrusted:1];
+        [(DMCHTTPRequestor *)selfCopy setDidFailDueToCertNotTrusted:1];
         CFRelease(v45);
         CFRelease(error);
         goto LABEL_47;
       }
 
       v40 = *DMCLogObjects();
-      v9 = v51;
+      handlerCopy = v51;
       if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
@@ -725,15 +725,15 @@ LABEL_52:
       }
     }
 
-    else if (([(DMCHTTPRequestor *)v11 isEqualToString:*MEMORY[0x1E696A960]]& 1) == 0 && ![(DMCHTTPRequestor *)v11 isEqualToString:*MEMORY[0x1E696A958]])
+    else if (([(DMCHTTPRequestor *)authenticationMethod isEqualToString:*MEMORY[0x1E696A960]]& 1) == 0 && ![(DMCHTTPRequestor *)authenticationMethod isEqualToString:*MEMORY[0x1E696A958]])
     {
       v32 = *DMCLogObjects();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v58 = self;
+        selfCopy2 = self;
         v59 = 2114;
-        v60 = v11;
+        v60 = authenticationMethod;
         v33 = "%{public}@ cannot accept the authentication method %{public}@";
         v34 = v32;
         v35 = OS_LOG_TYPE_ERROR;
@@ -747,11 +747,11 @@ LABEL_51:
     }
 
     v41 = MEMORY[0x1E696AF30];
-    v42 = [(DMCHTTPRequestor *)self username];
-    v43 = [(DMCHTTPRequestor *)self password];
-    v44 = [v41 credentialWithUser:v42 password:v43 persistence:0];
+    username = [(DMCHTTPRequestor *)self username];
+    password = [(DMCHTTPRequestor *)self password];
+    v44 = [v41 credentialWithUser:username password:password persistence:0];
 
-    (v9)[2](v9, 0, v44);
+    (handlerCopy)[2](handlerCopy, 0, v44);
     goto LABEL_53;
   }
 
@@ -762,7 +762,7 @@ LABEL_51:
     _os_log_impl(&dword_1B1630000, v13, OS_LOG_TYPE_ERROR, "We have failed too many times.", buf, 2u);
   }
 
-  if (([(DMCHTTPRequestor *)v11 isEqualToString:*MEMORY[0x1E696A960]]& 1) == 0 && ![(DMCHTTPRequestor *)v11 isEqualToString:*MEMORY[0x1E696A958]])
+  if (([(DMCHTTPRequestor *)authenticationMethod isEqualToString:*MEMORY[0x1E696A960]]& 1) == 0 && ![(DMCHTTPRequestor *)authenticationMethod isEqualToString:*MEMORY[0x1E696A958]])
   {
     v37 = *DMCLogObjects();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
@@ -787,7 +787,7 @@ LABEL_50:
     _os_log_impl(&dword_1B1630000, v14, OS_LOG_TYPE_DEBUG, "Continue without credential for authentication challenge...", buf, 2u);
   }
 
-  v9[2](v9, 0, 0);
+  handlerCopy[2](handlerCopy, 0, 0);
 LABEL_53:
 
   v48 = *MEMORY[0x1E69E9840];

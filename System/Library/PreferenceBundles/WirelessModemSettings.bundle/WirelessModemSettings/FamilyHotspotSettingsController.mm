@@ -2,16 +2,16 @@
 - (BOOL)_shouldShareHotspotWithFamily;
 - (FamilyHotspotSettingsController)init;
 - (id)_generateFamilyPreferencesArray;
-- (id)_generatePrefDictionaryForMember:(id)a3;
+- (id)_generatePrefDictionaryForMember:(id)member;
 - (id)_getFamilyMembers;
-- (id)_joinOption:(id)a3;
-- (id)_specifierForFamilyMember:(id)a3;
+- (id)_joinOption:(id)option;
+- (id)_specifierForFamilyMember:(id)member;
 - (id)_switchSpecifier;
 - (id)specifiers;
 - (void)_setFamilyPreferences;
-- (void)_setFamilyShare:(id)a3;
-- (void)_setJoinOption:(id)a3 specifier:(id)a4;
-- (void)_updateMemberWithMember:(id)a3;
+- (void)_setFamilyShare:(id)share;
+- (void)_setJoinOption:(id)option specifier:(id)specifier;
+- (void)_updateMemberWithMember:(id)member;
 - (void)dealloc;
 - (void)viewDidLoad;
 @end
@@ -26,8 +26,8 @@
   if (v2)
   {
     [(FamilyHotspotSettingsController *)v2 setWifiClient:WiFiManagerClientCreate()];
-    v3 = [(FamilyHotspotSettingsController *)v2 _getFamilyMembers];
-    [(FamilyHotspotSettingsController *)v2 setFamilyMembers:v3];
+    _getFamilyMembers = [(FamilyHotspotSettingsController *)v2 _getFamilyMembers];
+    [(FamilyHotspotSettingsController *)v2 setFamilyMembers:_getFamilyMembers];
 
     [(FamilyHotspotSettingsController *)v2 setShouldShareWithFamily:[(FamilyHotspotSettingsController *)v2 _shouldShareHotspotWithFamily]];
   }
@@ -65,34 +65,34 @@
   if (!v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v6 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
     switchSpecifier = self->_switchSpecifier;
     if (!switchSpecifier)
     {
-      v8 = [(FamilyHotspotSettingsController *)self _switchSpecifier];
+      _switchSpecifier = [(FamilyHotspotSettingsController *)self _switchSpecifier];
       v9 = self->_switchSpecifier;
-      self->_switchSpecifier = v8;
+      self->_switchSpecifier = _switchSpecifier;
 
       switchSpecifier = self->_switchSpecifier;
     }
 
     v10 = switchSpecifier;
-    v20[0] = v6;
+    v20[0] = emptyGroupSpecifier;
     v20[1] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
     [v5 addObjectsFromArray:v11];
 
     if (self->_shouldShareWithFamily && [(NSArray *)self->_familyMembers count])
     {
-      v12 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-      [v5 addObject:v12];
+      emptyGroupSpecifier2 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+      [v5 addObject:emptyGroupSpecifier2];
       familyMembers = self->_familyMembers;
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __45__FamilyHotspotSettingsController_specifiers__block_invoke;
       v17[3] = &unk_278BB5198;
       v18 = v5;
-      v19 = self;
+      selfCopy = self;
       [(NSArray *)familyMembers enumerateObjectsUsingBlock:v17];
     }
 
@@ -113,11 +113,11 @@ void __45__FamilyHotspotSettingsController_specifiers__block_invoke(uint64_t a1,
   [v2 addObject:v3];
 }
 
-- (id)_specifierForFamilyMember:(id)a3
+- (id)_specifierForFamilyMember:(id)member
 {
   v17[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
+  memberCopy = member;
   v6 = [v4 alloc];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"FAMILY_HOTSPOT_ASK" value:&stru_284EED640 table:@"WirelessModemSettings"];
@@ -129,32 +129,32 @@ void __45__FamilyHotspotSettingsController_specifiers__block_invoke(uint64_t a1,
   v12 = [v6 initWithArray:v11];
 
   v13 = MEMORY[0x277D3FAD8];
-  v14 = [v5 displayName];
-  v15 = [v13 preferenceSpecifierNamed:v14 target:self set:sel__setJoinOption_specifier_ get:sel__joinOption_ detail:objc_opt_class() cell:2 edit:{0, v17[0]}];
+  displayName = [memberCopy displayName];
+  v15 = [v13 preferenceSpecifierNamed:displayName target:self set:sel__setJoinOption_specifier_ get:sel__joinOption_ detail:objc_opt_class() cell:2 edit:{0, v17[0]}];
 
   [v15 setValues:&unk_284EEFBA0 titles:v12];
-  [v15 setProperty:v5 forKey:@"FamilyMemberDetailKey"];
+  [v15 setProperty:memberCopy forKey:@"FamilyMemberDetailKey"];
 
   return v15;
 }
 
-- (id)_joinOption:(id)a3
+- (id)_joinOption:(id)option
 {
-  v3 = [a3 propertyForKey:@"FamilyMemberDetailKey"];
+  v3 = [option propertyForKey:@"FamilyMemberDetailKey"];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v3, "shareOption")}];
 
   return v4;
 }
 
-- (void)_setJoinOption:(id)a3 specifier:(id)a4
+- (void)_setJoinOption:(id)option specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [v6 propertyForKey:@"FamilyMemberDetailKey"];
-  v8 = [v7 intValue];
+  specifierCopy = specifier;
+  optionCopy = option;
+  v9 = [specifierCopy propertyForKey:@"FamilyMemberDetailKey"];
+  intValue = [optionCopy intValue];
 
-  [v9 setShareOption:v8];
-  [v6 setProperty:v9 forKey:@"FamilyMemberDetailKey"];
+  [v9 setShareOption:intValue];
+  [specifierCopy setProperty:v9 forKey:@"FamilyMemberDetailKey"];
 
   [(FamilyHotspotSettingsController *)self _updateMemberWithMember:v9];
   [(FamilyHotspotSettingsController *)self _setFamilyPreferences];
@@ -170,13 +170,13 @@ void __45__FamilyHotspotSettingsController_specifiers__block_invoke(uint64_t a1,
   return v6;
 }
 
-- (void)_setFamilyShare:(id)a3
+- (void)_setFamilyShare:(id)share
 {
-  v4 = [a3 BOOLValue];
-  self->_shouldShareWithFamily = v4;
-  v5 = [(FamilyHotspotSettingsController *)self familyMembers];
-  v6 = v5;
-  if (v4)
+  bOOLValue = [share BOOLValue];
+  self->_shouldShareWithFamily = bOOLValue;
+  familyMembers = [(FamilyHotspotSettingsController *)self familyMembers];
+  v6 = familyMembers;
+  if (bOOLValue)
   {
     v7 = &__block_literal_global_76;
   }
@@ -186,7 +186,7 @@ void __45__FamilyHotspotSettingsController_specifiers__block_invoke(uint64_t a1,
     v7 = &__block_literal_global_1;
   }
 
-  [v5 enumerateObjectsUsingBlock:v7];
+  [familyMembers enumerateObjectsUsingBlock:v7];
 
   [(FamilyHotspotSettingsController *)self _setFamilyPreferences];
   [(FamilyHotspotSettingsController *)self reloadSpecifiers];
@@ -219,17 +219,17 @@ void __51__FamilyHotspotSettingsController__setFamilyShare___block_invoke_2(uint
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v2 = [(FamilyHotspotSettingsController *)self familyMembers];
+  familyMembers = [(FamilyHotspotSettingsController *)self familyMembers];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __64__FamilyHotspotSettingsController__shouldShareHotspotWithFamily__block_invoke;
   v4[3] = &unk_278BB51E0;
   v4[4] = &v5;
-  [v2 enumerateObjectsUsingBlock:v4];
+  [familyMembers enumerateObjectsUsingBlock:v4];
 
-  LOBYTE(v2) = *(v6 + 24);
+  LOBYTE(familyMembers) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return familyMembers;
 }
 
 uint64_t __64__FamilyHotspotSettingsController__shouldShareHotspotWithFamily__block_invoke(uint64_t a1, void *a2)
@@ -243,17 +243,17 @@ uint64_t __64__FamilyHotspotSettingsController__shouldShareHotspotWithFamily__bl
   return result;
 }
 
-- (void)_updateMemberWithMember:(id)a3
+- (void)_updateMemberWithMember:(id)member
 {
-  v4 = a3;
-  v5 = [(FamilyHotspotSettingsController *)self familyMembers];
+  memberCopy = member;
+  familyMembers = [(FamilyHotspotSettingsController *)self familyMembers];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__FamilyHotspotSettingsController__updateMemberWithMember___block_invoke;
   v7[3] = &unk_278BB5208;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = memberCopy;
+  v6 = memberCopy;
+  [familyMembers enumerateObjectsUsingBlock:v7];
 }
 
 void __59__FamilyHotspotSettingsController__updateMemberWithMember___block_invoke(uint64_t a1, void *a2)
@@ -296,22 +296,22 @@ void __52__FamilyHotspotSettingsController__getFamilyMembers__block_invoke(uint6
 
 - (void)_setFamilyPreferences
 {
-  v2 = [(FamilyHotspotSettingsController *)self _generateFamilyPreferencesArray];
+  _generateFamilyPreferencesArray = [(FamilyHotspotSettingsController *)self _generateFamilyPreferencesArray];
   WiFiManagerClientSetFamilyHotspotPreferences();
 }
 
 - (id)_generateFamilyPreferencesArray
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(FamilyHotspotSettingsController *)self familyMembers];
+  familyMembers = [(FamilyHotspotSettingsController *)self familyMembers];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__FamilyHotspotSettingsController__generateFamilyPreferencesArray__block_invoke;
   v8[3] = &unk_278BB5198;
   v5 = v3;
   v9 = v5;
-  v10 = self;
-  [v4 enumerateObjectsUsingBlock:v8];
+  selfCopy = self;
+  [familyMembers enumerateObjectsUsingBlock:v8];
 
   v6 = v5;
   return v5;
@@ -324,19 +324,19 @@ void __66__FamilyHotspotSettingsController__generateFamilyPreferencesArray__bloc
   [v2 addObject:v3];
 }
 
-- (id)_generatePrefDictionaryForMember:(id)a3
+- (id)_generatePrefDictionaryForMember:(id)member
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  memberCopy = member;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 altDSID];
-  v7 = [v4 displayName];
+  altDSID = [memberCopy altDSID];
+  displayName = [memberCopy displayName];
   v8 = MEMORY[0x277CCABB0];
-  v9 = [v4 shareOption];
+  shareOption = [memberCopy shareOption];
 
-  v10 = [v8 numberWithUnsignedInt:v9];
-  [v5 setValue:v6 forKey:@"FamilyHotspotIdentifier"];
-  [v5 setValue:v7 forKey:@"FamilyHotspotDisplayName"];
+  v10 = [v8 numberWithUnsignedInt:shareOption];
+  [v5 setValue:altDSID forKey:@"FamilyHotspotIdentifier"];
+  [v5 setValue:displayName forKey:@"FamilyHotspotDisplayName"];
   [v5 setValue:v10 forKey:@"FamilyHotspotSharingMode"];
 
   return v5;

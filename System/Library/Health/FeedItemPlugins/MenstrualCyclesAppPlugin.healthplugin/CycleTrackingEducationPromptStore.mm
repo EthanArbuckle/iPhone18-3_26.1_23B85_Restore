@@ -1,12 +1,12 @@
 @interface CycleTrackingEducationPromptStore
-- (void)didUpdateKeyValueDomain:(id)a3;
+- (void)didUpdateKeyValueDomain:(id)domain;
 @end
 
 @implementation CycleTrackingEducationPromptStore
 
-- (void)didUpdateKeyValueDomain:(id)a3
+- (void)didUpdateKeyValueDomain:(id)domain
 {
-  v3 = a3;
+  domainCopy = domain;
 
   sub_29E22B6F4();
 }

@@ -8,8 +8,8 @@
 {
   [(SBIconView *)self setIcon:0];
   [(SBIconView *)self setOverrideCustomIconImageViewController:0];
-  v3 = [(SBIconView *)self borrowingAssertion];
-  [v3 invalidate];
+  borrowingAssertion = [(SBIconView *)self borrowingAssertion];
+  [borrowingAssertion invalidate];
 
   [(SBIconView *)self setBorrowingAssertion:0];
 }

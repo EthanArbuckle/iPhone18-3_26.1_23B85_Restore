@@ -1,32 +1,32 @@
 @interface NPKProtoProvisionHomeKeyPassForSerialNumbersRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addSerialNumbers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSerialNumbers:(id)numbers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoProvisionHomeKeyPassForSerialNumbersRequest
 
-- (void)addSerialNumbers:(id)a3
+- (void)addSerialNumbers:(id)numbers
 {
-  v4 = a3;
+  numbersCopy = numbers;
   serialNumbers = self->_serialNumbers;
-  v8 = v4;
+  v8 = numbersCopy;
   if (!serialNumbers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_serialNumbers;
     self->_serialNumbers = v6;
 
-    v4 = v8;
+    numbersCopy = v8;
     serialNumbers = self->_serialNumbers;
   }
 
-  [(NSMutableArray *)serialNumbers addObject:v4];
+  [(NSMutableArray *)serialNumbers addObject:numbersCopy];
 }
 
 - (id)description
@@ -35,29 +35,29 @@
   v8.receiver = self;
   v8.super_class = NPKProtoProvisionHomeKeyPassForSerialNumbersRequest;
   v4 = [(NPKProtoProvisionHomeKeyPassForSerialNumbersRequest *)&v8 description];
-  v5 = [(NPKProtoProvisionHomeKeyPassForSerialNumbersRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoProvisionHomeKeyPassForSerialNumbersRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   serialNumbers = self->_serialNumbers;
   if (serialNumbers)
   {
-    [v3 setObject:serialNumbers forKey:@"serialNumbers"];
+    [dictionary setObject:serialNumbers forKey:@"serialNumbers"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -93,29 +93,29 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(NPKProtoProvisionHomeKeyPassForSerialNumbersRequest *)self serialNumbersCount])
   {
-    [v8 clearSerialNumbers];
-    v4 = [(NPKProtoProvisionHomeKeyPassForSerialNumbersRequest *)self serialNumbersCount];
-    if (v4)
+    [toCopy clearSerialNumbers];
+    serialNumbersCount = [(NPKProtoProvisionHomeKeyPassForSerialNumbersRequest *)self serialNumbersCount];
+    if (serialNumbersCount)
     {
-      v5 = v4;
+      v5 = serialNumbersCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoProvisionHomeKeyPassForSerialNumbersRequest *)self serialNumbersAtIndex:i];
-        [v8 addSerialNumbers:v7];
+        [toCopy addSerialNumbers:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -136,7 +136,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addSerialNumbers:v11];
 
         ++v10;
@@ -153,13 +153,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     serialNumbers = self->_serialNumbers;
-    if (serialNumbers | v4[1])
+    if (serialNumbers | equalCopy[1])
     {
       v6 = [(NSMutableArray *)serialNumbers isEqual:?];
     }
@@ -178,14 +178,14 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {

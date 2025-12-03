@@ -1,22 +1,22 @@
 @interface MCUIAppSignerViewController
 - (BOOL)_isTrustPreventedByLockdownMode;
-- (BOOL)_showVerifyRowIncludeAlmostUntrustedApps:(BOOL)a3;
-- (BOOL)_tableView:(id)a3 isIndexPathValid:(id)a4;
+- (BOOL)_showVerifyRowIncludeAlmostUntrustedApps:(BOOL)apps;
+- (BOOL)_tableView:(id)view isIndexPathValid:(id)valid;
 - (BOOL)isFreeDeveloper;
-- (MCUIAppSignerViewController)initWithAppSigner:(id)a3;
-- (MCUIAppSignerViewController)initWithAppSigner:(id)a3 uninstaller:(id)a4;
-- (id)_appCellInTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_trustCellInTableView:(id)a3 atIndexPath:(id)a4 appCount:(int64_t)a5;
-- (id)_verifyCellInTableView:(id)a3 atIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (MCUIAppSignerViewController)initWithAppSigner:(id)signer;
+- (MCUIAppSignerViewController)initWithAppSigner:(id)signer uninstaller:(id)uninstaller;
+- (id)_appCellInTableView:(id)view atIndexPath:(id)path;
+- (id)_trustCellInTableView:(id)view atIndexPath:(id)path appCount:(int64_t)count;
+- (id)_verifyCellInTableView:(id)view atIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_appSignerWasRemoved;
 - (void)_appSignersDidChange;
-- (void)_appSignersUpdated:(id)a3;
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4;
+- (void)_appSignersUpdated:(id)updated;
+- (void)_presentAlertWithTitle:(id)title message:(id)message;
 - (void)_presentAppRemovalAlert;
 - (void)_presentNetworkRequiredAlert;
 - (void)_presentTrustFailedAlert;
@@ -26,34 +26,34 @@
 - (void)_trust;
 - (void)_verify;
 - (void)dealloc;
-- (void)networkReachabilityChanged:(id)a3;
-- (void)setAppSigner:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)networkReachabilityChanged:(id)changed;
+- (void)setAppSigner:(id)signer;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation MCUIAppSignerViewController
 
-- (MCUIAppSignerViewController)initWithAppSigner:(id)a3
+- (MCUIAppSignerViewController)initWithAppSigner:(id)signer
 {
-  v4 = a3;
+  signerCopy = signer;
   v5 = objc_opt_new();
-  v6 = [(MCUIAppSignerViewController *)self initWithAppSigner:v4 uninstaller:v5];
+  v6 = [(MCUIAppSignerViewController *)self initWithAppSigner:signerCopy uninstaller:v5];
 
   return v6;
 }
 
-- (MCUIAppSignerViewController)initWithAppSigner:(id)a3 uninstaller:(id)a4
+- (MCUIAppSignerViewController)initWithAppSigner:(id)signer uninstaller:(id)uninstaller
 {
-  v7 = a3;
-  v8 = a4;
+  signerCopy = signer;
+  uninstallerCopy = uninstaller;
   v18.receiver = self;
   v18.super_class = MCUIAppSignerViewController;
   v9 = [(MCUITableViewController *)&v18 initWithStyle:2];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_appSigner, a3);
-    objc_storeStrong(&v10->_uninstaller, a4);
+    objc_storeStrong(&v9->_appSigner, signer);
+    objc_storeStrong(&v10->_uninstaller, uninstaller);
     v11 = objc_alloc(MEMORY[0x277D24690]);
     v12 = dispatch_get_global_queue(33, 0);
     v13 = [v11 initWithValidationQueue:v12];
@@ -61,9 +61,9 @@
     v10->_profileTrust = v13;
 
     [(MCUIAppSignerViewController *)v10 _setup];
-    v15 = [v7 displayName];
-    v16 = [(MCUIAppSignerViewController *)v10 navigationItem];
-    [v16 setTitle:v15];
+    displayName = [signerCopy displayName];
+    navigationItem = [(MCUIAppSignerViewController *)v10 navigationItem];
+    [navigationItem setTitle:displayName];
   }
 
   return v10;
@@ -79,27 +79,27 @@
   v24.super_class = MCUIAppSignerViewController;
   [(MCUITableViewController *)&v24 updateExtendedLayoutIncludesOpaqueBars];
   [(MCUIAppSignerViewController *)self setEdgesForExtendedLayout:15];
-  v5 = [(MCUIAppSignerViewController *)self tableView];
-  [v5 registerClass:objc_opt_class() forCellReuseIdentifier:@"MCUIApplicationCellIdentifier"];
+  tableView = [(MCUIAppSignerViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"MCUIApplicationCellIdentifier"];
 
-  v6 = [(MCUIAppSignerViewController *)self tableView];
-  [v6 registerClass:objc_opt_class() forCellReuseIdentifier:@"MCUIApplicationTrustCellIdentifier"];
+  tableView2 = [(MCUIAppSignerViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"MCUIApplicationTrustCellIdentifier"];
 
   v23.receiver = self;
   v23.super_class = MCUIAppSignerViewController;
   [(MCUITableViewController *)&v23 reloadTableOnContentSizeCategoryChange];
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  v8 = [(MCUIAppSignerViewController *)self appSigner];
-  [v7 addObserver:self selector:sel__appSignersUpdated_ name:@"kMCUIAppSignersUpdatedNotification" object:v8];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  appSigner = [(MCUIAppSignerViewController *)self appSigner];
+  [defaultCenter addObserver:self selector:sel__appSignersUpdated_ name:@"kMCUIAppSignersUpdatedNotification" object:appSigner];
 
-  v9 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-  [v9 addNetworkReachableObserver:self selector:sel_networkReachabilityChanged_];
+  mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+  [mEMORY[0x277CEC5B8] addNetworkReachableObserver:self selector:sel_networkReachabilityChanged_];
 
-  v10 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-  self->_isNetworkReachable = [v10 isNetworkReachable];
+  mEMORY[0x277CEC5B8]2 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+  self->_isNetworkReachable = [mEMORY[0x277CEC5B8]2 isNetworkReachable];
 
   objc_initWeak(&location, self);
-  v11 = [*MEMORY[0x277D03440] UTF8String];
+  uTF8String = [*MEMORY[0x277D03440] UTF8String];
   v12 = MEMORY[0x277D85CD0];
   v13 = MEMORY[0x277D85CD0];
   handler[0] = MEMORY[0x277D85DD0];
@@ -107,23 +107,23 @@
   handler[2] = __37__MCUIAppSignerViewController__setup__block_invoke;
   handler[3] = &unk_279861FA8;
   objc_copyWeak(&v21, &location);
-  notify_register_dispatch(v11, &_setup_settingsChangedToken, v12, handler);
+  notify_register_dispatch(uTF8String, &_setup_settingsChangedToken, v12, handler);
 
-  v14 = [*MEMORY[0x277D03460] UTF8String];
+  uTF8String2 = [*MEMORY[0x277D03460] UTF8String];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __37__MCUIAppSignerViewController__setup__block_invoke_2;
   v18[3] = &unk_279861FA8;
   objc_copyWeak(&v19, &location);
-  notify_register_dispatch(v14, &_setup_trustFailedToken, MEMORY[0x277D85CD0], v18);
+  notify_register_dispatch(uTF8String2, &_setup_trustFailedToken, MEMORY[0x277D85CD0], v18);
 
-  v15 = [*MEMORY[0x277D03468] UTF8String];
+  uTF8String3 = [*MEMORY[0x277D03468] UTF8String];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __37__MCUIAppSignerViewController__setup__block_invoke_3;
   v16[3] = &unk_279861FA8;
   objc_copyWeak(&v17, &location);
-  notify_register_dispatch(v15, &_setup_verificationOfflineToken, MEMORY[0x277D85CD0], v16);
+  notify_register_dispatch(uTF8String3, &_setup_verificationOfflineToken, MEMORY[0x277D85CD0], v16);
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&v19);
@@ -166,18 +166,18 @@ void __37__MCUIAppSignerViewController__setup__block_invoke_3(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-  [v3 removeNetworkReachableObserver:self];
+  mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+  [mEMORY[0x277CEC5B8] removeNetworkReachableObserver:self];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = MCUIAppSignerViewController;
   [(MCUITableViewController *)&v5 dealloc];
 }
 
-- (void)_appSignersUpdated:(id)a3
+- (void)_appSignersUpdated:(id)updated
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x277D85DD0];
@@ -206,24 +206,24 @@ void __50__MCUIAppSignerViewController__appSignersUpdated___block_invoke(uint64_
 - (void)_appSignersDidChange
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v3 = [(MCUIAppSignerViewController *)self appSigner];
-  [v3 refreshApplications];
+  appSigner = [(MCUIAppSignerViewController *)self appSigner];
+  [appSigner refreshApplications];
 
-  v4 = [(MCUIAppSignerViewController *)self appSigner];
-  v5 = [v4 displayName];
-  v6 = [(MCUIAppSignerViewController *)self navigationItem];
-  [v6 setTitle:v5];
+  appSigner2 = [(MCUIAppSignerViewController *)self appSigner];
+  displayName = [appSigner2 displayName];
+  navigationItem = [(MCUIAppSignerViewController *)self navigationItem];
+  [navigationItem setTitle:displayName];
 
-  v7 = [(MCUIAppSignerViewController *)self tableView];
-  [v7 reloadData];
+  tableView = [(MCUIAppSignerViewController *)self tableView];
+  [tableView reloadData];
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v12 = @"kMCUIAppSignersUpdatedNotification";
   v13[0] = MEMORY[0x277CBEC38];
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  [v8 postNotificationName:@"kMCUIUpdatedNotification" object:self userInfo:v9];
+  [defaultCenter postNotificationName:@"kMCUIUpdatedNotification" object:self userInfo:v9];
 
-  v10 = [(MCUIAppSignerViewController *)self navigationItem];
+  navigationItem2 = [(MCUIAppSignerViewController *)self navigationItem];
   DMCSendNavUIUpdatedNotification();
 
   v11 = *MEMORY[0x277D85DE8];
@@ -232,77 +232,77 @@ void __50__MCUIAppSignerViewController__appSignersUpdated___block_invoke(uint64_
 - (void)_appSignerWasRemoved
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v6 = @"kMCUIAppSignersUpdatedNotification";
   v7[0] = MEMORY[0x277CBEC38];
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
-  [v3 postNotificationName:@"kMCUIUpdatedNotification" object:self userInfo:v4];
+  [defaultCenter postNotificationName:@"kMCUIUpdatedNotification" object:self userInfo:v4];
 
   [(MCUIAppSignerViewController *)self dmc_popViewControllerAnimated:1];
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)networkReachabilityChanged:(id)a3
+- (void)networkReachabilityChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277CEC510]];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277CEC510]];
 
   -[MCUIAppSignerViewController setIsNetworkReachable:](self, "setIsNetworkReachable:", [v5 BOOLValue]);
 }
 
 - (BOOL)isFreeDeveloper
 {
-  v3 = [(MCUIAppSignerViewController *)self appSigner];
-  if ([v3 hasUniversalPP])
+  appSigner = [(MCUIAppSignerViewController *)self appSigner];
+  if ([appSigner hasUniversalPP])
   {
-    v4 = 0;
+    hasFreePP = 0;
   }
 
   else
   {
-    v5 = [(MCUIAppSignerViewController *)self appSigner];
-    v4 = [v5 hasFreePP];
+    appSigner2 = [(MCUIAppSignerViewController *)self appSigner];
+    hasFreePP = [appSigner2 hasFreePP];
   }
 
-  return v4;
+  return hasFreePP;
 }
 
-- (void)setAppSigner:(id)a3
+- (void)setAppSigner:(id)signer
 {
-  v5 = a3;
-  if (self->_appSigner != v5)
+  signerCopy = signer;
+  if (self->_appSigner != signerCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_appSigner, a3);
-    v6 = [(MCUIAppSigner *)v10 displayName];
-    v7 = [(MCUIAppSignerViewController *)self navigationItem];
-    [v7 setTitle:v6];
+    v10 = signerCopy;
+    objc_storeStrong(&self->_appSigner, signer);
+    displayName = [(MCUIAppSigner *)v10 displayName];
+    navigationItem = [(MCUIAppSignerViewController *)self navigationItem];
+    [navigationItem setTitle:displayName];
 
-    v8 = [(MCUIAppSignerViewController *)self tableView];
-    [v8 reloadData];
+    tableView = [(MCUIAppSignerViewController *)self tableView];
+    [tableView reloadData];
 
-    v9 = [(MCUIAppSignerViewController *)self navigationItem];
+    navigationItem2 = [(MCUIAppSignerViewController *)self navigationItem];
     DMCSendNavUIUpdatedNotification();
 
-    v5 = v10;
+    signerCopy = v10;
   }
 }
 
 - (void)_trust
 {
   v3 = MCUILocalizedString(@"TRUSTING_APP_SIGNER_STATUS");
-  v4 = [(MCUIAppSignerViewController *)self navigationItem];
-  [v4 setTitle:v3];
+  navigationItem = [(MCUIAppSignerViewController *)self navigationItem];
+  [navigationItem setTitle:v3];
 
   [(UIViewController *)self MCUIShowProgressInNavBar];
   objc_initWeak(&location, self);
-  v5 = [(MCUIAppSignerViewController *)self trustActionGroup];
+  trustActionGroup = [(MCUIAppSignerViewController *)self trustActionGroup];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__MCUIAppSignerViewController__trust__block_invoke;
   v6[3] = &unk_279861990;
   objc_copyWeak(&v7, &location);
-  dispatch_group_notify(v5, MEMORY[0x277D85CD0], v6);
+  dispatch_group_notify(trustActionGroup, MEMORY[0x277D85CD0], v6);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -365,18 +365,18 @@ void __37__MCUIAppSignerViewController__trust__block_invoke_3(uint64_t a1)
 - (void)_verify
 {
   v3 = MCUILocalizedString(@"VERIFYING_APPS_STATUS");
-  v4 = [(MCUIAppSignerViewController *)self navigationItem];
-  [v4 setTitle:v3];
+  navigationItem = [(MCUIAppSignerViewController *)self navigationItem];
+  [navigationItem setTitle:v3];
 
   [(UIViewController *)self MCUIShowProgressInNavBar];
   objc_initWeak(&location, self);
-  v5 = [(MCUIAppSignerViewController *)self trustActionGroup];
+  trustActionGroup = [(MCUIAppSignerViewController *)self trustActionGroup];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__MCUIAppSignerViewController__verify__block_invoke;
   v6[3] = &unk_279861990;
   objc_copyWeak(&v7, &location);
-  dispatch_group_notify(v5, MEMORY[0x277D85CD0], v6);
+  dispatch_group_notify(trustActionGroup, MEMORY[0x277D85CD0], v6);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -461,20 +461,20 @@ void __38__MCUIAppSignerViewController__verify__block_invoke_3(uint64_t a1)
 - (void)_removeAppSignerApps
 {
   v3 = MCUILocalizedString(@"REMOVING_APP_SIGNER_STATUS");
-  v4 = [(MCUIAppSignerViewController *)self navigationItem];
-  [v4 setTitle:v3];
+  navigationItem = [(MCUIAppSignerViewController *)self navigationItem];
+  [navigationItem setTitle:v3];
 
   [(UIViewController *)self MCUIShowProgressInNavBar];
   objc_initWeak(&location, self);
-  v5 = [(MCUIAppSignerViewController *)self appSigner];
-  v6 = [(MCUIAppSignerViewController *)self uninstaller];
-  v7 = [(MCUIAppSignerViewController *)self trustActionGroup];
+  appSigner = [(MCUIAppSignerViewController *)self appSigner];
+  uninstaller = [(MCUIAppSignerViewController *)self uninstaller];
+  trustActionGroup = [(MCUIAppSignerViewController *)self trustActionGroup];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__MCUIAppSignerViewController__removeAppSignerApps__block_invoke;
   v8[3] = &unk_279861990;
   objc_copyWeak(&v9, &location);
-  [MCUIAppSignerUninstallerUtilities uninstallAppSigner:v5 withUninstaller:v6 dispatchGroup:v7 completion:v8];
+  [MCUIAppSignerUninstallerUtilities uninstallAppSigner:appSigner withUninstaller:uninstaller dispatchGroup:trustActionGroup completion:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -491,26 +491,26 @@ void __51__MCUIAppSignerViewController__removeAppSignerApps__block_invoke(uint64
   }
 }
 
-- (BOOL)_showVerifyRowIncludeAlmostUntrustedApps:(BOOL)a3
+- (BOOL)_showVerifyRowIncludeAlmostUntrustedApps:(BOOL)apps
 {
-  v3 = a3;
-  v5 = [(MCUIAppSignerViewController *)self appSigner];
-  v6 = [v5 applications];
-  v7 = [v6 count];
+  appsCopy = apps;
+  appSigner = [(MCUIAppSignerViewController *)self appSigner];
+  applications = [appSigner applications];
+  v7 = [applications count];
 
-  v8 = [(MCUIAppSignerViewController *)self appSigner];
-  v9 = [v8 untrustedAppCount];
-  v10 = v9 > 0;
-  if (v9 <= 0 && v3)
+  appSigner2 = [(MCUIAppSignerViewController *)self appSigner];
+  untrustedAppCount = [appSigner2 untrustedAppCount];
+  v10 = untrustedAppCount > 0;
+  if (untrustedAppCount <= 0 && appsCopy)
   {
-    v11 = [(MCUIAppSignerViewController *)self appSigner];
-    v10 = [v11 almostUntrustedAppCount] > 0;
+    appSigner3 = [(MCUIAppSignerViewController *)self appSigner];
+    v10 = [appSigner3 almostUntrustedAppCount] > 0;
   }
 
-  v12 = [(MCUIAppSignerViewController *)self appSigner];
-  v13 = [v12 isTrusted];
+  appSigner4 = [(MCUIAppSignerViewController *)self appSigner];
+  isTrusted = [appSigner4 isTrusted];
   v14 = v7 > 0 && v10;
-  if (v13)
+  if (isTrusted)
   {
     v15 = v14;
   }
@@ -530,23 +530,23 @@ void __51__MCUIAppSignerViewController__removeAppSignerApps__block_invoke(uint64
     return 0;
   }
 
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v3 isLockdownModeEnabled];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isLockdownModeEnabled = [mEMORY[0x277D262A0] isLockdownModeEnabled];
 
-  return v4;
+  return isLockdownModeEnabled;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = [(MCUIAppSignerViewController *)self appSigner];
-  v5 = [v4 isTrustable];
+  appSigner = [(MCUIAppSignerViewController *)self appSigner];
+  isTrustable = [appSigner isTrustable];
 
   v6 = [(MCUIAppSignerViewController *)self _showVerifyRowIncludeAlmostUntrustedApps:1];
-  v7 = [(MCUIAppSignerViewController *)self appSigner];
-  v8 = [v7 applications];
-  v9 = [v8 count];
+  appSigner2 = [(MCUIAppSignerViewController *)self appSigner];
+  applications = [appSigner2 applications];
+  v9 = [applications count];
 
-  if (v5)
+  if (isTrustable)
   {
     v10 = 2;
   }
@@ -568,17 +568,17 @@ void __51__MCUIAppSignerViewController__removeAppSignerApps__block_invoke(uint64
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(MCUIAppSignerViewController *)self appSigner];
-  v7 = [v6 isTrustable];
+  appSigner = [(MCUIAppSignerViewController *)self appSigner];
+  isTrustable = [appSigner isTrustable];
 
   v8 = [(MCUIAppSignerViewController *)self _showVerifyRowIncludeAlmostUntrustedApps:1];
-  v9 = [(MCUIAppSignerViewController *)self appSigner];
-  v10 = [v9 applications];
-  v11 = [v10 count];
+  appSigner2 = [(MCUIAppSignerViewController *)self appSigner];
+  applications = [appSigner2 applications];
+  v11 = [applications count];
 
-  if ((v7 & v8) != 0)
+  if ((isTrustable & v8) != 0)
   {
     v12 = 1;
   }
@@ -588,7 +588,7 @@ void __51__MCUIAppSignerViewController__removeAppSignerApps__block_invoke(uint64
     v12 = v11;
   }
 
-  if ((v7 | v8))
+  if ((isTrustable | v8))
   {
     v13 = 1;
   }
@@ -598,17 +598,17 @@ void __51__MCUIAppSignerViewController__removeAppSignerApps__block_invoke(uint64
     v13 = v11;
   }
 
-  if (a4 != 1)
+  if (section != 1)
   {
     v13 = 0;
   }
 
-  if (a4 != 2)
+  if (section != 2)
   {
     v12 = v13;
   }
 
-  if (a4 == 3)
+  if (section == 3)
   {
     return v11;
   }
@@ -619,40 +619,40 @@ void __51__MCUIAppSignerViewController__removeAppSignerApps__block_invoke(uint64
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = [(MCUIAppSignerViewController *)self appSigner];
-  v7 = [v6 isTrustable];
+  appSigner = [(MCUIAppSignerViewController *)self appSigner];
+  isTrustable = [appSigner isTrustable];
 
   v8 = [(MCUIAppSignerViewController *)self _showVerifyRowIncludeAlmostUntrustedApps:1];
-  v9 = [(MCUIAppSignerViewController *)self appSigner];
-  v10 = [v9 applications];
-  v11 = [v10 count];
+  appSigner2 = [(MCUIAppSignerViewController *)self appSigner];
+  applications = [appSigner2 applications];
+  v11 = [applications count];
 
   if (v11 < 1)
   {
     goto LABEL_7;
   }
 
-  if (!(v7 & 1 | (a4 != 1 || v8)))
+  if (!(isTrustable & 1 | (section != 1 || v8)))
   {
     goto LABEL_8;
   }
 
   v12 = !v8;
-  if (a4 != 2)
+  if (section != 2)
   {
     v12 = 0;
   }
 
-  if (a4 == 3 || v12)
+  if (section == 3 || v12)
   {
 LABEL_8:
     v14 = MEMORY[0x277CCACA8];
     v15 = MCUILocalizedString(@"APPLICATIONS_FROM_APP_SIGNER_%@");
-    v16 = [(MCUIAppSignerViewController *)self appSigner];
-    v17 = [v16 identity];
-    v13 = [v14 stringWithFormat:v15, v17];
+    appSigner3 = [(MCUIAppSignerViewController *)self appSigner];
+    identity = [appSigner3 identity];
+    v13 = [v14 stringWithFormat:v15, identity];
   }
 
   else
@@ -664,13 +664,13 @@ LABEL_7:
   return v13;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v6 = [(MCUIAppSignerViewController *)self appSigner];
-  v7 = [v6 isTrusted];
+  appSigner = [(MCUIAppSignerViewController *)self appSigner];
+  isTrusted = [appSigner isTrusted];
 
-  if (v7)
+  if (isTrusted)
   {
     v8 = @"APP_SIGNER_TRUSTED_DESCRIPTION_%@";
   }
@@ -687,26 +687,26 @@ LABEL_7:
 
   v9 = MEMORY[0x277CCACA8];
   v10 = MCUILocalizedStringByDevice(v8);
-  v11 = [(MCUIAppSignerViewController *)self appSigner];
-  v12 = [v11 identity];
-  v13 = [v9 stringWithFormat:v10, v12];
+  appSigner2 = [(MCUIAppSignerViewController *)self appSigner];
+  identity = [appSigner2 identity];
+  v13 = [v9 stringWithFormat:v10, identity];
 
-  v14 = [(MCUIAppSignerViewController *)self appSigner];
-  v15 = [v14 isTrustable];
+  appSigner3 = [(MCUIAppSignerViewController *)self appSigner];
+  isTrustable = [appSigner3 isTrustable];
 
-  if (!a4 && v15)
+  if (!section && isTrustable)
   {
     v16 = v13;
     goto LABEL_33;
   }
 
-  if (!a4)
+  if (!section)
   {
-    v21 = [(MCUIAppSignerViewController *)self appSigner];
-    v22 = [v21 isTrusted];
+    appSigner4 = [(MCUIAppSignerViewController *)self appSigner];
+    isTrusted2 = [appSigner4 isTrusted];
 
-    v23 = [MEMORY[0x277D262A0] sharedConnection];
-    if (v22)
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    if (isTrusted2)
     {
       v35 = *MEMORY[0x277D25D20];
       v24 = &v35;
@@ -719,7 +719,7 @@ LABEL_7:
     }
 
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
-    v26 = [v23 localizedRestrictionSourceDescriptionForFeatures:v25];
+    v26 = [mEMORY[0x277D262A0] localizedRestrictionSourceDescriptionForFeatures:v25];
 
     if (v13 && v26)
     {
@@ -748,7 +748,7 @@ LABEL_30:
     goto LABEL_33;
   }
 
-  if (a4 != 1)
+  if (section != 1)
   {
     goto LABEL_25;
   }
@@ -757,11 +757,11 @@ LABEL_30:
   {
     if ([(MCUIAppSignerViewController *)self _showVerifyRowIncludeAlmostUntrustedApps:1])
     {
-      v28 = [(MCUIAppSignerViewController *)self appSigner];
-      v29 = [v28 almostUntrustedAppCount];
+      appSigner5 = [(MCUIAppSignerViewController *)self appSigner];
+      almostUntrustedAppCount = [appSigner5 almostUntrustedAppCount];
 
       v19 = MEMORY[0x277CCACA8];
-      if (v29 < 2)
+      if (almostUntrustedAppCount < 2)
       {
         v20 = @"APP_SIGNER_SINGULAR_APPS_EXPIRING_VERIFICATION_DESCRIPTION_%@";
       }
@@ -779,11 +779,11 @@ LABEL_25:
     goto LABEL_33;
   }
 
-  v17 = [(MCUIAppSignerViewController *)self appSigner];
-  v18 = [v17 untrustedAppCount];
+  appSigner6 = [(MCUIAppSignerViewController *)self appSigner];
+  untrustedAppCount = [appSigner6 untrustedAppCount];
 
   v19 = MEMORY[0x277CCACA8];
-  if (v18 < 2)
+  if (untrustedAppCount < 2)
   {
     v20 = @"APP_SIGNER_SINGULAR_APPS_NOT_VERIFIED_DESCRIPTION_%@";
   }
@@ -795,9 +795,9 @@ LABEL_25:
 
 LABEL_32:
   v30 = MCUILocalizedStringByDevice(v20);
-  v31 = [(MCUIAppSignerViewController *)self appSigner];
-  v32 = [v31 identity];
-  v16 = [v19 stringWithFormat:v30, v32];
+  appSigner7 = [(MCUIAppSignerViewController *)self appSigner];
+  identity2 = [appSigner7 identity];
+  v16 = [v19 stringWithFormat:v30, identity2];
 
 LABEL_33:
   v33 = *MEMORY[0x277D85DE8];
@@ -805,47 +805,47 @@ LABEL_33:
   return v16;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MCUIAppSignerViewController *)self appSigner];
-  v9 = [v8 isTrustable];
+  viewCopy = view;
+  pathCopy = path;
+  appSigner = [(MCUIAppSignerViewController *)self appSigner];
+  isTrustable = [appSigner isTrustable];
 
   v10 = [(MCUIAppSignerViewController *)self _showVerifyRowIncludeAlmostUntrustedApps:1];
-  v11 = [(MCUIAppSignerViewController *)self appSigner];
-  v12 = [v11 applications];
-  v13 = [v12 count];
+  appSigner2 = [(MCUIAppSignerViewController *)self appSigner];
+  applications = [appSigner2 applications];
+  v13 = [applications count];
 
-  if (v9)
+  if (isTrustable)
   {
-    if ([v7 section] == 1)
+    if ([pathCopy section] == 1)
     {
-      v14 = [(MCUIAppSignerViewController *)self _trustCellInTableView:v6 atIndexPath:v7 appCount:v13];
+      v14 = [(MCUIAppSignerViewController *)self _trustCellInTableView:viewCopy atIndexPath:pathCopy appCount:v13];
       goto LABEL_18;
     }
 
-    if (v10 && [v7 section] == 2)
+    if (v10 && [pathCopy section] == 2)
     {
       goto LABEL_9;
     }
   }
 
-  else if (v10 && [v7 section] == 1)
+  else if (v10 && [pathCopy section] == 1)
   {
 LABEL_9:
-    v14 = [(MCUIAppSignerViewController *)self _verifyCellInTableView:v6 atIndexPath:v7];
+    v14 = [(MCUIAppSignerViewController *)self _verifyCellInTableView:viewCopy atIndexPath:pathCopy];
     goto LABEL_18;
   }
 
-  if (v13 >= 1 && (!(v9 | v10) && [v7 section] == 1 || !(v10 & v9) && objc_msgSend(v7, "section") == 2 || objc_msgSend(v7, "section") == 3))
+  if (v13 >= 1 && (!(isTrustable | v10) && [pathCopy section] == 1 || !(v10 & isTrustable) && objc_msgSend(pathCopy, "section") == 2 || objc_msgSend(pathCopy, "section") == 3))
   {
-    v14 = [(MCUIAppSignerViewController *)self _appCellInTableView:v6 atIndexPath:v7];
+    v14 = [(MCUIAppSignerViewController *)self _appCellInTableView:viewCopy atIndexPath:pathCopy];
   }
 
   else
   {
-    NSLog(&cfstr_Mcuiappsignerv.isa, v7, v9, v10, v13);
+    NSLog(&cfstr_Mcuiappsignerv.isa, pathCopy, isTrustable, v10, v13);
     v14 = objc_opt_new();
   }
 
@@ -855,29 +855,29 @@ LABEL_18:
   return v15;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [(MCUIAppSignerViewController *)self appSigner];
-  v8 = [v7 isTrustable];
+  viewCopy = view;
+  pathCopy = path;
+  appSigner = [(MCUIAppSignerViewController *)self appSigner];
+  isTrustable = [appSigner isTrustable];
 
   v9 = [(MCUIAppSignerViewController *)self _showVerifyRowIncludeAlmostUntrustedApps:1];
-  if ([v6 section] == 1 && v8)
+  if ([pathCopy section] == 1 && isTrustable)
   {
-    v10 = [(MCUIAppSignerViewController *)self appSigner];
-    v11 = [v10 isTrusted];
+    appSigner2 = [(MCUIAppSignerViewController *)self appSigner];
+    isTrusted = [appSigner2 isTrusted];
 
-    if (v11)
+    if (isTrusted)
     {
       [(MCUIAppSignerViewController *)self _presentAppRemovalAlert];
     }
 
     else
     {
-      v12 = [(MCUIAppSignerViewController *)self appSigner];
-      v13 = [v12 applications];
-      v14 = [v13 count];
+      appSigner3 = [(MCUIAppSignerViewController *)self appSigner];
+      applications = [appSigner3 applications];
+      v14 = [applications count];
 
       if (v14)
       {
@@ -886,56 +886,56 @@ LABEL_18:
 
       else
       {
-        v15 = [(MCUIAppSignerViewController *)self appSigner];
-        v16 = [v15 displayName];
-        NSLog(&cfstr_Mcuiappsignerv_0.isa, v16);
+        appSigner4 = [(MCUIAppSignerViewController *)self appSigner];
+        displayName = [appSigner4 displayName];
+        NSLog(&cfstr_Mcuiappsignerv_0.isa, displayName);
       }
     }
   }
 
-  else if (v9 && (!(([v6 section] != 1) | v8 & 1) || ((objc_msgSend(v6, "section") == 2) & v8) == 1))
+  else if (v9 && (!(([pathCopy section] != 1) | isTrustable & 1) || ((objc_msgSend(pathCopy, "section") == 2) & isTrustable) == 1))
   {
     [(MCUIAppSignerViewController *)self _presentVerifyAppAlert];
   }
 
-  [v17 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (BOOL)_tableView:(id)a3 isIndexPathValid:(id)a4
+- (BOOL)_tableView:(id)view isIndexPathValid:(id)valid
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 section];
-  if (v7 >= [v5 numberOfSections])
+  viewCopy = view;
+  validCopy = valid;
+  section = [validCopy section];
+  if (section >= [viewCopy numberOfSections])
   {
     v9 = 0;
   }
 
   else
   {
-    v8 = [v6 row];
-    v9 = v8 < [v5 numberOfRowsInSection:{objc_msgSend(v6, "section")}];
+    v8 = [validCopy row];
+    v9 = v8 < [viewCopy numberOfRowsInSection:{objc_msgSend(validCopy, "section")}];
   }
 
   return v9;
 }
 
-- (id)_trustCellInTableView:(id)a3 atIndexPath:(id)a4 appCount:(int64_t)a5
+- (id)_trustCellInTableView:(id)view atIndexPath:(id)path appCount:(int64_t)count
 {
-  v8 = a3;
-  v9 = a4;
-  if ([(MCUIAppSignerViewController *)self _tableView:v8 isIndexPathValid:v9])
+  viewCopy = view;
+  pathCopy = path;
+  if ([(MCUIAppSignerViewController *)self _tableView:viewCopy isIndexPathValid:pathCopy])
   {
-    v10 = [v8 dequeueReusableCellWithIdentifier:@"MCUIApplicationTrustCellIdentifier" forIndexPath:v9];
+    v10 = [viewCopy dequeueReusableCellWithIdentifier:@"MCUIApplicationTrustCellIdentifier" forIndexPath:pathCopy];
 
     [(MCUIAppSignerViewController *)self setTrustCell:v10];
-    v11 = [(MCUIAppSignerViewController *)self appSigner];
-    LODWORD(v10) = [v11 isTrusted];
+    appSigner = [(MCUIAppSignerViewController *)self appSigner];
+    LODWORD(v10) = [appSigner isTrusted];
 
     if (v10)
     {
-      v12 = [(MCUIAppSignerViewController *)self trustCell];
-      if (a5 >= 2)
+      trustCell = [(MCUIAppSignerViewController *)self trustCell];
+      if (count >= 2)
       {
         v13 = @"DELETE_APP_PLURAL";
       }
@@ -945,11 +945,11 @@ LABEL_18:
         v13 = @"DELETE_APP_SINGULAR";
       }
 
-      v14 = MCUILocalizedString(v13);
-      v15 = [MEMORY[0x277D75348] DMCProfileRedColor];
-      v16 = v12;
-      v17 = v14;
-      v18 = v15;
+      trustCell2 = MCUILocalizedString(v13);
+      dMCProfileRedColor = [MEMORY[0x277D75348] DMCProfileRedColor];
+      v16 = trustCell;
+      v17 = trustCell2;
+      v18 = dMCProfileRedColor;
       v19 = 1;
     }
 
@@ -957,45 +957,45 @@ LABEL_18:
     {
       v21 = MEMORY[0x277CCACA8];
       v22 = MCUILocalizedString(@"TRUST_APP_DEVELOPER_NAME_%@");
-      v23 = [(MCUIAppSignerViewController *)self appSigner];
-      v24 = [v23 displayName];
-      v12 = [v21 stringWithFormat:v22, v24];
+      appSigner2 = [(MCUIAppSignerViewController *)self appSigner];
+      displayName = [appSigner2 displayName];
+      trustCell = [v21 stringWithFormat:v22, displayName];
 
-      v14 = [(MCUIAppSignerViewController *)self trustCell];
-      v15 = [MEMORY[0x277D75348] systemBlueColor];
+      trustCell2 = [(MCUIAppSignerViewController *)self trustCell];
+      dMCProfileRedColor = [MEMORY[0x277D75348] systemBlueColor];
       v19 = [(MCUIAppSignerViewController *)self _isTrustPreventedByLockdownMode]^ 1;
-      v16 = v14;
-      v17 = v12;
-      v18 = v15;
+      v16 = trustCell2;
+      v17 = trustCell;
+      v18 = dMCProfileRedColor;
     }
 
     [v16 setText:v17 color:v18 enabled:v19];
 
-    v20 = [(MCUIAppSignerViewController *)self trustCell];
+    trustCell3 = [(MCUIAppSignerViewController *)self trustCell];
   }
 
   else
   {
-    NSLog(&cfstr_Mcuiappsignerv_1.isa, v9);
+    NSLog(&cfstr_Mcuiappsignerv_1.isa, pathCopy);
 
-    v20 = objc_opt_new();
+    trustCell3 = objc_opt_new();
   }
 
-  v25 = v20;
+  v25 = trustCell3;
 
   return v25;
 }
 
-- (id)_verifyCellInTableView:(id)a3 atIndexPath:(id)a4
+- (id)_verifyCellInTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(MCUIAppSignerViewController *)self _tableView:v6 isIndexPathValid:v7])
+  viewCopy = view;
+  pathCopy = path;
+  if ([(MCUIAppSignerViewController *)self _tableView:viewCopy isIndexPathValid:pathCopy])
   {
-    v8 = [v6 dequeueReusableCellWithIdentifier:@"MCUIApplicationTrustCellIdentifier" forIndexPath:v7];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"MCUIApplicationTrustCellIdentifier" forIndexPath:pathCopy];
 
-    v9 = [(MCUIAppSignerViewController *)self appSigner];
-    if ([v9 untrustedAppCount] >= 2)
+    appSigner = [(MCUIAppSignerViewController *)self appSigner];
+    if ([appSigner untrustedAppCount] >= 2)
     {
       v10 = @"VERIFY_APP_PLURAL";
     }
@@ -1006,13 +1006,13 @@ LABEL_18:
     }
 
     v11 = MCUILocalizedString(v10);
-    v12 = [MEMORY[0x277D75348] systemBlueColor];
-    [v8 setText:v11 color:v12 enabled:1];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [v8 setText:v11 color:systemBlueColor enabled:1];
   }
 
   else
   {
-    NSLog(&cfstr_Mcuiappsignerv_2.isa, v7);
+    NSLog(&cfstr_Mcuiappsignerv_2.isa, pathCopy);
 
     v8 = objc_opt_new();
   }
@@ -1020,26 +1020,26 @@ LABEL_18:
   return v8;
 }
 
-- (id)_appCellInTableView:(id)a3 atIndexPath:(id)a4
+- (id)_appCellInTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(MCUIAppSignerViewController *)self _tableView:v6 isIndexPathValid:v7])
+  viewCopy = view;
+  pathCopy = path;
+  if ([(MCUIAppSignerViewController *)self _tableView:viewCopy isIndexPathValid:pathCopy])
   {
-    v8 = [(MCUIAppSignerViewController *)self appSigner];
-    v9 = [v8 applications];
+    appSigner = [(MCUIAppSignerViewController *)self appSigner];
+    applications = [appSigner applications];
 
-    v10 = [v7 row];
-    if (v10 >= [v9 count])
+    v10 = [pathCopy row];
+    if (v10 >= [applications count])
     {
-      NSLog(&cfstr_Mcuiappsignerv_4.isa, v7, v9);
+      NSLog(&cfstr_Mcuiappsignerv_4.isa, pathCopy, applications);
       v12 = objc_opt_new();
     }
 
     else
     {
-      v11 = [v9 objectAtIndex:{objc_msgSend(v7, "row")}];
-      v12 = [v6 dequeueReusableCellWithIdentifier:@"MCUIApplicationCellIdentifier" forIndexPath:v7];
+      v11 = [applications objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+      v12 = [viewCopy dequeueReusableCellWithIdentifier:@"MCUIApplicationCellIdentifier" forIndexPath:pathCopy];
       v13 = [objc_alloc(MEMORY[0x277D03238]) initWithBundleID:v11 dataSource:0];
       [v12 setApplication:v13];
     }
@@ -1047,7 +1047,7 @@ LABEL_18:
 
   else
   {
-    NSLog(&cfstr_Mcuiappsignerv_3.isa, v7);
+    NSLog(&cfstr_Mcuiappsignerv_3.isa, pathCopy);
     v12 = objc_opt_new();
   }
 
@@ -1058,9 +1058,9 @@ LABEL_18:
 {
   if ([(MCUIAppSignerViewController *)self isNetworkReachable])
   {
-    v3 = [(MCUIAppSignerViewController *)self appSigner];
-    v4 = [v3 applications];
-    v5 = [v4 count];
+    appSigner = [(MCUIAppSignerViewController *)self appSigner];
+    applications = [appSigner applications];
+    v5 = [applications count];
 
     if (v5 == 1)
     {
@@ -1072,9 +1072,9 @@ LABEL_18:
     {
       if (!v5)
       {
-        v18 = [(MCUIAppSignerViewController *)self appSigner];
-        v6 = [v18 displayName];
-        NSLog(&cfstr_AppSignerDoesN.isa, v6);
+        appSigner2 = [(MCUIAppSignerViewController *)self appSigner];
+        displayName = [appSigner2 displayName];
+        NSLog(&cfstr_AppSignerDoesN.isa, displayName);
 
         return;
       }
@@ -1085,9 +1085,9 @@ LABEL_18:
 
     v9 = MEMORY[0x277CCACA8];
     v10 = MCUILocalizedString(v8);
-    v11 = [(MCUIAppSignerViewController *)self appSigner];
-    v12 = [v11 identity];
-    v13 = [v9 stringWithFormat:v10, v12];
+    appSigner3 = [(MCUIAppSignerViewController *)self appSigner];
+    identity = [appSigner3 identity];
+    v13 = [v9 stringWithFormat:v10, identity];
 
     v14 = MCUILocalizedStringByDevice(v7);
     v15 = [MEMORY[0x277D75110] alertControllerWithTitle:v13 message:v14 preferredStyle:1];
@@ -1128,15 +1128,15 @@ void __53__MCUIAppSignerViewController__presentVerifyAppAlert__block_invoke(uint
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = MCUILocalizedString(@"APP_SIGNER_TRUST_FAILED_TITLE_%@");
-  v5 = [(MCUIAppSignerViewController *)self appSigner];
-  v6 = [v5 identity];
-  v12 = [v3 stringWithFormat:v4, v6];
+  appSigner = [(MCUIAppSignerViewController *)self appSigner];
+  identity = [appSigner identity];
+  v12 = [v3 stringWithFormat:v4, identity];
 
   v7 = MEMORY[0x277CCACA8];
   v8 = MCUILocalizedString(@"APP_SIGNER_TRUST_FAILED_MESSAGE_%@");
-  v9 = [(MCUIAppSignerViewController *)self appSigner];
-  v10 = [v9 identity];
-  v11 = [v7 stringWithFormat:v8, v10];
+  appSigner2 = [(MCUIAppSignerViewController *)self appSigner];
+  identity2 = [appSigner2 identity];
+  v11 = [v7 stringWithFormat:v8, identity2];
 
   [(MCUIAppSignerViewController *)self _presentAlertWithTitle:v12 message:v11];
 }
@@ -1145,28 +1145,28 @@ void __53__MCUIAppSignerViewController__presentVerifyAppAlert__block_invoke(uint
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = MCUILocalizedString(@"APP_SIGNER_REQUIRES_NETWORK_TITLE_%@");
-  v5 = [(MCUIAppSignerViewController *)self appSigner];
-  v6 = [v5 identity];
-  v12 = [v3 stringWithFormat:v4, v6];
+  appSigner = [(MCUIAppSignerViewController *)self appSigner];
+  identity = [appSigner identity];
+  v12 = [v3 stringWithFormat:v4, identity];
 
   v7 = MEMORY[0x277CCACA8];
   v8 = MCUILocalizedStringByDevice(@"APP_SIGNER_REQUIRES_NETWORK_ALERT_%@");
-  v9 = [(MCUIAppSignerViewController *)self appSigner];
-  v10 = [v9 identity];
-  v11 = [v7 stringWithFormat:v8, v10];
+  appSigner2 = [(MCUIAppSignerViewController *)self appSigner];
+  identity2 = [appSigner2 identity];
+  v11 = [v7 stringWithFormat:v8, identity2];
 
   [(MCUIAppSignerViewController *)self _presentAlertWithTitle:v12 message:v11];
 }
 
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4
+- (void)_presentAlertWithTitle:(id)title message:(id)message
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(MCUIAppSignerViewController *)self presentedViewController];
+  titleCopy = title;
+  messageCopy = message;
+  presentedViewController = [(MCUIAppSignerViewController *)self presentedViewController];
 
-  if (!v7)
+  if (!presentedViewController)
   {
-    v8 = [MEMORY[0x277D75110] alertControllerWithTitle:v10 message:v6 preferredStyle:1];
+    v8 = [MEMORY[0x277D75110] alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:1];
     v9 = MCUILocalizedString(@"DISMISS_ALERT");
     [v8 MCUIAddCancelActionWithTitle:v9];
 
@@ -1176,24 +1176,24 @@ void __53__MCUIAppSignerViewController__presentVerifyAppAlert__block_invoke(uint
 
 - (void)_presentAppRemovalAlert
 {
-  v3 = [(MCUIAppSignerViewController *)self appSigner];
-  v4 = [v3 applications];
-  v5 = [v4 firstObject];
+  appSigner = [(MCUIAppSignerViewController *)self appSigner];
+  applications = [appSigner applications];
+  firstObject = [applications firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    v6 = [objc_alloc(MEMORY[0x277D03238]) initWithBundleID:v5 dataSource:0];
-    v7 = [v6 name];
+    v6 = [objc_alloc(MEMORY[0x277D03238]) initWithBundleID:firstObject dataSource:0];
+    name = [v6 name];
   }
 
   else
   {
-    v7 = 0;
+    name = 0;
   }
 
-  v8 = [(MCUIAppSignerViewController *)self appSigner];
-  v9 = [v8 applications];
-  v10 = [v9 count];
+  appSigner2 = [(MCUIAppSignerViewController *)self appSigner];
+  applications2 = [appSigner2 applications];
+  v10 = [applications2 count];
 
   if (v10 >= 2)
   {
@@ -1207,14 +1207,14 @@ void __53__MCUIAppSignerViewController__presentVerifyAppAlert__block_invoke(uint
     {
       v12 = MEMORY[0x277CCACA8];
       v13 = MCUILocalizedString(@"DELETE_APP_WARNING_ONE_%@");
-      v14 = [v12 stringWithFormat:v13, v7];
+      v14 = [v12 stringWithFormat:v13, name];
       goto LABEL_9;
     }
   }
 
   v15 = MEMORY[0x277CCACA8];
   v13 = MCUILocalizedString(@"DELETE_APP_WARNING_MULTIPLE_%d_%@");
-  v14 = [v15 localizedStringWithFormat:v13, (v10 - 1), v7];
+  v14 = [v15 localizedStringWithFormat:v13, (v10 - 1), name];
 LABEL_9:
   v16 = v14;
 
@@ -1229,13 +1229,13 @@ LABEL_9:
   v22[3] = &unk_279861990;
   objc_copyWeak(&v23, &location);
   [v17 MCUIAddActionWithTitle:v11 style:2 completion:v22];
-  v19 = [(MCUIAppSignerViewController *)self trustCell];
+  trustCell = [(MCUIAppSignerViewController *)self trustCell];
 
-  if (v19)
+  if (trustCell)
   {
-    v20 = [(MCUIAppSignerViewController *)self trustCell];
-    v21 = [v17 popoverPresentationController];
-    [v21 setSourceItem:v20];
+    trustCell2 = [(MCUIAppSignerViewController *)self trustCell];
+    popoverPresentationController = [v17 popoverPresentationController];
+    [popoverPresentationController setSourceItem:trustCell2];
   }
 
   [(MCUIAppSignerViewController *)self dmc_presentAlert:v17 completion:0];

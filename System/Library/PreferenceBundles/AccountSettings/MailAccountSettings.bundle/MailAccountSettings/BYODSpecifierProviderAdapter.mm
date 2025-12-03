@@ -1,8 +1,8 @@
 @interface BYODSpecifierProviderAdapter
 + (id)log;
-- (BYODSpecifierProviderAdapter)initWithAccountManager:(id)a3 presenter:(id)a4;
+- (BYODSpecifierProviderAdapter)initWithAccountManager:(id)manager presenter:(id)presenter;
 - (NSArray)specifiers;
-- (void)specifierProvider:(id)a3 showViewController:(id)a4;
+- (void)specifierProvider:(id)provider showViewController:(id)controller;
 @end
 
 @implementation BYODSpecifierProviderAdapter
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_64490;
   block[3] = &unk_B8D78;
-  block[4] = a1;
+  block[4] = self;
   if (qword_D65C0 != -1)
   {
     dispatch_once(&qword_D65C0, block);
@@ -24,21 +24,21 @@
   return v2;
 }
 
-- (BYODSpecifierProviderAdapter)initWithAccountManager:(id)a3 presenter:(id)a4
+- (BYODSpecifierProviderAdapter)initWithAccountManager:(id)manager presenter:(id)presenter
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  presenterCopy = presenter;
   v12.receiver = self;
   v12.super_class = BYODSpecifierProviderAdapter;
   v8 = [(BYODSpecifierProviderAdapter *)&v12 init];
   if (v8)
   {
-    v9 = [[BYODSpecifierProvider alloc] initWithAccountManager:v6 presenter:v7];
+    v9 = [[BYODSpecifierProvider alloc] initWithAccountManager:managerCopy presenter:presenterCopy];
     specifierProvider = v8->_specifierProvider;
     v8->_specifierProvider = v9;
 
     [(BYODSpecifierProvider *)v8->_specifierProvider setDelegate:v8];
-    objc_storeStrong(&v8->_presenter, a4);
+    objc_storeStrong(&v8->_presenter, presenter);
   }
 
   return v8;
@@ -76,8 +76,8 @@
       [v4 addObject:v10];
     }
 
-    v16 = [(BYODSpecifierProvider *)self->_specifierProvider specifiers];
-    [v4 addObjectsFromArray:v16];
+    specifiers = [(BYODSpecifierProvider *)self->_specifierProvider specifiers];
+    [v4 addObjectsFromArray:specifiers];
 
     v17 = [v4 copy];
     v18 = self->_specifiers;
@@ -89,13 +89,13 @@
   return specifiers;
 }
 
-- (void)specifierProvider:(id)a3 showViewController:(id)a4
+- (void)specifierProvider:(id)provider showViewController:(id)controller
 {
-  v11 = a3;
-  v7 = a4;
-  if (v11)
+  providerCopy = provider;
+  controllerCopy = controller;
+  if (providerCopy)
   {
-    if (v7)
+    if (controllerCopy)
     {
       goto LABEL_3;
     }
@@ -106,7 +106,7 @@
     v8 = +[NSAssertionHandler currentHandler];
     [v8 handleFailureInMethod:a2 object:self file:@"BYODSpecifierProviderAdapter.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"provider"}];
 
-    if (v7)
+    if (controllerCopy)
     {
       goto LABEL_3;
     }
@@ -125,12 +125,12 @@ LABEL_3:
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    [(UIViewController *)self->_presenter presentViewController:v7 animated:1 completion:0];
+    [(UIViewController *)self->_presenter presentViewController:controllerCopy animated:1 completion:0];
   }
 
   else
   {
-    [(UIViewController *)self->_presenter showViewController:v7 sender:v11];
+    [(UIViewController *)self->_presenter showViewController:controllerCopy sender:providerCopy];
   }
 }
 

@@ -1,30 +1,30 @@
 @interface PRRangingServiceProxy
-- (PRRangingServiceProxy)initWithConnection:(id)a3 queue:(id)a4;
+- (PRRangingServiceProxy)initWithConnection:(id)connection queue:(id)queue;
 - (id).cxx_construct;
 - (void)activate;
-- (void)configureForP2PRanging:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)connectWithClientInfo:(id)a3;
+- (void)configureForP2PRanging:(id)ranging options:(id)options reply:(id)reply;
+- (void)connectWithClientInfo:(id)info;
 - (void)dealloc;
-- (void)didFailWithError:(id)a3;
-- (void)didReceiveNewSolutions:(id)a3;
-- (void)rangingRequestDidUpdateStatus:(unint64_t)a3;
-- (void)rangingServiceDidUpdateState:(unint64_t)a3 cause:(int64_t)a4;
-- (void)remoteDevice:(id)a3 didChangeState:(int64_t)a4;
-- (void)startP2PRanging:(id)a3 reply:(id)a4;
-- (void)stopP2PRanging:(id)a3 reply:(id)a4;
+- (void)didFailWithError:(id)error;
+- (void)didReceiveNewSolutions:(id)solutions;
+- (void)rangingRequestDidUpdateStatus:(unint64_t)status;
+- (void)rangingServiceDidUpdateState:(unint64_t)state cause:(int64_t)cause;
+- (void)remoteDevice:(id)device didChangeState:(int64_t)state;
+- (void)startP2PRanging:(id)ranging reply:(id)reply;
+- (void)stopP2PRanging:(id)ranging reply:(id)reply;
 - (void)terminate;
 @end
 
 @implementation PRRangingServiceProxy
 
-- (PRRangingServiceProxy)initWithConnection:(id)a3 queue:(id)a4
+- (PRRangingServiceProxy)initWithConnection:(id)connection queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  connectionCopy = connection;
+  queueCopy = queue;
+  v9 = queueCopy;
+  if (connectionCopy)
   {
-    if (v8)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -52,7 +52,7 @@ LABEL_3:
   if (v10)
   {
     v10->_terminated = 0;
-    v12 = [[PRNSXPCConnection alloc] initWithConnection:v7];
+    v12 = [[PRNSXPCConnection alloc] initWithConnection:connectionCopy];
     connWrapper = v11->_connWrapper;
     v11->_connWrapper = v12;
 
@@ -70,22 +70,22 @@ LABEL_3:
   return 0;
 }
 
-- (void)connectWithClientInfo:(id)a3
+- (void)connectWithClientInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v6 = qword_1009F9820;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 objectForKey:PRProcessNameKey];
-    v8 = [v5 objectForKey:PRProcessIdentifierKey];
+    v7 = [infoCopy objectForKey:PRProcessNameKey];
+    v8 = [infoCopy objectForKey:PRProcessIdentifierKey];
     v9 = 138412546;
     v10 = v7;
     v11 = 1024;
-    v12 = [v8 intValue];
+    intValue = [v8 intValue];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PRGenericRanging: XPC connection created. Process name: %@, pid: %d", &v9, 0x12u);
   }
 
-  objc_storeStrong(&self->_clientInfo, a3);
+  objc_storeStrong(&self->_clientInfo, info);
   [(PRRangingServiceProxy *)self activate];
 }
 
@@ -166,74 +166,74 @@ LABEL_3:
   self->_terminated = 1;
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   connWrapper = self->_connWrapper;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000592C8;
   v7[3] = &unk_10098B638;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   [(PRRangingClientProtocol *)connWrapper actOnRemoteObjectAndScheduleBarrierBlock:v7];
 }
 
-- (void)didReceiveNewSolutions:(id)a3
+- (void)didReceiveNewSolutions:(id)solutions
 {
-  v4 = a3;
+  solutionsCopy = solutions;
   connWrapper = self->_connWrapper;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100059408;
   v7[3] = &unk_10098B638;
-  v8 = v4;
-  v6 = v4;
+  v8 = solutionsCopy;
+  v6 = solutionsCopy;
   [(PRRangingClientProtocol *)connWrapper actOnRemoteObjectAndScheduleBarrierBlock:v7];
 }
 
-- (void)rangingServiceDidUpdateState:(unint64_t)a3 cause:(int64_t)a4
+- (void)rangingServiceDidUpdateState:(unint64_t)state cause:(int64_t)cause
 {
   connWrapper = self->_connWrapper;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100059508;
   v5[3] = &unk_10098B658;
-  v5[4] = a3;
-  v5[5] = a4;
+  v5[4] = state;
+  v5[5] = cause;
   [(PRRangingClientProtocol *)connWrapper actOnRemoteObjectAndScheduleBarrierBlock:v5];
 }
 
-- (void)rangingRequestDidUpdateStatus:(unint64_t)a3
+- (void)rangingRequestDidUpdateStatus:(unint64_t)status
 {
   connWrapper = self->_connWrapper;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100059608;
   v4[3] = &unk_10098B678;
-  v4[4] = a3;
+  v4[4] = status;
   [(PRRangingClientProtocol *)connWrapper actOnRemoteObjectAndScheduleBarrierBlock:v4];
 }
 
-- (void)remoteDevice:(id)a3 didChangeState:(int64_t)a4
+- (void)remoteDevice:(id)device didChangeState:(int64_t)state
 {
-  v6 = a3;
+  deviceCopy = device;
   connWrapper = self->_connWrapper;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10005974C;
   v9[3] = &unk_10098BB48;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = deviceCopy;
+  stateCopy = state;
+  v8 = deviceCopy;
   [(PRRangingClientProtocol *)connWrapper actOnRemoteObjectAndScheduleBarrierBlock:v9];
 }
 
-- (void)configureForP2PRanging:(id)a3 options:(id)a4 reply:(id)a5
+- (void)configureForP2PRanging:(id)ranging options:(id)options reply:(id)reply
 {
-  v9 = a3;
-  v64 = a4;
-  v10 = a5;
+  rangingCopy = ranging;
+  optionsCopy = options;
+  replyCopy = reply;
   v11 = qword_1009F9820;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -246,7 +246,7 @@ LABEL_3:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "PRGenericRanging: XPC command - configureForP2PRanging. Process name: %@, pid: %d", buf, 0x12u);
   }
 
-  if (!v9)
+  if (!rangingCopy)
   {
     v61 = +[NSAssertionHandler currentHandler];
     [v61 handleFailureInMethod:a2 object:self file:@"PRRangingServiceProxy.mm" lineNumber:150 description:{@"Invalid parameter not satisfying: %@", @"remoteDevice"}];
@@ -279,7 +279,7 @@ LABEL_3:
     v19 = [NSDictionary dictionaryWithObjects:&v99 forKeys:&v98 count:1];
     v20 = PRErrorWithCodeAndUserInfo(101, v19);
 
-    v10[2](v10, 0, v20);
+    replyCopy[2](replyCopy, 0, v20);
     goto LABEL_78;
   }
 
@@ -312,12 +312,12 @@ LABEL_3:
       v38 = [NSDictionary dictionaryWithObjects:&v97 forKeys:&v96 count:1];
       v20 = PRErrorWithCodeAndUserInfo(105, v38);
 
-      v10[2](v10, 0, v20);
+      replyCopy[2](replyCopy, 0, v20);
       goto LABEL_78;
     }
   }
 
-  v20 = [v64 objectForKey:PRP2PArgsRangingRole];
+  v20 = [optionsCopy objectForKey:PRP2PArgsRangingRole];
   if (!v20 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v94 = NSLocalizedDescriptionKey;
@@ -325,7 +325,7 @@ LABEL_3:
     v36 = [NSDictionary dictionaryWithObjects:&v95 forKeys:&v94 count:1];
     v37 = PRErrorWithCodeAndUserInfo(100, v36);
 
-    v10[2](v10, 0, v37);
+    replyCopy[2](replyCopy, 0, v37);
     goto LABEL_78;
   }
 
@@ -336,7 +336,7 @@ LABEL_3:
     v39 = [NSDictionary dictionaryWithObjects:&v93 forKeys:&v92 count:1];
     v40 = PRErrorWithCodeAndUserInfo(100, v39);
 
-    v10[2](v10, 0, v40);
+    replyCopy[2](replyCopy, 0, v40);
     goto LABEL_78;
   }
 
@@ -356,15 +356,15 @@ LABEL_3:
     v42 = [NSDictionary dictionaryWithObjects:&v91 forKeys:&v90 count:1];
     v63 = PRErrorWithCodeAndUserInfo(999, v42);
 
-    v10[2](v10, 0, v63);
+    replyCopy[2](replyCopy, 0, v63);
     goto LABEL_76;
   }
 
-  v63 = [v64 objectForKey:PRDebugConfigArgUWBChannel];
+  v63 = [optionsCopy objectForKey:PRDebugConfigArgUWBChannel];
   if (v63 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v26 = [v63 intValue];
-    v34 = sub_1004282F4(v26, v27, v28, v29, v30, v31, v32, v33);
+    intValue = [v63 intValue];
+    v34 = sub_1004282F4(intValue, v27, v28, v29, v30, v31, v32, v33);
     v35 = 256;
   }
 
@@ -374,8 +374,8 @@ LABEL_3:
     v35 = 0;
   }
 
-  v41 = [v9 roseMACAddress];
-  [v41 getBytes:&v89 length:8];
+  roseMACAddress = [rangingCopy roseMACAddress];
+  [roseMACAddress getBytes:&v89 length:8];
 
   v83 = 1;
   v84 = 0;
@@ -392,7 +392,7 @@ LABEL_3:
     v43 = [NSDictionary dictionaryWithObjects:&v82 forKeys:&v81 count:1];
     v44 = PRErrorWithCodeAndUserInfo(999, v43);
 
-    v10[2](v10, 0, v44);
+    replyCopy[2](replyCopy, 0, v44);
     goto LABEL_76;
   }
 
@@ -419,11 +419,11 @@ LABEL_3:
     _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "[P2PDEBUG] post prep req uwbChannel %hhu", v75, 8u);
   }
 
-  v46 = v64;
-  if (v64)
+  v46 = optionsCopy;
+  if (optionsCopy)
   {
     v67 = 0;
-    v47 = sub_10002A358(v64, v80, &v67);
+    v47 = sub_10002A358(optionsCopy, v80, &v67);
     v48 = v67;
     v49 = v48;
     if ((v47 & 1) == 0)
@@ -433,11 +433,11 @@ LABEL_3:
         sub_10049D39C();
       }
 
-      v10[2](v10, 0, v49);
+      replyCopy[2](replyCopy, 0, v49);
       goto LABEL_75;
     }
 
-    v46 = v64;
+    v46 = optionsCopy;
   }
 
   v49 = [v46 objectForKey:PRDebugConfigArgSolutionVariant];
@@ -453,8 +453,8 @@ LABEL_3:
         _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "P2P Ranging: PRDebugConfigArgSolutionVariant passed as an option.", v75, 2u);
       }
 
-      v51 = [v49 intValue];
-      switch(v51)
+      intValue2 = [v49 intValue];
+      switch(intValue2)
       {
         case 0u:
           v55 = qword_1009F9820;
@@ -514,13 +514,13 @@ LABEL_65:
 
   if ((v57 & 0x10000) != 0)
   {
-    v60 = self;
-    objc_sync_enter(v60);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     self->_p2pServiceId = v57;
-    objc_sync_exit(v60);
+    objc_sync_exit(selfCopy);
 
-    v10[2](v10, 1, 0);
-    [(PRRangingServiceProxy *)v60 remoteDevice:v9 didChangeState:1];
+    replyCopy[2](replyCopy, 1, 0);
+    [(PRRangingServiceProxy *)selfCopy remoteDevice:rangingCopy didChangeState:1];
   }
 
   else
@@ -530,7 +530,7 @@ LABEL_65:
     v58 = [NSDictionary dictionaryWithObjects:&v74 forKeys:&v73 count:1];
     v59 = PRErrorWithCodeAndUserInfo(101, v58);
 
-    v10[2](v10, 0, v59);
+    replyCopy[2](replyCopy, 0, v59);
   }
 
 LABEL_75:
@@ -544,11 +544,11 @@ LABEL_76:
 LABEL_78:
 }
 
-- (void)startP2PRanging:(id)a3 reply:(id)a4
+- (void)startP2PRanging:(id)ranging reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  rangingCopy = ranging;
+  replyCopy = reply;
+  if (!rangingCopy)
   {
     v18 = +[NSAssertionHandler currentHandler];
     [v18 handleFailureInMethod:a2 object:self file:@"PRRangingServiceProxy.mm" lineNumber:270 description:{@"Invalid parameter not satisfying: %@", @"remoteDevice"}];
@@ -562,12 +562,12 @@ LABEL_78:
     *buf = 138412546;
     v28 = v10;
     v29 = 1024;
-    v30 = [v11 intValue];
+    intValue = [v11 intValue];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "PRGenericRanging: XPC command - startP2PRanging. Process name: %@, pid: %d", buf, 0x12u);
   }
 
-  v12 = [v7 roseMACAddress];
-  [v12 getBytes:&v42 length:8];
+  roseMACAddress = [rangingCopy roseMACAddress];
+  [roseMACAddress getBytes:&v42 length:8];
 
   *buf = 1;
   LOBYTE(v28) = 0;
@@ -589,7 +589,7 @@ LABEL_78:
     v15 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v16 = PRErrorWithCodeAndUserInfo(102, v15);
 
-    v8[2](v8, 0, v16);
+    replyCopy[2](replyCopy, 0, v16);
 LABEL_16:
 
     goto LABEL_17;
@@ -622,19 +622,19 @@ LABEL_16:
     v17 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v16 = PRErrorWithCodeAndUserInfo(102, v17);
 
-    v8[2](v8, 0, v16);
+    replyCopy[2](replyCopy, 0, v16);
     goto LABEL_16;
   }
 
-  v8[2](v8, 1, 0);
+  replyCopy[2](replyCopy, 1, 0);
 LABEL_17:
 }
 
-- (void)stopP2PRanging:(id)a3 reply:(id)a4
+- (void)stopP2PRanging:(id)ranging reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  rangingCopy = ranging;
+  replyCopy = reply;
+  if (!rangingCopy)
   {
     v17 = +[NSAssertionHandler currentHandler];
     [v17 handleFailureInMethod:a2 object:self file:@"PRRangingServiceProxy.mm" lineNumber:312 description:{@"Invalid parameter not satisfying: %@", @"remoteDevice"}];
@@ -659,7 +659,7 @@ LABEL_17:
     v14 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     v15 = PRErrorWithCodeAndUserInfo(103, v14);
 
-    v8[2](v8, 0, v15);
+    replyCopy[2](replyCopy, 0, v15);
 LABEL_16:
 
     goto LABEL_17;
@@ -692,11 +692,11 @@ LABEL_16:
     v16 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
     v15 = PRErrorWithCodeAndUserInfo(103, v16);
 
-    v8[2](v8, 0, v15);
+    replyCopy[2](replyCopy, 0, v15);
     goto LABEL_16;
   }
 
-  v8[2](v8, 1, 0);
+  replyCopy[2](replyCopy, 1, 0);
 LABEL_17:
 }
 

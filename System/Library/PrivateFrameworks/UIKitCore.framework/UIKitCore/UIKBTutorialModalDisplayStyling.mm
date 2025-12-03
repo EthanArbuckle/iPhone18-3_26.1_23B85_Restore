@@ -1,11 +1,11 @@
 @interface UIKBTutorialModalDisplayStyling
-- (UIKBTutorialModalDisplayStyling)initWithKeyboardAppearance:(int64_t)a3;
-- (id)backgroundBlurEffects:(int64_t)a3;
+- (UIKBTutorialModalDisplayStyling)initWithKeyboardAppearance:(int64_t)appearance;
+- (id)backgroundBlurEffects:(int64_t)effects;
 @end
 
 @implementation UIKBTutorialModalDisplayStyling
 
-- (UIKBTutorialModalDisplayStyling)initWithKeyboardAppearance:(int64_t)a3
+- (UIKBTutorialModalDisplayStyling)initWithKeyboardAppearance:(int64_t)appearance
 {
   v16.receiver = self;
   v16.super_class = UIKBTutorialModalDisplayStyling;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [(UIKBTutorialModalDisplayStyling *)v4 backgroundBlurEffects:a3];
+    v6 = [(UIKBTutorialModalDisplayStyling *)v4 backgroundBlurEffects:appearance];
     backgroundEffects = v5->_backgroundEffects;
     v5->_backgroundEffects = v6;
 
@@ -35,7 +35,7 @@
   return v5;
 }
 
-- (id)backgroundBlurEffects:(int64_t)a3
+- (id)backgroundBlurEffects:(int64_t)effects
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v3 = [UIBlurEffect effectWithStyle:1200];

@@ -1,21 +1,21 @@
 @interface HMDCameraRecordingAnalysisNode
-- (HMDCameraRecordingAnalysisNode)initWithResidentDevice:(id)a3 metrics:(id)a4;
+- (HMDCameraRecordingAnalysisNode)initWithResidentDevice:(id)device metrics:(id)metrics;
 @end
 
 @implementation HMDCameraRecordingAnalysisNode
 
-- (HMDCameraRecordingAnalysisNode)initWithResidentDevice:(id)a3 metrics:(id)a4
+- (HMDCameraRecordingAnalysisNode)initWithResidentDevice:(id)device metrics:(id)metrics
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  deviceCopy = device;
+  metricsCopy = metrics;
+  if (!deviceCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = metricsCopy;
+  if (!metricsCopy)
   {
 LABEL_7:
     v13 = _HMFPreconditionFailure();
@@ -28,8 +28,8 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_residentDevice, a3);
-    objc_storeStrong(&v11->_metrics, a4);
+    objc_storeStrong(&v10->_residentDevice, device);
+    objc_storeStrong(&v11->_metrics, metrics);
   }
 
   return v11;

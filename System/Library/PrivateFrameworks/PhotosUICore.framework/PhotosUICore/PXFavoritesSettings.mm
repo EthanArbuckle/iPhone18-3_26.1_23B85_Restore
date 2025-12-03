@@ -1,30 +1,30 @@
 @interface PXFavoritesSettings
-+ (id)favoritesSubmoduleWithFavoritesSettingsKeyPath:(id)a3 delegate:(id)a4;
++ (id)favoritesSubmoduleWithFavoritesSettingsKeyPath:(id)path delegate:(id)delegate;
 + (id)sharedInstance;
 + (id)transientProperties;
-- (BOOL)isFavoriteSettings:(id)a3;
+- (BOOL)isFavoriteSettings:(id)settings;
 - (PXFavoritesSettingsDelegate)delegate;
-- (id)_keyForFavoriteExistingAtIndex:(int64_t)a3;
-- (id)_keyForFavoriteNameAtIndex:(int64_t)a3;
-- (id)valueForKey:(id)a3;
+- (id)_keyForFavoriteExistingAtIndex:(int64_t)index;
+- (id)_keyForFavoriteNameAtIndex:(int64_t)index;
+- (id)valueForKey:(id)key;
 - (void)_notifyChange;
-- (void)_performBlockAfterLoadingAccessorySettings:(id)a3;
-- (void)_requestFavoriteSettingsAtIndex:(int64_t)a3 fromViewController:(id)a4 resultHandler:(id)a5;
-- (void)setFavoritesSettingsClassNames:(id)a3;
-- (void)setIsFavorite:(BOOL)a3 settings:(id)a4;
+- (void)_performBlockAfterLoadingAccessorySettings:(id)settings;
+- (void)_requestFavoriteSettingsAtIndex:(int64_t)index fromViewController:(id)controller resultHandler:(id)handler;
+- (void)setFavoritesSettingsClassNames:(id)names;
+- (void)setIsFavorite:(BOOL)favorite settings:(id)settings;
 @end
 
 @implementation PXFavoritesSettings
 
-+ (id)favoritesSubmoduleWithFavoritesSettingsKeyPath:(id)a3 delegate:(id)a4
++ (id)favoritesSubmoduleWithFavoritesSettingsKeyPath:(id)path delegate:(id)delegate
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v5 = a4;
+  pathCopy = path;
+  delegateCopy = delegate;
   v30 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:50];
   v6 = +[PXFavoritesSettings sharedInstance];
-  v28 = v5;
-  [v6 setDelegate:v5];
+  v28 = delegateCopy;
+  [v6 setDelegate:delegateCopy];
   for (i = 0; i != 50; ++i)
   {
     v8 = [v6 _keyForFavoriteNameAtIndex:i];
@@ -57,7 +57,7 @@
   v34[0] = v19;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
   v25 = [v23 moduleWithTitle:0 contents:v24];
-  v26 = [v23 submoduleWithModule:v25 childSettingsKeyPath:v29 condition:v22];
+  v26 = [v23 submoduleWithModule:v25 childSettingsKeyPath:pathCopy condition:v22];
 
   return v26;
 }
@@ -98,9 +98,9 @@ void __79__PXFavoritesSettings_favoritesSubmoduleWithFavoritesSettingsKeyPath_de
   return WeakRetained;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -109,27 +109,27 @@ void __79__PXFavoritesSettings_favoritesSubmoduleWithFavoritesSettingsKeyPath_de
   aBlock[1] = 3221225472;
   aBlock[2] = __35__PXFavoritesSettings_valueForKey___block_invoke;
   aBlock[3] = &unk_1E7740CD0;
-  v5 = v4;
+  v5 = keyCopy;
   v20 = v5;
   v21 = &v22;
   v6 = _Block_copy(aBlock);
-  v7 = [(PXFavoritesSettings *)self favoritesSettingsClassNames];
+  favoritesSettingsClassNames = [(PXFavoritesSettings *)self favoritesSettingsClassNames];
   if (v6[2](v6, @"favoriteName"))
   {
     v8 = v23[3];
-    if (v8 >= [v7 count])
+    if (v8 >= [favoritesSettingsClassNames count])
     {
       v12 = 0;
     }
 
     else
     {
-      v9 = [v7 objectAtIndexedSubscript:v23[3]];
+      v9 = [favoritesSettingsClassNames objectAtIndexedSubscript:v23[3]];
       v10 = NSClassFromString(v9);
       if ([(objc_class *)v10 isSubclassOfClass:objc_opt_class()])
       {
-        v11 = [(objc_class *)v10 settingsControllerModule];
-        v12 = [v11 valueForKey:@"title"];
+        settingsControllerModule = [(objc_class *)v10 settingsControllerModule];
+        v12 = [settingsControllerModule valueForKey:@"title"];
       }
 
       else
@@ -161,7 +161,7 @@ void __79__PXFavoritesSettings_favoritesSubmoduleWithFavoritesSettingsKeyPath_de
   {
     if (v6[2](v6, @"hasFavorite"))
     {
-      v13 = [MEMORY[0x1E696AD98] numberWithInt:{v23[3] < objc_msgSend(v7, "count")}];
+      v13 = [MEMORY[0x1E696AD98] numberWithInt:{v23[3] < objc_msgSend(favoritesSettingsClassNames, "count")}];
     }
 
     else
@@ -192,53 +192,53 @@ uint64_t __35__PXFavoritesSettings_valueForKey___block_invoke(uint64_t a1, void 
   return v4;
 }
 
-- (void)_performBlockAfterLoadingAccessorySettings:(id)a3
+- (void)_performBlockAfterLoadingAccessorySettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(PXFavoritesSettings *)self delegate];
+  settingsCopy = settings;
+  delegate = [(PXFavoritesSettings *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __66__PXFavoritesSettings__performBlockAfterLoadingAccessorySettings___block_invoke;
     v6[3] = &unk_1E774C250;
-    v7 = v4;
-    [v5 favoritesSettings:self loadAccessorySettingsWithCompletionHandler:v6];
+    v7 = settingsCopy;
+    [delegate favoritesSettings:self loadAccessorySettingsWithCompletionHandler:v6];
   }
 
   else
   {
-    dispatch_async(MEMORY[0x1E69E96A0], v4);
+    dispatch_async(MEMORY[0x1E69E96A0], settingsCopy);
   }
 }
 
-- (id)_keyForFavoriteExistingAtIndex:(int64_t)a3
+- (id)_keyForFavoriteExistingAtIndex:(int64_t)index
 {
-  v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%li", @"hasFavorite", a3];
+  index = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%li", @"hasFavorite", index];
 
-  return v3;
+  return index;
 }
 
-- (id)_keyForFavoriteNameAtIndex:(int64_t)a3
+- (id)_keyForFavoriteNameAtIndex:(int64_t)index
 {
-  v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%li", @"favoriteName", a3];
+  index = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%li", @"favoriteName", index];
 
-  return v3;
+  return index;
 }
 
-- (void)_requestFavoriteSettingsAtIndex:(int64_t)a3 fromViewController:(id)a4 resultHandler:(id)a5
+- (void)_requestFavoriteSettingsAtIndex:(int64_t)index fromViewController:(id)controller resultHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(PXFavoritesSettings *)self favoritesSettingsClassNames];
-  v11 = [v10 objectAtIndexedSubscript:a3];
+  controllerCopy = controller;
+  handlerCopy = handler;
+  favoritesSettingsClassNames = [(PXFavoritesSettings *)self favoritesSettingsClassNames];
+  v11 = [favoritesSettingsClassNames objectAtIndexedSubscript:index];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __88__PXFavoritesSettings__requestFavoriteSettingsAtIndex_fromViewController_resultHandler___block_invoke;
   aBlock[3] = &unk_1E7740C80;
   v12 = v11;
   v23 = v12;
-  v13 = v9;
+  v13 = handlerCopy;
   v24 = v13;
   v14 = _Block_copy(aBlock);
   if ((v14[2]() & 1) == 0)
@@ -249,10 +249,10 @@ uint64_t __35__PXFavoritesSettings_valueForKey___block_invoke(uint64_t a1, void 
     v15[3] = &unk_1E7743080;
     v20 = v14;
     v16 = v12;
-    v21 = a3;
-    v17 = v10;
-    v18 = self;
-    v19 = v8;
+    indexCopy = index;
+    v17 = favoritesSettingsClassNames;
+    selfCopy = self;
+    v19 = controllerCopy;
     [(PXFavoritesSettings *)self _performBlockAfterLoadingAccessorySettings:v15];
   }
 }
@@ -378,18 +378,18 @@ void __88__PXFavoritesSettings__requestFavoriteSettingsAtIndex_fromViewControlle
   }
 
   [(PXSettings *)self save];
-  v18 = [(PXFavoritesSettings *)self delegate];
-  [v18 favoritesSettingsDidChangeFavorites:self];
+  delegate = [(PXFavoritesSettings *)self delegate];
+  [delegate favoritesSettingsDidChangeFavorites:self];
 }
 
-- (void)setFavoritesSettingsClassNames:(id)a3
+- (void)setFavoritesSettingsClassNames:(id)names
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_favoritesSettingsClassNames != v4)
+  namesCopy = names;
+  v5 = namesCopy;
+  if (self->_favoritesSettingsClassNames != namesCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = namesCopy;
+    v6 = [(NSArray *)namesCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -404,12 +404,12 @@ void __88__PXFavoritesSettings__requestFavoriteSettingsAtIndex_fromViewControlle
   }
 }
 
-- (void)setIsFavorite:(BOOL)a3 settings:(id)a4
+- (void)setIsFavorite:(BOOL)favorite settings:(id)settings
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PXFavoritesSettings *)self favoritesSettingsClassNames];
-  v8 = [v7 mutableCopy];
+  favoriteCopy = favorite;
+  settingsCopy = settings;
+  favoritesSettingsClassNames = [(PXFavoritesSettings *)self favoritesSettingsClassNames];
+  v8 = [favoritesSettingsClassNames mutableCopy];
   v9 = v8;
   if (v8)
   {
@@ -425,7 +425,7 @@ void __88__PXFavoritesSettings__requestFavoriteSettingsAtIndex_fromViewControlle
 
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
-  if (v4)
+  if (favoriteCopy)
   {
     [v13 insertObject:v12 atIndex:0];
   }
@@ -438,14 +438,14 @@ void __88__PXFavoritesSettings__requestFavoriteSettingsAtIndex_fromViewControlle
   [(PXFavoritesSettings *)self setFavoritesSettingsClassNames:v13];
 }
 
-- (BOOL)isFavoriteSettings:(id)a3
+- (BOOL)isFavoriteSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(PXFavoritesSettings *)self favoritesSettingsClassNames];
+  settingsCopy = settings;
+  favoritesSettingsClassNames = [(PXFavoritesSettings *)self favoritesSettingsClassNames];
   v6 = objc_opt_class();
 
   v7 = NSStringFromClass(v6);
-  LOBYTE(v6) = [v5 containsObject:v7];
+  LOBYTE(v6) = [favoritesSettingsClassNames containsObject:v7];
 
   return v6;
 }
@@ -456,7 +456,7 @@ void __88__PXFavoritesSettings__requestFavoriteSettingsAtIndex_fromViewControlle
   block[1] = 3221225472;
   block[2] = __42__PXFavoritesSettings_transientProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transientProperties_onceToken_181272 != -1)
   {
     dispatch_once(&transientProperties_onceToken_181272, block);
@@ -483,9 +483,9 @@ void __42__PXFavoritesSettings_transientProperties__block_invoke(uint64_t a1)
   os_unfair_lock_lock(&PXSettingsSharedInstanceLock);
   if (!sharedInstance_sharedInstance_181277)
   {
-    v3 = [a1 createSharedInstance];
+    createSharedInstance = [self createSharedInstance];
     v4 = sharedInstance_sharedInstance_181277;
-    sharedInstance_sharedInstance_181277 = v3;
+    sharedInstance_sharedInstance_181277 = createSharedInstance;
   }
 
   os_unfair_lock_unlock(&PXSettingsSharedInstanceLock);

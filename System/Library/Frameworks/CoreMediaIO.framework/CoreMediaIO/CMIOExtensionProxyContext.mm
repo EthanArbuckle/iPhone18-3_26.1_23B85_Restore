@@ -1,21 +1,21 @@
 @interface CMIOExtensionProxyContext
-- (CMIOExtensionProxyContext)initWithConnection:(id)a3 serverConnection:(id)a4 queue:(id)a5 delegate:(id)a6;
+- (CMIOExtensionProxyContext)initWithConnection:(id)connection serverConnection:(id)serverConnection queue:(id)queue delegate:(id)delegate;
 - (id)description;
 - (id)redactedDescription;
 - (void)dealloc;
-- (void)handleClientMessageWithConnection:(id)a3 message:(id)a4;
-- (void)handleServerMessageWithConnection:(id)a3 message:(id)a4;
+- (void)handleClientMessageWithConnection:(id)connection message:(id)message;
+- (void)handleServerMessageWithConnection:(id)connection message:(id)message;
 - (void)invalidate;
-- (void)receivedSample:(id)a3 message:(id)a4;
+- (void)receivedSample:(id)sample message:(id)message;
 - (void)sendClientInfo;
 @end
 
 @implementation CMIOExtensionProxyContext
 
-- (CMIOExtensionProxyContext)initWithConnection:(id)a3 serverConnection:(id)a4 queue:(id)a5 delegate:(id)a6
+- (CMIOExtensionProxyContext)initWithConnection:(id)connection serverConnection:(id)serverConnection queue:(id)queue delegate:(id)delegate
 {
   v31 = *MEMORY[0x277D85DE8];
-  if (a3 && a4)
+  if (connection && serverConnection)
   {
     v29.receiver = self;
     v29.super_class = CMIOExtensionProxyContext;
@@ -25,53 +25,53 @@
     {
       v10->_lock._os_unfair_lock_opaque = 0;
       v10->_transaction = os_transaction_create();
-      objc_storeWeak(&v11->_delegate, a6);
-      v11->_connection = a3;
-      v11->_serverConnection = a4;
+      objc_storeWeak(&v11->_delegate, delegate);
+      v11->_connection = connection;
+      v11->_serverConnection = serverConnection;
       v11->_deviceIDsByStreamID = objc_alloc_init(MEMORY[0x277CBEB38]);
       v11->_hasCameraAttribution = 0;
-      if (a5)
+      if (queue)
       {
-        v12 = a5;
+        queueCopy = queue;
       }
 
       else
       {
         v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
         global_queue = dispatch_get_global_queue(21, 0);
-        v12 = dispatch_queue_create_with_target_V2("com.apple.cmio.CMIOExtensionProxyContext", v13, global_queue);
+        queueCopy = dispatch_queue_create_with_target_V2("com.apple.cmio.CMIOExtensionProxyContext", v13, global_queue);
       }
 
-      v11->_queue = v12;
+      v11->_queue = queueCopy;
       objc_initWeak(&location, v11);
       handler[0] = MEMORY[0x277D85DD0];
       handler[1] = 3221225472;
       handler[2] = __80__CMIOExtensionProxyContext_initWithConnection_serverConnection_queue_delegate___block_invoke;
       handler[3] = &unk_27885C1C0;
       objc_copyWeak(&v27, &location);
-      handler[4] = a4;
-      xpc_connection_set_event_handler(a4, handler);
-      xpc_connection_set_target_queue(a4, v11->_queue);
-      xpc_connection_activate(a4);
+      handler[4] = serverConnection;
+      xpc_connection_set_event_handler(serverConnection, handler);
+      xpc_connection_set_target_queue(serverConnection, v11->_queue);
+      xpc_connection_activate(serverConnection);
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __80__CMIOExtensionProxyContext_initWithConnection_serverConnection_queue_delegate___block_invoke_22;
       v24[3] = &unk_27885C1C0;
       objc_copyWeak(&v25, &location);
-      v24[4] = a3;
-      xpc_connection_set_event_handler(a3, v24);
-      xpc_connection_set_target_queue(a3, v11->_queue);
-      xpc_connection_activate(a3);
+      v24[4] = connection;
+      xpc_connection_set_event_handler(connection, v24);
+      xpc_connection_set_target_queue(connection, v11->_queue);
+      xpc_connection_activate(connection);
       xpc_connection_get_audit_token();
-      pid = xpc_connection_get_pid(a3);
-      v16 = [MEMORY[0x277CCAD78] UUID];
+      pid = xpc_connection_get_pid(connection);
+      uUID = [MEMORY[0x277CCAD78] UUID];
       memset(buf, 0, 32);
       v17 = [CMIOExtensionProvider newActivityAttributionWithToken:buf];
       v18 = [CMIOExtensionClient alloc];
       memset(buf, 0, 32);
-      v11->_clientInfo = [(CMIOExtensionClient *)v18 initWithPID:pid clientID:v16 auditToken:buf stAttribution:v17 isToProxy:1 isFromProxyExtensionManager:0];
+      v11->_clientInfo = [(CMIOExtensionClient *)v18 initWithPID:pid clientID:uUID auditToken:buf stAttribution:v17 isToProxy:1 isFromProxyExtensionManager:0];
       v11->_activeStreams = 0;
-      v11->_description = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"<CMIOExtensionProxyContext: pid %u, ID %@, delegate %@>", pid, v16, a6];
+      v11->_description = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"<CMIOExtensionProxyContext: pid %u, ID %@, delegate %@>", pid, uUID, delegate];
       v11->_redactedDescription = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"<CMIOExtensionProxyContext: pid -, ID ->"];
       [(CMIOExtensionProxyContext *)v11 sendClientInfo];
       v19 = CMIOLog();
@@ -225,7 +225,7 @@ void __80__CMIOExtensionProxyContext_initWithConnection_serverConnection_queue_d
       v21 = 2080;
       v22 = "[CMIOExtensionProxyContext dealloc]";
       v23 = 2113;
-      v24 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22EA08000, v4, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %{private}@", buf, 0x26u);
     }
   }
@@ -303,7 +303,7 @@ void __80__CMIOExtensionProxyContext_initWithConnection_serverConnection_queue_d
       v22 = 2080;
       v23 = "[CMIOExtensionProxyContext invalidate]";
       v24 = 2113;
-      v25 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22EA08000, v4, OS_LOG_TYPE_INFO, "%s:%d:%s %{private}@", buf, 0x26u);
     }
   }
@@ -322,8 +322,8 @@ void __80__CMIOExtensionProxyContext_initWithConnection_serverConnection_queue_d
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [-[CMIOExtensionClient stCameraCaptureAttributionsMap](self->_clientInfo stCameraCaptureAttributionsMap];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    stCameraCaptureAttributionsMap = [-[CMIOExtensionClient stCameraCaptureAttributionsMap](self->_clientInfo stCameraCaptureAttributionsMap];
+    v6 = [stCameraCaptureAttributionsMap countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -335,14 +335,14 @@ void __80__CMIOExtensionProxyContext_initWithConnection_serverConnection_queue_d
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(stCameraCaptureAttributionsMap);
           }
 
           [+[CMIOExtensionProxyAttribution sharedAttribution](CMIOExtensionProxyAttribution "sharedAttribution")];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [stCameraCaptureAttributionsMap countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);
@@ -428,15 +428,15 @@ void __43__CMIOExtensionProxyContext_sendClientInfo__block_invoke(uint64_t a1, v
   }
 }
 
-- (void)receivedSample:(id)a3 message:(id)a4
+- (void)receivedSample:(id)sample message:(id)message
 {
   v31 = *MEMORY[0x277D85DE8];
   cf = 0;
-  cmio_XPCMessageCopyCFString(a4, "param1", &cf);
+  cmio_XPCMessageCopyCFString(message, "param1", &cf);
   if (cf)
   {
-    int64 = xpc_dictionary_get_int64(a4, "param2");
-    if (!xpc_dictionary_get_value(a4, "param3"))
+    int64 = xpc_dictionary_get_int64(message, "param2");
+    if (!xpc_dictionary_get_value(message, "param3"))
     {
       v10 = CMIOLog();
       if (v10 && os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -464,9 +464,9 @@ void __43__CMIOExtensionProxyContext_sendClientInfo__block_invoke(uint64_t a1, v
       {
         if (int64 == 1936684398)
         {
-          v7 = [(CMIOExtensionClient *)self->_clientInfo microphoneAuthorizationStatus];
+          microphoneAuthorizationStatus = [(CMIOExtensionClient *)self->_clientInfo microphoneAuthorizationStatus];
           v8 = [(CMIOExtensionClient *)self->_clientInfo microphoneAuthorizationStatus]== 0;
-          if (v7 == 3)
+          if (microphoneAuthorizationStatus == 3)
           {
 LABEL_24:
             v14 = xpc_dictionary_create(0, 0, 0);
@@ -475,7 +475,7 @@ LABEL_24:
             applier[2] = __52__CMIOExtensionProxyContext_receivedSample_message___block_invoke;
             applier[3] = &unk_27885BF98;
             applier[4] = v14;
-            xpc_dictionary_apply(a4, applier);
+            xpc_dictionary_apply(message, applier);
             xpc_connection_send_message(self->_connection, v14);
             xpc_release(v14);
 LABEL_39:
@@ -551,9 +551,9 @@ LABEL_38:
         goto LABEL_35;
       }
 
-      v11 = [(CMIOExtensionClient *)self->_clientInfo cameraAuthorizationStatus];
+      cameraAuthorizationStatus = [(CMIOExtensionClient *)self->_clientInfo cameraAuthorizationStatus];
       v12 = [(CMIOExtensionClient *)self->_clientInfo cameraAuthorizationStatus]== 0;
-      if (v11 != 3)
+      if (cameraAuthorizationStatus != 3)
       {
         v8 = 0;
         goto LABEL_25;
@@ -655,10 +655,10 @@ void __52__CMIOExtensionProxyContext_receivedSample_message___block_invoke_45(ui
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleClientMessageWithConnection:(id)a3 message:(id)a4
+- (void)handleClientMessageWithConnection:(id)connection message:(id)message
 {
   v42 = *MEMORY[0x277D85DE8];
-  uint64 = xpc_dictionary_get_uint64(a4, "MessageType");
+  uint64 = xpc_dictionary_get_uint64(message, "MessageType");
   if (CMIOModuleLogLevel_once_0 != -1)
   {
     [CMIOExtensionProxyContext sendClientInfo];
@@ -679,7 +679,7 @@ void __52__CMIOExtensionProxyContext_receivedSample_message___block_invoke_45(ui
         v36 = 2080;
         v37 = "[CMIOExtensionProxyContext handleClientMessageWithConnection:message:]";
         v38 = 2113;
-        v39 = self;
+        selfCopy = self;
         v40 = 2048;
         v41 = uint64;
         _os_log_impl(&dword_22EA08000, v9, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %{private}@ %lld", buf, 0x30u);
@@ -693,12 +693,12 @@ void __52__CMIOExtensionProxyContext_receivedSample_message___block_invoke_45(ui
     {
       if (uint64 == 5)
       {
-        reply = xpc_dictionary_create_reply(a4);
+        reply = xpc_dictionary_create_reply(message);
         if (reply)
         {
           v11 = reply;
           xpc_dictionary_set_int64(reply, "errorReturn", 0);
-          xpc_connection_send_message(a3, v11);
+          xpc_connection_send_message(connection, v11);
           xpc_release(v11);
         }
 
@@ -723,7 +723,7 @@ void __52__CMIOExtensionProxyContext_receivedSample_message___block_invoke_45(ui
   if (uint64 < 23)
   {
 LABEL_14:
-    v12 = xpc_dictionary_create_reply(a4);
+    v12 = xpc_dictionary_create_reply(message);
     if (v12)
     {
       serverConnection = self->_serverConnection;
@@ -733,10 +733,10 @@ LABEL_14:
       handler[2] = __71__CMIOExtensionProxyContext_handleClientMessageWithConnection_message___block_invoke;
       handler[3] = &unk_27885C250;
       handler[4] = v12;
-      handler[5] = a3;
+      handler[5] = connection;
       v15 = handler;
 LABEL_16:
-      xpc_connection_send_message_with_reply(serverConnection, a4, queue, v15);
+      xpc_connection_send_message_with_reply(serverConnection, message, queue, v15);
       goto LABEL_20;
     }
 
@@ -752,7 +752,7 @@ LABEL_16:
   switch(uint64)
   {
     case 23:
-      v22 = xpc_dictionary_create_reply(a4);
+      v22 = xpc_dictionary_create_reply(message);
       if (v22)
       {
         serverConnection = self->_serverConnection;
@@ -763,7 +763,7 @@ LABEL_16:
         v31[3] = &unk_27885C278;
         v31[4] = v22;
         v31[5] = self;
-        v31[6] = a3;
+        v31[6] = connection;
         v15 = v31;
         goto LABEL_16;
       }
@@ -777,7 +777,7 @@ LABEL_16:
       break;
     case 24:
       *buf = 0;
-      cmio_XPCMessageCopyCFString(a4, "param1", buf);
+      cmio_XPCMessageCopyCFString(message, "param1", buf);
       if (*buf)
       {
         v19 = [(NSMutableDictionary *)self->_deviceIDsByStreamID objectForKeyedSubscript:?];
@@ -791,7 +791,7 @@ LABEL_16:
         }
 
         CFRelease(*buf);
-        v21 = xpc_dictionary_create_reply(a4);
+        v21 = xpc_dictionary_create_reply(message);
         if (v21)
         {
           serverConnection = self->_serverConnection;
@@ -802,7 +802,7 @@ LABEL_16:
           v30[3] = &unk_27885C278;
           v30[4] = v21;
           v30[5] = self;
-          v30[6] = a3;
+          v30[6] = connection;
           v15 = v30;
           goto LABEL_16;
         }
@@ -827,7 +827,7 @@ LABEL_16:
     case 25:
 
       self->_transaction = 0;
-      v18 = xpc_dictionary_create_reply(a4);
+      v18 = xpc_dictionary_create_reply(message);
       if (v18)
       {
         serverConnection = self->_serverConnection;
@@ -837,7 +837,7 @@ LABEL_16:
         v29[2] = __71__CMIOExtensionProxyContext_handleClientMessageWithConnection_message___block_invoke_52;
         v29[3] = &unk_27885C250;
         v29[4] = v18;
-        v29[5] = a3;
+        v29[5] = connection;
         v15 = v29;
         goto LABEL_16;
       }
@@ -1025,10 +1025,10 @@ LABEL_11:
   xpc_release(*(a1 + 32));
 }
 
-- (void)handleServerMessageWithConnection:(id)a3 message:(id)a4
+- (void)handleServerMessageWithConnection:(id)connection message:(id)message
 {
   v34 = *MEMORY[0x277D85DE8];
-  uint64 = xpc_dictionary_get_uint64(a4, "MessageType");
+  uint64 = xpc_dictionary_get_uint64(message, "MessageType");
   if (CMIOModuleLogLevel_once_0 != -1)
   {
     [CMIOExtensionProxyContext sendClientInfo];
@@ -1049,7 +1049,7 @@ LABEL_11:
         v28 = 2080;
         v29 = "[CMIOExtensionProxyContext handleServerMessageWithConnection:message:]";
         v30 = 2113;
-        v31 = self;
+        selfCopy = self;
         v32 = 2048;
         v33 = uint64;
         _os_log_impl(&dword_22EA08000, v9, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %{private}@ %lld", buf, 0x30u);
@@ -1062,9 +1062,9 @@ LABEL_11:
   {
     if ((uint64 - 1) < 4)
     {
-      if (MEMORY[0x2318F1BC0](a4) == v10)
+      if (MEMORY[0x2318F1BC0](message) == v10)
       {
-        dictionary = xpc_dictionary_get_dictionary(a4, "param2");
+        dictionary = xpc_dictionary_get_dictionary(message, "param2");
         if (dictionary)
         {
           v12 = [CMIOExtensionPropertyState copyPropertyStatesFromXPCDictionary:dictionary];
@@ -1094,7 +1094,7 @@ LABEL_11:
     {
       if (uint64 == 7)
       {
-        [(CMIOExtensionProxyContext *)self receivedSample:a3 message:a4];
+        [(CMIOExtensionProxyContext *)self receivedSample:connection message:message];
         goto LABEL_35;
       }
 
@@ -1119,7 +1119,7 @@ LABEL_29:
     }
 
 LABEL_25:
-    if (MEMORY[0x2318F1BC0](a4) == v10)
+    if (MEMORY[0x2318F1BC0](message) == v10)
     {
       v15 = xpc_dictionary_create(0, 0, 0);
       applier[0] = MEMORY[0x277D85DD0];
@@ -1127,7 +1127,7 @@ LABEL_25:
       applier[2] = __71__CMIOExtensionProxyContext_handleServerMessageWithConnection_message___block_invoke;
       applier[3] = &unk_27885BF98;
       applier[4] = v15;
-      xpc_dictionary_apply(a4, applier);
+      xpc_dictionary_apply(message, applier);
       xpc_connection_send_message(self->_connection, v15);
       xpc_release(v15);
     }
@@ -1135,7 +1135,7 @@ LABEL_25:
     goto LABEL_35;
   }
 
-  reply = xpc_dictionary_create_reply(a4);
+  reply = xpc_dictionary_create_reply(message);
   if (reply)
   {
     connection = self->_connection;
@@ -1145,8 +1145,8 @@ LABEL_25:
     handler[2] = __71__CMIOExtensionProxyContext_handleServerMessageWithConnection_message___block_invoke_55;
     handler[3] = &unk_27885C250;
     handler[4] = reply;
-    handler[5] = a3;
-    xpc_connection_send_message_with_reply(connection, a4, queue, handler);
+    handler[5] = connection;
+    xpc_connection_send_message_with_reply(connection, message, queue, handler);
   }
 
   else

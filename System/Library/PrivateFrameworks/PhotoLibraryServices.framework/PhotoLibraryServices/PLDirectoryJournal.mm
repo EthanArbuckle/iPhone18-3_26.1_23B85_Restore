@@ -1,21 +1,21 @@
 @interface PLDirectoryJournal
-- (BOOL)enumeratePayloadsUsingBlock:(id)a3 error:(id *)a4;
-- (BOOL)persistManagedObject:(id)a3 error:(id *)a4;
-- (BOOL)removeAllPersistenceFilesWithError:(id *)a3;
-- (BOOL)removePersistenceForManagedObject:(id)a3 error:(id *)a4;
-- (BOOL)shouldPersistManagedObject:(id)a3;
-- (PLDirectoryJournal)initWithPathManager:(id)a3 payloadClass:(Class)a4;
-- (id)baseURLCreateIfNeeded:(BOOL)a3;
+- (BOOL)enumeratePayloadsUsingBlock:(id)block error:(id *)error;
+- (BOOL)persistManagedObject:(id)object error:(id *)error;
+- (BOOL)removeAllPersistenceFilesWithError:(id *)error;
+- (BOOL)removePersistenceForManagedObject:(id)object error:(id *)error;
+- (BOOL)shouldPersistManagedObject:(id)object;
+- (PLDirectoryJournal)initWithPathManager:(id)manager payloadClass:(Class)class;
+- (id)baseURLCreateIfNeeded:(BOOL)needed;
 @end
 
 @implementation PLDirectoryJournal
 
-- (BOOL)enumeratePayloadsUsingBlock:(id)a3 error:(id *)a4
+- (BOOL)enumeratePayloadsUsingBlock:(id)block error:(id *)error
 {
-  v26 = a4;
+  errorCopy = error;
   v60[2] = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  v29 = self;
+  blockCopy = block;
+  selfCopy = self;
   v30 = [(PLDirectoryJournal *)self baseURLCreateIfNeeded:0];
   v55 = 0;
   v56 = &v55;
@@ -27,7 +27,7 @@
   v52 = __Block_byref_object_copy__3284;
   v53 = __Block_byref_object_dispose__3285;
   v54 = 0;
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v6 = *MEMORY[0x1E695DBB8];
   v60[0] = *MEMORY[0x1E695DC30];
   v60[1] = v6;
@@ -38,7 +38,7 @@
   v48[3] = &unk_1E75655C8;
   v48[4] = &v49;
   v48[5] = &v55;
-  v8 = [v5 enumeratorAtURL:v30 includingPropertiesForKeys:v7 options:5 errorHandler:v48];
+  v8 = [defaultManager enumeratorAtURL:v30 includingPropertiesForKeys:v7 options:5 errorHandler:v48];
 
   v46 = 0u;
   v47 = 0u;
@@ -59,8 +59,8 @@
           objc_enumerationMutation(obj);
         }
 
-        v12 = [*(*(&v44 + 1) + 8 * i) lastPathComponent];
-        v13 = [v12 length];
+        lastPathComponent = [*(*(&v44 + 1) + 8 * i) lastPathComponent];
+        v13 = [lastPathComponent length];
         if (v13 < [MEMORY[0x1E69BF320] UUIDStringLength])
         {
           v14 = 0;
@@ -69,17 +69,17 @@ LABEL_14:
           continue;
         }
 
-        v14 = [v12 substringWithRange:{0, objc_msgSend(MEMORY[0x1E69BF320], "UUIDStringLength")}];
+        v14 = [lastPathComponent substringWithRange:{0, objc_msgSend(MEMORY[0x1E69BF320], "UUIDStringLength")}];
         if (!v14 || (PLIsValidUUIDString() & 1) == 0)
         {
           goto LABEL_14;
         }
 
-        v15 = [[PLJournal alloc] initWithBaseURL:v30 name:v14 payloadClass:v29->_payloadClass hasMetadata:0];
-        v16 = [(PLJournal *)v15 snapshotJournal];
-        v17 = [v16 url];
-        v18 = [v17 lastPathComponent];
-        v19 = [v12 isEqualToString:v18];
+        v15 = [[PLJournal alloc] initWithBaseURL:v30 name:v14 payloadClass:selfCopy->_payloadClass hasMetadata:0];
+        snapshotJournal = [(PLJournal *)v15 snapshotJournal];
+        v17 = [snapshotJournal url];
+        lastPathComponent2 = [v17 lastPathComponent];
+        v19 = [lastPathComponent isEqualToString:lastPathComponent2];
 
         if ((v19 & 1) == 0)
         {
@@ -100,7 +100,7 @@ LABEL_14:
         v34[0] = __56__PLDirectoryJournal_enumeratePayloadsUsingBlock_error___block_invoke_2;
         v34[1] = &unk_1E75655F0;
         v36 = v42;
-        v35 = v28;
+        v35 = blockCopy;
         v37 = &v38;
         v20 = (v50 + 5);
         v32 = v50[5];
@@ -128,10 +128,10 @@ LABEL_17:
 
   v22 = *(v56 + 24);
   v23 = v50[5];
-  if (v26 && (v22 & 1) == 0)
+  if (errorCopy && (v22 & 1) == 0)
   {
     v23 = v23;
-    *v26 = v23;
+    *errorCopy = v23;
   }
 
   v24 = *(v56 + 24);
@@ -171,40 +171,40 @@ uint64_t __56__PLDirectoryJournal_enumeratePayloadsUsingBlock_error___block_invo
   return result;
 }
 
-- (BOOL)removeAllPersistenceFilesWithError:(id *)a3
+- (BOOL)removeAllPersistenceFilesWithError:(id *)error
 {
   v4 = [(PLDirectoryJournal *)self baseURLCreateIfNeeded:0];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v13 = 0;
-  v6 = [v5 removeItemAtURL:v4 error:&v13];
+  v6 = [defaultManager removeItemAtURL:v4 error:&v13];
   v7 = v13;
 
   v8 = PLIsErrorFileNotFound() | v6;
   v9 = v7;
   v10 = v9;
-  if ((v8 & 1) == 0 && a3)
+  if ((v8 & 1) == 0 && error)
   {
     v11 = v9;
-    *a3 = v10;
+    *error = v10;
   }
 
   return v8 & 1;
 }
 
-- (BOOL)removePersistenceForManagedObject:(id)a3 error:(id *)a4
+- (BOOL)removePersistenceForManagedObject:(id)object error:(id *)error
 {
-  v6 = [(objc_class *)self->_payloadClass payloadAdapterForManagedObject:a3];
-  v7 = [v6 payloadID];
+  v6 = [(objc_class *)self->_payloadClass payloadAdapterForManagedObject:object];
+  payloadID = [v6 payloadID];
 
-  if (v7)
+  if (payloadID)
   {
     v8 = [PLJournal alloc];
     v9 = [(PLDirectoryJournal *)self baseURLCreateIfNeeded:0];
-    v10 = [v6 payloadID];
-    v11 = [v10 payloadIDString];
-    v12 = [(PLJournal *)v8 initWithBaseURL:v9 name:v11 payloadClass:self->_payloadClass hasMetadata:0];
+    payloadID2 = [v6 payloadID];
+    payloadIDString = [payloadID2 payloadIDString];
+    v12 = [(PLJournal *)v8 initWithBaseURL:v9 name:payloadIDString payloadClass:self->_payloadClass hasMetadata:0];
 
-    v13 = [(PLJournal *)v12 removeJournalFilesWithError:a4];
+    v13 = [(PLJournal *)v12 removeJournalFilesWithError:error];
   }
 
   else
@@ -215,21 +215,21 @@ uint64_t __56__PLDirectoryJournal_enumeratePayloadsUsingBlock_error___block_invo
   return v13;
 }
 
-- (BOOL)persistManagedObject:(id)a3 error:(id *)a4
+- (BOOL)persistManagedObject:(id)object error:(id *)error
 {
-  v6 = a3;
-  v7 = [(objc_class *)self->_payloadClass payloadAdapterForManagedObject:v6];
-  v8 = [v7 payloadID];
+  objectCopy = object;
+  v7 = [(objc_class *)self->_payloadClass payloadAdapterForManagedObject:objectCopy];
+  payloadID = [v7 payloadID];
 
-  if (v8)
+  if (payloadID)
   {
     if ([v7 isValidForJournalPersistence])
     {
       v9 = [PLJournal alloc];
       v10 = [(PLDirectoryJournal *)self baseURLCreateIfNeeded:1];
-      v11 = [v7 payloadID];
-      v12 = [v11 payloadIDString];
-      v13 = [(PLJournal *)v9 initWithBaseURL:v10 name:v12 payloadClass:self->_payloadClass hasMetadata:0];
+      payloadID2 = [v7 payloadID];
+      payloadIDString = [payloadID2 payloadIDString];
+      v13 = [(PLJournal *)v9 initWithBaseURL:v10 name:payloadIDString payloadClass:self->_payloadClass hasMetadata:0];
 
       v19[0] = 0;
       v19[1] = v19;
@@ -241,14 +241,14 @@ uint64_t __56__PLDirectoryJournal_enumeratePayloadsUsingBlock_error___block_invo
       v16[3] = &unk_1E75655A0;
       v18 = v19;
       v17 = v7;
-      v14 = [(PLJournal *)v13 createSnapshotUsingNextPayloadBlock:v16 createOnlyIfNecessary:0 error:a4];
+      v14 = [(PLJournal *)v13 createSnapshotUsingNextPayloadBlock:v16 createOnlyIfNecessary:0 error:error];
 
       _Block_object_dispose(v19, 8);
     }
 
     else
     {
-      v14 = [(PLDirectoryJournal *)self removePersistenceForManagedObject:v6 error:a4];
+      v14 = [(PLDirectoryJournal *)self removePersistenceForManagedObject:objectCopy error:error];
     }
   }
 
@@ -277,28 +277,28 @@ id __49__PLDirectoryJournal_persistManagedObject_error___block_invoke(uint64_t a
   return v4;
 }
 
-- (BOOL)shouldPersistManagedObject:(id)a3
+- (BOOL)shouldPersistManagedObject:(id)object
 {
-  v4 = a3;
-  if ([v4 isDeleted])
+  objectCopy = object;
+  if ([objectCopy isDeleted])
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    if ([v4 isInserted])
+    if ([objectCopy isInserted])
     {
       goto LABEL_8;
     }
 
-    v6 = [v4 changedValues];
-    if ([v6 count])
+    changedValues = [objectCopy changedValues];
+    if ([changedValues count])
     {
       v7 = MEMORY[0x1E695DFD8];
-      v8 = [v4 changedValues];
-      v9 = [v8 allKeys];
-      v10 = [v7 setWithArray:v9];
+      changedValues2 = [objectCopy changedValues];
+      allKeys = [changedValues2 allKeys];
+      v10 = [v7 setWithArray:allKeys];
     }
 
     else
@@ -307,8 +307,8 @@ id __49__PLDirectoryJournal_persistManagedObject_error___block_invoke(uint64_t a
     }
 
     payloadClass = self->_payloadClass;
-    v12 = [(objc_class *)payloadClass entityName];
-    v5 = [(objc_class *)payloadClass shouldPersistForChangedKeys:v10 entityName:v12];
+    entityName = [(objc_class *)payloadClass entityName];
+    v5 = [(objc_class *)payloadClass shouldPersistForChangedKeys:v10 entityName:entityName];
 
     if (v5)
     {
@@ -320,29 +320,29 @@ LABEL_8:
   return v5;
 }
 
-- (id)baseURLCreateIfNeeded:(BOOL)a3
+- (id)baseURLCreateIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   pathManager = self->_pathManager;
-  v5 = [(objc_class *)self->_payloadClass payloadClassID];
-  v6 = [(PLPhotoLibraryPathManager *)pathManager photoDirectoryWithType:8 leafType:1 additionalPathComponents:v5 createIfNeeded:v3 error:0];
+  payloadClassID = [(objc_class *)self->_payloadClass payloadClassID];
+  v6 = [(PLPhotoLibraryPathManager *)pathManager photoDirectoryWithType:8 leafType:1 additionalPathComponents:payloadClassID createIfNeeded:neededCopy error:0];
 
   v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6 isDirectory:1];
 
   return v7;
 }
 
-- (PLDirectoryJournal)initWithPathManager:(id)a3 payloadClass:(Class)a4
+- (PLDirectoryJournal)initWithPathManager:(id)manager payloadClass:(Class)class
 {
-  v7 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = PLDirectoryJournal;
   v8 = [(PLDirectoryJournal *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_pathManager, a3);
-    v9->_payloadClass = a4;
+    objc_storeStrong(&v8->_pathManager, manager);
+    v9->_payloadClass = class;
   }
 
   return v9;

@@ -11,15 +11,15 @@
   v4 = [v3 safeSwiftValueForKey:@"achievement"];
   v5 = [(AchievementSummaryCollectionViewCellAccessibility *)self safeSwiftValueForKey:@"numberCompletedLabel"];
   v6 = [(AchievementSummaryCollectionViewCellAccessibility *)self safeSwiftValueForKey:@"outOfTotalLabel"];
-  v7 = [v5 accessibilityLabel];
-  v8 = [v7 intValue];
-  v9 = [v6 accessibilityLabel];
-  v10 = [v9 stringByReplacingOccurrencesOfString:@"\u202A/ " withString:&stru_2A2106700];
+  accessibilityLabel = [v5 accessibilityLabel];
+  intValue = [accessibilityLabel intValue];
+  accessibilityLabel2 = [v6 accessibilityLabel];
+  v10 = [accessibilityLabel2 stringByReplacingOccurrencesOfString:@"\u202A/ " withString:&stru_2A2106700];
 
-  v11 = [v10 intValue];
+  intValue2 = [v10 intValue];
   v12 = MEMORY[0x29EDBA0F8];
   v13 = accessibilityAppStoreLocalizedString(@"game.achievements.completed");
-  v14 = [v12 stringWithFormat:v13, v8, v11];
+  v14 = [v12 stringWithFormat:v13, intValue, intValue2];
 
   v15 = __UIAXStringForVariables();
 

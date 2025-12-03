@@ -1,23 +1,23 @@
 @interface SACriticalNotification
-- (SACriticalNotification)initWithBundleManager:(id)a3;
+- (SACriticalNotification)initWithBundleManager:(id)manager;
 - (id)_createNotification;
 - (void)_createNotification;
-- (void)sendNotificationWithCompletionHandler:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)sendNotificationWithCompletionHandler:(id)handler;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation SACriticalNotification
 
-- (SACriticalNotification)initWithBundleManager:(id)a3
+- (SACriticalNotification)initWithBundleManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = SACriticalNotification;
   v6 = [(SACriticalNotification *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleManager, a3);
+    objc_storeStrong(&v6->_bundleManager, manager);
     v8 = [objc_alloc(MEMORY[0x277CE2028]) initWithBundleIdentifier:@"com.apple.sosd.usernotification"];
     center = v7->_center;
     v7->_center = v8;
@@ -33,17 +33,17 @@
   return v7;
 }
 
-- (void)sendNotificationWithCompletionHandler:(id)a3
+- (void)sendNotificationWithCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v4 = [(SACriticalNotification *)self _createNotification];
-  if (!v4)
+  handlerCopy = handler;
+  _createNotification = [(SACriticalNotification *)self _createNotification];
+  if (!_createNotification)
   {
     v5 = [SAError errorWithCode:4];
-    v6[2](v6, v5);
+    handlerCopy[2](handlerCopy, v5);
   }
 
-  [(UNUserNotificationCenter *)self->_center addNotificationRequest:v4 withCompletionHandler:v6];
+  [(UNUserNotificationCenter *)self->_center addNotificationRequest:_createNotification withCompletionHandler:handlerCopy];
 }
 
 - (id)_createNotification
@@ -72,8 +72,8 @@ LABEL_5:
     v11 = [v9 stringWithFormat:v10, v5];
     [v6 setBody:v11];
 
-    v12 = [MEMORY[0x277CE1FE0] defaultSound];
-    [v6 setSound:v12];
+    defaultSound = [MEMORY[0x277CE1FE0] defaultSound];
+    [v6 setSound:defaultSound];
 
     [v6 setCategoryIdentifier:@"CRASH"];
     [v6 setShouldBackgroundDefaultAction:1];
@@ -99,18 +99,18 @@ LABEL_9:
   return v14;
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  responseCopy = response;
+  handlerCopy = handler;
   v9 = sa_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [SACriticalNotification userNotificationCenter:v7 didReceiveNotificationResponse:v9 withCompletionHandler:?];
+    [SACriticalNotification userNotificationCenter:responseCopy didReceiveNotificationResponse:v9 withCompletionHandler:?];
   }
 
-  v10 = [v7 actionIdentifier];
-  v11 = [v10 isEqualToString:@"com.apple.UNNotificationDefaultActionIdentifier"];
+  actionIdentifier = [responseCopy actionIdentifier];
+  v11 = [actionIdentifier isEqualToString:@"com.apple.UNNotificationDefaultActionIdentifier"];
 
   if (v11)
   {
@@ -124,7 +124,7 @@ LABEL_9:
     [(SABundleManager *)self->_bundleManager wakeApprovedAppsWithReason:2 completion:0];
   }
 
-  v8[2](v8);
+  handlerCopy[2](handlerCopy);
 }
 
 - (void)_createNotification

@@ -9,27 +9,27 @@
 {
   v13[5] = *MEMORY[0x1E69E9840];
   v12[0] = @"name";
-  v2 = [a1 name];
-  v13[0] = v2;
+  name = [self name];
+  v13[0] = name;
   v12[1] = @"uuid";
-  v3 = [a1 uuid];
-  v4 = [v3 UUIDString];
-  v13[1] = v4;
+  uuid = [self uuid];
+  uUIDString = [uuid UUIDString];
+  v13[1] = uUIDString;
   v12[2] = @"version";
-  v5 = [a1 version];
-  v6 = v5;
+  version = [self version];
+  v6 = version;
   v7 = &stru_1F454A698;
-  if (v5)
+  if (version)
   {
-    v7 = v5;
+    v7 = version;
   }
 
   v13[2] = v7;
   v12[3] = @"debug";
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a1, "isDebug")}];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(self, "isDebug")}];
   v13[3] = v8;
   v12[4] = @"root";
-  v9 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a1, "isRoot")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(self, "isRoot")}];
   v13[4] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:5];
 
@@ -39,17 +39,17 @@
 + (id)payloadValueFromJSONValue:()MPCPlaybackEngineEventPayload
 {
   v4 = a3;
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   v6 = [v4 objectForKeyedSubscript:@"name"];
   v7 = objc_alloc(MEMORY[0x1E696AFB0]);
   v8 = [v4 objectForKeyedSubscript:@"uuid"];
   v9 = [v7 initWithUUIDString:v8];
   v10 = [v4 objectForKeyedSubscript:@"version"];
   v11 = [v4 objectForKeyedSubscript:@"root"];
-  v12 = [v11 BOOLValue];
+  bOOLValue = [v11 BOOLValue];
   v13 = [v4 objectForKeyedSubscript:@"debug"];
 
-  v14 = [v5 initWithName:v6 uuid:v9 version:v10 root:v12 debug:{objc_msgSend(v13, "BOOLValue")}];
+  v14 = [v5 initWithName:v6 uuid:v9 version:v10 root:bOOLValue debug:{objc_msgSend(v13, "BOOLValue")}];
 
   return v14;
 }

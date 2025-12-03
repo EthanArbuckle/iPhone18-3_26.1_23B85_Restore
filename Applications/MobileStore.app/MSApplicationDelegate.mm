@@ -1,35 +1,35 @@
 @interface MSApplicationDelegate
-- (BOOL)_showsDownloadsTabForDownloadManager:(id)a3;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 openURL:(id)a4 sourceApplication:(id)a5 annotation:(id)a6;
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
+- (BOOL)_showsDownloadsTabForDownloadManager:(id)manager;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application openURL:(id)l sourceApplication:(id)sourceApplication annotation:(id)annotation;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
 - (MSApplicationDelegate)init;
 - (id)_downloadManager;
-- (id)_newDefaultTabBarItemsWithClientContext:(id)a3 style:(int64_t)a4;
-- (id)_newTabBarItemsWithStyle:(int64_t)a3;
+- (id)_newDefaultTabBarItemsWithClientContext:(id)context style:(int64_t)style;
+- (id)_newTabBarItemsWithStyle:(int64_t)style;
 - (id)_storeReview;
-- (id)application:(id)a3 navigationControllerWithTabBarItem:(id)a4;
-- (id)bootstrapScriptURLForApplication:(id)a3;
-- (id)purchaseManager:(id)a3 purchaseBatchForItems:(id)a4;
-- (id)purchaseManager:(id)a3 purchaseBatchForPurchases:(id)a4;
-- (int64_t)_maximumTabBarItemsForStyle:(int64_t)a3;
-- (int64_t)_tabBarStyleWithWidth:(double)a3;
-- (void)_loadApplicationWithLaunchOptions:(id)a3;
-- (void)_networkingStartNotification:(id)a3;
-- (void)_networkingStopNotification:(id)a3;
-- (void)_purchaseFinishedNotification:(id)a3;
+- (id)application:(id)application navigationControllerWithTabBarItem:(id)item;
+- (id)bootstrapScriptURLForApplication:(id)application;
+- (id)purchaseManager:(id)manager purchaseBatchForItems:(id)items;
+- (id)purchaseManager:(id)manager purchaseBatchForPurchases:(id)purchases;
+- (int64_t)_maximumTabBarItemsForStyle:(int64_t)style;
+- (int64_t)_tabBarStyleWithWidth:(double)width;
+- (void)_loadApplicationWithLaunchOptions:(id)options;
+- (void)_networkingStartNotification:(id)notification;
+- (void)_networkingStopNotification:(id)notification;
+- (void)_purchaseFinishedNotification:(id)notification;
 - (void)_requestAuthorization;
-- (void)_showExternalURL:(id)a3;
-- (void)application:(id)a3 didFailToLoadWithError:(id)a4;
-- (void)application:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
-- (void)application:(id)a3 willTransitionToSize:(CGSize)a4 withTransitionCoordinator:(id)a5;
-- (void)applicationDidBecomeActive:(id)a3;
-- (void)applicationDidChangeClientContext:(id)a3;
-- (void)applicationDidCustomizeTabBarItems:(id)a3;
-- (void)applicationDidDisplayFirstPage:(id)a3;
-- (void)applicationWillResignActive:(id)a3;
+- (void)_showExternalURL:(id)l;
+- (void)application:(id)application didFailToLoadWithError:(id)error;
+- (void)application:(id)application performActionForShortcutItem:(id)item completionHandler:(id)handler;
+- (void)application:(id)application willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)applicationDidBecomeActive:(id)active;
+- (void)applicationDidChangeClientContext:(id)context;
+- (void)applicationDidCustomizeTabBarItems:(id)items;
+- (void)applicationDidDisplayFirstPage:(id)page;
+- (void)applicationWillResignActive:(id)active;
 - (void)dealloc;
-- (void)downloadManagerDownloadsDidChange:(id)a3;
+- (void)downloadManagerDownloadsDidChange:(id)change;
 - (void)presentOnboardingIfNeeded;
 @end
 
@@ -65,13 +65,13 @@
   downloadManager = self->_downloadManager;
   if (!downloadManager)
   {
-    v4 = [(SUUIApplicationController *)self->_applicationController clientContext];
-    v5 = [v4 clientInterface];
+    clientContext = [(SUUIApplicationController *)self->_applicationController clientContext];
+    clientInterface = [clientContext clientInterface];
 
-    v6 = [v5 viewControllerFactory];
-    v7 = [v6 newDownloadManagerOptions];
-    v8 = [v5 queueSessionManager];
-    v9 = [v8 beginDownloadManagerSessionWithManagerOptions:v7];
+    viewControllerFactory = [clientInterface viewControllerFactory];
+    newDownloadManagerOptions = [viewControllerFactory newDownloadManagerOptions];
+    queueSessionManager = [clientInterface queueSessionManager];
+    v9 = [queueSessionManager beginDownloadManagerSessionWithManagerOptions:newDownloadManagerOptions];
     v10 = self->_downloadManager;
     self->_downloadManager = v9;
 
@@ -123,48 +123,48 @@
   [(MSApplicationDelegate *)&v4 dealloc];
 }
 
-- (void)applicationDidChangeClientContext:(id)a3
+- (void)applicationDidChangeClientContext:(id)context
 {
-  v4 = [(SUUIApplicationController *)self->_applicationController clientContext];
-  [v4 setPurchaseReferrerURL:self->_launchURL];
+  clientContext = [(SUUIApplicationController *)self->_applicationController clientContext];
+  [clientContext setPurchaseReferrerURL:self->_launchURL];
 
   [(SSDownloadManager *)self->_downloadManager removeObserver:self];
   downloadManager = self->_downloadManager;
   self->_downloadManager = 0;
 
-  v18 = [(SUUIApplicationController *)self->_applicationController rootViewController];
-  v6 = [v18 view];
-  [v6 bounds];
+  rootViewController = [(SUUIApplicationController *)self->_applicationController rootViewController];
+  view = [rootViewController view];
+  [view bounds];
   v8 = [(MSApplicationDelegate *)self _tabBarStyleWithWidth:v7];
 
   applicationController = self->_applicationController;
   v10 = [(MSApplicationDelegate *)self _newTabBarItemsWithStyle:v8];
   [(SUUIApplicationController *)applicationController setTabBarItems:v10];
 
-  [(UIWindow *)self->_window setRootViewController:v18];
-  v11 = [(SUUIApplicationController *)self->_applicationController clientContext];
-  v12 = [v11 clientInterface];
+  [(UIWindow *)self->_window setRootViewController:rootViewController];
+  clientContext2 = [(SUUIApplicationController *)self->_applicationController clientContext];
+  clientInterface = [clientContext2 clientInterface];
 
-  v13 = [[SULegacyClientBridge alloc] initWithClientInterface:v12];
+  v13 = [[SULegacyClientBridge alloc] initWithClientInterface:clientInterface];
   legacyBridge = self->_legacyBridge;
   self->_legacyBridge = v13;
 
   v15 = self->_legacyBridge;
-  v16 = [(SUUIApplicationController *)self->_applicationController tabBarController];
-  [(SULegacyClientBridge *)v15 setRootViewController:v16];
+  tabBarController = [(SUUIApplicationController *)self->_applicationController tabBarController];
+  [(SULegacyClientBridge *)v15 setRootViewController:tabBarController];
 
   [SUClientDispatch setClientBridge:self->_legacyBridge];
-  v17 = [v12 purchaseManager];
-  [v17 setDelegate:self];
+  purchaseManager = [clientInterface purchaseManager];
+  [purchaseManager setDelegate:self];
 
   [(MSApplicationDelegate *)self presentOnboardingIfNeeded];
 }
 
-- (void)applicationDidCustomizeTabBarItems:(id)a3
+- (void)applicationDidCustomizeTabBarItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_alloc_init(NSMutableArray);
-  v5 = [v3 tabBarItems];
+  tabBarItems = [itemsCopy tabBarItems];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -172,27 +172,27 @@
   v8[3] = &unk_100010550;
   v9 = v4;
   v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [tabBarItems enumerateObjectsUsingBlock:v8];
 
   v7 = +[NSUserDefaults standardUserDefaults];
   [v7 setObject:v6 forKey:@"MSApplicationDelegateTabBarOrdering"];
   [v7 synchronize];
 }
 
-- (void)applicationDidDisplayFirstPage:(id)a3
+- (void)applicationDidDisplayFirstPage:(id)page
 {
-  v11 = a3;
+  pageCopy = page;
   if (!self->_launchNotificationsController)
   {
     v4 = [MSLaunchNotificationsController alloc];
-    v5 = [(UIWindow *)self->_window rootViewController];
-    v6 = [(MSLaunchNotificationsController *)v4 initWithParentViewController:v5];
+    rootViewController = [(UIWindow *)self->_window rootViewController];
+    v6 = [(MSLaunchNotificationsController *)v4 initWithParentViewController:rootViewController];
     launchNotificationsController = self->_launchNotificationsController;
     self->_launchNotificationsController = v6;
 
     v8 = self->_launchNotificationsController;
-    v9 = [v11 clientContext];
-    [(MSLaunchNotificationsController *)v8 setClientContext:v9];
+    clientContext = [pageCopy clientContext];
+    [(MSLaunchNotificationsController *)v8 setClientContext:clientContext];
 
     if ((+[MSOnboardingUtil shouldShowOnboarding]& 1) == 0)
     {
@@ -211,14 +211,14 @@
   [(MSApplicationDelegate *)self presentOnboardingIfNeeded];
 }
 
-- (void)application:(id)a3 didFailToLoadWithError:(id)a4
+- (void)application:(id)application didFailToLoadWithError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 clientContext];
-  v6 = v5;
-  if (v5)
+  applicationCopy = application;
+  clientContext = [applicationCopy clientContext];
+  v6 = clientContext;
+  if (clientContext)
   {
-    v7 = [v5 localizedStringForKey:@"GENERIC_ERROR"];
+    v7 = [clientContext localizedStringForKey:@"GENERIC_ERROR"];
   }
 
   else
@@ -230,22 +230,22 @@
   }
 
   v10 = v7;
-  [v4 showErrorViewWithTitle:v7 message:0];
+  [applicationCopy showErrorViewWithTitle:v7 message:0];
 }
 
-- (id)application:(id)a3 navigationControllerWithTabBarItem:(id)a4
+- (id)application:(id)application navigationControllerWithTabBarItem:(id)item
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 tabIdentifier];
-  v8 = [v7 isEqualToString:@"search"];
+  applicationCopy = application;
+  itemCopy = item;
+  tabIdentifier = [itemCopy tabIdentifier];
+  v8 = [tabIdentifier isEqualToString:@"search"];
   if (v8)
   {
     v9 = 0;
     v10 = 1;
   }
 
-  else if (([v7 isEqualToString:@"movies"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"tv"))
+  else if (([tabIdentifier isEqualToString:@"movies"] & 1) != 0 || objc_msgSend(tabIdentifier, "isEqualToString:", @"tv"))
   {
     v10 = 0;
     v9 = 1;
@@ -257,36 +257,36 @@
     v9 = 0;
   }
 
-  v11 = [v5 clientContext];
-  v12 = [v11 clientInterface];
-  v13 = [[SUSection alloc] initWithClientInterface:v12 sectionType:v10 defaultPNGStyle:v9];
+  clientContext = [applicationCopy clientContext];
+  clientInterface = [clientContext clientInterface];
+  v13 = [[SUSection alloc] initWithClientInterface:clientInterface sectionType:v10 defaultPNGStyle:v9];
   if ((v8 & 1) != 0 || SUUIUserInterfaceIdiom() == 1)
   {
-    v14 = [SUSearchFieldConfiguration defaultConfigurationWithClientInterface:v12];
+    v14 = [SUSearchFieldConfiguration defaultConfigurationWithClientInterface:clientInterface];
     [v13 setSearchFieldConfiguration:v14];
   }
 
-  v15 = [v6 underlyingTabBarItem];
-  v16 = [v15 image];
-  [v13 setImage:v16];
+  underlyingTabBarItem = [itemCopy underlyingTabBarItem];
+  image = [underlyingTabBarItem image];
+  [v13 setImage:image];
 
-  v17 = [v15 selectedImage];
-  [v13 setSelectedImage:v17];
+  selectedImage = [underlyingTabBarItem selectedImage];
+  [v13 setSelectedImage:selectedImage];
 
   v18 = [[SUNavigationController alloc] initWithSection:v13];
-  [v18 setClientInterface:v12];
+  [v18 setClientInterface:clientInterface];
 
   return v18;
 }
 
-- (void)application:(id)a3 willTransitionToSize:(CGSize)a4 withTransitionCoordinator:(id)a5
+- (void)application:(id)application willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  width = a4.width;
-  v17 = a3;
-  v8 = a5;
-  v9 = [v17 rootViewController];
-  v10 = [v9 view];
-  [v10 bounds];
+  width = size.width;
+  applicationCopy = application;
+  coordinatorCopy = coordinator;
+  rootViewController = [applicationCopy rootViewController];
+  view = [rootViewController view];
+  [view bounds];
   v12 = [(MSApplicationDelegate *)self _tabBarStyleWithWidth:v11];
 
   v13 = [(MSApplicationDelegate *)self _tabBarStyleWithWidth:width];
@@ -294,23 +294,23 @@
   {
     v14 = v13;
     v15 = [(MSApplicationDelegate *)self _newTabBarItemsWithStyle:v13];
-    v16 = [v17 tabBarController];
-    [v16 _setMaximumNumberOfItems:{-[MSApplicationDelegate _maximumTabBarItemsForStyle:](self, "_maximumTabBarItemsForStyle:", v14)}];
+    tabBarController = [applicationCopy tabBarController];
+    [tabBarController _setMaximumNumberOfItems:{-[MSApplicationDelegate _maximumTabBarItemsForStyle:](self, "_maximumTabBarItemsForStyle:", v14)}];
 
-    [v17 updateTabBarWithItems:v15 animated:{objc_msgSend(v8, "isAnimated")}];
+    [applicationCopy updateTabBarWithItems:v15 animated:{objc_msgSend(coordinatorCopy, "isAnimated")}];
   }
 }
 
-- (id)bootstrapScriptURLForApplication:(id)a3
+- (id)bootstrapScriptURLForApplication:(id)application
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 launchedToTest];
+  launchedToTest = [v3 launchedToTest];
 
-  if (v4)
+  if (launchedToTest)
   {
     v5 = [NSString alloc];
-    v6 = [v5 initWithFormat:@"%@://PPT.js", SUUITestDataURLScheme];
-    v7 = [NSURL URLWithString:v6];
+    sUUITestDataURLScheme = [v5 initWithFormat:@"%@://PPT.js", SUUITestDataURLScheme];
+    v7 = [NSURL URLWithString:sUUITestDataURLScheme];
   }
 
   else
@@ -321,38 +321,38 @@
   return v7;
 }
 
-- (void)downloadManagerDownloadsDidChange:(id)a3
+- (void)downloadManagerDownloadsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = dispatch_time(0, 1000000000);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100003B58;
   v7[3] = &unk_100010498;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_after(v5, &_dispatch_main_q, v7);
 }
 
-- (id)purchaseManager:(id)a3 purchaseBatchForItems:(id)a4
+- (id)purchaseManager:(id)manager purchaseBatchForItems:(id)items
 {
-  v4 = a4;
-  v5 = [[MSPurchaseBatch alloc] initWithItems:v4];
+  itemsCopy = items;
+  v5 = [[MSPurchaseBatch alloc] initWithItems:itemsCopy];
 
   return v5;
 }
 
-- (id)purchaseManager:(id)a3 purchaseBatchForPurchases:(id)a4
+- (id)purchaseManager:(id)manager purchaseBatchForPurchases:(id)purchases
 {
-  v5 = a4;
+  purchasesCopy = purchases;
   v6 = objc_alloc_init(MSPurchaseBatch);
-  v7 = [(SUUIApplicationController *)self->_applicationController clientContext];
+  clientContext = [(SUUIApplicationController *)self->_applicationController clientContext];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v5;
+  v8 = purchasesCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -371,7 +371,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v7 customizePurchase:{v13, v15}];
+          [clientContext customizePurchase:{v13, v15}];
         }
       }
 
@@ -386,10 +386,10 @@
   return v6;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  applicationCopy = application;
   v8 = +[NSUserDefaults standardUserDefaults];
   [v8 registerDefaults:&off_1000110E8];
 
@@ -411,25 +411,25 @@
     window = self->_window;
   }
 
-  v16 = [(SUUIApplicationController *)self->_applicationController rootViewController];
-  [(UIWindow *)window setRootViewController:v16];
+  rootViewController = [(SUUIApplicationController *)self->_applicationController rootViewController];
+  [(UIWindow *)window setRootViewController:rootViewController];
 
   [(UIWindow *)self->_window makeKeyAndVisible];
-  v17 = [v7 launchedToTest];
+  launchedToTest = [applicationCopy launchedToTest];
 
-  if ((v17 & 1) == 0)
+  if ((launchedToTest & 1) == 0)
   {
-    [(MSApplicationDelegate *)self _loadApplicationWithLaunchOptions:v6];
+    [(MSApplicationDelegate *)self _loadApplicationWithLaunchOptions:optionsCopy];
   }
 
-  v18 = [(SUUIApplicationController *)self->_applicationController tabBarItems];
+  tabBarItems = [(SUUIApplicationController *)self->_applicationController tabBarItems];
 
-  if (!v18)
+  if (!tabBarItems)
   {
     [(UIWindow *)self->_window bounds];
     v20 = [(MSApplicationDelegate *)self _tabBarStyleWithWidth:v19];
-    v21 = [(SUUIApplicationController *)self->_applicationController tabBarController];
-    [v21 _setMaximumNumberOfItems:{-[MSApplicationDelegate _maximumTabBarItemsForStyle:](self, "_maximumTabBarItemsForStyle:", v20)}];
+    tabBarController = [(SUUIApplicationController *)self->_applicationController tabBarController];
+    [tabBarController _setMaximumNumberOfItems:{-[MSApplicationDelegate _maximumTabBarItemsForStyle:](self, "_maximumTabBarItemsForStyle:", v20)}];
 
     applicationController = self->_applicationController;
     v23 = [(MSApplicationDelegate *)self _newTabBarItemsWithStyle:v20];
@@ -444,14 +444,14 @@
   return 1;
 }
 
-- (BOOL)application:(id)a3 openURL:(id)a4 sourceApplication:(id)a5 annotation:(id)a6
+- (BOOL)application:(id)application openURL:(id)l sourceApplication:(id)sourceApplication annotation:(id)annotation
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [[SUUIURL alloc] initWithURL:v11];
-  [v14 setReferrerApplicationName:v12];
+  applicationCopy = application;
+  lCopy = l;
+  sourceApplicationCopy = sourceApplication;
+  annotationCopy = annotation;
+  v14 = [[SUUIURL alloc] initWithURL:lCopy];
+  [v14 setReferrerApplicationName:sourceApplicationCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -459,7 +459,7 @@
     v16 = *sub_100003194("LSReferrerURLKey", v15);
     if (v16)
     {
-      v17 = [v13 objectForKey:v16];
+      v17 = [annotationCopy objectForKey:v16];
     }
 
     else
@@ -478,8 +478,8 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v18 = [v17 absoluteString];
-        [v14 setReferrerURLString:v18];
+        absoluteString = [v17 absoluteString];
+        [v14 setReferrerURLString:absoluteString];
       }
     }
   }
@@ -495,8 +495,8 @@
   v26 = v20;
   [(SUUIApplicationController *)applicationController evaluateBlockWhenLoaded:v25];
   self->_onActiveShouldResumeApplication = 0;
-  v21 = [(SUUIApplicationController *)self->_applicationController clientContext];
-  [v21 setPurchaseReferrerURL:v20];
+  clientContext = [(SUUIApplicationController *)self->_applicationController clientContext];
+  [clientContext setPurchaseReferrerURL:v20];
 
   launchURL = self->_launchURL;
   self->_launchURL = v20;
@@ -508,10 +508,10 @@
   return 1;
 }
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
-  v7 = a4;
-  v8 = a5;
+  testCopy = test;
+  optionsCopy = options;
   v9 = +[NSBundle mainBundle];
   v10 = [v9 pathForResource:@"testDefinitions" ofType:@"plist"];
 
@@ -533,8 +533,8 @@
         v15 = v14;
         v28 = v12;
         v29 = v11;
-        v30 = v8;
-        v31 = self;
+        v30 = optionsCopy;
+        selfCopy = self;
         v16 = *v33;
         while (2)
         {
@@ -550,13 +550,13 @@
             if (objc_opt_isKindOfClass())
             {
               v19 = [v18 objectForKey:@"testName"];
-              v20 = [v19 isEqualToString:v7];
+              v20 = [v19 isEqualToString:testCopy];
 
               if (v20)
               {
-                v8 = v18;
+                optionsCopy = v18;
 
-                self = v31;
+                self = selfCopy;
                 goto LABEL_14;
               }
             }
@@ -571,7 +571,7 @@
           break;
         }
 
-        self = v31;
+        self = selfCopy;
 LABEL_14:
         v11 = v29;
         v12 = v28;
@@ -580,21 +580,21 @@ LABEL_14:
   }
 
   v21 = +[SSLogConfig sharedConfig];
-  v22 = [v21 shouldLog];
+  shouldLog = [v21 shouldLog];
   if ([v21 shouldLogToDisk])
   {
-    v22 |= 2u;
+    shouldLog |= 2u;
   }
 
-  v23 = [v21 OSLogObject];
-  if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v21 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
-    v24 = v22;
+    v24 = shouldLog;
   }
 
   else
   {
-    v24 = v22 & 2;
+    v24 = shouldLog & 2;
   }
 
   if (!v24)
@@ -603,47 +603,47 @@ LABEL_14:
   }
 
   v36 = 138412290;
-  v37 = v8;
+  v37 = optionsCopy;
   LODWORD(v27) = 12;
   v25 = _os_log_send_and_compose_impl();
 
   if (v25)
   {
-    v23 = [NSString stringWithCString:v25 encoding:4, &v36, v27];
+    oSLogObject = [NSString stringWithCString:v25 encoding:4, &v36, v27];
     free(v25);
     SSFileLog();
 LABEL_25:
   }
 
-  [(MSApplicationDelegate *)self _loadApplicationWithLaunchOptions:v8];
+  [(MSApplicationDelegate *)self _loadApplicationWithLaunchOptions:optionsCopy];
   return 1;
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
   if (self->_onActiveShouldResumeApplication)
   {
     [(SUUIApplicationController *)self->_applicationController resumeApplicationWithOptions:0];
   }
 
-  v4 = [(MSApplicationDelegate *)self _storeReview];
-  [v4 applicationDidForeground];
+  _storeReview = [(MSApplicationDelegate *)self _storeReview];
+  [_storeReview applicationDidForeground];
 }
 
-- (void)application:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)application:(id)application performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  applicationCopy = application;
+  itemCopy = item;
+  handlerCopy = handler;
   objc_initWeak(&location, self->_applicationController);
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_1000047F8;
   v19 = &unk_1000105E0;
   objc_copyWeak(&v22, &location);
-  v11 = v9;
+  v11 = itemCopy;
   v20 = v11;
-  v12 = v10;
+  v12 = handlerCopy;
   v21 = v12;
   v13 = objc_retainBlock(&v16);
   quickActionBlock = self->_quickActionBlock;
@@ -660,15 +660,15 @@ LABEL_25:
   objc_destroyWeak(&location);
 }
 
-- (void)applicationWillResignActive:(id)a3
+- (void)applicationWillResignActive:(id)active
 {
-  v3 = a3;
-  [v3 beginBackgroundTaskWithExpirationHandler:0];
-  v4 = v3;
+  activeCopy = active;
+  [activeCopy beginBackgroundTaskWithExpirationHandler:0];
+  v4 = activeCopy;
   SSDialogGetDaemonDialogState();
 }
 
-- (void)_networkingStartNotification:(id)a3
+- (void)_networkingStartNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -678,7 +678,7 @@ LABEL_25:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_networkingStopNotification:(id)a3
+- (void)_networkingStopNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -688,29 +688,29 @@ LABEL_25:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_purchaseFinishedNotification:(id)a3
+- (void)_purchaseFinishedNotification:(id)notification
 {
-  v4 = [a3 object];
-  v5 = v4;
-  if (v4)
+  object = [notification object];
+  v5 = object;
+  if (object)
   {
-    v6 = [v4 buyParameters];
+    buyParameters = [object buyParameters];
 
-    if (v6)
+    if (buyParameters)
     {
-      v7 = [v5 buyParameters];
-      v8 = [AMSBuyParams buyParamsWithString:v7];
+      buyParameters2 = [v5 buyParameters];
+      v8 = [AMSBuyParams buyParamsWithString:buyParameters2];
 
       v9 = [v8 parameterForKey:@"mtApp"];
       if ([v9 isEqual:@"com.apple.MobileStore"])
       {
-        v10 = [(MSApplicationDelegate *)self _storeReview];
-        v11 = [v10 shouldAttemptPromptReview];
+        _storeReview = [(MSApplicationDelegate *)self _storeReview];
+        shouldAttemptPromptReview = [_storeReview shouldAttemptPromptReview];
 
-        if (v11)
+        if (shouldAttemptPromptReview)
         {
-          v12 = [(MSApplicationDelegate *)self _storeReview];
-          [v12 didAttemptPromptReview];
+          _storeReview2 = [(MSApplicationDelegate *)self _storeReview];
+          [_storeReview2 didAttemptPromptReview];
 
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
@@ -724,35 +724,35 @@ LABEL_25:
   }
 }
 
-- (void)_loadApplicationWithLaunchOptions:(id)a3
+- (void)_loadApplicationWithLaunchOptions:(id)options
 {
   applicationController = self->_applicationController;
-  v5 = a3;
-  v14 = [objc_opt_class() applicationOptionsWithLaunchOptions:v5];
+  optionsCopy = options;
+  v14 = [objc_opt_class() applicationOptionsWithLaunchOptions:optionsCopy];
 
   [(SUUIApplicationController *)self->_applicationController loadApplicationWithOptions:v14];
-  v6 = [(SUUIApplicationController *)self->_applicationController clientContext];
-  v7 = v6;
-  if (v6)
+  clientContext = [(SUUIApplicationController *)self->_applicationController clientContext];
+  v7 = clientContext;
+  if (clientContext)
   {
-    v8 = [v6 clientInterface];
-    v9 = [[SULegacyClientBridge alloc] initWithClientInterface:v8];
+    clientInterface = [clientContext clientInterface];
+    v9 = [[SULegacyClientBridge alloc] initWithClientInterface:clientInterface];
     legacyBridge = self->_legacyBridge;
     self->_legacyBridge = v9;
 
     v11 = self->_legacyBridge;
-    v12 = [(SUUIApplicationController *)self->_applicationController tabBarController];
-    [(SULegacyClientBridge *)v11 setRootViewController:v12];
+    tabBarController = [(SUUIApplicationController *)self->_applicationController tabBarController];
+    [(SULegacyClientBridge *)v11 setRootViewController:tabBarController];
 
     [SUClientDispatch setClientBridge:self->_legacyBridge];
-    v13 = [v8 purchaseManager];
-    [v13 setDelegate:self];
+    purchaseManager = [clientInterface purchaseManager];
+    [purchaseManager setDelegate:self];
   }
 }
 
-- (int64_t)_maximumTabBarItemsForStyle:(int64_t)a3
+- (int64_t)_maximumTabBarItemsForStyle:(int64_t)style
 {
-  if (a3)
+  if (style)
   {
     return 8;
   }
@@ -763,9 +763,9 @@ LABEL_25:
   }
 }
 
-- (id)_newDefaultTabBarItemsWithClientContext:(id)a3 style:(int64_t)a4
+- (id)_newDefaultTabBarItemsWithClientContext:(id)context style:(int64_t)style
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = objc_alloc_init(NSMutableArray);
   v7 = SUUIUserInterfaceIdiom();
 
@@ -784,7 +784,7 @@ LABEL_25:
   [v12 setRootURL:v13];
 
   [v6 addObject:v12];
-  if (!a4 || v7 != 1)
+  if (!style || v7 != 1)
   {
     v14 = [[SUUITabBarItem alloc] initWithTabIdentifier:@"search"];
     [v6 addObject:v14];
@@ -802,7 +802,7 @@ LABEL_25:
     goto LABEL_8;
   }
 
-  if (a4 == 1)
+  if (style == 1)
   {
     v17 = @"https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewTop?genreId=34";
     v18 = @"charts";
@@ -832,23 +832,23 @@ LABEL_8:
   return v6;
 }
 
-- (id)_newTabBarItemsWithStyle:(int64_t)a3
+- (id)_newTabBarItemsWithStyle:(int64_t)style
 {
   v5 = objc_alloc_init(NSMutableArray);
-  v59 = self;
-  v6 = [(SUUIApplicationController *)self->_applicationController clientContext];
+  selfCopy = self;
+  clientContext = [(SUUIApplicationController *)self->_applicationController clientContext];
   if ((+[UIApplication shouldMakeUIForDefaultPNG]& 1) != 0)
   {
     v7 = 0;
   }
 
-  else if (v6)
+  else if (clientContext)
   {
     v69[0] = _NSConcreteStackBlock;
     v69[1] = 3221225472;
     v69[2] = sub_100005C48;
     v69[3] = &unk_100010678;
-    v70 = v6;
+    v70 = clientContext;
     v7 = objc_retainBlock(v69);
   }
 
@@ -857,13 +857,13 @@ LABEL_8:
     v7 = &stru_1000106B8;
   }
 
-  v8 = [v6 tabBarItemsForStyle:a3];
+  v8 = [clientContext tabBarItemsForStyle:style];
   if (!v8)
   {
-    v8 = [(MSApplicationDelegate *)v59 _newDefaultTabBarItemsWithClientContext:v6 style:a3];
+    v8 = [(MSApplicationDelegate *)selfCopy _newDefaultTabBarItemsWithClientContext:clientContext style:style];
   }
 
-  v60 = v6;
+  v60 = clientContext;
   v67 = 0u;
   v68 = 0u;
   v65 = 0u;
@@ -887,8 +887,8 @@ LABEL_8:
         }
 
         v14 = *(*(&v65 + 1) + 8 * v13);
-        v15 = [v14 tabIdentifier];
-        if ([v15 isEqualToString:@"music"])
+        tabIdentifier = [v14 tabIdentifier];
+        if ([tabIdentifier isEqualToString:@"music"])
         {
           v16 = objc_alloc_init(UITabBarItem);
           v17 = [UIImage _systemImageNamed:@"music"];
@@ -905,7 +905,7 @@ LABEL_8:
           goto LABEL_18;
         }
 
-        if ([v15 isEqualToString:@"movies"])
+        if ([tabIdentifier isEqualToString:@"movies"])
         {
           v16 = objc_alloc_init(UITabBarItem);
           v24 = [UIImage _systemImageNamed:@"film.fill"];
@@ -922,7 +922,7 @@ LABEL_8:
           goto LABEL_26;
         }
 
-        if ([v15 isEqualToString:@"tv"])
+        if ([tabIdentifier isEqualToString:@"tv"])
         {
           v16 = objc_alloc_init(UITabBarItem);
           v28 = [UIImage _systemImageNamed:@"tv.inset.filled"];
@@ -944,7 +944,7 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        if ([v15 isEqualToString:@"search"])
+        if ([tabIdentifier isEqualToString:@"search"])
         {
           v16 = [[UITabBarItem alloc] initWithTabBarSystemItem:8 tag:0];
           if (v7)
@@ -958,16 +958,16 @@ LABEL_26:
           goto LABEL_45;
         }
 
-        if ([v15 isEqualToString:@"audiobooks"])
+        if ([tabIdentifier isEqualToString:@"audiobooks"])
         {
           v16 = objc_alloc_init(UITabBarItem);
           v36 = [UIImage imageNamed:@"UITabBarAudiobooks"];
-          v37 = [v36 _imageThatSuppressesAccessibilityHairlineThickening];
-          [v16 setImage:v37];
+          _imageThatSuppressesAccessibilityHairlineThickening = [v36 _imageThatSuppressesAccessibilityHairlineThickening];
+          [v16 setImage:_imageThatSuppressesAccessibilityHairlineThickening];
 
           v38 = [UIImage imageNamed:@"UITabBarAudiobooksSelected"];
-          v39 = [v38 _imageThatSuppressesAccessibilityHairlineThickening];
-          [v16 setSelectedImage:v39];
+          _imageThatSuppressesAccessibilityHairlineThickening2 = [v38 _imageThatSuppressesAccessibilityHairlineThickening];
+          [v16 setSelectedImage:_imageThatSuppressesAccessibilityHairlineThickening2];
 
           if (v7)
           {
@@ -982,7 +982,7 @@ LABEL_26:
           goto LABEL_28;
         }
 
-        if ([v15 isEqualToString:@"tones"])
+        if ([tabIdentifier isEqualToString:@"tones"])
         {
           v16 = objc_alloc_init(UITabBarItem);
           v41 = [UIImage _systemImageNamed:@"bell.fill"];
@@ -1013,7 +1013,7 @@ LABEL_28:
           goto LABEL_29;
         }
 
-        if ([v15 isEqualToString:@"charts"])
+        if ([tabIdentifier isEqualToString:@"charts"])
         {
           v16 = [[UITabBarItem alloc] initWithTabBarSystemItem:11 tag:0];
           if (v7)
@@ -1034,7 +1034,7 @@ LABEL_45:
           goto LABEL_18;
         }
 
-        if ([v15 isEqualToString:@"genius"])
+        if ([tabIdentifier isEqualToString:@"genius"])
         {
           v16 = objc_alloc_init(UITabBarItem);
           v42 = [UIImage _systemImageNamed:@"genius"];
@@ -1054,7 +1054,7 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        if ([v15 isEqualToString:@"purchased"])
+        if ([tabIdentifier isEqualToString:@"purchased"])
         {
           v16 = objc_alloc_init(UITabBarItem);
           v43 = [UIImage _systemImageNamed:@"purchased"];
@@ -1071,10 +1071,10 @@ LABEL_16:
           goto LABEL_16;
         }
 
-        if ([v15 isEqualToString:@"downloads"])
+        if ([tabIdentifier isEqualToString:@"downloads"])
         {
-          v44 = [(MSApplicationDelegate *)v59 _downloadManager];
-          v45 = [(MSApplicationDelegate *)v59 _showsDownloadsTabForDownloadManager:v44];
+          _downloadManager = [(MSApplicationDelegate *)selfCopy _downloadManager];
+          v45 = [(MSApplicationDelegate *)selfCopy _showsDownloadsTabForDownloadManager:_downloadManager];
 
           if (v45)
           {
@@ -1094,12 +1094,12 @@ LABEL_16:
 
         else
         {
-          if ([v15 isEqualToString:@"itunesu"])
+          if ([tabIdentifier isEqualToString:@"itunesu"])
           {
             v16 = objc_alloc_init(UITabBarItem);
             v47 = [UIImage imageNamed:@"UITabBariTunesU"];
-            v48 = [v47 _imageThatSuppressesAccessibilityHairlineThickening];
-            [v16 setImage:v48];
+            _imageThatSuppressesAccessibilityHairlineThickening3 = [v47 _imageThatSuppressesAccessibilityHairlineThickening];
+            [v16 setImage:_imageThatSuppressesAccessibilityHairlineThickening3];
 
             if (v7)
             {
@@ -1112,12 +1112,12 @@ LABEL_16:
             goto LABEL_64;
           }
 
-          if ([v15 isEqualToString:@"podcast"])
+          if ([tabIdentifier isEqualToString:@"podcast"])
           {
             v16 = objc_alloc_init(UITabBarItem);
             v52 = [UIImage imageNamed:@"UITabBarPodcasts"];
-            v53 = [v52 _imageThatSuppressesAccessibilityHairlineThickening];
-            [v16 setImage:v53];
+            _imageThatSuppressesAccessibilityHairlineThickening4 = [v52 _imageThatSuppressesAccessibilityHairlineThickening];
+            [v16 setImage:_imageThatSuppressesAccessibilityHairlineThickening4];
 
             if (v7)
             {
@@ -1167,9 +1167,9 @@ LABEL_29:
   return v5;
 }
 
-- (void)_showExternalURL:(id)a3
+- (void)_showExternalURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (+[MSOnboardingUtil shouldShowOnboarding])
   {
     objc_initWeak(&location, self);
@@ -1178,7 +1178,7 @@ LABEL_29:
     v7[2] = sub_100005EB0;
     v7[3] = &unk_1000105B8;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
+    v8 = lCopy;
     v5 = objc_retainBlock(v7);
     showURLBlock = self->_showURLBlock;
     self->_showURLBlock = v5;
@@ -1189,7 +1189,7 @@ LABEL_29:
 
   else
   {
-    [(SUUIApplicationController *)self->_applicationController showExternalURL:v4];
+    [(SUUIApplicationController *)self->_applicationController showExternalURL:lCopy];
   }
 }
 
@@ -1198,7 +1198,7 @@ LABEL_29:
   if (self->_didDisplayFirstPage)
   {
     objc_initWeak(&location, self);
-    v3 = [(SUUIApplicationController *)self->_applicationController clientContext];
+    clientContext = [(SUUIApplicationController *)self->_applicationController clientContext];
     v8[0] = SUUIConfigurationKeyTabs;
     v8[1] = SUUIConfigurationKeyStopPages;
     v4 = [NSArray arrayWithObjects:v8 count:2];
@@ -1207,23 +1207,23 @@ LABEL_29:
     v5[2] = sub_100006068;
     v5[3] = &unk_100010730;
     objc_copyWeak(&v6, &location);
-    [v3 loadValueForConfigurationKeys:v4 completionBlock:v5];
+    [clientContext loadValueForConfigurationKeys:v4 completionBlock:v5];
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
   }
 }
 
-- (BOOL)_showsDownloadsTabForDownloadManager:(id)a3
+- (BOOL)_showsDownloadsTabForDownloadManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  if (v5)
+  if (userInterfaceIdiom)
   {
-    v6 = [v3 downloads];
-    v7 = [v6 count] != 0;
+    downloads = [managerCopy downloads];
+    v7 = [downloads count] != 0;
   }
 
   else
@@ -1234,12 +1234,12 @@ LABEL_29:
   return v7;
 }
 
-- (int64_t)_tabBarStyleWithWidth:(double)a3
+- (int64_t)_tabBarStyleWithWidth:(double)width
 {
-  v4 = [(SUUIApplicationController *)self->_applicationController clientContext];
+  clientContext = [(SUUIApplicationController *)self->_applicationController clientContext];
   v5 = SUUIUserInterfaceIdiom();
 
-  return a3 >= 768.0 && v5 == 1;
+  return width >= 768.0 && v5 == 1;
 }
 
 @end

@@ -3,10 +3,10 @@
 - (ASDRequestBroker)init;
 - (id)activeRequests;
 - (id)description;
-- (void)cancelAllRequestsWithErrorHandler:(id)a3;
-- (void)markRequestAsActive:(void *)a1;
-- (void)markRequestAsComplete:(void *)a1;
-- (void)submitRequest:(id)a3 withReplyHandler:(id)a4;
+- (void)cancelAllRequestsWithErrorHandler:(id)handler;
+- (void)markRequestAsActive:(void *)active;
+- (void)markRequestAsComplete:(void *)complete;
+- (void)submitRequest:(id)request withReplyHandler:(id)handler;
 @end
 
 @implementation ASDRequestBroker
@@ -45,22 +45,22 @@
 
 - (id)activeRequests
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    objc_sync_enter(v1);
-    v2 = v1[1];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v2 = selfCopy[1];
     if (!v2)
     {
       v3 = objc_opt_new();
-      v4 = v1[1];
-      v1[1] = v3;
+      v4 = selfCopy[1];
+      selfCopy[1] = v3;
 
-      v2 = v1[1];
+      v2 = selfCopy[1];
     }
 
     v5 = v2;
-    objc_sync_exit(v1);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -84,8 +84,8 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(ASDRequestBroker *)self activeRequests];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  activeRequests = [(ASDRequestBroker *)self activeRequests];
+  v6 = [activeRequests countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -96,14 +96,14 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(activeRequests);
         }
 
         v10 = [*(*(&v13 + 1) + 8 * i) description];
         [v4 appendFormat:@"\n\t%@", v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v7 = [activeRequests countByEnumeratingWithState:&v13 objects:v18 count:16];
     }
 
     while (v7);
@@ -115,9 +115,9 @@
   return v4;
 }
 
-- (void)cancelAllRequestsWithErrorHandler:(id)a3
+- (void)cancelAllRequestsWithErrorHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (self)
   {
     self = objc_getProperty(self, v4, 16, 1);
@@ -127,7 +127,7 @@
   v11[1] = 3221225472;
   v11[2] = __54__ASDRequestBroker_cancelAllRequestsWithErrorHandler___block_invoke;
   v11[3] = &unk_1E7CDB730;
-  v6 = v5;
+  v6 = handlerCopy;
   v12 = v6;
   v7 = [(ASDRequestBroker *)self remoteObjectProxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];
@@ -161,15 +161,15 @@ uint64_t __54__ASDRequestBroker_cancelAllRequestsWithErrorHandler___block_invoke
   return result;
 }
 
-- (void)markRequestAsActive:(void *)a1
+- (void)markRequestAsActive:(void *)active
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (active)
   {
-    v4 = a1;
-    objc_sync_enter(v4);
-    v5 = [(ASDRequestBroker *)v4 activeRequests];
+    activeCopy = active;
+    objc_sync_enter(activeCopy);
+    activeRequests = [(ASDRequestBroker *)activeCopy activeRequests];
     v6 = ASDLogHandleForCategory(13);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
@@ -181,24 +181,24 @@ uint64_t __54__ASDRequestBroker_cancelAllRequestsWithErrorHandler___block_invoke
       _os_log_debug_impl(&dword_1B8220000, v6, OS_LOG_TYPE_DEBUG, "[%{public}@]: Marking request active: %{public}@", &v10, 0x16u);
     }
 
-    v7 = [v3 requestID];
-    [v5 setObject:v3 forKeyedSubscript:v7];
+    requestID = [v3 requestID];
+    [activeRequests setObject:v3 forKeyedSubscript:requestID];
 
-    objc_sync_exit(v4);
+    objc_sync_exit(activeCopy);
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)markRequestAsComplete:(void *)a1
+- (void)markRequestAsComplete:(void *)complete
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (complete)
   {
-    v4 = a1;
-    objc_sync_enter(v4);
-    v5 = [(ASDRequestBroker *)v4 activeRequests];
+    completeCopy = complete;
+    objc_sync_enter(completeCopy);
+    activeRequests = [(ASDRequestBroker *)completeCopy activeRequests];
     v6 = ASDLogHandleForCategory(13);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
@@ -210,22 +210,22 @@ uint64_t __54__ASDRequestBroker_cancelAllRequestsWithErrorHandler___block_invoke
       _os_log_debug_impl(&dword_1B8220000, v6, OS_LOG_TYPE_DEBUG, "[%{public}@]: Marking request completed: %{public}@", &v10, 0x16u);
     }
 
-    v7 = [v3 requestID];
-    [v5 setObject:0 forKeyedSubscript:v7];
+    requestID = [v3 requestID];
+    [activeRequests setObject:0 forKeyedSubscript:requestID];
 
-    objc_sync_exit(v4);
+    objc_sync_exit(completeCopy);
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)submitRequest:(id)a3 withReplyHandler:(id)a4
+- (void)submitRequest:(id)request withReplyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 conformsToProtocol:&unk_1F3035950] & 1) == 0)
+  requestCopy = request;
+  handlerCopy = handler;
+  if (([requestCopy conformsToProtocol:&unk_1F3035950] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Request %@ is expected to be a ASDRequestDelegate", v6}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Request %@ is expected to be a ASDRequestDelegate", requestCopy}];
   }
 
   if (self)
@@ -237,7 +237,7 @@ uint64_t __54__ASDRequestBroker_cancelAllRequestsWithErrorHandler___block_invoke
   v14[1] = 3221225472;
   v14[2] = __51__ASDRequestBroker_submitRequest_withReplyHandler___block_invoke;
   v14[3] = &unk_1E7CDB730;
-  v9 = v7;
+  v9 = handlerCopy;
   v15 = v9;
   v10 = [(ASDRequestBroker *)self remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
@@ -246,7 +246,7 @@ uint64_t __54__ASDRequestBroker_cancelAllRequestsWithErrorHandler___block_invoke
   v12[3] = &unk_1E7CDD748;
   v13 = v9;
   v11 = v9;
-  [v10 submitRequest:v6 delegate:v6 withReplyHandler:v12];
+  [v10 submitRequest:requestCopy delegate:requestCopy withReplyHandler:v12];
 }
 
 uint64_t __51__ASDRequestBroker_submitRequest_withReplyHandler___block_invoke(uint64_t a1, uint64_t a2)

@@ -1,6 +1,6 @@
 @interface INFSentenceToken
 - (id)dictionaryRepresentation;
-- (id)stringForContext:(id)a3;
+- (id)stringForContext:(id)context;
 @end
 
 @implementation INFSentenceToken
@@ -15,7 +15,7 @@
   return 0;
 }
 
-- (id)stringForContext:(id)a3
+- (id)stringForContext:(id)context
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];

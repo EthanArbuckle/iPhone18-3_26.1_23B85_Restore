@@ -1,8 +1,8 @@
 @interface SceneWorkspace
 - (_TtC13ShellSceneKit14SceneWorkspace)init;
-- (void)workspace:(id)a3 didAddScene:(id)a4;
-- (void)workspace:(id)a3 didReceiveScene:(id)a4 withContext:(id)a5 fromProcess:(id)a6;
-- (void)workspace:(id)a3 willRemoveScene:(id)a4;
+- (void)workspace:(id)workspace didAddScene:(id)scene;
+- (void)workspace:(id)workspace didReceiveScene:(id)scene withContext:(id)context fromProcess:(id)process;
+- (void)workspace:(id)workspace willRemoveScene:(id)scene;
 @end
 
 @implementation SceneWorkspace
@@ -14,32 +14,32 @@
   return result;
 }
 
-- (void)workspace:(id)a3 didReceiveScene:(id)a4 withContext:(id)a5 fromProcess:(id)a6
+- (void)workspace:(id)workspace didReceiveScene:(id)scene withContext:(id)context fromProcess:(id)process
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  workspaceCopy = workspace;
+  sceneCopy = scene;
+  contextCopy = context;
   swift_unknownObjectRetain();
-  v13 = self;
-  sub_265FC212C(v11, a5, a6);
+  selfCopy = self;
+  sub_265FC212C(sceneCopy, context, process);
 
   swift_unknownObjectRelease();
 }
 
-- (void)workspace:(id)a3 didAddScene:(id)a4
+- (void)workspace:(id)workspace didAddScene:(id)scene
 {
   swift_getKeyPath();
   sub_265FBFC04();
-  v5 = self;
+  selfCopy = self;
   sub_265FEBF30();
 }
 
-- (void)workspace:(id)a3 willRemoveScene:(id)a4
+- (void)workspace:(id)workspace willRemoveScene:(id)scene
 {
   swift_getKeyPath();
   sub_265FBFC04();
-  v6 = a4;
-  v7 = self;
+  sceneCopy = scene;
+  selfCopy = self;
   sub_265FEBF30();
 }
 

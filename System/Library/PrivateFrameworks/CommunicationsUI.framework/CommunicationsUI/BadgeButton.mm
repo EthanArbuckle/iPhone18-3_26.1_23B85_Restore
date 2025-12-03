@@ -1,14 +1,14 @@
 @interface BadgeButton
 - (CGSize)intrinsicContentSize;
-- (_TtC16CommunicationsUI11BadgeButton)initWithCoder:(id)a3;
-- (_TtC16CommunicationsUI11BadgeButton)initWithFrame:(CGRect)a3;
+- (_TtC16CommunicationsUI11BadgeButton)initWithCoder:(id)coder;
+- (_TtC16CommunicationsUI11BadgeButton)initWithFrame:(CGRect)frame;
 @end
 
 @implementation BadgeButton
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C2E16670();
   v4 = v3;
   v6 = v5;
@@ -20,7 +20,7 @@
   return result;
 }
 
-- (_TtC16CommunicationsUI11BadgeButton)initWithCoder:(id)a3
+- (_TtC16CommunicationsUI11BadgeButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC16CommunicationsUI11BadgeButton____lazy_storage___badgeView) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC16CommunicationsUI11BadgeButton_badgeCount) = 0;
@@ -34,7 +34,7 @@
   return result;
 }
 
-- (_TtC16CommunicationsUI11BadgeButton)initWithFrame:(CGRect)a3
+- (_TtC16CommunicationsUI11BadgeButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

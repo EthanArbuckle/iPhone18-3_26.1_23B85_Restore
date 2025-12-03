@@ -8,8 +8,8 @@
 - (uint64_t)cal_changeMayAffectAnyObjectOfType:()EKAdditions
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [a1 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"EKEventStoreChangedObjectIDsUserInfoKey"];
+  userInfo = [self userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"EKEventStoreChangedObjectIDsUserInfoKey"];
 
   if (v5)
   {
@@ -69,8 +69,8 @@ LABEL_12:
 - (uint64_t)cal_changeMayAffectCalendarsOrSources
 {
   v18 = *MEMORY[0x1E69E9840];
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"EKEventStoreChangedObjectIDsUserInfoKey"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"EKEventStoreChangedObjectIDsUserInfoKey"];
 
   if (v2)
   {
@@ -93,8 +93,8 @@ LABEL_12:
             objc_enumerationMutation(v3);
           }
 
-          v8 = [*(*(&v13 + 1) + 8 * i) entityType];
-          if (v8 == 1 || v8 == 6)
+          entityType = [*(*(&v13 + 1) + 8 * i) entityType];
+          if (entityType == 1 || entityType == 6)
           {
             v10 = 1;
             goto LABEL_17;

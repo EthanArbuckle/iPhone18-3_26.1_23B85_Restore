@@ -1,11 +1,11 @@
 @interface HMHomePersonManagerSettings
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMHomePersonManagerSettings)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMHomePersonManagerSettings)initWithCoder:(id)coder;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMHomePersonManagerSettings
@@ -32,23 +32,23 @@
   return [v2 shortDescription];
 }
 
-- (HMHomePersonManagerSettings)initWithCoder:(id)a3
+- (HMHomePersonManagerSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [v4 decodeBoolForKey:@"HMPMS.fce"];
+  v6 = [coderCopy decodeBoolForKey:@"HMPMS.fce"];
 
   [(HMHomePersonManagerSettings *)v5 setFaceClassificationEnabled:v6];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[HMHomePersonManagerSettings isFaceClassificationEnabled](self forKey:{"isFaceClassificationEnabled"), @"HMPMS.fce"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[HMHomePersonManagerSettings isFaceClassificationEnabled](self forKey:{"isFaceClassificationEnabled"), @"HMPMS.fce"}];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [[HMMutableHomePersonManagerSettings allocWithZone:?]];
   [(HMHomePersonManagerSettings *)v4 setFaceClassificationEnabled:[(HMHomePersonManagerSettings *)self isFaceClassificationEnabled]];
@@ -62,13 +62,13 @@
   return NSStringFromClass(v2);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -79,8 +79,8 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMHomePersonManagerSettings *)self isFaceClassificationEnabled];
-    v8 = v7 ^ [v6 isFaceClassificationEnabled] ^ 1;
+    isFaceClassificationEnabled = [(HMHomePersonManagerSettings *)self isFaceClassificationEnabled];
+    v8 = isFaceClassificationEnabled ^ [v6 isFaceClassificationEnabled] ^ 1;
   }
 
   else

@@ -6,10 +6,10 @@
 
 - (id)_mapkit_title
 {
-  v1 = [a1 titleLabel];
-  v2 = [v1 text];
+  titleLabel = [self titleLabel];
+  text = [titleLabel text];
 
-  return v2;
+  return text;
 }
 
 @end

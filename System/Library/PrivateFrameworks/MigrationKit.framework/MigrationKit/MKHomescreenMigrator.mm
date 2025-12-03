@@ -1,10 +1,10 @@
 @interface MKHomescreenMigrator
 - (MKHomescreenMigrator)init;
-- (id)build:(id)a3 x:(int64_t)a4 y:(int64_t)a5 folderItems:(id)a6;
+- (id)build:(id)build x:(int64_t)x y:(int64_t)y folderItems:(id)items;
 - (id)export;
-- (id)export:(id)a3;
-- (void)build:(id)a3 item:(id)a4 ID:(int64_t *)a5 page:(int64_t)a6 x:(int64_t)a7 y:(int64_t)a8 maxWidth:(int64_t)a9 maxHeight:(int64_t)a10;
-- (void)import:(id)a3;
+- (id)export:(id)export;
+- (void)build:(id)build item:(id)item ID:(int64_t *)d page:(int64_t)page x:(int64_t)x y:(int64_t)y maxWidth:(int64_t)width maxHeight:(int64_t)self0;
+- (void)import:(id)import;
 @end
 
 @implementation MKHomescreenMigrator
@@ -26,8 +26,8 @@
 
 - (id)export
 {
-  v3 = [(SBSHomeScreenService *)self->_service osMigrationHomeScreenLayout];
-  v4 = [(MKHomescreenMigrator *)self export:v3];
+  osMigrationHomeScreenLayout = [(SBSHomeScreenService *)self->_service osMigrationHomeScreenLayout];
+  v4 = [(MKHomescreenMigrator *)self export:osMigrationHomeScreenLayout];
   if ([v4 count])
   {
     v5 = v4;
@@ -35,27 +35,27 @@
 
   else
   {
-    v6 = [(SBSHomeScreenService *)self->_service osMigrationDefaultHomeScreenLayout];
+    osMigrationDefaultHomeScreenLayout = [(SBSHomeScreenService *)self->_service osMigrationDefaultHomeScreenLayout];
 
-    v5 = [(MKHomescreenMigrator *)self export:v6];
-    v3 = v6;
+    v5 = [(MKHomescreenMigrator *)self export:osMigrationDefaultHomeScreenLayout];
+    osMigrationHomeScreenLayout = osMigrationDefaultHomeScreenLayout;
   }
 
   return v5;
 }
 
-- (id)export:(id)a3
+- (id)export:(id)export
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  exportCopy = export;
   v28 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v41 = 0;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v23 = v4;
-  obj = [v4 pages];
+  v23 = exportCopy;
+  obj = [exportCopy pages];
   v26 = [obj countByEnumeratingWithState:&v37 objects:v44 count:16];
   if (v26)
   {
@@ -73,14 +73,14 @@
 
         v27 = v6;
         v7 = *(*(&v37 + 1) + 8 * v6);
-        v8 = [v7 numberOfColumns];
-        v9 = [v7 numberOfRows];
+        numberOfColumns = [v7 numberOfColumns];
+        numberOfRows = [v7 numberOfRows];
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v10 = [v7 layoutItems];
-        v11 = [v10 countByEnumeratingWithState:&v33 objects:v43 count:16];
+        layoutItems = [v7 layoutItems];
+        v11 = [layoutItems countByEnumeratingWithState:&v33 objects:v43 count:16];
         if (v11)
         {
           v12 = v11;
@@ -91,13 +91,13 @@
             {
               if (*v34 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(layoutItems);
               }
 
-              -[MKHomescreenMigrator build:item:ID:page:x:y:maxWidth:maxHeight:](self, "build:item:ID:page:x:y:maxWidth:maxHeight:", v28, *(*(&v33 + 1) + 8 * i), &v41, v5, [*(*(&v33 + 1) + 8 * i) columnIndex], objc_msgSend(*(*(&v33 + 1) + 8 * i), "rowIndex"), v8, v9);
+              -[MKHomescreenMigrator build:item:ID:page:x:y:maxWidth:maxHeight:](self, "build:item:ID:page:x:y:maxWidth:maxHeight:", v28, *(*(&v33 + 1) + 8 * i), &v41, v5, [*(*(&v33 + 1) + 8 * i) columnIndex], objc_msgSend(*(*(&v33 + 1) + 8 * i), "rowIndex"), numberOfColumns, numberOfRows);
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v33 objects:v43 count:16];
+            v12 = [layoutItems countByEnumeratingWithState:&v33 objects:v43 count:16];
           }
 
           while (v12);
@@ -116,15 +116,15 @@
 
   else
   {
-    v8 = 0;
+    numberOfColumns = 0;
   }
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v15 = [v23 bottomBarItems];
-  v16 = [v15 countByEnumeratingWithState:&v29 objects:v42 count:16];
+  bottomBarItems = [v23 bottomBarItems];
+  v16 = [bottomBarItems countByEnumeratingWithState:&v29 objects:v42 count:16];
   if (v16)
   {
     v17 = v16;
@@ -136,13 +136,13 @@
       {
         if (*v30 != v19)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(bottomBarItems);
         }
 
-        [(MKHomescreenMigrator *)self build:v28 item:*(*(&v29 + 1) + 8 * j) ID:&v41 page:-1 x:v18++ y:0 maxWidth:v8 maxHeight:1];
+        [(MKHomescreenMigrator *)self build:v28 item:*(*(&v29 + 1) + 8 * j) ID:&v41 page:-1 x:v18++ y:0 maxWidth:numberOfColumns maxHeight:1];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v29 objects:v42 count:16];
+      v17 = [bottomBarItems countByEnumeratingWithState:&v29 objects:v42 count:16];
     }
 
     while (v17);
@@ -153,23 +153,23 @@
   return v28;
 }
 
-- (void)build:(id)a3 item:(id)a4 ID:(int64_t *)a5 page:(int64_t)a6 x:(int64_t)a7 y:(int64_t)a8 maxWidth:(int64_t)a9 maxHeight:(int64_t)a10
+- (void)build:(id)build item:(id)item ID:(int64_t *)d page:(int64_t)page x:(int64_t)x y:(int64_t)y maxWidth:(int64_t)width maxHeight:(int64_t)self0
 {
   v62 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = [v16 item];
+  buildCopy = build;
+  itemCopy = item;
+  item = [itemCopy item];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v19 = [v16 item];
-  v20 = v19;
+  item2 = [itemCopy item];
+  item4 = item2;
   if (isKindOfClass)
   {
-    v21 = [v19 bundleIdentifier];
-    v22 = [[MKHomescreen alloc] initWithID:*a5 page:a6 folder:-1 x:a7 y:a8 bundleID:v21 maxWidth:a9 maxHeight:a10];
-    [v15 addObject:v22];
-    ++*a5;
+    bundleIdentifier = [item2 bundleIdentifier];
+    v22 = [[MKHomescreen alloc] initWithID:*d page:page folder:-1 x:x y:y bundleID:bundleIdentifier maxWidth:width maxHeight:height];
+    [buildCopy addObject:v22];
+    ++*d;
 
 LABEL_3:
     goto LABEL_15;
@@ -178,8 +178,8 @@ LABEL_3:
   objc_opt_class();
   v23 = objc_opt_isKindOfClass();
 
-  v24 = [v16 item];
-  v25 = v24;
+  item3 = [itemCopy item];
+  v25 = item3;
   if ((v23 & 1) == 0)
   {
     objc_opt_class();
@@ -192,31 +192,31 @@ LABEL_3:
       goto LABEL_15;
     }
 
-    v20 = [v16 item];
-    obja = [v20 numberOfColumns];
-    v54 = [v20 numberOfRows];
-    v52 = [v20 widgetIdentifier];
-    v50 = [v20 widgetKind];
-    v43 = [v20 hostApp];
-    [v43 bundleIdentifier];
-    v44 = v48 = a8;
+    item4 = [itemCopy item];
+    obja = [item4 numberOfColumns];
+    numberOfRows = [item4 numberOfRows];
+    widgetIdentifier = [item4 widgetIdentifier];
+    widgetKind = [item4 widgetKind];
+    hostApp = [item4 hostApp];
+    [hostApp bundleIdentifier];
+    v44 = v48 = y;
 
-    v45 = [[MKHomescreen alloc] initWithID:*a5 page:a6 x:a7 y:v48 width:obja height:v54 bundleID:v52 host:v44 kind:v50 maxWidth:a9 maxHeight:a10];
-    [v15 addObject:v45];
-    ++*a5;
+    v45 = [[MKHomescreen alloc] initWithID:*d page:page x:x y:v48 width:obja height:numberOfRows bundleID:widgetIdentifier host:v44 kind:widgetKind maxWidth:width maxHeight:height];
+    [buildCopy addObject:v45];
+    ++*d;
 
     goto LABEL_3;
   }
 
-  v53 = v16;
-  v26 = a8;
-  v27 = *a5;
-  v49 = [v24 displayName];
-  v28 = [[MKHomescreen alloc] initWithID:*a5 page:a6 x:a7 y:v26 name:v49 maxWidth:a9 maxHeight:a10];
-  v29 = v15;
+  v53 = itemCopy;
+  yCopy = y;
+  v27 = *d;
+  displayName = [item3 displayName];
+  v28 = [[MKHomescreen alloc] initWithID:*d page:page x:x y:yCopy name:displayName maxWidth:width maxHeight:height];
+  v29 = buildCopy;
   v47 = v28;
-  [v15 addObject:?];
-  ++*a5;
+  [buildCopy addObject:?];
+  ++*d;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
@@ -240,12 +240,12 @@ LABEL_3:
 
         v35 = *(*(&v57 + 1) + 8 * i);
         v36 = [MKHomescreen alloc];
-        v37 = *a5;
-        v38 = [v35 bundleIdentifier];
-        v39 = [(MKHomescreen *)v36 initWithID:v37 page:0 folder:v27 x:v32 y:0 bundleID:v38 maxWidth:0x7FFFFFFFLL maxHeight:1];
+        v37 = *d;
+        bundleIdentifier2 = [v35 bundleIdentifier];
+        v39 = [(MKHomescreen *)v36 initWithID:v37 page:0 folder:v27 x:v32 y:0 bundleID:bundleIdentifier2 maxWidth:0x7FFFFFFFLL maxHeight:1];
 
         [v29 addObject:v39];
-        ++*a5;
+        ++*d;
         ++v32;
       }
 
@@ -255,24 +255,24 @@ LABEL_3:
     while (v31);
   }
 
-  v15 = v29;
-  v16 = v53;
+  buildCopy = v29;
+  itemCopy = v53;
 LABEL_15:
 
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (void)import:(id)a3
+- (void)import:(id)import
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  importCopy = import;
   v44 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  obj = v4;
+  obj = importCopy;
   v6 = [obj countByEnumeratingWithState:&v58 objects:v64 count:16];
   if (v6)
   {
@@ -300,25 +300,25 @@ LABEL_15:
 
           v15 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v13, "page")}];
 
-          v16 = [v13 page];
-          if (v11 <= v16)
+          page = [v13 page];
+          if (v11 <= page)
           {
-            v11 = v16;
+            v11 = page;
           }
 
-          v17 = [v13 maxWidth];
+          maxWidth = [v13 maxWidth];
           v18 = v46;
-          if (v46 <= v17)
+          if (v46 <= maxWidth)
           {
-            v18 = v17;
+            v18 = maxWidth;
           }
 
           v46 = v18;
-          v19 = [v13 maxHeight];
+          maxHeight = [v13 maxHeight];
           v20 = v47;
-          if (v47 <= v19)
+          if (v47 <= maxHeight)
           {
-            v20 = v19;
+            v20 = maxHeight;
           }
 
           v47 = v20;
@@ -442,27 +442,27 @@ LABEL_15:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (id)build:(id)a3 x:(int64_t)a4 y:(int64_t)a5 folderItems:(id)a6
+- (id)build:(id)build x:(int64_t)x y:(int64_t)y folderItems:(id)items
 {
   v47 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
-  v11 = [v9 bundleID];
-  if ([v11 length])
+  buildCopy = build;
+  itemsCopy = items;
+  bundleID = [buildCopy bundleID];
+  if ([bundleID length])
   {
-    v12 = [v9 host];
-    v13 = [v12 length];
+    host = [buildCopy host];
+    v13 = [host length];
 
     if (v13)
     {
       v14 = objc_alloc(MEMORY[0x277D66B60]);
-      v15 = [v9 host];
-      v16 = [v14 initWithBundleIdentifier:v15];
+      host2 = [buildCopy host];
+      v16 = [v14 initWithBundleIdentifier:host2];
 
       v17 = objc_alloc(MEMORY[0x277D66B88]);
-      v18 = [v9 bundleID];
-      v19 = [v9 kind];
-      v20 = [v17 initWithWidgetIdentifier:v18 widgetKind:v19 hostApp:v16 numberOfRows:objc_msgSend(v9 numberOfColumns:{"height"), objc_msgSend(v9, "width")}];
+      bundleID2 = [buildCopy bundleID];
+      kind = [buildCopy kind];
+      v20 = [v17 initWithWidgetIdentifier:bundleID2 widgetKind:kind hostApp:v16 numberOfRows:objc_msgSend(buildCopy numberOfColumns:{"height"), objc_msgSend(buildCopy, "width")}];
 
       goto LABEL_15;
     }
@@ -472,26 +472,26 @@ LABEL_15:
   {
   }
 
-  v21 = [v9 bundleID];
-  v22 = [v21 length];
+  bundleID3 = [buildCopy bundleID];
+  v22 = [bundleID3 length];
 
   if (v22)
   {
     v23 = objc_alloc(MEMORY[0x277D66B60]);
-    v24 = [v9 bundleID];
-    v20 = [v23 initWithBundleIdentifier:v24];
+    bundleID4 = [buildCopy bundleID];
+    v20 = [v23 initWithBundleIdentifier:bundleID4];
   }
 
   else
   {
-    v41 = a5;
+    yCopy = y;
     v25 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v26 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v9, "ID")}];
-    v27 = [v10 objectForKeyedSubscript:v26];
+    v26 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(buildCopy, "ID")}];
+    v27 = [itemsCopy objectForKeyedSubscript:v26];
 
     v28 = [v27 countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (v28)
@@ -509,8 +509,8 @@ LABEL_15:
 
           v32 = *(*(&v42 + 1) + 8 * i);
           v33 = objc_alloc(MEMORY[0x277D66B60]);
-          v34 = [v32 bundleID];
-          v35 = [v33 initWithBundleIdentifier:v34];
+          bundleID5 = [v32 bundleID];
+          v35 = [v33 initWithBundleIdentifier:bundleID5];
 
           [v25 addObject:v35];
         }
@@ -522,14 +522,14 @@ LABEL_15:
     }
 
     v36 = objc_alloc(MEMORY[0x277D66B68]);
-    v37 = [v9 name];
-    v20 = [v36 initWithDisplayName:v37 apps:v25];
+    name = [buildCopy name];
+    v20 = [v36 initWithDisplayName:name apps:v25];
 
-    a5 = v41;
+    y = yCopy;
   }
 
 LABEL_15:
-  v38 = [objc_alloc(MEMORY[0x277D66B78]) initWithIdentifier:objc_msgSend(v9 rowIndex:"ID") columnIndex:a5 item:{a4, v20}];
+  v38 = [objc_alloc(MEMORY[0x277D66B78]) initWithIdentifier:objc_msgSend(buildCopy rowIndex:"ID") columnIndex:y item:{x, v20}];
 
   v39 = *MEMORY[0x277D85DE8];
 

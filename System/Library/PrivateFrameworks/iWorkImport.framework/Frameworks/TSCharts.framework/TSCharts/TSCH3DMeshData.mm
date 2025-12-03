@@ -1,32 +1,32 @@
 @interface TSCH3DMeshData
-+ (id)dataWithGeometry:(id)a3 texcoordGenerator:(id)a4;
-- (TSCH3DMeshData)initWithGeometry:(id)a3 texcoordGenerator:(id)a4;
++ (id)dataWithGeometry:(id)geometry texcoordGenerator:(id)generator;
+- (TSCH3DMeshData)initWithGeometry:(id)geometry texcoordGenerator:(id)generator;
 @end
 
 @implementation TSCH3DMeshData
 
-+ (id)dataWithGeometry:(id)a3 texcoordGenerator:(id)a4
++ (id)dataWithGeometry:(id)geometry texcoordGenerator:(id)generator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 alloc];
-  v13 = objc_msgSend_initWithGeometry_texcoordGenerator_(v8, v9, v10, v11, v12, v6, v7);
+  geometryCopy = geometry;
+  generatorCopy = generator;
+  v8 = [self alloc];
+  v13 = objc_msgSend_initWithGeometry_texcoordGenerator_(v8, v9, v10, v11, v12, geometryCopy, generatorCopy);
 
   return v13;
 }
 
-- (TSCH3DMeshData)initWithGeometry:(id)a3 texcoordGenerator:(id)a4
+- (TSCH3DMeshData)initWithGeometry:(id)geometry texcoordGenerator:(id)generator
 {
-  v7 = a3;
-  v8 = a4;
+  geometryCopy = geometry;
+  generatorCopy = generator;
   v12.receiver = self;
   v12.super_class = TSCH3DMeshData;
   v9 = [(TSCH3DMeshData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_geometry, a3);
-    objc_storeStrong(&v10->_texcoordGenerator, a4);
+    objc_storeStrong(&v9->_geometry, geometry);
+    objc_storeStrong(&v10->_texcoordGenerator, generator);
   }
 
   return v10;

@@ -1,20 +1,20 @@
 @interface CAMIOSurfaceWrapper
-- (CAMIOSurfaceWrapper)initWithIOSurface:(void *)a3;
+- (CAMIOSurfaceWrapper)initWithIOSurface:(void *)surface;
 - (void)dealloc;
 @end
 
 @implementation CAMIOSurfaceWrapper
 
-- (CAMIOSurfaceWrapper)initWithIOSurface:(void *)a3
+- (CAMIOSurfaceWrapper)initWithIOSurface:(void *)surface
 {
   v7.receiver = self;
   v7.super_class = CAMIOSurfaceWrapper;
   v4 = [(CAMIOSurfaceWrapper *)&v7 init];
   if (v4)
   {
-    if (a3)
+    if (surface)
     {
-      v4->_surface = CFRetain(a3);
+      v4->_surface = CFRetain(surface);
     }
 
     v5 = v4;

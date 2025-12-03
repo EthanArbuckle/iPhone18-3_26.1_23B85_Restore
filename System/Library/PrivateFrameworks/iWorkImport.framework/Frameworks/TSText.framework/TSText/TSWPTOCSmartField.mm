@@ -1,14 +1,14 @@
 @interface TSWPTOCSmartField
-- (void)loadFromUnarchiver:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
 @end
 
 @implementation TSWPTOCSmartField
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812DC408[162]);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812DC408[162]);
 
   if (*(v6 + 48))
   {
@@ -22,7 +22,7 @@
 
   v8.receiver = self;
   v8.super_class = TSWPTOCSmartField;
-  [(TSWPPlaceholderSmartField *)&v8 loadFromArchive:v7 unarchiver:v4];
+  [(TSWPPlaceholderSmartField *)&v8 loadFromArchive:v7 unarchiver:unarchiverCopy];
 }
 
 @end

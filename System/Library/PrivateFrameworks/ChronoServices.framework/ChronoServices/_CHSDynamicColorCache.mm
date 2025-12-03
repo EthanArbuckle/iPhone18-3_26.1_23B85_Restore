@@ -1,7 +1,7 @@
 @interface _CHSDynamicColorCache
 + (_CHSDynamicColorCache)sharedInstance;
 - (_CHSDynamicColorCache)init;
-- (id)cachedObjectForObject:(id)a3;
+- (id)cachedObjectForObject:(id)object;
 @end
 
 @implementation _CHSDynamicColorCache
@@ -35,22 +35,22 @@
   return v3;
 }
 
-- (id)cachedObjectForObject:(id)a3
+- (id)cachedObjectForObject:(id)object
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__6;
   v14 = __Block_byref_object_dispose__6;
-  v15 = a3;
+  objectCopy = object;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47___CHSDynamicColorCache_cachedObjectForObject___block_invoke;
   v7[3] = &unk_1E7453A50;
   v7[4] = self;
-  v8 = v15;
+  v8 = objectCopy;
   v9 = &v10;
-  v4 = v15;
+  v4 = objectCopy;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   __47___CHSDynamicColorCache_cachedObjectForObject___block_invoke(v7);

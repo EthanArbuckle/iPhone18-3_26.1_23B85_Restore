@@ -1,41 +1,41 @@
 @interface DKPresenter
 + (void)presentInSettings;
-+ (void)presentUsingParentViewController:(id)a3;
-+ (void)presentUsingParentViewController:(id)a3 completion:(id)a4;
-+ (void)presentUsingParentViewController:(id)a3 configuration:(id)a4 willPresent:(id)a5 completion:(id)a6;
++ (void)presentUsingParentViewController:(id)controller;
++ (void)presentUsingParentViewController:(id)controller completion:(id)completion;
++ (void)presentUsingParentViewController:(id)controller configuration:(id)configuration willPresent:(id)present completion:(id)completion;
 @end
 
 @implementation DKPresenter
 
-+ (void)presentUsingParentViewController:(id)a3
++ (void)presentUsingParentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = +[DKConfiguration defaultConfiguration];
-  [a1 presentUsingParentViewController:v4 configuration:v5 completion:0];
+  [self presentUsingParentViewController:controllerCopy configuration:v5 completion:0];
 }
 
-+ (void)presentUsingParentViewController:(id)a3 completion:(id)a4
++ (void)presentUsingParentViewController:(id)controller completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  controllerCopy = controller;
   v8 = +[DKConfiguration defaultConfiguration];
-  [a1 presentUsingParentViewController:v7 configuration:v8 completion:v6];
+  [self presentUsingParentViewController:controllerCopy configuration:v8 completion:completionCopy];
 }
 
-+ (void)presentUsingParentViewController:(id)a3 configuration:(id)a4 willPresent:(id)a5 completion:(id)a6
++ (void)presentUsingParentViewController:(id)controller configuration:(id)configuration willPresent:(id)present completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
+  controllerCopy = controller;
+  presentCopy = present;
+  completionCopy = completion;
+  configurationCopy = configuration;
   v13 = objc_alloc_init(DKNavigationController);
   v14 = objc_opt_new();
   [(DKNavigationController *)v13 pushViewController:v14 animated:0];
-  v15 = [[DKEraseFlow alloc] initWithNavigationController:v13 configuration:v12];
+  v15 = [[DKEraseFlow alloc] initWithNavigationController:v13 configuration:configurationCopy];
 
-  if (v10)
+  if (presentCopy)
   {
-    v10[2](v10, v15);
+    presentCopy[2](presentCopy, v15);
   }
 
   v20[0] = MEMORY[0x277D85DD0];
@@ -45,12 +45,12 @@
   v21 = v15;
   v22 = v13;
   v23 = v14;
-  v24 = v11;
-  v16 = v11;
+  v24 = completionCopy;
+  v16 = completionCopy;
   v17 = v14;
   v18 = v13;
   v19 = v15;
-  [(DKEraseFlow *)v19 showFlowContainerFromParentViewController:v9 completion:v20];
+  [(DKEraseFlow *)v19 showFlowContainerFromParentViewController:controllerCopy completion:v20];
 }
 
 void __85__DKPresenter_presentUsingParentViewController_configuration_willPresent_completion___block_invoke(id *a1)
@@ -96,9 +96,9 @@ void __85__DKPresenter_presentUsingParentViewController_configuration_willPresen
     _os_log_impl(&dword_248D68000, v2, OS_LOG_TYPE_DEFAULT, "Launching settings...", v5, 2u);
   }
 
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.General/Reset/exitBuddy"];
-  [v3 openSensitiveURL:v4 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v4 withOptions:0];
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface _INPBUpdateAlarmIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBUpdateAlarmIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBUpdateAlarmIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)addConflictAlarms:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setConflictAlarms:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addConflictAlarms:(id)alarms;
+- (void)encodeWithCoder:(id)coder;
+- (void)setConflictAlarms:(id)alarms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBUpdateAlarmIntentResponse
@@ -14,10 +14,10 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_conflictAlarms count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -37,8 +37,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -47,40 +47,40 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"conflictAlarms"];
+    [dictionary setObject:array forKeyedSubscript:@"conflictAlarms"];
   }
 
-  v11 = [(_INPBUpdateAlarmIntentResponse *)self updatedAlarm];
-  v12 = [v11 dictionaryRepresentation];
-  [v3 setObject:v12 forKeyedSubscript:@"updatedAlarm"];
+  updatedAlarm = [(_INPBUpdateAlarmIntentResponse *)self updatedAlarm];
+  dictionaryRepresentation2 = [updatedAlarm dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"updatedAlarm"];
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBUpdateAlarmIntentResponse *)self conflictAlarms];
-  v6 = [v4 conflictAlarms];
-  if ((v5 != 0) == (v6 == 0))
+  conflictAlarms = [(_INPBUpdateAlarmIntentResponse *)self conflictAlarms];
+  conflictAlarms2 = [equalCopy conflictAlarms];
+  if ((conflictAlarms != 0) == (conflictAlarms2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBUpdateAlarmIntentResponse *)self conflictAlarms];
-  if (v7)
+  conflictAlarms3 = [(_INPBUpdateAlarmIntentResponse *)self conflictAlarms];
+  if (conflictAlarms3)
   {
-    v8 = v7;
-    v9 = [(_INPBUpdateAlarmIntentResponse *)self conflictAlarms];
-    v10 = [v4 conflictAlarms];
-    v11 = [v9 isEqual:v10];
+    v8 = conflictAlarms3;
+    conflictAlarms4 = [(_INPBUpdateAlarmIntentResponse *)self conflictAlarms];
+    conflictAlarms5 = [equalCopy conflictAlarms];
+    v11 = [conflictAlarms4 isEqual:conflictAlarms5];
 
     if (!v11)
     {
@@ -92,12 +92,12 @@
   {
   }
 
-  v5 = [(_INPBUpdateAlarmIntentResponse *)self updatedAlarm];
-  v6 = [v4 updatedAlarm];
-  if ((v5 != 0) != (v6 == 0))
+  conflictAlarms = [(_INPBUpdateAlarmIntentResponse *)self updatedAlarm];
+  conflictAlarms2 = [equalCopy updatedAlarm];
+  if ((conflictAlarms != 0) != (conflictAlarms2 == 0))
   {
-    v12 = [(_INPBUpdateAlarmIntentResponse *)self updatedAlarm];
-    if (!v12)
+    updatedAlarm = [(_INPBUpdateAlarmIntentResponse *)self updatedAlarm];
+    if (!updatedAlarm)
     {
 
 LABEL_15:
@@ -105,10 +105,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBUpdateAlarmIntentResponse *)self updatedAlarm];
-    v15 = [v4 updatedAlarm];
-    v16 = [v14 isEqual:v15];
+    v13 = updatedAlarm;
+    updatedAlarm2 = [(_INPBUpdateAlarmIntentResponse *)self updatedAlarm];
+    updatedAlarm3 = [equalCopy updatedAlarm];
+    v16 = [updatedAlarm2 isEqual:updatedAlarm3];
 
     if (v16)
     {
@@ -128,46 +128,46 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBUpdateAlarmIntentResponse allocWithZone:](_INPBUpdateAlarmIntentResponse init];
-  v6 = [(NSArray *)self->_conflictAlarms copyWithZone:a3];
+  v6 = [(NSArray *)self->_conflictAlarms copyWithZone:zone];
   [(_INPBUpdateAlarmIntentResponse *)v5 setConflictAlarms:v6];
 
-  v7 = [(_INPBAlarm *)self->_updatedAlarm copyWithZone:a3];
+  v7 = [(_INPBAlarm *)self->_updatedAlarm copyWithZone:zone];
   [(_INPBUpdateAlarmIntentResponse *)v5 setUpdatedAlarm:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBUpdateAlarmIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBUpdateAlarmIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBUpdateAlarmIntentResponse)initWithCoder:(id)a3
+- (_INPBUpdateAlarmIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBUpdateAlarmIntentResponse *)self initWithData:v6];
+    self = [(_INPBUpdateAlarmIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -200,38 +200,38 @@ LABEL_13:
     while (v7);
   }
 
-  v11 = [(_INPBUpdateAlarmIntentResponse *)self updatedAlarm];
+  updatedAlarm = [(_INPBUpdateAlarmIntentResponse *)self updatedAlarm];
 
-  if (v11)
+  if (updatedAlarm)
   {
-    v12 = [(_INPBUpdateAlarmIntentResponse *)self updatedAlarm];
+    updatedAlarm2 = [(_INPBUpdateAlarmIntentResponse *)self updatedAlarm];
     PBDataWriterWriteSubmessage();
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addConflictAlarms:(id)a3
+- (void)addConflictAlarms:(id)alarms
 {
-  v4 = a3;
+  alarmsCopy = alarms;
   conflictAlarms = self->_conflictAlarms;
-  v8 = v4;
+  v8 = alarmsCopy;
   if (!conflictAlarms)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_conflictAlarms;
-    self->_conflictAlarms = v6;
+    self->_conflictAlarms = array;
 
-    v4 = v8;
+    alarmsCopy = v8;
     conflictAlarms = self->_conflictAlarms;
   }
 
-  [(NSArray *)conflictAlarms addObject:v4];
+  [(NSArray *)conflictAlarms addObject:alarmsCopy];
 }
 
-- (void)setConflictAlarms:(id)a3
+- (void)setConflictAlarms:(id)alarms
 {
-  v4 = [a3 mutableCopy];
+  v4 = [alarms mutableCopy];
   conflictAlarms = self->_conflictAlarms;
   self->_conflictAlarms = v4;
 

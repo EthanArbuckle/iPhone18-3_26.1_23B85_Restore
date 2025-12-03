@@ -1,26 +1,26 @@
 @interface MRRMultimodalMentionDetector
 + (id)sharedManager;
-- (BOOL)detectMentionsInUtterance:(id)a3 maximumCandidates:(unint64_t)a4 status:(id *)a5 completionBlock:(id)a6;
-- (BOOL)detectMentionsInUtterance:(id)a3 status:(id *)a4 completionBlock:(id)a5;
-- (BOOL)detectMentionsInUtterance:(id)a3 utteranceTokens:(id)a4 tokenEmbeddings:(id)a5 maximumCandidates:(unint64_t)a6 status:(id *)a7 completionBlock:(id)a8;
-- (MRRMultimodalMentionDetector)initWithAssets:(id)a3 forLocale:(id)a4 status:(id *)a5;
-- (id)detectMentionsInUtterance:(id)a3 maximumCandidates:(unint64_t)a4 status:(id *)a5;
-- (id)detectMentionsInUtterance:(id)a3 status:(id *)a4;
-- (id)detectMentionsInUtterance:(id)a3 utteranceTokens:(id)a4 tokenEmbeddings:(id)a5 maximumCandidates:(unint64_t)a6 status:(id *)a7;
-- (id)detectMentionsInUtteranceImpl:(id)a3 status:(id *)a4;
-- (id)detectMentionsInUtteranceRequest:(id)a3 status:(id *)a4;
+- (BOOL)detectMentionsInUtterance:(id)utterance maximumCandidates:(unint64_t)candidates status:(id *)status completionBlock:(id)block;
+- (BOOL)detectMentionsInUtterance:(id)utterance status:(id *)status completionBlock:(id)block;
+- (BOOL)detectMentionsInUtterance:(id)utterance utteranceTokens:(id)tokens tokenEmbeddings:(id)embeddings maximumCandidates:(unint64_t)candidates status:(id *)status completionBlock:(id)block;
+- (MRRMultimodalMentionDetector)initWithAssets:(id)assets forLocale:(id)locale status:(id *)status;
+- (id)detectMentionsInUtterance:(id)utterance maximumCandidates:(unint64_t)candidates status:(id *)status;
+- (id)detectMentionsInUtterance:(id)utterance status:(id *)status;
+- (id)detectMentionsInUtterance:(id)utterance utteranceTokens:(id)tokens tokenEmbeddings:(id)embeddings maximumCandidates:(unint64_t)candidates status:(id *)status;
+- (id)detectMentionsInUtteranceImpl:(id)impl status:(id *)status;
+- (id)detectMentionsInUtteranceRequest:(id)request status:(id *)status;
 @end
 
 @implementation MRRMultimodalMentionDetector
 
-- (BOOL)detectMentionsInUtterance:(id)a3 utteranceTokens:(id)a4 tokenEmbeddings:(id)a5 maximumCandidates:(unint64_t)a6 status:(id *)a7 completionBlock:(id)a8
+- (BOOL)detectMentionsInUtterance:(id)utterance utteranceTokens:(id)tokens tokenEmbeddings:(id)embeddings maximumCandidates:(unint64_t)candidates status:(id *)status completionBlock:(id)block
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
+  utteranceCopy = utterance;
+  tokensCopy = tokens;
+  embeddingsCopy = embeddings;
+  blockCopy = block;
   v18 = objc_opt_new();
-  [v18 setUtterance:v14];
+  [v18 setUtterance:utteranceCopy];
   [v18 setRequestId:0];
   [v18 setNluRequestId:0];
   [v18 setResultCandidateId:0];
@@ -28,18 +28,18 @@
   [v18 setTokenChain:v19];
 
   locale = self->_locale;
-  v21 = [v18 tokenChain];
-  [v21 setLocale:locale];
+  tokenChain = [v18 tokenChain];
+  [tokenChain setLocale:locale];
 
-  v22 = [v18 tokenChain];
-  [v22 setStringValue:v14];
+  tokenChain2 = [v18 tokenChain];
+  [tokenChain2 setStringValue:utteranceCopy];
 
-  v23 = [MEMORY[0x277CBEB18] arrayWithArray:v15];
-  v24 = [v18 tokenChain];
-  [v24 setTokens:v23];
+  v23 = [MEMORY[0x277CBEB18] arrayWithArray:tokensCopy];
+  tokenChain3 = [v18 tokenChain];
+  [tokenChain3 setTokens:v23];
 
-  [v18 setEmbeddingTensor:v16];
-  [v18 setMaxCandidates:a6];
+  [v18 setEmbeddingTensor:embeddingsCopy];
+  [v18 setMaxCandidates:candidates];
   v46[0] = 0;
   v46[1] = v46;
   v46[2] = 0x3032000000;
@@ -67,12 +67,12 @@
   v31 = v26;
   v34 = &v36;
   v35 = &v42;
-  v27 = v17;
+  v27 = blockCopy;
   v32 = v27;
   dispatch_async(dispatchQueue, block);
-  if (a7)
+  if (status)
   {
-    *a7 = v37[5];
+    *status = v37[5];
   }
 
   v28 = *(v43 + 24);
@@ -119,23 +119,23 @@ void __131__MRRMultimodalMentionDetector_detectMentionsInUtterance_utteranceToke
   (*(a1[6] + 16))();
 }
 
-- (BOOL)detectMentionsInUtterance:(id)a3 maximumCandidates:(unint64_t)a4 status:(id *)a5 completionBlock:(id)a6
+- (BOOL)detectMentionsInUtterance:(id)utterance maximumCandidates:(unint64_t)candidates status:(id *)status completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a6;
+  utteranceCopy = utterance;
+  blockCopy = block;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
   v37 = __Block_byref_object_copy_;
   v38 = __Block_byref_object_dispose_;
   v39 = objc_opt_new();
-  [v35[5] setUtterance:v10];
+  [v35[5] setUtterance:utteranceCopy];
   [v35[5] setRequestId:0];
   [v35[5] setNluRequestId:0];
   [v35[5] setResultCandidateId:0];
   [v35[5] setTokenChain:0];
   [v35[5] setEmbeddingTensor:0];
-  [v35[5] setMaxCandidates:a4];
+  [v35[5] setMaxCandidates:candidates];
   v32[0] = 0;
   v32[1] = v32;
   v32[2] = 0x3032000000;
@@ -162,12 +162,12 @@ void __131__MRRMultimodalMentionDetector_detectMentionsInUtterance_utteranceToke
   v19 = &v34;
   v20 = &v22;
   v21 = &v28;
-  v13 = v11;
+  v13 = blockCopy;
   v17 = v13;
   dispatch_async(dispatchQueue, v16);
-  if (a5)
+  if (status)
   {
-    *a5 = v23[5];
+    *status = v23[5];
   }
 
   v14 = *(v29 + 24);
@@ -215,13 +215,13 @@ void __99__MRRMultimodalMentionDetector_detectMentionsInUtterance_maximumCandida
   (*(a1[5] + 16))();
 }
 
-- (id)detectMentionsInUtterance:(id)a3 utteranceTokens:(id)a4 tokenEmbeddings:(id)a5 maximumCandidates:(unint64_t)a6 status:(id *)a7
+- (id)detectMentionsInUtterance:(id)utterance utteranceTokens:(id)tokens tokenEmbeddings:(id)embeddings maximumCandidates:(unint64_t)candidates status:(id *)status
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  utteranceCopy = utterance;
+  tokensCopy = tokens;
+  embeddingsCopy = embeddings;
   v15 = objc_opt_new();
-  [v15 setUtterance:v12];
+  [v15 setUtterance:utteranceCopy];
   [v15 setRequestId:0];
   [v15 setNluRequestId:0];
   [v15 setResultCandidateId:0];
@@ -229,18 +229,18 @@ void __99__MRRMultimodalMentionDetector_detectMentionsInUtterance_maximumCandida
   [v15 setTokenChain:v16];
 
   locale = self->_locale;
-  v18 = [v15 tokenChain];
-  [v18 setLocale:locale];
+  tokenChain = [v15 tokenChain];
+  [tokenChain setLocale:locale];
 
-  v19 = [v15 tokenChain];
-  [v19 setStringValue:v12];
+  tokenChain2 = [v15 tokenChain];
+  [tokenChain2 setStringValue:utteranceCopy];
 
-  v20 = [MEMORY[0x277CBEB18] arrayWithArray:v13];
-  v21 = [v15 tokenChain];
-  [v21 setTokens:v20];
+  v20 = [MEMORY[0x277CBEB18] arrayWithArray:tokensCopy];
+  tokenChain3 = [v15 tokenChain];
+  [tokenChain3 setTokens:v20];
 
-  [v15 setEmbeddingTensor:v14];
-  [v15 setMaxCandidates:a6];
+  [v15 setEmbeddingTensor:embeddingsCopy];
+  [v15 setMaxCandidates:candidates];
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -253,25 +253,25 @@ void __99__MRRMultimodalMentionDetector_detectMentionsInUtterance_maximumCandida
   v29 = __115__MRRMultimodalMentionDetector_detectMentionsInUtterance_utteranceTokens_tokenEmbeddings_maximumCandidates_status___block_invoke;
   v30 = &unk_2784B51F8;
   v33 = &v35;
-  v31 = self;
+  selfCopy = self;
   v23 = v15;
   v32 = v23;
-  v34 = a7;
+  statusCopy = status;
   dispatch_sync(dispatchQueue, &v27);
   v24 = v36[5];
   if (v24)
   {
-    v25 = [v24 mentions];
+    mentions = [v24 mentions];
   }
 
   else
   {
-    v25 = 0;
+    mentions = 0;
   }
 
   _Block_object_dispose(&v35, 8);
 
-  return v25;
+  return mentions;
 }
 
 uint64_t __115__MRRMultimodalMentionDetector_detectMentionsInUtterance_utteranceTokens_tokenEmbeddings_maximumCandidates_status___block_invoke(uint64_t a1)
@@ -284,17 +284,17 @@ uint64_t __115__MRRMultimodalMentionDetector_detectMentionsInUtterance_utterance
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)detectMentionsInUtterance:(id)a3 maximumCandidates:(unint64_t)a4 status:(id *)a5
+- (id)detectMentionsInUtterance:(id)utterance maximumCandidates:(unint64_t)candidates status:(id *)status
 {
-  v8 = a3;
+  utteranceCopy = utterance;
   v9 = objc_opt_new();
-  [v9 setUtterance:v8];
+  [v9 setUtterance:utteranceCopy];
   [v9 setRequestId:0];
   [v9 setNluRequestId:0];
   [v9 setResultCandidateId:0];
   [v9 setTokenChain:0];
   [v9 setEmbeddingTensor:0];
-  [v9 setMaxCandidates:a4];
+  [v9 setMaxCandidates:candidates];
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -307,25 +307,25 @@ uint64_t __115__MRRMultimodalMentionDetector_detectMentionsInUtterance_utterance
   v17 = __83__MRRMultimodalMentionDetector_detectMentionsInUtterance_maximumCandidates_status___block_invoke;
   v18 = &unk_2784B51F8;
   v21 = &v23;
-  v19 = self;
+  selfCopy = self;
   v11 = v9;
   v20 = v11;
-  v22 = a5;
+  statusCopy = status;
   dispatch_sync(dispatchQueue, &v15);
   v12 = v24[5];
   if (v12)
   {
-    v13 = [v12 mentions];
+    mentions = [v12 mentions];
   }
 
   else
   {
-    v13 = 0;
+    mentions = 0;
   }
 
   _Block_object_dispose(&v23, 8);
 
-  return v13;
+  return mentions;
 }
 
 uint64_t __83__MRRMultimodalMentionDetector_detectMentionsInUtterance_maximumCandidates_status___block_invoke(uint64_t a1)
@@ -338,10 +338,10 @@ uint64_t __83__MRRMultimodalMentionDetector_detectMentionsInUtterance_maximumCan
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)detectMentionsInUtterance:(id)a3 status:(id *)a4 completionBlock:(id)a5
+- (BOOL)detectMentionsInUtterance:(id)utterance status:(id *)status completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  utteranceCopy = utterance;
+  blockCopy = block;
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x3032000000;
@@ -365,16 +365,16 @@ uint64_t __83__MRRMultimodalMentionDetector_detectMentionsInUtterance_maximumCan
   v15[3] = &unk_2784B5220;
   v18 = v31;
   v15[4] = self;
-  v11 = v8;
+  v11 = utteranceCopy;
   v16 = v11;
   v19 = &v21;
   v20 = &v27;
-  v12 = v9;
+  v12 = blockCopy;
   v17 = v12;
   dispatch_async(dispatchQueue, v15);
-  if (a4)
+  if (status)
   {
-    *a4 = v22[5];
+    *status = v22[5];
   }
 
   v13 = *(v28 + 24);
@@ -407,9 +407,9 @@ uint64_t __81__MRRMultimodalMentionDetector_detectMentionsInUtterance_status_com
   return (*(a1[6] + 16))();
 }
 
-- (id)detectMentionsInUtteranceRequest:(id)a3 status:(id *)a4
+- (id)detectMentionsInUtteranceRequest:(id)request status:(id *)status
 {
-  v6 = a3;
+  requestCopy = request;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -422,10 +422,10 @@ uint64_t __81__MRRMultimodalMentionDetector_detectMentionsInUtterance_status_com
   v11[2] = __72__MRRMultimodalMentionDetector_detectMentionsInUtteranceRequest_status___block_invoke;
   v11[3] = &unk_2784B51F8;
   v11[4] = self;
-  v12 = v6;
+  v12 = requestCopy;
   v13 = &v15;
-  v14 = a4;
-  v8 = v6;
+  statusCopy = status;
+  v8 = requestCopy;
   dispatch_sync(dispatchQueue, v11);
   v9 = v16[5];
 
@@ -444,9 +444,9 @@ uint64_t __72__MRRMultimodalMentionDetector_detectMentionsInUtteranceRequest_sta
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)detectMentionsInUtterance:(id)a3 status:(id *)a4
+- (id)detectMentionsInUtterance:(id)utterance status:(id *)status
 {
-  v6 = a3;
+  utteranceCopy = utterance;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -459,10 +459,10 @@ uint64_t __72__MRRMultimodalMentionDetector_detectMentionsInUtteranceRequest_sta
   v11[2] = __65__MRRMultimodalMentionDetector_detectMentionsInUtterance_status___block_invoke;
   v11[3] = &unk_2784B51F8;
   v11[4] = self;
-  v12 = v6;
+  v12 = utteranceCopy;
   v13 = &v15;
-  v14 = a4;
-  v8 = v6;
+  statusCopy = status;
+  v8 = utteranceCopy;
   dispatch_sync(dispatchQueue, v11);
   v9 = v16[5];
 
@@ -481,9 +481,9 @@ uint64_t __65__MRRMultimodalMentionDetector_detectMentionsInUtterance_status___b
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)detectMentionsInUtteranceImpl:(id)a3 status:(id *)a4
+- (id)detectMentionsInUtteranceImpl:(id)impl status:(id *)status
 {
-  v4 = a3;
+  implCopy = impl;
   v5 = MRRLoggerForCategory(3);
   v6 = os_signpost_id_generate(v5);
 
@@ -502,51 +502,51 @@ uint64_t __65__MRRMultimodalMentionDetector_detectMentionsInUtterance_status___b
     _os_log_impl(&dword_2227A9000, v9, OS_LOG_TYPE_INFO, "BEGIN MDExecuteRequest", buf, 2u);
   }
 
-  v10 = [v4 requestId];
+  requestId = [implCopy requestId];
 
-  if (!v10)
+  if (!requestId)
   {
     v11 = objc_alloc_init(MEMORY[0x277D5DDD0]);
-    [v4 setRequestId:v11];
+    [implCopy setRequestId:v11];
   }
 
-  v12 = [v4 nluRequestId];
+  nluRequestId = [implCopy nluRequestId];
 
-  if (!v12)
+  if (!nluRequestId)
   {
     v13 = objc_alloc_init(MEMORY[0x277D5DDD0]);
-    [v4 setNluRequestId:v13];
+    [implCopy setNluRequestId:v13];
   }
 
-  v14 = [v4 resultCandidateId];
+  resultCandidateId = [implCopy resultCandidateId];
 
-  if (!v14)
+  if (!resultCandidateId)
   {
-    [v4 setResultCandidateId:&stru_2835DF758];
+    [implCopy setResultCandidateId:&stru_2835DF758];
   }
 
-  v15 = [v4 tokenChain];
-  if (v15)
+  tokenChain = [implCopy tokenChain];
+  if (tokenChain)
   {
-    v16 = [v4 tokenChain];
-    [v16 tokens];
+    tokenChain2 = [implCopy tokenChain];
+    [tokenChain2 tokens];
   }
 
-  [v4 embeddingTensor];
-  if (![v4 maxCandidates])
+  [implCopy embeddingTensor];
+  if (![implCopy maxCandidates])
   {
-    [v4 setMaxCandidates:0x7FFFFFFFLL];
+    [implCopy setMaxCandidates:0x7FFFFFFFLL];
   }
 
   if (!self->_locale)
   {
-    v17 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v18 = [v17 objectAtIndex:0];
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    v18 = [preferredLanguages objectAtIndex:0];
     locale = self->_locale;
     self->_locale = v18;
   }
 
-  [ConverterUtils convertMentionDetectorRequestFromObjCToCpp:v4];
+  [ConverterUtils convertMentionDetectorRequestFromObjCToCpp:implCopy];
   ptr = self->_mentionDetector.__ptr_;
   if (ptr)
   {
@@ -555,7 +555,7 @@ uint64_t __65__MRRMultimodalMentionDetector_detectMentionsInUtterance_status___b
   }
 
   v21 = +[MRRMultimodalMentionDetector name];
-  *a4 = [PredictorUtils getPredictStatusWithPredictorName:v21 domain:@"com.apple.siri.marrs.rr" code:137];
+  *status = [PredictorUtils getPredictStatusWithPredictorName:v21 domain:@"com.apple.siri.marrs.rr" code:137];
 
   v22 = MRRLoggerForCategory(1);
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -589,11 +589,11 @@ uint64_t __65__MRRMultimodalMentionDetector_detectMentionsInUtterance_status___b
   return 0;
 }
 
-- (MRRMultimodalMentionDetector)initWithAssets:(id)a3 forLocale:(id)a4 status:(id *)a5
+- (MRRMultimodalMentionDetector)initWithAssets:(id)assets forLocale:(id)locale status:(id *)status
 {
   v42 = *MEMORY[0x277D85DE8];
-  v34 = a3;
-  v33 = a4;
+  assetsCopy = assets;
+  localeCopy = locale;
   v6 = MRRLoggerForCategory(3);
   v7 = os_signpost_id_generate(v6);
 
@@ -618,16 +618,16 @@ uint64_t __65__MRRMultimodalMentionDetector_detectMentionsInUtterance_status___b
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     buf = 138412546;
-    buf_4 = v34;
+    buf_4 = assetsCopy;
     buf_12 = 2112;
-    *buf_14 = v33;
+    *buf_14 = localeCopy;
     _os_log_impl(&dword_2227A9000, v11, OS_LOG_TYPE_INFO, "initializing MD with asset path - %@, locale - %@", &buf, 0x16u);
   }
 
   v37.receiver = self;
   v37.super_class = MRRMultimodalMentionDetector;
   v36 = [(MRRMultimodalMentionDetector *)&v37 init];
-  v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithString:v33];
+  v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithString:localeCopy];
   locale = v36->_locale;
   v36->_locale = v12;
 
@@ -639,13 +639,13 @@ uint64_t __65__MRRMultimodalMentionDetector_detectMentionsInUtterance_status___b
   v17 = dispatch_get_global_queue(25, 0);
   dispatch_set_target_queue(v16, v17);
 
-  v18 = [MEMORY[0x277CCAA00] defaultManager];
-  LODWORD(v17) = [v18 fileExistsAtPath:v34];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  LODWORD(v17) = [defaultManager fileExistsAtPath:assetsCopy];
 
   if (v17)
   {
-    v19 = v34;
-    [v34 UTF8String];
+    v19 = assetsCopy;
+    [assetsCopy UTF8String];
     operator new();
   }
 
@@ -660,19 +660,19 @@ uint64_t __65__MRRMultimodalMentionDetector_detectMentionsInUtterance_status___b
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
     buf = 138412546;
-    buf_4 = v34;
+    buf_4 = assetsCopy;
     buf_12 = 2112;
-    *buf_14 = v33;
+    *buf_14 = localeCopy;
     _os_log_impl(&dword_2227A9000, v21, OS_LOG_TYPE_INFO, "Failed initializing MD with asset path - %@, locale - %@", &buf, 0x16u);
   }
 
   v22 = +[MRRMultimodalMentionDetector name];
-  [PredictorUtils reportInitStatusWithPredictorName:v22 domain:@"com.apple.siri.marrs.rr" code:0 locale:v33];
+  [PredictorUtils reportInitStatusWithPredictorName:v22 domain:@"com.apple.siri.marrs.rr" code:0 locale:localeCopy];
 
-  if (a5)
+  if (status)
   {
     v23 = +[MRRMultimodalMentionDetector name];
-    *a5 = [PredictorUtils getInitStatusWithPredictorName:v23 domain:@"com.apple.siri.marrs.rr" code:0];
+    *status = [PredictorUtils getInitStatusWithPredictorName:v23 domain:@"com.apple.siri.marrs.rr" code:0];
   }
 
   v24 = MRRLoggerForCategory(1);

@@ -1,33 +1,33 @@
 @interface PKPaymentSetupProductsSectionAlphabeticalFactory
-+ (id)_createSectionsListFromListItems:(id)a3;
-+ (id)generateSectionWithCredentialTypeSortingForItems:(id)a3 categorizingByCredentialTypes:(id)a4 withContext:(id)a5;
-+ (id)generateSectionWithDefaultSortingForItems:(id)a3 withContext:(id)a4;
-+ (void)_applyDefaultSortToSectionList:(id)a3 usingContext:(id)a4;
++ (id)_createSectionsListFromListItems:(id)items;
++ (id)generateSectionWithCredentialTypeSortingForItems:(id)items categorizingByCredentialTypes:(id)types withContext:(id)context;
++ (id)generateSectionWithDefaultSortingForItems:(id)items withContext:(id)context;
++ (void)_applyDefaultSortToSectionList:(id)list usingContext:(id)context;
 @end
 
 @implementation PKPaymentSetupProductsSectionAlphabeticalFactory
 
-+ (id)generateSectionWithDefaultSortingForItems:(id)a3 withContext:(id)a4
++ (id)generateSectionWithDefaultSortingForItems:(id)items withContext:(id)context
 {
-  v6 = a4;
-  v7 = [a1 _createSectionsListFromListItems:a3];
-  [a1 _applyDefaultSortToSectionList:v7 usingContext:v6];
+  contextCopy = context;
+  v7 = [self _createSectionsListFromListItems:items];
+  [self _applyDefaultSortToSectionList:v7 usingContext:contextCopy];
 
   return v7;
 }
 
-+ (id)generateSectionWithCredentialTypeSortingForItems:(id)a3 categorizingByCredentialTypes:(id)a4 withContext:(id)a5
++ (id)generateSectionWithCredentialTypeSortingForItems:(id)items categorizingByCredentialTypes:(id)types withContext:(id)context
 {
   v47 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v33 = a4;
-  v34 = a5;
+  itemsCopy = items;
+  typesCopy = types;
+  contextCopy = context;
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v7;
+  obj = itemsCopy;
   v9 = [obj countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v9)
   {
@@ -43,31 +43,31 @@
         }
 
         v13 = *(*(&v41 + 1) + 8 * i);
-        v14 = [v13 sectionIdentifier];
-        v15 = [v13 credentialSectionIdentifier];
-        v16 = v15;
-        if (v15)
+        sectionIdentifier = [v13 sectionIdentifier];
+        credentialSectionIdentifier = [v13 credentialSectionIdentifier];
+        v16 = credentialSectionIdentifier;
+        if (credentialSectionIdentifier)
         {
-          v17 = v15;
+          stringValue = credentialSectionIdentifier;
         }
 
         else
         {
           v18 = MEMORY[0x1E696AD98];
-          v19 = [v13 product];
-          v20 = [v18 numberWithInteger:{objc_msgSend(v19, "primaryCredentialType")}];
-          v17 = [v20 stringValue];
+          product = [v13 product];
+          v20 = [v18 numberWithInteger:{objc_msgSend(product, "primaryCredentialType")}];
+          stringValue = [v20 stringValue];
         }
 
-        v21 = [v8 objectForKey:v17];
+        v21 = [v8 objectForKey:stringValue];
         if (!v21)
         {
-          v21 = [[PKPaymentSetupProductsSectionListSection alloc] initWithIdentifier:v14 credentialTypeIdentifier:v17];
-          [v8 setObject:v21 forKey:v17];
+          v21 = [[PKPaymentSetupProductsSectionListSection alloc] initWithIdentifier:sectionIdentifier credentialTypeIdentifier:stringValue];
+          [v8 setObject:v21 forKey:stringValue];
         }
 
-        v22 = [(PKPaymentSetupProductsSectionListSection *)v21 sectionListItems];
-        [v22 addObject:v13];
+        sectionListItems = [(PKPaymentSetupProductsSectionListSection *)v21 sectionListItems];
+        [sectionListItems addObject:v13];
       }
 
       v10 = [obj countByEnumeratingWithState:&v41 objects:v46 count:16];
@@ -81,7 +81,7 @@
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v24 = v33;
+  v24 = typesCopy;
   v25 = [v24 countByEnumeratingWithState:&v37 objects:v45 count:16];
   if (v25)
   {
@@ -96,13 +96,13 @@
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v37 + 1) + 8 * j) stringValue];
-        v30 = [v8 objectForKey:v29];
+        stringValue2 = [*(*(&v37 + 1) + 8 * j) stringValue];
+        v30 = [v8 objectForKey:stringValue2];
 
         if (v30)
         {
-          v31 = [v30 sectionListItems];
-          [v31 sortUsingComparator:&__block_literal_global_246];
+          sectionListItems2 = [v30 sectionListItems];
+          [sectionListItems2 sortUsingComparator:&__block_literal_global_246];
 
           [v23 addObject:v30];
         }
@@ -114,7 +114,7 @@
     while (v26);
   }
 
-  [a1 _applyDefaultSortToSectionList:v23 usingContext:v34];
+  [self _applyDefaultSortToSectionList:v23 usingContext:contextCopy];
 
   return v23;
 }
@@ -160,16 +160,16 @@ uint64_t __143__PKPaymentSetupProductsSectionAlphabeticalFactory_generateSection
   return v10;
 }
 
-+ (id)_createSectionsListFromListItems:(id)a3
++ (id)_createSectionsListFromListItems:(id)items
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v6)
   {
@@ -185,18 +185,18 @@ uint64_t __143__PKPaymentSetupProductsSectionAlphabeticalFactory_generateSection
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
-        v11 = [v10 sectionIdentifier];
-        if (v11)
+        sectionIdentifier = [v10 sectionIdentifier];
+        if (sectionIdentifier)
         {
-          v12 = [v4 objectForKey:v11];
+          v12 = [v4 objectForKey:sectionIdentifier];
           if (!v12)
           {
-            v12 = [[PKPaymentSetupProductsSectionListSection alloc] initWithIdentifier:v11];
-            [v4 setObject:v12 forKey:v11];
+            v12 = [[PKPaymentSetupProductsSectionListSection alloc] initWithIdentifier:sectionIdentifier];
+            [v4 setObject:v12 forKey:sectionIdentifier];
           }
 
-          v13 = [(PKPaymentSetupProductsSectionListSection *)v12 sectionListItems];
-          [v13 addObject:v10];
+          sectionListItems = [(PKPaymentSetupProductsSectionListSection *)v12 sectionListItems];
+          [sectionListItems addObject:v10];
         }
       }
 
@@ -206,8 +206,8 @@ uint64_t __143__PKPaymentSetupProductsSectionAlphabeticalFactory_generateSection
     while (v7);
   }
 
-  v14 = [v4 allValues];
-  v15 = [v14 mutableCopy];
+  allValues = [v4 allValues];
+  v15 = [allValues mutableCopy];
 
   v25 = 0u;
   v26 = 0u;
@@ -228,8 +228,8 @@ uint64_t __143__PKPaymentSetupProductsSectionAlphabeticalFactory_generateSection
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v23 + 1) + 8 * j) sectionListItems];
-        [v21 sortUsingComparator:&__block_literal_global_18_0];
+        sectionListItems2 = [*(*(&v23 + 1) + 8 * j) sectionListItems];
+        [sectionListItems2 sortUsingComparator:&__block_literal_global_18_0];
       }
 
       v18 = [v16 countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -282,24 +282,24 @@ uint64_t __85__PKPaymentSetupProductsSectionAlphabeticalFactory__createSectionsL
   return v10;
 }
 
-+ (void)_applyDefaultSortToSectionList:(id)a3 usingContext:(id)a4
++ (void)_applyDefaultSortToSectionList:(id)list usingContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 primaryCountryName];
-  v8 = [v5 secondaryCountryName];
+  contextCopy = context;
+  listCopy = list;
+  primaryCountryName = [contextCopy primaryCountryName];
+  secondaryCountryName = [contextCopy secondaryCountryName];
 
-  v9 = [v7 isEqualToString:v8];
+  v9 = [primaryCountryName isEqualToString:secondaryCountryName];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __96__PKPaymentSetupProductsSectionAlphabeticalFactory__applyDefaultSortToSectionList_usingContext___block_invoke;
   v12[3] = &unk_1E8025988;
   v15 = v9 ^ 1;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
-  [v6 sortUsingComparator:v12];
+  v13 = primaryCountryName;
+  v14 = secondaryCountryName;
+  v10 = secondaryCountryName;
+  v11 = primaryCountryName;
+  [listCopy sortUsingComparator:v12];
 }
 
 uint64_t __96__PKPaymentSetupProductsSectionAlphabeticalFactory__applyDefaultSortToSectionList_usingContext___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -1,21 +1,21 @@
 @interface MKServerFormattedString
-+ (id)attributesForServerFormatStyle:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToServerFormattedString:(id)a3;
-- (MKServerFormattedString)initWithCoder:(id)a3;
-- (MKServerFormattedString)initWithComposedString:(id)a3;
-- (MKServerFormattedString)initWithGeoServerString:(id)a3 parameters:(id)a4;
-- (id)_attachmentTextForSFSymbol:(id)a3 attributes:(id)a4;
-- (id)_attributesByTokenForFormatStyles:(id)a3;
-- (id)_multiPartAttributedStringForComposedStringWithAttributes:(id)a3;
-- (id)_parametersByScrubbingUnusedOverrideVariablesFromParameters:(id)a3 geoServerString:(id)a4;
-- (id)_textAttachmentForAvatarWithAttributes:(id)a3;
-- (id)_textAttachmentForGeoArtwork:(id)a3 attributes:(id)a4 accessibilityText:(id)a5;
-- (id)_textAttachmentForManeuver:(int)a3 junctionInfo:(id)a4 defaultAttributes:(id)a5;
++ (id)attributesForServerFormatStyle:(int64_t)style;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToServerFormattedString:(id)string;
+- (MKServerFormattedString)initWithCoder:(id)coder;
+- (MKServerFormattedString)initWithComposedString:(id)string;
+- (MKServerFormattedString)initWithGeoServerString:(id)string parameters:(id)parameters;
+- (id)_attachmentTextForSFSymbol:(id)symbol attributes:(id)attributes;
+- (id)_attributesByTokenForFormatStyles:(id)styles;
+- (id)_multiPartAttributedStringForComposedStringWithAttributes:(id)attributes;
+- (id)_parametersByScrubbingUnusedOverrideVariablesFromParameters:(id)parameters geoServerString:(id)string;
+- (id)_textAttachmentForAvatarWithAttributes:(id)attributes;
+- (id)_textAttachmentForGeoArtwork:(id)artwork attributes:(id)attributes accessibilityText:(id)text;
+- (id)_textAttachmentForManeuver:(int)maneuver junctionInfo:(id)info defaultAttributes:(id)attributes;
 - (id)debugDescription;
-- (id)multiPartAttributedStringWithAttributes:(id)a3;
+- (id)multiPartAttributedStringWithAttributes:(id)attributes;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MKServerFormattedString
@@ -33,30 +33,30 @@
   v12[1] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v7 = [(MKServerFormattedString *)self multiPartAttributedStringWithAttributes:v6];
-  v8 = [v7 attributedString];
-  v9 = [v8 string];
+  attributedString = [v7 attributedString];
+  string = [attributedString string];
 
-  return v9;
+  return string;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(MKServerFormattedString *)self geoServerString];
-  v4 = [v3 hash];
-  v5 = [(MKServerFormattedString *)self parameters];
-  v6 = [v5 hash];
+  geoServerString = [(MKServerFormattedString *)self geoServerString];
+  v4 = [geoServerString hash];
+  parameters = [(MKServerFormattedString *)self parameters];
+  v6 = [parameters hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqualToServerFormattedString:(id)a3
+- (BOOL)isEqualToServerFormattedString:(id)string
 {
   v90 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MKServerFormattedString *)self geoServerString];
-  v6 = [v4 geoServerString];
-  v7 = v5;
-  v8 = v6;
+  stringCopy = string;
+  geoServerString = [(MKServerFormattedString *)self geoServerString];
+  geoServerString2 = [stringCopy geoServerString];
+  v7 = geoServerString;
+  v8 = geoServerString2;
   v9 = v8;
   if (!(v7 | v8))
   {
@@ -68,10 +68,10 @@
     goto LABEL_63;
   }
 
-  v17 = [v7 formatStrings];
-  v18 = [v9 formatStrings];
-  v19 = v17;
-  v20 = v18;
+  formatStrings = [v7 formatStrings];
+  formatStrings2 = [v9 formatStrings];
+  v19 = formatStrings;
+  v20 = formatStrings2;
   v21 = v20;
   if (v19 | v20)
   {
@@ -84,8 +84,8 @@ LABEL_63:
       goto LABEL_64;
     }
 
-    v73 = self;
-    v76 = v4;
+    selfCopy = self;
+    v76 = stringCopy;
     v35 = v21;
     v87 = 0u;
     v88 = 0u;
@@ -119,7 +119,7 @@ LABEL_63:
             {
 
               v21 = v35;
-              v4 = v76;
+              stringCopy = v76;
               v19 = v79;
               goto LABEL_62;
             }
@@ -139,15 +139,15 @@ LABEL_63:
     }
 
     v21 = v35;
-    self = v73;
-    v4 = v76;
+    self = selfCopy;
+    stringCopy = v76;
     v19 = v79;
   }
 
-  v22 = [v7 separators];
-  v23 = [v9 separators];
-  v24 = v22;
-  v25 = v23;
+  separators = [v7 separators];
+  separators2 = [v9 separators];
+  v24 = separators;
+  v25 = separators2;
   v26 = v25;
   if (v24 | v25)
   {
@@ -159,11 +159,11 @@ LABEL_61:
     }
 
     v84 = v26;
-    v77 = v4;
+    v77 = stringCopy;
     v80 = v19;
     v47 = v21;
     v71 = v24;
-    v74 = self;
+    selfCopy2 = self;
     v87 = 0u;
     v88 = 0u;
     v85 = 0u;
@@ -196,7 +196,7 @@ LABEL_61:
 
               v26 = v84;
               v21 = v47;
-              v4 = v77;
+              stringCopy = v77;
               v19 = v80;
               v24 = v71;
               goto LABEL_61;
@@ -218,8 +218,8 @@ LABEL_61:
 
     v19 = v80;
     v21 = v47;
-    self = v74;
-    v4 = v77;
+    self = selfCopy2;
+    stringCopy = v77;
     v24 = v71;
   }
 
@@ -228,10 +228,10 @@ LABEL_61:
     v84 = v25;
   }
 
-  v27 = [v7 formatTokens];
-  v28 = [v9 formatTokens];
-  v29 = v27;
-  v30 = v28;
+  formatTokens = [v7 formatTokens];
+  formatTokens2 = [v9 formatTokens];
+  v29 = formatTokens;
+  v30 = formatTokens2;
   v31 = v30;
   if (!(v29 | v30))
   {
@@ -249,9 +249,9 @@ LABEL_56:
 
   v70 = v21;
   v72 = v24;
-  v78 = v4;
+  v78 = stringCopy;
   v81 = v19;
-  v75 = self;
+  selfCopy3 = self;
   v87 = 0u;
   v88 = 0u;
   v85 = 0u;
@@ -278,7 +278,7 @@ LABEL_56:
         if (!v67)
         {
 
-          v4 = v78;
+          stringCopy = v78;
           v19 = v81;
           v21 = v70;
           v24 = v72;
@@ -298,22 +298,22 @@ LABEL_56:
     }
   }
 
-  self = v75;
-  v4 = v78;
+  self = selfCopy3;
+  stringCopy = v78;
   v19 = v81;
   v21 = v70;
   v24 = v72;
 LABEL_12:
-  v32 = [v7 alternativeString];
-  v33 = [v9 alternativeString];
-  if (!(v32 | v33))
+  alternativeString = [v7 alternativeString];
+  alternativeString2 = [v9 alternativeString];
+  if (!(alternativeString | alternativeString2))
   {
 
     goto LABEL_2;
   }
 
-  v68 = v33;
-  v82 = [v32 isEqual:v33];
+  v68 = alternativeString2;
+  v82 = [alternativeString isEqual:alternativeString2];
 
   if ((v82 & 1) == 0)
   {
@@ -323,10 +323,10 @@ LABEL_64:
   }
 
 LABEL_2:
-  v10 = [(MKServerFormattedString *)self parameters];
-  v11 = [v4 parameters];
-  v12 = v10;
-  v13 = v11;
+  parameters = [(MKServerFormattedString *)self parameters];
+  parameters2 = [stringCopy parameters];
+  v12 = parameters;
+  v13 = parameters2;
   if (v12 | v13 && (v14 = [v12 isEqual:v13], v13, v12, !v14))
   {
     v16 = 0;
@@ -335,7 +335,7 @@ LABEL_2:
   else
   {
     composedString = self->_composedString;
-    if (composedString | v4[3])
+    if (composedString | stringCopy[3])
     {
       v16 = [(GEOComposedString *)composedString isEqual:?];
     }
@@ -350,33 +350,33 @@ LABEL_65:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MKServerFormattedString *)self isEqualToServerFormattedString:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MKServerFormattedString *)self isEqualToServerFormattedString:v5];
   }
 
   return v6;
 }
 
-- (id)_attributesByTokenForFormatStyles:(id)a3
+- (id)_attributesByTokenForFormatStyles:(id)styles
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  stylesCopy = styles;
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(stylesCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = stylesCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -393,8 +393,8 @@ LABEL_65:
 
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [objc_opt_class() attributesForServerFormatStyle:{objc_msgSend(v10, "styleType", v14)}];
-        v12 = [v10 token];
-        [v4 setObject:v11 forKey:v12];
+        token = [v10 token];
+        [v4 setObject:v11 forKey:token];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -406,35 +406,35 @@ LABEL_65:
   return v4;
 }
 
-- (id)multiPartAttributedStringWithAttributes:(id)a3
+- (id)multiPartAttributedStringWithAttributes:(id)attributes
 {
   v240 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v177 = v4;
+  attributesCopy = attributes;
+  v177 = attributesCopy;
   if (self->_composedString)
   {
-    v5 = [(MKServerFormattedString *)self _multiPartAttributedStringForComposedStringWithAttributes:v4];
+    v5 = [(MKServerFormattedString *)self _multiPartAttributedStringForComposedStringWithAttributes:attributesCopy];
     goto LABEL_3;
   }
 
   v7 = MEMORY[0x1E69A2580];
-  v200 = self;
-  v8 = [(MKServerFormattedString *)self geoServerString];
-  v175 = [v7 serverFormattedStringByEvaluatingConditionsInString:v8];
+  selfCopy = self;
+  geoServerString = [(MKServerFormattedString *)self geoServerString];
+  v175 = [v7 serverFormattedStringByEvaluatingConditionsInString:geoServerString];
 
   v226 = 0;
   v227 = &v226;
   v228 = 0x3032000000;
   v229 = __Block_byref_object_copy__9981;
   v230 = __Block_byref_object_dispose__9982;
-  v231 = [v175 formatStrings];
-  v170 = [v175 formatStyles];
+  formatStrings = [v175 formatStrings];
+  formatStyles = [v175 formatStyles];
   v220 = 0;
   v221 = &v220;
   v222 = 0x3032000000;
   v223 = __Block_byref_object_copy__9981;
   v224 = __Block_byref_object_dispose__9982;
-  v225 = [v175 separators];
+  separators = [v175 separators];
   if (GEOConfigGetBOOL())
   {
     v219[0] = MEMORY[0x1E69E9820];
@@ -457,7 +457,7 @@ LABEL_65:
 
   v10 = objc_alloc(MEMORY[0x1E695DF70]);
   v179 = [v10 initWithCapacity:{objc_msgSend(v227[5], "count")}];
-  v176 = [(MKServerFormattedString *)v200 _attributesByTokenForFormatStyles:v170];
+  v176 = [(MKServerFormattedString *)selfCopy _attributesByTokenForFormatStyles:formatStyles];
   v217 = 0u;
   v218 = 0u;
   v215 = 0u;
@@ -489,13 +489,13 @@ LABEL_65:
           v16 = [v174 attributedStringWithStyleAttributes:v176 defaultAttributes:v177];
           v206 = [v16 mutableCopy];
 
-          v205 = [v206 mutableString];
+          mutableString = [v206 mutableString];
           v213 = 0u;
           v214 = 0u;
           v211 = 0u;
           v212 = 0u;
-          v182 = [v175 formatTokens];
-          v186 = [v182 countByEnumeratingWithState:&v211 objects:v232 count:16];
+          formatTokens = [v175 formatTokens];
+          v186 = [formatTokens countByEnumeratingWithState:&v211 objects:v232 count:16];
           if (v186)
           {
             v185 = *v212;
@@ -506,21 +506,21 @@ LABEL_65:
               {
                 if (*v212 != v185)
                 {
-                  objc_enumerationMutation(v182);
+                  objc_enumerationMutation(formatTokens);
                 }
 
                 v202 = *(*(&v211 + 1) + 8 * v194);
                 context = objc_autoreleasePoolPush();
-                v204 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-                v199 = [v202 token];
-                v18 = [v205 rangeOfString:?];
+                strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+                token = [v202 token];
+                v18 = [mutableString rangeOfString:?];
                 v210 = v17;
                 if (v18 != 0x7FFFFFFFFFFFFFFFLL && v17 != 0)
                 {
                   while (1)
                   {
                     v208 = [v206 attributesAtIndex:v18 effectiveRange:0];
-                    v20 = [v204 objectForKey:?];
+                    v20 = [strongToStrongObjectsMapTable objectForKey:?];
                     if (!v20)
                     {
                       break;
@@ -538,7 +538,7 @@ LABEL_108:
                     }
 
                     v99 = [v20 length] + v18;
-                    if ([v205 length] <= v99 || (v100 = objc_msgSend(v205, "length"), v100 == v99))
+                    if ([mutableString length] <= v99 || (v100 = objc_msgSend(mutableString, "length"), v100 == v99))
                     {
                       v210 = 0;
                       v18 = 0x7FFFFFFFFFFFFFFFLL;
@@ -546,7 +546,7 @@ LABEL_108:
 
                     else
                     {
-                      v101 = [v205 rangeOfString:v199 options:0 range:{v99, v100 - v99}];
+                      v101 = [mutableString rangeOfString:token options:0 range:{v99, v100 - v99}];
                       v210 = v102;
                       v18 = v101;
                     }
@@ -557,60 +557,60 @@ LABEL_108:
                     }
                   }
 
-                  v21 = [(MKServerFormattedString *)v200 parameters];
+                  parameters = [(MKServerFormattedString *)selfCopy parameters];
                   v22 = v202;
-                  v203 = v21;
+                  v203 = parameters;
                   v209 = v208;
                   v207 = v22;
                   if ([v22 type] == 11)
                   {
                     v23 = [v209 objectForKeyedSubscript:@"MKServerFormattedStringArtworkSizeAttribute"];
-                    v24 = v23;
+                    urlValue = v23;
                     if (v23)
                     {
-                      v25 = [v23 unsignedIntegerValue];
+                      unsignedIntegerValue = [v23 unsignedIntegerValue];
                     }
 
                     else
                     {
-                      v25 = 4;
+                      unsignedIntegerValue = 4;
                     }
 
                     v36 = [v209 objectForKeyedSubscript:@"MKServerFormattedStringArtworkFeatureTypeAttributeKey"];
                     v28 = v36;
                     if (v36)
                     {
-                      v37 = [v36 unsignedIntegerValue];
+                      unsignedIntegerValue2 = [v36 unsignedIntegerValue];
                     }
 
                     else
                     {
-                      v37 = 2;
+                      unsignedIntegerValue2 = 2;
                     }
 
-                    v38 = [v207 artworkValue];
-                    v39 = [MEMORY[0x1E69DCEB0] mainScreen];
-                    [v39 scale];
+                    artworkValue = [v207 artworkValue];
+                    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+                    [mainScreen scale];
                     v41 = v40;
 
                     v42 = [v209 objectForKeyedSubscript:@"MKServerFormattedStringArtworkDebugDescriptionOnlyAttributeKey"];
-                    v43 = [v42 BOOLValue];
+                    bOOLValue = [v42 BOOLValue];
 
-                    if (v43)
+                    if (bOOLValue)
                     {
-                      v44 = [v38 shieldDataSource];
-                      ShouldBeFlipped = ImageForShieldDataSourceTypeShouldBeFlipped([v44 shieldType]);
+                      shieldDataSource = [artworkValue shieldDataSource];
+                      ShouldBeFlipped = ImageForShieldDataSourceTypeShouldBeFlipped([shieldDataSource shieldType]);
 
-                      v46 = MKTransitArtworkDataSourceAllowMasking(v38);
-                      v47 = MKKeyForTransitArtwork(v38, v25, v37, ShouldBeFlipped, 0, 1.0, v41);
+                      v46 = MKTransitArtworkDataSourceAllowMasking(artworkValue);
+                      v47 = MKKeyForTransitArtwork(artworkValue, unsignedIntegerValue, unsignedIntegerValue2, ShouldBeFlipped, 0, 1.0, v41);
                       v48 = MEMORY[0x1E696AEC0];
-                      v49 = [v207 token];
-                      v50 = [v207 stringValue];
-                      v51 = v50;
+                      token2 = [v207 token];
+                      stringValue = [v207 stringValue];
+                      v51 = stringValue;
                       v52 = &stru_1F15B23C0;
-                      if (v50)
+                      if (stringValue)
                       {
-                        v53 = v50;
+                        v53 = stringValue;
                       }
 
                       else
@@ -623,14 +623,14 @@ LABEL_108:
                         v52 = @"can mask";
                       }
 
-                      v54 = [v48 stringWithFormat:@"{Artwork %@ '%@' %@ (%@)}", v49, v53, v47, v52];
+                      v54 = [v48 stringWithFormat:@"{Artwork %@ '%@' %@ (%@)}", token2, v53, v47, v52];
 
                       v30 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v54 attributes:v209];
                       goto LABEL_89;
                     }
 
                     v55 = +[MKTransitArtworkManager sharedInstance];
-                    v56 = [v55 transitArtworkImageWithDataSource:v38 size:v25 featureType:v37 scale:0 nightMode:v41];
+                    v56 = [v55 transitArtworkImageWithDataSource:artworkValue size:unsignedIntegerValue featureType:unsignedIntegerValue2 scale:0 nightMode:v41];
 
                     v57 = [v209 objectForKeyedSubscript:@"MKServerFormattedStringArtworkAlphaAttribute"];
                     [v57 doubleValue];
@@ -645,7 +645,7 @@ LABEL_108:
 
                     if (v56)
                     {
-                      if (MKTransitArtworkDataSourceAllowMasking(v38))
+                      if (MKTransitArtworkDataSourceAllowMasking(artworkValue))
                       {
                         v61 = [v209 objectForKeyedSubscript:v181];
                         if (v61)
@@ -667,8 +667,8 @@ LABEL_108:
 
                       v198 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
                       [v198 setImage:v54];
-                      v62 = [v207 accessibilityLabel];
-                      [v198 setAccessibilityLabel:v62];
+                      accessibilityLabel = [v207 accessibilityLabel];
+                      [v198 setAccessibilityLabel:accessibilityLabel];
 
                       v63 = [v209 objectForKeyedSubscript:v201];
                       [v54 size];
@@ -707,16 +707,16 @@ LABEL_73:
                         [v63 _mapkit_lineHeight];
                         v77 = v76;
                         v78 = [v209 objectForKeyedSubscript:@"MKServerFormattedStringArtworkMatchLineHeightAttributeKey"];
-                        v79 = [v78 BOOLValue];
+                        bOOLValue2 = [v78 BOOLValue];
 
                         v80 = [v209 objectForKeyedSubscript:@"MKServerFormattedStringArtworkLimitToLineHeightAttributeKey"];
-                        v81 = [v80 BOOLValue];
+                        bOOLValue3 = [v80 BOOLValue];
 
                         v82 = [v209 objectForKeyedSubscript:@"MKServerFormattedStringArtworkLimitToFontAscenderAttributeKey"];
-                        v83 = [v82 BOOLValue];
+                        bOOLValue4 = [v82 BOOLValue];
 
                         v84 = v65 / v67;
-                        if (v79 || (v73 > v77 ? (v85 = v81) : (v85 = 0), v85 == 1))
+                        if (bOOLValue2 || (v73 > v77 ? (v85 = bOOLValue3) : (v85 = 0), v85 == 1))
                         {
                           v71 = v84 * v77;
                         }
@@ -725,7 +725,7 @@ LABEL_73:
                         {
                           v86 = v73 > v75;
                           v87 = v84 * v75;
-                          if ((v83 & v86) != 0)
+                          if ((bOOLValue4 & v86) != 0)
                           {
                             v77 = v75;
                           }
@@ -735,7 +735,7 @@ LABEL_73:
                             v77 = v73;
                           }
 
-                          if ((v83 & v86) != 0)
+                          if ((bOOLValue4 & v86) != 0)
                           {
                             v71 = v87;
                           }
@@ -778,15 +778,15 @@ LABEL_91:
                     }
 
 LABEL_99:
-                    v94 = [v207 type];
-                    if (v94 == 9 || v94 == 3)
+                    type = [v207 type];
+                    if (type == 9 || type == 3)
                     {
                       v95 = [v209 objectForKeyedSubscript:v201];
                       if (v95)
                       {
                         v96 = [v30 mutableCopy];
-                        v97 = [v95 _mapkit_fontByAddingFeaturesForTimeDisplay];
-                        [v96 addAttribute:v201 value:v97 range:{0, objc_msgSend(v96, "length")}];
+                        _mapkit_fontByAddingFeaturesForTimeDisplay = [v95 _mapkit_fontByAddingFeaturesForTimeDisplay];
+                        [v96 addAttribute:v201 value:_mapkit_fontByAddingFeaturesForTimeDisplay range:{0, objc_msgSend(v96, "length")}];
 
                         v98 = [v96 copy];
                         v30 = v98;
@@ -803,18 +803,18 @@ LABEL_99:
                       v20 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1F15B23C0];
                     }
 
-                    [v204 setObject:v20 forKey:v209];
+                    [strongToStrongObjectsMapTable setObject:v20 forKey:v209];
                     goto LABEL_108;
                   }
 
                   if ([v22 type] == 14)
                   {
-                    v24 = [v22 urlValue];
+                    urlValue = [v22 urlValue];
                     v26 = objc_alloc(MEMORY[0x1E696AD40]);
-                    v27 = [v24 displayTitle];
-                    v28 = [v26 initWithString:v27];
+                    displayTitle = [urlValue displayTitle];
+                    v28 = [v26 initWithString:displayTitle];
 
-                    v29 = [v24 url];
+                    v29 = [urlValue url];
                     [v28 addAttribute:v192 value:v29 range:{0, objc_msgSend(v28, "length")}];
 
                     v30 = [v28 copy];
@@ -835,8 +835,8 @@ LABEL_92:
                       memset(buf, 0, 32);
                     }
 
-                    v92 = [v203 variableOverrides];
-                    v93 = [v91 _navigation_replacementForFormatToken:v207 options:buf overrideVariables:v92];
+                    variableOverrides = [v203 variableOverrides];
+                    v93 = [v91 _navigation_replacementForFormatToken:v207 options:buf overrideVariables:variableOverrides];
 
                     if (v93)
                     {
@@ -851,13 +851,13 @@ LABEL_92:
                     goto LABEL_99;
                   }
 
-                  v31 = [v22 maneuverValue];
-                  v32 = [v31 maneuverType];
+                  maneuverValue = [v22 maneuverValue];
+                  maneuverType = [maneuverValue maneuverType];
 
-                  if (v32 <= 0x27 && ((1 << v32) & 0x8600050000) != 0)
+                  if (maneuverType <= 0x27 && ((1 << maneuverType) & 0x8600050000) != 0)
                   {
-                    v24 = [v209 objectForKey:@"MKServerFormattedStringArtworkArrivalIconImageKey"];
-                    if (!v24)
+                    urlValue = [v209 objectForKey:@"MKServerFormattedStringArtworkArrivalIconImageKey"];
+                    if (!urlValue)
                     {
                       v33 = GEOFindOrCreateLog();
                       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -878,24 +878,24 @@ LABEL_45:
                     v35 = v34;
                     if (v34)
                     {
-                      v197 = v34;
+                      labelColor = v34;
                     }
 
                     else
                     {
-                      v197 = [MEMORY[0x1E69DC888] labelColor];
+                      labelColor = [MEMORY[0x1E69DC888] labelColor];
                     }
 
                     v103 = [v209 objectForKey:@"MKServerFormattedStringArtworkJunctionFillColorAttributeKey"];
                     v104 = v103;
                     if (v103)
                     {
-                      v196 = v103;
+                      secondaryLabelColor = v103;
                     }
 
                     else
                     {
-                      v196 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+                      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
                     }
 
                     v105 = [v209 objectForKey:@"MKServerFormattedStringArtworkSideLengthAttributeKey"];
@@ -915,20 +915,20 @@ LABEL_45:
 
                     [v105 _mapkit_cgFloatValue];
                     v108 = v107;
-                    v190 = [v207 maneuverValue];
-                    v189 = [v190 junctionInfo];
-                    v184 = [v189 junctionType];
-                    v188 = [v207 maneuverValue];
-                    v183 = [v188 maneuverType];
-                    v187 = [v207 maneuverValue];
-                    v109 = [v187 junctionInfo];
-                    v110 = [v109 drivingSide];
-                    v111 = [v207 maneuverValue];
-                    v112 = [v111 junctionInfo];
-                    v113 = [v112 junctionElements];
-                    v114 = [v207 maneuverValue];
-                    v115 = [v114 junctionInfo];
-                    v116 = [v115 junctionElementsCount];
+                    maneuverValue2 = [v207 maneuverValue];
+                    junctionInfo = [maneuverValue2 junctionInfo];
+                    junctionType = [junctionInfo junctionType];
+                    maneuverValue3 = [v207 maneuverValue];
+                    maneuverType2 = [maneuverValue3 maneuverType];
+                    maneuverValue4 = [v207 maneuverValue];
+                    junctionInfo2 = [maneuverValue4 junctionInfo];
+                    drivingSide = [junctionInfo2 drivingSide];
+                    maneuverValue5 = [v207 maneuverValue];
+                    junctionInfo3 = [maneuverValue5 junctionInfo];
+                    junctionElements = [junctionInfo3 junctionElements];
+                    maneuverValue6 = [v207 maneuverValue];
+                    junctionInfo4 = [maneuverValue6 junctionInfo];
+                    junctionElementsCount = [junctionInfo4 junctionElementsCount];
                     memset(v239, 0, sizeof(v239));
                     v238 = 0u;
                     v237 = 0u;
@@ -1002,225 +1002,225 @@ LABEL_45:
                     *&buf[216] = 0x4030000000000000;
                     *&v239[3] = 0x4020000000000000;
                     *&buf[80] = xmmword_1A30F70D0;
-                    v122 = [MEMORY[0x1E69DCEB0] mainScreen];
-                    [v122 scale];
+                    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+                    [mainScreen2 scale];
                     v124 = v123;
 
-                    v24 = MKJunctionArrowImage(v184, v183, v110, v113, v116, buf, v197, v196, v108, v108, v124, 0);
+                    urlValue = MKJunctionArrowImage(junctionType, maneuverType2, drivingSide, junctionElements, junctionElementsCount, buf, labelColor, secondaryLabelColor, v108, v108, v124, 0);
 
-                    if (!v24)
+                    if (!urlValue)
                     {
                       v125 = GEOFindOrCreateLog();
                       if (os_log_type_enabled(v125, OS_LOG_TYPE_INFO))
                       {
-                        v126 = [v207 maneuverValue];
-                        v127 = [v126 maneuverType];
-                        v128 = @"NO_TURN";
-                        switch(v127)
+                        maneuverValue7 = [v207 maneuverValue];
+                        maneuverType3 = [maneuverValue7 maneuverType];
+                        v127 = @"NO_TURN";
+                        switch(maneuverType3)
                         {
                           case 0:
                             break;
                           case 1:
-                            v128 = @"LEFT_TURN";
+                            v127 = @"LEFT_TURN";
                             break;
                           case 2:
-                            v128 = @"RIGHT_TURN";
+                            v127 = @"RIGHT_TURN";
                             break;
                           case 3:
-                            v128 = @"STRAIGHT_AHEAD";
+                            v127 = @"STRAIGHT_AHEAD";
                             break;
                           case 4:
-                            v128 = @"U_TURN";
+                            v127 = @"U_TURN";
                             break;
                           case 5:
-                            v128 = @"FOLLOW_ROAD";
+                            v127 = @"FOLLOW_ROAD";
                             break;
                           case 6:
-                            v128 = @"ENTER_ROUNDABOUT";
+                            v127 = @"ENTER_ROUNDABOUT";
                             break;
                           case 7:
-                            v128 = @"EXIT_ROUNDABOUT";
+                            v127 = @"EXIT_ROUNDABOUT";
                             break;
                           case 11:
-                            v128 = @"OFF_RAMP";
+                            v127 = @"OFF_RAMP";
                             break;
                           case 12:
-                            v128 = @"ON_RAMP";
+                            v127 = @"ON_RAMP";
                             break;
                           case 16:
-                            v128 = @"ARRIVE_END_OF_NAVIGATION";
+                            v127 = @"ARRIVE_END_OF_NAVIGATION";
                             break;
                           case 17:
-                            v128 = @"START_ROUTE";
+                            v127 = @"START_ROUTE";
                             break;
                           case 18:
-                            v128 = @"ARRIVE_AT_DESTINATION";
+                            v127 = @"ARRIVE_AT_DESTINATION";
                             break;
                           case 20:
-                            v128 = @"KEEP_LEFT";
+                            v127 = @"KEEP_LEFT";
                             break;
                           case 21:
-                            v128 = @"KEEP_RIGHT";
+                            v127 = @"KEEP_RIGHT";
                             break;
                           case 22:
-                            v128 = @"ENTER_FERRY";
+                            v127 = @"ENTER_FERRY";
                             break;
                           case 23:
-                            v128 = @"EXIT_FERRY";
+                            v127 = @"EXIT_FERRY";
                             break;
                           case 24:
-                            v128 = @"CHANGE_FERRY";
+                            v127 = @"CHANGE_FERRY";
                             break;
                           case 25:
-                            v128 = @"START_ROUTE_WITH_U_TURN";
+                            v127 = @"START_ROUTE_WITH_U_TURN";
                             break;
                           case 26:
-                            v128 = @"U_TURN_AT_ROUNDABOUT";
+                            v127 = @"U_TURN_AT_ROUNDABOUT";
                             break;
                           case 27:
-                            v128 = @"LEFT_TURN_AT_END";
+                            v127 = @"LEFT_TURN_AT_END";
                             break;
                           case 28:
-                            v128 = @"RIGHT_TURN_AT_END";
+                            v127 = @"RIGHT_TURN_AT_END";
                             break;
                           case 29:
-                            v128 = @"HIGHWAY_OFF_RAMP_LEFT";
+                            v127 = @"HIGHWAY_OFF_RAMP_LEFT";
                             break;
                           case 30:
-                            v128 = @"HIGHWAY_OFF_RAMP_RIGHT";
+                            v127 = @"HIGHWAY_OFF_RAMP_RIGHT";
                             break;
                           case 33:
-                            v128 = @"ARRIVE_AT_DESTINATION_LEFT";
+                            v127 = @"ARRIVE_AT_DESTINATION_LEFT";
                             break;
                           case 34:
-                            v128 = @"ARRIVE_AT_DESTINATION_RIGHT";
+                            v127 = @"ARRIVE_AT_DESTINATION_RIGHT";
                             break;
                           case 35:
-                            v128 = @"U_TURN_WHEN_POSSIBLE";
+                            v127 = @"U_TURN_WHEN_POSSIBLE";
                             break;
                           case 39:
-                            v128 = @"ARRIVE_END_OF_DIRECTIONS";
+                            v127 = @"ARRIVE_END_OF_DIRECTIONS";
                             break;
                           case 41:
-                            v128 = @"ROUNDABOUT_EXIT_1";
+                            v127 = @"ROUNDABOUT_EXIT_1";
                             break;
                           case 42:
-                            v128 = @"ROUNDABOUT_EXIT_2";
+                            v127 = @"ROUNDABOUT_EXIT_2";
                             break;
                           case 43:
-                            v128 = @"ROUNDABOUT_EXIT_3";
+                            v127 = @"ROUNDABOUT_EXIT_3";
                             break;
                           case 44:
-                            v128 = @"ROUNDABOUT_EXIT_4";
+                            v127 = @"ROUNDABOUT_EXIT_4";
                             break;
                           case 45:
-                            v128 = @"ROUNDABOUT_EXIT_5";
+                            v127 = @"ROUNDABOUT_EXIT_5";
                             break;
                           case 46:
-                            v128 = @"ROUNDABOUT_EXIT_6";
+                            v127 = @"ROUNDABOUT_EXIT_6";
                             break;
                           case 47:
-                            v128 = @"ROUNDABOUT_EXIT_7";
+                            v127 = @"ROUNDABOUT_EXIT_7";
                             break;
                           case 48:
-                            v128 = @"ROUNDABOUT_EXIT_8";
+                            v127 = @"ROUNDABOUT_EXIT_8";
                             break;
                           case 49:
-                            v128 = @"ROUNDABOUT_EXIT_9";
+                            v127 = @"ROUNDABOUT_EXIT_9";
                             break;
                           case 50:
-                            v128 = @"ROUNDABOUT_EXIT_10";
+                            v127 = @"ROUNDABOUT_EXIT_10";
                             break;
                           case 51:
-                            v128 = @"ROUNDABOUT_EXIT_11";
+                            v127 = @"ROUNDABOUT_EXIT_11";
                             break;
                           case 52:
-                            v128 = @"ROUNDABOUT_EXIT_12";
+                            v127 = @"ROUNDABOUT_EXIT_12";
                             break;
                           case 53:
-                            v128 = @"ROUNDABOUT_EXIT_13";
+                            v127 = @"ROUNDABOUT_EXIT_13";
                             break;
                           case 54:
-                            v128 = @"ROUNDABOUT_EXIT_14";
+                            v127 = @"ROUNDABOUT_EXIT_14";
                             break;
                           case 55:
-                            v128 = @"ROUNDABOUT_EXIT_15";
+                            v127 = @"ROUNDABOUT_EXIT_15";
                             break;
                           case 56:
-                            v128 = @"ROUNDABOUT_EXIT_16";
+                            v127 = @"ROUNDABOUT_EXIT_16";
                             break;
                           case 57:
-                            v128 = @"ROUNDABOUT_EXIT_17";
+                            v127 = @"ROUNDABOUT_EXIT_17";
                             break;
                           case 58:
-                            v128 = @"ROUNDABOUT_EXIT_18";
+                            v127 = @"ROUNDABOUT_EXIT_18";
                             break;
                           case 59:
-                            v128 = @"ROUNDABOUT_EXIT_19";
+                            v127 = @"ROUNDABOUT_EXIT_19";
                             break;
                           case 60:
-                            v128 = @"SHARP_LEFT_TURN";
+                            v127 = @"SHARP_LEFT_TURN";
                             break;
                           case 61:
-                            v128 = @"SHARP_RIGHT_TURN";
+                            v127 = @"SHARP_RIGHT_TURN";
                             break;
                           case 62:
-                            v128 = @"SLIGHT_LEFT_TURN";
+                            v127 = @"SLIGHT_LEFT_TURN";
                             break;
                           case 63:
-                            v128 = @"SLIGHT_RIGHT_TURN";
+                            v127 = @"SLIGHT_RIGHT_TURN";
                             break;
                           case 64:
-                            v128 = @"CHANGE_HIGHWAY";
+                            v127 = @"CHANGE_HIGHWAY";
                             break;
                           case 65:
-                            v128 = @"CHANGE_HIGHWAY_LEFT";
+                            v127 = @"CHANGE_HIGHWAY_LEFT";
                             break;
                           case 66:
-                            v128 = @"CHANGE_HIGHWAY_RIGHT";
+                            v127 = @"CHANGE_HIGHWAY_RIGHT";
                             break;
                           case 80:
-                            v128 = @"TOLL_STATION";
+                            v127 = @"TOLL_STATION";
                             break;
                           case 81:
-                            v128 = @"ENTER_TUNNEL";
+                            v127 = @"ENTER_TUNNEL";
                             break;
                           case 82:
-                            v128 = @"WAYPOINT_STOP";
+                            v127 = @"WAYPOINT_STOP";
                             break;
                           case 83:
-                            v128 = @"WAYPOINT_STOP_LEFT";
+                            v127 = @"WAYPOINT_STOP_LEFT";
                             break;
                           case 84:
-                            v128 = @"WAYPOINT_STOP_RIGHT";
+                            v127 = @"WAYPOINT_STOP_RIGHT";
                             break;
                           case 85:
-                            v128 = @"RESUME_ROUTE";
+                            v127 = @"RESUME_ROUTE";
                             break;
                           case 86:
-                            v128 = @"RESUME_ROUTE_WITH_U_TURN";
+                            v127 = @"RESUME_ROUTE_WITH_U_TURN";
                             break;
                           case 87:
-                            v128 = @"CUSTOM";
+                            v127 = @"CUSTOM";
                             break;
                           case 88:
-                            v128 = @"TURN_AROUND";
+                            v127 = @"TURN_AROUND";
                             break;
                           default:
-                            v128 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v127];
+                            v127 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", maneuverType3];
                             break;
                         }
 
                         *buf = 138412290;
-                        *&buf[4] = v128;
+                        *&buf[4] = v127;
                         _os_log_impl(&dword_1A2EA0000, v125, OS_LOG_TYPE_INFO, "Junction for maneuver type %@ could not be drawn; trying regular maneuver arrow", buf, 0xCu);
                       }
 
-                      v129 = [v207 maneuverValue];
-                      v130 = [v129 maneuverType];
-                      v131 = [v207 maneuverValue];
-                      v132 = [v131 junctionInfo];
-                      v133 = [v132 drivingSide];
+                      maneuverValue8 = [v207 maneuverValue];
+                      maneuverType4 = [maneuverValue8 maneuverType];
+                      maneuverValue9 = [v207 maneuverValue];
+                      junctionInfo5 = [maneuverValue9 junctionInfo];
+                      drivingSide2 = [junctionInfo5 drivingSide];
                       v134 = GEOConfigGetBOOL();
                       buf[0] = 0;
                       *&buf[8] = MKDefaultGuidanceManeuverMetrics_referenceSize;
@@ -1280,223 +1280,223 @@ LABEL_45:
                       v237 = v135;
                       v238 = v137;
                       LODWORD(v239[0]) = vuzp1_s8(v136, v136).u32[0];
-                      v139 = [MEMORY[0x1E69DCEB0] mainScreen];
-                      [v139 scale];
+                      mainScreen3 = [MEMORY[0x1E69DCEB0] mainScreen];
+                      [mainScreen3 scale];
                       v141 = v140;
 
-                      v24 = MKManeuverArrowImage(v130, v133, buf, v197, v196, 0, v108, v108, v141);
+                      urlValue = MKManeuverArrowImage(maneuverType4, drivingSide2, buf, labelColor, secondaryLabelColor, 0, v108, v108, v141);
 
-                      if (!v24)
+                      if (!urlValue)
                       {
                         v142 = GEOFindOrCreateLog();
                         if (os_log_type_enabled(v142, OS_LOG_TYPE_INFO))
                         {
-                          v143 = [v207 maneuverValue];
-                          v144 = [v143 maneuverType];
-                          v145 = @"NO_TURN";
-                          switch(v144)
+                          maneuverValue10 = [v207 maneuverValue];
+                          maneuverType5 = [maneuverValue10 maneuverType];
+                          v144 = @"NO_TURN";
+                          switch(maneuverType5)
                           {
                             case 0:
                               break;
                             case 1:
-                              v145 = @"LEFT_TURN";
+                              v144 = @"LEFT_TURN";
                               break;
                             case 2:
-                              v145 = @"RIGHT_TURN";
+                              v144 = @"RIGHT_TURN";
                               break;
                             case 3:
-                              v145 = @"STRAIGHT_AHEAD";
+                              v144 = @"STRAIGHT_AHEAD";
                               break;
                             case 4:
-                              v145 = @"U_TURN";
+                              v144 = @"U_TURN";
                               break;
                             case 5:
-                              v145 = @"FOLLOW_ROAD";
+                              v144 = @"FOLLOW_ROAD";
                               break;
                             case 6:
-                              v145 = @"ENTER_ROUNDABOUT";
+                              v144 = @"ENTER_ROUNDABOUT";
                               break;
                             case 7:
-                              v145 = @"EXIT_ROUNDABOUT";
+                              v144 = @"EXIT_ROUNDABOUT";
                               break;
                             case 11:
-                              v145 = @"OFF_RAMP";
+                              v144 = @"OFF_RAMP";
                               break;
                             case 12:
-                              v145 = @"ON_RAMP";
+                              v144 = @"ON_RAMP";
                               break;
                             case 16:
-                              v145 = @"ARRIVE_END_OF_NAVIGATION";
+                              v144 = @"ARRIVE_END_OF_NAVIGATION";
                               break;
                             case 17:
-                              v145 = @"START_ROUTE";
+                              v144 = @"START_ROUTE";
                               break;
                             case 18:
-                              v145 = @"ARRIVE_AT_DESTINATION";
+                              v144 = @"ARRIVE_AT_DESTINATION";
                               break;
                             case 20:
-                              v145 = @"KEEP_LEFT";
+                              v144 = @"KEEP_LEFT";
                               break;
                             case 21:
-                              v145 = @"KEEP_RIGHT";
+                              v144 = @"KEEP_RIGHT";
                               break;
                             case 22:
-                              v145 = @"ENTER_FERRY";
+                              v144 = @"ENTER_FERRY";
                               break;
                             case 23:
-                              v145 = @"EXIT_FERRY";
+                              v144 = @"EXIT_FERRY";
                               break;
                             case 24:
-                              v145 = @"CHANGE_FERRY";
+                              v144 = @"CHANGE_FERRY";
                               break;
                             case 25:
-                              v145 = @"START_ROUTE_WITH_U_TURN";
+                              v144 = @"START_ROUTE_WITH_U_TURN";
                               break;
                             case 26:
-                              v145 = @"U_TURN_AT_ROUNDABOUT";
+                              v144 = @"U_TURN_AT_ROUNDABOUT";
                               break;
                             case 27:
-                              v145 = @"LEFT_TURN_AT_END";
+                              v144 = @"LEFT_TURN_AT_END";
                               break;
                             case 28:
-                              v145 = @"RIGHT_TURN_AT_END";
+                              v144 = @"RIGHT_TURN_AT_END";
                               break;
                             case 29:
-                              v145 = @"HIGHWAY_OFF_RAMP_LEFT";
+                              v144 = @"HIGHWAY_OFF_RAMP_LEFT";
                               break;
                             case 30:
-                              v145 = @"HIGHWAY_OFF_RAMP_RIGHT";
+                              v144 = @"HIGHWAY_OFF_RAMP_RIGHT";
                               break;
                             case 33:
-                              v145 = @"ARRIVE_AT_DESTINATION_LEFT";
+                              v144 = @"ARRIVE_AT_DESTINATION_LEFT";
                               break;
                             case 34:
-                              v145 = @"ARRIVE_AT_DESTINATION_RIGHT";
+                              v144 = @"ARRIVE_AT_DESTINATION_RIGHT";
                               break;
                             case 35:
-                              v145 = @"U_TURN_WHEN_POSSIBLE";
+                              v144 = @"U_TURN_WHEN_POSSIBLE";
                               break;
                             case 39:
-                              v145 = @"ARRIVE_END_OF_DIRECTIONS";
+                              v144 = @"ARRIVE_END_OF_DIRECTIONS";
                               break;
                             case 41:
-                              v145 = @"ROUNDABOUT_EXIT_1";
+                              v144 = @"ROUNDABOUT_EXIT_1";
                               break;
                             case 42:
-                              v145 = @"ROUNDABOUT_EXIT_2";
+                              v144 = @"ROUNDABOUT_EXIT_2";
                               break;
                             case 43:
-                              v145 = @"ROUNDABOUT_EXIT_3";
+                              v144 = @"ROUNDABOUT_EXIT_3";
                               break;
                             case 44:
-                              v145 = @"ROUNDABOUT_EXIT_4";
+                              v144 = @"ROUNDABOUT_EXIT_4";
                               break;
                             case 45:
-                              v145 = @"ROUNDABOUT_EXIT_5";
+                              v144 = @"ROUNDABOUT_EXIT_5";
                               break;
                             case 46:
-                              v145 = @"ROUNDABOUT_EXIT_6";
+                              v144 = @"ROUNDABOUT_EXIT_6";
                               break;
                             case 47:
-                              v145 = @"ROUNDABOUT_EXIT_7";
+                              v144 = @"ROUNDABOUT_EXIT_7";
                               break;
                             case 48:
-                              v145 = @"ROUNDABOUT_EXIT_8";
+                              v144 = @"ROUNDABOUT_EXIT_8";
                               break;
                             case 49:
-                              v145 = @"ROUNDABOUT_EXIT_9";
+                              v144 = @"ROUNDABOUT_EXIT_9";
                               break;
                             case 50:
-                              v145 = @"ROUNDABOUT_EXIT_10";
+                              v144 = @"ROUNDABOUT_EXIT_10";
                               break;
                             case 51:
-                              v145 = @"ROUNDABOUT_EXIT_11";
+                              v144 = @"ROUNDABOUT_EXIT_11";
                               break;
                             case 52:
-                              v145 = @"ROUNDABOUT_EXIT_12";
+                              v144 = @"ROUNDABOUT_EXIT_12";
                               break;
                             case 53:
-                              v145 = @"ROUNDABOUT_EXIT_13";
+                              v144 = @"ROUNDABOUT_EXIT_13";
                               break;
                             case 54:
-                              v145 = @"ROUNDABOUT_EXIT_14";
+                              v144 = @"ROUNDABOUT_EXIT_14";
                               break;
                             case 55:
-                              v145 = @"ROUNDABOUT_EXIT_15";
+                              v144 = @"ROUNDABOUT_EXIT_15";
                               break;
                             case 56:
-                              v145 = @"ROUNDABOUT_EXIT_16";
+                              v144 = @"ROUNDABOUT_EXIT_16";
                               break;
                             case 57:
-                              v145 = @"ROUNDABOUT_EXIT_17";
+                              v144 = @"ROUNDABOUT_EXIT_17";
                               break;
                             case 58:
-                              v145 = @"ROUNDABOUT_EXIT_18";
+                              v144 = @"ROUNDABOUT_EXIT_18";
                               break;
                             case 59:
-                              v145 = @"ROUNDABOUT_EXIT_19";
+                              v144 = @"ROUNDABOUT_EXIT_19";
                               break;
                             case 60:
-                              v145 = @"SHARP_LEFT_TURN";
+                              v144 = @"SHARP_LEFT_TURN";
                               break;
                             case 61:
-                              v145 = @"SHARP_RIGHT_TURN";
+                              v144 = @"SHARP_RIGHT_TURN";
                               break;
                             case 62:
-                              v145 = @"SLIGHT_LEFT_TURN";
+                              v144 = @"SLIGHT_LEFT_TURN";
                               break;
                             case 63:
-                              v145 = @"SLIGHT_RIGHT_TURN";
+                              v144 = @"SLIGHT_RIGHT_TURN";
                               break;
                             case 64:
-                              v145 = @"CHANGE_HIGHWAY";
+                              v144 = @"CHANGE_HIGHWAY";
                               break;
                             case 65:
-                              v145 = @"CHANGE_HIGHWAY_LEFT";
+                              v144 = @"CHANGE_HIGHWAY_LEFT";
                               break;
                             case 66:
-                              v145 = @"CHANGE_HIGHWAY_RIGHT";
+                              v144 = @"CHANGE_HIGHWAY_RIGHT";
                               break;
                             case 80:
-                              v145 = @"TOLL_STATION";
+                              v144 = @"TOLL_STATION";
                               break;
                             case 81:
-                              v145 = @"ENTER_TUNNEL";
+                              v144 = @"ENTER_TUNNEL";
                               break;
                             case 82:
-                              v145 = @"WAYPOINT_STOP";
+                              v144 = @"WAYPOINT_STOP";
                               break;
                             case 83:
-                              v145 = @"WAYPOINT_STOP_LEFT";
+                              v144 = @"WAYPOINT_STOP_LEFT";
                               break;
                             case 84:
-                              v145 = @"WAYPOINT_STOP_RIGHT";
+                              v144 = @"WAYPOINT_STOP_RIGHT";
                               break;
                             case 85:
-                              v145 = @"RESUME_ROUTE";
+                              v144 = @"RESUME_ROUTE";
                               break;
                             case 86:
-                              v145 = @"RESUME_ROUTE_WITH_U_TURN";
+                              v144 = @"RESUME_ROUTE_WITH_U_TURN";
                               break;
                             case 87:
-                              v145 = @"CUSTOM";
+                              v144 = @"CUSTOM";
                               break;
                             case 88:
-                              v145 = @"TURN_AROUND";
+                              v144 = @"TURN_AROUND";
                               break;
                             default:
-                              v145 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v144];
+                              v144 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", maneuverType5];
                               break;
                           }
 
                           *buf = 138412290;
-                          *&buf[4] = v145;
+                          *&buf[4] = v144;
                           _os_log_impl(&dword_1A2EA0000, v142, OS_LOG_TYPE_INFO, "Maneuver type %@ could not be drawn; defaulting to .STRAIGHT_AHEAD", buf, 0xCu);
                         }
 
-                        v146 = [v207 maneuverValue];
-                        v147 = [v146 junctionInfo];
-                        v148 = [v147 drivingSide];
+                        maneuverValue11 = [v207 maneuverValue];
+                        junctionInfo6 = [maneuverValue11 junctionInfo];
+                        drivingSide3 = [junctionInfo6 drivingSide];
                         v149 = GEOConfigGetBOOL();
                         buf[0] = 0;
                         *&buf[8] = MKDefaultGuidanceManeuverMetrics_referenceSize;
@@ -1556,25 +1556,25 @@ LABEL_45:
                         v237 = v150;
                         v238 = v152;
                         LODWORD(v239[0]) = vuzp1_s8(v151, v151).u32[0];
-                        v154 = [MEMORY[0x1E69DCEB0] mainScreen];
-                        [v154 scale];
+                        mainScreen4 = [MEMORY[0x1E69DCEB0] mainScreen];
+                        [mainScreen4 scale];
                         v156 = v155;
 
-                        v24 = MKManeuverArrowImage(3, v148, buf, v197, v196, 0, v108, v108, v156);
+                        urlValue = MKManeuverArrowImage(3, drivingSide3, buf, labelColor, secondaryLabelColor, 0, v108, v108, v156);
                       }
                     }
                   }
 
                   v28 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
-                  [v28 setImage:v24];
-                  v38 = [v209 objectForKeyedSubscript:v201];
-                  [v38 capHeight];
+                  [v28 setImage:urlValue];
+                  artworkValue = [v209 objectForKeyedSubscript:v201];
+                  [artworkValue capHeight];
                   v158 = v157;
-                  [v24 size];
+                  [urlValue size];
                   v160 = v159;
-                  [v24 size];
+                  [urlValue size];
                   v162 = v161;
-                  [v24 size];
+                  [urlValue size];
                   [v28 setBounds:{0.0, round(v158 - v160) * 0.5, v162, v163}];
                   v30 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v28];
                   goto LABEL_90;
@@ -1587,7 +1587,7 @@ LABEL_30:
               }
 
               while (v194 != v186);
-              v164 = [v182 countByEnumeratingWithState:&v211 objects:v232 count:16];
+              v164 = [formatTokens countByEnumeratingWithState:&v211 objects:v232 count:16];
               v186 = v164;
             }
 
@@ -1662,32 +1662,32 @@ void __67__MKServerFormattedString_multiPartAttributedStringWithAttributes___blo
   *(v10 + 40) = v9;
 }
 
-- (id)_multiPartAttributedStringForComposedStringWithAttributes:(id)a3
+- (id)_multiPartAttributedStringForComposedStringWithAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   composedString = self->_composedString;
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __85__MKServerFormattedString__multiPartAttributedStringForComposedStringWithAttributes___block_invoke;
   v19 = &unk_1E76C7C28;
-  v20 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = attributesCopy;
   v21 = v6;
   v7 = [(GEOComposedString *)composedString optionsWithArgumentHandler:&v16];
-  [v7 setCreateAttributedString:{1, v16, v17, v18, v19, v20}];
+  [v7 setCreateAttributedString:{1, v16, v17, v18, v19, selfCopy}];
   [v7 setStringAttributes:v6];
   [v7 setPreserveIndividualComponents:1];
   [v7 setFormatStyleHandler:&__block_literal_global_10059];
   v8 = [(GEOComposedString *)self->_composedString stringResultWithOptions:v7];
-  v9 = [v8 attributedComponentStrings];
-  v10 = [v9 count];
+  attributedComponentStrings = [v8 attributedComponentStrings];
+  v10 = [attributedComponentStrings count];
 
   if (v10)
   {
     v11 = [MKMultiPartAttributedString alloc];
-    v12 = [v8 attributedComponentStrings];
-    v13 = [v8 attributedSeparatorStrings];
-    v14 = [(MKMultiPartAttributedString *)v11 initWithComponents:v12 separators:v13];
+    attributedComponentStrings2 = [v8 attributedComponentStrings];
+    attributedSeparatorStrings = [v8 attributedSeparatorStrings];
+    v14 = [(MKMultiPartAttributedString *)v11 initWithComponents:attributedComponentStrings2 separators:attributedSeparatorStrings];
   }
 
   else
@@ -1844,9 +1844,9 @@ id __85__MKServerFormattedString__multiPartAttributedStringForComposedStringWith
   return v4;
 }
 
-- (id)_textAttachmentForAvatarWithAttributes:(id)a3
+- (id)_textAttachmentForAvatarWithAttributes:(id)attributes
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
+  v3 = [attributes objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
   v4 = v3;
   if (v3)
   {
@@ -1877,16 +1877,16 @@ id __85__MKServerFormattedString__multiPartAttributedStringForComposedStringWith
   return v11;
 }
 
-- (id)_textAttachmentForManeuver:(int)a3 junctionInfo:(id)a4 defaultAttributes:(id)a5
+- (id)_textAttachmentForManeuver:(int)maneuver junctionInfo:(id)info defaultAttributes:(id)attributes
 {
-  v6 = *&a3;
+  v6 = *&maneuver;
   v87 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
+  infoCopy = info;
+  attributesCopy = attributes;
+  v9 = attributesCopy;
   if (v6 <= 0x27 && ((1 << v6) & 0x8600050000) != 0)
   {
-    v10 = [v8 objectForKey:@"MKServerFormattedStringArtworkArrivalIconImageKey"];
+    v10 = [attributesCopy objectForKey:@"MKServerFormattedStringArtworkArrivalIconImageKey"];
     if (v10)
     {
       goto LABEL_230;
@@ -1915,29 +1915,29 @@ id __85__MKServerFormattedString__multiPartAttributedStringForComposedStringWith
   v14 = v13;
   if (v13)
   {
-    v15 = v13;
+    labelColor = v13;
   }
 
   else
   {
-    v15 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  v16 = v15;
+  v16 = labelColor;
 
   v17 = [v9 objectForKey:@"MKServerFormattedStringArtworkJunctionFillColorAttributeKey"];
   v18 = v17;
   if (v17)
   {
-    v19 = v17;
+    secondaryLabelColor = v17;
   }
 
   else
   {
-    v19 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
   }
 
-  v80 = v19;
+  v80 = secondaryLabelColor;
 
   v20 = [v9 objectForKey:@"MKServerFormattedStringArtworkSideLengthAttributeKey"];
   if (!v20)
@@ -2150,10 +2150,10 @@ id __85__MKServerFormattedString__multiPartAttributedStringForComposedStringWith
   v79 = v20;
   [v20 _mapkit_cgFloatValue];
   v24 = v23;
-  v25 = [v7 junctionType];
-  v26 = [v7 drivingSide];
-  v27 = [v7 junctionElements];
-  v28 = [v7 junctionElementsCount];
+  junctionType = [infoCopy junctionType];
+  drivingSide = [infoCopy drivingSide];
+  junctionElements = [infoCopy junctionElements];
+  junctionElementsCount = [infoCopy junctionElementsCount];
   memset(v86, 0, sizeof(v86));
   v84 = 0u;
   v85 = 0u;
@@ -2229,14 +2229,14 @@ id __85__MKServerFormattedString__multiPartAttributedStringForComposedStringWith
   *&buf[216] = 0x4030000000000000;
   *&v86[3] = 0x4020000000000000;
   *&buf[80] = xmmword_1A30F70D0;
-  v39 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v39 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v41 = v40;
 
-  v42 = v27;
+  v42 = junctionElements;
   v43 = v16;
   v44 = v80;
-  v45 = MKJunctionArrowImage(v25, v6, v26, v42, v28, buf, v16, v80, v24, v24, v41, 0);
+  v45 = MKJunctionArrowImage(junctionType, v6, drivingSide, v42, junctionElementsCount, buf, v16, v80, v24, v24, v41, 0);
   if (!v45)
   {
     v44 = 0x1E69DC000;
@@ -2447,7 +2447,7 @@ LABEL_117:
       v43 = v16;
     }
 
-    v48 = [v7 drivingSide];
+    drivingSide2 = [infoCopy drivingSide];
     v49 = GEOConfigGetBOOL();
     buf[0] = 0;
     *&buf[8] = MKDefaultGuidanceManeuverMetrics_referenceSize;
@@ -2510,12 +2510,12 @@ LABEL_117:
     v84 = v51;
     v85 = v53;
     LODWORD(v86[0]) = vuzp1_s8(v52, v52).u32[0];
-    v55 = [v44[470] mainScreen];
-    [v55 scale];
+    mainScreen2 = [v44[470] mainScreen];
+    [mainScreen2 scale];
     v57 = v56;
 
     v44 = v80;
-    v45 = MKManeuverArrowImage(v6, v48, buf, v43, v80, 0, v24, v24, v57);
+    v45 = MKManeuverArrowImage(v6, drivingSide2, buf, v43, v80, 0, v24, v24, v57);
     if (!v45)
     {
       v58 = GEOFindOrCreateLog();
@@ -2753,7 +2753,7 @@ LABEL_224:
         _os_log_impl(&dword_1A2EA0000, v58, OS_LOG_TYPE_INFO, "Maneuver type %@ could not be drawn; defaulting to .STRAIGHT_AHEAD", buf, 0xCu);
       }
 
-      v59 = [v7 drivingSide];
+      drivingSide3 = [infoCopy drivingSide];
       v60 = GEOConfigGetBOOL();
       buf[0] = 0;
       *&buf[8] = MKDefaultGuidanceManeuverMetrics_referenceSize;
@@ -2815,12 +2815,12 @@ LABEL_224:
       v84 = v62;
       v85 = v64;
       LODWORD(v86[0]) = vuzp1_s8(v63, v63).u32[0];
-      v66 = [v16[470] mainScreen];
-      [v66 scale];
+      mainScreen3 = [v16[470] mainScreen];
+      [mainScreen3 scale];
       v68 = v67;
 
       v44 = v80;
-      v45 = MKManeuverArrowImage(3, v59, buf, v43, v80, 0, v24, v24, v68);
+      v45 = MKManeuverArrowImage(3, drivingSide3, buf, v43, v80, 0, v24, v24, v68);
     }
   }
 
@@ -2842,44 +2842,44 @@ LABEL_230:
   return v69;
 }
 
-- (id)_textAttachmentForGeoArtwork:(id)a3 attributes:(id)a4 accessibilityText:(id)a5
+- (id)_textAttachmentForGeoArtwork:(id)artwork attributes:(id)attributes accessibilityText:(id)text
 {
   v60 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 objectForKeyedSubscript:@"MKServerFormattedStringArtworkSizeAttribute"];
+  artworkCopy = artwork;
+  attributesCopy = attributes;
+  textCopy = text;
+  v10 = [attributesCopy objectForKeyedSubscript:@"MKServerFormattedStringArtworkSizeAttribute"];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 unsignedIntegerValue];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
   }
 
   else
   {
-    v12 = 4;
+    unsignedIntegerValue = 4;
   }
 
-  v13 = [v8 objectForKeyedSubscript:@"MKServerFormattedStringArtworkFeatureTypeAttributeKey"];
+  v13 = [attributesCopy objectForKeyedSubscript:@"MKServerFormattedStringArtworkFeatureTypeAttributeKey"];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v13 unsignedIntegerValue];
   }
 
   else
   {
-    v15 = 2;
+    unsignedIntegerValue2 = 2;
   }
 
-  v16 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v16 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v18 = v17;
 
   v19 = +[MKArtworkDataSourceCache sharedInstance];
-  v20 = [v19 imageForArtwork:v7 size:v12 featureType:v15 scale:0 nightMode:v18];
+  v20 = [v19 imageForArtwork:artworkCopy size:unsignedIntegerValue featureType:unsignedIntegerValue2 scale:0 nightMode:v18];
 
-  v21 = [v8 objectForKeyedSubscript:@"MKServerFormattedStringArtworkAlphaAttribute"];
+  v21 = [attributesCopy objectForKeyedSubscript:@"MKServerFormattedStringArtworkAlphaAttribute"];
   [v21 doubleValue];
   v23 = v22;
 
@@ -2892,7 +2892,7 @@ LABEL_230:
 
   if (v20)
   {
-    if (MKTransitArtworkDataSourceAllowMasking(v7))
+    if (MKTransitArtworkDataSourceAllowMasking(artworkCopy))
     {
       v25 = [v20 imageWithRenderingMode:2];
 
@@ -2901,12 +2901,12 @@ LABEL_230:
 
     v26 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
     [v26 setImage:v20];
-    [v26 setAccessibilityLabel:v9];
-    v27 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
+    [v26 setAccessibilityLabel:textCopy];
+    v27 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
     [v20 size];
     v29 = v28;
     v31 = v30;
-    v32 = [v8 objectForKey:@"MKServerFormattedStringArtworkScaleAttributeKey"];
+    v32 = [attributesCopy objectForKey:@"MKServerFormattedStringArtworkScaleAttributeKey"];
     v33 = v32;
     if (v32)
     {
@@ -2918,34 +2918,34 @@ LABEL_230:
       {
 LABEL_15:
         v55 = v11;
-        v56 = v9;
-        v57 = v7;
+        v56 = textCopy;
+        v57 = artworkCopy;
         v38 = v29 / v31;
         [v27 ascender];
         v40 = v39;
         [v27 _mapkit_lineHeight];
         v42 = v41;
-        v43 = [v8 objectForKeyedSubscript:@"MKServerFormattedStringArtworkMatchLineHeightAttributeKey"];
-        v44 = [v43 BOOLValue];
+        v43 = [attributesCopy objectForKeyedSubscript:@"MKServerFormattedStringArtworkMatchLineHeightAttributeKey"];
+        bOOLValue = [v43 BOOLValue];
 
-        v45 = [v8 objectForKeyedSubscript:@"MKServerFormattedStringArtworkLimitToLineHeightAttributeKey"];
-        v46 = [v45 BOOLValue];
+        v45 = [attributesCopy objectForKeyedSubscript:@"MKServerFormattedStringArtworkLimitToLineHeightAttributeKey"];
+        bOOLValue2 = [v45 BOOLValue];
 
-        v47 = [v8 objectForKeyedSubscript:@"MKServerFormattedStringArtworkLimitToFontAscenderAttributeKey"];
-        v48 = [v47 BOOLValue];
+        v47 = [attributesCopy objectForKeyedSubscript:@"MKServerFormattedStringArtworkLimitToFontAscenderAttributeKey"];
+        bOOLValue3 = [v47 BOOLValue];
 
-        if (v44)
+        if (bOOLValue)
         {
           v35 = v38 * v42;
-          v9 = v56;
-          v7 = v57;
+          textCopy = v56;
+          artworkCopy = v57;
         }
 
         else
         {
           if (v37 > v42)
           {
-            v49 = v46;
+            v49 = bOOLValue2;
           }
 
           else
@@ -2953,7 +2953,7 @@ LABEL_15:
             v49 = 0;
           }
 
-          v9 = v56;
+          textCopy = v56;
           if (v49 == 1)
           {
             v35 = v38 * v42;
@@ -2962,7 +2962,7 @@ LABEL_15:
           else
           {
             v50 = v37 > v40;
-            if ((v48 & v50) != 0)
+            if ((bOOLValue3 & v50) != 0)
             {
               v42 = v40;
             }
@@ -2972,13 +2972,13 @@ LABEL_15:
               v42 = v37;
             }
 
-            if ((v48 & v50) != 0)
+            if ((bOOLValue3 & v50) != 0)
             {
               v35 = v38 * v40;
             }
           }
 
-          v7 = v57;
+          artworkCopy = v57;
         }
 
         v11 = v55;
@@ -3015,7 +3015,7 @@ LABEL_34:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v59 = v7;
+    v59 = artworkCopy;
     _os_log_impl(&dword_1A2EA0000, v20, OS_LOG_TYPE_ERROR, "Could not find requested shield: %@", buf, 0xCu);
   }
 
@@ -3025,26 +3025,26 @@ LABEL_37:
   return v26;
 }
 
-- (id)_attachmentTextForSFSymbol:(id)a3 attributes:(id)a4
+- (id)_attachmentTextForSFSymbol:(id)symbol attributes:(id)attributes
 {
-  v5 = a4;
-  v6 = [a3 symbolName];
-  if (v6)
+  attributesCopy = attributes;
+  symbolName = [symbol symbolName];
+  if (symbolName)
   {
-    v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
-    v8 = [v5 objectForKey:@"MKServerFormattedStringArtworkSFSymbolScaleAttributeKey"];
+    v7 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
+    v8 = [attributesCopy objectForKey:@"MKServerFormattedStringArtworkSFSymbolScaleAttributeKey"];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 integerValue];
+      integerValue = [v8 integerValue];
     }
 
     else
     {
-      v10 = 1;
+      integerValue = 1;
     }
 
-    v12 = [v5 objectForKey:@"MKServerFormattedStringArtworkSFSymbolStyleAttributeKey"];
+    v12 = [attributesCopy objectForKey:@"MKServerFormattedStringArtworkSFSymbolStyleAttributeKey"];
     v13 = v12;
     if (v12)
     {
@@ -3059,8 +3059,8 @@ LABEL_37:
 
     v16 = MEMORY[0x1E69DCAD8];
     [v7 pointSize];
-    v17 = [v16 configurationWithPointSize:v15 weight:v10 scale:?];
-    v18 = [MEMORY[0x1E69DCAB8] _mapkit_systemImageNamed:v6];
+    v17 = [v16 configurationWithPointSize:v15 weight:integerValue scale:?];
+    v18 = [MEMORY[0x1E69DCAB8] _mapkit_systemImageNamed:symbolName];
     v19 = [v18 _mapkit_imageWithSymbolConfiguration:v17];
 
     v20 = [v19 imageWithRenderingMode:2];
@@ -3071,7 +3071,7 @@ LABEL_37:
       [v21 setImage:v20];
       v22 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v21];
       v11 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:v22];
-      [v11 addAttributes:v5 range:{0, objc_msgSend(v11, "length")}];
+      [v11 addAttributes:attributesCopy range:{0, objc_msgSend(v11, "length")}];
     }
 
     else
@@ -3088,19 +3088,19 @@ LABEL_37:
   return v11;
 }
 
-- (id)_parametersByScrubbingUnusedOverrideVariablesFromParameters:(id)a3 geoServerString:(id)a4
+- (id)_parametersByScrubbingUnusedOverrideVariablesFromParameters:(id)parameters geoServerString:(id)string
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  parametersCopy = parameters;
+  stringCopy = string;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v21 = v6;
-  v8 = [v6 formatTokens];
-  v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v21 = stringCopy;
+  formatTokens = [stringCopy formatTokens];
+  v9 = [formatTokens countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -3111,31 +3111,31 @@ LABEL_37:
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(formatTokens);
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [v5 variableOverrides];
-        v15 = [v13 token];
-        v16 = [v14 objectForKeyedSubscript:v15];
+        variableOverrides = [parametersCopy variableOverrides];
+        token = [v13 token];
+        v16 = [variableOverrides objectForKeyedSubscript:token];
 
         if (v16)
         {
-          v17 = [v13 token];
-          [v7 setObject:v16 forKeyedSubscript:v17];
+          token2 = [v13 token];
+          [dictionary setObject:v16 forKeyedSubscript:token2];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v10 = [formatTokens countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v10);
   }
 
   v18 = [MKServerFormattedStringParameters alloc];
-  if (v5)
+  if (parametersCopy)
   {
-    [v5 options];
+    [parametersCopy options];
   }
 
   else
@@ -3143,37 +3143,37 @@ LABEL_37:
     memset(v22, 0, sizeof(v22));
   }
 
-  v19 = [(MKServerFormattedStringParameters *)v18 initWithOptions:v22 variableOverrides:v7];
+  v19 = [(MKServerFormattedStringParameters *)v18 initWithOptions:v22 variableOverrides:dictionary];
 
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   geoServerString = self->_geoServerString;
-  v5 = a3;
-  [v5 encodeObject:geoServerString forKey:@"geoServerString"];
-  [v5 encodeObject:self->_parameters forKey:@"parameters"];
-  [v5 encodeObject:self->_composedString forKey:@"composedString"];
+  coderCopy = coder;
+  [coderCopy encodeObject:geoServerString forKey:@"geoServerString"];
+  [coderCopy encodeObject:self->_parameters forKey:@"parameters"];
+  [coderCopy encodeObject:self->_composedString forKey:@"composedString"];
 }
 
-- (MKServerFormattedString)initWithCoder:(id)a3
+- (MKServerFormattedString)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MKServerFormattedString;
   v5 = [(MKServerFormattedString *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"geoServerString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"geoServerString"];
     geoServerString = v5->_geoServerString;
     v5->_geoServerString = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameters"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameters"];
     parameters = v5->_parameters;
     v5->_parameters = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"composedString"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"composedString"];
     composedString = v5->_composedString;
     v5->_composedString = v10;
   }
@@ -3181,33 +3181,33 @@ LABEL_37:
   return v5;
 }
 
-- (MKServerFormattedString)initWithComposedString:(id)a3
+- (MKServerFormattedString)initWithComposedString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = MKServerFormattedString;
   v6 = [(MKServerFormattedString *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_composedString, a3);
+    objc_storeStrong(&v6->_composedString, string);
   }
 
   return v7;
 }
 
-- (MKServerFormattedString)initWithGeoServerString:(id)a3 parameters:(id)a4
+- (MKServerFormattedString)initWithGeoServerString:(id)string parameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
+  stringCopy = string;
+  parametersCopy = parameters;
   v14.receiver = self;
   v14.super_class = MKServerFormattedString;
   v9 = [(MKServerFormattedString *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_geoServerString, a3);
-    v11 = [(MKServerFormattedString *)v10 _parametersByScrubbingUnusedOverrideVariablesFromParameters:v8 geoServerString:v10->_geoServerString];
+    objc_storeStrong(&v9->_geoServerString, string);
+    v11 = [(MKServerFormattedString *)v10 _parametersByScrubbingUnusedOverrideVariablesFromParameters:parametersCopy geoServerString:v10->_geoServerString];
     parameters = v10->_parameters;
     v10->_parameters = v11;
   }
@@ -3215,29 +3215,29 @@ LABEL_37:
   return v10;
 }
 
-+ (id)attributesForServerFormatStyle:(int64_t)a3
++ (id)attributesForServerFormatStyle:(int64_t)style
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  if (a3 == 4)
+  if (style == 4)
   {
     v11 = *MEMORY[0x1E69DB650];
-    v4 = [MEMORY[0x1E69DC888] linkColor];
-    v12 = v4;
+    linkColor = [MEMORY[0x1E69DC888] linkColor];
+    v12 = linkColor;
     v5 = MEMORY[0x1E695DF20];
     v6 = &v12;
     v7 = &v11;
     goto LABEL_9;
   }
 
-  if (a3 == 2)
+  if (style == 2)
   {
     v8 = +[MKInfoCardThemeManager currentTheme];
-    v4 = [v8 transitDelayedTextColor];
+    linkColor = [v8 transitDelayedTextColor];
 
-    if (v4)
+    if (linkColor)
     {
       v13 = *MEMORY[0x1E69DB650];
-      v14 = v4;
+      v14 = linkColor;
       v5 = MEMORY[0x1E695DF20];
       v6 = &v14;
       v7 = &v13;
@@ -3249,22 +3249,22 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a3 != 1)
+  if (style != 1)
   {
     v9 = MEMORY[0x1E695E0F8];
     goto LABEL_13;
   }
 
   v3 = +[MKInfoCardThemeManager currentTheme];
-  v4 = [v3 transitOntimeTextColor];
+  linkColor = [v3 transitOntimeTextColor];
 
-  if (!v4)
+  if (!linkColor)
   {
     goto LABEL_11;
   }
 
   v15 = *MEMORY[0x1E69DB650];
-  v16[0] = v4;
+  v16[0] = linkColor;
   v5 = MEMORY[0x1E695DF20];
   v6 = v16;
   v7 = &v15;

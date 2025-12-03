@@ -1,32 +1,32 @@
 @interface GKSavedGameManager
 + (id)sharedManager;
 - (GKSavedGameManager)init;
-- (id)currentDocumentWithName:(id)a3;
-- (id)documentForSavedGame:(id)a3;
-- (id)documentToSaveWithName:(id)a3;
+- (id)currentDocumentWithName:(id)name;
+- (id)documentForSavedGame:(id)game;
+- (id)documentToSaveWithName:(id)name;
 - (id)errorForNoUbiquity;
-- (id)fileURLForName:(id)a3;
-- (id)savedGameForDocument:(id)a3;
-- (id)savedGameForDocuments:(id)a3;
-- (id)savedGamesWithName:(id)a3;
-- (void)addDocument:(id)a3;
+- (id)fileURLForName:(id)name;
+- (id)savedGameForDocument:(id)document;
+- (id)savedGameForDocuments:(id)documents;
+- (id)savedGamesWithName:(id)name;
+- (void)addDocument:(id)document;
 - (void)callFetchHandlers;
 - (void)dealloc;
-- (void)deleteSavedGamesWithName:(id)a3 completionHandler:(id)a4;
+- (void)deleteSavedGamesWithName:(id)name completionHandler:(id)handler;
 - (void)disableQueryUpdates;
-- (void)documentConflictStateChanged:(id)a3;
-- (void)documentModified:(id)a3;
+- (void)documentConflictStateChanged:(id)changed;
+- (void)documentModified:(id)modified;
 - (void)enableQueryUpdates;
-- (void)fetchSavedGamesWithCompletionHandler:(id)a3;
-- (void)loadDataForSavedGame:(id)a3 completionHandler:(id)a4;
-- (void)queryDidFinishGathering:(id)a3;
-- (void)queryDidUpdate:(id)a3;
-- (void)removeDocument:(id)a3;
-- (void)resolveConflictingSavedGames:(id)a3 withData:(id)a4 completionHandler:(id)a5;
-- (void)saveGameData:(id)a3 withName:(id)a4 completionHandler:(id)a5;
+- (void)fetchSavedGamesWithCompletionHandler:(id)handler;
+- (void)loadDataForSavedGame:(id)game completionHandler:(id)handler;
+- (void)queryDidFinishGathering:(id)gathering;
+- (void)queryDidUpdate:(id)update;
+- (void)removeDocument:(id)document;
+- (void)resolveConflictingSavedGames:(id)games withData:(id)data completionHandler:(id)handler;
+- (void)saveGameData:(id)data withName:(id)name completionHandler:(id)handler;
 - (void)setupUbiquity;
 - (void)startSavedGameQuery;
-- (void)updateSavedGameDocumentsForQueryWithHandler:(id)a3;
+- (void)updateSavedGameDocumentsForQueryWithHandler:(id)handler;
 @end
 
 @implementation GKSavedGameManager
@@ -57,14 +57,14 @@ uint64_t __35__GKSavedGameManager_sharedManager__block_invoke()
   v2 = [(GKSavedGameManager *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_documentModified_ name:@"GKSavedGameDocumentModifiedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_documentModified_ name:@"GKSavedGameDocumentModifiedNotification" object:0];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v2 selector:sel_documentConflictStateChanged_ name:@"GKSavedGameDocumentConflictStateChangedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_documentConflictStateChanged_ name:@"GKSavedGameDocumentConflictStateChangedNotification" object:0];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel_ubiquityAvailabilityChanged_ name:*MEMORY[0x277CCA7C8] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_ubiquityAvailabilityChanged_ name:*MEMORY[0x277CCA7C8] object:0];
 
     [(GKSavedGameManager *)v2 setupUbiquity];
   }
@@ -74,19 +74,19 @@ uint64_t __35__GKSavedGameManager_sharedManager__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = GKSavedGameManager;
   [(GKSavedGameManager *)&v4 dealloc];
 }
 
-- (void)fetchSavedGamesWithCompletionHandler:(id)a3
+- (void)fetchSavedGamesWithCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    v4 = [a3 copy];
+    v4 = [handler copy];
     fetchHandlers = self->_fetchHandlers;
     v11 = v4;
     if (fetchHandlers)
@@ -111,14 +111,14 @@ uint64_t __35__GKSavedGameManager_sharedManager__block_invoke()
   }
 }
 
-- (id)savedGamesWithName:(id)a3
+- (id)savedGamesWithName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = [(NSMutableDictionary *)self->_documents objectForKey:?];
-    v5 = [v4 allObjects];
+    allObjects = [v4 allObjects];
 
-    v6 = [(GKSavedGameManager *)self savedGameForDocuments:v5];
+    v6 = [(GKSavedGameManager *)self savedGameForDocuments:allObjects];
   }
 
   else
@@ -131,7 +131,7 @@ uint64_t __35__GKSavedGameManager_sharedManager__block_invoke()
     v11[3] = &unk_2785DD848;
     v9 = v7;
     v12 = v9;
-    v13 = self;
+    selfCopy = self;
     [(NSMutableDictionary *)documents enumerateKeysAndObjectsUsingBlock:v11];
     v6 = v9;
   }
@@ -147,16 +147,16 @@ void __41__GKSavedGameManager_savedGamesWithName___block_invoke(uint64_t a1, uin
   [v4 addObjectsFromArray:v5];
 }
 
-- (id)savedGameForDocuments:(id)a3
+- (id)savedGameForDocuments:(id)documents
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  documentsCopy = documents;
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(documentsCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = documentsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -186,24 +186,24 @@ void __41__GKSavedGameManager_savedGamesWithName___block_invoke(uint64_t a1, uin
   return v5;
 }
 
-- (id)savedGameForDocument:(id)a3
+- (id)savedGameForDocument:(id)document
 {
-  if (a3)
+  if (document)
   {
-    v3 = a3;
+    documentCopy = document;
     v4 = objc_alloc_init(GKSavedGame);
-    v5 = [v3 fileURL];
-    [(GKSavedGame *)v4 setFileURL:v5];
+    fileURL = [documentCopy fileURL];
+    [(GKSavedGame *)v4 setFileURL:fileURL];
 
-    v6 = [v3 name];
-    [(GKSavedGame *)v4 setName:v6];
+    name = [documentCopy name];
+    [(GKSavedGame *)v4 setName:name];
 
-    v7 = [v3 deviceName];
-    [(GKSavedGame *)v4 setDeviceName:v7];
+    deviceName = [documentCopy deviceName];
+    [(GKSavedGame *)v4 setDeviceName:deviceName];
 
-    v8 = [v3 modificationDate];
+    modificationDate = [documentCopy modificationDate];
 
-    [(GKSavedGame *)v4 setModificationDate:v8];
+    [(GKSavedGame *)v4 setModificationDate:modificationDate];
   }
 
   else
@@ -214,84 +214,84 @@ void __41__GKSavedGameManager_savedGamesWithName___block_invoke(uint64_t a1, uin
   return v4;
 }
 
-- (id)fileURLForName:(id)a3
+- (id)fileURLForName:(id)name
 {
-  v3 = [(NSURL *)self->_ubiquityURL URLByAppendingPathComponent:a3];
+  v3 = [(NSURL *)self->_ubiquityURL URLByAppendingPathComponent:name];
   v4 = [v3 URLByAppendingPathExtension:@"bundle"];
 
   return v4;
 }
 
-- (void)addDocument:(id)a3
+- (void)addDocument:(id)document
 {
   documents = self->_documents;
-  v5 = a3;
-  v6 = [v5 name];
-  v11 = [(NSMutableDictionary *)documents objectForKey:v6];
+  documentCopy = document;
+  name = [documentCopy name];
+  v11 = [(NSMutableDictionary *)documents objectForKey:name];
 
   if (v11)
   {
-    v7 = [v5 fileURL];
-    [v11 setObject:v5 forKey:v7];
+    fileURL = [documentCopy fileURL];
+    [v11 setObject:documentCopy forKey:fileURL];
   }
 
   else
   {
     v8 = MEMORY[0x277CBEB38];
-    v9 = [v5 fileURL];
-    v11 = [v8 dictionaryWithObject:v5 forKey:v9];
+    fileURL2 = [documentCopy fileURL];
+    v11 = [v8 dictionaryWithObject:documentCopy forKey:fileURL2];
 
     v10 = self->_documents;
-    v7 = [v5 name];
+    fileURL = [documentCopy name];
 
-    [(NSMutableDictionary *)v10 setObject:v11 forKey:v7];
+    [(NSMutableDictionary *)v10 setObject:v11 forKey:fileURL];
   }
 }
 
-- (void)removeDocument:(id)a3
+- (void)removeDocument:(id)document
 {
-  v4 = a3;
-  v7 = [v4 name];
+  documentCopy = document;
+  name = [documentCopy name];
   v5 = [(NSMutableDictionary *)self->_documents objectForKey:?];
-  v6 = [v4 fileURL];
+  fileURL = [documentCopy fileURL];
 
-  [v5 removeObjectForKey:v6];
+  [v5 removeObjectForKey:fileURL];
   if (![v5 count])
   {
-    [(NSMutableDictionary *)self->_documents removeObjectForKey:v7];
+    [(NSMutableDictionary *)self->_documents removeObjectForKey:name];
   }
 }
 
-- (id)documentForSavedGame:(id)a3
+- (id)documentForSavedGame:(id)game
 {
   documents = self->_documents;
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [(NSMutableDictionary *)documents objectForKey:v5];
+  gameCopy = game;
+  name = [gameCopy name];
+  v6 = [(NSMutableDictionary *)documents objectForKey:name];
 
-  v7 = [v4 fileURL];
+  fileURL = [gameCopy fileURL];
 
-  v8 = [v6 objectForKey:v7];
+  v8 = [v6 objectForKey:fileURL];
 
   return v8;
 }
 
-- (id)documentToSaveWithName:(id)a3
+- (id)documentToSaveWithName:(id)name
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
     v5 = +[GKSavedGameDocument currentDeviceName];
-    v24 = v4;
-    v6 = [(NSMutableDictionary *)self->_documents objectForKey:v4];
-    v7 = [v6 allObjects];
+    v24 = nameCopy;
+    v6 = [(NSMutableDictionary *)self->_documents objectForKey:nameCopy];
+    allObjects = [v6 allObjects];
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v8 = v7;
+    v8 = allObjects;
     v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v9)
     {
@@ -308,8 +308,8 @@ void __41__GKSavedGameManager_savedGamesWithName___block_invoke(uint64_t a1, uin
           }
 
           v14 = *(*(&v25 + 1) + 8 * i);
-          v15 = [v14 deviceName];
-          v16 = [v15 isEqualToString:v5];
+          deviceName = [v14 deviceName];
+          v16 = [deviceName isEqualToString:v5];
 
           if (v16)
           {
@@ -321,9 +321,9 @@ void __41__GKSavedGameManager_savedGamesWithName___block_invoke(uint64_t a1, uin
 
           if (v11)
           {
-            v17 = [v14 modificationDate];
-            v18 = [v11 modificationDate];
-            v19 = [v17 compare:v18];
+            modificationDate = [v14 modificationDate];
+            modificationDate2 = [v11 modificationDate];
+            v19 = [modificationDate compare:modificationDate2];
 
             if (v19 != 1)
             {
@@ -353,7 +353,7 @@ void __41__GKSavedGameManager_savedGamesWithName___block_invoke(uint64_t a1, uin
 
 LABEL_17:
 
-    v4 = v24;
+    nameCopy = v24;
   }
 
   else
@@ -366,20 +366,20 @@ LABEL_17:
   return v11;
 }
 
-- (id)currentDocumentWithName:(id)a3
+- (id)currentDocumentWithName:(id)name
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_documents objectForKey:v4];
-    v6 = [v5 allObjects];
+    v5 = [(NSMutableDictionary *)self->_documents objectForKey:nameCopy];
+    allObjects = [v5 allObjects];
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = v6;
+    v7 = allObjects;
     v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
@@ -426,18 +426,18 @@ LABEL_17:
   return v10;
 }
 
-- (void)loadDataForSavedGame:(id)a3 completionHandler:(id)a4
+- (void)loadDataForSavedGame:(id)game completionHandler:(id)handler
 {
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = a3;
+    gameCopy = game;
     v9 = [v7 stringWithFormat:@"%s:%d %s", "GKSavedGameManager.m", 206, "-[GKSavedGameManager loadDataForSavedGame:completionHandler:]"];
     v10 = [GKDispatchGroup dispatchGroupWithName:v9];
 
     [(GKSavedGameManager *)self disableQueryUpdates];
-    v11 = [(GKSavedGameManager *)self documentForSavedGame:v8];
+    v11 = [(GKSavedGameManager *)self documentForSavedGame:gameCopy];
 
     if (v11)
     {
@@ -460,8 +460,8 @@ LABEL_17:
     v14[1] = 3221225472;
     v14[2] = __61__GKSavedGameManager_loadDataForSavedGame_completionHandler___block_invoke_3;
     v14[3] = &unk_2785DD8C0;
-    v16 = self;
-    v17 = v6;
+    selfCopy = self;
+    v17 = handlerCopy;
     v15 = v10;
     v13 = v10;
     [v13 notifyOnMainQueueWithBlock:v14];
@@ -509,16 +509,16 @@ uint64_t __61__GKSavedGameManager_loadDataForSavedGame_completionHandler___block
   return [v5 enableQueryUpdates];
 }
 
-- (void)saveGameData:(id)a3 withName:(id)a4 completionHandler:(id)a5
+- (void)saveGameData:(id)data withName:(id)name completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  nameCopy = name;
+  handlerCopy = handler;
   v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKSavedGameManager.m", 232, "-[GKSavedGameManager saveGameData:withName:completionHandler:]"];
   v12 = [GKDispatchGroup dispatchGroupWithName:v11];
 
   [(GKSavedGameManager *)self disableQueryUpdates];
-  v13 = [(GKSavedGameManager *)self documentToSaveWithName:v9];
+  v13 = [(GKSavedGameManager *)self documentToSaveWithName:nameCopy];
   if ([(GKSavedGameDocument *)v13 hasConflict])
   {
     if (!os_log_GKGeneral)
@@ -533,7 +533,7 @@ uint64_t __61__GKSavedGameManager_loadDataForSavedGame_completionHandler___block
     }
   }
 
-  if (v9)
+  if (nameCopy)
   {
     v16 = v13 == 0;
   }
@@ -553,17 +553,17 @@ uint64_t __61__GKSavedGameManager_loadDataForSavedGame_completionHandler___block
     }
 
     v18 = [GKSavedGameDocument alloc];
-    v19 = [(GKSavedGameManager *)self fileURLForName:v9];
+    v19 = [(GKSavedGameManager *)self fileURLForName:nameCopy];
     v13 = [(GKSavedGameDocument *)v18 initWithFileURL:v19];
 
-    [(GKSavedGameDocument *)v13 setName:v9];
+    [(GKSavedGameDocument *)v13 setName:nameCopy];
   }
 
   if (!v13)
   {
 LABEL_19:
-    v21 = [(GKSavedGameManager *)self errorForNoUbiquity];
-    [v12 setError:v21];
+    errorForNoUbiquity = [(GKSavedGameManager *)self errorForNoUbiquity];
+    [v12 setError:errorForNoUbiquity];
     v20 = 0;
     goto LABEL_20;
   }
@@ -574,11 +574,11 @@ LABEL_19:
   v31[3] = &unk_2785DD910;
   v20 = v13;
   v32 = v20;
-  v33 = v8;
+  v33 = dataCopy;
   v34 = v12;
   [v34 perform:v31];
 
-  v21 = v32;
+  errorForNoUbiquity = v32;
 LABEL_20:
 
   v25[0] = MEMORY[0x277D85DD0];
@@ -587,10 +587,10 @@ LABEL_20:
   v25[3] = &unk_2785DD938;
   v30 = v17;
   v26 = v12;
-  v27 = self;
+  selfCopy = self;
   v28 = v20;
-  v29 = v10;
-  v22 = v10;
+  v29 = handlerCopy;
+  v22 = handlerCopy;
   v23 = v20;
   v24 = v12;
   [v24 notifyOnMainQueueWithBlock:v25];
@@ -654,15 +654,15 @@ uint64_t __62__GKSavedGameManager_saveGameData_withName_completionHandler___bloc
   return [v7 enableQueryUpdates];
 }
 
-- (void)deleteSavedGamesWithName:(id)a3 completionHandler:(id)a4
+- (void)deleteSavedGamesWithName:(id)name completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKSavedGameManager.m", 274, "-[GKSavedGameManager deleteSavedGamesWithName:completionHandler:]"];
   v9 = [GKDispatchGroup dispatchGroupWithName:v8];
 
   [(GKSavedGameManager *)self disableQueryUpdates];
-  v10 = [(GKSavedGameManager *)self currentDocumentWithName:v6];
+  v10 = [(GKSavedGameManager *)self currentDocumentWithName:nameCopy];
   v11 = v10;
   if (v10)
   {
@@ -680,11 +680,11 @@ uint64_t __62__GKSavedGameManager_saveGameData_withName_completionHandler___bloc
   v15[2] = __65__GKSavedGameManager_deleteSavedGamesWithName_completionHandler___block_invoke_3;
   v15[3] = &unk_2785DD960;
   v16 = v9;
-  v17 = self;
-  v18 = v6;
-  v19 = v7;
-  v12 = v7;
-  v13 = v6;
+  selfCopy = self;
+  v18 = nameCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = nameCopy;
   v14 = v9;
   [v14 notifyOnMainQueueWithBlock:v15];
 }
@@ -732,36 +732,36 @@ uint64_t __65__GKSavedGameManager_deleteSavedGamesWithName_completionHandler___b
   return [v5 enableQueryUpdates];
 }
 
-- (void)documentModified:(id)a3
+- (void)documentModified:(id)modified
 {
-  v15 = a3;
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  v5 = [v4 isMainThread];
+  modifiedCopy = modified;
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  isMainThread = [currentThread isMainThread];
 
-  if ((v5 & 1) == 0)
+  if ((isMainThread & 1) == 0)
   {
     v6 = MEMORY[0x277CCACA8];
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"document modified notification received on thread other than main thread"];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterFoundation/API/GKSavedGameManager.m"];
-    v9 = [v8 lastPathComponent];
-    v10 = [v6 stringWithFormat:@"%@ ([[NSThread currentThread] isMainThread])\n[%s (%s:%d)]", v7, "-[GKSavedGameManager documentModified:]", objc_msgSend(v9, "UTF8String"), 300];
+    lastPathComponent = [v8 lastPathComponent];
+    v10 = [v6 stringWithFormat:@"%@ ([[NSThread currentThread] isMainThread])\n[%s (%s:%d)]", v7, "-[GKSavedGameManager documentModified:]", objc_msgSend(lastPathComponent, "UTF8String"), 300];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v10}];
   }
 
-  v11 = [v15 object];
-  v12 = [(GKSavedGameManager *)self savedGameForDocument:v11];
+  object = [modifiedCopy object];
+  v12 = [(GKSavedGameManager *)self savedGameForDocument:object];
   v13 = +[GKLocalPlayer localPlayer];
-  v14 = [v13 eventEmitter];
-  [v14 player:v13 didModifySavedGame:v12];
+  eventEmitter = [v13 eventEmitter];
+  [eventEmitter player:v13 didModifySavedGame:v12];
 }
 
 - (id)errorForNoUbiquity
 {
   v3 = +[GKLocalPlayer localPlayer];
-  v4 = [v3 isAuthenticated];
+  isAuthenticated = [v3 isAuthenticated];
 
-  if (v4)
+  if (isAuthenticated)
   {
     if (self->_ubiquityUnavailable)
     {
@@ -881,10 +881,10 @@ void __41__GKSavedGameManager_startSavedGameQuery__block_invoke(uint64_t a1)
   }
 }
 
-- (void)queryDidFinishGathering:(id)a3
+- (void)queryDidFinishGathering:(id)gathering
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277CCA4E8] object:self->_query];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CCA4E8] object:self->_query];
 
   [(GKSavedGameManager *)self disableQueryUpdates];
   v5[0] = MEMORY[0x277D85DD0];
@@ -903,7 +903,7 @@ uint64_t __46__GKSavedGameManager_queryDidFinishGathering___block_invoke(uint64_
   return [v2 enableQueryUpdates];
 }
 
-- (void)queryDidUpdate:(id)a3
+- (void)queryDidUpdate:(id)update
 {
   [(GKSavedGameManager *)self disableQueryUpdates];
   v4[0] = MEMORY[0x277D85DD0];
@@ -931,24 +931,24 @@ uint64_t __37__GKSavedGameManager_queryDidUpdate___block_invoke(uint64_t a1)
   return [v6 enableQueryUpdates];
 }
 
-- (void)updateSavedGameDocumentsForQueryWithHandler:(id)a3
+- (void)updateSavedGameDocumentsForQueryWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKSavedGameManager.m", 390, "-[GKSavedGameManager updateSavedGameDocumentsForQueryWithHandler:]"];
   v6 = [GKDispatchGroup dispatchGroupWithName:v5];
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
   query = self->_query;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __66__GKSavedGameManager_updateSavedGameDocumentsForQueryWithHandler___block_invoke;
   v21[3] = &unk_2785DDA28;
   v21[4] = self;
-  v10 = v7;
+  v10 = dictionary;
   v22 = v10;
   v23 = v6;
-  v11 = v8;
+  v11 = array;
   v24 = v11;
   v12 = v6;
   [(NSMetadataQuery *)query enumerateResultsUsingBlock:v21];
@@ -957,11 +957,11 @@ uint64_t __37__GKSavedGameManager_queryDidUpdate___block_invoke(uint64_t a1)
   v16[2] = __66__GKSavedGameManager_updateSavedGameDocumentsForQueryWithHandler___block_invoke_61;
   v16[3] = &unk_2785DDA50;
   v17 = v10;
-  v18 = self;
+  selfCopy = self;
   v19 = v11;
-  v20 = v4;
+  v20 = handlerCopy;
   v13 = v11;
-  v14 = v4;
+  v14 = handlerCopy;
   v15 = v10;
   [v12 notifyOnMainQueueWithBlock:v16];
 }
@@ -1321,14 +1321,14 @@ void __66__GKSavedGameManager_updateSavedGameDocumentsForQueryWithHandler___bloc
   v17 = *MEMORY[0x277D85DE8];
   if (self->_ubiquityUnavailable)
   {
-    v3 = [(GKSavedGameManager *)self errorForNoUbiquity];
+    errorForNoUbiquity = [(GKSavedGameManager *)self errorForNoUbiquity];
     v4 = 0;
   }
 
   else
   {
     v4 = [(GKSavedGameManager *)self savedGamesWithName:0];
-    v3 = 0;
+    errorForNoUbiquity = 0;
   }
 
   v14 = 0u;
@@ -1352,7 +1352,7 @@ void __66__GKSavedGameManager_updateSavedGameDocumentsForQueryWithHandler___bloc
         }
 
         v10 = _Block_copy(*(*(&v12 + 1) + 8 * v9));
-        v10[2](v10, v4, v3);
+        v10[2](v10, v4, errorForNoUbiquity);
 
         ++v9;
       }
@@ -1368,18 +1368,18 @@ void __66__GKSavedGameManager_updateSavedGameDocumentsForQueryWithHandler___bloc
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)documentConflictStateChanged:(id)a3
+- (void)documentConflictStateChanged:(id)changed
 {
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  v5 = [v4 isMainThread];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  isMainThread = [currentThread isMainThread];
 
-  if ((v5 & 1) == 0)
+  if ((isMainThread & 1) == 0)
   {
     v6 = MEMORY[0x277CCACA8];
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"document conflict notification received on thread other than main thread"];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterFoundation/API/GKSavedGameManager.m"];
-    v9 = [v8 lastPathComponent];
-    v10 = [v6 stringWithFormat:@"%@ ([[NSThread currentThread] isMainThread])\n[%s (%s:%d)]", v7, "-[GKSavedGameManager documentConflictStateChanged:]", objc_msgSend(v9, "UTF8String"), 520];
+    lastPathComponent = [v8 lastPathComponent];
+    v10 = [v6 stringWithFormat:@"%@ ([[NSThread currentThread] isMainThread])\n[%s (%s:%d)]", v7, "-[GKSavedGameManager documentConflictStateChanged:]", objc_msgSend(lastPathComponent, "UTF8String"), 520];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v10}];
   }
@@ -1387,21 +1387,21 @@ void __66__GKSavedGameManager_updateSavedGameDocumentsForQueryWithHandler___bloc
   [(GKSavedGameManager *)self updateSavedGameDocumentsForQueryWithHandler:0];
 }
 
-- (void)resolveConflictingSavedGames:(id)a3 withData:(id)a4 completionHandler:(id)a5
+- (void)resolveConflictingSavedGames:(id)games withData:(id)data completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 firstObject];
-  v12 = [v11 name];
+  gamesCopy = games;
+  dataCopy = data;
+  handlerCopy = handler;
+  firstObject = [gamesCopy firstObject];
+  name = [firstObject name];
 
-  if (v12)
+  if (name)
   {
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKSavedGameManager.m", 533, "-[GKSavedGameManager resolveConflictingSavedGames:withData:completionHandler:]"];
     v14 = [GKDispatchGroup dispatchGroupWithName:v13];
 
     [(GKSavedGameManager *)self disableQueryUpdates];
-    v15 = [(GKSavedGameManager *)self currentDocumentWithName:v12];
+    v15 = [(GKSavedGameManager *)self currentDocumentWithName:name];
     v16 = v15;
     if (v15)
     {
@@ -1410,7 +1410,7 @@ void __66__GKSavedGameManager_updateSavedGameDocumentsForQueryWithHandler___bloc
       v26[2] = __78__GKSavedGameManager_resolveConflictingSavedGames_withData_completionHandler___block_invoke;
       v26[3] = &unk_2785DD910;
       v27 = v15;
-      v28 = v8;
+      v28 = gamesCopy;
       v29 = v14;
       [v29 perform:v26];
     }
@@ -1419,20 +1419,20 @@ void __66__GKSavedGameManager_updateSavedGameDocumentsForQueryWithHandler___bloc
     v19[1] = 3221225472;
     v19[2] = __78__GKSavedGameManager_resolveConflictingSavedGames_withData_completionHandler___block_invoke_7;
     v19[3] = &unk_2785DDAF0;
-    v20 = v8;
-    v21 = self;
-    v22 = v12;
-    v23 = v9;
+    v20 = gamesCopy;
+    selfCopy = self;
+    v22 = name;
+    v23 = dataCopy;
     v24 = v14;
-    v25 = v10;
+    v25 = handlerCopy;
     v17 = v14;
     [v17 notifyOnMainQueueWithBlock:v19];
   }
 
-  else if (v10)
+  else if (handlerCopy)
   {
     v18 = [MEMORY[0x277CCA9B8] userErrorForCode:17 underlyingError:0];
-    (*(v10 + 2))(v10, 0, v18);
+    (*(handlerCopy + 2))(handlerCopy, 0, v18);
   }
 }
 

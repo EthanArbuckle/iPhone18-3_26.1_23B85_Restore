@@ -1,24 +1,24 @@
 @interface ClarityUIAppSelectionWelcomeController
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4;
-- (ClarityUIAppSelectionWelcomeController)initWithCompletion:(id)a3;
-- (double)tableView:(id)a3 estimatedHeightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (void)_didTapAppSelectionNextButton:(id)a3;
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path;
+- (ClarityUIAppSelectionWelcomeController)initWithCompletion:(id)completion;
+- (double)tableView:(id)view estimatedHeightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (void)_didTapAppSelectionNextButton:(id)button;
 - (void)_updateAppSelectionNextButton;
-- (void)dataSource:(id)a3 didSelectBundleIdentifier:(id)a4;
+- (void)dataSource:(id)source didSelectBundleIdentifier:(id)identifier;
 - (void)viewDidLoad;
 @end
 
 @implementation ClarityUIAppSelectionWelcomeController
 
-- (ClarityUIAppSelectionWelcomeController)initWithCompletion:(id)a3
+- (ClarityUIAppSelectionWelcomeController)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = settingsLocString(@"SELECT_APPS_TITLE", @"ClarityUISettings");
   v18.receiver = self;
   v18.super_class = ClarityUIAppSelectionWelcomeController;
@@ -26,7 +26,7 @@
 
   if (v6)
   {
-    v7 = objc_retainBlock(v4);
+    v7 = objc_retainBlock(completionCopy);
     completionHandler = v6->_completionHandler;
     v6->_completionHandler = v7;
 
@@ -34,8 +34,8 @@
     selectionController = v6->_selectionController;
     v6->_selectionController = v9;
 
-    v11 = [(ClarityUIAppSelectionController *)v6->_selectionController dataSource];
-    [v11 setDataSourceDelegate:v6];
+    dataSource = [(ClarityUIAppSelectionController *)v6->_selectionController dataSource];
+    [dataSource setDataSourceDelegate:v6];
 
     v12 = +[OBBoldTrayButton boldButton];
     v13 = settingsLocString(@"CONTINUE", @"ClarityUISettings");
@@ -47,8 +47,8 @@
     v15 = v12;
 
     [(ClarityUIAppSelectionWelcomeController *)v6 _updateAppSelectionNextButton];
-    v16 = [(ClarityUIAppSelectionWelcomeController *)v6 buttonTray];
-    [v16 addButton:v15];
+    buttonTray = [(ClarityUIAppSelectionWelcomeController *)v6 buttonTray];
+    [buttonTray addButton:v15];
   }
 
   return v6;
@@ -59,86 +59,86 @@
   v4.receiver = self;
   v4.super_class = ClarityUIAppSelectionWelcomeController;
   [(ClarityUIAppSelectionWelcomeController *)&v4 viewDidLoad];
-  v3 = [(ClarityUIAppSelectionController *)self->_selectionController tableView];
-  [(ClarityUIAppSelectionWelcomeController *)self setTableView:v3];
+  tableView = [(ClarityUIAppSelectionController *)self->_selectionController tableView];
+  [(ClarityUIAppSelectionWelcomeController *)self setTableView:tableView];
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
-  v9 = [v8 tableView:v7 editingStyleForRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  dataSource = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
+  v9 = [dataSource tableView:viewCopy editingStyleForRowAtIndexPath:pathCopy];
 
   return v9;
 }
 
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
-  v12 = [v11 tableView:v10 targetIndexPathForMoveFromRowAtIndexPath:v9 toProposedIndexPath:v8];
+  indexPathCopy = indexPath;
+  pathCopy = path;
+  viewCopy = view;
+  dataSource = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
+  v12 = [dataSource tableView:viewCopy targetIndexPathForMoveFromRowAtIndexPath:pathCopy toProposedIndexPath:indexPathCopy];
 
   return v12;
 }
 
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
-  v9 = [v8 tableView:v7 shouldIndentWhileEditingRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  dataSource = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
+  v9 = [dataSource tableView:viewCopy shouldIndentWhileEditingRowAtIndexPath:pathCopy];
 
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
-  v9 = [v8 tableView:v7 titleForDeleteConfirmationButtonForRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  dataSource = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
+  v9 = [dataSource tableView:viewCopy titleForDeleteConfirmationButtonForRowAtIndexPath:pathCopy];
 
   return v9;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
-  v8 = [v7 tableView:v6 viewForHeaderInSection:a4];
+  viewCopy = view;
+  dataSource = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
+  v8 = [dataSource tableView:viewCopy viewForHeaderInSection:section];
 
   return v8;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
-  [v8 tableView:v7 estimatedHeightForRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  dataSource = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
+  [dataSource tableView:viewCopy estimatedHeightForRowAtIndexPath:pathCopy];
   v10 = v9;
 
   return v10;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
-  [v7 tableView:v6 heightForHeaderInSection:a4];
+  viewCopy = view;
+  dataSource = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
+  [dataSource tableView:viewCopy heightForHeaderInSection:section];
   v9 = v8;
 
   return v9;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view estimatedHeightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
-  [v7 tableView:v6 estimatedHeightForHeaderInSection:a4];
+  viewCopy = view;
+  dataSource = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
+  [dataSource tableView:viewCopy estimatedHeightForHeaderInSection:section];
   v9 = v8;
 
   return v9;
@@ -146,36 +146,36 @@
 
 - (void)_updateAppSelectionNextButton
 {
-  v3 = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
-  v4 = [v3 applicationIdentifiers];
-  v5 = [v4 count] != 0;
-  v6 = [(ClarityUIAppSelectionWelcomeController *)self nextButton];
-  [v6 setEnabled:v5];
+  dataSource = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
+  applicationIdentifiers = [dataSource applicationIdentifiers];
+  v5 = [applicationIdentifiers count] != 0;
+  nextButton = [(ClarityUIAppSelectionWelcomeController *)self nextButton];
+  [nextButton setEnabled:v5];
 
-  v11 = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
-  v7 = [v11 applicationIdentifiers];
-  v8 = [v7 count] != 0;
-  v9 = [(ClarityUIAppSelectionWelcomeController *)self navigationItem];
-  v10 = [v9 rightBarButtonItem];
-  [v10 setEnabled:v8];
+  dataSource2 = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
+  applicationIdentifiers2 = [dataSource2 applicationIdentifiers];
+  v8 = [applicationIdentifiers2 count] != 0;
+  navigationItem = [(ClarityUIAppSelectionWelcomeController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v8];
 }
 
-- (void)_didTapAppSelectionNextButton:(id)a3
+- (void)_didTapAppSelectionNextButton:(id)button
 {
-  v4 = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
-  [v4 commitChangesToSelectedApplications];
+  dataSource = [(ClarityUIAppSelectionWelcomeController *)self dataSource];
+  [dataSource commitChangesToSelectedApplications];
 
   v5 = *(self->_completionHandler + 2);
 
   v5();
 }
 
-- (void)dataSource:(id)a3 didSelectBundleIdentifier:(id)a4
+- (void)dataSource:(id)source didSelectBundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ClarityUIAppSelectionWelcomeController *)self selectionController];
-  [v8 dataSource:v7 didSelectBundleIdentifier:v6];
+  identifierCopy = identifier;
+  sourceCopy = source;
+  selectionController = [(ClarityUIAppSelectionWelcomeController *)self selectionController];
+  [selectionController dataSource:sourceCopy didSelectBundleIdentifier:identifierCopy];
 }
 
 @end

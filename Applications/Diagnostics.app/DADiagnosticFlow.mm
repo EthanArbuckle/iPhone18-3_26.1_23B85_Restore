@@ -1,11 +1,11 @@
 @interface DADiagnosticFlow
 + (id)defaultFlow;
-- (DADiagnosticFlow)initWithBSXPCCoder:(id)a3;
-- (DADiagnosticFlow)initWithCoder:(id)a3;
-- (DADiagnosticFlow)initWithDestination:(unint64_t)a3 serialNumber:(id)a4 sessionID:(id)a5 passcode:(id)a6;
+- (DADiagnosticFlow)initWithBSXPCCoder:(id)coder;
+- (DADiagnosticFlow)initWithCoder:(id)coder;
+- (DADiagnosticFlow)initWithDestination:(unint64_t)destination serialNumber:(id)number sessionID:(id)d passcode:(id)passcode;
 - (NSString)debugDescription;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DADiagnosticFlow
@@ -17,42 +17,42 @@
   return v2;
 }
 
-- (DADiagnosticFlow)initWithDestination:(unint64_t)a3 serialNumber:(id)a4 sessionID:(id)a5 passcode:(id)a6
+- (DADiagnosticFlow)initWithDestination:(unint64_t)destination serialNumber:(id)number sessionID:(id)d passcode:(id)passcode
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  numberCopy = number;
+  dCopy = d;
+  passcodeCopy = passcode;
   v17.receiver = self;
   v17.super_class = DADiagnosticFlow;
   v14 = [(DADiagnosticFlow *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_destination = a3;
-    objc_storeStrong(&v14->_serialNumber, a4);
-    objc_storeStrong(&v15->_sessionID, a5);
-    objc_storeStrong(&v15->_passcode, a6);
+    v14->_destination = destination;
+    objc_storeStrong(&v14->_serialNumber, number);
+    objc_storeStrong(&v15->_sessionID, d);
+    objc_storeStrong(&v15->_passcode, passcode);
   }
 
   return v15;
 }
 
-- (DADiagnosticFlow)initWithCoder:(id)a3
+- (DADiagnosticFlow)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(DADiagnosticFlow *)self init];
   if (v5)
   {
-    v5->_destination = [v4 decodeIntForKey:@"destination"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
+    v5->_destination = [coderCopy decodeIntForKey:@"destination"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
     serialNumber = v5->_serialNumber;
     v5->_serialNumber = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionID"];
     sessionID = v5->_sessionID;
     v5->_sessionID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passcode"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passcode"];
     passcode = v5->_passcode;
     v5->_passcode = v10;
   }
@@ -60,36 +60,36 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:-[DADiagnosticFlow destination](self forKey:{"destination"), @"destination"}];
-  v5 = [(DADiagnosticFlow *)self serialNumber];
-  [v4 encodeObject:v5 forKey:@"serialNumber"];
+  coderCopy = coder;
+  [coderCopy encodeInt:-[DADiagnosticFlow destination](self forKey:{"destination"), @"destination"}];
+  serialNumber = [(DADiagnosticFlow *)self serialNumber];
+  [coderCopy encodeObject:serialNumber forKey:@"serialNumber"];
 
-  v6 = [(DADiagnosticFlow *)self sessionID];
-  [v4 encodeObject:v6 forKey:@"sessionID"];
+  sessionID = [(DADiagnosticFlow *)self sessionID];
+  [coderCopy encodeObject:sessionID forKey:@"sessionID"];
 
-  v7 = [(DADiagnosticFlow *)self passcode];
-  [v4 encodeObject:v7 forKey:@"passcode"];
+  passcode = [(DADiagnosticFlow *)self passcode];
+  [coderCopy encodeObject:passcode forKey:@"passcode"];
 }
 
-- (DADiagnosticFlow)initWithBSXPCCoder:(id)a3
+- (DADiagnosticFlow)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(DADiagnosticFlow *)self init];
   if (v5)
   {
-    v5->_destination = [v4 decodeInt64ForKey:@"destination"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
+    v5->_destination = [coderCopy decodeInt64ForKey:@"destination"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
     serialNumber = v5->_serialNumber;
     v5->_serialNumber = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionID"];
     sessionID = v5->_sessionID;
     v5->_sessionID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passcode"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passcode"];
     passcode = v5->_passcode;
     v5->_passcode = v10;
   }
@@ -97,28 +97,28 @@
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[DADiagnosticFlow destination](self forKey:{"destination"), @"destination"}];
-  v5 = [(DADiagnosticFlow *)self serialNumber];
-  [v4 encodeObject:v5 forKey:@"serialNumber"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[DADiagnosticFlow destination](self forKey:{"destination"), @"destination"}];
+  serialNumber = [(DADiagnosticFlow *)self serialNumber];
+  [coderCopy encodeObject:serialNumber forKey:@"serialNumber"];
 
-  v6 = [(DADiagnosticFlow *)self sessionID];
-  [v4 encodeObject:v6 forKey:@"sessionID"];
+  sessionID = [(DADiagnosticFlow *)self sessionID];
+  [coderCopy encodeObject:sessionID forKey:@"sessionID"];
 
-  v7 = [(DADiagnosticFlow *)self passcode];
-  [v4 encodeObject:v7 forKey:@"passcode"];
+  passcode = [(DADiagnosticFlow *)self passcode];
+  [coderCopy encodeObject:passcode forKey:@"passcode"];
 }
 
 - (NSString)debugDescription
 {
   v3 = objc_opt_class();
-  v4 = [(DADiagnosticFlow *)self destination];
-  v5 = [(DADiagnosticFlow *)self serialNumber];
-  v6 = [(DADiagnosticFlow *)self sessionID];
-  v7 = [(DADiagnosticFlow *)self passcode];
-  v8 = [NSString stringWithFormat:@"<%@: %p> destination: %lu, serialNumber: %@, sessionID: %@, passcode: %@", v3, self, v4, v5, v6, v7];
+  destination = [(DADiagnosticFlow *)self destination];
+  serialNumber = [(DADiagnosticFlow *)self serialNumber];
+  sessionID = [(DADiagnosticFlow *)self sessionID];
+  passcode = [(DADiagnosticFlow *)self passcode];
+  v8 = [NSString stringWithFormat:@"<%@: %p> destination: %lu, serialNumber: %@, sessionID: %@, passcode: %@", v3, self, destination, serialNumber, sessionID, passcode];
 
   return v8;
 }

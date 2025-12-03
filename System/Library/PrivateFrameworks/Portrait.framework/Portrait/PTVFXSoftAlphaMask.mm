@@ -1,16 +1,16 @@
 @interface PTVFXSoftAlphaMask
-- (PTVFXSoftAlphaMask)initWithMetalContext:(id)a3 colorSize:(id *)a4;
-- (id)lazyInstantiateAlphaMaskForRenderRequest:(id)a3;
-- (int)remapAlphaMask:(id)a3 effectRenderRequest:(id)a4;
-- (int)updateSoftAlphaMask:(id)a3 inDisparity:(id)a4 focusDisparityModifiers:(id)a5 effectRenderRequest:(id)a6;
-- (int)updateSoftAlphaMask:(id)a3 inSegmentation:(id)a4 effectRenderRequest:(id)a5;
+- (PTVFXSoftAlphaMask)initWithMetalContext:(id)context colorSize:(id *)size;
+- (id)lazyInstantiateAlphaMaskForRenderRequest:(id)request;
+- (int)remapAlphaMask:(id)mask effectRenderRequest:(id)request;
+- (int)updateSoftAlphaMask:(id)mask inDisparity:(id)disparity focusDisparityModifiers:(id)modifiers effectRenderRequest:(id)request;
+- (int)updateSoftAlphaMask:(id)mask inSegmentation:(id)segmentation effectRenderRequest:(id)request;
 @end
 
 @implementation PTVFXSoftAlphaMask
 
-- (PTVFXSoftAlphaMask)initWithMetalContext:(id)a3 colorSize:(id *)a4
+- (PTVFXSoftAlphaMask)initWithMetalContext:(id)context colorSize:(id *)size
 {
-  v7 = a3;
+  contextCopy = context;
   v56.receiver = self;
   v56.super_class = PTVFXSoftAlphaMask;
   v8 = [(PTVFXSoftAlphaMask *)&v56 init];
@@ -19,8 +19,8 @@
     goto LABEL_26;
   }
 
-  v9 = [PTEffectUtil aspectRatio:a4->var0, a4->var1];
-  if (a4->var0 > a4->var1)
+  v9 = [PTEffectUtil aspectRatio:size->var0, size->var1];
+  if (size->var0 > size->var1)
   {
     if (v9 != 3)
     {
@@ -63,8 +63,8 @@ LABEL_9:
   }
 
 LABEL_12:
-  objc_storeStrong(v8 + 1, a3);
-  v12 = [v7 computePipelineStateFor:@"disparityToAlphaMask" withConstants:0];
+  objc_storeStrong(v8 + 1, context);
+  v12 = [contextCopy computePipelineStateFor:@"disparityToAlphaMask" withConstants:0];
   v13 = *(v8 + 2);
   *(v8 + 2) = v12;
 
@@ -79,7 +79,7 @@ LABEL_12:
     goto LABEL_25;
   }
 
-  v14 = [v7 computePipelineStateFor:@"remapAlphaMask" withConstants:0];
+  v14 = [contextCopy computePipelineStateFor:@"remapAlphaMask" withConstants:0];
   v15 = *(v8 + 3);
   *(v8 + 3) = v14;
 
@@ -94,8 +94,8 @@ LABEL_12:
     goto LABEL_25;
   }
 
-  v16 = [v7 textureUtil];
-  v17 = [v16 createWithWidth:v10 height:v11 pixelFormat:10];
+  textureUtil = [contextCopy textureUtil];
+  v17 = [textureUtil createWithWidth:v10 height:v11 pixelFormat:10];
   v18 = *(v8 + 4);
   *(v8 + 4) = v17;
 
@@ -110,8 +110,8 @@ LABEL_12:
     goto LABEL_25;
   }
 
-  v19 = [v7 textureUtil];
-  v20 = [v19 createWithWidth:v10 height:v11 pixelFormat:10];
+  textureUtil2 = [contextCopy textureUtil];
+  v20 = [textureUtil2 createWithWidth:v10 height:v11 pixelFormat:10];
   v21 = *(v8 + 6);
   *(v8 + 6) = v20;
 
@@ -130,10 +130,10 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v22 = *&a4->var0;
-  *(v8 + 9) = a4->var2;
+  v22 = *&size->var0;
+  *(v8 + 9) = size->var2;
   *(v8 + 56) = v22;
-  v23 = [[PTBoxFilter alloc] initWithMetalContext:v7 options:1];
+  v23 = [[PTBoxFilter alloc] initWithMetalContext:contextCopy options:1];
   v24 = *(v8 + 10);
   *(v8 + 10) = v23;
 
@@ -143,73 +143,73 @@ LABEL_27:
   return v25;
 }
 
-- (int)updateSoftAlphaMask:(id)a3 inDisparity:(id)a4 focusDisparityModifiers:(id)a5 effectRenderRequest:(id)a6
+- (int)updateSoftAlphaMask:(id)mask inDisparity:(id)disparity focusDisparityModifiers:(id)modifiers effectRenderRequest:(id)request
 {
   v21 = 1065353216;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v13 computeCommandEncoder];
-  [v14 setComputePipelineState:self->_disparityToAlphaMask];
-  [v14 setTexture:v12 atIndex:0];
+  requestCopy = request;
+  modifiersCopy = modifiers;
+  disparityCopy = disparity;
+  maskCopy = mask;
+  computeCommandEncoder = [maskCopy computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_disparityToAlphaMask];
+  [computeCommandEncoder setTexture:disparityCopy atIndex:0];
 
-  [v14 setTexture:self->_alphaMask atIndex:1];
-  [v14 setBuffer:v11 offset:0 atIndex:0];
+  [computeCommandEncoder setTexture:self->_alphaMask atIndex:1];
+  [computeCommandEncoder setBuffer:modifiersCopy offset:0 atIndex:0];
 
-  [v14 setBytes:&v21 length:4 atIndex:1];
-  v15 = [(MTLTexture *)self->_alphaMask width];
-  v16 = [(MTLTexture *)self->_alphaMask height];
-  v20[0] = v15;
-  v20[1] = v16;
+  [computeCommandEncoder setBytes:&v21 length:4 atIndex:1];
+  width = [(MTLTexture *)self->_alphaMask width];
+  height = [(MTLTexture *)self->_alphaMask height];
+  v20[0] = width;
+  v20[1] = height;
   v20[2] = 1;
   v18 = xmmword_2244A5230;
   v19 = 1;
-  [v14 dispatchThreads:v20 threadsPerThreadgroup:&v18];
-  [v14 endEncoding];
-  LODWORD(v15) = [(PTVFXSoftAlphaMask *)self boxFilter:v13 mask:self->_alphaMask];
-  LODWORD(self) = [(PTVFXSoftAlphaMask *)self remapAlphaMask:v13 effectRenderRequest:v10];
+  [computeCommandEncoder dispatchThreads:v20 threadsPerThreadgroup:&v18];
+  [computeCommandEncoder endEncoding];
+  LODWORD(width) = [(PTVFXSoftAlphaMask *)self boxFilter:maskCopy mask:self->_alphaMask];
+  LODWORD(self) = [(PTVFXSoftAlphaMask *)self remapAlphaMask:maskCopy effectRenderRequest:requestCopy];
 
-  return self | v15;
+  return self | width;
 }
 
-- (int)remapAlphaMask:(id)a3 effectRenderRequest:(id)a4
+- (int)remapAlphaMask:(id)mask effectRenderRequest:(id)request
 {
   if (self->_remappedAlphaMask)
   {
-    v6 = a4;
-    v7 = [a3 computeCommandEncoder];
-    [v7 setComputePipelineState:self->_remapAlphaMask];
-    [v7 setTexture:self->_alphaMask atIndex:0];
-    [v7 setTexture:self->_remappedAlphaMask atIndex:1];
-    [v6 reactionsCombinedCropRect];
+    requestCopy = request;
+    computeCommandEncoder = [mask computeCommandEncoder];
+    [computeCommandEncoder setComputePipelineState:self->_remapAlphaMask];
+    [computeCommandEncoder setTexture:self->_alphaMask atIndex:0];
+    [computeCommandEncoder setTexture:self->_remappedAlphaMask atIndex:1];
+    [requestCopy reactionsCombinedCropRect];
     v12 = v8;
 
     v16 = v12;
-    [v7 setBytes:&v16 length:16 atIndex:0];
-    v9 = [(MTLTexture *)self->_remappedAlphaMask width];
-    v10 = [(MTLTexture *)self->_remappedAlphaMask height];
-    v15[0] = v9;
-    v15[1] = v10;
+    [computeCommandEncoder setBytes:&v16 length:16 atIndex:0];
+    width = [(MTLTexture *)self->_remappedAlphaMask width];
+    height = [(MTLTexture *)self->_remappedAlphaMask height];
+    v15[0] = width;
+    v15[1] = height;
     v15[2] = 1;
     v13 = xmmword_2244A5230;
     v14 = 1;
-    [v7 dispatchThreads:v15 threadsPerThreadgroup:&v13];
-    [v7 endEncoding];
+    [computeCommandEncoder dispatchThreads:v15 threadsPerThreadgroup:&v13];
+    [computeCommandEncoder endEncoding];
   }
 
   return 0;
 }
 
-- (id)lazyInstantiateAlphaMaskForRenderRequest:(id)a3
+- (id)lazyInstantiateAlphaMaskForRenderRequest:(id)request
 {
-  v4 = a3;
-  [v4 inReactionVideoRect];
+  requestCopy = request;
+  [requestCopy inReactionVideoRect];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 outColorROI];
+  [requestCopy outColorROI];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -232,12 +232,12 @@ LABEL_27:
 
   else
   {
-    [v4 outColorROI];
+    [requestCopy outColorROI];
     v24 = v23;
     v26 = v25;
-    [v4 inReactionColorSize];
+    [requestCopy inReactionColorSize];
     width = v27;
-    [v4 inReactionColorSize];
+    [requestCopy inReactionColorSize];
     height = v29;
     if (width)
     {
@@ -269,8 +269,8 @@ LABEL_27:
     p_alphaMask = &self->_remappedAlphaMask;
     if ([(MTLTexture *)self->_remappedAlphaMask width]!= v33 || [(MTLTexture *)*p_alphaMask height]!= v35)
     {
-      v37 = [(PTMetalContext *)self->_metalContext textureUtil];
-      v38 = [v37 createWithWidth:v33 height:v35 pixelFormat:10];
+      textureUtil = [(PTMetalContext *)self->_metalContext textureUtil];
+      v38 = [textureUtil createWithWidth:v33 height:v35 pixelFormat:10];
       v39 = self->_remappedAlphaMask;
       self->_remappedAlphaMask = v38;
 
@@ -291,14 +291,14 @@ LABEL_27:
   return v48;
 }
 
-- (int)updateSoftAlphaMask:(id)a3 inSegmentation:(id)a4 effectRenderRequest:(id)a5
+- (int)updateSoftAlphaMask:(id)mask inSegmentation:(id)segmentation effectRenderRequest:(id)request
 {
-  v8 = a5;
-  v9 = a3;
-  LODWORD(a4) = [(PTVFXSoftAlphaMask *)self boxFilter:v9 mask:a4];
-  LODWORD(self) = [(PTVFXSoftAlphaMask *)self remapAlphaMask:v9 effectRenderRequest:v8];
+  requestCopy = request;
+  maskCopy = mask;
+  LODWORD(segmentation) = [(PTVFXSoftAlphaMask *)self boxFilter:maskCopy mask:segmentation];
+  LODWORD(self) = [(PTVFXSoftAlphaMask *)self remapAlphaMask:maskCopy effectRenderRequest:requestCopy];
 
-  return self | a4;
+  return self | segmentation;
 }
 
 @end

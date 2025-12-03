@@ -1,12 +1,12 @@
 @interface DKUtilities
 + (Class)diagnosticInputsClassAttribute;
-+ (id)_fetchItemProviderFromItems:(id)a3 withError:(id *)a4;
++ (id)_fetchItemProviderFromItems:(id)items withError:(id *)error;
 + (id)_sharedParsingFailedError;
 + (id)acceptableDecoderClasses;
 + (id)extensionAttributes;
-+ (id)inputsForDiagnostic:(id)a3 predicates:(id)a4 specifications:(id)a5 parameters:(id)a6;
-+ (id)inputsUsingClass:(Class)a3 diagnostic:(id)a4 predicates:(id)a5 specifications:(id)a6 parameters:(id)a7;
-+ (void)moveFilesToSharedContainerInMutableResult:(id)a3;
++ (id)inputsForDiagnostic:(id)diagnostic predicates:(id)predicates specifications:(id)specifications parameters:(id)parameters;
++ (id)inputsUsingClass:(Class)class diagnostic:(id)diagnostic predicates:(id)predicates specifications:(id)specifications parameters:(id)parameters;
++ (void)moveFilesToSharedContainerInMutableResult:(id)result;
 @end
 
 @implementation DKUtilities
@@ -41,17 +41,17 @@ uint64_t __39__DKUtilities_acceptableDecoderClasses__block_invoke()
 
 + (id)extensionAttributes
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 infoDictionary];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
 
-  if (!v3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!infoDictionary || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v7 = 0;
     goto LABEL_16;
   }
 
   v4 = @"NSExtension";
-  v5 = [v3 objectForKeyedSubscript:@"NSExtension"];
+  v5 = [infoDictionary objectForKeyedSubscript:@"NSExtension"];
 
   if (v5)
   {
@@ -61,7 +61,7 @@ uint64_t __39__DKUtilities_acceptableDecoderClasses__block_invoke()
   else
   {
     v4 = @"DKDiagnosticService";
-    v8 = [v3 objectForKeyedSubscript:@"DKDiagnosticService"];
+    v8 = [infoDictionary objectForKeyedSubscript:@"DKDiagnosticService"];
 
     if (!v8)
     {
@@ -74,7 +74,7 @@ LABEL_14:
     v6 = @"DKDiagnosticServiceAttributes";
   }
 
-  v9 = [v3 objectForKeyedSubscript:v4];
+  v9 = [infoDictionary objectForKeyedSubscript:v4];
   v8 = [v9 objectForKeyedSubscript:v6];
   if (!v9)
   {
@@ -105,11 +105,11 @@ LABEL_16:
 
 + (Class)diagnosticInputsClassAttribute
 {
-  v2 = [a1 extensionAttributes];
-  v3 = v2;
-  if (v2)
+  extensionAttributes = [self extensionAttributes];
+  v3 = extensionAttributes;
+  if (extensionAttributes)
   {
-    v4 = [v2 objectForKeyedSubscript:@"DKDiagnosticInputsClass"];
+    v4 = [extensionAttributes objectForKeyedSubscript:@"DKDiagnosticInputsClass"];
     if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v5 = NSClassFromString(v4);
@@ -131,84 +131,84 @@ LABEL_16:
   return v5;
 }
 
-+ (id)inputsForDiagnostic:(id)a3 predicates:(id)a4 specifications:(id)a5 parameters:(id)a6
++ (id)inputsForDiagnostic:(id)diagnostic predicates:(id)predicates specifications:(id)specifications parameters:(id)parameters
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [a1 inputsUsingClass:objc_msgSend(a1 diagnostic:"diagnosticInputsClassAttribute") predicates:v13 specifications:v12 parameters:{v11, v10}];
+  parametersCopy = parameters;
+  specificationsCopy = specifications;
+  predicatesCopy = predicates;
+  diagnosticCopy = diagnostic;
+  v14 = [self inputsUsingClass:objc_msgSend(self diagnostic:"diagnosticInputsClassAttribute") predicates:diagnosticCopy specifications:predicatesCopy parameters:{specificationsCopy, parametersCopy}];
 
   return v14;
 }
 
-+ (id)inputsUsingClass:(Class)a3 diagnostic:(id)a4 predicates:(id)a5 specifications:(id)a6 parameters:(id)a7
++ (id)inputsUsingClass:(Class)class diagnostic:(id)diagnostic predicates:(id)predicates specifications:(id)specifications parameters:(id)parameters
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  if (a3)
+  diagnosticCopy = diagnostic;
+  predicatesCopy = predicates;
+  specificationsCopy = specifications;
+  parametersCopy = parameters;
+  if (class)
   {
-    a3 = objc_opt_new();
-    if (a3)
+    class = objc_opt_new();
+    if (class)
     {
-      if ((objc_opt_respondsToSelector() & 1) != 0 && ![(objc_class *)a3 validateAndInitializePredicates:v12])
+      if ((objc_opt_respondsToSelector() & 1) != 0 && ![(objc_class *)class validateAndInitializePredicates:predicatesCopy])
       {
         v15 = &unk_285B928E8;
         goto LABEL_12;
       }
 
-      if ((objc_opt_respondsToSelector() & 1) != 0 && ![(objc_class *)a3 validateAndInitializeSpecifications:v13])
+      if ((objc_opt_respondsToSelector() & 1) != 0 && ![(objc_class *)class validateAndInitializeSpecifications:specificationsCopy])
       {
         v15 = &unk_285B92900;
         goto LABEL_12;
       }
 
-      if ((objc_opt_respondsToSelector() & 1) != 0 && ([(objc_class *)a3 validateAndInitializeParameters:v14]& 1) == 0)
+      if ((objc_opt_respondsToSelector() & 1) != 0 && ([(objc_class *)class validateAndInitializeParameters:parametersCopy]& 1) == 0)
       {
         v15 = &unk_285B92918;
 LABEL_12:
-        v16 = [v11 result];
-        [v16 setStatusCode:v15];
+        result = [diagnosticCopy result];
+        [result setStatusCode:v15];
 
-        [v11 setFinished:1];
+        [diagnosticCopy setFinished:1];
       }
     }
   }
 
-  return a3;
+  return class;
 }
 
-+ (void)moveFilesToSharedContainerInMutableResult:(id)a3
++ (void)moveFilesToSharedContainerInMutableResult:(id)result
 {
   v52 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 files];
-  if (v4)
+  resultCopy = result;
+  files = [resultCopy files];
+  if (files)
   {
-    v5 = v4;
-    v6 = [v3 files];
-    v7 = [v6 count];
+    v5 = files;
+    files2 = [resultCopy files];
+    v7 = [files2 count];
 
     if (v7)
     {
       v38 = DKTemporaryDirectoryURL();
-      v8 = [v3 files];
-      v9 = [v8 copy];
+      files3 = [resultCopy files];
+      v9 = [files3 copy];
 
       v36 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
       v41 = 0u;
       v42 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v10 = [v3 files];
-      v11 = [v10 countByEnumeratingWithState:&v41 objects:v51 count:16];
+      files4 = [resultCopy files];
+      v11 = [files4 countByEnumeratingWithState:&v41 objects:v51 count:16];
       if (v11)
       {
         v12 = v11;
         v34 = v9;
-        v35 = v3;
+        v35 = resultCopy;
         v13 = 0;
         v14 = *v42;
         v15 = 0x277CCA000uLL;
@@ -220,30 +220,30 @@ LABEL_12:
           {
             if (*v42 != v14)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(files4);
             }
 
             v17 = *(*(&v41 + 1) + 8 * v16);
-            v18 = [v17 path];
-            v19 = [v38 path];
-            v20 = [v18 hasPrefix:v19];
+            path = [v17 path];
+            path2 = [v38 path];
+            v20 = [path hasPrefix:path2];
 
             if ((v20 & 1) == 0)
             {
-              v21 = v10;
-              v22 = [v17 lastPathComponent];
-              v23 = [v38 URLByAppendingPathComponent:v22];
-              v24 = [*(v15 + 2560) defaultManager];
+              v21 = files4;
+              lastPathComponent = [v17 lastPathComponent];
+              v23 = [v38 URLByAppendingPathComponent:lastPathComponent];
+              defaultManager = [*(v15 + 2560) defaultManager];
               v40 = 0;
-              v25 = [v24 copyItemAtURL:v17 toURL:v23 error:&v40];
+              v25 = [defaultManager copyItemAtURL:v17 toURL:v23 error:&v40];
               v26 = v40;
 
               if (v25)
               {
 
-                v27 = [*(v15 + 2560) defaultManager];
+                defaultManager2 = [*(v15 + 2560) defaultManager];
                 v39 = 0;
-                v28 = [v27 removeItemAtURL:v17 error:&v39];
+                v28 = [defaultManager2 removeItemAtURL:v17 error:&v39];
                 v26 = v39;
 
                 if ((v28 & 1) == 0)
@@ -288,7 +288,7 @@ LABEL_12:
               }
 
               v13 = 1;
-              v10 = v21;
+              files4 = v21;
               v15 = 0x277CCA000;
               v12 = v37;
             }
@@ -297,13 +297,13 @@ LABEL_12:
           }
 
           while (v12 != v16);
-          v12 = [v10 countByEnumeratingWithState:&v41 objects:v51 count:16];
+          v12 = [files4 countByEnumeratingWithState:&v41 objects:v51 count:16];
         }
 
         while (v12);
 
         v9 = v34;
-        v3 = v35;
+        resultCopy = v35;
         if (v13)
         {
           v32 = [v36 copy];
@@ -334,32 +334,32 @@ LABEL_29:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_fetchItemProviderFromItems:(id)a3 withError:(id *)a4
++ (id)_fetchItemProviderFromItems:(id)items withError:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || ![v6 count])
+  itemsCopy = items;
+  v7 = itemsCopy;
+  if (!itemsCopy || ![itemsCopy count])
   {
-    v8 = [a1 _sharedParsingFailedError];
-    if (v8)
+    _sharedParsingFailedError = [self _sharedParsingFailedError];
+    if (_sharedParsingFailedError)
     {
-      v9 = v8;
-      v10 = 0;
+      v9 = _sharedParsingFailedError;
+      firstObject = 0;
       goto LABEL_9;
     }
   }
 
-  v10 = [v7 firstObject];
-  v11 = [v10 attachments];
-  if (!v11 || (v12 = v11, [v10 attachments], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, v12, !v14))
+  firstObject = [v7 firstObject];
+  attachments = [firstObject attachments];
+  if (!attachments || (v12 = attachments, [firstObject attachments], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, v12, !v14))
   {
-    v15 = [a1 _sharedParsingFailedError];
-    if (v15)
+    _sharedParsingFailedError2 = [self _sharedParsingFailedError];
+    if (_sharedParsingFailedError2)
     {
-      v9 = v15;
+      v9 = _sharedParsingFailedError2;
 LABEL_9:
-      v16 = 0;
-      if (!a4)
+      firstObject2 = 0;
+      if (!error)
       {
         goto LABEL_11;
       }
@@ -368,20 +368,20 @@ LABEL_9:
     }
   }
 
-  v19 = [v10 attachments];
-  v16 = [v19 firstObject];
+  attachments2 = [firstObject attachments];
+  firstObject2 = [attachments2 firstObject];
 
   v9 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_10:
     v17 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_11:
 
-  return v16;
+  return firstObject2;
 }
 
 + (id)_sharedParsingFailedError

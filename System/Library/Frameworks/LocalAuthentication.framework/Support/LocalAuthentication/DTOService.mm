@@ -1,5 +1,5 @@
 @interface DTOService
-- (DTOService)initWithWorkQueue:(id)a3 notificationCenter:(id)a4 ui:(id)a5;
+- (DTOService)initWithWorkQueue:(id)queue notificationCenter:(id)center ui:(id)ui;
 - (id)processor;
 - (void)startServices;
 @end
@@ -14,10 +14,10 @@
   v6 = [[LACUserInterfacePresenter alloc] initWithReplyQueue:workQueue uiController:self->_uiController];
   v7 = [v4 initWithReplyQueue:workQueue ui:v6];
   v14[0] = v7;
-  v8 = [(LACDTOSensorTrustService *)self->_sensorTrust evaluationProcessor];
+  evaluationProcessor = [(LACDTOSensorTrustService *)self->_sensorTrust evaluationProcessor];
   policyController = self->_policyController;
   emptyPasscodeProcessor = self->_emptyPasscodeProcessor;
-  v14[1] = v8;
+  v14[1] = evaluationProcessor;
   v14[2] = emptyPasscodeProcessor;
   v14[3] = policyController;
   v11 = [NSArray arrayWithObjects:v14 count:4];
@@ -26,21 +26,21 @@
   return v12;
 }
 
-- (DTOService)initWithWorkQueue:(id)a3 notificationCenter:(id)a4 ui:(id)a5
+- (DTOService)initWithWorkQueue:(id)queue notificationCenter:(id)center ui:(id)ui
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  centerCopy = center;
+  uiCopy = ui;
   v112.receiver = self;
   v112.super_class = DTOService;
   v12 = [(DTOService *)&v112 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_workQueue, a3);
-    objc_storeStrong(&v13->_uiController, a5);
+    objc_storeStrong(&v12->_workQueue, queue);
+    objc_storeStrong(&v13->_uiController, ui);
     v14 = objc_alloc_init(DTOPolicyEvaluationIdentifierFactory);
-    v15 = [[DTOKVStore alloc] initWithWorkQueue:v9];
+    v15 = [[DTOKVStore alloc] initWithWorkQueue:queueCopy];
     kvStore = v13->_kvStore;
     v13->_kvStore = v15;
 
@@ -70,19 +70,19 @@
 
     v109[0] = _NSConcreteStackBlock;
     v109[1] = 3221225472;
-    v89 = v10;
+    v89 = centerCopy;
     v109[2] = sub_100004F84;
     v109[3] = &unk_100054DE8;
     v31 = v13;
     v110 = v31;
-    v32 = v9;
+    v32 = queueCopy;
     v111 = v32;
     v33 = sub_100004F84(v109);
     featureController = v31->_featureController;
     v31->_featureController = v33;
 
-    v87 = v11;
-    v88 = v9;
+    v87 = uiCopy;
+    v88 = queueCopy;
     v35 = v13->_kvStore;
     v36 = v31->_featureController;
     v37 = v13->_eventBus;
@@ -191,13 +191,13 @@
     v75 = [LACDTOServiceXPCHost alloc];
     v76 = v31->_featureController;
     v77 = v47->_ratchetStateProvider;
-    v9 = v88;
-    v78 = [v64[3] trustStateProvider];
+    queueCopy = v88;
+    trustStateProvider = [v64[3] trustStateProvider];
     v79 = v75;
-    v10 = v89;
+    centerCopy = v89;
     v80 = v76;
-    v11 = v87;
-    v81 = [v79 initWithFeatureController:v80 ratchetStateProvider:v77 trustStateProvider:v78 pendingEvaluationController:v50->_pendingEvaluationsController];
+    uiCopy = v87;
+    v81 = [v79 initWithFeatureController:v80 ratchetStateProvider:v77 trustStateProvider:trustStateProvider pendingEvaluationController:v50->_pendingEvaluationsController];
     v82 = v71[14];
     v71[14] = v81;
   }

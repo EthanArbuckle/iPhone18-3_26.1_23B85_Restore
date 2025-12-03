@@ -1,12 +1,12 @@
 @interface CKBusinessOnboardingController
 + (BOOL)shouldShowBusinessOnboarding;
-+ (void)checkForBusinessAlertsIDSIssues:(id)a3;
-- (CKBusinessOnboardingController)initWithCompletionHandler:(id)a3;
++ (void)checkForBusinessAlertsIDSIssues:(id)issues;
+- (CKBusinessOnboardingController)initWithCompletionHandler:(id)handler;
 - (void)_addBusinessInitiatedBullets;
-- (void)_setBusinessInitiatedFeatureStateOn:(BOOL)a3 completion:(id)a4;
-- (void)continueButtonTapped:(id)a3;
-- (void)notNowButtonTapped:(id)a3;
-- (void)setupNotNowWithActionHandler:(id)a3;
+- (void)_setBusinessInitiatedFeatureStateOn:(BOOL)on completion:(id)completion;
+- (void)continueButtonTapped:(id)tapped;
+- (void)notNowButtonTapped:(id)tapped;
+- (void)setupNotNowWithActionHandler:(id)handler;
 - (void)viewDidLoad;
 @end
 
@@ -14,8 +14,8 @@
 
 + (BOOL)shouldShowBusinessOnboarding
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"BusinessChatPrivacyPageDisplayed"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"BusinessChatPrivacyPageDisplayed"];
 
   if (v3 > 2)
   {
@@ -27,10 +27,10 @@
   return [v4 supportsBusinessChat];
 }
 
-+ (void)checkForBusinessAlertsIDSIssues:(id)a3
++ (void)checkForBusinessAlertsIDSIssues:(id)issues
 {
-  v3 = a3;
-  if (v3)
+  issuesCopy = issues;
+  if (issuesCopy)
   {
     v4 = objc_alloc(MEMORY[0x1E69A4860]);
     v5 = [v4 initWithService:*MEMORY[0x1E69A4820] queue:MEMORY[0x1E69E96A0]];
@@ -39,7 +39,7 @@
     v7[1] = 3221225472;
     v7[2] = __66__CKBusinessOnboardingController_checkForBusinessAlertsIDSIssues___block_invoke;
     v7[3] = &unk_1E72F08C8;
-    v8 = v3;
+    v8 = issuesCopy;
     [v5 retrieveFeatureToggleStateForOptions:v6 completion:v7];
   }
 }
@@ -55,20 +55,20 @@ void __66__CKBusinessOnboardingController_checkForBusinessAlertsIDSIssues___bloc
   (*(*(a1 + 32) + 16))();
 }
 
-- (CKBusinessOnboardingController)initWithCompletionHandler:(id)a3
+- (CKBusinessOnboardingController)initWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [(CKBusinessOnboardingController *)a2 initWithCompletionHandler:?];
   }
 
-  v6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v7 = [v6 isBIAEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isBIAEnabled = [mEMORY[0x1E69A8070] isBIAEnabled];
 
   v8 = CKFrameworkBundle();
   v9 = v8;
-  if (v7)
+  if (isBIAEnabled)
   {
     v10 = &stru_1F04268F8;
     v11 = [v8 localizedStringForKey:@"BUSINESS_INITIATED_ALERTS" value:&stru_1F04268F8 table:@"ChatKit"];
@@ -88,13 +88,13 @@ void __66__CKBusinessOnboardingController_checkForBusinessAlertsIDSIssues___bloc
   v13 = v12;
   if (v12)
   {
-    [(CKBusinessOnboardingController *)v12 setCompletionHandler:v5];
+    [(CKBusinessOnboardingController *)v12 setCompletionHandler:handlerCopy];
     [(CKBusinessOnboardingController *)v13 setModalPresentationStyle:2];
     [(CKBusinessOnboardingController *)v13 setModalInPresentation:1];
-    v14 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v15 = [v14 isBIAEnabled];
+    mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isBIAEnabled2 = [mEMORY[0x1E69A8070]2 isBIAEnabled];
 
-    if (v15)
+    if (isBIAEnabled2)
     {
       [(CKBusinessOnboardingController *)v13 _addBusinessInitiatedBullets];
     }
@@ -129,37 +129,37 @@ void __66__CKBusinessOnboardingController_checkForBusinessAlertsIDSIssues___bloc
   v8.receiver = self;
   v8.super_class = CKBusinessOnboardingController;
   [(OBBaseWelcomeController *)&v8 viewDidLoad];
-  v3 = [MEMORY[0x1E69B7D00] boldButton];
+  boldButton = [MEMORY[0x1E69B7D00] boldButton];
   v4 = CKFrameworkBundle();
   v5 = [v4 localizedStringForKey:@"CONTINUE" value:&stru_1F04268F8 table:@"ChatKit"];
-  [v3 setTitle:v5 forState:0];
+  [boldButton setTitle:v5 forState:0];
 
-  [v3 addTarget:self action:sel_continueButtonTapped_ forControlEvents:64];
-  v6 = [(CKBusinessOnboardingController *)self buttonTray];
-  [v6 addButton:v3];
+  [boldButton addTarget:self action:sel_continueButtonTapped_ forControlEvents:64];
+  buttonTray = [(CKBusinessOnboardingController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
-  v7 = [(CKBusinessOnboardingController *)self buttonTray];
-  [v7 setPrivacyLinkForBundles:&unk_1F04E68E8];
+  buttonTray2 = [(CKBusinessOnboardingController *)self buttonTray];
+  [buttonTray2 setPrivacyLinkForBundles:&unk_1F04E68E8];
 }
 
-- (void)setupNotNowWithActionHandler:(id)a3
+- (void)setupNotNowWithActionHandler:(id)handler
 {
-  aBlock = a3;
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isBIAEnabled];
+  aBlock = handler;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isBIAEnabled = [mEMORY[0x1E69A8070] isBIAEnabled];
 
-  if (v5)
+  if (isBIAEnabled)
   {
     if (!self->_notNowActionHandler)
     {
-      v6 = [MEMORY[0x1E69B7D38] linkButton];
+      linkButton = [MEMORY[0x1E69B7D38] linkButton];
       v7 = CKFrameworkBundle();
       v8 = [v7 localizedStringForKey:@"BUSINESS_INITIATED_WELCOME_OPTOUT_BUTTON" value:&stru_1F04268F8 table:@"ChatKit"];
-      [v6 setTitle:v8 forState:0];
+      [linkButton setTitle:v8 forState:0];
 
-      [v6 addTarget:self action:sel_notNowButtonTapped_ forControlEvents:64];
-      v9 = [(CKBusinessOnboardingController *)self buttonTray];
-      [v9 addButton:v6];
+      [linkButton addTarget:self action:sel_notNowButtonTapped_ forControlEvents:64];
+      buttonTray = [(CKBusinessOnboardingController *)self buttonTray];
+      [buttonTray addButton:linkButton];
     }
 
     v10 = _Block_copy(aBlock);
@@ -168,11 +168,11 @@ void __66__CKBusinessOnboardingController_checkForBusinessAlertsIDSIssues___bloc
   }
 }
 
-- (void)continueButtonTapped:(id)a3
+- (void)continueButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v5 setInteger:3 forKey:@"BusinessChatPrivacyPageDisplayed"];
+  tappedCopy = tapped;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setInteger:3 forKey:@"BusinessChatPrivacyPageDisplayed"];
 
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
@@ -201,9 +201,9 @@ void __55__CKBusinessOnboardingController_continueButtonTapped___block_invoke(ui
   }
 }
 
-- (void)notNowButtonTapped:(id)a3
+- (void)notNowButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -231,13 +231,13 @@ void __53__CKBusinessOnboardingController_notNowButtonTapped___block_invoke(uint
   }
 }
 
-- (void)_setBusinessInitiatedFeatureStateOn:(BOOL)a3 completion:(id)a4
+- (void)_setBusinessInitiatedFeatureStateOn:(BOOL)on completion:(id)completion
 {
-  v4 = a3;
-  v5 = a4;
+  onCopy = on;
+  completionCopy = completion;
   v6 = objc_alloc(MEMORY[0x1E69A4860]);
   v7 = [v6 initWithService:*MEMORY[0x1E69A4820] queue:MEMORY[0x1E69E96A0]];
-  if (v4)
+  if (onCopy)
   {
     v8 = 1;
   }
@@ -252,9 +252,9 @@ void __53__CKBusinessOnboardingController_notNowButtonTapped___block_invoke(uint
   v11[1] = 3221225472;
   v11[2] = __81__CKBusinessOnboardingController__setBusinessInitiatedFeatureStateOn_completion___block_invoke;
   v11[3] = &unk_1E72F08F0;
-  v13 = v4;
-  v12 = v5;
-  v10 = v5;
+  v13 = onCopy;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [v7 updateFeatureToggleStateWithOptions:v9 completion:v11];
 }
 

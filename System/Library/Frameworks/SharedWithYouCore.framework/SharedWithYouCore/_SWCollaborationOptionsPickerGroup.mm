@@ -1,55 +1,55 @@
 @interface _SWCollaborationOptionsPickerGroup
-- (_SWCollaborationOptionsPickerGroup)initWithCoder:(id)a3;
-- (_SWCollaborationOptionsPickerGroup)initWithTitle:(id)a3 identifier:(id)a4 footer:(id)a5 options:(id)a6 selectedOptionIdentifierIndex:(int64_t)a7;
+- (_SWCollaborationOptionsPickerGroup)initWithCoder:(id)coder;
+- (_SWCollaborationOptionsPickerGroup)initWithTitle:(id)title identifier:(id)identifier footer:(id)footer options:(id)options selectedOptionIdentifierIndex:(int64_t)index;
 - (id)_defaultSelectedOptionIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setOptions:(id)a3;
-- (void)setSelectedOptionIdentifier:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setOptions:(id)options;
+- (void)setSelectedOptionIdentifier:(id)identifier;
 @end
 
 @implementation _SWCollaborationOptionsPickerGroup
 
-- (_SWCollaborationOptionsPickerGroup)initWithTitle:(id)a3 identifier:(id)a4 footer:(id)a5 options:(id)a6 selectedOptionIdentifierIndex:(int64_t)a7
+- (_SWCollaborationOptionsPickerGroup)initWithTitle:(id)title identifier:(id)identifier footer:(id)footer options:(id)options selectedOptionIdentifierIndex:(int64_t)index
 {
-  v12 = a6;
+  optionsCopy = options;
   v20.receiver = self;
   v20.super_class = _SWCollaborationOptionsPickerGroup;
-  v13 = [(_SWCollaborationOptionsGroup *)&v20 initWithTitle:a3 identifier:a4 footer:a5 options:v12];
-  if ([v12 count] <= a7)
+  v13 = [(_SWCollaborationOptionsGroup *)&v20 initWithTitle:title identifier:identifier footer:footer options:optionsCopy];
+  if ([optionsCopy count] <= index)
   {
-    v18 = [(_SWCollaborationOptionsPickerGroup *)v13 _defaultSelectedOptionIdentifier];
+    _defaultSelectedOptionIdentifier = [(_SWCollaborationOptionsPickerGroup *)v13 _defaultSelectedOptionIdentifier];
   }
 
   else
   {
-    v14 = [v12 objectAtIndex:a7];
-    v15 = [v14 identifier];
-    v16 = v15;
+    v14 = [optionsCopy objectAtIndex:index];
+    identifier = [v14 identifier];
+    v16 = identifier;
     v17 = &stru_1F4E16F00;
-    if (v15)
+    if (identifier)
     {
-      v17 = v15;
+      v17 = identifier;
     }
 
-    v18 = v17;
+    _defaultSelectedOptionIdentifier = v17;
   }
 
-  [(_SWCollaborationOptionsPickerGroup *)v13 setSelectedOptionIdentifier:v18];
+  [(_SWCollaborationOptionsPickerGroup *)v13 setSelectedOptionIdentifier:_defaultSelectedOptionIdentifier];
 
   return v13;
 }
 
 - (id)_defaultSelectedOptionIdentifier
 {
-  v2 = [(_SWCollaborationOptionsGroup *)self options];
-  v3 = [v2 firstObject];
-  v4 = [v3 identifier];
-  v5 = v4;
-  if (v4)
+  options = [(_SWCollaborationOptionsGroup *)self options];
+  firstObject = [options firstObject];
+  identifier = [firstObject identifier];
+  v5 = identifier;
+  if (identifier)
   {
-    v6 = v4;
+    v6 = identifier;
   }
 
   else
@@ -62,29 +62,29 @@
   return v6;
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
   v5.receiver = self;
   v5.super_class = _SWCollaborationOptionsPickerGroup;
-  [(_SWCollaborationOptionsGroup *)&v5 setOptions:a3];
-  v4 = [(_SWCollaborationOptionsPickerGroup *)self _defaultSelectedOptionIdentifier];
-  [(_SWCollaborationOptionsPickerGroup *)self setSelectedOptionIdentifier:v4];
+  [(_SWCollaborationOptionsGroup *)&v5 setOptions:options];
+  _defaultSelectedOptionIdentifier = [(_SWCollaborationOptionsPickerGroup *)self _defaultSelectedOptionIdentifier];
+  [(_SWCollaborationOptionsPickerGroup *)self setSelectedOptionIdentifier:_defaultSelectedOptionIdentifier];
 }
 
-- (void)setSelectedOptionIdentifier:(id)a3
+- (void)setSelectedOptionIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(_SWCollaborationOptionsPickerGroup *)self selectedOptionIdentifier];
+  identifierCopy = identifier;
+  selectedOptionIdentifier = [(_SWCollaborationOptionsPickerGroup *)self selectedOptionIdentifier];
 
-  if (v6 != v5)
+  if (selectedOptionIdentifier != identifierCopy)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v7 = [(_SWCollaborationOptionsGroup *)self options];
-    v8 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    options = [(_SWCollaborationOptionsGroup *)self options];
+    v8 = [options countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v8)
     {
       v9 = v8;
@@ -95,22 +95,22 @@
         {
           if (*v27 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(options);
           }
 
-          v12 = [*(*(&v26 + 1) + 8 * i) identifier];
+          identifier = [*(*(&v26 + 1) + 8 * i) identifier];
 
-          if (v12 == v5)
+          if (identifier == identifierCopy)
           {
 
-            objc_storeStrong(&self->_selectedOptionIdentifier, a3);
+            objc_storeStrong(&self->_selectedOptionIdentifier, identifier);
             self->_isUpdatingSelectionState = 1;
             v22 = 0u;
             v23 = 0u;
             v24 = 0u;
             v25 = 0u;
-            v13 = [(_SWCollaborationOptionsGroup *)self options];
-            v14 = [v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            options2 = [(_SWCollaborationOptionsGroup *)self options];
+            v14 = [options2 countByEnumeratingWithState:&v22 objects:v30 count:16];
             if (v14)
             {
               v15 = v14;
@@ -121,17 +121,17 @@
                 {
                   if (*v23 != v16)
                   {
-                    objc_enumerationMutation(v13);
+                    objc_enumerationMutation(options2);
                   }
 
                   v18 = *(*(&v22 + 1) + 8 * j);
-                  v19 = [v18 identifier];
-                  v20 = v19 == v5;
+                  identifier2 = [v18 identifier];
+                  v20 = identifier2 == identifierCopy;
 
                   [v18 setSelected:v20];
                 }
 
-                v15 = [v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
+                v15 = [options2 countByEnumeratingWithState:&v22 objects:v30 count:16];
               }
 
               while (v15);
@@ -142,7 +142,7 @@
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v9 = [options countByEnumeratingWithState:&v26 objects:v31 count:16];
         if (v9)
         {
           continue;
@@ -161,11 +161,11 @@ LABEL_19:
 - (id)description
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(SWCollaborationOptionsGroup *)self title];
-  if (v3)
+  title = [(SWCollaborationOptionsGroup *)self title];
+  if (title)
   {
-    v4 = [(SWCollaborationOptionsGroup *)self title];
-    v5 = [v4 mutableCopy];
+    title2 = [(SWCollaborationOptionsGroup *)self title];
+    v5 = [title2 mutableCopy];
   }
 
   else
@@ -177,8 +177,8 @@ LABEL_19:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(_SWCollaborationOptionsGroup *)self options];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  options = [(_SWCollaborationOptionsGroup *)self options];
+  v7 = [options countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -189,7 +189,7 @@ LABEL_19:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(options);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -201,18 +201,18 @@ LABEL_19:
         [v5 appendFormat:@"- %@", v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [options countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
   }
 
-  v12 = [(SWCollaborationOptionsGroup *)self footer];
+  footer = [(SWCollaborationOptionsGroup *)self footer];
 
-  if (v12)
+  if (footer)
   {
-    v13 = [(SWCollaborationOptionsGroup *)self footer];
-    [v5 appendString:v13];
+    footer2 = [(SWCollaborationOptionsGroup *)self footer];
+    [v5 appendString:footer2];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -220,11 +220,11 @@ LABEL_19:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = _SWCollaborationOptionsPickerGroup;
-  v4 = [(SWCollaborationOptionsGroup *)&v7 copyWithZone:a3];
+  v4 = [(SWCollaborationOptionsGroup *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -234,58 +234,58 @@ LABEL_19:
   return v5;
 }
 
-- (_SWCollaborationOptionsPickerGroup)initWithCoder:(id)a3
+- (_SWCollaborationOptionsPickerGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = _SWCollaborationOptionsPickerGroup;
-  v5 = [(SWCollaborationOptionsGroup *)&v17 initWithCoder:v4];
+  v5 = [(SWCollaborationOptionsGroup *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selectedOption"];
-    v7 = [v6 unsignedIntegerValue];
-    v8 = [(_SWCollaborationOptionsGroup *)v5 options];
-    v9 = [v8 count];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectedOption"];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
+    options = [(_SWCollaborationOptionsGroup *)v5 options];
+    v9 = [options count];
 
-    if (v7 >= v9)
+    if (unsignedIntegerValue >= v9)
     {
-      v15 = [(_SWCollaborationOptionsPickerGroup *)v5 _defaultSelectedOptionIdentifier];
+      _defaultSelectedOptionIdentifier = [(_SWCollaborationOptionsPickerGroup *)v5 _defaultSelectedOptionIdentifier];
     }
 
     else
     {
-      v10 = [(_SWCollaborationOptionsGroup *)v5 options];
-      v11 = [v10 objectAtIndexedSubscript:v7];
-      v12 = [v11 identifier];
-      v13 = v12;
+      options2 = [(_SWCollaborationOptionsGroup *)v5 options];
+      v11 = [options2 objectAtIndexedSubscript:unsignedIntegerValue];
+      identifier = [v11 identifier];
+      v13 = identifier;
       v14 = &stru_1F4E16F00;
-      if (v12)
+      if (identifier)
       {
-        v14 = v12;
+        v14 = identifier;
       }
 
-      v15 = v14;
+      _defaultSelectedOptionIdentifier = v14;
     }
 
-    [(_SWCollaborationOptionsPickerGroup *)v5 setSelectedOptionIdentifier:v15];
+    [(_SWCollaborationOptionsPickerGroup *)v5 setSelectedOptionIdentifier:_defaultSelectedOptionIdentifier];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = _SWCollaborationOptionsPickerGroup;
-  [(SWCollaborationOptionsGroup *)&v19 encodeWithCoder:v4];
+  [(SWCollaborationOptionsGroup *)&v19 encodeWithCoder:coderCopy];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(_SWCollaborationOptionsGroup *)self options];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  options = [(_SWCollaborationOptionsGroup *)self options];
+  v6 = [options countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v6)
   {
     v7 = *v16;
@@ -295,21 +295,21 @@ LABEL_3:
     {
       if (*v16 != v7)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(options);
       }
 
       v9 = *(*(&v15 + 1) + 8 * v8);
-      v10 = [v9 identifier];
+      identifier = [v9 identifier];
       selectedOptionIdentifier = self->_selectedOptionIdentifier;
 
-      if (v10 == selectedOptionIdentifier)
+      if (identifier == selectedOptionIdentifier)
       {
         break;
       }
 
       if (v6 == ++v8)
       {
-        v6 = [v5 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v6 = [options countByEnumeratingWithState:&v15 objects:v20 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -323,13 +323,13 @@ LABEL_3:
 
     if (v6)
     {
-      v12 = [(_SWCollaborationOptionsGroup *)self options];
-      v13 = [v12 indexOfObject:v6];
+      options2 = [(_SWCollaborationOptionsGroup *)self options];
+      v13 = [options2 indexOfObject:v6];
 
       if (v13 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v13];
-        [v4 encodeObject:v5 forKey:@"selectedOption"];
+        options = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v13];
+        [coderCopy encodeObject:options forKey:@"selectedOption"];
         goto LABEL_13;
       }
     }

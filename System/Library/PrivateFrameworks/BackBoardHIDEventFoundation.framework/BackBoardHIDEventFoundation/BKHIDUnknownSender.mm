@@ -12,9 +12,9 @@
   v2 = [(BKHIDUnknownSender *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CF06D0] wildcard];
+    wildcard = [MEMORY[0x277CF06D0] wildcard];
     senderDescriptor = v2->_senderDescriptor;
-    v2->_senderDescriptor = v3;
+    v2->_senderDescriptor = wildcard;
   }
 
   return v2;
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __39__BKHIDUnknownSender_unknownSenderInfo__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (unknownSenderInfo_onceToken != -1)
   {
     dispatch_once(&unknownSenderInfo_onceToken, block);

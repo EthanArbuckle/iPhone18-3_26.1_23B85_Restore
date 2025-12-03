@@ -1,18 +1,18 @@
 @interface _SFFloatingTabBarItemViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation _SFFloatingTabBarItemViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_SFFloatingTabBarItemView" hasSwiftField:@"titleTextField" withSwiftType:"UITextField"];
-  [v3 validateClass:@"_SFFloatingTabBarItemView" hasSwiftField:@"configuration" withSwiftType:"Configuration"];
-  [v3 validateSwiftStruct:@"MobileSafari.FloatingTabBar[class].ItemView[class].Configuration"];
-  [v3 validateSwiftStruct:@"MobileSafari.FloatingTabBar[class].ItemView[class].Configuration" hasSwiftField:@"isSelected" withSwiftType:"Bool"];
-  [v3 validateSwiftStruct:@"MobileSafari.FloatingTabBar[class].ItemView[class].Configuration" hasSwiftField:@"isRetitling" withSwiftType:"Bool"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_SFFloatingTabBarItemView" hasSwiftField:@"titleTextField" withSwiftType:"UITextField"];
+  [validationsCopy validateClass:@"_SFFloatingTabBarItemView" hasSwiftField:@"configuration" withSwiftType:"Configuration"];
+  [validationsCopy validateSwiftStruct:@"MobileSafari.FloatingTabBar[class].ItemView[class].Configuration"];
+  [validationsCopy validateSwiftStruct:@"MobileSafari.FloatingTabBar[class].ItemView[class].Configuration" hasSwiftField:@"isSelected" withSwiftType:"Bool"];
+  [validationsCopy validateSwiftStruct:@"MobileSafari.FloatingTabBar[class].ItemView[class].Configuration" hasSwiftField:@"isRetitling" withSwiftType:"Bool"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

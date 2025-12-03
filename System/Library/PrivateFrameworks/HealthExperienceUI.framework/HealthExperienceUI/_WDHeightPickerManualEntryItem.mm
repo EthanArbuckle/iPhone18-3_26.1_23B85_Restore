@@ -1,24 +1,24 @@
 @interface _WDHeightPickerManualEntryItem
-- (_WDHeightPickerManualEntryItem)initWithDisplayName:(id)a3;
+- (_WDHeightPickerManualEntryItem)initWithDisplayName:(id)name;
 - (id)generateValue;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
 - (id)tableViewCells;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
 - (void)_updateTableViewCell;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation _WDHeightPickerManualEntryItem
 
-- (_WDHeightPickerManualEntryItem)initWithDisplayName:(id)a3
+- (_WDHeightPickerManualEntryItem)initWithDisplayName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = _WDHeightPickerManualEntryItem;
   v5 = [(_WDHeightPickerManualEntryItem *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     displayName = v5->_displayName;
     v5->_displayName = v6;
   }
@@ -36,20 +36,20 @@
     v5 = self->_tableViewCell;
     self->_tableViewCell = v4;
 
-    v6 = [(HXUIInlinePickerTableViewCell *)self->_tableViewCell pickerView];
-    [v6 setDataSource:self];
+    pickerView = [(HXUIInlinePickerTableViewCell *)self->_tableViewCell pickerView];
+    [pickerView setDataSource:self];
 
-    v7 = [(HXUIInlinePickerTableViewCell *)self->_tableViewCell pickerView];
-    [v7 setDelegate:self];
+    pickerView2 = [(HXUIInlinePickerTableViewCell *)self->_tableViewCell pickerView];
+    [pickerView2 setDelegate:self];
 
-    v8 = [(HXUIInlinePickerTableViewCell *)self->_tableViewCell pickerView];
-    [v8 selectRow:5 inComponent:0 animated:0];
+    pickerView3 = [(HXUIInlinePickerTableViewCell *)self->_tableViewCell pickerView];
+    [pickerView3 selectRow:5 inComponent:0 animated:0];
 
-    v9 = [(HXUIInlinePickerTableViewCell *)self->_tableViewCell pickerView];
-    [v9 selectRow:4 inComponent:1 animated:0];
+    pickerView4 = [(HXUIInlinePickerTableViewCell *)self->_tableViewCell pickerView];
+    [pickerView4 selectRow:4 inComponent:1 animated:0];
 
-    v10 = [(HXUIInlinePickerTableViewCell *)self->_tableViewCell pickerView];
-    [v10 selectRow:5 inComponent:0 animated:0];
+    pickerView5 = [(HXUIInlinePickerTableViewCell *)self->_tableViewCell pickerView];
+    [pickerView5 selectRow:5 inComponent:0 animated:0];
 
     v11 = self->_tableViewCell;
     v12 = HKUIJoinStringsForAutomationIdentifier();
@@ -65,15 +65,15 @@
   return v13;
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
   v4 = 12;
-  if (a4 != 1)
+  if (component != 1)
   {
     v4 = 0;
   }
 
-  if (a4)
+  if (component)
   {
     return v4;
   }
@@ -84,13 +84,13 @@
   }
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
   v7 = HKLocalizedNoDataString();
-  if (a5 <= 1)
+  if (component <= 1)
   {
     v8 = HKIntegerFormatter();
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:row];
     v10 = [v8 stringFromNumber:v9];
 
     v11 = HKFormatValueAndUnit();
@@ -103,11 +103,11 @@
 
 - (void)_updateTableViewCell
 {
-  v3 = [(HXUIInlinePickerTableViewCell *)self->_tableViewCell pickerView];
-  v4 = [v3 selectedRowInComponent:0];
+  pickerView = [(HXUIInlinePickerTableViewCell *)self->_tableViewCell pickerView];
+  v4 = [pickerView selectedRowInComponent:0];
 
-  v5 = [(HXUIInlinePickerTableViewCell *)self->_tableViewCell pickerView];
-  v6 = [v5 selectedRowInComponent:1];
+  pickerView2 = [(HXUIInlinePickerTableViewCell *)self->_tableViewCell pickerView];
+  v6 = [pickerView2 selectedRowInComponent:1];
 
   v7 = HKIntegerFormatter();
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
@@ -128,17 +128,17 @@
 
 - (id)generateValue
 {
-  v3 = [(HXUIInlinePickerTableViewCell *)self->_tableViewCell pickerView];
-  v4 = [v3 selectedRowInComponent:0];
+  pickerView = [(HXUIInlinePickerTableViewCell *)self->_tableViewCell pickerView];
+  v4 = [pickerView selectedRowInComponent:0];
 
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
   if ([v5 integerValue] >= 1)
   {
-    v6 = [(HXUIInlinePickerTableViewCell *)self->_tableViewCell pickerView];
-    v7 = [v6 selectedRowInComponent:0];
+    pickerView2 = [(HXUIInlinePickerTableViewCell *)self->_tableViewCell pickerView];
+    v7 = [pickerView2 selectedRowInComponent:0];
 
-    v8 = [(HXUIInlinePickerTableViewCell *)self->_tableViewCell pickerView];
-    v9 = [v8 selectedRowInComponent:1];
+    pickerView3 = [(HXUIInlinePickerTableViewCell *)self->_tableViewCell pickerView];
+    v9 = [pickerView3 selectedRowInComponent:1];
 
     v10 = [MEMORY[0x1E696AD98] numberWithDouble:v9 / 12.0 + v7];
 
@@ -148,13 +148,13 @@
   return v5;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v5.receiver = self;
   v5.super_class = _WDHeightPickerManualEntryItem;
-  v4 = a3;
-  [(WDAddDataManualEntryItem *)&v5 setTitle:v4];
-  [(HXUIInlinePickerTableViewCell *)self->_tableViewCell setDisplayName:v4, v5.receiver, v5.super_class];
+  titleCopy = title;
+  [(WDAddDataManualEntryItem *)&v5 setTitle:titleCopy];
+  [(HXUIInlinePickerTableViewCell *)self->_tableViewCell setDisplayName:titleCopy, v5.receiver, v5.super_class];
 }
 
 @end

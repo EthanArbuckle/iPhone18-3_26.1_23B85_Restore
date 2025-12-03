@@ -1,15 +1,15 @@
 @interface _HMTelevisionProfile
 - (BOOL)isMediaSourceDisplayOrderModifiable;
 - (NSArray)mediaSourceDisplayOrder;
-- (_HMTelevisionProfile)initWithTelevisionService:(id)a3 linkedServices:(id)a4;
+- (_HMTelevisionProfile)initWithTelevisionService:(id)service linkedServices:(id)services;
 - (_HMTelevisionProfileDelegate)delegate;
 - (id)messageDestination;
 - (id)messageTargetUUID;
-- (void)_handleSourceDisplayOrderUpdated:(id)a3;
-- (void)_notifyDelegateOfUpdatedSourceDisplayOrder:(id)a3;
+- (void)_handleSourceDisplayOrderUpdated:(id)updated;
+- (void)_notifyDelegateOfUpdatedSourceDisplayOrder:(id)order;
 - (void)_registerNotificationHandlers;
-- (void)setMediaSourceDisplayOrder:(id)a3;
-- (void)updateMediaSourceDisplayOrder:(id)a3 completionHandler:(id)a4;
+- (void)setMediaSourceDisplayOrder:(id)order;
+- (void)updateMediaSourceDisplayOrder:(id)order completionHandler:(id)handler;
 @end
 
 @implementation _HMTelevisionProfile
@@ -21,24 +21,24 @@
   return WeakRetained;
 }
 
-- (void)_handleSourceDisplayOrderUpdated:(id)a3
+- (void)_handleSourceDisplayOrderUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(_HMAccessoryProfile *)self context];
-  v12 = [v5 pendingRequests];
+  updatedCopy = updated;
+  context = [(_HMAccessoryProfile *)self context];
+  pendingRequests = [context pendingRequests];
 
-  v6 = [v4 identifier];
-  v7 = [v12 removeCompletionBlockForIdentifier:v6];
+  identifier = [updatedCopy identifier];
+  v7 = [pendingRequests removeCompletionBlockForIdentifier:identifier];
 
-  v8 = [v4 arrayForKey:@"source-display-order"];
+  v8 = [updatedCopy arrayForKey:@"source-display-order"];
 
-  v9 = [(_HMTelevisionProfile *)self mediaSourceDisplayOrder];
+  mediaSourceDisplayOrder = [(_HMTelevisionProfile *)self mediaSourceDisplayOrder];
   [(_HMTelevisionProfile *)self setMediaSourceDisplayOrder:v8];
   if (v7)
   {
-    v10 = [(_HMAccessoryProfile *)self context];
-    v11 = [v10 delegateCaller];
-    [v11 callCompletion:v7 error:0];
+    context2 = [(_HMAccessoryProfile *)self context];
+    delegateCaller = [context2 delegateCaller];
+    [delegateCaller callCompletion:v7 error:0];
   }
 
   else if ((HMFEqualObjects() & 1) == 0)
@@ -47,38 +47,38 @@
   }
 }
 
-- (void)_notifyDelegateOfUpdatedSourceDisplayOrder:(id)a3
+- (void)_notifyDelegateOfUpdatedSourceDisplayOrder:(id)order
 {
-  v4 = [(_HMTelevisionProfile *)self delegate];
+  delegate = [(_HMTelevisionProfile *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(_HMTelevisionProfile *)self delegate];
-    v7 = [(_HMAccessoryProfile *)self context];
-    v8 = [v7 delegateCaller];
+    delegate2 = [(_HMTelevisionProfile *)self delegate];
+    context = [(_HMAccessoryProfile *)self context];
+    delegateCaller = [context delegateCaller];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __67___HMTelevisionProfile__notifyDelegateOfUpdatedSourceDisplayOrder___block_invoke;
     v10[3] = &unk_1E754E5C0;
-    v11 = v6;
-    v12 = self;
-    v9 = v6;
-    [v8 invokeBlock:v10];
+    v11 = delegate2;
+    selfCopy = self;
+    v9 = delegate2;
+    [delegateCaller invokeBlock:v10];
   }
 }
 
-- (void)updateMediaSourceDisplayOrder:(id)a3 completionHandler:(id)a4
+- (void)updateMediaSourceDisplayOrder:(id)order completionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_HMAccessoryProfile *)self context];
-  if (!v7)
+  orderCopy = order;
+  handlerCopy = handler;
+  context = [(_HMAccessoryProfile *)self context];
+  if (!handlerCopy)
   {
     v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMTelevisionProfile updateMediaSourceDisplayOrder:completionHandler:]", @"completionHandler"];
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -95,11 +95,11 @@
     objc_exception_throw(v27);
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = context;
+  if (!context)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -117,7 +117,7 @@
     goto LABEL_11;
   }
 
-  if (![v6 count])
+  if (![orderCopy count])
   {
     v17 = objc_autoreleasePoolPush();
     v18 = HMFGetOSLogHandle();
@@ -134,21 +134,21 @@
     v16 = 3;
 LABEL_11:
     v20 = [v15 hmErrorWithCode:v16];
-    v7[2](v7, v20);
+    handlerCopy[2](handlerCopy, v20);
 
     goto LABEL_12;
   }
 
-  v10 = [v9 queue];
+  queue = [v9 queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72___HMTelevisionProfile_updateMediaSourceDisplayOrder_completionHandler___block_invoke;
   block[3] = &unk_1E754D208;
   block[4] = self;
-  v31 = v7;
-  v29 = v6;
+  v31 = handlerCopy;
+  v29 = orderCopy;
   v30 = v9;
-  dispatch_async(v10, block);
+  dispatch_async(queue, block);
 
 LABEL_12:
   v21 = *MEMORY[0x1E69E9840];
@@ -157,18 +157,18 @@ LABEL_12:
 - (id)messageDestination
 {
   v3 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v4 = [(_HMTelevisionProfile *)self messageTargetUUID];
-  v5 = [v3 initWithTarget:v4];
+  messageTargetUUID = [(_HMTelevisionProfile *)self messageTargetUUID];
+  v5 = [v3 initWithTarget:messageTargetUUID];
 
   return v5;
 }
 
 - (id)messageTargetUUID
 {
-  v2 = [(_HMAccessoryProfile *)self accessory];
-  v3 = [v2 uuid];
+  accessory = [(_HMAccessoryProfile *)self accessory];
+  uuid = [accessory uuid];
 
-  return v3;
+  return uuid;
 }
 
 - (BOOL)isMediaSourceDisplayOrderModifiable
@@ -179,12 +179,12 @@ LABEL_12:
   return v3;
 }
 
-- (void)setMediaSourceDisplayOrder:(id)a3
+- (void)setMediaSourceDisplayOrder:(id)order
 {
-  v4 = a3;
+  orderCopy = order;
   os_unfair_lock_lock_with_options();
   mediaSourceDisplayOrder = self->_mediaSourceDisplayOrder;
-  self->_mediaSourceDisplayOrder = v4;
+  self->_mediaSourceDisplayOrder = orderCopy;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -200,32 +200,32 @@ LABEL_12:
 
 - (void)_registerNotificationHandlers
 {
-  v3 = [(_HMAccessoryProfile *)self context];
-  v4 = [v3 messageDispatcher];
+  context = [(_HMAccessoryProfile *)self context];
+  messageDispatcher = [context messageDispatcher];
 
-  [v4 registerForMessage:@"HMTP.sdoUpdated" receiver:self selector:sel__handleSourceDisplayOrderUpdated_];
+  [messageDispatcher registerForMessage:@"HMTP.sdoUpdated" receiver:self selector:sel__handleSourceDisplayOrderUpdated_];
 }
 
-- (_HMTelevisionProfile)initWithTelevisionService:(id)a3 linkedServices:(id)a4
+- (_HMTelevisionProfile)initWithTelevisionService:(id)service linkedServices:(id)services
 {
-  v6 = a3;
+  serviceCopy = service;
   v7 = MEMORY[0x1E696AFB0];
-  v8 = a4;
-  v9 = [v6 uniqueIdentifier];
-  v10 = [v7 hm_deriveUUIDFromBaseUUID:v9];
+  servicesCopy = services;
+  uniqueIdentifier = [serviceCopy uniqueIdentifier];
+  v10 = [v7 hm_deriveUUIDFromBaseUUID:uniqueIdentifier];
 
-  v11 = [v8 arrayByAddingObject:v6];
+  v11 = [servicesCopy arrayByAddingObject:serviceCopy];
 
   v16.receiver = self;
   v16.super_class = _HMTelevisionProfile;
   v12 = [(_HMAccessoryProfile *)&v16 initWithUUID:v10 services:v11];
   if (v12)
   {
-    v13 = [v6 mediaSourceDisplayOrder];
+    mediaSourceDisplayOrder = [serviceCopy mediaSourceDisplayOrder];
     mediaSourceDisplayOrder = v12->_mediaSourceDisplayOrder;
-    v12->_mediaSourceDisplayOrder = v13;
+    v12->_mediaSourceDisplayOrder = mediaSourceDisplayOrder;
 
-    *(&v12->_mediaSourceDisplayOrderModifiable + 4) = [v6 mediaSourceDisplayOrderModifiable];
+    *(&v12->_mediaSourceDisplayOrderModifiable + 4) = [serviceCopy mediaSourceDisplayOrderModifiable];
   }
 
   return v12;

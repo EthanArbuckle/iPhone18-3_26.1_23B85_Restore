@@ -1,11 +1,11 @@
 @interface MPSCNNFullyConnectedGradient
 - (MPSCNNFullyConnectedGradient)initWithCoder:(NSCoder *)aDecoder device:(id)device;
-- (MPSCNNFullyConnectedGradient)initWithDevice:(id)a3 weights:(id)a4 convolutionTranspose:(BOOL)a5;
-- (MPSCNNFullyConnectedGradient)initWithDevice:(id)a3 weights:(id)a4 fullyConnected:(BOOL)a5;
 - (MPSCNNFullyConnectedGradient)initWithDevice:(id)device;
 - (MPSCNNFullyConnectedGradient)initWithDevice:(id)device weights:(id)weights;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 primaryOffset:(id *)a6 secondaryOffset:(id *)a7 kernelOffset:(id *)a8;
+- (MPSCNNFullyConnectedGradient)initWithDevice:(id)device weights:(id)weights convolutionTranspose:(BOOL)transpose;
+- (MPSCNNFullyConnectedGradient)initWithDevice:(id)device weights:(id)weights fullyConnected:(BOOL)connected;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method primaryOffset:(id *)offset secondaryOffset:(id *)secondaryOffset kernelOffset:(id *)kernelOffset;
 - (void)dealloc;
 @end
 
@@ -76,7 +76,7 @@
   return v12;
 }
 
-- (MPSCNNFullyConnectedGradient)initWithDevice:(id)a3 weights:(id)a4 fullyConnected:(BOOL)a5
+- (MPSCNNFullyConnectedGradient)initWithDevice:(id)device weights:(id)weights fullyConnected:(BOOL)connected
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -86,7 +86,7 @@
   return 0;
 }
 
-- (MPSCNNFullyConnectedGradient)initWithDevice:(id)a3 weights:(id)a4 convolutionTranspose:(BOOL)a5
+- (MPSCNNFullyConnectedGradient)initWithDevice:(id)device weights:(id)weights convolutionTranspose:(BOOL)transpose
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -96,11 +96,11 @@
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSCNNFullyConnectedGradient;
-  return [(MPSCNNConvolutionGradient *)&v5 copyWithZone:a3 device:a4];
+  return [(MPSCNNConvolutionGradient *)&v5 copyWithZone:zone device:device];
 }
 
 - (void)dealloc
@@ -110,27 +110,27 @@
   [(MPSCNNConvolutionGradient *)&v2 dealloc];
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 primaryOffset:(id *)a6 secondaryOffset:(id *)a7 kernelOffset:(id *)a8
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method primaryOffset:(id *)offset secondaryOffset:(id *)secondaryOffset kernelOffset:(id *)kernelOffset
 {
-  v11 = a5;
+  methodCopy = method;
   v85.receiver = self;
   v85.super_class = MPSCNNFullyConnectedGradient;
-  v14 = [MPSCNNConvolutionGradient destinationImageDescriptorForSourceImages:sel_destinationImageDescriptorForSourceImages_sourceStates_paddingMethod_primaryOffset_secondaryOffset_kernelOffset_ sourceStates:a3 paddingMethod:a4 primaryOffset:? secondaryOffset:? kernelOffset:?];
+  v14 = [MPSCNNConvolutionGradient destinationImageDescriptorForSourceImages:sel_destinationImageDescriptorForSourceImages_sourceStates_paddingMethod_primaryOffset_secondaryOffset_kernelOffset_ sourceStates:images paddingMethod:states primaryOffset:? secondaryOffset:? kernelOffset:?];
   primaryKernelHeight = self->super.super.super._primaryKernelHeight;
   primaryKernelWidth = self->super.super.super._primaryKernelWidth;
-  v17 = v11 & 3;
-  v81 = v11 & 4;
-  v82 = v11 & 8;
-  v24 = objc_msgSend_objectAtIndexedSubscript_(a3, v18, 1, v19, v20, v21, v22, v23);
+  v17 = methodCopy & 3;
+  v81 = methodCopy & 4;
+  v82 = methodCopy & 8;
+  v24 = objc_msgSend_objectAtIndexedSubscript_(images, v18, 1, v19, v20, v21, v22, v23);
   v25 = MEMORY[0x277CD7330];
   v84 = *(v24 + *MEMORY[0x277CD7330]);
-  v32 = *(objc_msgSend_objectAtIndexedSubscript_(a3, v26, 1, v27, v28, v29, v30, v31) + *MEMORY[0x277CD7308]);
-  v83 = *(objc_msgSend_objectAtIndexedSubscript_(a3, v33, 1, v34, v35, v36, v37, v38) + *MEMORY[0x277CD7310]);
-  if (a6 | a8)
+  v32 = *(objc_msgSend_objectAtIndexedSubscript_(images, v26, 1, v27, v28, v29, v30, v31) + *MEMORY[0x277CD7308]);
+  v83 = *(objc_msgSend_objectAtIndexedSubscript_(images, v33, 1, v34, v35, v36, v37, v38) + *MEMORY[0x277CD7310]);
+  if (offset | kernelOffset)
   {
-    v45 = *(objc_msgSend_objectAtIndexedSubscript_(a3, v39, 0, v40, v41, v42, v43, v44) + *v25);
-    v52 = objc_msgSend_objectAtIndexedSubscript_(a3, v46, 0, v47, v48, v49, v50, v51);
-    if (a6)
+    v45 = *(objc_msgSend_objectAtIndexedSubscript_(images, v39, 0, v40, v41, v42, v43, v44) + *v25);
+    v52 = objc_msgSend_objectAtIndexedSubscript_(images, v46, 0, v47, v48, v49, v50, v51);
+    if (offset)
     {
       v53 = *(v52 + *MEMORY[0x277CD7308]);
       v54 = primaryKernelHeight >> 1;
@@ -165,54 +165,54 @@
         }
       }
 
-      a6->var0 = v57;
-      a6->var1 = v54;
-      a6->var2 = 0;
+      offset->var0 = v57;
+      offset->var1 = v54;
+      offset->var2 = 0;
     }
 
     v25 = MEMORY[0x277CD7330];
-    if (a8)
+    if (kernelOffset)
     {
-      a8->var0 = 0;
-      a8->var1 = 0;
-      a8->var2 = 0;
+      kernelOffset->var0 = 0;
+      kernelOffset->var1 = 0;
+      kernelOffset->var2 = 0;
     }
   }
 
-  if (a7)
+  if (secondaryOffset)
   {
-    v58 = *(objc_msgSend_objectAtIndexedSubscript_(a3, v39, 1, v40, v41, v42, v43, v44) + *v25);
-    v65 = *(objc_msgSend_objectAtIndexedSubscript_(a3, v59, 1, v60, v61, v62, v63, v64) + *MEMORY[0x277CD7308]);
+    v58 = *(objc_msgSend_objectAtIndexedSubscript_(images, v39, 1, v40, v41, v42, v43, v44) + *v25);
+    v65 = *(objc_msgSend_objectAtIndexedSubscript_(images, v59, 1, v60, v61, v62, v63, v64) + *MEMORY[0x277CD7308]);
     v66 = primaryKernelWidth >> 1;
     if (v17 > 1)
     {
       if (v17 == 2)
       {
-        a7->var0 = v66 - primaryKernelWidth + v58;
+        secondaryOffset->var0 = v66 - primaryKernelWidth + v58;
         v67 = v65 - primaryKernelHeight + (primaryKernelHeight >> 1);
       }
 
       else
       {
         v67 = 0;
-        a7->var0 = 0;
+        secondaryOffset->var0 = 0;
       }
     }
 
     else if (v17)
     {
-      a7->var0 = v66;
+      secondaryOffset->var0 = v66;
       v67 = primaryKernelHeight >> 1;
     }
 
     else
     {
-      a7->var0 = v66 - ((primaryKernelWidth + ((v81 >> 2) ^ 1) - v58) >> 1);
+      secondaryOffset->var0 = v66 - ((primaryKernelWidth + ((v81 >> 2) ^ 1) - v58) >> 1);
       v67 = (primaryKernelHeight >> 1) - ((primaryKernelHeight + ((v82 >> 3) ^ 1) - v65) >> 1);
     }
 
-    a7->var1 = v67;
-    a7->var2 = 0;
+    secondaryOffset->var1 = v67;
+    secondaryOffset->var2 = 0;
   }
 
   objc_msgSend_setWidth_(v14, v39, v84, v40, v41, v42, v43, v44);

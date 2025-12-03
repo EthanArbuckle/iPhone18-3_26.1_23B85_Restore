@@ -1,26 +1,26 @@
 @interface THLayerContainingView
-- (void)addSublayer:(id)a3;
-- (void)removeSublayer:(id)a3;
+- (void)addSublayer:(id)sublayer;
+- (void)removeSublayer:(id)sublayer;
 @end
 
 @implementation THLayerContainingView
 
-- (void)addSublayer:(id)a3
+- (void)addSublayer:(id)sublayer
 {
   TSUScreenScale();
-  [a3 setContentsScale:?];
-  v5 = [(THLayerContainingView *)self layer];
+  [sublayer setContentsScale:?];
+  layer = [(THLayerContainingView *)self layer];
 
-  [v5 addSublayer:a3];
+  [layer addSublayer:sublayer];
 }
 
-- (void)removeSublayer:(id)a3
+- (void)removeSublayer:(id)sublayer
 {
-  v5 = [a3 superlayer];
-  if (v5 == [(THLayerContainingView *)self layer])
+  superlayer = [sublayer superlayer];
+  if (superlayer == [(THLayerContainingView *)self layer])
   {
 
-    [a3 removeFromSuperlayer];
+    [sublayer removeFromSuperlayer];
   }
 
   else

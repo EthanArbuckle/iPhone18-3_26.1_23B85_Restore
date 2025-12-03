@@ -1,50 +1,50 @@
 @interface SBRecentAppLayouts
 + (id)allowedHiddenApplicationBundleIdentifiers;
-- (BOOL)_ignoresAppHiddenForDisplayItem:(id)a3;
-- (BOOL)_isApplicationSupported:(id)a3;
-- (BOOL)_isDisplayItemRestrictedOrUnsupported:(id)a3;
-- (BOOL)_isExistingSceneIdentifierValidForClaimedMultiwindowSupportInDisplayItem:(id)a3;
-- (BOOL)_loadStashedModelAtPath:(id)a3;
-- (BOOL)_stashModelToPath:(id)a3;
-- (BOOL)_transitionContextRepresentsAmbiguousLaunch:(id)a3 forApplicationSceneEntity:(id)a4;
+- (BOOL)_ignoresAppHiddenForDisplayItem:(id)item;
+- (BOOL)_isApplicationSupported:(id)supported;
+- (BOOL)_isDisplayItemRestrictedOrUnsupported:(id)unsupported;
+- (BOOL)_isExistingSceneIdentifierValidForClaimedMultiwindowSupportInDisplayItem:(id)item;
+- (BOOL)_loadStashedModelAtPath:(id)path;
+- (BOOL)_stashModelToPath:(id)path;
+- (BOOL)_transitionContextRepresentsAmbiguousLaunch:(id)launch forApplicationSceneEntity:(id)entity;
 - (SBRecentAppLayouts)init;
-- (SBRecentAppLayouts)initWithUserDefaults:(id)a3 persister:(id)a4 iconRepository:(id)a5 applicationController:(id)a6 placeholderController:(id)a7 sceneManager:(id)a8 layoutAttributesProvider:(id)a9;
+- (SBRecentAppLayouts)initWithUserDefaults:(id)defaults persister:(id)persister iconRepository:(id)repository applicationController:(id)controller placeholderController:(id)placeholderController sceneManager:(id)manager layoutAttributesProvider:(id)provider;
 - (SBRecentAppLayoutsDelegate)delegate;
-- (id)_acquireAllowHiddenAppAssertionForBundleIdentifier:(id)a3 reason:(id)a4;
-- (id)_changeDescriptionForFilteringAppLayouts:(id)a3 withDisplayItemTest:(id)a4;
-- (id)_changeDescriptionForFilteringRestrictedOrUnsupportedAppsFromAppLayouts:(id)a3;
-- (id)_changeDescriptionForFilteringRestrictedUnsupportedAndInvalidAppsFromAppLayouts:(id)a3;
-- (id)_displayItemLayoutRolesFromLegacyPrefsForLoadedDisplayItems:(id)a3;
-- (id)_legacyAppLayoutForItem:(id)a3 layoutRole:(int64_t)a4;
-- (id)_legacyAppLayoutsForDisplayItems:(id)a3 layoutRolesMapping:(id)a4;
-- (id)_migrateDisplayItemIfNeeded:(id)a3;
+- (id)_acquireAllowHiddenAppAssertionForBundleIdentifier:(id)identifier reason:(id)reason;
+- (id)_changeDescriptionForFilteringAppLayouts:(id)layouts withDisplayItemTest:(id)test;
+- (id)_changeDescriptionForFilteringRestrictedOrUnsupportedAppsFromAppLayouts:(id)layouts;
+- (id)_changeDescriptionForFilteringRestrictedUnsupportedAndInvalidAppsFromAppLayouts:(id)layouts;
+- (id)_displayItemLayoutRolesFromLegacyPrefsForLoadedDisplayItems:(id)items;
+- (id)_legacyAppLayoutForItem:(id)item layoutRole:(int64_t)role;
+- (id)_legacyAppLayoutsForDisplayItems:(id)items layoutRolesMapping:(id)mapping;
+- (id)_migrateDisplayItemIfNeeded:(id)needed;
 - (id)_ppt_currentModel;
 - (id)_ppt_loadStashedModel;
 - (id)_recentDisplayItemsFromLegacyPrefs;
 - (id)_recentsFromPrefs;
-- (id)mostRecentAppLayoutIncludingHiddenAppLayouts:(BOOL)a3 passingTest:(id)a4;
-- (id)recentDisplayItemsForBundleIdentifier:(id)a3 includingHiddenAppLayouts:(BOOL)a4;
-- (id)recentsForBundleIdentifier:(id)a3 includingHiddenAppLayouts:(BOOL)a4;
-- (id)recentsIncludingHiddenAppLayouts:(BOOL)a3;
-- (int64_t)_lastInteractionTimeInOrientation:(int64_t)a3;
+- (id)mostRecentAppLayoutIncludingHiddenAppLayouts:(BOOL)layouts passingTest:(id)test;
+- (id)recentDisplayItemsForBundleIdentifier:(id)identifier includingHiddenAppLayouts:(BOOL)layouts;
+- (id)recentsForBundleIdentifier:(id)identifier includingHiddenAppLayouts:(BOOL)layouts;
+- (id)recentsIncludingHiddenAppLayouts:(BOOL)layouts;
+- (int64_t)_lastInteractionTimeInOrientation:(int64_t)orientation;
 - (void)_addAllAppsToModel;
-- (void)_addAllowHiddenAppAssertionForBundleIdentifier:(id)a3 requestIdentifier:(id)a4;
+- (void)_addAllowHiddenAppAssertionForBundleIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier;
 - (void)_filterRestrictedOrUnsupportedAppsFromRecents;
 - (void)_filterRestrictedUnsupportedAndInvalidAppsFromRecents;
 - (void)_initializeRecents;
-- (void)_ppt_setModel:(id)a3;
-- (void)_removeAllowHiddenAppAssertionForBundleIdentifier:(id)a3 requestIdentifier:(id)a4;
+- (void)_ppt_setModel:(id)model;
+- (void)_removeAllowHiddenAppAssertionForBundleIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier;
 - (void)_saveRecents;
-- (void)_setRecents:(id)a3 notifyForChangeDescription:(id)a4;
+- (void)_setRecents:(id)recents notifyForChangeDescription:(id)description;
 - (void)_setUpStashedModelSettingsOutlets;
-- (void)_validateAndUpdateRecents:(id)a3;
-- (void)addAppLayout:(id)a3 afterAppLayout:(id)a4;
-- (void)addAppLayout:(id)a3 atIndex:(unint64_t)a4;
+- (void)_validateAndUpdateRecents:(id)recents;
+- (void)addAppLayout:(id)layout afterAppLayout:(id)appLayout;
+- (void)addAppLayout:(id)layout atIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)hide:(id)a3;
-- (void)remove:(id)a3;
-- (void)removeAppLayouts:(id)a3;
-- (void)replaceAppLayout:(id)a3 withAppLayout:(id)a4;
+- (void)hide:(id)hide;
+- (void)remove:(id)remove;
+- (void)removeAppLayouts:(id)layouts;
+- (void)replaceAppLayout:(id)layout withAppLayout:(id)appLayout;
 @end
 
 @implementation SBRecentAppLayouts
@@ -130,42 +130,42 @@ BOOL __34__SBRecentAppLayouts__saveRecents__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (SBRecentAppLayouts)initWithUserDefaults:(id)a3 persister:(id)a4 iconRepository:(id)a5 applicationController:(id)a6 placeholderController:(id)a7 sceneManager:(id)a8 layoutAttributesProvider:(id)a9
+- (SBRecentAppLayouts)initWithUserDefaults:(id)defaults persister:(id)persister iconRepository:(id)repository applicationController:(id)controller placeholderController:(id)placeholderController sceneManager:(id)manager layoutAttributesProvider:(id)provider
 {
-  v16 = a3;
-  v30 = a4;
-  v31 = a5;
-  v29 = a6;
-  v28 = a7;
-  v27 = a8;
-  v26 = a9;
+  defaultsCopy = defaults;
+  persisterCopy = persister;
+  repositoryCopy = repository;
+  controllerCopy = controller;
+  placeholderControllerCopy = placeholderController;
+  managerCopy = manager;
+  providerCopy = provider;
   v34.receiver = self;
   v34.super_class = SBRecentAppLayouts;
   v17 = [(SBRecentAppLayouts *)&v34 init];
   if (v17)
   {
     kdebug_trace();
-    if (!v16)
+    if (!defaultsCopy)
     {
       [SBRecentAppLayouts initWithUserDefaults:persister:iconRepository:applicationController:placeholderController:sceneManager:layoutAttributesProvider:];
     }
 
-    objc_storeStrong(&v17->_defaults, a3);
-    objc_storeStrong(&v17->_iconRepository, a5);
-    objc_storeStrong(&v17->_applicationController, a6);
-    objc_storeStrong(&v17->_placeholderController, a7);
-    objc_storeStrong(&v17->_sceneManager, a8);
-    objc_storeStrong(&v17->_persister, a4);
-    objc_storeStrong(&v17->_layoutAttributesProvider, a9);
+    objc_storeStrong(&v17->_defaults, defaults);
+    objc_storeStrong(&v17->_iconRepository, repository);
+    objc_storeStrong(&v17->_applicationController, controller);
+    objc_storeStrong(&v17->_placeholderController, placeholderController);
+    objc_storeStrong(&v17->_sceneManager, manager);
+    objc_storeStrong(&v17->_persister, persister);
+    objc_storeStrong(&v17->_layoutAttributesProvider, provider);
     [(SBRecentAppLayouts *)v17 _initializeRecents];
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v17 selector:sel__iconVisibilityDidChange_ name:*MEMORY[0x277D66590] object:v31];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v17 selector:sel__iconVisibilityDidChange_ name:*MEMORY[0x277D66590] object:repositoryCopy];
 
-    v19 = [(SBApplicationController *)v17->_applicationController restrictionController];
-    [v19 addObserver:v17];
+    restrictionController = [(SBApplicationController *)v17->_applicationController restrictionController];
+    [restrictionController addObserver:v17];
 
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v20 addObserver:v17 selector:sel__installedApplicationsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:v17->_applicationController];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v17 selector:sel__installedApplicationsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:v17->_applicationController];
 
     [(SBAppSwitcherDefaults *)v17->_defaults clearLegacyDefaults];
     [(SBRecentAppLayouts *)v17 _setUpStashedModelSettingsOutlets];
@@ -223,7 +223,7 @@ id __150__SBRecentAppLayouts_initWithUserDefaults_persister_iconRepository_appli
 {
   v3 = objc_alloc_init(SBDisplayItemLayoutAttributesProvider);
   v4 = +[SBDefaults localDefaults];
-  v5 = [v4 appSwitcherDefaults];
+  appSwitcherDefaults = [v4 appSwitcherDefaults];
   v6 = [SBRecentAppLayoutsPersister alloc];
   if (SBRecentAppLayoutsPersistenceURL___onceToken != -1)
   {
@@ -235,15 +235,15 @@ id __150__SBRecentAppLayouts_initWithUserDefaults_persister_iconRepository_appli
   v9 = +[SBApplicationController sharedInstance];
   v10 = +[SBApplicationPlaceholderController sharedInstance];
   v11 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v12 = [(SBRecentAppLayouts *)self initWithUserDefaults:v5 persister:v7 iconRepository:v8 applicationController:v9 placeholderController:v10 sceneManager:v11 layoutAttributesProvider:v3];
+  v12 = [(SBRecentAppLayouts *)self initWithUserDefaults:appSwitcherDefaults persister:v7 iconRepository:v8 applicationController:v9 placeholderController:v10 sceneManager:v11 layoutAttributesProvider:v3];
 
   return v12;
 }
 
 - (void)dealloc
 {
-  v3 = [(SBApplicationController *)self->_applicationController restrictionController];
-  [v3 removeObserver:self];
+  restrictionController = [(SBApplicationController *)self->_applicationController restrictionController];
+  [restrictionController removeObserver:self];
 
   [(BSInvalidatable *)self->_stateCaptureInvalidatable invalidate];
   v4.receiver = self;
@@ -270,10 +270,10 @@ id __150__SBRecentAppLayouts_initWithUserDefaults_persister_iconRepository_appli
   [(SBRecentAppLayouts *)self _setRecents:v5 notifyForChangeDescription:0];
 }
 
-- (id)recentsIncludingHiddenAppLayouts:(BOOL)a3
+- (id)recentsIncludingHiddenAppLayouts:(BOOL)layouts
 {
   v3 = 16;
-  if (a3)
+  if (layouts)
   {
     v3 = 8;
   }
@@ -281,29 +281,29 @@ id __150__SBRecentAppLayouts_initWithUserDefaults_persister_iconRepository_appli
   return *(&self->super.isa + v3);
 }
 
-- (id)recentsForBundleIdentifier:(id)a3 includingHiddenAppLayouts:(BOOL)a4
+- (id)recentsForBundleIdentifier:(id)identifier includingHiddenAppLayouts:(BOOL)layouts
 {
   v4 = 32;
-  if (a4)
+  if (layouts)
   {
     v4 = 24;
   }
 
-  return [*(&self->super.isa + v4) objectForKey:a3];
+  return [*(&self->super.isa + v4) objectForKey:identifier];
 }
 
-- (id)recentDisplayItemsForBundleIdentifier:(id)a3 includingHiddenAppLayouts:(BOOL)a4
+- (id)recentDisplayItemsForBundleIdentifier:(id)identifier includingHiddenAppLayouts:(BOOL)layouts
 {
   v4 = 48;
-  if (a4)
+  if (layouts)
   {
     v4 = 40;
   }
 
-  return [*(&self->super.isa + v4) objectForKey:a3];
+  return [*(&self->super.isa + v4) objectForKey:identifier];
 }
 
-- (int64_t)_lastInteractionTimeInOrientation:(int64_t)a3
+- (int64_t)_lastInteractionTimeInOrientation:(int64_t)orientation
 {
   v9 = 0;
   v10 = &v9;
@@ -315,7 +315,7 @@ id __150__SBRecentAppLayouts_initWithUserDefaults_persister_iconRepository_appli
   v8[2] = __56__SBRecentAppLayouts__lastInteractionTimeInOrientation___block_invoke;
   v8[3] = &unk_2783C4EE0;
   v8[5] = &v9;
-  v8[6] = a3;
+  v8[6] = orientation;
   v8[4] = self;
   [v5 enumerateObjectsUsingBlock:v8];
 
@@ -359,16 +359,16 @@ void __56__SBRecentAppLayouts__lastInteractionTimeInOrientation___block_invoke_2
   *(v8 + 24) = v9;
 }
 
-- (void)_setRecents:(id)a3 notifyForChangeDescription:(id)a4
+- (void)_setRecents:(id)recents notifyForChangeDescription:(id)description
 {
-  v20 = a3;
-  v18 = a4;
-  objc_storeStrong(&self->_allRecents, a3);
+  recentsCopy = recents;
+  descriptionCopy = description;
+  objc_storeStrong(&self->_allRecents, recents);
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  v11 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary4 = [MEMORY[0x277CBEB38] dictionary];
   allRecents = self->_allRecents;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -376,25 +376,25 @@ void __56__SBRecentAppLayouts__lastInteractionTimeInOrientation___block_invoke_2
   v21[3] = &unk_2783C4F08;
   v19 = v7;
   v22 = v19;
-  v17 = v10;
+  v17 = dictionary3;
   v23 = v17;
-  v13 = v11;
+  v13 = dictionary4;
   v24 = v13;
-  v14 = v8;
+  v14 = dictionary;
   v25 = v14;
-  v15 = v9;
+  v15 = dictionary2;
   v26 = v15;
   [(NSMutableArray *)allRecents enumerateObjectsUsingBlock:v21];
   objc_storeStrong(&self->_unhiddenRecents, v7);
-  objc_storeStrong(&self->_allRecentsForBundleIdentifiers, v8);
-  objc_storeStrong(&self->_unhiddenRecentsForBundleIdentifiers, v9);
-  objc_storeStrong(&self->_allRecentDisplayItemsForBundleIdentifiers, v10);
-  objc_storeStrong(&self->_unhiddenRecentDisplayItemsForBundleIdentifiers, v11);
+  objc_storeStrong(&self->_allRecentsForBundleIdentifiers, dictionary);
+  objc_storeStrong(&self->_unhiddenRecentsForBundleIdentifiers, dictionary2);
+  objc_storeStrong(&self->_allRecentDisplayItemsForBundleIdentifiers, dictionary3);
+  objc_storeStrong(&self->_unhiddenRecentDisplayItemsForBundleIdentifiers, dictionary4);
   [(SBRecentAppLayouts *)self _saveRecents];
-  if (v18)
+  if (descriptionCopy)
   {
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 postNotificationName:@"SBRecentAppLayoutsDidChangeNotification" object:self userInfo:v18];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBRecentAppLayoutsDidChangeNotification" object:self userInfo:descriptionCopy];
   }
 }
 
@@ -505,28 +505,28 @@ void __61__SBRecentAppLayouts__setRecents_notifyForChangeDescription___block_inv
   }
 }
 
-- (id)_changeDescriptionForFilteringAppLayouts:(id)a3 withDisplayItemTest:(id)a4
+- (id)_changeDescriptionForFilteringAppLayouts:(id)layouts withDisplayItemTest:(id)test
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  layoutsCopy = layouts;
+  testCopy = test;
   v8 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v9 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __83__SBRecentAppLayouts__changeDescriptionForFilteringAppLayouts_withDisplayItemTest___block_invoke;
   v19 = &unk_2783C4F58;
-  v23 = v6;
-  v24 = v7;
-  v20 = self;
+  v23 = layoutsCopy;
+  v24 = testCopy;
+  selfCopy = self;
   v21 = v8;
   v22 = v9;
-  v10 = v6;
+  v10 = layoutsCopy;
   v11 = v9;
   v12 = v8;
-  v13 = v7;
+  v13 = testCopy;
   [v10 enumerateObjectsUsingBlock:&v16];
-  [v10 removeObjectsAtIndexes:{v12, v16, v17, v18, v19, v20}];
+  [v10 removeObjectsAtIndexes:{v12, v16, v17, v18, v19, selfCopy}];
   v25[0] = @"SBRecentAppLayoutsDidModifyAtIndexesKey";
   v25[1] = @"SBRecentAppLayoutsDidRemoveAtIndexesKey";
   v26[0] = v11;
@@ -586,16 +586,16 @@ LABEL_8:
 LABEL_11:
 }
 
-- (void)addAppLayout:(id)a3 atIndex:(unint64_t)a4
+- (void)addAppLayout:(id)layout atIndex:(unint64_t)index
 {
   v49[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  layoutCopy = layout;
+  if (!layoutCopy)
   {
     [SBRecentAppLayouts addAppLayout:atIndex:];
   }
 
-  if ([v6 type])
+  if ([layoutCopy type])
   {
     [SBRecentAppLayouts addAppLayout:atIndex:];
   }
@@ -606,12 +606,12 @@ LABEL_11:
   v47[2] = __43__SBRecentAppLayouts_addAppLayout_atIndex___block_invoke;
   v47[3] = &unk_2783A8C90;
   v47[4] = self;
-  v8 = [v6 appLayoutWithItemsPassingTest:v47];
-  if (a4 || (-[NSMutableArray firstObject](v7, "firstObject"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isEqual:v8], v9, (v10 & 1) == 0))
+  v8 = [layoutCopy appLayoutWithItemsPassingTest:v47];
+  if (index || (-[NSMutableArray firstObject](v7, "firstObject"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isEqual:v8], v9, (v10 & 1) == 0))
   {
     if (v8)
     {
-      v11 = [(SBRecentAppLayouts *)self delegate];
+      delegate = [(SBRecentAppLayouts *)self delegate];
       v46[0] = MEMORY[0x277D85DD0];
       v46[1] = 3221225472;
       v46[2] = __43__SBRecentAppLayouts_addAppLayout_atIndex___block_invoke_2;
@@ -630,7 +630,7 @@ LABEL_11:
         do
         {
           v16 = [v13 objectAtIndex:v15];
-          [v11 recentAppLayouts:self didRemoveAppLayoutForFallingOffList:v16];
+          [delegate recentAppLayouts:self didRemoveAppLayoutForFallingOffList:v16];
           [v13 removeObjectAtIndex:v15];
           [v12 addIndex:v15];
 
@@ -640,14 +640,14 @@ LABEL_11:
         while (v15 > 0x62);
       }
 
-      v17 = [v8 allItems];
+      allItems = [v8 allItems];
       v43[0] = MEMORY[0x277D85DD0];
       v43[1] = 3221225472;
       v43[2] = __43__SBRecentAppLayouts_addAppLayout_atIndex___block_invoke_3;
       v43[3] = &unk_2783C4F80;
       v8 = v8;
       v44 = v8;
-      v36 = v17;
+      v36 = allItems;
       v45 = v36;
       v18 = [(SBRecentAppLayouts *)self _changeDescriptionForFilteringAppLayouts:v13 withDisplayItemTest:v43];
       v19 = [v18 objectForKeyedSubscript:@"SBRecentAppLayoutsDidRemoveAtIndexesKey"];
@@ -659,12 +659,12 @@ LABEL_11:
       else
       {
         [MEMORY[0x277CCAA78] indexSet];
-        v20 = v6;
+        v20 = layoutCopy;
         v22 = v21 = v18;
         [v12 addIndexes:v22];
 
         v18 = v21;
-        v6 = v20;
+        layoutCopy = v20;
       }
 
       v35 = v18;
@@ -677,14 +677,14 @@ LABEL_11:
 
       else
       {
-        v25 = [MEMORY[0x277CCAA78] indexSet];
-        [v39 addIndexes:v25];
+        indexSet = [MEMORY[0x277CCAA78] indexSet];
+        [v39 addIndexes:indexSet];
 
         v24 = v39;
       }
 
       v38 = v7;
-      if (v11)
+      if (delegate)
       {
         v26 = objc_alloc(MEMORY[0x277CBEB98]);
         v27 = [v13 objectsAtIndexes:v24];
@@ -706,15 +706,15 @@ LABEL_11:
           v31 = v32;
         }
 
-        v33 = [v11 recentAppLayouts:self willAddAppLayout:v8 replacingAppLayouts:v28 removingAppLayouts:v31];
+        v33 = [delegate recentAppLayouts:self willAddAppLayout:v8 replacingAppLayouts:v28 removingAppLayouts:v31];
 
         v8 = v33;
         v24 = v39;
       }
 
-      [v13 insertObject:v8 atIndex:a4];
-      [v37 addIndex:a4];
-      [v24 shiftIndexesStartingAtIndex:a4 by:1];
+      [v13 insertObject:v8 atIndex:index];
+      [v37 addIndex:index];
+      [v24 shiftIndexesStartingAtIndex:index by:1];
       v48[0] = @"SBRecentAppLayoutsDidInsertAtIndexesKey";
       v48[1] = @"SBRecentAppLayoutsDidModifyAtIndexesKey";
       v49[0] = v37;
@@ -724,9 +724,9 @@ LABEL_11:
       v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:3];
       [(SBRecentAppLayouts *)self _setRecents:v13 notifyForChangeDescription:v34];
 
-      if (!a4)
+      if (!index)
       {
-        [v11 recentAppLayouts:self didMoveAppLayoutToFront:v8];
+        [delegate recentAppLayouts:self didMoveAppLayoutToFront:v8];
       }
 
       v7 = v38;
@@ -765,29 +765,29 @@ uint64_t __43__SBRecentAppLayouts_addAppLayout_atIndex___block_invoke_3(uint64_t
   return v7 ^ 1u;
 }
 
-- (void)addAppLayout:(id)a3 afterAppLayout:(id)a4
+- (void)addAppLayout:(id)layout afterAppLayout:(id)appLayout
 {
-  v7 = a3;
-  v6 = [(NSMutableArray *)self->_allRecents indexOfObject:a4];
+  layoutCopy = layout;
+  v6 = [(NSMutableArray *)self->_allRecents indexOfObject:appLayout];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     [SBRecentAppLayouts addAppLayout:afterAppLayout:];
   }
 
-  [(SBRecentAppLayouts *)self addAppLayout:v7 atIndex:v6 + 1];
+  [(SBRecentAppLayouts *)self addAppLayout:layoutCopy atIndex:v6 + 1];
 }
 
-- (void)replaceAppLayout:(id)a3 withAppLayout:(id)a4
+- (void)replaceAppLayout:(id)layout withAppLayout:(id)appLayout
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
+  if (!appLayoutCopy)
   {
     [SBRecentAppLayouts replaceAppLayout:withAppLayout:];
   }
 
-  if ([v7 type])
+  if ([appLayoutCopy type])
   {
     [SBRecentAppLayouts replaceAppLayout:withAppLayout:];
   }
@@ -797,12 +797,12 @@ uint64_t __43__SBRecentAppLayouts_addAppLayout_atIndex___block_invoke_3(uint64_t
   v16[2] = __53__SBRecentAppLayouts_replaceAppLayout_withAppLayout___block_invoke;
   v16[3] = &unk_2783A8C90;
   v16[4] = self;
-  v8 = [v7 appLayoutWithItemsPassingTest:v16];
+  v8 = [appLayoutCopy appLayoutWithItemsPassingTest:v16];
   v9 = self->_allRecents;
   v10 = v9;
   if (v9)
   {
-    v11 = [(NSMutableArray *)v9 indexOfObject:v6];
+    v11 = [(NSMutableArray *)v9 indexOfObject:layoutCopy];
     if (v11 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v12 = v11;
@@ -817,21 +817,21 @@ uint64_t __43__SBRecentAppLayouts_addAppLayout_atIndex___block_invoke_3(uint64_t
   }
 }
 
-- (void)remove:(id)a3
+- (void)remove:(id)remove
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  removeCopy = remove;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v7 count:1];
+  removeCopy2 = remove;
+  v6 = [v4 arrayWithObjects:&removeCopy count:1];
 
-  [(SBRecentAppLayouts *)self removeAppLayouts:v6, v7, v8];
+  [(SBRecentAppLayouts *)self removeAppLayouts:v6, removeCopy, v8];
 }
 
-- (void)removeAppLayouts:(id)a3
+- (void)removeAppLayouts:(id)layouts
 {
   allRecents = self->_allRecents;
-  v5 = a3;
+  layoutsCopy = layouts;
   v6 = [(NSMutableArray *)allRecents mutableCopy];
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16[0] = MEMORY[0x277D85DD0];
@@ -840,7 +840,7 @@ uint64_t __43__SBRecentAppLayouts_addAppLayout_atIndex___block_invoke_3(uint64_t
   v16[3] = &unk_2783B1D38;
   v8 = v7;
   v17 = v8;
-  [v5 enumerateObjectsUsingBlock:v16];
+  [layoutsCopy enumerateObjectsUsingBlock:v16];
 
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
@@ -859,31 +859,31 @@ void __39__SBRecentAppLayouts_removeAppLayouts___block_invoke(uint64_t a1, void 
   [v2 addObjectsFromArray:v3];
 }
 
-- (void)hide:(id)a3
+- (void)hide:(id)hide
 {
-  v4 = a3;
-  v5 = [v4 appLayoutByModifyingHiddenState:1];
-  [(SBRecentAppLayouts *)self remove:v4];
+  hideCopy = hide;
+  v5 = [hideCopy appLayoutByModifyingHiddenState:1];
+  [(SBRecentAppLayouts *)self remove:hideCopy];
 
   [(SBRecentAppLayouts *)self addToFront:v5];
 }
 
-- (id)mostRecentAppLayoutIncludingHiddenAppLayouts:(BOOL)a3 passingTest:(id)a4
+- (id)mostRecentAppLayoutIncludingHiddenAppLayouts:(BOOL)layouts passingTest:(id)test
 {
-  v4 = a3;
-  v6 = a4;
+  layoutsCopy = layouts;
+  testCopy = test;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__149;
   v18 = __Block_byref_object_dispose__149;
   v19 = 0;
-  v7 = [(SBRecentAppLayouts *)self recentsIncludingHiddenAppLayouts:v4];
+  v7 = [(SBRecentAppLayouts *)self recentsIncludingHiddenAppLayouts:layoutsCopy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __79__SBRecentAppLayouts_mostRecentAppLayoutIncludingHiddenAppLayouts_passingTest___block_invoke;
   v11[3] = &unk_2783C4FD0;
-  v8 = v6;
+  v8 = testCopy;
   v12 = v8;
   v13 = &v14;
   [v7 enumerateObjectsUsingBlock:v11];
@@ -904,14 +904,14 @@ void __79__SBRecentAppLayouts_mostRecentAppLayoutIncludingHiddenAppLayouts_passi
   }
 }
 
-- (id)_legacyAppLayoutForItem:(id)a3 layoutRole:(int64_t)a4
+- (id)_legacyAppLayoutForItem:(id)item layoutRole:(int64_t)role
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemCopy = item;
   v6 = [SBAppLayout alloc];
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:role];
   v11 = v7;
-  v12[0] = v5;
+  v12[0] = itemCopy;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
   v9 = [(SBAppLayout *)v6 initWithItemsForLayoutRoles:v8 configuration:1 environment:1 preferredDisplayOrdinal:0];
@@ -919,17 +919,17 @@ void __79__SBRecentAppLayouts_mostRecentAppLayoutIncludingHiddenAppLayouts_passi
   return v9;
 }
 
-- (id)_legacyAppLayoutsForDisplayItems:(id)a3 layoutRolesMapping:(id)a4
+- (id)_legacyAppLayoutsForDisplayItems:(id)items layoutRolesMapping:(id)mapping
 {
-  v6 = a4;
+  mappingCopy = mapping;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __74__SBRecentAppLayouts__legacyAppLayoutsForDisplayItems_layoutRolesMapping___block_invoke;
   v10[3] = &unk_2783B9DC8;
   v10[4] = self;
-  v11 = v6;
-  v7 = v6;
-  v8 = [a3 bs_map:v10];
+  v11 = mappingCopy;
+  v7 = mappingCopy;
+  v8 = [items bs_map:v10];
 
   return v8;
 }
@@ -947,9 +947,9 @@ id __74__SBRecentAppLayouts__legacyAppLayoutsForDisplayItems_layoutRolesMapping_
 
 - (id)_recentsFromPrefs
 {
-  v3 = [(SBAppSwitcherDefaults *)self->_defaults recentsPlistRepresentation];
+  recentsPlistRepresentation = [(SBAppSwitcherDefaults *)self->_defaults recentsPlistRepresentation];
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = recentsPlistRepresentation;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -979,9 +979,9 @@ id __74__SBRecentAppLayouts__legacyAppLayoutsForDisplayItems_layoutRolesMapping_
 
   if (!v8 || ([MEMORY[0x277CBEB68] null], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "containsObject:", v9), v9, v10))
   {
-    v11 = [(SBRecentAppLayouts *)self _recentDisplayItemsFromLegacyPrefs];
-    v12 = [(SBRecentAppLayouts *)self _displayItemLayoutRolesFromLegacyPrefsForLoadedDisplayItems:v11];
-    v13 = [(SBRecentAppLayouts *)self _legacyAppLayoutsForDisplayItems:v11 layoutRolesMapping:v12];
+    _recentDisplayItemsFromLegacyPrefs = [(SBRecentAppLayouts *)self _recentDisplayItemsFromLegacyPrefs];
+    v12 = [(SBRecentAppLayouts *)self _displayItemLayoutRolesFromLegacyPrefsForLoadedDisplayItems:_recentDisplayItemsFromLegacyPrefs];
+    v13 = [(SBRecentAppLayouts *)self _legacyAppLayoutsForDisplayItems:_recentDisplayItemsFromLegacyPrefs layoutRolesMapping:v12];
 
     v8 = v13;
   }
@@ -1001,12 +1001,12 @@ SBAppLayout *__39__SBRecentAppLayouts__recentsFromPrefs__block_invoke(uint64_t a
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(SBAppSwitcherDefaults *)self->_defaults legacyRecentDisplayItems];
+  legacyRecentDisplayItems = [(SBAppSwitcherDefaults *)self->_defaults legacyRecentDisplayItems];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v19 count:16];
+  v5 = [legacyRecentDisplayItems countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1018,7 +1018,7 @@ SBAppLayout *__39__SBRecentAppLayouts__recentsFromPrefs__block_invoke(uint64_t a
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(legacyRecentDisplayItems);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
@@ -1043,7 +1043,7 @@ SBAppLayout *__39__SBRecentAppLayouts__recentsFromPrefs__block_invoke(uint64_t a
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v19 count:16];
+      v6 = [legacyRecentDisplayItems countByEnumeratingWithState:&v13 objects:v19 count:16];
     }
 
     while (v6);
@@ -1052,28 +1052,28 @@ SBAppLayout *__39__SBRecentAppLayouts__recentsFromPrefs__block_invoke(uint64_t a
   return v3;
 }
 
-- (id)_displayItemLayoutRolesFromLegacyPrefsForLoadedDisplayItems:(id)a3
+- (id)_displayItemLayoutRolesFromLegacyPrefsForLoadedDisplayItems:(id)items
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBAppSwitcherDefaults *)self->_defaults legacyRecentDisplayItemRoles];
-  v6 = [v5 bs_map:&__block_literal_global_95_1];
+  itemsCopy = items;
+  legacyRecentDisplayItemRoles = [(SBAppSwitcherDefaults *)self->_defaults legacyRecentDisplayItemRoles];
+  v6 = [legacyRecentDisplayItemRoles bs_map:&__block_literal_global_95_1];
 
   v7 = [v6 count];
-  if (v7 == [v4 count])
+  if (v7 == [itemsCopy count])
   {
-    v8 = [objc_alloc(MEMORY[0x277CBEB38]) initWithObjects:v6 forKeys:v4];
+    dictionary = [objc_alloc(MEMORY[0x277CBEB38]) initWithObjects:v6 forKeys:itemsCopy];
   }
 
   else
   {
     v17 = v6;
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = v4;
+    v9 = itemsCopy;
     v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
@@ -1090,7 +1090,7 @@ SBAppLayout *__39__SBRecentAppLayouts__recentsFromPrefs__block_invoke(uint64_t a
 
           v14 = *(*(&v18 + 1) + 8 * i);
           v15 = [MEMORY[0x277CCABB0] numberWithInteger:1];
-          [v8 setObject:v15 forKey:v14];
+          [dictionary setObject:v15 forKey:v14];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -1102,7 +1102,7 @@ SBAppLayout *__39__SBRecentAppLayouts__recentsFromPrefs__block_invoke(uint64_t a
     v6 = v17;
   }
 
-  return v8;
+  return dictionary;
 }
 
 uint64_t __82__SBRecentAppLayouts__displayItemLayoutRolesFromLegacyPrefsForLoadedDisplayItems___block_invoke(uint64_t a1, void *a2)
@@ -1126,10 +1126,10 @@ uint64_t __82__SBRecentAppLayouts__displayItemLayoutRolesFromLegacyPrefsForLoade
   return [v2 numberWithInteger:v6];
 }
 
-- (void)_validateAndUpdateRecents:(id)a3
+- (void)_validateAndUpdateRecents:(id)recents
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recentsCopy = recents;
   v43[0] = 0;
   v43[1] = v43;
   v43[2] = 0x3032000000;
@@ -1163,15 +1163,15 @@ uint64_t __82__SBRecentAppLayouts__displayItemLayoutRolesFromLegacyPrefsForLoade
   v24[6] = &v37;
   v24[7] = &v31;
   v24[8] = &v25;
-  v14 = [v4 indexesOfObjectsPassingTest:v24];
+  v14 = [recentsCopy indexesOfObjectsPassingTest:v24];
   if ([v38[5] count])
   {
-    [v4 replaceObjectsAtIndexes:v38[5] withObjects:v32[5]];
+    [recentsCopy replaceObjectsAtIndexes:v38[5] withObjects:v32[5]];
   }
 
   if ([v14 count])
   {
-    [v4 removeObjectsAtIndexes:v14];
+    [recentsCopy removeObjectsAtIndexes:v14];
   }
 
   v22 = 0u;
@@ -1193,10 +1193,10 @@ uint64_t __82__SBRecentAppLayouts__displayItemLayoutRolesFromLegacyPrefsForLoade
         }
 
         v8 = *(*(&v20 + 1) + 8 * i);
-        v9 = [v4 indexOfObject:v8];
+        v9 = [recentsCopy indexOfObject:v8];
         if (v9 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v4 removeObject:v8];
+          [recentsCopy removeObject:v8];
           v18 = 0u;
           v19 = 0u;
           v16 = 0u;
@@ -1215,7 +1215,7 @@ uint64_t __82__SBRecentAppLayouts__displayItemLayoutRolesFromLegacyPrefsForLoade
                   objc_enumerationMutation(v10);
                 }
 
-                [v4 insertObject:*(*(&v16 + 1) + 8 * j) atIndex:v9++];
+                [recentsCopy insertObject:*(*(&v16 + 1) + 8 * j) atIndex:v9++];
               }
 
               v11 = [v10 countByEnumeratingWithState:&v16 objects:v45 count:16];
@@ -1510,21 +1510,21 @@ LABEL_31:
   }
 }
 
-- (BOOL)_isExistingSceneIdentifierValidForClaimedMultiwindowSupportInDisplayItem:(id)a3
+- (BOOL)_isExistingSceneIdentifierValidForClaimedMultiwindowSupportInDisplayItem:(id)item
 {
   applicationController = self->_applicationController;
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  v6 = [(SBApplicationController *)applicationController applicationWithBundleIdentifier:v5];
+  itemCopy = item;
+  bundleIdentifier = [itemCopy bundleIdentifier];
+  v6 = [(SBApplicationController *)applicationController applicationWithBundleIdentifier:bundleIdentifier];
 
-  v7 = [v4 uniqueIdentifier];
+  uniqueIdentifier = [itemCopy uniqueIdentifier];
 
-  if (v7 && (v8 = [v7 length], v8 >= objc_msgSend(@"default", "length")))
+  if (uniqueIdentifier && (v8 = [uniqueIdentifier length], v8 >= objc_msgSend(@"default", "length")))
   {
-    v10 = [v6 info];
-    v11 = [v10 supportsMultiwindow];
+    info = [v6 info];
+    supportsMultiwindow = [info supportsMultiwindow];
 
-    v9 = v11 ^ [v7 hasSuffix:@"default"];
+    v9 = supportsMultiwindow ^ [uniqueIdentifier hasSuffix:@"default"];
   }
 
   else
@@ -1538,45 +1538,45 @@ LABEL_31:
 - (void)_setUpStashedModelSettingsOutlets
 {
   v3 = +[SBAppSwitcherDomain rootSettings];
-  v4 = [v3 clearModelOutlet];
+  clearModelOutlet = [v3 clearModelOutlet];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __55__SBRecentAppLayouts__setUpStashedModelSettingsOutlets__block_invoke;
   v18[3] = &unk_2783A8C18;
   v18[4] = self;
-  v5 = [v4 addAction:v18];
+  v5 = [clearModelOutlet addAction:v18];
 
-  v6 = [v3 stashModelOutlet];
+  stashModelOutlet = [v3 stashModelOutlet];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __55__SBRecentAppLayouts__setUpStashedModelSettingsOutlets__block_invoke_2;
   v17[3] = &unk_2783A8C18;
   v17[4] = self;
-  v7 = [v6 addAction:v17];
+  v7 = [stashModelOutlet addAction:v17];
 
-  v8 = [v3 loadModelOutlet];
+  loadModelOutlet = [v3 loadModelOutlet];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __55__SBRecentAppLayouts__setUpStashedModelSettingsOutlets__block_invoke_3;
   v16[3] = &unk_2783A8C18;
   v16[4] = self;
-  v9 = [v8 addAction:v16];
+  v9 = [loadModelOutlet addAction:v16];
 
-  v10 = [v3 addAppsToModelOutlet];
+  addAppsToModelOutlet = [v3 addAppsToModelOutlet];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __55__SBRecentAppLayouts__setUpStashedModelSettingsOutlets__block_invoke_4;
   v15[3] = &unk_2783A8C18;
   v15[4] = self;
-  v11 = [v10 addAction:v15];
+  v11 = [addAppsToModelOutlet addAction:v15];
 
-  v12 = [v3 addPPTAppsToModelOutlet];
+  addPPTAppsToModelOutlet = [v3 addPPTAppsToModelOutlet];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __55__SBRecentAppLayouts__setUpStashedModelSettingsOutlets__block_invoke_5;
   v14[3] = &unk_2783A8C18;
   v14[4] = self;
-  v13 = [v12 addAction:v14];
+  v13 = [addPPTAppsToModelOutlet addAction:v14];
 }
 
 void __55__SBRecentAppLayouts__setUpStashedModelSettingsOutlets__block_invoke_2(uint64_t a1)
@@ -1593,10 +1593,10 @@ void __55__SBRecentAppLayouts__setUpStashedModelSettingsOutlets__block_invoke_3(
   [v1 _loadStashedModelAtPath:v2];
 }
 
-- (BOOL)_stashModelToPath:(id)a3
+- (BOOL)_stashModelToPath:(id)path
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v5 = self->_allRecents;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -1606,7 +1606,7 @@ void __55__SBRecentAppLayouts__setUpStashedModelSettingsOutlets__block_invoke_3(
   v6 = [(NSMutableArray *)v5 bs_map:v15];
   v7 = [MEMORY[0x277CCAC58] dataWithPropertyList:v6 format:100 options:0 error:0];
   v14 = 0;
-  v8 = [v7 writeToFile:v4 options:1 error:&v14];
+  v8 = [v7 writeToFile:pathCopy options:1 error:&v14];
   v9 = v14;
   if ((v8 & 1) == 0)
   {
@@ -1614,13 +1614,13 @@ void __55__SBRecentAppLayouts__setUpStashedModelSettingsOutlets__block_invoke_3(
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v12 = [v7 length];
-      v13 = [v9 localizedDescription];
+      localizedDescription = [v9 localizedDescription];
       *buf = 134218498;
       v17 = v12;
       v18 = 2112;
-      v19 = v4;
+      v19 = pathCopy;
       v20 = 2112;
-      v21 = v13;
+      v21 = localizedDescription;
       _os_log_error_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_ERROR, "Error writing data (len=%lu) to %@: %@", buf, 0x20u);
     }
   }
@@ -1638,10 +1638,10 @@ id __40__SBRecentAppLayouts__stashModelToPath___block_invoke(uint64_t a1, void *
   return v5;
 }
 
-- (BOOL)_loadStashedModelAtPath:(id)a3
+- (BOOL)_loadStashedModelAtPath:(id)path
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:a3];
+  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:path];
   if (v4)
   {
     v5 = [MEMORY[0x277CCAC58] propertyListWithData:v4 options:0 format:0 error:0];
@@ -1681,8 +1681,8 @@ id __40__SBRecentAppLayouts__stashModelToPath___block_invoke(uint64_t a1, void *
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v14 = [v8 reverseObjectEnumerator];
-      v15 = [v14 countByEnumeratingWithState:&v21 objects:v30 count:16];
+      reverseObjectEnumerator = [v8 reverseObjectEnumerator];
+      v15 = [reverseObjectEnumerator countByEnumeratingWithState:&v21 objects:v30 count:16];
       if (v15)
       {
         v16 = v15;
@@ -1693,13 +1693,13 @@ id __40__SBRecentAppLayouts__stashModelToPath___block_invoke(uint64_t a1, void *
           {
             if (*v22 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             [(SBRecentAppLayouts *)self addToFront:*(*(&v21 + 1) + 8 * j)];
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v21 objects:v30 count:16];
+          v16 = [reverseObjectEnumerator countByEnumeratingWithState:&v21 objects:v30 count:16];
         }
 
         while (v16);
@@ -1776,7 +1776,7 @@ SBAppLayout *__46__SBRecentAppLayouts__loadStashedModelAtPath___block_invoke(uin
 
 - (id)_ppt_loadStashedModel
 {
-  v3 = [(SBRecentAppLayouts *)self _ppt_currentModel];
+  _ppt_currentModel = [(SBRecentAppLayouts *)self _ppt_currentModel];
   if (__sb__runningInSpringBoard())
   {
     v4 = SBFEffectiveDeviceClass();
@@ -1791,10 +1791,10 @@ SBAppLayout *__46__SBRecentAppLayouts__loadStashedModelAtPath___block_invoke(uin
 
   else
   {
-    v7 = [MEMORY[0x277D75418] currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
     v9 = @"_internal_iPhonePPTSwitcherModel";
-    if (v8 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v9 = @"_internal_iPadPPTSwitcherModel";
     }
@@ -1802,12 +1802,12 @@ SBAppLayout *__46__SBRecentAppLayouts__loadStashedModelAtPath___block_invoke(uin
     v6 = v9;
   }
 
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
-  v11 = [v10 pathForResource:v6 ofType:@"plist"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v11 = [mainBundle pathForResource:v6 ofType:@"plist"];
 
   [(SBRecentAppLayouts *)self _loadStashedModelAtPath:v11];
 
-  return v3;
+  return _ppt_currentModel;
 }
 
 - (id)_ppt_currentModel
@@ -1817,18 +1817,18 @@ SBAppLayout *__46__SBRecentAppLayouts__loadStashedModelAtPath___block_invoke(uin
   return v2;
 }
 
-- (void)_ppt_setModel:(id)a3
+- (void)_ppt_setModel:(id)model
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  modelCopy = model;
+  if (modelCopy)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = [(SBRecentAppLayouts *)self _ppt_currentModel];
-    v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    _ppt_currentModel = [(SBRecentAppLayouts *)self _ppt_currentModel];
+    v6 = [_ppt_currentModel countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1840,14 +1840,14 @@ SBAppLayout *__46__SBRecentAppLayouts__loadStashedModelAtPath___block_invoke(uin
         {
           if (*v20 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_ppt_currentModel);
           }
 
           [(SBRecentAppLayouts *)self remove:*(*(&v19 + 1) + 8 * v9++)];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v7 = [_ppt_currentModel countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v7);
@@ -1857,8 +1857,8 @@ SBAppLayout *__46__SBRecentAppLayouts__loadStashedModelAtPath___block_invoke(uin
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v10 = [v4 reverseObjectEnumerator];
-    v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+    reverseObjectEnumerator = [modelCopy reverseObjectEnumerator];
+    v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v23 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1870,14 +1870,14 @@ SBAppLayout *__46__SBRecentAppLayouts__loadStashedModelAtPath___block_invoke(uin
         {
           if (*v16 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           [(SBRecentAppLayouts *)self addToFront:*(*(&v15 + 1) + 8 * v14++)];
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+        v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v23 count:16];
       }
 
       while (v12);
@@ -1885,24 +1885,24 @@ SBAppLayout *__46__SBRecentAppLayouts__loadStashedModelAtPath___block_invoke(uin
   }
 }
 
-- (id)_acquireAllowHiddenAppAssertionForBundleIdentifier:(id)a3 reason:(id)a4
+- (id)_acquireAllowHiddenAppAssertionForBundleIdentifier:(id)identifier reason:(id)reason
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  v9 = [v8 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
   v10 = SBLogAppSwitcher();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v24 = v6;
+    v24 = identifierCopy;
     v25 = 2114;
-    v26 = v7;
+    v26 = reasonCopy;
     v27 = 2114;
-    v28 = v9;
+    v28 = uUIDString;
     _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Acquiring visibility assertion of %{public}@ for %{public}@ identifier %{public}@", buf, 0x20u);
   }
 
@@ -1912,11 +1912,11 @@ SBAppLayout *__46__SBRecentAppLayouts__loadStashedModelAtPath___block_invoke(uin
   v17[2] = __80__SBRecentAppLayouts__acquireAllowHiddenAppAssertionForBundleIdentifier_reason___block_invoke;
   v17[3] = &unk_2783BA4E0;
   objc_copyWeak(&v21, &location);
-  v12 = v6;
+  v12 = identifierCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = uUIDString;
   v19 = v13;
-  v14 = v7;
+  v14 = reasonCopy;
   v20 = v14;
   v15 = [v11 initWithIdentifier:v13 forReason:v14 invalidationBlock:v17];
   [(SBRecentAppLayouts *)self _addAllowHiddenAppAssertionForBundleIdentifier:v12 requestIdentifier:v13];
@@ -1948,47 +1948,47 @@ void __80__SBRecentAppLayouts__acquireAllowHiddenAppAssertionForBundleIdentifier
   }
 }
 
-- (void)_addAllowHiddenAppAssertionForBundleIdentifier:(id)a3 requestIdentifier:(id)a4
+- (void)_addAllowHiddenAppAssertionForBundleIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier
 {
-  v11 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  requestIdentifierCopy = requestIdentifier;
   allowHiddenAppAssertions = self->_allowHiddenAppAssertions;
   if (!allowHiddenAppAssertions)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v9 = self->_allowHiddenAppAssertions;
-    self->_allowHiddenAppAssertions = v8;
+    self->_allowHiddenAppAssertions = dictionary;
 
     allowHiddenAppAssertions = self->_allowHiddenAppAssertions;
   }
 
-  v10 = [(NSMutableDictionary *)allowHiddenAppAssertions objectForKey:v11];
+  v10 = [(NSMutableDictionary *)allowHiddenAppAssertions objectForKey:identifierCopy];
   if (!v10)
   {
     v10 = [MEMORY[0x277CBEB58] set];
-    [(NSMutableDictionary *)self->_allowHiddenAppAssertions setObject:v10 forKey:v11];
+    [(NSMutableDictionary *)self->_allowHiddenAppAssertions setObject:v10 forKey:identifierCopy];
   }
 
-  [v10 addObject:v6];
+  [v10 addObject:requestIdentifierCopy];
   [(SBRecentAppLayouts *)self _filterRestrictedOrUnsupportedAppsFromRecents];
 }
 
-- (void)_removeAllowHiddenAppAssertionForBundleIdentifier:(id)a3 requestIdentifier:(id)a4
+- (void)_removeAllowHiddenAppAssertionForBundleIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier
 {
   allowHiddenAppAssertions = self->_allowHiddenAppAssertions;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)allowHiddenAppAssertions objectForKey:a3];
-  [v8 removeObject:v7];
+  requestIdentifierCopy = requestIdentifier;
+  v8 = [(NSMutableDictionary *)allowHiddenAppAssertions objectForKey:identifier];
+  [v8 removeObject:requestIdentifierCopy];
 
   [(SBRecentAppLayouts *)self _filterRestrictedOrUnsupportedAppsFromRecents];
 }
 
-- (BOOL)_ignoresAppHiddenForDisplayItem:(id)a3
+- (BOOL)_ignoresAppHiddenForDisplayItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   allowHiddenAppAssertions = self->_allowHiddenAppAssertions;
-  v6 = [v4 bundleIdentifier];
-  v7 = [(NSMutableDictionary *)allowHiddenAppAssertions objectForKey:v6];
+  bundleIdentifier = [itemCopy bundleIdentifier];
+  v7 = [(NSMutableDictionary *)allowHiddenAppAssertions objectForKey:bundleIdentifier];
   if ([v7 count])
   {
     v8 = 1;
@@ -1996,21 +1996,21 @@ void __80__SBRecentAppLayouts__acquireAllowHiddenAppAssertionForBundleIdentifier
 
   else
   {
-    v9 = [objc_opt_class() allowedHiddenApplicationBundleIdentifiers];
-    v10 = [v4 bundleIdentifier];
-    v8 = [v9 containsObject:v10];
+    allowedHiddenApplicationBundleIdentifiers = [objc_opt_class() allowedHiddenApplicationBundleIdentifiers];
+    bundleIdentifier2 = [itemCopy bundleIdentifier];
+    v8 = [allowedHiddenApplicationBundleIdentifiers containsObject:bundleIdentifier2];
   }
 
   return v8;
 }
 
-- (BOOL)_isDisplayItemRestrictedOrUnsupported:(id)a3
+- (BOOL)_isDisplayItemRestrictedOrUnsupported:(id)unsupported
 {
-  v4 = a3;
-  if (![v4 type])
+  unsupportedCopy = unsupported;
+  if (![unsupportedCopy type])
   {
-    v6 = [v4 bundleIdentifier];
-    if (!v6)
+    bundleIdentifier = [unsupportedCopy bundleIdentifier];
+    if (!bundleIdentifier)
     {
       v5 = 0;
 LABEL_18:
@@ -2018,21 +2018,21 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v7 = [(SBHIconRepository *)self->_iconRepository iconForIdentifier:v6];
-    v8 = [(SBRecentAppLayouts *)self _isApplicationSupported:v6];
+    v7 = [(SBHIconRepository *)self->_iconRepository iconForIdentifier:bundleIdentifier];
+    v8 = [(SBRecentAppLayouts *)self _isApplicationSupported:bundleIdentifier];
     if (![(SBHIconRepository *)self->_iconRepository isIconVisible:v7])
     {
-      v9 = [v7 application];
-      if (v9)
+      application = [v7 application];
+      if (application)
       {
-        v10 = v9;
-        v11 = [v9 info];
-        v12 = [v11 isAppClip];
+        v10 = application;
+        info = [application info];
+        isAppClip = [info isAppClip];
 
-        if ((v12 & 1) == 0)
+        if ((isAppClip & 1) == 0)
         {
 LABEL_13:
-          v17 = [(SBRecentAppLayouts *)self _ignoresAppHiddenForDisplayItem:v4];
+          v17 = [(SBRecentAppLayouts *)self _ignoresAppHiddenForDisplayItem:unsupportedCopy];
           goto LABEL_14;
         }
       }
@@ -2040,17 +2040,17 @@ LABEL_13:
       else
       {
         placeholderController = self->_placeholderController;
-        v14 = [v4 bundleIdentifier];
-        v15 = [(SBApplicationPlaceholderController *)placeholderController placeholderForDisplayID:v14];
+        bundleIdentifier2 = [unsupportedCopy bundleIdentifier];
+        v15 = [(SBApplicationPlaceholderController *)placeholderController placeholderForDisplayID:bundleIdentifier2];
 
         if (!v15)
         {
           goto LABEL_13;
         }
 
-        v16 = [v15 isAppClip];
+        isAppClip2 = [v15 isAppClip];
 
-        if ((v16 & 1) == 0)
+        if ((isAppClip2 & 1) == 0)
         {
           goto LABEL_13;
         }
@@ -2061,8 +2061,8 @@ LABEL_13:
 
     v17 = 1;
 LABEL_14:
-    v18 = [(SBApplicationController *)self->_applicationController restrictionController];
-    v19 = [v18 isApplicationIdentifierRestricted:v6];
+    restrictionController = [(SBApplicationController *)self->_applicationController restrictionController];
+    v19 = [restrictionController isApplicationIdentifierRestricted:bundleIdentifier];
 
     if (v17)
     {
@@ -2083,14 +2083,14 @@ LABEL_19:
   return v5 & 1;
 }
 
-- (id)_changeDescriptionForFilteringRestrictedOrUnsupportedAppsFromAppLayouts:(id)a3
+- (id)_changeDescriptionForFilteringRestrictedOrUnsupportedAppsFromAppLayouts:(id)layouts
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __94__SBRecentAppLayouts__changeDescriptionForFilteringRestrictedOrUnsupportedAppsFromAppLayouts___block_invoke;
   v5[3] = &unk_2783C4FA8;
   v5[4] = self;
-  v3 = [(SBRecentAppLayouts *)self _changeDescriptionForFilteringAppLayouts:a3 withDisplayItemTest:v5];
+  v3 = [(SBRecentAppLayouts *)self _changeDescriptionForFilteringAppLayouts:layouts withDisplayItemTest:v5];
 
   return v3;
 }
@@ -2102,14 +2102,14 @@ LABEL_19:
   [(SBRecentAppLayouts *)self _setRecents:v4 notifyForChangeDescription:v3];
 }
 
-- (id)_changeDescriptionForFilteringRestrictedUnsupportedAndInvalidAppsFromAppLayouts:(id)a3
+- (id)_changeDescriptionForFilteringRestrictedUnsupportedAndInvalidAppsFromAppLayouts:(id)layouts
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __102__SBRecentAppLayouts__changeDescriptionForFilteringRestrictedUnsupportedAndInvalidAppsFromAppLayouts___block_invoke;
   v5[3] = &unk_2783C4FA8;
   v5[4] = self;
-  v3 = [(SBRecentAppLayouts *)self _changeDescriptionForFilteringAppLayouts:a3 withDisplayItemTest:v5];
+  v3 = [(SBRecentAppLayouts *)self _changeDescriptionForFilteringAppLayouts:layouts withDisplayItemTest:v5];
 
   return v3;
 }
@@ -2148,29 +2148,29 @@ uint64_t __102__SBRecentAppLayouts__changeDescriptionForFilteringRestrictedUnsup
   return v2;
 }
 
-- (BOOL)_isApplicationSupported:(id)a3
+- (BOOL)_isApplicationSupported:(id)supported
 {
-  v3 = [(SBApplicationController *)self->_applicationController applicationWithBundleIdentifier:a3];
+  v3 = [(SBApplicationController *)self->_applicationController applicationWithBundleIdentifier:supported];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 info];
-    v6 = [v5 supports64Bit];
+    info = [v3 info];
+    supports64Bit = [info supports64Bit];
   }
 
   else
   {
-    v6 = 0;
+    supports64Bit = 0;
   }
 
-  return v6;
+  return supports64Bit;
 }
 
-- (id)_migrateDisplayItemIfNeeded:(id)a3
+- (id)_migrateDisplayItemIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [v4 uniqueIdentifier];
-  if ([v4 type] && objc_msgSend(v4, "type") != 5 || (objc_msgSend(v5, "hasPrefix:", @"sceneID") & 1) != 0)
+  neededCopy = needed;
+  uniqueIdentifier = [neededCopy uniqueIdentifier];
+  if ([neededCopy type] && objc_msgSend(neededCopy, "type") != 5 || (objc_msgSend(uniqueIdentifier, "hasPrefix:", @"sceneID") & 1) != 0)
   {
     v6 = 0;
   }
@@ -2178,43 +2178,43 @@ uint64_t __102__SBRecentAppLayouts__changeDescriptionForFilteringRestrictedUnsup
   else
   {
     applicationController = self->_applicationController;
-    v8 = [v4 bundleIdentifier];
-    v9 = [(SBApplicationController *)applicationController applicationWithBundleIdentifier:v8];
+    bundleIdentifier = [neededCopy bundleIdentifier];
+    v9 = [(SBApplicationController *)applicationController applicationWithBundleIdentifier:bundleIdentifier];
 
-    v10 = [v9 _dataStore];
+    _dataStore = [v9 _dataStore];
     v11 = [(SBSceneManager *)self->_sceneManager newSceneIdentityForApplication:v9];
-    v12 = [v11 identifier];
+    identifier = [v11 identifier];
 
-    v13 = [v10 sceneStoreForIdentifier:v12 creatingIfNecessary:1];
-    v14 = [v10 sceneStoreForIdentifier:v5 creatingIfNecessary:0];
-    v15 = [v14 _data];
+    v13 = [_dataStore sceneStoreForIdentifier:identifier creatingIfNecessary:1];
+    v14 = [_dataStore sceneStoreForIdentifier:uniqueIdentifier creatingIfNecessary:0];
+    _data = [v14 _data];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __50__SBRecentAppLayouts__migrateDisplayItemIfNeeded___block_invoke;
     v21[3] = &unk_2783AD138;
     v22 = v13;
     v16 = v13;
-    [v15 enumerateKeysAndObjectsUsingBlock:v21];
+    [_data enumerateKeysAndObjectsUsingBlock:v21];
 
-    [v16 setObject:v5 forKey:@"persistenceIdentifier"];
-    [v10 removeSceneStoreForIdentifier:v5];
+    [v16 setObject:uniqueIdentifier forKey:@"persistenceIdentifier"];
+    [_dataStore removeSceneStoreForIdentifier:uniqueIdentifier];
     v17 = [SBDisplayItem alloc];
-    v18 = [v4 type];
-    v19 = [v4 bundleIdentifier];
-    v6 = [(SBDisplayItem *)v17 initWithType:v18 bundleIdentifier:v19 uniqueIdentifier:v12];
+    type = [neededCopy type];
+    bundleIdentifier2 = [neededCopy bundleIdentifier];
+    v6 = [(SBDisplayItem *)v17 initWithType:type bundleIdentifier:bundleIdentifier2 uniqueIdentifier:identifier];
   }
 
   return v6;
 }
 
-- (BOOL)_transitionContextRepresentsAmbiguousLaunch:(id)a3 forApplicationSceneEntity:(id)a4
+- (BOOL)_transitionContextRepresentsAmbiguousLaunch:(id)launch forApplicationSceneEntity:(id)entity
 {
-  v6 = a4;
-  v7 = [a3 request];
-  v8 = [v7 source];
+  entityCopy = entity;
+  request = [launch request];
+  source = [request source];
 
-  v9 = [v6 actions];
-  v10 = [v9 count];
+  actions = [entityCopy actions];
+  v10 = [actions count];
 
   if (v10)
   {
@@ -2222,10 +2222,10 @@ uint64_t __102__SBRecentAppLayouts__changeDescriptionForFilteringRestrictedUnsup
     goto LABEL_20;
   }
 
-  if ((v8 - 3) >= 0x33)
+  if ((source - 3) >= 0x33)
   {
     v11 = 0;
-    if (!v6)
+    if (!entityCopy)
     {
       goto LABEL_20;
     }
@@ -2234,27 +2234,27 @@ uint64_t __102__SBRecentAppLayouts__changeDescriptionForFilteringRestrictedUnsup
   else
   {
     v11 = 0;
-    if (!v6 || ((0x5040100000301uLL >> (v8 - 3)) & 1) != 0)
+    if (!entityCopy || ((0x5040100000301uLL >> (source - 3)) & 1) != 0)
     {
       goto LABEL_20;
     }
   }
 
-  if (v8 != 52)
+  if (source != 52)
   {
-    v12 = [v6 application];
-    if (([v12 isWebApplication] & 1) != 0 || (objc_msgSend(v12, "info"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "supportsMultiwindow"), v13, !v14))
+    application = [entityCopy application];
+    if (([application isWebApplication] & 1) != 0 || (objc_msgSend(application, "info"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "supportsMultiwindow"), v13, !v14))
     {
       v11 = 0;
     }
 
     else
     {
-      v15 = [v12 bundleIdentifier];
-      v16 = [(SBRecentAppLayouts *)self recentDisplayItemsForBundleIdentifier:v15 includingHiddenAppLayouts:0];
+      bundleIdentifier = [application bundleIdentifier];
+      v16 = [(SBRecentAppLayouts *)self recentDisplayItemsForBundleIdentifier:bundleIdentifier includingHiddenAppLayouts:0];
       v17 = [v16 count];
 
-      v18 = [(SBRecentAppLayouts *)self recentsForBundleIdentifier:v15 includingHiddenAppLayouts:0];
+      v18 = [(SBRecentAppLayouts *)self recentsForBundleIdentifier:bundleIdentifier includingHiddenAppLayouts:0];
       v19 = [v18 count];
 
       v11 = v17 > 1 && v19 > 1;

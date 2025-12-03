@@ -1,30 +1,30 @@
 @interface FPAccessControlManager
-- (void)_killBundle:(id)a3 completionHandler:(id)a4;
-- (void)bundleIdentifiersWithAccessToAnyItemCompletionHandler:(id)a3;
-- (void)collectionForItemsAccessibleByBundleIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)revokeAccessToAllBundlesCompletionHandler:(id)a3;
-- (void)revokeAccessToAllItemsForBundle:(id)a3 completionHandler:(id)a4;
+- (void)_killBundle:(id)bundle completionHandler:(id)handler;
+- (void)bundleIdentifiersWithAccessToAnyItemCompletionHandler:(id)handler;
+- (void)collectionForItemsAccessibleByBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)revokeAccessToAllBundlesCompletionHandler:(id)handler;
+- (void)revokeAccessToAllItemsForBundle:(id)bundle completionHandler:(id)handler;
 @end
 
 @implementation FPAccessControlManager
 
-- (void)collectionForItemsAccessibleByBundleIdentifier:(id)a3 completionHandler:(id)a4
+- (void)collectionForItemsAccessibleByBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = FPNotSupportedError();
-  (*(a4 + 2))(v5, 0, v6);
+  (*(handler + 2))(handlerCopy, 0, v6);
 }
 
-- (void)bundleIdentifiersWithAccessToAnyItemCompletionHandler:(id)a3
+- (void)bundleIdentifiersWithAccessToAnyItemCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[FPDaemonConnection sharedConnectionProxy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __80__FPAccessControlManager_bundleIdentifiersWithAccessToAnyItemCompletionHandler___block_invoke;
   v6[3] = &unk_1E793D118;
-  v7 = v3;
-  v5 = v3;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [v4 fetchAccessServicer:v6];
 }
 
@@ -50,10 +50,10 @@ void __80__FPAccessControlManager_bundleIdentifiersWithAccessToAnyItemCompletion
   }
 }
 
-- (void)_killBundle:(id)a3 completionHandler:(id)a4
+- (void)_killBundle:(id)bundle completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  bundleCopy = bundle;
+  handlerCopy = handler;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2050000000;
@@ -72,22 +72,22 @@ void __80__FPAccessControlManager_bundleIdentifiersWithAccessToAnyItemCompletion
 
   v10 = v9;
   _Block_object_dispose(&v19, 8);
-  v11 = [v9 sharedService];
-  if (!v11)
+  sharedService = [v9 sharedService];
+  if (!sharedService)
   {
     [FPAccessControlManager _killBundle:a2 completionHandler:self];
   }
 
-  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Terminating %@ to revoke access to files.", v7];
+  bundleCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Terminating %@ to revoke access to files.", bundleCopy];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __56__FPAccessControlManager__killBundle_completionHandler___block_invoke;
   v15[3] = &unk_1E7939328;
-  v16 = v7;
-  v17 = v8;
-  v13 = v8;
-  v14 = v7;
-  [v11 terminateApplication:v14 forReason:3 andReport:0 withDescription:v12 completion:v15];
+  v16 = bundleCopy;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = bundleCopy;
+  [sharedService terminateApplication:v14 forReason:3 andReport:0 withDescription:bundleCopy completion:v15];
 }
 
 void __56__FPAccessControlManager__killBundle_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -112,20 +112,20 @@ void __56__FPAccessControlManager__killBundle_completionHandler___block_invoke(u
   v6();
 }
 
-- (void)revokeAccessToAllItemsForBundle:(id)a3 completionHandler:(id)a4
+- (void)revokeAccessToAllItemsForBundle:(id)bundle completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  bundleCopy = bundle;
+  handlerCopy = handler;
   v8 = +[FPDaemonConnection sharedConnectionProxy];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __76__FPAccessControlManager_revokeAccessToAllItemsForBundle_completionHandler___block_invoke;
   v11[3] = &unk_1E793D168;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = bundleCopy;
+  v9 = bundleCopy;
+  v10 = handlerCopy;
   [v8 fetchAccessServicer:v11];
 }
 
@@ -173,11 +173,11 @@ uint64_t __76__FPAccessControlManager_revokeAccessToAllItemsForBundle_completion
   }
 }
 
-- (void)revokeAccessToAllBundlesCompletionHandler:(id)a3
+- (void)revokeAccessToAllBundlesCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = FPNotSupportedError();
-  (*(a3 + 2))(v4, v5);
+  (*(handler + 2))(handlerCopy, v5);
 }
 
 - (void)_killBundle:(uint64_t)a1 completionHandler:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

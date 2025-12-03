@@ -1,18 +1,18 @@
 @interface W5PeerDebugListener
-- (BOOL)handleClientRequest:(id)a3;
-- (W5PeerDebugListener)initWithDebugManager:(id)a3;
+- (BOOL)handleClientRequest:(id)request;
+- (W5PeerDebugListener)initWithDebugManager:(id)manager;
 @end
 
 @implementation W5PeerDebugListener
 
-- (W5PeerDebugListener)initWithDebugManager:(id)a3
+- (W5PeerDebugListener)initWithDebugManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = W5PeerDebugListener;
   v6 = [(W5PeerDebugListener *)&v10 init];
   v7 = v6;
-  if (!v6 || (objc_storeStrong(&v6->_debugManager, a3), !v7->_debugManager))
+  if (!v6 || (objc_storeStrong(&v6->_debugManager, manager), !v7->_debugManager))
   {
 
     v8 = sub_100098A04();
@@ -33,15 +33,15 @@
   return v7;
 }
 
-- (BOOL)handleClientRequest:(id)a3
+- (BOOL)handleClientRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = [v5 requestType];
+  requestCopy = request;
+  payload = [requestCopy payload];
+  requestType = [payload requestType];
   v7 = sub_100098A04();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 configuration];
+    configuration = [payload configuration];
     v35 = 136316674;
     v36 = "[W5PeerDebugListener handleClientRequest:]";
     v37 = 2080;
@@ -49,13 +49,13 @@
     v39 = 1024;
     v40 = 46;
     v41 = 2114;
-    v42 = v4;
+    v42 = requestCopy;
     v43 = 2114;
-    v44 = v5;
+    v44 = payload;
     v45 = 2114;
-    v46 = v8;
+    v46 = configuration;
     v47 = 2050;
-    v48 = [v5 requestType];
+    requestType2 = [payload requestType];
     LODWORD(v27) = 68;
     v26 = &v35;
     _os_log_send_and_compose_impl();
@@ -65,29 +65,29 @@
   v10 = [NSNumber numberWithInteger:[(W5PeerDebugListener *)self currentVersion]];
   [(W5PeerDebugResponsePayload *)v9 setVersion:v10];
 
-  v11 = [v5 version];
-  v12 = [v11 integerValue];
-  v13 = [(W5PeerDebugListener *)self currentVersion];
+  version = [payload version];
+  integerValue = [version integerValue];
+  currentVersion = [(W5PeerDebugListener *)self currentVersion];
 
-  if (v12 != v13)
+  if (integerValue != currentVersion)
   {
     [(W5PeerDebugResponsePayload *)v9 setStatus:3];
     v29 = NSLocalizedFailureReasonErrorKey;
     v30 = @"W5NotSupportedErr";
-    v16 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-    v17 = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:4 userInfo:v16];
+    configuration2 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
+    v17 = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:4 userInfo:configuration2];
 LABEL_21:
 
     goto LABEL_22;
   }
 
-  if (v6 == 2)
+  if (requestType == 2)
   {
-    v16 = [v5 configuration];
-    if (v16)
+    configuration2 = [payload configuration];
+    if (configuration2)
     {
-      v19 = [(W5PeerDebugListener *)self debugManager];
-      [v19 setDebugConfiguration:v16 reply:0];
+      debugManager = [(W5PeerDebugListener *)self debugManager];
+      [debugManager setDebugConfiguration:configuration2 reply:0];
       v17 = 0;
       v20 = 1;
     }
@@ -110,8 +110,8 @@ LABEL_21:
 
       v31 = NSLocalizedFailureReasonErrorKey;
       v32 = @"W5ParamErr";
-      v19 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
-      v17 = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:1 userInfo:v19];
+      debugManager = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
+      v17 = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:1 userInfo:debugManager];
       v20 = 2;
     }
 
@@ -119,14 +119,14 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (v6 == 1)
+  if (requestType == 1)
   {
-    v14 = [(W5PeerDebugListener *)self debugManager];
+    debugManager2 = [(W5PeerDebugListener *)self debugManager];
     v28 = 0;
-    v15 = [v14 queryDebugConfigurationAndReturnError:&v28];
-    v16 = v28;
+    v15 = [debugManager2 queryDebugConfigurationAndReturnError:&v28];
+    configuration2 = v28;
 
-    if (v16 || !v15)
+    if (configuration2 || !v15)
     {
       v21 = sub_100098A04();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -138,7 +138,7 @@ LABEL_21:
         v39 = 1024;
         v40 = 60;
         v41 = 2114;
-        v42 = v16;
+        v42 = configuration2;
         LODWORD(v27) = 38;
         v26 = &v35;
         _os_log_send_and_compose_impl();
@@ -166,8 +166,8 @@ LABEL_21:
 
   v17 = 0;
 LABEL_22:
-  v24 = [v4 handler];
-  (v24)[2](v24, v9, v17);
+  handler = [requestCopy handler];
+  (handler)[2](handler, v9, v17);
 
   return 1;
 }

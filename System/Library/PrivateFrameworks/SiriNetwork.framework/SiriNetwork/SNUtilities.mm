@@ -1,12 +1,12 @@
 @interface SNUtilities
-+ (id)createUserAgentStringFromProductTypePrefix:(id)a3;
++ (id)createUserAgentStringFromProductTypePrefix:(id)prefix;
 @end
 
 @implementation SNUtilities
 
-+ (id)createUserAgentStringFromProductTypePrefix:(id)a3
++ (id)createUserAgentStringFromProductTypePrefix:(id)prefix
 {
-  if (a3)
+  if (prefix)
   {
     v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v5 = v4;

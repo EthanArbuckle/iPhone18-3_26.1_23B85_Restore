@@ -1,12 +1,12 @@
 @interface AVRoutingScheduledFloatValueRamp
 + (id)defaultValue;
-+ (id)scheduledFloatValueRampWithStartValue:(float)a3 endValue:(float)a4 timeRange:(id *)a5;
-- (AVRoutingScheduledFloatValueRamp)initWithPropertyList:(id)a3;
-- (AVRoutingScheduledFloatValueRamp)initWithStartValue:(float)a3 endValue:(float)a4 timeRange:(id *)a5;
-- (float)_interpolatedValueAtTime:(id *)a3;
-- (id)_makeRampWithTruncatedTimeRange:(id *)a3 endValue:(float)a4;
++ (id)scheduledFloatValueRampWithStartValue:(float)value endValue:(float)endValue timeRange:(id *)range;
+- (AVRoutingScheduledFloatValueRamp)initWithPropertyList:(id)list;
+- (AVRoutingScheduledFloatValueRamp)initWithStartValue:(float)value endValue:(float)endValue timeRange:(id *)range;
+- (float)_interpolatedValueAtTime:(id *)time;
+- (id)_makeRampWithTruncatedTimeRange:(id *)range endValue:(float)value;
 - (id)propertyList;
-- (id)scheduledParameterRampInterpolatedToTime:(id *)a3;
+- (id)scheduledParameterRampInterpolatedToTime:(id *)time;
 @end
 
 @implementation AVRoutingScheduledFloatValueRamp
@@ -14,38 +14,38 @@
 + (id)defaultValue
 {
   v2 = MEMORY[0x1E696AD98];
-  [a1 defaultFloatValue];
+  [self defaultFloatValue];
 
   return [v2 numberWithFloat:?];
 }
 
-+ (id)scheduledFloatValueRampWithStartValue:(float)a3 endValue:(float)a4 timeRange:(id *)a5
++ (id)scheduledFloatValueRampWithStartValue:(float)value endValue:(float)endValue timeRange:(id *)range
 {
   v8 = objc_alloc(objc_opt_class());
-  v9 = *&a5->var0.var3;
-  v11[0] = *&a5->var0.var0;
+  v9 = *&range->var0.var3;
+  v11[0] = *&range->var0.var0;
   v11[1] = v9;
-  *&v9 = a4;
-  return [v8 initWithStartValue:v11 endValue:COERCE_DOUBLE(__PAIR64__(HIDWORD(*&a5->var1.var1) timeRange:{LODWORD(a3))), *&v9}];
+  *&v9 = endValue;
+  return [v8 initWithStartValue:v11 endValue:COERCE_DOUBLE(__PAIR64__(HIDWORD(*&range->var1.var1) timeRange:{LODWORD(value))), *&v9}];
 }
 
-- (AVRoutingScheduledFloatValueRamp)initWithStartValue:(float)a3 endValue:(float)a4 timeRange:(id *)a5
+- (AVRoutingScheduledFloatValueRamp)initWithStartValue:(float)value endValue:(float)endValue timeRange:(id *)range
 {
   v17.receiver = self;
   v17.super_class = AVRoutingScheduledFloatValueRamp;
-  v7 = *&a5->var0.var3;
-  v16[0] = *&a5->var0.var0;
+  v7 = *&range->var0.var3;
+  v16[0] = *&range->var0.var0;
   v16[1] = v7;
-  v16[2] = *&a5->var1.var1;
+  v16[2] = *&range->var1.var1;
   v8 = [(AVRoutingScheduledParameterRamp *)&v17 initWithTimeRange:v16];
   if (v8)
   {
     v9 = objc_opt_class();
-    *&v10 = a3;
+    *&v10 = value;
     [v9 boundsAdjustedFloatValue:v10];
     v8->_startValue = v11;
     v12 = objc_opt_class();
-    *&v13 = a4;
+    *&v13 = endValue;
     [v12 boundsAdjustedFloatValue:v13];
     v8->_endValue = v14;
   }
@@ -53,7 +53,7 @@
   return v8;
 }
 
-- (float)_interpolatedValueAtTime:(id *)a3
+- (float)_interpolatedValueAtTime:(id *)time
 {
   memset(v21, 0, sizeof(v21));
   v20 = 0u;
@@ -61,16 +61,16 @@
   {
     time = *(v21 + 8);
     Seconds = CMTimeGetSeconds(&time);
-    lhs = *a3;
+    lhs = *time;
     *&v17.value = v20;
     v17.epoch = *&v21[0];
     CMTimeSubtract(&time, &lhs, &v17);
     v6 = CMTimeGetSeconds(&time) / Seconds;
-    v7 = [(AVRoutingScheduledFloatValueRamp *)self _parameterRampMode];
-    if (v7)
+    _parameterRampMode = [(AVRoutingScheduledFloatValueRamp *)self _parameterRampMode];
+    if (_parameterRampMode)
     {
       result = 0.0;
-      if (v7 != 1)
+      if (_parameterRampMode != 1)
       {
         return result;
       }
@@ -105,18 +105,18 @@
   return result;
 }
 
-- (id)_makeRampWithTruncatedTimeRange:(id *)a3 endValue:(float)a4
+- (id)_makeRampWithTruncatedTimeRange:(id *)range endValue:(float)value
 {
   v6 = objc_opt_class();
   [(AVRoutingScheduledFloatValueRamp *)self startFloatValue];
-  v7 = *&a3->var0.var3;
-  v9[0] = *&a3->var0.var0;
+  v7 = *&range->var0.var3;
+  v9[0] = *&range->var0.var0;
   v9[1] = v7;
-  v9[2] = *&a3->var1.var1;
+  v9[2] = *&range->var1.var1;
   return [v6 scheduledFloatValueRampWithStartValue:v9 endValue:? timeRange:?];
 }
 
-- (id)scheduledParameterRampInterpolatedToTime:(id *)a3
+- (id)scheduledParameterRampInterpolatedToTime:(id *)time
 {
   memset(&v19, 0, sizeof(v19));
   if (self)
@@ -126,8 +126,8 @@
 
   range = v19;
   CMTimeRangeGetEnd(&time2, &range);
-  *&range.start.value = *&a3->var0;
-  range.start.epoch = a3->var3;
+  *&range.start.value = *&time->var0;
+  range.start.epoch = time->var3;
   if (!CMTimeCompare(&range.start, &time2))
   {
     return [(AVRoutingScheduledFloatValueRamp *)self copy];
@@ -135,21 +135,21 @@
 
   *&range.start.value = *&v19.start.value;
   *&range.start.epoch = *&v19.start.epoch;
-  v6 = *&a3->var0;
+  v6 = *&time->var0;
   *&range.duration.timescale = *&v19.duration.timescale;
   *&time2.value = v6;
-  time2.epoch = a3->var3;
+  time2.epoch = time->var3;
   if (!CMTimeRangeContainsTime(&range, &time2))
   {
     v15 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"can't interpolate outside of the timeRange of the receiver", v7, v8, v9, v10, v11, start.value), 0}];
     objc_exception_throw(v15);
   }
 
-  *&range.start.value = *&a3->var0;
-  range.start.epoch = a3->var3;
+  *&range.start.value = *&time->var0;
+  range.start.epoch = time->var3;
   [(AVRoutingScheduledFloatValueRamp *)self _interpolatedValueAtTime:&range];
   v13 = v12;
-  time2 = *a3;
+  time2 = *time;
   start = v19.start;
   CMTimeSubtract(&range.start, &time2, &start);
   v19.duration = range.start;
@@ -157,13 +157,13 @@
   return [(AVRoutingScheduledFloatValueRamp *)self _makeRampWithTruncatedTimeRange:&range endValue:COERCE_DOUBLE(__PAIR64__(v19.duration.flags, v13))];
 }
 
-- (AVRoutingScheduledFloatValueRamp)initWithPropertyList:(id)a3
+- (AVRoutingScheduledFloatValueRamp)initWithPropertyList:(id)list
 {
   v35 = *MEMORY[0x1E69E9840];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v27 = self;
+    selfCopy = self;
     v24 = MEMORY[0x1E695DF30];
     v25 = *MEMORY[0x1E695D940];
     v26 = "[propertyList isKindOfClass:[NSDictionary class]]";
@@ -175,7 +175,7 @@ LABEL_15:
   v6 = MEMORY[0x1E6960C98];
   value = *MEMORY[0x1E6960C98];
   timescale = *(MEMORY[0x1E6960C98] + 8);
-  v7 = [a3 objectForKey:@"timeRange"];
+  v7 = [list objectForKey:@"timeRange"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -183,7 +183,7 @@ LABEL_15:
     goto LABEL_6;
   }
 
-  v8 = [a3 objectForKey:@"time"];
+  v8 = [list objectForKey:@"time"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -214,7 +214,7 @@ LABEL_6:
   if ((flags & 1) == 0)
   {
 LABEL_13:
-    v18 = self;
+    selfCopy2 = self;
     v24 = MEMORY[0x1E695DF30];
     v25 = *MEMORY[0x1E695D940];
     v26 = "CMTIMERANGE_IS_VALID(timeRange)";
@@ -228,8 +228,8 @@ LABEL_9:
   }
 
   v29 = v12;
-  [objc_msgSend(a3 objectForKey:{@"startValue", "floatValue"}];
-  [objc_msgSend(a3 objectForKey:{@"endValue", "floatValue"}];
+  [objc_msgSend(list objectForKey:{@"startValue", "floatValue"}];
+  [objc_msgSend(list objectForKey:{@"endValue", "floatValue"}];
   LODWORD(v15) = v14;
   v32.start.value = value;
   v32.start.timescale = timescale;
@@ -260,8 +260,8 @@ LABEL_9:
   }
 
   v4 = MEMORY[0x1E695DF90];
-  v5 = [(AVRoutingScheduledFloatValueRamp *)self startValue];
-  v6 = [(AVRoutingScheduledFloatValueRamp *)self endValue];
+  startValue = [(AVRoutingScheduledFloatValueRamp *)self startValue];
+  endValue = [(AVRoutingScheduledFloatValueRamp *)self endValue];
   if (v3)
   {
     v10 = v13;
@@ -279,7 +279,7 @@ LABEL_9:
     v8 = @"time";
   }
 
-  return [v4 dictionaryWithObjectsAndKeys:{v5, @"startValue", v6, @"endValue", v7, v8, 0}];
+  return [v4 dictionaryWithObjectsAndKeys:{startValue, @"startValue", endValue, @"endValue", v7, v8, 0}];
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface NSCollectionLayoutItem
 + (NSCollectionLayoutItem)itemWithLayoutSize:(NSCollectionLayoutSize *)layoutSize;
 + (NSCollectionLayoutItem)itemWithLayoutSize:(NSCollectionLayoutSize *)layoutSize supplementaryItems:(NSArray *)supplementaryItems;
-+ (NSCollectionLayoutItem)itemWithSize:(id)a3 decorationItems:(id)a4;
++ (NSCollectionLayoutItem)itemWithSize:(id)size decorationItems:(id)items;
 - (BOOL)containsEstimatedSizeItem;
 - (BOOL)containsItemWithAxesUniformAcrossSiblings;
 - (BOOL)hasCustomGroupItemProvider;
 - (BOOL)ignoresRTL;
 - (BOOL)isAuxillary;
 - (BOOL)isCustomGroup;
-- (BOOL)isEqual:(id)a3;
-- (CGSize)_insetSizeForContainer:(id)a3 displayScale:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (CGSize)_insetSizeForContainer:(id)container displayScale:(double)scale;
 - (CVCDirectionalEdgeInsets)_effectiveContentInsets;
-- (NSCollectionLayoutItem)initWithSize:(id)a3 contentInsets:(CVCDirectionalEdgeInsets)a4 edgeSpacing:(id)a5 supplementaryItems:(id)a6 decorationItems:(id)a7 name:(id)a8 identifier:(id)a9;
+- (NSCollectionLayoutItem)initWithSize:(id)size contentInsets:(CVCDirectionalEdgeInsets)insets edgeSpacing:(id)spacing supplementaryItems:(id)items decorationItems:(id)decorationItems name:(id)name identifier:(id)identifier;
 - (NSDirectionalEdgeInsets)contentInsets;
 - (id)_externalDescription;
 - (id)auxillaryItems;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_enumerateItemsWithHandler:(id)a3;
-- (void)_enumerateSupplementaryItemsWithHandler:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_enumerateItemsWithHandler:(id)handler;
+- (void)_enumerateSupplementaryItemsWithHandler:(id)handler;
 - (void)setContentInsets:(NSDirectionalEdgeInsets)contentInsets;
 @end
 
@@ -88,8 +88,8 @@
     return 0;
   }
 
-  v3 = [(NSCollectionLayoutItem *)self customGroupItemProvider];
-  v4 = v3 != 0;
+  customGroupItemProvider = [(NSCollectionLayoutItem *)self customGroupItemProvider];
+  v4 = customGroupItemProvider != 0;
 
   return v4;
 }
@@ -150,8 +150,8 @@ void __51__NSCollectionLayoutItem_containsEstimatedSizeItem__block_invoke(uint64
 
   if ([(NSCollectionLayoutEdgeSpacing *)self->_edgeSpacing _hasSpacing])
   {
-    v7 = [(NSCollectionLayoutEdgeSpacing *)self->_edgeSpacing _externalDescription];
-    [v3 appendFormat:@"\n\tedgeSpacing=%@", v7];
+    _externalDescription = [(NSCollectionLayoutEdgeSpacing *)self->_edgeSpacing _externalDescription];
+    [v3 appendFormat:@"\n\tedgeSpacing=%@", _externalDescription];
   }
 
   v26 = v3;
@@ -162,7 +162,7 @@ void __51__NSCollectionLayoutItem_containsEstimatedSizeItem__block_invoke(uint64
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v25 = self;
+    selfCopy = self;
     v9 = self->_supplementaryItems;
     v10 = [(NSArray *)v9 countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v10)
@@ -178,8 +178,8 @@ void __51__NSCollectionLayoutItem_containsEstimatedSizeItem__block_invoke(uint64
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v31 + 1) + 8 * i) _externalDescription];
-          v15 = [v14 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
+          _externalDescription2 = [*(*(&v31 + 1) + 8 * i) _externalDescription];
+          v15 = [_externalDescription2 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
           [v8 appendFormat:@"\n\t\t%@", v15];
         }
 
@@ -192,7 +192,7 @@ void __51__NSCollectionLayoutItem_containsEstimatedSizeItem__block_invoke(uint64
     v3 = v26;
     [v26 appendString:v8];
 
-    self = v25;
+    self = selfCopy;
   }
 
   if ([(NSArray *)self->_decorationItems count])
@@ -217,8 +217,8 @@ void __51__NSCollectionLayoutItem_containsEstimatedSizeItem__block_invoke(uint64
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v27 + 1) + 8 * j) _externalDescription];
-          v23 = [v22 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
+          _externalDescription3 = [*(*(&v27 + 1) + 8 * j) _externalDescription];
+          v23 = [_externalDescription3 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
           [v16 appendFormat:@"\n\t\t%@", v23];
         }
 
@@ -235,44 +235,44 @@ void __51__NSCollectionLayoutItem_containsEstimatedSizeItem__block_invoke(uint64
   return v3;
 }
 
-- (NSCollectionLayoutItem)initWithSize:(id)a3 contentInsets:(CVCDirectionalEdgeInsets)a4 edgeSpacing:(id)a5 supplementaryItems:(id)a6 decorationItems:(id)a7 name:(id)a8 identifier:(id)a9
+- (NSCollectionLayoutItem)initWithSize:(id)size contentInsets:(CVCDirectionalEdgeInsets)insets edgeSpacing:(id)spacing supplementaryItems:(id)items decorationItems:(id)decorationItems name:(id)name identifier:(id)identifier
 {
-  trailing = a4.trailing;
-  bottom = a4.bottom;
-  leading = a4.leading;
-  top = a4.top;
-  v19 = a3;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = a9;
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  leading = insets.leading;
+  top = insets.top;
+  sizeCopy = size;
+  spacingCopy = spacing;
+  itemsCopy = items;
+  decorationItemsCopy = decorationItems;
+  nameCopy = name;
+  identifierCopy = identifier;
   v37.receiver = self;
   v37.super_class = NSCollectionLayoutItem;
   v25 = [(NSCollectionLayoutItem *)&v37 init];
   if (v25)
   {
-    v26 = [v19 copy];
+    v26 = [sizeCopy copy];
     size = v25->_size;
     v25->_size = v26;
 
-    v28 = [v20 copy];
+    v28 = [spacingCopy copy];
     edgeSpacing = v25->_edgeSpacing;
     v25->_edgeSpacing = v28;
 
-    v30 = [v21 copy];
+    v30 = [itemsCopy copy];
     supplementaryItems = v25->_supplementaryItems;
     v25->_supplementaryItems = v30;
 
-    v32 = [v22 copy];
+    v32 = [decorationItemsCopy copy];
     decorationItems = v25->_decorationItems;
     v25->_decorationItems = v32;
 
-    v34 = [v23 copy];
+    v34 = [nameCopy copy];
     name = v25->_name;
     v25->_name = v34;
 
-    objc_storeStrong(&v25->_identifier, a9);
+    objc_storeStrong(&v25->_identifier, identifier);
     [(NSCollectionLayoutItem *)v25 setContentInsets:top, leading, bottom, trailing];
   }
 
@@ -282,10 +282,10 @@ void __51__NSCollectionLayoutItem_containsEstimatedSizeItem__block_invoke(uint64
 + (NSCollectionLayoutItem)itemWithLayoutSize:(NSCollectionLayoutSize *)layoutSize
 {
   v4 = layoutSize;
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   v6 = +[NSCollectionLayoutEdgeSpacing defaultSpacing];
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [v5 initWithSize:v4 contentInsets:v6 edgeSpacing:MEMORY[0x277CBEBF8] supplementaryItems:MEMORY[0x277CBEBF8] decorationItems:0 name:v7 identifier:{0.0, 0.0, 0.0, 0.0}];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v8 = [v5 initWithSize:v4 contentInsets:v6 edgeSpacing:MEMORY[0x277CBEBF8] supplementaryItems:MEMORY[0x277CBEBF8] decorationItems:0 name:uUID identifier:{0.0, 0.0, 0.0, 0.0}];
 
   return v8;
 }
@@ -294,49 +294,49 @@ void __51__NSCollectionLayoutItem_containsEstimatedSizeItem__block_invoke(uint64
 {
   v6 = supplementaryItems;
   v7 = layoutSize;
-  v8 = [a1 alloc];
+  v8 = [self alloc];
   v9 = +[NSCollectionLayoutEdgeSpacing defaultSpacing];
-  v10 = [MEMORY[0x277CCAD78] UUID];
-  v11 = [v8 initWithSize:v7 contentInsets:v9 edgeSpacing:v6 supplementaryItems:MEMORY[0x277CBEBF8] decorationItems:0 name:v10 identifier:{0.0, 0.0, 0.0, 0.0}];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v11 = [v8 initWithSize:v7 contentInsets:v9 edgeSpacing:v6 supplementaryItems:MEMORY[0x277CBEBF8] decorationItems:0 name:uUID identifier:{0.0, 0.0, 0.0, 0.0}];
 
   return v11;
 }
 
-+ (NSCollectionLayoutItem)itemWithSize:(id)a3 decorationItems:(id)a4
++ (NSCollectionLayoutItem)itemWithSize:(id)size decorationItems:(id)items
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
+  itemsCopy = items;
+  sizeCopy = size;
+  v8 = [self alloc];
   v9 = +[NSCollectionLayoutEdgeSpacing defaultSpacing];
-  v10 = [MEMORY[0x277CCAD78] UUID];
-  v11 = [v8 initWithSize:v7 contentInsets:v9 edgeSpacing:MEMORY[0x277CBEBF8] supplementaryItems:v6 decorationItems:0 name:v10 identifier:{0.0, 0.0, 0.0, 0.0}];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v11 = [v8 initWithSize:sizeCopy contentInsets:v9 edgeSpacing:MEMORY[0x277CBEBF8] supplementaryItems:itemsCopy decorationItems:0 name:uUID identifier:{0.0, 0.0, 0.0, 0.0}];
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = [(NSCollectionLayoutItem *)self size];
   [(NSCollectionLayoutItem *)self contentInsets];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(NSCollectionLayoutItem *)self edgeSpacing];
-  v15 = [(NSCollectionLayoutItem *)self supplementaryItems];
-  v16 = [(NSCollectionLayoutItem *)self decorationItems];
-  v17 = [(NSCollectionLayoutItem *)self name];
-  v18 = [MEMORY[0x277CCAD78] UUID];
-  v19 = [v4 initWithSize:v5 contentInsets:v14 edgeSpacing:v15 supplementaryItems:v16 decorationItems:v17 name:v18 identifier:{v7, v9, v11, v13}];
+  edgeSpacing = [(NSCollectionLayoutItem *)self edgeSpacing];
+  supplementaryItems = [(NSCollectionLayoutItem *)self supplementaryItems];
+  decorationItems = [(NSCollectionLayoutItem *)self decorationItems];
+  name = [(NSCollectionLayoutItem *)self name];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v19 = [v4 initWithSize:v5 contentInsets:edgeSpacing edgeSpacing:supplementaryItems supplementaryItems:decorationItems decorationItems:name name:uUID identifier:{v7, v9, v11, v13}];
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v16 = 1;
     goto LABEL_13;
@@ -353,30 +353,30 @@ void __51__NSCollectionLayoutItem_containsEstimatedSizeItem__block_invoke(uint64
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [(NSCollectionLayoutItem *)v4 contentInsets];
+  [(NSCollectionLayoutItem *)equalCopy contentInsets];
   v16 = 0;
   if (v8 == v17 && v6 == v13 && v12 == v15 && v10 == v14)
   {
-    v18 = [(NSCollectionLayoutItem *)self edgeSpacing];
-    v19 = [(NSCollectionLayoutItem *)v4 edgeSpacing];
-    v20 = __objectEqual(v18, v19);
+    edgeSpacing = [(NSCollectionLayoutItem *)self edgeSpacing];
+    edgeSpacing2 = [(NSCollectionLayoutItem *)equalCopy edgeSpacing];
+    v20 = __objectEqual(edgeSpacing, edgeSpacing2);
 
     if (v20)
     {
-      v21 = [(NSCollectionLayoutItem *)self supplementaryItems];
-      v22 = [(NSCollectionLayoutItem *)v4 supplementaryItems];
-      v23 = __objectEqual(v21, v22);
+      supplementaryItems = [(NSCollectionLayoutItem *)self supplementaryItems];
+      supplementaryItems2 = [(NSCollectionLayoutItem *)equalCopy supplementaryItems];
+      v23 = __objectEqual(supplementaryItems, supplementaryItems2);
 
       if (v23)
       {
-        v24 = [(NSCollectionLayoutItem *)self decorationItems];
-        v25 = [(NSCollectionLayoutItem *)v4 decorationItems];
-        v26 = __objectEqual(v24, v25);
+        decorationItems = [(NSCollectionLayoutItem *)self decorationItems];
+        decorationItems2 = [(NSCollectionLayoutItem *)equalCopy decorationItems];
+        v26 = __objectEqual(decorationItems, decorationItems2);
 
         if (v26)
         {
           v27 = [(NSCollectionLayoutItem *)self size];
-          v28 = [(NSCollectionLayoutItem *)v4 size];
+          v28 = [(NSCollectionLayoutItem *)equalCopy size];
           v16 = __objectEqual(v27, v28);
 
           goto LABEL_13;
@@ -413,9 +413,9 @@ LABEL_13:
       v7 = _compLayoutLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v8 = [(NSCollectionLayoutItem *)self _externalDescription];
+        _externalDescription = [(NSCollectionLayoutItem *)self _externalDescription];
         *buf = 138412290;
-        v12 = v8;
+        v12 = _externalDescription;
         _os_log_error_impl(&dword_243B9B000, v7, OS_LOG_TYPE_ERROR, "Attempting to add contentInsets to an item's dimension along an estimated axis. Insets along any estimated axes will be ignored. Use the item's edgeSpacing or the containing group's interItemSpacing instead. Item: %@", buf, 0xCu);
       }
     }
@@ -472,17 +472,17 @@ void __67__NSCollectionLayoutItem_containsItemWithAxesUniformAcrossSiblings__blo
   }
 }
 
-- (void)_enumerateSupplementaryItemsWithHandler:(id)a3
+- (void)_enumerateSupplementaryItemsWithHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v25 = 0;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(NSCollectionLayoutItem *)self supplementaryItems];
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v27 count:16];
+  supplementaryItems = [(NSCollectionLayoutItem *)self supplementaryItems];
+  v6 = [supplementaryItems countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -493,10 +493,10 @@ LABEL_3:
     {
       if (*v22 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(supplementaryItems);
       }
 
-      v4[2](v4, *(*(&v21 + 1) + 8 * v9), &v25);
+      handlerCopy[2](handlerCopy, *(*(&v21 + 1) + 8 * v9), &v25);
       if (v25)
       {
         goto LABEL_17;
@@ -504,7 +504,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v21 objects:v27 count:16];
+        v7 = [supplementaryItems countByEnumeratingWithState:&v21 objects:v27 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -517,12 +517,12 @@ LABEL_3:
 
   if ([(NSCollectionLayoutItem *)self isGroup])
   {
-    v5 = [(NSCollectionLayoutItem *)self subitems];
+    supplementaryItems = [(NSCollectionLayoutItem *)self subitems];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [v5 countByEnumeratingWithState:&v17 objects:v26 count:16];
+    v10 = [supplementaryItems countByEnumeratingWithState:&v17 objects:v26 count:16];
     if (v10)
     {
       v11 = v10;
@@ -533,7 +533,7 @@ LABEL_3:
         {
           if (*v18 != v12)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(supplementaryItems);
           }
 
           v14 = *(*(&v17 + 1) + 8 * i);
@@ -541,11 +541,11 @@ LABEL_3:
           v15[1] = 3221225472;
           v15[2] = __66__NSCollectionLayoutItem__enumerateSupplementaryItemsWithHandler___block_invoke;
           v15[3] = &unk_278DE5690;
-          v16 = v4;
+          v16 = handlerCopy;
           [v14 _enumerateSupplementaryItemsWithHandler:v15];
         }
 
-        v11 = [v5 countByEnumeratingWithState:&v17 objects:v26 count:16];
+        v11 = [supplementaryItems countByEnumeratingWithState:&v17 objects:v26 count:16];
       }
 
       while (v11);
@@ -555,20 +555,20 @@ LABEL_17:
   }
 }
 
-- (void)_enumerateItemsWithHandler:(id)a3
+- (void)_enumerateItemsWithHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v17 = 0;
-  v4[2](v4, self, &v17);
+  handlerCopy[2](handlerCopy, self, &v17);
   if ((v17 & 1) == 0 && [(NSCollectionLayoutItem *)self isGroup])
   {
-    v5 = [(NSCollectionLayoutItem *)self subitems];
+    subitems = [(NSCollectionLayoutItem *)self subitems];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+    v6 = [subitems countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -579,7 +579,7 @@ LABEL_17:
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subitems);
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
@@ -587,11 +587,11 @@ LABEL_17:
           v11[1] = 3221225472;
           v11[2] = __53__NSCollectionLayoutItem__enumerateItemsWithHandler___block_invoke;
           v11[3] = &unk_278DE56B8;
-          v12 = v4;
+          v12 = handlerCopy;
           [v10 _enumerateItemsWithHandler:v11];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v7 = [subitems countByEnumeratingWithState:&v13 objects:v18 count:16];
       }
 
       while (v7);
@@ -599,11 +599,11 @@ LABEL_17:
   }
 }
 
-- (CGSize)_insetSizeForContainer:(id)a3 displayScale:(double)a4
+- (CGSize)_insetSizeForContainer:(id)container displayScale:(double)scale
 {
-  v6 = a3;
+  containerCopy = container;
   v7 = [(NSCollectionLayoutItem *)self size];
-  [v7 _effectiveSizeForContainer:v6 displayScale:0 ignoringInsets:a4];
+  [v7 _effectiveSizeForContainer:containerCopy displayScale:0 ignoringInsets:scale];
   v22 = v9;
   v23 = v8;
 
@@ -623,14 +623,14 @@ LABEL_17:
 
 - (BOOL)isCustomGroup
 {
-  v3 = [(NSCollectionLayoutItem *)self isGroup];
-  if (v3)
+  isGroup = [(NSCollectionLayoutItem *)self isGroup];
+  if (isGroup)
   {
 
-    LOBYTE(v3) = [(NSCollectionLayoutItem *)self hasCustomGroupItemProvider];
+    LOBYTE(isGroup) = [(NSCollectionLayoutItem *)self hasCustomGroupItemProvider];
   }
 
-  return v3;
+  return isGroup;
 }
 
 - (BOOL)isAuxillary
@@ -669,13 +669,13 @@ LABEL_17:
 
 - (BOOL)ignoresRTL
 {
-  v3 = [(NSCollectionLayoutItem *)self isGroup];
-  if (v3)
+  isGroup = [(NSCollectionLayoutItem *)self isGroup];
+  if (isGroup)
   {
-    LOBYTE(v3) = [(NSCollectionLayoutItem *)self groupOptions];
+    LOBYTE(isGroup) = [(NSCollectionLayoutItem *)self groupOptions];
   }
 
-  return v3 & 1;
+  return isGroup & 1;
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface TrafficIncidentLayoutItem
-+ (id)defaultDescriptionTextForType:(int)a3;
-+ (id)defaultDisplayTextForType:(int)a3;
-+ (id)styleAttributesForType:(int)a3;
++ (id)defaultDescriptionTextForType:(int)type;
++ (id)defaultDisplayTextForType:(int)type;
++ (id)styleAttributesForType:(int)type;
 - (NSString)secondaryString;
-- (TrafficIncidentLayoutItem)initWithCoder:(id)a3;
-- (TrafficIncidentLayoutItem)initWithTrafficIncidentType:(int)a3 displayOnMap:(BOOL)a4;
+- (TrafficIncidentLayoutItem)initWithCoder:(id)coder;
+- (TrafficIncidentLayoutItem)initWithTrafficIncidentType:(int)type displayOnMap:(BOOL)map;
 - (id)descriptionText;
 - (id)displayImage;
 - (id)displayText;
 - (id)incidentTypeAsString;
 - (id)preferredConfirmationTitle;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TrafficIncidentLayoutItem
@@ -20,17 +20,17 @@
   if (MapsFeature_IsEnabled_MoreReportTypes() && (+[MNNavigationService sharedService](MNNavigationService, "sharedService"), v2 = objc_claimAutoreleasedReturnValue(), [v2 lastLocation], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "roadName"), v4 = objc_claimAutoreleasedReturnValue(), v4, v3, v2, v4))
   {
     v5 = +[MNNavigationService sharedService];
-    v6 = [v5 lastLocation];
-    v7 = [v6 roadName];
+    lastLocation = [v5 lastLocation];
+    roadName = [lastLocation roadName];
   }
 
   else
   {
     v5 = +[NSBundle mainBundle];
-    v7 = [v5 localizedStringForKey:@"Report [Nav Tray value:Incident Report now]" table:{@"localized string not found", 0}];
+    roadName = [v5 localizedStringForKey:@"Report [Nav Tray value:Incident Report now]" table:{@"localized string not found", 0}];
   }
 
-  return v7;
+  return roadName;
 }
 
 - (id)preferredConfirmationTitle
@@ -43,16 +43,16 @@
 
 - (id)descriptionText
 {
-  v2 = [(TrafficIncidentLayoutItem *)self incidentType];
+  incidentType = [(TrafficIncidentLayoutItem *)self incidentType];
 
-  return [TrafficIncidentLayoutItem defaultDescriptionTextForType:v2];
+  return [TrafficIncidentLayoutItem defaultDescriptionTextForType:incidentType];
 }
 
 - (id)displayText
 {
-  v2 = [(TrafficIncidentLayoutItem *)self incidentType];
+  incidentType = [(TrafficIncidentLayoutItem *)self incidentType];
 
-  return [TrafficIncidentLayoutItem defaultDisplayTextForType:v2];
+  return [TrafficIncidentLayoutItem defaultDisplayTextForType:incidentType];
 }
 
 - (id)displayImage
@@ -62,78 +62,78 @@
   return sub_100955208(v2, 4);
 }
 
-+ (id)defaultDescriptionTextForType:(int)a3
++ (id)defaultDescriptionTextForType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v4 = +[MKTrafficSupport sharedTrafficSupport];
   v5 = [v4 localizedRAPDescriptionForGEOTrafficIncidentType:v3];
 
   return v5;
 }
 
-+ (id)defaultDisplayTextForType:(int)a3
++ (id)defaultDisplayTextForType:(int)type
 {
-  v3 = [MKTrafficSupport GEORouteIncidentTypeForGEOTrafficIncidentType:*&a3];
+  v3 = [MKTrafficSupport GEORouteIncidentTypeForGEOTrafficIncidentType:*&type];
   v4 = +[MKTrafficSupport sharedTrafficSupport];
   v5 = [v4 localizedTitleForGEOIncidentType:v3 laneType:0 laneCount:0];
 
   return v5;
 }
 
-+ (id)styleAttributesForType:(int)a3
++ (id)styleAttributesForType:(int)type
 {
-  v3 = [MKTrafficSupport VKTrafficIncidentTypeForGEOTrafficIncidentType:*&a3];
+  v3 = [MKTrafficSupport VKTrafficIncidentTypeForGEOTrafficIncidentType:*&type];
 
   return [GEOFeatureStyleAttributes styleAttributesForTrafficIncidentType:v3];
 }
 
 - (id)incidentTypeAsString
 {
-  v2 = [(TrafficIncidentLayoutItem *)self incidentType];
-  if (v2 >= 0x14)
+  incidentType = [(TrafficIncidentLayoutItem *)self incidentType];
+  if (incidentType >= 0x14)
   {
-    v3 = [NSString stringWithFormat:@"(unknown: %i)", v2];
+    v3 = [NSString stringWithFormat:@"(unknown: %i)", incidentType];
   }
 
   else
   {
-    v3 = off_101657EE0[v2];
+    v3 = off_101657EE0[incidentType];
   }
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:-[TrafficIncidentLayoutItem incidentType](self forKey:{"incidentType"), @"incidentType"}];
-  [v4 encodeBool:-[TrafficIncidentLayoutItem displayIncidentOnMap](self forKey:{"displayIncidentOnMap"), @"displayIncidentOnMap"}];
+  coderCopy = coder;
+  [coderCopy encodeInt32:-[TrafficIncidentLayoutItem incidentType](self forKey:{"incidentType"), @"incidentType"}];
+  [coderCopy encodeBool:-[TrafficIncidentLayoutItem displayIncidentOnMap](self forKey:{"displayIncidentOnMap"), @"displayIncidentOnMap"}];
 }
 
-- (TrafficIncidentLayoutItem)initWithCoder:(id)a3
+- (TrafficIncidentLayoutItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = TrafficIncidentLayoutItem;
   v5 = [(TrafficIncidentLayoutItem *)&v7 init];
   if (v5)
   {
-    -[TrafficIncidentLayoutItem setIncidentType:](v5, "setIncidentType:", [v4 decodeInt32ForKey:@"incidentType"]);
-    -[TrafficIncidentLayoutItem setDisplayIncidentOnMap:](v5, "setDisplayIncidentOnMap:", [v4 decodeBoolForKey:@"displayIncidentOnMap"]);
+    -[TrafficIncidentLayoutItem setIncidentType:](v5, "setIncidentType:", [coderCopy decodeInt32ForKey:@"incidentType"]);
+    -[TrafficIncidentLayoutItem setDisplayIncidentOnMap:](v5, "setDisplayIncidentOnMap:", [coderCopy decodeBoolForKey:@"displayIncidentOnMap"]);
   }
 
   return v5;
 }
 
-- (TrafficIncidentLayoutItem)initWithTrafficIncidentType:(int)a3 displayOnMap:(BOOL)a4
+- (TrafficIncidentLayoutItem)initWithTrafficIncidentType:(int)type displayOnMap:(BOOL)map
 {
   v7.receiver = self;
   v7.super_class = TrafficIncidentLayoutItem;
   result = [(TrafficIncidentLayoutItem *)&v7 init];
   if (result)
   {
-    result->_incidentType = a3;
-    result->_displayIncidentOnMap = a4;
+    result->_incidentType = type;
+    result->_displayIncidentOnMap = map;
   }
 
   return result;

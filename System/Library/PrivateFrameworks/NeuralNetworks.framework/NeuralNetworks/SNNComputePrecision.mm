@@ -1,18 +1,18 @@
 @interface SNNComputePrecision
-- (SNNComputePrecision)initWithComputePrecisionKind:(int64_t)a3;
+- (SNNComputePrecision)initWithComputePrecisionKind:(int64_t)kind;
 - (int)storageType;
 @end
 
 @implementation SNNComputePrecision
 
-- (SNNComputePrecision)initWithComputePrecisionKind:(int64_t)a3
+- (SNNComputePrecision)initWithComputePrecisionKind:(int64_t)kind
 {
   v5.receiver = self;
   v5.super_class = SNNComputePrecision;
   result = [(SNNComputePrecision *)&v5 init];
   if (result)
   {
-    result->_kind = a3;
+    result->_kind = kind;
   }
 
   return result;

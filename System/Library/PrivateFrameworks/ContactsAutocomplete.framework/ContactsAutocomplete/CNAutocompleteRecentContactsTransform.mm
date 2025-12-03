@@ -1,97 +1,97 @@
 @interface CNAutocompleteRecentContactsTransform
-+ (id)autocompleteResultForRecent:(id)a3 factory:(id)a4 membersFactory:(id)a5 chosenAddressHashes:(id)a6 searchString:(id)a7 library:(id)a8;
-+ (id)contactAutocompleteResultForRecent:(id)a3 factory:(id)a4 completesChosenGroup:(BOOL)a5;
-+ (id)groupAutocompleteResultForRecent:(id)a3 factory:(id)a4 membersFactory:(id)a5 chosenAddressHashes:(id)a6 searchString:(id)a7;
-+ (id)resultTransformWithFactory:(id)a3 membersFactory:(id)a4 chosenAddressHashes:(id)a5 searchString:(id)a6 library:(id)a7;
-+ (id)transformForRequest:(id)a3 library:(id)a4;
-+ (int64_t)addressTypeForRecentContact:(id)a3;
++ (id)autocompleteResultForRecent:(id)recent factory:(id)factory membersFactory:(id)membersFactory chosenAddressHashes:(id)hashes searchString:(id)string library:(id)library;
++ (id)contactAutocompleteResultForRecent:(id)recent factory:(id)factory completesChosenGroup:(BOOL)group;
++ (id)groupAutocompleteResultForRecent:(id)recent factory:(id)factory membersFactory:(id)membersFactory chosenAddressHashes:(id)hashes searchString:(id)string;
++ (id)resultTransformWithFactory:(id)factory membersFactory:(id)membersFactory chosenAddressHashes:(id)hashes searchString:(id)string library:(id)library;
++ (id)transformForRequest:(id)request library:(id)library;
++ (int64_t)addressTypeForRecentContact:(id)contact;
 @end
 
 @implementation CNAutocompleteRecentContactsTransform
 
-+ (id)transformForRequest:(id)a3 library:(id)a4
++ (id)transformForRequest:(id)request library:(id)library
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 priorityDomainForSorting];
-  v9 = [v7 sendingAddress];
-  v10 = [CNAutocompleteResultFactory factoryWithPriorityDomain:v8 sendingAddress:v9];
+  libraryCopy = library;
+  requestCopy = request;
+  priorityDomainForSorting = [requestCopy priorityDomainForSorting];
+  sendingAddress = [requestCopy sendingAddress];
+  v10 = [CNAutocompleteResultFactory factoryWithPriorityDomain:priorityDomainForSorting sendingAddress:sendingAddress];
 
   v11 = [CNAutocompleteResultFactory factoryWithPriorityDomain:0 sendingAddress:0];
   v12 = MEMORY[0x277CBEB98];
-  v13 = [v7 fetchContext];
-  v14 = [v13 otherAddressesAlreadyChosen];
-  v15 = [v14 _cn_map:CNAutocompleteResultAddressStringForHashingTransform];
+  fetchContext = [requestCopy fetchContext];
+  otherAddressesAlreadyChosen = [fetchContext otherAddressesAlreadyChosen];
+  v15 = [otherAddressesAlreadyChosen _cn_map:CNAutocompleteResultAddressStringForHashingTransform];
   v16 = [v12 setWithArray:v15];
 
-  v17 = [v7 searchString];
+  searchString = [requestCopy searchString];
 
-  v18 = [a1 resultTransformWithFactory:v10 membersFactory:v11 chosenAddressHashes:v16 searchString:v17 library:v6];
+  v18 = [self resultTransformWithFactory:v10 membersFactory:v11 chosenAddressHashes:v16 searchString:searchString library:libraryCopy];
 
   return v18;
 }
 
-+ (id)resultTransformWithFactory:(id)a3 membersFactory:(id)a4 chosenAddressHashes:(id)a5 searchString:(id)a6 library:(id)a7
++ (id)resultTransformWithFactory:(id)factory membersFactory:(id)membersFactory chosenAddressHashes:(id)hashes searchString:(id)string library:(id)library
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  factoryCopy = factory;
+  membersFactoryCopy = membersFactory;
+  hashesCopy = hashes;
+  stringCopy = string;
+  libraryCopy = library;
   v25 = MEMORY[0x277D85DD0];
   v26 = 3221225472;
   v27 = __124__CNAutocompleteRecentContactsTransform_resultTransformWithFactory_membersFactory_chosenAddressHashes_searchString_library___block_invoke;
   v28 = &unk_2781C46F0;
-  v29 = v12;
-  v30 = v13;
-  v31 = v14;
-  v32 = v15;
-  v33 = v16;
-  v34 = a1;
-  v17 = v16;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v12;
+  v29 = factoryCopy;
+  v30 = membersFactoryCopy;
+  v31 = hashesCopy;
+  v32 = stringCopy;
+  v33 = libraryCopy;
+  selfCopy = self;
+  v17 = libraryCopy;
+  v18 = stringCopy;
+  v19 = hashesCopy;
+  v20 = membersFactoryCopy;
+  v21 = factoryCopy;
   v22 = _Block_copy(&v25);
   v23 = [v22 copy];
 
   return v23;
 }
 
-+ (id)autocompleteResultForRecent:(id)a3 factory:(id)a4 membersFactory:(id)a5 chosenAddressHashes:(id)a6 searchString:(id)a7 library:(id)a8
++ (id)autocompleteResultForRecent:(id)recent factory:(id)factory membersFactory:(id)membersFactory chosenAddressHashes:(id)hashes searchString:(id)string library:(id)library
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a4;
-  v20 = [v14 kind];
-  v21 = [v20 isEqual:*MEMORY[0x277D00EC8]];
+  recentCopy = recent;
+  membersFactoryCopy = membersFactory;
+  hashesCopy = hashes;
+  stringCopy = string;
+  libraryCopy = library;
+  factoryCopy = factory;
+  kind = [recentCopy kind];
+  v21 = [kind isEqual:*MEMORY[0x277D00EC8]];
 
   if (v21)
   {
-    [a1 groupAutocompleteResultForRecent:v14 factory:v19 membersFactory:v15 chosenAddressHashes:v16 searchString:v17];
+    [self groupAutocompleteResultForRecent:recentCopy factory:factoryCopy membersFactory:membersFactoryCopy chosenAddressHashes:hashesCopy searchString:stringCopy];
   }
 
   else
   {
-    [a1 contactAutocompleteResultForRecent:v14 factory:v19 completesChosenGroup:0];
+    [self contactAutocompleteResultForRecent:recentCopy factory:factoryCopy completesChosenGroup:0];
   }
   v22 = ;
 
-  v23 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v14, "contactID")}];
+  v23 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(recentCopy, "contactID")}];
   [v22 setRecentsIdentifier:v23];
 
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __133__CNAutocompleteRecentContactsTransform_autocompleteResultForRecent_factory_membersFactory_chosenAddressHashes_searchString_library___block_invoke;
   v27[3] = &unk_2781C4718;
-  v28 = v18;
-  v29 = v14;
-  v24 = v14;
-  v25 = v18;
+  v28 = libraryCopy;
+  v29 = recentCopy;
+  v24 = recentCopy;
+  v25 = libraryCopy;
   [v22 setIgnoreResultBlock:v27];
 
   return v22;
@@ -131,48 +131,48 @@ uint64_t __133__CNAutocompleteRecentContactsTransform_autocompleteResultForRecen
   return v6;
 }
 
-+ (id)groupAutocompleteResultForRecent:(id)a3 factory:(id)a4 membersFactory:(id)a5 chosenAddressHashes:(id)a6 searchString:(id)a7
++ (id)groupAutocompleteResultForRecent:(id)recent factory:(id)factory membersFactory:(id)membersFactory chosenAddressHashes:(id)hashes searchString:(id)string
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 displayName];
-  v18 = [v12 countOfRecents];
-  v19 = [v12 mostRecentDate];
-  if (![v15 count])
+  recentCopy = recent;
+  factoryCopy = factory;
+  membersFactoryCopy = membersFactory;
+  hashesCopy = hashes;
+  stringCopy = string;
+  displayName = [recentCopy displayName];
+  countOfRecents = [recentCopy countOfRecents];
+  mostRecentDate = [recentCopy mostRecentDate];
+  if (![hashesCopy count])
   {
     goto LABEL_12;
   }
 
-  v36 = a1;
-  v37 = v13;
-  v38 = v16;
-  v20 = [v12 members];
-  v21 = [v20 _cn_filter:&__block_literal_global_16];
+  selfCopy = self;
+  v37 = factoryCopy;
+  v38 = stringCopy;
+  members = [recentCopy members];
+  v21 = [members _cn_filter:&__block_literal_global_16];
   v22 = [v21 _cn_indexBy:&__block_literal_global_8];
 
   v23 = MEMORY[0x277CBEB58];
-  v24 = [v22 allKeys];
-  v25 = [v23 setWithArray:v24];
+  allKeys = [v22 allKeys];
+  v25 = [v23 setWithArray:allKeys];
 
-  if (![v15 isSubsetOfSet:v25])
+  if (![hashesCopy isSubsetOfSet:v25])
   {
     v32 = 0;
-    v13 = v37;
+    factoryCopy = v37;
     goto LABEL_7;
   }
 
-  [v25 minusSet:v15];
+  [v25 minusSet:hashesCopy];
   if ([v25 count] == 1)
   {
-    v26 = [v25 anyObject];
-    v27 = [v22 objectForKeyedSubscript:v26];
+    anyObject = [v25 anyObject];
+    v27 = [v22 objectForKeyedSubscript:anyObject];
 
     v28 = v27;
-    v29 = [v27 kind];
-    v30 = [v29 isEqual:*MEMORY[0x277D00EC8]];
+    kind = [v27 kind];
+    v30 = [kind isEqual:*MEMORY[0x277D00EC8]];
     if (v30)
     {
 
@@ -190,29 +190,29 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    v13 = v37;
-    v32 = [v36 contactAutocompleteResultForRecent:v31 factory:v37 completesChosenGroup:1];
+    factoryCopy = v37;
+    v32 = [selfCopy contactAutocompleteResultForRecent:v31 factory:v37 completesChosenGroup:1];
 
 LABEL_7:
-    v16 = v38;
+    stringCopy = v38;
     goto LABEL_13;
   }
 
 LABEL_11:
 
-  v13 = v37;
-  v16 = v38;
-  a1 = v36;
+  factoryCopy = v37;
+  stringCopy = v38;
+  self = selfCopy;
 LABEL_12:
   LOBYTE(v34) = 0;
-  v32 = [v13 recentResultWithDisplayName:v17 value:0 lastSendingAddress:0 dateCount:v18 date:v19 group:1 completesChosenGroup:v34];
+  v32 = [factoryCopy recentResultWithDisplayName:displayName value:0 lastSendingAddress:0 dateCount:countOfRecents date:mostRecentDate group:1 completesChosenGroup:v34];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __130__CNAutocompleteRecentContactsTransform_groupAutocompleteResultForRecent_factory_membersFactory_chosenAddressHashes_searchString___block_invoke_15;
   v39[3] = &unk_2781C47A8;
-  v40 = v12;
-  v42 = a1;
-  v41 = v14;
+  v40 = recentCopy;
+  selfCopy2 = self;
+  v41 = membersFactoryCopy;
   [v32 setMembersProvider:v39];
 
 LABEL_13:
@@ -258,33 +258,33 @@ id __130__CNAutocompleteRecentContactsTransform_groupAutocompleteResultForRecent
   return v5;
 }
 
-+ (id)contactAutocompleteResultForRecent:(id)a3 factory:(id)a4 completesChosenGroup:(BOOL)a5
++ (id)contactAutocompleteResultForRecent:(id)recent factory:(id)factory completesChosenGroup:(BOOL)group
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 displayName];
-  v10 = [v8 countOfRecents];
-  v11 = [v8 mostRecentDate];
-  v12 = [v8 lastSendingAddress];
+  factoryCopy = factory;
+  recentCopy = recent;
+  displayName = [recentCopy displayName];
+  countOfRecents = [recentCopy countOfRecents];
+  mostRecentDate = [recentCopy mostRecentDate];
+  lastSendingAddress = [recentCopy lastSendingAddress];
   v13 = objc_alloc_init(CNAutocompleteResultValue);
-  v14 = [v8 address];
-  [(CNAutocompleteResultValue *)v13 setAddress:v14];
+  address = [recentCopy address];
+  [(CNAutocompleteResultValue *)v13 setAddress:address];
 
-  v15 = [objc_opt_class() addressTypeForRecentContact:v8];
+  v15 = [objc_opt_class() addressTypeForRecentContact:recentCopy];
   [(CNAutocompleteResultValue *)v13 setAddressType:v15];
-  LOBYTE(v18) = a5;
-  v16 = [v7 recentResultWithDisplayName:v9 value:v13 lastSendingAddress:v12 dateCount:v10 date:v11 group:0 completesChosenGroup:v18];
+  LOBYTE(v18) = group;
+  v16 = [factoryCopy recentResultWithDisplayName:displayName value:v13 lastSendingAddress:lastSendingAddress dateCount:countOfRecents date:mostRecentDate group:0 completesChosenGroup:v18];
 
   return v16;
 }
 
-+ (int64_t)addressTypeForRecentContact:(id)a3
++ (int64_t)addressTypeForRecentContact:(id)contact
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contactCopy = contact;
   v4 = *MEMORY[0x277D00EC0];
-  v5 = [v3 kind];
-  LOBYTE(v4) = [v4 isEqual:v5];
+  kind = [contactCopy kind];
+  LOBYTE(v4) = [v4 isEqual:kind];
 
   if (v4)
   {
@@ -294,8 +294,8 @@ id __130__CNAutocompleteRecentContactsTransform_groupAutocompleteResultForRecent
   else
   {
     v7 = *MEMORY[0x277D00EE0];
-    v8 = [v3 kind];
-    LOBYTE(v7) = [v7 isEqual:v8];
+    kind2 = [contactCopy kind];
+    LOBYTE(v7) = [v7 isEqual:kind2];
 
     if (v7)
     {
@@ -305,8 +305,8 @@ id __130__CNAutocompleteRecentContactsTransform_groupAutocompleteResultForRecent
     else
     {
       v9 = *MEMORY[0x277D00ED0];
-      v10 = [v3 kind];
-      LOBYTE(v9) = [v9 isEqual:v10];
+      kind3 = [contactCopy kind];
+      LOBYTE(v9) = [v9 isEqual:kind3];
 
       if (v9)
       {
@@ -319,7 +319,7 @@ id __130__CNAutocompleteRecentContactsTransform_groupAutocompleteResultForRecent
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           v14 = 138412290;
-          v15 = v3;
+          v15 = contactCopy;
           _os_log_impl(&dword_2155FE000, v11, OS_LOG_TYPE_DEFAULT, "Unknown address type for recent contact: %@ ", &v14, 0xCu);
         }
 

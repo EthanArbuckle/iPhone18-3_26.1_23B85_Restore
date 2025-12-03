@@ -1,5 +1,5 @@
 @interface ACTUserMentalCursor
-- (ACTUserMentalCursor)initWithInternalSegments:(id)a3 externalSegments:(id)a4 segmentCursor:(unint64_t)a5 position:(unint64_t)a6;
+- (ACTUserMentalCursor)initWithInternalSegments:(id)segments externalSegments:(id)externalSegments segmentCursor:(unint64_t)cursor position:(unint64_t)position;
 - (BOOL)advanceSegmentCursor;
 - (BOOL)atEndOfText;
 - (BOOL)nextLongCharacterEndsSegment;
@@ -10,25 +10,25 @@
 - (NSString)currentLongCharacter;
 - (NSString)nextLongCharacter;
 - (NSString)previousLongCharacter;
-- (_NSRange)rangeOfInputSegmentsForCandidate:(id)a3;
-- (id)longCharacterAtSegment:(unint64_t)a3 position:(unint64_t)a4;
-- (void)advancePositionByString:(id)a3;
-- (void)enumerateRemainingLongCharactersForCurrentSegment:(id)a3;
-- (void)rewindPositionByString:(id)a3;
+- (_NSRange)rangeOfInputSegmentsForCandidate:(id)candidate;
+- (id)longCharacterAtSegment:(unint64_t)segment position:(unint64_t)position;
+- (void)advancePositionByString:(id)string;
+- (void)enumerateRemainingLongCharactersForCurrentSegment:(id)segment;
+- (void)rewindPositionByString:(id)string;
 @end
 
 @implementation ACTUserMentalCursor
 
 - (NSString)currentComposedCharacter
 {
-  v3 = [(ACTUserMentalCursor *)self currentInternalSegment];
-  v4 = [v3 rangeOfComposedCharacterSequenceAtIndex:{-[ACTUserMentalCursor positionInCurrentInternalSegment](self, "positionInCurrentInternalSegment")}];
+  currentInternalSegment = [(ACTUserMentalCursor *)self currentInternalSegment];
+  v4 = [currentInternalSegment rangeOfComposedCharacterSequenceAtIndex:{-[ACTUserMentalCursor positionInCurrentInternalSegment](self, "positionInCurrentInternalSegment")}];
   v6 = v5;
 
   if (v4 == [(ACTUserMentalCursor *)self positionInCurrentInternalSegment])
   {
-    v7 = [(ACTUserMentalCursor *)self currentInternalSegment];
-    v8 = [v7 substringWithRange:{v4, v6}];
+    currentInternalSegment2 = [(ACTUserMentalCursor *)self currentInternalSegment];
+    v8 = [currentInternalSegment2 substringWithRange:{v4, v6}];
   }
 
   else
@@ -39,13 +39,13 @@
   return v8;
 }
 
-- (id)longCharacterAtSegment:(unint64_t)a3 position:(unint64_t)a4
+- (id)longCharacterAtSegment:(unint64_t)segment position:(unint64_t)position
 {
-  v6 = [(ACTUserMentalCursor *)self internalSegments];
-  v7 = [v6 objectAtIndex:a3];
+  internalSegments = [(ACTUserMentalCursor *)self internalSegments];
+  v7 = [internalSegments objectAtIndex:segment];
 
-  v8 = [v7 _rangeOfLongCharacterAtIndex:a4];
-  if (v8 == a4)
+  v8 = [v7 _rangeOfLongCharacterAtIndex:position];
+  if (v8 == position)
   {
     v10 = [v7 substringWithRange:{v8, v9}];
   }
@@ -60,18 +60,18 @@
 
 - (NSString)previousLongCharacter
 {
-  v3 = [(ACTUserMentalCursor *)self segmentCursor];
-  v4 = [(ACTUserMentalCursor *)self positionInCurrentInternalSegment];
-  if (v4)
+  segmentCursor = [(ACTUserMentalCursor *)self segmentCursor];
+  positionInCurrentInternalSegment = [(ACTUserMentalCursor *)self positionInCurrentInternalSegment];
+  if (positionInCurrentInternalSegment)
   {
-    v5 = [(ACTUserMentalCursor *)self longCharacterAtSegment:v3 position:v4 - 1];
+    v5 = [(ACTUserMentalCursor *)self longCharacterAtSegment:segmentCursor position:positionInCurrentInternalSegment - 1];
   }
 
-  else if (v3)
+  else if (segmentCursor)
   {
-    v6 = [(ACTUserMentalCursor *)self internalSegments];
-    v7 = v3 - 1;
-    v8 = [v6 objectAtIndex:v7];
+    internalSegments = [(ACTUserMentalCursor *)self internalSegments];
+    v7 = segmentCursor - 1;
+    v8 = [internalSegments objectAtIndex:v7];
 
     v5 = -[ACTUserMentalCursor longCharacterAtSegment:position:](self, "longCharacterAtSegment:position:", v7, [v8 length] - 1);
   }
@@ -86,27 +86,27 @@
 
 - (NSString)nextLongCharacter
 {
-  v3 = [(ACTUserMentalCursor *)self currentLongCharacter];
-  if (!v3)
+  currentLongCharacter = [(ACTUserMentalCursor *)self currentLongCharacter];
+  if (!currentLongCharacter)
   {
     goto LABEL_9;
   }
 
-  v4 = [(ACTUserMentalCursor *)self segmentCursor];
-  v5 = [(ACTUserMentalCursor *)self positionInCurrentInternalSegment];
-  v6 = [v3 length] + v5;
-  v7 = [(ACTUserMentalCursor *)self currentInternalSegment];
-  v8 = [v7 length];
+  segmentCursor = [(ACTUserMentalCursor *)self segmentCursor];
+  positionInCurrentInternalSegment = [(ACTUserMentalCursor *)self positionInCurrentInternalSegment];
+  v6 = [currentLongCharacter length] + positionInCurrentInternalSegment;
+  currentInternalSegment = [(ACTUserMentalCursor *)self currentInternalSegment];
+  v8 = [currentInternalSegment length];
 
   if (v6 >= v8)
   {
-    ++v4;
+    ++segmentCursor;
   }
 
-  v9 = [(ACTUserMentalCursor *)self internalSegments];
-  v10 = [v9 count];
+  internalSegments = [(ACTUserMentalCursor *)self internalSegments];
+  v10 = [internalSegments count];
 
-  if (v4 < v10)
+  if (segmentCursor < v10)
   {
     if (v6 < v8)
     {
@@ -118,7 +118,7 @@
       v11 = 0;
     }
 
-    v12 = [(ACTUserMentalCursor *)self longCharacterAtSegment:v4 position:v11];
+    v12 = [(ACTUserMentalCursor *)self longCharacterAtSegment:segmentCursor position:v11];
   }
 
   else
@@ -147,20 +147,20 @@ LABEL_9:
 
 - (BOOL)nextLongCharacterEndsSegment
 {
-  v3 = [(ACTUserMentalCursor *)self currentLongCharacter];
-  v4 = [(ACTUserMentalCursor *)self positionInCurrentInternalSegment];
-  v5 = [v3 length] + v4;
-  v6 = [(ACTUserMentalCursor *)self currentInternalSegment];
-  LOBYTE(v5) = v5 >= [v6 length];
+  currentLongCharacter = [(ACTUserMentalCursor *)self currentLongCharacter];
+  positionInCurrentInternalSegment = [(ACTUserMentalCursor *)self positionInCurrentInternalSegment];
+  v5 = [currentLongCharacter length] + positionInCurrentInternalSegment;
+  currentInternalSegment = [(ACTUserMentalCursor *)self currentInternalSegment];
+  LOBYTE(v5) = v5 >= [currentInternalSegment length];
 
   return v5;
 }
 
 - (BOOL)atEndOfText
 {
-  v3 = [(ACTUserMentalCursor *)self segmentCursor];
-  v4 = [(ACTUserMentalCursor *)self internalSegments];
-  if (v3 >= [v4 count])
+  segmentCursor = [(ACTUserMentalCursor *)self segmentCursor];
+  internalSegments = [(ACTUserMentalCursor *)self internalSegments];
+  if (segmentCursor >= [internalSegments count])
   {
     v9 = 1;
   }
@@ -168,12 +168,12 @@ LABEL_9:
   else
   {
     v5 = [(ACTUserMentalCursor *)self segmentCursor]+ 1;
-    v6 = [(ACTUserMentalCursor *)self internalSegments];
-    if (v5 == [v6 count])
+    internalSegments2 = [(ACTUserMentalCursor *)self internalSegments];
+    if (v5 == [internalSegments2 count])
     {
-      v7 = [(ACTUserMentalCursor *)self positionInCurrentInternalSegment];
-      v8 = [(ACTUserMentalCursor *)self currentInternalSegment];
-      v9 = v7 >= [v8 length];
+      positionInCurrentInternalSegment = [(ACTUserMentalCursor *)self positionInCurrentInternalSegment];
+      currentInternalSegment = [(ACTUserMentalCursor *)self currentInternalSegment];
+      v9 = positionInCurrentInternalSegment >= [currentInternalSegment length];
     }
 
     else
@@ -185,34 +185,34 @@ LABEL_9:
   return v9;
 }
 
-- (void)enumerateRemainingLongCharactersForCurrentSegment:(id)a3
+- (void)enumerateRemainingLongCharactersForCurrentSegment:(id)segment
 {
-  v4 = a3;
+  segmentCopy = segment;
   v11 = 0;
-  v5 = [(ACTUserMentalCursor *)self positionInCurrentInternalSegment];
-  v6 = [(ACTUserMentalCursor *)self currentInternalSegment];
-  v7 = [v6 length];
+  positionInCurrentInternalSegment = [(ACTUserMentalCursor *)self positionInCurrentInternalSegment];
+  currentInternalSegment = [(ACTUserMentalCursor *)self currentInternalSegment];
+  v7 = [currentInternalSegment length];
 
-  if (v5 < v7)
+  if (positionInCurrentInternalSegment < v7)
   {
     while (1)
     {
-      v8 = [(ACTUserMentalCursor *)self longCharacterAtSegment:[(ACTUserMentalCursor *)self segmentCursor] position:v5];
+      v8 = [(ACTUserMentalCursor *)self longCharacterAtSegment:[(ACTUserMentalCursor *)self segmentCursor] position:positionInCurrentInternalSegment];
       if (v8)
       {
-        v4[2](v4, v8, &v11);
+        segmentCopy[2](segmentCopy, v8, &v11);
         if (v11 == 1)
         {
           break;
         }
       }
 
-      v5 += [v8 length];
+      positionInCurrentInternalSegment += [v8 length];
 
-      v9 = [(ACTUserMentalCursor *)self currentInternalSegment];
-      v10 = [v9 length];
+      currentInternalSegment2 = [(ACTUserMentalCursor *)self currentInternalSegment];
+      v10 = [currentInternalSegment2 length];
 
-      if (v5 >= v10)
+      if (positionInCurrentInternalSegment >= v10)
       {
         goto LABEL_7;
       }
@@ -222,34 +222,34 @@ LABEL_9:
 LABEL_7:
 }
 
-- (_NSRange)rangeOfInputSegmentsForCandidate:(id)a3
+- (_NSRange)rangeOfInputSegmentsForCandidate:(id)candidate
 {
-  v4 = a3;
+  candidateCopy = candidate;
   for (i = [(ACTUserMentalCursor *)self segmentCursor]; ; ++i)
   {
-    v6 = [(ACTUserMentalCursor *)self externalSegments];
-    v7 = [v6 count];
+    externalSegments = [(ACTUserMentalCursor *)self externalSegments];
+    v7 = [externalSegments count];
 
     if (i > v7)
     {
       v9 = 0;
-      v8 = 0x7FFFFFFFFFFFFFFFLL;
+      segmentCursor = 0x7FFFFFFFFFFFFFFFLL;
       goto LABEL_19;
     }
 
-    v8 = [(ACTUserMentalCursor *)self segmentCursor];
+    segmentCursor = [(ACTUserMentalCursor *)self segmentCursor];
     v9 = i - [(ACTUserMentalCursor *)self segmentCursor];
-    v10 = [(ACTUserMentalCursor *)self externalSegments];
-    v11 = [v10 subarrayWithRange:{v8, v9}];
+    externalSegments2 = [(ACTUserMentalCursor *)self externalSegments];
+    v11 = [externalSegments2 subarrayWithRange:{segmentCursor, v9}];
     v12 = [v11 componentsJoinedByString:&stru_287EC4808];
 
-    v13 = [v4 input];
-    v14 = [v13 length];
+    input = [candidateCopy input];
+    v14 = [input length];
 
     if (!v14)
     {
-      v25 = [v4 candidate];
-      v26 = [v25 isEqualToString:v12];
+      candidate = [candidateCopy candidate];
+      v26 = [candidate isEqualToString:v12];
 
       if (v26)
       {
@@ -264,8 +264,8 @@ LABEL_7:
       break;
     }
 
-    v15 = [v4 candidate];
-    v16 = [v15 hasSuffix:v12];
+    candidate2 = [candidateCopy candidate];
+    v16 = [candidate2 hasSuffix:v12];
 
     if (v16)
     {
@@ -273,35 +273,35 @@ LABEL_7:
     }
 
     v27 = [v12 length];
-    v28 = [v4 candidate];
-    v29 = [v28 length];
+    candidate3 = [candidateCopy candidate];
+    v29 = [candidate3 length];
 
     if (v27 >= v29)
     {
       v9 = 0;
-      v8 = 0x7FFFFFFFFFFFFFFFLL;
+      segmentCursor = 0x7FFFFFFFFFFFFFFFLL;
       goto LABEL_18;
     }
 
 LABEL_15:
   }
 
-  v17 = [(ACTUserMentalCursor *)self segmentCursor];
-  if (v17 == -1)
+  segmentCursor2 = [(ACTUserMentalCursor *)self segmentCursor];
+  if (segmentCursor2 == -1)
   {
     goto LABEL_15;
   }
 
-  v9 = i - v17;
+  v9 = i - segmentCursor2;
   while (1)
   {
-    v8 = v17;
-    v18 = [(ACTUserMentalCursor *)self externalSegments];
-    v19 = [v18 subarrayWithRange:{v8, v9}];
+    segmentCursor = segmentCursor2;
+    externalSegments3 = [(ACTUserMentalCursor *)self externalSegments];
+    v19 = [externalSegments3 subarrayWithRange:{segmentCursor, v9}];
     v20 = [v19 componentsJoinedByString:&stru_287EC4808];
 
-    v21 = [v4 candidate];
-    LOBYTE(v19) = [v21 isEqualToString:v20];
+    candidate4 = [candidateCopy candidate];
+    LOBYTE(v19) = [candidate4 isEqualToString:v20];
 
     if (v19)
     {
@@ -309,14 +309,14 @@ LABEL_15:
     }
 
     v22 = [v20 length];
-    v23 = [v4 candidate];
-    v24 = [v23 length];
+    candidate5 = [candidateCopy candidate];
+    v24 = [candidate5 length];
 
     if (v22 < v24)
     {
-      v17 = v8 - 1;
+      segmentCursor2 = segmentCursor - 1;
       ++v9;
-      if (v8)
+      if (segmentCursor)
       {
         continue;
       }
@@ -328,41 +328,41 @@ LABEL_15:
 LABEL_18:
 LABEL_19:
 
-  v30 = v8;
+  v30 = segmentCursor;
   v31 = v9;
   result.length = v31;
   result.location = v30;
   return result;
 }
 
-- (void)rewindPositionByString:(id)a3
+- (void)rewindPositionByString:(id)string
 {
-  v12 = a3;
-  v4 = v12;
-  if ([v12 length])
+  stringCopy = string;
+  v4 = stringCopy;
+  if ([stringCopy length])
   {
-    v5 = v12;
+    v5 = stringCopy;
     do
     {
       if (![(ACTUserMentalCursor *)self positionInCurrentInternalSegment])
       {
         [(ACTUserMentalCursor *)self setSegmentCursor:[(ACTUserMentalCursor *)self segmentCursor]- 1];
-        v6 = [(ACTUserMentalCursor *)self currentInternalSegment];
-        -[ACTUserMentalCursor setPositionInCurrentInternalSegment:](self, "setPositionInCurrentInternalSegment:", [v6 length]);
+        currentInternalSegment = [(ACTUserMentalCursor *)self currentInternalSegment];
+        -[ACTUserMentalCursor setPositionInCurrentInternalSegment:](self, "setPositionInCurrentInternalSegment:", [currentInternalSegment length]);
       }
 
       v7 = [v5 length];
-      v8 = [(ACTUserMentalCursor *)self positionInCurrentInternalSegment];
-      v9 = [(ACTUserMentalCursor *)self currentInternalSegment];
-      v10 = [(ACTUserMentalCursor *)self positionInCurrentInternalSegment];
-      if (v7 <= v8)
+      positionInCurrentInternalSegment = [(ACTUserMentalCursor *)self positionInCurrentInternalSegment];
+      currentInternalSegment2 = [(ACTUserMentalCursor *)self currentInternalSegment];
+      positionInCurrentInternalSegment2 = [(ACTUserMentalCursor *)self positionInCurrentInternalSegment];
+      if (v7 <= positionInCurrentInternalSegment)
       {
-        [v9 substringWithRange:{v10 - objc_msgSend(v5, "length"), objc_msgSend(v5, "length")}];
+        [currentInternalSegment2 substringWithRange:{positionInCurrentInternalSegment2 - objc_msgSend(v5, "length"), objc_msgSend(v5, "length")}];
       }
 
       else
       {
-        [v9 substringToIndex:v10];
+        [currentInternalSegment2 substringToIndex:positionInCurrentInternalSegment2];
       }
       v11 = ;
 
@@ -376,25 +376,25 @@ LABEL_19:
   }
 }
 
-- (void)advancePositionByString:(id)a3
+- (void)advancePositionByString:(id)string
 {
-  v13 = a3;
-  v4 = v13;
-  if ([v13 length])
+  stringCopy = string;
+  v4 = stringCopy;
+  if ([stringCopy length])
   {
-    v4 = v13;
+    v4 = stringCopy;
     do
     {
       v5 = [v4 length];
-      v6 = [(ACTUserMentalCursor *)self currentInternalSegment];
-      v7 = [v6 length];
+      currentInternalSegment = [(ACTUserMentalCursor *)self currentInternalSegment];
+      v7 = [currentInternalSegment length];
       v8 = v7 - [(ACTUserMentalCursor *)self positionInCurrentInternalSegment];
 
-      v9 = [(ACTUserMentalCursor *)self currentInternalSegment];
-      v10 = [(ACTUserMentalCursor *)self positionInCurrentInternalSegment];
+      currentInternalSegment2 = [(ACTUserMentalCursor *)self currentInternalSegment];
+      positionInCurrentInternalSegment = [(ACTUserMentalCursor *)self positionInCurrentInternalSegment];
       if (v5 >= v8)
       {
-        v11 = [v9 substringFromIndex:v10];
+        v11 = [currentInternalSegment2 substringFromIndex:positionInCurrentInternalSegment];
 
         v12 = [v4 substringFromIndex:{objc_msgSend(v11, "length")}];
 
@@ -403,7 +403,7 @@ LABEL_19:
 
       else
       {
-        v11 = [v9 substringWithRange:{v10, objc_msgSend(v4, "length")}];
+        v11 = [currentInternalSegment2 substringWithRange:{positionInCurrentInternalSegment, objc_msgSend(v4, "length")}];
 
         -[ACTUserMentalCursor setPositionInCurrentInternalSegment:](self, "setPositionInCurrentInternalSegment:", -[ACTUserMentalCursor positionInCurrentInternalSegment](self, "positionInCurrentInternalSegment") + [v4 length]);
         v12 = [v4 substringFromIndex:{objc_msgSend(v11, "length")}];
@@ -418,52 +418,52 @@ LABEL_19:
 
 - (BOOL)rewindSegmentCursor
 {
-  v3 = [(ACTUserMentalCursor *)self segmentCursor];
-  if (v3)
+  segmentCursor = [(ACTUserMentalCursor *)self segmentCursor];
+  if (segmentCursor)
   {
     [(ACTUserMentalCursor *)self setSegmentCursor:[(ACTUserMentalCursor *)self segmentCursor]- 1];
     [(ACTUserMentalCursor *)self setPositionInCurrentInternalSegment:0];
-    LOBYTE(v3) = [(ACTUserMentalCursor *)self segmentCursor]!= 0;
+    LOBYTE(segmentCursor) = [(ACTUserMentalCursor *)self segmentCursor]!= 0;
   }
 
-  return v3;
+  return segmentCursor;
 }
 
 - (BOOL)advanceSegmentCursor
 {
-  v3 = [(ACTUserMentalCursor *)self externalSegments];
-  v4 = [v3 count];
-  v5 = [(ACTUserMentalCursor *)self segmentCursor];
+  externalSegments = [(ACTUserMentalCursor *)self externalSegments];
+  v4 = [externalSegments count];
+  segmentCursor = [(ACTUserMentalCursor *)self segmentCursor];
 
-  if (v4 == v5)
+  if (v4 == segmentCursor)
   {
     return 0;
   }
 
   [(ACTUserMentalCursor *)self setSegmentCursor:[(ACTUserMentalCursor *)self segmentCursor]+ 1];
   [(ACTUserMentalCursor *)self setPositionInCurrentInternalSegment:0];
-  v7 = [(ACTUserMentalCursor *)self segmentCursor];
-  v8 = [(ACTUserMentalCursor *)self externalSegments];
-  v6 = v7 < [v8 count];
+  segmentCursor2 = [(ACTUserMentalCursor *)self segmentCursor];
+  externalSegments2 = [(ACTUserMentalCursor *)self externalSegments];
+  v6 = segmentCursor2 < [externalSegments2 count];
 
   return v6;
 }
 
 - (NSString)currentInternalSegment
 {
-  v3 = [(ACTUserMentalCursor *)self segmentCursor];
-  v4 = [(ACTUserMentalCursor *)self internalSegments];
-  v5 = [v4 count];
+  segmentCursor = [(ACTUserMentalCursor *)self segmentCursor];
+  internalSegments = [(ACTUserMentalCursor *)self internalSegments];
+  v5 = [internalSegments count];
 
-  if (v3 >= v5)
+  if (segmentCursor >= v5)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [(ACTUserMentalCursor *)self internalSegments];
-    v7 = [v6 objectAtIndex:{-[ACTUserMentalCursor segmentCursor](self, "segmentCursor")}];
+    internalSegments2 = [(ACTUserMentalCursor *)self internalSegments];
+    v7 = [internalSegments2 objectAtIndex:{-[ACTUserMentalCursor segmentCursor](self, "segmentCursor")}];
   }
 
   return v7;
@@ -471,47 +471,47 @@ LABEL_19:
 
 - (NSString)currentExternalSegment
 {
-  v3 = [(ACTUserMentalCursor *)self segmentCursor];
-  v4 = [(ACTUserMentalCursor *)self externalSegments];
-  v5 = [v4 count];
+  segmentCursor = [(ACTUserMentalCursor *)self segmentCursor];
+  externalSegments = [(ACTUserMentalCursor *)self externalSegments];
+  v5 = [externalSegments count];
 
-  if (v3 >= v5)
+  if (segmentCursor >= v5)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [(ACTUserMentalCursor *)self externalSegments];
-    v7 = [v6 objectAtIndex:{-[ACTUserMentalCursor segmentCursor](self, "segmentCursor")}];
+    externalSegments2 = [(ACTUserMentalCursor *)self externalSegments];
+    v7 = [externalSegments2 objectAtIndex:{-[ACTUserMentalCursor segmentCursor](self, "segmentCursor")}];
   }
 
   return v7;
 }
 
-- (ACTUserMentalCursor)initWithInternalSegments:(id)a3 externalSegments:(id)a4 segmentCursor:(unint64_t)a5 position:(unint64_t)a6
+- (ACTUserMentalCursor)initWithInternalSegments:(id)segments externalSegments:(id)externalSegments segmentCursor:(unint64_t)cursor position:(unint64_t)position
 {
-  v10 = a3;
-  v11 = a4;
+  segmentsCopy = segments;
+  externalSegmentsCopy = externalSegments;
   v20.receiver = self;
   v20.super_class = ACTUserMentalCursor;
   v12 = [(ACTUserMentalCursor *)&v20 init];
   if (v12)
   {
-    v13 = [v11 componentsJoinedByString:&stru_287EC4808];
+    v13 = [externalSegmentsCopy componentsJoinedByString:&stru_287EC4808];
     intendedText = v12->_intendedText;
     v12->_intendedText = v13;
 
-    v15 = [v11 copy];
+    v15 = [externalSegmentsCopy copy];
     externalSegments = v12->_externalSegments;
     v12->_externalSegments = v15;
 
-    v17 = [v10 copy];
+    v17 = [segmentsCopy copy];
     internalSegments = v12->_internalSegments;
     v12->_internalSegments = v17;
 
-    v12->_segmentCursor = a5;
-    v12->_positionInCurrentInternalSegment = a6;
+    v12->_segmentCursor = cursor;
+    v12->_positionInCurrentInternalSegment = position;
   }
 
   return v12;

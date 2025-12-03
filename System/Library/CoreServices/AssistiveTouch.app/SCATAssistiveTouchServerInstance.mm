@@ -2,21 +2,21 @@
 + (id)serverInstance;
 - (SCATAssistiveTouchServerInstance)init;
 - (id)_initServer;
-- (id)closeMenu:(id)a3;
-- (id)currentBubbleElement:(id)a3;
-- (id)getMenuItemPosition:(id)a3;
-- (id)getNubbitPosition:(id)a3;
-- (id)getPointerPosition:(id)a3;
-- (id)home:(id)a3;
-- (id)isMenuOpen:(id)a3;
-- (id)menuAction:(id)a3;
-- (id)menuItems:(id)a3;
-- (id)openMenu:(id)a3;
-- (id)pointerClick:(id)a3;
-- (id)setNubbitPosition:(id)a3;
-- (id)setPointerPosition:(id)a3;
-- (id)tapMenuItem:(id)a3;
-- (id)virtualPointer:(id)a3;
+- (id)closeMenu:(id)menu;
+- (id)currentBubbleElement:(id)element;
+- (id)getMenuItemPosition:(id)position;
+- (id)getNubbitPosition:(id)position;
+- (id)getPointerPosition:(id)position;
+- (id)home:(id)home;
+- (id)isMenuOpen:(id)open;
+- (id)menuAction:(id)action;
+- (id)menuItems:(id)items;
+- (id)openMenu:(id)menu;
+- (id)pointerClick:(id)click;
+- (id)setNubbitPosition:(id)position;
+- (id)setPointerPosition:(id)position;
+- (id)tapMenuItem:(id)item;
+- (id)virtualPointer:(id)pointer;
 - (void)dealloc;
 @end
 
@@ -100,7 +100,7 @@
   [(SCATAssistiveTouchServerInstance *)&v3 dealloc];
 }
 
-- (id)home:(id)a3
+- (id)home:(id)home
 {
   v3 = +[AXPISystemActionHelper sharedInstance];
   [v3 activateHomeButton];
@@ -110,13 +110,13 @@
   return v4;
 }
 
-- (id)getNubbitPosition:(id)a3
+- (id)getNubbitPosition:(id)position
 {
   v3 = +[HNDHandManager sharedManager];
-  v4 = [v3 mainDisplayManager];
+  mainDisplayManager = [v3 mainDisplayManager];
 
-  v5 = [v4 rocker];
-  [v5 center];
+  rocker = [mainDisplayManager rocker];
+  [rocker center];
   v7 = v6;
   v9 = v8;
 
@@ -132,54 +132,54 @@
   return v13;
 }
 
-- (id)setNubbitPosition:(id)a3
+- (id)setNubbitPosition:(id)position
 {
-  v3 = [a3 payload];
-  v4 = [v3 objectForKey:@"action"];
+  payload = [position payload];
+  v4 = [payload objectForKey:@"action"];
   [v4 CGPointValue];
   v6 = v5;
   v8 = v7;
 
   v9 = +[HNDHandManager sharedManager];
-  v10 = [v9 mainDisplayManager];
+  mainDisplayManager = [v9 mainDisplayManager];
 
-  [v10 moveNubbitToPoint:{v6, v8}];
+  [mainDisplayManager moveNubbitToPoint:{v6, v8}];
   v11 = [[AXIPCMessage alloc] initWithKey:6024 payload:&off_1001E5890];
 
   return v11;
 }
 
-- (id)openMenu:(id)a3
+- (id)openMenu:(id)menu
 {
   v3 = +[HNDHandManager sharedManager];
-  v4 = [v3 mainDisplayManager];
+  mainDisplayManager = [v3 mainDisplayManager];
 
-  [v4 showMenu:1];
+  [mainDisplayManager showMenu:1];
   v5 = [[AXIPCMessage alloc] initWithKey:6020 payload:&__NSDictionary0__struct];
 
   return v5;
 }
 
-- (id)closeMenu:(id)a3
+- (id)closeMenu:(id)menu
 {
   v3 = +[HNDHandManager sharedManager];
-  v4 = [v3 mainDisplayManager];
+  mainDisplayManager = [v3 mainDisplayManager];
 
-  [v4 showMenu:0];
+  [mainDisplayManager showMenu:0];
   v5 = [[AXIPCMessage alloc] initWithKey:6021 payload:&__NSDictionary0__struct];
 
   return v5;
 }
 
-- (id)isMenuOpen:(id)a3
+- (id)isMenuOpen:(id)open
 {
   v3 = +[HNDHandManager sharedManager];
-  v4 = [v3 mainDisplayManager];
+  mainDisplayManager = [v3 mainDisplayManager];
 
-  v5 = [v4 isMenuVisible];
+  isMenuVisible = [mainDisplayManager isMenuVisible];
   v6 = [AXIPCMessage alloc];
   v11 = @"result";
-  v7 = [NSNumber numberWithBool:v5];
+  v7 = [NSNumber numberWithBool:isMenuVisible];
   v12 = v7;
   v8 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   v9 = [v6 initWithKey:6022 payload:v8];
@@ -187,21 +187,21 @@
   return v9;
 }
 
-- (id)menuItems:(id)a3
+- (id)menuItems:(id)items
 {
   v3 = +[HNDHandManager sharedManager];
-  v4 = [v3 mainDisplayManager];
+  mainDisplayManager = [v3 mainDisplayManager];
 
-  v21 = v4;
-  v5 = [v4 rocker];
-  v6 = [v5 currentlyVisibleRockerItems];
+  v21 = mainDisplayManager;
+  rocker = [mainDisplayManager rocker];
+  currentlyVisibleRockerItems = [rocker currentlyVisibleRockerItems];
 
   v7 = objc_alloc_init(NSMutableString);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v6;
+  obj = currentlyVisibleRockerItems;
   v8 = [obj countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v8)
   {
@@ -217,9 +217,9 @@
         }
 
         v12 = *(*(&v23 + 1) + 8 * i);
-        v13 = [v12 title];
-        v14 = [v12 type];
-        v15 = [NSString stringWithFormat:@"%@#%@", v13, v14];
+        title = [v12 title];
+        type = [v12 type];
+        v15 = [NSString stringWithFormat:@"%@#%@", title, type];
 
         if ([v7 length])
         {
@@ -245,16 +245,16 @@
   return v19;
 }
 
-- (id)tapMenuItem:(id)a3
+- (id)tapMenuItem:(id)item
 {
-  v3 = [a3 payload];
-  v4 = [v3 objectForKey:@"action"];
+  payload = [item payload];
+  v4 = [payload objectForKey:@"action"];
 
   v5 = +[HNDHandManager sharedManager];
-  v6 = [v5 mainDisplayManager];
+  mainDisplayManager = [v5 mainDisplayManager];
 
-  v7 = [v6 rocker];
-  v8 = [v7 currentlyVisibleRockerItems];
+  rocker = [mainDisplayManager rocker];
+  currentlyVisibleRockerItems = [rocker currentlyVisibleRockerItems];
 
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
@@ -262,68 +262,68 @@
   v20 = &unk_1001D5E48;
   v21 = v4;
   v9 = v4;
-  v10 = [v8 indexOfObjectPassingTest:&v17];
+  v10 = [currentlyVisibleRockerItems indexOfObjectPassingTest:&v17];
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [v8 objectAtIndex:{v10, v17, v18, v19, v20, v21}];
+    v11 = [currentlyVisibleRockerItems objectAtIndex:{v10, v17, v18, v19, v20, v21}];
     [v11 performPress:1];
     [v11 performPress:0];
   }
 
   v12 = [AXIPCMessage alloc];
   v22 = @"result";
-  v13 = [NSNumber numberWithBool:v10 != 0x7FFFFFFFFFFFFFFFLL];
-  v23 = v13;
+  0x7FFFFFFFFFFFFFFFLL = [NSNumber numberWithBool:v10 != 0x7FFFFFFFFFFFFFFFLL];
+  v23 = 0x7FFFFFFFFFFFFFFFLL;
   v14 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
   v15 = [v12 initWithKey:6026 payload:v14];
 
   return v15;
 }
 
-- (id)menuAction:(id)a3
+- (id)menuAction:(id)action
 {
-  v3 = [a3 payload];
-  v4 = [v3 objectForKey:@"action"];
+  payload = [action payload];
+  v4 = [payload objectForKey:@"action"];
 
   v5 = +[HNDHandManager sharedManager];
-  v6 = [v5 mainDisplayManager];
+  mainDisplayManager = [v5 mainDisplayManager];
 
-  [v6 activateAssistiveTouchAction:v4 fromButtonPress:0];
+  [mainDisplayManager activateAssistiveTouchAction:v4 fromButtonPress:0];
   v7 = [[AXIPCMessage alloc] initWithKey:6027 payload:&off_1001E58B8];
 
   return v7;
 }
 
-- (id)getMenuItemPosition:(id)a3
+- (id)getMenuItemPosition:(id)position
 {
-  v3 = [a3 payload];
-  v4 = [v3 objectForKey:@"action"];
-  v5 = [v4 stringValue];
+  payload = [position payload];
+  v4 = [payload objectForKey:@"action"];
+  stringValue = [v4 stringValue];
 
   v6 = +[HNDHandManager sharedManager];
-  v7 = [v6 mainDisplayManager];
+  mainDisplayManager = [v6 mainDisplayManager];
 
-  v8 = [v7 rocker];
-  v9 = [v8 currentlyVisibleRockerItems];
+  rocker = [mainDisplayManager rocker];
+  currentlyVisibleRockerItems = [rocker currentlyVisibleRockerItems];
 
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_10008B83C;
   v29[3] = &unk_1001D5E48;
-  v30 = v5;
-  v10 = v5;
-  v11 = [v9 indexOfObjectPassingTest:v29];
+  v30 = stringValue;
+  v10 = stringValue;
+  v11 = [currentlyVisibleRockerItems indexOfObjectPassingTest:v29];
   v12 = -1.0;
   v13 = -1.0;
   if (v11 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v14 = [v9 objectAtIndex:v11];
+    v14 = [currentlyVisibleRockerItems objectAtIndex:v11];
     [v14 center];
     v16 = v15;
     v18 = v17;
-    v19 = [v7 rocker];
-    v20 = [v7 window];
-    [v19 convertPoint:v20 toView:{v16, v18}];
+    rocker2 = [mainDisplayManager rocker];
+    window = [mainDisplayManager window];
+    [rocker2 convertPoint:window toView:{v16, v18}];
     v12 = v21;
     v13 = v22;
   }
@@ -340,15 +340,15 @@
   return v26;
 }
 
-- (id)virtualPointer:(id)a3
+- (id)virtualPointer:(id)pointer
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKey:@"action"];
-  v6 = [v5 BOOLValue];
+  payload = [pointer payload];
+  v5 = [payload objectForKey:@"action"];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = +[HNDDeviceManager sharedManager];
   v8 = +[SCATAssistiveTouchWorkspace sharedWorkspace];
-  if (v6)
+  if (bOOLValue)
   {
     v9 = objc_opt_new();
     virtualMouse = self->_virtualMouse;
@@ -357,23 +357,23 @@
     [v7 addDevice:self->_virtualMouse];
     [(HNDDevice *)self->_virtualMouse setDelegate:v8];
     v11 = +[HNDHandManager sharedManager];
-    v12 = [v11 systemPointerController];
-    [v12 addPointerStreamObserver:v8];
+    systemPointerController = [v11 systemPointerController];
+    [systemPointerController addPointerStreamObserver:v8];
 
-    v13 = [NSString stringWithFormat:@"AXAutomation"];
-    v14 = [HNDVirtualHIDMouse addActiveClientWithReason:v13];
+    virtualMouseClient = [NSString stringWithFormat:@"AXAutomation"];
+    v14 = [HNDVirtualHIDMouse addActiveClientWithReason:virtualMouseClient];
     [(SCATAssistiveTouchServerInstance *)self setVirtualMouseClient:v14];
   }
 
   else
   {
     v15 = +[HNDHandManager sharedManager];
-    v16 = [v15 systemPointerController];
-    [v16 removePointerStreamObserver:v8];
+    systemPointerController2 = [v15 systemPointerController];
+    [systemPointerController2 removePointerStreamObserver:v8];
 
     [v7 removeDevice:self->_virtualMouse];
-    v13 = [(SCATAssistiveTouchServerInstance *)self virtualMouseClient];
-    [v13 invalidate];
+    virtualMouseClient = [(SCATAssistiveTouchServerInstance *)self virtualMouseClient];
+    [virtualMouseClient invalidate];
   }
 
   v17 = [[AXIPCMessage alloc] initWithKey:6028 payload:&off_1001E58E0];
@@ -381,11 +381,11 @@
   return v17;
 }
 
-- (id)getPointerPosition:(id)a3
+- (id)getPointerPosition:(id)position
 {
   v3 = +[HNDHandManager sharedManager];
-  v4 = [v3 systemPointerController];
-  [v4 currentSystemPointerPoint];
+  systemPointerController = [v3 systemPointerController];
+  [systemPointerController currentSystemPointerPoint];
   v6 = v5;
   v8 = v7;
 
@@ -401,17 +401,17 @@
   return v12;
 }
 
-- (id)setPointerPosition:(id)a3
+- (id)setPointerPosition:(id)position
 {
-  v3 = [a3 payload];
-  v4 = [v3 objectForKey:@"action"];
+  payload = [position payload];
+  v4 = [payload objectForKey:@"action"];
   [v4 axCGPointValue];
   v6 = v5;
   v8 = v7;
 
   v9 = +[HNDHandManager sharedManager];
-  v10 = [v9 systemPointerController];
-  [v10 currentSystemPointerPoint];
+  systemPointerController = [v9 systemPointerController];
+  [systemPointerController currentSystemPointerPoint];
   v12 = v11;
   v14 = v13;
 
@@ -427,11 +427,11 @@
   return v19;
 }
 
-- (id)pointerClick:(id)a3
+- (id)pointerClick:(id)click
 {
   v3 = +[HNDHandManager sharedManager];
-  v4 = [v3 systemPointerController];
-  [v4 currentSystemPointerPoint];
+  systemPointerController = [v3 systemPointerController];
+  [systemPointerController currentSystemPointerPoint];
   v6 = v5;
   v8 = v7;
 
@@ -447,17 +447,17 @@
   return v10;
 }
 
-- (id)currentBubbleElement:(id)a3
+- (id)currentBubbleElement:(id)element
 {
   v3 = +[HNDHandManager sharedManager];
-  v4 = [v3 currentBubbleModeFocusedElement];
-  v5 = v4;
-  if (v4)
+  currentBubbleModeFocusedElement = [v3 currentBubbleModeFocusedElement];
+  v5 = currentBubbleModeFocusedElement;
+  if (currentBubbleModeFocusedElement)
   {
-    v6 = [v4 uiElement];
-    v7 = [v6 axElement];
+    uiElement = [currentBubbleModeFocusedElement uiElement];
+    axElement = [uiElement axElement];
 
-    if (v7)
+    if (axElement)
     {
       Data = _AXUIElementCreateData();
       v9 = [AXIPCMessage alloc];

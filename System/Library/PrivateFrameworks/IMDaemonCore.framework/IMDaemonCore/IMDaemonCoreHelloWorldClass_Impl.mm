@@ -8,9 +8,9 @@
 - (void)printGreeting
 {
   v2 = *(&self->super.isa + OBJC_IVAR___IMDaemonCoreHelloWorldClass_Impl_sharedUtilitiesHelloWorld);
-  v4 = self;
+  selfCopy = self;
   sub_22B7DABF8();
-  v3 = *(&v4->super.isa + OBJC_IVAR___IMDaemonCoreHelloWorldClass_Impl_persistenceHelloWorld);
+  v3 = *(&selfCopy->super.isa + OBJC_IVAR___IMDaemonCoreHelloWorldClass_Impl_persistenceHelloWorld);
   sub_22B7DABA8();
 }
 

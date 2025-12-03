@@ -1,18 +1,18 @@
 @interface WarlockFace
-+ (BOOL)isRestrictedForDevice:(id)a3;
++ (BOOL)isRestrictedForDevice:(id)device;
 + (id)pigmentFaceDomain;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
 - (Class)faceViewClass;
-- (_TtC20NTKWarlockFaceBundle11WarlockFace)initWithCoder:(id)a3;
+- (_TtC20NTKWarlockFaceBundle11WarlockFace)initWithCoder:(id)coder;
 - (id)_customEditModes;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
 - (id)_faceDescriptionKey;
-- (id)_optionAtIndex:(int64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (id)_optionAtIndex:(int64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)curatedGalleryBackgroundColors;
 - (id)faceSharingName;
-- (int64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (int64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (int64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (int64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation WarlockFace
@@ -26,29 +26,29 @@
   return v2.super.isa;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4)
+  if (slot)
   {
     sub_37530();
   }
 
-  v6 = self;
-  v7 = sub_7858(a3);
+  selfCopy = self;
+  v7 = sub_7858(mode);
 
   return v7;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 17)
+  if (mode == 17)
   {
     type metadata accessor for WarlockBackgroundEditOption();
   }
 
   else
   {
-    if (a3 != 13)
+    if (mode != 13)
     {
       return 0;
     }
@@ -59,22 +59,22 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (id)_optionAtIndex:(int64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(int64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 == 17)
+  if (mode == 17)
   {
     type metadata accessor for WarlockBackgroundEditOption();
     goto LABEL_5;
   }
 
-  if (a4 == 13)
+  if (mode == 13)
   {
     type metadata accessor for WarlockTypefaceEditOption();
 LABEL_5:
     ObjCClassFromMetadata = swift_getObjCClassFromMetadata();
-    v8 = self;
-    v9 = [(WarlockFace *)v8 device];
-    v10 = [ObjCClassFromMetadata optionAtIndex:a3 forDevice:v9];
+    selfCopy = self;
+    device = [(WarlockFace *)selfCopy device];
+    v10 = [ObjCClassFromMetadata optionAtIndex:index forDevice:device];
 
     goto LABEL_7;
   }
@@ -85,22 +85,22 @@ LABEL_7:
   return v10;
 }
 
-- (int64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (int64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 17)
+  if (mode == 17)
   {
     type metadata accessor for WarlockBackgroundEditOption();
     goto LABEL_5;
   }
 
-  if (a3 == 13)
+  if (mode == 13)
   {
     type metadata accessor for WarlockTypefaceEditOption();
 LABEL_5:
     ObjCClassFromMetadata = swift_getObjCClassFromMetadata();
-    v6 = self;
-    v7 = [(WarlockFace *)v6 device];
-    v8 = [ObjCClassFromMetadata numberOfOptionsForDevice:v7];
+    selfCopy = self;
+    device = [(WarlockFace *)selfCopy device];
+    v8 = [ObjCClassFromMetadata numberOfOptionsForDevice:device];
 
     return v8;
   }
@@ -108,16 +108,16 @@ LABEL_5:
   return 0;
 }
 
-- (int64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (int64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a5)
+  if (slot)
   {
     sub_37530();
   }
 
-  v8 = a3;
-  v9 = self;
-  v10 = sub_7924(a3, a4);
+  optionCopy = option;
+  selfCopy = self;
+  v10 = sub_7924(option, mode);
 
   return v10;
 }
@@ -157,18 +157,18 @@ LABEL_5:
   return v6;
 }
 
-+ (BOOL)isRestrictedForDevice:(id)a3
++ (BOOL)isRestrictedForDevice:(id)device
 {
   v9 = &type metadata for WarlockFeatureFlags;
   v10 = sub_36BD4();
-  v4 = a3;
+  deviceCopy = device;
   v5 = sub_36D00();
   result = sub_85EC(v8);
-  if (v4)
+  if (deviceCopy)
   {
-    v7 = [v4 supportsNapiliAligned];
+    supportsNapiliAligned = [deviceCopy supportsNapiliAligned];
 
-    return (v5 & v7 & 1) == 0;
+    return (v5 & supportsNapiliAligned & 1) == 0;
   }
 
   else
@@ -179,12 +179,12 @@ LABEL_5:
   return result;
 }
 
-- (_TtC20NTKWarlockFaceBundle11WarlockFace)initWithCoder:(id)a3
+- (_TtC20NTKWarlockFaceBundle11WarlockFace)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for WarlockFace();
-  v4 = a3;
-  v5 = [(WarlockFace *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(WarlockFace *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

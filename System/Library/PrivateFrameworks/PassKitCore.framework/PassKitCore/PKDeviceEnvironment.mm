@@ -1,7 +1,7 @@
 @interface PKDeviceEnvironment
-- (BOOL)isEqual:(id)a3;
-- (BOOL)localeDiffersFromEnvironment:(id)a3;
-- (PKDeviceEnvironment)initWithCountryCode:(id)a3 deviceLanguage:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)localeDiffersFromEnvironment:(id)environment;
+- (PKDeviceEnvironment)initWithCountryCode:(id)code deviceLanguage:(id)language;
 - (id)_init;
 - (unint64_t)hash;
 @end
@@ -15,34 +15,34 @@
   return [(PKDeviceEnvironment *)&v3 init];
 }
 
-- (PKDeviceEnvironment)initWithCountryCode:(id)a3 deviceLanguage:(id)a4
+- (PKDeviceEnvironment)initWithCountryCode:(id)code deviceLanguage:(id)language
 {
-  v7 = a3;
-  v8 = a4;
+  codeCopy = code;
+  languageCopy = language;
   v12.receiver = self;
   v12.super_class = PKDeviceEnvironment;
   v9 = [(PKDeviceEnvironment *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_countryCode, a3);
-    objc_storeStrong(&v10->_deviceLanguage, a4);
+    objc_storeStrong(&v9->_countryCode, code);
+    objc_storeStrong(&v10->_deviceLanguage, language);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     countryCode = self->_countryCode;
-    v7 = [v5 countryCode];
+    countryCode = [v5 countryCode];
     v8 = countryCode;
-    v9 = v7;
+    v9 = countryCode;
     v10 = v9;
     if (v8 == v9)
     {
@@ -69,9 +69,9 @@ LABEL_17:
     }
 
     deviceLanguage = self->_deviceLanguage;
-    v13 = [v5 deviceLanguage];
+    deviceLanguage = [v5 deviceLanguage];
     v14 = deviceLanguage;
-    v15 = v13;
+    v15 = deviceLanguage;
     v8 = v15;
     if (v14 == v15)
     {
@@ -106,22 +106,22 @@ LABEL_18:
   return v4;
 }
 
-- (BOOL)localeDiffersFromEnvironment:(id)a3
+- (BOOL)localeDiffersFromEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   countryCode = self->_countryCode;
-  v6 = [v4 countryCode];
+  countryCode = [environmentCopy countryCode];
   v7 = countryCode;
-  v8 = v6;
+  v8 = countryCode;
   v9 = v8;
   if (v7 == v8)
   {
 
 LABEL_10:
     deviceLanguage = self->_deviceLanguage;
-    v15 = [v4 deviceLanguage];
+    deviceLanguage = [environmentCopy deviceLanguage];
     v12 = deviceLanguage;
-    v16 = v15;
+    v16 = deviceLanguage;
     v7 = v16;
     if (v12 == v16)
     {

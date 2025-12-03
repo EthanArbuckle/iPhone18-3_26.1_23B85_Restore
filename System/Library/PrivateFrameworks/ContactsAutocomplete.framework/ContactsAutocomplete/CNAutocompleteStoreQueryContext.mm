@@ -13,16 +13,16 @@
   if (v2)
   {
     v3 = objc_alloc(MEMORY[0x277CFBDC0]);
-    v4 = [objc_opt_class() cacheBoundaryStrategies];
-    v5 = [MEMORY[0x277CFBDC0] atomicCacheScheduler];
-    v6 = [v3 initWithBoundingStrategies:v4 resourceScheduler:v5];
+    cacheBoundaryStrategies = [objc_opt_class() cacheBoundaryStrategies];
+    atomicCacheScheduler = [MEMORY[0x277CFBDC0] atomicCacheScheduler];
+    v6 = [v3 initWithBoundingStrategies:cacheBoundaryStrategies resourceScheduler:atomicCacheScheduler];
     directoryServerReuseCache = v2->_directoryServerReuseCache;
     v2->_directoryServerReuseCache = v6;
 
     v8 = objc_alloc(MEMORY[0x277CFBDC0]);
-    v9 = [objc_opt_class() cacheBoundaryStrategies];
-    v10 = [MEMORY[0x277CFBDC0] atomicCacheScheduler];
-    v11 = [v8 initWithBoundingStrategies:v9 resourceScheduler:v10];
+    cacheBoundaryStrategies2 = [objc_opt_class() cacheBoundaryStrategies];
+    atomicCacheScheduler2 = [MEMORY[0x277CFBDC0] atomicCacheScheduler];
+    v11 = [v8 initWithBoundingStrategies:cacheBoundaryStrategies2 resourceScheduler:atomicCacheScheduler2];
     calendarServerReuseCache = v2->_calendarServerReuseCache;
     v2->_calendarServerReuseCache = v11;
 

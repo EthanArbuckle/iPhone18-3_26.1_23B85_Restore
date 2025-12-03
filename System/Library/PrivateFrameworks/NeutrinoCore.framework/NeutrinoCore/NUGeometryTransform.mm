@@ -1,18 +1,18 @@
 @interface NUGeometryTransform
-- (BOOL)isEqual:(id)a3;
-- (CGRect)transformRect:(CGRect)a3;
-- (__n128)transformMatrix:(uint64_t)a1@<X2>;
+- (BOOL)isEqual:(id)equal;
+- (CGRect)transformRect:(CGRect)rect;
+- (__n128)transformMatrix:(uint64_t)matrix@<X2>;
 @end
 
 @implementation NUGeometryTransform
 
-- (CGRect)transformRect:(CGRect)a3
+- (CGRect)transformRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MinX = CGRectGetMinX(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  MinX = CGRectGetMinX(rect);
   v37.origin.x = x;
   v37.origin.y = y;
   v37.size.width = width;
@@ -82,9 +82,9 @@
   return CGRectUnion(v46, *&v31);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -93,19 +93,19 @@
   return v3 == objc_opt_class();
 }
 
-- (__n128)transformMatrix:(uint64_t)a1@<X2>
+- (__n128)transformMatrix:(uint64_t)matrix@<X2>
 {
-  v2 = *(a1 + 80);
-  *(a2 + 64) = *(a1 + 64);
+  v2 = *(matrix + 80);
+  *(a2 + 64) = *(matrix + 64);
   *(a2 + 80) = v2;
-  v3 = *(a1 + 112);
-  *(a2 + 96) = *(a1 + 96);
+  v3 = *(matrix + 112);
+  *(a2 + 96) = *(matrix + 96);
   *(a2 + 112) = v3;
-  v4 = *(a1 + 16);
-  *a2 = *a1;
+  v4 = *(matrix + 16);
+  *a2 = *matrix;
   *(a2 + 16) = v4;
-  result = *(a1 + 32);
-  v6 = *(a1 + 48);
+  result = *(matrix + 32);
+  v6 = *(matrix + 48);
   *(a2 + 32) = result;
   *(a2 + 48) = v6;
   return result;

@@ -1,17 +1,17 @@
 @interface PKRemoteDevice
-+ (id)acceptedComparatorWithPaymentSupportedQuery:(id)a3;
++ (id)acceptedComparatorWithPaymentSupportedQuery:(id)query;
 + (id)preferenceComparator;
 - (BOOL)canMakePayments;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRemoteDevice:(id)a3;
-- (PKRemoteDevice)initWithCoder:(id)a3;
-- (PKRemoteDevice)initWithIDSDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRemoteDevice:(id)device;
+- (PKRemoteDevice)initWithCoder:(id)coder;
+- (PKRemoteDevice)initWithIDSDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)pk_idsDestination;
-- (int64_t)_deviceTypeForModelIdentifier:(id)a3;
+- (int64_t)_deviceTypeForModelIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKRemoteDevice
@@ -109,18 +109,18 @@ LABEL_21:
   return v12;
 }
 
-+ (id)acceptedComparatorWithPaymentSupportedQuery:(id)a3
++ (id)acceptedComparatorWithPaymentSupportedQuery:(id)query
 {
-  v4 = a3;
-  v5 = [a1 preferenceComparator];
+  queryCopy = query;
+  preferenceComparator = [self preferenceComparator];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __95__PKRemoteDevice_PKPaymentAuthorizationDataModel__acceptedComparatorWithPaymentSupportedQuery___block_invoke;
   v14 = &unk_1E79CC598;
-  v15 = v4;
-  v16 = v5;
-  v6 = v5;
-  v7 = v4;
+  v15 = queryCopy;
+  v16 = preferenceComparator;
+  v6 = preferenceComparator;
+  v7 = queryCopy;
   v8 = _Block_copy(&v11);
   v9 = [v8 copy];
 
@@ -162,16 +162,16 @@ uint64_t __95__PKRemoteDevice_PKPaymentAuthorizationDataModel__acceptedComparato
   return v15;
 }
 
-- (PKRemoteDevice)initWithIDSDevice:(id)a3
+- (PKRemoteDevice)initWithIDSDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v19.receiver = self;
   v19.super_class = PKRemoteDevice;
   v5 = [(PKRemoteDevice *)&v19 init];
   if (v5)
   {
-    v6 = [v4 name];
-    v7 = [v6 copy];
+    name = [deviceCopy name];
+    v7 = [name copy];
     deviceName = v5->_deviceName;
     v5->_deviceName = v7;
 
@@ -179,20 +179,20 @@ uint64_t __95__PKRemoteDevice_PKPaymentAuthorizationDataModel__acceptedComparato
     uniqueID = v5->_uniqueID;
     v5->_uniqueID = v9;
 
-    v11 = [v4 modelIdentifier];
-    v5->_type = [(PKRemoteDevice *)v5 _deviceTypeForModelIdentifier:v11];
+    modelIdentifier = [deviceCopy modelIdentifier];
+    v5->_type = [(PKRemoteDevice *)v5 _deviceTypeForModelIdentifier:modelIdentifier];
 
-    v12 = [v4 nsuuid];
+    nsuuid = [deviceCopy nsuuid];
     bluetoothUUID = v5->_bluetoothUUID;
-    v5->_bluetoothUUID = v12;
+    v5->_bluetoothUUID = nsuuid;
 
-    v14 = [v4 modelIdentifier];
+    modelIdentifier2 = [deviceCopy modelIdentifier];
     modelIdentifier = v5->_modelIdentifier;
-    v5->_modelIdentifier = v14;
+    v5->_modelIdentifier = modelIdentifier2;
 
-    if (v4)
+    if (deviceCopy)
     {
-      [v4 operatingSystemVersion];
+      [deviceCopy operatingSystemVersion];
       v16 = v18;
     }
 
@@ -207,83 +207,83 @@ uint64_t __95__PKRemoteDevice_PKPaymentAuthorizationDataModel__acceptedComparato
   return v5;
 }
 
-- (PKRemoteDevice)initWithCoder:(id)a3
+- (PKRemoteDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = PKRemoteDevice;
   v5 = [(PKRemoteDevice *)&v29 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
     deviceName = v5->_deviceName;
     v5->_deviceName = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"remotePaymentInstruments"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"remotePaymentInstruments"];
     remotePaymentInstruments = v5->_remotePaymentInstruments;
     v5->_remotePaymentInstruments = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"defaultRemotePaymentInstrument"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultRemotePaymentInstrument"];
     defaultRemotePaymentInstrument = v5->_defaultRemotePaymentInstrument;
     v5->_defaultRemotePaymentInstrument = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
     uniqueID = v5->_uniqueID;
     v5->_uniqueID = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothUUID"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothUUID"];
     bluetoothUUID = v5->_bluetoothUUID;
     v5->_bluetoothUUID = v17;
 
-    v5->_isLocked = [v4 decodeBoolForKey:@"isLocked"];
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_userDisabled = [v4 decodeBoolForKey:@"userDisabled"];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastSeen"];
+    v5->_isLocked = [coderCopy decodeBoolForKey:@"isLocked"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_userDisabled = [coderCopy decodeBoolForKey:@"userDisabled"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastSeen"];
     lastSeen = v5->_lastSeen;
     v5->_lastSeen = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modelIdentifier"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modelIdentifier"];
     modelIdentifier = v5->_modelIdentifier;
     v5->_modelIdentifier = v21;
 
-    v5->_deviceDisabled = [v4 decodeBoolForKey:@"deviceDisabled"];
-    v5->_proximityState = [v4 decodeIntegerForKey:@"proximityState"];
-    v5->_supportsFaceID = [v4 decodeBoolForKey:@"supportsFaceID"];
+    v5->_deviceDisabled = [coderCopy decodeBoolForKey:@"deviceDisabled"];
+    v5->_proximityState = [coderCopy decodeIntegerForKey:@"proximityState"];
+    v5->_supportsFaceID = [coderCopy decodeBoolForKey:@"supportsFaceID"];
     v23 = MEMORY[0x1E695DFD8];
     v24 = objc_opt_class();
     v25 = [v23 setWithObjects:{v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"supportedSetupFeatures"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"supportedSetupFeatures"];
     supportedSetupFeatures = v5->_supportedSetupFeatures;
     v5->_supportedSetupFeatures = v26;
 
-    v5->_majorOperatingSystemVersion = [v4 decodeIntegerForKey:@"majorOperatingSystemVersion"];
+    v5->_majorOperatingSystemVersion = [coderCopy decodeIntegerForKey:@"majorOperatingSystemVersion"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deviceName = self->_deviceName;
-  v5 = a3;
-  [v5 encodeObject:deviceName forKey:@"deviceName"];
-  [v5 encodeObject:self->_remotePaymentInstruments forKey:@"remotePaymentInstruments"];
-  [v5 encodeObject:self->_defaultRemotePaymentInstrument forKey:@"defaultRemotePaymentInstrument"];
-  [v5 encodeObject:self->_uniqueID forKey:@"uniqueID"];
-  [v5 encodeObject:self->_bluetoothUUID forKey:@"bluetoothUUID"];
-  [v5 encodeBool:self->_isLocked forKey:@"isLocked"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
-  [v5 encodeBool:self->_userDisabled forKey:@"userDisabled"];
-  [v5 encodeObject:self->_lastSeen forKey:@"lastSeen"];
-  [v5 encodeObject:self->_modelIdentifier forKey:@"modelIdentifier"];
-  [v5 encodeBool:self->_deviceDisabled forKey:@"deviceDisabled"];
-  [v5 encodeInteger:self->_proximityState forKey:@"proximityState"];
-  [v5 encodeBool:self->_supportsFaceID forKey:@"supportsFaceID"];
-  [v5 encodeObject:self->_supportedSetupFeatures forKey:@"supportedSetupFeatures"];
-  [v5 encodeInteger:self->_majorOperatingSystemVersion forKey:@"majorOperatingSystemVersion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:deviceName forKey:@"deviceName"];
+  [coderCopy encodeObject:self->_remotePaymentInstruments forKey:@"remotePaymentInstruments"];
+  [coderCopy encodeObject:self->_defaultRemotePaymentInstrument forKey:@"defaultRemotePaymentInstrument"];
+  [coderCopy encodeObject:self->_uniqueID forKey:@"uniqueID"];
+  [coderCopy encodeObject:self->_bluetoothUUID forKey:@"bluetoothUUID"];
+  [coderCopy encodeBool:self->_isLocked forKey:@"isLocked"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeBool:self->_userDisabled forKey:@"userDisabled"];
+  [coderCopy encodeObject:self->_lastSeen forKey:@"lastSeen"];
+  [coderCopy encodeObject:self->_modelIdentifier forKey:@"modelIdentifier"];
+  [coderCopy encodeBool:self->_deviceDisabled forKey:@"deviceDisabled"];
+  [coderCopy encodeInteger:self->_proximityState forKey:@"proximityState"];
+  [coderCopy encodeBool:self->_supportsFaceID forKey:@"supportsFaceID"];
+  [coderCopy encodeObject:self->_supportedSetupFeatures forKey:@"supportedSetupFeatures"];
+  [coderCopy encodeInteger:self->_majorOperatingSystemVersion forKey:@"majorOperatingSystemVersion"];
 }
 
 - (unint64_t)hash
@@ -298,28 +298,28 @@ uint64_t __95__PKRemoteDevice_PKPaymentAuthorizationDataModel__acceptedComparato
   return self->_type - v5 + 32 * v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKRemoteDevice *)self isEqualToRemoteDevice:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKRemoteDevice *)self isEqualToRemoteDevice:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToRemoteDevice:(id)a3
+- (BOOL)isEqualToRemoteDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   deviceName = self->_deviceName;
-  v6 = v4[2];
+  v6 = deviceCopy[2];
   if (deviceName)
   {
     v7 = v6 == 0;
@@ -349,7 +349,7 @@ LABEL_7:
 
 LABEL_9:
   uniqueID = self->_uniqueID;
-  v10 = v4[9];
+  v10 = deviceCopy[9];
   if (uniqueID && v10)
   {
     v8 = [(NSString *)uniqueID isEqual:?];
@@ -433,8 +433,8 @@ LABEL_13:
   }
 
   [v3 appendFormat:@"Face ID available: %@\n", v10];
-  v11 = [(PKRemotePaymentInstrument *)self->_defaultRemotePaymentInstrument displayName];
-  [v3 appendFormat:@"Default: %@\n", v11];
+  displayName = [(PKRemotePaymentInstrument *)self->_defaultRemotePaymentInstrument displayName];
+  [v3 appendFormat:@"Default: %@\n", displayName];
 
   [v3 appendFormat:@"OS Version: %ld\n", self->_majorOperatingSystemVersion];
   [v3 appendString:@"Payment Instruments: \n"];
@@ -502,19 +502,19 @@ LABEL_13:
   return v24;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKRemoteDevice allocWithZone:](PKRemoteDevice init];
-  v6 = [(NSString *)self->_deviceName copyWithZone:a3];
+  v6 = [(NSString *)self->_deviceName copyWithZone:zone];
   deviceName = v5->_deviceName;
   v5->_deviceName = v6;
 
   v5->_type = self->_type;
-  v8 = [(NSString *)self->_modelIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_modelIdentifier copyWithZone:zone];
   modelIdentifier = v5->_modelIdentifier;
   v5->_modelIdentifier = v8;
 
-  v10 = [(NSDate *)self->_lastSeen copyWithZone:a3];
+  v10 = [(NSDate *)self->_lastSeen copyWithZone:zone];
   lastSeen = v5->_lastSeen;
   v5->_lastSeen = v10;
 
@@ -522,24 +522,24 @@ LABEL_13:
   v5->_isLocked = self->_isLocked;
   v5->_userDisabled = self->_userDisabled;
   v5->_deviceDisabled = self->_deviceDisabled;
-  v12 = [(NSArray *)self->_remotePaymentInstruments copyWithZone:a3];
+  v12 = [(NSArray *)self->_remotePaymentInstruments copyWithZone:zone];
   remotePaymentInstruments = v5->_remotePaymentInstruments;
   v5->_remotePaymentInstruments = v12;
 
-  v14 = [(PKRemotePaymentInstrument *)self->_defaultRemotePaymentInstrument copyWithZone:a3];
+  v14 = [(PKRemotePaymentInstrument *)self->_defaultRemotePaymentInstrument copyWithZone:zone];
   defaultRemotePaymentInstrument = v5->_defaultRemotePaymentInstrument;
   v5->_defaultRemotePaymentInstrument = v14;
 
-  v16 = [(NSString *)self->_uniqueID copyWithZone:a3];
+  v16 = [(NSString *)self->_uniqueID copyWithZone:zone];
   uniqueID = v5->_uniqueID;
   v5->_uniqueID = v16;
 
-  v18 = [(NSUUID *)self->_bluetoothUUID copyWithZone:a3];
+  v18 = [(NSUUID *)self->_bluetoothUUID copyWithZone:zone];
   bluetoothUUID = v5->_bluetoothUUID;
   v5->_bluetoothUUID = v18;
 
   v5->_supportsFaceID = self->_supportsFaceID;
-  v20 = [(NSArray *)self->_supportedSetupFeatures copyWithZone:a3];
+  v20 = [(NSArray *)self->_supportedSetupFeatures copyWithZone:zone];
   supportedSetupFeatures = v5->_supportedSetupFeatures;
   v5->_supportedSetupFeatures = v20;
 
@@ -554,8 +554,8 @@ LABEL_13:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(PKRemotePaymentInstrument *)self->_defaultRemotePaymentInstrument paymentApplications];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  paymentApplications = [(PKRemotePaymentInstrument *)self->_defaultRemotePaymentInstrument paymentApplications];
+  v4 = [paymentApplications countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -565,14 +565,14 @@ LABEL_13:
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(paymentApplications);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
         if ([v7 supportsInAppPayment])
         {
-          v8 = [v7 state];
-          if (v8 == 1 || v8 == 15)
+          state = [v7 state];
+          if (state == 1 || state == 15)
           {
             LOBYTE(v4) = 1;
             goto LABEL_15;
@@ -580,7 +580,7 @@ LABEL_13:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [paymentApplications countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v4)
       {
         continue;
@@ -603,25 +603,25 @@ LABEL_15:
   }
 }
 
-- (int64_t)_deviceTypeForModelIdentifier:(id)a3
+- (int64_t)_deviceTypeForModelIdentifier:(id)identifier
 {
-  v3 = [a3 lowercaseString];
-  if ([v3 containsString:@"watch"])
+  lowercaseString = [identifier lowercaseString];
+  if ([lowercaseString containsString:@"watch"])
   {
     v4 = 0;
   }
 
-  else if ([v3 containsString:@"iphone"])
+  else if ([lowercaseString containsString:@"iphone"])
   {
     v4 = 1;
   }
 
-  else if ([v3 containsString:@"mac"])
+  else if ([lowercaseString containsString:@"mac"])
   {
     v4 = 3;
   }
 
-  else if ([v3 containsString:@"pad"])
+  else if ([lowercaseString containsString:@"pad"])
   {
     v4 = 2;
   }
@@ -636,9 +636,9 @@ LABEL_15:
 
 - (id)pk_idsDestination
 {
-  v3 = [(PKRemoteDevice *)self uniqueID];
-  v4 = [(PKRemoteDevice *)self deviceName];
-  v5 = [PKIDSDestination destinationWithDeviceIdentifier:v3 name:v4];
+  uniqueID = [(PKRemoteDevice *)self uniqueID];
+  deviceName = [(PKRemoteDevice *)self deviceName];
+  v5 = [PKIDSDestination destinationWithDeviceIdentifier:uniqueID name:deviceName];
 
   return v5;
 }

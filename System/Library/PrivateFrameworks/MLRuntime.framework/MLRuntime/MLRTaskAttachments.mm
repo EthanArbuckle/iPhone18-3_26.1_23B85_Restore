@@ -1,23 +1,23 @@
 @interface MLRTaskAttachments
-- (MLRTaskAttachments)initWithCoder:(id)a3;
-- (MLRTaskAttachments)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (MLRTaskAttachments)initWithDESRecipe:(id)a3;
-- (MLRTaskAttachments)initWithURLs:(id)a3;
-- (id)attachmentURLsForBasename:(id)a3;
+- (MLRTaskAttachments)initWithCoder:(id)coder;
+- (MLRTaskAttachments)initWithContentsOfURL:(id)l error:(id *)error;
+- (MLRTaskAttachments)initWithDESRecipe:(id)recipe;
+- (MLRTaskAttachments)initWithURLs:(id)ls;
+- (id)attachmentURLsForBasename:(id)basename;
 - (id)description;
 @end
 
 @implementation MLRTaskAttachments
 
-- (MLRTaskAttachments)initWithURLs:(id)a3
+- (MLRTaskAttachments)initWithURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   v9.receiver = self;
   v9.super_class = MLRTaskAttachments;
   v5 = [(MLRTaskAttachments *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lsCopy copy];
     attachmentURLs = v5->_attachmentURLs;
     v5->_attachmentURLs = v6;
   }
@@ -25,39 +25,39 @@
   return v5;
 }
 
-- (MLRTaskAttachments)initWithDESRecipe:(id)a3
+- (MLRTaskAttachments)initWithDESRecipe:(id)recipe
 {
-  if (a3)
+  if (recipe)
   {
-    v4 = [a3 attachments];
-    self = [(MLRTaskAttachments *)self initWithURLs:v4];
+    attachments = [recipe attachments];
+    self = [(MLRTaskAttachments *)self initWithURLs:attachments];
 
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (MLRTaskAttachments)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (MLRTaskAttachments)initWithContentsOfURL:(id)l error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = [a3 URLByResolvingSymlinksInPath];
-  if (!v5)
+  uRLByResolvingSymlinksInPath = [l URLByResolvingSymlinksInPath];
+  if (!uRLByResolvingSymlinksInPath)
   {
     v21 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Nil URL" userInfo:0];
     objc_exception_throw(v21);
   }
 
-  v6 = v5;
-  v7 = [MEMORY[0x277CBEB18] array];
+  v6 = uRLByResolvingSymlinksInPath;
+  array = [MEMORY[0x277CBEB18] array];
   v8 = objc_autoreleasePoolPush();
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [v9 enumeratorAtURL:v6 includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:0 errorHandler:&__block_literal_global_1];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v10 = [defaultManager enumeratorAtURL:v6 includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:0 errorHandler:&__block_literal_global_1];
 
   v24 = 0u;
   v25 = 0u;
@@ -81,8 +81,8 @@
         v16 = *(*(&v22 + 1) + 8 * i);
         if (([v16 hasDirectoryPath] & 1) == 0)
         {
-          v17 = [v16 URLByStandardizingPath];
-          [v7 addObject:v17];
+          uRLByStandardizingPath = [v16 URLByStandardizingPath];
+          [array addObject:uRLByStandardizingPath];
         }
       }
 
@@ -93,7 +93,7 @@
   }
 
   objc_autoreleasePoolPop(v8);
-  v18 = [(MLRTaskAttachments *)self initWithURLs:v7];
+  v18 = [(MLRTaskAttachments *)self initWithURLs:array];
 
   v19 = *MEMORY[0x277D85DE8];
   return v18;
@@ -131,12 +131,12 @@ uint64_t __50__MLRTaskAttachments_initWithContentsOfURL_error___block_invoke(uin
   return v6;
 }
 
-- (id)attachmentURLsForBasename:(id)a3
+- (id)attachmentURLsForBasename:(id)basename
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  basenameCopy = basename;
   v5 = [MEMORY[0x277CBEBF8] mutableCopy];
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -157,13 +157,13 @@ uint64_t __50__MLRTaskAttachments_initWithContentsOfURL_error___block_invoke(uin
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 lastPathComponent];
-        v14 = [v13 hasSuffix:v4];
+        lastPathComponent = [v12 lastPathComponent];
+        v14 = [lastPathComponent hasSuffix:basenameCopy];
 
         if (v14)
         {
-          v15 = [v12 path];
-          v16 = [v6 fileExistsAtPath:v15];
+          path = [v12 path];
+          v16 = [defaultManager fileExistsAtPath:path];
 
           if (v16)
           {
@@ -183,13 +183,13 @@ uint64_t __50__MLRTaskAttachments_initWithContentsOfURL_error___block_invoke(uin
   return v5;
 }
 
-- (MLRTaskAttachments)initWithCoder:(id)a3
+- (MLRTaskAttachments)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"attachmentURLs"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"attachmentURLs"];
 
   v9 = [(MLRTaskAttachments *)self initWithURLs:v8];
   return v9;

@@ -10,9 +10,9 @@
 - (uint64_t)computeTopPlaneTranslationTarget;
 - (unint64_t)computeBottomPlaneTranslationTarget;
 - (void)setBottomPlaneTranslationTarget:(ARCoachingGlyphState *)self;
-- (void)setQuaternionTarget:(_OWORD *)a3;
+- (void)setQuaternionTarget:(_OWORD *)target;
 - (void)setScaleTarget:(ARCoachingGlyphState *)self;
-- (void)setSnapState:(unint64_t)a3;
+- (void)setSnapState:(unint64_t)state;
 - (void)setTopPlaneTranslationTarget:(ARCoachingGlyphState *)self;
 @end
 
@@ -31,15 +31,15 @@
   return result;
 }
 
-- (void)setSnapState:(unint64_t)a3
+- (void)setSnapState:(unint64_t)state
 {
-  self->_snapState = a3;
-  v4 = [(ARCoachingGlyphState *)self delegate];
+  self->_snapState = state;
+  delegate = [(ARCoachingGlyphState *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(ARCoachingGlyphState *)self delegate];
-    [v5 snapStateChanged];
+    delegate2 = [(ARCoachingGlyphState *)self delegate];
+    [delegate2 snapStateChanged];
 
     [(ARCoachingGlyphState *)self computeQuaternionTarget];
     v12 = v14;
@@ -62,31 +62,31 @@
 
 - (__n128)quaternionTarget
 {
-  result = *(a1 + 16);
-  v3 = *(a1 + 32);
+  result = *(self + 16);
+  v3 = *(self + 32);
   *a2 = result;
   *(a2 + 16) = v3;
   return result;
 }
 
-- (void)setQuaternionTarget:(_OWORD *)a3
+- (void)setQuaternionTarget:(_OWORD *)target
 {
-  v4 = a3[1];
-  a1[1] = *a3;
-  a1[2] = v4;
-  v5 = [a1 delegate];
+  v4 = target[1];
+  self[1] = *target;
+  self[2] = v4;
+  delegate = [self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [a1 delegate];
-    [v6 quaternionTargetChanged];
+    delegate2 = [self delegate];
+    [delegate2 quaternionTargetChanged];
   }
 }
 
 - (__n128)scaleTarget
 {
-  result = *(a1 + 48);
-  v3 = *(a1 + 64);
+  result = *(self + 48);
+  v3 = *(self + 64);
   *a2 = result;
   *(a2 + 16) = v3;
   return result;
@@ -97,12 +97,12 @@
   v4 = v2[1];
   *self->_scaleTarget = *v2;
   *&self->_scaleTarget[16] = v4;
-  v5 = [(ARCoachingGlyphState *)self delegate];
+  delegate = [(ARCoachingGlyphState *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(ARCoachingGlyphState *)self delegate];
-    [v6 scaleTargetChanged];
+    delegate2 = [(ARCoachingGlyphState *)self delegate];
+    [delegate2 scaleTargetChanged];
   }
 }
 
@@ -111,12 +111,12 @@
   v4 = v2[1];
   *self->_topPlaneTranslationTarget = *v2;
   *&self->_topPlaneTranslationTarget[16] = v4;
-  v5 = [(ARCoachingGlyphState *)self delegate];
+  delegate = [(ARCoachingGlyphState *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(ARCoachingGlyphState *)self delegate];
-    [v6 topPlaneTranslationTargetChanged];
+    delegate2 = [(ARCoachingGlyphState *)self delegate];
+    [delegate2 topPlaneTranslationTargetChanged];
   }
 }
 
@@ -125,18 +125,18 @@
   v4 = v2[1];
   *self->_bottomPlaneTranslationTarget = *v2;
   *&self->_bottomPlaneTranslationTarget[16] = v4;
-  v5 = [(ARCoachingGlyphState *)self delegate];
+  delegate = [(ARCoachingGlyphState *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(ARCoachingGlyphState *)self delegate];
-    [v6 bottomPlaneTranslationTargetChanged];
+    delegate2 = [(ARCoachingGlyphState *)self delegate];
+    [delegate2 bottomPlaneTranslationTargetChanged];
   }
 }
 
 - (uint64_t)computeQuaternionTarget
 {
-  result = [a1 snapState];
+  result = [self snapState];
   if (result > 2)
   {
     if (result == 3)
@@ -150,7 +150,7 @@
 
     if (result == 4)
     {
-      if (a1[88] == 1)
+      if (self[88] == 1)
       {
         v6 = xmmword_23D3DC350;
         v7 = xmmword_23D3DC360;
@@ -179,7 +179,7 @@ LABEL_12:
 
     if (!result)
     {
-      if (a1[88] == 1)
+      if (self[88] == 1)
       {
         v6 = xmmword_23D3DC400;
         v7 = xmmword_23D3DC410;
@@ -198,12 +198,12 @@ LABEL_18:
     }
   }
 
-  return [a1 quaternionTarget];
+  return [self quaternionTarget];
 }
 
 - (uint64_t)computeScaleTarget
 {
-  result = [a1 snapState];
+  result = [self snapState];
   if (result > 2)
   {
     if (result == 4)
@@ -216,7 +216,7 @@ LABEL_18:
     if (result != 3)
     {
 LABEL_10:
-      result = [a1 scaleTarget];
+      result = [self scaleTarget];
       _Q1 = v12;
       v5 = v13;
       goto LABEL_11;
@@ -248,7 +248,7 @@ LABEL_11:
 
 - (uint64_t)computeTopPlaneTranslationTarget
 {
-  result = [a1 snapState];
+  result = [self snapState];
   v5 = 0uLL;
   v6 = 0uLL;
   if (result <= 2)
@@ -265,7 +265,7 @@ LABEL_11:
     }
 
 LABEL_8:
-    result = [a1 topPlaneTranslationTarget];
+    result = [self topPlaneTranslationTarget];
     v5 = v7;
     v6 = v8;
     goto LABEL_10;
@@ -290,7 +290,7 @@ LABEL_10:
 
 - (unint64_t)computeBottomPlaneTranslationTarget
 {
-  result = [a1 snapState];
+  result = [self snapState];
   v5 = 0uLL;
   v6 = 0uLL;
   if (result >= 3 && result != 4)
@@ -302,7 +302,7 @@ LABEL_10:
 
     else
     {
-      result = [a1 bottomPlaneTranslationTarget];
+      result = [self bottomPlaneTranslationTarget];
       v5 = v7;
       v6 = v8;
     }
@@ -322,16 +322,16 @@ LABEL_10:
 
 - (__n128)topPlaneTranslationTarget
 {
-  result = a1[7];
-  a2[1].n128_u64[0] = a1[8].n128_u64[0];
+  result = self[7];
+  a2[1].n128_u64[0] = self[8].n128_u64[0];
   *a2 = result;
   return result;
 }
 
 - (__n128)bottomPlaneTranslationTarget
 {
-  result = a1[9];
-  a2[1].n128_u64[0] = a1[10].n128_u64[0];
+  result = self[9];
+  a2[1].n128_u64[0] = self[10].n128_u64[0];
   *a2 = result;
   return result;
 }

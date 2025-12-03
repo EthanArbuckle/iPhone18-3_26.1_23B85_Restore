@@ -1,72 +1,72 @@
 @interface ATXAnchorModelEventHarvester
-+ (id)deduplicatedActionEventsByIdFromActionEvents:(id)a3;
-+ (id)idsFromBiomeEvents:(id)a3;
-+ (id)idsFromDuetEvents:(id)a3;
-+ (id)negativeAppsGivenAllAppIds:(id)a3 positiveAppIds:(id)a4;
-+ (id)randomSampleFromArray:(id)a3 sampleSize:(unint64_t)a4;
-- (id)fetchAppLaunchEventsAfterAnchorOccurrenceDate:(id)a3 limit:(unint64_t)a4 maxSecondsBeforeAnchor:(int64_t)a5 maxSecondsAfterAnchor:(int64_t)a6 isIncluded:(id)a7;
-- (id)fetchEventsAfterAnchorOccurenceDate:(id)a3 withBiomePublisher:(id)a4 maxSecondsBeforeAnchor:(int64_t)a5 maxSecondsAfterAnchor:(int64_t)a6 isIncluded:(id)a7;
-- (id)fetchEventsAfterAnchorOccurrenceDate:(id)a3 withDuetDataProviderClass:(Class)a4 limit:(unint64_t)a5 maxSecondsBeforeAnchor:(int64_t)a6 maxSecondsAfterAnchor:(int64_t)a7 predicates:(id)a8;
-- (id)negativeActionsOnAnchorOccurrenceDate:(id)a3 positiveActionEvents:(id)a4;
-- (id)negativeActionsOnAnchorOccurrenceDate:(id)a3 positiveActionIds:(id)a4;
++ (id)deduplicatedActionEventsByIdFromActionEvents:(id)events;
++ (id)idsFromBiomeEvents:(id)events;
++ (id)idsFromDuetEvents:(id)events;
++ (id)negativeAppsGivenAllAppIds:(id)ids positiveAppIds:(id)appIds;
++ (id)randomSampleFromArray:(id)array sampleSize:(unint64_t)size;
+- (id)fetchAppLaunchEventsAfterAnchorOccurrenceDate:(id)date limit:(unint64_t)limit maxSecondsBeforeAnchor:(int64_t)anchor maxSecondsAfterAnchor:(int64_t)afterAnchor isIncluded:(id)included;
+- (id)fetchEventsAfterAnchorOccurenceDate:(id)date withBiomePublisher:(id)publisher maxSecondsBeforeAnchor:(int64_t)anchor maxSecondsAfterAnchor:(int64_t)afterAnchor isIncluded:(id)included;
+- (id)fetchEventsAfterAnchorOccurrenceDate:(id)date withDuetDataProviderClass:(Class)class limit:(unint64_t)limit maxSecondsBeforeAnchor:(int64_t)anchor maxSecondsAfterAnchor:(int64_t)afterAnchor predicates:(id)predicates;
+- (id)negativeActionsOnAnchorOccurrenceDate:(id)date positiveActionEvents:(id)events;
+- (id)negativeActionsOnAnchorOccurrenceDate:(id)date positiveActionIds:(id)ids;
 @end
 
 @implementation ATXAnchorModelEventHarvester
 
-- (id)fetchEventsAfterAnchorOccurrenceDate:(id)a3 withDuetDataProviderClass:(Class)a4 limit:(unint64_t)a5 maxSecondsBeforeAnchor:(int64_t)a6 maxSecondsAfterAnchor:(int64_t)a7 predicates:(id)a8
+- (id)fetchEventsAfterAnchorOccurrenceDate:(id)date withDuetDataProviderClass:(Class)class limit:(unint64_t)limit maxSecondsBeforeAnchor:(int64_t)anchor maxSecondsAfterAnchor:(int64_t)afterAnchor predicates:(id)predicates
 {
-  v11 = -a6;
-  v12 = a8;
-  v13 = a3;
-  v14 = [v13 dateByAddingTimeInterval:v11];
-  v15 = [v13 dateByAddingTimeInterval:a7];
+  v11 = -anchor;
+  predicatesCopy = predicates;
+  dateCopy = date;
+  v14 = [dateCopy dateByAddingTimeInterval:v11];
+  v15 = [dateCopy dateByAddingTimeInterval:afterAnchor];
 
   v16 = objc_opt_new();
-  v17 = [v16 fetchEventsBetweenStartDate:v14 andEndDate:v15 withPredicates:v12];
+  v17 = [v16 fetchEventsBetweenStartDate:v14 andEndDate:v15 withPredicates:predicatesCopy];
 
-  if ([v17 count] <= a5)
+  if ([v17 count] <= limit)
   {
-    a5 = [v17 count];
+    limit = [v17 count];
   }
 
-  v18 = [v17 subarrayWithRange:{0, a5}];
+  v18 = [v17 subarrayWithRange:{0, limit}];
 
   return v18;
 }
 
-- (id)fetchEventsAfterAnchorOccurenceDate:(id)a3 withBiomePublisher:(id)a4 maxSecondsBeforeAnchor:(int64_t)a5 maxSecondsAfterAnchor:(int64_t)a6 isIncluded:(id)a7
+- (id)fetchEventsAfterAnchorOccurenceDate:(id)date withBiomePublisher:(id)publisher maxSecondsBeforeAnchor:(int64_t)anchor maxSecondsAfterAnchor:(int64_t)afterAnchor isIncluded:(id)included
 {
-  v11 = a3;
-  v12 = a7;
-  v13 = a4;
+  dateCopy = date;
+  includedCopy = included;
+  publisherCopy = publisher;
   v14 = objc_opt_new();
-  v15 = [v11 dateByAddingTimeInterval:-a5];
-  v16 = [v11 dateByAddingTimeInterval:a6];
+  v15 = [dateCopy dateByAddingTimeInterval:-anchor];
+  v16 = [dateCopy dateByAddingTimeInterval:afterAnchor];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __143__ATXAnchorModelEventHarvester_fetchEventsAfterAnchorOccurenceDate_withBiomePublisher_maxSecondsBeforeAnchor_maxSecondsAfterAnchor_isIncluded___block_invoke;
   v32[3] = &unk_2785988F0;
   v33 = v15;
   v34 = v16;
-  v35 = v12;
-  v17 = v12;
+  v35 = includedCopy;
+  v17 = includedCopy;
   v18 = v16;
   v19 = v15;
-  v20 = [v13 filterWithIsIncluded:v32];
+  v20 = [publisherCopy filterWithIsIncluded:v32];
 
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __143__ATXAnchorModelEventHarvester_fetchEventsAfterAnchorOccurenceDate_withBiomePublisher_maxSecondsBeforeAnchor_maxSecondsAfterAnchor_isIncluded___block_invoke_2;
   v29[3] = &unk_278598918;
   v30 = v14;
-  v31 = v11;
+  v31 = dateCopy;
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __143__ATXAnchorModelEventHarvester_fetchEventsAfterAnchorOccurenceDate_withBiomePublisher_maxSecondsBeforeAnchor_maxSecondsAfterAnchor_isIncluded___block_invoke_13;
   v27[3] = &unk_278596F60;
   v21 = v30;
   v28 = v21;
-  v22 = v11;
+  v22 = dateCopy;
   v23 = [v20 sinkWithCompletion:v29 receiveInput:v27];
 
   v24 = v28;
@@ -123,12 +123,12 @@ void __143__ATXAnchorModelEventHarvester_fetchEventsAfterAnchorOccurenceDate_wit
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchAppLaunchEventsAfterAnchorOccurrenceDate:(id)a3 limit:(unint64_t)a4 maxSecondsBeforeAnchor:(int64_t)a5 maxSecondsAfterAnchor:(int64_t)a6 isIncluded:(id)a7
+- (id)fetchAppLaunchEventsAfterAnchorOccurrenceDate:(id)date limit:(unint64_t)limit maxSecondsBeforeAnchor:(int64_t)anchor maxSecondsAfterAnchor:(int64_t)afterAnchor isIncluded:(id)included
 {
-  v11 = a7;
-  v12 = a3;
-  v13 = [v12 dateByAddingTimeInterval:-a5];
-  v14 = [v12 dateByAddingTimeInterval:a6];
+  includedCopy = included;
+  dateCopy = date;
+  v13 = [dateCopy dateByAddingTimeInterval:-anchor];
+  v14 = [dateCopy dateByAddingTimeInterval:afterAnchor];
 
   if (v13)
   {
@@ -149,9 +149,9 @@ void __143__ATXAnchorModelEventHarvester_fetchEventsAfterAnchorOccurenceDate_wit
     v23 = __140__ATXAnchorModelEventHarvester_fetchAppLaunchEventsAfterAnchorOccurrenceDate_limit_maxSecondsBeforeAnchor_maxSecondsAfterAnchor_isIncluded___block_invoke;
     v24 = &unk_278598940;
     v25 = v19;
-    v26 = v11;
+    v26 = includedCopy;
     v20 = v19;
-    [v18 enumerateAppLaunchSessionsBetweenStartDate:v13 endDate:v14 limit:a4 shouldReverse:0 bundleIDFilter:0 block:&v21];
+    [v18 enumerateAppLaunchSessionsBetweenStartDate:v13 endDate:v14 limit:limit shouldReverse:0 bundleIDFilter:0 block:&v21];
     v16 = [v20 copy];
   }
 
@@ -176,36 +176,36 @@ uint64_t __140__ATXAnchorModelEventHarvester_fetchAppLaunchEventsAfterAnchorOccu
   return 1;
 }
 
-+ (id)negativeAppsGivenAllAppIds:(id)a3 positiveAppIds:(id)a4
++ (id)negativeAppsGivenAllAppIds:(id)ids positiveAppIds:(id)appIds
 {
-  v5 = a4;
-  v6 = [a3 mutableCopy];
-  [v6 minusSet:v5];
+  appIdsCopy = appIds;
+  v6 = [ids mutableCopy];
+  [v6 minusSet:appIdsCopy];
 
   return v6;
 }
 
-- (id)negativeActionsOnAnchorOccurrenceDate:(id)a3 positiveActionEvents:(id)a4
+- (id)negativeActionsOnAnchorOccurrenceDate:(id)date positiveActionEvents:(id)events
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() idsFromDuetEvents:v6];
+  eventsCopy = events;
+  dateCopy = date;
+  v8 = [objc_opt_class() idsFromDuetEvents:eventsCopy];
 
-  v9 = [(ATXAnchorModelEventHarvester *)self negativeActionsOnAnchorOccurrenceDate:v7 positiveActionIds:v8];
+  v9 = [(ATXAnchorModelEventHarvester *)self negativeActionsOnAnchorOccurrenceDate:dateCopy positiveActionIds:v8];
 
   return v9;
 }
 
-+ (id)idsFromDuetEvents:(id)a3
++ (id)idsFromDuetEvents:(id)events
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventsCopy = events;
   v4 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = eventsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -222,8 +222,8 @@ uint64_t __140__ATXAnchorModelEventHarvester_fetchAppLaunchEventsAfterAnchorOccu
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 identifier];
-        [v4 addObject:v12];
+        identifier = [v10 identifier];
+        [v4 addObject:identifier];
 
         objc_autoreleasePoolPop(v11);
       }
@@ -240,16 +240,16 @@ uint64_t __140__ATXAnchorModelEventHarvester_fetchAppLaunchEventsAfterAnchorOccu
   return v13;
 }
 
-+ (id)idsFromBiomeEvents:(id)a3
++ (id)idsFromBiomeEvents:(id)events
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventsCopy = events;
   v4 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = eventsCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -286,17 +286,17 @@ uint64_t __140__ATXAnchorModelEventHarvester_fetchAppLaunchEventsAfterAnchorOccu
   return v15;
 }
 
-+ (id)deduplicatedActionEventsByIdFromActionEvents:(id)a3
++ (id)deduplicatedActionEventsByIdFromActionEvents:(id)events
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventsCopy = events;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v3;
+  v6 = eventsCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -313,13 +313,13 @@ uint64_t __140__ATXAnchorModelEventHarvester_fetchAppLaunchEventsAfterAnchorOccu
 
         v11 = *(*(&v19 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        v13 = [v11 identifier];
-        v14 = [v5 containsObject:v13];
+        identifier = [v11 identifier];
+        v14 = [v5 containsObject:identifier];
 
         if ((v14 & 1) == 0)
         {
-          v15 = [v11 identifier];
-          [v5 addObject:v15];
+          identifier2 = [v11 identifier];
+          [v5 addObject:identifier2];
 
           [v4 addObject:v11];
         }
@@ -339,17 +339,17 @@ uint64_t __140__ATXAnchorModelEventHarvester_fetchAppLaunchEventsAfterAnchorOccu
   return v16;
 }
 
-- (id)negativeActionsOnAnchorOccurrenceDate:(id)a3 positiveActionIds:(id)a4
+- (id)negativeActionsOnAnchorOccurrenceDate:(id)date positiveActionIds:(id)ids
 {
-  v5 = a3;
-  v6 = a4;
+  dateCopy = date;
+  idsCopy = ids;
   v7 = +[ATXAnchorModelHyperParameters sharedInstance];
   [v7 maxSecondsSinceCandidateOccurrenceToConsiderCandidateForPrediction];
   v9 = v8;
 
   v10 = +[_ATXDataStore sharedInstance];
-  v11 = [v5 dateByAddingTimeInterval:-v9];
-  v12 = [v10 appIntentDuetEventsForActionsBetweenStartDate:v11 endDate:v5];
+  v11 = [dateCopy dateByAddingTimeInterval:-v9];
+  v12 = [v10 appIntentDuetEventsForActionsBetweenStartDate:v11 endDate:dateCopy];
 
   v13 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -364,8 +364,8 @@ uint64_t __140__ATXAnchorModelEventHarvester_fetchAppLaunchEventsAfterAnchorOccu
     do
     {
       v16 = [v12 objectAtIndexedSubscript:v15];
-      v17 = [v16 identifier];
-      v18 = [v6 containsObject:v17];
+      identifier = [v16 identifier];
+      v18 = [idsCopy containsObject:identifier];
 
       if ((v18 & 1) == 0)
       {
@@ -388,20 +388,20 @@ uint64_t __140__ATXAnchorModelEventHarvester_fetchAppLaunchEventsAfterAnchorOccu
   return v19;
 }
 
-+ (id)randomSampleFromArray:(id)a3 sampleSize:(unint64_t)a4
++ (id)randomSampleFromArray:(id)array sampleSize:(unint64_t)size
 {
-  v5 = a3;
+  arrayCopy = array;
   v6 = objc_opt_new();
-  v7 = [v5 _pas_shuffledArrayUsingRng:v6];
+  v7 = [arrayCopy _pas_shuffledArrayUsingRng:v6];
 
-  if ([v7 count] <= a4)
+  if ([v7 count] <= size)
   {
     v8 = v7;
   }
 
   else
   {
-    v8 = [v7 subarrayWithRange:{0, a4}];
+    v8 = [v7 subarrayWithRange:{0, size}];
   }
 
   v9 = v8;

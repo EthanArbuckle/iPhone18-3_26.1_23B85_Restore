@@ -1,6 +1,6 @@
 @interface MPCPlayerResponseSection
 - (MPCPlayerResponse)response;
-- (MPCPlayerResponseSection)initWithModelGenericObject:(id)a3 sectionIndex:(int64_t)a4 response:(id)a5;
+- (MPCPlayerResponseSection)initWithModelGenericObject:(id)object sectionIndex:(int64_t)index response:(id)response;
 - (id)_init;
 @end
 
@@ -20,18 +20,18 @@
   return [(MPCPlayerResponseSection *)&v3 init];
 }
 
-- (MPCPlayerResponseSection)initWithModelGenericObject:(id)a3 sectionIndex:(int64_t)a4 response:(id)a5
+- (MPCPlayerResponseSection)initWithModelGenericObject:(id)object sectionIndex:(int64_t)index response:(id)response
 {
-  v8 = a3;
-  v9 = a5;
+  objectCopy = object;
+  responseCopy = response;
   v13.receiver = self;
   v13.super_class = MPCPlayerResponseSection;
   v10 = [(MPCPlayerResponseSection *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_response, v9);
-    objc_storeStrong(&v11->_metadataObject, a3);
+    objc_storeWeak(&v10->_response, responseCopy);
+    objc_storeStrong(&v11->_metadataObject, object);
   }
 
   return v11;

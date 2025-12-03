@@ -1,21 +1,21 @@
 @interface CSDCarrierBundlePhoneNumberProvider
-- (CSDCarrierBundlePhoneNumberProvider)initWithUUID:(id)a3 carrierPhoneNumbers:(id)a4;
+- (CSDCarrierBundlePhoneNumberProvider)initWithUUID:(id)d carrierPhoneNumbers:(id)numbers;
 @end
 
 @implementation CSDCarrierBundlePhoneNumberProvider
 
-- (CSDCarrierBundlePhoneNumberProvider)initWithUUID:(id)a3 carrierPhoneNumbers:(id)a4
+- (CSDCarrierBundlePhoneNumberProvider)initWithUUID:(id)d carrierPhoneNumbers:(id)numbers
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  numbersCopy = numbers;
   v14.receiver = self;
   v14.super_class = CSDCarrierBundlePhoneNumberProvider;
   v9 = [(CSDCarrierBundlePhoneNumberProvider *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_uuid, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_uuid, d);
+    v11 = [numbersCopy copy];
     carrierPhoneNumbers = v10->_carrierPhoneNumbers;
     v10->_carrierPhoneNumbers = v11;
   }

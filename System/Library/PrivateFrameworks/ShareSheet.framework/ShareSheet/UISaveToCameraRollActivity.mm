@@ -1,12 +1,12 @@
 @interface UISaveToCameraRollActivity
 + (unint64_t)_xpcAttributes;
 - (BOOL)_canSaveImages;
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (id)_activityImage;
 - (id)_systemImageName;
 - (id)activityTitle;
-- (void)_prepareWithActivityItems:(id)a3 completion:(id)a4;
-- (void)_startSavingItems:(id)a3;
+- (void)_prepareWithActivityItems:(id)items completion:(id)completion;
+- (void)_startSavingItems:(id)items;
 @end
 
 @implementation UISaveToCameraRollActivity
@@ -211,10 +211,10 @@ void __44__UISaveToCameraRollActivity__activityImage__block_invoke_2()
 
   if (!v3)
   {
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v4 objectForInfoDictionaryKey:@"NSPhotoLibraryAddUsageDescription"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    v5 = [mainBundle objectForInfoDictionaryKey:@"NSPhotoLibraryAddUsageDescription"];
 
-    v6 = [v4 objectForInfoDictionaryKey:@"NSPhotoLibraryUsageDescription"];
+    v6 = [mainBundle objectForInfoDictionaryKey:@"NSPhotoLibraryUsageDescription"];
     v7 = v5 | v6;
 
     v2 = v7 != 0;
@@ -223,22 +223,22 @@ void __44__UISaveToCameraRollActivity__activityImage__block_invoke_2()
   return v2;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   self->_imageCount = 0;
   self->_livePhotoCount = 0;
   self->_videoCount = 0;
   if ((_UIActivityItemTypes() & 0x42) != 0)
   {
-    self->_imageCount = _UIActivityItemCountOfType(v4, 2);
-    self->_videoCount = _UIActivityItemCountOfType(v4, 64);
+    self->_imageCount = _UIActivityItemCountOfType(itemsCopy, 2);
+    self->_videoCount = _UIActivityItemCountOfType(itemsCopy, 64);
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v4;
+    v5 = itemsCopy;
     v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
@@ -277,9 +277,9 @@ void __44__UISaveToCameraRollActivity__activityImage__block_invoke_2()
   return v10;
 }
 
-- (void)_startSavingItems:(id)a3
+- (void)_startSavingItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   objc_initWeak(&location, self);
   v5 = [_UISaveToCameraRollSaveItemsController alloc];
   v8 = MEMORY[0x1E69E9820];
@@ -287,7 +287,7 @@ void __44__UISaveToCameraRollActivity__activityImage__block_invoke_2()
   v10 = __48__UISaveToCameraRollActivity__startSavingItems___block_invoke;
   v11 = &unk_1E71FAF08;
   objc_copyWeak(&v12, &location);
-  v6 = [(_UISaveToCameraRollSaveItemsController *)v5 initWithItems:v4 saveCompletionBlock:&v8];
+  v6 = [(_UISaveToCameraRollSaveItemsController *)v5 initWithItems:itemsCopy saveCompletionBlock:&v8];
   saveController = self->_saveController;
   self->_saveController = v6;
 
@@ -303,19 +303,19 @@ void __48__UISaveToCameraRollActivity__startSavingItems___block_invoke(uint64_t 
   [WeakRetained activityDidFinish:a2 items:0 error:v5];
 }
 
-- (void)_prepareWithActivityItems:(id)a3 completion:(id)a4
+- (void)_prepareWithActivityItems:(id)items completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __67__UISaveToCameraRollActivity__prepareWithActivityItems_completion___block_invoke;
   v9[3] = &unk_1E71F9A70;
   objc_copyWeak(&v11, &location);
-  v8 = v7;
+  v8 = completionCopy;
   v10 = v8;
-  [(UIActivity *)self _loadItemProvidersFromActivityItems:v6 completion:v9];
+  [(UIActivity *)self _loadItemProvidersFromActivityItems:itemsCopy completion:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);

@@ -1,6 +1,6 @@
 @interface AVCaptureAutoExposureBracketedStillImageSettings
 + (AVCaptureAutoExposureBracketedStillImageSettings)autoExposureSettingsWithExposureTargetBias:(float)exposureTargetBias;
-- (id)_initAutoExposureSettingsWithExposureTargetBias:(float)a3;
+- (id)_initAutoExposureSettingsWithExposureTargetBias:(float)bias;
 - (id)description;
 @end
 
@@ -15,14 +15,14 @@
   return v6;
 }
 
-- (id)_initAutoExposureSettingsWithExposureTargetBias:(float)a3
+- (id)_initAutoExposureSettingsWithExposureTargetBias:(float)bias
 {
   v5.receiver = self;
   v5.super_class = AVCaptureAutoExposureBracketedStillImageSettings;
   result = [(AVCaptureBracketedStillImageSettings *)&v5 initSubclass];
   if (result)
   {
-    *(result + 2) = a3;
+    *(result + 2) = bias;
   }
 
   return result;

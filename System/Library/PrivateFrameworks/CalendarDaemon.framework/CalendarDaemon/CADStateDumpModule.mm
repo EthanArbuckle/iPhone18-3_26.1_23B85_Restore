@@ -1,5 +1,5 @@
 @interface CADStateDumpModule
-- (id)_storeTypeStringFromType:(int)a3;
+- (id)_storeTypeStringFromType:(int)type;
 - (void)activate;
 - (void)registerForStateCapture;
 @end
@@ -226,16 +226,16 @@ id __45__CADStateDumpModule_registerForStateCapture__block_invoke_2()
   return v0;
 }
 
-- (id)_storeTypeStringFromType:(int)a3
+- (id)_storeTypeStringFromType:(int)type
 {
-  if ((a3 - 1) > 5)
+  if ((type - 1) > 5)
   {
     return @"Local";
   }
 
   else
   {
-    return off_27851BDC8[a3 - 1];
+    return off_27851BDC8[type - 1];
   }
 }
 

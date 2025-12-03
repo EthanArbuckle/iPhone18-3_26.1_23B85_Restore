@@ -1,5 +1,5 @@
 @interface BKThreeLevelForest
-- (void)addLeaf:(void *)a3 toBranch:(void *)a4 trunk:;
+- (void)addLeaf:(void *)leaf toBranch:(void *)branch trunk:;
 @end
 
 @implementation BKThreeLevelForest
@@ -28,31 +28,31 @@ void __58__BKThreeLevelForest_dictionaryContainingBranchesToLeaves__block_invoke
   [v6 unionSet:v5];
 }
 
-- (void)addLeaf:(void *)a3 toBranch:(void *)a4 trunk:
+- (void)addLeaf:(void *)leaf toBranch:(void *)branch trunk:
 {
   v13 = a2;
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  leafCopy = leaf;
+  branchCopy = branch;
+  if (self)
   {
-    v9 = *(a1 + 8);
+    v9 = *(self + 8);
     if (!v9)
     {
       v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v11 = *(a1 + 8);
-      *(a1 + 8) = v10;
+      v11 = *(self + 8);
+      *(self + 8) = v10;
 
-      v9 = *(a1 + 8);
+      v9 = *(self + 8);
     }
 
-    v12 = [v9 objectForKey:v8];
+    v12 = [v9 objectForKey:branchCopy];
     if (!v12)
     {
       v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      [*(a1 + 8) setObject:v12 forKey:v8];
+      [*(self + 8) setObject:v12 forKey:branchCopy];
     }
 
-    [v12 bs_addObject:v13 toCollectionClass:objc_opt_class() forKey:v7];
+    [v12 bs_addObject:v13 toCollectionClass:objc_opt_class() forKey:leafCopy];
   }
 }
 

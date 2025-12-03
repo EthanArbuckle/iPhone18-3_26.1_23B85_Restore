@@ -1,22 +1,22 @@
 @interface TVRMessageView
 - (BOOL)_largeAccessibilityFontSizesEnabled;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGSize)intrinsicContentSize;
-- (id)_convertToAttributedStringWithReplacement:(id)a3 imagePointSize:(double)a4;
+- (id)_convertToAttributedStringWithReplacement:(id)replacement imagePointSize:(double)size;
 - (id)_deviceTypeString;
-- (id)_loadingViewWithTitle:(id)a3 forSize:(CGSize)a4;
+- (id)_loadingViewWithTitle:(id)title forSize:(CGSize)size;
 - (id)_localizedLegacyPairingMessageForDeviceModel;
-- (void)_turnOnWireless:(id)a3;
+- (void)_turnOnWireless:(id)wireless;
 - (void)clearContent;
 - (void)layoutSubviews;
-- (void)setCurrentView:(id)a3;
+- (void)setCurrentView:(id)view;
 - (void)showLoadingSpinner;
-- (void)showMessageWithError:(id)a3 device:(id)a4;
-- (void)showMessageWithTitle:(id)a3 message:(id)a4;
-- (void)showMessageWithTitle:(id)a3 message:(id)a4 titleFont:(id)a5;
+- (void)showMessageWithError:(id)error device:(id)device;
+- (void)showMessageWithTitle:(id)title message:(id)message;
+- (void)showMessageWithTitle:(id)title message:(id)message titleFont:(id)font;
 - (void)showNoAssociatedNetworkMessage;
 - (void)showNoWIFIConnectionMessage;
-- (void)showPairingMessageWithCode:(id)a3;
+- (void)showPairingMessageWithCode:(id)code;
 - (void)showSearchingSpinner;
 @end
 
@@ -43,28 +43,28 @@
   [(UIView *)currentView setCenter:?];
 }
 
-- (void)showMessageWithError:(id)a3 device:(id)a4
+- (void)showMessageWithError:(id)error device:(id)device
 {
-  v41 = a3;
-  v6 = a4;
-  if ([v41 code] == 102)
+  errorCopy = error;
+  deviceCopy = device;
+  if ([errorCopy code] == 102)
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [(TVRMessageView *)self _deviceTypeString];
-    v9 = [v7 stringWithFormat:@"TVRemoteUIPairingDeviceLockedMessage%@", v8];
+    _deviceTypeString = [(TVRMessageView *)self _deviceTypeString];
+    v9 = [v7 stringWithFormat:@"TVRemoteUIPairingDeviceLockedMessage%@", _deviceTypeString];
 
     v10 = MEMORY[0x277CCACA8];
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v12 = [v11 localizedStringForKey:v9 value:&stru_287E6AEF8 table:@"Localizable"];
-    v13 = [v6 name];
-    v14 = [v10 stringWithFormat:v12, v13];
+    name = [deviceCopy name];
+    v14 = [v10 stringWithFormat:v12, name];
 
     v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v16 = [v15 localizedStringForKey:@"TVRemoteUIPairingDeviceLockedTitle" value:&stru_287E6AEF8 table:@"Localizable"];
     [(TVRMessageView *)self showMessageWithTitle:v16 message:v14];
   }
 
-  else if ([v41 code] == 104)
+  else if ([errorCopy code] == 104)
   {
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v14 = [v9 localizedStringForKey:@"TVRemoteUIConnectionErrorTitle" value:&stru_287E6AEF8 table:@"Localizable"];
@@ -73,7 +73,7 @@
     [(TVRMessageView *)self showMessageWithTitle:v14 message:v18];
   }
 
-  else if ([v41 code] == 103)
+  else if ([errorCopy code] == 103)
   {
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v14 = [v9 localizedStringForKey:@"TVRemoteUIConnectionErrorTitleTV" value:&stru_287E6AEF8 table:@"Localizable"];
@@ -93,15 +93,15 @@
     v21 = MEMORY[0x277CCACA8];
     v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v23 = [v22 localizedStringForKey:v9 value:&stru_287E6AEF8 table:@"Localizable"];
-    v24 = [v6 name];
-    v14 = [v21 stringWithFormat:v23, v24];
+    name2 = [deviceCopy name];
+    v14 = [v21 stringWithFormat:v23, name2];
 
-    v25 = [v6 model];
-    v26 = [v25 containsString:@"AppleTV"];
+    model = [deviceCopy model];
+    v26 = [model containsString:@"AppleTV"];
 
-    v27 = [v6 name];
+    name3 = [deviceCopy name];
 
-    if (!v27)
+    if (!name3)
     {
       v28 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v29 = v28;
@@ -143,20 +143,20 @@
   }
 }
 
-- (void)showMessageWithTitle:(id)a3 message:(id)a4 titleFont:(id)a5
+- (void)showMessageWithTitle:(id)title message:(id)message titleFont:(id)font
 {
   v68[3] = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  messageCopy = message;
   v9 = MEMORY[0x277D75D18];
-  v10 = a5;
-  v11 = a3;
+  fontCopy = font;
+  titleCopy = title;
   v12 = objc_alloc_init(v9);
-  v13 = [v12 layer];
-  [v13 setAllowsGroupOpacity:0];
-  v65 = v13;
-  [v13 setAllowsGroupBlending:0];
+  layer = [v12 layer];
+  [layer setAllowsGroupOpacity:0];
+  v65 = layer;
+  [layer setAllowsGroupBlending:0];
   v14 = objc_alloc_init(MEMORY[0x277D756B8]);
-  [v14 setFont:v10];
+  [v14 setFont:fontCopy];
 
   [v14 setNumberOfLines:0];
   [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -164,24 +164,24 @@
   [v14 setContentCompressionResistancePriority:0 forAxis:v15];
   [v14 setTextAlignment:1];
   [v14 setAdjustsFontSizeToFitWidth:1];
-  [v14 setText:v11];
+  [v14 setText:titleCopy];
 
-  v16 = [(TVRMessageView *)self styleProvider];
-  v17 = [v16 colorForMessageLabels];
-  [v14 setTextColor:v17];
+  styleProvider = [(TVRMessageView *)self styleProvider];
+  colorForMessageLabels = [styleProvider colorForMessageLabels];
+  [v14 setTextColor:colorForMessageLabels];
 
   [v12 addSubview:v14];
-  v18 = [v14 topAnchor];
-  v19 = [v12 topAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  topAnchor = [v14 topAnchor];
+  topAnchor2 = [v12 topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-  v21 = [v14 leadingAnchor];
-  v22 = [v12 leadingAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  leadingAnchor = [v14 leadingAnchor];
+  leadingAnchor2 = [v12 leadingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-  v24 = [v14 trailingAnchor];
-  v25 = [v12 trailingAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
+  trailingAnchor = [v14 trailingAnchor];
+  trailingAnchor2 = [v12 trailingAnchor];
+  v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
   v27 = MEMORY[0x277CCAAD0];
   v63 = v23;
@@ -193,23 +193,23 @@
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v68 count:3];
   [v27 activateConstraints:v28];
 
-  if (v8)
+  if (messageCopy)
   {
-    v29 = [(TVRMessageView *)self styleProvider];
-    v59 = [v29 fontForMessageViewDescription];
+    styleProvider2 = [(TVRMessageView *)self styleProvider];
+    fontForMessageViewDescription = [styleProvider2 fontForMessageViewDescription];
 
     v30 = objc_alloc_init(MEMORY[0x277D756B8]);
-    [v30 setFont:v59];
+    [v30 setFont:fontForMessageViewDescription];
     [v30 setNumberOfLines:0];
     [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v31) = 1148846080;
     [v30 setContentCompressionResistancePriority:0 forAxis:v31];
     [v30 setTextAlignment:1];
     [v30 setAdjustsFontSizeToFitWidth:1];
-    [v30 setText:v8];
-    v32 = [(TVRMessageView *)self styleProvider];
-    v33 = [v32 colorForMessageLabels];
-    [v30 setTextColor:v33];
+    [v30 setText:messageCopy];
+    styleProvider3 = [(TVRMessageView *)self styleProvider];
+    colorForMessageLabels2 = [styleProvider3 colorForMessageLabels];
+    [v30 setTextColor:colorForMessageLabels2];
 
     [v12 addSubview:v30];
     if ([(TVRMessageView *)self _largeAccessibilityFontSizesEnabled])
@@ -222,41 +222,41 @@
       v34 = 20.0;
     }
 
-    v35 = [v30 firstBaselineAnchor];
-    v36 = [v14 lastBaselineAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36 constant:v34];
+    firstBaselineAnchor = [v30 firstBaselineAnchor];
+    lastBaselineAnchor = [v14 lastBaselineAnchor];
+    bottomAnchor4 = [firstBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor constant:v34];
 
-    v38 = [v30 leadingAnchor];
+    leadingAnchor3 = [v30 leadingAnchor];
     [v12 leadingAnchor];
-    v39 = v61 = v8;
-    v40 = [v38 constraintEqualToAnchor:v39];
+    v39 = v61 = messageCopy;
+    v40 = [leadingAnchor3 constraintEqualToAnchor:v39];
 
-    v41 = [v30 trailingAnchor];
-    v42 = [v12 trailingAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42];
+    trailingAnchor3 = [v30 trailingAnchor];
+    trailingAnchor4 = [v12 trailingAnchor];
+    v43 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
 
-    v44 = [v30 bottomAnchor];
-    v45 = [v12 bottomAnchor];
-    v46 = [v44 constraintLessThanOrEqualToAnchor:v45];
+    bottomAnchor = [v30 bottomAnchor];
+    bottomAnchor2 = [v12 bottomAnchor];
+    v46 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
 
     v47 = MEMORY[0x277CCAAD0];
-    v67[0] = v37;
+    v67[0] = bottomAnchor4;
     v67[1] = v40;
     v67[2] = v43;
     v67[3] = v46;
     v48 = [MEMORY[0x277CBEA60] arrayWithObjects:v67 count:4];
     [v47 activateConstraints:v48];
 
-    v8 = v61;
-    v49 = v60;
+    messageCopy = v61;
+    bottomAnchor3 = v60;
   }
 
   else
   {
     v50 = MEMORY[0x277CCAAD0];
-    v49 = [v14 bottomAnchor];
-    v37 = [v12 bottomAnchor];
-    v40 = [v49 constraintEqualToAnchor:v37];
+    bottomAnchor3 = [v14 bottomAnchor];
+    bottomAnchor4 = [v12 bottomAnchor];
+    v40 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v66 = v40;
     v43 = [MEMORY[0x277CBEA60] arrayWithObjects:&v66 count:1];
     [v50 activateConstraints:v43];
@@ -268,7 +268,7 @@
   v54 = v53;
   [v14 sizeThatFits:{v51, v53}];
   v56 = v55;
-  if (v8)
+  if (messageCopy)
   {
     [v30 sizeThatFits:{v52, v54}];
   }
@@ -293,23 +293,23 @@
   [(TVRMessageView *)self setMessageType:1];
 }
 
-- (void)showMessageWithTitle:(id)a3 message:(id)a4
+- (void)showMessageWithTitle:(id)title message:(id)message
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TVRMessageView *)self styleProvider];
-  v9 = [v8 fontForMessageViewTitle];
+  messageCopy = message;
+  titleCopy = title;
+  styleProvider = [(TVRMessageView *)self styleProvider];
+  fontForMessageViewTitle = [styleProvider fontForMessageViewTitle];
 
-  [(TVRMessageView *)self showMessageWithTitle:v7 message:v6 titleFont:v9];
+  [(TVRMessageView *)self showMessageWithTitle:titleCopy message:messageCopy titleFont:fontForMessageViewTitle];
 }
 
-- (void)showPairingMessageWithCode:(id)a3
+- (void)showPairingMessageWithCode:(id)code
 {
   v119 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  codeCopy = code;
   v5 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v6 = [(TVRMessageView *)self styleProvider];
-  v7 = [v6 fontForMessageViewDescription];
+  styleProvider = [(TVRMessageView *)self styleProvider];
+  fontForMessageViewDescription = [styleProvider fontForMessageViewDescription];
 
   v8 = objc_alloc_init(MEMORY[0x277D756B8]);
   [v8 setNumberOfLines:0];
@@ -319,13 +319,13 @@
 
   [v8 setTextAlignment:1];
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [(TVRMessageView *)self styleProvider];
-  v12 = [v11 fontForMessageViewTitle];
-  [v8 setFont:v12];
+  styleProvider2 = [(TVRMessageView *)self styleProvider];
+  fontForMessageViewTitle = [styleProvider2 fontForMessageViewTitle];
+  [v8 setFont:fontForMessageViewTitle];
 
-  v13 = [(TVRMessageView *)self styleProvider];
-  v14 = [v13 colorForMessageLabels];
-  [v8 setTextColor:v14];
+  styleProvider3 = [(TVRMessageView *)self styleProvider];
+  colorForMessageLabels = [styleProvider3 colorForMessageLabels];
+  [v8 setTextColor:colorForMessageLabels];
 
   LODWORD(v15) = 1148846080;
   [v8 setContentCompressionResistancePriority:0 forAxis:v15];
@@ -336,34 +336,34 @@
   [v17 setNumberOfLines:0];
   [v17 setTextAlignment:1];
   [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v106 = v7;
-  [v17 setFont:v7];
-  v18 = [(TVRMessageView *)self styleProvider];
-  v19 = [v18 colorForMessageLabels];
-  [v17 setTextColor:v19];
+  v106 = fontForMessageViewDescription;
+  [v17 setFont:fontForMessageViewDescription];
+  styleProvider4 = [(TVRMessageView *)self styleProvider];
+  colorForMessageLabels2 = [styleProvider4 colorForMessageLabels];
+  [v17 setTextColor:colorForMessageLabels2];
 
-  v105 = self;
-  v20 = [(TVRMessageView *)self _localizedLegacyPairingMessageForDeviceModel];
-  [v17 setText:v20];
+  selfCopy = self;
+  _localizedLegacyPairingMessageForDeviceModel = [(TVRMessageView *)self _localizedLegacyPairingMessageForDeviceModel];
+  [v17 setText:_localizedLegacyPairingMessageForDeviceModel];
 
   LODWORD(v21) = 1148846080;
   [v17 setContentCompressionResistancePriority:0 forAxis:v21];
   v107 = v17;
   LODWORD(v22) = 1148846080;
   [v17 setContentCompressionResistancePriority:1 forAxis:v22];
-  v23 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "length")}];
-  if ([v4 length])
+  v23 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(codeCopy, "length")}];
+  if ([codeCopy length])
   {
     v24 = 0;
     do
     {
-      v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%c", objc_msgSend(v4, "characterAtIndex:", v24)];
+      v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%c", objc_msgSend(codeCopy, "characterAtIndex:", v24)];
       [v23 addObject:v25];
 
       ++v24;
     }
 
-    while (v24 < [v4 length]);
+    while (v24 < [codeCopy length]);
   }
 
   v26 = [v23 componentsJoinedByString:@" "];
@@ -377,9 +377,9 @@
   v28 = [MEMORY[0x277D74300] systemFontOfSize:*MEMORY[0x277CC4970] weight:28.0 design:*MEMORY[0x277D74418]];
   [v27 setFont:v28];
 
-  v29 = [(TVRMessageView *)v105 styleProvider];
-  v30 = [v29 colorForMessageLabels];
-  [v27 setTextColor:v30];
+  styleProvider5 = [(TVRMessageView *)selfCopy styleProvider];
+  colorForMessageLabels3 = [styleProvider5 colorForMessageLabels];
+  [v27 setTextColor:colorForMessageLabels3];
 
   LODWORD(v31) = 1148846080;
   [v27 setContentCompressionResistancePriority:0 forAxis:v31];
@@ -390,17 +390,17 @@
   [v33 setTextAlignment:1];
   [v33 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v33 setFont:v106];
-  v34 = [(TVRMessageView *)v105 styleProvider];
-  v35 = [v34 colorForSpinner];
-  [v33 setTintColor:v35];
+  styleProvider6 = [(TVRMessageView *)selfCopy styleProvider];
+  colorForSpinner = [styleProvider6 colorForSpinner];
+  [v33 setTintColor:colorForSpinner];
 
-  v36 = [(TVRMessageView *)v105 styleProvider];
-  v37 = [v36 colorForSpinner];
-  [v33 setTextColor:v37];
+  styleProvider7 = [(TVRMessageView *)selfCopy styleProvider];
+  colorForSpinner2 = [styleProvider7 colorForSpinner];
+  [v33 setTextColor:colorForSpinner2];
 
   v38 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v39 = [v38 localizedStringForKey:@"TVRemoteUILegacyPairingBottomMessage" value:&stru_287E6AEF8 table:@"Localizable"];
-  v40 = [(TVRMessageView *)v105 _convertToAttributedStringWithReplacement:v39 imagePointSize:13.0];
+  v40 = [(TVRMessageView *)selfCopy _convertToAttributedStringWithReplacement:v39 imagePointSize:13.0];
   [v33 setAttributedText:v40];
 
   LODWORD(v41) = 1148846080;
@@ -439,17 +439,17 @@
     while (v45);
   }
 
-  v48 = [v108 topAnchor];
-  v49 = [v5 topAnchor];
-  v103 = [v48 constraintEqualToAnchor:v49];
+  topAnchor = [v108 topAnchor];
+  topAnchor2 = [v5 topAnchor];
+  v103 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-  v50 = [v108 leadingAnchor];
-  v51 = [v5 leadingAnchor];
-  v102 = [v50 constraintEqualToAnchor:v51];
+  leadingAnchor = [v108 leadingAnchor];
+  leadingAnchor2 = [v5 leadingAnchor];
+  v102 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-  v52 = [v108 trailingAnchor];
-  v53 = [v5 trailingAnchor];
-  v101 = [v52 constraintEqualToAnchor:v53];
+  trailingAnchor = [v108 trailingAnchor];
+  trailingAnchor2 = [v5 trailingAnchor];
+  v101 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
   v54 = MEMORY[0x277CCAAD0];
   v116[0] = v103;
@@ -458,17 +458,17 @@
   v55 = [MEMORY[0x277CBEA60] arrayWithObjects:v116 count:3];
   [v54 activateConstraints:v55];
 
-  v56 = [v107 topAnchor];
-  v57 = [v108 lastBaselineAnchor];
-  v100 = [v56 constraintEqualToAnchor:v57 constant:16.0];
+  topAnchor3 = [v107 topAnchor];
+  lastBaselineAnchor = [v108 lastBaselineAnchor];
+  v100 = [topAnchor3 constraintEqualToAnchor:lastBaselineAnchor constant:16.0];
 
-  v58 = [v107 leadingAnchor];
-  v59 = [v5 leadingAnchor];
-  v99 = [v58 constraintEqualToAnchor:v59];
+  leadingAnchor3 = [v107 leadingAnchor];
+  leadingAnchor4 = [v5 leadingAnchor];
+  v99 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
 
-  v60 = [v107 trailingAnchor];
-  v61 = [v5 trailingAnchor];
-  v98 = [v60 constraintEqualToAnchor:v61];
+  trailingAnchor3 = [v107 trailingAnchor];
+  trailingAnchor4 = [v5 trailingAnchor];
+  v98 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
 
   v62 = MEMORY[0x277CCAAD0];
   v115[0] = v100;
@@ -477,17 +477,17 @@
   v63 = [MEMORY[0x277CBEA60] arrayWithObjects:v115 count:3];
   [v62 activateConstraints:v63];
 
-  v64 = [v27 topAnchor];
-  v65 = [v107 lastBaselineAnchor];
-  v97 = [v64 constraintEqualToAnchor:v65 constant:16.0];
+  topAnchor4 = [v27 topAnchor];
+  lastBaselineAnchor2 = [v107 lastBaselineAnchor];
+  v97 = [topAnchor4 constraintEqualToAnchor:lastBaselineAnchor2 constant:16.0];
 
-  v66 = [v27 leadingAnchor];
-  v67 = [v5 leadingAnchor];
-  v96 = [v66 constraintEqualToAnchor:v67];
+  leadingAnchor5 = [v27 leadingAnchor];
+  leadingAnchor6 = [v5 leadingAnchor];
+  v96 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
 
-  v68 = [v27 trailingAnchor];
-  v69 = [v5 trailingAnchor];
-  v95 = [v68 constraintEqualToAnchor:v69];
+  trailingAnchor5 = [v27 trailingAnchor];
+  trailingAnchor6 = [v5 trailingAnchor];
+  v95 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
 
   v70 = MEMORY[0x277CCAAD0];
   v114[0] = v97;
@@ -496,17 +496,17 @@
   v71 = [MEMORY[0x277CBEA60] arrayWithObjects:v114 count:3];
   [v70 activateConstraints:v71];
 
-  v72 = [v33 topAnchor];
-  v73 = [v27 bottomAnchor];
-  v94 = [v72 constraintEqualToAnchor:v73 constant:16.0];
+  topAnchor5 = [v33 topAnchor];
+  bottomAnchor = [v27 bottomAnchor];
+  v94 = [topAnchor5 constraintEqualToAnchor:bottomAnchor constant:16.0];
 
-  v74 = [v33 leadingAnchor];
-  v75 = [v5 leadingAnchor];
-  v76 = [v74 constraintEqualToAnchor:v75];
+  leadingAnchor7 = [v33 leadingAnchor];
+  leadingAnchor8 = [v5 leadingAnchor];
+  v76 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
 
-  v77 = [v33 trailingAnchor];
-  v78 = [v5 trailingAnchor];
-  v79 = [v77 constraintEqualToAnchor:v78];
+  trailingAnchor7 = [v33 trailingAnchor];
+  trailingAnchor8 = [v5 trailingAnchor];
+  v79 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
 
   v80 = MEMORY[0x277CCAAD0];
   v113[0] = v76;
@@ -515,7 +515,7 @@
   v81 = [MEMORY[0x277CBEA60] arrayWithObjects:v113 count:3];
   [v80 activateConstraints:v81];
 
-  [(TVRMessageView *)v105 bounds];
+  [(TVRMessageView *)selfCopy bounds];
   v83 = v82;
   v85 = v84;
   [v108 sizeThatFits:{v82, v84}];
@@ -536,8 +536,8 @@
   }
 
   [v5 setBounds:{0.0, 0.0, v83, v93}];
-  [(TVRMessageView *)v105 setCurrentView:v5];
-  [(TVRMessageView *)v105 setMessageType:2];
+  [(TVRMessageView *)selfCopy setCurrentView:v5];
+  [(TVRMessageView *)selfCopy setMessageType:2];
 }
 
 - (void)showNoAssociatedNetworkMessage
@@ -571,15 +571,15 @@
 
     v52 = [MEMORY[0x277CCACA8] stringWithFormat:@"TVRemoteUINoWIFIConnectionString%@", v4];
     v5 = objc_alloc_init(MEMORY[0x277D75D18]);
-    v54 = [v5 layer];
-    [v54 setAllowsGroupOpacity:0];
-    [v54 setAllowsGroupBlending:0];
+    layer = [v5 layer];
+    [layer setAllowsGroupOpacity:0];
+    [layer setAllowsGroupBlending:0];
     [(TVRMessageView *)self setUserInteractionEnabled:1];
-    v6 = [(TVRMessageView *)self styleProvider];
-    v53 = [v6 fontForMessageViewTitle];
+    styleProvider = [(TVRMessageView *)self styleProvider];
+    fontForMessageViewTitle = [styleProvider fontForMessageViewTitle];
 
     v7 = objc_alloc_init(MEMORY[0x277D756B8]);
-    [v7 setFont:v53];
+    [v7 setFont:fontForMessageViewTitle];
     [v7 setNumberOfLines:0];
     [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v8) = 1148846080;
@@ -590,25 +590,25 @@
     v10 = [v9 localizedStringForKey:v52 value:&stru_287E6AEF8 table:@"Localizable"];
     [v7 setText:v10];
 
-    v11 = [(TVRMessageView *)self styleProvider];
-    v12 = [v11 colorForMessageLabels];
-    [v7 setTextColor:v12];
+    styleProvider2 = [(TVRMessageView *)self styleProvider];
+    colorForMessageLabels = [styleProvider2 colorForMessageLabels];
+    [v7 setTextColor:colorForMessageLabels];
 
     [v5 addSubview:v7];
-    v13 = [v7 topAnchor];
-    v14 = [v5 topAnchor];
-    v55 = [v13 constraintEqualToAnchor:v14];
+    topAnchor = [v7 topAnchor];
+    topAnchor2 = [v5 topAnchor];
+    v55 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-    v15 = [v7 leadingAnchor];
-    v16 = [v5 leadingAnchor];
-    v51 = [v15 constraintEqualToAnchor:v16];
+    leadingAnchor = [v7 leadingAnchor];
+    leadingAnchor2 = [v5 leadingAnchor];
+    v51 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-    v17 = [v7 trailingAnchor];
-    v18 = [v5 trailingAnchor];
-    v50 = [v17 constraintEqualToAnchor:v18];
+    trailingAnchor = [v7 trailingAnchor];
+    trailingAnchor2 = [v5 trailingAnchor];
+    v50 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
-    v19 = [v7 heightAnchor];
-    v49 = [v19 constraintEqualToConstant:44.0];
+    heightAnchor = [v7 heightAnchor];
+    v49 = [heightAnchor constraintEqualToConstant:44.0];
 
     v20 = [MEMORY[0x277D75220] buttonWithType:0];
     [(TVRMessageView *)self setTurnOnWiFiButton:v20];
@@ -618,18 +618,18 @@
     v23 = [v22 localizedStringForKey:@"TVRemoteUITurnOnButtonTitleString" value:&stru_287E6AEF8 table:@"Localizable"];
     [(UIButton *)turnOnWiFiButton setTitle:v23 forState:0];
 
-    v24 = [(UIButton *)self->_turnOnWiFiButton layer];
-    [v24 setCornerRadius:8.0];
+    layer2 = [(UIButton *)self->_turnOnWiFiButton layer];
+    [layer2 setCornerRadius:8.0];
 
-    v25 = [(TVRMessageView *)self styleProvider];
-    v26 = [v25 buttonTextColor];
-    v27 = [(UIButton *)self->_turnOnWiFiButton titleLabel];
-    [v27 setTextColor:v26];
+    styleProvider3 = [(TVRMessageView *)self styleProvider];
+    buttonTextColor = [styleProvider3 buttonTextColor];
+    titleLabel = [(UIButton *)self->_turnOnWiFiButton titleLabel];
+    [titleLabel setTextColor:buttonTextColor];
 
-    v28 = [(TVRMessageView *)self styleProvider];
-    v29 = [v28 fontForWiFiButton];
-    v30 = [(UIButton *)self->_turnOnWiFiButton titleLabel];
-    [v30 setFont:v29];
+    styleProvider4 = [(TVRMessageView *)self styleProvider];
+    fontForWiFiButton = [styleProvider4 fontForWiFiButton];
+    titleLabel2 = [(UIButton *)self->_turnOnWiFiButton titleLabel];
+    [titleLabel2 setFont:fontForWiFiButton];
 
     [(UIButton *)self->_turnOnWiFiButton setTranslatesAutoresizingMaskIntoConstraints:0];
     v31 = [MEMORY[0x277D75348] colorWithDisplayP3Red:0.921568627 green:0.921568627 blue:0.960784314 alpha:0.3];
@@ -638,19 +638,19 @@
     [(UIButton *)self->_turnOnWiFiButton addTarget:self action:sel__turnOnWireless_ forControlEvents:64];
     v48 = v5;
     [v5 addSubview:self->_turnOnWiFiButton];
-    v32 = [(UIButton *)self->_turnOnWiFiButton topAnchor];
-    v33 = [v7 bottomAnchor];
-    v47 = [v32 constraintEqualToAnchor:v33 constant:16.0];
+    topAnchor3 = [(UIButton *)self->_turnOnWiFiButton topAnchor];
+    bottomAnchor = [v7 bottomAnchor];
+    v47 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:16.0];
 
-    v34 = [(UIButton *)self->_turnOnWiFiButton centerXAnchor];
-    v35 = [v5 centerXAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35];
+    centerXAnchor = [(UIButton *)self->_turnOnWiFiButton centerXAnchor];
+    centerXAnchor2 = [v5 centerXAnchor];
+    v36 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-    v37 = [(UIButton *)self->_turnOnWiFiButton heightAnchor];
-    v38 = [v37 constraintEqualToConstant:44.0];
+    heightAnchor2 = [(UIButton *)self->_turnOnWiFiButton heightAnchor];
+    v38 = [heightAnchor2 constraintEqualToConstant:44.0];
 
-    v39 = [(UIButton *)self->_turnOnWiFiButton widthAnchor];
-    v40 = [v39 constraintEqualToConstant:281.0];
+    widthAnchor = [(UIButton *)self->_turnOnWiFiButton widthAnchor];
+    v40 = [widthAnchor constraintEqualToConstant:281.0];
 
     v41 = MEMORY[0x277CCAAD0];
     v56[0] = v55;
@@ -707,14 +707,14 @@
 - (id)_localizedLegacyPairingMessageForDeviceModel
 {
   v2 = MGCopyAnswer();
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
   v4 = @"TVRemoteUILegacyPairingTopMessage_IPHONE";
-  if (v3 == 2)
+  if (intValue == 2)
   {
     v4 = @"TVRemoteUILegacyPairingTopMessage_IPOD";
   }
 
-  if (v3 == 3)
+  if (intValue == 3)
   {
     v5 = @"TVRemoteUILegacyPairingTopMessage_IPAD";
   }
@@ -730,75 +730,75 @@
   return v7;
 }
 
-- (void)setCurrentView:(id)a3
+- (void)setCurrentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   [(UIView *)self->_currentView removeFromSuperview];
-  if (v5)
+  if (viewCopy)
   {
-    objc_storeStrong(&self->_currentView, a3);
+    objc_storeStrong(&self->_currentView, view);
     [(TVRMessageView *)self addSubview:self->_currentView];
   }
 
   [(TVRMessageView *)self setNeedsLayout];
 }
 
-- (id)_loadingViewWithTitle:(id)a3 forSize:(CGSize)a4
+- (id)_loadingViewWithTitle:(id)title forSize:(CGSize)size
 {
-  width = a4.width;
+  width = size.width;
   v44[5] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277D75D18];
-  v7 = a3;
+  titleCopy = title;
   v8 = objc_alloc_init(v6);
   v9 = objc_alloc_init(MEMORY[0x277D750E8]);
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v9 setActivityIndicatorViewStyle:101];
-  v10 = [(TVRMessageView *)self styleProvider];
-  v11 = [v10 colorForSpinner];
-  [v9 setColor:v11];
+  styleProvider = [(TVRMessageView *)self styleProvider];
+  colorForSpinner = [styleProvider colorForSpinner];
+  [v9 setColor:colorForSpinner];
 
   [v9 startAnimating];
-  v12 = [(TVRMessageView *)self styleProvider];
-  v43 = [v12 fontForSpinnerTitle];
+  styleProvider2 = [(TVRMessageView *)self styleProvider];
+  fontForSpinnerTitle = [styleProvider2 fontForSpinnerTitle];
 
   v13 = objc_alloc_init(MEMORY[0x277D756B8]);
-  [v13 setFont:v43];
+  [v13 setFont:fontForSpinnerTitle];
   [v13 setAdjustsFontSizeToFitWidth:1];
   [v13 setNumberOfLines:1];
   [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v14) = 1148846080;
   [v13 setContentCompressionResistancePriority:0 forAxis:v14];
   [v13 setTextAlignment:1];
-  [v13 setText:v7];
+  [v13 setText:titleCopy];
 
-  v15 = [(TVRMessageView *)self styleProvider];
-  v16 = [v15 textColorForSpinnerTitle];
-  [v13 setTextColor:v16];
+  styleProvider3 = [(TVRMessageView *)self styleProvider];
+  textColorForSpinnerTitle = [styleProvider3 textColorForSpinnerTitle];
+  [v13 setTextColor:textColorForSpinnerTitle];
 
   [v8 addSubview:v9];
   [v8 addSubview:v13];
-  v42 = [v8 layer];
-  [v42 setAllowsGroupOpacity:0];
-  [v42 setAllowsGroupBlending:0];
-  v17 = [v9 topAnchor];
-  v18 = [v8 topAnchor];
-  v41 = [v17 constraintEqualToAnchor:v18];
+  layer = [v8 layer];
+  [layer setAllowsGroupOpacity:0];
+  [layer setAllowsGroupBlending:0];
+  topAnchor = [v9 topAnchor];
+  topAnchor2 = [v8 topAnchor];
+  v41 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-  v19 = [v9 centerXAnchor];
-  v20 = [v8 centerXAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  centerXAnchor = [v9 centerXAnchor];
+  centerXAnchor2 = [v8 centerXAnchor];
+  v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-  v22 = [v13 bottomAnchor];
-  v23 = [v8 bottomAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  bottomAnchor = [v13 bottomAnchor];
+  bottomAnchor2 = [v8 bottomAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
-  v25 = [v13 leadingAnchor];
-  v26 = [v8 leadingAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  leadingAnchor = [v13 leadingAnchor];
+  leadingAnchor2 = [v8 leadingAnchor];
+  v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-  v28 = [v13 trailingAnchor];
-  v29 = [v8 trailingAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  trailingAnchor = [v13 trailingAnchor];
+  trailingAnchor2 = [v8 trailingAnchor];
+  v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
   v31 = MEMORY[0x277CCAAD0];
   v44[0] = v41;
@@ -835,26 +835,26 @@
 
 - (BOOL)_largeAccessibilityFontSizesEnabled
 {
-  v2 = [MEMORY[0x277D75380] system];
-  v3 = [v2 preferredContentSizeCategory];
+  system = [MEMORY[0x277D75380] system];
+  preferredContentSizeCategory = [system preferredContentSizeCategory];
 
-  v4 = UIContentSizeCategoryIsAccessibilityCategory(v3) && ([(NSString *)v3 isEqualToString:*MEMORY[0x277D767F0]]|| [(NSString *)v3 isEqualToString:*MEMORY[0x277D767E8]]);
+  v4 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory) && ([(NSString *)preferredContentSizeCategory isEqualToString:*MEMORY[0x277D767F0]]|| [(NSString *)preferredContentSizeCategory isEqualToString:*MEMORY[0x277D767E8]]);
   return v4;
 }
 
 - (id)_deviceTypeString
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return @"Pad";
   }
 
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 model];
-  v7 = [v6 containsString:@"iPod"];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  model = [currentDevice2 model];
+  v7 = [model containsString:@"iPod"];
 
   if (v7)
   {
@@ -867,7 +867,7 @@
   }
 }
 
-- (void)_turnOnWireless:(id)a3
+- (void)_turnOnWireless:(id)wireless
 {
   v4 = objc_alloc_init(MEMORY[0x277D7B958]);
   if ([v4 powered])
@@ -920,25 +920,25 @@ void __34__TVRMessageView__turnOnWireless___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v23 = *MEMORY[0x277D85DE8];
-  v7 = [(TVRMessageView *)self turnOnWiFiButton];
+  turnOnWiFiButton = [(TVRMessageView *)self turnOnWiFiButton];
 
-  if (!v7)
+  if (!turnOnWiFiButton)
   {
     return 0;
   }
 
-  v8 = [(TVRMessageView *)self turnOnWiFiButton];
-  [(TVRMessageView *)self convertPoint:v8 toView:x, y];
+  turnOnWiFiButton2 = [(TVRMessageView *)self turnOnWiFiButton];
+  [(TVRMessageView *)self convertPoint:turnOnWiFiButton2 toView:x, y];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(TVRMessageView *)self turnOnWiFiButton];
-  [v13 bounds];
+  turnOnWiFiButton3 = [(TVRMessageView *)self turnOnWiFiButton];
+  [turnOnWiFiButton3 bounds];
   v24.x = v10;
   v24.y = v12;
   v14 = CGRectContainsPoint(v25, v24);
@@ -946,11 +946,11 @@ void __34__TVRMessageView__turnOnWireless___block_invoke(uint64_t a1)
   v15 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(TVRMessageView *)self turnOnWiFiButton];
+    turnOnWiFiButton4 = [(TVRMessageView *)self turnOnWiFiButton];
     LODWORD(buf) = 67109376;
     HIDWORD(buf) = v14;
     v21 = 1024;
-    v22 = [v16 isEnabled];
+    isEnabled = [turnOnWiFiButton4 isEnabled];
     _os_log_impl(&dword_26CFEB000, v15, OS_LOG_TYPE_DEFAULT, "#debug pointinsidebutton %d %d", &buf, 0xEu);
   }
 
@@ -982,27 +982,27 @@ void __40__TVRMessageView_pointInside_withEvent___block_invoke(uint64_t a1)
   }
 }
 
-- (id)_convertToAttributedStringWithReplacement:(id)a3 imagePointSize:(double)a4
+- (id)_convertToAttributedStringWithReplacement:(id)replacement imagePointSize:(double)size
 {
-  v5 = a3;
+  replacementCopy = replacement;
   if (_convertToAttributedStringWithReplacement_imagePointSize__onceToken != -1)
   {
     [TVRMessageView _convertToAttributedStringWithReplacement:imagePointSize:];
   }
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [v5 length];
+  v7 = [replacementCopy length];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __75__TVRMessageView__convertToAttributedStringWithReplacement_imagePointSize___block_invoke_2;
   v19[3] = &unk_279D87F68;
   v8 = v6;
   v20 = v8;
-  [v5 enumerateSubstringsInRange:0 options:v7 usingBlock:{2, v19}];
+  [replacementCopy enumerateSubstringsInRange:0 options:v7 usingBlock:{2, v19}];
   if ([v8 count])
   {
-    v9 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v5];
-    v10 = [MEMORY[0x277D755D0] configurationWithPointSize:7 weight:a4];
+    v9 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:replacementCopy];
+    v10 = [MEMORY[0x277D755D0] configurationWithPointSize:7 weight:size];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __75__TVRMessageView__convertToAttributedStringWithReplacement_imagePointSize___block_invoke_4;

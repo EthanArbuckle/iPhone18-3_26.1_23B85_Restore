@@ -1,29 +1,29 @@
 @interface CLDiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation CLDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v4 = os_log_create("com.apple.locationd.Utility", "Core");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *&buf[4] = v3;
+    *&buf[4] = parametersCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "#diagnosticExtension attachmentsForParameters,called with parameters %@", buf, 0xCu);
   }
 
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [v3 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
+  v6 = [parametersCopy objectForKeyedSubscript:@"DEExtensionHostAppKey"];
   if (([v6 isEqualToString:@"com.apple.taptoradard"] & 1) == 0 && !objc_msgSend(v6, "isEqualToString:", @"com.apple.TapToRadar"))
   {
     v8 = 0;
     goto LABEL_10;
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
+  v7 = [parametersCopy objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
 
   if (v7)
   {

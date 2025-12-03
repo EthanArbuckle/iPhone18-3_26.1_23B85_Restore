@@ -1,52 +1,52 @@
 @interface LSDocumentProxy
-+ (id)documentProxyForName:(id)a3 type:(id)a4 MIMEType:(id)a5;
-+ (id)documentProxyForName:(id)a3 type:(id)a4 MIMEType:(id)a5 managedSourceAuditToken:(id *)a6;
-+ (id)documentProxyForURL:(id)a3;
-+ (id)documentProxyForURL:(id)a3 managedSourceAuditToken:(id *)a4;
++ (id)documentProxyForName:(id)name type:(id)type MIMEType:(id)eType;
++ (id)documentProxyForName:(id)name type:(id)type MIMEType:(id)eType managedSourceAuditToken:(id *)token;
++ (id)documentProxyForURL:(id)l;
++ (id)documentProxyForURL:(id)l managedSourceAuditToken:(id *)token;
 - (BOOL)isImageOrVideo;
 - (BindingEvaluator)bindingEvaluatorForIconInfo;
-- (LSDocumentProxy)initWithCoder:(id)a3;
-- (LSDocumentProxy)initWithURL:(id)a3 name:(id)a4 type:(id)a5 MIMEType:(id)a6 isContentManaged:(BOOL)a7 sourceAuditToken:(id *)a8;
+- (LSDocumentProxy)initWithCoder:(id)coder;
+- (LSDocumentProxy)initWithURL:(id)l name:(id)name type:(id)type MIMEType:(id)eType isContentManaged:(BOOL)managed sourceAuditToken:(id *)token;
 - (id)_boundIconInfo;
-- (id)applicationsAvailableForOpeningWithHandlerRanks:(id)a3 error:(id *)a4;
+- (id)applicationsAvailableForOpeningWithHandlerRanks:(id)ranks error:(id *)error;
 - (id)debugDescription;
 - (id)description;
 - (id)uniqueIdentifier;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LSDocumentProxy
 
-+ (id)documentProxyForURL:(id)a3
++ (id)documentProxyForURL:(id)l
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 path];
-  v7 = [v6 lastPathComponent];
-  v8 = [v5 initWithURL:v4 name:v7 type:0 MIMEType:0 isContentManaged:0 sourceAuditToken:0];
+  lCopy = l;
+  v5 = [self alloc];
+  path = [lCopy path];
+  lastPathComponent = [path lastPathComponent];
+  v8 = [v5 initWithURL:lCopy name:lastPathComponent type:0 MIMEType:0 isContentManaged:0 sourceAuditToken:0];
 
   return v8;
 }
 
-+ (id)documentProxyForName:(id)a3 type:(id)a4 MIMEType:(id)a5
++ (id)documentProxyForName:(id)name type:(id)type MIMEType:(id)eType
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[a1 alloc] initWithURL:0 name:v8 type:v9 MIMEType:v10 isContentManaged:0 sourceAuditToken:0];
+  nameCopy = name;
+  typeCopy = type;
+  eTypeCopy = eType;
+  v11 = [[self alloc] initWithURL:0 name:nameCopy type:typeCopy MIMEType:eTypeCopy isContentManaged:0 sourceAuditToken:0];
 
   return v11;
 }
 
-- (LSDocumentProxy)initWithURL:(id)a3 name:(id)a4 type:(id)a5 MIMEType:(id)a6 isContentManaged:(BOOL)a7 sourceAuditToken:(id *)a8
+- (LSDocumentProxy)initWithURL:(id)l name:(id)name type:(id)type MIMEType:(id)eType isContentManaged:(BOOL)managed sourceAuditToken:(id *)token
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  if (v16)
+  lCopy = l;
+  nameCopy = name;
+  typeCopy = type;
+  eTypeCopy = eType;
+  if (nameCopy)
   {
-    v19 = v16;
+    v19 = nameCopy;
   }
 
   else
@@ -60,27 +60,27 @@
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(v20 + 9, a3);
+    objc_storeStrong(v20 + 9, l);
     v22 = [(__CFString *)v19 copy];
     v23 = v21[10];
     v21[10] = v22;
 
-    v24 = [v17 copy];
+    v24 = [typeCopy copy];
     v25 = v21[11];
     v21[11] = v24;
 
-    v26 = [v18 copy];
+    v26 = [eTypeCopy copy];
     v27 = v21[12];
     v21[12] = v26;
 
-    *(v21 + 64) = a7;
-    if (!a8)
+    *(v21 + 64) = managed;
+    if (!token)
     {
-      a8 = _LSGetAuditTokenForSelf();
+      token = _LSGetAuditTokenForSelf();
     }
 
-    v28 = *&a8->var0[4];
-    *(v21 + 2) = *a8->var0;
+    v28 = *&token->var0[4];
+    *(v21 + 2) = *token->var0;
     *(v21 + 3) = v28;
   }
 
@@ -90,12 +90,12 @@
 - (BOOL)isImageOrVideo
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [(LSDocumentProxy *)self name];
-  v3 = [v2 pathExtension];
+  name = [(LSDocumentProxy *)self name];
+  pathExtension = [name pathExtension];
 
-  if (v3)
+  if (pathExtension)
   {
-    v4 = [UTTypeRecord typeRecordsWithTag:v3 ofClass:@"public.filename-extension"];
+    v4 = [UTTypeRecord typeRecordsWithTag:pathExtension ofClass:@"public.filename-extension"];
     if ([LSDocumentProxy isImageOrVideo]::once != -1)
     {
       [LSDocumentProxy isImageOrVideo];
@@ -119,8 +119,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v9 = [*(*(&v13 + 1) + 8 * i) pedigree];
-          v10 = [v9 intersectsSet:-[LSDocumentProxy isImageOrVideo]::imageAndVideoTypes];
+          pedigree = [*(*(&v13 + 1) + 8 * i) pedigree];
+          v10 = [pedigree intersectsSet:-[LSDocumentProxy isImageOrVideo]::imageAndVideoTypes];
 
           if (v10)
           {
@@ -158,14 +158,14 @@ void __33__LSDocumentProxy_isImageOrVideo__block_invoke()
   [LSDocumentProxy isImageOrVideo]::imageAndVideoTypes = v0;
 }
 
-- (id)applicationsAvailableForOpeningWithHandlerRanks:(id)a3 error:(id *)a4
+- (id)applicationsAvailableForOpeningWithHandlerRanks:(id)ranks error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  ranksCopy = ranks;
   v7 = objc_autoreleasePoolPush();
-  if (!v6)
+  if (!ranksCopy)
   {
-    v6 = _LSCopyAllHandlerRankStrings();
+    ranksCopy = _LSCopyAllHandlerRankStrings();
   }
 
   v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -173,7 +173,7 @@ void __33__LSDocumentProxy_isImageOrVideo__block_invoke()
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = v6;
+  v9 = ranksCopy;
   v10 = [(__CFSet *)v9 countByEnumeratingWithState:&v28 objects:v38 count:16];
   if (v10)
   {
@@ -223,10 +223,10 @@ void __33__LSDocumentProxy_isImageOrVideo__block_invoke()
     v19 = _LSDefaultLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(__CFSet *)v9 allObjects];
-      v21 = [v20 componentsJoinedByString:{@", "}];
+      allObjects = [(__CFSet *)v9 allObjects];
+      v21 = [allObjects componentsJoinedByString:{@", "}];
       *buf = 138412802;
-      v33 = self;
+      selfCopy = self;
       v34 = 2112;
       v35 = v21;
       v36 = 2112;
@@ -238,10 +238,10 @@ void __33__LSDocumentProxy_isImageOrVideo__block_invoke()
   }
 
   objc_autoreleasePoolPop(v7);
-  if (a4 && !v18)
+  if (error && !v18)
   {
     v22 = v16;
-    *a4 = v16;
+    *error = v16;
   }
 
   v23 = *MEMORY[0x1E69E9840];
@@ -259,47 +259,47 @@ void __73__LSDocumentProxy_applicationsAvailableForOpeningWithHandlerRanks_error
   }
 }
 
-- (LSDocumentProxy)initWithCoder:(id)a3
+- (LSDocumentProxy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = LSDocumentProxy;
-  v5 = [(LSResourceProxy *)&v20 initWithCoder:v4];
+  v5 = [(LSResourceProxy *)&v20 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
+    v6 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
     URL = v5->_URL;
     v5->_URL = v6;
 
-    v8 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v8 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v8;
 
-    v10 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"typeIdentifier"];
+    v10 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"typeIdentifier"];
     typeIdentifier = v5->_typeIdentifier;
     v5->_typeIdentifier = v10;
 
-    v12 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"MIMEType"];
+    v12 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"MIMEType"];
     MIMEType = v5->_MIMEType;
     v5->_MIMEType = v12;
 
-    v5->_isContentManaged = [v4 decodeBoolForKey:@"contentManaged"];
-    v14 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"sourceAuditToken"];
+    v5->_isContentManaged = [coderCopy decodeBoolForKey:@"contentManaged"];
+    v14 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"sourceAuditToken"];
     v15 = v14;
     if (v14)
     {
       if ([v14 length] == 32)
       {
-        v16 = [v15 bytes];
-        v17 = v16[1];
-        *v5->_sourceAuditToken.val = *v16;
+        bytes = [v15 bytes];
+        v17 = bytes[1];
+        *v5->_sourceAuditToken.val = *bytes;
         *&v5->_sourceAuditToken.val[4] = v17;
       }
 
       else
       {
         v18 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A250], 4864, 0, "[LSDocumentProxy initWithCoder:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSDocumentProxy.mm", 271);
-        [v4 failWithError:v18];
+        [coderCopy failWithError:v18];
       }
     }
   }
@@ -307,53 +307,53 @@ void __73__LSDocumentProxy_applicationsAvailableForOpeningWithHandlerRanks_error
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = LSDocumentProxy;
-  [(LSResourceProxy *)&v6 encodeWithCoder:v4];
-  [v4 encodeObject:self->_URL forKey:@"URL"];
-  [v4 encodeObject:self->_name forKey:@"name"];
-  [v4 encodeObject:self->_typeIdentifier forKey:@"typeIdentifier"];
-  [v4 encodeObject:self->_MIMEType forKey:@"MIMEType"];
-  [v4 encodeBool:self->_isContentManaged forKey:@"contentManaged"];
+  [(LSResourceProxy *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_URL forKey:@"URL"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_typeIdentifier forKey:@"typeIdentifier"];
+  [coderCopy encodeObject:self->_MIMEType forKey:@"MIMEType"];
+  [coderCopy encodeBool:self->_isContentManaged forKey:@"contentManaged"];
   v5 = [MEMORY[0x1E695DEF0] dataWithBytes:&self->_sourceAuditToken length:32];
-  [v4 encodeObject:v5 forKey:@"sourceAuditToken"];
+  [coderCopy encodeObject:v5 forKey:@"sourceAuditToken"];
 }
 
 - (id)uniqueIdentifier
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF88]);
-  v4 = [(LSDocumentProxy *)self name];
+  name = [(LSDocumentProxy *)self name];
 
-  if (v4)
+  if (name)
   {
-    v5 = [(LSDocumentProxy *)self name];
-    v6 = [v5 dataUsingEncoding:4];
+    name2 = [(LSDocumentProxy *)self name];
+    v6 = [name2 dataUsingEncoding:4];
     [v3 appendData:v6];
   }
 
-  v7 = [(LSDocumentProxy *)self typeIdentifier];
+  typeIdentifier = [(LSDocumentProxy *)self typeIdentifier];
 
-  if (v7)
+  if (typeIdentifier)
   {
-    v8 = [(LSDocumentProxy *)self typeIdentifier];
-    v9 = [v8 dataUsingEncoding:4];
+    typeIdentifier2 = [(LSDocumentProxy *)self typeIdentifier];
+    v9 = [typeIdentifier2 dataUsingEncoding:4];
     [v3 appendData:v9];
   }
 
-  v10 = [(LSDocumentProxy *)self MIMEType];
+  mIMEType = [(LSDocumentProxy *)self MIMEType];
 
-  if (v10)
+  if (mIMEType)
   {
-    v11 = [(LSDocumentProxy *)self MIMEType];
-    v12 = [v11 dataUsingEncoding:4];
+    mIMEType2 = [(LSDocumentProxy *)self MIMEType];
+    v12 = [mIMEType2 dataUsingEncoding:4];
     [v3 appendData:v12];
   }
 
-  v15 = [(LSDocumentProxy *)self isContentManaged];
-  [v3 appendBytes:&v15 length:1];
+  isContentManaged = [(LSDocumentProxy *)self isContentManaged];
+  [v3 appendBytes:&isContentManaged length:1];
   v13 = [MEMORY[0x1E696AFB0] _LS_UUIDWithData:v3 digestType:2];
 
   return v13;
@@ -362,47 +362,47 @@ void __73__LSDocumentProxy_applicationsAvailableForOpeningWithHandlerRanks_error
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(LSResourceProxy *)self localizedName];
-  v5 = [(LSDocumentProxy *)self typeIdentifier];
-  v6 = [(LSDocumentProxy *)self MIMEType];
-  v7 = [v3 initWithFormat:@"LSDocumentProxy: Name=%@ UTI=%@ MIMEType=%@", v4, v5, v6];
+  localizedName = [(LSResourceProxy *)self localizedName];
+  typeIdentifier = [(LSDocumentProxy *)self typeIdentifier];
+  mIMEType = [(LSDocumentProxy *)self MIMEType];
+  v7 = [v3 initWithFormat:@"LSDocumentProxy: Name=%@ UTI=%@ MIMEType=%@", localizedName, typeIdentifier, mIMEType];
 
   return v7;
 }
 
 - (id)debugDescription
 {
-  v3 = [(LSDocumentProxy *)self isContentManaged];
+  isContentManaged = [(LSDocumentProxy *)self isContentManaged];
   v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:-[LSDocumentProxy sourceAuditToken](self length:{"sourceAuditToken"), 32}];
   v5 = objc_alloc(MEMORY[0x1E696AEC0]);
   v6 = objc_opt_class();
   v7 = [(LSDocumentProxy *)self URL];
-  v8 = [(LSDocumentProxy *)self name];
-  v9 = [(LSDocumentProxy *)self typeIdentifier];
-  v10 = [(LSDocumentProxy *)self MIMEType];
+  name = [(LSDocumentProxy *)self name];
+  typeIdentifier = [(LSDocumentProxy *)self typeIdentifier];
+  mIMEType = [(LSDocumentProxy *)self MIMEType];
   v11 = [v4 description];
   v12 = v11;
   v13 = "no";
-  if (v3)
+  if (isContentManaged)
   {
     v13 = "yes";
   }
 
-  v14 = [v5 initWithFormat:@"<%@ %p> { URL: %@, Name: %@, UTI: %@, MIMEType: %@, isContentManaged: %s, sourceAuditToken: %@ }", v6, self, v7, v8, v9, v10, v13, v11];
+  v14 = [v5 initWithFormat:@"<%@ %p> { URL: %@, Name: %@, UTI: %@, MIMEType: %@, isContentManaged: %s, sourceAuditToken: %@ }", v6, self, v7, name, typeIdentifier, mIMEType, v13, v11];
 
   return v14;
 }
 
-+ (id)documentProxyForURL:(id)a3 managedSourceAuditToken:(id *)a4
++ (id)documentProxyForURL:(id)l managedSourceAuditToken:(id *)token
 {
-  v4 = [a1 documentProxyForURL:a3 isContentManaged:a4 != 0 sourceAuditToken:a4];
+  v4 = [self documentProxyForURL:l isContentManaged:token != 0 sourceAuditToken:token];
 
   return v4;
 }
 
-+ (id)documentProxyForName:(id)a3 type:(id)a4 MIMEType:(id)a5 managedSourceAuditToken:(id *)a6
++ (id)documentProxyForName:(id)name type:(id)type MIMEType:(id)eType managedSourceAuditToken:(id *)token
 {
-  v6 = [a1 documentProxyForName:a3 type:a4 MIMEType:a5 isContentManaged:a6 != 0 sourceAuditToken:a6];
+  v6 = [self documentProxyForName:name type:type MIMEType:eType isContentManaged:token != 0 sourceAuditToken:token];
 
   return v6;
 }
@@ -554,13 +554,13 @@ uint64_t __107__LSDocumentProxy_Binding___bindingEvaluatorResultFilterForBinding
     v38 = __Block_byref_object_copy__25;
     v39 = __Block_byref_object_dispose__25;
     v40 = 0;
-    v3 = self;
-    objc_sync_enter(v3);
-    v34.receiver = v3;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v34.receiver = selfCopy;
     v34.super_class = LSDocumentProxy;
-    v4 = [(LSResourceProxy *)&v34 _boundIconInfo];
-    v5 = [v4 applicationIdentifier];
-    v6 = v5 == 0;
+    _boundIconInfo = [(LSResourceProxy *)&v34 _boundIconInfo];
+    applicationIdentifier = [_boundIconInfo applicationIdentifier];
+    v6 = applicationIdentifier == 0;
 
     if (v6)
     {
@@ -575,9 +575,9 @@ uint64_t __107__LSDocumentProxy_Binding___bindingEvaluatorResultFilterForBinding
           v7 = +[_LSDServiceDomain defaultServiceDomain];
           v8 = LaunchServices::Database::Context::_get(&v30, v7, 0);
 
-          [(_LSBoundIconInfo *)v4 setDocumentAllowOverride:?];
-          [(_LSBoundIconInfo *)v4 setPrerendered:?];
-          [(LSDocumentProxy *)v3 bindingEvaluatorForIconInfo];
+          [(_LSBoundIconInfo *)_boundIconInfo setDocumentAllowOverride:?];
+          [(_LSBoundIconInfo *)_boundIconInfo setPrerendered:?];
+          [(LSDocumentProxy *)selfCopy bindingEvaluatorForIconInfo];
           LaunchServices::BindingEvaluator::BindingEvaluator(v53, &v47);
           v54 = 1;
           LaunchServices::BindingEvaluator::~BindingEvaluator(&v47);
@@ -592,14 +592,14 @@ uint64_t __107__LSDocumentProxy_Binding___bindingEvaluatorResultFilterForBinding
               v11 = active;
               if (!active || (*(active + 9) & 2) != 0)
               {
-                [(_LSBoundIconInfo *)v4 setFileNames:?];
-                [(_LSBoundIconInfo *)v4 setIconsDictionary:?];
-                [v4 setApplicationIdentifier:@"com.apple.mobilecoretypes"];
-                [(_LSBoundIconInfo *)v4 setContainerURL:?];
+                [(_LSBoundIconInfo *)_boundIconInfo setFileNames:?];
+                [(_LSBoundIconInfo *)_boundIconInfo setIconsDictionary:?];
+                [_boundIconInfo setApplicationIdentifier:@"com.apple.mobilecoretypes"];
+                [(_LSBoundIconInfo *)_boundIconInfo setContainerURL:?];
                 v21 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:@"/System/Library/CoreServices/MobileCoreTypes.bundle" isDirectory:1];
-                [v4 setResourcesDirectoryURL:v21];
+                [_boundIconInfo setResourcesDirectoryURL:v21];
 
-                [(_LSBoundIconInfo *)v4 setDocumentAllowOverride:?];
+                [(_LSBoundIconInfo *)_boundIconInfo setDocumentAllowOverride:?];
               }
 
               else
@@ -623,21 +623,21 @@ uint64_t __107__LSDocumentProxy_Binding___bindingEvaluatorResultFilterForBinding
                 v44 = &v47;
                 v45 = v8;
                 v43 = v27;
-                v12 = v4;
+                v12 = _boundIconInfo;
                 v42 = v12;
                 std::__optional_copy_base<LaunchServices::BindingEvaluator,false>::__optional_copy_base[abi:nn200100](v46, v53);
                 v13 = MEMORY[0x1865D71B0](v41);
                 if ((v13[2](v13, v11) & 1) != 0 || (v14 = _UTGetActiveTypeWithIconForNSStringIdentifier(v8->db, v9, &v29), v13[2](v13, v14)))
                 {
-                  v15 = [v48[5] bundleIdentifier];
-                  [v12 setApplicationIdentifier:v15];
+                  bundleIdentifier = [v48[5] bundleIdentifier];
+                  [v12 setApplicationIdentifier:bundleIdentifier];
 
-                  v16 = [v48[5] containerURL];
-                  [(_LSBoundIconInfo *)v12 setContainerURL:v16];
+                  containerURL = [v48[5] containerURL];
+                  [(_LSBoundIconInfo *)v12 setContainerURL:containerURL];
 
-                  v17 = [v48[5] _boundIconInfo];
-                  v18 = [v17 resourcesDirectoryURL];
-                  [v12 setResourcesDirectoryURL:v18];
+                  _boundIconInfo2 = [v48[5] _boundIconInfo];
+                  resourcesDirectoryURL = [_boundIconInfo2 resourcesDirectoryURL];
+                  [v12 setResourcesDirectoryURL:resourcesDirectoryURL];
 
                   [(_LSBoundIconInfo *)v12 setBadge:?];
                 }
@@ -652,7 +652,7 @@ uint64_t __107__LSDocumentProxy_Binding___bindingEvaluatorResultFilterForBinding
               }
             }
 
-            objc_storeStrong(v36 + 5, v4);
+            objc_storeStrong(v36 + 5, _boundIconInfo);
             if (v54)
             {
               LaunchServices::BindingEvaluator::~BindingEvaluator(v53);
@@ -681,18 +681,18 @@ uint64_t __107__LSDocumentProxy_Binding___bindingEvaluatorResultFilterForBinding
         v26[1] = 3221225472;
         v26[2] = __42__LSDocumentProxy_Binding___boundIconInfo__block_invoke_161;
         v26[3] = &unk_1E6A1C7F8;
-        v26[4] = v3;
+        v26[4] = selfCopy;
         v26[5] = &v35;
-        [v20 getBoundIconInfoForDocumentProxy:v3 completionHandler:v26];
+        [v20 getBoundIconInfoForDocumentProxy:selfCopy completionHandler:v26];
       }
     }
 
     else
     {
-      objc_storeStrong(v36 + 5, v4);
+      objc_storeStrong(v36 + 5, _boundIconInfo);
     }
 
-    objc_sync_exit(v3);
+    objc_sync_exit(selfCopy);
     v19 = v36[5];
     _Block_object_dispose(&v35, 8);
   }

@@ -1,14 +1,14 @@
 @interface AVTAvatarRemoteImageRenderer
 - (AVTAvatarRemoteImageRenderer)init;
-- (AVTAvatarRemoteImageRenderer)initWithEnvironment:(id)a3;
+- (AVTAvatarRemoteImageRenderer)initWithEnvironment:(id)environment;
 - (id)_setupConnection;
-- (void)_requestStickerAndCacheWithProxy:(id)a3 avatarRecord:(id)a4 stickerPackName:(id)a5 stickerConfigurationName:(id)a6 resource:(id)a7 reply:(id)a8;
-- (void)_startRequestWithRetryCount:(unint64_t)a3 withReply:(id)a4 connectionRequestHandler:(id)a5;
+- (void)_requestStickerAndCacheWithProxy:(id)proxy avatarRecord:(id)record stickerPackName:(id)name stickerConfigurationName:(id)configurationName resource:(id)resource reply:(id)reply;
+- (void)_startRequestWithRetryCount:(unint64_t)count withReply:(id)reply connectionRequestHandler:(id)handler;
 - (void)_tearDownService;
-- (void)getSnapshotAndCacheForAvatarRecord:(id)a3 scope:(id)a4 withReply:(id)a5;
-- (void)getSnapshotForAvatar:(id)a3 scope:(id)a4 withModifications:(id)a5 withReply:(id)a6;
-- (void)getSnapshotForAvatar:(id)a3 scope:(id)a4 withReply:(id)a5;
-- (void)getStickerAndCacheForAvatarRecord:(id)a3 withStickerPackName:(id)a4 stickerConfigurationName:(id)a5 resource:(id)a6 withReply:(id)a7;
+- (void)getSnapshotAndCacheForAvatarRecord:(id)record scope:(id)scope withReply:(id)reply;
+- (void)getSnapshotForAvatar:(id)avatar scope:(id)scope withModifications:(id)modifications withReply:(id)reply;
+- (void)getSnapshotForAvatar:(id)avatar scope:(id)scope withReply:(id)reply;
+- (void)getStickerAndCacheForAvatarRecord:(id)record withStickerPackName:(id)name stickerConfigurationName:(id)configurationName resource:(id)resource withReply:(id)reply;
 @end
 
 @implementation AVTAvatarRemoteImageRenderer
@@ -21,17 +21,17 @@
   return v4;
 }
 
-- (AVTAvatarRemoteImageRenderer)initWithEnvironment:(id)a3
+- (AVTAvatarRemoteImageRenderer)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v9.receiver = self;
   v9.super_class = AVTAvatarRemoteImageRenderer;
   v5 = [(AVTAvatarRemoteImageRenderer *)&v9 init];
   if (v5)
   {
-    v6 = [v4 logger];
+    logger = [environmentCopy logger];
     logger = v5->_logger;
-    v5->_logger = v6;
+    v5->_logger = logger;
   }
 
   return v5;
@@ -39,22 +39,22 @@
 
 - (id)_setupConnection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_connection)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_connection)
   {
     v3 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithServiceName:@"com.apple.MemojiImageRenderService"];
-    connection = v2->_connection;
-    v2->_connection = v3;
+    connection = selfCopy->_connection;
+    selfCopy->_connection = v3;
 
     v5 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F39EDA18];
-    [(NSXPCConnection *)v2->_connection setRemoteObjectInterface:v5];
+    [(NSXPCConnection *)selfCopy->_connection setRemoteObjectInterface:v5];
 
-    objc_initWeak(&location, v2);
+    objc_initWeak(&location, selfCopy);
     v11[0] = 0;
     v11[1] = v11;
     v11[2] = 0x2050000000;
-    v11[3] = v2->_connection;
+    v11[3] = selfCopy->_connection;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __48__AVTAvatarRemoteImageRenderer__setupConnection__block_invoke;
@@ -62,18 +62,18 @@
     objc_copyWeak(&v10, &location);
     v9[4] = v11;
     v6 = MEMORY[0x1BFB0DE80](v9);
-    [(NSXPCConnection *)v2->_connection setInvalidationHandler:v6];
-    [(NSXPCConnection *)v2->_connection setInterruptionHandler:v6];
-    [(NSXPCConnection *)v2->_connection resume];
+    [(NSXPCConnection *)selfCopy->_connection setInvalidationHandler:v6];
+    [(NSXPCConnection *)selfCopy->_connection setInterruptionHandler:v6];
+    [(NSXPCConnection *)selfCopy->_connection resume];
 
     objc_destroyWeak(&v10);
     _Block_object_dispose(v11, 8);
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v7 = v2->_connection;
+  v7 = selfCopy->_connection;
 
   return v7;
 }
@@ -105,10 +105,10 @@ void __48__AVTAvatarRemoteImageRenderer__setupConnection__block_invoke(uint64_t 
   self->_connection = 0;
 }
 
-- (void)_startRequestWithRetryCount:(unint64_t)a3 withReply:(id)a4 connectionRequestHandler:(id)a5
+- (void)_startRequestWithRetryCount:(unint64_t)count withReply:(id)reply connectionRequestHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  replyCopy = reply;
+  handlerCopy = handler;
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x2020000000;
@@ -128,13 +128,13 @@ void __48__AVTAvatarRemoteImageRenderer__setupConnection__block_invoke(uint64_t 
   v13[3] = &unk_1E7F3BDE0;
   objc_copyWeak(v19, &location);
   v16 = &v21;
-  v10 = v8;
+  v10 = replyCopy;
   v13[4] = self;
   v14 = v10;
   v17 = v25;
   v18 = v26;
-  v19[1] = a3;
-  v11 = v9;
+  v19[1] = count;
+  v11 = handlerCopy;
   v15 = v11;
   v12 = [v13 copy];
   v22[3] = v12;
@@ -188,12 +188,12 @@ LABEL_6:
   }
 }
 
-- (void)getSnapshotForAvatar:(id)a3 scope:(id)a4 withReply:(id)a5
+- (void)getSnapshotForAvatar:(id)avatar scope:(id)scope withReply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(AVTAvatarRemoteImageRenderer *)self _setupConnection];
+  replyCopy = reply;
+  scopeCopy = scope;
+  avatarCopy = avatar;
+  _setupConnection = [(AVTAvatarRemoteImageRenderer *)self _setupConnection];
   connection = self->_connection;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -205,18 +205,18 @@ LABEL_6:
   v15[1] = 3221225472;
   v15[2] = __69__AVTAvatarRemoteImageRenderer_getSnapshotForAvatar_scope_withReply___block_invoke_2;
   v15[3] = &unk_1E7F3BE30;
-  v16 = v8;
-  v14 = v8;
-  [v13 requestImageForAvatar:v10 scope:v9 withReply:v15];
+  v16 = replyCopy;
+  v14 = replyCopy;
+  [v13 requestImageForAvatar:avatarCopy scope:scopeCopy withReply:v15];
 }
 
-- (void)getSnapshotForAvatar:(id)a3 scope:(id)a4 withModifications:(id)a5 withReply:(id)a6
+- (void)getSnapshotForAvatar:(id)avatar scope:(id)scope withModifications:(id)modifications withReply:(id)reply
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(AVTAvatarRemoteImageRenderer *)self _setupConnection];
+  replyCopy = reply;
+  modificationsCopy = modifications;
+  scopeCopy = scope;
+  avatarCopy = avatar;
+  _setupConnection = [(AVTAvatarRemoteImageRenderer *)self _setupConnection];
   connection = self->_connection;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -228,17 +228,17 @@ LABEL_6:
   v18[1] = 3221225472;
   v18[2] = __87__AVTAvatarRemoteImageRenderer_getSnapshotForAvatar_scope_withModifications_withReply___block_invoke_2;
   v18[3] = &unk_1E7F3BE30;
-  v19 = v10;
-  v17 = v10;
-  [v16 requestImageForAvatar:v13 scope:v12 withModifications:v11 withReply:v18];
+  v19 = replyCopy;
+  v17 = replyCopy;
+  [v16 requestImageForAvatar:avatarCopy scope:scopeCopy withModifications:modificationsCopy withReply:v18];
 }
 
-- (void)getSnapshotAndCacheForAvatarRecord:(id)a3 scope:(id)a4 withReply:(id)a5
+- (void)getSnapshotAndCacheForAvatarRecord:(id)record scope:(id)scope withReply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(AVTAvatarRemoteImageRenderer *)self _setupConnection];
+  replyCopy = reply;
+  scopeCopy = scope;
+  recordCopy = record;
+  _setupConnection = [(AVTAvatarRemoteImageRenderer *)self _setupConnection];
   connection = self->_connection;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -251,9 +251,9 @@ LABEL_6:
   v15[2] = __83__AVTAvatarRemoteImageRenderer_getSnapshotAndCacheForAvatarRecord_scope_withReply___block_invoke_2;
   v15[3] = &unk_1E7F3BE58;
   v15[4] = self;
-  v16 = v8;
-  v14 = v8;
-  [v13 generateAndCacheImageForAvatarRecord:v10 scope:v9 withReply:v15];
+  v16 = replyCopy;
+  v14 = replyCopy;
+  [v13 generateAndCacheImageForAvatarRecord:recordCopy scope:scopeCopy withReply:v15];
 }
 
 void __83__AVTAvatarRemoteImageRenderer_getSnapshotAndCacheForAvatarRecord_scope_withReply___block_invoke_2(uint64_t a1, void *a2)
@@ -274,26 +274,26 @@ void __83__AVTAvatarRemoteImageRenderer_getSnapshotAndCacheForAvatarRecord_scope
   }
 }
 
-- (void)_requestStickerAndCacheWithProxy:(id)a3 avatarRecord:(id)a4 stickerPackName:(id)a5 stickerConfigurationName:(id)a6 resource:(id)a7 reply:(id)a8
+- (void)_requestStickerAndCacheWithProxy:(id)proxy avatarRecord:(id)record stickerPackName:(id)name stickerConfigurationName:(id)configurationName resource:(id)resource reply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  proxyCopy = proxy;
+  recordCopy = record;
+  nameCopy = name;
+  configurationNameCopy = configurationName;
+  resourceCopy = resource;
+  replyCopy = reply;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(AVTUILogger *)self->_logger logRequestedAnimojiSticker:v17];
+    [(AVTUILogger *)self->_logger logRequestedAnimojiSticker:configurationNameCopy];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __134__AVTAvatarRemoteImageRenderer__requestStickerAndCacheWithProxy_avatarRecord_stickerPackName_stickerConfigurationName_resource_reply___block_invoke;
     v25[3] = &unk_1E7F3B9D8;
     v20 = &v26;
-    v26 = v19;
-    v21 = v19;
-    [v14 requestAnimojiStickerImageForAvatarRecord:v15 withStickerPackName:v16 stickerConfigurationName:v17 resource:v18 withReply:v25];
+    v26 = replyCopy;
+    v21 = replyCopy;
+    [proxyCopy requestAnimojiStickerImageForAvatarRecord:recordCopy withStickerPackName:nameCopy stickerConfigurationName:configurationNameCopy resource:resourceCopy withReply:v25];
   }
 
   else
@@ -303,34 +303,34 @@ void __83__AVTAvatarRemoteImageRenderer_getSnapshotAndCacheForAvatarRecord_scope
     v23[2] = __134__AVTAvatarRemoteImageRenderer__requestStickerAndCacheWithProxy_avatarRecord_stickerPackName_stickerConfigurationName_resource_reply___block_invoke_2;
     v23[3] = &unk_1E7F3B9D8;
     v20 = &v24;
-    v24 = v19;
-    v22 = v19;
-    [v14 requestStickerImageForAvatarRecord:v15 withStickerPackName:v16 stickerConfigurationName:v17 resource:v18 withReply:v23];
+    v24 = replyCopy;
+    v22 = replyCopy;
+    [proxyCopy requestStickerImageForAvatarRecord:recordCopy withStickerPackName:nameCopy stickerConfigurationName:configurationNameCopy resource:resourceCopy withReply:v23];
   }
 }
 
-- (void)getStickerAndCacheForAvatarRecord:(id)a3 withStickerPackName:(id)a4 stickerConfigurationName:(id)a5 resource:(id)a6 withReply:(id)a7
+- (void)getStickerAndCacheForAvatarRecord:(id)record withStickerPackName:(id)name stickerConfigurationName:(id)configurationName resource:(id)resource withReply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  recordCopy = record;
+  nameCopy = name;
+  configurationNameCopy = configurationName;
+  resourceCopy = resource;
+  replyCopy = reply;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __130__AVTAvatarRemoteImageRenderer_getStickerAndCacheForAvatarRecord_withStickerPackName_stickerConfigurationName_resource_withReply___block_invoke;
   v22[3] = &unk_1E7F3BE80;
   v22[4] = self;
-  v23 = v12;
-  v24 = v13;
-  v25 = v14;
-  v26 = v15;
-  v27 = v16;
-  v17 = v16;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v12;
+  v23 = recordCopy;
+  v24 = nameCopy;
+  v25 = configurationNameCopy;
+  v26 = resourceCopy;
+  v27 = replyCopy;
+  v17 = replyCopy;
+  v18 = resourceCopy;
+  v19 = configurationNameCopy;
+  v20 = nameCopy;
+  v21 = recordCopy;
   [(AVTAvatarRemoteImageRenderer *)self _startRequestWithRetryCount:10 withReply:v17 connectionRequestHandler:v22];
 }
 

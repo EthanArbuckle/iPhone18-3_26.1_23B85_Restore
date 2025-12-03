@@ -1,35 +1,35 @@
 @interface ASRSchemaASRToken
-- (ASRSchemaASRToken)initWithDictionary:(id)a3;
-- (ASRSchemaASRToken)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRToken)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRToken)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAcousticCost:(BOOL)a3;
-- (void)setHasAppendSpaceAfter:(BOOL)a3;
-- (void)setHasConfidence:(BOOL)a3;
-- (void)setHasEndTimeInNs:(BOOL)a3;
-- (void)setHasGraphCost:(BOOL)a3;
-- (void)setHasIsAutoPunctuation:(BOOL)a3;
-- (void)setHasIsModifiedByAutoPunctuation:(BOOL)a3;
-- (void)setHasSilenceStartTimeInNs:(BOOL)a3;
-- (void)setHasStartTimeInNs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAcousticCost:(BOOL)cost;
+- (void)setHasAppendSpaceAfter:(BOOL)after;
+- (void)setHasConfidence:(BOOL)confidence;
+- (void)setHasEndTimeInNs:(BOOL)ns;
+- (void)setHasGraphCost:(BOOL)cost;
+- (void)setHasIsAutoPunctuation:(BOOL)punctuation;
+- (void)setHasIsModifiedByAutoPunctuation:(BOOL)punctuation;
+- (void)setHasSilenceStartTimeInNs:(BOOL)ns;
+- (void)setHasStartTimeInNs:(BOOL)ns;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRToken
 
-- (ASRSchemaASRToken)initWithDictionary:(id)a3
+- (ASRSchemaASRToken)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v35.receiver = self;
   v35.super_class = ASRSchemaASRToken;
   v5 = [(ASRSchemaASRToken *)&v35 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkIndex"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkIndex"];
     objc_opt_class();
     v32 = v6;
     if (objc_opt_isKindOfClass())
@@ -37,42 +37,42 @@
       -[ASRSchemaASRToken setLinkIndex:](v5, "setLinkIndex:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"startTimeInNs"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"startTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRToken setStartTimeInNs:](v5, "setStartTimeInNs:", [v7 unsignedLongLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"endTimeInNs"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"endTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRToken setEndTimeInNs:](v5, "setEndTimeInNs:", [v8 unsignedLongLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"appendSpaceAfter"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"appendSpaceAfter"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRToken setAppendSpaceAfter:](v5, "setAppendSpaceAfter:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"silenceStartTimeInNs"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"silenceStartTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRToken setSilenceStartTimeInNs:](v5, "setSilenceStartTimeInNs:", [v10 unsignedLongLongValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"confidence"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"confidence"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRToken setConfidence:](v5, "setConfidence:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"punctuationText"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"punctuationText"];
     objc_opt_class();
     v34 = v12;
     if (objc_opt_isKindOfClass())
@@ -88,14 +88,14 @@
       v5 = v13;
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"isAutoPunctuation"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"isAutoPunctuation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRToken setIsAutoPunctuation:](v5, "setIsAutoPunctuation:", [v17 BOOLValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"isModifiedByAutoPunctuation"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"isModifiedByAutoPunctuation"];
     objc_opt_class();
     v33 = v18;
     if (objc_opt_isKindOfClass())
@@ -104,7 +104,7 @@
     }
 
     v31 = v17;
-    v19 = [v4 objectForKeyedSubscript:@"graphCost"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"graphCost"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -112,7 +112,7 @@
       [(ASRSchemaASRToken *)v5 setGraphCost:?];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"acousticCost"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"acousticCost"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -120,7 +120,7 @@
       [(ASRSchemaASRToken *)v5 setAcousticCost:?];
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"entityMetadata"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"entityMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -147,30 +147,30 @@
   return v5;
 }
 
-- (ASRSchemaASRToken)initWithJSON:(id)a3
+- (ASRSchemaASRToken)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRToken *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRToken *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRToken *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -183,14 +183,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x200) != 0)
   {
     v8 = MEMORY[0x1E696AD98];
     [(ASRSchemaASRToken *)self acousticCost];
     v9 = [v8 numberWithDouble:?];
-    [v3 setObject:v9 forKeyedSubscript:@"acousticCost"];
+    [dictionary setObject:v9 forKeyedSubscript:@"acousticCost"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -211,7 +211,7 @@ LABEL_3:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASRToken appendSpaceAfter](self, "appendSpaceAfter")}];
-  [v3 setObject:v10 forKeyedSubscript:@"appendSpaceAfter"];
+  [dictionary setObject:v10 forKeyedSubscript:@"appendSpaceAfter"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -227,29 +227,29 @@ LABEL_4:
 
 LABEL_11:
   v11 = [MEMORY[0x1E696AD98] numberWithInt:{-[ASRSchemaASRToken confidence](self, "confidence")}];
-  [v3 setObject:v11 forKeyedSubscript:@"confidence"];
+  [dictionary setObject:v11 forKeyedSubscript:@"confidence"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRToken endTimeInNs](self, "endTimeInNs")}];
-    [v3 setObject:v5 forKeyedSubscript:@"endTimeInNs"];
+    [dictionary setObject:v5 forKeyedSubscript:@"endTimeInNs"];
   }
 
 LABEL_6:
   if (self->_entityMetadata)
   {
-    v6 = [(ASRSchemaASRToken *)self entityMetadata];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    entityMetadata = [(ASRSchemaASRToken *)self entityMetadata];
+    dictionaryRepresentation = [entityMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"entityMetadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"entityMetadata"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"entityMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"entityMetadata"];
     }
   }
 
@@ -259,7 +259,7 @@ LABEL_6:
     v21 = MEMORY[0x1E696AD98];
     [(ASRSchemaASRToken *)self graphCost];
     v22 = [v21 numberWithDouble:?];
-    [v3 setObject:v22 forKeyedSubscript:@"graphCost"];
+    [dictionary setObject:v22 forKeyedSubscript:@"graphCost"];
 
     v13 = self->_has;
     if ((v13 & 0x40) == 0)
@@ -280,7 +280,7 @@ LABEL_17:
   }
 
   v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASRToken isAutoPunctuation](self, "isAutoPunctuation")}];
-  [v3 setObject:v23 forKeyedSubscript:@"isAutoPunctuation"];
+  [dictionary setObject:v23 forKeyedSubscript:@"isAutoPunctuation"];
 
   v13 = self->_has;
   if ((v13 & 0x80) == 0)
@@ -296,28 +296,28 @@ LABEL_18:
 
 LABEL_31:
   v24 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASRToken isModifiedByAutoPunctuation](self, "isModifiedByAutoPunctuation")}];
-  [v3 setObject:v24 forKeyedSubscript:@"isModifiedByAutoPunctuation"];
+  [dictionary setObject:v24 forKeyedSubscript:@"isModifiedByAutoPunctuation"];
 
   if (*&self->_has)
   {
 LABEL_19:
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ASRSchemaASRToken linkIndex](self, "linkIndex")}];
-    [v3 setObject:v14 forKeyedSubscript:@"linkIndex"];
+    [dictionary setObject:v14 forKeyedSubscript:@"linkIndex"];
   }
 
 LABEL_20:
   if (self->_punctuationText)
   {
-    v15 = [(ASRSchemaASRToken *)self punctuationText];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"punctuationText"];
+    punctuationText = [(ASRSchemaASRToken *)self punctuationText];
+    v16 = [punctuationText copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"punctuationText"];
   }
 
   v17 = self->_has;
   if ((v17 & 0x10) != 0)
   {
     v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRToken silenceStartTimeInNs](self, "silenceStartTimeInNs")}];
-    [v3 setObject:v18 forKeyedSubscript:@"silenceStartTimeInNs"];
+    [dictionary setObject:v18 forKeyedSubscript:@"silenceStartTimeInNs"];
 
     v17 = self->_has;
   }
@@ -325,12 +325,12 @@ LABEL_20:
   if ((v17 & 2) != 0)
   {
     v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRToken startTimeInNs](self, "startTimeInNs")}];
-    [v3 setObject:v19 forKeyedSubscript:@"startTimeInNs"];
+    [dictionary setObject:v19 forKeyedSubscript:@"startTimeInNs"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -513,16 +513,16 @@ LABEL_24:
   return v5 ^ v4 ^ v6 ^ v7 ^ v8 ^ v9 ^ v14 ^ v15 ^ v19 ^ v20 ^ v10 ^ [(ASRSchemaASREntityMetadata *)self->_entityMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_50;
   }
 
   has = self->_has;
-  v6 = v4[48];
+  v6 = equalCopy[48];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_50;
@@ -531,13 +531,13 @@ LABEL_24:
   if (*&has)
   {
     linkIndex = self->_linkIndex;
-    if (linkIndex != [v4 linkIndex])
+    if (linkIndex != [equalCopy linkIndex])
     {
       goto LABEL_50;
     }
 
     has = self->_has;
-    v6 = v4[48];
+    v6 = equalCopy[48];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -549,13 +549,13 @@ LABEL_24:
   if (v8)
   {
     startTimeInNs = self->_startTimeInNs;
-    if (startTimeInNs != [v4 startTimeInNs])
+    if (startTimeInNs != [equalCopy startTimeInNs])
     {
       goto LABEL_50;
     }
 
     has = self->_has;
-    v6 = v4[48];
+    v6 = equalCopy[48];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -567,13 +567,13 @@ LABEL_24:
   if (v10)
   {
     endTimeInNs = self->_endTimeInNs;
-    if (endTimeInNs != [v4 endTimeInNs])
+    if (endTimeInNs != [equalCopy endTimeInNs])
     {
       goto LABEL_50;
     }
 
     has = self->_has;
-    v6 = v4[48];
+    v6 = equalCopy[48];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -585,13 +585,13 @@ LABEL_24:
   if (v12)
   {
     appendSpaceAfter = self->_appendSpaceAfter;
-    if (appendSpaceAfter != [v4 appendSpaceAfter])
+    if (appendSpaceAfter != [equalCopy appendSpaceAfter])
     {
       goto LABEL_50;
     }
 
     has = self->_has;
-    v6 = v4[48];
+    v6 = equalCopy[48];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -603,13 +603,13 @@ LABEL_24:
   if (v14)
   {
     silenceStartTimeInNs = self->_silenceStartTimeInNs;
-    if (silenceStartTimeInNs != [v4 silenceStartTimeInNs])
+    if (silenceStartTimeInNs != [equalCopy silenceStartTimeInNs])
     {
       goto LABEL_50;
     }
 
     has = self->_has;
-    v6 = v4[48];
+    v6 = equalCopy[48];
   }
 
   v16 = (*&has >> 5) & 1;
@@ -621,26 +621,26 @@ LABEL_24:
   if (v16)
   {
     confidence = self->_confidence;
-    if (confidence != [v4 confidence])
+    if (confidence != [equalCopy confidence])
     {
       goto LABEL_50;
     }
   }
 
-  v18 = [(ASRSchemaASRToken *)self punctuationText];
-  v19 = [v4 punctuationText];
-  if ((v18 != 0) == (v19 == 0))
+  punctuationText = [(ASRSchemaASRToken *)self punctuationText];
+  punctuationText2 = [equalCopy punctuationText];
+  if ((punctuationText != 0) == (punctuationText2 == 0))
   {
     goto LABEL_49;
   }
 
-  v20 = [(ASRSchemaASRToken *)self punctuationText];
-  if (v20)
+  punctuationText3 = [(ASRSchemaASRToken *)self punctuationText];
+  if (punctuationText3)
   {
-    v21 = v20;
-    v22 = [(ASRSchemaASRToken *)self punctuationText];
-    v23 = [v4 punctuationText];
-    v24 = [v22 isEqual:v23];
+    v21 = punctuationText3;
+    punctuationText4 = [(ASRSchemaASRToken *)self punctuationText];
+    punctuationText5 = [equalCopy punctuationText];
+    v24 = [punctuationText4 isEqual:punctuationText5];
 
     if (!v24)
     {
@@ -654,7 +654,7 @@ LABEL_24:
 
   v25 = self->_has;
   v26 = (*&v25 >> 6) & 1;
-  v27 = v4[48];
+  v27 = equalCopy[48];
   if (v26 != ((v27 >> 6) & 1))
   {
     goto LABEL_50;
@@ -663,13 +663,13 @@ LABEL_24:
   if (v26)
   {
     isAutoPunctuation = self->_isAutoPunctuation;
-    if (isAutoPunctuation != [v4 isAutoPunctuation])
+    if (isAutoPunctuation != [equalCopy isAutoPunctuation])
     {
       goto LABEL_50;
     }
 
     v25 = self->_has;
-    v27 = v4[48];
+    v27 = equalCopy[48];
   }
 
   v29 = (*&v25 >> 7) & 1;
@@ -681,13 +681,13 @@ LABEL_24:
   if (v29)
   {
     isModifiedByAutoPunctuation = self->_isModifiedByAutoPunctuation;
-    if (isModifiedByAutoPunctuation != [v4 isModifiedByAutoPunctuation])
+    if (isModifiedByAutoPunctuation != [equalCopy isModifiedByAutoPunctuation])
     {
       goto LABEL_50;
     }
 
     v25 = self->_has;
-    v27 = v4[48];
+    v27 = equalCopy[48];
   }
 
   v31 = (*&v25 >> 8) & 1;
@@ -699,14 +699,14 @@ LABEL_24:
   if (v31)
   {
     graphCost = self->_graphCost;
-    [v4 graphCost];
+    [equalCopy graphCost];
     if (graphCost != v33)
     {
       goto LABEL_50;
     }
 
     v25 = self->_has;
-    v27 = v4[48];
+    v27 = equalCopy[48];
   }
 
   v34 = (*&v25 >> 9) & 1;
@@ -718,24 +718,24 @@ LABEL_24:
   if (v34)
   {
     acousticCost = self->_acousticCost;
-    [v4 acousticCost];
+    [equalCopy acousticCost];
     if (acousticCost != v36)
     {
       goto LABEL_50;
     }
   }
 
-  v18 = [(ASRSchemaASRToken *)self entityMetadata];
-  v19 = [v4 entityMetadata];
-  if ((v18 != 0) == (v19 == 0))
+  punctuationText = [(ASRSchemaASRToken *)self entityMetadata];
+  punctuationText2 = [equalCopy entityMetadata];
+  if ((punctuationText != 0) == (punctuationText2 == 0))
   {
 LABEL_49:
 
     goto LABEL_50;
   }
 
-  v37 = [(ASRSchemaASRToken *)self entityMetadata];
-  if (!v37)
+  entityMetadata = [(ASRSchemaASRToken *)self entityMetadata];
+  if (!entityMetadata)
   {
 
 LABEL_53:
@@ -743,10 +743,10 @@ LABEL_53:
     goto LABEL_51;
   }
 
-  v38 = v37;
-  v39 = [(ASRSchemaASRToken *)self entityMetadata];
-  v40 = [v4 entityMetadata];
-  v41 = [v39 isEqual:v40];
+  v38 = entityMetadata;
+  entityMetadata2 = [(ASRSchemaASRToken *)self entityMetadata];
+  entityMetadata3 = [equalCopy entityMetadata];
+  v41 = [entityMetadata2 isEqual:entityMetadata3];
 
   if (v41)
   {
@@ -760,9 +760,9 @@ LABEL_51:
   return v42;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -835,9 +835,9 @@ LABEL_7:
   }
 
 LABEL_8:
-  v5 = [(ASRSchemaASRToken *)self punctuationText];
+  punctuationText = [(ASRSchemaASRToken *)self punctuationText];
 
-  if (v5)
+  if (punctuationText)
   {
     PBDataWriterWriteStringField();
   }
@@ -886,21 +886,21 @@ LABEL_14:
   }
 
 LABEL_15:
-  v7 = [(ASRSchemaASRToken *)self entityMetadata];
+  entityMetadata = [(ASRSchemaASRToken *)self entityMetadata];
 
-  v8 = v10;
-  if (v7)
+  v8 = toCopy;
+  if (entityMetadata)
   {
-    v9 = [(ASRSchemaASRToken *)self entityMetadata];
+    entityMetadata2 = [(ASRSchemaASRToken *)self entityMetadata];
     PBDataWriterWriteSubmessage();
 
-    v8 = v10;
+    v8 = toCopy;
   }
 }
 
-- (void)setHasAcousticCost:(BOOL)a3
+- (void)setHasAcousticCost:(BOOL)cost
 {
-  if (a3)
+  if (cost)
   {
     v3 = 512;
   }
@@ -913,9 +913,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasGraphCost:(BOOL)a3
+- (void)setHasGraphCost:(BOOL)cost
 {
-  if (a3)
+  if (cost)
   {
     v3 = 256;
   }
@@ -928,9 +928,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasIsModifiedByAutoPunctuation:(BOOL)a3
+- (void)setHasIsModifiedByAutoPunctuation:(BOOL)punctuation
 {
-  if (a3)
+  if (punctuation)
   {
     v3 = 128;
   }
@@ -943,9 +943,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasIsAutoPunctuation:(BOOL)a3
+- (void)setHasIsAutoPunctuation:(BOOL)punctuation
 {
-  if (a3)
+  if (punctuation)
   {
     v3 = 64;
   }
@@ -958,9 +958,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasConfidence:(BOOL)a3
+- (void)setHasConfidence:(BOOL)confidence
 {
-  if (a3)
+  if (confidence)
   {
     v3 = 32;
   }
@@ -973,9 +973,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasSilenceStartTimeInNs:(BOOL)a3
+- (void)setHasSilenceStartTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 16;
   }
@@ -988,9 +988,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasAppendSpaceAfter:(BOOL)a3
+- (void)setHasAppendSpaceAfter:(BOOL)after
 {
-  if (a3)
+  if (after)
   {
     v3 = 8;
   }
@@ -1003,9 +1003,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasEndTimeInNs:(BOOL)a3
+- (void)setHasEndTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 4;
   }
@@ -1018,9 +1018,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasStartTimeInNs:(BOOL)a3
+- (void)setHasStartTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 2;
   }
@@ -1033,17 +1033,17 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ASRSchemaASRToken;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ASRSchemaASRToken *)self entityMetadata:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ASRSchemaASRToken *)self deleteEntityMetadata];
   }

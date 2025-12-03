@@ -5,8 +5,8 @@
 - (NSString)pmString;
 - (id)_dateOnlyFormatter;
 - (id)_timeOnlyFormatter;
-- (id)localizedTimeStringFromDate:(id)a3 forTimeZone:(id)a4 timeDesignator:(id *)a5;
-- (id)timeDesignatorForDate:(id)a3 timeZone:(id)a4;
+- (id)localizedTimeStringFromDate:(id)date forTimeZone:(id)zone timeDesignator:(id *)designator;
+- (id)timeDesignatorForDate:(id)date timeZone:(id)zone;
 - (void)_clearLocaleDependentState;
 - (void)_loadLocaleInfo;
 - (void)_reloadLocaleInfo;
@@ -43,8 +43,8 @@ uint64_t __34__MTDateFormatting_sharedInstance__block_invoke()
   v2 = [(MTDateFormatting *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__reloadLocaleInfo name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__reloadLocaleInfo name:*MEMORY[0x1E695D8F0] object:0];
 
     [(MTDateFormatting *)v2 _loadLocaleInfo];
   }
@@ -79,15 +79,15 @@ uint64_t __34__MTDateFormatting_sharedInstance__block_invoke()
 {
   [(MTDateFormatting *)self _clearLocaleDependentState];
   [(MTDateFormatting *)self _loadLocaleInfo];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"MTDateFormattingLocaleDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MTDateFormattingLocaleDidChangeNotification" object:0];
 }
 
 - (void)_loadLocaleInfo
 {
   v3 = MEMORY[0x1E696AB78];
-  v4 = [MEMORY[0x1E695DF58] currentLocale];
-  v11 = [v3 dateFormatFromTemplate:@"j" options:0 locale:v4];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v11 = [v3 dateFormatFromTemplate:@"j" options:0 locale:currentLocale];
 
   v5 = [v11 rangeOfString:@"H"] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v11, "rangeOfString:", @"k") != 0x7FFFFFFFFFFFFFFFLL;
   self->_use24HourTime = v5;
@@ -122,8 +122,8 @@ uint64_t __34__MTDateFormatting_sharedInstance__block_invoke()
     self->_dateOnlyFormatter = v4;
 
     v6 = self->_dateOnlyFormatter;
-    v7 = [MEMORY[0x1E695DF58] currentLocale];
-    [(NSDateFormatter *)v6 setLocale:v7];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    [(NSDateFormatter *)v6 setLocale:currentLocale];
 
     [(NSDateFormatter *)self->_dateOnlyFormatter setDateStyle:1];
     [(NSDateFormatter *)self->_dateOnlyFormatter setTimeStyle:0];
@@ -154,9 +154,9 @@ uint64_t __34__MTDateFormatting_sharedInstance__block_invoke()
   amString = self->_amString;
   if (!amString)
   {
-    v4 = [(MTDateFormatting *)self _dateOnlyFormatter];
-    v5 = [v4 AMSymbol];
-    v6 = [v5 copy];
+    _dateOnlyFormatter = [(MTDateFormatting *)self _dateOnlyFormatter];
+    aMSymbol = [_dateOnlyFormatter AMSymbol];
+    v6 = [aMSymbol copy];
     v7 = self->_amString;
     self->_amString = v6;
 
@@ -171,9 +171,9 @@ uint64_t __34__MTDateFormatting_sharedInstance__block_invoke()
   pmString = self->_pmString;
   if (!pmString)
   {
-    v4 = [(MTDateFormatting *)self _dateOnlyFormatter];
-    v5 = [v4 PMSymbol];
-    v6 = [v5 copy];
+    _dateOnlyFormatter = [(MTDateFormatting *)self _dateOnlyFormatter];
+    pMSymbol = [_dateOnlyFormatter PMSymbol];
+    v6 = [pMSymbol copy];
     v7 = self->_pmString;
     self->_pmString = v6;
 
@@ -183,40 +183,40 @@ uint64_t __34__MTDateFormatting_sharedInstance__block_invoke()
   return pmString;
 }
 
-- (id)localizedTimeStringFromDate:(id)a3 forTimeZone:(id)a4 timeDesignator:(id *)a5
+- (id)localizedTimeStringFromDate:(id)date forTimeZone:(id)zone timeDesignator:(id *)designator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MTDateFormatting *)self _timeOnlyFormatter];
-  v11 = v10;
-  if (v9)
+  dateCopy = date;
+  zoneCopy = zone;
+  _timeOnlyFormatter = [(MTDateFormatting *)self _timeOnlyFormatter];
+  v11 = _timeOnlyFormatter;
+  if (zoneCopy)
   {
-    v12 = [v10 timeZone];
-    v13 = [v9 isEqualToTimeZone:v12];
+    timeZone = [_timeOnlyFormatter timeZone];
+    v13 = [zoneCopy isEqualToTimeZone:timeZone];
 
     if ((v13 & 1) == 0)
     {
       v14 = [v11 copy];
 
-      [v14 setTimeZone:v9];
+      [v14 setTimeZone:zoneCopy];
       v11 = v14;
     }
   }
 
-  if (a5)
+  if (designator)
   {
-    *a5 = [(MTDateFormatting *)self timeDesignatorForDate:v8 timeZone:v9];
+    *designator = [(MTDateFormatting *)self timeDesignatorForDate:dateCopy timeZone:zoneCopy];
   }
 
-  v15 = [v11 stringFromDate:v8];
+  v15 = [v11 stringFromDate:dateCopy];
 
   return v15;
 }
 
-- (id)timeDesignatorForDate:(id)a3 timeZone:(id)a4
+- (id)timeDesignatorForDate:(id)date timeZone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  zoneCopy = zone;
   if (self->_use24HourTime)
   {
     v8 = &stru_1F29360E0;
@@ -224,14 +224,14 @@ uint64_t __34__MTDateFormatting_sharedInstance__block_invoke()
 
   else
   {
-    v9 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v10 = v9;
-    if (v7)
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v10 = currentCalendar;
+    if (zoneCopy)
     {
-      [v9 setTimeZone:v7];
+      [currentCalendar setTimeZone:zoneCopy];
     }
 
-    if ([v10 component:32 fromDate:v6] < 12)
+    if ([v10 component:32 fromDate:dateCopy] < 12)
     {
       [(MTDateFormatting *)self amString];
     }

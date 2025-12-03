@@ -8,7 +8,7 @@
 - (id)fb_processClass
 {
   v10 = 0;
-  v2 = [a1 treatedAsAnAppByFrontBoard:&v10];
+  v2 = [self treatedAsAnAppByFrontBoard:&v10];
   v3 = v10;
   if (v3)
   {
@@ -26,9 +26,9 @@
 
   else
   {
-    v6 = [a1 isXPCService];
+    isXPCService = [self isXPCService];
     v5 = off_1E783A898;
-    if (v6)
+    if (isXPCService)
     {
       v5 = off_1E783A848;
     }

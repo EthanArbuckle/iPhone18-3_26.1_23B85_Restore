@@ -2,94 +2,94 @@
 + (BOOL)areScrollingTabsAllowed;
 - ($175F26EC2B3A5A0892810A401BCEA849)_viewControllerContentScrollViewContentInsetDescriptor;
 - (BOOL)_focusedContentScrollViewIsScrolledToOrPastBottom;
-- (BOOL)dynamicBarAnimator:(id)a3 canHideBarsByDraggingWithOffset:(double)a4;
+- (BOOL)dynamicBarAnimator:(id)animator canHideBarsByDraggingWithOffset:(double)offset;
 - (CGRect)tabBarButtonsContainerFrame;
 - (CGRect)tabBarPaletteFrame;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (SUUIScrollingTabBarController)initWithNibName:(id)a3 bundle:(id)a4;
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4;
-- (UIOffset)_roundedOffsetFromOffset:(UIOffset)a3;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (SUUIScrollingTabBarController)initWithNibName:(id)name bundle:(id)bundle;
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute;
+- (UIOffset)_roundedOffsetFromOffset:(UIOffset)offset;
 - (UIOffset)additionalTabBarButtonsContainerPositionOffset;
 - (UIOffset)additionalTabBarPalettePositionOffset;
 - (double)_effectiveBottomBarOffset;
 - (double)_effectiveTopBarHeight;
 - (double)contentViewControllerBottomInsetAdjustment;
-- (id)_deepestFocusedViewControllerWithTopLevelFocusedViewController:(id)a3;
-- (id)_parentCellForViewController:(id)a3;
+- (id)_deepestFocusedViewControllerWithTopLevelFocusedViewController:(id)controller;
+- (id)_parentCellForViewController:(id)controller;
 - (id)_tabBarBackdropGroupName;
 - (id)childViewControllerForStatusBarHidden;
 - (id)childViewControllerForStatusBarStyle;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)contentScrollView;
 - (id)presentedViewController;
-- (id)rotatingSnapshotViewForWindow:(id)a3;
-- (id)tabBarPaletteWithHeight:(double)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)rotatingSnapshotViewForWindow:(id)window;
+- (id)tabBarPaletteWithHeight:(double)height;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (unint64_t)selectedIndex;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_animatePaletteWithSetup:(id)a3 animations:(id)a4 completion:(id)a5;
-- (void)_discardUndesirableLastSelectedPageIndexesWithHorizontalLayoutContext:(id *)a3;
-- (void)_invalidateContentCollectionViewLayoutForUpdatedContentSizeWithHorizontalLayoutContext:(id *)a3 indexOfViewControllerWithUpdatedContentSize:(unint64_t)a4;
-- (void)_notifyViewControllerAppearanceProgressUpdateWithHorizontalLayoutContext:(id *)a3;
-- (void)_popVisibleNavigationStacksToRootWithHorizontalLayoutContext:(id *)a3;
-- (void)_selectTabAtIndex:(unint64_t)a3 shouldFallbackToPoppingToTabRootContent:(BOOL)a4;
-- (void)_setFocusedViewController:(id)a3 showBarsIfNeeded:(BOOL)a4 animated:(BOOL)a5 notifyDelegate:(BOOL)a6;
-- (void)_setViewControllers:(id)a3 collectionViewsUpdateHandler:(id)a4 forFinalTearDown:(BOOL)a5;
-- (void)_tabBarButtonTapped:(id)a3;
-- (void)_updateAdditionalPositionOffsetsWithUpdateRecord:(id *)a3;
+- (void)_animatePaletteWithSetup:(id)setup animations:(id)animations completion:(id)completion;
+- (void)_discardUndesirableLastSelectedPageIndexesWithHorizontalLayoutContext:(id *)context;
+- (void)_invalidateContentCollectionViewLayoutForUpdatedContentSizeWithHorizontalLayoutContext:(id *)context indexOfViewControllerWithUpdatedContentSize:(unint64_t)size;
+- (void)_notifyViewControllerAppearanceProgressUpdateWithHorizontalLayoutContext:(id *)context;
+- (void)_popVisibleNavigationStacksToRootWithHorizontalLayoutContext:(id *)context;
+- (void)_selectTabAtIndex:(unint64_t)index shouldFallbackToPoppingToTabRootContent:(BOOL)content;
+- (void)_setFocusedViewController:(id)controller showBarsIfNeeded:(BOOL)needed animated:(BOOL)animated notifyDelegate:(BOOL)delegate;
+- (void)_setViewControllers:(id)controllers collectionViewsUpdateHandler:(id)handler forFinalTearDown:(BOOL)down;
+- (void)_tabBarButtonTapped:(id)tapped;
+- (void)_updateAdditionalPositionOffsetsWithUpdateRecord:(id *)record;
 - (void)_updateDynamicBarGeometry;
 - (void)_updateFocusedViewControllerInsetsForVerticalLayoutChange;
-- (void)_updateFocusedViewControllerWithHorizontalLayoutContext:(id *)a3;
+- (void)_updateFocusedViewControllerWithHorizontalLayoutContext:(id *)context;
 - (void)_updateForHorizontalLayoutChange;
 - (void)_updateHidesBarsOnSwipeAvailability;
 - (void)_updateHorizontalScrollingAvailability;
-- (void)_updateLayoutOfCollectionViewCell:(id)a3;
+- (void)_updateLayoutOfCollectionViewCell:(id)cell;
 - (void)_updateLayoutOfTabBar;
 - (void)_updateLayoutOfVisibleCollectionViewCells;
 - (void)_updateNavigationBarsForVerticalLayoutChange;
 - (void)_updateScrollViewContentOffsetsToTargetContentOffsets;
-- (void)_updateStatusBarPositionForcingVisible:(BOOL)a3;
+- (void)_updateStatusBarPositionForcingVisible:(BOOL)visible;
 - (void)_updateTabBarBackgroundsAndHairlines;
 - (void)_updateTabBarButtons;
-- (void)_updateTabBarButtonsSelectionProgressWithHorizontalLayoutContext:(id *)a3;
+- (void)_updateTabBarButtonsSelectionProgressWithHorizontalLayoutContext:(id *)context;
 - (void)_updateViewControllerContentScrollViewInset;
-- (void)_viewControllerNeedsNestedPagingScrollViewUpdate:(id)a3;
-- (void)attachTabBarPalette:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)_viewControllerNeedsNestedPagingScrollViewUpdate:(id)update;
+- (void)attachTabBarPalette:(id)palette animated:(BOOL)animated completion:(id)completion;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)decodeRestorableStateWithCoder:(id)a3;
-- (void)detachTabBarPalette:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)decodeRestorableStateWithCoder:(id)coder;
+- (void)detachTabBarPalette:(id)palette animated:(BOOL)animated completion:(id)completion;
 - (void)didUpdateAdditionalTabBarComponentsPositionOffsets;
-- (void)dynamicBarAnimatorDidUpdate:(id)a3;
-- (void)encodeRestorableStateWithCoder:(id)a3;
-- (void)hideBarWithTransition:(int)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)observedScrollViewDidScroll:(id)a3;
-- (void)observedScrollViewWillBeginDragging:(id)a3;
-- (void)observedScrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint)a5;
-- (void)scrollViewDidChangeContentInset:(id)a3;
-- (void)scrollingTabBarContentCollectionViewDidLayoutSubviews:(id)a3;
-- (void)scrollingTabBarControllerItemContext:(id)a3 observedNavigationStackDidChange:(id)a4;
-- (void)scrollingTabBarControllerItemContextRequestsContentOffsetUpdate:(id)a3;
-- (void)scrollingTabBarControllerItemContextRequestsContentSizeUpdate:(id)a3;
-- (void)setAdditionalTabBarButtonsContainerPositionOffset:(UIOffset)a3;
-- (void)setAdditionalTabBarPalettePositionOffset:(UIOffset)a3;
-- (void)setChargeEnabledOnTabBarButtonsContainer:(BOOL)a3;
-- (void)setClientContext:(id)a3;
-- (void)setScrollEnabled:(BOOL)a3;
-- (void)setSelectedViewController:(id)a3;
-- (void)setTransientViewController:(id)a3 animated:(BOOL)a4;
-- (void)setViewControllers:(id)a3;
-- (void)showBarWithTransition:(int)a3;
-- (void)tabBarBackgroundExtendsBehindPaletteDidChangeForPalette:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)dynamicBarAnimatorDidUpdate:(id)update;
+- (void)encodeRestorableStateWithCoder:(id)coder;
+- (void)hideBarWithTransition:(int)transition;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)observedScrollViewDidScroll:(id)scroll;
+- (void)observedScrollViewWillBeginDragging:(id)dragging;
+- (void)observedScrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint)offset;
+- (void)scrollViewDidChangeContentInset:(id)inset;
+- (void)scrollingTabBarContentCollectionViewDidLayoutSubviews:(id)subviews;
+- (void)scrollingTabBarControllerItemContext:(id)context observedNavigationStackDidChange:(id)change;
+- (void)scrollingTabBarControllerItemContextRequestsContentOffsetUpdate:(id)update;
+- (void)scrollingTabBarControllerItemContextRequestsContentSizeUpdate:(id)update;
+- (void)setAdditionalTabBarButtonsContainerPositionOffset:(UIOffset)offset;
+- (void)setAdditionalTabBarPalettePositionOffset:(UIOffset)offset;
+- (void)setChargeEnabledOnTabBarButtonsContainer:(BOOL)container;
+- (void)setClientContext:(id)context;
+- (void)setScrollEnabled:(BOOL)enabled;
+- (void)setSelectedViewController:(id)controller;
+- (void)setTransientViewController:(id)controller animated:(BOOL)animated;
+- (void)setViewControllers:(id)controllers;
+- (void)showBarWithTransition:(int)transition;
+- (void)tabBarBackgroundExtendsBehindPaletteDidChangeForPalette:(id)palette;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateTabBarComponentPositionOffsetsWithPresentationValues;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SUUIScrollingTabBarController
@@ -110,11 +110,11 @@ void __56__SUUIScrollingTabBarController_areScrollingTabsAllowed__block_invoke()
   areScrollingTabsAllowed_sAreScrollingTabsAllowed = [v0 BOOLForKey:@"AllowsScrollingTabs"];
 }
 
-- (SUUIScrollingTabBarController)initWithNibName:(id)a3 bundle:(id)a4
+- (SUUIScrollingTabBarController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = SUUIScrollingTabBarController;
-  v4 = [(SUUIScrollingTabBarController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(SUUIScrollingTabBarController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -133,12 +133,12 @@ void __56__SUUIScrollingTabBarController_areScrollingTabsAllowed__block_invoke()
   [(SUUIProxyScrollView *)self->_proxyScrollView setDelegate:0];
   [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView setDataSource:0];
   [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView setDelegate:0];
-  v3 = [(SUUICrossFadingTabBar *)self->_tabBar tabBarButtons];
+  tabBarButtons = [(SUUICrossFadingTabBar *)self->_tabBar tabBarButtons];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [tabBarButtons countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -150,14 +150,14 @@ void __56__SUUIScrollingTabBarController_areScrollingTabsAllowed__block_invoke()
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(tabBarButtons);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [tabBarButtons countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -194,41 +194,41 @@ void __56__SUUIScrollingTabBarController_areScrollingTabsAllowed__block_invoke()
 {
   v5.receiver = self;
   v5.super_class = SUUIScrollingTabBarController;
-  v3 = [(SUUIScrollingTabBarController *)&v5 presentedViewController];
-  if (!v3)
+  presentedViewController = [(SUUIScrollingTabBarController *)&v5 presentedViewController];
+  if (!presentedViewController)
   {
     if (self->_isDelegatingPresentedViewControllerLogicToSelectedViewController)
     {
-      v3 = 0;
+      presentedViewController = 0;
     }
 
     else
     {
       self->_isDelegatingPresentedViewControllerLogicToSelectedViewController = 1;
-      v3 = [(UIViewController *)self->_topLevelFocusedViewController presentedViewController];
+      presentedViewController = [(UIViewController *)self->_topLevelFocusedViewController presentedViewController];
       self->_isDelegatingPresentedViewControllerLogicToSelectedViewController = 0;
     }
   }
 
-  return v3;
+  return presentedViewController;
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [(SUUIScrollingTabBarController *)self delegate];
+  delegate = [(SUUIScrollingTabBarController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 tabBarControllerSupportedInterfaceOrientations:self];
+    supportedInterfaceOrientations = [delegate tabBarControllerSupportedInterfaceOrientations:self];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SUUIScrollingTabBarController;
-    v4 = [(SUUIViewController *)&v7 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [(SUUIViewController *)&v7 supportedInterfaceOrientations];
   }
 
-  v5 = v4;
+  v5 = supportedInterfaceOrientations;
 
   return v5;
 }
@@ -239,11 +239,11 @@ void __56__SUUIScrollingTabBarController_areScrollingTabsAllowed__block_invoke()
   v35.receiver = self;
   v35.super_class = SUUIScrollingTabBarController;
   [(SUUIScrollingTabBarController *)&v35 viewDidLoad];
-  v3 = [(SUUIScrollingTabBarController *)self view];
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(SUUIScrollingTabBarController *)self view];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [view setBackgroundColor:clearColor];
 
-  [v3 bounds];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -251,7 +251,7 @@ void __56__SUUIScrollingTabBarController_areScrollingTabsAllowed__block_invoke()
   v13 = objc_alloc(MEMORY[0x277D75D18]);
   v14 = [v13 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v14 setHidden:1];
-  [v3 addSubview:v14];
+  [view addSubview:v14];
   self->_contentCollectionViewItemSize.width = v10;
   self->_contentCollectionViewItemSize.height = v12;
   v15 = objc_alloc_init(MEMORY[0x277D752F0]);
@@ -297,13 +297,13 @@ void __56__SUUIScrollingTabBarController_areScrollingTabsAllowed__block_invoke()
   contentCollectionView = self->_contentCollectionView;
   self->_contentCollectionView = v21;
 
-  v23 = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView panGestureRecognizer];
-  [v23 _setHysteresis:15.0];
+  panGestureRecognizer = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView panGestureRecognizer];
+  [panGestureRecognizer _setHysteresis:15.0];
 
   [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView setAllowsSelection:0];
   v24 = self->_contentCollectionView;
-  v25 = [MEMORY[0x277D75348] clearColor];
-  [(SUUIScrollingTabBarContentCollectionView *)v24 setBackgroundColor:v25];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  [(SUUIScrollingTabBarContentCollectionView *)v24 setBackgroundColor:clearColor2];
 
   [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView setDataSource:self];
   [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView setDelegate:self];
@@ -312,21 +312,21 @@ void __56__SUUIScrollingTabBarController_areScrollingTabsAllowed__block_invoke()
   [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView setShowsHorizontalScrollIndicator:0];
   [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView setShowsVerticalScrollIndicator:0];
   [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView setPagingEnabled:1];
-  [v3 addSubview:self->_contentCollectionView];
+  [view addSubview:self->_contentCollectionView];
   [(SUUIScrollingTabBarController *)self _updateHorizontalScrollingAvailability];
-  v26 = [(SUUIScrollingTabBarController *)self _tabBarBackdropGroupName];
+  _tabBarBackdropGroupName = [(SUUIScrollingTabBarController *)self _tabBarBackdropGroupName];
   v27 = objc_alloc_init(MEMORY[0x277D75D18]);
   tabBarContainerView = self->_tabBarContainerView;
   self->_tabBarContainerView = v27;
 
-  [v3 addSubview:self->_tabBarContainerView];
+  [view addSubview:self->_tabBarContainerView];
   v29 = objc_alloc_init(SUUICrossFadingTabBar);
   tabBar = self->_tabBar;
   self->_tabBar = v29;
 
   [(SUUICrossFadingTabBar *)self->_tabBar _setChargeEnabled:self->_chargeEnabledOnTabBarButtonsContainer];
-  v31 = [(SUUICrossFadingTabBar *)self->_tabBar backgroundView];
-  [v31 setBackdropBarGroupName:v26];
+  backgroundView = [(SUUICrossFadingTabBar *)self->_tabBar backgroundView];
+  [backgroundView setBackdropBarGroupName:_tabBarBackdropGroupName];
   [(UIView *)self->_tabBarContainerView addSubview:self->_tabBar];
   [(SUUIScrollingTabBarController *)self _updateTabBarButtons];
   v32 = objc_alloc_init(SUUIDynamicBarAnimator);
@@ -338,8 +338,8 @@ void __56__SUUIScrollingTabBarController_areScrollingTabsAllowed__block_invoke()
   if (self->_transientViewController)
   {
     [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView setHidden:1];
-    v34 = [(UIViewController *)self->_transientViewController view];
-    [v3 insertSubview:v34 belowSubview:self->_tabBarContainerView];
+    view2 = [(UIViewController *)self->_transientViewController view];
+    [view insertSubview:view2 belowSubview:self->_tabBarContainerView];
   }
 }
 
@@ -348,8 +348,8 @@ void __56__SUUIScrollingTabBarController_areScrollingTabsAllowed__block_invoke()
   v29.receiver = self;
   v29.super_class = SUUIScrollingTabBarController;
   [(SUUIScrollingTabBarController *)&v29 viewDidLayoutSubviews];
-  v3 = [(SUUIScrollingTabBarController *)self view];
-  [v3 bounds];
+  view = [(SUUIScrollingTabBarController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -357,11 +357,11 @@ void __56__SUUIScrollingTabBarController_areScrollingTabsAllowed__block_invoke()
   proxyScrollView = self->_proxyScrollView;
   if (proxyScrollView)
   {
-    v13 = [(SUUIProxyScrollView *)proxyScrollView superview];
+    superview = [(SUUIProxyScrollView *)proxyScrollView superview];
 
-    if (!v13)
+    if (!superview)
     {
-      [v3 addSubview:self->_proxyScrollView];
+      [view addSubview:self->_proxyScrollView];
     }
   }
 
@@ -398,12 +398,12 @@ void __56__SUUIScrollingTabBarController_areScrollingTabsAllowed__block_invoke()
 
     p_contentCollectionViewItemSize->width = v9;
     self->_contentCollectionViewItemSize.height = v11;
-    v22 = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView collectionViewLayout];
+    collectionViewLayout = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView collectionViewLayout];
     v23 = objc_alloc_init([objc_opt_class() invalidationContextClass]);
 
     [v23 setInvalidateFlowLayoutDelegateMetrics:1];
-    v24 = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView collectionViewLayout];
-    [v24 invalidateLayoutWithContext:v23];
+    collectionViewLayout2 = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView collectionViewLayout];
+    [collectionViewLayout2 invalidateLayoutWithContext:v23];
   }
 
   v30.origin.x = v5;
@@ -446,14 +446,14 @@ void __56__SUUIScrollingTabBarController_areScrollingTabsAllowed__block_invoke()
   [(SUUIScrollingTabBarController *)self _updateForHorizontalLayoutChange];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = SUUIScrollingTabBarController;
-  [(SUUIViewController *)&v8 viewWillAppear:a3];
-  v4 = [(SUUIScrollingTabBarController *)self transitionCoordinator];
-  v5 = v4;
-  if (v4)
+  [(SUUIViewController *)&v8 viewWillAppear:appear];
+  transitionCoordinator = [(SUUIScrollingTabBarController *)self transitionCoordinator];
+  v5 = transitionCoordinator;
+  if (transitionCoordinator)
   {
     v6[4] = self;
     v7[0] = MEMORY[0x277D85DD0];
@@ -465,7 +465,7 @@ void __56__SUUIScrollingTabBarController_areScrollingTabsAllowed__block_invoke()
     v6[1] = 3221225472;
     v6[2] = __48__SUUIScrollingTabBarController_viewWillAppear___block_invoke_2;
     v6[3] = &unk_2798F5A88;
-    [v4 animateAlongsideTransition:v7 completion:v6];
+    [transitionCoordinator animateAlongsideTransition:v7 completion:v6];
   }
 
   else
@@ -487,14 +487,14 @@ uint64_t __48__SUUIScrollingTabBarController_viewWillAppear___block_invoke_2(uin
   return result;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = SUUIScrollingTabBarController;
-  [(SUUIScrollingTabBarController *)&v8 viewWillDisappear:a3];
-  v4 = [(SUUIScrollingTabBarController *)self transitionCoordinator];
-  v5 = v4;
-  if (v4)
+  [(SUUIScrollingTabBarController *)&v8 viewWillDisappear:disappear];
+  transitionCoordinator = [(SUUIScrollingTabBarController *)self transitionCoordinator];
+  v5 = transitionCoordinator;
+  if (transitionCoordinator)
   {
     v6[4] = self;
     v7[0] = MEMORY[0x277D85DD0];
@@ -506,7 +506,7 @@ uint64_t __48__SUUIScrollingTabBarController_viewWillAppear___block_invoke_2(uin
     v6[1] = 3221225472;
     v6[2] = __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2;
     v6[3] = &unk_2798F5A88;
-    [v4 animateAlongsideTransition:v7 completion:v6];
+    [transitionCoordinator animateAlongsideTransition:v7 completion:v6];
   }
 
   else
@@ -528,19 +528,19 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
   return result;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(SUUIScrollingTabBarController *)self delegate];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  delegate = [(SUUIScrollingTabBarController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 tabBarController:self willTransitionToSize:v7 withTransitionCoordinator:{width, height}];
+    [delegate tabBarController:self willTransitionToSize:coordinatorCopy withTransitionCoordinator:{width, height}];
   }
 
   self->_shouldPreserveFocusUponNextContentCollectionViewItemSizeChange = 1;
-  if (v7)
+  if (coordinatorCopy)
   {
     ++self->_referenceCountForIgnoringContentOffsetUpdateRequests;
     v10[0] = MEMORY[0x277D85DD0];
@@ -548,12 +548,12 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
     v10[2] = __84__SUUIScrollingTabBarController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
     v10[3] = &unk_2798F5A88;
     v10[4] = self;
-    [v7 animateAlongsideTransition:0 completion:v10];
+    [coordinatorCopy animateAlongsideTransition:0 completion:v10];
   }
 
   v9.receiver = self;
   v9.super_class = SUUIScrollingTabBarController;
-  [(SUUIScrollingTabBarController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(SUUIScrollingTabBarController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 - (id)contentScrollView
@@ -569,8 +569,8 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
     [(SUUIProxyScrollView *)self->_proxyScrollView setDelegate:self];
     [(SUUIProxyScrollView *)self->_proxyScrollView setScrollEnabled:0];
     [(SUUIProxyScrollView *)self->_proxyScrollView setScrollsToTop:0];
-    v6 = [(SUUIScrollingTabBarController *)self view];
-    [v6 addSubview:self->_proxyScrollView];
+    view = [(SUUIScrollingTabBarController *)self view];
+    [view addSubview:self->_proxyScrollView];
   }
 
   v7 = self->_proxyScrollView;
@@ -578,7 +578,7 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
   return v7;
 }
 
-- (id)rotatingSnapshotViewForWindow:(id)a3
+- (id)rotatingSnapshotViewForWindow:(id)window
 {
   v4 = self->_transientViewController;
   if (!v4)
@@ -586,24 +586,24 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
     v4 = self->_topLevelFocusedViewController;
   }
 
-  v5 = [(UIViewController *)v4 view];
+  view = [(UIViewController *)v4 view];
 
-  return v5;
+  return view;
 }
 
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute
 {
   v17.receiver = self;
   v17.super_class = SUUIScrollingTabBarController;
-  [(SUUIScrollingTabBarController *)&v17 _edgeInsetsForChildViewController:a3 insetsAreAbsolute:?];
+  [(SUUIScrollingTabBarController *)&v17 _edgeInsetsForChildViewController:controller insetsAreAbsolute:?];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   [(SUUIScrollingTabBarController *)self contentViewControllerBottomInsetAdjustment];
   v13 = v12;
-  if (a4)
+  if (absolute)
   {
-    *a4 = 0;
+    *absolute = 0;
   }
 
   v14 = v7;
@@ -616,13 +616,13 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
   return result;
 }
 
-- (void)setClientContext:(id)a3
+- (void)setClientContext:(id)context
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = SUUIScrollingTabBarController;
-  [(SUUIViewController *)&v15 setClientContext:v4];
+  [(SUUIViewController *)&v15 setClientContext:contextCopy];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -645,7 +645,7 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
         v10 = *(*(&v11 + 1) + 8 * i);
         if ([v10 conformsToProtocol:{&unk_286BCF1D8, v11}])
         {
-          [v10 setClientContext:v4];
+          [v10 setClientContext:contextCopy];
         }
       }
 
@@ -656,12 +656,12 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (_SUUIScrollingTabFocusedContentScrollViewContentSizeObservationContext == a6)
+  if (_SUUIScrollingTabFocusedContentScrollViewContentSizeObservationContext == context)
   {
 
-    [(SUUIScrollingTabBarController *)self _updateHidesBarsOnSwipeAvailability:a3];
+    [(SUUIScrollingTabBarController *)self _updateHidesBarsOnSwipeAvailability:path];
   }
 
   else
@@ -670,21 +670,21 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
     v10 = v7;
     v8.receiver = self;
     v8.super_class = SUUIScrollingTabBarController;
-    [(SUUIScrollingTabBarController *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(SUUIScrollingTabBarController *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (BOOL)dynamicBarAnimator:(id)a3 canHideBarsByDraggingWithOffset:(double)a4
+- (BOOL)dynamicBarAnimator:(id)animator canHideBarsByDraggingWithOffset:(double)offset
 {
   [(UIScrollView *)self->_focusedContentScrollView contentSize];
   v7 = v6;
   [(UIScrollView *)self->_focusedContentScrollView contentInset];
   v9 = v7 + v8;
   [(UIScrollView *)self->_focusedContentScrollView bounds];
-  return v9 - CGRectGetMaxY(v11) - a4 > 49.0;
+  return v9 - CGRectGetMaxY(v11) - offset > 49.0;
 }
 
-- (void)dynamicBarAnimatorDidUpdate:(id)a3
+- (void)dynamicBarAnimatorDidUpdate:(id)update
 {
   [(SUUIScrollingTabBarController *)self _updateNavigationBarsForVerticalLayoutChange];
   [(SUUIScrollingTabBarController *)self _updateLayoutOfTabBar];
@@ -692,11 +692,11 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
   [(SUUIScrollingTabBarController *)self _updateFocusedViewControllerInsetsForVerticalLayoutChange];
 }
 
-- (void)scrollViewDidChangeContentInset:(id)a3
+- (void)scrollViewDidChangeContentInset:(id)inset
 {
-  if (self->_proxyScrollView == a3)
+  if (self->_proxyScrollView == inset)
   {
-    [a3 contentInset];
+    [inset contentInset];
     v8.f64[0] = v4;
     v8.f64[1] = v5;
     v9.f64[0] = v6;
@@ -713,33 +713,33 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
   }
 }
 
-- (void)scrollingTabBarContentCollectionViewDidLayoutSubviews:(id)a3
+- (void)scrollingTabBarContentCollectionViewDidLayoutSubviews:(id)subviews
 {
-  if (self->_contentCollectionView == a3)
+  if (self->_contentCollectionView == subviews)
   {
     [(SUUIScrollingTabBarController *)self _updateForHorizontalLayoutChange];
   }
 }
 
-- (void)scrollingTabBarControllerItemContextRequestsContentOffsetUpdate:(id)a3
+- (void)scrollingTabBarControllerItemContextRequestsContentOffsetUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if (!self->_referenceCountForIgnoringContentOffsetUpdateRequests)
   {
-    v14 = v4;
-    v5 = [v4 viewController];
-    if ([v5 isViewLoaded])
+    v14 = updateCopy;
+    viewController = [updateCopy viewController];
+    if ([viewController isViewLoaded])
     {
-      v6 = [v5 view];
-      v7 = [v6 window];
+      view = [viewController view];
+      window = [view window];
 
-      if (v7)
+      if (window)
       {
-        v8 = [(SUUIScrollingTabBarController *)self _parentCellForViewController:v5];
+        v8 = [(SUUIScrollingTabBarController *)self _parentCellForViewController:viewController];
         if (v8)
         {
-          v9 = [v14 nestedPagingScrollView];
-          [v9 contentOffset];
+          nestedPagingScrollView = [v14 nestedPagingScrollView];
+          [nestedPagingScrollView contentOffset];
           v11 = v10;
           [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView contentOffset];
           v13 = v12;
@@ -749,15 +749,15 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
       }
     }
 
-    v4 = v14;
+    updateCopy = v14;
   }
 }
 
-- (void)scrollingTabBarControllerItemContextRequestsContentSizeUpdate:(id)a3
+- (void)scrollingTabBarControllerItemContextRequestsContentSizeUpdate:(id)update
 {
   viewControllers = self->_viewControllers;
-  v5 = [a3 viewController];
-  self->_indexOfViewControllerWithUpdatedContentSize = [(NSArray *)viewControllers indexOfObject:v5];
+  viewController = [update viewController];
+  self->_indexOfViewControllerWithUpdatedContentSize = [(NSArray *)viewControllers indexOfObject:viewController];
 
   if (![(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView isPerformingLayout])
   {
@@ -766,27 +766,27 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
   }
 }
 
-- (void)scrollingTabBarControllerItemContext:(id)a3 observedNavigationStackDidChange:(id)a4
+- (void)scrollingTabBarControllerItemContext:(id)context observedNavigationStackDidChange:(id)change
 {
-  if (self->_topLevelFocusedViewController == a4)
+  if (self->_topLevelFocusedViewController == change)
   {
     [(SUUIScrollingTabBarController *)self _updateHorizontalScrollingAvailability];
   }
 }
 
-- (void)tabBarBackgroundExtendsBehindPaletteDidChangeForPalette:(id)a3
+- (void)tabBarBackgroundExtendsBehindPaletteDidChangeForPalette:(id)palette
 {
   tabBarPalette = self->_tabBarPalette;
-  if (tabBarPalette == a3 && [(SUUIScrollingTabBarPalette *)tabBarPalette isAttached])
+  if (tabBarPalette == palette && [(SUUIScrollingTabBarPalette *)tabBarPalette isAttached])
   {
 
     [(SUUIScrollingTabBarController *)self _updateTabBarBackgroundsAndHairlines];
   }
 }
 
-- (void)observedScrollViewDidScroll:(id)a3
+- (void)observedScrollViewDidScroll:(id)scroll
 {
-  v5 = a3;
+  scrollCopy = scroll;
   [(SUUIScrollingTabBarController *)self _updateDynamicBarGeometry];
   if (self->_focusedScrollViewIsDragging)
   {
@@ -800,7 +800,7 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
       self->_shouldShowBarsAfterDraggingDownward = 0;
     }
 
-    [v5 contentOffset];
+    [scrollCopy contentOffset];
     [(SUUIDynamicBarAnimator *)self->_dynamicBarAnimator updateDraggingWithOffset:v4];
   }
 
@@ -808,26 +808,26 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
   [(SUUIScrollingTabBarController *)self _updateFocusedViewControllerInsetsForVerticalLayoutChange];
 }
 
-- (void)observedScrollViewWillBeginDragging:(id)a3
+- (void)observedScrollViewWillBeginDragging:(id)dragging
 {
   self->_focusedScrollViewIsDragging = 1;
-  [a3 contentOffset];
+  [dragging contentOffset];
   [(SUUIDynamicBarAnimator *)self->_dynamicBarAnimator beginDraggingWithOffset:v4];
   self->_shouldShowBarsAfterDraggingDownward = [(SUUIScrollingTabBarController *)self _focusedContentScrollViewIsScrolledToOrPastBottom];
 }
 
-- (void)observedScrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint)a5
+- (void)observedScrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint)offset
 {
   if (self->_focusedScrollViewIsDragging)
   {
     self->_focusedScrollViewIsDragging = 0;
-    [(SUUIDynamicBarAnimator *)self->_dynamicBarAnimator endDraggingWithTargetOffset:a3 velocity:a5.y, a4.y * 1000.0, a5.x];
+    [(SUUIDynamicBarAnimator *)self->_dynamicBarAnimator endDraggingWithTargetOffset:dragging velocity:offset.y, velocity.y * 1000.0, offset.x];
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  if (self->_contentCollectionView == a3)
+  if (self->_contentCollectionView == view)
   {
     return [(NSArray *)self->_viewControllers count];
   }
@@ -838,27 +838,27 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_contentCollectionView == v6)
+  viewCopy = view;
+  pathCopy = path;
+  v8 = pathCopy;
+  if (self->_contentCollectionView == viewCopy)
   {
     ++self->_referenceCountForIgnoringContentOffsetUpdateRequests;
-    v10 = -[NSArray objectAtIndex:](self->_viewControllers, "objectAtIndex:", [v7 item]);
+    v10 = -[NSArray objectAtIndex:](self->_viewControllers, "objectAtIndex:", [pathCopy item]);
     v11 = [(NSMapTable *)self->_viewControllerToItemContext objectForKey:v10];
-    v12 = [v11 collectionViewCell];
-    if (v12)
+    collectionViewCell = [v11 collectionViewCell];
+    if (collectionViewCell)
     {
-      v13 = v12;
-      v14 = [(SUUIScrollingTabBarContentCollectionView *)v6 layoutAttributesForItemAtIndexPath:v8];
+      v13 = collectionViewCell;
+      v14 = [(SUUIScrollingTabBarContentCollectionView *)viewCopy layoutAttributesForItemAtIndexPath:v8];
       v15 = MEMORY[0x277D75D18];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __71__SUUIScrollingTabBarController_collectionView_cellForItemAtIndexPath___block_invoke;
       v23[3] = &unk_2798F5BC0;
-      v24 = v6;
+      v24 = viewCopy;
       v25 = v14;
       v9 = v13;
       v26 = v9;
@@ -868,17 +868,17 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
 
     else
     {
-      v9 = [(SUUIScrollingTabBarContentCollectionView *)v6 dequeueReusableCellWithReuseIdentifier:0x286AEFD80 forIndexPath:v8];
+      v9 = [(SUUIScrollingTabBarContentCollectionView *)viewCopy dequeueReusableCellWithReuseIdentifier:0x286AEFD80 forIndexPath:v8];
       [v11 setCollectionViewCell:v9];
     }
 
-    v17 = [v10 view];
+    view = [v10 view];
     if ([v11 viewControllerIsNavigationController])
     {
-      v18 = [v10 viewControllers];
-      v19 = [v18 firstObject];
+      viewControllers = [v10 viewControllers];
+      firstObject = [viewControllers firstObject];
 
-      v20 = [v19 view];
+      view2 = [firstObject view];
     }
 
     [(SUUIScrollingTabBarController *)self _viewControllerContentScrollViewContentInsetDescriptor];
@@ -896,15 +896,15 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
   return v9;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v7 = a4;
-  [a3 bounds];
+  cellCopy = cell;
+  [view bounds];
   v9 = v8;
   v11 = v10;
   viewControllerToItemContext = self->_viewControllerToItemContext;
-  v13 = [v7 viewController];
-  v14 = [(NSMapTable *)viewControllerToItemContext objectForKey:v13];
+  viewController = [cellCopy viewController];
+  v14 = [(NSMapTable *)viewControllerToItemContext objectForKey:viewController];
 
   [v14 prepareViewControllerForDisplayWithSize:{v9, v11}];
   v15 = MEMORY[0x277D75D18];
@@ -912,44 +912,44 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
   v20 = 3221225472;
   v21 = __83__SUUIScrollingTabBarController_collectionView_willDisplayCell_forItemAtIndexPath___block_invoke;
   v22 = &unk_2798F5AF8;
-  v23 = self;
-  v16 = v7;
+  selfCopy = self;
+  v16 = cellCopy;
   v24 = v16;
   [v15 performWithoutAnimation:&v19];
   v17 = [(SUUIScrollingTabBarController *)self delegate:v19];
   if (objc_opt_respondsToSelector())
   {
-    v18 = [v16 viewController];
-    [v17 tabBarController:self willDisplayViewController:v18];
+    viewController2 = [v16 viewController];
+    [v17 tabBarController:self willDisplayViewController:viewController2];
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v8 = [a4 viewController];
+  viewController = [cell viewController];
   v6 = [(NSMapTable *)self->_viewControllerToItemContext objectForKey:?];
   [v6 notifyOfUpdatedAppearanceStatus:{0, 0}];
-  v7 = [(SUUIScrollingTabBarController *)self delegate];
+  delegate = [(SUUIScrollingTabBarController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 tabBarController:self didEndDisplayingViewController:v8];
+    [delegate tabBarController:self didEndDisplayingViewController:viewController];
   }
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  if (self->_contentCollectionView == a3)
+  if (self->_contentCollectionView == view)
   {
     width = self->_contentCollectionViewItemSize.width;
     height = self->_contentCollectionViewItemSize.height;
-    v10 = -[NSArray objectAtIndex:](self->_viewControllers, "objectAtIndex:", [a5 item]);
+    v10 = -[NSArray objectAtIndex:](self->_viewControllers, "objectAtIndex:", [path item]);
     v11 = [(NSMapTable *)self->_viewControllerToItemContext objectForKey:v10];
     [v11 nestedPagingScrollViewContentWidth];
     v13 = v12;
     if ([v10 isViewLoaded])
     {
-      v14 = [v10 view];
-      [v14 bounds];
+      view = [v10 view];
+      [view bounds];
       v15 = CGRectGetWidth(v21);
 
       if (v15 > 0.00000011920929)
@@ -1003,14 +1003,14 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
   return result;
 }
 
-- (void)decodeRestorableStateWithCoder:(id)a3
+- (void)decodeRestorableStateWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"_SUUIScrollingTabStateRestorationSelectedViewController"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"_SUUIScrollingTabStateRestorationSelectedViewController"];
   if (v5)
   {
-    v6 = [(SUUIScrollingTabBarController *)self allViewControllers];
-    v7 = [v6 containsObject:v5];
+    allViewControllers = [(SUUIScrollingTabBarController *)self allViewControllers];
+    v7 = [allViewControllers containsObject:v5];
 
     if (v7)
     {
@@ -1020,48 +1020,48 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
 
   v8.receiver = self;
   v8.super_class = SUUIScrollingTabBarController;
-  [(SUUIScrollingTabBarController *)&v8 decodeRestorableStateWithCoder:v4];
+  [(SUUIScrollingTabBarController *)&v8 decodeRestorableStateWithCoder:coderCopy];
 }
 
-- (void)encodeRestorableStateWithCoder:(id)a3
+- (void)encodeRestorableStateWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SUUIScrollingTabBarController *)self selectedViewController];
-  if (v5)
+  coderCopy = coder;
+  selectedViewController = [(SUUIScrollingTabBarController *)self selectedViewController];
+  if (selectedViewController)
   {
-    [v4 encodeObject:v5 forKey:@"_SUUIScrollingTabStateRestorationSelectedViewController"];
+    [coderCopy encodeObject:selectedViewController forKey:@"_SUUIScrollingTabStateRestorationSelectedViewController"];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D75128] sharedApplication];
-    [v6 ignoreSnapshotOnNextApplicationLaunch];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] ignoreSnapshotOnNextApplicationLaunch];
   }
 
   v7.receiver = self;
   v7.super_class = SUUIScrollingTabBarController;
-  [(SUUIScrollingTabBarController *)&v7 encodeRestorableStateWithCoder:v4];
+  [(SUUIScrollingTabBarController *)&v7 encodeRestorableStateWithCoder:coderCopy];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v11.receiver = self;
   v11.super_class = SUUIScrollingTabBarController;
-  v4 = a3;
-  [(SUUIScrollingTabBarController *)&v11 traitCollectionDidChange:v4];
-  [v4 displayScale];
+  changeCopy = change;
+  [(SUUIScrollingTabBarController *)&v11 traitCollectionDidChange:changeCopy];
+  [changeCopy displayScale];
   v6 = v5;
 
-  v7 = [(SUUIScrollingTabBarController *)self traitCollection];
-  [v7 displayScale];
+  traitCollection = [(SUUIScrollingTabBarController *)self traitCollection];
+  [traitCollection displayScale];
   v9 = vabdd_f64(v6, v8);
 
   if (v9 > 0.00000011920929)
   {
     if ([(SUUIScrollingTabBarController *)self isViewLoaded])
     {
-      v10 = [(SUUIScrollingTabBarController *)self view];
-      [v10 setNeedsLayout];
+      view = [(SUUIScrollingTabBarController *)self view];
+      [view setNeedsLayout];
     }
   }
 }
@@ -1080,17 +1080,17 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v4 = [(SUUIScrollingTabBarController *)self viewControllers];
-  v5 = [(SUUIScrollingTabBarController *)self selectedViewController];
-  v6 = [v4 indexOfObject:v5];
+  viewControllers = [(SUUIScrollingTabBarController *)self viewControllers];
+  selectedViewController = [(SUUIScrollingTabBarController *)self selectedViewController];
+  v6 = [viewControllers indexOfObject:selectedViewController];
 
   return v6;
 }
 
-- (void)setAdditionalTabBarButtonsContainerPositionOffset:(UIOffset)a3
+- (void)setAdditionalTabBarButtonsContainerPositionOffset:(UIOffset)offset
 {
   v15 = *MEMORY[0x277D85DE8];
-  [(SUUIScrollingTabBarController *)self _roundedOffsetFromOffset:a3.horizontal, a3.vertical];
+  [(SUUIScrollingTabBarController *)self _roundedOffsetFromOffset:offset.horizontal, offset.vertical];
   p_additionalTabBarButtonsContainerPositionOffset = &self->_additionalTabBarButtonsContainerPositionOffset;
   if (self->_additionalTabBarButtonsContainerPositionOffset.horizontal != v4 || self->_additionalTabBarButtonsContainerPositionOffset.vertical != v5)
   {
@@ -1128,10 +1128,10 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
   }
 }
 
-- (void)setAdditionalTabBarPalettePositionOffset:(UIOffset)a3
+- (void)setAdditionalTabBarPalettePositionOffset:(UIOffset)offset
 {
   v15 = *MEMORY[0x277D85DE8];
-  [(SUUIScrollingTabBarController *)self _roundedOffsetFromOffset:a3.horizontal, a3.vertical];
+  [(SUUIScrollingTabBarController *)self _roundedOffsetFromOffset:offset.horizontal, offset.vertical];
   p_additionalTabBarPalettePositionOffset = &self->_additionalTabBarPalettePositionOffset;
   if (self->_additionalTabBarPalettePositionOffset.horizontal != v4 || self->_additionalTabBarPalettePositionOffset.vertical != v5)
   {
@@ -1169,55 +1169,55 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
   }
 }
 
-- (void)setChargeEnabledOnTabBarButtonsContainer:(BOOL)a3
+- (void)setChargeEnabledOnTabBarButtonsContainer:(BOOL)container
 {
-  if (self->_chargeEnabledOnTabBarButtonsContainer != a3)
+  if (self->_chargeEnabledOnTabBarButtonsContainer != container)
   {
-    v3 = a3;
-    self->_chargeEnabledOnTabBarButtonsContainer = a3;
+    containerCopy = container;
+    self->_chargeEnabledOnTabBarButtonsContainer = container;
     if ([(SUUIScrollingTabBarController *)self isViewLoaded])
     {
       tabBar = self->_tabBar;
 
-      [(SUUICrossFadingTabBar *)tabBar _setChargeEnabled:v3];
+      [(SUUICrossFadingTabBar *)tabBar _setChargeEnabled:containerCopy];
     }
   }
 }
 
-- (void)setScrollEnabled:(BOOL)a3
+- (void)setScrollEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
-    v4 = [objc_opt_class() areScrollingTabsAllowed];
+    areScrollingTabsAllowed = [objc_opt_class() areScrollingTabsAllowed];
   }
 
   else
   {
-    v4 = 0;
+    areScrollingTabsAllowed = 0;
   }
 
-  if (self->_scrollEnabled != v4)
+  if (self->_scrollEnabled != areScrollingTabsAllowed)
   {
-    self->_scrollEnabled = v4;
+    self->_scrollEnabled = areScrollingTabsAllowed;
 
     [(SUUIScrollingTabBarController *)self _updateHorizontalScrollingAvailability];
   }
 }
 
-- (void)setSelectedViewController:(id)a3
+- (void)setSelectedViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SUUIScrollingTabBarController *)self viewControllers];
-  v6 = [v5 indexOfObject:v4];
+  controllerCopy = controller;
+  viewControllers = [(SUUIScrollingTabBarController *)self viewControllers];
+  v6 = [viewControllers indexOfObject:controllerCopy];
 
   [(SUUIScrollingTabBarController *)self setSelectedIndex:v6];
 }
 
-- (void)setTransientViewController:(id)a3 animated:(BOOL)a4
+- (void)setTransientViewController:(id)controller animated:(BOOL)animated
 {
-  v6 = a3;
+  controllerCopy = controller;
   transientViewController = self->_transientViewController;
-  if (transientViewController != v6)
+  if (transientViewController != controllerCopy)
   {
     v8 = transientViewController;
     if (v8)
@@ -1234,22 +1234,22 @@ uint64_t __51__SUUIScrollingTabBarController_viewWillDisappear___block_invoke_2(
       [(UIViewController *)v8 willMoveToParentViewController:0];
       if ([(UIViewController *)v8 isViewLoaded])
       {
-        v12 = [(UIViewController *)v8 view];
-        [v12 removeFromSuperview];
+        view = [(UIViewController *)v8 view];
+        [view removeFromSuperview];
       }
 
       [(UIViewController *)v8 removeFromParentViewController];
     }
 
-    objc_storeStrong(&self->_transientViewController, a3);
+    objc_storeStrong(&self->_transientViewController, controller);
     if (self->_transientViewController)
     {
       [(SUUIScrollingTabBarController *)self addChildViewController:?];
       if ([(SUUIScrollingTabBarController *)self isViewLoaded])
       {
-        v13 = [(SUUIScrollingTabBarController *)self view];
-        v14 = [(UIViewController *)self->_transientViewController view];
-        [v13 insertSubview:v14 belowSubview:self->_tabBarContainerView];
+        view2 = [(SUUIScrollingTabBarController *)self view];
+        view3 = [(UIViewController *)self->_transientViewController view];
+        [view2 insertSubview:view3 belowSubview:self->_tabBarContainerView];
       }
 
       [(UIViewController *)self->_transientViewController didMoveToParentViewController:self];
@@ -1265,13 +1265,13 @@ LABEL_15:
         v17 = self->_transientViewControllerItemContext;
         self->_transientViewControllerItemContext = v16;
 
-        v18 = [(UIViewController *)self->_transientViewController view];
+        view4 = [(UIViewController *)self->_transientViewController view];
         if ([(SUUIScrollingTabBarControllerItemContext *)self->_transientViewControllerItemContext viewControllerIsNavigationController])
         {
-          v19 = [(UIViewController *)self->_transientViewController viewControllers];
-          v20 = [v19 firstObject];
+          viewControllers = [(UIViewController *)self->_transientViewController viewControllers];
+          firstObject = [viewControllers firstObject];
 
-          v21 = [v20 view];
+          view5 = [firstObject view];
         }
 
         v27 = 0;
@@ -1305,15 +1305,15 @@ LABEL_18:
   }
 }
 
-- (void)setViewControllers:(id)a3
+- (void)setViewControllers:(id)controllers
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __52__SUUIScrollingTabBarController_setViewControllers___block_invoke;
   v5[3] = &unk_2798F5BE8;
   v5[4] = self;
-  v4 = self;
-  [(SUUIScrollingTabBarController *)v4 _setViewControllers:a3 collectionViewsUpdateHandler:v5 forFinalTearDown:0];
+  selfCopy = self;
+  [(SUUIScrollingTabBarController *)selfCopy _setViewControllers:controllers collectionViewsUpdateHandler:v5 forFinalTearDown:0];
 }
 
 uint64_t __52__SUUIScrollingTabBarController_setViewControllers___block_invoke(uint64_t a1)
@@ -1328,22 +1328,22 @@ uint64_t __52__SUUIScrollingTabBarController_setViewControllers___block_invoke(u
 {
   if ([(SUUIScrollingTabBarController *)self isViewLoaded])
   {
-    v3 = [(SUUIScrollingTabBarController *)self view];
+    view = [(SUUIScrollingTabBarController *)self view];
     [(SUUICrossFadingTabBar *)self->_tabBar bounds];
-    [v3 convertRect:self->_tabBar fromView:?];
+    [view convertRect:self->_tabBar fromView:?];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
 
-    v12 = [(SUUICrossFadingTabBar *)self->_tabBar traitCollection];
-    [v12 displayScale];
+    traitCollection = [(SUUICrossFadingTabBar *)self->_tabBar traitCollection];
+    [traitCollection displayScale];
     v14 = v13;
 
     if (v14 < 0.00000011920929)
     {
-      v15 = [MEMORY[0x277D759A0] mainScreen];
-      [v15 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v14 = v16;
     }
 
@@ -1372,9 +1372,9 @@ uint64_t __52__SUUIScrollingTabBarController_setViewControllers___block_invoke(u
 {
   if ([(SUUIScrollingTabBarPalette *)self->_tabBarPalette isAttached])
   {
-    v3 = [(SUUIScrollingTabBarController *)self view];
+    view = [(SUUIScrollingTabBarController *)self view];
     [(SUUIScrollingTabBarPalette *)self->_tabBarPalette bounds];
-    [v3 convertRect:self->_tabBarPalette fromView:?];
+    [view convertRect:self->_tabBarPalette fromView:?];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -1400,24 +1400,24 @@ uint64_t __52__SUUIScrollingTabBarController_setViewControllers___block_invoke(u
   return result;
 }
 
-- (id)tabBarPaletteWithHeight:(double)a3
+- (id)tabBarPaletteWithHeight:(double)height
 {
   tabBarPalette = self->_tabBarPalette;
   if (!tabBarPalette)
   {
     v6 = *MEMORY[0x277CBF3A0];
     v7 = *(MEMORY[0x277CBF3A0] + 8);
-    v8 = [(SUUIScrollingTabBarController *)self view];
-    [v8 bounds];
+    view = [(SUUIScrollingTabBarController *)self view];
+    [view bounds];
     Width = CGRectGetWidth(v16);
 
-    v10 = [[SUUIScrollingTabBarPalette alloc] initWithFrame:v6, v7, Width, a3];
+    height = [[SUUIScrollingTabBarPalette alloc] initWithFrame:v6, v7, Width, height];
     v11 = self->_tabBarPalette;
-    self->_tabBarPalette = v10;
+    self->_tabBarPalette = height;
 
-    v12 = [(SUUIScrollingTabBarPalette *)self->_tabBarPalette _backgroundView];
-    v13 = [(SUUIScrollingTabBarController *)self _tabBarBackdropGroupName];
-    [v12 setBackdropBarGroupName:v13];
+    _backgroundView = [(SUUIScrollingTabBarPalette *)self->_tabBarPalette _backgroundView];
+    _tabBarBackdropGroupName = [(SUUIScrollingTabBarController *)self _tabBarBackdropGroupName];
+    [_backgroundView setBackdropBarGroupName:_tabBarBackdropGroupName];
 
     tabBarPalette = self->_tabBarPalette;
   }
@@ -1425,14 +1425,14 @@ uint64_t __52__SUUIScrollingTabBarController_setViewControllers___block_invoke(u
   return tabBarPalette;
 }
 
-- (void)attachTabBarPalette:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)attachTabBarPalette:(id)palette animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v8 && self->_tabBarPalette == v8)
+  animatedCopy = animated;
+  paletteCopy = palette;
+  completionCopy = completion;
+  if (paletteCopy && self->_tabBarPalette == paletteCopy)
   {
-    v10 = [(SUUIScrollingTabBarController *)self view];
+    view = [(SUUIScrollingTabBarController *)self view];
     [(SUUIScrollingTabBarPalette *)self->_tabBarPalette _setAttached:1];
     [(SUUIScrollingTabBarPalette *)self->_tabBarPalette _setDelegate:self];
     [(SUUIScrollingTabBarController *)self _updateViewControllerContentScrollViewInset];
@@ -1441,19 +1441,19 @@ uint64_t __52__SUUIScrollingTabBarController_setViewControllers___block_invoke(u
     aBlock[2] = __73__SUUIScrollingTabBarController_attachTabBarPalette_animated_completion___block_invoke;
     aBlock[3] = &unk_2798F9498;
     aBlock[4] = self;
-    v11 = v10;
+    v11 = view;
     v26 = v11;
-    v27 = v9;
+    v27 = completionCopy;
     v12 = _Block_copy(aBlock);
     v13 = v12;
-    if (v6)
+    if (animatedCopy)
     {
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __73__SUUIScrollingTabBarController_attachTabBarPalette_animated_completion___block_invoke_2;
       v22[3] = &unk_2798F5AF8;
       v23 = v11;
-      v24 = self;
+      selfCopy = self;
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __73__SUUIScrollingTabBarController_attachTabBarPalette_animated_completion___block_invoke_3;
@@ -1463,7 +1463,7 @@ uint64_t __52__SUUIScrollingTabBarController_setViewControllers___block_invoke(u
       v16 = 3221225472;
       v17 = __73__SUUIScrollingTabBarController_attachTabBarPalette_animated_completion___block_invoke_4;
       v18 = &unk_2798F94C0;
-      v19 = self;
+      selfCopy2 = self;
       v20 = v13;
       [(SUUIScrollingTabBarController *)self _animatePaletteWithSetup:v22 animations:v21 completion:&v15];
     }
@@ -1474,8 +1474,8 @@ uint64_t __52__SUUIScrollingTabBarController_setViewControllers___block_invoke(u
       [(SUUIScrollingTabBarController *)self _updateTabBarBackgroundsAndHairlines];
     }
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 postNotificationName:@"SUUIScrollingTabBarControllerPaletteWasAttached" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SUUIScrollingTabBarControllerPaletteWasAttached" object:self];
   }
 }
 
@@ -1525,23 +1525,23 @@ uint64_t __73__SUUIScrollingTabBarController_attachTabBarPalette_animated_comple
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)detachTabBarPalette:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)detachTabBarPalette:(id)palette animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8 && self->_tabBarPalette == v8)
+  animatedCopy = animated;
+  paletteCopy = palette;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (paletteCopy && self->_tabBarPalette == paletteCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __73__SUUIScrollingTabBarController_detachTabBarPalette_animated_completion___block_invoke;
     aBlock[3] = &unk_2798F6030;
     aBlock[4] = self;
-    v22 = v9;
+    v22 = completionCopy;
     v11 = _Block_copy(aBlock);
     v12 = v11;
-    if (v6)
+    if (animatedCopy)
     {
       [(SUUIScrollingTabBarPalette *)self->_tabBarPalette frame];
       v20[0] = MEMORY[0x277D85DD0];
@@ -1567,8 +1567,8 @@ uint64_t __73__SUUIScrollingTabBarController_attachTabBarPalette_animated_comple
       (*(v11 + 2))(v11);
     }
 
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 postNotificationName:@"SUUIScrollingTabBarControllerPaletteWasDetached" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SUUIScrollingTabBarControllerPaletteWasDetached" object:self];
   }
 }
 
@@ -1720,15 +1720,15 @@ void __91__SUUIScrollingTabBarController_updateTabBarComponentPositionOffsetsWit
   }
 }
 
-- (void)hideBarWithTransition:(int)a3
+- (void)hideBarWithTransition:(int)transition
 {
   if (!self->_tabBarExplicitlyHidden)
   {
-    v3 = *&a3;
+    v3 = *&transition;
     self->_tabBarExplicitlyHidden = 1;
     [(SUUIScrollingTabBarController *)self _updateHidesBarsOnSwipeAvailability];
-    v5 = [(SUUIScrollingTabBarController *)self view];
-    [v5 layoutIfNeeded];
+    view = [(SUUIScrollingTabBarController *)self view];
+    [view layoutIfNeeded];
 
     [(UIView *)self->_tabBarContainerView bounds];
     v10 = *MEMORY[0x277D76DA8];
@@ -1829,13 +1829,13 @@ uint64_t __55__SUUIScrollingTabBarController_hideBarWithTransition___block_invok
   return result;
 }
 
-- (void)showBarWithTransition:(int)a3
+- (void)showBarWithTransition:(int)transition
 {
   if (self->_tabBarExplicitlyHidden)
   {
-    v3 = *&a3;
-    v5 = [(SUUIScrollingTabBarController *)self view];
-    [v5 layoutIfNeeded];
+    v3 = *&transition;
+    view = [(SUUIScrollingTabBarController *)self view];
+    [view layoutIfNeeded];
 
     [(UIView *)self->_tabBarContainerView bounds];
     v10 = MEMORY[0x277D76DA8];
@@ -1933,27 +1933,27 @@ uint64_t __55__SUUIScrollingTabBarController_showBarWithTransition___block_invok
   return result;
 }
 
-- (void)_tabBarButtonTapped:(id)a3
+- (void)_tabBarButtonTapped:(id)tapped
 {
-  v6 = a3;
+  tappedCopy = tapped;
   if (self->_transientViewController)
   {
     [(SUUIScrollingTabBarController *)self setTransientViewController:0 animated:0];
   }
 
-  v4 = [(SUUICrossFadingTabBar *)self->_tabBar tabBarButtons];
-  v5 = [v4 indexOfObject:v6];
+  tabBarButtons = [(SUUICrossFadingTabBar *)self->_tabBar tabBarButtons];
+  v5 = [tabBarButtons indexOfObject:tappedCopy];
 
   [(SUUIScrollingTabBarController *)self _selectTabAtIndex:v5 shouldFallbackToPoppingToTabRootContent:1];
 }
 
-- (id)_deepestFocusedViewControllerWithTopLevelFocusedViewController:(id)a3
+- (id)_deepestFocusedViewControllerWithTopLevelFocusedViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_viewControllerToItemContext objectForKey:v4];
-  v6 = [v5 nestedPagingScrollView];
-  v7 = v4;
-  if (v6)
+  controllerCopy = controller;
+  v5 = [(NSMapTable *)self->_viewControllerToItemContext objectForKey:controllerCopy];
+  nestedPagingScrollView = [v5 nestedPagingScrollView];
+  v7 = controllerCopy;
+  if (nestedPagingScrollView)
   {
     [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView bounds];
     Width = CGRectGetWidth(v13);
@@ -1967,7 +1967,7 @@ uint64_t __55__SUUIScrollingTabBarController_showBarWithTransition___block_invok
       v9 = 2.0;
     }
 
-    [v6 contentOffset];
+    [nestedPagingScrollView contentOffset];
     if (v10 < 0.0)
     {
       v10 = 0.0;
@@ -1979,19 +1979,19 @@ uint64_t __55__SUUIScrollingTabBarController_showBarWithTransition___block_invok
   return v7;
 }
 
-- (void)_discardUndesirableLastSelectedPageIndexesWithHorizontalLayoutContext:(id *)a3
+- (void)_discardUndesirableLastSelectedPageIndexesWithHorizontalLayoutContext:(id *)context
 {
-  if (a3->var0 != a3->var1)
+  if (context->var0 != context->var1)
   {
     viewControllers = self->_viewControllers;
-    if (a3->var2 >= 0.5)
+    if (context->var2 >= 0.5)
     {
-      var0 = a3->var0;
+      var0 = context->var0;
     }
 
     else
     {
-      var0 = a3->var1;
+      var0 = context->var1;
     }
 
     v8 = [(NSArray *)viewControllers objectAtIndex:var0];
@@ -2022,9 +2022,9 @@ uint64_t __55__SUUIScrollingTabBarController_showBarWithTransition___block_invok
 {
   if (self->_tabBarExplicitlyHidden)
   {
-    v3 = [(UIViewController *)self->_focusedViewController navigationController];
-    v4 = [v3 navigationBar];
-    [v4 bounds];
+    navigationController = [(UIViewController *)self->_focusedViewController navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar bounds];
     Height = CGRectGetHeight(v8);
 
     return Height;
@@ -2050,12 +2050,12 @@ uint64_t __55__SUUIScrollingTabBarController_showBarWithTransition___block_invok
   return CGRectGetMaxY(v8) >= v4 + v6;
 }
 
-- (void)_invalidateContentCollectionViewLayoutForUpdatedContentSizeWithHorizontalLayoutContext:(id *)a3 indexOfViewControllerWithUpdatedContentSize:(unint64_t)a4
+- (void)_invalidateContentCollectionViewLayoutForUpdatedContentSizeWithHorizontalLayoutContext:(id *)context indexOfViewControllerWithUpdatedContentSize:(unint64_t)size
 {
-  v7 = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView collectionViewLayout];
+  collectionViewLayout = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView collectionViewLayout];
   v8 = *(MEMORY[0x277CBF348] + 8);
-  v9 = a3->var0 != a4 || a3->var0 == a3->var1;
-  v20 = v7;
+  v9 = context->var0 != size || context->var0 == context->var1;
+  v20 = collectionViewLayout;
   if (v9)
   {
     v17 = *MEMORY[0x277CBF348];
@@ -2063,13 +2063,13 @@ uint64_t __55__SUUIScrollingTabBarController_showBarWithTransition___block_invok
 
   else
   {
-    v10 = [MEMORY[0x277CCAA70] indexPathForItem:a4 inSection:0];
+    v10 = [MEMORY[0x277CCAA70] indexPathForItem:size inSection:0];
     v11 = [v20 layoutAttributesForItemAtIndexPath:v10];
     [v11 frame];
     Width = CGRectGetWidth(v22);
 
     viewControllerToItemContext = self->_viewControllerToItemContext;
-    v14 = [(NSArray *)self->_viewControllers objectAtIndex:a4];
+    v14 = [(NSArray *)self->_viewControllers objectAtIndex:size];
     v15 = [(NSMapTable *)viewControllerToItemContext objectForKey:v14];
 
     [v15 nestedPagingScrollViewContentWidth];
@@ -2079,36 +2079,36 @@ uint64_t __55__SUUIScrollingTabBarController_showBarWithTransition___block_invok
   v18 = objc_alloc_init([objc_opt_class() invalidationContextClass]);
   [v18 setInvalidateFlowLayoutDelegateMetrics:1];
   [v18 setContentOffsetAdjustment:{v17, v8}];
-  v19 = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView collectionViewLayout];
-  [v19 invalidateLayoutWithContext:v18];
+  collectionViewLayout2 = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView collectionViewLayout];
+  [collectionViewLayout2 invalidateLayoutWithContext:v18];
 }
 
-- (void)_notifyViewControllerAppearanceProgressUpdateWithHorizontalLayoutContext:(id *)a3
+- (void)_notifyViewControllerAppearanceProgressUpdateWithHorizontalLayoutContext:(id *)context
 {
-  var0 = a3->var0;
-  var1 = a3->var1;
-  v8 = 1.0 - a3->var2;
+  var0 = context->var0;
+  var1 = context->var1;
+  v8 = 1.0 - context->var2;
   v10 = v8 < 0.999999881 && var1 == var0;
   v15 = [(NSArray *)self->_viewControllers objectAtIndex:?];
   v11 = [(NSMapTable *)self->_viewControllerToItemContext objectForKey:?];
   [v11 notifyOfUpdatedAppearanceStatus:{*&v8, v10}];
-  if (a3->var1 != a3->var0)
+  if (context->var1 != context->var0)
   {
-    var2 = a3->var2;
+    var2 = context->var2;
     v13 = [(NSArray *)self->_viewControllers objectAtIndex:?];
     v14 = [(NSMapTable *)self->_viewControllerToItemContext objectForKey:v13];
     [v14 notifyOfUpdatedAppearanceStatus:{*&var2, 0}];
   }
 }
 
-- (id)_parentCellForViewController:(id)a3
+- (id)_parentCellForViewController:(id)controller
 {
-  v3 = a3;
-  if ([v3 isViewLoaded])
+  controllerCopy = controller;
+  if ([controllerCopy isViewLoaded])
   {
-    v4 = [v3 view];
-    v5 = [v4 superview];
-    if (v5)
+    view = [controllerCopy view];
+    superview = [view superview];
+    if (superview)
     {
       do
       {
@@ -2118,28 +2118,28 @@ uint64_t __55__SUUIScrollingTabBarController_showBarWithTransition___block_invok
           break;
         }
 
-        v6 = [v5 superview];
+        v5Superview = [superview superview];
 
-        v5 = v6;
+        superview = v5Superview;
       }
 
-      while (v6);
+      while (v5Superview);
     }
   }
 
   else
   {
-    v5 = 0;
+    superview = 0;
   }
 
-  return v5;
+  return superview;
 }
 
-- (void)_animatePaletteWithSetup:(id)a3 animations:(id)a4 completion:(id)a5
+- (void)_animatePaletteWithSetup:(id)setup animations:(id)animations completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  setupCopy = setup;
+  animationsCopy = animations;
+  completionCopy = completion;
   activePaletteTransitions = self->_activePaletteTransitions;
   if (!activePaletteTransitions)
   {
@@ -2147,15 +2147,15 @@ uint64_t __55__SUUIScrollingTabBarController_showBarWithTransition___block_invok
     v16 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v14, v13 + -5.0, v15, v12 + 5.0}];
     [v16 setClipsToBounds:1];
     [v16 addSubview:self->_tabBarPalette];
-    v17 = [(SUUIScrollingTabBarPalette *)self->_tabBarPalette layer];
-    [v17 setValue:v16 forKey:@"SUUIScrollingTabBarPaletteClippingView"];
+    layer = [(SUUIScrollingTabBarPalette *)self->_tabBarPalette layer];
+    [layer setValue:v16 forKey:@"SUUIScrollingTabBarPaletteClippingView"];
 
     [(UIView *)self->_tabBarContainerView insertSubview:v16 belowSubview:self->_tabBar];
     [(SUUIScrollingTabBarPalette *)self->_tabBarPalette setTabBarBackgroundExtendsBehindPalette:0];
     [(SUUIScrollingTabBarController *)self _updateTabBarBackgroundsAndHairlines];
-    if (v8)
+    if (setupCopy)
     {
-      v8[2](v8);
+      setupCopy[2](setupCopy);
     }
 
     activePaletteTransitions = self->_activePaletteTransitions;
@@ -2169,9 +2169,9 @@ uint64_t __55__SUUIScrollingTabBarController_showBarWithTransition___block_invok
   v21[2] = __80__SUUIScrollingTabBarController__animatePaletteWithSetup_animations_completion___block_invoke;
   v21[3] = &unk_2798F94C0;
   v21[4] = self;
-  v22 = v10;
-  v20 = v10;
-  [v19 animateUsingSpringWithDamping:v9 mass:1024 stiffness:v21 velocity:700.0 animations:2.0 options:300.0 completion:0.0];
+  v22 = completionCopy;
+  v20 = completionCopy;
+  [v19 animateUsingSpringWithDamping:animationsCopy mass:1024 stiffness:v21 velocity:700.0 animations:2.0 options:300.0 completion:0.0];
 }
 
 void __80__SUUIScrollingTabBarController__animatePaletteWithSetup_animations_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -2197,17 +2197,17 @@ void __80__SUUIScrollingTabBarController__animatePaletteWithSetup_animations_com
   }
 }
 
-- (void)_popVisibleNavigationStacksToRootWithHorizontalLayoutContext:(id *)a3
+- (void)_popVisibleNavigationStacksToRootWithHorizontalLayoutContext:(id *)context
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3->var0 != a3->var1)
+  if (context->var0 != context->var1)
   {
-    v3 = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView visibleCells];
+    visibleCells = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView visibleCells];
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    v4 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -2219,20 +2219,20 @@ void __80__SUUIScrollingTabBarController__animatePaletteWithSetup_animations_com
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(visibleCells);
           }
 
-          v8 = [*(*(&v9 + 1) + 8 * v7) viewController];
-          if ([v8 conformsToProtocol:&unk_286C23950])
+          viewController = [*(*(&v9 + 1) + 8 * v7) viewController];
+          if ([viewController conformsToProtocol:&unk_286C23950])
           {
-            [v8 popToNavigationStackRootContentAnimated:0 withBehavior:1];
+            [viewController popToNavigationStackRootContentAnimated:0 withBehavior:1];
           }
 
           ++v7;
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v5);
@@ -2240,13 +2240,13 @@ void __80__SUUIScrollingTabBarController__animatePaletteWithSetup_animations_com
   }
 }
 
-- (UIOffset)_roundedOffsetFromOffset:(UIOffset)a3
+- (UIOffset)_roundedOffsetFromOffset:(UIOffset)offset
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = offset.vertical;
+  horizontal = offset.horizontal;
   if ([(SUUIScrollingTabBarController *)self isViewLoaded])
   {
-    v6 = [(SUUIScrollingTabBarController *)self view];
+    view = [(SUUIScrollingTabBarController *)self view];
     UIRoundToViewScale();
     horizontal = v7;
     UIRoundToViewScale();
@@ -2260,15 +2260,15 @@ void __80__SUUIScrollingTabBarController__animatePaletteWithSetup_animations_com
   return result;
 }
 
-- (void)_setFocusedViewController:(id)a3 showBarsIfNeeded:(BOOL)a4 animated:(BOOL)a5 notifyDelegate:(BOOL)a6
+- (void)_setFocusedViewController:(id)controller showBarsIfNeeded:(BOOL)needed animated:(BOOL)animated notifyDelegate:(BOOL)delegate
 {
-  v6 = a6;
-  v7 = a4;
-  v10 = a3;
-  v19 = v10;
-  if (v10)
+  delegateCopy = delegate;
+  neededCopy = needed;
+  controllerCopy = controller;
+  v19 = controllerCopy;
+  if (controllerCopy)
   {
-    v11 = [(SUUIScrollingTabBarController *)self _deepestFocusedViewControllerWithTopLevelFocusedViewController:v10];
+    v11 = [(SUUIScrollingTabBarController *)self _deepestFocusedViewControllerWithTopLevelFocusedViewController:controllerCopy];
   }
 
   else
@@ -2293,13 +2293,13 @@ void __80__SUUIScrollingTabBarController__animatePaletteWithSetup_animations_com
     topLevelFocusedViewController = self->_topLevelFocusedViewController;
     if (topLevelFocusedViewController != v19)
     {
-      objc_storeStrong(&self->_topLevelFocusedViewController, a3);
+      objc_storeStrong(&self->_topLevelFocusedViewController, controller);
     }
 
     objc_storeStrong(&self->_focusedViewController, v11);
-    v15 = [(UIViewController *)v11 contentScrollView];
+    contentScrollView = [(UIViewController *)v11 contentScrollView];
     v16 = self->_focusedContentScrollView;
-    self->_focusedContentScrollView = v15;
+    self->_focusedContentScrollView = contentScrollView;
 
     v17 = self->_focusedContentScrollView;
     if (v17)
@@ -2312,7 +2312,7 @@ void __80__SUUIScrollingTabBarController__animatePaletteWithSetup_animations_com
       [(UIViewController *)self->_focusedViewController setScrollViewDelegateObserver:self];
     }
 
-    if (v7)
+    if (neededCopy)
     {
       [(SUUIDynamicBarAnimator *)self->_dynamicBarAnimator attemptTransitionToState:1 animated:1];
     }
@@ -2322,23 +2322,23 @@ void __80__SUUIScrollingTabBarController__animatePaletteWithSetup_animations_com
     if (topLevelFocusedViewController != v19)
     {
       [(SUUIScrollingTabBarController *)self setNeedsStatusBarAppearanceUpdate];
-      if (v6)
+      if (delegateCopy)
       {
-        v18 = [(SUUIScrollingTabBarController *)self delegate];
+        delegate = [(SUUIScrollingTabBarController *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          [v18 tabBarController:self didSelectViewController:self->_topLevelFocusedViewController];
+          [delegate tabBarController:self didSelectViewController:self->_topLevelFocusedViewController];
         }
       }
     }
   }
 }
 
-- (void)_selectTabAtIndex:(unint64_t)a3 shouldFallbackToPoppingToTabRootContent:(BOOL)a4
+- (void)_selectTabAtIndex:(unint64_t)index shouldFallbackToPoppingToTabRootContent:(BOOL)content
 {
-  v4 = a4;
+  contentCopy = content;
   contentCollectionView = self->_contentCollectionView;
-  v8 = [MEMORY[0x277CCAA70] indexPathForItem:a3 inSection:0];
+  v8 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:0];
   v37 = [(SUUIScrollingTabBarContentCollectionView *)contentCollectionView layoutAttributesForItemAtIndexPath:v8];
 
   [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView contentOffset];
@@ -2346,13 +2346,13 @@ void __80__SUUIScrollingTabBarController__animatePaletteWithSetup_animations_com
   v12 = v11;
   [v37 frame];
   MinX = CGRectGetMinX(v39);
-  v14 = [(NSArray *)self->_viewControllers objectAtIndex:a3];
+  v14 = [(NSArray *)self->_viewControllers objectAtIndex:index];
   v15 = [(NSMapTable *)self->_viewControllerToItemContext objectForKey:v14];
   [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView bounds];
   Width = CGRectGetWidth(v40);
   v17 = MinX + Width * [v15 lastSelectedPageIndex];
-  v18 = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView collectionViewLayout];
-  [v18 targetContentOffsetForProposedContentOffset:{v17, v12}];
+  collectionViewLayout = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView collectionViewLayout];
+  [collectionViewLayout targetContentOffsetForProposedContentOffset:{v17, v12}];
   v20 = v19;
   v22 = v21;
 
@@ -2367,7 +2367,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v4)
+  if (!contentCopy)
   {
     goto LABEL_14;
   }
@@ -2377,11 +2377,11 @@ LABEL_13:
     v27 = self->_topLevelFocusedViewController;
     if (([(UIViewController *)v27 isShowingNavigationStackRootContent]& 1) == 0)
     {
-      v28 = [(SUUIScrollingTabBarController *)self delegate];
+      delegate = [(SUUIScrollingTabBarController *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        v29 = [(SUUIScrollingTabBarController *)self delegate];
-        v30 = [v29 tabBarController:self shouldFallbackToRootForController:v14];
+        delegate2 = [(SUUIScrollingTabBarController *)self delegate];
+        v30 = [delegate2 tabBarController:self shouldFallbackToRootForController:v14];
 
         if (v30)
         {
@@ -2401,8 +2401,8 @@ LABEL_13:
   {
     [v37 frame];
     v31 = CGRectGetMinX(v41);
-    v32 = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView collectionViewLayout];
-    [v32 targetContentOffsetForProposedContentOffset:{v31, v22}];
+    collectionViewLayout2 = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView collectionViewLayout];
+    [collectionViewLayout2 targetContentOffsetForProposedContentOffset:{v31, v22}];
     v34 = v33;
     v36 = v35;
 
@@ -2416,19 +2416,19 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)_setViewControllers:(id)a3 collectionViewsUpdateHandler:(id)a4 forFinalTearDown:(BOOL)a5
+- (void)_setViewControllers:(id)controllers collectionViewsUpdateHandler:(id)handler forFinalTearDown:(BOOL)down
 {
   v93 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  controllersCopy = controllers;
+  handlerCopy = handler;
   viewControllers = self->_viewControllers;
-  if (viewControllers == v8 || [(NSArray *)viewControllers isEqualToArray:v8])
+  if (viewControllers == controllersCopy || [(NSArray *)viewControllers isEqualToArray:controllersCopy])
   {
     goto LABEL_74;
   }
 
-  v63 = a5;
-  v67 = v9;
+  downCopy = down;
+  v67 = handlerCopy;
   v65 = self->_transientViewController;
   if (v65)
   {
@@ -2436,10 +2436,10 @@ LABEL_14:
   }
 
   v64 = self->_topLevelFocusedViewController;
-  v62 = [(SUUIScrollingTabBarController *)self selectedIndex];
+  selectedIndex = [(SUUIScrollingTabBarController *)self selectedIndex];
   v11 = [(NSArray *)self->_viewControllers copy];
-  v66 = v8;
-  v12 = [(NSArray *)v8 copy];
+  v66 = controllersCopy;
+  v12 = [(NSArray *)controllersCopy copy];
   v13 = self->_viewControllers;
   self->_viewControllers = v12;
 
@@ -2468,9 +2468,9 @@ LABEL_14:
         v20 = *(*(&v85 + 1) + 8 * i);
         if (![(NSArray *)self->_viewControllers containsObject:v20])
         {
-          v21 = [v20 parentViewController];
+          parentViewController = [v20 parentViewController];
 
-          if (v21 == self)
+          if (parentViewController == self)
           {
             [v70 addObject:v20];
             [v20 willMoveToParentViewController:0];
@@ -2523,8 +2523,8 @@ LABEL_14:
           [v25 addObject:v31];
           if ([v31 conformsToProtocol:&unk_286BCF1D8])
           {
-            v32 = [(SUUIViewController *)self clientContext];
-            [v31 setClientContext:v32];
+            clientContext = [(SUUIViewController *)self clientContext];
+            [v31 setClientContext:clientContext];
           }
 
           [(SUUIScrollingTabBarController *)self addChildViewController:v31];
@@ -2626,7 +2626,7 @@ LABEL_14:
     while (v44);
   }
 
-  if (v63 || ![(SUUIScrollingTabBarController *)self isViewLoaded])
+  if (downCopy || ![(SUUIScrollingTabBarController *)self isViewLoaded])
   {
     v50 = v64;
     v51 = v69;
@@ -2657,7 +2657,7 @@ LABEL_14:
     v56 = v52;
     [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView bounds];
     Width = CGRectGetWidth(v94);
-    v58 = v62;
+    v58 = selectedIndex;
     if (Width > 0.00000011920929)
     {
       [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView contentSize];
@@ -2681,27 +2681,27 @@ LABEL_14:
       goto LABEL_71;
     }
 
-    v54 = self;
+    selfCopy2 = self;
     v55 = v56;
     goto LABEL_69;
   }
 
-  if (v62 >= [(NSArray *)self->_viewControllers count])
+  if (selectedIndex >= [(NSArray *)self->_viewControllers count])
   {
     v53 = 0;
   }
 
   else
   {
-    v53 = v62;
+    v53 = selectedIndex;
   }
 
   if (v53 < [(NSArray *)self->_viewControllers count]&& v53 != [(SUUIScrollingTabBarController *)self selectedIndex])
   {
-    v54 = self;
+    selfCopy2 = self;
     v55 = v53;
 LABEL_69:
-    [(SUUIScrollingTabBarController *)v54 setSelectedIndex:v55];
+    [(SUUIScrollingTabBarController *)selfCopy2 setSelectedIndex:v55];
   }
 
 LABEL_71:
@@ -2710,8 +2710,8 @@ LABEL_71:
     [(SUUIScrollingTabBarController *)self setTransientViewController:v65 animated:0];
   }
 
-  v8 = v66;
-  v9 = v67;
+  controllersCopy = v66;
+  handlerCopy = v67;
 LABEL_74:
 }
 
@@ -2725,14 +2725,14 @@ LABEL_74:
   return v6;
 }
 
-- (void)_updateAdditionalPositionOffsetsWithUpdateRecord:(id *)a3
+- (void)_updateAdditionalPositionOffsetsWithUpdateRecord:(id *)record
 {
   if (!self->_tabBarExplicitlyHidden)
   {
-    var0 = a3->var0;
-    var2 = a3->var2;
-    var3 = a3->var3;
-    var1 = a3->var1;
+    var0 = record->var0;
+    var2 = record->var2;
+    var3 = record->var3;
+    var1 = record->var1;
     if (var0)
     {
       [(UIView *)self->_tabBarContainerView center];
@@ -2740,7 +2740,7 @@ LABEL_74:
       [(UIView *)self->_tabBarContainerView setCenter:vaddq_f64(vsubq_f64(v7, var1), self->_additionalTabBarButtonsContainerPositionOffset)];
     }
 
-    else if (!a3->var2)
+    else if (!record->var2)
     {
       return;
     }
@@ -2768,13 +2768,13 @@ LABEL_74:
 
 - (void)_updateDynamicBarGeometry
 {
-  v3 = [(UIViewController *)self->_focusedViewController navigationController];
-  v4 = [v3 navigationBar];
-  [v4 bounds];
+  navigationController = [(UIViewController *)self->_focusedViewController navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar bounds];
   Height = CGRectGetHeight(v20);
 
-  v6 = [MEMORY[0x277D75128] sharedApplication];
-  [v6 statusBarFrame];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] statusBarFrame];
   v7 = CGRectGetHeight(v21);
 
   [(SUUIDynamicBarAnimator *)self->_dynamicBarAnimator setTopBarHeight:1 forState:Height];
@@ -2800,13 +2800,13 @@ LABEL_74:
 
 - (void)_updateFocusedViewControllerInsetsForVerticalLayoutChange
 {
-  v3 = [(SUUIScrollingTabBarController *)self view];
-  v4 = [(UIViewController *)self->_focusedViewController navigationController];
-  v5 = [v4 navigationBar];
+  view = [(SUUIScrollingTabBarController *)self view];
+  navigationController = [(UIViewController *)self->_focusedViewController navigationController];
+  navigationBar = [navigationController navigationBar];
 
   [(SUUIScrollingTabBarController *)self _viewControllerContentScrollViewContentInsetDescriptor:0];
-  [v5 bounds];
-  [v3 convertRect:v5 fromView:?];
+  [navigationBar bounds];
+  [view convertRect:navigationBar fromView:?];
   MaxY = CGRectGetMaxY(v7);
   [(SUUIScrollingTabBarController *)self _effectiveBottomBarOffset];
   [(UIScrollView *)self->_focusedContentScrollView contentInset];
@@ -2815,17 +2815,17 @@ LABEL_74:
   [(UIScrollView *)self->_focusedContentScrollView setScrollIndicatorInsets:MaxY];
 }
 
-- (void)_updateFocusedViewControllerWithHorizontalLayoutContext:(id *)a3
+- (void)_updateFocusedViewControllerWithHorizontalLayoutContext:(id *)context
 {
-  var2 = a3->var2;
-  if (var2 == a3->var1 || var2 <= 0.5)
+  var2 = context->var2;
+  if (var2 == context->var1 || var2 <= 0.5)
   {
-    var0 = a3->var0;
+    var0 = context->var0;
   }
 
   else
   {
-    var0 = a3->var1;
+    var0 = context->var1;
   }
 
   v7 = [(NSArray *)self->_viewControllers objectAtIndex:var0];
@@ -2851,8 +2851,8 @@ LABEL_74:
     v8 = 2.0;
   }
 
-  v9 = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView collectionViewLayout];
-  v10 = [v9 layoutAttributesForElementsInRect:{x, y, width, height}];
+  collectionViewLayout = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView collectionViewLayout];
+  v10 = [collectionViewLayout layoutAttributesForElementsInRect:{x, y, width, height}];
 
   v38 = 0u;
   v39 = 0u;
@@ -2920,17 +2920,17 @@ LABEL_74:
 
   if ([v23 count])
   {
-    v24 = [v23 firstObject];
-    v25 = [v24 indexPath];
-    v26 = [v25 item];
+    firstObject = [v23 firstObject];
+    indexPath = [firstObject indexPath];
+    item = [indexPath item];
 
-    v27 = [v23 lastObject];
-    v28 = [v27 indexPath];
-    v29 = [v28 item];
+    lastObject = [v23 lastObject];
+    indexPath2 = [lastObject indexPath];
+    item2 = [indexPath2 item];
 
-    if (v29 == v26 + 1)
+    if (item2 == item + 1)
     {
-      [v27 frame];
+      [lastObject frame];
       v50.origin.x = x;
       v50.origin.y = y;
       v50.size.width = width;
@@ -2941,7 +2941,7 @@ LABEL_74:
 
     else
     {
-      [v24 frame];
+      [firstObject frame];
       v51.origin.x = x;
       v51.origin.y = y;
       v51.size.width = width;
@@ -2963,33 +2963,33 @@ LABEL_74:
     v32 = fmin(v30, 1.0);
     if (self->_indexOfViewControllerWithUpdatedContentSize == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v33 = v26;
-      v34 = v29;
+      v33 = item;
+      v34 = item2;
       v35 = v32;
       [(SUUIScrollingTabBarController *)self _popVisibleNavigationStacksToRootWithHorizontalLayoutContext:&v33];
       [(SUUIScrollingTabBarController *)self _updateLayoutOfVisibleCollectionViewCells];
-      v33 = v26;
-      v34 = v29;
+      v33 = item;
+      v34 = item2;
       v35 = v32;
       [(SUUIScrollingTabBarController *)self _updateTabBarButtonsSelectionProgressWithHorizontalLayoutContext:&v33];
-      v33 = v26;
-      v34 = v29;
+      v33 = item;
+      v34 = item2;
       v35 = v32;
       [(SUUIScrollingTabBarController *)self _updateFocusedViewControllerWithHorizontalLayoutContext:&v33];
-      v33 = v26;
-      v34 = v29;
+      v33 = item;
+      v34 = item2;
       v35 = v32;
       [(SUUIScrollingTabBarController *)self _discardUndesirableLastSelectedPageIndexesWithHorizontalLayoutContext:&v33];
-      v33 = v26;
-      v34 = v29;
+      v33 = item;
+      v34 = item2;
       v35 = v32;
       [(SUUIScrollingTabBarController *)self _notifyViewControllerAppearanceProgressUpdateWithHorizontalLayoutContext:&v33];
     }
 
     else
     {
-      v33 = v26;
-      v34 = v29;
+      v33 = item;
+      v34 = item2;
       v35 = v32;
       [(SUUIScrollingTabBarController *)self _invalidateContentCollectionViewLayoutForUpdatedContentSizeWithHorizontalLayoutContext:&v33 indexOfViewControllerWithUpdatedContentSize:?];
       self->_indexOfViewControllerWithUpdatedContentSize = 0x7FFFFFFFFFFFFFFFLL;
@@ -3036,8 +3036,8 @@ uint64_t __65__SUUIScrollingTabBarController__updateForHorizontalLayoutChange__b
   {
     [(UIScrollView *)focusedContentScrollView contentSize];
     v8 = v7;
-    v9 = [(SUUIScrollingTabBarController *)self view];
-    [v9 bounds];
+    view = [(SUUIScrollingTabBarController *)self view];
+    [view bounds];
     v4 = v8 > CGRectGetHeight(v11) * 1.5;
   }
 
@@ -3048,15 +3048,15 @@ uint64_t __65__SUUIScrollingTabBarController__updateForHorizontalLayoutChange__b
     {
       if (self->_canHideBarsOnSwipe)
       {
-        v5 = self;
+        selfCopy = self;
       }
 
       else
       {
-        v5 = 0;
+        selfCopy = 0;
       }
 
-      [(UIViewController *)self->_focusedViewController setScrollViewDelegateObserver:v5];
+      [(UIViewController *)self->_focusedViewController setScrollViewDelegateObserver:selfCopy];
     }
 
     if (!self->_canHideBarsOnSwipe)
@@ -3074,34 +3074,34 @@ uint64_t __65__SUUIScrollingTabBarController__updateForHorizontalLayoutChange__b
   {
     if ([(UIViewController *)self->_topLevelFocusedViewController conformsToProtocol:&unk_286C23950])
     {
-      v3 = [(UIViewController *)self->_topLevelFocusedViewController isShowingNavigationStackRootContent];
+      isShowingNavigationStackRootContent = [(UIViewController *)self->_topLevelFocusedViewController isShowingNavigationStackRootContent];
     }
 
     else
     {
-      v3 = 1;
+      isShowingNavigationStackRootContent = 1;
     }
   }
 
   else
   {
-    v3 = 0;
+    isShowingNavigationStackRootContent = 0;
   }
 
   contentCollectionView = self->_contentCollectionView;
 
-  [(SUUIScrollingTabBarContentCollectionView *)contentCollectionView setScrollEnabled:v3];
+  [(SUUIScrollingTabBarContentCollectionView *)contentCollectionView setScrollEnabled:isShowingNavigationStackRootContent];
 }
 
-- (void)_updateLayoutOfCollectionViewCell:(id)a3
+- (void)_updateLayoutOfCollectionViewCell:(id)cell
 {
-  v4 = a3;
-  [v4 layoutIfNeeded];
-  v46 = [v4 viewController];
-  v5 = [v4 viewControllerContainerView];
+  cellCopy = cell;
+  [cellCopy layoutIfNeeded];
+  viewController = [cellCopy viewController];
+  viewControllerContainerView = [cellCopy viewControllerContainerView];
 
-  v6 = [v5 superview];
-  [v6 bounds];
+  superview = [viewControllerContainerView superview];
+  [superview bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -3122,15 +3122,15 @@ uint64_t __65__SUUIScrollingTabBarController__updateForHorizontalLayoutChange__b
 
   [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView contentOffset];
   v19 = v18;
-  v20 = [(NSMapTable *)self->_viewControllerToItemContext objectForKey:v46];
-  v21 = [v20 nestedPagingScrollView];
-  v22 = v21;
-  if (v21)
+  v20 = [(NSMapTable *)self->_viewControllerToItemContext objectForKey:viewController];
+  nestedPagingScrollView = [v20 nestedPagingScrollView];
+  v22 = nestedPagingScrollView;
+  if (nestedPagingScrollView)
   {
-    [v21 contentOffset];
+    [nestedPagingScrollView contentOffset];
     v42 = v24;
     v43 = v23;
-    [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView convertRect:v6 fromView:v8, v10, v12, v14];
+    [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView convertRect:superview fromView:v8, v10, v12, v14];
     v41 = v14;
     x = v49.origin.x;
     y = v49.origin.y;
@@ -3174,7 +3174,7 @@ uint64_t __65__SUUIScrollingTabBarController__updateForHorizontalLayoutChange__b
     v52.origin.y = v10;
     v52.size.width = v12;
     v52.size.height = v41;
-    [v5 setFrame:{v32, MinY, v44, CGRectGetHeight(v52)}];
+    [viewControllerContainerView setFrame:{v32, MinY, v44, CGRectGetHeight(v52)}];
     if (v43 != v32)
     {
       [v20 updateNestedPagingScrollViewContentOffset:{v32, v42}];
@@ -3186,22 +3186,22 @@ uint64_t __65__SUUIScrollingTabBarController__updateForHorizontalLayoutChange__b
 
   else
   {
-    [v5 setFrame:{v8, v10, v12, v14}];
+    [viewControllerContainerView setFrame:{v8, v10, v12, v14}];
     v34 = 0;
   }
 
   [v20 setLastSelectedPageIndex:v34];
   if ([v20 viewControllerIsNavigationController])
   {
-    v35 = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView layer];
-    v36 = [v35 needsLayout];
+    layer = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView layer];
+    needsLayout = [layer needsLayout];
 
-    if ((v36 & 1) == 0)
+    if ((needsLayout & 1) == 0)
     {
-      v37 = [v46 navigationBar];
-      if ([v37 conformsToProtocol:&unk_286C399A0])
+      navigationBar = [viewController navigationBar];
+      if ([navigationBar conformsToProtocol:&unk_286C399A0])
       {
-        v38 = v37;
+        v38 = navigationBar;
         [v38 positionOffset];
         v39 = v19;
         if (v19 >= 0.0)
@@ -3223,24 +3223,24 @@ uint64_t __65__SUUIScrollingTabBarController__updateForHorizontalLayoutChange__b
 {
   if ([(SUUIScrollingTabBarController *)self isViewLoaded])
   {
-    v36 = [(SUUIScrollingTabBarController *)self view];
-    [v36 bounds];
+    view = [(SUUIScrollingTabBarController *)self view];
+    [view bounds];
     v4 = v3;
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(SUUIScrollingTabBarPalette *)self->_tabBarPalette isAttached];
+    isAttached = [(SUUIScrollingTabBarPalette *)self->_tabBarPalette isAttached];
     v12 = 0.0;
-    if (v11)
+    if (isAttached)
     {
-      v13 = [v36 traitCollection];
-      [v13 displayScale];
+      traitCollection = [view traitCollection];
+      [traitCollection displayScale];
       v15 = v14;
 
       if (v15 < 0.00000011920929)
       {
-        v16 = [MEMORY[0x277D759A0] mainScreen];
-        [v16 scale];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen scale];
         v15 = v17;
       }
 
@@ -3288,7 +3288,7 @@ uint64_t __65__SUUIScrollingTabBarController__updateForHorizontalLayoutChange__b
       [(SUUIScrollingTabBarBackgroundView *)tabBarExtendedBackgroundView setFrame:v23, v24, v25, v26];
     }
 
-    if (v11)
+    if (isAttached)
     {
       [(SUUIScrollingTabBarPalette *)self->_tabBarPalette setFrame:v34 + v27 - horizontal, v33 + v28 - vertical, v29, v12];
     }
@@ -3309,12 +3309,12 @@ uint64_t __65__SUUIScrollingTabBarController__updateForHorizontalLayoutChange__b
 - (void)_updateLayoutOfVisibleCollectionViewCells
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView visibleCells];
+  visibleCells = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView visibleCells];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [visibleCells countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3326,14 +3326,14 @@ uint64_t __65__SUUIScrollingTabBarController__updateForHorizontalLayoutChange__b
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleCells);
         }
 
         [(SUUIScrollingTabBarController *)self _updateLayoutOfCollectionViewCell:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [visibleCells countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -3343,12 +3343,12 @@ uint64_t __65__SUUIScrollingTabBarController__updateForHorizontalLayoutChange__b
 - (void)_updateNavigationBarsForVerticalLayoutChange
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView visibleCells];
+  visibleCells = [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView visibleCells];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v4 = [visibleCells countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3361,18 +3361,18 @@ uint64_t __65__SUUIScrollingTabBarController__updateForHorizontalLayoutChange__b
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleCells);
         }
 
-        v10 = [*(*(&v23 + 1) + 8 * i) viewController];
-        v11 = [(SUUIScrollingTabBarController *)self _deepestFocusedViewControllerWithTopLevelFocusedViewController:v10];
+        viewController = [*(*(&v23 + 1) + 8 * i) viewController];
+        v11 = [(SUUIScrollingTabBarController *)self _deepestFocusedViewControllerWithTopLevelFocusedViewController:viewController];
 
-        v12 = [v11 navigationController];
-        v13 = [v12 navigationBar];
+        navigationController = [v11 navigationController];
+        navigationBar = [navigationController navigationBar];
 
-        if ([v13 conformsToProtocol:&unk_286C399A0])
+        if ([navigationBar conformsToProtocol:&unk_286C399A0])
         {
-          v14 = v13;
+          v14 = navigationBar;
           [v14 positionOffset];
           v16 = v15;
           [(SUUIScrollingTabBarController *)self _effectiveBottomBarOffset];
@@ -3397,7 +3397,7 @@ uint64_t __65__SUUIScrollingTabBarController__updateForHorizontalLayoutChange__b
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v5 = [visibleCells countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v5);
@@ -3408,19 +3408,19 @@ uint64_t __65__SUUIScrollingTabBarController__updateForHorizontalLayoutChange__b
     v8 = 0.0;
   }
 
-  v20 = [MEMORY[0x277D75128] sharedApplication];
-  v21 = [v20 statusBar];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  statusBar = [mEMORY[0x277D75128] statusBar];
 
   CGAffineTransformMakeTranslation(&v22, 0.0, v8);
-  [v21 setTransform:&v22];
+  [statusBar setTransform:&v22];
 }
 
 - (void)_updateScrollViewContentOffsetsToTargetContentOffsets
 {
   if ([(SUUIScrollingTabBarController *)self isViewLoaded])
   {
-    v3 = [(SUUIScrollingTabBarController *)self view];
-    [v3 bounds];
+    view = [(SUUIScrollingTabBarController *)self view];
+    [view bounds];
     Width = CGRectGetWidth(v12);
 
     [(SUUIScrollingTabBarContentCollectionView *)self->_contentCollectionView contentSize];
@@ -3448,28 +3448,28 @@ uint64_t __65__SUUIScrollingTabBarController__updateForHorizontalLayoutChange__b
   }
 }
 
-- (void)_updateStatusBarPositionForcingVisible:(BOOL)a3
+- (void)_updateStatusBarPositionForcingVisible:(BOOL)visible
 {
   v3 = *(MEMORY[0x277CBF2C0] + 16);
   *&v11.a = *MEMORY[0x277CBF2C0];
   *&v11.c = v3;
   *&v11.tx = *(MEMORY[0x277CBF2C0] + 32);
-  if (!a3)
+  if (!visible)
   {
-    v4 = [(UIViewController *)self->_focusedViewController navigationController];
-    v5 = [v4 navigationBar];
+    navigationController = [(UIViewController *)self->_focusedViewController navigationController];
+    navigationBar = [navigationController navigationBar];
 
-    if ([v5 conformsToProtocol:&unk_286C399A0])
+    if ([navigationBar conformsToProtocol:&unk_286C399A0])
     {
-      [v5 positionOffset];
+      [navigationBar positionOffset];
       CGAffineTransformMakeTranslation(&v11, v6, v7);
     }
   }
 
-  v8 = [MEMORY[0x277D75128] sharedApplication];
-  v9 = [v8 statusBar];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  statusBar = [mEMORY[0x277D75128] statusBar];
   v10 = v11;
-  [v9 setTransform:&v10];
+  [statusBar setTransform:&v10];
 }
 
 - (void)_updateTabBarBackgroundsAndHairlines
@@ -3495,8 +3495,8 @@ uint64_t __65__SUUIScrollingTabBarController__updateForHorizontalLayoutChange__b
         [(SUUIScrollingTabBarBackgroundView *)self->_tabBarExtendedBackgroundView setShowsBackdrop:1];
         [(SUUIScrollingTabBarBackgroundView *)self->_tabBarExtendedBackgroundView setShowsTopHairline:1];
         v7 = self->_tabBarExtendedBackgroundView;
-        v8 = [(SUUIScrollingTabBarController *)self _tabBarBackdropGroupName];
-        [(SUUIScrollingTabBarBackgroundView *)v7 setBackdropBarGroupName:v8];
+        _tabBarBackdropGroupName = [(SUUIScrollingTabBarController *)self _tabBarBackdropGroupName];
+        [(SUUIScrollingTabBarBackgroundView *)v7 setBackdropBarGroupName:_tabBarBackdropGroupName];
 
         [(UIView *)self->_tabBarContainerView insertSubview:self->_tabBarExtendedBackgroundView atIndex:0];
       }
@@ -3514,24 +3514,24 @@ uint64_t __65__SUUIScrollingTabBarController__updateForHorizontalLayoutChange__b
   }
 
   [(SUUIScrollingTabBarBackgroundView *)self->_tabBarExtendedBackgroundView setHidden:v3 ^ 1];
-  v10 = [(SUUICrossFadingTabBar *)self->_tabBar backgroundView];
-  [v10 setHidden:v3];
-  [v10 setUsesOpaqueColorForTopHairline:v3 ^ 1];
-  v9 = [(SUUIScrollingTabBarPalette *)self->_tabBarPalette _backgroundView];
-  [v9 setShowsBackdrop:v3 ^ 1];
-  [v9 setShowsTopHairline:v3 ^ 1];
-  [v9 setShowsBottomHairline:1];
+  backgroundView = [(SUUICrossFadingTabBar *)self->_tabBar backgroundView];
+  [backgroundView setHidden:v3];
+  [backgroundView setUsesOpaqueColorForTopHairline:v3 ^ 1];
+  _backgroundView = [(SUUIScrollingTabBarPalette *)self->_tabBarPalette _backgroundView];
+  [_backgroundView setShowsBackdrop:v3 ^ 1];
+  [_backgroundView setShowsTopHairline:v3 ^ 1];
+  [_backgroundView setShowsBottomHairline:1];
 }
 
 - (void)_updateTabBarButtons
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(SUUICrossFadingTabBar *)self->_tabBar tabBarButtons];
+  tabBarButtons = [(SUUICrossFadingTabBar *)self->_tabBar tabBarButtons];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  v4 = [tabBarButtons countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3542,19 +3542,19 @@ uint64_t __65__SUUIScrollingTabBarController__updateForHorizontalLayoutChange__b
       {
         if (*v25 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(tabBarButtons);
         }
 
         [*(*(&v24 + 1) + 8 * i) removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v5 = [tabBarButtons countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v5);
   }
 
-  v18 = v3;
+  v18 = tabBarButtons;
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -3575,16 +3575,16 @@ uint64_t __65__SUUIScrollingTabBarController__updateForHorizontalLayoutChange__b
           objc_enumerationMutation(obj);
         }
 
-        v13 = [*(*(&v20 + 1) + 8 * j) tabBarItem];
+        tabBarItem = [*(*(&v20 + 1) + 8 * j) tabBarItem];
         v14 = objc_alloc_init(SUUICrossFadingTabBarButton);
-        v15 = [v13 title];
-        [(SUUICrossFadingTabBarButton *)v14 setTitle:v15];
+        title = [tabBarItem title];
+        [(SUUICrossFadingTabBarButton *)v14 setTitle:title];
 
-        v16 = [v13 image];
-        [(SUUICrossFadingTabBarButton *)v14 setImage:v16];
+        image = [tabBarItem image];
+        [(SUUICrossFadingTabBarButton *)v14 setImage:image];
 
-        v17 = [v13 selectedImage];
-        [(SUUICrossFadingTabBarButton *)v14 setSelectedImage:v17];
+        selectedImage = [tabBarItem selectedImage];
+        [(SUUICrossFadingTabBarButton *)v14 setSelectedImage:selectedImage];
 
         [(SUUICrossFadingTabBarButton *)v14 addTarget:self action:sel__tabBarButtonTapped_ forControlEvents:1];
         if (!v10)
@@ -3593,7 +3593,7 @@ uint64_t __65__SUUIScrollingTabBarController__updateForHorizontalLayoutChange__b
         }
 
         [v10 addObject:v14];
-        [v13 setView:v14];
+        [tabBarItem setView:v14];
       }
 
       v9 = [(NSArray *)obj countByEnumeratingWithState:&v20 objects:v28 count:16];
@@ -3610,28 +3610,28 @@ uint64_t __65__SUUIScrollingTabBarController__updateForHorizontalLayoutChange__b
   [(SUUICrossFadingTabBar *)self->_tabBar setTabBarButtons:v10];
 }
 
-- (void)_updateTabBarButtonsSelectionProgressWithHorizontalLayoutContext:(id *)a3
+- (void)_updateTabBarButtonsSelectionProgressWithHorizontalLayoutContext:(id *)context
 {
-  if (a3->var0 == a3->var1)
+  if (context->var0 == context->var1)
   {
     var2 = 0.0;
   }
 
   else
   {
-    var2 = a3->var2;
+    var2 = context->var2;
   }
 
-  v6 = [(SUUICrossFadingTabBar *)self->_tabBar tabBarButtons];
+  tabBarButtons = [(SUUICrossFadingTabBar *)self->_tabBar tabBarButtons];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __98__SUUIScrollingTabBarController__updateTabBarButtonsSelectionProgressWithHorizontalLayoutContext___block_invoke;
   v7[3] = &unk_2798F9530;
   v7[4] = self;
-  v8 = *&a3->var0;
-  v9 = a3->var2;
+  v8 = *&context->var0;
+  v9 = context->var2;
   v10 = var2;
-  [v6 enumerateObjectsUsingBlock:v7];
+  [tabBarButtons enumerateObjectsUsingBlock:v7];
 }
 
 uint64_t __98__SUUIScrollingTabBarController__updateTabBarButtonsSelectionProgressWithHorizontalLayoutContext___block_invoke(uint64_t a1, void *a2, unint64_t a3)
@@ -3720,15 +3720,15 @@ uint64_t __98__SUUIScrollingTabBarController__updateTabBarButtonsSelectionProgre
   result = [(SUUIScrollingTabBarPalette *)self->_tabBarPalette isAttached];
   if (result)
   {
-    v7 = [(SUUIScrollingTabBarController *)self view];
-    v8 = [v7 traitCollection];
-    [v8 displayScale];
+    view = [(SUUIScrollingTabBarController *)self view];
+    traitCollection = [view traitCollection];
+    [traitCollection displayScale];
     v10 = v9;
 
     if (v10 < 0.00000011920929)
     {
-      v11 = [MEMORY[0x277D759A0] mainScreen];
-      [v11 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v10 = v12;
     }
 
@@ -3746,9 +3746,9 @@ uint64_t __98__SUUIScrollingTabBarController__updateTabBarButtonsSelectionProgre
   return result;
 }
 
-- (void)_viewControllerNeedsNestedPagingScrollViewUpdate:(id)a3
+- (void)_viewControllerNeedsNestedPagingScrollViewUpdate:(id)update
 {
-  v3 = [(NSMapTable *)self->_viewControllerToItemContext objectForKey:a3];
+  v3 = [(NSMapTable *)self->_viewControllerToItemContext objectForKey:update];
   [v3 updateForPossibleNestedPagingScrollViewChange];
 }
 

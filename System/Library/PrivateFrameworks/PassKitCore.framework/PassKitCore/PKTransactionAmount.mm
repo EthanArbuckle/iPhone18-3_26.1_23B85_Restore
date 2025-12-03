@@ -1,66 +1,66 @@
 @interface PKTransactionAmount
-- (BOOL)isEqual:(id)a3;
-- (PKTransactionAmount)initWithCoder:(id)a3;
-- (PKTransactionAmount)initWithCurrencyAmount:(id)a3 label:(id)a4;
-- (PKTransactionAmount)initWithCurrencyAmount:(id)a3 label:(id)a4 unitIdentifier:(id)a5;
-- (PKTransactionAmount)initWithDictionary:(id)a3;
-- (PKTransactionAmount)initWithPendingCurrencyAmount:(id)a3 unitIdentifier:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKTransactionAmount)initWithCoder:(id)coder;
+- (PKTransactionAmount)initWithCurrencyAmount:(id)amount label:(id)label;
+- (PKTransactionAmount)initWithCurrencyAmount:(id)amount label:(id)label unitIdentifier:(id)identifier;
+- (PKTransactionAmount)initWithDictionary:(id)dictionary;
+- (PKTransactionAmount)initWithPendingCurrencyAmount:(id)amount unitIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKTransactionAmount
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKTransactionAmount allocWithZone:](PKTransactionAmount init];
-  v6 = [(PKCurrencyAmount *)self->_amount copyWithZone:a3];
+  v6 = [(PKCurrencyAmount *)self->_amount copyWithZone:zone];
   amount = v5->_amount;
   v5->_amount = v6;
 
-  v8 = [(NSString *)self->_label copyWithZone:a3];
+  v8 = [(NSString *)self->_label copyWithZone:zone];
   label = v5->_label;
   v5->_label = v8;
 
   v5->_pending = self->_pending;
-  v10 = [(NSString *)self->_unitIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_unitIdentifier copyWithZone:zone];
   unitIdentifier = v5->_unitIdentifier;
   v5->_unitIdentifier = v10;
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   amount = self->_amount;
-  v5 = a3;
-  [v5 encodeObject:amount forKey:@"amount"];
-  [v5 encodeObject:self->_label forKey:@"label"];
-  [v5 encodeBool:self->_pending forKey:@"pending"];
-  [v5 encodeObject:self->_unitIdentifier forKey:@"unitIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:amount forKey:@"amount"];
+  [coderCopy encodeObject:self->_label forKey:@"label"];
+  [coderCopy encodeBool:self->_pending forKey:@"pending"];
+  [coderCopy encodeObject:self->_unitIdentifier forKey:@"unitIdentifier"];
 }
 
-- (PKTransactionAmount)initWithCoder:(id)a3
+- (PKTransactionAmount)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKTransactionAmount;
   v5 = [(PKTransactionAmount *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
     amount = v5->_amount;
     v5->_amount = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
     label = v5->_label;
     v5->_label = v8;
 
-    v5->_pending = [v4 decodeBoolForKey:@"pending"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unitIdentifier"];
+    v5->_pending = [coderCopy decodeBoolForKey:@"pending"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unitIdentifier"];
     unitIdentifier = v5->_unitIdentifier;
     v5->_unitIdentifier = v10;
   }
@@ -68,86 +68,86 @@
   return v5;
 }
 
-- (PKTransactionAmount)initWithCurrencyAmount:(id)a3 label:(id)a4
+- (PKTransactionAmount)initWithCurrencyAmount:(id)amount label:(id)label
 {
-  v7 = a3;
-  v8 = a4;
+  amountCopy = amount;
+  labelCopy = label;
   v12.receiver = self;
   v12.super_class = PKTransactionAmount;
   v9 = [(PKTransactionAmount *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_amount, a3);
-    objc_storeStrong(&v10->_label, a4);
+    objc_storeStrong(&v9->_amount, amount);
+    objc_storeStrong(&v10->_label, label);
     v10->_pending = 0;
   }
 
   return v10;
 }
 
-- (PKTransactionAmount)initWithCurrencyAmount:(id)a3 label:(id)a4 unitIdentifier:(id)a5
+- (PKTransactionAmount)initWithCurrencyAmount:(id)amount label:(id)label unitIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  amountCopy = amount;
+  labelCopy = label;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = PKTransactionAmount;
   v12 = [(PKTransactionAmount *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_amount, a3);
-    objc_storeStrong(&v13->_label, a4);
-    objc_storeStrong(&v13->_unitIdentifier, a5);
+    objc_storeStrong(&v12->_amount, amount);
+    objc_storeStrong(&v13->_label, label);
+    objc_storeStrong(&v13->_unitIdentifier, identifier);
     v13->_pending = 0;
   }
 
   return v13;
 }
 
-- (PKTransactionAmount)initWithPendingCurrencyAmount:(id)a3 unitIdentifier:(id)a4
+- (PKTransactionAmount)initWithPendingCurrencyAmount:(id)amount unitIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  amountCopy = amount;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = PKTransactionAmount;
   v9 = [(PKTransactionAmount *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_amount, a3);
+    objc_storeStrong(&v9->_amount, amount);
     v10->_pending = 1;
-    objc_storeStrong(&v10->_unitIdentifier, a4);
+    objc_storeStrong(&v10->_unitIdentifier, identifier);
   }
 
   return v10;
 }
 
-- (PKTransactionAmount)initWithDictionary:(id)a3
+- (PKTransactionAmount)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 PKDecimalNumberForKey:@"amount"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKDecimalNumberForKey:@"amount"];
   if (!v5)
   {
-    v5 = [v4 PKDecimalNumberForKey:@"value"];
+    v5 = [dictionaryCopy PKDecimalNumberForKey:@"value"];
   }
 
-  v6 = [v4 PKStringForKey:@"currency"];
+  v6 = [dictionaryCopy PKStringForKey:@"currency"];
   if (!v6)
   {
-    v6 = [v4 PKStringForKey:@"currencyCode"];
+    v6 = [dictionaryCopy PKStringForKey:@"currencyCode"];
   }
 
-  v7 = [v4 PKIntegerForKey:@"exponent"];
-  v8 = [v4 PKStringForKey:@"label"];
+  v7 = [dictionaryCopy PKIntegerForKey:@"exponent"];
+  v8 = [dictionaryCopy PKStringForKey:@"label"];
   if (!v8)
   {
-    v8 = [v4 PKStringForKey:@"localizedTitle"];
+    v8 = [dictionaryCopy PKStringForKey:@"localizedTitle"];
   }
 
-  v9 = [v4 PKBoolForKey:@"pending"];
-  v10 = [v4 PKStringForKey:@"unitIdentifier"];
+  v9 = [dictionaryCopy PKBoolForKey:@"pending"];
+  v10 = [dictionaryCopy PKStringForKey:@"unitIdentifier"];
   v11 = [PKCurrencyAmount alloc];
   v12 = v11;
   if (v9)
@@ -175,14 +175,14 @@
   if (self->_pending)
   {
     unitIdentifier = self->_unitIdentifier;
-    v5 = [(PKCurrencyAmount *)self->_amount formattedStringValue];
-    [v3 stringWithFormat:@"Pending, Unit Identifier: %@, Amount: %@", unitIdentifier, v5];
+    formattedStringValue = [(PKCurrencyAmount *)self->_amount formattedStringValue];
+    [v3 stringWithFormat:@"Pending, Unit Identifier: %@, Amount: %@", unitIdentifier, formattedStringValue];
   }
 
   else
   {
-    v5 = [(PKCurrencyAmount *)self->_amount formattedStringValue];
-    [v3 stringWithFormat:@"Amount: %@, Label: %@", v5, self->_label];
+    formattedStringValue = [(PKCurrencyAmount *)self->_amount formattedStringValue];
+    [v3 stringWithFormat:@"Amount: %@, Label: %@", formattedStringValue, self->_label];
   }
   v6 = ;
 
@@ -192,11 +192,11 @@
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PKCurrencyAmount *)self->_amount amount];
-  [v3 setObject:v4 forKeyedSubscript:@"amount"];
+  amount = [(PKCurrencyAmount *)self->_amount amount];
+  [v3 setObject:amount forKeyedSubscript:@"amount"];
 
-  v5 = [(PKCurrencyAmount *)self->_amount currency];
-  [v3 setObject:v5 forKeyedSubscript:@"currency"];
+  currency = [(PKCurrencyAmount *)self->_amount currency];
+  [v3 setObject:currency forKeyedSubscript:@"currency"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PKCurrencyAmount exponent](self->_amount, "exponent")}];
   [v3 setObject:v6 forKeyedSubscript:@"exponent"];
@@ -209,8 +209,8 @@
 
   else
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
-    [v3 setObject:v8 forKeyedSubscript:@"label"];
+    null = [MEMORY[0x1E695DFB0] null];
+    [v3 setObject:null forKeyedSubscript:@"label"];
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_pending];
@@ -224,8 +224,8 @@
 
   else
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
-    [v3 setObject:v11 forKeyedSubscript:@"unitIdentifier"];
+    null2 = [MEMORY[0x1E695DFB0] null];
+    [v3 setObject:null2 forKeyedSubscript:@"unitIdentifier"];
   }
 
   v12 = [v3 copy];
@@ -235,25 +235,25 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_amount];
-  [v3 safelyAddObject:self->_label];
-  [v3 safelyAddObject:self->_unitIdentifier];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_amount];
+  [array safelyAddObject:self->_label];
+  [array safelyAddObject:self->_unitIdentifier];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_pending - v4 + 32 * v4;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   amount = self->_amount;
-  v6 = [v4 amount];
-  v7 = v6;
+  amount = [equalCopy amount];
+  v7 = amount;
   if (amount)
   {
-    v8 = v6 == 0;
+    v8 = amount == 0;
   }
 
   else
@@ -263,19 +263,19 @@
 
   if (v8)
   {
-    if (amount == v6)
+    if (amount == amount)
     {
       goto LABEL_9;
     }
   }
 
-  else if ([(PKCurrencyAmount *)amount isEqual:v6])
+  else if ([(PKCurrencyAmount *)amount isEqual:amount])
   {
 LABEL_9:
     label = self->_label;
-    v12 = [v4 label];
+    label = [equalCopy label];
     v13 = label;
-    v14 = v12;
+    v14 = label;
     v15 = v14;
     if (v13 == v14)
     {
@@ -301,21 +301,21 @@ LABEL_24:
     }
 
     unitIdentifier = self->_unitIdentifier;
-    v18 = [v4 unitIdentifier];
-    v13 = v18;
-    if (unitIdentifier && v18)
+    unitIdentifier = [equalCopy unitIdentifier];
+    v13 = unitIdentifier;
+    if (unitIdentifier && unitIdentifier)
     {
-      if (([(NSString *)unitIdentifier isEqual:v18]& 1) != 0)
+      if (([(NSString *)unitIdentifier isEqual:unitIdentifier]& 1) != 0)
       {
         goto LABEL_22;
       }
     }
 
-    else if (unitIdentifier == v18)
+    else if (unitIdentifier == unitIdentifier)
     {
 LABEL_22:
       pending = self->_pending;
-      v9 = pending == [v4 isPending];
+      v9 = pending == [equalCopy isPending];
       goto LABEL_23;
     }
 

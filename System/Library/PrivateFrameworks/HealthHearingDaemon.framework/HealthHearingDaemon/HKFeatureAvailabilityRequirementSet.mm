@@ -1,14 +1,14 @@
 @interface HKFeatureAvailabilityRequirementSet
-+ (id)advertisableFeatureRequirementsForIdentifier:(uint64_t)a1;
-+ (id)promptTileRequirementsForIdentifier:(uint64_t)a1;
-+ (id)settingsUserInteractionEnabledRequirementsForIdentifier:(uint64_t)a1;
-+ (id)settingsVisibilityRequirementsForIdentifier:(uint64_t)a1;
-+ (id)usageRequirementsForIdentifier:(uint64_t)a1;
++ (id)advertisableFeatureRequirementsForIdentifier:(uint64_t)identifier;
++ (id)promptTileRequirementsForIdentifier:(uint64_t)identifier;
++ (id)settingsUserInteractionEnabledRequirementsForIdentifier:(uint64_t)identifier;
++ (id)settingsVisibilityRequirementsForIdentifier:(uint64_t)identifier;
++ (id)usageRequirementsForIdentifier:(uint64_t)identifier;
 @end
 
 @implementation HKFeatureAvailabilityRequirementSet
 
-+ (id)advertisableFeatureRequirementsForIdentifier:(uint64_t)a1
++ (id)advertisableFeatureRequirementsForIdentifier:(uint64_t)identifier
 {
   v9[3] = *MEMORY[0x277D85DE8];
   v2 = a2;
@@ -26,7 +26,7 @@
   return v6;
 }
 
-+ (id)settingsVisibilityRequirementsForIdentifier:(uint64_t)a1
++ (id)settingsVisibilityRequirementsForIdentifier:(uint64_t)identifier
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v2 = a2;
@@ -41,7 +41,7 @@
   return v4;
 }
 
-+ (id)settingsUserInteractionEnabledRequirementsForIdentifier:(uint64_t)a1
++ (id)settingsUserInteractionEnabledRequirementsForIdentifier:(uint64_t)identifier
 {
   v2 = a2;
   objc_opt_self();
@@ -50,7 +50,7 @@
   return v3;
 }
 
-+ (id)usageRequirementsForIdentifier:(uint64_t)a1
++ (id)usageRequirementsForIdentifier:(uint64_t)identifier
 {
   v11[5] = *MEMORY[0x277D85DE8];
   v2 = a2;
@@ -72,7 +72,7 @@
   return v8;
 }
 
-+ (id)promptTileRequirementsForIdentifier:(uint64_t)a1
++ (id)promptTileRequirementsForIdentifier:(uint64_t)identifier
 {
   v2 = a2;
   objc_opt_self();

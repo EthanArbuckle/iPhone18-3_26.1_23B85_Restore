@@ -1,16 +1,16 @@
 @interface ACUISActivitySceneAction
-- (ACUISActivitySceneAction)initWithCommand:(int64_t)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (ACUISActivitySceneAction)initWithCommand:(int64_t)command;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (int64_t)command;
 @end
 
 @implementation ACUISActivitySceneAction
 
-- (ACUISActivitySceneAction)initWithCommand:(int64_t)a3
+- (ACUISActivitySceneAction)initWithCommand:(int64_t)command
 {
   v5 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:command];
   [v5 setObject:v6 forSetting:0];
 
   v9.receiver = self;
@@ -22,16 +22,16 @@
 
 - (int64_t)command
 {
-  v2 = [(ACUISActivitySceneAction *)self info];
-  v3 = [v2 objectForSetting:0];
-  v4 = [v3 unsignedIntegerValue];
+  info = [(ACUISActivitySceneAction *)self info];
+  v3 = [info objectForSetting:0];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3)
+  if (setting)
   {
     return 0;
   }
@@ -42,22 +42,22 @@
   }
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  if (a5)
+  if (setting)
   {
     return 0;
   }
 
-  v8 = [a4 unsignedIntegerValue];
-  if ((v8 - 1) > 2)
+  unsignedIntegerValue = [object unsignedIntegerValue];
+  if ((unsignedIntegerValue - 1) > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_1E72627C0[v8 - 1];
+    return off_1E72627C0[unsignedIntegerValue - 1];
   }
 }
 

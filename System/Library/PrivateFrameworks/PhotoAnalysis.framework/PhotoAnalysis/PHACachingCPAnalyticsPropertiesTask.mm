@@ -1,23 +1,23 @@
 @interface PHACachingCPAnalyticsPropertiesTask
-+ (BOOL)_hasAppleMusicSubscriptionWithLoggingConnection:(id)a3;
-+ (id)_ageRangeDescriptionFromBirthday:(id)a3;
-+ (id)_fetchDemographicsSummaryWithLoggingConnection:(id)a3;
-+ (id)_fetchLibrarySummaryForPhotoLibrary:(id)a3 loggingConnection:(id)a4 progressReporter:(id)a5;
-+ (id)_genderDescriptionFromGivenName:(id)a3;
-+ (id)_meContactWithLoggingConnection:(id)a3;
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-- (BOOL)runWithPhotoLibrary:(id)a3 analytics:(id)a4 progressReporter:(id)a5 error:(id *)a6;
-- (BOOL)shouldRunWithGraphManager:(id)a3;
-- (BOOL)shouldRunWithPhotoLibrary:(id)a3;
-- (id)_buildPropertyCacheForPhotoLibrary:(id)a3 loggingConnection:(id)a4 progressReporter:(id)a5;
-- (void)timeoutFatal:(BOOL)a3;
++ (BOOL)_hasAppleMusicSubscriptionWithLoggingConnection:(id)connection;
++ (id)_ageRangeDescriptionFromBirthday:(id)birthday;
++ (id)_fetchDemographicsSummaryWithLoggingConnection:(id)connection;
++ (id)_fetchLibrarySummaryForPhotoLibrary:(id)library loggingConnection:(id)connection progressReporter:(id)reporter;
++ (id)_genderDescriptionFromGivenName:(id)name;
++ (id)_meContactWithLoggingConnection:(id)connection;
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
+- (BOOL)runWithPhotoLibrary:(id)library analytics:(id)analytics progressReporter:(id)reporter error:(id *)error;
+- (BOOL)shouldRunWithGraphManager:(id)manager;
+- (BOOL)shouldRunWithPhotoLibrary:(id)library;
+- (id)_buildPropertyCacheForPhotoLibrary:(id)library loggingConnection:(id)connection progressReporter:(id)reporter;
+- (void)timeoutFatal:(BOOL)fatal;
 @end
 
 @implementation PHACachingCPAnalyticsPropertiesTask
 
-+ (BOOL)_hasAppleMusicSubscriptionWithLoggingConnection:(id)a3
++ (BOOL)_hasAppleMusicSubscriptionWithLoggingConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v4 = dispatch_group_create();
   dispatch_group_enter(v4);
   v17 = 0;
@@ -25,17 +25,17 @@
   v19 = 0x2020000000;
   v20 = 0;
   v5 = MEMORY[0x277D3BAB0];
-  v6 = [MEMORY[0x277D22C80] ignoreProgress];
+  ignoreProgress = [MEMORY[0x277D22C80] ignoreProgress];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __87__PHACachingCPAnalyticsPropertiesTask__hasAppleMusicSubscriptionWithLoggingConnection___block_invoke;
   v13[3] = &unk_2788B2060;
   v16 = &v17;
-  v7 = v3;
+  v7 = connectionCopy;
   v14 = v7;
   v8 = v4;
   v15 = v8;
-  [v5 checkMusicCatalogEligibilityWithProgressReporter:v6 completionHandler:v13];
+  [v5 checkMusicCatalogEligibilityWithProgressReporter:ignoreProgress completionHandler:v13];
 
   v9 = dispatch_time(0, 10000000000);
   if (dispatch_group_wait(v8, v9) && os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -69,60 +69,60 @@ void __87__PHACachingCPAnalyticsPropertiesTask__hasAppleMusicSubscriptionWithLog
   dispatch_group_leave(*(a1 + 40));
 }
 
-+ (id)_ageRangeDescriptionFromBirthday:(id)a3
++ (id)_ageRangeDescriptionFromBirthday:(id)birthday
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || [v3 year] < 1900 || objc_msgSend(v4, "day") == 1 && objc_msgSend(v4, "month") == 1)
+  birthdayCopy = birthday;
+  v4 = birthdayCopy;
+  if (!birthdayCopy || [birthdayCopy year] < 1900 || objc_msgSend(v4, "day") == 1 && objc_msgSend(v4, "month") == 1)
   {
     v5 = @"Unknown";
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEA80] currentCalendar];
-    [v4 setCalendar:v6];
-    v7 = [v4 date];
-    v8 = [MEMORY[0x277CBEAA8] date];
-    v9 = [v6 components:4 fromDate:v7 toDate:v8 options:0];
-    v10 = [v9 year];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    [v4 setCalendar:currentCalendar];
+    date = [v4 date];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    v9 = [currentCalendar components:4 fromDate:date toDate:date2 options:0];
+    year = [v9 year];
     v11 = @"<18";
     v12 = @"18-25";
     v13 = @"26-35";
     v14 = @"36-45";
     v15 = @"46-55";
     v16 = @">65";
-    if (v10 < 0x42)
+    if (year < 0x42)
     {
       v16 = @"56-65";
     }
 
-    if (v10 >= 0x38)
+    if (year >= 0x38)
     {
       v15 = v16;
     }
 
-    if (v10 >= 0x2E)
+    if (year >= 0x2E)
     {
       v14 = v15;
     }
 
-    if (v10 >= 0x24)
+    if (year >= 0x24)
     {
       v13 = v14;
     }
 
-    if (v10 >= 0x1A)
+    if (year >= 0x1A)
     {
       v12 = v13;
     }
 
-    if (v10 >= 0x12)
+    if (year >= 0x12)
     {
       v11 = v12;
     }
 
-    if (v10 >= 1)
+    if (year >= 1)
     {
       v5 = v11;
     }
@@ -136,16 +136,16 @@ void __87__PHACachingCPAnalyticsPropertiesTask__hasAppleMusicSubscriptionWithLog
   return v5;
 }
 
-+ (id)_genderDescriptionFromGivenName:(id)a3
++ (id)_genderDescriptionFromGivenName:(id)name
 {
-  v3 = a3;
-  if ([v3 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
     v4 = @"Unknown";
-    if ([v3 UTF8String])
+    if ([nameCopy UTF8String])
     {
       v5 = objc_alloc_init(MEMORY[0x277D003E8]);
-      v6 = [v5 genderMajorityForGivenName:v3];
+      v6 = [v5 genderMajorityForGivenName:nameCopy];
       v7 = @"Male";
       if (v6 != 2)
       {
@@ -172,14 +172,14 @@ void __87__PHACachingCPAnalyticsPropertiesTask__hasAppleMusicSubscriptionWithLog
   return v4;
 }
 
-+ (id)_meContactWithLoggingConnection:(id)a3
++ (id)_meContactWithLoggingConnection:(id)connection
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+  connectionCopy = connection;
+  if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
   {
     *buf = 0;
-    _os_log_impl(&dword_22FA28000, v3, OS_LOG_TYPE_INFO, "[PHACachingCPAnalyticsPropertiesTask] Start fetching Me contact card", buf, 2u);
+    _os_log_impl(&dword_22FA28000, connectionCopy, OS_LOG_TYPE_INFO, "[PHACachingCPAnalyticsPropertiesTask] Start fetching Me contact card", buf, 2u);
   }
 
   v4 = objc_alloc_init(MEMORY[0x277CBDAB8]);
@@ -195,11 +195,11 @@ void __87__PHACachingCPAnalyticsPropertiesTask__hasAppleMusicSubscriptionWithLog
 
     if (v9)
     {
-      if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v13 = v9;
-        _os_log_error_impl(&dword_22FA28000, v3, OS_LOG_TYPE_ERROR, "[PHACachingCPAnalyticsPropertiesTask] Error fetching the me Contact Card (%@)", buf, 0xCu);
+        _os_log_error_impl(&dword_22FA28000, connectionCopy, OS_LOG_TYPE_ERROR, "[PHACachingCPAnalyticsPropertiesTask] Error fetching the me Contact Card (%@)", buf, 0xCu);
       }
 
       v5 = 0;
@@ -213,10 +213,10 @@ void __87__PHACachingCPAnalyticsPropertiesTask__hasAppleMusicSubscriptionWithLog
 
   else
   {
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_22FA28000, v3, OS_LOG_TYPE_INFO, "[PHACachingCPAnalyticsPropertiesTask] Not authorized to get meContact", buf, 2u);
+      _os_log_impl(&dword_22FA28000, connectionCopy, OS_LOG_TYPE_INFO, "[PHACachingCPAnalyticsPropertiesTask] Not authorized to get meContact", buf, 2u);
     }
 
     v5 = 0;
@@ -225,26 +225,26 @@ void __87__PHACachingCPAnalyticsPropertiesTask__hasAppleMusicSubscriptionWithLog
   return v5;
 }
 
-+ (id)_fetchDemographicsSummaryWithLoggingConnection:(id)a3
++ (id)_fetchDemographicsSummaryWithLoggingConnection:(id)connection
 {
-  v4 = a3;
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+  connectionCopy = connection;
+  if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
   {
     *v13 = 0;
-    _os_log_impl(&dword_22FA28000, v4, OS_LOG_TYPE_INFO, "[PHACachingCPAnalyticsPropertiesTask] Start caching CPAnalytics demographics summary", v13, 2u);
+    _os_log_impl(&dword_22FA28000, connectionCopy, OS_LOG_TYPE_INFO, "[PHACachingCPAnalyticsPropertiesTask] Start caching CPAnalytics demographics summary", v13, 2u);
   }
 
-  v5 = [a1 _meContactWithLoggingConnection:v4];
+  v5 = [self _meContactWithLoggingConnection:connectionCopy];
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v7 = v6;
   if (v5)
   {
-    v8 = [v5 birthday];
-    v9 = [a1 _ageRangeDescriptionFromBirthday:v8];
+    birthday = [v5 birthday];
+    v9 = [self _ageRangeDescriptionFromBirthday:birthday];
     [v7 setObject:v9 forKeyedSubscript:*MEMORY[0x277CF6DF8]];
 
-    v10 = [v5 givenName];
-    v11 = [a1 _genderDescriptionFromGivenName:v10];
+    givenName = [v5 givenName];
+    v11 = [self _genderDescriptionFromGivenName:givenName];
     [v7 setObject:v11 forKeyedSubscript:*MEMORY[0x277CF6E00]];
   }
 
@@ -257,30 +257,30 @@ void __87__PHACachingCPAnalyticsPropertiesTask__hasAppleMusicSubscriptionWithLog
   return v7;
 }
 
-+ (id)_fetchLibrarySummaryForPhotoLibrary:(id)a3 loggingConnection:(id)a4 progressReporter:(id)a5
++ (id)_fetchLibrarySummaryForPhotoLibrary:(id)library loggingConnection:(id)connection progressReporter:(id)reporter
 {
   v61 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  libraryCopy = library;
+  connectionCopy = connection;
+  reporterCopy = reporter;
+  if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
   {
     *buf = 0;
-    _os_log_impl(&dword_22FA28000, v8, OS_LOG_TYPE_INFO, "[PHACachingCPAnalyticsPropertiesTask] Start caching CPAnalytics library summary", buf, 2u);
+    _os_log_impl(&dword_22FA28000, connectionCopy, OS_LOG_TYPE_INFO, "[PHACachingCPAnalyticsPropertiesTask] Start caching CPAnalytics library summary", buf, 2u);
   }
 
-  if (!v7)
+  if (!libraryCopy)
   {
     v14 = MEMORY[0x277CBEC10];
     goto LABEL_33;
   }
 
-  v10 = v9;
-  v11 = [v7 librarySpecificFetchOptions];
-  [v11 setWantsIncrementalChangeDetails:0];
-  [v11 setShouldPrefetchCount:1];
-  [v11 setIsExclusivePredicate:1];
-  v12 = [MEMORY[0x277CD97A8] fetchAssetsWithMediaType:1 options:v11];
+  v10 = reporterCopy;
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
+  [librarySpecificFetchOptions setShouldPrefetchCount:1];
+  [librarySpecificFetchOptions setIsExclusivePredicate:1];
+  v12 = [MEMORY[0x277CD97A8] fetchAssetsWithMediaType:1 options:librarySpecificFetchOptions];
   v13 = [v12 count];
   if ([v10 isCancelledWithProgress:0.1])
   {
@@ -297,7 +297,7 @@ void __87__PHACachingCPAnalyticsPropertiesTask__hasAppleMusicSubscriptionWithLog
     goto LABEL_32;
   }
 
-  v15 = [MEMORY[0x277CD97A8] fetchAssetsWithMediaType:2 options:v11];
+  v15 = [MEMORY[0x277CD97A8] fetchAssetsWithMediaType:2 options:librarySpecificFetchOptions];
   v16 = [v15 count];
   if ([v10 isCancelledWithProgress:0.2])
   {
@@ -314,12 +314,12 @@ void __87__PHACachingCPAnalyticsPropertiesTask__hasAppleMusicSubscriptionWithLog
     goto LABEL_31;
   }
 
-  v54 = [MEMORY[0x277CD98F8] fetchMomentsWithOptions:v11];
-  v17 = [v7 librarySpecificFetchOptions];
-  [v17 setShouldPrefetchCount:1];
-  [v17 setPersonContext:1];
-  v53 = v17;
-  v18 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:v17];
+  v54 = [MEMORY[0x277CD98F8] fetchMomentsWithOptions:librarySpecificFetchOptions];
+  librarySpecificFetchOptions2 = [libraryCopy librarySpecificFetchOptions];
+  [librarySpecificFetchOptions2 setShouldPrefetchCount:1];
+  [librarySpecificFetchOptions2 setPersonContext:1];
+  v53 = librarySpecificFetchOptions2;
+  v18 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:librarySpecificFetchOptions2];
   if ([v10 isCancelledWithProgress:0.3])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -336,24 +336,24 @@ LABEL_19:
 
   else
   {
-    [v7 ratioOfAssetsWithScenesProcessed];
+    [libraryCopy ratioOfAssetsWithScenesProcessed];
     v21 = v20;
-    [v7 ratioOfAssetsWithFacesProcessed];
+    [libraryCopy ratioOfAssetsWithFacesProcessed];
     v23 = v22;
-    [v7 ratioOfAssetsWithMediaAnalysisVideoProcessed];
+    [libraryCopy ratioOfAssetsWithMediaAnalysisVideoProcessed];
     v25 = v24;
-    [v7 ratioOfAssetsWithMediaAnalysisImageProcessed];
+    [libraryCopy ratioOfAssetsWithMediaAnalysisImageProcessed];
     v27 = v26;
     if (![v10 isCancelledWithProgress:0.5])
     {
       v52 = v18;
-      v41 = [v7 isCloudPhotoLibraryEnabled];
+      isCloudPhotoLibraryEnabled = [libraryCopy isCloudPhotoLibraryEnabled];
       v50 = v15;
-      if (v41)
+      if (isCloudPhotoLibraryEnabled)
       {
-        v28 = [v7 librarySpecificFetchOptions];
-        [v28 setShouldPrefetchCount:1];
-        v29 = [MEMORY[0x277CD98A8] fetchActiveLibraryScopeWithOptions:v28];
+        librarySpecificFetchOptions3 = [libraryCopy librarySpecificFetchOptions];
+        [librarySpecificFetchOptions3 setShouldPrefetchCount:1];
+        v29 = [MEMORY[0x277CD98A8] fetchActiveLibraryScopeWithOptions:librarySpecificFetchOptions3];
         v46 = [v29 count] != 0;
       }
 
@@ -362,7 +362,7 @@ LABEL_19:
         v46 = 0;
       }
 
-      v51 = [v7 cplStatus];
+      cplStatus = [libraryCopy cplStatus];
       v55[0] = *MEMORY[0x277CF6E78];
       v49 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v13];
       v56[0] = v49;
@@ -391,19 +391,19 @@ LABEL_19:
       v38 = [MEMORY[0x277CCABB0] numberWithDouble:v27];
       v56[8] = v38;
       v55[9] = *MEMORY[0x277CF6E98];
-      v42 = [MEMORY[0x277CCABB0] numberWithBool:v41];
+      v42 = [MEMORY[0x277CCABB0] numberWithBool:isCloudPhotoLibraryEnabled];
       v56[9] = v42;
       v55[10] = *MEMORY[0x277CF6EA0];
-      v37 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v51, "isExceedingQuota")}];
+      v37 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(cplStatus, "isExceedingQuota")}];
       v56[10] = v37;
       v55[11] = *MEMORY[0x277CF6EB0];
-      v36 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v51, "lowDiskSpace")}];
+      v36 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(cplStatus, "lowDiskSpace")}];
       v56[11] = v36;
       v55[12] = *MEMORY[0x277CF6EB8];
-      v30 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v51, "veryLowDiskSpace")}];
+      v30 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(cplStatus, "veryLowDiskSpace")}];
       v56[12] = v30;
       v55[13] = *MEMORY[0x277CF6EA8];
-      v31 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v51, "hasChangesToProcess")}];
+      v31 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(cplStatus, "hasChangesToProcess")}];
       v56[13] = v31;
       v55[14] = *MEMORY[0x277CF6E90];
       v32 = [MEMORY[0x277CCABB0] numberWithBool:v46];
@@ -460,21 +460,21 @@ LABEL_33:
   return v14;
 }
 
-- (id)_buildPropertyCacheForPhotoLibrary:(id)a3 loggingConnection:(id)a4 progressReporter:(id)a5
+- (id)_buildPropertyCacheForPhotoLibrary:(id)library loggingConnection:(id)connection progressReporter:(id)reporter
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v8 childProgressReporterFromStart:0.0 toEnd:0.3];
+  connectionCopy = connection;
+  reporterCopy = reporter;
+  libraryCopy = library;
+  v10 = [reporterCopy childProgressReporterFromStart:0.0 toEnd:0.3];
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v12 = [objc_opt_class() _fetchLibrarySummaryForPhotoLibrary:v9 loggingConnection:v7 progressReporter:v10];
+  v12 = [objc_opt_class() _fetchLibrarySummaryForPhotoLibrary:libraryCopy loggingConnection:connectionCopy progressReporter:v10];
 
   [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x277CF6DF0]];
-  v13 = [objc_opt_class() _fetchDemographicsSummaryWithLoggingConnection:v7];
+  v13 = [objc_opt_class() _fetchDemographicsSummaryWithLoggingConnection:connectionCopy];
   [v11 setObject:v13 forKeyedSubscript:*MEMORY[0x277CF6DE0]];
 
-  if ([v8 isCancelledWithProgress:0.6])
+  if ([reporterCopy isCancelledWithProgress:0.6])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -491,10 +491,10 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v15 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(objc_opt_class(), "_hasAppleMusicSubscriptionWithLoggingConnection:", v7)}];
+  v15 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(objc_opt_class(), "_hasAppleMusicSubscriptionWithLoggingConnection:", connectionCopy)}];
   [v11 setObject:v15 forKeyedSubscript:*MEMORY[0x277CF6E10]];
 
-  if ([v8 isCancelledWithProgress:1.0])
+  if ([reporterCopy isCancelledWithProgress:1.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -511,8 +511,8 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v17 = [MEMORY[0x277CBEAA8] date];
-  [v11 setObject:v17 forKeyedSubscript:*MEMORY[0x277CF6DE8]];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v11 setObject:date forKeyedSubscript:*MEMORY[0x277CF6DE8]];
 
   v16 = v11;
 LABEL_10:
@@ -520,9 +520,9 @@ LABEL_10:
   return v16;
 }
 
-- (void)timeoutFatal:(BOOL)a3
+- (void)timeoutFatal:(BOOL)fatal
 {
-  if (a3)
+  if (fatal)
   {
     __assert_rtn("[PHACachingCPAnalyticsPropertiesTask timeoutFatal:]", "PHACachingCPAnalyticsPropertiesTask.m", 159, "NO");
   }
@@ -534,12 +534,12 @@ LABEL_10:
   }
 }
 
-- (BOOL)runWithPhotoLibrary:(id)a3 analytics:(id)a4 progressReporter:(id)a5 error:(id *)a6
+- (BOOL)runWithPhotoLibrary:(id)library analytics:(id)analytics progressReporter:(id)reporter error:(id *)error
 {
   v63 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  if (![v10 isCancelledWithProgress:0.0])
+  libraryCopy = library;
+  reporterCopy = reporter;
+  if (![reporterCopy isCancelledWithProgress:0.0])
   {
     v12 = os_log_create("com.apple.PhotosGraph", "metrics");
     v13 = os_signpost_id_generate(v12);
@@ -555,10 +555,10 @@ LABEL_10:
     }
 
     v50 = mach_absolute_time();
-    v52 = [v10 childProgressReporterFromStart:0.0 toEnd:0.5];
-    v53 = [(PHACachingCPAnalyticsPropertiesTask *)self _buildPropertyCacheForPhotoLibrary:v9 loggingConnection:v15 progressReporter:?];
+    v52 = [reporterCopy childProgressReporterFromStart:0.0 toEnd:0.5];
+    v53 = [(PHACachingCPAnalyticsPropertiesTask *)self _buildPropertyCacheForPhotoLibrary:libraryCopy loggingConnection:v15 progressReporter:?];
     v57 = 0;
-    v17 = [v9 urlForApplicationDataFolderIdentifier:9 error:&v57];
+    v17 = [libraryCopy urlForApplicationDataFolderIdentifier:9 error:&v57];
     v18 = v57;
     if (!v17 && os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -601,10 +601,10 @@ LABEL_10:
         _os_log_impl(&dword_22FA28000, v27, OS_LOG_TYPE_INFO, "[PHACachingCPAnalyticsPropertiesTask] CPAnalytics TemporaryCacheFile URL is nil", buf, 2u);
       }
 
-      if (a6)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:9];
-        *a6 = v11 = 0;
+        *error = v11 = 0;
       }
 
       else
@@ -616,7 +616,7 @@ LABEL_10:
       goto LABEL_79;
     }
 
-    if ([v10 isCancelledWithProgress:0.6])
+    if ([reporterCopy isCancelledWithProgress:0.6])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -628,10 +628,10 @@ LABEL_10:
       }
 
       v22 = v51;
-      if (a6 && !*a6)
+      if (error && !*error)
       {
         [MEMORY[0x277D22C28] errorForCode:-4];
-        *a6 = v11 = 0;
+        *error = v11 = 0;
       }
 
       else
@@ -647,7 +647,7 @@ LABEL_10:
     v29 = v56;
     if (v28)
     {
-      if ([v10 isCancelledWithProgress:0.7])
+      if ([reporterCopy isCancelledWithProgress:0.7])
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -660,10 +660,10 @@ LABEL_10:
 
         v22 = v51;
         v30 = v29;
-        if (a6 && !*a6)
+        if (error && !*error)
         {
           [MEMORY[0x277D22C28] errorForCode:-4];
-          *a6 = v11 = 0;
+          *error = v11 = 0;
         }
 
         else
@@ -675,10 +675,10 @@ LABEL_10:
       }
 
       v37 = [v17 URLByAppendingPathComponent:v19];
-      v38 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v55 = v29;
       v49 = v37;
-      LOBYTE(v37) = [v38 replaceItemAtURL:v37 withItemAtURL:v54 backupItemName:0 options:1 resultingItemURL:0 error:&v55];
+      LOBYTE(v37) = [defaultManager replaceItemAtURL:v37 withItemAtURL:v54 backupItemName:0 options:1 resultingItemURL:0 error:&v55];
       v39 = v55;
       v40 = v29;
       v41 = v39;
@@ -711,7 +711,7 @@ LABEL_10:
           _os_log_impl(&dword_22FA28000, v44, OS_LOG_TYPE_INFO, "[PHACachingCPAnalyticsPropertiesTask] Successfully cached CPAnalytics system properties", buf, 2u);
         }
 
-        v46 = [v10 isCancelledWithProgress:1.0];
+        v46 = [reporterCopy isCancelledWithProgress:1.0];
         if (v46)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -723,9 +723,9 @@ LABEL_10:
             _os_log_impl(&dword_22FA28000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
           }
 
-          if (a6 && !*a6)
+          if (error && !*error)
           {
-            *a6 = [MEMORY[0x277D22C28] errorForCode:-4];
+            *error = [MEMORY[0x277D22C28] errorForCode:-4];
           }
         }
 
@@ -759,18 +759,18 @@ LABEL_10:
         v61 = 2112;
         v62 = v41;
         _os_log_error_impl(&dword_22FA28000, v44, OS_LOG_TYPE_ERROR, "[PHACachingCPAnalyticsPropertiesTask] Failed replacing %@ to %@, error: %@", buf, 0x20u);
-        if (a6)
+        if (error)
         {
           goto LABEL_70;
         }
       }
 
-      else if (a6)
+      else if (error)
       {
 LABEL_70:
         v47 = v41;
         v11 = 0;
-        *a6 = v30;
+        *error = v30;
 LABEL_77:
         v22 = v51;
 
@@ -806,19 +806,19 @@ LABEL_77:
       *buf = 138412290;
       *v60 = v29;
       _os_log_error_impl(&dword_22FA28000, v35, OS_LOG_TYPE_ERROR, "[PHACachingCPAnalyticsPropertiesTask] Failed writing cached CPAnalytics properties, error: %@", buf, 0xCu);
-      if (a6)
+      if (error)
       {
         goto LABEL_44;
       }
     }
 
-    else if (a6)
+    else if (error)
     {
 LABEL_44:
       v36 = v29;
       v30 = v29;
       v11 = 0;
-      *a6 = v30;
+      *error = v30;
 LABEL_74:
       v22 = v51;
 LABEL_78:
@@ -841,10 +841,10 @@ LABEL_79:
     _os_log_impl(&dword_22FA28000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
   }
 
-  if (a6 && !*a6)
+  if (error && !*error)
   {
     [MEMORY[0x277D22C28] errorForCode:-4];
-    *a6 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -857,41 +857,41 @@ LABEL_80:
   return v11;
 }
 
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 workingContext];
-  v11 = [v10 photoLibrary];
-  v12 = [v9 analytics];
+  reporterCopy = reporter;
+  managerCopy = manager;
+  workingContext = [managerCopy workingContext];
+  photoLibrary = [workingContext photoLibrary];
+  analytics = [managerCopy analytics];
 
-  LOBYTE(a5) = [(PHACachingCPAnalyticsPropertiesTask *)self runWithPhotoLibrary:v11 analytics:v12 progressReporter:v8 error:a5];
-  return a5;
+  LOBYTE(error) = [(PHACachingCPAnalyticsPropertiesTask *)self runWithPhotoLibrary:photoLibrary analytics:analytics progressReporter:reporterCopy error:error];
+  return error;
 }
 
-- (BOOL)shouldRunWithPhotoLibrary:(id)a3
+- (BOOL)shouldRunWithPhotoLibrary:(id)library
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 isSystemPhotoLibrary];
-  if ((v5 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+  libraryCopy = library;
+  isSystemPhotoLibrary = [libraryCopy isSystemPhotoLibrary];
+  if ((isSystemPhotoLibrary & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PHACachingCPAnalyticsPropertiesTask *)self name];
-    v7 = [v4 debugDescription];
+    name = [(PHACachingCPAnalyticsPropertiesTask *)self name];
+    v7 = [libraryCopy debugDescription];
     v9 = 138412546;
-    v10 = v6;
+    v10 = name;
     v11 = 2112;
     v12 = v7;
     _os_log_impl(&dword_22FA28000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%@ is running on a non system photo library. Library: %@", &v9, 0x16u);
   }
 
-  return v5;
+  return isSystemPhotoLibrary;
 }
 
-- (BOOL)shouldRunWithGraphManager:(id)a3
+- (BOOL)shouldRunWithGraphManager:(id)manager
 {
-  v4 = [a3 photoLibrary];
-  LOBYTE(self) = [(PHACachingCPAnalyticsPropertiesTask *)self shouldRunWithPhotoLibrary:v4];
+  photoLibrary = [manager photoLibrary];
+  LOBYTE(self) = [(PHACachingCPAnalyticsPropertiesTask *)self shouldRunWithPhotoLibrary:photoLibrary];
 
   return self;
 }

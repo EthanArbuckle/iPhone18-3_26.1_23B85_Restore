@@ -1,6 +1,6 @@
 @interface RemoteUIController
-- (BOOL)_objectModelPageWantsHSATokens:(id)a3;
-- (BOOL)objectModel:(id)a3 shouldDisplayNamedElement:(id)a4 page:(id)a5;
+- (BOOL)_objectModelPageWantsHSATokens:(id)tokens;
+- (BOOL)objectModel:(id)model shouldDisplayNamedElement:(id)element page:(id)page;
 - (NSArray)displayedPages;
 - (RUILoader)loader;
 - (RemoteUIController)init;
@@ -9,60 +9,60 @@
 - (UINavigationController)navigationController;
 - (UIViewController)currentPresentationContext;
 - (UIViewController)hostViewController;
-- (id)_handleDismissAndReplaceWithActionSignal:(id)a3 objectModel:(id)a4;
-- (id)_handleDismissWithActionSignal:(id)a3 objectModel:(id)a4;
+- (id)_handleDismissAndReplaceWithActionSignal:(id)signal objectModel:(id)model;
+- (id)_handleDismissWithActionSignal:(id)signal objectModel:(id)model;
 - (id)_objectModelStack;
-- (id)dismissObjectModelsAnimated:(BOOL)a3 completion:(id)a4;
+- (id)dismissObjectModelsAnimated:(BOOL)animated completion:(id)completion;
 - (id)hostingController;
-- (id)parentViewControllerForObjectModel:(id)a3;
-- (id)parser:(id)a3 createPageWithName:(id)a4 attributes:(id)a5;
-- (id)popObjectModelAnimated:(BOOL)a3 stopListeningForHSATokens:(BOOL)a4;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (id)setHandlerForElementsMatching:(id)a3 handler:(id)a4;
+- (id)parentViewControllerForObjectModel:(id)model;
+- (id)parser:(id)parser createPageWithName:(id)name attributes:(id)attributes;
+- (id)popObjectModelAnimated:(BOOL)animated stopListeningForHSATokens:(BOOL)tokens;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (id)setHandlerForElementsMatching:(id)matching handler:(id)handler;
 - (id)viewControllerForAlertPresentation;
-- (id)visibleElementWithIdentifier:(id)a3;
+- (id)visibleElementWithIdentifier:(id)identifier;
 - (void)_beginListeningForSMSAutoFill;
-- (void)_didPresentObjectModel:(id)a3 modally:(BOOL)a4;
-- (void)_didRemoveObjectModel:(id)a3;
+- (void)_didPresentObjectModel:(id)model modally:(BOOL)modally;
+- (void)_didRemoveObjectModel:(id)model;
 - (void)_invalidateModalObjectModels;
-- (void)_loadURL:(id)a3 fromObjectModel:(id)a4 postBody:(id)a5;
-- (void)_loadURL:(id)a3 postBody:(id)a4 fromObjectModel:(id)a5 completion:(id)a6;
+- (void)_loadURL:(id)l fromObjectModel:(id)model postBody:(id)body;
+- (void)_loadURL:(id)l postBody:(id)body fromObjectModel:(id)model completion:(id)completion;
 - (void)_modalNavigationWasDismissed;
-- (void)_modalViewControllerWasPopped:(id)a3;
-- (void)_objectModel:(id)a3 receivedToken:(id)a4;
-- (void)_presentModalRUIController:(id)a3 completion:(id)a4;
-- (void)_removePreviousObjectModelsBackToIdentifier:(id)a3;
-- (void)_replaceModalRUIController:(id)a3 byController:(id)a4 completion:(id)a5;
-- (void)_replaceObjectModelWithObjectModel:(id)a3;
-- (void)_replacePagesOfObjectModel:(id)a3 byObjectModel:(id)a4 sourceArray:(id)a5;
-- (void)_setHandlerWithKey:(id)a3 forElementsMatching:(id)a4 handler:(id)a5;
-- (void)_showPartialScreenModal:(id)a3;
+- (void)_modalViewControllerWasPopped:(id)popped;
+- (void)_objectModel:(id)model receivedToken:(id)token;
+- (void)_presentModalRUIController:(id)controller completion:(id)completion;
+- (void)_removePreviousObjectModelsBackToIdentifier:(id)identifier;
+- (void)_replaceModalRUIController:(id)controller byController:(id)byController completion:(id)completion;
+- (void)_replaceObjectModelWithObjectModel:(id)model;
+- (void)_replacePagesOfObjectModel:(id)model byObjectModel:(id)objectModel sourceArray:(id)array;
+- (void)_setHandlerWithKey:(id)key forElementsMatching:(id)matching handler:(id)handler;
+- (void)_showPartialScreenModal:(id)modal;
 - (void)_stopListeningForSMSAutoFill;
-- (void)_willPresentObjectModel:(id)a3 modally:(BOOL)a4;
+- (void)_willPresentObjectModel:(id)model modally:(BOOL)modally;
 - (void)dealloc;
-- (void)handleCancel:(id)a3;
-- (void)loadData:(id)a3 baseURL:(id)a4;
-- (void)loadRequest:(id)a3;
-- (void)loadRequest:(id)a3 completion:(id)a4;
-- (void)loader:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5;
-- (void)loader:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)loader:(id)a3 didReceiveHTTPResponse:(id)a4 forRequest:(id)a5;
-- (void)loader:(id)a3 loadResourcesForObjectModel:(id)a4 completion:(id)a5;
-- (void)loader:(id)a3 receivedObjectModel:(id)a4 topActionSignal:(id)a5 completion:(id)a6;
-- (void)loader:(id)a3 willLoadRequest:(id)a4 redirectResponse:(id)a5 completionHandler:(id)a6;
+- (void)handleCancel:(id)cancel;
+- (void)loadData:(id)data baseURL:(id)l;
+- (void)loadRequest:(id)request;
+- (void)loadRequest:(id)request completion:(id)completion;
+- (void)loader:(id)loader didFinishLoadWithError:(id)error forRequest:(id)request;
+- (void)loader:(id)loader didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)loader:(id)loader didReceiveHTTPResponse:(id)response forRequest:(id)request;
+- (void)loader:(id)loader loadResourcesForObjectModel:(id)model completion:(id)completion;
+- (void)loader:(id)loader receivedObjectModel:(id)model topActionSignal:(id)signal completion:(id)completion;
+- (void)loader:(id)loader willLoadRequest:(id)request redirectResponse:(id)response completionHandler:(id)handler;
 - (void)modalNavigationWasDismissed;
-- (void)objectModel:(id)a3 didNavigateBackFromController:(id)a4 withGesture:(BOOL)a5;
-- (void)objectModel:(id)a3 elementDidChange:(id)a4;
-- (void)objectModel:(id)a3 pressedLink:(id)a4 httpMethod:(id)a5 completion:(id)a6;
-- (void)objectModel:(id)a3 willLoadLinkURL:(id)a4 attributes:(id)a5;
-- (void)presentLoadingSheet:(id)a3;
-- (void)pushObjectModel:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)refreshTopModelWithModel:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setHandlerForButtonName:(id)a3 handler:(id)a4;
-- (void)setHandlerForButtonsMatching:(id)a3 handler:(id)a4;
-- (void)setHandlerForElementName:(id)a3 handler:(id)a4;
-- (void)setStyle:(id)a3;
+- (void)objectModel:(id)model didNavigateBackFromController:(id)controller withGesture:(BOOL)gesture;
+- (void)objectModel:(id)model elementDidChange:(id)change;
+- (void)objectModel:(id)model pressedLink:(id)link httpMethod:(id)method completion:(id)completion;
+- (void)objectModel:(id)model willLoadLinkURL:(id)l attributes:(id)attributes;
+- (void)presentLoadingSheet:(id)sheet;
+- (void)pushObjectModel:(id)model animated:(BOOL)animated completion:(id)completion;
+- (void)refreshTopModelWithModel:(id)model;
+- (void)setDelegate:(id)delegate;
+- (void)setHandlerForButtonName:(id)name handler:(id)handler;
+- (void)setHandlerForButtonsMatching:(id)matching handler:(id)handler;
+- (void)setHandlerForElementName:(id)name handler:(id)handler;
+- (void)setStyle:(id)style;
 - (void)startListeningForHSATokenAutoFill;
 - (void)stopListeningForHSATokenAutoFill;
 @end
@@ -86,9 +86,9 @@
     v2->_modalObjectModels = v5;
 
     [MEMORY[0x277D75780] _setUseCustomBackButtonAction:1];
-    v7 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     UUID = v2->_UUID;
-    v2->_UUID = v7;
+    v2->_UUID = uUID;
 
     if (_isInternalInstall())
     {
@@ -97,12 +97,12 @@
         v9 = _RUILoggingFacility();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [(RemoteUIController *)v2 UUID];
-          v11 = [MEMORY[0x277CCACC8] callStackSymbols];
+          uUID2 = [(RemoteUIController *)v2 UUID];
+          callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
           *buf = 138412546;
-          v15 = v10;
+          v15 = uUID2;
           v16 = 2112;
-          v17 = v11;
+          v17 = callStackSymbols;
           _os_log_impl(&dword_21B93D000, v9, OS_LOG_TYPE_DEFAULT, "RemoteUIController init %@\n%@", buf, 0x16u);
         }
       }
@@ -120,12 +120,12 @@
     v3 = _RUILoggingFacility();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(RemoteUIController *)self UUID];
-      v5 = [MEMORY[0x277CCACC8] callStackSymbols];
+      uUID = [(RemoteUIController *)self UUID];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
       *buf = 138412546;
-      v8 = v4;
+      v8 = uUID;
       v9 = 2112;
-      v10 = v5;
+      v10 = callStackSymbols;
       _os_log_impl(&dword_21B93D000, v3, OS_LOG_TYPE_DEFAULT, "RemoteUIController dealloc %@\n%@", buf, 0x16u);
     }
   }
@@ -138,25 +138,25 @@
   [(RemoteUIController *)&v6 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != delegateCopy)
   {
-    objc_storeWeak(&self->_delegate, v4);
+    objc_storeWeak(&self->_delegate, delegateCopy);
     if (_isInternalInstall())
     {
       v6 = _RUILoggingFacility();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(RemoteUIController *)self UUID];
-        v8 = [v7 UUIDString];
+        uUID = [(RemoteUIController *)self UUID];
+        uUIDString = [uUID UUIDString];
         v9 = objc_loadWeakRetained(&self->_delegate);
         v10 = 138412546;
-        v11 = v8;
+        v11 = uUIDString;
         v12 = 2112;
         v13 = v9;
         _os_log_impl(&dword_21B93D000, v6, OS_LOG_TYPE_DEFAULT, "RUIController %@ got delegate %@", &v10, 0x16u);
@@ -170,15 +170,15 @@
   modalNavigationController = self->_modalNavigationController;
   if (modalNavigationController && ![(RUINavigationController *)modalNavigationController isDismissing])
   {
-    v4 = self->_modalNavigationController;
+    hostViewController = self->_modalNavigationController;
   }
 
   else
   {
-    v4 = [(RemoteUIController *)self hostViewController];
+    hostViewController = [(RemoteUIController *)self hostViewController];
   }
 
-  return v4;
+  return hostViewController;
 }
 
 - (RemoteUITelemetryDelegate)telemetryDelegate
@@ -188,14 +188,14 @@
   return WeakRetained;
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_style != v5)
+  styleCopy = style;
+  if (self->_style != styleCopy)
   {
-    objc_storeStrong(&self->_style, a3);
-    [(RUILoader *)self->_loader setStyle:v5];
+    objc_storeStrong(&self->_style, style);
+    [(RUILoader *)self->_loader setStyle:styleCopy];
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
@@ -215,7 +215,7 @@
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v20 + 1) + 8 * i) setStyle:v5];
+          [*(*(&v20 + 1) + 8 * i) setStyle:styleCopy];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v20 objects:v25 count:16];
@@ -243,7 +243,7 @@
             objc_enumerationMutation(v11);
           }
 
-          [*(*(&v16 + 1) + 8 * j) setStyle:{v5, v16}];
+          [*(*(&v16 + 1) + 8 * j) setStyle:{styleCopy, v16}];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
@@ -265,186 +265,186 @@
   [(RemoteUIController *)self _modalNavigationWasDismissed];
 }
 
-- (void)handleCancel:(id)a3
+- (void)handleCancel:(id)cancel
 {
-  v4 = [(RemoteUIController *)self hostViewController];
+  hostViewController = [(RemoteUIController *)self hostViewController];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __35__RemoteUIController_handleCancel___block_invoke;
   v5[3] = &unk_2782E7F30;
   v5[4] = self;
-  [v4 dismissViewControllerAnimated:1 completion:v5];
+  [hostViewController dismissViewControllerAnimated:1 completion:v5];
 }
 
-- (void)presentLoadingSheet:(id)a3
+- (void)presentLoadingSheet:(id)sheet
 {
-  v53 = a3;
+  sheetCopy = sheet;
   v4 = objc_alloc_init(MEMORY[0x277D75D28]);
   objc_storeStrong(&self->_loadingViewController, v4);
   v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_handleCancel_];
-  v6 = [v4 navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  navigationItem = [v4 navigationItem];
+  [navigationItem setRightBarButtonItem:v5];
 
-  v7 = [(RemoteUIController *)self style];
-  if ((!v7 || (v8 = v7, -[RemoteUIController style](self, "style"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 showsImageInLoadingNavbar], v9, v8, v10)) && (objc_msgSend(v53, "navBarImage"), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+  style = [(RemoteUIController *)self style];
+  if ((!style || (v8 = style, -[RemoteUIController style](self, "style"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 showsImageInLoadingNavbar], v9, v8, v10)) && (objc_msgSend(sheetCopy, "navBarImage"), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v12 = v11;
-    v13 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v11];
-    v14 = [v53 navBarImageLabel];
-    v15 = [(RemoteUIController *)self style];
-    v16 = [RUIBarButtonItem titleItemWithLabel:v14 imageView:v13 imageSize:v15 style:0 labelColor:25.0, 25.0];
-    v17 = [v4 navigationItem];
-    [v17 setLeftBarButtonItem:v16];
+    navBarImageLabel2 = v11;
+    style3 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v11];
+    navBarImageLabel = [sheetCopy navBarImageLabel];
+    style2 = [(RemoteUIController *)self style];
+    v16 = [RUIBarButtonItem titleItemWithLabel:navBarImageLabel imageView:style3 imageSize:style2 style:0 labelColor:25.0, 25.0];
+    navigationItem2 = [v4 navigationItem];
+    [navigationItem2 setLeftBarButtonItem:v16];
   }
 
   else
   {
-    v12 = [v53 navBarImageLabel];
-    v13 = [(RemoteUIController *)self style];
-    v14 = [RUIBarButtonItem titleItemWithLabel:v12 imageView:0 imageSize:v13 style:0 labelColor:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
-    v15 = [v4 navigationItem];
-    [v15 setLeftBarButtonItem:v14];
+    navBarImageLabel2 = [sheetCopy navBarImageLabel];
+    style3 = [(RemoteUIController *)self style];
+    navBarImageLabel = [RUIBarButtonItem titleItemWithLabel:navBarImageLabel2 imageView:0 imageSize:style3 style:0 labelColor:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
+    style2 = [v4 navigationItem];
+    [style2 setLeftBarButtonItem:navBarImageLabel];
   }
 
-  v18 = [(RemoteUIController *)self style];
-  v19 = [v4 navigationItem];
-  [v18 applyToNavigationItem:v19];
+  style4 = [(RemoteUIController *)self style];
+  navigationItem3 = [v4 navigationItem];
+  [style4 applyToNavigationItem:navigationItem3];
 
   v20 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   spinner = self->_spinner;
   self->_spinner = v20;
 
-  v22 = [v4 view];
-  [v22 addSubview:self->_spinner];
+  view = [v4 view];
+  [view addSubview:self->_spinner];
 
   [(UIActivityIndicatorView *)self->_spinner setTranslatesAutoresizingMaskIntoConstraints:0];
-  v23 = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
-  v24 = [v4 view];
-  v25 = [v24 centerXAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25];
+  centerXAnchor = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
+  view2 = [v4 view];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v26 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v26 setActive:1];
 
-  v27 = [(UIActivityIndicatorView *)self->_spinner centerYAnchor];
-  v28 = [v4 view];
-  v29 = [v28 centerYAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29];
+  centerYAnchor = [(UIActivityIndicatorView *)self->_spinner centerYAnchor];
+  view3 = [v4 view];
+  centerYAnchor2 = [view3 centerYAnchor];
+  v30 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v30 setActive:1];
 
-  v31 = [v53 spinnerLabel];
+  spinnerLabel = [sheetCopy spinnerLabel];
 
-  if (v31)
+  if (spinnerLabel)
   {
     v32 = objc_alloc_init(MEMORY[0x277D756B8]);
-    v33 = [v53 spinnerLabel];
-    [v32 setText:v33];
+    spinnerLabel2 = [sheetCopy spinnerLabel];
+    [v32 setText:spinnerLabel2];
 
     [v32 setTextAlignment:1];
-    v34 = [(RemoteUIController *)self style];
-    v35 = [v34 spinnerLabelFont];
-    [v32 setFont:v35];
+    style5 = [(RemoteUIController *)self style];
+    spinnerLabelFont = [style5 spinnerLabelFont];
+    [v32 setFont:spinnerLabelFont];
 
-    v36 = [(RemoteUIController *)self style];
-    v37 = [v36 spinnerLabelColor];
-    [v32 setTextColor:v37];
+    style6 = [(RemoteUIController *)self style];
+    spinnerLabelColor = [style6 spinnerLabelColor];
+    [v32 setTextColor:spinnerLabelColor];
 
-    v38 = [v4 view];
-    [v38 addSubview:v32];
+    view4 = [v4 view];
+    [view4 addSubview:v32];
 
     [v32 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v39 = [v32 leadingAnchor];
-    v40 = [v4 view];
-    v41 = [v40 leadingAnchor];
-    v42 = [v39 constraintEqualToAnchor:v41];
+    leadingAnchor = [v32 leadingAnchor];
+    view5 = [v4 view];
+    leadingAnchor2 = [view5 leadingAnchor];
+    v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v42 setActive:1];
 
-    v43 = [v32 trailingAnchor];
-    v44 = [v4 view];
-    v45 = [v44 trailingAnchor];
-    v46 = [v43 constraintEqualToAnchor:v45];
+    trailingAnchor = [v32 trailingAnchor];
+    view6 = [v4 view];
+    trailingAnchor2 = [view6 trailingAnchor];
+    v46 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v46 setActive:1];
 
-    v47 = [v32 topAnchor];
-    v48 = [(UIActivityIndicatorView *)self->_spinner bottomAnchor];
-    v49 = [v47 constraintEqualToAnchor:v48 constant:10.0];
+    topAnchor = [v32 topAnchor];
+    bottomAnchor = [(UIActivityIndicatorView *)self->_spinner bottomAnchor];
+    v49 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:10.0];
     [v49 setActive:1];
   }
 
   [(UIActivityIndicatorView *)self->_spinner startAnimating];
-  v50 = [v4 view];
-  v51 = [(RemoteUIController *)self style];
-  v52 = [v51 backgroundColor];
-  [v50 setBackgroundColor:v52];
+  view7 = [v4 view];
+  style7 = [(RemoteUIController *)self style];
+  backgroundColor = [style7 backgroundColor];
+  [view7 setBackgroundColor:backgroundColor];
 
   [(RemoteUIController *)self _showPartialScreenModal:v4];
 }
 
-- (void)_showPartialScreenModal:(id)a3
+- (void)_showPartialScreenModal:(id)modal
 {
-  v4 = a3;
-  obj = [[RUINavigationController alloc] initWithRootViewController:v4];
+  modalCopy = modal;
+  obj = [[RUINavigationController alloc] initWithRootViewController:modalCopy];
 
-  v5 = [(RemoteUIController *)self hostViewController];
-  [(RUINavigationController *)obj setHostViewController:v5];
+  hostViewController = [(RemoteUIController *)self hostViewController];
+  [(RUINavigationController *)obj setHostViewController:hostViewController];
 
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  LODWORD(v4) = [v6 userInterfaceIdiom] != 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  LODWORD(modalCopy) = [currentDevice userInterfaceIdiom] != 1;
 
-  [(RUINavigationController *)obj setRuiModalPresentationStyle:2 * v4];
+  [(RUINavigationController *)obj setRuiModalPresentationStyle:2 * modalCopy];
   [(RUINavigationController *)obj setModalPresentationStyle:4];
   [(RUINavigationController *)obj setTransitioningDelegate:self];
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-  if (!v8)
+  if (!userInterfaceIdiom)
   {
     [(RUINavigationController *)obj setSupportedInterfaceOrientations:2];
   }
 
-  v9 = [(RemoteUIController *)self style];
-  [v9 applyToNavigationController:obj];
+  style = [(RemoteUIController *)self style];
+  [style applyToNavigationController:obj];
 
   objc_storeStrong(&self->_modalNavigationController, obj);
-  v10 = [MEMORY[0x277D75418] currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice3 userInterfaceIdiom];
 
-  if (v11 == 1)
+  if (userInterfaceIdiom2 == 1)
   {
     [(RUINavigationController *)self->_modalNavigationController setModalInPresentation:1];
   }
 
-  v12 = [(RemoteUIController *)self hostViewController];
-  [v12 presentViewController:obj animated:1 completion:0];
+  hostViewController2 = [(RemoteUIController *)self hostViewController];
+  [hostViewController2 presentViewController:obj animated:1 completion:0];
 }
 
-- (void)loadRequest:(id)a3 completion:(id)a4
+- (void)loadRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  [(RemoteUIController *)self setLoadCompletion:a4];
-  v7 = [v6 mutableCopy];
+  requestCopy = request;
+  [(RemoteUIController *)self setLoadCompletion:completion];
+  v7 = [requestCopy mutableCopy];
 
   [(RemoteUIController *)self loadRequest:v7];
 }
 
-- (void)_loadURL:(id)a3 postBody:(id)a4 fromObjectModel:(id)a5 completion:(id)a6
+- (void)_loadURL:(id)l postBody:(id)body fromObjectModel:(id)model completion:(id)completion
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  [(RemoteUIController *)self setLoadCompletion:a6];
-  [(RemoteUIController *)self _loadURL:v12 fromObjectModel:v10 postBody:v11];
+  modelCopy = model;
+  bodyCopy = body;
+  lCopy = l;
+  [(RemoteUIController *)self setLoadCompletion:completion];
+  [(RemoteUIController *)self _loadURL:lCopy fromObjectModel:modelCopy postBody:bodyCopy];
 }
 
-- (void)loadRequest:(id)a3
+- (void)loadRequest:(id)request
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 setValue:self->_userAgentString forHTTPHeaderField:@"User-Agent"];
-  v5 = [v4 valueForHTTPHeaderField:@"Content-Type"];
+  requestCopy = request;
+  [requestCopy setValue:self->_userAgentString forHTTPHeaderField:@"User-Agent"];
+  v5 = [requestCopy valueForHTTPHeaderField:@"Content-Type"];
   v6 = [v5 length];
 
   if (!v6)
   {
-    [v4 setValue:@"application/x-plist" forHTTPHeaderField:@"Content-Type"];
+    [requestCopy setValue:@"application/x-plist" forHTTPHeaderField:@"Content-Type"];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostViewController);
@@ -452,36 +452,36 @@
   if (WeakRetained)
   {
     v8 = objc_loadWeakRetained(&self->_hostViewController);
-    v9 = [v8 traitCollection];
-    v10 = [v9 userInterfaceStyle];
+    traitCollection = [v8 traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
     if (_isInternalInstall())
     {
       v11 = _RUILoggingFacility();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [MEMORY[0x277CCABB0] numberWithInteger:v10];
+        v12 = [MEMORY[0x277CCABB0] numberWithInteger:userInterfaceStyle];
         v15 = 138412290;
         v16 = v12;
         _os_log_impl(&dword_21B93D000, v11, OS_LOG_TYPE_DEFAULT, "Setting interface style based on _hostViewController %@", &v15, 0xCu);
       }
     }
 
-    v13 = [(RemoteUIController *)self loader];
-    [v13 setUserInterfaceStyle:v10];
+    loader = [(RemoteUIController *)self loader];
+    [loader setUserInterfaceStyle:userInterfaceStyle];
   }
 
-  v14 = [(RemoteUIController *)self loader];
-  [v14 loadXMLUIWithRequest:v4];
+  loader2 = [(RemoteUIController *)self loader];
+  [loader2 loadXMLUIWithRequest:requestCopy];
 }
 
-- (void)_loadURL:(id)a3 fromObjectModel:(id)a4 postBody:(id)a5
+- (void)_loadURL:(id)l fromObjectModel:(id)model postBody:(id)body
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && (-[RemoteUIController loader](self, "loader"), v11 = objc_claimAutoreleasedReturnValue(), [v11 URL], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "absoluteURL"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "absoluteURL"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "isEqual:", v14), v14, v13, v12, v11, v15))
+  lCopy = l;
+  modelCopy = model;
+  bodyCopy = body;
+  if (lCopy && (-[RemoteUIController loader](self, "loader"), v11 = objc_claimAutoreleasedReturnValue(), [v11 URL], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "absoluteURL"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(lCopy, "absoluteURL"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "isEqual:", v14), v14, v13, v12, v11, v15))
   {
     if (_isInternalInstall())
     {
@@ -489,7 +489,7 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 138412290;
-        v21 = v8;
+        v21 = lCopy;
         _os_log_impl(&dword_21B93D000, v16, OS_LOG_TYPE_DEFAULT, "Already loading %@", &v20, 0xCu);
       }
     }
@@ -497,34 +497,34 @@
 
   else
   {
-    v17 = [(RemoteUIController *)self loader];
-    [v17 cancel];
+    loader = [(RemoteUIController *)self loader];
+    [loader cancel];
 
-    v18 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:v8 cachePolicy:1 timeoutInterval:30.0];
+    v18 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:lCopy cachePolicy:1 timeoutInterval:30.0];
     v19 = v18;
-    if (v10)
+    if (bodyCopy)
     {
-      [v18 setHTTPBody:v10];
+      [v18 setHTTPBody:bodyCopy];
       [v19 setHTTPMethod:@"POST"];
     }
 
-    [v9 _populateRequest:v19];
+    [modelCopy _populateRequest:v19];
     [(RemoteUIController *)self loadRequest:v19];
   }
 }
 
-- (void)loadData:(id)a3 baseURL:(id)a4
+- (void)loadData:(id)data baseURL:(id)l
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7 || (-[RemoteUIController loader](self, "loader"), v8 = objc_claimAutoreleasedReturnValue(), [v8 URL], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "absoluteURL"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "absoluteURL"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "isEqual:", v11), v11, v10, v9, v8, !v12))
+  dataCopy = data;
+  lCopy = l;
+  if (!lCopy || (-[RemoteUIController loader](self, "loader"), v8 = objc_claimAutoreleasedReturnValue(), [v8 URL], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "absoluteURL"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(lCopy, "absoluteURL"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "isEqual:", v11), v11, v10, v9, v8, !v12))
   {
-    v14 = [(RemoteUIController *)self loader];
-    [v14 cancel];
+    loader = [(RemoteUIController *)self loader];
+    [loader cancel];
 
-    v13 = [(RemoteUIController *)self loader];
-    [v13 loadXMLUIWithData:v6 baseURL:v7];
+    loader2 = [(RemoteUIController *)self loader];
+    [loader2 loadXMLUIWithData:dataCopy baseURL:lCopy];
 LABEL_7:
 
     goto LABEL_8;
@@ -532,12 +532,12 @@ LABEL_7:
 
   if (_isInternalInstall())
   {
-    v13 = _RUILoggingFacility();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    loader2 = _RUILoggingFacility();
+    if (os_log_type_enabled(loader2, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = v7;
-      _os_log_impl(&dword_21B93D000, v13, OS_LOG_TYPE_DEFAULT, "Already loading %@", &v15, 0xCu);
+      v16 = lCopy;
+      _os_log_impl(&dword_21B93D000, loader2, OS_LOG_TYPE_DEFAULT, "Already loading %@", &v15, 0xCu);
     }
 
     goto LABEL_7;
@@ -546,56 +546,56 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_willPresentObjectModel:(id)a3 modally:(BOOL)a4
+- (void)_willPresentObjectModel:(id)model modally:(BOOL)modally
 {
-  v4 = a4;
-  v9 = a3;
+  modallyCopy = modally;
+  modelCopy = model;
   if (self->_SMSAutoFillToken)
   {
-    [(RemoteUIController *)self _objectModel:v9 receivedToken:?];
+    [(RemoteUIController *)self _objectModel:modelCopy receivedToken:?];
   }
 
-  v6 = [(RemoteUIController *)self delegate];
+  delegate = [(RemoteUIController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(RemoteUIController *)self delegate];
-    [v8 remoteUIController:self willPresentObjectModel:v9 modally:v4];
+    delegate2 = [(RemoteUIController *)self delegate];
+    [delegate2 remoteUIController:self willPresentObjectModel:modelCopy modally:modallyCopy];
   }
 }
 
-- (void)_didPresentObjectModel:(id)a3 modally:(BOOL)a4
+- (void)_didPresentObjectModel:(id)model modally:(BOOL)modally
 {
-  v4 = a4;
-  v9 = a3;
-  v6 = [(RemoteUIController *)self delegate];
+  modallyCopy = modally;
+  modelCopy = model;
+  delegate = [(RemoteUIController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(RemoteUIController *)self delegate];
-    [v8 remoteUIController:self didPresentObjectModel:v9 modally:v4];
+    delegate2 = [(RemoteUIController *)self delegate];
+    [delegate2 remoteUIController:self didPresentObjectModel:modelCopy modally:modallyCopy];
   }
 }
 
-- (void)_didRemoveObjectModel:(id)a3
+- (void)_didRemoveObjectModel:(id)model
 {
-  v7 = a3;
-  v4 = [(RemoteUIController *)self delegate];
+  modelCopy = model;
+  delegate = [(RemoteUIController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(RemoteUIController *)self delegate];
-    [v6 remoteUIController:self didRemoveObjectModel:v7];
+    delegate2 = [(RemoteUIController *)self delegate];
+    [delegate2 remoteUIController:self didRemoveObjectModel:modelCopy];
   }
 }
 
-- (void)_removePreviousObjectModelsBackToIdentifier:(id)a3
+- (void)_removePreviousObjectModelsBackToIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = 24;
   if (!self->_modalNavigationController)
   {
@@ -608,21 +608,21 @@ LABEL_8:
     modalNavigationController = self->_modalNavigationController;
     if (modalNavigationController)
     {
-      v8 = modalNavigationController;
+      navigationController = modalNavigationController;
     }
 
     else
     {
-      v8 = [(RemoteUIController *)self navigationController];
-      if (!v8)
+      navigationController = [(RemoteUIController *)self navigationController];
+      if (!navigationController)
       {
         [RemoteUIController _removePreviousObjectModelsBackToIdentifier:];
-        v8 = 0;
+        navigationController = 0;
       }
     }
 
-    p_super = &v8->super.super.super.super;
-    v10 = [MEMORY[0x277CBEB18] array];
+    p_super = &navigationController->super.super.super.super;
+    array = [MEMORY[0x277CBEB18] array];
     v11 = objc_opt_new();
     v12 = [v6 count];
     if (v12 - 2 < 0)
@@ -634,12 +634,12 @@ LABEL_8:
     while (1)
     {
       v14 = [v6 objectAtIndexedSubscript:--v13];
-      v15 = [v14 displayedPages];
-      [v10 addObjectsFromArray:v15];
+      displayedPages = [v14 displayedPages];
+      [array addObjectsFromArray:displayedPages];
 
       [v11 addObject:v14];
-      v16 = [v14 identifier];
-      v17 = [v16 isEqualToString:v4];
+      identifier = [v14 identifier];
+      v17 = [identifier isEqualToString:identifierCopy];
 
       if (v17)
       {
@@ -655,7 +655,7 @@ LABEL_8:
     if ([v11 count])
     {
       v9 = p_super;
-      [p_super settingsCompatibleReplaceViewControllers:v10 byViewControllers:MEMORY[0x277CBEBF8] animated:0];
+      [p_super settingsCompatibleReplaceViewControllers:array byViewControllers:MEMORY[0x277CBEBF8] animated:0];
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
@@ -728,12 +728,12 @@ LABEL_30:
 LABEL_31:
 }
 
-- (void)pushObjectModel:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)pushObjectModel:(id)model animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  animatedCopy = animated;
   v53 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  modelCopy = model;
+  completionCopy = completion;
   v10 = 24;
   if (!self->_modalNavigationController)
   {
@@ -744,33 +744,33 @@ LABEL_31:
   modalNavigationController = self->_modalNavigationController;
   if (modalNavigationController)
   {
-    v13 = modalNavigationController;
+    hostingController = modalNavigationController;
   }
 
   else
   {
-    v13 = [(RemoteUIController *)self hostingController];
-    if (!v13)
+    hostingController = [(RemoteUIController *)self hostingController];
+    if (!hostingController)
     {
       [RemoteUIController pushObjectModel:animated:completion:];
     }
   }
 
-  [v8 setDelegate:self];
-  v14 = [(RemoteUIController *)self telemetryDelegate];
-  [v8 setTelemetryDelegate:v14];
+  [modelCopy setDelegate:self];
+  telemetryDelegate = [(RemoteUIController *)self telemetryDelegate];
+  [modelCopy setTelemetryDelegate:telemetryDelegate];
 
-  [(RemoteUIController *)self _willPresentObjectModel:v8 modally:self->_modalNavigationController != 0];
-  v15 = [v8 identifierMarkingStackRemovalAfterPush];
+  [(RemoteUIController *)self _willPresentObjectModel:modelCopy modally:self->_modalNavigationController != 0];
+  identifierMarkingStackRemovalAfterPush = [modelCopy identifierMarkingStackRemovalAfterPush];
 
   v16 = &off_21BA91000;
-  if (v15)
+  if (identifierMarkingStackRemovalAfterPush)
   {
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
     v49[2] = __58__RemoteUIController_pushObjectModel_animated_completion___block_invoke;
     v49[3] = &unk_2782E89F0;
-    v17 = v8;
+    v17 = modelCopy;
     v50 = v17;
     v18 = [v11 indexOfObjectPassingTest:v49];
     if (v18 == 0x7FFFFFFFFFFFFFFFLL)
@@ -780,50 +780,50 @@ LABEL_31:
         v19 = _RUILoggingFacility();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v17 identifierMarkingStackRemovalAfterPush];
+          identifierMarkingStackRemovalAfterPush2 = [v17 identifierMarkingStackRemovalAfterPush];
           *buf = 138412290;
-          v52 = v20;
+          v52 = identifierMarkingStackRemovalAfterPush2;
           _os_log_impl(&dword_21B93D000, v19, OS_LOG_TYPE_DEFAULT, "idOfOldestObjectModelToRemoveAfterPush '%@' not found", buf, 0xCu);
 
           v16 = &off_21BA91000;
         }
       }
 
-      v15 = 0;
+      identifierMarkingStackRemovalAfterPush = 0;
       goto LABEL_25;
     }
 
     v21 = v18;
     if (v18 >= 2)
     {
-      v42 = v6;
+      v42 = animatedCopy;
       v22 = [v11 objectAtIndexedSubscript:v18 - 1];
-      v23 = [v22 displayedPages];
-      v24 = [v23 lastObject];
+      displayedPages = [v22 displayedPages];
+      lastObject = [displayedPages lastObject];
 
-      v25 = [v24 backButtonTitle];
-      if (v25)
+      backButtonTitle = [lastObject backButtonTitle];
+      if (backButtonTitle)
       {
-        v26 = v25;
+        navTitle = backButtonTitle;
 
         goto LABEL_22;
       }
 
-      v26 = [v24 navTitle];
+      navTitle = [lastObject navTitle];
 
-      v6 = v42;
-      if (v26)
+      animatedCopy = v42;
+      if (navTitle)
       {
         goto LABEL_22;
       }
     }
 
     v27 = [v11 objectAtIndexedSubscript:v21];
-    v28 = [v27 displayedPages];
-    v26 = [v28 firstObject];
+    displayedPages2 = [v27 displayedPages];
+    navTitle = [displayedPages2 firstObject];
 
-    v29 = [(RUINavigationController *)v13 viewControllers];
-    v30 = [v29 indexOfObject:v26];
+    viewControllers = [(RUINavigationController *)hostingController viewControllers];
+    v30 = [viewControllers indexOfObject:navTitle];
 
     if (v30 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -836,15 +836,15 @@ LABEL_31:
       goto LABEL_23;
     }
 
-    v41 = [(RUINavigationController *)v13 viewControllers];
-    [v41 objectAtIndexedSubscript:v31];
-    v32 = v42 = v6;
-    v33 = [v32 navigationItem];
-    v34 = [v33 title];
+    viewControllers2 = [(RUINavigationController *)hostingController viewControllers];
+    [viewControllers2 objectAtIndexedSubscript:v31];
+    v32 = v42 = animatedCopy;
+    navigationItem = [v32 navigationItem];
+    title = [navigationItem title];
 
-    v6 = v42;
+    animatedCopy = v42;
     v16 = &off_21BA91000;
-    if (!v34)
+    if (!title)
     {
 LABEL_24:
       aBlock[0] = MEMORY[0x277D85DD0];
@@ -853,20 +853,20 @@ LABEL_24:
       aBlock[3] = &unk_2782E84F8;
       aBlock[4] = self;
       v48 = v17;
-      v15 = _Block_copy(aBlock);
+      identifierMarkingStackRemovalAfterPush = _Block_copy(aBlock);
 
 LABEL_25:
       goto LABEL_26;
     }
 
-    v26 = v34;
+    navTitle = title;
 LABEL_22:
-    v35 = [v11 lastObject];
-    v36 = [v35 displayedPages];
-    v37 = [v36 lastObject];
+    lastObject2 = [v11 lastObject];
+    displayedPages3 = [lastObject2 displayedPages];
+    lastObject3 = [displayedPages3 lastObject];
 
-    [v37 setBackButtonTitle:v26];
-    v6 = v42;
+    [lastObject3 setBackButtonTitle:navTitle];
+    animatedCopy = v42;
 LABEL_23:
 
     v16 = &off_21BA91000;
@@ -874,19 +874,19 @@ LABEL_23:
   }
 
 LABEL_26:
-  [v11 addObject:v8];
+  [v11 addObject:modelCopy];
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = *(v16 + 441);
   v43[2] = __58__RemoteUIController_pushObjectModel_animated_completion___block_invoke_63;
   v43[3] = &unk_2782E8A18;
   v43[4] = self;
-  v44 = v8;
-  v45 = v15;
-  v46 = v9;
-  v38 = v9;
-  v39 = v15;
-  v40 = v8;
-  [v40 presentInParentViewController:v13 animated:v6 completion:v43];
+  v44 = modelCopy;
+  v45 = identifierMarkingStackRemovalAfterPush;
+  v46 = completionCopy;
+  v38 = completionCopy;
+  v39 = identifierMarkingStackRemovalAfterPush;
+  v40 = modelCopy;
+  [v40 presentInParentViewController:hostingController animated:animatedCopy completion:v43];
 }
 
 uint64_t __58__RemoteUIController_pushObjectModel_animated_completion___block_invoke(uint64_t a1, void *a2)
@@ -936,10 +936,10 @@ uint64_t __58__RemoteUIController_pushObjectModel_animated_completion___block_in
   return *(&self->super.isa + v2);
 }
 
-- (id)popObjectModelAnimated:(BOOL)a3 stopListeningForHSATokens:(BOOL)a4
+- (id)popObjectModelAnimated:(BOOL)animated stopListeningForHSATokens:(BOOL)tokens
 {
-  v4 = a3;
-  if (a4)
+  animatedCopy = animated;
+  if (tokens)
   {
     [(RemoteUIController *)self _stopListeningForSMSAutoFill];
   }
@@ -947,51 +947,51 @@ uint64_t __58__RemoteUIController_pushObjectModel_animated_completion___block_in
   modalNavigationController = self->_modalNavigationController;
   if (modalNavigationController)
   {
-    v7 = modalNavigationController;
+    navigationController = modalNavigationController;
   }
 
   else
   {
-    v7 = [(RemoteUIController *)self navigationController];
-    if (!v7)
+    navigationController = [(RemoteUIController *)self navigationController];
+    if (!navigationController)
     {
       [RemoteUIController popObjectModelAnimated:stopListeningForHSATokens:];
     }
   }
 
-  v8 = [(RemoteUIController *)self _objectModelStack];
-  v9 = [v8 count];
+  _objectModelStack = [(RemoteUIController *)self _objectModelStack];
+  v9 = [_objectModelStack count];
 
   if (v9)
   {
-    v10 = [(RemoteUIController *)self _objectModelStack];
-    v11 = [v10 lastObject];
+    _objectModelStack2 = [(RemoteUIController *)self _objectModelStack];
+    lastObject = [_objectModelStack2 lastObject];
 
-    v12 = [v11 displayedPages];
-    [v12 count];
-    [(UINavigationController *)v7 settingsCompatibleReplaceViewControllers:v12 byViewControllers:MEMORY[0x277CBEBF8] animated:v4];
-    [v11 setDelegate:0];
-    v13 = [(RemoteUIController *)self _objectModelStack];
-    [v13 removeLastObject];
+    displayedPages = [lastObject displayedPages];
+    [displayedPages count];
+    [(UINavigationController *)navigationController settingsCompatibleReplaceViewControllers:displayedPages byViewControllers:MEMORY[0x277CBEBF8] animated:animatedCopy];
+    [lastObject setDelegate:0];
+    _objectModelStack3 = [(RemoteUIController *)self _objectModelStack];
+    [_objectModelStack3 removeLastObject];
 
-    [(RemoteUIController *)self _didRemoveObjectModel:v11];
+    [(RemoteUIController *)self _didRemoveObjectModel:lastObject];
   }
 
   else
   {
-    v11 = 0;
+    lastObject = 0;
   }
 
-  return v11;
+  return lastObject;
 }
 
-- (void)_replaceObjectModelWithObjectModel:(id)a3
+- (void)_replaceObjectModelWithObjectModel:(id)model
 {
   v40[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 defaultPages];
-  v6 = [v5 firstObject];
-  v7 = [(RemoteUIController *)self _objectModelPageWantsHSATokens:v6];
+  modelCopy = model;
+  defaultPages = [modelCopy defaultPages];
+  firstObject = [defaultPages firstObject];
+  v7 = [(RemoteUIController *)self _objectModelPageWantsHSATokens:firstObject];
 
   v36 = 0;
   v37 = &v36;
@@ -1011,8 +1011,8 @@ uint64_t __58__RemoteUIController_pushObjectModel_animated_completion___block_in
   v34 = __Block_byref_object_dispose__1;
   v10 = v9;
   v35 = v10;
-  v11 = [v4 idOfObjectModelToReplace];
-  v12 = [v11 length] == 0;
+  idOfObjectModelToReplace = [modelCopy idOfObjectModelToReplace];
+  v12 = [idOfObjectModelToReplace length] == 0;
 
   if (v12)
   {
@@ -1039,7 +1039,7 @@ uint64_t __58__RemoteUIController_pushObjectModel_animated_completion___block_in
     v26[1] = 3221225472;
     v26[2] = __57__RemoteUIController__replaceObjectModelWithObjectModel___block_invoke;
     v26[3] = &unk_2782E8A68;
-    v27 = v4;
+    v27 = modelCopy;
     v28 = &v30;
     v29 = &v36;
     [v14 enumerateObjectsUsingBlock:v26];
@@ -1049,7 +1049,7 @@ LABEL_8:
   v18 = v37[3];
   if (v18 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v10 addObject:v4];
+    [v10 addObject:modelCopy];
     v19 = 0;
   }
 
@@ -1062,11 +1062,11 @@ LABEL_8:
     }
 
     v19 = [v31[5] objectAtIndexedSubscript:v18];
-    [v31[5] replaceObjectAtIndex:v37[3] withObject:v4];
+    [v31[5] replaceObjectAtIndex:v37[3] withObject:modelCopy];
   }
 
-  [v4 setDelegate:self];
-  [(RemoteUIController *)self _replacePagesOfObjectModel:v19 byObjectModel:v4 sourceArray:v31[5]];
+  [modelCopy setDelegate:self];
+  [(RemoteUIController *)self _replacePagesOfObjectModel:v19 byObjectModel:modelCopy sourceArray:v31[5]];
   if (v19)
   {
     [(RemoteUIController *)self _didRemoveObjectModel:v19];
@@ -1075,13 +1075,13 @@ LABEL_8:
 
   v20 = v31[5];
   modalObjectModels = self->_modalObjectModels;
-  [(RemoteUIController *)self _willPresentObjectModel:v4 modally:v20 == modalObjectModels];
+  [(RemoteUIController *)self _willPresentObjectModel:modelCopy modally:v20 == modalObjectModels];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __57__RemoteUIController__replaceObjectModelWithObjectModel___block_invoke_3;
   v23[3] = &unk_2782E8A90;
   v23[4] = self;
-  v22 = v4;
+  v22 = modelCopy;
   v24 = v22;
   v25 = v20 == modalObjectModels;
   [v22 presentWithBlock:v23];
@@ -1121,59 +1121,59 @@ void __57__RemoteUIController__replaceObjectModelWithObjectModel___block_invoke_
   }
 }
 
-- (void)_replacePagesOfObjectModel:(id)a3 byObjectModel:(id)a4 sourceArray:(id)a5
+- (void)_replacePagesOfObjectModel:(id)model byObjectModel:(id)objectModel sourceArray:(id)array
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
+  modelCopy = model;
+  objectModelCopy = objectModel;
+  arrayCopy = array;
   modalNavigationController = self->_modalNavigationController;
   if (modalNavigationController)
   {
-    v11 = modalNavigationController;
+    navigationController = modalNavigationController;
   }
 
   else
   {
-    v11 = [(RemoteUIController *)self navigationController];
+    navigationController = [(RemoteUIController *)self navigationController];
   }
 
-  v12 = v11;
-  if ([(NSMutableArray *)v9 count])
+  v12 = navigationController;
+  if ([(NSMutableArray *)arrayCopy count])
   {
-    if (self->_modalObjectModels == v9)
+    if (self->_modalObjectModels == arrayCopy)
     {
-      v13 = self->_modalNavigationController;
+      navigationController2 = self->_modalNavigationController;
     }
 
     else
     {
-      v13 = [(RemoteUIController *)self navigationController];
+      navigationController2 = [(RemoteUIController *)self navigationController];
     }
 
-    v14 = v13;
+    v14 = navigationController2;
 
     v12 = v14;
   }
 
-  [(UINavigationController *)v12 replacePagesOfObjectModel:v15 byObjectModel:v8];
+  [(UINavigationController *)v12 replacePagesOfObjectModel:modelCopy byObjectModel:objectModelCopy];
 }
 
-- (id)dismissObjectModelsAnimated:(BOOL)a3 completion:(id)a4
+- (id)dismissObjectModelsAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if (self->_modalNavigationController && [(NSMutableArray *)self->_modalObjectModels count])
   {
     v7 = [(NSMutableArray *)self->_modalObjectModels copy];
-    [(RUINavigationController *)self->_modalNavigationController dismissViewControllerAnimated:v4 completion:v6];
+    [(RUINavigationController *)self->_modalNavigationController dismissViewControllerAnimated:animatedCopy completion:completionCopy];
     [(RemoteUIController *)self _invalidateModalObjectModels];
   }
 
   else
   {
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
 
     v7 = 0;
@@ -1227,8 +1227,8 @@ void __57__RemoteUIController__replaceObjectModelWithObjectModel___block_invoke_
 - (void)_modalNavigationWasDismissed
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(RemoteUIController *)self loader];
-  [v3 cancel];
+  loader = [(RemoteUIController *)self loader];
+  [loader cancel];
 
   if (self->_modalNavigationController)
   {
@@ -1237,8 +1237,8 @@ void __57__RemoteUIController__replaceObjectModelWithObjectModel___block_invoke_
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = [(NSMutableArray *)self->_modalObjectModels reverseObjectEnumerator];
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v22 count:16];
+    reverseObjectEnumerator = [(NSMutableArray *)self->_modalObjectModels reverseObjectEnumerator];
+    v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v22 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1249,7 +1249,7 @@ void __57__RemoteUIController__replaceObjectModelWithObjectModel___block_invoke_
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
@@ -1257,7 +1257,7 @@ void __57__RemoteUIController__replaceObjectModelWithObjectModel___block_invoke_
           [(RemoteUIController *)self _didRemoveObjectModel:v10];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v16 objects:v22 count:16];
+        v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v22 count:16];
       }
 
       while (v7);
@@ -1289,27 +1289,27 @@ void __57__RemoteUIController__replaceObjectModelWithObjectModel___block_invoke_
   }
 }
 
-- (void)_modalViewControllerWasPopped:(id)a3
+- (void)_modalViewControllerWasPopped:(id)popped
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RemoteUIController *)self loader];
-  [v5 cancel];
+  poppedCopy = popped;
+  loader = [(RemoteUIController *)self loader];
+  [loader cancel];
 
   if (_isInternalInstall())
   {
     v6 = _RUILoggingFacility();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(NSMutableArray *)self->_modalObjectModels lastObject];
+      lastObject = [(NSMutableArray *)self->_modalObjectModels lastObject];
       v9 = 138412290;
-      v10 = v7;
+      v10 = lastObject;
       _os_log_impl(&dword_21B93D000, v6, OS_LOG_TYPE_DEFAULT, "A page from modal object model was popped: %@", &v9, 0xCu);
     }
   }
 
-  v8 = [(NSMutableArray *)self->_modalObjectModels lastObject];
-  [v8 didNavigateBackFromViewController:v4];
+  lastObject2 = [(NSMutableArray *)self->_modalObjectModels lastObject];
+  [lastObject2 didNavigateBackFromViewController:poppedCopy];
 }
 
 - (NSArray)displayedPages
@@ -1335,8 +1335,8 @@ void __57__RemoteUIController__replaceObjectModelWithObjectModel___block_invoke_
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v21 + 1) + 8 * i) displayedPages];
-        [v3 addObjectsFromArray:v9];
+        displayedPages = [*(*(&v21 + 1) + 8 * i) displayedPages];
+        [v3 addObjectsFromArray:displayedPages];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
@@ -1364,8 +1364,8 @@ void __57__RemoteUIController__replaceObjectModelWithObjectModel___block_invoke_
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v17 + 1) + 8 * j) displayedPages];
-        [v3 addObjectsFromArray:v15];
+        displayedPages2 = [*(*(&v17 + 1) + 8 * j) displayedPages];
+        [v3 addObjectsFromArray:displayedPages2];
       }
 
       v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
@@ -1377,13 +1377,13 @@ void __57__RemoteUIController__replaceObjectModelWithObjectModel___block_invoke_
   return v3;
 }
 
-- (void)_setHandlerWithKey:(id)a3 forElementsMatching:(id)a4 handler:(id)a5
+- (void)_setHandlerWithKey:(id)key forElementsMatching:(id)matching handler:(id)handler
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  keyCopy = key;
+  matchingCopy = matching;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [RemoteUIController _setHandlerWithKey:forElementsMatching:handler:];
   }
@@ -1396,25 +1396,25 @@ void __57__RemoteUIController__replaceObjectModelWithObjectModel___block_invoke_
   }
 
   v16[0] = @"ButtonHandler";
-  v13 = [v10 copy];
+  v13 = [handlerCopy copy];
   v16[1] = @"ButtonComparison";
   v17[0] = v13;
-  v14 = [v9 copy];
+  v14 = [matchingCopy copy];
   v17[1] = v14;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
-  [(NSMutableDictionary *)self->_elementChangeHandlers setObject:v15 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_elementChangeHandlers setObject:v15 forKeyedSubscript:keyCopy];
 }
 
-- (void)setHandlerForElementName:(id)a3 handler:(id)a4
+- (void)setHandlerForElementName:(id)name handler:(id)handler
 {
-  v6 = a3;
+  nameCopy = name;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__RemoteUIController_setHandlerForElementName_handler___block_invoke;
   v8[3] = &unk_2782E7FF0;
-  v9 = v6;
-  v7 = v6;
-  [(RemoteUIController *)self _setHandlerWithKey:v7 forElementsMatching:v8 handler:a4];
+  v9 = nameCopy;
+  v7 = nameCopy;
+  [(RemoteUIController *)self _setHandlerWithKey:v7 forElementsMatching:v8 handler:handler];
 }
 
 uint64_t __55__RemoteUIController_setHandlerForElementName_handler___block_invoke(uint64_t a1, void *a2)
@@ -1425,35 +1425,35 @@ uint64_t __55__RemoteUIController_setHandlerForElementName_handler___block_invok
   return v4;
 }
 
-- (id)setHandlerForElementsMatching:(id)a3 handler:(id)a4
+- (id)setHandlerForElementsMatching:(id)matching handler:(id)handler
 {
   v6 = MEMORY[0x277CCAD78];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 UUID];
-  v10 = [v9 UUIDString];
+  handlerCopy = handler;
+  matchingCopy = matching;
+  uUID = [v6 UUID];
+  uUIDString = [uUID UUIDString];
 
-  [(RemoteUIController *)self _setHandlerWithKey:v10 forElementsMatching:v8 handler:v7];
+  [(RemoteUIController *)self _setHandlerWithKey:uUIDString forElementsMatching:matchingCopy handler:handlerCopy];
 
-  return v10;
+  return uUIDString;
 }
 
-- (void)setHandlerForButtonsMatching:(id)a3 handler:(id)a4
+- (void)setHandlerForButtonsMatching:(id)matching handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  matchingCopy = matching;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __59__RemoteUIController_setHandlerForButtonsMatching_handler___block_invoke;
   v13[3] = &unk_2782E8AB8;
-  v14 = v6;
+  v14 = matchingCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__RemoteUIController_setHandlerForButtonsMatching_handler___block_invoke_2;
   v11[3] = &unk_2782E8AE0;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = matchingCopy;
   v10 = [(RemoteUIController *)self setHandlerForElementsMatching:v13 handler:v11];
 }
 
@@ -1475,16 +1475,16 @@ void __59__RemoteUIController_setHandlerForButtonsMatching_handler___block_invok
   (*(v6 + 16))(v6, v8, v9, v7);
 }
 
-- (void)setHandlerForButtonName:(id)a3 handler:(id)a4
+- (void)setHandlerForButtonName:(id)name handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__RemoteUIController_setHandlerForButtonName_handler___block_invoke;
   v8[3] = &unk_2782E8AE0;
-  v9 = v6;
-  v7 = v6;
-  [(RemoteUIController *)self setHandlerForElementName:a3 handler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(RemoteUIController *)self setHandlerForElementName:name handler:v8];
 }
 
 void __54__RemoteUIController_setHandlerForButtonName_handler___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -1514,12 +1514,12 @@ void __54__RemoteUIController_setHandlerForButtonName_handler___block_invoke(uin
   return loader;
 }
 
-- (void)loader:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5
+- (void)loader:(id)loader didFinishLoadWithError:(id)error forRequest:(id)request
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  loaderCopy = loader;
+  errorCopy = error;
+  requestCopy = request;
+  if (errorCopy)
   {
     v11 = _RUILoggingFacility();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1528,18 +1528,18 @@ void __54__RemoteUIController_setHandlerForButtonName_handler___block_invoke(uin
     }
   }
 
-  v12 = [(RemoteUIController *)self _objectModelStack];
-  v13 = [v12 lastObject];
-  [v13 stopActivityIndicator];
+  _objectModelStack = [(RemoteUIController *)self _objectModelStack];
+  lastObject = [_objectModelStack lastObject];
+  [lastObject stopActivityIndicator];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v13) = objc_opt_respondsToSelector();
+  LOBYTE(lastObject) = objc_opt_respondsToSelector();
 
   v15 = objc_loadWeakRetained(&self->_delegate);
   v16 = v15;
-  if (v13)
+  if (lastObject)
   {
-    [v15 remoteUIController:self didFinishLoadWithError:v9 forRequest:v10];
+    [v15 remoteUIController:self didFinishLoadWithError:errorCopy forRequest:requestCopy];
   }
 
   else
@@ -1552,7 +1552,7 @@ void __54__RemoteUIController_setHandlerForButtonName_handler___block_invoke(uin
     }
 
     v16 = objc_loadWeakRetained(&self->_delegate);
-    [v16 remoteUIController:self didFinishLoadWithError:v9];
+    [v16 remoteUIController:self didFinishLoadWithError:errorCopy];
   }
 
 LABEL_10:
@@ -1564,27 +1564,27 @@ LABEL_10:
     v20 = objc_loadWeakRetained(&self->_telemetryDelegate);
     v21 = [RUITelemetryElement alloc];
     v22 = [[RUIXMLElement alloc] initWithName:&stru_282D68F58];
-    v23 = [v10 URL];
+    v23 = [requestCopy URL];
     v24 = [(RUITelemetryElement *)v21 initWithXMLElement:v22 url:v23];
-    [v20 didLoadURL:v24 error:v9];
+    [v20 didLoadURL:v24 error:errorCopy];
   }
 
-  v25 = [(RemoteUIController *)self loadCompletion];
+  loadCompletion = [(RemoteUIController *)self loadCompletion];
 
-  if (v25)
+  if (loadCompletion)
   {
-    v26 = [(RemoteUIController *)self loadCompletion];
-    (v26)[2](v26, v9 == 0, v9);
+    loadCompletion2 = [(RemoteUIController *)self loadCompletion];
+    (loadCompletion2)[2](loadCompletion2, errorCopy == 0, errorCopy);
   }
 
   loadCompletion = self->_loadCompletion;
   self->_loadCompletion = 0;
 }
 
-- (void)loader:(id)a3 didReceiveHTTPResponse:(id)a4 forRequest:(id)a5
+- (void)loader:(id)loader didReceiveHTTPResponse:(id)response forRequest:(id)request
 {
-  v13 = a4;
-  v7 = a5;
+  responseCopy = response;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_opt_respondsToSelector();
 
@@ -1592,7 +1592,7 @@ LABEL_10:
   v11 = v10;
   if (v9)
   {
-    [v10 remoteUIController:self didReceiveHTTPResponse:v13 forRequest:v7];
+    [v10 remoteUIController:self didReceiveHTTPResponse:responseCopy forRequest:requestCopy];
   }
 
   else
@@ -1605,52 +1605,52 @@ LABEL_10:
     }
 
     v11 = objc_loadWeakRetained(&self->_delegate);
-    [v11 remoteUIController:self didReceiveHTTPResponse:v13];
+    [v11 remoteUIController:self didReceiveHTTPResponse:responseCopy];
   }
 
 LABEL_6:
 }
 
-- (void)loader:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)loader:(id)loader didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v11 = a4;
-  v7 = a5;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
     v10 = objc_loadWeakRetained(&self->_delegate);
-    [v10 remoteUIController:self didReceiveChallenge:v11 completionHandler:v7];
+    [v10 remoteUIController:self didReceiveChallenge:challengeCopy completionHandler:handlerCopy];
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    v7[2](v7, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 }
 
-- (void)loader:(id)a3 loadResourcesForObjectModel:(id)a4 completion:(id)a5
+- (void)loader:(id)loader loadResourcesForObjectModel:(id)model completion:(id)completion
 {
-  v9 = a4;
-  v7 = a5;
-  v8 = [(RemoteUIController *)self delegate];
+  modelCopy = model;
+  completionCopy = completion;
+  delegate = [(RemoteUIController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 remoteUIController:self loadResourcesForObjectModel:v9 completion:v7];
+    [delegate remoteUIController:self loadResourcesForObjectModel:modelCopy completion:completionCopy];
   }
 
   else
   {
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
-- (id)_handleDismissAndReplaceWithActionSignal:(id)a3 objectModel:(id)a4
+- (id)_handleDismissAndReplaceWithActionSignal:(id)signal objectModel:(id)model
 {
-  v6 = a4;
-  v7 = [v6 defaultPages];
-  v8 = [v7 count];
+  modelCopy = model;
+  defaultPages = [modelCopy defaultPages];
+  v8 = [defaultPages count];
 
   if (!v8)
   {
@@ -1659,12 +1659,12 @@ LABEL_6:
   }
 
   v9 = [(NSMutableArray *)self->_objectModels count];
-  v10 = [(RemoteUIController *)self hostingController];
+  hostingController = [(RemoteUIController *)self hostingController];
 
-  if (!v10)
+  if (!hostingController)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"RemoteUIController.m" lineNumber:731 description:{@"%s: dismiss+replace requires a hosting controller", "-[RemoteUIController _handleDismissAndReplaceWithActionSignal:objectModel:]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"RemoteUIController.m" lineNumber:731 description:{@"%s: dismiss+replace requires a hosting controller", "-[RemoteUIController _handleDismissAndReplaceWithActionSignal:objectModel:]"}];
 
     if (v9)
     {
@@ -1693,7 +1693,7 @@ LABEL_8:
   v11[2] = v12;
   v11[3] = &unk_2782E84F8;
   v11[4] = self;
-  v11[5] = v6;
+  v11[5] = modelCopy;
   v13 = _Block_copy(v11);
 
 LABEL_9:
@@ -1725,22 +1725,22 @@ void __75__RemoteUIController__handleDismissAndReplaceWithActionSignal_objectMod
   [*(*(a1 + 32) + 16) addObject:{*(a1 + 40), v8, v9, v10, v11, v12}];
 }
 
-- (id)_handleDismissWithActionSignal:(id)a3 objectModel:(id)a4
+- (id)_handleDismissWithActionSignal:(id)signal objectModel:(id)model
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 subActions];
-  v9 = [v8 firstObject];
+  signalCopy = signal;
+  modelCopy = model;
+  subActions = [signalCopy subActions];
+  firstObject = [subActions firstObject];
 
-  v10 = [RUIActionSignal signalWithString:v9];
-  v11 = [v6 subActions];
-  [v10 setSubActions:v11];
+  v10 = [RUIActionSignal signalWithString:firstObject];
+  subActions2 = [signalCopy subActions];
+  [v10 setSubActions:subActions2];
 
   if (v10)
   {
-    v12 = [v10 subActions];
-    [v12 removeObjectAtIndex:0];
+    subActions3 = [v10 subActions];
+    [subActions3 removeObjectAtIndex:0];
 
     if (_isInternalInstall())
     {
@@ -1758,7 +1758,7 @@ void __75__RemoteUIController__handleDismissAndReplaceWithActionSignal_objectMod
     aBlock[2] = __65__RemoteUIController__handleDismissWithActionSignal_objectModel___block_invoke;
     aBlock[3] = &unk_2782E8B08;
     aBlock[4] = self;
-    v18 = v7;
+    v18 = modelCopy;
     v19 = v10;
     v14 = _Block_copy(aBlock);
     v15 = _Block_copy(v14);
@@ -1766,32 +1766,32 @@ void __75__RemoteUIController__handleDismissAndReplaceWithActionSignal_objectMod
 
   else
   {
-    v15 = [(RemoteUIController *)self _handleDismissAndReplaceWithActionSignal:v6 objectModel:v7];
+    v15 = [(RemoteUIController *)self _handleDismissAndReplaceWithActionSignal:signalCopy objectModel:modelCopy];
   }
 
   return v15;
 }
 
-- (void)loader:(id)a3 receivedObjectModel:(id)a4 topActionSignal:(id)a5 completion:(id)a6
+- (void)loader:(id)loader receivedObjectModel:(id)model topActionSignal:(id)signal completion:(id)completion
 {
   v154 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6)
+  loaderCopy = loader;
+  modelCopy = model;
+  signalCopy = signal;
+  if (completion)
   {
-    v13 = a6;
+    completionCopy = completion;
   }
 
   else
   {
-    v13 = &__block_literal_global_115;
+    completionCopy = &__block_literal_global_115;
   }
 
-  v14 = _Block_copy(v13);
-  [v11 setDelegate:self];
-  v15 = [(RemoteUIController *)self telemetryDelegate];
-  [v11 setTelemetryDelegate:v15];
+  v14 = _Block_copy(completionCopy);
+  [modelCopy setDelegate:self];
+  telemetryDelegate = [(RemoteUIController *)self telemetryDelegate];
+  [modelCopy setTelemetryDelegate:telemetryDelegate];
 
   WeakRetained = objc_loadWeakRetained(&self->_hostViewController);
   if (!WeakRetained)
@@ -1802,7 +1802,7 @@ void __75__RemoteUIController__handleDismissAndReplaceWithActionSignal_objectMod
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *&buf[4] = v12;
+        *&buf[4] = signalCopy;
         _os_log_impl(&dword_21B93D000, v22, OS_LOG_TYPE_DEFAULT, "Warning: Received action signal %@ with no host controller", buf, 0xCu);
       }
     }
@@ -1821,19 +1821,19 @@ LABEL_18:
       v23 = _RUILoggingFacility();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [(RemoteUIController *)self UUID];
-        v25 = [v24 UUIDString];
+        uUID = [(RemoteUIController *)self UUID];
+        uUIDString = [uUID UUIDString];
         *buf = 138412546;
-        *&buf[4] = v12;
+        *&buf[4] = signalCopy;
         v152 = 2112;
-        v153 = v25;
+        v153 = uUIDString;
         _os_log_impl(&dword_21B93D000, v23, OS_LOG_TYPE_DEFAULT, "Incoming action signal: %@ on RemoteUIController %@", buf, 0x16u);
       }
     }
 
     if (self->_modalNavigationController)
     {
-      [v12 topSignal];
+      [signalCopy topSignal];
     }
 
     else
@@ -1841,7 +1841,7 @@ LABEL_18:
       v26 = objc_loadWeakRetained(&self->_hostViewController);
       v27 = [v26 conformsToProtocol:&unk_282DAE228];
 
-      if (!(([v12 topSignal] != 2) | v27 & 1))
+      if (!(([signalCopy topSignal] != 2) | v27 & 1))
       {
         if (_isInternalInstall())
         {
@@ -1853,7 +1853,7 @@ LABEL_18:
           }
         }
 
-        [v12 setTopSignal:5];
+        [signalCopy setTopSignal:5];
       }
     }
 
@@ -1862,14 +1862,14 @@ LABEL_18:
 
     if (v30)
     {
-      *buf = [v12 topSignal];
+      *buf = [signalCopy topSignal];
       v31 = objc_loadWeakRetained(&self->_delegate);
-      [v31 remoteUIController:self didReceiveObjectModel:v11 actionSignal:buf];
+      [v31 remoteUIController:self didReceiveObjectModel:modelCopy actionSignal:buf];
 
       if (*buf)
       {
-        v32 = [v12 topSignal];
-        if (v32 != *buf)
+        topSignal = [signalCopy topSignal];
+        if (topSignal != *buf)
         {
           if (_isInternalInstall())
           {
@@ -1882,15 +1882,15 @@ LABEL_18:
             }
           }
 
-          [v12 setTopSignal:*buf];
+          [signalCopy setTopSignal:*buf];
         }
       }
     }
 
-    if ([v12 topSignal] == 2 || objc_msgSend(v12, "topSignal") == 5)
+    if ([signalCopy topSignal] == 2 || objc_msgSend(signalCopy, "topSignal") == 5)
     {
-      v34 = [v11 defaultPages];
-      v35 = [v34 count] == 0;
+      defaultPages = [modelCopy defaultPages];
+      v35 = [defaultPages count] == 0;
 
       if (v35)
       {
@@ -1904,8 +1904,8 @@ LABEL_18:
           }
         }
 
-        v37 = [v11 primaryAlert];
-        v38 = v37 == 0;
+        primaryAlert = [modelCopy primaryAlert];
+        v38 = primaryAlert == 0;
 
         if (v38)
         {
@@ -1923,43 +1923,43 @@ LABEL_18:
           }
         }
 
-        [v12 setTopSignal:7];
+        [signalCopy setTopSignal:7];
       }
     }
 
     modalNavigationController = self->_modalNavigationController;
     if (modalNavigationController)
     {
-      v41 = [(RUINavigationController *)modalNavigationController topViewController];
+      topViewController = [(RUINavigationController *)modalNavigationController topViewController];
     }
 
     else
     {
-      v42 = [(RemoteUIController *)self navigationController];
-      v41 = [v42 topViewController];
+      navigationController = [(RemoteUIController *)self navigationController];
+      topViewController = [navigationController topViewController];
     }
 
     loadingViewController = self->_loadingViewController;
-    if ([v12 topSignal] == 2 && loadingViewController != 0 && v41 == loadingViewController)
+    if ([signalCopy topSignal] == 2 && loadingViewController != 0 && topViewController == loadingViewController)
     {
-      [v12 setTopSignal:3];
+      [signalCopy setTopSignal:3];
     }
 
-    if ([v12 topSignal] == 2)
+    if ([signalCopy topSignal] == 2)
     {
       v44 = self->_modalNavigationController;
       if (v44)
       {
-        v45 = v44;
+        hostingController = v44;
       }
 
       else
       {
-        v45 = [(RemoteUIController *)self hostingController];
-        if (!v45)
+        hostingController = [(RemoteUIController *)self hostingController];
+        if (!hostingController)
         {
-          v45 = _RUILoggingFacility();
-          if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
+          hostingController = _RUILoggingFacility();
+          if (os_log_type_enabled(hostingController, OS_LOG_TYPE_ERROR))
           {
             [RemoteUIController loader:receivedObjectModel:topActionSignal:completion:];
           }
@@ -1968,7 +1968,7 @@ LABEL_18:
         }
       }
 
-      [(RemoteUIController *)self pushObjectModel:v11 animated:[(RemoteUIController *)self _shouldAnimate] completion:v14];
+      [(RemoteUIController *)self pushObjectModel:modelCopy animated:[(RemoteUIController *)self _shouldAnimate] completion:v14];
 LABEL_72:
 
 LABEL_73:
@@ -1985,15 +1985,15 @@ LABEL_73:
       goto LABEL_74;
     }
 
-    if ([v12 topSignal] == 1)
+    if ([signalCopy topSignal] == 1)
     {
-      v46 = [(RemoteUIController *)self loader];
-      [v46 cancel];
+      loader = [(RemoteUIController *)self loader];
+      [loader cancel];
 
       [(RUINavigationController *)self->_modalNavigationController setIsDismissing:1];
-      v47 = [v12 subActions];
-      v48 = [v47 firstObject];
-      v49 = [v48 isEqualToString:@"refresh"];
+      subActions = [signalCopy subActions];
+      firstObject = [subActions firstObject];
+      v49 = [firstObject isEqualToString:@"refresh"];
 
       v50 = self->_modalNavigationController;
       if ((v50 != 0) | v49 & 1)
@@ -2002,22 +2002,22 @@ LABEL_73:
         {
           if (v50)
           {
-            v51 = [(RemoteUIController *)self _shouldAnimate];
+            _shouldAnimate = [(RemoteUIController *)self _shouldAnimate];
             v143[0] = MEMORY[0x277D85DD0];
             v143[1] = 3221225472;
             v143[2] = __76__RemoteUIController_loader_receivedObjectModel_topActionSignal_completion___block_invoke_143;
             v143[3] = &unk_2782E8610;
             v143[4] = self;
-            v144 = v11;
+            v144 = modelCopy;
             v145 = v14;
-            [(RUINavigationController *)v50 dismissViewControllerAnimated:v51 completion:v143];
+            [(RUINavigationController *)v50 dismissViewControllerAnimated:_shouldAnimate completion:v143];
             v52 = self->_modalNavigationController;
             self->_modalNavigationController = 0;
           }
 
           else
           {
-            [(RemoteUIController *)self refreshTopModelWithModel:v11];
+            [(RemoteUIController *)self refreshTopModelWithModel:modelCopy];
           }
 
           v14[2](v14);
@@ -2025,7 +2025,7 @@ LABEL_73:
 
         else
         {
-          v63 = [(RemoteUIController *)self _handleDismissWithActionSignal:v12 objectModel:v11];
+          v63 = [(RemoteUIController *)self _handleDismissWithActionSignal:signalCopy objectModel:modelCopy];
           aBlock[0] = MEMORY[0x277D85DD0];
           aBlock[1] = 3221225472;
           aBlock[2] = __76__RemoteUIController_loader_receivedObjectModel_topActionSignal_completion___block_invoke_2;
@@ -2036,7 +2036,7 @@ LABEL_73:
           v142 = v14;
           v65 = _Block_copy(aBlock);
           v66 = self->_modalNavigationController;
-          v67 = [(RemoteUIController *)self _shouldAnimate];
+          _shouldAnimate2 = [(RemoteUIController *)self _shouldAnimate];
           if ([(RemoteUIController *)self _shouldAnimate])
           {
             v68 = v65;
@@ -2047,7 +2047,7 @@ LABEL_73:
             v68 = 0;
           }
 
-          [(RUINavigationController *)v66 dismissViewControllerAnimated:v67 completion:v68];
+          [(RUINavigationController *)v66 dismissViewControllerAnimated:_shouldAnimate2 completion:v68];
           if (![(RemoteUIController *)self _shouldAnimate])
           {
             v65[2](v65);
@@ -2057,13 +2057,13 @@ LABEL_73:
 
       else
       {
-        v60 = [(RemoteUIController *)self delegate];
+        delegate = [(RemoteUIController *)self delegate];
         v61 = objc_opt_respondsToSelector();
 
         if (v61)
         {
-          v62 = [(RemoteUIController *)self delegate];
-          [v62 remoteUIControllerDidDismiss:self];
+          delegate2 = [(RemoteUIController *)self delegate];
+          [delegate2 remoteUIControllerDidDismiss:self];
 
           v14[2](v14);
         }
@@ -2072,10 +2072,10 @@ LABEL_73:
       goto LABEL_73;
     }
 
-    if ([v12 topSignal] == 4)
+    if ([signalCopy topSignal] == 4)
     {
-      v53 = [v11 defaultPages];
-      v54 = [v53 count] == 0;
+      defaultPages2 = [modelCopy defaultPages];
+      v54 = [defaultPages2 count] == 0;
 
       if (v54)
       {
@@ -2093,13 +2093,13 @@ LABEL_73:
       v56 = self->_modalNavigationController;
       if (v56)
       {
-        v57 = v56;
+        navigationController2 = v56;
       }
 
       else
       {
-        v57 = [(RemoteUIController *)self navigationController];
-        if (!v57)
+        navigationController2 = [(RemoteUIController *)self navigationController];
+        if (!navigationController2)
         {
           v91 = _RUILoggingFacility();
           p_super = v91;
@@ -2113,29 +2113,29 @@ LABEL_73:
         }
       }
 
-      v119 = v57;
+      v119 = navigationController2;
       if ([v120 count] > 1)
       {
-        v114 = [(RUINavigationController *)v119 topViewController];
-        v116 = [v120 lastObject];
-        [v116 setDelegate:0];
+        topViewController2 = [(RUINavigationController *)v119 topViewController];
+        lastObject = [v120 lastObject];
+        [lastObject setDelegate:0];
         [v120 removeLastObject];
-        [(RemoteUIController *)self _didRemoveObjectModel:v116];
-        v115 = [v120 lastObject];
-        [v115 setDelegate:0];
+        [(RemoteUIController *)self _didRemoveObjectModel:lastObject];
+        lastObject2 = [v120 lastObject];
+        [lastObject2 setDelegate:0];
         [v120 removeLastObject];
-        [(RemoteUIController *)self _didRemoveObjectModel:v115];
-        [(RemoteUIController *)self _willPresentObjectModel:v11 modally:0];
+        [(RemoteUIController *)self _didRemoveObjectModel:lastObject2];
+        [(RemoteUIController *)self _willPresentObjectModel:modelCopy modally:0];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v73 = [v115 displayedPages];
-          v74 = [v116 displayedPages];
-          v75 = [v73 arrayByAddingObjectsFromArray:v74];
+          displayedPages = [lastObject2 displayedPages];
+          displayedPages2 = [lastObject displayedPages];
+          v75 = [displayedPages arrayByAddingObjectsFromArray:displayedPages2];
 
-          v76 = [v11 _firstPageForPresentation];
-          v148[0] = v76;
-          v148[1] = v114;
+          _firstPageForPresentation = [modelCopy _firstPageForPresentation];
+          v148[0] = _firstPageForPresentation;
+          v148[1] = topViewController2;
           v77 = [MEMORY[0x277CBEA60] arrayWithObjects:v148 count:2];
 
           [(UINavigationController *)v119 settingsCompatibleReplaceViewControllers:v75 byViewControllers:v77 animated:0];
@@ -2143,17 +2143,17 @@ LABEL_73:
 
         else
         {
-          v78 = [(RUINavigationController *)v119 viewControllers];
-          v75 = [v78 mutableCopy];
+          viewControllers = [(RUINavigationController *)v119 viewControllers];
+          v75 = [viewControllers mutableCopy];
 
           v138 = 0u;
           v139 = 0u;
           v136 = 0u;
           v137 = 0u;
-          v79 = [v116 displayedPages];
-          v80 = [v79 reverseObjectEnumerator];
+          displayedPages3 = [lastObject displayedPages];
+          reverseObjectEnumerator = [displayedPages3 reverseObjectEnumerator];
 
-          v81 = [v80 countByEnumeratingWithState:&v136 objects:v147 count:16];
+          v81 = [reverseObjectEnumerator countByEnumeratingWithState:&v136 objects:v147 count:16];
           if (v81)
           {
             v82 = *v137;
@@ -2161,13 +2161,13 @@ LABEL_73:
             {
               if (*v137 != v82)
               {
-                objc_enumerationMutation(v80);
+                objc_enumerationMutation(reverseObjectEnumerator);
               }
 
               [v75 removeLastObject];
               if (!--v81)
               {
-                v81 = [v80 countByEnumeratingWithState:&v136 objects:v147 count:16];
+                v81 = [reverseObjectEnumerator countByEnumeratingWithState:&v136 objects:v147 count:16];
                 if (!v81)
                 {
                   break;
@@ -2180,10 +2180,10 @@ LABEL_73:
           v135 = 0u;
           v132 = 0u;
           v133 = 0u;
-          v83 = [v115 displayedPages];
-          v84 = [v83 reverseObjectEnumerator];
+          displayedPages4 = [lastObject2 displayedPages];
+          reverseObjectEnumerator2 = [displayedPages4 reverseObjectEnumerator];
 
-          v85 = [v84 countByEnumeratingWithState:&v132 objects:v146 count:16];
+          v85 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v132 objects:v146 count:16];
           if (v85)
           {
             v86 = *v133;
@@ -2191,13 +2191,13 @@ LABEL_73:
             {
               if (*v133 != v86)
               {
-                objc_enumerationMutation(v84);
+                objc_enumerationMutation(reverseObjectEnumerator2);
               }
 
               [v75 removeLastObject];
               if (!--v85)
               {
-                v85 = [v84 countByEnumeratingWithState:&v132 objects:v146 count:16];
+                v85 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v132 objects:v146 count:16];
                 if (!v85)
                 {
                   break;
@@ -2206,20 +2206,20 @@ LABEL_73:
             }
           }
 
-          v87 = [v11 _firstPageForPresentation];
-          [v75 addObject:v87];
+          _firstPageForPresentation2 = [modelCopy _firstPageForPresentation];
+          [v75 addObject:_firstPageForPresentation2];
 
-          [v75 addObject:v114];
+          [v75 addObject:topViewController2];
           [(RUINavigationController *)v119 setViewControllers:v75 animated:0];
         }
 
-        [v120 addObject:v11];
-        [v11 setDelegate:self];
-        v88 = [(RemoteUIController *)self telemetryDelegate];
-        [v11 setTelemetryDelegate:v88];
+        [v120 addObject:modelCopy];
+        [modelCopy setDelegate:self];
+        telemetryDelegate2 = [(RemoteUIController *)self telemetryDelegate];
+        [modelCopy setTelemetryDelegate:telemetryDelegate2];
 
         [(UINavigationController *)v119 settingsCompatiblePopViewController];
-        [(RemoteUIController *)self _didPresentObjectModel:v11 modally:0];
+        [(RemoteUIController *)self _didPresentObjectModel:modelCopy modally:0];
         v14[2](v14);
       }
 
@@ -2238,19 +2238,19 @@ LABEL_124:
       goto LABEL_73;
     }
 
-    if ([v12 topSignal] != 3)
+    if ([signalCopy topSignal] != 3)
     {
-      if ([v12 topSignal] == 8)
+      if ([signalCopy topSignal] == 8)
       {
-        [(RemoteUIController *)self refreshTopModelWithModel:v11];
+        [(RemoteUIController *)self refreshTopModelWithModel:modelCopy];
         v14[2](v14);
       }
 
-      else if ([v12 topSignal] == 5 || objc_msgSend(v12, "topSignal") == 6 || objc_msgSend(v12, "topSignal") == 9)
+      else if ([signalCopy topSignal] == 5 || objc_msgSend(signalCopy, "topSignal") == 6 || objc_msgSend(signalCopy, "topSignal") == 9)
       {
-        [(RemoteUIController *)self _willPresentObjectModel:v11 modally:1];
-        v70 = [v12 topSignal];
-        if (v70 == 9)
+        [(RemoteUIController *)self _willPresentObjectModel:modelCopy modally:1];
+        topSignal2 = [signalCopy topSignal];
+        if (topSignal2 == 9)
         {
           v118 = 0;
           v71 = 2;
@@ -2258,7 +2258,7 @@ LABEL_124:
 
         else
         {
-          v71 = [v12 topSignal] == 6;
+          v71 = [signalCopy topSignal] == 6;
           v118 = v71;
         }
 
@@ -2276,7 +2276,7 @@ LABEL_124:
           v117 = 0;
         }
 
-        [(NSMutableArray *)self->_modalObjectModels addObject:v11];
+        [(NSMutableArray *)self->_modalObjectModels addObject:modelCopy];
         if (self->_modalNavigationController)
         {
           v129[0] = MEMORY[0x277D85DD0];
@@ -2284,7 +2284,7 @@ LABEL_124:
           v129[2] = __76__RemoteUIController_loader_receivedObjectModel_topActionSignal_completion___block_invoke_145;
           v129[3] = &unk_2782E8610;
           v129[4] = self;
-          v93 = v11;
+          v93 = modelCopy;
           v130 = v93;
           v131 = v14;
           v94 = _Block_copy(v129);
@@ -2293,9 +2293,9 @@ LABEL_124:
 
         else
         {
-          v95 = [v11 newNavigationControllerForPresentation];
+          newNavigationControllerForPresentation = [modelCopy newNavigationControllerForPresentation];
           v96 = self->_modalNavigationController;
-          self->_modalNavigationController = v95;
+          self->_modalNavigationController = newNavigationControllerForPresentation;
 
           [(RUINavigationController *)self->_modalNavigationController setRuiModalPresentationStyle:v71];
           if (objc_opt_respondsToSelector())
@@ -2304,11 +2304,11 @@ LABEL_124:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v98 = [v97 navigationController];
-              v99 = v98;
-              if (v98)
+              navigationController3 = [v97 navigationController];
+              v99 = navigationController3;
+              if (navigationController3)
               {
-                v100 = v98;
+                v100 = navigationController3;
               }
 
               else
@@ -2333,15 +2333,15 @@ LABEL_124:
           objc_copyWeak(&v128, buf);
           [(RUINavigationController *)v102 setMenuDismissalHandler:v127];
           v103 = v118 ^ 1;
-          if (v70 == 9)
+          if (topSignal2 == 9)
           {
             v103 = 0;
           }
 
           if (v103)
           {
-            v104 = [MEMORY[0x277D75418] currentDevice];
-            v105 = [v104 userInterfaceIdiom] == 1;
+            currentDevice = [MEMORY[0x277D75418] currentDevice];
+            v105 = [currentDevice userInterfaceIdiom] == 1;
 
             if (v105)
             {
@@ -2363,13 +2363,13 @@ LABEL_124:
             [(RUINavigationController *)self->_modalNavigationController setTransitioningDelegate:self];
           }
 
-          v107 = [(RemoteUIController *)self delegate];
+          delegate3 = [(RemoteUIController *)self delegate];
           v108 = objc_opt_respondsToSelector();
 
           if (v108)
           {
-            v109 = [(RemoteUIController *)self delegate];
-            [v109 remoteUIController:self willPresentModalNavigationController:self->_modalNavigationController];
+            delegate4 = [(RemoteUIController *)self delegate];
+            [delegate4 remoteUIController:self willPresentModalNavigationController:self->_modalNavigationController];
           }
 
           v124[0] = MEMORY[0x277D85DD0];
@@ -2377,7 +2377,7 @@ LABEL_124:
           v124[2] = __76__RemoteUIController_loader_receivedObjectModel_topActionSignal_completion___block_invoke_3;
           v124[3] = &unk_2782E8610;
           v124[4] = self;
-          v125 = v11;
+          v125 = modelCopy;
           v126 = v14;
           v110 = _Block_copy(v124);
           v111 = self->_modalNavigationController;
@@ -2396,11 +2396,11 @@ LABEL_124:
         }
       }
 
-      else if ([v12 topSignal] == 7)
+      else if ([signalCopy topSignal] == 7)
       {
-        [v11 setDelegate:self];
-        v112 = [(RemoteUIController *)self telemetryDelegate];
-        [v11 setTelemetryDelegate:v112];
+        [modelCopy setDelegate:self];
+        telemetryDelegate3 = [(RemoteUIController *)self telemetryDelegate];
+        [modelCopy setTelemetryDelegate:telemetryDelegate3];
 
         v14[2](v14);
       }
@@ -2422,13 +2422,13 @@ LABEL_124:
     v58 = self->_modalNavigationController;
     if (v58)
     {
-      v59 = v58;
+      hostingController2 = v58;
     }
 
     else
     {
-      v59 = [(RemoteUIController *)self hostingController];
-      if (!v59)
+      hostingController2 = [(RemoteUIController *)self hostingController];
+      if (!hostingController2)
       {
         v92 = _RUILoggingFacility();
         if (os_log_type_enabled(v92, OS_LOG_TYPE_ERROR))
@@ -2436,23 +2436,23 @@ LABEL_124:
           [RemoteUIController loader:receivedObjectModel:topActionSignal:completion:];
         }
 
-        v59 = 0;
+        hostingController2 = 0;
         goto LABEL_106;
       }
     }
 
-    [(RemoteUIController *)self _replaceObjectModelWithObjectModel:v11];
+    [(RemoteUIController *)self _replaceObjectModelWithObjectModel:modelCopy];
 LABEL_106:
     v14[2](v14);
 
     goto LABEL_73;
   }
 
-  v18 = [(NSMutableArray *)self->_objectModels lastObject];
-  v19 = [v18 visiblePage];
+  lastObject3 = [(NSMutableArray *)self->_objectModels lastObject];
+  visiblePage = [lastObject3 visiblePage];
   v20 = self->_pageOriginatingLoad;
 
-  if (v19 == v20)
+  if (visiblePage == v20)
   {
     pageOriginatingLoad = self->_pageOriginatingLoad;
     goto LABEL_18;
@@ -2536,13 +2536,13 @@ void __76__RemoteUIController_loader_receivedObjectModel_topActionSignal_complet
   }
 }
 
-- (void)_replaceModalRUIController:(id)a3 byController:(id)a4 completion:(id)a5
+- (void)_replaceModalRUIController:(id)controller byController:(id)byController completion:(id)completion
 {
-  v14 = a4;
-  v8 = a5;
-  v9 = a3;
+  byControllerCopy = byController;
+  completionCopy = completion;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_hostViewController);
-  [v14 setHostViewController:WeakRetained];
+  [byControllerCopy setHostViewController:WeakRetained];
 
   v11 = objc_loadWeakRetained(&self->_hostViewController);
   v12 = [v11 conformsToProtocol:&unk_282DBDDE8];
@@ -2550,25 +2550,25 @@ void __76__RemoteUIController_loader_receivedObjectModel_topActionSignal_complet
   if (v12)
   {
     v13 = objc_loadWeakRetained(&self->_hostViewController);
-    [v13 replaceModalRUIController:v9 byController:v14 completion:v8];
+    [v13 replaceModalRUIController:controllerCopy byController:byControllerCopy completion:completionCopy];
 
-    v8 = v13;
+    completionCopy = v13;
   }
 
   else
   {
-    [v9 dismissViewControllerAnimated:-[RemoteUIController _shouldAnimate](self completion:{"_shouldAnimate"), 0}];
+    [controllerCopy dismissViewControllerAnimated:-[RemoteUIController _shouldAnimate](self completion:{"_shouldAnimate"), 0}];
 
-    [(RemoteUIController *)self _presentModalRUIController:self->_modalNavigationController completion:v8];
+    [(RemoteUIController *)self _presentModalRUIController:self->_modalNavigationController completion:completionCopy];
   }
 }
 
-- (void)_presentModalRUIController:(id)a3 completion:(id)a4
+- (void)_presentModalRUIController:(id)controller completion:(id)completion
 {
-  v12 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_hostViewController);
-  [v12 setHostViewController:WeakRetained];
+  [controllerCopy setHostViewController:WeakRetained];
 
   v8 = objc_loadWeakRetained(&self->_hostViewController);
   v9 = [v8 conformsToProtocol:&unk_282DBDDE8];
@@ -2577,36 +2577,36 @@ void __76__RemoteUIController_loader_receivedObjectModel_topActionSignal_complet
   v11 = v10;
   if (v9)
   {
-    [v10 presentModalRUIController:v12 completion:v6];
+    [v10 presentModalRUIController:controllerCopy completion:completionCopy];
   }
 
   else
   {
-    [v10 presentViewController:v12 animated:-[RemoteUIController _shouldAnimate](self completion:{"_shouldAnimate"), v6}];
+    [v10 presentViewController:controllerCopy animated:-[RemoteUIController _shouldAnimate](self completion:{"_shouldAnimate"), completionCopy}];
   }
 }
 
-- (void)refreshTopModelWithModel:(id)a3
+- (void)refreshTopModelWithModel:(id)model
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RemoteUIController *)self _objectModelStack];
-  v6 = [v5 lastObject];
+  modelCopy = model;
+  _objectModelStack = [(RemoteUIController *)self _objectModelStack];
+  lastObject = [_objectModelStack lastObject];
 
-  v7 = [v4 identifier];
-  v8 = [v6 identifier];
-  v9 = [v7 isEqualToString:v8];
+  identifier = [modelCopy identifier];
+  identifier2 = [lastObject identifier];
+  v9 = [identifier isEqualToString:identifier2];
 
   if (v9)
   {
-    [v6 refreshWithObjectModel:v4];
+    [lastObject refreshWithObjectModel:modelCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
       v12 = objc_loadWeakRetained(&self->_delegate);
-      [v12 remoteUIController:self didRefreshObjectModel:v6];
+      [v12 remoteUIController:self didRefreshObjectModel:lastObject];
     }
   }
 
@@ -2615,28 +2615,28 @@ void __76__RemoteUIController_loader_receivedObjectModel_topActionSignal_complet
     v13 = _RUILoggingFacility();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v4 identifier];
-      v15 = [v6 identifier];
+      identifier3 = [modelCopy identifier];
+      identifier4 = [lastObject identifier];
       v16 = 138412546;
-      v17 = v14;
+      v17 = identifier3;
       v18 = 2112;
-      v19 = v15;
+      v19 = identifier4;
       _os_log_impl(&dword_21B93D000, v13, OS_LOG_TYPE_DEFAULT, "Refresh action detected, but identifiers did not match; New: <%@> Old: <%@>", &v16, 0x16u);
     }
   }
 }
 
-- (void)loader:(id)a3 willLoadRequest:(id)a4 redirectResponse:(id)a5 completionHandler:(id)a6
+- (void)loader:(id)loader willLoadRequest:(id)request redirectResponse:(id)response completionHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(RemoteUIController *)self _objectModelStack];
-  v13 = [v12 lastObject];
+  requestCopy = request;
+  responseCopy = response;
+  handlerCopy = handler;
+  _objectModelStack = [(RemoteUIController *)self _objectModelStack];
+  lastObject = [_objectModelStack lastObject];
 
-  [v13 startActivityIndicator];
-  if (!v11)
+  [lastObject startActivityIndicator];
+  if (!handlerCopy)
   {
     [RemoteUIController loader:willLoadRequest:redirectResponse:completionHandler:];
   }
@@ -2646,14 +2646,14 @@ void __76__RemoteUIController_loader_receivedObjectModel_topActionSignal_complet
     v14 = _RUILoggingFacility();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v9 URL];
+      v15 = [requestCopy URL];
       *buf = 138412290;
       v31 = v15;
       _os_log_impl(&dword_21B93D000, v14, OS_LOG_TYPE_DEFAULT, "RUIController sending delegate redirect call for URL %@", buf, 0xCu);
     }
   }
 
-  v16 = [v9 mutableCopy];
+  v16 = [requestCopy mutableCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v18 = objc_opt_respondsToSelector();
 
@@ -2666,12 +2666,12 @@ void __76__RemoteUIController_loader_receivedObjectModel_topActionSignal_complet
     v22 = v21;
     if (v20)
     {
-      v23 = [v21 remoteUIController:self shouldLoadRequest:v16 redirectResponse:v10];
+      v23 = [v21 remoteUIController:self shouldLoadRequest:v16 redirectResponse:responseCopy];
 
       if (!v23)
       {
-        [v13 stopActivityIndicator];
-        (*(v11 + 2))(v11, 0, 0);
+        [lastObject stopActivityIndicator];
+        (*(handlerCopy + 2))(handlerCopy, 0, 0);
         goto LABEL_15;
       }
     }
@@ -2687,7 +2687,7 @@ void __76__RemoteUIController_loader_receivedObjectModel_topActionSignal_complet
       }
     }
 
-    (*(v11 + 2))(v11, v16, 0);
+    (*(handlerCopy + 2))(handlerCopy, v16, 0);
     goto LABEL_15;
   }
 
@@ -2695,10 +2695,10 @@ void __76__RemoteUIController_loader_receivedObjectModel_topActionSignal_complet
   v26[1] = 3221225472;
   v26[2] = __80__RemoteUIController_loader_willLoadRequest_redirectResponse_completionHandler___block_invoke;
   v26[3] = &unk_2782E8570;
-  v29 = v11;
+  v29 = handlerCopy;
   v27 = v16;
-  v28 = v13;
-  [v19 remoteUIController:self shouldLoadRequest:v27 redirectResponse:v10 withCompletionHandler:v26];
+  v28 = lastObject;
+  [v19 remoteUIController:self shouldLoadRequest:v27 redirectResponse:responseCopy withCompletionHandler:v26];
 
 LABEL_15:
 }
@@ -2714,17 +2714,17 @@ void __80__RemoteUIController_loader_willLoadRequest_redirectResponse_completion
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)parser:(id)a3 createPageWithName:(id)a4 attributes:(id)a5
+- (id)parser:(id)parser createPageWithName:(id)name attributes:(id)attributes
 {
-  v7 = a4;
-  v8 = a5;
+  nameCopy = name;
+  attributesCopy = attributes;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
     v11 = objc_loadWeakRetained(&self->_delegate);
-    v12 = [v11 remoteUIController:self createPageWithName:v7 attributes:v8];
+    v12 = [v11 remoteUIController:self createPageWithName:nameCopy attributes:attributesCopy];
   }
 
   else
@@ -2735,20 +2735,20 @@ void __80__RemoteUIController_loader_willLoadRequest_redirectResponse_completion
   return v12;
 }
 
-- (id)parentViewControllerForObjectModel:(id)a3
+- (id)parentViewControllerForObjectModel:(id)model
 {
-  v4 = a3;
-  if ([(NSMutableArray *)self->_objectModels containsObject:v4])
+  modelCopy = model;
+  if ([(NSMutableArray *)self->_objectModels containsObject:modelCopy])
   {
-    v5 = [(RemoteUIController *)self navigationController];
+    navigationController = [(RemoteUIController *)self navigationController];
 LABEL_5:
-    v6 = v5;
+    v6 = navigationController;
     goto LABEL_7;
   }
 
-  if ([(NSMutableArray *)self->_modalObjectModels containsObject:v4])
+  if ([(NSMutableArray *)self->_modalObjectModels containsObject:modelCopy])
   {
-    v5 = self->_modalNavigationController;
+    navigationController = self->_modalNavigationController;
     goto LABEL_5;
   }
 
@@ -2774,11 +2774,11 @@ LABEL_7:
   return WeakRetained;
 }
 
-- (id)visibleElementWithIdentifier:(id)a3
+- (id)visibleElementWithIdentifier:(id)identifier
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v24 = 0u;
     v25 = 0u;
@@ -2799,8 +2799,8 @@ LABEL_4:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v22 + 1) + 8 * v9) visiblePage];
-        v11 = [v10 subElementWithID:v4];
+        visiblePage = [*(*(&v22 + 1) + 8 * v9) visiblePage];
+        v11 = [visiblePage subElementWithID:identifierCopy];
 
         if (v11)
         {
@@ -2843,8 +2843,8 @@ LABEL_12:
             objc_enumerationMutation(v5);
           }
 
-          v16 = [*(*(&v18 + 1) + 8 * v15) visiblePage];
-          v11 = [v16 subElementWithID:v4];
+          visiblePage2 = [*(*(&v18 + 1) + 8 * v15) visiblePage];
+          v11 = [visiblePage2 subElementWithID:identifierCopy];
 
           if (v11)
           {
@@ -2880,17 +2880,17 @@ LABEL_18:
   return v11;
 }
 
-- (void)objectModel:(id)a3 didNavigateBackFromController:(id)a4 withGesture:(BOOL)a5
+- (void)objectModel:(id)model didNavigateBackFromController:(id)controller withGesture:(BOOL)gesture
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  controllerCopy = controller;
   if (_isInternalInstall())
   {
     v9 = _RUILoggingFacility();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138412290;
-      v21 = v8;
+      v21 = controllerCopy;
       _os_log_impl(&dword_21B93D000, v9, OS_LOG_TYPE_DEFAULT, "Object model navigated back from %@", &v20, 0xCu);
     }
   }
@@ -2902,18 +2902,18 @@ LABEL_18:
   }
 
   v11 = *(&self->super.isa + v10);
-  v12 = [(RemoteUIController *)self loader];
-  [v12 cancel];
+  loader = [(RemoteUIController *)self loader];
+  [loader cancel];
 
-  v13 = [v11 lastObject];
-  v14 = [v13 displayedPages];
-  v15 = [v14 count];
+  lastObject = [v11 lastObject];
+  displayedPages = [lastObject displayedPages];
+  v15 = [displayedPages count];
   if (v15 == 1)
   {
-    v5 = [v13 displayedPages];
-    v16 = [v5 lastObject];
-    v6 = v16;
-    if (v16 == v8)
+    displayedPages2 = [lastObject displayedPages];
+    lastObject2 = [displayedPages2 lastObject];
+    v6 = lastObject2;
+    if (lastObject2 == controllerCopy)
     {
 
 LABEL_14:
@@ -2923,19 +2923,19 @@ LABEL_14:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           v20 = 138412290;
-          v21 = v13;
+          v21 = lastObject;
           _os_log_impl(&dword_21B93D000, v19, OS_LOG_TYPE_DEFAULT, "Object model has no more pages, popping: %@", &v20, 0xCu);
         }
       }
 
       [v11 removeLastObject];
-      [(RemoteUIController *)self _didRemoveObjectModel:v13];
+      [(RemoteUIController *)self _didRemoveObjectModel:lastObject];
       goto LABEL_19;
     }
   }
 
-  v17 = [v13 displayedPages];
-  v18 = [v17 count];
+  displayedPages3 = [lastObject displayedPages];
+  v18 = [displayedPages3 count];
 
   if (v15 == 1)
   {
@@ -2949,13 +2949,13 @@ LABEL_14:
 LABEL_19:
 }
 
-- (void)objectModel:(id)a3 elementDidChange:(id)a4
+- (void)objectModel:(id)model elementDidChange:(id)change
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RemoteUIController *)self loader];
-  [v8 cancel];
+  modelCopy = model;
+  changeCopy = change;
+  loader = [(RemoteUIController *)self loader];
+  [loader cancel];
 
   v35 = 0u;
   v36 = 0u;
@@ -3030,10 +3030,10 @@ LABEL_19:
   v26[1] = 3221225472;
   v26[2] = __51__RemoteUIController_objectModel_elementDidChange___block_invoke;
   v26[3] = &unk_2782E8BA8;
-  v27 = v7;
-  v28 = v6;
-  v24 = v6;
-  v25 = v7;
+  v27 = changeCopy;
+  v28 = modelCopy;
+  v24 = modelCopy;
+  v25 = changeCopy;
   [(NSMutableDictionary *)elementChangeHandlers enumerateKeysAndObjectsUsingBlock:v26];
 }
 
@@ -3069,54 +3069,54 @@ void __51__RemoteUIController_objectModel_elementDidChange___block_invoke(uint64
   }
 }
 
-- (void)objectModel:(id)a3 willLoadLinkURL:(id)a4 attributes:(id)a5
+- (void)objectModel:(id)model willLoadLinkURL:(id)l attributes:(id)attributes
 {
-  v10 = a5;
-  v6 = [v10 objectForKeyedSubscript:@"url"];
+  attributesCopy = attributes;
+  v6 = [attributesCopy objectForKeyedSubscript:@"url"];
   if (v6)
   {
     v7 = v6;
-    v8 = [v10 objectForKeyedSubscript:@"startSMSAutoFill"];
-    v9 = [v8 BOOLValue];
+    v8 = [attributesCopy objectForKeyedSubscript:@"startSMSAutoFill"];
+    bOOLValue = [v8 BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
       [(RemoteUIController *)self _beginListeningForSMSAutoFill];
     }
   }
 }
 
-- (void)objectModel:(id)a3 pressedLink:(id)a4 httpMethod:(id)a5 completion:(id)a6
+- (void)objectModel:(id)model pressedLink:(id)link httpMethod:(id)method completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a4;
-  v13 = [a5 lowercaseString];
-  LODWORD(a4) = [v13 isEqualToString:@"post"];
+  modelCopy = model;
+  completionCopy = completion;
+  linkCopy = link;
+  lowercaseString = [method lowercaseString];
+  LODWORD(link) = [lowercaseString isEqualToString:@"post"];
 
-  if (a4)
+  if (link)
   {
-    v14 = [v10 postbackData];
+    postbackData = [modelCopy postbackData];
   }
 
   else
   {
-    v14 = 0;
+    postbackData = 0;
   }
 
-  v15 = [(NSMutableArray *)self->_objectModels lastObject];
-  v16 = [v15 visiblePage];
+  lastObject = [(NSMutableArray *)self->_objectModels lastObject];
+  visiblePage = [lastObject visiblePage];
   pageOriginatingLoad = self->_pageOriginatingLoad;
-  self->_pageOriginatingLoad = v16;
+  self->_pageOriginatingLoad = visiblePage;
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __68__RemoteUIController_objectModel_pressedLink_httpMethod_completion___block_invoke;
   v19[3] = &unk_2782E7F08;
   v19[4] = self;
-  v20 = v11;
-  v18 = v11;
-  [(RemoteUIController *)self _loadURL:v12 postBody:v14 fromObjectModel:v10 completion:v19];
+  v20 = completionCopy;
+  v18 = completionCopy;
+  [(RemoteUIController *)self _loadURL:linkCopy postBody:postbackData fromObjectModel:modelCopy completion:v19];
 }
 
 void __68__RemoteUIController_objectModel_pressedLink_httpMethod_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -3137,18 +3137,18 @@ void __68__RemoteUIController_objectModel_pressedLink_httpMethod_completion___bl
   }
 }
 
-- (BOOL)objectModel:(id)a3 shouldDisplayNamedElement:(id)a4 page:(id)a5
+- (BOOL)objectModel:(id)model shouldDisplayNamedElement:(id)element page:(id)page
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RemoteUIController *)self delegate];
+  modelCopy = model;
+  elementCopy = element;
+  pageCopy = page;
+  delegate = [(RemoteUIController *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(RemoteUIController *)self delegate];
-    v14 = [v13 remoteUIController:self objectModel:v8 shouldDisplayNamedElement:v9 page:v10];
+    delegate2 = [(RemoteUIController *)self delegate];
+    v14 = [delegate2 remoteUIController:self objectModel:modelCopy shouldDisplayNamedElement:elementCopy page:pageCopy];
   }
 
   else
@@ -3159,58 +3159,58 @@ void __68__RemoteUIController_objectModel_pressedLink_httpMethod_completion___bl
   return v14;
 }
 
-- (BOOL)_objectModelPageWantsHSATokens:(id)a3
+- (BOOL)_objectModelPageWantsHSATokens:(id)tokens
 {
-  v3 = a3;
-  v4 = [v3 attributes];
-  v5 = [v4 objectForKeyedSubscript:@"tokenReceivedFunction"];
+  tokensCopy = tokens;
+  attributes = [tokensCopy attributes];
+  v5 = [attributes objectForKeyedSubscript:@"tokenReceivedFunction"];
   if ([v5 length])
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
-  else if ([v3 hasPasscodeView])
+  else if ([tokensCopy hasPasscodeView])
   {
-    v7 = [v3 passcodeViewOM];
-    v8 = [v7 attributes];
-    v9 = [v8 objectForKeyedSubscript:@"SMSAutoFill"];
-    v6 = [v9 BOOLValue];
+    passcodeViewOM = [tokensCopy passcodeViewOM];
+    attributes2 = [passcodeViewOM attributes];
+    v9 = [attributes2 objectForKeyedSubscript:@"SMSAutoFill"];
+    bOOLValue = [v9 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)_objectModel:(id)a3 receivedToken:(id)a4
+- (void)_objectModel:(id)model receivedToken:(id)token
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  tokenCopy = token;
   if (_isInternalInstall())
   {
     v8 = _RUILoggingFacility();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v33 = v7;
+      v33 = tokenCopy;
       _os_log_impl(&dword_21B93D000, v8, OS_LOG_TYPE_DEFAULT, "Got an autofill token: %@", buf, 0xCu);
     }
   }
 
-  if (v7)
+  if (tokenCopy)
   {
-    v9 = [v6 visiblePage];
-    [v9 publishSMSToken:v7];
+    visiblePage = [modelCopy visiblePage];
+    [visiblePage publishSMSToken:tokenCopy];
   }
 
-  v10 = [(RemoteUIController *)self parentViewControllerForObjectModel:v6];
-  v11 = [v10 presentedViewController];
+  v10 = [(RemoteUIController *)self parentViewControllerForObjectModel:modelCopy];
+  presentedViewController = [v10 presentedViewController];
 
-  if (v11)
+  if (presentedViewController)
   {
     if (_isInternalInstall())
     {
@@ -3225,9 +3225,9 @@ void __68__RemoteUIController_objectModel_pressedLink_httpMethod_completion___bl
     goto LABEL_32;
   }
 
-  v13 = [v6 visiblePage];
-  v14 = [v13 attributes];
-  v15 = [v14 objectForKeyedSubscript:@"tokenReceivedFunction"];
+  visiblePage2 = [modelCopy visiblePage];
+  attributes = [visiblePage2 attributes];
+  v15 = [attributes objectForKeyedSubscript:@"tokenReceivedFunction"];
   v16 = [v15 length];
 
   if (v16)
@@ -3242,28 +3242,28 @@ void __68__RemoteUIController_objectModel_pressedLink_httpMethod_completion___bl
       }
     }
 
-    v18 = [v6 visiblePage];
-    v19 = [v18 attributes];
-    v20 = [v19 objectForKeyedSubscript:@"tokenReceivedFunction"];
-    v31 = v7;
+    visiblePage3 = [modelCopy visiblePage];
+    attributes2 = [visiblePage3 attributes];
+    v20 = [attributes2 objectForKeyedSubscript:@"tokenReceivedFunction"];
+    v31 = tokenCopy;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
-    v22 = [v6 invokeScriptFunction:v20 withArguments:v21];
+    v22 = [modelCopy invokeScriptFunction:v20 withArguments:v21];
 
 LABEL_18:
     [(RemoteUIController *)self _stopListeningForSMSAutoFill];
     goto LABEL_32;
   }
 
-  v23 = [v6 visiblePage];
-  if ([v23 hasPasscodeView])
+  visiblePage4 = [modelCopy visiblePage];
+  if ([visiblePage4 hasPasscodeView])
   {
-    v24 = [v6 visiblePage];
-    v25 = [v24 passcodeViewOM];
-    v26 = [v25 attributes];
-    v27 = [v26 objectForKeyedSubscript:@"SMSAutoFill"];
-    v30 = [v27 BOOLValue];
+    visiblePage5 = [modelCopy visiblePage];
+    passcodeViewOM = [visiblePage5 passcodeViewOM];
+    attributes3 = [passcodeViewOM attributes];
+    v27 = [attributes3 objectForKeyedSubscript:@"SMSAutoFill"];
+    bOOLValue = [v27 BOOLValue];
 
-    if (v30)
+    if (bOOLValue)
     {
       if (_isInternalInstall())
       {
@@ -3275,9 +3275,9 @@ LABEL_18:
         }
       }
 
-      v18 = [v6 visiblePage];
-      v19 = [v18 passcodeViewOM];
-      [v19 autofillWithToken:v7];
+      visiblePage3 = [modelCopy visiblePage];
+      attributes2 = [visiblePage3 passcodeViewOM];
+      [attributes2 autofillWithToken:tokenCopy];
       goto LABEL_18;
     }
   }
@@ -3296,15 +3296,15 @@ LABEL_18:
     }
   }
 
-  objc_storeStrong(&self->_SMSAutoFillToken, a4);
+  objc_storeStrong(&self->_SMSAutoFillToken, token);
 LABEL_32:
 }
 
 - (void)_beginListeningForSMSAutoFill
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void RUIHSAAuthenticationRegisterIncomingAuthenticationTokenBlockWithIdentifier(__strong HSAAuthenticationClientIncomingAuthenticationTokenBlock, CFStringRef)"}];
-  [v0 handleFailureInFunction:v1 file:@"RemoteUIController.m" lineNumber:46 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"RemoteUIController.m" lineNumber:46 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
@@ -3344,9 +3344,9 @@ void __51__RemoteUIController__beginListeningForSMSAutoFill__block_invoke_2(uint
 
 - (void)_stopListeningForSMSAutoFill
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:"void RUIHSAAuthenticationUnregisterIncomingAuthenticationTokenBlockWithIdentifier(CFStringRef)"];
-  [v0 handleFailureInFunction:v1 file:@"RemoteUIController.m" lineNumber:47 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"RemoteUIController.m" lineNumber:47 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
@@ -3425,24 +3425,24 @@ void __51__RemoteUIController__beginListeningForSMSAutoFill__block_invoke_2(uint
   return v5;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v7 ruiModalPresentationStyle];
+    ruiModalPresentationStyle = [controllerCopy ruiModalPresentationStyle];
   }
 
   else
   {
-    v9 = 1;
+    ruiModalPresentationStyle = 1;
   }
 
   v10 = [RUIModalPresentationController alloc];
-  v11 = [(RemoteUIController *)self style];
-  v12 = [(RUIModalPresentationController *)v10 initWithPresentedViewController:v7 presentingViewController:v8 modalPresentationStyle:v9 style:v11];
+  style = [(RemoteUIController *)self style];
+  v12 = [(RUIModalPresentationController *)v10 initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy modalPresentationStyle:ruiModalPresentationStyle style:style];
 
   [(RUIModalPresentationController *)v12 setDelegate:self];
 

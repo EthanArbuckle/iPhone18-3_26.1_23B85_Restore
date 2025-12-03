@@ -1,22 +1,22 @@
 @interface NTKDFaceSnapshotClientHandler
-- (NTKDFaceSnapshotClientHandler)initWithConnection:(id)a3 snapshotController:(id)a4;
+- (NTKDFaceSnapshotClientHandler)initWithConnection:(id)connection snapshotController:(id)controller;
 - (void)_handleInvalidation;
-- (void)_onQueueAsync:(id)a3;
-- (void)faceSnapshotChangedForKey:(id)a3;
-- (void)performAfterCompletingCurrentlyPendingSnapshots:(id)a3;
-- (void)requestSnapshotOfFaceInstanceDescriptor:(id)a3;
-- (void)requestSnapshotOfFaceInstanceDescriptor:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)snapshotFaceInstanceDescriptor:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)snapshotLibrarySelectedFaceForDeviceUUID:(id)a3 options:(id)a4 completion:(id)a5;
+- (void)_onQueueAsync:(id)async;
+- (void)faceSnapshotChangedForKey:(id)key;
+- (void)performAfterCompletingCurrentlyPendingSnapshots:(id)snapshots;
+- (void)requestSnapshotOfFaceInstanceDescriptor:(id)descriptor;
+- (void)requestSnapshotOfFaceInstanceDescriptor:(id)descriptor options:(id)options completion:(id)completion;
+- (void)snapshotFaceInstanceDescriptor:(id)descriptor options:(id)options completion:(id)completion;
+- (void)snapshotLibrarySelectedFaceForDeviceUUID:(id)d options:(id)options completion:(id)completion;
 - (void)updateAllSnapshots;
 @end
 
 @implementation NTKDFaceSnapshotClientHandler
 
-- (NTKDFaceSnapshotClientHandler)initWithConnection:(id)a3 snapshotController:(id)a4
+- (NTKDFaceSnapshotClientHandler)initWithConnection:(id)connection snapshotController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  controllerCopy = controller;
   v22.receiver = self;
   v22.super_class = NTKDFaceSnapshotClientHandler;
   v9 = [(NTKDFaceSnapshotClientHandler *)&v22 init];
@@ -27,7 +27,7 @@
     queue = v9->_queue;
     v9->_queue = v11;
 
-    objc_storeStrong(&v9->_connection, a3);
+    objc_storeStrong(&v9->_connection, connection);
     connection = v9->_connection;
     v14 = NTKFaceSnapshotClientInterface();
     [(NSXPCConnection *)connection setRemoteObjectInterface:v14];
@@ -37,8 +37,8 @@
     [(NSXPCConnection *)v15 setExportedInterface:v16];
 
     [(NSXPCConnection *)v9->_connection setExportedObject:v9];
-    objc_storeStrong(&v9->_snapshotController, a4);
-    [v8 addObserver:v9];
+    objc_storeStrong(&v9->_snapshotController, controller);
+    [controllerCopy addObserver:v9];
     objc_initWeak(&location, v9);
     v17 = v9->_connection;
     v19[0] = _NSConcreteStackBlock;
@@ -61,7 +61,7 @@
   {
     connection = self->_connection;
     *buf = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = connection;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Connection invalidated: %@ %@", buf, 0x16u);
@@ -98,9 +98,9 @@
   [(NTKDFaceSnapshotClientHandler *)self _onQueueAsync:v6];
 }
 
-- (void)requestSnapshotOfFaceInstanceDescriptor:(id)a3
+- (void)requestSnapshotOfFaceInstanceDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -117,15 +117,15 @@
   v9[1] = 3221225472;
   v9[2] = sub_1000023B4;
   v9[3] = &unk_10005CA98;
-  v10 = v4;
-  v11 = self;
-  v8 = v4;
+  v10 = descriptorCopy;
+  selfCopy = self;
+  v8 = descriptorCopy;
   [(NTKDFaceSnapshotClientHandler *)self _onQueueAsync:v9];
 }
 
-- (void)performAfterCompletingCurrentlyPendingSnapshots:(id)a3
+- (void)performAfterCompletingCurrentlyPendingSnapshots:(id)snapshots
 {
-  v4 = a3;
+  snapshotsCopy = snapshots;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -143,16 +143,16 @@
   v9[2] = sub_100002578;
   v9[3] = &unk_10005CAC0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = snapshotsCopy;
+  v8 = snapshotsCopy;
   [(NTKDFaceSnapshotClientHandler *)self _onQueueAsync:v9];
 }
 
-- (void)requestSnapshotOfFaceInstanceDescriptor:(id)a3 options:(id)a4 completion:(id)a5
+- (void)requestSnapshotOfFaceInstanceDescriptor:(id)descriptor options:(id)options completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  optionsCopy = options;
+  completionCopy = completion;
+  descriptorCopy = descriptor;
   v11 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -165,25 +165,25 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Inside: %@ %s", &v16, 0x16u);
   }
 
-  v14 = [NTKFace faceWithInstanceDescriptor:v10];
+  v14 = [NTKFace faceWithInstanceDescriptor:descriptorCopy];
 
   if (v14)
   {
-    [(NTKDFaceSnapshotController *)self->_snapshotController requestSnapshotOfFace:v14 options:v8 completion:v9];
+    [(NTKDFaceSnapshotController *)self->_snapshotController requestSnapshotOfFace:v14 options:optionsCopy completion:completionCopy];
   }
 
   else
   {
     v15 = [NSError errorWithDomain:@"com.apple.nanotimekit.snapshots" code:24000 userInfo:0];
-    v9[2](v9, 0, v15);
+    completionCopy[2](completionCopy, 0, v15);
   }
 }
 
-- (void)snapshotFaceInstanceDescriptor:(id)a3 options:(id)a4 completion:(id)a5
+- (void)snapshotFaceInstanceDescriptor:(id)descriptor options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  descriptorCopy = descriptor;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -200,21 +200,21 @@
   v17[1] = 3221225472;
   v17[2] = sub_1000028B4;
   v17[3] = &unk_10005CAE8;
-  v18 = v8;
-  v19 = self;
-  v20 = v9;
-  v21 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v18 = descriptorCopy;
+  selfCopy = self;
+  v20 = optionsCopy;
+  v21 = completionCopy;
+  v14 = completionCopy;
+  v15 = optionsCopy;
+  v16 = descriptorCopy;
   [(NTKDFaceSnapshotClientHandler *)self _onQueueAsync:v17];
 }
 
-- (void)snapshotLibrarySelectedFaceForDeviceUUID:(id)a3 options:(id)a4 completion:(id)a5
+- (void)snapshotLibrarySelectedFaceForDeviceUUID:(id)d options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -232,38 +232,38 @@
   v17[2] = sub_100002AC8;
   v17[3] = &unk_10005CAE8;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v18 = dCopy;
+  v19 = optionsCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = optionsCopy;
+  v16 = dCopy;
   [(NTKDFaceSnapshotClientHandler *)self _onQueueAsync:v17];
 }
 
-- (void)faceSnapshotChangedForKey:(id)a3
+- (void)faceSnapshotChangedForKey:(id)key
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100002B70;
   v4[3] = &unk_10005CA98;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(NTKDFaceSnapshotClientHandler *)v5 _onQueueAsync:v4];
+  selfCopy = self;
+  keyCopy = key;
+  v3 = keyCopy;
+  [(NTKDFaceSnapshotClientHandler *)selfCopy _onQueueAsync:v4];
 }
 
-- (void)_onQueueAsync:(id)a3
+- (void)_onQueueAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   sub_100007294(@"com.apple.ntkd.facesnapshotclient.busy");
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100002D24;
   block[3] = &unk_10005CB10;
-  v8 = v4;
-  v6 = v4;
+  v8 = asyncCopy;
+  v6 = asyncCopy;
   dispatch_async(queue, block);
 }
 

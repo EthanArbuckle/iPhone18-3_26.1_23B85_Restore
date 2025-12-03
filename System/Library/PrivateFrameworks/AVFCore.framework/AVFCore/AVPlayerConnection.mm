@@ -1,6 +1,6 @@
 @interface AVPlayerConnection
-- (AVPlayerConnection)initWithWeakReferenceToPlayer:(id)a3 weakReferenceToPlayerItem:(id)a4;
-- (BOOL)addItemToPlayQueueAfterPlaybackItemOfItem:(id)a3;
+- (AVPlayerConnection)initWithWeakReferenceToPlayer:(id)player weakReferenceToPlayerItem:(id)item;
+- (BOOL)addItemToPlayQueueAfterPlaybackItemOfItem:(id)item;
 - (id)description;
 - (uint64_t)removeItemFromPlayQueue;
 - (void)dealloc;
@@ -9,13 +9,13 @@
 
 @implementation AVPlayerConnection
 
-- (AVPlayerConnection)initWithWeakReferenceToPlayer:(id)a3 weakReferenceToPlayerItem:(id)a4
+- (AVPlayerConnection)initWithWeakReferenceToPlayer:(id)player weakReferenceToPlayerItem:(id)item
 {
   v21.receiver = self;
   v21.super_class = AVPlayerConnection;
   v7 = [(AVPlayerConnection *)&v21 init];
   v8 = v7;
-  if (!a3)
+  if (!player)
   {
     v10 = v7;
     v16 = MEMORY[0x1E695DF30];
@@ -24,7 +24,7 @@
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!item)
   {
     v19 = v7;
     v16 = MEMORY[0x1E695DF30];
@@ -37,8 +37,8 @@ LABEL_8:
 
   if (v7)
   {
-    v7->_playerReference = a3;
-    v8->_playerItemReference = a4;
+    v7->_playerReference = player;
+    v8->_playerItemReference = item;
     v8->_status = 0;
   }
 
@@ -59,12 +59,12 @@ LABEL_8:
   return [v3 stringWithFormat:@"<%@: %p, player = %@, playerItem = %@>", NSStringFromClass(v4), self, -[AVPlayerConnection player](self, "player"), -[AVPlayerConnection playerItem](self, "playerItem")];
 }
 
-- (BOOL)addItemToPlayQueueAfterPlaybackItemOfItem:(id)a3
+- (BOOL)addItemToPlayQueueAfterPlaybackItemOfItem:(id)item
 {
-  v6 = [(AVPlayerConnection *)self playerItem];
-  v7 = [(AVPlayerConnection *)self player];
-  v8 = [(AVPlayerConnection *)self status];
-  switch(v8)
+  playerItem = [(AVPlayerConnection *)self playerItem];
+  player = [(AVPlayerConnection *)self player];
+  status = [(AVPlayerConnection *)self status];
+  switch(status)
   {
     case 3:
       return 0;
@@ -82,25 +82,25 @@ LABEL_24:
       objc_exception_throw(v24);
   }
 
-  v14 = [v6 _copyFigPlaybackItem];
-  if (a3)
+  _copyFigPlaybackItem = [playerItem _copyFigPlaybackItem];
+  if (item)
   {
-    a3 = [a3 _copyFigPlaybackItem];
+    item = [item _copyFigPlaybackItem];
   }
 
-  if ([v6 status] == 2)
+  if ([playerItem status] == 2)
   {
     v15 = -12780;
     goto LABEL_15;
   }
 
-  [v6 _setPlaybackCoordinator:{objc_msgSend(v7, "_playbackCoordinatorWithoutTriggeringFullSetup")}];
-  v17 = [v7 _copyFigPlayer];
+  [playerItem _setPlaybackCoordinator:{objc_msgSend(player, "_playbackCoordinatorWithoutTriggeringFullSetup")}];
+  _copyFigPlayer = [player _copyFigPlayer];
   v18 = *(*(CMBaseObjectGetVTable() + 16) + 16);
   if (!v18)
   {
     v15 = -12782;
-    if (!v17)
+    if (!_copyFigPlayer)
     {
       goto LABEL_14;
     }
@@ -108,11 +108,11 @@ LABEL_24:
     goto LABEL_13;
   }
 
-  v15 = v18(v17, v14, a3);
-  if (v17)
+  v15 = v18(_copyFigPlayer, _copyFigPlaybackItem, item);
+  if (_copyFigPlayer)
   {
 LABEL_13:
-    CFRelease(v17);
+    CFRelease(_copyFigPlayer);
   }
 
 LABEL_14:
@@ -133,14 +133,14 @@ LABEL_16:
   [(AVPlayerConnection *)self willChangeValueForKey:@"status"];
   self->_status = v19;
   [(AVPlayerConnection *)self didChangeValueForKey:@"status"];
-  if (v14)
+  if (_copyFigPlaybackItem)
   {
-    CFRelease(v14);
+    CFRelease(_copyFigPlaybackItem);
   }
 
-  if (a3)
+  if (item)
   {
-    CFRelease(a3);
+    CFRelease(item);
   }
 
   return v16;
@@ -148,8 +148,8 @@ LABEL_16:
 
 - (void)removeItemFromPlayQueue
 {
-  v4 = [(AVPlayerConnection *)self status];
-  switch(v4)
+  status = [(AVPlayerConnection *)self status];
+  switch(status)
   {
     case 1:
       v12 = [-[AVPlayerConnection player](self "player")];
@@ -200,12 +200,12 @@ LABEL_11:
   v6 = *(*(CMBaseObjectGetVTable() + 16) + 24);
   if (v6)
   {
-    v6(a1, a3);
+    v6(self, a3);
   }
 
-  v7 = [a2 playerItem];
+  playerItem = [a2 playerItem];
 
-  return [v7 _setPlaybackCoordinator:0];
+  return [playerItem _setPlaybackCoordinator:0];
 }
 
 @end

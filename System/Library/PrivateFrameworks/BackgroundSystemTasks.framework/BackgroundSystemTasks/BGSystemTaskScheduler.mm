@@ -1,27 +1,27 @@
 @interface BGSystemTaskScheduler
 + (BGSystemTaskScheduler)sharedScheduler;
 - (BGSystemTaskScheduler)init;
-- (BOOL)canTaskRegistration:(id)a3 produceResultOfIdentifier:(id)a4;
-- (BOOL)cancelTaskRequestWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)deregisterTaskWithIdentifier:(id)a3;
-- (BOOL)registerForTaskWithIdentifier:(id)a3 usingQueue:(id)a4 launchHandler:(id)a5;
-- (BOOL)reportProgressMetrics:(id)a3 error:(id *)a4;
-- (BOOL)resumeScheduling:(id)a3 error:(id *)a4;
-- (BOOL)submitTaskRequest:(id)a3 error:(id *)a4;
-- (BOOL)systemTask:(id)a3 canConsumeResultOfIdentifier:(id)a4;
-- (BOOL)systemTask:(id)a3 consumedResults:(id)a4 error:(id *)a5;
-- (BOOL)systemTask:(id)a3 producedResults:(id)a4 error:(id *)a5;
-- (BOOL)systemTask:(id)a3 resetResultsForIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)taskStartedWithParameters:(id)a3 error:(id *)a4;
-- (BOOL)taskStoppedWithParameters:(id)a3 error:(id *)a4;
-- (BOOL)updateTaskRequest:(id)a3 error:(id *)a4;
-- (id)taskRequestForIdentifier:(id)a3;
-- (void)expireTaskWithRegistration:(id)a3 withReason:(unint64_t)a4;
-- (void)handleDeniedTaskLaunch:(id)a3;
+- (BOOL)canTaskRegistration:(id)registration produceResultOfIdentifier:(id)identifier;
+- (BOOL)cancelTaskRequestWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)deregisterTaskWithIdentifier:(id)identifier;
+- (BOOL)registerForTaskWithIdentifier:(id)identifier usingQueue:(id)queue launchHandler:(id)handler;
+- (BOOL)reportProgressMetrics:(id)metrics error:(id *)error;
+- (BOOL)resumeScheduling:(id)scheduling error:(id *)error;
+- (BOOL)submitTaskRequest:(id)request error:(id *)error;
+- (BOOL)systemTask:(id)task canConsumeResultOfIdentifier:(id)identifier;
+- (BOOL)systemTask:(id)task consumedResults:(id)results error:(id *)error;
+- (BOOL)systemTask:(id)task producedResults:(id)results error:(id *)error;
+- (BOOL)systemTask:(id)task resetResultsForIdentifier:(id)identifier error:(id *)error;
+- (BOOL)taskStartedWithParameters:(id)parameters error:(id *)error;
+- (BOOL)taskStoppedWithParameters:(id)parameters error:(id *)error;
+- (BOOL)updateTaskRequest:(id)request error:(id *)error;
+- (id)taskRequestForIdentifier:(id)identifier;
+- (void)expireTaskWithRegistration:(id)registration withReason:(unint64_t)reason;
+- (void)handleDeniedTaskLaunch:(id)launch;
 - (void)installEventStreamHandler;
 - (void)installResubmissionHandler;
-- (void)processEvent:(id)a3 forRegistration:(id)a4;
-- (void)runTaskWithRegistration:(id)a3;
+- (void)processEvent:(id)event forRegistration:(id)registration;
+- (void)runTaskWithRegistration:(id)registration;
 @end
 
 @implementation BGSystemTaskScheduler
@@ -105,25 +105,25 @@ uint64_t __40__BGSystemTaskScheduler_sharedScheduler__block_invoke()
 - (void)installResubmissionHandler
 {
   out_token = 0;
-  v3 = [@"com.apple.bg.system.task.resubmission" UTF8String];
+  uTF8String = [@"com.apple.bg.system.task.resubmission" UTF8String];
   internalQueue = self->_internalQueue;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __51__BGSystemTaskScheduler_installResubmissionHandler__block_invoke;
   v5[3] = &unk_1E7B24100;
   v5[4] = self;
-  notify_register_dispatch(v3, &out_token, internalQueue, v5);
+  notify_register_dispatch(uTF8String, &out_token, internalQueue, v5);
 }
 
 - (void)installEventStreamHandler
 {
-  v3 = [(BGSystemTaskScheduler *)self internalQueue];
+  internalQueue = [(BGSystemTaskScheduler *)self internalQueue];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __50__BGSystemTaskScheduler_installEventStreamHandler__block_invoke;
   handler[3] = &unk_1E7B24178;
   handler[4] = self;
-  xpc_set_event_stream_handler("com.apple.bg.system.task", v3, handler);
+  xpc_set_event_stream_handler("com.apple.bg.system.task", internalQueue, handler);
 }
 
 void __50__BGSystemTaskScheduler_installEventStreamHandler__block_invoke(uint64_t a1, void *a2)
@@ -156,36 +156,36 @@ void __50__BGSystemTaskScheduler_installEventStreamHandler__block_invoke(uint64_
   }
 }
 
-- (BOOL)registerForTaskWithIdentifier:(id)a3 usingQueue:(id)a4 launchHandler:(id)a5
+- (BOOL)registerForTaskWithIdentifier:(id)identifier usingQueue:(id)queue launchHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BGSystemTaskScheduler *)self internalQueue];
-  dispatch_assert_queue_not_V2(v11);
+  identifierCopy = identifier;
+  queueCopy = queue;
+  handlerCopy = handler;
+  internalQueue = [(BGSystemTaskScheduler *)self internalQueue];
+  dispatch_assert_queue_not_V2(internalQueue);
 
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 1;
-  v12 = [(BGSystemTaskScheduler *)self internalQueue];
+  internalQueue2 = [(BGSystemTaskScheduler *)self internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__BGSystemTaskScheduler_registerForTaskWithIdentifier_usingQueue_launchHandler___block_invoke;
   block[3] = &unk_1E7B240D8;
-  v18 = v8;
-  v19 = self;
-  v21 = v10;
+  v18 = identifierCopy;
+  selfCopy = self;
+  v21 = handlerCopy;
   v22 = &v23;
-  v20 = v9;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  dispatch_sync(v12, block);
+  v20 = queueCopy;
+  v13 = handlerCopy;
+  v14 = queueCopy;
+  v15 = identifierCopy;
+  dispatch_sync(internalQueue2, block);
 
-  LOBYTE(v10) = *(v24 + 24);
+  LOBYTE(handlerCopy) = *(v24 + 24);
   _Block_object_dispose(&v23, 8);
-  return v10;
+  return handlerCopy;
 }
 
 void __80__BGSystemTaskScheduler_registerForTaskWithIdentifier_usingQueue_launchHandler___block_invoke(uint64_t a1)
@@ -345,47 +345,47 @@ uint64_t __50__BGSystemTaskScheduler_installEventStreamHandler__block_invoke_85(
   return result;
 }
 
-- (void)processEvent:(id)a3 forRegistration:(id)a4
+- (void)processEvent:(id)event forRegistration:(id)registration
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 taskRequest];
+  eventCopy = event;
+  registrationCopy = registration;
+  taskRequest = [registrationCopy taskRequest];
 
-  if (v8)
+  if (taskRequest)
   {
-    v9 = xpc_dictionary_get_value(v6, "run");
+    v9 = xpc_dictionary_get_value(eventCopy, "run");
     if (v9 == MEMORY[0x1E69E9E10])
     {
       v15 = _log;
       if (os_log_type_enabled(_log, OS_LOG_TYPE_INFO))
       {
         v16 = v15;
-        v17 = [v7 identifier];
+        identifier = [registrationCopy identifier];
         v19 = 138412290;
-        v20 = v17;
+        v20 = identifier;
         _os_log_impl(&dword_1B236A000, v16, OS_LOG_TYPE_INFO, "Received run request for %@", &v19, 0xCu);
       }
 
-      [(BGSystemTaskScheduler *)self runTaskWithRegistration:v7];
+      [(BGSystemTaskScheduler *)self runTaskWithRegistration:registrationCopy];
     }
 
     else
     {
-      int64 = xpc_dictionary_get_int64(v6, "expirationReason");
+      int64 = xpc_dictionary_get_int64(eventCopy, "expirationReason");
       v11 = _log;
       if (os_log_type_enabled(_log, OS_LOG_TYPE_INFO))
       {
         v12 = v11;
-        v13 = [v7 identifier];
+        identifier2 = [registrationCopy identifier];
         v19 = 138412546;
-        v20 = v13;
+        v20 = identifier2;
         v21 = 2048;
         v22 = int64;
         _os_log_impl(&dword_1B236A000, v12, OS_LOG_TYPE_INFO, "Received request to expire %@ with reason: %lu", &v19, 0x16u);
       }
 
-      [(BGSystemTaskScheduler *)self expireTaskWithRegistration:v7 withReason:int64];
+      [(BGSystemTaskScheduler *)self expireTaskWithRegistration:registrationCopy withReason:int64];
     }
   }
 
@@ -401,11 +401,11 @@ uint64_t __50__BGSystemTaskScheduler_installEventStreamHandler__block_invoke_85(
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)submitTaskRequest:(id)a3 error:(id *)a4
+- (BOOL)submitTaskRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(BGSystemTaskScheduler *)self internalQueue];
-  dispatch_assert_queue_not_V2(v7);
+  requestCopy = request;
+  internalQueue = [(BGSystemTaskScheduler *)self internalQueue];
+  dispatch_assert_queue_not_V2(internalQueue);
 
   v24 = 0;
   v25 = &v24;
@@ -415,22 +415,22 @@ uint64_t __50__BGSystemTaskScheduler_installEventStreamHandler__block_invoke_85(
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v8 = [(BGSystemTaskScheduler *)self internalQueue];
+  internalQueue2 = [(BGSystemTaskScheduler *)self internalQueue];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __49__BGSystemTaskScheduler_submitTaskRequest_error___block_invoke;
   v15 = &unk_1E7B241C8;
-  v9 = v6;
+  v9 = requestCopy;
   v18 = &v24;
   v19 = &v20;
   v16 = v9;
-  v17 = self;
-  dispatch_sync(v8, &v12);
+  selfCopy = self;
+  dispatch_sync(internalQueue2, &v12);
 
   v10 = *(v25 + 24);
-  if (a4 && (v25[3] & 1) == 0)
+  if (error && (v25[3] & 1) == 0)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BGSystemTaskSchedulerErrorDomain" code:v21[3] userInfo:{0, v12, v13, v14, v15}];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"BGSystemTaskSchedulerErrorDomain" code:v21[3] userInfo:{0, v12, v13, v14, v15}];
     v10 = *(v25 + 24);
   }
 
@@ -606,11 +606,11 @@ void __49__BGSystemTaskScheduler_submitTaskRequest_error___block_invoke_89(uint6
   }
 }
 
-- (BOOL)updateTaskRequest:(id)a3 error:(id *)a4
+- (BOOL)updateTaskRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(BGSystemTaskScheduler *)self internalQueue];
-  dispatch_assert_queue_not_V2(v7);
+  requestCopy = request;
+  internalQueue = [(BGSystemTaskScheduler *)self internalQueue];
+  dispatch_assert_queue_not_V2(internalQueue);
 
   v24 = 0;
   v25 = &v24;
@@ -620,22 +620,22 @@ void __49__BGSystemTaskScheduler_submitTaskRequest_error___block_invoke_89(uint6
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v8 = [(BGSystemTaskScheduler *)self internalQueue];
+  internalQueue2 = [(BGSystemTaskScheduler *)self internalQueue];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __49__BGSystemTaskScheduler_updateTaskRequest_error___block_invoke;
   v15 = &unk_1E7B241C8;
-  v9 = v6;
+  v9 = requestCopy;
   v18 = &v24;
   v19 = &v20;
   v16 = v9;
-  v17 = self;
-  dispatch_sync(v8, &v12);
+  selfCopy = self;
+  dispatch_sync(internalQueue2, &v12);
 
   v10 = *(v25 + 24);
-  if (a4 && (v25[3] & 1) == 0)
+  if (error && (v25[3] & 1) == 0)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BGSystemTaskSchedulerErrorDomain" code:v21[3] userInfo:{0, v12, v13, v14, v15}];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"BGSystemTaskSchedulerErrorDomain" code:v21[3] userInfo:{0, v12, v13, v14, v15}];
     v10 = *(v25 + 24);
   }
 
@@ -853,11 +853,11 @@ void __49__BGSystemTaskScheduler_updateTaskRequest_error___block_invoke_91(uint6
   }
 }
 
-- (BOOL)cancelTaskRequestWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)cancelTaskRequestWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(BGSystemTaskScheduler *)self internalQueue];
-  dispatch_assert_queue_not_V2(v7);
+  identifierCopy = identifier;
+  internalQueue = [(BGSystemTaskScheduler *)self internalQueue];
+  dispatch_assert_queue_not_V2(internalQueue);
 
   v24 = 0;
   v25 = &v24;
@@ -867,22 +867,22 @@ void __49__BGSystemTaskScheduler_updateTaskRequest_error___block_invoke_91(uint6
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v8 = [(BGSystemTaskScheduler *)self internalQueue];
+  internalQueue2 = [(BGSystemTaskScheduler *)self internalQueue];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __63__BGSystemTaskScheduler_cancelTaskRequestWithIdentifier_error___block_invoke;
   v15 = &unk_1E7B241C8;
-  v9 = v6;
+  v9 = identifierCopy;
   v18 = &v24;
   v19 = &v20;
   v16 = v9;
-  v17 = self;
-  dispatch_sync(v8, &v12);
+  selfCopy = self;
+  dispatch_sync(internalQueue2, &v12);
 
   v10 = *(v25 + 24);
-  if (a4 && (v25[3] & 1) == 0)
+  if (error && (v25[3] & 1) == 0)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BGSystemTaskSchedulerErrorDomain" code:v21[3] userInfo:{0, v12, v13, v14, v15}];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"BGSystemTaskSchedulerErrorDomain" code:v21[3] userInfo:{0, v12, v13, v14, v15}];
     v10 = *(v25 + 24);
   }
 
@@ -1022,11 +1022,11 @@ uint64_t __63__BGSystemTaskScheduler_cancelTaskRequestWithIdentifier_error___blo
   return result;
 }
 
-- (id)taskRequestForIdentifier:(id)a3
+- (id)taskRequestForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BGSystemTaskScheduler *)self internalQueue];
-  dispatch_assert_queue_not_V2(v5);
+  identifierCopy = identifier;
+  internalQueue = [(BGSystemTaskScheduler *)self internalQueue];
+  dispatch_assert_queue_not_V2(internalQueue);
 
   v14 = 0;
   v15 = &v14;
@@ -1034,16 +1034,16 @@ uint64_t __63__BGSystemTaskScheduler_cancelTaskRequestWithIdentifier_error___blo
   v17 = __Block_byref_object_copy__0;
   v18 = __Block_byref_object_dispose__0;
   v19 = 0;
-  v6 = [(BGSystemTaskScheduler *)self internalQueue];
+  internalQueue2 = [(BGSystemTaskScheduler *)self internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__BGSystemTaskScheduler_taskRequestForIdentifier___block_invoke;
   block[3] = &unk_1E7B24218;
-  v11 = v4;
-  v12 = self;
+  v11 = identifierCopy;
+  selfCopy = self;
   v13 = &v14;
-  v7 = v4;
-  dispatch_sync(v6, block);
+  v7 = identifierCopy;
+  dispatch_sync(internalQueue2, block);
 
   v8 = v15[5];
   _Block_object_dispose(&v14, 8);
@@ -1091,11 +1091,11 @@ void __50__BGSystemTaskScheduler_taskRequestForIdentifier___block_invoke(uint64_
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)resumeScheduling:(id)a3 error:(id *)a4
+- (BOOL)resumeScheduling:(id)scheduling error:(id *)error
 {
-  v6 = a3;
-  v7 = [(BGSystemTaskScheduler *)self internalQueue];
-  dispatch_assert_queue_not_V2(v7);
+  schedulingCopy = scheduling;
+  internalQueue = [(BGSystemTaskScheduler *)self internalQueue];
+  dispatch_assert_queue_not_V2(internalQueue);
 
   v24 = 0;
   v25 = &v24;
@@ -1105,22 +1105,22 @@ void __50__BGSystemTaskScheduler_taskRequestForIdentifier___block_invoke(uint64_
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v8 = [(BGSystemTaskScheduler *)self internalQueue];
+  internalQueue2 = [(BGSystemTaskScheduler *)self internalQueue];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __48__BGSystemTaskScheduler_resumeScheduling_error___block_invoke;
   v15 = &unk_1E7B241C8;
-  v9 = v6;
+  v9 = schedulingCopy;
   v18 = &v24;
   v19 = &v20;
   v16 = v9;
-  v17 = self;
-  dispatch_sync(v8, &v12);
+  selfCopy = self;
+  dispatch_sync(internalQueue2, &v12);
 
   v10 = *(v25 + 24);
-  if (a4 && (v25[3] & 1) == 0)
+  if (error && (v25[3] & 1) == 0)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BGSystemTaskSchedulerErrorDomain" code:v21[3] userInfo:{0, v12, v13, v14, v15}];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"BGSystemTaskSchedulerErrorDomain" code:v21[3] userInfo:{0, v12, v13, v14, v15}];
     v10 = *(v25 + 24);
   }
 
@@ -1235,12 +1235,12 @@ void __48__BGSystemTaskScheduler_resumeScheduling_error___block_invoke_93(uint64
   }
 }
 
-- (void)runTaskWithRegistration:(id)a3
+- (void)runTaskWithRegistration:(id)registration
 {
   v71 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(NSMutableDictionary *)self->_runningTasksMap objectForKey:v5];
+  registrationCopy = registration;
+  identifier = [registrationCopy identifier];
+  v6 = [(NSMutableDictionary *)self->_runningTasksMap objectForKey:identifier];
 
   if (v6)
   {
@@ -1249,23 +1249,23 @@ void __48__BGSystemTaskScheduler_resumeScheduling_error___block_invoke_93(uint64
       [BGSystemTaskScheduler runTaskWithRegistration:];
     }
 
-    v7 = [(BGSystemTaskScheduler *)self scheduler];
-    [v7 acknowledgeSystemTaskLaunchWithIdentifier:v5 error:0];
+    scheduler = [(BGSystemTaskScheduler *)self scheduler];
+    [scheduler acknowledgeSystemTaskLaunchWithIdentifier:identifier error:0];
 
     goto LABEL_21;
   }
 
-  v8 = [v4 taskRequest];
-  v9 = [v8 isMemberOfClass:objc_opt_class()];
+  taskRequest = [registrationCopy taskRequest];
+  v9 = [taskRequest isMemberOfClass:objc_opt_class()];
 
   if (v9)
   {
     v10 = off_1E7B23ED8;
 LABEL_11:
     v15 = objc_alloc(*v10);
-    v16 = [(BGSystemTaskScheduler *)self internalQueue];
-    v17 = [v4 taskRequest];
-    v18 = [v15 initWithIdentifier:v5 queue:v16 taskRequest:v17];
+    internalQueue = [(BGSystemTaskScheduler *)self internalQueue];
+    taskRequest2 = [registrationCopy taskRequest];
+    v18 = [v15 initWithIdentifier:identifier queue:internalQueue taskRequest:taskRequest2];
 
     [v18 setDelegate:self];
     [v18 prepareForRunning];
@@ -1276,9 +1276,9 @@ LABEL_11:
     v60[3] = &unk_1E7B24268;
     objc_copyWeak(&v63, &location);
     v60[4] = self;
-    v19 = v5;
+    v19 = identifier;
     v61 = v19;
-    v20 = v4;
+    v20 = registrationCopy;
     v62 = v20;
     [v18 setCompletionHandler:v60];
     v55[0] = MEMORY[0x1E69E9820];
@@ -1290,7 +1290,7 @@ LABEL_11:
     v56 = v21;
     v22 = v20;
     v57 = v22;
-    v58 = self;
+    selfCopy = self;
     [v18 setExpirationAckHandler:v55];
     v51[0] = MEMORY[0x1E69E9820];
     v51[1] = 3221225472;
@@ -1299,10 +1299,10 @@ LABEL_11:
     objc_copyWeak(&v54, &location);
     v23 = v21;
     v52 = v23;
-    v53 = self;
+    selfCopy2 = self;
     [v18 setClientLedExpirationHandler:v51];
-    v24 = [(BGSystemTaskScheduler *)self preRunningTasksMap];
-    [v24 setObject:v18 forKey:v23];
+    preRunningTasksMap = [(BGSystemTaskScheduler *)self preRunningTasksMap];
+    [preRunningTasksMap setObject:v18 forKey:v23];
 
     v49[0] = MEMORY[0x1E69E9820];
     v49[1] = 3221225472;
@@ -1311,12 +1311,12 @@ LABEL_11:
     v25 = v22;
     v50 = v25;
     v26 = __49__BGSystemTaskScheduler_runTaskWithRegistration___block_invoke_104(v49, self->_clampToBGQoS);
-    v27 = [v25 registeredLaunchQueue];
+    registeredLaunchQueue = [v25 registeredLaunchQueue];
 
-    if (v27)
+    if (registeredLaunchQueue)
     {
-      v28 = [v25 registeredLaunchQueue];
-      qos_class = dispatch_queue_get_qos_class(v28, 0);
+      registeredLaunchQueue2 = [v25 registeredLaunchQueue];
+      qos_class = dispatch_queue_get_qos_class(registeredLaunchQueue2, 0);
 
       if (qos_class > v26)
       {
@@ -1336,8 +1336,8 @@ LABEL_11:
 
     else
     {
-      v31 = [v25 generatedLaunchQueue];
-      v32 = v31 == 0;
+      generatedLaunchQueue = [v25 generatedLaunchQueue];
+      v32 = generatedLaunchQueue == 0;
 
       if (v32)
       {
@@ -1351,19 +1351,19 @@ LABEL_11:
       }
     }
 
-    v39 = [v25 registeredLaunchQueue];
-    v40 = v39;
-    if (v39)
+    registeredLaunchQueue3 = [v25 registeredLaunchQueue];
+    v40 = registeredLaunchQueue3;
+    if (registeredLaunchQueue3)
     {
-      v41 = v39;
+      generatedLaunchQueue2 = registeredLaunchQueue3;
     }
 
     else
     {
-      v41 = [v25 generatedLaunchQueue];
+      generatedLaunchQueue2 = [v25 generatedLaunchQueue];
     }
 
-    v42 = v41;
+    v42 = generatedLaunchQueue2;
 
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -1385,8 +1385,8 @@ LABEL_11:
     goto LABEL_21;
   }
 
-  v11 = [v4 taskRequest];
-  v12 = [v11 isMemberOfClass:objc_opt_class()];
+  taskRequest3 = [registrationCopy taskRequest];
+  v12 = [taskRequest3 isMemberOfClass:objc_opt_class()];
 
   if (v12)
   {
@@ -1394,8 +1394,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v13 = [v4 taskRequest];
-  v14 = [v13 isMemberOfClass:objc_opt_class()];
+  taskRequest4 = [registrationCopy taskRequest];
+  v14 = [taskRequest4 isMemberOfClass:objc_opt_class()];
 
   if (v14)
   {
@@ -1752,25 +1752,25 @@ uint64_t __49__BGSystemTaskScheduler_runTaskWithRegistration___block_invoke_110(
   return result;
 }
 
-- (void)handleDeniedTaskLaunch:(id)a3
+- (void)handleDeniedTaskLaunch:(id)launch
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  launchCopy = launch;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__0;
   v25 = __Block_byref_object_dispose__0;
   v26 = 0;
-  v5 = [(BGSystemTaskScheduler *)self internalQueue];
+  internalQueue = [(BGSystemTaskScheduler *)self internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__BGSystemTaskScheduler_handleDeniedTaskLaunch___block_invoke;
   block[3] = &unk_1E7B24358;
   v20 = &v21;
-  v6 = v4;
+  v6 = launchCopy;
   v19 = v6;
-  dispatch_sync(v5, block);
+  dispatch_sync(internalQueue, block);
 
   v7 = v22[5];
   if (!v7)
@@ -1787,9 +1787,9 @@ uint64_t __49__BGSystemTaskScheduler_runTaskWithRegistration___block_invoke_110(
     goto LABEL_12;
   }
 
-  v8 = [v7 identifier];
+  identifier = [v7 identifier];
   v17 = 0;
-  v9 = [(BGSystemTaskScheduler *)self cancelTaskRequestWithIdentifier:v8 error:&v17];
+  v9 = [(BGSystemTaskScheduler *)self cancelTaskRequestWithIdentifier:identifier error:&v17];
   v10 = v17;
 
   if (!v9)
@@ -1842,21 +1842,21 @@ void __48__BGSystemTaskScheduler_handleDeniedTaskLaunch___block_invoke(uint64_t 
   *(v3 + 40) = v2;
 }
 
-- (void)expireTaskWithRegistration:(id)a3 withReason:(unint64_t)a4
+- (void)expireTaskWithRegistration:(id)registration withReason:(unint64_t)reason
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = [a3 identifier];
-  v7 = [(BGSystemTaskScheduler *)self runningTasksMap];
-  v8 = [v7 objectForKey:v6];
+  identifier = [registration identifier];
+  runningTasksMap = [(BGSystemTaskScheduler *)self runningTasksMap];
+  v8 = [runningTasksMap objectForKey:identifier];
 
-  v9 = [v8 uuid];
-  v10 = [v9 copy];
+  uuid = [v8 uuid];
+  v10 = [uuid copy];
 
   if (v8)
   {
-    v11 = [v8 completionHandler];
+    completionHandler = [v8 completionHandler];
 
-    if (v11)
+    if (completionHandler)
     {
       if (([v8 hasValidExpirationHandler] & 1) == 0)
       {
@@ -1864,17 +1864,17 @@ void __48__BGSystemTaskScheduler_handleDeniedTaskLaunch___block_invoke(uint64_t 
         if (os_log_type_enabled(_log, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v47 = v6;
+          v47 = identifier;
           _os_log_impl(&dword_1B236A000, v12, OS_LOG_TYPE_DEFAULT, "Expiration handler not found for %{public}@, caching expiration request in task.", buf, 0xCu);
         }
       }
 
-      [v8 handleExpirationWithReason:a4];
-      v13 = [MEMORY[0x1E699A4A8] sharedInstance];
-      v14 = [v13 suspensionThreshold];
-      if (v14)
+      [v8 handleExpirationWithReason:reason];
+      mEMORY[0x1E699A4A8] = [MEMORY[0x1E699A4A8] sharedInstance];
+      suspensionThreshold = [mEMORY[0x1E699A4A8] suspensionThreshold];
+      if (suspensionThreshold)
       {
-        v15 = v14;
+        v15 = suspensionThreshold;
       }
 
       else
@@ -1882,19 +1882,19 @@ void __48__BGSystemTaskScheduler_handleDeniedTaskLaunch___block_invoke(uint64_t 
         v15 = 61;
       }
 
-      v16 = [MEMORY[0x1E699A4A8] sharedInstance];
-      v17 = [v16 suspensionDelayMitigationsForActivity:v6];
+      mEMORY[0x1E699A4A8]2 = [MEMORY[0x1E699A4A8] sharedInstance];
+      v17 = [mEMORY[0x1E699A4A8]2 suspensionDelayMitigationsForActivity:identifier];
 
       if (v17)
       {
         v43 = 0;
         v44 = 0;
         v45 = 0;
-        v18 = [MEMORY[0x1E696AE30] processInfo];
-        v19 = v18;
-        if (v18)
+        processInfo = [MEMORY[0x1E696AE30] processInfo];
+        v19 = processInfo;
+        if (processInfo)
         {
-          [v18 operatingSystemVersion];
+          [processInfo operatingSystemVersion];
         }
 
         else
@@ -1952,7 +1952,7 @@ void __48__BGSystemTaskScheduler_handleDeniedTaskLaunch___block_invoke(uint64_t 
           if (os_log_type_enabled(_log, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138413058;
-            v47 = v6;
+            v47 = identifier;
             v48 = 2112;
             v49 = v25;
             v50 = 2112;
@@ -1983,7 +1983,7 @@ void __48__BGSystemTaskScheduler_handleDeniedTaskLaunch___block_invoke(uint64_t 
       v38[2] = __63__BGSystemTaskScheduler_expireTaskWithRegistration_withReason___block_invoke;
       v38[3] = &unk_1E7B24380;
       v38[4] = self;
-      v39 = v6;
+      v39 = identifier;
       v42 = v21;
       v40 = v10;
       v41 = v15;
@@ -1996,7 +1996,7 @@ void __48__BGSystemTaskScheduler_handleDeniedTaskLaunch___block_invoke(uint64_t 
       if (os_log_type_enabled(_log, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v47 = v6;
+        v47 = identifier;
         _os_log_impl(&dword_1B236A000, v20, OS_LOG_TYPE_DEFAULT, "Not expiring, task %{public}@ already finished", buf, 0xCu);
       }
     }
@@ -2059,30 +2059,30 @@ void __63__BGSystemTaskScheduler_expireTaskWithRegistration_withReason___block_i
   }
 }
 
-- (BOOL)deregisterTaskWithIdentifier:(id)a3
+- (BOOL)deregisterTaskWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BGSystemTaskScheduler *)self internalQueue];
-  dispatch_assert_queue_not_V2(v5);
+  identifierCopy = identifier;
+  internalQueue = [(BGSystemTaskScheduler *)self internalQueue];
+  dispatch_assert_queue_not_V2(internalQueue);
 
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 1;
-  v6 = [(BGSystemTaskScheduler *)self internalQueue];
+  internalQueue2 = [(BGSystemTaskScheduler *)self internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__BGSystemTaskScheduler_deregisterTaskWithIdentifier___block_invoke;
   block[3] = &unk_1E7B243A8;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
-  v10 = v4;
-  v7 = v4;
-  dispatch_sync(v6, block);
+  v10 = identifierCopy;
+  v7 = identifierCopy;
+  dispatch_sync(internalQueue2, block);
 
-  LOBYTE(v4) = *(v14 + 24);
+  LOBYTE(identifierCopy) = *(v14 + 24);
   _Block_object_dispose(&v13, 8);
-  return v4;
+  return identifierCopy;
 }
 
 void __54__BGSystemTaskScheduler_deregisterTaskWithIdentifier___block_invoke(uint64_t a1)
@@ -2215,15 +2215,15 @@ uint64_t __54__BGSystemTaskScheduler_deregisterTaskWithIdentifier___block_invoke
   return result;
 }
 
-- (BOOL)taskStartedWithParameters:(id)a3 error:(id *)a4
+- (BOOL)taskStartedWithParameters:(id)parameters error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  parametersCopy = parameters;
   v7 = _log;
   if (os_log_type_enabled(_log, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = parametersCopy;
     _os_log_impl(&dword_1B236A000, v7, OS_LOG_TYPE_DEFAULT, "Task started %@", &buf, 0xCu);
   }
 
@@ -2235,17 +2235,17 @@ uint64_t __54__BGSystemTaskScheduler_deregisterTaskWithIdentifier___block_invoke
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v8 = [(BGSystemTaskScheduler *)self internalQueue];
+  internalQueue = [(BGSystemTaskScheduler *)self internalQueue];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __57__BGSystemTaskScheduler_taskStartedWithParameters_error___block_invoke;
   v17 = &unk_1E7B241C8;
-  v9 = v6;
+  v9 = parametersCopy;
   p_buf = &buf;
   v21 = &v22;
   v18 = v9;
-  v19 = self;
-  dispatch_sync(v8, &v14);
+  selfCopy = self;
+  dispatch_sync(internalQueue, &v14);
 
   v10 = *(*(&buf + 1) + 24);
   if ((v10 & 1) == 0)
@@ -2253,7 +2253,7 @@ uint64_t __54__BGSystemTaskScheduler_deregisterTaskWithIdentifier___block_invoke
     v11 = v23[3];
     if (v11)
     {
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BGSystemTaskSchedulerErrorDomain" code:v11 userInfo:{0, v14, v15, v16, v17}];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"BGSystemTaskSchedulerErrorDomain" code:v11 userInfo:{0, v14, v15, v16, v17}];
       v10 = *(*(&buf + 1) + 24);
     }
 
@@ -2358,27 +2358,27 @@ LABEL_8:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)taskStoppedWithParameters:(id)a3 error:(id *)a4
+- (BOOL)taskStoppedWithParameters:(id)parameters error:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  parametersCopy = parameters;
   v6 = _log;
   if (os_log_type_enabled(_log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v5;
+    v15 = parametersCopy;
     _os_log_impl(&dword_1B236A000, v6, OS_LOG_TYPE_DEFAULT, "Task stopped %@", buf, 0xCu);
   }
 
-  v7 = [(BGSystemTaskScheduler *)self internalQueue];
+  internalQueue = [(BGSystemTaskScheduler *)self internalQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __57__BGSystemTaskScheduler_taskStoppedWithParameters_error___block_invoke;
   v11[3] = &unk_1E7B24150;
-  v12 = v5;
-  v13 = self;
-  v8 = v5;
-  dispatch_sync(v7, v11);
+  v12 = parametersCopy;
+  selfCopy = self;
+  v8 = parametersCopy;
+  dispatch_sync(internalQueue, v11);
 
   v9 = *MEMORY[0x1E69E9840];
   return 1;
@@ -2443,11 +2443,11 @@ LABEL_9:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)systemTask:(id)a3 producedResults:(id)a4 error:(id *)a5
+- (BOOL)systemTask:(id)task producedResults:(id)results error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  taskCopy = task;
+  resultsCopy = results;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -2461,29 +2461,29 @@ LABEL_9:
   v10 = _log;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [v8 identifier];
+    [taskCopy identifier];
     objc_claimAutoreleasedReturnValue();
     [BGSystemTaskScheduler systemTask:producedResults:error:];
   }
 
-  v11 = [(BGSystemTaskScheduler *)self internalQueue];
+  internalQueue = [(BGSystemTaskScheduler *)self internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__BGSystemTaskScheduler_systemTask_producedResults_error___block_invoke;
   block[3] = &unk_1E7B243F8;
   block[4] = self;
-  v12 = v8;
+  v12 = taskCopy;
   v18 = v12;
   v20 = &v22;
   v21 = &v28;
-  v13 = v9;
+  v13 = resultsCopy;
   v19 = v13;
-  dispatch_sync(v11, block);
+  dispatch_sync(internalQueue, block);
 
   v14 = *(v29 + 24);
-  if (a5 && (v29[3] & 1) == 0)
+  if (error && (v29[3] & 1) == 0)
   {
-    *a5 = v23[5];
+    *error = v23[5];
     v14 = *(v29 + 24);
   }
 
@@ -2610,11 +2610,11 @@ void __58__BGSystemTaskScheduler_systemTask_producedResults_error___block_invoke
   *(*(*(a1 + 40) + 8) + 24) = a2;
 }
 
-- (BOOL)systemTask:(id)a3 consumedResults:(id)a4 error:(id *)a5
+- (BOOL)systemTask:(id)task consumedResults:(id)results error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  taskCopy = task;
+  resultsCopy = results;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -2628,29 +2628,29 @@ void __58__BGSystemTaskScheduler_systemTask_producedResults_error___block_invoke
   v10 = _log;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [v8 identifier];
+    [taskCopy identifier];
     objc_claimAutoreleasedReturnValue();
     [BGSystemTaskScheduler systemTask:consumedResults:error:];
   }
 
-  v11 = [(BGSystemTaskScheduler *)self internalQueue];
+  internalQueue = [(BGSystemTaskScheduler *)self internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__BGSystemTaskScheduler_systemTask_consumedResults_error___block_invoke;
   block[3] = &unk_1E7B243F8;
   block[4] = self;
-  v12 = v8;
+  v12 = taskCopy;
   v18 = v12;
   v20 = &v22;
   v21 = &v28;
-  v13 = v9;
+  v13 = resultsCopy;
   v19 = v13;
-  dispatch_sync(v11, block);
+  dispatch_sync(internalQueue, block);
 
   v14 = *(v29 + 24);
-  if (a5 && (v29[3] & 1) == 0)
+  if (error && (v29[3] & 1) == 0)
   {
-    *a5 = v23[5];
+    *error = v23[5];
     v14 = *(v29 + 24);
   }
 
@@ -2810,30 +2810,30 @@ void __58__BGSystemTaskScheduler_systemTask_consumedResults_error___block_invoke
   *(*(*(a1 + 40) + 8) + 24) = a2;
 }
 
-- (BOOL)systemTask:(id)a3 canConsumeResultOfIdentifier:(id)a4
+- (BOOL)systemTask:(id)task canConsumeResultOfIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  identifierCopy = identifier;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v8 = [(BGSystemTaskScheduler *)self internalQueue];
+  internalQueue = [(BGSystemTaskScheduler *)self internalQueue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __65__BGSystemTaskScheduler_systemTask_canConsumeResultOfIdentifier___block_invoke;
   v12[3] = &unk_1E7B24420;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = taskCopy;
+  v14 = identifierCopy;
   v15 = &v16;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, v12);
+  v9 = identifierCopy;
+  v10 = taskCopy;
+  dispatch_sync(internalQueue, v12);
 
-  LOBYTE(v7) = *(v17 + 24);
+  LOBYTE(identifierCopy) = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
-  return v7;
+  return identifierCopy;
 }
 
 void __65__BGSystemTaskScheduler_systemTask_canConsumeResultOfIdentifier___block_invoke(uint64_t a1)
@@ -2904,10 +2904,10 @@ LABEL_12:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)systemTask:(id)a3 resetResultsForIdentifier:(id)a4 error:(id *)a5
+- (BOOL)systemTask:(id)task resetResultsForIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  taskCopy = task;
+  identifierCopy = identifier;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -2918,24 +2918,24 @@ LABEL_12:
   v23 = __Block_byref_object_copy__0;
   v24 = __Block_byref_object_dispose__0;
   v25 = 0;
-  v10 = [(BGSystemTaskScheduler *)self internalQueue];
+  internalQueue = [(BGSystemTaskScheduler *)self internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__BGSystemTaskScheduler_systemTask_resetResultsForIdentifier_error___block_invoke;
   block[3] = &unk_1E7B24448;
   block[4] = self;
-  v11 = v8;
+  v11 = taskCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = identifierCopy;
   v17 = v12;
   v18 = &v20;
   v19 = &v26;
-  dispatch_sync(v10, block);
+  dispatch_sync(internalQueue, block);
 
   v13 = *(v27 + 24);
-  if (a5 && (v27[3] & 1) == 0)
+  if (error && (v27[3] & 1) == 0)
   {
-    *a5 = v21[5];
+    *error = v21[5];
     v13 = *(v27 + 24);
   }
 
@@ -2996,17 +2996,17 @@ LABEL_10:
 LABEL_11:
 }
 
-- (BOOL)canTaskRegistration:(id)a3 produceResultOfIdentifier:(id)a4
+- (BOOL)canTaskRegistration:(id)registration produceResultOfIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 taskRequest];
-  v8 = [v7 producedResultIdentifiers];
-  if (v8)
+  registrationCopy = registration;
+  identifierCopy = identifier;
+  taskRequest = [registrationCopy taskRequest];
+  producedResultIdentifiers = [taskRequest producedResultIdentifiers];
+  if (producedResultIdentifiers)
   {
-    v9 = [v5 taskRequest];
-    v10 = [v9 producedResultIdentifiers];
-    v11 = [v10 containsObject:v6];
+    taskRequest2 = [registrationCopy taskRequest];
+    producedResultIdentifiers2 = [taskRequest2 producedResultIdentifiers];
+    v11 = [producedResultIdentifiers2 containsObject:identifierCopy];
   }
 
   else
@@ -3017,10 +3017,10 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)reportProgressMetrics:(id)a3 error:(id *)a4
+- (BOOL)reportProgressMetrics:(id)metrics error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  metricsCopy = metrics;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -3034,34 +3034,34 @@ LABEL_11:
   v7 = _log;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 performanceMetricIdentifier];
+    performanceMetricIdentifier = [metricsCopy performanceMetricIdentifier];
     *buf = 138412290;
-    v37 = v8;
+    v37 = performanceMetricIdentifier;
     _os_log_impl(&dword_1B236A000, v7, OS_LOG_TYPE_DEFAULT, "Reporting progress metrics for %@", buf, 0xCu);
   }
 
-  v9 = [(BGSystemTaskScheduler *)self internalQueue];
+  internalQueue = [(BGSystemTaskScheduler *)self internalQueue];
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __53__BGSystemTaskScheduler_reportProgressMetrics_error___block_invoke;
   v21 = &unk_1E7B24470;
   v24 = &v32;
-  v22 = self;
-  v10 = v6;
+  selfCopy = self;
+  v10 = metricsCopy;
   v23 = v10;
   v25 = &v26;
-  dispatch_sync(v9, &v18);
+  dispatch_sync(internalQueue, &v18);
 
-  LODWORD(v9) = *(v33 + 24);
+  LODWORD(internalQueue) = *(v33 + 24);
   v11 = _log;
   v12 = v11;
-  if (v9 == 1)
+  if (internalQueue == 1)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v10 performanceMetricIdentifier];
+      performanceMetricIdentifier2 = [v10 performanceMetricIdentifier];
       *buf = 138412290;
-      v37 = v13;
+      v37 = performanceMetricIdentifier2;
       _os_log_impl(&dword_1B236A000, v12, OS_LOG_TYPE_DEFAULT, "reportProgressMetrics: Reported progress metrics successfully for %@", buf, 0xCu);
     }
   }
@@ -3070,13 +3070,13 @@ LABEL_11:
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v10 performanceMetricIdentifier];
-      [(BGSystemTaskScheduler *)v14 reportProgressMetrics:buf error:v12];
+      performanceMetricIdentifier3 = [v10 performanceMetricIdentifier];
+      [(BGSystemTaskScheduler *)performanceMetricIdentifier3 reportProgressMetrics:buf error:v12];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = v27[5];
+      *error = v27[5];
     }
   }
 

@@ -64,7 +64,7 @@
 - (id)fp_mapWithIndex:()FPFrameworkAdditions
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __49__NSArray_FPFrameworkAdditions__fp_mapWithIndex___block_invoke;
@@ -73,7 +73,7 @@
   v6 = v5;
   v12 = v6;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:v11];
+  [self enumerateObjectsUsingBlock:v11];
   v8 = v12;
   v9 = v6;
 
@@ -89,7 +89,7 @@
   v8[3] = &unk_1E793BA48;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 fp_mapWithIndex:v8];
+  v6 = [self fp_mapWithIndex:v8];
 
   return v6;
 }
@@ -98,13 +98,13 @@
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -115,7 +115,7 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -128,7 +128,7 @@
         objc_autoreleasePoolPop(v12);
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -142,16 +142,16 @@
 - (id)fp_categorize:()FPFrameworkAdditions
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __47__NSArray_FPFrameworkAdditions__fp_categorize___block_invoke;
   v11[3] = &unk_1E793BA20;
   v13 = v4;
-  v6 = v5;
+  v6 = dictionary;
   v12 = v6;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:v11];
+  [self enumerateObjectsUsingBlock:v11];
   v8 = v12;
   v9 = v6;
 
@@ -163,13 +163,13 @@
   v28 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [a1 count];
+  v8 = [self count];
   if (v8 != [v6 count])
   {
-    v9 = [a1 count];
+    v9 = [self count];
     if (v9 != [v6 count])
     {
-      [NSArray(FPFrameworkAdditions) fp_pickItemsFromArray:a2 correspondingToIndexesOfItemsInArray:a1];
+      [NSArray(FPFrameworkAdditions) fp_pickItemsFromArray:a2 correspondingToIndexesOfItemsInArray:self];
     }
   }
 
@@ -194,11 +194,11 @@
         }
 
         v15 = *(*(&v23 + 1) + 8 * i);
-        v16 = [a1 indexOfObject:v15];
+        v16 = [self indexOfObject:v15];
         if (v16 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v17 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v17 handleFailureInMethod:a2 object:a1 file:@"NSArray+FPFrameworkAdditions.m" lineNumber:126 description:{@"Object %@ not found", v15}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"NSArray+FPFrameworkAdditions.m" lineNumber:126 description:{@"Object %@ not found", v15}];
         }
 
         v18 = [v6 objectAtIndexedSubscript:v16];
@@ -219,7 +219,7 @@
 - (id)fp_removingObjectsNotKindOfClasses:()FPFrameworkAdditions
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__NSArray_FPFrameworkAdditions__fp_removingObjectsNotKindOfClasses___block_invoke;
@@ -228,7 +228,7 @@
   v6 = v5;
   v13 = v6;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:v11];
+  [self enumerateObjectsUsingBlock:v11];
   v8 = v13;
   v9 = v6;
 

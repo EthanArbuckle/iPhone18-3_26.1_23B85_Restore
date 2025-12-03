@@ -1,7 +1,7 @@
 @interface MFAddressConcatenator
 + (id)defaultRecipientListConcatenator;
-- (id)commaSeparatedAddressListWithAddressCount:(unint64_t)a3 prefixForAddressAtIndex:(id)a4 stringForAddressAtIndex:(id)a5 lengthValidationBlock:(id)a6;
-- (void)getCommaSeparatedAddressList:(id *)a3 andListSuffix:(id *)a4 withAddressCount:(unint64_t)a5 prefixForAddressAtIndex:(id)a6 stringForAddressAtIndex:(id)a7 lengthValidationBlock:(id)a8;
+- (id)commaSeparatedAddressListWithAddressCount:(unint64_t)count prefixForAddressAtIndex:(id)index stringForAddressAtIndex:(id)atIndex lengthValidationBlock:(id)block;
+- (void)getCommaSeparatedAddressList:(id *)list andListSuffix:(id *)suffix withAddressCount:(unint64_t)count prefixForAddressAtIndex:(id)index stringForAddressAtIndex:(id)atIndex lengthValidationBlock:(id)block;
 @end
 
 @implementation MFAddressConcatenator
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __57__MFAddressConcatenator_defaultRecipientListConcatenator__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultRecipientListConcatenator_onceToken != -1)
   {
     dispatch_once(&defaultRecipientListConcatenator_onceToken, block);
@@ -55,24 +55,24 @@ void __57__MFAddressConcatenator_defaultRecipientListConcatenator__block_invoke(
   [v11 setTruncatedAddressFormat:v12];
 }
 
-- (void)getCommaSeparatedAddressList:(id *)a3 andListSuffix:(id *)a4 withAddressCount:(unint64_t)a5 prefixForAddressAtIndex:(id)a6 stringForAddressAtIndex:(id)a7 lengthValidationBlock:(id)a8
+- (void)getCommaSeparatedAddressList:(id *)list andListSuffix:(id *)suffix withAddressCount:(unint64_t)count prefixForAddressAtIndex:(id)index stringForAddressAtIndex:(id)atIndex lengthValidationBlock:(id)block
 {
-  v11 = a6;
-  v12 = a7;
-  v13 = a8;
-  v14 = self;
+  indexCopy = index;
+  atIndexCopy = atIndex;
+  blockCopy = block;
+  selfCopy = self;
   v15 = 0;
-  v43 = v12;
+  v43 = atIndexCopy;
   v44 = 0;
-  v45 = v13;
+  v45 = blockCopy;
   v16 = &stru_1F3CF3758;
-  v41 = v11;
-  v42 = self;
-  while (v15 < a5)
+  v41 = indexCopy;
+  selfCopy2 = self;
+  while (v15 < count)
   {
-    if (v11)
+    if (indexCopy)
     {
-      v17 = v11[2](v11, v15);
+      v17 = indexCopy[2](indexCopy, v15);
       if (!v15)
       {
         goto LABEL_9;
@@ -115,7 +115,7 @@ LABEL_9:
     aBlock[2] = __155__MFAddressConcatenator_getCommaSeparatedAddressList_andListSuffix_withAddressCount_prefixForAddressAtIndex_stringForAddressAtIndex_lengthValidationBlock___block_invoke;
     aBlock[3] = &unk_1E80706A8;
     v58 = v15;
-    v59 = a5;
+    countCopy = count;
     v57 = &v60;
     v16 = v16;
     v55 = v16;
@@ -123,7 +123,7 @@ LABEL_9:
     v56 = v19;
     v20 = _Block_copy(aBlock);
     v21 = v43[2](v43, v15);
-    v22 = (v20)[2](v20, v21, v14->_andNMoreFormat);
+    v22 = (v20)[2](v20, v21, selfCopy->_andNMoreFormat);
     v23 = v45[2](v45, v22, v61[5]);
     v24 = v23;
     if (v23)
@@ -138,14 +138,14 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    if (!-[__CFString length](v16, "length") && v14->_truncatedAddressFormat && v14->_andNMoreNoEllipsisFormat && [v21 length] >= 2)
+    if (!-[__CFString length](v16, "length") && selfCopy->_truncatedAddressFormat && selfCopy->_andNMoreNoEllipsisFormat && [v21 length] >= 2)
     {
       v51[0] = MEMORY[0x1E69E9820];
       v51[1] = 3221225472;
       v51[2] = __155__MFAddressConcatenator_getCommaSeparatedAddressList_andListSuffix_withAddressCount_prefixForAddressAtIndex_stringForAddressAtIndex_lengthValidationBlock___block_invoke_2;
       v51[3] = &unk_1E80706D0;
       v53 = v20;
-      v51[4] = v14;
+      v51[4] = selfCopy;
       v37 = v21;
       v52 = v37;
       v35 = _Block_copy(v51);
@@ -159,7 +159,7 @@ LABEL_26:
       v49 = v36;
       v50 = &v60;
       v29 = MFLastIndexPassingTest(v38, v47);
-      v14 = v42;
+      selfCopy = selfCopy2;
       if (v29)
       {
         v30 = v36;
@@ -170,8 +170,8 @@ LABEL_26:
           v32 = v61[5];
           v44 = v32;
           v16 = v31;
-          v11 = v41;
-          v14 = v42;
+          indexCopy = v41;
+          selfCopy = selfCopy2;
         }
       }
 
@@ -186,20 +186,20 @@ LABEL_26:
       goto LABEL_28;
     }
 
-    if (a5 < 2 || !v14->_nAddressesFormat)
+    if (count < 2 || !selfCopy->_nAddressesFormat)
     {
-      v25 = v14->_oneAddressFormat;
+      v25 = selfCopy->_oneAddressFormat;
 
       goto LABEL_26;
     }
 
-    v27 = [MEMORY[0x1E696ADA0] ef_formatInteger:a5 withGrouping:1];
-    v28 = [MEMORY[0x1E696AEC0] stringWithFormat:v14->_nAddressesFormat, v27];
+    v27 = [MEMORY[0x1E696ADA0] ef_formatInteger:count withGrouping:1];
+    v28 = [MEMORY[0x1E696AEC0] stringWithFormat:selfCopy->_nAddressesFormat, v27];
 
     v16 = v28;
-    v11 = v41;
+    indexCopy = v41;
 LABEL_27:
-    v14 = v42;
+    selfCopy = selfCopy2;
 LABEL_28:
 
     _Block_object_dispose(&v60, 8);
@@ -210,9 +210,9 @@ LABEL_28:
   }
 
   v33 = v16;
-  *a3 = v16;
+  *list = v16;
   v34 = v44;
-  *a4 = v34;
+  *suffix = v34;
 }
 
 id __155__MFAddressConcatenator_getCommaSeparatedAddressList_andListSuffix_withAddressCount_prefixForAddressAtIndex_stringForAddressAtIndex_lengthValidationBlock___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -275,21 +275,21 @@ uint64_t __155__MFAddressConcatenator_getCommaSeparatedAddressList_andListSuffix
   return v4;
 }
 
-- (id)commaSeparatedAddressListWithAddressCount:(unint64_t)a3 prefixForAddressAtIndex:(id)a4 stringForAddressAtIndex:(id)a5 lengthValidationBlock:(id)a6
+- (id)commaSeparatedAddressListWithAddressCount:(unint64_t)count prefixForAddressAtIndex:(id)index stringForAddressAtIndex:(id)atIndex lengthValidationBlock:(id)block
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  indexCopy = index;
+  atIndexCopy = atIndex;
+  blockCopy = block;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __137__MFAddressConcatenator_commaSeparatedAddressListWithAddressCount_prefixForAddressAtIndex_stringForAddressAtIndex_lengthValidationBlock___block_invoke;
   aBlock[3] = &unk_1E8070720;
-  v13 = v12;
+  v13 = blockCopy;
   v23 = v13;
   v14 = _Block_copy(aBlock);
   v20 = 0;
   v21 = 0;
-  [(MFAddressConcatenator *)self getCommaSeparatedAddressList:&v21 andListSuffix:&v20 withAddressCount:a3 prefixForAddressAtIndex:v10 stringForAddressAtIndex:v11 lengthValidationBlock:v14];
+  [(MFAddressConcatenator *)self getCommaSeparatedAddressList:&v21 andListSuffix:&v20 withAddressCount:count prefixForAddressAtIndex:indexCopy stringForAddressAtIndex:atIndexCopy lengthValidationBlock:v14];
   v15 = v21;
   v16 = v20;
   if (v16)

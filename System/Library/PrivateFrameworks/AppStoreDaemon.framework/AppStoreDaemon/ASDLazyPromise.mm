@@ -1,31 +1,31 @@
 @interface ASDLazyPromise
-- (id)initOnScheduler:(id)a3 withExecutor:(id)a4;
-- (id)joinWithPromise:(id)a3;
-- (void)thenPerform:(id)a3 orCatchError:(id)a4 onScheduler:(id)a5;
+- (id)initOnScheduler:(id)scheduler withExecutor:(id)executor;
+- (id)joinWithPromise:(id)promise;
+- (void)thenPerform:(id)perform orCatchError:(id)error onScheduler:(id)scheduler;
 @end
 
 @implementation ASDLazyPromise
 
-- (id)initOnScheduler:(id)a3 withExecutor:(id)a4
+- (id)initOnScheduler:(id)scheduler withExecutor:(id)executor
 {
-  v7 = a3;
-  v8 = a4;
+  schedulerCopy = scheduler;
+  executorCopy = executor;
   v13.receiver = self;
   v13.super_class = ASDLazyPromise;
   v9 = [(ASDPromise *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [executorCopy copy];
     executor = v9->_executor;
     v9->_executor = v10;
 
-    objc_storeStrong(&v9->_scheduler, a3);
+    objc_storeStrong(&v9->_scheduler, scheduler);
   }
 
   return v9;
 }
 
-- (void)thenPerform:(id)a3 orCatchError:(id)a4 onScheduler:(id)a5
+- (void)thenPerform:(id)perform orCatchError:(id)error onScheduler:(id)scheduler
 {
   stateLock = self->super._stateLock;
   v13[0] = MEMORY[0x1E69E9820];
@@ -33,13 +33,13 @@
   v13[2] = __55__ASDLazyPromise_thenPerform_orCatchError_onScheduler___block_invoke;
   v13[3] = &unk_1E7CDB930;
   v13[4] = self;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  schedulerCopy = scheduler;
+  errorCopy = error;
+  performCopy = perform;
   ASDWithLock(stateLock, v13);
   v12.receiver = self;
   v12.super_class = ASDLazyPromise;
-  [(ASDPromise *)&v12 thenPerform:v11 orCatchError:v10 onScheduler:v9];
+  [(ASDPromise *)&v12 thenPerform:performCopy orCatchError:errorCopy onScheduler:schedulerCopy];
 }
 
 void __55__ASDLazyPromise_thenPerform_orCatchError_onScheduler___block_invoke(uint64_t a1)
@@ -55,21 +55,21 @@ void __55__ASDLazyPromise_thenPerform_orCatchError_onScheduler___block_invoke(ui
   }
 }
 
-- (id)joinWithPromise:(id)a3
+- (id)joinWithPromise:(id)promise
 {
-  v4 = a3;
+  promiseCopy = promise;
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __34__ASDLazyPromise_joinWithPromise___block_invoke;
   v13 = &unk_1E7CDD8A8;
-  v14 = self;
-  v15 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v15 = promiseCopy;
+  v5 = promiseCopy;
   v6 = MEMORY[0x1B8CBC4F0](&v10);
   v7 = +[ASDSyncTaskScheduler sharedInstance];
-  v8 = [(ASDPromise *)ASDLazyPromise onScheduler:v7 usingBlock:v6, v10, v11, v12, v13, v14];
+  selfCopy = [(ASDPromise *)ASDLazyPromise onScheduler:v7 usingBlock:v6, v10, v11, v12, v13, selfCopy];
 
-  return v8;
+  return selfCopy;
 }
 
 void __34__ASDLazyPromise_joinWithPromise___block_invoke(uint64_t a1, void *a2, void *a3)

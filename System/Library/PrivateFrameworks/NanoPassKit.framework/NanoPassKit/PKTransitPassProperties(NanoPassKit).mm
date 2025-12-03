@@ -6,13 +6,13 @@
 
 - (uint64_t)npkHasTransitBalance
 {
-  v1 = [a1 balanceAmount];
-  v2 = [v1 amount];
+  balanceAmount = [self balanceAmount];
+  amount = [balanceAmount amount];
 
-  if (v2)
+  if (amount)
   {
-    v3 = [MEMORY[0x277CCA980] zero];
-    v4 = [v2 isEqualToNumber:v3] ^ 1;
+    zero = [MEMORY[0x277CCA980] zero];
+    v4 = [amount isEqualToNumber:zero] ^ 1;
   }
 
   else

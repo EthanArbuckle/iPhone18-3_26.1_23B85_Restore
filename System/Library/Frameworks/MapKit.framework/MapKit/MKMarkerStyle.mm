@@ -1,15 +1,15 @@
 @interface MKMarkerStyle
-+ (id)defaultSelectedMarkerStyleForScale:(double)a3;
-+ (id)defaultUnselectedMarkerStyleForScale:(double)a3;
-+ (id)markerStyleForConfiguration:(id)a3;
-+ (id)poiMarkerStyleForConfiguration:(id)a3;
-- (CGPoint)_anchorPointFromIcon:(id)a3;
++ (id)defaultSelectedMarkerStyleForScale:(double)scale;
++ (id)defaultUnselectedMarkerStyleForScale:(double)scale;
++ (id)markerStyleForConfiguration:(id)configuration;
++ (id)poiMarkerStyleForConfiguration:(id)configuration;
+- (CGPoint)_anchorPointFromIcon:(id)icon;
 - (CGPoint)anchorPoint;
-- (CGRect)_convertRect:(CGRect)a3 scale:(double)a4;
+- (CGRect)_convertRect:(CGRect)rect scale:(double)scale;
 - (CGRect)balloonRect;
 - (CGRect)contentRect;
 - (CGRect)dotRect;
-- (MKMarkerStyle)initWithBalloonIcon:(id)a3 configuration:(id)a4;
+- (MKMarkerStyle)initWithBalloonIcon:(id)icon configuration:(id)configuration;
 - (id)debugDescription;
 @end
 
@@ -74,21 +74,21 @@
   return v7;
 }
 
-- (CGPoint)_anchorPointFromIcon:(id)a3
+- (CGPoint)_anchorPointFromIcon:(id)icon
 {
-  v3 = a3;
+  iconCopy = icon;
   v4 = *MEMORY[0x1E695EFF8];
   v5 = *(MEMORY[0x1E695EFF8] + 8);
-  Width = CGImageGetWidth([v3 balloonImage]);
-  Height = CGImageGetHeight([v3 balloonImage]);
+  Width = CGImageGetWidth([iconCopy balloonImage]);
+  Height = CGImageGetHeight([iconCopy balloonImage]);
   if (Width)
   {
     v8 = Height;
     if (Height)
     {
-      [v3 anchorPoint];
+      [iconCopy anchorPoint];
       v4 = v9 / Width;
-      [v3 anchorPoint];
+      [iconCopy anchorPoint];
       v5 = v10 / v8;
     }
   }
@@ -100,12 +100,12 @@
   return result;
 }
 
-- (CGRect)_convertRect:(CGRect)a3 scale:(double)a4
+- (CGRect)_convertRect:(CGRect)rect scale:(double)scale
 {
-  v4 = a3.origin.x / a4;
-  v5 = a3.origin.y / a4;
-  v6 = a3.size.width / a4;
-  v7 = a3.size.height / a4;
+  v4 = rect.origin.x / scale;
+  v5 = rect.origin.y / scale;
+  v6 = rect.size.width / scale;
+  v7 = rect.size.height / scale;
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -113,89 +113,89 @@
   return result;
 }
 
-- (MKMarkerStyle)initWithBalloonIcon:(id)a3 configuration:(id)a4
+- (MKMarkerStyle)initWithBalloonIcon:(id)icon configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  iconCopy = icon;
+  configurationCopy = configuration;
   v59.receiver = self;
   v59.super_class = MKMarkerStyle;
   v8 = [(MKMarkerStyle *)&v59 init];
   if (v8)
   {
-    v9 = [v6 balloonImage];
-    v10 = [v6 dotImage];
-    [v7 scale];
-    v11 = [(MKMarkerStyle *)v8 _imageWithCGImage:v9 scale:?];
+    balloonImage = [iconCopy balloonImage];
+    dotImage = [iconCopy dotImage];
+    [configurationCopy scale];
+    v11 = [(MKMarkerStyle *)v8 _imageWithCGImage:balloonImage scale:?];
     balloonImage = v8->_balloonImage;
     v8->_balloonImage = v11;
 
-    [v7 scale];
-    v13 = [(MKMarkerStyle *)v8 _imageWithCGImage:v10 scale:?];
+    [configurationCopy scale];
+    v13 = [(MKMarkerStyle *)v8 _imageWithCGImage:dotImage scale:?];
     dotImage = v8->_dotImage;
     v8->_dotImage = v13;
 
-    [v6 contentRect];
+    [iconCopy contentRect];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    [v7 scale];
+    [configurationCopy scale];
     [(MKMarkerStyle *)v8 _convertRect:v16 scale:v18, v20, v22, v23];
     v8->_contentRect.origin.x = v24;
     v8->_contentRect.origin.y = v25;
     v8->_contentRect.size.width = v26;
     v8->_contentRect.size.height = v27;
-    [(MKMarkerStyle *)v8 _anchorPointFromIcon:v6];
+    [(MKMarkerStyle *)v8 _anchorPointFromIcon:iconCopy];
     v8->_anchorPoint.x = v28;
     v8->_anchorPoint.y = v29;
-    v30 = [MEMORY[0x1E69DC888] colorWithCGColor:{objc_msgSend(v6, "defaultGlyphColor")}];
+    v30 = [MEMORY[0x1E69DC888] colorWithCGColor:{objc_msgSend(iconCopy, "defaultGlyphColor")}];
     defaultGlyphColor = v8->_defaultGlyphColor;
     v8->_defaultGlyphColor = v30;
 
-    [v6 balloonRect];
+    [iconCopy balloonRect];
     v33 = v32;
     v35 = v34;
     v37 = v36;
     v39 = v38;
-    [v7 scale];
+    [configurationCopy scale];
     [(MKMarkerStyle *)v8 _convertRect:v33 scale:v35, v37, v39, v40];
     v8->_balloonRect = v60;
     MaxY = CGRectGetMaxY(v60);
-    [v6 anchorPoint];
+    [iconCopy anchorPoint];
     v43 = v42;
-    [v7 scale];
+    [configurationCopy scale];
     v8->_balloonYOffset = MaxY - v43 / v44;
-    [v6 dotRect];
+    [iconCopy dotRect];
     v46 = v45;
     v48 = v47;
     v50 = v49;
     v52 = v51;
-    [v7 scale];
+    [configurationCopy scale];
     [(MKMarkerStyle *)v8 _convertRect:v46 scale:v48, v50, v52, v53];
     v8->_dotRect.origin.x = v54;
     v8->_dotRect.origin.y = v55;
     v8->_dotRect.size.width = v56;
     v8->_dotRect.size.height = v57;
-    objc_storeStrong(&v8->_configuration, a4);
+    objc_storeStrong(&v8->_configuration, configuration);
   }
 
   return v8;
 }
 
-+ (id)poiMarkerStyleForConfiguration:(id)a3
++ (id)poiMarkerStyleForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [MKIconManager poiBalloonIconForConfiguration:v4];
-  v6 = [[a1 alloc] initWithBalloonIcon:v5 configuration:v4];
+  configurationCopy = configuration;
+  v5 = [MKIconManager poiBalloonIconForConfiguration:configurationCopy];
+  v6 = [[self alloc] initWithBalloonIcon:v5 configuration:configurationCopy];
 
   return v6;
 }
 
-+ (id)markerStyleForConfiguration:(id)a3
++ (id)markerStyleForConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = +[MKMarkerStyleCache sharedCache];
-  v6 = [v5 cachedStyleForConfiguration:v4];
+  v6 = [v5 cachedStyleForConfiguration:configurationCopy];
 
   if (v6)
   {
@@ -204,10 +204,10 @@
 
   else
   {
-    v8 = [MKIconManager markerBalloonIconForConfiguration:v4];
-    v9 = [[a1 alloc] initWithBalloonIcon:v8 configuration:v4];
+    v8 = [MKIconManager markerBalloonIconForConfiguration:configurationCopy];
+    v9 = [[self alloc] initWithBalloonIcon:v8 configuration:configurationCopy];
     v10 = +[MKMarkerStyleCache sharedCache];
-    [v10 cacheStyle:v9 forConfiguration:v4];
+    [v10 cacheStyle:v9 forConfiguration:configurationCopy];
 
     v7 = v9;
   }
@@ -215,21 +215,21 @@
   return v7;
 }
 
-+ (id)defaultUnselectedMarkerStyleForScale:(double)a3
++ (id)defaultUnselectedMarkerStyleForScale:(double)scale
 {
   v5 = objc_alloc_init(MKMarkerStyleConfiguration);
-  [(MKMarkerStyleConfiguration *)v5 setScale:a3];
-  v6 = [a1 markerStyleForConfiguration:v5];
+  [(MKMarkerStyleConfiguration *)v5 setScale:scale];
+  v6 = [self markerStyleForConfiguration:v5];
 
   return v6;
 }
 
-+ (id)defaultSelectedMarkerStyleForScale:(double)a3
++ (id)defaultSelectedMarkerStyleForScale:(double)scale
 {
   v5 = objc_alloc_init(MKMarkerStyleConfiguration);
-  [(MKMarkerStyleConfiguration *)v5 setScale:a3];
+  [(MKMarkerStyleConfiguration *)v5 setScale:scale];
   [(MKMarkerStyleConfiguration *)v5 setSelected:1];
-  v6 = [a1 markerStyleForConfiguration:v5];
+  v6 = [self markerStyleForConfiguration:v5];
 
   return v6;
 }

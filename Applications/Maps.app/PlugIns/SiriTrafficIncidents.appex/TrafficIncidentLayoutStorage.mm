@@ -1,7 +1,7 @@
 @interface TrafficIncidentLayoutStorage
 + (id)sharedInstance;
-- (id)_cachedIncidentLayoutWithIncidentKey:(id)a3;
-- (void)_saveIncidentLayout:(id)a3 withIncidentKey:(id)a4;
+- (id)_cachedIncidentLayoutWithIncidentKey:(id)key;
+- (void)_saveIncidentLayout:(id)layout withIncidentKey:(id)key;
 - (void)clearCache;
 @end
 
@@ -21,19 +21,19 @@
 
 - (void)clearCache
 {
-  v2 = [(TrafficIncidentLayoutStorage *)self _sharedUserDefaults];
-  [v2 setObject:0 forKey:@"TrafficIncidentVotingDictionary"];
-  [v2 setObject:0 forKey:@"TrafficIncidentLayoutDictionary"];
-  [v2 synchronize];
+  _sharedUserDefaults = [(TrafficIncidentLayoutStorage *)self _sharedUserDefaults];
+  [_sharedUserDefaults setObject:0 forKey:@"TrafficIncidentVotingDictionary"];
+  [_sharedUserDefaults setObject:0 forKey:@"TrafficIncidentLayoutDictionary"];
+  [_sharedUserDefaults synchronize];
 }
 
-- (void)_saveIncidentLayout:(id)a3 withIncidentKey:(id)a4
+- (void)_saveIncidentLayout:(id)layout withIncidentKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TrafficIncidentLayoutStorage *)self _sharedUserDefaults];
+  keyCopy = key;
+  layoutCopy = layout;
+  _sharedUserDefaults = [(TrafficIncidentLayoutStorage *)self _sharedUserDefaults];
   v12 = 0;
-  v9 = [NSKeyedArchiver archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v12];
+  v9 = [NSKeyedArchiver archivedDataWithRootObject:layoutCopy requiringSecureCoding:1 error:&v12];
 
   v10 = v12;
   if (v10)
@@ -47,15 +47,15 @@
     }
   }
 
-  [v8 setObject:v9 forKey:v6];
-  [v8 synchronize];
+  [_sharedUserDefaults setObject:v9 forKey:keyCopy];
+  [_sharedUserDefaults synchronize];
 }
 
-- (id)_cachedIncidentLayoutWithIncidentKey:(id)a3
+- (id)_cachedIncidentLayoutWithIncidentKey:(id)key
 {
-  v4 = a3;
-  v5 = [(TrafficIncidentLayoutStorage *)self _sharedUserDefaults];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  _sharedUserDefaults = [(TrafficIncidentLayoutStorage *)self _sharedUserDefaults];
+  v6 = [_sharedUserDefaults objectForKey:keyCopy];
 
   v12 = 0;
   v7 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:&v12];

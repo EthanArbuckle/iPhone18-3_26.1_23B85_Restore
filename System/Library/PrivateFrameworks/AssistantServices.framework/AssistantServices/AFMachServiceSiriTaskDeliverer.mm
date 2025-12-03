@@ -1,17 +1,17 @@
 @interface AFMachServiceSiriTaskDeliverer
-+ (id)machServiceSiriTaskDelivererForAppWithBundleIdentifier:(id)a3;
-- (AFMachServiceSiriTaskDeliverer)initWithMachServiceName:(id)a3;
++ (id)machServiceSiriTaskDelivererForAppWithBundleIdentifier:(id)identifier;
+- (AFMachServiceSiriTaskDeliverer)initWithMachServiceName:(id)name;
 - (NSString)description;
-- (void)deliverSiriTask:(id)a3 completionHandler:(id)a4;
+- (void)deliverSiriTask:(id)task completionHandler:(id)handler;
 @end
 
 @implementation AFMachServiceSiriTaskDeliverer
 
-- (void)deliverSiriTask:(id)a3 completionHandler:(id)a4
+- (void)deliverSiriTask:(id)task completionHandler:(id)handler
 {
   v58 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  handlerCopy = handler;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -19,8 +19,8 @@
   v48 = __Block_byref_object_dispose__35054;
   v49 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:self->_machServiceName options:0];
   v8 = v45[5];
-  v9 = [MEMORY[0x1E696B0D0] af_siriTaskDeliveringInterface];
-  [v8 setRemoteObjectInterface:v9];
+  af_siriTaskDeliveringInterface = [MEMORY[0x1E696B0D0] af_siriTaskDeliveringInterface];
+  [v8 setRemoteObjectInterface:af_siriTaskDeliveringInterface];
 
   v42[0] = 0;
   v42[1] = v42;
@@ -40,7 +40,7 @@
   v35[3] = &unk_1E73472A0;
   v37 = v40;
   v38 = v42;
-  v11 = v7;
+  v11 = handlerCopy;
   v36 = v11;
   v39 = &v44;
   v12 = MEMORY[0x193AFB7B0](v35);
@@ -57,11 +57,11 @@
     *buf = 136315906;
     v51 = "[AFMachServiceSiriTaskDeliverer deliverSiriTask:completionHandler:]";
     v52 = 2112;
-    v53 = self;
+    selfCopy = self;
     v54 = 2080;
     v55 = "[AFMachServiceSiriTaskDeliverer deliverSiriTask:completionHandler:]";
     v56 = 2112;
-    v57 = v6;
+    v57 = taskCopy;
     _os_log_impl(&dword_1912FE000, v15, OS_LOG_TYPE_INFO, "%s %@ %s %@", buf, 0x2Au);
   }
 
@@ -92,7 +92,7 @@
   v21 = v13;
   v28 = v21;
   v22 = [v20 remoteObjectProxyWithErrorHandler:&v24];
-  [v22 deliverSiriTask:v6 completionHandler:{v21, v24, v25, v26, v27}];
+  [v22 deliverSiriTask:taskCopy completionHandler:{v21, v24, v25, v26, v27}];
 
   _Block_object_dispose(v40, 8);
   _Block_object_dispose(v42, 8);
@@ -210,15 +210,15 @@ void __68__AFMachServiceSiriTaskDeliverer_deliverSiriTask_completionHandler___bl
   return v3;
 }
 
-- (AFMachServiceSiriTaskDeliverer)initWithMachServiceName:(id)a3
+- (AFMachServiceSiriTaskDeliverer)initWithMachServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = AFMachServiceSiriTaskDeliverer;
   v5 = [(AFMachServiceSiriTaskDeliverer *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     machServiceName = v5->_machServiceName;
     v5->_machServiceName = v6;
   }
@@ -226,10 +226,10 @@ void __68__AFMachServiceSiriTaskDeliverer_deliverSiriTask_completionHandler___bl
   return v5;
 }
 
-+ (id)machServiceSiriTaskDelivererForAppWithBundleIdentifier:(id)a3
++ (id)machServiceSiriTaskDelivererForAppWithBundleIdentifier:(id)identifier
 {
-  v4 = [AFSiriTaskService _machServiceNameForAppTaskServiceWithBundleIdentifier:a3];
-  v5 = [[a1 alloc] initWithMachServiceName:v4];
+  v4 = [AFSiriTaskService _machServiceNameForAppTaskServiceWithBundleIdentifier:identifier];
+  v5 = [[self alloc] initWithMachServiceName:v4];
 
   return v5;
 }

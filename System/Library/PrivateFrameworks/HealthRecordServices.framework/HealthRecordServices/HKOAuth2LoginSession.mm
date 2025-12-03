@@ -1,13 +1,13 @@
 @interface HKOAuth2LoginSession
-+ (id)generatePKCEChallengeFromVerifier:(id)a3 algorithm:(int64_t)a4 error:(id *)a5;
-+ (id)generatePKCEVerifierWithAlgorithm:(int64_t)a3;
++ (id)generatePKCEChallengeFromVerifier:(id)verifier algorithm:(int64_t)algorithm error:(id *)error;
++ (id)generatePKCEVerifierWithAlgorithm:(int64_t)algorithm;
 + (id)new;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKOAuth2LoginSession)init;
-- (HKOAuth2LoginSession)initWithCoder:(id)a3;
-- (HKOAuth2LoginSession)initWithState:(id)a3 loginURL:(id)a4 callbackURLComponents:(id)a5 requestedScope:(id)a6 pkceVerifier:(id)a7;
+- (HKOAuth2LoginSession)initWithCoder:(id)coder;
+- (HKOAuth2LoginSession)initWithState:(id)state loginURL:(id)l callbackURLComponents:(id)components requestedScope:(id)scope pkceVerifier:(id)verifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKOAuth2LoginSession
@@ -32,35 +32,35 @@
   return 0;
 }
 
-- (HKOAuth2LoginSession)initWithState:(id)a3 loginURL:(id)a4 callbackURLComponents:(id)a5 requestedScope:(id)a6 pkceVerifier:(id)a7
+- (HKOAuth2LoginSession)initWithState:(id)state loginURL:(id)l callbackURLComponents:(id)components requestedScope:(id)scope pkceVerifier:(id)verifier
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  stateCopy = state;
+  lCopy = l;
+  componentsCopy = components;
+  scopeCopy = scope;
+  verifierCopy = verifier;
   v29.receiver = self;
   v29.super_class = HKOAuth2LoginSession;
   v17 = [(HKOAuth2LoginSession *)&v29 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [stateCopy copy];
     state = v17->_state;
     v17->_state = v18;
 
-    v20 = [v13 copy];
+    v20 = [lCopy copy];
     loginURL = v17->_loginURL;
     v17->_loginURL = v20;
 
-    v22 = [v14 copy];
+    v22 = [componentsCopy copy];
     callbackURLComponents = v17->_callbackURLComponents;
     v17->_callbackURLComponents = v22;
 
-    v24 = [v15 copy];
+    v24 = [scopeCopy copy];
     requestedScope = v17->_requestedScope;
     v17->_requestedScope = v24;
 
-    v26 = [v16 copy];
+    v26 = [verifierCopy copy];
     pkceVerifier = v17->_pkceVerifier;
     v17->_pkceVerifier = v26;
   }
@@ -68,11 +68,11 @@
   return v17;
 }
 
-+ (id)generatePKCEVerifierWithAlgorithm:(int64_t)a3
++ (id)generatePKCEVerifierWithAlgorithm:(int64_t)algorithm
 {
-  if ((a3 - 1) > 1)
+  if ((algorithm - 1) > 1)
   {
-    v6 = 0;
+    uUIDString = 0;
   }
 
   else
@@ -87,58 +87,58 @@
         [HKOAuth2LoginSession generatePKCEVerifierWithAlgorithm:v4];
       }
 
-      v5 = [MEMORY[0x277CCAD78] UUID];
-      v6 = [v5 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
     }
 
     else
     {
-      v6 = [v3 hk_base64URLEncodedString];
+      uUIDString = [v3 hk_base64URLEncodedString];
     }
   }
 
-  return v6;
+  return uUIDString;
 }
 
-+ (id)generatePKCEChallengeFromVerifier:(id)a3 algorithm:(int64_t)a4 error:(id *)a5
++ (id)generatePKCEChallengeFromVerifier:(id)verifier algorithm:(int64_t)algorithm error:(id *)error
 {
-  v7 = a3;
-  if ([v7 length])
+  verifierCopy = verifier;
+  if ([verifierCopy length])
   {
-    if (a4 == 2)
+    if (algorithm == 2)
     {
-      v9 = [v7 dataUsingEncoding:4];
-      v10 = [v9 hk_SHA256];
-      v8 = [v10 hk_base64URLEncodedString];
+      v9 = [verifierCopy dataUsingEncoding:4];
+      hk_SHA256 = [v9 hk_SHA256];
+      hk_base64URLEncodedString = [hk_SHA256 hk_base64URLEncodedString];
     }
 
-    else if (a4 == 1)
+    else if (algorithm == 1)
     {
-      v8 = v7;
+      hk_base64URLEncodedString = verifierCopy;
     }
 
     else
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a5 code:125 format:{@"PKCE algorithm %lu not implemented", a4}];
-      v8 = 0;
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:125 format:{@"PKCE algorithm %lu not implemented", algorithm}];
+      hk_base64URLEncodedString = 0;
     }
   }
 
   else
   {
-    v8 = &stru_2863E37A8;
+    hk_base64URLEncodedString = &stru_2863E37A8;
   }
 
-  return v8;
+  return hk_base64URLEncodedString;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self != v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self != equalCopy)
   {
-    v7 = v5;
+    v7 = equalCopy;
     if (![(HKOAuth2LoginSession *)v7 isMemberOfClass:objc_opt_class()])
     {
       v14 = 0;
@@ -148,20 +148,20 @@ LABEL_49:
     }
 
     state = self->_state;
-    v9 = [(HKOAuth2LoginSession *)v7 state];
-    if (state != v9)
+    state = [(HKOAuth2LoginSession *)v7 state];
+    if (state != state)
     {
-      v10 = [(HKOAuth2LoginSession *)v7 state];
-      if (!v10)
+      state2 = [(HKOAuth2LoginSession *)v7 state];
+      if (!state2)
       {
         v14 = 0;
         goto LABEL_48;
       }
 
-      v11 = v10;
+      v11 = state2;
       v12 = self->_state;
-      v13 = [(HKOAuth2LoginSession *)v7 state];
-      if (![(NSUUID *)v12 isEqual:v13])
+      state3 = [(HKOAuth2LoginSession *)v7 state];
+      if (![(NSUUID *)v12 isEqual:state3])
       {
         v14 = 0;
 LABEL_47:
@@ -170,71 +170,71 @@ LABEL_47:
       }
 
       v56 = v11;
-      v55 = v13;
+      v55 = state3;
     }
 
     loginURL = self->_loginURL;
-    v16 = [(HKOAuth2LoginSession *)v7 loginURL];
-    if (loginURL != v16)
+    loginURL = [(HKOAuth2LoginSession *)v7 loginURL];
+    if (loginURL != loginURL)
     {
-      v17 = [(HKOAuth2LoginSession *)v7 loginURL];
-      if (!v17)
+      loginURL2 = [(HKOAuth2LoginSession *)v7 loginURL];
+      if (!loginURL2)
       {
         goto LABEL_35;
       }
 
-      v54 = v17;
+      v54 = loginURL2;
       v18 = self->_loginURL;
-      v3 = [(HKOAuth2LoginSession *)v7 loginURL];
-      if (([(NSURL *)v18 isEqual:v3]& 1) == 0)
+      loginURL3 = [(HKOAuth2LoginSession *)v7 loginURL];
+      if (([(NSURL *)v18 isEqual:loginURL3]& 1) == 0)
       {
         goto LABEL_34;
       }
     }
 
     callbackURLComponents = self->_callbackURLComponents;
-    v20 = [(HKOAuth2LoginSession *)v7 callbackURLComponents];
+    callbackURLComponents = [(HKOAuth2LoginSession *)v7 callbackURLComponents];
     v53 = callbackURLComponents;
-    if (callbackURLComponents == v20)
+    if (callbackURLComponents == callbackURLComponents)
     {
       v52 = loginURL;
-      v27 = v16;
+      v27 = loginURL;
 LABEL_20:
       requestedScope = self->_requestedScope;
-      v29 = [(HKOAuth2LoginSession *)v7 requestedScope];
-      v30 = v29;
+      requestedScope = [(HKOAuth2LoginSession *)v7 requestedScope];
+      v30 = requestedScope;
       v49 = requestedScope;
-      v51 = v3;
-      if (requestedScope == v29)
+      v51 = loginURL3;
+      if (requestedScope == requestedScope)
       {
-        v47 = v29;
-        v48 = v20;
-        v16 = v27;
+        v47 = requestedScope;
+        v48 = callbackURLComponents;
+        loginURL = v27;
       }
 
       else
       {
-        v31 = [(HKOAuth2LoginSession *)v7 requestedScope];
-        if (!v31)
+        requestedScope2 = [(HKOAuth2LoginSession *)v7 requestedScope];
+        if (!requestedScope2)
         {
           v14 = 0;
-          v16 = v27;
+          loginURL = v27;
           loginURL = v52;
           goto LABEL_37;
         }
 
-        v45 = v31;
-        v48 = v20;
+        v45 = requestedScope2;
+        v48 = callbackURLComponents;
         v32 = self->_requestedScope;
-        v33 = [(HKOAuth2LoginSession *)v7 requestedScope];
+        requestedScope3 = [(HKOAuth2LoginSession *)v7 requestedScope];
         v34 = v32;
-        v35 = v33;
-        v16 = v27;
-        if (![(NSString *)v34 isEqualToString:v33])
+        v35 = requestedScope3;
+        loginURL = v27;
+        if (![(NSString *)v34 isEqualToString:requestedScope3])
         {
 
           v14 = 0;
-          v20 = v48;
+          callbackURLComponents = v48;
           loginURL = v52;
           v42 = v53;
           goto LABEL_41;
@@ -246,17 +246,17 @@ LABEL_20:
 
       loginURL = v52;
       pkceVerifier = self->_pkceVerifier;
-      v37 = [(HKOAuth2LoginSession *)v7 pkceVerifier];
-      v14 = pkceVerifier == v37;
-      if (pkceVerifier != v37)
+      pkceVerifier = [(HKOAuth2LoginSession *)v7 pkceVerifier];
+      v14 = pkceVerifier == pkceVerifier;
+      if (pkceVerifier != pkceVerifier)
       {
-        v38 = [(HKOAuth2LoginSession *)v7 pkceVerifier];
-        if (v38)
+        pkceVerifier2 = [(HKOAuth2LoginSession *)v7 pkceVerifier];
+        if (pkceVerifier2)
         {
-          v39 = v38;
+          v39 = pkceVerifier2;
           v40 = self->_pkceVerifier;
-          v41 = [(HKOAuth2LoginSession *)v7 pkceVerifier];
-          v14 = [(NSString *)v40 isEqualToString:v41];
+          pkceVerifier3 = [(HKOAuth2LoginSession *)v7 pkceVerifier];
+          v14 = [(NSString *)v40 isEqualToString:pkceVerifier3];
 
           if (v49 != v47)
           {
@@ -271,38 +271,38 @@ LABEL_20:
       {
 LABEL_39:
 
-        v20 = v48;
+        callbackURLComponents = v48;
         goto LABEL_40;
       }
 
-      v20 = v48;
+      callbackURLComponents = v48;
 LABEL_37:
 
 LABEL_40:
       v42 = v53;
 LABEL_41:
-      if (v42 != v20)
+      if (v42 != callbackURLComponents)
       {
       }
 
       goto LABEL_43;
     }
 
-    v21 = [(HKOAuth2LoginSession *)v7 callbackURLComponents];
-    if (!v21)
+    callbackURLComponents2 = [(HKOAuth2LoginSession *)v7 callbackURLComponents];
+    if (!callbackURLComponents2)
     {
-      v51 = v3;
+      v51 = loginURL3;
       v14 = 0;
 LABEL_43:
 
-      if (loginURL != v16)
+      if (loginURL != loginURL)
       {
       }
 
 LABEL_46:
-      v13 = v55;
+      state3 = v55;
       v11 = v56;
-      if (state != v9)
+      if (state != state)
       {
         goto LABEL_47;
       }
@@ -312,22 +312,22 @@ LABEL_48:
       goto LABEL_49;
     }
 
-    v50 = v21;
+    v50 = callbackURLComponents2;
     v52 = loginURL;
-    v22 = v20;
+    v22 = callbackURLComponents;
     v23 = self->_callbackURLComponents;
-    v24 = [(HKOAuth2LoginSession *)v7 callbackURLComponents];
+    callbackURLComponents3 = [(HKOAuth2LoginSession *)v7 callbackURLComponents];
     v25 = v23;
-    v26 = v24;
-    if (([(NSURLComponents *)v25 isEqual:v24]& 1) != 0)
+    v26 = callbackURLComponents3;
+    if (([(NSURLComponents *)v25 isEqual:callbackURLComponents3]& 1) != 0)
     {
-      v27 = v16;
+      v27 = loginURL;
       v46 = v26;
-      v20 = v22;
+      callbackURLComponents = v22;
       goto LABEL_20;
     }
 
-    if (loginURL != v16)
+    if (loginURL != loginURL)
     {
 LABEL_34:
     }
@@ -353,28 +353,28 @@ LABEL_50:
   return v6 ^ [(NSString *)self->_pkceVerifier hash];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   state = self->_state;
-  v6 = a3;
-  [v6 encodeObject:state forKey:@"state"];
-  [v6 encodeObject:self->_loginURL forKey:@"loginURL"];
-  v5 = [(NSURLComponents *)self->_callbackURLComponents string];
-  [v6 encodeObject:v5 forKey:@"callbackURLString"];
+  coderCopy = coder;
+  [coderCopy encodeObject:state forKey:@"state"];
+  [coderCopy encodeObject:self->_loginURL forKey:@"loginURL"];
+  string = [(NSURLComponents *)self->_callbackURLComponents string];
+  [coderCopy encodeObject:string forKey:@"callbackURLString"];
 
-  [v6 encodeObject:self->_requestedScope forKey:@"requestedScope"];
-  [v6 encodeObject:self->_pkceVerifier forKey:@"pkceVerifier"];
+  [coderCopy encodeObject:self->_requestedScope forKey:@"requestedScope"];
+  [coderCopy encodeObject:self->_pkceVerifier forKey:@"pkceVerifier"];
 }
 
-- (HKOAuth2LoginSession)initWithCoder:(id)a3
+- (HKOAuth2LoginSession)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"state"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"loginURL"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"callbackURLString"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"state"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"loginURL"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"callbackURLString"];
   v8 = [MEMORY[0x277CCACE0] componentsWithString:v7];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestedScope"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pkceVerifier"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestedScope"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pkceVerifier"];
   if (!v5 || !v6 || !v7 || !v9)
   {
     v12 = objc_alloc(MEMORY[0x277CCA9B8]);
@@ -382,9 +382,9 @@ LABEL_50:
     v14 = 4865;
 LABEL_9:
     v15 = [v12 initWithDomain:v13 code:v14 userInfo:0];
-    [v4 failWithError:v15];
+    [coderCopy failWithError:v15];
 
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
@@ -397,10 +397,10 @@ LABEL_9:
   }
 
   self = [(HKOAuth2LoginSession *)self initWithState:v5 loginURL:v6 callbackURLComponents:v8 requestedScope:v9 pkceVerifier:v10];
-  v11 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v11;
+  return selfCopy;
 }
 
 + (void)generatePKCEVerifierWithAlgorithm:(void *)a1 .cold.1(void *a1)

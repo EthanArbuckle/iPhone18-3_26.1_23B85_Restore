@@ -6,10 +6,10 @@
 
 + (BOOL)enabled
 {
-  v2 = [MEMORY[0x277CEF368] sharedPreferences];
-  v3 = [v2 siriInCallEnabled];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  siriInCallEnabled = [mEMORY[0x277CEF368] siriInCallEnabled];
 
-  return v3;
+  return siriInCallEnabled;
 }
 
 @end

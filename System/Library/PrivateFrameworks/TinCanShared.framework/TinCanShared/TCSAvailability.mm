@@ -2,18 +2,18 @@
 + (BOOL)isUserAvailable;
 + (BOOL)shouldShowWalkieTalkieStatusIndicator;
 + (id)sharedInstance;
-+ (void)setUserAvailable:(BOOL)a3;
++ (void)setUserAvailable:(BOOL)available;
 - (BOOL)_calculateShouldShowStatusIndicator;
 - (BOOL)_isUserUnavailable;
 - (TCSAvailability)init;
-- (id)_unavailabilityText:(BOOL)a3;
+- (id)_unavailabilityText:(BOOL)text;
 - (void)_handleDeviceFirstUnlock;
-- (void)_postNotificationName:(id)a3;
+- (void)_postNotificationName:(id)name;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setShouldObserveFriendListDefaultChanges:(BOOL)a3;
-- (void)setShouldObserveUnavailabilityDefaultChanges:(BOOL)a3;
-- (void)setShouldShowStatusIndicator:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setShouldObserveFriendListDefaultChanges:(BOOL)changes;
+- (void)setShouldObserveUnavailabilityDefaultChanges:(BOOL)changes;
+- (void)setShouldShowStatusIndicator:(BOOL)indicator;
 @end
 
 @implementation TCSAvailability
@@ -54,9 +54,9 @@ uint64_t __33__TCSAvailability_sharedInstance__block_invoke()
 
     if (!+[TCSBehavior isMobileKeyBagDisabledOrDeviceUnlockedSinceBoot])
     {
-      v7 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v8 = +[TCSBehavior sharedBehavior];
-      [v7 addObserver:v2 selector:sel__handleDeviceFirstUnlock name:@"TCSFirstUnlockNotification" object:v8];
+      [defaultCenter addObserver:v2 selector:sel__handleDeviceFirstUnlock name:@"TCSFirstUnlockNotification" object:v8];
     }
 
     v2->_shouldShowStatusIndicator = [(TCSAvailability *)v2 _calculateShouldShowStatusIndicator];
@@ -69,8 +69,8 @@ uint64_t __33__TCSAvailability_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(TCSAvailability *)self setShouldObserveUnavailabilityDefaultChanges:0];
   [(TCSAvailability *)self setShouldObserveFriendListDefaultChanges:0];
@@ -79,16 +79,16 @@ uint64_t __33__TCSAvailability_sharedInstance__block_invoke()
   [(TCSAvailability *)&v4 dealloc];
 }
 
-- (void)setShouldObserveFriendListDefaultChanges:(BOOL)a3
+- (void)setShouldObserveFriendListDefaultChanges:(BOOL)changes
 {
-  if (self->_shouldObserveFriendListDefaultChanges != a3)
+  if (self->_shouldObserveFriendListDefaultChanges != changes)
   {
-    v4 = a3;
-    self->_shouldObserveFriendListDefaultChanges = a3;
+    changesCopy = changes;
+    self->_shouldObserveFriendListDefaultChanges = changes;
     tinCanDefaults = self->_tinCanDefaults;
     v7 = +[TCSTinCanUserDefaults allowListKey];
     v8 = v7;
-    if (v4)
+    if (changesCopy)
     {
       [(NSUserDefaults *)tinCanDefaults addObserver:self forKeyPath:v7 options:1 context:TCSFriendListObservationContext];
     }
@@ -100,13 +100,13 @@ uint64_t __33__TCSAvailability_sharedInstance__block_invoke()
   }
 }
 
-- (void)setShouldObserveUnavailabilityDefaultChanges:(BOOL)a3
+- (void)setShouldObserveUnavailabilityDefaultChanges:(BOOL)changes
 {
-  if (self->_shouldObserveUnavailabilityDefaultChanges != a3)
+  if (self->_shouldObserveUnavailabilityDefaultChanges != changes)
   {
-    self->_shouldObserveUnavailabilityDefaultChanges = a3;
+    self->_shouldObserveUnavailabilityDefaultChanges = changes;
     tinCanDefaults = self->_tinCanDefaults;
-    if (a3)
+    if (changes)
     {
       [(NSUserDefaults *)tinCanDefaults addObserver:self forKeyPath:@"Unavailable" options:1 context:TCSAvailabilityObservationContext];
     }
@@ -118,12 +118,12 @@ uint64_t __33__TCSAvailability_sharedInstance__block_invoke()
   }
 }
 
-- (void)setShouldShowStatusIndicator:(BOOL)a3
+- (void)setShouldShowStatusIndicator:(BOOL)indicator
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (self->_shouldShowStatusIndicator != a3)
+  if (self->_shouldShowStatusIndicator != indicator)
   {
-    self->_shouldShowStatusIndicator = a3;
+    self->_shouldShowStatusIndicator = indicator;
     _TCSInitializeLogging();
     v4 = TCSLogDefault;
     if (os_log_type_enabled(TCSLogDefault, OS_LOG_TYPE_DEFAULT))
@@ -152,34 +152,34 @@ uint64_t __33__TCSAvailability_sharedInstance__block_invoke()
 + (BOOL)isUserAvailable
 {
   v2 = +[TCSAvailability sharedInstance];
-  v3 = [v2 _isUserUnavailable];
+  _isUserUnavailable = [v2 _isUserUnavailable];
 
-  return v3 ^ 1;
+  return _isUserUnavailable ^ 1;
 }
 
-+ (void)setUserAvailable:(BOOL)a3
++ (void)setUserAvailable:(BOOL)available
 {
-  v3 = a3;
+  availableCopy = available;
   v4 = +[TCSAvailability sharedInstance];
-  [v4 _setUserUnavailable:!v3];
+  [v4 _setUserUnavailable:!availableCopy];
 }
 
 + (BOOL)shouldShowWalkieTalkieStatusIndicator
 {
   v2 = +[TCSAvailability sharedInstance];
-  v3 = [v2 shouldShowStatusIndicator];
+  shouldShowStatusIndicator = [v2 shouldShowStatusIndicator];
 
-  return v3;
+  return shouldShowStatusIndicator;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (TCSAvailabilityObservationContext == a6 || TCSFriendListObservationContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (TCSAvailabilityObservationContext == context || TCSFriendListObservationContext == context)
   {
-    if (TCSAvailabilityObservationContext == a6)
+    if (TCSAvailabilityObservationContext == context)
     {
       [(TCSAvailability *)self _postNotificationName:@"TCSAvailabilityDidChangeNotification"];
     }
@@ -196,7 +196,7 @@ uint64_t __33__TCSAvailability_sharedInstance__block_invoke()
   {
     v14.receiver = self;
     v14.super_class = TCSAvailability;
-    [(TCSAvailability *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(TCSAvailability *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -227,22 +227,22 @@ uint64_t __66__TCSAvailability_observeValueForKeyPath_ofObject_change_context___
     return 0;
   }
 
-  v3 = [(TCSAvailability *)self _hasConnectivity];
+  _hasConnectivity = [(TCSAvailability *)self _hasConnectivity];
   tinCanDefaults = self->_tinCanDefaults;
   v5 = +[TCSTinCanUserDefaults allowListKey];
   v6 = [(NSUserDefaults *)tinCanDefaults dictionaryForKey:v5];
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    dictionary = v6;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
   }
 
-  v10 = v8;
+  v10 = dictionary;
 
   v11 = [TCSContacts validatedAllowlistFromDictionary:v10];
 
@@ -250,7 +250,7 @@ uint64_t __66__TCSAvailability_observeValueForKeyPath_ofObject_change_context___
   v13 = [v12 count];
 
   v14 = (v13 != 0) & ~[(TCSAvailability *)self _isUserUnavailable];
-  if (v3)
+  if (_hasConnectivity)
   {
     v9 = v14;
   }
@@ -280,15 +280,15 @@ uint64_t __66__TCSAvailability_observeValueForKeyPath_ofObject_change_context___
   }
 }
 
-- (void)_postNotificationName:(id)a3
+- (void)_postNotificationName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__TCSAvailability__postNotificationName___block_invoke;
   block[3] = &unk_279DC19E0;
-  v6 = v3;
-  v4 = v3;
+  v6 = nameCopy;
+  v4 = nameCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -298,9 +298,9 @@ void __41__TCSAvailability__postNotificationName___block_invoke(uint64_t a1)
   [v2 postNotificationName:*(a1 + 32) object:0];
 }
 
-- (id)_unavailabilityText:(BOOL)a3
+- (id)_unavailabilityText:(BOOL)text
 {
-  if (a3)
+  if (text)
   {
     return @"unavailable";
   }

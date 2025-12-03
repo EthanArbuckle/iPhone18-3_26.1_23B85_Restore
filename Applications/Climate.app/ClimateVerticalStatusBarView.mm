@@ -1,25 +1,25 @@
 @interface ClimateVerticalStatusBarView
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation ClimateVerticalStatusBarView
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_100065140(v4);
+  contextCopy = context;
+  selfCopy = self;
+  LOBYTE(self) = sub_100065140(contextCopy);
 
   return self & 1;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100065260(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_100065260(contextCopy, coordinatorCopy);
 }
 
 @end

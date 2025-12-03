@@ -1,22 +1,22 @@
 @interface FSPathURLResource
-+ (id)resourceWithURL:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (FSPathURLResource)initWithCoder:(id)a3;
-- (FSPathURLResource)initWithURL:(id)a3 writable:(BOOL)a4;
++ (id)resourceWithURL:(id)l;
+- (BOOL)isEqual:(id)equal;
+- (FSPathURLResource)initWithCoder:(id)coder;
+- (FSPathURLResource)initWithURL:(id)l writable:(BOOL)writable;
 - (id)getResourceID;
-- (id)initAsSecureURL:(id)a3 writable:(BOOL)a4;
+- (id)initAsSecureURL:(id)l writable:(BOOL)writable;
 - (id)makeProxy;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FSPathURLResource
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = FSPathURLResource;
-  v4 = a3;
-  [(FSResource *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(FSResource *)&v7 encodeWithCoder:coderCopy];
   urlWrapper = self->_urlWrapper;
   if (urlWrapper)
   {
@@ -29,13 +29,13 @@
     v6 = @"FSResource.URL";
   }
 
-  [v4 encodeObject:urlWrapper forKey:{v6, v7.receiver, v7.super_class}];
-  [v4 encodeBool:self->_writable forKey:@"FSResource.writable"];
+  [coderCopy encodeObject:urlWrapper forKey:{v6, v7.receiver, v7.super_class}];
+  [coderCopy encodeBool:self->_writable forKey:@"FSResource.writable"];
 }
 
-- (FSPathURLResource)initWithCoder:(id)a3
+- (FSPathURLResource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -45,10 +45,10 @@
 
   v13.receiver = self;
   v13.super_class = FSPathURLResource;
-  v5 = [(FSResource *)&v13 initWithCoder:v4];
+  v5 = [(FSResource *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSResource.Wrapper"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSResource.Wrapper"];
     urlWrapper = v5->_urlWrapper;
     v5->_urlWrapper = v6;
 
@@ -60,56 +60,56 @@
 
     else
     {
-      [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSResource.URL"];
+      [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSResource.URL"];
     }
     v9 = ;
     url = v5->_url;
     v5->_url = v9;
 
-    v5->_writable = [v4 decodeBoolForKey:@"FSResource.writable"];
+    v5->_writable = [coderCopy decodeBoolForKey:@"FSResource.writable"];
   }
 
   return v5;
 }
 
-- (FSPathURLResource)initWithURL:(id)a3 writable:(BOOL)a4
+- (FSPathURLResource)initWithURL:(id)l writable:(BOOL)writable
 {
-  v4 = a4;
-  v7 = a3;
-  if ([v7 isFileURL])
+  writableCopy = writable;
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
     v14.receiver = self;
     v14.super_class = FSPathURLResource;
-    v8 = [(FSResource *)&v14 initResource];
-    if (v8)
+    initResource = [(FSResource *)&v14 initResource];
+    if (initResource)
     {
-      v9 = MEMORY[0x24C220DB0](v7);
+      v9 = MEMORY[0x24C220DB0](lCopy);
       if (v9)
       {
-        v10 = [objc_alloc(MEMORY[0x277CCAC90]) initWithURL:v7 readonly:!v4 extensionClass:0];
-        v11 = *(v8 + 4);
-        *(v8 + 4) = v10;
+        v10 = [objc_alloc(MEMORY[0x277CCAC90]) initWithURL:lCopy readonly:!writableCopy extensionClass:0];
+        v11 = *(initResource + 4);
+        *(initResource + 4) = v10;
       }
 
-      *(v8 + 16) = v4;
-      objc_storeStrong(v8 + 3, a3);
+      *(initResource + 16) = writableCopy;
+      objc_storeStrong(initResource + 3, l);
     }
 
-    self = v8;
-    v12 = self;
+    self = initResource;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = [(FSResource *)FSPathURLResource dynamicCast:a3];
+  v4 = [(FSResource *)FSPathURLResource dynamicCast:equal];
   v5 = v4;
   if (v4)
   {
@@ -129,8 +129,8 @@
 - (id)getResourceID
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(NSURL *)self->_url absoluteString];
-  v4 = [v2 stringWithFormat:@"FSPathURLResource:%@", v3];
+  absoluteString = [(NSURL *)self->_url absoluteString];
+  v4 = [v2 stringWithFormat:@"FSPathURLResource:%@", absoluteString];
 
   return v4;
 }
@@ -147,52 +147,52 @@
   return v5;
 }
 
-- (id)initAsSecureURL:(id)a3 writable:(BOOL)a4
+- (id)initAsSecureURL:(id)l writable:(BOOL)writable
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 isFileURL])
+  writableCopy = writable;
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
     v15.receiver = self;
     v15.super_class = FSPathURLResource;
-    v7 = [(FSResource *)&v15 initResource];
-    if (v7)
+    initResource = [(FSResource *)&v15 initResource];
+    if (initResource)
     {
-      v8 = [objc_alloc(MEMORY[0x277CCAC90]) initWithURL:v6 readonly:!v4 extensionClass:0];
-      v9 = v7[4];
-      v7[4] = v8;
+      v8 = [objc_alloc(MEMORY[0x277CCAC90]) initWithURL:lCopy readonly:!writableCopy extensionClass:0];
+      v9 = initResource[4];
+      initResource[4] = v8;
 
-      v10 = v7[4];
+      v10 = initResource[4];
       if (v10)
       {
         v11 = [v10 url];
-        v12 = v7[3];
-        v7[3] = v11;
+        v12 = initResource[3];
+        initResource[3] = v11;
       }
 
       else
       {
-        v12 = v7;
-        v7 = 0;
+        v12 = initResource;
+        initResource = 0;
       }
     }
 
-    self = v7;
-    v13 = self;
+    self = initResource;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-+ (id)resourceWithURL:(id)a3
++ (id)resourceWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithURL:v4 readOnly:0];
+  lCopy = l;
+  v5 = [[self alloc] initWithURL:lCopy readOnly:0];
 
   return v5;
 }

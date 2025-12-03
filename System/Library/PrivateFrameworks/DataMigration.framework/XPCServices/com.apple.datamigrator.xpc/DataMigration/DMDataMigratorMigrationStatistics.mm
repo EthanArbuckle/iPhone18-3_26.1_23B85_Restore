@@ -1,28 +1,28 @@
 @interface DMDataMigratorMigrationStatistics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasFastPluginDuration:(BOOL)a3;
-- (void)setHasMigratedAfterUpgrade:(BOOL)a3;
-- (void)setHasMigratedFromBackup:(BOOL)a3;
-- (void)setHasMigratedFromBackupSourceDifferentDevice:(BOOL)a3;
-- (void)setHasMigratedFromBackupSourceiCloud:(BOOL)a3;
-- (void)setHasPluginCrashCount:(BOOL)a3;
-- (void)setHasPluginReturnedFalseCount:(BOOL)a3;
-- (void)setHasPluginWatchdogCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasFastPluginDuration:(BOOL)duration;
+- (void)setHasMigratedAfterUpgrade:(BOOL)upgrade;
+- (void)setHasMigratedFromBackup:(BOOL)backup;
+- (void)setHasMigratedFromBackupSourceDifferentDevice:(BOOL)device;
+- (void)setHasMigratedFromBackupSourceiCloud:(BOOL)cloud;
+- (void)setHasPluginCrashCount:(BOOL)count;
+- (void)setHasPluginReturnedFalseCount:(BOOL)count;
+- (void)setHasPluginWatchdogCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DMDataMigratorMigrationStatistics
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -35,9 +35,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasFastPluginDuration:(BOOL)a3
+- (void)setHasFastPluginDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4;
   }
@@ -50,9 +50,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasPluginCrashCount:(BOOL)a3
+- (void)setHasPluginCrashCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -65,9 +65,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasPluginWatchdogCount:(BOOL)a3
+- (void)setHasPluginWatchdogCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -80,9 +80,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasPluginReturnedFalseCount:(BOOL)a3
+- (void)setHasPluginReturnedFalseCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -95,9 +95,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasMigratedAfterUpgrade:(BOOL)a3
+- (void)setHasMigratedAfterUpgrade:(BOOL)upgrade
 {
-  if (a3)
+  if (upgrade)
   {
     v3 = 64;
   }
@@ -110,9 +110,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasMigratedFromBackup:(BOOL)a3
+- (void)setHasMigratedFromBackup:(BOOL)backup
 {
-  if (a3)
+  if (backup)
   {
     v3 = 128;
   }
@@ -125,9 +125,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasMigratedFromBackupSourceDifferentDevice:(BOOL)a3
+- (void)setHasMigratedFromBackupSourceDifferentDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = 256;
   }
@@ -140,9 +140,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasMigratedFromBackupSourceiCloud:(BOOL)a3
+- (void)setHasMigratedFromBackupSourceiCloud:(BOOL)cloud
 {
-  if (a3)
+  if (cloud)
   {
     v3 = 512;
   }
@@ -160,8 +160,8 @@
   v7.receiver = self;
   v7.super_class = DMDataMigratorMigrationStatistics;
   v3 = [(DMDataMigratorMigrationStatistics *)&v7 description];
-  v4 = [(DMDataMigratorMigrationStatistics *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(DMDataMigratorMigrationStatistics *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -313,9 +313,9 @@ LABEL_15:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -449,14 +449,14 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 24) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 24) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -475,8 +475,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 6) = self->_duration;
-  *(v4 + 24) |= 2u;
+  *(toCopy + 6) = self->_duration;
+  *(toCopy + 24) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -490,8 +490,8 @@ LABEL_4:
   }
 
 LABEL_20:
-  *(v4 + 7) = self->_fastPluginDuration;
-  *(v4 + 24) |= 4u;
+  *(toCopy + 7) = self->_fastPluginDuration;
+  *(toCopy + 24) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -505,8 +505,8 @@ LABEL_5:
   }
 
 LABEL_21:
-  *(v4 + 8) = self->_pluginCrashCount;
-  *(v4 + 24) |= 8u;
+  *(toCopy + 8) = self->_pluginCrashCount;
+  *(toCopy + 24) |= 8u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -520,28 +520,28 @@ LABEL_6:
   }
 
 LABEL_22:
-  *(v4 + 10) = self->_pluginWatchdogCount;
-  *(v4 + 24) |= 0x20u;
+  *(toCopy + 10) = self->_pluginWatchdogCount;
+  *(toCopy + 24) |= 0x20u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_7:
-    *(v4 + 9) = self->_pluginReturnedFalseCount;
-    *(v4 + 24) |= 0x10u;
+    *(toCopy + 9) = self->_pluginReturnedFalseCount;
+    *(toCopy + 24) |= 0x10u;
   }
 
 LABEL_8:
   if (self->_buildMigratedFrom)
   {
-    v7 = v4;
-    [v4 setBuildMigratedFrom:?];
-    v4 = v7;
+    v7 = toCopy;
+    [toCopy setBuildMigratedFrom:?];
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x40) != 0)
   {
-    *(v4 + 44) = self->_migratedAfterUpgrade;
-    *(v4 + 24) |= 0x40u;
+    *(toCopy + 44) = self->_migratedAfterUpgrade;
+    *(toCopy + 24) |= 0x40u;
     v6 = self->_has;
     if ((v6 & 0x80) == 0)
     {
@@ -560,8 +560,8 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  *(v4 + 45) = self->_migratedFromBackup;
-  *(v4 + 24) |= 0x80u;
+  *(toCopy + 45) = self->_migratedFromBackup;
+  *(toCopy + 24) |= 0x80u;
   v6 = self->_has;
   if ((v6 & 0x100) == 0)
   {
@@ -575,21 +575,21 @@ LABEL_13:
   }
 
 LABEL_26:
-  *(v4 + 46) = self->_migratedFromBackupSourceDifferentDevice;
-  *(v4 + 24) |= 0x100u;
+  *(toCopy + 46) = self->_migratedFromBackupSourceDifferentDevice;
+  *(toCopy + 24) |= 0x100u;
   if ((*&self->_has & 0x200) != 0)
   {
 LABEL_14:
-    *(v4 + 47) = self->_migratedFromBackupSourceiCloud;
-    *(v4 + 24) |= 0x200u;
+    *(toCopy + 47) = self->_migratedFromBackupSourceiCloud;
+    *(toCopy + 24) |= 0x200u;
   }
 
 LABEL_15:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -669,7 +669,7 @@ LABEL_7:
   }
 
 LABEL_8:
-  v8 = [(NSString *)self->_buildMigratedFrom copyWithZone:a3];
+  v8 = [(NSString *)self->_buildMigratedFrom copyWithZone:zone];
   v9 = v6[2];
   v6[2] = v8;
 
@@ -723,19 +723,19 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_66;
   }
 
   has = self->_has;
-  v6 = *(v4 + 24);
+  v6 = *(equalCopy + 24);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_66;
     }
@@ -748,7 +748,7 @@ LABEL_12:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_duration != *(v4 + 6))
+    if ((v6 & 2) == 0 || self->_duration != *(equalCopy + 6))
     {
       goto LABEL_66;
     }
@@ -761,7 +761,7 @@ LABEL_12:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_fastPluginDuration != *(v4 + 7))
+    if ((v6 & 4) == 0 || self->_fastPluginDuration != *(equalCopy + 7))
     {
       goto LABEL_66;
     }
@@ -774,7 +774,7 @@ LABEL_12:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_pluginCrashCount != *(v4 + 8))
+    if ((v6 & 8) == 0 || self->_pluginCrashCount != *(equalCopy + 8))
     {
       goto LABEL_66;
     }
@@ -787,7 +787,7 @@ LABEL_12:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_pluginWatchdogCount != *(v4 + 10))
+    if ((v6 & 0x20) == 0 || self->_pluginWatchdogCount != *(equalCopy + 10))
     {
       goto LABEL_66;
     }
@@ -800,7 +800,7 @@ LABEL_12:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_pluginReturnedFalseCount != *(v4 + 9))
+    if ((v6 & 0x10) == 0 || self->_pluginReturnedFalseCount != *(equalCopy + 9))
     {
       goto LABEL_66;
     }
@@ -812,7 +812,7 @@ LABEL_12:
   }
 
   buildMigratedFrom = self->_buildMigratedFrom;
-  if (buildMigratedFrom | *(v4 + 2))
+  if (buildMigratedFrom | *(equalCopy + 2))
   {
     if (![(NSString *)buildMigratedFrom isEqual:?])
     {
@@ -822,7 +822,7 @@ LABEL_12:
     has = self->_has;
   }
 
-  v8 = *(v4 + 24);
+  v8 = *(equalCopy + 24);
   if ((has & 0x40) != 0)
   {
     if ((v8 & 0x40) == 0)
@@ -830,16 +830,16 @@ LABEL_12:
       goto LABEL_66;
     }
 
-    v10 = *(v4 + 44);
+    v10 = *(equalCopy + 44);
     if (self->_migratedAfterUpgrade)
     {
-      if ((*(v4 + 44) & 1) == 0)
+      if ((*(equalCopy + 44) & 1) == 0)
       {
         goto LABEL_66;
       }
     }
 
-    else if (*(v4 + 44))
+    else if (*(equalCopy + 44))
     {
       goto LABEL_66;
     }
@@ -857,16 +857,16 @@ LABEL_12:
       goto LABEL_66;
     }
 
-    v11 = *(v4 + 45);
+    v11 = *(equalCopy + 45);
     if (self->_migratedFromBackup)
     {
-      if ((*(v4 + 45) & 1) == 0)
+      if ((*(equalCopy + 45) & 1) == 0)
       {
         goto LABEL_66;
       }
     }
 
-    else if (*(v4 + 45))
+    else if (*(equalCopy + 45))
     {
       goto LABEL_66;
     }
@@ -879,44 +879,44 @@ LABEL_12:
 
   if ((has & 0x100) != 0)
   {
-    if ((*(v4 + 24) & 0x100) == 0)
+    if ((*(equalCopy + 24) & 0x100) == 0)
     {
       goto LABEL_66;
     }
 
-    v12 = *(v4 + 46);
+    v12 = *(equalCopy + 46);
     if (self->_migratedFromBackupSourceDifferentDevice)
     {
-      if ((*(v4 + 46) & 1) == 0)
+      if ((*(equalCopy + 46) & 1) == 0)
       {
         goto LABEL_66;
       }
     }
 
-    else if (*(v4 + 46))
+    else if (*(equalCopy + 46))
     {
       goto LABEL_66;
     }
   }
 
-  else if ((*(v4 + 24) & 0x100) != 0)
+  else if ((*(equalCopy + 24) & 0x100) != 0)
   {
     goto LABEL_66;
   }
 
   if ((has & 0x200) != 0)
   {
-    if ((*(v4 + 24) & 0x200) != 0)
+    if ((*(equalCopy + 24) & 0x200) != 0)
     {
       if (self->_migratedFromBackupSourceiCloud)
       {
-        if (*(v4 + 47))
+        if (*(equalCopy + 47))
         {
           goto LABEL_68;
         }
       }
 
-      else if (!*(v4 + 47))
+      else if (!*(equalCopy + 47))
       {
 LABEL_68:
         v9 = 1;
@@ -1070,15 +1070,15 @@ LABEL_18:
   return v5 ^ v4 ^ v6 ^ v7 ^ v8 ^ v9 ^ v12 ^ v13 ^ v14 ^ v15 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 24);
+  fromCopy = from;
+  v5 = *(fromCopy + 24);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -1096,9 +1096,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_duration = *(v4 + 6);
+  self->_duration = *(fromCopy + 6);
   *&self->_has |= 2u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -1111,9 +1111,9 @@ LABEL_4:
   }
 
 LABEL_20:
-  self->_fastPluginDuration = *(v4 + 7);
+  self->_fastPluginDuration = *(fromCopy + 7);
   *&self->_has |= 4u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 8) == 0)
   {
 LABEL_5:
@@ -1126,9 +1126,9 @@ LABEL_5:
   }
 
 LABEL_21:
-  self->_pluginCrashCount = *(v4 + 8);
+  self->_pluginCrashCount = *(fromCopy + 8);
   *&self->_has |= 8u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x20) == 0)
   {
 LABEL_6:
@@ -1141,29 +1141,29 @@ LABEL_6:
   }
 
 LABEL_22:
-  self->_pluginWatchdogCount = *(v4 + 10);
+  self->_pluginWatchdogCount = *(fromCopy + 10);
   *&self->_has |= 0x20u;
-  if ((*(v4 + 24) & 0x10) != 0)
+  if ((*(fromCopy + 24) & 0x10) != 0)
   {
 LABEL_7:
-    self->_pluginReturnedFalseCount = *(v4 + 9);
+    self->_pluginReturnedFalseCount = *(fromCopy + 9);
     *&self->_has |= 0x10u;
   }
 
 LABEL_8:
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
-    v7 = v4;
+    v7 = fromCopy;
     [(DMDataMigratorMigrationStatistics *)self setBuildMigratedFrom:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 24);
+  v6 = *(fromCopy + 24);
   if ((v6 & 0x40) != 0)
   {
-    self->_migratedAfterUpgrade = *(v4 + 44);
+    self->_migratedAfterUpgrade = *(fromCopy + 44);
     *&self->_has |= 0x40u;
-    v6 = *(v4 + 24);
+    v6 = *(fromCopy + 24);
     if ((v6 & 0x80) == 0)
     {
 LABEL_12:
@@ -1181,9 +1181,9 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  self->_migratedFromBackup = *(v4 + 45);
+  self->_migratedFromBackup = *(fromCopy + 45);
   *&self->_has |= 0x80u;
-  v6 = *(v4 + 24);
+  v6 = *(fromCopy + 24);
   if ((v6 & 0x100) == 0)
   {
 LABEL_13:
@@ -1196,12 +1196,12 @@ LABEL_13:
   }
 
 LABEL_26:
-  self->_migratedFromBackupSourceDifferentDevice = *(v4 + 46);
+  self->_migratedFromBackupSourceDifferentDevice = *(fromCopy + 46);
   *&self->_has |= 0x100u;
-  if ((*(v4 + 24) & 0x200) != 0)
+  if ((*(fromCopy + 24) & 0x200) != 0)
   {
 LABEL_14:
-    self->_migratedFromBackupSourceiCloud = *(v4 + 47);
+    self->_migratedFromBackupSourceiCloud = *(fromCopy + 47);
     *&self->_has |= 0x200u;
   }
 

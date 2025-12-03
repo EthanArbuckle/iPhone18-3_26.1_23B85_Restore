@@ -2,7 +2,7 @@
 + (id)supportedStatusClasses;
 + (id)supportedStatusKeys;
 - (SoftwareUpdateStatus)init;
-- (void)queryForStatusWithKeyPaths:(id)a3 store:(id)a4 completionHandler:(id)a5;
+- (void)queryForStatusWithKeyPaths:(id)paths store:(id)store completionHandler:(id)handler;
 @end
 
 @implementation SoftwareUpdateStatus
@@ -49,20 +49,20 @@
   return v2;
 }
 
-- (void)queryForStatusWithKeyPaths:(id)a3 store:(id)a4 completionHandler:(id)a5
+- (void)queryForStatusWithKeyPaths:(id)paths store:(id)store completionHandler:(id)handler
 {
-  v6 = a3;
-  v33 = a5;
+  pathsCopy = paths;
+  handlerCopy = handler;
   v7 = +[SUCoreDDMUtilities sharedLogger];
-  v8 = [v7 oslog];
+  oslog = [v7 oslog];
 
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v44 = "[SoftwareUpdateStatus queryForStatusWithKeyPaths:store:completionHandler:]";
     v45 = 2114;
-    v46 = v6;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: Querying status for key paths: %{public}@", buf, 0x16u);
+    v46 = pathsCopy;
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "%s: Querying status for key paths: %{public}@", buf, 0x16u);
   }
 
   v9 = objc_alloc_init(NSMutableDictionary);
@@ -70,7 +70,7 @@
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v6;
+  obj = pathsCopy;
   v10 = [(__CFString *)obj countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v10)
   {
@@ -97,12 +97,12 @@
         if ([v16 isEqualToString:v14])
         {
           v18 = +[SDBetaManager sharedManager];
-          v19 = [v18 enrolledBetaProgramForCurrentDevice];
+          enrolledBetaProgramForCurrentDevice = [v18 enrolledBetaProgramForCurrentDevice];
 
-          if (v19)
+          if (enrolledBetaProgramForCurrentDevice)
           {
-            v20 = [v19 title];
-            [v9 setObject:v20 forKeyedSubscript:v14];
+            title = [enrolledBetaProgramForCurrentDevice title];
+            [v9 setObject:title forKeyedSubscript:v14];
           }
 
           else
@@ -120,17 +120,17 @@
 
   if (self->_controller)
   {
-    v21 = v33;
+    v21 = handlerCopy;
     if (objc_opt_respondsToSelector())
     {
       v22 = +[SUCoreDDMUtilities sharedLogger];
-      v23 = [v22 oslog];
+      oslog2 = [v22 oslog];
 
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315138;
         v44 = "[SoftwareUpdateStatus queryForStatusWithKeyPaths:store:completionHandler:]";
-        _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%s: Querying for status", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "%s: Querying for status", buf, 0xCu);
       }
 
       controller = self->_controller;
@@ -139,7 +139,7 @@
       v35[2] = __75__SoftwareUpdateStatus_queryForStatusWithKeyPaths_store_completionHandler___block_invoke;
       v35[3] = &unk_10000C348;
       v36 = v9;
-      v37 = v33;
+      v37 = handlerCopy;
       [(SUCoreDDMControllerProtocol *)controller getDDMStatusWithKeys:obj completion:v35];
 
       v25 = v36;
@@ -161,19 +161,19 @@
   else
   {
     v25 = @"nil";
-    v21 = v33;
+    v21 = handlerCopy;
   }
 
   v27 = +[SUCoreDDMUtilities sharedLogger];
-  v28 = [v27 oslog];
+  oslog3 = [v27 oslog];
 
-  if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v44 = "[SoftwareUpdateStatus queryForStatusWithKeyPaths:store:completionHandler:]";
     v45 = 2114;
     v46 = v25;
-    _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%s: No valid controller (%{public}@)", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oslog3, OS_LOG_TYPE_DEFAULT, "%s: No valid controller (%{public}@)", buf, 0x16u);
   }
 
   v29 = +[SUCore sharedCore];

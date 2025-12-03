@@ -1,59 +1,59 @@
 @interface _PSContactResolver
 + (id)handlesForContactFavorites;
-+ (id)normalizedHandlesDictionaryFromHandles:(id)a3;
-- (_PSContactResolver)initWithContactStore:(id)a3 keysToFetch:(id)a4;
-- (id)allEmailAndPhoneNumberHandlesForContact:(id)a3;
-- (id)contactWithIdentifier:(id)a3;
-- (id)resolveContact:(id)a3;
-- (id)resolveContactFromINPerson:(id)a3;
-- (id)resolveContactIdentifier:(id)a3;
-- (id)resolveContactIfPossibleFromContactIdentifierString:(id)a3 pickFirstOfMultiple:(BOOL)a4;
++ (id)normalizedHandlesDictionaryFromHandles:(id)handles;
+- (_PSContactResolver)initWithContactStore:(id)store keysToFetch:(id)fetch;
+- (id)allEmailAndPhoneNumberHandlesForContact:(id)contact;
+- (id)contactWithIdentifier:(id)identifier;
+- (id)resolveContact:(id)contact;
+- (id)resolveContactFromINPerson:(id)person;
+- (id)resolveContactIdentifier:(id)identifier;
+- (id)resolveContactIfPossibleFromContactIdentifierString:(id)string pickFirstOfMultiple:(BOOL)multiple;
 @end
 
 @implementation _PSContactResolver
 
-- (_PSContactResolver)initWithContactStore:(id)a3 keysToFetch:(id)a4
+- (_PSContactResolver)initWithContactStore:(id)store keysToFetch:(id)fetch
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  fetchCopy = fetch;
   v12.receiver = self;
   v12.super_class = _PSContactResolver;
   v9 = [(_PSContactResolver *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contactStore, a3);
-    objc_storeStrong(&v10->_keysToFetch, a4);
+    objc_storeStrong(&v9->_contactStore, store);
+    objc_storeStrong(&v10->_keysToFetch, fetch);
   }
 
   return v10;
 }
 
-- (id)contactWithIdentifier:(id)a3
+- (id)contactWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(_PSContactResolver *)self contactStore];
-  v6 = [(_PSContactResolver *)self keysToFetch];
-  v7 = [v5 unifiedContactWithIdentifier:v4 keysToFetch:v6 error:0];
+  identifierCopy = identifier;
+  contactStore = [(_PSContactResolver *)self contactStore];
+  keysToFetch = [(_PSContactResolver *)self keysToFetch];
+  v7 = [contactStore unifiedContactWithIdentifier:identifierCopy keysToFetch:keysToFetch error:0];
 
   return v7;
 }
 
-- (id)resolveContactFromINPerson:(id)a3
+- (id)resolveContactFromINPerson:(id)person
 {
-  v4 = a3;
-  v5 = [v4 contactIdentifier];
+  personCopy = person;
+  contactIdentifier = [personCopy contactIdentifier];
 
-  if (!v5 || ([v4 contactIdentifier], v6 = objc_claimAutoreleasedReturnValue(), -[_PSContactResolver contactWithIdentifier:](self, "contactWithIdentifier:", v6), v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
+  if (!contactIdentifier || ([personCopy contactIdentifier], v6 = objc_claimAutoreleasedReturnValue(), -[_PSContactResolver contactWithIdentifier:](self, "contactWithIdentifier:", v6), v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
   {
-    v8 = [v4 personHandle];
-    v9 = [v8 value];
+    personHandle = [personCopy personHandle];
+    value = [personHandle value];
 
-    if (v9)
+    if (value)
     {
-      v10 = [v4 personHandle];
-      v11 = [v10 value];
-      v7 = [(_PSContactResolver *)self resolveContactIfPossibleFromContactIdentifierString:v11];
+      personHandle2 = [personCopy personHandle];
+      value2 = [personHandle2 value];
+      v7 = [(_PSContactResolver *)self resolveContactIfPossibleFromContactIdentifierString:value2];
     }
 
     else
@@ -65,14 +65,14 @@
   return v7;
 }
 
-- (id)allEmailAndPhoneNumberHandlesForContact:(id)a3
+- (id)allEmailAndPhoneNumberHandlesForContact:(id)contact
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 phoneNumbers];
-  v5 = [v4 valueForKey:@"value"];
+  contactCopy = contact;
+  phoneNumbers = [contactCopy phoneNumbers];
+  v5 = [phoneNumbers valueForKey:@"value"];
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -93,12 +93,12 @@
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 unformattedInternationalStringValue];
+        unformattedInternationalStringValue = [v12 unformattedInternationalStringValue];
 
-        if (v13)
+        if (unformattedInternationalStringValue)
         {
-          v14 = [v12 unformattedInternationalStringValue];
-          [v6 addObject:v14];
+          unformattedInternationalStringValue2 = [v12 unformattedInternationalStringValue];
+          [array addObject:unformattedInternationalStringValue2];
         }
       }
 
@@ -108,20 +108,20 @@
     while (v9);
   }
 
-  v15 = [v3 emailAddresses];
-  v16 = [v15 valueForKey:@"value"];
+  emailAddresses = [contactCopy emailAddresses];
+  v16 = [emailAddresses valueForKey:@"value"];
 
-  [v6 addObjectsFromArray:v16];
+  [array addObjectsFromArray:v16];
   v17 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return array;
 }
 
-- (id)resolveContactIdentifier:(id)a3
+- (id)resolveContactIdentifier:(id)identifier
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     goto LABEL_15;
   }
@@ -131,39 +131,39 @@
     goto LABEL_15;
   }
 
-  v5 = [v4 identifier];
+  identifier = [identifierCopy identifier];
 
-  if (!v5)
+  if (!identifier)
   {
     goto LABEL_15;
   }
 
-  v6 = [v4 identifier];
-  v7 = [v6 containsString:@"@"];
+  identifier2 = [identifierCopy identifier];
+  v7 = [identifier2 containsString:@"@"];
 
   CNContactClass_2 = getCNContactClass_2();
   if (v7)
   {
-    v9 = [v4 identifier];
-    v10 = [CNContactClass_2 predicateForContactsMatchingEmailAddress:v9];
+    identifier3 = [identifierCopy identifier];
+    v10 = [CNContactClass_2 predicateForContactsMatchingEmailAddress:identifier3];
   }
 
   else
   {
     CNPhoneNumberClass_0 = getCNPhoneNumberClass_0();
-    v9 = [v4 identifier];
-    v12 = [CNPhoneNumberClass_0 phoneNumberWithStringValue:v9];
+    identifier3 = [identifierCopy identifier];
+    v12 = [CNPhoneNumberClass_0 phoneNumberWithStringValue:identifier3];
     v10 = [CNContactClass_2 predicateForContactsMatchingPhoneNumber:v12];
   }
 
   if (!v10)
   {
 LABEL_15:
-    v22 = 0;
+    identifier4 = 0;
     goto LABEL_16;
   }
 
-  v13 = [(_PSContactResolver *)self contactStore];
+  contactStore = [(_PSContactResolver *)self contactStore];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -194,7 +194,7 @@ LABEL_15:
   v17 = v32[0];
   v18 = [v16 arrayWithObjects:v32 count:1];
   v26[0] = 0;
-  v19 = [v13 unifiedContactsMatchingPredicate:v10 keysToFetch:v18 error:v26];
+  v19 = [contactStore unifiedContactsMatchingPredicate:v10 keysToFetch:v18 error:v26];
   v20 = v26[0];
 
   if (v20)
@@ -211,28 +211,28 @@ LABEL_15:
   if ([v19 count] != 1)
   {
 LABEL_21:
-    v22 = 0;
-    v25 = v19;
+    identifier4 = 0;
+    firstObject = v19;
     goto LABEL_22;
   }
 
-  v25 = [v19 firstObject];
-  v22 = [v25 identifier];
+  firstObject = [v19 firstObject];
+  identifier4 = [firstObject identifier];
   v20 = v19;
 LABEL_22:
 
 LABEL_16:
   v23 = *MEMORY[0x1E69E9840];
 
-  return v22;
+  return identifier4;
 }
 
-- (id)resolveContact:(id)a3
+- (id)resolveContact:(id)contact
 {
-  if (a3)
+  if (contact)
   {
-    v4 = [a3 identifier];
-    v5 = [(_PSContactResolver *)self resolveContactIfPossibleFromContactIdentifierString:v4];
+    identifier = [contact identifier];
+    v5 = [(_PSContactResolver *)self resolveContactIfPossibleFromContactIdentifierString:identifier];
   }
 
   else
@@ -243,18 +243,18 @@ LABEL_16:
   return v5;
 }
 
-- (id)resolveContactIfPossibleFromContactIdentifierString:(id)a3 pickFirstOfMultiple:(BOOL)a4
+- (id)resolveContactIfPossibleFromContactIdentifierString:(id)string pickFirstOfMultiple:(BOOL)multiple
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  multipleCopy = multiple;
+  stringCopy = string;
+  v7 = stringCopy;
+  if (!stringCopy)
   {
     v14 = 0;
     goto LABEL_9;
   }
 
-  v8 = [v6 containsString:@"@"];
+  v8 = [stringCopy containsString:@"@"];
   CNContactClass_2 = getCNContactClass_2();
   v10 = CNContactClass_2;
   if (!v8)
@@ -279,9 +279,9 @@ LABEL_7:
   }
 
 LABEL_4:
-  v12 = [(_PSContactResolver *)self contactStore];
-  v13 = [(_PSContactResolver *)self keysToFetch];
-  v14 = _PSResolveContactWithPredicate(v11, v12, v13, v4);
+  contactStore = [(_PSContactResolver *)self contactStore];
+  keysToFetch = [(_PSContactResolver *)self keysToFetch];
+  v14 = _PSResolveContactWithPredicate(v11, contactStore, keysToFetch, multipleCopy);
 
 LABEL_8:
 LABEL_9:
@@ -289,16 +289,16 @@ LABEL_9:
   return v14;
 }
 
-+ (id)normalizedHandlesDictionaryFromHandles:(id)a3
++ (id)normalizedHandlesDictionaryFromHandles:(id)handles
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  handlesCopy = handles;
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(handlesCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = handlesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -322,10 +322,10 @@ LABEL_9:
         else
         {
           v11 = [getCNPhoneNumberClass_0() phoneNumberWithStringValue:v10];
-          v12 = [v11 unformattedInternationalStringValue];
-          if ([v12 length])
+          unformattedInternationalStringValue = [v11 unformattedInternationalStringValue];
+          if ([unformattedInternationalStringValue length])
           {
-            [v4 setObject:v12 forKeyedSubscript:v10];
+            [v4 setObject:unformattedInternationalStringValue forKeyedSubscript:v10];
           }
         }
       }
@@ -344,14 +344,14 @@ LABEL_9:
 + (id)handlesForContactFavorites
 {
   v2 = objc_opt_new();
-  v3 = [MEMORY[0x1E69978A8] sharedInstance];
+  mEMORY[0x1E69978A8] = [MEMORY[0x1E69978A8] sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48___PSContactResolver_handlesForContactFavorites__block_invoke;
   v6[3] = &unk_1E7C257C8;
   v4 = v2;
   v7 = v4;
-  [v3 accessFavoriteContactEntriesWithBlock:v6];
+  [mEMORY[0x1E69978A8] accessFavoriteContactEntriesWithBlock:v6];
 
   return v4;
 }

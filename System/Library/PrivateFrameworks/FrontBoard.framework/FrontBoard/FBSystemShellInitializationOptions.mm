@@ -1,27 +1,27 @@
 @interface FBSystemShellInitializationOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (FBSystemShellInitializationOptions)init;
-- (id)_initWithOptions:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithOptions:(id)options;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation FBSystemShellInitializationOptions
 
-- (id)_initWithOptions:(id)a3
+- (id)_initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = [(FBSystemShellInitializationOptions *)self init];
   v6 = v5;
   if (v5)
   {
-    v5->_resetDarkBootState = *(v4 + 10);
-    v5->_initializeReadyForInteraction = *(v4 + 8);
-    v5->_shouldWaitForMigrator = *(v4 + 9);
-    v5->_systemSleepInterval = *(v4 + 3);
-    objc_storeStrong(&v5->_independentWatchdogPortName, *(v4 + 2));
-    v6->_initializeDisplayManager = *(v4 + 11);
-    v7 = [*(v4 + 4) copy];
+    v5->_resetDarkBootState = *(optionsCopy + 10);
+    v5->_initializeReadyForInteraction = *(optionsCopy + 8);
+    v5->_shouldWaitForMigrator = *(optionsCopy + 9);
+    v5->_systemSleepInterval = *(optionsCopy + 3);
+    objc_storeStrong(&v5->_independentWatchdogPortName, *(optionsCopy + 2));
+    v6->_initializeDisplayManager = *(optionsCopy + 11);
+    v7 = [*(optionsCopy + 4) copy];
     registerServicesBlock = v6->_registerServicesBlock;
     v6->_registerServicesBlock = v7;
   }
@@ -46,25 +46,25 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendBool:self->_resetDarkBootState];
-  v5 = [v3 appendBool:self->_initializeReadyForInteraction];
-  v6 = [v3 appendBool:self->_shouldWaitForMigrator];
-  v7 = [v3 appendBool:self->_initializeDisplayManager];
-  v8 = [v3 appendDouble:self->_systemSleepInterval];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendBool:self->_resetDarkBootState];
+  v5 = [builder appendBool:self->_initializeReadyForInteraction];
+  v6 = [builder appendBool:self->_shouldWaitForMigrator];
+  v7 = [builder appendBool:self->_initializeDisplayManager];
+  v8 = [builder appendDouble:self->_systemSleepInterval];
   v9 = MEMORY[0x1AC572E40](self->_registerServicesBlock);
-  v10 = [v3 appendObject:v9];
+  v10 = [builder appendObject:v9];
 
-  v11 = [v3 appendObject:self->_independentWatchdogPortName];
-  v12 = [v3 hash];
+  v11 = [builder appendObject:self->_independentWatchdogPortName];
+  v12 = [builder hash];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v20 = 1;
   }
@@ -74,7 +74,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       initializeReadyForInteraction = self->_initializeReadyForInteraction;
       v7 = v5->_initializeReadyForInteraction;
       if (!BSEqualBools())
@@ -124,7 +124,7 @@ LABEL_12:
   return v20;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [FBMutableSystemShellInitializationOptions alloc];
 

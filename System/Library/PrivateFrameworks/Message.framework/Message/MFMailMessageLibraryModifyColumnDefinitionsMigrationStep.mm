@@ -1,7 +1,7 @@
 @interface MFMailMessageLibraryModifyColumnDefinitionsMigrationStep
 - (BOOL)performMigrationStep;
 - (EFSQLSchema)schema;
-- (MFMailMessageLibraryModifyColumnDefinitionsMigrationStep)initWithSQLiteConnection:(id)a3;
+- (MFMailMessageLibraryModifyColumnDefinitionsMigrationStep)initWithSQLiteConnection:(id)connection;
 - (id)actionFlagsTableSchema;
 - (id)actionLabelsTableSchema;
 - (id)actionMessagesTableSchema;
@@ -14,16 +14,16 @@
 
 @implementation MFMailMessageLibraryModifyColumnDefinitionsMigrationStep
 
-- (MFMailMessageLibraryModifyColumnDefinitionsMigrationStep)initWithSQLiteConnection:(id)a3
+- (MFMailMessageLibraryModifyColumnDefinitionsMigrationStep)initWithSQLiteConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = MFMailMessageLibraryModifyColumnDefinitionsMigrationStep;
   v6 = [(MFMailMessageLibraryModifyColumnDefinitionsMigrationStep *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
@@ -32,62 +32,62 @@
 - (EFSQLSchema)schema
 {
   v29[8] = *MEMORY[0x1E69E9840];
-  v3 = [(MFMailMessageLibraryModifyColumnDefinitionsMigrationStep *)self messagesTableStubSchema];
-  v4 = [(MFMailMessageLibraryModifyColumnDefinitionsMigrationStep *)self mailboxesTableStubSchema];
-  v5 = [(MFMailMessageLibraryModifyColumnDefinitionsMigrationStep *)self serverMessagesTableSchema];
-  v6 = [(MFMailMessageLibraryModifyColumnDefinitionsMigrationStep *)self serverLabelsTableSchema];
-  v7 = [(MFMailMessageLibraryModifyColumnDefinitionsMigrationStep *)self localMessageActionsTableSchema];
-  v8 = [(MFMailMessageLibraryModifyColumnDefinitionsMigrationStep *)self actionMessagesTableSchema];
-  v9 = [(MFMailMessageLibraryModifyColumnDefinitionsMigrationStep *)self actionLabelsTableSchema];
-  v10 = [(MFMailMessageLibraryModifyColumnDefinitionsMigrationStep *)self actionFlagsTableSchema];
-  v11 = [v5 columnForName:@"message"];
-  [v11 setAsForeignKeyForTable:v3 onDelete:3 onUpdate:0];
+  messagesTableStubSchema = [(MFMailMessageLibraryModifyColumnDefinitionsMigrationStep *)self messagesTableStubSchema];
+  mailboxesTableStubSchema = [(MFMailMessageLibraryModifyColumnDefinitionsMigrationStep *)self mailboxesTableStubSchema];
+  serverMessagesTableSchema = [(MFMailMessageLibraryModifyColumnDefinitionsMigrationStep *)self serverMessagesTableSchema];
+  serverLabelsTableSchema = [(MFMailMessageLibraryModifyColumnDefinitionsMigrationStep *)self serverLabelsTableSchema];
+  localMessageActionsTableSchema = [(MFMailMessageLibraryModifyColumnDefinitionsMigrationStep *)self localMessageActionsTableSchema];
+  actionMessagesTableSchema = [(MFMailMessageLibraryModifyColumnDefinitionsMigrationStep *)self actionMessagesTableSchema];
+  actionLabelsTableSchema = [(MFMailMessageLibraryModifyColumnDefinitionsMigrationStep *)self actionLabelsTableSchema];
+  actionFlagsTableSchema = [(MFMailMessageLibraryModifyColumnDefinitionsMigrationStep *)self actionFlagsTableSchema];
+  v11 = [serverMessagesTableSchema columnForName:@"message"];
+  [v11 setAsForeignKeyForTable:messagesTableStubSchema onDelete:3 onUpdate:0];
 
-  v12 = [v5 columnForName:@"mailbox"];
-  [v12 setAsForeignKeyForTable:v4 onDelete:2 onUpdate:0];
+  v12 = [serverMessagesTableSchema columnForName:@"mailbox"];
+  [v12 setAsForeignKeyForTable:mailboxesTableStubSchema onDelete:2 onUpdate:0];
 
-  v13 = [v6 columnForName:@"server_message"];
-  [v13 setAsForeignKeyForTable:v5 onDelete:2 onUpdate:0];
+  v13 = [serverLabelsTableSchema columnForName:@"server_message"];
+  [v13 setAsForeignKeyForTable:serverMessagesTableSchema onDelete:2 onUpdate:0];
 
-  v14 = [v6 columnForName:@"label"];
-  [v14 setAsForeignKeyForTable:v4 onDelete:2 onUpdate:0];
+  v14 = [serverLabelsTableSchema columnForName:@"label"];
+  [v14 setAsForeignKeyForTable:mailboxesTableStubSchema onDelete:2 onUpdate:0];
 
-  v15 = [v7 columnForName:@"mailbox"];
-  [v15 setAsForeignKeyForTable:v4 onDelete:2 onUpdate:0];
+  v15 = [localMessageActionsTableSchema columnForName:@"mailbox"];
+  [v15 setAsForeignKeyForTable:mailboxesTableStubSchema onDelete:2 onUpdate:0];
 
-  v16 = [v7 columnForName:@"source_mailbox"];
-  [v16 setAsForeignKeyForTable:v4 onDelete:2 onUpdate:0];
+  v16 = [localMessageActionsTableSchema columnForName:@"source_mailbox"];
+  [v16 setAsForeignKeyForTable:mailboxesTableStubSchema onDelete:2 onUpdate:0];
 
-  v17 = [v7 columnForName:@"destination_mailbox"];
-  [v17 setAsForeignKeyForTable:v4 onDelete:2 onUpdate:0];
+  v17 = [localMessageActionsTableSchema columnForName:@"destination_mailbox"];
+  [v17 setAsForeignKeyForTable:mailboxesTableStubSchema onDelete:2 onUpdate:0];
 
-  v18 = [v8 columnForName:@"action"];
-  [v18 setAsForeignKeyForTable:v7 onDelete:2 onUpdate:0];
+  v18 = [actionMessagesTableSchema columnForName:@"action"];
+  [v18 setAsForeignKeyForTable:localMessageActionsTableSchema onDelete:2 onUpdate:0];
 
-  v19 = [v8 columnForName:@"message"];
-  [v19 setAsForeignKeyForTable:v3 onDelete:3 onUpdate:0];
+  v19 = [actionMessagesTableSchema columnForName:@"message"];
+  [v19 setAsForeignKeyForTable:messagesTableStubSchema onDelete:3 onUpdate:0];
 
-  v20 = [v8 columnForName:@"destination_message"];
-  [v20 setAsForeignKeyForTable:v3 onDelete:2 onUpdate:0];
+  v20 = [actionMessagesTableSchema columnForName:@"destination_message"];
+  [v20 setAsForeignKeyForTable:messagesTableStubSchema onDelete:2 onUpdate:0];
 
-  v21 = [v9 columnForName:@"action"];
-  [v21 setAsForeignKeyForTable:v7 onDelete:2 onUpdate:0];
+  v21 = [actionLabelsTableSchema columnForName:@"action"];
+  [v21 setAsForeignKeyForTable:localMessageActionsTableSchema onDelete:2 onUpdate:0];
 
-  v22 = [v9 columnForName:@"label"];
-  [v22 setAsForeignKeyForTable:v4 onDelete:2 onUpdate:0];
+  v22 = [actionLabelsTableSchema columnForName:@"label"];
+  [v22 setAsForeignKeyForTable:mailboxesTableStubSchema onDelete:2 onUpdate:0];
 
-  v23 = [v10 columnForName:@"action"];
-  [v23 setAsForeignKeyForTable:v7 onDelete:2 onUpdate:0];
+  v23 = [actionFlagsTableSchema columnForName:@"action"];
+  [v23 setAsForeignKeyForTable:localMessageActionsTableSchema onDelete:2 onUpdate:0];
 
   v24 = objc_alloc(MEMORY[0x1E699B940]);
-  v29[0] = v3;
-  v29[1] = v4;
-  v29[2] = v5;
-  v29[3] = v6;
-  v29[4] = v7;
-  v29[5] = v8;
-  v29[6] = v9;
-  v29[7] = v10;
+  v29[0] = messagesTableStubSchema;
+  v29[1] = mailboxesTableStubSchema;
+  v29[2] = serverMessagesTableSchema;
+  v29[3] = serverLabelsTableSchema;
+  v29[4] = localMessageActionsTableSchema;
+  v29[5] = actionMessagesTableSchema;
+  v29[6] = actionLabelsTableSchema;
+  v29[7] = actionFlagsTableSchema;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:8];
   v26 = [v24 initWithTables:v25];
 
@@ -292,15 +292,15 @@
 
 - (BOOL)performMigrationStep
 {
-  v3 = [(MFMailMessageLibraryModifyColumnDefinitionsMigrationStep *)self connection];
-  v4 = [(MFMailMessageLibraryModifyColumnDefinitionsMigrationStep *)self schema];
-  v5 = [v3 executeStatementString:@"ALTER TABLE server_messages RENAME TO server_messages_old" errorMessage:@"Renaming old server_messages"];
-  v6 = [v4 tableForName:@"server_messages"];
+  connection = [(MFMailMessageLibraryModifyColumnDefinitionsMigrationStep *)self connection];
+  schema = [(MFMailMessageLibraryModifyColumnDefinitionsMigrationStep *)self schema];
+  v5 = [connection executeStatementString:@"ALTER TABLE server_messages RENAME TO server_messages_old" errorMessage:@"Renaming old server_messages"];
+  v6 = [schema tableForName:@"server_messages"];
   v7 = [v6 definitionWithDatabaseName:0];
 
-  if (v5 && [v3 executeStatementString:v7 errorMessage:@"Creating new server_messages"] && objc_msgSend(v3, "executeStatementString:errorMessage:", @"INSERT INTO server_messages SELECT * FROM server_messages_old", @"Populating new server_messages from old server_messages") && objc_msgSend(v3, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS server_messages_old", @"Dropping old server_messages") && objc_msgSend(v3, "executeStatementString:errorMessage:", v7, @"Creating new indexes for server_messages"))
+  if (v5 && [connection executeStatementString:v7 errorMessage:@"Creating new server_messages"] && objc_msgSend(connection, "executeStatementString:errorMessage:", @"INSERT INTO server_messages SELECT * FROM server_messages_old", @"Populating new server_messages from old server_messages") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS server_messages_old", @"Dropping old server_messages") && objc_msgSend(connection, "executeStatementString:errorMessage:", v7, @"Creating new indexes for server_messages"))
   {
-    v8 = [v3 executeStatementString:@"ALTER TABLE local_message_actions RENAME TO local_message_actions_old" errorMessage:@"Renaming old local_message_actions"];
+    v8 = [connection executeStatementString:@"ALTER TABLE local_message_actions RENAME TO local_message_actions_old" errorMessage:@"Renaming old local_message_actions"];
   }
 
   else
@@ -308,14 +308,14 @@
     v8 = 0;
   }
 
-  v9 = [v4 tableForName:@"local_message_actions"];
+  v9 = [schema tableForName:@"local_message_actions"];
   v10 = [v9 definitionWithDatabaseName:0];
 
   if (v8)
   {
-    if ([v3 executeStatementString:v10 errorMessage:@"Creating new local_message_actions"] && objc_msgSend(v3, "executeStatementString:errorMessage:", @"INSERT INTO local_message_actions SELECT * FROM local_message_actions_old", @"Populating new local_message_actions from old local_message_actions") && objc_msgSend(v3, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS local_message_actions_old", @"Dropping old local_message_actions"))
+    if ([connection executeStatementString:v10 errorMessage:@"Creating new local_message_actions"] && objc_msgSend(connection, "executeStatementString:errorMessage:", @"INSERT INTO local_message_actions SELECT * FROM local_message_actions_old", @"Populating new local_message_actions from old local_message_actions") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS local_message_actions_old", @"Dropping old local_message_actions"))
     {
-      LOBYTE(v8) = [v3 executeStatementString:v10 errorMessage:@"Creating new indexes for local_message_actions"];
+      LOBYTE(v8) = [connection executeStatementString:v10 errorMessage:@"Creating new indexes for local_message_actions"];
     }
 
     else

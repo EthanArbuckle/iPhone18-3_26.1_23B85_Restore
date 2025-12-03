@@ -1,32 +1,32 @@
 @interface FaceAestheticQualityFilterSVMDataScalerInput
-- (FaceAestheticQualityFilterSVMDataScalerInput)initWithInput:(id)a3;
-- (id)featureValueForName:(id)a3;
+- (FaceAestheticQualityFilterSVMDataScalerInput)initWithInput:(id)input;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation FaceAestheticQualityFilterSVMDataScalerInput
 
-- (FaceAestheticQualityFilterSVMDataScalerInput)initWithInput:(id)a3
+- (FaceAestheticQualityFilterSVMDataScalerInput)initWithInput:(id)input
 {
-  v5 = a3;
+  inputCopy = input;
   v9.receiver = self;
   v9.super_class = FaceAestheticQualityFilterSVMDataScalerInput;
   v6 = [(FaceAestheticQualityFilterSVMDataScalerInput *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_input, a3);
+    objc_storeStrong(&v6->_input, input);
   }
 
   return v7;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"input"])
+  if ([name isEqualToString:@"input"])
   {
     v4 = MEMORY[0x277CBFEF8];
-    v5 = [(FaceAestheticQualityFilterSVMDataScalerInput *)self input];
-    v6 = [v4 featureValueWithMultiArray:v5];
+    input = [(FaceAestheticQualityFilterSVMDataScalerInput *)self input];
+    v6 = [v4 featureValueWithMultiArray:input];
   }
 
   else

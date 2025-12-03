@@ -2,25 +2,25 @@
 + (void)initialize;
 - (WBSHighlightManager)init;
 - (WBSStartPageSuggestionsProviderDelegate)suggestionsProviderDelegate;
-- (id)attributionViewForHighlight:(id)a3;
+- (id)attributionViewForHighlight:(id)highlight;
 - (void)_didFetchHighlights;
 - (void)_enableNewSLAttributionViewAppereance;
-- (void)_setHighlights:(id)a3;
-- (void)_showBannerIfNeededForPresenter:(id)a3;
+- (void)_setHighlights:(id)highlights;
+- (void)_showBannerIfNeededForPresenter:(id)presenter;
 - (void)_updateAttributionViews;
 - (void)_updateHighlights;
-- (void)fetchMetadataForHighlight:(id)a3 completionHandler:(id)a4;
-- (void)highlightCenter:(id)a3 didRemoveHighlights:(id)a4;
-- (void)highlightCenterDidAddHighlights:(id)a3;
-- (void)sendFeedbackForHighlight:(id)a3 withType:(unint64_t)a4 inPrivateBrowsing:(BOOL)a5;
-- (void)updateHighlightForAttributionPresenter:(id)a3;
+- (void)fetchMetadataForHighlight:(id)highlight completionHandler:(id)handler;
+- (void)highlightCenter:(id)center didRemoveHighlights:(id)highlights;
+- (void)highlightCenterDidAddHighlights:(id)highlights;
+- (void)sendFeedbackForHighlight:(id)highlight withType:(unint64_t)type inPrivateBrowsing:(BOOL)browsing;
+- (void)updateHighlightForAttributionPresenter:(id)presenter;
 @end
 
 @implementation WBSHighlightManager
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = NSClassFromString(&cfstr_Slhighlight.isa);
     if (v2)
@@ -142,31 +142,31 @@ void __40__WBSHighlightManager__updateHighlights__block_invoke(uint64_t a1)
   objc_destroyWeak(&v4);
 }
 
-- (void)fetchMetadataForHighlight:(id)a3 completionHandler:(id)a4
+- (void)fetchMetadataForHighlight:(id)highlight completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [(NSCache *)self->_linkDataCache objectForKey:v8];
+  highlightCopy = highlight;
+  handlerCopy = handler;
+  identifier = [highlightCopy identifier];
+  v9 = [(NSCache *)self->_linkDataCache objectForKey:identifier];
   if (v9)
   {
-    v7[2](v7, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 
   else
   {
-    v10 = [v6 attributions];
-    v11 = [v10 firstObject];
-    v12 = [v11 uniqueIdentifier];
+    attributions = [highlightCopy attributions];
+    firstObject = [attributions firstObject];
+    uniqueIdentifier = [firstObject uniqueIdentifier];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __67__WBSHighlightManager_fetchMetadataForHighlight_completionHandler___block_invoke;
     v13[3] = &unk_1E8285678;
-    v14 = v6;
-    v15 = self;
-    v16 = v8;
-    v17 = v7;
-    [(WBSHighlightManager *)self loadLinkMetadataForMessageWithGUID:v12 completionHandler:v13];
+    v14 = highlightCopy;
+    selfCopy = self;
+    v16 = identifier;
+    v17 = handlerCopy;
+    [(WBSHighlightManager *)self loadLinkMetadataForMessageWithGUID:uniqueIdentifier completionHandler:v13];
   }
 }
 
@@ -248,9 +248,9 @@ uint64_t __67__WBSHighlightManager_fetchMetadataForHighlight_completionHandler__
   return v2();
 }
 
-- (void)updateHighlightForAttributionPresenter:(id)a3
+- (void)updateHighlightForAttributionPresenter:(id)presenter
 {
-  v4 = a3;
+  presenterCopy = presenter;
   if (self->_isFetchingHighlights)
   {
     v5 = WBS_LOG_CHANNEL_PREFIXInterstellar();
@@ -263,37 +263,37 @@ uint64_t __67__WBSHighlightManager_fetchMetadataForHighlight_completionHandler__
     v6 = WBS_LOG_CHANNEL_PREFIXInterstellar();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      [(WBSHighlightManager *)v6 updateHighlightForAttributionPresenter:v4];
+      [(WBSHighlightManager *)v6 updateHighlightForAttributionPresenter:presenterCopy];
     }
 
     deferredAttributionPresenters = self->_deferredAttributionPresenters;
     if (!deferredAttributionPresenters)
     {
-      v8 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v9 = self->_deferredAttributionPresenters;
-      self->_deferredAttributionPresenters = v8;
+      self->_deferredAttributionPresenters = array;
 
       deferredAttributionPresenters = self->_deferredAttributionPresenters;
     }
 
-    [(NSMutableArray *)deferredAttributionPresenters addObject:v4];
+    [(NSMutableArray *)deferredAttributionPresenters addObject:presenterCopy];
   }
 
   else
   {
-    [(WBSHighlightManager *)self _showBannerIfNeededForPresenter:v4];
+    [(WBSHighlightManager *)self _showBannerIfNeededForPresenter:presenterCopy];
   }
 }
 
-- (void)_showBannerIfNeededForPresenter:(id)a3
+- (void)_showBannerIfNeededForPresenter:(id)presenter
 {
-  v4 = a3;
+  presenterCopy = presenter;
   highlights = self->_highlights;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __55__WBSHighlightManager__showBannerIfNeededForPresenter___block_invoke;
   v11[3] = &unk_1E82856A0;
-  v6 = v4;
+  v6 = presenterCopy;
   v12 = v6;
   v7 = [(NSArray *)highlights safari_firstObjectPassingTest:v11];
   if (v7)
@@ -328,31 +328,31 @@ uint64_t __55__WBSHighlightManager__showBannerIfNeededForPresenter___block_invok
   return v9;
 }
 
-- (void)sendFeedbackForHighlight:(id)a3 withType:(unint64_t)a4 inPrivateBrowsing:(BOOL)a5
+- (void)sendFeedbackForHighlight:(id)highlight withType:(unint64_t)type inPrivateBrowsing:(BOOL)browsing
 {
-  v8 = a3;
-  if (!a5)
+  highlightCopy = highlight;
+  if (!browsing)
   {
     v9 = WBS_LOG_CHANNEL_PREFIXInterstellar();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [WBSHighlightManager sendFeedbackForHighlight:v9 withType:v8 inPrivateBrowsing:a4];
+      [WBSHighlightManager sendFeedbackForHighlight:v9 withType:highlightCopy inPrivateBrowsing:type];
     }
 
-    [(SLHighlightCenter *)self->_highlightCenter feedbackForHighlight:v8 withType:a4 completionBlock:0];
+    [(SLHighlightCenter *)self->_highlightCenter feedbackForHighlight:highlightCopy withType:type completionBlock:0];
   }
 }
 
 - (void)_updateAttributionViews
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(WBSHighlightManager *)self highlights];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  highlights = [(WBSHighlightManager *)self highlights];
+  v5 = [highlights countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -363,43 +363,43 @@ uint64_t __55__WBSHighlightManager__showBannerIfNeededForPresenter___block_invok
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(highlights);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [(NSMutableDictionary *)self->_highlightToAttributionViewMap objectForKeyedSubscript:v10];
+        identifier = [v9 identifier];
+        v11 = [(NSMutableDictionary *)self->_highlightToAttributionViewMap objectForKeyedSubscript:identifier];
         if (v11)
         {
-          [(NSMutableDictionary *)v3 setObject:v11 forKeyedSubscript:v10];
+          [(NSMutableDictionary *)dictionary setObject:v11 forKeyedSubscript:identifier];
         }
 
         else
         {
           v12 = [objc_alloc(getSLAttributionViewClass()) initWithHighlight:v9];
-          [(NSMutableDictionary *)v3 setObject:v12 forKeyedSubscript:v10];
+          [(NSMutableDictionary *)dictionary setObject:v12 forKeyedSubscript:identifier];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [highlights countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 
   highlightToAttributionViewMap = self->_highlightToAttributionViewMap;
-  self->_highlightToAttributionViewMap = v3;
+  self->_highlightToAttributionViewMap = dictionary;
 }
 
-- (id)attributionViewForHighlight:(id)a3
+- (id)attributionViewForHighlight:(id)highlight
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(NSMutableDictionary *)self->_highlightToAttributionViewMap objectForKeyedSubscript:v5];
+  highlightCopy = highlight;
+  identifier = [highlightCopy identifier];
+  v6 = [(NSMutableDictionary *)self->_highlightToAttributionViewMap objectForKeyedSubscript:identifier];
   if (!v6)
   {
-    v6 = [objc_alloc(getSLAttributionViewClass()) initWithHighlight:v4];
-    [(NSMutableDictionary *)self->_highlightToAttributionViewMap setObject:v6 forKeyedSubscript:v5];
+    v6 = [objc_alloc(getSLAttributionViewClass()) initWithHighlight:highlightCopy];
+    [(NSMutableDictionary *)self->_highlightToAttributionViewMap setObject:v6 forKeyedSubscript:identifier];
   }
 
   v7 = v6;
@@ -407,10 +407,10 @@ uint64_t __55__WBSHighlightManager__showBannerIfNeededForPresenter___block_invok
   return v7;
 }
 
-- (void)_setHighlights:(id)a3
+- (void)_setHighlights:(id)highlights
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [a3 safari_filterObjectsUsingBlock:&__block_literal_global_28];
+  v4 = [highlights safari_filterObjectsUsingBlock:&__block_literal_global_28];
   v5 = v4;
   if (v4 != self->_highlights)
   {
@@ -428,8 +428,8 @@ uint64_t __55__WBSHighlightManager__showBannerIfNeededForPresenter___block_invok
     self->_highlights = v6;
 
     [(WBSHighlightManager *)self _updateAttributionViews];
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 postNotificationName:@"WBSHighlightsContentDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"WBSHighlightsContentDidChangeNotification" object:self];
 
     v9 = WBS_LOG_CHANNEL_PREFIXStartPage();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -562,16 +562,16 @@ void __40__WBSHighlightManager__updateHighlights__block_invoke_31(uint64_t a1)
   self->_isFetchingHighlights = 0;
 }
 
-- (void)highlightCenter:(id)a3 didRemoveHighlights:(id)a4
+- (void)highlightCenter:(id)center didRemoveHighlights:(id)highlights
 {
-  v5 = a4;
+  highlightsCopy = highlights;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__WBSHighlightManager_highlightCenter_didRemoveHighlights___block_invoke;
   v7[3] = &unk_1E82834A0;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = highlightsCopy;
+  selfCopy = self;
+  v6 = highlightsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -624,7 +624,7 @@ uint64_t __59__WBSHighlightManager_highlightCenter_didRemoveHighlights___block_i
   return v2 ^ 1;
 }
 
-- (void)highlightCenterDidAddHighlights:(id)a3
+- (void)highlightCenterDidAddHighlights:(id)highlights
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;

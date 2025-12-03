@@ -12,14 +12,14 @@
 - (int)wrapFitType;
 - (int)wrapType;
 - (void)dealloc;
-- (void)dragBy:(CGPoint)a3;
+- (void)dragBy:(CGPoint)by;
 - (void)i_invalidateWrap;
 - (void)invalidate;
 - (void)invalidateExteriorWrap;
 - (void)invalidateParentForWrap;
 - (void)parentDidChange;
-- (void)processChangedProperty:(int)a3;
-- (void)setGeometry:(id)a3;
+- (void)processChangedProperty:(int)property;
+- (void)setGeometry:(id)geometry;
 - (void)updateChildrenFromInfo;
 @end
 
@@ -39,19 +39,19 @@
 
 - (id)childrenForLayout
 {
-  v3 = [(THWContainerLayout *)self childInfosForLayout];
+  childInfosForLayout = [(THWContainerLayout *)self childInfosForLayout];
   result = [(THWContainerLayout *)self additionalLayouts];
-  if (v3 && result)
+  if (childInfosForLayout && result)
   {
 
-    return [v3 arrayByAddingObjectsFromArray:result];
+    return [childInfosForLayout arrayByAddingObjectsFromArray:result];
   }
 
   else
   {
     if (result)
     {
-      v5 = v3 == 0;
+      v5 = childInfosForLayout == 0;
     }
 
     else
@@ -61,7 +61,7 @@
 
     if (!v5)
     {
-      return v3;
+      return childInfosForLayout;
     }
   }
 
@@ -70,19 +70,19 @@
 
 - (void)updateChildrenFromInfo
 {
-  v3 = [(THWContainerLayout *)self childrenForLayout];
-  v4 = [(THWContainerLayout *)self children];
-  if (!v4 || (v5 = [v3 count], v5 != objc_msgSend(v4, "count")))
+  childrenForLayout = [(THWContainerLayout *)self childrenForLayout];
+  children = [(THWContainerLayout *)self children];
+  if (!children || (v5 = [childrenForLayout count], v5 != objc_msgSend(children, "count")))
   {
 LABEL_15:
-    v23 = v4;
-    v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
-    v14 = [(THWContainerLayout *)self layoutController];
+    v23 = children;
+    v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(childrenForLayout, "count")}];
+    layoutController = [(THWContainerLayout *)self layoutController];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v15 = [v3 countByEnumeratingWithState:&v24 objects:v32 count:16];
+    v15 = [childrenForLayout countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (!v15)
     {
       goto LABEL_29;
@@ -97,12 +97,12 @@ LABEL_15:
       {
         if (*v25 != v17)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childrenForLayout);
         }
 
         objc_opt_class();
         v19 = TSUDynamicCast();
-        if (v19 || (v20 = TSUProtocolCast(), (v19 = [v14 layoutForInfo:v20 childOfLayout:self]) != 0))
+        if (v19 || (v20 = TSUProtocolCast(), (v19 = [layoutController layoutForInfo:v20 childOfLayout:self]) != 0))
         {
           v21 = v19;
 LABEL_23:
@@ -123,7 +123,7 @@ LABEL_24:
       }
 
       while (v16 != v18);
-      v22 = [v3 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v22 = [childrenForLayout countByEnumeratingWithState:&v24 objects:v32 count:16];
       v16 = v22;
       if (!v22)
       {
@@ -131,7 +131,7 @@ LABEL_29:
         [(THWContainerLayout *)self setChildren:v13];
 
         [(THWContainerLayout *)self invalidate];
-        v4 = v23;
+        children = v23;
         goto LABEL_30;
       }
     }
@@ -141,7 +141,7 @@ LABEL_29:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = [v3 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  v6 = [childrenForLayout countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v6)
   {
     v7 = v6;
@@ -152,13 +152,13 @@ LABEL_29:
       {
         if (*v29 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childrenForLayout);
         }
 
         v10 = *(*(&v28 + 1) + 8 * i);
         objc_opt_class();
         v11 = TSUDynamicCast();
-        v12 = [v4 objectAtIndex:0];
+        v12 = [children objectAtIndex:0];
         if (v11)
         {
           if (v12 != v11)
@@ -173,7 +173,7 @@ LABEL_29:
         }
       }
 
-      v7 = [v3 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v7 = [childrenForLayout countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v7);
@@ -187,9 +187,9 @@ LABEL_30:
 - (id)i_exteriorTextWrap
 {
   [(THWContainerLayout *)self info];
-  v2 = [TSUProtocolCast() adornmentInfo];
+  adornmentInfo = [TSUProtocolCast() adornmentInfo];
 
-  return [v2 exteriorTextWrap];
+  return [adornmentInfo exteriorTextWrap];
 }
 
 - (CGRect)boundsInfluencingExteriorWrap
@@ -199,10 +199,10 @@ LABEL_30:
   y = v5;
   width = v7;
   height = v9;
-  v11 = [(THWContainerLayout *)self i_exteriorTextWrap];
-  if (v11)
+  i_exteriorTextWrap = [(THWContainerLayout *)self i_exteriorTextWrap];
+  if (i_exteriorTextWrap)
   {
-    [v11 margin];
+    [i_exteriorTextWrap margin];
     if (v12 > 0.0)
     {
       v13 = -v12;
@@ -266,24 +266,24 @@ LABEL_30:
   result = self->mCachedWrapPolygon;
   if (!result)
   {
-    v4 = [(THWContainerLayout *)self i_wrapPath];
-    v5 = [(THWContainerLayout *)self i_exteriorTextWrap];
-    if (v5 && (v6 = v5, [v5 margin], v7 > 0.0))
+    i_wrapPath = [(THWContainerLayout *)self i_wrapPath];
+    i_exteriorTextWrap = [(THWContainerLayout *)self i_exteriorTextWrap];
+    if (i_exteriorTextWrap && (v6 = i_exteriorTextWrap, [i_exteriorTextWrap margin], v7 > 0.0))
     {
-      if ([(TSDBezierPath *)v4 elementCount]>= 1001)
+      if ([(TSDBezierPath *)i_wrapPath elementCount]>= 1001)
       {
         [-[THWContainerLayout geometry](self "geometry")];
         TSDRectWithSize();
-        v4 = [TSDBezierPath bezierPathWithRect:?];
+        i_wrapPath = [TSDBezierPath bezierPathWithRect:?];
       }
 
       [v6 margin];
-      v8 = [TSDBezierPath bezierPathByOffsettingPath:v4 joinStyle:"bezierPathByOffsettingPath:joinStyle:withThreshold:" withThreshold:1];
+      v8 = [TSDBezierPath bezierPathByOffsettingPath:i_wrapPath joinStyle:"bezierPathByOffsettingPath:joinStyle:withThreshold:" withThreshold:1];
     }
 
     else
     {
-      v8 = [(TSDBezierPath *)v4 copy];
+      v8 = [(TSDBezierPath *)i_wrapPath copy];
     }
 
     v9 = v8;
@@ -305,49 +305,49 @@ LABEL_30:
 
 - (BOOL)isHTMLWrap
 {
-  v2 = [(THWContainerLayout *)self i_exteriorTextWrap];
-  if (v2)
+  i_exteriorTextWrap = [(THWContainerLayout *)self i_exteriorTextWrap];
+  if (i_exteriorTextWrap)
   {
 
-    LOBYTE(v2) = [v2 isHTMLWrap];
+    LOBYTE(i_exteriorTextWrap) = [i_exteriorTextWrap isHTMLWrap];
   }
 
-  return v2;
+  return i_exteriorTextWrap;
 }
 
 - (int)wrapType
 {
-  v2 = [(THWContainerLayout *)self i_exteriorTextWrap];
-  if (v2)
+  i_exteriorTextWrap = [(THWContainerLayout *)self i_exteriorTextWrap];
+  if (i_exteriorTextWrap)
   {
 
-    LODWORD(v2) = [v2 type];
+    LODWORD(i_exteriorTextWrap) = [i_exteriorTextWrap type];
   }
 
-  return v2;
+  return i_exteriorTextWrap;
 }
 
 - (int)wrapDirection
 {
-  v2 = [(THWContainerLayout *)self i_exteriorTextWrap];
-  if (!v2)
+  i_exteriorTextWrap = [(THWContainerLayout *)self i_exteriorTextWrap];
+  if (!i_exteriorTextWrap)
   {
     return 2;
   }
 
-  return [v2 direction];
+  return [i_exteriorTextWrap direction];
 }
 
 - (int)wrapFitType
 {
-  v2 = [(THWContainerLayout *)self i_exteriorTextWrap];
-  if (v2)
+  i_exteriorTextWrap = [(THWContainerLayout *)self i_exteriorTextWrap];
+  if (i_exteriorTextWrap)
   {
 
-    LODWORD(v2) = [v2 fitType];
+    LODWORD(i_exteriorTextWrap) = [i_exteriorTextWrap fitType];
   }
 
-  return v2;
+  return i_exteriorTextWrap;
 }
 
 - (void)invalidate
@@ -366,18 +366,18 @@ LABEL_30:
   self->mCachedExternalWrapPath = 0;
 }
 
-- (void)dragBy:(CGPoint)a3
+- (void)dragBy:(CGPoint)by
 {
   v4.receiver = self;
   v4.super_class = THWContainerLayout;
-  [(THWContainerLayout *)&v4 dragBy:a3.x, a3.y];
+  [(THWContainerLayout *)&v4 dragBy:by.x, by.y];
   [(THWContainerLayout *)self invalidateParentForWrap];
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  v5 = [(THWContainerLayout *)self geometry];
-  if (!v5)
+  geometry = [(THWContainerLayout *)self geometry];
+  if (!geometry)
   {
     if (!self->mCachedWrapPolygon)
     {
@@ -387,22 +387,22 @@ LABEL_30:
     goto LABEL_8;
   }
 
-  v6 = v5;
-  if (([v5 isEqual:a3] & 1) != 0 || !self->mCachedWrapPolygon)
+  v6 = geometry;
+  if (([geometry isEqual:geometry] & 1) != 0 || !self->mCachedWrapPolygon)
   {
     goto LABEL_10;
   }
 
-  if ([v6 differsInMoreThanTranslationFrom:a3])
+  if ([v6 differsInMoreThanTranslationFrom:geometry])
   {
 LABEL_8:
     [(THWContainerLayout *)self invalidateExteriorWrap];
     goto LABEL_10;
   }
 
-  if (a3)
+  if (geometry)
   {
-    [a3 transform];
+    [geometry transform];
   }
 
   [v6 transform];
@@ -413,15 +413,15 @@ LABEL_8:
 LABEL_10:
   v10.receiver = self;
   v10.super_class = THWContainerLayout;
-  [(THWContainerLayout *)&v10 setGeometry:a3];
+  [(THWContainerLayout *)&v10 setGeometry:geometry];
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
   v5.receiver = self;
   v5.super_class = THWContainerLayout;
   [(THWContainerLayout *)&v5 processChangedProperty:?];
-  if (a3 == 521)
+  if (property == 521)
   {
     [(THWContainerLayout *)self invalidateExteriorWrap];
   }
@@ -437,20 +437,20 @@ LABEL_10:
 
 - (void)i_invalidateWrap
 {
-  v3 = [(THWContainerLayout *)self parent];
-  if (v3)
+  parent = [(THWContainerLayout *)self parent];
+  if (parent)
   {
-    v4 = v3;
+    parent2 = parent;
     while ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v4 = [v4 parent];
-      if (!v4)
+      parent2 = [parent2 parent];
+      if (!parent2)
       {
         return;
       }
     }
 
-    [v4 wrappableChildInvalidated:self];
+    [parent2 wrappableChildInvalidated:self];
   }
 }
 

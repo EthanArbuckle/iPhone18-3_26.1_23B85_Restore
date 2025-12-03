@@ -1,32 +1,32 @@
 @interface PNPAnimatedHardwareView
-- (id)layerForHardwareType:(unint64_t)a3 deviceType:(int64_t)a4;
+- (id)layerForHardwareType:(unint64_t)type deviceType:(int64_t)deviceType;
 - (void)configureForCurrentHardwareAndDevice;
 - (void)layoutSubviews;
-- (void)setHardwareType:(unint64_t)a3 deviceType:(int64_t)a4;
-- (void)setPencilLayer:(id)a3;
+- (void)setHardwareType:(unint64_t)type deviceType:(int64_t)deviceType;
+- (void)setPencilLayer:(id)layer;
 @end
 
 @implementation PNPAnimatedHardwareView
 
-- (void)setPencilLayer:(id)a3
+- (void)setPencilLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   [(CALayer *)self->_pencilLayer removeFromSuperlayer];
   pencilLayer = self->_pencilLayer;
-  self->_pencilLayer = v4;
-  v6 = v4;
+  self->_pencilLayer = layerCopy;
+  v6 = layerCopy;
 
   [(CALayer *)self->_pencilLayer setAnchorPoint:0.0, 0.5];
   [(CALayer *)self->_pencilLayer setPosition:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
   [(CALayer *)self->_pencilLayer setGeometryFlipped:1];
-  v7 = [(PNPAnimatedHardwareView *)self layer];
-  [v7 addSublayer:self->_pencilLayer];
+  layer = [(PNPAnimatedHardwareView *)self layer];
+  [layer addSublayer:self->_pencilLayer];
 }
 
-- (void)setHardwareType:(unint64_t)a3 deviceType:(int64_t)a4
+- (void)setHardwareType:(unint64_t)type deviceType:(int64_t)deviceType
 {
-  [(PNPAnimatedHardwareView *)self setHardwareType:a3];
-  [(PNPAnimatedHardwareView *)self setDeviceType:a4];
+  [(PNPAnimatedHardwareView *)self setHardwareType:type];
+  [(PNPAnimatedHardwareView *)self setDeviceType:deviceType];
 
   [(PNPAnimatedHardwareView *)self configureForCurrentHardwareAndDevice];
 }
@@ -38,8 +38,8 @@
 
   if ([(PNPAnimatedHardwareView *)self hardwareType]- 1 <= 1)
   {
-    v4 = [(PNPAnimatedHardwareView *)self pencilLayer];
-    [v4 setAnchorPoint:{0.0, 0.5}];
+    pencilLayer = [(PNPAnimatedHardwareView *)self pencilLayer];
+    [pencilLayer setAnchorPoint:{0.0, 0.5}];
   }
 }
 
@@ -50,33 +50,33 @@
   [(PNPAnimatedHardwareView *)&v15 layoutSubviews];
   [(PNPAnimatedHardwareView *)self bounds];
   v4 = v3;
-  v5 = [(PNPAnimatedHardwareView *)self pencilLayer];
-  [v5 size];
+  pencilLayer = [(PNPAnimatedHardwareView *)self pencilLayer];
+  [pencilLayer size];
   v7 = v6;
 
   memset(&v14, 0, sizeof(v14));
   CGAffineTransformMakeScale(&v14, v4 / v7, v4 / v7);
   v13 = v14;
-  v8 = [(PNPAnimatedHardwareView *)self pencilLayer];
+  pencilLayer2 = [(PNPAnimatedHardwareView *)self pencilLayer];
   v12 = v13;
-  [v8 setAffineTransform:&v12];
+  [pencilLayer2 setAffineTransform:&v12];
 
   [(PNPAnimatedHardwareView *)self bounds];
   v10 = v9 * 0.5 + 8.0;
-  v11 = [(PNPAnimatedHardwareView *)self pencilLayer];
-  [v11 setPosition:{0.0, v10}];
+  pencilLayer3 = [(PNPAnimatedHardwareView *)self pencilLayer];
+  [pencilLayer3 setPosition:{0.0, v10}];
 }
 
-- (id)layerForHardwareType:(unint64_t)a3 deviceType:(int64_t)a4
+- (id)layerForHardwareType:(unint64_t)type deviceType:(int64_t)deviceType
 {
   v18 = *MEMORY[0x277D85DE8];
   v4 = @"DoubleTap";
-  if (a3 != 1)
+  if (type != 1)
   {
     v4 = 0;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v5 = @"Squeeze";
   }
@@ -86,14 +86,14 @@
     v5 = v4;
   }
 
-  if (a4 == 2)
+  if (deviceType == 2)
   {
     v6 = @"-B332";
   }
 
   else
   {
-    if (a4 != 4)
+    if (deviceType != 4)
     {
       goto LABEL_11;
     }
@@ -121,9 +121,9 @@ LABEL_11:
     }
   }
 
-  v13 = [v10 rootLayer];
+  rootLayer = [v10 rootLayer];
 
-  return v13;
+  return rootLayer;
 }
 
 @end

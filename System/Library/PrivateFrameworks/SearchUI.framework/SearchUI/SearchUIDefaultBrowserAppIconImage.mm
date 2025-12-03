@@ -1,8 +1,8 @@
 @interface SearchUIDefaultBrowserAppIconImage
 + (id)defaultBrowserBundleIdentifier;
 + (void)invalidateDefaultBrowserBundleIdentifier;
-- (SearchUIDefaultBrowserAppIconImage)initWithVariant:(unint64_t)a3;
-- (id)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4;
+- (SearchUIDefaultBrowserAppIconImage)initWithVariant:(unint64_t)variant;
+- (id)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style;
 @end
 
 @implementation SearchUIDefaultBrowserAppIconImage
@@ -23,12 +23,12 @@
     v4 = [MEMORY[0x1E695DFF8] URLWithString:@"http://"];
     v5 = [v3 initWithURL:v4 error:0];
 
-    v6 = [v5 bundleRecord];
-    v7 = [v6 bundleIdentifier];
-    v8 = v7;
-    if (v7)
+    bundleRecord = [v5 bundleRecord];
+    bundleIdentifier = [bundleRecord bundleIdentifier];
+    v8 = bundleIdentifier;
+    if (bundleIdentifier)
     {
-      v9 = v7;
+      v9 = bundleIdentifier;
     }
 
     else
@@ -47,25 +47,25 @@
   return v11;
 }
 
-- (SearchUIDefaultBrowserAppIconImage)initWithVariant:(unint64_t)a3
+- (SearchUIDefaultBrowserAppIconImage)initWithVariant:(unint64_t)variant
 {
-  v5 = [objc_opt_class() defaultBrowserBundleIdentifier];
+  defaultBrowserBundleIdentifier = [objc_opt_class() defaultBrowserBundleIdentifier];
   v8.receiver = self;
   v8.super_class = SearchUIDefaultBrowserAppIconImage;
-  v6 = [(SearchUIAppIconImage *)&v8 initWithBundleIdentifier:v5 isOnenessApp:0 variant:a3 contentType:0];
+  v6 = [(SearchUIAppIconImage *)&v8 initWithBundleIdentifier:defaultBrowserBundleIdentifier isOnenessApp:0 variant:variant contentType:0];
 
   return v6;
 }
 
-- (id)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4
+- (id)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style
 {
-  v4 = a4;
-  v7 = [objc_opt_class() defaultBrowserBundleIdentifier];
-  [(SearchUIAppIconImage *)self setBundleIdentifier:v7];
+  styleCopy = style;
+  defaultBrowserBundleIdentifier = [objc_opt_class() defaultBrowserBundleIdentifier];
+  [(SearchUIAppIconImage *)self setBundleIdentifier:defaultBrowserBundleIdentifier];
 
   v10.receiver = self;
   v10.super_class = SearchUIDefaultBrowserAppIconImage;
-  v8 = [(SearchUIAppIconImage *)&v10 loadImageWithScale:v4 isDarkStyle:a3];
+  v8 = [(SearchUIAppIconImage *)&v10 loadImageWithScale:styleCopy isDarkStyle:scale];
 
   return v8;
 }

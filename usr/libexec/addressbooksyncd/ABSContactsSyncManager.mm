@@ -1,55 +1,55 @@
 @interface ABSContactsSyncManager
-- (id)addressingGrammarsFromContactWrapper:(id)a3;
+- (id)addressingGrammarsFromContactWrapper:(id)wrapper;
 - (id)reality;
-- (void)_addContactFromContactWrapper_LOCKED:(id)a3 toContainerWithIdentifier:(id)a4;
-- (void)_applyPronounsToContact:(id)a3 contactWrapper:(id)a4;
-- (void)_applySensitiveContentConfigurationIfPossible:(id)a3 wrapper:(id)a4;
-- (void)_applyWallpaperArchiveToContactIfPossible:(id)a3 wrapper:(id)a4;
-- (void)_applyWatchWallpaperToContactIfPossible:(id)a3 wrapper:(id)a4;
-- (void)_bindLinks:(id)a3 contact:(id)a4 guid:(id)a5 store:(id)a6;
-- (void)_deleteContactForGUID_LOCKED:(id)a3;
-- (void)_modifyContactFromContactWrapper_LOCKED:(id)a3 toContact:(id)a4;
-- (void)_processSpecialRulesFieldsForContact:(id)a3 wrapper:(id)a4;
-- (void)addBatch:(id)a3 forSession:(id)a4;
-- (void)addOrUpdateContactIn:(id)a3 forSession:(id)a4;
-- (void)addOrUpdateLMAIn:(id)a3 forSession:(id)a4;
+- (void)_addContactFromContactWrapper_LOCKED:(id)d toContainerWithIdentifier:(id)identifier;
+- (void)_applyPronounsToContact:(id)contact contactWrapper:(id)wrapper;
+- (void)_applySensitiveContentConfigurationIfPossible:(id)possible wrapper:(id)wrapper;
+- (void)_applyWallpaperArchiveToContactIfPossible:(id)possible wrapper:(id)wrapper;
+- (void)_applyWatchWallpaperToContactIfPossible:(id)possible wrapper:(id)wrapper;
+- (void)_bindLinks:(id)links contact:(id)contact guid:(id)guid store:(id)store;
+- (void)_deleteContactForGUID_LOCKED:(id)d;
+- (void)_modifyContactFromContactWrapper_LOCKED:(id)d toContact:(id)contact;
+- (void)_processSpecialRulesFieldsForContact:(id)contact wrapper:(id)wrapper;
+- (void)addBatch:(id)batch forSession:(id)session;
+- (void)addOrUpdateContactIn:(id)in forSession:(id)session;
+- (void)addOrUpdateLMAIn:(id)in forSession:(id)session;
 - (void)clearShadowMarks;
 - (void)deleteShadow;
 - (void)deleteUnmarked;
-- (void)remove:(id)a3;
+- (void)remove:(id)remove;
 @end
 
 @implementation ABSContactsSyncManager
 
 - (id)reality
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_reality)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_reality)
   {
     v3 = objc_alloc_init(ABSContactsReality);
-    reality = v2->_reality;
-    v2->_reality = v3;
+    reality = selfCopy->_reality;
+    selfCopy->_reality = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_reality;
+  v5 = selfCopy->_reality;
 
   return v5;
 }
 
-- (void)_bindLinks:(id)a3 contact:(id)a4 guid:(id)a5 store:(id)a6
+- (void)_bindLinks:(id)links contact:(id)contact guid:(id)guid store:(id)store
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v11 && [v11 length])
+  linksCopy = links;
+  contactCopy = contact;
+  guidCopy = guid;
+  storeCopy = store;
+  if (guidCopy && [guidCopy length])
   {
-    v13 = [[ABSContactsLinkCluster alloc] initWithPBStuff:v9 contact:v10];
+    v13 = [[ABSContactsLinkCluster alloc] initWithPBStuff:linksCopy contact:contactCopy];
     v14 = +[ABSContactsReclusterizer sharedInstance];
-    [v14 stashCluster:v13 forGuid:v11];
+    [v14 stashCluster:v13 forGuid:guidCopy];
   }
 
   else if (os_log_type_enabled(*(qword_100071D00 + 8), OS_LOG_TYPE_ERROR))
@@ -58,10 +58,10 @@
   }
 }
 
-- (void)_applyWatchWallpaperToContactIfPossible:(id)a3 wrapper:(id)a4
+- (void)_applyWatchWallpaperToContactIfPossible:(id)possible wrapper:(id)wrapper
 {
-  v5 = a3;
-  v6 = a4;
+  possibleCopy = possible;
+  wrapperCopy = wrapper;
   v7 = *(qword_100071D00 + 8);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -69,25 +69,25 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Checking SNAP shared preference before applying avatar and poster", v9, 2u);
   }
 
-  if ([v6 hasWallpaperDataRepresentation])
+  if ([wrapperCopy hasWallpaperDataRepresentation])
   {
-    v8 = [v6 wallpaperImageData];
-    [v5 setWatchWallpaperImageData:v8];
+    wallpaperImageData = [wrapperCopy wallpaperImageData];
+    [possibleCopy setWatchWallpaperImageData:wallpaperImageData];
   }
 }
 
-- (void)_applyWallpaperArchiveToContactIfPossible:(id)a3 wrapper:(id)a4
+- (void)_applyWallpaperArchiveToContactIfPossible:(id)possible wrapper:(id)wrapper
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 wallpaperDataRepresentation];
+  possibleCopy = possible;
+  wrapperCopy = wrapper;
+  wallpaperDataRepresentation = [wrapperCopy wallpaperDataRepresentation];
 
-  if (v7)
+  if (wallpaperDataRepresentation)
   {
     v8 = [CNWallpaper alloc];
-    v9 = [v6 wallpaperDataRepresentation];
-    v10 = [v8 initWithDataRepresentation:v9];
-    [v5 setWallpaper:v10];
+    wallpaperDataRepresentation2 = [wrapperCopy wallpaperDataRepresentation];
+    v10 = [v8 initWithDataRepresentation:wallpaperDataRepresentation2];
+    [possibleCopy setWallpaper:v10];
 
     v11 = *(qword_100071D00 + 8);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -113,19 +113,19 @@ LABEL_6:
   }
 }
 
-- (void)_applySensitiveContentConfigurationIfPossible:(id)a3 wrapper:(id)a4
+- (void)_applySensitiveContentConfigurationIfPossible:(id)possible wrapper:(id)wrapper
 {
-  v5 = a3;
-  v6 = a4;
+  possibleCopy = possible;
+  wrapperCopy = wrapper;
   v7 = [CNSensitiveContentConfiguration alloc];
-  v8 = [v6 sensitiveContentConfiguration];
-  v9 = [v7 initWithDataRepresentation:v8];
+  sensitiveContentConfiguration = [wrapperCopy sensitiveContentConfiguration];
+  v9 = [v7 initWithDataRepresentation:sensitiveContentConfiguration];
 
-  v10 = [v6 sensitiveContentConfiguration];
+  sensitiveContentConfiguration2 = [wrapperCopy sensitiveContentConfiguration];
 
-  if (!v10 || v9)
+  if (!sensitiveContentConfiguration2 || v9)
   {
-    [v5 setSensitiveContentConfiguration:v9];
+    [possibleCopy setSensitiveContentConfiguration:v9];
   }
 
   else if (os_log_type_enabled(*(qword_100071D00 + 8), OS_LOG_TYPE_ERROR))
@@ -134,10 +134,10 @@ LABEL_6:
   }
 }
 
-- (void)_addContactFromContactWrapper_LOCKED:(id)a3 toContainerWithIdentifier:(id)a4
+- (void)_addContactFromContactWrapper_LOCKED:(id)d toContainerWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v8 = *(qword_100071D00 + 8);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -150,29 +150,29 @@ LABEL_6:
   v14[1] = 3221225472;
   v14[2] = sub_10001E1FC;
   v14[3] = &unk_10005D440;
-  v15 = v6;
-  v16 = self;
-  v17 = v7;
-  v10 = v7;
-  v11 = v6;
+  v15 = dCopy;
+  selfCopy = self;
+  v17 = identifierCopy;
+  v10 = identifierCopy;
+  v11 = dCopy;
   [v9 mutateAssert:v14];
 
   v12 = +[ABSContactsShadow instance];
-  v13 = [v11 guid];
-  [v12 insert:v13];
+  guid = [v11 guid];
+  [v12 insert:guid];
 }
 
-- (id)addressingGrammarsFromContactWrapper:(id)a3
+- (id)addressingGrammarsFromContactWrapper:(id)wrapper
 {
-  v3 = a3;
+  wrapperCopy = wrapper;
   v11[0] = objc_opt_class();
   v11[1] = objc_opt_class();
   v4 = [NSArray arrayWithObjects:v11 count:2];
   v5 = [NSSet setWithArray:v4];
-  v6 = [v3 encryptedPronounData];
+  encryptedPronounData = [wrapperCopy encryptedPronounData];
 
   v10 = 0;
-  v7 = [NSKeyedUnarchiver unarchivedArrayOfObjectsOfClasses:v5 fromData:v6 error:&v10];
+  v7 = [NSKeyedUnarchiver unarchivedArrayOfObjectsOfClasses:v5 fromData:encryptedPronounData error:&v10];
   v8 = v10;
 
   if (v8 && os_log_type_enabled(*(qword_100071D00 + 8), OS_LOG_TYPE_ERROR))
@@ -183,29 +183,29 @@ LABEL_6:
   return v7;
 }
 
-- (void)_applyPronounsToContact:(id)a3 contactWrapper:(id)a4
+- (void)_applyPronounsToContact:(id)contact contactWrapper:(id)wrapper
 {
-  v6 = a3;
-  v7 = [(ABSContactsSyncManager *)self addressingGrammarsFromContactWrapper:a4];
-  [v6 setAddressingGrammarsEncrypted:v7];
+  contactCopy = contact;
+  v7 = [(ABSContactsSyncManager *)self addressingGrammarsFromContactWrapper:wrapper];
+  [contactCopy setAddressingGrammarsEncrypted:v7];
 }
 
-- (void)_processSpecialRulesFieldsForContact:(id)a3 wrapper:(id)a4
+- (void)_processSpecialRulesFieldsForContact:(id)contact wrapper:(id)wrapper
 {
-  v6 = a4;
-  v7 = a3;
-  [(ABSContactsSyncManager *)self _applyWatchWallpaperToContactIfPossible:v7 wrapper:v6];
-  [(ABSContactsSyncManager *)self _applyWallpaperArchiveToContactIfPossible:v7 wrapper:v6];
-  [(ABSContactsSyncManager *)self _applySensitiveContentConfigurationIfPossible:v7 wrapper:v6];
-  [(ABSContactsSyncManager *)self _applyPronounsToContact:v7 contactWrapper:v6];
+  wrapperCopy = wrapper;
+  contactCopy = contact;
+  [(ABSContactsSyncManager *)self _applyWatchWallpaperToContactIfPossible:contactCopy wrapper:wrapperCopy];
+  [(ABSContactsSyncManager *)self _applyWallpaperArchiveToContactIfPossible:contactCopy wrapper:wrapperCopy];
+  [(ABSContactsSyncManager *)self _applySensitiveContentConfigurationIfPossible:contactCopy wrapper:wrapperCopy];
+  [(ABSContactsSyncManager *)self _applyPronounsToContact:contactCopy contactWrapper:wrapperCopy];
 }
 
-- (void)_modifyContactFromContactWrapper_LOCKED:(id)a3 toContact:(id)a4
+- (void)_modifyContactFromContactWrapper_LOCKED:(id)d toContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  contactCopy = contact;
   v8 = *(qword_100071D00 + 8);
-  if (!v7)
+  if (!contactCopy)
   {
     if (os_log_type_enabled(*(qword_100071D00 + 8), OS_LOG_TYPE_ERROR))
     {
@@ -216,7 +216,7 @@ LABEL_6:
     objc_exception_throw(v15);
   }
 
-  v9 = v7;
+  v9 = contactCopy;
   if (os_log_type_enabled(*(qword_100071D00 + 8), OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -228,27 +228,27 @@ LABEL_6:
   v16[1] = 3221225472;
   v16[2] = sub_10001ED00;
   v16[3] = &unk_10005D440;
-  v17 = v6;
+  v17 = dCopy;
   v18 = v9;
-  v19 = self;
+  selfCopy = self;
   v11 = v9;
-  v12 = v6;
+  v12 = dCopy;
   [v10 mutateAssert:v16];
 
   v13 = +[ABSContactsShadow instance];
-  v14 = [v11 identifier];
-  [v13 insert:v14];
+  identifier = [v11 identifier];
+  [v13 insert:identifier];
 }
 
-- (void)addBatch:(id)a3 forSession:(id)a4
+- (void)addBatch:(id)batch forSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  batchCopy = batch;
+  sessionCopy = session;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v8 = [batchCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -259,38 +259,38 @@ LABEL_6:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(batchCopy);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 pbObject];
-        v14 = [v13 contactWrapper];
+        pbObject = [v12 pbObject];
+        contactWrapper = [pbObject contactWrapper];
 
-        if ([v14 hasGuid])
+        if ([contactWrapper hasGuid])
         {
-          [(ABSContactsSyncManager *)self addOrUpdateContactIn:v12 forSession:v7];
+          [(ABSContactsSyncManager *)self addOrUpdateContactIn:v12 forSession:sessionCopy];
         }
 
         else
         {
-          v15 = [v12 pbObject];
-          v16 = [v15 hasLmaSyncData];
+          pbObject2 = [v12 pbObject];
+          hasLmaSyncData = [pbObject2 hasLmaSyncData];
 
-          if (v16)
+          if (hasLmaSyncData)
           {
-            [(ABSContactsSyncManager *)self addOrUpdateLMAIn:v12 forSession:v7];
+            [(ABSContactsSyncManager *)self addOrUpdateLMAIn:v12 forSession:sessionCopy];
           }
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [batchCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)addOrUpdateLMAIn:(id)a3 forSession:(id)a4
+- (void)addOrUpdateLMAIn:(id)in forSession:(id)session
 {
   v4 = *(qword_100071D00 + 8);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -300,15 +300,15 @@ LABEL_6:
   }
 }
 
-- (void)addOrUpdateContactIn:(id)a3 forSession:(id)a4
+- (void)addOrUpdateContactIn:(id)in forSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 pbObject];
-  v9 = [v8 contactWrapper];
+  inCopy = in;
+  sessionCopy = session;
+  pbObject = [inCopy pbObject];
+  contactWrapper = [pbObject contactWrapper];
 
-  v10 = [v9 guid];
-  if (v10)
+  guid = [contactWrapper guid];
+  if (guid)
   {
     v18[0] = 0;
     v18[1] = v18;
@@ -321,11 +321,11 @@ LABEL_6:
     v12[1] = 3221225472;
     v12[2] = sub_10001F4DC;
     v12[3] = &unk_10005D468;
-    v13 = v9;
+    v13 = contactWrapper;
     v17 = v18;
-    v14 = v10;
-    v15 = self;
-    v16 = v7;
+    v14 = guid;
+    selfCopy = self;
+    v16 = sessionCopy;
     [v11 accessSync:v12];
 
     _Block_object_dispose(v18, 8);
@@ -337,26 +337,26 @@ LABEL_6:
   }
 }
 
-- (void)_deleteContactForGUID_LOCKED:(id)a3
+- (void)_deleteContactForGUID_LOCKED:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[ABSContactsInterface sharedInstance];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001F8D4;
   v7[3] = &unk_10005D168;
-  v8 = v3;
-  v5 = v3;
+  v8 = dCopy;
+  v5 = dCopy;
   [v4 mutateAssert:v7];
 
   v6 = +[ABSContactsShadow instance];
   [v6 remove:v5];
 }
 
-- (void)remove:(id)a3
+- (void)remove:(id)remove
 {
-  v4 = [a3 pbObject];
-  v5 = [v4 deleteWrapper];
+  pbObject = [remove pbObject];
+  deleteWrapper = [pbObject deleteWrapper];
 
   v6 = +[ABSContactsInterface sharedInstance];
   v8[0] = _NSConcreteStackBlock;
@@ -364,8 +364,8 @@ LABEL_6:
   v8[2] = sub_10001FC24;
   v8[3] = &unk_10005D4B8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = deleteWrapper;
+  v7 = deleteWrapper;
   [v6 accessSync:v8];
 }
 

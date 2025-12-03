@@ -1,6 +1,6 @@
 @interface FTSpeechTranslationStreamingResponse
-+ (Class)content_immutableClassForType:(int64_t)a3;
-+ (int64_t)content_typeForImmutableObject:(id)a3;
++ (Class)content_immutableClassForType:(int64_t)type;
++ (int64_t)content_typeForImmutableObject:(id)object;
 - (FLTBFBufferAccessor)content;
 - (FTAudioLimitExceeded)contentAsFTAudioLimitExceeded;
 - (FTClientSetupInfo)contentAsFTClientSetupInfo;
@@ -13,51 +13,51 @@
 - (FTSpeechTranslationMtResponse)contentAsFTSpeechTranslationMtResponse;
 - (FTSpeechTranslationPartialRecognitionResponse)contentAsFTSpeechTranslationPartialRecognitionResponse;
 - (FTSpeechTranslationServerEndpointFeatures)contentAsFTSpeechTranslationServerEndpointFeatures;
-- (FTSpeechTranslationStreamingResponse)initWithFlatbuffData:(id)a3 root:(const SpeechTranslationStreamingResponse *)a4 verify:(BOOL)a5;
+- (FTSpeechTranslationStreamingResponse)initWithFlatbuffData:(id)data root:(const SpeechTranslationStreamingResponse *)root verify:(BOOL)verify;
 - (FTSpeechTranslationTextToSpeechResponse)contentAsFTSpeechTranslationTextToSpeechResponse;
-- (Offset<siri::speech::qss_fb::SpeechTranslationStreamingResponse>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::qss_fb::SpeechTranslationStreamingResponse>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int64_t)content_type;
 @end
 
 @implementation FTSpeechTranslationStreamingResponse
 
-- (FTSpeechTranslationStreamingResponse)initWithFlatbuffData:(id)a3 root:(const SpeechTranslationStreamingResponse *)a4 verify:(BOOL)a5
+- (FTSpeechTranslationStreamingResponse)initWithFlatbuffData:(id)data root:(const SpeechTranslationStreamingResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = FTSpeechTranslationStreamingResponse;
   v10 = [(FTSpeechTranslationStreamingResponse *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_15;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_15;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_233005E20;
       v27 = 0;
@@ -74,9 +74,9 @@ LABEL_15:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;
@@ -498,35 +498,35 @@ LABEL_16:
 
 - (FLTBFBufferAccessor)content
 {
-  v3 = [(FTSpeechTranslationStreamingResponse *)self content_type];
-  v4 = 0;
-  if (v3 <= 6)
+  content_type = [(FTSpeechTranslationStreamingResponse *)self content_type];
+  contentAsFTSpeechTranslationPartialRecognitionResponse = 0;
+  if (content_type <= 6)
   {
-    if (v3 <= 3)
+    if (content_type <= 3)
     {
-      switch(v3)
+      switch(content_type)
       {
         case 1:
-          v4 = [(FTSpeechTranslationStreamingResponse *)self contentAsFTSpeechTranslationPartialRecognitionResponse];
+          contentAsFTSpeechTranslationPartialRecognitionResponse = [(FTSpeechTranslationStreamingResponse *)self contentAsFTSpeechTranslationPartialRecognitionResponse];
           break;
         case 2:
-          v4 = [(FTSpeechTranslationStreamingResponse *)self contentAsFTSpeechTranslationFinalRecognitionResponse];
+          contentAsFTSpeechTranslationPartialRecognitionResponse = [(FTSpeechTranslationStreamingResponse *)self contentAsFTSpeechTranslationFinalRecognitionResponse];
           break;
         case 3:
-          v4 = [(FTSpeechTranslationStreamingResponse *)self contentAsFTAudioLimitExceeded];
+          contentAsFTSpeechTranslationPartialRecognitionResponse = [(FTSpeechTranslationStreamingResponse *)self contentAsFTAudioLimitExceeded];
           break;
       }
 
       goto LABEL_27;
     }
 
-    if (v3 == 4)
+    if (content_type == 4)
     {
-      v4 = [(FTSpeechTranslationStreamingResponse *)self contentAsFTSpeechTranslationMtResponse];
+      contentAsFTSpeechTranslationPartialRecognitionResponse = [(FTSpeechTranslationStreamingResponse *)self contentAsFTSpeechTranslationMtResponse];
       goto LABEL_27;
     }
 
-    if (v3 == 5)
+    if (content_type == 5)
     {
       [(FTSpeechTranslationStreamingResponse *)self contentAsFTSpeechTranslationTextToSpeechResponse];
     }
@@ -536,19 +536,19 @@ LABEL_16:
       [(FTSpeechTranslationStreamingResponse *)self contentAsFTFinalBlazarResponse];
     }
 
-    v4 = LABEL_11:;
+    contentAsFTSpeechTranslationPartialRecognitionResponse = LABEL_11:;
     goto LABEL_27;
   }
 
-  if (v3 <= 9)
+  if (content_type <= 9)
   {
-    if (v3 == 7)
+    if (content_type == 7)
     {
-      v4 = [(FTSpeechTranslationStreamingResponse *)self contentAsFTRecognitionProgress];
+      contentAsFTSpeechTranslationPartialRecognitionResponse = [(FTSpeechTranslationStreamingResponse *)self contentAsFTRecognitionProgress];
       goto LABEL_27;
     }
 
-    if (v3 == 8)
+    if (content_type == 8)
     {
       [(FTSpeechTranslationStreamingResponse *)self contentAsFTRecognitionCandidate];
     }
@@ -561,99 +561,99 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  switch(v3)
+  switch(content_type)
   {
     case 10:
-      v4 = [(FTSpeechTranslationStreamingResponse *)self contentAsFTServerEndpointFeatures];
+      contentAsFTSpeechTranslationPartialRecognitionResponse = [(FTSpeechTranslationStreamingResponse *)self contentAsFTServerEndpointFeatures];
       break;
     case 11:
-      v4 = [(FTSpeechTranslationStreamingResponse *)self contentAsFTClientSetupInfo];
+      contentAsFTSpeechTranslationPartialRecognitionResponse = [(FTSpeechTranslationStreamingResponse *)self contentAsFTClientSetupInfo];
       break;
     case 12:
-      v4 = [(FTSpeechTranslationStreamingResponse *)self contentAsFTSpeechTranslationServerEndpointFeatures];
+      contentAsFTSpeechTranslationPartialRecognitionResponse = [(FTSpeechTranslationStreamingResponse *)self contentAsFTSpeechTranslationServerEndpointFeatures];
       break;
   }
 
 LABEL_27:
 
-  return v4;
+  return contentAsFTSpeechTranslationPartialRecognitionResponse;
 }
 
-+ (Class)content_immutableClassForType:(int64_t)a3
++ (Class)content_immutableClassForType:(int64_t)type
 {
-  if ((a3 - 1) > 0xB)
+  if ((type - 1) > 0xB)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = *off_2789B8D28[a3 - 1];
+    v4 = *off_2789B8D28[type - 1];
     v5 = objc_opt_class();
   }
 
   return v5;
 }
 
-+ (int64_t)content_typeForImmutableObject:(id)a3
++ (int64_t)content_typeForImmutableObject:(id)object
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  objectCopy = object;
+  if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 1;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 2;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 3;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 4;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 5;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 6;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 7;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 8;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 9;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 10;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 11;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 12;
   }
@@ -666,13 +666,13 @@ LABEL_27:
   return v4;
 }
 
-- (Offset<siri::speech::qss_fb::SpeechTranslationStreamingResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::qss_fb::SpeechTranslationStreamingResponse>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTSpeechTranslationStreamingResponse *)self content_type];
+  content_type = [(FTSpeechTranslationStreamingResponse *)self content_type];
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 1)
   {
-    v6 = [(FTSpeechTranslationStreamingResponse *)self contentAsFTSpeechTranslationPartialRecognitionResponse];
-    v7 = [v6 addObjectToBuffer:a3];
+    contentAsFTSpeechTranslationPartialRecognitionResponse = [(FTSpeechTranslationStreamingResponse *)self contentAsFTSpeechTranslationPartialRecognitionResponse];
+    v7 = [contentAsFTSpeechTranslationPartialRecognitionResponse addObjectToBuffer:buffer];
 
     v8 = v7;
   }
@@ -684,8 +684,8 @@ LABEL_27:
 
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 2)
   {
-    v9 = [(FTSpeechTranslationStreamingResponse *)self contentAsFTSpeechTranslationFinalRecognitionResponse];
-    v10 = [v9 addObjectToBuffer:a3];
+    contentAsFTSpeechTranslationFinalRecognitionResponse = [(FTSpeechTranslationStreamingResponse *)self contentAsFTSpeechTranslationFinalRecognitionResponse];
+    v10 = [contentAsFTSpeechTranslationFinalRecognitionResponse addObjectToBuffer:buffer];
 
     v11 = v10;
   }
@@ -697,8 +697,8 @@ LABEL_27:
 
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 3)
   {
-    v12 = [(FTSpeechTranslationStreamingResponse *)self contentAsFTAudioLimitExceeded];
-    v13 = [v12 addObjectToBuffer:a3];
+    contentAsFTAudioLimitExceeded = [(FTSpeechTranslationStreamingResponse *)self contentAsFTAudioLimitExceeded];
+    v13 = [contentAsFTAudioLimitExceeded addObjectToBuffer:buffer];
 
     v14 = v13;
   }
@@ -710,8 +710,8 @@ LABEL_27:
 
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 4)
   {
-    v15 = [(FTSpeechTranslationStreamingResponse *)self contentAsFTSpeechTranslationMtResponse];
-    v16 = [v15 addObjectToBuffer:a3];
+    contentAsFTSpeechTranslationMtResponse = [(FTSpeechTranslationStreamingResponse *)self contentAsFTSpeechTranslationMtResponse];
+    v16 = [contentAsFTSpeechTranslationMtResponse addObjectToBuffer:buffer];
 
     v50 = v16;
   }
@@ -723,8 +723,8 @@ LABEL_27:
 
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 5)
   {
-    v17 = [(FTSpeechTranslationStreamingResponse *)self contentAsFTSpeechTranslationTextToSpeechResponse];
-    v18 = [v17 addObjectToBuffer:a3];
+    contentAsFTSpeechTranslationTextToSpeechResponse = [(FTSpeechTranslationStreamingResponse *)self contentAsFTSpeechTranslationTextToSpeechResponse];
+    v18 = [contentAsFTSpeechTranslationTextToSpeechResponse addObjectToBuffer:buffer];
 
     v49 = v18;
   }
@@ -736,8 +736,8 @@ LABEL_27:
 
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 6)
   {
-    v19 = [(FTSpeechTranslationStreamingResponse *)self contentAsFTFinalBlazarResponse];
-    v20 = [v19 addObjectToBuffer:a3];
+    contentAsFTFinalBlazarResponse = [(FTSpeechTranslationStreamingResponse *)self contentAsFTFinalBlazarResponse];
+    v20 = [contentAsFTFinalBlazarResponse addObjectToBuffer:buffer];
 
     v48 = v20;
   }
@@ -749,8 +749,8 @@ LABEL_27:
 
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 7)
   {
-    v21 = [(FTSpeechTranslationStreamingResponse *)self contentAsFTRecognitionProgress];
-    v22 = [v21 addObjectToBuffer:a3];
+    contentAsFTRecognitionProgress = [(FTSpeechTranslationStreamingResponse *)self contentAsFTRecognitionProgress];
+    v22 = [contentAsFTRecognitionProgress addObjectToBuffer:buffer];
 
     v47 = v22;
   }
@@ -762,8 +762,8 @@ LABEL_27:
 
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 8)
   {
-    v23 = [(FTSpeechTranslationStreamingResponse *)self contentAsFTRecognitionCandidate];
-    v24 = [v23 addObjectToBuffer:a3];
+    contentAsFTRecognitionCandidate = [(FTSpeechTranslationStreamingResponse *)self contentAsFTRecognitionCandidate];
+    v24 = [contentAsFTRecognitionCandidate addObjectToBuffer:buffer];
 
     v46 = v24;
   }
@@ -775,8 +775,8 @@ LABEL_27:
 
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 9)
   {
-    v25 = [(FTSpeechTranslationStreamingResponse *)self contentAsFTRequestStatsResponse];
-    v26 = [v25 addObjectToBuffer:a3];
+    contentAsFTRequestStatsResponse = [(FTSpeechTranslationStreamingResponse *)self contentAsFTRequestStatsResponse];
+    v26 = [contentAsFTRequestStatsResponse addObjectToBuffer:buffer];
 
     v45 = v26;
   }
@@ -788,8 +788,8 @@ LABEL_27:
 
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 10)
   {
-    v27 = [(FTSpeechTranslationStreamingResponse *)self contentAsFTServerEndpointFeatures];
-    v28 = [v27 addObjectToBuffer:a3];
+    contentAsFTServerEndpointFeatures = [(FTSpeechTranslationStreamingResponse *)self contentAsFTServerEndpointFeatures];
+    v28 = [contentAsFTServerEndpointFeatures addObjectToBuffer:buffer];
 
     v44 = v28;
   }
@@ -802,8 +802,8 @@ LABEL_27:
   v29 = v14;
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 11)
   {
-    v30 = [(FTSpeechTranslationStreamingResponse *)self contentAsFTClientSetupInfo];
-    v31 = [v30 addObjectToBuffer:a3];
+    contentAsFTClientSetupInfo = [(FTSpeechTranslationStreamingResponse *)self contentAsFTClientSetupInfo];
+    v31 = [contentAsFTClientSetupInfo addObjectToBuffer:buffer];
 
     v32 = v31;
   }
@@ -818,7 +818,7 @@ LABEL_27:
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 12)
   {
     v34 = [(FTSpeechTranslationStreamingResponse *)self contentAsFTSpeechTranslationServerEndpointFeatures:v32];
-    v35 = [v34 addObjectToBuffer:a3];
+    v35 = [v34 addObjectToBuffer:buffer];
     v36 = v8;
 
     v37 = v35;
@@ -830,72 +830,72 @@ LABEL_27:
     v37 = 0;
   }
 
-  *(a3 + 70) = 1;
-  v38 = *(a3 + 5);
-  v39 = *(a3 + 6);
-  v40 = *(a3 + 4);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(a3, 4, v5, 0);
+  *(buffer + 70) = 1;
+  v38 = *(buffer + 5);
+  v39 = *(buffer + 6);
+  v40 = *(buffer + 4);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(buffer, 4, content_type, 0);
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 1)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v36);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v36);
   }
 
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 2)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v33);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v33);
   }
 
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 3)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v29);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v29);
   }
 
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 4)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v50);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v50);
   }
 
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 5)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v49);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v49);
   }
 
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 6)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v48);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v48);
   }
 
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 7)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v47);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v47);
   }
 
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 8)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v46);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v46);
   }
 
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 9)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v45);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v45);
   }
 
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 10)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v44);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v44);
   }
 
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 11)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v43);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v43);
   }
 
   if ([(FTSpeechTranslationStreamingResponse *)self content_type]== 12)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v37);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v37);
   }
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v40 - v39 + v38);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v40 - v39 + v38);
 }
 
 - (id)flatbuffData

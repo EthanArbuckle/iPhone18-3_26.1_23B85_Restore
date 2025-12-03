@@ -1,9 +1,9 @@
 @interface HMDEventCountersManagerLegacyDelegate
 - (HMDEventCounterContext)context;
-- (HMDEventCountersManagerLegacyDelegate)initWithStorage:(id)a3 uptimeProvider:(id)a4;
-- (id)groupForSpecifier:(id)a3;
+- (HMDEventCountersManagerLegacyDelegate)initWithStorage:(id)storage uptimeProvider:(id)provider;
+- (id)groupForSpecifier:(id)specifier;
 - (id)initialCounterGroups;
-- (void)saveForManager:(id)a3;
+- (void)saveForManager:(id)manager;
 @end
 
 @implementation HMDEventCountersManagerLegacyDelegate
@@ -15,15 +15,15 @@
   return WeakRetained;
 }
 
-- (void)saveForManager:(id)a3
+- (void)saveForManager:(id)manager
 {
-  v4 = a3;
-  v7 = [(HMDEventCountersManagerLegacyDelegate *)self counterStorage];
-  v5 = [v4 fetchAllEventCounters];
+  managerCopy = manager;
+  counterStorage = [(HMDEventCountersManagerLegacyDelegate *)self counterStorage];
+  fetchAllEventCounters = [managerCopy fetchAllEventCounters];
 
-  if (v5)
+  if (fetchAllEventCounters)
   {
-    v6 = v5;
+    v6 = fetchAllEventCounters;
   }
 
   else
@@ -31,17 +31,17 @@
     v6 = MEMORY[0x277CBEC10];
   }
 
-  [v7 archiveDictionary:v6];
+  [counterStorage archiveDictionary:v6];
 }
 
-- (id)groupForSpecifier:(id)a3
+- (id)groupForSpecifier:(id)specifier
 {
-  v4 = [(HMDEventCountersManagerLegacyDelegate *)self context];
-  if (v4)
+  context = [(HMDEventCountersManagerLegacyDelegate *)self context];
+  if (context)
   {
     v5 = [HMDEventCounterGroup alloc];
-    v6 = [(HMDEventCountersManagerLegacyDelegate *)self uptimeProvider];
-    v7 = [(HMDEventCounterGroup *)v5 initWithContext:v4 serializedEventCounters:0 uptimeProvider:v6];
+    uptimeProvider = [(HMDEventCountersManagerLegacyDelegate *)self uptimeProvider];
+    v7 = [(HMDEventCounterGroup *)v5 initWithContext:context serializedEventCounters:0 uptimeProvider:uptimeProvider];
   }
 
   else
@@ -55,27 +55,27 @@
 - (id)initialCounterGroups
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDEventCountersManagerLegacyDelegate *)self context];
-  if (v3)
+  context = [(HMDEventCountersManagerLegacyDelegate *)self context];
+  if (context)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    v5 = [(HMDEventCountersManagerLegacyDelegate *)self counterStorage];
-    v6 = [v5 unarchive];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    counterStorage = [(HMDEventCountersManagerLegacyDelegate *)self counterStorage];
+    unarchive = [counterStorage unarchive];
 
-    if (v6)
+    if (unarchive)
     {
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __61__HMDEventCountersManagerLegacyDelegate_initialCounterGroups__block_invoke;
       v13[3] = &unk_278684E58;
-      v14 = v4;
-      v15 = v3;
-      v16 = self;
-      [v6 enumerateKeysAndObjectsUsingBlock:v13];
+      v14 = dictionary;
+      v15 = context;
+      selfCopy = self;
+      [unarchive enumerateKeysAndObjectsUsingBlock:v13];
     }
 
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy2 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
@@ -83,7 +83,7 @@
       *buf = 138543618;
       v18 = v10;
       v19 = 2112;
-      v20 = v4;
+      v20 = dictionary;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_DEBUG, "%{public}@Final restored event counters: %@", buf, 0x16u);
     }
 
@@ -92,12 +92,12 @@
 
   else
   {
-    v4 = 0;
+    dictionary = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return dictionary;
 }
 
 void __61__HMDEventCountersManagerLegacyDelegate_initialCounterGroups__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -112,18 +112,18 @@ void __61__HMDEventCountersManagerLegacyDelegate_initialCounterGroups__block_inv
   [*(a1 + 32) setObject:v9 forKeyedSubscript:v6];
 }
 
-- (HMDEventCountersManagerLegacyDelegate)initWithStorage:(id)a3 uptimeProvider:(id)a4
+- (HMDEventCountersManagerLegacyDelegate)initWithStorage:(id)storage uptimeProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  storageCopy = storage;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = HMDEventCountersManagerLegacyDelegate;
   v9 = [(HMDEventCountersManagerLegacyDelegate *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_counterStorage, a3);
-    objc_storeStrong(&v10->_uptimeProvider, a4);
+    objc_storeStrong(&v9->_counterStorage, storage);
+    objc_storeStrong(&v10->_uptimeProvider, provider);
   }
 
   return v10;

@@ -1,15 +1,15 @@
 @interface ManagerShim
 - (_TtC5UIKitP33_3F2359D4CD32AF8D101770CCFE86694711ManagerShim)init;
-- (void)_advanceWithTime:(double)a3;
+- (void)_advanceWithTime:(double)time;
 @end
 
 @implementation ManagerShim
 
-- (void)_advanceWithTime:(double)a3
+- (void)_advanceWithTime:(double)time
 {
   __swift_project_boxed_opaque_existential_0((&self->super.isa + OBJC_IVAR____TtC5UIKitP33_3F2359D4CD32AF8D101770CCFE86694711ManagerShim_implementation), *&self->implementation[OBJC_IVAR____TtC5UIKitP33_3F2359D4CD32AF8D101770CCFE86694711ManagerShim_implementation + 16]);
-  v5 = self;
-  sub_188A33AD0(a3, a3);
+  selfCopy = self;
+  sub_188A33AD0(time, time);
 }
 
 - (_TtC5UIKitP33_3F2359D4CD32AF8D101770CCFE86694711ManagerShim)init

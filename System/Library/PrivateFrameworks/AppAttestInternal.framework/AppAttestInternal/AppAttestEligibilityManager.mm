@@ -1,17 +1,17 @@
 @interface AppAttestEligibilityManager
 - (BOOL)containsValidEntitlements;
-- (BOOL)isEligibleApplicationExtensionFor:(id *)a3;
-- (BOOL)isEligibleApplicationFor:(id *)a3;
-- (BOOL)isEligibleClientFor:(id *)a3;
-- (BOOL)isEligibleDaemonFor:(id *)a3;
-- (BOOL)isEligibleForPrivService:(id *)a3;
+- (BOOL)isEligibleApplicationExtensionFor:(id *)for;
+- (BOOL)isEligibleApplicationFor:(id *)for;
+- (BOOL)isEligibleClientFor:(id *)for;
+- (BOOL)isEligibleDaemonFor:(id *)for;
+- (BOOL)isEligibleForPrivService:(id *)service;
 - (BOOL)isSupportedSPIClient;
-- (BOOL)meetsSecurityControlsForAuditToken:(id *)a3;
+- (BOOL)meetsSecurityControlsForAuditToken:(id *)token;
 - (NSArray)allowlistedDaemons;
 - (NSArray)allowlistedFirstPartyExtensions;
 - (NSArray)allowlistedThirdPartyExtensions;
-- (id)fetchBundleRecordFor:(id *)a3;
-- (id)fetchEntitlementForAuditToken:(id *)a3 withKey:(id)a4;
+- (id)fetchBundleRecordFor:(id *)for;
+- (id)fetchEntitlementForAuditToken:(id *)token withKey:(id)key;
 @end
 
 @implementation AppAttestEligibilityManager
@@ -84,7 +84,7 @@
   return allowlistedFirstPartyExtensions;
 }
 
-- (BOOL)isEligibleClientFor:(id *)a3
+- (BOOL)isEligibleClientFor:(id *)for
 {
   v35 = *MEMORY[0x277D85DE8];
   if ([(AppAttestEligibilityManager *)self isSupportedHardware])
@@ -93,10 +93,10 @@
     {
       if ([(AppAttestEligibilityManager *)self containsValidEntitlements])
       {
-        v5 = *&a3->var0[4];
-        *v34 = *a3->var0;
+        v5 = *&for->var0[4];
+        *v34 = *for->var0;
         *&v34[16] = v5;
-        if ([(AppAttestEligibilityManager *)self isEligibleApplicationFor:v34]|| (v6 = *&a3->var0[4], *v34 = *a3->var0, *&v34[16] = v6, [(AppAttestEligibilityManager *)self isEligibleDaemonFor:v34]) || (v7 = *&a3->var0[4], *v34 = *a3->var0, *&v34[16] = v7, [(AppAttestEligibilityManager *)self isEligibleApplicationExtensionFor:v34]))
+        if ([(AppAttestEligibilityManager *)self isEligibleApplicationFor:v34]|| (v6 = *&for->var0[4], *v34 = *for->var0, *&v34[16] = v6, [(AppAttestEligibilityManager *)self isEligibleDaemonFor:v34]) || (v7 = *&for->var0[4], *v34 = *for->var0, *&v34[16] = v7, [(AppAttestEligibilityManager *)self isEligibleApplicationExtensionFor:v34]))
         {
           LOBYTE(v8) = 1;
           goto LABEL_48;
@@ -313,11 +313,11 @@ LABEL_48:
   return v8;
 }
 
-- (BOOL)isEligibleApplicationFor:(id *)a3
+- (BOOL)isEligibleApplicationFor:(id *)for
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = *&a3->var0[4];
-  *v22 = *a3->var0;
+  v3 = *&for->var0[4];
+  *v22 = *for->var0;
   *&v22[16] = v3;
   v4 = [(AppAttestEligibilityManager *)self fetchBundleRecordFor:v22];
   if (!v4)
@@ -418,13 +418,13 @@ LABEL_30:
       v11 = "/Library/Caches/com.apple.xbs/Sources/TwoBit/AppAttestInternal/Source/Core/AppAttestEligibilityManager.m";
     }
 
-    v12 = [v4 bundleIdentifier];
+    bundleIdentifier = [v4 bundleIdentifier];
     *v22 = 136315650;
     *&v22[4] = v11;
     *&v22[12] = 1024;
     *&v22[14] = 167;
     *&v22[18] = 2112;
-    *&v22[20] = v12;
+    *&v22[20] = bundleIdentifier;
     _os_log_impl(&dword_226177000, v5, OS_LOG_TYPE_DEBUG, "%25s:%-5d Client is eligible. { 'type':App, 'identifier':%@ }", v22, 0x1Cu);
   }
 
@@ -435,11 +435,11 @@ LABEL_31:
   return v13;
 }
 
-- (BOOL)isEligibleApplicationExtensionFor:(id *)a3
+- (BOOL)isEligibleApplicationExtensionFor:(id *)for
 {
   v94 = *MEMORY[0x277D85DE8];
-  v5 = *&a3->var0[4];
-  *buf.val = *a3->var0;
+  v5 = *&for->var0[4];
+  *buf.val = *for->var0;
   *&buf.val[4] = v5;
   v6 = [(AppAttestEligibilityManager *)self fetchBundleRecordFor:&buf];
   if (!v6)
@@ -498,10 +498,10 @@ LABEL_31:
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
-    v88 = [v7 extensionPointRecord];
-    v8 = [(AppAttestEligibilityManager *)self allowlistedThirdPartyExtensions];
-    v9 = [v88 name];
-    if ([v8 containsObject:v9])
+    extensionPointRecord = [v7 extensionPointRecord];
+    allowlistedThirdPartyExtensions = [(AppAttestEligibilityManager *)self allowlistedThirdPartyExtensions];
+    name = [extensionPointRecord name];
+    if ([allowlistedThirdPartyExtensions containsObject:name])
     {
       v10 = +[FeatureFlagsManager isExtensionAttestationEnabled];
 
@@ -546,13 +546,13 @@ LABEL_31:
             v17 = "/Library/Caches/com.apple.xbs/Sources/TwoBit/AppAttestInternal/Source/Core/AppAttestEligibilityManager.m";
           }
 
-          v18 = [v7 bundleIdentifier];
+          bundleIdentifier = [v7 bundleIdentifier];
           buf.val[0] = 136315650;
           *&buf.val[1] = v17;
           LOWORD(buf.val[3]) = 1024;
           *(&buf.val[3] + 2) = 202;
           HIWORD(buf.val[4]) = 2112;
-          *&buf.val[5] = v18;
+          *&buf.val[5] = bundleIdentifier;
           _os_log_impl(&dword_226177000, v11, OS_LOG_TYPE_DEBUG, "%25s:%-5d Client is eligible. { 'type':AppExtension, 'identifier':%@ }", &buf, 0x1Cu);
         }
 
@@ -566,8 +566,8 @@ LABEL_31:
     }
 
     v32 = *MEMORY[0x277CBECE8];
-    v33 = *&a3->var0[4];
-    *buf.val = *a3->var0;
+    v33 = *&for->var0[4];
+    *buf.val = *for->var0;
     *&buf.val[4] = v33;
     v34 = SecTaskCreateWithAuditToken(v32, &buf);
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -621,8 +621,8 @@ LABEL_31:
         }
 
         while (!v16);
-        v43 = [(__CFError *)error localizedDescription];
-        v44 = v43;
+        localizedDescription = [(__CFError *)error localizedDescription];
+        v44 = localizedDescription;
         if (v40)
         {
           v45 = v40 + 1;
@@ -638,7 +638,7 @@ LABEL_31:
         LOWORD(buf.val[3]) = 1024;
         *(&buf.val[3] + 2) = 219;
         HIWORD(buf.val[4]) = 2112;
-        *&buf.val[5] = v43;
+        *&buf.val[5] = localizedDescription;
         _os_log_impl(&dword_226177000, v38, OS_LOG_TYPE_DEBUG, "%25s:%-5d Failed to fetch extension entitlement. { error=%@ }", &buf, 0x1Cu);
       }
 
@@ -647,18 +647,18 @@ LABEL_31:
 
     if ([v36 intValue] == 1)
     {
-      v48 = [v7 teamIdentifier];
-      v87 = [v48 isEqualToString:@"0000000000"];
+      teamIdentifier = [v7 teamIdentifier];
+      v87 = [teamIdentifier isEqualToString:@"0000000000"];
 
-      v49 = [v7 bundleIdentifier];
-      v86 = [v49 hasPrefix:@"com.apple."];
+      bundleIdentifier2 = [v7 bundleIdentifier];
+      v86 = [bundleIdentifier2 hasPrefix:@"com.apple."];
 
-      v50 = [(AppAttestEligibilityManager *)self allowlistedFirstPartyExtensions];
-      v51 = [v7 bundleIdentifier];
-      v85 = [v50 containsObject:v51];
+      allowlistedFirstPartyExtensions = [(AppAttestEligibilityManager *)self allowlistedFirstPartyExtensions];
+      bundleIdentifier3 = [v7 bundleIdentifier];
+      v85 = [allowlistedFirstPartyExtensions containsObject:bundleIdentifier3];
 
-      v52 = *&a3->var0[4];
-      *buf.val = *a3->var0;
+      v52 = *&for->var0[4];
+      *buf.val = *for->var0;
       *&buf.val[4] = v52;
       v53 = [(AppAttestEligibilityManager *)self meetsSecurityControlsForAuditToken:&buf];
       if (v53)
@@ -692,7 +692,7 @@ LABEL_31:
           }
 
           while (!v16);
-          v59 = [v7 bundleIdentifier];
+          bundleIdentifier4 = [v7 bundleIdentifier];
           if (v56)
           {
             v60 = v56 + 1;
@@ -708,8 +708,8 @@ LABEL_31:
           LOWORD(buf.val[3]) = 1024;
           *(&buf.val[3] + 2) = 251;
           HIWORD(buf.val[4]) = 2112;
-          *&buf.val[5] = v59;
-          v61 = v59;
+          *&buf.val[5] = bundleIdentifier4;
+          v61 = bundleIdentifier4;
           _os_log_impl(&dword_226177000, v54, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Client meets security standards. { type=AppExtension, identifier=%@ }", &buf, 0x1Cu);
         }
 
@@ -744,8 +744,8 @@ LABEL_31:
             }
 
             while (!v16);
-            v67 = [v7 bundleIdentifier];
-            v68 = v67;
+            bundleIdentifier5 = [v7 bundleIdentifier];
+            v68 = bundleIdentifier5;
             if (v64)
             {
               v69 = v64 + 1;
@@ -761,7 +761,7 @@ LABEL_31:
             LOWORD(buf.val[3]) = 1024;
             *(&buf.val[3] + 2) = 254;
             HIWORD(buf.val[4]) = 2112;
-            *&buf.val[5] = v67;
+            *&buf.val[5] = bundleIdentifier5;
             _os_log_impl(&dword_226177000, v62, OS_LOG_TYPE_DEBUG, "%25s:%-5d Client is eligible. { 'type':AppExtension, 'identifier':%@ }", &buf, 0x1Cu);
           }
 
@@ -972,18 +972,18 @@ void __65__AppAttestEligibilityManager_isEligibleApplicationExtensionFor___block
   }
 }
 
-- (BOOL)isEligibleDaemonFor:(id *)a3
+- (BOOL)isEligibleDaemonFor:(id *)for
 {
   v57 = *MEMORY[0x277D85DE8];
-  v5 = *&a3->var0[4];
-  *v56 = *a3->var0;
+  v5 = *&for->var0[4];
+  *v56 = *for->var0;
   *&v56[16] = v5;
   v6 = [(AppAttestEligibilityManager *)self fetchEntitlementForAuditToken:v56 withKey:@"com.apple.devicecheck.daemon-client"];
   v7 = v6;
   if (v6 && [v6 intValue] == 1)
   {
-    v8 = *&a3->var0[4];
-    *v56 = *a3->var0;
+    v8 = *&for->var0[4];
+    *v56 = *for->var0;
     *&v56[16] = v8;
     v9 = [(AppAttestEligibilityManager *)self fetchEntitlementForAuditToken:v56 withKey:@"application-identifier"];
     v10 = v9;
@@ -991,8 +991,8 @@ void __65__AppAttestEligibilityManager_isEligibleApplicationExtensionFor___block
     {
       if ([v9 hasPrefix:@"com.apple."])
       {
-        v11 = [(AppAttestEligibilityManager *)self allowlistedDaemons];
-        v12 = [v11 containsObject:v10];
+        allowlistedDaemons = [(AppAttestEligibilityManager *)self allowlistedDaemons];
+        v12 = [allowlistedDaemons containsObject:v10];
 
         if (v12)
         {
@@ -1045,8 +1045,8 @@ void __65__AppAttestEligibilityManager_isEligibleApplicationExtensionFor___block
           }
         }
 
-        v20 = *&a3->var0[4];
-        *v56 = *a3->var0;
+        v20 = *&for->var0[4];
+        *v56 = *for->var0;
         *&v56[16] = v20;
         v21 = [(AppAttestEligibilityManager *)self meetsSecurityControlsForAuditToken:v56];
         if (v21)
@@ -1196,13 +1196,13 @@ LABEL_89:
           v47 = "/Library/Caches/com.apple.xbs/Sources/TwoBit/AppAttestInternal/Source/Core/AppAttestEligibilityManager.m";
         }
 
-        v48 = [v10 UTF8String];
+        uTF8String = [v10 UTF8String];
         *v56 = 136315650;
         *&v56[4] = v47;
         *&v56[12] = 1024;
         *&v56[14] = 276;
         *&v56[18] = 2080;
-        *&v56[20] = v48;
+        *&v56[20] = uTF8String;
         _os_log_impl(&dword_226177000, v42, OS_LOG_TYPE_DEBUG, "%25s:%-5d Invalid daemon application identifier. { appID=%s }", v56, 0x1Cu);
       }
     }
@@ -1315,11 +1315,11 @@ LABEL_91:
   return v35;
 }
 
-- (BOOL)isEligibleForPrivService:(id *)a3
+- (BOOL)isEligibleForPrivService:(id *)service
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = *&a3->var0[4];
-  *v35 = *a3->var0;
+  v5 = *&service->var0[4];
+  *v35 = *service->var0;
   *&v35[16] = v5;
   v6 = [(AppAttestEligibilityManager *)self fetchEntitlementForAuditToken:v35 withKey:@"com.apple.devicecheck.private.api"];
   v7 = v6;
@@ -1377,8 +1377,8 @@ LABEL_91:
     goto LABEL_30;
   }
 
-  v8 = *&a3->var0[4];
-  *v35 = *a3->var0;
+  v8 = *&service->var0[4];
+  *v35 = *service->var0;
   *&v35[16] = v8;
   v9 = [(AppAttestEligibilityManager *)self meetsSecurityControlsForAuditToken:v35];
   if (!v9)
@@ -1782,13 +1782,13 @@ void __56__AppAttestEligibilityManager_containsValidEntitlements__block_invoke_3
   }
 }
 
-- (id)fetchEntitlementForAuditToken:(id *)a3 withKey:(id)a4
+- (id)fetchEntitlementForAuditToken:(id *)token withKey:(id)key
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  keyCopy = key;
   v6 = *MEMORY[0x277CBECE8];
-  v7 = *&a3->var0[4];
-  *token.val = *a3->var0;
+  v7 = *&token->var0[4];
+  *token.val = *token->var0;
   *&token.val[4] = v7;
   v8 = SecTaskCreateWithAuditToken(v6, &token);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -1804,7 +1804,7 @@ void __56__AppAttestEligibilityManager_containsValidEntitlements__block_invoke_3
   v35[2] = __69__AppAttestEligibilityManager_fetchEntitlementForAuditToken_withKey___block_invoke_2;
   v35[3] = &__block_descriptor_40_e5_v8__0l;
   v10 = _Block_copy(v35);
-  v11 = SecTaskCopyValueForEntitlement(v8, v5, &error);
+  v11 = SecTaskCopyValueForEntitlement(v8, keyCopy, &error);
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __69__AppAttestEligibilityManager_fetchEntitlementForAuditToken_withKey___block_invoke_3;
@@ -1842,8 +1842,8 @@ void __56__AppAttestEligibilityManager_containsValidEntitlements__block_invoke_3
       }
 
       while (!v18);
-      v19 = [(__CFError *)error localizedDescription];
-      v20 = v19;
+      localizedDescription = [(__CFError *)error localizedDescription];
+      v20 = localizedDescription;
       if (v15)
       {
         v21 = v15 + 1;
@@ -1859,7 +1859,7 @@ void __56__AppAttestEligibilityManager_containsValidEntitlements__block_invoke_3
       LOWORD(token.val[3]) = 1024;
       *(&token.val[3] + 2) = 369;
       HIWORD(token.val[4]) = 2112;
-      *&token.val[5] = v19;
+      *&token.val[5] = localizedDescription;
       _os_log_impl(&dword_226177000, v13, OS_LOG_TYPE_DEBUG, "%25s:%-5d Failed to fetch entitlement. { error=%@ }", &token, 0x1Cu);
     }
 
@@ -1972,12 +1972,12 @@ void __69__AppAttestEligibilityManager_fetchEntitlementForAuditToken_withKey___b
   }
 }
 
-- (BOOL)meetsSecurityControlsForAuditToken:(id *)a3
+- (BOOL)meetsSecurityControlsForAuditToken:(id *)token
 {
   v66 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CBECE8];
-  v6 = *&a3->var0[4];
-  *token.val = *a3->var0;
+  v6 = *&token->var0[4];
+  *token.val = *token->var0;
   *&token.val[4] = v6;
   v7 = SecTaskCreateWithAuditToken(v5, &token);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -2189,16 +2189,16 @@ void __69__AppAttestEligibilityManager_fetchEntitlementForAuditToken_withKey___b
       _os_log_impl(&dword_226177000, v30, OS_LOG_TYPE_DEBUG, "%25s:%-5d Internal build variant, attempting internal binary security check.", &token, 0x12u);
     }
 
-    v36 = *&a3->var0[4];
-    *token.val = *a3->var0;
+    v36 = *&token->var0[4];
+    *token.val = *token->var0;
     *&token.val[4] = v36;
     v37 = [(AppAttestEligibilityManager *)self fetchBundleRecordFor:&token];
     v38 = v37;
     v39 = -335552513;
     if (v37)
     {
-      v40 = [v37 bundleIdentifier];
-      v41 = [v40 isEqualToString:@"com.apple.DeviceCheckTests.xctrunner"];
+      bundleIdentifier = [v37 bundleIdentifier];
+      v41 = [bundleIdentifier isEqualToString:@"com.apple.DeviceCheckTests.xctrunner"];
 
       if (v41)
       {
@@ -2388,12 +2388,12 @@ void __66__AppAttestEligibilityManager_meetsSecurityControlsForAuditToken___bloc
   }
 }
 
-- (id)fetchBundleRecordFor:(id *)a3
+- (id)fetchBundleRecordFor:(id *)for
 {
   v32 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CBECE8];
-  v5 = *&a3->var0[4];
-  *token.val = *a3->var0;
+  v5 = *&for->var0[4];
+  *token.val = *for->var0;
   *&token.val[4] = v5;
   v6 = SecTaskCreateWithAuditToken(v4, &token);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -2403,8 +2403,8 @@ void __66__AppAttestEligibilityManager_meetsSecurityControlsForAuditToken___bloc
   aBlock[4] = v6;
   v7 = _Block_copy(aBlock);
   v29 = 0;
-  v8 = *&a3->var0[4];
-  *token.val = *a3->var0;
+  v8 = *&for->var0[4];
+  *token.val = *for->var0;
   *&token.val[4] = v8;
   v9 = [MEMORY[0x277CC1E90] bundleRecordForAuditToken:&token error:&v29];
   v10 = v29;
@@ -2439,8 +2439,8 @@ void __66__AppAttestEligibilityManager_meetsSecurityControlsForAuditToken___bloc
       }
 
       while (!v16);
-      v17 = [v10 localizedDescription];
-      v18 = v17;
+      localizedDescription = [v10 localizedDescription];
+      v18 = localizedDescription;
       if (v13)
       {
         v19 = v13 + 1;
@@ -2456,7 +2456,7 @@ void __66__AppAttestEligibilityManager_meetsSecurityControlsForAuditToken___bloc
       LOWORD(token.val[3]) = 1024;
       *(&token.val[3] + 2) = 443;
       HIWORD(token.val[4]) = 2112;
-      *&token.val[5] = v17;
+      *&token.val[5] = localizedDescription;
       _os_log_impl(&dword_226177000, v11, OS_LOG_TYPE_DEBUG, "%25s:%-5d Failed to fetch bundle record. { error=%@ }", &token, 0x1Cu);
     }
 

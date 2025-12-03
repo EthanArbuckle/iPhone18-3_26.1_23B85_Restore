@@ -1,43 +1,43 @@
 @interface KNAnimatedTextureManager
 - (BOOL)p_stopPreCachingIfStarted;
-- (KNAnimatedTextureManager)initWithSession:(id)a3;
-- (id)ASVForSlideNode:(id)a3;
+- (KNAnimatedTextureManager)initWithSession:(id)session;
+- (id)ASVForSlideNode:(id)node;
 - (id)description;
-- (id)p_setupGenerateTexturesOperationOnSlideNode:(id)a3;
-- (id)p_setupPrepareAnimationsOperationOnSlideNode:(id)a3;
-- (id)p_setupRenderTexturesOperationOnSlideNode:(id)a3;
-- (id)p_slideNodesToCacheAroundCurrentSlideNode:(id)a3 shouldIncludeExtraSlideAtEnd:(BOOL)a4;
-- (void)addTextureToRasterizationQueue:(id)a3 asv:(id)a4;
+- (id)p_setupGenerateTexturesOperationOnSlideNode:(id)node;
+- (id)p_setupPrepareAnimationsOperationOnSlideNode:(id)node;
+- (id)p_setupRenderTexturesOperationOnSlideNode:(id)node;
+- (id)p_slideNodesToCacheAroundCurrentSlideNode:(id)node shouldIncludeExtraSlideAtEnd:(BOOL)end;
+- (void)addTextureToRasterizationQueue:(id)queue asv:(id)asv;
 - (void)dealloc;
 - (void)evictCaches;
-- (void)p_addSlideNodeToMemorySet:(id)a3;
+- (void)p_addSlideNodeToMemorySet:(id)set;
 - (void)p_cancelAllOperations;
 - (void)p_didReceiveMemoryWarning;
 - (void)p_processCurrentSlideNode;
-- (void)p_processSlideNode:(id)a3 isHighPriority:(BOOL)a4;
-- (void)p_rasterizeTexture:(id)a3;
-- (void)p_removeTextureCacheForASV:(id)a3;
+- (void)p_processSlideNode:(id)node isHighPriority:(BOOL)priority;
+- (void)p_rasterizeTexture:(id)texture;
+- (void)p_removeTextureCacheForASV:(id)v;
 - (void)p_scheduleSerializeExtraSlideNodes;
 - (void)p_serializeExtraSlideNodes;
-- (void)p_serializeTexturesForSlideNode:(id)a3;
+- (void)p_serializeTexturesForSlideNode:(id)node;
 - (void)p_waitUntilAllOperationsAreFinished;
-- (void)setCurrentSlideNode:(id)a3;
+- (void)setCurrentSlideNode:(id)node;
 - (void)startPreCaching;
 - (void)tearDown;
 @end
 
 @implementation KNAnimatedTextureManager
 
-- (KNAnimatedTextureManager)initWithSession:(id)a3
+- (KNAnimatedTextureManager)initWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v40.receiver = self;
   v40.super_class = KNAnimatedTextureManager;
   v5 = [(KNAnimatedTextureManager *)&v40 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_session, v4);
+    objc_storeWeak(&v5->_session, sessionCopy);
     v7 = objc_opt_new();
     preCacheBackgroundQueue = v6->_preCacheBackgroundQueue;
     v6->_preCacheBackgroundQueue = v7;
@@ -163,23 +163,23 @@
   return v12;
 }
 
-- (void)setCurrentSlideNode:(id)a3
+- (void)setCurrentSlideNode:(id)node
 {
-  v11 = a3;
+  nodeCopy = node;
   if (KNAnimatedTextureManagerCat_init_token != -1)
   {
     sub_275E5B624();
   }
 
   os_unfair_lock_lock(&self->_preCachingStateLock);
-  if (self->_currentSlideNode == v11)
+  if (self->_currentSlideNode == nodeCopy)
   {
     os_unfair_lock_unlock(&self->_preCachingStateLock);
   }
 
   else
   {
-    objc_storeStrong(&self->_currentSlideNode, a3);
+    objc_storeStrong(&self->_currentSlideNode, node);
     currentSlideNode = self->_currentSlideNode;
     isPreCachingActive = self->_isPreCachingActive;
     os_unfair_lock_unlock(&self->_preCachingStateLock);
@@ -193,15 +193,15 @@
 
       else
       {
-        objc_msgSend_p_addSlideNodeToMemorySet_(self, v7, v11);
+        objc_msgSend_p_addSlideNodeToMemorySet_(self, v7, nodeCopy);
       }
     }
   }
 }
 
-- (id)ASVForSlideNode:(id)a3
+- (id)ASVForSlideNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   os_unfair_lock_lock(&self->_preCachingStateLock);
   slideNodeToASVMap = self->_slideNodeToASVMap;
   if (!slideNodeToASVMap)
@@ -213,14 +213,14 @@
     slideNodeToASVMap = self->_slideNodeToASVMap;
   }
 
-  v10 = objc_msgSend_objectForKey_(slideNodeToASVMap, v5, v4);
+  v10 = objc_msgSend_objectForKey_(slideNodeToASVMap, v5, nodeCopy);
   if (!v10)
   {
     v11 = [KNAnimatedSlideView alloc];
     WeakRetained = objc_loadWeakRetained(&self->_session);
-    v10 = objc_msgSend_initForSlideNode_session_(v11, v13, v4, WeakRetained);
+    v10 = objc_msgSend_initForSlideNode_session_(v11, v13, nodeCopy, WeakRetained);
 
-    objc_msgSend_setObject_forKey_(self->_slideNodeToASVMap, v14, v10, v4);
+    objc_msgSend_setObject_forKey_(self->_slideNodeToASVMap, v14, v10, nodeCopy);
   }
 
   os_unfair_lock_unlock(&self->_preCachingStateLock);
@@ -228,9 +228,9 @@
   return v10;
 }
 
-- (void)p_addSlideNodeToMemorySet:(id)a3
+- (void)p_addSlideNodeToMemorySet:(id)set
 {
-  v8 = a3;
+  setCopy = set;
   os_unfair_lock_lock(&self->_preCachingStateLock);
   slideNodesInMemorySet = self->_slideNodesInMemorySet;
   if (!slideNodesInMemorySet)
@@ -242,22 +242,22 @@
     slideNodesInMemorySet = self->_slideNodesInMemorySet;
   }
 
-  objc_msgSend_addObject_(slideNodesInMemorySet, v4, v8);
+  objc_msgSend_addObject_(slideNodesInMemorySet, v4, setCopy);
   os_unfair_lock_unlock(&self->_preCachingStateLock);
 }
 
-- (id)p_setupGenerateTexturesOperationOnSlideNode:(id)a3
+- (id)p_setupGenerateTexturesOperationOnSlideNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v5 = [KNSlideNodeBlockOperation alloc];
-  v7 = objc_msgSend_initWithSlideNode_type_(v5, v6, v4, 0);
+  v7 = objc_msgSend_initWithSlideNode_type_(v5, v6, nodeCopy, 0);
   objc_initWeak(&location, v7);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_275DDF518;
   v14[3] = &unk_27A699078;
   v14[4] = self;
-  v8 = v4;
+  v8 = nodeCopy;
   v15 = v8;
   objc_copyWeak(&v16, &location);
   objc_msgSend_addExecutionBlock_(v7, v9, v14);
@@ -270,18 +270,18 @@
   return v7;
 }
 
-- (id)p_setupRenderTexturesOperationOnSlideNode:(id)a3
+- (id)p_setupRenderTexturesOperationOnSlideNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v5 = [KNSlideNodeBlockOperation alloc];
-  v7 = objc_msgSend_initWithSlideNode_type_(v5, v6, v4, 1);
+  v7 = objc_msgSend_initWithSlideNode_type_(v5, v6, nodeCopy, 1);
   objc_initWeak(&location, v7);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_275DDFA20;
   v14[3] = &unk_27A699078;
   v14[4] = self;
-  v8 = v4;
+  v8 = nodeCopy;
   v15 = v8;
   objc_copyWeak(&v16, &location);
   objc_msgSend_addExecutionBlock_(v7, v9, v14);
@@ -294,18 +294,18 @@
   return v7;
 }
 
-- (id)p_setupPrepareAnimationsOperationOnSlideNode:(id)a3
+- (id)p_setupPrepareAnimationsOperationOnSlideNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v5 = [KNSlideNodeBlockOperation alloc];
-  v7 = objc_msgSend_initWithSlideNode_type_(v5, v6, v4, 3);
+  v7 = objc_msgSend_initWithSlideNode_type_(v5, v6, nodeCopy, 3);
   objc_initWeak(&location, v7);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_275DDFDB8;
   v11[3] = &unk_27A699078;
   v11[4] = self;
-  v8 = v4;
+  v8 = nodeCopy;
   v12 = v8;
   objc_copyWeak(&v13, &location);
   objc_msgSend_addExecutionBlock_(v7, v9, v11);
@@ -316,15 +316,15 @@
   return v7;
 }
 
-- (void)p_processSlideNode:(id)a3 isHighPriority:(BOOL)a4
+- (void)p_processSlideNode:(id)node isHighPriority:(BOOL)priority
 {
-  v4 = a4;
+  priorityCopy = priority;
   v58 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v9 = v6;
+  nodeCopy = node;
+  v9 = nodeCopy;
   if (KNAnimatedTextureManagerCat_init_token == -1)
   {
-    if (!v6)
+    if (!nodeCopy)
     {
       goto LABEL_26;
     }
@@ -398,7 +398,7 @@ LABEL_15:
       v38 = objc_msgSend_p_setupPrepareAnimationsOperationOnSlideNode_(self, v37, v9);
       objc_msgSend_addDependency_(v36, v39, v34);
       objc_msgSend_addDependency_(v38, v40, v36);
-      if (v4)
+      if (priorityCopy)
       {
         objc_msgSend_setQualityOfService_(v34, v41, 33);
         objc_msgSend_setQueuePriority_(v34, v42, 8);
@@ -462,7 +462,7 @@ LABEL_26:
   if (shouldPreCache && v12 != 0)
   {
     objc_msgSend_p_processSlideNode_isHighPriority_(self, v14, v12, 1);
-    v16 = self;
+    selfCopy = self;
     v18 = objc_msgSend_p_slideNodesToCacheAroundCurrentSlideNode_shouldIncludeExtraSlideAtEnd_(self, v17, v12, 0);
     v29 = 0u;
     v30 = 0u;
@@ -492,7 +492,7 @@ LABEL_26:
             block[1] = 3221225472;
             block[2] = sub_275DE05BC;
             block[3] = &unk_27A697C10;
-            block[4] = v16;
+            block[4] = selfCopy;
             block[5] = v26;
             dispatch_after(v27, v24, block);
           }
@@ -509,11 +509,11 @@ LABEL_26:
   }
 }
 
-- (id)p_slideNodesToCacheAroundCurrentSlideNode:(id)a3 shouldIncludeExtraSlideAtEnd:(BOOL)a4
+- (id)p_slideNodesToCacheAroundCurrentSlideNode:(id)node shouldIncludeExtraSlideAtEnd:(BOOL)end
 {
-  v4 = a4;
-  v7 = a3;
-  if (!v7)
+  endCopy = end;
+  nodeCopy = node;
+  if (!nodeCopy)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[KNAnimatedTextureManager p_slideNodesToCacheAroundCurrentSlideNode:shouldIncludeExtraSlideAtEnd:]");
@@ -523,10 +523,10 @@ LABEL_26:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v13, v14);
   }
 
-  v15 = v7;
+  v15 = nodeCopy;
   v17 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v16, 2);
   objc_msgSend_addObject_(v17, v18, v15);
-  if (!v7)
+  if (!nodeCopy)
   {
     v21 = 0;
     goto LABEL_9;
@@ -545,7 +545,7 @@ LABEL_9:
   objc_msgSend_addObject_(v17, v22, v21);
   v23 = v21;
   v21 = v23;
-  if (v4)
+  if (endCopy)
   {
     v26 = objc_msgSend_nextSkippingHidden(v23, v24, v25);
 
@@ -625,24 +625,24 @@ LABEL_11:
   objc_msgSend_waitUntilAllOperationsAreFinished(rasterizeTextureQueue, v4, v5);
 }
 
-- (void)p_rasterizeTexture:(id)a3
+- (void)p_rasterizeTexture:(id)texture
 {
-  v15 = a3;
+  textureCopy = texture;
   isMainThread = objc_msgSend_isMainThread(MEMORY[0x277CCACC8], v3, v4);
   objc_msgSend_begin(MEMORY[0x277CD9FF0], v6, v7);
   objc_msgSend_setDisableActions_(MEMORY[0x277CD9FF0], v8, 1);
   objc_msgSend_activateBackground_(MEMORY[0x277CD9FF0], v9, isMainThread ^ 1u);
   v10 = objc_autoreleasePoolPush();
-  objc_msgSend_renderLayerContentsIfNeeded(v15, v11, v12);
+  objc_msgSend_renderLayerContentsIfNeeded(textureCopy, v11, v12);
   objc_autoreleasePoolPop(v10);
   objc_msgSend_commit(MEMORY[0x277CD9FF0], v13, v14);
 }
 
-- (void)addTextureToRasterizationQueue:(id)a3 asv:(id)a4
+- (void)addTextureToRasterizationQueue:(id)queue asv:(id)asv
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  queueCopy = queue;
+  asvCopy = asv;
+  v8 = queueCopy;
   objc_sync_enter(v8);
   WeakRetained = objc_loadWeakRetained(&self->_session);
   isExitingShow = objc_msgSend_isExitingShow(WeakRetained, v10, v11);
@@ -667,7 +667,7 @@ LABEL_11:
         objc_copyWeak(&v36, &location);
         v19 = v8;
         v34 = v19;
-        v35 = self;
+        selfCopy = self;
         objc_msgSend_addExecutionBlock_(v18, v20, v33);
         v22 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v21, @"render texture:%p", v19);
         objc_msgSend_setName_(v18, v23, v22);
@@ -702,10 +702,10 @@ LABEL_11:
   objc_sync_exit(v8);
 }
 
-- (void)p_removeTextureCacheForASV:(id)a3
+- (void)p_removeTextureCacheForASV:(id)v
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = objc_msgSend_allReps(a3, a2, a3);
+  v4 = objc_msgSend_allReps(v, a2, v);
   os_unfair_lock_lock(&self->_textureCacheLock);
   v19 = 0u;
   v20 = 0u;
@@ -742,24 +742,24 @@ LABEL_11:
   os_unfair_lock_unlock(&self->_textureCacheLock);
 }
 
-- (void)p_serializeTexturesForSlideNode:(id)a3
+- (void)p_serializeTexturesForSlideNode:(id)node
 {
   v47 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nodeCopy = node;
   if (KNAnimatedTextureManagerCat_init_token != -1)
   {
     sub_275E5B64C();
   }
 
   v4 = [KNSlideNodeBlockOperation alloc];
-  v37 = objc_msgSend_initWithSlideNode_type_(v4, v5, v3, 2);
+  v37 = objc_msgSend_initWithSlideNode_type_(v4, v5, nodeCopy, 2);
   objc_initWeak(&location, v37);
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = sub_275DE12A0;
   v42[3] = &unk_27A699078;
   v42[4] = self;
-  v6 = v3;
+  v6 = nodeCopy;
   v43 = v6;
   objc_copyWeak(&v44, &location);
   objc_msgSend_addExecutionBlock_(v37, v7, v42);

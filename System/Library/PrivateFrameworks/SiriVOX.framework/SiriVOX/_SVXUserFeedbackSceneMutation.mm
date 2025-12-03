@@ -1,5 +1,5 @@
 @interface _SVXUserFeedbackSceneMutation
-- (_SVXUserFeedbackSceneMutation)initWithBaseModel:(id)a3;
+- (_SVXUserFeedbackSceneMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -24,15 +24,15 @@ LABEL_5:
 
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v6 = self->_identifier;
+    identifier = self->_identifier;
   }
 
   else
   {
-    v6 = [(SVXUserFeedbackScene *)baseModel identifier];
+    identifier = [(SVXUserFeedbackScene *)baseModel identifier];
   }
 
-  v7 = v6;
+  v7 = identifier;
   if ((*&self->_mutationFlags & 4) != 0)
   {
     duration = self->_duration;
@@ -42,7 +42,7 @@ LABEL_5:
     }
 
 LABEL_13:
-    v10 = [(SVXUserFeedbackScene *)self->_baseModel nodes];
+    nodes = [(SVXUserFeedbackScene *)self->_baseModel nodes];
     goto LABEL_14;
   }
 
@@ -54,26 +54,26 @@ LABEL_13:
   }
 
 LABEL_11:
-  v10 = self->_nodes;
+  nodes = self->_nodes;
 LABEL_14:
-  v11 = v10;
-  v5 = [[SVXUserFeedbackScene alloc] initWithIdentifier:v7 duration:v10 nodes:duration];
+  v11 = nodes;
+  v5 = [[SVXUserFeedbackScene alloc] initWithIdentifier:v7 duration:nodes nodes:duration];
 
 LABEL_15:
 
   return v5;
 }
 
-- (_SVXUserFeedbackSceneMutation)initWithBaseModel:(id)a3
+- (_SVXUserFeedbackSceneMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SVXUserFeedbackSceneMutation;
   v6 = [(_SVXUserFeedbackSceneMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

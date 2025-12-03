@@ -1,19 +1,19 @@
 @interface DCAppAttestController
 - (BOOL)isSupported;
-- (BOOL)isSupportedWithError:(id *)a3;
-- (DCAppAttestController)initWithType:(unint64_t)a3;
+- (BOOL)isSupportedWithError:(id *)error;
+- (DCAppAttestController)initWithType:(unint64_t)type;
 - (NSUserDefaults)legacyUserDefaults;
 - (NSUserDefaults)userDefaults;
 - (id)loadAppUUID;
-- (id)rewrapAsDCError:(id)a3;
-- (void)attestKey:(id)a3 keyAttributes:(id)a4 clientDataHash:(id)a5 authData:(id)a6 options:(id)a7 completionHandler:(id)a8;
-- (void)attestKey:(id)a3 teamIdentifier:(id)a4 clientDataHash:(id)a5 completionHandler:(id)a6;
-- (void)dispatchCompletionHandler:(id)a3 ontoQueue:(id)a4;
-- (void)generateAssertion:(id)a3 teamIdentifier:(id)a4 clientDataHash:(id)a5 completionHandler:(id)a6;
-- (void)generateKeyWithTeamIdentifier:(id)a3 completion:(id)a4;
-- (void)getPropertiesForKeyId:(id)a3 teamIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)saveAppUUID:(id)a3;
-- (void)sign:(id)a3 withKey:(id)a4 teamIdentifier:(id)a5 completionHandler:(id)a6;
+- (id)rewrapAsDCError:(id)error;
+- (void)attestKey:(id)key keyAttributes:(id)attributes clientDataHash:(id)hash authData:(id)data options:(id)options completionHandler:(id)handler;
+- (void)attestKey:(id)key teamIdentifier:(id)identifier clientDataHash:(id)hash completionHandler:(id)handler;
+- (void)dispatchCompletionHandler:(id)handler ontoQueue:(id)queue;
+- (void)generateAssertion:(id)assertion teamIdentifier:(id)identifier clientDataHash:(id)hash completionHandler:(id)handler;
+- (void)generateKeyWithTeamIdentifier:(id)identifier completion:(id)completion;
+- (void)getPropertiesForKeyId:(id)id teamIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)saveAppUUID:(id)d;
+- (void)sign:(id)sign withKey:(id)key teamIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation DCAppAttestController
@@ -35,13 +35,13 @@
     if (os_log_type_enabled(DCLogSystem_log, OS_LOG_TYPE_ERROR))
     {
       v5 = v4;
-      v6 = [v3 localizedDescription];
+      localizedDescription = [v3 localizedDescription];
       *buf = 136315650;
       v11 = "DCAppAttestController.m";
       v12 = 1024;
       v13 = 75;
       v14 = 2112;
-      v15 = v6;
+      v15 = localizedDescription;
       _os_log_impl(&dword_238044000, v5, OS_LOG_TYPE_ERROR, "%25s:%-5d Failed to check if AppAttest is supported. { error=%@ }", buf, 0x1Cu);
     }
   }
@@ -50,7 +50,7 @@
   return v2;
 }
 
-- (DCAppAttestController)initWithType:(unint64_t)a3
+- (DCAppAttestController)initWithType:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = DCAppAttestController;
@@ -58,7 +58,7 @@
   v5 = v4;
   if (v4)
   {
-    [(DCAppAttestController *)v4 setAppAttestType:a3];
+    [(DCAppAttestController *)v4 setAppAttestType:type];
   }
 
   return v5;
@@ -69,9 +69,9 @@
   legacyUserDefaults = self->_legacyUserDefaults;
   if (!legacyUserDefaults)
   {
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     v5 = self->_legacyUserDefaults;
-    self->_legacyUserDefaults = v4;
+    self->_legacyUserDefaults = standardUserDefaults;
 
     legacyUserDefaults = self->_legacyUserDefaults;
   }
@@ -94,10 +94,10 @@
   return userDefaults;
 }
 
-- (void)generateKeyWithTeamIdentifier:(id)a3 completion:(id)a4
+- (void)generateKeyWithTeamIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = dispatch_get_current_queue();
   v9 = clientProcessingQueue();
   v13[0] = MEMORY[0x277D85DD0];
@@ -106,11 +106,11 @@
   v13[3] = &unk_278A45F58;
   v13[4] = self;
   v14 = v8;
-  v15 = v6;
-  v16 = v7;
-  v10 = v6;
+  v15 = identifierCopy;
+  v16 = completionCopy;
+  v10 = identifierCopy;
   v11 = v8;
-  v12 = v7;
+  v12 = completionCopy;
   dispatch_async(v9, v13);
 }
 
@@ -285,12 +285,12 @@ void __66__DCAppAttestController_generateKeyWithTeamIdentifier_completion___bloc
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)attestKey:(id)a3 teamIdentifier:(id)a4 clientDataHash:(id)a5 completionHandler:(id)a6
+- (void)attestKey:(id)key teamIdentifier:(id)identifier clientDataHash:(id)hash completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keyCopy = key;
+  identifierCopy = identifier;
+  hashCopy = hash;
+  handlerCopy = handler;
   v14 = dispatch_get_current_queue();
   v15 = clientProcessingQueue();
   v21[0] = MEMORY[0x277D85DD0];
@@ -298,16 +298,16 @@ void __66__DCAppAttestController_generateKeyWithTeamIdentifier_completion___bloc
   v21[2] = __83__DCAppAttestController_attestKey_teamIdentifier_clientDataHash_completionHandler___block_invoke;
   v21[3] = &unk_278A45FF8;
   v21[4] = self;
-  v22 = v10;
-  v23 = v12;
+  v22 = keyCopy;
+  v23 = hashCopy;
   v24 = v14;
-  v25 = v11;
-  v26 = v13;
-  v16 = v11;
+  v25 = identifierCopy;
+  v26 = handlerCopy;
+  v16 = identifierCopy;
   v17 = v14;
-  v18 = v12;
-  v19 = v10;
-  v20 = v13;
+  v18 = hashCopy;
+  v19 = keyCopy;
+  v20 = handlerCopy;
   dispatch_async(v15, v21);
 }
 
@@ -552,29 +552,29 @@ void __83__DCAppAttestController_attestKey_teamIdentifier_clientDataHash_complet
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)attestKey:(id)a3 keyAttributes:(id)a4 clientDataHash:(id)a5 authData:(id)a6 options:(id)a7 completionHandler:(id)a8
+- (void)attestKey:(id)key keyAttributes:(id)attributes clientDataHash:(id)hash authData:(id)data options:(id)options completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  keyCopy = key;
+  hashCopy = hash;
+  dataCopy = data;
+  optionsCopy = options;
+  handlerCopy = handler;
   v18 = clientProcessingQueue();
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __99__DCAppAttestController_attestKey_keyAttributes_clientDataHash_authData_options_completionHandler___block_invoke;
   v24[3] = &unk_278A45FF8;
   v24[4] = self;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v29 = v17;
-  v19 = v16;
-  v20 = v15;
-  v21 = v14;
-  v22 = v13;
-  v23 = v17;
+  v25 = keyCopy;
+  v26 = hashCopy;
+  v27 = dataCopy;
+  v28 = optionsCopy;
+  v29 = handlerCopy;
+  v19 = optionsCopy;
+  v20 = dataCopy;
+  v21 = hashCopy;
+  v22 = keyCopy;
+  v23 = handlerCopy;
   dispatch_async(v18, v24);
 }
 
@@ -1199,12 +1199,12 @@ void __99__DCAppAttestController_attestKey_keyAttributes_clientDataHash_authData
   }
 }
 
-- (void)generateAssertion:(id)a3 teamIdentifier:(id)a4 clientDataHash:(id)a5 completionHandler:(id)a6
+- (void)generateAssertion:(id)assertion teamIdentifier:(id)identifier clientDataHash:(id)hash completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  assertionCopy = assertion;
+  identifierCopy = identifier;
+  hashCopy = hash;
+  handlerCopy = handler;
   v14 = dispatch_get_current_queue();
   v15 = clientProcessingQueue();
   v21[0] = MEMORY[0x277D85DD0];
@@ -1212,16 +1212,16 @@ void __99__DCAppAttestController_attestKey_keyAttributes_clientDataHash_authData
   v21[2] = __91__DCAppAttestController_generateAssertion_teamIdentifier_clientDataHash_completionHandler___block_invoke;
   v21[3] = &unk_278A45FF8;
   v21[4] = self;
-  v22 = v10;
-  v23 = v12;
+  v22 = assertionCopy;
+  v23 = hashCopy;
   v24 = v14;
-  v25 = v11;
-  v26 = v13;
-  v16 = v11;
+  v25 = identifierCopy;
+  v26 = handlerCopy;
+  v16 = identifierCopy;
   v17 = v14;
-  v18 = v12;
-  v19 = v10;
-  v20 = v13;
+  v18 = hashCopy;
+  v19 = assertionCopy;
+  v20 = handlerCopy;
   dispatch_async(v15, v21);
 }
 
@@ -1466,26 +1466,26 @@ void __91__DCAppAttestController_generateAssertion_teamIdentifier_clientDataHash
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sign:(id)a3 withKey:(id)a4 teamIdentifier:(id)a5 completionHandler:(id)a6
+- (void)sign:(id)sign withKey:(id)key teamIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  signCopy = sign;
+  keyCopy = key;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v14 = clientProcessingQueue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__DCAppAttestController_sign_withKey_teamIdentifier_completionHandler___block_invoke;
   block[3] = &unk_278A461D0;
-  v22 = v12;
-  v23 = v13;
+  v22 = identifierCopy;
+  v23 = handlerCopy;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  v18 = v13;
+  v20 = signCopy;
+  v21 = keyCopy;
+  v15 = identifierCopy;
+  v16 = keyCopy;
+  v17 = signCopy;
+  v18 = handlerCopy;
   dispatch_async(v14, block);
 }
 
@@ -1579,23 +1579,23 @@ void __71__DCAppAttestController_sign_withKey_teamIdentifier_completionHandler__
   [v9 invalidate];
 }
 
-- (void)getPropertiesForKeyId:(id)a3 teamIdentifier:(id)a4 completionHandler:(id)a5
+- (void)getPropertiesForKeyId:(id)id teamIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = clientProcessingQueue();
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __80__DCAppAttestController_getPropertiesForKeyId_teamIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_278A45F58;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = idCopy;
+  v17 = identifierCopy;
+  v18 = handlerCopy;
+  v12 = identifierCopy;
+  v13 = idCopy;
+  v14 = handlerCopy;
   dispatch_async(v11, v15);
 }
 
@@ -1774,7 +1774,7 @@ void __80__DCAppAttestController_getPropertiesForKeyId_teamIdentifier_completion
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isSupportedWithError:(id *)a3
+- (BOOL)isSupportedWithError:(id *)error
 {
   v25 = 0;
   v26 = &v25;
@@ -1865,7 +1865,7 @@ LABEL_9:
   }
 
 LABEL_10:
-  *a3 = v20[5];
+  *error = v20[5];
   v12 = *(v26 + 24);
 
   _Block_object_dispose(&v19, 8);
@@ -2026,11 +2026,11 @@ void __46__DCAppAttestController_isSupportedWithError___block_invoke_4(uint64_t 
 - (id)loadAppUUID
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(DCAppAttestController *)self legacyUserDefaults];
-  v4 = [v3 stringForKey:@"com.apple.DC.AppAttestAppUUID"];
+  legacyUserDefaults = [(DCAppAttestController *)self legacyUserDefaults];
+  v4 = [legacyUserDefaults stringForKey:@"com.apple.DC.AppAttestAppUUID"];
 
-  v5 = [(DCAppAttestController *)self userDefaults];
-  v6 = [v5 stringForKey:@"com.apple.DC.AppAttestAppUUID"];
+  userDefaults = [(DCAppAttestController *)self userDefaults];
+  v6 = [userDefaults stringForKey:@"com.apple.DC.AppAttestAppUUID"];
 
   if (v4 && !v6)
   {
@@ -2050,8 +2050,8 @@ void __46__DCAppAttestController_isSupportedWithError___block_invoke_4(uint64_t 
     }
 
     [(DCAppAttestController *)self saveAppUUID:v4];
-    v8 = [(DCAppAttestController *)self legacyUserDefaults];
-    [v8 removeObjectForKey:@"com.apple.DC.AppAttestAppUUID"];
+    legacyUserDefaults2 = [(DCAppAttestController *)self legacyUserDefaults];
+    [legacyUserDefaults2 removeObjectForKey:@"com.apple.DC.AppAttestAppUUID"];
 
     v6 = v4;
   }
@@ -2072,27 +2072,27 @@ void __46__DCAppAttestController_isSupportedWithError___block_invoke_4(uint64_t 
   return v10;
 }
 
-- (void)saveAppUUID:(id)a3
+- (void)saveAppUUID:(id)d
 {
   v4 = *MEMORY[0x277CBF040];
   v5 = *MEMORY[0x277CBF010];
-  v6 = a3;
+  dCopy = d;
   _CFPreferencesSetBackupDisabled();
-  v7 = [(DCAppAttestController *)self userDefaults];
-  [v7 setObject:v6 forKey:@"com.apple.DC.AppAttestAppUUID"];
+  userDefaults = [(DCAppAttestController *)self userDefaults];
+  [userDefaults setObject:dCopy forKey:@"com.apple.DC.AppAttestAppUUID"];
 
   CFPreferencesSynchronize(@"com.apple.AppAttest.client", v4, v5);
 }
 
-- (id)rewrapAsDCError:(id)a3
+- (id)rewrapAsDCError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    v5 = [v3 domain];
-    v6 = [v5 isEqualToString:@"com.apple.appattest.error"];
+    domain = [errorCopy domain];
+    v6 = [domain isEqualToString:@"com.apple.appattest.error"];
 
     if (v6 && (v7 = [v4 code], (v7 + 7) <= 5))
     {
@@ -2135,11 +2135,11 @@ void __46__DCAppAttestController_isSupportedWithError___block_invoke_4(uint64_t 
   return v9;
 }
 
-- (void)dispatchCompletionHandler:(id)a3 ontoQueue:(id)a4
+- (void)dispatchCompletionHandler:(id)handler ontoQueue:(id)queue
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  handlerCopy = handler;
+  queueCopy = queue;
   v7 = copy_current_process_name();
   v8 = [objc_alloc(MEMORY[0x277CBEB58]) initWithObjects:{@"CommCenter", 0}];
   v9 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.DeviceCheck"];
@@ -2148,9 +2148,9 @@ void __46__DCAppAttestController_isSupportedWithError___block_invoke_4(uint64_t 
     [v8 addObject:@"dctestd"];
   }
 
-  if ([v8 containsObject:v7] && v6)
+  if ([v8 containsObject:v7] && queueCopy)
   {
-    label = dispatch_queue_get_label(v6);
+    label = dispatch_queue_get_label(queueCopy);
     if (DCLogSystem_onceToken != -1)
     {
       __66__DCAppAttestController_generateKeyWithTeamIdentifier_completion___block_invoke_cold_1();
@@ -2172,13 +2172,13 @@ void __46__DCAppAttestController_isSupportedWithError___block_invoke_4(uint64_t 
     block[1] = 3221225472;
     block[2] = __61__DCAppAttestController_dispatchCompletionHandler_ontoQueue___block_invoke;
     block[3] = &unk_278A46270;
-    v14 = v5;
-    dispatch_async(v6, block);
+    v14 = handlerCopy;
+    dispatch_async(queueCopy, block);
   }
 
   else
   {
-    v5[2](v5);
+    handlerCopy[2](handlerCopy);
   }
 
   v12 = *MEMORY[0x277D85DE8];

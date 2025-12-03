@@ -1,7 +1,7 @@
 @interface VNDetectFaceExpressionsRequest
 + (const)dependentRequestCompatibility;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
 @end
 
 @implementation VNDetectFaceExpressionsRequest
@@ -24,12 +24,12 @@
   return &+[VNDetectFaceExpressionsRequest dependentRequestCompatibility]::ourDependentRequestCompatibilityTable;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  v8 = a4;
+  contextCopy = context;
   VNValidatedLog(1, @"Processing DetectFaceExpressions request\n", v9, v10, v11, v12, v13, v14, v25);
   v26 = 0;
-  v15 = [(VNImageBasedRequest *)self getOptionalValidatedInputFaceObservations:&v26 clippedToRegionOfInterest:1 error:a5];
+  v15 = [(VNImageBasedRequest *)self getOptionalValidatedInputFaceObservations:&v26 clippedToRegionOfInterest:1 error:error];
   v16 = v26;
   if (v15)
   {
@@ -48,7 +48,7 @@
         v20 = 0;
       }
 
-      v21 = [(VNRequest *)self detectFaceLandmarksInContext:v8 faces:v20 error:a5];
+      v21 = [(VNRequest *)self detectFaceLandmarksInContext:contextCopy faces:v20 error:error];
       if (!v21)
       {
         v23 = 0;
@@ -61,7 +61,7 @@ LABEL_14:
     }
 
     [(VNImageBasedRequest *)self regionOfInterest];
-    v22 = [(VNRequest *)self processFaceObservations:v19 revision:a3 regionOfInterest:@"VNFaceExpressionDetectorType" detectorType:0 detectorOptions:&__block_literal_global_34444 shouldAlignFaceBBox:&__block_literal_global_33_34445 shouldRunDetectorBlock:v8 context:a5 error:?];
+    v22 = [(VNRequest *)self processFaceObservations:v19 revision:revision regionOfInterest:@"VNFaceExpressionDetectorType" detectorType:0 detectorOptions:&__block_literal_global_34444 shouldAlignFaceBBox:&__block_literal_global_33_34445 shouldRunDetectorBlock:contextCopy context:error error:?];
     v23 = v22 != 0;
     if (v22)
     {
@@ -86,18 +86,18 @@ BOOL __74__VNDetectFaceExpressionsRequest_internalPerformRevision_inContext_erro
   return v3;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 == 1)
+  if (revision == 1)
   {
     v4 = @"VNFaceExpressionDetectorType";
     v5 = @"VNFaceExpressionDetectorType";
   }
 
-  else if (a4)
+  else if (error)
   {
     [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-    *a4 = v4 = 0;
+    *error = v4 = 0;
   }
 
   else

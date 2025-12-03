@@ -1,21 +1,21 @@
 @interface _BlastDoorLPFaceTimeInviteMetadata
-- (BOOL)isEqual:(id)a3;
-- (_BlastDoorLPFaceTimeInviteMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_BlastDoorLPFaceTimeInviteMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _BlastDoorLPFaceTimeInviteMetadata
 
-- (_BlastDoorLPFaceTimeInviteMetadata)initWithCoder:(id)a3
+- (_BlastDoorLPFaceTimeInviteMetadata)initWithCoder:(id)coder
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _BlastDoorLPFaceTimeInviteMetadata;
   v5 = [(_BlastDoorLPFaceTimeInviteMetadata *)&v11 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"title");
+    v6 = decodeStringForKey(coderCopy, @"title");
     title = v5->_title;
     v5->_title = v6;
 
@@ -26,13 +26,13 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_BlastDoorLPFaceTimeInviteMetadata allocWithZone:a3];
+  v4 = [_BlastDoorLPFaceTimeInviteMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(_BlastDoorLPFaceTimeInviteMetadata *)self title];
-    [(_BlastDoorLPFaceTimeInviteMetadata *)v4 setTitle:v5];
+    title = [(_BlastDoorLPFaceTimeInviteMetadata *)self title];
+    [(_BlastDoorLPFaceTimeInviteMetadata *)v4 setTitle:title];
 
     v6 = v4;
   }
@@ -40,13 +40,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = _BlastDoorLPFaceTimeInviteMetadata;
-  if ([(_BlastDoorLPFaceTimeInviteMetadata *)&v9 isEqual:v4])
+  if ([(_BlastDoorLPFaceTimeInviteMetadata *)&v9 isEqual:equalCopy])
   {
     goto LABEL_2;
   }
@@ -58,7 +58,7 @@
     goto LABEL_7;
   }
 
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (!(v6 | self->_title))
   {
 LABEL_2:

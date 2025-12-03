@@ -12,15 +12,15 @@
 - (UIVisualEffectView)vibrancyView;
 - (void)awakeFromNib;
 - (void)layoutSubviews;
-- (void)setBadge:(id)a3;
-- (void)setBadgeContainer:(id)a3;
-- (void)setCaption:(id)a3;
-- (void)setRank:(id)a3;
-- (void)setStackView:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setSubtitleToBadgeTrailingConstraint:(id)a3;
-- (void)setVibrancyView:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBadge:(id)badge;
+- (void)setBadgeContainer:(id)container;
+- (void)setCaption:(id)caption;
+- (void)setRank:(id)rank;
+- (void)setStackView:(id)view;
+- (void)setSubtitle:(id)subtitle;
+- (void)setSubtitleToBadgeTrailingConstraint:(id)constraint;
+- (void)setVibrancyView:(id)view;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ChicletMetadata
@@ -32,11 +32,11 @@
   return v2;
 }
 
-- (void)setSubtitleToBadgeTrailingConstraint:(id)a3
+- (void)setSubtitleToBadgeTrailingConstraint:(id)constraint
 {
-  v5 = a3;
-  v6 = self;
-  sub_100006934(a3);
+  constraintCopy = constraint;
+  selfCopy = self;
+  sub_100006934(constraint);
 }
 
 - (UILabel)rank
@@ -46,10 +46,10 @@
   return v2;
 }
 
-- (void)setRank:(id)a3
+- (void)setRank:(id)rank
 {
-  v4 = a3;
-  v5 = self;
+  rankCopy = rank;
+  selfCopy = self;
   sub_1000069DC();
 }
 
@@ -60,10 +60,10 @@
   return v2;
 }
 
-- (void)setCaption:(id)a3
+- (void)setCaption:(id)caption
 {
-  v4 = a3;
-  v5 = self;
+  captionCopy = caption;
+  selfCopy = self;
   sub_100006ABC();
 }
 
@@ -74,10 +74,10 @@
   return v2;
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = self;
+  subtitleCopy = subtitle;
+  selfCopy = self;
   sub_100006B9C();
 }
 
@@ -88,10 +88,10 @@
   return v2;
 }
 
-- (void)setBadge:(id)a3
+- (void)setBadge:(id)badge
 {
-  v4 = a3;
-  v5 = self;
+  badgeCopy = badge;
+  selfCopy = self;
   sub_100006C7C();
 }
 
@@ -102,10 +102,10 @@
   return v2;
 }
 
-- (void)setBadgeContainer:(id)a3
+- (void)setBadgeContainer:(id)container
 {
-  v4 = a3;
-  v5 = self;
+  containerCopy = container;
+  selfCopy = self;
   sub_100006D5C();
 }
 
@@ -116,10 +116,10 @@
   return v2;
 }
 
-- (void)setStackView:(id)a3
+- (void)setStackView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_100006E3C();
 }
 
@@ -130,30 +130,30 @@
   return v2;
 }
 
-- (void)setVibrancyView:(id)a3
+- (void)setVibrancyView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_100006F40(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100006F40(view);
 }
 
 - (void)awakeFromNib
 {
-  v2 = self;
+  selfCopy = self;
   sub_100006F4C();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000071D8();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1000073A0(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1000073A0(change);
 }
 
 - (UILabel)accessibilityChicletRank

@@ -28,8 +28,8 @@
   if (!self->_shieldUIProcessHandle)
   {
     objc_initWeak(&location, self);
-    v3 = [(CCDShieldUISession *)self bundleIdentifier];
-    v4 = [RBSProcessPredicate predicateMatchingBundleIdentifier:v3];
+    bundleIdentifier = [(CCDShieldUISession *)self bundleIdentifier];
+    v4 = [RBSProcessPredicate predicateMatchingBundleIdentifier:bundleIdentifier];
 
     v29 = 0;
     v5 = [RBSProcessHandle handleForPredicate:v4 error:&v29];
@@ -44,7 +44,7 @@
       {
         v9 = self->_shieldUIProcessHandle;
         *buf = 138543618;
-        v26 = self;
+        selfCopy3 = self;
         v27 = 2114;
         v28 = v9;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ setup monitor for %{public}@", buf, 0x16u);
@@ -57,17 +57,17 @@
       v23[3] = &unk_10001C708;
       objc_copyWeak(&v24, &location);
       [(RBSProcessHandle *)v10 monitorForDeath:v23];
-      v11 = self;
-      objc_sync_enter(v11);
-      waitShieldLaunchTimer = v11->_waitShieldLaunchTimer;
+      selfCopy2 = self;
+      objc_sync_enter(selfCopy2);
+      waitShieldLaunchTimer = selfCopy2->_waitShieldLaunchTimer;
       if (waitShieldLaunchTimer)
       {
         dispatch_source_cancel(waitShieldLaunchTimer);
-        v13 = v11->_waitShieldLaunchTimer;
-        v11->_waitShieldLaunchTimer = 0;
+        v13 = selfCopy2->_waitShieldLaunchTimer;
+        selfCopy2->_waitShieldLaunchTimer = 0;
       }
 
-      objc_sync_exit(v11);
+      objc_sync_exit(selfCopy2);
 
       objc_destroyWeak(&v24);
     }
@@ -78,7 +78,7 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v26 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to find shieldUI process", buf, 0xCu);
       }
 
@@ -112,16 +112,16 @@
         objc_copyWeak(&v22, &location);
         dispatch_source_set_event_handler(v18, v21);
         dispatch_resume(v18);
-        v19 = self;
-        objc_sync_enter(v19);
+        selfCopy4 = self;
+        objc_sync_enter(selfCopy4);
         objc_storeStrong(p_waitShieldLaunchTimer, v18);
-        objc_sync_exit(v19);
+        objc_sync_exit(selfCopy4);
 
         v20 = CMContinuityCaptureLog();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v26 = v19;
+          selfCopy3 = selfCopy4;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ wait for setting shield ui monitor", buf, 0xCu);
         }
 
@@ -139,29 +139,29 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = "[CCDShieldUISession invalidate]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ %s", &v9, 0x16u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  waitShieldLaunchTimer = v4->_waitShieldLaunchTimer;
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  waitShieldLaunchTimer = selfCopy2->_waitShieldLaunchTimer;
   if (waitShieldLaunchTimer)
   {
     dispatch_source_cancel(waitShieldLaunchTimer);
-    v6 = v4->_waitShieldLaunchTimer;
-    v4->_waitShieldLaunchTimer = 0;
+    v6 = selfCopy2->_waitShieldLaunchTimer;
+    selfCopy2->_waitShieldLaunchTimer = 0;
   }
 
-  shieldUIProcessHandle = v4->_shieldUIProcessHandle;
-  v4->_shieldUIProcessHandle = 0;
+  shieldUIProcessHandle = selfCopy2->_shieldUIProcessHandle;
+  selfCopy2->_shieldUIProcessHandle = 0;
 
-  sessionInterruptionBlock = v4->_sessionInterruptionBlock;
-  v4->_sessionInterruptionBlock = 0;
+  sessionInterruptionBlock = selfCopy2->_sessionInterruptionBlock;
+  selfCopy2->_sessionInterruptionBlock = 0;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy2);
 }
 
 - (NSString)bundleIdentifier
@@ -180,9 +180,9 @@
 - (id)description
 {
   deviceIdentifier = self->_deviceIdentifier;
-  v4 = [(CCDShieldUISession *)self sessionID];
-  v5 = [(CCDShieldUISession *)self configuration];
-  v6 = [NSString stringWithFormat:@"DID:%@ SID:%@ Configuration:%@", deviceIdentifier, v4, v5];
+  sessionID = [(CCDShieldUISession *)self sessionID];
+  configuration = [(CCDShieldUISession *)self configuration];
+  v6 = [NSString stringWithFormat:@"DID:%@ SID:%@ Configuration:%@", deviceIdentifier, sessionID, configuration];
 
   return v6;
 }

@@ -1,10 +1,10 @@
 @interface RMSNowPlayingArtworkCache
 + (id)sharedArtworkCache;
 - (RMSNowPlayingArtworkCache)init;
-- (id)artworkDataForIdentifier:(id)a3;
-- (id)artworkDataForNowPlayingInfo:(id)a3;
-- (void)setArtworkData:(id)a3 forIdentifier:(id)a4;
-- (void)setArtworkData:(id)a3 forNowPlayingInfo:(id)a4;
+- (id)artworkDataForIdentifier:(id)identifier;
+- (id)artworkDataForNowPlayingInfo:(id)info;
+- (void)setArtworkData:(id)data forIdentifier:(id)identifier;
+- (void)setArtworkData:(id)data forNowPlayingInfo:(id)info;
 @end
 
 @implementation RMSNowPlayingArtworkCache
@@ -46,26 +46,26 @@ uint64_t __47__RMSNowPlayingArtworkCache_sharedArtworkCache__block_invoke()
   return v2;
 }
 
-- (id)artworkDataForIdentifier:(id)a3
+- (id)artworkDataForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSCache *)self->_cache objectForKey:v4];
-  v6 = [v5 artworkData];
-  v7 = v6;
-  if (v6)
+  identifierCopy = identifier;
+  v5 = [(NSCache *)self->_cache objectForKey:identifierCopy];
+  artworkData = [v5 artworkData];
+  v7 = artworkData;
+  if (artworkData)
   {
-    v8 = v6;
+    artworkData2 = artworkData;
 LABEL_5:
-    v11 = v8;
+    v11 = artworkData2;
     goto LABEL_6;
   }
 
-  v9 = [(_RMSNowPlayingArtworkCacheItem *)self->_lastItem artworkIdentifier];
-  v10 = [v4 isEqualToString:v9];
+  artworkIdentifier = [(_RMSNowPlayingArtworkCacheItem *)self->_lastItem artworkIdentifier];
+  v10 = [identifierCopy isEqualToString:artworkIdentifier];
 
   if (v10)
   {
-    v8 = [(_RMSNowPlayingArtworkCacheItem *)self->_lastItem artworkData];
+    artworkData2 = [(_RMSNowPlayingArtworkCacheItem *)self->_lastItem artworkData];
     goto LABEL_5;
   }
 
@@ -75,39 +75,39 @@ LABEL_6:
   return v11;
 }
 
-- (id)artworkDataForNowPlayingInfo:(id)a3
+- (id)artworkDataForNowPlayingInfo:(id)info
 {
-  v4 = [a3 artworkIdentifier];
-  v5 = [(RMSNowPlayingArtworkCache *)self artworkDataForIdentifier:v4];
+  artworkIdentifier = [info artworkIdentifier];
+  v5 = [(RMSNowPlayingArtworkCache *)self artworkDataForIdentifier:artworkIdentifier];
 
   return v5;
 }
 
-- (void)setArtworkData:(id)a3 forIdentifier:(id)a4
+- (void)setArtworkData:(id)data forIdentifier:(id)identifier
 {
-  if (a3 && a4)
+  if (data && identifier)
   {
     lastItem = self->_lastItem;
-    v7 = a4;
-    v8 = a3;
+    identifierCopy = identifier;
+    dataCopy = data;
     [(_RMSNowPlayingArtworkCacheItem *)lastItem endContentAccess];
     v9 = objc_opt_new();
-    [(_RMSNowPlayingArtworkCacheItem *)v9 setArtworkData:v8];
+    [(_RMSNowPlayingArtworkCacheItem *)v9 setArtworkData:dataCopy];
 
-    [(_RMSNowPlayingArtworkCacheItem *)v9 setArtworkIdentifier:v7];
+    [(_RMSNowPlayingArtworkCacheItem *)v9 setArtworkIdentifier:identifierCopy];
     [(_RMSNowPlayingArtworkCacheItem *)v9 beginContentAccess];
-    [(NSCache *)self->_cache setObject:v9 forKey:v7];
+    [(NSCache *)self->_cache setObject:v9 forKey:identifierCopy];
 
     v10 = self->_lastItem;
     self->_lastItem = v9;
   }
 }
 
-- (void)setArtworkData:(id)a3 forNowPlayingInfo:(id)a4
+- (void)setArtworkData:(id)data forNowPlayingInfo:(id)info
 {
-  v6 = a3;
-  v7 = [a4 artworkIdentifier];
-  [(RMSNowPlayingArtworkCache *)self setArtworkData:v6 forIdentifier:v7];
+  dataCopy = data;
+  artworkIdentifier = [info artworkIdentifier];
+  [(RMSNowPlayingArtworkCache *)self setArtworkData:dataCopy forIdentifier:artworkIdentifier];
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface _TVListMediaQueryEvaluator
-- (BOOL)evaluteForMediaType:(id)a3 featureType:(id)a4 value:(id)a5 result:(BOOL *)a6;
+- (BOOL)evaluteForMediaType:(id)type featureType:(id)featureType value:(id)value result:(BOOL *)result;
 @end
 
 @implementation _TVListMediaQueryEvaluator
 
-- (BOOL)evaluteForMediaType:(id)a3 featureType:(id)a4 value:(id)a5 result:(BOOL *)a6
+- (BOOL)evaluteForMediaType:(id)type featureType:(id)featureType value:(id)value result:(BOOL *)result
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  if (IsTemplateMediaType(a3) && [v9 isEqualToString:@"-tv-header"])
+  featureTypeCopy = featureType;
+  if (IsTemplateMediaType(type) && [featureTypeCopy isEqualToString:@"-tv-header"])
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v10 = [(TVMediaQueryEvaluator *)self templateElement];
-    v11 = [v10 children];
+    templateElement = [(TVMediaQueryEvaluator *)self templateElement];
+    children = [templateElement children];
 
-    v12 = [v11 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    v12 = [children countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v12)
     {
       v13 = *v29;
@@ -27,7 +27,7 @@
         {
           if (*v29 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(children);
           }
 
           v15 = *(*(&v28 + 1) + 8 * i);
@@ -38,7 +38,7 @@
           }
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v12 = [children countByEnumeratingWithState:&v28 objects:v33 count:16];
         if (v12)
         {
           continue;
@@ -54,8 +54,8 @@ LABEL_14:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v17 = [v12 children];
-    v18 = [v17 countByEnumeratingWithState:&v24 objects:v32 count:16];
+    children2 = [v12 children];
+    v18 = [children2 countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v18)
     {
       v19 = v18;
@@ -66,18 +66,18 @@ LABEL_14:
         {
           if (*v25 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(children2);
           }
 
           v22 = *(*(&v24 + 1) + 8 * j);
           if ([v22 tv_elementType] == 58 || objc_msgSend(v22, "tv_elementType") == 15)
           {
-            *a6 = 1;
+            *result = 1;
             goto LABEL_25;
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        v19 = [children2 countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v19)
         {
           continue;

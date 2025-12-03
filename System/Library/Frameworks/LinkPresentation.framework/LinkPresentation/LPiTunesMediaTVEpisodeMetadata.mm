@@ -1,49 +1,49 @@
 @interface LPiTunesMediaTVEpisodeMetadata
-- (BOOL)isEqual:(id)a3;
-- (LPiTunesMediaTVEpisodeMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)presentationPropertiesForTransformer:(id)a3;
-- (id)previewSummaryForTransformer:(id)a3;
-- (id)storeIdentifierForTransformer:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)populateMetadataForBackwardCompatibility:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LPiTunesMediaTVEpisodeMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)presentationPropertiesForTransformer:(id)transformer;
+- (id)previewSummaryForTransformer:(id)transformer;
+- (id)storeIdentifierForTransformer:(id)transformer;
+- (void)encodeWithCoder:(id)coder;
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility;
 @end
 
 @implementation LPiTunesMediaTVEpisodeMetadata
 
-- (LPiTunesMediaTVEpisodeMetadata)initWithCoder:(id)a3
+- (LPiTunesMediaTVEpisodeMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = LPiTunesMediaTVEpisodeMetadata;
   v5 = [(LPiTunesMediaTVEpisodeMetadata *)&v22 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"storeFrontIdentifier");
+    v6 = decodeStringForKey(coderCopy, @"storeFrontIdentifier");
     storeFrontIdentifier = v5->_storeFrontIdentifier;
     v5->_storeFrontIdentifier = v6;
 
-    v8 = decodeStringForKey(v4, @"storeIdentifier");
+    v8 = decodeStringForKey(coderCopy, @"storeIdentifier");
     storeIdentifier = v5->_storeIdentifier;
     v5->_storeIdentifier = v8;
 
-    v10 = decodeStringForKey(v4, @"episodeName");
+    v10 = decodeStringForKey(coderCopy, @"episodeName");
     episodeName = v5->_episodeName;
     v5->_episodeName = v10;
 
-    v12 = decodeStringForKey(v4, @"seasonName");
+    v12 = decodeStringForKey(coderCopy, @"seasonName");
     seasonName = v5->_seasonName;
     v5->_seasonName = v12;
 
-    v14 = decodeStringForKey(v4, @"genre");
+    v14 = decodeStringForKey(coderCopy, @"genre");
     genre = v5->_genre;
     v5->_genre = v14;
 
-    v16 = [v4 _lp_strictlyDecodeLPImageForKey:@"artwork"];
+    v16 = [coderCopy _lp_strictlyDecodeLPImageForKey:@"artwork"];
     artwork = v5->_artwork;
     v5->_artwork = v16;
 
-    v18 = [v4 _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"artworkMetadata"];
+    v18 = [coderCopy _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"artworkMetadata"];
     artworkMetadata = v5->_artworkMetadata;
     v5->_artworkMetadata = v18;
 
@@ -53,43 +53,43 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 _lp_encodeStringIfNotNil:self->_storeFrontIdentifier forKey:@"storeFrontIdentifier"];
-  [v4 _lp_encodeStringIfNotNil:self->_storeIdentifier forKey:@"storeIdentifier"];
-  [v4 _lp_encodeStringIfNotNil:self->_episodeName forKey:@"episodeName"];
-  [v4 _lp_encodeStringIfNotNil:self->_seasonName forKey:@"seasonName"];
-  [v4 _lp_encodeStringIfNotNil:self->_genre forKey:@"genre"];
-  [v4 _lp_encodeObjectIfNotNil:self->_artwork forKey:@"artwork"];
-  [v4 _lp_encodeObjectIfNotNil:self->_artworkMetadata forKey:@"artworkMetadata"];
+  coderCopy = coder;
+  [coderCopy _lp_encodeStringIfNotNil:self->_storeFrontIdentifier forKey:@"storeFrontIdentifier"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_storeIdentifier forKey:@"storeIdentifier"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_episodeName forKey:@"episodeName"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_seasonName forKey:@"seasonName"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_genre forKey:@"genre"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_artwork forKey:@"artwork"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_artworkMetadata forKey:@"artworkMetadata"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPiTunesMediaTVEpisodeMetadata allocWithZone:a3];
+  v4 = [LPiTunesMediaTVEpisodeMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPiTunesMediaTVEpisodeMetadata *)self storeFrontIdentifier];
-    [(LPiTunesMediaTVEpisodeMetadata *)v4 setStoreFrontIdentifier:v5];
+    storeFrontIdentifier = [(LPiTunesMediaTVEpisodeMetadata *)self storeFrontIdentifier];
+    [(LPiTunesMediaTVEpisodeMetadata *)v4 setStoreFrontIdentifier:storeFrontIdentifier];
 
-    v6 = [(LPiTunesMediaTVEpisodeMetadata *)self storeIdentifier];
-    [(LPiTunesMediaTVEpisodeMetadata *)v4 setStoreIdentifier:v6];
+    storeIdentifier = [(LPiTunesMediaTVEpisodeMetadata *)self storeIdentifier];
+    [(LPiTunesMediaTVEpisodeMetadata *)v4 setStoreIdentifier:storeIdentifier];
 
-    v7 = [(LPiTunesMediaTVEpisodeMetadata *)self episodeName];
-    [(LPiTunesMediaTVEpisodeMetadata *)v4 setEpisodeName:v7];
+    episodeName = [(LPiTunesMediaTVEpisodeMetadata *)self episodeName];
+    [(LPiTunesMediaTVEpisodeMetadata *)v4 setEpisodeName:episodeName];
 
-    v8 = [(LPiTunesMediaTVEpisodeMetadata *)self seasonName];
-    [(LPiTunesMediaTVEpisodeMetadata *)v4 setSeasonName:v8];
+    seasonName = [(LPiTunesMediaTVEpisodeMetadata *)self seasonName];
+    [(LPiTunesMediaTVEpisodeMetadata *)v4 setSeasonName:seasonName];
 
-    v9 = [(LPiTunesMediaTVEpisodeMetadata *)self genre];
-    [(LPiTunesMediaTVEpisodeMetadata *)v4 setGenre:v9];
+    genre = [(LPiTunesMediaTVEpisodeMetadata *)self genre];
+    [(LPiTunesMediaTVEpisodeMetadata *)v4 setGenre:genre];
 
-    v10 = [(LPiTunesMediaTVEpisodeMetadata *)self artwork];
-    [(LPiTunesMediaTVEpisodeMetadata *)v4 setArtwork:v10];
+    artwork = [(LPiTunesMediaTVEpisodeMetadata *)self artwork];
+    [(LPiTunesMediaTVEpisodeMetadata *)v4 setArtwork:artwork];
 
-    v11 = [(LPiTunesMediaTVEpisodeMetadata *)self artworkMetadata];
-    [(LPiTunesMediaTVEpisodeMetadata *)v4 setArtworkMetadata:v11];
+    artworkMetadata = [(LPiTunesMediaTVEpisodeMetadata *)self artworkMetadata];
+    [(LPiTunesMediaTVEpisodeMetadata *)v4 setArtworkMetadata:artworkMetadata];
 
     v12 = v4;
   }
@@ -97,12 +97,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = LPiTunesMediaTVEpisodeMetadata;
-  if ([(LPiTunesMediaTVEpisodeMetadata *)&v8 isEqual:v4])
+  if ([(LPiTunesMediaTVEpisodeMetadata *)&v8 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -112,7 +112,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       if ((objectsAreEqual_0(v6[2], self->_storeFrontIdentifier) & 1) != 0 && objectsAreEqual_0(v6[3], self->_storeIdentifier) && objectsAreEqual_0(v6[4], self->_episodeName) && objectsAreEqual_0(v6[5], self->_seasonName) && objectsAreEqual_0(v6[6], self->_genre) && objectsAreEqual_0(v6[7], self->_artwork))
       {
         v5 = objectsAreEqual_0(v6[8], self->_artworkMetadata);
@@ -133,49 +133,49 @@
   return v5;
 }
 
-- (id)presentationPropertiesForTransformer:(id)a3
+- (id)presentationPropertiesForTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [v4 commonPresentationPropertiesForStyle:22];
+  transformerCopy = transformer;
+  v5 = [transformerCopy commonPresentationPropertiesForStyle:22];
   v6 = objc_alloc_init(LPCaptionBarPresentationProperties);
   [v5 setCaptionBar:v6];
 
-  v7 = [(LPiTunesMediaTVEpisodeMetadata *)self episodeName];
-  v8 = [(LPiTunesMediaTVEpisodeMetadata *)self seasonName];
-  populateCaptionBar(v5, v7, v8, 0, 1, v4);
+  episodeName = [(LPiTunesMediaTVEpisodeMetadata *)self episodeName];
+  seasonName = [(LPiTunesMediaTVEpisodeMetadata *)self seasonName];
+  populateCaptionBar(v5, episodeName, seasonName, 0, 1, transformerCopy);
 
-  v9 = [(LPiTunesMediaTVEpisodeMetadata *)self artwork];
-  [v4 _populateProperties:v5 withPrimaryImage:v9];
+  artwork = [(LPiTunesMediaTVEpisodeMetadata *)self artwork];
+  [transformerCopy _populateProperties:v5 withPrimaryImage:artwork];
 
   return v5;
 }
 
-- (id)previewSummaryForTransformer:(id)a3
+- (id)previewSummaryForTransformer:(id)transformer
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = LPLocalizedString(@"TV Episode: %@ – %@");
-  v6 = [(LPiTunesMediaTVEpisodeMetadata *)self episodeName];
-  v7 = [(LPiTunesMediaTVEpisodeMetadata *)self seasonName];
-  v8 = [v4 localizedStringWithFormat:v5, v6, v7];
+  episodeName = [(LPiTunesMediaTVEpisodeMetadata *)self episodeName];
+  seasonName = [(LPiTunesMediaTVEpisodeMetadata *)self seasonName];
+  v8 = [v4 localizedStringWithFormat:v5, episodeName, seasonName];
 
   return v8;
 }
 
-- (void)populateMetadataForBackwardCompatibility:(id)a3
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility
 {
-  v6 = a3;
-  v4 = [(LPiTunesMediaTVEpisodeMetadata *)self episodeName];
-  [v6 setTitle:v4];
+  compatibilityCopy = compatibility;
+  episodeName = [(LPiTunesMediaTVEpisodeMetadata *)self episodeName];
+  [compatibilityCopy setTitle:episodeName];
 
-  v5 = [(LPiTunesMediaTVEpisodeMetadata *)self artwork];
-  [v6 setIcon:v5];
+  artwork = [(LPiTunesMediaTVEpisodeMetadata *)self artwork];
+  [compatibilityCopy setIcon:artwork];
 }
 
-- (id)storeIdentifierForTransformer:(id)a3
+- (id)storeIdentifierForTransformer:(id)transformer
 {
-  v3 = [(LPiTunesMediaTVEpisodeMetadata *)self storeIdentifier];
+  storeIdentifier = [(LPiTunesMediaTVEpisodeMetadata *)self storeIdentifier];
 
-  return v3;
+  return storeIdentifier;
 }
 
 @end

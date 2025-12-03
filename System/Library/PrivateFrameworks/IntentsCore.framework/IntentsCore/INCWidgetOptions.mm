@@ -1,23 +1,23 @@
 @interface INCWidgetOptions
-- (INCWidgetOptions)initWithExtensionBundleIdentifier:(id)a3 intentType:(id)a4;
+- (INCWidgetOptions)initWithExtensionBundleIdentifier:(id)identifier intentType:(id)type;
 @end
 
 @implementation INCWidgetOptions
 
-- (INCWidgetOptions)initWithExtensionBundleIdentifier:(id)a3 intentType:(id)a4
+- (INCWidgetOptions)initWithExtensionBundleIdentifier:(id)identifier intentType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  typeCopy = type;
   v14.receiver = self;
   v14.super_class = INCWidgetOptions;
   v8 = [(INCWidgetOptions *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     extensionBundleIdentifier = v8->_extensionBundleIdentifier;
     v8->_extensionBundleIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [typeCopy copy];
     intentType = v8->_intentType;
     v8->_intentType = v11;
   }

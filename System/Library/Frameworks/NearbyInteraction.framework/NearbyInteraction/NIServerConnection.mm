@@ -1,8 +1,8 @@
 @interface NIServerConnection
 + (BOOL)_internalBuildShouldDenyConnection;
-+ (id)createOneShotConnectionAndResume:(BOOL)a3;
++ (id)createOneShotConnectionAndResume:(BOOL)resume;
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditTokenForConnection;
-- (NIServerConnection)initWithSessionID:(id)a3 queue:(id)a4 exportedObject:(id)a5 options:(unint64_t)a6;
+- (NIServerConnection)initWithSessionID:(id)d queue:(id)queue exportedObject:(id)object options:(unint64_t)options;
 - (id)remoteObjectProxy;
 - (id)synchronousRemoteObjectProxy;
 - (void)dealloc;
@@ -24,13 +24,13 @@
   return v3;
 }
 
-- (NIServerConnection)initWithSessionID:(id)a3 queue:(id)a4 exportedObject:(id)a5 options:(unint64_t)a6
+- (NIServerConnection)initWithSessionID:(id)d queue:(id)queue exportedObject:(id)object options:(unint64_t)options
 {
   v37 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (!v12)
+  dCopy = d;
+  queueCopy = queue;
+  objectCopy = object;
+  if (!dCopy)
   {
     [NIServerConnection initWithSessionID:a2 queue:self exportedObject:? options:?];
   }
@@ -41,9 +41,9 @@
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_sessionID, a3);
-    objc_storeStrong(&v16->_queue, a4);
-    v16->_options = a6;
+    objc_storeStrong(&v15->_sessionID, d);
+    objc_storeStrong(&v16->_queue, queue);
+    v16->_options = options;
     v17 = os_log_create("com.apple.NearbyInteraction", "NIServerConnection");
     log = v16->_log;
     v16->_log = v17;
@@ -57,10 +57,10 @@
         {
           v20 = MEMORY[0x1E696AE30];
           v21 = v19;
-          v22 = [v20 processInfo];
-          v23 = [v22 processName];
+          processInfo = [v20 processInfo];
+          processName = [processInfo processName];
           *buf = 138412290;
-          v36 = v23;
+          v36 = processName;
           _os_log_impl(&dword_1BAC42000, v21, OS_LOG_TYPE_DEFAULT, "Deny connection: %@", buf, 0xCu);
         }
       }
@@ -69,7 +69,7 @@
     else
     {
       v24 = objc_alloc(MEMORY[0x1E696B0B8]);
-      if (a6)
+      if (options)
       {
         v25 = @"com.apple.nearbyd.xpc.nearbyinteraction.observer";
       }
@@ -87,16 +87,16 @@
       v29 = UWBMakeSessionDelegateXPCInterface();
       [(NSXPCConnection *)v28 setExportedInterface:v29];
 
-      if (v14)
+      if (objectCopy)
       {
-        [(NSXPCConnection *)v16->_connection setExportedObject:v14];
+        [(NSXPCConnection *)v16->_connection setExportedObject:objectCopy];
       }
 
       v30 = v16->_connection;
       v31 = UWBMakeSessionServerXPCInterface();
       [(NSXPCConnection *)v30 setRemoteObjectInterface:v31];
 
-      [(NSXPCConnection *)v16->_connection _setQueue:v13];
+      [(NSXPCConnection *)v16->_connection _setQueue:queueCopy];
     }
   }
 
@@ -171,16 +171,16 @@ void __50__NIServerConnection_synchronousRemoteObjectProxy__block_invoke(uint64_
   return result;
 }
 
-+ (id)createOneShotConnectionAndResume:(BOOL)a3
++ (id)createOneShotConnectionAndResume:(BOOL)resume
 {
-  v3 = a3;
+  resumeCopy = resume;
   v4 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
   v5 = dispatch_queue_create("com.apple.NearbyInteraction", v4);
   v6 = [NIServerConnection alloc];
   v7 = objc_opt_new();
   v8 = [(NIServerConnection *)v6 initWithSessionID:v7 queue:v5 exportedObject:0 options:0];
 
-  if (v3)
+  if (resumeCopy)
   {
     [(NIServerConnection *)v8 resume];
   }
@@ -196,23 +196,23 @@ void __50__NIServerConnection_synchronousRemoteObjectProxy__block_invoke(uint64_
     v3 = [v2 objectForKey:@"com.apple.NearbyInteraction.ConnectionAllowList"];
     if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v4 = [MEMORY[0x1E696AE30] processInfo];
-      v5 = [v4 processName];
-      v6 = [v3 containsObject:v5] ^ 1;
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
+      v6 = [v3 containsObject:processName] ^ 1;
     }
 
     else
     {
-      v4 = [v2 objectForKey:@"com.apple.NearbyInteraction.ConnectionDenyList"];
-      if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+      processInfo = [v2 objectForKey:@"com.apple.NearbyInteraction.ConnectionDenyList"];
+      if (!processInfo || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         LOBYTE(v6) = 0;
         goto LABEL_11;
       }
 
-      v5 = [MEMORY[0x1E696AE30] processInfo];
-      v7 = [v5 processName];
-      LOBYTE(v6) = [v4 containsObject:v7];
+      processName = [MEMORY[0x1E696AE30] processInfo];
+      v5ProcessName = [processName processName];
+      LOBYTE(v6) = [processInfo containsObject:v5ProcessName];
     }
 
 LABEL_11:

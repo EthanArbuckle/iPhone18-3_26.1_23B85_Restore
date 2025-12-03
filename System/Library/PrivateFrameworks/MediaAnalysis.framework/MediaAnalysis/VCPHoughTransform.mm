@@ -1,42 +1,42 @@
 @interface VCPHoughTransform
-- (VCPHoughTransform)initWithEdgeMap:(float *)a3 mapWidth:(int)a4 mapHeight:(int)a5 angleStep:(float)a6;
-- (int)DetectLinesWithThreshold:(int)a3 output:(id)a4;
+- (VCPHoughTransform)initWithEdgeMap:(float *)map mapWidth:(int)width mapHeight:(int)height angleStep:(float)step;
+- (int)DetectLinesWithThreshold:(int)threshold output:(id)output;
 - (void)Transform;
 - (void)dealloc;
 @end
 
 @implementation VCPHoughTransform
 
-- (VCPHoughTransform)initWithEdgeMap:(float *)a3 mapWidth:(int)a4 mapHeight:(int)a5 angleStep:(float)a6
+- (VCPHoughTransform)initWithEdgeMap:(float *)map mapWidth:(int)width mapHeight:(int)height angleStep:(float)step
 {
   v21.receiver = self;
   v21.super_class = VCPHoughTransform;
   v10 = [(VCPHoughTransform *)&v21 init];
   v11 = v10;
   v12 = 0;
-  if (a5 >= 1 && a4 >= 1 && a3 && v10)
+  if (height >= 1 && width >= 1 && map && v10)
   {
     v10->_verbose = 0;
-    v10->_edgeMap = a3;
-    v10->_mapWidth = a4;
-    v10->_mapHeight = a5;
-    if (a4 <= a5)
+    v10->_edgeMap = map;
+    v10->_mapWidth = width;
+    v10->_mapHeight = height;
+    if (width <= height)
     {
-      v13 = a5;
+      widthCopy = height;
     }
 
     else
     {
-      v13 = a4;
+      widthCopy = width;
     }
 
-    v14 = llround(v13 * 1.41421356 * 0.5);
+    v14 = llround(widthCopy * 1.41421356 * 0.5);
     v10->_accHalfHeight = v14;
-    v15 = llroundf(180.0 / a6);
+    v15 = llroundf(180.0 / step);
     v14 *= 2;
     v10->_accWidth = v15;
     v10->_accHeight = v14;
-    v10->_angleStep = a6;
+    v10->_angleStep = step;
     v16 = v14 * v15;
     if (v16 < 0)
     {
@@ -80,9 +80,9 @@
   [(VCPHoughTransform *)&v4 dealloc];
 }
 
-- (int)DetectLinesWithThreshold:(int)a3 output:(id)a4
+- (int)DetectLinesWithThreshold:(int)threshold output:(id)output
 {
-  v42 = a4;
+  outputCopy = output;
   accHeight = self->_accHeight;
   if (accHeight >= 1)
   {
@@ -98,7 +98,7 @@
         {
           accumulator = self->_accumulator;
           v12 = accumulator[v10 + accWidth * v7];
-          if (v12 >= a3)
+          if (v12 >= threshold)
           {
             v13 = v9 * accWidth - 4;
             v14 = -4;
@@ -162,8 +162,8 @@ LABEL_16:
                 v31 = 0.0;
               }
 
-              v32 = [MEMORY[0x1E695DF90] dictionary];
-              if (!v32)
+              dictionary = [MEMORY[0x1E695DF90] dictionary];
+              if (!dictionary)
               {
                 v40 = -108;
                 goto LABEL_30;
@@ -172,25 +172,25 @@ LABEL_16:
               v43.x = v31;
               v43.y = v28;
               v33 = NSStringFromPoint(v43);
-              [v32 setObject:v33 forKey:@"Point0"];
+              [dictionary setObject:v33 forKey:@"Point0"];
 
               v44.x = v30;
               v44.y = v29;
               v34 = NSStringFromPoint(v44);
-              [v32 setObject:v34 forKey:@"Point1"];
+              [dictionary setObject:v34 forKey:@"Point1"];
 
               *&v35 = v18;
               v36 = [MEMORY[0x1E696AD98] numberWithFloat:v35];
-              [v32 setObject:v36 forKey:@"Radius"];
+              [dictionary setObject:v36 forKey:@"Radius"];
 
               *&v37 = v17;
               v38 = [MEMORY[0x1E696AD98] numberWithFloat:v37];
-              [v32 setObject:v38 forKey:@"Theta"];
+              [dictionary setObject:v38 forKey:@"Theta"];
 
               v39 = [MEMORY[0x1E696AD98] numberWithInt:v16];
-              [v32 setObject:v39 forKey:@"Length"];
+              [dictionary setObject:v39 forKey:@"Length"];
 
-              [v42 addObject:v32];
+              [outputCopy addObject:dictionary];
               accWidth = self->_accWidth;
             }
           }
@@ -210,7 +210,7 @@ LABEL_16:
     while (v7 < accHeight);
   }
 
-  [v42 sortUsingComparator:&__block_literal_global_72];
+  [outputCopy sortUsingComparator:&__block_literal_global_72];
   v40 = 0;
 LABEL_30:
 

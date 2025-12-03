@@ -60,9 +60,9 @@
   v13 = v12;
   v15 = v14;
   v19[0] = v6;
-  v16 = [(CIImage *)self->inputRadiusImage imageByClampingToExtent];
+  imageByClampingToExtent = [(CIImage *)self->inputRadiusImage imageByClampingToExtent];
   inputScale = self->inputScale;
-  v19[1] = v16;
+  v19[1] = imageByClampingToExtent;
   v19[2] = inputScale;
   v19[3] = v7;
   return -[CIKernel applyWithExtent:roiCallback:arguments:](v4, "applyWithExtent:roiCallback:arguments:", &__block_literal_global_69, [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:4], v9, v11, v13, v15);

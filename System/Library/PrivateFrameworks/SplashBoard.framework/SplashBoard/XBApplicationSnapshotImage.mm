@@ -1,5 +1,5 @@
 @interface XBApplicationSnapshotImage
-- (XBApplicationSnapshotImage)initWithSnapshot:(id)a3 interfaceOrientation:(int64_t)a4;
+- (XBApplicationSnapshotImage)initWithSnapshot:(id)snapshot interfaceOrientation:(int64_t)orientation;
 - (id)description;
 - (void)dealloc;
 @end
@@ -14,35 +14,35 @@
   [(XBApplicationSnapshotImage *)&v3 dealloc];
 }
 
-- (XBApplicationSnapshotImage)initWithSnapshot:(id)a3 interfaceOrientation:(int64_t)a4
+- (XBApplicationSnapshotImage)initWithSnapshot:(id)snapshot interfaceOrientation:(int64_t)orientation
 {
-  v7 = a3;
-  v8 = XBImageOrientationForInterfaceOrientationRotation(a4, 1);
-  v9 = [v7 _cachedImage];
-  v10 = v9;
-  if (v9)
+  snapshotCopy = snapshot;
+  v8 = XBImageOrientationForInterfaceOrientationRotation(orientation, 1);
+  _cachedImage = [snapshotCopy _cachedImage];
+  v10 = _cachedImage;
+  if (_cachedImage)
   {
-    if ([v9 CGImage])
+    if ([_cachedImage CGImage])
     {
-      v11 = [v10 CGImage];
+      cGImage = [v10 CGImage];
       [v10 scale];
-      v12 = [(XBApplicationSnapshotImage *)&v16 initWithCGImage:v11 scale:v8 orientation:v15.receiver, v15.super_class, self, XBApplicationSnapshotImage];
+      xBApplicationSnapshotImage = [(XBApplicationSnapshotImage *)&v16 initWithCGImage:cGImage scale:v8 orientation:v15.receiver, v15.super_class, self, XBApplicationSnapshotImage];
     }
 
     else
     {
-      v13 = [v10 ioSurface];
+      ioSurface = [v10 ioSurface];
       [v10 scale];
-      v12 = [(XBApplicationSnapshotImage *)&v15 _initWithIOSurface:v13 scale:v8 orientation:self, XBApplicationSnapshotImage, v16.receiver, v16.super_class];
+      xBApplicationSnapshotImage = [(XBApplicationSnapshotImage *)&v15 _initWithIOSurface:ioSurface scale:v8 orientation:self, XBApplicationSnapshotImage, v16.receiver, v16.super_class];
     }
 
-    self = v12;
+    self = xBApplicationSnapshotImage;
   }
 
   if (self)
   {
-    self->_interfaceOrientation = a4;
-    objc_storeStrong(&self->_snapshot, a3);
+    self->_interfaceOrientation = orientation;
+    objc_storeStrong(&self->_snapshot, snapshot);
     [(XBApplicationSnapshot *)self->_snapshot beginImageAccess];
   }
 
@@ -57,12 +57,12 @@
   v9 = __41__XBApplicationSnapshotImage_description__block_invoke;
   v10 = &unk_279CF9508;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v4 = v3;
   [v4 appendBodySectionWithName:0 multilinePrefix:0 block:&v7];
-  v5 = [v4 build];
+  build = [v4 build];
 
-  return v5;
+  return build;
 }
 
 void __41__XBApplicationSnapshotImage_description__block_invoke(uint64_t a1)

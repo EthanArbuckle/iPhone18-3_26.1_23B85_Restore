@@ -1,10 +1,10 @@
 @interface _UIIntelligenceSystemNoiseView
-- (_UIIntelligenceSystemNoiseView)initWithFrame:(CGRect)a3 serviceIdentity:(id)a4 sceneSpecification:(id)a5;
+- (_UIIntelligenceSystemNoiseView)initWithFrame:(CGRect)frame serviceIdentity:(id)identity sceneSpecification:(id)specification;
 @end
 
 @implementation _UIIntelligenceSystemNoiseView
 
-- (_UIIntelligenceSystemNoiseView)initWithFrame:(CGRect)a3 serviceIdentity:(id)a4 sceneSpecification:(id)a5
+- (_UIIntelligenceSystemNoiseView)initWithFrame:(CGRect)frame serviceIdentity:(id)identity sceneSpecification:(id)specification
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,12 +1,12 @@
 @interface CKDAssetRequestPlanner
 - (BOOL)hasSuccessfulAssetTokenRequests;
 - (BOOL)hasSuccessfulBatches;
-- (CKDAssetRequestPlanner)initWithAssetTokenRequestSizeLimit:(unsigned int)a3;
+- (CKDAssetRequestPlanner)initWithAssetTokenRequestSizeLimit:(unsigned int)limit;
 - (id)CKPropertiesDescription;
-- (void)addMMCSItem:(id)a3;
-- (void)addMMCSSectionItem:(id)a3;
-- (void)addRereferencedPackageItem:(id)a3;
-- (void)failBatch:(id)a3;
+- (void)addMMCSItem:(id)item;
+- (void)addMMCSSectionItem:(id)item;
+- (void)addRereferencedPackageItem:(id)item;
+- (void)failBatch:(id)batch;
 - (void)planAssetRequests;
 - (void)planRegisterBatches;
 - (void)resetAssetTokenRequests;
@@ -14,7 +14,7 @@
 
 @implementation CKDAssetRequestPlanner
 
-- (CKDAssetRequestPlanner)initWithAssetTokenRequestSizeLimit:(unsigned int)a3
+- (CKDAssetRequestPlanner)initWithAssetTokenRequestSizeLimit:(unsigned int)limit
 {
   v14.receiver = self;
   v14.super_class = CKDAssetRequestPlanner;
@@ -29,7 +29,7 @@
     assetZoneByKey = v4->_assetZoneByKey;
     v4->_assetZoneByKey = v7;
 
-    v4->_assetTokenRequestSizeLimit = a3;
+    v4->_assetTokenRequestSizeLimit = limit;
     v9 = objc_opt_new();
     assetBatchesByZoneID = v4->_assetBatchesByZoneID;
     v4->_assetBatchesByZoneID = v9;
@@ -42,16 +42,16 @@
   return v4;
 }
 
-- (void)addMMCSItem:(id)a3
+- (void)addMMCSItem:(id)item
 {
-  v15 = a3;
-  if (objc_msgSend_containsObject_(self->_items, v4, v15))
+  itemCopy = item;
+  if (objc_msgSend_containsObject_(self->_items, v4, itemCopy))
   {
     __assert_rtn("[CKDAssetRequestPlanner addMMCSItem:]", "CKDAssetRequestPlanner.m", 58, "![_items containsObject:item]");
   }
 
-  objc_msgSend_addObject_(self->_items, v5, v15);
-  v8 = objc_msgSend_assetZoneKey(v15, v6, v7);
+  objc_msgSend_addObject_(self->_items, v5, itemCopy);
+  v8 = objc_msgSend_assetZoneKey(itemCopy, v6, v7);
   v11 = objc_msgSend_objectForKeyedSubscript_(self->_assetZoneByKey, v9, v8);
   if (!v11)
   {
@@ -60,57 +60,57 @@
     objc_msgSend_setObject_forKeyedSubscript_(self->_assetZoneByKey, v14, v11, v8);
   }
 
-  objc_msgSend_addMMCSItem_(v11, v10, v15);
+  objc_msgSend_addMMCSItem_(v11, v10, itemCopy);
 }
 
-- (void)addRereferencedPackageItem:(id)a3
+- (void)addRereferencedPackageItem:(id)item
 {
-  v23 = a3;
-  if (objc_msgSend_containsObject_(self->_items, v4, v23))
+  itemCopy = item;
+  if (objc_msgSend_containsObject_(self->_items, v4, itemCopy))
   {
     __assert_rtn("[CKDAssetRequestPlanner addRereferencedPackageItem:]", "CKDAssetRequestPlanner.m", 71, "![_items containsObject:item]");
   }
 
-  objc_msgSend_addObject_(self->_items, v5, v23);
+  objc_msgSend_addObject_(self->_items, v5, itemCopy);
   assetZoneByKey = self->_assetZoneByKey;
-  v9 = objc_msgSend_assetZoneKey(v23, v7, v8);
+  v9 = objc_msgSend_assetZoneKey(itemCopy, v7, v8);
   v11 = objc_msgSend_objectForKeyedSubscript_(assetZoneByKey, v10, v9);
 
   if (!v11)
   {
     v13 = [CKDAssetZone alloc];
-    v16 = objc_msgSend_assetZoneKey(v23, v14, v15);
+    v16 = objc_msgSend_assetZoneKey(itemCopy, v14, v15);
     v11 = objc_msgSend_initWithAssetZoneKey_(v13, v17, v16);
 
     v18 = self->_assetZoneByKey;
-    v21 = objc_msgSend_assetZoneKey(v23, v19, v20);
+    v21 = objc_msgSend_assetZoneKey(itemCopy, v19, v20);
     objc_msgSend_setObject_forKeyedSubscript_(v18, v22, v11, v21);
   }
 
-  objc_msgSend_addRereferencedMMCSPackageItem_(v11, v12, v23);
+  objc_msgSend_addRereferencedMMCSPackageItem_(v11, v12, itemCopy);
 }
 
-- (void)addMMCSSectionItem:(id)a3
+- (void)addMMCSSectionItem:(id)item
 {
-  v18 = a3;
-  if (objc_msgSend_containsObject_(self->_items, v4, v18))
+  itemCopy = item;
+  if (objc_msgSend_containsObject_(self->_items, v4, itemCopy))
   {
     __assert_rtn("[CKDAssetRequestPlanner addMMCSSectionItem:]", "CKDAssetRequestPlanner.m", 83, "![_items containsObject:item]");
   }
 
-  objc_msgSend_addObject_(self->_items, v5, v18);
+  objc_msgSend_addObject_(self->_items, v5, itemCopy);
   assetZoneByKey = self->_assetZoneByKey;
-  v9 = objc_msgSend_assetZoneKey(v18, v7, v8);
+  v9 = objc_msgSend_assetZoneKey(itemCopy, v7, v8);
   v11 = objc_msgSend_objectForKeyedSubscript_(assetZoneByKey, v10, v9);
 
   if (!v11)
   {
     v13 = [CKDAssetZone alloc];
-    v16 = objc_msgSend_assetZoneKey(v18, v14, v15);
+    v16 = objc_msgSend_assetZoneKey(itemCopy, v14, v15);
     v11 = objc_msgSend_initWithAssetZoneKey_(v13, v17, v16);
   }
 
-  objc_msgSend_addMMCSSectionItem_(v11, v12, v18);
+  objc_msgSend_addMMCSSectionItem_(v11, v12, itemCopy);
 }
 
 - (void)resetAssetTokenRequests
@@ -130,7 +130,7 @@
   v147 = 0u;
   v144 = 0u;
   v145 = 0u;
-  v122 = self;
+  selfCopy = self;
   obj = objc_msgSend_allKeys(self->_assetZoneByKey, v4, v5);
   v120 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v6, &v144, v152, 16);
   if (v120)
@@ -148,7 +148,7 @@
 
         v121 = v8;
         v9 = *(*(&v144 + 1) + 8 * v8);
-        v10 = objc_msgSend_objectForKeyedSubscript_(v122->_assetZoneByKey, v7, v9);
+        v10 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_assetZoneByKey, v7, v9);
         v11 = [CKDAssetBatch alloc];
         v13 = objc_msgSend_initWithAssetZone_(v11, v12, v10);
         v16 = objc_msgSend_useMMCSEncryptionV2(v9, v14, v15);
@@ -318,7 +318,7 @@
         }
 
         v93 = *(*(&v128 + 1) + 8 * m);
-        assetBatchesByZoneID = v122->_assetBatchesByZoneID;
+        assetBatchesByZoneID = selfCopy->_assetBatchesByZoneID;
         v95 = objc_msgSend_assetZone(v93, v88, v89);
         v98 = objc_msgSend_assetZoneKey(v95, v96, v97);
         v101 = objc_msgSend_destinationZoneID(v98, v99, v100);
@@ -327,7 +327,7 @@
         if (!v103)
         {
           v103 = objc_opt_new();
-          v105 = v122->_assetBatchesByZoneID;
+          v105 = selfCopy->_assetBatchesByZoneID;
           v108 = objc_msgSend_assetZone(v93, v106, v107);
           v111 = objc_msgSend_assetZoneKey(v108, v109, v110);
           v114 = objc_msgSend_destinationZoneID(v111, v112, v113);
@@ -343,7 +343,7 @@
     while (v90);
   }
 
-  objc_msgSend_setAssetRegisterAndPutBatches_(v122, v116, v85);
+  objc_msgSend_setAssetRegisterAndPutBatches_(selfCopy, v116, v85);
   v117 = *MEMORY[0x277D85DE8];
 }
 
@@ -353,7 +353,7 @@
   v3 = objc_opt_new();
   assetTokenRequestSizeLimit = self->_assetTokenRequestSizeLimit;
   v5 = objc_opt_new();
-  v43 = self;
+  selfCopy = self;
   v8 = objc_msgSend_assetRegisterAndPutBatches(self, v6, v7);
   v9 = objc_alloc(MEMORY[0x277CBEB18]);
   v12 = objc_msgSend_count(v8, v10, v11);
@@ -421,22 +421,22 @@
     objc_msgSend_addObject_(v3, v38, v5);
   }
 
-  assetTokenRequests = v43->_assetTokenRequests;
-  v43->_assetTokenRequests = v3;
+  assetTokenRequests = selfCopy->_assetTokenRequests;
+  selfCopy->_assetTokenRequests = v3;
   v40 = v3;
 
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)failBatch:(id)a3
+- (void)failBatch:(id)batch
 {
-  v9 = a3;
-  objc_msgSend_setIsFailed_(v9, v3, 1);
-  v6 = objc_msgSend_assetTokenRequest(v9, v4, v5);
+  batchCopy = batch;
+  objc_msgSend_setIsFailed_(batchCopy, v3, 1);
+  v6 = objc_msgSend_assetTokenRequest(batchCopy, v4, v5);
   v8 = v6;
   if (v6)
   {
-    objc_msgSend_addFailedBatch_(v6, v7, v9);
+    objc_msgSend_addFailedBatch_(v6, v7, batchCopy);
   }
 }
 

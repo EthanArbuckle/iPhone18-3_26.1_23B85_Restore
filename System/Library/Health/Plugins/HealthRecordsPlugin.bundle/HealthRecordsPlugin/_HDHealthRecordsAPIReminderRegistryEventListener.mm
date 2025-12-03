@@ -1,9 +1,9 @@
 @interface _HDHealthRecordsAPIReminderRegistryEventListener
-- (void)didFinishProcessingPendingReminderID:(id)a3;
-- (void)displayedAlertForPendingReminderID:(id)a3;
-- (void)droppedReminder:(id)a3;
+- (void)didFinishProcessingPendingReminderID:(id)d;
+- (void)displayedAlertForPendingReminderID:(id)d;
+- (void)droppedReminder:(id)reminder;
 - (void)handledApplicationsUninstalled;
-- (void)launchedClinicalSettingsForSource:(id)a3;
+- (void)launchedClinicalSettingsForSource:(id)source;
 - (void)receivedHomescreenUnlockedAtHomescreenNotification;
 - (void)startedListeningForHomescreenUnlockedNotifications;
 - (void)stoppedListeningForHomescreenUnlockedNotifications;
@@ -13,93 +13,93 @@
 
 - (void)handledApplicationsUninstalled
 {
-  v3 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self handledApplicationsUninstalledHandler];
+  handledApplicationsUninstalledHandler = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self handledApplicationsUninstalledHandler];
 
-  if (v3)
+  if (handledApplicationsUninstalledHandler)
   {
-    v4 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self handledApplicationsUninstalledHandler];
-    v4[2]();
+    handledApplicationsUninstalledHandler2 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self handledApplicationsUninstalledHandler];
+    handledApplicationsUninstalledHandler2[2]();
   }
 }
 
-- (void)displayedAlertForPendingReminderID:(id)a3
+- (void)displayedAlertForPendingReminderID:(id)d
 {
-  v6 = a3;
-  v4 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self displayedAlertHandler];
+  dCopy = d;
+  displayedAlertHandler = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self displayedAlertHandler];
 
-  if (v4)
+  if (displayedAlertHandler)
   {
-    v5 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self displayedAlertHandler];
-    (v5)[2](v5, v6);
+    displayedAlertHandler2 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self displayedAlertHandler];
+    (displayedAlertHandler2)[2](displayedAlertHandler2, dCopy);
   }
 }
 
-- (void)didFinishProcessingPendingReminderID:(id)a3
+- (void)didFinishProcessingPendingReminderID:(id)d
 {
-  v6 = a3;
-  v4 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self finishedProcessingReminderHandler];
+  dCopy = d;
+  finishedProcessingReminderHandler = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self finishedProcessingReminderHandler];
 
-  if (v4)
+  if (finishedProcessingReminderHandler)
   {
-    v5 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self finishedProcessingReminderHandler];
-    (v5)[2](v5, v6);
+    finishedProcessingReminderHandler2 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self finishedProcessingReminderHandler];
+    (finishedProcessingReminderHandler2)[2](finishedProcessingReminderHandler2, dCopy);
   }
 }
 
-- (void)droppedReminder:(id)a3
+- (void)droppedReminder:(id)reminder
 {
-  v6 = a3;
-  v4 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self droppedReminderHandler];
+  reminderCopy = reminder;
+  droppedReminderHandler = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self droppedReminderHandler];
 
-  if (v4)
+  if (droppedReminderHandler)
   {
-    v5 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self droppedReminderHandler];
-    (v5)[2](v5, v6);
+    droppedReminderHandler2 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self droppedReminderHandler];
+    (droppedReminderHandler2)[2](droppedReminderHandler2, reminderCopy);
   }
 }
 
-- (void)launchedClinicalSettingsForSource:(id)a3
+- (void)launchedClinicalSettingsForSource:(id)source
 {
-  v6 = a3;
-  v4 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self launchedClinicalSourceSettingsHandler];
+  sourceCopy = source;
+  launchedClinicalSourceSettingsHandler = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self launchedClinicalSourceSettingsHandler];
 
-  if (v4)
+  if (launchedClinicalSourceSettingsHandler)
   {
-    v5 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self launchedClinicalSourceSettingsHandler];
-    (v5)[2](v5, v6);
+    launchedClinicalSourceSettingsHandler2 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self launchedClinicalSourceSettingsHandler];
+    (launchedClinicalSourceSettingsHandler2)[2](launchedClinicalSourceSettingsHandler2, sourceCopy);
   }
 }
 
 - (void)startedListeningForHomescreenUnlockedNotifications
 {
-  v3 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self startedListeningForHomescreenUnlockedNotificationsHandler];
+  startedListeningForHomescreenUnlockedNotificationsHandler = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self startedListeningForHomescreenUnlockedNotificationsHandler];
 
-  if (v3)
+  if (startedListeningForHomescreenUnlockedNotificationsHandler)
   {
-    v4 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self startedListeningForHomescreenUnlockedNotificationsHandler];
-    v4[2]();
+    startedListeningForHomescreenUnlockedNotificationsHandler2 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self startedListeningForHomescreenUnlockedNotificationsHandler];
+    startedListeningForHomescreenUnlockedNotificationsHandler2[2]();
   }
 }
 
 - (void)receivedHomescreenUnlockedAtHomescreenNotification
 {
-  v3 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self receivedHomescreenUnlockedAtHomescreenNotificationHandler];
+  receivedHomescreenUnlockedAtHomescreenNotificationHandler = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self receivedHomescreenUnlockedAtHomescreenNotificationHandler];
 
-  if (v3)
+  if (receivedHomescreenUnlockedAtHomescreenNotificationHandler)
   {
-    v4 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self receivedHomescreenUnlockedAtHomescreenNotificationHandler];
-    v4[2]();
+    receivedHomescreenUnlockedAtHomescreenNotificationHandler2 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self receivedHomescreenUnlockedAtHomescreenNotificationHandler];
+    receivedHomescreenUnlockedAtHomescreenNotificationHandler2[2]();
   }
 }
 
 - (void)stoppedListeningForHomescreenUnlockedNotifications
 {
-  v3 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self stoppedListeningForHomescreenUnlockedNotificationsHandler];
+  stoppedListeningForHomescreenUnlockedNotificationsHandler = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self stoppedListeningForHomescreenUnlockedNotificationsHandler];
 
-  if (v3)
+  if (stoppedListeningForHomescreenUnlockedNotificationsHandler)
   {
-    v4 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self stoppedListeningForHomescreenUnlockedNotificationsHandler];
-    v4[2]();
+    stoppedListeningForHomescreenUnlockedNotificationsHandler2 = [(_HDHealthRecordsAPIReminderRegistryEventListener *)self stoppedListeningForHomescreenUnlockedNotificationsHandler];
+    stoppedListeningForHomescreenUnlockedNotificationsHandler2[2]();
   }
 }
 

@@ -1,44 +1,44 @@
 @interface PPLocationRecord
-+ (id)algorithmForName:(id)a3;
++ (id)algorithmForName:(id)name;
 + (id)sharedAmbiguousRecord;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLocationRecord:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLocationRecord:(id)record;
 - (NSSet)featureNames;
-- (PPLocationRecord)initWithCoder:(id)a3;
+- (PPLocationRecord)initWithCoder:(id)coder;
 - (id)description;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 - (id)initAmbiguousRecord;
 - (id)init_;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)supplementFieldsWithClusterID:(id)a3 locationWithLatLong:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)supplementFieldsWithClusterID:(id)d locationWithLatLong:(id)long;
 @end
 
 @implementation PPLocationRecord
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 hasPrefix:@"location_"])
+  nameCopy = name;
+  if ([nameCopy hasPrefix:@"location_"])
   {
-    v5 = [(PPLocationRecord *)self location];
+    location = [(PPLocationRecord *)self location];
     v6 = @"location_";
 LABEL_5:
-    v7 = [v4 substringFromIndex:{-[__CFString length](v6, "length")}];
-    v8 = [v5 featureValueForName:v7];
+    v7 = [nameCopy substringFromIndex:{-[__CFString length](v6, "length")}];
+    v8 = [location featureValueForName:v7];
 
     goto LABEL_6;
   }
 
-  if ([v4 hasPrefix:@"source_"])
+  if ([nameCopy hasPrefix:@"source_"])
   {
-    v5 = [(PPLocationRecord *)self source];
+    location = [(PPLocationRecord *)self source];
     v6 = @"source_";
     goto LABEL_5;
   }
 
-  if ([v4 isEqualToString:@"extractionAssetVersion"])
+  if ([nameCopy isEqualToString:@"extractionAssetVersion"])
   {
     v10 = MEMORY[0x1E695FE60];
     extractionAssetVersion = self->_extractionAssetVersion;
@@ -49,14 +49,14 @@ LABEL_12:
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:@"extractionOsBuild"])
+  if ([nameCopy isEqualToString:@"extractionOsBuild"])
   {
     v13 = MEMORY[0x1E695FE60];
-    v14 = [(PPLocationRecord *)self extractionOsBuild];
-    v15 = v14;
-    if (v14)
+    extractionOsBuild = [(PPLocationRecord *)self extractionOsBuild];
+    v15 = extractionOsBuild;
+    if (extractionOsBuild)
     {
-      v16 = v14;
+      v16 = extractionOsBuild;
     }
 
     else
@@ -71,14 +71,14 @@ LABEL_18:
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:@"algorithm"])
+  if ([nameCopy isEqualToString:@"algorithm"])
   {
     v10 = MEMORY[0x1E695FE60];
     extractionAssetVersion = self->_algorithm;
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"contextualNamedEntities"])
+  if ([nameCopy isEqualToString:@"contextualNamedEntities"])
   {
     v18 = MEMORY[0x1E695FE60];
     if (self->_contextualNamedEntities)
@@ -96,7 +96,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if ([v4 isEqualToString:@"decayRate"])
+  if ([nameCopy isEqualToString:@"decayRate"])
   {
     v20 = MEMORY[0x1E695FE60];
     decayRate = self->_decayRate;
@@ -107,14 +107,14 @@ LABEL_31:
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"initialScore"])
+  if ([nameCopy isEqualToString:@"initialScore"])
   {
     v20 = MEMORY[0x1E695FE60];
     decayRate = self->_initialScore;
     goto LABEL_30;
   }
 
-  if ([v4 isEqualToString:@"sentimentScore"])
+  if ([nameCopy isEqualToString:@"sentimentScore"])
   {
     v23 = MEMORY[0x1E695FE60];
     [(PPLocationRecord *)self sentimentScore];
@@ -173,12 +173,12 @@ void __32__PPLocationRecord_featureNames__block_invoke(uint64_t a1)
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   uuid = self->_uuid;
   location = self->_location;
-  v6 = [(PPSource *)self->_source bundleId];
+  bundleId = [(PPSource *)self->_source bundleId];
   v7 = [PPLocationRecord describeAlgorithm:self->_algorithm];
   initialScore = self->_initialScore;
   decayRate = self->_decayRate;
   [(PPLocationRecord *)self sentimentScore];
-  v11 = [v3 initWithFormat:@"<PPLocationRecord u:%@ l:%@ src:%@ a:'%@' is:%f dr:%f ss:%f cne:%@ eos:%@ eav:%u>", uuid, location, v6, v7, *&initialScore, *&decayRate, v10, self->_contextualNamedEntities, self->_extractionOsBuild, self->_extractionAssetVersion];
+  v11 = [v3 initWithFormat:@"<PPLocationRecord u:%@ l:%@ src:%@ a:'%@' is:%f dr:%f ss:%f cne:%@ eos:%@ eav:%u>", uuid, location, bundleId, v7, *&initialScore, *&decayRate, v10, self->_contextualNamedEntities, self->_extractionOsBuild, self->_extractionAssetVersion];
 
   return v11;
 }
@@ -203,33 +203,33 @@ void __32__PPLocationRecord_featureNames__block_invoke(uint64_t a1)
   return self->_extractionAssetVersion - (v15 - v14 + 32 * v14) + 32 * (v15 - v14 + 32 * v14);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)) && [(PPLocationRecord *)self isEqualToLocationRecord:v5];
+    v6 = equalCopy && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)) && [(PPLocationRecord *)self isEqualToLocationRecord:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToLocationRecord:(id)a3
+- (BOOL)isEqualToLocationRecord:(id)record
 {
-  v4 = a3;
-  if (!v4)
+  recordCopy = record;
+  if (!recordCopy)
   {
     goto LABEL_33;
   }
 
   uuid = self->_uuid;
-  v6 = *(v4 + 1);
+  v6 = *(recordCopy + 1);
   if (uuid)
   {
     if (!v6 || ![(NSUUID *)uuid isEqual:?])
@@ -244,7 +244,7 @@ void __32__PPLocationRecord_featureNames__block_invoke(uint64_t a1)
   }
 
   location = self->_location;
-  v8 = *(v4 + 2);
+  v8 = *(recordCopy + 2);
   if (location)
   {
     if (!v8 || ![(PPLocation *)location isEqual:?])
@@ -259,7 +259,7 @@ void __32__PPLocationRecord_featureNames__block_invoke(uint64_t a1)
   }
 
   v9 = self->_source;
-  v10 = *(v4 + 3);
+  v10 = *(recordCopy + 3);
   if (v9 | v10)
   {
     v14 = v10;
@@ -276,13 +276,13 @@ void __32__PPLocationRecord_featureNames__block_invoke(uint64_t a1)
     }
   }
 
-  if (self->_algorithm != v4[32] || self->_initialScore != *(v4 + 9) || self->_decayRate != *(v4 + 10) || self->_bucketizedSentimentScore != v4[68])
+  if (self->_algorithm != recordCopy[32] || self->_initialScore != *(recordCopy + 9) || self->_decayRate != *(recordCopy + 10) || self->_bucketizedSentimentScore != recordCopy[68])
   {
     goto LABEL_33;
   }
 
   v9 = self->_contextualNamedEntities;
-  v11 = *(v4 + 6);
+  v11 = *(recordCopy + 6);
   if (v9 | v11)
   {
     v14 = v11;
@@ -300,7 +300,7 @@ void __32__PPLocationRecord_featureNames__block_invoke(uint64_t a1)
   }
 
   v9 = self->_extractionOsBuild;
-  v12 = *(v4 + 7);
+  v12 = *(recordCopy + 7);
   if (v9 | v12)
   {
     v14 = v12;
@@ -324,33 +324,33 @@ LABEL_32:
   }
 
 LABEL_19:
-  v13 = self->_extractionAssetVersion == *(v4 + 16);
+  v13 = self->_extractionAssetVersion == *(recordCopy + 16);
 LABEL_34:
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uuid = self->_uuid;
-  v7 = a3;
-  [v7 encodeObject:uuid forKey:@"uuid"];
-  [v7 encodeObject:self->_location forKey:@"loc"];
-  [v7 encodeObject:self->_source forKey:@"src"];
-  [v7 encodeInt32:self->_algorithm forKey:@"alg"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
+  [coderCopy encodeObject:self->_location forKey:@"loc"];
+  [coderCopy encodeObject:self->_source forKey:@"src"];
+  [coderCopy encodeInt32:self->_algorithm forKey:@"alg"];
   *&v5 = self->_initialScore;
-  [v7 encodeFloat:@"iscr" forKey:v5];
+  [coderCopy encodeFloat:@"iscr" forKey:v5];
   *&v6 = self->_decayRate;
-  [v7 encodeFloat:@"dr" forKey:v6];
-  [v7 encodeInt32:self->_bucketizedSentimentScore forKey:@"bss"];
-  [v7 encodeObject:self->_contextualNamedEntities forKey:@"cne"];
-  [v7 encodeObject:self->_extractionOsBuild forKey:@"eob"];
-  [v7 encodeInt64:self->_extractionAssetVersion forKey:@"eav"];
+  [coderCopy encodeFloat:@"dr" forKey:v6];
+  [coderCopy encodeInt32:self->_bucketizedSentimentScore forKey:@"bss"];
+  [coderCopy encodeObject:self->_contextualNamedEntities forKey:@"cne"];
+  [coderCopy encodeObject:self->_extractionOsBuild forKey:@"eob"];
+  [coderCopy encodeInt64:self->_extractionAssetVersion forKey:@"eav"];
 }
 
-- (PPLocationRecord)initWithCoder:(id)a3
+- (PPLocationRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = PPLocationRecord;
   v5 = [(PPLocationRecord *)&v24 init];
@@ -359,38 +359,38 @@ LABEL_34:
     goto LABEL_5;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
   uuid = v5->_uuid;
   v5->_uuid = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"loc"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"loc"];
   location = v5->_location;
   v5->_location = v8;
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"src"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"src"];
   source = v5->_source;
   v5->_source = v10;
 
-  v5->_algorithm = [v4 decodeInt32ForKey:@"alg"];
-  [v4 decodeFloatForKey:@"iscr"];
+  v5->_algorithm = [coderCopy decodeInt32ForKey:@"alg"];
+  [coderCopy decodeFloatForKey:@"iscr"];
   v5->_initialScore = v12;
-  [v4 decodeFloatForKey:@"dr"];
+  [coderCopy decodeFloatForKey:@"dr"];
   v5->_decayRate = v13;
-  v5->_bucketizedSentimentScore = [v4 decodeInt32ForKey:@"bss"];
+  v5->_bucketizedSentimentScore = [coderCopy decodeInt32ForKey:@"bss"];
   v14 = objc_autoreleasePoolPush();
   v15 = objc_alloc(MEMORY[0x1E695DFD8]);
   v16 = objc_opt_class();
   v17 = [v15 initWithObjects:{v16, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v14);
-  v18 = [v4 decodeObjectOfClasses:v17 forKey:@"cne"];
+  v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"cne"];
   contextualNamedEntities = v5->_contextualNamedEntities;
   v5->_contextualNamedEntities = v18;
 
-  v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eob"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eob"];
   extractionOsBuild = v5->_extractionOsBuild;
   v5->_extractionOsBuild = v20;
 
-  v5->_extractionAssetVersion = [v4 decodeInt64ForKey:@"eav"];
+  v5->_extractionAssetVersion = [coderCopy decodeInt64ForKey:@"eav"];
   if (!v5->_uuid)
   {
     goto LABEL_6;
@@ -411,20 +411,20 @@ LABEL_6:
   return v22;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = [+[PPMutableLocationRecord allocWithZone:](PPMutableLocationRecord init];
-  v6 = [(NSUUID *)self->_uuid copyWithZone:a3];
+  v6 = [(NSUUID *)self->_uuid copyWithZone:zone];
   [(PPMutableLocationRecord *)v5 setUuid:v6];
 
-  v7 = [(PPLocation *)self->_location copyWithZone:a3];
+  v7 = [(PPLocation *)self->_location copyWithZone:zone];
   [(PPMutableLocationRecord *)v5 setLocation:v7];
 
   [(PPMutableLocationRecord *)v5 setSource:self->_source];
   [(PPMutableLocationRecord *)v5 setAlgorithm:self->_algorithm];
   [(PPMutableLocationRecord *)v5 setInitialScore:self->_initialScore];
   [(PPMutableLocationRecord *)v5 setDecayRate:self->_decayRate];
-  v8 = [(NSArray *)self->_contextualNamedEntities copyWithZone:a3];
+  v8 = [(NSArray *)self->_contextualNamedEntities copyWithZone:zone];
   [(PPMutableLocationRecord *)v5 setContextualNamedEntities:v8];
 
   [(PPMutableLocationRecord *)v5 setExtractionOsBuild:self->_extractionOsBuild];
@@ -433,7 +433,7 @@ LABEL_6:
   return v5;
 }
 
-+ (id)algorithmForName:(id)a3
++ (id)algorithmForName:(id)name
 {
   v12[12] = *MEMORY[0x1E69E9840];
   v11[0] = @"CoreNLP";
@@ -461,9 +461,9 @@ LABEL_6:
   v12[10] = &unk_1F1B46108;
   v12[11] = &unk_1F1B46120;
   v3 = MEMORY[0x1E695DF20];
-  v4 = a3;
+  nameCopy = name;
   v5 = [v3 dictionaryWithObjects:v12 forKeys:v11 count:12];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:nameCopy];
 
   if (v6)
   {
@@ -487,7 +487,7 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = __41__PPLocationRecord_sharedAmbiguousRecord__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedAmbiguousRecord__pasOnceToken9 != -1)
   {
     dispatch_once(&sharedAmbiguousRecord__pasOnceToken9, block);
@@ -508,88 +508,88 @@ void __41__PPLocationRecord_sharedAmbiguousRecord__block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)supplementFieldsWithClusterID:(id)a3 locationWithLatLong:(id)a4
+- (void)supplementFieldsWithClusterID:(id)d locationWithLatLong:(id)long
 {
-  v44 = a3;
-  v40 = self;
+  dCopy = d;
+  selfCopy = self;
   location = self->_location;
-  v7 = a4;
-  v8 = [(PPLocation *)location placemark];
-  v9 = v7;
-  v39 = v7;
-  if (!v7)
+  longCopy = long;
+  placemark = [(PPLocation *)location placemark];
+  location = longCopy;
+  v39 = longCopy;
+  if (!longCopy)
   {
-    v9 = [v8 location];
+    location = [placemark location];
   }
 
-  v41 = v9;
-  v38 = [v8 name];
-  v10 = v44;
-  if (v38)
+  v41 = location;
+  name = [placemark name];
+  v10 = dCopy;
+  if (name)
   {
-    v10 = v8;
+    v10 = placemark;
   }
 
-  v43 = [v10 name];
-  v37 = [v8 thoroughfare];
-  v11 = v44;
-  if (v37)
+  name2 = [v10 name];
+  thoroughfare = [placemark thoroughfare];
+  v11 = dCopy;
+  if (thoroughfare)
   {
-    v11 = v8;
+    v11 = placemark;
   }
 
-  v42 = [v11 thoroughfare];
-  v36 = [v8 subThoroughfare];
-  v12 = v44;
-  if (v36)
+  thoroughfare2 = [v11 thoroughfare];
+  subThoroughfare = [placemark subThoroughfare];
+  v12 = dCopy;
+  if (subThoroughfare)
   {
-    v12 = v8;
+    v12 = placemark;
   }
 
-  v31 = [v12 subThoroughfare];
-  v35 = [v8 locality];
-  v13 = v44;
-  if (v35)
+  subThoroughfare2 = [v12 subThoroughfare];
+  locality = [placemark locality];
+  v13 = dCopy;
+  if (locality)
   {
-    v13 = v8;
+    v13 = placemark;
   }
 
-  v30 = [v13 locality];
-  v33 = [v8 subLocality];
-  v14 = v44;
-  if (v33)
+  locality2 = [v13 locality];
+  subLocality = [placemark subLocality];
+  v14 = dCopy;
+  if (subLocality)
   {
-    v14 = v8;
+    v14 = placemark;
   }
 
-  v15 = [v14 subLocality];
-  v32 = [v8 administrativeArea];
-  v16 = v44;
-  if (v32)
+  subLocality2 = [v14 subLocality];
+  administrativeArea = [placemark administrativeArea];
+  v16 = dCopy;
+  if (administrativeArea)
   {
-    v16 = v8;
+    v16 = placemark;
   }
 
-  v29 = [v16 administrativeArea];
-  v28 = [v8 subAdministrativeArea];
-  v17 = [v8 postalCode];
-  v18 = [v8 ISOcountryCode];
-  v19 = [v8 country];
-  v20 = [v8 inlandWater];
-  v21 = [v8 ocean];
-  v22 = [v8 areasOfInterest];
-  v34 = [PPLocationStore placemarkWithLocation:v41 name:v43 thoroughfare:v42 subthoroughFare:v31 locality:v30 subLocality:v15 administrativeArea:v29 subAdministrativeArea:v28 postalCode:v17 countryCode:v18 country:v19 inlandWater:v20 ocean:v21 areasOfInterest:v22];
+  administrativeArea2 = [v16 administrativeArea];
+  subAdministrativeArea = [placemark subAdministrativeArea];
+  postalCode = [placemark postalCode];
+  iSOcountryCode = [placemark ISOcountryCode];
+  country = [placemark country];
+  inlandWater = [placemark inlandWater];
+  ocean = [placemark ocean];
+  areasOfInterest = [placemark areasOfInterest];
+  v34 = [PPLocationStore placemarkWithLocation:v41 name:name2 thoroughfare:thoroughfare2 subthoroughFare:subThoroughfare2 locality:locality2 subLocality:subLocality2 administrativeArea:administrativeArea2 subAdministrativeArea:subAdministrativeArea postalCode:postalCode countryCode:iSOcountryCode country:country inlandWater:inlandWater ocean:ocean areasOfInterest:areasOfInterest];
 
   if (!v39)
   {
   }
 
   v23 = [PPLocation alloc];
-  v24 = [(PPLocation *)v40->_location category];
-  v25 = [(PPLocation *)v40->_location mostRelevantRecord];
-  v26 = [(PPLocation *)v23 initWithPlacemark:v34 category:v24 mostRelevantRecord:v25];
-  v27 = v40->_location;
-  v40->_location = v26;
+  category = [(PPLocation *)selfCopy->_location category];
+  mostRelevantRecord = [(PPLocation *)selfCopy->_location mostRelevantRecord];
+  v26 = [(PPLocation *)v23 initWithPlacemark:v34 category:category mostRelevantRecord:mostRelevantRecord];
+  v27 = selfCopy->_location;
+  selfCopy->_location = v26;
 }
 
 - (id)initAmbiguousRecord

@@ -1,7 +1,7 @@
 @interface PKNotifySubregistration
 - (BOOL)isInvalidated;
-- (PKNotifySubregistration)initWithParent:(id)a3 handler:(id)a4;
-- (void)_invalidateFromParent:(BOOL)a3;
+- (PKNotifySubregistration)initWithParent:(id)parent handler:(id)handler;
+- (void)_invalidateFromParent:(BOOL)parent;
 - (void)dealloc;
 - (void)invokeHandler;
 @end
@@ -16,10 +16,10 @@
   [(PKNotifySubregistration *)&v3 dealloc];
 }
 
-- (PKNotifySubregistration)initWithParent:(id)a3 handler:(id)a4
+- (PKNotifySubregistration)initWithParent:(id)parent handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  parentCopy = parent;
+  handlerCopy = handler;
   v13.receiver = self;
   v13.super_class = PKNotifySubregistration;
   v8 = [(PKNotifySubregistration *)&v13 init];
@@ -27,8 +27,8 @@
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v8->_parent, v6);
-    v10 = _Block_copy(v7);
+    objc_storeWeak(&v8->_parent, parentCopy);
+    v10 = _Block_copy(handlerCopy);
     handler = v9->_handler;
     v9->_handler = v10;
   }
@@ -36,7 +36,7 @@
   return v9;
 }
 
-- (void)_invalidateFromParent:(BOOL)a3
+- (void)_invalidateFromParent:(BOOL)parent
 {
   os_unfair_lock_lock(&self->_lock);
   if (self->_invalidated)
@@ -48,7 +48,7 @@
   else
   {
     self->_invalidated = 1;
-    if (a3)
+    if (parent)
     {
       WeakRetained = 0;
     }

@@ -1,79 +1,79 @@
 @interface ACUIAccountOperationsHelper
 - (ACUIAccountOperationsDelegate)delegate;
-- (ACUIAccountOperationsHelper)initWithAccountStore:(id)a3;
-- (id)_desiredDataclassActionsFromPossibleActions:(id)a3 forAccount:(id)a4 withError:(id *)a5;
-- (id)dataclassActionsForAccountSave:(id)a3 forDataclass:(id)a4 error:(id *)a5;
-- (void)removeAccount:(id)a3;
-- (void)saveAccount:(id)a3;
-- (void)saveAccount:(id)a3 requireVerification:(BOOL)a4;
-- (void)saveAccount:(id)a3 requireVerification:(BOOL)a4 completion:(id)a5;
-- (void)saveAccount:(id)a3 withDataclassActions:(id)a4;
-- (void)saveAccount:(id)a3 withDataclassActions:(id)a4 requireVerification:(BOOL)a5;
-- (void)saveAccount:(id)a3 withDataclassActions:(id)a4 requireVerification:(BOOL)a5 completion:(id)a6;
+- (ACUIAccountOperationsHelper)initWithAccountStore:(id)store;
+- (id)_desiredDataclassActionsFromPossibleActions:(id)actions forAccount:(id)account withError:(id *)error;
+- (id)dataclassActionsForAccountSave:(id)save forDataclass:(id)dataclass error:(id *)error;
+- (void)removeAccount:(id)account;
+- (void)saveAccount:(id)account;
+- (void)saveAccount:(id)account requireVerification:(BOOL)verification;
+- (void)saveAccount:(id)account requireVerification:(BOOL)verification completion:(id)completion;
+- (void)saveAccount:(id)account withDataclassActions:(id)actions;
+- (void)saveAccount:(id)account withDataclassActions:(id)actions requireVerification:(BOOL)verification;
+- (void)saveAccount:(id)account withDataclassActions:(id)actions requireVerification:(BOOL)verification completion:(id)completion;
 @end
 
 @implementation ACUIAccountOperationsHelper
 
-- (ACUIAccountOperationsHelper)initWithAccountStore:(id)a3
+- (ACUIAccountOperationsHelper)initWithAccountStore:(id)store
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
-  v11 = 0;
+  objc_storeStrong(location, store);
+  v3 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v3;
   v9.super_class = ACUIAccountOperationsHelper;
-  v11 = [(ACUIAccountOperationsHelper *)&v9 init];
-  objc_storeStrong(&v11, v11);
-  if (v11)
+  selfCopy = [(ACUIAccountOperationsHelper *)&v9 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v11->_accountStore, location[0]);
+    objc_storeStrong(&selfCopy->_accountStore, location[0]);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v4 = dispatch_queue_create("com.apple.acountsui.operations", v8);
-    accountOperationsQueue = v11->_accountOperationsQueue;
-    v11->_accountOperationsQueue = v4;
+    accountOperationsQueue = selfCopy->_accountOperationsQueue;
+    selfCopy->_accountOperationsQueue = v4;
     MEMORY[0x277D82BD8](accountOperationsQueue);
     MEMORY[0x277D82BD8](v8);
   }
 
-  v7 = MEMORY[0x277D82BE0](v11);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (id)dataclassActionsForAccountSave:(id)a3 forDataclass:(id)a4 error:(id *)a5
+- (id)dataclassActionsForAccountSave:(id)save forDataclass:(id)dataclass error:(id *)error
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, save);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
-  v20 = a5;
+  objc_storeStrong(&v21, dataclass);
+  errorCopy = error;
   v19 = 0;
-  accountStore = v23->_accountStore;
+  accountStore = selfCopy->_accountStore;
   v17 = 0;
   v13 = [(ACAccountStore *)accountStore dataclassActionsForAccountSave:location[0] error:&v17];
   objc_storeStrong(&v19, v17);
   v18 = v13;
   v16 = [v13 objectForKeyedSubscript:v21];
-  v14 = [(ACUIAccountOperationsHelper *)v23 delegate];
+  delegate = [(ACUIAccountOperationsHelper *)selfCopy delegate];
   v15 = objc_opt_respondsToSelector();
-  MEMORY[0x277D82BD8](v14);
+  MEMORY[0x277D82BD8](delegate);
   if (v15)
   {
-    v10 = [(ACUIAccountOperationsHelper *)v23 delegate];
-    [(ACUIAccountOperationsDelegate *)v10 operationsHelper:v23 didLoadSaveActions:v16 forDataclass:v21 withAccount:location[0] error:v19];
-    MEMORY[0x277D82BD8](v10);
+    delegate2 = [(ACUIAccountOperationsHelper *)selfCopy delegate];
+    [(ACUIAccountOperationsDelegate *)delegate2 operationsHelper:selfCopy didLoadSaveActions:v16 forDataclass:v21 withAccount:location[0] error:v19];
+    MEMORY[0x277D82BD8](delegate2);
   }
 
-  if (v20)
+  if (errorCopy)
   {
     v9 = v19;
     v6 = v19;
-    *v20 = v9;
+    *errorCopy = v9;
   }
 
   v8 = MEMORY[0x277D82BE0](v16);
@@ -86,44 +86,44 @@
   return v8;
 }
 
-- (void)saveAccount:(id)a3
+- (void)saveAccount:(id)account
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(ACUIAccountOperationsHelper *)v4 saveAccount:location[0] requireVerification:1];
+  objc_storeStrong(location, account);
+  [(ACUIAccountOperationsHelper *)selfCopy saveAccount:location[0] requireVerification:1];
   objc_storeStrong(location, 0);
 }
 
-- (void)saveAccount:(id)a3 requireVerification:(BOOL)a4
+- (void)saveAccount:(id)account requireVerification:(BOOL)verification
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(ACUIAccountOperationsHelper *)v6 saveAccount:location[0] requireVerification:a4 completion:0];
+  objc_storeStrong(location, account);
+  [(ACUIAccountOperationsHelper *)selfCopy saveAccount:location[0] requireVerification:verification completion:0];
   objc_storeStrong(location, 0);
 }
 
-- (void)saveAccount:(id)a3 requireVerification:(BOOL)a4 completion:(id)a5
+- (void)saveAccount:(id)account requireVerification:(BOOL)verification completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18 = a4;
+  objc_storeStrong(location, account);
+  verificationCopy = verification;
   v17 = 0;
-  objc_storeStrong(&v17, a5);
-  queue = v20->_accountOperationsQueue;
+  objc_storeStrong(&v17, completion);
+  queue = selfCopy->_accountOperationsQueue;
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
   v10 = 0;
   v11 = __74__ACUIAccountOperationsHelper_saveAccount_requireVerification_completion___block_invoke;
   v12 = &unk_278BFA610;
   v13 = MEMORY[0x277D82BE0](location[0]);
-  v14 = MEMORY[0x277D82BE0](v20);
-  v16 = v18;
+  v14 = MEMORY[0x277D82BE0](selfCopy);
+  v16 = verificationCopy;
   v15 = MEMORY[0x277D82BE0](v17);
   dispatch_async(queue, &v8);
   objc_storeStrong(&v15, 0);
@@ -275,53 +275,53 @@ void __74__ACUIAccountOperationsHelper_saveAccount_requireVerification_completio
   objc_storeStrong(&location, 0);
 }
 
-- (void)saveAccount:(id)a3 withDataclassActions:(id)a4
+- (void)saveAccount:(id)account withDataclassActions:(id)actions
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(ACUIAccountOperationsHelper *)v7 saveAccount:location[0] withDataclassActions:v5 requireVerification:1];
+  objc_storeStrong(&v5, actions);
+  [(ACUIAccountOperationsHelper *)selfCopy saveAccount:location[0] withDataclassActions:v5 requireVerification:1];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)saveAccount:(id)a3 withDataclassActions:(id)a4 requireVerification:(BOOL)a5
+- (void)saveAccount:(id)account withDataclassActions:(id)actions requireVerification:(BOOL)verification
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  [(ACUIAccountOperationsHelper *)v9 saveAccount:location[0] withDataclassActions:v7 requireVerification:a5 completion:0];
+  objc_storeStrong(&v7, actions);
+  [(ACUIAccountOperationsHelper *)selfCopy saveAccount:location[0] withDataclassActions:v7 requireVerification:verification completion:0];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)saveAccount:(id)a3 withDataclassActions:(id)a4 requireVerification:(BOOL)a5 completion:(id)a6
+- (void)saveAccount:(id)account withDataclassActions:(id)actions requireVerification:(BOOL)verification completion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  v21 = a5;
+  objc_storeStrong(&v22, actions);
+  verificationCopy = verification;
   v20 = 0;
-  objc_storeStrong(&v20, a6);
-  queue = v24->_accountOperationsQueue;
+  objc_storeStrong(&v20, completion);
+  queue = selfCopy->_accountOperationsQueue;
   v10 = MEMORY[0x277D85DD0];
   v11 = -1073741824;
   v12 = 0;
   v13 = __95__ACUIAccountOperationsHelper_saveAccount_withDataclassActions_requireVerification_completion___block_invoke;
   v14 = &unk_278BFA660;
-  v15 = MEMORY[0x277D82BE0](v24);
+  v15 = MEMORY[0x277D82BE0](selfCopy);
   v16 = MEMORY[0x277D82BE0](location[0]);
   v17 = MEMORY[0x277D82BE0](v22);
-  v19 = v21;
+  v19 = verificationCopy;
   v18 = MEMORY[0x277D82BE0](v20);
   dispatch_async(queue, &v10);
   objc_storeStrong(&v18, 0);
@@ -403,19 +403,19 @@ void __95__ACUIAccountOperationsHelper_saveAccount_withDataclassActions_requireV
   objc_storeStrong(&location, 0);
 }
 
-- (void)removeAccount:(id)a3
+- (void)removeAccount:(id)account
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_accountOperationsQueue;
+  objc_storeStrong(location, account);
+  queue = selfCopy->_accountOperationsQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __45__ACUIAccountOperationsHelper_removeAccount___block_invoke;
   v8 = &unk_278BFA6B0;
-  v9 = MEMORY[0x277D82BE0](v12);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   v10 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
@@ -646,21 +646,21 @@ void __45__ACUIAccountOperationsHelper_removeAccount___block_invoke_2_18(uint64_
   objc_storeStrong(&location, 0);
 }
 
-- (id)_desiredDataclassActionsFromPossibleActions:(id)a3 forAccount:(id)a4 withError:(id *)a5
+- (id)_desiredDataclassActionsFromPossibleActions:(id)actions forAccount:(id)account withError:(id *)error
 {
   v68 = *MEMORY[0x277D85DE8];
-  v61 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, actions);
   v59 = 0;
-  objc_storeStrong(&v59, a4);
-  v58 = a5;
+  objc_storeStrong(&v59, account);
+  errorCopy = error;
   v57 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v56 = objc_alloc_init(MEMORY[0x277CBEB18]);
   memset(__b, 0, sizeof(__b));
-  v34 = [location[0] allKeys];
-  v35 = [v34 countByEnumeratingWithState:__b objects:v67 count:16];
+  allKeys = [location[0] allKeys];
+  v35 = [allKeys countByEnumeratingWithState:__b objects:v67 count:16];
   if (v35)
   {
     v29 = *__b[2];
@@ -671,7 +671,7 @@ void __45__ACUIAccountOperationsHelper_removeAccount___block_invoke_2_18(uint64_
       v28 = v30;
       if (*__b[2] != v29)
       {
-        objc_enumerationMutation(v34);
+        objc_enumerationMutation(allKeys);
       }
 
       v55 = *(__b[1] + 8 * v30);
@@ -679,9 +679,9 @@ void __45__ACUIAccountOperationsHelper_removeAccount___block_invoke_2_18(uint64_
       if ([v53 count] == 1)
       {
         v26 = v57;
-        v27 = [v53 lastObject];
+        lastObject = [v53 lastObject];
         [v26 setObject:? forKey:?];
-        MEMORY[0x277D82BD8](v27);
+        MEMORY[0x277D82BD8](lastObject);
       }
 
       else
@@ -721,7 +721,7 @@ void __45__ACUIAccountOperationsHelper_removeAccount___block_invoke_2_18(uint64_
       if (v28 + 1 >= v31)
       {
         v30 = 0;
-        v31 = [v34 countByEnumeratingWithState:__b objects:v67 count:16];
+        v31 = [allKeys countByEnumeratingWithState:__b objects:v67 count:16];
         if (!v31)
         {
           break;
@@ -730,7 +730,7 @@ void __45__ACUIAccountOperationsHelper_removeAccount___block_invoke_2_18(uint64_
     }
   }
 
-  MEMORY[0x277D82BD8](v34);
+  MEMORY[0x277D82BD8](allKeys);
   [v56 sortUsingComparator:&__block_literal_global_27];
   v42 = 0;
   memset(v40, 0, sizeof(v40));
@@ -750,14 +750,14 @@ void __45__ACUIAccountOperationsHelper_removeAccount___block_invoke_2_18(uint64_
       }
 
       v41 = *(v40[1] + 8 * v21);
-      v18 = [(ACUIAccountOperationsHelper *)v61 delegate];
-      v39 = [(ACUIAccountOperationsDelegate *)v18 operationsHelper:v61 desiredDataclassActionFromPicker:v41];
-      MEMORY[0x277D82BD8](v18);
+      delegate = [(ACUIAccountOperationsHelper *)selfCopy delegate];
+      v39 = [(ACUIAccountOperationsDelegate *)delegate operationsHelper:selfCopy desiredDataclassActionFromPicker:v41];
+      MEMORY[0x277D82BD8](delegate);
       if ([v39 type])
       {
         memset(v36, 0, sizeof(v36));
-        v16 = [v41 affectedDataclasses];
-        v17 = [v16 countByEnumeratingWithState:v36 objects:v65 count:16];
+        affectedDataclasses = [v41 affectedDataclasses];
+        v17 = [affectedDataclasses countByEnumeratingWithState:v36 objects:v65 count:16];
         if (v17)
         {
           v13 = *v36[2];
@@ -768,7 +768,7 @@ void __45__ACUIAccountOperationsHelper_removeAccount___block_invoke_2_18(uint64_
             v12 = v14;
             if (*v36[2] != v13)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(affectedDataclasses);
             }
 
             v37 = *(v36[1] + 8 * v14);
@@ -777,7 +777,7 @@ void __45__ACUIAccountOperationsHelper_removeAccount___block_invoke_2_18(uint64_
             if (v12 + 1 >= v15)
             {
               v14 = 0;
-              v15 = [v16 countByEnumeratingWithState:v36 objects:v65 count:16];
+              v15 = [affectedDataclasses countByEnumeratingWithState:v36 objects:v65 count:16];
               if (!v15)
               {
                 break;
@@ -786,7 +786,7 @@ void __45__ACUIAccountOperationsHelper_removeAccount___block_invoke_2_18(uint64_
           }
         }
 
-        MEMORY[0x277D82BD8](v16);
+        MEMORY[0x277D82BD8](affectedDataclasses);
         v38 = 0;
       }
 
@@ -824,7 +824,7 @@ LABEL_29:
   MEMORY[0x277D82BD8](v23);
   if ((v42 & 1) == 1)
   {
-    if (v58)
+    if (errorCopy)
     {
       v9 = MEMORY[0x277CCA9B8];
       v63 = *MEMORY[0x277CCA450];
@@ -832,7 +832,7 @@ LABEL_29:
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v64 forKeys:&v63 count:1];
       v11 = [v9 errorWithDomain:@"com.apple.accountsui" code:0 userInfo:?];
       v6 = v11;
-      *v58 = v11;
+      *errorCopy = v11;
       MEMORY[0x277D82BD8](v10);
     }
 

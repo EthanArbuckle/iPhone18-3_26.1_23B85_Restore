@@ -6,7 +6,7 @@
 
 - (unint64_t)wallpaperAppearanceType
 {
-  result = [a1 valueForNSIntegerTrait:objc_opt_class()];
+  result = [self valueForNSIntegerTrait:objc_opt_class()];
   if (result >= 3)
   {
     return 0;

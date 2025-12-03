@@ -1,11 +1,11 @@
 @interface LPCustomizationPickerViewController.VariantLinkView
-- (_TtCE16LinkPresentationCSo35LPCustomizationPickerViewController15VariantLinkView)initWithCoder:(id)a3;
-- (_TtCE16LinkPresentationCSo35LPCustomizationPickerViewController15VariantLinkView)initWithFrame:(CGRect)a3;
+- (_TtCE16LinkPresentationCSo35LPCustomizationPickerViewController15VariantLinkView)initWithCoder:(id)coder;
+- (_TtCE16LinkPresentationCSo35LPCustomizationPickerViewController15VariantLinkView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation LPCustomizationPickerViewController.VariantLinkView
 
-- (_TtCE16LinkPresentationCSo35LPCustomizationPickerViewController15VariantLinkView)initWithCoder:(id)a3
+- (_TtCE16LinkPresentationCSo35LPCustomizationPickerViewController15VariantLinkView)initWithCoder:(id)coder
 {
   sub_1AE988824();
   sub_1AE988814();
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (_TtCE16LinkPresentationCSo35LPCustomizationPickerViewController15VariantLinkView)initWithFrame:(CGRect)a3
+- (_TtCE16LinkPresentationCSo35LPCustomizationPickerViewController15VariantLinkView)initWithFrame:(CGRect)frame
 {
   sub_1AE988824();
   sub_1AE988814();

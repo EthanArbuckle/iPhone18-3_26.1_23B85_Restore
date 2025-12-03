@@ -1,31 +1,31 @@
 @interface PXGColorTintEffect
-- (PXGColorTintEffect)initWithEntityManager:(id)a3;
-- (void)setTintColor:(id)a3;
+- (PXGColorTintEffect)initWithEntityManager:(id)manager;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation PXGColorTintEffect
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v6 = self->_tintColorUniform;
   v7 = v6;
-  if (v6 == v5)
+  if (v6 == colorCopy)
   {
   }
 
   else
   {
-    v8 = [(PXGUniform *)v6 isEqual:v5];
+    v8 = [(PXGUniform *)v6 isEqual:colorCopy];
 
     if ((v8 & 1) == 0)
     {
-      objc_storeStrong(&self->_tintColor, a3);
+      objc_storeStrong(&self->_tintColor, color);
       v13 = 0.0;
       v14 = 0.0;
       v11 = 0.0;
       v12 = 0.0;
-      [(PXGUniform *)v5 getRed:&v14 green:&v13 blue:&v12 alpha:&v11];
+      [(PXGUniform *)colorCopy getRed:&v14 green:&v13 blue:&v12 alpha:&v11];
       v9.f64[0] = v14;
       v10.f64[0] = v12;
       v9.f64[1] = v13;
@@ -35,12 +35,12 @@
   }
 }
 
-- (PXGColorTintEffect)initWithEntityManager:(id)a3
+- (PXGColorTintEffect)initWithEntityManager:(id)manager
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v12.receiver = self;
   v12.super_class = PXGColorTintEffect;
-  v3 = [(PXGEffect *)&v12 initWithEntityManager:a3];
+  v3 = [(PXGEffect *)&v12 initWithEntityManager:manager];
   if (v3)
   {
     v4 = [[PXGUniform alloc] initWithName:@"tintColor" type:3];

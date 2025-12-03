@@ -1,27 +1,27 @@
 @interface VNMRCDetector
-+ (id)espressoModelFileNameForConfigurationOptions:(id)a3;
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)espressoModelFileNameForConfigurationOptions:(id)options;
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation VNMRCDetector
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  v14 = a5;
-  v15 = a7;
-  v16 = a9;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
   v41[0] = 0;
-  if (![VNValidationUtilities getBOOLValue:v41 forKey:@"VNMRCDetectorProcessOption_UseMLBasedDetector" inOptions:v14 error:a8])
+  if (![VNValidationUtilities getBOOLValue:v41 forKey:@"VNMRCDetectorProcessOption_UseMLBasedDetector" inOptions:optionsCopy error:error])
   {
     v23 = 0;
     goto LABEL_25;
   }
 
-  v17 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNMRCDetectorProcessOption_MRCDecoderOptions" inOptions:v14 error:a8];
+  v17 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNMRCDetectorProcessOption_MRCDecoderOptions" inOptions:optionsCopy error:error];
   v18 = v17;
   if (v17)
   {
@@ -30,7 +30,7 @@
     valuePtr = 0;
     if (v19 && (CFNumberGetValue(v19, kCFNumberCFIndexType, &valuePtr), valuePtr) && valuePtr != 0x20000 && valuePtr != 0x10000)
     {
-      v22 = [VNValidationUtilities requiredObjectOfClass:0 forKey:@"VNMRCDetectorProcessOption_MRCSample" inOptions:v14 error:a8];
+      v22 = [VNValidationUtilities requiredObjectOfClass:0 forKey:@"VNMRCDetectorProcessOption_MRCSample" inOptions:optionsCopy error:error];
       if (v22)
       {
 LABEL_20:
@@ -49,11 +49,11 @@ LABEL_20:
         aBlock[4] = self;
         v28 = v18;
         v30 = &v34;
-        v31 = a4;
+        bufferCopy = buffer;
         v32 = v22;
-        v29 = v14;
+        v29 = optionsCopy;
         v24 = _Block_copy(aBlock);
-        if (VNExecuteBlock(v24, a8))
+        if (VNExecuteBlock(v24, error))
         {
           v23 = v35[5];
         }
@@ -71,17 +71,17 @@ LABEL_20:
 
     else
     {
-      v26 = v15;
-      v20 = v14;
-      if (self && ([VNValidationUtilities requiredObjectOfClass:0 forKey:@"VNMRCDetectorProcessOption_MRCSample" inOptions:v20 error:a8], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
+      v26 = recorderCopy;
+      v20 = optionsCopy;
+      if (self && ([VNValidationUtilities requiredObjectOfClass:0 forKey:@"VNMRCDetectorProcessOption_MRCSample" inOptions:v20 error:error], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v22 = MRCSampleCreateByGeneratingPyramid();
         if (!v22)
         {
-          if (a8)
+          if (error)
           {
             [VNError errorForInternalErrorWithLocalizedDescription:@"unable to generate pyramid data"];
-            *a8 = v22 = 0;
+            *error = v22 = 0;
           }
 
           else
@@ -98,7 +98,7 @@ LABEL_20:
         v22 = 0;
       }
 
-      v15 = v26;
+      recorderCopy = v26;
       if (v22)
       {
         goto LABEL_20;
@@ -636,30 +636,30 @@ LABEL_58:
   return *(*(*(a1 + 56) + 8) + 40) != 0;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a4;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  optionsCopy = options;
   v53 = 0;
-  if ([VNValidationUtilities getBOOLValue:&v53 forKey:@"VNMRCDetectorProcessOption_UseMLBasedDetector" inOptions:v16 error:a8])
+  if ([VNValidationUtilities getBOOLValue:&v53 forKey:@"VNMRCDetectorProcessOption_UseMLBasedDetector" inOptions:optionsCopy error:error])
   {
-    if (v53 == 1 && ([v16 objectForKeyedSubscript:@"VNMRCDetectorProcessOption_SegmentationMask"], v17 = objc_claimAutoreleasedReturnValue(), v17, !v17))
+    if (v53 == 1 && ([optionsCopy objectForKeyedSubscript:@"VNMRCDetectorProcessOption_SegmentationMask"], v17 = objc_claimAutoreleasedReturnValue(), v17, !v17))
     {
-      v20 = [(VNDetector *)self validatedImageBufferFromOptions:v16 error:a8];
+      v20 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
       v21 = v20;
       if (v20)
       {
-        v22 = [v20 width];
-        v23 = [v21 height];
+        width = [v20 width];
+        height = [v21 height];
         *v52 = *MEMORY[0x1E695EFF8];
         v50 = 0.0;
         v51 = 0.0;
-        [v16 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
-        [v16 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_DoNotCacheRepresentations"];
-        v24 = width * v22 / (height * v23);
+        [optionsCopy setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
+        [optionsCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_DoNotCacheRepresentations"];
+        v24 = width * width / (height * height);
         if (v24 >= 1.0)
         {
           v25 = 1;
@@ -670,12 +670,12 @@ LABEL_58:
           v25 = 257;
         }
 
-        v26 = [v21 cropAndScaleBufferWithWidth:self->_networkWidth height:self->_networkHeight cropRect:1111970369 format:v25 imageCropAndScaleOption:v16 options:a8 error:x * v22 calculatedNormalizedOriginOffset:y * v23 calculatedScaleX:v52 calculatedScaleY:{&v51, &v50}];
-        *a7 = v26;
+        v26 = [v21 cropAndScaleBufferWithWidth:self->_networkWidth height:self->_networkHeight cropRect:1111970369 format:v25 imageCropAndScaleOption:optionsCopy options:error error:x * width calculatedNormalizedOriginOffset:y * height calculatedScaleX:v52 calculatedScaleY:{&v51, &v50}];
+        *buffer = v26;
         v18 = v26 != 0;
         if (v26)
         {
-          v27 = [v16 objectForKeyedSubscript:@"VNMRCDetectorProcessOption_MaxDimensionSideScale"];
+          v27 = [optionsCopy objectForKeyedSubscript:@"VNMRCDetectorProcessOption_MaxDimensionSideScale"];
           VisionCoreImagePointForNormalizedPoint();
           v29 = v28;
           v31 = v30;
@@ -746,7 +746,7 @@ LABEL_58:
           *&v56.a = v41;
           *&v56.c = v42;
           *&v56.tx = v43;
-          v44 = *a7;
+          v44 = *buffer;
           v45 = CFDataCreate(*MEMORY[0x1E695E480], &v56, 48);
           if (v45)
           {
@@ -790,15 +790,15 @@ LABEL_58:
   [(VNDetector *)&v4 dealloc];
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  sessionCopy = session;
   v16.receiver = self;
   v16.super_class = VNMRCDetector;
-  if (-[VNEspressoModelFileBasedDetector completeInitializationForSession:error:](&v16, sel_completeInitializationForSession_error_, v6, a4) && ([MEMORY[0x1E696AEC0] stringWithUTF8String:"input_image"], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[VNEspressoModelFileBasedDetector getWidth:height:ofEspressoModelNetworkBlobNamed:error:](self, "getWidth:height:ofEspressoModelNetworkBlobNamed:error:", &self->_networkWidth, &self->_networkHeight, v7, a4), v7, v8))
+  if (-[VNEspressoModelFileBasedDetector completeInitializationForSession:error:](&v16, sel_completeInitializationForSession_error_, sessionCopy, error) && ([MEMORY[0x1E696AEC0] stringWithUTF8String:"input_image"], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[VNEspressoModelFileBasedDetector getWidth:height:ofEspressoModelNetworkBlobNamed:error:](self, "getWidth:height:ofEspressoModelNetworkBlobNamed:error:", &self->_networkWidth, &self->_networkHeight, v7, error), v7, v8))
   {
-    v9 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:a4];
+    v9 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:error];
     v10 = v9 != 0;
     if (v9)
     {
@@ -821,14 +821,14 @@ LABEL_58:
   return v10;
 }
 
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options
 {
   v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"input_image"];
 
   return v3;
 }
 
-+ (id)espressoModelFileNameForConfigurationOptions:(id)a3
++ (id)espressoModelFileNameForConfigurationOptions:(id)options
 {
   v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"mrcdetector.espresso"];
 

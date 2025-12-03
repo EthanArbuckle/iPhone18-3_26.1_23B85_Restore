@@ -11,40 +11,40 @@
 + (IMDSpotlightQueries)synchronousSpotlightQueryProvider;
 + (void)reset;
 - (IMDPersistenceService)init;
-- (IMDPersistenceService)initWithListener:(id)a3;
-- (void)sendLegacyXPCCommandWithObject:(id)a3;
-- (void)sendLegacyXPCCommandWithObject:(id)a3 reply:(id)a4;
+- (IMDPersistenceService)initWithListener:(id)listener;
+- (void)sendLegacyXPCCommandWithObject:(id)object;
+- (void)sendLegacyXPCCommandWithObject:(id)object reply:(id)reply;
 @end
 
 @implementation IMDPersistenceService
 
-- (void)sendLegacyXPCCommandWithObject:(id)a3
+- (void)sendLegacyXPCCommandWithObject:(id)object
 {
-  v4 = a3;
-  v5 = self;
-  _sSo21IMDPersistenceServiceC0A0E20sendLegacyXPCCommand10withObject5replyySo15IMXPCDictionaryC_yAHctF_0(v4, 0, 0);
+  objectCopy = object;
+  selfCopy = self;
+  _sSo21IMDPersistenceServiceC0A0E20sendLegacyXPCCommand10withObject5replyySo15IMXPCDictionaryC_yAHctF_0(objectCopy, 0, 0);
 }
 
-- (void)sendLegacyXPCCommandWithObject:(id)a3 reply:(id)a4
+- (void)sendLegacyXPCCommandWithObject:(id)object reply:(id)reply
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(reply);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  _sSo21IMDPersistenceServiceC0A0E20sendLegacyXPCCommand10withObject5replyySo15IMXPCDictionaryC_yAHctF_0(v8, sub_1B7AE15E4, v7);
+  objectCopy = object;
+  selfCopy = self;
+  _sSo21IMDPersistenceServiceC0A0E20sendLegacyXPCCommand10withObject5replyySo15IMXPCDictionaryC_yAHctF_0(objectCopy, sub_1B7AE15E4, v7);
 }
 
 + (IMDRemoteDatabaseProtocol)synchronousDatabaseQueryProvider
 {
-  v2 = sub_1B7C87D44(a1);
+  v2 = sub_1B7C87D44(self);
 
   return v2;
 }
 
-- (IMDPersistenceService)initWithListener:(id)a3
+- (IMDPersistenceService)initWithListener:(id)listener
 {
-  v3 = a3;
+  listenerCopy = listener;
   v4 = sub_1B7C85AF8();
 
   return v4;
@@ -52,63 +52,63 @@
 
 + (IMDPersistentTaskQueries)pTaskQueryProvider
 {
-  v2 = sub_1B7C85D58(a1);
+  v2 = sub_1B7C85D58(self);
 
   return v2;
 }
 
 + (IMDPersistentTaskQueries)synchronousPTaskQueryProvider
 {
-  v2 = sub_1B7C860E4(a1);
+  v2 = sub_1B7C860E4(self);
 
   return v2;
 }
 
 + (IMDIndexingQueries)indexingQueryProvider
 {
-  v2 = sub_1B7C86470(a1);
+  v2 = sub_1B7C86470(self);
 
   return v2;
 }
 
 + (IMDIndexingQueries)synchronousIndexingQueryProvider
 {
-  v2 = sub_1B7C867FC(a1);
+  v2 = sub_1B7C867FC(self);
 
   return v2;
 }
 
 + (IMDSpotlightQueries)spotlightQueryProvider
 {
-  v2 = sub_1B7C86B88(a1);
+  v2 = sub_1B7C86B88(self);
 
   return v2;
 }
 
 + (IMDSpotlightQueries)synchronousSpotlightQueryProvider
 {
-  v2 = sub_1B7C86F14(a1);
+  v2 = sub_1B7C86F14(self);
 
   return v2;
 }
 
 + (IMDSpotlightActivityMonitorQueries)spotlightActivityMonitorQueryProvider
 {
-  v2 = sub_1B7C872A0(a1);
+  v2 = sub_1B7C872A0(self);
 
   return v2;
 }
 
 + (IMDSpotlightActivityMonitorQueries)synchronousSpotlightActivityMonitorQueryProvider
 {
-  v2 = sub_1B7C8762C(a1);
+  v2 = sub_1B7C8762C(self);
 
   return v2;
 }
 
 + (IMDRemoteDatabaseProtocol)databaseQueryProvider
 {
-  v2 = sub_1B7C879B8(a1);
+  v2 = sub_1B7C879B8(self);
 
   return v2;
 }
@@ -141,8 +141,8 @@
 
   if (IMDIsRunningInDatabaseServerProcess())
   {
-    v5 = [objc_opt_self() defaultCenter];
-    [v5 postNotificationName:@"IMDPersistenceServiceResettingNotification" object:0];
+    defaultCenter = [objc_opt_self() defaultCenter];
+    [defaultCenter postNotificationName:@"IMDPersistenceServiceResettingNotification" object:0];
   }
 
   else

@@ -1,51 +1,51 @@
 @interface STUsageDetailItem
 - (BOOL)isAllAppsOrCategories;
-- (BOOL)isEqual:(id)a3;
-- (STUsageDetailItem)initWithType:(int64_t)a3 identifier:(id)a4 usageTrusted:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (STUsageDetailItem)initWithType:(int64_t)type identifier:(id)identifier usageTrusted:(BOOL)trusted;
 - (float)sortQuantity;
 - (unint64_t)hash;
 @end
 
 @implementation STUsageDetailItem
 
-- (STUsageDetailItem)initWithType:(int64_t)a3 identifier:(id)a4 usageTrusted:(BOOL)a5
+- (STUsageDetailItem)initWithType:(int64_t)type identifier:(id)identifier usageTrusted:(BOOL)trusted
 {
   v12.receiver = self;
   v12.super_class = STUsageDetailItem;
-  v7 = a4;
+  identifierCopy = identifier;
   v8 = [(STUsageDetailItem *)&v12 init];
-  v8->_type = a3;
-  v9 = [v7 copy];
+  v8->_type = type;
+  v9 = [identifierCopy copy];
 
   identifier = v8->_identifier;
   v8->_identifier = v9;
 
   v8->_quantity = 0.0;
-  v8->_usageTrusted = a5;
+  v8->_usageTrusted = trusted;
   return v8;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(STUsageDetailItem *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(STUsageDetailItem *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(STUsageDetailItem *)self identifier];
-    v7 = [v5 identifier];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    identifier = [(STUsageDetailItem *)self identifier];
+    identifier2 = [v5 identifier];
+    if ([identifier isEqualToString:identifier2])
     {
-      v8 = [(STUsageDetailItem *)self usageTrusted];
-      v9 = v8 ^ [v5 usageTrusted] ^ 1;
+      usageTrusted = [(STUsageDetailItem *)self usageTrusted];
+      v9 = usageTrusted ^ [v5 usageTrusted] ^ 1;
     }
 
     else
@@ -64,15 +64,15 @@
 
 - (BOOL)isAllAppsOrCategories
 {
-  v2 = [(STUsageDetailItem *)self identifier];
-  if ([v2 isEqualToString:@"__AllAppsAndCategories__"] & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"__AllApps__"))
+  identifier = [(STUsageDetailItem *)self identifier];
+  if ([identifier isEqualToString:@"__AllAppsAndCategories__"] & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", @"__AllApps__"))
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v2 isEqualToString:@"__AllCategories__"];
+    v3 = [identifier isEqualToString:@"__AllCategories__"];
   }
 
   return v3;

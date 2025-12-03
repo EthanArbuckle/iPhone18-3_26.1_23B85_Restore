@@ -1,9 +1,9 @@
 @interface BMRankableSocialHighlight
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMRankableSocialHighlight)initWithHighlightIdentifier:(id)a3 highlightType:(unint64_t)a4 syndicationDate:(id)a5 sourceBundleId:(id)a6 applicationIdentifiers:(id)a7 resourceUrl:(id)a8 sender:(id)a9 domainIdentifier:(id)a10 batchIdentifier:(id)a11 calculatedFeatures:(id)a12 clientIdentifier:(id)a13 contentCreationDate:(id)a14 groupPhotoPath:(id)a15 displayName:(id)a16 isPrimary:(id)a17 attributionIdentifier:(id)a18 rank:(id)a19 score:(id)a20 isConversationAutoDonating:(id)a21 originatingDeviceId:(id)a22 rankingDate:(id)a23 resolvedUrl:(id)a24;
-- (BMRankableSocialHighlight)initWithHighlightIdentifier:(id)a3 highlightType:(unint64_t)a4 syndicationDate:(id)a5 sourceBundleId:(id)a6 applicationIdentifiers:(id)a7 resourceUrl:(id)a8 sender:(id)a9 domainIdentifier:(id)a10 batchIdentifier:(id)a11 calculatedFeatures:(id)a12 clientIdentifier:(id)a13 contentCreationDate:(id)a14 groupPhotoPathDigest:(id)a15 displayName:(id)a16 isPrimary:(id)a17 attributionIdentifier:(id)a18 rank:(id)a19 score:(id)a20 isConversationAutoDonating:(id)a21 originatingDeviceId:(id)a22 rankingDate:(id)a23 resolvedUrl:(id)a24 clientVariant:(id)a25;
-- (BMRankableSocialHighlight)initWithProto:(id)a3;
-- (BMRankableSocialHighlight)initWithProtoData:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMRankableSocialHighlight)initWithHighlightIdentifier:(id)identifier highlightType:(unint64_t)type syndicationDate:(id)date sourceBundleId:(id)id applicationIdentifiers:(id)identifiers resourceUrl:(id)url sender:(id)sender domainIdentifier:(id)self0 batchIdentifier:(id)self1 calculatedFeatures:(id)self2 clientIdentifier:(id)self3 contentCreationDate:(id)self4 groupPhotoPath:(id)self5 displayName:(id)self6 isPrimary:(id)self7 attributionIdentifier:(id)self8 rank:(id)self9 score:(id)score isConversationAutoDonating:(id)donating originatingDeviceId:(id)deviceId rankingDate:(id)rankingDate resolvedUrl:(id)resolvedUrl;
+- (BMRankableSocialHighlight)initWithHighlightIdentifier:(id)identifier highlightType:(unint64_t)type syndicationDate:(id)date sourceBundleId:(id)id applicationIdentifiers:(id)identifiers resourceUrl:(id)url sender:(id)sender domainIdentifier:(id)self0 batchIdentifier:(id)self1 calculatedFeatures:(id)self2 clientIdentifier:(id)self3 contentCreationDate:(id)self4 groupPhotoPathDigest:(id)self5 displayName:(id)self6 isPrimary:(id)self7 attributionIdentifier:(id)self8 rank:(id)self9 score:(id)score isConversationAutoDonating:(id)donating originatingDeviceId:(id)deviceId rankingDate:(id)rankingDate resolvedUrl:(id)resolvedUrl clientVariant:(id)variant;
+- (BMRankableSocialHighlight)initWithProto:(id)proto;
+- (BMRankableSocialHighlight)initWithProtoData:(id)data;
 - (id)encodeAsProto;
 - (id)proto;
 - (int)_protoType;
@@ -13,8 +13,8 @@
 
 - (int)_protoType
 {
-  v3 = [(BMRankableSocialHighlight *)self highlightType];
-  if (v3 >= 3)
+  highlightType = [(BMRankableSocialHighlight *)self highlightType];
+  if (highlightType >= 3)
   {
     v4 = __biome_log_for_category();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -22,79 +22,79 @@
       [(BMRankableSocialHighlight *)self _protoType];
     }
 
-    LODWORD(v3) = 0;
+    LODWORD(highlightType) = 0;
   }
 
-  return v3;
+  return highlightType;
 }
 
-- (BMRankableSocialHighlight)initWithHighlightIdentifier:(id)a3 highlightType:(unint64_t)a4 syndicationDate:(id)a5 sourceBundleId:(id)a6 applicationIdentifiers:(id)a7 resourceUrl:(id)a8 sender:(id)a9 domainIdentifier:(id)a10 batchIdentifier:(id)a11 calculatedFeatures:(id)a12 clientIdentifier:(id)a13 contentCreationDate:(id)a14 groupPhotoPathDigest:(id)a15 displayName:(id)a16 isPrimary:(id)a17 attributionIdentifier:(id)a18 rank:(id)a19 score:(id)a20 isConversationAutoDonating:(id)a21 originatingDeviceId:(id)a22 rankingDate:(id)a23 resolvedUrl:(id)a24 clientVariant:(id)a25
+- (BMRankableSocialHighlight)initWithHighlightIdentifier:(id)identifier highlightType:(unint64_t)type syndicationDate:(id)date sourceBundleId:(id)id applicationIdentifiers:(id)identifiers resourceUrl:(id)url sender:(id)sender domainIdentifier:(id)self0 batchIdentifier:(id)self1 calculatedFeatures:(id)self2 clientIdentifier:(id)self3 contentCreationDate:(id)self4 groupPhotoPathDigest:(id)self5 displayName:(id)self6 isPrimary:(id)self7 attributionIdentifier:(id)self8 rank:(id)self9 score:(id)score isConversationAutoDonating:(id)donating originatingDeviceId:(id)deviceId rankingDate:(id)rankingDate resolvedUrl:(id)resolvedUrl clientVariant:(id)variant
 {
-  v59 = a3;
-  v41 = a5;
-  v58 = a5;
-  v42 = a6;
-  v57 = a6;
-  v43 = a7;
-  v56 = a7;
-  v55 = a8;
-  v54 = a9;
-  v53 = a10;
-  v52 = a11;
-  v51 = a12;
-  v50 = a13;
-  v49 = a14;
-  v48 = a15;
-  v47 = a16;
-  v46 = a17;
-  v29 = a18;
-  v30 = a19;
-  v31 = a20;
-  v32 = a21;
-  v33 = a22;
-  v34 = a23;
-  v35 = a24;
-  v45 = a25;
+  identifierCopy = identifier;
+  dateCopy = date;
+  dateCopy2 = date;
+  idCopy = id;
+  idCopy2 = id;
+  identifiersCopy = identifiers;
+  identifiersCopy2 = identifiers;
+  urlCopy = url;
+  senderCopy = sender;
+  domainIdentifierCopy = domainIdentifier;
+  batchIdentifierCopy = batchIdentifier;
+  featuresCopy = features;
+  clientIdentifierCopy = clientIdentifier;
+  creationDateCopy = creationDate;
+  digestCopy = digest;
+  nameCopy = name;
+  primaryCopy = primary;
+  attributionIdentifierCopy = attributionIdentifier;
+  rankCopy = rank;
+  scoreCopy = score;
+  donatingCopy = donating;
+  deviceIdCopy = deviceId;
+  rankingDateCopy = rankingDate;
+  resolvedUrlCopy = resolvedUrl;
+  variantCopy = variant;
   v60.receiver = self;
   v60.super_class = BMRankableSocialHighlight;
   v36 = [(BMEventBase *)&v60 init];
   v37 = v36;
   if (v36)
   {
-    objc_storeStrong(&v36->_highlightIdentifier, a3);
-    v37->_highlightType = a4;
-    objc_storeStrong(&v37->_syndicationDate, v41);
-    objc_storeStrong(&v37->_sourceBundleId, v42);
-    objc_storeStrong(&v37->_applicationIdentifiers, v43);
-    objc_storeStrong(&v37->_resourceUrl, a8);
-    objc_storeStrong(&v37->_sender, a9);
-    objc_storeStrong(&v37->_domainIdentifier, a10);
-    objc_storeStrong(&v37->_batchIdentifier, a11);
-    objc_storeStrong(&v37->_calculatedFeatures, a12);
-    objc_storeStrong(&v37->_clientIdentifier, a13);
-    objc_storeStrong(&v37->_contentCreationDate, a14);
-    objc_storeStrong(&v37->_groupPhotoPathDigest, a15);
-    objc_storeStrong(&v37->_displayName, a16);
-    objc_storeStrong(&v37->_isPrimary, a17);
-    objc_storeStrong(&v37->_attributionIdentifier, a18);
-    objc_storeStrong(&v37->_rank, a19);
-    objc_storeStrong(&v37->_score, a20);
-    objc_storeStrong(&v37->_isConversationAutoDonating, a21);
-    objc_storeStrong(&v37->_originatingDeviceId, a22);
-    objc_storeStrong(&v37->_rankingDate, a23);
-    objc_storeStrong(&v37->_resolvedUrl, a24);
-    objc_storeStrong(&v37->_clientVariant, a25);
+    objc_storeStrong(&v36->_highlightIdentifier, identifier);
+    v37->_highlightType = type;
+    objc_storeStrong(&v37->_syndicationDate, dateCopy);
+    objc_storeStrong(&v37->_sourceBundleId, idCopy);
+    objc_storeStrong(&v37->_applicationIdentifiers, identifiersCopy);
+    objc_storeStrong(&v37->_resourceUrl, url);
+    objc_storeStrong(&v37->_sender, sender);
+    objc_storeStrong(&v37->_domainIdentifier, domainIdentifier);
+    objc_storeStrong(&v37->_batchIdentifier, batchIdentifier);
+    objc_storeStrong(&v37->_calculatedFeatures, features);
+    objc_storeStrong(&v37->_clientIdentifier, clientIdentifier);
+    objc_storeStrong(&v37->_contentCreationDate, creationDate);
+    objc_storeStrong(&v37->_groupPhotoPathDigest, digest);
+    objc_storeStrong(&v37->_displayName, name);
+    objc_storeStrong(&v37->_isPrimary, primary);
+    objc_storeStrong(&v37->_attributionIdentifier, attributionIdentifier);
+    objc_storeStrong(&v37->_rank, rank);
+    objc_storeStrong(&v37->_score, score);
+    objc_storeStrong(&v37->_isConversationAutoDonating, donating);
+    objc_storeStrong(&v37->_originatingDeviceId, deviceId);
+    objc_storeStrong(&v37->_rankingDate, rankingDate);
+    objc_storeStrong(&v37->_resolvedUrl, resolvedUrl);
+    objc_storeStrong(&v37->_clientVariant, variant);
   }
 
   return v37;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 3)
+  if (version == 3)
   {
-    v4 = a3;
-    v5 = [[BMRankableSocialHighlight alloc] initWithProtoData:v4];
+    dataCopy = data;
+    v5 = [[BMRankableSocialHighlight alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -107,20 +107,20 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(BMRankableSocialHighlight *)self proto];
-  v3 = [v2 data];
+  proto = [(BMRankableSocialHighlight *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMRankableSocialHighlight)initWithProto:(id)a3
+- (BMRankableSocialHighlight)initWithProto:(id)proto
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  protoCopy = proto;
+  if (protoCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v56 = [v5 highlightIdentifier];
+    v5 = protoCopy;
+    highlightIdentifier = [v5 highlightIdentifier];
     if ([v5 hasSyndicationSecondsSinceReferenceDate])
     {
       v6 = objc_alloc(MEMORY[0x1E695DF00]);
@@ -145,8 +145,8 @@
       v54 = 0;
     }
 
-    v46 = v4;
-    v57 = self;
+    v46 = protoCopy;
+    selfCopy = self;
     if ([v5 hasRankingSecondsSinceReferenceDate])
     {
       v9 = objc_alloc(MEMORY[0x1E695DF00]);
@@ -164,8 +164,8 @@
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v11 = [v5 calculatedFeatures];
-    v12 = [v11 countByEnumeratingWithState:&v59 objects:v63 count:16];
+    calculatedFeatures = [v5 calculatedFeatures];
+    v12 = [calculatedFeatures countByEnumeratingWithState:&v59 objects:v63 count:16];
     if (v12)
     {
       v13 = v12;
@@ -176,7 +176,7 @@
         {
           if (*v60 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(calculatedFeatures);
           }
 
           v16 = *(*(&v59 + 1) + 8 * i);
@@ -186,34 +186,34 @@
             v18 = MEMORY[0x1E696AD98];
             [v16 value];
             v19 = [v18 numberWithDouble:?];
-            v20 = [v16 name];
-            [v10 setObject:v19 forKeyedSubscript:v20];
+            name = [v16 name];
+            [v10 setObject:v19 forKeyedSubscript:name];
           }
 
           objc_autoreleasePoolPop(v17);
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v59 objects:v63 count:16];
+        v13 = [calculatedFeatures countByEnumeratingWithState:&v59 objects:v63 count:16];
       }
 
       while (v13);
     }
 
-    v21 = [v5 groupPhotoPathDigest];
-    v22 = [v21 hasPrefix:@"file://"];
+    groupPhotoPathDigest = [v5 groupPhotoPathDigest];
+    v22 = [groupPhotoPathDigest hasPrefix:@"file://"];
 
-    v23 = [v5 groupPhotoPathDigest];
-    v24 = v23;
+    groupPhotoPathDigest2 = [v5 groupPhotoPathDigest];
+    v24 = groupPhotoPathDigest2;
     if (v22)
     {
-      v25 = bm_sha256(v23);
+      v25 = bm_sha256(groupPhotoPathDigest2);
 
       v24 = v25;
     }
 
     if ([v5 hasHighlightType])
     {
-      v44 = -[BMRankableSocialHighlight _socialHighlightTypeForProtoType:](v57, "_socialHighlightTypeForProtoType:", [v5 highlightType]);
+      v44 = -[BMRankableSocialHighlight _socialHighlightTypeForProtoType:](selfCopy, "_socialHighlightTypeForProtoType:", [v5 highlightType]);
     }
 
     else
@@ -221,14 +221,14 @@
       v44 = 0;
     }
 
-    v51 = [v5 sourceBundleId];
-    v50 = [v5 applicationIdentifiers];
+    sourceBundleId = [v5 sourceBundleId];
+    applicationIdentifiers = [v5 applicationIdentifiers];
     v52 = v24;
-    v45 = [v5 hasResourceUrl];
-    if (v45)
+    hasResourceUrl = [v5 hasResourceUrl];
+    if (hasResourceUrl)
     {
       v26 = objc_alloc(MEMORY[0x1E695DFF8]);
-      v36 = [v5 resourceUrl];
+      resourceUrl = [v5 resourceUrl];
       v47 = [v26 initWithString:?];
     }
 
@@ -238,31 +238,31 @@
     }
 
     v27 = [BMSocialHighlightContact alloc];
-    v43 = [v5 sender];
-    v42 = [(BMSocialHighlightContact *)v27 initWithProto:v43];
-    v49 = [v5 domainIdentifier];
-    v41 = [v5 batchIdentifier];
-    v40 = [v5 clientIdentifier];
-    v48 = [v5 displayName];
+    sender = [v5 sender];
+    v42 = [(BMSocialHighlightContact *)v27 initWithProto:sender];
+    domainIdentifier = [v5 domainIdentifier];
+    batchIdentifier = [v5 batchIdentifier];
+    clientIdentifier = [v5 clientIdentifier];
+    displayName = [v5 displayName];
     v39 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "isPrimary")}];
-    v38 = [v5 attributionIdentifier];
+    attributionIdentifier = [v5 attributionIdentifier];
     v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v5, "rank")}];
     v29 = MEMORY[0x1E696AD98];
     [v5 score];
     v37 = [v29 numberWithDouble:?];
     v30 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "isConversationAutoDonating")}];
-    v31 = [v5 originatingDeviceId];
-    v32 = [v5 resolvedUrl];
-    v33 = [v5 clientVariant];
-    v58 = [(BMRankableSocialHighlight *)v57 initWithHighlightIdentifier:v56 highlightType:v44 syndicationDate:v55 sourceBundleId:v51 applicationIdentifiers:v50 resourceUrl:v47 sender:v42 domainIdentifier:v49 batchIdentifier:v41 calculatedFeatures:v10 clientIdentifier:v40 contentCreationDate:v54 groupPhotoPathDigest:v52 displayName:v48 isPrimary:v39 attributionIdentifier:v38 rank:v28 score:v37 isConversationAutoDonating:v30 originatingDeviceId:v31 rankingDate:v53 resolvedUrl:v32 clientVariant:v33];
+    originatingDeviceId = [v5 originatingDeviceId];
+    resolvedUrl = [v5 resolvedUrl];
+    clientVariant = [v5 clientVariant];
+    v58 = [(BMRankableSocialHighlight *)selfCopy initWithHighlightIdentifier:highlightIdentifier highlightType:v44 syndicationDate:v55 sourceBundleId:sourceBundleId applicationIdentifiers:applicationIdentifiers resourceUrl:v47 sender:v42 domainIdentifier:domainIdentifier batchIdentifier:batchIdentifier calculatedFeatures:v10 clientIdentifier:clientIdentifier contentCreationDate:v54 groupPhotoPathDigest:v52 displayName:displayName isPrimary:v39 attributionIdentifier:attributionIdentifier rank:v28 score:v37 isConversationAutoDonating:v30 originatingDeviceId:originatingDeviceId rankingDate:v53 resolvedUrl:resolvedUrl clientVariant:clientVariant];
 
-    if (v45)
+    if (hasResourceUrl)
     {
     }
 
     self = v58;
     v7 = v58;
-    v4 = v46;
+    protoCopy = v46;
   }
 
   else
@@ -274,23 +274,23 @@
   return v7;
 }
 
-- (BMRankableSocialHighlight)initWithProtoData:(id)a3
+- (BMRankableSocialHighlight)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBRankableSocialHighlight alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBRankableSocialHighlight alloc] initWithData:dataCopy];
 
     self = [(BMRankableSocialHighlight *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -357,11 +357,11 @@
   v17 = [(NSArray *)applicationIdentifiers mutableCopy];
   [v14 setApplicationIdentifiers:v17];
 
-  v18 = [(NSURL *)self->_resourceUrl absoluteString];
-  [v14 setResourceUrl:v18];
+  absoluteString = [(NSURL *)self->_resourceUrl absoluteString];
+  [v14 setResourceUrl:absoluteString];
 
-  v19 = [(BMSocialHighlightContact *)self->_sender proto];
-  [v14 setSender:v19];
+  proto = [(BMSocialHighlightContact *)self->_sender proto];
+  [v14 setSender:proto];
 
   [v14 setDomainIdentifier:self->_domainIdentifier];
   [v14 setBatchIdentifier:self->_batchIdentifier];
@@ -417,41 +417,41 @@
   return v14;
 }
 
-- (BMRankableSocialHighlight)initWithHighlightIdentifier:(id)a3 highlightType:(unint64_t)a4 syndicationDate:(id)a5 sourceBundleId:(id)a6 applicationIdentifiers:(id)a7 resourceUrl:(id)a8 sender:(id)a9 domainIdentifier:(id)a10 batchIdentifier:(id)a11 calculatedFeatures:(id)a12 clientIdentifier:(id)a13 contentCreationDate:(id)a14 groupPhotoPath:(id)a15 displayName:(id)a16 isPrimary:(id)a17 attributionIdentifier:(id)a18 rank:(id)a19 score:(id)a20 isConversationAutoDonating:(id)a21 originatingDeviceId:(id)a22 rankingDate:(id)a23 resolvedUrl:(id)a24
+- (BMRankableSocialHighlight)initWithHighlightIdentifier:(id)identifier highlightType:(unint64_t)type syndicationDate:(id)date sourceBundleId:(id)id applicationIdentifiers:(id)identifiers resourceUrl:(id)url sender:(id)sender domainIdentifier:(id)self0 batchIdentifier:(id)self1 calculatedFeatures:(id)self2 clientIdentifier:(id)self3 contentCreationDate:(id)self4 groupPhotoPath:(id)self5 displayName:(id)self6 isPrimary:(id)self7 attributionIdentifier:(id)self8 rank:(id)self9 score:(id)score isConversationAutoDonating:(id)donating originatingDeviceId:(id)deviceId rankingDate:(id)rankingDate resolvedUrl:(id)resolvedUrl
 {
-  v54 = a3;
-  v53 = a5;
-  v52 = a6;
-  v51 = a7;
-  v46 = a8;
-  v50 = a9;
-  v49 = a10;
-  v45 = a11;
-  v48 = a12;
-  v47 = a13;
-  v28 = a14;
-  v29 = a15;
-  v41 = a16;
-  v30 = a17;
-  v40 = a18;
-  v31 = a19;
-  v32 = a20;
-  v33 = a21;
-  v34 = a22;
-  v35 = a23;
-  v36 = a24;
-  if ([v29 hasPrefix:@"file://"])
+  identifierCopy = identifier;
+  dateCopy = date;
+  idCopy = id;
+  identifiersCopy = identifiers;
+  urlCopy = url;
+  senderCopy = sender;
+  domainIdentifierCopy = domainIdentifier;
+  batchIdentifierCopy = batchIdentifier;
+  featuresCopy = features;
+  clientIdentifierCopy = clientIdentifier;
+  creationDateCopy = creationDate;
+  pathCopy = path;
+  nameCopy = name;
+  primaryCopy = primary;
+  attributionIdentifierCopy = attributionIdentifier;
+  rankCopy = rank;
+  scoreCopy = score;
+  donatingCopy = donating;
+  deviceIdCopy = deviceId;
+  rankingDateCopy = rankingDate;
+  resolvedUrlCopy = resolvedUrl;
+  if ([pathCopy hasPrefix:@"file://"])
   {
-    v37 = bm_sha256(v29);
+    v37 = bm_sha256(pathCopy);
   }
 
   else
   {
-    v37 = v29;
+    v37 = pathCopy;
   }
 
   v38 = v37;
-  v44 = [(BMRankableSocialHighlight *)self initWithHighlightIdentifier:v54 highlightType:a4 syndicationDate:v53 sourceBundleId:v52 applicationIdentifiers:v51 resourceUrl:v46 sender:v50 domainIdentifier:v49 batchIdentifier:v45 calculatedFeatures:v48 clientIdentifier:v47 contentCreationDate:v28 groupPhotoPathDigest:v37 displayName:v41 isPrimary:v30 attributionIdentifier:v40 rank:v31 score:v32 isConversationAutoDonating:v33 originatingDeviceId:v34 rankingDate:v35 resolvedUrl:v36 clientVariant:0];
+  v44 = [(BMRankableSocialHighlight *)self initWithHighlightIdentifier:identifierCopy highlightType:type syndicationDate:dateCopy sourceBundleId:idCopy applicationIdentifiers:identifiersCopy resourceUrl:urlCopy sender:senderCopy domainIdentifier:domainIdentifierCopy batchIdentifier:batchIdentifierCopy calculatedFeatures:featuresCopy clientIdentifier:clientIdentifierCopy contentCreationDate:creationDateCopy groupPhotoPathDigest:v37 displayName:nameCopy isPrimary:primaryCopy attributionIdentifier:attributionIdentifierCopy rank:rankCopy score:scoreCopy isConversationAutoDonating:donatingCopy originatingDeviceId:deviceIdCopy rankingDate:rankingDateCopy resolvedUrl:resolvedUrlCopy clientVariant:0];
 
   return v44;
 }

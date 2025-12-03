@@ -1,8 +1,8 @@
 @interface CRLCommandSetLocked
 - (NSUUID)id;
 - (_TtC8Freeform19CRLCommandSetLocked)init;
-- (_TtC8Freeform19CRLCommandSetLocked)initWithBoardItem:(id)a3 locked:(BOOL)a4;
-- (_TtC8Freeform19CRLCommandSetLocked)initWithId:(id)a3 locked:(BOOL)a4;
+- (_TtC8Freeform19CRLCommandSetLocked)initWithBoardItem:(id)item locked:(BOOL)locked;
+- (_TtC8Freeform19CRLCommandSetLocked)initWithId:(id)id locked:(BOOL)locked;
 @end
 
 @implementation CRLCommandSetLocked
@@ -20,7 +20,7 @@
   return v8.super.isa;
 }
 
-- (_TtC8Freeform19CRLCommandSetLocked)initWithId:(id)a3 locked:(BOOL)a4
+- (_TtC8Freeform19CRLCommandSetLocked)initWithId:(id)id locked:(BOOL)locked
 {
   v6 = type metadata accessor for UUID();
   v7 = *(v6 - 8);
@@ -28,7 +28,7 @@
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   (*(v7 + 16))(self + OBJC_IVAR____TtC8Freeform19CRLCommandSetLocked_id, v9, v6);
-  *(self + OBJC_IVAR____TtC8Freeform19CRLCommandSetLocked_locked) = a4;
+  *(self + OBJC_IVAR____TtC8Freeform19CRLCommandSetLocked_locked) = locked;
   v10 = type metadata accessor for CRLCommandSetLocked();
   v13.receiver = self;
   v13.super_class = v10;
@@ -37,18 +37,18 @@
   return v11;
 }
 
-- (_TtC8Freeform19CRLCommandSetLocked)initWithBoardItem:(id)a3 locked:(BOOL)a4
+- (_TtC8Freeform19CRLCommandSetLocked)initWithBoardItem:(id)item locked:(BOOL)locked
 {
-  v4 = a4;
+  lockedCopy = locked;
   v7 = type metadata accessor for UUID();
   v8 = *(v7 - 8);
   v9 = __chkstk_darwin(v7);
   v11 = &v16 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  (*((swift_isaMask & *a3) + 0x88))(v9);
-  v12 = a3;
+  (*((swift_isaMask & *item) + 0x88))(v9);
+  itemCopy = item;
   isa = UUID._bridgeToObjectiveC()().super.isa;
   (*(v8 + 8))(v11, v7);
-  v14 = [(CRLCommandSetLocked *)self initWithId:isa locked:v4];
+  v14 = [(CRLCommandSetLocked *)self initWithId:isa locked:lockedCopy];
 
   return v14;
 }

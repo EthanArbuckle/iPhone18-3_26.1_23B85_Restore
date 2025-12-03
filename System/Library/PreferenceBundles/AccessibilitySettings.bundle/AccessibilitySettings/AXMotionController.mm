@@ -37,8 +37,8 @@
   if (!v6)
   {
     v7 = [objc_allocWithZone(NSMutableArray) init];
-    v8 = [(AXDisplayTextMotionSpecifiersHelper *)self->_helper motionSpecifiers];
-    [v7 axSafelyAddObjectsFromArray:v8];
+    motionSpecifiers = [(AXDisplayTextMotionSpecifiersHelper *)self->_helper motionSpecifiers];
+    [v7 axSafelyAddObjectsFromArray:motionSpecifiers];
 
     v9 = [v7 copy];
     v10 = *&self->super.AXUISettingsListController_opaque[v5];

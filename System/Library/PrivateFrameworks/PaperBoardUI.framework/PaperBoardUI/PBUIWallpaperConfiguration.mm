@@ -1,29 +1,29 @@
 @interface PBUIWallpaperConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)proceduralWallpaperOptions;
 - (NSString)proceduralWallpaperIdentifier;
 - (PBUIWallpaperConfiguration)init;
-- (PBUIWallpaperConfiguration)initWithCoder:(id)a3;
-- (PBUIWallpaperConfiguration)initWithVariant:(int64_t)a3 type:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (PBUIWallpaperConfiguration)initWithCoder:(id)coder;
+- (PBUIWallpaperConfiguration)initWithVariant:(int64_t)variant type:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PBUIWallpaperConfiguration
 
-- (PBUIWallpaperConfiguration)initWithVariant:(int64_t)a3 type:(int64_t)a4
+- (PBUIWallpaperConfiguration)initWithVariant:(int64_t)variant type:(int64_t)type
 {
   v7.receiver = self;
   v7.super_class = PBUIWallpaperConfiguration;
   result = [(PBUIWallpaperConfiguration *)&v7 init];
   if (result)
   {
-    result->_variant = a3;
-    result->_wallpaperType = a4;
+    result->_variant = variant;
+    result->_wallpaperType = type;
   }
 
   return result;
@@ -37,81 +37,81 @@
 
 - (NSString)proceduralWallpaperIdentifier
 {
-  v2 = [(PBUIWallpaperConfiguration *)self proceduralWallpaperInfo];
-  v3 = [v2 objectForKey:@"kSBUIMagicWallpaperIdentifierKey"];
+  proceduralWallpaperInfo = [(PBUIWallpaperConfiguration *)self proceduralWallpaperInfo];
+  v3 = [proceduralWallpaperInfo objectForKey:@"kSBUIMagicWallpaperIdentifierKey"];
 
   return v3;
 }
 
 - (NSDictionary)proceduralWallpaperOptions
 {
-  v2 = [(PBUIWallpaperConfiguration *)self proceduralWallpaperInfo];
-  v3 = [v2 objectForKey:@"kSBUIMagicWallpaperPresetOptionsKey"];
+  proceduralWallpaperInfo = [(PBUIWallpaperConfiguration *)self proceduralWallpaperInfo];
+  v3 = [proceduralWallpaperInfo objectForKey:@"kSBUIMagicWallpaperPresetOptionsKey"];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithVariant:-[PBUIWallpaperConfiguration variant](self type:{"variant"), -[PBUIWallpaperConfiguration wallpaperType](self, "wallpaperType")}];
   if (v4)
   {
     *(v4 + 8) = [(PBUIWallpaperConfiguration *)self needsWallpaperDimmingTreatment];
     *(v4 + 9) = [(PBUIWallpaperConfiguration *)self needsInactiveAppearanceTreatment];
-    v5 = [(PBUIWallpaperConfiguration *)self wallpaperImage];
+    wallpaperImage = [(PBUIWallpaperConfiguration *)self wallpaperImage];
     v6 = *(v4 + 24);
-    *(v4 + 24) = v5;
+    *(v4 + 24) = wallpaperImage;
 
-    v7 = [(PBUIWallpaperConfiguration *)self wallpaperOriginalImage];
+    wallpaperOriginalImage = [(PBUIWallpaperConfiguration *)self wallpaperOriginalImage];
     v8 = *(v4 + 32);
-    *(v4 + 32) = v7;
+    *(v4 + 32) = wallpaperOriginalImage;
 
-    v9 = [(PBUIWallpaperConfiguration *)self wallpaperThumbnailImage];
+    wallpaperThumbnailImage = [(PBUIWallpaperConfiguration *)self wallpaperThumbnailImage];
     v10 = *(v4 + 40);
-    *(v4 + 40) = v9;
+    *(v4 + 40) = wallpaperThumbnailImage;
 
-    v11 = [(PBUIWallpaperConfiguration *)self wallpaperThumbnailImageData];
-    v12 = [v11 copy];
+    wallpaperThumbnailImageData = [(PBUIWallpaperConfiguration *)self wallpaperThumbnailImageData];
+    v12 = [wallpaperThumbnailImageData copy];
     v13 = *(v4 + 48);
     *(v4 + 48) = v12;
 
-    v14 = [(PBUIWallpaperConfiguration *)self wallpaperImageHashData];
-    v15 = [v14 copy];
+    wallpaperImageHashData = [(PBUIWallpaperConfiguration *)self wallpaperImageHashData];
+    v15 = [wallpaperImageHashData copy];
     v16 = *(v4 + 56);
     *(v4 + 56) = v15;
 
-    v17 = [(PBUIWallpaperConfiguration *)self proceduralWallpaperInfo];
-    v18 = [v17 copy];
+    proceduralWallpaperInfo = [(PBUIWallpaperConfiguration *)self proceduralWallpaperInfo];
+    v18 = [proceduralWallpaperInfo copy];
     v19 = *(v4 + 72);
     *(v4 + 72) = v18;
 
-    v20 = [(PBUIWallpaperConfiguration *)self videoURL];
-    v21 = [v20 copy];
+    videoURL = [(PBUIWallpaperConfiguration *)self videoURL];
+    v21 = [videoURL copy];
     v22 = *(v4 + 80);
     *(v4 + 80) = v21;
 
-    v23 = [(PBUIWallpaperConfiguration *)self originalVideoURL];
-    v24 = [v23 copy];
+    originalVideoURL = [(PBUIWallpaperConfiguration *)self originalVideoURL];
+    v24 = [originalVideoURL copy];
     v25 = *(v4 + 88);
     *(v4 + 88) = v24;
 
-    v26 = [(PBUIWallpaperConfiguration *)self wallpaperOptions];
-    v27 = [v26 copy];
+    wallpaperOptions = [(PBUIWallpaperConfiguration *)self wallpaperOptions];
+    v27 = [wallpaperOptions copy];
     v28 = *(v4 + 64);
     *(v4 + 64) = v27;
 
-    v29 = [(PBUIWallpaperConfiguration *)self wallpaperColor];
-    v30 = [v29 copy];
+    wallpaperColor = [(PBUIWallpaperConfiguration *)self wallpaperColor];
+    v30 = [wallpaperColor copy];
     v31 = *(v4 + 96);
     *(v4 + 96) = v30;
 
-    v32 = [(PBUIWallpaperConfiguration *)self wallpaperColorName];
-    v33 = [v32 copy];
+    wallpaperColorName = [(PBUIWallpaperConfiguration *)self wallpaperColorName];
+    v33 = [wallpaperColorName copy];
     v34 = *(v4 + 104);
     *(v4 + 104) = v33;
 
-    v35 = [(PBUIWallpaperConfiguration *)self wallpaperGradient];
-    v36 = [v35 copy];
+    wallpaperGradient = [(PBUIWallpaperConfiguration *)self wallpaperGradient];
+    v36 = [wallpaperGradient copy];
     v37 = *(v4 + 112);
     *(v4 + 112) = v36;
 
@@ -121,10 +121,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v47) = 1;
   }
@@ -136,9 +136,9 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(PBUIWallpaperConfiguration *)self variant];
-      if (v8 == [(PBUIWallpaperConfiguration *)v7 variant]
+      v7 = equalCopy;
+      variant = [(PBUIWallpaperConfiguration *)self variant];
+      if (variant == [(PBUIWallpaperConfiguration *)v7 variant]
         && (v9 = [(PBUIWallpaperConfiguration *)self wallpaperType], v9 == [(PBUIWallpaperConfiguration *)v7 wallpaperType])
         && ([(PBUIWallpaperConfiguration *)self wallpaperImage], v10 = objc_claimAutoreleasedReturnValue(), [(PBUIWallpaperConfiguration *)v7 wallpaperImage], v11 = objc_claimAutoreleasedReturnValue(), v12 = BSEqualObjects(), v11, v10, v12)
         && ([(PBUIWallpaperConfiguration *)self wallpaperOriginalImage], v13 = objc_claimAutoreleasedReturnValue(), [(PBUIWallpaperConfiguration *)v7 wallpaperOriginalImage], v14 = objc_claimAutoreleasedReturnValue(), v15 = (v13 != 0) ^ (v14 != 0), v14, v13, (v15 & 1) == 0)
@@ -154,8 +154,8 @@
         && ([(PBUIWallpaperConfiguration *)self wallpaperGradient], v43 = objc_claimAutoreleasedReturnValue(), [(PBUIWallpaperConfiguration *)v7 wallpaperGradient], v44 = objc_claimAutoreleasedReturnValue(), v45 = BSEqualObjects(), v44, v43, v45)
         && (v46 = [(PBUIWallpaperConfiguration *)self needsWallpaperDimmingTreatment], v46 == [(PBUIWallpaperConfiguration *)v7 needsWallpaperDimmingTreatment]))
       {
-        v49 = [(PBUIWallpaperConfiguration *)self needsInactiveAppearanceTreatment];
-        v47 = v49 ^ [(PBUIWallpaperConfiguration *)v7 needsInactiveAppearanceTreatment]^ 1;
+        needsInactiveAppearanceTreatment = [(PBUIWallpaperConfiguration *)self needsInactiveAppearanceTreatment];
+        v47 = needsInactiveAppearanceTreatment ^ [(PBUIWallpaperConfiguration *)v7 needsInactiveAppearanceTreatment]^ 1;
       }
 
       else
@@ -175,82 +175,82 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PBUIWallpaperConfiguration *)self variant];
-  v4 = [(PBUIWallpaperConfiguration *)self wallpaperType]+ v3;
-  v26 = [(PBUIWallpaperConfiguration *)self wallpaperImage];
-  v5 = v4 + [v26 hash];
-  v25 = [(PBUIWallpaperConfiguration *)self wallpaperThumbnailImageData];
-  v6 = [v25 hash];
-  v24 = [(PBUIWallpaperConfiguration *)self wallpaperImageHashData];
-  v7 = v5 + v6 + [v24 hash];
-  v8 = [(PBUIWallpaperConfiguration *)self proceduralWallpaperInfo];
-  v9 = [v8 hash];
-  v10 = [(PBUIWallpaperConfiguration *)self videoURL];
-  v11 = v9 + [v10 hash];
-  v12 = [(PBUIWallpaperConfiguration *)self originalVideoURL];
-  v13 = v7 + v11 + [v12 hash];
-  v14 = [(PBUIWallpaperConfiguration *)self wallpaperOptions];
-  v15 = [v14 hash];
-  v16 = [(PBUIWallpaperConfiguration *)self wallpaperColor];
-  v17 = v15 + [v16 hash];
-  v18 = [(PBUIWallpaperConfiguration *)self wallpaperColorName];
-  v19 = v17 + [v18 hash];
-  v20 = [(PBUIWallpaperConfiguration *)self wallpaperGradient];
-  v21 = v13 + v19 + [v20 hash];
+  variant = [(PBUIWallpaperConfiguration *)self variant];
+  v4 = [(PBUIWallpaperConfiguration *)self wallpaperType]+ variant;
+  wallpaperImage = [(PBUIWallpaperConfiguration *)self wallpaperImage];
+  v5 = v4 + [wallpaperImage hash];
+  wallpaperThumbnailImageData = [(PBUIWallpaperConfiguration *)self wallpaperThumbnailImageData];
+  v6 = [wallpaperThumbnailImageData hash];
+  wallpaperImageHashData = [(PBUIWallpaperConfiguration *)self wallpaperImageHashData];
+  v7 = v5 + v6 + [wallpaperImageHashData hash];
+  proceduralWallpaperInfo = [(PBUIWallpaperConfiguration *)self proceduralWallpaperInfo];
+  v9 = [proceduralWallpaperInfo hash];
+  videoURL = [(PBUIWallpaperConfiguration *)self videoURL];
+  v11 = v9 + [videoURL hash];
+  originalVideoURL = [(PBUIWallpaperConfiguration *)self originalVideoURL];
+  v13 = v7 + v11 + [originalVideoURL hash];
+  wallpaperOptions = [(PBUIWallpaperConfiguration *)self wallpaperOptions];
+  v15 = [wallpaperOptions hash];
+  wallpaperColor = [(PBUIWallpaperConfiguration *)self wallpaperColor];
+  v17 = v15 + [wallpaperColor hash];
+  wallpaperColorName = [(PBUIWallpaperConfiguration *)self wallpaperColorName];
+  v19 = v17 + [wallpaperColorName hash];
+  wallpaperGradient = [(PBUIWallpaperConfiguration *)self wallpaperGradient];
+  v21 = v13 + v19 + [wallpaperGradient hash];
   v22 = v21 + [(PBUIWallpaperConfiguration *)self needsWallpaperDimmingTreatment];
 
   return v22 + [(PBUIWallpaperConfiguration *)self needsInactiveAppearanceTreatment];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PBUIWallpaperConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PBUIWallpaperConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v5 = PBUIStringForWallpaperType([(PBUIWallpaperConfiguration *)self wallpaperType]);
   v6 = [v4 appendObject:v5 withName:@"wallpaperType"];
 
-  v7 = [(PBUIWallpaperConfiguration *)self wallpaperImage];
-  v8 = [v4 appendObject:v7 withName:@"wallpaperImage" skipIfNil:1];
+  wallpaperImage = [(PBUIWallpaperConfiguration *)self wallpaperImage];
+  v8 = [v4 appendObject:wallpaperImage withName:@"wallpaperImage" skipIfNil:1];
 
-  v9 = [(PBUIWallpaperConfiguration *)self wallpaperOriginalImage];
-  v10 = [v4 appendObject:v9 withName:@"wallpaperOriginalImage" skipIfNil:1];
+  wallpaperOriginalImage = [(PBUIWallpaperConfiguration *)self wallpaperOriginalImage];
+  v10 = [v4 appendObject:wallpaperOriginalImage withName:@"wallpaperOriginalImage" skipIfNil:1];
 
-  v11 = [(PBUIWallpaperConfiguration *)self wallpaperThumbnailImage];
-  v12 = [v4 appendObject:v11 withName:@"wallpaperThumbnailImage" skipIfNil:1];
+  wallpaperThumbnailImage = [(PBUIWallpaperConfiguration *)self wallpaperThumbnailImage];
+  v12 = [v4 appendObject:wallpaperThumbnailImage withName:@"wallpaperThumbnailImage" skipIfNil:1];
 
-  v13 = [(PBUIWallpaperConfiguration *)self wallpaperThumbnailImageData];
-  v14 = [v4 appendObject:v13 withName:@"wallpaperThumbnailImageData" skipIfNil:1];
+  wallpaperThumbnailImageData = [(PBUIWallpaperConfiguration *)self wallpaperThumbnailImageData];
+  v14 = [v4 appendObject:wallpaperThumbnailImageData withName:@"wallpaperThumbnailImageData" skipIfNil:1];
 
-  v15 = [(PBUIWallpaperConfiguration *)self wallpaperImageHashData];
-  v16 = [v4 appendObject:v15 withName:@"wallpaperImageHashData" skipIfNil:1];
+  wallpaperImageHashData = [(PBUIWallpaperConfiguration *)self wallpaperImageHashData];
+  v16 = [v4 appendObject:wallpaperImageHashData withName:@"wallpaperImageHashData" skipIfNil:1];
 
-  v17 = [(PBUIWallpaperConfiguration *)self proceduralWallpaperInfo];
-  v18 = [v4 appendObject:v17 withName:@"proceduralWallpaperInfo" skipIfNil:1];
+  proceduralWallpaperInfo = [(PBUIWallpaperConfiguration *)self proceduralWallpaperInfo];
+  v18 = [v4 appendObject:proceduralWallpaperInfo withName:@"proceduralWallpaperInfo" skipIfNil:1];
 
-  v19 = [(PBUIWallpaperConfiguration *)self videoURL];
-  v20 = [v4 appendObject:v19 withName:@"videoURL" skipIfNil:1];
+  videoURL = [(PBUIWallpaperConfiguration *)self videoURL];
+  v20 = [v4 appendObject:videoURL withName:@"videoURL" skipIfNil:1];
 
-  v21 = [(PBUIWallpaperConfiguration *)self originalVideoURL];
-  v22 = [v4 appendObject:v21 withName:@"originalVideoURL" skipIfNil:1];
+  originalVideoURL = [(PBUIWallpaperConfiguration *)self originalVideoURL];
+  v22 = [v4 appendObject:originalVideoURL withName:@"originalVideoURL" skipIfNil:1];
 
-  v23 = [(PBUIWallpaperConfiguration *)self wallpaperOptions];
-  v24 = [v4 appendObject:v23 withName:@"wallpaperOptions" skipIfNil:1];
+  wallpaperOptions = [(PBUIWallpaperConfiguration *)self wallpaperOptions];
+  v24 = [v4 appendObject:wallpaperOptions withName:@"wallpaperOptions" skipIfNil:1];
 
-  v25 = [(PBUIWallpaperConfiguration *)self wallpaperColor];
-  v26 = [v4 appendObject:v25 withName:@"wallpaperColor" skipIfNil:1];
+  wallpaperColor = [(PBUIWallpaperConfiguration *)self wallpaperColor];
+  v26 = [v4 appendObject:wallpaperColor withName:@"wallpaperColor" skipIfNil:1];
 
-  v27 = [(PBUIWallpaperConfiguration *)self wallpaperColorName];
-  v28 = [v4 appendObject:v27 withName:@"wallpaperColorName" skipIfNil:1];
+  wallpaperColorName = [(PBUIWallpaperConfiguration *)self wallpaperColorName];
+  v28 = [v4 appendObject:wallpaperColorName withName:@"wallpaperColorName" skipIfNil:1];
 
-  v29 = [(PBUIWallpaperConfiguration *)self wallpaperGradient];
-  v30 = [v4 appendObject:v29 withName:@"wallpaperGradient" skipIfNil:1];
+  wallpaperGradient = [(PBUIWallpaperConfiguration *)self wallpaperGradient];
+  v30 = [v4 appendObject:wallpaperGradient withName:@"wallpaperGradient" skipIfNil:1];
 
   v31 = [v4 appendBool:-[PBUIWallpaperConfiguration needsWallpaperDimmingTreatment](self withName:"needsWallpaperDimmingTreatment") ifEqualTo:{@"needsWallpaperDimmingTreatment", 1}];
   v32 = [v4 appendBool:-[PBUIWallpaperConfiguration needsInactiveAppearanceTreatment](self withName:"needsInactiveAppearanceTreatment") ifEqualTo:{@"needsInactiveAppearanceTreatment", 1}];
@@ -260,139 +260,139 @@
 
 - (id)succinctDescription
 {
-  v2 = [(PBUIWallpaperConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PBUIWallpaperConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v18 = a3;
+  coderCopy = coder;
   v4 = PBUIStringForWallpaperType([(PBUIWallpaperConfiguration *)self wallpaperType]);
-  [v18 encodeObject:v4 forKey:@"wallpaperType"];
+  [coderCopy encodeObject:v4 forKey:@"wallpaperType"];
 
   v5 = PBUIStringForWallpaperVariant([(PBUIWallpaperConfiguration *)self variant]);
-  [v18 encodeObject:v5 forKey:@"variant"];
+  [coderCopy encodeObject:v5 forKey:@"variant"];
 
-  v6 = [(PBUIWallpaperConfiguration *)self wallpaperImage];
-  [v18 encodeObject:v6 forKey:@"wallpaperImage"];
+  wallpaperImage = [(PBUIWallpaperConfiguration *)self wallpaperImage];
+  [coderCopy encodeObject:wallpaperImage forKey:@"wallpaperImage"];
 
-  v7 = [(PBUIWallpaperConfiguration *)self wallpaperOriginalImage];
-  [v18 encodeObject:v7 forKey:@"wallpaperOriginalImage"];
+  wallpaperOriginalImage = [(PBUIWallpaperConfiguration *)self wallpaperOriginalImage];
+  [coderCopy encodeObject:wallpaperOriginalImage forKey:@"wallpaperOriginalImage"];
 
-  v8 = [(PBUIWallpaperConfiguration *)self wallpaperThumbnailImage];
-  [v18 encodeObject:v8 forKey:@"wallpaperThumbnailImage"];
+  wallpaperThumbnailImage = [(PBUIWallpaperConfiguration *)self wallpaperThumbnailImage];
+  [coderCopy encodeObject:wallpaperThumbnailImage forKey:@"wallpaperThumbnailImage"];
 
-  v9 = [(PBUIWallpaperConfiguration *)self wallpaperThumbnailImageData];
-  [v18 encodeObject:v9 forKey:@"wallpaperThumbnailImageData"];
+  wallpaperThumbnailImageData = [(PBUIWallpaperConfiguration *)self wallpaperThumbnailImageData];
+  [coderCopy encodeObject:wallpaperThumbnailImageData forKey:@"wallpaperThumbnailImageData"];
 
-  v10 = [(PBUIWallpaperConfiguration *)self wallpaperImageHashData];
-  [v18 encodeObject:v10 forKey:@"wallpaperImageHashData"];
+  wallpaperImageHashData = [(PBUIWallpaperConfiguration *)self wallpaperImageHashData];
+  [coderCopy encodeObject:wallpaperImageHashData forKey:@"wallpaperImageHashData"];
 
-  v11 = [(PBUIWallpaperConfiguration *)self proceduralWallpaperInfo];
-  [v18 encodeObject:v11 forKey:@"proceduralWallpaperInfo"];
+  proceduralWallpaperInfo = [(PBUIWallpaperConfiguration *)self proceduralWallpaperInfo];
+  [coderCopy encodeObject:proceduralWallpaperInfo forKey:@"proceduralWallpaperInfo"];
 
-  v12 = [(PBUIWallpaperConfiguration *)self videoURL];
-  [v18 encodeObject:v12 forKey:@"videoURL"];
+  videoURL = [(PBUIWallpaperConfiguration *)self videoURL];
+  [coderCopy encodeObject:videoURL forKey:@"videoURL"];
 
-  v13 = [(PBUIWallpaperConfiguration *)self originalVideoURL];
-  [v18 encodeObject:v13 forKey:@"originalVideoURL"];
+  originalVideoURL = [(PBUIWallpaperConfiguration *)self originalVideoURL];
+  [coderCopy encodeObject:originalVideoURL forKey:@"originalVideoURL"];
 
-  v14 = [(PBUIWallpaperConfiguration *)self wallpaperOptions];
-  [v18 encodeObject:v14 forKey:@"wallpaperOptions"];
+  wallpaperOptions = [(PBUIWallpaperConfiguration *)self wallpaperOptions];
+  [coderCopy encodeObject:wallpaperOptions forKey:@"wallpaperOptions"];
 
-  v15 = [(PBUIWallpaperConfiguration *)self wallpaperColor];
-  [v18 encodeObject:v15 forKey:@"wallpaperColor"];
+  wallpaperColor = [(PBUIWallpaperConfiguration *)self wallpaperColor];
+  [coderCopy encodeObject:wallpaperColor forKey:@"wallpaperColor"];
 
-  v16 = [(PBUIWallpaperConfiguration *)self wallpaperColorName];
-  [v18 encodeObject:v16 forKey:@"wallpaperColorName"];
+  wallpaperColorName = [(PBUIWallpaperConfiguration *)self wallpaperColorName];
+  [coderCopy encodeObject:wallpaperColorName forKey:@"wallpaperColorName"];
 
-  v17 = [(PBUIWallpaperConfiguration *)self wallpaperGradient];
-  [v18 encodeObject:v17 forKey:@"wallpaperGradient"];
+  wallpaperGradient = [(PBUIWallpaperConfiguration *)self wallpaperGradient];
+  [coderCopy encodeObject:wallpaperGradient forKey:@"wallpaperGradient"];
 
-  [v18 encodeBool:-[PBUIWallpaperConfiguration needsWallpaperDimmingTreatment](self forKey:{"needsWallpaperDimmingTreatment"), @"needsWallpaperDimmingTreatment"}];
-  [v18 encodeBool:-[PBUIWallpaperConfiguration needsInactiveAppearanceTreatment](self forKey:{"needsInactiveAppearanceTreatment"), @"needsInactiveAppearanceTreatment"}];
+  [coderCopy encodeBool:-[PBUIWallpaperConfiguration needsWallpaperDimmingTreatment](self forKey:{"needsWallpaperDimmingTreatment"), @"needsWallpaperDimmingTreatment"}];
+  [coderCopy encodeBool:-[PBUIWallpaperConfiguration needsInactiveAppearanceTreatment](self forKey:{"needsInactiveAppearanceTreatment"), @"needsInactiveAppearanceTreatment"}];
 }
 
-- (PBUIWallpaperConfiguration)initWithCoder:(id)a3
+- (PBUIWallpaperConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v47.receiver = self;
   v47.super_class = PBUIWallpaperConfiguration;
   v5 = [(PBUIWallpaperConfiguration *)&v47 init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"wallpaperType"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"wallpaperType"];
     v5->_wallpaperType = PBUIWallpaperTypeForString(v7);
 
     v8 = objc_opt_self();
-    v9 = [v4 decodeObjectOfClass:v8 forKey:@"variant"];
+    v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"variant"];
     v5->_variant = PBUIWallpaperVariantForString(v9);
 
     v10 = objc_opt_self();
-    v11 = [v4 decodeObjectOfClass:v10 forKey:@"wallpaperImage"];
+    v11 = [coderCopy decodeObjectOfClass:v10 forKey:@"wallpaperImage"];
     wallpaperImage = v5->_wallpaperImage;
     v5->_wallpaperImage = v11;
 
     v13 = objc_opt_self();
-    v14 = [v4 decodeObjectOfClass:v13 forKey:@"wallpaperOriginalImage"];
+    v14 = [coderCopy decodeObjectOfClass:v13 forKey:@"wallpaperOriginalImage"];
     wallpaperOriginalImage = v5->_wallpaperOriginalImage;
     v5->_wallpaperOriginalImage = v14;
 
     v16 = objc_opt_self();
-    v17 = [v4 decodeObjectOfClass:v16 forKey:@"wallpaperThumbnailImage"];
+    v17 = [coderCopy decodeObjectOfClass:v16 forKey:@"wallpaperThumbnailImage"];
     wallpaperThumbnailImage = v5->_wallpaperThumbnailImage;
     v5->_wallpaperThumbnailImage = v17;
 
     v19 = objc_opt_self();
-    v20 = [v4 decodeObjectOfClass:v19 forKey:@"wallpaperThumbnailImageData"];
+    v20 = [coderCopy decodeObjectOfClass:v19 forKey:@"wallpaperThumbnailImageData"];
     wallpaperThumbnailImageData = v5->_wallpaperThumbnailImageData;
     v5->_wallpaperThumbnailImageData = v20;
 
     v22 = objc_opt_self();
-    v23 = [v4 decodeObjectOfClass:v22 forKey:@"wallpaperImageHashData"];
+    v23 = [coderCopy decodeObjectOfClass:v22 forKey:@"wallpaperImageHashData"];
     wallpaperImageHashData = v5->_wallpaperImageHashData;
     v5->_wallpaperImageHashData = v23;
 
     v25 = objc_opt_self();
-    v26 = [v4 decodeObjectOfClass:v25 forKey:@"proceduralWallpaperInfo"];
+    v26 = [coderCopy decodeObjectOfClass:v25 forKey:@"proceduralWallpaperInfo"];
     proceduralWallpaperInfo = v5->_proceduralWallpaperInfo;
     v5->_proceduralWallpaperInfo = v26;
 
     v28 = objc_opt_self();
-    v29 = [v4 decodeObjectOfClass:v28 forKey:@"videoURL"];
+    v29 = [coderCopy decodeObjectOfClass:v28 forKey:@"videoURL"];
     videoURL = v5->_videoURL;
     v5->_videoURL = v29;
 
     v31 = objc_opt_self();
-    v32 = [v4 decodeObjectOfClass:v31 forKey:@"originalVideoURL"];
+    v32 = [coderCopy decodeObjectOfClass:v31 forKey:@"originalVideoURL"];
     originalVideoURL = v5->_originalVideoURL;
     v5->_originalVideoURL = v32;
 
     v34 = objc_opt_self();
-    v35 = [v4 decodeObjectOfClass:v34 forKey:@"wallpaperOptions"];
+    v35 = [coderCopy decodeObjectOfClass:v34 forKey:@"wallpaperOptions"];
     wallpaperOptions = v5->_wallpaperOptions;
     v5->_wallpaperOptions = v35;
 
     v37 = objc_opt_self();
-    v38 = [v4 decodeObjectOfClass:v37 forKey:@"wallpaperColor"];
+    v38 = [coderCopy decodeObjectOfClass:v37 forKey:@"wallpaperColor"];
     wallpaperColor = v5->_wallpaperColor;
     v5->_wallpaperColor = v38;
 
     v40 = objc_opt_self();
-    v41 = [v4 decodeObjectOfClass:v40 forKey:@"wallpaperColorName"];
+    v41 = [coderCopy decodeObjectOfClass:v40 forKey:@"wallpaperColorName"];
     wallpaperColorName = v5->_wallpaperColorName;
     v5->_wallpaperColorName = v41;
 
     v43 = objc_opt_self();
-    v44 = [v4 decodeObjectOfClass:v43 forKey:@"wallpaperGradient"];
+    v44 = [coderCopy decodeObjectOfClass:v43 forKey:@"wallpaperGradient"];
     wallpaperGradient = v5->_wallpaperGradient;
     v5->_wallpaperGradient = v44;
 
-    v5->_needsWallpaperDimmingTreatment = [v4 decodeBoolForKey:@"needsWallpaperDimmingTreatment"];
-    v5->_needsInactiveAppearanceTreatment = [v4 decodeBoolForKey:@"needsInactiveAppearanceTreatment"];
+    v5->_needsWallpaperDimmingTreatment = [coderCopy decodeBoolForKey:@"needsWallpaperDimmingTreatment"];
+    v5->_needsInactiveAppearanceTreatment = [coderCopy decodeBoolForKey:@"needsInactiveAppearanceTreatment"];
   }
 
   return v5;

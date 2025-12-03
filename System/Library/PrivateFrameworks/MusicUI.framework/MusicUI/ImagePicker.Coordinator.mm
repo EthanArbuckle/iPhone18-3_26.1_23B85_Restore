@@ -1,50 +1,50 @@
 @interface ImagePicker.Coordinator
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)documentPickerWasCancelled:(id)a3;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)imagePickerControllerDidCancel:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)documentPickerWasCancelled:(id)cancelled;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)imagePickerControllerDidCancel:(id)cancel;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation ImagePicker.Coordinator
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
   type metadata accessor for InfoKey(0);
   sub_21694CFA0(&qword_27CAB6800, type metadata accessor for InfoKey);
   sub_21700E354();
-  v6 = a3;
-  v7 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_21694A590();
 }
 
-- (void)imagePickerControllerDidCancel:(id)a3
+- (void)imagePickerControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
+  cancelCopy = cancel;
+  selfCopy = self;
   sub_21694AC38();
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
   sub_217005EF4();
   sub_21700E824();
-  v6 = a3;
-  v7 = self;
+  pickerCopy = picker;
+  selfCopy = self;
   sub_21694B974();
 }
 
-- (void)documentPickerWasCancelled:(id)a3
+- (void)documentPickerWasCancelled:(id)cancelled
 {
-  v4 = a3;
-  v5 = self;
+  cancelledCopy = cancelled;
+  selfCopy = self;
   sub_21694BEE0();
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_21694C01C();
 }
 

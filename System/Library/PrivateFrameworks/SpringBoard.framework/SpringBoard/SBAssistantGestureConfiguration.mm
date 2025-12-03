@@ -3,34 +3,34 @@
 - (BOOL)shouldDismissForTapsOutsideContent;
 - (BOOL)shouldPassTouchesThroughToSpringBoard;
 - (BOOL)shouldShareHomeGesture;
-- (SBAssistantGestureConfiguration)initWithSiriPresentationViewController:(id)a3;
-- (void)_makeObserversPerformBlock:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)assistantGestureConfiguration:(id)a3 didUpdateHomeAffordanceSuppression:(int64_t)a4;
-- (void)assistantGestureConfiguration:(id)a3 didUpdateHomeGestureSharing:(BOOL)a4;
-- (void)assistantGestureConfiguration:(id)a3 didUpdateShouldDismissForSwipesOutsideContent:(BOOL)a4;
-- (void)assistantGestureConfiguration:(id)a3 didUpdateShouldDismissForTapsOutsideContent:(BOOL)a4;
-- (void)assistantGestureConfiguration:(id)a3 didUpdateShouldPassTouchesThroughToSpringBoard:(BOOL)a4;
-- (void)assistantGestureConfiguration:(id)a3 didUpdateShouldShowHomeAffordance:(BOOL)a4;
-- (void)assistantGestureConfiguration:(id)a3 didUpdateStatusBarActionGestureRecognizer:(id)a4;
-- (void)notifyPanBeganAtPoint:(CGPoint)a3;
-- (void)notifyTapAtPoint:(CGPoint)a3;
-- (void)removeObserver:(id)a3;
-- (void)shouldDismissForGestureAtLocation:(CGPoint)a3 completion:(id)a4;
+- (SBAssistantGestureConfiguration)initWithSiriPresentationViewController:(id)controller;
+- (void)_makeObserversPerformBlock:(id)block;
+- (void)addObserver:(id)observer;
+- (void)assistantGestureConfiguration:(id)configuration didUpdateHomeAffordanceSuppression:(int64_t)suppression;
+- (void)assistantGestureConfiguration:(id)configuration didUpdateHomeGestureSharing:(BOOL)sharing;
+- (void)assistantGestureConfiguration:(id)configuration didUpdateShouldDismissForSwipesOutsideContent:(BOOL)content;
+- (void)assistantGestureConfiguration:(id)configuration didUpdateShouldDismissForTapsOutsideContent:(BOOL)content;
+- (void)assistantGestureConfiguration:(id)configuration didUpdateShouldPassTouchesThroughToSpringBoard:(BOOL)board;
+- (void)assistantGestureConfiguration:(id)configuration didUpdateShouldShowHomeAffordance:(BOOL)affordance;
+- (void)assistantGestureConfiguration:(id)configuration didUpdateStatusBarActionGestureRecognizer:(id)recognizer;
+- (void)notifyPanBeganAtPoint:(CGPoint)point;
+- (void)notifyTapAtPoint:(CGPoint)point;
+- (void)removeObserver:(id)observer;
+- (void)shouldDismissForGestureAtLocation:(CGPoint)location completion:(id)completion;
 @end
 
 @implementation SBAssistantGestureConfiguration
 
-- (SBAssistantGestureConfiguration)initWithSiriPresentationViewController:(id)a3
+- (SBAssistantGestureConfiguration)initWithSiriPresentationViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = SBAssistantGestureConfiguration;
   v6 = [(SBAssistantGestureConfiguration *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_siriPresentationViewController, a3);
+    objc_storeStrong(&v6->_siriPresentationViewController, controller);
     v8 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
     observers = v7->_observers;
     v7->_observers = v8;
@@ -39,46 +39,46 @@
   return v7;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v7 = v4;
-    v5 = [(NSHashTable *)self->_observers containsObject:v4];
-    v4 = v7;
+    v7 = observerCopy;
+    v5 = [(NSHashTable *)self->_observers containsObject:observerCopy];
+    observerCopy = v7;
     if (!v5)
     {
-      v6 = [(SBAssistantGestureConfiguration *)self observers];
-      [v6 addObject:v7];
+      observers = [(SBAssistantGestureConfiguration *)self observers];
+      [observers addObject:v7];
 
-      v4 = v7;
+      observerCopy = v7;
     }
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
-    v5 = [(SBAssistantGestureConfiguration *)self observers];
-    [v5 removeObject:v4];
+    observerCopy = observer;
+    observers = [(SBAssistantGestureConfiguration *)self observers];
+    [observers removeObject:observerCopy];
   }
 }
 
-- (void)_makeObserversPerformBlock:(id)a3
+- (void)_makeObserversPerformBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(SBAssistantGestureConfiguration *)self observers];
-  v6 = [v5 allObjects];
+  observers = [(SBAssistantGestureConfiguration *)self observers];
+  allObjects = [observers allObjects];
 
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -90,14 +90,14 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObjects);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v10++));
+        blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v10++));
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -106,49 +106,49 @@
 
 - (BOOL)shouldDismissForSwipesOutsideContent
 {
-  v2 = [(SBAssistantGestureConfiguration *)self siriPresentationViewController];
-  v3 = [v2 shouldDismissForSwipesOutsideContent];
+  siriPresentationViewController = [(SBAssistantGestureConfiguration *)self siriPresentationViewController];
+  shouldDismissForSwipesOutsideContent = [siriPresentationViewController shouldDismissForSwipesOutsideContent];
 
-  return v3;
+  return shouldDismissForSwipesOutsideContent;
 }
 
 - (BOOL)shouldDismissForTapsOutsideContent
 {
-  v2 = [(SBAssistantGestureConfiguration *)self siriPresentationViewController];
-  v3 = [v2 shouldDismissForTapsOutsideContent];
+  siriPresentationViewController = [(SBAssistantGestureConfiguration *)self siriPresentationViewController];
+  shouldDismissForTapsOutsideContent = [siriPresentationViewController shouldDismissForTapsOutsideContent];
 
-  return v3;
+  return shouldDismissForTapsOutsideContent;
 }
 
 - (BOOL)shouldShareHomeGesture
 {
-  v2 = [(SBAssistantGestureConfiguration *)self siriPresentationViewController];
-  v3 = [v2 shareHomeGesture];
+  siriPresentationViewController = [(SBAssistantGestureConfiguration *)self siriPresentationViewController];
+  shareHomeGesture = [siriPresentationViewController shareHomeGesture];
 
-  return v3;
+  return shareHomeGesture;
 }
 
 - (BOOL)shouldPassTouchesThroughToSpringBoard
 {
-  v2 = [(SBAssistantGestureConfiguration *)self siriPresentationViewController];
-  v3 = [v2 shouldPassTouchesThroughToSpringBoard];
+  siriPresentationViewController = [(SBAssistantGestureConfiguration *)self siriPresentationViewController];
+  shouldPassTouchesThroughToSpringBoard = [siriPresentationViewController shouldPassTouchesThroughToSpringBoard];
 
-  return v3;
+  return shouldPassTouchesThroughToSpringBoard;
 }
 
-- (void)shouldDismissForGestureAtLocation:(CGPoint)a3 completion:(id)a4
+- (void)shouldDismissForGestureAtLocation:(CGPoint)location completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(SBAssistantGestureConfiguration *)self siriPresentationViewController];
+  y = location.y;
+  x = location.x;
+  completionCopy = completion;
+  siriPresentationViewController = [(SBAssistantGestureConfiguration *)self siriPresentationViewController];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __80__SBAssistantGestureConfiguration_shouldDismissForGestureAtLocation_completion___block_invoke;
   v10[3] = &unk_2783A9C70;
-  v11 = v7;
-  v9 = v7;
-  [v8 hasContentAtPoint:v10 completion:{x, y}];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [siriPresentationViewController hasContentAtPoint:v10 completion:{x, y}];
 }
 
 void __80__SBAssistantGestureConfiguration_shouldDismissForGestureAtLocation_completion___block_invoke(uint64_t a1, char a2)
@@ -163,35 +163,35 @@ void __80__SBAssistantGestureConfiguration_shouldDismissForGestureAtLocation_com
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
-- (void)notifyPanBeganAtPoint:(CGPoint)a3
+- (void)notifyPanBeganAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SBAssistantGestureConfiguration *)self siriPresentationViewController];
+  y = point.y;
+  x = point.x;
+  siriPresentationViewController = [(SBAssistantGestureConfiguration *)self siriPresentationViewController];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SBAssistantGestureConfiguration *)self siriPresentationViewController];
-    [v8 notePanBeganAtPoint:{x, y}];
+    siriPresentationViewController2 = [(SBAssistantGestureConfiguration *)self siriPresentationViewController];
+    [siriPresentationViewController2 notePanBeganAtPoint:{x, y}];
   }
 }
 
-- (void)notifyTapAtPoint:(CGPoint)a3
+- (void)notifyTapAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SBAssistantGestureConfiguration *)self siriPresentationViewController];
+  y = point.y;
+  x = point.x;
+  siriPresentationViewController = [(SBAssistantGestureConfiguration *)self siriPresentationViewController];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SBAssistantGestureConfiguration *)self siriPresentationViewController];
-    [v8 noteTapAtPoint:{x, y}];
+    siriPresentationViewController2 = [(SBAssistantGestureConfiguration *)self siriPresentationViewController];
+    [siriPresentationViewController2 noteTapAtPoint:{x, y}];
   }
 }
 
-- (void)assistantGestureConfiguration:(id)a3 didUpdateHomeGestureSharing:(BOOL)a4
+- (void)assistantGestureConfiguration:(id)configuration didUpdateHomeGestureSharing:(BOOL)sharing
 {
   v15 = *MEMORY[0x277D85DE8];
   v6 = SBLogSiri();
@@ -211,11 +211,11 @@ void __80__SBAssistantGestureConfiguration_shouldDismissForGestureAtLocation_com
   v9[2] = __93__SBAssistantGestureConfiguration_assistantGestureConfiguration_didUpdateHomeGestureSharing___block_invoke;
   v9[3] = &unk_2783B0CD8;
   v9[4] = self;
-  v10 = a4;
+  sharingCopy = sharing;
   [(SBAssistantGestureConfiguration *)self _makeObserversPerformBlock:v9];
 }
 
-- (void)assistantGestureConfiguration:(id)a3 didUpdateShouldDismissForTapsOutsideContent:(BOOL)a4
+- (void)assistantGestureConfiguration:(id)configuration didUpdateShouldDismissForTapsOutsideContent:(BOOL)content
 {
   v15 = *MEMORY[0x277D85DE8];
   v6 = SBLogSiri();
@@ -235,11 +235,11 @@ void __80__SBAssistantGestureConfiguration_shouldDismissForGestureAtLocation_com
   v9[2] = __109__SBAssistantGestureConfiguration_assistantGestureConfiguration_didUpdateShouldDismissForTapsOutsideContent___block_invoke;
   v9[3] = &unk_2783B0CD8;
   v9[4] = self;
-  v10 = a4;
+  contentCopy = content;
   [(SBAssistantGestureConfiguration *)self _makeObserversPerformBlock:v9];
 }
 
-- (void)assistantGestureConfiguration:(id)a3 didUpdateShouldDismissForSwipesOutsideContent:(BOOL)a4
+- (void)assistantGestureConfiguration:(id)configuration didUpdateShouldDismissForSwipesOutsideContent:(BOOL)content
 {
   v15 = *MEMORY[0x277D85DE8];
   v6 = SBLogSiri();
@@ -259,11 +259,11 @@ void __80__SBAssistantGestureConfiguration_shouldDismissForGestureAtLocation_com
   v9[2] = __111__SBAssistantGestureConfiguration_assistantGestureConfiguration_didUpdateShouldDismissForSwipesOutsideContent___block_invoke;
   v9[3] = &unk_2783B0CD8;
   v9[4] = self;
-  v10 = a4;
+  contentCopy = content;
   [(SBAssistantGestureConfiguration *)self _makeObserversPerformBlock:v9];
 }
 
-- (void)assistantGestureConfiguration:(id)a3 didUpdateShouldPassTouchesThroughToSpringBoard:(BOOL)a4
+- (void)assistantGestureConfiguration:(id)configuration didUpdateShouldPassTouchesThroughToSpringBoard:(BOOL)board
 {
   v15 = *MEMORY[0x277D85DE8];
   v6 = SBLogSiri();
@@ -283,13 +283,13 @@ void __80__SBAssistantGestureConfiguration_shouldDismissForGestureAtLocation_com
   v9[2] = __112__SBAssistantGestureConfiguration_assistantGestureConfiguration_didUpdateShouldPassTouchesThroughToSpringBoard___block_invoke;
   v9[3] = &unk_2783B0CD8;
   v9[4] = self;
-  v10 = a4;
+  boardCopy = board;
   [(SBAssistantGestureConfiguration *)self _makeObserversPerformBlock:v9];
 }
 
-- (void)assistantGestureConfiguration:(id)a3 didUpdateShouldShowHomeAffordance:(BOOL)a4
+- (void)assistantGestureConfiguration:(id)configuration didUpdateShouldShowHomeAffordance:(BOOL)affordance
 {
-  v4 = a4;
+  affordanceCopy = affordance;
   v15 = *MEMORY[0x277D85DE8];
   v6 = SBLogSiri();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -303,24 +303,24 @@ void __80__SBAssistantGestureConfiguration_shouldDismissForGestureAtLocation_com
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@", buf, 0x16u);
   }
 
-  [(SBAssistantGestureConfiguration *)self setSiriWantsToShowHomeAffordance:v4];
+  [(SBAssistantGestureConfiguration *)self setSiriWantsToShowHomeAffordance:affordanceCopy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __99__SBAssistantGestureConfiguration_assistantGestureConfiguration_didUpdateShouldShowHomeAffordance___block_invoke;
   v9[3] = &unk_2783B0CD8;
   v9[4] = self;
-  v10 = v4;
+  v10 = affordanceCopy;
   [(SBAssistantGestureConfiguration *)self _makeObserversPerformBlock:v9];
 }
 
-- (void)assistantGestureConfiguration:(id)a3 didUpdateHomeAffordanceSuppression:(int64_t)a4
+- (void)assistantGestureConfiguration:(id)configuration didUpdateHomeAffordanceSuppression:(int64_t)suppression
 {
   v14 = *MEMORY[0x277D85DE8];
   v6 = SBLogSiri();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = _SBFLoggingMethodProem();
-    v8 = [MEMORY[0x277CCACA8] stringWithSiriHomeAffordanceSuppression:a4];
+    v8 = [MEMORY[0x277CCACA8] stringWithSiriHomeAffordanceSuppression:suppression];
     *buf = 138543618;
     v11 = v7;
     v12 = 2114;
@@ -328,25 +328,25 @@ void __80__SBAssistantGestureConfiguration_shouldDismissForGestureAtLocation_com
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@", buf, 0x16u);
   }
 
-  if (a4 <= 2)
+  if (suppression <= 2)
   {
-    [(SBAssistantGestureConfiguration *)self setSiriWantsToShowHomeAffordance:(a4 & 1) == 0];
+    [(SBAssistantGestureConfiguration *)self setSiriWantsToShowHomeAffordance:(suppression & 1) == 0];
   }
 
-  [(SBAssistantGestureConfiguration *)self setSiriWantsHomeAffordanceSuppression:a4];
+  [(SBAssistantGestureConfiguration *)self setSiriWantsHomeAffordanceSuppression:suppression];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __100__SBAssistantGestureConfiguration_assistantGestureConfiguration_didUpdateHomeAffordanceSuppression___block_invoke;
   v9[3] = &unk_2783B0D00;
   v9[4] = self;
-  v9[5] = a4;
+  v9[5] = suppression;
   [(SBAssistantGestureConfiguration *)self _makeObserversPerformBlock:v9];
 }
 
-- (void)assistantGestureConfiguration:(id)a3 didUpdateStatusBarActionGestureRecognizer:(id)a4
+- (void)assistantGestureConfiguration:(id)configuration didUpdateStatusBarActionGestureRecognizer:(id)recognizer
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  recognizerCopy = recognizer;
   v6 = SBLogSiri();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -354,18 +354,18 @@ void __80__SBAssistantGestureConfiguration_shouldDismissForGestureAtLocation_com
     *buf = 138543618;
     v12 = v7;
     v13 = 2114;
-    v14 = v5;
+    v14 = recognizerCopy;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@", buf, 0x16u);
   }
 
-  [(SBAssistantGestureConfiguration *)self setStatusBarActionGestureRecognizer:v5];
+  [(SBAssistantGestureConfiguration *)self setStatusBarActionGestureRecognizer:recognizerCopy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __107__SBAssistantGestureConfiguration_assistantGestureConfiguration_didUpdateStatusBarActionGestureRecognizer___block_invoke;
   v9[3] = &unk_2783B0D28;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = recognizerCopy;
+  v8 = recognizerCopy;
   [(SBAssistantGestureConfiguration *)self _makeObserversPerformBlock:v9];
 }
 

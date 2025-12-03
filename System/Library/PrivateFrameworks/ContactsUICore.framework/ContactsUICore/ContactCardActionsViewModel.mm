@@ -2,7 +2,7 @@
 - (_TtC14ContactsUICore27ContactCardActionsViewModel)init;
 - (void)actionsUpdated;
 - (void)dismissViewController;
-- (void)presentViewController:(id)a3 forActionType:(int64_t)a4;
+- (void)presentViewController:(id)controller forActionType:(int64_t)type;
 @end
 
 @implementation ContactCardActionsViewModel
@@ -16,15 +16,15 @@
 
 - (void)actionsUpdated
 {
-  v2 = self;
+  selfCopy = self;
   ContactCardActionsViewModel.actionsUpdated()();
 }
 
-- (void)presentViewController:(id)a3 forActionType:(int64_t)a4
+- (void)presentViewController:(id)controller forActionType:(int64_t)type
 {
-  v6 = a3;
-  v7 = self;
-  ContactCardActionsViewModel.present(_:for:)(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  ContactCardActionsViewModel.present(_:for:)(controllerCopy, type);
 }
 
 - (void)dismissViewController
@@ -34,7 +34,7 @@
   v5 = &v8 - v4;
   v6 = type metadata accessor for ContactCardActionsViewModel.ViewController(0);
   (*(*(v6 - 8) + 56))(v5, 1, 1, v6);
-  v7 = self;
+  selfCopy = self;
   sub_1A340D87C(v5);
 }
 

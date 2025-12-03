@@ -1,24 +1,24 @@
 @interface ADVisualDepthExecutor
-- (ADVisualDepthExecutor)initWithOutputDimensions:(CGSize)a3;
+- (ADVisualDepthExecutor)initWithOutputDimensions:(CGSize)dimensions;
 - (BOOL)isReadyForExecution;
 - (id)execute;
 - (id)getIntermediates;
-- (int64_t)executeWithOutput:(id)a3;
-- (int64_t)prepareForInputRoi:(CGRect)a3;
-- (int64_t)pushKeyframes:(id)a3;
-- (int64_t)pushMesh:(id)a3;
-- (uint64_t)pushPrimaryColorImage:(__n128)a3 timestamp:(__n128)a4 pose:(__n128)a5;
-- (uint64_t)pushSecondaryColorImage:(uint64_t)a3 timestamp:(uint64_t)a4 pose:;
-- (void)checkProjectionChanged:(id)a3 newCalib:(id)a4;
+- (int64_t)executeWithOutput:(id)output;
+- (int64_t)prepareForInputRoi:(CGRect)roi;
+- (int64_t)pushKeyframes:(id)keyframes;
+- (int64_t)pushMesh:(id)mesh;
+- (uint64_t)pushPrimaryColorImage:(__n128)image timestamp:(__n128)timestamp pose:(__n128)pose;
+- (uint64_t)pushSecondaryColorImage:(uint64_t)image timestamp:(uint64_t)timestamp pose:;
+- (void)checkProjectionChanged:(id)changed newCalib:(id)calib;
 - (void)dealloc;
 - (void)deallocateVisualDepthBuffers;
-- (void)setPrimaryColorCameraCalibration:(id)a3;
-- (void)setPrimaryDisparityCalibration:(id)a3;
-- (void)setPrimaryTargetCameraCalibration:(id)a3;
-- (void)setSecondaryColorCameraCalibration:(id)a3;
-- (void)setSecondaryDisparityCalibration:(id)a3;
-- (void)setSecondaryTargetCameraCalibration:(id)a3;
-- (void)updatePixelBufferAllocationForImageDescriptor:(id)a3 pixelBuffer:(__CVBuffer *)a4;
+- (void)setPrimaryColorCameraCalibration:(id)calibration;
+- (void)setPrimaryDisparityCalibration:(id)calibration;
+- (void)setPrimaryTargetCameraCalibration:(id)calibration;
+- (void)setSecondaryColorCameraCalibration:(id)calibration;
+- (void)setSecondaryDisparityCalibration:(id)calibration;
+- (void)setSecondaryTargetCameraCalibration:(id)calibration;
+- (void)updatePixelBufferAllocationForImageDescriptor:(id)descriptor pixelBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation ADVisualDepthExecutor
@@ -223,9 +223,9 @@
 
 - (BOOL)isReadyForExecution
 {
-  v3 = [(ADVisualDepthPipeline *)self->_pipeline metalDescriptor];
-  v4 = v3;
-  if (!v3)
+  metalDescriptor = [(ADVisualDepthPipeline *)self->_pipeline metalDescriptor];
+  v4 = metalDescriptor;
+  if (!metalDescriptor)
   {
     v6 = 0;
     goto LABEL_13;
@@ -234,8 +234,8 @@
   lastReceivedPrimaryColor = self->_lastReceivedPrimaryColor;
   if (!lastReceivedPrimaryColor)
   {
-    v7 = [v3 primaryColorInput];
-    if (v7)
+    primaryColorInput = [metalDescriptor primaryColorInput];
+    if (primaryColorInput)
     {
       v6 = 0;
       goto LABEL_12;
@@ -243,21 +243,21 @@
 
     if (self->_lastReceivedSecondaryColor)
     {
-      v7 = 0;
+      primaryColorInput = 0;
       v6 = 1;
       goto LABEL_12;
     }
 
 LABEL_10:
-    v8 = [v4 secondaryColorInput];
-    v6 = v8 == 0;
+    secondaryColorInput = [v4 secondaryColorInput];
+    v6 = secondaryColorInput == 0;
 
     if (lastReceivedPrimaryColor)
     {
       goto LABEL_13;
     }
 
-    v7 = 0;
+    primaryColorInput = 0;
 LABEL_12:
 
     goto LABEL_13;
@@ -299,23 +299,23 @@ LABEL_13:
   return v5;
 }
 
-- (int64_t)executeWithOutput:(id)a3
+- (int64_t)executeWithOutput:(id)output
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  outputCopy = output;
   kdebug_trace();
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(ADVisualDepthExecutor *)v5 isReadyForExecution])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(ADVisualDepthExecutor *)selfCopy isReadyForExecution])
   {
-    v6 = [(ADExecutor *)v5 executorParameters];
-    v7 = [v6 stepsToExecute];
+    executorParameters = [(ADExecutor *)selfCopy executorParameters];
+    stepsToExecute = [executorParameters stepsToExecute];
 
-    v8 = [(ADExecutor *)v5 executorParameters];
-    v40 = [v8 timeProfiler];
+    executorParameters2 = [(ADExecutor *)selfCopy executorParameters];
+    timeProfiler = [executorParameters2 timeProfiler];
 
-    v9 = v7 - 1;
-    if (v7 < 1)
+    v9 = stepsToExecute - 1;
+    if (stepsToExecute < 1)
     {
       v11 = -22977;
 LABEL_37:
@@ -324,64 +324,64 @@ LABEL_37:
     }
 
     kdebug_trace();
-    [v40 startWithUTFString:"preprocess metal inputs"];
-    [(ADExecutor *)v5 frameExecutionStart];
+    [timeProfiler startWithUTFString:"preprocess metal inputs"];
+    [(ADExecutor *)selfCopy frameExecutionStart];
     if (ADDebugUtilsADVerboseLogsEnabled == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      lastReceivedPrimaryColorTimestamp = v5->_lastReceivedPrimaryColorTimestamp;
+      lastReceivedPrimaryColorTimestamp = selfCopy->_lastReceivedPrimaryColorTimestamp;
       *buf = 134217984;
       v42 = lastReceivedPrimaryColorTimestamp;
       _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "visual depth: running visual depth for timestamp:%f", buf, 0xCu);
     }
 
-    if ([v4 confidenceForPrimaryPoV])
+    if ([outputCopy confidenceForPrimaryPoV])
     {
-      vdPrimaryConfOutput = [v4 confidenceForPrimaryPoV];
+      vdPrimaryConfOutput = [outputCopy confidenceForPrimaryPoV];
     }
 
     else
     {
-      vdPrimaryConfOutput = v5->_vdPrimaryConfOutput;
+      vdPrimaryConfOutput = selfCopy->_vdPrimaryConfOutput;
     }
 
-    if ([v4 confidenceForSecondaryPoV])
+    if ([outputCopy confidenceForSecondaryPoV])
     {
-      vdSecondaryConfOutput = [v4 confidenceForSecondaryPoV];
+      vdSecondaryConfOutput = [outputCopy confidenceForSecondaryPoV];
     }
 
     else
     {
-      vdSecondaryConfOutput = v5->_vdSecondaryConfOutput;
+      vdSecondaryConfOutput = selfCopy->_vdSecondaryConfOutput;
     }
 
-    v39 = +[ADVisualDepthBuffer inputWithImage:confidence:calibration:](ADVisualDepthBuffer, "inputWithImage:confidence:calibration:", [v4 depthForPrimaryPoV], vdPrimaryConfOutput, 0);
-    v38 = +[ADVisualDepthBuffer inputWithImage:confidence:calibration:](ADVisualDepthBuffer, "inputWithImage:confidence:calibration:", [v4 depthForSecondaryPoV], vdSecondaryConfOutput, 0);
-    if (v5->_requiredVDInit)
+    v39 = +[ADVisualDepthBuffer inputWithImage:confidence:calibration:](ADVisualDepthBuffer, "inputWithImage:confidence:calibration:", [outputCopy depthForPrimaryPoV], vdPrimaryConfOutput, 0);
+    v38 = +[ADVisualDepthBuffer inputWithImage:confidence:calibration:](ADVisualDepthBuffer, "inputWithImage:confidence:calibration:", [outputCopy depthForSecondaryPoV], vdSecondaryConfOutput, 0);
+    if (selfCopy->_requiredVDInit)
     {
-      [v40 stopWithUTFString:"preprocess metal inputs"];
+      [timeProfiler stopWithUTFString:"preprocess metal inputs"];
       kdebug_trace();
-      if (v7 == 1)
+      if (stepsToExecute == 1)
       {
         goto LABEL_18;
       }
 
       kdebug_trace();
-      [v40 startWithUTFString:"build metal pipeline"];
-      pipeline = v5->_pipeline;
-      mtlCommandQueue = v5->_mtlCommandQueue;
-      lastReceivedPrimaryColor = v5->_lastReceivedPrimaryColor;
+      [timeProfiler startWithUTFString:"build metal pipeline"];
+      pipeline = selfCopy->_pipeline;
+      mtlCommandQueue = selfCopy->_mtlCommandQueue;
+      lastReceivedPrimaryColor = selfCopy->_lastReceivedPrimaryColor;
       if (lastReceivedPrimaryColor)
       {
-        v35 = [(ADVisualDepthBuffer *)v5->_lastReceivedPrimaryColor calibration];
-        v18 = [v35 distortionModel];
+        calibration = [(ADVisualDepthBuffer *)selfCopy->_lastReceivedPrimaryColor calibration];
+        distortionModel = [calibration distortionModel];
       }
 
       else
       {
-        v18 = 0;
+        distortionModel = 0;
       }
 
-      v11 = [(ADVisualDepthPipeline *)pipeline buildMetalPipelineWithQueue:mtlCommandQueue lensDistortion:v18];
+      v11 = [(ADVisualDepthPipeline *)pipeline buildMetalPipelineWithQueue:mtlCommandQueue lensDistortion:distortionModel];
       if (lastReceivedPrimaryColor)
       {
       }
@@ -391,8 +391,8 @@ LABEL_37:
         goto LABEL_36;
       }
 
-      v9 = v7 - 2;
-      v5->_requiredVDInit = 0;
+      v9 = stepsToExecute - 2;
+      selfCopy->_requiredVDInit = 0;
       v12 = "build metal pipeline";
     }
 
@@ -401,22 +401,22 @@ LABEL_37:
       v12 = "preprocess metal inputs";
     }
 
-    v11 = [(ADVisualDepthPipeline *)v5->_pipeline addMeshInput:v5->_meshInput];
+    v11 = [(ADVisualDepthPipeline *)selfCopy->_pipeline addMeshInput:selfCopy->_meshInput];
     if (v11)
     {
       goto LABEL_36;
     }
 
-    v11 = [(ADVisualDepthPipeline *)v5->_pipeline addKeyframeInput:v5->_keyframeInput timestamp:v5->_lastReceivedPrimaryColorTimestamp];
+    v11 = [(ADVisualDepthPipeline *)selfCopy->_pipeline addKeyframeInput:selfCopy->_keyframeInput timestamp:selfCopy->_lastReceivedPrimaryColorTimestamp];
     if (v11)
     {
       goto LABEL_36;
     }
 
-    if ([(ADVisualDepthPipeline *)v5->_pipeline shouldExecuteForTimestamp:v5->_lastReceivedPrimaryColorTimestamp poseMillimeters:*v5->_anon_b0, *&v5->_anon_b0[16], *&v5->_anon_b0[32], *&v5->_anon_b0[48]])
+    if ([(ADVisualDepthPipeline *)selfCopy->_pipeline shouldExecuteForTimestamp:selfCopy->_lastReceivedPrimaryColorTimestamp poseMillimeters:*selfCopy->_anon_b0, *&selfCopy->_anon_b0[16], *&selfCopy->_anon_b0[32], *&selfCopy->_anon_b0[48]])
     {
-      v13 = v5->_lastReceivedPrimaryColorTimestamp;
-      [v40 stopWithUTFString:v12];
+      v13 = selfCopy->_lastReceivedPrimaryColorTimestamp;
+      [timeProfiler stopWithUTFString:v12];
       kdebug_trace();
       if (!v9)
       {
@@ -424,16 +424,16 @@ LABEL_37:
       }
 
       kdebug_trace();
-      [v40 startWithUTFString:"prediction encode"];
+      [timeProfiler startWithUTFString:"prediction encode"];
       if (ADDebugUtilsADVerboseLogsEnabled == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "running visual depth", buf, 2u);
       }
 
-      v14 = [(MTLCommandQueue *)v5->_mtlCommandQueue commandBufferWithUnretainedReferences];
+      commandBufferWithUnretainedReferences = [(MTLCommandQueue *)selfCopy->_mtlCommandQueue commandBufferWithUnretainedReferences];
       LODWORD(v34) = 0;
-      v11 = -[ADVisualDepthPipeline encodePredictionToCommandBuffer:primaryColorInput:secondaryColorInput:primaryPredictionOutput:secondaryPredictionOutput:primaryOcclusionOutput:secondaryOcclusionOutput:predictionTimestamp:predictionPose:poseSessionID:poseReinitCount:](v5->_pipeline, "encodePredictionToCommandBuffer:primaryColorInput:secondaryColorInput:primaryPredictionOutput:secondaryPredictionOutput:primaryOcclusionOutput:secondaryOcclusionOutput:predictionTimestamp:predictionPose:poseSessionID:poseReinitCount:", v14, v5->_lastReceivedPrimaryColor, v5->_lastReceivedSecondaryColor, v39, v38, [v4 occlusionForPrimaryPoV], v13, *v5->_anon_b0, *&v5->_anon_b0[16], *&v5->_anon_b0[32], *&v5->_anon_b0[48], objc_msgSend(v4, "occlusionForSecondaryPoV"), 0, v34);
+      v11 = -[ADVisualDepthPipeline encodePredictionToCommandBuffer:primaryColorInput:secondaryColorInput:primaryPredictionOutput:secondaryPredictionOutput:primaryOcclusionOutput:secondaryOcclusionOutput:predictionTimestamp:predictionPose:poseSessionID:poseReinitCount:](selfCopy->_pipeline, "encodePredictionToCommandBuffer:primaryColorInput:secondaryColorInput:primaryPredictionOutput:secondaryPredictionOutput:primaryOcclusionOutput:secondaryOcclusionOutput:predictionTimestamp:predictionPose:poseSessionID:poseReinitCount:", commandBufferWithUnretainedReferences, selfCopy->_lastReceivedPrimaryColor, selfCopy->_lastReceivedSecondaryColor, v39, v38, [outputCopy occlusionForPrimaryPoV], v13, *selfCopy->_anon_b0, *&selfCopy->_anon_b0[16], *&selfCopy->_anon_b0[32], *&selfCopy->_anon_b0[48], objc_msgSend(outputCopy, "occlusionForSecondaryPoV"), 0, v34);
       if (v11)
       {
 LABEL_47:
@@ -441,7 +441,7 @@ LABEL_47:
         goto LABEL_36;
       }
 
-      [v40 stopWithUTFString:"prediction encode"];
+      [timeProfiler stopWithUTFString:"prediction encode"];
       kdebug_trace();
       if (v9 == 1)
       {
@@ -450,10 +450,10 @@ LABEL_47:
       }
 
       kdebug_trace();
-      [v40 startWithUTFString:"metal execution"];
-      [v14 encodeSignalEvent:v5->_completionEvent value:(v13 * 1000.0)];
-      [v14 commitAndWaitUntilSubmitted];
-      if (([(MTLSharedEventSPI *)v5->_completionEvent waitUntilSignaledValue:(v13 * 1000.0) timeoutMS:500]& 1) == 0)
+      [timeProfiler startWithUTFString:"metal execution"];
+      [commandBufferWithUnretainedReferences encodeSignalEvent:selfCopy->_completionEvent value:(v13 * 1000.0)];
+      [commandBufferWithUnretainedReferences commitAndWaitUntilSubmitted];
+      if (([(MTLSharedEventSPI *)selfCopy->_completionEvent waitUntilSignaledValue:(v13 * 1000.0) timeoutMS:500]& 1) == 0)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
@@ -466,47 +466,47 @@ LABEL_47:
         goto LABEL_47;
       }
 
-      v24 = [v39 calibration];
-      v25 = [v38 calibration];
-      [v4 addPrimaryCalibration:v24 secondaryCalibration:v25 timestamp:v13];
+      calibration2 = [v39 calibration];
+      calibration3 = [v38 calibration];
+      [outputCopy addPrimaryCalibration:calibration2 secondaryCalibration:calibration3 timestamp:v13];
 
-      v26 = [(ADExecutor *)v5 executorParameters];
-      v27 = [v26 logger];
-      [v27 logPixelBuffer:objc_msgSend(v4 name:"depthForPrimaryPoV") timestamp:{"primaryDepthPrediction", v13}];
+      executorParameters3 = [(ADExecutor *)selfCopy executorParameters];
+      logger = [executorParameters3 logger];
+      [logger logPixelBuffer:objc_msgSend(outputCopy name:"depthForPrimaryPoV") timestamp:{"primaryDepthPrediction", v13}];
 
-      v28 = [(ADExecutor *)v5 executorParameters];
-      v29 = [v28 logger];
-      [v29 logPixelBuffer:vdPrimaryConfOutput name:"primaryConfOutputPrediction" timestamp:v13];
+      executorParameters4 = [(ADExecutor *)selfCopy executorParameters];
+      logger2 = [executorParameters4 logger];
+      [logger2 logPixelBuffer:vdPrimaryConfOutput name:"primaryConfOutputPrediction" timestamp:v13];
 
-      v30 = [(ADExecutor *)v5 executorParameters];
-      v31 = [v30 logger];
-      [v31 logPixelBuffer:objc_msgSend(v4 name:"depthForSecondaryPoV") timestamp:{"secondaryDepthPrediction", v13}];
+      executorParameters5 = [(ADExecutor *)selfCopy executorParameters];
+      logger3 = [executorParameters5 logger];
+      [logger3 logPixelBuffer:objc_msgSend(outputCopy name:"depthForSecondaryPoV") timestamp:{"secondaryDepthPrediction", v13}];
 
-      v32 = [(ADExecutor *)v5 executorParameters];
-      v33 = [v32 logger];
-      [v33 logPixelBuffer:vdSecondaryConfOutput name:"secondaryConfOutputPrediction" timestamp:v13];
+      executorParameters6 = [(ADExecutor *)selfCopy executorParameters];
+      logger4 = [executorParameters6 logger];
+      [logger4 logPixelBuffer:vdSecondaryConfOutput name:"secondaryConfOutputPrediction" timestamp:v13];
 
       v9 -= 2;
       v12 = "metal execution";
     }
 
-    v20 = v5->_lastReceivedPrimaryColor;
-    v5->_lastReceivedPrimaryColor = 0;
+    v20 = selfCopy->_lastReceivedPrimaryColor;
+    selfCopy->_lastReceivedPrimaryColor = 0;
 
-    lastReceivedSecondaryColor = v5->_lastReceivedSecondaryColor;
-    v5->_lastReceivedSecondaryColor = 0;
+    lastReceivedSecondaryColor = selfCopy->_lastReceivedSecondaryColor;
+    selfCopy->_lastReceivedSecondaryColor = 0;
 
-    meshInput = v5->_meshInput;
-    v5->_meshInput = 0;
+    meshInput = selfCopy->_meshInput;
+    selfCopy->_meshInput = 0;
 
-    keyframeInput = v5->_keyframeInput;
-    v5->_keyframeInput = 0;
+    keyframeInput = selfCopy->_keyframeInput;
+    selfCopy->_keyframeInput = 0;
 
-    [v40 stopWithUTFString:v12];
+    [timeProfiler stopWithUTFString:v12];
     kdebug_trace();
     if (v9)
     {
-      [(ADExecutor *)v5 frameExecutionEnd];
+      [(ADExecutor *)selfCopy frameExecutionEnd];
       v11 = 0;
       goto LABEL_36;
     }
@@ -526,18 +526,18 @@ LABEL_36:
 
   v11 = -22973;
 LABEL_38:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   kdebug_trace();
   return v11;
 }
 
-- (int64_t)prepareForInputRoi:(CGRect)a3
+- (int64_t)prepareForInputRoi:(CGRect)roi
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = roi.size.height;
+  width = roi.size.width;
+  y = roi.origin.y;
+  x = roi.origin.x;
   v32 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -545,11 +545,11 @@ LABEL_38:
     _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "visual depth executor: preparing executor", &v24, 2u);
   }
 
-  v8 = [(ADVisualDepthPipeline *)self->_pipeline metalDescriptor];
-  if (v8)
+  metalDescriptor = [(ADVisualDepthPipeline *)self->_pipeline metalDescriptor];
+  if (metalDescriptor)
   {
-    v9 = self;
-    objc_sync_enter(v9);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v24 = 134218752;
@@ -563,47 +563,47 @@ LABEL_38:
       _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "visual depth executor: preparing executor for visual depth roi: [%f,%f,%f,%f]", &v24, 0x2Au);
     }
 
-    v9->_vdColorInputCrop.origin.x = x;
-    v9->_vdColorInputCrop.origin.y = y;
-    v9->_vdColorInputCrop.size.width = width;
-    v9->_vdColorInputCrop.size.height = height;
-    v10 = [v8 primaryColorInput];
-    [(ADVisualDepthExecutor *)v9 updatePixelBufferAllocationForImageDescriptor:v10 pixelBuffer:&v9->_vdPrimaryInput];
+    selfCopy->_vdColorInputCrop.origin.x = x;
+    selfCopy->_vdColorInputCrop.origin.y = y;
+    selfCopy->_vdColorInputCrop.size.width = width;
+    selfCopy->_vdColorInputCrop.size.height = height;
+    primaryColorInput = [metalDescriptor primaryColorInput];
+    [(ADVisualDepthExecutor *)selfCopy updatePixelBufferAllocationForImageDescriptor:primaryColorInput pixelBuffer:&selfCopy->_vdPrimaryInput];
 
-    v11 = [v8 secondaryColorInput];
-    [(ADVisualDepthExecutor *)v9 updatePixelBufferAllocationForImageDescriptor:v11 pixelBuffer:&v9->_vdSecondaryInput];
+    secondaryColorInput = [metalDescriptor secondaryColorInput];
+    [(ADVisualDepthExecutor *)selfCopy updatePixelBufferAllocationForImageDescriptor:secondaryColorInput pixelBuffer:&selfCopy->_vdSecondaryInput];
 
-    v12 = [v8 primaryRasterizedMeshInput];
-    [(ADVisualDepthExecutor *)v9 updatePixelBufferAllocationForImageDescriptor:v12 pixelBuffer:&v9->_vdSqrtInfoPrimaryMeshInput];
+    primaryRasterizedMeshInput = [metalDescriptor primaryRasterizedMeshInput];
+    [(ADVisualDepthExecutor *)selfCopy updatePixelBufferAllocationForImageDescriptor:primaryRasterizedMeshInput pixelBuffer:&selfCopy->_vdSqrtInfoPrimaryMeshInput];
 
-    v13 = [v8 secondaryRasterizedMeshInput];
-    [(ADVisualDepthExecutor *)v9 updatePixelBufferAllocationForImageDescriptor:v13 pixelBuffer:&v9->_vdSqrtInfoSecondaryMeshInput];
+    secondaryRasterizedMeshInput = [metalDescriptor secondaryRasterizedMeshInput];
+    [(ADVisualDepthExecutor *)selfCopy updatePixelBufferAllocationForImageDescriptor:secondaryRasterizedMeshInput pixelBuffer:&selfCopy->_vdSqrtInfoSecondaryMeshInput];
 
-    v14 = [v8 primaryRasterizedMeshInput];
-    [(ADVisualDepthExecutor *)v9 updatePixelBufferAllocationForImageDescriptor:v14 pixelBuffer:&v9->_vdPrimaryMeshIntermediate];
+    primaryRasterizedMeshInput2 = [metalDescriptor primaryRasterizedMeshInput];
+    [(ADVisualDepthExecutor *)selfCopy updatePixelBufferAllocationForImageDescriptor:primaryRasterizedMeshInput2 pixelBuffer:&selfCopy->_vdPrimaryMeshIntermediate];
 
-    v15 = [v8 secondaryRasterizedMeshInput];
-    [(ADVisualDepthExecutor *)v9 updatePixelBufferAllocationForImageDescriptor:v15 pixelBuffer:&v9->_vdSecondaryMeshIntermediate];
+    secondaryRasterizedMeshInput2 = [metalDescriptor secondaryRasterizedMeshInput];
+    [(ADVisualDepthExecutor *)selfCopy updatePixelBufferAllocationForImageDescriptor:secondaryRasterizedMeshInput2 pixelBuffer:&selfCopy->_vdSecondaryMeshIntermediate];
 
-    v16 = [v8 primaryPredictionOutput];
-    [(ADVisualDepthExecutor *)v9 updatePixelBufferAllocationForImageDescriptor:v16 pixelBuffer:&v9->_vdPrimaryDepthOutput];
+    primaryPredictionOutput = [metalDescriptor primaryPredictionOutput];
+    [(ADVisualDepthExecutor *)selfCopy updatePixelBufferAllocationForImageDescriptor:primaryPredictionOutput pixelBuffer:&selfCopy->_vdPrimaryDepthOutput];
 
-    v17 = [v8 primaryPredictionConfidenceOutput];
-    [(ADVisualDepthExecutor *)v9 updatePixelBufferAllocationForImageDescriptor:v17 pixelBuffer:&v9->_vdPrimaryConfOutput];
+    primaryPredictionConfidenceOutput = [metalDescriptor primaryPredictionConfidenceOutput];
+    [(ADVisualDepthExecutor *)selfCopy updatePixelBufferAllocationForImageDescriptor:primaryPredictionConfidenceOutput pixelBuffer:&selfCopy->_vdPrimaryConfOutput];
 
-    v18 = [v8 secondaryPredictionOutput];
-    [(ADVisualDepthExecutor *)v9 updatePixelBufferAllocationForImageDescriptor:v18 pixelBuffer:&v9->_vdSecondaryDepthOutput];
+    secondaryPredictionOutput = [metalDescriptor secondaryPredictionOutput];
+    [(ADVisualDepthExecutor *)selfCopy updatePixelBufferAllocationForImageDescriptor:secondaryPredictionOutput pixelBuffer:&selfCopy->_vdSecondaryDepthOutput];
 
-    v19 = [v8 secondaryPredictionConfidenceOutput];
-    [(ADVisualDepthExecutor *)v9 updatePixelBufferAllocationForImageDescriptor:v19 pixelBuffer:&v9->_vdSecondaryConfOutput];
+    secondaryPredictionConfidenceOutput = [metalDescriptor secondaryPredictionConfidenceOutput];
+    [(ADVisualDepthExecutor *)selfCopy updatePixelBufferAllocationForImageDescriptor:secondaryPredictionConfidenceOutput pixelBuffer:&selfCopy->_vdSecondaryConfOutput];
 
-    v20 = [v8 primaryOcclusionMapOutput];
-    [(ADVisualDepthExecutor *)v9 updatePixelBufferAllocationForImageDescriptor:v20 pixelBuffer:&v9->_vdPrimaryOcclusionOutput];
+    primaryOcclusionMapOutput = [metalDescriptor primaryOcclusionMapOutput];
+    [(ADVisualDepthExecutor *)selfCopy updatePixelBufferAllocationForImageDescriptor:primaryOcclusionMapOutput pixelBuffer:&selfCopy->_vdPrimaryOcclusionOutput];
 
-    v21 = [v8 secondaryOcclusionMapOutput];
-    [(ADVisualDepthExecutor *)v9 updatePixelBufferAllocationForImageDescriptor:v21 pixelBuffer:&v9->_vdSecondaryOcclusionOutput];
+    secondaryOcclusionMapOutput = [metalDescriptor secondaryOcclusionMapOutput];
+    [(ADVisualDepthExecutor *)selfCopy updatePixelBufferAllocationForImageDescriptor:secondaryOcclusionMapOutput pixelBuffer:&selfCopy->_vdSecondaryOcclusionOutput];
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
     v22 = 0;
   }
 
@@ -621,12 +621,12 @@ LABEL_38:
   return v22;
 }
 
-- (void)setSecondaryDisparityCalibration:(id)a3
+- (void)setSecondaryDisparityCalibration:(id)calibration
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v4)
+  calibrationCopy = calibration;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (calibrationCopy)
   {
     if (ADDebugUtilsADVerboseLogsEnabled == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -634,13 +634,13 @@ LABEL_38:
       _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "updating secondary disparity calibration", buf, 2u);
     }
 
-    v6 = [(ADExecutor *)v5 executorParameters];
-    v7 = [v6 logger];
-    [v7 logCalibration:v4 name:"secondaryDisparityCalibration" priority:1];
+    executorParameters = [(ADExecutor *)selfCopy executorParameters];
+    logger = [executorParameters logger];
+    [logger logCalibration:calibrationCopy name:"secondaryDisparityCalibration" priority:1];
 
-    v8 = v4;
-    secondaryDisparityCalibration = v5->_secondaryDisparityCalibration;
-    v5->_secondaryDisparityCalibration = v8;
+    v8 = calibrationCopy;
+    secondaryDisparityCalibration = selfCopy->_secondaryDisparityCalibration;
+    selfCopy->_secondaryDisparityCalibration = v8;
   }
 
   else
@@ -651,19 +651,19 @@ LABEL_38:
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "secondaryDisparityCalibration property set to nil. this may indicate incorrect usage.", v10, 2u);
     }
 
-    secondaryDisparityCalibration = v5->_secondaryDisparityCalibration;
-    v5->_secondaryDisparityCalibration = 0;
+    secondaryDisparityCalibration = selfCopy->_secondaryDisparityCalibration;
+    selfCopy->_secondaryDisparityCalibration = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setPrimaryDisparityCalibration:(id)a3
+- (void)setPrimaryDisparityCalibration:(id)calibration
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v4)
+  calibrationCopy = calibration;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (calibrationCopy)
   {
     if (ADDebugUtilsADVerboseLogsEnabled == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -671,13 +671,13 @@ LABEL_38:
       _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "updating primary disparity calibration", buf, 2u);
     }
 
-    v6 = [(ADExecutor *)v5 executorParameters];
-    v7 = [v6 logger];
-    [v7 logCalibration:v4 name:"primaryDisparityCalibration" priority:1];
+    executorParameters = [(ADExecutor *)selfCopy executorParameters];
+    logger = [executorParameters logger];
+    [logger logCalibration:calibrationCopy name:"primaryDisparityCalibration" priority:1];
 
-    v8 = v4;
-    primaryDisparityCalibration = v5->_primaryDisparityCalibration;
-    v5->_primaryDisparityCalibration = v8;
+    v8 = calibrationCopy;
+    primaryDisparityCalibration = selfCopy->_primaryDisparityCalibration;
+    selfCopy->_primaryDisparityCalibration = v8;
   }
 
   else
@@ -688,14 +688,14 @@ LABEL_38:
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "primaryDisparityCalibration property set to nil. this may indicate incorrect usage.", v10, 2u);
     }
 
-    primaryDisparityCalibration = v5->_primaryDisparityCalibration;
-    v5->_primaryDisparityCalibration = 0;
+    primaryDisparityCalibration = selfCopy->_primaryDisparityCalibration;
+    selfCopy->_primaryDisparityCalibration = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setSecondaryTargetCameraCalibration:(id)a3
+- (void)setSecondaryTargetCameraCalibration:(id)calibration
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -704,7 +704,7 @@ LABEL_38:
   }
 }
 
-- (void)setPrimaryTargetCameraCalibration:(id)a3
+- (void)setPrimaryTargetCameraCalibration:(id)calibration
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -713,12 +713,12 @@ LABEL_38:
   }
 }
 
-- (void)setSecondaryColorCameraCalibration:(id)a3
+- (void)setSecondaryColorCameraCalibration:(id)calibration
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v4)
+  calibrationCopy = calibration;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (calibrationCopy)
   {
     if (ADDebugUtilsADVerboseLogsEnabled == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -726,14 +726,14 @@ LABEL_38:
       _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "updating secondary color calibration", buf, 2u);
     }
 
-    v6 = [(ADExecutor *)v5 executorParameters];
-    v7 = [v6 logger];
-    [v7 logCalibration:v4 name:"secondaryColorCalibration" priority:1];
+    executorParameters = [(ADExecutor *)selfCopy executorParameters];
+    logger = [executorParameters logger];
+    [logger logCalibration:calibrationCopy name:"secondaryColorCalibration" priority:1];
 
-    v8 = [v4 mutableCopy];
-    v9 = [(ADVisualDepthPipeline *)v5->_pipeline metalDescriptor];
-    v10 = [v9 secondaryColorInput];
-    [v10 sizeForLayout:255];
+    v8 = [calibrationCopy mutableCopy];
+    metalDescriptor = [(ADVisualDepthPipeline *)selfCopy->_pipeline metalDescriptor];
+    secondaryColorInput = [metalDescriptor secondaryColorInput];
+    [secondaryColorInput sizeForLayout:255];
     v11 = [v8 scale:?];
 
     if ((v11 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -754,18 +754,18 @@ LABEL_38:
     v8 = 0;
   }
 
-  secondaryColorCameraCalibration = v5->_secondaryColorCameraCalibration;
-  v5->_secondaryColorCameraCalibration = v8;
+  secondaryColorCameraCalibration = selfCopy->_secondaryColorCameraCalibration;
+  selfCopy->_secondaryColorCameraCalibration = v8;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setPrimaryColorCameraCalibration:(id)a3
+- (void)setPrimaryColorCameraCalibration:(id)calibration
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v4)
+  calibrationCopy = calibration;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (calibrationCopy)
   {
     if (ADDebugUtilsADVerboseLogsEnabled == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -773,15 +773,15 @@ LABEL_38:
       _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "updating primary color calibration", buf, 2u);
     }
 
-    v6 = [(ADExecutor *)v5 executorParameters];
-    v7 = [v6 logger];
-    [v7 logCalibration:v4 name:"primaryColorCalibration" priority:1];
+    executorParameters = [(ADExecutor *)selfCopy executorParameters];
+    logger = [executorParameters logger];
+    [logger logCalibration:calibrationCopy name:"primaryColorCalibration" priority:1];
 
-    [(ADVisualDepthExecutor *)v5 checkProjectionChanged:v5->_primaryColorCameraCalibration newCalib:v4];
-    v8 = [v4 mutableCopy];
-    v9 = [(ADVisualDepthPipeline *)v5->_pipeline metalDescriptor];
-    v10 = [v9 primaryColorInput];
-    [v10 sizeForLayout:255];
+    [(ADVisualDepthExecutor *)selfCopy checkProjectionChanged:selfCopy->_primaryColorCameraCalibration newCalib:calibrationCopy];
+    v8 = [calibrationCopy mutableCopy];
+    metalDescriptor = [(ADVisualDepthPipeline *)selfCopy->_pipeline metalDescriptor];
+    primaryColorInput = [metalDescriptor primaryColorInput];
+    [primaryColorInput sizeForLayout:255];
     v11 = [v8 scale:?];
 
     if ((v11 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -790,8 +790,8 @@ LABEL_38:
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed setting primary color calibration", v14, 2u);
     }
 
-    primaryColorCameraCalibration = v5->_primaryColorCameraCalibration;
-    v5->_primaryColorCameraCalibration = v8;
+    primaryColorCameraCalibration = selfCopy->_primaryColorCameraCalibration;
+    selfCopy->_primaryColorCameraCalibration = v8;
   }
 
   else
@@ -802,18 +802,18 @@ LABEL_38:
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "primaryColorCameraCalibration property set to nil. this may indicate incorrect usage.", v13, 2u);
     }
 
-    primaryColorCameraCalibration = v5->_primaryColorCameraCalibration;
-    v5->_primaryColorCameraCalibration = 0;
+    primaryColorCameraCalibration = selfCopy->_primaryColorCameraCalibration;
+    selfCopy->_primaryColorCameraCalibration = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)checkProjectionChanged:(id)a3 newCalib:(id)a4
+- (void)checkProjectionChanged:(id)changed newCalib:(id)calib
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  changedCopy = changed;
+  calibCopy = calib;
+  if (!changedCopy)
   {
     if (ADDebugUtilsADVerboseLogsEnabled == 1)
     {
@@ -846,8 +846,8 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v8 = [v6 distortionModel];
-  v9 = [v7 distortionModel];
+  distortionModel = [changedCopy distortionModel];
+  distortionModel2 = [calibCopy distortionModel];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -880,19 +880,19 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v11 = [v6 distortionModel];
+  distortionModel3 = [changedCopy distortionModel];
   objc_opt_class();
   v12 = objc_opt_isKindOfClass();
 
   if (v12)
   {
-    v13 = [v6 distortionModel];
-    v14 = [v13 XThetaType];
+    distortionModel4 = [changedCopy distortionModel];
+    xThetaType = [distortionModel4 XThetaType];
 
-    v15 = [v7 distortionModel];
-    v16 = [v15 XThetaType];
+    distortionModel5 = [calibCopy distortionModel];
+    xThetaType2 = [distortionModel5 XThetaType];
 
-    if (v14 != v16)
+    if (xThetaType != xThetaType2)
     {
       if (ADDebugUtilsADVerboseLogsEnabled == 1)
       {
@@ -927,23 +927,23 @@ LABEL_19:
 LABEL_21:
 }
 
-- (int64_t)pushKeyframes:(id)a3
+- (int64_t)pushKeyframes:(id)keyframes
 {
-  v5 = a3;
+  keyframesCopy = keyframes;
   v11 = 335684248;
   v12 = 0u;
   v13 = 0u;
   kdebug_trace();
-  if (v5)
+  if (keyframesCopy)
   {
-    v6 = [v5 meshKeyframes];
-    if ([v6 count])
+    meshKeyframes = [keyframesCopy meshKeyframes];
+    if ([meshKeyframes count])
     {
-      v7 = [v5 metricDepth];
+      metricDepth = [keyframesCopy metricDepth];
 
-      if (v7)
+      if (metricDepth)
       {
-        objc_storeStrong(&self->_keyframeInput, a3);
+        objc_storeStrong(&self->_keyframeInput, keyframes);
         v8 = 0;
         goto LABEL_9;
       }
@@ -967,16 +967,16 @@ LABEL_9:
   return v8;
 }
 
-- (int64_t)pushMesh:(id)a3
+- (int64_t)pushMesh:(id)mesh
 {
-  v5 = a3;
+  meshCopy = mesh;
   v11 = 335684248;
   v12 = 0u;
   v13 = 0u;
   kdebug_trace();
-  if (v5 && ([v5 meshChunks], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v7))
+  if (meshCopy && ([meshCopy meshChunks], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v7))
   {
-    objc_storeStrong(&self->_meshInput, a3);
+    objc_storeStrong(&self->_meshInput, mesh);
     v8 = 0;
   }
 
@@ -996,21 +996,21 @@ LABEL_9:
   return v8;
 }
 
-- (uint64_t)pushSecondaryColorImage:(uint64_t)a3 timestamp:(uint64_t)a4 pose:
+- (uint64_t)pushSecondaryColorImage:(uint64_t)image timestamp:(uint64_t)timestamp pose:
 {
   v23 = *MEMORY[0x277D85DE8];
   kdebug_trace();
-  if (a4 && a1[49])
+  if (timestamp && self[49])
   {
-    v7 = a1;
-    objc_sync_enter(v7);
-    v8 = [v7 executorParameters];
-    v9 = [v8 timeProfiler];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    executorParameters = [selfCopy executorParameters];
+    timeProfiler = [executorParameters timeProfiler];
 
-    [v9 start:@"pushSecondaryColor"];
+    [timeProfiler start:@"pushSecondaryColor"];
     if (ADDebugUtilsADVerboseLogsEnabled == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v10 = v7[59];
+      v10 = selfCopy[59];
       *buf = 134218240;
       v20 = a2;
       v21 = 2048;
@@ -1018,21 +1018,21 @@ LABEL_9:
       _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "pushed secondary color image for ts:%f while calib is: %p", buf, 0x16u);
     }
 
-    v11 = [v7 executorParameters];
-    v12 = [v11 logger];
-    [v12 logPixelBuffer:a4 name:"secondaryColorImage" priority:1 timestamp:a2];
+    executorParameters2 = [selfCopy executorParameters];
+    logger = [executorParameters2 logger];
+    [logger logPixelBuffer:timestamp name:"secondaryColorImage" priority:1 timestamp:a2];
 
-    [ADUtils scaleConvertRotateImage:a4 rotateBy:0 cropBy:a1[49] scaleInto:v7 + 50 intermediateScalingBuffer:v7 + 51 intermediateRotatingBuffer:1 useVT:*(v7 + 32), *(v7 + 33), *(v7 + 34), *(v7 + 35)];
-    v13 = [ADVisualDepthBuffer inputWithImage:a1[49] confidence:0 calibration:v7[59]];
-    v14 = v7[19];
-    v7[19] = v13;
+    [ADUtils scaleConvertRotateImage:timestamp rotateBy:0 cropBy:self[49] scaleInto:selfCopy + 50 intermediateScalingBuffer:selfCopy + 51 intermediateRotatingBuffer:1 useVT:*(selfCopy + 32), *(selfCopy + 33), *(selfCopy + 34), *(selfCopy + 35)];
+    v13 = [ADVisualDepthBuffer inputWithImage:self[49] confidence:0 calibration:selfCopy[59]];
+    v14 = selfCopy[19];
+    selfCopy[19] = v13;
 
-    v15 = [v7 executorParameters];
-    v16 = [v15 logger];
-    [v16 logPixelBuffer:a1[49] name:"secondaryColorImageProcessed" priority:1 timestamp:a2];
+    executorParameters3 = [selfCopy executorParameters];
+    logger2 = [executorParameters3 logger];
+    [logger2 logPixelBuffer:self[49] name:"secondaryColorImageProcessed" priority:1 timestamp:a2];
 
-    [v9 stop:@"pushSecondaryColor"];
-    if (v7[19])
+    [timeProfiler stop:@"pushSecondaryColor"];
+    if (selfCopy[19])
     {
       v17 = 0;
     }
@@ -1042,7 +1042,7 @@ LABEL_9:
       v17 = -22950;
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1060,19 +1060,19 @@ LABEL_9:
   return v17;
 }
 
-- (uint64_t)pushPrimaryColorImage:(__n128)a3 timestamp:(__n128)a4 pose:(__n128)a5
+- (uint64_t)pushPrimaryColorImage:(__n128)image timestamp:(__n128)timestamp pose:(__n128)pose
 {
   v35 = *MEMORY[0x277D85DE8];
   kdebug_trace();
-  v11 = a1;
-  objc_sync_enter(v11);
-  v12 = [v11 executorParameters];
-  v13 = [v12 timeProfiler];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  executorParameters = [selfCopy executorParameters];
+  timeProfiler = [executorParameters timeProfiler];
 
-  [v13 start:@"pushPrimaryColor"];
+  [timeProfiler start:@"pushPrimaryColor"];
   if (ADDebugUtilsADVerboseLogsEnabled == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v14 = *(v11 + 58);
+    v14 = *(selfCopy + 58);
     *buf = 134218240;
     v32 = a2;
     v33 = 2048;
@@ -1080,28 +1080,28 @@ LABEL_9:
     _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "pushed primary color image for ts:%f while calib is: %p", buf, 0x16u);
   }
 
-  v15 = [v11 executorParameters];
-  v16 = [v15 logger];
-  [v16 logPixelBuffer:a8 name:"primaryColorImage" priority:1 timestamp:a2];
+  executorParameters2 = [selfCopy executorParameters];
+  logger = [executorParameters2 logger];
+  [logger logPixelBuffer:a8 name:"primaryColorImage" priority:1 timestamp:a2];
 
-  [ADUtils scaleConvertRotateImage:a8 rotateBy:0 cropBy:*(v11 + 46) scaleInto:v11 + 376 intermediateScalingBuffer:v11 + 384 intermediateRotatingBuffer:1 useVT:*(v11 + 32), *(v11 + 33), *(v11 + 34), *(v11 + 35)];
-  v17 = [ADVisualDepthBuffer inputWithImage:*(v11 + 46) confidence:0 calibration:*(v11 + 58)];
-  v18 = *(v11 + 18);
-  *(v11 + 18) = v17;
+  [ADUtils scaleConvertRotateImage:a8 rotateBy:0 cropBy:*(selfCopy + 46) scaleInto:selfCopy + 376 intermediateScalingBuffer:selfCopy + 384 intermediateRotatingBuffer:1 useVT:*(selfCopy + 32), *(selfCopy + 33), *(selfCopy + 34), *(selfCopy + 35)];
+  v17 = [ADVisualDepthBuffer inputWithImage:*(selfCopy + 46) confidence:0 calibration:*(selfCopy + 58)];
+  v18 = *(selfCopy + 18);
+  *(selfCopy + 18) = v17;
 
-  *(v11 + 20) = a2;
-  *(v11 + 11) = v24;
-  *(v11 + 12) = v26;
-  *(v11 + 13) = v28;
-  *(v11 + 14) = v30;
-  v19 = [v11 executorParameters];
-  v20 = [v19 logger];
-  [v20 logPixelBuffer:*(v11 + 46) name:"primaryColorImageProcessed" priority:1 timestamp:a2];
+  *(selfCopy + 20) = a2;
+  *(selfCopy + 11) = v24;
+  *(selfCopy + 12) = v26;
+  *(selfCopy + 13) = v28;
+  *(selfCopy + 14) = v30;
+  executorParameters3 = [selfCopy executorParameters];
+  logger2 = [executorParameters3 logger];
+  [logger2 logPixelBuffer:*(selfCopy + 46) name:"primaryColorImageProcessed" priority:1 timestamp:a2];
 
-  [v13 stop:@"pushPrimaryColor"];
-  v21 = *(v11 + 18);
+  [timeProfiler stop:@"pushPrimaryColor"];
+  v21 = *(selfCopy + 18);
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
   kdebug_trace();
   if (v21)
   {
@@ -1114,20 +1114,20 @@ LABEL_9:
   }
 }
 
-- (void)updatePixelBufferAllocationForImageDescriptor:(id)a3 pixelBuffer:(__CVBuffer *)a4
+- (void)updatePixelBufferAllocationForImageDescriptor:(id)descriptor pixelBuffer:(__CVBuffer *)buffer
 {
-  v7 = a3;
-  if (v7)
+  descriptorCopy = descriptor;
+  if (descriptorCopy)
   {
-    [v7 sizeForLayout:255];
-    +[ADUtils updatePixelBufferAllocationWithNewSize:pixelFormat:pixelBuffer:](ADUtils, "updatePixelBufferAllocationWithNewSize:pixelFormat:pixelBuffer:", [v7 pixelFormat], a4, v5, v6);
+    [descriptorCopy sizeForLayout:255];
+    +[ADUtils updatePixelBufferAllocationWithNewSize:pixelFormat:pixelBuffer:](ADUtils, "updatePixelBufferAllocationWithNewSize:pixelFormat:pixelBuffer:", [descriptorCopy pixelFormat], buffer, v5, v6);
   }
 }
 
-- (ADVisualDepthExecutor)initWithOutputDimensions:(CGSize)a3
+- (ADVisualDepthExecutor)initWithOutputDimensions:(CGSize)dimensions
 {
-  height = a3.height;
-  width = a3.width;
+  height = dimensions.height;
+  width = dimensions.width;
   v26 = 335680416;
   v27 = 0u;
   v28 = 0u;
@@ -1170,13 +1170,13 @@ LABEL_9:
   mtlDevice = v7->_mtlDevice;
   v7->_mtlDevice = v10;
 
-  v12 = [(MTLDevice *)v7->_mtlDevice newCommandQueue];
+  newCommandQueue = [(MTLDevice *)v7->_mtlDevice newCommandQueue];
   mtlCommandQueue = v7->_mtlCommandQueue;
-  v7->_mtlCommandQueue = v12;
+  v7->_mtlCommandQueue = newCommandQueue;
 
-  v14 = [(MTLDevice *)v7->_mtlDevice newSharedEvent];
+  newSharedEvent = [(MTLDevice *)v7->_mtlDevice newSharedEvent];
   completionEvent = v7->_completionEvent;
-  v7->_completionEvent = v14;
+  v7->_completionEvent = newSharedEvent;
 
   [(MTLSharedEventSPI *)v7->_completionEvent setLabel:@"visualDepth-completion-event"];
   v16 = [[ADVisualDepthPipeline alloc] initWithMetalCommandQueue:v7->_mtlCommandQueue dimensions:875836518 format:v7->_visualDepthResolution.width, v7->_visualDepthResolution.height];
@@ -1188,10 +1188,10 @@ LABEL_9:
     v18 = [[ADVisualDepthExecutorParameters alloc] initForPipeline:v7->_pipeline];
     [(ADExecutor *)v7 setExecutorParameters:v18];
 
-    v19 = [(ADExecutor *)v7 executorParameters];
-    v20 = [v19 logger];
+    executorParameters = [(ADExecutor *)v7 executorParameters];
+    logger = [executorParameters logger];
     v21 = objc_opt_new();
-    [v20 addHandler:v21];
+    [logger addHandler:v21];
 
 LABEL_4:
     v22 = v7;

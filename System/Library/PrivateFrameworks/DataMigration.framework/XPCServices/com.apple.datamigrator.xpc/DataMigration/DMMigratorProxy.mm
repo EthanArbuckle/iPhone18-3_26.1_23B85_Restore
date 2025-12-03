@@ -1,15 +1,15 @@
 @interface DMMigratorProxy
-- (DMMigratorProxy)initWithConnection:(id)a3;
-- (void)handleMessage:(id)a3;
+- (DMMigratorProxy)initWithConnection:(id)connection;
+- (void)handleMessage:(id)message;
 @end
 
 @implementation DMMigratorProxy
 
-- (DMMigratorProxy)initWithConnection:(id)a3
+- (DMMigratorProxy)initWithConnection:(id)connection
 {
   v7.receiver = self;
   v7.super_class = DMMigratorProxy;
-  v3 = [(DMMigratorProxy *)&v7 initWithConnection:a3];
+  v3 = [(DMMigratorProxy *)&v7 initWithConnection:connection];
   if (v3)
   {
     v4 = objc_alloc_init(DMMigrator);
@@ -20,16 +20,16 @@
   return v3;
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  v4 = a3;
-  int64 = xpc_dictionary_get_int64(v4, "msgID");
+  messageCopy = message;
+  int64 = xpc_dictionary_get_int64(messageCopy, "msgID");
   v6 = OBJC_IVAR___DMXPCConnection__connection;
   pid = xpc_connection_get_pid(*&self->DMXPCConnection_opaque[OBJC_IVAR___DMXPCConnection__connection]);
   v8 = [NSNumber numberWithLongLong:int64];
   [NSNumber numberWithInt:pid];
   v91 = v89 = v8;
-  v86 = v4;
+  v86 = messageCopy;
   _DMLogFunc();
 
   v123 = 0;
@@ -43,12 +43,12 @@
   v116[1] = 3221225472;
   v116[2] = sub_10000A5C0;
   v116[3] = &unk_1000249D0;
-  v10 = v4;
+  v10 = messageCopy;
   v122 = pid;
   v120 = int64;
   v121 = v9;
   v117 = v10;
-  v118 = self;
+  selfCopy = self;
   v119 = &v123;
   v11 = objc_retainBlock(v116);
   switch(int64)
@@ -81,7 +81,7 @@
       v112[3] = &unk_1000249F8;
       v115 = pid;
       v113 = v10;
-      v114 = self;
+      selfCopy2 = self;
       [(DMMigrator *)migrator migrateCheckingNecessity:v12 lastRelevantPlugin:v14 testMigrationInfrastructureOnly:v80 connection:v84 migrationResultHandler:v112, v14, v90];
       v110[0] = 0;
       v110[1] = v110;

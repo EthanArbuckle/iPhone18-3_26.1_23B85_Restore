@@ -1,15 +1,15 @@
 @interface WFLibraryLayoutMetrics
-+ (id)metricsCompatibleWithTraitCollection:(id)a3 viewWidth:(double)a4 layoutMargins:(UIEdgeInsets)a5 needsTopPadding:(BOOL)a6;
-+ (id)workflowTitleFontCompatibleWithTraitCollection:(id)a3;
++ (id)metricsCompatibleWithTraitCollection:(id)collection viewWidth:(double)width layoutMargins:(UIEdgeInsets)margins needsTopPadding:(BOOL)padding;
++ (id)workflowTitleFontCompatibleWithTraitCollection:(id)collection;
 + (id)workflowTitleFontInDefaultSize;
 - (CGSize)workflowGlyphSize;
 - (CGSize)workflowSize;
-- (UIEdgeInsets)scaledEdgeInsets:(UIEdgeInsets)a3;
+- (UIEdgeInsets)scaledEdgeInsets:(UIEdgeInsets)insets;
 - (UIEdgeInsets)sectionInset;
 - (UIEdgeInsets)workflowContentEdgeInsets;
-- (WFLibraryLayoutMetrics)initWithTraitCollection:(id)a3 viewWidth:(double)a4 layoutMargins:(UIEdgeInsets)a5 needsTopPadding:(BOOL)a6;
-- (double)capEdgeInsets:(double)a3 min:(double)a4 max:(double)a5;
-- (double)scaledValueForValue:(double)a3;
+- (WFLibraryLayoutMetrics)initWithTraitCollection:(id)collection viewWidth:(double)width layoutMargins:(UIEdgeInsets)margins needsTopPadding:(BOOL)padding;
+- (double)capEdgeInsets:(double)insets min:(double)min max:(double)max;
+- (double)scaledValueForValue:(double)value;
 - (double)workflowButtonDimension;
 - (double)workflowGlyphDimension;
 @end
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __56__WFLibraryLayoutMetrics_workflowTitleFontInDefaultSize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (workflowTitleFontInDefaultSize_onceToken != -1)
   {
     dispatch_once(&workflowTitleFontInDefaultSize_onceToken, block);
@@ -112,27 +112,27 @@ void __56__WFLibraryLayoutMetrics_workflowTitleFontInDefaultSize__block_invoke(u
   return result;
 }
 
-- (double)capEdgeInsets:(double)a3 min:(double)a4 max:(double)a5
+- (double)capEdgeInsets:(double)insets min:(double)min max:(double)max
 {
   if (a9 < result)
   {
     result = a9;
   }
 
-  if (a5 >= result)
+  if (max >= result)
   {
-    return a5;
+    return max;
   }
 
   return result;
 }
 
-- (UIEdgeInsets)scaledEdgeInsets:(UIEdgeInsets)a3
+- (UIEdgeInsets)scaledEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  [(WFLibraryLayoutMetrics *)self scaledValueForValue:a3.top];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  [(WFLibraryLayoutMetrics *)self scaledValueForValue:insets.top];
   v8 = v7;
   [(WFLibraryLayoutMetrics *)self scaledValueForValue:left];
   v10 = v9;
@@ -150,11 +150,11 @@ void __56__WFLibraryLayoutMetrics_workflowTitleFontInDefaultSize__block_invoke(u
   return result;
 }
 
-- (double)scaledValueForValue:(double)a3
+- (double)scaledValueForValue:(double)value
 {
-  v4 = [(WFLibraryLayoutMetrics *)self workflowTitleFont];
-  v5 = [objc_opt_class() workflowTitleFontInDefaultSize];
-  [v4 wf_scaledValueForValue:v5 baseFont:a3];
+  workflowTitleFont = [(WFLibraryLayoutMetrics *)self workflowTitleFont];
+  workflowTitleFontInDefaultSize = [objc_opt_class() workflowTitleFontInDefaultSize];
+  [workflowTitleFont wf_scaledValueForValue:workflowTitleFontInDefaultSize baseFont:value];
   v7 = v6;
 
   return v7;
@@ -181,10 +181,10 @@ void __56__WFLibraryLayoutMetrics_workflowTitleFontInDefaultSize__block_invoke(u
   return result;
 }
 
-- (WFLibraryLayoutMetrics)initWithTraitCollection:(id)a3 viewWidth:(double)a4 layoutMargins:(UIEdgeInsets)a5 needsTopPadding:(BOOL)a6
+- (WFLibraryLayoutMetrics)initWithTraitCollection:(id)collection viewWidth:(double)width layoutMargins:(UIEdgeInsets)margins needsTopPadding:(BOOL)padding
 {
-  v6 = a6;
-  v9 = a3;
+  paddingCopy = padding;
+  collectionCopy = collection;
   v49.receiver = self;
   v49.super_class = WFLibraryLayoutMetrics;
   v10 = [(WFLibraryLayoutMetrics *)&v49 init];
@@ -193,11 +193,11 @@ void __56__WFLibraryLayoutMetrics_workflowTitleFontInDefaultSize__block_invoke(u
     goto LABEL_37;
   }
 
-  v11 = [objc_opt_class() workflowTitleFontCompatibleWithTraitCollection:v9];
+  v11 = [objc_opt_class() workflowTitleFontCompatibleWithTraitCollection:collectionCopy];
   workflowTitleFont = v10->_workflowTitleFont;
   v10->_workflowTitleFont = v11;
 
-  v13 = [objc_opt_class() workflowSubtitleFontCompatibleWithTraitCollection:v9];
+  v13 = [objc_opt_class() workflowSubtitleFontCompatibleWithTraitCollection:collectionCopy];
   workflowSubtitleFont = v10->_workflowSubtitleFont;
   v10->_workflowSubtitleFont = v13;
 
@@ -206,7 +206,7 @@ void __56__WFLibraryLayoutMetrics_workflowTitleFontInDefaultSize__block_invoke(u
   v18 = v17;
   v20 = v19;
   v22 = v21 + 15.0;
-  v23 = [v9 verticalSizeClass] == 1 || v6;
+  v23 = [collectionCopy verticalSizeClass] == 1 || paddingCopy;
   v24 = v16 + 15.0;
   if (!v23)
   {
@@ -218,9 +218,9 @@ void __56__WFLibraryLayoutMetrics_workflowTitleFontInDefaultSize__block_invoke(u
   v10->_sectionInset.bottom = v22;
   v10->_sectionInset.right = v20;
   v25 = _UISolariumEnabled();
-  if (a4 <= 1500.0)
+  if (width <= 1500.0)
   {
-    if (a4 > 1205.0)
+    if (width > 1205.0)
     {
       *&v26 = 16.0;
       v48 = v26;
@@ -228,7 +228,7 @@ void __56__WFLibraryLayoutMetrics_workflowTitleFontInDefaultSize__block_invoke(u
       goto LABEL_16;
     }
 
-    if (a4 > 972.0)
+    if (width > 972.0)
     {
       *&v26 = 16.0;
       v48 = v26;
@@ -236,7 +236,7 @@ void __56__WFLibraryLayoutMetrics_workflowTitleFontInDefaultSize__block_invoke(u
       goto LABEL_16;
     }
 
-    if (a4 > 694.0)
+    if (width > 694.0)
     {
       *&v26 = 16.0;
       v48 = v26;
@@ -250,7 +250,7 @@ void __56__WFLibraryLayoutMetrics_workflowTitleFontInDefaultSize__block_invoke(u
       v46 = 534.0;
     }
 
-    v47 = v46 < a4;
+    v47 = v46 < width;
     *&v26 = 10.0;
     if (v47)
     {
@@ -270,7 +270,7 @@ void __56__WFLibraryLayoutMetrics_workflowTitleFontInDefaultSize__block_invoke(u
 
   else
   {
-    v27 = (a4 / 215.0);
+    v27 = (width / 215.0);
     *&v26 = 16.0;
   }
 
@@ -278,14 +278,14 @@ void __56__WFLibraryLayoutMetrics_workflowTitleFontInDefaultSize__block_invoke(u
 LABEL_16:
   v10->_itemsPerBanner = 1;
   v28 = *MEMORY[0x277D76838];
-  v29 = [MEMORY[0x277CFC248] sharedContext];
-  v30 = [v29 applicationOrNil];
+  mEMORY[0x277CFC248] = [MEMORY[0x277CFC248] sharedContext];
+  applicationOrNil = [mEMORY[0x277CFC248] applicationOrNil];
 
-  if (v30)
+  if (applicationOrNil)
   {
-    v31 = [v30 preferredContentSizeCategory];
+    preferredContentSizeCategory = [applicationOrNil preferredContentSizeCategory];
 
-    v28 = v31;
+    v28 = preferredContentSizeCategory;
   }
 
   if (UIContentSizeCategoryIsAccessibilityCategory(v28))
@@ -336,7 +336,7 @@ LABEL_16:
     }
   }
 
-  v37 = floor((a4 - v18 - v20 - (v27 - 1) * v10->_interitemSpacing) / v27);
+  v37 = floor((width - v18 - v20 - (v27 - 1) * v10->_interitemSpacing) / v27);
   if (v37 >= 0.0)
   {
     v38 = v37;
@@ -350,19 +350,19 @@ LABEL_16:
   [(WFLibraryLayoutMetrics *)v10 scaledValueForValue:v36 + v35];
   v10->_workflowSize.width = v38;
   v10->_workflowSize.height = v39;
-  v40 = [MEMORY[0x277D7D750] materialWorkflowConfiguration];
-  [v40 cornerRadius];
+  materialWorkflowConfiguration = [MEMORY[0x277D7D750] materialWorkflowConfiguration];
+  [materialWorkflowConfiguration cornerRadius];
   [(WFLibraryLayoutMetrics *)v10 scaledValueForValue:?];
   if (v41 > 33.0)
   {
     v41 = 33.0;
   }
 
-  [v40 setCornerRadius:v41];
-  [v40 cornerRadius];
+  [materialWorkflowConfiguration setCornerRadius:v41];
+  [materialWorkflowConfiguration cornerRadius];
   v10->_cornerRadius = v42;
   floatingViewConfiguration = v10->_floatingViewConfiguration;
-  v10->_floatingViewConfiguration = v40;
+  v10->_floatingViewConfiguration = materialWorkflowConfiguration;
 
   v44 = v10;
 LABEL_37:
@@ -370,9 +370,9 @@ LABEL_37:
   return v10;
 }
 
-+ (id)workflowTitleFontCompatibleWithTraitCollection:(id)a3
++ (id)workflowTitleFontCompatibleWithTraitCollection:(id)collection
 {
-  v3 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76988] compatibleWithTraitCollection:a3];
+  v3 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76988] compatibleWithTraitCollection:collection];
   v4 = [v3 fontDescriptorWithSymbolicTraits:2];
 
   v5 = [MEMORY[0x277D74300] fontWithDescriptor:v4 size:0.0];
@@ -380,15 +380,15 @@ LABEL_37:
   return v5;
 }
 
-+ (id)metricsCompatibleWithTraitCollection:(id)a3 viewWidth:(double)a4 layoutMargins:(UIEdgeInsets)a5 needsTopPadding:(BOOL)a6
++ (id)metricsCompatibleWithTraitCollection:(id)collection viewWidth:(double)width layoutMargins:(UIEdgeInsets)margins needsTopPadding:(BOOL)padding
 {
-  v6 = a6;
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithTraitCollection:v13 viewWidth:v6 layoutMargins:a4 needsTopPadding:{top, left, bottom, right}];
+  paddingCopy = padding;
+  right = margins.right;
+  bottom = margins.bottom;
+  left = margins.left;
+  top = margins.top;
+  collectionCopy = collection;
+  v14 = [[self alloc] initWithTraitCollection:collectionCopy viewWidth:paddingCopy layoutMargins:width needsTopPadding:{top, left, bottom, right}];
 
   return v14;
 }

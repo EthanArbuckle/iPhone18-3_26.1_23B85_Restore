@@ -1,14 +1,14 @@
 @interface SUICProgressEventViewController
-- (SUICProgressEventViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SUICProgressEventViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation SUICProgressEventViewController
 
-- (SUICProgressEventViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SUICProgressEventViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = SUICProgressEventViewController;
-  v4 = [(SUICProgressEventViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(SUICProgressEventViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(SUICProgressStateMachine);

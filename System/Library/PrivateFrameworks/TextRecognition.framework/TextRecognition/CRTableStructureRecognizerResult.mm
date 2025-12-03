@@ -11,11 +11,11 @@
 - (void)setColumns:()vector<CRTableStructureColumn;
 - (void)setColumnsForCells:()vector<_NSRange;
 - (void)setMerges:()vector<CRTableStructureMerge;
-- (void)setParsedProgram:(CRTableStructureRecognizerResultParsed *)a3;
+- (void)setParsedProgram:(CRTableStructureRecognizerResultParsed *)program;
 - (void)setRectForCells:()vector<CGRect;
 - (void)setRows:()vector<CRTableStructureRow;
 - (void)setRowsForCells:()vector<_NSRange;
-- (void)setTextLineIndexesForCells:(vector<std:(std::allocator<std::vector<unsigned long>>> *)a3 :vector<unsigned)long>;
+- (void)setTextLineIndexesForCells:(vector<std:(std::allocator<std::vector<unsigned long>>> *)cells :vector<unsigned)long>;
 @end
 
 @implementation CRTableStructureRecognizerResult
@@ -235,14 +235,14 @@
   return std::vector<std::vector<unsigned long>>::__init_with_size[abi:ne200100]<std::vector<unsigned long>*,std::vector<unsigned long>*>(retstr, self->_textLineIndexesForCells.__begin_, self->_textLineIndexesForCells.__end_, 0xAAAAAAAAAAAAAAABLL * ((self->_textLineIndexesForCells.__end_ - self->_textLineIndexesForCells.__begin_) >> 3));
 }
 
-- (void)setTextLineIndexesForCells:(vector<std:(std::allocator<std::vector<unsigned long>>> *)a3 :vector<unsigned)long>
+- (void)setTextLineIndexesForCells:(vector<std:(std::allocator<std::vector<unsigned long>>> *)cells :vector<unsigned)long>
 {
   p_textLineIndexesForCells = &self->_textLineIndexesForCells;
-  if (&self->_textLineIndexesForCells != a3)
+  if (&self->_textLineIndexesForCells != cells)
   {
-    begin = a3->__begin_;
-    end = a3->__end_;
-    v7 = end - a3->__begin_;
+    begin = cells->__begin_;
+    end = cells->__end_;
+    v7 = end - cells->__begin_;
     cap = self->_textLineIndexesForCells.__cap_;
     v9 = self->_textLineIndexesForCells.__begin_;
     if (cap - v9 < v7)
@@ -459,17 +459,17 @@
   return std::vector<CRTableStructureMerge>::__init_with_size[abi:ne200100]<CRTableStructureMerge*,CRTableStructureMerge*>(&retstr->merges, self->_parsedProgram.merges.__begin_, self->_parsedProgram.merges.__end_, (self->_parsedProgram.merges.__end_ - self->_parsedProgram.merges.__begin_) >> 5);
 }
 
-- (void)setParsedProgram:(CRTableStructureRecognizerResultParsed *)a3
+- (void)setParsedProgram:(CRTableStructureRecognizerResultParsed *)program
 {
-  v4 = *&a3->numRows;
-  self->_parsedProgram.valid = a3->valid;
+  v4 = *&program->numRows;
+  self->_parsedProgram.valid = program->valid;
   *&self->_parsedProgram.numRows = v4;
-  if (&self->_parsedProgram != a3)
+  if (&self->_parsedProgram != program)
   {
-    std::vector<double>::__assign_with_size[abi:ne200100]<double *,double *>(&self->_parsedProgram.rowHeights.__begin_, a3->rowHeights.__begin_, a3->rowHeights.__end_, a3->rowHeights.__end_ - a3->rowHeights.__begin_);
-    std::vector<double>::__assign_with_size[abi:ne200100]<double *,double *>(&self->_parsedProgram.columnWidths.__begin_, a3->columnWidths.__begin_, a3->columnWidths.__end_, a3->columnWidths.__end_ - a3->columnWidths.__begin_);
-    begin = a3->merges.__begin_;
-    end = a3->merges.__end_;
+    std::vector<double>::__assign_with_size[abi:ne200100]<double *,double *>(&self->_parsedProgram.rowHeights.__begin_, program->rowHeights.__begin_, program->rowHeights.__end_, program->rowHeights.__end_ - program->rowHeights.__begin_);
+    std::vector<double>::__assign_with_size[abi:ne200100]<double *,double *>(&self->_parsedProgram.columnWidths.__begin_, program->columnWidths.__begin_, program->columnWidths.__end_, program->columnWidths.__end_ - program->columnWidths.__begin_);
+    begin = program->merges.__begin_;
+    end = program->merges.__end_;
 
     std::vector<CRTableStructureMerge>::__assign_with_size[abi:ne200100]<CRTableStructureMerge*,CRTableStructureMerge*>(&self->_parsedProgram.merges.__begin_, begin, end, (end - begin) >> 5);
   }

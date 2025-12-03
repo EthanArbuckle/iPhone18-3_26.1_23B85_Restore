@@ -1,27 +1,27 @@
 @interface UIDragInteraction
 + (void)_cancelAllDrags;
-- (BOOL)_accessibilityAddItemsToDragSessionAtPoint:(CAPoint3D)a3;
+- (BOOL)_accessibilityAddItemsToDragSessionAtPoint:(CAPoint3D)point;
 - (BOOL)_accessibilityCanAddItemsToDragSession;
-- (BOOL)_beginLiftForItems:(id)a3 session:(id)a4 animated:(BOOL)a5;
+- (BOOL)_beginLiftForItems:(id)items session:(id)session animated:(BOOL)animated;
 - (BOOL)_isActive;
-- (BOOL)_isPointerDriver:(id)a3;
-- (BOOL)_itemsForAddingToSession:(id)a3 atPoint:(CAPoint3D)a4 completion:(id)a5;
-- (BOOL)_sessionDynamicallyUpdatesPrefersFullSizePreviews:(id)a3;
-- (BOOL)_sessionPrefersFullSizePreviews:(id)a3;
-- (BOOL)_viewRestrictsDragToSourceApp:(id)a3;
-- (BOOL)dragDriver:(id)a3 canExcludeCompetingGestureRecognizer:(id)a4;
-- (BOOL)dragDriver:(id)a3 competingGestureRecognizerShouldDelayLift:(id)a4;
-- (BOOL)dragDriver:(id)a3 shouldBeginAtLocation3D:(CAPoint3D)a4;
-- (BOOL)dragDriver:(id)a3 shouldDelayCompetingGestureRecognizer:(id)a4;
-- (BOOL)dragDriver:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)dragDriverBeginLift:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)_isPointerDriver:(id)driver;
+- (BOOL)_itemsForAddingToSession:(id)session atPoint:(CAPoint3D)point completion:(id)completion;
+- (BOOL)_sessionDynamicallyUpdatesPrefersFullSizePreviews:(id)previews;
+- (BOOL)_sessionPrefersFullSizePreviews:(id)previews;
+- (BOOL)_viewRestrictsDragToSourceApp:(id)app;
+- (BOOL)dragDriver:(id)driver canExcludeCompetingGestureRecognizer:(id)recognizer;
+- (BOOL)dragDriver:(id)driver competingGestureRecognizerShouldDelayLift:(id)lift;
+- (BOOL)dragDriver:(id)driver shouldBeginAtLocation3D:(CAPoint3D)d;
+- (BOOL)dragDriver:(id)driver shouldDelayCompetingGestureRecognizer:(id)recognizer;
+- (BOOL)dragDriver:(id)driver shouldReceiveTouch:(id)touch;
+- (BOOL)dragDriverBeginLift:(id)lift;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isEnabled;
-- (CGPoint)_locationInView:(id)a3;
+- (CGPoint)_locationInView:(id)view;
 - (UIDragInteraction)initWithDelegate:(id)delegate;
 - (UIDragInteractionEffect)interactionEffect;
 - (UIView)view;
@@ -29,52 +29,52 @@
 - (double)liftDelay;
 - (id)_createDefaultInitiationDrivers;
 - (id)_initiationDriver;
-- (id)_itemsToDragFromView:(id)a3;
-- (id)_queryDelegate:(id)a3 forItemsForBeginningSession:(id)a4;
-- (id)_requiredContextIDsForDragSessionInView:(id)a3;
-- (id)_session:(id)a3 customSpringAnimationBehaviorForCancellingItem:(id)a4;
-- (id)_session:(id)a3 targetedPreviewForCancellingItem:(id)a4 duiPreview:(id)a5 snapshotView:(id)a6 container:(id)a7;
-- (id)_viewDragSessionProperties:(id)a3;
+- (id)_itemsToDragFromView:(id)view;
+- (id)_queryDelegate:(id)delegate forItemsForBeginningSession:(id)session;
+- (id)_requiredContextIDsForDragSessionInView:(id)view;
+- (id)_session:(id)_session customSpringAnimationBehaviorForCancellingItem:(id)item;
+- (id)_session:(id)_session targetedPreviewForCancellingItem:(id)item duiPreview:(id)preview snapshotView:(id)view container:(id)container;
+- (id)_viewDragSessionProperties:(id)properties;
 - (id)delegate;
-- (int64_t)_dataOwnerOfDragFromView:(id)a3;
-- (uint64_t)_addItemsWithPoint:(double)a3;
-- (unint64_t)_session:(id)a3 sourceOperationMaskForDraggingWithinApp:(BOOL)a4;
-- (void)_accessibilityPrepareForDragAtPoint:(CAPoint3D)a3 completion:(id)a4;
-- (void)_beginDragWithTouches:(id)a3 itemUpdater:(id)a4;
+- (int64_t)_dataOwnerOfDragFromView:(id)view;
+- (uint64_t)_addItemsWithPoint:(double)point;
+- (unint64_t)_session:(id)_session sourceOperationMaskForDraggingWithinApp:(BOOL)app;
+- (void)_accessibilityPrepareForDragAtPoint:(CAPoint3D)point completion:(id)completion;
+- (void)_beginDragWithTouches:(id)touches itemUpdater:(id)updater;
 - (void)_cancelDrag;
 - (void)_cancelLift;
 - (void)_endLiftWithoutDragging;
 - (void)_finalizeLiftCancellation;
-- (void)_gestureRecognizerFailed:(id)a3;
-- (void)_handoffSession:(id)a3;
-- (void)_immediatelyBeginDragWithTouch:(id)a3 completion:(id)a4;
-- (void)_prepareForLiftAtPoint:(void *)a3 invocationType:(double)a4 completion:(double)a5;
-- (void)_prepareForSession:(id)a3 completion:(id)a4;
-- (void)_queryDelegate:(id)a3 forLiftPreviewsUsingItems:(id)a4 session:(id)a5;
-- (void)_session:(id)a3 item:(id)a4 willCancelWithAnimator:(id)a5;
-- (void)_session:(id)a3 willAddItems:(id)a4 forInteraction:(id)a5;
-- (void)_sessionDidEnd:(id)a3 withOperation:(unint64_t)a4;
-- (void)_sessionDidMove:(id)a3;
-- (void)_sessionDidTransferItems:(id)a3;
-- (void)_sessionHandedOffDragImage:(id)a3;
-- (void)_sessionWillEnd:(id)a3 withOperation:(unint64_t)a4;
-- (void)_setAddItemsGestureConfiguration:(int64_t)a3;
-- (void)_setAllowedTouchTypes:(id)a3;
-- (void)_setAllowsPointerDragBeforeLiftDelay:(BOOL)a3;
-- (void)_setInitiationDrivers:(id)a3;
-- (void)_setPresentationDelegate:(id)a3;
+- (void)_gestureRecognizerFailed:(id)failed;
+- (void)_handoffSession:(id)session;
+- (void)_immediatelyBeginDragWithTouch:(id)touch completion:(id)completion;
+- (void)_prepareForLiftAtPoint:(void *)point invocationType:(double)type completion:(double)completion;
+- (void)_prepareForSession:(id)session completion:(id)completion;
+- (void)_queryDelegate:(id)delegate forLiftPreviewsUsingItems:(id)items session:(id)session;
+- (void)_session:(id)_session item:(id)item willCancelWithAnimator:(id)animator;
+- (void)_session:(id)_session willAddItems:(id)items forInteraction:(id)interaction;
+- (void)_sessionDidEnd:(id)end withOperation:(unint64_t)operation;
+- (void)_sessionDidMove:(id)move;
+- (void)_sessionDidTransferItems:(id)items;
+- (void)_sessionHandedOffDragImage:(id)image;
+- (void)_sessionWillEnd:(id)end withOperation:(unint64_t)operation;
+- (void)_setAddItemsGestureConfiguration:(int64_t)configuration;
+- (void)_setAllowedTouchTypes:(id)types;
+- (void)_setAllowsPointerDragBeforeLiftDelay:(BOOL)delay;
+- (void)_setInitiationDrivers:(id)drivers;
+- (void)_setPresentationDelegate:(id)delegate;
 - (void)_updateDriverParameters;
-- (void)_updateInteractionEffectWithContext:(id)a3 notifyDelegate:(BOOL)a4;
-- (void)_viewFailedToDrag:(id)a3;
-- (void)didMoveToView:(id)a3;
-- (void)dragDriver:(id)a3 beginDragWithTouches:(id)a4 itemUpdater:(id)a5 beginningSessionHandler:(id)a6;
-- (void)dragDriver:(id)a3 prepareToLiftWithCompletion:(id)a4;
-- (void)dragDriverCancelAddItemsGesture:(id)a3;
-- (void)dragDriverCancelLift:(id)a3;
-- (void)setDragCancellationDelay:(double)a3;
+- (void)_updateInteractionEffectWithContext:(id)context notifyDelegate:(BOOL)delegate;
+- (void)_viewFailedToDrag:(id)drag;
+- (void)didMoveToView:(id)view;
+- (void)dragDriver:(id)driver beginDragWithTouches:(id)touches itemUpdater:(id)updater beginningSessionHandler:(id)handler;
+- (void)dragDriver:(id)driver prepareToLiftWithCompletion:(id)completion;
+- (void)dragDriverCancelAddItemsGesture:(id)gesture;
+- (void)dragDriverCancelLift:(id)lift;
+- (void)setDragCancellationDelay:(double)delay;
 - (void)setEnabled:(BOOL)enabled;
-- (void)setLiftDelay:(double)a3;
-- (void)willMoveToView:(id)a3;
+- (void)setLiftDelay:(double)delay;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation UIDragInteraction
@@ -148,7 +148,7 @@ void __52__UIDragInteraction__createDefaultInitiationDrivers__block_invoke()
         v8 = *(*(&v18 + 1) + 8 * v7);
         [(UIDragInteraction *)self _liftDelay];
         v10 = v9;
-        v11 = [(UIDragInteraction *)self _additionalTouchesCancelLift];
+        _additionalTouchesCancelLift = [(UIDragInteraction *)self _additionalTouchesCancelLift];
         [(UIDragInteraction *)self _liftMoveHysteresis];
         v13 = v12;
         if ([(UIDragInteraction *)self _isPointerDriver:v8])
@@ -162,7 +162,7 @@ void __52__UIDragInteraction__createDefaultInitiationDrivers__block_invoke()
 
         else
         {
-          v16 = v11;
+          v16 = _additionalTouchesCancelLift;
         }
 
         [v8 setAutomaticallyAddsFailureRelationships:{-[UIDragInteraction _automaticallyAddsFailureRelationships](self, "_automaticallyAddsFailureRelationships")}];
@@ -176,8 +176,8 @@ void __52__UIDragInteraction__createDefaultInitiationDrivers__block_invoke()
         [v8 setCancellationDelay:?];
         [v8 setLiftMoveHysteresis:v13];
         [v8 setEnabled:{-[UIDragInteraction isEnabled](self, "isEnabled")}];
-        v17 = [(UIDragInteraction *)self view];
-        [v8 setView:v17];
+        view = [(UIDragInteraction *)self view];
+        [v8 setView:view];
 
         ++v7;
       }
@@ -206,8 +206,8 @@ void __52__UIDragInteraction__createDefaultInitiationDrivers__block_invoke()
 
     else if ((*(&self->_delegateImplements + 2) & 2) != 0)
     {
-      v4 = [(UIDragInteraction *)self delegate];
-      v3 = [v4 _dragInteractionAllowsDragOverridingMasterSwitch:self];
+      delegate = [(UIDragInteraction *)self delegate];
+      v3 = [delegate _dragInteractionAllowsDragOverridingMasterSwitch:self];
     }
 
     else
@@ -340,8 +340,8 @@ void __52__UIDragInteraction__createDefaultInitiationDrivers__block_invoke()
       _UIValidateAccountBasedDelegateRespondsToSelector(v25, sel__dragInteraction_dataOwnerForAddingToSession_withTouchAtPoint_);
     }
 
-    v26 = [(UIDragInteraction *)v5 _createDefaultInitiationDrivers];
-    [(UIDragInteraction *)v5 _setInitiationDrivers:v26];
+    _createDefaultInitiationDrivers = [(UIDragInteraction *)v5 _createDefaultInitiationDrivers];
+    [(UIDragInteraction *)v5 _setInitiationDrivers:_createDefaultInitiationDrivers];
 
     v5->_delegateImplements = (*&v5->_delegateImplements & 0xFFFFFFFFFFFFFFFELL | objc_opt_respondsToSelector() & 1);
     v27 = objc_opt_respondsToSelector();
@@ -605,10 +605,10 @@ void __52__UIDragInteraction__createDefaultInitiationDrivers__block_invoke()
   return v5;
 }
 
-- (void)_setPresentationDelegate:(id)a3
+- (void)_setPresentationDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_presentationDelegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_presentationDelegate, delegateCopy);
   *&self->_presentationDelegateImplements = *&self->_presentationDelegateImplements & 0xFE | objc_opt_respondsToSelector() & 1;
   if (objc_opt_respondsToSelector())
   {
@@ -636,10 +636,10 @@ void __52__UIDragInteraction__createDefaultInitiationDrivers__block_invoke()
   *&self->_presentationDelegateImplements = *&self->_presentationDelegateImplements & 0xFB | v7;
 }
 
-- (void)_setInitiationDrivers:(id)a3
+- (void)_setInitiationDrivers:(id)drivers
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  driversCopy = drivers;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -671,18 +671,18 @@ void __52__UIDragInteraction__createDefaultInitiationDrivers__block_invoke()
     while (v7);
   }
 
-  if (!v4 || ![v4 count])
+  if (!driversCopy || ![driversCopy count])
   {
-    v11 = [(UIDragInteraction *)self _createDefaultInitiationDrivers];
+    _createDefaultInitiationDrivers = [(UIDragInteraction *)self _createDefaultInitiationDrivers];
 
-    v4 = v11;
+    driversCopy = _createDefaultInitiationDrivers;
   }
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = v4;
+  v12 = driversCopy;
   v13 = [(NSSet *)v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v13)
   {
@@ -758,11 +758,11 @@ void __52__UIDragInteraction__createDefaultInitiationDrivers__block_invoke()
   return v6;
 }
 
-- (BOOL)_isPointerDriver:(id)a3
+- (BOOL)_isPointerDriver:(id)driver
 {
-  v3 = a3;
+  driverCopy = driver;
   objc_opt_class();
-  v4 = (objc_opt_isKindOfClass() & 1) != 0 && [v3 behavior];
+  v4 = (objc_opt_isKindOfClass() & 1) != 0 && [driverCopy behavior];
 
   return v4;
 }
@@ -824,8 +824,8 @@ void __52__UIDragInteraction__createDefaultInitiationDrivers__block_invoke()
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [v8 trackedInteractions];
-        v10 = [v9 containsObject:self];
+        trackedInteractions = [v8 trackedInteractions];
+        v10 = [trackedInteractions containsObject:self];
 
         if (v10)
         {
@@ -863,12 +863,12 @@ void __52__UIDragInteraction__createDefaultInitiationDrivers__block_invoke()
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 trackedInteractions];
-        if ([v9 containsObject:self])
+        trackedInteractions = [v8 trackedInteractions];
+        if ([trackedInteractions containsObject:self])
         {
-          v10 = [v8 _isActive];
+          _isActive = [v8 _isActive];
 
-          if (v10)
+          if (_isActive)
           {
             v11 = 1;
             goto LABEL_13;
@@ -892,14 +892,14 @@ LABEL_13:
   return v11;
 }
 
-- (void)setDragCancellationDelay:(double)a3
+- (void)setDragCancellationDelay:(double)delay
 {
   if (setDragCancellationDelay__once != -1)
   {
     dispatch_once(&setDragCancellationDelay__once, &__block_literal_global_282);
   }
 
-  [(UIDragInteraction *)self _setCancellationDelay:a3];
+  [(UIDragInteraction *)self _setCancellationDelay:delay];
 }
 
 void __46__UIDragInteraction_setDragCancellationDelay___block_invoke()
@@ -912,14 +912,14 @@ void __46__UIDragInteraction_setDragCancellationDelay___block_invoke()
   }
 }
 
-- (void)setLiftDelay:(double)a3
+- (void)setLiftDelay:(double)delay
 {
   if (setLiftDelay__once != -1)
   {
     dispatch_once(&setLiftDelay__once, &__block_literal_global_285_0);
   }
 
-  [(UIDragInteraction *)self _setLiftDelay:a3];
+  [(UIDragInteraction *)self _setLiftDelay:delay];
 }
 
 void __34__UIDragInteraction_setLiftDelay___block_invoke()
@@ -953,60 +953,60 @@ void __30__UIDragInteraction_liftDelay__block_invoke()
   }
 }
 
-- (void)_setAllowedTouchTypes:(id)a3
+- (void)_setAllowedTouchTypes:(id)types
 {
-  objc_storeStrong(&self->_allowedTouchTypes, a3);
-  v5 = a3;
-  [(UIGestureRecognizer *)self->_gestureRecognizerForAddingItems setAllowedTouchTypes:v5];
+  objc_storeStrong(&self->_allowedTouchTypes, types);
+  typesCopy = types;
+  [(UIGestureRecognizer *)self->_gestureRecognizerForAddingItems setAllowedTouchTypes:typesCopy];
 
   [(UIDragInteraction *)self _updateDriverParameters];
 }
 
-- (void)_setAllowsPointerDragBeforeLiftDelay:(BOOL)a3
+- (void)_setAllowsPointerDragBeforeLiftDelay:(BOOL)delay
 {
-  if (self->_allowsPointerDragBeforeLiftDelay != a3)
+  if (self->_allowsPointerDragBeforeLiftDelay != delay)
   {
-    self->_allowsPointerDragBeforeLiftDelay = a3;
-    v5 = [(UIDragInteraction *)self _createDefaultInitiationDrivers];
-    [(UIDragInteraction *)self _setInitiationDrivers:v5];
+    self->_allowsPointerDragBeforeLiftDelay = delay;
+    _createDefaultInitiationDrivers = [(UIDragInteraction *)self _createDefaultInitiationDrivers];
+    [(UIDragInteraction *)self _setInitiationDrivers:_createDefaultInitiationDrivers];
   }
 }
 
-- (void)_setAddItemsGestureConfiguration:(int64_t)a3
+- (void)_setAddItemsGestureConfiguration:(int64_t)configuration
 {
-  self->_addItemsGestureConfiguration = a3;
-  if (a3 <= 3)
+  self->_addItemsGestureConfiguration = configuration;
+  if (configuration <= 3)
   {
-    v5 = qword_18A679CC8[a3];
-    [(UITapGestureRecognizer *)self->_gestureRecognizerForAddingItems setNumberOfTapsRequired:qword_18A679CA8[a3]];
+    v5 = qword_18A679CC8[configuration];
+    [(UITapGestureRecognizer *)self->_gestureRecognizerForAddingItems setNumberOfTapsRequired:qword_18A679CA8[configuration]];
     gestureRecognizerForAddingItems = self->_gestureRecognizerForAddingItems;
 
     [(UITapGestureRecognizer *)gestureRecognizerForAddingItems setNumberOfTouchesRequired:v5];
   }
 }
 
-- (CGPoint)_locationInView:(id)a3
+- (CGPoint)_locationInView:(id)view
 {
-  v6 = a3;
-  v7 = [(UIDragInteractionContextImpl *)self->_interactionContext invocationType];
-  if (v7 == 1)
+  viewCopy = view;
+  invocationType = [(UIDragInteractionContextImpl *)self->_interactionContext invocationType];
+  if (invocationType == 1)
   {
     [(UIDragInteractionContextImpl *)self->_interactionContext initialLocation];
     v12 = v11;
     v14 = v13;
-    v8 = [(UIDragInteraction *)self view];
-    v15 = [v8 window];
-    [v15 convertPoint:v6 toView:{v12, v14}];
+    view = [(UIDragInteraction *)self view];
+    window = [view window];
+    [window convertPoint:viewCopy toView:{v12, v14}];
     v3 = v16;
     v4 = v17;
 
     goto LABEL_5;
   }
 
-  if (!v7)
+  if (!invocationType)
   {
-    v8 = [(UIDragInteractionContextImpl *)self->_interactionContext initiationTouch];
-    [v8 locationInView:v6];
+    view = [(UIDragInteractionContextImpl *)self->_interactionContext initiationTouch];
+    [view locationInView:viewCopy];
     v3 = v9;
     v4 = v10;
 LABEL_5:
@@ -1019,33 +1019,33 @@ LABEL_5:
   return result;
 }
 
-- (void)_immediatelyBeginDragWithTouch:(id)a3 completion:(id)a4
+- (void)_immediatelyBeginDragWithTouch:(id)touch completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  touchCopy = touch;
+  completionCopy = completion;
+  if (!touchCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"UIDragInteraction.m" lineNumber:680 description:{@"Invalid parameter not satisfying: %@", @"touch"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDragInteraction.m" lineNumber:680 description:{@"Invalid parameter not satisfying: %@", @"touch"}];
   }
 
   if (self->_interactionContext)
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   else
   {
-    v9 = [(UIDragInteraction *)self view];
-    [v7 locationInView:v9];
+    view = [(UIDragInteraction *)self view];
+    [touchCopy locationInView:view];
     v11 = v10;
     v13 = v12;
 
-    v14 = [(UIDragInteraction *)self view];
-    [v14 convertPoint:0 toView:{v11, v13}];
+    view2 = [(UIDragInteraction *)self view];
+    [view2 convertPoint:0 toView:{v11, v13}];
     v16 = v15;
     v18 = v17;
 
@@ -1054,8 +1054,8 @@ LABEL_5:
     v20[2] = __63__UIDragInteraction__immediatelyBeginDragWithTouch_completion___block_invoke;
     v20[3] = &unk_1E7105F20;
     v20[4] = self;
-    v21 = v7;
-    v22 = v8;
+    v21 = touchCopy;
+    v22 = completionCopy;
     [(UIDragInteraction *)&self->super.isa _prepareForLiftAtPoint:v20 invocationType:v16 completion:v18, 0.0];
   }
 }
@@ -1085,22 +1085,22 @@ void __63__UIDragInteraction__immediatelyBeginDragWithTouch_completion___block_i
   }
 }
 
-- (void)_prepareForLiftAtPoint:(void *)a3 invocationType:(double)a4 completion:(double)a5
+- (void)_prepareForLiftAtPoint:(void *)point invocationType:(double)type completion:(double)completion
 {
-  v11 = a3;
-  if (a1)
+  pointCopy = point;
+  if (self)
   {
-    v12 = [a1 delegate];
-    v13 = [[_UIDragSessionImpl alloc] initWithInteraction:a1];
+    delegate = [self delegate];
+    v13 = [[_UIDragSessionImpl alloc] initWithInteraction:self];
     v14 = objc_opt_new();
-    v15 = a1[4];
-    a1[4] = v14;
+    v15 = self[4];
+    self[4] = v14;
 
-    [a1[4] setInvocationType:a2];
-    [a1[4] setInitialLocation:{a4, a5, a6}];
-    objc_initWeak(&location, a1[4]);
-    objc_initWeak(&from, a1);
-    v16 = a1[4];
+    [self[4] setInvocationType:a2];
+    [self[4] setInitialLocation:{type, completion, a6}];
+    objc_initWeak(&location, self[4]);
+    objc_initWeak(&from, self);
+    v16 = self[4];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __70__UIDragInteraction__prepareForLiftAtPoint_invocationType_completion___block_invoke;
@@ -1112,11 +1112,11 @@ void __63__UIDragInteraction__immediatelyBeginDragWithTouch_completion___block_i
     v18[1] = 3221225472;
     v18[2] = __70__UIDragInteraction__prepareForLiftAtPoint_invocationType_completion___block_invoke_2;
     v18[3] = &unk_1E7105F98;
-    v18[4] = a1;
-    v20 = v11;
+    v18[4] = self;
+    v20 = pointCopy;
     v17 = v13;
     v19 = v17;
-    [a1 _prepareForSession:v17 completion:v18];
+    [self _prepareForSession:v17 completion:v18];
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(&v22);
@@ -1125,24 +1125,24 @@ void __63__UIDragInteraction__immediatelyBeginDragWithTouch_completion___block_i
   }
 }
 
-- (void)_beginDragWithTouches:(id)a3 itemUpdater:(id)a4
+- (void)_beginDragWithTouches:(id)touches itemUpdater:(id)updater
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  touchesCopy = touches;
+  updaterCopy = updater;
   if (![(UIDragInteractionContextImpl *)self->_interactionContext hasBegunDrag])
   {
     [(UIDragInteractionContextImpl *)self->_interactionContext setHasBegunDrag:1];
-    v20 = [(UIDragInteraction *)self delegate];
-    v8 = [(UIDragInteraction *)self view];
-    v9 = [v8 window];
+    delegate = [(UIDragInteraction *)self delegate];
+    view = [(UIDragInteraction *)self view];
+    window = [view window];
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v10 = [(UIDragInteractionContextImpl *)self->_interactionContext items];
-    v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    items = [(UIDragInteractionContextImpl *)self->_interactionContext items];
+    v11 = [items countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1153,75 +1153,75 @@ void __63__UIDragInteraction__immediatelyBeginDragWithTouch_completion___block_i
         {
           if (*v22 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(items);
           }
 
           v15 = *(*(&v21 + 1) + 8 * i);
-          if (v7)
+          if (updaterCopy)
           {
-            v7[2](v7, *(*(&v21 + 1) + 8 * i));
+            updaterCopy[2](updaterCopy, *(*(&v21 + 1) + 8 * i));
           }
 
-          v16 = [v15 _targetedLiftPreview];
+          _targetedLiftPreview = [v15 _targetedLiftPreview];
           [(UIDragInteractionContextImpl *)self->_interactionContext initialLocation];
-          [v16 takeLiftAnchorPoint:v9 fromView:?];
+          [_targetedLiftPreview takeLiftAnchorPoint:window fromView:?];
 
           if (*(&self->_delegateImplements + 2))
           {
-            v17 = [v20 _dragInteraction:self viewToSnapshotItem:v15];
+            v17 = [delegate _dragInteraction:self viewToSnapshotItem:v15];
             if (v17)
             {
-              v18 = [v15 _targetedLiftPreview];
-              [v18 _setViewToSnapshot:v17];
+              _targetedLiftPreview2 = [v15 _targetedLiftPreview];
+              [_targetedLiftPreview2 _setViewToSnapshot:v17];
             }
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v12 = [items countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v12);
     }
 
-    v19 = [(UIDragInteraction *)self view];
-    [v19 _beginDragWithInteractionTouches:v6];
+    view2 = [(UIDragInteraction *)self view];
+    [view2 _beginDragWithInteractionTouches:touchesCopy];
   }
 }
 
-- (void)_handoffSession:(id)a3
+- (void)_handoffSession:(id)session
 {
-  [(_UIDragSessionImpl *)self->_preliminarySession _setInternalDragSession:a3];
+  [(_UIDragSessionImpl *)self->_preliminarySession _setInternalDragSession:session];
   preliminarySession = self->_preliminarySession;
   self->_preliminarySession = 0;
 }
 
-- (id)_queryDelegate:(id)a3 forItemsForBeginningSession:(id)a4
+- (id)_queryDelegate:(id)delegate forItemsForBeginningSession:(id)session
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  sessionCopy = session;
   if (*&self->_delegateImplements)
   {
-    v9 = [v6 dragInteraction:self itemsForBeginningSession:v7];
+    v9 = [delegateCopy dragInteraction:self itemsForBeginningSession:sessionCopy];
     v8 = [v9 copy];
 
     if (!v8)
     {
-      v10 = [(UIDragInteraction *)self view];
-      v11 = [v10 _effectiveActivityItemsConfigurationForSender:self];
+      view = [(UIDragInteraction *)self view];
+      v11 = [view _effectiveActivityItemsConfigurationForSender:self];
 
       if (v11)
       {
         v12 = MEMORY[0x1E695DF70];
-        v13 = [v11 itemProvidersForActivityItemsConfiguration];
-        v8 = [v12 arrayWithCapacity:{objc_msgSend(v13, "count")}];
+        itemProvidersForActivityItemsConfiguration = [v11 itemProvidersForActivityItemsConfiguration];
+        v8 = [v12 arrayWithCapacity:{objc_msgSend(itemProvidersForActivityItemsConfiguration, "count")}];
 
         v32 = 0u;
         v33 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v14 = [v11 itemProvidersForActivityItemsConfiguration];
-        v15 = [v14 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        itemProvidersForActivityItemsConfiguration2 = [v11 itemProvidersForActivityItemsConfiguration];
+        v15 = [itemProvidersForActivityItemsConfiguration2 countByEnumeratingWithState:&v30 objects:v35 count:16];
         if (v15)
         {
           v16 = v15;
@@ -1232,14 +1232,14 @@ void __63__UIDragInteraction__immediatelyBeginDragWithTouch_completion___block_i
             {
               if (*v31 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(itemProvidersForActivityItemsConfiguration2);
               }
 
               v19 = [[UIDragItem alloc] initWithItemProvider:*(*(&v30 + 1) + 8 * i)];
               [v8 addObject:v19];
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v30 objects:v35 count:16];
+            v16 = [itemProvidersForActivityItemsConfiguration2 countByEnumeratingWithState:&v30 objects:v35 count:16];
           }
 
           while (v16);
@@ -1277,7 +1277,7 @@ void __63__UIDragInteraction__immediatelyBeginDragWithTouch_completion___block_i
           objc_enumerationMutation(v20);
         }
 
-        [*(*(&v26 + 1) + 8 * j) _setDragDropSession:{v7, v26}];
+        [*(*(&v26 + 1) + 8 * j) _setDragDropSession:{sessionCopy, v26}];
       }
 
       v22 = [v20 countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -1289,29 +1289,29 @@ void __63__UIDragInteraction__immediatelyBeginDragWithTouch_completion___block_i
   return v20;
 }
 
-- (BOOL)_itemsForAddingToSession:(id)a3 atPoint:(CAPoint3D)a4 completion:(id)a5
+- (BOOL)_itemsForAddingToSession:(id)session atPoint:(CAPoint3D)point completion:(id)completion
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(UIDragInteraction *)self delegate];
-  v12 = v10;
-  v13 = v9;
+  y = point.y;
+  x = point.x;
+  completionCopy = completion;
+  sessionCopy = session;
+  delegate = [(UIDragInteraction *)self delegate];
+  v12 = sessionCopy;
+  v13 = completionCopy;
   v14 = v13;
   if (self)
   {
     delegateImplements = self->_delegateImplements;
     if ((*&delegateImplements & 0x800) != 0)
     {
-      v16 = [v11 dragInteraction:self itemsForAddingToSession:v12 withTouchAtPoint:{x, y}];
+      v16 = [delegate dragInteraction:self itemsForAddingToSession:v12 withTouchAtPoint:{x, y}];
       (v14)[2](v14, v16);
       LOBYTE(self) = [v16 count] != 0;
     }
 
     else if ((*&delegateImplements & 0x20000000) != 0)
     {
-      [v11 _dragInteraction:self itemsForAddingToSession:v12 withTouchAtPoint:v13 completion:{x, y}];
+      [delegate _dragInteraction:self itemsForAddingToSession:v12 withTouchAtPoint:v13 completion:{x, y}];
       LOBYTE(self) = 1;
     }
 
@@ -1325,17 +1325,17 @@ void __63__UIDragInteraction__immediatelyBeginDragWithTouch_completion___block_i
   return self;
 }
 
-- (void)_queryDelegate:(id)a3 forLiftPreviewsUsingItems:(id)a4 session:(id)a5
+- (void)_queryDelegate:(id)delegate forLiftPreviewsUsingItems:(id)items session:(id)session
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  itemsCopy = items;
+  sessionCopy = session;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v11 = [itemsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1347,20 +1347,20 @@ void __63__UIDragInteraction__immediatelyBeginDragWithTouch_completion___block_i
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v15 = *(*(&v19 + 1) + 8 * v14);
         if ((*&self->_delegateImplements & 2) != 0)
         {
-          v18 = [v8 dragInteraction:self previewForLiftingItem:*(*(&v19 + 1) + 8 * v14) session:v10];
+          v18 = [delegateCopy dragInteraction:self previewForLiftingItem:*(*(&v19 + 1) + 8 * v14) session:sessionCopy];
         }
 
         else
         {
           v16 = [UITargetedDragPreview alloc];
-          v17 = [(UIDragInteraction *)self view];
-          v18 = [(UITargetedDragPreview *)v16 initWithView:v17];
+          view = [(UIDragInteraction *)self view];
+          v18 = [(UITargetedDragPreview *)v16 initWithView:view];
         }
 
         [v15 setTargetedLiftPreview:v18];
@@ -1369,56 +1369,56 @@ void __63__UIDragInteraction__immediatelyBeginDragWithTouch_completion___block_i
       }
 
       while (v12 != v14);
-      v12 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v12 = [itemsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v12);
   }
 }
 
-- (uint64_t)_addItemsWithPoint:(double)a3
+- (uint64_t)_addItemsWithPoint:(double)point
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v5 = *(a1 + 24);
+  v5 = *(self + 24);
   if (!v5)
   {
     return 0;
   }
 
-  v6 = *(a1 + 16);
+  v6 = *(self + 16);
   if (v6)
   {
-    v7 = [v6 items];
-    v8 = [v7 count];
+    items = [v6 items];
+    v8 = [items count];
     v9 = v8 != 0;
     if (v8)
     {
-      [*(a1 + 24) addItems:v7 forDragSourceInteraction:a1];
+      [*(self + 24) addItems:items forDragSourceInteraction:self];
     }
 
-    v10 = *(a1 + 16);
-    *(a1 + 16) = 0;
+    v10 = *(self + 16);
+    *(self + 16) = 0;
 
-    v11 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    v11 = *(self + 24);
+    *(self + 24) = 0;
   }
 
   else
   {
     v15 = v5;
-    v16 = *(a1 + 24);
+    v16 = *(self + 24);
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __40__UIDragInteraction__addItemsWithPoint___block_invoke;
     v18[3] = &unk_1E7105F48;
-    v18[4] = a1;
+    v18[4] = self;
     v19 = v15;
-    v7 = v15;
-    v9 = [a1 _itemsForAddingToSession:v16 atPoint:v18 completion:{a2, a3, a4}];
+    items = v15;
+    v9 = [self _itemsForAddingToSession:v16 atPoint:v18 completion:{a2, point, a4}];
     v11 = v19;
   }
 
@@ -1488,13 +1488,13 @@ void __40__UIDragInteraction__addItemsWithPoint___block_invoke(uint64_t a1, void
   }
 }
 
-- (void)_updateInteractionEffectWithContext:(id)a3 notifyDelegate:(BOOL)a4
+- (void)_updateInteractionEffectWithContext:(id)context notifyDelegate:(BOOL)delegate
 {
-  v4 = a4;
-  v6 = a3;
+  delegateCopy = delegate;
+  contextCopy = context;
   if (os_variant_has_internal_diagnostics())
   {
-    if (!v6)
+    if (!contextCopy)
     {
       v9 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -1505,7 +1505,7 @@ void __40__UIDragInteraction__addItemsWithPoint___block_invoke(uint64_t a1, void
     }
   }
 
-  else if (!v6)
+  else if (!contextCopy)
   {
     v10 = *(__UILogGetCategoryCachedImpl("Assert", &_updateInteractionEffectWithContext_notifyDelegate____s_category) + 8);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1515,15 +1515,15 @@ void __40__UIDragInteraction__addItemsWithPoint___block_invoke(uint64_t a1, void
     }
   }
 
-  v7 = [(UIDragInteraction *)self interactionEffect];
-  [v7 interaction:self didChangeWithContext:v6];
+  interactionEffect = [(UIDragInteraction *)self interactionEffect];
+  [interactionEffect interaction:self didChangeWithContext:contextCopy];
 
-  if (v4)
+  if (delegateCopy)
   {
-    v8 = [(UIDragInteraction *)self delegate];
+    delegate = [(UIDragInteraction *)self delegate];
     if ((*(&self->_delegateImplements + 2) & 8) != 0)
     {
-      [v8 _dragInteraction:self liftAnimationDidChangeDirection:{objc_msgSend(v6, "state") == 0}];
+      [delegate _dragInteraction:self liftAnimationDidChangeDirection:{objc_msgSend(contextCopy, "state") == 0}];
     }
   }
 }
@@ -1553,11 +1553,11 @@ void __40__UIDragInteraction__addItemsWithPoint___block_invoke(uint64_t a1, void
         v8 = *(*(&v12 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v9 = [v8 interactionEffect];
+          interactionEffect = [v8 interactionEffect];
 
-          if (v9)
+          if (interactionEffect)
           {
-            v10 = [v8 interactionEffect];
+            interactionEffect2 = [v8 interactionEffect];
 
             goto LABEL_12;
           }
@@ -1574,19 +1574,19 @@ void __40__UIDragInteraction__addItemsWithPoint___block_invoke(uint64_t a1, void
     }
   }
 
-  v10 = self->_interactionEffect;
+  interactionEffect2 = self->_interactionEffect;
 LABEL_12:
 
-  return v10;
+  return interactionEffect2;
 }
 
-- (void)_accessibilityPrepareForDragAtPoint:(CAPoint3D)a3 completion:(id)a4
+- (void)_accessibilityPrepareForDragAtPoint:(CAPoint3D)point completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(UIDragInteraction *)self view];
-  [v8 convertPoint:0 toView:{x, y}];
+  y = point.y;
+  x = point.x;
+  completionCopy = completion;
+  view = [(UIDragInteraction *)self view];
+  [view convertPoint:0 toView:{x, y}];
   v10 = v9;
   v12 = v11;
 
@@ -1595,8 +1595,8 @@ LABEL_12:
   v14[2] = __68__UIDragInteraction__accessibilityPrepareForDragAtPoint_completion___block_invoke;
   v14[3] = &unk_1E7105F70;
   v14[4] = self;
-  v15 = v7;
-  v13 = v7;
+  v15 = completionCopy;
+  v13 = completionCopy;
   [(UIDragInteraction *)&self->super.isa _prepareForLiftAtPoint:v14 invocationType:v10 completion:v12, 0.0];
 }
 
@@ -1625,28 +1625,28 @@ void __68__UIDragInteraction__accessibilityPrepareForDragAtPoint_completion___bl
   }
 }
 
-- (BOOL)_accessibilityAddItemsToDragSessionAtPoint:(CAPoint3D)a3
+- (BOOL)_accessibilityAddItemsToDragSessionAtPoint:(CAPoint3D)point
 {
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
-  v7 = [(UIDragInteraction *)self _accessibilityCanAddItemsToDragSession];
-  if (v7)
+  z = point.z;
+  y = point.y;
+  x = point.x;
+  _accessibilityCanAddItemsToDragSession = [(UIDragInteraction *)self _accessibilityCanAddItemsToDragSession];
+  if (_accessibilityCanAddItemsToDragSession)
   {
     v8 = _sessionsAvailableForAddingItems();
-    v9 = [v8 anyObject];
+    anyObject = [v8 anyObject];
     sessionForAddingItems = self->_sessionForAddingItems;
-    self->_sessionForAddingItems = v9;
+    self->_sessionForAddingItems = anyObject;
 
-    LOBYTE(v7) = [(UIDragInteraction *)self _addItemsWithPoint:y, z];
+    LOBYTE(_accessibilityCanAddItemsToDragSession) = [(UIDragInteraction *)self _addItemsWithPoint:y, z];
   }
 
-  return v7;
+  return _accessibilityCanAddItemsToDragSession;
 }
 
 - (BOOL)_accessibilityCanAddItemsToDragSession
 {
-  v3 = [(UIDragInteraction *)self delegate];
+  delegate = [(UIDragInteraction *)self delegate];
   if (![(UIDragInteraction *)self isEnabled])
   {
     goto LABEL_7;
@@ -1664,14 +1664,14 @@ void __68__UIDragInteraction__accessibilityPrepareForDragAtPoint_completion___bl
   if (sessionForAddingItems)
   {
 LABEL_7:
-    v6 = 0;
+    _supportsAddingItemsAsynchronously = 0;
     goto LABEL_8;
   }
 
-  v6 = [(UIDragInteraction *)self _delegateRespondsToAddingItems]|| [(UIDragInteraction *)self _supportsAddingItemsAsynchronously];
+  _supportsAddingItemsAsynchronously = [(UIDragInteraction *)self _delegateRespondsToAddingItems]|| [(UIDragInteraction *)self _supportsAddingItemsAsynchronously];
 LABEL_8:
 
-  return v6;
+  return _supportsAddingItemsAsynchronously;
 }
 
 void __70__UIDragInteraction__prepareForLiftAtPoint_invocationType_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1704,54 +1704,54 @@ uint64_t __70__UIDragInteraction__prepareForLiftAtPoint_invocationType_completio
   return v3();
 }
 
-- (void)_prepareForSession:(id)a3 completion:(id)a4
+- (void)_prepareForSession:(id)session completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIDragInteraction *)self delegate];
+  sessionCopy = session;
+  completionCopy = completion;
+  delegate = [(UIDragInteraction *)self delegate];
   if ((*(&self->_delegateImplements + 2) & 4) != 0)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __51__UIDragInteraction__prepareForSession_completion___block_invoke;
     v9[3] = &unk_1E70F0F78;
-    v10 = v7;
-    [v8 _dragInteraction:self prepareForSession:v6 completion:v9];
+    v10 = completionCopy;
+    [delegate _dragInteraction:self prepareForSession:sessionCopy completion:v9];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
-- (BOOL)_beginLiftForItems:(id)a3 session:(id)a4 animated:(BOOL)a5
+- (BOOL)_beginLiftForItems:(id)items session:(id)session animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 count];
+  itemsCopy = items;
+  sessionCopy = session;
+  v10 = [itemsCopy count];
   if (v10)
   {
-    objc_storeStrong(&self->_preliminarySession, a4);
-    [(_UIDragSessionImpl *)self->_preliminarySession addItems:v8 forDragSourceInteraction:self];
-    [(UIDragInteractionContextImpl *)self->_interactionContext setItems:v8];
-    [(UIDragInteractionContextImpl *)self->_interactionContext setShouldAnimateLift:v5];
-    v11 = [(UIDragInteraction *)self delegate];
-    [(UIDragInteraction *)self _queryDelegate:v11 forLiftPreviewsUsingItems:v8 session:v9];
+    objc_storeStrong(&self->_preliminarySession, session);
+    [(_UIDragSessionImpl *)self->_preliminarySession addItems:itemsCopy forDragSourceInteraction:self];
+    [(UIDragInteractionContextImpl *)self->_interactionContext setItems:itemsCopy];
+    [(UIDragInteractionContextImpl *)self->_interactionContext setShouldAnimateLift:animatedCopy];
+    delegate = [(UIDragInteraction *)self delegate];
+    [(UIDragInteraction *)self _queryDelegate:delegate forLiftPreviewsUsingItems:itemsCopy session:sessionCopy];
     if ((*&self->_delegateImplements & 4) != 0)
     {
-      [v11 dragInteraction:self willAnimateLiftWithAnimator:self->_interactionContext session:v9];
+      [delegate dragInteraction:self willAnimateLiftWithAnimator:self->_interactionContext session:sessionCopy];
     }
 
-    v20 = v11;
-    v21 = v9;
+    v20 = delegate;
+    v21 = sessionCopy;
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = v8;
+    v12 = itemsCopy;
     v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v13)
     {
@@ -1767,9 +1767,9 @@ uint64_t __70__UIDragInteraction__prepareForLiftAtPoint_invocationType_completio
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v22 + 1) + 8 * v16) _targetedLiftPreview];
-          v18 = [v17 _previewContainer];
-          [v18 _animateLiftAlongsideAnimator:self->_interactionContext completion:&__block_literal_global_305];
+          _targetedLiftPreview = [*(*(&v22 + 1) + 8 * v16) _targetedLiftPreview];
+          _previewContainer = [_targetedLiftPreview _previewContainer];
+          [_previewContainer _animateLiftAlongsideAnimator:self->_interactionContext completion:&__block_literal_global_305];
 
           ++v16;
         }
@@ -1784,7 +1784,7 @@ uint64_t __70__UIDragInteraction__prepareForLiftAtPoint_invocationType_completio
     [(UIDragInteractionContextImpl *)self->_interactionContext setState:1];
     [(UIDragInteraction *)self _updateInteractionEffectWithContext:self->_interactionContext notifyDelegate:0];
 
-    v9 = v21;
+    sessionCopy = v21;
   }
 
   return v10 != 0;
@@ -1797,12 +1797,12 @@ uint64_t __70__UIDragInteraction__prepareForLiftAtPoint_invocationType_completio
   {
     [(UIDragInteractionContextImpl *)interactionContext setState:0];
     [(UIDragInteraction *)self _updateInteractionEffectWithContext:self->_interactionContext notifyDelegate:1];
-    v4 = [(UIDragInteraction *)self delegate];
+    delegate = [(UIDragInteraction *)self delegate];
     if ((*(&self->_delegateImplements + 2) & 0x10) != 0)
     {
-      v5 = v4;
-      [v4 _dragInteractionDidCancelLiftWithoutDragging:self];
-      v4 = v5;
+      v5 = delegate;
+      [delegate _dragInteractionDidCancelLiftWithoutDragging:self];
+      delegate = v5;
     }
   }
 }
@@ -1850,20 +1850,20 @@ uint64_t __70__UIDragInteraction__prepareForLiftAtPoint_invocationType_completio
   self->_interactionContext = 0;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
   if (![(UIDragInteraction *)self isEnabled])
   {
     v9 = 0;
     goto LABEL_6;
   }
 
-  if (self->_gestureRecognizerForAddingItems == v7 && !self->_sessionForAddingItems)
+  if (self->_gestureRecognizerForAddingItems == recognizerCopy && !self->_sessionForAddingItems)
   {
-    v11 = [(UIDragInteraction *)self delegate];
+    delegate = [(UIDragInteraction *)self delegate];
     if (![(UIDragInteraction *)self _delegateRespondsToAddingItems]&& ![(UIDragInteraction *)self _supportsAddingItemsAsynchronously])
     {
       v9 = 0;
@@ -1875,32 +1875,32 @@ LABEL_31:
     v12 = _sessionsAvailableForAddingItems();
     if ([v12 count])
     {
-      v13 = [(UIDragInteraction *)self view];
-      [v8 locationInView:v13];
+      view = [(UIDragInteraction *)self view];
+      [touchCopy locationInView:view];
       v15 = v14;
       v17 = v16;
 
       if ([v12 count] == 1)
       {
-        v18 = [v12 anyObject];
+        anyObject = [v12 anyObject];
       }
 
       else if ((*(&self->_delegateImplements + 1) & 0x10) != 0)
       {
-        v19 = [v12 allObjects];
-        v18 = [v11 dragInteraction:self sessionForAddingItems:v19 withTouchAtPoint:{v15, v17}];
+        allObjects = [v12 allObjects];
+        anyObject = [delegate dragInteraction:self sessionForAddingItems:allObjects withTouchAtPoint:{v15, v17}];
 
-        if (v18)
+        if (anyObject)
         {
           v20 = dyld_program_sdk_at_least();
-          v21 = [v12 containsObject:v18];
+          v21 = [v12 containsObject:anyObject];
           if (v20)
           {
             if ((v21 & 1) == 0)
             {
-              v22 = [MEMORY[0x1E696AAA8] currentHandler];
+              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
               v23 = NSStringFromSelector(sel_dragInteraction_sessionForAddingItems_withTouchAtPoint_);
-              [v22 handleFailureInMethod:a2 object:self file:@"UIDragInteraction.m" lineNumber:1135 description:{@"delegate (%@) returned a object (%@) from %@ that is not a local drag session.", v11, v18, v23}];
+              [currentHandler handleFailureInMethod:a2 object:self file:@"UIDragInteraction.m" lineNumber:1135 description:{@"delegate (%@) returned a object (%@) from %@ that is not a local drag session.", delegate, anyObject, v23}];
             }
           }
 
@@ -1912,9 +1912,9 @@ LABEL_31:
               v29 = v28;
               v30 = NSStringFromSelector(sel_dragInteraction_sessionForAddingItems_withTouchAtPoint_);
               *buf = 138412802;
-              v32 = v11;
+              v32 = delegate;
               v33 = 2112;
-              v34 = v18;
+              v34 = anyObject;
               v35 = 2112;
               v36 = v30;
               _os_log_impl(&dword_188A29000, v29, OS_LOG_TYPE_ERROR, "delegate (%@) returned a object (%@) from %@ that is not a local drag session.", buf, 0x20u);
@@ -1925,28 +1925,28 @@ LABEL_31:
 
       else
       {
-        v18 = 0;
+        anyObject = 0;
       }
 
       if (_UIShouldEnforceOpenInRulesInAccountBasedApp())
       {
-        v24 = [(_UIDragSessionImpl *)v18 _internalDragSession];
-        v25 = [v24 dataOwner];
+        _internalDragSession = [(_UIDragSessionImpl *)anyObject _internalDragSession];
+        dataOwner = [_internalDragSession dataOwner];
 
-        v26 = (*(&self->_delegateImplements + 3) & 2) != 0 ? [v11 _dragInteraction:self dataOwnerForAddingToSession:v18 withTouchAtPoint:{v15, v17}] : 0;
-        if (v25 != v26)
+        v26 = (*(&self->_delegateImplements + 3) & 2) != 0 ? [delegate _dragInteraction:self dataOwnerForAddingToSession:anyObject withTouchAtPoint:{v15, v17}] : 0;
+        if (dataOwner != v26)
         {
           v9 = 0;
           goto LABEL_29;
         }
       }
 
-      if (v18)
+      if (anyObject)
       {
         sessionForAddingItems = self->_sessionForAddingItems;
-        self->_sessionForAddingItems = v18;
+        self->_sessionForAddingItems = anyObject;
         v9 = 1;
-        v18 = sessionForAddingItems;
+        anyObject = sessionForAddingItems;
 LABEL_29:
 
         goto LABEL_30;
@@ -1965,27 +1965,27 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   gestureRecognizerForAddingItems = self->_gestureRecognizerForAddingItems;
-  if (gestureRecognizerForAddingItems != a3)
+  if (gestureRecognizerForAddingItems != begin)
   {
     return 0;
   }
 
-  v6 = [(UIDragInteraction *)self view];
-  [(UITapGestureRecognizer *)gestureRecognizerForAddingItems locationInView:v6];
+  view = [(UIDragInteraction *)self view];
+  [(UITapGestureRecognizer *)gestureRecognizerForAddingItems locationInView:view];
   v8 = v7;
   v10 = v9;
 
   return [(UIDragInteraction *)self _addItemsWithPoint:v8, v10, 0.0];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  if (self->_gestureRecognizerForAddingItems == a3)
+  if (self->_gestureRecognizerForAddingItems == recognizer)
   {
-    v5 = a4;
+    gestureRecognizerCopy = gestureRecognizer;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2000,21 +2000,21 @@ LABEL_6:
   return v4 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v9 = self->_gestureRecognizerForAddingItems == v6 && ([v7 _isGestureType:0] & 1) != 0;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  v8 = gestureRecognizerCopy;
+  v9 = self->_gestureRecognizerForAddingItems == recognizerCopy && ([gestureRecognizerCopy _isGestureType:0] & 1) != 0;
 
   return v9;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (self->_gestureRecognizerForAddingItems == a3)
+  gestureRecognizerCopy = gestureRecognizer;
+  if (self->_gestureRecognizerForAddingItems == recognizer)
   {
     v14 = 0u;
     v15 = 0u;
@@ -2034,7 +2034,7 @@ LABEL_6:
             objc_enumerationMutation(v8);
           }
 
-          if ([*(*(&v12 + 1) + 8 * i) isGestureRecognizerForDragInitiation:{v6, v12}])
+          if ([*(*(&v12 + 1) + 8 * i) isGestureRecognizerForDragInitiation:{gestureRecognizerCopy, v12}])
           {
             LOBYTE(v7) = 1;
             goto LABEL_13;
@@ -2062,23 +2062,23 @@ LABEL_13:
   return v7;
 }
 
-- (void)_gestureRecognizerFailed:(id)a3
+- (void)_gestureRecognizerFailed:(id)failed
 {
-  if (self->_gestureRecognizerForAddingItems == a3)
+  if (self->_gestureRecognizerForAddingItems == failed)
   {
     sessionForAddingItems = self->_sessionForAddingItems;
     self->_sessionForAddingItems = 0;
   }
 }
 
-- (id)_itemsToDragFromView:(id)a3
+- (id)_itemsToDragFromView:(id)view
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(_UIDragSessionImpl *)self->_preliminarySession items:a3];
+  v4 = [(_UIDragSessionImpl *)self->_preliminarySession items:view];
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -2102,27 +2102,27 @@ LABEL_13:
     while (v6);
   }
 
-  v9 = [(_UIDragSessionImpl *)self->_preliminarySession items];
-  v10 = [v9 copy];
+  items = [(_UIDragSessionImpl *)self->_preliminarySession items];
+  v10 = [items copy];
 
   return v10;
 }
 
-- (BOOL)_viewRestrictsDragToSourceApp:(id)a3
+- (BOOL)_viewRestrictsDragToSourceApp:(id)app
 {
   if ((*&self->_delegateImplements & 0x20) == 0)
   {
     return 0;
   }
 
-  v4 = self;
-  v5 = [(UIDragInteraction *)self delegate];
-  LOBYTE(v4) = [v5 dragInteraction:v4 sessionIsRestrictedToDraggingApplication:v4->_preliminarySession];
+  selfCopy = self;
+  delegate = [(UIDragInteraction *)self delegate];
+  LOBYTE(selfCopy) = [delegate dragInteraction:selfCopy sessionIsRestrictedToDraggingApplication:selfCopy->_preliminarySession];
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)_viewFailedToDrag:(id)a3
+- (void)_viewFailedToDrag:(id)drag
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
@@ -2156,11 +2156,11 @@ LABEL_13:
   }
 }
 
-- (id)_viewDragSessionProperties:(id)a3
+- (id)_viewDragSessionProperties:(id)properties
 {
-  v4 = [(UIDragInteraction *)self delegate];
-  v5 = v4;
-  if ((*(&self->_delegateImplements + 3) & 0x10) == 0 || ([v4 _dragInteraction:self sessionPropertiesForSession:self->_preliminarySession], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  delegate = [(UIDragInteraction *)self delegate];
+  v5 = delegate;
+  if ((*(&self->_delegateImplements + 3) & 0x10) == 0 || ([delegate _dragInteraction:self sessionPropertiesForSession:self->_preliminarySession], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v6 = objc_opt_new();
     if ((*(&self->_delegateImplements + 3) & 4) != 0)
@@ -2172,30 +2172,30 @@ LABEL_13:
   return v6;
 }
 
-- (id)_requiredContextIDsForDragSessionInView:(id)a3
+- (id)_requiredContextIDsForDragSessionInView:(id)view
 {
-  v4 = a3;
-  v5 = [(UIDragInteraction *)self delegate];
-  if (v5 == self || (objc_opt_respondsToSelector() & 1) == 0)
+  viewCopy = view;
+  delegate = [(UIDragInteraction *)self delegate];
+  if (delegate == self || (objc_opt_respondsToSelector() & 1) == 0)
   {
     v6 = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v6 = [(UIDragInteraction *)v5 _requiredContextIDsForDragSessionInView:v4];
+    v6 = [(UIDragInteraction *)delegate _requiredContextIDsForDragSessionInView:viewCopy];
   }
 
   return v6;
 }
 
-- (int64_t)_dataOwnerOfDragFromView:(id)a3
+- (int64_t)_dataOwnerOfDragFromView:(id)view
 {
-  v4 = [(UIDragInteraction *)self delegate];
-  v5 = v4;
+  delegate = [(UIDragInteraction *)self delegate];
+  v5 = delegate;
   if (*(&self->_delegateImplements + 3))
   {
-    v6 = [v4 _dragInteraction:self dataOwnerForSession:self->_preliminarySession];
+    v6 = [delegate _dragInteraction:self dataOwnerForSession:self->_preliminarySession];
   }
 
   else
@@ -2206,15 +2206,15 @@ LABEL_13:
   return v6;
 }
 
-- (unint64_t)_session:(id)a3 sourceOperationMaskForDraggingWithinApp:(BOOL)a4
+- (unint64_t)_session:(id)_session sourceOperationMaskForDraggingWithinApp:(BOOL)app
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(UIDragInteraction *)self delegate];
-  v8 = v7;
-  if (v4)
+  appCopy = app;
+  _sessionCopy = _session;
+  delegate = [(UIDragInteraction *)self delegate];
+  v8 = delegate;
+  if (appCopy)
   {
-    if ((*&self->_delegateImplements & 0x10) != 0 && ![v7 dragInteraction:self sessionAllowsMoveOperation:v6])
+    if ((*&self->_delegateImplements & 0x10) != 0 && ![delegate dragInteraction:self sessionAllowsMoveOperation:_sessionCopy])
     {
       v9 = 1;
     }
@@ -2227,34 +2227,34 @@ LABEL_13:
 
   else
   {
-    v10 = [v6 _internalDragSession];
-    v11 = [v10 shouldCancelOnAppDeactivation];
+    _internalDragSession = [_sessionCopy _internalDragSession];
+    shouldCancelOnAppDeactivation = [_internalDragSession shouldCancelOnAppDeactivation];
 
-    if (v11)
+    if (shouldCancelOnAppDeactivation)
     {
       v9 = 0;
     }
 
     else
     {
-      v12 = [v6 _internalDragSession];
-      v13 = [v12 restrictedToSourceApp];
+      _internalDragSession2 = [_sessionCopy _internalDragSession];
+      restrictedToSourceApp = [_internalDragSession2 restrictedToSourceApp];
 
-      v9 = v13 ^ 1u;
+      v9 = restrictedToSourceApp ^ 1u;
     }
   }
 
   return v9;
 }
 
-- (BOOL)_sessionPrefersFullSizePreviews:(id)a3
+- (BOOL)_sessionPrefersFullSizePreviews:(id)previews
 {
-  v4 = a3;
-  v5 = [(UIDragInteraction *)self delegate];
-  v6 = v5;
+  previewsCopy = previews;
+  delegate = [(UIDragInteraction *)self delegate];
+  v6 = delegate;
   if ((*&self->_delegateImplements & 0x40) != 0)
   {
-    v7 = [v5 dragInteraction:self prefersFullSizePreviewsForSession:v4];
+    v7 = [delegate dragInteraction:self prefersFullSizePreviewsForSession:previewsCopy];
   }
 
   else
@@ -2265,13 +2265,13 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)_sessionDynamicallyUpdatesPrefersFullSizePreviews:(id)a3
+- (BOOL)_sessionDynamicallyUpdatesPrefersFullSizePreviews:(id)previews
 {
-  v4 = [(UIDragInteraction *)self delegate];
-  v5 = v4;
+  delegate = [(UIDragInteraction *)self delegate];
+  v5 = delegate;
   if (*(&self->_delegateImplements + 4))
   {
-    v6 = [v4 _dragInteractionDynamicallyUpdatesPrefersFullSizePreviews:self];
+    v6 = [delegate _dragInteractionDynamicallyUpdatesPrefersFullSizePreviews:self];
   }
 
   else
@@ -2282,90 +2282,90 @@ LABEL_13:
   return v6;
 }
 
-- (void)_sessionHandedOffDragImage:(id)a3
+- (void)_sessionHandedOffDragImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if (self->_interactionContext)
   {
-    v10 = v4;
-    v5 = [(UIDragInteraction *)self delegate];
-    v6 = v5;
+    v10 = imageCopy;
+    delegate = [(UIDragInteraction *)self delegate];
+    v6 = delegate;
     if ((*&self->_delegateImplements & 8) != 0)
     {
-      [v5 dragInteraction:self sessionWillBegin:v10];
+      [delegate dragInteraction:self sessionWillBegin:v10];
     }
 
     [v10 _setSentSessionDidBegin:1];
     [(UIDragInteractionContextImpl *)self->_interactionContext setState:2];
     [(UIDragInteraction *)self _updateInteractionEffectWithContext:self->_interactionContext notifyDelegate:0];
-    v7 = [(UIDragInteractionContextImpl *)self->_interactionContext _sessionDidBegin];
+    _sessionDidBegin = [(UIDragInteractionContextImpl *)self->_interactionContext _sessionDidBegin];
 
-    if (v7)
+    if (_sessionDidBegin)
     {
-      v8 = [(UIDragInteractionContextImpl *)self->_interactionContext _sessionDidBegin];
-      (v8)[2](v8, v10);
+      _sessionDidBegin2 = [(UIDragInteractionContextImpl *)self->_interactionContext _sessionDidBegin];
+      (_sessionDidBegin2)[2](_sessionDidBegin2, v10);
     }
 
     interactionContext = self->_interactionContext;
     self->_interactionContext = 0;
 
-    v4 = v10;
+    imageCopy = v10;
   }
 }
 
-- (void)_sessionDidMove:(id)a3
+- (void)_sessionDidMove:(id)move
 {
-  v6 = a3;
-  v4 = [(UIDragInteraction *)self delegate];
-  v5 = v4;
+  moveCopy = move;
+  delegate = [(UIDragInteraction *)self delegate];
+  v5 = delegate;
   if ((*&self->_delegateImplements & 0x80) != 0)
   {
-    [v4 dragInteraction:self sessionDidMove:v6];
+    [delegate dragInteraction:self sessionDidMove:moveCopy];
   }
 }
 
-- (void)_session:(id)a3 willAddItems:(id)a4 forInteraction:(id)a5
+- (void)_session:(id)_session willAddItems:(id)items forInteraction:(id)interaction
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(UIDragInteraction *)self delegate];
-  v11 = v10;
+  _sessionCopy = _session;
+  itemsCopy = items;
+  interactionCopy = interaction;
+  delegate = [(UIDragInteraction *)self delegate];
+  v11 = delegate;
   if ((*(&self->_delegateImplements + 1) & 0x20) != 0)
   {
-    [v10 dragInteraction:self session:v12 willAddItems:v8 forInteraction:v9];
+    [delegate dragInteraction:self session:_sessionCopy willAddItems:itemsCopy forInteraction:interactionCopy];
   }
 }
 
-- (void)_sessionWillEnd:(id)a3 withOperation:(unint64_t)a4
+- (void)_sessionWillEnd:(id)end withOperation:(unint64_t)operation
 {
-  v13 = a3;
+  endCopy = end;
   interactionContext = self->_interactionContext;
   if (interactionContext && [(UIDragInteractionContextImpl *)interactionContext state]!= 2)
   {
     [(UIDragInteraction *)self _endLiftWithoutDragging];
     [(UIDragInteraction *)self _finalizeLiftCancellation];
-    v7 = [(UIDragInteraction *)self _presentationDelegate];
-    v8 = v7;
+    _presentationDelegate = [(UIDragInteraction *)self _presentationDelegate];
+    v8 = _presentationDelegate;
     if ((*&self->_presentationDelegateImplements & 4) != 0)
     {
-      [v7 _dragInteractionPresentation:self sessionDidEnd:v13 withoutBeginning:1];
+      [_presentationDelegate _dragInteractionPresentation:self sessionDidEnd:endCopy withoutBeginning:1];
     }
   }
 
-  if ([v13 _sentSessionDidBegin])
+  if ([endCopy _sentSessionDidBegin])
   {
-    v9 = [(UIDragInteraction *)self delegate];
-    v10 = v9;
+    delegate = [(UIDragInteraction *)self delegate];
+    v10 = delegate;
     if (*(&self->_delegateImplements + 1))
     {
       v11 = 2;
-      if (a4 == 16)
+      if (operation == 16)
       {
         v11 = 3;
       }
 
-      if (a4)
+      if (operation)
       {
         v12 = v11;
       }
@@ -2375,27 +2375,27 @@ LABEL_13:
         v12 = 0;
       }
 
-      [v9 dragInteraction:self session:v13 willEndWithOperation:v12];
+      [delegate dragInteraction:self session:endCopy willEndWithOperation:v12];
     }
   }
 }
 
-- (void)_sessionDidEnd:(id)a3 withOperation:(unint64_t)a4
+- (void)_sessionDidEnd:(id)end withOperation:(unint64_t)operation
 {
-  v12 = a3;
-  if ([v12 _sentSessionDidBegin])
+  endCopy = end;
+  if ([endCopy _sentSessionDidBegin])
   {
-    v6 = [(UIDragInteraction *)self delegate];
-    v7 = v6;
+    delegate = [(UIDragInteraction *)self delegate];
+    v7 = delegate;
     if ((*(&self->_delegateImplements + 1) & 2) != 0)
     {
       v8 = 2;
-      if (a4 == 16)
+      if (operation == 16)
       {
         v8 = 3;
       }
 
-      if (a4)
+      if (operation)
       {
         v9 = v8;
       }
@@ -2405,38 +2405,38 @@ LABEL_13:
         v9 = 0;
       }
 
-      [v6 dragInteraction:self session:v12 didEndWithOperation:v9];
+      [delegate dragInteraction:self session:endCopy didEndWithOperation:v9];
     }
 
-    v10 = [(UIDragInteraction *)self _presentationDelegate];
-    v11 = v10;
+    _presentationDelegate = [(UIDragInteraction *)self _presentationDelegate];
+    v11 = _presentationDelegate;
     if ((*&self->_presentationDelegateImplements & 4) != 0)
     {
-      [v10 _dragInteractionPresentation:self sessionDidEnd:v12 withoutBeginning:0];
+      [_presentationDelegate _dragInteractionPresentation:self sessionDidEnd:endCopy withoutBeginning:0];
     }
   }
 }
 
-- (id)_session:(id)a3 targetedPreviewForCancellingItem:(id)a4 duiPreview:(id)a5 snapshotView:(id)a6 container:(id)a7
+- (id)_session:(id)_session targetedPreviewForCancellingItem:(id)item duiPreview:(id)preview snapshotView:(id)view container:(id)container
 {
-  v11 = a4;
-  v45 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = [(UIDragInteraction *)self delegate];
+  itemCopy = item;
+  previewCopy = preview;
+  viewCopy = view;
+  containerCopy = container;
+  delegate = [(UIDragInteraction *)self delegate];
   if ((*(&self->_delegateImplements + 1) & 0x40) != 0 || ([(UIDragInteraction *)self _presentationDelegate], v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
   {
-    v16 = [(UIDragInteraction *)self view];
-    v17 = [v16 window];
-    if (v17 && (v18 = v17, v19 = [v16 isHiddenOrHasHiddenAncestor], v18, !v19))
+    view = [(UIDragInteraction *)self view];
+    window = [view window];
+    if (window && (v18 = window, v19 = [view isHiddenOrHasHiddenAncestor], v18, !v19))
     {
-      v21 = v13;
-      [v16 frame];
+      v21 = containerCopy;
+      [view frame];
       v26 = v25 + v24 * 0.5;
       v29 = v28 + v27 * 0.5;
       v30 = [UIDragPreviewTarget alloc];
-      v31 = [v16 superview];
-      v22 = [(UIPreviewTarget *)v30 initWithContainer:v31 center:v26, v29];
+      superview = [view superview];
+      v22 = [(UIPreviewTarget *)v30 initWithContainer:superview center:v26, v29];
 
       v23 = 1;
     }
@@ -2444,22 +2444,22 @@ LABEL_13:
     else
     {
       v20 = [UIDragPreviewTarget alloc];
-      [v12 center];
-      v21 = v13;
-      v22 = [(UIPreviewTarget *)v20 initWithContainer:v13 center:?];
+      [viewCopy center];
+      v21 = containerCopy;
+      v22 = [(UIPreviewTarget *)v20 initWithContainer:containerCopy center:?];
       v23 = 0;
     }
 
     v32 = [UITargetedDragPreview alloc];
-    v33 = [v45 parameters];
-    v15 = [(UITargetedDragPreview *)v32 initWithView:v12 parameters:v33 target:v22];
+    parameters = [previewCopy parameters];
+    v15 = [(UITargetedDragPreview *)v32 initWithView:viewCopy parameters:parameters target:v22];
 
     [(UITargetedPreview *)v15 _setDefaultPreview:1];
   }
 
   else
   {
-    v21 = v13;
+    v21 = containerCopy;
     v23 = 1;
   }
 
@@ -2469,11 +2469,11 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  v35 = [v14 dragInteraction:self previewForCancellingItem:v11 withDefault:v15];
+  v35 = [delegate dragInteraction:self previewForCancellingItem:itemCopy withDefault:v15];
   v34 = v35;
   if (((v35 == v15) & ~v23) != 0)
   {
-    v37 = v35;
+    container = v35;
     goto LABEL_16;
   }
 
@@ -2482,11 +2482,11 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  v36 = [(UITargetedPreview *)v35 target];
-  v37 = [v36 container];
+  target = [(UITargetedPreview *)v35 target];
+  container = [target container];
 
-  v38 = [v37 _window];
-  if (!v38 || (v39 = v38, v40 = [v37 isHiddenOrHasHiddenAncestor], v39, v40))
+  _window = [container _window];
+  if (!_window || (v39 = _window, v40 = [container isHiddenOrHasHiddenAncestor], v39, v40))
   {
 
 LABEL_16:
@@ -2494,11 +2494,11 @@ LABEL_16:
   }
 
 LABEL_18:
-  v41 = [(UIDragInteraction *)self _presentationDelegate];
-  v42 = v41;
+  _presentationDelegate = [(UIDragInteraction *)self _presentationDelegate];
+  v42 = _presentationDelegate;
   if (*&self->_presentationDelegateImplements)
   {
-    v43 = [v41 _dragInteractionPresentation:self previewForCancellingItem:v11 defaultPreview:v15 proposedPreview:v34];
+    v43 = [_presentationDelegate _dragInteractionPresentation:self previewForCancellingItem:itemCopy defaultPreview:v15 proposedPreview:v34];
 
     v34 = v43;
   }
@@ -2506,17 +2506,17 @@ LABEL_18:
   return v34;
 }
 
-- (void)_session:(id)a3 item:(id)a4 willCancelWithAnimator:(id)a5
+- (void)_session:(id)_session item:(id)item willCancelWithAnimator:(id)animator
 {
-  v15 = a4;
-  v7 = a5;
-  if (v15)
+  itemCopy = item;
+  animatorCopy = animator;
+  if (itemCopy)
   {
-    v8 = [(UIDragInteraction *)self delegate];
+    delegate = [(UIDragInteraction *)self delegate];
     if ((*(&self->_delegateImplements + 1) & 0x80) != 0)
     {
-      v9 = [[_UIDragAnimatingWrapper alloc] initWithPropertyAnimator:v7];
-      [v8 dragInteraction:self item:v15 willAnimateCancelWithAnimator:v9];
+      v9 = [[_UIDragAnimatingWrapper alloc] initWithPropertyAnimator:animatorCopy];
+      [delegate dragInteraction:self item:itemCopy willAnimateCancelWithAnimator:v9];
     }
 
     else
@@ -2524,44 +2524,44 @@ LABEL_18:
       v9 = 0;
     }
 
-    v10 = [(UIDragInteraction *)self _presentationDelegate];
+    _presentationDelegate = [(UIDragInteraction *)self _presentationDelegate];
     if ((*&self->_presentationDelegateImplements & 2) != 0)
     {
       if (!v9)
       {
-        v9 = [[_UIDragAnimatingWrapper alloc] initWithPropertyAnimator:v7];
+        v9 = [[_UIDragAnimatingWrapper alloc] initWithPropertyAnimator:animatorCopy];
       }
 
-      [v10 _dragInteractionPresentation:self item:v15 willAnimateCancelWithAnimator:v9];
+      [_presentationDelegate _dragInteractionPresentation:self item:itemCopy willAnimateCancelWithAnimator:v9];
     }
 
-    v11 = [v15 _targetedLiftPreview];
-    v12 = [v11 _previewContainer];
+    _targetedLiftPreview = [itemCopy _targetedLiftPreview];
+    _previewContainer = [_targetedLiftPreview _previewContainer];
 
-    if (v12)
+    if (_previewContainer)
     {
       if (!v9)
       {
-        v9 = [[_UIDragAnimatingWrapper alloc] initWithPropertyAnimator:v7];
+        v9 = [[_UIDragAnimatingWrapper alloc] initWithPropertyAnimator:animatorCopy];
       }
 
-      v13 = [v15 _targetedLiftPreview];
-      v14 = [v13 _previewContainer];
-      [v14 _animateLiftCancellationAlongsideAnimator:v9 completion:&__block_literal_global_315];
+      _targetedLiftPreview2 = [itemCopy _targetedLiftPreview];
+      _previewContainer2 = [_targetedLiftPreview2 _previewContainer];
+      [_previewContainer2 _animateLiftCancellationAlongsideAnimator:v9 completion:&__block_literal_global_315];
     }
   }
 }
 
-- (id)_session:(id)a3 customSpringAnimationBehaviorForCancellingItem:(id)a4
+- (id)_session:(id)_session customSpringAnimationBehaviorForCancellingItem:(id)item
 {
-  v5 = a4;
-  if (v5)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v6 = [(UIDragInteraction *)self delegate];
-    v7 = v6;
+    delegate = [(UIDragInteraction *)self delegate];
+    v7 = delegate;
     if ((*(&self->_delegateImplements + 3) & 8) != 0)
     {
-      v8 = [v6 _dragInteraction:self customSpringAnimationBehaviorForCancellingItem:v5];
+      v8 = [delegate _dragInteraction:self customSpringAnimationBehaviorForCancellingItem:itemCopy];
     }
 
     else
@@ -2578,28 +2578,28 @@ LABEL_18:
   return v8;
 }
 
-- (void)_sessionDidTransferItems:(id)a3
+- (void)_sessionDidTransferItems:(id)items
 {
-  v6 = a3;
-  v4 = [(UIDragInteraction *)self delegate];
-  v5 = v4;
+  itemsCopy = items;
+  delegate = [(UIDragInteraction *)self delegate];
+  v5 = delegate;
   if ((*(&self->_delegateImplements + 1) & 4) != 0)
   {
-    [v4 dragInteraction:self sessionDidTransferItems:v6];
+    [delegate dragInteraction:self sessionDidTransferItems:itemsCopy];
   }
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
   if (WeakRetained)
   {
     v6 = WeakRetained;
     v7 = objc_loadWeakRetained(&self->_view);
 
-    if (v7 != v4)
+    if (v7 != viewCopy)
     {
       v19 = 0u;
       v20 = 0u;
@@ -2635,9 +2635,9 @@ LABEL_18:
       [v13 removeGestureRecognizer:self->_gestureRecognizerForAddingItems];
 
       v14 = objc_loadWeakRetained(&self->_view);
-      v15 = [v14 _draggingSourceDelegate];
+      _draggingSourceDelegate = [v14 _draggingSourceDelegate];
 
-      if (v15 == self)
+      if (_draggingSourceDelegate == self)
       {
         v16 = objc_loadWeakRetained(&self->_view);
         [v16 _setDraggingSourceDelegate:0];
@@ -2646,14 +2646,14 @@ LABEL_18:
   }
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  objc_storeWeak(&self->_view, v4);
-  if (v4)
+  viewCopy = view;
+  objc_storeWeak(&self->_view, viewCopy);
+  if (viewCopy)
   {
-    [v4 addGestureRecognizer:self->_gestureRecognizerForAddingItems];
+    [viewCopy addGestureRecognizer:self->_gestureRecognizerForAddingItems];
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
@@ -2674,7 +2674,7 @@ LABEL_18:
             objc_enumerationMutation(v5);
           }
 
-          [*(*(&v12 + 1) + 8 * v9++) setView:{v4, v12}];
+          [*(*(&v12 + 1) + 8 * v9++) setView:{viewCopy, v12}];
         }
 
         while (v7 != v9);
@@ -2684,25 +2684,25 @@ LABEL_18:
       while (v7);
     }
 
-    v10 = [(UIDragInteraction *)self delegate];
-    v11 = v10;
-    if ((*(&self->_delegateImplements + 4) & 2) == 0 || [v10 _dragInteractionShouldBecomeDraggingSourceDelegate:self])
+    delegate = [(UIDragInteraction *)self delegate];
+    v11 = delegate;
+    if ((*(&self->_delegateImplements + 4) & 2) == 0 || [delegate _dragInteractionShouldBecomeDraggingSourceDelegate:self])
     {
-      [v4 _setDraggingSourceDelegate:{self, v12}];
+      [viewCopy _setDraggingSourceDelegate:{self, v12}];
     }
   }
 }
 
-- (BOOL)dragDriver:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)dragDriver:(id)driver shouldReceiveTouch:(id)touch
 {
   if ((*(&self->_delegateImplements + 4) & 4) != 0)
   {
-    v6 = a4;
-    v7 = a3;
+    touchCopy = touch;
+    driverCopy = driver;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v9 = [v7 view];
+    view = [driverCopy view];
 
-    [v6 locationInView:v9];
+    [touchCopy locationInView:view];
     v11 = v10;
     v13 = v12;
 
@@ -2713,12 +2713,12 @@ LABEL_18:
   return 1;
 }
 
-- (BOOL)dragDriver:(id)a3 shouldBeginAtLocation3D:(CAPoint3D)a4
+- (BOOL)dragDriver:(id)driver shouldBeginAtLocation3D:(CAPoint3D)d
 {
-  y = a4.y;
-  x = a4.x;
+  y = d.y;
+  x = d.x;
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  driverCopy = driver;
   if ([(UIDragInteraction *)self _isActive]&& !self->_allowsMultipleSessions)
   {
     LOBYTE(v18) = 0;
@@ -2730,8 +2730,8 @@ LABEL_18:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v8 = self->_initiationDrivers;
-    v9 = [(NSSet *)v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    view = self->_initiationDrivers;
+    v9 = [(NSSet *)view countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v9)
     {
       v10 = v9;
@@ -2742,18 +2742,18 @@ LABEL_18:
         {
           if (*v29 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(view);
           }
 
           v13 = *(*(&v28 + 1) + 8 * i);
-          if (v13 != v7 && ([v13 isActive] & 1) != 0)
+          if (v13 != driverCopy && ([v13 isActive] & 1) != 0)
           {
             LOBYTE(v18) = 0;
             goto LABEL_28;
           }
         }
 
-        v10 = [(NSSet *)v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v10 = [(NSSet *)view countByEnumeratingWithState:&v28 objects:v33 count:16];
         if (v10)
         {
           continue;
@@ -2766,13 +2766,13 @@ LABEL_18:
     interactionContext = self->_interactionContext;
     if (interactionContext && (-[UIDragInteractionContextImpl items](interactionContext, "items"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 count], v15, v16))
     {
-      v8 = [(UIDragInteraction *)self view];
+      view = [(UIDragInteraction *)self view];
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v17 = [(UIDragInteractionContextImpl *)self->_interactionContext items];
-      v18 = [v17 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      items = [(UIDragInteractionContextImpl *)self->_interactionContext items];
+      v18 = [items countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (v18)
       {
         v19 = *v25;
@@ -2782,11 +2782,11 @@ LABEL_18:
           {
             if (*v25 != v19)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(items);
             }
 
-            v21 = [*(*(&v24 + 1) + 8 * j) _targetedLiftPreview];
-            v22 = [v21 containsPoint:v8 fromView:{x, y}];
+            _targetedLiftPreview = [*(*(&v24 + 1) + 8 * j) _targetedLiftPreview];
+            v22 = [_targetedLiftPreview containsPoint:view fromView:{x, y}];
 
             if (v22)
             {
@@ -2795,7 +2795,7 @@ LABEL_18:
             }
           }
 
-          v18 = [v17 countByEnumeratingWithState:&v24 objects:v32 count:16];
+          v18 = [items countByEnumeratingWithState:&v24 objects:v32 count:16];
           if (v18)
           {
             continue;
@@ -2819,12 +2819,12 @@ LABEL_28:
   return v18;
 }
 
-- (void)dragDriver:(id)a3 prepareToLiftWithCompletion:(id)a4
+- (void)dragDriver:(id)driver prepareToLiftWithCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (self)
   {
-    [a3 initialLocationInWindow];
+    [driver initialLocationInWindow];
     v8 = v7;
     v10 = v9;
   }
@@ -2840,8 +2840,8 @@ LABEL_28:
   v12[2] = __60__UIDragInteraction_dragDriver_prepareToLiftWithCompletion___block_invoke;
   v12[3] = &unk_1E7105F70;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
+  v13 = completionCopy;
+  v11 = completionCopy;
   [(UIDragInteraction *)&self->super.isa _prepareForLiftAtPoint:v12 invocationType:v8 completion:v10, 0.0];
 }
 
@@ -2852,52 +2852,52 @@ void __60__UIDragInteraction_dragDriver_prepareToLiftWithCompletion___block_invo
   (*(*(a1 + 40) + 16))(*(a1 + 40), v4 != 0);
 }
 
-- (BOOL)dragDriverBeginLift:(id)a3
+- (BOOL)dragDriverBeginLift:(id)lift
 {
   preliminarySession = self->_preliminarySession;
   self->_preliminarySession = 0;
   v6 = preliminarySession;
-  v7 = a3;
+  liftCopy = lift;
 
-  v8 = [(UIDragInteraction *)self delegate];
-  v9 = [(UIDragInteraction *)self _queryDelegate:v8 forItemsForBeginningSession:v6];
+  delegate = [(UIDragInteraction *)self delegate];
+  v9 = [(UIDragInteraction *)self _queryDelegate:delegate forItemsForBeginningSession:v6];
 
-  v10 = [v7 shouldAnimateLift];
-  LOBYTE(v7) = [(UIDragInteraction *)self _beginLiftForItems:v9 session:v6 animated:v10];
+  shouldAnimateLift = [liftCopy shouldAnimateLift];
+  LOBYTE(liftCopy) = [(UIDragInteraction *)self _beginLiftForItems:v9 session:v6 animated:shouldAnimateLift];
 
-  return v7;
+  return liftCopy;
 }
 
-- (void)dragDriverCancelLift:(id)a3
+- (void)dragDriverCancelLift:(id)lift
 {
-  v4 = a3;
+  liftCopy = lift;
   interactionContext = self->_interactionContext;
   if (interactionContext)
   {
-    v7 = v4;
-    v6 = [(UIDragInteractionContextImpl *)interactionContext hasBegunDrag];
-    v4 = v7;
-    if (!v6)
+    v7 = liftCopy;
+    hasBegunDrag = [(UIDragInteractionContextImpl *)interactionContext hasBegunDrag];
+    liftCopy = v7;
+    if (!hasBegunDrag)
     {
       [(UIDragInteraction *)self _endLiftWithoutDragging];
       [(UIDragInteraction *)self _finalizeLiftCancellation];
-      v4 = v7;
+      liftCopy = v7;
     }
   }
 }
 
-- (void)dragDriver:(id)a3 beginDragWithTouches:(id)a4 itemUpdater:(id)a5 beginningSessionHandler:(id)a6
+- (void)dragDriver:(id)driver beginDragWithTouches:(id)touches itemUpdater:(id)updater beginningSessionHandler:(id)handler
 {
-  v9 = a6;
-  [(UIDragInteraction *)self _beginDragWithTouches:a4 itemUpdater:a5];
-  [(UIDragInteractionContextImpl *)self->_interactionContext set_sessionDidBegin:v9];
+  handlerCopy = handler;
+  [(UIDragInteraction *)self _beginDragWithTouches:touches itemUpdater:updater];
+  [(UIDragInteractionContextImpl *)self->_interactionContext set_sessionDidBegin:handlerCopy];
 }
 
-- (void)dragDriverCancelAddItemsGesture:(id)a3
+- (void)dragDriverCancelAddItemsGesture:(id)gesture
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v4 = [(UIGestureRecognizer *)self->_gestureRecognizerForAddingItems _allActiveTouches];
-  v5 = [v4 count];
+  _allActiveTouches = [(UIGestureRecognizer *)self->_gestureRecognizerForAddingItems _allActiveTouches];
+  v5 = [_allActiveTouches count];
 
   if (!v5)
   {
@@ -2908,14 +2908,14 @@ void __60__UIDragInteraction_dragDriver_prepareToLiftWithCompletion___block_invo
   }
 }
 
-- (BOOL)dragDriver:(id)a3 shouldDelayCompetingGestureRecognizer:(id)a4
+- (BOOL)dragDriver:(id)driver shouldDelayCompetingGestureRecognizer:(id)recognizer
 {
-  v5 = a4;
-  v6 = [(UIDragInteraction *)self delegate];
-  v7 = v6;
+  recognizerCopy = recognizer;
+  delegate = [(UIDragInteraction *)self delegate];
+  v7 = delegate;
   if ((*(&self->_delegateImplements + 2) & 0x20) != 0)
   {
-    v8 = [v6 _dragInteraction:self shouldDelayCompetingGestureRecognizer:v5];
+    v8 = [delegate _dragInteraction:self shouldDelayCompetingGestureRecognizer:recognizerCopy];
   }
 
   else
@@ -2926,23 +2926,23 @@ void __60__UIDragInteraction_dragDriver_prepareToLiftWithCompletion___block_invo
   return v8;
 }
 
-- (BOOL)dragDriver:(id)a3 canExcludeCompetingGestureRecognizer:(id)a4
+- (BOOL)dragDriver:(id)driver canExcludeCompetingGestureRecognizer:(id)recognizer
 {
-  v5 = a4;
-  v6 = [(UIDragInteraction *)self delegate];
-  LOBYTE(self) = [v6 _dragInteraction:self canExcludeCompetingGestureRecognizer:v5];
+  recognizerCopy = recognizer;
+  delegate = [(UIDragInteraction *)self delegate];
+  LOBYTE(self) = [delegate _dragInteraction:self canExcludeCompetingGestureRecognizer:recognizerCopy];
 
   return self;
 }
 
-- (BOOL)dragDriver:(id)a3 competingGestureRecognizerShouldDelayLift:(id)a4
+- (BOOL)dragDriver:(id)driver competingGestureRecognizerShouldDelayLift:(id)lift
 {
-  v5 = a4;
-  v6 = [(UIDragInteraction *)self delegate];
-  v7 = v6;
+  liftCopy = lift;
+  delegate = [(UIDragInteraction *)self delegate];
+  v7 = delegate;
   if ((*(&self->_delegateImplements + 2) & 0x80) != 0)
   {
-    v8 = [v6 _dragInteraction:self competingGestureRecognizerShouldDelayLift:v5];
+    v8 = [delegate _dragInteraction:self competingGestureRecognizerShouldDelayLift:liftCopy];
   }
 
   else

@@ -8,8 +8,8 @@
 {
   if (!_Failover)
   {
-    v2 = [MEMORY[0x29EDBD6E8] sharedInstance];
-    [v2 performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_310 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_319];
+    mEMORY[0x29EDBD6E8] = [MEMORY[0x29EDBD6E8] sharedInstance];
+    [mEMORY[0x29EDBD6E8] performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_310 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_319];
 
     _Failover = objc_alloc_init(AXSocialFrameworkGlue);
 

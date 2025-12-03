@@ -1,6 +1,6 @@
 @interface TrendDetailDailyAverageViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axDayStringForIndex:(int)a3 withFormatter:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axDayStringForIndex:(int)index withFormatter:(id)formatter;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
@@ -8,16 +8,16 @@
 
 @implementation TrendDetailDailyAverageViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FitnessApp.TrendDetailDailyAverageView" hasInstanceMethod:@"accessibiliytQuantity365ForIndex:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"FitnessApp.TrendDetailDailyAverageView" hasInstanceMethod:@"accessibiliytQuantity90ForIndex:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"FitnessApp.TrendDetailDailyAverageView" hasInstanceMethod:@"accessibilityDayForStopIndex:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"FitnessApp.TrendDetailDailyAverageView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"FitnessApp.TrendDetailDailyAverageView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FitnessApp.TrendDetailDailyAverageView" hasInstanceMethod:@"dayStops" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FitnessApp.TrendDetailDailyAverageView" hasInstanceMethod:@"accessibilityUnit" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FitnessApp.TrendDetailDailyAverageView" hasInstanceMethod:@"accessibiliytQuantity365ForIndex:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"FitnessApp.TrendDetailDailyAverageView" hasInstanceMethod:@"accessibiliytQuantity90ForIndex:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"FitnessApp.TrendDetailDailyAverageView" hasInstanceMethod:@"accessibilityDayForStopIndex:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"FitnessApp.TrendDetailDailyAverageView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"FitnessApp.TrendDetailDailyAverageView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FitnessApp.TrendDetailDailyAverageView" hasInstanceMethod:@"dayStops" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FitnessApp.TrendDetailDailyAverageView" hasInstanceMethod:@"accessibilityUnit" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityElements
@@ -25,7 +25,7 @@
   v3 = [(TrendDetailDailyAverageViewAccessibility *)self _accessibilityValueForKey:kUIAccessibilityStorageKeyChildren];
   if (!v3)
   {
-    v4 = [(TrendDetailDailyAverageViewAccessibility *)self _accessibilityGraphData];
+    _accessibilityGraphData = [(TrendDetailDailyAverageViewAccessibility *)self _accessibilityGraphData];
     v3 = [NSMutableArray arrayWithCapacity:7];
     [(TrendDetailDailyAverageViewAccessibility *)self _accessibilitySetRetainedValue:v3 forKey:kUIAccessibilityStorageKeyChildren];
     v5 = [(TrendDetailDailyAverageViewAccessibility *)self safeUIViewForKey:@"titleLabel"];
@@ -34,17 +34,17 @@
     v6 = objc_alloc_init(NSDateFormatter);
     objc_opt_class();
     v7 = __UIAccessibilityCastAsClass();
-    if (v7 && [v4 count] == &dword_4 + 3)
+    if (v7 && [_accessibilityGraphData count] == &dword_4 + 3)
     {
       [v5 frame];
       v9 = v8 + v8;
       [v7 frame];
       v11 = v10;
       v12 = floorf(v11) - v9;
-      v13 = [v4 objectAtIndexedSubscript:1];
+      v13 = [_accessibilityGraphData objectAtIndexedSubscript:1];
       [v13 floatValue];
       v15 = v14;
-      v16 = [v4 objectAtIndexedSubscript:0];
+      v16 = [_accessibilityGraphData objectAtIndexedSubscript:0];
       [v16 floatValue];
       v18 = (v15 - v17);
 
@@ -54,7 +54,7 @@
         if (v20)
         {
           v21 = [[UIAccessibilityElement alloc] initWithAccessibilityContainer:v7];
-          v22 = [v4 objectAtIndexedSubscript:i];
+          v22 = [_accessibilityGraphData objectAtIndexedSubscript:i];
           [v22 floatValue];
           v24 = v23;
 
@@ -91,9 +91,9 @@ uint64_t __75__TrendDetailDailyAverageViewAccessibility__axLabelForIndex_withFor
   return _objc_release_x1();
 }
 
-- (id)_axDayStringForIndex:(int)a3 withFormatter:(id)a4
+- (id)_axDayStringForIndex:(int)index withFormatter:(id)formatter
 {
-  v4 = a4;
+  formatterCopy = formatter;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -112,15 +112,15 @@ uint64_t __75__TrendDetailDailyAverageViewAccessibility__axLabelForIndex_withFor
   else
   {
     v6 = [v5 intValue] - 1;
-    v7 = [v4 weekdaySymbols];
-    if ([v7 count] <= v6)
+    weekdaySymbols = [formatterCopy weekdaySymbols];
+    if ([weekdaySymbols count] <= v6)
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = [v7 objectAtIndex:v6];
+      v8 = [weekdaySymbols objectAtIndex:v6];
     }
   }
 
@@ -146,17 +146,17 @@ uint64_t __79__TrendDetailDailyAverageViewAccessibility__axDayStringForIndex_wit
   v4 = v3;
   if (v3 && [v3 count] && (objc_msgSend(v4, "firstObject"), v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass & 1) != 0))
   {
-    v7 = self;
+    selfCopy2 = self;
     v8 = v4;
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
     v8 = 0;
   }
 
-  [(TrendDetailDailyAverageViewAccessibility *)v7 _accessibilitySetRetainedValue:v8 forKey:@"kAXTrendDetailDailyAveragesGraphElements"];
+  [(TrendDetailDailyAverageViewAccessibility *)selfCopy2 _accessibilitySetRetainedValue:v8 forKey:@"kAXTrendDetailDailyAveragesGraphElements"];
   [(TrendDetailDailyAverageViewAccessibility *)self _accessibilitySetRetainedValue:0 forKey:kUIAccessibilityStorageKeyChildren];
 }
 

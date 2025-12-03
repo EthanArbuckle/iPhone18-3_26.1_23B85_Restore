@@ -1,6 +1,6 @@
 @interface CLKCComplicationDataSourceContext
 - (CLKCComplicationDataSourceContext)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CLKCComplicationDataSourceContext
@@ -18,7 +18,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_opt_new();
   *(result + 8) = self->_showsBackground;

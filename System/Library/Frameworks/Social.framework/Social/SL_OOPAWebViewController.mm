@@ -1,29 +1,29 @@
 @interface SL_OOPAWebViewController
-- (BOOL)webView:(id)a3 shouldStartLoadWithRequest:(id)a4 navigationType:(int64_t)a5;
+- (BOOL)webView:(id)view shouldStartLoadWithRequest:(id)request navigationType:(int64_t)type;
 - (SL_OOPAWebViewController)init;
 - (SL_OOPAWebViewControllerDelegate)delegate;
-- (void)_cancelButtonTapped:(id)a3;
-- (void)_didFinishWithSuccess:(BOOL)a3 response:(id)a4 error:(id)a5;
-- (void)_evaluateDocumentTitleForUIWebView:(id)a3 retryCount:(unint64_t)a4 completion:(id)a5;
-- (void)_evaluateDocumentTitleForWebView:(id)a3 retryCount:(unint64_t)a4 completion:(id)a5;
+- (void)_cancelButtonTapped:(id)tapped;
+- (void)_didFinishWithSuccess:(BOOL)success response:(id)response error:(id)error;
+- (void)_evaluateDocumentTitleForUIWebView:(id)view retryCount:(unint64_t)count completion:(id)completion;
+- (void)_evaluateDocumentTitleForWebView:(id)view retryCount:(unint64_t)count completion:(id)completion;
 - (void)_loadWebView;
 - (void)_loadWebViewIfReady;
 - (void)_updateNavBarTitle;
-- (void)_updateNavigationPromptWithActiveURL:(id)a3;
+- (void)_updateNavigationPromptWithActiveURL:(id)l;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setAuthFlowDelegate:(id)a3;
-- (void)setAuthURL:(id)a3;
-- (void)setNavBarTitle:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setAuthFlowDelegate:(id)delegate;
+- (void)setAuthURL:(id)l;
+- (void)setNavBarTitle:(id)title;
 - (void)startAnimating;
 - (void)stopAnimating;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFailLoadWithError:(id)a4;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webView:(id)a3 didReceiveServerRedirectForProvisionalNavigation:(id)a4;
-- (void)webViewDidFinishLoad:(id)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view didFailLoadWithError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webView:(id)view didReceiveServerRedirectForProvisionalNavigation:(id)navigation;
+- (void)webViewDidFinishLoad:(id)load;
 @end
 
 @implementation SL_OOPAWebViewController
@@ -63,8 +63,8 @@
     else
     {
       v5 = objc_alloc_init(MEMORY[0x1E69853A8]);
-      v6 = [MEMORY[0x1E69853B8] nonPersistentDataStore];
-      [v5 setWebsiteDataStore:v6];
+      nonPersistentDataStore = [MEMORY[0x1E69853B8] nonPersistentDataStore];
+      [v5 setWebsiteDataStore:nonPersistentDataStore];
 
       v7 = objc_alloc(MEMORY[0x1E69853A0]);
       v8 = [v7 initWithFrame:v5 configuration:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -76,22 +76,22 @@
       [(SL_OOPAWebViewController *)v2 setView:v2->_wkWebView];
     }
 
-    v13 = [MEMORY[0x1E696AC60] sharedHTTPCookieStorage];
-    [v13 setCookieAcceptPolicy:0];
+    mEMORY[0x1E696AC60] = [MEMORY[0x1E696AC60] sharedHTTPCookieStorage];
+    [mEMORY[0x1E696AC60] setCookieAcceptPolicy:0];
     if (v2->_uiWebView)
     {
       v14 = [objc_alloc(MEMORY[0x1E69E2F78]) initWithIdentifier:@"com.apple.AccountAuthenticationDialog.private"];
       [v14 setAutosaves:0];
       [v14 setPrivateBrowsingEnabled:1];
       [v14 setJavaScriptEnabled:1];
-      v15 = [(UIWebView *)v2->_uiWebView _browserView];
-      v16 = [v15 webView];
-      [v16 setPreferences:v14];
+      _browserView = [(UIWebView *)v2->_uiWebView _browserView];
+      webView = [_browserView webView];
+      [webView setPreferences:v14];
     }
 
     v17 = objc_alloc_init(SL_OOPASpinnerTitle);
-    v18 = [(SL_OOPAWebViewController *)v2 navigationItem];
-    [v18 setTitleView:v17];
+    navigationItem = [(SL_OOPAWebViewController *)v2 navigationItem];
+    [navigationItem setTitleView:v17];
   }
 
   return v2;
@@ -116,34 +116,34 @@
   [(SL_OOPAWebViewController *)&v4 dealloc];
 }
 
-- (void)setNavBarTitle:(id)a3
+- (void)setNavBarTitle:(id)title
 {
-  [(SL_OOPAWebViewController *)self setBackingTitle:a3];
+  [(SL_OOPAWebViewController *)self setBackingTitle:title];
 
   [(SL_OOPAWebViewController *)self _updateNavBarTitle];
 }
 
 - (void)_updateNavBarTitle
 {
-  v5 = [(SL_OOPAWebViewController *)self backingTitle];
-  v3 = [(SL_OOPAWebViewController *)self navigationItem];
-  v4 = [v3 titleView];
-  [v4 setTitle:v5];
+  backingTitle = [(SL_OOPAWebViewController *)self backingTitle];
+  navigationItem = [(SL_OOPAWebViewController *)self navigationItem];
+  titleView = [navigationItem titleView];
+  [titleView setTitle:backingTitle];
 }
 
-- (void)setAuthURL:(id)a3
+- (void)setAuthURL:(id)l
 {
-  v4 = [a3 copy];
+  v4 = [l copy];
   authURL = self->_authURL;
   self->_authURL = v4;
 
   [(SL_OOPAWebViewController *)self _loadWebViewIfReady];
 }
 
-- (void)setAuthFlowDelegate:(id)a3
+- (void)setAuthFlowDelegate:(id)delegate
 {
-  v5 = a3;
-  objc_storeStrong(&self->_authFlowDelegate, a3);
+  delegateCopy = delegate;
+  objc_storeStrong(&self->_authFlowDelegate, delegate);
   objc_initWeak(&location, self);
   authFlowDelegate = self->_authFlowDelegate;
   v7 = MEMORY[0x1E69E9820];
@@ -157,34 +157,34 @@
   objc_destroyWeak(&location);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = SL_OOPAWebViewController;
-  [(SL_OOPAWebViewController *)&v13 viewWillAppear:a3];
-  v4 = [(SL_OOPAWebViewController *)self navigationItem];
-  [v4 setHidesBackButton:1];
+  [(SL_OOPAWebViewController *)&v13 viewWillAppear:appear];
+  navigationItem = [(SL_OOPAWebViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 
   v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__cancelButtonTapped_];
-  v6 = [(SL_OOPAWebViewController *)self navigationItem];
-  [v6 setLeftBarButtonItem:v5];
+  navigationItem2 = [(SL_OOPAWebViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v5];
 
-  v7 = [(SL_OOPAWebViewController *)self authURL];
-  [(SL_OOPAWebViewController *)self _updateNavigationPromptWithActiveURL:v7];
+  authURL = [(SL_OOPAWebViewController *)self authURL];
+  [(SL_OOPAWebViewController *)self _updateNavigationPromptWithActiveURL:authURL];
 
-  v8 = [(SL_OOPAWebViewController *)self navigationController];
-  v9 = [v8 navigationBar];
-  v10 = [v9 standardAppearance];
-  v11 = [(SL_OOPAWebViewController *)self navigationController];
-  v12 = [v11 navigationBar];
-  [v12 setScrollEdgeAppearance:v10];
+  navigationController = [(SL_OOPAWebViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  standardAppearance = [navigationBar standardAppearance];
+  navigationController2 = [(SL_OOPAWebViewController *)self navigationController];
+  navigationBar2 = [navigationController2 navigationBar];
+  [navigationBar2 setScrollEdgeAppearance:standardAppearance];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SL_OOPAWebViewController;
-  [(SL_OOPAWebViewController *)&v4 viewDidAppear:a3];
+  [(SL_OOPAWebViewController *)&v4 viewDidAppear:appear];
   [(SL_OOPAWebViewController *)self _loadWebViewIfReady];
 }
 
@@ -216,8 +216,8 @@
   v18[3] = &unk_1E8175E70;
   v18[4] = self;
   v7 = MEMORY[0x1C6917BF0](v18, a2);
-  v8 = [(SL_OOPAuthFlowDelegate *)self->_authFlowDelegate initialRedirectURL];
-  if (v8)
+  initialRedirectURL = [(SL_OOPAuthFlowDelegate *)self->_authFlowDelegate initialRedirectURL];
+  if (initialRedirectURL)
   {
     v9 = [SLExternalServiceGatekeeper alloc];
     v10 = self->_authURL;
@@ -225,7 +225,7 @@
     v13 = 3221225472;
     v14 = __40__SL_OOPAWebViewController__loadWebView__block_invoke_2;
     v15 = &unk_1E8175EC0;
-    v16 = self;
+    selfCopy = self;
     v17 = v7;
   }
 
@@ -237,29 +237,29 @@
   [(SL_OOPAWebViewController *)self startAnimating:v11];
 }
 
-- (void)_didFinishWithSuccess:(BOOL)a3 response:(id)a4 error:(id)a5
+- (void)_didFinishWithSuccess:(BOOL)success response:(id)response error:(id)error
 {
   if (!self->_didFinish)
   {
-    v7 = a3;
+    successCopy = success;
     self->_didFinish = 1;
-    v9 = a5;
-    v10 = a4;
-    v11 = [(SL_OOPAWebViewController *)self delegate];
-    [v11 webViewController:self didFinishWithSuccess:v7 response:v10 error:v9];
+    errorCopy = error;
+    responseCopy = response;
+    delegate = [(SL_OOPAWebViewController *)self delegate];
+    [delegate webViewController:self didFinishWithSuccess:successCopy response:responseCopy error:errorCopy];
   }
 }
 
-- (BOOL)webView:(id)a3 shouldStartLoadWithRequest:(id)a4 navigationType:(int64_t)a5
+- (BOOL)webView:(id)view shouldStartLoadWithRequest:(id)request navigationType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  requestCopy = request;
   if (!self->_authFlowDelegate)
   {
-    v15 = [v9 URL];
-    v12 = [v15 absoluteString];
+    v15 = [requestCopy URL];
+    absoluteString = [v15 absoluteString];
 
-    if ([v12 hasPrefix:@"account://"])
+    if ([absoluteString hasPrefix:@"account://"])
     {
       _SLLog(v5, 5, @"SL_OOPAWebViewController caught account:// redirect!");
       [(SL_OOPAWebViewController *)self _didFinishWithSuccess:1 response:0 error:0];
@@ -281,18 +281,18 @@ LABEL_9:
   }
 
   v10 = 1;
-  if ([(SL_OOPAuthFlowDelegate *)self->_authFlowDelegate shouldHideWebViewForLoadWithRequest:v9])
+  if ([(SL_OOPAuthFlowDelegate *)self->_authFlowDelegate shouldHideWebViewForLoadWithRequest:requestCopy])
   {
-    v11 = [(SL_OOPAWebViewController *)self view];
-    v12 = [v11 snapshotViewAfterScreenUpdates:0];
+    view = [(SL_OOPAWebViewController *)self view];
+    absoluteString = [view snapshotViewAfterScreenUpdates:0];
 
-    v13 = [(SL_OOPAWebViewController *)self view];
-    [v13 bounds];
-    [v12 setFrame:?];
+    view2 = [(SL_OOPAWebViewController *)self view];
+    [view2 bounds];
+    [absoluteString setFrame:?];
 
-    [v12 setAutoresizingMask:18];
-    v14 = [(SL_OOPAWebViewController *)self view];
-    [v14 addSubview:v12];
+    [absoluteString setAutoresizingMask:18];
+    view3 = [(SL_OOPAWebViewController *)self view];
+    [view3 addSubview:absoluteString];
 
     self->_hidingWebView = 1;
 LABEL_7:
@@ -303,23 +303,23 @@ LABEL_10:
   return v10;
 }
 
-- (void)webView:(id)a3 didFailLoadWithError:(id)a4
+- (void)webView:(id)view didFailLoadWithError:(id)error
 {
   _SLLog(v4, 5, @"SL_OOPAWebViewController failed to load page with error: %@");
 
   [(SL_OOPAWebViewController *)self stopAnimating];
 }
 
-- (void)webViewDidFinishLoad:(id)a3
+- (void)webViewDidFinishLoad:(id)load
 {
-  v4 = a3;
+  loadCopy = load;
   if (!self->_hidingWebView)
   {
     [(SL_OOPAWebViewController *)self stopAnimating];
   }
 
-  v5 = [v4 request];
-  v6 = [v5 URL];
+  request = [loadCopy request];
+  v6 = [request URL];
   [(SL_OOPAWebViewController *)self _updateNavigationPromptWithActiveURL:v6];
 
   if (self->_authFlowDelegate && (objc_opt_respondsToSelector() & 1) != 0)
@@ -330,23 +330,23 @@ LABEL_10:
     v8[2] = __49__SL_OOPAWebViewController_webViewDidFinishLoad___block_invoke;
     v8[3] = &unk_1E8175EE8;
     v8[4] = self;
-    v9 = v4;
+    v9 = loadCopy;
     [(SL_OOPAuthFlowDelegate *)authFlowDelegate webViewDidFinishLoadWithPageTitleSupplier:v8];
   }
 }
 
-- (void)_evaluateDocumentTitleForUIWebView:(id)a3 retryCount:(unint64_t)a4 completion:(id)a5
+- (void)_evaluateDocumentTitleForUIWebView:(id)view retryCount:(unint64_t)count completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  if (a4)
+  viewCopy = view;
+  completionCopy = completion;
+  if (count)
   {
-    v11 = [v9 stringByEvaluatingJavaScriptFromString:@"document.title"];
+    v11 = [viewCopy stringByEvaluatingJavaScriptFromString:@"document.title"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 length])
     {
       _SLLog(v5, 3, @"Found title for webview");
-      v10[2](v10, v11);
+      completionCopy[2](completionCopy, v11);
     }
 
     else
@@ -357,9 +357,9 @@ LABEL_10:
       v13[2] = __85__SL_OOPAWebViewController__evaluateDocumentTitleForUIWebView_retryCount_completion___block_invoke;
       v13[3] = &unk_1E8175F10;
       v13[4] = self;
-      v14 = v9;
-      v16 = a4;
-      v15 = v10;
+      v14 = viewCopy;
+      countCopy = count;
+      v15 = completionCopy;
       dispatch_after(v12, MEMORY[0x1E69E96A0], v13);
     }
   }
@@ -367,54 +367,54 @@ LABEL_10:
   else
   {
     _SLLog(v5, 3, @"No title for webview found");
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  actionCopy = action;
+  handlerCopy = handler;
   if (self->_authFlowDelegate)
   {
     if (objc_opt_respondsToSelector())
     {
       authFlowDelegate = self->_authFlowDelegate;
-      v11 = [v8 request];
-      LODWORD(authFlowDelegate) = [(SL_OOPAuthFlowDelegate *)authFlowDelegate shouldHideWebViewForLoadWithRequest:v11];
+      request = [actionCopy request];
+      LODWORD(authFlowDelegate) = [(SL_OOPAuthFlowDelegate *)authFlowDelegate shouldHideWebViewForLoadWithRequest:request];
 
       if (authFlowDelegate)
       {
-        v12 = [(SL_OOPAWebViewController *)self view];
-        v13 = [v12 snapshotViewAfterScreenUpdates:0];
+        view = [(SL_OOPAWebViewController *)self view];
+        v13 = [view snapshotViewAfterScreenUpdates:0];
 
-        v14 = [(SL_OOPAWebViewController *)self view];
-        [v14 bounds];
+        view2 = [(SL_OOPAWebViewController *)self view];
+        [view2 bounds];
         [v13 setFrame:?];
 
         [v13 setAutoresizingMask:18];
-        v15 = [(SL_OOPAWebViewController *)self view];
-        [v15 addSubview:v13];
+        view3 = [(SL_OOPAWebViewController *)self view];
+        [view3 addSubview:v13];
 
         self->_hidingWebView = 1;
       }
     }
   }
 
-  v9[2](v9, 1);
+  handlerCopy[2](handlerCopy, 1);
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  navigationCopy = navigation;
   if (!self->_hidingWebView)
   {
     [(SL_OOPAWebViewController *)self stopAnimating];
-    v8 = [v6 backForwardList];
-    v9 = [v8 currentItem];
-    v10 = [v9 URL];
+    backForwardList = [viewCopy backForwardList];
+    currentItem = [backForwardList currentItem];
+    v10 = [currentItem URL];
     [(SL_OOPAWebViewController *)self _updateNavigationPromptWithActiveURL:v10];
   }
 
@@ -426,26 +426,26 @@ LABEL_10:
     v12[2] = __56__SL_OOPAWebViewController_webView_didFinishNavigation___block_invoke;
     v12[3] = &unk_1E8175EE8;
     v12[4] = self;
-    v13 = v6;
+    v13 = viewCopy;
     [(SL_OOPAuthFlowDelegate *)authFlowDelegate webViewDidFinishLoadWithPageTitleSupplier:v12];
   }
 }
 
-- (void)_evaluateDocumentTitleForWebView:(id)a3 retryCount:(unint64_t)a4 completion:(id)a5
+- (void)_evaluateDocumentTitleForWebView:(id)view retryCount:(unint64_t)count completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (a4)
+  viewCopy = view;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (count)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __83__SL_OOPAWebViewController__evaluateDocumentTitleForWebView_retryCount_completion___block_invoke;
     v12[3] = &unk_1E8175F38;
-    v14 = v10;
+    v14 = completionCopy;
     v12[4] = self;
-    v13 = v9;
-    v15 = a4;
+    v13 = viewCopy;
+    countCopy = count;
     [v13 evaluateJavaScript:@"document.title" completionHandler:v12];
   }
 
@@ -456,37 +456,37 @@ LABEL_10:
   }
 }
 
-- (void)webView:(id)a3 didReceiveServerRedirectForProvisionalNavigation:(id)a4
+- (void)webView:(id)view didReceiveServerRedirectForProvisionalNavigation:(id)navigation
 {
   v6 = v5;
-  v25 = a3;
-  v8 = [v25 URL];
-  v9 = [v8 scheme];
-  v10 = [v9 isEqualToString:@"https"];
+  viewCopy = view;
+  queryItems = [viewCopy URL];
+  scheme = [queryItems scheme];
+  v10 = [scheme isEqualToString:@"https"];
   if ((v10 & 1) == 0)
   {
-    v24 = [v25 URL];
-    v4 = [v24 scheme];
-    if (![v4 isEqualToString:@"http"])
+    v24 = [viewCopy URL];
+    scheme2 = [v24 scheme];
+    if (![scheme2 isEqualToString:@"http"])
     {
       v19 = v24;
       goto LABEL_14;
     }
   }
 
-  v11 = [v25 URL];
-  v12 = [v11 host];
-  v23 = self;
-  if ([v12 isEqualToString:@"www.apple.com"])
+  v11 = [viewCopy URL];
+  host = [v11 host];
+  selfCopy = self;
+  if ([host isEqualToString:@"www.apple.com"])
   {
     v13 = 1;
   }
 
   else
   {
-    v14 = [v25 URL];
-    v15 = [v14 host];
-    v13 = [v15 isEqualToString:@"apple.com"];
+    v14 = [viewCopy URL];
+    host2 = [v14 host];
+    v13 = [host2 isEqualToString:@"apple.com"];
 
     v6 = v5;
   }
@@ -506,24 +506,24 @@ LABEL_10:
   {
 LABEL_10:
     v16 = MEMORY[0x1E696AF20];
-    v17 = [v25 URL];
+    v17 = [viewCopy URL];
     v18 = [v16 componentsWithURL:v17 resolvingAgainstBaseURL:0];
-    v8 = [v18 queryItems];
+    queryItems = [v18 queryItems];
 
-    v9 = [MEMORY[0x1E696AF60] queryItemWithName:@"error" value:@"access_denied"];
+    scheme = [MEMORY[0x1E696AF60] queryItemWithName:@"error" value:@"access_denied"];
     v19 = [MEMORY[0x1E696AF60] queryItemWithName:@"account" value:@"yahoo_japan"];
-    if (![v8 containsObject:v9] || (objc_msgSend(v8, "containsObject:", v19) & 1) != 0)
+    if (![queryItems containsObject:scheme] || (objc_msgSend(queryItems, "containsObject:", v19) & 1) != 0)
     {
       goto LABEL_15;
     }
 
     v20 = v6;
-    v21 = [v25 URL];
-    v22 = [v21 absoluteString];
+    v21 = [viewCopy URL];
+    absoluteString = [v21 absoluteString];
     _SLLog(v20, 7, @"Dimissing auth UI because the server redirected us to %@");
 
-    v4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"SLErrorDomain" code:-1 userInfo:{0, v22}];
-    [(SL_OOPAWebViewController *)v23 _didFinishWithSuccess:0 response:0 error:v4];
+    scheme2 = [MEMORY[0x1E696ABC0] errorWithDomain:@"SLErrorDomain" code:-1 userInfo:{0, absoluteString}];
+    [(SL_OOPAWebViewController *)selfCopy _didFinishWithSuccess:0 response:0 error:scheme2];
 LABEL_14:
 
 LABEL_15:
@@ -532,12 +532,12 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if ([v11 isEqualToString:@"loading"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"loading"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[WKWebView isLoading](self->_wkWebView, "isLoading")}];
     _SLLog(v6, 5, @"SL_OOPAWebViewController observed WKWebView loading did change to %@");
@@ -557,41 +557,41 @@ LABEL_16:
   {
     v15.receiver = self;
     v15.super_class = SL_OOPAWebViewController;
-    [(SL_OOPAWebViewController *)&v15 observeValueForKeyPath:v11 ofObject:v12 change:v13 context:a6];
+    [(SL_OOPAWebViewController *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)_cancelButtonTapped:(id)a3
+- (void)_cancelButtonTapped:(id)tapped
 {
   _SLLog(v3, 7, @"SL_OOPAWebViewController: user tapped Cancel.");
 
   [(SL_OOPAWebViewController *)self _didFinishWithSuccess:0 response:0 error:0];
 }
 
-- (void)_updateNavigationPromptWithActiveURL:(id)a3
+- (void)_updateNavigationPromptWithActiveURL:(id)l
 {
-  v7 = a3;
-  v4 = [v7 host];
-  [(SL_OOPAWebViewController *)self setHostString:v4];
+  lCopy = l;
+  host = [lCopy host];
+  [(SL_OOPAWebViewController *)self setHostString:host];
 
-  v5 = [(SL_OOPAWebViewController *)self navigationItem];
-  if (v7)
+  navigationItem = [(SL_OOPAWebViewController *)self navigationItem];
+  if (lCopy)
   {
-    v6 = [v7 host];
-    [v5 setPrompt:v6];
+    host2 = [lCopy host];
+    [navigationItem setPrompt:host2];
   }
 
   else
   {
-    [v5 setPrompt:&stru_1F41EC300];
+    [navigationItem setPrompt:&stru_1F41EC300];
   }
 }
 
 - (void)startAnimating
 {
-  v3 = [(SL_OOPAWebViewController *)self navigationItem];
-  v4 = [v3 titleView];
-  [v4 startAnimating];
+  navigationItem = [(SL_OOPAWebViewController *)self navigationItem];
+  titleView = [navigationItem titleView];
+  [titleView startAnimating];
 
   webPageLoading = self->_webPageLoading;
 
@@ -600,9 +600,9 @@ LABEL_16:
 
 - (void)stopAnimating
 {
-  v3 = [(SL_OOPAWebViewController *)self navigationItem];
-  v4 = [v3 titleView];
-  [v4 stopAnimating];
+  navigationItem = [(SL_OOPAWebViewController *)self navigationItem];
+  titleView = [navigationItem titleView];
+  [titleView stopAnimating];
 
   webPageLoading = self->_webPageLoading;
 

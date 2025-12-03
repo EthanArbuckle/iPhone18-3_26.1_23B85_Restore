@@ -1,25 +1,25 @@
 @interface PMLMultiLabelLogisticRegressionModel
-- (PMLMultiLabelLogisticRegressionModel)initWithModels:(id)a3;
-- (PMLMultiLabelLogisticRegressionModel)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5;
-- (id)predict:(id)a3;
-- (id)toPlistWithChunks:(id)a3;
+- (PMLMultiLabelLogisticRegressionModel)initWithModels:(id)models;
+- (PMLMultiLabelLogisticRegressionModel)initWithPlist:(id)plist chunks:(id)chunks context:(id)context;
+- (id)predict:(id)predict;
+- (id)toPlistWithChunks:(id)chunks;
 @end
 
 @implementation PMLMultiLabelLogisticRegressionModel
 
-- (PMLMultiLabelLogisticRegressionModel)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5
+- (PMLMultiLabelLogisticRegressionModel)initWithPlist:(id)plist chunks:(id)chunks context:(id)context
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  plistCopy = plist;
+  chunksCopy = chunks;
+  contextCopy = context;
   v10 = [[PMLPlistClassWrapper alloc] initWithClassNameKey:@"CLASS_NAME"];
   v11 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v12 = [v7 objectForKeyedSubscript:@"MULTI_LABEL_REGRESSION_MODELS"];
+  v12 = [plistCopy objectForKeyedSubscript:@"MULTI_LABEL_REGRESSION_MODELS"];
   v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v13)
   {
@@ -35,7 +35,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [(PMLPlistClassWrapper *)v10 readObjectWithPlist:*(*(&v22 + 1) + 8 * v16) chunks:v8 context:v9];
+        v17 = [(PMLPlistClassWrapper *)v10 readObjectWithPlist:*(*(&v22 + 1) + 8 * v16) chunks:chunksCopy context:contextCopy];
         [v11 addObject:v17];
 
         ++v16;
@@ -53,10 +53,10 @@
   return v18;
 }
 
-- (id)toPlistWithChunks:(id)a3
+- (id)toPlistWithChunks:(id)chunks
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  chunksCopy = chunks;
   v5 = [[PMLPlistClassWrapper alloc] initWithClassNameKey:@"CLASS_NAME"];
   v6 = objc_opt_new();
   v16 = 0u;
@@ -78,7 +78,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [(PMLPlistClassWrapper *)v5 writeToPlistWithObject:*(*(&v16 + 1) + 8 * i) andChunks:v4, v16];
+        v12 = [(PMLPlistClassWrapper *)v5 writeToPlistWithObject:*(*(&v16 + 1) + 8 * i) andChunks:chunksCopy, v16];
         [v6 addObject:v12];
       }
 
@@ -97,10 +97,10 @@
   return v13;
 }
 
-- (id)predict:(id)a3
+- (id)predict:(id)predict
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predictCopy = predict;
   v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSArray count](self->_models, "count")}];
   if (v5)
   {
@@ -123,12 +123,12 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v18 + 1) + 8 * i) predict:{v4, v18}];
+          v11 = [*(*(&v18 + 1) + 8 * i) predict:{predictCopy, v18}];
           v12 = v11;
           if (v11)
           {
-            v13 = [v11 firstObject];
-            [v5 addObject:v13];
+            firstObject = [v11 firstObject];
+            [v5 addObject:firstObject];
           }
 
           else
@@ -148,8 +148,8 @@
 
   else
   {
-    v15 = [(PMLMultiLabelLogisticRegressionModel *)self outputDimension];
-    for (j = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v15]; v15; --v15)
+    outputDimension = [(PMLMultiLabelLogisticRegressionModel *)self outputDimension];
+    for (j = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:outputDimension]; outputDimension; --outputDimension)
     {
       [j addObject:&unk_287357F08];
     }
@@ -160,16 +160,16 @@
   return j;
 }
 
-- (PMLMultiLabelLogisticRegressionModel)initWithModels:(id)a3
+- (PMLMultiLabelLogisticRegressionModel)initWithModels:(id)models
 {
-  v5 = a3;
+  modelsCopy = models;
   v9.receiver = self;
   v9.super_class = PMLMultiLabelLogisticRegressionModel;
   v6 = [(PMLMultiLabelLogisticRegressionModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_models, a3);
+    objc_storeStrong(&v6->_models, models);
   }
 
   return v7;

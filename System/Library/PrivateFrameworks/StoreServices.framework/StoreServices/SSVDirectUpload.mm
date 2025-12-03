@@ -1,24 +1,24 @@
 @interface SSVDirectUpload
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SSVDirectUpload)initWithXPCEncoding:(id)a3;
+- (SSVDirectUpload)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
-- (void)_adoptStatusFromUpload:(id)a3;
+- (void)_adoptStatusFromUpload:(id)upload;
 @end
 
 @implementation SSVDirectUpload
 
-- (void)_adoptStatusFromUpload:(id)a3
+- (void)_adoptStatusFromUpload:(id)upload
 {
-  v4 = a3;
-  self->_countOfBytesExpectedToSend = [v4 countOfBytesExpectedToSend];
-  self->_countOfBytesSent = [v4 countOfBytesSent];
-  v5 = [v4 error];
+  uploadCopy = upload;
+  self->_countOfBytesExpectedToSend = [uploadCopy countOfBytesExpectedToSend];
+  self->_countOfBytesSent = [uploadCopy countOfBytesSent];
+  error = [uploadCopy error];
   error = self->_error;
-  self->_error = v5;
+  self->_error = error;
 
-  v7 = [v4 state];
-  self->_state = v7;
+  state = [uploadCopy state];
+  self->_state = state;
 }
 
 - (NSString)description
@@ -32,14 +32,14 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = [(SSVDirectUpload *)self persistentIdentifier];
-    v6 = v7 == [v4 persistentIdentifier];
+    persistentIdentifier = [(SSVDirectUpload *)self persistentIdentifier];
+    v6 = persistentIdentifier == [equalCopy persistentIdentifier];
   }
 
   else
@@ -50,11 +50,11 @@
   return v6;
 }
 
-- (SSVDirectUpload)initWithXPCEncoding:(id)a3
+- (SSVDirectUpload)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v25.receiver = self;
     v25.super_class = SSVDirectUpload;
@@ -128,8 +128,8 @@
   xpc_dictionary_set_int64(v3, "5", self->_persistentIdentifier);
   xpc_dictionary_set_int64(v3, "6", self->_state);
   SSXPCDictionarySetObject(v3, "7", self->_subtitle);
-  v4 = [(NSURL *)self->_thumbnailImageURL absoluteString];
-  SSXPCDictionarySetObject(v3, "8", v4);
+  absoluteString = [(NSURL *)self->_thumbnailImageURL absoluteString];
+  SSXPCDictionarySetObject(v3, "8", absoluteString);
 
   SSXPCDictionarySetObject(v3, "9", self->_title);
   SSXPCDictionarySetObject(v3, "A", self->_uploadKind);

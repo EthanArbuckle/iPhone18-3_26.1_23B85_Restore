@@ -6,10 +6,10 @@
 
 - (id)hu_containedServices
 {
-  v1 = [a1 accessory];
-  v2 = [v1 hf_visibleServices];
+  accessory = [self accessory];
+  hf_visibleServices = [accessory hf_visibleServices];
 
-  return v2;
+  return hf_visibleServices;
 }
 
 @end

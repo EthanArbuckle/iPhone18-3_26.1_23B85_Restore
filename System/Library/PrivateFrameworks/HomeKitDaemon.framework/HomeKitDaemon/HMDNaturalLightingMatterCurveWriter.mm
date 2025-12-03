@@ -1,43 +1,43 @@
 @interface HMDNaturalLightingMatterCurveWriter
 + (id)logCategory;
-- (BOOL)didAdjustNewColorTempBasedOnAccessoryColorTempRange:(id *)a3;
-- (BOOL)isAccessoryColorTemp:(id)a3 closeToCurveColorTemp:(id)a4;
+- (BOOL)didAdjustNewColorTempBasedOnAccessoryColorTempRange:(id *)range;
+- (BOOL)isAccessoryColorTemp:(id)temp closeToCurveColorTemp:(id)colorTemp;
 - (BOOL)isDemoMode;
 - (BOOL)isTimerRunning;
-- (BOOL)shouldAcceptSpecificationVersion:(id)a3;
+- (BOOL)shouldAcceptSpecificationVersion:(id)version;
 - (HMDHAPAccessory)accessory;
 - (HMDLightProfile)lightProfile;
-- (HMDNaturalLightingMatterCurveWriter)initWithWorkQueue:(id)a3 accessory:(id)a4;
-- (HMDNaturalLightingMatterCurveWriter)initWithWorkQueue:(id)a3 accessory:(id)a4 dataSource:(id)a5 notificationCenter:(id)a6 timerFactory:(id)a7;
+- (HMDNaturalLightingMatterCurveWriter)initWithWorkQueue:(id)queue accessory:(id)accessory;
+- (HMDNaturalLightingMatterCurveWriter)initWithWorkQueue:(id)queue accessory:(id)accessory dataSource:(id)source notificationCenter:(id)center timerFactory:(id)factory;
 - (NSNumber)regularTransitionTime;
 - (id)isNaturalLightingAllowedBasedOnAllowList;
 - (id)isNaturalLightingAllowedBasedOnSpecVersion;
 - (id)logIdentifier;
-- (unsigned)getShortTransitionTimeForAccessoryColorTemp:(id)a3 curveColorTemp:(id)a4;
+- (unsigned)getShortTransitionTimeForAccessoryColorTemp:(id)temp curveColorTemp:(id)colorTemp;
 - (void)checkIfNaturalLightingAllowed;
 - (void)configurePostNaturalLightingContext;
 - (void)configurePreNaturalLightingContext;
-- (void)configureWithLightProfile:(id)a3;
-- (void)disableNaturalLightingCurveWithCompletion:(id)a3;
-- (void)disableNaturalLightingWithReason:(id)a3 message:(id)a4;
-- (void)enableNaturalLightingWithReason:(id)a3;
-- (void)enableNaturalLightingWithReason:(id)a3 message:(id)a4;
-- (void)enableOrUpdateNaturalLightingCurveWithColorMode:(id)a3 accessoryColorTemp:(id)a4 completion:(id)a5;
-- (void)enableOrUpdateNaturalLightingCurveWithCompletion:(id)a3;
-- (void)getDemoModeTransitionTime:(id *)a3 newColorTemp:(id *)a4 accessoryColorTemp:(id)a5 colorMode:(id)a6;
-- (void)getTransitionTime:(id *)a3 newColorTemp:(id *)a4 accessoryColorTemp:(id)a5 colorMode:(id)a6;
-- (void)handleAccessoryConnected:(id)a3;
-- (void)handleAccessoryFirmwareVersionChangedNotification:(id)a3;
-- (void)handleColorControlAttributeReport:(id)a3;
-- (void)handleColorTemperatureAttributes:(id)a3;
-- (void)handleHomeNaturalLightingContextUpdated:(id)a3;
-- (void)handleMobileAssetsUpdatedNotification:(id)a3;
-- (void)handlePrimaryResidentUpdateNotification:(id)a3;
-- (void)handleSetNaturalLightingEnabledMessage:(id)a3 lightProfile:(id)a4;
-- (void)setNaturalLightingEnabled:(BOOL)a3 completion:(id)a4;
+- (void)configureWithLightProfile:(id)profile;
+- (void)disableNaturalLightingCurveWithCompletion:(id)completion;
+- (void)disableNaturalLightingWithReason:(id)reason message:(id)message;
+- (void)enableNaturalLightingWithReason:(id)reason;
+- (void)enableNaturalLightingWithReason:(id)reason message:(id)message;
+- (void)enableOrUpdateNaturalLightingCurveWithColorMode:(id)mode accessoryColorTemp:(id)temp completion:(id)completion;
+- (void)enableOrUpdateNaturalLightingCurveWithCompletion:(id)completion;
+- (void)getDemoModeTransitionTime:(id *)time newColorTemp:(id *)temp accessoryColorTemp:(id)colorTemp colorMode:(id)mode;
+- (void)getTransitionTime:(id *)time newColorTemp:(id *)temp accessoryColorTemp:(id)colorTemp colorMode:(id)mode;
+- (void)handleAccessoryConnected:(id)connected;
+- (void)handleAccessoryFirmwareVersionChangedNotification:(id)notification;
+- (void)handleColorControlAttributeReport:(id)report;
+- (void)handleColorTemperatureAttributes:(id)attributes;
+- (void)handleHomeNaturalLightingContextUpdated:(id)updated;
+- (void)handleMobileAssetsUpdatedNotification:(id)notification;
+- (void)handlePrimaryResidentUpdateNotification:(id)notification;
+- (void)handleSetNaturalLightingEnabledMessage:(id)message lightProfile:(id)profile;
+- (void)setNaturalLightingEnabled:(BOOL)enabled completion:(id)completion;
 - (void)setStartUpColorTemperature;
-- (void)startPeriodicWriteTimerWithInterval:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)startPeriodicWriteTimerWithInterval:(id)interval;
+- (void)timerDidFire:(id)fire;
 - (void)updateNaturalLightingEnabledFromAttributes;
 - (void)updateSettingsIfNaturalLightingSupportedByAccessory;
 @end
@@ -60,73 +60,73 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDNaturalLightingMatterCurveWriter *)self lightProfile];
-  v3 = [v2 logIdentifier];
+  lightProfile = [(HMDNaturalLightingMatterCurveWriter *)self lightProfile];
+  logIdentifier = [lightProfile logIdentifier];
 
-  return v3;
+  return logIdentifier;
 }
 
-- (void)handleColorControlAttributeReport:(id)a3
+- (void)handleColorControlAttributeReport:(id)report
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 path];
-  v6 = [v5 attribute];
+  reportCopy = report;
+  path = [reportCopy path];
+  attribute = [path attribute];
 
-  v7 = [(HMDNaturalLightingMatterCurveWriter *)self lightProfile];
-  v8 = [v7 isNaturalLightingEnabled];
+  lightProfile = [(HMDNaturalLightingMatterCurveWriter *)self lightProfile];
+  isNaturalLightingEnabled = [lightProfile isNaturalLightingEnabled];
 
-  if (v8 && [v6 isEqualToNumber:&unk_283E75380])
+  if (isNaturalLightingEnabled && [attribute isEqualToNumber:&unk_283E75380])
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      v21 = [v4 path];
-      v13 = [v21 endpoint];
-      v20 = [v4 path];
-      v14 = [v20 cluster];
-      v15 = [v4 path];
-      [v15 attribute];
+      path2 = [reportCopy path];
+      endpoint = [path2 endpoint];
+      path3 = [reportCopy path];
+      cluster = [path3 cluster];
+      path4 = [reportCopy path];
+      [path4 attribute];
       v16 = v22 = v9;
-      v17 = [v4 value];
+      value = [reportCopy value];
       *buf = 138544386;
       v24 = v12;
       v25 = 2112;
-      v26 = v13;
+      v26 = endpoint;
       v27 = 2112;
-      v28 = v14;
+      v28 = cluster;
       v29 = 2112;
       v30 = v16;
       v31 = 2112;
-      v32 = v17;
+      v32 = value;
       _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Handling MTRAttributeReport with endpoint: %@, cluster: %@, attribute: %@, value: %@", buf, 0x34u);
 
       v9 = v22;
     }
 
     objc_autoreleasePoolPop(v9);
-    v18 = [v4 value];
-    if ([v18 intValue] != 2)
+    value2 = [reportCopy value];
+    if ([value2 intValue] != 2)
     {
-      [(HMDNaturalLightingMatterCurveWriter *)v10 disableNaturalLightingWithReason:@"accessory-attribute-unexpected-color-mode" message:0];
+      [(HMDNaturalLightingMatterCurveWriter *)selfCopy disableNaturalLightingWithReason:@"accessory-attribute-unexpected-color-mode" message:0];
     }
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAccessoryFirmwareVersionChangedNotification:(id)a3
+- (void)handleAccessoryFirmwareVersionChangedNotification:(id)notification
 {
-  v4 = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
+  workQueue = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __89__HMDNaturalLightingMatterCurveWriter_handleAccessoryFirmwareVersionChangedNotification___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __89__HMDNaturalLightingMatterCurveWriter_handleAccessoryFirmwareVersionChangedNotification___block_invoke(uint64_t a1)
@@ -149,15 +149,15 @@ uint64_t __89__HMDNaturalLightingMatterCurveWriter_handleAccessoryFirmwareVersio
   return result;
 }
 
-- (void)handleAccessoryConnected:(id)a3
+- (void)handleAccessoryConnected:(id)connected
 {
-  v4 = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
+  workQueue = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__HMDNaturalLightingMatterCurveWriter_handleAccessoryConnected___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __64__HMDNaturalLightingMatterCurveWriter_handleAccessoryConnected___block_invoke(uint64_t a1)
@@ -290,12 +290,12 @@ uint64_t __64__HMDNaturalLightingMatterCurveWriter_handleAccessoryConnected___bl
   return 1;
 }
 
-- (void)handlePrimaryResidentUpdateNotification:(id)a3
+- (void)handlePrimaryResidentUpdateNotification:(id)notification
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"HMDResidentDeviceHomeUUIDNotificationKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"HMDResidentDeviceHomeUUIDNotificationKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -311,7 +311,7 @@ uint64_t __64__HMDNaturalLightingMatterCurveWriter_handleAccessoryConnected___bl
   v8 = v7;
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -322,26 +322,26 @@ uint64_t __64__HMDNaturalLightingMatterCurveWriter_handleAccessoryConnected___bl
   }
 
   objc_autoreleasePoolPop(v9);
-  v13 = [(HMDNaturalLightingMatterCurveWriter *)v10 accessory];
-  v14 = [v13 home];
-  v15 = [v14 uuid];
-  v16 = [v8 hmf_isEqualToUUID:v15];
+  accessory = [(HMDNaturalLightingMatterCurveWriter *)selfCopy accessory];
+  home = [accessory home];
+  uuid = [home uuid];
+  v16 = [v8 hmf_isEqualToUUID:uuid];
 
   if (v16)
   {
-    v17 = [(HMDNaturalLightingMatterCurveWriter *)v10 workQueue];
+    workQueue = [(HMDNaturalLightingMatterCurveWriter *)selfCopy workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __79__HMDNaturalLightingMatterCurveWriter_handlePrimaryResidentUpdateNotification___block_invoke;
     block[3] = &unk_27868A728;
-    block[4] = v10;
-    dispatch_async(v17, block);
+    block[4] = selfCopy;
+    dispatch_async(workQueue, block);
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = v10;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
@@ -404,15 +404,15 @@ void __79__HMDNaturalLightingMatterCurveWriter_handlePrimaryResidentUpdateNotifi
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleMobileAssetsUpdatedNotification:(id)a3
+- (void)handleMobileAssetsUpdatedNotification:(id)notification
 {
-  v4 = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
+  workQueue = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__HMDNaturalLightingMatterCurveWriter_handleMobileAssetsUpdatedNotification___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __77__HMDNaturalLightingMatterCurveWriter_handleMobileAssetsUpdatedNotification___block_invoke(uint64_t a1)
@@ -435,15 +435,15 @@ uint64_t __77__HMDNaturalLightingMatterCurveWriter_handleMobileAssetsUpdatedNoti
   return result;
 }
 
-- (void)handleHomeNaturalLightingContextUpdated:(id)a3
+- (void)handleHomeNaturalLightingContextUpdated:(id)updated
 {
-  v4 = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
+  workQueue = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__HMDNaturalLightingMatterCurveWriter_handleHomeNaturalLightingContextUpdated___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __79__HMDNaturalLightingMatterCurveWriter_handleHomeNaturalLightingContextUpdated___block_invoke(uint64_t a1)
@@ -466,12 +466,12 @@ uint64_t __79__HMDNaturalLightingMatterCurveWriter_handleHomeNaturalLightingCont
   return result;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -482,26 +482,26 @@ uint64_t __79__HMDNaturalLightingMatterCurveWriter_handleHomeNaturalLightingCont
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDNaturalLightingMatterCurveWriter *)v6 workQueue];
-  dispatch_assert_queue_V2(v9);
+  workQueue = [(HMDNaturalLightingMatterCurveWriter *)selfCopy workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v10 = [(HMDNaturalLightingMatterCurveWriter *)v6 periodicWriteTimer];
+  periodicWriteTimer = [(HMDNaturalLightingMatterCurveWriter *)selfCopy periodicWriteTimer];
 
-  if (v10 != v4)
+  if (periodicWriteTimer != fireCopy)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = v6;
+    v12 = selfCopy;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [(HMDNaturalLightingMatterCurveWriter *)v12 periodicWriteTimer];
+      periodicWriteTimer2 = [(HMDNaturalLightingMatterCurveWriter *)v12 periodicWriteTimer];
       v20 = 138543874;
       v21 = v14;
       v22 = 2112;
-      v23 = v15;
+      v23 = periodicWriteTimer2;
       v24 = 2112;
-      v25 = v4;
+      v25 = fireCopy;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Received timer did fire callback for unknown timer. Expected: %@ received: %@", &v20, 0x20u);
 
 LABEL_10:
@@ -511,14 +511,14 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v16 = [(HMDNaturalLightingMatterCurveWriter *)v6 accessory];
-  v17 = [v16 naturalLightingEnabled];
-  v18 = [v17 BOOLValue];
+  accessory = [(HMDNaturalLightingMatterCurveWriter *)selfCopy accessory];
+  naturalLightingEnabled = [accessory naturalLightingEnabled];
+  bOOLValue = [naturalLightingEnabled BOOLValue];
 
-  if ((v18 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = v6;
+    v12 = selfCopy;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -535,19 +535,19 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  [(HMDNaturalLightingMatterCurveWriter *)v6 enableNaturalLightingWithReason:@"periodic-timer-expired"];
+  [(HMDNaturalLightingMatterCurveWriter *)selfCopy enableNaturalLightingWithReason:@"periodic-timer-expired"];
 LABEL_12:
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startPeriodicWriteTimerWithInterval:(id)a3
+- (void)startPeriodicWriteTimerWithInterval:(id)interval
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 longValue];
+  intervalCopy = interval;
+  longValue = [intervalCopy longValue];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -555,43 +555,43 @@ LABEL_12:
     v17 = 138543618;
     v18 = v9;
     v19 = 2048;
-    v20 = v5;
+    v20 = longValue;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Starting Periodic write timer for %f seconds", &v17, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDNaturalLightingMatterCurveWriter *)v7 timerFactory];
-  v11 = v10[2](v10, 0, v5);
-  [(HMDNaturalLightingMatterCurveWriter *)v7 setPeriodicWriteTimer:v11];
+  timerFactory = [(HMDNaturalLightingMatterCurveWriter *)selfCopy timerFactory];
+  v11 = timerFactory[2](timerFactory, 0, longValue);
+  [(HMDNaturalLightingMatterCurveWriter *)selfCopy setPeriodicWriteTimer:v11];
 
-  v12 = [(HMDNaturalLightingMatterCurveWriter *)v7 periodicWriteTimer];
-  [v12 setDelegate:v7];
+  periodicWriteTimer = [(HMDNaturalLightingMatterCurveWriter *)selfCopy periodicWriteTimer];
+  [periodicWriteTimer setDelegate:selfCopy];
 
-  v13 = [(HMDNaturalLightingMatterCurveWriter *)v7 workQueue];
-  v14 = [(HMDNaturalLightingMatterCurveWriter *)v7 periodicWriteTimer];
-  [v14 setDelegateQueue:v13];
+  workQueue = [(HMDNaturalLightingMatterCurveWriter *)selfCopy workQueue];
+  periodicWriteTimer2 = [(HMDNaturalLightingMatterCurveWriter *)selfCopy periodicWriteTimer];
+  [periodicWriteTimer2 setDelegateQueue:workQueue];
 
-  v15 = [(HMDNaturalLightingMatterCurveWriter *)v7 periodicWriteTimer];
-  [v15 resume];
+  periodicWriteTimer3 = [(HMDNaturalLightingMatterCurveWriter *)selfCopy periodicWriteTimer];
+  [periodicWriteTimer3 resume];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldAcceptSpecificationVersion:(id)a3
+- (BOOL)shouldAcceptSpecificationVersion:(id)version
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  versionCopy = version;
+  v4 = versionCopy;
+  if (versionCopy)
   {
-    v5 = [v3 unsignedIntValue];
-    v6 = [v4 unsignedIntValue];
-    v7 = (v5 & 0xFF000000) != 0;
-    if ((v6 & 0xFC0000) == 0)
+    unsignedIntValue = [versionCopy unsignedIntValue];
+    unsignedIntValue2 = [v4 unsignedIntValue];
+    v7 = (unsignedIntValue & 0xFF000000) != 0;
+    if ((unsignedIntValue2 & 0xFC0000) == 0)
     {
       v7 = 0;
     }
 
-    if (v5 >> 25)
+    if (unsignedIntValue >> 25)
     {
       v8 = 1;
     }
@@ -610,25 +610,25 @@ LABEL_12:
   return v8;
 }
 
-- (void)getDemoModeTransitionTime:(id *)a3 newColorTemp:(id *)a4 accessoryColorTemp:(id)a5 colorMode:(id)a6
+- (void)getDemoModeTransitionTime:(id *)time newColorTemp:(id *)temp accessoryColorTemp:(id)colorTemp colorMode:(id)mode
 {
   v8 = 1800000 * (++getDemoModeTransitionTime_newColorTemp_accessoryColorTemp_colorMode__count % 0x30u) + 2000;
-  v9 = [(HMDNaturalLightingMatterCurveWriter *)self naturalLightingCurve:a3];
-  *a4 = [v9 colorTemperatureForBrightness:objc_msgSend(&unk_283E75368 millisecondsElapsedSinceStartOfDay:{"integerValue"), v8}];
+  v9 = [(HMDNaturalLightingMatterCurveWriter *)self naturalLightingCurve:time];
+  *temp = [v9 colorTemperatureForBrightness:objc_msgSend(&unk_283E75368 millisecondsElapsedSinceStartOfDay:{"integerValue"), v8}];
 
-  *a3 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:20];
+  *time = [MEMORY[0x277CCABB0] numberWithUnsignedShort:20];
 }
 
-- (BOOL)isAccessoryColorTemp:(id)a3 closeToCurveColorTemp:(id)a4
+- (BOOL)isAccessoryColorTemp:(id)temp closeToCurveColorTemp:(id)colorTemp
 {
-  v5 = a4;
-  v6 = [a3 shortValue];
-  v7 = [v5 shortValue];
+  colorTempCopy = colorTemp;
+  shortValue = [temp shortValue];
+  shortValue2 = [colorTempCopy shortValue];
 
-  v8 = v6 - v7;
-  if (v6 - v7 < 0)
+  v8 = shortValue - shortValue2;
+  if (shortValue - shortValue2 < 0)
   {
-    v8 = v7 - v6;
+    v8 = shortValue2 - shortValue;
   }
 
   return v8 < 0xB;
@@ -642,16 +642,16 @@ LABEL_12:
   return [v3 numberWithUnsignedShort:v2];
 }
 
-- (unsigned)getShortTransitionTimeForAccessoryColorTemp:(id)a3 curveColorTemp:(id)a4
+- (unsigned)getShortTransitionTimeForAccessoryColorTemp:(id)temp curveColorTemp:(id)colorTemp
 {
-  v5 = a4;
-  v6 = [a3 shortValue];
-  v7 = [v5 shortValue];
+  colorTempCopy = colorTemp;
+  shortValue = [temp shortValue];
+  shortValue2 = [colorTempCopy shortValue];
 
-  v8 = v6 - v7;
-  if (v6 - v7 < 0)
+  v8 = shortValue - shortValue2;
+  if (shortValue - shortValue2 < 0)
   {
-    v8 = v7 - v6;
+    v8 = shortValue2 - shortValue;
   }
 
   v9 = v8 / 0xAu;
@@ -666,177 +666,177 @@ LABEL_12:
   }
 }
 
-- (BOOL)didAdjustNewColorTempBasedOnAccessoryColorTempRange:(id *)a3
+- (BOOL)didAdjustNewColorTempBasedOnAccessoryColorTempRange:(id *)range
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = [(HMDNaturalLightingMatterCurveWriter *)self accessoryMinColorTemperature];
-  if (v5)
+  accessoryMinColorTemperature = [(HMDNaturalLightingMatterCurveWriter *)self accessoryMinColorTemperature];
+  if (accessoryMinColorTemperature)
   {
-    v6 = v5;
-    v7 = [*a3 intValue];
-    v8 = [(HMDNaturalLightingMatterCurveWriter *)self accessoryMinColorTemperature];
-    v9 = [v8 intValue];
+    v6 = accessoryMinColorTemperature;
+    intValue = [*range intValue];
+    accessoryMinColorTemperature2 = [(HMDNaturalLightingMatterCurveWriter *)self accessoryMinColorTemperature];
+    intValue2 = [accessoryMinColorTemperature2 intValue];
 
-    if (v7 < v9)
+    if (intValue < intValue2)
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v13 = HMFGetLogIdentifier();
-        v14 = *a3;
-        v15 = [(HMDNaturalLightingMatterCurveWriter *)v11 accessoryMinColorTemperature];
+        v14 = *range;
+        accessoryMinColorTemperature3 = [(HMDNaturalLightingMatterCurveWriter *)selfCopy accessoryMinColorTemperature];
         v30 = 138543874;
         v31 = v13;
         v32 = 2112;
         v33 = v14;
         v34 = 2112;
-        v35 = v15;
+        v35 = accessoryMinColorTemperature3;
         _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@Adjusting new color temp: %@ to min color temp: %@", &v30, 0x20u);
       }
 
       objc_autoreleasePoolPop(v10);
-      v16 = [(HMDNaturalLightingMatterCurveWriter *)v11 accessoryMinColorTemperature];
+      accessoryMinColorTemperature4 = [(HMDNaturalLightingMatterCurveWriter *)selfCopy accessoryMinColorTemperature];
 LABEL_11:
-      *a3 = v16;
-      LOBYTE(v17) = 1;
+      *range = accessoryMinColorTemperature4;
+      LOBYTE(accessoryMaxColorTemperature) = 1;
       goto LABEL_13;
     }
   }
 
-  v17 = [(HMDNaturalLightingMatterCurveWriter *)self accessoryMaxColorTemperature];
-  if (v17)
+  accessoryMaxColorTemperature = [(HMDNaturalLightingMatterCurveWriter *)self accessoryMaxColorTemperature];
+  if (accessoryMaxColorTemperature)
   {
-    v18 = v17;
-    v19 = [*a3 intValue];
-    v20 = [(HMDNaturalLightingMatterCurveWriter *)self accessoryMaxColorTemperature];
-    v21 = [v20 intValue];
+    v18 = accessoryMaxColorTemperature;
+    intValue3 = [*range intValue];
+    accessoryMaxColorTemperature2 = [(HMDNaturalLightingMatterCurveWriter *)self accessoryMaxColorTemperature];
+    intValue4 = [accessoryMaxColorTemperature2 intValue];
 
-    if (v19 <= v21)
+    if (intValue3 <= intValue4)
     {
-      LOBYTE(v17) = 0;
+      LOBYTE(accessoryMaxColorTemperature) = 0;
       goto LABEL_13;
     }
 
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = *a3;
-      v27 = [(HMDNaturalLightingMatterCurveWriter *)v23 accessoryMaxColorTemperature];
+      v26 = *range;
+      accessoryMaxColorTemperature3 = [(HMDNaturalLightingMatterCurveWriter *)selfCopy2 accessoryMaxColorTemperature];
       v30 = 138543874;
       v31 = v25;
       v32 = 2112;
       v33 = v26;
       v34 = 2112;
-      v35 = v27;
+      v35 = accessoryMaxColorTemperature3;
       _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_INFO, "%{public}@Adjusting new color temp: %@ to max color temp: %@", &v30, 0x20u);
     }
 
     objc_autoreleasePoolPop(v22);
-    v16 = [(HMDNaturalLightingMatterCurveWriter *)v23 accessoryMaxColorTemperature];
+    accessoryMinColorTemperature4 = [(HMDNaturalLightingMatterCurveWriter *)selfCopy2 accessoryMaxColorTemperature];
     goto LABEL_11;
   }
 
 LABEL_13:
   v28 = *MEMORY[0x277D85DE8];
-  return v17;
+  return accessoryMaxColorTemperature;
 }
 
-- (void)getTransitionTime:(id *)a3 newColorTemp:(id *)a4 accessoryColorTemp:(id)a5 colorMode:(id)a6
+- (void)getTransitionTime:(id *)time newColorTemp:(id *)temp accessoryColorTemp:(id)colorTemp colorMode:(id)mode
 {
-  v31 = a5;
-  v10 = a6;
-  v11 = [(HMDNaturalLightingMatterCurveWriter *)self dataSource];
-  v12 = [(HMDNaturalLightingMatterCurveWriter *)self dataSource];
-  v13 = [v12 date];
-  v14 = [(HMDNaturalLightingMatterCurveWriter *)self dataSource];
-  v15 = [v14 localTimeZone];
-  v16 = [v11 millisecondsElapsedSinceStartOfDayWithDate:v13 timeZone:v15];
+  colorTempCopy = colorTemp;
+  modeCopy = mode;
+  dataSource = [(HMDNaturalLightingMatterCurveWriter *)self dataSource];
+  dataSource2 = [(HMDNaturalLightingMatterCurveWriter *)self dataSource];
+  date = [dataSource2 date];
+  dataSource3 = [(HMDNaturalLightingMatterCurveWriter *)self dataSource];
+  localTimeZone = [dataSource3 localTimeZone];
+  v16 = [dataSource millisecondsElapsedSinceStartOfDayWithDate:date timeZone:localTimeZone];
 
-  v17 = [(HMDNaturalLightingMatterCurveWriter *)self naturalLightingCurve];
-  v18 = [v17 colorTemperatureForBrightness:objc_msgSend(&unk_283E75368 millisecondsElapsedSinceStartOfDay:{"integerValue"), v16}];
+  naturalLightingCurve = [(HMDNaturalLightingMatterCurveWriter *)self naturalLightingCurve];
+  v18 = [naturalLightingCurve colorTemperatureForBrightness:objc_msgSend(&unk_283E75368 millisecondsElapsedSinceStartOfDay:{"integerValue"), v16}];
 
-  LODWORD(v17) = [v10 intValue];
-  if (v17 != 2)
+  LODWORD(naturalLightingCurve) = [modeCopy intValue];
+  if (naturalLightingCurve != 2)
   {
-    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:0];
+    regularTransitionTime = [MEMORY[0x277CCABB0] numberWithUnsignedShort:0];
     goto LABEL_5;
   }
 
-  if ([(HMDNaturalLightingMatterCurveWriter *)self isAccessoryColorTemp:v31 closeToCurveColorTemp:v18])
+  if ([(HMDNaturalLightingMatterCurveWriter *)self isAccessoryColorTemp:colorTempCopy closeToCurveColorTemp:v18])
   {
-    v19 = [(HMDNaturalLightingMatterCurveWriter *)self regularTransitionTime];
+    regularTransitionTime = [(HMDNaturalLightingMatterCurveWriter *)self regularTransitionTime];
 LABEL_5:
-    *a3 = v19;
+    *time = regularTransitionTime;
     v20 = 0.0;
     goto LABEL_7;
   }
 
-  v21 = [(HMDNaturalLightingMatterCurveWriter *)self getShortTransitionTimeForAccessoryColorTemp:v31 curveColorTemp:v18];
-  *a3 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v21];
+  v21 = [(HMDNaturalLightingMatterCurveWriter *)self getShortTransitionTimeForAccessoryColorTemp:colorTempCopy curveColorTemp:v18];
+  *time = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v21];
   v20 = v21;
 LABEL_7:
-  v22 = [(HMDNaturalLightingMatterCurveWriter *)self dataSource];
-  v23 = [(HMDNaturalLightingMatterCurveWriter *)self dataSource];
-  v24 = [v23 date];
-  v25 = [v24 dateByAddingTimeInterval:v20];
-  v26 = [(HMDNaturalLightingMatterCurveWriter *)self dataSource];
-  v27 = [v26 localTimeZone];
-  v28 = [v22 millisecondsElapsedSinceStartOfDayWithDate:v25 timeZone:v27];
+  dataSource4 = [(HMDNaturalLightingMatterCurveWriter *)self dataSource];
+  dataSource5 = [(HMDNaturalLightingMatterCurveWriter *)self dataSource];
+  date2 = [dataSource5 date];
+  v25 = [date2 dateByAddingTimeInterval:v20];
+  dataSource6 = [(HMDNaturalLightingMatterCurveWriter *)self dataSource];
+  localTimeZone2 = [dataSource6 localTimeZone];
+  v28 = [dataSource4 millisecondsElapsedSinceStartOfDayWithDate:v25 timeZone:localTimeZone2];
 
-  v29 = [(HMDNaturalLightingMatterCurveWriter *)self naturalLightingCurve];
-  *a4 = [v29 colorTemperatureForBrightness:objc_msgSend(&unk_283E75368 millisecondsElapsedSinceStartOfDay:{"integerValue"), v28}];
+  naturalLightingCurve2 = [(HMDNaturalLightingMatterCurveWriter *)self naturalLightingCurve];
+  *temp = [naturalLightingCurve2 colorTemperatureForBrightness:objc_msgSend(&unk_283E75368 millisecondsElapsedSinceStartOfDay:{"integerValue"), v28}];
 
-  if ([(HMDNaturalLightingMatterCurveWriter *)self didAdjustNewColorTempBasedOnAccessoryColorTempRange:a4])
+  if ([(HMDNaturalLightingMatterCurveWriter *)self didAdjustNewColorTempBasedOnAccessoryColorTempRange:temp])
   {
     *v30 = [(HMDNaturalLightingMatterCurveWriter *)self regularTransitionTime];
   }
 }
 
-- (void)enableOrUpdateNaturalLightingCurveWithColorMode:(id)a3 accessoryColorTemp:(id)a4 completion:(id)a5
+- (void)enableOrUpdateNaturalLightingCurveWithColorMode:(id)mode accessoryColorTemp:(id)temp completion:(id)completion
 {
   v62 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v40 = a5;
-  v10 = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  modeCopy = mode;
+  tempCopy = temp;
+  completionCopy = completion;
+  workQueue = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [(HMDNaturalLightingMatterCurveWriter *)v12 accessory];
-    v16 = [v15 name];
+    accessory = [(HMDNaturalLightingMatterCurveWriter *)selfCopy accessory];
+    name = [accessory name];
     *buf = 138544130;
     v53 = v14;
     v54 = 2112;
-    v55 = v8;
+    v55 = modeCopy;
     v56 = 2112;
-    v57 = v9;
+    v57 = tempCopy;
     v58 = 2112;
-    v59 = v16;
+    v59 = name;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Enabling natural lighting, colorMode: %@ accessoryColorTemp: %@ for accessory: %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v11);
-  v17 = [(HMDNaturalLightingMatterCurveWriter *)v12 accessory];
-  v41 = v8;
-  if ([(HMDNaturalLightingMatterCurveWriter *)v12 isDemoMode])
+  accessory2 = [(HMDNaturalLightingMatterCurveWriter *)selfCopy accessory];
+  v41 = modeCopy;
+  if ([(HMDNaturalLightingMatterCurveWriter *)selfCopy isDemoMode])
   {
     v48 = 0;
     v49 = 0;
-    [(HMDNaturalLightingMatterCurveWriter *)v12 getDemoModeTransitionTime:&v49 newColorTemp:&v48 accessoryColorTemp:v9 colorMode:v8];
+    [(HMDNaturalLightingMatterCurveWriter *)selfCopy getDemoModeTransitionTime:&v49 newColorTemp:&v48 accessoryColorTemp:tempCopy colorMode:modeCopy];
     v18 = v49;
     v19 = v48;
     v20 = objc_autoreleasePoolPush();
-    v21 = v12;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
@@ -844,7 +844,7 @@ LABEL_7:
     }
 
     v23 = HMFGetLogIdentifier();
-    v24 = [v17 name];
+    name2 = [accessory2 name];
     *buf = 138544386;
     v53 = v23;
     v54 = 2112;
@@ -852,9 +852,9 @@ LABEL_7:
     v56 = 2112;
     v57 = v18;
     v58 = 2112;
-    v59 = v24;
+    v59 = name2;
     v60 = 2112;
-    v61 = v9;
+    v61 = tempCopy;
     v25 = "%{public}@Demo mode: Calculated new color temp: %@ transition time: %@ for accessory: %@ with color temp: %@";
   }
 
@@ -862,11 +862,11 @@ LABEL_7:
   {
     v50 = 0;
     v51 = 0;
-    [(HMDNaturalLightingMatterCurveWriter *)v12 getTransitionTime:&v51 newColorTemp:&v50 accessoryColorTemp:v9 colorMode:v8];
+    [(HMDNaturalLightingMatterCurveWriter *)selfCopy getTransitionTime:&v51 newColorTemp:&v50 accessoryColorTemp:tempCopy colorMode:modeCopy];
     v18 = v51;
     v19 = v50;
     v20 = objc_autoreleasePoolPush();
-    v26 = v12;
+    v26 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
@@ -874,7 +874,7 @@ LABEL_7:
     }
 
     v23 = HMFGetLogIdentifier();
-    v24 = [v17 name];
+    name2 = [accessory2 name];
     *buf = 138544386;
     v53 = v23;
     v54 = 2112;
@@ -882,9 +882,9 @@ LABEL_7:
     v56 = 2112;
     v57 = v18;
     v58 = 2112;
-    v59 = v24;
+    v59 = name2;
     v60 = 2112;
-    v61 = v9;
+    v61 = tempCopy;
     v25 = "%{public}@Calculated new color temp: %@ transition time: %@ for accessory: %@ with color temp: %@";
   }
 
@@ -893,24 +893,24 @@ LABEL_7:
 LABEL_9:
   objc_autoreleasePoolPop(v20);
   v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{10 * objc_msgSend(v18, "unsignedIntValue")}];
-  v28 = [v17 chipAccessoryServer];
-  v29 = v28;
-  if (v28)
+  chipAccessoryServer = [accessory2 chipAccessoryServer];
+  v29 = chipAccessoryServer;
+  if (chipAccessoryServer)
   {
-    v30 = [v28 identifier];
-    v31 = [v17 hapInstanceId];
-    v32 = [v17 matchingHAPAccessoryWithServerIdentifier:v30 instanceID:v31];
+    identifier = [chipAccessoryServer identifier];
+    hapInstanceId = [accessory2 hapInstanceId];
+    v32 = [accessory2 matchingHAPAccessoryWithServerIdentifier:identifier instanceID:hapInstanceId];
 
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __117__HMDNaturalLightingMatterCurveWriter_enableOrUpdateNaturalLightingCurveWithColorMode_accessoryColorTemp_completion___block_invoke;
     v42[3] = &unk_278689B30;
-    v42[4] = v12;
-    v33 = v40;
-    v47 = v40;
+    v42[4] = selfCopy;
+    v33 = completionCopy;
+    v47 = completionCopy;
     v43 = v19;
     v44 = v27;
-    v45 = v9;
+    v45 = tempCopy;
     v46 = v18;
     [v29 fetchColorControlClusterForHapAccessory:v32 completionHandler:v42];
   }
@@ -918,7 +918,7 @@ LABEL_9:
   else
   {
     v34 = objc_autoreleasePoolPush();
-    v35 = v12;
+    v35 = selfCopy;
     v36 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
@@ -930,9 +930,9 @@ LABEL_9:
 
     objc_autoreleasePoolPop(v34);
     v32 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    v38 = [(HMDNaturalLightingMatterCurveWriter *)v35 regularTransitionTime];
-    v33 = v40;
-    (*(v40 + 2))(v40, v32, v38);
+    regularTransitionTime = [(HMDNaturalLightingMatterCurveWriter *)v35 regularTransitionTime];
+    v33 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, v32, regularTransitionTime);
   }
 
   v39 = *MEMORY[0x277D85DE8];
@@ -1066,32 +1066,32 @@ void __117__HMDNaturalLightingMatterCurveWriter_enableOrUpdateNaturalLightingCur
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)enableOrUpdateNaturalLightingCurveWithCompletion:(id)a3
+- (void)enableOrUpdateNaturalLightingCurveWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNaturalLightingMatterCurveWriter *)self accessory];
-  v6 = [v5 chipAccessoryServer];
-  if (v6)
+  completionCopy = completion;
+  accessory = [(HMDNaturalLightingMatterCurveWriter *)self accessory];
+  chipAccessoryServer = [accessory chipAccessoryServer];
+  if (chipAccessoryServer)
   {
-    v7 = [v5 chipAccessoryServer];
-    v8 = [v7 identifier];
-    v9 = [v5 hapInstanceId];
-    v10 = [v5 matchingHAPAccessoryWithServerIdentifier:v8 instanceID:v9];
+    chipAccessoryServer2 = [accessory chipAccessoryServer];
+    identifier = [chipAccessoryServer2 identifier];
+    hapInstanceId = [accessory hapInstanceId];
+    v10 = [accessory matchingHAPAccessoryWithServerIdentifier:identifier instanceID:hapInstanceId];
 
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __88__HMDNaturalLightingMatterCurveWriter_enableOrUpdateNaturalLightingCurveWithCompletion___block_invoke;
     v17[3] = &unk_278689A90;
     v17[4] = self;
-    v18 = v4;
-    [v6 fetchColorControlClusterForHapAccessory:v10 completionHandler:v17];
+    v18 = completionCopy;
+    [chipAccessoryServer fetchColorControlClusterForHapAccessory:v10 completionHandler:v17];
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -1103,8 +1103,8 @@ void __117__HMDNaturalLightingMatterCurveWriter_enableOrUpdateNaturalLightingCur
 
     objc_autoreleasePoolPop(v11);
     v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    v15 = [(HMDNaturalLightingMatterCurveWriter *)v12 regularTransitionTime];
-    (*(v4 + 2))(v4, v10, v15);
+    regularTransitionTime = [(HMDNaturalLightingMatterCurveWriter *)selfCopy regularTransitionTime];
+    (*(completionCopy + 2))(completionCopy, v10, regularTransitionTime);
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -1239,32 +1239,32 @@ void __88__HMDNaturalLightingMatterCurveWriter_enableOrUpdateNaturalLightingCurv
   (*(v2 + 16))(v2, v4, v3);
 }
 
-- (void)disableNaturalLightingCurveWithCompletion:(id)a3
+- (void)disableNaturalLightingCurveWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNaturalLightingMatterCurveWriter *)self accessory];
-  v6 = [v5 chipAccessoryServer];
-  if (v6)
+  completionCopy = completion;
+  accessory = [(HMDNaturalLightingMatterCurveWriter *)self accessory];
+  chipAccessoryServer = [accessory chipAccessoryServer];
+  if (chipAccessoryServer)
   {
-    v7 = [v5 chipAccessoryServer];
-    v8 = [v7 identifier];
-    v9 = [v5 hapInstanceId];
-    v10 = [v5 matchingHAPAccessoryWithServerIdentifier:v8 instanceID:v9];
+    chipAccessoryServer2 = [accessory chipAccessoryServer];
+    identifier = [chipAccessoryServer2 identifier];
+    hapInstanceId = [accessory hapInstanceId];
+    v10 = [accessory matchingHAPAccessoryWithServerIdentifier:identifier instanceID:hapInstanceId];
 
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __81__HMDNaturalLightingMatterCurveWriter_disableNaturalLightingCurveWithCompletion___block_invoke;
     v17[3] = &unk_278689A90;
     v17[4] = self;
-    v18 = v4;
-    [v6 fetchColorControlClusterForHapAccessory:v10 completionHandler:v17];
+    v18 = completionCopy;
+    [chipAccessoryServer fetchColorControlClusterForHapAccessory:v10 completionHandler:v17];
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -1276,8 +1276,8 @@ void __88__HMDNaturalLightingMatterCurveWriter_enableOrUpdateNaturalLightingCurv
 
     objc_autoreleasePoolPop(v11);
     v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    v15 = [(HMDNaturalLightingMatterCurveWriter *)v12 regularTransitionTime];
-    (*(v4 + 2))(v4, v10, v15);
+    regularTransitionTime = [(HMDNaturalLightingMatterCurveWriter *)selfCopy regularTransitionTime];
+    (*(completionCopy + 2))(completionCopy, v10, regularTransitionTime);
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -1388,66 +1388,66 @@ void __81__HMDNaturalLightingMatterCurveWriter_disableNaturalLightingCurveWithCo
   (*(v2 + 16))(v2, v1, v3);
 }
 
-- (void)setNaturalLightingEnabled:(BOOL)a3 completion:(id)a4
+- (void)setNaturalLightingEnabled:(BOOL)enabled completion:(id)completion
 {
-  v4 = a3;
-  v7 = a4;
-  v6 = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  enabledCopy = enabled;
+  completionCopy = completion;
+  workQueue = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v4)
+  if (enabledCopy)
   {
-    [(HMDNaturalLightingMatterCurveWriter *)self enableOrUpdateNaturalLightingCurveWithCompletion:v7];
+    [(HMDNaturalLightingMatterCurveWriter *)self enableOrUpdateNaturalLightingCurveWithCompletion:completionCopy];
   }
 
   else
   {
-    [(HMDNaturalLightingMatterCurveWriter *)self disableNaturalLightingCurveWithCompletion:v7];
+    [(HMDNaturalLightingMatterCurveWriter *)self disableNaturalLightingCurveWithCompletion:completionCopy];
   }
 }
 
 - (void)setStartUpColorTemperature
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDNaturalLightingMatterCurveWriter *)self accessory];
+  accessory = [(HMDNaturalLightingMatterCurveWriter *)self accessory];
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(HMDNaturalLightingMatterCurveWriter *)self dataSource];
-  v7 = [v5 numberWithInteger:{objc_msgSend(v6, "naturalLightingStartUpColorTemperature")}];
+  dataSource = [(HMDNaturalLightingMatterCurveWriter *)self dataSource];
+  v7 = [v5 numberWithInteger:{objc_msgSend(dataSource, "naturalLightingStartUpColorTemperature")}];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v4 name];
+    name = [accessory name];
     *buf = 138543874;
     v23 = v11;
     v24 = 2112;
     v25 = v7;
     v26 = 2112;
-    v27 = v12;
+    v27 = name;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Setting startUpColorTemperature:%@ on accessory: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [v4 chipAccessoryServer];
-  v14 = [v13 identifier];
-  v15 = [v4 hapInstanceId];
-  v16 = [v4 matchingHAPAccessoryWithServerIdentifier:v14 instanceID:v15];
+  chipAccessoryServer = [accessory chipAccessoryServer];
+  identifier = [chipAccessoryServer identifier];
+  hapInstanceId = [accessory hapInstanceId];
+  v16 = [accessory matchingHAPAccessoryWithServerIdentifier:identifier instanceID:hapInstanceId];
 
-  v17 = [v4 chipAccessoryServer];
+  chipAccessoryServer2 = [accessory chipAccessoryServer];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __65__HMDNaturalLightingMatterCurveWriter_setStartUpColorTemperature__block_invoke;
   v20[3] = &unk_278689A40;
-  v20[4] = v9;
+  v20[4] = selfCopy;
   v21 = v7;
   v18 = v7;
-  [v17 fetchColorControlClusterForHapAccessory:v16 completionHandler:v20];
+  [chipAccessoryServer2 fetchColorControlClusterForHapAccessory:v16 completionHandler:v20];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -1524,16 +1524,16 @@ void __65__HMDNaturalLightingMatterCurveWriter_setStartUpColorTemperature__block
 - (void)updateSettingsIfNaturalLightingSupportedByAccessory
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDNaturalLightingMatterCurveWriter *)self accessory];
-  v5 = [v4 home];
-  v6 = v5;
-  if (!v4 || !v5)
+  accessory = [(HMDNaturalLightingMatterCurveWriter *)self accessory];
+  home = [accessory home];
+  v6 = home;
+  if (!accessory || !home)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy3 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -1554,10 +1554,10 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (([v5 isCurrentDeviceConfirmedPrimaryResident] & 1) == 0)
+  if (([home isCurrentDeviceConfirmedPrimaryResident] & 1) == 0)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy3 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -1576,7 +1576,7 @@ LABEL_12:
   if (![(HMDNaturalLightingMatterCurveWriter *)self naturalLightingAllowed])
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy3 = self;
     v14 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -1584,22 +1584,22 @@ LABEL_12:
     }
 
     v15 = HMFGetLogIdentifier();
-    v20 = [v4 uuid];
+    uuid = [accessory uuid];
     *buf = 138543618;
     v25 = v15;
     v26 = 2112;
-    v27 = v20;
+    v27 = uuid;
     _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@Not updating natural lighting settings because natural lighting is not allowed for this accessory: %@", buf, 0x16u);
 
     goto LABEL_11;
   }
 
-  v7 = [v4 chipAccessoryServer];
-  v8 = [v7 identifier];
-  v9 = [v4 hapInstanceId];
-  v10 = [v4 matchingHAPAccessoryWithServerIdentifier:v8 instanceID:v9];
+  chipAccessoryServer = [accessory chipAccessoryServer];
+  identifier = [chipAccessoryServer identifier];
+  hapInstanceId = [accessory hapInstanceId];
+  v10 = [accessory matchingHAPAccessoryWithServerIdentifier:identifier instanceID:hapInstanceId];
 
-  v11 = [v4 chipAccessoryServer];
+  chipAccessoryServer2 = [accessory chipAccessoryServer];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __90__HMDNaturalLightingMatterCurveWriter_updateSettingsIfNaturalLightingSupportedByAccessory__block_invoke;
@@ -1607,7 +1607,7 @@ LABEL_12:
   v21[4] = self;
   v22 = &unk_283E75338;
   v23 = &unk_283E75350;
-  [v11 fetchColorControlClusterForHapAccessory:v10 completionHandler:v21];
+  [chipAccessoryServer2 fetchColorControlClusterForHapAccessory:v10 completionHandler:v21];
 
 LABEL_13:
   v19 = *MEMORY[0x277D85DE8];
@@ -1739,59 +1739,59 @@ void __90__HMDNaturalLightingMatterCurveWriter_updateSettingsIfNaturalLightingSu
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleColorTemperatureAttributes:(id)a3
+- (void)handleColorTemperatureAttributes:(id)attributes
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 colorMode];
+  attributesCopy = attributes;
+  colorMode = [attributesCopy colorMode];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v4 shortDescription];
+    shortDescription = [attributesCopy shortDescription];
     v23 = 138543618;
     v24 = v9;
     v25 = 2112;
-    v26 = v10;
+    v26 = shortDescription;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Color temperature attributes read from accessory: %@", &v23, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  if (v5 && [v5 intValue] != 2)
+  if (colorMode && [colorMode intValue] != 2)
   {
-    [(HMDNaturalLightingMatterCurveWriter *)v7 disableNaturalLightingWithReason:@"accessory-attribute-colorMode-change" message:0];
+    [(HMDNaturalLightingMatterCurveWriter *)selfCopy disableNaturalLightingWithReason:@"accessory-attribute-colorMode-change" message:0];
     goto LABEL_16;
   }
 
-  v11 = [v4 remainingTime];
-  v12 = [(HMDNaturalLightingMatterCurveWriter *)v7 accessory];
-  v13 = [v12 naturalLightingEnabled];
-  v14 = [v13 BOOLValue];
+  remainingTime = [attributesCopy remainingTime];
+  accessory = [(HMDNaturalLightingMatterCurveWriter *)selfCopy accessory];
+  naturalLightingEnabled = [accessory naturalLightingEnabled];
+  bOOLValue = [naturalLightingEnabled BOOLValue];
 
-  if (v14 && v11 && [v11 unsignedShortValue])
+  if (bOOLValue && remainingTime && [remainingTime unsignedShortValue])
   {
     v15 = @"naturalLightingEnabled";
 LABEL_13:
-    [(HMDNaturalLightingMatterCurveWriter *)v7 enableNaturalLightingWithReason:v15];
+    [(HMDNaturalLightingMatterCurveWriter *)selfCopy enableNaturalLightingWithReason:v15];
     goto LABEL_14;
   }
 
-  if (v14)
+  if (bOOLValue)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = v7;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v19 = HMFGetLogIdentifier();
-      v20 = [(HMDNaturalLightingMatterCurveWriter *)v17 accessory];
-      v21 = [v20 name];
+      accessory2 = [(HMDNaturalLightingMatterCurveWriter *)v17 accessory];
+      name = [accessory2 name];
       v23 = 138543618;
       v24 = v19;
       v25 = 2112;
-      v26 = v21;
+      v26 = name;
       _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_INFO, "%{public}@Natural lighting is enabled and remaining time is 0, yet enabling again on accessory: %@", &v23, 0x16u);
     }
 
@@ -1809,16 +1809,16 @@ LABEL_16:
 - (void)updateNaturalLightingEnabledFromAttributes
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDNaturalLightingMatterCurveWriter *)self accessory];
-  v5 = [v4 home];
-  v6 = v5;
-  if (!v4 || !v5)
+  accessory = [(HMDNaturalLightingMatterCurveWriter *)self accessory];
+  home = [accessory home];
+  v6 = home;
+  if (!accessory || !home)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy3 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -1839,10 +1839,10 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (([v5 isCurrentDeviceConfirmedPrimaryResident] & 1) == 0)
+  if (([home isCurrentDeviceConfirmedPrimaryResident] & 1) == 0)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy3 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -1861,7 +1861,7 @@ LABEL_12:
   if (![(HMDNaturalLightingMatterCurveWriter *)self naturalLightingAllowed])
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy3 = self;
     v14 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -1869,28 +1869,28 @@ LABEL_12:
     }
 
     v15 = HMFGetLogIdentifier();
-    v20 = [v4 uuid];
+    uuid = [accessory uuid];
     *buf = 138543618;
     v23 = v15;
     v24 = 2112;
-    v25 = v20;
+    v25 = uuid;
     _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@Not updating natural lighting settings because natural lighting is not allowed for this accessory: %@", buf, 0x16u);
 
     goto LABEL_11;
   }
 
-  v7 = [v4 chipAccessoryServer];
-  v8 = [v7 identifier];
-  v9 = [v4 hapInstanceId];
-  v10 = [v4 matchingHAPAccessoryWithServerIdentifier:v8 instanceID:v9];
+  chipAccessoryServer = [accessory chipAccessoryServer];
+  identifier = [chipAccessoryServer identifier];
+  hapInstanceId = [accessory hapInstanceId];
+  v10 = [accessory matchingHAPAccessoryWithServerIdentifier:identifier instanceID:hapInstanceId];
 
-  v11 = [v4 chipAccessoryServer];
+  chipAccessoryServer2 = [accessory chipAccessoryServer];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __81__HMDNaturalLightingMatterCurveWriter_updateNaturalLightingEnabledFromAttributes__block_invoke;
   v21[3] = &unk_2786899A0;
   v21[4] = self;
-  [v11 fetchColorControlClusterForHapAccessory:v10 completionHandler:v21];
+  [chipAccessoryServer2 fetchColorControlClusterForHapAccessory:v10 completionHandler:v21];
 
 LABEL_13:
   v19 = *MEMORY[0x277D85DE8];
@@ -1984,25 +1984,25 @@ void __81__HMDNaturalLightingMatterCurveWriter_updateNaturalLightingEnabledFromA
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disableNaturalLightingWithReason:(id)a3 message:(id)a4
+- (void)disableNaturalLightingWithReason:(id)reason message:(id)message
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDNaturalLightingMatterCurveWriter *)self lightProfile];
-  v9 = [v8 isNaturalLightingEnabled];
-  if (v7)
+  reasonCopy = reason;
+  messageCopy = message;
+  lightProfile = [(HMDNaturalLightingMatterCurveWriter *)self lightProfile];
+  isNaturalLightingEnabled = [lightProfile isNaturalLightingEnabled];
+  if (messageCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = v9;
+    v10 = isNaturalLightingEnabled;
   }
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_INFO);
   if (v10)
@@ -2013,20 +2013,20 @@ void __81__HMDNaturalLightingMatterCurveWriter_updateNaturalLightingEnabledFromA
       *buf = 138543618;
       v25 = v15;
       v26 = 2112;
-      v27 = v6;
+      v27 = reasonCopy;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Disabling natural lighting with reason: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v11);
-    objc_initWeak(buf, v12);
+    objc_initWeak(buf, selfCopy);
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __80__HMDNaturalLightingMatterCurveWriter_disableNaturalLightingWithReason_message___block_invoke;
     v20[3] = &unk_278689928;
     objc_copyWeak(&v23, buf);
-    v21 = v8;
-    v22 = v7;
-    [(HMDNaturalLightingMatterCurveWriter *)v12 setNaturalLightingEnabled:0 completion:v20];
+    v21 = lightProfile;
+    v22 = messageCopy;
+    [(HMDNaturalLightingMatterCurveWriter *)selfCopy setNaturalLightingEnabled:0 completion:v20];
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(buf);
@@ -2037,13 +2037,13 @@ void __81__HMDNaturalLightingMatterCurveWriter_updateNaturalLightingEnabledFromA
     if (v14)
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v8 uniqueIdentifier];
+      uniqueIdentifier = [lightProfile uniqueIdentifier];
       *buf = 138543874;
       v25 = v16;
       v26 = 2112;
-      v27 = v17;
+      v27 = uniqueIdentifier;
       v28 = 2112;
-      v29 = v6;
+      v29 = reasonCopy;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Natural lighting is already disabled for lightProfile: %@ reason: %@", buf, 0x20u);
     }
 
@@ -2095,13 +2095,13 @@ void __80__HMDNaturalLightingMatterCurveWriter_disableNaturalLightingWithReason_
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableNaturalLightingWithReason:(id)a3
+- (void)enableNaturalLightingWithReason:(id)reason
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNaturalLightingMatterCurveWriter *)self lightProfile];
+  reasonCopy = reason;
+  lightProfile = [(HMDNaturalLightingMatterCurveWriter *)self lightProfile];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -2109,20 +2109,20 @@ void __80__HMDNaturalLightingMatterCurveWriter_disableNaturalLightingWithReason_
     *buf = 138543618;
     v16 = v9;
     v17 = 2112;
-    v18 = v4;
+    v18 = reasonCopy;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Enabling natural lighting with reason: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  objc_initWeak(buf, v7);
+  objc_initWeak(buf, selfCopy);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __71__HMDNaturalLightingMatterCurveWriter_enableNaturalLightingWithReason___block_invoke;
   v12[3] = &unk_278689950;
   objc_copyWeak(&v14, buf);
-  v10 = v5;
+  v10 = lightProfile;
   v13 = v10;
-  [(HMDNaturalLightingMatterCurveWriter *)v7 setNaturalLightingEnabled:1 completion:v12];
+  [(HMDNaturalLightingMatterCurveWriter *)selfCopy setNaturalLightingEnabled:1 completion:v12];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(buf);
@@ -2165,14 +2165,14 @@ void __71__HMDNaturalLightingMatterCurveWriter_enableNaturalLightingWithReason__
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableNaturalLightingWithReason:(id)a3 message:(id)a4
+- (void)enableNaturalLightingWithReason:(id)reason message:(id)message
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDNaturalLightingMatterCurveWriter *)self lightProfile];
+  reasonCopy = reason;
+  messageCopy = message;
+  lightProfile = [(HMDNaturalLightingMatterCurveWriter *)self lightProfile];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -2180,22 +2180,22 @@ void __71__HMDNaturalLightingMatterCurveWriter_enableNaturalLightingWithReason__
     *buf = 138543618;
     v21 = v12;
     v22 = 2112;
-    v23 = v6;
+    v23 = reasonCopy;
     _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Enabling natural lighting with reason: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
-  objc_initWeak(buf, v10);
+  objc_initWeak(buf, selfCopy);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __79__HMDNaturalLightingMatterCurveWriter_enableNaturalLightingWithReason_message___block_invoke;
   v16[3] = &unk_278689928;
   objc_copyWeak(&v19, buf);
-  v13 = v7;
+  v13 = messageCopy;
   v17 = v13;
-  v14 = v8;
+  v14 = lightProfile;
   v18 = v14;
-  [(HMDNaturalLightingMatterCurveWriter *)v10 setNaturalLightingEnabled:1 completion:v16];
+  [(HMDNaturalLightingMatterCurveWriter *)selfCopy setNaturalLightingEnabled:1 completion:v16];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(buf);
@@ -2261,50 +2261,50 @@ void __79__HMDNaturalLightingMatterCurveWriter_enableNaturalLightingWithReason_m
 
 - (BOOL)isTimerRunning
 {
-  v2 = [(HMDNaturalLightingMatterCurveWriter *)self periodicWriteTimer];
-  v3 = v2 != 0;
+  periodicWriteTimer = [(HMDNaturalLightingMatterCurveWriter *)self periodicWriteTimer];
+  v3 = periodicWriteTimer != 0;
 
   return v3;
 }
 
 - (BOOL)isDemoMode
 {
-  v2 = [(HMDNaturalLightingMatterCurveWriter *)self dataSource];
-  v3 = [v2 naturalLightingStartUpColorTemperature] == 123;
+  dataSource = [(HMDNaturalLightingMatterCurveWriter *)self dataSource];
+  v3 = [dataSource naturalLightingStartUpColorTemperature] == 123;
 
   return v3;
 }
 
-- (void)handleSetNaturalLightingEnabledMessage:(id)a3 lightProfile:(id)a4
+- (void)handleSetNaturalLightingEnabledMessage:(id)message lightProfile:(id)profile
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  messageCopy = message;
+  profileCopy = profile;
+  workQueue = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v6 messagePayload];
+    messagePayload = [messageCopy messagePayload];
     v29 = 138543618;
     v30 = v12;
     v31 = 2112;
-    v32 = v13;
+    v32 = messagePayload;
     _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Received message to set matter natural lighting setting: %@", &v29, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
-  v14 = [(HMDNaturalLightingMatterCurveWriter *)v10 accessory];
-  v15 = [v14 home];
-  v16 = v15;
-  if (!v14 || !v15)
+  accessory = [(HMDNaturalLightingMatterCurveWriter *)selfCopy accessory];
+  home = [accessory home];
+  v16 = home;
+  if (!accessory || !home)
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = v10;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -2320,10 +2320,10 @@ void __79__HMDNaturalLightingMatterCurveWriter_enableNaturalLightingWithReason_m
     goto LABEL_14;
   }
 
-  if (([v15 isCurrentDeviceConfirmedPrimaryResident] & 1) == 0)
+  if (([home isCurrentDeviceConfirmedPrimaryResident] & 1) == 0)
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = v10;
+    v24 = selfCopy;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
@@ -2338,19 +2338,19 @@ void __79__HMDNaturalLightingMatterCurveWriter_enableNaturalLightingWithReason_m
     v22 = 48;
 LABEL_14:
     v27 = [v21 hmErrorWithCode:v22];
-    [v6 respondWithError:v27];
+    [messageCopy respondWithError:v27];
 
     goto LABEL_15;
   }
 
-  if ([v6 BOOLForKey:*MEMORY[0x277CD0798]])
+  if ([messageCopy BOOLForKey:*MEMORY[0x277CD0798]])
   {
-    [(HMDNaturalLightingMatterCurveWriter *)v10 enableNaturalLightingWithReason:@"XPCMessagge" message:v6];
+    [(HMDNaturalLightingMatterCurveWriter *)selfCopy enableNaturalLightingWithReason:@"XPCMessagge" message:messageCopy];
   }
 
   else
   {
-    [(HMDNaturalLightingMatterCurveWriter *)v10 disableNaturalLightingWithReason:@"XPCMessagge" message:v6];
+    [(HMDNaturalLightingMatterCurveWriter *)selfCopy disableNaturalLightingWithReason:@"XPCMessagge" message:messageCopy];
   }
 
 LABEL_15:
@@ -2418,21 +2418,21 @@ void __65__HMDNaturalLightingMatterCurveWriter_setNaturalLightingEnabled___block
 
 - (id)isNaturalLightingAllowedBasedOnAllowList
 {
-  v3 = [(HMDNaturalLightingMatterCurveWriter *)self accessory];
-  v4 = [v3 home];
-  if (v4)
+  accessory = [(HMDNaturalLightingMatterCurveWriter *)self accessory];
+  home = [accessory home];
+  if (home)
   {
     v5 = objc_alloc(MEMORY[0x277D0F7A8]);
-    v6 = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
-    v7 = [v5 initWithQueue:v6];
+    workQueue = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
+    v7 = [v5 initWithQueue:workQueue];
 
     v8 = MEMORY[0x277D0F7C0];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __79__HMDNaturalLightingMatterCurveWriter_isNaturalLightingAllowedBasedOnAllowList__block_invoke;
     v13[3] = &unk_2786898D8;
-    v14 = v4;
-    v15 = v3;
+    v14 = home;
+    v15 = accessory;
     v9 = [v8 inContext:v7 perform:v13];
   }
 
@@ -2466,30 +2466,30 @@ uint64_t __79__HMDNaturalLightingMatterCurveWriter_isNaturalLightingAllowedBased
 - (id)isNaturalLightingAllowedBasedOnSpecVersion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDNaturalLightingMatterCurveWriter *)self accessory];
-  v4 = v3;
-  if (v3)
+  accessory = [(HMDNaturalLightingMatterCurveWriter *)self accessory];
+  v4 = accessory;
+  if (accessory)
   {
-    v5 = [v3 chipAccessoryServer];
+    chipAccessoryServer = [accessory chipAccessoryServer];
 
-    if (v5)
+    if (chipAccessoryServer)
     {
       *buf = 0;
       v6 = [MEMORY[0x277D0F7C0] futureWithPromise:buf];
-      v7 = [v4 chipAccessoryServer];
+      chipAccessoryServer2 = [v4 chipAccessoryServer];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __81__HMDNaturalLightingMatterCurveWriter_isNaturalLightingAllowedBasedOnSpecVersion__block_invoke;
       v17[3] = &unk_2786898B0;
       v17[4] = self;
       v18 = *buf;
-      [v7 readSpecificationVersionWithCompletionHandler:v17];
+      [chipAccessoryServer2 readSpecificationVersionWithCompletionHandler:v17];
 
       goto LABEL_10;
     }
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -2504,7 +2504,7 @@ uint64_t __79__HMDNaturalLightingMatterCurveWriter_isNaturalLightingAllowedBased
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -2587,10 +2587,10 @@ void __81__HMDNaturalLightingMatterCurveWriter_isNaturalLightingAllowedBasedOnSp
 - (void)checkIfNaturalLightingAllowed
 {
   v3 = objc_alloc(MEMORY[0x277D0F7A8]);
-  v4 = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
-  v5 = [v3 initWithQueue:v4];
+  workQueue = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
+  v5 = [v3 initWithQueue:workQueue];
 
-  v6 = [(HMDNaturalLightingMatterCurveWriter *)self isNaturalLightingAllowedBasedOnSpecVersion];
+  isNaturalLightingAllowedBasedOnSpecVersion = [(HMDNaturalLightingMatterCurveWriter *)self isNaturalLightingAllowedBasedOnSpecVersion];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __68__HMDNaturalLightingMatterCurveWriter_checkIfNaturalLightingAllowed__block_invoke;
@@ -2601,10 +2601,10 @@ void __81__HMDNaturalLightingMatterCurveWriter_isNaturalLightingAllowedBasedOnSp
   v12[2] = __68__HMDNaturalLightingMatterCurveWriter_checkIfNaturalLightingAllowed__block_invoke_23;
   v12[3] = &unk_278689CD8;
   v12[4] = self;
-  v7 = [v6 inContext:v5 then:v13 orRecover:v12];
+  v7 = [isNaturalLightingAllowedBasedOnSpecVersion inContext:v5 then:v13 orRecover:v12];
   if (![(HMDNaturalLightingMatterCurveWriter *)self naturalLightingAllowed])
   {
-    v8 = [(HMDNaturalLightingMatterCurveWriter *)self isNaturalLightingAllowedBasedOnAllowList];
+    isNaturalLightingAllowedBasedOnAllowList = [(HMDNaturalLightingMatterCurveWriter *)self isNaturalLightingAllowedBasedOnAllowList];
     v10[4] = self;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -2615,7 +2615,7 @@ void __81__HMDNaturalLightingMatterCurveWriter_isNaturalLightingAllowedBasedOnSp
     v10[1] = 3221225472;
     v10[2] = __68__HMDNaturalLightingMatterCurveWriter_checkIfNaturalLightingAllowed__block_invoke_26;
     v10[3] = &unk_278689CD8;
-    v9 = [v8 inContext:v5 then:v11 orRecover:v10];
+    v9 = [isNaturalLightingAllowedBasedOnAllowList inContext:v5 then:v11 orRecover:v10];
   }
 }
 
@@ -2768,13 +2768,13 @@ uint64_t __68__HMDNaturalLightingMatterCurveWriter_checkIfNaturalLightingAllowed
 - (void)configurePostNaturalLightingContext
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDNaturalLightingMatterCurveWriter *)self accessory];
-  v4 = [v3 home];
+  accessory = [(HMDNaturalLightingMatterCurveWriter *)self accessory];
+  home = [accessory home];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   v8 = v7;
-  if (v3 && v4)
+  if (accessory && home)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -2785,50 +2785,50 @@ uint64_t __68__HMDNaturalLightingMatterCurveWriter_checkIfNaturalLightingAllowed
     }
 
     objc_autoreleasePoolPop(v5);
-    v10 = [v4 naturalLightingContext];
-    v11 = [v10 curve];
+    naturalLightingContext = [home naturalLightingContext];
+    curve = [naturalLightingContext curve];
 
-    if (v11)
+    if (curve)
     {
-      v12 = -[HMDNaturalLightingCurve initWithCurve:minimumColorTemperature:maximumColorTemperature:]([HMDNaturalLightingCurve alloc], "initWithCurve:minimumColorTemperature:maximumColorTemperature:", v11, [v11 minimumColorTemperature], objc_msgSend(v11, "maximumColorTemperature"));
-      [(HMDNaturalLightingMatterCurveWriter *)v6 setNaturalLightingCurve:v12];
+      v12 = -[HMDNaturalLightingCurve initWithCurve:minimumColorTemperature:maximumColorTemperature:]([HMDNaturalLightingCurve alloc], "initWithCurve:minimumColorTemperature:maximumColorTemperature:", curve, [curve minimumColorTemperature], objc_msgSend(curve, "maximumColorTemperature"));
+      [(HMDNaturalLightingMatterCurveWriter *)selfCopy setNaturalLightingCurve:v12];
 
-      v13 = [(HMDNaturalLightingMatterCurveWriter *)v6 naturalLightingCurve];
+      naturalLightingCurve = [(HMDNaturalLightingMatterCurveWriter *)selfCopy naturalLightingCurve];
 
-      if (v13)
+      if (naturalLightingCurve)
       {
-        v14 = [(HMDNaturalLightingMatterCurveWriter *)v6 notificationCenter];
-        [v14 addObserver:v6 selector:sel_handlePrimaryResidentUpdateNotification_ name:@"HMDResidentDeviceConfirmedStateChangedNotification" object:0];
+        notificationCenter = [(HMDNaturalLightingMatterCurveWriter *)selfCopy notificationCenter];
+        [notificationCenter addObserver:selfCopy selector:sel_handlePrimaryResidentUpdateNotification_ name:@"HMDResidentDeviceConfirmedStateChangedNotification" object:0];
 
-        v15 = [(HMDNaturalLightingMatterCurveWriter *)v6 notificationCenter];
-        [v15 addObserver:v6 selector:sel_handleAccessoryConnected_ name:@"HMDAccessoryConnectedNotification" object:v3];
+        notificationCenter2 = [(HMDNaturalLightingMatterCurveWriter *)selfCopy notificationCenter];
+        [notificationCenter2 addObserver:selfCopy selector:sel_handleAccessoryConnected_ name:@"HMDAccessoryConnectedNotification" object:accessory];
 
-        v16 = [v3 bridge];
-        v17 = [(HMDNaturalLightingMatterCurveWriter *)v6 notificationCenter];
-        v18 = v17;
-        if (v16)
+        bridge = [accessory bridge];
+        notificationCenter3 = [(HMDNaturalLightingMatterCurveWriter *)selfCopy notificationCenter];
+        v18 = notificationCenter3;
+        if (bridge)
         {
-          v19 = v16;
+          v19 = bridge;
         }
 
         else
         {
-          v19 = v3;
+          v19 = accessory;
         }
 
-        [v17 addObserver:v6 selector:sel_handleAccessoryFirmwareVersionChangedNotification_ name:@"HMDAccessoryFirmwareVersionUpdatedNotification" object:v19];
+        [notificationCenter3 addObserver:selfCopy selector:sel_handleAccessoryFirmwareVersionChangedNotification_ name:@"HMDAccessoryFirmwareVersionUpdatedNotification" object:v19];
 
-        v20 = [(HMDNaturalLightingMatterCurveWriter *)v6 notificationCenter];
-        v21 = [v4 homeManager];
-        v22 = [v21 mobileAssetManager];
-        [v20 addObserver:v6 selector:sel_handleMobileAssetsUpdatedNotification_ name:@"HMDMobileAssetManagerFoundUpdateNotification" object:v22];
+        notificationCenter4 = [(HMDNaturalLightingMatterCurveWriter *)selfCopy notificationCenter];
+        homeManager = [home homeManager];
+        mobileAssetManager = [homeManager mobileAssetManager];
+        [notificationCenter4 addObserver:selfCopy selector:sel_handleMobileAssetsUpdatedNotification_ name:@"HMDMobileAssetManagerFoundUpdateNotification" object:mobileAssetManager];
 
-        [(HMDNaturalLightingMatterCurveWriter *)v6 checkIfNaturalLightingAllowed];
+        [(HMDNaturalLightingMatterCurveWriter *)selfCopy checkIfNaturalLightingAllowed];
         goto LABEL_20;
       }
 
       v24 = objc_autoreleasePoolPush();
-      v25 = v6;
+      v25 = selfCopy;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
@@ -2843,7 +2843,7 @@ uint64_t __68__HMDNaturalLightingMatterCurveWriter_checkIfNaturalLightingAllowed
     else
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = v6;
+      v25 = selfCopy;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
@@ -2879,14 +2879,14 @@ LABEL_21:
 - (void)configurePreNaturalLightingContext
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDNaturalLightingMatterCurveWriter *)self accessory];
-  v4 = [v3 home];
+  accessory = [(HMDNaturalLightingMatterCurveWriter *)self accessory];
+  home = [accessory home];
 
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   v8 = v7;
-  if (v4)
+  if (home)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -2897,8 +2897,8 @@ LABEL_21:
     }
 
     objc_autoreleasePoolPop(v5);
-    v10 = [(HMDNaturalLightingMatterCurveWriter *)v6 notificationCenter];
-    [v10 addObserver:v6 selector:sel_handleHomeNaturalLightingContextUpdated_ name:@"HMDHomeNaturalLightingContextUpdatedNotification" object:v4];
+    notificationCenter = [(HMDNaturalLightingMatterCurveWriter *)selfCopy notificationCenter];
+    [notificationCenter addObserver:selfCopy selector:sel_handleHomeNaturalLightingContextUpdated_ name:@"HMDHomeNaturalLightingContextUpdatedNotification" object:home];
   }
 
   else
@@ -2917,37 +2917,37 @@ LABEL_21:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithLightProfile:(id)a3
+- (void)configureWithLightProfile:(id)profile
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  profileCopy = profile;
+  workQueue = [(HMDNaturalLightingMatterCurveWriter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDNaturalLightingMatterCurveWriter *)self accessory];
-  v7 = [v6 home];
-  v8 = v7;
-  if (v6 && v7)
+  accessory = [(HMDNaturalLightingMatterCurveWriter *)self accessory];
+  home = [accessory home];
+  v8 = home;
+  if (accessory && home)
   {
-    [(HMDNaturalLightingMatterCurveWriter *)self setLightProfile:v4];
+    [(HMDNaturalLightingMatterCurveWriter *)self setLightProfile:profileCopy];
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v4 uniqueIdentifier];
-      v14 = [(HMDNaturalLightingMatterCurveWriter *)v10 accessory];
-      v15 = [v14 uuid];
-      [(HMDNaturalLightingMatterCurveWriter *)v10 isDemoMode];
+      uniqueIdentifier = [profileCopy uniqueIdentifier];
+      accessory2 = [(HMDNaturalLightingMatterCurveWriter *)selfCopy accessory];
+      uuid = [accessory2 uuid];
+      [(HMDNaturalLightingMatterCurveWriter *)selfCopy isDemoMode];
       HMFBooleanToString();
       v16 = v24 = v9;
       *buf = 138544130;
       v26 = v12;
       v27 = 2112;
-      v28 = v13;
+      v28 = uniqueIdentifier;
       v29 = 2112;
-      v30 = v15;
+      v30 = uuid;
       v31 = 2112;
       v32 = v16;
       _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Configuring matter light profile: %@, accessory: %@ demoMode: %@ ", buf, 0x2Au);
@@ -2956,24 +2956,24 @@ LABEL_21:
     }
 
     objc_autoreleasePoolPop(v9);
-    v17 = [v8 naturalLightingContext];
-    v18 = [v17 curve];
+    naturalLightingContext = [v8 naturalLightingContext];
+    curve = [naturalLightingContext curve];
 
-    if (v18)
+    if (curve)
     {
-      [(HMDNaturalLightingMatterCurveWriter *)v10 configurePostNaturalLightingContext];
+      [(HMDNaturalLightingMatterCurveWriter *)selfCopy configurePostNaturalLightingContext];
     }
 
     else
     {
-      [(HMDNaturalLightingMatterCurveWriter *)v10 configurePreNaturalLightingContext];
+      [(HMDNaturalLightingMatterCurveWriter *)selfCopy configurePreNaturalLightingContext];
     }
   }
 
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -2989,39 +2989,39 @@ LABEL_21:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDNaturalLightingMatterCurveWriter)initWithWorkQueue:(id)a3 accessory:(id)a4 dataSource:(id)a5 notificationCenter:(id)a6 timerFactory:(id)a7
+- (HMDNaturalLightingMatterCurveWriter)initWithWorkQueue:(id)queue accessory:(id)accessory dataSource:(id)source notificationCenter:(id)center timerFactory:(id)factory
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  queueCopy = queue;
+  accessoryCopy = accessory;
+  sourceCopy = source;
+  centerCopy = center;
+  factoryCopy = factory;
   v22.receiver = self;
   v22.super_class = HMDNaturalLightingMatterCurveWriter;
   v18 = [(HMDNaturalLightingMatterCurveWriter *)&v22 init];
   if (v18)
   {
-    v19 = _Block_copy(v17);
+    v19 = _Block_copy(factoryCopy);
     timerFactory = v18->_timerFactory;
     v18->_timerFactory = v19;
 
-    objc_storeStrong(&v18->_workQueue, a3);
-    objc_storeWeak(&v18->_accessory, v14);
-    objc_storeStrong(&v18->_dataSource, a5);
-    objc_storeStrong(&v18->_notificationCenter, a6);
+    objc_storeStrong(&v18->_workQueue, queue);
+    objc_storeWeak(&v18->_accessory, accessoryCopy);
+    objc_storeStrong(&v18->_dataSource, source);
+    objc_storeStrong(&v18->_notificationCenter, center);
     v18->_naturalLightingAllowed = 0;
   }
 
   return v18;
 }
 
-- (HMDNaturalLightingMatterCurveWriter)initWithWorkQueue:(id)a3 accessory:(id)a4
+- (HMDNaturalLightingMatterCurveWriter)initWithWorkQueue:(id)queue accessory:(id)accessory
 {
-  v6 = a4;
-  v7 = a3;
+  accessoryCopy = accessory;
+  queueCopy = queue;
   v8 = objc_alloc_init(HMDLightProfileDataSource);
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  v10 = [(HMDNaturalLightingMatterCurveWriter *)self initWithWorkQueue:v7 accessory:v6 dataSource:v8 notificationCenter:v9 timerFactory:&__block_literal_global_278733];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v10 = [(HMDNaturalLightingMatterCurveWriter *)self initWithWorkQueue:queueCopy accessory:accessoryCopy dataSource:v8 notificationCenter:defaultCenter timerFactory:&__block_literal_global_278733];
 
   return v10;
 }

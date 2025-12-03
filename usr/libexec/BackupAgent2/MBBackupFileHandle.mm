@@ -1,29 +1,29 @@
 @interface MBBackupFileHandle
-- (BOOL)_isModifiedSince:(int64_t)a3 error:(id *)a4;
+- (BOOL)_isModifiedSince:(int64_t)since error:(id *)error;
 - (BOOL)isSQLiteFile;
-- (BOOL)recordMetadataWithSHA256Data:(id)a3 error:(id *)a4;
-- (MBBackupFileHandle)initWithEngine:(id)a3 fileHandle:(id)a4 file:(id)a5;
-- (int64_t)readWithBytes:(void *)a3 length:(unint64_t)a4 error:(id *)a5;
+- (BOOL)recordMetadataWithSHA256Data:(id)data error:(id *)error;
+- (MBBackupFileHandle)initWithEngine:(id)engine fileHandle:(id)handle file:(id)file;
+- (int64_t)readWithBytes:(void *)bytes length:(unint64_t)length error:(id *)error;
 @end
 
 @implementation MBBackupFileHandle
 
-- (MBBackupFileHandle)initWithEngine:(id)a3 fileHandle:(id)a4 file:(id)a5
+- (MBBackupFileHandle)initWithEngine:(id)engine fileHandle:(id)handle file:(id)file
 {
-  v9 = a3;
-  v10 = a5;
+  engineCopy = engine;
+  fileCopy = file;
   v19.receiver = self;
   v19.super_class = MBBackupFileHandle;
-  v11 = [(MBFileHandleProxy *)&v19 initWithFileHandle:a4];
+  v11 = [(MBFileHandleProxy *)&v19 initWithFileHandle:handle];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_engine, a3);
-    objc_storeStrong(&v12->_file, a5);
-    v13 = [v10 domain];
-    v14 = [v13 shouldDigest];
+    objc_storeStrong(&v11->_engine, engine);
+    objc_storeStrong(&v12->_file, file);
+    domain = [fileCopy domain];
+    shouldDigest = [domain shouldDigest];
 
-    if (v14)
+    if (shouldDigest)
     {
       v15 = objc_alloc_init(MBDigestSHA1);
       digest = v12->_digest;
@@ -32,7 +32,7 @@
 
     +[NSDate timeIntervalSinceReferenceDate];
     v12->_startTime = v17;
-    v12->_shouldCheckForModifications = [v9 isFinalRetry] ^ 1;
+    v12->_shouldCheckForModifications = [engineCopy isFinalRetry] ^ 1;
   }
 
   return v12;
@@ -40,23 +40,23 @@
 
 - (BOOL)isSQLiteFile
 {
-  v2 = [(MBFileHandleProxy *)self fileHandle];
-  v3 = [v2 isSQLiteFile];
+  fileHandle = [(MBFileHandleProxy *)self fileHandle];
+  isSQLiteFile = [fileHandle isSQLiteFile];
 
-  return v3;
+  return isSQLiteFile;
 }
 
-- (BOOL)_isModifiedSince:(int64_t)a3 error:(id *)a4
+- (BOOL)_isModifiedSince:(int64_t)since error:(id *)error
 {
   engine = self->_engine;
   v10 = 0;
-  v7 = [(MBDriveBackupEngine *)engine isModifiedSince:a3 reason:&v10];
+  v7 = [(MBDriveBackupEngine *)engine isModifiedSince:since reason:&v10];
   v8 = v10;
   if (v7)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MBError errorWithCode:9 format:@"File modified while being uploaded"];
+      *error = [MBError errorWithCode:9 format:@"File modified while being uploaded"];
     }
 
     [(MBDriveBackupEngine *)self->_engine fileModifiedWhileUploadingFile:self->_file reason:v8];
@@ -65,12 +65,12 @@
   return v7;
 }
 
-- (BOOL)recordMetadataWithSHA256Data:(id)a3 error:(id *)a4
+- (BOOL)recordMetadataWithSHA256Data:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   memset(v48, 0, sizeof(v48));
-  v7 = [(MBFileHandleProxy *)self fileHandle];
-  v8 = [v7 statWithBuffer:v48 error:a4];
+  fileHandle = [(MBFileHandleProxy *)self fileHandle];
+  v8 = [fileHandle statWithBuffer:v48 error:error];
 
   if (!v8)
   {
@@ -82,49 +82,49 @@
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  if (!sub_10008E6F8(v48, &v43, a4))
+  if (!sub_10008E6F8(v48, &v43, error))
   {
     goto LABEL_20;
   }
 
   [(MBFile *)self->_file setNode:&v43];
-  if (self->_shouldCheckForModifications && [(MBBackupFileHandle *)self _isModifiedSince:*(&v44 + 1) error:a4])
+  if (self->_shouldCheckForModifications && [(MBBackupFileHandle *)self _isModifiedSince:*(&v44 + 1) error:error])
   {
     goto LABEL_20;
   }
 
-  v9 = [(MBFile *)self->_file domain];
-  v10 = [v9 shouldDigest];
+  domain = [(MBFile *)self->_file domain];
+  shouldDigest = [domain shouldDigest];
 
-  if (v10)
+  if (shouldDigest)
   {
-    if (v6)
+    if (dataCopy)
     {
-      [(MBFile *)self->_file setDigest:v6];
+      [(MBFile *)self->_file setDigest:dataCopy];
     }
 
     else
     {
-      v11 = [(MBDigest *)self->_digest final];
-      [(MBFile *)self->_file setDigest:v11];
+      final = [(MBDigest *)self->_digest final];
+      [(MBFile *)self->_file setDigest:final];
     }
   }
 
-  v12 = [(MBFileHandleProxy *)self fileHandle];
-  -[MBFile setProtectionClass:](self->_file, "setProtectionClass:", +[MBProtectionClassUtils getWithFD:error:](MBProtectionClassUtils, "getWithFD:error:", [v12 fd], a4));
+  fileHandle2 = [(MBFileHandleProxy *)self fileHandle];
+  -[MBFile setProtectionClass:](self->_file, "setProtectionClass:", +[MBProtectionClassUtils getWithFD:error:](MBProtectionClassUtils, "getWithFD:error:", [fileHandle2 fd], error));
 
   if ([(MBFile *)self->_file protectionClass]== 255)
   {
     goto LABEL_20;
   }
 
-  v13 = [(MBFileHandleProxy *)self fileHandle];
-  v14 = +[MBExtendedAttributes attributesForFD:error:](MBExtendedAttributes, "attributesForFD:error:", [v13 fd], a4);
+  fileHandle3 = [(MBFileHandleProxy *)self fileHandle];
+  v14 = +[MBExtendedAttributes attributesForFD:error:](MBExtendedAttributes, "attributesForFD:error:", [fileHandle3 fd], error);
   [(MBFile *)self->_file setExtendedAttributes:v14];
 
-  v15 = [(MBFile *)self->_file extendedAttributes];
+  extendedAttributes = [(MBFile *)self->_file extendedAttributes];
 
-  if (!v15)
+  if (!extendedAttributes)
   {
 LABEL_20:
     v34 = 0;
@@ -132,21 +132,21 @@ LABEL_20:
 
   else
   {
-    v16 = [(MBFile *)self->_file extendedAttributes];
-    v17 = [MBExtendedAttributes sizeOfAttributes:v16];
+    extendedAttributes2 = [(MBFile *)self->_file extendedAttributes];
+    v17 = [MBExtendedAttributes sizeOfAttributes:extendedAttributes2];
 
     if (v17 >= 0x801)
     {
       v18 = MBGetDefaultLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(MBFile *)self->_file absolutePath];
+        absolutePath = [(MBFile *)self->_file absolutePath];
         *buf = 134218498;
         v50 = v17;
         v51 = 1024;
         *v52 = 2048;
         *&v52[4] = 2112;
-        *&v52[6] = v19;
+        *&v52[6] = absolutePath;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Extended attributes size greater than supported (%lu > %d): %@", buf, 0x1Cu);
 
         [(MBFile *)self->_file absolutePath];
@@ -165,16 +165,16 @@ LABEL_20:
       v22 = MBGetDefaultLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v41 = [(MBFile *)self->_file domain];
+        domain2 = [(MBFile *)self->_file domain];
         v42 = v21;
-        v23 = [(MBFile *)self->_file relativePath];
+        relativePath = [(MBFile *)self->_file relativePath];
         v24 = sub_10008E638(&v43);
-        v25 = [(MBDriveBackupEngine *)self->_engine snapshotManifestDB];
-        v26 = [v25 path];
+        snapshotManifestDB = [(MBDriveBackupEngine *)self->_engine snapshotManifestDB];
+        path = [snapshotManifestDB path];
         *buf = 138413314;
-        v50 = v41;
+        v50 = domain2;
         v51 = 2112;
-        *v52 = v23;
+        *v52 = relativePath;
         *&v52[8] = 2112;
         *&v52[10] = v24;
         v27 = v24;
@@ -182,24 +182,24 @@ LABEL_20:
         v54 = v21;
         v20 = &OBJC_IVAR___MBDriveBackupEngine__fullBackup;
         v55 = 2112;
-        v56 = v26;
+        v56 = path;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Adding file %@:%@ with mbNode %@ (dataless:%d) to manifest at %@", buf, 0x30u);
 
-        v28 = [(MBFile *)self->_file domain];
-        v29 = [(MBFile *)self->_file relativePath];
+        domain3 = [(MBFile *)self->_file domain];
+        relativePath2 = [(MBFile *)self->_file relativePath];
         v30 = sub_10008E638(&v43);
-        v31 = [(MBDriveBackupEngine *)self->_engine snapshotManifestDB];
-        [v31 path];
+        snapshotManifestDB2 = [(MBDriveBackupEngine *)self->_engine snapshotManifestDB];
+        [snapshotManifestDB2 path];
         v40 = v39 = v42;
-        v37 = v29;
+        v37 = relativePath2;
         v38 = v30;
-        v36 = v28;
+        v36 = domain3;
         _MBLog();
       }
     }
 
-    v32 = [*(&self->super.super.super.isa + v20[199]) snapshotManifestDB];
-    v33 = [v32 addFile:self->_file flags:0];
+    snapshotManifestDB3 = [*(&self->super.super.super.isa + v20[199]) snapshotManifestDB];
+    v33 = [snapshotManifestDB3 addFile:self->_file flags:0];
 
     v34 = 1;
   }
@@ -207,21 +207,21 @@ LABEL_20:
   return v34;
 }
 
-- (int64_t)readWithBytes:(void *)a3 length:(unint64_t)a4 error:(id *)a5
+- (int64_t)readWithBytes:(void *)bytes length:(unint64_t)length error:(id *)error
 {
-  v9 = [(MBFileHandleProxy *)self fileHandle];
-  v10 = sub_100079D10([v9 fd]);
+  fileHandle = [(MBFileHandleProxy *)self fileHandle];
+  v10 = sub_100079D10([fileHandle fd]);
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(MBFileHandleProxy *)self fileHandle];
-    v12 = [v11 readWithBytes:a3 length:a4 error:a5];
+    fileHandle2 = [(MBFileHandleProxy *)self fileHandle];
+    v12 = [fileHandle2 readWithBytes:bytes length:length error:error];
 
     if (v12)
     {
       if (v12 >= 1)
       {
-        [(MBDigest *)self->_digest updateWithBytes:a3 length:v12];
+        [(MBDigest *)self->_digest updateWithBytes:bytes length:v12];
         v13 = self->_bytesReadSinceLastModificationCheck + v12;
         self->_bytesReadSinceLastModificationCheck = v13;
         if (!self->_shouldCheckForModifications)
@@ -242,12 +242,12 @@ LABEL_20:
         v37 = 0u;
         v35 = 0u;
         memset(buf, 0, sizeof(buf));
-        v14 = [(MBFileHandleProxy *)self fileHandle];
-        v15 = [v14 statWithBuffer:buf error:a5];
+        fileHandle3 = [(MBFileHandleProxy *)self fileHandle];
+        v15 = [fileHandle3 statWithBuffer:buf error:error];
 
         if (v15)
         {
-          if (![(MBBackupFileHandle *)self _isModifiedSince:v36 error:a5])
+          if (![(MBBackupFileHandle *)self _isModifiedSince:v36 error:error])
           {
             return v12;
           }
@@ -258,7 +258,7 @@ LABEL_20:
     }
   }
 
-  if (![(MBBackupFileHandle *)self recordMetadataWithSHA256Data:0 error:a5])
+  if (![(MBBackupFileHandle *)self recordMetadataWithSHA256Data:0 error:error])
   {
     return -1;
   }
@@ -275,9 +275,9 @@ LABEL_20:
     v22 = MBGetDefaultLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
-      v23 = [(MBFile *)self->_file snapshotPath];
+      snapshotPath = [(MBFile *)self->_file snapshotPath];
       file = self->_file;
-      if (v23)
+      if (snapshotPath)
       {
         [(MBFile *)file snapshotPath];
       }
@@ -287,21 +287,21 @@ LABEL_20:
         [(MBFile *)file absolutePath];
       }
       v25 = ;
-      v26 = [(MBFile *)self->_file fileID];
-      v27 = [v26 string];
+      fileID = [(MBFile *)self->_file fileID];
+      string = [fileID string];
       *buf = 138413058;
       *&buf[4] = v25;
       *&buf[12] = 2112;
-      *&buf[14] = v27;
+      *&buf[14] = string;
       *&buf[22] = 2048;
       *&buf[24] = v21;
       LOWORD(v35) = 2048;
       *(&v35 + 2) = (v21 / (v19 - startTime));
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "Uploaded: %@ for %@ (%{bytes}llu at %{bytes}llu/s)", buf, 0x2Au);
 
-      v28 = [(MBFile *)self->_file snapshotPath];
+      snapshotPath2 = [(MBFile *)self->_file snapshotPath];
       v29 = self->_file;
-      if (v28)
+      if (snapshotPath2)
       {
         [(MBFile *)v29 snapshotPath];
       }
@@ -311,8 +311,8 @@ LABEL_20:
         [(MBFile *)v29 absolutePath];
       }
       v30 = ;
-      v31 = [(MBFile *)self->_file fileID];
-      v33 = [v31 string];
+      fileID2 = [(MBFile *)self->_file fileID];
+      string2 = [fileID2 string];
       _MBLog();
     }
   }

@@ -1,25 +1,25 @@
 @interface TVRUIUpNextController
 - (BOOL)_isDataStale;
 - (BOOL)hasMoreInfo;
-- (BOOL)isItemInUpNextForIdentifier:(id)a3;
-- (BOOL)isItemInUpNextForMediaInfo:(id)a3;
+- (BOOL)isItemInUpNextForIdentifier:(id)identifier;
+- (BOOL)isItemInUpNextForMediaInfo:(id)info;
 - (NSSet)infoIdentifiers;
 - (TVRCUpNextController)upNextController;
 - (TVRUIUpNextController)init;
-- (void)_notifyInfosUpdatedFromRequest:(BOOL)a3;
+- (void)_notifyInfosUpdatedFromRequest:(BOOL)request;
 - (void)_prewarmImagesAsNeeded;
-- (void)_remoteAddItemWithMediaIdentifier:(id)a3 completion:(id)a4;
-- (void)_remoteFetchUpNextInfosWithPaginationToken:(id)a3 completion:(id)a4;
-- (void)_remoteMarkAsWatchedWithMediaIdentifier:(id)a3 completion:(id)a4;
-- (void)_remotePlayItem:(id)a3 completion:(id)a4;
-- (void)_remoteRemoveItemWithMediaIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchImageForUpNextInfo:(id)a3 completion:(id)a4;
-- (void)playItem:(id)a3 completion:(id)a4;
+- (void)_remoteAddItemWithMediaIdentifier:(id)identifier completion:(id)completion;
+- (void)_remoteFetchUpNextInfosWithPaginationToken:(id)token completion:(id)completion;
+- (void)_remoteMarkAsWatchedWithMediaIdentifier:(id)identifier completion:(id)completion;
+- (void)_remotePlayItem:(id)item completion:(id)completion;
+- (void)_remoteRemoveItemWithMediaIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchImageForUpNextInfo:(id)info completion:(id)completion;
+- (void)playItem:(id)item completion:(id)completion;
 - (void)refresh;
 - (void)refreshIfNeeded;
 - (void)requestMore;
-- (void)setActiveDevice:(id)a3;
-- (void)setInfos:(id)a3;
+- (void)setActiveDevice:(id)device;
+- (void)setInfos:(id)infos;
 @end
 
 @implementation TVRUIUpNextController
@@ -44,26 +44,26 @@
   return v3;
 }
 
-- (void)playItem:(id)a3 completion:(id)a4
+- (void)playItem:(id)item completion:(id)completion
 {
-  [(TVRUIUpNextController *)self _remotePlayItem:a3 completion:a4];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"TVRUIUpNextMediaPlayedNotification" object:0];
+  [(TVRUIUpNextController *)self _remotePlayItem:item completion:completion];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"TVRUIUpNextMediaPlayedNotification" object:0];
 }
 
-- (BOOL)isItemInUpNextForIdentifier:(id)a3
+- (BOOL)isItemInUpNextForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TVRUIUpNextController *)self infoIdentifiers];
-  v6 = [v5 containsObject:v4];
+  identifierCopy = identifier;
+  infoIdentifiers = [(TVRUIUpNextController *)self infoIdentifiers];
+  v6 = [infoIdentifiers containsObject:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)isItemInUpNextForMediaInfo:(id)a3
+- (BOOL)isItemInUpNextForMediaInfo:(id)info
 {
-  v4 = [a3 tvrui_effectiveIdentifier];
-  LOBYTE(self) = [(TVRUIUpNextController *)self isItemInUpNextForIdentifier:v4];
+  tvrui_effectiveIdentifier = [info tvrui_effectiveIdentifier];
+  LOBYTE(self) = [(TVRUIUpNextController *)self isItemInUpNextForIdentifier:tvrui_effectiveIdentifier];
 
   return self;
 }
@@ -83,12 +83,12 @@
   return upNextController;
 }
 
-- (void)setActiveDevice:(id)a3
+- (void)setActiveDevice:(id)device
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 isEqualToDevice:self->_activeDevice];
-  objc_storeStrong(&self->_activeDevice, a3);
+  deviceCopy = device;
+  v6 = [deviceCopy isEqualToDevice:self->_activeDevice];
+  objc_storeStrong(&self->_activeDevice, device);
   if ((v6 & 1) == 0)
   {
     [(TVRUIUpNextController *)self setHasFetchedInfos:0];
@@ -99,8 +99,8 @@
     v9 = @"TVRUIUpNextInfosDidChangeFromRequestKey";
     v10[0] = MEMORY[0x277CBEC28];
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 postNotificationName:@"TVRUIUpNextInfosDidChangeNotification" object:self userInfo:v7];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"TVRUIUpNextInfosDidChangeNotification" object:self userInfo:v7];
 
     if ([(TVRUIUpNextController *)self shouldPrewarmData])
     {
@@ -109,13 +109,13 @@
   }
 }
 
-- (void)_notifyInfosUpdatedFromRequest:(BOOL)a3
+- (void)_notifyInfosUpdatedFromRequest:(BOOL)request
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __56__TVRUIUpNextController__notifyInfosUpdatedFromRequest___block_invoke;
   v3[3] = &unk_279D878A8;
-  v4 = a3;
+  requestCopy = request;
   v3[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
@@ -132,10 +132,10 @@ void __56__TVRUIUpNextController__notifyInfosUpdatedFromRequest___block_invoke(u
   [v4 postNotificationName:@"TVRUIUpNextInfosDidChangeNotification" object:*(a1 + 32) userInfo:v3];
 }
 
-- (void)setInfos:(id)a3
+- (void)setInfos:(id)infos
 {
-  v6 = a3;
-  objc_storeStrong(&self->_infos, a3);
+  infosCopy = infos;
+  objc_storeStrong(&self->_infos, infos);
   infoIdentifiers = self->_infoIdentifiers;
   self->_infoIdentifiers = 0;
 
@@ -149,8 +149,8 @@ void __56__TVRUIUpNextController__notifyInfosUpdatedFromRequest___block_invoke(u
 {
   if (![(TVRUIUpNextController *)self isFetchingUpNextInfos])
   {
-    v3 = [(TVRUIUpNextController *)self _isDataStale];
-    if ([(TVRUIUpNextController *)self refreshNeeded]|| v3)
+    _isDataStale = [(TVRUIUpNextController *)self _isDataStale];
+    if ([(TVRUIUpNextController *)self refreshNeeded]|| _isDataStale)
     {
 
       [(TVRUIUpNextController *)self refresh];
@@ -162,15 +162,15 @@ void __56__TVRUIUpNextController__notifyInfosUpdatedFromRequest___block_invoke(u
 {
   if (![(TVRUIUpNextController *)self isFetchingUpNextInfos]&& [(TVRUIUpNextController *)self hasMoreInfo])
   {
-    v3 = [(TVRUIUpNextController *)self paginationToken];
-    [(TVRUIUpNextController *)self _remoteFetchUpNextInfosWithPaginationToken:v3 completion:0];
+    paginationToken = [(TVRUIUpNextController *)self paginationToken];
+    [(TVRUIUpNextController *)self _remoteFetchUpNextInfosWithPaginationToken:paginationToken completion:0];
   }
 }
 
 - (void)refresh
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"TVRUIUpNextInfosRequestedNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"TVRUIUpNextInfosRequestedNotification" object:self];
 
   [(TVRUIUpNextController *)self setPaginationToken:0];
 
@@ -188,8 +188,8 @@ void __56__TVRUIUpNextController__notifyInfosUpdatedFromRequest___block_invoke(u
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [(TVRUIUpNextController *)self infos];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    infos = [(TVRUIUpNextController *)self infos];
+    v6 = [infos countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -201,22 +201,22 @@ void __56__TVRUIUpNextController__notifyInfosUpdatedFromRequest___block_invoke(u
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(infos);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * v9) mediaInfo];
-          v11 = [v10 tvrui_effectiveIdentifier];
+          mediaInfo = [*(*(&v14 + 1) + 8 * v9) mediaInfo];
+          tvrui_effectiveIdentifier = [mediaInfo tvrui_effectiveIdentifier];
 
-          if ([v11 length])
+          if ([tvrui_effectiveIdentifier length])
           {
-            [(NSSet *)v4 addObject:v11];
+            [(NSSet *)v4 addObject:tvrui_effectiveIdentifier];
           }
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [infos countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
@@ -233,86 +233,86 @@ void __56__TVRUIUpNextController__notifyInfosUpdatedFromRequest___block_invoke(u
 
 - (BOOL)hasMoreInfo
 {
-  v2 = [(TVRUIUpNextController *)self paginationToken];
-  v3 = [v2 length] != 0;
+  paginationToken = [(TVRUIUpNextController *)self paginationToken];
+  v3 = [paginationToken length] != 0;
 
   return v3;
 }
 
-- (void)fetchImageForUpNextInfo:(id)a3 completion:(id)a4
+- (void)fetchImageForUpNextInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 mediaInfo];
-  v9 = [v8 identifier];
+  infoCopy = info;
+  completionCopy = completion;
+  mediaInfo = [infoCopy mediaInfo];
+  identifier = [mediaInfo identifier];
 
-  if (v6 && [v9 length])
+  if (infoCopy && [identifier length])
   {
-    v10 = [v6 mediaInfo];
-    v11 = [v10 imageURLTemplate];
-    if ([v11 length])
+    mediaInfo2 = [infoCopy mediaInfo];
+    imageURLTemplate = [mediaInfo2 imageURLTemplate];
+    if ([imageURLTemplate length])
     {
-      v12 = [MEMORY[0x277D6C500] imageTemplateWithString:v11];
+      v12 = [MEMORY[0x277D6C500] imageTemplateWithString:imageURLTemplate];
       v13 = [v12 urlForSize:{400.0, 225.0}];
-      v14 = [(TVRUIUpNextController *)self imageFetcher];
+      imageFetcher = [(TVRUIUpNextController *)self imageFetcher];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __60__TVRUIUpNextController_fetchImageForUpNextInfo_completion___block_invoke;
       v15[3] = &unk_279D878D0;
-      v16 = v7;
-      [v14 fetchImageWithURL:v13 identifier:v9 completion:v15];
+      v16 = completionCopy;
+      [imageFetcher fetchImageWithURL:v13 identifier:identifier completion:v15];
     }
 
     else
     {
-      (*(v7 + 2))(v7, v9, 0);
+      (*(completionCopy + 2))(completionCopy, identifier, 0);
     }
   }
 
   else
   {
-    (*(v7 + 2))(v7, *MEMORY[0x277D6C5B0], 0);
+    (*(completionCopy + 2))(completionCopy, *MEMORY[0x277D6C5B0], 0);
   }
 }
 
 - (BOOL)_isDataStale
 {
-  v3 = [(TVRUIUpNextController *)self lastRefreshTimestamp];
+  lastRefreshTimestamp = [(TVRUIUpNextController *)self lastRefreshTimestamp];
 
-  if (!v3)
+  if (!lastRefreshTimestamp)
   {
     return 1;
   }
 
   v4 = [MEMORY[0x277CBEAA8] now];
-  v5 = [(TVRUIUpNextController *)self lastRefreshTimestamp];
-  [v4 timeIntervalSinceDate:v5];
+  lastRefreshTimestamp2 = [(TVRUIUpNextController *)self lastRefreshTimestamp];
+  [v4 timeIntervalSinceDate:lastRefreshTimestamp2];
   v7 = v6;
 
   +[TVRUIUpNextController staleDataTimeInterval];
   return v7 > v8;
 }
 
-- (void)_remoteFetchUpNextInfosWithPaginationToken:(id)a3 completion:(id)a4
+- (void)_remoteFetchUpNextInfosWithPaginationToken:(id)token completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TVRUIUpNextController *)self activeDevice];
+  tokenCopy = token;
+  completionCopy = completion;
+  activeDevice = [(TVRUIUpNextController *)self activeDevice];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
     [(TVRUIUpNextController *)self setIsFetchingUpNextInfos:1];
     objc_initWeak(&location, self);
-    v10 = [(TVRUIUpNextController *)self activeDevice];
+    activeDevice2 = [(TVRUIUpNextController *)self activeDevice];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __79__TVRUIUpNextController__remoteFetchUpNextInfosWithPaginationToken_completion___block_invoke;
     v11[3] = &unk_279D87920;
     objc_copyWeak(&v14, &location);
-    v12 = v6;
-    v13 = v7;
-    [v10 fetchUpNextInfoWithPaginationToken:v12 completion:v11];
+    v12 = tokenCopy;
+    v13 = completionCopy;
+    [activeDevice2 fetchUpNextInfoWithPaginationToken:v12 completion:v11];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -474,25 +474,25 @@ void __79__TVRUIUpNextController__remoteFetchUpNextInfosWithPaginationToken_comp
   }
 }
 
-- (void)_remoteAddItemWithMediaIdentifier:(id)a3 completion:(id)a4
+- (void)_remoteAddItemWithMediaIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(TVRUIUpNextController *)self activeDevice];
+  activeDevice = [(TVRUIUpNextController *)self activeDevice];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(TVRUIUpNextController *)self activeDevice];
+    activeDevice2 = [(TVRUIUpNextController *)self activeDevice];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __70__TVRUIUpNextController__remoteAddItemWithMediaIdentifier_completion___block_invoke;
     v11[3] = &unk_279D87970;
-    v12 = v6;
-    v13 = v7;
+    v12 = identifierCopy;
+    v13 = completionCopy;
     objc_copyWeak(&v14, &location);
-    [v10 addItemWithMediaIdentifier:v12 completion:v11];
+    [activeDevice2 addItemWithMediaIdentifier:v12 completion:v11];
 
     objc_destroyWeak(&v14);
   }
@@ -532,25 +532,25 @@ void __70__TVRUIUpNextController__remoteAddItemWithMediaIdentifier_completion___
   [WeakRetained refresh];
 }
 
-- (void)_remoteMarkAsWatchedWithMediaIdentifier:(id)a3 completion:(id)a4
+- (void)_remoteMarkAsWatchedWithMediaIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(TVRUIUpNextController *)self activeDevice];
+  activeDevice = [(TVRUIUpNextController *)self activeDevice];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(TVRUIUpNextController *)self activeDevice];
+    activeDevice2 = [(TVRUIUpNextController *)self activeDevice];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __76__TVRUIUpNextController__remoteMarkAsWatchedWithMediaIdentifier_completion___block_invoke;
     v11[3] = &unk_279D87970;
-    v12 = v6;
-    v13 = v7;
+    v12 = identifierCopy;
+    v13 = completionCopy;
     objc_copyWeak(&v14, &location);
-    [v10 markAsWatchedWithMediaIdentifier:v12 completion:v11];
+    [activeDevice2 markAsWatchedWithMediaIdentifier:v12 completion:v11];
 
     objc_destroyWeak(&v14);
   }
@@ -590,25 +590,25 @@ void __76__TVRUIUpNextController__remoteMarkAsWatchedWithMediaIdentifier_complet
   [WeakRetained refresh];
 }
 
-- (void)_remoteRemoveItemWithMediaIdentifier:(id)a3 completion:(id)a4
+- (void)_remoteRemoveItemWithMediaIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(TVRUIUpNextController *)self activeDevice];
+  activeDevice = [(TVRUIUpNextController *)self activeDevice];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(TVRUIUpNextController *)self activeDevice];
+    activeDevice2 = [(TVRUIUpNextController *)self activeDevice];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __73__TVRUIUpNextController__remoteRemoveItemWithMediaIdentifier_completion___block_invoke;
     v11[3] = &unk_279D87970;
-    v12 = v6;
-    v13 = v7;
+    v12 = identifierCopy;
+    v13 = completionCopy;
     objc_copyWeak(&v14, &location);
-    [v10 removeItemWithMediaIdentifier:v12 completion:v11];
+    [activeDevice2 removeItemWithMediaIdentifier:v12 completion:v11];
 
     objc_destroyWeak(&v14);
   }
@@ -648,23 +648,23 @@ void __73__TVRUIUpNextController__remoteRemoveItemWithMediaIdentifier_completion
   [WeakRetained refresh];
 }
 
-- (void)_remotePlayItem:(id)a3 completion:(id)a4
+- (void)_remotePlayItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TVRUIUpNextController *)self activeDevice];
+  itemCopy = item;
+  completionCopy = completion;
+  activeDevice = [(TVRUIUpNextController *)self activeDevice];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(TVRUIUpNextController *)self activeDevice];
+    activeDevice2 = [(TVRUIUpNextController *)self activeDevice];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __52__TVRUIUpNextController__remotePlayItem_completion___block_invoke;
     v11[3] = &unk_279D879C0;
-    v12 = v6;
-    v13 = v7;
-    [v10 playItem:v12 completion:v11];
+    v12 = itemCopy;
+    v13 = completionCopy;
+    [activeDevice2 playItem:v12 completion:v11];
   }
 }
 
@@ -698,8 +698,8 @@ void __52__TVRUIUpNextController__remotePlayItem_completion___block_invoke(uint6
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(TVRUIUpNextController *)self infos];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  infos = [(TVRUIUpNextController *)self infos];
+  v4 = [infos countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -711,14 +711,14 @@ void __52__TVRUIUpNextController__remotePlayItem_completion___block_invoke(uint6
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(infos);
         }
 
         [(TVRUIUpNextController *)self fetchImageForUpNextInfo:*(*(&v8 + 1) + 8 * v7++) completion:&__block_literal_global];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [infos countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);

@@ -1,16 +1,16 @@
 @interface AXMTPointerMovement
-- (AXMTPointerMovement)initWithMovementDelta:(CGPoint)a3;
-- (AXMTPointerMovement)initWithPointerLocation:(CGPoint)a3;
+- (AXMTPointerMovement)initWithMovementDelta:(CGPoint)delta;
+- (AXMTPointerMovement)initWithPointerLocation:(CGPoint)location;
 - (CGPoint)delta;
 - (CGPoint)location;
 @end
 
 @implementation AXMTPointerMovement
 
-- (AXMTPointerMovement)initWithPointerLocation:(CGPoint)a3
+- (AXMTPointerMovement)initWithPointerLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v6.receiver = self;
   v6.super_class = AXMTPointerMovement;
   result = [(AXMTPointerMovement *)&v6 init];
@@ -24,10 +24,10 @@
   return result;
 }
 
-- (AXMTPointerMovement)initWithMovementDelta:(CGPoint)a3
+- (AXMTPointerMovement)initWithMovementDelta:(CGPoint)delta
 {
-  y = a3.y;
-  x = a3.x;
+  y = delta.y;
+  x = delta.x;
   v6.receiver = self;
   v6.super_class = AXMTPointerMovement;
   result = [(AXMTPointerMovement *)&v6 init];

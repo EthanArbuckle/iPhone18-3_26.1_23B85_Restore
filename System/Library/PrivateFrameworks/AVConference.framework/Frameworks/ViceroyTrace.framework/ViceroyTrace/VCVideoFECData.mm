@@ -1,11 +1,11 @@
 @interface VCVideoFECData
 - (VCVideoFECData)init;
-- (void)accumulate:(id)a3;
+- (void)accumulate:(id)accumulate;
 - (void)dealloc;
 - (void)init;
-- (void)updateReport:(id)a3 withStreamGroup:(id)a4;
-- (void)updateWithPayload:(id)a3;
-- (void)updateWithPayload:(id)a3 blockFecLevels:(unsigned int)a4;
+- (void)updateReport:(id)report withStreamGroup:(id)group;
+- (void)updateWithPayload:(id)payload;
+- (void)updateWithPayload:(id)payload blockFecLevels:(unsigned int)levels;
 @end
 
 @implementation VCVideoFECData
@@ -41,14 +41,14 @@ LABEL_6:
   [(VCVideoFECData *)&v3 dealloc];
 }
 
-- (void)updateWithPayload:(id)a3 blockFecLevels:(unsigned int)a4
+- (void)updateWithPayload:(id)payload blockFecLevels:(unsigned int)levels
 {
-  if (a4)
+  if (levels)
   {
     v6 = 0;
     do
     {
-      if ((a4 >> v6))
+      if ((levels >> v6))
       {
         [(VCHistogram *)self->_videoTxFecLevel addValue:v6];
       }
@@ -60,43 +60,43 @@ LABEL_6:
   }
 }
 
-- (void)updateWithPayload:(id)a3
+- (void)updateWithPayload:(id)payload
 {
-  v5 = [a3 objectForKeyedSubscript:@"VFEC"];
+  v5 = [payload objectForKeyedSubscript:@"VFEC"];
   if (v5)
   {
     -[VCHistogram addValue:](self->_videoTxFecLevel, "addValue:", [v5 intValue]);
   }
 
-  v6 = [a3 objectForKeyedSubscript:@"AFECL"];
+  v6 = [payload objectForKeyedSubscript:@"AFECL"];
   if (v6)
   {
-    v7 = [v6 intValue];
+    intValue = [v6 intValue];
 
-    [(VCVideoFECData *)self updateWithPayload:a3 blockFecLevels:v7];
+    [(VCVideoFECData *)self updateWithPayload:payload blockFecLevels:intValue];
   }
 }
 
-- (void)accumulate:(id)a3
+- (void)accumulate:(id)accumulate
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     videoTxFecLevel = self->_videoTxFecLevel;
-    v6 = *(a3 + 1);
+    v6 = *(accumulate + 1);
 
     [(VCHistogram *)videoTxFecLevel merge:v6];
   }
 }
 
-- (void)updateReport:(id)a3 withStreamGroup:(id)a4
+- (void)updateReport:(id)report withStreamGroup:(id)group
 {
   v6 = @"AFECL";
-  if (!a4 || (v6 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"AFECL", a4]) != 0)
+  if (!group || (v6 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"AFECL", group]) != 0)
   {
     v7 = [(VCHistogram *)self->_videoTxFecLevel description];
 
-    [a3 setObject:v7 forKeyedSubscript:v6];
+    [report setObject:v7 forKeyedSubscript:v6];
   }
 }
 

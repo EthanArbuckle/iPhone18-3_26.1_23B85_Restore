@@ -1,8 +1,8 @@
 @interface PXOperationStatus
-- (BOOL)isEqual:(id)a3;
-- (PXOperationStatus)initWithState:(int64_t)a3 progress:(double)a4 indeterminate:(BOOL)a5 error:(id)a6 creationDate:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (PXOperationStatus)initWithState:(int64_t)state progress:(double)progress indeterminate:(BOOL)indeterminate error:(id)error creationDate:(id)date;
 - (id)description;
-- (id)operationStatusByMixingOperationStatus:(id)a3 withMixFactor:(double)a4;
+- (id)operationStatusByMixingOperationStatus:(id)status withMixFactor:(double)factor;
 - (id)redactedDescription;
 - (unint64_t)hash;
 @end
@@ -14,9 +14,9 @@
   if ([(PXOperationStatus *)self state]== 3 && ([(PXOperationStatus *)self error], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_opt_respondsToSelector(), v3, (v4 & 1) != 0))
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [(PXOperationStatus *)self error];
-    v7 = [v6 redactedDescription];
-    v8 = [v5 stringWithFormat:@"Failed (%@)", v7];
+    error = [(PXOperationStatus *)self error];
+    redactedDescription = [error redactedDescription];
+    v8 = [v5 stringWithFormat:@"Failed (%@)", redactedDescription];
   }
 
   else
@@ -29,12 +29,12 @@
 
 - (id)description
 {
-  v3 = [(PXOperationStatus *)self state];
-  if (v3 <= 1)
+  state = [(PXOperationStatus *)self state];
+  if (state <= 1)
   {
-    if (v3)
+    if (state)
     {
-      if (v3 == 1)
+      if (state == 1)
       {
         v5 = MEMORY[0x1E696AEC0];
         [(PXOperationStatus *)self progress];
@@ -55,15 +55,15 @@
 
   else
   {
-    switch(v3)
+    switch(state)
     {
       case 2:
         v4 = @"Succeeded";
         break;
       case 3:
         v7 = MEMORY[0x1E696AEC0];
-        v8 = [(PXOperationStatus *)self error];
-        v4 = [v7 stringWithFormat:@"Failed (%@)", v8];
+        error = [(PXOperationStatus *)self error];
+        v4 = [v7 stringWithFormat:@"Failed (%@)", error];
 
         break;
       case 4:
@@ -78,9 +78,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -88,15 +88,15 @@
     goto LABEL_10;
   }
 
-  v5 = v4;
-  v6 = [v5 state];
-  if (v6 != [(PXOperationStatus *)self state])
+  v5 = equalCopy;
+  state = [v5 state];
+  if (state != [(PXOperationStatus *)self state])
   {
     goto LABEL_7;
   }
 
-  v7 = [v5 isIndeterminate];
-  if (v7 != [(PXOperationStatus *)self isIndeterminate])
+  isIndeterminate = [v5 isIndeterminate];
+  if (isIndeterminate != [(PXOperationStatus *)self isIndeterminate])
   {
     goto LABEL_7;
   }
@@ -109,32 +109,32 @@
     goto LABEL_7;
   }
 
-  v11 = [v5 creationDate];
-  v12 = [(PXOperationStatus *)self creationDate];
-  v13 = v12;
-  if (v11 == v12)
+  creationDate = [v5 creationDate];
+  creationDate2 = [(PXOperationStatus *)self creationDate];
+  v13 = creationDate2;
+  if (creationDate == creationDate2)
   {
 
     goto LABEL_12;
   }
 
-  v14 = [v11 isEqual:v12];
+  v14 = [creationDate isEqual:creationDate2];
 
   if (v14)
   {
 LABEL_12:
-    v17 = [v5 error];
-    v18 = [(PXOperationStatus *)self error];
-    if (v17 == v18)
+    error = [v5 error];
+    error2 = [(PXOperationStatus *)self error];
+    if (error == error2)
     {
       v15 = 1;
     }
 
     else
     {
-      v19 = [v5 error];
-      v20 = [(PXOperationStatus *)self error];
-      v15 = [v19 isEqual:v20];
+      error3 = [v5 error];
+      error4 = [(PXOperationStatus *)self error];
+      v15 = [error3 isEqual:error4];
     }
 
     goto LABEL_8;
@@ -150,42 +150,42 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [(PXOperationStatus *)self state];
-  v4 = v3 ^ [(PXOperationStatus *)self isIndeterminate];
+  state = [(PXOperationStatus *)self state];
+  v4 = state ^ [(PXOperationStatus *)self isIndeterminate];
   [(PXOperationStatus *)self progress];
   v6 = (v5 * 1000.0);
-  v7 = [(PXOperationStatus *)self error];
-  v8 = v4 ^ [v7 hash];
+  error = [(PXOperationStatus *)self error];
+  v8 = v4 ^ [error hash];
 
   return v8 ^ v6;
 }
 
-- (id)operationStatusByMixingOperationStatus:(id)a3 withMixFactor:(double)a4
+- (id)operationStatusByMixingOperationStatus:(id)status withMixFactor:(double)factor
 {
-  v7 = a3;
-  if (a4 < 0.0 || a4 > 1.0)
+  statusCopy = status;
+  if (factor < 0.0 || factor > 1.0)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PXOperationStatus.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"mixFactor >= 0.0 && mixFactor <= 1.0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXOperationStatus.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"mixFactor >= 0.0 && mixFactor <= 1.0"}];
   }
 
-  v9 = [v7 state];
+  state = [statusCopy state];
   v10 = 0;
-  if (v9 > 1)
+  if (state > 1)
   {
-    if (v9 != 2)
+    if (state != 2)
     {
-      if (v9 != 3)
+      if (state != 3)
       {
-        if (v9 != 4)
+        if (state != 4)
         {
           goto LABEL_35;
         }
 
-        v11 = [(PXOperationStatus *)self state];
-        if ((v11 - 1) >= 4)
+        state2 = [(PXOperationStatus *)self state];
+        if ((state2 - 1) >= 4)
         {
-          if (v11)
+          if (state2)
           {
             v10 = 0;
             goto LABEL_35;
@@ -195,22 +195,22 @@ LABEL_10:
         }
 
 LABEL_25:
-        v14 = self;
+        selfCopy = self;
 LABEL_34:
-        v10 = v14;
+        v10 = selfCopy;
         goto LABEL_35;
       }
 
 LABEL_33:
-      v14 = v7;
+      selfCopy = statusCopy;
       goto LABEL_34;
     }
 
-    v13 = [(PXOperationStatus *)self state];
+    state3 = [(PXOperationStatus *)self state];
     v10 = 0;
-    if (v13 > 1)
+    if (state3 > 1)
     {
-      switch(v13)
+      switch(state3)
       {
         case 4:
           goto LABEL_33;
@@ -223,42 +223,42 @@ LABEL_33:
       goto LABEL_35;
     }
 
-    if (!v13)
+    if (!state3)
     {
       goto LABEL_33;
     }
 
-    if (v13 != 1)
+    if (state3 != 1)
     {
       goto LABEL_35;
     }
 
     v15 = [PXOperationStatus alloc];
     [(PXOperationStatus *)self progress];
-    v17 = a4 + (1.0 - a4) * v16;
+    v17 = factor + (1.0 - factor) * v16;
     goto LABEL_32;
   }
 
-  if (!v9)
+  if (!state)
   {
     goto LABEL_25;
   }
 
-  if (v9 != 1)
+  if (state != 1)
   {
     goto LABEL_35;
   }
 
-  v12 = [(PXOperationStatus *)self state];
+  state4 = [(PXOperationStatus *)self state];
   v10 = 0;
-  if (v12 <= 1)
+  if (state4 <= 1)
   {
-    if (!v12)
+    if (!state4)
     {
       goto LABEL_33;
     }
 
-    if (v12 != 1)
+    if (state4 != 1)
     {
       goto LABEL_35;
     }
@@ -266,21 +266,21 @@ LABEL_33:
     v15 = [PXOperationStatus alloc];
     [(PXOperationStatus *)self progress];
     v19 = v18;
-    [v7 progress];
-    v17 = v20 * a4 + (1.0 - a4) * v19;
+    [statusCopy progress];
+    v17 = v20 * factor + (1.0 - factor) * v19;
 LABEL_32:
     v21 = v15;
 LABEL_39:
-    v14 = [(PXOperationStatus *)v21 initWithState:1 progress:0 indeterminate:0 error:0 creationDate:v17];
+    selfCopy = [(PXOperationStatus *)v21 initWithState:1 progress:0 indeterminate:0 error:0 creationDate:v17];
     goto LABEL_34;
   }
 
-  switch(v12)
+  switch(state4)
   {
     case 2:
       v23 = [PXOperationStatus alloc];
-      [v7 progress];
-      v17 = 1.0 - a4 + v24 * a4;
+      [statusCopy progress];
+      v17 = 1.0 - factor + v24 * factor;
       v21 = v23;
       goto LABEL_39;
     case 3:
@@ -294,24 +294,24 @@ LABEL_35:
   return v10;
 }
 
-- (PXOperationStatus)initWithState:(int64_t)a3 progress:(double)a4 indeterminate:(BOOL)a5 error:(id)a6 creationDate:(id)a7
+- (PXOperationStatus)initWithState:(int64_t)state progress:(double)progress indeterminate:(BOOL)indeterminate error:(id)error creationDate:(id)date
 {
-  v12 = a6;
-  v13 = a7;
+  errorCopy = error;
+  dateCopy = date;
   v19.receiver = self;
   v19.super_class = PXOperationStatus;
   v14 = [(PXOperationStatus *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    v14->_state = a3;
-    v14->_progress = a4;
-    v14->_indeterminate = a5;
-    v16 = [v12 copy];
+    v14->_state = state;
+    v14->_progress = progress;
+    v14->_indeterminate = indeterminate;
+    v16 = [errorCopy copy];
     error = v15->_error;
     v15->_error = v16;
 
-    objc_storeStrong(&v15->_creationDate, a7);
+    objc_storeStrong(&v15->_creationDate, date);
   }
 
   return v15;

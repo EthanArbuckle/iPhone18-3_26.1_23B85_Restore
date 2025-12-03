@@ -1,19 +1,19 @@
 @interface NUAnimationFactory
-- (NUAnimationFactory)initWithMediaTimingFunction:(id)a3;
+- (NUAnimationFactory)initWithMediaTimingFunction:(id)function;
 @end
 
 @implementation NUAnimationFactory
 
-- (NUAnimationFactory)initWithMediaTimingFunction:(id)a3
+- (NUAnimationFactory)initWithMediaTimingFunction:(id)function
 {
-  v5 = a3;
+  functionCopy = function;
   v9.receiver = self;
   v9.super_class = NUAnimationFactory;
   v6 = [(NUAnimationFactory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaTimingFunction, a3);
+    objc_storeStrong(&v6->_mediaTimingFunction, function);
   }
 
   return v7;

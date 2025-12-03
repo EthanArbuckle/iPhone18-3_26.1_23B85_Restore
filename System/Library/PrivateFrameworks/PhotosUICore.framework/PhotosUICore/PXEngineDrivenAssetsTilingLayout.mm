@@ -1,20 +1,20 @@
 @interface PXEngineDrivenAssetsTilingLayout
-- (BOOL)getGeometry:(PXTileGeometry *)a3 group:(unint64_t *)a4 userData:(id *)a5 forTileWithIdentifier:(PXTileIdentifier *)a6;
-- (CGRect)_contentsRectForItemAtIndexPath:(PXSimpleIndexPath *)a3 forAspectRatio:(double)a4;
+- (BOOL)getGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier;
+- (CGRect)_contentsRectForItemAtIndexPath:(PXSimpleIndexPath *)path forAspectRatio:(double)ratio;
 - (CGRect)contentBounds;
-- (CGSize)playButtonSizeForItemAtIndexPath:(PXSimpleIndexPath *)a3 contentTileSize:(CGSize)a4;
-- (PXEngineDrivenAssetsTilingLayout)initWithDataSource:(id)a3;
-- (PXEngineDrivenAssetsTilingLayout)initWithLayoutEngineSnapshot:(id)a3;
+- (CGSize)playButtonSizeForItemAtIndexPath:(PXSimpleIndexPath *)path contentTileSize:(CGSize)size;
+- (PXEngineDrivenAssetsTilingLayout)initWithDataSource:(id)source;
+- (PXEngineDrivenAssetsTilingLayout)initWithLayoutEngineSnapshot:(id)snapshot;
 - (PXEngineDrivenAssetsTilingLayoutDelegate)delegate;
-- (double)_aspectRatioForItemAtIndexPath:(PXSimpleIndexPath *)a3;
-- (double)_zPositionForItemAtIndexPath:(PXSimpleIndexPath *)a3;
+- (double)_aspectRatioForItemAtIndexPath:(PXSimpleIndexPath *)path;
+- (double)_zPositionForItemAtIndexPath:(PXSimpleIndexPath *)path;
 - (id)dataSource;
-- (void)adjustGeometry:(PXTileGeometry *)a3 forContentTileWithIndexPath:(PXSimpleIndexPath *)a4;
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5;
-- (void)setContentMode:(int64_t)a3;
-- (void)setDelegate:(id)a3;
-- (void)setLayoutSnapshot:(id)a3;
-- (void)setReferenceSize:(CGSize)a3;
+- (void)adjustGeometry:(PXTileGeometry *)geometry forContentTileWithIndexPath:(PXSimpleIndexPath *)path;
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block;
+- (void)setContentMode:(int64_t)mode;
+- (void)setDelegate:(id)delegate;
+- (void)setLayoutSnapshot:(id)snapshot;
+- (void)setReferenceSize:(CGSize)size;
 @end
 
 @implementation PXEngineDrivenAssetsTilingLayout
@@ -26,15 +26,15 @@
   return WeakRetained;
 }
 
-- (CGRect)_contentsRectForItemAtIndexPath:(PXSimpleIndexPath *)a3 forAspectRatio:(double)a4
+- (CGRect)_contentsRectForItemAtIndexPath:(PXSimpleIndexPath *)path forAspectRatio:(double)ratio
 {
   if (self->_delegateFlags.respondsToEngineDrivenLayoutContentsRectForItemAtIndexPathForAspectRatio)
   {
-    v7 = [(PXEngineDrivenAssetsTilingLayout *)self delegate];
-    v8 = *&a3->item;
-    v21[0] = *&a3->dataSourceIdentifier;
+    delegate = [(PXEngineDrivenAssetsTilingLayout *)self delegate];
+    v8 = *&path->item;
+    v21[0] = *&path->dataSourceIdentifier;
     v21[1] = v8;
-    [v7 engineDrivenLayout:self contentsRectForItemAtIndexPath:v21 forAspectRatio:a4];
+    [delegate engineDrivenLayout:self contentsRectForItemAtIndexPath:v21 forAspectRatio:ratio];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -60,49 +60,49 @@
   return result;
 }
 
-- (double)_zPositionForItemAtIndexPath:(PXSimpleIndexPath *)a3
+- (double)_zPositionForItemAtIndexPath:(PXSimpleIndexPath *)path
 {
   v3 = 0.0;
   if (self->_delegateFlags.respondsToEngineDrivenLayoutZPositionForItemAtIndexPath)
   {
-    v6 = [(PXEngineDrivenAssetsTilingLayout *)self delegate];
-    v7 = *&a3->item;
-    v10[0] = *&a3->dataSourceIdentifier;
+    delegate = [(PXEngineDrivenAssetsTilingLayout *)self delegate];
+    v7 = *&path->item;
+    v10[0] = *&path->dataSourceIdentifier;
     v10[1] = v7;
-    [v6 engineDrivenLayout:self zPositionForItemAtIndexPath:v10];
+    [delegate engineDrivenLayout:self zPositionForItemAtIndexPath:v10];
     v3 = v8;
   }
 
   return v3;
 }
 
-- (double)_aspectRatioForItemAtIndexPath:(PXSimpleIndexPath *)a3
+- (double)_aspectRatioForItemAtIndexPath:(PXSimpleIndexPath *)path
 {
   v3 = 1.0;
   if (self->_delegateFlags.respondsToEngineDrivenLayoutAspectRatioForItemAtIndexPath)
   {
-    v6 = [(PXEngineDrivenAssetsTilingLayout *)self delegate];
-    v7 = *&a3->item;
-    v10[0] = *&a3->dataSourceIdentifier;
+    delegate = [(PXEngineDrivenAssetsTilingLayout *)self delegate];
+    v7 = *&path->item;
+    v10[0] = *&path->dataSourceIdentifier;
     v10[1] = v7;
-    [v6 engineDrivenLayout:self aspectRatioForItemAtIndexPath:v10];
+    [delegate engineDrivenLayout:self aspectRatioForItemAtIndexPath:v10];
     v3 = v8;
   }
 
   return v3;
 }
 
-- (CGSize)playButtonSizeForItemAtIndexPath:(PXSimpleIndexPath *)a3 contentTileSize:(CGSize)a4
+- (CGSize)playButtonSizeForItemAtIndexPath:(PXSimpleIndexPath *)path contentTileSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   if (self->_delegateFlags.respondsToEngineDrivenLayoutPlayButtonSizeForItemAtIndexPathForAspectRatio)
   {
-    v8 = [(PXEngineDrivenAssetsTilingLayout *)self delegate];
-    v9 = *&a3->item;
-    v20 = *&a3->dataSourceIdentifier;
+    delegate = [(PXEngineDrivenAssetsTilingLayout *)self delegate];
+    v9 = *&path->item;
+    v20 = *&path->dataSourceIdentifier;
     v21 = v9;
-    [v8 engineDrivenLayout:self playButtonSizeForItemAtIndexPath:&v20 contentTileSize:{width, height}];
+    [delegate engineDrivenLayout:self playButtonSizeForItemAtIndexPath:&v20 contentTileSize:{width, height}];
     v11 = v10;
     v13 = v12;
   }
@@ -111,10 +111,10 @@
   {
     v19.receiver = self;
     v19.super_class = PXEngineDrivenAssetsTilingLayout;
-    v14 = *&a3->item;
-    v20 = *&a3->dataSourceIdentifier;
+    v14 = *&path->item;
+    v20 = *&path->dataSourceIdentifier;
     v21 = v14;
-    [(PXAssetsTilingLayout *)&v19 playButtonSizeForItemAtIndexPath:&v20 contentTileSize:a4.width, height];
+    [(PXAssetsTilingLayout *)&v19 playButtonSizeForItemAtIndexPath:&v20 contentTileSize:size.width, height];
     v11 = v15;
     v13 = v16;
   }
@@ -128,114 +128,114 @@
 
 - (id)dataSource
 {
-  v3 = [(PXEngineDrivenAssetsTilingLayout *)self layoutSnapshot];
-  v4 = [v3 dataSourceSnapshot];
-  v5 = v4;
-  if (v4)
+  layoutSnapshot = [(PXEngineDrivenAssetsTilingLayout *)self layoutSnapshot];
+  dataSourceSnapshot = [layoutSnapshot dataSourceSnapshot];
+  v5 = dataSourceSnapshot;
+  if (dataSourceSnapshot)
   {
-    v6 = v4;
+    dataSource = dataSourceSnapshot;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = PXEngineDrivenAssetsTilingLayout;
-    v6 = [(PXAssetsTilingLayout *)&v9 dataSource];
+    dataSource = [(PXAssetsTilingLayout *)&v9 dataSource];
   }
 
-  v7 = v6;
+  v7 = dataSource;
 
   return v7;
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
-  if (self->_contentMode != a3)
+  if (self->_contentMode != mode)
   {
-    self->_contentMode = a3;
+    self->_contentMode = mode;
     v5 = objc_alloc_init(PXTilingLayoutInvalidationContext);
     [(PXTilingLayoutInvalidationContext *)v5 invalidateAllTiles];
     [(PXTilingLayout *)self invalidateLayoutWithContext:v5];
   }
 }
 
-- (void)setLayoutSnapshot:(id)a3
+- (void)setLayoutSnapshot:(id)snapshot
 {
-  v6 = a3;
-  if (self->_layoutSnapshot != v6)
+  snapshotCopy = snapshot;
+  if (self->_layoutSnapshot != snapshotCopy)
   {
-    v21 = v6;
-    if (v6)
+    v21 = snapshotCopy;
+    if (snapshotCopy)
     {
-      v7 = [(PXLayoutSnapshot *)v6 dataSourceSnapshot];
-      v8 = [v7 identifier];
-      v9 = [(PXEngineDrivenAssetsTilingLayout *)self dataSource];
-      v10 = [v9 identifier];
+      dataSourceSnapshot = [(PXLayoutSnapshot *)snapshotCopy dataSourceSnapshot];
+      identifier = [dataSourceSnapshot identifier];
+      dataSource = [(PXEngineDrivenAssetsTilingLayout *)self dataSource];
+      identifier2 = [dataSource identifier];
 
-      if (v8 != v10)
+      if (identifier != identifier2)
       {
-        v19 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v19 handleFailureInMethod:a2 object:self file:@"PXEngineDrivenAssetsTilingLayout.m" lineNumber:223 description:@"Changing to a layoutSnapshot with a new data source version is not supported."];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXEngineDrivenAssetsTilingLayout.m" lineNumber:223 description:@"Changing to a layoutSnapshot with a new data source version is not supported."];
       }
 
       if (self->_layoutSnapshot)
       {
-        v11 = [(PXLayoutSnapshot *)v21 dataSourceSnapshot];
-        v12 = [v11 identifier];
-        v13 = [(PXLayoutSnapshot *)self->_layoutSnapshot dataSourceSnapshot];
-        v14 = [v13 identifier];
+        dataSourceSnapshot2 = [(PXLayoutSnapshot *)v21 dataSourceSnapshot];
+        identifier3 = [dataSourceSnapshot2 identifier];
+        dataSourceSnapshot3 = [(PXLayoutSnapshot *)self->_layoutSnapshot dataSourceSnapshot];
+        identifier4 = [dataSourceSnapshot3 identifier];
 
-        if (v12 != v14)
+        if (identifier3 != identifier4)
         {
-          v15 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v15 handleFailureInMethod:a2 object:self file:@"PXEngineDrivenAssetsTilingLayout.m" lineNumber:224 description:@"Changing to a layoutSnapshot with a new data source version is not supported."];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXEngineDrivenAssetsTilingLayout.m" lineNumber:224 description:@"Changing to a layoutSnapshot with a new data source version is not supported."];
         }
       }
 
-      v16 = [(PXLayoutSnapshot *)v21 dataSourceSnapshot];
+      dataSourceSnapshot4 = [(PXLayoutSnapshot *)v21 dataSourceSnapshot];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if ((isKindOfClass & 1) == 0)
       {
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v20 handleFailureInMethod:a2 object:self file:@"PXEngineDrivenAssetsTilingLayout.m" lineNumber:225 description:@"Requires a layout snapshot with a PXAssetsDataSource data source."];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXEngineDrivenAssetsTilingLayout.m" lineNumber:225 description:@"Requires a layout snapshot with a PXAssetsDataSource data source."];
       }
     }
 
-    objc_storeStrong(&self->_layoutSnapshot, a3);
+    objc_storeStrong(&self->_layoutSnapshot, snapshot);
     v18 = objc_alloc_init(PXTilingLayoutInvalidationContext);
     [(PXTilingLayoutInvalidationContext *)v18 invalidateAllTiles];
     [(PXTilingLayoutInvalidationContext *)v18 invalidateContentBounds];
     [(PXTilingLayout *)self invalidateLayoutWithContext:v18];
 
-    v6 = v21;
+    snapshotCopy = v21;
   }
 }
 
 - (CGRect)contentBounds
 {
-  v3 = [(PXEngineDrivenAssetsTilingLayout *)self layoutSnapshot];
-  if (v3)
+  layoutSnapshot = [(PXEngineDrivenAssetsTilingLayout *)self layoutSnapshot];
+  if (layoutSnapshot)
   {
-    [v3 contentRect];
+    [layoutSnapshot contentRect];
   }
 
   [(PXTilingLayout *)self contentInset];
   sub_1A524D1F4();
 }
 
-- (void)adjustGeometry:(PXTileGeometry *)a3 forContentTileWithIndexPath:(PXSimpleIndexPath *)a4
+- (void)adjustGeometry:(PXTileGeometry *)geometry forContentTileWithIndexPath:(PXSimpleIndexPath *)path
 {
   v4.receiver = self;
   v4.super_class = PXEngineDrivenAssetsTilingLayout;
-  [(PXAssetsTilingLayout *)&v4 adjustGeometry:a4->dataSourceIdentifier forContentTileWithIndexPath:a4->section, a4->item, a4->subitem];
+  [(PXAssetsTilingLayout *)&v4 adjustGeometry:path->dataSourceIdentifier forContentTileWithIndexPath:path->section, path->item, path->subitem];
   PXSizeGetAspectRatio();
 }
 
-- (BOOL)getGeometry:(PXTileGeometry *)a3 group:(unint64_t *)a4 userData:(id *)a5 forTileWithIdentifier:(PXTileIdentifier *)a6
+- (BOOL)getGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier
 {
-  length = a6->length;
+  length = identifier->length;
   v12 = *(off_1E7722248 + 9);
   v42 = *(off_1E7722248 + 8);
   v43 = v12;
@@ -256,18 +256,18 @@
   v37 = v17;
   if (length - 3 <= 2)
   {
-    v18 = a6->index[1];
-    if (v18 != 0x7FFFFFFFFFFFFFFFLL && length == 5 && a6->index[0] == 6432423)
+    v18 = identifier->index[1];
+    if (v18 != 0x7FFFFFFFFFFFFFFFLL && length == 5 && identifier->index[0] == 6432423)
     {
-      v19 = [(PXEngineDrivenAssetsTilingLayout *)self dataSource];
-      v20 = [v19 identifier];
+      dataSource = [(PXEngineDrivenAssetsTilingLayout *)self dataSource];
+      identifier = [dataSource identifier];
 
-      if (v18 == v20)
+      if (v18 == identifier)
       {
-        v21 = a6->index[2];
-        v23 = a6->index[3];
-        v22 = a6->index[4];
-        *&v28 = a6->index[1];
+        v21 = identifier->index[2];
+        v23 = identifier->index[3];
+        v22 = identifier->index[4];
+        *&v28 = identifier->index[1];
         *(&v28 + 1) = v21;
         *&v29 = v23;
         *(&v29 + 1) = v22;
@@ -278,44 +278,44 @@
 
   v27.receiver = self;
   v27.super_class = PXEngineDrivenAssetsTilingLayout;
-  v24 = *&a6->index[5];
-  v30 = *&a6->index[3];
+  v24 = *&identifier->index[5];
+  v30 = *&identifier->index[3];
   v31 = v24;
-  v32 = *&a6->index[7];
-  *&v33 = a6->index[9];
-  v25 = *&a6->index[1];
-  v28 = *&a6->length;
+  v32 = *&identifier->index[7];
+  *&v33 = identifier->index[9];
+  v25 = *&identifier->index[1];
+  v28 = *&identifier->length;
   v29 = v25;
-  return [(PXAssetsTilingLayout *)&v27 getGeometry:a3 group:a4 userData:a5 forTileWithIdentifier:&v28];
+  return [(PXAssetsTilingLayout *)&v27 getGeometry:geometry group:group userData:data forTileWithIdentifier:&v28];
 }
 
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(PXEngineDrivenAssetsTilingLayout *)self dataSource];
-  v14 = [v13 identifier];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  optionsCopy = options;
+  blockCopy = block;
+  dataSource = [(PXEngineDrivenAssetsTilingLayout *)self dataSource];
+  identifier = [dataSource identifier];
 
-  v15 = [(PXTilingLayout *)self coordinateSpaceIdentifier];
+  coordinateSpaceIdentifier = [(PXTilingLayout *)self coordinateSpaceIdentifier];
   v16 = [(PXEngineDrivenAssetsTilingLayout *)self contentMode]== 0;
-  v17 = [(PXEngineDrivenAssetsTilingLayout *)self layoutSnapshot];
+  layoutSnapshot = [(PXEngineDrivenAssetsTilingLayout *)self layoutSnapshot];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __80__PXEngineDrivenAssetsTilingLayout_enumerateTilesInRect_withOptions_usingBlock___block_invoke;
   v20[3] = &unk_1E772FA88;
   v25 = v16;
-  v23 = v14;
-  v24 = v15;
-  v21 = v11;
-  v22 = v12;
+  v23 = identifier;
+  v24 = coordinateSpaceIdentifier;
+  v21 = optionsCopy;
+  v22 = blockCopy;
   v20[4] = self;
-  v18 = v11;
-  v19 = v12;
-  [v17 enumerateGeometriesForItemsInRect:v20 usingBlock:{x, y, width, height}];
+  v18 = optionsCopy;
+  v19 = blockCopy;
+  [layoutSnapshot enumerateGeometriesForItemsInRect:v20 usingBlock:{x, y, width, height}];
 }
 
 void __80__PXEngineDrivenAssetsTilingLayout_enumerateTilesInRect_withOptions_usingBlock___block_invoke(uint64_t a1, void *a2, uint64_t *a3)
@@ -406,28 +406,28 @@ LABEL_8:
   }
 }
 
-- (void)setReferenceSize:(CGSize)a3
+- (void)setReferenceSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PXTilingLayout *)self referenceSize];
   if (width != v7 || height != v6)
   {
     v11.receiver = self;
     v11.super_class = PXEngineDrivenAssetsTilingLayout;
     [(PXTilingLayout *)&v11 setReferenceSize:width, height];
-    v9 = [(PXEngineDrivenAssetsTilingLayout *)self delegate];
-    v10 = v9;
+    delegate = [(PXEngineDrivenAssetsTilingLayout *)self delegate];
+    v10 = delegate;
     if (self->_delegateFlags.respondsToEngineDrivenLayoutReferenceSizeDidChange)
     {
-      [v9 engineDrivenLayoutReferenceSizeDidChange:self];
+      [delegate engineDrivenLayoutReferenceSizeDidChange:self];
     }
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -442,28 +442,28 @@ LABEL_8:
   }
 }
 
-- (PXEngineDrivenAssetsTilingLayout)initWithLayoutEngineSnapshot:(id)a3
+- (PXEngineDrivenAssetsTilingLayout)initWithLayoutEngineSnapshot:(id)snapshot
 {
-  v5 = a3;
-  v6 = [v5 dataSourceSnapshot];
+  snapshotCopy = snapshot;
+  dataSourceSnapshot = [snapshotCopy dataSourceSnapshot];
   v10.receiver = self;
   v10.super_class = PXEngineDrivenAssetsTilingLayout;
-  v7 = [(PXAssetsTilingLayout *)&v10 initWithDataSource:v6];
+  v7 = [(PXAssetsTilingLayout *)&v10 initWithDataSource:dataSourceSnapshot];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_layoutSnapshot, a3);
+    objc_storeStrong(&v7->_layoutSnapshot, snapshot);
     [(PXEngineDrivenAssetsTilingLayout *)v8 _commonInit];
   }
 
   return v8;
 }
 
-- (PXEngineDrivenAssetsTilingLayout)initWithDataSource:(id)a3
+- (PXEngineDrivenAssetsTilingLayout)initWithDataSource:(id)source
 {
   v6.receiver = self;
   v6.super_class = PXEngineDrivenAssetsTilingLayout;
-  v3 = [(PXAssetsTilingLayout *)&v6 initWithDataSource:a3];
+  v3 = [(PXAssetsTilingLayout *)&v6 initWithDataSource:source];
   v4 = v3;
   if (v3)
   {

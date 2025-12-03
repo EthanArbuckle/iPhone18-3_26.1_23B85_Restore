@@ -1,8 +1,8 @@
 @interface SUUIReviewList
 - (NSMutableDictionary)cacheRepresentation;
 - (NSURL)writeReviewURL;
-- (SUUIReviewList)initWithCacheRepresentation:(id)a3;
-- (SUUIReviewList)initWithReviewListDictionary:(id)a3;
+- (SUUIReviewList)initWithCacheRepresentation:(id)representation;
+- (SUUIReviewList)initWithReviewListDictionary:(id)dictionary;
 - (float)userRating;
 - (int64_t)fiveStarRatingCount;
 - (int64_t)fourStarRatingCount;
@@ -15,20 +15,20 @@
 
 @implementation SUUIReviewList
 
-- (SUUIReviewList)initWithReviewListDictionary:(id)a3
+- (SUUIReviewList)initWithReviewListDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = SUUIReviewList;
   v5 = [(SUUIReviewList *)&v25 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     dictionary = v5->_dictionary;
     v5->_dictionary = v6;
 
-    v8 = [v4 objectForKey:@"review_list"];
+    v8 = [dictionaryCopy objectForKey:@"review_list"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,15 +92,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)fourStarRatingCount
@@ -109,15 +109,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)numberOfPages
@@ -125,15 +125,15 @@
   v2 = [(NSDictionary *)self->_dictionary objectForKey:@"total_num_pages"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)oneStarRatingCount
@@ -142,15 +142,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)ratingCount
@@ -159,15 +159,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)threeStarRatingCount
@@ -176,15 +176,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)twoStarRatingCount
@@ -193,15 +193,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (float)userRating
@@ -235,10 +235,10 @@
   return v3;
 }
 
-- (SUUIReviewList)initWithCacheRepresentation:(id)a3
+- (SUUIReviewList)initWithCacheRepresentation:(id)representation
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -247,11 +247,11 @@
     v5 = [(SUUIReviewList *)&v25 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [representationCopy copy];
       dictionary = v5->_dictionary;
       v5->_dictionary = v6;
 
-      v8 = [v4 objectForKey:@"reviews"];
+      v8 = [representationCopy objectForKey:@"reviews"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -334,10 +334,10 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) cacheRepresentation];
-        if (v10)
+        cacheRepresentation = [*(*(&v12 + 1) + 8 * i) cacheRepresentation];
+        if (cacheRepresentation)
         {
-          [v4 addObject:v10];
+          [v4 addObject:cacheRepresentation];
         }
       }
 

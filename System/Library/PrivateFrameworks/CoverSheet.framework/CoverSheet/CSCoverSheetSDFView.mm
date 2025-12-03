@@ -1,11 +1,11 @@
 @interface CSCoverSheetSDFView
-- (CSCoverSheetSDFView)initWithFrame:(CGRect)a3;
+- (CSCoverSheetSDFView)initWithFrame:(CGRect)frame;
 - (void)_displayScaleDidChange;
-- (void)_layoutLayer:(id)a3 inBounds:(CGRect)a4 withHorizontalOutset:(double)a5;
+- (void)_layoutLayer:(id)layer inBounds:(CGRect)bounds withHorizontalOutset:(double)outset;
 - (void)_setupOutputLayer;
 - (void)_updateGlassLayerFilterValues;
 - (void)layoutSubviews;
-- (void)setEffectMultiplier:(double)a3;
+- (void)setEffectMultiplier:(double)multiplier;
 @end
 
 @implementation CSCoverSheetSDFView
@@ -15,40 +15,40 @@
   v3 = -240.0 / self->_screenScale * self->_effectMultiplier;
   [(CSCoverSheetSDFView *)self _refractionHeight];
   v5 = v4;
-  v6 = [(CSCoverSheetSDFView *)self backdropView];
-  v7 = [v6 backdropLayer];
+  backdropView = [(CSCoverSheetSDFView *)self backdropView];
+  backdropLayer = [backdropView backdropLayer];
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:v3];
-  [v7 setValue:v8 forKeyPath:@"filters.glassForeground.inputRefractionAmount"];
+  [backdropLayer setValue:v8 forKeyPath:@"filters.glassForeground.inputRefractionAmount"];
 
-  v9 = [(CSCoverSheetSDFView *)self backdropView];
-  v10 = [v9 backdropLayer];
+  backdropView2 = [(CSCoverSheetSDFView *)self backdropView];
+  backdropLayer2 = [backdropView2 backdropLayer];
   v11 = [MEMORY[0x277CCABB0] numberWithDouble:v5];
-  [v10 setValue:v11 forKeyPath:@"filters.glassForeground.inputRefractionHeight"];
+  [backdropLayer2 setValue:v11 forKeyPath:@"filters.glassForeground.inputRefractionHeight"];
 
   screenScale = self->_screenScale;
   v13 = 120.0 / screenScale * self->_effectMultiplier;
   v14 = 20.0 / screenScale;
-  v15 = [(CSCoverSheetSDFView *)self backdropView];
-  v16 = [v15 backdropLayer];
+  backdropView3 = [(CSCoverSheetSDFView *)self backdropView];
+  backdropLayer3 = [backdropView3 backdropLayer];
   v17 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
-  [v16 setValue:v17 forKeyPath:@"filters.glassForeground.inputAberrationAmount"];
+  [backdropLayer3 setValue:v17 forKeyPath:@"filters.glassForeground.inputAberrationAmount"];
 
-  v20 = [(CSCoverSheetSDFView *)self backdropView];
-  v18 = [v20 backdropLayer];
+  backdropView4 = [(CSCoverSheetSDFView *)self backdropView];
+  backdropLayer4 = [backdropView4 backdropLayer];
   v19 = [MEMORY[0x277CCABB0] numberWithDouble:v14];
-  [v18 setValue:v19 forKeyPath:@"filters.glassForeground.inputAberrationHeight"];
+  [backdropLayer4 setValue:v19 forKeyPath:@"filters.glassForeground.inputAberrationHeight"];
 }
 
-- (CSCoverSheetSDFView)initWithFrame:(CGRect)a3
+- (CSCoverSheetSDFView)initWithFrame:(CGRect)frame
 {
   v36[1] = *MEMORY[0x277D85DE8];
   v34.receiver = self;
   v34.super_class = CSCoverSheetSDFView;
-  v3 = [(CSCoverSheetSDFView *)&v34 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CSCoverSheetSDFView *)&v34 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D759A0] mainScreen];
-    [v4 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v3->_screenScale = v5;
 
     v6 = [CSCoverSheetSDFBackdropView alloc];
@@ -63,9 +63,9 @@
     v15 = v14;
     [(CSCoverSheetSDFView *)v3 _setupOutputLayer];
     [(CSCoverSheetSDFView *)v3 _layoutLayer:v3->_outputLayer inBounds:v9, v11, v13, v15];
-    v16 = [(CSCoverSheetSDFView *)v3 backdropView];
-    v17 = [v16 backdropLayer];
-    [v17 addSublayer:v3->_outputLayer];
+    backdropView = [(CSCoverSheetSDFView *)v3 backdropView];
+    backdropLayer = [backdropView backdropLayer];
+    [backdropLayer addSublayer:v3->_outputLayer];
 
     v18 = objc_alloc(MEMORY[0x277CD9EA0]);
     v19 = [v18 initWithType:*MEMORY[0x277CDA338]];
@@ -75,24 +75,24 @@
     [v19 setValue:&unk_28307A538 forKey:*MEMORY[0x277CDA450]];
     [v19 setValue:&unk_283078E40 forKey:*MEMORY[0x277CDA348]];
     [v19 setEnabled:1];
-    v20 = [(CSCoverSheetSDFView *)v3 backdropView];
-    v21 = [v20 backdropLayer];
+    backdropView2 = [(CSCoverSheetSDFView *)v3 backdropView];
+    backdropLayer2 = [backdropView2 backdropLayer];
     v36[0] = v19;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
-    [v21 setFilters:v22];
+    [backdropLayer2 setFilters:v22];
 
-    v23 = [(CSCoverSheetSDFView *)v3 backdropView];
-    v24 = [v23 backdropLayer];
-    [v24 setAllowsHitTesting:0];
+    backdropView3 = [(CSCoverSheetSDFView *)v3 backdropView];
+    backdropLayer3 = [backdropView3 backdropLayer];
+    [backdropLayer3 setAllowsHitTesting:0];
 
-    v25 = [(CSCoverSheetSDFView *)v3 backdropView];
-    v26 = [v25 backdropLayer];
-    [v26 setPreallocatesScreenArea:1];
+    backdropView4 = [(CSCoverSheetSDFView *)v3 backdropView];
+    backdropLayer4 = [backdropView4 backdropLayer];
+    [backdropLayer4 setPreallocatesScreenArea:1];
 
     [(CSCoverSheetSDFView *)v3 setUserInteractionEnabled:0];
-    v27 = [MEMORY[0x277D759A0] mainScreen];
-    v28 = [v27 traitCollection];
-    [v28 displayCornerRadius];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    traitCollection = [mainScreen2 traitCollection];
+    [traitCollection displayCornerRadius];
     v3->_cornerRadius = v29;
 
     [(CSCoverSheetSDFView *)v3 _updateGlassLayerFilterValues];
@@ -105,39 +105,39 @@
   return v3;
 }
 
-- (void)setEffectMultiplier:(double)a3
+- (void)setEffectMultiplier:(double)multiplier
 {
-  if (self->_effectMultiplier != a3)
+  if (self->_effectMultiplier != multiplier)
   {
-    self->_effectMultiplier = a3;
+    self->_effectMultiplier = multiplier;
     [(CSCoverSheetSDFView *)self _updateGlassLayerFilterValues];
   }
 }
 
 - (void)_displayScaleDidChange
 {
-  v3 = [(CSCoverSheetSDFView *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(CSCoverSheetSDFView *)self traitCollection];
+  [traitCollection displayScale];
   self->_screenScale = v4;
 
   [(CSCoverSheetSDFView *)self _updateGlassLayerFilterValues];
 }
 
-- (void)_layoutLayer:(id)a3 inBounds:(CGRect)a4 withHorizontalOutset:(double)a5
+- (void)_layoutLayer:(id)layer inBounds:(CGRect)bounds withHorizontalOutset:(double)outset
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = -a5;
-  v11 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v10 = -outset;
+  layerCopy = layer;
   v13.origin.x = x;
   v13.origin.y = y;
   v13.size.width = width;
   v13.size.height = height;
   v14 = CGRectInset(v13, v10, 0.0);
-  [v11 setFrame:{v14.origin.x, v14.origin.y, v14.size.width, v14.size.height}];
-  [v11 setCornerRadius:self->_cornerRadius];
+  [layerCopy setFrame:{v14.origin.x, v14.origin.y, v14.size.width, v14.size.height}];
+  [layerCopy setCornerRadius:self->_cornerRadius];
 }
 
 - (void)layoutSubviews
@@ -150,13 +150,13 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CSCoverSheetSDFView *)self backdropView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  backdropView = [(CSCoverSheetSDFView *)self backdropView];
+  [backdropView setFrame:{v4, v6, v8, v10}];
 
   [(CSCoverSheetSDFView *)self _layoutLayer:self->_outputLayer inBounds:v4, v6, v8, v10];
-  v12 = [MEMORY[0x277D759A0] mainScreen];
-  v13 = [v12 traitCollection];
-  [v13 displayCornerRadius];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  [traitCollection displayCornerRadius];
   IsZero = BSFloatIsZero();
 
   outputElementLayer = self->_outputElementLayer;

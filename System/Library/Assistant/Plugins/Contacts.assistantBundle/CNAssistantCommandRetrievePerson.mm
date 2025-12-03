@@ -1,7 +1,7 @@
 @interface CNAssistantCommandRetrievePerson
 - (CNContactStore)contactStore;
 - (id)retrieve;
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation CNAssistantCommandRetrievePerson
@@ -21,12 +21,12 @@
   return contactStore;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10 = objc_msgSend_retrieve(self, v5, v6);
   v9 = objc_msgSend_dictionary(v10, v7, v8);
-  v4[2](v4, v9);
+  completionCopy[2](completionCopy, v9);
 }
 
 - (id)retrieve

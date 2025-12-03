@@ -1,7 +1,7 @@
 @interface PXViewSpec
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PXViewSpec)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -20,9 +20,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong((v4 + 16), self->_backgroundColor);
   objc_storeStrong((v4 + 24), self->_selectionHighlightColor);
   objc_storeStrong((v4 + 32), self->_borderColor);
@@ -40,23 +40,23 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PXViewSpec *)self backgroundColor];
-    v7 = [v5 backgroundColor];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    backgroundColor = [(PXViewSpec *)self backgroundColor];
+    backgroundColor2 = [v5 backgroundColor];
+    v8 = backgroundColor2;
+    if (backgroundColor == backgroundColor2)
     {
     }
 
     else
     {
-      v9 = [v6 isEqual:v7];
+      v9 = [backgroundColor isEqual:backgroundColor2];
 
       if ((v9 & 1) == 0)
       {
@@ -64,16 +64,16 @@
       }
     }
 
-    v11 = [(PXViewSpec *)self selectionHighlightColor];
-    v12 = [v5 selectionHighlightColor];
-    v13 = v12;
-    if (v11 == v12)
+    selectionHighlightColor = [(PXViewSpec *)self selectionHighlightColor];
+    selectionHighlightColor2 = [v5 selectionHighlightColor];
+    v13 = selectionHighlightColor2;
+    if (selectionHighlightColor == selectionHighlightColor2)
     {
     }
 
     else
     {
-      v14 = [v11 isEqual:v12];
+      v14 = [selectionHighlightColor isEqual:selectionHighlightColor2];
 
       if ((v14 & 1) == 0)
       {
@@ -81,16 +81,16 @@
       }
     }
 
-    v15 = [(PXViewSpec *)self borderColor];
-    v16 = [v5 borderColor];
-    v17 = v16;
-    if (v15 == v16)
+    borderColor = [(PXViewSpec *)self borderColor];
+    borderColor2 = [v5 borderColor];
+    v17 = borderColor2;
+    if (borderColor == borderColor2)
     {
     }
 
     else
     {
-      v18 = [v15 isEqual:v16];
+      v18 = [borderColor isEqual:borderColor2];
 
       if ((v18 & 1) == 0)
       {
@@ -114,16 +114,16 @@
       goto LABEL_25;
     }
 
-    v25 = [(PXViewSpec *)self cornerCurve];
-    v26 = [v5 cornerCurve];
-    v27 = v26;
-    if (v25 == v26)
+    cornerCurve = [(PXViewSpec *)self cornerCurve];
+    cornerCurve2 = [v5 cornerCurve];
+    v27 = cornerCurve2;
+    if (cornerCurve == cornerCurve2)
     {
     }
 
     else
     {
-      v28 = [v25 isEqual:v26];
+      v28 = [cornerCurve isEqual:cornerCurve2];
 
       if ((v28 & 1) == 0)
       {
@@ -131,19 +131,19 @@
       }
     }
 
-    v29 = [(PXViewSpec *)self cornerMask];
-    if (v29 == [v5 cornerMask])
+    cornerMask = [(PXViewSpec *)self cornerMask];
+    if (cornerMask == [v5 cornerMask])
     {
       [(PXViewSpec *)self displayScale];
       v31 = v30;
       [v5 displayScale];
       if (v31 == v32)
       {
-        v33 = [(PXViewSpec *)self compositingFilterType];
-        if (v33 == [v5 compositingFilterType])
+        compositingFilterType = [(PXViewSpec *)self compositingFilterType];
+        if (compositingFilterType == [v5 compositingFilterType])
         {
-          v34 = [(PXViewSpec *)self isHidden];
-          if (v34 == [v5 isHidden])
+          isHidden = [(PXViewSpec *)self isHidden];
+          if (isHidden == [v5 isHidden])
           {
             [(PXViewSpec *)self rotationAngle];
             v37 = v36;
@@ -170,14 +170,14 @@ LABEL_27:
 
 - (unint64_t)hash
 {
-  v3 = [(PXViewSpec *)self backgroundColor];
-  v4 = [v3 hash];
+  backgroundColor = [(PXViewSpec *)self backgroundColor];
+  v4 = [backgroundColor hash];
 
-  v5 = [(PXViewSpec *)self selectionHighlightColor];
-  v6 = [v5 hash] ^ v4;
+  selectionHighlightColor = [(PXViewSpec *)self selectionHighlightColor];
+  v6 = [selectionHighlightColor hash] ^ v4;
 
-  v7 = [(PXViewSpec *)self borderColor];
-  v8 = v6 ^ [v7 hash];
+  borderColor = [(PXViewSpec *)self borderColor];
+  v8 = v6 ^ [borderColor hash];
 
   v9 = vshlq_u64(vcvtq_s64_f64(*&self->_borderWidth), xmmword_1B406FF50);
   return v8 ^ v9.i64[0] ^ v9.i64[1] ^ (8 * self->_cornerMask) ^ (16 * self->_displayScale) ^ (32 * self->_hidden);

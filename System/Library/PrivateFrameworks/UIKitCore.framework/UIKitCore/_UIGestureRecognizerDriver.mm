@@ -2,7 +2,7 @@
 - (_UIGestureRecognizerDriver)init;
 - (_UIGestureRecognizerDriverDelegate)delegate;
 - (id)description;
-- (void)_setState:(int)a3 notifyDelegate:;
+- (void)_setState:(int)state notifyDelegate:;
 - (void)fail;
 - (void)reset;
 @end
@@ -71,19 +71,19 @@
   }
 }
 
-- (void)_setState:(int)a3 notifyDelegate:
+- (void)_setState:(int)state notifyDelegate:
 {
-  if (a1)
+  if (self)
   {
-    v5 = *(a1 + 8);
+    v5 = *(self + 8);
     if (v5 != a2 || v5 == 1)
     {
-      *(a1 + 8) = a2;
-      [a1 didUpdateState:a2 previousState:v5];
-      if (a3)
+      *(self + 8) = a2;
+      [self didUpdateState:a2 previousState:v5];
+      if (state)
       {
-        WeakRetained = objc_loadWeakRetained((a1 + 32));
-        [WeakRetained _gestureRecognizerDriver:a1 didUpdateState:a2 previousState:v5];
+        WeakRetained = objc_loadWeakRetained((self + 32));
+        [WeakRetained _gestureRecognizerDriver:self didUpdateState:a2 previousState:v5];
       }
     }
   }

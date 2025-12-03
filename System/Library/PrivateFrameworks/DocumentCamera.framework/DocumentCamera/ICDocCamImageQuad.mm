@@ -1,54 +1,54 @@
 @interface ICDocCamImageQuad
-+ (id)quadFromCGRect:(CGRect)a3;
-+ (id)quadFromVNRectangle:(id)a3;
++ (id)quadFromCGRect:(CGRect)rect;
++ (id)quadFromVNRectangle:(id)rectangle;
 - (BOOL)containsAngleOutOfValidThreshold;
 - (BOOL)containsIntersectingLines;
 - (BOOL)containsPointOutsideOfExtendedImageBounds;
 - (BOOL)containsPointsLessThanDistanceThreshold;
 - (BOOL)isConvex;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)bottomLeft;
 - (CGPoint)bottomRight;
-- (CGPoint)pointRotatedClockwiseAroundOrigin:(CGPoint)a3;
+- (CGPoint)pointRotatedClockwiseAroundOrigin:(CGPoint)origin;
 - (CGPoint)topLeft;
 - (CGPoint)topRight;
 - (CGRect)boundingBox;
 - (CGRect)bounds;
 - (CGSize)perspectiveCorrectedSize;
-- (ICDocCamImageQuad)initWithBottomLeft:(CGPoint)a3 bottomRight:(CGPoint)a4 topLeft:(CGPoint)a5 topRight:(CGPoint)a6;
-- (ICDocCamImageQuad)initWithCoder:(id)a3;
+- (ICDocCamImageQuad)initWithBottomLeft:(CGPoint)left bottomRight:(CGPoint)right topLeft:(CGPoint)topLeft topRight:(CGPoint)topRight;
+- (ICDocCamImageQuad)initWithCoder:(id)coder;
 - (double)mininumAllowedDistanceBetweenPoints;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)flippedQuadFromSourceFrame:(CGRect)a3;
-- (id)imageQuadByScalingBy:(CGSize)a3;
-- (id)intersectionOfLineFrom:(CGPoint)a3 to:(CGPoint)a4 withLineFrom:(CGPoint)a5 to:(CGPoint)a6;
-- (id)normalizedQuadByConvertingFromView:(id)a3 toView:(id)a4 toViewSize:(CGSize)a5;
-- (id)quadByConvertingFromView:(id)a3 toView:(id)a4 isNormalized:(BOOL)a5;
-- (void)addPointToQuadPoints:(CGPoint)a3;
-- (void)applyOrientation:(int64_t)a3 boundingBox:(CGRect)a4;
-- (void)clampQuadToRect:(CGRect)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)flipPointsWithSourceFrame:(CGRect)a3;
-- (void)insertAndClipTopBy:(double)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)flippedQuadFromSourceFrame:(CGRect)frame;
+- (id)imageQuadByScalingBy:(CGSize)by;
+- (id)intersectionOfLineFrom:(CGPoint)from to:(CGPoint)to withLineFrom:(CGPoint)lineFrom to:(CGPoint)a6;
+- (id)normalizedQuadByConvertingFromView:(id)view toView:(id)toView toViewSize:(CGSize)size;
+- (id)quadByConvertingFromView:(id)view toView:(id)toView isNormalized:(BOOL)normalized;
+- (void)addPointToQuadPoints:(CGPoint)points;
+- (void)applyOrientation:(int64_t)orientation boundingBox:(CGRect)box;
+- (void)clampQuadToRect:(CGRect)rect;
+- (void)encodeWithCoder:(id)coder;
+- (void)flipPointsWithSourceFrame:(CGRect)frame;
+- (void)insertAndClipTopBy:(double)by;
 - (void)orientIfNecessary;
-- (void)removeOrientation:(int64_t)a3 boundingBox:(CGRect)a4;
-- (void)rotatePointsByOrientation:(int64_t)a3;
+- (void)removeOrientation:(int64_t)orientation boundingBox:(CGRect)box;
+- (void)rotatePointsByOrientation:(int64_t)orientation;
 - (void)rotatePointsClockwise;
-- (void)rotatePointsRemovingOrientation:(int64_t)a3;
+- (void)rotatePointsRemovingOrientation:(int64_t)orientation;
 @end
 
 @implementation ICDocCamImageQuad
 
-- (ICDocCamImageQuad)initWithBottomLeft:(CGPoint)a3 bottomRight:(CGPoint)a4 topLeft:(CGPoint)a5 topRight:(CGPoint)a6
+- (ICDocCamImageQuad)initWithBottomLeft:(CGPoint)left bottomRight:(CGPoint)right topLeft:(CGPoint)topLeft topRight:(CGPoint)topRight
 {
-  y = a6.y;
-  x = a6.x;
-  v8 = a5.y;
-  v9 = a5.x;
-  v10 = a4.y;
-  v11 = a4.x;
-  v12 = a3.y;
-  v13 = a3.x;
+  y = topRight.y;
+  x = topRight.x;
+  v8 = topLeft.y;
+  v9 = topLeft.x;
+  v10 = right.y;
+  v11 = right.x;
+  v12 = left.y;
+  v13 = left.x;
   result = [(ICDocCamImageQuad *)self init];
   if (result)
   {
@@ -65,10 +65,10 @@
   return result;
 }
 
-- (id)imageQuadByScalingBy:(CGSize)a3
+- (id)imageQuadByScalingBy:(CGSize)by
 {
-  height = a3.height;
-  width = a3.width;
+  height = by.height;
+  width = by.width;
   [(ICDocCamImageQuad *)self bottomLeft];
   v7 = v6;
   v9 = v8;
@@ -188,7 +188,7 @@
   return result;
 }
 
-- (void)flipPointsWithSourceFrame:(CGRect)a3
+- (void)flipPointsWithSourceFrame:(CGRect)frame
 {
   [(ICDocCamImageQuad *)self topLeft];
   DCTSDFlipPoint();
@@ -205,12 +205,12 @@
   [(ICDocCamImageQuad *)self setBottomLeft:?];
 }
 
-- (void)clampQuadToRect:(CGRect)a3
+- (void)clampQuadToRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(ICDocCamImageQuad *)self topLeft];
   [(ICDocCamImageQuad *)self setTopLeft:DCTSDClampPointInRect(v8, v9, x, y, width, height)];
   [(ICDocCamImageQuad *)self topRight];
@@ -223,16 +223,16 @@
   [(ICDocCamImageQuad *)self setBottomLeft:v16];
 }
 
-- (void)insertAndClipTopBy:(double)a3
+- (void)insertAndClipTopBy:(double)by
 {
   [(ICDocCamImageQuad *)self topLeft];
   v6 = v5;
   [(ICDocCamImageQuad *)self topLeft];
-  [(ICDocCamImageQuad *)self setTopLeft:v6, v7 - a3];
+  [(ICDocCamImageQuad *)self setTopLeft:v6, v7 - by];
   [(ICDocCamImageQuad *)self topRight];
   v9 = v8;
   [(ICDocCamImageQuad *)self topRight];
-  v11 = v10 - a3;
+  v11 = v10 - by;
 
   [(ICDocCamImageQuad *)self setTopRight:v9, v11];
 }
@@ -459,37 +459,37 @@ uint64_t __38__ICDocCamImageQuad_orientIfNecessary__block_invoke(uint64_t a1, vo
   return v18;
 }
 
-- (id)intersectionOfLineFrom:(CGPoint)a3 to:(CGPoint)a4 withLineFrom:(CGPoint)a5 to:(CGPoint)a6
+- (id)intersectionOfLineFrom:(CGPoint)from to:(CGPoint)to withLineFrom:(CGPoint)lineFrom to:(CGPoint)a6
 {
-  v8 = a4.x - a3.x;
-  v9 = a6.y - a5.y;
-  v10 = a4.y - a3.y;
-  v11 = a6.x - a5.x;
-  v12 = v8 * (a6.y - a5.y) - v10 * (a6.x - a5.x);
+  v8 = to.x - from.x;
+  v9 = a6.y - lineFrom.y;
+  v10 = to.y - from.y;
+  v11 = a6.x - lineFrom.x;
+  v12 = v8 * (a6.y - lineFrom.y) - v10 * (a6.x - lineFrom.x);
   v13 = 0;
-  if (v12 != 0.0 && ((v15 = a5.x - a3.x, v16 = a5.y - a3.y, v17 = ((a5.x - a3.x) * v9 - v16 * v11) / v12, v17 >= 0.0) ? (v18 = v17 <= 1.0) : (v18 = 0), v18 && ((v19 = (v15 * v10 - v16 * v8) / v12, v19 >= 0.0) ? (v20 = v19 <= 1.0) : (v20 = 0), v20)))
+  if (v12 != 0.0 && ((v15 = lineFrom.x - from.x, v16 = lineFrom.y - from.y, v17 = ((lineFrom.x - from.x) * v9 - v16 * v11) / v12, v17 >= 0.0) ? (v18 = v17 <= 1.0) : (v18 = 0), v18 && ((v19 = (v15 * v10 - v16 * v8) / v12, v19 >= 0.0) ? (v20 = v19 <= 1.0) : (v20 = 0), v20)))
   {
-    v13 = [MEMORY[0x277CCAE60] valueWithCGPoint:{a3.x + v17 * v8, a3.y + v17 * v10, v6}];
+    v13 = [MEMORY[0x277CCAE60] valueWithCGPoint:{from.x + v17 * v8, from.y + v17 * v10, v6}];
   }
 
   return v13;
 }
 
-+ (id)quadFromVNRectangle:(id)a3
++ (id)quadFromVNRectangle:(id)rectangle
 {
-  if (a3)
+  if (rectangle)
   {
-    v3 = a3;
+    rectangleCopy = rectangle;
     v4 = objc_alloc_init(ICDocCamImageQuad);
-    [v3 topRight];
+    [rectangleCopy topRight];
     [(ICDocCamImageQuad *)v4 setTopRight:?];
-    [v3 topLeft];
+    [rectangleCopy topLeft];
     [(ICDocCamImageQuad *)v4 setTopLeft:?];
-    [v3 bottomRight];
+    [rectangleCopy bottomRight];
     [(ICDocCamImageQuad *)v4 setBottomRight:?];
-    [v3 bottomLeft];
+    [rectangleCopy bottomLeft];
     [(ICDocCamImageQuad *)v4 setBottomLeft:?];
-    [v3 boundingBox];
+    [rectangleCopy boundingBox];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -506,12 +506,12 @@ uint64_t __38__ICDocCamImageQuad_orientIfNecessary__block_invoke(uint64_t a1, vo
   return v4;
 }
 
-+ (id)quadFromCGRect:(CGRect)a3
++ (id)quadFromCGRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = objc_alloc_init(ICDocCamImageQuad);
   [(ICDocCamImageQuad *)v7 setTopLeft:x, y];
   v10.origin.x = x;
@@ -530,28 +530,28 @@ uint64_t __38__ICDocCamImageQuad_orientIfNecessary__block_invoke(uint64_t a1, vo
   return v7;
 }
 
-- (id)flippedQuadFromSourceFrame:(CGRect)a3
+- (id)flippedQuadFromSourceFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = [(ICDocCamImageQuad *)self copy];
   [v7 flipPointsWithSourceFrame:{x, y, width, height}];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
 
-  else if (v4 && (([(ICDocCamImageQuad *)self topLeft], v7 = v6, v9 = v8, [(ICDocCamImageQuad *)v5 topLeft], v7 == v11) ? (v12 = v9 == v10) : (v12 = 0), v12))
+  else if (equalCopy && (([(ICDocCamImageQuad *)self topLeft], v7 = v6, v9 = v8, [(ICDocCamImageQuad *)v5 topLeft], v7 == v11) ? (v12 = v9 == v10) : (v12 = 0), v12))
   {
     [(ICDocCamImageQuad *)self topRight];
     v16 = v15;
@@ -584,7 +584,7 @@ uint64_t __38__ICDocCamImageQuad_orientIfNecessary__block_invoke(uint64_t a1, vo
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ICDocCamImageQuad);
   [(ICDocCamImageQuad *)self topLeft];
@@ -644,37 +644,37 @@ uint64_t __38__ICDocCamImageQuad_orientIfNecessary__block_invoke(uint64_t a1, vo
   return v13 * triangleNormalDirection(v35, v37, v39, v41, v42, v43) > 0.0;
 }
 
-- (void)applyOrientation:(int64_t)a3 boundingBox:(CGRect)a4
+- (void)applyOrientation:(int64_t)orientation boundingBox:(CGRect)box
 {
-  v6 = DCTSDCenterOfRect(a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+  v6 = DCTSDCenterOfRect(box.origin.x, box.origin.y, box.size.width, box.size.height);
   v8 = v7;
   [(ICDocCamImageQuad *)self addPointToQuadPoints:DCTSDMultiplyPointScalar(v6, v7, -1.0)];
-  [(ICDocCamImageQuad *)self rotatePointsByOrientation:a3];
+  [(ICDocCamImageQuad *)self rotatePointsByOrientation:orientation];
 
   [(ICDocCamImageQuad *)self addPointToQuadPoints:v6, v8];
 }
 
-- (void)removeOrientation:(int64_t)a3 boundingBox:(CGRect)a4
+- (void)removeOrientation:(int64_t)orientation boundingBox:(CGRect)box
 {
-  v6 = DCTSDCenterOfRect(a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+  v6 = DCTSDCenterOfRect(box.origin.x, box.origin.y, box.size.width, box.size.height);
   v8 = v7;
   [(ICDocCamImageQuad *)self addPointToQuadPoints:DCTSDMultiplyPointScalar(v6, v7, -1.0)];
-  [(ICDocCamImageQuad *)self rotatePointsRemovingOrientation:a3];
+  [(ICDocCamImageQuad *)self rotatePointsRemovingOrientation:orientation];
 
   [(ICDocCamImageQuad *)self addPointToQuadPoints:v6, v8];
 }
 
-- (void)rotatePointsRemovingOrientation:(int64_t)a3
+- (void)rotatePointsRemovingOrientation:(int64_t)orientation
 {
-  for (i = -dc_clockwiseRotationsFromUpToMatchOrientation(a3) & 3; i; --i)
+  for (i = -dc_clockwiseRotationsFromUpToMatchOrientation(orientation) & 3; i; --i)
   {
     [(ICDocCamImageQuad *)self rotatePointsClockwise];
   }
 }
 
-- (void)rotatePointsByOrientation:(int64_t)a3
+- (void)rotatePointsByOrientation:(int64_t)orientation
 {
-  matched = dc_clockwiseRotationsFromUpToMatchOrientation(a3);
+  matched = dc_clockwiseRotationsFromUpToMatchOrientation(orientation);
   if (matched)
   {
     v5 = matched;
@@ -705,20 +705,20 @@ uint64_t __38__ICDocCamImageQuad_orientIfNecessary__block_invoke(uint64_t a1, vo
   [(ICDocCamImageQuad *)self setBottomLeft:?];
 }
 
-- (CGPoint)pointRotatedClockwiseAroundOrigin:(CGPoint)a3
+- (CGPoint)pointRotatedClockwiseAroundOrigin:(CGPoint)origin
 {
-  y = a3.y;
-  v4 = -a3.x;
+  y = origin.y;
+  v4 = -origin.x;
   v5 = y;
   result.y = v4;
   result.x = v5;
   return result;
 }
 
-- (void)addPointToQuadPoints:(CGPoint)a3
+- (void)addPointToQuadPoints:(CGPoint)points
 {
-  y = a3.y;
-  x = a3.x;
+  y = points.y;
+  x = points.x;
   [(ICDocCamImageQuad *)self topLeft];
   [(ICDocCamImageQuad *)self setTopLeft:DCTSDAddPoints(x, y, v6)];
   [(ICDocCamImageQuad *)self topRight];
@@ -731,62 +731,62 @@ uint64_t __38__ICDocCamImageQuad_orientIfNecessary__block_invoke(uint64_t a1, vo
   [(ICDocCamImageQuad *)self setBottomLeft:v10];
 }
 
-- (ICDocCamImageQuad)initWithCoder:(id)a3
+- (ICDocCamImageQuad)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = ICDocCamImageQuad;
   v5 = [(ICDocCamImageQuad *)&v19 init];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"kBottomLeftXFieldCodingKey"];
+    [coderCopy decodeFloatForKey:@"kBottomLeftXFieldCodingKey"];
     v7 = v6;
-    [v4 decodeFloatForKey:@"kBottomLeftYFieldCodingKey"];
+    [coderCopy decodeFloatForKey:@"kBottomLeftYFieldCodingKey"];
     [(ICDocCamImageQuad *)v5 setBottomLeft:v7, v8];
-    [v4 decodeFloatForKey:@"kBottomRightXFieldCodingKey"];
+    [coderCopy decodeFloatForKey:@"kBottomRightXFieldCodingKey"];
     v10 = v9;
-    [v4 decodeFloatForKey:@"kBottomRightYFieldCodingKey"];
+    [coderCopy decodeFloatForKey:@"kBottomRightYFieldCodingKey"];
     [(ICDocCamImageQuad *)v5 setBottomRight:v10, v11];
-    [v4 decodeFloatForKey:@"kTopLeftXFieldCodingKey"];
+    [coderCopy decodeFloatForKey:@"kTopLeftXFieldCodingKey"];
     v13 = v12;
-    [v4 decodeFloatForKey:@"kTopLeftYFieldCodingKey"];
+    [coderCopy decodeFloatForKey:@"kTopLeftYFieldCodingKey"];
     [(ICDocCamImageQuad *)v5 setTopLeft:v13, v14];
-    [v4 decodeFloatForKey:@"kTopRightXFieldCodingKey"];
+    [coderCopy decodeFloatForKey:@"kTopRightXFieldCodingKey"];
     v16 = v15;
-    [v4 decodeFloatForKey:@"kTopRightYFieldCodingKey"];
+    [coderCopy decodeFloatForKey:@"kTopRightYFieldCodingKey"];
     [(ICDocCamImageQuad *)v5 setTopRight:v16, v17];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v16 = a3;
+  coderCopy = coder;
   [(ICDocCamImageQuad *)self bottomLeft];
   *&v4 = v4;
-  [v16 encodeFloat:@"kBottomLeftXFieldCodingKey" forKey:v4];
+  [coderCopy encodeFloat:@"kBottomLeftXFieldCodingKey" forKey:v4];
   [(ICDocCamImageQuad *)self bottomLeft];
   *&v6 = v5;
-  [v16 encodeFloat:@"kBottomLeftYFieldCodingKey" forKey:v6];
+  [coderCopy encodeFloat:@"kBottomLeftYFieldCodingKey" forKey:v6];
   [(ICDocCamImageQuad *)self bottomRight];
   *&v7 = v7;
-  [v16 encodeFloat:@"kBottomRightXFieldCodingKey" forKey:v7];
+  [coderCopy encodeFloat:@"kBottomRightXFieldCodingKey" forKey:v7];
   [(ICDocCamImageQuad *)self bottomRight];
   *&v9 = v8;
-  [v16 encodeFloat:@"kBottomRightYFieldCodingKey" forKey:v9];
+  [coderCopy encodeFloat:@"kBottomRightYFieldCodingKey" forKey:v9];
   [(ICDocCamImageQuad *)self topLeft];
   *&v10 = v10;
-  [v16 encodeFloat:@"kTopLeftXFieldCodingKey" forKey:v10];
+  [coderCopy encodeFloat:@"kTopLeftXFieldCodingKey" forKey:v10];
   [(ICDocCamImageQuad *)self topLeft];
   *&v12 = v11;
-  [v16 encodeFloat:@"kTopLeftYFieldCodingKey" forKey:v12];
+  [coderCopy encodeFloat:@"kTopLeftYFieldCodingKey" forKey:v12];
   [(ICDocCamImageQuad *)self topRight];
   *&v13 = v13;
-  [v16 encodeFloat:@"kTopRightXFieldCodingKey" forKey:v13];
+  [coderCopy encodeFloat:@"kTopRightXFieldCodingKey" forKey:v13];
   [(ICDocCamImageQuad *)self topRight];
   *&v15 = v14;
-  [v16 encodeFloat:@"kTopRightYFieldCodingKey" forKey:v15];
+  [coderCopy encodeFloat:@"kTopRightYFieldCodingKey" forKey:v15];
 }
 
 - (CGPoint)topLeft
@@ -838,26 +838,26 @@ uint64_t __38__ICDocCamImageQuad_orientIfNecessary__block_invoke(uint64_t a1, vo
   return result;
 }
 
-- (id)quadByConvertingFromView:(id)a3 toView:(id)a4 isNormalized:(BOOL)a5
+- (id)quadByConvertingFromView:(id)view toView:(id)toView isNormalized:(BOOL)normalized
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  normalizedCopy = normalized;
+  viewCopy = view;
+  toViewCopy = toView;
   v10 = objc_alloc_init(ICDocCamImageQuad);
-  [v8 bounds];
-  if (v5)
+  [viewCopy bounds];
+  if (normalizedCopy)
   {
     v14 = v11;
     v15 = v12;
     v16 = v13;
     [(ICDocCamImageQuad *)self topLeft];
-    [v8 convertPoint:v9 toView:{DCTSDPointFromNormalizedRect(v17, v18, v14, v15, v16)}];
+    [viewCopy convertPoint:toViewCopy toView:{DCTSDPointFromNormalizedRect(v17, v18, v14, v15, v16)}];
     [(ICDocCamImageQuad *)v10 setTopLeft:?];
     [(ICDocCamImageQuad *)self topRight];
-    [v8 convertPoint:v9 toView:{DCTSDPointFromNormalizedRect(v19, v20, v14, v15, v16)}];
+    [viewCopy convertPoint:toViewCopy toView:{DCTSDPointFromNormalizedRect(v19, v20, v14, v15, v16)}];
     [(ICDocCamImageQuad *)v10 setTopRight:?];
     [(ICDocCamImageQuad *)self bottomRight];
-    [v8 convertPoint:v9 toView:{DCTSDPointFromNormalizedRect(v21, v22, v14, v15, v16)}];
+    [viewCopy convertPoint:toViewCopy toView:{DCTSDPointFromNormalizedRect(v21, v22, v14, v15, v16)}];
     [(ICDocCamImageQuad *)v10 setBottomRight:?];
     [(ICDocCamImageQuad *)self bottomLeft];
     v25 = DCTSDPointFromNormalizedRect(v23, v24, v14, v15, v16);
@@ -866,18 +866,18 @@ uint64_t __38__ICDocCamImageQuad_orientIfNecessary__block_invoke(uint64_t a1, vo
   else
   {
     [(ICDocCamImageQuad *)self topLeft];
-    [v8 convertPoint:v9 toView:?];
+    [viewCopy convertPoint:toViewCopy toView:?];
     [(ICDocCamImageQuad *)v10 setTopLeft:?];
     [(ICDocCamImageQuad *)self topRight];
-    [v8 convertPoint:v9 toView:?];
+    [viewCopy convertPoint:toViewCopy toView:?];
     [(ICDocCamImageQuad *)v10 setTopRight:?];
     [(ICDocCamImageQuad *)self bottomRight];
-    [v8 convertPoint:v9 toView:?];
+    [viewCopy convertPoint:toViewCopy toView:?];
     [(ICDocCamImageQuad *)v10 setBottomRight:?];
     [(ICDocCamImageQuad *)self bottomLeft];
   }
 
-  [v8 convertPoint:v9 toView:v25];
+  [viewCopy convertPoint:toViewCopy toView:v25];
   v27 = v26;
   v29 = v28;
 
@@ -886,25 +886,25 @@ uint64_t __38__ICDocCamImageQuad_orientIfNecessary__block_invoke(uint64_t a1, vo
   return v10;
 }
 
-- (id)normalizedQuadByConvertingFromView:(id)a3 toView:(id)a4 toViewSize:(CGSize)a5
+- (id)normalizedQuadByConvertingFromView:(id)view toView:(id)toView toViewSize:(CGSize)size
 {
-  width = a5.width;
-  v8 = a4;
-  v9 = a3;
+  width = size.width;
+  toViewCopy = toView;
+  viewCopy = view;
   v10 = objc_alloc_init(ICDocCamImageQuad);
   v11 = *MEMORY[0x277CBF3A0];
   v12 = *(MEMORY[0x277CBF3A0] + 8);
   [(ICDocCamImageQuad *)self topLeft];
-  [v9 convertPoint:v8 toView:?];
+  [viewCopy convertPoint:toViewCopy toView:?];
   [(ICDocCamImageQuad *)v10 setTopLeft:?];
   [(ICDocCamImageQuad *)self topRight];
-  [v9 convertPoint:v8 toView:?];
+  [viewCopy convertPoint:toViewCopy toView:?];
   [(ICDocCamImageQuad *)v10 setTopRight:?];
   [(ICDocCamImageQuad *)self bottomRight];
-  [v9 convertPoint:v8 toView:?];
+  [viewCopy convertPoint:toViewCopy toView:?];
   [(ICDocCamImageQuad *)v10 setBottomRight:?];
   [(ICDocCamImageQuad *)self bottomLeft];
-  [v9 convertPoint:v8 toView:?];
+  [viewCopy convertPoint:toViewCopy toView:?];
   v14 = v13;
   v16 = v15;
 

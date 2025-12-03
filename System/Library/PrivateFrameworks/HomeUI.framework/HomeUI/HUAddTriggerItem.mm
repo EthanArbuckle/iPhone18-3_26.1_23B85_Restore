@@ -1,34 +1,34 @@
 @interface HUAddTriggerItem
 - (BOOL)_itemisHidden;
-- (HUAddTriggerItem)initWithHome:(id)a3 mode:(unint64_t)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HUAddTriggerItem)initWithHome:(id)home mode:(unint64_t)mode;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUAddTriggerItem
 
-- (HUAddTriggerItem)initWithHome:(id)a3 mode:(unint64_t)a4
+- (HUAddTriggerItem)initWithHome:(id)home mode:(unint64_t)mode
 {
-  v7 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HUAddTriggerItem;
   v8 = [(HUAddTriggerItem *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a3);
-    v9->_mode = a4;
+    objc_storeStrong(&v8->_home, home);
+    v9->_mode = mode;
   }
 
   return v9;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v26[6] = *MEMORY[0x277D85DE8];
-  v4 = [(HUAddTriggerItem *)self _itemisHidden];
-  v5 = [(HUAddTriggerItem *)self mode];
+  _itemisHidden = [(HUAddTriggerItem *)self _itemisHidden];
+  mode = [(HUAddTriggerItem *)self mode];
   v6 = @"HUMacToolbarAddMenuAutomation";
-  if (!v5)
+  if (!mode)
   {
     v6 = @"HUTriggerListAddTriggerButtonTitle";
   }
@@ -45,7 +45,7 @@
   v13 = _HULocalizedStringWithDefaultValue(v9, v9, 1);
   v26[1] = v13;
   v25[2] = *MEMORY[0x277D13FB8];
-  v14 = [MEMORY[0x277CCABB0] numberWithBool:v4];
+  v14 = [MEMORY[0x277CCABB0] numberWithBool:_itemisHidden];
   v15 = *MEMORY[0x277D13F98];
   v26[2] = v14;
   v26[3] = MEMORY[0x277CBEC38];
@@ -53,8 +53,8 @@
   v25[3] = v15;
   v25[4] = v16;
   v17 = MEMORY[0x277CBEB98];
-  v18 = [(HUAddTriggerItem *)self home];
-  v19 = [v17 setWithObject:v18];
+  home = [(HUAddTriggerItem *)self home];
+  v19 = [v17 setWithObject:home];
   v26[4] = v19;
   v25[5] = *MEMORY[0x277D13DA0];
   v20 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
@@ -68,18 +68,18 @@
 
 - (BOOL)_itemisHidden
 {
-  v3 = [(HUAddTriggerItem *)self home];
-  v4 = [v3 hf_hasAnyVisibleTriggers];
+  home = [(HUAddTriggerItem *)self home];
+  hf_hasAnyVisibleTriggers = [home hf_hasAnyVisibleTriggers];
 
-  v5 = [(HUAddTriggerItem *)self mode];
-  v6 = v5 == 0;
-  if (!v5 && (v4 & 1) == 0)
+  mode = [(HUAddTriggerItem *)self mode];
+  isAMac = mode == 0;
+  if (!mode && (hf_hasAnyVisibleTriggers & 1) == 0)
   {
-    v6 = [MEMORY[0x277D14CE8] isAMac];
+    isAMac = [MEMORY[0x277D14CE8] isAMac];
   }
 
-  v7 = [(HUAddTriggerItem *)self home];
-  v8 = v6 | ~[v7 hf_userCanCreateTrigger];
+  home2 = [(HUAddTriggerItem *)self home];
+  v8 = isAMac | ~[home2 hf_userCanCreateTrigger];
 
   return v8 & 1;
 }

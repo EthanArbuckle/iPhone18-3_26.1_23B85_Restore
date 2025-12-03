@@ -1,18 +1,18 @@
 @interface BLTAlertStateTester
-- (BOOL)isScreenTimeBlockedForBundleIdentifier:(id)a3 ignoresDowntime:(BOOL)a4;
+- (BOOL)isScreenTimeBlockedForBundleIdentifier:(id)identifier ignoresDowntime:(BOOL)downtime;
 @end
 
 @implementation BLTAlertStateTester
 
-- (BOOL)isScreenTimeBlockedForBundleIdentifier:(id)a3 ignoresDowntime:(BOOL)a4
+- (BOOL)isScreenTimeBlockedForBundleIdentifier:(id)identifier ignoresDowntime:(BOOL)downtime
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:v5];
-  v7 = [v6 deviceManagementPolicy];
-  if (v7)
+  downtimeCopy = downtime;
+  identifierCopy = identifier;
+  v6 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:identifierCopy];
+  deviceManagementPolicy = [v6 deviceManagementPolicy];
+  if (deviceManagementPolicy)
   {
-    v8 = !v4;
+    v8 = !downtimeCopy;
   }
 
   else
@@ -27,7 +27,7 @@
 
   else
   {
-    v9 = v7;
+    v9 = deviceManagementPolicy;
     v10 = [objc_alloc(MEMORY[0x277D04BF0]) initWithPolicyChangeHandler:0];
     v18 = 0;
     v11 = [v10 requestPoliciesByBundleIdentifierWithError:&v18];
@@ -39,13 +39,13 @@
 
     else
     {
-      v15 = [v11 objectForKey:v5];
-      v16 = [v15 unsignedIntegerValue];
+      v15 = [v11 objectForKey:identifierCopy];
+      unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-      v13 = v16 != 0;
+      v13 = unsignedIntegerValue != 0;
     }
 
-    v14 = (v9 != 0 || v13) && !v4;
+    v14 = (v9 != 0 || v13) && !downtimeCopy;
   }
 
   return v14;

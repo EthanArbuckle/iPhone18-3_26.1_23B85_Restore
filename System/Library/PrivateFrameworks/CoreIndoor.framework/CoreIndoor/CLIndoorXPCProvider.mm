@@ -1,19 +1,19 @@
 @interface CLIndoorXPCProvider
-+ (id)newConnectionFor:(id)a3;
++ (id)newConnectionFor:(id)for;
 - (CLIndoorXPCProvider)init;
-- (CLIndoorXPCProvider)initWithConnection:(id)a3;
-- (CLIndoorXPCProvider)initWithEndpoint:(id)a3;
-- (id)_defaultErrHandler:(id)a3 forCaller:(id)a4;
-- (id)_defaultErrHandlerForCaller:(id)a3;
-- (int)withinQueueShouldReinitializeRemote:()time_point<std:(std:()std:(1000000000>>>)a3 :ratio<1 :chrono::duration<long)long :chrono::steady_clock;
+- (CLIndoorXPCProvider)initWithConnection:(id)connection;
+- (CLIndoorXPCProvider)initWithEndpoint:(id)endpoint;
+- (id)_defaultErrHandler:(id)handler forCaller:(id)caller;
+- (id)_defaultErrHandlerForCaller:(id)caller;
+- (int)withinQueueShouldReinitializeRemote:()time_point<std:(std:()std:(1000000000>>>)std :ratio<1 :chrono::duration<long)long :chrono::steady_clock;
 - (void)dealloc;
 - (void)invalidate;
-- (void)withinQueueHandleReconnect:()time_point<std:(std:()std:(1000000000>>>)a3 :ratio<1 :chrono::duration<long)long :chrono::steady_clock;
+- (void)withinQueueHandleReconnect:()time_point<std:(std:()std:(1000000000>>>)std :ratio<1 :chrono::duration<long)long :chrono::steady_clock;
 - (void)withinQueueInitializeConnection;
 - (void)withinQueueInterruptionHandler;
 - (void)withinQueueInvalidate;
 - (void)withinQueueReinitializeRemoteState;
-- (void)withinQueueScheduleReconnect:(duration<long)long reason:()std:(1000000000>>)a3 :(id)a4 ratio<1;
+- (void)withinQueueScheduleReconnect:(duration<long)long reason:()std:(1000000000>>)std :(id)a4 ratio<1;
 @end
 
 @implementation CLIndoorXPCProvider
@@ -86,12 +86,12 @@ LABEL_4:
   return v17;
 }
 
-+ (id)newConnectionFor:(id)a3
++ (id)newConnectionFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   v8 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], v4, v5, v6, v7);
   v9 = objc_alloc(MEMORY[0x277CCAE80]);
-  v14 = objc_msgSend_endpointName(v3, v10, v11, v12, v13);
+  v14 = objc_msgSend_endpointName(forCopy, v10, v11, v12, v13);
   v19 = objc_msgSend_persistentDomainForName_(v8, v15, v16, v17, v18, @"com.apple.pipelined.framework");
   v24 = objc_msgSend_objectForKey_(v19, v20, v21, v22, v23, @"UnprivilegedDaemon");
   v29 = objc_msgSend_BOOLValue(v24, v25, v26, v27, v28);
@@ -130,11 +130,11 @@ LABEL_7:
   return v36;
 }
 
-- (CLIndoorXPCProvider)initWithEndpoint:(id)a3
+- (CLIndoorXPCProvider)initWithEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v5 = objc_alloc(MEMORY[0x277CCAE80]);
-  v10 = objc_msgSend_initWithListenerEndpoint_(v5, v6, v7, v8, v9, v4);
+  v10 = objc_msgSend_initWithListenerEndpoint_(v5, v6, v7, v8, v9, endpointCopy);
   if (qword_28144B270 != -1)
   {
     sub_245A8E5C8();
@@ -161,9 +161,9 @@ LABEL_4:
   return v16;
 }
 
-- (CLIndoorXPCProvider)initWithConnection:(id)a3
+- (CLIndoorXPCProvider)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v54.receiver = self;
   v54.super_class = CLIndoorXPCProvider;
   v6 = [(CLIndoorXPCProvider *)&v54 init];
@@ -201,7 +201,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  objc_storeStrong(&v11->_connection, a3);
+  objc_storeStrong(&v11->_connection, connection);
   if (!v12->_connection)
   {
     objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x277CBEAD8], v35, v36, v37, v38, *MEMORY[0x277CBE660], @"Must provide a connection", 0);
@@ -300,8 +300,8 @@ LABEL_10:
     block[1] = 3321888768;
     block[2] = sub_245A731EC;
     block[3] = &unk_28589FC08;
-    v29 = self;
-    v20 = v29;
+    selfCopy = self;
+    v20 = selfCopy;
     dispatch_sync(frameworkQueue, block);
   }
 
@@ -318,8 +318,8 @@ LABEL_10:
   block[1] = 3321888768;
   block[2] = sub_245A73354;
   block[3] = &unk_28589FC38;
-  v5 = self;
-  v3 = v5;
+  selfCopy = self;
+  v3 = selfCopy;
   dispatch_sync(frameworkQueue, block);
 }
 
@@ -415,7 +415,7 @@ LABEL_10:
   v48 = *MEMORY[0x277D85DE8];
 }
 
-- (void)withinQueueHandleReconnect:()time_point<std:(std:()std:(1000000000>>>)a3 :ratio<1 :chrono::duration<long)long :chrono::steady_clock
+- (void)withinQueueHandleReconnect:()time_point<std:(std:()std:(1000000000>>>)std :ratio<1 :chrono::duration<long)long :chrono::steady_clock
 {
   ShouldReinitializeRemote = objc_msgSend_withinQueueShouldReinitializeRemote_(self, a2, v3, v4, v5);
   if (ShouldReinitializeRemote == 1)
@@ -431,7 +431,7 @@ LABEL_10:
 
   if (ShouldReinitializeRemote == 2)
   {
-    objc_msgSend_withinQueueScheduleReconnect_reason_(self, v9, v10, v11, v12, *(&self->_lastReconnectTime.m_storage.dummy_.aligner_ + 7) - a3.var0.__rep_ + 10000000000, @"deferred re-initialization");
+    objc_msgSend_withinQueueScheduleReconnect_reason_(self, v9, v10, v11, v12, *(&self->_lastReconnectTime.m_storage.dummy_.aligner_ + 7) - std.var0.__rep_ + 10000000000, @"deferred re-initialization");
   }
 
   if (!self->_lastReconnectTime.m_initialized)
@@ -441,10 +441,10 @@ LABEL_5:
   }
 
 LABEL_6:
-  *(&self->_lastReconnectTime.m_storage.dummy_.aligner_ + 7) = a3;
+  *(&self->_lastReconnectTime.m_storage.dummy_.aligner_ + 7) = std;
 }
 
-- (int)withinQueueShouldReinitializeRemote:()time_point<std:(std:()std:(1000000000>>>)a3 :ratio<1 :chrono::duration<long)long :chrono::steady_clock
+- (int)withinQueueShouldReinitializeRemote:()time_point<std:(std:()std:(1000000000>>>)std :ratio<1 :chrono::duration<long)long :chrono::steady_clock
 {
   v31 = *MEMORY[0x277D85DE8];
   v8 = objc_msgSend_impl(self, a2, v3, v4, v5);
@@ -452,7 +452,7 @@ LABEL_6:
 
   if (CanReinitializeRemoteState)
   {
-    if (self->_lastReconnectTime.m_initialized && a3.var0.__rep_ - *(&self->_lastReconnectTime.m_storage.dummy_.aligner_ + 7) < 10000000000)
+    if (self->_lastReconnectTime.m_initialized && std.var0.__rep_ - *(&self->_lastReconnectTime.m_storage.dummy_.aligner_ + 7) < 10000000000)
     {
       result = 2;
       v28 = *MEMORY[0x277D85DE8];
@@ -513,7 +513,7 @@ LABEL_6:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)withinQueueScheduleReconnect:(duration<long)long reason:()std:(1000000000>>)a3 :(id)a4 ratio<1
+- (void)withinQueueScheduleReconnect:(duration<long)long reason:()std:(1000000000>>)std :(id)a4 ratio<1
 {
   v26 = *MEMORY[0x277D85DE8];
   v6 = a4;
@@ -532,32 +532,32 @@ LABEL_6:
     v22 = 2114;
     v23 = v6;
     v24 = 2048;
-    v25 = a3.__rep_ / 1000000;
+    v25 = std.__rep_ / 1000000;
     _os_log_impl(&dword_245A2E000, v7, OS_LOG_TYPE_INFO, "Connection to %{public}@ %{public}@ - retrying in %lld milliseconds", &v20, 0x20u);
   }
 
-  v18 = dispatch_time(0, a3.__rep_);
+  v18 = dispatch_time(0, std.__rep_);
   dispatch_source_set_timer(self->_interruptReconnection, v18, 0xFFFFFFFFFFFFFFFFLL, 0x77359400uLL);
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_defaultErrHandlerForCaller:(id)a3
+- (id)_defaultErrHandlerForCaller:(id)caller
 {
-  v6 = objc_msgSend__defaultErrHandler_forCaller_(self, a2, v3, v4, v5, &unk_28589FC68, a3);
+  v6 = objc_msgSend__defaultErrHandler_forCaller_(self, a2, v3, v4, v5, &unk_28589FC68, caller);
 
   return v6;
 }
 
-- (id)_defaultErrHandler:(id)a3 forCaller:(id)a4
+- (id)_defaultErrHandler:(id)handler forCaller:(id)caller
 {
-  v5 = a4;
+  callerCopy = caller;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3321888768;
   v12[2] = sub_245A73EA8;
   v12[3] = &unk_28589FC88;
-  v6 = v5;
-  v7 = MEMORY[0x245D78D90](a3);
+  v6 = callerCopy;
+  v7 = MEMORY[0x245D78D90](handler);
   v8 = v6;
   v13 = v8;
   v14 = MEMORY[0x245D78D90](v7);

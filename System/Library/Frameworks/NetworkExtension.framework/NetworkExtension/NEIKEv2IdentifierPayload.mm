@@ -1,20 +1,20 @@
 @interface NEIKEv2IdentifierPayload
 - (BOOL)generatePayloadData;
 - (BOOL)hasRequiredFields;
-- (BOOL)parsePayloadData:(id)a3;
+- (BOOL)parsePayloadData:(id)data;
 - (id)copyPayloadData;
-- (void)setPayloadData:(uint64_t)a1;
+- (void)setPayloadData:(uint64_t)data;
 @end
 
 @implementation NEIKEv2IdentifierPayload
 
-- (BOOL)parsePayloadData:(id)a3
+- (BOOL)parsePayloadData:(id)data
 {
   *&v17[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length] > 3)
+  dataCopy = data;
+  if ([dataCopy length] > 3)
   {
-    v5 = [v4 copy];
+    v5 = [dataCopy copy];
     [(NEIKEv2IdentifierPayload *)self setPayloadData:v5];
     v15 = 0;
     [v5 getBytes:&v15 length:4];
@@ -27,7 +27,7 @@
 
       if (objc_getProperty(self, v10, 32, 1))
       {
-        v11 = [(NEIKEv2IdentifierPayload *)self hasRequiredFields];
+        hasRequiredFields = [(NEIKEv2IdentifierPayload *)self hasRequiredFields];
 LABEL_12:
 
         goto LABEL_13;
@@ -48,7 +48,7 @@ LABEL_12:
       _os_log_error_impl(&dword_1BA83C000, v12, OS_LOG_TYPE_ERROR, "Failed to parse identifier type %u data %@", buf, 0x12u);
     }
 
-    v11 = 0;
+    hasRequiredFields = 0;
     goto LABEL_12;
   }
 
@@ -60,18 +60,18 @@ LABEL_12:
     _os_log_error_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_ERROR, "BACKTRACE %s called with null (payloadData.length >= sizeof(ikev2_payload_id_hdr_t))", buf, 0xCu);
   }
 
-  v11 = 0;
+  hasRequiredFields = 0;
 LABEL_13:
 
   v13 = *MEMORY[0x1E69E9840];
-  return v11;
+  return hasRequiredFields;
 }
 
-- (void)setPayloadData:(uint64_t)a1
+- (void)setPayloadData:(uint64_t)data
 {
-  if (a1)
+  if (data)
   {
-    objc_storeStrong((a1 + 48), a2);
+    objc_storeStrong((data + 48), a2);
   }
 }
 
@@ -80,12 +80,12 @@ LABEL_13:
   v61[1] = *MEMORY[0x1E69E9840];
   if (!self)
   {
-    v53 = [0 hasRequiredFields];
+    hasRequiredFields = [0 hasRequiredFields];
     v9 = 0;
-    if (v53)
+    if (hasRequiredFields)
     {
 LABEL_8:
-      v7 = [v9 identifierData];
+      identifierData = [v9 identifierData];
       if (self)
       {
         Property = objc_getProperty(self, v10, 32, 1);
@@ -116,8 +116,8 @@ LABEL_8:
           {
             v25 = v15;
             *location = 0;
-            v26 = [v25 identifierData];
-            v27 = [v26 length];
+            identifierData2 = [v25 identifierData];
+            v27 = [identifierData2 length];
 
             if (v27)
             {
@@ -130,17 +130,17 @@ LABEL_8:
                 {
                   v37 = v25[2];
                   v38 = [NEIKEv2CryptoKitHPKE alloc];
-                  v39 = [v25 identifierData];
+                  identifierData3 = [v25 identifierData];
                   v40 = v25[4];
                   if (v37)
                   {
-                    v41 = [(NEIKEv2CryptoKitHPKE *)v38 initWithPayload:v39 aad:v40 psk:v36 pskID:v35 keyRef:v25[2]];
+                    v41 = [(NEIKEv2CryptoKitHPKE *)v38 initWithPayload:identifierData3 aad:v40 psk:v36 pskID:v35 keyRef:v25[2]];
                   }
 
                   else
                   {
                     v44 = v25[3];
-                    v41 = [(NEIKEv2CryptoKitHPKE *)v38 initWithPayload:v39 aad:v40 psk:v36 pskID:v35 keyData:v44];
+                    v41 = [(NEIKEv2CryptoKitHPKE *)v38 initWithPayload:identifierData3 aad:v40 psk:v36 pskID:v35 keyData:v44];
                   }
 
                   obj = *location;
@@ -213,7 +213,7 @@ LABEL_29:
       if (v43)
       {
 
-        v7 = v43;
+        identifierData = v43;
 LABEL_31:
         *location = 0;
         if (self)
@@ -227,9 +227,9 @@ LABEL_31:
         }
 
         location[0] = [v49 identifierType];
-        v50 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:{-[NSObject length](v7, "length") + 4}];
+        v50 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:{-[NSObject length](identifierData, "length") + 4}];
         [v50 appendBytes:location length:4];
-        [v50 appendData:v7];
+        [v50 appendData:identifierData];
         [(NEIKEv2IdentifierPayload *)self setPayloadData:v50];
         v59 = v50;
         v3 = 1;
@@ -253,11 +253,11 @@ LABEL_43:
     }
 
 LABEL_41:
-    v7 = ne_log_obj();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    identifierData = ne_log_obj();
+    if (os_log_type_enabled(identifierData, OS_LOG_TYPE_ERROR))
     {
       *location = 0;
-      _os_log_error_impl(&dword_1BA83C000, v7, OS_LOG_TYPE_ERROR, "ID payload missing required fields", location, 2u);
+      _os_log_error_impl(&dword_1BA83C000, identifierData, OS_LOG_TYPE_ERROR, "ID payload missing required fields", location, 2u);
     }
 
     goto LABEL_43;
@@ -271,8 +271,8 @@ LABEL_41:
       v61[0] = self->_payloadData;
       v5 = MEMORY[0x1E695DEC8];
       v6 = payloadData;
-      v7 = [v5 arrayWithObjects:v61 count:1];
-      [(NEIKEv2KeyExchangeHandler *)self setSharedSecret:v7];
+      identifierData = [v5 arrayWithObjects:v61 count:1];
+      [(NEIKEv2KeyExchangeHandler *)self setSharedSecret:identifierData];
 
       v3 = 1;
 LABEL_44:
@@ -307,15 +307,15 @@ LABEL_45:
 
 - (id)copyPayloadData
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = a1[6];
+  v2 = self[6];
   if (!v2)
   {
-    if ([a1 generatePayloadData])
+    if ([self generatePayloadData])
     {
       goto LABEL_5;
     }
@@ -324,7 +324,7 @@ LABEL_45:
   }
 
 LABEL_5:
-  v3 = a1[6];
+  v3 = self[6];
 
   return v3;
 }

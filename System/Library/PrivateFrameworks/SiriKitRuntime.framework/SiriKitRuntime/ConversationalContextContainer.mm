@@ -1,20 +1,20 @@
 @interface ConversationalContextContainer
 - (_TtC14SiriKitRuntime30ConversationalContextContainer)init;
-- (_TtC14SiriKitRuntime30ConversationalContextContainer)initWithSerializedBackingStore:(id)a3;
+- (_TtC14SiriKitRuntime30ConversationalContextContainer)initWithSerializedBackingStore:(id)store;
 - (id)serializedBackingStore;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ConversationalContextContainer
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ConversationalContextContainer.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ConversationalContextContainer.encode(with:)(coderCopy);
 }
 
-- (_TtC14SiriKitRuntime30ConversationalContextContainer)initWithSerializedBackingStore:(id)a3
+- (_TtC14SiriKitRuntime30ConversationalContextContainer)initWithSerializedBackingStore:(id)store
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
@@ -24,7 +24,7 @@
 
 - (id)serializedBackingStore
 {
-  v2 = self;
+  selfCopy = self;
   ConversationalContextContainer.serializedBackingStore()(v5);
 
   __swift_project_boxed_opaque_existential_1(v5, v5[3]);

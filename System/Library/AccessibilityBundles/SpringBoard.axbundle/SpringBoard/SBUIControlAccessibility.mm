@@ -8,8 +8,8 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(SBUIControlAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"ShowcaseBlockingView"];
+  accessibilityIdentifier = [(SBUIControlAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"ShowcaseBlockingView"];
 
   if (v4)
   {
@@ -22,23 +22,23 @@
     {
       accessibilityLocalizedString(@"dismiss.app.switcher.label");
     }
-    v5 = ;
+    accessibilityLabel = ;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SBUIControlAccessibility;
-    v5 = [(SBUIControlAccessibility *)&v7 accessibilityLabel];
+    accessibilityLabel = [(SBUIControlAccessibility *)&v7 accessibilityLabel];
   }
 
-  return v5;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityHint
 {
-  v3 = [(SBUIControlAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"ShowcaseBlockingView"];
+  accessibilityIdentifier = [(SBUIControlAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"ShowcaseBlockingView"];
 
   if (v4)
   {
@@ -51,23 +51,23 @@
     {
       accessibilityLocalizedString(@"dismiss.app.switcher.hint");
     }
-    v5 = ;
+    accessibilityHint = ;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SBUIControlAccessibility;
-    v5 = [(SBUIControlAccessibility *)&v7 accessibilityHint];
+    accessibilityHint = [(SBUIControlAccessibility *)&v7 accessibilityHint];
   }
 
-  return v5;
+  return accessibilityHint;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(SBUIControlAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"ShowcaseBlockingView"];
+  accessibilityIdentifier = [(SBUIControlAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"ShowcaseBlockingView"];
 
   if (v4)
   {

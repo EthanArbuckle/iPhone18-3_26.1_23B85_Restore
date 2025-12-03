@@ -1,10 +1,10 @@
 @interface SSSUncroppedOccludingView
-- (BOOL)_pointInsideAnOccludingView:(CGPoint)a3;
+- (BOOL)_pointInsideAnOccludingView:(CGPoint)view;
 - (CGRect)unoccludedRect;
-- (SSSUncroppedOccludingView)initWithFrame:(CGRect)a3;
+- (SSSUncroppedOccludingView)initWithFrame:(CGRect)frame;
 - (id)_occludingViews;
 - (void)layoutSubviews;
-- (void)setUnoccludedRect:(CGRect)a3;
+- (void)setUnoccludedRect:(CGRect)rect;
 @end
 
 @implementation SSSUncroppedOccludingView
@@ -22,8 +22,8 @@
   if (!CGRectIsEmpty(v29))
   {
     [(SSSUncroppedOccludingView *)self unoccludedRect];
-    v7 = [(SSSUncroppedOccludingView *)self traitCollection];
-    [v7 displayScale];
+    traitCollection = [(SSSUncroppedOccludingView *)self traitCollection];
+    [traitCollection displayScale];
     SSRoundRectToScale();
     v9 = v8;
     v11 = v10;
@@ -110,16 +110,16 @@
   return v4;
 }
 
-- (BOOL)_pointInsideAnOccludingView:(CGPoint)a3
+- (BOOL)_pointInsideAnOccludingView:(CGPoint)view
 {
-  y = a3.y;
-  x = a3.x;
+  y = view.y;
+  x = view.x;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(SSSUncroppedOccludingView *)self _occludingViews];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  _occludingViews = [(SSSUncroppedOccludingView *)self _occludingViews];
+  v7 = [_occludingViews countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -130,7 +130,7 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_occludingViews);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -142,7 +142,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [_occludingViews countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         continue;
@@ -158,14 +158,14 @@ LABEL_11:
   return v12;
 }
 
-- (void)setUnoccludedRect:(CGRect)a3
+- (void)setUnoccludedRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_unoccludedRect = &self->_unoccludedRect;
-  if (!CGRectEqualToRect(self->_unoccludedRect, a3))
+  if (!CGRectEqualToRect(self->_unoccludedRect, rect))
   {
     p_unoccludedRect->origin.x = x;
     p_unoccludedRect->origin.y = y;
@@ -176,11 +176,11 @@ LABEL_11:
   }
 }
 
-- (SSSUncroppedOccludingView)initWithFrame:(CGRect)a3
+- (SSSUncroppedOccludingView)initWithFrame:(CGRect)frame
 {
   v22.receiver = self;
   v22.super_class = SSSUncroppedOccludingView;
-  v3 = [(SSSUncroppedOccludingView *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SSSUncroppedOccludingView *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SSSUncroppedOccludingView *)v3 setClipsToBounds:1];
   v4 = objc_opt_new();
   topView = v3->_topView;
@@ -202,8 +202,8 @@ LABEL_11:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = [(SSSUncroppedOccludingView *)v3 _occludingViews];
-  v13 = [v12 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  _occludingViews = [(SSSUncroppedOccludingView *)v3 _occludingViews];
+  v13 = [_occludingViews countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v13)
   {
     v14 = v13;
@@ -215,7 +215,7 @@ LABEL_11:
       {
         if (*v19 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(_occludingViews);
         }
 
         [(SSSUncroppedOccludingView *)v3 addSubview:*(*(&v18 + 1) + 8 * v16)];
@@ -223,7 +223,7 @@ LABEL_11:
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v14 = [_occludingViews countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v14);

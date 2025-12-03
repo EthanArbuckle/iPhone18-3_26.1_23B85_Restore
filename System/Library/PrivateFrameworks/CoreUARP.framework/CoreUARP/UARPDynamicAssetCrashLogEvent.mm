@@ -1,13 +1,13 @@
 @interface UARPDynamicAssetCrashLogEvent
 + (id)tag;
 - (BOOL)decomposeUARP;
-- (BOOL)expandToDirectory:(id)a3 forRemoteEndpoint:(id)a4;
+- (BOOL)expandToDirectory:(id)directory forRemoteEndpoint:(id)endpoint;
 - (BOOL)findMatchingCMAP;
-- (BOOL)getCoreName:(id)a3 inPayload:(id)a4;
+- (BOOL)getCoreName:(id)name inPayload:(id)payload;
 - (BOOL)processCrashAdditionalInfo;
 - (BOOL)processCrashInstance;
 - (UARPDynamicAssetCrashLogEvent)init;
-- (UARPDynamicAssetCrashLogEvent)initWithURL:(id)a3;
+- (UARPDynamicAssetCrashLogEvent)initWithURL:(id)l;
 - (id)description;
 - (void)decomposeUARP;
 - (void)findMatchingCMAP;
@@ -25,16 +25,16 @@
   return 0;
 }
 
-- (UARPDynamicAssetCrashLogEvent)initWithURL:(id)a3
+- (UARPDynamicAssetCrashLogEvent)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = UARPDynamicAssetCrashLogEvent;
   v6 = [(UARPDynamicAssetCrashLogEvent *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
     v8 = os_log_create("com.apple.accessoryupdater.uarp", "crsh");
     log = v7->_log;
     v7->_log = v8;
@@ -66,16 +66,16 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)expandToDirectory:(id)a3 forRemoteEndpoint:(id)a4
+- (BOOL)expandToDirectory:(id)directory forRemoteEndpoint:(id)endpoint
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 appleModelNumber];
-  v9 = [v7 serialNumber];
+  directoryCopy = directory;
+  endpointCopy = endpoint;
+  appleModelNumber = [endpointCopy appleModelNumber];
+  serialNumber = [endpointCopy serialNumber];
 
   v10 = UARPStringCrashAnalyticsDirectoryFilePath();
-  v11 = UARPUniqueFilename(v8, v9, v10, @"CRSH", @".json");
+  v11 = UARPUniqueFilename(appleModelNumber, serialNumber, v10, @"CRSH", @".json");
 
   v12 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v11];
   v13 = UARPWriteFile(self->_processedCrashInstanceData, v12);
@@ -85,19 +85,19 @@
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
     {
       v15 = log;
-      v16 = [v12 path];
+      path = [v12 path];
       v21 = 136315394;
       v22 = "[UARPDynamicAssetCrashLogEvent expandToDirectory:forRemoteEndpoint:]";
       v23 = 2112;
-      v24 = v16;
+      v24 = path;
       _os_log_impl(&dword_247AA7000, v15, OS_LOG_TYPE_INFO, "%s: Successfully Expanded CRSH to File: %@", &v21, 0x16u);
     }
 
-    if (v6)
+    if (directoryCopy)
     {
       v17 = UARPStringCrashAnalyticsDirectoryFilePath();
-      v18 = [v6 path];
-      UARPCopyFile(v17, v18, v11);
+      path2 = [directoryCopy path];
+      UARPCopyFile(v17, path2, v11);
     }
   }
 
@@ -122,34 +122,34 @@
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v7 = [(UARPSuperBinaryAsset *)self->_asset payloads];
-    v25 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    payloads = [(UARPSuperBinaryAsset *)self->_asset payloads];
+    v25 = [payloads countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v25)
     {
       v8 = *v27;
-      v24 = v7;
+      v24 = payloads;
       while (2)
       {
         for (i = 0; i != v25; ++i)
         {
           if (*v27 != v8)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(payloads);
           }
 
           v10 = *(*(&v26 + 1) + 8 * i);
           v11 = +[UARPDynamicAssetCrashLogEvent tag];
-          v12 = [v10 payloadTag];
-          v13 = [v12 isEqual:v11];
+          payloadTag = [v10 payloadTag];
+          v13 = [payloadTag isEqual:v11];
 
           if (v13)
           {
-            v14 = [MEMORY[0x277CBEB38] dictionary];
+            dictionary = [MEMORY[0x277CBEB38] dictionary];
             v15 = objc_alloc_init(MEMORY[0x277CCAB68]);
             if ([(UARPDynamicAssetCrashLogEvent *)self getCoreName:v15 inPayload:v10])
             {
               v16 = [v15 copy];
-              [v14 setObject:v16 forKeyedSubscript:@"core"];
+              [dictionary setObject:v16 forKeyedSubscript:@"core"];
 
               [v10 rangePayload];
               v18 = [(UARPSuperBinaryAsset *)self->_asset payloadData:v10 range:0 error:v17, 0];
@@ -161,7 +161,7 @@
                 }
 
                 v21 = 0;
-                v7 = v24;
+                payloads = v24;
                 goto LABEL_20;
               }
 
@@ -169,12 +169,12 @@
               v20 = [v18 copy];
               [(NSMutableDictionary *)self->_preProcessedCrashLogs setObject:v20 forKeyedSubscript:v15];
 
-              v7 = v24;
+              payloads = v24;
             }
           }
         }
 
-        v25 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v25 = [payloads countByEnumeratingWithState:&v26 objects:v30 count:16];
         if (v25)
         {
           continue;
@@ -206,8 +206,8 @@ LABEL_20:
     preProcessedCrashLogs = self->_preProcessedCrashLogs;
     testMode = self->_testMode;
     productId = self->_productId;
-    v7 = [(NSURL *)self->_url lastPathComponent];
-    v8 = [v3 generateReportWithBinary:preProcessedCrashLogs testMode:testMode productId:productId applicationInfo:&unk_2859CACE8 description:v7];
+    lastPathComponent = [(NSURL *)self->_url lastPathComponent];
+    v8 = [v3 generateReportWithBinary:preProcessedCrashLogs testMode:testMode productId:productId applicationInfo:&unk_2859CACE8 description:lastPathComponent];
 
     v9 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v8 options:0 error:0];
     if (v9)
@@ -282,19 +282,19 @@ LABEL_26:
   return v15;
 }
 
-- (BOOL)getCoreName:(id)a3 inPayload:(id)a4
+- (BOOL)getCoreName:(id)name inPayload:(id)payload
 {
-  v5 = a3;
-  v6 = [a4 tlvs];
-  v7 = [UARPSuperBinaryAssetTLV findTLVWithType:4042160640 tlvs:v6];
+  nameCopy = name;
+  tlvs = [payload tlvs];
+  v7 = [UARPSuperBinaryAssetTLV findTLVWithType:4042160640 tlvs:tlvs];
 
   if (v7)
   {
-    v8 = [v7 valueAsString];
-    v9 = v8 != 0;
-    if (v8)
+    valueAsString = [v7 valueAsString];
+    v9 = valueAsString != 0;
+    if (valueAsString)
     {
-      [v5 setString:v8];
+      [nameCopy setString:valueAsString];
     }
 
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -318,16 +318,16 @@ LABEL_26:
 
 - (BOOL)processCrashAdditionalInfo
 {
-  v3 = [(UARPSuperBinaryAsset *)self->_asset tlvs];
-  v4 = [UARPSuperBinaryAssetTLV findTLVWithType:4042160641 tlvs:v3];
+  tlvs = [(UARPSuperBinaryAsset *)self->_asset tlvs];
+  v4 = [UARPSuperBinaryAssetTLV findTLVWithType:4042160641 tlvs:tlvs];
 
   if (v4)
   {
-    v5 = [v4 valueAsString];
-    v6 = v5;
-    if (v5)
+    valueAsString = [v4 valueAsString];
+    v6 = valueAsString;
+    if (valueAsString)
     {
-      v7 = [v5 copy];
+      v7 = [valueAsString copy];
       appleModelNumber = self->_appleModelNumber;
       self->_appleModelNumber = v7;
 
@@ -335,8 +335,8 @@ LABEL_26:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [v9 hardwareID];
-        self->_productId = [v10 productID];
+        hardwareID = [v9 hardwareID];
+        self->_productId = [hardwareID productID];
       }
 
       else
@@ -348,17 +348,17 @@ LABEL_26:
         }
       }
 
-      v12 = [(UARPSuperBinaryAsset *)self->_asset tlvs];
-      v13 = [UARPSuperBinaryAssetTLV findTLVWithType:4042160643 tlvs:v12];
+      tlvs2 = [(UARPSuperBinaryAsset *)self->_asset tlvs];
+      v13 = [UARPSuperBinaryAssetTLV findTLVWithType:4042160643 tlvs:tlvs2];
 
       if (v13)
       {
-        v14 = [v13 valueAsNumber];
-        v15 = v14;
-        v11 = v14 != 0;
-        if (v14)
+        valueAsNumber = [v13 valueAsNumber];
+        v15 = valueAsNumber;
+        v11 = valueAsNumber != 0;
+        if (valueAsNumber)
         {
-          if ([v14 unsignedIntValue])
+          if ([valueAsNumber unsignedIntValue])
           {
             self->_testMode = 1;
           }
@@ -467,7 +467,7 @@ LABEL_26:
 - (void)processCrashAdditionalInfo
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = *a1;
+  v7 = *self;
   OUTLINED_FUNCTION_0_5();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
   v6 = *MEMORY[0x277D85DE8];
@@ -476,7 +476,7 @@ LABEL_26:
 - (void)findMatchingCMAP
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = *a1;
+  v7 = *self;
   OUTLINED_FUNCTION_0_5();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
   v6 = *MEMORY[0x277D85DE8];

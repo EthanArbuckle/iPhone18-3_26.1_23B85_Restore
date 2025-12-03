@@ -1,12 +1,12 @@
 @interface _PXSharedLibrarySettingsSection
-- (void)addItemWithConfigurationHandler:(id)a3;
+- (void)addItemWithConfigurationHandler:(id)handler;
 @end
 
 @implementation _PXSharedLibrarySettingsSection
 
-- (void)addItemWithConfigurationHandler:(id)a3
+- (void)addItemWithConfigurationHandler:(id)handler
 {
-  v7 = a3;
+  handlerCopy = handler;
   if (!self->_items)
   {
     v4 = objc_opt_new();
@@ -15,7 +15,7 @@
   }
 
   v6 = objc_opt_new();
-  v7[2](v7, v6);
+  handlerCopy[2](handlerCopy, v6);
   [(NSMutableArray *)self->_items addObject:v6];
 }
 

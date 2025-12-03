@@ -1,22 +1,22 @@
 @interface PLModelMigrationAction_RepairMaintenanceTaskMarker
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_RepairMaintenanceTaskMarker
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v77 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69BF188];
-  v6 = [(PLModelMigrationActionCore *)self pathManager:a3];
-  v7 = [v6 libraryURL];
-  v8 = [v5 appPrivateDataForLibraryURL:v7];
+  v6 = [(PLModelMigrationActionCore *)self pathManager:context];
+  libraryURL = [v6 libraryURL];
+  v8 = [v5 appPrivateDataForLibraryURL:libraryURL];
 
   v9 = [v8 valueForKey:@"PLDeferredMaintenanceTask"];
   objc_opt_class();
-  LOBYTE(v7) = objc_opt_isKindOfClass();
+  LOBYTE(libraryURL) = objc_opt_isKindOfClass();
 
-  if ((v7 & 1) == 0)
+  if ((libraryURL & 1) == 0)
   {
     v39 = 0;
     v10 = [v8 setValue:0 forKey:@"PLDeferredMaintenanceTask" error:&v39];
@@ -29,9 +29,9 @@
 
       if (v14)
       {
-        v15 = [(PLModelMigrationActionCore *)self logger];
+        logger = [(PLModelMigrationActionCore *)self logger];
 
-        if (v15)
+        if (logger)
         {
           v75 = 0u;
           v76 = 0u;
@@ -115,9 +115,9 @@ LABEL_16:
 
       if (v25)
       {
-        v26 = [(PLModelMigrationActionCore *)self logger];
+        logger2 = [(PLModelMigrationActionCore *)self logger];
 
-        if (v26)
+        if (logger2)
         {
           v75 = 0u;
           v76 = 0u;

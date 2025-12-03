@@ -1,15 +1,15 @@
 @interface AVRenderedCaptionImage
-- (AVRenderedCaptionImage)initWithPixelBuffer:(__CVBuffer *)a3 atPosition:(CGPoint)a4;
+- (AVRenderedCaptionImage)initWithPixelBuffer:(__CVBuffer *)buffer atPosition:(CGPoint)position;
 - (CGPoint)position;
 - (void)dealloc;
 @end
 
 @implementation AVRenderedCaptionImage
 
-- (AVRenderedCaptionImage)initWithPixelBuffer:(__CVBuffer *)a3 atPosition:(CGPoint)a4
+- (AVRenderedCaptionImage)initWithPixelBuffer:(__CVBuffer *)buffer atPosition:(CGPoint)position
 {
-  y = a4.y;
-  x = a4.x;
+  y = position.y;
+  x = position.x;
   v10.receiver = self;
   v10.super_class = AVRenderedCaptionImage;
   v7 = [(AVRenderedCaptionImage *)&v10 init];
@@ -18,7 +18,7 @@
   {
     v7->_position.x = x;
     v7->_position.y = y;
-    v7->_pixelBuffer = CVPixelBufferRetain(a3);
+    v7->_pixelBuffer = CVPixelBufferRetain(buffer);
   }
 
   return v8;

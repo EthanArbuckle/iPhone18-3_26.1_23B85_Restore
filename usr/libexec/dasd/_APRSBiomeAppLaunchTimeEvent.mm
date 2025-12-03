@@ -1,18 +1,18 @@
 @interface _APRSBiomeAppLaunchTimeEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 - (id)serialize;
 @end
 
 @implementation _APRSBiomeAppLaunchTimeEvent
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
   v12 = 0;
   v11 = 0u;
   memset(v10, 0, sizeof(v10));
-  if (a4 == 2)
+  if (version == 2)
   {
-    [a3 getBytes:v10 length:68];
+    [data getBytes:v10 length:68];
     v4 = objc_opt_class();
     v5 = [NSString stringWithUTF8String:v10];
     v6 = HIDWORD(v11);
@@ -21,7 +21,7 @@
 
   else
   {
-    [a3 getBytes:v10 length:68];
+    [data getBytes:v10 length:68];
     v4 = objc_opt_class();
     v5 = [NSString stringWithUTF8String:v10];
     v6 = HIDWORD(v11);
@@ -36,15 +36,15 @@
 - (id)serialize
 {
   LODWORD(v11) = 0;
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSString *)v2->_bundleID copy:0];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSString *)selfCopy->_bundleID copy:0];
   if ([v3 length] >= 0x3D)
   {
     v4 = os_log_create("com.apple.aprs", "appResume.AppLaunchWriter");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      sub_100120D34(&v2->_bundleID, v3, v4);
+      sub_100120D34(&selfCopy->_bundleID, v3, v4);
     }
 
     v5 = [v3 substringToIndex:60];
@@ -57,14 +57,14 @@
     v6 = os_log_create("com.apple.aprs", "appResume.AppLaunchWriter");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_100120DC0(&v2->_bundleID, v6);
+      sub_100120DC0(&selfCopy->_bundleID, v6);
     }
   }
 
-  HIDWORD(v10) = v2->_activationTime;
-  LOBYTE(v11) = v2->_launchReason;
+  HIDWORD(v10) = selfCopy->_activationTime;
+  LOBYTE(v11) = selfCopy->_launchReason;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v7 = [NSData dataWithBytes:&v9 length:68];
 
   return v7;

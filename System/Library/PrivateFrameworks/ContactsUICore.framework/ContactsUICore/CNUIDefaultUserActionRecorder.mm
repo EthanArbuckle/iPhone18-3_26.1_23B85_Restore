@@ -1,61 +1,61 @@
 @interface CNUIDefaultUserActionRecorder
 - (CNUIDefaultUserActionRecorder)init;
-- (CNUIDefaultUserActionRecorder)initWithRecentsLibrary:(id)a3 eventFactory:(id)a4;
-- (void)recordUserAction:(id)a3;
+- (CNUIDefaultUserActionRecorder)initWithRecentsLibrary:(id)library eventFactory:(id)factory;
+- (void)recordUserAction:(id)action;
 @end
 
 @implementation CNUIDefaultUserActionRecorder
 
 - (CNUIDefaultUserActionRecorder)init
 {
-  v3 = [MEMORY[0x1E6998FC8] defaultInstance];
+  defaultInstance = [MEMORY[0x1E6998FC8] defaultInstance];
   v4 = objc_alloc_init(_CNUIDefaultUserActionRecorderEventFactory);
-  v5 = [(CNUIDefaultUserActionRecorder *)self initWithRecentsLibrary:v3 eventFactory:v4];
+  v5 = [(CNUIDefaultUserActionRecorder *)self initWithRecentsLibrary:defaultInstance eventFactory:v4];
 
   return v5;
 }
 
-- (CNUIDefaultUserActionRecorder)initWithRecentsLibrary:(id)a3 eventFactory:(id)a4
+- (CNUIDefaultUserActionRecorder)initWithRecentsLibrary:(id)library eventFactory:(id)factory
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  factoryCopy = factory;
   v13.receiver = self;
   v13.super_class = CNUIDefaultUserActionRecorder;
   v9 = [(CNUIDefaultUserActionRecorder *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_library, a3);
-    objc_storeStrong(&v10->_eventFactory, a4);
+    objc_storeStrong(&v9->_library, library);
+    objc_storeStrong(&v10->_eventFactory, factory);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (void)recordUserAction:(id)a3
+- (void)recordUserAction:(id)action
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   v5 = +[CNUICoreLogProvider actions_os_log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v38 = v4;
+    v38 = actionCopy;
     _os_log_impl(&dword_1A31E6000, v5, OS_LOG_TYPE_INFO, "[Default Action] Recording default action: %@", buf, 0xCu);
   }
 
-  v6 = [v4 contactProperty];
-  v7 = [v6 contact];
-  v8 = [v7 hasBeenPersisted];
+  contactProperty = [actionCopy contactProperty];
+  contact = [contactProperty contact];
+  hasBeenPersisted = [contact hasBeenPersisted];
 
-  if (v8)
+  if (hasBeenPersisted)
   {
-    v9 = [v4 associatedRecentContactMetadata];
-    if (v9)
+    associatedRecentContactMetadata = [actionCopy associatedRecentContactMetadata];
+    if (associatedRecentContactMetadata)
     {
-      v10 = [v4 associatedRecentContactMetadata];
-      v11 = [v10 mutableCopy];
+      associatedRecentContactMetadata2 = [actionCopy associatedRecentContactMetadata];
+      v11 = [associatedRecentContactMetadata2 mutableCopy];
     }
 
     else
@@ -63,12 +63,12 @@
       v11 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
     }
 
-    v12 = [v4 type];
-    v13 = [v11 objectForKeyedSubscript:v12];
+    type = [actionCopy type];
+    v13 = [v11 objectForKeyedSubscript:type];
     if (v13)
     {
-      v14 = [v4 type];
-      v15 = [v11 objectForKeyedSubscript:v14];
+      type2 = [actionCopy type];
+      v15 = [v11 objectForKeyedSubscript:type2];
       v16 = [v15 mutableCopy];
     }
 
@@ -79,39 +79,39 @@
 
     v35[0] = @"date";
     v17 = MEMORY[0x1E696AD98];
-    v18 = [MEMORY[0x1E695DF00] date];
-    [v18 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceReferenceDate];
     v19 = [v17 numberWithDouble:?];
     v36[0] = v19;
     v35[1] = @"bundleIdentifier";
-    v20 = [v4 bundleIdentifier];
-    v21 = v20;
+    bundleIdentifier = [actionCopy bundleIdentifier];
+    v21 = bundleIdentifier;
     v22 = &stru_1F162C170;
-    if (v20)
+    if (bundleIdentifier)
     {
-      v22 = v20;
+      v22 = bundleIdentifier;
     }
 
     v36[1] = v22;
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:2];
-    v24 = [v4 contactProperty];
-    v25 = [v24 identifier];
-    [v16 setObject:v23 forKeyedSubscript:v25];
+    contactProperty2 = [actionCopy contactProperty];
+    identifier = [contactProperty2 identifier];
+    [v16 setObject:v23 forKeyedSubscript:identifier];
 
-    v26 = [v4 type];
-    [v11 setObject:v16 forKeyedSubscript:v26];
+    type3 = [actionCopy type];
+    [v11 setObject:v16 forKeyedSubscript:type3];
 
-    v27 = [v4 contactProperty];
+    contactProperty3 = [actionCopy contactProperty];
     v28 = CNUIUserActionRecentsAddressKindForContactProperty();
 
-    v29 = [(CNUIDefaultUserActionRecorder *)self eventFactory];
-    v30 = [v4 sanitizedTargetHandle];
-    v31 = [v29 recentEventForAddress:v30 kind:v28 metadata:v11];
+    eventFactory = [(CNUIDefaultUserActionRecorder *)self eventFactory];
+    sanitizedTargetHandle = [actionCopy sanitizedTargetHandle];
+    v31 = [eventFactory recentEventForAddress:sanitizedTargetHandle kind:v28 metadata:v11];
 
-    v32 = [(CNUIDefaultUserActionRecorder *)self library];
+    library = [(CNUIDefaultUserActionRecorder *)self library];
     v34 = v31;
     v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v34 count:1];
-    [v32 recordContactEvents:v33 recentsDomain:@"CNUICRRecentsDomainContactDefaultAction" sendingAddress:0 completion:&__block_literal_global_44];
+    [library recordContactEvents:v33 recentsDomain:@"CNUICRRecentsDomainContactDefaultAction" sendingAddress:0 completion:&__block_literal_global_44];
   }
 
   else
@@ -119,7 +119,7 @@
     v11 = +[CNUICoreLogProvider actions_os_log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [(CNUIDefaultUserActionRecorder *)v4 recordUserAction:v11];
+      [(CNUIDefaultUserActionRecorder *)actionCopy recordUserAction:v11];
     }
   }
 }

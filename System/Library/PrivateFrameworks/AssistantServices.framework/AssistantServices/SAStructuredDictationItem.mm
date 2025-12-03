@@ -7,15 +7,15 @@
 - (id)ad_transcriptionResults
 {
   v3 = [NSMutableArray alloc];
-  v4 = [(SAStructuredDictationItem *)self resultOptions];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  resultOptions = [(SAStructuredDictationItem *)self resultOptions];
+  v5 = [v3 initWithCapacity:{objc_msgSend(resultOptions, "count")}];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(SAStructuredDictationItem *)self resultOptions];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  resultOptions2 = [(SAStructuredDictationItem *)self resultOptions];
+  v7 = [resultOptions2 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v7)
   {
     v9 = v7;
@@ -29,7 +29,7 @@
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(resultOptions2);
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
@@ -66,7 +66,7 @@
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v9 = [resultOptions2 countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v9);

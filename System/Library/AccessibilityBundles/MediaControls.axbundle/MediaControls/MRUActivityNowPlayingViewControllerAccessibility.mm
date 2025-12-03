@@ -1,17 +1,17 @@
 @interface MRUActivityNowPlayingViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)updateNowPlayingInfo;
 @end
 
 @implementation MRUActivityNowPlayingViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MRUActivityNowPlayingViewController" hasInstanceMethod:@"updateNowPlayingInfo" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"UIWindowScene" hasInstanceMethod:@"systemApertureElementContext" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"SBUISystemApertureElementContext" hasRequiredInstanceMethod:@"setElementNeedsUpdate"];
-  [v3 validateClass:@"MRUActivityNowPlayingViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MRUActivityNowPlayingViewController" hasInstanceMethod:@"updateNowPlayingInfo" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"UIWindowScene" hasInstanceMethod:@"systemApertureElementContext" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"SBUISystemApertureElementContext" hasRequiredInstanceMethod:@"setElementNeedsUpdate"];
+  [validationsCopy validateClass:@"MRUActivityNowPlayingViewController" isKindOfClass:@"UIViewController"];
 }
 
 - (void)updateNowPlayingInfo

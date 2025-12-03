@@ -1,12 +1,12 @@
 @interface GKProfilePrivacyTableViewController
 - (GKProfilePrivacyTableViewControllerDelegate)delegate;
-- (id)tableFooterForPrivacy:(int)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)titleForPrivacy:(int)a3;
-- (void)setIsSendingRequest:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateCell:(id)a3 withCheckmark:(BOOL)a4;
+- (id)tableFooterForPrivacy:(int)privacy;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)titleForPrivacy:(int)privacy;
+- (void)setIsSendingRequest:(BOOL)request;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateCell:(id)cell withCheckmark:(BOOL)checkmark;
 - (void)updateTableViewLayoutMargins;
 - (void)viewDidLoad;
 @end
@@ -25,15 +25,15 @@
   [(GKProfilePrivacyTableViewController *)self setIsSendingRequest:0];
   [(GKProfilePrivacyTableViewController *)self updateTableViewLayoutMargins];
   objc_initWeak(&location, self);
-  v5 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
-  v6 = [v5 profileServicePrivate];
+  proxyForLocalPlayer = [MEMORY[0x277D0C010] proxyForLocalPlayer];
+  profileServicePrivate = [proxyForLocalPlayer profileServicePrivate];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__GKProfilePrivacyTableViewController_viewDidLoad__block_invoke;
   v7[3] = &unk_27966A5E8;
   objc_copyWeak(&v8, &location);
   v7[4] = self;
-  [v6 getProfilePrivacyWithHandler:v7];
+  [profileServicePrivate getProfilePrivacyWithHandler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -77,8 +77,8 @@ void __50__GKProfilePrivacyTableViewController_viewDidLoad__block_invoke(uint64_
 
 - (void)updateTableViewLayoutMargins
 {
-  v3 = [(GKProfilePrivacyTableViewController *)self traitCollection];
-  if ([v3 verticalSizeClass] == 1)
+  traitCollection = [(GKProfilePrivacyTableViewController *)self traitCollection];
+  if ([traitCollection verticalSizeClass] == 1)
   {
 
     if (!_os_feature_enabled_impl())
@@ -89,12 +89,12 @@ void __50__GKProfilePrivacyTableViewController_viewDidLoad__block_invoke(uint64_
 
   else
   {
-    v4 = [(GKProfilePrivacyTableViewController *)self traitCollection];
-    v5 = [v4 userInterfaceIdiom];
+    traitCollection2 = [(GKProfilePrivacyTableViewController *)self traitCollection];
+    userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
 
     if ((_os_feature_enabled_impl() & 1) == 0)
     {
-      if (v5 == 1)
+      if (userInterfaceIdiom == 1)
       {
         goto LABEL_6;
       }
@@ -104,7 +104,7 @@ void __50__GKProfilePrivacyTableViewController_viewDidLoad__block_invoke(uint64_
   }
 
   v6 = objc_opt_new();
-  v7 = [v6 view];
+  view = [v6 view];
   v8 = PSShouldInsetListView();
 
   if (v8)
@@ -123,21 +123,21 @@ LABEL_8:
   v10 = *(MEMORY[0x277D768C8] + 16);
   v12 = *(MEMORY[0x277D768C8] + 24);
 LABEL_9:
-  v13 = [(GKProfilePrivacyTableViewController *)self tableView];
-  [v13 _setSectionContentInset:{v11, v9, v10, v12}];
+  tableView = [(GKProfilePrivacyTableViewController *)self tableView];
+  [tableView _setSectionContentInset:{v11, v9, v10, v12}];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = GKProfilePrivacyTableViewController;
-  [(GKProfilePrivacyTableViewController *)&v4 traitCollectionDidChange:a3];
+  [(GKProfilePrivacyTableViewController *)&v4 traitCollectionDidChange:change];
   [(GKProfilePrivacyTableViewController *)self updateTableViewLayoutMargins];
 }
 
-- (id)titleForPrivacy:(int)a3
+- (id)titleForPrivacy:(int)privacy
 {
-  if (a3 > 2)
+  if (privacy > 2)
   {
     v4 = &stru_28612D290;
   }
@@ -151,7 +151,7 @@ LABEL_9:
   return v4;
 }
 
-- (id)tableFooterForPrivacy:(int)a3
+- (id)tableFooterForPrivacy:(int)privacy
 {
   v3 = GKGameCenterUIFrameworkBundle();
   v4 = GKGetLocalizedStringFromTableInBundle();
@@ -159,44 +159,44 @@ LABEL_9:
   return v4;
 }
 
-- (void)setIsSendingRequest:(BOOL)a3
+- (void)setIsSendingRequest:(BOOL)request
 {
-  v3 = a3;
-  self->_isSendingRequest = a3;
-  v5 = [(GKProfilePrivacyTableViewController *)self navigationController];
-  v6 = [v5 navigationBar];
-  [v6 setUserInteractionEnabled:!v3];
+  requestCopy = request;
+  self->_isSendingRequest = request;
+  navigationController = [(GKProfilePrivacyTableViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setUserInteractionEnabled:!requestCopy];
 
-  v7 = [(GKProfilePrivacyTableViewController *)self navigationController];
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  navigationController2 = [(GKProfilePrivacyTableViewController *)self navigationController];
+  LOBYTE(navigationController) = objc_opt_respondsToSelector();
 
-  if (v5)
+  if (navigationController)
   {
     isSendingRequest = self->_isSendingRequest;
-    v10 = [(GKProfilePrivacyTableViewController *)self navigationController];
-    v9 = [v10 interactivePopGestureRecognizer];
-    [v9 setEnabled:!isSendingRequest];
+    navigationController3 = [(GKProfilePrivacyTableViewController *)self navigationController];
+    interactivePopGestureRecognizer = [navigationController3 interactivePopGestureRecognizer];
+    [interactivePopGestureRecognizer setEnabled:!isSendingRequest];
   }
 }
 
-- (void)updateCell:(id)a3 withCheckmark:(BOOL)a4
+- (void)updateCell:(id)cell withCheckmark:(BOOL)checkmark
 {
-  v4 = a4;
-  v5 = a3;
-  v11 = v5;
-  if (v4)
+  checkmarkCopy = checkmark;
+  cellCopy = cell;
+  v11 = cellCopy;
+  if (checkmarkCopy)
   {
-    [v5 setAccessoryType:3];
+    [cellCopy setAccessoryType:3];
     [v11 setAccessoryView:0];
     v6 = v11;
   }
 
   else
   {
-    [v5 setAccessoryType:0];
+    [cellCopy setAccessoryType:0];
     v7 = objc_opt_new();
-    v8 = [MEMORY[0x277D75520] defaultMetrics];
-    [v8 scaledValueForValue:20.0];
+    defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+    [defaultMetrics scaledValueForValue:20.0];
     v10 = v9;
 
     [v7 setFrame:{0.0, 0.0, v10, 20.0}];
@@ -206,48 +206,48 @@ LABEL_9:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"GKProfilePrivacyTableCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"GKProfilePrivacyTableCell"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:3 reuseIdentifier:@"GKProfilePrivacyTableCell"];
-    v8 = [v7 detailTextLabel];
-    [v8 setNumberOfLines:0];
+    detailTextLabel = [v7 detailTextLabel];
+    [detailTextLabel setNumberOfLines:0];
 
-    v9 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v10 = [v7 detailTextLabel];
-    [v10 setTextColor:v9];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    detailTextLabel2 = [v7 detailTextLabel];
+    [detailTextLabel2 setTextColor:secondaryLabelColor];
   }
 
-  v11 = -[NSMutableArray objectAtIndexedSubscript:](self->_availblePrivacySettings, "objectAtIndexedSubscript:", [v6 row]);
-  v12 = [v11 intValue];
+  v11 = -[NSMutableArray objectAtIndexedSubscript:](self->_availblePrivacySettings, "objectAtIndexedSubscript:", [pathCopy row]);
+  intValue = [v11 intValue];
 
-  v13 = [(GKProfilePrivacyTableViewController *)self titleForPrivacy:v12];
-  v14 = [v7 textLabel];
-  [v14 setText:v13];
+  v13 = [(GKProfilePrivacyTableViewController *)self titleForPrivacy:intValue];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v13];
 
-  v15 = [(GKProfilePrivacyTableViewController *)self tableFooterForPrivacy:v12];
-  v16 = [v7 detailTextLabel];
-  [v16 setText:v15];
+  v15 = [(GKProfilePrivacyTableViewController *)self tableFooterForPrivacy:intValue];
+  detailTextLabel3 = [v7 detailTextLabel];
+  [detailTextLabel3 setText:v15];
 
-  [(GKProfilePrivacyTableViewController *)self updateCell:v7 withCheckmark:[(GKProfilePrivacyTableViewController *)self currentPrivacySettings]== v12];
+  [(GKProfilePrivacyTableViewController *)self updateCell:v7 withCheckmark:[(GKProfilePrivacyTableViewController *)self currentPrivacySettings]== intValue];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = -[NSMutableArray objectAtIndexedSubscript:](self->_availblePrivacySettings, "objectAtIndexedSubscript:", [v5 row]);
-  v7 = [v6 intValue];
+  pathCopy = path;
+  v6 = -[NSMutableArray objectAtIndexedSubscript:](self->_availblePrivacySettings, "objectAtIndexedSubscript:", [pathCopy row]);
+  intValue = [v6 intValue];
 
-  if (v7 == [(GKProfilePrivacyTableViewController *)self currentPrivacySettings])
+  if (intValue == [(GKProfilePrivacyTableViewController *)self currentPrivacySettings])
   {
-    v8 = [(GKProfilePrivacyTableViewController *)self tableView];
-    [v8 deselectRowAtIndexPath:v5 animated:0];
+    tableView = [(GKProfilePrivacyTableViewController *)self tableView];
+    [tableView deselectRowAtIndexPath:pathCopy animated:0];
   }
 
   else
@@ -256,10 +256,10 @@ LABEL_9:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v9 = [(GKProfilePrivacyTableViewController *)self tableView];
-    v10 = [v9 visibleCells];
+    tableView2 = [(GKProfilePrivacyTableViewController *)self tableView];
+    visibleCells = [tableView2 visibleCells];
 
-    v11 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    v11 = [visibleCells countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v11)
     {
       v12 = v11;
@@ -271,22 +271,22 @@ LABEL_9:
         {
           if (*v29 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(visibleCells);
           }
 
           [(GKProfilePrivacyTableViewController *)self updateCell:*(*(&v28 + 1) + 8 * v14++) withCheckmark:0];
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v12 = [visibleCells countByEnumeratingWithState:&v28 objects:v32 count:16];
       }
 
       while (v12);
     }
 
-    v15 = [(GKProfilePrivacyTableViewController *)self traitCollection];
-    v16 = [v15 preferredContentSizeCategory];
-    if (UIContentSizeCategoryIsAccessibilityCategory(v16))
+    traitCollection = [(GKProfilePrivacyTableViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
     {
       v17 = 101;
     }
@@ -296,13 +296,13 @@ LABEL_9:
       v17 = 100;
     }
 
-    v18 = [(GKProfilePrivacyTableViewController *)self tableView];
-    v19 = [v18 cellForRowAtIndexPath:v5];
+    tableView3 = [(GKProfilePrivacyTableViewController *)self tableView];
+    v19 = [tableView3 cellForRowAtIndexPath:pathCopy];
 
     v20 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:v17];
     [v20 startAnimating];
-    v21 = [MEMORY[0x277D75520] defaultMetrics];
-    [v21 scaledValueForValue:20.0];
+    defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+    [defaultMetrics scaledValueForValue:20.0];
     v23 = v22;
 
     [v20 frame];
@@ -310,15 +310,15 @@ LABEL_9:
     [v19 setAccessoryView:v20];
     [v19 setAccessoryType:0];
     [(GKProfilePrivacyTableViewController *)self setIsSendingRequest:1];
-    v24 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
-    v25 = [v24 profileServicePrivate];
+    proxyForLocalPlayer = [MEMORY[0x277D0C010] proxyForLocalPlayer];
+    profileServicePrivate = [proxyForLocalPlayer profileServicePrivate];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __73__GKProfilePrivacyTableViewController_tableView_didSelectRowAtIndexPath___block_invoke;
     v26[3] = &unk_27966A610;
     v26[4] = self;
-    v27 = v7;
-    [v25 setProfilePrivacy:v7 handler:v26];
+    v27 = intValue;
+    [profileServicePrivate setProfilePrivacy:intValue handler:v26];
   }
 }
 

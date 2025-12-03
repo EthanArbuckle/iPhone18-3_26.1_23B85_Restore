@@ -1,22 +1,22 @@
 @interface SettingsCellularUIPlacardCell
-- (_TtC18SettingsCellularUI29SettingsCellularUIPlacardCell)initWithCoder:(id)a3;
-- (_TtC18SettingsCellularUI29SettingsCellularUIPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC18SettingsCellularUI29SettingsCellularUIPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (_TtC18SettingsCellularUI29SettingsCellularUIPlacardCell)initWithCoder:(id)coder;
+- (_TtC18SettingsCellularUI29SettingsCellularUIPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC18SettingsCellularUI29SettingsCellularUIPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation SettingsCellularUIPlacardCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = self;
+  specifierCopy = specifier;
+  selfCopy = self;
   sub_2658E1938();
 }
 
-- (_TtC18SettingsCellularUI29SettingsCellularUIPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC18SettingsCellularUI29SettingsCellularUIPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  if (a4)
+  if (identifier)
   {
     v7 = sub_26596A2AC();
     v9 = v8;
@@ -28,32 +28,32 @@
     v9 = 0;
   }
 
-  v10 = a5;
-  return sub_2658E10B4(a3, v7, v9, a5);
+  specifierCopy = specifier;
+  return sub_2658E10B4(style, v7, v9, specifier);
 }
 
-- (_TtC18SettingsCellularUI29SettingsCellularUIPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18SettingsCellularUI29SettingsCellularUIPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   ObjectType = swift_getObjectType();
-  if (a4)
+  if (identifier)
   {
     sub_26596A2AC();
-    a4 = sub_26596A27C();
+    identifier = sub_26596A27C();
   }
 
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = [(PSTableCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v8 = [(PSTableCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
 
   return v8;
 }
 
-- (_TtC18SettingsCellularUI29SettingsCellularUIPlacardCell)initWithCoder:(id)a3
+- (_TtC18SettingsCellularUI29SettingsCellularUIPlacardCell)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(SettingsCellularUIPlacardCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SettingsCellularUIPlacardCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

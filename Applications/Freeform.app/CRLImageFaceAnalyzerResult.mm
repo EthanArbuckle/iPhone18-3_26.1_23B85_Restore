@@ -1,8 +1,8 @@
 @interface CRLImageFaceAnalyzerResult
-- (CGPoint)maskCenterForFacesWithImageSize:(CGSize)a3 maskSize:(CGSize)a4 defaultCenter:(CGPoint)a5;
+- (CGPoint)maskCenterForFacesWithImageSize:(CGSize)size maskSize:(CGSize)maskSize defaultCenter:(CGPoint)center;
 - (CGRect)interestingFacesRect;
 - (_TtC8Freeform26CRLImageFaceAnalyzerResult)init;
-- (_TtC8Freeform26CRLImageFaceAnalyzerResult)initWithFaceRectValues:(id)a3;
+- (_TtC8Freeform26CRLImageFaceAnalyzerResult)initWithFaceRectValues:(id)values;
 @end
 
 @implementation CRLImageFaceAnalyzerResult
@@ -20,9 +20,9 @@
   return result;
 }
 
-- (_TtC8Freeform26CRLImageFaceAnalyzerResult)initWithFaceRectValues:(id)a3
+- (_TtC8Freeform26CRLImageFaceAnalyzerResult)initWithFaceRectValues:(id)values
 {
-  if (a3)
+  if (values)
   {
     sub_10077804C();
     v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -36,13 +36,13 @@
   return CRLImageFaceAnalyzerResult.init(faceRectValues:)(v3);
 }
 
-- (CGPoint)maskCenterForFacesWithImageSize:(CGSize)a3 maskSize:(CGSize)a4 defaultCenter:(CGPoint)a5
+- (CGPoint)maskCenterForFacesWithImageSize:(CGSize)size maskSize:(CGSize)maskSize defaultCenter:(CGPoint)center
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3.height;
-  v8 = a3.width;
-  v9 = self;
+  height = maskSize.height;
+  width = maskSize.width;
+  v7 = size.height;
+  v8 = size.width;
+  selfCopy = self;
   CRLImageFaceAnalyzerResult.maskCenterForFaces(imageSize:maskSize:defaultCenter:)(v8, v7, width, height);
   v11 = v10;
   v13 = v12;

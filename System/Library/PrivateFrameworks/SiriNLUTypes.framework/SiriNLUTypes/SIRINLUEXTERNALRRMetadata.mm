@@ -1,25 +1,25 @@
 @interface SIRINLUEXTERNALRRMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDataSource:(id)a3;
+- (int)StringAsDataSource:(id)source;
 - (int)dataSource;
 - (unint64_t)hash;
-- (void)addSurroundingTexts:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSurroundingTexts:(id)texts;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALRRMetadata
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   boundingBox = self->_boundingBox;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (boundingBox)
   {
     if (v6)
@@ -37,7 +37,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 3);
+  v7 = *(fromCopy + 3);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -61,9 +61,9 @@
     while (v9);
   }
 
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
-    self->_dataSource = *(v4 + 4);
+    self->_dataSource = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
@@ -87,16 +87,16 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   boundingBox = self->_boundingBox;
-  if (boundingBox | *(v4 + 1))
+  if (boundingBox | *(equalCopy + 1))
   {
     if (![(SIRINLUEXTERNALRRBoundingBox *)boundingBox isEqual:?])
     {
@@ -105,7 +105,7 @@
   }
 
   surroundingTexts = self->_surroundingTexts;
-  if (surroundingTexts | *(v4 + 3))
+  if (surroundingTexts | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)surroundingTexts isEqual:?])
     {
@@ -113,10 +113,10 @@
     }
   }
 
-  v7 = (*(v4 + 32) & 1) == 0;
+  v7 = (*(equalCopy + 32) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) != 0 && self->_dataSource == *(v4 + 4))
+    if ((*(equalCopy + 32) & 1) != 0 && self->_dataSource == *(equalCopy + 4))
     {
       v7 = 1;
       goto LABEL_11;
@@ -131,11 +131,11 @@ LABEL_11:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALRRBoundingBox *)self->_boundingBox copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALRRBoundingBox *)self->_boundingBox copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -159,7 +159,7 @@ LABEL_11:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addSurroundingTexts:v13];
 
         ++v12;
@@ -182,40 +182,40 @@ LABEL_11:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_boundingBox)
   {
-    [v8 setBoundingBox:?];
+    [toCopy setBoundingBox:?];
   }
 
   if ([(SIRINLUEXTERNALRRMetadata *)self surroundingTextsCount])
   {
-    [v8 clearSurroundingTexts];
-    v4 = [(SIRINLUEXTERNALRRMetadata *)self surroundingTextsCount];
-    if (v4)
+    [toCopy clearSurroundingTexts];
+    surroundingTextsCount = [(SIRINLUEXTERNALRRMetadata *)self surroundingTextsCount];
+    if (surroundingTextsCount)
     {
-      v5 = v4;
+      v5 = surroundingTextsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUEXTERNALRRMetadata *)self surroundingTextsAtIndex:i];
-        [v8 addSurroundingTexts:v7];
+        [toCopy addSurroundingTexts:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v8 + 4) = self->_dataSource;
-    *(v8 + 32) |= 1u;
+    *(toCopy + 4) = self->_dataSource;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_boundingBox)
   {
     PBDataWriterWriteSubmessage();
@@ -265,12 +265,12 @@ LABEL_11:
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   boundingBox = self->_boundingBox;
   if (boundingBox)
   {
-    v5 = [(SIRINLUEXTERNALRRBoundingBox *)boundingBox dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"bounding_box"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALRRBoundingBox *)boundingBox dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"bounding_box"];
   }
 
   if ([(NSMutableArray *)self->_surroundingTexts count])
@@ -295,8 +295,8 @@ LABEL_11:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -305,7 +305,7 @@ LABEL_11:
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"surrounding_texts"];
+    [dictionary setObject:v6 forKey:@"surrounding_texts"];
   }
 
   if (*&self->_has)
@@ -321,12 +321,12 @@ LABEL_11:
       v14 = off_1E8328300[dataSource];
     }
 
-    [v3 setObject:v14 forKey:@"data_source"];
+    [dictionary setObject:v14 forKey:@"data_source"];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -335,41 +335,41 @@ LABEL_11:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALRRMetadata;
   v4 = [(SIRINLUEXTERNALRRMetadata *)&v8 description];
-  v5 = [(SIRINLUEXTERNALRRMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALRRMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsDataSource:(id)a3
+- (int)StringAsDataSource:(id)source
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CONVERSATIONAL"])
+  else if ([sourceCopy isEqualToString:@"CONVERSATIONAL"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ON_SCREEN"])
+  else if ([sourceCopy isEqualToString:@"ON_SCREEN"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"NOTIFICATION"])
+  else if ([sourceCopy isEqualToString:@"NOTIFICATION"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ANNOUNCEMENT"])
+  else if ([sourceCopy isEqualToString:@"ANNOUNCEMENT"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"VISUAL"])
+  else if ([sourceCopy isEqualToString:@"VISUAL"])
   {
     v4 = 5;
   }
@@ -395,22 +395,22 @@ LABEL_11:
   }
 }
 
-- (void)addSurroundingTexts:(id)a3
+- (void)addSurroundingTexts:(id)texts
 {
-  v4 = a3;
+  textsCopy = texts;
   surroundingTexts = self->_surroundingTexts;
-  v8 = v4;
+  v8 = textsCopy;
   if (!surroundingTexts)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_surroundingTexts;
     self->_surroundingTexts = v6;
 
-    v4 = v8;
+    textsCopy = v8;
     surroundingTexts = self->_surroundingTexts;
   }
 
-  [(NSMutableArray *)surroundingTexts addObject:v4];
+  [(NSMutableArray *)surroundingTexts addObject:textsCopy];
 }
 
 @end

@@ -1,40 +1,40 @@
 @interface AKPrivateEmailPresenter
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)_callCompletionBlockWithEmail:(id)a3 error:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)_callCompletionBlockWithEmail:(id)email error:(id)error;
 - (void)dealloc;
-- (void)presentPrivateEmailWithContext:(id)a3 client:(id)a4 completion:(id)a5;
-- (void)privateEmailFetchCompletedWith:(id)a3 error:(id)a4 completion:(id)a5;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)presentPrivateEmailWithContext:(id)context client:(id)client completion:(id)completion;
+- (void)privateEmailFetchCompletedWith:(id)with error:(id)error completion:(id)completion;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation AKPrivateEmailPresenter
 
-- (void)presentPrivateEmailWithContext:(id)a3 client:(id)a4 completion:(id)a5
+- (void)presentPrivateEmailWithContext:(id)context client:(id)client completion:(id)completion
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
+  objc_storeStrong(&v34, client);
   v33 = 0;
-  objc_storeStrong(&v33, a5);
+  objc_storeStrong(&v33, completion);
   v32 = objc_alloc_init(NSMutableDictionary);
-  v20 = [location[0] altDSID];
+  altDSID = [location[0] altDSID];
   [v32 setObject:? forKeyedSubscript:?];
-  _objc_release(v20);
+  _objc_release(altDSID);
   v21 = [location[0] key];
   [v32 setObject:? forKeyedSubscript:?];
   _objc_release(v21);
-  v22 = [location[0] clientAppBundleId];
-  _objc_release(v22);
-  if (v22)
+  clientAppBundleId = [location[0] clientAppBundleId];
+  _objc_release(clientAppBundleId);
+  if (clientAppBundleId)
   {
-    v17 = [location[0] clientAppBundleId];
+    clientAppBundleId2 = [location[0] clientAppBundleId];
     [v32 setObject:? forKeyedSubscript:?];
-    _objc_release(v17);
+    _objc_release(clientAppBundleId2);
   }
 
   v31 = _AKLogHme();
@@ -47,12 +47,12 @@
 
   objc_storeStrong(&v31, 0);
   v5 = +[NSXPCListener anonymousListener];
-  remoteListener = v36->_remoteListener;
-  v36->_remoteListener = v5;
+  remoteListener = selfCopy->_remoteListener;
+  selfCopy->_remoteListener = v5;
   _objc_release(remoteListener);
-  [(NSXPCListener *)v36->_remoteListener setDelegate:v36];
-  [(NSXPCListener *)v36->_remoteListener resume];
-  [(AKPrivateEmailPresenter *)v36 setPrivateEmailCompletion:v33];
+  [(NSXPCListener *)selfCopy->_remoteListener setDelegate:selfCopy];
+  [(NSXPCListener *)selfCopy->_remoteListener resume];
+  [(AKPrivateEmailPresenter *)selfCopy setPrivateEmailCompletion:v33];
   if (SBSGetScreenLockStatus())
   {
     v29 = _AKLogSystem();
@@ -78,22 +78,22 @@
     v7 = [SBSRemoteAlertDefinition alloc];
     v25 = [v7 initWithServiceName:off_100370FC8 viewControllerClassName:off_100370FC0];
     v24 = objc_opt_new();
-    v9 = [(NSXPCListener *)v36->_remoteListener endpoint];
-    v8 = [(NSXPCListenerEndpoint *)v9 _endpoint];
+    endpoint = [(NSXPCListener *)selfCopy->_remoteListener endpoint];
+    _endpoint = [(NSXPCListenerEndpoint *)endpoint _endpoint];
     [v24 setXpcEndpoint:?];
-    _objc_release(v8);
-    _objc_release(v9);
+    _objc_release(_endpoint);
+    _objc_release(endpoint);
     [v24 setUserInfo:v32];
     v23 = objc_opt_new();
     v10 = [SBSRemoteAlertHandle newHandleWithDefinition:v25 configurationContext:v24];
-    [(AKPrivateEmailPresenter *)v36 setRemoteAlertHandle:?];
+    [(AKPrivateEmailPresenter *)selfCopy setRemoteAlertHandle:?];
     _objc_release(v10);
-    v11 = [(AKPrivateEmailPresenter *)v36 remoteAlertHandle];
-    [(SBSRemoteAlertHandle *)v11 registerObserver:v36];
-    _objc_release(v11);
-    v12 = [(AKPrivateEmailPresenter *)v36 remoteAlertHandle];
-    [(SBSRemoteAlertHandle *)v12 activateWithContext:v23];
-    _objc_release(v12);
+    remoteAlertHandle = [(AKPrivateEmailPresenter *)selfCopy remoteAlertHandle];
+    [(SBSRemoteAlertHandle *)remoteAlertHandle registerObserver:selfCopy];
+    _objc_release(remoteAlertHandle);
+    remoteAlertHandle2 = [(AKPrivateEmailPresenter *)selfCopy remoteAlertHandle];
+    [(SBSRemoteAlertHandle *)remoteAlertHandle2 activateWithContext:v23];
+    _objc_release(remoteAlertHandle2);
     objc_storeStrong(&v23, 0);
     objc_storeStrong(&v24, 0);
     objc_storeStrong(&v25, 0);
@@ -106,16 +106,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)privateEmailFetchCompletedWith:(id)a3 error:(id)a4 completion:(id)a5
+- (void)privateEmailFetchCompletedWith:(id)with error:(id)error completion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, with);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, error);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
+  objc_storeStrong(&v8, completion);
   v7 = _AKLogHme();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -124,59 +124,59 @@
   }
 
   objc_storeStrong(&v7, 0);
-  [(AKPrivateEmailPresenter *)v11 _callCompletionBlockWithEmail:location[0] error:v9];
+  [(AKPrivateEmailPresenter *)selfCopy _callCompletionBlockWithEmail:location[0] error:v9];
   (*(v8 + 2))(v8, 1, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, listener);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, connection);
   v6 = +[AKPrivateEmailPresenterHostInterface XPCInterface];
   [v7 setExportedInterface:?];
   _objc_release(v6);
-  [v7 setExportedObject:v9];
+  [v7 setExportedObject:selfCopy];
   [v7 resume];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
   return 1;
 }
 
-- (void)_callCompletionBlockWithEmail:(id)a3 error:(id)a4
+- (void)_callCompletionBlockWithEmail:(id)email error:(id)error
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, email);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  v6 = [(AKPrivateEmailPresenter *)v9 privateEmailCompletion];
-  _objc_release(v6);
-  if (v6)
+  objc_storeStrong(&v7, error);
+  privateEmailCompletion = [(AKPrivateEmailPresenter *)selfCopy privateEmailCompletion];
+  _objc_release(privateEmailCompletion);
+  if (privateEmailCompletion)
   {
-    v4 = [(AKPrivateEmailPresenter *)v9 privateEmailCompletion];
-    v4[2](v4, location[0], v7);
-    _objc_release(v4);
+    privateEmailCompletion2 = [(AKPrivateEmailPresenter *)selfCopy privateEmailCompletion];
+    privateEmailCompletion2[2](privateEmailCompletion2, location[0], v7);
+    _objc_release(privateEmailCompletion2);
   }
 
-  [(AKPrivateEmailPresenter *)v9 setPrivateEmailCompletion:?];
+  [(AKPrivateEmailPresenter *)selfCopy setPrivateEmailCompletion:?];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, activate);
   oslog = _AKLogHme();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -188,12 +188,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, deactivate);
   oslog = _AKLogHme();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -202,24 +202,24 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v3 = v7;
+  v3 = selfCopy;
   v4 = [NSError ak_errorWithCode:-7034];
   [(AKPrivateEmailPresenter *)v3 _callCompletionBlockWithEmail:0 error:?];
   _objc_release(v4);
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, handle);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v10 = [v15 domain];
+  objc_storeStrong(&v15, error);
+  domain = [v15 domain];
   v11 = 0;
-  if ([v10 isEqualToString:SBSRemoteAlertHandleInvalidationErrorDomain])
+  if ([domain isEqualToString:SBSRemoteAlertHandleInvalidationErrorDomain])
   {
     v8 = 1;
     if ([v15 code] != 4)
@@ -230,7 +230,7 @@
     v11 = v8;
   }
 
-  _objc_release(v10);
+  _objc_release(domain);
   if (v11)
   {
     v14 = _AKLogHme();
@@ -242,7 +242,7 @@
     }
 
     objc_storeStrong(&v14, 0);
-    v6 = v17;
+    v6 = selfCopy;
     v7 = [NSError ak_errorWithCode:-7003];
     [(AKPrivateEmailPresenter *)v6 _callCompletionBlockWithEmail:0 error:?];
     _objc_release(v7);
@@ -258,7 +258,7 @@
     }
 
     objc_storeStrong(&v12, 0);
-    v4 = v17;
+    v4 = selfCopy;
     v5 = [NSError ak_errorWithCode:-7034 underlyingError:v15];
     [(AKPrivateEmailPresenter *)v4 _callCompletionBlockWithEmail:0 error:?];
     _objc_release(v5);
@@ -270,15 +270,15 @@
 
 - (void)dealloc
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v2 = [(AKPrivateEmailPresenter *)self remoteAlertHandle];
-  [(SBSRemoteAlertHandle *)v2 unregisterObserver:v6];
-  _objc_release(v2);
-  v3 = [(AKPrivateEmailPresenter *)v6 remoteAlertHandle];
-  [(SBSRemoteAlertHandle *)v3 invalidate];
-  _objc_release(v3);
-  v4.receiver = v6;
+  remoteAlertHandle = [(AKPrivateEmailPresenter *)self remoteAlertHandle];
+  [(SBSRemoteAlertHandle *)remoteAlertHandle unregisterObserver:selfCopy];
+  _objc_release(remoteAlertHandle);
+  remoteAlertHandle2 = [(AKPrivateEmailPresenter *)selfCopy remoteAlertHandle];
+  [(SBSRemoteAlertHandle *)remoteAlertHandle2 invalidate];
+  _objc_release(remoteAlertHandle2);
+  v4.receiver = selfCopy;
   v4.super_class = AKPrivateEmailPresenter;
   [(AKPrivateEmailPresenter *)&v4 dealloc];
 }

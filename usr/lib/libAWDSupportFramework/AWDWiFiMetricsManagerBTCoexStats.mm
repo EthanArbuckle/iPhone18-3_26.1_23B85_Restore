@@ -1,44 +1,44 @@
 @interface AWDWiFiMetricsManagerBTCoexStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unint64_t)rxMPDUCountPerMCSAtIndex:(unint64_t)a3;
-- (unint64_t)txMPDUCountPerMCSAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unint64_t)rxMPDUCountPerMCSAtIndex:(unint64_t)index;
+- (unint64_t)txMPDUCountPerMCSAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAntennaRequests:(BOOL)a3;
-- (void)setHasBeaconLostCnt:(BOOL)a3;
-- (void)setHasEnvelopeLowToHighAccumulatedMsec:(BOOL)a3;
-- (void)setHasGuardTimeMicroseconds:(BOOL)a3;
-- (void)setHasHighUcodeLatency:(BOOL)a3;
-- (void)setHasPsRequestTxCnt:(BOOL)a3;
-- (void)setHasPsnullExceeded:(BOOL)a3;
-- (void)setHasRequestsA2DP:(BOOL)a3;
-- (void)setHasRequestsACL:(BOOL)a3;
-- (void)setHasRequestsBLE:(BOOL)a3;
-- (void)setHasRequestsBLEScan:(BOOL)a3;
-- (void)setHasRequestsInquiry:(BOOL)a3;
-- (void)setHasRequestsInquiryScan:(BOOL)a3;
-- (void)setHasRequestsMSS:(BOOL)a3;
-- (void)setHasRequestsOther:(BOOL)a3;
-- (void)setHasRequestsPARK:(BOOL)a3;
-- (void)setHasRequestsPage:(BOOL)a3;
-- (void)setHasRequestsPageScan:(BOOL)a3;
-- (void)setHasRequestsSCO:(BOOL)a3;
-- (void)setHasRequestsSniff:(BOOL)a3;
-- (void)setHasRequestseSCO:(BOOL)a3;
-- (void)setHasResumeTimeAccumulatedMsec:(BOOL)a3;
-- (void)setHasScoReservedSlotDenyCount:(BOOL)a3;
-- (void)setHasScoRetransmission1DenyCount:(BOOL)a3;
-- (void)setHasScoRetransmission2DenyCount:(BOOL)a3;
-- (void)setHasTimeTillResumeAccumulatedMsec:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasTxCTS2Self:(BOOL)a3;
-- (void)setHasWlanPreempted:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAntennaRequests:(BOOL)requests;
+- (void)setHasBeaconLostCnt:(BOOL)cnt;
+- (void)setHasEnvelopeLowToHighAccumulatedMsec:(BOOL)msec;
+- (void)setHasGuardTimeMicroseconds:(BOOL)microseconds;
+- (void)setHasHighUcodeLatency:(BOOL)latency;
+- (void)setHasPsRequestTxCnt:(BOOL)cnt;
+- (void)setHasPsnullExceeded:(BOOL)exceeded;
+- (void)setHasRequestsA2DP:(BOOL)p;
+- (void)setHasRequestsACL:(BOOL)l;
+- (void)setHasRequestsBLE:(BOOL)e;
+- (void)setHasRequestsBLEScan:(BOOL)scan;
+- (void)setHasRequestsInquiry:(BOOL)inquiry;
+- (void)setHasRequestsInquiryScan:(BOOL)scan;
+- (void)setHasRequestsMSS:(BOOL)s;
+- (void)setHasRequestsOther:(BOOL)other;
+- (void)setHasRequestsPARK:(BOOL)k;
+- (void)setHasRequestsPage:(BOOL)page;
+- (void)setHasRequestsPageScan:(BOOL)scan;
+- (void)setHasRequestsSCO:(BOOL)o;
+- (void)setHasRequestsSniff:(BOOL)sniff;
+- (void)setHasRequestseSCO:(BOOL)o;
+- (void)setHasResumeTimeAccumulatedMsec:(BOOL)msec;
+- (void)setHasScoReservedSlotDenyCount:(BOOL)count;
+- (void)setHasScoRetransmission1DenyCount:(BOOL)count;
+- (void)setHasScoRetransmission2DenyCount:(BOOL)count;
+- (void)setHasTimeTillResumeAccumulatedMsec:(BOOL)msec;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasTxCTS2Self:(BOOL)self;
+- (void)setHasWlanPreempted:(BOOL)preempted;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricsManagerBTCoexStats
@@ -60,9 +60,9 @@
   [(AWDWiFiMetricsManagerBTCoexStats *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 0x8000000;
   }
@@ -75,9 +75,9 @@
   self->_has = (*&self->_has & 0xF7FFFFFF | v3);
 }
 
-- (void)setHasAntennaRequests:(BOOL)a3
+- (void)setHasAntennaRequests:(BOOL)requests
 {
-  if (a3)
+  if (requests)
   {
     v3 = 2;
   }
@@ -90,9 +90,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasWlanPreempted:(BOOL)a3
+- (void)setHasWlanPreempted:(BOOL)preempted
 {
-  if (a3)
+  if (preempted)
   {
     v3 = 0x20000000;
   }
@@ -105,9 +105,9 @@
   self->_has = (*&self->_has & 0xDFFFFFFF | v3);
 }
 
-- (void)setHasPsnullExceeded:(BOOL)a3
+- (void)setHasPsnullExceeded:(BOOL)exceeded
 {
-  if (a3)
+  if (exceeded)
   {
     v3 = 128;
   }
@@ -120,9 +120,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasHighUcodeLatency:(BOOL)a3
+- (void)setHasHighUcodeLatency:(BOOL)latency
 {
-  if (a3)
+  if (latency)
   {
     v3 = 32;
   }
@@ -135,9 +135,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasRequestsACL:(BOOL)a3
+- (void)setHasRequestsACL:(BOOL)l
 {
-  if (a3)
+  if (l)
   {
     v3 = 512;
   }
@@ -150,9 +150,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasRequestsSCO:(BOOL)a3
+- (void)setHasRequestsSCO:(BOOL)o
 {
-  if (a3)
+  if (o)
   {
     v3 = 0x80000;
   }
@@ -165,9 +165,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasRequestseSCO:(BOOL)a3
+- (void)setHasRequestseSCO:(BOOL)o
 {
-  if (a3)
+  if (o)
   {
     v3 = 0x200000;
   }
@@ -180,9 +180,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasRequestsA2DP:(BOOL)a3
+- (void)setHasRequestsA2DP:(BOOL)p
 {
-  if (a3)
+  if (p)
   {
     v3 = 256;
   }
@@ -195,9 +195,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasRequestsSniff:(BOOL)a3
+- (void)setHasRequestsSniff:(BOOL)sniff
 {
-  if (a3)
+  if (sniff)
   {
     v3 = 0x100000;
   }
@@ -210,9 +210,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasRequestsPageScan:(BOOL)a3
+- (void)setHasRequestsPageScan:(BOOL)scan
 {
-  if (a3)
+  if (scan)
   {
     v3 = 0x40000;
   }
@@ -225,9 +225,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasRequestsInquiryScan:(BOOL)a3
+- (void)setHasRequestsInquiryScan:(BOOL)scan
 {
-  if (a3)
+  if (scan)
   {
     v3 = 0x2000;
   }
@@ -240,9 +240,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasRequestsPage:(BOOL)a3
+- (void)setHasRequestsPage:(BOOL)page
 {
-  if (a3)
+  if (page)
   {
     v3 = 0x20000;
   }
@@ -255,9 +255,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasRequestsInquiry:(BOOL)a3
+- (void)setHasRequestsInquiry:(BOOL)inquiry
 {
-  if (a3)
+  if (inquiry)
   {
     v3 = 4096;
   }
@@ -270,9 +270,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasRequestsBLE:(BOOL)a3
+- (void)setHasRequestsBLE:(BOOL)e
 {
-  if (a3)
+  if (e)
   {
     v3 = 1024;
   }
@@ -285,9 +285,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasRequestsOther:(BOOL)a3
+- (void)setHasRequestsOther:(BOOL)other
 {
-  if (a3)
+  if (other)
   {
     v3 = 0x8000;
   }
@@ -300,9 +300,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasRequestsBLEScan:(BOOL)a3
+- (void)setHasRequestsBLEScan:(BOOL)scan
 {
-  if (a3)
+  if (scan)
   {
     v3 = 2048;
   }
@@ -315,9 +315,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasRequestsMSS:(BOOL)a3
+- (void)setHasRequestsMSS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 0x4000;
   }
@@ -330,9 +330,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasRequestsPARK:(BOOL)a3
+- (void)setHasRequestsPARK:(BOOL)k
 {
-  if (a3)
+  if (k)
   {
     v3 = 0x10000;
   }
@@ -345,9 +345,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasBeaconLostCnt:(BOOL)a3
+- (void)setHasBeaconLostCnt:(BOOL)cnt
 {
-  if (a3)
+  if (cnt)
   {
     v3 = 4;
   }
@@ -360,33 +360,33 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (unint64_t)rxMPDUCountPerMCSAtIndex:(unint64_t)a3
+- (unint64_t)rxMPDUCountPerMCSAtIndex:(unint64_t)index
 {
   p_rxMPDUCountPerMCSs = &self->_rxMPDUCountPerMCSs;
   count = self->_rxMPDUCountPerMCSs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_rxMPDUCountPerMCSs->list[a3];
+  return p_rxMPDUCountPerMCSs->list[index];
 }
 
-- (unint64_t)txMPDUCountPerMCSAtIndex:(unint64_t)a3
+- (unint64_t)txMPDUCountPerMCSAtIndex:(unint64_t)index
 {
   p_txMPDUCountPerMCSs = &self->_txMPDUCountPerMCSs;
   count = self->_txMPDUCountPerMCSs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_txMPDUCountPerMCSs->list[a3];
+  return p_txMPDUCountPerMCSs->list[index];
 }
 
-- (void)setHasTimeTillResumeAccumulatedMsec:(BOOL)a3
+- (void)setHasTimeTillResumeAccumulatedMsec:(BOOL)msec
 {
-  if (a3)
+  if (msec)
   {
     v3 = 0x4000000;
   }
@@ -399,9 +399,9 @@
   self->_has = (*&self->_has & 0xFBFFFFFF | v3);
 }
 
-- (void)setHasResumeTimeAccumulatedMsec:(BOOL)a3
+- (void)setHasResumeTimeAccumulatedMsec:(BOOL)msec
 {
-  if (a3)
+  if (msec)
   {
     v3 = 0x400000;
   }
@@ -414,9 +414,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasEnvelopeLowToHighAccumulatedMsec:(BOOL)a3
+- (void)setHasEnvelopeLowToHighAccumulatedMsec:(BOOL)msec
 {
-  if (a3)
+  if (msec)
   {
     v3 = 8;
   }
@@ -429,9 +429,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasScoReservedSlotDenyCount:(BOOL)a3
+- (void)setHasScoReservedSlotDenyCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x800000;
   }
@@ -444,9 +444,9 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasScoRetransmission1DenyCount:(BOOL)a3
+- (void)setHasScoRetransmission1DenyCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x1000000;
   }
@@ -459,9 +459,9 @@
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasScoRetransmission2DenyCount:(BOOL)a3
+- (void)setHasScoRetransmission2DenyCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x2000000;
   }
@@ -474,9 +474,9 @@
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasGuardTimeMicroseconds:(BOOL)a3
+- (void)setHasGuardTimeMicroseconds:(BOOL)microseconds
 {
-  if (a3)
+  if (microseconds)
   {
     v3 = 16;
   }
@@ -489,9 +489,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasPsRequestTxCnt:(BOOL)a3
+- (void)setHasPsRequestTxCnt:(BOOL)cnt
 {
-  if (a3)
+  if (cnt)
   {
     v3 = 64;
   }
@@ -504,9 +504,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasTxCTS2Self:(BOOL)a3
+- (void)setHasTxCTS2Self:(BOOL)self
 {
-  if (a3)
+  if (self)
   {
     v3 = 0x10000000;
   }
@@ -528,11 +528,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((*&has & 0x8000000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((*&has & 2) == 0)
     {
@@ -551,7 +551,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_antennaRequests), @"antennaRequests"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_antennaRequests), @"antennaRequests"}];
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -565,7 +565,7 @@ LABEL_4:
   }
 
 LABEL_53:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_antennaGrants), @"antennaGrants"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_antennaGrants), @"antennaGrants"}];
   has = self->_has;
   if ((*&has & 0x20000000) == 0)
   {
@@ -579,7 +579,7 @@ LABEL_5:
   }
 
 LABEL_54:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_wlanPreempted), @"wlanPreempted"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_wlanPreempted), @"wlanPreempted"}];
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -593,66 +593,66 @@ LABEL_6:
   }
 
 LABEL_55:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_psnullExceeded), @"psnullExceeded"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_psnullExceeded), @"psnullExceeded"}];
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_7:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_highUcodeLatency), @"highUcodeLatency"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_highUcodeLatency), @"highUcodeLatency"}];
   }
 
 LABEL_8:
   antennaOwnership2BT = self->_antennaOwnership2BT;
   if (antennaOwnership2BT)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](antennaOwnership2BT forKey:{"dictionaryRepresentation"), @"antennaOwnership2_BT"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](antennaOwnership2BT forKey:{"dictionaryRepresentation"), @"antennaOwnership2_BT"}];
   }
 
   antennaOwnership2WLAN = self->_antennaOwnership2WLAN;
   if (antennaOwnership2WLAN)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](antennaOwnership2WLAN forKey:{"dictionaryRepresentation"), @"antennaOwnership2_WLAN"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](antennaOwnership2WLAN forKey:{"dictionaryRepresentation"), @"antennaOwnership2_WLAN"}];
   }
 
   enbledStateOn = self->_enbledStateOn;
   if (enbledStateOn)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](enbledStateOn forKey:{"dictionaryRepresentation"), @"enbledState_On"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](enbledStateOn forKey:{"dictionaryRepresentation"), @"enbledState_On"}];
   }
 
   enbledStateOff = self->_enbledStateOff;
   if (enbledStateOff)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](enbledStateOff forKey:{"dictionaryRepresentation"), @"enbledState_Off"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](enbledStateOff forKey:{"dictionaryRepresentation"), @"enbledState_Off"}];
   }
 
   hybridStateOn = self->_hybridStateOn;
   if (hybridStateOn)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](hybridStateOn forKey:{"dictionaryRepresentation"), @"hybridState_On"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](hybridStateOn forKey:{"dictionaryRepresentation"), @"hybridState_On"}];
   }
 
   hybridStateOff = self->_hybridStateOff;
   if (hybridStateOff)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](hybridStateOff forKey:{"dictionaryRepresentation"), @"hybridState_Off"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](hybridStateOff forKey:{"dictionaryRepresentation"), @"hybridState_Off"}];
   }
 
   tdmStateOn = self->_tdmStateOn;
   if (tdmStateOn)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](tdmStateOn forKey:{"dictionaryRepresentation"), @"tdmState_On"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](tdmStateOn forKey:{"dictionaryRepresentation"), @"tdmState_On"}];
   }
 
   tdmStateOff = self->_tdmStateOff;
   if (tdmStateOff)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](tdmStateOff forKey:{"dictionaryRepresentation"), @"tdmState_Off"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](tdmStateOff forKey:{"dictionaryRepresentation"), @"tdmState_Off"}];
   }
 
   v13 = self->_has;
   if ((*&v13 & 0x200) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsACL), @"requestsACL"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsACL), @"requestsACL"}];
     v13 = self->_has;
     if ((*&v13 & 0x80000) == 0)
     {
@@ -671,7 +671,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsSCO), @"requestsSCO"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsSCO), @"requestsSCO"}];
   v13 = self->_has;
   if ((*&v13 & 0x200000) == 0)
   {
@@ -685,7 +685,7 @@ LABEL_27:
   }
 
 LABEL_59:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestseSCO), @"requestseSCO"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestseSCO), @"requestseSCO"}];
   v13 = self->_has;
   if ((*&v13 & 0x100) == 0)
   {
@@ -699,7 +699,7 @@ LABEL_28:
   }
 
 LABEL_60:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsA2DP), @"requestsA2DP"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsA2DP), @"requestsA2DP"}];
   v13 = self->_has;
   if ((*&v13 & 0x100000) == 0)
   {
@@ -713,7 +713,7 @@ LABEL_29:
   }
 
 LABEL_61:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsSniff), @"requestsSniff"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsSniff), @"requestsSniff"}];
   v13 = self->_has;
   if ((*&v13 & 0x40000) == 0)
   {
@@ -727,7 +727,7 @@ LABEL_30:
   }
 
 LABEL_62:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsPageScan), @"requestsPageScan"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsPageScan), @"requestsPageScan"}];
   v13 = self->_has;
   if ((*&v13 & 0x2000) == 0)
   {
@@ -741,7 +741,7 @@ LABEL_31:
   }
 
 LABEL_63:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsInquiryScan), @"requestsInquiryScan"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsInquiryScan), @"requestsInquiryScan"}];
   v13 = self->_has;
   if ((*&v13 & 0x20000) == 0)
   {
@@ -755,7 +755,7 @@ LABEL_32:
   }
 
 LABEL_64:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsPage), @"requestsPage"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsPage), @"requestsPage"}];
   v13 = self->_has;
   if ((*&v13 & 0x1000) == 0)
   {
@@ -769,7 +769,7 @@ LABEL_33:
   }
 
 LABEL_65:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsInquiry), @"requestsInquiry"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsInquiry), @"requestsInquiry"}];
   v13 = self->_has;
   if ((*&v13 & 0x400) == 0)
   {
@@ -783,7 +783,7 @@ LABEL_34:
   }
 
 LABEL_66:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsBLE), @"requestsBLE"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsBLE), @"requestsBLE"}];
   v13 = self->_has;
   if ((*&v13 & 0x8000) == 0)
   {
@@ -797,7 +797,7 @@ LABEL_35:
   }
 
 LABEL_67:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsOther), @"requestsOther"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsOther), @"requestsOther"}];
   v13 = self->_has;
   if ((*&v13 & 0x800) == 0)
   {
@@ -811,7 +811,7 @@ LABEL_36:
   }
 
 LABEL_68:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsBLEScan), @"requestsBLEScan"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsBLEScan), @"requestsBLEScan"}];
   v13 = self->_has;
   if ((*&v13 & 0x4000) == 0)
   {
@@ -825,7 +825,7 @@ LABEL_37:
   }
 
 LABEL_69:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsMSS), @"requestsMSS"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsMSS), @"requestsMSS"}];
   v13 = self->_has;
   if ((*&v13 & 0x10000) == 0)
   {
@@ -839,20 +839,20 @@ LABEL_38:
   }
 
 LABEL_70:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsPARK), @"requestsPARK"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestsPARK), @"requestsPARK"}];
   if ((*&self->_has & 4) != 0)
   {
 LABEL_39:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_beaconLostCnt), @"beaconLostCnt"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_beaconLostCnt), @"beaconLostCnt"}];
   }
 
 LABEL_40:
-  [v3 setObject:PBRepeatedUInt64NSArray() forKey:@"rxMPDUCountPerMCS"];
-  [v3 setObject:PBRepeatedUInt64NSArray() forKey:@"txMPDUCountPerMCS"];
+  [dictionary setObject:PBRepeatedUInt64NSArray() forKey:@"rxMPDUCountPerMCS"];
+  [dictionary setObject:PBRepeatedUInt64NSArray() forKey:@"txMPDUCountPerMCS"];
   v14 = self->_has;
   if ((*&v14 & 0x4000000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timeTillResumeAccumulatedMsec), @"timeTillResumeAccumulatedMsec"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timeTillResumeAccumulatedMsec), @"timeTillResumeAccumulatedMsec"}];
     v14 = self->_has;
     if ((*&v14 & 0x400000) == 0)
     {
@@ -871,7 +871,7 @@ LABEL_42:
     goto LABEL_42;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_resumeTimeAccumulatedMsec), @"resumeTimeAccumulatedMsec"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_resumeTimeAccumulatedMsec), @"resumeTimeAccumulatedMsec"}];
   v14 = self->_has;
   if ((*&v14 & 8) == 0)
   {
@@ -885,7 +885,7 @@ LABEL_43:
   }
 
 LABEL_74:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_envelopeLowToHighAccumulatedMsec), @"envelopeLowToHighAccumulatedMsec"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_envelopeLowToHighAccumulatedMsec), @"envelopeLowToHighAccumulatedMsec"}];
   v14 = self->_has;
   if ((*&v14 & 0x800000) == 0)
   {
@@ -899,7 +899,7 @@ LABEL_44:
   }
 
 LABEL_75:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_scoReservedSlotDenyCount), @"scoReservedSlotDenyCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_scoReservedSlotDenyCount), @"scoReservedSlotDenyCount"}];
   v14 = self->_has;
   if ((*&v14 & 0x1000000) == 0)
   {
@@ -913,7 +913,7 @@ LABEL_45:
   }
 
 LABEL_76:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_scoRetransmission1DenyCount), @"scoRetransmission1DenyCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_scoRetransmission1DenyCount), @"scoRetransmission1DenyCount"}];
   v14 = self->_has;
   if ((*&v14 & 0x2000000) == 0)
   {
@@ -927,7 +927,7 @@ LABEL_46:
   }
 
 LABEL_77:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_scoRetransmission2DenyCount), @"scoRetransmission2DenyCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_scoRetransmission2DenyCount), @"scoRetransmission2DenyCount"}];
   v14 = self->_has;
   if ((*&v14 & 0x10) == 0)
   {
@@ -938,17 +938,17 @@ LABEL_47:
     }
 
 LABEL_79:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_psRequestTxCnt), @"psRequestTxCnt"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_psRequestTxCnt), @"psRequestTxCnt"}];
     if ((*&self->_has & 0x10000000) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_49;
   }
 
 LABEL_78:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_guardTimeMicroseconds), @"guardTimeMicroseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_guardTimeMicroseconds), @"guardTimeMicroseconds"}];
   v14 = self->_has;
   if ((*&v14 & 0x40) != 0)
   {
@@ -959,13 +959,13 @@ LABEL_48:
   if ((*&v14 & 0x10000000) != 0)
   {
 LABEL_49:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txCTS2Self), @"txCTS2Self"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txCTS2Self), @"txCTS2Self"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((*&has & 0x8000000) != 0)
@@ -1450,13 +1450,13 @@ LABEL_85:
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((*&has & 0x8000000) != 0)
   {
-    *(a3 + 34) = self->_timestamp;
-    *(a3 + 90) |= 0x8000000u;
+    *(to + 34) = self->_timestamp;
+    *(to + 90) |= 0x8000000u;
     has = self->_has;
     if ((*&has & 2) == 0)
     {
@@ -1475,8 +1475,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 8) = self->_antennaRequests;
-  *(a3 + 90) |= 2u;
+  *(to + 8) = self->_antennaRequests;
+  *(to + 90) |= 2u;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -1490,8 +1490,8 @@ LABEL_4:
   }
 
 LABEL_61:
-  *(a3 + 7) = self->_antennaGrants;
-  *(a3 + 90) |= 1u;
+  *(to + 7) = self->_antennaGrants;
+  *(to + 90) |= 1u;
   has = self->_has;
   if ((*&has & 0x20000000) == 0)
   {
@@ -1505,8 +1505,8 @@ LABEL_5:
   }
 
 LABEL_62:
-  *(a3 + 36) = self->_wlanPreempted;
-  *(a3 + 90) |= 0x20000000u;
+  *(to + 36) = self->_wlanPreempted;
+  *(to + 90) |= 0x20000000u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1520,61 +1520,61 @@ LABEL_6:
   }
 
 LABEL_63:
-  *(a3 + 14) = self->_psnullExceeded;
-  *(a3 + 90) |= 0x80u;
+  *(to + 14) = self->_psnullExceeded;
+  *(to + 90) |= 0x80u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_7:
-    *(a3 + 12) = self->_highUcodeLatency;
-    *(a3 + 90) |= 0x20u;
+    *(to + 12) = self->_highUcodeLatency;
+    *(to + 90) |= 0x20u;
   }
 
 LABEL_8:
   if (self->_antennaOwnership2BT)
   {
-    [a3 setAntennaOwnership2BT:?];
+    [to setAntennaOwnership2BT:?];
   }
 
   if (self->_antennaOwnership2WLAN)
   {
-    [a3 setAntennaOwnership2WLAN:?];
+    [to setAntennaOwnership2WLAN:?];
   }
 
   if (self->_enbledStateOn)
   {
-    [a3 setEnbledStateOn:?];
+    [to setEnbledStateOn:?];
   }
 
   if (self->_enbledStateOff)
   {
-    [a3 setEnbledStateOff:?];
+    [to setEnbledStateOff:?];
   }
 
   if (self->_hybridStateOn)
   {
-    [a3 setHybridStateOn:?];
+    [to setHybridStateOn:?];
   }
 
   if (self->_hybridStateOff)
   {
-    [a3 setHybridStateOff:?];
+    [to setHybridStateOff:?];
   }
 
   if (self->_tdmStateOn)
   {
-    [a3 setTdmStateOn:?];
+    [to setTdmStateOn:?];
   }
 
   if (self->_tdmStateOff)
   {
-    [a3 setTdmStateOff:?];
+    [to setTdmStateOff:?];
   }
 
   v6 = self->_has;
   if ((*&v6 & 0x200) != 0)
   {
-    *(a3 + 16) = self->_requestsACL;
-    *(a3 + 90) |= 0x200u;
+    *(to + 16) = self->_requestsACL;
+    *(to + 90) |= 0x200u;
     v6 = self->_has;
     if ((*&v6 & 0x80000) == 0)
     {
@@ -1593,8 +1593,8 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  *(a3 + 26) = self->_requestsSCO;
-  *(a3 + 90) |= 0x80000u;
+  *(to + 26) = self->_requestsSCO;
+  *(to + 90) |= 0x80000u;
   v6 = self->_has;
   if ((*&v6 & 0x200000) == 0)
   {
@@ -1608,8 +1608,8 @@ LABEL_27:
   }
 
 LABEL_67:
-  *(a3 + 28) = self->_requestseSCO;
-  *(a3 + 90) |= 0x200000u;
+  *(to + 28) = self->_requestseSCO;
+  *(to + 90) |= 0x200000u;
   v6 = self->_has;
   if ((*&v6 & 0x100) == 0)
   {
@@ -1623,8 +1623,8 @@ LABEL_28:
   }
 
 LABEL_68:
-  *(a3 + 15) = self->_requestsA2DP;
-  *(a3 + 90) |= 0x100u;
+  *(to + 15) = self->_requestsA2DP;
+  *(to + 90) |= 0x100u;
   v6 = self->_has;
   if ((*&v6 & 0x100000) == 0)
   {
@@ -1638,8 +1638,8 @@ LABEL_29:
   }
 
 LABEL_69:
-  *(a3 + 27) = self->_requestsSniff;
-  *(a3 + 90) |= 0x100000u;
+  *(to + 27) = self->_requestsSniff;
+  *(to + 90) |= 0x100000u;
   v6 = self->_has;
   if ((*&v6 & 0x40000) == 0)
   {
@@ -1653,8 +1653,8 @@ LABEL_30:
   }
 
 LABEL_70:
-  *(a3 + 25) = self->_requestsPageScan;
-  *(a3 + 90) |= 0x40000u;
+  *(to + 25) = self->_requestsPageScan;
+  *(to + 90) |= 0x40000u;
   v6 = self->_has;
   if ((*&v6 & 0x2000) == 0)
   {
@@ -1668,8 +1668,8 @@ LABEL_31:
   }
 
 LABEL_71:
-  *(a3 + 20) = self->_requestsInquiryScan;
-  *(a3 + 90) |= 0x2000u;
+  *(to + 20) = self->_requestsInquiryScan;
+  *(to + 90) |= 0x2000u;
   v6 = self->_has;
   if ((*&v6 & 0x20000) == 0)
   {
@@ -1683,8 +1683,8 @@ LABEL_32:
   }
 
 LABEL_72:
-  *(a3 + 24) = self->_requestsPage;
-  *(a3 + 90) |= 0x20000u;
+  *(to + 24) = self->_requestsPage;
+  *(to + 90) |= 0x20000u;
   v6 = self->_has;
   if ((*&v6 & 0x1000) == 0)
   {
@@ -1698,8 +1698,8 @@ LABEL_33:
   }
 
 LABEL_73:
-  *(a3 + 19) = self->_requestsInquiry;
-  *(a3 + 90) |= 0x1000u;
+  *(to + 19) = self->_requestsInquiry;
+  *(to + 90) |= 0x1000u;
   v6 = self->_has;
   if ((*&v6 & 0x400) == 0)
   {
@@ -1713,8 +1713,8 @@ LABEL_34:
   }
 
 LABEL_74:
-  *(a3 + 17) = self->_requestsBLE;
-  *(a3 + 90) |= 0x400u;
+  *(to + 17) = self->_requestsBLE;
+  *(to + 90) |= 0x400u;
   v6 = self->_has;
   if ((*&v6 & 0x8000) == 0)
   {
@@ -1728,8 +1728,8 @@ LABEL_35:
   }
 
 LABEL_75:
-  *(a3 + 22) = self->_requestsOther;
-  *(a3 + 90) |= 0x8000u;
+  *(to + 22) = self->_requestsOther;
+  *(to + 90) |= 0x8000u;
   v6 = self->_has;
   if ((*&v6 & 0x800) == 0)
   {
@@ -1743,8 +1743,8 @@ LABEL_36:
   }
 
 LABEL_76:
-  *(a3 + 18) = self->_requestsBLEScan;
-  *(a3 + 90) |= 0x800u;
+  *(to + 18) = self->_requestsBLEScan;
+  *(to + 90) |= 0x800u;
   v6 = self->_has;
   if ((*&v6 & 0x4000) == 0)
   {
@@ -1755,8 +1755,8 @@ LABEL_37:
     }
 
 LABEL_78:
-    *(a3 + 23) = self->_requestsPARK;
-    *(a3 + 90) |= 0x10000u;
+    *(to + 23) = self->_requestsPARK;
+    *(to + 90) |= 0x10000u;
     if ((*&self->_has & 4) == 0)
     {
       goto LABEL_40;
@@ -1766,8 +1766,8 @@ LABEL_78:
   }
 
 LABEL_77:
-  *(a3 + 21) = self->_requestsMSS;
-  *(a3 + 90) |= 0x4000u;
+  *(to + 21) = self->_requestsMSS;
+  *(to + 90) |= 0x4000u;
   v6 = self->_has;
   if ((*&v6 & 0x10000) != 0)
   {
@@ -1778,35 +1778,35 @@ LABEL_38:
   if ((*&v6 & 4) != 0)
   {
 LABEL_39:
-    *(a3 + 9) = self->_beaconLostCnt;
-    *(a3 + 90) |= 4u;
+    *(to + 9) = self->_beaconLostCnt;
+    *(to + 90) |= 4u;
   }
 
 LABEL_40:
   if ([(AWDWiFiMetricsManagerBTCoexStats *)self rxMPDUCountPerMCSsCount])
   {
-    [a3 clearRxMPDUCountPerMCSs];
-    v7 = [(AWDWiFiMetricsManagerBTCoexStats *)self rxMPDUCountPerMCSsCount];
-    if (v7)
+    [to clearRxMPDUCountPerMCSs];
+    rxMPDUCountPerMCSsCount = [(AWDWiFiMetricsManagerBTCoexStats *)self rxMPDUCountPerMCSsCount];
+    if (rxMPDUCountPerMCSsCount)
     {
-      v8 = v7;
+      v8 = rxMPDUCountPerMCSsCount;
       for (i = 0; i != v8; ++i)
       {
-        [a3 addRxMPDUCountPerMCS:{-[AWDWiFiMetricsManagerBTCoexStats rxMPDUCountPerMCSAtIndex:](self, "rxMPDUCountPerMCSAtIndex:", i)}];
+        [to addRxMPDUCountPerMCS:{-[AWDWiFiMetricsManagerBTCoexStats rxMPDUCountPerMCSAtIndex:](self, "rxMPDUCountPerMCSAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricsManagerBTCoexStats *)self txMPDUCountPerMCSsCount])
   {
-    [a3 clearTxMPDUCountPerMCSs];
-    v10 = [(AWDWiFiMetricsManagerBTCoexStats *)self txMPDUCountPerMCSsCount];
-    if (v10)
+    [to clearTxMPDUCountPerMCSs];
+    txMPDUCountPerMCSsCount = [(AWDWiFiMetricsManagerBTCoexStats *)self txMPDUCountPerMCSsCount];
+    if (txMPDUCountPerMCSsCount)
     {
-      v11 = v10;
+      v11 = txMPDUCountPerMCSsCount;
       for (j = 0; j != v11; ++j)
       {
-        [a3 addTxMPDUCountPerMCS:{-[AWDWiFiMetricsManagerBTCoexStats txMPDUCountPerMCSAtIndex:](self, "txMPDUCountPerMCSAtIndex:", j)}];
+        [to addTxMPDUCountPerMCS:{-[AWDWiFiMetricsManagerBTCoexStats txMPDUCountPerMCSAtIndex:](self, "txMPDUCountPerMCSAtIndex:", j)}];
       }
     }
   }
@@ -1814,8 +1814,8 @@ LABEL_40:
   v13 = self->_has;
   if ((*&v13 & 0x4000000) != 0)
   {
-    *(a3 + 33) = self->_timeTillResumeAccumulatedMsec;
-    *(a3 + 90) |= 0x4000000u;
+    *(to + 33) = self->_timeTillResumeAccumulatedMsec;
+    *(to + 90) |= 0x4000000u;
     v13 = self->_has;
     if ((*&v13 & 0x400000) == 0)
     {
@@ -1834,8 +1834,8 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  *(a3 + 29) = self->_resumeTimeAccumulatedMsec;
-  *(a3 + 90) |= 0x400000u;
+  *(to + 29) = self->_resumeTimeAccumulatedMsec;
+  *(to + 90) |= 0x400000u;
   v13 = self->_has;
   if ((*&v13 & 8) == 0)
   {
@@ -1849,8 +1849,8 @@ LABEL_51:
   }
 
 LABEL_82:
-  *(a3 + 10) = self->_envelopeLowToHighAccumulatedMsec;
-  *(a3 + 90) |= 8u;
+  *(to + 10) = self->_envelopeLowToHighAccumulatedMsec;
+  *(to + 90) |= 8u;
   v13 = self->_has;
   if ((*&v13 & 0x800000) == 0)
   {
@@ -1864,8 +1864,8 @@ LABEL_52:
   }
 
 LABEL_83:
-  *(a3 + 30) = self->_scoReservedSlotDenyCount;
-  *(a3 + 90) |= 0x800000u;
+  *(to + 30) = self->_scoReservedSlotDenyCount;
+  *(to + 90) |= 0x800000u;
   v13 = self->_has;
   if ((*&v13 & 0x1000000) == 0)
   {
@@ -1879,8 +1879,8 @@ LABEL_53:
   }
 
 LABEL_84:
-  *(a3 + 31) = self->_scoRetransmission1DenyCount;
-  *(a3 + 90) |= 0x1000000u;
+  *(to + 31) = self->_scoRetransmission1DenyCount;
+  *(to + 90) |= 0x1000000u;
   v13 = self->_has;
   if ((*&v13 & 0x2000000) == 0)
   {
@@ -1894,8 +1894,8 @@ LABEL_54:
   }
 
 LABEL_85:
-  *(a3 + 32) = self->_scoRetransmission2DenyCount;
-  *(a3 + 90) |= 0x2000000u;
+  *(to + 32) = self->_scoRetransmission2DenyCount;
+  *(to + 90) |= 0x2000000u;
   v13 = self->_has;
   if ((*&v13 & 0x10) == 0)
   {
@@ -1909,8 +1909,8 @@ LABEL_55:
   }
 
 LABEL_86:
-  *(a3 + 11) = self->_guardTimeMicroseconds;
-  *(a3 + 90) |= 0x10u;
+  *(to + 11) = self->_guardTimeMicroseconds;
+  *(to + 90) |= 0x10u;
   v13 = self->_has;
   if ((*&v13 & 0x40) == 0)
   {
@@ -1924,21 +1924,21 @@ LABEL_56:
   }
 
 LABEL_87:
-  *(a3 + 13) = self->_psRequestTxCnt;
-  *(a3 + 90) |= 0x40u;
+  *(to + 13) = self->_psRequestTxCnt;
+  *(to + 90) |= 0x40u;
   if ((*&self->_has & 0x10000000) == 0)
   {
     return;
   }
 
 LABEL_57:
-  *(a3 + 35) = self->_txCTS2Self;
-  *(a3 + 90) |= 0x10000000u;
+  *(to + 35) = self->_txCTS2Self;
+  *(to + 90) |= 0x10000000u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((*&has & 0x8000000) != 0)
@@ -2019,17 +2019,17 @@ LABEL_7:
 
 LABEL_8:
 
-  *(v6 + 296) = [(AWDWiFiMetricsManagerStateMachine *)self->_antennaOwnership2BT copyWithZone:a3];
-  *(v6 + 304) = [(AWDWiFiMetricsManagerStateMachine *)self->_antennaOwnership2WLAN copyWithZone:a3];
+  *(v6 + 296) = [(AWDWiFiMetricsManagerStateMachine *)self->_antennaOwnership2BT copyWithZone:zone];
+  *(v6 + 304) = [(AWDWiFiMetricsManagerStateMachine *)self->_antennaOwnership2WLAN copyWithZone:zone];
 
-  *(v6 + 320) = [(AWDWiFiMetricsManagerStateMachine *)self->_enbledStateOn copyWithZone:a3];
-  *(v6 + 312) = [(AWDWiFiMetricsManagerStateMachine *)self->_enbledStateOff copyWithZone:a3];
+  *(v6 + 320) = [(AWDWiFiMetricsManagerStateMachine *)self->_enbledStateOn copyWithZone:zone];
+  *(v6 + 312) = [(AWDWiFiMetricsManagerStateMachine *)self->_enbledStateOff copyWithZone:zone];
 
-  *(v6 + 336) = [(AWDWiFiMetricsManagerStateMachine *)self->_hybridStateOn copyWithZone:a3];
-  *(v6 + 328) = [(AWDWiFiMetricsManagerStateMachine *)self->_hybridStateOff copyWithZone:a3];
+  *(v6 + 336) = [(AWDWiFiMetricsManagerStateMachine *)self->_hybridStateOn copyWithZone:zone];
+  *(v6 + 328) = [(AWDWiFiMetricsManagerStateMachine *)self->_hybridStateOff copyWithZone:zone];
 
-  *(v6 + 352) = [(AWDWiFiMetricsManagerStateMachine *)self->_tdmStateOn copyWithZone:a3];
-  *(v6 + 344) = [(AWDWiFiMetricsManagerStateMachine *)self->_tdmStateOff copyWithZone:a3];
+  *(v6 + 352) = [(AWDWiFiMetricsManagerStateMachine *)self->_tdmStateOn copyWithZone:zone];
+  *(v6 + 344) = [(AWDWiFiMetricsManagerStateMachine *)self->_tdmStateOff copyWithZone:zone];
   v8 = self->_has;
   if ((*&v8 & 0x200) != 0)
   {
@@ -2370,16 +2370,16 @@ LABEL_33:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  IsEqual = [a3 isMemberOfClass:objc_opt_class()];
+  IsEqual = [equal isMemberOfClass:objc_opt_class()];
   if (IsEqual)
   {
     has = self->_has;
-    v7 = *(a3 + 90);
+    v7 = *(equal + 90);
     if ((*&has & 0x8000000) != 0)
     {
-      if ((v7 & 0x8000000) == 0 || self->_timestamp != *(a3 + 34))
+      if ((v7 & 0x8000000) == 0 || self->_timestamp != *(equal + 34))
       {
         goto LABEL_169;
       }
@@ -2394,7 +2394,7 @@ LABEL_169:
 
     if ((*&has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_antennaRequests != *(a3 + 8))
+      if ((v7 & 2) == 0 || self->_antennaRequests != *(equal + 8))
       {
         goto LABEL_169;
       }
@@ -2407,7 +2407,7 @@ LABEL_169:
 
     if (*&has)
     {
-      if ((v7 & 1) == 0 || self->_antennaGrants != *(a3 + 7))
+      if ((v7 & 1) == 0 || self->_antennaGrants != *(equal + 7))
       {
         goto LABEL_169;
       }
@@ -2420,7 +2420,7 @@ LABEL_169:
 
     if ((*&has & 0x20000000) != 0)
     {
-      if ((v7 & 0x20000000) == 0 || self->_wlanPreempted != *(a3 + 36))
+      if ((v7 & 0x20000000) == 0 || self->_wlanPreempted != *(equal + 36))
       {
         goto LABEL_169;
       }
@@ -2433,7 +2433,7 @@ LABEL_169:
 
     if ((*&has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_psnullExceeded != *(a3 + 14))
+      if ((v7 & 0x80) == 0 || self->_psnullExceeded != *(equal + 14))
       {
         goto LABEL_169;
       }
@@ -2446,7 +2446,7 @@ LABEL_169:
 
     if ((*&has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_highUcodeLatency != *(a3 + 12))
+      if ((v7 & 0x20) == 0 || self->_highUcodeLatency != *(equal + 12))
       {
         goto LABEL_169;
       }
@@ -2458,34 +2458,34 @@ LABEL_169:
     }
 
     antennaOwnership2BT = self->_antennaOwnership2BT;
-    if (!(antennaOwnership2BT | *(a3 + 37)) || (IsEqual = [(AWDWiFiMetricsManagerStateMachine *)antennaOwnership2BT isEqual:?]) != 0)
+    if (!(antennaOwnership2BT | *(equal + 37)) || (IsEqual = [(AWDWiFiMetricsManagerStateMachine *)antennaOwnership2BT isEqual:?]) != 0)
     {
       antennaOwnership2WLAN = self->_antennaOwnership2WLAN;
-      if (!(antennaOwnership2WLAN | *(a3 + 38)) || (IsEqual = [(AWDWiFiMetricsManagerStateMachine *)antennaOwnership2WLAN isEqual:?]) != 0)
+      if (!(antennaOwnership2WLAN | *(equal + 38)) || (IsEqual = [(AWDWiFiMetricsManagerStateMachine *)antennaOwnership2WLAN isEqual:?]) != 0)
       {
         enbledStateOn = self->_enbledStateOn;
-        if (!(enbledStateOn | *(a3 + 40)) || (IsEqual = [(AWDWiFiMetricsManagerStateMachine *)enbledStateOn isEqual:?]) != 0)
+        if (!(enbledStateOn | *(equal + 40)) || (IsEqual = [(AWDWiFiMetricsManagerStateMachine *)enbledStateOn isEqual:?]) != 0)
         {
           enbledStateOff = self->_enbledStateOff;
-          if (!(enbledStateOff | *(a3 + 39)) || (IsEqual = [(AWDWiFiMetricsManagerStateMachine *)enbledStateOff isEqual:?]) != 0)
+          if (!(enbledStateOff | *(equal + 39)) || (IsEqual = [(AWDWiFiMetricsManagerStateMachine *)enbledStateOff isEqual:?]) != 0)
           {
             hybridStateOn = self->_hybridStateOn;
-            if (!(hybridStateOn | *(a3 + 42)) || (IsEqual = [(AWDWiFiMetricsManagerStateMachine *)hybridStateOn isEqual:?]) != 0)
+            if (!(hybridStateOn | *(equal + 42)) || (IsEqual = [(AWDWiFiMetricsManagerStateMachine *)hybridStateOn isEqual:?]) != 0)
             {
               hybridStateOff = self->_hybridStateOff;
-              if (!(hybridStateOff | *(a3 + 41)) || (IsEqual = [(AWDWiFiMetricsManagerStateMachine *)hybridStateOff isEqual:?]) != 0)
+              if (!(hybridStateOff | *(equal + 41)) || (IsEqual = [(AWDWiFiMetricsManagerStateMachine *)hybridStateOff isEqual:?]) != 0)
               {
                 tdmStateOn = self->_tdmStateOn;
-                if (!(tdmStateOn | *(a3 + 44)) || (IsEqual = [(AWDWiFiMetricsManagerStateMachine *)tdmStateOn isEqual:?]) != 0)
+                if (!(tdmStateOn | *(equal + 44)) || (IsEqual = [(AWDWiFiMetricsManagerStateMachine *)tdmStateOn isEqual:?]) != 0)
                 {
                   tdmStateOff = self->_tdmStateOff;
-                  if (!(tdmStateOff | *(a3 + 43)) || (IsEqual = [(AWDWiFiMetricsManagerStateMachine *)tdmStateOff isEqual:?]) != 0)
+                  if (!(tdmStateOff | *(equal + 43)) || (IsEqual = [(AWDWiFiMetricsManagerStateMachine *)tdmStateOff isEqual:?]) != 0)
                   {
                     v16 = self->_has;
-                    v17 = *(a3 + 90);
+                    v17 = *(equal + 90);
                     if ((*&v16 & 0x200) != 0)
                     {
-                      if ((v17 & 0x200) == 0 || self->_requestsACL != *(a3 + 16))
+                      if ((v17 & 0x200) == 0 || self->_requestsACL != *(equal + 16))
                       {
                         goto LABEL_169;
                       }
@@ -2498,7 +2498,7 @@ LABEL_169:
 
                     if ((*&v16 & 0x80000) != 0)
                     {
-                      if ((v17 & 0x80000) == 0 || self->_requestsSCO != *(a3 + 26))
+                      if ((v17 & 0x80000) == 0 || self->_requestsSCO != *(equal + 26))
                       {
                         goto LABEL_169;
                       }
@@ -2511,7 +2511,7 @@ LABEL_169:
 
                     if ((*&v16 & 0x200000) != 0)
                     {
-                      if ((v17 & 0x200000) == 0 || self->_requestseSCO != *(a3 + 28))
+                      if ((v17 & 0x200000) == 0 || self->_requestseSCO != *(equal + 28))
                       {
                         goto LABEL_169;
                       }
@@ -2524,7 +2524,7 @@ LABEL_169:
 
                     if ((*&v16 & 0x100) != 0)
                     {
-                      if ((v17 & 0x100) == 0 || self->_requestsA2DP != *(a3 + 15))
+                      if ((v17 & 0x100) == 0 || self->_requestsA2DP != *(equal + 15))
                       {
                         goto LABEL_169;
                       }
@@ -2537,7 +2537,7 @@ LABEL_169:
 
                     if ((*&v16 & 0x100000) != 0)
                     {
-                      if ((v17 & 0x100000) == 0 || self->_requestsSniff != *(a3 + 27))
+                      if ((v17 & 0x100000) == 0 || self->_requestsSniff != *(equal + 27))
                       {
                         goto LABEL_169;
                       }
@@ -2550,7 +2550,7 @@ LABEL_169:
 
                     if ((*&v16 & 0x40000) != 0)
                     {
-                      if ((v17 & 0x40000) == 0 || self->_requestsPageScan != *(a3 + 25))
+                      if ((v17 & 0x40000) == 0 || self->_requestsPageScan != *(equal + 25))
                       {
                         goto LABEL_169;
                       }
@@ -2563,7 +2563,7 @@ LABEL_169:
 
                     if ((*&v16 & 0x2000) != 0)
                     {
-                      if ((v17 & 0x2000) == 0 || self->_requestsInquiryScan != *(a3 + 20))
+                      if ((v17 & 0x2000) == 0 || self->_requestsInquiryScan != *(equal + 20))
                       {
                         goto LABEL_169;
                       }
@@ -2576,7 +2576,7 @@ LABEL_169:
 
                     if ((*&v16 & 0x20000) != 0)
                     {
-                      if ((v17 & 0x20000) == 0 || self->_requestsPage != *(a3 + 24))
+                      if ((v17 & 0x20000) == 0 || self->_requestsPage != *(equal + 24))
                       {
                         goto LABEL_169;
                       }
@@ -2589,7 +2589,7 @@ LABEL_169:
 
                     if ((*&v16 & 0x1000) != 0)
                     {
-                      if ((v17 & 0x1000) == 0 || self->_requestsInquiry != *(a3 + 19))
+                      if ((v17 & 0x1000) == 0 || self->_requestsInquiry != *(equal + 19))
                       {
                         goto LABEL_169;
                       }
@@ -2602,7 +2602,7 @@ LABEL_169:
 
                     if ((*&v16 & 0x400) != 0)
                     {
-                      if ((v17 & 0x400) == 0 || self->_requestsBLE != *(a3 + 17))
+                      if ((v17 & 0x400) == 0 || self->_requestsBLE != *(equal + 17))
                       {
                         goto LABEL_169;
                       }
@@ -2615,7 +2615,7 @@ LABEL_169:
 
                     if ((*&v16 & 0x8000) != 0)
                     {
-                      if ((v17 & 0x8000) == 0 || self->_requestsOther != *(a3 + 22))
+                      if ((v17 & 0x8000) == 0 || self->_requestsOther != *(equal + 22))
                       {
                         goto LABEL_169;
                       }
@@ -2628,7 +2628,7 @@ LABEL_169:
 
                     if ((*&v16 & 0x800) != 0)
                     {
-                      if ((v17 & 0x800) == 0 || self->_requestsBLEScan != *(a3 + 18))
+                      if ((v17 & 0x800) == 0 || self->_requestsBLEScan != *(equal + 18))
                       {
                         goto LABEL_169;
                       }
@@ -2641,7 +2641,7 @@ LABEL_169:
 
                     if ((*&v16 & 0x4000) != 0)
                     {
-                      if ((v17 & 0x4000) == 0 || self->_requestsMSS != *(a3 + 21))
+                      if ((v17 & 0x4000) == 0 || self->_requestsMSS != *(equal + 21))
                       {
                         goto LABEL_169;
                       }
@@ -2654,7 +2654,7 @@ LABEL_169:
 
                     if ((*&v16 & 0x10000) != 0)
                     {
-                      if ((v17 & 0x10000) == 0 || self->_requestsPARK != *(a3 + 23))
+                      if ((v17 & 0x10000) == 0 || self->_requestsPARK != *(equal + 23))
                       {
                         goto LABEL_169;
                       }
@@ -2667,7 +2667,7 @@ LABEL_169:
 
                     if ((*&v16 & 4) != 0)
                     {
-                      if ((v17 & 4) == 0 || self->_beaconLostCnt != *(a3 + 9))
+                      if ((v17 & 4) == 0 || self->_beaconLostCnt != *(equal + 9))
                       {
                         goto LABEL_169;
                       }
@@ -2685,10 +2685,10 @@ LABEL_169:
                       if (IsEqual)
                       {
                         v18 = self->_has;
-                        v19 = *(a3 + 90);
+                        v19 = *(equal + 90);
                         if ((*&v18 & 0x4000000) != 0)
                         {
-                          if ((v19 & 0x4000000) == 0 || self->_timeTillResumeAccumulatedMsec != *(a3 + 33))
+                          if ((v19 & 0x4000000) == 0 || self->_timeTillResumeAccumulatedMsec != *(equal + 33))
                           {
                             goto LABEL_169;
                           }
@@ -2701,7 +2701,7 @@ LABEL_169:
 
                         if ((*&v18 & 0x400000) != 0)
                         {
-                          if ((v19 & 0x400000) == 0 || self->_resumeTimeAccumulatedMsec != *(a3 + 29))
+                          if ((v19 & 0x400000) == 0 || self->_resumeTimeAccumulatedMsec != *(equal + 29))
                           {
                             goto LABEL_169;
                           }
@@ -2714,7 +2714,7 @@ LABEL_169:
 
                         if ((*&v18 & 8) != 0)
                         {
-                          if ((v19 & 8) == 0 || self->_envelopeLowToHighAccumulatedMsec != *(a3 + 10))
+                          if ((v19 & 8) == 0 || self->_envelopeLowToHighAccumulatedMsec != *(equal + 10))
                           {
                             goto LABEL_169;
                           }
@@ -2727,7 +2727,7 @@ LABEL_169:
 
                         if ((*&v18 & 0x800000) != 0)
                         {
-                          if ((v19 & 0x800000) == 0 || self->_scoReservedSlotDenyCount != *(a3 + 30))
+                          if ((v19 & 0x800000) == 0 || self->_scoReservedSlotDenyCount != *(equal + 30))
                           {
                             goto LABEL_169;
                           }
@@ -2740,7 +2740,7 @@ LABEL_169:
 
                         if ((*&v18 & 0x1000000) != 0)
                         {
-                          if ((v19 & 0x1000000) == 0 || self->_scoRetransmission1DenyCount != *(a3 + 31))
+                          if ((v19 & 0x1000000) == 0 || self->_scoRetransmission1DenyCount != *(equal + 31))
                           {
                             goto LABEL_169;
                           }
@@ -2753,7 +2753,7 @@ LABEL_169:
 
                         if ((*&v18 & 0x2000000) != 0)
                         {
-                          if ((v19 & 0x2000000) == 0 || self->_scoRetransmission2DenyCount != *(a3 + 32))
+                          if ((v19 & 0x2000000) == 0 || self->_scoRetransmission2DenyCount != *(equal + 32))
                           {
                             goto LABEL_169;
                           }
@@ -2766,7 +2766,7 @@ LABEL_169:
 
                         if ((*&v18 & 0x10) != 0)
                         {
-                          if ((v19 & 0x10) == 0 || self->_guardTimeMicroseconds != *(a3 + 11))
+                          if ((v19 & 0x10) == 0 || self->_guardTimeMicroseconds != *(equal + 11))
                           {
                             goto LABEL_169;
                           }
@@ -2779,7 +2779,7 @@ LABEL_169:
 
                         if ((*&v18 & 0x40) != 0)
                         {
-                          if ((v19 & 0x40) == 0 || self->_psRequestTxCnt != *(a3 + 13))
+                          if ((v19 & 0x40) == 0 || self->_psRequestTxCnt != *(equal + 13))
                           {
                             goto LABEL_169;
                           }
@@ -2793,7 +2793,7 @@ LABEL_169:
                         LOBYTE(IsEqual) = (v19 & 0x10000000) == 0;
                         if ((*&v18 & 0x10000000) != 0)
                         {
-                          if ((v19 & 0x10000000) == 0 || self->_txCTS2Self != *(a3 + 35))
+                          if ((v19 & 0x10000000) == 0 || self->_txCTS2Self != *(equal + 35))
                           {
                             goto LABEL_169;
                           }
@@ -3234,14 +3234,14 @@ LABEL_54:
   return v45 ^ v46 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 90);
+  v5 = *(from + 90);
   if ((v5 & 0x8000000) != 0)
   {
-    self->_timestamp = *(a3 + 34);
+    self->_timestamp = *(from + 34);
     *&self->_has |= 0x8000000u;
-    v5 = *(a3 + 90);
+    v5 = *(from + 90);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -3259,9 +3259,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_antennaRequests = *(a3 + 8);
+  self->_antennaRequests = *(from + 8);
   *&self->_has |= 2u;
-  v5 = *(a3 + 90);
+  v5 = *(from + 90);
   if ((v5 & 1) == 0)
   {
 LABEL_4:
@@ -3274,9 +3274,9 @@ LABEL_4:
   }
 
 LABEL_13:
-  self->_antennaGrants = *(a3 + 7);
+  self->_antennaGrants = *(from + 7);
   *&self->_has |= 1u;
-  v5 = *(a3 + 90);
+  v5 = *(from + 90);
   if ((v5 & 0x20000000) == 0)
   {
 LABEL_5:
@@ -3289,9 +3289,9 @@ LABEL_5:
   }
 
 LABEL_14:
-  self->_wlanPreempted = *(a3 + 36);
+  self->_wlanPreempted = *(from + 36);
   *&self->_has |= 0x20000000u;
-  v5 = *(a3 + 90);
+  v5 = *(from + 90);
   if ((v5 & 0x80) == 0)
   {
 LABEL_6:
@@ -3304,18 +3304,18 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_psnullExceeded = *(a3 + 14);
+  self->_psnullExceeded = *(from + 14);
   *&self->_has |= 0x80u;
-  if ((*(a3 + 90) & 0x20) != 0)
+  if ((*(from + 90) & 0x20) != 0)
   {
 LABEL_7:
-    self->_highUcodeLatency = *(a3 + 12);
+    self->_highUcodeLatency = *(from + 12);
     *&self->_has |= 0x20u;
   }
 
 LABEL_8:
   antennaOwnership2BT = self->_antennaOwnership2BT;
-  v7 = *(a3 + 37);
+  v7 = *(from + 37);
   if (antennaOwnership2BT)
   {
     if (v7)
@@ -3330,7 +3330,7 @@ LABEL_8:
   }
 
   antennaOwnership2WLAN = self->_antennaOwnership2WLAN;
-  v9 = *(a3 + 38);
+  v9 = *(from + 38);
   if (antennaOwnership2WLAN)
   {
     if (v9)
@@ -3345,7 +3345,7 @@ LABEL_8:
   }
 
   enbledStateOn = self->_enbledStateOn;
-  v11 = *(a3 + 40);
+  v11 = *(from + 40);
   if (enbledStateOn)
   {
     if (v11)
@@ -3360,7 +3360,7 @@ LABEL_8:
   }
 
   enbledStateOff = self->_enbledStateOff;
-  v13 = *(a3 + 39);
+  v13 = *(from + 39);
   if (enbledStateOff)
   {
     if (v13)
@@ -3375,7 +3375,7 @@ LABEL_8:
   }
 
   hybridStateOn = self->_hybridStateOn;
-  v15 = *(a3 + 42);
+  v15 = *(from + 42);
   if (hybridStateOn)
   {
     if (v15)
@@ -3390,7 +3390,7 @@ LABEL_8:
   }
 
   hybridStateOff = self->_hybridStateOff;
-  v17 = *(a3 + 41);
+  v17 = *(from + 41);
   if (hybridStateOff)
   {
     if (v17)
@@ -3405,7 +3405,7 @@ LABEL_8:
   }
 
   tdmStateOn = self->_tdmStateOn;
-  v19 = *(a3 + 44);
+  v19 = *(from + 44);
   if (tdmStateOn)
   {
     if (v19)
@@ -3420,7 +3420,7 @@ LABEL_8:
   }
 
   tdmStateOff = self->_tdmStateOff;
-  v21 = *(a3 + 43);
+  v21 = *(from + 43);
   if (tdmStateOff)
   {
     if (v21)
@@ -3434,12 +3434,12 @@ LABEL_8:
     [(AWDWiFiMetricsManagerBTCoexStats *)self setTdmStateOff:?];
   }
 
-  v22 = *(a3 + 90);
+  v22 = *(from + 90);
   if ((v22 & 0x200) != 0)
   {
-    self->_requestsACL = *(a3 + 16);
+    self->_requestsACL = *(from + 16);
     *&self->_has |= 0x200u;
-    v22 = *(a3 + 90);
+    v22 = *(from + 90);
     if ((v22 & 0x80000) == 0)
     {
 LABEL_56:
@@ -3457,9 +3457,9 @@ LABEL_56:
     goto LABEL_56;
   }
 
-  self->_requestsSCO = *(a3 + 26);
+  self->_requestsSCO = *(from + 26);
   *&self->_has |= 0x80000u;
-  v22 = *(a3 + 90);
+  v22 = *(from + 90);
   if ((v22 & 0x200000) == 0)
   {
 LABEL_57:
@@ -3472,9 +3472,9 @@ LABEL_57:
   }
 
 LABEL_89:
-  self->_requestseSCO = *(a3 + 28);
+  self->_requestseSCO = *(from + 28);
   *&self->_has |= 0x200000u;
-  v22 = *(a3 + 90);
+  v22 = *(from + 90);
   if ((v22 & 0x100) == 0)
   {
 LABEL_58:
@@ -3487,9 +3487,9 @@ LABEL_58:
   }
 
 LABEL_90:
-  self->_requestsA2DP = *(a3 + 15);
+  self->_requestsA2DP = *(from + 15);
   *&self->_has |= 0x100u;
-  v22 = *(a3 + 90);
+  v22 = *(from + 90);
   if ((v22 & 0x100000) == 0)
   {
 LABEL_59:
@@ -3502,9 +3502,9 @@ LABEL_59:
   }
 
 LABEL_91:
-  self->_requestsSniff = *(a3 + 27);
+  self->_requestsSniff = *(from + 27);
   *&self->_has |= 0x100000u;
-  v22 = *(a3 + 90);
+  v22 = *(from + 90);
   if ((v22 & 0x40000) == 0)
   {
 LABEL_60:
@@ -3517,9 +3517,9 @@ LABEL_60:
   }
 
 LABEL_92:
-  self->_requestsPageScan = *(a3 + 25);
+  self->_requestsPageScan = *(from + 25);
   *&self->_has |= 0x40000u;
-  v22 = *(a3 + 90);
+  v22 = *(from + 90);
   if ((v22 & 0x2000) == 0)
   {
 LABEL_61:
@@ -3532,9 +3532,9 @@ LABEL_61:
   }
 
 LABEL_93:
-  self->_requestsInquiryScan = *(a3 + 20);
+  self->_requestsInquiryScan = *(from + 20);
   *&self->_has |= 0x2000u;
-  v22 = *(a3 + 90);
+  v22 = *(from + 90);
   if ((v22 & 0x20000) == 0)
   {
 LABEL_62:
@@ -3547,9 +3547,9 @@ LABEL_62:
   }
 
 LABEL_94:
-  self->_requestsPage = *(a3 + 24);
+  self->_requestsPage = *(from + 24);
   *&self->_has |= 0x20000u;
-  v22 = *(a3 + 90);
+  v22 = *(from + 90);
   if ((v22 & 0x1000) == 0)
   {
 LABEL_63:
@@ -3562,9 +3562,9 @@ LABEL_63:
   }
 
 LABEL_95:
-  self->_requestsInquiry = *(a3 + 19);
+  self->_requestsInquiry = *(from + 19);
   *&self->_has |= 0x1000u;
-  v22 = *(a3 + 90);
+  v22 = *(from + 90);
   if ((v22 & 0x400) == 0)
   {
 LABEL_64:
@@ -3577,9 +3577,9 @@ LABEL_64:
   }
 
 LABEL_96:
-  self->_requestsBLE = *(a3 + 17);
+  self->_requestsBLE = *(from + 17);
   *&self->_has |= 0x400u;
-  v22 = *(a3 + 90);
+  v22 = *(from + 90);
   if ((v22 & 0x8000) == 0)
   {
 LABEL_65:
@@ -3592,9 +3592,9 @@ LABEL_65:
   }
 
 LABEL_97:
-  self->_requestsOther = *(a3 + 22);
+  self->_requestsOther = *(from + 22);
   *&self->_has |= 0x8000u;
-  v22 = *(a3 + 90);
+  v22 = *(from + 90);
   if ((v22 & 0x800) == 0)
   {
 LABEL_66:
@@ -3607,9 +3607,9 @@ LABEL_66:
   }
 
 LABEL_98:
-  self->_requestsBLEScan = *(a3 + 18);
+  self->_requestsBLEScan = *(from + 18);
   *&self->_has |= 0x800u;
-  v22 = *(a3 + 90);
+  v22 = *(from + 90);
   if ((v22 & 0x4000) == 0)
   {
 LABEL_67:
@@ -3622,9 +3622,9 @@ LABEL_67:
   }
 
 LABEL_99:
-  self->_requestsMSS = *(a3 + 21);
+  self->_requestsMSS = *(from + 21);
   *&self->_has |= 0x4000u;
-  v22 = *(a3 + 90);
+  v22 = *(from + 90);
   if ((v22 & 0x10000) == 0)
   {
 LABEL_68:
@@ -3637,42 +3637,42 @@ LABEL_68:
   }
 
 LABEL_100:
-  self->_requestsPARK = *(a3 + 23);
+  self->_requestsPARK = *(from + 23);
   *&self->_has |= 0x10000u;
-  if ((*(a3 + 90) & 4) != 0)
+  if ((*(from + 90) & 4) != 0)
   {
 LABEL_69:
-    self->_beaconLostCnt = *(a3 + 9);
+    self->_beaconLostCnt = *(from + 9);
     *&self->_has |= 4u;
   }
 
 LABEL_70:
-  v23 = [a3 rxMPDUCountPerMCSsCount];
-  if (v23)
+  rxMPDUCountPerMCSsCount = [from rxMPDUCountPerMCSsCount];
+  if (rxMPDUCountPerMCSsCount)
   {
-    v24 = v23;
+    v24 = rxMPDUCountPerMCSsCount;
     for (i = 0; i != v24; ++i)
     {
-      -[AWDWiFiMetricsManagerBTCoexStats addRxMPDUCountPerMCS:](self, "addRxMPDUCountPerMCS:", [a3 rxMPDUCountPerMCSAtIndex:i]);
+      -[AWDWiFiMetricsManagerBTCoexStats addRxMPDUCountPerMCS:](self, "addRxMPDUCountPerMCS:", [from rxMPDUCountPerMCSAtIndex:i]);
     }
   }
 
-  v26 = [a3 txMPDUCountPerMCSsCount];
-  if (v26)
+  txMPDUCountPerMCSsCount = [from txMPDUCountPerMCSsCount];
+  if (txMPDUCountPerMCSsCount)
   {
-    v27 = v26;
+    v27 = txMPDUCountPerMCSsCount;
     for (j = 0; j != v27; ++j)
     {
-      -[AWDWiFiMetricsManagerBTCoexStats addTxMPDUCountPerMCS:](self, "addTxMPDUCountPerMCS:", [a3 txMPDUCountPerMCSAtIndex:j]);
+      -[AWDWiFiMetricsManagerBTCoexStats addTxMPDUCountPerMCS:](self, "addTxMPDUCountPerMCS:", [from txMPDUCountPerMCSAtIndex:j]);
     }
   }
 
-  v29 = *(a3 + 90);
+  v29 = *(from + 90);
   if ((v29 & 0x4000000) != 0)
   {
-    self->_timeTillResumeAccumulatedMsec = *(a3 + 33);
+    self->_timeTillResumeAccumulatedMsec = *(from + 33);
     *&self->_has |= 0x4000000u;
-    v29 = *(a3 + 90);
+    v29 = *(from + 90);
     if ((v29 & 0x400000) == 0)
     {
 LABEL_78:
@@ -3690,9 +3690,9 @@ LABEL_78:
     goto LABEL_78;
   }
 
-  self->_resumeTimeAccumulatedMsec = *(a3 + 29);
+  self->_resumeTimeAccumulatedMsec = *(from + 29);
   *&self->_has |= 0x400000u;
-  v29 = *(a3 + 90);
+  v29 = *(from + 90);
   if ((v29 & 8) == 0)
   {
 LABEL_79:
@@ -3705,9 +3705,9 @@ LABEL_79:
   }
 
 LABEL_104:
-  self->_envelopeLowToHighAccumulatedMsec = *(a3 + 10);
+  self->_envelopeLowToHighAccumulatedMsec = *(from + 10);
   *&self->_has |= 8u;
-  v29 = *(a3 + 90);
+  v29 = *(from + 90);
   if ((v29 & 0x800000) == 0)
   {
 LABEL_80:
@@ -3720,9 +3720,9 @@ LABEL_80:
   }
 
 LABEL_105:
-  self->_scoReservedSlotDenyCount = *(a3 + 30);
+  self->_scoReservedSlotDenyCount = *(from + 30);
   *&self->_has |= 0x800000u;
-  v29 = *(a3 + 90);
+  v29 = *(from + 90);
   if ((v29 & 0x1000000) == 0)
   {
 LABEL_81:
@@ -3735,9 +3735,9 @@ LABEL_81:
   }
 
 LABEL_106:
-  self->_scoRetransmission1DenyCount = *(a3 + 31);
+  self->_scoRetransmission1DenyCount = *(from + 31);
   *&self->_has |= 0x1000000u;
-  v29 = *(a3 + 90);
+  v29 = *(from + 90);
   if ((v29 & 0x2000000) == 0)
   {
 LABEL_82:
@@ -3750,9 +3750,9 @@ LABEL_82:
   }
 
 LABEL_107:
-  self->_scoRetransmission2DenyCount = *(a3 + 32);
+  self->_scoRetransmission2DenyCount = *(from + 32);
   *&self->_has |= 0x2000000u;
-  v29 = *(a3 + 90);
+  v29 = *(from + 90);
   if ((v29 & 0x10) == 0)
   {
 LABEL_83:
@@ -3765,9 +3765,9 @@ LABEL_83:
   }
 
 LABEL_108:
-  self->_guardTimeMicroseconds = *(a3 + 11);
+  self->_guardTimeMicroseconds = *(from + 11);
   *&self->_has |= 0x10u;
-  v29 = *(a3 + 90);
+  v29 = *(from + 90);
   if ((v29 & 0x40) == 0)
   {
 LABEL_84:
@@ -3780,15 +3780,15 @@ LABEL_84:
   }
 
 LABEL_109:
-  self->_psRequestTxCnt = *(a3 + 13);
+  self->_psRequestTxCnt = *(from + 13);
   *&self->_has |= 0x40u;
-  if ((*(a3 + 90) & 0x10000000) == 0)
+  if ((*(from + 90) & 0x10000000) == 0)
   {
     return;
   }
 
 LABEL_85:
-  self->_txCTS2Self = *(a3 + 35);
+  self->_txCTS2Self = *(from + 35);
   *&self->_has |= 0x10000000u;
 }
 

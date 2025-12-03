@@ -1,13 +1,13 @@
 @interface SVXServiceCommandHandlerRegistry
-- (SVXServiceCommandHandlerRegistry)initWithHandlers:(id)a3;
-- (id)handlersForCommand:(id)a3;
+- (SVXServiceCommandHandlerRegistry)initWithHandlers:(id)handlers;
+- (id)handlersForCommand:(id)command;
 @end
 
 @implementation SVXServiceCommandHandlerRegistry
 
-- (id)handlersForCommand:(id)a3
+- (id)handlersForCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = objc_opt_class();
   if (v6)
@@ -44,10 +44,10 @@ LABEL_9:
   return v11;
 }
 
-- (SVXServiceCommandHandlerRegistry)initWithHandlers:(id)a3
+- (SVXServiceCommandHandlerRegistry)initWithHandlers:(id)handlers
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlersCopy = handlers;
   v37.receiver = self;
   v37.super_class = SVXServiceCommandHandlerRegistry;
   v5 = [(SVXServiceCommandHandlerRegistry *)&v37 init];
@@ -58,8 +58,8 @@ LABEL_9:
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v28 = v4;
-    v7 = v4;
+    v28 = handlersCopy;
+    v7 = handlersCopy;
     v8 = [v7 countByEnumeratingWithState:&v33 objects:v39 count:16];
     if (v8)
     {
@@ -75,8 +75,8 @@ LABEL_9:
           }
 
           v12 = *(*(&v33 + 1) + 8 * i);
-          v13 = [objc_opt_class() supportedCommandClass];
-          v14 = NSStringFromClass(v13);
+          supportedCommandClass = [objc_opt_class() supportedCommandClass];
+          v14 = NSStringFromClass(supportedCommandClass);
           v15 = [v6 objectForKey:v14];
           if (!v15)
           {
@@ -97,8 +97,8 @@ LABEL_9:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v16 = [v6 allKeys];
-    v17 = [v16 countByEnumeratingWithState:&v29 objects:v38 count:16];
+    allKeys = [v6 allKeys];
+    v17 = [allKeys countByEnumeratingWithState:&v29 objects:v38 count:16];
     if (v17)
     {
       v18 = v17;
@@ -109,7 +109,7 @@ LABEL_9:
         {
           if (*v30 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(allKeys);
           }
 
           v21 = *(*(&v29 + 1) + 8 * j);
@@ -118,7 +118,7 @@ LABEL_9:
           [v6 setObject:v23 forKey:v21];
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v29 objects:v38 count:16];
+        v18 = [allKeys countByEnumeratingWithState:&v29 objects:v38 count:16];
       }
 
       while (v18);
@@ -128,7 +128,7 @@ LABEL_9:
     handlersByServiceCommandClassName = v5->_handlersByServiceCommandClassName;
     v5->_handlersByServiceCommandClassName = v24;
 
-    v4 = v28;
+    handlersCopy = v28;
   }
 
   v26 = *MEMORY[0x277D85DE8];

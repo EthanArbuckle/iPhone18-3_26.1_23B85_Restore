@@ -8,8 +8,8 @@
 {
   linkID = self->_linkID;
   v26 = MEMORY[0x1E696AEC0];
-  v3 = [(NSUUID *)self->_linkUUID UUIDString];
-  v4 = [(NSUUID *)self->_QRSessionID UUIDString];
+  uUIDString = [(NSUUID *)self->_linkUUID UUIDString];
+  uUIDString2 = [(NSUUID *)self->_QRSessionID UUIDString];
   v5 = self->_connectionType - 1;
   if (v5 > 4)
   {
@@ -78,7 +78,7 @@
     v16 = @"YES";
   }
 
-  v20 = [v26 stringWithFormat:@"<LinkContext %p> linkID %d (UUID:%@, QRSessionID:%@) networkType %u connectionType %s maxMTU %u estimatedConstantOverhead %u RATType %lu maxBitrate %u (remote networkType %u connectionType %s RATType %lu), relay(provider:%d, token:%dB) serverIsDegraded: %@ localLinkFlags 0x%x remoteLinkFlags 0x%x, localDataSoMask: %u, remoteDataSoMask: %u, virtualRelayLink: %@, delegatedLinkID %d, localInterfaceName: %@, relayProtocolStack: %@, isPartialTLEForUPlusOneEnabled: %@, quality metadata: %@, connections: %@, featureFlags: %@, qrExperiments: %@", self, linkID, v3, v4, networkType, v24, maxMTU, estimatedPerPacketConstantOverhead, RATType, maxBitrate, remoteNetworkType, v12, remoteRATType, relayServerProvider, v15, v17, self->_localLinkFlags, self->_remoteLinkFlags, self->_localDataSoMask, self->_remoteDataSoMask, v18, self->_delegatedLinkID, self->_localInterfaceName, self->_relayProtocolStackDescription, v19, v16, self->_connections, self->_featureFlags, self->_qrExperiments];
+  v20 = [v26 stringWithFormat:@"<LinkContext %p> linkID %d (UUID:%@, QRSessionID:%@) networkType %u connectionType %s maxMTU %u estimatedConstantOverhead %u RATType %lu maxBitrate %u (remote networkType %u connectionType %s RATType %lu), relay(provider:%d, token:%dB) serverIsDegraded: %@ localLinkFlags 0x%x remoteLinkFlags 0x%x, localDataSoMask: %u, remoteDataSoMask: %u, virtualRelayLink: %@, delegatedLinkID %d, localInterfaceName: %@, relayProtocolStack: %@, isPartialTLEForUPlusOneEnabled: %@, quality metadata: %@, connections: %@, featureFlags: %@, qrExperiments: %@", self, linkID, uUIDString, uUIDString2, networkType, v24, maxMTU, estimatedPerPacketConstantOverhead, RATType, maxBitrate, remoteNetworkType, v12, remoteRATType, relayServerProvider, v15, v17, self->_localLinkFlags, self->_remoteLinkFlags, self->_localDataSoMask, self->_remoteDataSoMask, v18, self->_delegatedLinkID, self->_localInterfaceName, self->_relayProtocolStackDescription, v19, v16, self->_connections, self->_featureFlags, self->_qrExperiments];
 
   return v20;
 }

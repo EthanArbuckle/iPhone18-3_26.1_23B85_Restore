@@ -1,35 +1,35 @@
 @interface CRKUpdateASMClassOperation
-- (CRKUpdateASMClassOperation)initWithObjectID:(id)a3 properties:(id)a4 requirements:(id)a5;
-- (id)classWithObjectID:(id)a3 inClasses:(id)a4;
+- (CRKUpdateASMClassOperation)initWithObjectID:(id)d properties:(id)properties requirements:(id)requirements;
+- (id)classWithObjectID:(id)d inClasses:(id)classes;
 - (id)makePropertyApplicator;
-- (void)applyPropertiesToClass:(id)a3;
-- (void)didFetchClasses:(id)a3 error:(id)a4;
+- (void)applyPropertiesToClass:(id)class;
+- (void)didFetchClasses:(id)classes error:(id)error;
 - (void)fetchClasses;
 - (void)main;
-- (void)saveClass:(id)a3;
+- (void)saveClass:(id)class;
 @end
 
 @implementation CRKUpdateASMClassOperation
 
-- (CRKUpdateASMClassOperation)initWithObjectID:(id)a3 properties:(id)a4 requirements:(id)a5
+- (CRKUpdateASMClassOperation)initWithObjectID:(id)d properties:(id)properties requirements:(id)requirements
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  propertiesCopy = properties;
+  requirementsCopy = requirements;
   v17.receiver = self;
   v17.super_class = CRKUpdateASMClassOperation;
   v11 = [(CRKUpdateASMClassOperation *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     objectID = v11->_objectID;
     v11->_objectID = v12;
 
-    v14 = [v9 copy];
+    v14 = [propertiesCopy copy];
     properties = v11->_properties;
     v11->_properties = v14;
 
-    objc_storeStrong(&v11->_requirements, a5);
+    objc_storeStrong(&v11->_requirements, requirements);
   }
 
   return v11;
@@ -47,13 +47,13 @@
 
 - (void)fetchClasses
 {
-  v3 = [(CRKUpdateASMClassOperation *)self requirements];
+  requirements = [(CRKUpdateASMClassOperation *)self requirements];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __42__CRKUpdateASMClassOperation_fetchClasses__block_invoke;
   v4[3] = &unk_278DC1E18;
   v4[4] = self;
-  [v3 classesWithCompletion:v4];
+  [requirements classesWithCompletion:v4];
 }
 
 void __42__CRKUpdateASMClassOperation_fetchClasses__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -72,19 +72,19 @@ void __42__CRKUpdateASMClassOperation_fetchClasses__block_invoke(uint64_t a1, vo
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)didFetchClasses:(id)a3 error:(id)a4
+- (void)didFetchClasses:(id)classes error:(id)error
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4)
+  classesCopy = classes;
+  if (error)
   {
-    [(CRKUpdateASMClassOperation *)self endOperationWithError:a4];
+    [(CRKUpdateASMClassOperation *)self endOperationWithError:error];
   }
 
   else
   {
-    v7 = [(CRKUpdateASMClassOperation *)self objectID];
-    v8 = [(CRKUpdateASMClassOperation *)self classWithObjectID:v7 inClasses:v6];
+    objectID = [(CRKUpdateASMClassOperation *)self objectID];
+    v8 = [(CRKUpdateASMClassOperation *)self classWithObjectID:objectID inClasses:classesCopy];
 
     if (v8)
     {
@@ -94,12 +94,12 @@ void __42__CRKUpdateASMClassOperation_fetchClasses__block_invoke(uint64_t a1, vo
     else
     {
       v14 = @"kCRKItemNameErrorKey";
-      v9 = [(CRKUpdateASMClassOperation *)self objectID];
-      v10 = v9;
+      objectID2 = [(CRKUpdateASMClassOperation *)self objectID];
+      v10 = objectID2;
       v11 = @"self.objectID";
-      if (v9)
+      if (objectID2)
       {
-        v11 = v9;
+        v11 = objectID2;
       }
 
       v15[0] = v11;
@@ -110,20 +110,20 @@ void __42__CRKUpdateASMClassOperation_fetchClasses__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)applyPropertiesToClass:(id)a3
+- (void)applyPropertiesToClass:(id)class
 {
-  v4 = a3;
-  v5 = [(CRKUpdateASMClassOperation *)self makePropertyApplicator];
-  v6 = [(CRKUpdateASMClassOperation *)self properties];
+  classCopy = class;
+  makePropertyApplicator = [(CRKUpdateASMClassOperation *)self makePropertyApplicator];
+  properties = [(CRKUpdateASMClassOperation *)self properties];
   v9 = 0;
-  v7 = [v5 applyProperties:v6 toClass:v4 error:&v9];
+  v7 = [makePropertyApplicator applyProperties:properties toClass:classCopy error:&v9];
   v8 = v9;
 
   if (v7)
   {
     if ([v7 classWasModified])
     {
-      [(CRKUpdateASMClassOperation *)self saveClass:v4];
+      [(CRKUpdateASMClassOperation *)self saveClass:classCopy];
     }
 
     else
@@ -138,16 +138,16 @@ void __42__CRKUpdateASMClassOperation_fetchClasses__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)saveClass:(id)a3
+- (void)saveClass:(id)class
 {
-  v4 = a3;
-  v5 = [(CRKUpdateASMClassOperation *)self requirements];
+  classCopy = class;
+  requirements = [(CRKUpdateASMClassOperation *)self requirements];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__CRKUpdateASMClassOperation_saveClass___block_invoke;
   v6[3] = &unk_278DC0F68;
   v6[4] = self;
-  [v5 saveClass:v4 completion:v6];
+  [requirements saveClass:classCopy completion:v6];
 }
 
 void __40__CRKUpdateASMClassOperation_saveClass___block_invoke(uint64_t a1, void *a2)
@@ -182,25 +182,25 @@ uint64_t __40__CRKUpdateASMClassOperation_saveClass___block_invoke_2(uint64_t a1
 - (id)makePropertyApplicator
 {
   v3 = [CRKClassKitClassPropertyApplicator alloc];
-  v4 = [(CRKUpdateASMClassOperation *)self requirements];
-  v5 = [(CRKClassKitClassPropertyApplicator *)v3 initWithRequirements:v4];
+  requirements = [(CRKUpdateASMClassOperation *)self requirements];
+  v5 = [(CRKClassKitClassPropertyApplicator *)v3 initWithRequirements:requirements];
 
   return v5;
 }
 
-- (id)classWithObjectID:(id)a3 inClasses:(id)a4
+- (id)classWithObjectID:(id)d inClasses:(id)classes
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  dCopy = d;
+  classesCopy = classes;
+  v7 = classesCopy;
+  if (dCopy)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = v6;
+    v8 = classesCopy;
     v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
@@ -215,8 +215,8 @@ uint64_t __40__CRKUpdateASMClassOperation_saveClass___block_invoke_2(uint64_t a1
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
-          v13 = [v12 objectID];
-          v14 = [v5 isEqualToString:v13];
+          objectID = [v12 objectID];
+          v14 = [dCopy isEqualToString:objectID];
 
           if (v14)
           {

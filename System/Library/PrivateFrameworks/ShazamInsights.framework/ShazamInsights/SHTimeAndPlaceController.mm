@@ -1,35 +1,35 @@
 @interface SHTimeAndPlaceController
-- (void)affinityGroupsFromData:(id)a3 atLocation:(id)a4 onDate:(id)a5 configuration:(id)a6 completionHandler:(id)a7;
+- (void)affinityGroupsFromData:(id)data atLocation:(id)location onDate:(id)date configuration:(id)configuration completionHandler:(id)handler;
 @end
 
 @implementation SHTimeAndPlaceController
 
-- (void)affinityGroupsFromData:(id)a3 atLocation:(id)a4 onDate:(id)a5 configuration:(id)a6 completionHandler:(id)a7
+- (void)affinityGroupsFromData:(id)data atLocation:(id)location onDate:(id)date configuration:(id)configuration completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = a7;
+  locationCopy = location;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v22 = 0;
-  v13 = [SHTimeAndPlaceServerResponseParser regionAffinityGroupsFromServerData:a3 error:&v22];
+  v13 = [SHTimeAndPlaceServerResponseParser regionAffinityGroupsFromServerData:data error:&v22];
   v14 = v22;
   if (v13)
   {
-    v15 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __101__SHTimeAndPlaceController_affinityGroupsFromData_atLocation_onDate_configuration_completionHandler___block_invoke;
     v17[3] = &unk_279BBEF10;
-    v21 = v12;
-    v18 = v10;
+    v21 = handlerCopy;
+    v18 = locationCopy;
     v19 = v13;
-    v20 = v15;
-    v16 = v15;
-    [v11 geoHashLengthsWithCompletionHandler:v17];
+    v20 = array;
+    v16 = array;
+    [configurationCopy geoHashLengthsWithCompletionHandler:v17];
   }
 
   else
   {
-    (*(v12 + 2))(v12, 0, v14);
+    (*(handlerCopy + 2))(handlerCopy, 0, v14);
   }
 }
 

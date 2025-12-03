@@ -1,19 +1,19 @@
 @interface PXFeedCommentsSectionInfo
-- (BOOL)containsAsset:(id)a3;
-- (BOOL)hasMultipleAssetsForItemAtIndex:(int64_t)a3;
+- (BOOL)containsAsset:(id)asset;
+- (BOOL)hasMultipleAssetsForItemAtIndex:(int64_t)index;
 - (BOOL)isMine;
-- (id)assetForItemAtIndex:(int64_t)a3;
+- (id)assetForItemAtIndex:(int64_t)index;
 - (id)assets;
-- (id)assetsForItemAtIndex:(int64_t)a3 maximumCount:(int64_t)a4;
+- (id)assetsForItemAtIndex:(int64_t)index maximumCount:(int64_t)count;
 - (id)cloudFeedCommentsEntry;
-- (id)commentForItemAtIndex:(int64_t)a3;
-- (id)commentTextForItemAtIndex:(int64_t)a3;
-- (id)likesForItemAtIndex:(int64_t)a3;
-- (int64_t)indexOfItemWithAsset:(id)a3;
-- (int64_t)indexOfItemWithComment:(id)a3;
-- (int64_t)typeForItemAtIndex:(int64_t)a3;
+- (id)commentForItemAtIndex:(int64_t)index;
+- (id)commentTextForItemAtIndex:(int64_t)index;
+- (id)likesForItemAtIndex:(int64_t)index;
+- (int64_t)indexOfItemWithAsset:(id)asset;
+- (int64_t)indexOfItemWithComment:(id)comment;
+- (int64_t)typeForItemAtIndex:(int64_t)index;
 - (unint64_t)assetsCount;
-- (void)getCommentCount:(unint64_t *)a3 likeCount:(unint64_t *)a4;
+- (void)getCommentCount:(unint64_t *)count likeCount:(unint64_t *)likeCount;
 - (void)updateFromCloudFeedEntry;
 @end
 
@@ -25,21 +25,21 @@
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 1;
-  v3 = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
-  v4 = [(PXFeedSectionInfo *)self photoLibrary];
-  v5 = [v4 photoLibrary];
+  cloudFeedCommentsEntry = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
+  photoLibrary = [(PXFeedSectionInfo *)self photoLibrary];
+  v4PhotoLibrary = [photoLibrary photoLibrary];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __35__PXFeedCommentsSectionInfo_isMine__block_invoke;
   v8[3] = &unk_1E7749A28;
-  v6 = v3;
+  v6 = cloudFeedCommentsEntry;
   v9 = v6;
   v10 = &v11;
-  [v5 performBlockAndWait:v8];
+  [v4PhotoLibrary performBlockAndWait:v8];
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(photoLibrary) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return photoLibrary;
 }
 
 void __35__PXFeedCommentsSectionInfo_isMine__block_invoke(uint64_t a1)
@@ -99,17 +99,17 @@ LABEL_11:
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v3 = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
-  v4 = [(PXFeedSectionInfo *)self photoLibrary];
-  v5 = [v4 photoLibrary];
+  cloudFeedCommentsEntry = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
+  photoLibrary = [(PXFeedSectionInfo *)self photoLibrary];
+  v4PhotoLibrary = [photoLibrary photoLibrary];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __40__PXFeedCommentsSectionInfo_assetsCount__block_invoke;
   v9[3] = &unk_1E7749A28;
-  v6 = v3;
+  v6 = cloudFeedCommentsEntry;
   v10 = v6;
   v11 = &v12;
-  [v5 performBlockAndWait:v9];
+  [v4PhotoLibrary performBlockAndWait:v9];
 
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);
@@ -150,9 +150,9 @@ void __40__PXFeedCommentsSectionInfo_assetsCount__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (int64_t)indexOfItemWithComment:(id)a3
+- (int64_t)indexOfItemWithComment:(id)comment
 {
-  v4 = a3;
+  commentCopy = comment;
   if ([(PXFeedSectionInfo *)self numberOfItems]< 1)
   {
     v8 = 0x7FFFFFFFFFFFFFFFLL;
@@ -160,11 +160,11 @@ void __40__PXFeedCommentsSectionInfo_assetsCount__block_invoke(uint64_t a1)
 
   else
   {
-    v5 = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
-    if ([v4 isLikeBoolValue])
+    cloudFeedCommentsEntry = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
+    if ([commentCopy isLikeBoolValue])
     {
-      v6 = [v5 entryLikeComments];
-      v7 = [v6 containsObject:v4];
+      entryLikeComments = [cloudFeedCommentsEntry entryLikeComments];
+      v7 = [entryLikeComments containsObject:commentCopy];
 
       if (v7)
       {
@@ -179,8 +179,8 @@ void __40__PXFeedCommentsSectionInfo_assetsCount__block_invoke(uint64_t a1)
 
     else
     {
-      v9 = [v5 entryComments];
-      v10 = [v9 indexOfObject:v4];
+      entryComments = [cloudFeedCommentsEntry entryComments];
+      v10 = [entryComments indexOfObject:commentCopy];
 
       v8 = 0x7FFFFFFFFFFFFFFFLL;
       if (v10 != 0x7FFFFFFFFFFFFFFFLL)
@@ -193,11 +193,11 @@ void __40__PXFeedCommentsSectionInfo_assetsCount__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (int64_t)indexOfItemWithAsset:(id)a3
+- (int64_t)indexOfItemWithAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = 0x7FFFFFFFFFFFFFFFLL;
-  if ([(PXFeedSectionInfo *)self numberOfItems]>= 1 && [(PXFeedCommentsSectionInfo *)self containsAsset:v4])
+  if ([(PXFeedSectionInfo *)self numberOfItems]>= 1 && [(PXFeedCommentsSectionInfo *)self containsAsset:assetCopy])
   {
     v5 = 0;
   }
@@ -205,27 +205,27 @@ void __40__PXFeedCommentsSectionInfo_assetsCount__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (BOOL)containsAsset:(id)a3
+- (BOOL)containsAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
+  assetCopy = asset;
+  cloudFeedCommentsEntry = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v6 = [(PXFeedSectionInfo *)self photoLibrary];
-  v7 = [v6 photoLibrary];
+  photoLibrary = [(PXFeedSectionInfo *)self photoLibrary];
+  v6PhotoLibrary = [photoLibrary photoLibrary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __43__PXFeedCommentsSectionInfo_containsAsset___block_invoke;
   v11[3] = &unk_1E77448A8;
-  v8 = v5;
+  v8 = cloudFeedCommentsEntry;
   v12 = v8;
   v15 = &v16;
-  v9 = v4;
+  v9 = assetCopy;
   v13 = v9;
-  v14 = self;
-  [v7 performBlockAndWait:v11];
+  selfCopy = self;
+  [v6PhotoLibrary performBlockAndWait:v11];
 
   LOBYTE(self) = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
@@ -246,15 +246,15 @@ void __43__PXFeedCommentsSectionInfo_containsAsset___block_invoke(uint64_t a1)
   }
 }
 
-- (void)getCommentCount:(unint64_t *)a3 likeCount:(unint64_t *)a4
+- (void)getCommentCount:(unint64_t *)count likeCount:(unint64_t *)likeCount
 {
   if (![(PXFeedSectionInfo *)self isLoaded])
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXFeedCommentsSectionInfo.m" lineNumber:160 description:@"section info should be loaded at this point"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedCommentsSectionInfo.m" lineNumber:160 description:@"section info should be loaded at this point"];
   }
 
-  v8 = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
+  cloudFeedCommentsEntry = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -263,26 +263,26 @@ void __43__PXFeedCommentsSectionInfo_containsAsset___block_invoke(uint64_t a1)
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v9 = [(PXFeedSectionInfo *)self photoLibrary];
-  v10 = [v9 photoLibrary];
+  photoLibrary = [(PXFeedSectionInfo *)self photoLibrary];
+  v9PhotoLibrary = [photoLibrary photoLibrary];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __55__PXFeedCommentsSectionInfo_getCommentCount_likeCount___block_invoke;
   v13[3] = &unk_1E7746888;
   v15 = &v21;
-  v11 = v8;
+  v11 = cloudFeedCommentsEntry;
   v14 = v11;
   v16 = &v17;
-  [v10 performBlockAndWait:v13];
+  [v9PhotoLibrary performBlockAndWait:v13];
 
-  if (a3)
+  if (count)
   {
-    *a3 = v22[3];
+    *count = v22[3];
   }
 
-  if (a4)
+  if (likeCount)
   {
-    *a4 = v18[3];
+    *likeCount = v18[3];
   }
 
   _Block_object_dispose(&v17, 8);
@@ -298,25 +298,25 @@ void __55__PXFeedCommentsSectionInfo_getCommentCount_likeCount___block_invoke(ui
   *(*(*(a1 + 48) + 8) + 24) = [v3 count];
 }
 
-- (id)likesForItemAtIndex:(int64_t)a3
+- (id)likesForItemAtIndex:(int64_t)index
 {
-  v4 = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
+  cloudFeedCommentsEntry = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__7002;
   v17 = __Block_byref_object_dispose__7003;
   v18 = 0;
-  v5 = [(PXFeedSectionInfo *)self photoLibrary];
-  v6 = [v5 photoLibrary];
+  photoLibrary = [(PXFeedSectionInfo *)self photoLibrary];
+  v5PhotoLibrary = [photoLibrary photoLibrary];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __49__PXFeedCommentsSectionInfo_likesForItemAtIndex___block_invoke;
   v10[3] = &unk_1E7749A28;
   v12 = &v13;
-  v7 = v4;
+  v7 = cloudFeedCommentsEntry;
   v11 = v7;
-  [v6 performBlockAndWait:v10];
+  [v5PhotoLibrary performBlockAndWait:v10];
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -332,7 +332,7 @@ void __49__PXFeedCommentsSectionInfo_likesForItemAtIndex___block_invoke(uint64_t
   *(v3 + 40) = v2;
 }
 
-- (id)commentTextForItemAtIndex:(int64_t)a3
+- (id)commentTextForItemAtIndex:(int64_t)index
 {
   v10 = 0;
   v11 = &v10;
@@ -340,16 +340,16 @@ void __49__PXFeedCommentsSectionInfo_likesForItemAtIndex___block_invoke(uint64_t
   v13 = __Block_byref_object_copy__7002;
   v14 = __Block_byref_object_dispose__7003;
   v15 = 0;
-  v5 = [(PXFeedSectionInfo *)self photoLibrary];
-  v6 = [v5 photoLibrary];
+  photoLibrary = [(PXFeedSectionInfo *)self photoLibrary];
+  v5PhotoLibrary = [photoLibrary photoLibrary];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__PXFeedCommentsSectionInfo_commentTextForItemAtIndex___block_invoke;
   v9[3] = &unk_1E77477B8;
   v9[4] = self;
   v9[5] = &v10;
-  v9[6] = a3;
-  [v6 performBlockAndWait:v9];
+  v9[6] = index;
+  [v5PhotoLibrary performBlockAndWait:v9];
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -366,14 +366,14 @@ void __55__PXFeedCommentsSectionInfo_commentTextForItemAtIndex___block_invoke(ui
   *(v3 + 40) = v2;
 }
 
-- (id)commentForItemAtIndex:(int64_t)a3
+- (id)commentForItemAtIndex:(int64_t)index
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
-  v6 = a3 - [(PXFeedCommentsSectionInfo *)self _hasLikes];
-  v7 = [v5 entryComments];
-  v8 = v7;
-  if ((v6 & 0x8000000000000000) != 0 || v6 >= [v7 count])
+  cloudFeedCommentsEntry = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
+  v6 = index - [(PXFeedCommentsSectionInfo *)self _hasLikes];
+  entryComments = [cloudFeedCommentsEntry entryComments];
+  v8 = entryComments;
+  if ((v6 & 0x8000000000000000) != 0 || v6 >= [entryComments count])
   {
     v10 = PLUIGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -381,9 +381,9 @@ void __55__PXFeedCommentsSectionInfo_commentTextForItemAtIndex___block_invoke(ui
       v12 = 134218496;
       v13 = v6;
       v14 = 2048;
-      v15 = a3;
+      indexCopy = index;
       v16 = 1024;
-      v17 = [(PXFeedCommentsSectionInfo *)self _hasLikes];
+      _hasLikes = [(PXFeedCommentsSectionInfo *)self _hasLikes];
       _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEFAULT, "Attempting to get a comment at invalid index [%ld] from original index [%ld] due to _hasLikes=[%d]", &v12, 0x1Cu);
     }
 
@@ -398,26 +398,26 @@ void __55__PXFeedCommentsSectionInfo_commentTextForItemAtIndex___block_invoke(ui
   return v9;
 }
 
-- (id)assetsForItemAtIndex:(int64_t)a3 maximumCount:(int64_t)a4
+- (id)assetsForItemAtIndex:(int64_t)index maximumCount:(int64_t)count
 {
-  v6 = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
+  cloudFeedCommentsEntry = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__7002;
   v20 = __Block_byref_object_dispose__7003;
   v21 = 0;
-  v7 = [(PXFeedSectionInfo *)self photoLibrary];
-  v8 = [v7 photoLibrary];
+  photoLibrary = [(PXFeedSectionInfo *)self photoLibrary];
+  v7PhotoLibrary = [photoLibrary photoLibrary];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __63__PXFeedCommentsSectionInfo_assetsForItemAtIndex_maximumCount___block_invoke;
   v12[3] = &unk_1E77477B8;
-  v9 = v6;
+  v9 = cloudFeedCommentsEntry;
   v13 = v9;
   v14 = &v16;
-  v15 = a4;
-  [v8 performBlockAndWait:v12];
+  countCopy = count;
+  [v7PhotoLibrary performBlockAndWait:v12];
 
   v10 = v17[5];
   _Block_object_dispose(&v16, 8);
@@ -503,28 +503,28 @@ LABEL_15:
   }
 }
 
-- (BOOL)hasMultipleAssetsForItemAtIndex:(int64_t)a3
+- (BOOL)hasMultipleAssetsForItemAtIndex:(int64_t)index
 {
-  v4 = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
+  cloudFeedCommentsEntry = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(PXFeedSectionInfo *)self photoLibrary];
-  v6 = [v5 photoLibrary];
+  photoLibrary = [(PXFeedSectionInfo *)self photoLibrary];
+  v5PhotoLibrary = [photoLibrary photoLibrary];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__PXFeedCommentsSectionInfo_hasMultipleAssetsForItemAtIndex___block_invoke;
   v9[3] = &unk_1E7749A28;
   v11 = &v12;
-  v7 = v4;
+  v7 = cloudFeedCommentsEntry;
   v10 = v7;
-  [v6 performBlockAndWait:v9];
+  [v5PhotoLibrary performBlockAndWait:v9];
 
-  LOBYTE(v5) = *(v13 + 24);
+  LOBYTE(photoLibrary) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
 
-  return v5;
+  return photoLibrary;
 }
 
 void __61__PXFeedCommentsSectionInfo_hasMultipleAssetsForItemAtIndex___block_invoke(uint64_t a1)
@@ -533,25 +533,25 @@ void __61__PXFeedCommentsSectionInfo_hasMultipleAssetsForItemAtIndex___block_inv
   *(*(*(a1 + 40) + 8) + 24) = v2 == 0;
 }
 
-- (id)assetForItemAtIndex:(int64_t)a3
+- (id)assetForItemAtIndex:(int64_t)index
 {
-  v4 = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
+  cloudFeedCommentsEntry = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__7002;
   v17 = __Block_byref_object_dispose__7003;
   v18 = 0;
-  v5 = [(PXFeedSectionInfo *)self photoLibrary];
-  v6 = [v5 photoLibrary];
+  photoLibrary = [(PXFeedSectionInfo *)self photoLibrary];
+  v5PhotoLibrary = [photoLibrary photoLibrary];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __49__PXFeedCommentsSectionInfo_assetForItemAtIndex___block_invoke;
   v10[3] = &unk_1E7749A28;
-  v7 = v4;
+  v7 = cloudFeedCommentsEntry;
   v11 = v7;
   v12 = &v13;
-  [v6 performBlockAndWait:v10];
+  [v5PhotoLibrary performBlockAndWait:v10];
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -581,9 +581,9 @@ void __49__PXFeedCommentsSectionInfo_assetForItemAtIndex___block_invoke(uint64_t
   *(v7 + 40) = v6;
 }
 
-- (int64_t)typeForItemAtIndex:(int64_t)a3
+- (int64_t)typeForItemAtIndex:(int64_t)index
 {
-  if (((a3 == 0) & [(PXFeedCommentsSectionInfo *)self _hasLikes]) != 0)
+  if (((index == 0) & [(PXFeedCommentsSectionInfo *)self _hasLikes]) != 0)
   {
     return 2;
   }
@@ -599,7 +599,7 @@ void __49__PXFeedCommentsSectionInfo_assetForItemAtIndex___block_invoke(uint64_t
   v33.receiver = self;
   v33.super_class = PXFeedCommentsSectionInfo;
   [(PXFeedSectionInfo *)&v33 updateFromCloudFeedEntry];
-  v3 = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
+  cloudFeedCommentsEntry = [(PXFeedCommentsSectionInfo *)self cloudFeedCommentsEntry];
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -614,18 +614,18 @@ void __49__PXFeedCommentsSectionInfo_assetForItemAtIndex___block_invoke(uint64_t
   v22 = __Block_byref_object_copy__7002;
   v23 = __Block_byref_object_dispose__7003;
   v24 = 0;
-  v4 = [(PXFeedSectionInfo *)self photoLibrary];
-  v5 = [v4 photoLibrary];
+  photoLibrary = [(PXFeedSectionInfo *)self photoLibrary];
+  v4PhotoLibrary = [photoLibrary photoLibrary];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __53__PXFeedCommentsSectionInfo_updateFromCloudFeedEntry__block_invoke;
   v14 = &unk_1E7744670;
   v16 = &v29;
-  v6 = v3;
+  v6 = cloudFeedCommentsEntry;
   v15 = v6;
   v17 = &v25;
   v18 = &v19;
-  [v5 performBlockAndWait:&v11];
+  [v4PhotoLibrary performBlockAndWait:&v11];
 
   v7 = [(PXFeedSectionInfo *)self sharedAlbumWithGUID:v20[5], v11, v12, v13, v14];
   v8 = v30[3];
@@ -637,8 +637,8 @@ void __49__PXFeedCommentsSectionInfo_assetForItemAtIndex___block_invoke(uint64_t
 
   [(PXFeedSectionInfo *)self setNumberOfItems:v9];
   [(PXFeedSectionInfo *)self setSharedAlbum:v7];
-  v10 = [v7 localizedTitle];
-  [(PXFeedSectionInfo *)self setAlbumTitle:v10];
+  localizedTitle = [v7 localizedTitle];
+  [(PXFeedSectionInfo *)self setAlbumTitle:localizedTitle];
 
   [(PXFeedCommentsSectionInfo *)self _setHasLikes:v8 > 0];
   _Block_object_dispose(&v19, 8);
@@ -663,15 +663,15 @@ void __53__PXFeedCommentsSectionInfo_updateFromCloudFeedEntry__block_invoke(uint
 
 - (id)cloudFeedCommentsEntry
 {
-  v4 = [(PXFeedSectionInfo *)self cloudFeedEntry];
+  cloudFeedEntry = [(PXFeedSectionInfo *)self cloudFeedEntry];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXFeedCommentsSectionInfo.m" lineNumber:37 description:@"unexpected cloud feed entry class"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedCommentsSectionInfo.m" lineNumber:37 description:@"unexpected cloud feed entry class"];
   }
 
-  return v4;
+  return cloudFeedEntry;
 }
 
 @end

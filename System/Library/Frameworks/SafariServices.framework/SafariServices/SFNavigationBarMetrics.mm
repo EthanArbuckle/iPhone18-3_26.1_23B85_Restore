@@ -1,22 +1,22 @@
 @interface SFNavigationBarMetrics
 + (id)traitsAffectingBarMetrics;
-- (NSString)_contentSizeCategoryForFontsWithPreferredCategory:(NSString *)a1;
+- (NSString)_contentSizeCategoryForFontsWithPreferredCategory:(NSString *)category;
 - (SFNavigationBarMetrics)init;
 - (double)barButtonHeight;
-- (double)barHeightWithBarMetricsCategory:(uint64_t)a1;
+- (double)barHeightWithBarMetricsCategory:(uint64_t)category;
 - (double)distanceFromLabelBaselineToURLOutlineBottom;
 - (double)minimumBarHeight;
 - (double)narrowEditingScaleFactor;
-- (double)progressBarCornerRadiusWithBarMetricsCategory:(uint64_t)a1;
-- (double)squishHeightQuantizationOffsetWithBarMetricsCategory:(uint64_t)a1;
+- (double)progressBarCornerRadiusWithBarMetricsCategory:(uint64_t)category;
+- (double)squishHeightQuantizationOffsetWithBarMetricsCategory:(uint64_t)category;
 - (double)urlContainerTop;
 - (double)urlLabelVerticalOffset;
 - (double)urlOutlineCornerRadius;
 - (double)urlOutlineHeight;
-- (uint64_t)_updateForContentSizeCategory:(uint64_t)a3 legibilityWeight:;
+- (uint64_t)_updateForContentSizeCategory:(uint64_t)category legibilityWeight:;
 - (uint64_t)traitCollectionForButtonMetrics;
 - (uint64_t)updateForStatusBarHeight:(uint64_t)result;
-- (uint64_t)updateForTraitCollection:(uint64_t)a1;
+- (uint64_t)updateForTraitCollection:(uint64_t)collection;
 - (uint64_t)useNarrowInsets;
 - (void)_updateMetrics;
 - (void)accessoryImageSymbolConfiguration;
@@ -25,7 +25,7 @@
 - (void)mediumButtonImageSymbolConfiguration;
 - (void)narrowEditingLabelFont;
 - (void)squishedAccessoryImageSymbolConfiguration;
-- (void)updateMetricsWithModalPresentationStyle:(uint64_t)a1;
+- (void)updateMetricsWithModalPresentationStyle:(uint64_t)style;
 @end
 
 @implementation SFNavigationBarMetrics
@@ -49,14 +49,14 @@
   v2 = [(SFNavigationBarMetrics *)&v10 init];
   if (v2)
   {
-    v4 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-    v5 = [v4 legibilityWeight];
+    currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+    legibilityWeight = [currentTraitCollection legibilityWeight];
 
-    v6 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-    v7 = v6;
-    if (v6)
+    preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+    v7 = preferredContentSizeCategory;
+    if (preferredContentSizeCategory)
     {
-      v8 = v6;
+      v8 = preferredContentSizeCategory;
     }
 
     else
@@ -64,7 +64,7 @@
       v8 = *MEMORY[0x1E69DDC70];
     }
 
-    [(SFNavigationBarMetrics *)v2 _updateForContentSizeCategory:v8 legibilityWeight:v5];
+    [(SFNavigationBarMetrics *)v2 _updateForContentSizeCategory:v8 legibilityWeight:legibilityWeight];
 
     [(SFNavigationBarMetrics *)v2 _updateMetrics];
     v9 = v2;
@@ -73,11 +73,11 @@
   return v2;
 }
 
-- (NSString)_contentSizeCategoryForFontsWithPreferredCategory:(NSString *)a1
+- (NSString)_contentSizeCategoryForFontsWithPreferredCategory:(NSString *)category
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (category)
   {
     v5 = *MEMORY[0x1E69DDC70];
     if (UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC70]) != NSOrderedAscending && UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x1E69DDC90]))
@@ -90,24 +90,24 @@
       }
     }
 
-    a1 = v5;
+    category = v5;
   }
 
-  return a1;
+  return category;
 }
 
-- (uint64_t)_updateForContentSizeCategory:(uint64_t)a3 legibilityWeight:
+- (uint64_t)_updateForContentSizeCategory:(uint64_t)category legibilityWeight:
 {
   v24[2] = *MEMORY[0x1E69E9840];
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [(SFNavigationBarMetrics *)a1 _contentSizeCategoryForFontsWithPreferredCategory:v5];
-    v7 = *(a1 + 16);
+    v6 = [(SFNavigationBarMetrics *)self _contentSizeCategoryForFontsWithPreferredCategory:v5];
+    v7 = *(self + 16);
     if (v7)
     {
-      v8 = [v7 preferredContentSizeCategory];
-      v9 = UIContentSizeCategoryCompareToCategory(v8, v6) != NSOrderedSame;
+      preferredContentSizeCategory = [v7 preferredContentSizeCategory];
+      v9 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, v6) != NSOrderedSame;
     }
 
     else
@@ -116,69 +116,69 @@
     }
 
     v10 = _SFToolbarContentSizeCategoryForPreferredCategory();
-    v11 = *(a1 + 224);
+    v11 = *(self + 224);
     if (v11)
     {
-      v12 = [v11 preferredContentSizeCategory];
-      if (UIContentSizeCategoryCompareToCategory(v12, v10))
+      preferredContentSizeCategory2 = [v11 preferredContentSizeCategory];
+      if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory2, v10))
       {
       }
 
       else
       {
-        v13 = [*(a1 + 224) legibilityWeight];
+        legibilityWeight = [*(self + 224) legibilityWeight];
 
-        v14 = v13 != a3 || v9;
+        v14 = legibilityWeight != category || v9;
         if (v14 != 1)
         {
-          a1 = 0;
+          self = 0;
           goto LABEL_13;
         }
       }
     }
 
     v15 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:v6];
-    v16 = *(a1 + 16);
-    *(a1 + 16) = v15;
+    v16 = *(self + 16);
+    *(self + 16) = v15;
 
     v17 = MEMORY[0x1E69DD1B8];
     v18 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:v10];
     v24[0] = v18;
-    v19 = [MEMORY[0x1E69DD1B8] traitCollectionWithLegibilityWeight:a3];
+    v19 = [MEMORY[0x1E69DD1B8] traitCollectionWithLegibilityWeight:category];
     v24[1] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
     v21 = [v17 traitCollectionWithTraitsFromCollections:v20];
-    v22 = *(a1 + 224);
-    *(a1 + 224) = v21;
+    v22 = *(self + 224);
+    *(self + 224) = v21;
 
-    a1 = 1;
+    self = 1;
 LABEL_13:
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_updateMetrics
 {
-  if (a1)
+  if (self)
   {
-    v2 = (a1 + 16);
-    v3 = *(a1 + 104);
-    v43 = [*(a1 + 16) preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v43);
+    v2 = (self + 16);
+    v3 = *(self + 104);
+    preferredContentSizeCategory = [*(self + 16) preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
     v5 = 1.0;
     if (IsAccessibilityCategory)
     {
       _UIAccessibilityContentSizeCategoryImageAdjustingScaleFactorForTraitCollection();
     }
 
-    *(a1 + 152) = v5;
-    v6 = [MEMORY[0x1E69DCA40] defaultMetrics];
-    [v6 scaledValueForValue:*(a1 + 16) compatibleWithTraitCollection:50.0];
-    *(a1 + 72) = ceil(v7);
+    *(self + 152) = v5;
+    defaultMetrics = [MEMORY[0x1E69DCA40] defaultMetrics];
+    [defaultMetrics scaledValueForValue:*(self + 16) compatibleWithTraitCollection:50.0];
+    *(self + 72) = ceil(v7);
     if ([MEMORY[0x1E69C8880] isSolariumEnabled])
     {
-      if (*(a1 + 144))
+      if (*(self + 144))
       {
         v8 = 64.0;
       }
@@ -211,11 +211,11 @@ LABEL_13:
       v10 = v11 * 0.5;
     }
 
-    v12 = *(a1 + 8) == 1 && *(a1 + 80) < v8;
+    v12 = *(self + 8) == 1 && *(self + 80) < v8;
     v13 = MEMORY[0x1E69B1E20];
     if ([MEMORY[0x1E69C8880] isSolariumEnabled])
     {
-      v12 = *(a1 + 8);
+      v12 = *(self + 8);
     }
 
     v14 = *v13;
@@ -226,53 +226,53 @@ LABEL_13:
       v16 = v8;
     }
 
-    *(a1 + 80) = v16;
-    [v6 scaledValueForValue:*(a1 + 16) compatibleWithTraitCollection:10.0];
-    *(a1 + 160) = v17;
+    *(self + 80) = v16;
+    [defaultMetrics scaledValueForValue:*(self + 16) compatibleWithTraitCollection:10.0];
+    *(self + 160) = v17;
     [OUTLINED_FUNCTION_1_8() scaledValueForValue:v10 compatibleWithTraitCollection:?];
-    *(a1 + 136) = v18;
-    v19 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+    *(self + 136) = v18;
+    isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
     v20 = 19.0;
-    if (v19)
+    if (isSolariumEnabled)
     {
       v20 = 25.0;
     }
 
-    [v6 scaledValueForValue:*(a1 + 16) compatibleWithTraitCollection:v20];
-    *(a1 + 24) = ceil(v21);
+    [defaultMetrics scaledValueForValue:*(self + 16) compatibleWithTraitCollection:v20];
+    *(self + 24) = ceil(v21);
     if ([MEMORY[0x1E69C8880] isSolariumEnabled])
     {
       [OUTLINED_FUNCTION_1_8() scaledValueForValue:? compatibleWithTraitCollection:?];
-      *(a1 + 176) = v22;
+      *(self + 176) = v22;
       v23 = 44.0;
-      [v6 scaledValueForValue:*(a1 + 16) compatibleWithTraitCollection:44.0];
-      *(a1 + 184) = v24;
-      [v6 scaledValueForValue:*(a1 + 16) compatibleWithTraitCollection:18.0];
-      *(a1 + 216) = v25;
-      v2 = (a1 + 224);
+      [defaultMetrics scaledValueForValue:*(self + 16) compatibleWithTraitCollection:44.0];
+      *(self + 184) = v24;
+      [defaultMetrics scaledValueForValue:*(self + 16) compatibleWithTraitCollection:18.0];
+      *(self + 216) = v25;
+      v2 = (self + 224);
       v26 = 232;
     }
 
     else
     {
-      [v6 scaledValueForValue:*(a1 + 16) compatibleWithTraitCollection:7.0];
-      *(a1 + 176) = v27;
-      [v6 scaledValueForValue:*(a1 + 16) compatibleWithTraitCollection:36.0];
-      *(a1 + 184) = v28;
+      [defaultMetrics scaledValueForValue:*(self + 16) compatibleWithTraitCollection:7.0];
+      *(self + 176) = v27;
+      [defaultMetrics scaledValueForValue:*(self + 16) compatibleWithTraitCollection:36.0];
+      *(self + 184) = v28;
       v23 = 12.0;
       v26 = 216;
     }
 
-    [v6 scaledValueForValue:*v2 compatibleWithTraitCollection:v23];
-    *(a1 + v26) = v29;
-    [v6 scaledValueForValue:*(a1 + 16) compatibleWithTraitCollection:-4.0];
-    *(a1 + 192) = v30;
+    [defaultMetrics scaledValueForValue:*v2 compatibleWithTraitCollection:v23];
+    *(self + v26) = v29;
+    [defaultMetrics scaledValueForValue:*(self + 16) compatibleWithTraitCollection:-4.0];
+    *(self + 192) = v30;
     _SFOnePixel();
     [OUTLINED_FUNCTION_1_8() scaledValueForValue:? compatibleWithTraitCollection:?];
-    *(a1 + 200) = v31;
+    *(self + 200) = v31;
     _SFOnePixel();
     [OUTLINED_FUNCTION_1_8() scaledValueForValue:? compatibleWithTraitCollection:?];
-    *(a1 + 208) = v32;
+    *(self + 208) = v32;
     v33 = 10.0;
     if (v3 <= v14)
     {
@@ -285,39 +285,39 @@ LABEL_13:
       v34 = 10.5;
     }
 
-    [v6 scaledValueForValue:*(a1 + 16) compatibleWithTraitCollection:v33];
-    *(a1 + 88) = v35;
+    [defaultMetrics scaledValueForValue:*(self + 16) compatibleWithTraitCollection:v33];
+    *(self + 88) = v35;
     [OUTLINED_FUNCTION_1_8() scaledValueForValue:v34 compatibleWithTraitCollection:?];
-    *(a1 + 96) = v36;
-    v37 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    *(self + 96) = v36;
+    v37 = *(self + 32);
+    *(self + 32) = 0;
 
-    v38 = *(a1 + 40);
-    *(a1 + 40) = 0;
+    v38 = *(self + 40);
+    *(self + 40) = 0;
 
-    v39 = *(a1 + 48);
-    *(a1 + 48) = 0;
+    v39 = *(self + 48);
+    *(self + 48) = 0;
 
-    *(a1 + 56) = 1;
-    v40 = *(a1 + 112);
-    *(a1 + 112) = 0;
+    *(self + 56) = 1;
+    v40 = *(self + 112);
+    *(self + 112) = 0;
 
-    v41 = *(a1 + 120);
-    *(a1 + 120) = 0;
+    v41 = *(self + 120);
+    *(self + 120) = 0;
 
-    v42 = *(a1 + 128);
-    *(a1 + 128) = 0;
+    v42 = *(self + 128);
+    *(self + 128) = 0;
   }
 }
 
-- (uint64_t)updateForTraitCollection:(uint64_t)a1
+- (uint64_t)updateForTraitCollection:(uint64_t)collection
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (collection)
   {
-    v5 = [v3 preferredContentSizeCategory];
-    v6 = -[SFNavigationBarMetrics _updateForContentSizeCategory:legibilityWeight:](a1, v5, [v4 legibilityWeight]);
+    preferredContentSizeCategory = [v3 preferredContentSizeCategory];
+    v6 = -[SFNavigationBarMetrics _updateForContentSizeCategory:legibilityWeight:](collection, preferredContentSizeCategory, [v4 legibilityWeight]);
 
     v7 = objc_opt_respondsToSelector();
     if ((v6 & 1) != 0 || (v7 & 1) == 0)
@@ -331,22 +331,22 @@ LABEL_13:
     else
     {
       v8 = [v4 _presentationSemanticContext] == 2;
-      if (*(a1 + 8) != v8)
+      if (*(collection + 8) != v8)
       {
-        *(a1 + 8) = v8;
+        *(collection + 8) = v8;
 LABEL_9:
-        [(SFNavigationBarMetrics *)a1 _updateMetrics];
-        a1 = 1;
+        [(SFNavigationBarMetrics *)collection _updateMetrics];
+        collection = 1;
         goto LABEL_8;
       }
     }
 
-    a1 = 0;
+    collection = 0;
   }
 
 LABEL_8:
 
-  return a1;
+  return collection;
 }
 
 - (uint64_t)updateForStatusBarHeight:(uint64_t)result
@@ -369,19 +369,19 @@ LABEL_8:
   return result;
 }
 
-- (void)updateMetricsWithModalPresentationStyle:(uint64_t)a1
+- (void)updateMetricsWithModalPresentationStyle:(uint64_t)style
 {
-  if (a1 && [MEMORY[0x1E69C8880] isSolariumEnabled] && _SFDeviceIsPad())
+  if (style && [MEMORY[0x1E69C8880] isSolariumEnabled] && _SFDeviceIsPad())
   {
-    *(a1 + 144) = (a2 & 0xFFFFFFFFFFFFFFFDLL) == 0;
+    *(style + 144) = (a2 & 0xFFFFFFFFFFFFFFFDLL) == 0;
 
-    [(SFNavigationBarMetrics *)a1 _updateMetrics];
+    [(SFNavigationBarMetrics *)style _updateMetrics];
   }
 }
 
-- (double)barHeightWithBarMetricsCategory:(uint64_t)a1
+- (double)barHeightWithBarMetricsCategory:(uint64_t)category
 {
-  if (!a1)
+  if (!category)
   {
     return 0.0;
   }
@@ -392,12 +392,12 @@ LABEL_8:
     v2 = 80;
   }
 
-  return OUTLINED_FUNCTION_2_6(a1, v2);
+  return OUTLINED_FUNCTION_2_6(category, v2);
 }
 
-- (double)squishHeightQuantizationOffsetWithBarMetricsCategory:(uint64_t)a1
+- (double)squishHeightQuantizationOffsetWithBarMetricsCategory:(uint64_t)category
 {
-  if (!a1)
+  if (!category)
   {
     return 0.0;
   }
@@ -408,12 +408,12 @@ LABEL_8:
     v2 = 96;
   }
 
-  return OUTLINED_FUNCTION_2_6(a1, v2);
+  return OUTLINED_FUNCTION_2_6(category, v2);
 }
 
-- (double)progressBarCornerRadiusWithBarMetricsCategory:(uint64_t)a1
+- (double)progressBarCornerRadiusWithBarMetricsCategory:(uint64_t)category
 {
-  if (!a1)
+  if (!category)
   {
     return 0.0;
   }
@@ -424,102 +424,102 @@ LABEL_8:
     v2 = 136;
   }
 
-  return OUTLINED_FUNCTION_2_6(a1, v2);
+  return OUTLINED_FUNCTION_2_6(category, v2);
 }
 
 - (void)defaultLabelFont
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[4];
+    selfCopy = self;
+    v3 = self[4];
     if (!v3)
     {
-      v4 = [MEMORY[0x1E69DCA40] defaultMetrics];
+      defaultMetrics = [MEMORY[0x1E69DCA40] defaultMetrics];
       v5 = MEMORY[0x1E69DB878];
       [MEMORY[0x1E69DB878] labelFontSize];
       [v5 systemFontOfSize:?];
       objc_claimAutoreleasedReturnValue();
       v6 = [OUTLINED_FUNCTION_0_7() scaledFontForFont:? compatibleWithTraitCollection:?];
-      v7 = v2[4];
-      v2[4] = v6;
+      v7 = selfCopy[4];
+      selfCopy[4] = v6;
 
-      v3 = v2[4];
+      v3 = selfCopy[4];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)defaultBoldFont
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[5];
+    selfCopy = self;
+    v3 = self[5];
     if (!v3)
     {
-      v4 = [MEMORY[0x1E69DCA40] defaultMetrics];
+      defaultMetrics = [MEMORY[0x1E69DCA40] defaultMetrics];
       v5 = MEMORY[0x1E69DB878];
       [MEMORY[0x1E69DB878] labelFontSize];
       [v5 boldSystemFontOfSize:?];
       objc_claimAutoreleasedReturnValue();
       v6 = [OUTLINED_FUNCTION_0_7() scaledFontForFont:? compatibleWithTraitCollection:?];
-      v7 = v2[5];
-      v2[5] = v6;
+      v7 = selfCopy[5];
+      selfCopy[5] = v6;
 
-      v3 = v2[5];
+      v3 = selfCopy[5];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)narrowEditingLabelFont
 {
-  if (a1)
+  if (self)
   {
-    v3 = a1;
-    v4 = a1[6];
+    selfCopy = self;
+    v4 = self[6];
     if (!v4)
     {
-      v5 = [MEMORY[0x1E69DCA40] defaultMetrics];
+      defaultMetrics = [MEMORY[0x1E69DCA40] defaultMetrics];
       [MEMORY[0x1E69DB878] systemFontOfSize:15.0];
       objc_claimAutoreleasedReturnValue();
       v6 = [OUTLINED_FUNCTION_0_7() scaledFontForFont:? compatibleWithTraitCollection:?];
-      v7 = v3[6];
-      v3[6] = v6;
+      v7 = selfCopy[6];
+      selfCopy[6] = v6;
 
-      v4 = v3[6];
+      v4 = selfCopy[6];
     }
 
-    a1 = v4;
+    self = v4;
     v2 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (double)narrowEditingScaleFactor
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  if (*(a1 + 56) == 1)
+  if (*(self + 56) == 1)
   {
-    *(a1 + 56) = 0;
+    *(self + 56) = 0;
     v3 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [v3 setText:@"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"];
-    v4 = [(SFNavigationBarMetrics *)a1 defaultLabelFont];
-    [v3 setFont:v4];
+    defaultLabelFont = [(SFNavigationBarMetrics *)self defaultLabelFont];
+    [v3 setFont:defaultLabelFont];
 
     v5 = *MEMORY[0x1E695F060];
     v6 = *(MEMORY[0x1E695F060] + 8);
@@ -527,96 +527,96 @@ LABEL_8:
     v8 = v7;
     v9 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [v9 setText:@"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"];
-    v10 = [(SFNavigationBarMetrics *)a1 narrowEditingLabelFont];
-    [v9 setFont:v10];
+    narrowEditingLabelFont = [(SFNavigationBarMetrics *)self narrowEditingLabelFont];
+    [v9 setFont:narrowEditingLabelFont];
 
     [v9 sizeThatFits:{v5, v6}];
-    *(a1 + 64) = v11 / v8;
+    *(self + 64) = v11 / v8;
   }
 
-  return *(a1 + 64);
+  return *(self + 64);
 }
 
 - (void)accessoryImageSymbolConfiguration
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[14];
+    selfCopy = self;
+    v3 = self[14];
     if (!v3)
     {
-      v4 = [MEMORY[0x1E69DCA40] defaultMetrics];
+      defaultMetrics = [MEMORY[0x1E69DCA40] defaultMetrics];
       [MEMORY[0x1E69DB878] labelFontSize];
       [OUTLINED_FUNCTION_1_8() scaledValueForValue:? compatibleWithTraitCollection:?];
       v6 = v5;
 
       v7 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:5 weight:1 scale:v6];
-      v8 = v2[14];
-      v2[14] = v7;
+      v8 = selfCopy[14];
+      selfCopy[14] = v7;
 
-      v3 = v2[14];
+      v3 = selfCopy[14];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)squishedAccessoryImageSymbolConfiguration
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[15];
+    selfCopy = self;
+    v3 = self[15];
     if (!v3)
     {
-      v4 = [MEMORY[0x1E69DCA40] defaultMetrics];
-      [v4 scaledValueForValue:v2[2] compatibleWithTraitCollection:12.0];
+      defaultMetrics = [MEMORY[0x1E69DCA40] defaultMetrics];
+      [defaultMetrics scaledValueForValue:selfCopy[2] compatibleWithTraitCollection:12.0];
       v6 = v5;
 
       v7 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:4 weight:1 scale:v6];
-      v8 = v2[15];
-      v2[15] = v7;
+      v8 = selfCopy[15];
+      selfCopy[15] = v7;
 
-      v3 = v2[15];
+      v3 = selfCopy[15];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)mediumButtonImageSymbolConfiguration
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[16];
+    selfCopy = self;
+    v3 = self[16];
     if (!v3)
     {
-      v4 = [MEMORY[0x1E69DCAD8] _sf_staticConfigurationWithTextStyle:*MEMORY[0x1E69DDCF8] scale:2 compatibleWithTraitCollection:a1[28]];
-      v5 = v2[16];
-      v2[16] = v4;
+      v4 = [MEMORY[0x1E69DCAD8] _sf_staticConfigurationWithTextStyle:*MEMORY[0x1E69DDCF8] scale:2 compatibleWithTraitCollection:self[28]];
+      v5 = selfCopy[16];
+      selfCopy[16] = v4;
 
-      v3 = v2[16];
+      v3 = selfCopy[16];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (double)urlOutlineCornerRadius
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 160);
+    return *(self + 160);
   }
 
   else
@@ -627,9 +627,9 @@ LABEL_8:
 
 - (double)minimumBarHeight
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 24);
+    return *(self + 24);
   }
 
   else
@@ -640,9 +640,9 @@ LABEL_8:
 
 - (double)urlContainerTop
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 176);
+    return *(self + 176);
   }
 
   else
@@ -653,9 +653,9 @@ LABEL_8:
 
 - (double)urlOutlineHeight
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 184);
+    return *(self + 184);
   }
 
   else
@@ -666,9 +666,9 @@ LABEL_8:
 
 - (double)urlLabelVerticalOffset
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 192);
+    return *(self + 192);
   }
 
   else
@@ -679,9 +679,9 @@ LABEL_8:
 
 - (double)distanceFromLabelBaselineToURLOutlineBottom
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 216);
+    return *(self + 216);
   }
 
   else
@@ -702,9 +702,9 @@ LABEL_8:
 
 - (double)barButtonHeight
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 232);
+    return *(self + 232);
   }
 
   else
@@ -715,9 +715,9 @@ LABEL_8:
 
 - (uint64_t)useNarrowInsets
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 144);
+    v1 = *(self + 144);
   }
 
   else

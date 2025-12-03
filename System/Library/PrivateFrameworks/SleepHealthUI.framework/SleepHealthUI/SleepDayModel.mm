@@ -1,6 +1,6 @@
 @interface SleepDayModel
 - (_TtC13SleepHealthUI13SleepDayModel)init;
-- (void)dateCacheDidUpdate:(id)a3 onNotification:(id)a4;
+- (void)dateCacheDidUpdate:(id)update onNotification:(id)notification;
 @end
 
 @implementation SleepDayModel
@@ -20,7 +20,7 @@
   return result;
 }
 
-- (void)dateCacheDidUpdate:(id)a3 onNotification:(id)a4
+- (void)dateCacheDidUpdate:(id)update onNotification:(id)notification
 {
   v6 = sub_269D97050();
   v7 = *(v6 - 8);
@@ -35,8 +35,8 @@
   }
 
   sub_269D97020();
-  v10 = a3;
-  v11 = self;
+  updateCopy = update;
+  selfCopy = self;
   sub_269D19B2C(v9);
 
   (*(v7 + 8))(v9, v6);

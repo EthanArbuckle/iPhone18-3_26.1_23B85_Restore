@@ -1,11 +1,11 @@
 @interface EMCoreAnalyticsCollector
 + (id)log;
 - (EMCoreAnalyticsCollector)init;
-- (id)registerForLogEventsWithBlock:(id)a3;
-- (id)registerForLogEventsWithPeriodicDataProvider:(id)a3;
+- (id)registerForLogEventsWithBlock:(id)block;
+- (id)registerForLogEventsWithPeriodicDataProvider:(id)provider;
 - (void)_logPeriodicEvents;
 - (void)_registerXPCActivity;
-- (void)logOneTimeEvent:(id)a3;
+- (void)logOneTimeEvent:(id)event;
 @end
 
 @implementation EMCoreAnalyticsCollector
@@ -45,7 +45,7 @@ void __31__EMCoreAnalyticsCollector_log__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __31__EMCoreAnalyticsCollector_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_9 != -1)
   {
     dispatch_once(&log_onceToken_9, block);
@@ -56,9 +56,9 @@ void __31__EMCoreAnalyticsCollector_log__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)registerForLogEventsWithPeriodicDataProvider:(id)a3
+- (id)registerForLogEventsWithPeriodicDataProvider:(id)provider
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, provider);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __73__EMCoreAnalyticsCollector_registerForLogEventsWithPeriodicDataProvider___block_invoke;
@@ -84,10 +84,10 @@ void __73__EMCoreAnalyticsCollector_registerForLogEventsWithPeriodicDataProvider
   }
 }
 
-- (id)registerForLogEventsWithBlock:(id)a3
+- (id)registerForLogEventsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AFB0] UUID];
+  blockCopy = block;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v6 = objc_alloc_init(MEMORY[0x1E699B7F8]);
   objc_initWeak(&location, self);
   v18[0] = MEMORY[0x1E69E9820];
@@ -95,19 +95,19 @@ void __73__EMCoreAnalyticsCollector_registerForLogEventsWithPeriodicDataProvider
   v18[2] = __58__EMCoreAnalyticsCollector_registerForLogEventsWithBlock___block_invoke;
   v18[3] = &unk_1E826CA80;
   objc_copyWeak(&v20, &location);
-  v7 = v5;
+  v7 = uUID;
   v19 = v7;
   [v6 addCancelationBlock:v18];
-  v8 = [(EMCoreAnalyticsCollector *)self blocks];
+  blocks = [(EMCoreAnalyticsCollector *)self blocks];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __58__EMCoreAnalyticsCollector_registerForLogEventsWithBlock___block_invoke_3;
   v15[3] = &unk_1E826CAA8;
   v9 = v7;
   v16 = v9;
-  v10 = v4;
+  v10 = blockCopy;
   v17 = v10;
-  [v8 performWhileLocked:v15];
+  [blocks performWhileLocked:v15];
 
   if ((atomic_exchange(&self->_didRegister._Value, 1u) & 1) == 0)
   {
@@ -151,17 +151,17 @@ void __58__EMCoreAnalyticsCollector_registerForLogEventsWithBlock___block_invoke
   [v5 setObject:v4 forKeyedSubscript:*(a1 + 32)];
 }
 
-- (void)logOneTimeEvent:(id)a3
+- (void)logOneTimeEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(EMCoreAnalyticsCollector *)self oneTimeScheduler];
+  eventCopy = event;
+  oneTimeScheduler = [(EMCoreAnalyticsCollector *)self oneTimeScheduler];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__EMCoreAnalyticsCollector_logOneTimeEvent___block_invoke;
   v7[3] = &unk_1E826C098;
-  v6 = v4;
+  v6 = eventCopy;
   v8 = v6;
-  [v5 performBlock:v7];
+  [oneTimeScheduler performBlock:v7];
 }
 
 void __44__EMCoreAnalyticsCollector_logOneTimeEvent___block_invoke(uint64_t a1)
@@ -273,13 +273,13 @@ void __48__EMCoreAnalyticsCollector__registerXPCActivity__block_invoke_4(uint64_
   v18 = __Block_byref_object_copy__1;
   v19 = __Block_byref_object_dispose__1;
   v20 = 0;
-  v2 = [(EMCoreAnalyticsCollector *)self blocks];
+  blocks = [(EMCoreAnalyticsCollector *)self blocks];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __46__EMCoreAnalyticsCollector__logPeriodicEvents__block_invoke;
   v14[3] = &unk_1E826CB18;
   v14[4] = &v15;
-  [v2 performWhileLocked:v14];
+  [blocks performWhileLocked:v14];
 
   v3 = +[EMCoreAnalyticsCollector log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))

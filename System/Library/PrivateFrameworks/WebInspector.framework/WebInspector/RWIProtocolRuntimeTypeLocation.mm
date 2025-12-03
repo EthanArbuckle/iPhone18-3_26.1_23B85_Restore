@@ -2,7 +2,7 @@
 - (NSString)sourceID;
 - (int)divot;
 - (int)typeInformationDescriptor;
-- (void)setSourceID:(id)a3;
+- (void)setSourceID:(id)d;
 @end
 
 @implementation RWIProtocolRuntimeTypeLocation
@@ -14,11 +14,11 @@
   return [(RWIProtocolJSONObject *)&v3 integerForKey:@"typeInformationDescriptor"];
 }
 
-- (void)setSourceID:(id)a3
+- (void)setSourceID:(id)d
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimeTypeLocation;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"sourceID"];
+  [(RWIProtocolJSONObject *)&v3 setString:d forKey:@"sourceID"];
 }
 
 - (NSString)sourceID

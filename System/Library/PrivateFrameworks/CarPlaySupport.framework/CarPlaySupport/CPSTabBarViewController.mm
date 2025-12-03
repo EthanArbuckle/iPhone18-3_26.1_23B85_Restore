@@ -1,8 +1,8 @@
 @interface CPSTabBarViewController
 - (BOOL)_isEligibleForNowPlayingButton;
 - (BOOL)restoresFocusAfterTransition;
-- (BOOL)tabBarController:(id)a3 shouldSelectViewController:(id)a4;
-- (CPSTabBarViewController)initWithTabBarTemplate:(id)a3 templateDelegate:(id)a4 templateEnvironment:(id)a5;
+- (BOOL)tabBarController:(id)controller shouldSelectViewController:(id)viewController;
+- (CPSTabBarViewController)initWithTabBarTemplate:(id)template templateDelegate:(id)delegate templateEnvironment:(id)environment;
 - (CPSTemplateEnvironment)templateEnvironment;
 - (CPSTemplateViewControllerDelegate)viewControllerDelegate;
 - (id)tabBarTemplate;
@@ -10,75 +10,75 @@
 - (void)_nowPlayingButtonTapped;
 - (void)_updateNowPlayingButtonIfNeeded;
 - (void)_updateTitle;
-- (void)applicationDidBecomeNowPlayingApp:(BOOL)a3;
+- (void)applicationDidBecomeNowPlayingApp:(BOOL)app;
 - (void)invalidate;
 - (void)removeFromParentViewController;
-- (void)setSelectedIndex:(unint64_t)a3;
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4;
-- (void)showNowPlayingButton:(BOOL)a3;
-- (void)tabBarController:(id)a3 didSelectViewController:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setSelectedIndex:(unint64_t)index;
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated;
+- (void)showNowPlayingButton:(BOOL)button;
+- (void)tabBarController:(id)controller didSelectViewController:(id)viewController;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CPSTabBarViewController
 
-- (CPSTabBarViewController)initWithTabBarTemplate:(id)a3 templateDelegate:(id)a4 templateEnvironment:(id)a5
+- (CPSTabBarViewController)initWithTabBarTemplate:(id)template templateDelegate:(id)delegate templateEnvironment:(id)environment
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, template);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, delegate);
   v14 = 0;
-  objc_storeStrong(&v14, a5);
-  v5 = v17;
-  v17 = 0;
+  objc_storeStrong(&v14, environment);
+  v5 = selfCopy;
+  selfCopy = 0;
   v13.receiver = v5;
   v13.super_class = CPSTabBarViewController;
   v12 = [(CPSTabBarViewController *)&v13 init];
-  v17 = v12;
-  objc_storeStrong(&v17, v12);
+  selfCopy = v12;
+  objc_storeStrong(&selfCopy, v12);
   if (v12)
   {
-    objc_storeStrong(&v17->_associatedTemplate, location[0]);
-    objc_storeStrong(&v17->_templateDelegate, v15);
+    objc_storeStrong(&selfCopy->_associatedTemplate, location[0]);
+    objc_storeStrong(&selfCopy->_templateDelegate, v15);
     v6 = objc_opt_new();
-    templateProviderFuture = v17->_templateProviderFuture;
-    v17->_templateProviderFuture = v6;
+    templateProviderFuture = selfCopy->_templateProviderFuture;
+    selfCopy->_templateProviderFuture = v6;
     MEMORY[0x277D82BD8](templateProviderFuture);
-    objc_storeWeak(&v17->_templateEnvironment, v14);
-    [(CPSTabBarViewController *)v17 setDelegate:v17];
+    objc_storeWeak(&selfCopy->_templateEnvironment, v14);
+    [(CPSTabBarViewController *)selfCopy setDelegate:selfCopy];
     if ([v14 canBecomeNowPlayingApp])
     {
-      [v14 addTemplateEnvironmentDelegate:v17];
+      [v14 addTemplateEnvironmentDelegate:selfCopy];
     }
 
     if ([v14 isNowPlayingApp])
     {
-      [(CPSTabBarViewController *)v17 showNowPlayingButton:1];
+      [(CPSTabBarViewController *)selfCopy showNowPlayingButton:1];
     }
   }
 
-  v9 = MEMORY[0x277D82BE0](v17);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
 - (id)tabBarTemplate
 {
   v3 = objc_opt_class();
-  v4 = [(CPSTabBarViewController *)self associatedTemplate];
-  v5 = CPSSafeCast_5(v3, v4);
-  MEMORY[0x277D82BD8](v4);
+  associatedTemplate = [(CPSTabBarViewController *)self associatedTemplate];
+  v5 = CPSSafeCast_5(v3, associatedTemplate);
+  MEMORY[0x277D82BD8](associatedTemplate);
 
   return v5;
 }
@@ -86,21 +86,21 @@
 - (void)invalidate
 {
   v18 = *MEMORY[0x277D85DE8];
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = CarPlaySupportGeneralLogging();
   v13 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_1_8_64(v17, v15);
+    __os_log_helper_16_2_1_8_64(v17, selfCopy);
     _os_log_impl(&dword_242FE8000, location[0], v13, "Invalidating %@", v17, 0xCu);
   }
 
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v15->_templateProviderFuture, 0);
-  v6 = [(CPSTabBarViewController *)v15 viewControllers];
-  v12 = [v6 copy];
-  MEMORY[0x277D82BD8](v6);
+  objc_storeStrong(&selfCopy->_templateProviderFuture, 0);
+  viewControllers = [(CPSTabBarViewController *)selfCopy viewControllers];
+  v12 = [viewControllers copy];
+  MEMORY[0x277D82BD8](viewControllers);
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](v12);
   v8 = [obj countByEnumeratingWithState:__b objects:v16 count:16];
@@ -140,27 +140,27 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = CPSTabBarViewController;
   [(CPSTabBarViewController *)&v2 viewDidLayoutSubviews];
-  [(CPSTabBarViewController *)v4 _updateNowPlayingButtonIfNeeded];
+  [(CPSTabBarViewController *)selfCopy _updateNowPlayingButtonIfNeeded];
 }
 
-- (void)showNowPlayingButton:(BOOL)a3
+- (void)showNowPlayingButton:(BOOL)button
 {
-  v23 = self;
+  selfCopy = self;
   v22 = a2;
-  v21 = a3;
-  v9 = [(CPSTabBarViewController *)self _accessoryView];
+  buttonCopy = button;
+  _accessoryView = [(CPSTabBarViewController *)self _accessoryView];
   v10 = 0;
-  if (v9)
+  if (_accessoryView)
   {
-    v10 = v21;
+    v10 = buttonCopy;
   }
 
-  MEMORY[0x277D82BD8](v9);
+  MEMORY[0x277D82BD8](_accessoryView);
   if (v10)
   {
     location = CarPlaySupportGeneralLogging();
@@ -176,7 +176,7 @@
     objc_storeStrong(&location, 0);
   }
 
-  else if (v21)
+  else if (buttonCopy)
   {
     v17 = CarPlaySupportGeneralLogging();
     v16 = OS_LOG_TYPE_DEFAULT;
@@ -190,9 +190,9 @@
 
     objc_storeStrong(&v17, 0);
     v14 = objc_alloc_init(MEMORY[0x277CF9150]);
-    [v14 addTarget:v23 action:sel__nowPlayingButtonTapped forControlEvents:64];
+    [v14 addTarget:selfCopy action:sel__nowPlayingButtonTapped forControlEvents:64];
     [v14 setAccessibilityIdentifier:@"CPTabBarNowPlayingButton"];
-    [(CPSTabBarViewController *)v23 _setAccessoryView:v14];
+    [(CPSTabBarViewController *)selfCopy _setAccessoryView:v14];
     objc_storeStrong(&v14, 0);
   }
 
@@ -209,36 +209,36 @@
     }
 
     objc_storeStrong(&v13, 0);
-    [(CPSTabBarViewController *)v23 _setAccessoryView:0];
+    [(CPSTabBarViewController *)selfCopy _setAccessoryView:0];
   }
 }
 
 - (void)_nowPlayingButtonTapped
 {
-  v3 = [(CPSTabBarViewController *)self templateEnvironment];
-  v2 = [(CPSTemplateEnvironment *)v3 templateProvider];
-  [(CPTemplateProviding *)v2 clientRequestNowPlayingTemplateAnimated:1];
-  MEMORY[0x277D82BD8](v2);
-  MEMORY[0x277D82BD8](v3);
+  templateEnvironment = [(CPSTabBarViewController *)self templateEnvironment];
+  templateProvider = [(CPSTemplateEnvironment *)templateEnvironment templateProvider];
+  [(CPTemplateProviding *)templateProvider clientRequestNowPlayingTemplateAnimated:1];
+  MEMORY[0x277D82BD8](templateProvider);
+  MEMORY[0x277D82BD8](templateEnvironment);
 }
 
 - (void)_updateTitle
 {
   v22 = *MEMORY[0x277D85DE8];
-  v20 = self;
+  selfCopy = self;
   v19[1] = a2;
   v13 = objc_opt_class();
-  v14 = [(CPSTabBarViewController *)v20 selectedViewController];
-  v19[0] = CPSSafeCast_5(v13, v14);
-  v15 = [v19[0] associatedTemplate];
-  location = [v15 identifier];
-  MEMORY[0x277D82BD8](v15);
+  selectedViewController = [(CPSTabBarViewController *)selfCopy selectedViewController];
+  v19[0] = CPSSafeCast_5(v13, selectedViewController);
+  associatedTemplate = [v19[0] associatedTemplate];
+  location = [associatedTemplate identifier];
+  MEMORY[0x277D82BD8](associatedTemplate);
   if (location)
   {
     memset(__b, 0, sizeof(__b));
-    v10 = [(CPSTabBarViewController *)v20 associatedTemplate];
-    obj = [(CPTemplate *)v10 templates];
-    v12 = [obj countByEnumeratingWithState:__b objects:v21 count:{16, MEMORY[0x277D82BD8](v10).n128_f64[0]}];
+    associatedTemplate2 = [(CPSTabBarViewController *)selfCopy associatedTemplate];
+    obj = [(CPTemplate *)associatedTemplate2 templates];
+    v12 = [obj countByEnumeratingWithState:__b objects:v21 count:{16, MEMORY[0x277D82BD8](associatedTemplate2).n128_f64[0]}];
     if (v12)
     {
       v7 = *__b[2];
@@ -253,9 +253,9 @@
         }
 
         v17 = *(__b[1] + 8 * v8);
-        v4 = [v17 identifier];
-        v5 = [v4 isEqual:location];
-        *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
+        identifier = [v17 identifier];
+        v5 = [identifier isEqual:location];
+        *&v2 = MEMORY[0x277D82BD8](identifier).n128_u64[0];
         if (v5)
         {
           break;
@@ -273,9 +273,9 @@
         }
       }
 
-      v3 = [v17 backTitle];
-      [(CPSTabBarViewController *)v20 setTitle:?];
-      MEMORY[0x277D82BD8](v3);
+      backTitle = [v17 backTitle];
+      [(CPSTabBarViewController *)selfCopy setTitle:?];
+      MEMORY[0x277D82BD8](backTitle);
     }
 
 LABEL_10:
@@ -286,22 +286,22 @@ LABEL_10:
   objc_storeStrong(v19, 0);
 }
 
-- (void)setSelectedIndex:(unint64_t)a3
+- (void)setSelectedIndex:(unint64_t)index
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  indexCopy = index;
   v3.receiver = self;
   v3.super_class = CPSTabBarViewController;
-  [(CPSTabBarViewController *)&v3 setSelectedIndex:a3];
-  [(CPSTabBarViewController *)v6 _updateTitle];
+  [(CPSTabBarViewController *)&v3 setSelectedIndex:index];
+  [(CPSTabBarViewController *)selfCopy _updateTitle];
 }
 
-- (void)applicationDidBecomeNowPlayingApp:(BOOL)a3
+- (void)applicationDidBecomeNowPlayingApp:(BOOL)app
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  appCopy = app;
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -310,8 +310,8 @@ LABEL_10:
   v8 = 0;
   v9 = __61__CPSTabBarViewController_applicationDidBecomeNowPlayingApp___block_invoke;
   v10 = &unk_278D91CA8;
-  v11 = MEMORY[0x277D82BE0](v15);
-  v12 = v13;
+  v11 = MEMORY[0x277D82BE0](selfCopy);
+  v12 = appCopy;
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v11, 0);
@@ -330,18 +330,18 @@ uint64_t __61__CPSTabBarViewController_applicationDidBecomeNowPlayingApp___block
   }
 }
 
-- (BOOL)tabBarController:(id)a3 shouldSelectViewController:(id)a4
+- (BOOL)tabBarController:(id)controller shouldSelectViewController:(id)viewController
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v8 = [(CPSTabBarViewController *)v12 selectedViewController];
+  objc_storeStrong(&v10, viewController);
+  selectedViewController = [(CPSTabBarViewController *)selfCopy selectedViewController];
   v7 = v10;
-  MEMORY[0x277D82BD8](v8);
-  if (v8 == v7)
+  MEMORY[0x277D82BD8](selectedViewController);
+  if (selectedViewController == v7)
   {
     v4 = objc_opt_class();
     v9 = CPSSafeCast_5(v4, v10);
@@ -358,40 +358,40 @@ uint64_t __61__CPSTabBarViewController_applicationDidBecomeNowPlayingApp___block
   return 1;
 }
 
-- (void)tabBarController:(id)a3 didSelectViewController:(id)a4
+- (void)tabBarController:(id)controller didSelectViewController:(id)viewController
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, viewController);
   v12 = 0;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v13 associatedTemplate];
-    v4 = [v10 identifier];
+    associatedTemplate = [v13 associatedTemplate];
+    identifier = [associatedTemplate identifier];
     v5 = v12;
-    v12 = v4;
+    v12 = identifier;
     MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](associatedTemplate);
   }
 
-  [(CPSTabBarViewController *)v15 _updateTitle];
-  v8 = [(CPSTabBarViewController *)v15 tabBarTemplateDelegate];
+  [(CPSTabBarViewController *)selfCopy _updateTitle];
+  tabBarTemplateDelegate = [(CPSTabBarViewController *)selfCopy tabBarTemplateDelegate];
   v9 = 0;
-  if ([v8 conformsToProtocol:&unk_28562C040])
+  if ([tabBarTemplateDelegate conformsToProtocol:&unk_28562C040])
   {
     v9 = v12 != 0;
   }
 
-  *&v6 = MEMORY[0x277D82BD8](v8).n128_u64[0];
+  *&v6 = MEMORY[0x277D82BD8](tabBarTemplateDelegate).n128_u64[0];
   if (v9)
   {
-    v7 = [(CPSTabBarViewController *)v15 tabBarTemplateDelegate];
-    [v7 handleActionForControlIdentifier:v12];
-    MEMORY[0x277D82BD8](v7);
+    tabBarTemplateDelegate2 = [(CPSTabBarViewController *)selfCopy tabBarTemplateDelegate];
+    [tabBarTemplateDelegate2 handleActionForControlIdentifier:v12];
+    MEMORY[0x277D82BD8](tabBarTemplateDelegate2);
   }
 
   objc_storeStrong(&v12, 0);
@@ -401,198 +401,198 @@ uint64_t __61__CPSTabBarViewController_applicationDidBecomeNowPlayingApp___block
 
 - (void)removeFromParentViewController
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = CPSTabBarViewController;
   [(CPSTabBarViewController *)&v2 removeFromParentViewController];
-  [(CPSTabBarViewController *)v4 _cleanup];
+  [(CPSTabBarViewController *)selfCopy _cleanup];
 }
 
 - (void)_cleanup
 {
   objc_storeStrong(&self->_templateProviderFuture, 0);
-  v2 = [(CPSTabBarViewController *)self viewControllerDelegate];
-  [(CPSTemplateViewControllerDelegate *)v2 templateViewControllerDidPop:self];
-  MEMORY[0x277D82BD8](v2);
+  viewControllerDelegate = [(CPSTabBarViewController *)self viewControllerDelegate];
+  [(CPSTemplateViewControllerDelegate *)viewControllerDelegate templateViewControllerDidPop:self];
+  MEMORY[0x277D82BD8](viewControllerDelegate);
 }
 
 - (void)viewDidLoad
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5.receiver = self;
   v5.super_class = CPSTabBarViewController;
   [(CPSTabBarViewController *)&v5 viewDidLoad];
-  v4 = [(CPSTabBarViewController *)v7 tabBar];
-  [v4 setAccessibilityIdentifier:@"CPTabBar"];
-  MEMORY[0x277D82BD8](v4);
+  tabBar = [(CPSTabBarViewController *)selfCopy tabBar];
+  [tabBar setAccessibilityIdentifier:@"CPTabBar"];
+  MEMORY[0x277D82BD8](tabBar);
   if (_UISolariumEnabled())
   {
-    v3 = [MEMORY[0x277D75348] clearColor];
-    v2 = [(CPSTabBarViewController *)v7 view];
-    [v2 setBackgroundColor:v3];
-    MEMORY[0x277D82BD8](v2);
-    MEMORY[0x277D82BD8](v3);
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    view = [(CPSTabBarViewController *)selfCopy view];
+    [view setBackgroundColor:clearColor];
+    MEMORY[0x277D82BD8](view);
+    MEMORY[0x277D82BD8](clearColor);
   }
 
-  [(CPSTabBarViewController *)v7 _updateTitle];
+  [(CPSTabBarViewController *)selfCopy _updateTitle];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  appearCopy = appear;
   v9.receiver = self;
   v9.super_class = CPSTabBarViewController;
-  [(CPSTabBarViewController *)&v9 viewWillAppear:a3];
-  v7 = [(CPSTabBarViewController *)v12 tabBarTemplateDelegate];
-  v8 = [v7 conformsToProtocol:&unk_28562C040];
-  *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
+  [(CPSTabBarViewController *)&v9 viewWillAppear:appear];
+  tabBarTemplateDelegate = [(CPSTabBarViewController *)selfCopy tabBarTemplateDelegate];
+  v8 = [tabBarTemplateDelegate conformsToProtocol:&unk_28562C040];
+  *&v3 = MEMORY[0x277D82BD8](tabBarTemplateDelegate).n128_u64[0];
   if (v8)
   {
-    v6 = [(CPSTabBarViewController *)v12 tabBarTemplateDelegate];
-    v5 = [(CPSTabBarViewController *)v12 associatedTemplate];
-    v4 = [(CPTemplate *)v5 identifier];
-    [v6 templateWillAppearWithIdentifier:? animated:?];
-    MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
-  }
-}
-
-- (void)viewDidAppear:(BOOL)a3
-{
-  v12 = self;
-  v11 = a2;
-  v10 = a3;
-  v9.receiver = self;
-  v9.super_class = CPSTabBarViewController;
-  [(CPSTabBarViewController *)&v9 viewDidAppear:a3];
-  v7 = [(CPSTabBarViewController *)v12 tabBarTemplateDelegate];
-  v8 = [v7 conformsToProtocol:&unk_28562C040];
-  *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  if (v8)
-  {
-    v6 = [(CPSTabBarViewController *)v12 tabBarTemplateDelegate];
-    v5 = [(CPSTabBarViewController *)v12 associatedTemplate];
-    v4 = [(CPTemplate *)v5 identifier];
-    [v6 templateDidAppearWithIdentifier:? animated:?];
-    MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
+    tabBarTemplateDelegate2 = [(CPSTabBarViewController *)selfCopy tabBarTemplateDelegate];
+    associatedTemplate = [(CPSTabBarViewController *)selfCopy associatedTemplate];
+    identifier = [(CPTemplate *)associatedTemplate identifier];
+    [tabBarTemplateDelegate2 templateWillAppearWithIdentifier:? animated:?];
+    MEMORY[0x277D82BD8](identifier);
+    MEMORY[0x277D82BD8](associatedTemplate);
+    MEMORY[0x277D82BD8](tabBarTemplateDelegate2);
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  appearCopy = appear;
   v9.receiver = self;
   v9.super_class = CPSTabBarViewController;
-  [(CPSTabBarViewController *)&v9 viewWillDisappear:a3];
-  v7 = [(CPSTabBarViewController *)v12 tabBarTemplateDelegate];
-  v8 = [v7 conformsToProtocol:&unk_28562C040];
-  *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
+  [(CPSTabBarViewController *)&v9 viewDidAppear:appear];
+  tabBarTemplateDelegate = [(CPSTabBarViewController *)selfCopy tabBarTemplateDelegate];
+  v8 = [tabBarTemplateDelegate conformsToProtocol:&unk_28562C040];
+  *&v3 = MEMORY[0x277D82BD8](tabBarTemplateDelegate).n128_u64[0];
   if (v8)
   {
-    v6 = [(CPSTabBarViewController *)v12 tabBarTemplateDelegate];
-    v5 = [(CPSTabBarViewController *)v12 associatedTemplate];
-    v4 = [(CPTemplate *)v5 identifier];
-    [v6 templateWillDisappearWithIdentifier:? animated:?];
-    MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
+    tabBarTemplateDelegate2 = [(CPSTabBarViewController *)selfCopy tabBarTemplateDelegate];
+    associatedTemplate = [(CPSTabBarViewController *)selfCopy associatedTemplate];
+    identifier = [(CPTemplate *)associatedTemplate identifier];
+    [tabBarTemplateDelegate2 templateDidAppearWithIdentifier:? animated:?];
+    MEMORY[0x277D82BD8](identifier);
+    MEMORY[0x277D82BD8](associatedTemplate);
+    MEMORY[0x277D82BD8](tabBarTemplateDelegate2);
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  disappearCopy = disappear;
   v9.receiver = self;
   v9.super_class = CPSTabBarViewController;
-  [(CPSTabBarViewController *)&v9 viewDidDisappear:a3];
-  v7 = [(CPSTabBarViewController *)v12 tabBarTemplateDelegate];
-  v8 = [v7 conformsToProtocol:&unk_28562C040];
-  *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
+  [(CPSTabBarViewController *)&v9 viewWillDisappear:disappear];
+  tabBarTemplateDelegate = [(CPSTabBarViewController *)selfCopy tabBarTemplateDelegate];
+  v8 = [tabBarTemplateDelegate conformsToProtocol:&unk_28562C040];
+  *&v3 = MEMORY[0x277D82BD8](tabBarTemplateDelegate).n128_u64[0];
   if (v8)
   {
-    v6 = [(CPSTabBarViewController *)v12 tabBarTemplateDelegate];
-    v5 = [(CPSTabBarViewController *)v12 associatedTemplate];
-    v4 = [(CPTemplate *)v5 identifier];
-    [v6 templateDidDisappearWithIdentifier:? animated:?];
-    MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
+    tabBarTemplateDelegate2 = [(CPSTabBarViewController *)selfCopy tabBarTemplateDelegate];
+    associatedTemplate = [(CPSTabBarViewController *)selfCopy associatedTemplate];
+    identifier = [(CPTemplate *)associatedTemplate identifier];
+    [tabBarTemplateDelegate2 templateWillDisappearWithIdentifier:? animated:?];
+    MEMORY[0x277D82BD8](identifier);
+    MEMORY[0x277D82BD8](associatedTemplate);
+    MEMORY[0x277D82BD8](tabBarTemplateDelegate2);
+  }
+}
+
+- (void)viewDidDisappear:(BOOL)disappear
+{
+  selfCopy = self;
+  v11 = a2;
+  disappearCopy = disappear;
+  v9.receiver = self;
+  v9.super_class = CPSTabBarViewController;
+  [(CPSTabBarViewController *)&v9 viewDidDisappear:disappear];
+  tabBarTemplateDelegate = [(CPSTabBarViewController *)selfCopy tabBarTemplateDelegate];
+  v8 = [tabBarTemplateDelegate conformsToProtocol:&unk_28562C040];
+  *&v3 = MEMORY[0x277D82BD8](tabBarTemplateDelegate).n128_u64[0];
+  if (v8)
+  {
+    tabBarTemplateDelegate2 = [(CPSTabBarViewController *)selfCopy tabBarTemplateDelegate];
+    associatedTemplate = [(CPSTabBarViewController *)selfCopy associatedTemplate];
+    identifier = [(CPTemplate *)associatedTemplate identifier];
+    [tabBarTemplateDelegate2 templateDidDisappearWithIdentifier:? animated:?];
+    MEMORY[0x277D82BD8](identifier);
+    MEMORY[0x277D82BD8](associatedTemplate);
+    MEMORY[0x277D82BD8](tabBarTemplateDelegate2);
   }
 }
 
 - (BOOL)restoresFocusAfterTransition
 {
-  v3 = [(CPSTabBarViewController *)self selectedViewController];
-  v4 = [v3 restoresFocusAfterTransition];
-  MEMORY[0x277D82BD8](v3);
-  return v4;
+  selectedViewController = [(CPSTabBarViewController *)self selectedViewController];
+  restoresFocusAfterTransition = [selectedViewController restoresFocusAfterTransition];
+  MEMORY[0x277D82BD8](selectedViewController);
+  return restoresFocusAfterTransition;
 }
 
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = a4;
-  v5.receiver = v8;
+  objc_storeStrong(location, controllers);
+  animatedCopy = animated;
+  v5.receiver = selfCopy;
   v5.super_class = CPSTabBarViewController;
-  [(CPSTabBarViewController *)&v5 setViewControllers:location[0] animated:a4];
-  [(CPSTabBarViewController *)v8 _updateNowPlayingButtonIfNeeded];
+  [(CPSTabBarViewController *)&v5 setViewControllers:location[0] animated:animated];
+  [(CPSTabBarViewController *)selfCopy _updateNowPlayingButtonIfNeeded];
   objc_storeStrong(location, 0);
 }
 
 - (BOOL)_isEligibleForNowPlayingButton
 {
-  v8 = [(CPSTabBarViewController *)self templateEnvironment];
-  v9 = [(CPSTemplateEnvironment *)v8 canBecomeNowPlayingApp];
-  *&v2 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-  if (!v9)
+  templateEnvironment = [(CPSTabBarViewController *)self templateEnvironment];
+  canBecomeNowPlayingApp = [(CPSTemplateEnvironment *)templateEnvironment canBecomeNowPlayingApp];
+  *&v2 = MEMORY[0x277D82BD8](templateEnvironment).n128_u64[0];
+  if (!canBecomeNowPlayingApp)
   {
     return 0;
   }
 
-  v6 = [(CPSTabBarViewController *)self viewControllers];
-  v7 = [v6 count];
-  *&v3 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+  viewControllers = [(CPSTabBarViewController *)self viewControllers];
+  v7 = [viewControllers count];
+  *&v3 = MEMORY[0x277D82BD8](viewControllers).n128_u64[0];
   if (v7 <= 4)
   {
     return 1;
   }
 
-  v5 = [(CPSTabBarViewController *)self view];
-  [v5 bounds];
+  view = [(CPSTabBarViewController *)self view];
+  [view bounds];
   v11 = CGRectGetWidth(v12) >= 440.0;
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](view);
   return v11;
 }
 
 - (void)_updateNowPlayingButtonIfNeeded
 {
-  v2 = [(CPSTabBarViewController *)self _accessoryView];
-  v6 = v2 != 0;
-  v4 = [(CPSTabBarViewController *)self templateEnvironment];
-  v5 = 0;
-  if ([(CPSTemplateEnvironment *)v4 isNowPlayingApp])
+  _accessoryView = [(CPSTabBarViewController *)self _accessoryView];
+  v6 = _accessoryView != 0;
+  templateEnvironment = [(CPSTabBarViewController *)self templateEnvironment];
+  _isEligibleForNowPlayingButton = 0;
+  if ([(CPSTemplateEnvironment *)templateEnvironment isNowPlayingApp])
   {
-    v5 = [(CPSTabBarViewController *)self _isEligibleForNowPlayingButton];
+    _isEligibleForNowPlayingButton = [(CPSTabBarViewController *)self _isEligibleForNowPlayingButton];
   }
 
-  *&v3 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (v6 != v5)
+  *&v3 = MEMORY[0x277D82BD8](templateEnvironment).n128_u64[0];
+  if (v6 != _isEligibleForNowPlayingButton)
   {
-    [(CPSTabBarViewController *)self showNowPlayingButton:v5, v3];
+    [(CPSTabBarViewController *)self showNowPlayingButton:_isEligibleForNowPlayingButton, v3];
   }
 }
 

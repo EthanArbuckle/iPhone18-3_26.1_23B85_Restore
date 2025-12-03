@@ -2,16 +2,16 @@
 - (CGSize)compactPreferredContentSize;
 - (SBHRecentsDocumentExtensionProvider)init;
 - (SBHRecentsDocumentExtensionProviderDelegate)delegate;
-- (id)_viewControllerConfiguration:(id)a3;
-- (id)recentsDocumentViewControllerForBundleIdentifier:(id)a3;
-- (void)_extensionWillExit:(id)a3;
-- (void)_loadExtensionWithCompletion:(id)a3;
-- (void)_loadRemoteViewControllerWithConfiguration:(id)a3;
-- (void)_setupHostViewController:(id)a3;
+- (id)_viewControllerConfiguration:(id)configuration;
+- (id)recentsDocumentViewControllerForBundleIdentifier:(id)identifier;
+- (void)_extensionWillExit:(id)exit;
+- (void)_loadExtensionWithCompletion:(id)completion;
+- (void)_loadRemoteViewControllerWithConfiguration:(id)configuration;
+- (void)_setupHostViewController:(id)controller;
 - (void)_teardownHostViewController;
 - (void)dealloc;
-- (void)popoverHostExtensionDidExit:(id)a3;
-- (void)popoverHostExtensionRequestsDismiss:(id)a3;
+- (void)popoverHostExtensionDidExit:(id)exit;
+- (void)popoverHostExtensionRequestsDismiss:(id)dismiss;
 @end
 
 @implementation SBHRecentsDocumentExtensionProvider
@@ -43,32 +43,32 @@
   [(SBHRecentsDocumentExtensionProvider *)&v3 dealloc];
 }
 
-- (id)recentsDocumentViewControllerForBundleIdentifier:(id)a3
+- (id)recentsDocumentViewControllerForBundleIdentifier:(id)identifier
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHRecentsDocumentExtensionProvider *)self wrappingViewController];
-  v6 = [(SBHRecentsDocumentExtensionProvider *)self hostViewController];
+  identifierCopy = identifier;
+  wrappingViewController = [(SBHRecentsDocumentExtensionProvider *)self wrappingViewController];
+  hostViewController = [(SBHRecentsDocumentExtensionProvider *)self hostViewController];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __88__SBHRecentsDocumentExtensionProvider_recentsDocumentViewControllerForBundleIdentifier___block_invoke;
   aBlock[3] = &unk_1E808B820;
-  v7 = v4;
+  v7 = identifierCopy;
   v26 = v7;
   v8 = _Block_copy(aBlock);
-  if (v6)
+  if (hostViewController)
   {
-    v9 = [(SBHRecentsDocumentExtensionProvider *)self remoteService];
-    v8[2](v8, v9);
+    remoteService = [(SBHRecentsDocumentExtensionProvider *)self remoteService];
+    v8[2](v8, remoteService);
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v27[0] = v5;
-    v27[1] = v6;
-    v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:{2, 0}];
-    v11 = [v10 countByEnumeratingWithState:&v19 objects:v28 count:16];
+    v27[0] = wrappingViewController;
+    v27[1] = hostViewController;
+    extension = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:{2, 0}];
+    v11 = [extension countByEnumeratingWithState:&v19 objects:v28 count:16];
     if (v11)
     {
       v12 = v11;
@@ -79,18 +79,18 @@
         {
           if (*v20 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(extension);
           }
 
-          v15 = [*(*(&v19 + 1) + 8 * i) view];
-          [v15 frame];
-          [v15 setFrame:?];
-          [v15 setNeedsLayout];
-          [v15 setNeedsUpdateConstraints];
-          [v15 layoutIfNeeded];
+          view = [*(*(&v19 + 1) + 8 * i) view];
+          [view frame];
+          [view setFrame:?];
+          [view setNeedsLayout];
+          [view setNeedsUpdateConstraints];
+          [view layoutIfNeeded];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v19 objects:v28 count:16];
+        v12 = [extension countByEnumeratingWithState:&v19 objects:v28 count:16];
       }
 
       while (v12);
@@ -99,8 +99,8 @@
 
   else
   {
-    v10 = [(SBHRecentsDocumentExtensionProvider *)self extension];
-    if (v10)
+    extension = [(SBHRecentsDocumentExtensionProvider *)self extension];
+    if (extension)
     {
       [(SBHRecentsDocumentExtensionProvider *)self _loadRemoteViewControllerWithConfiguration:v8];
     }
@@ -123,44 +123,44 @@
     }
   }
 
-  v17 = v5;
-  return v5;
+  v17 = wrappingViewController;
+  return wrappingViewController;
 }
 
-- (void)popoverHostExtensionRequestsDismiss:(id)a3
+- (void)popoverHostExtensionRequestsDismiss:(id)dismiss
 {
-  v5 = [(SBHRecentsDocumentExtensionProvider *)self delegate];
-  v4 = [(SBHRecentsDocumentExtensionProvider *)self wrappingViewController];
-  [v5 recentsDocumentExtensionViewControllerRequestsDismiss:v4];
+  delegate = [(SBHRecentsDocumentExtensionProvider *)self delegate];
+  wrappingViewController = [(SBHRecentsDocumentExtensionProvider *)self wrappingViewController];
+  [delegate recentsDocumentExtensionViewControllerRequestsDismiss:wrappingViewController];
 }
 
-- (void)popoverHostExtensionDidExit:(id)a3
+- (void)popoverHostExtensionDidExit:(id)exit
 {
-  [(SBHRecentsDocumentExtensionProvider *)self _extensionWillExit:a3];
-  v5 = [(SBHRecentsDocumentExtensionProvider *)self delegate];
-  v4 = [(SBHRecentsDocumentExtensionProvider *)self wrappingViewController];
-  [v5 recentsDocumentExtensionViewControllerRequestsDismiss:v4];
+  [(SBHRecentsDocumentExtensionProvider *)self _extensionWillExit:exit];
+  delegate = [(SBHRecentsDocumentExtensionProvider *)self delegate];
+  wrappingViewController = [(SBHRecentsDocumentExtensionProvider *)self wrappingViewController];
+  [delegate recentsDocumentExtensionViewControllerRequestsDismiss:wrappingViewController];
 }
 
-- (void)_extensionWillExit:(id)a3
+- (void)_extensionWillExit:(id)exit
 {
-  v4 = a3;
-  v5 = [(SBHRecentsDocumentExtensionProvider *)self delegate];
-  [v5 recentsDocumentExtensionViewControllerRequestsDismiss:v4];
+  exitCopy = exit;
+  delegate = [(SBHRecentsDocumentExtensionProvider *)self delegate];
+  [delegate recentsDocumentExtensionViewControllerRequestsDismiss:exitCopy];
 
   [(SBHRecentsDocumentExtensionProvider *)self setExtension:0];
 
   [(SBHRecentsDocumentExtensionProvider *)self _teardownHostViewController];
 }
 
-- (void)_loadExtensionWithCompletion:(id)a3
+- (void)_loadExtensionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_new();
   [v5 setObject:@"com.apple.internal.springboard.app-popover" forKeyedSubscript:*MEMORY[0x1E696A2F8]];
-  v6 = [(SBHRecentsDocumentExtensionProvider *)self _preferredExtensionIdentifier];
+  _preferredExtensionIdentifier = [(SBHRecentsDocumentExtensionProvider *)self _preferredExtensionIdentifier];
   v7 = *MEMORY[0x1E696A2E0];
-  [v5 setObject:v6 forKeyedSubscript:*MEMORY[0x1E696A2E0]];
+  [v5 setObject:_preferredExtensionIdentifier forKeyedSubscript:*MEMORY[0x1E696A2E0]];
 
   v21 = 0;
   v8 = [MEMORY[0x1E696ABD0] extensionsWithMatchingAttributes:v5 error:&v21];
@@ -196,8 +196,8 @@
     v8 = v12;
   }
 
-  v14 = [v8 firstObject];
-  [(SBHRecentsDocumentExtensionProvider *)self setExtension:v14];
+  firstObject = [v8 firstObject];
+  [(SBHRecentsDocumentExtensionProvider *)self setExtension:firstObject];
 
   if (v13)
   {
@@ -208,10 +208,10 @@
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v16 = [(SBHRecentsDocumentExtensionProvider *)self extension];
-    v17 = v16;
+    extension = [(SBHRecentsDocumentExtensionProvider *)self extension];
+    v17 = extension;
     if (v13)
     {
       v18 = 1;
@@ -219,33 +219,33 @@
 
     else
     {
-      v18 = v16 == 0;
+      v18 = extension == 0;
     }
 
     v19 = !v18;
-    v4[2](v4, v19);
+    completionCopy[2](completionCopy, v19);
   }
 }
 
-- (id)_viewControllerConfiguration:(id)a3
+- (id)_viewControllerConfiguration:(id)configuration
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHRecentsDocumentExtensionProvider *)self wrappingViewController];
-  v6 = [(SBHRecentsDocumentExtensionProvider *)self hostViewController];
-  if (v6)
+  configurationCopy = configuration;
+  wrappingViewController = [(SBHRecentsDocumentExtensionProvider *)self wrappingViewController];
+  hostViewController = [(SBHRecentsDocumentExtensionProvider *)self hostViewController];
+  if (hostViewController)
   {
-    v7 = [(SBHRecentsDocumentExtensionProvider *)self remoteService];
-    v4[2](v4, v7);
+    remoteService = [(SBHRecentsDocumentExtensionProvider *)self remoteService];
+    configurationCopy[2](configurationCopy, remoteService);
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v22[0] = v5;
-    v22[1] = v6;
-    v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:{2, 0}];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v23 count:16];
+    v22[0] = wrappingViewController;
+    v22[1] = hostViewController;
+    extension = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:{2, 0}];
+    v9 = [extension countByEnumeratingWithState:&v16 objects:v23 count:16];
     if (v9)
     {
       v10 = v9;
@@ -256,18 +256,18 @@
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(extension);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) view];
-          [v13 frame];
-          [v13 setFrame:?];
-          [v13 setNeedsLayout];
-          [v13 setNeedsUpdateConstraints];
-          [v13 layoutIfNeeded];
+          view = [*(*(&v16 + 1) + 8 * i) view];
+          [view frame];
+          [view setFrame:?];
+          [view setNeedsLayout];
+          [view setNeedsUpdateConstraints];
+          [view layoutIfNeeded];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v23 count:16];
+        v10 = [extension countByEnumeratingWithState:&v16 objects:v23 count:16];
       }
 
       while (v10);
@@ -276,10 +276,10 @@
 
   else
   {
-    v8 = [(SBHRecentsDocumentExtensionProvider *)self extension];
-    if (v8)
+    extension = [(SBHRecentsDocumentExtensionProvider *)self extension];
+    if (extension)
     {
-      [(SBHRecentsDocumentExtensionProvider *)self _loadRemoteViewControllerWithConfiguration:v4];
+      [(SBHRecentsDocumentExtensionProvider *)self _loadRemoteViewControllerWithConfiguration:configurationCopy];
     }
 
     else
@@ -295,27 +295,27 @@
       v20[2] = __68__SBHRecentsDocumentExtensionProvider__viewControllerConfiguration___block_invoke;
       v20[3] = &unk_1E808B3C0;
       v20[4] = self;
-      v21 = v4;
+      v21 = configurationCopy;
       [(SBHRecentsDocumentExtensionProvider *)self _loadExtensionWithCompletion:v20];
     }
   }
 
-  return v5;
+  return wrappingViewController;
 }
 
-- (void)_loadRemoteViewControllerWithConfiguration:(id)a3
+- (void)_loadRemoteViewControllerWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(SBHRecentsDocumentExtensionProvider *)self extension];
+  configurationCopy = configuration;
+  extension = [(SBHRecentsDocumentExtensionProvider *)self extension];
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __82__SBHRecentsDocumentExtensionProvider__loadRemoteViewControllerWithConfiguration___block_invoke;
   v7[3] = &unk_1E808B868;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = configurationCopy;
   v8 = v6;
-  [v5 instantiateViewControllerWithInputItems:0 connectionHandler:v7];
+  [extension instantiateViewControllerWithInputItems:0 connectionHandler:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -361,35 +361,35 @@ void __82__SBHRecentsDocumentExtensionProvider__loadRemoteViewControllerWithConf
   }
 }
 
-- (void)_setupHostViewController:(id)a3
+- (void)_setupHostViewController:(id)controller
 {
-  v4 = a3;
-  v9 = [(SBHRecentsDocumentExtensionProvider *)self wrappingViewController];
+  controllerCopy = controller;
+  wrappingViewController = [(SBHRecentsDocumentExtensionProvider *)self wrappingViewController];
   if (!self->_hostViewController)
   {
-    [v9 preferredContentSize];
+    [wrappingViewController preferredContentSize];
     self->_compactPreferredContentSize.width = v5;
     self->_compactPreferredContentSize.height = v6;
   }
 
-  [v4 setDelegate:self];
+  [controllerCopy setDelegate:self];
   hostViewController = self->_hostViewController;
-  self->_hostViewController = v4;
-  v8 = v4;
+  self->_hostViewController = controllerCopy;
+  v8 = controllerCopy;
 
-  [v9 wrapRemoteViewController:v8];
+  [wrappingViewController wrapRemoteViewController:v8];
 }
 
 - (void)_teardownHostViewController
 {
-  v3 = [(SBHRecentsDocumentExtensionProvider *)self wrappingViewController];
-  [v3 wrapRemoteViewController:0];
+  wrappingViewController = [(SBHRecentsDocumentExtensionProvider *)self wrappingViewController];
+  [wrappingViewController wrapRemoteViewController:0];
 
   hostViewController = self->_hostViewController;
   self->_hostViewController = 0;
 
-  v5 = [(SBHRecentsDocumentExtensionProvider *)self remoteService];
-  [v5 _invalidateSBUIPopoverExtension];
+  remoteService = [(SBHRecentsDocumentExtensionProvider *)self remoteService];
+  [remoteService _invalidateSBUIPopoverExtension];
 }
 
 - (SBHRecentsDocumentExtensionProviderDelegate)delegate

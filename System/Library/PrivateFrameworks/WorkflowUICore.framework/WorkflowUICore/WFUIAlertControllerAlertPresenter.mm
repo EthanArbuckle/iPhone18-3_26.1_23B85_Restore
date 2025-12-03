@@ -1,39 +1,39 @@
 @interface WFUIAlertControllerAlertPresenter
-+ (id)contentViewControllerForContentView:(id)a3 padding:(UIEdgeInsets)a4;
-+ (void)presentAlert:(id)a3 withUserInterface:(id)a4;
++ (id)contentViewControllerForContentView:(id)view padding:(UIEdgeInsets)padding;
++ (void)presentAlert:(id)alert withUserInterface:(id)interface;
 @end
 
 @implementation WFUIAlertControllerAlertPresenter
 
-+ (id)contentViewControllerForContentView:(id)a3 padding:(UIEdgeInsets)a4
++ (id)contentViewControllerForContentView:(id)view padding:(UIEdgeInsets)padding
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
   v26[4] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  viewCopy = view;
   v25 = objc_opt_new();
   v9 = objc_alloc_init(MEMORY[0x277D75D18]);
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v9 addSubview:v8];
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  [v9 addSubview:viewCopy];
   v20 = MEMORY[0x277CCAAD0];
-  v24 = [v8 topAnchor];
-  v23 = [v9 topAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23 constant:top];
+  topAnchor = [viewCopy topAnchor];
+  topAnchor2 = [v9 topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:top];
   v26[0] = v22;
-  v21 = [v8 bottomAnchor];
-  v10 = [v9 bottomAnchor];
-  v11 = [v21 constraintEqualToAnchor:v10 constant:-bottom];
+  bottomAnchor = [viewCopy bottomAnchor];
+  bottomAnchor2 = [v9 bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-bottom];
   v26[1] = v11;
-  v12 = [v8 leadingAnchor];
-  v13 = [v9 leadingAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13 constant:left];
+  leadingAnchor = [viewCopy leadingAnchor];
+  leadingAnchor2 = [v9 leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:left];
   v26[2] = v14;
-  v15 = [v8 trailingAnchor];
+  trailingAnchor = [viewCopy trailingAnchor];
 
-  v16 = [v9 trailingAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16 constant:-right];
+  trailingAnchor2 = [v9 trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-right];
   v26[3] = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:4];
   [v20 activateConstraints:v18];
@@ -43,20 +43,20 @@
   return v25;
 }
 
-+ (void)presentAlert:(id)a3 withUserInterface:(id)a4
++ (void)presentAlert:(id)alert withUserInterface:(id)interface
 {
   v54 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 preferredStyle] != 1 || (objc_msgSend(v5, "textFieldConfigurationHandlers"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8))
+  alertCopy = alert;
+  interfaceCopy = interface;
+  if ([alertCopy preferredStyle] != 1 || (objc_msgSend(alertCopy, "textFieldConfigurationHandlers"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8))
   {
     v9 = 1;
     goto LABEL_4;
   }
 
-  v37 = [v5 presentationSource];
-  v38 = [v37 barButtonItem];
-  if (v38)
+  presentationSource = [alertCopy presentationSource];
+  barButtonItem = [presentationSource barButtonItem];
+  if (barButtonItem)
   {
 
     v9 = 0;
@@ -65,29 +65,29 @@ LABEL_31:
     goto LABEL_4;
   }
 
-  v39 = [v5 presentationSource];
-  v40 = [v39 sourceView];
+  presentationSource2 = [alertCopy presentationSource];
+  sourceView = [presentationSource2 sourceView];
 
-  if (!v40)
+  if (!sourceView)
   {
-    v37 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:0];
-    v9 = [v37 modalPresentationStyle] == 7;
+    presentationSource = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:0];
+    v9 = [presentationSource modalPresentationStyle] == 7;
     goto LABEL_31;
   }
 
   v9 = 0;
 LABEL_4:
   v10 = MEMORY[0x277D75110];
-  v11 = [v5 title];
-  v12 = [v5 message];
-  v13 = [v10 alertControllerWithTitle:v11 message:v12 preferredStyle:v9];
+  title = [alertCopy title];
+  message = [alertCopy message];
+  v13 = [v10 alertControllerWithTitle:title message:message preferredStyle:v9];
 
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v14 = [v5 textFieldConfigurationHandlers];
-  v15 = [v14 countByEnumeratingWithState:&v48 objects:v53 count:16];
+  textFieldConfigurationHandlers = [alertCopy textFieldConfigurationHandlers];
+  v15 = [textFieldConfigurationHandlers countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v15)
   {
     v16 = v15;
@@ -99,7 +99,7 @@ LABEL_4:
       {
         if (*v49 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(textFieldConfigurationHandlers);
         }
 
         v19 = *(*(&v48 + 1) + 8 * v18);
@@ -113,29 +113,29 @@ LABEL_4:
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v48 objects:v53 count:16];
+      v16 = [textFieldConfigurationHandlers countByEnumeratingWithState:&v48 objects:v53 count:16];
     }
 
     while (v16);
   }
 
-  v20 = [v5 buttons];
-  [v13 setButtons:v20 forAlert:v5];
+  buttons = [alertCopy buttons];
+  [v13 setButtons:buttons forAlert:alertCopy];
 
-  v21 = [v5 contentView];
-  if (v21)
+  contentView = [alertCopy contentView];
+  if (contentView)
   {
-    [v5 contentViewPadding];
-    v22 = [WFUIAlertControllerAlertPresenter contentViewControllerForContentView:v21 padding:?];
+    [alertCopy contentViewPadding];
+    v22 = [WFUIAlertControllerAlertPresenter contentViewControllerForContentView:contentView padding:?];
     [v13 setContentViewController:v22];
   }
 
-  v23 = [v5 keyCommands];
+  keyCommands = [alertCopy keyCommands];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v24 = [v23 countByEnumeratingWithState:&v43 objects:v52 count:16];
+  v24 = [keyCommands countByEnumeratingWithState:&v43 objects:v52 count:16];
   if (v24)
   {
     v25 = v24;
@@ -147,72 +147,72 @@ LABEL_4:
       {
         if (*v44 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(keyCommands);
         }
 
         [v13 addKeyCommand:*(*(&v43 + 1) + 8 * v27++)];
       }
 
       while (v25 != v27);
-      v25 = [v23 countByEnumeratingWithState:&v43 objects:v52 count:16];
+      v25 = [keyCommands countByEnumeratingWithState:&v43 objects:v52 count:16];
     }
 
     while (v25);
   }
 
-  v28 = [v5 presentationSource];
-  v29 = [v13 popoverPresentationController];
-  [v29 setPermittedArrowDirections:{objc_msgSend(v28, "permittedArrowDirections")}];
-  [v29 setCanOverlapSourceViewRect:{objc_msgSend(v28, "canOverlapSourceViewRect")}];
-  v30 = [v28 barButtonItem];
-  [v29 setBarButtonItem:v30];
+  presentationSource3 = [alertCopy presentationSource];
+  popoverPresentationController = [v13 popoverPresentationController];
+  [popoverPresentationController setPermittedArrowDirections:{objc_msgSend(presentationSource3, "permittedArrowDirections")}];
+  [popoverPresentationController setCanOverlapSourceViewRect:{objc_msgSend(presentationSource3, "canOverlapSourceViewRect")}];
+  barButtonItem2 = [presentationSource3 barButtonItem];
+  [popoverPresentationController setBarButtonItem:barButtonItem2];
 
-  v31 = [v28 sourceView];
-  [v29 setSourceView:v31];
+  sourceView2 = [presentationSource3 sourceView];
+  [popoverPresentationController setSourceView:sourceView2];
 
-  [v29 wf_forcePresentationInPresenterSceneIfNeeded];
-  [v28 sourceRect];
+  [popoverPresentationController wf_forcePresentationInPresenterSceneIfNeeded];
+  [presentationSource3 sourceRect];
   if (!CGRectIsNull(v55))
   {
-    [v28 sourceRect];
-    [v29 setSourceRect:?];
+    [presentationSource3 sourceRect];
+    [popoverPresentationController setSourceRect:?];
   }
 
-  v32 = [v6 viewController];
-  if ([v32 overrideUserInterfaceStyle])
+  viewController = [interfaceCopy viewController];
+  if ([viewController overrideUserInterfaceStyle])
   {
-    [v13 setOverrideUserInterfaceStyle:{objc_msgSend(v32, "overrideUserInterfaceStyle")}];
+    [v13 setOverrideUserInterfaceStyle:{objc_msgSend(viewController, "overrideUserInterfaceStyle")}];
   }
 
-  v33 = [v32 presentedViewController];
+  presentedViewController = [viewController presentedViewController];
 
-  if (v33)
+  if (presentedViewController)
   {
     do
     {
-      v34 = [v32 presentedViewController];
+      presentedViewController2 = [viewController presentedViewController];
 
-      v35 = [v34 presentedViewController];
+      v34PresentedViewController = [presentedViewController2 presentedViewController];
 
-      v32 = v34;
+      viewController = presentedViewController2;
     }
 
-    while (v35);
+    while (v34PresentedViewController);
   }
 
   else
   {
-    v34 = v32;
+    presentedViewController2 = viewController;
   }
 
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __68__WFUIAlertControllerAlertPresenter_presentAlert_withUserInterface___block_invoke_2;
   v41[3] = &unk_279EF5240;
-  v42 = v21;
-  v36 = v21;
-  [v34 presentViewController:v13 animated:1 completion:v41];
-  [v5 setPresenter:v13];
+  v42 = contentView;
+  v36 = contentView;
+  [presentedViewController2 presentViewController:v13 animated:1 completion:v41];
+  [alertCopy setPresenter:v13];
 }
 
 uint64_t __68__WFUIAlertControllerAlertPresenter_presentAlert_withUserInterface___block_invoke_2(uint64_t a1)

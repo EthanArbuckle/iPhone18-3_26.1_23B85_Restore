@@ -1,16 +1,16 @@
 @interface PTFrameRateRangeSettings
-+ (BOOL)ignoresKey:(id)a3;
++ (BOOL)ignoresKey:(id)key;
 + (id)settingsControllerModule;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)drillDownSummary;
 - (id)succinctDescription;
 - (void)setDefaultValues;
-- (void)setFrameRateRange:(CAFrameRateRange)a3;
-- (void)setFrameRateRange:(CAFrameRateRange)a3 highFrameRateReason:(unsigned int)a4;
-- (void)setHighFrameRateReason:(unsigned int)a3;
-- (void)setPreset:(unint64_t)a3;
+- (void)setFrameRateRange:(CAFrameRateRange)range;
+- (void)setFrameRateRange:(CAFrameRateRange)range highFrameRateReason:(unsigned int)reason;
+- (void)setHighFrameRateReason:(unsigned int)reason;
+- (void)setPreset:(unint64_t)preset;
 - (void)validate;
 @end
 
@@ -28,9 +28,9 @@
   self->_reason = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (([(PTFrameRateRangeSettings *)self isEqual:v4]& 1) == 0)
   {
     *(v4 + 52) = self->_minimum;
@@ -96,12 +96,12 @@ uint64_t __52__PTFrameRateRangeSettings_settingsControllerModule__block_invoke(u
   return 1;
 }
 
-- (void)setFrameRateRange:(CAFrameRateRange)a3
+- (void)setFrameRateRange:(CAFrameRateRange)range
 {
-  preferred = a3.preferred;
-  maximum = a3.maximum;
-  minimum = a3.minimum;
-  if (CAFrameRateRangeIsEqualToRange(*MEMORY[0x277CD9DD0], a3))
+  preferred = range.preferred;
+  maximum = range.maximum;
+  minimum = range.minimum;
+  if (CAFrameRateRangeIsEqualToRange(*MEMORY[0x277CD9DD0], range))
   {
     if (!self->_preset)
     {
@@ -171,26 +171,26 @@ LABEL_14:
   [(PTFrameRateRangeSettings *)self setPreferred:preferred];
 }
 
-- (void)setFrameRateRange:(CAFrameRateRange)a3 highFrameRateReason:(unsigned int)a4
+- (void)setFrameRateRange:(CAFrameRateRange)range highFrameRateReason:(unsigned int)reason
 {
-  v4 = *&a4;
-  [(PTFrameRateRangeSettings *)self setFrameRateRange:*&a3.minimum, *&a3.maximum, *&a3.preferred];
+  v4 = *&reason;
+  [(PTFrameRateRangeSettings *)self setFrameRateRange:*&range.minimum, *&range.maximum, *&range.preferred];
 
   [(PTFrameRateRangeSettings *)self setHighFrameRateReason:v4];
 }
 
-- (void)setPreset:(unint64_t)a3
+- (void)setPreset:(unint64_t)preset
 {
   [(PTFrameRateRangeSettings *)self willChangeValueForKey:@"preset"];
-  self->_preset = a3;
+  self->_preset = preset;
   [(PTFrameRateRangeSettings *)self didChangeValueForKey:@"preset"];
-  if (a3 == 2)
+  if (preset == 2)
   {
     v8 = 80.0;
     goto LABEL_7;
   }
 
-  if (a3 == 1)
+  if (preset == 1)
   {
     v8 = 120.0;
 LABEL_7:
@@ -198,7 +198,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a3)
+  if (preset)
   {
     return;
   }
@@ -211,11 +211,11 @@ LABEL_8:
   [(PTFrameRateRangeSettings *)self setFrameRateRange:v5, v6, v7];
 }
 
-+ (BOOL)ignoresKey:(id)a3
++ (BOOL)ignoresKey:(id)key
 {
-  v3 = a3;
-  v4 = [v3 isEqualToString:@"frameRateRange"];
-  v5 = [v3 isEqualToString:@"highFrameRateReason"];
+  keyCopy = key;
+  v4 = [keyCopy isEqualToString:@"frameRateRange"];
+  v5 = [keyCopy isEqualToString:@"highFrameRateReason"];
 
   return v4 | v5;
 }
@@ -235,12 +235,12 @@ LABEL_8:
   return v3;
 }
 
-- (void)setHighFrameRateReason:(unsigned int)a3
+- (void)setHighFrameRateReason:(unsigned int)reason
 {
-  v3 = a3;
-  [(PTFrameRateRangeSettings *)self setReasonComponent:HIWORD(a3)];
+  reasonCopy = reason;
+  [(PTFrameRateRangeSettings *)self setReasonComponent:HIWORD(reason)];
 
-  [(PTFrameRateRangeSettings *)self setReason:v3];
+  [(PTFrameRateRangeSettings *)self setReason:reasonCopy];
 }
 
 - (void)validate
@@ -271,30 +271,30 @@ LABEL_8:
 
 - (id)succinctDescription
 {
-  v2 = [(PTFrameRateRangeSettings *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PTFrameRateRangeSettings *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PTFrameRateRangeSettings *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PTFrameRateRangeSettings *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(PTFrameRateRangeSettings *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(PTFrameRateRangeSettings *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__PTFrameRateRangeSettings_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_27835EC80;
-  v5 = v4;
+  v5 = succinctDescriptionBuilder;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v6 = [v5 modifyBody:v9];
   v7 = v5;
 

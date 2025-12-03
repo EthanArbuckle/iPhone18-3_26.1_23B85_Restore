@@ -1,50 +1,50 @@
 @interface HULocationEventSelectedLocationItem
 - (BOOL)_locationIsHome;
 - (HULocationEventSelectedLocationItem)init;
-- (HULocationEventSelectedLocationItem)initWithEvent:(id)a3 inHome:(id)a4;
+- (HULocationEventSelectedLocationItem)initWithEvent:(id)event inHome:(id)home;
 - (id)_locationTitle;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HULocationEventSelectedLocationItem
 
 - (HULocationEventSelectedLocationItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithEvent_inHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HULocationEventSelectedLocationItem.m" lineNumber:16 description:{@"%s is unavailable; use %@ instead", "-[HULocationEventSelectedLocationItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HULocationEventSelectedLocationItem.m" lineNumber:16 description:{@"%s is unavailable; use %@ instead", "-[HULocationEventSelectedLocationItem init]", v5}];
 
   return 0;
 }
 
-- (HULocationEventSelectedLocationItem)initWithEvent:(id)a3 inHome:(id)a4
+- (HULocationEventSelectedLocationItem)initWithEvent:(id)event inHome:(id)home
 {
-  v7 = a3;
-  v8 = a4;
+  eventCopy = event;
+  homeCopy = home;
   v12.receiver = self;
   v12.super_class = HULocationEventSelectedLocationItem;
   v9 = [(HULocationEventSelectedLocationItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_eventBuilder, a3);
-    objc_storeStrong(&v10->_home, a4);
+    objc_storeStrong(&v9->_eventBuilder, event);
+    objc_storeStrong(&v10->_home, home);
     v10->_locationCanBeEdited = 0;
   }
 
   return v10;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = objc_opt_new();
-  v5 = [(HULocationEventSelectedLocationItem *)self _locationTitle];
-  if (v5)
+  _locationTitle = [(HULocationEventSelectedLocationItem *)self _locationTitle];
+  if (_locationTitle)
   {
     v6 = _HULocalizedStringWithDefaultValue(@"HULocationTriggerSelectedLocationTitle", @"HULocationTriggerSelectedLocationTitle", 1);
     [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x277D13F60]];
 
-    [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x277D13E20]];
+    [v4 setObject:_locationTitle forKeyedSubscript:*MEMORY[0x277D13E20]];
     v7 = [MEMORY[0x277CCABB0] numberWithInt:{-[HULocationEventSelectedLocationItem locationCanBeEdited](self, "locationCanBeEdited") ^ 1}];
     [v4 setObject:v7 forKeyedSubscript:*MEMORY[0x277D13EA8]];
   }
@@ -65,20 +65,20 @@
 {
   if ([(HULocationEventSelectedLocationItem *)self _locationIsHome])
   {
-    v3 = _HULocalizedStringWithDefaultValue(@"HULocationTriggerSelectedLocationHome", @"HULocationTriggerSelectedLocationHome", 1);
+    identifier = _HULocalizedStringWithDefaultValue(@"HULocationTriggerSelectedLocationHome", @"HULocationTriggerSelectedLocationHome", 1);
   }
 
   else
   {
-    v4 = [(HULocationEventSelectedLocationItem *)self eventBuilder];
+    eventBuilder = [(HULocationEventSelectedLocationItem *)self eventBuilder];
 
-    if (v4)
+    if (eventBuilder)
     {
       objc_opt_class();
-      v5 = [(HULocationEventSelectedLocationItem *)self eventBuilder];
+      eventBuilder2 = [(HULocationEventSelectedLocationItem *)self eventBuilder];
       if (objc_opt_isKindOfClass())
       {
-        v6 = v5;
+        v6 = eventBuilder2;
       }
 
       else
@@ -90,31 +90,31 @@
 
       if (v7)
       {
-        v8 = [v7 region];
-        v3 = [v8 identifier];
+        region = [v7 region];
+        identifier = [region identifier];
       }
 
       else
       {
-        v9 = [(HULocationEventSelectedLocationItem *)self eventBuilder];
-        NSLog(&cfstr_ExpectedARegio.isa, v9);
+        eventBuilder3 = [(HULocationEventSelectedLocationItem *)self eventBuilder];
+        NSLog(&cfstr_ExpectedARegio.isa, eventBuilder3);
 
-        v3 = _HULocalizedStringWithDefaultValue(@"HULocationTriggerSelectedLocationCustom", @"HULocationTriggerSelectedLocationCustom", 1);
+        identifier = _HULocalizedStringWithDefaultValue(@"HULocationTriggerSelectedLocationCustom", @"HULocationTriggerSelectedLocationCustom", 1);
       }
     }
 
     else
     {
-      v3 = 0;
+      identifier = 0;
     }
   }
 
-  return v3;
+  return identifier;
 }
 
 - (BOOL)_locationIsHome
 {
-  v3 = [(HULocationEventSelectedLocationItem *)self eventBuilder];
+  eventBuilder = [(HULocationEventSelectedLocationItem *)self eventBuilder];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -124,10 +124,10 @@
   }
 
   objc_opt_class();
-  v6 = [(HULocationEventSelectedLocationItem *)self eventBuilder];
+  eventBuilder2 = [(HULocationEventSelectedLocationItem *)self eventBuilder];
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = eventBuilder2;
   }
 
   else
@@ -139,8 +139,8 @@
 
   if (v8)
   {
-    v9 = [(HULocationEventSelectedLocationItem *)self home];
-    v5 = [v8 isRegionAtHome:v9];
+    home = [(HULocationEventSelectedLocationItem *)self home];
+    v5 = [v8 isRegionAtHome:home];
   }
 
   else

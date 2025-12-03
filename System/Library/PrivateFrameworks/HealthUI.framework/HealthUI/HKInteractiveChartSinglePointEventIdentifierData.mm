@@ -6,16 +6,16 @@
 
 - (id)description
 {
-  v3 = [(HKInteractiveChartSinglePointEventIdentifierData *)self identifiers];
+  identifiers = [(HKInteractiveChartSinglePointEventIdentifierData *)self identifiers];
 
-  if (v3)
+  if (identifiers)
   {
     v4 = MEMORY[0x1E696AEC0];
     v11.receiver = self;
     v11.super_class = HKInteractiveChartSinglePointEventIdentifierData;
     v5 = [(HKInteractiveChartSinglePointData *)&v11 description];
-    v6 = [(HKInteractiveChartSinglePointEventIdentifierData *)self identifiers];
-    v7 = [v6 description];
+    identifiers2 = [(HKInteractiveChartSinglePointEventIdentifierData *)self identifiers];
+    v7 = [identifiers2 description];
     v8 = [v4 stringWithFormat:@"%@, identifiers: %@", v5, v7];
   }
 

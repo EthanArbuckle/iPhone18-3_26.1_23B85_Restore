@@ -17,9 +17,9 @@
     childID = 0;
   }
 
-  v5 = [v3 initWithFormat:@"rekey child context with child id %u", childID];
+  childID = [v3 initWithFormat:@"rekey child context with child id %u", childID];
 
-  return v5;
+  return childID;
 }
 
 @end

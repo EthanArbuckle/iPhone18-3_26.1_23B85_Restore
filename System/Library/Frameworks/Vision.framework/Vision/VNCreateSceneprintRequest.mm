@@ -1,52 +1,52 @@
 @interface VNCreateSceneprintRequest
-+ (BOOL)recordSpecifierModelEquivalenciesInRegistrar:(id)a3 error:(id *)a4;
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4;
-+ (id)descriptionForPrivateRevision:(unint64_t)a3;
++ (BOOL)recordSpecifierModelEquivalenciesInRegistrar:(id)registrar error:(id *)error;
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision;
++ (id)descriptionForPrivateRevision:(unint64_t)revision;
 + (id)privateRevisionsSet;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
 - (BOOL)returnAllResults;
 - (BOOL)useCenterTileOnly;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
 - (id)description;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
 - (id)supportedImageSizeSet;
 - (unint64_t)imageCropAndScaleOption;
-- (void)applyConfigurationOfRequest:(id)a3;
-- (void)setImageCropAndScaleOption:(unint64_t)a3;
-- (void)setReturnAllResults:(BOOL)a3;
-- (void)setUseCenterTileOnly:(BOOL)a3;
+- (void)applyConfigurationOfRequest:(id)request;
+- (void)setImageCropAndScaleOption:(unint64_t)option;
+- (void)setReturnAllResults:(BOOL)results;
+- (void)setUseCenterTileOnly:(BOOL)only;
 @end
 
 @implementation VNCreateSceneprintRequest
 
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision
 {
-  v7 = [VNImageAnalyzerMultiDetector modelForRequestClass:a1 revision:a3];
-  if (v7 != [VNImageAnalyzerMultiDetector modelForRequestClass:a1 revision:a4])
+  v7 = [VNImageAnalyzerMultiDetector modelForRequestClass:self revision:revision];
+  if (v7 != [VNImageAnalyzerMultiDetector modelForRequestClass:self revision:byRevision])
   {
     return 0;
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___VNCreateSceneprintRequest;
-  return objc_msgSendSuper2(&v9, sel_revision_mayAcceptResultsProducedByRevision_, a3, a4);
+  return objc_msgSendSuper2(&v9, sel_revision_mayAcceptResultsProducedByRevision_, revision, byRevision);
 }
 
-+ (id)descriptionForPrivateRevision:(unint64_t)a3
++ (id)descriptionForPrivateRevision:(unint64_t)revision
 {
-  if (a3 - 3737841664u >= 9)
+  if (revision - 3737841664u >= 9)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___VNCreateSceneprintRequest;
     v5 = objc_msgSendSuper2(&v7, sel_descriptionForPrivateRevision_);
   }
 
   else
   {
-    v5 = off_1E77B5608[a3 - 3737841664u];
+    v5 = off_1E77B5608[revision - 3737841664u];
   }
 
   return v5;
@@ -71,12 +71,12 @@ uint64_t __48__VNCreateSceneprintRequest_privateRevisionsSet__block_invoke(uint6
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)recordSpecifierModelEquivalenciesInRegistrar:(id)a3 error:(id *)a4
++ (BOOL)recordSpecifierModelEquivalenciesInRegistrar:(id)registrar error:(id *)error
 {
-  v6 = a3;
-  if ([v6 registerRequestClass:a1 revision:3 equivalencyToRevision:3737841671 error:a4])
+  registrarCopy = registrar;
+  if ([registrarCopy registerRequestClass:self revision:3 equivalencyToRevision:3737841671 error:error])
   {
-    v7 = [v6 registerRequestClass:a1 revision:3737841671 equivalencyToRevision:3737841672 error:a4];
+    v7 = [registrarCopy registerRequestClass:self revision:3737841671 equivalencyToRevision:3737841672 error:error];
   }
 
   else
@@ -90,37 +90,37 @@ uint64_t __48__VNCreateSceneprintRequest_privateRevisionsSet__block_invoke(uint6
 - (id)supportedImageSizeSet
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(VNRequest *)self resolvedRevision];
-  if (v3 == 3737841666 || v3 == 2)
+  resolvedRevision = [(VNRequest *)self resolvedRevision];
+  if (resolvedRevision == 3737841666 || resolvedRevision == 2)
   {
     v4 = [[VNSupportedImageSize alloc] initWithIdealFormat:1111970369 width:299 height:299 orientation:1 aspectRatioHandling:0 orientationAgnostic:0];
     v8[0] = v4;
-    v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
+    supportedImageSizeSet = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = VNCreateSceneprintRequest;
-    v5 = [(VNImageBasedRequest *)&v7 supportedImageSizeSet];
+    supportedImageSizeSet = [(VNImageBasedRequest *)&v7 supportedImageSizeSet];
   }
 
-  return v5;
+  return supportedImageSizeSet;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = v8;
-  if (a3 == 2 || a3 == 3737841666)
+  contextCopy = context;
+  v9 = contextCopy;
+  if (revision == 2 || revision == 3737841666)
   {
-    v10 = [v8 imageBufferAndReturnError:a5];
+    v10 = [contextCopy imageBufferAndReturnError:error];
     if (v10)
     {
-      v11 = [v9 session];
+      session = [v9 session];
       v21 = 0;
-      v12 = [(VNRequest *)self applicableDetectorAndOptions:&v21 forRevision:a3 loadedInSession:v11 error:a5];
+      v12 = [(VNRequest *)self applicableDetectorAndOptions:&v21 forRevision:revision loadedInSession:session error:error];
       v13 = v21;
       if (v12)
       {
@@ -134,9 +134,9 @@ uint64_t __48__VNCreateSceneprintRequest_privateRevisionsSet__block_invoke(uint6
         v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[VNCreateSceneprintRequest imageCropAndScaleOption](self, "imageCropAndScaleOption")}];
         [v13 setObject:v16 forKeyedSubscript:@"VNDetectorProcessOption_ImageCropAndScaleOption"];
 
-        v17 = [v9 qosClass];
+        qosClass = [v9 qosClass];
         [(VNImageBasedRequest *)self regionOfInterest];
-        v18 = [v12 processUsingQualityOfServiceClass:v17 options:v13 regionOfInterest:self warningRecorder:a5 error:0 progressHandler:?];
+        v18 = [v12 processUsingQualityOfServiceClass:qosClass options:v13 regionOfInterest:self warningRecorder:error error:0 progressHandler:?];
         v19 = v18 != 0;
         if (v18)
         {
@@ -156,10 +156,10 @@ uint64_t __48__VNCreateSceneprintRequest_privateRevisionsSet__block_invoke(uint6
     }
   }
 
-  else if (a5)
+  else if (error)
   {
-    [VNError errorForUnsupportedRevision:a3 ofRequest:self];
-    *a5 = v19 = 0;
+    [VNError errorForUnsupportedRevision:revision ofRequest:self];
+    *error = v19 = 0;
   }
 
   else
@@ -170,17 +170,17 @@ uint64_t __48__VNCreateSceneprintRequest_privateRevisionsSet__block_invoke(uint6
   return v19;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v21[1] = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = VNCreateSceneprintRequest;
-  v6 = [(VNRequest *)&v19 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
+  v6 = [(VNRequest *)&v19 newDefaultDetectorOptionsForRequestRevision:revision session:session];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[VNCreateSceneprintRequest imageCropAndScaleOption](self, "imageCropAndScaleOption")}];
   [v6 setObject:v7 forKeyedSubscript:@"VNDetectorProcessOption_ImageCropAndScaleOption"];
 
-  v8 = [(VNRequest *)self frameworkClass];
-  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:v8 revision:a3])
+  frameworkClass = [(VNRequest *)self frameworkClass];
+  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:frameworkClass revision:revision])
   {
     v9 = [(VNCoreSceneUnderstandingDetectorFeatureConfiguration *)[VNCoreSceneUnderstandingDetectorSceneprintConfiguration alloc] initWithObservationsRecipient:self];
     v21[0] = v9;
@@ -192,7 +192,7 @@ uint64_t __48__VNCreateSceneprintRequest_privateRevisionsSet__block_invoke(uint6
 
   else
   {
-    v12 = [VNImageAnalyzerMultiDetector modelForRequestClass:v8 revision:a3];
+    v12 = [VNImageAnalyzerMultiDetector modelForRequestClass:frameworkClass revision:revision];
     if (v12)
     {
       v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12];
@@ -215,32 +215,32 @@ uint64_t __48__VNCreateSceneprintRequest_privateRevisionsSet__block_invoke(uint6
   return v6;
 }
 
-- (void)applyConfigurationOfRequest:(id)a3
+- (void)applyConfigurationOfRequest:(id)request
 {
-  v4 = a3;
-  if (self != v4)
+  requestCopy = request;
+  if (self != requestCopy)
   {
     v5.receiver = self;
     v5.super_class = VNCreateSceneprintRequest;
-    [(VNImageBasedRequest *)&v5 applyConfigurationOfRequest:v4];
+    [(VNImageBasedRequest *)&v5 applyConfigurationOfRequest:requestCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(VNCreateSceneprintRequest *)self setReturnAllResults:[(VNCreateSceneprintRequest *)v4 returnAllResults]];
-      [(VNCreateSceneprintRequest *)self setUseCenterTileOnly:[(VNCreateSceneprintRequest *)v4 useCenterTileOnly]];
-      [(VNCreateSceneprintRequest *)self setImageCropAndScaleOption:[(VNCreateSceneprintRequest *)v4 imageCropAndScaleOption]];
+      [(VNCreateSceneprintRequest *)self setReturnAllResults:[(VNCreateSceneprintRequest *)requestCopy returnAllResults]];
+      [(VNCreateSceneprintRequest *)self setUseCenterTileOnly:[(VNCreateSceneprintRequest *)requestCopy useCenterTileOnly]];
+      [(VNCreateSceneprintRequest *)self setImageCropAndScaleOption:[(VNCreateSceneprintRequest *)requestCopy imageCropAndScaleOption]];
     }
   }
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (([v4 resolvedRevision] != 2 || (v5 = -[VNRequest detectionLevel](self, "detectionLevel"), v5 == objc_msgSend(v4, "detectionLevel"))) && (v6 = -[VNCreateSceneprintRequest returnAllResults](self, "returnAllResults"), v6 == objc_msgSend(v4, "returnAllResults")) && (v7 = -[VNCreateSceneprintRequest useCenterTileOnly](self, "useCenterTileOnly"), v7 == objc_msgSend(v4, "useCenterTileOnly")) && (v8 = -[VNCreateSceneprintRequest imageCropAndScaleOption](self, "imageCropAndScaleOption"), v8 == objc_msgSend(v4, "imageCropAndScaleOption")))
+  configurationCopy = configuration;
+  if (([configurationCopy resolvedRevision] != 2 || (v5 = -[VNRequest detectionLevel](self, "detectionLevel"), v5 == objc_msgSend(configurationCopy, "detectionLevel"))) && (v6 = -[VNCreateSceneprintRequest returnAllResults](self, "returnAllResults"), v6 == objc_msgSend(configurationCopy, "returnAllResults")) && (v7 = -[VNCreateSceneprintRequest useCenterTileOnly](self, "useCenterTileOnly"), v7 == objc_msgSend(configurationCopy, "useCenterTileOnly")) && (v8 = -[VNCreateSceneprintRequest imageCropAndScaleOption](self, "imageCropAndScaleOption"), v8 == objc_msgSend(configurationCopy, "imageCropAndScaleOption")))
   {
     v11.receiver = self;
     v11.super_class = VNCreateSceneprintRequest;
-    v9 = [(VNImageBasedRequest *)&v11 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+    v9 = [(VNImageBasedRequest *)&v11 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
   }
 
   else
@@ -251,48 +251,48 @@ uint64_t __48__VNCreateSceneprintRequest_privateRevisionsSet__block_invoke(uint6
   return v9;
 }
 
-- (void)setImageCropAndScaleOption:(unint64_t)a3
+- (void)setImageCropAndScaleOption:(unint64_t)option
 {
-  v4 = [(VNRequest *)self configuration];
-  [v4 setImageCropAndScaleOption:a3];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setImageCropAndScaleOption:option];
 }
 
 - (unint64_t)imageCropAndScaleOption
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 imageCropAndScaleOption];
+  configuration = [(VNRequest *)self configuration];
+  imageCropAndScaleOption = [configuration imageCropAndScaleOption];
 
-  return v3;
+  return imageCropAndScaleOption;
 }
 
-- (void)setUseCenterTileOnly:(BOOL)a3
+- (void)setUseCenterTileOnly:(BOOL)only
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setUseCenterTileOnly:v3];
+  onlyCopy = only;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setUseCenterTileOnly:onlyCopy];
 }
 
 - (BOOL)useCenterTileOnly
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 useCenterTileOnly];
+  configuration = [(VNRequest *)self configuration];
+  useCenterTileOnly = [configuration useCenterTileOnly];
 
-  return v3;
+  return useCenterTileOnly;
 }
 
-- (void)setReturnAllResults:(BOOL)a3
+- (void)setReturnAllResults:(BOOL)results
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setReturnAllResults:v3];
+  resultsCopy = results;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setReturnAllResults:resultsCopy];
 }
 
 - (BOOL)returnAllResults
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 returnAllResults];
+  configuration = [(VNRequest *)self configuration];
+  returnAllResults = [configuration returnAllResults];
 
-  return v3;
+  return returnAllResults;
 }
 
 - (id)description
@@ -317,10 +317,10 @@ uint64_t __48__VNCreateSceneprintRequest_privateRevisionsSet__block_invoke(uint6
   return v3;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  v7 = [(VNRequest *)self frameworkClass];
-  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:v7 revision:a3])
+  frameworkClass = [(VNRequest *)self frameworkClass];
+  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:frameworkClass revision:revision])
   {
     v8 = @"VNCoreSceneUnderstandingDetectorType";
 LABEL_5:
@@ -328,16 +328,16 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([VNImageAnalyzerMultiDetector modelForRequestClass:v7 revision:a3])
+  if ([VNImageAnalyzerMultiDetector modelForRequestClass:frameworkClass revision:revision])
   {
     v8 = @"VNImageAnalyzerMultiDetectorType";
     goto LABEL_5;
   }
 
-  if (a4)
+  if (error)
   {
-    [VNError errorForUnsupportedRevision:a3 ofRequest:self];
-    *a4 = v8 = 0;
+    [VNError errorForUnsupportedRevision:revision ofRequest:self];
+    *error = v8 = 0;
   }
 
   else

@@ -1,7 +1,7 @@
 @interface EFSQLColumn
 - (BOOL)BOOLValue;
-- (EFSQLColumn)initWithPreparedStatement:(id)a3 index:(int64_t)a4;
-- (EFSQLColumn)initWithSQLiteStatement:(sqlite3_stmt *)a3 index:(int64_t)a4;
+- (EFSQLColumn)initWithPreparedStatement:(id)statement index:(int64_t)index;
+- (EFSQLColumn)initWithSQLiteStatement:(sqlite3_stmt *)statement index:(int64_t)index;
 - (NSData)dataValue;
 - (NSDate)dateValue;
 - (NSNumber)numberValue;
@@ -65,9 +65,9 @@
 
 - (NSNumber)numberValue
 {
-  v2 = [(EFSQLColumn *)self objectValue];
+  objectValue = [(EFSQLColumn *)self objectValue];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = objectValue;
   if (v4 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v6 = NSStringFromClass(v3);
@@ -249,9 +249,9 @@
 
   else
   {
-    v4 = [(EFSQLColumn *)self objectValue];
+    objectValue = [(EFSQLColumn *)self objectValue];
     v5 = objc_opt_class();
-    v3 = v4;
+    v3 = objectValue;
     if (v3 && (objc_opt_isKindOfClass() & 1) == 0)
     {
       v7 = NSStringFromClass(v5);
@@ -270,24 +270,24 @@
   return v3;
 }
 
-- (EFSQLColumn)initWithSQLiteStatement:(sqlite3_stmt *)a3 index:(int64_t)a4
+- (EFSQLColumn)initWithSQLiteStatement:(sqlite3_stmt *)statement index:(int64_t)index
 {
   v7.receiver = self;
   v7.super_class = EFSQLColumn;
   result = [(EFSQLColumn *)&v7 init];
   if (result)
   {
-    result->_index = a4;
-    result->_statement = a3;
+    result->_index = index;
+    result->_statement = statement;
   }
 
   return result;
 }
 
-- (EFSQLColumn)initWithPreparedStatement:(id)a3 index:(int64_t)a4
+- (EFSQLColumn)initWithPreparedStatement:(id)statement index:(int64_t)index
 {
-  v6 = a3;
-  v7 = -[EFSQLColumn initWithSQLiteStatement:index:](self, "initWithSQLiteStatement:index:", [v6 compiled], a4);
+  statementCopy = statement;
+  v7 = -[EFSQLColumn initWithSQLiteStatement:index:](self, "initWithSQLiteStatement:index:", [statementCopy compiled], index);
 
   return v7;
 }
@@ -332,10 +332,10 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EFSQLColumn *)self index];
-  v6 = [(EFSQLColumn *)self name];
-  v7 = [(EFSQLColumn *)self objectValue];
-  v8 = [v3 stringWithFormat:@"<%@: %p index=%ld name=%@ value=%@>", v4, self, v5, v6, v7];
+  index = [(EFSQLColumn *)self index];
+  name = [(EFSQLColumn *)self name];
+  objectValue = [(EFSQLColumn *)self objectValue];
+  v8 = [v3 stringWithFormat:@"<%@: %p index=%ld name=%@ value=%@>", v4, self, index, name, objectValue];
 
   return v8;
 }

@@ -1,52 +1,52 @@
 @interface SBAmbientTelemetryEmitter
-+ (id)_faceDescriptionFromConfiguration:(id)a3;
-+ (int64_t)_ambientActiveFaceTypeForConfiguration:(id)a3;
-+ (int64_t)_ambientClockFaceDescriptorForConfiguration:(id)a3;
-+ (int64_t)_ambientPhotosFaceDescriptorForConfiguration:(id)a3;
++ (id)_faceDescriptionFromConfiguration:(id)configuration;
++ (int64_t)_ambientActiveFaceTypeForConfiguration:(id)configuration;
++ (int64_t)_ambientClockFaceDescriptorForConfiguration:(id)configuration;
++ (int64_t)_ambientPhotosFaceDescriptorForConfiguration:(id)configuration;
 + (int64_t)_ambientTimeOfDay;
-+ (void)_ambientCoreAnalyticsActiveFaceDescription:(id)a3 duration:(double)a4 sessionIdString:(id)a5;
-+ (void)_ambientCoreAnalyticsActiveFaceDescription:(id)a3 screenOffDuration:(double)a4 sessionIdString:(id)a5;
-+ (void)_ambientCoreAnalyticsConfigurationUpdateForEventType:(int64_t)a3 activeFace:(id)a4 metadata:(id)a5 sessionIdString:(id)a6 timeOfDay:(int64_t)a7;
-+ (void)_ambientCoreAnalyticsSystemEventForBumpIgnored:(BOOL)a3 sessionIdString:(id)a4;
-+ (void)_ambientCoreAnalyticsSystemEventForSleepSuppressionActive:(BOOL)a3 sessionIdString:(id)a4;
-+ (void)_ambientCoreAnalyticsTotalAmbientDuration:(double)a3 sessionIdString:(id)a4;
-+ (void)_ambientCoreAnalyticsUserSettingsForAmbientDefaults:(id)a3 userTriggered:(BOOL)a4;
-+ (void)_ambientPowerLogActiveFaceUpdateWithFaceType:(unint64_t)a3 activeFaceDescriptor:(unint64_t)a4;
-+ (void)_ambientPowerLogAmbientModeEnabled:(BOOL)a3;
-+ (void)_ambientPowerLogAmbientMotionToWakeEnabled:(BOOL)a3;
-+ (void)_ambientPowerLogAmbientPresented:(BOOL)a3 displayStyle:(int64_t)a4;
-+ (void)_ambientPowerLogLifetimePresentationCounterUpdate:(unint64_t)a3;
-- (SBAmbientTelemetryEmitter)initWithAmbientDefaults:(id)a3;
-- (void)_logAmbientEnabled:(BOOL)a3 userTriggered:(BOOL)a4;
-- (void)_logAmbientUserSettingsUserTriggered:(BOOL)a3;
++ (void)_ambientCoreAnalyticsActiveFaceDescription:(id)description duration:(double)duration sessionIdString:(id)string;
++ (void)_ambientCoreAnalyticsActiveFaceDescription:(id)description screenOffDuration:(double)duration sessionIdString:(id)string;
++ (void)_ambientCoreAnalyticsConfigurationUpdateForEventType:(int64_t)type activeFace:(id)face metadata:(id)metadata sessionIdString:(id)string timeOfDay:(int64_t)day;
++ (void)_ambientCoreAnalyticsSystemEventForBumpIgnored:(BOOL)ignored sessionIdString:(id)string;
++ (void)_ambientCoreAnalyticsSystemEventForSleepSuppressionActive:(BOOL)active sessionIdString:(id)string;
++ (void)_ambientCoreAnalyticsTotalAmbientDuration:(double)duration sessionIdString:(id)string;
++ (void)_ambientCoreAnalyticsUserSettingsForAmbientDefaults:(id)defaults userTriggered:(BOOL)triggered;
++ (void)_ambientPowerLogActiveFaceUpdateWithFaceType:(unint64_t)type activeFaceDescriptor:(unint64_t)descriptor;
++ (void)_ambientPowerLogAmbientModeEnabled:(BOOL)enabled;
++ (void)_ambientPowerLogAmbientMotionToWakeEnabled:(BOOL)enabled;
++ (void)_ambientPowerLogAmbientPresented:(BOOL)presented displayStyle:(int64_t)style;
++ (void)_ambientPowerLogLifetimePresentationCounterUpdate:(unint64_t)update;
+- (SBAmbientTelemetryEmitter)initWithAmbientDefaults:(id)defaults;
+- (void)_logAmbientEnabled:(BOOL)enabled userTriggered:(BOOL)triggered;
+- (void)_logAmbientUserSettingsUserTriggered:(BOOL)triggered;
 - (void)_setupAmbientEnabledDailyTimerForLogging;
 - (void)_setupAmbientEnabledLogging;
 - (void)_setupUserSettingUpdateLogging;
-- (void)_updateActiveFaceDurationForPreviousConfiguration:(id)a3 currentConfiguration:(id)a4 sessionIdString:(id)a5;
-- (void)_updateActiveFaceScreenOffForBacklightState:(int64_t)a3 forConfiguration:(id)a4 sessionIdString:(id)a5;
-- (void)_updateSessionIdForAmbientPresented:(BOOL)a3;
-- (void)_updateTotalDurationLoggingForAmbientPresented:(BOOL)a3 sessionIdString:(id)a4;
+- (void)_updateActiveFaceDurationForPreviousConfiguration:(id)configuration currentConfiguration:(id)currentConfiguration sessionIdString:(id)string;
+- (void)_updateActiveFaceScreenOffForBacklightState:(int64_t)state forConfiguration:(id)configuration sessionIdString:(id)string;
+- (void)_updateSessionIdForAmbientPresented:(BOOL)presented;
+- (void)_updateTotalDurationLoggingForAmbientPresented:(BOOL)presented sessionIdString:(id)string;
 - (void)dealloc;
-- (void)logTelemetryForAmbientConfigurationUpdate:(id)a3 metadata:(id)a4;
-- (void)logTelemetryForAmbientPresented:(BOOL)a3 displayStyle:(int64_t)a4;
-- (void)logTelemetryForAmbientPresented:(BOOL)a3 withBacklightState:(int64_t)a4 screenOffWithConfiguration:(id)a5;
-- (void)logTelemetryForBumpEventIgnored:(BOOL)a3;
-- (void)logTelemetryForMotionToWakeEnabled:(BOOL)a3;
-- (void)logTelemetryForSleepSuppressionActive:(BOOL)a3;
+- (void)logTelemetryForAmbientConfigurationUpdate:(id)update metadata:(id)metadata;
+- (void)logTelemetryForAmbientPresented:(BOOL)presented displayStyle:(int64_t)style;
+- (void)logTelemetryForAmbientPresented:(BOOL)presented withBacklightState:(int64_t)state screenOffWithConfiguration:(id)configuration;
+- (void)logTelemetryForBumpEventIgnored:(BOOL)ignored;
+- (void)logTelemetryForMotionToWakeEnabled:(BOOL)enabled;
+- (void)logTelemetryForSleepSuppressionActive:(BOOL)active;
 @end
 
 @implementation SBAmbientTelemetryEmitter
 
-- (SBAmbientTelemetryEmitter)initWithAmbientDefaults:(id)a3
+- (SBAmbientTelemetryEmitter)initWithAmbientDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v9.receiver = self;
   v9.super_class = SBAmbientTelemetryEmitter;
   v6 = [(SBAmbientTelemetryEmitter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_ambientDefaults, a3);
+    objc_storeStrong(&v6->_ambientDefaults, defaults);
     [(SBAmbientTelemetryEmitter *)v7 _setupAmbientEnabledLogging];
     [(SBAmbientTelemetryEmitter *)v7 _setupUserSettingUpdateLogging];
     [objc_opt_class() _ambientPowerLogLifetimePresentationCounterUpdate:{-[AMAmbientDefaults lifetimePresentationCounter](v7->_ambientDefaults, "lifetimePresentationCounter")}];
@@ -63,17 +63,17 @@
   [(SBAmbientTelemetryEmitter *)&v3 dealloc];
 }
 
-- (void)logTelemetryForAmbientPresented:(BOOL)a3 displayStyle:(int64_t)a4
+- (void)logTelemetryForAmbientPresented:(BOOL)presented displayStyle:(int64_t)style
 {
-  v4 = a3;
-  [objc_opt_class() _ambientPowerLogAmbientPresented:a3 displayStyle:a4];
-  v15 = [(NSUUID *)self->_sessionId UUIDString];
-  [(SBAmbientTelemetryEmitter *)self _updateSessionIdForAmbientPresented:v4];
-  if (v4)
+  presentedCopy = presented;
+  [objc_opt_class() _ambientPowerLogAmbientPresented:presented displayStyle:style];
+  uUIDString = [(NSUUID *)self->_sessionId UUIDString];
+  [(SBAmbientTelemetryEmitter *)self _updateSessionIdForAmbientPresented:presentedCopy];
+  if (presentedCopy)
   {
-    v6 = [(NSUUID *)self->_sessionId UUIDString];
-    v7 = [objc_opt_class() _ambientTimeOfDay];
-    [objc_opt_class() _ambientCoreAnalyticsConfigurationUpdateForEventType:1 activeFace:0 metadata:0 sessionIdString:v6 timeOfDay:v7];
+    uUIDString2 = [(NSUUID *)self->_sessionId UUIDString];
+    _ambientTimeOfDay = [objc_opt_class() _ambientTimeOfDay];
+    [objc_opt_class() _ambientCoreAnalyticsConfigurationUpdateForEventType:1 activeFace:0 metadata:0 sessionIdString:uUIDString2 timeOfDay:_ambientTimeOfDay];
     v8 = objc_opt_class();
     if (AMUIAmbientDisplayStyleIsRedMode())
     {
@@ -85,16 +85,16 @@
       v9 = 3;
     }
 
-    [v8 _ambientCoreAnalyticsConfigurationUpdateForEventType:v9 activeFace:0 metadata:0 sessionIdString:v6 timeOfDay:v7];
-    [(SBAmbientTelemetryEmitter *)self _updateTotalDurationLoggingForAmbientPresented:1 sessionIdString:v6];
+    [v8 _ambientCoreAnalyticsConfigurationUpdateForEventType:v9 activeFace:0 metadata:0 sessionIdString:uUIDString2 timeOfDay:_ambientTimeOfDay];
+    [(SBAmbientTelemetryEmitter *)self _updateTotalDurationLoggingForAmbientPresented:1 sessionIdString:uUIDString2];
     [objc_opt_class() _ambientPowerLogLifetimePresentationCounterUpdate:{-[AMAmbientDefaults lifetimePresentationCounter](self->_ambientDefaults, "lifetimePresentationCounter")}];
   }
 
   else
   {
-    v6 = v15;
-    v10 = [objc_opt_class() _ambientTimeOfDay];
-    [objc_opt_class() _ambientCoreAnalyticsConfigurationUpdateForEventType:0 activeFace:0 metadata:0 sessionIdString:v6 timeOfDay:v10];
+    uUIDString2 = uUIDString;
+    _ambientTimeOfDay2 = [objc_opt_class() _ambientTimeOfDay];
+    [objc_opt_class() _ambientCoreAnalyticsConfigurationUpdateForEventType:0 activeFace:0 metadata:0 sessionIdString:uUIDString2 timeOfDay:_ambientTimeOfDay2];
     v11 = objc_opt_class();
     if (AMUIAmbientDisplayStyleIsRedMode())
     {
@@ -106,9 +106,9 @@
       v12 = 3;
     }
 
-    [v11 _ambientCoreAnalyticsConfigurationUpdateForEventType:v12 activeFace:0 metadata:0 sessionIdString:v6 timeOfDay:v10];
-    [(SBAmbientTelemetryEmitter *)self _updateTotalDurationLoggingForAmbientPresented:0 sessionIdString:v6];
-    [(SBAmbientTelemetryEmitter *)self _updateActiveFaceDurationForPreviousConfiguration:self->_activePosterConfiguration currentConfiguration:0 sessionIdString:v6];
+    [v11 _ambientCoreAnalyticsConfigurationUpdateForEventType:v12 activeFace:0 metadata:0 sessionIdString:uUIDString2 timeOfDay:_ambientTimeOfDay2];
+    [(SBAmbientTelemetryEmitter *)self _updateTotalDurationLoggingForAmbientPresented:0 sessionIdString:uUIDString2];
+    [(SBAmbientTelemetryEmitter *)self _updateActiveFaceDurationForPreviousConfiguration:self->_activePosterConfiguration currentConfiguration:0 sessionIdString:uUIDString2];
     activePosterConfiguration = self->_activePosterConfiguration;
     self->_activePosterConfiguration = 0;
 
@@ -117,33 +117,33 @@
   }
 }
 
-- (void)logTelemetryForAmbientPresented:(BOOL)a3 withBacklightState:(int64_t)a4 screenOffWithConfiguration:(id)a5
+- (void)logTelemetryForAmbientPresented:(BOOL)presented withBacklightState:(int64_t)state screenOffWithConfiguration:(id)configuration
 {
-  if (a3)
+  if (presented)
   {
     sessionId = self->_sessionId;
-    v8 = a5;
-    v9 = [(NSUUID *)sessionId UUIDString];
-    [(SBAmbientTelemetryEmitter *)self _updateActiveFaceScreenOffForBacklightState:a4 forConfiguration:v8 sessionIdString:v9];
+    configurationCopy = configuration;
+    uUIDString = [(NSUUID *)sessionId UUIDString];
+    [(SBAmbientTelemetryEmitter *)self _updateActiveFaceScreenOffForBacklightState:state forConfiguration:configurationCopy sessionIdString:uUIDString];
   }
 }
 
-- (void)logTelemetryForAmbientConfigurationUpdate:(id)a3 metadata:(id)a4
+- (void)logTelemetryForAmbientConfigurationUpdate:(id)update metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  v17 = [objc_opt_class() _faceDescriptionFromConfiguration:v6];
-  v8 = [objc_opt_class() _ambientActiveFaceTypeForConfiguration:v6];
+  updateCopy = update;
+  metadataCopy = metadata;
+  v17 = [objc_opt_class() _faceDescriptionFromConfiguration:updateCopy];
+  v8 = [objc_opt_class() _ambientActiveFaceTypeForConfiguration:updateCopy];
   v9 = v8;
   if (v8 == 1)
   {
-    v10 = [objc_opt_class() _ambientPhotosFaceDescriptorForConfiguration:v6];
+    v10 = [objc_opt_class() _ambientPhotosFaceDescriptorForConfiguration:updateCopy];
     goto LABEL_5;
   }
 
   if (v8 == 2)
   {
-    v10 = [objc_opt_class() _ambientClockFaceDescriptorForConfiguration:v6];
+    v10 = [objc_opt_class() _ambientClockFaceDescriptorForConfiguration:updateCopy];
 LABEL_5:
     v11 = v10;
     goto LABEL_7;
@@ -153,39 +153,39 @@ LABEL_5:
 LABEL_7:
   [objc_opt_class() _ambientPowerLogActiveFaceUpdateWithFaceType:v9 activeFaceDescriptor:v11];
   v12 = objc_opt_class();
-  v13 = [(NSUUID *)self->_sessionId UUIDString];
-  [v12 _ambientCoreAnalyticsConfigurationUpdateForEventType:2 activeFace:v17 metadata:v7 sessionIdString:v13 timeOfDay:{objc_msgSend(objc_opt_class(), "_ambientTimeOfDay")}];
+  uUIDString = [(NSUUID *)self->_sessionId UUIDString];
+  [v12 _ambientCoreAnalyticsConfigurationUpdateForEventType:2 activeFace:v17 metadata:metadataCopy sessionIdString:uUIDString timeOfDay:{objc_msgSend(objc_opt_class(), "_ambientTimeOfDay")}];
 
   activePosterConfiguration = self->_activePosterConfiguration;
-  v15 = [(NSUUID *)self->_sessionId UUIDString];
-  [(SBAmbientTelemetryEmitter *)self _updateActiveFaceDurationForPreviousConfiguration:activePosterConfiguration currentConfiguration:v6 sessionIdString:v15];
+  uUIDString2 = [(NSUUID *)self->_sessionId UUIDString];
+  [(SBAmbientTelemetryEmitter *)self _updateActiveFaceDurationForPreviousConfiguration:activePosterConfiguration currentConfiguration:updateCopy sessionIdString:uUIDString2];
 
   v16 = self->_activePosterConfiguration;
-  self->_activePosterConfiguration = v6;
+  self->_activePosterConfiguration = updateCopy;
 }
 
-- (void)logTelemetryForMotionToWakeEnabled:(BOOL)a3
+- (void)logTelemetryForMotionToWakeEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = objc_opt_class();
 
-  [v4 _ambientPowerLogAmbientMotionToWakeEnabled:v3];
+  [v4 _ambientPowerLogAmbientMotionToWakeEnabled:enabledCopy];
 }
 
-- (void)logTelemetryForBumpEventIgnored:(BOOL)a3
+- (void)logTelemetryForBumpEventIgnored:(BOOL)ignored
 {
-  v3 = a3;
+  ignoredCopy = ignored;
   v5 = objc_opt_class();
-  v6 = [(NSUUID *)self->_sessionId UUIDString];
-  [v5 _ambientCoreAnalyticsSystemEventForBumpIgnored:v3 sessionIdString:v6];
+  uUIDString = [(NSUUID *)self->_sessionId UUIDString];
+  [v5 _ambientCoreAnalyticsSystemEventForBumpIgnored:ignoredCopy sessionIdString:uUIDString];
 }
 
-- (void)logTelemetryForSleepSuppressionActive:(BOOL)a3
+- (void)logTelemetryForSleepSuppressionActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v5 = objc_opt_class();
-  v6 = [(NSUUID *)self->_sessionId UUIDString];
-  [v5 _ambientCoreAnalyticsSystemEventForSleepSuppressionActive:v3 sessionIdString:v6];
+  uUIDString = [(NSUUID *)self->_sessionId UUIDString];
+  [v5 _ambientCoreAnalyticsSystemEventForSleepSuppressionActive:activeCopy sessionIdString:uUIDString];
 }
 
 - (void)_setupAmbientEnabledLogging
@@ -250,29 +250,29 @@ void __59__SBAmbientTelemetryEmitter__setupUserSettingUpdateLogging__block_invok
   [WeakRetained _logAmbientUserSettingsUserTriggered:1];
 }
 
-- (void)_logAmbientEnabled:(BOOL)a3 userTriggered:(BOOL)a4
+- (void)_logAmbientEnabled:(BOOL)enabled userTriggered:(BOOL)triggered
 {
-  v4 = a4;
-  v5 = a3;
-  [objc_opt_class() _ambientPowerLogAmbientModeEnabled:a3];
+  triggeredCopy = triggered;
+  enabledCopy = enabled;
+  [objc_opt_class() _ambientPowerLogAmbientModeEnabled:enabled];
   v6 = objc_opt_class();
 
-  [v6 _ambientCoreAnalyticsAmbientEnabled:v5 userTriggered:v4];
+  [v6 _ambientCoreAnalyticsAmbientEnabled:enabledCopy userTriggered:triggeredCopy];
 }
 
-- (void)_logAmbientUserSettingsUserTriggered:(BOOL)a3
+- (void)_logAmbientUserSettingsUserTriggered:(BOOL)triggered
 {
-  v3 = a3;
+  triggeredCopy = triggered;
   v5 = objc_opt_class();
   ambientDefaults = self->_ambientDefaults;
 
-  [v5 _ambientCoreAnalyticsUserSettingsForAmbientDefaults:ambientDefaults userTriggered:v3];
+  [v5 _ambientCoreAnalyticsUserSettingsForAmbientDefaults:ambientDefaults userTriggered:triggeredCopy];
 }
 
 - (void)_setupAmbientEnabledDailyTimerForLogging
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [v3 dateByAddingTimeInterval:5.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [date dateByAddingTimeInterval:5.0];
 
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x277CBEBB8]);
@@ -301,17 +301,17 @@ void __69__SBAmbientTelemetryEmitter__setupAmbientEnabledDailyTimerForLogging__b
   }
 }
 
-- (void)_updateSessionIdForAmbientPresented:(BOOL)a3
+- (void)_updateSessionIdForAmbientPresented:(BOOL)presented
 {
   sessionId = self->_sessionId;
-  if (a3)
+  if (presented)
   {
     if (sessionId)
     {
       return;
     }
 
-    v5 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     sessionId = self->_sessionId;
   }
 
@@ -322,26 +322,26 @@ void __69__SBAmbientTelemetryEmitter__setupAmbientEnabledDailyTimerForLogging__b
       return;
     }
 
-    v5 = 0;
+    uUID = 0;
   }
 
-  self->_sessionId = v5;
+  self->_sessionId = uUID;
 }
 
-- (void)_updateTotalDurationLoggingForAmbientPresented:(BOOL)a3 sessionIdString:(id)a4
+- (void)_updateTotalDurationLoggingForAmbientPresented:(BOOL)presented sessionIdString:(id)string
 {
-  v4 = a3;
-  v6 = a4;
+  presentedCopy = presented;
+  stringCopy = string;
   ambientPresentationTimestamp = self->_ambientPresentationTimestamp;
-  if (v4)
+  if (presentedCopy)
   {
     if (ambientPresentationTimestamp)
     {
       goto LABEL_7;
     }
 
-    v13 = v6;
-    v8 = [MEMORY[0x277CBEAA8] date];
+    v13 = stringCopy;
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
   else
@@ -351,59 +351,59 @@ void __69__SBAmbientTelemetryEmitter__setupAmbientEnabledDailyTimerForLogging__b
       goto LABEL_7;
     }
 
-    v13 = v6;
-    v9 = [MEMORY[0x277CBEAA8] date];
-    [v9 timeIntervalSinceDate:self->_ambientPresentationTimestamp];
+    v13 = stringCopy;
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [date2 timeIntervalSinceDate:self->_ambientPresentationTimestamp];
     v11 = v10;
 
     [objc_opt_class() _ambientCoreAnalyticsTotalAmbientDuration:v13 sessionIdString:v11];
-    v8 = 0;
+    date = 0;
   }
 
   v12 = self->_ambientPresentationTimestamp;
-  self->_ambientPresentationTimestamp = v8;
+  self->_ambientPresentationTimestamp = date;
 
-  v6 = v13;
+  stringCopy = v13;
 LABEL_7:
 }
 
-- (void)_updateActiveFaceDurationForPreviousConfiguration:(id)a3 currentConfiguration:(id)a4 sessionIdString:(id)a5
+- (void)_updateActiveFaceDurationForPreviousConfiguration:(id)configuration currentConfiguration:(id)currentConfiguration sessionIdString:(id)string
 {
-  v17 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() _faceDescriptionFromConfiguration:v9];
+  stringCopy = string;
+  currentConfigurationCopy = currentConfiguration;
+  configurationCopy = configuration;
+  v10 = [objc_opt_class() _faceDescriptionFromConfiguration:configurationCopy];
 
-  v11 = [objc_opt_class() _faceDescriptionFromConfiguration:v8];
+  v11 = [objc_opt_class() _faceDescriptionFromConfiguration:currentConfigurationCopy];
 
   if (([v10 isEqualToString:v11] & 1) == 0)
   {
     if (self->_ambientActiveFaceTimestamp)
     {
-      v12 = [MEMORY[0x277CBEAA8] date];
-      [v12 timeIntervalSinceDate:self->_ambientActiveFaceTimestamp];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSinceDate:self->_ambientActiveFaceTimestamp];
       v14 = v13;
 
-      [objc_opt_class() _ambientCoreAnalyticsActiveFaceDescription:v10 duration:v17 sessionIdString:v14];
+      [objc_opt_class() _ambientCoreAnalyticsActiveFaceDescription:v10 duration:stringCopy sessionIdString:v14];
     }
 
-    v15 = [MEMORY[0x277CBEAA8] date];
+    date2 = [MEMORY[0x277CBEAA8] date];
     ambientActiveFaceTimestamp = self->_ambientActiveFaceTimestamp;
-    self->_ambientActiveFaceTimestamp = v15;
+    self->_ambientActiveFaceTimestamp = date2;
   }
 }
 
-- (void)_updateActiveFaceScreenOffForBacklightState:(int64_t)a3 forConfiguration:(id)a4 sessionIdString:(id)a5
+- (void)_updateActiveFaceScreenOffForBacklightState:(int64_t)state forConfiguration:(id)configuration sessionIdString:(id)string
 {
-  v15 = a5;
-  v8 = a4;
-  v9 = [objc_opt_class() _faceDescriptionFromConfiguration:v8];
+  stringCopy = string;
+  configurationCopy = configuration;
+  v9 = [objc_opt_class() _faceDescriptionFromConfiguration:configurationCopy];
 
-  if (a3 == 4)
+  if (state == 4)
   {
-    v10 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     ambientActiveFaceSceenOffTimestamp = self->_ambientActiveFaceSceenOffTimestamp;
-    self->_ambientActiveFaceSceenOffTimestamp = v10;
+    self->_ambientActiveFaceSceenOffTimestamp = date;
   }
 
   else
@@ -411,11 +411,11 @@ LABEL_7:
     ambientActiveFaceSceenOffTimestamp = self->_ambientActiveFaceSceenOffTimestamp;
     if (ambientActiveFaceSceenOffTimestamp)
     {
-      v12 = [MEMORY[0x277CBEAA8] date];
-      [v12 timeIntervalSinceDate:self->_ambientActiveFaceSceenOffTimestamp];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      [date2 timeIntervalSinceDate:self->_ambientActiveFaceSceenOffTimestamp];
       v14 = v13;
 
-      [objc_opt_class() _ambientCoreAnalyticsActiveFaceDescription:v9 screenOffDuration:v15 sessionIdString:v14];
+      [objc_opt_class() _ambientCoreAnalyticsActiveFaceDescription:v9 screenOffDuration:stringCopy sessionIdString:v14];
       ambientActiveFaceSceenOffTimestamp = self->_ambientActiveFaceSceenOffTimestamp;
     }
 
@@ -423,14 +423,14 @@ LABEL_7:
   }
 }
 
-+ (id)_faceDescriptionFromConfiguration:(id)a3
++ (id)_faceDescriptionFromConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [v3 providerBundleIdentifier];
-  v5 = v4;
-  if (v4)
+  configurationCopy = configuration;
+  providerBundleIdentifier = [configurationCopy providerBundleIdentifier];
+  v5 = providerBundleIdentifier;
+  if (providerBundleIdentifier)
   {
-    v6 = v4;
+    v6 = providerBundleIdentifier;
   }
 
   else
@@ -438,11 +438,11 @@ LABEL_7:
     v6 = @"Unknown";
   }
 
-  v7 = [v3 descriptorIdentifier];
+  descriptorIdentifier = [configurationCopy descriptorIdentifier];
 
-  if (v7)
+  if (descriptorIdentifier)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v6, v7];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v6, descriptorIdentifier];
 
     v6 = v8;
   }
@@ -452,59 +452,59 @@ LABEL_7:
   return v6;
 }
 
-+ (void)_ambientPowerLogAmbientPresented:(BOOL)a3 displayStyle:(int64_t)a4
++ (void)_ambientPowerLogAmbientPresented:(BOOL)presented displayStyle:(int64_t)style
 {
-  v5 = a3;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [MEMORY[0x277CCABB0] numberWithBool:v5];
-  [v8 setObject:v6 forKeyedSubscript:@"Enabled"];
+  presentedCopy = presented;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v6 = [MEMORY[0x277CCABB0] numberWithBool:presentedCopy];
+  [dictionary setObject:v6 forKeyedSubscript:@"Enabled"];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  [v8 setObject:v7 forKeyedSubscript:@"Mode"];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:style];
+  [dictionary setObject:v7 forKeyedSubscript:@"Mode"];
 
-  [objc_opt_class() _ambientPowerLogWithEventName:@"AmbientMode" dictionary:v8];
+  [objc_opt_class() _ambientPowerLogWithEventName:@"AmbientMode" dictionary:dictionary];
 }
 
-+ (void)_ambientPowerLogAmbientModeEnabled:(BOOL)a3
++ (void)_ambientPowerLogAmbientModeEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  [v5 setObject:v4 forKeyedSubscript:@"Enabled"];
+  enabledCopy = enabled;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:enabledCopy];
+  [dictionary setObject:v4 forKeyedSubscript:@"Enabled"];
 
-  [objc_opt_class() _ambientPowerLogWithEventName:@"AmbientModeEnabled" dictionary:v5];
+  [objc_opt_class() _ambientPowerLogWithEventName:@"AmbientModeEnabled" dictionary:dictionary];
 }
 
-+ (void)_ambientPowerLogAmbientMotionToWakeEnabled:(BOOL)a3
++ (void)_ambientPowerLogAmbientMotionToWakeEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  [v8 setObject:v4 forKeyedSubscript:@"Enabled"];
+  enabledCopy = enabled;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:enabledCopy];
+  [dictionary setObject:v4 forKeyedSubscript:@"Enabled"];
 
   v5 = MEMORY[0x277CCABB0];
   v6 = [MEMORY[0x277CBEAA8] now];
   [v6 timeIntervalSince1970];
   v7 = [v5 numberWithDouble:?];
-  [v8 setObject:v7 forKeyedSubscript:@"Timestamp"];
+  [dictionary setObject:v7 forKeyedSubscript:@"Timestamp"];
 
-  [objc_opt_class() _ambientPowerLogWithEventName:@"AmbientModeMotionToWake" dictionary:v8];
+  [objc_opt_class() _ambientPowerLogWithEventName:@"AmbientModeMotionToWake" dictionary:dictionary];
 }
 
-+ (int64_t)_ambientActiveFaceTypeForConfiguration:(id)a3
++ (int64_t)_ambientActiveFaceTypeForConfiguration:(id)configuration
 {
-  v3 = [a3 providerBundleIdentifier];
-  if ([v3 isEqualToString:@"com.apple.ambient.AmbientUI.InfographPoster"])
+  providerBundleIdentifier = [configuration providerBundleIdentifier];
+  if ([providerBundleIdentifier isEqualToString:@"com.apple.ambient.AmbientUI.InfographPoster"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.ClockPoster.ClockPosterExtension"])
+  else if ([providerBundleIdentifier isEqualToString:@"com.apple.ClockPoster.ClockPosterExtension"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.PhotosUIPrivate.PhotosAmbientPosterProvider"])
+  else if ([providerBundleIdentifier isEqualToString:@"com.apple.PhotosUIPrivate.PhotosAmbientPosterProvider"])
   {
     v4 = 1;
   }
@@ -517,30 +517,30 @@ LABEL_7:
   return v4;
 }
 
-+ (int64_t)_ambientClockFaceDescriptorForConfiguration:(id)a3
++ (int64_t)_ambientClockFaceDescriptorForConfiguration:(id)configuration
 {
-  v3 = [a3 descriptorIdentifier];
-  if ([v3 isEqualToString:@"digital"])
+  descriptorIdentifier = [configuration descriptorIdentifier];
+  if ([descriptorIdentifier isEqualToString:@"digital"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"analog"])
+  else if ([descriptorIdentifier isEqualToString:@"analog"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"play"])
+  else if ([descriptorIdentifier isEqualToString:@"play"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"solar"])
+  else if ([descriptorIdentifier isEqualToString:@"solar"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"world"])
+  else if ([descriptorIdentifier isEqualToString:@"world"])
   {
     v4 = 2;
   }
@@ -553,35 +553,35 @@ LABEL_7:
   return v4;
 }
 
-+ (int64_t)_ambientPhotosFaceDescriptorForConfiguration:(id)a3
++ (int64_t)_ambientPhotosFaceDescriptorForConfiguration:(id)configuration
 {
-  v3 = [a3 descriptorIdentifier];
-  if ([v3 isEqualToString:@"featured"])
+  descriptorIdentifier = [configuration descriptorIdentifier];
+  if ([descriptorIdentifier isEqualToString:@"featured"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"pets"])
+  else if ([descriptorIdentifier isEqualToString:@"pets"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"people"])
+  else if ([descriptorIdentifier isEqualToString:@"people"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"nature"])
+  else if ([descriptorIdentifier isEqualToString:@"nature"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"cities"])
+  else if ([descriptorIdentifier isEqualToString:@"cities"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"album"])
+  else if ([descriptorIdentifier isEqualToString:@"album"])
   {
     v4 = 5;
   }
@@ -594,25 +594,25 @@ LABEL_7:
   return v4;
 }
 
-+ (void)_ambientPowerLogActiveFaceUpdateWithFaceType:(unint64_t)a3 activeFaceDescriptor:(unint64_t)a4
++ (void)_ambientPowerLogActiveFaceUpdateWithFaceType:(unint64_t)type activeFaceDescriptor:(unint64_t)descriptor
 {
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v8 setObject:v6 forKeyedSubscript:@"ActiveFaceType"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  [dictionary setObject:v6 forKeyedSubscript:@"ActiveFaceType"];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  [v8 setObject:v7 forKeyedSubscript:@"ActiveFaceDescriptor"];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:descriptor];
+  [dictionary setObject:v7 forKeyedSubscript:@"ActiveFaceDescriptor"];
 
-  [objc_opt_class() _ambientPowerLogWithEventName:@"AmbientModeActiveFace" dictionary:v8];
+  [objc_opt_class() _ambientPowerLogWithEventName:@"AmbientModeActiveFace" dictionary:dictionary];
 }
 
-+ (void)_ambientPowerLogLifetimePresentationCounterUpdate:(unint64_t)a3
++ (void)_ambientPowerLogLifetimePresentationCounterUpdate:(unint64_t)update
 {
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKeyedSubscript:@"LifetimePresentationCounter"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:update];
+  [dictionary setObject:v4 forKeyedSubscript:@"LifetimePresentationCounter"];
 
-  [objc_opt_class() _ambientPowerLogWithEventName:@"AmbientModeLifetimePresentationCounter" dictionary:v5];
+  [objc_opt_class() _ambientPowerLogWithEventName:@"AmbientModeLifetimePresentationCounter" dictionary:dictionary];
 }
 
 id __79__SBAmbientTelemetryEmitter__ambientCoreAnalyticsAmbientEnabled_userTriggered___block_invoke(uint64_t a1)
@@ -629,12 +629,12 @@ id __79__SBAmbientTelemetryEmitter__ambientCoreAnalyticsAmbientEnabled_userTrigg
   return v4;
 }
 
-+ (void)_ambientCoreAnalyticsActiveFaceDescription:(id)a3 duration:(double)a4 sessionIdString:(id)a5
++ (void)_ambientCoreAnalyticsActiveFaceDescription:(id)description duration:(double)duration sessionIdString:(id)string
 {
-  v8 = a3;
-  v9 = a5;
-  v6 = v9;
-  v7 = v8;
+  descriptionCopy = description;
+  stringCopy = string;
+  v6 = stringCopy;
+  v7 = descriptionCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -654,12 +654,12 @@ id __97__SBAmbientTelemetryEmitter__ambientCoreAnalyticsActiveFaceDescription_du
   return v4;
 }
 
-+ (void)_ambientCoreAnalyticsActiveFaceDescription:(id)a3 screenOffDuration:(double)a4 sessionIdString:(id)a5
++ (void)_ambientCoreAnalyticsActiveFaceDescription:(id)description screenOffDuration:(double)duration sessionIdString:(id)string
 {
-  v8 = a3;
-  v9 = a5;
-  v6 = v9;
-  v7 = v8;
+  descriptionCopy = description;
+  stringCopy = string;
+  v6 = stringCopy;
+  v7 = descriptionCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -679,10 +679,10 @@ id __106__SBAmbientTelemetryEmitter__ambientCoreAnalyticsActiveFaceDescription_s
   return v4;
 }
 
-+ (void)_ambientCoreAnalyticsTotalAmbientDuration:(double)a3 sessionIdString:(id)a4
++ (void)_ambientCoreAnalyticsTotalAmbientDuration:(double)duration sessionIdString:(id)string
 {
-  v5 = a4;
-  v4 = v5;
+  stringCopy = string;
+  v4 = stringCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -699,23 +699,23 @@ id __87__SBAmbientTelemetryEmitter__ambientCoreAnalyticsTotalAmbientDuration_ses
   return v3;
 }
 
-+ (void)_ambientCoreAnalyticsConfigurationUpdateForEventType:(int64_t)a3 activeFace:(id)a4 metadata:(id)a5 sessionIdString:(id)a6 timeOfDay:(int64_t)a7
++ (void)_ambientCoreAnalyticsConfigurationUpdateForEventType:(int64_t)type activeFace:(id)face metadata:(id)metadata sessionIdString:(id)string timeOfDay:(int64_t)day
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  faceCopy = face;
+  metadataCopy = metadata;
+  stringCopy = string;
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __128__SBAmbientTelemetryEmitter__ambientCoreAnalyticsConfigurationUpdateForEventType_activeFace_metadata_sessionIdString_timeOfDay___block_invoke;
   v24 = &unk_2783B1188;
-  v27 = a3;
-  v14 = v13;
+  typeCopy = type;
+  v14 = stringCopy;
   v25 = v14;
-  v15 = v11;
+  v15 = faceCopy;
   v26 = v15;
-  v28 = a7;
+  dayCopy = day;
   AnalyticsSendEventLazy();
-  if (a3 == 2 && v12)
+  if (type == 2 && metadataCopy)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -724,8 +724,8 @@ id __87__SBAmbientTelemetryEmitter__ambientCoreAnalyticsTotalAmbientDuration_ses
     v19 = 2;
     v17 = v15;
     v18 = v14;
-    v20 = a7;
-    [v12 enumerateKeysAndObjectsUsingBlock:v16];
+    dayCopy2 = day;
+    [metadataCopy enumerateKeysAndObjectsUsingBlock:v16];
   }
 }
 
@@ -781,10 +781,10 @@ id __128__SBAmbientTelemetryEmitter__ambientCoreAnalyticsConfigurationUpdateForE
   return v2;
 }
 
-+ (void)_ambientCoreAnalyticsUserSettingsForAmbientDefaults:(id)a3 userTriggered:(BOOL)a4
++ (void)_ambientCoreAnalyticsUserSettingsForAmbientDefaults:(id)defaults userTriggered:(BOOL)triggered
 {
-  v5 = a3;
-  v4 = v5;
+  defaultsCopy = defaults;
+  v4 = defaultsCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -814,10 +814,10 @@ id __95__SBAmbientTelemetryEmitter__ambientCoreAnalyticsUserSettingsForAmbientDe
   return v8;
 }
 
-+ (void)_ambientCoreAnalyticsSystemEventForBumpIgnored:(BOOL)a3 sessionIdString:(id)a4
++ (void)_ambientCoreAnalyticsSystemEventForBumpIgnored:(BOOL)ignored sessionIdString:(id)string
 {
-  v5 = a4;
-  v4 = v5;
+  stringCopy = string;
+  v4 = stringCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -834,10 +834,10 @@ id __92__SBAmbientTelemetryEmitter__ambientCoreAnalyticsSystemEventForBumpIgnore
   return v3;
 }
 
-+ (void)_ambientCoreAnalyticsSystemEventForSleepSuppressionActive:(BOOL)a3 sessionIdString:(id)a4
++ (void)_ambientCoreAnalyticsSystemEventForSleepSuppressionActive:(BOOL)active sessionIdString:(id)string
 {
-  v5 = a4;
-  v4 = v5;
+  stringCopy = string;
+  v4 = stringCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -866,18 +866,18 @@ id __103__SBAmbientTelemetryEmitter__ambientCoreAnalyticsSystemEventForSleepSupp
 
 + (int64_t)_ambientTimeOfDay
 {
-  v2 = [MEMORY[0x277CBEA80] currentCalendar];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [v2 components:32 fromDate:v3];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [currentCalendar components:32 fromDate:date];
 
-  v5 = [v4 hour];
+  hour = [v4 hour];
   v6 = 2;
-  if (v5 - 18 >= 6)
+  if (hour - 18 >= 6)
   {
     v6 = -1;
   }
 
-  if (v5 - 12 >= 6)
+  if (hour - 12 >= 6)
   {
     v7 = v6;
   }
@@ -887,7 +887,7 @@ id __103__SBAmbientTelemetryEmitter__ambientCoreAnalyticsSystemEventForSleepSupp
     v7 = 1;
   }
 
-  if (v5 - 5 >= 7)
+  if (hour - 5 >= 7)
   {
     v8 = v7;
   }
@@ -897,7 +897,7 @@ id __103__SBAmbientTelemetryEmitter__ambientCoreAnalyticsSystemEventForSleepSupp
     v8 = 0;
   }
 
-  if (v5 >= 5)
+  if (hour >= 5)
   {
     v9 = v8;
   }

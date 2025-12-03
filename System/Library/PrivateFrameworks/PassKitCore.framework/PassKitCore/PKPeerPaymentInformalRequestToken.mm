@@ -19,8 +19,8 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p ", v5, self];;
 
-  v7 = [(PKPeerPaymentRequestToken *)self requestToken];
-  [v6 appendFormat:@"requestToken: '%@'; ", v7];
+  requestToken = [(PKPeerPaymentRequestToken *)self requestToken];
+  [v6 appendFormat:@"requestToken: '%@'; ", requestToken];
 
   [v6 appendFormat:@">"];
   v8 = [MEMORY[0x1E696AEC0] stringWithString:v6];

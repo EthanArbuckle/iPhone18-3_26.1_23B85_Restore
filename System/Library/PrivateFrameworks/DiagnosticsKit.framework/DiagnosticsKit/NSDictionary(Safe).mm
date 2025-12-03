@@ -18,7 +18,7 @@
 - (id)getStringForKey:()Safe
 {
   v4 = a3;
-  v5 = [a1 getKey:v4 ofType:objc_opt_class()];
+  v5 = [self getKey:v4 ofType:objc_opt_class()];
 
   return v5;
 }
@@ -26,7 +26,7 @@
 - (id)getNumberForKey:()Safe
 {
   v4 = a3;
-  v5 = [a1 getKey:v4 ofType:objc_opt_class()];
+  v5 = [self getKey:v4 ofType:objc_opt_class()];
 
   return v5;
 }
@@ -34,16 +34,16 @@
 - (uint64_t)getBoolForKey:()Safe
 {
   v4 = a3;
-  v5 = [a1 getKey:v4 ofType:objc_opt_class()];
+  v5 = [self getKey:v4 ofType:objc_opt_class()];
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 - (id)getDictionaryForKey:()Safe
 {
   v4 = a3;
-  v5 = [a1 getKey:v4 ofType:objc_opt_class()];
+  v5 = [self getKey:v4 ofType:objc_opt_class()];
 
   return v5;
 }
@@ -51,14 +51,14 @@
 - (id)getArrayForKey:()Safe
 {
   v4 = a3;
-  v5 = [a1 getKey:v4 ofType:objc_opt_class()];
+  v5 = [self getKey:v4 ofType:objc_opt_class()];
 
   return v5;
 }
 
 - (id)getKey:()Safe ofType:
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
@@ -72,7 +72,7 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 alwaysGetKey:v7 ofType:objc_opt_class() default:v6];
+  v8 = [self alwaysGetKey:v7 ofType:objc_opt_class() default:v6];
 
   return v8;
 }
@@ -81,7 +81,7 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 alwaysGetKey:v7 ofType:objc_opt_class() default:v6];
+  v8 = [self alwaysGetKey:v7 ofType:objc_opt_class() default:v6];
 
   return v8;
 }
@@ -90,7 +90,7 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 alwaysGetKey:v7 ofType:objc_opt_class() default:v6];
+  v8 = [self alwaysGetKey:v7 ofType:objc_opt_class() default:v6];
 
   return v8;
 }
@@ -99,7 +99,7 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 alwaysGetKey:v7 ofType:objc_opt_class() default:v6];
+  v8 = [self alwaysGetKey:v7 ofType:objc_opt_class() default:v6];
 
   return v8;
 }
@@ -107,7 +107,7 @@
 - (id)alwaysGetKey:()Safe ofType:default:
 {
   v8 = a5;
-  v9 = [a1 getKey:a3 ofType:a4];
+  v9 = [self getKey:a3 ofType:a4];
   if (!v9)
   {
     v9 = [v8 copy];
@@ -118,7 +118,7 @@
 
 - (id)alwaysGetKey:()Safe ofType:
 {
-  v5 = [a1 getKey:? ofType:?];
+  v5 = [self getKey:? ofType:?];
   if (!v5)
   {
     v5 = objc_alloc_init(a4);

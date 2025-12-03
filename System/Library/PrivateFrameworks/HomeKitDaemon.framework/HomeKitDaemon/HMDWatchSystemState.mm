@@ -3,16 +3,16 @@
 - (BOOL)isCompanionReachable;
 - (HMDWatchSystemState)init;
 - (NSHashTable)watchSystemStateDelegates;
-- (void)registerDelegate:(id)a3;
+- (void)registerDelegate:(id)delegate;
 @end
 
 @implementation HMDWatchSystemState
 
-- (void)registerDelegate:(id)a3
+- (void)registerDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock_with_options();
-  [(NSHashTable *)self->_watchSystemStateDelegates addObject:v4];
+  [(NSHashTable *)self->_watchSystemStateDelegates addObject:delegateCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
@@ -42,9 +42,9 @@
   if (v2)
   {
     v2->_companionReachable = 0;
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     watchSystemStateDelegates = v3->_watchSystemStateDelegates;
-    v3->_watchSystemStateDelegates = v4;
+    v3->_watchSystemStateDelegates = weakObjectsHashTable;
   }
 
   return v3;
@@ -58,7 +58,7 @@
     block[1] = 3221225472;
     block[2] = __34__HMDWatchSystemState_sharedState__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (sharedState_onceToken != -1)
     {
       dispatch_once(&sharedState_onceToken, block);

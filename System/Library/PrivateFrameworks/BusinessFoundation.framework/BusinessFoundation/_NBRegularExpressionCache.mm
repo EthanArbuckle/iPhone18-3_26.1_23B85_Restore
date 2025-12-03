@@ -1,7 +1,7 @@
 @interface _NBRegularExpressionCache
 + (id)sharedInstance;
 - (_NBRegularExpressionCache)init;
-- (id)regularExpressionForPattern:(id)a3 error:(id *)a4;
+- (id)regularExpressionForPattern:(id)pattern error:(id *)error;
 @end
 
 @implementation _NBRegularExpressionCache
@@ -33,13 +33,13 @@
   return v2;
 }
 
-- (id)regularExpressionForPattern:(id)a3 error:(id *)a4
+- (id)regularExpressionForPattern:(id)pattern error:(id *)error
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(_NBRegularExpressionCache *)v7 cache];
-  v9 = [v8 objectForKey:v6];
+  patternCopy = pattern;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cache = [(_NBRegularExpressionCache *)selfCopy cache];
+  v9 = [cache objectForKey:patternCopy];
 
   if (v9)
   {
@@ -49,13 +49,13 @@
   else
   {
     v17 = 0;
-    v11 = [objc_alloc(MEMORY[0x277CCAC68]) initWithPattern:v6 options:0 error:&v17];
+    v11 = [objc_alloc(MEMORY[0x277CCAC68]) initWithPattern:patternCopy options:0 error:&v17];
     v12 = v17;
     v13 = v12;
-    if (!a4 || v11)
+    if (!error || v11)
     {
-      v15 = [(_NBRegularExpressionCache *)v7 cache];
-      [v15 setObject:v11 forKey:v6];
+      cache2 = [(_NBRegularExpressionCache *)selfCopy cache];
+      [cache2 setObject:v11 forKey:patternCopy];
 
       v10 = v11;
     }
@@ -64,11 +64,11 @@
     {
       v14 = v12;
       v10 = 0;
-      *a4 = v13;
+      *error = v13;
     }
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }

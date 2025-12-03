@@ -1,25 +1,25 @@
 @interface BWStreamingCVAFilterRenderer
 + (void)initialize;
-- (BWStreamingCVAFilterRenderer)initWithCaptureDevice:(id)a3 studioAndContourRenderingEnabled:(BOOL)a4 stageRenderingEnabled:(BOOL)a5 depthDataSource:(int)a6 foregroundBlurEnabled:(BOOL)a7 depthFilterRenderingIsAfterPreviewStitcher:(BOOL)a8 commandQueue:(id)a9 priority:(unsigned int)a10 mirroredForMetadataAdjustment:(BOOL)a11 rotationDegreesForMetadataAdjustment:(int)a12 secondaryStreamingPersonSegmentationEnabled:(BOOL)a13 cropDepthToPrimaryCaptureAspectRatio:(BOOL)a14 disableDepthAndSegmentationRotationInLandscape:(BOOL)a15;
+- (BWStreamingCVAFilterRenderer)initWithCaptureDevice:(id)device studioAndContourRenderingEnabled:(BOOL)enabled stageRenderingEnabled:(BOOL)renderingEnabled depthDataSource:(int)source foregroundBlurEnabled:(BOOL)blurEnabled depthFilterRenderingIsAfterPreviewStitcher:(BOOL)stitcher commandQueue:(id)queue priority:(unsigned int)self0 mirroredForMetadataAdjustment:(BOOL)self1 rotationDegreesForMetadataAdjustment:(int)self2 secondaryStreamingPersonSegmentationEnabled:(BOOL)self3 cropDepthToPrimaryCaptureAspectRatio:(BOOL)self4 disableDepthAndSegmentationRotationInLandscape:(BOOL)self5;
 - (float)portraitLightingEffectStrength;
 - (float)simulatedAperture;
-- (int)prepareForRenderingWithParameters:(id)a3 inputVideoFormat:(id)a4 inputMediaPropertiesByAttachedMediaKey:(id)a5;
+- (int)prepareForRenderingWithParameters:(id)parameters inputVideoFormat:(id)format inputMediaPropertiesByAttachedMediaKey:(id)key;
 - (uint64_t)mattingRequest:(uint64_t)result didCompleteMattingWithResult:;
-- (void)_removeFaceVisibilityForFacesMissingFromDetectedFaces:(uint64_t)a1;
-- (void)adjustMetadataOfSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (void)_removeFaceVisibilityForFacesMissingFromDetectedFaces:(uint64_t)faces;
+- (void)adjustMetadataOfSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (void)dealloc;
-- (void)disparityPostprocessingRequest:(void *)a3 didCompleteDisparityPostprocessingWithResult:;
-- (void)portraitRequest:(void *)a3 didCompletePortraitWithResult:(uint64_t)a4 completionHandler:;
-- (void)renderUsingParameters:(id)a3 inputPixelBuffer:(__CVBuffer *)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 originalPixelBuffer:(__CVBuffer *)a6 processedPixelBuffer:(__CVBuffer *)a7 completionHandler:(id)a8;
-- (void)setPortraitLightingEffectStrength:(float)a3;
-- (void)setSimulatedAperture:(float)a3;
+- (void)disparityPostprocessingRequest:(void *)request didCompleteDisparityPostprocessingWithResult:;
+- (void)portraitRequest:(void *)request didCompletePortraitWithResult:(uint64_t)result completionHandler:;
+- (void)renderUsingParameters:(id)parameters inputPixelBuffer:(__CVBuffer *)buffer inputSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer originalPixelBuffer:(__CVBuffer *)pixelBuffer processedPixelBuffer:(__CVBuffer *)processedPixelBuffer completionHandler:(id)handler;
+- (void)setPortraitLightingEffectStrength:(float)strength;
+- (void)setSimulatedAperture:(float)aperture;
 @end
 
 @implementation BWStreamingCVAFilterRenderer
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -28,9 +28,9 @@
   }
 }
 
-- (BWStreamingCVAFilterRenderer)initWithCaptureDevice:(id)a3 studioAndContourRenderingEnabled:(BOOL)a4 stageRenderingEnabled:(BOOL)a5 depthDataSource:(int)a6 foregroundBlurEnabled:(BOOL)a7 depthFilterRenderingIsAfterPreviewStitcher:(BOOL)a8 commandQueue:(id)a9 priority:(unsigned int)a10 mirroredForMetadataAdjustment:(BOOL)a11 rotationDegreesForMetadataAdjustment:(int)a12 secondaryStreamingPersonSegmentationEnabled:(BOOL)a13 cropDepthToPrimaryCaptureAspectRatio:(BOOL)a14 disableDepthAndSegmentationRotationInLandscape:(BOOL)a15
+- (BWStreamingCVAFilterRenderer)initWithCaptureDevice:(id)device studioAndContourRenderingEnabled:(BOOL)enabled stageRenderingEnabled:(BOOL)renderingEnabled depthDataSource:(int)source foregroundBlurEnabled:(BOOL)blurEnabled depthFilterRenderingIsAfterPreviewStitcher:(BOOL)stitcher commandQueue:(id)queue priority:(unsigned int)self0 mirroredForMetadataAdjustment:(BOOL)self1 rotationDegreesForMetadataAdjustment:(int)self2 secondaryStreamingPersonSegmentationEnabled:(BOOL)self3 cropDepthToPrimaryCaptureAspectRatio:(BOOL)self4 disableDepthAndSegmentationRotationInLandscape:(BOOL)self5
 {
-  v18 = a5;
+  renderingEnabledCopy = renderingEnabled;
   v26.receiver = self;
   v26.super_class = BWStreamingCVAFilterRenderer;
   v21 = [(BWStreamingCVAFilterRenderer *)&v26 init];
@@ -38,9 +38,9 @@
   {
     v21->_sharedContextQueue = dispatch_queue_create("com.apple.bwgraph.streaming-cva-renderer.context-queue", 0);
     v21->_notificationQueue = FigDispatchQueueCreateWithPriority();
-    v21->_commandQueue = a9;
-    v21->_depthFilterRenderingIsAfterPreviewStitcher = a8;
-    v21->_animator = -[BWStreamingCVAFilterRendererAnimator initWithEffectStatus:overCaptureEnabled:]([BWStreamingCVAFilterRendererAnimator alloc], "initWithEffectStatus:overCaptureEnabled:", [a3 shallowDepthOfFieldEffectStatus], objc_msgSend(a3, "overCaptureEnabled"));
+    v21->_commandQueue = queue;
+    v21->_depthFilterRenderingIsAfterPreviewStitcher = stitcher;
+    v21->_animator = -[BWStreamingCVAFilterRendererAnimator initWithEffectStatus:overCaptureEnabled:]([BWStreamingCVAFilterRendererAnimator alloc], "initWithEffectStatus:overCaptureEnabled:", [device shallowDepthOfFieldEffectStatus], objc_msgSend(device, "overCaptureEnabled"));
     v21->_previousSkinSegmentationPixelBuffer = 0;
     v21->_previousDisparityPixelBuffer = 0;
     v21->_previousForegroundSegmentationPixelBuffer = 0;
@@ -51,11 +51,11 @@
     block[3] = &unk_1E798F870;
     block[4] = v21;
     dispatch_sync(sharedContextQueue, block);
-    v21->_depthDataSource = a6;
-    v21->_captureDevice = a3;
-    v21->_studioAndContourRenderingEnabled = a4;
-    v21->_stageRenderingEnabled = v18;
-    if (v18)
+    v21->_depthDataSource = source;
+    v21->_captureDevice = device;
+    v21->_studioAndContourRenderingEnabled = enabled;
+    v21->_stageRenderingEnabled = renderingEnabledCopy;
+    if (renderingEnabledCopy)
     {
       v23 = objc_alloc_init(BWSpringSimulation);
       v21->_stageProxyLiveRenderingSpringSimulation = v23;
@@ -67,12 +67,12 @@
     v21->_objectVisibilityByID = objc_alloc_init(MEMORY[0x1E695DF90]);
     v21->_objectVisibilityByIDLock._os_unfair_lock_opaque = 0;
     v21->_postprocessedFaces = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v21->_foregroundBlurEnabled = a7;
-    v21->_mirroredForMetadataAdjustment = a11;
-    v21->_rotationDegreesForMetadataAdjustment = a12;
-    v21->_secondaryStreamingPersonSegmentationEnabled = a13;
-    v21->_cropDepthToPrimaryCaptureAspectRatio = a14;
-    v21->_disableDepthAndSegmentationRotationInLandscape = a15;
+    v21->_foregroundBlurEnabled = blurEnabled;
+    v21->_mirroredForMetadataAdjustment = adjustment;
+    v21->_rotationDegreesForMetadataAdjustment = metadataAdjustment;
+    v21->_secondaryStreamingPersonSegmentationEnabled = segmentationEnabled;
+    v21->_cropDepthToPrimaryCaptureAspectRatio = ratio;
+    v21->_disableDepthAndSegmentationRotationInLandscape = landscape;
   }
 
   return v21;
@@ -140,7 +140,7 @@ void __39__BWStreamingCVAFilterRenderer_dealloc__block_invoke(uint64_t a1)
   v4 = *(*(a1 + 32) + 80);
 }
 
-- (void)setSimulatedAperture:(float)a3
+- (void)setSimulatedAperture:(float)aperture
 {
   sharedContextQueue = self->_sharedContextQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -148,7 +148,7 @@ void __39__BWStreamingCVAFilterRenderer_dealloc__block_invoke(uint64_t a1)
   v4[2] = __53__BWStreamingCVAFilterRenderer_setSimulatedAperture___block_invoke;
   v4[3] = &unk_1E7991CF0;
   v4[4] = self;
-  v5 = a3;
+  apertureCopy = aperture;
   dispatch_sync(sharedContextQueue, v4);
 }
 
@@ -185,7 +185,7 @@ float __49__BWStreamingCVAFilterRenderer_simulatedAperture__block_invoke(uint64_
   return result;
 }
 
-- (void)setPortraitLightingEffectStrength:(float)a3
+- (void)setPortraitLightingEffectStrength:(float)strength
 {
   sharedContextQueue = self->_sharedContextQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -193,7 +193,7 @@ float __49__BWStreamingCVAFilterRenderer_simulatedAperture__block_invoke(uint64_
   v4[2] = __66__BWStreamingCVAFilterRenderer_setPortraitLightingEffectStrength___block_invoke;
   v4[3] = &unk_1E7991CF0;
   v4[4] = self;
-  v5 = a3;
+  strengthCopy = strength;
   dispatch_sync(sharedContextQueue, v4);
 }
 
@@ -230,10 +230,10 @@ float __62__BWStreamingCVAFilterRenderer_portraitLightingEffectStrength__block_i
   return result;
 }
 
-- (int)prepareForRenderingWithParameters:(id)a3 inputVideoFormat:(id)a4 inputMediaPropertiesByAttachedMediaKey:(id)a5
+- (int)prepareForRenderingWithParameters:(id)parameters inputVideoFormat:(id)format inputMediaPropertiesByAttachedMediaKey:(id)key
 {
   v62 = 0;
-  if (!a3)
+  if (!parameters)
   {
     goto LABEL_177;
   }
@@ -244,7 +244,7 @@ float __62__BWStreamingCVAFilterRenderer_portraitLightingEffectStrength__block_i
     return 0;
   }
 
-  v9 = [a3 prepareForRenderingWithInputVideoFormat:a4];
+  v9 = [parameters prepareForRenderingWithInputVideoFormat:format];
   if (!v9)
   {
 LABEL_177:
@@ -257,8 +257,8 @@ LABEL_177:
     *&self->_maxFramesWithoutDepth = 1;
     self->_hasSeenSegmentation = 0;
     *&self->_maxFramesWithoutSegmentation = 6;
-    v10 = [objc_msgSend(a5 objectForKeyedSubscript:{@"Depth", "resolvedVideoFormat"}];
-    if (!a4)
+    v10 = [objc_msgSend(key objectForKeyedSubscript:{@"Depth", "resolvedVideoFormat"}];
+    if (!format)
     {
       [BWStreamingCVAFilterRenderer prepareForRenderingWithParameters:inputVideoFormat:inputMediaPropertiesByAttachedMediaKey:];
       goto LABEL_72;
@@ -271,15 +271,15 @@ LABEL_177:
       goto LABEL_72;
     }
 
-    v12 = [(BWFigVideoCaptureDevice *)self->_captureDevice position];
-    v13 = [(BWFigVideoCaptureDevice *)self->_captureDevice bravoSuperWideCaptureStream];
+    position = [(BWFigVideoCaptureDevice *)self->_captureDevice position];
+    bravoSuperWideCaptureStream = [(BWFigVideoCaptureDevice *)self->_captureDevice bravoSuperWideCaptureStream];
     [(BWZoomCommandHandler *)[(BWFigVideoCaptureDevice *)self->_captureDevice zoomCommandHandler] requestedZoomFactorWithoutFudge];
     v15 = v14;
     depthFilterRenderingIsAfterPreviewStitcher = self->_depthFilterRenderingIsAfterPreviewStitcher;
     ModelSpecificName = FigCaptureGetModelSpecificName();
     if ([ModelSpecificName hasPrefix:@"N104"])
     {
-      v18 = v12 == 2;
+      v18 = position == 2;
       v19 = 18;
       goto LABEL_10;
     }
@@ -287,12 +287,12 @@ LABEL_177:
     if ([ModelSpecificName hasPrefix:@"D42"])
     {
       v21 = 12;
-      if (v13)
+      if (bravoSuperWideCaptureStream)
       {
         v21 = 13;
       }
 
-      v22 = v12 == 2;
+      v22 = position == 2;
       v23 = 14;
       goto LABEL_21;
     }
@@ -300,12 +300,12 @@ LABEL_177:
     if ([ModelSpecificName hasPrefix:@"D43"])
     {
       v21 = 15;
-      if (v13)
+      if (bravoSuperWideCaptureStream)
       {
         v21 = 16;
       }
 
-      v22 = v12 == 2;
+      v22 = position == 2;
       v23 = 17;
       goto LABEL_21;
     }
@@ -336,14 +336,14 @@ LABEL_56:
 
       if ([ModelSpecificName hasPrefix:@"D52g"] || objc_msgSend(ModelSpecificName, "hasPrefix:", @"D53g"))
       {
-        v18 = v12 == 2;
+        v18 = position == 2;
         v19 = 22;
         goto LABEL_10;
       }
 
       if ([ModelSpecificName hasPrefix:@"D53p"])
       {
-        v46 = v13 == 0;
+        v46 = bravoSuperWideCaptureStream == 0;
         v21 = 24;
 LABEL_80:
         if (!v46)
@@ -351,14 +351,14 @@ LABEL_80:
           ++v21;
         }
 
-        v22 = v12 == 2;
+        v22 = position == 2;
         v23 = 26;
         goto LABEL_21;
       }
 
       if ([ModelSpecificName hasPrefix:@"D54p"])
       {
-        v46 = v13 == 0;
+        v46 = bravoSuperWideCaptureStream == 0;
         v21 = 27;
         goto LABEL_80;
       }
@@ -372,7 +372,7 @@ LABEL_80:
 
         if ([ModelSpecificName hasPrefix:@"D16"] || objc_msgSend(ModelSpecificName, "hasPrefix:", @"D17"))
         {
-          v18 = v12 == 2;
+          v18 = position == 2;
           v19 = 29;
 LABEL_10:
           if (v18)
@@ -390,7 +390,7 @@ LABEL_10:
 
         if ([ModelSpecificName hasPrefix:@"D27"] || objc_msgSend(ModelSpecificName, "hasPrefix:", @"D28"))
         {
-          if (v12 == 2)
+          if (position == 2)
           {
             v20 = 37;
           }
@@ -406,7 +406,7 @@ LABEL_10:
         if ([ModelSpecificName hasPrefix:@"D37"])
         {
 LABEL_96:
-          if (v12 != 2)
+          if (position != 2)
           {
             v47 = !depthFilterRenderingIsAfterPreviewStitcher;
             v48 = 42;
@@ -442,7 +442,7 @@ LABEL_108:
         if ([ModelSpecificName hasPrefix:@"D48"])
         {
 LABEL_99:
-          if (v12 != 2)
+          if (position != 2)
           {
             v47 = !depthFilterRenderingIsAfterPreviewStitcher;
             v48 = 43;
@@ -458,7 +458,7 @@ LABEL_100:
 
         if ([ModelSpecificName hasPrefix:@"V59"])
         {
-          if (v12 == 2)
+          if (position == 2)
           {
             goto LABEL_100;
           }
@@ -488,19 +488,19 @@ LABEL_21:
         if ([ModelSpecificName hasPrefix:@"D63"] || objc_msgSend(ModelSpecificName, "hasPrefix:", @"D64"))
         {
           v21 = 31;
-          if (!v13)
+          if (!bravoSuperWideCaptureStream)
           {
             v21 = 32;
           }
 
-          v22 = v12 == 2;
+          v22 = position == 2;
           v23 = 30;
           goto LABEL_21;
         }
 
         if ([ModelSpecificName hasPrefix:@"D73"] || objc_msgSend(ModelSpecificName, "hasPrefix:", @"D74"))
         {
-          if (v12 != 2)
+          if (position != 2)
           {
             v21 = 34;
             if (v15 == 4.0)
@@ -508,7 +508,7 @@ LABEL_21:
               v21 = 35;
             }
 
-            v22 = v13 == 0;
+            v22 = bravoSuperWideCaptureStream == 0;
             v23 = 36;
             goto LABEL_21;
           }
@@ -519,12 +519,12 @@ LABEL_27:
           if (v24)
           {
             v25 = v24;
-            v26 = [a4 width];
-            v27 = [a4 height];
-            [v25 setColorPixelBufferWidth:v26];
-            [v25 setColorPixelBufferHeight:v27];
-            [v25 setAlphaMattePixelBufferWidth:v26];
-            [v25 setAlphaMattePixelBufferHeight:v27];
+            width = [format width];
+            height = [format height];
+            [v25 setColorPixelBufferWidth:width];
+            [v25 setColorPixelBufferHeight:height];
+            [v25 setAlphaMattePixelBufferWidth:width];
+            [v25 setAlphaMattePixelBufferHeight:height];
             depthDataSource = self->_depthDataSource;
             switch(depthDataSource)
             {
@@ -564,22 +564,22 @@ LABEL_31:
 
             self->_requiredDisparityFormat = v29;
             [v25 setInputDisparityPixelBufferPixelFormat:?];
-            if (self->_foregroundBlurEnabled && v12 == 2)
+            if (self->_foregroundBlurEnabled && position == 2)
             {
-              v30 = 0;
+              inputToOutputDisparityPixelBufferRotation = 0;
             }
 
             else
             {
-              v30 = [v25 inputToOutputDisparityPixelBufferRotation];
+              inputToOutputDisparityPixelBufferRotation = [v25 inputToOutputDisparityPixelBufferRotation];
             }
 
-            [v25 setInputToOutputDisparityPixelBufferRotation:v30];
+            [v25 setInputToOutputDisparityPixelBufferRotation:inputToOutputDisparityPixelBufferRotation];
             if (self->_depthFilterRenderingIsAfterPreviewStitcher && ![(BWFigVideoCaptureDevice *)self->_captureDevice isBravoVariant])
             {
               [v25 setOutputDisparityPixelBufferWidth:{objc_msgSend(v11, "height")}];
               [v25 setOutputDisparityPixelBufferHeight:{objc_msgSend(v11, "width")}];
-              if (v12 == 2)
+              if (position == 2)
               {
                 v31 = 1;
               }
@@ -592,17 +592,17 @@ LABEL_31:
               [v25 setInputToOutputDisparityPixelBufferRotation:v31];
             }
 
-            v32 = [v25 outputDisparityPixelBufferWidth];
-            v33 = [v25 outputDisparityPixelBufferHeight];
+            outputDisparityPixelBufferWidth = [v25 outputDisparityPixelBufferWidth];
+            outputDisparityPixelBufferHeight = [v25 outputDisparityPixelBufferHeight];
 
             v34 = [MEMORY[0x1E698C0E0] portraitVideoPipelineWithProperties:v25 commandQueue:self->_commandQueue notificationQueue:self->_notificationQueue error:&v62];
             self->_portraitVideoPipeline = v34;
             if (v34)
             {
               v60[0] = *MEMORY[0x1E6966208];
-              v61[0] = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v32];
+              v61[0] = [MEMORY[0x1E696AD98] numberWithUnsignedLong:outputDisparityPixelBufferWidth];
               v60[1] = *MEMORY[0x1E69660B8];
-              v35 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v33];
+              v35 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:outputDisparityPixelBufferHeight];
               v36 = *MEMORY[0x1E6966130];
               v61[1] = v35;
               v61[2] = &unk_1F22488C8;
@@ -626,7 +626,7 @@ LABEL_31:
 
               v57 = v37;
               v58 = v38;
-              CVPixelBufferCreate(0, v26, v27, 0x4C303038u, [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v57 count:1], &self->_mattingBuffer);
+              CVPixelBufferCreate(0, width, height, 0x4C303038u, [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v57 count:1], &self->_mattingBuffer);
               if (*p_mattingBuffer)
               {
                 return 0;
@@ -659,7 +659,7 @@ LABEL_72:
             v50 = 49;
           }
 
-          if (v12 == 2)
+          if (position == 2)
           {
             v20 = v50;
           }
@@ -675,7 +675,7 @@ LABEL_72:
         if (([ModelSpecificName hasPrefix:@"V53"] & 1) != 0 || objc_msgSend(ModelSpecificName, "hasPrefix:", @"V54"))
         {
 LABEL_113:
-          v22 = v12 == 2;
+          v22 = position == 2;
           v21 = 48;
           v23 = 51;
           goto LABEL_21;
@@ -684,14 +684,14 @@ LABEL_113:
         if ([ModelSpecificName hasPrefix:@"D49"])
         {
 LABEL_58:
-          v18 = v12 == 2;
+          v18 = position == 2;
           v19 = 20;
           goto LABEL_10;
         }
 
         if ([ModelSpecificName hasPrefix:@"J617"])
         {
-          if (v12 != 2)
+          if (position != 2)
           {
             if (([ModelSpecificName hasPrefix:@"J620"] & 1) == 0)
             {
@@ -705,11 +705,11 @@ LABEL_58:
         else
         {
           v51 = [ModelSpecificName hasPrefix:@"J618"];
-          if (v12 != 2 || (v51 & 1) == 0)
+          if (position != 2 || (v51 & 1) == 0)
           {
             if ([ModelSpecificName hasPrefix:@"J620"])
             {
-              if (v12 == 2)
+              if (position == 2)
               {
                 goto LABEL_56;
               }
@@ -718,7 +718,7 @@ LABEL_58:
             else
             {
               v52 = [ModelSpecificName hasPrefix:@"J621"];
-              if (v12 == 2 && (v52 & 1) != 0)
+              if (position == 2 && (v52 & 1) != 0)
               {
                 goto LABEL_56;
               }
@@ -727,7 +727,7 @@ LABEL_58:
 LABEL_150:
             if ([ModelSpecificName hasPrefix:@"J717"])
             {
-              if (v12 == 2)
+              if (position == 2)
               {
                 goto LABEL_167;
               }
@@ -741,14 +741,14 @@ LABEL_150:
             else
             {
               v53 = [ModelSpecificName hasPrefix:@"J718"];
-              if (v12 == 2 && (v53 & 1) != 0)
+              if (position == 2 && (v53 & 1) != 0)
               {
                 goto LABEL_167;
               }
 
               if ([ModelSpecificName hasPrefix:@"J720"])
               {
-                if (v12 == 2)
+                if (position == 2)
                 {
                   goto LABEL_173;
                 }
@@ -757,7 +757,7 @@ LABEL_150:
               else
               {
                 v54 = [ModelSpecificName hasPrefix:@"J721"];
-                if (v12 == 2 && (v54 & 1) != 0)
+                if (position == 2 && (v54 & 1) != 0)
                 {
                   goto LABEL_173;
                 }
@@ -766,7 +766,7 @@ LABEL_150:
 
             if ([ModelSpecificName hasPrefix:@"J817"])
             {
-              if (v12 != 2)
+              if (position != 2)
               {
                 if (([ModelSpecificName hasPrefix:@"J820"] & 1) == 0)
                 {
@@ -774,7 +774,7 @@ LABEL_150:
                 }
 
 LABEL_174:
-                objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Failed to find CVAVideoPipelineDevice for modelSpecificName: %@, isFrontCamera: %d, zoomFactor %f", ModelSpecificName, v12 == 2, v15), 0}]);
+                objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Failed to find CVAVideoPipelineDevice for modelSpecificName: %@, isFrontCamera: %d, zoomFactor %f", ModelSpecificName, position == 2, v15), 0}]);
               }
 
 LABEL_167:
@@ -783,14 +783,14 @@ LABEL_167:
             }
 
             v55 = [ModelSpecificName hasPrefix:@"J818"];
-            if (v12 == 2 && (v55 & 1) != 0)
+            if (position == 2 && (v55 & 1) != 0)
             {
               goto LABEL_167;
             }
 
             if ([ModelSpecificName hasPrefix:@"J820"])
             {
-              if (v12 != 2)
+              if (position != 2)
               {
                 goto LABEL_174;
               }
@@ -799,7 +799,7 @@ LABEL_167:
             else
             {
               v56 = [ModelSpecificName hasPrefix:@"J821"];
-              if (v12 != 2 || (v56 & 1) == 0)
+              if (position != 2 || (v56 & 1) == 0)
               {
                 goto LABEL_174;
               }
@@ -832,7 +832,7 @@ LABEL_73:
   return v43;
 }
 
-- (void)renderUsingParameters:(id)a3 inputPixelBuffer:(__CVBuffer *)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 originalPixelBuffer:(__CVBuffer *)a6 processedPixelBuffer:(__CVBuffer *)a7 completionHandler:(id)a8
+- (void)renderUsingParameters:(id)parameters inputPixelBuffer:(__CVBuffer *)buffer inputSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer originalPixelBuffer:(__CVBuffer *)pixelBuffer processedPixelBuffer:(__CVBuffer *)processedPixelBuffer completionHandler:(id)handler
 {
   v8 = MEMORY[0x1EEE9AC00](self);
   v59 = v10;
@@ -1089,7 +1089,7 @@ LABEL_27:
     }
   }
 
-  v40 = [v16 colorFilter];
+  colorFilter = [v16 colorFilter];
   v41 = *(v17 + 152);
   if (v41 != 2)
   {
@@ -1145,9 +1145,9 @@ LABEL_91:
 LABEL_59:
   BYTE4(v62) = 0;
 LABEL_60:
-  if (v40)
+  if (colorFilter)
   {
-    v75 = v40;
+    v75 = colorFilter;
     if (BWCIFilterArrayContainsFiltersRequiringSegmentation([MEMORY[0x1E695DEC8] arrayWithObjects:&v75 count:1]))
     {
       if (*(v17 + 236) == 1 && *(v17 + 244) <= *(v17 + 240))
@@ -1216,16 +1216,16 @@ LABEL_98:
     }
 
     *(v96 + 6) = v42;
-    v43 = [*(v17 + 160) shallowDepthOfFieldEffectStatus];
+    shallowDepthOfFieldEffectStatus = [*(v17 + 160) shallowDepthOfFieldEffectStatus];
     v44 = CMGetAttachment(target, @"BWShallowDepthOfFieldEffectPreviewStatusOverride", 0);
     if (v44)
     {
-      v43 = [v44 intValue];
+      shallowDepthOfFieldEffectStatus = [v44 intValue];
     }
 
     LODWORD(v45) = *(v106 + 6);
     LODWORD(v46) = *(v84 + 6);
-    [*(v17 + 192) simulateNextFrameWithEffectStatus:v43 portraitStability:v45 clientSuppliedSimulatedAperture:v46];
+    [*(v17 + 192) simulateNextFrameWithEffectStatus:shallowDepthOfFieldEffectStatus portraitStability:v45 clientSuppliedSimulatedAperture:v46];
     v47 = [(__CFDictionary *)theDict objectForKeyedSubscript:*off_1E798B4B8];
     if (v47)
     {
@@ -1293,18 +1293,18 @@ float __148__BWStreamingCVAFilterRenderer_renderUsingParameters_inputPixelBuffer
   return result;
 }
 
-- (void)disparityPostprocessingRequest:(void *)a3 didCompleteDisparityPostprocessingWithResult:
+- (void)disparityPostprocessingRequest:(void *)request didCompleteDisparityPostprocessingWithResult:
 {
-  if (a1)
+  if (self)
   {
     v5 = MEMORY[0x1E695FF58];
     if (*MEMORY[0x1E695FF58] == 1)
     {
-      [a3 postprocessedDisparityPixelBuffer];
+      [request postprocessedDisparityPixelBuffer];
       kdebug_trace();
       if (*v5 == 1)
       {
-        [a3 postprocessedDisparityPixelBuffer];
+        [request postprocessedDisparityPixelBuffer];
         kdebug_trace();
       }
     }
@@ -1319,38 +1319,38 @@ float __148__BWStreamingCVAFilterRenderer_renderUsingParameters_inputPixelBuffer
     v32 = __Block_byref_object_copy__22;
     v33 = __Block_byref_object_dispose__22;
     v34 = MEMORY[0x1E695E0F0];
-    v6 = *(a1 + 8);
+    v6 = *(self + 8);
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __108__BWStreamingCVAFilterRenderer_disparityPostprocessingRequest_didCompleteDisparityPostprocessingWithResult___block_invoke;
     v28[3] = &unk_1E7997788;
-    v28[4] = a1;
-    v28[5] = a3;
+    v28[4] = self;
+    v28[5] = request;
     v28[6] = &v35;
     v28[7] = &v29;
     dispatch_sync(v6, v28);
-    v7 = *(a1 + 160);
-    [a3 backgroundDisparitySum];
+    v7 = *(self + 160);
+    [request backgroundDisparitySum];
     v9 = v8;
-    [a3 invalidDisparityRatio];
+    [request invalidDisparityRatio];
     v11 = v10;
-    [a3 closeCanonicalDisparityAverage];
+    [request closeCanonicalDisparityAverage];
     v13 = v12;
-    v14 = [a3 faceCanonicalDisparityAverage];
-    [a3 erodedForegroundRatio];
+    faceCanonicalDisparityAverage = [request faceCanonicalDisparityAverage];
+    [request erodedForegroundRatio];
     v16 = v15;
-    [a3 foregroundRatio];
+    [request foregroundRatio];
     v18 = v17;
     v19 = *(v36 + 24);
     v20 = v30[5];
-    [a3 personSegmentationRatio];
+    [request personSegmentationRatio];
     LODWORD(v22) = v21;
     LODWORD(v23) = v9;
     LODWORD(v24) = v11;
     LODWORD(v25) = v13;
     LODWORD(v26) = v16;
     LODWORD(v27) = v18;
-    [v7 updateSDOFBackgroundShiftSum:v14 invalidShiftRatio:v19 closeCanonicalDisparityAverage:v20 faceCanonicalDisparityAverages:v23 erodedForegroundRatio:v24 foregroundRatio:v25 occluded:v26 faces:v27 personSegmentationRatio:v22];
+    [v7 updateSDOFBackgroundShiftSum:faceCanonicalDisparityAverage invalidShiftRatio:v19 closeCanonicalDisparityAverage:v20 faceCanonicalDisparityAverages:v23 erodedForegroundRatio:v24 foregroundRatio:v25 occluded:v26 faces:v27 personSegmentationRatio:v22];
 
     _Block_object_dispose(&v29, 8);
     _Block_object_dispose(&v35, 8);
@@ -1394,9 +1394,9 @@ id __148__BWStreamingCVAFilterRenderer_renderUsingParameters_inputPixelBuffer_in
   return result;
 }
 
-- (void)adjustMetadataOfSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)adjustMetadataOfSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v4 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v4 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   v15 = *off_1E798B220;
   v5 = [v4 objectForKeyedSubscript:?];
   v6 = [v5 objectForKeyedSubscript:*off_1E798ACB8];
@@ -1529,15 +1529,15 @@ id __148__BWStreamingCVAFilterRenderer_renderUsingParameters_inputPixelBuffer_in
   _Block_object_dispose(&v37, 8);
 }
 
-- (void)_removeFaceVisibilityForFacesMissingFromDetectedFaces:(uint64_t)a1
+- (void)_removeFaceVisibilityForFacesMissingFromDetectedFaces:(uint64_t)faces
 {
-  if (a1 && a2)
+  if (faces && a2)
   {
-    os_unfair_lock_lock((a1 + 208));
-    DeepCopy = CFPropertyListCreateDeepCopy(*MEMORY[0x1E695E480], [*(a1 + 200) allKeys], 0);
-    v15 = a1;
-    os_unfair_lock_unlock((a1 + 208));
-    v16 = [MEMORY[0x1E695DF70] array];
+    os_unfair_lock_lock((faces + 208));
+    DeepCopy = CFPropertyListCreateDeepCopy(*MEMORY[0x1E695E480], [*(faces + 200) allKeys], 0);
+    facesCopy = faces;
+    os_unfair_lock_unlock((faces + 208));
+    array = [MEMORY[0x1E695DF70] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -1563,7 +1563,7 @@ id __148__BWStreamingCVAFilterRenderer_renderUsingParameters_inputPixelBuffer_in
           v19 = 0u;
           v20 = 0u;
           v21 = 0u;
-          v11 = [a2 countByEnumeratingWithState:&v18 objects:v17 count:{16, v15}];
+          v11 = [a2 countByEnumeratingWithState:&v18 objects:v17 count:{16, facesCopy}];
           if (v11)
           {
             v12 = v11;
@@ -1598,7 +1598,7 @@ LABEL_10:
           else
           {
 LABEL_16:
-            [v16 addObject:v10];
+            [array addObject:v10];
           }
 
           ++v9;
@@ -1611,9 +1611,9 @@ LABEL_16:
       while (v6);
     }
 
-    os_unfair_lock_lock((v15 + 208));
-    [*(v15 + 200) removeObjectsForKeys:v16];
-    os_unfair_lock_unlock((v15 + 208));
+    os_unfair_lock_lock((facesCopy + 208));
+    [*(facesCopy + 200) removeObjectsForKeys:array];
+    os_unfair_lock_unlock((facesCopy + 208));
   }
 }
 
@@ -1816,9 +1816,9 @@ uint64_t __96__BWStreamingCVAFilterRenderer_portraitRequest_didCompletePortraitW
   return result;
 }
 
-- (void)portraitRequest:(void *)a3 didCompletePortraitWithResult:(uint64_t)a4 completionHandler:
+- (void)portraitRequest:(void *)request didCompletePortraitWithResult:(uint64_t)result completionHandler:
 {
-  if (a1)
+  if (self)
   {
     v7 = MEMORY[0x1E695FF58];
     if (*MEMORY[0x1E695FF58] == 1)
@@ -1830,7 +1830,7 @@ uint64_t __96__BWStreamingCVAFilterRenderer_portraitRequest_didCompletePortraitW
       }
     }
 
-    if ([a3 portraitPixelBuffer])
+    if ([request portraitPixelBuffer])
     {
       v8 = 0;
       v9 = 2;
@@ -1845,17 +1845,17 @@ uint64_t __96__BWStreamingCVAFilterRenderer_portraitRequest_didCompletePortraitW
       v9 = 0;
     }
 
-    v11 = *(a1 + 8);
+    v11 = *(self + 8);
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __96__BWStreamingCVAFilterRenderer_portraitRequest_didCompletePortraitWithResult_completionHandler___block_invoke;
     v12[3] = &unk_1E798F898;
-    v12[4] = a1;
-    v12[5] = a3;
+    v12[4] = self;
+    v12[5] = request;
     dispatch_sync(v11, v12);
-    if (a4)
+    if (result)
     {
-      (*(a4 + 16))(a4, v9, v8);
+      (*(result + 16))(result, v9, v8);
     }
   }
 }

@@ -1,33 +1,33 @@
 @interface IPAImageSizePolicy
-+ (id)bestFitPolicyInSize:(CGSize)a3;
-+ (id)bestFitPolicyShortestEdge:(double)a3;
-+ (id)bestFitPolicyWithEvenTotalPixelCount:(int64_t)a3;
-+ (id)bestFitPolicyWithEvenWidthTotalPixelCount:(int64_t)a3;
-+ (id)bestFitPolicyWithHeight:(double)a3;
-+ (id)bestFitPolicyWithNominalShortSide:(int64_t)a3 minLongSide:(int64_t)a4 maxLongSide:(int64_t)a5;
-+ (id)bestFitPolicyWithTotalPixelCount:(int64_t)a3;
-+ (id)bestFitPolicyWithWidth:(double)a3;
-+ (id)largestPolicyWithPolicies:(id)a3;
++ (id)bestFitPolicyInSize:(CGSize)size;
++ (id)bestFitPolicyShortestEdge:(double)edge;
++ (id)bestFitPolicyWithEvenTotalPixelCount:(int64_t)count;
++ (id)bestFitPolicyWithEvenWidthTotalPixelCount:(int64_t)count;
++ (id)bestFitPolicyWithHeight:(double)height;
++ (id)bestFitPolicyWithNominalShortSide:(int64_t)side minLongSide:(int64_t)longSide maxLongSide:(int64_t)maxLongSide;
++ (id)bestFitPolicyWithTotalPixelCount:(int64_t)count;
++ (id)bestFitPolicyWithWidth:(double)width;
++ (id)largestPolicyWithPolicies:(id)policies;
 + (id)originalSizePolicy;
-+ (id)scalePolicyWithScale:(double)a3;
-- (IPAImageSizePolicy)initWithCoder:(id)a3;
-- (PFIntSize_st)integralTransformSize:(CGSize)a3;
-- (double)transformScaleForSize:(CGSize)a3;
++ (id)scalePolicyWithScale:(double)scale;
+- (IPAImageSizePolicy)initWithCoder:(id)coder;
+- (PFIntSize_st)integralTransformSize:(CGSize)size;
+- (double)transformScaleForSize:(CGSize)size;
 @end
 
 @implementation IPAImageSizePolicy
 
-- (IPAImageSizePolicy)initWithCoder:(id)a3
+- (IPAImageSizePolicy)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = IPAImageSizePolicy;
   return [(IPAImageSizePolicy *)&v4 init];
 }
 
-- (double)transformScaleForSize:(CGSize)a3
+- (double)transformScaleForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(IPAImageSizePolicy *)self transformSize:?];
   result = v5 / width;
   v8 = v7 / height;
@@ -39,9 +39,9 @@
   return result;
 }
 
-- (PFIntSize_st)integralTransformSize:(CGSize)a3
+- (PFIntSize_st)integralTransformSize:(CGSize)size
 {
-  [(IPAImageSizePolicy *)self transformSize:a3.width, a3.height];
+  [(IPAImageSizePolicy *)self transformSize:size.width, size.height];
   v4 = vcvtad_u64_f64(v3);
   v6 = vcvtad_u64_f64(v5);
   result.height = v6;
@@ -49,80 +49,80 @@
   return result;
 }
 
-+ (id)bestFitPolicyWithNominalShortSide:(int64_t)a3 minLongSide:(int64_t)a4 maxLongSide:(int64_t)a5
++ (id)bestFitPolicyWithNominalShortSide:(int64_t)side minLongSide:(int64_t)longSide maxLongSide:(int64_t)maxLongSide
 {
-  v5 = [[IPABestFitShortSideWithLongSideLimit alloc] initWithNominalShortSide:a3 minLongSide:a4 maxLongSide:a5];
+  v5 = [[IPABestFitShortSideWithLongSideLimit alloc] initWithNominalShortSide:side minLongSide:longSide maxLongSide:maxLongSide];
 
   return v5;
 }
 
-+ (id)largestPolicyWithPolicies:(id)a3
++ (id)largestPolicyWithPolicies:(id)policies
 {
-  v3 = a3;
-  v4 = [[IPAAggregateLargestImageSizePolicy alloc] initWithPolicies:v3];
+  policiesCopy = policies;
+  v4 = [[IPAAggregateLargestImageSizePolicy alloc] initWithPolicies:policiesCopy];
 
   return v4;
 }
 
-+ (id)bestFitPolicyWithEvenWidthTotalPixelCount:(int64_t)a3
++ (id)bestFitPolicyWithEvenWidthTotalPixelCount:(int64_t)count
 {
-  v3 = [(IPABestFitTotalPixelCountImageSizePolicy *)[IPABestFitEvenWidthTotalPixelCountImageSizePolicy alloc] initWithTotalPixelCount:a3];
+  v3 = [(IPABestFitTotalPixelCountImageSizePolicy *)[IPABestFitEvenWidthTotalPixelCountImageSizePolicy alloc] initWithTotalPixelCount:count];
 
   return v3;
 }
 
-+ (id)bestFitPolicyWithEvenTotalPixelCount:(int64_t)a3
++ (id)bestFitPolicyWithEvenTotalPixelCount:(int64_t)count
 {
-  v3 = [[IPABestFitEvenTotalPixelCountImageSizePolicy alloc] initWithTotalPixelCount:a3];
+  v3 = [[IPABestFitEvenTotalPixelCountImageSizePolicy alloc] initWithTotalPixelCount:count];
 
   return v3;
 }
 
-+ (id)bestFitPolicyWithTotalPixelCount:(int64_t)a3
++ (id)bestFitPolicyWithTotalPixelCount:(int64_t)count
 {
-  v3 = [[IPABestFitTotalPixelCountImageSizePolicy alloc] initWithTotalPixelCount:a3];
+  v3 = [[IPABestFitTotalPixelCountImageSizePolicy alloc] initWithTotalPixelCount:count];
 
   return v3;
 }
 
-+ (id)bestFitPolicyWithHeight:(double)a3
++ (id)bestFitPolicyWithHeight:(double)height
 {
-  v3 = [[IPABestFitImageHeightPolicy alloc] initWithHeight:a3];
+  v3 = [[IPABestFitImageHeightPolicy alloc] initWithHeight:height];
 
   return v3;
 }
 
-+ (id)bestFitPolicyWithWidth:(double)a3
++ (id)bestFitPolicyWithWidth:(double)width
 {
-  v3 = [[IPABestFitImageWidthPolicy alloc] initWithWidth:a3];
+  v3 = [[IPABestFitImageWidthPolicy alloc] initWithWidth:width];
 
   return v3;
 }
 
-+ (id)bestFitPolicyShortestEdge:(double)a3
++ (id)bestFitPolicyShortestEdge:(double)edge
 {
-  v3 = [[IPAShortestEdgeImageSizePolicy alloc] initWithShortestEdge:a3];
+  v3 = [[IPAShortestEdgeImageSizePolicy alloc] initWithShortestEdge:edge];
 
   return v3;
 }
 
-+ (id)bestFitPolicyInSize:(CGSize)a3
++ (id)bestFitPolicyInSize:(CGSize)size
 {
-  v3 = [[IPABestFitImageSizePolicy alloc] initWithFitSize:a3.width, a3.height];
+  v3 = [[IPABestFitImageSizePolicy alloc] initWithFitSize:size.width, size.height];
 
   return v3;
 }
 
-+ (id)scalePolicyWithScale:(double)a3
++ (id)scalePolicyWithScale:(double)scale
 {
-  if (a3 == 1.0)
+  if (scale == 1.0)
   {
     v3 = +[IPAImageSizePolicy originalSizePolicy];
   }
 
   else
   {
-    v3 = [[IPAScaleImageSizePolicy alloc] initWithScale:a3];
+    v3 = [[IPAScaleImageSizePolicy alloc] initWithScale:scale];
   }
 
   return v3;

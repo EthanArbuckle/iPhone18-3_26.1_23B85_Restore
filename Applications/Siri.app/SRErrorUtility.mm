@@ -1,11 +1,11 @@
 @interface SRErrorUtility
-+ (BOOL)_shouldShowErrorCodes:(id)a3;
-+ (id)_errorDescriptionForCode:(int64_t)a3;
-+ (id)_localizedErrorString:(id)a3;
++ (BOOL)_shouldShowErrorCodes:(id)codes;
++ (id)_errorDescriptionForCode:(int64_t)code;
++ (id)_localizedErrorString:(id)string;
 + (id)_sharedErrorUtilityDefaults;
-+ (id)userStringForError:(id)a3 modeProvider:(id)a4 reflectionDialogWasPlayed:(BOOL)a5;
++ (id)userStringForError:(id)error modeProvider:(id)provider reflectionDialogWasPlayed:(BOOL)played;
 + (int64_t)_getUpdatedErrorCount;
-+ (void)_logDummyAssistantUtteranceViewWithDialogIdentifier:(id)a3;
++ (void)_logDummyAssistantUtteranceViewWithDialogIdentifier:(id)identifier;
 + (void)resetErrorState;
 @end
 
@@ -18,26 +18,26 @@
   [v3 setPreviousSiriRequestErrorTimestamp:v2];
 }
 
-+ (id)userStringForError:(id)a3 modeProvider:(id)a4 reflectionDialogWasPlayed:(BOOL)a5
++ (id)userStringForError:(id)error modeProvider:(id)provider reflectionDialogWasPlayed:(BOOL)played
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 domain];
-  v11 = [v10 isEqualToString:kAFAssistantErrorDomain];
+  playedCopy = played;
+  errorCopy = error;
+  providerCopy = provider;
+  domain = [errorCopy domain];
+  v11 = [domain isEqualToString:kAFAssistantErrorDomain];
 
   if (v11)
   {
-    v12 = [v8 code];
+    code = [errorCopy code];
     v13 = @"clientGenerated#TryAgain";
     v14 = @"ASSISTANT_TRY_AGAIN";
-    if (v12 <= 5)
+    if (code <= 5)
     {
-      if (v12 <= 2)
+      if (code <= 2)
       {
-        if ((v12 - 1) >= 2)
+        if ((code - 1) >= 2)
         {
-          if (v12)
+          if (code)
           {
             goto LABEL_28;
           }
@@ -46,7 +46,7 @@
         }
 
 LABEL_15:
-        if (v5 && [v8 code] == 4)
+        if (playedCopy && [errorCopy code] == 4)
         {
           v13 = @"clientGenerated#TimeoutAfterDelayInterstitials";
           v14 = @"ASSISTANT_TIMEOUT_ERROR_AFTER_DELAY_INTERSTITIAL";
@@ -54,16 +54,16 @@ LABEL_15:
 
         else
         {
-          v16 = [a1 _getUpdatedErrorCount];
+          _getUpdatedErrorCount = [self _getUpdatedErrorCount];
           v17 = @"clientGenerated#ConnectionFailed2";
           v18 = @"ASSISTANT_CONNECTION_FAILED_2";
-          if (v16 == 1)
+          if (_getUpdatedErrorCount == 1)
           {
             v18 = @"ASSISTANT_CONNECTION_FAILED_1";
             v17 = @"clientGenerated#ConnectionFailed1";
           }
 
-          if (v16)
+          if (_getUpdatedErrorCount)
           {
             v14 = v18;
           }
@@ -73,7 +73,7 @@ LABEL_15:
             v14 = @"ASSISTANT_CONNECTION_FAILED_0";
           }
 
-          if (v16)
+          if (_getUpdatedErrorCount)
           {
             v13 = v17;
           }
@@ -87,12 +87,12 @@ LABEL_15:
         goto LABEL_33;
       }
 
-      if (v12 == 3)
+      if (code == 3)
       {
         goto LABEL_33;
       }
 
-      if (v12 == 4)
+      if (code == 4)
       {
         goto LABEL_15;
       }
@@ -101,23 +101,23 @@ LABEL_28:
       v19 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
       {
-        sub_1000CA874(v8, v19);
+        sub_1000CA874(errorCopy, v19);
       }
 
       v14 = 0;
       goto LABEL_34;
     }
 
-    if (v12 <= 13)
+    if (code <= 13)
     {
-      if (v12 == 6)
+      if (code == 6)
       {
         v14 = 0;
         v13 = @"clientGenerated#NotReady";
         goto LABEL_33;
       }
 
-      if (v12 != 7)
+      if (code != 7)
       {
         goto LABEL_28;
       }
@@ -125,16 +125,16 @@ LABEL_28:
 
     else
     {
-      if (v12 == 14)
+      if (code == 14)
       {
         v13 = @"clientGenerated#ConnectionFailed3";
         v14 = @"ASSISTANT_CONNECTION_FAILED_3";
         goto LABEL_33;
       }
 
-      if (v12 != 300)
+      if (code != 300)
       {
-        if (v12 != 2001)
+        if (code != 2001)
         {
           goto LABEL_28;
         }
@@ -144,29 +144,29 @@ LABEL_28:
     }
 
 LABEL_33:
-    [a1 _logDummyAssistantUtteranceViewWithDialogIdentifier:v13];
+    [self _logDummyAssistantUtteranceViewWithDialogIdentifier:v13];
     v20 = +[SRUIFInstrumentationManager sharedManager];
     [v20 storeClientGeneratedDUC:v13];
 
 LABEL_34:
-    if (AFIsInternalInstall() && [a1 _shouldShowErrorCodes:v9])
+    if (AFIsInternalInstall() && [self _shouldShowErrorCodes:providerCopy])
     {
-      v21 = [a1 _localizedErrorString:v14];
+      v21 = [self _localizedErrorString:v14];
       if (v21)
       {
-        v22 = [a1 _errorDescriptionForCode:{objc_msgSend(v8, "code")}];
-        v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (internal: %@ = %ld)", v21, v22, [v8 code]);
+        v22 = [self _errorDescriptionForCode:{objc_msgSend(errorCopy, "code")}];
+        v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (internal: %@ = %ld)", v21, v22, [errorCopy code]);
       }
 
       else
       {
-        v15 = [a1 _localizedErrorString:v14];
+        v15 = [self _localizedErrorString:v14];
       }
     }
 
     else
     {
-      v15 = [a1 _localizedErrorString:v14];
+      v15 = [self _localizedErrorString:v14];
     }
 
     goto LABEL_41;
@@ -190,91 +190,91 @@ LABEL_41:
   return v3;
 }
 
-+ (BOOL)_shouldShowErrorCodes:(id)a3
++ (BOOL)_shouldShowErrorCodes:(id)codes
 {
-  v4 = [a3 displayOnlyModeForInterstitialsAndErrors];
-  if (v4)
+  displayOnlyModeForInterstitialsAndErrors = [codes displayOnlyModeForInterstitialsAndErrors];
+  if (displayOnlyModeForInterstitialsAndErrors)
   {
-    v5 = [a1 _sharedErrorUtilityDefaults];
-    v6 = [v5 BOOLForKey:@"ShowErrorCodes"];
+    _sharedErrorUtilityDefaults = [self _sharedErrorUtilityDefaults];
+    v6 = [_sharedErrorUtilityDefaults BOOLForKey:@"ShowErrorCodes"];
 
-    LOBYTE(v4) = v6;
+    LOBYTE(displayOnlyModeForInterstitialsAndErrors) = v6;
   }
 
-  return v4;
+  return displayOnlyModeForInterstitialsAndErrors;
 }
 
-+ (id)_errorDescriptionForCode:(int64_t)a3
++ (id)_errorDescriptionForCode:(int64_t)code
 {
   v3 = @"kAFErrorInternalServerUnreachable // assistantd is trying to connect to custom server that is likely not reachable.";
   v4 = @"kAFErrorAuthGeneric";
   v5 = @"kAFErrorServersNotAvailable";
-  if (a3 != 2001)
+  if (code != 2001)
   {
     v5 = 0;
   }
 
-  if (a3 != 300)
+  if (code != 300)
   {
     v4 = v5;
   }
 
-  if (a3 != 14)
+  if (code != 14)
   {
     v3 = v4;
   }
 
   v6 = @"kAFErrorNotReady // Assistant or Dictation not ready error returned from server.";
   v7 = @"kAFErrorXPCInterruption // XPC connection was torn down before the request was complete.";
-  if (a3 != 7)
+  if (code != 7)
   {
     v7 = 0;
   }
 
-  if (a3 != 6)
+  if (code != 6)
   {
     v6 = v7;
   }
 
-  if (a3 <= 13)
+  if (code <= 13)
   {
     v3 = v6;
   }
 
   v8 = @"kAFErrorSessionDenied // SessionValidationFailed or LoadAssistant failure";
   v9 = @"kAFErrorAceConnectionFailure // Failure from the session layer. Underlying error will have more info";
-  if (a3 != 4)
+  if (code != 4)
   {
     v9 = 0;
   }
 
-  if (a3 != 3)
+  if (code != 3)
   {
     v8 = v9;
   }
 
-  if (a3 == 2)
+  if (code == 2)
   {
     v8 = @"kAFErrorServerError // CommandFailed received for critical part of request";
   }
 
   v10 = @"kAFErrorClientTimedOut // AFConnection timed out in the client process.";
-  if (a3 != 1)
+  if (code != 1)
   {
     v10 = 0;
   }
 
-  if (!a3)
+  if (!code)
   {
     v10 = @"kAFErrorGeneric";
   }
 
-  if (a3 <= 1)
+  if (code <= 1)
   {
     v8 = v10;
   }
 
-  if (a3 <= 5)
+  if (code <= 5)
   {
     return v8;
   }
@@ -288,9 +288,9 @@ LABEL_41:
 + (int64_t)_getUpdatedErrorCount
 {
   v2 = +[SiriUIPreferences sharedPreferences];
-  v3 = [v2 previousSiriRequestErrorTimestamp];
-  v4 = [v2 siriRequestErrorCount];
-  [v3 timeIntervalSinceNow];
+  previousSiriRequestErrorTimestamp = [v2 previousSiriRequestErrorTimestamp];
+  siriRequestErrorCount = [v2 siriRequestErrorCount];
+  [previousSiriRequestErrorTimestamp timeIntervalSinceNow];
   if (v5 < 0.0)
   {
     v5 = -v5;
@@ -298,7 +298,7 @@ LABEL_41:
 
   if (v5 <= 480.0)
   {
-    v6 = v4 + 1;
+    v6 = siriRequestErrorCount + 1;
   }
 
   else
@@ -313,13 +313,13 @@ LABEL_41:
   return v6;
 }
 
-+ (id)_localizedErrorString:(id)a3
++ (id)_localizedErrorString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v3 = a3;
+    stringCopy = string;
     v4 = [NSBundle bundleForClass:objc_opt_class()];
-    v5 = [v4 assistantUILocalizedStringForKey:v3 table:0];
+    v5 = [v4 assistantUILocalizedStringForKey:stringCopy table:0];
   }
 
   else
@@ -330,21 +330,21 @@ LABEL_41:
   return v5;
 }
 
-+ (void)_logDummyAssistantUtteranceViewWithDialogIdentifier:(id)a3
++ (void)_logDummyAssistantUtteranceViewWithDialogIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[AFAnalytics sharedAnalytics];
   v9 = @"dialogIdentifier";
-  v10 = v3;
+  v10 = identifierCopy;
   v5 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   [v4 logEventWithType:1429 context:v5];
 
   v6 = objc_alloc_init(SAUIAssistantUtteranceView);
   v7 = +[NSUUID UUID];
-  v8 = [v7 UUIDString];
-  [v6 setAceId:v8];
+  uUIDString = [v7 UUIDString];
+  [v6 setAceId:uUIDString];
 
-  [v6 setDialogIdentifier:v3];
+  [v6 setDialogIdentifier:identifierCopy];
   [v4 logClientFeedbackPresented:v6];
 }
 

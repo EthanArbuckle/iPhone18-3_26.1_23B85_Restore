@@ -1,13 +1,13 @@
 @interface PXGAssetDecorationView
-+ (BOOL)_wantsActivityIndicatorForConfiguration:(id)a3;
-+ (BOOL)_wantsProgressIndicatorForConfiguration:(id)a3;
-+ (BOOL)wantsDecorationViewForConfiguration:(id)a3;
++ (BOOL)_wantsActivityIndicatorForConfiguration:(id)configuration;
++ (BOOL)_wantsProgressIndicatorForConfiguration:(id)configuration;
++ (BOOL)wantsDecorationViewForConfiguration:(id)configuration;
 - (CGRect)clippingRect;
-- (PXGAssetDecorationView)initWithFrame:(CGRect)a3;
+- (PXGAssetDecorationView)initWithFrame:(CGRect)frame;
 - (void)_updateProgressIndicator;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setUserData:(id)a3;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PXGAssetDecorationView
@@ -37,9 +37,9 @@
 - (void)_updateProgressIndicator
 {
   v36[2] = *MEMORY[0x277D85DE8];
-  v3 = [(PXGAssetDecorationView *)self userData];
-  v4 = [objc_opt_class() _wantsProgressIndicatorForConfiguration:v3];
-  v5 = [objc_opt_class() _wantsActivityIndicatorForConfiguration:v3];
+  userData = [(PXGAssetDecorationView *)self userData];
+  v4 = [objc_opt_class() _wantsProgressIndicatorForConfiguration:userData];
+  v5 = [objc_opt_class() _wantsActivityIndicatorForConfiguration:userData];
   if (v4)
   {
     progressIndicatorDelayTimer = self->_progressIndicatorDelayTimer;
@@ -84,8 +84,8 @@ LABEL_5:
       [(PXGAssetDecorationView *)self addSubview:self->_progressIndicatorView];
     }
 
-    v18 = [v3 loadStatus];
-    [v18 progress];
+    loadStatus = [userData loadStatus];
+    [loadStatus progress];
     *&v19 = v19;
     [(PXRoundProgressView *)self->_progressIndicatorView setProgress:v19];
   }
@@ -112,18 +112,18 @@ LABEL_11:
       self->_activityIndicatorView = v21;
 
       [(UIActivityIndicatorView *)self->_activityIndicatorView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v23 = [MEMORY[0x277D75348] whiteColor];
-      [(UIActivityIndicatorView *)self->_activityIndicatorView setColor:v23];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [(UIActivityIndicatorView *)self->_activityIndicatorView setColor:whiteColor];
 
       [(PXGAssetDecorationView *)self addSubview:self->_activityIndicatorView];
       v32 = MEMORY[0x277CCAAD0];
-      v24 = [(UIActivityIndicatorView *)self->_activityIndicatorView centerXAnchor];
-      v25 = [(PXGAssetDecorationView *)self centerXAnchor];
-      v26 = [v24 constraintEqualToAnchor:v25];
+      centerXAnchor = [(UIActivityIndicatorView *)self->_activityIndicatorView centerXAnchor];
+      centerXAnchor2 = [(PXGAssetDecorationView *)self centerXAnchor];
+      v26 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v36[0] = v26;
-      v27 = [(UIActivityIndicatorView *)self->_activityIndicatorView centerYAnchor];
-      v28 = [(PXGAssetDecorationView *)self centerYAnchor];
-      v29 = [v27 constraintEqualToAnchor:v28];
+      centerYAnchor = [(UIActivityIndicatorView *)self->_activityIndicatorView centerYAnchor];
+      centerYAnchor2 = [(PXGAssetDecorationView *)self centerYAnchor];
+      v29 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v36[1] = v29;
       v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:2];
       [v32 activateConstraints:v30];
@@ -157,14 +157,14 @@ void __50__PXGAssetDecorationView__updateProgressIndicator__block_invoke(uint64_
   [(PXRoundProgressView *)progressIndicatorView setCenter:?];
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_userData != v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (self->_userData != dataCopy)
   {
-    v9 = v4;
-    v6 = [(PXGAssetDecorationViewConfiguration *)v4 isEqual:?];
+    v9 = dataCopy;
+    v6 = [(PXGAssetDecorationViewConfiguration *)dataCopy isEqual:?];
     v5 = v9;
     if (!v6)
     {
@@ -178,11 +178,11 @@ void __50__PXGAssetDecorationView__updateProgressIndicator__block_invoke(uint64_
   }
 }
 
-- (PXGAssetDecorationView)initWithFrame:(CGRect)a3
+- (PXGAssetDecorationView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PXGAssetDecorationView;
-  v3 = [(PXGAssetDecorationView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXGAssetDecorationView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D3CE28]) initWithTarget:v3 needsUpdateSelector:sel__setNeedsUpdate];
@@ -195,32 +195,32 @@ void __50__PXGAssetDecorationView__updateProgressIndicator__block_invoke(uint64_
   return v3;
 }
 
-+ (BOOL)_wantsActivityIndicatorForConfiguration:(id)a3
++ (BOOL)_wantsActivityIndicatorForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [v3 loadStatus];
-  if ([v4 state] == 1)
+  configurationCopy = configuration;
+  loadStatus = [configurationCopy loadStatus];
+  if ([loadStatus state] == 1)
   {
-    v5 = [v3 loadStatus];
-    v6 = [v5 isIndeterminate];
+    loadStatus2 = [configurationCopy loadStatus];
+    isIndeterminate = [loadStatus2 isIndeterminate];
   }
 
   else
   {
-    v6 = 0;
+    isIndeterminate = 0;
   }
 
-  return v6;
+  return isIndeterminate;
 }
 
-+ (BOOL)_wantsProgressIndicatorForConfiguration:(id)a3
++ (BOOL)_wantsProgressIndicatorForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [v3 loadStatus];
-  if ([v4 state] == 1)
+  configurationCopy = configuration;
+  loadStatus = [configurationCopy loadStatus];
+  if ([loadStatus state] == 1)
   {
-    v5 = [v3 loadStatus];
-    v6 = [v5 isIndeterminate] ^ 1;
+    loadStatus2 = [configurationCopy loadStatus];
+    v6 = [loadStatus2 isIndeterminate] ^ 1;
   }
 
   else
@@ -231,10 +231,10 @@ void __50__PXGAssetDecorationView__updateProgressIndicator__block_invoke(uint64_
   return v6;
 }
 
-+ (BOOL)wantsDecorationViewForConfiguration:(id)a3
++ (BOOL)wantsDecorationViewForConfiguration:(id)configuration
 {
-  v3 = [a3 loadStatus];
-  v4 = [v3 state] == 1;
+  loadStatus = [configuration loadStatus];
+  v4 = [loadStatus state] == 1;
 
   return v4;
 }

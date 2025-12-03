@@ -1,31 +1,31 @@
 @interface MLDDatabaseIntegrityCheckOperation
-- (MLDDatabaseIntegrityCheckOperation)initWithDatabasePath:(id)a3 repairFaults:(BOOL)a4;
-- (id)_createSQLiteErrorWithCode:(int)a3 description:(id)a4;
+- (MLDDatabaseIntegrityCheckOperation)initWithDatabasePath:(id)path repairFaults:(BOOL)faults;
+- (id)_createSQLiteErrorWithCode:(int)code description:(id)description;
 - (void)main;
 @end
 
 @implementation MLDDatabaseIntegrityCheckOperation
 
-- (id)_createSQLiteErrorWithCode:(int)a3 description:(id)a4
+- (id)_createSQLiteErrorWithCode:(int)code description:(id)description
 {
-  v4 = a3;
+  codeCopy = code;
   v9 = NSLocalizedDescriptionKey;
-  v10 = a4;
-  v5 = a4;
-  v6 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-  v7 = [NSError errorWithDomain:@"NSSQLiteErrorDomain" code:v4 userInfo:v6];
+  descriptionCopy = description;
+  descriptionCopy2 = description;
+  v6 = [NSDictionary dictionaryWithObjects:&descriptionCopy forKeys:&v9 count:1];
+  v7 = [NSError errorWithDomain:@"NSSQLiteErrorDomain" code:codeCopy userInfo:v6];
 
   return v7;
 }
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   ppDb = 0;
   v3 = sqlite3_open_v2([(NSString *)self->_databasePath fileSystemRepresentation], &ppDb, 16777218, 0);
   if (v3)
   {
-    v4 = [(MLDDatabaseIntegrityCheckOperation *)v2 _createSQLiteErrorWithCode:v3 description:@"failed to open DB file"];
+    v4 = [(MLDDatabaseIntegrityCheckOperation *)selfCopy _createSQLiteErrorWithCode:v3 description:@"failed to open DB file"];
   }
 
   else
@@ -34,12 +34,12 @@
     v6 = sqlite3_exec(ppDb, "pragma integrity_check", sub_10001BDC4, v5, 0);
     if (v6)
     {
-      v4 = [(MLDDatabaseIntegrityCheckOperation *)v2 _createSQLiteErrorWithCode:v6 description:@"failed to collect integrity check results"];
+      v4 = [(MLDDatabaseIntegrityCheckOperation *)selfCopy _createSQLiteErrorWithCode:v6 description:@"failed to collect integrity check results"];
     }
 
     else
     {
-      v41 = v2;
+      v41 = selfCopy;
       v42 = objc_alloc_init(NSMutableArray);
       v7 = [NSRegularExpression regularExpressionWithPattern:@"index (\\w+)" options:0 error:0];
       v48 = 0u;
@@ -121,7 +121,7 @@
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Integrity check found %lu faults with database file", buf, 0xCu);
       }
 
-      v2 = v41;
+      selfCopy = v41;
       if (v41->_repairFaults)
       {
         v46 = 0u;
@@ -218,23 +218,23 @@ LABEL_40:
     ppDb = 0;
   }
 
-  error = v2->_error;
-  v2->_error = v4;
+  error = selfCopy->_error;
+  selfCopy->_error = v4;
 }
 
-- (MLDDatabaseIntegrityCheckOperation)initWithDatabasePath:(id)a3 repairFaults:(BOOL)a4
+- (MLDDatabaseIntegrityCheckOperation)initWithDatabasePath:(id)path repairFaults:(BOOL)faults
 {
-  v6 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = MLDDatabaseIntegrityCheckOperation;
   v7 = [(MLDDatabaseIntegrityCheckOperation *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [pathCopy copy];
     databasePath = v7->_databasePath;
     v7->_databasePath = v8;
 
-    v7->_repairFaults = a4;
+    v7->_repairFaults = faults;
   }
 
   return v7;

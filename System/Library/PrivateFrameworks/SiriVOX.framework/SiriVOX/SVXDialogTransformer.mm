@@ -1,31 +1,31 @@
 @interface SVXDialogTransformer
-- (SVXDialogTransformer)initWithModeProvider:(id)a3;
-- (id)transformAddDialogs:(id)a3;
-- (id)transformAddViews:(id)a3;
+- (SVXDialogTransformer)initWithModeProvider:(id)provider;
+- (id)transformAddDialogs:(id)dialogs;
+- (id)transformAddViews:(id)views;
 @end
 
 @implementation SVXDialogTransformer
 
-- (id)transformAddDialogs:(id)a3
+- (id)transformAddDialogs:(id)dialogs
 {
   modeProvider = self->_modeProvider;
-  v5 = a3;
-  v6 = [(SVXDialogTransformer *)self transformAddDialogs:v5 forMode:[(MDModeProviding *)modeProvider currentMode]];
+  dialogsCopy = dialogs;
+  v6 = [(SVXDialogTransformer *)self transformAddDialogs:dialogsCopy forMode:[(MDModeProviding *)modeProvider currentMode]];
 
   return v6;
 }
 
-- (id)transformAddViews:(id)a3
+- (id)transformAddViews:(id)views
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MDModeProviding *)self->_modeProvider currentMode];
+  viewsCopy = views;
+  currentMode = [(MDModeProviding *)self->_modeProvider currentMode];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [v4 views];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  views = [viewsCopy views];
+  v7 = [views countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v7)
   {
     v8 = *v19;
@@ -35,7 +35,7 @@
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(views);
         }
 
         if ([*(*(&v18 + 1) + 8 * i) svx_isResponseViewIdPresent])
@@ -45,7 +45,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v7 = [views countByEnumeratingWithState:&v18 objects:v26 count:16];
       if (v7)
       {
         continue;
@@ -57,11 +57,11 @@
 
 LABEL_11:
 
-  v10 = [v4 patternId];
+  patternId = [viewsCopy patternId];
 
-  if ((v7 & 1) != 0 || v10)
+  if ((v7 & 1) != 0 || patternId)
   {
-    v14 = v4;
+    v14 = viewsCopy;
   }
 
   else
@@ -70,15 +70,15 @@ LABEL_11:
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
     {
       v12 = v11;
-      v13 = [v4 responseMode];
+      responseMode = [viewsCopy responseMode];
       *buf = 136315394;
       v23 = "[SVXDialogTransformer transformAddViews:]";
       v24 = 2112;
-      v25 = v13;
+      v25 = responseMode;
       _os_log_impl(&dword_2695B9000, v12, OS_LOG_TYPE_INFO, "%s patternId is nil and responseViewIdPresent is false. Calling on MDDialogTransformer for mode: %@", buf, 0x16u);
     }
 
-    v14 = [(SVXDialogTransformer *)self transformAddViews:v4 forMode:v5];
+    v14 = [(SVXDialogTransformer *)self transformAddViews:viewsCopy forMode:currentMode];
   }
 
   v15 = v14;
@@ -88,16 +88,16 @@ LABEL_11:
   return v15;
 }
 
-- (SVXDialogTransformer)initWithModeProvider:(id)a3
+- (SVXDialogTransformer)initWithModeProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = SVXDialogTransformer;
   v6 = [(SVXDialogTransformer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_modeProvider, a3);
+    objc_storeStrong(&v6->_modeProvider, provider);
   }
 
   return v7;

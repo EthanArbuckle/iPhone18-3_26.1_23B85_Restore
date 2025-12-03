@@ -1,24 +1,24 @@
 @interface AWDCoreRoutineTransitionMotionType
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCoreRoutineTransitionMotionTypeCycling:(BOOL)a3;
-- (void)setHasCoreRoutineTransitionMotionTypeRunning:(BOOL)a3;
-- (void)setHasCoreRoutineTransitionMotionTypeStationary:(BOOL)a3;
-- (void)setHasCoreRoutineTransitionMotionTypeUnknown:(BOOL)a3;
-- (void)setHasCoreRoutineTransitionMotionTypeWalking:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCoreRoutineTransitionMotionTypeCycling:(BOOL)cycling;
+- (void)setHasCoreRoutineTransitionMotionTypeRunning:(BOOL)running;
+- (void)setHasCoreRoutineTransitionMotionTypeStationary:(BOOL)stationary;
+- (void)setHasCoreRoutineTransitionMotionTypeUnknown:(BOOL)unknown;
+- (void)setHasCoreRoutineTransitionMotionTypeWalking:(BOOL)walking;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineTransitionMotionType
 
-- (void)setHasCoreRoutineTransitionMotionTypeStationary:(BOOL)a3
+- (void)setHasCoreRoutineTransitionMotionTypeStationary:(BOOL)stationary
 {
-  if (a3)
+  if (stationary)
   {
     v3 = 8;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasCoreRoutineTransitionMotionTypeWalking:(BOOL)a3
+- (void)setHasCoreRoutineTransitionMotionTypeWalking:(BOOL)walking
 {
-  if (a3)
+  if (walking)
   {
     v3 = 32;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasCoreRoutineTransitionMotionTypeRunning:(BOOL)a3
+- (void)setHasCoreRoutineTransitionMotionTypeRunning:(BOOL)running
 {
-  if (a3)
+  if (running)
   {
     v3 = 4;
   }
@@ -61,9 +61,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCoreRoutineTransitionMotionTypeCycling:(BOOL)a3
+- (void)setHasCoreRoutineTransitionMotionTypeCycling:(BOOL)cycling
 {
-  if (a3)
+  if (cycling)
   {
     v3 = 2;
   }
@@ -76,9 +76,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasCoreRoutineTransitionMotionTypeUnknown:(BOOL)a3
+- (void)setHasCoreRoutineTransitionMotionTypeUnknown:(BOOL)unknown
 {
-  if (a3)
+  if (unknown)
   {
     v3 = 16;
   }
@@ -100,11 +100,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_coreRoutineTransitionMotionTypeStationary), @"CoreRoutineTransitionMotionTypeStationary"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_coreRoutineTransitionMotionTypeStationary), @"CoreRoutineTransitionMotionTypeStationary"}];
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -123,7 +123,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_coreRoutineTransitionMotionTypeWalking), @"CoreRoutineTransitionMotionTypeWalking"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_coreRoutineTransitionMotionTypeWalking), @"CoreRoutineTransitionMotionTypeWalking"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -137,7 +137,7 @@ LABEL_4:
   }
 
 LABEL_11:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_coreRoutineTransitionMotionTypeRunning), @"CoreRoutineTransitionMotionTypeRunning"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_coreRoutineTransitionMotionTypeRunning), @"CoreRoutineTransitionMotionTypeRunning"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -148,17 +148,17 @@ LABEL_5:
     }
 
 LABEL_13:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_coreRoutineTransitionMotionTypeCycling), @"CoreRoutineTransitionMotionTypeCycling"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_coreRoutineTransitionMotionTypeCycling), @"CoreRoutineTransitionMotionTypeCycling"}];
     if ((*&self->_has & 0x10) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_7;
   }
 
 LABEL_12:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_coreRoutineTransitionMotionTypeAutomotive), @"CoreRoutineTransitionMotionTypeAutomotive"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_coreRoutineTransitionMotionTypeAutomotive), @"CoreRoutineTransitionMotionTypeAutomotive"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -169,13 +169,13 @@ LABEL_6:
   if ((has & 0x10) != 0)
   {
 LABEL_7:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_coreRoutineTransitionMotionTypeUnknown), @"CoreRoutineTransitionMotionTypeUnknown"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_coreRoutineTransitionMotionTypeUnknown), @"CoreRoutineTransitionMotionTypeUnknown"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 8) != 0)
@@ -258,13 +258,13 @@ LABEL_13:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(a3 + 5) = self->_coreRoutineTransitionMotionTypeStationary;
-    *(a3 + 32) |= 8u;
+    *(to + 5) = self->_coreRoutineTransitionMotionTypeStationary;
+    *(to + 32) |= 8u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -283,8 +283,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 7) = self->_coreRoutineTransitionMotionTypeWalking;
-  *(a3 + 32) |= 0x20u;
+  *(to + 7) = self->_coreRoutineTransitionMotionTypeWalking;
+  *(to + 32) |= 0x20u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -298,8 +298,8 @@ LABEL_4:
   }
 
 LABEL_10:
-  *(a3 + 4) = self->_coreRoutineTransitionMotionTypeRunning;
-  *(a3 + 32) |= 4u;
+  *(to + 4) = self->_coreRoutineTransitionMotionTypeRunning;
+  *(to + 32) |= 4u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -313,8 +313,8 @@ LABEL_5:
   }
 
 LABEL_11:
-  *(a3 + 2) = self->_coreRoutineTransitionMotionTypeAutomotive;
-  *(a3 + 32) |= 1u;
+  *(to + 2) = self->_coreRoutineTransitionMotionTypeAutomotive;
+  *(to + 32) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -325,23 +325,23 @@ LABEL_6:
     }
 
 LABEL_13:
-    *(a3 + 6) = self->_coreRoutineTransitionMotionTypeUnknown;
-    *(a3 + 32) |= 0x10u;
+    *(to + 6) = self->_coreRoutineTransitionMotionTypeUnknown;
+    *(to + 32) |= 0x10u;
     return;
   }
 
 LABEL_12:
-  *(a3 + 3) = self->_coreRoutineTransitionMotionTypeCycling;
-  *(a3 + 32) |= 2u;
+  *(to + 3) = self->_coreRoutineTransitionMotionTypeCycling;
+  *(to + 32) |= 2u;
   if ((*&self->_has & 0x10) != 0)
   {
     goto LABEL_13;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -423,20 +423,20 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 32) & 8) == 0 || self->_coreRoutineTransitionMotionTypeStationary != *(a3 + 5))
+      if ((*(equal + 32) & 8) == 0 || self->_coreRoutineTransitionMotionTypeStationary != *(equal + 5))
       {
         goto LABEL_31;
       }
     }
 
-    else if ((*(a3 + 32) & 8) != 0)
+    else if ((*(equal + 32) & 8) != 0)
     {
 LABEL_31:
       LOBYTE(v5) = 0;
@@ -445,60 +445,60 @@ LABEL_31:
 
     if ((*&self->_has & 0x20) != 0)
     {
-      if ((*(a3 + 32) & 0x20) == 0 || self->_coreRoutineTransitionMotionTypeWalking != *(a3 + 7))
+      if ((*(equal + 32) & 0x20) == 0 || self->_coreRoutineTransitionMotionTypeWalking != *(equal + 7))
       {
         goto LABEL_31;
       }
     }
 
-    else if ((*(a3 + 32) & 0x20) != 0)
+    else if ((*(equal + 32) & 0x20) != 0)
     {
       goto LABEL_31;
     }
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 32) & 4) == 0 || self->_coreRoutineTransitionMotionTypeRunning != *(a3 + 4))
+      if ((*(equal + 32) & 4) == 0 || self->_coreRoutineTransitionMotionTypeRunning != *(equal + 4))
       {
         goto LABEL_31;
       }
     }
 
-    else if ((*(a3 + 32) & 4) != 0)
+    else if ((*(equal + 32) & 4) != 0)
     {
       goto LABEL_31;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 32) & 1) == 0 || self->_coreRoutineTransitionMotionTypeAutomotive != *(a3 + 2))
+      if ((*(equal + 32) & 1) == 0 || self->_coreRoutineTransitionMotionTypeAutomotive != *(equal + 2))
       {
         goto LABEL_31;
       }
     }
 
-    else if (*(a3 + 32))
+    else if (*(equal + 32))
     {
       goto LABEL_31;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 32) & 2) == 0 || self->_coreRoutineTransitionMotionTypeCycling != *(a3 + 3))
+      if ((*(equal + 32) & 2) == 0 || self->_coreRoutineTransitionMotionTypeCycling != *(equal + 3))
       {
         goto LABEL_31;
       }
     }
 
-    else if ((*(a3 + 32) & 2) != 0)
+    else if ((*(equal + 32) & 2) != 0)
     {
       goto LABEL_31;
     }
 
-    LOBYTE(v5) = (*(a3 + 32) & 0x10) == 0;
+    LOBYTE(v5) = (*(equal + 32) & 0x10) == 0;
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 32) & 0x10) == 0 || self->_coreRoutineTransitionMotionTypeUnknown != *(a3 + 6))
+      if ((*(equal + 32) & 0x10) == 0 || self->_coreRoutineTransitionMotionTypeUnknown != *(equal + 6))
       {
         goto LABEL_31;
       }
@@ -592,14 +592,14 @@ LABEL_7:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 8) != 0)
   {
-    self->_coreRoutineTransitionMotionTypeStationary = *(a3 + 5);
+    self->_coreRoutineTransitionMotionTypeStationary = *(from + 5);
     *&self->_has |= 8u;
-    v3 = *(a3 + 32);
+    v3 = *(from + 32);
     if ((v3 & 0x20) == 0)
     {
 LABEL_3:
@@ -612,14 +612,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 32) & 0x20) == 0)
+  else if ((*(from + 32) & 0x20) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_coreRoutineTransitionMotionTypeWalking = *(a3 + 7);
+  self->_coreRoutineTransitionMotionTypeWalking = *(from + 7);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 4) == 0)
   {
 LABEL_4:
@@ -632,9 +632,9 @@ LABEL_4:
   }
 
 LABEL_10:
-  self->_coreRoutineTransitionMotionTypeRunning = *(a3 + 4);
+  self->_coreRoutineTransitionMotionTypeRunning = *(from + 4);
   *&self->_has |= 4u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 1) == 0)
   {
 LABEL_5:
@@ -647,9 +647,9 @@ LABEL_5:
   }
 
 LABEL_11:
-  self->_coreRoutineTransitionMotionTypeAutomotive = *(a3 + 2);
+  self->_coreRoutineTransitionMotionTypeAutomotive = *(from + 2);
   *&self->_has |= 1u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 2) == 0)
   {
 LABEL_6:
@@ -659,15 +659,15 @@ LABEL_6:
     }
 
 LABEL_13:
-    self->_coreRoutineTransitionMotionTypeUnknown = *(a3 + 6);
+    self->_coreRoutineTransitionMotionTypeUnknown = *(from + 6);
     *&self->_has |= 0x10u;
     return;
   }
 
 LABEL_12:
-  self->_coreRoutineTransitionMotionTypeCycling = *(a3 + 3);
+  self->_coreRoutineTransitionMotionTypeCycling = *(from + 3);
   *&self->_has |= 2u;
-  if ((*(a3 + 32) & 0x10) != 0)
+  if ((*(from + 32) & 0x10) != 0)
   {
     goto LABEL_13;
   }

@@ -8,9 +8,9 @@
 {
   Strong = swift_unknownObjectUnownedLoadStrong();
 
-  v3 = [Strong viewControllerForModalPresentation];
+  viewControllerForModalPresentation = [Strong viewControllerForModalPresentation];
 
-  return v3;
+  return viewControllerForModalPresentation;
 }
 
 @end

@@ -46,13 +46,13 @@
 
 - (void)startNotesSession
 {
-  v3 = [(ICNAMultiSceneSessionTracker *)self isolationQueue];
+  isolationQueue = [(ICNAMultiSceneSessionTracker *)self isolationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__ICNAMultiSceneSessionTracker_startNotesSession__block_invoke;
   block[3] = &unk_2799AF130;
   block[4] = self;
-  dispatch_barrier_async(v3, block);
+  dispatch_barrier_async(isolationQueue, block);
 }
 
 void __49__ICNAMultiSceneSessionTracker_startNotesSession__block_invoke(uint64_t a1)
@@ -78,13 +78,13 @@ void __49__ICNAMultiSceneSessionTracker_startNotesSession__block_invoke(uint64_t
 
 - (void)endNotesSession
 {
-  v3 = [(ICNAMultiSceneSessionTracker *)self isolationQueue];
+  isolationQueue = [(ICNAMultiSceneSessionTracker *)self isolationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__ICNAMultiSceneSessionTracker_endNotesSession__block_invoke;
   block[3] = &unk_2799AF130;
   block[4] = self;
-  dispatch_barrier_async(v3, block);
+  dispatch_barrier_async(isolationQueue, block);
 }
 
 void __47__ICNAMultiSceneSessionTracker_endNotesSession__block_invoke(uint64_t a1)
@@ -103,13 +103,13 @@ void __47__ICNAMultiSceneSessionTracker_endNotesSession__block_invoke(uint64_t a
 
 - (void)startPaperSession
 {
-  v3 = [(ICNAMultiSceneSessionTracker *)self isolationQueue];
+  isolationQueue = [(ICNAMultiSceneSessionTracker *)self isolationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__ICNAMultiSceneSessionTracker_startPaperSession__block_invoke;
   block[3] = &unk_2799AF130;
   block[4] = self;
-  dispatch_barrier_async(v3, block);
+  dispatch_barrier_async(isolationQueue, block);
 }
 
 void __49__ICNAMultiSceneSessionTracker_startPaperSession__block_invoke(uint64_t a1)
@@ -135,13 +135,13 @@ void __49__ICNAMultiSceneSessionTracker_startPaperSession__block_invoke(uint64_t
 
 - (void)endPaperSession
 {
-  v3 = [(ICNAMultiSceneSessionTracker *)self isolationQueue];
+  isolationQueue = [(ICNAMultiSceneSessionTracker *)self isolationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__ICNAMultiSceneSessionTracker_endPaperSession__block_invoke;
   block[3] = &unk_2799AF130;
   block[4] = self;
-  dispatch_barrier_async(v3, block);
+  dispatch_barrier_async(isolationQueue, block);
 }
 
 void __47__ICNAMultiSceneSessionTracker_endPaperSession__block_invoke(uint64_t a1)
@@ -160,13 +160,13 @@ void __47__ICNAMultiSceneSessionTracker_endPaperSession__block_invoke(uint64_t a
 
 - (void)endAllSessionsAndInvalidate
 {
-  v3 = [(ICNAMultiSceneSessionTracker *)self isolationQueue];
+  isolationQueue = [(ICNAMultiSceneSessionTracker *)self isolationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__ICNAMultiSceneSessionTracker_endAllSessionsAndInvalidate__block_invoke;
   block[3] = &unk_2799AF130;
   block[4] = self;
-  dispatch_barrier_async(v3, block);
+  dispatch_barrier_async(isolationQueue, block);
 }
 
 uint64_t __59__ICNAMultiSceneSessionTracker_endAllSessionsAndInvalidate__block_invoke(uint64_t a1)
@@ -222,14 +222,14 @@ uint64_t __59__ICNAMultiSceneSessionTracker_endAllSessionsAndInvalidate__block_i
   v11 = __Block_byref_object_copy__3;
   v12 = __Block_byref_object_dispose__3;
   v13 = 0;
-  v3 = [(ICNAMultiSceneSessionTracker *)self isolationQueue];
+  isolationQueue = [(ICNAMultiSceneSessionTracker *)self isolationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__ICNAMultiSceneSessionTracker_sessionSummaryData__block_invoke;
   v7[3] = &unk_2799AF158;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v3, v7);
+  dispatch_sync(isolationQueue, v7);
 
   v4 = [ICASSessionSummaryData alloc];
   v5 = [(ICASSessionSummaryData *)v4 initWithSessionSummaryArray:v9[5]];
@@ -287,23 +287,23 @@ void __50__ICNAMultiSceneSessionTracker_sessionSummaryData__block_invoke(uint64_
 
 - (BOOL)hasLiveTimers
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(ICNAMultiSceneSessionTracker *)self isolationQueue];
+  isolationQueue = [(ICNAMultiSceneSessionTracker *)self isolationQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __45__ICNAMultiSceneSessionTracker_hasLiveTimers__block_invoke;
   v5[3] = &unk_2799AF480;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(isolationQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __45__ICNAMultiSceneSessionTracker_hasLiveTimers__block_invoke(uint64_t a1)
@@ -361,14 +361,14 @@ LABEL_4:
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(ICNAMultiSceneSessionTracker *)self isolationQueue];
+  isolationQueue = [(ICNAMultiSceneSessionTracker *)self isolationQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__ICNAMultiSceneSessionTracker_sessionDetailType__block_invoke;
   v6[3] = &unk_2799AF480;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(isolationQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -426,14 +426,14 @@ void __49__ICNAMultiSceneSessionTracker_sessionDetailType__block_invoke(uint64_t
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = @"unknown";
-  v3 = [(ICNAMultiSceneSessionTracker *)self isolationQueue];
+  isolationQueue = [(ICNAMultiSceneSessionTracker *)self isolationQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__ICNAMultiSceneSessionTracker_sessionDetailDescription__block_invoke;
   v6[3] = &unk_2799AF480;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(isolationQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -484,23 +484,23 @@ void __56__ICNAMultiSceneSessionTracker_sessionDetailDescription__block_invoke(u
 
 - (BOOL)invalidated
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(ICNAMultiSceneSessionTracker *)self isolationQueue];
+  isolationQueue = [(ICNAMultiSceneSessionTracker *)self isolationQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __43__ICNAMultiSceneSessionTracker_invalidated__block_invoke;
   v5[3] = &unk_2799AF158;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(isolationQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 @end

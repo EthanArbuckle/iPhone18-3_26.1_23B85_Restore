@@ -1,52 +1,52 @@
 @interface _SBDisplayPredicate
-+ (id)fromDefaultsKey:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesDisplay:(id)a3;
-- (_SBDisplayPredicate)initWithDisplay:(id)a3;
-- (_SBDisplayPredicate)initWithDisplayHardwareIdentifier:(id)a3 productName:(id)a4;
++ (id)fromDefaultsKey:(id)key;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesDisplay:(id)display;
+- (_SBDisplayPredicate)initWithDisplay:(id)display;
+- (_SBDisplayPredicate)initWithDisplayHardwareIdentifier:(id)identifier productName:(id)name;
 @end
 
 @implementation _SBDisplayPredicate
 
-- (_SBDisplayPredicate)initWithDisplayHardwareIdentifier:(id)a3 productName:(id)a4
+- (_SBDisplayPredicate)initWithDisplayHardwareIdentifier:(id)identifier productName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  nameCopy = name;
+  if (!identifierCopy)
   {
     [_SBDisplayPredicate initWithDisplayHardwareIdentifier:productName:];
   }
 
   v12.receiver = self;
   v12.super_class = _SBDisplayPredicate;
-  v9 = [(SBDisplayModePredicate *)&v12 _init];
-  v10 = v9;
-  if (v9)
+  _init = [(SBDisplayModePredicate *)&v12 _init];
+  v10 = _init;
+  if (_init)
   {
-    objc_storeStrong(v9 + 1, a3);
-    objc_storeStrong(&v10->_displayProductName, a4);
+    objc_storeStrong(_init + 1, identifier);
+    objc_storeStrong(&v10->_displayProductName, name);
   }
 
   return v10;
 }
 
-- (_SBDisplayPredicate)initWithDisplay:(id)a3
+- (_SBDisplayPredicate)initWithDisplay:(id)display
 {
-  v4 = a3;
-  v5 = [v4 hardwareIdentifier];
-  v6 = [v4 CADisplay];
+  displayCopy = display;
+  hardwareIdentifier = [displayCopy hardwareIdentifier];
+  cADisplay = [displayCopy CADisplay];
 
-  v7 = [v6 productName];
-  v8 = [(_SBDisplayPredicate *)self initWithDisplayHardwareIdentifier:v5 productName:v7];
+  productName = [cADisplay productName];
+  v8 = [(_SBDisplayPredicate *)self initWithDisplayHardwareIdentifier:hardwareIdentifier productName:productName];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -80,34 +80,34 @@
   return v9;
 }
 
-- (BOOL)matchesDisplay:(id)a3
+- (BOOL)matchesDisplay:(id)display
 {
-  v4 = a3;
-  if (!v4)
+  displayCopy = display;
+  if (!displayCopy)
   {
     [_SBDisplayPredicate matchesDisplay:];
   }
 
   displayHardwareIdentifier = self->_displayHardwareIdentifier;
-  v6 = [v4 hardwareIdentifier];
-  LOBYTE(displayHardwareIdentifier) = [(NSString *)displayHardwareIdentifier isEqualToString:v6];
+  hardwareIdentifier = [displayCopy hardwareIdentifier];
+  LOBYTE(displayHardwareIdentifier) = [(NSString *)displayHardwareIdentifier isEqualToString:hardwareIdentifier];
 
   return displayHardwareIdentifier;
 }
 
-+ (id)fromDefaultsKey:(id)a3
++ (id)fromDefaultsKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"^\\(\\.%@ \\[(%@)\\] \\[(.*)\\]\\)$", @"display", @"[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}"];
   v6 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:v5 options:0 error:0];
-  v7 = [v6 firstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+  v7 = [v6 firstMatchInString:keyCopy options:0 range:{0, objc_msgSend(keyCopy, "length")}];
   v8 = v7;
   if (v7)
   {
     v9 = [v7 rangeAtIndex:1];
-    v11 = [v4 substringWithRange:{v9, v10}];
+    v11 = [keyCopy substringWithRange:{v9, v10}];
     v12 = [v8 rangeAtIndex:2];
-    v14 = [v4 substringWithRange:{v12, v13}];
+    v14 = [keyCopy substringWithRange:{v12, v13}];
     v15 = v14;
     if (v11)
     {
@@ -126,7 +126,7 @@
 
     else
     {
-      v17 = [[a1 alloc] initWithDisplayHardwareIdentifier:v11 productName:v14];
+      v17 = [[self alloc] initWithDisplayHardwareIdentifier:v11 productName:v14];
     }
   }
 

@@ -1,12 +1,12 @@
 @interface INWorkoutCustomization
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INWorkoutCustomization)initWithCoder:(id)a3;
-- (INWorkoutCustomization)initWithFocus:(id)a3 environment:(id)a4;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INWorkoutCustomization)initWithCoder:(id)coder;
+- (INWorkoutCustomization)initWithFocus:(id)focus environment:(id)environment;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INWorkoutCustomization
@@ -16,22 +16,22 @@
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"focus";
   focus = self->_focus;
-  v4 = focus;
+  null = focus;
   if (!focus)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"environment";
-  v11[0] = v4;
+  v11[0] = null;
   environment = self->_environment;
-  v6 = environment;
+  null2 = environment;
   if (!environment)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   if (environment)
   {
@@ -56,63 +56,63 @@ LABEL_7:
   return v7;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INWorkoutCustomization;
   v6 = [(INWorkoutCustomization *)&v11 description];
-  v7 = [(INWorkoutCustomization *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INWorkoutCustomization *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_focus];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"focus"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_focus];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"focus"];
 
-  v9 = [v6 encodeObject:self->_environment];
+  v9 = [encoderCopy encodeObject:self->_environment];
 
-  [v7 if_setObjectIfNonNil:v9 forKey:@"environment"];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"environment"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   focus = self->_focus;
-  v5 = a3;
-  [v5 encodeObject:focus forKey:@"focus"];
-  [v5 encodeObject:self->_environment forKey:@"environment"];
+  coderCopy = coder;
+  [coderCopy encodeObject:focus forKey:@"focus"];
+  [coderCopy encodeObject:self->_environment forKey:@"environment"];
 }
 
-- (INWorkoutCustomization)initWithCoder:(id)a3
+- (INWorkoutCustomization)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"focus"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"focus"];
 
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v5 decodeObjectOfClasses:v11 forKey:@"environment"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"environment"];
 
   v13 = [(INWorkoutCustomization *)self initWithFocus:v8 environment:v12];
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -122,7 +122,7 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       focus = self->_focus;
       v8 = 0;
       if (focus == v5->_focus || [(NSString *)focus isEqual:?])
@@ -144,20 +144,20 @@ LABEL_7:
   return v8;
 }
 
-- (INWorkoutCustomization)initWithFocus:(id)a3 environment:(id)a4
+- (INWorkoutCustomization)initWithFocus:(id)focus environment:(id)environment
 {
-  v6 = a3;
-  v7 = a4;
+  focusCopy = focus;
+  environmentCopy = environment;
   v14.receiver = self;
   v14.super_class = INWorkoutCustomization;
   v8 = [(INWorkoutCustomization *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [focusCopy copy];
     focus = v8->_focus;
     v8->_focus = v9;
 
-    v11 = [v7 copy];
+    v11 = [environmentCopy copy];
     environment = v8->_environment;
     v8->_environment = v11;
   }
@@ -165,15 +165,15 @@ LABEL_7:
   return v8;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v6 = a5;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 objectForKeyedSubscript:@"focus"];
-    v8 = [v6 objectForKeyedSubscript:@"environment"];
-    v9 = [[a1 alloc] initWithFocus:v7 environment:v8];
+    v7 = [fromCopy objectForKeyedSubscript:@"focus"];
+    v8 = [fromCopy objectForKeyedSubscript:@"environment"];
+    v9 = [[self alloc] initWithFocus:v7 environment:v8];
   }
 
   else

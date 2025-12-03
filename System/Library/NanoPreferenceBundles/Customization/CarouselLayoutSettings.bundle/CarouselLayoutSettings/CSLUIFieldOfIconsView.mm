@@ -1,64 +1,64 @@
 @interface CSLUIFieldOfIconsView
-- ($153C3A5BC4E016D58A1B9CA554FFC462)originalLayoutAttributesForHex:(Hex)a3;
+- ($153C3A5BC4E016D58A1B9CA554FFC462)originalLayoutAttributesForHex:(Hex)hex;
 - (BOOL)isDragging;
 - (CGPoint)contentOffset;
-- (CGPoint)contentOffsetToCenterHex:(Hex)a3;
-- (CGPoint)inertialUpdater:(id)a3 willDecelerateWithTarget:(CGPoint)a4;
+- (CGPoint)contentOffsetToCenterHex:(Hex)hex;
+- (CGPoint)inertialUpdater:(id)updater willDecelerateWithTarget:(CGPoint)target;
 - (CSLHexAppNode)draggingNode;
 - (CSLLauncherViewModeDelegate)launcherDelegate;
-- (CSLUIFieldOfIconsView)initWithFrame:(CGRect)a3 iconGraph:(id)a4 viewFactory:(id)a5 options:(unint64_t)a6;
+- (CSLUIFieldOfIconsView)initWithFrame:(CGRect)frame iconGraph:(id)graph viewFactory:(id)factory options:(unint64_t)options;
 - (CSLUIFieldOfIconsViewScrollDelegate)scrollDelegate;
 - (CSLUIHexIconActionDelegate)actionDelegate;
-- (Hex)closestIconHexToHex:(Hex)a3;
+- (Hex)closestIconHexToHex:(Hex)hex;
 - (Hex)targetHex;
-- (id)createApplierToAnimateToContentOffset:(CGPoint)a3;
-- (id)iconViewForBundleIdentifier:(id)a3;
+- (id)createApplierToAnimateToContentOffset:(CGPoint)offset;
+- (id)iconViewForBundleIdentifier:(id)identifier;
 - (id)scrolledCenterBundleIdentifier;
-- (void)PPTPanAround:(id)a3 panDistance:(double)a4 panCount:(int64_t)a5;
+- (void)PPTPanAround:(id)around panDistance:(double)distance panCount:(int64_t)count;
 - (void)autoScroll;
 - (void)dealloc;
-- (void)enableGestureRecognizers:(BOOL)a3;
+- (void)enableGestureRecognizers:(BOOL)recognizers;
 - (void)endDragging;
 - (void)endPressing;
-- (void)enumerateIconViewsWithBlock:(id)a3;
-- (void)forceIconAttributesAndSubviewForView:(id)a3;
-- (void)handleIconTap:(id)a3;
-- (void)handlePanGesture:(id)a3;
-- (void)handlePinch:(id)a3;
-- (void)hexAppGraph:(id)a3 addedNodes:(id)a4 removedNodes:(id)a5 movedNodes:(id)a6;
-- (void)inertialUpdaterFinishedScrolling:(id)a3;
-- (void)layoutAnimated:(BOOL)a3;
-- (void)layoutIconView:(id)a3 forcedApply:(BOOL)a4 forcedSubview:(BOOL)a5;
-- (void)layoutIconsForcedApply:(BOOL)a3 forcedSubview:(BOOL)a4;
+- (void)enumerateIconViewsWithBlock:(id)block;
+- (void)forceIconAttributesAndSubviewForView:(id)view;
+- (void)handleIconTap:(id)tap;
+- (void)handlePanGesture:(id)gesture;
+- (void)handlePinch:(id)pinch;
+- (void)hexAppGraph:(id)graph addedNodes:(id)nodes removedNodes:(id)removedNodes movedNodes:(id)movedNodes;
+- (void)inertialUpdaterFinishedScrolling:(id)scrolling;
+- (void)layoutAnimated:(BOOL)animated;
+- (void)layoutIconView:(id)view forcedApply:(BOOL)apply forcedSubview:(BOOL)subview;
+- (void)layoutIconsForcedApply:(BOOL)apply forcedSubview:(BOOL)subview;
 - (void)layoutSubviews;
-- (void)setTargetBundleIdentifier:(id)a3;
-- (void)setTargetHexToScrolledCenterForReason:(id)a3;
-- (void)updatePPT:(id)a3;
+- (void)setTargetBundleIdentifier:(id)identifier;
+- (void)setTargetHexToScrolledCenterForReason:(id)reason;
+- (void)updatePPT:(id)t;
 @end
 
 @implementation CSLUIFieldOfIconsView
 
-- (CSLUIFieldOfIconsView)initWithFrame:(CGRect)a3 iconGraph:(id)a4 viewFactory:(id)a5 options:(unint64_t)a6
+- (CSLUIFieldOfIconsView)initWithFrame:(CGRect)frame iconGraph:(id)graph viewFactory:(id)factory options:(unint64_t)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a4;
-  v14 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  graphCopy = graph;
+  factoryCopy = factory;
   v68.receiver = self;
   v68.super_class = CSLUIFieldOfIconsView;
-  v15 = [(CSLUIFieldOfIconsView *)&v68 initWithFrame:x, y, width, height];
-  v16 = v15;
-  v17 = v15;
-  if (v15)
+  height = [(CSLUIFieldOfIconsView *)&v68 initWithFrame:x, y, width, height];
+  v16 = height;
+  v17 = height;
+  if (height)
   {
-    v15->_options = 0;
-    v18 = objc_storeWeak(&v15->_iconGraph, v13);
-    [v13 setDelegate:v17];
+    height->_options = 0;
+    v18 = objc_storeWeak(&height->_iconGraph, graphCopy);
+    [graphCopy setDelegate:v17];
 
-    v19 = objc_storeWeak(&v16->_viewFactory, v14);
-    [v14 defaultPixelDiameter];
+    v19 = objc_storeWeak(&v16->_viewFactory, factoryCopy);
+    [factoryCopy defaultPixelDiameter];
     *(v17 + 64) = v20;
 
     v21 = [CSLUniformHexLayout alloc];
@@ -89,9 +89,9 @@
 
     WeakRetained = objc_loadWeakRetained(&v16->_iconGraph);
     v34 = [WeakRetained nodeAtHex:0];
-    v35 = [v34 bundleIdentifier];
+    bundleIdentifier = [v34 bundleIdentifier];
     v36 = *(v17 + 368);
-    *(v17 + 368) = v35;
+    *(v17 + 368) = bundleIdentifier;
 
     v37 = +[NSMutableDictionary dictionary];
     v38 = *(v17 + 32);
@@ -152,7 +152,7 @@
     v66 = vmul_f32(vrndm_f32(vdup_lane_s32(COERCE_UNSIGNED_INT((v65 * 0.0) + (v65 * 0.0)), 0)), 0x3F0000003F000000);
     v67 = v66;
     v54 = [(CSLUniformHexLayout *)v49 initWithConfiguration:&v58];
-    [v17 setLayout:v54 percentComplete:0 animated:a6 options:0.0];
+    [v17 setLayout:v54 percentComplete:0 animated:options options:0.0];
 
     v55 = objc_opt_new();
     v56 = *(v17 + 216);
@@ -172,16 +172,16 @@
   [(CSLUIFieldOfIconsView *)&v3 dealloc];
 }
 
-- (void)setTargetBundleIdentifier:(id)a3
+- (void)setTargetBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = cslprf_ui_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     WeakRetained = objc_loadWeakRetained(&self->_iconGraph);
     v8 = [WeakRetained nodeWithBundleIdentifier:self->_targetBundleIdentifier];
     v9 = objc_loadWeakRetained(&self->_iconGraph);
-    v10 = [v9 nodeWithBundleIdentifier:v5];
+    v10 = [v9 nodeWithBundleIdentifier:identifierCopy];
     v13 = 138412546;
     v14 = v8;
     v15 = 2112;
@@ -189,11 +189,11 @@
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "changing locked target %@ to %@", &v13, 0x16u);
   }
 
-  v11 = [(CSLUIFieldOfIconsView *)self targetHex];
-  objc_storeStrong(&self->_targetBundleIdentifier, a3);
-  v12 = [(CSLUIFieldOfIconsView *)self targetHex];
-  [(CSLHexLayout *)self->_layout setTargetHex:v12];
-  if (v11 != v12)
+  targetHex = [(CSLUIFieldOfIconsView *)self targetHex];
+  objc_storeStrong(&self->_targetBundleIdentifier, identifier);
+  targetHex2 = [(CSLUIFieldOfIconsView *)self targetHex];
+  [(CSLHexLayout *)self->_layout setTargetHex:targetHex2];
+  if (targetHex != targetHex2)
   {
     [(CSLUIFieldOfIconsView *)self setNeedsLayout];
   }
@@ -208,34 +208,34 @@
   return v5;
 }
 
-- (id)iconViewForBundleIdentifier:(id)a3
+- (id)iconViewForBundleIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_iconViewDict objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_iconViewDict objectForKeyedSubscript:identifier];
 
   return v3;
 }
 
-- (void)enumerateIconViewsWithBlock:(id)a3
+- (void)enumerateIconViewsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     iconViewDict = self->_iconViewDict;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_2850;
     v7[3] = &unk_38850;
-    v8 = v4;
+    v8 = blockCopy;
     [(NSMutableDictionary *)iconViewDict enumerateKeysAndObjectsUsingBlock:v7];
   }
 }
 
-- (void)hexAppGraph:(id)a3 addedNodes:(id)a4 removedNodes:(id)a5 movedNodes:(id)a6
+- (void)hexAppGraph:(id)graph addedNodes:(id)nodes removedNodes:(id)removedNodes movedNodes:(id)movedNodes
 {
-  v32 = a4;
-  v31 = a5;
-  v9 = a6;
+  nodesCopy = nodes;
+  removedNodesCopy = removedNodes;
+  movedNodesCopy = movedNodes;
   layout = self->_layout;
   [(CSLUIFieldOfIconsView *)self bounds];
   [(CSLHexLayout *)layout updateWithBounds:?];
@@ -243,7 +243,7 @@
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v11 = v32;
+  v11 = nodesCopy;
   v12 = [v11 countByEnumeratingWithState:&v51 objects:v57 count:16];
   if (v12)
   {
@@ -258,8 +258,8 @@
           objc_enumerationMutation(v11);
         }
 
-        v15 = [*(*(&v51 + 1) + 8 * v14) bundleIdentifier];
-        v16 = [(CSLUIFieldOfIconsView *)self iconViewForBundleIdentifier:v15];
+        bundleIdentifier = [*(*(&v51 + 1) + 8 * v14) bundleIdentifier];
+        v16 = [(CSLUIFieldOfIconsView *)self iconViewForBundleIdentifier:bundleIdentifier];
         [(CSLUIFieldOfIconsView *)self forceIconAttributesAndSubviewForView:v16];
 
         v14 = v14 + 1;
@@ -276,7 +276,7 @@
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v17 = v31;
+  v17 = removedNodesCopy;
   v18 = [v17 countByEnumeratingWithState:&v47 objects:v56 count:16];
   if (v18)
   {
@@ -291,8 +291,8 @@
           objc_enumerationMutation(v17);
         }
 
-        v21 = [*(*(&v47 + 1) + 8 * v20) bundleIdentifier];
-        v22 = [(CSLUIFieldOfIconsView *)self iconViewForBundleIdentifier:v21];
+        bundleIdentifier2 = [*(*(&v47 + 1) + 8 * v20) bundleIdentifier];
+        v22 = [(CSLUIFieldOfIconsView *)self iconViewForBundleIdentifier:bundleIdentifier2];
         [(CSLUIFieldOfIconsView *)self forceIconAttributesAndSubviewForView:v22];
 
         v20 = v20 + 1;
@@ -309,7 +309,7 @@
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v23 = v9;
+  v23 = movedNodesCopy;
   v24 = [v23 countByEnumeratingWithState:&v43 objects:v55 count:16];
   if (v24)
   {
@@ -324,8 +324,8 @@
           objc_enumerationMutation(v23);
         }
 
-        v27 = [*(*(&v43 + 1) + 8 * v26) bundleIdentifier];
-        v28 = [(CSLUIFieldOfIconsView *)self iconViewForBundleIdentifier:v27];
+        bundleIdentifier3 = [*(*(&v43 + 1) + 8 * v26) bundleIdentifier];
+        v28 = [(CSLUIFieldOfIconsView *)self iconViewForBundleIdentifier:bundleIdentifier3];
         [(CSLUIFieldOfIconsView *)self forceIconAttributesAndSubviewForView:v28];
 
         v26 = v26 + 1;
@@ -373,9 +373,9 @@
   _Block_object_dispose(v41, 8);
 }
 
-- (void)layoutAnimated:(BOOL)a3
+- (void)layoutAnimated:(BOOL)animated
 {
-  if (a3)
+  if (animated)
   {
     sub_3894(self);
     v4[0] = _NSConcreteStackBlock;
@@ -393,7 +393,7 @@
   }
 }
 
-- (void)layoutIconsForcedApply:(BOOL)a3 forcedSubview:(BOOL)a4
+- (void)layoutIconsForcedApply:(BOOL)apply forcedSubview:(BOOL)subview
 {
   layout = self->_layout;
   [(CSLUIFieldOfIconsView *)self bounds];
@@ -404,19 +404,19 @@
   v8[2] = sub_40E4;
   v8[3] = &unk_38910;
   v8[4] = self;
-  v9 = a3;
-  v10 = a4;
+  applyCopy = apply;
+  subviewCopy = subview;
   [(CSLUIFieldOfIconsView *)self enumerateIconViewsWithBlock:v8];
   [(CSLPressStateApplier *)self->_pressApplier cleanupAfterLayout];
 }
 
-- (void)forceIconAttributesAndSubviewForView:(id)a3
+- (void)forceIconAttributesAndSubviewForView:(id)view
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  viewCopy = view;
+  v5 = viewCopy;
+  if (viewCopy)
   {
-    [v4 layoutAttributes];
+    [viewCopy layoutAttributes];
   }
 
   else
@@ -425,23 +425,23 @@
   }
 
   [v5 applyLayoutAttributes:v8];
-  v6 = [v5 superview];
+  superview = [v5 superview];
 
-  if (!v6)
+  if (!superview)
   {
-    v7 = [v5 node];
-    [v7 hex];
+    node = [v5 node];
+    [node hex];
     sub_25FC(self, v5);
   }
 }
 
-- (void)layoutIconView:(id)a3 forcedApply:(BOOL)a4 forcedSubview:(BOOL)a5
+- (void)layoutIconView:(id)view forcedApply:(BOOL)apply forcedSubview:(BOOL)subview
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = [v8 node];
-  v10 = [v9 hex];
+  subviewCopy = subview;
+  applyCopy = apply;
+  viewCopy = view;
+  node = [viewCopy node];
+  v10 = [node hex];
   if (![(CSLPressStateApplier *)self->_pressApplier isEnabledForHex:v10])
   {
     [(CSLUIFieldOfIconsView *)self originalLayoutAttributesForHex:v10];
@@ -464,7 +464,7 @@ LABEL_6:
   v21 = HIDWORD(v19[1]);
   DWORD2(v19[0]) = DWORD2(v12);
   *&v19[0] = v12;
-  [v8 setLayoutAttributes:{v19, v12}];
+  [viewCopy setLayoutAttributes:{v19, v12}];
   if (*&v18.i32[2] < 0.2)
   {
     v13 = 0;
@@ -477,7 +477,7 @@ LABEL_6:
   if (v14.i32[0] < 0)
   {
 LABEL_9:
-    if (!v6)
+    if (!applyCopy)
     {
       goto LABEL_11;
     }
@@ -487,29 +487,29 @@ LABEL_9:
   *&v19[0] = v18.i64[0];
   *(v19 + 12) = v20;
   HIDWORD(v19[1]) = v21;
-  [v8 applyLayoutAttributes:v19];
+  [viewCopy applyLayoutAttributes:v19];
 LABEL_11:
   WeakRetained = objc_loadWeakRetained(&self->_dragView);
-  v16 = WeakRetained == v8;
+  v16 = WeakRetained == viewCopy;
 
   if (!v16)
   {
-    v17 = [v8 superview];
+    superview = [viewCopy superview];
 
-    if (v13 != (v17 != 0))
+    if (v13 != (superview != 0))
     {
       if (!v13)
       {
-        sub_4468(self, v8);
+        sub_4468(self, viewCopy);
         goto LABEL_18;
       }
 
 LABEL_17:
-      sub_25FC(self, v8);
+      sub_25FC(self, viewCopy);
       goto LABEL_18;
     }
 
-    if (v5 && !v17)
+    if (subviewCopy && !superview)
     {
       goto LABEL_17;
     }
@@ -518,17 +518,17 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)handlePanGesture:(id)a3
+- (void)handlePanGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   if ([(CSLUIFieldOfIconsView *)self isDragging])
   {
-    sub_4548(self, v4);
+    sub_4548(self, gestureCopy);
   }
 
   else
   {
-    sub_47D4(self, v4);
+    sub_47D4(self, gestureCopy);
   }
 }
 
@@ -542,12 +542,12 @@ LABEL_18:
   [(CSLUIFieldOfIconsView *)self setNeedsLayout];
 }
 
-- ($153C3A5BC4E016D58A1B9CA554FFC462)originalLayoutAttributesForHex:(Hex)a3
+- ($153C3A5BC4E016D58A1B9CA554FFC462)originalLayoutAttributesForHex:(Hex)hex
 {
   layout = self->_layout;
   if (layout)
   {
-    [(CSLHexLayout *)layout layoutAttributesForItemAtHex:a3];
+    [(CSLHexLayout *)layout layoutAttributesForItemAtHex:hex];
   }
 
   else
@@ -560,37 +560,37 @@ LABEL_18:
   return v5;
 }
 
-- (void)handleIconTap:(id)a3
+- (void)handleIconTap:(id)tap
 {
-  v4 = a3;
+  tapCopy = tap;
   if (self)
   {
     [(CSLUIPointAnimator *)self->_contentOffsetAnimator cancel];
   }
 
-  v5 = [v4 state];
-  if (v5 > 2)
+  state = [tapCopy state];
+  if (state > 2)
   {
-    if (v5 != (&dword_0 + 3))
+    if (state != (&dword_0 + 3))
     {
-      if (v5 == &dword_4)
+      if (state == &dword_4)
       {
-        v16 = [(CSLUIFieldOfIconsView *)self isDragging];
+        isDragging = [(CSLUIFieldOfIconsView *)self isDragging];
         v17 = cslprf_icon_field_log();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [(CSLUIFieldOfIconsView *)self isEditing];
+          isEditing = [(CSLUIFieldOfIconsView *)self isEditing];
           didPanDrag = self->_didPanDrag;
           *buf = 67109632;
-          *&buf[4] = v18;
+          *&buf[4] = isEditing;
           *&buf[8] = 1024;
-          *&buf[10] = v16;
+          *&buf[10] = isDragging;
           *&buf[14] = 1024;
           LODWORD(v36) = didPanDrag;
           _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "handleIconTap:stateCancelled isEditing:%{BOOL}u isDragging:%{BOOL}u didPanDrag:%{BOOL}u", buf, 0x14u);
         }
 
-        if (!self->_didPanDrag && ((v16 ^ 1) & 1) == 0)
+        if (!self->_didPanDrag && ((isDragging ^ 1) & 1) == 0)
         {
           [(CSLUIFieldOfIconsView *)self endDragging];
         }
@@ -601,22 +601,22 @@ LABEL_18:
       goto LABEL_40;
     }
 
-    v7 = [(CSLUIIconView *)self->_pressedIcon node];
-    v24 = [v4 isLongPress];
+    node = [(CSLUIIconView *)self->_pressedIcon node];
+    isLongPress = [tapCopy isLongPress];
     v25 = cslprf_icon_field_log();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109634;
       *&buf[4] = [(CSLUIFieldOfIconsView *)self isEditing];
       *&buf[8] = 1024;
-      *&buf[10] = v24;
+      *&buf[10] = isLongPress;
       *&buf[14] = 2114;
-      *&v36 = v7;
+      *&v36 = node;
       _os_log_impl(&dword_0, v25, OS_LOG_TYPE_DEFAULT, "handleIconTap:stateEnded isEditing:%{BOOL}u isLongPress:%{BOOL}u node:%{public}@", buf, 0x18u);
     }
 
     sub_4BD0(self, @"touch up");
-    if ([v4 isLongPress])
+    if ([tapCopy isLongPress])
     {
       if (!self->_didPanDrag && [(CSLUIFieldOfIconsView *)self isDragging])
       {
@@ -626,14 +626,14 @@ LABEL_18:
       goto LABEL_39;
     }
 
-    if (v7)
+    if (node)
     {
-      v30 = [v7 bundleIdentifier];
-      if (v30)
+      bundleIdentifier = [node bundleIdentifier];
+      if (bundleIdentifier)
       {
-        [(CSLUIFieldOfIconsView *)self setTargetBundleIdentifier:v30];
+        [(CSLUIFieldOfIconsView *)self setTargetBundleIdentifier:bundleIdentifier];
         WeakRetained = objc_loadWeakRetained(&self->_actionDelegate);
-        [WeakRetained tappedIconWithBundleIdentifier:v30];
+        [WeakRetained tappedIconWithBundleIdentifier:bundleIdentifier];
       }
     }
 
@@ -646,17 +646,17 @@ LABEL_39:
         goto LABEL_40;
       }
 
-      v30 = objc_loadWeakRetained(&self->_actionDelegate);
-      [v30 tappedEmptyHex:*&self->_touchedHex];
+      bundleIdentifier = objc_loadWeakRetained(&self->_actionDelegate);
+      [bundleIdentifier tappedEmptyHex:*&self->_touchedHex];
     }
 
     goto LABEL_39;
   }
 
-  if (v5 == (&dword_0 + 1))
+  if (state == (&dword_0 + 1))
   {
     [(CSLUIInertialUpdater *)self->_inertialUpdater endUpdating];
-    [v4 locationInView:self->_contentView];
+    [tapCopy locationInView:self->_contentView];
     v22 = sub_2418(self, v20, v21);
     self->_touchedHex = v22;
     *buf = 0u;
@@ -692,27 +692,27 @@ LABEL_39:
     }
   }
 
-  else if (v5 == (&dword_0 + 2))
+  else if (state == (&dword_0 + 2))
   {
-    v6 = [v4 isLongPress];
-    v7 = [(CSLUIIconView *)self->_pressedIcon node];
+    isLongPress2 = [tapCopy isLongPress];
+    node = [(CSLUIIconView *)self->_pressedIcon node];
     v8 = cslprf_icon_field_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(CSLUIFieldOfIconsView *)self isEditing];
+      isEditing2 = [(CSLUIFieldOfIconsView *)self isEditing];
       v10 = objc_loadWeakRetained(&self->_dragView);
       *buf = 67109890;
-      *&buf[4] = v9;
+      *&buf[4] = isEditing2;
       *&buf[8] = 1024;
-      *&buf[10] = v6;
+      *&buf[10] = isLongPress2;
       *&buf[14] = 1024;
       LODWORD(v36) = v10 == 0;
       WORD2(v36) = 2114;
-      *(&v36 + 6) = v7;
+      *(&v36 + 6) = node;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "handleIconTap:stateChanged isEditing:%{BOOL}u isLongPress:%{BOOL}u _dragView nil:%{BOOL}u, node:%{public}@", buf, 0x1Eu);
     }
 
-    if (v6)
+    if (isLongPress2)
     {
       v11 = objc_loadWeakRetained(&self->_dragView);
       v12 = v11 == 0;
@@ -723,8 +723,8 @@ LABEL_39:
         v13 = objc_loadWeakRetained(&self->_actionDelegate);
         [v13 handleLongPress];
 
-        [v4 locationInView:self];
-        sub_5490(self, v7, v14, v15);
+        [tapCopy locationInView:self];
+        sub_5490(self, node, v14, v15);
       }
     }
 
@@ -734,27 +734,27 @@ LABEL_39:
 LABEL_40:
 }
 
-- (void)handlePinch:(id)a3
+- (void)handlePinch:(id)pinch
 {
-  v4 = a3;
-  v5 = [v4 state];
-  if ((v5 - 3) >= 3)
+  pinchCopy = pinch;
+  state = [pinchCopy state];
+  if ((state - 3) >= 3)
   {
-    if (v5 == &dword_0 + 1)
+    if (state == &dword_0 + 1)
     {
       sub_3894(self);
     }
 
-    else if (v5 != &dword_0 + 2)
+    else if (state != &dword_0 + 2)
     {
       goto LABEL_8;
     }
 
-    [v4 scale];
+    [pinchCopy scale];
     v7 = v6;
-    v8 = [(CSLUIFieldOfIconsView *)self layer];
+    layer = [(CSLUIFieldOfIconsView *)self layer];
     CATransform3DMakeScale(&v10, v7, v7, 1.0);
-    [v8 setTransform:&v10];
+    [layer setTransform:&v10];
   }
 
   else
@@ -771,7 +771,7 @@ LABEL_40:
 LABEL_8:
 }
 
-- (CGPoint)inertialUpdater:(id)a3 willDecelerateWithTarget:(CGPoint)a4
+- (CGPoint)inertialUpdater:(id)updater willDecelerateWithTarget:(CGPoint)target
 {
   if ((self->_options & 0x20) != 0)
   {
@@ -781,9 +781,9 @@ LABEL_8:
 
   else
   {
-    y = a4.y;
-    x = a4.x;
-    v24 = sub_5A0C(self, a4.x, a4.y);
+    y = target.y;
+    x = target.x;
+    v24 = sub_5A0C(self, target.x, target.y);
     [(CSLUIFieldOfIconsView *)self contentOffsetToCenterHex:v24];
     v8 = v7;
     v10 = v9;
@@ -846,7 +846,7 @@ LABEL_8:
   return result;
 }
 
-- (void)inertialUpdaterFinishedScrolling:(id)a3
+- (void)inertialUpdaterFinishedScrolling:(id)scrolling
 {
   if ((self->_options & 0x20) == 0)
   {
@@ -854,10 +854,10 @@ LABEL_8:
   }
 }
 
-- (id)createApplierToAnimateToContentOffset:(CGPoint)a3
+- (id)createApplierToAnimateToContentOffset:(CGPoint)offset
 {
-  x = a3.x;
-  y = a3.y;
+  x = offset.x;
+  y = offset.y;
   [(CSLUIInertialUpdater *)self->_inertialUpdater endUpdating];
   v4 = vcvt_f32_f64(self->_contentOffset);
   v5.f64[0] = x;
@@ -877,50 +877,50 @@ LABEL_8:
 - (id)scrolledCenterBundleIdentifier
 {
   v2 = sub_66D4(&self->super.super.super.isa, [(CSLUIFieldOfIconsView *)self centeredHex]);
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
-- (void)setTargetHexToScrolledCenterForReason:(id)a3
+- (void)setTargetHexToScrolledCenterForReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(CSLUIFieldOfIconsView *)self centeredHex];
-  v6 = sub_66D4(&self->super.super.super.isa, *&v5);
+  reasonCopy = reason;
+  centeredHex = [(CSLUIFieldOfIconsView *)self centeredHex];
+  v6 = sub_66D4(&self->super.super.super.isa, *&centeredHex);
   if (v6)
   {
     v7 = cslprf_icon_field_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138544130;
-      v10 = v4;
+      v10 = reasonCopy;
       v11 = 1024;
-      q = v5.q;
+      q = centeredHex.q;
       v13 = 1024;
-      r = v5.r;
+      r = centeredHex.r;
       v15 = 2114;
       v16 = v6;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Setting target hex to scrolled center reason:%{public}@ centeredHex:{%d,%d} node:%{public}@", &v9, 0x22u);
     }
 
-    v8 = [v6 bundleIdentifier];
-    [(CSLUIFieldOfIconsView *)self setTargetBundleIdentifier:v8];
+    bundleIdentifier = [v6 bundleIdentifier];
+    [(CSLUIFieldOfIconsView *)self setTargetBundleIdentifier:bundleIdentifier];
   }
 
   else
   {
-    v8 = cslprf_icon_field_log();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    bundleIdentifier = cslprf_icon_field_log();
+    if (os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_ERROR))
     {
       v9 = 138544130;
-      v10 = v4;
+      v10 = reasonCopy;
       v11 = 1024;
-      q = v5.q;
+      q = centeredHex.q;
       v13 = 1024;
-      r = v5.r;
+      r = centeredHex.r;
       v15 = 2114;
       v16 = 0;
-      _os_log_error_impl(&dword_0, v8, OS_LOG_TYPE_ERROR, "Cannot set target hex to scrolled center reason:%{public}@ centeredHex:{%d,%d} node:%{public}@", &v9, 0x22u);
+      _os_log_error_impl(&dword_0, bundleIdentifier, OS_LOG_TYPE_ERROR, "Cannot set target hex to scrolled center reason:%{public}@ centeredHex:{%d,%d} node:%{public}@", &v9, 0x22u);
     }
   }
 }
@@ -954,9 +954,9 @@ LABEL_8:
   [(CSLUIFieldOfIconsView *)self setContentOffset:v7, v8];
 }
 
-- (CGPoint)contentOffsetToCenterHex:(Hex)a3
+- (CGPoint)contentOffsetToCenterHex:(Hex)hex
 {
-  v4 = sub_3CAC(self, *&a3);
+  v4 = sub_3CAC(self, *&hex);
   contentOffsetLayout = self->_contentOffsetLayout;
   if (contentOffsetLayout)
   {
@@ -990,24 +990,24 @@ LABEL_8:
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_dragView);
-    v5 = [v4 node];
+    node = [v4 node];
   }
 
   else
   {
-    v5 = 0;
+    node = 0;
   }
 
-  return v5;
+  return node;
 }
 
-- (Hex)closestIconHexToHex:(Hex)a3
+- (Hex)closestIconHexToHex:(Hex)hex
 {
-  v5 = [(CSLUIFieldOfIconsView *)self layout];
-  v6 = v5;
-  if (v5)
+  layout = [(CSLUIFieldOfIconsView *)self layout];
+  v6 = layout;
+  if (layout)
   {
-    [v5 layoutAttributesForItemAtHex:a3];
+    [layout layoutAttributesForItemAtHex:hex];
     v7 = v15;
   }
 
@@ -1016,11 +1016,11 @@ LABEL_8:
     v7 = 0;
   }
 
-  v8 = [(CSLUIFieldOfIconsView *)self layout];
-  v9 = v8;
-  if (v8)
+  layout2 = [(CSLUIFieldOfIconsView *)self layout];
+  v9 = layout2;
+  if (layout2)
   {
-    [v8 layoutAttributesForItemAtHex:a3];
+    [layout2 layoutAttributesForItemAtHex:hex];
     v10 = v14;
   }
 
@@ -1034,21 +1034,21 @@ LABEL_8:
   return v11;
 }
 
-- (void)updatePPT:(id)a3
+- (void)updatePPT:(id)t
 {
-  v4 = a3;
-  v21 = v4;
+  tCopy = t;
+  v21 = tCopy;
   if (self->_pptPanStartTime == 0.0)
   {
-    [v4 timestamp];
+    [tCopy timestamp];
     self->_pptPanStartTime = v5;
     v6 = +[UIApplication sharedApplication];
     [v6 startedTest:self->_pptPanTestName];
 
-    v4 = v21;
+    tCopy = v21;
   }
 
-  [v4 timestamp];
+  [tCopy timestamp];
   v8 = v7 - self->_pptPanStartTime;
   if (v8 >= self->_pptPanCount)
   {
@@ -1089,15 +1089,15 @@ LABEL_8:
   }
 }
 
-- (void)PPTPanAround:(id)a3 panDistance:(double)a4 panCount:(int64_t)a5
+- (void)PPTPanAround:(id)around panDistance:(double)distance panCount:(int64_t)count
 {
-  v13 = a3;
+  aroundCopy = around;
   self->_pptPanStartTime = 0.0;
   self->_rawTouchContentOffset = self->_contentOffset;
   self->_pptPanStartContentOffset = self->_contentOffset;
-  self->_pptPanDistance = a4;
-  objc_storeStrong(&self->_pptPanTestName, a3);
-  self->_pptPanCount = a5;
+  self->_pptPanDistance = distance;
+  objc_storeStrong(&self->_pptPanTestName, around);
+  self->_pptPanCount = count;
   v9 = [CADisplayLink displayLinkWithTarget:self selector:"updatePPT:"];
   pptPanDisplayLink = self->_pptPanDisplayLink;
   self->_pptPanDisplayLink = v9;
@@ -1145,15 +1145,15 @@ LABEL_8:
   [(CSLUIFieldOfIconsView *)self layoutIconsForcedApply:0 forcedSubview:0, sub_22320(self)];
 }
 
-- (void)enableGestureRecognizers:(BOOL)a3
+- (void)enableGestureRecognizers:(BOOL)recognizers
 {
-  v3 = a3;
-  self->_recognizersEnabled = a3;
+  recognizersCopy = recognizers;
+  self->_recognizersEnabled = recognizers;
   v5 = cslprf_fluidui_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = recognizersCopy;
     _os_log_debug_impl(&dword_0, v5, OS_LOG_TYPE_DEBUG, "CSLUIFieldOfIconsView gesture recognizers enabled: %{BOOL}u", v6, 8u);
   }
 
@@ -1169,14 +1169,14 @@ LABEL_8:
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_dragView);
-    v5 = [v4 node];
+    node = [v4 node];
 
-    v6 = [v5 hex];
+    v6 = [node hex];
     v7 = objc_loadWeakRetained(&self->_iconGraph);
-    [v7 moveNode:v5 toHex:v6 final:1];
+    [v7 moveNode:node toHex:v6 final:1];
 
     v8 = objc_loadWeakRetained(&self->_iconGraph);
-    [v8 commitMovedNode:v5 withReason:2];
+    [v8 commitMovedNode:node withReason:2];
 
     v9 = objc_loadWeakRetained(&self->_dragView);
     [v9 center];

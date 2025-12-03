@@ -17,7 +17,7 @@
   v11 = a4;
   v12 = a5;
   v13 = a6;
-  if (![a1 length])
+  if (![self length])
   {
     goto LABEL_37;
   }
@@ -41,18 +41,18 @@
     if (v10)
     {
       v18 = MEMORY[0x277CCACA8];
-      v19 = [a1 string];
-      v20 = [v18 stringWithFormat:@"%@%@", v10, v19];
+      string = [self string];
+      string2 = [v18 stringWithFormat:@"%@%@", v10, string];
     }
 
     else
     {
-      v20 = [a1 string];
+      string2 = [self string];
     }
 
     v21 = [v10 length];
-    v22 = [a1 length];
-    [v17 setString:v20];
+    v22 = [self length];
+    [v17 setString:string2];
     v59[0] = MEMORY[0x277D85DD0];
     v59[1] = 3221225472;
     v59[2] = __162__NSMutableAttributedString_MutableAttributedStringSRCSTextEditing__adjustCapsAndSpacingUsingLeadingText_localeIdentifier_vocabularyEntries_spellingGuessesBlock___block_invoke;
@@ -60,24 +60,24 @@
     v62 = v21;
     v63 = v22;
     v61 = &v64;
-    v23 = v20;
+    v23 = string2;
     v60 = v23;
     [v17 enumerateTagsInRange:v21 scheme:v22 options:v15 usingBlock:{0, v59}];
   }
 
   v58 = 0;
-  [a1 _SRCSPreserveCasingOfPrefixCustomVocabularies:v12 startsWithMustPreserveCaseCustomVocabulary:&v58 + 1 startsWithAutoCaseCustomVocabulary:&v58];
+  [self _SRCSPreserveCasingOfPrefixCustomVocabularies:v12 startsWithMustPreserveCaseCustomVocabulary:&v58 + 1 startsWithAutoCaseCustomVocabulary:&v58];
   if ((v58 & 0x100) == 0 && (v65[3] & 1) == 0)
   {
-    v24 = [a1 string];
-    v25 = [v24 substringToIndex:1];
-    v26 = [v25 lowercaseString];
-    v27 = [a1 string];
-    v28 = [v27 substringFromIndex:1];
-    v57 = [v26 stringByAppendingString:v28];
+    string3 = [self string];
+    v25 = [string3 substringToIndex:1];
+    lowercaseString = [v25 lowercaseString];
+    string4 = [self string];
+    v28 = [string4 substringFromIndex:1];
+    v57 = [lowercaseString stringByAppendingString:v28];
 
-    v29 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v30 = [v57 rangeOfCharacterFromSet:v29];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v30 = [v57 rangeOfCharacterFromSet:whitespaceCharacterSet];
     v32 = v31;
 
     if (v30 == 0x7FFFFFFFFFFFFFFFLL)
@@ -90,16 +90,16 @@
     v33 = 0;
     if (v30 == 1 && v32 == 1)
     {
-      v34 = [a1 string];
-      v35 = [v34 substringToIndex:1];
+      string5 = [self string];
+      v35 = [string5 substringToIndex:1];
       if ([v35 isEqualToString:{@", "}])
       {
       }
 
       else
       {
-        v36 = [a1 string];
-        v37 = [v36 substringToIndex:1];
+        string6 = [self string];
+        v37 = [string6 substringToIndex:1];
         v54 = [v37 isEqualToString:@";"];
 
         if (!v54)
@@ -110,20 +110,20 @@
         }
       }
 
-      v38 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-      v39 = [v57 rangeOfCharacterFromSet:v38 options:0 range:{2, objc_msgSend(v57, "length") - 2}];
+      whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+      v39 = [v57 rangeOfCharacterFromSet:whitespaceCharacterSet2 options:0 range:{2, objc_msgSend(v57, "length") - 2}];
 
       if (v39 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v39 = [v57 length];
       }
 
-      v55 = [a1 string];
-      v52 = [v55 substringToIndex:3];
-      v40 = [v52 lowercaseString];
-      v41 = [a1 string];
-      v42 = [v41 substringFromIndex:3];
-      v43 = [v40 stringByAppendingString:v42];
+      string7 = [self string];
+      v52 = [string7 substringToIndex:3];
+      lowercaseString2 = [v52 lowercaseString];
+      string8 = [self string];
+      v42 = [string8 substringFromIndex:3];
+      v43 = [lowercaseString2 stringByAppendingString:v42];
       v30 = v39 - 2;
 
       v33 = 2;
@@ -131,31 +131,31 @@
     }
 
 LABEL_22:
-    v44 = [a1 string];
-    v45 = [v44 substringWithRange:{v33, v30}];
+    string9 = [self string];
+    v45 = [string9 substringWithRange:{v33, v30}];
     v56 = v33;
 
-    v46 = [v45 uppercaseString];
-    v47 = [v45 lowercaseString];
-    if (([v47 isEqualToString:v46] & 1) == 0)
+    uppercaseString = [v45 uppercaseString];
+    lowercaseString3 = [v45 lowercaseString];
+    if (([lowercaseString3 isEqualToString:uppercaseString] & 1) == 0)
     {
-      if (![v45 isEqualToString:v46])
+      if (![v45 isEqualToString:uppercaseString])
       {
 
 LABEL_28:
-        v47 = v13[2](v13, v56, v30, v57, v11);
-        if (![v47 count] || !objc_msgSend(v47, "containsObject:", v45) || v58 == 1)
+        lowercaseString3 = v13[2](v13, v56, v30, v57, v11);
+        if (![lowercaseString3 count] || !objc_msgSend(lowercaseString3, "containsObject:", v45) || v58 == 1)
         {
-          v53 = [a1 string];
-          v49 = [v53 substringWithRange:{v56, 1}];
-          v50 = [v49 lowercaseString];
-          [a1 replaceCharactersInRange:v56 withString:{1, v50}];
+          string10 = [self string];
+          v49 = [string10 substringWithRange:{v56, 1}];
+          lowercaseString4 = [v49 lowercaseString];
+          [self replaceCharactersInRange:v56 withString:{1, lowercaseString4}];
         }
 
         goto LABEL_32;
       }
 
-      if ([a1 length] >= 2)
+      if ([self length] >= 2)
       {
         v48 = [v45 isEqualToString:@"A"];
 
@@ -173,10 +173,10 @@ LABEL_32:
 LABEL_33:
   }
 
-  if ([a1 _SRCSShouldAddSpaceForLeadingText:v10 localeIdentifier:v11])
+  if ([self _SRCSShouldAddSpaceForLeadingText:v10 localeIdentifier:v11])
   {
     v51 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@" "];
-    [a1 insertAttributedString:v51 atIndex:0];
+    [self insertAttributedString:v51 atIndex:0];
   }
 
   _Block_object_dispose(&v64, 8);
@@ -192,8 +192,8 @@ LABEL_37:
     goto LABEL_11;
   }
 
-  v8 = [a1 string];
-  v9 = [v8 length];
+  string = [self string];
+  v9 = [string length];
 
   if (!v9)
   {
@@ -203,8 +203,8 @@ LABEL_37:
   if ([v7 isEqualToString:@"fr_FR"])
   {
     v10 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@":!?«»"];;
-    v11 = [a1 string];
-    v12 = [v10 characterIsMember:{objc_msgSend(v11, "characterAtIndex:", 0)}];
+    string2 = [self string];
+    v12 = [v10 characterIsMember:{objc_msgSend(string2, "characterAtIndex:", 0)}];
   }
 
   else
@@ -212,9 +212,9 @@ LABEL_37:
     v12 = 0;
   }
 
-  v13 = [a1 _SRCSTrailingCharInString:v6];
-  v14 = [a1 string];
-  v15 = [a1 _SRCSLeadingCharInString:v14];
+  v13 = [self _SRCSTrailingCharInString:v6];
+  string3 = [self string];
+  v15 = [self _SRCSLeadingCharInString:string3];
 
   if (v13 && v15 && ![SRCSSmartReplace isCharacterSmartReplaceExempt:v13 isPreviousCharacter:1]&& v12 & 1 | ![SRCSSmartReplace isCharacterSmartReplaceExempt:v15 isPreviousCharacter:0])
   {
@@ -354,8 +354,8 @@ LABEL_11:
 
 + (uint64_t)_SRCSCharacterType:()MutableAttributedStringSRCSTextEditing
 {
-  v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v5 = [v4 characterIsMember:a3];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v5 = [whitespaceAndNewlineCharacterSet characterIsMember:a3];
 
   if (v5)
   {
@@ -367,15 +367,15 @@ LABEL_11:
     return 2;
   }
 
-  v7 = [MEMORY[0x277CCA900] punctuationCharacterSet];
-  if ([v7 characterIsMember:a3])
+  punctuationCharacterSet = [MEMORY[0x277CCA900] punctuationCharacterSet];
+  if ([punctuationCharacterSet characterIsMember:a3])
   {
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCA900] symbolCharacterSet];
-    v9 = [v8 characterIsMember:a3];
+    symbolCharacterSet = [MEMORY[0x277CCA900] symbolCharacterSet];
+    v9 = [symbolCharacterSet characterIsMember:a3];
 
     if (!v9)
     {
@@ -414,8 +414,8 @@ LABEL_11:
 
         else
         {
-          v14 = [MEMORY[0x277CCA900] punctuationCharacterSet];
-          v15 = [v14 characterIsMember:a3];
+          punctuationCharacterSet2 = [MEMORY[0x277CCA900] punctuationCharacterSet];
+          v15 = [punctuationCharacterSet2 characterIsMember:a3];
 
           if (v15)
           {
@@ -460,15 +460,15 @@ LABEL_11:
         }
 
         v14 = *(*(&v32 + 1) + 8 * i);
-        v15 = [a1 string];
-        v16 = [v15 lowercaseString];
-        v17 = [v14 lowercaseString];
-        v18 = [v16 hasPrefix:v17];
+        string = [self string];
+        lowercaseString = [string lowercaseString];
+        lowercaseString2 = [v14 lowercaseString];
+        v18 = [lowercaseString hasPrefix:lowercaseString2];
 
         if (v18)
         {
-          v19 = [a1 string];
-          v20 = [v19 length];
+          string2 = [self string];
+          v20 = [string2 length];
           v21 = [v14 length];
 
           if (v20 <= v21)
@@ -476,21 +476,21 @@ LABEL_11:
             goto LABEL_12;
           }
 
-          v22 = [a1 string];
-          v23 = [v22 characterAtIndex:{objc_msgSend(v14, "length")}];
+          string3 = [self string];
+          v23 = [string3 characterAtIndex:{objc_msgSend(v14, "length")}];
 
-          v24 = [MEMORY[0x277CCAB50] whitespaceAndNewlineCharacterSet];
-          v25 = [MEMORY[0x277CCA900] punctuationCharacterSet];
-          [v24 formUnionWithCharacterSet:v25];
+          whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCAB50] whitespaceAndNewlineCharacterSet];
+          punctuationCharacterSet = [MEMORY[0x277CCA900] punctuationCharacterSet];
+          [whitespaceAndNewlineCharacterSet formUnionWithCharacterSet:punctuationCharacterSet];
 
-          LODWORD(v23) = [v24 characterIsMember:v23];
+          LODWORD(v23) = [whitespaceAndNewlineCharacterSet characterIsMember:v23];
           if (v23)
           {
 LABEL_12:
-            v26 = [MEMORY[0x277CCAB50] lowercaseLetterCharacterSet];
-            [v26 addCharactersInString:@"-' "];
-            v27 = [v26 invertedSet];
-            v28 = [v14 rangeOfCharacterFromSet:v27];
+            lowercaseLetterCharacterSet = [MEMORY[0x277CCAB50] lowercaseLetterCharacterSet];
+            [lowercaseLetterCharacterSet addCharactersInString:@"-' "];
+            invertedSet = [lowercaseLetterCharacterSet invertedSet];
+            v28 = [v14 rangeOfCharacterFromSet:invertedSet];
 
             if (v28 == 0x7FFFFFFFFFFFFFFFLL)
             {
@@ -511,7 +511,7 @@ LABEL_12:
 
               v10 = v14;
 
-              [a1 replaceCharactersInRange:0 withString:{objc_msgSend(v10, "length"), v10}];
+              [self replaceCharactersInRange:0 withString:{objc_msgSend(v10, "length"), v10}];
             }
 
             goto LABEL_19;
@@ -542,12 +542,12 @@ LABEL_19:
   v11 = a4;
   v47 = a5;
   v12 = a6;
-  if (![a1 length])
+  if (![self length])
   {
     goto LABEL_38;
   }
 
-  v13 = [a1 string];
+  string = [self string];
   v53 = 0;
   v54 = &v53;
   v55 = 0x2020000000;
@@ -567,18 +567,18 @@ LABEL_19:
     if (v10)
     {
       v18 = MEMORY[0x277CCACA8];
-      v19 = [a1 string];
-      v20 = [v18 stringWithFormat:@"%@%@", v10, v19];
+      string2 = [self string];
+      string3 = [v18 stringWithFormat:@"%@%@", v10, string2];
     }
 
     else
     {
-      v20 = [a1 string];
+      string3 = [self string];
     }
 
     v21 = [v10 length];
-    v22 = [a1 length];
-    [v17 setString:v20];
+    v22 = [self length];
+    [v17 setString:string3];
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __155__NSMutableAttributedString_MutableAttributedStringSRCSTextEditing__adjustCapsAndSpacingUsingLeadingText_preITNTokens_customVocabularies_localeIdentifier___block_invoke;
@@ -586,19 +586,19 @@ LABEL_19:
     v51 = v21;
     v52 = v22;
     v50 = &v53;
-    v23 = v20;
+    v23 = string3;
     v49 = v23;
     [v17 enumerateTagsInRange:v21 scheme:v22 options:v15 usingBlock:{0, v48}];
   }
 
-  v24 = [v11 firstObject];
-  v25 = [v24 length];
+  firstObject = [v11 firstObject];
+  v25 = [firstObject length];
 
   if (v25)
   {
-    v26 = [MEMORY[0x277CCA900] lowercaseLetterCharacterSet];
-    v27 = [v11 firstObject];
-    v28 = [v26 characterIsMember:{objc_msgSend(v27, "characterAtIndex:", 0)}];
+    lowercaseLetterCharacterSet = [MEMORY[0x277CCA900] lowercaseLetterCharacterSet];
+    firstObject2 = [v11 firstObject];
+    v28 = [lowercaseLetterCharacterSet characterIsMember:{objc_msgSend(firstObject2, "characterAtIndex:", 0)}];
 
     v29 = v28 ^ 1;
   }
@@ -619,45 +619,45 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v33 = [v13 lowercaseString];
-  if (([v33 isEqualToString:@"t"] & 1) == 0 && (objc_msgSend(v33, "isEqualToString:", @"re") & 1) == 0 && (objc_msgSend(v33, "isEqualToString:", @"d") & 1) == 0 && (objc_msgSend(v33, "isEqualToString:", @"ll") & 1) == 0 && (objc_msgSend(v33, "isEqualToString:", @"s") & 1) == 0 && !objc_msgSend(v33, "isEqualToString:", @"m"))
+  lowercaseString = [string lowercaseString];
+  if (([lowercaseString isEqualToString:@"t"] & 1) == 0 && (objc_msgSend(lowercaseString, "isEqualToString:", @"re") & 1) == 0 && (objc_msgSend(lowercaseString, "isEqualToString:", @"d") & 1) == 0 && (objc_msgSend(lowercaseString, "isEqualToString:", @"ll") & 1) == 0 && (objc_msgSend(lowercaseString, "isEqualToString:", @"s") & 1) == 0 && !objc_msgSend(lowercaseString, "isEqualToString:", @"m"))
   {
 
     goto LABEL_25;
   }
 
 LABEL_26:
-  v34 = [v13 substringWithRange:{0, 1}];
-  v35 = [v34 lowercaseString];
-  [a1 replaceCharactersInRange:0 withString:{1, v35}];
+  v34 = [string substringWithRange:{0, 1}];
+  lowercaseString2 = [v34 lowercaseString];
+  [self replaceCharactersInRange:0 withString:{1, lowercaseString2}];
 
 LABEL_27:
-  if ([v13 length] >= 3)
+  if ([string length] >= 3)
   {
-    v36 = [v13 characterAtIndex:0];
-    v37 = [v13 characterAtIndex:1];
+    v36 = [string characterAtIndex:0];
+    v37 = [string characterAtIndex:1];
     v38 = v36 == 59 || v36 == 44;
     if (v38 && v37 == 32)
     {
-      v39 = [a1 attributedSubstringFromRange:{2, objc_msgSend(v13, "length") - 2}];
+      v39 = [self attributedSubstringFromRange:{2, objc_msgSend(string, "length") - 2}];
       v40 = [v39 mutableCopy];
 
-      v41 = [v13 substringToIndex:2];
+      v41 = [string substringToIndex:2];
       v42 = [v10 stringByAppendingString:v41];
       v43 = [v11 subarrayWithRange:{1, objc_msgSend(v11, "count") - 1}];
       [v40 adjustCapsAndSpacingUsingLeadingText:v42 preITNTokens:v43 customVocabularies:v47 localeIdentifier:v12];
 
-      v44 = [v13 length];
-      v45 = [v40 string];
-      [a1 replaceCharactersInRange:2 withString:{v44 - 2, v45}];
+      v44 = [string length];
+      string4 = [v40 string];
+      [self replaceCharactersInRange:2 withString:{v44 - 2, string4}];
     }
   }
 
-  [a1 _SRCSPreserveCasingOfPrefixCustomVocabularies:v47];
-  if ([a1 _SRCSShouldAddSpaceForLeadingText:v10 localeIdentifier:v12])
+  [self _SRCSPreserveCasingOfPrefixCustomVocabularies:v47];
+  if ([self _SRCSShouldAddSpaceForLeadingText:v10 localeIdentifier:v12])
   {
     v46 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@" "];
-    [a1 insertAttributedString:v46 atIndex:0];
+    [self insertAttributedString:v46 atIndex:0];
   }
 
   _Block_object_dispose(&v53, 8);

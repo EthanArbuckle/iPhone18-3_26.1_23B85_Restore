@@ -1,18 +1,18 @@
 @interface FARateLimiter
-- (BOOL)isAllowedWithClientName:(id)a3;
+- (BOOL)isAllowedWithClientName:(id)name;
 - (FARateLimiter)init;
-- (FARateLimiter)initWithIdentifier:(id)a3;
-- (FARateLimiter)initWithPersistence:(id)a3 identifier:(id)a4 getDate:(id)a5;
-- (void)recordCallWithClientName:(id)a3;
+- (FARateLimiter)initWithIdentifier:(id)identifier;
+- (FARateLimiter)initWithPersistence:(id)persistence identifier:(id)identifier getDate:(id)date;
+- (void)recordCallWithClientName:(id)name;
 @end
 
 @implementation FARateLimiter
 
-- (FARateLimiter)initWithIdentifier:(id)a3
+- (FARateLimiter)initWithIdentifier:(id)identifier
 {
   v5 = objc_opt_self();
-  v6 = a3;
-  v7 = [v5 standardUserDefaults];
+  identifierCopy = identifier;
+  standardUserDefaults = [v5 standardUserDefaults];
   v11[4] = j___s10Foundation4DateV3nowACvgZ;
   v11[5] = 0;
   v11[0] = _NSConcreteStackBlock;
@@ -20,15 +20,15 @@
   v11[2] = sub_1000353F0;
   v11[3] = &unk_1000A8018;
   v8 = _Block_copy(v11);
-  v9 = [(FARateLimiter *)self initWithPersistence:v7 identifier:v6 getDate:v8];
+  v9 = [(FARateLimiter *)self initWithPersistence:standardUserDefaults identifier:identifierCopy getDate:v8];
   _Block_release(v8);
 
   return v9;
 }
 
-- (FARateLimiter)initWithPersistence:(id)a3 identifier:(id)a4 getDate:(id)a5
+- (FARateLimiter)initWithPersistence:(id)persistence identifier:(id)identifier getDate:(id)date
 {
-  v5 = _Block_copy(a5);
+  v5 = _Block_copy(date);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   v9 = swift_allocObject();
@@ -37,21 +37,21 @@
   return RateLimiter.init(persistence:identifier:getDate:)(v10, v6, v8, sub_100037E2C, v9);
 }
 
-- (BOOL)isAllowedWithClientName:(id)a3
+- (BOOL)isAllowedWithClientName:(id)name
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   v4 = *(&self->super.isa + OBJC_IVAR___FARateLimiter_queue);
-  v5 = self;
+  selfCopy = self;
   OS_dispatch_queue.sync<A>(execute:)();
 
   return v7;
 }
 
-- (void)recordCallWithClientName:(id)a3
+- (void)recordCallWithClientName:(id)name
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   RateLimiter.recordCall(clientName:)(v8);

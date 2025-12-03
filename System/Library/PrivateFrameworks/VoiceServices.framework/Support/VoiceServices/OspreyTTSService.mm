@@ -2,59 +2,59 @@
 + (id)ospreyServiceEndpointURL;
 + (id)sharedInstance;
 - (OspreyTTSService)init;
-- (void)roundTripTTS:(id)a3 responseHandler:(id)a4;
-- (void)streamTTS:(id)a3 beginHandler:(id)a4 chunkHandler:(id)a5 endHandler:(id)a6 completion:(id)a7;
+- (void)roundTripTTS:(id)s responseHandler:(id)handler;
+- (void)streamTTS:(id)s beginHandler:(id)handler chunkHandler:(id)chunkHandler endHandler:(id)endHandler completion:(id)completion;
 @end
 
 @implementation OspreyTTSService
 
-- (void)streamTTS:(id)a3 beginHandler:(id)a4 chunkHandler:(id)a5 endHandler:(id)a6 completion:(id)a7
+- (void)streamTTS:(id)s beginHandler:(id)handler chunkHandler:(id)chunkHandler endHandler:(id)endHandler completion:(id)completion
 {
   v66 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v45 = a6;
-  v46 = a7;
-  v43 = v13;
-  v44 = v14;
+  sCopy = s;
+  handlerCopy = handler;
+  chunkHandlerCopy = chunkHandler;
+  endHandlerCopy = endHandler;
+  completionCopy = completion;
+  v43 = handlerCopy;
+  v44 = chunkHandlerCopy;
   v15 = objc_alloc_init(OPTTSMutableStartTextToSpeechStreamingRequest);
-  v42 = self;
-  v16 = [(OspreyTTSService *)self deviceID];
-  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 setSpeech_id:v16];
+  selfCopy = self;
+  deviceID = [(OspreyTTSService *)self deviceID];
+  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 setSpeech_id:deviceID];
 
-  v17 = [MEMORY[0x277CCAD78] UUID];
-  v18 = [v17 UUIDString];
-  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 setSession_id:v18];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 setSession_id:uUIDString];
 
-  v19 = [v12 language];
-  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 setLanguage:v19];
+  language = [sCopy language];
+  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 setLanguage:language];
 
-  v20 = [v12 voice_name];
-  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 setVoice_name:v20];
+  voice_name = [sCopy voice_name];
+  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 setVoice_name:voice_name];
 
-  v21 = [v12 gender];
-  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 setGender:v21];
+  gender = [sCopy gender];
+  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 setGender:gender];
 
-  v22 = [v12 text];
-  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 setText:v22];
+  text = [sCopy text];
+  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 setText:text];
 
-  -[OPTTSMutableStartTextToSpeechStreamingRequest setAudio_type:](v15, "setAudio_type:", [v12 audio_type]);
-  -[OPTTSMutableStartTextToSpeechStreamingRequest setEnable_word_timing_info:](v15, "setEnable_word_timing_info:", [v12 enable_word_timing_info]);
-  v23 = [MEMORY[0x277CCAD78] UUID];
-  v24 = [v23 UUIDString];
-  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 setStream_id:v24];
+  -[OPTTSMutableStartTextToSpeechStreamingRequest setAudio_type:](v15, "setAudio_type:", [sCopy audio_type]);
+  -[OPTTSMutableStartTextToSpeechStreamingRequest setEnable_word_timing_info:](v15, "setEnable_word_timing_info:", [sCopy enable_word_timing_info]);
+  uUID2 = [MEMORY[0x277CCAD78] UUID];
+  uUIDString2 = [uUID2 UUIDString];
+  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 setStream_id:uUIDString2];
 
-  v25 = [v12 meta_info];
-  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 setMeta_info:v25];
+  meta_info = [sCopy meta_info];
+  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 setMeta_info:meta_info];
 
   v26 = +[VSSiriServerConfiguration defaultConfig];
-  v27 = [v26 experimentIdentifier];
+  experimentIdentifier = [v26 experimentIdentifier];
 
-  if (v27)
+  if (experimentIdentifier)
   {
     v28 = objc_alloc_init(OPTTSMutableTextToSpeechRequestExperiment);
-    [(OPTTSMutableTextToSpeechRequestExperiment *)v28 setExperiment_identifier:v27];
+    [(OPTTSMutableTextToSpeechRequestExperiment *)v28 setExperiment_identifier:experimentIdentifier];
     [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 setExperiment:v28];
   }
 
@@ -66,27 +66,27 @@
   v56[2] = 0x3032000000;
   v56[3] = __Block_byref_object_copy__2040;
   v56[4] = __Block_byref_object_dispose__2041;
-  v57 = MEMORY[0x2743CD880](v46);
+  v57 = MEMORY[0x2743CD880](completionCopy);
   v30 = VSGetLogDefault();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 speech_id];
-    v32 = [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 session_id];
-    v33 = [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 stream_id];
-    v34 = [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 meta_info];
-    v35 = [v34 app_id];
+    speech_id = [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 speech_id];
+    session_id = [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 session_id];
+    stream_id = [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 stream_id];
+    meta_info2 = [(OPTTSMutableStartTextToSpeechStreamingRequest *)v15 meta_info];
+    app_id = [meta_info2 app_id];
     *buf = 138413058;
-    v59 = v31;
+    v59 = speech_id;
     v60 = 2112;
-    v61 = v32;
+    v61 = session_id;
     v62 = 2112;
-    v63 = v33;
+    v63 = stream_id;
     v64 = 2112;
-    v65 = v35;
+    v65 = app_id;
     _os_log_impl(&dword_2727E4000, v30, OS_LOG_TYPE_DEFAULT, "Sent Osprey streaming request with speech_id '%@', session_id '%@', stream_id '%@', app_id '%@'", buf, 0x2Au);
   }
 
-  v36 = [(OPTTSTextToSpeechRouterStreamingStreamingRequest *)v29 flatbuffData];
+  flatbuffData = [(OPTTSTextToSpeechRouterStreamingStreamingRequest *)v29 flatbuffData];
   v54[0] = MEMORY[0x277D85DD0];
   v54[1] = 3221225472;
   v54[2] = __78__OspreyTTSService_streamTTS_beginHandler_chunkHandler_endHandler_completion___block_invoke;
@@ -103,14 +103,14 @@
   v50 = v38;
   v39 = v44;
   v51 = v39;
-  v40 = v45;
+  v40 = endHandlerCopy;
   v52 = v40;
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
   v47[2] = __78__OspreyTTSService_streamTTS_beginHandler_chunkHandler_endHandler_completion___block_invoke_58;
   v47[3] = &unk_279E4BB40;
   v47[4] = v56;
-  [(OspreyChannel *)v42 serverStreamingRequestWithMethodName:@"/siri.speech.qss_fb.Blazar/TextToSpeechRouterStreaming" requestData:v36 requestBuilder:v54 streamingResponseHandler:v48 completion:v47];
+  [(OspreyChannel *)selfCopy serverStreamingRequestWithMethodName:@"/siri.speech.qss_fb.Blazar/TextToSpeechRouterStreaming" requestData:flatbuffData requestBuilder:v54 streamingResponseHandler:v48 completion:v47];
 
   _Block_object_dispose(v56, 8);
   v41 = *MEMORY[0x277D85DE8];
@@ -403,58 +403,58 @@ void __78__OspreyTTSService_streamTTS_beginHandler_chunkHandler_endHandler_compl
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)roundTripTTS:(id)a3 responseHandler:(id)a4
+- (void)roundTripTTS:(id)s responseHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(OspreyTTSService *)self deviceID];
-  [v6 setSpeech_id:v8];
+  sCopy = s;
+  handlerCopy = handler;
+  deviceID = [(OspreyTTSService *)self deviceID];
+  [sCopy setSpeech_id:deviceID];
 
-  v9 = [MEMORY[0x277CCAD78] UUID];
-  v10 = [v9 UUIDString];
-  [v6 setSession_id:v10];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [sCopy setSession_id:uUIDString];
 
   v11 = +[VSSiriServerConfiguration defaultConfig];
-  v12 = [v11 experimentIdentifier];
+  experimentIdentifier = [v11 experimentIdentifier];
 
-  if (v12)
+  if (experimentIdentifier)
   {
     v13 = objc_alloc_init(OPTTSMutableTextToSpeechRequestExperiment);
-    [(OPTTSMutableTextToSpeechRequestExperiment *)v13 setExperiment_identifier:v12];
-    [v6 setExperiment:v13];
+    [(OPTTSMutableTextToSpeechRequestExperiment *)v13 setExperiment_identifier:experimentIdentifier];
+    [sCopy setExperiment:v13];
   }
 
   v14 = VSGetLogDefault();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v6 speech_id];
-    v16 = [v6 session_id];
-    v17 = [v6 meta_info];
-    v18 = [v17 app_id];
+    speech_id = [sCopy speech_id];
+    session_id = [sCopy session_id];
+    meta_info = [sCopy meta_info];
+    app_id = [meta_info app_id];
     *buf = 138412802;
-    v28 = v15;
+    v28 = speech_id;
     v29 = 2112;
-    v30 = v16;
+    v30 = session_id;
     v31 = 2112;
-    v32 = v18;
+    v32 = app_id;
     _os_log_impl(&dword_2727E4000, v14, OS_LOG_TYPE_DEFAULT, "Sent Osprey grpc request with speech_id '%@', session_id '%@', app_id '%@'", buf, 0x20u);
   }
 
-  v19 = [v6 flatbuffData];
+  flatbuffData = [sCopy flatbuffData];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __49__OspreyTTSService_roundTripTTS_responseHandler___block_invoke;
   v25[3] = &unk_279E4B8D0;
-  v20 = v6;
+  v20 = sCopy;
   v26 = v20;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __49__OspreyTTSService_roundTripTTS_responseHandler___block_invoke_2;
   v23[3] = &unk_279E4B8F8;
-  v21 = v7;
+  v21 = handlerCopy;
   v24 = v21;
-  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Blazar/TextToSpeechRouter" requestData:v19 requestBuilder:v25 responseHandler:v23];
+  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Blazar/TextToSpeechRouter" requestData:flatbuffData requestBuilder:v25 responseHandler:v23];
 
   v22 = *MEMORY[0x277D85DE8];
 }
@@ -555,21 +555,21 @@ LABEL_18:
 - (OspreyTTSService)init
 {
   v3 = +[OspreyTTSService ospreyServiceEndpointURL];
-  v4 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-  [v4 setTimeoutIntervalForRequest:5.0];
-  [v4 setTimeoutIntervalForResource:60.0];
+  defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+  [defaultSessionConfiguration setTimeoutIntervalForRequest:5.0];
+  [defaultSessionConfiguration setTimeoutIntervalForResource:60.0];
   v5 = [MEMORY[0x277CBEBC0] URLWithString:v3];
   v11.receiver = self;
   v11.super_class = OspreyTTSService;
-  v6 = [(OspreyChannel *)&v11 initWithURL:v5 configuration:v4];
+  v6 = [(OspreyChannel *)&v11 initWithURL:v5 configuration:defaultSessionConfiguration];
 
   if (v6)
   {
     [(OspreyChannel *)v6 setUseCompression:0];
-    v7 = [MEMORY[0x277D79978] defaultInstance];
-    v8 = [v7 deviceUUID];
+    defaultInstance = [MEMORY[0x277D79978] defaultInstance];
+    deviceUUID = [defaultInstance deviceUUID];
     deviceID = v6->_deviceID;
-    v6->_deviceID = v8;
+    v6->_deviceID = deviceUUID;
   }
 
   return v6;
@@ -596,12 +596,12 @@ uint64_t __34__OspreyTTSService_sharedInstance__block_invoke()
 
 + (id)ospreyServiceEndpointURL
 {
-  v2 = [MEMORY[0x277D79998] standardInstance];
-  v3 = [v2 ospreyEndpointURL];
+  standardInstance = [MEMORY[0x277D79998] standardInstance];
+  ospreyEndpointURL = [standardInstance ospreyEndpointURL];
 
-  if ([v3 length])
+  if ([ospreyEndpointURL length])
   {
-    v4 = v3;
+    v4 = ospreyEndpointURL;
   }
 
   else if ([MEMORY[0x277D799C0] isSeedBuild])

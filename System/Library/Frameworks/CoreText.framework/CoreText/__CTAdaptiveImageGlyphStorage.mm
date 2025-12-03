@@ -1,32 +1,32 @@
 @interface __CTAdaptiveImageGlyphStorage
-+ (id)adaptiveImageGlyphStorageWithContentIdentifier:(id)a3 imageContent:(id)a4;
++ (id)adaptiveImageGlyphStorageWithContentIdentifier:(id)identifier imageContent:(id)content;
 - (NSData)_RTFDImageData;
 - (NSData)_fallbackImageData;
-- (__CTAdaptiveImageGlyphStorage)initWithImageContent:(id)a3;
+- (__CTAdaptiveImageGlyphStorage)initWithImageContent:(id)content;
 - (void)dealloc;
 @end
 
 @implementation __CTAdaptiveImageGlyphStorage
 
-+ (id)adaptiveImageGlyphStorageWithContentIdentifier:(id)a3 imageContent:(id)a4
++ (id)adaptiveImageGlyphStorageWithContentIdentifier:(id)identifier imageContent:(id)content
 {
-  v5 = a4;
-  v6 = a3;
+  contentCopy = content;
+  identifierCopy = identifier;
   v7 = objc_opt_class();
   objc_sync_enter(v7);
-  v8 = [__CTAdaptiveImageGlyphStorageCache objectForKey:v6];
+  v8 = [__CTAdaptiveImageGlyphStorageCache objectForKey:identifierCopy];
 
-  if (v5)
+  if (contentCopy)
   {
     if (!v8)
     {
-      v8 = [[__CTAdaptiveImageGlyphStorage alloc] initWithImageContent:v5];
+      v8 = [[__CTAdaptiveImageGlyphStorage alloc] initWithImageContent:contentCopy];
       if (v8)
       {
         v9 = __CTAdaptiveImageGlyphStorageCache;
         if (__CTAdaptiveImageGlyphStorageCache)
         {
-          if (v6)
+          if (identifierCopy)
           {
             goto LABEL_11;
           }
@@ -34,25 +34,25 @@
 
         else
         {
-          v10 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+          strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
           v11 = __CTAdaptiveImageGlyphStorageCache;
-          __CTAdaptiveImageGlyphStorageCache = v10;
+          __CTAdaptiveImageGlyphStorageCache = strongToWeakObjectsMapTable;
 
           v9 = __CTAdaptiveImageGlyphStorageCache;
-          if (v6)
+          if (identifierCopy)
           {
             goto LABEL_11;
           }
         }
 
-        v12 = [(__CTAdaptiveImageGlyphStorage *)v8 contentIdentifier];
-        v13 = [v9 objectForKey:v12];
+        contentIdentifier = [(__CTAdaptiveImageGlyphStorage *)v8 contentIdentifier];
+        v13 = [v9 objectForKey:contentIdentifier];
 
         if (v13)
         {
-          v14 = v13;
+          contentIdentifier2 = v13;
 
-          v8 = v14;
+          v8 = contentIdentifier2;
 LABEL_12:
 
           goto LABEL_13;
@@ -60,8 +60,8 @@ LABEL_12:
 
         v9 = __CTAdaptiveImageGlyphStorageCache;
 LABEL_11:
-        v14 = [(__CTAdaptiveImageGlyphStorage *)v8 contentIdentifier];
-        [v9 setObject:v8 forKey:v14];
+        contentIdentifier2 = [(__CTAdaptiveImageGlyphStorage *)v8 contentIdentifier];
+        [v9 setObject:v8 forKey:contentIdentifier2];
         goto LABEL_12;
       }
     }
@@ -73,9 +73,9 @@ LABEL_13:
   return v8;
 }
 
-- (__CTAdaptiveImageGlyphStorage)initWithImageContent:(id)a3
+- (__CTAdaptiveImageGlyphStorage)initWithImageContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v23.receiver = self;
   v23.super_class = __CTAdaptiveImageGlyphStorage;
   v5 = [(__CTAdaptiveImageGlyphStorage *)&v23 init];
@@ -84,7 +84,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v6 = CGImageSourceCreateWithData(v4, 0);
+  v6 = CGImageSourceCreateWithData(contentCopy, 0);
   v7 = v6;
   if (v6)
   {
@@ -124,7 +124,7 @@ LABEL_10:
   v5->_imageSourceRef = v7;
   if (v7)
   {
-    v16 = [(__CFData *)v4 copy];
+    v16 = [(__CFData *)contentCopy copy];
     imageContent = v5->_imageContent;
     v5->_imageContent = v16;
 
@@ -241,10 +241,10 @@ LABEL_14:
       while (1)
       {
         v9 = [v5 objectAtIndexedSubscript:v8];
-        v10 = [v9 cgImage];
+        cgImage = [v9 cgImage];
 
-        Width = CGImageGetWidth(v10);
-        Height = CGImageGetHeight(v10);
+        Width = CGImageGetWidth(cgImage);
+        Height = CGImageGetHeight(cgImage);
         if (Width == 64 && Height == 64)
         {
           break;
@@ -274,9 +274,9 @@ LABEL_14:
         v17 = v13;
 
         v18 = [[CTEmojiImageAsset alloc] initWithContentIdentifier:self->_contentIdentifier shortDescription:self->_imageDescription strikeImages:v17];
-        v19 = [(CTEmojiImageAsset *)v18 imageData];
+        imageData = [(CTEmojiImageAsset *)v18 imageData];
         v20 = self->_RTFDImageData;
-        self->_RTFDImageData = v19;
+        self->_RTFDImageData = imageData;
 
         v5 = v17;
       }

@@ -1,58 +1,58 @@
 @interface FAShowAccountDetailsHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_showAccountDetailsFor:(id)a3 withCompletion:(id)a4;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_showAccountDetailsFor:(id)for withCompletion:(id)completion;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation FAShowAccountDetailsHook
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"family:showAccountDetails"];
+  name = [element name];
+  v4 = [name isEqualToString:@"family:showAccountDetails"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CEC988]];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKeyedSubscript:*MEMORY[0x277CEC988]];
   v5 = [v4 isEqualToString:@"family:showAccountDetails"];
 
   return v5;
 }
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
-  v8 = a6;
-  v9 = [a4 objectForKeyedSubscript:@"altDSID"];
-  [(FAShowAccountDetailsHook *)self _showAccountDetailsFor:v9 withCompletion:v8];
+  completionCopy = completion;
+  v9 = [attributes objectForKeyedSubscript:@"altDSID"];
+  [(FAShowAccountDetailsHook *)self _showAccountDetailsFor:v9 withCompletion:completionCopy];
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a4;
-  v8 = [a3 clientInfo];
-  v7 = [v8 objectForKeyedSubscript:@"altDSID"];
-  [(FAShowAccountDetailsHook *)self _showAccountDetailsFor:v7 withCompletion:v6];
+  completionCopy = completion;
+  clientInfo = [model clientInfo];
+  v7 = [clientInfo objectForKeyedSubscript:@"altDSID"];
+  [(FAShowAccountDetailsHook *)self _showAccountDetailsFor:v7 withCompletion:completionCopy];
 }
 
-- (void)_showAccountDetailsFor:(id)a3 withCompletion:(id)a4
+- (void)_showAccountDetailsFor:(id)for withCompletion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  forCopy = for;
+  completionCopy = completion;
   v8 = _FALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v18 = "[FAShowAccountDetailsHook _showAccountDetailsFor:withCompletion:]";
     v19 = 2112;
-    v20 = v6;
+    v20 = forCopy;
     _os_log_impl(&dword_21BB35000, v8, OS_LOG_TYPE_DEFAULT, "%s - show account details for %@", buf, 0x16u);
   }
 
@@ -65,9 +65,9 @@
   v13[2] = __66__FAShowAccountDetailsHook__showAccountDetailsFor_withCompletion___block_invoke;
   v13[3] = &unk_2782F3DA0;
   objc_copyWeak(&v16, buf);
-  v10 = v7;
+  v10 = completionCopy;
   v15 = v10;
-  v11 = v6;
+  v11 = forCopy;
   v14 = v11;
   [v9 startRequestWithCompletionHandler:v13];
 

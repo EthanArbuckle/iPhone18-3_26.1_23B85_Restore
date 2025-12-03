@@ -11,7 +11,7 @@
 {
   v4 = a3;
   outCount = 0;
-  v5 = class_copyPropertyList(a1, &outCount);
+  v5 = class_copyPropertyList(self, &outCount);
   if (v5)
   {
     v6 = v5;
@@ -60,41 +60,41 @@
   v18 = a5;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"NSObject+PhotosUIFoundation.m" lineNumber:43 description:@"not on the main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSObject+PhotosUIFoundation.m" lineNumber:43 description:@"not on the main thread"];
   }
 
   if ((PFIsPhotosAppAnyPlatform() & 1) == 0 && (PFIsPhotosPicker() & 1) == 0 && (PFIsCamera() & 1) == 0)
   {
-    if (a1 == a3)
+    if (self == a3)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v17 handleFailureInMethod:a2 object:a1 file:@"NSObject+PhotosUIFoundation.m" lineNumber:50 description:{@"%@ is already the root class", a1}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"NSObject+PhotosUIFoundation.m" lineNumber:50 description:{@"%@ is already the root class", self}];
     }
 
-    v9 = a1;
-    while ([v9 superclass] != a3)
+    selfCopy = self;
+    while ([selfCopy superclass] != a3)
     {
-      v9 = [v9 superclass];
-      if (!v9)
+      selfCopy = [selfCopy superclass];
+      if (!selfCopy)
       {
-        v10 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v10 handleFailureInMethod:a2 object:a1 file:@"NSObject+PhotosUIFoundation.m" lineNumber:55 description:{@"%@ isn't a descendant of %@", a1, a3}];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"NSObject+PhotosUIFoundation.m" lineNumber:55 description:{@"%@ isn't a descendant of %@", self, a3}];
 
         abort();
       }
     }
 
-    a3 = v9;
+    a3 = selfCopy;
   }
 
   v11 = [MEMORY[0x1E696B098] valueWithPointer:a4];
   v12 = px_swizzleOnceAsSubclassOfClass_context_usingBlock__preparedClassesByContext;
   if (!px_swizzleOnceAsSubclassOfClass_context_usingBlock__preparedClassesByContext)
   {
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v14 = px_swizzleOnceAsSubclassOfClass_context_usingBlock__preparedClassesByContext;
-    px_swizzleOnceAsSubclassOfClass_context_usingBlock__preparedClassesByContext = v13;
+    px_swizzleOnceAsSubclassOfClass_context_usingBlock__preparedClassesByContext = dictionary;
 
     v12 = px_swizzleOnceAsSubclassOfClass_context_usingBlock__preparedClassesByContext;
   }
@@ -115,9 +115,9 @@
 
 + (void)px_swizzleClassMethod:()PhotosUIFoundation withMethod:
 {
-  ClassMethod = class_getClassMethod(a1, name);
-  v8 = class_getClassMethod(a1, a4);
-  Class = object_getClass(a1);
+  ClassMethod = class_getClassMethod(self, name);
+  v8 = class_getClassMethod(self, a4);
+  Class = object_getClass(self);
   Implementation = method_getImplementation(v8);
   TypeEncoding = method_getTypeEncoding(v8);
   if (class_addMethod(Class, name, Implementation, TypeEncoding))
@@ -137,20 +137,20 @@
 
 + (void)px_swizzleMethod:()PhotosUIFoundation withMethod:
 {
-  InstanceMethod = class_getInstanceMethod(a1, name);
-  v8 = class_getInstanceMethod(a1, a4);
-  MethodImplementation = class_getMethodImplementation(a1, name);
+  InstanceMethod = class_getInstanceMethod(self, name);
+  v8 = class_getInstanceMethod(self, a4);
+  MethodImplementation = class_getMethodImplementation(self, name);
   TypeEncoding = method_getTypeEncoding(InstanceMethod);
-  if (class_addMethod(a1, name, MethodImplementation, TypeEncoding))
+  if (class_addMethod(self, name, MethodImplementation, TypeEncoding))
   {
-    InstanceMethod = class_getInstanceMethod(a1, name);
+    InstanceMethod = class_getInstanceMethod(self, name);
   }
 
-  v11 = class_getMethodImplementation(a1, a4);
+  v11 = class_getMethodImplementation(self, a4);
   v12 = method_getTypeEncoding(v8);
-  if (class_addMethod(a1, a4, v11, v12))
+  if (class_addMethod(self, a4, v11, v12))
   {
-    v8 = class_getInstanceMethod(a1, a4);
+    v8 = class_getInstanceMethod(self, a4);
   }
 
   method_exchangeImplementations(InstanceMethod, v8);

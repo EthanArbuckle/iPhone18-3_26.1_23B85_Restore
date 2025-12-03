@@ -1,11 +1,11 @@
 @interface DOCItemCollectionViewController.FolderMenuHeader
-- (_TtCC26DocumentManagerExecutables31DOCItemCollectionViewController16FolderMenuHeader)initWithMetadata:(id)a3;
-- (_TtCC26DocumentManagerExecutables31DOCItemCollectionViewController16FolderMenuHeader)initWithURL:(id)a3;
+- (_TtCC26DocumentManagerExecutables31DOCItemCollectionViewController16FolderMenuHeader)initWithMetadata:(id)metadata;
+- (_TtCC26DocumentManagerExecutables31DOCItemCollectionViewController16FolderMenuHeader)initWithURL:(id)l;
 @end
 
 @implementation DOCItemCollectionViewController.FolderMenuHeader
 
-- (_TtCC26DocumentManagerExecutables31DOCItemCollectionViewController16FolderMenuHeader)initWithURL:(id)a3
+- (_TtCC26DocumentManagerExecutables31DOCItemCollectionViewController16FolderMenuHeader)initWithURL:(id)l
 {
   v3 = type metadata accessor for URL();
   MEMORY[0x28223BE20](v3 - 8, v4);
@@ -15,7 +15,7 @@
   return result;
 }
 
-- (_TtCC26DocumentManagerExecutables31DOCItemCollectionViewController16FolderMenuHeader)initWithMetadata:(id)a3
+- (_TtCC26DocumentManagerExecutables31DOCItemCollectionViewController16FolderMenuHeader)initWithMetadata:(id)metadata
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

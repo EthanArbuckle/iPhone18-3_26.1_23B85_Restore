@@ -1,10 +1,10 @@
 @interface TTSManager
-- (void)handleAudioInterruptionWithNotification:(id)a3;
+- (void)handleAudioInterruptionWithNotification:(id)notification;
 @end
 
 @implementation TTSManager
 
-- (void)handleAudioInterruptionWithNotification:(id)a3
+- (void)handleAudioInterruptionWithNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

@@ -1,19 +1,19 @@
 @interface GCSMouseProfilesCollection
 - (BOOL)storeVersionIsCompatible;
-- (GCSMouseProfilesCollection)initWithSettingsStore:(id)a3 userDefaults:(id)a4;
+- (GCSMouseProfilesCollection)initWithSettingsStore:(id)store userDefaults:(id)defaults;
 - (GCSSettingsStoreService)settingsStore;
-- (id)mouseProfileForBundleIdentifier:(id)a3;
+- (id)mouseProfileForBundleIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)updateMouseProfiles:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)updateMouseProfiles:(id)profiles;
 @end
 
 @implementation GCSMouseProfilesCollection
 
-- (GCSMouseProfilesCollection)initWithSettingsStore:(id)a3 userDefaults:(id)a4
+- (GCSMouseProfilesCollection)initWithSettingsStore:(id)store userDefaults:(id)defaults
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  defaultsCopy = defaults;
   v13.receiver = self;
   v13.super_class = GCSMouseProfilesCollection;
   v8 = [(GCSMouseProfilesCollection *)&v13 init];
@@ -23,10 +23,10 @@
     values = v8->_values;
     v8->_values = v9;
 
-    v11 = objc_storeWeak(&v8->_settingsStore, v6);
-    [v6 addObserver:v8 forKeyPath:@"mouseProfiles" options:5 context:KVOContext];
+    v11 = objc_storeWeak(&v8->_settingsStore, storeCopy);
+    [storeCopy addObserver:v8 forKeyPath:@"mouseProfiles" options:5 context:KVOContext];
 
-    objc_storeStrong(&v8->_userDefaults, a4);
+    objc_storeStrong(&v8->_userDefaults, defaults);
     [(GCUserDefaults *)v8->_userDefaults addObserver:v8 forKeyPath:@"settingsVersion" options:5 context:KVOContext];
   }
 
@@ -44,41 +44,41 @@
   [(GCSMouseProfilesCollection *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (KVOContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (KVOContext == context)
   {
     WeakRetained = objc_loadWeakRetained(&self->_settingsStore);
 
-    if (WeakRetained == v12)
+    if (WeakRetained == objectCopy)
     {
-      if (([v11 isEqualToString:@"mouseProfiles"] & 1) == 0)
+      if (([pathCopy isEqualToString:@"mouseProfiles"] & 1) == 0)
       {
-        [GCSMouseProfilesCollection observeValueForKeyPath:a2 ofObject:self change:v11 context:?];
+        [GCSMouseProfilesCollection observeValueForKeyPath:a2 ofObject:self change:pathCopy context:?];
       }
 
-      v15 = [v13 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      v15 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     }
 
     else
     {
-      if (self->_userDefaults != v12)
+      if (self->_userDefaults != objectCopy)
       {
         v17 = MEMORY[0x277CBEAD8];
         v18 = *MEMORY[0x277CBE658];
-        v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"KVO notification from unknown object <%@:%p>", objc_opt_class(), v12];
-        v20 = [v17 exceptionWithName:v18 reason:v19 userInfo:0];
+        objectCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"KVO notification from unknown object <%@:%p>", objc_opt_class(), objectCopy];
+        v20 = [v17 exceptionWithName:v18 reason:objectCopy userInfo:0];
         v21 = v20;
 
         objc_exception_throw(v20);
       }
 
-      if (([v11 isEqualToString:@"settingsVersion"] & 1) == 0)
+      if (([pathCopy isEqualToString:@"settingsVersion"] & 1) == 0)
       {
-        [GCSMouseProfilesCollection observeValueForKeyPath:a2 ofObject:self change:v11 context:?];
+        [GCSMouseProfilesCollection observeValueForKeyPath:a2 ofObject:self change:pathCopy context:?];
       }
 
       v15 = [(GCUserDefaults *)self->_userDefaults objectForKey:@"mouseProfiles"];
@@ -92,7 +92,7 @@
   {
     v22.receiver = self;
     v22.super_class = GCSMouseProfilesCollection;
-    [(GCSMouseProfilesCollection *)&v22 observeValueForKeyPath:v11 ofObject:v12 change:v13 context:a6];
+    [(GCSMouseProfilesCollection *)&v22 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -104,10 +104,10 @@
   return v3;
 }
 
-- (void)updateMouseProfiles:(id)a3
+- (void)updateMouseProfiles:(id)profiles
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profilesCopy = profiles;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [(GCSMouseProfilesCollection *)self storeVersionIsCompatible])
   {
@@ -116,7 +116,7 @@
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = v4;
+    v6 = profilesCopy;
     v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
@@ -161,16 +161,16 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)mouseProfileForBundleIdentifier:(id)a3
+- (id)mouseProfileForBundleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(GCSMouseProfilesCollection *)self values];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  values = [(GCSMouseProfilesCollection *)self values];
+  v6 = [values countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -180,12 +180,12 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(values);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 bundleIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        bundleIdentifier = [v9 bundleIdentifier];
+        v11 = [bundleIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -194,7 +194,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [values countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;

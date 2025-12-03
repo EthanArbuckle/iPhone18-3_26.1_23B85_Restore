@@ -1,22 +1,22 @@
 @interface LiblouisEmojiPrintPreprocessor
 - (LiblouisEmojiPrintPreprocessor)init;
-- (id)preprocessPrintString:(id)a3 withLocationMap:(id *)a4 typeformData:(id)a5;
+- (id)preprocessPrintString:(id)string withLocationMap:(id *)map typeformData:(id)data;
 - (void)_setupLocale;
 - (void)dealloc;
 @end
 
 @implementation LiblouisEmojiPrintPreprocessor
 
-- (id)preprocessPrintString:(id)a3 withLocationMap:(id *)a4 typeformData:(id)a5
+- (id)preprocessPrintString:(id)string withLocationMap:(id *)map typeformData:(id)data
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  stringCopy = string;
+  dataCopy = data;
+  if (stringCopy)
   {
-    v24 = v9;
-    v10 = [v8 length];
+    v24 = dataCopy;
+    v10 = [stringCopy length];
     v11 = +[NSMutableString string];
-    if (a4)
+    if (map)
     {
       v12 = [NSMutableData dataWithLength:0];
     }
@@ -30,9 +30,9 @@
     v27 = &v26;
     v28 = 0x2020000000;
     v29 = 0;
-    [v8 length];
+    [stringCopy length];
     locale = self->_locale;
-    v15 = v8;
+    v15 = stringCopy;
     v16 = v11;
     v17 = v12;
     v25 = v24;
@@ -55,16 +55,16 @@
       while (v10 != v18);
     }
 
-    if (a4)
+    if (map)
     {
       v22 = v17;
-      *a4 = v17;
+      *map = v17;
     }
 
     v13 = v16;
 
     _Block_object_dispose(&v26, 8);
-    v9 = v24;
+    dataCopy = v24;
   }
 
   else

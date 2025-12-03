@@ -1,15 +1,15 @@
 @interface LabelRenderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)selectAnimationComplete;
 @end
 
 @implementation LabelRenderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Measure.SpatialGenericPlatter"];
-  [v3 validateClass:@"Measure.LabelRender" hasInstanceMethod:@"selectAnimationComplete" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Measure.SpatialGenericPlatter"];
+  [validationsCopy validateClass:@"Measure.LabelRender" hasInstanceMethod:@"selectAnimationComplete" withFullSignature:{"v", 0}];
 }
 
 - (void)selectAnimationComplete

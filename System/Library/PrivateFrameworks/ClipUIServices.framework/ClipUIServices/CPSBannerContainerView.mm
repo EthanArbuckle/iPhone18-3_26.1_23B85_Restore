@@ -1,28 +1,28 @@
 @interface CPSBannerContainerView
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CPSBannerContainerView)initWithBannerView:(id)a3;
-- (CPSBannerContainerView)initWithCoder:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_accessibilityElementFocusDidChange:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CPSBannerContainerView)initWithBannerView:(id)view;
+- (CPSBannerContainerView)initWithCoder:(id)coder;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_accessibilityElementFocusDidChange:(id)change;
 - (void)_commonInit;
-- (void)_dismissGestureRecognized:(id)a3;
+- (void)_dismissGestureRecognized:(id)recognized;
 - (void)_installBannerViewIfNeeded;
 - (void)_removeBannerAnimationsIfNeeded;
 - (void)_updateBannerContentSizeCategory;
-- (void)setBannerHidden:(BOOL)a3 animated:(BOOL)a4 animationCompletion:(id)a5;
-- (void)setBannerView:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBannerHidden:(BOOL)hidden animated:(BOOL)animated animationCompletion:(id)completion;
+- (void)setBannerView:(id)view;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraints;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation CPSBannerContainerView
 
-- (CPSBannerContainerView)initWithBannerView:(id)a3
+- (CPSBannerContainerView)initWithBannerView:(id)view
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 bounds];
+  viewCopy = view;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v10.receiver = self;
   v10.super_class = CPSBannerContainerView;
   v7 = [(CPSBannerContainerView *)&v10 initWithFrame:?];
@@ -30,7 +30,7 @@
   if (v7)
   {
     [(CPSBannerContainerView *)v7 _commonInit];
-    objc_storeStrong(&v7->_bannerView, a3);
+    objc_storeStrong(&v7->_bannerView, view);
     [(CPSBannerContainerView *)v7 _installBannerViewIfNeeded];
     v8 = v7;
   }
@@ -38,11 +38,11 @@
   return v7;
 }
 
-- (CPSBannerContainerView)initWithCoder:(id)a3
+- (CPSBannerContainerView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CPSBannerContainerView;
-  v3 = [(CPSBannerContainerView *)&v7 initWithCoder:a3];
+  v3 = [(CPSBannerContainerView *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -76,11 +76,11 @@
   [MEMORY[0x277CCAAD0] cps_if:v3 thenActivate:self->_verticalPositionConstraintWhenHidden elseActivate:self->_verticalPositionConstraintWhenVisible];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = CPSBannerContainerView;
-  v5 = [(CPSBannerContainerView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(CPSBannerContainerView *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -97,69 +97,69 @@
   return v7;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v5 = a3;
+  windowCopy = window;
   if (self->_bannerHasAccessibilityFocus)
   {
     [(CPSBannerContainerView *)self setBannerHasAccessibilityFocus:0];
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  if (v5)
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  if (windowCopy)
   {
-    [v4 addObserver:self selector:sel__accessibilityElementFocusDidChange_ name:*MEMORY[0x277D76468] object:0];
+    [defaultCenter addObserver:self selector:sel__accessibilityElementFocusDidChange_ name:*MEMORY[0x277D76468] object:0];
   }
 
   else
   {
-    [v4 removeObserver:self name:*MEMORY[0x277D76468] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D76468] object:0];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CPSBannerContainerView;
-  [(CPSBannerContainerView *)&v4 traitCollectionDidChange:a3];
+  [(CPSBannerContainerView *)&v4 traitCollectionDidChange:change];
   [(CPSBannerContainerView *)self _updateBannerContentSizeCategory];
 }
 
-- (void)setBannerView:(id)a3
+- (void)setBannerView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   bannerView = self->_bannerView;
-  if (bannerView != v5)
+  if (bannerView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)bannerView removeFromSuperview];
     [(UIView *)self->_bannerView _setLocalOverrideTraitCollection:0];
-    objc_storeStrong(&self->_bannerView, a3);
+    objc_storeStrong(&self->_bannerView, view);
     bannerView = [(CPSBannerContainerView *)self _installBannerViewIfNeeded];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](bannerView, v5);
+  MEMORY[0x2821F96F8](bannerView, viewCopy);
 }
 
-- (void)setBannerHidden:(BOOL)a3 animated:(BOOL)a4 animationCompletion:(id)a5
+- (void)setBannerHidden:(BOOL)hidden animated:(BOOL)animated animationCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  if (self->_bannerHidden != v6)
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  completionCopy = completion;
+  if (self->_bannerHidden != hiddenCopy)
   {
-    if (v5)
+    if (animatedCopy)
     {
       [(CPSBannerContainerView *)self _removeBannerAnimationsIfNeeded];
       [(CPSBannerContainerView *)self layoutIfNeeded];
-      [(CPSBannerContainerView *)self setBannerHidden:v6];
+      [(CPSBannerContainerView *)self setBannerHidden:hiddenCopy];
       [(CPSBannerContainerView *)self setNeedsUpdateConstraints];
       if (UIAccessibilityPrefersCrossFadeTransitions())
       {
         self->_bannerCrossFading = 1;
         v9 = 0.0;
-        if (v6)
+        if (hiddenCopy)
         {
           v9 = 1.0;
         }
@@ -171,13 +171,13 @@
         v18[2] = __71__CPSBannerContainerView_setBannerHidden_animated_animationCompletion___block_invoke;
         v18[3] = &unk_278DD2498;
         v18[4] = self;
-        v19 = v6;
+        v19 = hiddenCopy;
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = __71__CPSBannerContainerView_setBannerHidden_animated_animationCompletion___block_invoke_2;
         v16[3] = &unk_278DD2538;
         v16[4] = self;
-        v17 = v8;
+        v17 = completionCopy;
         [v10 animateWithDuration:v18 animations:v16 completion:0.2];
         v11 = v17;
       }
@@ -194,7 +194,7 @@
         v13[1] = 3221225472;
         v13[2] = __71__CPSBannerContainerView_setBannerHidden_animated_animationCompletion___block_invoke_4;
         v13[3] = &unk_278DD2560;
-        v14 = v8;
+        v14 = completionCopy;
         [v12 _animateUsingSpringWithDampingRatio:1 response:v15 tracking:v13 dampingRatioSmoothing:1.0 responseSmoothing:0.5 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.998];
         v11 = v14;
       }
@@ -202,13 +202,13 @@
       goto LABEL_12;
     }
 
-    [(CPSBannerContainerView *)self setBannerHidden:v6];
+    [(CPSBannerContainerView *)self setBannerHidden:hiddenCopy];
     [(CPSBannerContainerView *)self setNeedsUpdateConstraints];
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_12:
@@ -260,11 +260,11 @@ uint64_t __71__CPSBannerContainerView_setBannerHidden_animated_animationCompleti
   return result;
 }
 
-- (void)_accessibilityElementFocusDidChange:(id)a3
+- (void)_accessibilityElementFocusDidChange:(id)change
 {
   bannerView = self->_bannerView;
-  v5 = [a3 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D76470]];
+  userInfo = [change userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D76470]];
   v7 = viewContainsAccessibilityElement(bannerView, v6);
 
   if (self->_bannerHasAccessibilityFocus != v7)
@@ -274,12 +274,12 @@ uint64_t __71__CPSBannerContainerView_setBannerHidden_animated_animationCompleti
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  if (self->_dismissGesture == a3)
+  if (self->_dismissGesture == begin)
   {
     bannerView = self->_bannerView;
-    [a3 locationInView:bannerView];
+    [begin locationInView:bannerView];
     v5 = [(UIView *)bannerView hitTest:0 withEvent:?];
     v3 = v5 != 0;
   }
@@ -294,10 +294,10 @@ uint64_t __71__CPSBannerContainerView_setBannerHidden_animated_animationCompleti
   return v3;
 }
 
-- (void)_dismissGestureRecognized:(id)a3
+- (void)_dismissGestureRecognized:(id)recognized
 {
   dismissGesture = self->_dismissGesture;
-  v5 = a3;
+  recognizedCopy = recognized;
   [(UIPanGestureRecognizer *)dismissGesture translationInView:self];
   v7 = v6;
   [(UIPanGestureRecognizer *)self->_dismissGesture velocityInView:self];
@@ -309,23 +309,23 @@ uint64_t __71__CPSBannerContainerView_setBannerHidden_animated_animationCompleti
   *&v16[5] = v7;
   v16[6] = v8;
   v9 = MEMORY[0x245D3DDC0](v16);
-  v10 = [v5 state];
+  state = [recognizedCopy state];
 
-  if (v10 > 2)
+  if (state > 2)
   {
-    if (v10 == 3)
+    if (state == 3)
     {
       v9[2](v9, 0);
     }
 
-    else if (v10 == 4)
+    else if (state == 4)
     {
       v15 = [MEMORY[0x277CCABB0] numberWithBool:self->_bannerHidden];
       (v9)[2](v9, v15);
     }
   }
 
-  else if (v10 == 1)
+  else if (state == 1)
   {
     [(UIPanGestureRecognizer *)self->_dismissGesture setTranslation:self inView:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
     [(UIView *)self->_bannerView frame];
@@ -336,7 +336,7 @@ uint64_t __71__CPSBannerContainerView_setBannerHidden_animated_animationCompleti
     [(CPSBannerContainerView *)self didChangeValueForKey:@"trackingBannerDismissGesture"];
   }
 
-  else if (v10 == 2)
+  else if (state == 2)
   {
     verticalPositionOffsetForDismissGesture = self->_verticalPositionOffsetForDismissGesture;
     v12 = self->_bannerView;
@@ -439,32 +439,32 @@ uint64_t __52__CPSBannerContainerView__dismissGestureRecognized___block_invoke_2
   bannerView = self->_bannerView;
   if (bannerView)
   {
-    v4 = [(UIView *)bannerView superview];
+    superview = [(UIView *)bannerView superview];
 
-    if (!v4)
+    if (!superview)
     {
       [(UIView *)self->_bannerView setTranslatesAutoresizingMaskIntoConstraints:0];
       [(CPSBannerContainerView *)self addSubview:self->_bannerView];
-      v5 = [(CPSBannerContainerView *)self safeAreaLayoutGuide];
+      safeAreaLayoutGuide = [(CPSBannerContainerView *)self safeAreaLayoutGuide];
       [(CPSBannerContainerView *)self willChangeValueForKey:@"trackingBannerDismissGesture"];
-      v6 = [(UIView *)self->_bannerView topAnchor];
-      v7 = [(CPSBannerContainerView *)self topAnchor];
-      v8 = [v6 constraintEqualToAnchor:v7];
+      topAnchor = [(UIView *)self->_bannerView topAnchor];
+      topAnchor2 = [(CPSBannerContainerView *)self topAnchor];
+      v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
       verticalPositionConstraintForDismissGesture = self->_verticalPositionConstraintForDismissGesture;
       self->_verticalPositionConstraintForDismissGesture = v8;
 
       [(CPSBannerContainerView *)self didChangeValueForKey:@"trackingBannerDismissGesture"];
-      v10 = [(UIView *)self->_bannerView topAnchor];
-      v11 = [v5 topAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11 constant:8.0];
+      topAnchor3 = [(UIView *)self->_bannerView topAnchor];
+      topAnchor4 = [safeAreaLayoutGuide topAnchor];
+      v12 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:8.0];
       LODWORD(v13) = 1148829696;
       v14 = [v12 cps_setPriority:v13];
       verticalPositionConstraintWhenVisible = self->_verticalPositionConstraintWhenVisible;
       self->_verticalPositionConstraintWhenVisible = v14;
 
-      v16 = [(UIView *)self->_bannerView bottomAnchor];
-      v17 = [(CPSBannerContainerView *)self topAnchor];
-      v18 = [v16 constraintEqualToAnchor:v17];
+      bottomAnchor = [(UIView *)self->_bannerView bottomAnchor];
+      topAnchor5 = [(CPSBannerContainerView *)self topAnchor];
+      v18 = [bottomAnchor constraintEqualToAnchor:topAnchor5];
       LODWORD(v19) = 1148829696;
       v20 = [v18 cps_setPriority:v19];
       verticalPositionConstraintWhenHidden = self->_verticalPositionConstraintWhenHidden;
@@ -472,16 +472,16 @@ uint64_t __52__CPSBannerContainerView__dismissGestureRecognized___block_invoke_2
 
       v32 = MEMORY[0x277CCAAD0];
       [(UIView *)self->_bannerView centerXAnchor];
-      v34 = v33 = v5;
-      v22 = [v5 centerXAnchor];
-      v23 = [v34 constraintEqualToAnchor:v22];
+      v34 = v33 = safeAreaLayoutGuide;
+      centerXAnchor = [safeAreaLayoutGuide centerXAnchor];
+      v23 = [v34 constraintEqualToAnchor:centerXAnchor];
       v35[0] = v23;
-      v24 = [(UIView *)self->_bannerView leadingAnchor];
-      v25 = [v5 leadingAnchor];
-      v26 = [v24 constraintGreaterThanOrEqualToAnchor:v25 constant:8.0];
+      leadingAnchor = [(UIView *)self->_bannerView leadingAnchor];
+      leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+      v26 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:8.0];
       v35[1] = v26;
-      v27 = [(UIView *)self->_bannerView widthAnchor];
-      v28 = [v27 constraintEqualToConstant:556.0];
+      widthAnchor = [(UIView *)self->_bannerView widthAnchor];
+      v28 = [widthAnchor constraintEqualToConstant:556.0];
       LODWORD(v29) = 1144750080;
       v30 = [v28 cps_setPriority:v29];
       v35[2] = v30;
@@ -508,9 +508,9 @@ uint64_t __52__CPSBannerContainerView__dismissGestureRecognized___block_invoke_2
 - (void)_updateBannerContentSizeCategory
 {
   v3 = *MEMORY[0x277D76818];
-  v4 = [(CPSBannerContainerView *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  v6 = UIContentSizeCategoryCompareToCategory(v3, v5);
+  traitCollection = [(CPSBannerContainerView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v6 = UIContentSizeCategoryCompareToCategory(v3, preferredContentSizeCategory);
 
   if (v6 == NSOrderedAscending)
   {

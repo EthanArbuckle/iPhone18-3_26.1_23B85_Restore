@@ -1,30 +1,30 @@
 @interface RTTripSegmentInertialDataManager
 + (id)vendedClasses;
-- (RTTripSegmentInertialDataManager)initWithInertialDataStore:(id)a3 routineLocationManager:(id)a4;
-- (void)_addTripSegmentInertialData:(id)a3 handler:(id)a4;
-- (void)_fetchTripSegmentInertialDataWithOptions:(id)a3 handler:(id)a4;
-- (void)addTripSegmentInertialData:(id)a3 handler:(id)a4;
-- (void)fetchEnumerableObjectsWithOptions:(id)a3 offset:(unint64_t)a4 handler:(id)a5;
-- (void)fetchTripSegmentInertialDataWithOptions:(id)a3 handler:(id)a4;
-- (void)inertialDataManager:(id)a3 didUpdateInertialData:(id)a4;
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5;
+- (RTTripSegmentInertialDataManager)initWithInertialDataStore:(id)store routineLocationManager:(id)manager;
+- (void)_addTripSegmentInertialData:(id)data handler:(id)handler;
+- (void)_fetchTripSegmentInertialDataWithOptions:(id)options handler:(id)handler;
+- (void)addTripSegmentInertialData:(id)data handler:(id)handler;
+- (void)fetchEnumerableObjectsWithOptions:(id)options offset:(unint64_t)offset handler:(id)handler;
+- (void)fetchTripSegmentInertialDataWithOptions:(id)options handler:(id)handler;
+- (void)inertialDataManager:(id)manager didUpdateInertialData:(id)data;
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion;
 @end
 
 @implementation RTTripSegmentInertialDataManager
 
-- (RTTripSegmentInertialDataManager)initWithInertialDataStore:(id)a3 routineLocationManager:(id)a4
+- (RTTripSegmentInertialDataManager)initWithInertialDataStore:(id)store routineLocationManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  storeCopy = store;
+  managerCopy = manager;
+  v9 = managerCopy;
+  if (!storeCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v12 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -35,7 +35,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!managerCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -54,22 +54,22 @@ LABEL_12:
   p_isa = &v10->super.super.super.isa;
   if (v10)
   {
-    objc_storeStrong(&v10->_inertialDataStore, a3);
-    objc_storeStrong(p_isa + 4, a4);
+    objc_storeStrong(&v10->_inertialDataStore, store);
+    objc_storeStrong(p_isa + 4, manager);
     [p_isa[4] setInertialDelegate:p_isa];
   }
 
   self = p_isa;
-  v12 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)_fetchTripSegmentInertialDataWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchTripSegmentInertialDataWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -80,19 +80,19 @@ LABEL_10:
     }
   }
 
-  v9 = [(RTTripSegmentInertialDataManager *)self inertialDataStore];
-  [v9 fetchStoredTripSegmentInertialDataWithOptions:v6 handler:v7];
+  inertialDataStore = [(RTTripSegmentInertialDataManager *)self inertialDataStore];
+  [inertialDataStore fetchStoredTripSegmentInertialDataWithOptions:optionsCopy handler:handlerCopy];
 }
 
-- (void)fetchTripSegmentInertialDataWithOptions:(id)a3 handler:(id)a4
+- (void)fetchTripSegmentInertialDataWithOptions:(id)options handler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  optionsCopy = options;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (optionsCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
@@ -125,34 +125,34 @@ LABEL_7:
   }
 
 LABEL_10:
-  v11 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__RTTripSegmentInertialDataManager_fetchTripSegmentInertialDataWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v15 = v6;
+  v15 = optionsCopy;
   v16 = v8;
   v12 = v8;
-  v13 = v6;
-  dispatch_async(v11, block);
+  v13 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_addTripSegmentInertialData:(id)a3 handler:(id)a4
+- (void)_addTripSegmentInertialData:(id)data handler:(id)handler
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 count])
+  dataCopy = data;
+  handlerCopy = handler;
+  if ([dataCopy count])
   {
-    v9 = [(RTTripSegmentInertialDataManager *)self inertialDataStore];
+    inertialDataStore = [(RTTripSegmentInertialDataManager *)self inertialDataStore];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __72__RTTripSegmentInertialDataManager__addTripSegmentInertialData_handler___block_invoke;
     v14[3] = &unk_2788C4780;
     v16 = a2;
-    v15 = v8;
-    [v9 storeWritableObjects:v7 handler:v14];
+    v15 = handlerCopy;
+    [inertialDataStore storeWritableObjects:dataCopy handler:v14];
 
     v10 = v15;
 LABEL_5:
@@ -160,7 +160,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v8)
+  if (handlerCopy)
   {
     v11 = MEMORY[0x277CCA9B8];
     v12 = *MEMORY[0x277D01448];
@@ -168,7 +168,7 @@ LABEL_5:
     v18[0] = @"requires valid locations.";
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v13 = [v11 errorWithDomain:v12 code:7 userInfo:v10];
-    (*(v8 + 2))(v8, v13);
+    (*(handlerCopy + 2))(handlerCopy, v13);
 
     goto LABEL_5;
   }
@@ -201,15 +201,15 @@ void __72__RTTripSegmentInertialDataManager__addTripSegmentInertialData_handler_
   }
 }
 
-- (void)addTripSegmentInertialData:(id)a3 handler:(id)a4
+- (void)addTripSegmentInertialData:(id)data handler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  dataCopy = data;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (dataCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
@@ -242,17 +242,17 @@ LABEL_7:
   }
 
 LABEL_10:
-  v11 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__RTTripSegmentInertialDataManager_addTripSegmentInertialData_handler___block_invoke;
   block[3] = &unk_2788C4500;
-  v15 = v6;
-  v16 = self;
+  v15 = dataCopy;
+  selfCopy = self;
   v17 = v8;
   v12 = v8;
-  v13 = v6;
-  dispatch_async(v11, block);
+  v13 = dataCopy;
+  dispatch_async(queue, block);
 }
 
 void __71__RTTripSegmentInertialDataManager_addTripSegmentInertialData_handler___block_invoke(uint64_t a1)
@@ -333,16 +333,16 @@ void __71__RTTripSegmentInertialDataManager_addTripSegmentInertialData_handler__
   }
 }
 
-- (void)inertialDataManager:(id)a3 didUpdateInertialData:(id)a4
+- (void)inertialDataManager:(id)manager didUpdateInertialData:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __78__RTTripSegmentInertialDataManager_inertialDataManager_didUpdateInertialData___block_invoke;
   v8[3] = &unk_2788C4D10;
-  v9 = v6;
+  v9 = dataCopy;
   v10 = a2;
-  v7 = v6;
+  v7 = dataCopy;
   [(RTTripSegmentInertialDataManager *)self addTripSegmentInertialData:v7 handler:v8];
 }
 
@@ -368,23 +368,23 @@ void __78__RTTripSegmentInertialDataManager_inertialDataManager_didUpdateInertia
   }
 }
 
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RTNotifier *)self queue];
+  dateCopy = date;
+  completionCopy = completion;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__RTTripSegmentInertialDataManager_performPurgeOfType_referenceDate_completion___block_invoke;
   block[3] = &unk_2788C47A8;
-  v17 = v10;
-  v18 = a3;
-  v15 = v9;
-  v16 = self;
+  v17 = completionCopy;
+  typeCopy = type;
+  v15 = dateCopy;
+  selfCopy = self;
   v19 = a2;
-  v12 = v10;
-  v13 = v9;
-  dispatch_async(v11, block);
+  v12 = completionCopy;
+  v13 = dateCopy;
+  dispatch_async(queue, block);
 }
 
 void __80__RTTripSegmentInertialDataManager_performPurgeOfType_referenceDate_completion___block_invoke(uint64_t a1)
@@ -446,22 +446,22 @@ void __80__RTTripSegmentInertialDataManager_performPurgeOfType_referenceDate_com
   return v2;
 }
 
-- (void)fetchEnumerableObjectsWithOptions:(id)a3 offset:(unint64_t)a4 handler:(id)a5
+- (void)fetchEnumerableObjectsWithOptions:(id)options offset:(unint64_t)offset handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v10 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __85__RTTripSegmentInertialDataManager_fetchEnumerableObjectsWithOptions_offset_handler___block_invoke;
     v12[3] = &unk_2788C6940;
-    v13 = v8;
-    v14 = self;
-    v15 = v9;
-    v16 = a4;
-    dispatch_async(v10, v12);
+    v13 = optionsCopy;
+    selfCopy = self;
+    v15 = handlerCopy;
+    offsetCopy = offset;
+    dispatch_async(queue, v12);
 
     v11 = v13;
   }

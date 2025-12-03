@@ -1,59 +1,59 @@
 @interface TIKeyboardInputManager_si
-- (unsigned)composedCharacterWithInputCharacter:(unsigned __int16)a3;
-- (void)deleteFromInputWithContext:(id)a3;
-- (void)syncToKeyboardState:(id)a3 from:(id)a4 afterContextChange:(BOOL)a5;
+- (unsigned)composedCharacterWithInputCharacter:(unsigned __int16)character;
+- (void)deleteFromInputWithContext:(id)context;
+- (void)syncToKeyboardState:(id)state from:(id)from afterContextChange:(BOOL)change;
 @end
 
 @implementation TIKeyboardInputManager_si
 
-- (void)syncToKeyboardState:(id)a3 from:(id)a4 afterContextChange:(BOOL)a5
+- (void)syncToKeyboardState:(id)state from:(id)from afterContextChange:(BOOL)change
 {
-  v5 = a5;
+  changeCopy = change;
   v7.receiver = self;
   v7.super_class = TIKeyboardInputManager_si;
-  [(TIKeyboardInputManager_si *)&v7 syncToKeyboardState:a3 from:a4 afterContextChange:?];
-  if (v5)
+  [(TIKeyboardInputManager_si *)&v7 syncToKeyboardState:state from:from afterContextChange:?];
+  if (changeCopy)
   {
     [(TIKeyboardInputManager_si *)self setLastTypedChar:0];
   }
 }
 
-- (unsigned)composedCharacterWithInputCharacter:(unsigned __int16)a3
+- (unsigned)composedCharacterWithInputCharacter:(unsigned __int16)character
 {
-  v3 = a3;
-  v4 = [(TIKeyboardInputManager_si *)self lastTypedChar];
-  if (!v3 || !v4)
+  characterCopy = character;
+  lastTypedChar = [(TIKeyboardInputManager_si *)self lastTypedChar];
+  if (!characterCopy || !lastTypedChar)
   {
     return 0;
   }
 
-  if (v4 <= 3472)
+  if (lastTypedChar <= 3472)
   {
-    if (v4 > 3468)
+    if (lastTypedChar > 3468)
     {
-      if (v4 == 3469)
+      if (lastTypedChar == 3469)
       {
-        if (v3 == 3544)
+        if (characterCopy == 3544)
         {
           return 3470;
         }
       }
 
-      else if (v4 == 3471 && v3 == 3551)
+      else if (lastTypedChar == 3471 && characterCopy == 3551)
       {
         return 3472;
       }
     }
 
-    else if (v4 == 3461)
+    else if (lastTypedChar == 3461)
     {
-      if ((v3 - 3535) < 3)
+      if ((characterCopy - 3535) < 3)
       {
-        return v3 - 73;
+        return characterCopy - 73;
       }
     }
 
-    else if (v4 == 3467 && v3 == 3551)
+    else if (lastTypedChar == 3467 && characterCopy == 3551)
     {
       return 3468;
     }
@@ -61,26 +61,26 @@
     return 0;
   }
 
-  if (v4 > 3543)
+  if (lastTypedChar > 3543)
   {
-    if (v4 == 3544)
+    if (lastTypedChar == 3544)
     {
-      if (v3 == 3544)
+      if (characterCopy == 3544)
       {
         return 3570;
       }
     }
 
-    else if (v4 == 3545)
+    else if (lastTypedChar == 3545)
     {
-      if (v3 <= 3534)
+      if (characterCopy <= 3534)
       {
-        if (v3 == 3473)
+        if (characterCopy == 3473)
         {
           return 3475;
         }
 
-        if (v3 == 3530)
+        if (characterCopy == 3530)
         {
           return 3546;
         }
@@ -88,7 +88,7 @@
 
       else
       {
-        switch(v3)
+        switch(characterCopy)
         {
           case 3551:
             return 3550;
@@ -100,7 +100,7 @@
       }
     }
 
-    else if (v4 == 3548 && v3 == 3530)
+    else if (lastTypedChar == 3548 && characterCopy == 3530)
     {
       return 3549;
     }
@@ -108,9 +108,9 @@
     return 0;
   }
 
-  if (v4 == 3473)
+  if (lastTypedChar == 3473)
   {
-    if (v3 == 3530)
+    if (characterCopy == 3530)
     {
       return 3474;
     }
@@ -118,12 +118,12 @@
     return 0;
   }
 
-  if (v4 != 3476)
+  if (lastTypedChar != 3476)
   {
     return 0;
   }
 
-  if (v3 == 3551)
+  if (characterCopy == 3551)
   {
     v5 = 3478;
   }
@@ -133,7 +133,7 @@
     v5 = 0;
   }
 
-  if (v3 == 3530)
+  if (characterCopy == 3530)
   {
     return 3477;
   }
@@ -141,11 +141,11 @@
   return v5;
 }
 
-- (void)deleteFromInputWithContext:(id)a3
+- (void)deleteFromInputWithContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = TIKeyboardInputManager_si;
-  [(TIKeyboardInputManager_si *)&v4 deleteFromInputWithContext:a3];
+  [(TIKeyboardInputManager_si *)&v4 deleteFromInputWithContext:context];
   [(TIKeyboardInputManager_si *)self setLastTypedChar:0];
 }
 

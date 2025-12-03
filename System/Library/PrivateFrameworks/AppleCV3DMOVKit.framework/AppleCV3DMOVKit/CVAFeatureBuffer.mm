@@ -1,16 +1,16 @@
 @interface CVAFeatureBuffer
 + (id)classes;
-+ (id)streamName:(id)a3;
-+ (id)withData:(id)a3;
-- (CVAFeatureBuffer)initWithCoder:(id)a3;
-- (CVAFeatureBuffer)initWithPixelBufferRef:(__CVBuffer *)a3 timestamp:(double)a4 streamID:(id)a5 reduce:(BOOL)a6 compress:(BOOL)a7;
-- (__CVBuffer)getPixelBuffer:(BOOL)a3;
++ (id)streamName:(id)name;
++ (id)withData:(id)data;
+- (CVAFeatureBuffer)initWithCoder:(id)coder;
+- (CVAFeatureBuffer)initWithPixelBufferRef:(__CVBuffer *)ref timestamp:(double)timestamp streamID:(id)d reduce:(BOOL)reduce compress:(BOOL)compress;
+- (__CVBuffer)getPixelBuffer:(BOOL)buffer;
 - (__CVBuffer)getPixelBufferCopy;
 - (id)debugDescription;
 - (id)dictionary;
-- (id)reduceBuffer:(void *)a3;
+- (id)reduceBuffer:(void *)buffer;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CVAFeatureBuffer
@@ -31,26 +31,26 @@
   return v3;
 }
 
-- (id)reduceBuffer:(void *)a3
+- (id)reduceBuffer:(void *)buffer
 {
-  v3 = *(a3 + 13);
+  v3 = *(buffer + 13);
   if (v3 <= 0xF4240)
   {
-    v6 = *(a3 + 10);
-    v7 = *(a3 + 12);
+    v6 = *(buffer + 10);
+    v7 = *(buffer + 12);
     v9 = [MEMORY[0x277CBEB28] dataWithLength:(v6 + v3)];
-    v10 = [v9 mutableBytes];
-    v11 = *a3;
-    v12 = *(a3 + 6);
-    v13 = *(a3 + 2);
-    *(v10 + 16) = *(a3 + 1);
-    *(v10 + 32) = v13;
-    *(v10 + 48) = v12;
-    *v10 = v11;
-    *(v10 + 40) = v6;
-    *(v10 + 48) = v6;
-    *(v10 + 52) = v3;
-    memcpy((v10 + v6), a3 + v7, v3);
+    mutableBytes = [v9 mutableBytes];
+    v11 = *buffer;
+    v12 = *(buffer + 6);
+    v13 = *(buffer + 2);
+    *(mutableBytes + 16) = *(buffer + 1);
+    *(mutableBytes + 32) = v13;
+    *(mutableBytes + 48) = v12;
+    *mutableBytes = v11;
+    *(mutableBytes + 40) = v6;
+    *(mutableBytes + 48) = v6;
+    *(mutableBytes + 52) = v3;
+    memcpy((mutableBytes + v6), buffer + v7, v3);
     v4 = v9;
   }
 
@@ -62,20 +62,20 @@
   return v4;
 }
 
-- (CVAFeatureBuffer)initWithPixelBufferRef:(__CVBuffer *)a3 timestamp:(double)a4 streamID:(id)a5 reduce:(BOOL)a6 compress:(BOOL)a7
+- (CVAFeatureBuffer)initWithPixelBufferRef:(__CVBuffer *)ref timestamp:(double)timestamp streamID:(id)d reduce:(BOOL)reduce compress:(BOOL)compress
 {
-  v13 = a5;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = CVAFeatureBuffer;
   v14 = [(CVAFeatureBuffer *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    v14->_pixelBufferRef = a3;
-    v14->_timestamp = a4;
-    objc_storeStrong(&v14->_sourceStreamID, a5);
-    v15->_reduce = a6;
-    v15->_compressed = a7;
+    v14->_pixelBufferRef = ref;
+    v14->_timestamp = timestamp;
+    objc_storeStrong(&v14->_sourceStreamID, d);
+    v15->_reduce = reduce;
+    v15->_compressed = compress;
     CVPixelBufferRetain(v15->_pixelBufferRef);
     v16 = CVBufferCopyAttachments(v15->_pixelBufferRef, kCVAttachmentMode_ShouldPropagate);
     attachments = v15->_attachments;
@@ -85,11 +85,11 @@
   return v15;
 }
 
-+ (id)withData:(id)a3
++ (id)withData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[CVAFeatureBuffer classes];
-  v5 = [CVAMetadataWrapper decodeNSCoderObject:v3 classes:v4];
+  v5 = [CVAMetadataWrapper decodeNSCoderObject:dataCopy classes:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -107,11 +107,11 @@
   return v6;
 }
 
-- (__CVBuffer)getPixelBuffer:(BOOL)a3
+- (__CVBuffer)getPixelBuffer:(BOOL)buffer
 {
   buffer = 0;
   width = self->_width;
-  if (a3)
+  if (buffer)
   {
     self->_original_width = width;
     width = self->_bytesPerRow;
@@ -175,36 +175,36 @@
   return result;
 }
 
-- (CVAFeatureBuffer)initWithCoder:(id)a3
+- (CVAFeatureBuffer)initWithCoder:(id)coder
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = CVAFeatureBuffer;
   v5 = [(CVAFeatureBuffer *)&v24 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v5->_width = [v4 decodeIntegerForKey:@"w"];
-    v5->_height = [v4 decodeIntegerForKey:@"h"];
-    v5->_bytesPerRow = [v4 decodeIntegerForKey:@"bpr"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"d"];
+    v5->_width = [coderCopy decodeIntegerForKey:@"w"];
+    v5->_height = [coderCopy decodeIntegerForKey:@"h"];
+    v5->_bytesPerRow = [coderCopy decodeIntegerForKey:@"bpr"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"d"];
     data = v5->_data;
     v5->_data = v7;
 
-    v9 = [v4 decodeObjectForKey:@"a"];
+    v9 = [coderCopy decodeObjectForKey:@"a"];
     attachments = v5->_attachments;
     v5->_attachments = v9;
 
-    [v4 decodeDoubleForKey:@"t"];
+    [coderCopy decodeDoubleForKey:@"t"];
     v5->_timestamp = v11;
-    v5->_syncTimestamp = [v4 decodeInt64ForKey:@"sct"];
-    v5->_frameId = [v4 decodeInt64ForKey:@"fi"];
-    v12 = [v4 decodeObjectForKey:@"st"];
+    v5->_syncTimestamp = [coderCopy decodeInt64ForKey:@"sct"];
+    v5->_frameId = [coderCopy decodeInt64ForKey:@"fi"];
+    v12 = [coderCopy decodeObjectForKey:@"st"];
     sourceStreamID = v5->_sourceStreamID;
     v5->_sourceStreamID = v12;
 
-    v14 = [v4 decodeBoolForKey:@"c"];
+    v14 = [coderCopy decodeBoolForKey:@"c"];
     v5->_compressed = v14;
     if (v14)
     {
@@ -239,10 +239,10 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   CVPixelBufferLockBaseAddress(self->_pixelBufferRef, 1uLL);
   BaseAddress = CVPixelBufferGetBaseAddress(self->_pixelBufferRef);
@@ -286,16 +286,16 @@ LABEL_7:
       objc_storeStrong(&self->_data, v7);
     }
 
-    [v4 encodeInteger:self->_width forKey:@"w"];
-    [v4 encodeInteger:self->_height forKey:@"h"];
-    [v4 encodeInteger:self->_bytesPerRow forKey:@"bpr"];
-    [v4 encodeObject:self->_data forKey:@"d"];
-    [v4 encodeDouble:@"t" forKey:self->_timestamp];
-    [v4 encodeInt64:self->_syncTimestamp forKey:@"sct"];
-    [v4 encodeObject:self->_sourceStreamID forKey:@"st"];
-    [v4 encodeBool:self->_compressed forKey:@"c"];
-    [v4 encodeInt64:self->_frameId forKey:@"fi"];
-    [v4 encodeObject:self->_attachments forKey:@"a"];
+    [coderCopy encodeInteger:self->_width forKey:@"w"];
+    [coderCopy encodeInteger:self->_height forKey:@"h"];
+    [coderCopy encodeInteger:self->_bytesPerRow forKey:@"bpr"];
+    [coderCopy encodeObject:self->_data forKey:@"d"];
+    [coderCopy encodeDouble:@"t" forKey:self->_timestamp];
+    [coderCopy encodeInt64:self->_syncTimestamp forKey:@"sct"];
+    [coderCopy encodeObject:self->_sourceStreamID forKey:@"st"];
+    [coderCopy encodeBool:self->_compressed forKey:@"c"];
+    [coderCopy encodeInt64:self->_frameId forKey:@"fi"];
+    [coderCopy encodeObject:self->_attachments forKey:@"a"];
     goto LABEL_15;
   }
 
@@ -338,19 +338,19 @@ LABEL_15:
   [(CVAFeatureBuffer *)&v4 dealloc];
 }
 
-+ (id)streamName:(id)a3
++ (id)streamName:(id)name
 {
-  if (a3)
+  if (name)
   {
-    v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.reality.kind.data.%@.desgen", a3];
+    name = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.reality.kind.data.%@.desgen", name];
   }
 
   else
   {
-    v3 = @"CVAFeatureBuffer";
+    name = @"CVAFeatureBuffer";
   }
 
-  return v3;
+  return name;
 }
 
 - (id)dictionary
@@ -417,8 +417,8 @@ LABEL_15:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CVAFeatureBuffer *)self dictionary];
-  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, v5];
+  dictionary = [(CVAFeatureBuffer *)self dictionary];
+  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, dictionary];
 
   return v6;
 }

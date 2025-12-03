@@ -1,8 +1,8 @@
 @interface _EARLanguageDetectorRequestContext
-+ (id)contextFromLDContext:(const void *)a3;
-+ (id)contextFromLDContext:(void *)a1;
++ (id)contextFromLDContext:(const void *)context;
++ (id)contextFromLDContext:(void *)context;
 - (LDContext)LDContext;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)LDContext;
 @end
 
@@ -13,8 +13,8 @@
   v2 = v1;
   v59 = *MEMORY[0x1E69E9840];
   quasar::LDContext::LDContext(retstr);
-  v4 = [v2 languagePriors];
-  EARHelpers::DictionaryToMap<quasar::language_detector::Locale,double,[_EARLanguageDetectorRequestContext LDContext]::$_0,[_EARLanguageDetectorRequestContext LDContext]::$_1>(v4, &v55);
+  languagePriors = [v2 languagePriors];
+  EARHelpers::DictionaryToMap<quasar::language_detector::Locale,double,[_EARLanguageDetectorRequestContext LDContext]::$_0,[_EARLanguageDetectorRequestContext LDContext]::$_1>(languagePriors, &v55);
   p_var1 = &retstr->var0.var0.var1;
   std::__tree<std::__value_type<std::string,std::string>,std::__map_value_compare<std::string,std::__value_type<std::string,std::string>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,std::string>>>::destroy(retstr, retstr->var0.var0.var1.__left_);
   v6 = *(&v55 + 1);
@@ -38,9 +38,9 @@
 
   std::__tree<std::__value_type<std::string,std::string>,std::__map_value_compare<std::string,std::__value_type<std::string,std::string>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,std::string>>>::destroy(&v55, v6);
 
-  v8 = [v2 dictationLanguages];
-  v9 = v8;
-  if (v8)
+  dictationLanguages = [v2 dictationLanguages];
+  v9 = dictationLanguages;
+  if (dictationLanguages)
   {
     v43.__end_ = 0;
     v43.__end_cap_.__value_ = 0;
@@ -49,7 +49,7 @@
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v10 = v8;
+    v10 = dictationLanguages;
     v11 = [v10 countByEnumeratingWithState:v48 objects:&v55 count:16];
     if (v11)
     {
@@ -105,11 +105,11 @@
     std::__tree<std::__value_type<std::string,std::string>,std::__map_value_compare<std::string,std::__value_type<std::string,std::string>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,std::string>>>::destroy(&v43, v43.__end_->first.__r_.__value_.__r.__words);
   }
 
-  v16 = [v2 currentDictationLanguage];
-  v17 = v16;
-  if (v16)
+  currentDictationLanguage = [v2 currentDictationLanguage];
+  v17 = currentDictationLanguage;
+  if (currentDictationLanguage)
   {
-    [v16 ear_toString];
+    [currentDictationLanguage ear_toString];
     quasar::language_detector::Locale::Locale(&v55, v48);
     if (SBYTE7(v49) < 0)
     {
@@ -128,18 +128,18 @@
     }
   }
 
-  v18 = [v2 wasLanguageToggled];
-  v19 = v18;
-  if (v18)
+  wasLanguageToggled = [v2 wasLanguageToggled];
+  v19 = wasLanguageToggled;
+  if (wasLanguageToggled)
   {
-    LOWORD(retstr[1].var0.var0.var1.__left_) = [v18 BOOLValue] | 0x100;
+    LOWORD(retstr[1].var0.var0.var1.__left_) = [wasLanguageToggled BOOLValue] | 0x100;
   }
 
-  v20 = [v2 multilingualKeyboardLanguages];
-  v21 = v20;
-  if (v20)
+  multilingualKeyboardLanguages = [v2 multilingualKeyboardLanguages];
+  v21 = multilingualKeyboardLanguages;
+  if (multilingualKeyboardLanguages)
   {
-    v22 = v20;
+    v22 = multilingualKeyboardLanguages;
     memset(&v43, 0, sizeof(v43));
     *v48 = 0u;
     v49 = 0u;
@@ -222,29 +222,29 @@
     std::vector<std::pair<std::string,std::string>>::__destroy_vector::operator()[abi:ne200100](&v55);
   }
 
-  v32 = [v2 keyboardConvoLanguagePriors];
-  v33 = v32;
-  if (v32)
+  keyboardConvoLanguagePriors = [v2 keyboardConvoLanguagePriors];
+  v33 = keyboardConvoLanguagePriors;
+  if (keyboardConvoLanguagePriors)
   {
-    EARHelpers::DictionaryToMap<quasar::language_detector::Locale,double,[_EARLanguageDetectorRequestContext LDContext]::$_0,[_EARLanguageDetectorRequestContext LDContext]::$_1>(v32, &v55);
+    EARHelpers::DictionaryToMap<quasar::language_detector::Locale,double,[_EARLanguageDetectorRequestContext LDContext]::$_0,[_EARLanguageDetectorRequestContext LDContext]::$_1>(keyboardConvoLanguagePriors, &v55);
     std::optional<std::set<quasar::language_detector::Locale>>::operator=[abi:ne200100]<std::set<quasar::language_detector::Locale>,void>(&retstr[1].var1.var1, &v55);
     std::__tree<std::__value_type<std::string,std::string>,std::__map_value_compare<std::string,std::__value_type<std::string,std::string>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,std::string>>>::destroy(&v55, *(&v55 + 1));
   }
 
-  v34 = [v2 keyboardGlobalLanguagePriors];
-  v35 = v34;
-  if (v34)
+  keyboardGlobalLanguagePriors = [v2 keyboardGlobalLanguagePriors];
+  v35 = keyboardGlobalLanguagePriors;
+  if (keyboardGlobalLanguagePriors)
   {
-    EARHelpers::DictionaryToMap<quasar::language_detector::Locale,double,[_EARLanguageDetectorRequestContext LDContext]::$_0,[_EARLanguageDetectorRequestContext LDContext]::$_1>(v34, &v55);
+    EARHelpers::DictionaryToMap<quasar::language_detector::Locale,double,[_EARLanguageDetectorRequestContext LDContext]::$_0,[_EARLanguageDetectorRequestContext LDContext]::$_1>(keyboardGlobalLanguagePriors, &v55);
     std::optional<std::set<quasar::language_detector::Locale>>::operator=[abi:ne200100]<std::set<quasar::language_detector::Locale>,void>(&retstr[1].var2.var1, &v55);
     std::__tree<std::__value_type<std::string,std::string>,std::__map_value_compare<std::string,std::__value_type<std::string,std::string>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,std::string>>>::destroy(&v55, *(&v55 + 1));
   }
 
-  v36 = [v2 previousMessageLanguage];
-  v37 = v36;
-  if (v36)
+  previousMessageLanguage = [v2 previousMessageLanguage];
+  v37 = previousMessageLanguage;
+  if (previousMessageLanguage)
   {
-    [v36 ear_toString];
+    [previousMessageLanguage ear_toString];
     quasar::language_detector::Locale::Locale(&v55, v48);
     if (SBYTE7(v49) < 0)
     {
@@ -263,11 +263,11 @@
     }
   }
 
-  v38 = [v2 globalLastKeyboardUsed];
-  v39 = v38;
-  if (v38)
+  globalLastKeyboardUsed = [v2 globalLastKeyboardUsed];
+  v39 = globalLastKeyboardUsed;
+  if (globalLastKeyboardUsed)
   {
-    [v38 ear_toString];
+    [globalLastKeyboardUsed ear_toString];
     quasar::language_detector::Locale::Locale(&v55, v48);
     if (SBYTE7(v49) < 0)
     {
@@ -286,11 +286,11 @@
     }
   }
 
-  v40 = [v2 dictationLanguagePriors];
-  v41 = v40;
-  if (v40)
+  dictationLanguagePriors = [v2 dictationLanguagePriors];
+  v41 = dictationLanguagePriors;
+  if (dictationLanguagePriors)
   {
-    EARHelpers::DictionaryToMap<quasar::language_detector::Locale,double,[_EARLanguageDetectorRequestContext LDContext]::$_0,[_EARLanguageDetectorRequestContext LDContext]::$_1>(v40, &v55);
+    EARHelpers::DictionaryToMap<quasar::language_detector::Locale,double,[_EARLanguageDetectorRequestContext LDContext]::$_0,[_EARLanguageDetectorRequestContext LDContext]::$_1>(dictationLanguagePriors, &v55);
     std::optional<std::set<quasar::language_detector::Locale>>::operator=[abi:ne200100]<std::set<quasar::language_detector::Locale>,void>(&retstr[3].var0.var0.var2, &v55);
     std::__tree<std::__value_type<std::string,std::string>,std::__map_value_compare<std::string,std::__value_type<std::string,std::string>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,std::string>>>::destroy(&v55, *(&v55 + 1));
   }
@@ -300,7 +300,7 @@
 
 - (void)LDContext
 {
-  v3 = a1;
+  selfCopy = self;
   v5 = 0;
   v6 = &v5;
   v7 = 0x4812000000;
@@ -315,19 +315,19 @@
   v4[2] = ___ZN10EARHelpers15DictionaryToMapIN6quasar17language_detector6LocaleEdZ47___EARLanguageDetectorRequestContext_LDContext_E3__0Z47___EARLanguageDetectorRequestContext_LDContext_E3__1EENSt3__13mapIT_T0_NS6_4lessIS8_EENS6_9allocatorINS6_4pairIKS8_S9_EEEEEEP12NSDictionaryT1_T2__block_invoke;
   v4[3] = &unk_1E7C1A308;
   v4[4] = &v5;
-  [v3 enumerateKeysAndObjectsUsingBlock:v4];
+  [selfCopy enumerateKeysAndObjectsUsingBlock:v4];
   std::map<quasar::language_detector::Locale,double>::map[abi:ne200100](a2, v6 + 6);
   _Block_object_dispose(&v5, 8);
   std::__tree<std::__value_type<std::string,std::string>,std::__map_value_compare<std::string,std::__value_type<std::string,std::string>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,std::string>>>::destroy(&v11, v12[0]);
 }
 
-+ (id)contextFromLDContext:(const void *)a3
++ (id)contextFromLDContext:(const void *)context
 {
   v4 = objc_alloc_init(_EARLanguageDetectorRequestContext);
-  v5 = EARHelpers::MapToDictionary<quasar::language_detector::Locale,double,+[_EARLanguageDetectorRequestContext contextFromLDContext:]::$_2,+[_EARLanguageDetectorRequestContext contextFromLDContext:]::$_3>(a3);
+  v5 = EARHelpers::MapToDictionary<quasar::language_detector::Locale,double,+[_EARLanguageDetectorRequestContext contextFromLDContext:]::$_2,+[_EARLanguageDetectorRequestContext contextFromLDContext:]::$_3>(context);
   [(_EARLanguageDetectorRequestContext *)v4 setLanguagePriors:v5];
 
-  std::__optional_copy_base<std::set<quasar::language_detector::Locale>,false>::__optional_copy_base[abi:ne200100](&v46, a3 + 24);
+  std::__optional_copy_base<std::set<quasar::language_detector::Locale>,false>::__optional_copy_base[abi:ne200100](&v46, context + 24);
   if (v47.__r_.__value_.__s.__data_[0] == 1)
   {
     v6 = [MEMORY[0x1E695DFA8] setWithCapacity:v46.__r_.__value_.__r.__words[2]];
@@ -405,7 +405,7 @@
     }
   }
 
-  std::__optional_copy_base<quasar::language_detector::Locale,false>::__optional_copy_base[abi:ne200100](&v46, (a3 + 56));
+  std::__optional_copy_base<quasar::language_detector::Locale,false>::__optional_copy_base[abi:ne200100](&v46, (context + 56));
   if (v48 == 1)
   {
     v16 = MEMORY[0x1E696AEC0];
@@ -452,17 +452,17 @@
     }
   }
 
-  v20 = *(a3 + 56);
+  v20 = *(context + 56);
   if ((v20 & 0x100) != 0)
   {
     v21 = [MEMORY[0x1E696AD98] numberWithBool:v20 & 1];
     [(_EARLanguageDetectorRequestContext *)v4 setWasLanguageToggled:v21];
   }
 
-  std::__optional_copy_base<std::vector<quasar::language_detector::Locale>,false>::__optional_copy_base[abi:ne200100](&__p, a3 + 120);
+  std::__optional_copy_base<std::vector<quasar::language_detector::Locale>,false>::__optional_copy_base[abi:ne200100](&__p, context + 120);
   if (v45 == 1)
   {
-    v22 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v24 = __p.__r_.__value_.__l.__size_;
     for (i = __p.__r_.__value_.__r.__words[0]; i != v24; i += 48)
     {
@@ -518,7 +518,7 @@
         operator delete(v49.__r_.__value_.__l.__data_);
       }
 
-      [v22 addObject:v30];
+      [array addObject:v30];
 
       if (SHIBYTE(v47.__r_.__value_.__r.__words[2]) < 0)
       {
@@ -531,7 +531,7 @@
       }
     }
 
-    v31 = [v22 copy];
+    v31 = [array copy];
 
     [(_EARLanguageDetectorRequestContext *)v4 setMultilingualKeyboardLanguages:v31];
     if (v45)
@@ -541,7 +541,7 @@
     }
   }
 
-  std::__optional_copy_base<std::map<quasar::language_detector::Locale,double>,false>::__optional_copy_base[abi:ne200100](&v46, a3 + 152);
+  std::__optional_copy_base<std::map<quasar::language_detector::Locale,double>,false>::__optional_copy_base[abi:ne200100](&v46, context + 152);
   if (v47.__r_.__value_.__s.__data_[0] == 1)
   {
     v32 = EARHelpers::MapToDictionary<quasar::language_detector::Locale,double,+[_EARLanguageDetectorRequestContext contextFromLDContext:]::$_2,+[_EARLanguageDetectorRequestContext contextFromLDContext:]::$_3>(&v46);
@@ -553,7 +553,7 @@
     }
   }
 
-  std::__optional_copy_base<std::map<quasar::language_detector::Locale,double>,false>::__optional_copy_base[abi:ne200100](&v46, a3 + 184);
+  std::__optional_copy_base<std::map<quasar::language_detector::Locale,double>,false>::__optional_copy_base[abi:ne200100](&v46, context + 184);
   if (v47.__r_.__value_.__s.__data_[0] == 1)
   {
     v33 = EARHelpers::MapToDictionary<quasar::language_detector::Locale,double,+[_EARLanguageDetectorRequestContext contextFromLDContext:]::$_2,+[_EARLanguageDetectorRequestContext contextFromLDContext:]::$_3>(&v46);
@@ -565,7 +565,7 @@
     }
   }
 
-  std::__optional_copy_base<quasar::language_detector::Locale,false>::__optional_copy_base[abi:ne200100](&v46, (a3 + 216));
+  std::__optional_copy_base<quasar::language_detector::Locale,false>::__optional_copy_base[abi:ne200100](&v46, (context + 216));
   if (v48 == 1)
   {
     v34 = MEMORY[0x1E696AEC0];
@@ -612,7 +612,7 @@
     }
   }
 
-  std::__optional_copy_base<quasar::language_detector::Locale,false>::__optional_copy_base[abi:ne200100](&v46, a3 + 17);
+  std::__optional_copy_base<quasar::language_detector::Locale,false>::__optional_copy_base[abi:ne200100](&v46, context + 17);
   if (v48 == 1)
   {
     v38 = MEMORY[0x1E696AEC0];
@@ -659,7 +659,7 @@
     }
   }
 
-  std::__optional_copy_base<std::map<quasar::language_detector::Locale,double>,false>::__optional_copy_base[abi:ne200100](&v46, a3 + 328);
+  std::__optional_copy_base<std::map<quasar::language_detector::Locale,double>,false>::__optional_copy_base[abi:ne200100](&v46, context + 328);
   if (v47.__r_.__value_.__s.__data_[0] == 1)
   {
     v42 = EARHelpers::MapToDictionary<quasar::language_detector::Locale,double,+[_EARLanguageDetectorRequestContext contextFromLDContext:]::$_2,+[_EARLanguageDetectorRequestContext contextFromLDContext:]::$_3>(&v46);
@@ -674,11 +674,11 @@
   return v4;
 }
 
-+ (id)contextFromLDContext:(void *)a1
++ (id)contextFromLDContext:(void *)context
 {
   v2 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v5 = *a1;
-  v3 = (a1 + 1);
+  v5 = *context;
+  v3 = (context + 1);
   v4 = v5;
   if (v5 != v3)
   {
@@ -750,41 +750,41 @@
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(_EARLanguageDetectorRequestContext *)self languagePriors];
-  [v4 setLanguagePriors:v5];
+  languagePriors = [(_EARLanguageDetectorRequestContext *)self languagePriors];
+  [v4 setLanguagePriors:languagePriors];
 
-  v6 = [(_EARLanguageDetectorRequestContext *)self dictationLanguages];
-  [v4 setDictationLanguages:v6];
+  dictationLanguages = [(_EARLanguageDetectorRequestContext *)self dictationLanguages];
+  [v4 setDictationLanguages:dictationLanguages];
 
-  v7 = [(_EARLanguageDetectorRequestContext *)self currentDictationLanguage];
-  [v4 setCurrentDictationLanguage:v7];
+  currentDictationLanguage = [(_EARLanguageDetectorRequestContext *)self currentDictationLanguage];
+  [v4 setCurrentDictationLanguage:currentDictationLanguage];
 
-  v8 = [(_EARLanguageDetectorRequestContext *)self wasLanguageToggled];
-  [v4 setWasLanguageToggled:v8];
+  wasLanguageToggled = [(_EARLanguageDetectorRequestContext *)self wasLanguageToggled];
+  [v4 setWasLanguageToggled:wasLanguageToggled];
 
-  v9 = [(_EARLanguageDetectorRequestContext *)self multilingualKeyboardLanguages];
-  [v4 setMultilingualKeyboardLanguages:v9];
+  multilingualKeyboardLanguages = [(_EARLanguageDetectorRequestContext *)self multilingualKeyboardLanguages];
+  [v4 setMultilingualKeyboardLanguages:multilingualKeyboardLanguages];
 
-  v10 = [(_EARLanguageDetectorRequestContext *)self keyboardConvoLanguagePriors];
-  [v4 setKeyboardConvoLanguagePriors:v10];
+  keyboardConvoLanguagePriors = [(_EARLanguageDetectorRequestContext *)self keyboardConvoLanguagePriors];
+  [v4 setKeyboardConvoLanguagePriors:keyboardConvoLanguagePriors];
 
-  v11 = [(_EARLanguageDetectorRequestContext *)self keyboardGlobalLanguagePriors];
-  [v4 setKeyboardGlobalLanguagePriors:v11];
+  keyboardGlobalLanguagePriors = [(_EARLanguageDetectorRequestContext *)self keyboardGlobalLanguagePriors];
+  [v4 setKeyboardGlobalLanguagePriors:keyboardGlobalLanguagePriors];
 
-  v12 = [(_EARLanguageDetectorRequestContext *)self previousMessageLanguage];
-  [v4 setPreviousMessageLanguage:v12];
+  previousMessageLanguage = [(_EARLanguageDetectorRequestContext *)self previousMessageLanguage];
+  [v4 setPreviousMessageLanguage:previousMessageLanguage];
 
-  v13 = [(_EARLanguageDetectorRequestContext *)self globalLastKeyboardUsed];
-  [v4 setGlobalLastKeyboardUsed:v13];
+  globalLastKeyboardUsed = [(_EARLanguageDetectorRequestContext *)self globalLastKeyboardUsed];
+  [v4 setGlobalLastKeyboardUsed:globalLastKeyboardUsed];
 
-  v14 = [(_EARLanguageDetectorRequestContext *)self dictationLanguagePriors];
-  [v4 setDictationLanguagePriors:v14];
+  dictationLanguagePriors = [(_EARLanguageDetectorRequestContext *)self dictationLanguagePriors];
+  [v4 setDictationLanguagePriors:dictationLanguagePriors];
 
-  v15 = [(_EARLanguageDetectorRequestContext *)self recentMessages];
-  [v4 setRecentMessages:v15];
+  recentMessages = [(_EARLanguageDetectorRequestContext *)self recentMessages];
+  [v4 setRecentMessages:recentMessages];
 
   return v4;
 }

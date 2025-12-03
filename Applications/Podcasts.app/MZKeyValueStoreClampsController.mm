@@ -1,35 +1,35 @@
 @interface MZKeyValueStoreClampsController
 + (id)_classesForTransactionClampsValues;
 + (id)sharedClampsController;
-- (BOOL)_canScheduleTransactionBasedOfNetworkingBlocked:(id)a3 error:(id *)a4;
-- (BOOL)_canScheduleTransactionBasedOnBackOff:(id)a3 error:(id *)a4;
-- (BOOL)_canScheduleTransactionBasedOnDSIDCheck:(id)a3 error:(id *)a4;
-- (BOOL)_canScheduleTransactionBasedOnType:(id)a3 error:(id *)a4;
-- (BOOL)_canScheduleTransactionBasedOnUserCancelledSignIn:(id)a3 error:(id *)a4;
-- (BOOL)canScheduleTransaction:(id)a3 error:(id *)a4;
-- (BOOL)hasAuthenticatedTooRecentlyForTransaction:(id)a3 error:(id *)a4;
+- (BOOL)_canScheduleTransactionBasedOfNetworkingBlocked:(id)blocked error:(id *)error;
+- (BOOL)_canScheduleTransactionBasedOnBackOff:(id)off error:(id *)error;
+- (BOOL)_canScheduleTransactionBasedOnDSIDCheck:(id)check error:(id *)error;
+- (BOOL)_canScheduleTransactionBasedOnType:(id)type error:(id *)error;
+- (BOOL)_canScheduleTransactionBasedOnUserCancelledSignIn:(id)in error:(id *)error;
+- (BOOL)canScheduleTransaction:(id)transaction error:(id *)error;
+- (BOOL)hasAuthenticatedTooRecentlyForTransaction:(id)transaction error:(id *)error;
 - (BOOL)hasUserRecentlyAcceptedSync;
 - (BOOL)isNetworkingBlocked;
 - (MZKeyValueStoreClampsController)init;
-- (MZKeyValueStoreClampsController)initWithCoder:(id)a3;
+- (MZKeyValueStoreClampsController)initWithCoder:(id)coder;
 - (double)_rightNow;
-- (id)_keyForTransaction:(id)a3;
+- (id)_keyForTransaction:(id)transaction;
 - (id)description;
-- (void)accessTransactionClampsWithBlock:(id)a3;
-- (void)backOffForTimeInterval:(double)a3;
+- (void)accessTransactionClampsWithBlock:(id)block;
+- (void)backOffForTimeInterval:(double)interval;
 - (void)clearAuthenticationRequest;
 - (void)clearBackOff;
 - (void)clearDSIDCheckTimestamp;
-- (void)clearTimestampForTransaction:(id)a3;
+- (void)clearTimestampForTransaction:(id)transaction;
 - (void)clearUserAcceptedSyncTimestamp;
 - (void)clearUserCancelledSignIn;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)reset;
 - (void)saveToUserDefaults;
 - (void)setAuthenticationRequest;
 - (void)setDSIDCheckTimestamp;
 - (void)setNetworkingBlocked;
-- (void)setTimestampForTransaction:(id)a3;
+- (void)setTimestampForTransaction:(id)transaction;
 - (void)setUserAcceptedSyncTimestamp;
 - (void)setUserCancelledSignIn;
 @end
@@ -106,14 +106,14 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(MZKeyValueStoreClampsController *)self queue];
+  queue = [(MZKeyValueStoreClampsController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100044230;
   block[3] = &unk_1004D9068;
   block[4] = self;
   block[5] = &v7;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 
   if (*(v8 + 24) == 1)
   {
@@ -158,56 +158,56 @@
   [(MZKeyValueStoreClampsController *)self saveToUserDefaults];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   transactionClamps = self->_transactionClamps;
-  v6 = v4;
+  v6 = coderCopy;
   if (transactionClamps)
   {
-    [v4 encodeObject:transactionClamps forKey:@"MZTransactionClamps"];
-    v4 = v6;
+    [coderCopy encodeObject:transactionClamps forKey:@"MZTransactionClamps"];
+    coderCopy = v6;
   }
 
   if (fabs(self->_dsidCheckTimestamp) > 2.22044605e-16)
   {
     [v6 encodeDouble:@"MZDSIDCheckTimestamp" forKey:?];
-    v4 = v6;
+    coderCopy = v6;
   }
 
   if (fabs(self->_authenticationNeededTimestamp) > 2.22044605e-16)
   {
     [v6 encodeDouble:@"MZAuthenticationNeededTimestamp" forKey:?];
-    v4 = v6;
+    coderCopy = v6;
   }
 
   if (fabs(self->_userAcceptedSyncTimestamp) > 2.22044605e-16)
   {
     [v6 encodeDouble:@"MZUserAcceptedSyncTimestamp" forKey:?];
-    v4 = v6;
+    coderCopy = v6;
   }
 
   if (fabs(self->_networkingBlockedUntil) > 2.22044605e-16)
   {
     [v6 encodeDouble:@"MZNetworkingBlockedUntil" forKey:?];
-    v4 = v6;
+    coderCopy = v6;
   }
 
   if (fabs(self->_userCancelledSignInBackOffUntil) > 2.22044605e-16)
   {
     [v6 encodeDouble:@"MZUserCancelledSignInBackOffUntil" forKey:?];
-    v4 = v6;
+    coderCopy = v6;
   }
 }
 
-- (MZKeyValueStoreClampsController)initWithCoder:(id)a3
+- (MZKeyValueStoreClampsController)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MZKeyValueStoreClampsController *)self init];
   if (v5)
   {
-    v6 = [objc_opt_class() _classesForTransactionClampsValues];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"MZTransactionClamps"];
+    _classesForTransactionClampsValues = [objc_opt_class() _classesForTransactionClampsValues];
+    v7 = [coderCopy decodeObjectOfClasses:_classesForTransactionClampsValues forKey:@"MZTransactionClamps"];
     v8 = [v7 mutableCopy];
 
     if (v8)
@@ -220,15 +220,15 @@
       [(MZKeyValueStoreClampsController *)v5 accessTransactionClampsWithBlock:v15];
     }
 
-    [v4 decodeDoubleForKey:@"MZDSIDCheckTimestamp"];
+    [coderCopy decodeDoubleForKey:@"MZDSIDCheckTimestamp"];
     v5->_dsidCheckTimestamp = v9;
-    [v4 decodeDoubleForKey:@"MZAuthenticationNeededTimestamp"];
+    [coderCopy decodeDoubleForKey:@"MZAuthenticationNeededTimestamp"];
     v5->_authenticationNeededTimestamp = v10;
-    [v4 decodeDoubleForKey:@"MZUserAcceptedSyncTimestamp"];
+    [coderCopy decodeDoubleForKey:@"MZUserAcceptedSyncTimestamp"];
     v5->_userAcceptedSyncTimestamp = v11;
-    [v4 decodeDoubleForKey:@"MZNetworkingBlockedUntil"];
+    [coderCopy decodeDoubleForKey:@"MZNetworkingBlockedUntil"];
     v5->_networkingBlockedUntil = v12;
-    [v4 decodeDoubleForKey:@"MZUserCancelledSignInBackOffUntil"];
+    [coderCopy decodeDoubleForKey:@"MZUserCancelledSignInBackOffUntil"];
     v5->_userCancelledSignInBackOffUntil = v13;
   }
 
@@ -251,12 +251,12 @@
   return v12;
 }
 
-- (BOOL)canScheduleTransaction:(id)a3 error:(id *)a4
+- (BOOL)canScheduleTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
-  if ([(MZKeyValueStoreClampsController *)self _canScheduleTransactionBasedOfNetworkingBlocked:v6 error:a4]&& [(MZKeyValueStoreClampsController *)self _canScheduleTransactionBasedOnBackOff:v6 error:a4]&& [(MZKeyValueStoreClampsController *)self _canScheduleTransactionBasedOnUserCancelledSignIn:v6 error:a4]&& [(MZKeyValueStoreClampsController *)self _canScheduleTransactionBasedOnDSIDCheck:v6 error:a4])
+  transactionCopy = transaction;
+  if ([(MZKeyValueStoreClampsController *)self _canScheduleTransactionBasedOfNetworkingBlocked:transactionCopy error:error]&& [(MZKeyValueStoreClampsController *)self _canScheduleTransactionBasedOnBackOff:transactionCopy error:error]&& [(MZKeyValueStoreClampsController *)self _canScheduleTransactionBasedOnUserCancelledSignIn:transactionCopy error:error]&& [(MZKeyValueStoreClampsController *)self _canScheduleTransactionBasedOnDSIDCheck:transactionCopy error:error])
   {
-    v7 = [(MZKeyValueStoreClampsController *)self _canScheduleTransactionBasedOnType:v6 error:a4];
+    v7 = [(MZKeyValueStoreClampsController *)self _canScheduleTransactionBasedOnType:transactionCopy error:error];
   }
 
   else
@@ -267,23 +267,23 @@
   return v7;
 }
 
-- (void)accessTransactionClampsWithBlock:(id)a3
+- (void)accessTransactionClampsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MZKeyValueStoreClampsController *)self queue];
+  blockCopy = block;
+  queue = [(MZKeyValueStoreClampsController *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10007BCBC;
   v7[3] = &unk_1004D8520;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (void)setTimestampForTransaction:(id)a3
+- (void)setTimestampForTransaction:(id)transaction
 {
-  [(MZKeyValueStoreClampsController *)self _keyForTransaction:a3];
+  [(MZKeyValueStoreClampsController *)self _keyForTransaction:transaction];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10007BE08;
@@ -292,9 +292,9 @@
   [(MZKeyValueStoreClampsController *)self accessTransactionClampsWithBlock:v5];
 }
 
-- (void)clearTimestampForTransaction:(id)a3
+- (void)clearTimestampForTransaction:(id)transaction
 {
-  [(MZKeyValueStoreClampsController *)self _keyForTransaction:a3];
+  [(MZKeyValueStoreClampsController *)self _keyForTransaction:transaction];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10007BF20;
@@ -320,16 +320,16 @@
   [(MZKeyValueStoreClampsController *)self saveToUserDefaults];
 }
 
-- (BOOL)hasAuthenticatedTooRecentlyForTransaction:(id)a3 error:(id *)a4
+- (BOOL)hasAuthenticatedTooRecentlyForTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
+  transactionCopy = transaction;
   [(MZKeyValueStoreClampsController *)self _rightNow];
   v8 = v7;
   [(MZKeyValueStoreClampsController *)self authenticationNeededTimestamp];
   v10 = v8 - v9;
-  if (a4 && v10 < 1.0)
+  if (error && v10 < 1.0)
   {
-    *a4 = [MZKeyValueStoreError userClampErrorWithTransaction:v6 retrySeconds:0 underlyingError:1.0 - v10];
+    *error = [MZKeyValueStoreError userClampErrorWithTransaction:transactionCopy retrySeconds:0 underlyingError:1.0 - v10];
   }
 
   return v10 < 1.0;
@@ -372,10 +372,10 @@
   [(MZKeyValueStoreClampsController *)self saveToUserDefaults];
 }
 
-- (void)backOffForTimeInterval:(double)a3
+- (void)backOffForTimeInterval:(double)interval
 {
   [(MZKeyValueStoreClampsController *)self _rightNow];
-  [(MZKeyValueStoreClampsController *)self setBackOffUntil:v5 + a3];
+  [(MZKeyValueStoreClampsController *)self setBackOffUntil:v5 + interval];
 
   [(MZKeyValueStoreClampsController *)self saveToUserDefaults];
 }
@@ -416,24 +416,24 @@
   return v4;
 }
 
-- (id)_keyForTransaction:(id)a3
+- (id)_keyForTransaction:(id)transaction
 {
-  v3 = a3;
-  v4 = [v3 type];
-  v5 = [v3 processor];
+  transactionCopy = transaction;
+  type = [transactionCopy type];
+  processor = [transactionCopy processor];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v3 keys];
+  keys = [transactionCopy keys];
 
-  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%d-%@-%lu", v4, v7, [v8 count]);
+  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%d-%@-%lu", type, v7, [keys count]);
 
   return v9;
 }
 
-- (BOOL)_canScheduleTransactionBasedOnType:(id)a3 error:(id *)a4
+- (BOOL)_canScheduleTransactionBasedOnType:(id)type error:(id *)error
 {
-  v6 = a3;
-  [(MZKeyValueStoreClampsController *)self _keyForTransaction:v6];
+  typeCopy = type;
+  [(MZKeyValueStoreClampsController *)self _keyForTransaction:typeCopy];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -461,16 +461,16 @@
 
   if (v9 > 5.0)
   {
-    [(MZKeyValueStoreClampsController *)self clearTimestampForTransaction:v6];
+    [(MZKeyValueStoreClampsController *)self clearTimestampForTransaction:typeCopy];
 LABEL_6:
     v10 = 1;
     goto LABEL_10;
   }
 
-  if (a4)
+  if (error)
   {
-    [MZKeyValueStoreError clientClampErrorWithTransaction:v6 retrySeconds:0 underlyingError:5.0 - v9];
-    *a4 = v10 = 0;
+    [MZKeyValueStoreError clientClampErrorWithTransaction:typeCopy retrySeconds:0 underlyingError:5.0 - v9];
+    *error = v10 = 0;
   }
 
   else
@@ -484,34 +484,34 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)_canScheduleTransactionBasedOfNetworkingBlocked:(id)a3 error:(id *)a4
+- (BOOL)_canScheduleTransactionBasedOfNetworkingBlocked:(id)blocked error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MZKeyValueStoreClampsController *)self isNetworkingBlocked];
-  if (v7)
+  blockedCopy = blocked;
+  isNetworkingBlocked = [(MZKeyValueStoreClampsController *)self isNetworkingBlocked];
+  if (isNetworkingBlocked)
   {
-    *a4 = [MZKeyValueStoreError networkingBlockedErrorWithTransaction:v6 underlyingError:0];
+    *error = [MZKeyValueStoreError networkingBlockedErrorWithTransaction:blockedCopy underlyingError:0];
   }
 
-  return v7 ^ 1;
+  return isNetworkingBlocked ^ 1;
 }
 
-- (BOOL)_canScheduleTransactionBasedOnDSIDCheck:(id)a3 error:(id *)a4
+- (BOOL)_canScheduleTransactionBasedOnDSIDCheck:(id)check error:(id *)error
 {
-  v6 = a3;
+  checkCopy = check;
   [(MZKeyValueStoreClampsController *)self dsidCheckTimestamp];
   v8 = v7;
-  if (a4 && v7 != 0.0)
+  if (error && v7 != 0.0)
   {
-    *a4 = [MZKeyValueStoreError userClampErrorWithTransaction:v6 retrySeconds:0 underlyingError:0.0];
+    *error = [MZKeyValueStoreError userClampErrorWithTransaction:checkCopy retrySeconds:0 underlyingError:0.0];
   }
 
   return v8 == 0.0;
 }
 
-- (BOOL)_canScheduleTransactionBasedOnBackOff:(id)a3 error:(id *)a4
+- (BOOL)_canScheduleTransactionBasedOnBackOff:(id)off error:(id *)error
 {
-  v6 = a3;
+  offCopy = off;
   [(MZKeyValueStoreClampsController *)self backOffUntil];
   if (fabs(v7) <= 2.22044605e-16)
   {
@@ -530,10 +530,10 @@ LABEL_4:
   }
 
   [(MZKeyValueStoreClampsController *)self backOffUntil];
-  if (a4)
+  if (error)
   {
-    [MZKeyValueStoreError serverClampErrorWithTransaction:v6 retrySeconds:0 underlyingError:v13 - v9];
-    *a4 = v11 = 0;
+    [MZKeyValueStoreError serverClampErrorWithTransaction:offCopy retrySeconds:0 underlyingError:v13 - v9];
+    *error = v11 = 0;
   }
 
   else
@@ -546,9 +546,9 @@ LABEL_5:
   return v11;
 }
 
-- (BOOL)_canScheduleTransactionBasedOnUserCancelledSignIn:(id)a3 error:(id *)a4
+- (BOOL)_canScheduleTransactionBasedOnUserCancelledSignIn:(id)in error:(id *)error
 {
-  v6 = a3;
+  inCopy = in;
   [(MZKeyValueStoreClampsController *)self userCancelledSignInBackOffUntil];
   if (fabs(v7) <= 2.22044605e-16)
   {
@@ -567,10 +567,10 @@ LABEL_4:
   }
 
   [(MZKeyValueStoreClampsController *)self userAcceptedSyncTimestamp];
-  if (a4)
+  if (error)
   {
-    [MZKeyValueStoreError userClampErrorWithTransaction:v6 retrySeconds:0 underlyingError:v13 - v9];
-    *a4 = v11 = 0;
+    [MZKeyValueStoreError userClampErrorWithTransaction:inCopy retrySeconds:0 underlyingError:v13 - v9];
+    *error = v11 = 0;
   }
 
   else

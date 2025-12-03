@@ -1,26 +1,26 @@
 @interface PNRODSchemaPNRODIntelligenceFlowSessionSummary
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PNRODSchemaPNRODIntelligenceFlowSessionSummary)initWithDictionary:(id)a3;
-- (PNRODSchemaPNRODIntelligenceFlowSessionSummary)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PNRODSchemaPNRODIntelligenceFlowSessionSummary)initWithDictionary:(id)dictionary;
+- (PNRODSchemaPNRODIntelligenceFlowSessionSummary)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PNRODSchemaPNRODIntelligenceFlowSessionSummary
 
-- (PNRODSchemaPNRODIntelligenceFlowSessionSummary)initWithDictionary:(id)a3
+- (PNRODSchemaPNRODIntelligenceFlowSessionSummary)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = PNRODSchemaPNRODIntelligenceFlowSessionSummary;
   v5 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)&v28 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"clientSessionId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"clientSessionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)v5 setClientSessionId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"rawSessionId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"rawSessionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
     }
 
     v27 = v6;
-    v10 = [v4 objectForKeyedSubscript:@"standardPlannerSetupTime"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"standardPlannerSetupTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)v5 setStandardPlannerSetupTime:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:{@"queryDecorationServiceSetupTime", v8}];
+    v12 = [dictionaryCopy objectForKeyedSubscript:{@"queryDecorationServiceSetupTime", v8}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,7 +53,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)v5 setQueryDecorationServiceSetupTime:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"fullPlannerServiceSetupTime"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"fullPlannerServiceSetupTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,7 +61,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)v5 setFullPlannerServiceSetupTime:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"planOverridesServiceSetupTime"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"planOverridesServiceSetupTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,7 +69,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)v5 setPlanOverridesServiceSetupTime:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"planResolverServiceSetupTime"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"planResolverServiceSetupTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,7 +77,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)v5 setPlanResolverServiceSetupTime:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"responseGenerationServiceSetupTime"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"responseGenerationServiceSetupTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,7 +85,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)v5 setResponseGenerationServiceSetupTime:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"failureInfo"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"failureInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -99,30 +99,30 @@
   return v5;
 }
 
-- (PNRODSchemaPNRODIntelligenceFlowSessionSummary)initWithJSON:(id)a3
+- (PNRODSchemaPNRODIntelligenceFlowSessionSummary)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -135,154 +135,154 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_clientSessionId)
   {
-    v4 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self clientSessionId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    clientSessionId = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self clientSessionId];
+    dictionaryRepresentation = [clientSessionId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"clientSessionId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"clientSessionId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"clientSessionId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"clientSessionId"];
     }
   }
 
   if (self->_failureInfo)
   {
-    v7 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self failureInfo];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    failureInfo = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self failureInfo];
+    dictionaryRepresentation2 = [failureInfo dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"failureInfo"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"failureInfo"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"failureInfo"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"failureInfo"];
     }
   }
 
   if (self->_fullPlannerServiceSetupTime)
   {
-    v10 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self fullPlannerServiceSetupTime];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    fullPlannerServiceSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self fullPlannerServiceSetupTime];
+    dictionaryRepresentation3 = [fullPlannerServiceSetupTime dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"fullPlannerServiceSetupTime"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"fullPlannerServiceSetupTime"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"fullPlannerServiceSetupTime"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"fullPlannerServiceSetupTime"];
     }
   }
 
   if (self->_planOverridesServiceSetupTime)
   {
-    v13 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planOverridesServiceSetupTime];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    planOverridesServiceSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planOverridesServiceSetupTime];
+    dictionaryRepresentation4 = [planOverridesServiceSetupTime dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"planOverridesServiceSetupTime"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"planOverridesServiceSetupTime"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"planOverridesServiceSetupTime"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"planOverridesServiceSetupTime"];
     }
   }
 
   if (self->_planResolverServiceSetupTime)
   {
-    v16 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planResolverServiceSetupTime];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    planResolverServiceSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planResolverServiceSetupTime];
+    dictionaryRepresentation5 = [planResolverServiceSetupTime dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"planResolverServiceSetupTime"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"planResolverServiceSetupTime"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"planResolverServiceSetupTime"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"planResolverServiceSetupTime"];
     }
   }
 
   if (self->_queryDecorationServiceSetupTime)
   {
-    v19 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self queryDecorationServiceSetupTime];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    queryDecorationServiceSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self queryDecorationServiceSetupTime];
+    dictionaryRepresentation6 = [queryDecorationServiceSetupTime dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"queryDecorationServiceSetupTime"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"queryDecorationServiceSetupTime"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"queryDecorationServiceSetupTime"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"queryDecorationServiceSetupTime"];
     }
   }
 
   if (self->_rawSessionId)
   {
-    v22 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self rawSessionId];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    rawSessionId = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self rawSessionId];
+    dictionaryRepresentation7 = [rawSessionId dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"rawSessionId"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"rawSessionId"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"rawSessionId"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"rawSessionId"];
     }
   }
 
   if (self->_responseGenerationServiceSetupTime)
   {
-    v25 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self responseGenerationServiceSetupTime];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    responseGenerationServiceSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self responseGenerationServiceSetupTime];
+    dictionaryRepresentation8 = [responseGenerationServiceSetupTime dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"responseGenerationServiceSetupTime"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"responseGenerationServiceSetupTime"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"responseGenerationServiceSetupTime"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"responseGenerationServiceSetupTime"];
     }
   }
 
   if (self->_standardPlannerSetupTime)
   {
-    v28 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self standardPlannerSetupTime];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    standardPlannerSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self standardPlannerSetupTime];
+    dictionaryRepresentation9 = [standardPlannerSetupTime dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"standardPlannerSetupTime"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"standardPlannerSetupTime"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"standardPlannerSetupTime"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"standardPlannerSetupTime"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -298,28 +298,28 @@
   return v9 ^ v10 ^ [(PNRODSchemaPNRODFailureInfo *)self->_failureInfo hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_47;
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self clientSessionId];
-  v6 = [v4 clientSessionId];
-  if ((v5 != 0) == (v6 == 0))
+  clientSessionId = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self clientSessionId];
+  clientSessionId2 = [equalCopy clientSessionId];
+  if ((clientSessionId != 0) == (clientSessionId2 == 0))
   {
     goto LABEL_46;
   }
 
-  v7 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self clientSessionId];
-  if (v7)
+  clientSessionId3 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self clientSessionId];
+  if (clientSessionId3)
   {
-    v8 = v7;
-    v9 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self clientSessionId];
-    v10 = [v4 clientSessionId];
-    v11 = [v9 isEqual:v10];
+    v8 = clientSessionId3;
+    clientSessionId4 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self clientSessionId];
+    clientSessionId5 = [equalCopy clientSessionId];
+    v11 = [clientSessionId4 isEqual:clientSessionId5];
 
     if (!v11)
     {
@@ -331,20 +331,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self rawSessionId];
-  v6 = [v4 rawSessionId];
-  if ((v5 != 0) == (v6 == 0))
+  clientSessionId = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self rawSessionId];
+  clientSessionId2 = [equalCopy rawSessionId];
+  if ((clientSessionId != 0) == (clientSessionId2 == 0))
   {
     goto LABEL_46;
   }
 
-  v12 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self rawSessionId];
-  if (v12)
+  rawSessionId = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self rawSessionId];
+  if (rawSessionId)
   {
-    v13 = v12;
-    v14 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self rawSessionId];
-    v15 = [v4 rawSessionId];
-    v16 = [v14 isEqual:v15];
+    v13 = rawSessionId;
+    rawSessionId2 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self rawSessionId];
+    rawSessionId3 = [equalCopy rawSessionId];
+    v16 = [rawSessionId2 isEqual:rawSessionId3];
 
     if (!v16)
     {
@@ -356,20 +356,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self standardPlannerSetupTime];
-  v6 = [v4 standardPlannerSetupTime];
-  if ((v5 != 0) == (v6 == 0))
+  clientSessionId = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self standardPlannerSetupTime];
+  clientSessionId2 = [equalCopy standardPlannerSetupTime];
+  if ((clientSessionId != 0) == (clientSessionId2 == 0))
   {
     goto LABEL_46;
   }
 
-  v17 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self standardPlannerSetupTime];
-  if (v17)
+  standardPlannerSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self standardPlannerSetupTime];
+  if (standardPlannerSetupTime)
   {
-    v18 = v17;
-    v19 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self standardPlannerSetupTime];
-    v20 = [v4 standardPlannerSetupTime];
-    v21 = [v19 isEqual:v20];
+    v18 = standardPlannerSetupTime;
+    standardPlannerSetupTime2 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self standardPlannerSetupTime];
+    standardPlannerSetupTime3 = [equalCopy standardPlannerSetupTime];
+    v21 = [standardPlannerSetupTime2 isEqual:standardPlannerSetupTime3];
 
     if (!v21)
     {
@@ -381,20 +381,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self queryDecorationServiceSetupTime];
-  v6 = [v4 queryDecorationServiceSetupTime];
-  if ((v5 != 0) == (v6 == 0))
+  clientSessionId = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self queryDecorationServiceSetupTime];
+  clientSessionId2 = [equalCopy queryDecorationServiceSetupTime];
+  if ((clientSessionId != 0) == (clientSessionId2 == 0))
   {
     goto LABEL_46;
   }
 
-  v22 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self queryDecorationServiceSetupTime];
-  if (v22)
+  queryDecorationServiceSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self queryDecorationServiceSetupTime];
+  if (queryDecorationServiceSetupTime)
   {
-    v23 = v22;
-    v24 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self queryDecorationServiceSetupTime];
-    v25 = [v4 queryDecorationServiceSetupTime];
-    v26 = [v24 isEqual:v25];
+    v23 = queryDecorationServiceSetupTime;
+    queryDecorationServiceSetupTime2 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self queryDecorationServiceSetupTime];
+    queryDecorationServiceSetupTime3 = [equalCopy queryDecorationServiceSetupTime];
+    v26 = [queryDecorationServiceSetupTime2 isEqual:queryDecorationServiceSetupTime3];
 
     if (!v26)
     {
@@ -406,20 +406,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self fullPlannerServiceSetupTime];
-  v6 = [v4 fullPlannerServiceSetupTime];
-  if ((v5 != 0) == (v6 == 0))
+  clientSessionId = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self fullPlannerServiceSetupTime];
+  clientSessionId2 = [equalCopy fullPlannerServiceSetupTime];
+  if ((clientSessionId != 0) == (clientSessionId2 == 0))
   {
     goto LABEL_46;
   }
 
-  v27 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self fullPlannerServiceSetupTime];
-  if (v27)
+  fullPlannerServiceSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self fullPlannerServiceSetupTime];
+  if (fullPlannerServiceSetupTime)
   {
-    v28 = v27;
-    v29 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self fullPlannerServiceSetupTime];
-    v30 = [v4 fullPlannerServiceSetupTime];
-    v31 = [v29 isEqual:v30];
+    v28 = fullPlannerServiceSetupTime;
+    fullPlannerServiceSetupTime2 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self fullPlannerServiceSetupTime];
+    fullPlannerServiceSetupTime3 = [equalCopy fullPlannerServiceSetupTime];
+    v31 = [fullPlannerServiceSetupTime2 isEqual:fullPlannerServiceSetupTime3];
 
     if (!v31)
     {
@@ -431,20 +431,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planOverridesServiceSetupTime];
-  v6 = [v4 planOverridesServiceSetupTime];
-  if ((v5 != 0) == (v6 == 0))
+  clientSessionId = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planOverridesServiceSetupTime];
+  clientSessionId2 = [equalCopy planOverridesServiceSetupTime];
+  if ((clientSessionId != 0) == (clientSessionId2 == 0))
   {
     goto LABEL_46;
   }
 
-  v32 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planOverridesServiceSetupTime];
-  if (v32)
+  planOverridesServiceSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planOverridesServiceSetupTime];
+  if (planOverridesServiceSetupTime)
   {
-    v33 = v32;
-    v34 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planOverridesServiceSetupTime];
-    v35 = [v4 planOverridesServiceSetupTime];
-    v36 = [v34 isEqual:v35];
+    v33 = planOverridesServiceSetupTime;
+    planOverridesServiceSetupTime2 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planOverridesServiceSetupTime];
+    planOverridesServiceSetupTime3 = [equalCopy planOverridesServiceSetupTime];
+    v36 = [planOverridesServiceSetupTime2 isEqual:planOverridesServiceSetupTime3];
 
     if (!v36)
     {
@@ -456,20 +456,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planResolverServiceSetupTime];
-  v6 = [v4 planResolverServiceSetupTime];
-  if ((v5 != 0) == (v6 == 0))
+  clientSessionId = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planResolverServiceSetupTime];
+  clientSessionId2 = [equalCopy planResolverServiceSetupTime];
+  if ((clientSessionId != 0) == (clientSessionId2 == 0))
   {
     goto LABEL_46;
   }
 
-  v37 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planResolverServiceSetupTime];
-  if (v37)
+  planResolverServiceSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planResolverServiceSetupTime];
+  if (planResolverServiceSetupTime)
   {
-    v38 = v37;
-    v39 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planResolverServiceSetupTime];
-    v40 = [v4 planResolverServiceSetupTime];
-    v41 = [v39 isEqual:v40];
+    v38 = planResolverServiceSetupTime;
+    planResolverServiceSetupTime2 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planResolverServiceSetupTime];
+    planResolverServiceSetupTime3 = [equalCopy planResolverServiceSetupTime];
+    v41 = [planResolverServiceSetupTime2 isEqual:planResolverServiceSetupTime3];
 
     if (!v41)
     {
@@ -481,20 +481,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self responseGenerationServiceSetupTime];
-  v6 = [v4 responseGenerationServiceSetupTime];
-  if ((v5 != 0) == (v6 == 0))
+  clientSessionId = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self responseGenerationServiceSetupTime];
+  clientSessionId2 = [equalCopy responseGenerationServiceSetupTime];
+  if ((clientSessionId != 0) == (clientSessionId2 == 0))
   {
     goto LABEL_46;
   }
 
-  v42 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self responseGenerationServiceSetupTime];
-  if (v42)
+  responseGenerationServiceSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self responseGenerationServiceSetupTime];
+  if (responseGenerationServiceSetupTime)
   {
-    v43 = v42;
-    v44 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self responseGenerationServiceSetupTime];
-    v45 = [v4 responseGenerationServiceSetupTime];
-    v46 = [v44 isEqual:v45];
+    v43 = responseGenerationServiceSetupTime;
+    responseGenerationServiceSetupTime2 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self responseGenerationServiceSetupTime];
+    responseGenerationServiceSetupTime3 = [equalCopy responseGenerationServiceSetupTime];
+    v46 = [responseGenerationServiceSetupTime2 isEqual:responseGenerationServiceSetupTime3];
 
     if (!v46)
     {
@@ -506,12 +506,12 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self failureInfo];
-  v6 = [v4 failureInfo];
-  if ((v5 != 0) != (v6 == 0))
+  clientSessionId = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self failureInfo];
+  clientSessionId2 = [equalCopy failureInfo];
+  if ((clientSessionId != 0) != (clientSessionId2 == 0))
   {
-    v47 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self failureInfo];
-    if (!v47)
+    failureInfo = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self failureInfo];
+    if (!failureInfo)
     {
 
 LABEL_50:
@@ -519,10 +519,10 @@ LABEL_50:
       goto LABEL_48;
     }
 
-    v48 = v47;
-    v49 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self failureInfo];
-    v50 = [v4 failureInfo];
-    v51 = [v49 isEqual:v50];
+    v48 = failureInfo;
+    failureInfo2 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self failureInfo];
+    failureInfo3 = [equalCopy failureInfo];
+    v51 = [failureInfo2 isEqual:failureInfo3];
 
     if (v51)
     {
@@ -542,168 +542,168 @@ LABEL_48:
   return v52;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v23 = a3;
-  v4 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self clientSessionId];
+  toCopy = to;
+  clientSessionId = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self clientSessionId];
 
-  if (v4)
+  if (clientSessionId)
   {
-    v5 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self clientSessionId];
+    clientSessionId2 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self clientSessionId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self rawSessionId];
+  rawSessionId = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self rawSessionId];
 
-  if (v6)
+  if (rawSessionId)
   {
-    v7 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self rawSessionId];
+    rawSessionId2 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self rawSessionId];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self standardPlannerSetupTime];
+  standardPlannerSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self standardPlannerSetupTime];
 
-  if (v8)
+  if (standardPlannerSetupTime)
   {
-    v9 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self standardPlannerSetupTime];
+    standardPlannerSetupTime2 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self standardPlannerSetupTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self queryDecorationServiceSetupTime];
+  queryDecorationServiceSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self queryDecorationServiceSetupTime];
 
-  if (v10)
+  if (queryDecorationServiceSetupTime)
   {
-    v11 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self queryDecorationServiceSetupTime];
+    queryDecorationServiceSetupTime2 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self queryDecorationServiceSetupTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self fullPlannerServiceSetupTime];
+  fullPlannerServiceSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self fullPlannerServiceSetupTime];
 
-  if (v12)
+  if (fullPlannerServiceSetupTime)
   {
-    v13 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self fullPlannerServiceSetupTime];
+    fullPlannerServiceSetupTime2 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self fullPlannerServiceSetupTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planOverridesServiceSetupTime];
+  planOverridesServiceSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planOverridesServiceSetupTime];
 
-  if (v14)
+  if (planOverridesServiceSetupTime)
   {
-    v15 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planOverridesServiceSetupTime];
+    planOverridesServiceSetupTime2 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planOverridesServiceSetupTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planResolverServiceSetupTime];
+  planResolverServiceSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planResolverServiceSetupTime];
 
-  if (v16)
+  if (planResolverServiceSetupTime)
   {
-    v17 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planResolverServiceSetupTime];
+    planResolverServiceSetupTime2 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planResolverServiceSetupTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self responseGenerationServiceSetupTime];
+  responseGenerationServiceSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self responseGenerationServiceSetupTime];
 
-  if (v18)
+  if (responseGenerationServiceSetupTime)
   {
-    v19 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self responseGenerationServiceSetupTime];
+    responseGenerationServiceSetupTime2 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self responseGenerationServiceSetupTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self failureInfo];
+  failureInfo = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self failureInfo];
 
-  v21 = v23;
-  if (v20)
+  v21 = toCopy;
+  if (failureInfo)
   {
-    v22 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self failureInfo];
+    failureInfo2 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self failureInfo];
     PBDataWriterWriteSubmessage();
 
-    v21 = v23;
+    v21 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v34.receiver = self;
   v34.super_class = PNRODSchemaPNRODIntelligenceFlowSessionSummary;
-  v5 = [(SISchemaInstrumentationMessage *)&v34 applySensitiveConditionsPolicy:v4];
-  v6 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self clientSessionId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v34 applySensitiveConditionsPolicy:policyCopy];
+  clientSessionId = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self clientSessionId];
+  v7 = [clientSessionId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self deleteClientSessionId];
   }
 
-  v9 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self rawSessionId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  rawSessionId = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self rawSessionId];
+  v10 = [rawSessionId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self deleteRawSessionId];
   }
 
-  v12 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self standardPlannerSetupTime];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  standardPlannerSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self standardPlannerSetupTime];
+  v13 = [standardPlannerSetupTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self deleteStandardPlannerSetupTime];
   }
 
-  v15 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self queryDecorationServiceSetupTime];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  queryDecorationServiceSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self queryDecorationServiceSetupTime];
+  v16 = [queryDecorationServiceSetupTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self deleteQueryDecorationServiceSetupTime];
   }
 
-  v18 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self fullPlannerServiceSetupTime];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  fullPlannerServiceSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self fullPlannerServiceSetupTime];
+  v19 = [fullPlannerServiceSetupTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self deleteFullPlannerServiceSetupTime];
   }
 
-  v21 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planOverridesServiceSetupTime];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  planOverridesServiceSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planOverridesServiceSetupTime];
+  v22 = [planOverridesServiceSetupTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self deletePlanOverridesServiceSetupTime];
   }
 
-  v24 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planResolverServiceSetupTime];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  planResolverServiceSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self planResolverServiceSetupTime];
+  v25 = [planResolverServiceSetupTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self deletePlanResolverServiceSetupTime];
   }
 
-  v27 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self responseGenerationServiceSetupTime];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  responseGenerationServiceSetupTime = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self responseGenerationServiceSetupTime];
+  v28 = [responseGenerationServiceSetupTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self deleteResponseGenerationServiceSetupTime];
   }
 
-  v30 = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self failureInfo];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  failureInfo = [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self failureInfo];
+  v31 = [failureInfo applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(PNRODSchemaPNRODIntelligenceFlowSessionSummary *)self deleteFailureInfo];
   }

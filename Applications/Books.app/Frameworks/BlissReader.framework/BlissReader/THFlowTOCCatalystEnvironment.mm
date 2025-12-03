@@ -1,7 +1,7 @@
 @interface THFlowTOCCatalystEnvironment
 - (CGRect)im_frameEnvironmentBounds;
 - (CGRect)im_frameEnvironmentFrame;
-- (THFlowTOCCatalystEnvironment)initWithContext:(id)a3;
+- (THFlowTOCCatalystEnvironment)initWithContext:(id)context;
 - (UIEdgeInsets)im_frameEnvironmentSafeAreaInsets;
 - (UITraitCollection)traitCollection;
 - (UIViewController)context;
@@ -9,16 +9,16 @@
 
 @implementation THFlowTOCCatalystEnvironment
 
-- (THFlowTOCCatalystEnvironment)initWithContext:(id)a3
+- (THFlowTOCCatalystEnvironment)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = THFlowTOCCatalystEnvironment;
   v5 = [(THFlowTOCCatalystEnvironment *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_context, v4);
+    objc_storeWeak(&v5->_context, contextCopy);
   }
 
   return v6;
@@ -30,8 +30,8 @@
   if ([WeakRetained isViewLoaded])
   {
     v4 = objc_loadWeakRetained(&self->_context);
-    v5 = [v4 view];
-    [v5 bounds];
+    view = [v4 view];
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -65,8 +65,8 @@
   if ([WeakRetained isViewLoaded])
   {
     v4 = objc_loadWeakRetained(&self->_context);
-    v5 = [v4 view];
-    [v5 frame];
+    view = [v4 view];
+    [view frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -100,8 +100,8 @@
   if ([WeakRetained isViewLoaded])
   {
     v4 = objc_loadWeakRetained(&self->_context);
-    v5 = [v4 view];
-    [v5 safeAreaInsets];
+    view = [v4 view];
+    [view safeAreaInsets];
     top = v6;
     left = v8;
     bottom = v10;
@@ -130,8 +130,8 @@
 - (UITraitCollection)traitCollection
 {
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  v3 = [WeakRetained traitCollection];
-  v4 = [v3 traitCollectionByModifyingTraits:&stru_45D110];
+  traitCollection = [WeakRetained traitCollection];
+  v4 = [traitCollection traitCollectionByModifyingTraits:&stru_45D110];
 
   return v4;
 }

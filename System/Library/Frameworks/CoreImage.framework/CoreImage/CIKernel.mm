@@ -1,80 +1,80 @@
 @interface CIKernel
 + (CIKernel)kernelWithFunctionName:(NSString *)name fromMetalLibraryData:(NSData *)data error:(NSError *)error;
 + (CIKernel)kernelWithFunctionName:(NSString *)name fromMetalLibraryData:(NSData *)data outputPixelFormat:(CIFormat)format error:(NSError *)error;
-+ (CIKernel)kernelWithFunctionName:(id)a3 fromCIKernelLibrary:(id)a4 options:(id)a5 error:(id *)a6;
-+ (CIKernel)kernelWithFunctionName:(id)a3 fromMetalLibrary:(id)a4 constants:(id)a5 error:(id *)a6;
-+ (CIKernel)kernelWithFunctionName:(id)a3 fromMetalLibrary:(id)a4 error:(id *)a5;
-+ (CIKernel)kernelWithFunctionName:(id)a3 fromMetalLibrary:(id)a4 options:(id)a5 error:(id *)a6;
-+ (CIKernel)kernelWithFunctionName:(id)a3 fromMetalLibrary:(id)a4 outputPixelFormat:(int)a5 error:(id *)a6;
-+ (CIKernel)kernelWithFunctionName:(id)a3 fromMetalLibraryData:(id)a4 constants:(id)a5 error:(id *)a6;
-+ (CIKernel)kernelWithFunctionName:(id)a3 fromMetalLibraryData:(id)a4 options:(id)a5 error:(id *)a6;
-+ (CIKernel)kernelWithFunctionName:(id)a3 fromMetalLibraryData:(id)a4 outputGroupSize:(CGSize)a5 error:(id *)a6;
-+ (CIKernel)kernelWithInternalRepresentation:(const void *)a3;
++ (CIKernel)kernelWithFunctionName:(id)name fromCIKernelLibrary:(id)library options:(id)options error:(id *)error;
++ (CIKernel)kernelWithFunctionName:(id)name fromMetalLibrary:(id)library constants:(id)constants error:(id *)error;
++ (CIKernel)kernelWithFunctionName:(id)name fromMetalLibrary:(id)library error:(id *)error;
++ (CIKernel)kernelWithFunctionName:(id)name fromMetalLibrary:(id)library options:(id)options error:(id *)error;
++ (CIKernel)kernelWithFunctionName:(id)name fromMetalLibrary:(id)library outputPixelFormat:(int)format error:(id *)error;
++ (CIKernel)kernelWithFunctionName:(id)name fromMetalLibraryData:(id)data constants:(id)constants error:(id *)error;
++ (CIKernel)kernelWithFunctionName:(id)name fromMetalLibraryData:(id)data options:(id)options error:(id *)error;
++ (CIKernel)kernelWithFunctionName:(id)name fromMetalLibraryData:(id)data outputGroupSize:(CGSize)size error:(id *)error;
++ (CIKernel)kernelWithInternalRepresentation:(const void *)representation;
 + (CIKernel)kernelWithString:(NSString *)string;
-+ (CIKernel)kernelWithString:(id)a3 fromMetalLibraryData:(id)a4;
++ (CIKernel)kernelWithString:(id)string fromMetalLibraryData:(id)data;
 + (NSArray)kernelNamesFromMetalLibraryData:(NSData *)data;
 + (NSArray)kernelsWithMetalString:(NSString *)source error:(NSError *)error;
 + (NSArray)kernelsWithString:(NSString *)string;
-+ (id)SDOFV2MetalKernelNamed:(id)a3;
-+ (id)SDOFV3MetalKernelNamed:(id)a3;
++ (id)SDOFV2MetalKernelNamed:(id)named;
++ (id)SDOFV3MetalKernelNamed:(id)named;
 + (id)cache;
-+ (id)cacheKeyForFunctionName:(id)a3 fromCIKernelLibrary:(id)a4 options:(id)a5;
-+ (id)cachedKernelWithFunctionName:(id)a3 fromCIKernelLibrary:(id)a4 options:(id)a5 error:(id *)a6;
-+ (id)cachedKernelWithFunctionName:(id)a3 fromMetalLibrary:(id)a4 constants:(id)a5 error:(id *)a6;
-+ (id)cachedKernelWithFunctionName:(id)a3 fromMetalLibrary:(id)a4 error:(id *)a5;
-+ (id)cachedKernelWithFunctionName:(id)a3 fromMetalLibrary:(id)a4 options:(id)a5 error:(id *)a6;
-+ (id)cachedKernelWithFunctionName:(id)a3 fromMetalLibrary:(id)a4 outputPixelFormat:(int)a5 error:(id *)a6;
-+ (id)cachedKernelWithString:(id)a3;
++ (id)cacheKeyForFunctionName:(id)name fromCIKernelLibrary:(id)library options:(id)options;
++ (id)cachedKernelWithFunctionName:(id)name fromCIKernelLibrary:(id)library options:(id)options error:(id *)error;
++ (id)cachedKernelWithFunctionName:(id)name fromMetalLibrary:(id)library constants:(id)constants error:(id *)error;
++ (id)cachedKernelWithFunctionName:(id)name fromMetalLibrary:(id)library error:(id *)error;
++ (id)cachedKernelWithFunctionName:(id)name fromMetalLibrary:(id)library options:(id)options error:(id *)error;
++ (id)cachedKernelWithFunctionName:(id)name fromMetalLibrary:(id)library outputPixelFormat:(int)format error:(id *)error;
++ (id)cachedKernelWithString:(id)string;
 + (id)colorMatrixBiasKernel;
-+ (id)internalCachedKernelWithString:(id)a3;
-+ (id)kernelNamesFromMetalLibrary:(id)a3;
-+ (id)kernelsWithString:(id)a3 andCIKernelLibrary:(id)a4 messageLog:(id)a5;
-+ (id)kernelsWithString:(id)a3 fromMetalLibraryData:(id)a4;
-+ (id)kernelsWithString:(id)a3 messageLog:(id)a4;
++ (id)internalCachedKernelWithString:(id)string;
++ (id)kernelNamesFromMetalLibrary:(id)library;
++ (id)kernelsWithString:(id)string andCIKernelLibrary:(id)library messageLog:(id)log;
++ (id)kernelsWithString:(id)string fromMetalLibraryData:(id)data;
++ (id)kernelsWithString:(id)string messageLog:(id)log;
 + (void)clearCache;
-- (BOOL)_isValidOutputPixelFormat:(int)a3;
+- (BOOL)_isValidOutputPixelFormat:(int)format;
 - (BOOL)canReduceOutputChannels;
 - (BOOL)perservesAlpha;
 - (BOOL)preservesOpacity;
 - (BOOL)preservesRange;
 - (CGSize)outputGroupSize;
 - (CIKernel)init;
-- (CIKernel)initWithString:(id)a3;
+- (CIKernel)initWithString:(id)string;
 - (NSString)name;
 - (SEL)ROISelector;
-- (id)_initInternalWithString:(id)a3;
-- (id)_initWithInternalRepresentation:(void *)a3;
-- (id)_initWithReflection:(CIKernelReflection *)a3;
-- (id)_initWithString:(id)a3 andCIKernelLibrary:(id)a4 usingCruftCompatibility:(BOOL)a5 isInternal:(BOOL)a6;
-- (id)applyWithExtent:(CGRect)a3 roiCallback:(id)a4 arguments:(id)a5 options:(id)a6;
+- (id)_initInternalWithString:(id)string;
+- (id)_initWithInternalRepresentation:(void *)representation;
+- (id)_initWithReflection:(CIKernelReflection *)reflection;
+- (id)_initWithString:(id)string andCIKernelLibrary:(id)library usingCruftCompatibility:(BOOL)compatibility isInternal:(BOOL)internal;
+- (id)applyWithExtent:(CGRect)extent roiCallback:(id)callback arguments:(id)arguments options:(id)options;
 - (id)debugDescription;
 - (id)parameters;
-- (int)_outputFormatUsingDictionary:(id)a3 andKernel:(void *)a4;
+- (int)_outputFormatUsingDictionary:(id)dictionary andKernel:(void *)kernel;
 - (void)dealloc;
-- (void)setCanReduceOutputChannels:(BOOL)a3;
-- (void)setPerservesAlpha:(BOOL)a3;
-- (void)setPreservesRange:(BOOL)a3;
+- (void)setCanReduceOutputChannels:(BOOL)channels;
+- (void)setPerservesAlpha:(BOOL)alpha;
+- (void)setPreservesRange:(BOOL)range;
 - (void)setROISelector:(SEL)method;
 @end
 
 @implementation CIKernel
 
-- (id)_initWithInternalRepresentation:(void *)a3
+- (id)_initWithInternalRepresentation:(void *)representation
 {
-  if (a3)
+  if (representation)
   {
-    v3 = a3;
+    representationCopy = representation;
     v6.receiver = self;
     v6.super_class = CIKernel;
     v4 = [(CIKernel *)&v6 init];
     if (v4)
     {
-      if (*(v3 + 12) == 1)
+      if (*(representationCopy + 12) == 1)
       {
-        v3 = CI::Object::ref(v3);
+        representationCopy = CI::Object::ref(representationCopy);
       }
 
-      v4->_priv = v3;
+      v4->_priv = representationCopy;
     }
   }
 
@@ -87,14 +87,14 @@
   return v4;
 }
 
-+ (CIKernel)kernelWithInternalRepresentation:(const void *)a3
++ (CIKernel)kernelWithInternalRepresentation:(const void *)representation
 {
-  if ((*(*a3 + 16))(a3, a2) == 72)
+  if ((*(*representation + 16))(representation, a2) == 72)
   {
     v4 = 1;
   }
 
-  else if ((*(*a3 + 16))(a3) == 70)
+  else if ((*(*representation + 16))(representation) == 70)
   {
     v4 = 2;
   }
@@ -104,7 +104,7 @@
     v4 = 3;
   }
 
-  v5 = [KernelKindAlloc(v4) _initWithInternalRepresentation:a3];
+  v5 = [KernelKindAlloc(v4) _initWithInternalRepresentation:representation];
 
   return v5;
 }
@@ -128,22 +128,22 @@ id __17__CIKernel_cache__block_invoke()
 
 + (void)clearCache
 {
-  v2 = [a1 cache];
-  objc_sync_enter(v2);
-  [v2 removeAllObjects];
-  objc_sync_exit(v2);
+  cache = [self cache];
+  objc_sync_enter(cache);
+  [cache removeAllObjects];
+  objc_sync_exit(cache);
 
   +[CIKernelLibrary clearCache];
 }
 
-+ (id)cachedKernelWithString:(id)a3
++ (id)cachedKernelWithString:(id)string
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = ci_signpost_log_kernel();
   if (os_signpost_enabled(v5))
   {
     *buf = 138543362;
-    v18 = [a1 description];
+    v18 = [self description];
     _os_signpost_emit_with_name_impl(&dword_19CC36000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "cachedKernelWithString", "%{public}@", buf, 0xCu);
   }
 
@@ -151,10 +151,10 @@ id __17__CIKernel_cache__block_invoke()
   v13[1] = 3221225472;
   v14 = __35__CIKernel_cachedKernelWithString___block_invoke;
   v15 = &unk_1E75C2AA0;
-  v16 = a1;
-  v6 = [a1 cache];
-  objc_sync_enter(v6);
-  v7 = [v6 objectForKey:a3];
+  selfCopy = self;
+  cache = [self cache];
+  objc_sync_enter(cache);
+  v7 = [cache objectForKey:string];
   v8 = v7;
   if (v7)
   {
@@ -163,17 +163,17 @@ id __17__CIKernel_cache__block_invoke()
 
   else
   {
-    v8 = [[a1 alloc] initWithString:a3];
-    v10 = v8;
+    v8 = [[self alloc] initWithString:string];
+    null = v8;
     if (!v8)
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    [v6 setObject:v10 forKey:a3];
+    [cache setObject:null forKey:string];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(cache);
   if (v8 == [MEMORY[0x1E695DFB0] null])
   {
     v11 = 0;
@@ -201,14 +201,14 @@ void __35__CIKernel_cachedKernelWithString___block_invoke(uint64_t a1)
   }
 }
 
-+ (id)internalCachedKernelWithString:(id)a3
++ (id)internalCachedKernelWithString:(id)string
 {
   v17 = *MEMORY[0x1E69E9840];
   v5 = ci_signpost_log_kernel();
   if (os_signpost_enabled(v5))
   {
     *buf = 138543362;
-    v16 = [a1 description];
+    v16 = [self description];
     _os_signpost_emit_with_name_impl(&dword_19CC36000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "internalCachedKernelWithString", "%{public}@", buf, 0xCu);
   }
 
@@ -216,10 +216,10 @@ void __35__CIKernel_cachedKernelWithString___block_invoke(uint64_t a1)
   v11[1] = 3221225472;
   v12 = __43__CIKernel_internalCachedKernelWithString___block_invoke;
   v13 = &unk_1E75C2AA0;
-  v14 = a1;
-  v6 = [a1 cache];
-  objc_sync_enter(v6);
-  v7 = [v6 objectForKey:a3];
+  selfCopy = self;
+  cache = [self cache];
+  objc_sync_enter(cache);
+  v7 = [cache objectForKey:string];
   v8 = v7;
   if (v7)
   {
@@ -228,11 +228,11 @@ void __35__CIKernel_cachedKernelWithString___block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [[a1 alloc] _initInternalWithString:a3];
-    [v6 setObject:v8 forKey:a3];
+    v8 = [[self alloc] _initInternalWithString:string];
+    [cache setObject:v8 forKey:string];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(cache);
   v12(v11);
   return v8;
 }
@@ -250,14 +250,14 @@ void __43__CIKernel_internalCachedKernelWithString___block_invoke(uint64_t a1)
   }
 }
 
-+ (id)cacheKeyForFunctionName:(id)a3 fromCIKernelLibrary:(id)a4 options:(id)a5
++ (id)cacheKeyForFunctionName:(id)name fromCIKernelLibrary:(id)library options:(id)options
 {
   v24 = *MEMORY[0x1E69E9840];
   XXH64_reset(v21, 0);
-  CI::XXHashHelper::addstr(v21, [a3 UTF8String]);
-  __src = [a4 digest];
+  CI::XXHashHelper::addstr(v21, [name UTF8String]);
+  __src = [library digest];
   XXH64_update(v21, &__src, 8uLL);
-  v8 = [a5 objectForKeyedSubscript:@"kCIKernelFunctionConstants"];
+  v8 = [options objectForKeyedSubscript:@"kCIKernelFunctionConstants"];
   v9 = [objc_msgSend(v8 "allKeys")];
   v19 = 0u;
   v20 = 0u;
@@ -308,19 +308,19 @@ void __43__CIKernel_internalCachedKernelWithString___block_invoke(uint64_t a1)
     while (v10);
   }
 
-  __src = [objc_msgSend(a5 objectForKeyedSubscript:{@"kCIKernelOutputFormat", "longLongValue"}];
+  __src = [objc_msgSend(options objectForKeyedSubscript:{@"kCIKernelOutputFormat", "longLongValue"}];
   XXH64_update(v21, &__src, 8uLL);
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%016llX", XXH64_digest(v21)];
 }
 
-+ (id)cachedKernelWithFunctionName:(id)a3 fromCIKernelLibrary:(id)a4 options:(id)a5 error:(id *)a6
++ (id)cachedKernelWithFunctionName:(id)name fromCIKernelLibrary:(id)library options:(id)options error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
   v11 = ci_signpost_log_kernel();
   if (os_signpost_enabled(v11))
   {
     *buf = 138543362;
-    *&buf[4] = [a1 description];
+    *&buf[4] = [self description];
     _os_signpost_emit_with_name_impl(&dword_19CC36000, v11, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "cachedKernelWithFunctionName", "%{public}@", buf, 0xCu);
   }
 
@@ -328,12 +328,12 @@ void __43__CIKernel_internalCachedKernelWithString___block_invoke(uint64_t a1)
   v19[1] = 3221225472;
   v20 = __75__CIKernel_cachedKernelWithFunctionName_fromCIKernelLibrary_options_error___block_invoke;
   v21 = &unk_1E75C2AA0;
-  v22 = a1;
-  v12 = [a1 cache];
-  v13 = [a1 cacheKeyForFunctionName:a3 fromCIKernelLibrary:a4 options:a5];
-  objc_sync_enter(v12);
-  v14 = [v12 objectForKey:v13];
-  v15 = v14;
+  selfCopy = self;
+  cache = [self cache];
+  v13 = [self cacheKeyForFunctionName:name fromCIKernelLibrary:library options:options];
+  objc_sync_enter(cache);
+  v14 = [cache objectForKey:v13];
+  null = v14;
   if (v14)
   {
     v16 = v14;
@@ -342,27 +342,27 @@ void __43__CIKernel_internalCachedKernelWithString___block_invoke(uint64_t a1)
   else
   {
     *buf = 0;
-    v17 = [a1 kernelWithFunctionName:a3 fromCIKernelLibrary:a4 options:a5 error:buf];
+    v17 = [self kernelWithFunctionName:name fromCIKernelLibrary:library options:options error:buf];
     if (v17)
     {
-      v15 = v17;
+      null = v17;
     }
 
     else
     {
-      v15 = *buf;
+      null = *buf;
     }
 
-    if (!v15)
+    if (!null)
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    [v12 setObject:v15 forKey:v13];
+    [cache setObject:null forKey:v13];
   }
 
-  objc_sync_exit(v12);
-  if (v15 == [MEMORY[0x1E695DFB0] null])
+  objc_sync_exit(cache);
+  if (null == [MEMORY[0x1E695DFB0] null])
   {
     goto LABEL_15;
   }
@@ -371,17 +371,17 @@ void __43__CIKernel_internalCachedKernelWithString___block_invoke(uint64_t a1)
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
-    if (!((a6 == 0) | ((objc_opt_isKindOfClass() & 1) == 0)))
+    if (!((error == 0) | ((objc_opt_isKindOfClass() & 1) == 0)))
     {
-      *a6 = v15;
+      *error = null;
     }
 
 LABEL_15:
-    v15 = 0;
+    null = 0;
   }
 
   v20(v19);
-  return v15;
+  return null;
 }
 
 void __75__CIKernel_cachedKernelWithFunctionName_fromCIKernelLibrary_options_error___block_invoke(uint64_t a1)
@@ -426,10 +426,10 @@ void __75__CIKernel_cachedKernelWithFunctionName_fromCIKernelLibrary_options_err
   [(CIKernel *)&v4 dealloc];
 }
 
-- (id)_initWithString:(id)a3 andCIKernelLibrary:(id)a4 usingCruftCompatibility:(BOOL)a5 isInternal:(BOOL)a6
+- (id)_initWithString:(id)string andCIKernelLibrary:(id)library usingCruftCompatibility:(BOOL)compatibility isInternal:(BOOL)internal
 {
-  v6 = a6;
-  v7 = a5;
+  internalCopy = internal;
+  compatibilityCopy = compatibility;
   v65 = *MEMORY[0x1E69E9840];
   context = objc_autoreleasePoolPush();
   memset(v59, 0, sizeof(v59));
@@ -445,7 +445,7 @@ void __75__CIKernel_cachedKernelWithFunctionName_fromCIKernelLibrary_options_err
   *&v55.var12 = 0;
   v11 = CI_USE_MTL_DAG_FOR_CIKL_SRC();
   v12 = 0;
-  if (!a4 && v11 && !v6)
+  if (!library && v11 && !internalCopy)
   {
     v12 = can_use_metal();
   }
@@ -454,13 +454,13 @@ void __75__CIKernel_cachedKernelWithFunctionName_fromCIKernelLibrary_options_err
   v14 = uselocale(v13);
   Pool = fosl_filter_kernelpool_createPool();
   fosl_filter_kernelpool_addLibrary(Pool, aCopyright2022A);
-  if ((dyld_program_sdk_at_least() & 1) == 0 && (dyld_program_sdk_at_least() & 1) == 0 && !CI_DISABLE_CRUFT_COMPATABILITY() && v7)
+  if ((dyld_program_sdk_at_least() & 1) == 0 && (dyld_program_sdk_at_least() & 1) == 0 && !CI_DISABLE_CRUFT_COMPATABILITY() && compatibilityCopy)
   {
-    a3 = [a3 stringByReplacingOccurrencesOfString:@"__sampler" withString:@"sampler"];
+    string = [string stringByReplacingOccurrencesOfString:@"__sampler" withString:@"sampler"];
   }
 
-  fosl_filter_kernelpool_addString(Pool, [a3 UTF8String]);
-  if (check_and_emit_compile_errors(a3, Pool, 0))
+  fosl_filter_kernelpool_addString(Pool, [string UTF8String]);
+  if (check_and_emit_compile_errors(string, Pool, 0))
   {
     v16 = ci_logger_compile();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -526,7 +526,7 @@ LABEL_22:
 
   if (!v12)
   {
-    if (!a4)
+    if (!library)
     {
       goto LABEL_44;
     }
@@ -535,7 +535,7 @@ LABEL_22:
   }
 
   CIKLLibraryMaker::CIKLLibraryMaker(buf, Pool);
-  a4 = buf[0];
+  library = buf[0];
   if (!buf[0])
   {
     v35 = ci_logger_compile();
@@ -551,7 +551,7 @@ LABEL_22:
 
   CIKLLibraryMaker::~CIKLLibraryMaker(v26);
 LABEL_40:
-  if (CIKernelReflection::reflect(&v55, a4, v56.var2, 0))
+  if (CIKernelReflection::reflect(&v55, library, v56.var2, 0))
   {
     v27 = v55.var0;
     objc_opt_class();
@@ -594,7 +594,7 @@ LABEL_44:
   v61 = *&v56.var12;
 LABEL_45:
   v29 = *v56.var2;
-  if (v6)
+  if (internalCopy)
   {
     if (v29 != 95)
     {
@@ -742,12 +742,12 @@ LABEL_24:
   return self;
 }
 
-- (id)_initInternalWithString:(id)a3
+- (id)_initInternalWithString:(id)string
 {
-  if (check_cikl_string(a3, "[CIKernel _initInternalWithString:]"))
+  if (check_cikl_string(string, "[CIKernel _initInternalWithString:]"))
   {
 
-    return [(CIKernel *)self _initWithString:a3 andCIKernelLibrary:0 usingCruftCompatibility:0 isInternal:1];
+    return [(CIKernel *)self _initWithString:string andCIKernelLibrary:0 usingCruftCompatibility:0 isInternal:1];
   }
 
   else
@@ -757,18 +757,18 @@ LABEL_24:
   }
 }
 
-- (id)_initWithReflection:(CIKernelReflection *)a3
+- (id)_initWithReflection:(CIKernelReflection *)reflection
 {
-  v5 = *&a3->var3;
-  v9[0] = *&a3->var0;
+  v5 = *&reflection->var3;
+  v9[0] = *&reflection->var0;
   v9[1] = v5;
-  std::vector<CI::KernelArgumentType>::vector[abi:nn200100](__p, &a3->var5.var0);
+  std::vector<CI::KernelArgumentType>::vector[abi:nn200100](__p, &reflection->var5.var0);
   memset(v11, 0, sizeof(v11));
-  std::vector<std::string>::__init_with_size[abi:nn200100]<std::string*,std::string*>(v11, a3->var6.var0, a3->var6.var1, 0xAAAAAAAAAAAAAAABLL * ((a3->var6.var1 - a3->var6.var0) >> 3));
-  v6 = *&a3->var10;
-  v12 = *&a3->var7;
+  std::vector<std::string>::__init_with_size[abi:nn200100]<std::string*,std::string*>(v11, reflection->var6.var0, reflection->var6.var1, 0xAAAAAAAAAAAAAAABLL * ((reflection->var6.var1 - reflection->var6.var0) >> 3));
+  v6 = *&reflection->var10;
+  v12 = *&reflection->var7;
   v13 = v6;
-  v14 = *&a3->var12;
+  v14 = *&reflection->var12;
   v7 = [(CIKernel *)self _initWithReflection:v9 constants:0 constantTypes:0];
   v15 = v11;
   std::vector<std::string>::__destroy_vector::operator()[abi:nn200100](&v15);
@@ -781,20 +781,20 @@ LABEL_24:
   return v7;
 }
 
-+ (id)kernelsWithString:(id)a3 andCIKernelLibrary:(id)a4 messageLog:(id)a5
++ (id)kernelsWithString:(id)string andCIKernelLibrary:(id)library messageLog:(id)log
 {
   v8 = objc_autoreleasePoolPush();
-  if (!check_cikl_string(a3, "+[CIKernel kernelsWithString:andCIKernelLibrary:messageLog:]"))
+  if (!check_cikl_string(string, "+[CIKernel kernelsWithString:andCIKernelLibrary:messageLog:]"))
   {
     objc_autoreleasePoolPop(v8);
     return 0;
   }
 
   v9 = CI_USE_MTL_DAG_FOR_CIKL_SRC();
-  v10 = a4;
+  libraryCopy = library;
   v11 = 0;
-  v28 = v10;
-  if (!v10 && v9)
+  v28 = libraryCopy;
+  if (!libraryCopy && v9)
   {
     v11 = can_use_metal();
   }
@@ -803,8 +803,8 @@ LABEL_24:
   v13 = uselocale(v12);
   Pool = fosl_filter_kernelpool_createPool();
   fosl_filter_kernelpool_addLibrary(Pool, aCopyright2022A);
-  fosl_filter_kernelpool_addString(Pool, [a3 UTF8String]);
-  check_and_emit_compile_errors(a3, Pool, a5);
+  fosl_filter_kernelpool_addString(Pool, [string UTF8String]);
+  check_and_emit_compile_errors(string, Pool, log);
   NumKernels = fosl_filter_kernelpool_getNumKernels(Pool);
   v29 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:NumKernels];
   if (!v11)
@@ -1056,14 +1056,14 @@ LABEL_49:
   return v29;
 }
 
-+ (id)kernelsWithString:(id)a3 fromMetalLibraryData:(id)a4
++ (id)kernelsWithString:(id)string fromMetalLibraryData:(id)data
 {
   v16 = *MEMORY[0x1E69E9840];
   v7 = ci_signpost_log_kernel();
   if (os_signpost_enabled(v7))
   {
     *buf = 138543362;
-    v15 = [a1 description];
+    v15 = [self description];
     _os_signpost_emit_with_name_impl(&dword_19CC36000, v7, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "kernelsWithString:fromMetalLibraryData", "%{public}@", buf, 0xCu);
   }
 
@@ -1071,10 +1071,10 @@ LABEL_49:
   v10[1] = 3221225472;
   v11 = __51__CIKernel_kernelsWithString_fromMetalLibraryData___block_invoke;
   v12 = &unk_1E75C2AA0;
-  v13 = a1;
-  if (check_cikl_string(a3, "+[CIKernel kernelsWithString:fromMetalLibraryData:]"))
+  selfCopy = self;
+  if (check_cikl_string(string, "+[CIKernel kernelsWithString:fromMetalLibraryData:]"))
   {
-    v8 = [objc_opt_class() kernelsWithString:a3 andCIKernelLibrary:+[CIKernelLibrary libraryWithData:error:](CIKernelLibrary messageLog:{"libraryWithData:error:", a4, 0), 0}];
+    v8 = [objc_opt_class() kernelsWithString:string andCIKernelLibrary:+[CIKernelLibrary libraryWithData:error:](CIKernelLibrary messageLog:{"libraryWithData:error:", data, 0), 0}];
   }
 
   else
@@ -1099,16 +1099,16 @@ void __51__CIKernel_kernelsWithString_fromMetalLibraryData___block_invoke(uint64
   }
 }
 
-+ (id)kernelsWithString:(id)a3 messageLog:(id)a4
++ (id)kernelsWithString:(id)string messageLog:(id)log
 {
-  if (!check_cikl_string(a3, "+[CIKernel kernelsWithString:messageLog:]"))
+  if (!check_cikl_string(string, "+[CIKernel kernelsWithString:messageLog:]"))
   {
     return 0;
   }
 
   v6 = objc_opt_class();
 
-  return [v6 kernelsWithString:a3 andCIKernelLibrary:0 messageLog:a4];
+  return [v6 kernelsWithString:string andCIKernelLibrary:0 messageLog:log];
 }
 
 + (NSArray)kernelsWithString:(NSString *)string
@@ -1118,7 +1118,7 @@ void __51__CIKernel_kernelsWithString_fromMetalLibraryData___block_invoke(uint64
   if (os_signpost_enabled(v5))
   {
     *buf = 138543362;
-    v13 = [a1 description];
+    v13 = [self description];
     _os_signpost_emit_with_name_impl(&dword_19CC36000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "kernelsWithString", "%{public}@", buf, 0xCu);
   }
 
@@ -1126,7 +1126,7 @@ void __51__CIKernel_kernelsWithString_fromMetalLibraryData___block_invoke(uint64
   v8[1] = 3221225472;
   v9 = __30__CIKernel_kernelsWithString___block_invoke;
   v10 = &unk_1E75C2AA0;
-  v11 = a1;
+  selfCopy = self;
   if (check_cikl_string(string, "+[CIKernel kernelsWithString:]"))
   {
     v6 = [objc_opt_class() kernelsWithString:string andCIKernelLibrary:0 messageLog:0];
@@ -1161,7 +1161,7 @@ void __30__CIKernel_kernelsWithString___block_invoke(uint64_t a1)
   if (os_signpost_enabled(v7))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = [a1 description];
+    *(&buf + 4) = [self description];
     _os_signpost_emit_with_name_impl(&dword_19CC36000, v7, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "kernelsWithMetalString", "%{public}@", &buf, 0xCu);
   }
 
@@ -1170,7 +1170,7 @@ void __30__CIKernel_kernelsWithString___block_invoke(uint64_t a1)
   v28[1] = 3221225472;
   v29 = __41__CIKernel_kernelsWithMetalString_error___block_invoke;
   v30 = &unk_1E75C2AA0;
-  v31 = a1;
+  selfCopy = self;
   v8 = [CIKernelLibrary libraryWithSource:source error:&v27];
   v9 = v8;
   if (!v8)
@@ -1205,8 +1205,8 @@ LABEL_21:
     goto LABEL_25;
   }
 
-  v10 = [(CIKernelLibrary *)v8 functionNames];
-  v11 = [v10 count];
+  functionNames = [(CIKernelLibrary *)v8 functionNames];
+  v11 = [functionNames count];
   if (!v11)
   {
     v17 = @"Cannot find a valid stitchable Metal function in the source";
@@ -1224,7 +1224,7 @@ LABEL_21:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v13 = [v10 countByEnumeratingWithState:&v23 objects:v32 count:16];
+  v13 = [functionNames countByEnumeratingWithState:&v23 objects:v32 count:16];
   if (v13)
   {
     v14 = *v24;
@@ -1234,7 +1234,7 @@ LABEL_21:
       {
         if (*v24 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(functionNames);
         }
 
         v16 = [CIKernel kernelWithFunctionName:*(*(&v23 + 1) + 8 * i) fromCIKernelLibrary:v9 options:0 error:&v27];
@@ -1244,7 +1244,7 @@ LABEL_21:
         }
       }
 
-      v13 = [v10 countByEnumeratingWithState:&v23 objects:v32 count:16];
+      v13 = [functionNames countByEnumeratingWithState:&v23 objects:v32 count:16];
     }
 
     while (v13);
@@ -1283,12 +1283,12 @@ void __41__CIKernel_kernelsWithMetalString_error___block_invoke(uint64_t a1)
   }
 }
 
-- (CIKernel)initWithString:(id)a3
+- (CIKernel)initWithString:(id)string
 {
-  if (check_cikl_string(a3, "[CIKernel initWithString:]"))
+  if (check_cikl_string(string, "[CIKernel initWithString:]"))
   {
 
-    return [(CIKernel *)self _initWithString:a3 andCIKernelLibrary:0 usingCruftCompatibility:1 isInternal:0];
+    return [(CIKernel *)self _initWithString:string andCIKernelLibrary:0 usingCruftCompatibility:1 isInternal:0];
   }
 
   else
@@ -1305,7 +1305,7 @@ void __41__CIKernel_kernelsWithMetalString_error___block_invoke(uint64_t a1)
   if (os_signpost_enabled(v5))
   {
     *buf = 138543362;
-    v14 = [a1 description];
+    v14 = [self description];
     _os_signpost_emit_with_name_impl(&dword_19CC36000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "kernelWithString", "%{public}@", buf, 0xCu);
   }
 
@@ -1313,10 +1313,10 @@ void __41__CIKernel_kernelsWithMetalString_error___block_invoke(uint64_t a1)
   v9[1] = 3221225472;
   v10 = __29__CIKernel_kernelWithString___block_invoke;
   v11 = &unk_1E75C2AA0;
-  v12 = a1;
+  selfCopy = self;
   if (check_cikl_string(string, "+[CIKernel kernelWithString:]"))
   {
-    v6 = [[a1 alloc] initWithString:string];
+    v6 = [[self alloc] initWithString:string];
     if (v6)
     {
       v7 = [objc_opt_class() description];
@@ -1346,14 +1346,14 @@ void __29__CIKernel_kernelWithString___block_invoke(uint64_t a1)
   }
 }
 
-+ (CIKernel)kernelWithString:(id)a3 fromMetalLibraryData:(id)a4
++ (CIKernel)kernelWithString:(id)string fromMetalLibraryData:(id)data
 {
   v17 = *MEMORY[0x1E69E9840];
   v7 = ci_signpost_log_kernel();
   if (os_signpost_enabled(v7))
   {
     *buf = 138543362;
-    v16 = [a1 description];
+    v16 = [self description];
     _os_signpost_emit_with_name_impl(&dword_19CC36000, v7, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "kernelWithString:fromMetalLibraryData", "%{public}@", buf, 0xCu);
   }
 
@@ -1361,17 +1361,17 @@ void __29__CIKernel_kernelWithString___block_invoke(uint64_t a1)
   v11[1] = 3221225472;
   v12 = __50__CIKernel_kernelWithString_fromMetalLibraryData___block_invoke;
   v13 = &unk_1E75C2AA0;
-  v14 = a1;
-  if (check_cikl_string(a3, "+[CIKernel kernelWithString:fromMetalLibraryData:]"))
+  selfCopy = self;
+  if (check_cikl_string(string, "+[CIKernel kernelWithString:fromMetalLibraryData:]"))
   {
-    if (a4)
+    if (data)
     {
-      v8 = [[a1 alloc] _initWithString:a3 andCIKernelLibrary:+[CIKernelLibrary libraryWithData:error:](CIKernelLibrary usingCruftCompatibility:"libraryWithData:error:" isInternal:{a4, 0), 0, 0}];
+      v8 = [[self alloc] _initWithString:string andCIKernelLibrary:+[CIKernelLibrary libraryWithData:error:](CIKernelLibrary usingCruftCompatibility:"libraryWithData:error:" isInternal:{data, 0), 0, 0}];
     }
 
     else
     {
-      v8 = [a1 kernelWithString:a3];
+      v8 = [self kernelWithString:string];
     }
 
     v9 = v8;
@@ -1416,7 +1416,7 @@ void __50__CIKernel_kernelWithString_fromMetalLibraryData___block_invoke(uint64_
   return [v10 kernelWithFunctionName:name fromMetalLibraryData:data options:objc_msgSend(MEMORY[0x1E695DF20] error:{"dictionaryWithObjects:forKeys:count:", v13, &v12, 1), error}];
 }
 
-+ (CIKernel)kernelWithFunctionName:(id)a3 fromMetalLibraryData:(id)a4 outputGroupSize:(CGSize)a5 error:(id *)a6
++ (CIKernel)kernelWithFunctionName:(id)name fromMetalLibraryData:(id)data outputGroupSize:(CGSize)size error:(id *)error
 {
   v6 = ci_logger_api();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1427,24 +1427,24 @@ void __50__CIKernel_kernelWithString_fromMetalLibraryData___block_invoke(uint64_
   return 0;
 }
 
-+ (CIKernel)kernelWithFunctionName:(id)a3 fromMetalLibraryData:(id)a4 constants:(id)a5 error:(id *)a6
++ (CIKernel)kernelWithFunctionName:(id)name fromMetalLibraryData:(id)data constants:(id)constants error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"kCIKernelFunctionConstants";
-  v8[0] = a5;
-  return [objc_opt_class() kernelWithFunctionName:a3 fromMetalLibraryData:a4 options:objc_msgSend(MEMORY[0x1E695DF20] error:{"dictionaryWithObjects:forKeys:count:", v8, &v7, 1), a6}];
+  v8[0] = constants;
+  return [objc_opt_class() kernelWithFunctionName:name fromMetalLibraryData:data options:objc_msgSend(MEMORY[0x1E695DF20] error:{"dictionaryWithObjects:forKeys:count:", v8, &v7, 1), error}];
 }
 
-+ (CIKernel)kernelWithFunctionName:(id)a3 fromMetalLibraryData:(id)a4 options:(id)a5 error:(id *)a6
++ (CIKernel)kernelWithFunctionName:(id)name fromMetalLibraryData:(id)data options:(id)options error:(id *)error
 {
   v35[2] = *MEMORY[0x1E69E9840];
   v11 = ci_signpost_log_kernel();
   if (os_signpost_enabled(v11))
   {
     *buf = 138543618;
-    *&buf[4] = [a1 description];
+    *&buf[4] = [self description];
     *&buf[12] = 2114;
-    *&buf[14] = a3;
+    *&buf[14] = name;
     _os_signpost_emit_with_name_impl(&dword_19CC36000, v11, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "kernelWithFunctionName:fromMetalLibraryData", "%{public}@ %{public}@", buf, 0x16u);
   }
 
@@ -1453,16 +1453,16 @@ void __50__CIKernel_kernelWithString_fromMetalLibraryData___block_invoke(uint64_
   v29[1] = 3221225472;
   v30 = __70__CIKernel_kernelWithFunctionName_fromMetalLibraryData_options_error___block_invoke;
   v31 = &unk_1E75C20F8;
-  v32 = a1;
-  v33 = a3;
-  v12 = [CIKernelLibrary libraryWithData:a4 error:&v28];
+  selfCopy = self;
+  nameCopy = name;
+  v12 = [CIKernelLibrary libraryWithData:data error:&v28];
   if (v12)
   {
-    v13 = [objc_opt_class() kernelWithFunctionName:a3 fromCIKernelLibrary:v12 options:a5 error:a6];
+    v13 = [objc_opt_class() kernelWithFunctionName:name fromCIKernelLibrary:v12 options:options error:error];
     if (v13)
     {
       v14 = dyld_program_sdk_at_least();
-      if (a6)
+      if (error)
       {
         v15 = v14;
       }
@@ -1474,14 +1474,14 @@ void __50__CIKernel_kernelWithString_fromMetalLibraryData___block_invoke(uint64_
 
       if ((v15 & 1) == 0)
       {
-        *a6 = 0;
+        *error = 0;
       }
     }
   }
 
   else
   {
-    if (a6)
+    if (error)
     {
       if (v28)
       {
@@ -1501,7 +1501,7 @@ void __50__CIKernel_kernelWithString_fromMetalLibraryData___block_invoke(uint64_
       }
 
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:buf forKeys:v35 count:v17];
-      *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CIKernel" code:6 userInfo:v18];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CIKernel" code:6 userInfo:v18];
     }
 
     v19 = ci_logger_api();
@@ -1533,41 +1533,41 @@ void __70__CIKernel_kernelWithFunctionName_fromMetalLibraryData_options_error___
   }
 }
 
-+ (CIKernel)kernelWithFunctionName:(id)a3 fromMetalLibrary:(id)a4 error:(id *)a5
++ (CIKernel)kernelWithFunctionName:(id)name fromMetalLibrary:(id)library error:(id *)error
 {
   v8 = objc_opt_class();
 
-  return [v8 kernelWithFunctionName:a3 fromMetalLibrary:a4 options:0 error:a5];
+  return [v8 kernelWithFunctionName:name fromMetalLibrary:library options:0 error:error];
 }
 
-+ (CIKernel)kernelWithFunctionName:(id)a3 fromMetalLibrary:(id)a4 outputPixelFormat:(int)a5 error:(id *)a6
++ (CIKernel)kernelWithFunctionName:(id)name fromMetalLibrary:(id)library outputPixelFormat:(int)format error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v9 = CI::format_modernize(*&a5, "+[CIKernel kernelWithFunctionName:fromMetalLibrary:outputPixelFormat:error:]", a3);
+  v9 = CI::format_modernize(*&format, "+[CIKernel kernelWithFunctionName:fromMetalLibrary:outputPixelFormat:error:]", name);
   v10 = objc_opt_class();
   v12 = @"kCIKernelOutputFormat";
   v13[0] = [MEMORY[0x1E696AD98] numberWithInt:v9];
-  return [v10 kernelWithFunctionName:a3 fromMetalLibrary:a4 options:objc_msgSend(MEMORY[0x1E695DF20] error:{"dictionaryWithObjects:forKeys:count:", v13, &v12, 1), a6}];
+  return [v10 kernelWithFunctionName:name fromMetalLibrary:library options:objc_msgSend(MEMORY[0x1E695DF20] error:{"dictionaryWithObjects:forKeys:count:", v13, &v12, 1), error}];
 }
 
-+ (CIKernel)kernelWithFunctionName:(id)a3 fromMetalLibrary:(id)a4 constants:(id)a5 error:(id *)a6
++ (CIKernel)kernelWithFunctionName:(id)name fromMetalLibrary:(id)library constants:(id)constants error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"kCIKernelFunctionConstants";
-  v8[0] = a5;
-  return [objc_opt_class() kernelWithFunctionName:a3 fromMetalLibrary:a4 options:objc_msgSend(MEMORY[0x1E695DF20] error:{"dictionaryWithObjects:forKeys:count:", v8, &v7, 1), a6}];
+  v8[0] = constants;
+  return [objc_opt_class() kernelWithFunctionName:name fromMetalLibrary:library options:objc_msgSend(MEMORY[0x1E695DF20] error:{"dictionaryWithObjects:forKeys:count:", v8, &v7, 1), error}];
 }
 
-+ (CIKernel)kernelWithFunctionName:(id)a3 fromMetalLibrary:(id)a4 options:(id)a5 error:(id *)a6
++ (CIKernel)kernelWithFunctionName:(id)name fromMetalLibrary:(id)library options:(id)options error:(id *)error
 {
   v33[2] = *MEMORY[0x1E69E9840];
   v11 = ci_signpost_log_kernel();
   if (os_signpost_enabled(v11))
   {
     *buf = 138543618;
-    *&buf[4] = [a1 description];
+    *&buf[4] = [self description];
     *&buf[12] = 2114;
-    *&buf[14] = a3;
+    *&buf[14] = name;
     _os_signpost_emit_with_name_impl(&dword_19CC36000, v11, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "kernelWithFunctionName:fromMetalLibrary", "%{public}@ %{public}@", buf, 0x16u);
   }
 
@@ -1576,17 +1576,17 @@ void __70__CIKernel_kernelWithFunctionName_fromMetalLibraryData_options_error___
   v27[1] = 3221225472;
   v28 = __66__CIKernel_kernelWithFunctionName_fromMetalLibrary_options_error___block_invoke;
   v29 = &unk_1E75C20F8;
-  v30 = a1;
-  v31 = a3;
-  v12 = [CIKernelLibrary libraryWithURL:a4 error:&v26];
+  selfCopy = self;
+  nameCopy = name;
+  v12 = [CIKernelLibrary libraryWithURL:library error:&v26];
   if (v12)
   {
-    v13 = [objc_opt_class() kernelWithFunctionName:a3 fromCIKernelLibrary:v12 options:a5 error:a6];
+    v13 = [objc_opt_class() kernelWithFunctionName:name fromCIKernelLibrary:v12 options:options error:error];
   }
 
   else
   {
-    if (a6)
+    if (error)
     {
       if (v26)
       {
@@ -1606,7 +1606,7 @@ void __70__CIKernel_kernelWithFunctionName_fromMetalLibraryData_options_error___
       }
 
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:buf forKeys:v33 count:v15];
-      *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CIKernel" code:6 userInfo:v16];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CIKernel" code:6 userInfo:v16];
     }
 
     v17 = ci_logger_api();
@@ -1638,41 +1638,41 @@ void __66__CIKernel_kernelWithFunctionName_fromMetalLibrary_options_error___bloc
   }
 }
 
-+ (id)cachedKernelWithFunctionName:(id)a3 fromMetalLibrary:(id)a4 error:(id *)a5
++ (id)cachedKernelWithFunctionName:(id)name fromMetalLibrary:(id)library error:(id *)error
 {
   v8 = objc_opt_class();
 
-  return [v8 cachedKernelWithFunctionName:a3 fromMetalLibrary:a4 options:0 error:a5];
+  return [v8 cachedKernelWithFunctionName:name fromMetalLibrary:library options:0 error:error];
 }
 
-+ (id)cachedKernelWithFunctionName:(id)a3 fromMetalLibrary:(id)a4 outputPixelFormat:(int)a5 error:(id *)a6
++ (id)cachedKernelWithFunctionName:(id)name fromMetalLibrary:(id)library outputPixelFormat:(int)format error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v9 = CI::format_modernize(*&a5, "+[CIKernel cachedKernelWithFunctionName:fromMetalLibrary:outputPixelFormat:error:]", a3);
+  v9 = CI::format_modernize(*&format, "+[CIKernel cachedKernelWithFunctionName:fromMetalLibrary:outputPixelFormat:error:]", name);
   v10 = objc_opt_class();
   v12 = @"kCIKernelOutputFormat";
   v13[0] = [MEMORY[0x1E696AD98] numberWithInt:v9];
-  return [v10 cachedKernelWithFunctionName:a3 fromMetalLibrary:a4 options:objc_msgSend(MEMORY[0x1E695DF20] error:{"dictionaryWithObjects:forKeys:count:", v13, &v12, 1), a6}];
+  return [v10 cachedKernelWithFunctionName:name fromMetalLibrary:library options:objc_msgSend(MEMORY[0x1E695DF20] error:{"dictionaryWithObjects:forKeys:count:", v13, &v12, 1), error}];
 }
 
-+ (id)cachedKernelWithFunctionName:(id)a3 fromMetalLibrary:(id)a4 constants:(id)a5 error:(id *)a6
++ (id)cachedKernelWithFunctionName:(id)name fromMetalLibrary:(id)library constants:(id)constants error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"kCIKernelFunctionConstants";
-  v8[0] = a5;
-  return [objc_opt_class() cachedKernelWithFunctionName:a3 fromMetalLibrary:a4 options:objc_msgSend(MEMORY[0x1E695DF20] error:{"dictionaryWithObjects:forKeys:count:", v8, &v7, 1), a6}];
+  v8[0] = constants;
+  return [objc_opt_class() cachedKernelWithFunctionName:name fromMetalLibrary:library options:objc_msgSend(MEMORY[0x1E695DF20] error:{"dictionaryWithObjects:forKeys:count:", v8, &v7, 1), error}];
 }
 
-+ (id)cachedKernelWithFunctionName:(id)a3 fromMetalLibrary:(id)a4 options:(id)a5 error:(id *)a6
++ (id)cachedKernelWithFunctionName:(id)name fromMetalLibrary:(id)library options:(id)options error:(id *)error
 {
   v33[2] = *MEMORY[0x1E69E9840];
   v11 = ci_signpost_log_kernel();
   if (os_signpost_enabled(v11))
   {
     *buf = 138543618;
-    *&buf[4] = [a1 description];
+    *&buf[4] = [self description];
     *&buf[12] = 2114;
-    *&buf[14] = a3;
+    *&buf[14] = name;
     _os_signpost_emit_with_name_impl(&dword_19CC36000, v11, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "kernelWithFunctionName:fromMetalLibrary", "%{public}@ %{public}@", buf, 0x16u);
   }
 
@@ -1681,17 +1681,17 @@ void __66__CIKernel_kernelWithFunctionName_fromMetalLibrary_options_error___bloc
   v27[1] = 3221225472;
   v28 = __72__CIKernel_cachedKernelWithFunctionName_fromMetalLibrary_options_error___block_invoke;
   v29 = &unk_1E75C20F8;
-  v30 = a1;
-  v31 = a3;
-  v12 = [CIKernelLibrary cachedLibraryWithURL:a4 error:&v26];
+  selfCopy = self;
+  nameCopy = name;
+  v12 = [CIKernelLibrary cachedLibraryWithURL:library error:&v26];
   if (v12)
   {
-    v13 = [objc_opt_class() cachedKernelWithFunctionName:a3 fromCIKernelLibrary:v12 options:a5 error:a6];
+    v13 = [objc_opt_class() cachedKernelWithFunctionName:name fromCIKernelLibrary:v12 options:options error:error];
   }
 
   else
   {
-    if (a6)
+    if (error)
     {
       if (v26)
       {
@@ -1711,7 +1711,7 @@ void __66__CIKernel_kernelWithFunctionName_fromMetalLibrary_options_error___bloc
       }
 
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:buf forKeys:v33 count:v15];
-      *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CIKernel" code:6 userInfo:v16];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CIKernel" code:6 userInfo:v16];
     }
 
     v17 = ci_logger_api();
@@ -1743,18 +1743,18 @@ void __72__CIKernel_cachedKernelWithFunctionName_fromMetalLibrary_options_error_
   }
 }
 
-+ (CIKernel)kernelWithFunctionName:(id)a3 fromCIKernelLibrary:(id)a4 options:(id)a5 error:(id *)a6
++ (CIKernel)kernelWithFunctionName:(id)name fromCIKernelLibrary:(id)library options:(id)options error:(id *)error
 {
   v133 = *MEMORY[0x1E69E9840];
   v10 = objc_autoreleasePoolPush();
-  v112 = [a5 objectForKeyedSubscript:@"kCIKernelFunctionConstants"];
+  v112 = [options objectForKeyedSubscript:@"kCIKernelFunctionConstants"];
   memset(&v129.var2, 0, 88);
   *&v129.var10 = vdupq_n_s64(1uLL);
   *&v129.var12 = 0;
-  v11 = [a5 objectForKeyedSubscript:@"kCIKernelOutputFormat"];
+  v11 = [options objectForKeyedSubscript:@"kCIKernelOutputFormat"];
   if (!CI_ENABLE_METAL_DAG())
   {
-    CIKernelError(a6, 7u, &cfstr_CannotInitiali_2.isa);
+    CIKernelError(error, 7u, &cfstr_CannotInitiali_2.isa);
     v12 = ci_logger_api();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -1764,7 +1764,7 @@ void __72__CIKernel_cachedKernelWithFunctionName_fromMetalLibrary_options_error_
     goto LABEL_7;
   }
 
-  if (!CIKernelReflection::reflect(&v129, a4, [a3 UTF8String], a6))
+  if (!CIKernelReflection::reflect(&v129, library, [name UTF8String], error))
   {
 LABEL_7:
     v20 = 0;
@@ -1781,8 +1781,8 @@ LABEL_7:
     obj = 0;
   }
 
-  v24 = [v11 intValue];
-  v26 = CI::format_modernize(v24, "+[CIKernel kernelWithFunctionName:fromCIKernelLibrary:options:error:]", v25);
+  intValue = [v11 intValue];
+  v26 = CI::format_modernize(intValue, "+[CIKernel kernelWithFunctionName:fromCIKernelLibrary:options:error:]", v25);
   if (v26)
   {
     v129.var9 = v26;
@@ -1802,7 +1802,7 @@ LABEL_7:
     v29 = objc_opt_class();
     if (v29 == objc_opt_class() && v129.var0 == 2)
     {
-      CIKernelError(a6, 0xCu, &cfstr_CannotInitiali_3.isa);
+      CIKernelError(error, 0xCu, &cfstr_CannotInitiali_3.isa);
       v30 = ci_logger_api();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
@@ -1815,7 +1815,7 @@ LABEL_7:
     v38 = objc_opt_class();
     if (v38 == objc_opt_class() && v129.var0 == 3)
     {
-      CIKernelError(a6, 0xDu, &cfstr_CannotInitiali_4.isa);
+      CIKernelError(error, 0xDu, &cfstr_CannotInitiali_4.isa);
       v39 = ci_logger_api();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
@@ -1828,7 +1828,7 @@ LABEL_7:
     v47 = objc_opt_class();
     if (v47 == objc_opt_class() && v129.var0 == 1)
     {
-      CIKernelError(a6, 0xEu, &cfstr_CannotInitiali_5.isa);
+      CIKernelError(error, 0xEu, &cfstr_CannotInitiali_5.isa);
       v48 = ci_logger_api();
       if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
       {
@@ -1841,7 +1841,7 @@ LABEL_7:
     v56 = objc_opt_class();
     if (v56 == objc_opt_class() && v129.var0 == 1)
     {
-      CIKernelError(a6, 0xFu, &cfstr_CannotInitiali_6.isa);
+      CIKernelError(error, 0xFu, &cfstr_CannotInitiali_6.isa);
       v57 = ci_logger_api();
       if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
       {
@@ -1854,7 +1854,7 @@ LABEL_7:
     v65 = objc_opt_class();
     if (v65 == objc_opt_class() && v129.var0 == 1)
     {
-      CIKernelError(a6, 0x10u, &cfstr_CannotInitiali_7.isa);
+      CIKernelError(error, 0x10u, &cfstr_CannotInitiali_7.isa);
       v66 = ci_logger_api();
       if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
       {
@@ -1867,7 +1867,7 @@ LABEL_7:
     v74 = objc_opt_class();
     if (v74 == objc_opt_class() && v129.var0 == 2)
     {
-      CIKernelError(a6, 0x11u, &cfstr_CannotInitiali_8.isa);
+      CIKernelError(error, 0x11u, &cfstr_CannotInitiali_8.isa);
       v75 = ci_logger_api();
       if (os_log_type_enabled(v75, OS_LOG_TYPE_ERROR))
       {
@@ -1880,7 +1880,7 @@ LABEL_7:
     v83 = objc_opt_class();
     if (v83 == objc_opt_class() && v129.var0 == 3)
     {
-      CIKernelError(a6, 0x12u, &cfstr_CannotInitiali_9.isa);
+      CIKernelError(error, 0x12u, &cfstr_CannotInitiali_9.isa);
       v84 = ci_logger_api();
       if (os_log_type_enabled(v84, OS_LOG_TYPE_ERROR))
       {
@@ -1916,7 +1916,7 @@ LABEL_7:
         {
           if (v97 - 57 <= 0xFFFFFFC9)
           {
-            CIKernelError(a6, 8u, &cfstr_CannotInitiali_10.isa, v97);
+            CIKernelError(error, 8u, &cfstr_CannotInitiali_10.isa, v97);
             v108 = ci_logger_api();
             if (os_log_type_enabled(v108, OS_LOG_TYPE_ERROR))
             {
@@ -1929,7 +1929,7 @@ LABEL_7:
           if (!v96)
           {
 LABEL_86:
-            CIKernelError(a6, 9u, &cfstr_CannotInitiali_11.isa, v95);
+            CIKernelError(error, 9u, &cfstr_CannotInitiali_11.isa, v95);
             v105 = ci_logger_api();
             if (os_log_type_enabled(v105, OS_LOG_TYPE_ERROR))
             {
@@ -1953,7 +1953,7 @@ LABEL_86:
           if (v99)
           {
             v109 = v93;
-            v110 = a6;
+            errorCopy = error;
             v100 = *v122;
             v101 = 1;
             do
@@ -1973,12 +1973,12 @@ LABEL_86:
             }
 
             while (v99);
-            a6 = v110;
+            error = errorCopy;
             v93 = v109;
             if ((v101 & 1) == 0)
             {
 LABEL_90:
-              CIKernelError(a6, 0xBu, &cfstr_CannotInitiali_13.isa, v95);
+              CIKernelError(error, 0xBu, &cfstr_CannotInitiali_13.isa, v95);
               v107 = ci_logger_api();
               if (os_log_type_enabled(v107, OS_LOG_TYPE_ERROR))
               {
@@ -2000,7 +2000,7 @@ LABEL_90:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            CIKernelError(a6, 0xAu, &cfstr_CannotInitiali_12.isa, v95);
+            CIKernelError(error, 0xAu, &cfstr_CannotInitiali_12.isa, v95);
             v106 = ci_logger_api();
             if (os_log_type_enabled(v106, OS_LOG_TYPE_ERROR))
             {
@@ -2052,9 +2052,9 @@ LABEL_90:
   }
 
 LABEL_8:
-  if (a6)
+  if (error)
   {
-    v21 = *a6;
+    v21 = *error;
     p_var6 = &v129.var6;
     std::vector<std::string>::__destroy_vector::operator()[abi:nn200100](&p_var6);
     if (v129.var5.var0)
@@ -2064,7 +2064,7 @@ LABEL_8:
     }
 
     objc_autoreleasePoolPop(v10);
-    v22 = *a6;
+    v22 = *error;
   }
 
   else
@@ -2125,14 +2125,14 @@ LABEL_8:
     }
 
 LABEL_10:
-    v6 = MEMORY[0x1E695E0F0];
+    functionNames = MEMORY[0x1E695E0F0];
     goto LABEL_11;
   }
 
-  v6 = [(CIKernelLibrary *)v5 functionNames];
+  functionNames = [(CIKernelLibrary *)v5 functionNames];
 LABEL_11:
   __44__CIKernel_kernelNamesFromMetalLibraryData___block_invoke();
-  return v6;
+  return functionNames;
 }
 
 void __44__CIKernel_kernelNamesFromMetalLibraryData___block_invoke()
@@ -2145,7 +2145,7 @@ void __44__CIKernel_kernelNamesFromMetalLibraryData___block_invoke()
   }
 }
 
-+ (id)kernelNamesFromMetalLibrary:(id)a3
++ (id)kernelNamesFromMetalLibrary:(id)library
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = ci_signpost_log_kernel();
@@ -2168,7 +2168,7 @@ void __44__CIKernel_kernelNamesFromMetalLibraryData___block_invoke()
   }
 
   v18 = 0;
-  v5 = [CIKernelLibrary libraryWithURL:a3 error:&v18];
+  v5 = [CIKernelLibrary libraryWithURL:library error:&v18];
   if (!v5)
   {
     v15 = ci_logger_api();
@@ -2188,14 +2188,14 @@ void __44__CIKernel_kernelNamesFromMetalLibraryData___block_invoke()
     }
 
 LABEL_13:
-    v6 = MEMORY[0x1E695E0F0];
+    functionNames = MEMORY[0x1E695E0F0];
     goto LABEL_14;
   }
 
-  v6 = [(CIKernelLibrary *)v5 functionNames];
+  functionNames = [(CIKernelLibrary *)v5 functionNames];
 LABEL_14:
   __40__CIKernel_kernelNamesFromMetalLibrary___block_invoke();
-  return v6;
+  return functionNames;
 }
 
 void __40__CIKernel_kernelNamesFromMetalLibrary___block_invoke()
@@ -2240,7 +2240,7 @@ void __40__CIKernel_kernelNamesFromMetalLibrary___block_invoke()
   return v3 & 1;
 }
 
-- (void)setPerservesAlpha:(BOOL)a3
+- (void)setPerservesAlpha:(BOOL)alpha
 {
   v11 = *MEMORY[0x1E69E9840];
   priv = self->_priv;
@@ -2269,7 +2269,7 @@ LABEL_6:
 
   if (CI::Kernel::num_image_arguments(priv) > 0 || (*(*priv + 72))(priv))
   {
-    CI::Kernel::set_preserves_alpha(priv, a3);
+    CI::Kernel::set_preserves_alpha(priv, alpha);
   }
 }
 
@@ -2289,13 +2289,13 @@ LABEL_6:
   return v3 & 1;
 }
 
-- (void)setPreservesRange:(BOOL)a3
+- (void)setPreservesRange:(BOOL)range
 {
   priv = self->_priv;
   if (CI::Kernel::num_image_arguments(priv) > 0 || (*(*priv + 72))(priv))
   {
 
-    CI::Kernel::set_preserves_range(priv, a3);
+    CI::Kernel::set_preserves_range(priv, range);
   }
 }
 
@@ -2315,13 +2315,13 @@ LABEL_6:
   return v3 & 1;
 }
 
-- (void)setCanReduceOutputChannels:(BOOL)a3
+- (void)setCanReduceOutputChannels:(BOOL)channels
 {
   priv = self->_priv;
   if (CI::Kernel::num_image_arguments(priv) > 0 || (*(*priv + 72))(priv))
   {
 
-    CI::Kernel::set_can_reduce_output_channels(priv, a3);
+    CI::Kernel::set_can_reduce_output_channels(priv, channels);
   }
 }
 
@@ -2380,13 +2380,13 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)_isValidOutputPixelFormat:(int)a3
+- (BOOL)_isValidOutputPixelFormat:(int)format
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (format)
   {
     v4 = 0;
-    while (dword_19CF278D8[v4] != a3)
+    while (dword_19CF278D8[v4] != format)
     {
       if (++v4 == 6)
       {
@@ -2412,7 +2412,7 @@ LABEL_6:
         if (v9)
         {
           v11 = 136446466;
-          v12 = CI::name_for_format(a3);
+          v12 = CI::name_for_format(format);
           v13 = 2112;
           v14 = v5;
           _os_log_impl(&dword_19CC36000, v8, OS_LOG_TYPE_INFO, "kCIKernelOutputFormat value (%{public}s) is not supported.Use one of these formats instead: %@", &v11, 0x16u);
@@ -2428,15 +2428,15 @@ LABEL_6:
   return v9;
 }
 
-- (int)_outputFormatUsingDictionary:(id)a3 andKernel:(void *)a4
+- (int)_outputFormatUsingDictionary:(id)dictionary andKernel:(void *)kernel
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = [objc_msgSend(a3 objectForKey:{@"kCIKernelOutputFormat", "longValue"}];
+  v6 = [objc_msgSend(dictionary objectForKey:{@"kCIKernelOutputFormat", "longValue"}];
   v7 = [(CIKernel *)self _isValidOutputPixelFormat:v6];
-  v8 = *(a4 + 28);
+  v8 = *(kernel + 28);
   if (!v7 || v6 == 0)
   {
-    if (!v8 || ![(CIKernel *)self _isValidOutputPixelFormat:*(a4 + 28)])
+    if (!v8 || ![(CIKernel *)self _isValidOutputPixelFormat:*(kernel + 28)])
     {
       return 0;
     }
@@ -2452,7 +2452,7 @@ LABEL_6:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
           v12 = CI::name_for_format(v6);
-          v13 = CI::name_for_format(*(a4 + 28));
+          v13 = CI::name_for_format(*(kernel + 28));
           v14 = 136446466;
           v15 = v12;
           v16 = 2080;
@@ -2476,10 +2476,10 @@ LABEL_6:
   }
 }
 
-- (id)applyWithExtent:(CGRect)a3 roiCallback:(id)a4 arguments:(id)a5 options:(id)a6
+- (id)applyWithExtent:(CGRect)extent roiCallback:(id)callback arguments:(id)arguments options:(id)options
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (CGRectIsEmpty(a3))
+  if (CGRectIsEmpty(extent))
   {
 
     return +[CIImage emptyImage];
@@ -2488,10 +2488,10 @@ LABEL_6:
   else
   {
     priv = self->_priv;
-    v11 = [a5 count];
+    v11 = [arguments count];
     if (CI::Kernel::num_apply_arguments(priv) == v11)
     {
-      v18 = a4;
+      callbackCopy = callback;
       if (v11 < 1)
       {
 LABEL_24:
@@ -2516,20 +2516,20 @@ LABEL_24:
           type = *(priv[8] + 4 * v12);
         }
 
-        if (*(*priv + 72))(priv) && !priv[4] && (type == 15 || type == 8) && ([a5 objectAtIndexedSubscript:{v12, v18}], objc_opt_class(), (objc_opt_isKindOfClass()))
+        if (*(*priv + 72))(priv) && !priv[4] && (type == 15 || type == 8) && ([arguments objectAtIndexedSubscript:{v12, callbackCopy}], objc_opt_class(), (objc_opt_isKindOfClass()))
         {
           CI::Kernel::set_argument_type(priv, v12, 1);
           CI::Kernel::set_half_color_inputs(priv, type == 15);
         }
 
-        else if ((verify_argument_type([a5 objectAtIndexedSubscript:{v12, v18}], type, 0) & 1) == 0)
+        else if ((verify_argument_type([arguments objectAtIndexedSubscript:{v12, callbackCopy}], type, 0) & 1) == 0)
         {
           v15 = ci_logger_api();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
           {
             v16 = priv[3];
             v17 = expected_argument_type(type);
-            [a5 objectAtIndexedSubscript:v12];
+            [arguments objectAtIndexedSubscript:v12];
             __src = 136447234;
             __src_4 = "[CIKernel applyWithExtent:roiCallback:arguments:options:]";
             v21 = 2082;
@@ -2943,7 +2943,7 @@ uint64_t __28__CIKernel_debugDescription__block_invoke(uint64_t a1, FILE *a2)
   return result;
 }
 
-+ (id)SDOFV2MetalKernelNamed:(id)a3
++ (id)SDOFV2MetalKernelNamed:(id)named
 {
   if (SDOFV2MetalLibURL::onceToken != -1)
   {
@@ -2955,10 +2955,10 @@ uint64_t __28__CIKernel_debugDescription__block_invoke(uint64_t a1, FILE *a2)
     return 0;
   }
 
-  return [CIKernel cachedKernelWithFunctionName:"cachedKernelWithFunctionName:fromMetalLibrary:error:" fromMetalLibrary:a3 error:?];
+  return [CIKernel cachedKernelWithFunctionName:"cachedKernelWithFunctionName:fromMetalLibrary:error:" fromMetalLibrary:named error:?];
 }
 
-+ (id)SDOFV3MetalKernelNamed:(id)a3
++ (id)SDOFV3MetalKernelNamed:(id)named
 {
   if (SDOFV3MetalLibURL::onceToken != -1)
   {
@@ -2970,7 +2970,7 @@ uint64_t __28__CIKernel_debugDescription__block_invoke(uint64_t a1, FILE *a2)
     return 0;
   }
 
-  return [CIKernel cachedKernelWithFunctionName:"cachedKernelWithFunctionName:fromMetalLibrary:error:" fromMetalLibrary:a3 error:?];
+  return [CIKernel cachedKernelWithFunctionName:"cachedKernelWithFunctionName:fromMetalLibrary:error:" fromMetalLibrary:named error:?];
 }
 
 - (void)_initWithString:andCIKernelLibrary:usingCruftCompatibility:isInternal:.cold.1()

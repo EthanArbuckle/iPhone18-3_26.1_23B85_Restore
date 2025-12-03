@@ -1,6 +1,6 @@
 @interface _UIWindowSceneWindowingModeDiffAction
 - (UIApplicationSceneSettingsDiffInspector)sceneSettingsDisplayDiffInspector;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 @end
 
 @implementation _UIWindowSceneWindowingModeDiffAction
@@ -21,26 +21,26 @@
   return sceneSettingsDisplayDiffInspector;
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  sceneCopy = scene;
+  sSceneCopy = sScene;
+  diffCopy = diff;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"_UIWindowSceneWindowingModeDiffAction.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIWindowSceneWindowingModeDiffAction.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene class]]"}];
   }
 
   v18 = 0;
-  v15 = [(_UIWindowSceneWindowingModeDiffAction *)self sceneSettingsDisplayDiffInspector];
-  [v15 inspectDiff:v14 withContext:&v18];
+  sceneSettingsDisplayDiffInspector = [(_UIWindowSceneWindowingModeDiffAction *)self sceneSettingsDisplayDiffInspector];
+  [sceneSettingsDisplayDiffInspector inspectDiff:diffCopy withContext:&v18];
 
   if (v18)
   {
-    v16 = [v13 uiSettings];
-    [v12 _setEnhancedWindowingEnabled:{objc_msgSend(v16, "enhancedWindowingEnabled")}];
+    uiSettings = [sSceneCopy uiSettings];
+    [sceneCopy _setEnhancedWindowingEnabled:{objc_msgSend(uiSettings, "enhancedWindowingEnabled")}];
   }
 }
 

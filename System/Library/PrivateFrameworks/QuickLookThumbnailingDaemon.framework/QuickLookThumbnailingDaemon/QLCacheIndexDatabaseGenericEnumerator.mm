@@ -1,5 +1,5 @@
 @interface QLCacheIndexDatabaseGenericEnumerator
-- (QLCacheIndexDatabaseGenericEnumerator)initWithSqliteDatabase:(id)a3;
+- (QLCacheIndexDatabaseGenericEnumerator)initWithSqliteDatabase:(id)database;
 - (void)dealloc;
 @end
 
@@ -18,16 +18,16 @@
   [(QLCacheIndexDatabaseGenericEnumerator *)&v4 dealloc];
 }
 
-- (QLCacheIndexDatabaseGenericEnumerator)initWithSqliteDatabase:(id)a3
+- (QLCacheIndexDatabaseGenericEnumerator)initWithSqliteDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v9.receiver = self;
   v9.super_class = QLCacheIndexDatabaseGenericEnumerator;
   v6 = [(QLCacheIndexDatabaseGenericEnumerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sqliteDatabase, a3);
+    objc_storeStrong(&v6->_sqliteDatabase, database);
   }
 
   return v7;

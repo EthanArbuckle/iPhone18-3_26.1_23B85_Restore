@@ -1,23 +1,23 @@
 @interface KMibInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCellBarred:(BOOL)a3;
-- (void)setHasIntraFreqReselectionAllowed:(BOOL)a3;
-- (void)setHasSsbSubCarrierOffset:(BOOL)a3;
-- (void)setHasSubCarrierSpacing:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCellBarred:(BOOL)barred;
+- (void)setHasIntraFreqReselectionAllowed:(BOOL)allowed;
+- (void)setHasSsbSubCarrierOffset:(BOOL)offset;
+- (void)setHasSubCarrierSpacing:(BOOL)spacing;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KMibInfo
 
-- (void)setHasSubCarrierSpacing:(BOOL)a3
+- (void)setHasSubCarrierSpacing:(BOOL)spacing
 {
-  if (a3)
+  if (spacing)
   {
     v3 = 4;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSsbSubCarrierOffset:(BOOL)a3
+- (void)setHasSsbSubCarrierOffset:(BOOL)offset
 {
-  if (a3)
+  if (offset)
   {
     v3 = 2;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasCellBarred:(BOOL)a3
+- (void)setHasCellBarred:(BOOL)barred
 {
-  if (a3)
+  if (barred)
   {
     v3 = 8;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIntraFreqReselectionAllowed:(BOOL)a3
+- (void)setHasIntraFreqReselectionAllowed:(BOOL)allowed
 {
-  if (a3)
+  if (allowed)
   {
     v3 = 16;
   }
@@ -80,8 +80,8 @@
   v7.receiver = self;
   v7.super_class = KMibInfo;
   v3 = [(KMibInfo *)&v7 description];
-  v4 = [(KMibInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(KMibInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -160,9 +160,9 @@ LABEL_7:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -228,14 +228,14 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[4] = self->_subCarrierSpacing;
-    *(v4 + 24) |= 4u;
+    toCopy[4] = self->_subCarrierSpacing;
+    *(toCopy + 24) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -254,8 +254,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = self->_ssbSubCarrierOffset;
-  *(v4 + 24) |= 2u;
+  toCopy[3] = self->_ssbSubCarrierOffset;
+  *(toCopy + 24) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -269,8 +269,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  v4[2] = self->_dmrsTypeAPosition;
-  *(v4 + 24) |= 1u;
+  toCopy[2] = self->_dmrsTypeAPosition;
+  *(toCopy + 24) |= 1u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -284,21 +284,21 @@ LABEL_5:
   }
 
 LABEL_13:
-  *(v4 + 20) = self->_cellBarred;
-  *(v4 + 24) |= 8u;
+  *(toCopy + 20) = self->_cellBarred;
+  *(toCopy + 24) |= 8u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_6:
-    *(v4 + 21) = self->_intraFreqReselectionAllowed;
-    *(v4 + 24) |= 0x10u;
+    *(toCopy + 21) = self->_intraFreqReselectionAllowed;
+    *(toCopy + 24) |= 0x10u;
   }
 
 LABEL_7:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -365,94 +365,94 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 24) & 4) == 0 || self->_subCarrierSpacing != *(v4 + 4))
+    if ((*(equalCopy + 24) & 4) == 0 || self->_subCarrierSpacing != *(equalCopy + 4))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 24) & 4) != 0)
+  else if ((*(equalCopy + 24) & 4) != 0)
   {
     goto LABEL_25;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_ssbSubCarrierOffset != *(v4 + 3))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_ssbSubCarrierOffset != *(equalCopy + 3))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
     goto LABEL_25;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_dmrsTypeAPosition != *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_dmrsTypeAPosition != *(equalCopy + 2))
     {
       goto LABEL_25;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_25;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 24) & 8) == 0)
+    if ((*(equalCopy + 24) & 8) == 0)
     {
       goto LABEL_25;
     }
 
-    v7 = *(v4 + 20);
+    v7 = *(equalCopy + 20);
     if (self->_cellBarred)
     {
-      if ((*(v4 + 20) & 1) == 0)
+      if ((*(equalCopy + 20) & 1) == 0)
       {
         goto LABEL_25;
       }
     }
 
-    else if (*(v4 + 20))
+    else if (*(equalCopy + 20))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 24) & 8) != 0)
+  else if ((*(equalCopy + 24) & 8) != 0)
   {
     goto LABEL_25;
   }
 
-  v5 = (*(v4 + 24) & 0x10) == 0;
+  v5 = (*(equalCopy + 24) & 0x10) == 0;
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 24) & 0x10) != 0)
+    if ((*(equalCopy + 24) & 0x10) != 0)
     {
       if (self->_intraFreqReselectionAllowed)
       {
-        if (*(v4 + 21))
+        if (*(equalCopy + 21))
         {
           goto LABEL_33;
         }
       }
 
-      else if (!*(v4 + 21))
+      else if (!*(equalCopy + 21))
       {
 LABEL_33:
         v5 = 1;
@@ -537,15 +537,15 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 24);
+  fromCopy = from;
+  v5 = *(fromCopy + 24);
   if ((v5 & 4) != 0)
   {
-    self->_subCarrierSpacing = *(v4 + 4);
+    self->_subCarrierSpacing = *(fromCopy + 4);
     *&self->_has |= 4u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -558,14 +558,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 24) & 2) == 0)
+  else if ((*(fromCopy + 24) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_ssbSubCarrierOffset = *(v4 + 3);
+  self->_ssbSubCarrierOffset = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 1) == 0)
   {
 LABEL_4:
@@ -578,9 +578,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_dmrsTypeAPosition = *(v4 + 2);
+  self->_dmrsTypeAPosition = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 8) == 0)
   {
 LABEL_5:
@@ -593,12 +593,12 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_cellBarred = *(v4 + 20);
+  self->_cellBarred = *(fromCopy + 20);
   *&self->_has |= 8u;
-  if ((*(v4 + 24) & 0x10) != 0)
+  if ((*(fromCopy + 24) & 0x10) != 0)
   {
 LABEL_6:
-    self->_intraFreqReselectionAllowed = *(v4 + 21);
+    self->_intraFreqReselectionAllowed = *(fromCopy + 21);
     *&self->_has |= 0x10u;
   }
 

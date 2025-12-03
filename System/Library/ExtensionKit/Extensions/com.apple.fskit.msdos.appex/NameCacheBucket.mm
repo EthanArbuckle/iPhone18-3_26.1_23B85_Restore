@@ -1,7 +1,7 @@
 @interface NameCacheBucket
-- (BOOL)removeEntryAtIndex:(unsigned int)a3;
+- (BOOL)removeEntryAtIndex:(unsigned int)index;
 - (NameCacheBucket)init;
-- (int)addEntry:(NameCacheEntry_s)a3;
+- (int)addEntry:(NameCacheEntry_s)entry;
 - (void)dealloc;
 @end
 
@@ -35,7 +35,7 @@
   [(NameCacheBucket *)&v4 dealloc];
 }
 
-- (int)addEntry:(NameCacheEntry_s)a3
+- (int)addEntry:(NameCacheEntry_s)entry
 {
   currCount = self->_currCount;
   elements = self->elements;
@@ -54,14 +54,14 @@
 LABEL_4:
     result = 0;
     self->_currCount = currCount + 1;
-    elements[currCount] = a3;
+    elements[currCount] = entry;
     return result;
   }
 
   return 12;
 }
 
-- (BOOL)removeEntryAtIndex:(unsigned int)a3
+- (BOOL)removeEntryAtIndex:(unsigned int)index
 {
   currCount = self->_currCount;
   if (!currCount)
@@ -70,7 +70,7 @@ LABEL_4:
   }
 
   elements = self->elements;
-  if (elements->var1 != a3)
+  if (elements->var1 != index)
   {
     v5 = 0;
     v7 = self->elements;
@@ -79,7 +79,7 @@ LABEL_4:
       var1 = v7[1].var1;
       ++v7;
       ++v5;
-      if (var1 == a3)
+      if (var1 == index)
       {
         v6 = v5 < currCount;
         goto LABEL_8;

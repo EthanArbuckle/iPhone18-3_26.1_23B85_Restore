@@ -1,12 +1,12 @@
 @interface CRAccNavInfoCache
-- (CRAccNavInfoCache)initWithCountLimit:(unint64_t)a3;
+- (CRAccNavInfoCache)initWithCountLimit:(unint64_t)limit;
 - (id)description;
 - (id)indexes;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)removeAllObjects;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation CRAccNavInfoCache
@@ -15,33 +15,33 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRAccNavInfoCache *)self countLimit];
+  countLimit = [(CRAccNavInfoCache *)self countLimit];
   v6 = [(CRAccNavInfoCache *)self count];
-  v7 = [(CRAccNavInfoCache *)self indexes];
-  v8 = [v7 componentsJoinedByString:{@", "}];
-  v9 = [v3 stringWithFormat:@"<%@: %p countLimit=%lu count=%lu indexes=[%@]>", v4, self, v5, v6, v8];
+  indexes = [(CRAccNavInfoCache *)self indexes];
+  v8 = [indexes componentsJoinedByString:{@", "}];
+  v9 = [v3 stringWithFormat:@"<%@: %p countLimit=%lu count=%lu indexes=[%@]>", v4, self, countLimit, v6, v8];
 
   return v9;
 }
 
 - (unint64_t)count
 {
-  v2 = [(CRAccNavInfoCache *)self accNavInfo];
-  v3 = [v2 count];
+  accNavInfo = [(CRAccNavInfoCache *)self accNavInfo];
+  v3 = [accNavInfo count];
 
   return v3;
 }
 
 - (id)indexes
 {
-  v2 = [(CRAccNavInfoCache *)self accNavInfo];
-  v3 = [v2 allKeys];
-  v4 = [v3 sortedArrayUsingSelector:sel_compare_];
+  accNavInfo = [(CRAccNavInfoCache *)self accNavInfo];
+  allKeys = [accNavInfo allKeys];
+  v4 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   return v4;
 }
 
-- (CRAccNavInfoCache)initWithCountLimit:(unint64_t)a3
+- (CRAccNavInfoCache)initWithCountLimit:(unint64_t)limit
 {
   v10.receiver = self;
   v10.super_class = CRAccNavInfoCache;
@@ -49,13 +49,13 @@
   v5 = v4;
   if (v4)
   {
-    v6 = 999;
-    if (a3)
+    limitCopy = 999;
+    if (limit)
     {
-      v6 = a3;
+      limitCopy = limit;
     }
 
-    v4->_countLimit = v6;
+    v4->_countLimit = limitCopy;
     v7 = objc_opt_new();
     accNavInfo = v5->_accNavInfo;
     v5->_accNavInfo = v7;
@@ -64,52 +64,52 @@
   return v5;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CRAccNavInfoCache *)self accNavInfo];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  accNavInfo = [(CRAccNavInfoCache *)self accNavInfo];
+  v6 = [accNavInfo objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(CRAccNavInfoCache *)self accNavInfo];
-  [v7 setObject:v14 forKeyedSubscript:v6];
+  objectCopy = object;
+  keyCopy = key;
+  accNavInfo = [(CRAccNavInfoCache *)self accNavInfo];
+  [accNavInfo setObject:objectCopy forKeyedSubscript:keyCopy];
 
   while (1)
   {
-    v8 = [(CRAccNavInfoCache *)self accNavInfo];
-    v9 = [v8 count];
-    v10 = [(CRAccNavInfoCache *)self countLimit];
+    accNavInfo2 = [(CRAccNavInfoCache *)self accNavInfo];
+    v9 = [accNavInfo2 count];
+    countLimit = [(CRAccNavInfoCache *)self countLimit];
 
-    if (v9 <= v10)
+    if (v9 <= countLimit)
     {
       break;
     }
 
-    v11 = [(CRAccNavInfoCache *)self indexes];
-    v12 = [v11 firstObject];
+    indexes = [(CRAccNavInfoCache *)self indexes];
+    firstObject = [indexes firstObject];
 
-    v13 = [(CRAccNavInfoCache *)self accNavInfo];
-    [v13 removeObjectForKey:v12];
+    accNavInfo3 = [(CRAccNavInfoCache *)self accNavInfo];
+    [accNavInfo3 removeObjectForKey:firstObject];
   }
 }
 
 - (void)removeAllObjects
 {
-  v2 = [(CRAccNavInfoCache *)self accNavInfo];
-  [v2 removeAllObjects];
+  accNavInfo = [(CRAccNavInfoCache *)self accNavInfo];
+  [accNavInfo removeAllObjects];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = [(CRAccNavInfoCache *)self accNavInfo];
-  v9 = [v8 allValues];
-  v10 = [v9 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  accNavInfo = [(CRAccNavInfoCache *)self accNavInfo];
+  allValues = [accNavInfo allValues];
+  v10 = [allValues countByEnumeratingWithState:state objects:objects count:count];
 
   return v10;
 }

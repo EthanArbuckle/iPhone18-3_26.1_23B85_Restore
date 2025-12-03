@@ -1,40 +1,40 @@
 @interface _HKMedicationDoseEventComparisonFilter
-+ (BOOL)isAllowedPredicateOperatorType:(unint64_t)a3 forKeyPath:(id)a4;
-+ (BOOL)isSupportedKeyPath:(id)a3;
-+ (BOOL)isValidValue:(id)a3 forKeyPath:(id)a4 operatorType:(unint64_t)a5 dataTypes:(id)a6 error:(id *)a7;
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3;
-+ (id)allowedValueClassesForKeyPath:(id)a3;
-+ (int64_t)enumRepresentationForKeyPath:(id)a3;
-- (BOOL)_acceptsMedicationDoseEventWithHashedMedicationIdentifier:(id)a3;
-- (BOOL)_acceptsMedicationDoseEventWithLogOrigin:(int64_t)a3;
-- (BOOL)_acceptsMedicationDoseEventWithMedicationConceptIdentifier:(id)a3;
-- (BOOL)_acceptsMedicationDoseEventWithMedicationIdentifier:(id)a3;
-- (BOOL)_acceptsMedicationDoseEventWithMedicationUUID:(id)a3;
-- (BOOL)_acceptsMedicationDoseEventWithScheduleItemIdentifier:(id)a3;
-- (BOOL)_acceptsMedicationDoseEventWithScheduledDate:(id)a3;
-- (BOOL)_acceptsMedicationDoseEventWithStatus:(int64_t)a3;
-- (BOOL)acceptsDataObject:(id)a3;
++ (BOOL)isAllowedPredicateOperatorType:(unint64_t)type forKeyPath:(id)path;
++ (BOOL)isSupportedKeyPath:(id)path;
++ (BOOL)isValidValue:(id)value forKeyPath:(id)path operatorType:(unint64_t)type dataTypes:(id)types error:(id *)error;
++ (id)allowedDataTypeClassesForKeyPath:(id)path;
++ (id)allowedValueClassesForKeyPath:(id)path;
++ (int64_t)enumRepresentationForKeyPath:(id)path;
+- (BOOL)_acceptsMedicationDoseEventWithHashedMedicationIdentifier:(id)identifier;
+- (BOOL)_acceptsMedicationDoseEventWithLogOrigin:(int64_t)origin;
+- (BOOL)_acceptsMedicationDoseEventWithMedicationConceptIdentifier:(id)identifier;
+- (BOOL)_acceptsMedicationDoseEventWithMedicationIdentifier:(id)identifier;
+- (BOOL)_acceptsMedicationDoseEventWithMedicationUUID:(id)d;
+- (BOOL)_acceptsMedicationDoseEventWithScheduleItemIdentifier:(id)identifier;
+- (BOOL)_acceptsMedicationDoseEventWithScheduledDate:(id)date;
+- (BOOL)_acceptsMedicationDoseEventWithStatus:(int64_t)status;
+- (BOOL)acceptsDataObject:(id)object;
 @end
 
 @implementation _HKMedicationDoseEventComparisonFilter
 
-+ (BOOL)isSupportedKeyPath:(id)a3
++ (BOOL)isSupportedKeyPath:(id)path
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"status"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"medicationIdentifier") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"hashedMedicationIdentifier") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"scheduleItemIdentifier") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"logOrigin") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"medicationUUID") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"scheduledDate"))
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"status"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"medicationIdentifier") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"hashedMedicationIdentifier") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"scheduleItemIdentifier") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"logOrigin") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"medicationUUID") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"scheduledDate"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"medicationConceptIdentifier"];
+    v4 = [pathCopy isEqualToString:@"medicationConceptIdentifier"];
   }
 
   return v4;
 }
 
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3
++ (id)allowedDataTypeClassesForKeyPath:(id)path
 {
   v3 = MEMORY[0x1E695DFD8];
   v4 = objc_opt_class();
@@ -42,11 +42,11 @@
   return [v3 setWithObject:v4];
 }
 
-+ (id)allowedValueClassesForKeyPath:(id)a3
++ (id)allowedValueClassesForKeyPath:(id)path
 {
   v19[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (([v5 isEqualToString:@"status"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"logOrigin"))
+  pathCopy = path;
+  if (([pathCopy isEqualToString:@"status"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"logOrigin"))
   {
     v6 = MEMORY[0x1E695DFD8];
     v19[0] = objc_opt_class();
@@ -61,7 +61,7 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (([v5 isEqualToString:@"medicationIdentifier"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"scheduleItemIdentifier"))
+  if (([pathCopy isEqualToString:@"medicationIdentifier"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"scheduleItemIdentifier"))
   {
     v6 = MEMORY[0x1E695DFD8];
     v18[0] = objc_opt_class();
@@ -72,7 +72,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if ([v5 isEqualToString:@"hashedMedicationIdentifier"])
+  if ([pathCopy isEqualToString:@"hashedMedicationIdentifier"])
   {
     v6 = MEMORY[0x1E695DFD8];
     v17[0] = objc_opt_class();
@@ -83,7 +83,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if ([v5 isEqualToString:@"medicationUUID"])
+  if ([pathCopy isEqualToString:@"medicationUUID"])
   {
     v6 = MEMORY[0x1E695DFD8];
     v16[0] = objc_opt_class();
@@ -94,7 +94,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if ([v5 isEqualToString:@"scheduledDate"])
+  if ([pathCopy isEqualToString:@"scheduledDate"])
   {
     v6 = MEMORY[0x1E695DFD8];
     v15[0] = objc_opt_class();
@@ -105,7 +105,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if ([v5 isEqualToString:@"medicationConceptIdentifier"])
+  if ([pathCopy isEqualToString:@"medicationConceptIdentifier"])
   {
     v6 = MEMORY[0x1E695DFD8];
     v14[0] = objc_opt_class();
@@ -116,8 +116,8 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v13 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v13 handleFailureInMethod:a2 object:a1 file:@"_HKMedicationDoseEventComparisonFilter.m" lineNumber:94 description:@"Unreachable code has been executed"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_HKMedicationDoseEventComparisonFilter.m" lineNumber:94 description:@"Unreachable code has been executed"];
 
   v10 = [MEMORY[0x1E695DFD8] set];
 LABEL_5:
@@ -127,51 +127,51 @@ LABEL_5:
   return v10;
 }
 
-+ (BOOL)isAllowedPredicateOperatorType:(unint64_t)a3 forKeyPath:(id)a4
++ (BOOL)isAllowedPredicateOperatorType:(unint64_t)type forKeyPath:(id)path
 {
-  v7 = a4;
-  if (([v7 isEqualToString:@"status"] & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", @"medicationIdentifier") & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", @"hashedMedicationIdentifier") & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", @"scheduleItemIdentifier") & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", @"logOrigin") & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", @"medicationUUID") & 1) == 0 && !objc_msgSend(v7, "isEqualToString:", @"medicationConceptIdentifier"))
+  pathCopy = path;
+  if (([pathCopy isEqualToString:@"status"] & 1) == 0 && (objc_msgSend(pathCopy, "isEqualToString:", @"medicationIdentifier") & 1) == 0 && (objc_msgSend(pathCopy, "isEqualToString:", @"hashedMedicationIdentifier") & 1) == 0 && (objc_msgSend(pathCopy, "isEqualToString:", @"scheduleItemIdentifier") & 1) == 0 && (objc_msgSend(pathCopy, "isEqualToString:", @"logOrigin") & 1) == 0 && (objc_msgSend(pathCopy, "isEqualToString:", @"medicationUUID") & 1) == 0 && !objc_msgSend(pathCopy, "isEqualToString:", @"medicationConceptIdentifier"))
   {
-    if ([v7 isEqualToString:@"scheduledDate"])
+    if ([pathCopy isEqualToString:@"scheduledDate"])
     {
-      if (a3 < 0xB)
+      if (type < 0xB)
       {
-        v9 = 0x43Fu >> a3;
+        v9 = 0x43Fu >> type;
         goto LABEL_14;
       }
     }
 
     else
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:a1 file:@"_HKMedicationDoseEventComparisonFilter.m" lineNumber:124 description:@"Unreachable code has been executed"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_HKMedicationDoseEventComparisonFilter.m" lineNumber:124 description:@"Unreachable code has been executed"];
     }
 
     LOBYTE(v9) = 0;
     goto LABEL_14;
   }
 
-  LOBYTE(v9) = a3 == 10 || (a3 & 0xFFFFFFFFFFFFFFFELL) == 4;
+  LOBYTE(v9) = type == 10 || (type & 0xFFFFFFFFFFFFFFFELL) == 4;
 LABEL_14:
 
   return v9 & 1;
 }
 
-+ (BOOL)isValidValue:(id)a3 forKeyPath:(id)a4 operatorType:(unint64_t)a5 dataTypes:(id)a6 error:(id *)a7
++ (BOOL)isValidValue:(id)value forKeyPath:(id)path operatorType:(unint64_t)type dataTypes:(id)types error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v19.receiver = a1;
+  valueCopy = value;
+  pathCopy = path;
+  v19.receiver = self;
   v19.super_class = &OBJC_METACLASS____HKMedicationDoseEventComparisonFilter;
-  if (!objc_msgSendSuper2(&v19, sel_isValidValue_forKeyPath_operatorType_dataTypes_error_, v13, v14, a5, a6, a7))
+  if (!objc_msgSendSuper2(&v19, sel_isValidValue_forKeyPath_operatorType_dataTypes_error_, valueCopy, pathCopy, type, types, error))
   {
     goto LABEL_13;
   }
 
-  if (([v14 isEqualToString:@"status"] & 1) == 0 && !objc_msgSend(v14, "isEqualToString:", @"logOrigin") && (objc_msgSend(v14, "isEqualToString:", @"medicationIdentifier") & 1) == 0 && !objc_msgSend(v14, "isEqualToString:", @"scheduleItemIdentifier") && !objc_msgSend(v14, "isEqualToString:", @"hashedMedicationIdentifier") && !objc_msgSend(v14, "isEqualToString:", @"medicationUUID") && !objc_msgSend(v14, "isEqualToString:", @"scheduledDate") && !objc_msgSend(v14, "isEqualToString:", @"medicationConceptIdentifier"))
+  if (([pathCopy isEqualToString:@"status"] & 1) == 0 && !objc_msgSend(pathCopy, "isEqualToString:", @"logOrigin") && (objc_msgSend(pathCopy, "isEqualToString:", @"medicationIdentifier") & 1) == 0 && !objc_msgSend(pathCopy, "isEqualToString:", @"scheduleItemIdentifier") && !objc_msgSend(pathCopy, "isEqualToString:", @"hashedMedicationIdentifier") && !objc_msgSend(pathCopy, "isEqualToString:", @"medicationUUID") && !objc_msgSend(pathCopy, "isEqualToString:", @"scheduledDate") && !objc_msgSend(pathCopy, "isEqualToString:", @"medicationConceptIdentifier"))
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"_HKMedicationDoseEventComparisonFilter.m" lineNumber:164 description:@"Unreachable code has been executed"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_HKMedicationDoseEventComparisonFilter.m" lineNumber:164 description:@"Unreachable code has been executed"];
 
 LABEL_13:
     v16 = 0;
@@ -179,101 +179,101 @@ LABEL_13:
   }
 
   v15 = objc_opt_class();
-  v16 = HKIsValueOrContainerValidForOperatorType(a5, v13, v15, a7);
+  v16 = HKIsValueOrContainerValidForOperatorType(type, valueCopy, v15, error);
 LABEL_14:
 
   return v16;
 }
 
-+ (int64_t)enumRepresentationForKeyPath:(id)a3
++ (int64_t)enumRepresentationForKeyPath:(id)path
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"status"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"status"])
   {
     v6 = 0;
   }
 
-  else if ([v5 isEqualToString:@"medicationIdentifier"])
+  else if ([pathCopy isEqualToString:@"medicationIdentifier"])
   {
     v6 = 1;
   }
 
-  else if ([v5 isEqualToString:@"hashedMedicationIdentifier"])
+  else if ([pathCopy isEqualToString:@"hashedMedicationIdentifier"])
   {
     v6 = 2;
   }
 
-  else if ([v5 isEqualToString:@"scheduleItemIdentifier"])
+  else if ([pathCopy isEqualToString:@"scheduleItemIdentifier"])
   {
     v6 = 3;
   }
 
-  else if ([v5 isEqualToString:@"logOrigin"])
+  else if ([pathCopy isEqualToString:@"logOrigin"])
   {
     v6 = 4;
   }
 
-  else if ([v5 isEqualToString:@"medicationUUID"])
+  else if ([pathCopy isEqualToString:@"medicationUUID"])
   {
     v6 = 5;
   }
 
-  else if ([v5 isEqualToString:@"scheduledDate"])
+  else if ([pathCopy isEqualToString:@"scheduledDate"])
   {
     v6 = 6;
   }
 
-  else if ([v5 isEqualToString:@"medicationConceptIdentifier"])
+  else if ([pathCopy isEqualToString:@"medicationConceptIdentifier"])
   {
     v6 = 7;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"_HKMedicationDoseEventComparisonFilter.m" lineNumber:203 description:@"Unreachable code has been executed"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_HKMedicationDoseEventComparisonFilter.m" lineNumber:203 description:@"Unreachable code has been executed"];
 
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &OBJC_METACLASS____HKMedicationDoseEventComparisonFilter;
-    v6 = objc_msgSendSuper2(&v9, sel_enumRepresentationForKeyPath_, v5);
+    v6 = objc_msgSendSuper2(&v9, sel_enumRepresentationForKeyPath_, pathCopy);
   }
 
   return v6;
 }
 
-- (BOOL)acceptsDataObject:(id)a3
+- (BOOL)acceptsDataObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [(_HKComparisonFilter *)self keyPathIntegerValue];
-    if (v7 > 3)
+    v6 = objectCopy;
+    keyPathIntegerValue = [(_HKComparisonFilter *)self keyPathIntegerValue];
+    if (keyPathIntegerValue > 3)
     {
-      if (v7 > 5)
+      if (keyPathIntegerValue > 5)
       {
-        if (v7 == 6)
+        if (keyPathIntegerValue == 6)
         {
-          v8 = [v6 scheduledDate];
-          v9 = [(_HKMedicationDoseEventComparisonFilter *)self _acceptsMedicationDoseEventWithScheduledDate:v8];
+          scheduledDate = [v6 scheduledDate];
+          v9 = [(_HKMedicationDoseEventComparisonFilter *)self _acceptsMedicationDoseEventWithScheduledDate:scheduledDate];
           goto LABEL_21;
         }
 
-        if (v7 == 7)
+        if (keyPathIntegerValue == 7)
         {
-          v8 = [v6 medicationConceptIdentifier];
-          v9 = [(_HKMedicationDoseEventComparisonFilter *)self _acceptsMedicationDoseEventWithMedicationConceptIdentifier:v8];
+          scheduledDate = [v6 medicationConceptIdentifier];
+          v9 = [(_HKMedicationDoseEventComparisonFilter *)self _acceptsMedicationDoseEventWithMedicationConceptIdentifier:scheduledDate];
           goto LABEL_21;
         }
 
         goto LABEL_24;
       }
 
-      if (v7 != 4)
+      if (keyPathIntegerValue != 4)
       {
-        v8 = [v6 medicationUUID];
-        v9 = [(_HKMedicationDoseEventComparisonFilter *)self _acceptsMedicationDoseEventWithMedicationUUID:v8];
+        scheduledDate = [v6 medicationUUID];
+        v9 = [(_HKMedicationDoseEventComparisonFilter *)self _acceptsMedicationDoseEventWithMedicationUUID:scheduledDate];
         goto LABEL_21;
       }
 
@@ -282,30 +282,30 @@ LABEL_14:
 
     else
     {
-      if (v7 > 1)
+      if (keyPathIntegerValue > 1)
       {
-        if (v7 != 2)
+        if (keyPathIntegerValue != 2)
         {
-          v8 = [v6 scheduleItemIdentifier];
-          v9 = [(_HKMedicationDoseEventComparisonFilter *)self _acceptsMedicationDoseEventWithScheduleItemIdentifier:v8];
+          scheduledDate = [v6 scheduleItemIdentifier];
+          v9 = [(_HKMedicationDoseEventComparisonFilter *)self _acceptsMedicationDoseEventWithScheduleItemIdentifier:scheduledDate];
           goto LABEL_21;
         }
 
         v12 = [HKMedicationIdentifier alloc];
-        v13 = [v6 medicationIdentifier];
-        v14 = [(HKMedicationIdentifier *)v12 initWithSemanticIdentifierString:v13];
+        medicationIdentifier = [v6 medicationIdentifier];
+        v14 = [(HKMedicationIdentifier *)v12 initWithSemanticIdentifierString:medicationIdentifier];
         v10 = [(_HKMedicationDoseEventComparisonFilter *)self _acceptsMedicationDoseEventWithHashedMedicationIdentifier:v14];
 
 LABEL_22:
         goto LABEL_23;
       }
 
-      if (v7)
+      if (keyPathIntegerValue)
       {
-        if (v7 == 1)
+        if (keyPathIntegerValue == 1)
         {
-          v8 = [v6 medicationIdentifier];
-          v9 = [(_HKMedicationDoseEventComparisonFilter *)self _acceptsMedicationDoseEventWithMedicationIdentifier:v8];
+          scheduledDate = [v6 medicationIdentifier];
+          v9 = [(_HKMedicationDoseEventComparisonFilter *)self _acceptsMedicationDoseEventWithMedicationIdentifier:scheduledDate];
 LABEL_21:
           v10 = v9;
 
@@ -313,8 +313,8 @@ LABEL_21:
         }
 
 LABEL_24:
-        v16 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v16 handleFailureInMethod:a2 object:self file:@"_HKMedicationDoseEventComparisonFilter.m" lineNumber:231 description:@"Unreachable code has been executed"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_HKMedicationDoseEventComparisonFilter.m" lineNumber:231 description:@"Unreachable code has been executed"];
 
         v10 = 0;
         goto LABEL_22;
@@ -333,14 +333,14 @@ LABEL_23:
   return v10;
 }
 
-- (BOOL)_acceptsMedicationDoseEventWithStatus:(int64_t)a3
+- (BOOL)_acceptsMedicationDoseEventWithStatus:(int64_t)status
 {
-  v5 = [(_HKComparisonFilter *)self operatorType];
-  v6 = [(_HKComparisonFilter *)self value];
-  v7 = v6;
-  if (v5 == 10)
+  operatorType = [(_HKComparisonFilter *)self operatorType];
+  value = [(_HKComparisonFilter *)self value];
+  v7 = value;
+  if (operatorType == 10)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:status];
     v9 = [v7 containsObject:v8];
 
     return v9;
@@ -348,51 +348,51 @@ LABEL_23:
 
   else
   {
-    v11 = HKCompareIntegers(a3, [v6 integerValue]);
+    v11 = HKCompareIntegers(status, [value integerValue]);
 
-    v12 = [(_HKComparisonFilter *)self operatorType];
+    operatorType2 = [(_HKComparisonFilter *)self operatorType];
 
-    return HKComparisonResultMatchesPredicateOperator(v11, v12);
+    return HKComparisonResultMatchesPredicateOperator(v11, operatorType2);
   }
 }
 
-- (BOOL)_acceptsMedicationDoseEventWithMedicationIdentifier:(id)a3
+- (BOOL)_acceptsMedicationDoseEventWithMedicationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(_HKComparisonFilter *)self operatorType];
-  v6 = [(_HKComparisonFilter *)self value];
-  v7 = v6;
-  if (v5 == 10)
+  identifierCopy = identifier;
+  operatorType = [(_HKComparisonFilter *)self operatorType];
+  value = [(_HKComparisonFilter *)self value];
+  v7 = value;
+  if (operatorType == 10)
   {
-    v8 = [v6 containsObject:v4];
+    v8 = [value containsObject:identifierCopy];
 
     return v8;
   }
 
   else
   {
-    v10 = [v6 compare:v4];
+    v10 = [value compare:identifierCopy];
 
-    v11 = [(_HKComparisonFilter *)self operatorType];
+    operatorType2 = [(_HKComparisonFilter *)self operatorType];
 
-    return HKComparisonResultMatchesPredicateOperator(v10, v11);
+    return HKComparisonResultMatchesPredicateOperator(v10, operatorType2);
   }
 }
 
-- (BOOL)_acceptsMedicationDoseEventWithHashedMedicationIdentifier:(id)a3
+- (BOOL)_acceptsMedicationDoseEventWithHashedMedicationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(_HKComparisonFilter *)self operatorType];
-  v6 = [(_HKComparisonFilter *)self value];
-  v7 = v6;
-  if (v5 == 10)
+  identifierCopy = identifier;
+  operatorType = [(_HKComparisonFilter *)self operatorType];
+  value = [(_HKComparisonFilter *)self value];
+  v7 = value;
+  if (operatorType == 10)
   {
-    v8 = [v6 containsObject:v4];
+    v8 = [value containsObject:identifierCopy];
   }
 
   else
   {
-    v9 = [v6 compare:v4];
+    v9 = [value compare:identifierCopy];
 
     v8 = HKComparisonResultMatchesPredicateOperator(v9, [(_HKComparisonFilter *)self operatorType]);
   }
@@ -400,20 +400,20 @@ LABEL_23:
   return v8;
 }
 
-- (BOOL)_acceptsMedicationDoseEventWithMedicationConceptIdentifier:(id)a3
+- (BOOL)_acceptsMedicationDoseEventWithMedicationConceptIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(_HKComparisonFilter *)self operatorType];
-  v6 = [(_HKComparisonFilter *)self value];
-  v7 = v6;
-  if (v5 == 10)
+  identifierCopy = identifier;
+  operatorType = [(_HKComparisonFilter *)self operatorType];
+  value = [(_HKComparisonFilter *)self value];
+  v7 = value;
+  if (operatorType == 10)
   {
-    v8 = [v6 containsObject:v4];
+    v8 = [value containsObject:identifierCopy];
   }
 
   else
   {
-    v9 = [v6 compare:v4];
+    v9 = [value compare:identifierCopy];
 
     v8 = HKComparisonResultMatchesPredicateOperator(v9, [(_HKComparisonFilter *)self operatorType]);
   }
@@ -421,37 +421,37 @@ LABEL_23:
   return v8;
 }
 
-- (BOOL)_acceptsMedicationDoseEventWithScheduleItemIdentifier:(id)a3
+- (BOOL)_acceptsMedicationDoseEventWithScheduleItemIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(_HKComparisonFilter *)self operatorType];
-  v6 = [(_HKComparisonFilter *)self value];
-  v7 = v6;
-  if (v5 == 10)
+  identifierCopy = identifier;
+  operatorType = [(_HKComparisonFilter *)self operatorType];
+  value = [(_HKComparisonFilter *)self value];
+  v7 = value;
+  if (operatorType == 10)
   {
-    v8 = [v6 containsObject:v4];
+    v8 = [value containsObject:identifierCopy];
 
     return v8;
   }
 
   else
   {
-    v10 = [v6 compare:v4];
+    v10 = [value compare:identifierCopy];
 
-    v11 = [(_HKComparisonFilter *)self operatorType];
+    operatorType2 = [(_HKComparisonFilter *)self operatorType];
 
-    return HKComparisonResultMatchesPredicateOperator(v10, v11);
+    return HKComparisonResultMatchesPredicateOperator(v10, operatorType2);
   }
 }
 
-- (BOOL)_acceptsMedicationDoseEventWithLogOrigin:(int64_t)a3
+- (BOOL)_acceptsMedicationDoseEventWithLogOrigin:(int64_t)origin
 {
-  v5 = [(_HKComparisonFilter *)self operatorType];
-  v6 = [(_HKComparisonFilter *)self value];
-  v7 = v6;
-  if (v5 == 10)
+  operatorType = [(_HKComparisonFilter *)self operatorType];
+  value = [(_HKComparisonFilter *)self value];
+  v7 = value;
+  if (operatorType == 10)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:origin];
     v9 = [v7 containsObject:v8];
 
     return v9;
@@ -459,57 +459,57 @@ LABEL_23:
 
   else
   {
-    v11 = HKCompareIntegers(a3, [v6 integerValue]);
+    v11 = HKCompareIntegers(origin, [value integerValue]);
 
-    v12 = [(_HKComparisonFilter *)self operatorType];
+    operatorType2 = [(_HKComparisonFilter *)self operatorType];
 
-    return HKComparisonResultMatchesPredicateOperator(v11, v12);
+    return HKComparisonResultMatchesPredicateOperator(v11, operatorType2);
   }
 }
 
-- (BOOL)_acceptsMedicationDoseEventWithMedicationUUID:(id)a3
+- (BOOL)_acceptsMedicationDoseEventWithMedicationUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(_HKComparisonFilter *)self operatorType];
-  v6 = [(_HKComparisonFilter *)self value];
-  v7 = v6;
-  if (v5 == 10)
+  dCopy = d;
+  operatorType = [(_HKComparisonFilter *)self operatorType];
+  value = [(_HKComparisonFilter *)self value];
+  v7 = value;
+  if (operatorType == 10)
   {
-    v8 = [v6 containsObject:v4];
+    v8 = [value containsObject:dCopy];
 
     return v8;
   }
 
   else
   {
-    v10 = [v6 compare:v4];
+    v10 = [value compare:dCopy];
 
-    v11 = [(_HKComparisonFilter *)self operatorType];
+    operatorType2 = [(_HKComparisonFilter *)self operatorType];
 
-    return HKComparisonResultMatchesPredicateOperator(v10, v11);
+    return HKComparisonResultMatchesPredicateOperator(v10, operatorType2);
   }
 }
 
-- (BOOL)_acceptsMedicationDoseEventWithScheduledDate:(id)a3
+- (BOOL)_acceptsMedicationDoseEventWithScheduledDate:(id)date
 {
-  v4 = a3;
-  v5 = [(_HKComparisonFilter *)self operatorType];
-  v6 = [(_HKComparisonFilter *)self value];
-  v7 = v6;
-  if (v5 == 10)
+  dateCopy = date;
+  operatorType = [(_HKComparisonFilter *)self operatorType];
+  value = [(_HKComparisonFilter *)self value];
+  v7 = value;
+  if (operatorType == 10)
   {
-    v8 = [v6 containsObject:v4];
+    v8 = [value containsObject:dateCopy];
 
     return v8;
   }
 
   else
   {
-    v10 = [v6 compare:v4];
+    v10 = [value compare:dateCopy];
 
-    v11 = [(_HKComparisonFilter *)self operatorType];
+    operatorType2 = [(_HKComparisonFilter *)self operatorType];
 
-    return HKComparisonResultMatchesPredicateOperator(v10, v11);
+    return HKComparisonResultMatchesPredicateOperator(v10, operatorType2);
   }
 }
 

@@ -1,28 +1,28 @@
 @interface AKAuthModeController
-- ($1A23BB056C565A410801C90FE7234890)_authModeInfoFromResponse:(id)a3;
+- ($1A23BB056C565A410801C90FE7234890)_authModeInfoFromResponse:(id)response;
 - ($1A23BB056C565A410801C90FE7234890)_unknownAuthModeInfo;
-- (BOOL)_isClientEntitledForAuthMode:(id)a3;
-- (id)_authModeErrorFromError:(id)a3;
-- (void)_executeFetchAuthModeInfoWithContext:(id)a3 client:(id)a4 completion:(id)a5;
-- (void)_saveAuthMode:(id)a3 withContext:(id)a4;
-- (void)fetchAuthModeWithContext:(id)a3 client:(id)a4 completion:(id)a5;
+- (BOOL)_isClientEntitledForAuthMode:(id)mode;
+- (id)_authModeErrorFromError:(id)error;
+- (void)_executeFetchAuthModeInfoWithContext:(id)context client:(id)client completion:(id)completion;
+- (void)_saveAuthMode:(id)mode withContext:(id)context;
+- (void)fetchAuthModeWithContext:(id)context client:(id)client completion:(id)completion;
 @end
 
 @implementation AKAuthModeController
 
-- (void)fetchAuthModeWithContext:(id)a3 client:(id)a4 completion:(id)a5
+- (void)fetchAuthModeWithContext:(id)context client:(id)client completion:(id)completion
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v25 = 0;
-  objc_storeStrong(&v25, a4);
+  objc_storeStrong(&v25, client);
   v24 = 0;
-  objc_storeStrong(&v24, a5);
-  if ([(AKAuthModeController *)v27 _isClientEntitledForAuthMode:v25])
+  objc_storeStrong(&v24, completion);
+  if ([(AKAuthModeController *)selfCopy _isClientEntitledForAuthMode:v25])
   {
-    v8 = v27;
+    v8 = selfCopy;
     v6 = location[0];
     v7 = v25;
     v13 = _NSConcreteStackBlock;
@@ -31,7 +31,7 @@
     v16 = sub_1000E1470;
     v17 = &unk_10031F110;
     v20 = _objc_retain(v24);
-    v18 = _objc_retain(v27);
+    v18 = _objc_retain(selfCopy);
     v19 = _objc_retain(location[0]);
     [(AKAuthModeController *)v8 _executeFetchAuthModeInfoWithContext:v6 client:v7 completion:&v13];
     objc_storeStrong(&v19, 0);
@@ -43,10 +43,10 @@
   else
   {
     v9 = v24;
-    v22 = [(AKAuthModeController *)v27 _unknownAuthModeInfo];
+    _unknownAuthModeInfo = [(AKAuthModeController *)selfCopy _unknownAuthModeInfo];
     v23 = v5;
     v10 = [NSError ak_errorWithCode:-7026];
-    v9[2](v9, v22, v23);
+    v9[2](v9, _unknownAuthModeInfo, v23);
     _objc_release(v10);
     v21 = 1;
   }
@@ -56,12 +56,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_isClientEntitledForAuthMode:(id)a3
+- (BOOL)_isClientEntitledForAuthMode:(id)mode
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, mode);
   if ([location[0] hasInternalPrivateAccess])
   {
     v10 = 1;
@@ -96,16 +96,16 @@
   return result;
 }
 
-- (void)_executeFetchAuthModeInfoWithContext:(id)a3 client:(id)a4 completion:(id)a5
+- (void)_executeFetchAuthModeInfoWithContext:(id)context client:(id)client completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, client);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
+  objc_storeStrong(&v11, completion);
   v5 = [AKAuthModeRequestProvider alloc];
   v10 = [(AKURLRequestProviderImpl *)v5 initWithContext:location[0] urlBagKey:AKURLBagKeyFetchAuthenticationMode];
   [(AKURLRequestProviderImpl *)v10 setClient:v12];
@@ -119,16 +119,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_authModeErrorFromError:(id)a3
+- (id)_authModeErrorFromError:(id)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v19 = 0;
-  v13 = [location[0] userInfo];
-  v18 = [v13 objectForKeyedSubscript:AKErrorStatusCodeKey];
-  _objc_release(v13);
+  userInfo = [location[0] userInfo];
+  v18 = [userInfo objectForKeyedSubscript:AKErrorStatusCodeKey];
+  _objc_release(userInfo);
   if ([v18 integerValue] == -28043)
   {
     v3 = [NSError ak_errorWithCode:-7093];
@@ -196,28 +196,28 @@ LABEL_15:
   return v11;
 }
 
-- ($1A23BB056C565A410801C90FE7234890)_authModeInfoFromResponse:(id)a3
+- ($1A23BB056C565A410801C90FE7234890)_authModeInfoFromResponse:(id)response
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = 0;
+  objc_storeStrong(location, response);
+  unsignedIntegerValue = 0;
   v12 = 0;
   v9 = [AAFSerialization dictionaryFromObject:location[0] ofType:@"application/x-plist"];
   v5 = [v9 objectForKeyedSubscript:AKAuthenticationModeKey];
-  v11 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
   _objc_release(v5);
   v7 = 0;
-  v6 = 0;
+  bOOLValue = 0;
   if ((+[AKFeatureManager isEnforceMDMPolicyEnabled]& 1) != 0)
   {
     v8 = [v9 objectForKeyedSubscript:AKMDMInfoRequiredKey];
     v7 = 1;
-    v6 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
   }
 
-  LOBYTE(v12) = v6 & 1;
+  LOBYTE(v12) = bOOLValue & 1;
   if (v7)
   {
     _objc_release(v8);
@@ -225,20 +225,20 @@ LABEL_15:
 
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
-  v3 = v11;
+  v3 = unsignedIntegerValue;
   v4 = v12;
   result.var1 = v4;
   result.var0 = v3;
   return result;
 }
 
-- (void)_saveAuthMode:(id)a3 withContext:(id)a4
+- (void)_saveAuthMode:(id)mode withContext:(id)context
 {
-  v23 = a3;
+  modeCopy = mode;
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
+  objc_storeStrong(location, context);
   v21 = 0;
   v19 = 0;
   v6 = [location[0] authKitAccount:&v19];
@@ -272,7 +272,7 @@ LABEL_15:
 
       objc_storeStrong(&v12, 0);
       v10 = +[AKAccountManager sharedInstance];
-      [v10 setAuthenticationMode:v23.var0 forAccount:v20];
+      [v10 setAuthenticationMode:modeCopy.var0 forAccount:v20];
       v9 = 0;
       obj = 0;
       [v10 saveAccount:v20 error:&obj];

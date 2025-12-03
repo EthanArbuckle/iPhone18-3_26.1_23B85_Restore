@@ -1,24 +1,24 @@
 @interface EPActiveDeviceAssertionFactory
-+ (id)newService:(id)a3;
++ (id)newService:(id)service;
 - (EPActiveDeviceAssertionFactory)init;
-- (EPActiveDeviceAssertionFactory)initWithServiceRegistry:(id)a3;
+- (EPActiveDeviceAssertionFactory)initWithServiceRegistry:(id)registry;
 - (NSDictionary)assertions;
-- (id)assertionWithPairingID:(id)a3 isAltAccount:(BOOL)a4 delegate:(id)a5;
+- (id)assertionWithPairingID:(id)d isAltAccount:(BOOL)account delegate:(id)delegate;
 - (void)_holdAlternateAccountOSTransaction;
 - (void)_releaseAlternateAccountOSTransaction;
-- (void)addObserver:(id)a3;
-- (void)managerIsIdle:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setPairingID:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)managerIsIdle:(id)idle;
+- (void)removeObserver:(id)observer;
+- (void)setPairingID:(id)d;
 - (void)update;
 @end
 
 @implementation EPActiveDeviceAssertionFactory
 
-+ (id)newService:(id)a3
++ (id)newService:(id)service
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithServiceRegistry:v4];
+  serviceCopy = service;
+  v5 = [[self alloc] initWithServiceRegistry:serviceCopy];
 
   return v5;
 }
@@ -45,29 +45,29 @@
   return v2;
 }
 
-- (EPActiveDeviceAssertionFactory)initWithServiceRegistry:(id)a3
+- (EPActiveDeviceAssertionFactory)initWithServiceRegistry:(id)registry
 {
-  objc_storeStrong(&self->_serviceRegistry, a3);
+  objc_storeStrong(&self->_serviceRegistry, registry);
 
   return [(EPActiveDeviceAssertionFactory *)self init];
 }
 
-- (void)setPairingID:(id)a3
+- (void)setPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
-  if (v4)
+  if (dCopy)
   {
     if (v6)
     {
       v7 = nr_daemon_log();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(NSUUID *)v4 UUIDString];
+        uUIDString = [(NSUUID *)dCopy UUIDString];
         v11 = 138412290;
-        v12 = v8;
+        v12 = uUIDString;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "EPActiveDeviceAssertion: taking out switch assertion for %@", &v11, 0xCu);
 LABEL_8:
 
@@ -83,10 +83,10 @@ LABEL_8:
     v7 = nr_daemon_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(EPActiveDeviceAssertionFactory *)self pairingID];
-      v9 = [v8 UUIDString];
+      uUIDString = [(EPActiveDeviceAssertionFactory *)self pairingID];
+      v8UUIDString = [uUIDString UUIDString];
       v11 = 138412290;
-      v12 = v9;
+      v12 = v8UUIDString;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "EPActiveDeviceAssertion: releasing switch assertion for %@", &v11, 0xCu);
 
       goto LABEL_8;
@@ -96,7 +96,7 @@ LABEL_9:
   }
 
   pairingID = self->_pairingID;
-  self->_pairingID = v4;
+  self->_pairingID = dCopy;
 }
 
 - (void)_holdAlternateAccountOSTransaction
@@ -146,12 +146,12 @@ LABEL_9:
   }
 }
 
-- (id)assertionWithPairingID:(id)a3 isAltAccount:(BOOL)a4 delegate:(id)a5
+- (id)assertionWithPairingID:(id)d isAltAccount:(BOOL)account delegate:(id)delegate
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(NSMapTable *)self->_managers objectForKey:v8];
+  accountCopy = account;
+  dCopy = d;
+  delegateCopy = delegate;
+  v10 = [(NSMapTable *)self->_managers objectForKey:dCopy];
   if (v10)
   {
     v11 = v10;
@@ -163,11 +163,11 @@ LABEL_9:
       v14 = sub_1000A98C0();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v8 UUIDString];
+        uUIDString = [dCopy UUIDString];
         v31 = 134218242;
         v32 = v11;
         v33 = 2112;
-        v34 = v15;
+        v34 = uUIDString;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "EPActiveDeviceAssertionFactory: Reusing existing EPActiveDeviceAssertionManager %p to monitor switch to device %@", &v31, 0x16u);
       }
     }
@@ -175,8 +175,8 @@ LABEL_9:
 
   else
   {
-    v11 = [[EPActiveDeviceAssertionManager alloc] initWithFactory:self pairingID:v8];
-    [(NSMapTable *)self->_managers setObject:v11 forKey:v8];
+    v11 = [[EPActiveDeviceAssertionManager alloc] initWithFactory:self pairingID:dCopy];
+    [(NSMapTable *)self->_managers setObject:v11 forKey:dCopy];
     v16 = sub_1000A98C0();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
 
@@ -185,19 +185,19 @@ LABEL_9:
       v18 = sub_1000A98C0();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v8 UUIDString];
+        uUIDString2 = [dCopy UUIDString];
         v31 = 134218242;
         v32 = v11;
         v33 = 2112;
-        v34 = v19;
+        v34 = uUIDString2;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "EPActiveDeviceAssertionFactory: Created new EPActiveDeviceAssertionManager %p to monitor switch to device %@", &v31, 0x16u);
       }
     }
 
-    v20 = [(EPActiveDeviceAssertionFactory *)self pairingID];
-    if (!v20 || (v21 = v20, -[EPActiveDeviceAssertionFactory pairingID](self, "pairingID"), v22 = objc_claimAutoreleasedReturnValue(), v23 = [v22 isEqual:v8], v22, v21, (v23 & 1) == 0))
+    pairingID = [(EPActiveDeviceAssertionFactory *)self pairingID];
+    if (!pairingID || (v21 = pairingID, -[EPActiveDeviceAssertionFactory pairingID](self, "pairingID"), v22 = objc_claimAutoreleasedReturnValue(), v23 = [v22 isEqual:dCopy], v22, v21, (v23 & 1) == 0))
     {
-      [(EPActiveDeviceAssertionFactory *)self setPairingID:v8];
+      [(EPActiveDeviceAssertionFactory *)self setPairingID:dCopy];
       v24 = sub_1000A98C0();
       v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
 
@@ -206,9 +206,9 @@ LABEL_9:
         v26 = sub_1000A98C0();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
-          v27 = [(EPActiveDeviceAssertionFactory *)self pairingID];
+          pairingID2 = [(EPActiveDeviceAssertionFactory *)self pairingID];
           v31 = 138412290;
-          v32 = v27;
+          v32 = pairingID2;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "EPActiveDeviceAssertionFactory: Assertion taken for %@", &v31, 0xCu);
         }
       }
@@ -216,9 +216,9 @@ LABEL_9:
       [(EPActiveDeviceAssertionFactory *)self update];
     }
 
-    v28 = [(EPActiveDeviceAssertionFactory *)self pairingID];
+    pairingID3 = [(EPActiveDeviceAssertionFactory *)self pairingID];
 
-    if (v28 && v6)
+    if (pairingID3 && accountCopy)
     {
       [(EPActiveDeviceAssertionFactory *)self _holdAlternateAccountOSTransaction];
     }
@@ -229,34 +229,34 @@ LABEL_9:
     }
   }
 
-  v29 = [(EPResourceManager *)v11 newResourceWithDelegate:v9];
+  v29 = [(EPResourceManager *)v11 newResourceWithDelegate:delegateCopy];
 
   return v29;
 }
 
-- (void)managerIsIdle:(id)a3
+- (void)managerIsIdle:(id)idle
 {
-  v4 = a3;
+  idleCopy = idle;
   managers = self->_managers;
-  v6 = [v4 pairingID];
-  [(NSMapTable *)managers removeObjectForKey:v6];
+  pairingID = [idleCopy pairingID];
+  [(NSMapTable *)managers removeObjectForKey:pairingID];
 
-  v7 = [(EPActiveDeviceAssertionFactory *)self pairingID];
-  v8 = [v4 pairingID];
-  v9 = [v7 isEqual:v8];
+  pairingID2 = [(EPActiveDeviceAssertionFactory *)self pairingID];
+  pairingID3 = [idleCopy pairingID];
+  v9 = [pairingID2 isEqual:pairingID3];
 
   if (!v9)
   {
     goto LABEL_17;
   }
 
-  v10 = [(NSMapTable *)self->_managers keyEnumerator];
-  v11 = [v10 nextObject];
-  [(EPActiveDeviceAssertionFactory *)self setPairingID:v11];
+  keyEnumerator = [(NSMapTable *)self->_managers keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
+  [(EPActiveDeviceAssertionFactory *)self setPairingID:nextObject];
 
-  v12 = [(EPActiveDeviceAssertionFactory *)self pairingID];
+  pairingID4 = [(EPActiveDeviceAssertionFactory *)self pairingID];
 
-  v13 = v12 == 0;
+  v13 = pairingID4 == 0;
   v14 = sub_1000A98C0();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
 
@@ -280,9 +280,9 @@ LABEL_9:
     v16 = sub_1000A98C0();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(EPActiveDeviceAssertionFactory *)self pairingID];
+      pairingID5 = [(EPActiveDeviceAssertionFactory *)self pairingID];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v17;
+      *(&buf + 4) = pairingID5;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "EPActiveDeviceAssertionFactory: Assertion taken for %@", &buf, 0xCu);
     }
 
@@ -293,23 +293,23 @@ LABEL_9:
   *(&buf + 1) = &buf;
   v25 = 0x2020000000;
   v26 = 0;
-  v18 = [(EPActiveDeviceAssertionFactory *)self pairingID];
-  v19 = v18 == 0;
+  pairingID6 = [(EPActiveDeviceAssertionFactory *)self pairingID];
+  v19 = pairingID6 == 0;
 
   if (!v19)
   {
-    v20 = [v4 registry];
+    registry = [idleCopy registry];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_1000950EC;
     v23[3] = &unk_100177830;
     v23[4] = self;
     v23[5] = &buf;
-    [v20 deasyncGrabRegistryWithReadBlock:v23];
+    [registry deasyncGrabRegistryWithReadBlock:v23];
   }
 
-  v21 = [(EPActiveDeviceAssertionFactory *)self pairingID];
-  if (v21 && (v22 = *(*(&buf + 1) + 24), v21, (v22 & 1) != 0))
+  pairingID7 = [(EPActiveDeviceAssertionFactory *)self pairingID];
+  if (pairingID7 && (v22 = *(*(&buf + 1) + 24), pairingID7, (v22 & 1) != 0))
   {
     [(EPActiveDeviceAssertionFactory *)self _holdAlternateAccountOSTransaction];
   }
@@ -348,8 +348,8 @@ LABEL_17:
         }
 
         v8 = [(NSMapTable *)self->_managers objectForKey:*(*(&v20 + 1) + 8 * v7)];
-        v9 = [(EPActiveDeviceAssertionFactory *)self pairingID];
-        [v8 updateWithPairingID:v9];
+        pairingID = [(EPActiveDeviceAssertionFactory *)self pairingID];
+        [v8 updateWithPairingID:pairingID];
 
         v7 = v7 + 1;
       }
@@ -441,9 +441,9 @@ LABEL_17:
   return v3;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -459,10 +459,10 @@ LABEL_17:
   }
 
   v8 = objc_opt_new();
-  [v8 setObserver:v4];
+  [v8 setObserver:observerCopy];
 
-  v9 = [(EPActiveDeviceAssertionFactory *)self assertions];
-  v10 = [v9 count];
+  assertions = [(EPActiveDeviceAssertionFactory *)self assertions];
+  v10 = [assertions count];
 
   [(NSMutableOrderedSet *)self->_observers addObject:v8];
   if (!v10)
@@ -473,14 +473,14 @@ LABEL_17:
     v12[2] = sub_1000956C8;
     v12[3] = &unk_100175598;
     v13 = v8;
-    v14 = self;
+    selfCopy = self;
     [v11 dispatchAsync:v12];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -515,13 +515,13 @@ LABEL_17:
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v13 observer];
-        if (v14)
+        observer = [v13 observer];
+        if (observer)
         {
-          v15 = v14;
-          v16 = [v13 observer];
+          v15 = observer;
+          observer2 = [v13 observer];
 
-          if (v16 != v4)
+          if (observer2 != observerCopy)
           {
             continue;
           }

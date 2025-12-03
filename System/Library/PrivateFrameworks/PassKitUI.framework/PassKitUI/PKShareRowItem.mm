@@ -1,6 +1,6 @@
 @interface PKShareRowItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToareRowItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToareRowItem:(id)item;
 - (NSCopying)identifier;
 - (unint64_t)hash;
 @end
@@ -9,9 +9,9 @@
 
 - (NSCopying)identifier
 {
-  v3 = [(PKPassShare *)self->_share identifier];
-  title = v3;
-  if (!v3)
+  identifier = [(PKPassShare *)self->_share identifier];
+  title = identifier;
+  if (!identifier)
   {
     title = self->_title;
   }
@@ -24,8 +24,8 @@
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PKShareRowItem *)self identifier];
-  [v3 addObject:v4];
+  identifier = [(PKShareRowItem *)self identifier];
+  [v3 addObject:identifier];
 
   if (self->_title)
   {
@@ -47,30 +47,30 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKShareRowItem *)self isEqualToareRowItem:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKShareRowItem *)self isEqualToareRowItem:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToareRowItem:(id)a3
+- (BOOL)isEqualToareRowItem:(id)item
 {
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v5 = [(PKShareRowItem *)self identifier];
-    v6 = [v4 identifier];
+    identifier = [(PKShareRowItem *)self identifier];
+    identifier2 = [itemCopy identifier];
     if (PKEqualObjects() && PKEqualObjects() && PKEqualObjects())
     {
       v7 = PKEqualObjects();

@@ -1,32 +1,32 @@
 @interface HMIVideoEncoderDelegateAdapter
-- (void)encoder:(id)a3 didEncodeSampleBuffer:(opaqueCMSampleBuffer *)a4;
-- (void)encoder:(id)a3 didFailWithError:(id)a4;
+- (void)encoder:(id)encoder didEncodeSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)encoder:(id)encoder didFailWithError:(id)error;
 @end
 
 @implementation HMIVideoEncoderDelegateAdapter
 
-- (void)encoder:(id)a3 didEncodeSampleBuffer:(opaqueCMSampleBuffer *)a4
+- (void)encoder:(id)encoder didEncodeSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v8 = a3;
-  v6 = [(HMIVideoEncoderDelegateAdapter *)self encoderDidEncodeSampleBuffer];
+  encoderCopy = encoder;
+  encoderDidEncodeSampleBuffer = [(HMIVideoEncoderDelegateAdapter *)self encoderDidEncodeSampleBuffer];
 
-  if (v6)
+  if (encoderDidEncodeSampleBuffer)
   {
-    v7 = [(HMIVideoEncoderDelegateAdapter *)self encoderDidEncodeSampleBuffer];
-    (v7)[2](v7, v8, a4);
+    encoderDidEncodeSampleBuffer2 = [(HMIVideoEncoderDelegateAdapter *)self encoderDidEncodeSampleBuffer];
+    (encoderDidEncodeSampleBuffer2)[2](encoderDidEncodeSampleBuffer2, encoderCopy, buffer);
   }
 }
 
-- (void)encoder:(id)a3 didFailWithError:(id)a4
+- (void)encoder:(id)encoder didFailWithError:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(HMIVideoEncoderDelegateAdapter *)self encoderDidFailWithError];
+  encoderCopy = encoder;
+  errorCopy = error;
+  encoderDidFailWithError = [(HMIVideoEncoderDelegateAdapter *)self encoderDidFailWithError];
 
-  if (v7)
+  if (encoderDidFailWithError)
   {
-    v8 = [(HMIVideoEncoderDelegateAdapter *)self encoderDidFailWithError];
-    (v8)[2](v8, v9, v6);
+    encoderDidFailWithError2 = [(HMIVideoEncoderDelegateAdapter *)self encoderDidFailWithError];
+    (encoderDidFailWithError2)[2](encoderDidFailWithError2, encoderCopy, errorCopy);
   }
 }
 

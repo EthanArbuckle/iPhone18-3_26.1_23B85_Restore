@@ -1,32 +1,32 @@
 @interface PXGTextureProvider
 - ($28B10562A11C0018BB97DE3323169FD5)interactionState;
-- (BOOL)isRequestActive:(int)a3;
+- (BOOL)isRequestActive:(int)active;
 - (PXGTextureProvider)init;
 - (PXGTextureProviderDelegate)delegate;
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7;
-- (id)requestRenderSnapshot:(id *)a3 offscreenEffect:(id)a4;
-- (int64_t)registerImageDataSpec:(id *)a3;
-- (int64_t)requestQueue_indexForImageDataSpec:(id *)a3;
-- (void)cancelTextureRequests:(id)a3;
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout;
+- (id)requestRenderSnapshot:(id *)snapshot offscreenEffect:(id)effect;
+- (int64_t)registerImageDataSpec:(id *)spec;
+- (int64_t)requestQueue_indexForImageDataSpec:(id *)spec;
+- (void)cancelTextureRequests:(id)requests;
 - (void)clearTextureAtlasManagerCache;
 - (void)dealloc;
 - (void)performDeferredCancellations;
-- (void)provideCGImage:(CGImage *)a3 forRequestID:(int)a4;
-- (void)provideCGImage:(CGImage *)a3 options:(id)a4 adjustment:(id)a5 forRequestID:(int)a6;
-- (void)provideCGImage:(CGImage *)a3 options:(id)a4 adjustment:(id)a5 isDegraded:(BOOL)a6 forRequestID:(int)a7;
-- (void)provideCGImage:(CGImage *)a3 options:(id)a4 forRequestID:(int)a5;
-- (void)provideCGImage:(CGImage *)a3 options:(id)a4 isDegraded:(BOOL)a5 forRequestID:(int)a6;
-- (void)provideFailureWithError:(id)a3 forRequestID:(int)a4;
-- (void)provideImageData:(id)a3 withSpecAtIndex:(int64_t)a4 size:(CGSize)a5 bytesPerRow:(unint64_t)a6 contentsRect:(CGRect)a7 forRequestID:(int)a8;
-- (void)provideNothingForRequestID:(int)a3;
-- (void)providePayload:(id)a3 forRequestID:(int)a4;
-- (void)providePixelBuffer:(__CVBuffer *)a3 options:(id)a4 adjustment:(id)a5 forRequestID:(int)a6;
-- (void)providePixelBuffer:(__CVBuffer *)a3 options:(id)a4 forRequestID:(int)a5;
-- (void)setInteractionState:(id *)a3;
-- (void)setLowMemoryMode:(BOOL)a3;
+- (void)provideCGImage:(CGImage *)image forRequestID:(int)d;
+- (void)provideCGImage:(CGImage *)image options:(id)options adjustment:(id)adjustment forRequestID:(int)d;
+- (void)provideCGImage:(CGImage *)image options:(id)options adjustment:(id)adjustment isDegraded:(BOOL)degraded forRequestID:(int)d;
+- (void)provideCGImage:(CGImage *)image options:(id)options forRequestID:(int)d;
+- (void)provideCGImage:(CGImage *)image options:(id)options isDegraded:(BOOL)degraded forRequestID:(int)d;
+- (void)provideFailureWithError:(id)error forRequestID:(int)d;
+- (void)provideImageData:(id)data withSpecAtIndex:(int64_t)index size:(CGSize)size bytesPerRow:(unint64_t)row contentsRect:(CGRect)rect forRequestID:(int)d;
+- (void)provideNothingForRequestID:(int)d;
+- (void)providePayload:(id)payload forRequestID:(int)d;
+- (void)providePixelBuffer:(__CVBuffer *)buffer options:(id)options adjustment:(id)adjustment forRequestID:(int)d;
+- (void)providePixelBuffer:(__CVBuffer *)buffer options:(id)options forRequestID:(int)d;
+- (void)setInteractionState:(id *)state;
+- (void)setLowMemoryMode:(BOOL)mode;
 - (void)setNeedsRegisterToDisplayLinkUpdates;
 - (void)setNeedsUnregisterFromDisplayLinkUpdates;
-- (void)setViewEnvironment:(id)a3;
+- (void)setViewEnvironment:(id)environment;
 @end
 
 @implementation PXGTextureProvider
@@ -40,13 +40,13 @@
   if (v2)
   {
     v2->_lookupLock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
     lookupLock_activeRequests = v3->_lookupLock_activeRequests;
-    v3->_lookupLock_activeRequests = v4;
+    v3->_lookupLock_activeRequests = indexSet;
 
-    v6 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet2 = [MEMORY[0x277CCAB58] indexSet];
     requestIDsPendingCancellation = v3->_requestIDsPendingCancellation;
-    v3->_requestIDsPendingCancellation = v6;
+    v3->_requestIDsPendingCancellation = indexSet2;
 
     v3->_canDeliverThumbnailData = 1;
     v3->_preferredColorSpaceName = 12;
@@ -95,13 +95,13 @@
   }
 }
 
-- (int64_t)requestQueue_indexForImageDataSpec:(id *)a3
+- (int64_t)requestQueue_indexForImageDataSpec:(id *)spec
 {
   dispatch_assert_queue_V2(self->_requestQueue);
-  var1 = a3->var1;
-  var2 = a3->var2;
-  var3 = a3->var3;
-  if (self->_lastImageDataSpec.pixelFormat == a3->var0 && self->_lastImageDataSpec.colorSpaceName == var1 && self->_lastImageDataSpec.width == var2 && self->_lastImageDataSpec.height == var3)
+  var1 = spec->var1;
+  var2 = spec->var2;
+  var3 = spec->var3;
+  if (self->_lastImageDataSpec.pixelFormat == spec->var0 && self->_lastImageDataSpec.colorSpaceName == var1 && self->_lastImageDataSpec.width == var2 && self->_lastImageDataSpec.height == var3)
   {
     return self->_lastImageDataSpecIndex;
   }
@@ -115,7 +115,7 @@
   result = 0;
   for (i = &self->_imageDataSpecs->var2; ; i += 10)
   {
-    v14 = *(i - 2) == a3->var0 && *(i - 1) == var1;
+    v14 = *(i - 2) == spec->var0 && *(i - 1) == var1;
     v15 = v14 && *i == var2;
     if (v15 && i[1] == var3)
     {
@@ -128,17 +128,17 @@
     }
   }
 
-  v17 = *&a3->var0;
-  *&self->_lastImageDataSpec.width = *&a3->var2;
+  v17 = *&spec->var0;
+  *&self->_lastImageDataSpec.width = *&spec->var2;
   *&self->_lastImageDataSpec.pixelFormat = v17;
   self->_lastImageDataSpecIndex = result;
   return result;
 }
 
-- (int64_t)registerImageDataSpec:(id *)a3
+- (int64_t)registerImageDataSpec:(id *)spec
 {
-  v5 = [(PXGTextureProvider *)self layoutQueue];
-  dispatch_assert_queue_V2(v5);
+  layoutQueue = [(PXGTextureProvider *)self layoutQueue];
+  dispatch_assert_queue_V2(layoutQueue);
 
   imageDataSpecsCount = self->_imageDataSpecsCount;
   if (imageDataSpecsCount < 1)
@@ -170,8 +170,8 @@ LABEL_14:
     }
 
     v13 = self->_imageDataSpecs + 20 * imageDataSpecsCount;
-    v14 = *&a3->var0;
-    *(v13 + 4) = *&a3->var2;
+    v14 = *&spec->var0;
+    *(v13 + 4) = *&spec->var2;
     *v13 = v14;
     self->_textureAtlasManagers[imageDataSpecsCount] = 0;
   }
@@ -182,9 +182,9 @@ LABEL_14:
     p_var2 = &self->_imageDataSpecs->var2;
     while (1)
     {
-      v9 = *(p_var2 - 2) == a3->var0 && *(p_var2 - 1) == a3->var1;
-      v10 = v9 && *p_var2 == a3->var2;
-      if (v10 && p_var2[1] == a3->var3)
+      v9 = *(p_var2 - 2) == spec->var0 && *(p_var2 - 1) == spec->var1;
+      v10 = v9 && *p_var2 == spec->var2;
+      if (v10 && p_var2[1] == spec->var3)
       {
         return v7;
       }
@@ -200,190 +200,190 @@ LABEL_14:
   return imageDataSpecsCount;
 }
 
-- (id)requestRenderSnapshot:(id *)a3 offscreenEffect:(id)a4
+- (id)requestRenderSnapshot:(id *)snapshot offscreenEffect:(id)effect
 {
-  v6 = a4;
-  v7 = [(PXGTextureProvider *)self delegate];
-  v8 = *&a3->var1.origin.y;
-  v11[0] = *&a3->var0;
+  effectCopy = effect;
+  delegate = [(PXGTextureProvider *)self delegate];
+  v8 = *&snapshot->var1.origin.y;
+  v11[0] = *&snapshot->var0;
   v11[1] = v8;
-  height = a3->var1.size.height;
-  v9 = [v7 textureProvider:self requestRenderSnapshot:v11 offscreenEffect:v6];
+  height = snapshot->var1.size.height;
+  v9 = [delegate textureProvider:self requestRenderSnapshot:v11 offscreenEffect:effectCopy];
 
   return v9;
 }
 
-- (void)providePayload:(id)a3 forRequestID:(int)a4
+- (void)providePayload:(id)payload forRequestID:(int)d
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [(PXGTextureProvider *)self requestQueue];
-  dispatch_assert_queue_V2(v7);
+  v4 = *&d;
+  payloadCopy = payload;
+  requestQueue = [(PXGTextureProvider *)self requestQueue];
+  dispatch_assert_queue_V2(requestQueue);
 
-  v8 = [(PXGTextureProvider *)self delegate];
-  [v8 textureProvider:self didProvidePayload:v6 forRequestID:v4];
+  delegate = [(PXGTextureProvider *)self delegate];
+  [delegate textureProvider:self didProvidePayload:payloadCopy forRequestID:v4];
 }
 
 - (void)setNeedsUnregisterFromDisplayLinkUpdates
 {
-  v3 = [(PXGTextureProvider *)self requestQueue];
-  dispatch_assert_queue_V2(v3);
+  requestQueue = [(PXGTextureProvider *)self requestQueue];
+  dispatch_assert_queue_V2(requestQueue);
 
-  v4 = [(PXGTextureProvider *)self delegate];
-  [v4 textureProviderNeedsToUnregisterFromDisplayLinkUpdates:self];
+  delegate = [(PXGTextureProvider *)self delegate];
+  [delegate textureProviderNeedsToUnregisterFromDisplayLinkUpdates:self];
 }
 
 - (void)setNeedsRegisterToDisplayLinkUpdates
 {
-  v3 = [(PXGTextureProvider *)self requestQueue];
-  dispatch_assert_queue_V2(v3);
+  requestQueue = [(PXGTextureProvider *)self requestQueue];
+  dispatch_assert_queue_V2(requestQueue);
 
-  v4 = [(PXGTextureProvider *)self delegate];
-  [v4 textureProviderNeedsToRegisterToDisplayLinkUpdates:self];
+  delegate = [(PXGTextureProvider *)self delegate];
+  [delegate textureProviderNeedsToRegisterToDisplayLinkUpdates:self];
 }
 
-- (void)provideFailureWithError:(id)a3 forRequestID:(int)a4
+- (void)provideFailureWithError:(id)error forRequestID:(int)d
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [(PXGTextureProvider *)self requestQueue];
-  dispatch_assert_queue_V2(v7);
+  v4 = *&d;
+  errorCopy = error;
+  requestQueue = [(PXGTextureProvider *)self requestQueue];
+  dispatch_assert_queue_V2(requestQueue);
 
-  v8 = [(PXGTextureProvider *)self delegate];
-  [v8 textureProvider:self didProvideFailureWithError:v6 forRequestID:v4];
+  delegate = [(PXGTextureProvider *)self delegate];
+  [delegate textureProvider:self didProvideFailureWithError:errorCopy forRequestID:v4];
 }
 
-- (void)providePixelBuffer:(__CVBuffer *)a3 options:(id)a4 forRequestID:(int)a5
+- (void)providePixelBuffer:(__CVBuffer *)buffer options:(id)options forRequestID:(int)d
 {
-  v5 = *(*&a4.var0 + 16);
-  v6[0] = **&a4.var0;
+  v5 = *(*&options.var0 + 16);
+  v6[0] = **&options.var0;
   v6[1] = v5;
-  [(PXGTextureProvider *)self providePixelBuffer:a3 options:v6 adjustment:0 forRequestID:*&a4.var2];
+  [(PXGTextureProvider *)self providePixelBuffer:buffer options:v6 adjustment:0 forRequestID:*&options.var2];
 }
 
-- (void)providePixelBuffer:(__CVBuffer *)a3 options:(id)a4 adjustment:(id)a5 forRequestID:(int)a6
+- (void)providePixelBuffer:(__CVBuffer *)buffer options:(id)options adjustment:(id)adjustment forRequestID:(int)d
 {
-  v7 = *&a4.var0;
-  v11 = *&a4.var2;
-  v12 = [(PXGTextureProvider *)self requestQueue];
-  dispatch_assert_queue_V2(v12);
+  v7 = *&options.var0;
+  v11 = *&options.var2;
+  requestQueue = [(PXGTextureProvider *)self requestQueue];
+  dispatch_assert_queue_V2(requestQueue);
 
-  if (!a3)
+  if (!buffer)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXGTextureProvider.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"pixelBufferRef != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGTextureProvider.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"pixelBufferRef != nil"}];
   }
 
-  v13 = [(PXGTextureProvider *)self delegate];
+  delegate = [(PXGTextureProvider *)self delegate];
   v14 = v7[1];
   v16[0] = *v7;
   v16[1] = v14;
-  [v13 textureProvider:self didProvidePixelBuffer:a3 options:v16 adjustment:v11 forRequestID:a5];
+  [delegate textureProvider:self didProvidePixelBuffer:buffer options:v16 adjustment:v11 forRequestID:adjustment];
 }
 
-- (void)provideImageData:(id)a3 withSpecAtIndex:(int64_t)a4 size:(CGSize)a5 bytesPerRow:(unint64_t)a6 contentsRect:(CGRect)a7 forRequestID:(int)a8
+- (void)provideImageData:(id)data withSpecAtIndex:(int64_t)index size:(CGSize)size bytesPerRow:(unint64_t)row contentsRect:(CGRect)rect forRequestID:(int)d
 {
-  v8 = *&a8;
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v14 = a5.height;
-  v15 = a5.width;
-  v21 = a3;
-  if (!v21)
+  v8 = *&d;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v14 = size.height;
+  v15 = size.width;
+  dataCopy = data;
+  if (!dataCopy)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXGTextureProvider.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"imageData != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGTextureProvider.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"imageData != nil"}];
   }
 
-  v19 = [(PXGTextureProvider *)self delegate];
-  [v19 textureProvider:self didProvideImageData:v21 withSpecAtIndex:a4 size:a6 bytesPerRow:v8 contentsRect:v15 forRequestID:{v14, x, y, width, height}];
+  delegate = [(PXGTextureProvider *)self delegate];
+  [delegate textureProvider:self didProvideImageData:dataCopy withSpecAtIndex:index size:row bytesPerRow:v8 contentsRect:v15 forRequestID:{v14, x, y, width, height}];
 }
 
-- (void)provideCGImage:(CGImage *)a3 forRequestID:(int)a4
+- (void)provideCGImage:(CGImage *)image forRequestID:(int)d
 {
   v4[0] = PXGTextureProcessingOptionsDefault;
   v4[1] = unk_21AE2E320;
-  [(PXGTextureProvider *)self provideCGImage:a3 options:v4 forRequestID:*&a4];
+  [(PXGTextureProvider *)self provideCGImage:image options:v4 forRequestID:*&d];
 }
 
-- (void)provideCGImage:(CGImage *)a3 options:(id)a4 forRequestID:(int)a5
+- (void)provideCGImage:(CGImage *)image options:(id)options forRequestID:(int)d
 {
-  v5 = *(*&a4.var0 + 16);
-  v6[0] = **&a4.var0;
+  v5 = *(*&options.var0 + 16);
+  v6[0] = **&options.var0;
   v6[1] = v5;
-  [(PXGTextureProvider *)self provideCGImage:a3 options:v6 isDegraded:0 forRequestID:*&a4.var2];
+  [(PXGTextureProvider *)self provideCGImage:image options:v6 isDegraded:0 forRequestID:*&options.var2];
 }
 
-- (void)provideCGImage:(CGImage *)a3 options:(id)a4 isDegraded:(BOOL)a5 forRequestID:(int)a6
+- (void)provideCGImage:(CGImage *)image options:(id)options isDegraded:(BOOL)degraded forRequestID:(int)d
 {
-  v6 = *(*&a4.var0 + 16);
-  v7[0] = **&a4.var0;
+  v6 = *(*&options.var0 + 16);
+  v7[0] = **&options.var0;
   v7[1] = v6;
-  [(PXGTextureProvider *)self provideCGImage:a3 options:v7 adjustment:0 isDegraded:0 forRequestID:a5];
+  [(PXGTextureProvider *)self provideCGImage:image options:v7 adjustment:0 isDegraded:0 forRequestID:degraded];
 }
 
-- (void)provideCGImage:(CGImage *)a3 options:(id)a4 adjustment:(id)a5 forRequestID:(int)a6
+- (void)provideCGImage:(CGImage *)image options:(id)options adjustment:(id)adjustment forRequestID:(int)d
 {
-  v6 = *(*&a4.var0 + 16);
-  v7[0] = **&a4.var0;
+  v6 = *(*&options.var0 + 16);
+  v7[0] = **&options.var0;
   v7[1] = v6;
-  [(PXGTextureProvider *)self provideCGImage:a3 options:v7 adjustment:*&a4.var2 isDegraded:0 forRequestID:a5];
+  [(PXGTextureProvider *)self provideCGImage:image options:v7 adjustment:*&options.var2 isDegraded:0 forRequestID:adjustment];
 }
 
-- (void)provideCGImage:(CGImage *)a3 options:(id)a4 adjustment:(id)a5 isDegraded:(BOOL)a6 forRequestID:(int)a7
+- (void)provideCGImage:(CGImage *)image options:(id)options adjustment:(id)adjustment isDegraded:(BOOL)degraded forRequestID:(int)d
 {
-  v7 = a6;
-  v9 = *&a4.var0;
-  v13 = *&a4.var2;
-  if (!a3)
+  degradedCopy = degraded;
+  v9 = *&options.var0;
+  v13 = *&options.var2;
+  if (!image)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXGTextureProvider.m" lineNumber:144 description:{@"Invalid parameter not satisfying: %@", @"imageRef != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGTextureProvider.m" lineNumber:144 description:{@"Invalid parameter not satisfying: %@", @"imageRef != nil"}];
   }
 
-  v14 = [(PXGTextureProvider *)self requestQueue];
-  dispatch_assert_queue_V2(v14);
+  requestQueue = [(PXGTextureProvider *)self requestQueue];
+  dispatch_assert_queue_V2(requestQueue);
 
-  v15 = [(PXGTextureProvider *)self delegate];
+  delegate = [(PXGTextureProvider *)self delegate];
   v16 = v9[1];
   v18[0] = *v9;
   v18[1] = v16;
-  [v15 textureProvider:self didProvideCGImage:a3 options:v18 adjustment:v13 isDegraded:a5 forRequestID:v7];
+  [delegate textureProvider:self didProvideCGImage:image options:v18 adjustment:v13 isDegraded:adjustment forRequestID:degradedCopy];
 }
 
-- (void)provideNothingForRequestID:(int)a3
+- (void)provideNothingForRequestID:(int)d
 {
-  v3 = *&a3;
-  v5 = [(PXGTextureProvider *)self requestQueue];
-  dispatch_assert_queue_V2(v5);
+  v3 = *&d;
+  requestQueue = [(PXGTextureProvider *)self requestQueue];
+  dispatch_assert_queue_V2(requestQueue);
 
-  v6 = [(PXGTextureProvider *)self delegate];
-  [v6 textureProvider:self didProvideNothingForRequestID:v3];
+  delegate = [(PXGTextureProvider *)self delegate];
+  [delegate textureProvider:self didProvideNothingForRequestID:v3];
 }
 
-- (BOOL)isRequestActive:(int)a3
+- (BOOL)isRequestActive:(int)active
 {
   os_unfair_lock_lock(&self->_lookupLock);
-  LOBYTE(a3) = [(NSMutableIndexSet *)self->_lookupLock_activeRequests containsIndex:a3];
+  LOBYTE(active) = [(NSMutableIndexSet *)self->_lookupLock_activeRequests containsIndex:active];
   os_unfair_lock_unlock(&self->_lookupLock);
-  return a3;
+  return active;
 }
 
-- (void)cancelTextureRequests:(id)a3
+- (void)cancelTextureRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   os_unfair_lock_lock(&self->_lookupLock);
-  [(NSMutableIndexSet *)self->_lookupLock_activeRequests removeIndexes:v4];
+  [(NSMutableIndexSet *)self->_lookupLock_activeRequests removeIndexes:requestsCopy];
 
   os_unfair_lock_unlock(&self->_lookupLock);
 }
 
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout
 {
-  length = a3.length;
-  add = atomic_fetch_add(PXMakeNextTextureRequestIDRange_lastRequestID, a3.length);
+  length = range.length;
+  add = atomic_fetch_add(PXMakeNextTextureRequestIDRange_lastRequestID, range.length);
   os_unfair_lock_lock(&self->_lookupLock);
   [(NSMutableIndexSet *)self->_lookupLock_activeRequests addIndexesInRange:add, length];
   os_unfair_lock_unlock(&self->_lookupLock);
@@ -394,19 +394,19 @@ LABEL_14:
   return result;
 }
 
-- (void)setLowMemoryMode:(BOOL)a3
+- (void)setLowMemoryMode:(BOOL)mode
 {
-  if (self->_lowMemoryMode != a3)
+  if (self->_lowMemoryMode != mode)
   {
-    self->_lowMemoryMode = a3;
+    self->_lowMemoryMode = mode;
     [(PXGTextureProvider *)self lowMemoryModeDidChange];
   }
 }
 
-- (void)setInteractionState:(id *)a3
+- (void)setInteractionState:(id *)state
 {
   p_interactionState = &self->_interactionState;
-  if (self->_interactionState.scrollRegime != a3->var0 || self->_interactionState.isAnimatingScrollTowardsEdge != a3->var1 || self->_interactionState.isScrubbing != a3->var2 || self->_interactionState.isAnimatingContent != a3->var3 || self->_interactionState.contentChangeTrend != a3->var4 || self->_interactionState.isViewBoundsChanging != a3->var5 || self->_interactionState.isInitialLoad != a3->var6 || self->_interactionState.isVisible != a3->var7 || !CGRectEqualToRect(self->_interactionState.targetRect, a3->var8))
+  if (self->_interactionState.scrollRegime != state->var0 || self->_interactionState.isAnimatingScrollTowardsEdge != state->var1 || self->_interactionState.isScrubbing != state->var2 || self->_interactionState.isAnimatingContent != state->var3 || self->_interactionState.contentChangeTrend != state->var4 || self->_interactionState.isViewBoundsChanging != state->var5 || self->_interactionState.isInitialLoad != state->var6 || self->_interactionState.isVisible != state->var7 || !CGRectEqualToRect(self->_interactionState.targetRect, state->var8))
   {
     v6 = *&p_interactionState->contentChangeTrend;
     v11[0] = *&p_interactionState->scrollRegime;
@@ -414,10 +414,10 @@ LABEL_14:
     size = p_interactionState->targetRect.size;
     v11[2] = p_interactionState->targetRect.origin;
     v11[3] = size;
-    v8 = a3->var8.size;
-    v10 = *&a3->var0;
-    v9 = *&a3->var4;
-    p_interactionState->targetRect.origin = a3->var8.origin;
+    v8 = state->var8.size;
+    v10 = *&state->var0;
+    v9 = *&state->var4;
+    p_interactionState->targetRect.origin = state->var8.origin;
     p_interactionState->targetRect.size = v8;
     *&p_interactionState->scrollRegime = v10;
     *&p_interactionState->contentChangeTrend = v9;
@@ -425,23 +425,23 @@ LABEL_14:
   }
 }
 
-- (void)setViewEnvironment:(id)a3
+- (void)setViewEnvironment:(id)environment
 {
-  v11 = a3;
+  environmentCopy = environment;
   v4 = self->_viewEnvironment;
   v5 = v4;
-  if (v4 != v11)
+  if (v4 != environmentCopy)
   {
-    v6 = [(PXGViewEnvironment *)v4 isEqual:v11];
+    v6 = [(PXGViewEnvironment *)v4 isEqual:environmentCopy];
 
-    v7 = v11;
+    v7 = environmentCopy;
     if (v6)
     {
       goto LABEL_5;
     }
 
     viewEnvironment = self->_viewEnvironment;
-    v9 = v11;
+    v9 = environmentCopy;
     v10 = self->_viewEnvironment;
     self->_viewEnvironment = v9;
     v5 = viewEnvironment;
@@ -449,7 +449,7 @@ LABEL_14:
     [(PXGTextureProvider *)self viewEnvironmentDidChange:v5];
   }
 
-  v7 = v11;
+  v7 = environmentCopy;
 LABEL_5:
 }
 

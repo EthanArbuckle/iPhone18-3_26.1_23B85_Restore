@@ -1,47 +1,47 @@
 @interface CNAutocompleteResultTokenMatcher
-+ (id)indexTokensFromPhoneNumber:(id)a3;
-+ (id)normalizePhoneNumber:(id)a3 countryCode:(id)a4;
-+ (id)searchTokensFromString:(id)a3;
-+ (id)tokenizePhoneNumber:(id)a3;
-- (BOOL)evaluateResult:(id)a3;
-- (BOOL)evaluateSingleResult:(id)a3;
-- (BOOL)evaluateTopLevelGroupResult:(id)a3;
-- (CNAutocompleteResultTokenMatcher)initWithSearchString:(id)a3;
-- (CNAutocompleteResultTokenMatcher)initWithSearchString:(id)a3 countryCode:(id)a4;
++ (id)indexTokensFromPhoneNumber:(id)number;
++ (id)normalizePhoneNumber:(id)number countryCode:(id)code;
++ (id)searchTokensFromString:(id)string;
++ (id)tokenizePhoneNumber:(id)number;
+- (BOOL)evaluateResult:(id)result;
+- (BOOL)evaluateSingleResult:(id)result;
+- (BOOL)evaluateTopLevelGroupResult:(id)result;
+- (CNAutocompleteResultTokenMatcher)initWithSearchString:(id)string;
+- (CNAutocompleteResultTokenMatcher)initWithSearchString:(id)string countryCode:(id)code;
 - (id)filterAdapter;
-- (id)nameTokensForResult:(id)a3;
-- (id)representationsOfPhoneNumber:(id)a3;
-- (id)tokensForResultName:(id)a3;
-- (id)tokensForResultValue:(id)a3;
+- (id)nameTokensForResult:(id)result;
+- (id)representationsOfPhoneNumber:(id)number;
+- (id)tokensForResultName:(id)name;
+- (id)tokensForResultValue:(id)value;
 @end
 
 @implementation CNAutocompleteResultTokenMatcher
 
-- (CNAutocompleteResultTokenMatcher)initWithSearchString:(id)a3
+- (CNAutocompleteResultTokenMatcher)initWithSearchString:(id)string
 {
   v4 = MEMORY[0x277CBEAF8];
-  v5 = a3;
-  v6 = [v4 currentLocale];
-  v7 = [v6 objectForKey:*MEMORY[0x277CBE690]];
+  stringCopy = string;
+  currentLocale = [v4 currentLocale];
+  v7 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
 
-  v8 = [(CNAutocompleteResultTokenMatcher *)self initWithSearchString:v5 countryCode:v7];
+  v8 = [(CNAutocompleteResultTokenMatcher *)self initWithSearchString:stringCopy countryCode:v7];
   return v8;
 }
 
-- (CNAutocompleteResultTokenMatcher)initWithSearchString:(id)a3 countryCode:(id)a4
+- (CNAutocompleteResultTokenMatcher)initWithSearchString:(id)string countryCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  codeCopy = code;
   v15.receiver = self;
   v15.super_class = CNAutocompleteResultTokenMatcher;
   v8 = [(CNAutocompleteResultTokenMatcher *)&v15 init];
   if (v8)
   {
-    v9 = [objc_opt_class() searchTokensFromString:v6];
+    v9 = [objc_opt_class() searchTokensFromString:stringCopy];
     tokens = v8->_tokens;
     v8->_tokens = v9;
 
-    v11 = [v7 copy];
+    v11 = [codeCopy copy];
     countryCode = v8->_countryCode;
     v8->_countryCode = v11;
 
@@ -51,9 +51,9 @@
   return v8;
 }
 
-+ (id)searchTokensFromString:(id)a3
++ (id)searchTokensFromString:(id)string
 {
-  v3 = [CNAutocompleteInputStringTokenizer tokensFromString:a3];
+  v3 = [CNAutocompleteInputStringTokenizer tokensFromString:string];
   v4 = [v3 _cn_map:&__block_literal_global_24];
 
   return v4;
@@ -71,12 +71,12 @@
   return v2;
 }
 
-- (BOOL)evaluateResult:(id)a3
+- (BOOL)evaluateResult:(id)result
 {
-  v4 = a3;
-  if (v4)
+  resultCopy = result;
+  if (resultCopy)
   {
-    v5 = [(CNAutocompleteResultTokenMatcher *)self evaluateSingleResult:v4]|| [(CNAutocompleteResultTokenMatcher *)self evaluateTopLevelGroupResult:v4];
+    v5 = [(CNAutocompleteResultTokenMatcher *)self evaluateSingleResult:resultCopy]|| [(CNAutocompleteResultTokenMatcher *)self evaluateTopLevelGroupResult:resultCopy];
   }
 
   else
@@ -87,23 +87,23 @@
   return v5;
 }
 
-- (BOOL)evaluateSingleResult:(id)a3
+- (BOOL)evaluateSingleResult:(id)result
 {
-  v3 = self;
-  v4 = [(CNAutocompleteResultTokenMatcher *)self nameTokensForResult:a3];
-  LOBYTE(v3) = [CNAutocompleteTokenMatcher doSearchTokens:v3->_tokens matchNameTokens:v4];
+  selfCopy = self;
+  v4 = [(CNAutocompleteResultTokenMatcher *)self nameTokensForResult:result];
+  LOBYTE(selfCopy) = [CNAutocompleteTokenMatcher doSearchTokens:selfCopy->_tokens matchNameTokens:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)evaluateTopLevelGroupResult:(id)a3
+- (BOOL)evaluateTopLevelGroupResult:(id)result
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 resultType] == 1)
+  resultCopy = result;
+  if ([resultCopy resultType] == 1)
   {
     v12 = 0;
-    v5 = [v4 members:&v12];
+    v5 = [resultCopy members:&v12];
     v6 = v12;
     if (v5)
     {
@@ -123,7 +123,7 @@
         *buf = 138412546;
         v14 = v6;
         v15 = 2112;
-        v16 = v4;
+        v16 = resultCopy;
         _os_log_impl(&dword_2155FE000, v8, OS_LOG_TYPE_DEFAULT, "Error: %@ a result %@ has no members", buf, 0x16u);
       }
 
@@ -140,112 +140,112 @@
   return v7;
 }
 
-- (id)nameTokensForResult:(id)a3
+- (id)nameTokensForResult:(id)result
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
-  v7 = [(CNAutocompleteResultTokenMatcher *)self tokensForResultName:v5];
-  [v6 addObject:v7];
+  resultCopy = result;
+  array = [v4 array];
+  v7 = [(CNAutocompleteResultTokenMatcher *)self tokensForResultName:resultCopy];
+  [array addObject:v7];
 
-  v8 = [v5 value];
+  value = [resultCopy value];
 
-  v9 = [(CNAutocompleteResultTokenMatcher *)self tokensForResultValue:v8];
-  [v6 addObject:v9];
+  v9 = [(CNAutocompleteResultTokenMatcher *)self tokensForResultValue:value];
+  [array addObject:v9];
 
-  v10 = [v6 _cn_flatten];
-  v11 = [v10 _cn_map:&__block_literal_global_24];
+  _cn_flatten = [array _cn_flatten];
+  v11 = [_cn_flatten _cn_map:&__block_literal_global_24];
 
   return v11;
 }
 
-- (id)tokensForResultName:(id)a3
+- (id)tokensForResultName:(id)name
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 array];
-  v6 = [v4 nameComponents];
-  v7 = [v6 firstName];
-  [v5 _cn_addNonNilObject:v7];
+  nameCopy = name;
+  array = [v3 array];
+  nameComponents = [nameCopy nameComponents];
+  firstName = [nameComponents firstName];
+  [array _cn_addNonNilObject:firstName];
 
-  v8 = [v4 nameComponents];
-  v9 = [v8 lastName];
-  [v5 _cn_addNonNilObject:v9];
+  nameComponents2 = [nameCopy nameComponents];
+  lastName = [nameComponents2 lastName];
+  [array _cn_addNonNilObject:lastName];
 
-  v10 = [v4 nameComponents];
-  v11 = [v10 nickname];
-  [v5 _cn_addNonNilObject:v11];
+  nameComponents3 = [nameCopy nameComponents];
+  nickname = [nameComponents3 nickname];
+  [array _cn_addNonNilObject:nickname];
 
-  v12 = [v4 nameComponents];
-  v13 = [v12 nameSuffix];
-  [v5 _cn_addNonNilObject:v13];
+  nameComponents4 = [nameCopy nameComponents];
+  nameSuffix = [nameComponents4 nameSuffix];
+  [array _cn_addNonNilObject:nameSuffix];
 
-  v14 = [v4 displayName];
+  displayName = [nameCopy displayName];
 
-  [v5 _cn_addNonNilObject:v14];
-  v15 = [v5 _cn_flatMap:&__block_literal_global_9_0];
+  [array _cn_addNonNilObject:displayName];
+  v15 = [array _cn_flatMap:&__block_literal_global_9_0];
 
   return v15;
 }
 
-- (id)tokensForResultValue:(id)a3
+- (id)tokensForResultValue:(id)value
 {
-  v4 = a3;
-  if (v4)
+  valueCopy = value;
+  if (valueCopy)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
-    v6 = [v4 addressType];
-    v7 = [v4 address];
-    if (v6 == 2)
+    array = [MEMORY[0x277CBEB18] array];
+    addressType = [valueCopy addressType];
+    address = [valueCopy address];
+    if (addressType == 2)
     {
-      v8 = [(CNAutocompleteResultTokenMatcher *)self representationsOfPhoneNumber:v7];
-      [v5 addObjectsFromArray:v8];
+      v8 = [(CNAutocompleteResultTokenMatcher *)self representationsOfPhoneNumber:address];
+      [array addObjectsFromArray:v8];
     }
 
     else
     {
-      [v5 _cn_addNonNilObject:v7];
+      [array _cn_addNonNilObject:address];
     }
   }
 
   else
   {
-    v5 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
-  return v5;
+  return array;
 }
 
-- (id)representationsOfPhoneNumber:(id)a3
+- (id)representationsOfPhoneNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   if ((*(*MEMORY[0x277CFBD30] + 16))())
   {
-    v5 = MEMORY[0x277CBEBF8];
+    _cn_distinctObjects = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEB18] array];
-    [v6 addObject:v4];
-    v7 = [objc_opt_class() normalizePhoneNumber:v4 countryCode:self->_countryCode];
-    [v6 _cn_addNonNilObject:v7];
+    array = [MEMORY[0x277CBEB18] array];
+    [array addObject:numberCopy];
+    v7 = [objc_opt_class() normalizePhoneNumber:numberCopy countryCode:self->_countryCode];
+    [array _cn_addNonNilObject:v7];
     v8 = [objc_opt_class() indexTokensFromPhoneNumber:v7];
-    [v6 addObjectsFromArray:v8];
+    [array addObjectsFromArray:v8];
 
-    v9 = [objc_opt_class() indexTokensFromPhoneNumber:v4];
-    [v6 addObjectsFromArray:v9];
+    v9 = [objc_opt_class() indexTokensFromPhoneNumber:numberCopy];
+    [array addObjectsFromArray:v9];
 
-    v5 = [v6 _cn_distinctObjects];
+    _cn_distinctObjects = [array _cn_distinctObjects];
   }
 
-  return v5;
+  return _cn_distinctObjects;
 }
 
-+ (id)indexTokensFromPhoneNumber:(id)a3
++ (id)indexTokensFromPhoneNumber:(id)number
 {
   v20 = *MEMORY[0x277D85DE8];
-  [a1 tokenizePhoneNumber:a3];
+  [self tokenizePhoneNumber:number];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -297,16 +297,16 @@
   return v6;
 }
 
-+ (id)tokenizePhoneNumber:(id)a3
++ (id)tokenizePhoneNumber:(id)number
 {
   v3 = tokenizePhoneNumber__cn_once_token_1;
-  v4 = a3;
+  numberCopy = number;
   if (v3 != -1)
   {
     +[CNAutocompleteResultTokenMatcher tokenizePhoneNumber:];
   }
 
-  v5 = [v4 componentsSeparatedByCharactersInSet:tokenizePhoneNumber__cn_once_object_1];
+  v5 = [numberCopy componentsSeparatedByCharactersInSet:tokenizePhoneNumber__cn_once_object_1];
 
   v6 = [v5 _cn_filter:&__block_literal_global_18_2];
 
@@ -320,9 +320,9 @@ uint64_t __56__CNAutocompleteResultTokenMatcher_tokenizePhoneNumber___block_invo
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)normalizePhoneNumber:(id)a3 countryCode:(id)a4
++ (id)normalizePhoneNumber:(id)number countryCode:(id)code
 {
-  v4 = a4;
+  codeCopy = code;
   v5 = PNCopyBestGuessNormalizedNumberForCountry();
   v6 = CFStringCreateWithCStringNoCopy(*MEMORY[0x277CBECE8], v5, 0x8000100u, *MEMORY[0x277CBECF0]);
   v7 = CFPhoneNumberCreate();

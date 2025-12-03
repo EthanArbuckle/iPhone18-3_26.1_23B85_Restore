@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (id)accountViewController;
 - (id)rootSplitViewController;
-- (id)viewControllerWithDocumentDataSource:(id)a3 appContext:(id)a4;
-- (id)viewControllerWithDocumentDataSource:(id)a3 appContext:(id)a4 documentOptions:(id)a5;
-- (void)setDocumentCreator:(id)a3;
+- (id)viewControllerWithDocumentDataSource:(id)source appContext:(id)context;
+- (id)viewControllerWithDocumentDataSource:(id)source appContext:(id)context documentOptions:(id)options;
+- (void)setDocumentCreator:(id)creator;
 @end
 
 @implementation VUIInterfaceFactory
@@ -28,27 +28,27 @@ void __37__VUIInterfaceFactory_sharedInstance__block_invoke()
   sharedInstance_sharedInstance_6 = v0;
 }
 
-- (void)setDocumentCreator:(id)a3
+- (void)setDocumentCreator:(id)creator
 {
-  v5 = a3;
-  if (self->_documentCreator != v5)
+  creatorCopy = creator;
+  if (self->_documentCreator != creatorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_documentCreator, a3);
+    v7 = creatorCopy;
+    objc_storeStrong(&self->_documentCreator, creator);
     v6 = objc_opt_respondsToSelector();
-    v5 = v7;
+    creatorCopy = v7;
     self->_documentCreatorFlags.respondsToViewControllerCreation = v6 & 1;
   }
 }
 
-- (id)viewControllerWithDocumentDataSource:(id)a3 appContext:(id)a4
+- (id)viewControllerWithDocumentDataSource:(id)source appContext:(id)context
 {
   if (self->_documentCreatorFlags.respondsToViewControllerCreation)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(VUIInterfaceFactory *)self documentCreator];
-    v9 = [v8 viewControllerWithDocumentDataSource:v7 appContext:v6 documentOptions:0];
+    contextCopy = context;
+    sourceCopy = source;
+    documentCreator = [(VUIInterfaceFactory *)self documentCreator];
+    v9 = [documentCreator viewControllerWithDocumentDataSource:sourceCopy appContext:contextCopy documentOptions:0];
   }
 
   else
@@ -59,15 +59,15 @@ void __37__VUIInterfaceFactory_sharedInstance__block_invoke()
   return v9;
 }
 
-- (id)viewControllerWithDocumentDataSource:(id)a3 appContext:(id)a4 documentOptions:(id)a5
+- (id)viewControllerWithDocumentDataSource:(id)source appContext:(id)context documentOptions:(id)options
 {
   if (self->_documentCreatorFlags.respondsToViewControllerCreation)
   {
-    v8 = a5;
-    v9 = a4;
-    v10 = a3;
-    v11 = [(VUIInterfaceFactory *)self documentCreator];
-    v12 = [v11 viewControllerWithDocumentDataSource:v10 appContext:v9 documentOptions:v8];
+    optionsCopy = options;
+    contextCopy = context;
+    sourceCopy = source;
+    documentCreator = [(VUIInterfaceFactory *)self documentCreator];
+    v12 = [documentCreator viewControllerWithDocumentDataSource:sourceCopy appContext:contextCopy documentOptions:optionsCopy];
   }
 
   else
@@ -82,16 +82,16 @@ void __37__VUIInterfaceFactory_sharedInstance__block_invoke()
 {
   if (self->_documentCreatorFlags.respondsToViewControllerCreation)
   {
-    v2 = [(VUIInterfaceFactory *)self documentCreator];
-    v3 = [v2 rootSplitViewController];
+    documentCreator = [(VUIInterfaceFactory *)self documentCreator];
+    rootSplitViewController = [documentCreator rootSplitViewController];
   }
 
   else
   {
-    v3 = 0;
+    rootSplitViewController = 0;
   }
 
-  return v3;
+  return rootSplitViewController;
 }
 
 - (id)accountViewController

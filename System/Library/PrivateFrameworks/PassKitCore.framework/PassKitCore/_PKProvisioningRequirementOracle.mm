@@ -1,7 +1,7 @@
 @interface _PKProvisioningRequirementOracle
 - (_PKProvisioningRequirementOracle)init;
 - (id)recoverableRequirementsContainer;
-- (id)requirementsForAddSecureElementPassConfiguration:(id)a3;
+- (id)requirementsForAddSecureElementPassConfiguration:(id)configuration;
 @end
 
 @implementation _PKProvisioningRequirementOracle
@@ -13,11 +13,11 @@
   return [(_PKProvisioningRequirementOracle *)&v3 init];
 }
 
-- (id)requirementsForAddSecureElementPassConfiguration:(id)a3
+- (id)requirementsForAddSecureElementPassConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1AD50EC78(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  v6 = sub_1AD50EC78(configurationCopy);
   v7 = sub_1AD4CEF98(v6);
 
   v8 = type metadata accessor for ProvisioningRequirementsContainer();
@@ -29,9 +29,9 @@
   v14.receiver = v9;
   v14.super_class = v8;
   v11 = [(_PKProvisioningRequirementOracle *)&v14 init];
-  v12 = [objc_allocWithZone(PKProvisioningRequirementsContainer) initWithContainer_];
+  initWithContainer_ = [objc_allocWithZone(PKProvisioningRequirementsContainer) initWithContainer_];
 
-  return v12;
+  return initWithContainer_;
 }
 
 - (id)recoverableRequirementsContainer
@@ -44,12 +44,12 @@
   *&v4[OBJC_IVAR____PKProvisioningRequirementsContainer_requirements] = &unk_1F2261DA8;
   v11.receiver = v4;
   v11.super_class = v3;
-  v6 = self;
+  selfCopy = self;
   v7 = [(_PKProvisioningRequirementOracle *)&v11 init];
   v8 = objc_allocWithZone(PKProvisioningRequirementsContainer);
-  v9 = [v8 initWithContainer_];
+  initWithContainer_ = [v8 initWithContainer_];
 
-  return v9;
+  return initWithContainer_;
 }
 
 @end

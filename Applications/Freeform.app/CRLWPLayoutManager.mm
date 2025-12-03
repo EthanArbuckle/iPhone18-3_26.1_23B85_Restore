@@ -1,25 +1,25 @@
 @interface CRLWPLayoutManager
-+ (void)fixColumnBoundsForTarget:(id)a3 storage:(id)a4 charIndex:(unint64_t)a5 firstColumnIndex:(unint64_t)a6 precedingHeight:(double)a7 height:(double)a8 alreadyHasMargins:(BOOL)a9 styleProvider:(id)a10;
-+ (void)setTransformForColumn:(id)a3 andInvalidateWPRect:(CGRect)a4 inTarget:(id)a5;
-+ (void)setTransformForColumn:(id)a3 inTarget:(id)a4 metrics:(id)a5;
++ (void)fixColumnBoundsForTarget:(id)target storage:(id)storage charIndex:(unint64_t)index firstColumnIndex:(unint64_t)columnIndex precedingHeight:(double)height height:(double)a8 alreadyHasMargins:(BOOL)margins styleProvider:(id)self0;
++ (void)setTransformForColumn:(id)column andInvalidateWPRect:(CGRect)rect inTarget:(id)target;
++ (void)setTransformForColumn:(id)column inTarget:(id)target metrics:(id)metrics;
 - (CRLWPCTTypesetterCache)typesetterCache;
-- (CRLWPLayoutManager)initWithStorage:(id)a3 owner:(id)a4;
+- (CRLWPLayoutManager)initWithStorage:(id)storage owner:(id)owner;
 - (CRLWPLayoutOwner)owner;
 - (id)styleProvider;
-- (unint64_t)p_layoutConfigFlagsForTarget:(id)a3;
+- (unint64_t)p_layoutConfigFlagsForTarget:(id)target;
 - (void)dealloc;
-- (void)destroyLayoutState:(void *)a3;
-- (void)initialLayoutStateForLayout:(id)a3;
-- (void)layOutIntoTarget:(id)a3 withLayoutState:(void *)a4 outSync:(BOOL *)a5;
-- (void)p_clearTypesetterCacheForNotification:(id)a3;
+- (void)destroyLayoutState:(void *)state;
+- (void)initialLayoutStateForLayout:(id)layout;
+- (void)layOutIntoTarget:(id)target withLayoutState:(void *)state outSync:(BOOL *)sync;
+- (void)p_clearTypesetterCacheForNotification:(id)notification;
 @end
 
 @implementation CRLWPLayoutManager
 
-- (CRLWPLayoutManager)initWithStorage:(id)a3 owner:(id)a4
+- (CRLWPLayoutManager)initWithStorage:(id)storage owner:(id)owner
 {
-  v7 = a3;
-  v8 = a4;
+  storageCopy = storage;
+  ownerCopy = owner;
   v34.receiver = self;
   v34.super_class = CRLWPLayoutManager;
   v9 = [(CRLWPLayoutManager *)&v34 init];
@@ -27,7 +27,7 @@
   v11 = v9;
   if (v9)
   {
-    if (!v7)
+    if (!storageCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -62,11 +62,11 @@
       abort();
     }
 
-    objc_storeStrong(&v9->_storage, a3);
-    objc_storeWeak(&v10->_owner, v8);
+    objc_storeStrong(&v9->_storage, storage);
+    objc_storeWeak(&v10->_owner, ownerCopy);
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v8 topicNumbersForStorage:v7];
+      v12 = [ownerCopy topicNumbersForStorage:storageCopy];
       topicNumbers = v11->_topicNumbers;
       v11->_topicNumbers = v12;
     }
@@ -134,30 +134,30 @@
   {
     if ([v10 wantsToProvideStylesForTextLayout:0])
     {
-      v11 = [v10 styleProvider];
+      styleProvider = [v10 styleProvider];
 
       goto LABEL_6;
     }
   }
 
-  v11 = [CRLWPStorageStyleProvider styleProviderForStorage:self->_storage];
+  styleProvider = [CRLWPStorageStyleProvider styleProviderForStorage:self->_storage];
 LABEL_6:
 
-  return v11;
+  return styleProvider;
 }
 
-- (void)layOutIntoTarget:(id)a3 withLayoutState:(void *)a4 outSync:(BOOL *)a5
+- (void)layOutIntoTarget:(id)target withLayoutState:(void *)state outSync:(BOOL *)sync
 {
-  v7 = a3;
-  if (!a4)
+  targetCopy = target;
+  if (!state)
   {
-    [(CRLWPLayoutManager *)self p_layoutConfigFlagsForTarget:v7];
+    [(CRLWPLayoutManager *)self p_layoutConfigFlagsForTarget:targetCopy];
     operator new();
   }
 
   self->_layoutFinished = 0;
   self->_isLayingOut = 1;
-  v44 = *(a4 + 3);
+  v44 = *(state + 3);
   if (v44 != self)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -189,26 +189,26 @@ LABEL_6:
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:404 isFatal:0 description:"Layout manager mismatch"];
   }
 
-  v11 = sub_1001F486C(a4, v7, 3670017);
+  v11 = sub_1001F486C(state, targetCopy, 3670017);
   dirtyRanges = self->_dirtyRanges;
-  v13 = [v7 columns];
-  v14 = [CRLWPColumn rangeOfColumns:v13];
+  columns = [targetCopy columns];
+  v14 = [CRLWPColumn rangeOfColumns:columns];
   v16 = [(CRLWPDirtyRangeArray *)dirtyRanges dirtyRangesIntersecting:v14, v15];
 
   if (([v16 isEmpty] & 1) == 0)
   {
-    v17 = [v16 superRange];
+    superRange = [v16 superRange];
     v19 = v18;
-    v20 = [v7 columns];
-    v21 = [v20 lastObject];
+    columns2 = [targetCopy columns];
+    lastObject = [columns2 lastObject];
 
-    if (v21)
+    if (lastObject)
     {
-      v22 = [v21 range];
-      v24 = &v22[v23];
-      if (&v22[v23] > v17)
+      range = [lastObject range];
+      v24 = &range[v23];
+      if (&range[v23] > superRange)
       {
-        v25 = &v17[v19];
+        v25 = &superRange[v19];
         v26 = &v25[-v24];
         if (v25 <= v24)
         {
@@ -219,10 +219,10 @@ LABEL_6:
 
         else
         {
-          v27 = [v16 delta];
+          delta = [v16 delta];
           [(CRLWPMutableDirtyRangeArray *)self->_dirtyRanges subtract:v16];
           v28 = self->_dirtyRanges;
-          sub_10013CE8C(v24, v26, v27, v45);
+          sub_10013CE8C(v24, v26, delta, v45);
           [(CRLWPMutableDirtyRangeArray *)v28 addRange:v45];
           WeakRetained = objc_loadWeakRetained(&self->_owner);
           [WeakRetained didLayoutChangingDirtyRanges];
@@ -230,10 +230,10 @@ LABEL_6:
 
         v30 = self->_dirtyRanges;
         v31 = [(CRLWPMutableDirtyRangeArray *)v30 copy];
-        v32 = *(a4 + 105);
-        *(a4 + 105) = v31;
+        v32 = *(state + 105);
+        *(state + 105) = v31;
 
-        if (*(a4 + 848))
+        if (*(state + 848))
         {
           v33 = 1;
         }
@@ -243,22 +243,22 @@ LABEL_6:
           v33 = ![(CRLWPDirtyRangeArray *)v30 isEmpty];
         }
 
-        *(a4 + 848) = v33;
+        *(state + 848) = v33;
       }
     }
   }
 
   if ((v11 & 1) == 0)
   {
-    (*(*a4 + 8))(a4);
+    (*(*state + 8))(state);
     [(CRLWPLayoutManager *)self resetDirtyRange];
-    a4 = 0;
+    state = 0;
   }
 
-  if ([v7 textIsVertical] && (objc_msgSend(v7, "autosizeFlags") & 3) != 0)
+  if ([targetCopy textIsVertical] && (objc_msgSend(targetCopy, "autosizeFlags") & 3) != 0)
   {
-    v34 = [v7 columns];
-    if ([v34 count] != 1)
+    columns3 = [targetCopy columns];
+    if ([columns3 count] != 1)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -289,9 +289,9 @@ LABEL_6:
       [CRLAssertionHandler handleFailureInFunction:v36 file:v37 lineNumber:496 isFatal:0 description:"Autogrow with multiple columns is not supported"];
     }
 
-    v38 = [v34 firstObject];
-    v39 = [v7 columnMetricsForCharIndex:objc_msgSend(v38 outRange:{"range"), 0}];
-    [CRLWPLayoutManager setTransformForColumn:v38 inTarget:v7 metrics:v39];
+    firstObject = [columns3 firstObject];
+    v39 = [targetCopy columnMetricsForCharIndex:objc_msgSend(firstObject outRange:{"range"), 0}];
+    [CRLWPLayoutManager setTransformForColumn:firstObject inTarget:targetCopy metrics:v39];
   }
 
   v40 = objc_loadWeakRetained(&self->_owner);
@@ -306,29 +306,29 @@ LABEL_6:
   self->_layoutFinished = v11 ^ 1;
   self->_isLayingOut = 0;
 
-  return a4;
+  return state;
 }
 
-+ (void)fixColumnBoundsForTarget:(id)a3 storage:(id)a4 charIndex:(unint64_t)a5 firstColumnIndex:(unint64_t)a6 precedingHeight:(double)a7 height:(double)a8 alreadyHasMargins:(BOOL)a9 styleProvider:(id)a10
++ (void)fixColumnBoundsForTarget:(id)target storage:(id)storage charIndex:(unint64_t)index firstColumnIndex:(unint64_t)columnIndex precedingHeight:(double)height height:(double)a8 alreadyHasMargins:(BOOL)margins styleProvider:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v98 = a10;
+  targetCopy = target;
+  storageCopy = storage;
+  providerCopy = provider;
   v116 = xmmword_101464828;
-  v18 = [v16 columnMetricsForCharIndex:a5 outRange:&v116];
-  v110 = [v18 columnsAreLeftToRight];
+  v18 = [targetCopy columnMetricsForCharIndex:index outRange:&v116];
+  columnsAreLeftToRight = [v18 columnsAreLeftToRight];
   if (v18)
   {
-    v19 = [v18 columnCount];
+    columnCount = [v18 columnCount];
   }
 
   else
   {
-    v19 = 1;
+    columnCount = 1;
   }
 
-  v95 = v19 + a6;
-  if (!(v19 + a6))
+  v95 = columnCount + columnIndex;
+  if (!(columnCount + columnIndex))
   {
     v20 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -361,12 +361,12 @@ LABEL_6:
     [CRLAssertionHandler handleFailureInFunction:v24 file:v25 lineNumber:562 isFatal:0 description:"newColumnCount shouldn't be 0. %{public}@", objc_opt_class()];
   }
 
-  v26 = [v16 textIsVertical];
-  v27 = v116 < a5 || a9;
+  textIsVertical = [targetCopy textIsVertical];
+  v27 = v116 < index || margins;
   v108 = v27;
   v96 = +[CRLWPPadding padding];
-  v109 = [v16 columns];
-  if (!v109)
+  columns = [targetCopy columns];
+  if (!columns)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -397,10 +397,10 @@ LABEL_6:
     [CRLAssertionHandler handleFailureInFunction:v29 file:v30 lineNumber:573 isFatal:0 description:"invalid nil value for 'columnsArray'"];
   }
 
-  [v16 currentSize];
+  [targetCopy currentSize];
   v33 = v31;
   v100 = v32;
-  if (v26)
+  if (textIsVertical)
   {
     v31 = v32;
   }
@@ -408,7 +408,7 @@ LABEL_6:
   v102 = v31;
   if (v18)
   {
-    [v18 adjustedInsetsForTarget:v16];
+    [v18 adjustedInsetsForTarget:targetCopy];
     top = v34;
     left = v36;
     bottom = v38;
@@ -423,10 +423,10 @@ LABEL_6:
     right = UIEdgeInsetsZero.right;
   }
 
-  v106 = [v109 count];
+  v106 = [columns count];
   v99 = v33;
-  v104 = [v16 pageNumber];
-  v42 = top + a7;
+  pageNumber = [targetCopy pageNumber];
+  v42 = top + height;
   v43 = v102 - (right + left);
   v44 = a8 - (bottom + top);
   v45 = v43 < 0.0;
@@ -437,7 +437,7 @@ LABEL_6:
   }
 
   rect = v43;
-  if ((v45 & v26) != 0)
+  if ((v45 & textIsVertical) != 0)
   {
     v47 = v46;
   }
@@ -458,18 +458,18 @@ LABEL_6:
     v48 = 0.0;
   }
 
-  if (a6)
+  if (columnIndex)
   {
     if (v108)
     {
-      v49 = [v16 columns];
+      columns2 = [targetCopy columns];
       v101 = 0.0;
-      if ([v49 count] <= a6)
+      if ([columns2 count] <= columnIndex)
       {
         goto LABEL_54;
       }
 
-      v50 = [v49 objectAtIndexedSubscript:?];
+      v50 = [columns2 objectAtIndexedSubscript:?];
       if (!v50)
       {
         goto LABEL_54;
@@ -488,15 +488,15 @@ LABEL_6:
 
     else
     {
-      v53 = a6 - 1;
+      v53 = columnIndex - 1;
       while (1)
       {
         v54 = objc_opt_class();
-        v55 = [v16 columns];
-        v56 = [v55 objectAtIndexedSubscript:v53];
-        v49 = sub_100014370(v54, v56);
+        columns3 = [targetCopy columns];
+        v56 = [columns3 objectAtIndexedSubscript:v53];
+        columns2 = sub_100014370(v54, v56);
 
-        v57 = [v49 range];
+        range = [columns2 range];
         if (v58)
         {
           break;
@@ -508,12 +508,12 @@ LABEL_6:
         }
       }
 
-      v50 = [v16 columnMetricsForCharIndex:v57 outRange:0];
-      v59 = [v50 layoutMargins];
-      v60 = v59;
-      if (v59)
+      v50 = [targetCopy columnMetricsForCharIndex:range outRange:0];
+      layoutMargins = [v50 layoutMargins];
+      v60 = layoutMargins;
+      if (layoutMargins)
       {
-        [v59 bottomInset];
+        [layoutMargins bottomInset];
         v101 = v61;
       }
 
@@ -529,7 +529,7 @@ LABEL_54:
 LABEL_55:
   if (objc_opt_respondsToSelector())
   {
-    [v18 layoutMarginsForTarget:v16];
+    [v18 layoutMarginsForTarget:targetCopy];
   }
 
   else
@@ -545,12 +545,12 @@ LABEL_55:
 
   v63 = v62;
   v64 = v63;
-  if (v26)
+  if (textIsVertical)
   {
     [v63 topInset];
   }
 
-  else if (v110)
+  else if (columnsAreLeftToRight)
   {
     [v63 leftInset];
   }
@@ -561,15 +561,15 @@ LABEL_55:
   }
 
   v66 = v65;
-  if (v95 > a6)
+  if (v95 > columnIndex)
   {
     v67 = 0;
-    v68 = a6;
+    columnIndexCopy = columnIndex;
     do
     {
       v115 = rect;
       v114 = 0;
-      if (v26)
+      if (textIsVertical)
       {
         [v64 topInset];
         v70 = v69;
@@ -586,14 +586,14 @@ LABEL_55:
       }
 
       v74 = v72 - v70 - v71;
-      if (![v17 wpKind] || objc_msgSend(v17, "wpKind") == 7)
+      if (![storageCopy wpKind] || objc_msgSend(storageCopy, "wpKind") == 7)
       {
         v74 = fmax(v74, 36.0);
       }
 
       if (v18)
       {
-        [v18 positionForColumnIndex:v67 bodyWidth:v16 target:&v115 outWidth:&v114 outGap:v74];
+        [v18 positionForColumnIndex:v67 bodyWidth:targetCopy target:&v115 outWidth:&v114 outGap:v74];
       }
 
       else
@@ -601,7 +601,7 @@ LABEL_55:
         v75 = 0.0;
       }
 
-      if (v110)
+      if (columnsAreLeftToRight)
       {
         v76 = v66 + v75;
       }
@@ -612,7 +612,7 @@ LABEL_55:
       }
 
       v113 = v76;
-      if ([v17 wpKind] && objc_msgSend(v17, "wpKind") != 7)
+      if ([storageCopy wpKind] && objc_msgSend(storageCopy, "wpKind") != 7)
       {
         v77 = v115;
       }
@@ -621,9 +621,9 @@ LABEL_55:
       {
         v77 = fmax(v115, 18.0);
         v115 = v77;
-        v78 = v102 + (v19 * -18.0);
+        v78 = v102 + (columnCount * -18.0);
         v112 = v78;
-        if (v110)
+        if (columnsAreLeftToRight)
         {
           v79 = v78 < v76;
           v80 = &v113;
@@ -651,11 +651,11 @@ LABEL_55:
       v83 = v42;
       if (!v108)
       {
-        if (v26)
+        if (textIsVertical)
         {
           [v64 rightInset];
           v85 = v84;
-          [v16 maxSize];
+          [targetCopy maxSize];
           v87 = v86;
         }
 
@@ -663,7 +663,7 @@ LABEL_55:
         {
           [v64 topInset];
           v85 = v88;
-          [v16 maxSize];
+          [targetCopy maxSize];
           v87 = v89;
         }
 
@@ -673,7 +673,7 @@ LABEL_55:
         v119.size.width = v77;
         v119.size.height = v48;
         v90 = CGRectGetMaxY(v119);
-        if (a6 || v90 <= v87)
+        if (columnIndex || v90 <= v87)
         {
           v82 = v48;
         }
@@ -681,7 +681,7 @@ LABEL_55:
         else
         {
           v82 = v87 - v83;
-          if ([v17 wpKind] && objc_msgSend(v17, "wpKind") != 7 || v82 >= 36.0)
+          if ([storageCopy wpKind] && objc_msgSend(storageCopy, "wpKind") != 7 || v82 >= 36.0)
           {
             if (v82 < 1.0)
             {
@@ -698,15 +698,15 @@ LABEL_55:
         }
       }
 
-      if (v68 >= v106)
+      if (columnIndexCopy >= v106)
       {
-        if (v109)
+        if (columns)
         {
-          v92 = [[CRLWPColumn alloc] initWithStorage:v17 frameBounds:v76, v83, v77, v82];
-          [(CRLWPColumn *)v92 setStyleProvider:v98];
-          [(CRLWPColumn *)v92 setColumnIndex:v68];
+          v92 = [[CRLWPColumn alloc] initWithStorage:storageCopy frameBounds:v76, v83, v77, v82];
+          [(CRLWPColumn *)v92 setStyleProvider:providerCopy];
+          [(CRLWPColumn *)v92 setColumnIndex:columnIndexCopy];
           v91 = v92;
-          [v109 addObject:v92];
+          [columns addObject:v92];
         }
 
         else
@@ -717,54 +717,54 @@ LABEL_55:
 
       else
       {
-        v91 = [v109 objectAtIndexedSubscript:v68];
+        v91 = [columns objectAtIndexedSubscript:columnIndexCopy];
         [v91 setFrameBounds:{v76, v83, v77, v82}];
       }
 
-      [v91 setTextIsVertical:{objc_msgSend(v16, "textIsVertical")}];
-      [v91 setPageNumber:v104];
-      [a1 setTransformForColumn:v91 inTarget:v16 metrics:v18];
+      [v91 setTextIsVertical:{objc_msgSend(targetCopy, "textIsVertical")}];
+      [v91 setPageNumber:pageNumber];
+      [self setTransformForColumn:v91 inTarget:targetCopy metrics:v18];
 
-      ++v68;
+      ++columnIndexCopy;
       ++v67;
-      --v19;
+      --columnCount;
     }
 
-    while (v19);
+    while (columnCount);
   }
 
-  v93 = [v17 wpKind];
-  if (!a6)
+  wpKind = [storageCopy wpKind];
+  if (!columnIndex)
   {
-    if (v93)
+    if (wpKind)
     {
-      v94 = [v109 count];
+      v94 = [columns count];
       if (v94 > v95)
       {
-        [v109 removeObjectsInRange:{v95, &v94[-v95]}];
+        [columns removeObjectsInRange:{v95, &v94[-v95]}];
       }
     }
   }
 }
 
-+ (void)setTransformForColumn:(id)a3 inTarget:(id)a4 metrics:(id)a5
++ (void)setTransformForColumn:(id)column inTarget:(id)target metrics:(id)metrics
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 textIsVertical])
+  columnCopy = column;
+  targetCopy = target;
+  metricsCopy = metrics;
+  if ([targetCopy textIsVertical])
   {
-    if (([v8 autosizeFlags] & 3) != 0)
+    if (([targetCopy autosizeFlags] & 3) != 0)
     {
-      [v9 adjustedInsetsForTarget:v8];
+      [metricsCopy adjustedInsetsForTarget:targetCopy];
       v11 = v10;
-      [v7 frameBounds];
+      [columnCopy frameBounds];
       v12 = v11 + CGRectGetMaxY(v18);
     }
 
     else
     {
-      [v8 currentSize];
+      [targetCopy currentSize];
     }
 
     CGAffineTransformMakeTranslation(&v17, v12, 0.0);
@@ -787,22 +787,22 @@ LABEL_55:
   *&v16.a = *&v17.a;
   *&v16.c = *&v17.c;
   *&v16.tx = v14;
-  [v7 setTransformFromWP:&v16];
+  [columnCopy setTransformFromWP:&v16];
 }
 
-+ (void)setTransformForColumn:(id)a3 andInvalidateWPRect:(CGRect)a4 inTarget:(id)a5
++ (void)setTransformForColumn:(id)column andInvalidateWPRect:(CGRect)rect inTarget:(id)target
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
-  v11 = a5;
-  v12 = [v11 columnMetricsForCharIndex:objc_msgSend(v10 outRange:{"range"), 0}];
-  [CRLWPLayoutManager setTransformForColumn:v10 inTarget:v11 metrics:v12];
-  if (v10)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  columnCopy = column;
+  targetCopy = target;
+  v12 = [targetCopy columnMetricsForCharIndex:objc_msgSend(columnCopy outRange:{"range"), 0}];
+  [CRLWPLayoutManager setTransformForColumn:columnCopy inTarget:targetCopy metrics:v12];
+  if (columnCopy)
   {
-    [v10 transformFromWP];
+    [columnCopy transformFromWP];
   }
 
   else
@@ -815,42 +815,42 @@ LABEL_55:
   v14.size.width = width;
   v14.size.height = height;
   v15 = CGRectApplyAffineTransform(v14, &v13);
-  [v11 setNeedsDisplayInTargetRect:{v15.origin.x, v15.origin.y, v15.size.width, v15.size.height}];
+  [targetCopy setNeedsDisplayInTargetRect:{v15.origin.x, v15.origin.y, v15.size.width, v15.size.height}];
 }
 
 - (CRLWPCTTypesetterCache)typesetterCache
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_useLigatures || v2->_shouldClearTypesetterCache)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_useLigatures || selfCopy->_shouldClearTypesetterCache)
   {
-    [(CRLWPLayoutManager *)v2 clearTypesetterCache];
-    v2->_useLigatures = 1;
-    v2->_shouldClearTypesetterCache = 0;
+    [(CRLWPLayoutManager *)selfCopy clearTypesetterCache];
+    selfCopy->_useLigatures = 1;
+    selfCopy->_shouldClearTypesetterCache = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  typesetterCache = v2->_typesetterCache;
+  typesetterCache = selfCopy->_typesetterCache;
   if (!typesetterCache)
   {
     v4 = objc_alloc_init(CRLWPCTTypesetterCache);
-    v5 = v2->_typesetterCache;
-    v2->_typesetterCache = v4;
+    v5 = selfCopy->_typesetterCache;
+    selfCopy->_typesetterCache = v4;
 
-    typesetterCache = v2->_typesetterCache;
+    typesetterCache = selfCopy->_typesetterCache;
   }
 
   return typesetterCache;
 }
 
-- (unint64_t)p_layoutConfigFlagsForTarget:(id)a3
+- (unint64_t)p_layoutConfigFlagsForTarget:(id)target
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  targetCopy = target;
+  v5 = targetCopy;
+  if (targetCopy)
   {
-    if ([v4 descendersCannotClip])
+    if ([targetCopy descendersCannotClip])
     {
       v6 = 4;
     }
@@ -879,7 +879,7 @@ LABEL_55:
   return v6;
 }
 
-- (void)p_clearTypesetterCacheForNotification:(id)a3
+- (void)p_clearTypesetterCacheForNotification:(id)notification
 {
   obj = self;
   objc_sync_enter(obj);
@@ -887,20 +887,20 @@ LABEL_55:
   objc_sync_exit(obj);
 }
 
-- (void)initialLayoutStateForLayout:(id)a3
+- (void)initialLayoutStateForLayout:(id)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   v5 = 0uLL;
   v6 = 0;
   sub_10013CE8C(0x7FFFFFFFFFFFFFFFLL, 0, 0, &v5);
   operator new();
 }
 
-- (void)destroyLayoutState:(void *)a3
+- (void)destroyLayoutState:(void *)state
 {
-  if (a3)
+  if (state)
   {
-    (*(*a3 + 8))(a3);
+    (*(*state + 8))(state);
   }
 }
 

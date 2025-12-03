@@ -1,22 +1,22 @@
 @interface STCommunicationLimitsDowntimeDetailListController
-- (id)_allowedCommunicationGroupFooterText:(id)a3;
+- (id)_allowedCommunicationGroupFooterText:(id)text;
 - (id)_allowedContactsSpecifiers;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4;
-- (int64_t)_downtimeCommunicationLimitForSpecifier:(id)a3;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
+- (int64_t)_downtimeCommunicationLimitForSpecifier:(id)specifier;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
 - (void)_didFinishEditingCommunicationLimit;
 - (void)_didFinishSyncingWhitelistedContacts;
 - (void)_selectLeastRestrictiveOptionIfNecessary;
 - (void)_startSyncingWhitelistedContacts;
 - (void)_updateAllowedCommunicationGroupFooterText;
-- (void)dismissPresentedViewController:(id)a3;
+- (void)dismissPresentedViewController:(id)controller;
 - (void)familyMemberContactsDidChange;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)willResignActive;
 @end
 
@@ -25,41 +25,41 @@
 - (void)viewDidLoad
 {
   v27[3] = *MEMORY[0x277D85DE8];
-  v3 = [(STCommunicationLimitsDowntimeDetailListController *)self specifier];
-  v4 = [v3 objectForKeyedSubscript:0x287675C48];
-  v5 = [v4 contentPrivacyCoordinator];
-  v6 = [v5 viewModel];
-  v7 = [v6 communicationLimits];
-  v8 = [v7 copy];
+  specifier = [(STCommunicationLimitsDowntimeDetailListController *)self specifier];
+  v4 = [specifier objectForKeyedSubscript:0x287675C48];
+  contentPrivacyCoordinator = [v4 contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  communicationLimits = [viewModel communicationLimits];
+  v8 = [communicationLimits copy];
   [(STCommunicationLimitsDowntimeDetailListController *)self setCommunicationLimits:v8];
 
-  v9 = [v4 viewModel];
-  v10 = [v9 me];
+  viewModel2 = [v4 viewModel];
+  v10 = [viewModel2 me];
 
   if ([v10 isRemoteUser])
   {
-    v11 = [v10 altDSID];
-    if (v11)
+    altDSID = [v10 altDSID];
+    if (altDSID)
     {
       v12 = objc_alloc(MEMORY[0x277D08268]);
       v26[0] = @"member-first-name";
-      v13 = [v10 givenName];
-      v27[0] = v13;
+      givenName = [v10 givenName];
+      v27[0] = givenName;
       v26[1] = @"member-dsid";
-      v14 = [v10 dsid];
+      dsid = [v10 dsid];
       v26[2] = @"member-altDSID";
-      v27[1] = v14;
-      v27[2] = v11;
+      v27[1] = dsid;
+      v27[2] = altDSID;
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:3];
       v16 = [v12 initWithDictionaryRepresentation:v15];
     }
 
     else
     {
-      v13 = +[STUILog communication];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
+      givenName = +[STUILog communication];
+      if (os_log_type_enabled(givenName, OS_LOG_TYPE_FAULT))
       {
-        [(STCommunicationLimitsDowntimeDetailListController *)v13 viewDidLoad];
+        [(STCommunicationLimitsDowntimeDetailListController *)givenName viewDidLoad];
       }
 
       v16 = 0;
@@ -75,9 +75,9 @@
   [(STCommunicationLimitsDowntimeDetailListController *)self setWhitelistedContactsController:v17];
 
   v18 = +[STScreenTimeSettingsUIBundle bundle];
-  v19 = [v3 name];
+  name = [specifier name];
   v20 = [v18 localizedStringForKey:@"AllowedContactsSpecifierName" value:&stru_28766E5A8 table:0];
-  v21 = [v19 isEqualToString:v20];
+  v21 = [name isEqualToString:v20];
 
   if (v21)
   {
@@ -103,9 +103,9 @@
   [(STCommunicationLimitsDowntimeDetailListController *)&v24 viewDidLoad];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(STCommunicationLimitsDowntimeDetailListController *)self _selectLeastRestrictiveOptionIfNecessary];
   [(STCommunicationLimitsDowntimeDetailListController *)self _didFinishEditingCommunicationLimit];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -116,7 +116,7 @@
 
   v5.receiver = self;
   v5.super_class = STCommunicationLimitsDowntimeDetailListController;
-  [(STCommunicationLimitsDowntimeDetailListController *)&v5 viewWillDisappear:v3];
+  [(STCommunicationLimitsDowntimeDetailListController *)&v5 viewWillDisappear:disappearCopy];
 }
 
 - (void)willResignActive
@@ -130,16 +130,16 @@
 
 - (void)_didFinishEditingCommunicationLimit
 {
-  v3 = [(STCommunicationLimitsDowntimeDetailListController *)self specifier];
-  v8 = [v3 objectForKeyedSubscript:0x287675C48];
+  specifier = [(STCommunicationLimitsDowntimeDetailListController *)self specifier];
+  v8 = [specifier objectForKeyedSubscript:0x287675C48];
 
-  v4 = [(STCommunicationLimitsDowntimeDetailListController *)self communicationLimits];
-  v5 = [(STCommunicationLimitsDowntimeDetailListController *)self allowedCommunicationGroupSpecifier];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D40090]];
+  communicationLimits = [(STCommunicationLimitsDowntimeDetailListController *)self communicationLimits];
+  allowedCommunicationGroupSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowedCommunicationGroupSpecifier];
+  v6 = [allowedCommunicationGroupSpecifier objectForKeyedSubscript:*MEMORY[0x277D40090]];
 
-  [v4 setDowntimeCommunicationLimit:{-[STCommunicationLimitsDowntimeDetailListController _downtimeCommunicationLimitForSpecifier:](self, "_downtimeCommunicationLimitForSpecifier:", v6)}];
-  v7 = [v8 contentPrivacyCoordinator];
-  [v7 saveCommunicationLimits:v4 completionHandler:0];
+  [communicationLimits setDowntimeCommunicationLimit:{-[STCommunicationLimitsDowntimeDetailListController _downtimeCommunicationLimitForSpecifier:](self, "_downtimeCommunicationLimitForSpecifier:", v6)}];
+  contentPrivacyCoordinator = [v8 contentPrivacyCoordinator];
+  [contentPrivacyCoordinator saveCommunicationLimits:communicationLimits completionHandler:0];
 }
 
 - (id)specifiers
@@ -150,24 +150,24 @@
   {
     v5 = objc_opt_new();
     v6 = +[STScreenTimeSettingsUIBundle bundle];
-    v7 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    v8 = [(STCommunicationLimitsDowntimeDetailListController *)self specifier];
-    v9 = [v8 objectForKeyedSubscript:0x287675C48];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    specifier = [(STCommunicationLimitsDowntimeDetailListController *)self specifier];
+    v9 = [specifier objectForKeyedSubscript:0x287675C48];
 
     v42 = v9;
-    v10 = [v9 viewModel];
-    v11 = [v10 me];
+    viewModel = [v9 viewModel];
+    v11 = [viewModel me];
     v45 = v5;
     if ([v11 isRemoteUser])
     {
-      v12 = [v11 givenName];
+      givenName = [v11 givenName];
       v13 = +[STScreenTimeSettingsUIBundle bundle];
       v14 = v13;
-      if (v12)
+      if (givenName)
       {
         v15 = [v13 localizedStringForKey:@"CommunicationLimitsRemoteHeaderText" value:&stru_28766E5A8 table:0];
 
-        v16 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v15, v12];
+        v16 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v15, givenName];
         v14 = v15;
         v5 = v45;
       }
@@ -180,15 +180,15 @@
 
     else
     {
-      v12 = +[STScreenTimeSettingsUIBundle bundle];
-      v16 = [v12 localizedStringForKey:@"CommunicationLimitsLocalHeaderText" value:&stru_28766E5A8 table:0];
+      givenName = +[STScreenTimeSettingsUIBundle bundle];
+      v16 = [givenName localizedStringForKey:@"CommunicationLimitsLocalHeaderText" value:&stru_28766E5A8 table:0];
     }
 
     v40 = *MEMORY[0x277D3FF88];
-    [v7 setObject:v16 forKeyedSubscript:?];
+    [emptyGroupSpecifier setObject:v16 forKeyedSubscript:?];
 
-    v43 = v7;
-    [v5 addObject:v7];
+    v43 = emptyGroupSpecifier;
+    [v5 addObject:emptyGroupSpecifier];
     v17 = [v6 localizedStringForKey:@"AllowedCommunicationSectionTitle" value:&stru_28766E5A8 table:0];
     v18 = [MEMORY[0x277D3FAD8] groupSpecifierWithName:v17];
     v19 = MEMORY[0x277CBEC38];
@@ -201,16 +201,16 @@
     [v20 setObject:v19 forKeyedSubscript:*MEMORY[0x277D3FF38]];
     [(STCommunicationLimitsDowntimeDetailListController *)self setAllowSpecificContactsSpecifier:v20];
     [v5 addObject:v20];
-    v46 = [(STCommunicationLimitsDowntimeDetailListController *)self communicationLimits];
-    v22 = [v46 screenTimeCommunicationLimit];
+    communicationLimits = [(STCommunicationLimitsDowntimeDetailListController *)self communicationLimits];
+    screenTimeCommunicationLimit = [communicationLimits screenTimeCommunicationLimit];
     v23 = 0;
     v44 = v6;
-    if (v22 > 1)
+    if (screenTimeCommunicationLimit > 1)
     {
-      if (v22 == 2)
+      if (screenTimeCommunicationLimit == 2)
       {
-        v26 = [v6 localizedStringForKey:@"AllowContactsOnlySpecifierName" value:&stru_28766E5A8 table:0];
-        v24 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v26 target:self set:0 get:0 detail:0 cell:3 edit:0];
+        currentHandler = [v6 localizedStringForKey:@"AllowContactsOnlySpecifierName" value:&stru_28766E5A8 table:0];
+        v24 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:currentHandler target:self set:0 get:0 detail:0 cell:3 edit:0];
         [v24 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v21];
         [(STCommunicationLimitsDowntimeDetailListController *)self setAllowContactsOnlySpecifier:v24];
         [v45 addObject:v24];
@@ -220,22 +220,22 @@
 
       v24 = 0;
       v25 = 0;
-      if (v22 != 3)
+      if (screenTimeCommunicationLimit != 3)
       {
         goto LABEL_20;
       }
 
-      v26 = [MEMORY[0x277CCA890] currentHandler];
-      [v26 handleFailureInMethod:a2 object:self file:@"STCommunicationLimitsDowntimeDetailListController.m" lineNumber:166 description:@"Unexpected general communication policy whitelisted contacts"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"STCommunicationLimitsDowntimeDetailListController.m" lineNumber:166 description:@"Unexpected general communication policy whitelisted contacts"];
       v23 = 0;
     }
 
     else
     {
-      if (!v22)
+      if (!screenTimeCommunicationLimit)
       {
-        v26 = [v6 localizedStringForKey:@"AllowEveryoneSpecifierName" value:&stru_28766E5A8 table:0];
-        v25 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v26 target:self set:0 get:0 detail:0 cell:3 edit:0];
+        currentHandler = [v6 localizedStringForKey:@"AllowEveryoneSpecifierName" value:&stru_28766E5A8 table:0];
+        v25 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:currentHandler target:self set:0 get:0 detail:0 cell:3 edit:0];
         [v25 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v21];
         [(STCommunicationLimitsDowntimeDetailListController *)self setAllowEveryoneSpecifier:v25];
         [v5 addObject:v25];
@@ -244,11 +244,11 @@
 LABEL_19:
 
 LABEL_20:
-        v28 = [v46 downtimeCommunicationLimit];
+        downtimeCommunicationLimit = [communicationLimits downtimeCommunicationLimit];
         v41 = v17;
-        if (v28 > 1)
+        if (downtimeCommunicationLimit > 1)
         {
-          if (v28 == 2)
+          if (downtimeCommunicationLimit == 2)
           {
             v29 = *MEMORY[0x277D40090];
             if (v24)
@@ -261,7 +261,7 @@ LABEL_20:
             goto LABEL_35;
           }
 
-          if (v28 == 3)
+          if (downtimeCommunicationLimit == 3)
           {
             v29 = *MEMORY[0x277D40090];
             goto LABEL_35;
@@ -270,7 +270,7 @@ LABEL_20:
 
         else
         {
-          if (!v28)
+          if (!downtimeCommunicationLimit)
           {
             v29 = *MEMORY[0x277D40090];
             if (v25)
@@ -282,14 +282,14 @@ LABEL_20:
 
 LABEL_35:
             [v18 setObject:v20 forKeyedSubscript:v29];
-            v33 = [(STCommunicationLimitsDowntimeDetailListController *)self _allowedContactsSpecifiers];
+            _allowedContactsSpecifiers = [(STCommunicationLimitsDowntimeDetailListController *)self _allowedContactsSpecifiers];
             v32 = v45;
-            [v45 addObjectsFromArray:v33];
+            [v45 addObjectsFromArray:_allowedContactsSpecifiers];
 
             goto LABEL_36;
           }
 
-          if (v28 == 1)
+          if (downtimeCommunicationLimit == 1)
           {
             v29 = *MEMORY[0x277D40090];
             if (v23)
@@ -322,13 +322,13 @@ LABEL_36:
 
       v24 = 0;
       v25 = 0;
-      if (v22 != 1)
+      if (screenTimeCommunicationLimit != 1)
       {
         goto LABEL_20;
       }
 
-      v26 = [v44 localizedStringForKey:@"AllowGroupsWithOneContactSpecifierName" value:&stru_28766E5A8 table:0];
-      v23 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v26 target:self set:0 get:0 detail:0 cell:3 edit:0];
+      currentHandler = [v44 localizedStringForKey:@"AllowGroupsWithOneContactSpecifierName" value:&stru_28766E5A8 table:0];
+      v23 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:currentHandler target:self set:0 get:0 detail:0 cell:3 edit:0];
       v27 = MEMORY[0x277CBEC38];
       [v23 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FD80]];
       [v23 setObject:v27 forKeyedSubscript:v21];
@@ -354,23 +354,23 @@ LABEL_37:
   v4 = +[STScreenTimeSettingsUIBundle bundle];
   v36 = [v4 localizedStringForKey:@"AllowedContactsGroupSpecifierName" value:&stru_28766E5A8 table:0];
   v5 = [MEMORY[0x277D3FAD8] groupSpecifierWithName:?];
-  v39 = self;
-  v6 = [(STCommunicationLimitsDowntimeDetailListController *)self specifier];
-  v7 = [v6 objectForKeyedSubscript:0x287675C48];
+  selfCopy = self;
+  specifier = [(STCommunicationLimitsDowntimeDetailListController *)self specifier];
+  v7 = [specifier objectForKeyedSubscript:0x287675C48];
 
   v35 = v7;
-  v8 = [v7 viewModel];
-  v9 = [v8 me];
+  viewModel = [v7 viewModel];
+  v9 = [viewModel me];
 
   if ([v9 isRemoteUser] && objc_msgSend(v9, "hasPasscode"))
   {
-    v10 = [v9 givenName];
-    if (v10)
+    givenName = [v9 givenName];
+    if (givenName)
     {
       v11 = [v4 localizedStringForKey:@"AllowedContactsGroupSpecifierRemoteFooterText" value:&stru_28766E5A8 table:0];
       v12 = objc_alloc(MEMORY[0x277CCACA8]);
-      v13 = [MEMORY[0x277CBEAF8] currentLocale];
-      v14 = [v12 initWithFormat:v11 locale:v13, v10];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      v14 = [v12 initWithFormat:v11 locale:currentLocale, givenName];
       [v5 setObject:v14 forKeyedSubscript:*MEMORY[0x277D3FF88]];
     }
 
@@ -383,20 +383,20 @@ LABEL_37:
 
   v34 = v9;
   v37 = v4;
-  v15 = [(STCommunicationLimitsDowntimeDetailListController *)v39 whitelistedContactsController];
-  v16 = [v15 familyMemberContactItems];
+  whitelistedContactsController = [(STCommunicationLimitsDowntimeDetailListController *)selfCopy whitelistedContactsController];
+  familyMemberContactItems = [whitelistedContactsController familyMemberContactItems];
 
-  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v16, "count")}];
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(familyMemberContactItems, "count")}];
   v18 = *MEMORY[0x277D401A8];
   [v5 setObject:v17 forKeyedSubscript:*MEMORY[0x277D401A8]];
 
-  [(STCommunicationLimitsDowntimeDetailListController *)v39 setAllowedContactsGroupSpecifier:v5];
+  [(STCommunicationLimitsDowntimeDetailListController *)selfCopy setAllowedContactsGroupSpecifier:v5];
   [v3 addObject:v5];
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v16;
+  obj = familyMemberContactItems;
   v19 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
   v20 = *MEMORY[0x277D3FF38];
   if (v19)
@@ -415,12 +415,12 @@ LABEL_37:
 
         v25 = *(*(&v40 + 1) + 8 * i);
         v26 = MEMORY[0x277D3FB40];
-        v27 = [v25 label];
-        v28 = [v26 preferenceSpecifierNamed:v27 target:v39 set:0 get:sel__allowedContactDetailLabelText_ detail:0 cell:2 edit:0];
+        label = [v25 label];
+        v28 = [v26 preferenceSpecifierNamed:label target:selfCopy set:0 get:sel__allowedContactDetailLabelText_ detail:0 cell:2 edit:0];
 
         [v28 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v20];
-        v29 = [v25 detailLabel];
-        [v28 setObject:v29 forKeyedSubscript:v18];
+        detailLabel = [v25 detailLabel];
+        [v28 setObject:detailLabel forKeyedSubscript:v18];
 
         v30 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v25, "isUnreachable")}];
         [v28 setObject:v30 forKeyedSubscript:@"UnreachableContact"];
@@ -436,39 +436,39 @@ LABEL_37:
   }
 
   v31 = [v37 localizedStringForKey:@"AddContactsSpecifierName" value:&stru_28766E5A8 table:0];
-  v32 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v31 target:v39 set:0 get:0 detail:0 cell:13 edit:0];
+  v32 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v31 target:selfCopy set:0 get:0 detail:0 cell:13 edit:0];
   [v32 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v20];
-  [(STCommunicationLimitsDowntimeDetailListController *)v39 setAddContactsSpecifier:v32];
+  [(STCommunicationLimitsDowntimeDetailListController *)selfCopy setAddContactsSpecifier:v32];
   [v3 addObject:v32];
-  [(STCommunicationLimitsDowntimeDetailListController *)v39 setAllowedContactsSpecifiers:v3];
+  [(STCommunicationLimitsDowntimeDetailListController *)selfCopy setAllowedContactsSpecifiers:v3];
 
   return v3;
 }
 
-- (int64_t)_downtimeCommunicationLimitForSpecifier:(id)a3
+- (int64_t)_downtimeCommunicationLimitForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(STCommunicationLimitsDowntimeDetailListController *)self allowEveryoneSpecifier];
+  specifierCopy = specifier;
+  allowEveryoneSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowEveryoneSpecifier];
 
-  if (v5 == v4)
+  if (allowEveryoneSpecifier == specifierCopy)
   {
     v8 = 0;
   }
 
   else
   {
-    v6 = [(STCommunicationLimitsDowntimeDetailListController *)self allowContactsOnlySpecifier];
+    allowContactsOnlySpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowContactsOnlySpecifier];
 
-    if (v6 == v4)
+    if (allowContactsOnlySpecifier == specifierCopy)
     {
       v8 = 2;
     }
 
     else
     {
-      v7 = [(STCommunicationLimitsDowntimeDetailListController *)self allowGroupsWithOneContactSpecifier];
+      allowGroupsWithOneContactSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowGroupsWithOneContactSpecifier];
 
-      if (v7 == v4)
+      if (allowGroupsWithOneContactSpecifier == specifierCopy)
       {
         v8 = 1;
       }
@@ -493,17 +493,17 @@ LABEL_37:
 
   else
   {
-    v3 = [(STCommunicationLimitsDowntimeDetailListController *)self allowedContactsGroupSpecifier];
+    allowedContactsGroupSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowedContactsGroupSpecifier];
     v4 = *MEMORY[0x277D401A8];
-    v11 = v3;
-    v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277D401A8]];
-    v6 = [v5 unsignedIntegerValue];
+    v11 = allowedContactsGroupSpecifier;
+    v5 = [allowedContactsGroupSpecifier objectForKeyedSubscript:*MEMORY[0x277D401A8]];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-    v7 = [(STCommunicationLimitsDowntimeDetailListController *)self whitelistedContactsController];
-    v8 = [v7 familyMemberContactItems];
-    v9 = [v8 count];
+    whitelistedContactsController = [(STCommunicationLimitsDowntimeDetailListController *)self whitelistedContactsController];
+    familyMemberContactItems = [whitelistedContactsController familyMemberContactItems];
+    v9 = [familyMemberContactItems count];
 
-    if (v6 != v9)
+    if (unsignedIntegerValue != v9)
     {
       [(STCommunicationLimitsDowntimeDetailListController *)self reloadSpecifiers];
       [(STCommunicationLimitsDowntimeDetailListController *)self _selectLeastRestrictiveOptionIfNecessary];
@@ -513,7 +513,7 @@ LABEL_37:
   }
 }
 
-- (void)dismissPresentedViewController:(id)a3
+- (void)dismissPresentedViewController:(id)controller
 {
   [(STCommunicationLimitsDowntimeDetailListController *)self dismissViewControllerAnimated:1 completion:0];
 
@@ -522,10 +522,10 @@ LABEL_37:
 
 - (void)_selectLeastRestrictiveOptionIfNecessary
 {
-  v14 = [(STCommunicationLimitsDowntimeDetailListController *)self allowedCommunicationGroupSpecifier];
-  v3 = [(STCommunicationLimitsDowntimeDetailListController *)self whitelistedContactsController];
-  v4 = [v3 familyMemberContactItems];
-  if ([v4 count])
+  allowedCommunicationGroupSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowedCommunicationGroupSpecifier];
+  whitelistedContactsController = [(STCommunicationLimitsDowntimeDetailListController *)self whitelistedContactsController];
+  familyMemberContactItems = [whitelistedContactsController familyMemberContactItems];
+  if ([familyMemberContactItems count])
   {
 LABEL_2:
 
@@ -533,28 +533,28 @@ LABEL_2:
   }
 
   v5 = *MEMORY[0x277D40090];
-  v6 = [v14 objectForKeyedSubscript:*MEMORY[0x277D40090]];
-  v7 = [(STCommunicationLimitsDowntimeDetailListController *)self allowSpecificContactsSpecifier];
+  v6 = [allowedCommunicationGroupSpecifier objectForKeyedSubscript:*MEMORY[0x277D40090]];
+  allowSpecificContactsSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowSpecificContactsSpecifier];
 
-  if (v6 == v7)
+  if (v6 == allowSpecificContactsSpecifier)
   {
-    v3 = [(STCommunicationLimitsDowntimeDetailListController *)self allowEveryoneSpecifier];
-    v4 = [(STCommunicationLimitsDowntimeDetailListController *)self allowContactsOnlySpecifier];
-    v8 = [(STCommunicationLimitsDowntimeDetailListController *)self allowGroupsWithOneContactSpecifier];
-    v9 = v8;
-    v10 = v3;
-    if (v3 || (v10 = v4) != 0 || (v10 = v8) != 0)
+    whitelistedContactsController = [(STCommunicationLimitsDowntimeDetailListController *)self allowEveryoneSpecifier];
+    familyMemberContactItems = [(STCommunicationLimitsDowntimeDetailListController *)self allowContactsOnlySpecifier];
+    allowGroupsWithOneContactSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowGroupsWithOneContactSpecifier];
+    v9 = allowGroupsWithOneContactSpecifier;
+    v10 = whitelistedContactsController;
+    if (whitelistedContactsController || (v10 = familyMemberContactItems) != 0 || (v10 = allowGroupsWithOneContactSpecifier) != 0)
     {
-      [v14 setObject:v10 forKeyedSubscript:v5];
+      [allowedCommunicationGroupSpecifier setObject:v10 forKeyedSubscript:v5];
     }
 
-    v11 = [(STCommunicationLimitsDowntimeDetailListController *)self allowedContactsGroupSpecifier];
-    [(STCommunicationLimitsDowntimeDetailListController *)self removeSpecifier:v11 animated:1];
+    allowedContactsGroupSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowedContactsGroupSpecifier];
+    [(STCommunicationLimitsDowntimeDetailListController *)self removeSpecifier:allowedContactsGroupSpecifier animated:1];
 
-    [(STCommunicationLimitsDowntimeDetailListController *)self reloadSpecifier:v14 animated:0];
-    v12 = [v14 objectForKeyedSubscript:v5];
+    [(STCommunicationLimitsDowntimeDetailListController *)self reloadSpecifier:allowedCommunicationGroupSpecifier animated:0];
+    v12 = [allowedCommunicationGroupSpecifier objectForKeyedSubscript:v5];
     v13 = [(STCommunicationLimitsDowntimeDetailListController *)self _allowedCommunicationGroupFooterText:v12];
-    [v14 setObject:v13 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+    [allowedCommunicationGroupSpecifier setObject:v13 forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
     [(STCommunicationLimitsDowntimeDetailListController *)self _updateAllowedCommunicationGroupFooterText];
     goto LABEL_2;
@@ -563,38 +563,38 @@ LABEL_2:
 LABEL_4:
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STCommunicationLimitsDowntimeDetailListController *)self specifierAtIndexPath:v7];
-  v9 = [(STCommunicationLimitsDowntimeDetailListController *)self allowedContactsGroupSpecifier];
-  v10 = [(STCommunicationLimitsDowntimeDetailListController *)self indexPathForSpecifier:v9];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(STCommunicationLimitsDowntimeDetailListController *)self specifierAtIndexPath:pathCopy];
+  allowedContactsGroupSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowedContactsGroupSpecifier];
+  v10 = [(STCommunicationLimitsDowntimeDetailListController *)self indexPathForSpecifier:allowedContactsGroupSpecifier];
 
-  v11 = [(STCommunicationLimitsDowntimeDetailListController *)self allowedCommunicationGroupSpecifier];
-  v12 = [(STCommunicationLimitsDowntimeDetailListController *)self indexPathForSpecifier:v11];
+  allowedCommunicationGroupSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowedCommunicationGroupSpecifier];
+  v12 = [(STCommunicationLimitsDowntimeDetailListController *)self indexPathForSpecifier:allowedCommunicationGroupSpecifier];
 
-  v13 = [v7 section];
-  if (v13 == [v12 section])
+  section = [pathCopy section];
+  if (section == [v12 section])
   {
     v29 = v10;
-    v14 = [(STCommunicationLimitsDowntimeDetailListController *)self allowedCommunicationGroupSpecifier];
-    v15 = [(STCommunicationLimitsDowntimeDetailListController *)self allowSpecificContactsSpecifier];
-    v16 = [v14 objectForKeyedSubscript:*MEMORY[0x277D40090]];
+    allowedCommunicationGroupSpecifier2 = [(STCommunicationLimitsDowntimeDetailListController *)self allowedCommunicationGroupSpecifier];
+    allowSpecificContactsSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowSpecificContactsSpecifier];
+    v16 = [allowedCommunicationGroupSpecifier2 objectForKeyedSubscript:*MEMORY[0x277D40090]];
 
     v33.receiver = self;
     v33.super_class = STCommunicationLimitsDowntimeDetailListController;
-    [(STCommunicationLimitsDowntimeDetailListController *)&v33 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(STCommunicationLimitsDowntimeDetailListController *)&v33 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
     v17 = [(STCommunicationLimitsDowntimeDetailListController *)self _downtimeCommunicationLimitForSpecifier:v8];
-    v18 = [(STCommunicationLimitsDowntimeDetailListController *)self communicationLimits];
-    [v18 setDowntimeCommunicationLimit:v17];
+    communicationLimits = [(STCommunicationLimitsDowntimeDetailListController *)self communicationLimits];
+    [communicationLimits setDowntimeCommunicationLimit:v17];
 
-    if (v8 != v15 || v16 == v15)
+    if (v8 != allowSpecificContactsSpecifier || v16 == allowSpecificContactsSpecifier)
     {
-      if (v8 != v15 && v16 == v15)
+      if (v8 != allowSpecificContactsSpecifier && v16 == allowSpecificContactsSpecifier)
       {
-        v24 = [(STCommunicationLimitsDowntimeDetailListController *)self allowedContactsGroupSpecifier];
-        [(STCommunicationLimitsDowntimeDetailListController *)self removeSpecifier:v24 animated:1];
+        allowedContactsGroupSpecifier2 = [(STCommunicationLimitsDowntimeDetailListController *)self allowedContactsGroupSpecifier];
+        [(STCommunicationLimitsDowntimeDetailListController *)self removeSpecifier:allowedContactsGroupSpecifier2 animated:1];
       }
     }
 
@@ -604,15 +604,15 @@ LABEL_4:
     }
 
     v25 = [(STCommunicationLimitsDowntimeDetailListController *)self _allowedCommunicationGroupFooterText:v8];
-    [v14 setObject:v25 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+    [allowedCommunicationGroupSpecifier2 setObject:v25 forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
     [(STCommunicationLimitsDowntimeDetailListController *)self _updateAllowedCommunicationGroupFooterText];
-    v26 = [(STCommunicationLimitsDowntimeDetailListController *)self allowEveryoneSpecifier];
+    allowEveryoneSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowEveryoneSpecifier];
 
-    if (v8 != v26)
+    if (v8 != allowEveryoneSpecifier)
     {
-      v27 = [(STCommunicationLimitsDowntimeDetailListController *)self specifier];
-      v28 = [v27 objectForKeyedSubscript:0x287675C48];
+      specifier = [(STCommunicationLimitsDowntimeDetailListController *)self specifier];
+      v28 = [specifier objectForKeyedSubscript:0x287675C48];
 
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
@@ -627,26 +627,26 @@ LABEL_4:
 
   else
   {
-    v19 = [v7 section];
-    if (v19 == [v10 section])
+    section2 = [pathCopy section];
+    if (section2 == [v10 section])
     {
-      v20 = [(STCommunicationLimitsDowntimeDetailListController *)self whitelistedContactsController];
-      v21 = [(STCommunicationLimitsDowntimeDetailListController *)self addContactsSpecifier];
+      whitelistedContactsController = [(STCommunicationLimitsDowntimeDetailListController *)self whitelistedContactsController];
+      addContactsSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self addContactsSpecifier];
 
-      if (v8 == v21)
+      if (v8 == addContactsSpecifier)
       {
-        [v20 performInteraction:0];
+        [whitelistedContactsController performInteraction:0];
         v31.receiver = self;
         v31.super_class = STCommunicationLimitsDowntimeDetailListController;
-        [(STCommunicationLimitsDowntimeDetailListController *)&v31 tableView:v6 didSelectRowAtIndexPath:v7];
+        [(STCommunicationLimitsDowntimeDetailListController *)&v31 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
       }
 
       else
       {
-        [v6 deselectRowAtIndexPath:v7 animated:1];
-        v22 = [v20 familyMemberContactItems];
-        v23 = [v22 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
-        [v20 presentDetailsOfFamilyMemberContactItem:v23];
+        [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+        familyMemberContactItems = [whitelistedContactsController familyMemberContactItems];
+        v23 = [familyMemberContactItems objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+        [whitelistedContactsController presentDetailsOfFamilyMemberContactItem:v23];
       }
     }
 
@@ -654,38 +654,38 @@ LABEL_4:
     {
       v30.receiver = self;
       v30.super_class = STCommunicationLimitsDowntimeDetailListController;
-      [(STCommunicationLimitsDowntimeDetailListController *)&v30 tableView:v6 didSelectRowAtIndexPath:v7];
+      [(STCommunicationLimitsDowntimeDetailListController *)&v30 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
     }
   }
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(STCommunicationLimitsDowntimeDetailListController *)self allowedContactsGroupSpecifier];
-  v7 = [(STCommunicationLimitsDowntimeDetailListController *)self indexPathForSpecifier:v6];
+  pathCopy = path;
+  allowedContactsGroupSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowedContactsGroupSpecifier];
+  v7 = [(STCommunicationLimitsDowntimeDetailListController *)self indexPathForSpecifier:allowedContactsGroupSpecifier];
 
-  v8 = [v5 section];
-  v9 = v8 == [v7 section];
+  section = [pathCopy section];
+  v9 = section == [v7 section];
 
   return v9;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v23.receiver = self;
   v23.super_class = STCommunicationLimitsDowntimeDetailListController;
-  v7 = [(STCommunicationLimitsDowntimeDetailListController *)&v23 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(STCommunicationLimitsDowntimeDetailListController *)self allowedContactsGroupSpecifier];
-  v9 = [(STCommunicationLimitsDowntimeDetailListController *)self indexPathForSpecifier:v8];
+  v7 = [(STCommunicationLimitsDowntimeDetailListController *)&v23 tableView:view cellForRowAtIndexPath:pathCopy];
+  allowedContactsGroupSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowedContactsGroupSpecifier];
+  v9 = [(STCommunicationLimitsDowntimeDetailListController *)self indexPathForSpecifier:allowedContactsGroupSpecifier];
 
-  v10 = [v6 section];
-  if (v10 == [v9 section])
+  section = [pathCopy section];
+  if (section == [v9 section])
   {
-    v11 = [(STCommunicationLimitsDowntimeDetailListController *)self addContactsSpecifier];
-    v12 = [(STCommunicationLimitsDowntimeDetailListController *)self indexPathForSpecifier:v11];
-    v13 = [v6 isEqual:v12];
+    addContactsSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self addContactsSpecifier];
+    v12 = [(STCommunicationLimitsDowntimeDetailListController *)self indexPathForSpecifier:addContactsSpecifier];
+    v13 = [pathCopy isEqual:v12];
 
     if ((v13 & 1) == 0)
     {
@@ -693,19 +693,19 @@ LABEL_4:
     }
   }
 
-  v14 = [(STCommunicationLimitsDowntimeDetailListController *)self specifierAtIndexPath:v6];
+  v14 = [(STCommunicationLimitsDowntimeDetailListController *)self specifierAtIndexPath:pathCopy];
   v15 = [v14 objectForKeyedSubscript:@"UnreachableContact"];
-  v16 = [v15 BOOLValue];
+  bOOLValue = [v15 BOOLValue];
 
-  if (v16)
+  if (bOOLValue)
   {
     v17 = [MEMORY[0x277D755D0] configurationWithScale:3];
     v18 = objc_alloc(MEMORY[0x277D755E8]);
     v19 = [MEMORY[0x277D755B8] systemImageNamed:@"exclamationmark.circle" withConfiguration:v17];
     v20 = [v18 initWithImage:v19];
 
-    v21 = [MEMORY[0x277D75348] systemRedColor];
-    [v20 setTintColor:v21];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+    [v20 setTintColor:systemRedColor];
 
     [v7 setAccessoryView:v20];
   }
@@ -713,32 +713,32 @@ LABEL_4:
   return v7;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v7 = [a5 row];
-  if (a4 == 1)
+  v7 = [path row];
+  if (style == 1)
   {
     v8 = v7;
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [(STCommunicationLimitsDowntimeDetailListController *)self whitelistedContactsController];
-      v9 = [v11 familyMemberContactItems];
-      v10 = [v9 objectAtIndexedSubscript:v8];
-      [v11 deleteFamilyMemberContactItem:v10];
+      whitelistedContactsController = [(STCommunicationLimitsDowntimeDetailListController *)self whitelistedContactsController];
+      familyMemberContactItems = [whitelistedContactsController familyMemberContactItems];
+      v10 = [familyMemberContactItems objectAtIndexedSubscript:v8];
+      [whitelistedContactsController deleteFamilyMemberContactItem:v10];
     }
   }
 }
 
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  v9 = [(STCommunicationLimitsDowntimeDetailListController *)self allowedContactsGroupSpecifier];
-  v10 = [(STCommunicationLimitsDowntimeDetailListController *)self indexPathForSpecifier:v9];
-  v11 = [v10 section];
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  allowedContactsGroupSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowedContactsGroupSpecifier];
+  v10 = [(STCommunicationLimitsDowntimeDetailListController *)self indexPathForSpecifier:allowedContactsGroupSpecifier];
+  section2 = [v10 section];
 
-  if (v8 == v11)
+  if (section == section2)
   {
     v12 = +[STScreenTimeSettingsUIBundle bundle];
     v13 = [v12 localizedStringForKey:@"AllowedContactsDeleteConfirmationButtonTitle" value:&stru_28766E5A8 table:0];
@@ -748,7 +748,7 @@ LABEL_4:
   {
     v15.receiver = self;
     v15.super_class = STCommunicationLimitsDowntimeDetailListController;
-    v13 = [(STCommunicationLimitsDowntimeDetailListController *)&v15 tableView:v6 titleForDeleteConfirmationButtonForRowAtIndexPath:v7];
+    v13 = [(STCommunicationLimitsDowntimeDetailListController *)&v15 tableView:viewCopy titleForDeleteConfirmationButtonForRowAtIndexPath:pathCopy];
   }
 
   return v13;
@@ -756,16 +756,16 @@ LABEL_4:
 
 - (void)_updateAllowedCommunicationGroupFooterText
 {
-  v3 = [(STCommunicationLimitsDowntimeDetailListController *)self allowedCommunicationGroupSpecifier];
-  [(STCommunicationLimitsDowntimeDetailListController *)self reloadSpecifier:v3 animated:1];
+  allowedCommunicationGroupSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowedCommunicationGroupSpecifier];
+  [(STCommunicationLimitsDowntimeDetailListController *)self reloadSpecifier:allowedCommunicationGroupSpecifier animated:1];
 }
 
-- (id)_allowedCommunicationGroupFooterText:(id)a3
+- (id)_allowedCommunicationGroupFooterText:(id)text
 {
-  v4 = a3;
-  v5 = [(STCommunicationLimitsDowntimeDetailListController *)self allowEveryoneSpecifier];
+  textCopy = text;
+  allowEveryoneSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowEveryoneSpecifier];
 
-  if (v5 == v4)
+  if (allowEveryoneSpecifier == textCopy)
   {
     v7 = +[STScreenTimeSettingsUIBundle bundle];
     v18 = [v7 localizedStringForKey:@"DuringDowntimeEveryoneFooterText" value:&stru_28766E5A8 table:0];
@@ -773,32 +773,32 @@ LABEL_4:
 
   else
   {
-    v6 = [(STCommunicationLimitsDowntimeDetailListController *)self specifier];
-    v7 = [v6 objectForKeyedSubscript:0x287675C48];
+    specifier = [(STCommunicationLimitsDowntimeDetailListController *)self specifier];
+    v7 = [specifier objectForKeyedSubscript:0x287675C48];
 
-    v8 = [v7 viewModel];
-    v9 = [v8 me];
+    viewModel = [v7 viewModel];
+    v9 = [viewModel me];
 
     if ([v9 isRemoteUser])
     {
-      v10 = [v9 givenName];
-      if (v10)
+      givenName = [v9 givenName];
+      if (givenName)
       {
-        v11 = [(STCommunicationLimitsDowntimeDetailListController *)self allowGroupsWithOneContactSpecifier];
+        allowGroupsWithOneContactSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowGroupsWithOneContactSpecifier];
 
-        if (v11 == v4)
+        if (allowGroupsWithOneContactSpecifier == textCopy)
         {
           v27 = +[STScreenTimeSettingsUIBundle bundle];
           v16 = [v27 localizedStringForKey:@"DuringDowntimeGroupsWithOneContactRemoteFooterText" value:&stru_28766E5A8 table:0];
 
-          v17 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v16, v10, v10];
+          v17 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v16, givenName, givenName];
         }
 
         else
         {
-          v12 = [(STCommunicationLimitsDowntimeDetailListController *)self allowContactsOnlySpecifier];
+          allowContactsOnlySpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowContactsOnlySpecifier];
           v13 = @"DuringDowntimeSpecificContactsRemoteFooterText";
-          if (v12 == v4)
+          if (allowContactsOnlySpecifier == textCopy)
           {
             v13 = @"DuringDowntimeContactsOnlyRemoteFooterText";
           }
@@ -808,15 +808,15 @@ LABEL_4:
           v15 = +[STScreenTimeSettingsUIBundle bundle];
           v16 = [v15 localizedStringForKey:v14 value:&stru_28766E5A8 table:0];
 
-          v17 = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v16 validFormatSpecifiers:@"%@" error:0, v10];
+          v17 = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v16 validFormatSpecifiers:@"%@" error:0, givenName];
         }
       }
 
       else
       {
-        v23 = [(STCommunicationLimitsDowntimeDetailListController *)self allowContactsOnlySpecifier];
+        allowContactsOnlySpecifier2 = [(STCommunicationLimitsDowntimeDetailListController *)self allowContactsOnlySpecifier];
 
-        if (v23 == v4)
+        if (allowContactsOnlySpecifier2 == textCopy)
         {
           v25 = +[STScreenTimeSettingsUIBundle bundle];
           v16 = v25;
@@ -825,11 +825,11 @@ LABEL_4:
 
         else
         {
-          v24 = [(STCommunicationLimitsDowntimeDetailListController *)self allowGroupsWithOneContactSpecifier];
+          allowGroupsWithOneContactSpecifier2 = [(STCommunicationLimitsDowntimeDetailListController *)self allowGroupsWithOneContactSpecifier];
 
           v25 = +[STScreenTimeSettingsUIBundle bundle];
           v16 = v25;
-          if (v24 == v4)
+          if (allowGroupsWithOneContactSpecifier2 == textCopy)
           {
             v26 = @"DuringDowntimeGroupsWithOneContactRemoteGenericFooterText";
           }
@@ -848,22 +848,22 @@ LABEL_4:
 
     else
     {
-      v19 = [(STCommunicationLimitsDowntimeDetailListController *)self allowContactsOnlySpecifier];
+      allowContactsOnlySpecifier3 = [(STCommunicationLimitsDowntimeDetailListController *)self allowContactsOnlySpecifier];
 
-      if (v19 == v4)
+      if (allowContactsOnlySpecifier3 == textCopy)
       {
         v21 = +[STScreenTimeSettingsUIBundle bundle];
-        v10 = v21;
+        givenName = v21;
         v22 = @"DuringDowntimeContactsOnlyLocalFooterText";
       }
 
       else
       {
-        v20 = [(STCommunicationLimitsDowntimeDetailListController *)self allowGroupsWithOneContactSpecifier];
+        allowGroupsWithOneContactSpecifier3 = [(STCommunicationLimitsDowntimeDetailListController *)self allowGroupsWithOneContactSpecifier];
 
         v21 = +[STScreenTimeSettingsUIBundle bundle];
-        v10 = v21;
-        if (v20 == v4)
+        givenName = v21;
+        if (allowGroupsWithOneContactSpecifier3 == textCopy)
         {
           v22 = @"DuringDowntimeGroupsWithOneContactLocalFooterText";
         }
@@ -883,37 +883,37 @@ LABEL_4:
 
 - (void)_startSyncingWhitelistedContacts
 {
-  v4 = [(STCommunicationLimitsDowntimeDetailListController *)self whitelistedContactsController];
-  [v4 familyMemberContactItems];
+  whitelistedContactsController = [(STCommunicationLimitsDowntimeDetailListController *)self whitelistedContactsController];
+  [whitelistedContactsController familyMemberContactItems];
 
-  v3 = [v4 fetchStatus];
-  if (v3 == 2)
+  fetchStatus = [whitelistedContactsController fetchStatus];
+  if (fetchStatus == 2)
   {
     [(STCommunicationLimitsDowntimeDetailListController *)self _didFinishSyncingWhitelistedContacts];
   }
 
   else
   {
-    [(STCommunicationLimitsDowntimeDetailListController *)self setSyncingWhitelistedContacts:(v3 & 0xFFFFFFFFFFFFFFFDLL) == 1];
+    [(STCommunicationLimitsDowntimeDetailListController *)self setSyncingWhitelistedContacts:(fetchStatus & 0xFFFFFFFFFFFFFFFDLL) == 1];
   }
 }
 
 - (void)_didFinishSyncingWhitelistedContacts
 {
   [(STCommunicationLimitsDowntimeDetailListController *)self setSyncingWhitelistedContacts:0];
-  v18 = [(STCommunicationLimitsDowntimeDetailListController *)self whitelistedContactsController];
-  v3 = [v18 familyMemberContactItems];
-  v4 = [v3 count];
+  whitelistedContactsController = [(STCommunicationLimitsDowntimeDetailListController *)self whitelistedContactsController];
+  familyMemberContactItems = [whitelistedContactsController familyMemberContactItems];
+  v4 = [familyMemberContactItems count];
 
   if (v4)
   {
-    v5 = [(STCommunicationLimitsDowntimeDetailListController *)self allowedContactsSpecifiers];
-    v6 = [(STCommunicationLimitsDowntimeDetailListController *)self allowEveryoneSpecifier];
-    v7 = [(STCommunicationLimitsDowntimeDetailListController *)self allowContactsOnlySpecifier];
-    v8 = [(STCommunicationLimitsDowntimeDetailListController *)self allowGroupsWithOneContactSpecifier];
-    v9 = v8;
-    v10 = v6;
-    if (v6 || (v10 = v7) != 0 || (v10 = v8) != 0)
+    allowedContactsSpecifiers = [(STCommunicationLimitsDowntimeDetailListController *)self allowedContactsSpecifiers];
+    allowEveryoneSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowEveryoneSpecifier];
+    allowContactsOnlySpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowContactsOnlySpecifier];
+    allowGroupsWithOneContactSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowGroupsWithOneContactSpecifier];
+    v9 = allowGroupsWithOneContactSpecifier;
+    v10 = allowEveryoneSpecifier;
+    if (allowEveryoneSpecifier || (v10 = allowContactsOnlySpecifier) != 0 || (v10 = allowGroupsWithOneContactSpecifier) != 0)
     {
       v11 = v10;
     }
@@ -923,34 +923,34 @@ LABEL_4:
       v11 = 0;
     }
 
-    if (v5)
+    if (allowedContactsSpecifiers)
     {
-      v12 = [(STCommunicationLimitsDowntimeDetailListController *)self allowedContactsGroupSpecifier];
-      v13 = [(STCommunicationLimitsDowntimeDetailListController *)self containsSpecifier:v12];
+      allowedContactsGroupSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowedContactsGroupSpecifier];
+      v13 = [(STCommunicationLimitsDowntimeDetailListController *)self containsSpecifier:allowedContactsGroupSpecifier];
 
       if ((v13 & 1) == 0)
       {
-        [(STCommunicationLimitsDowntimeDetailListController *)self insertContiguousSpecifiers:v5 afterSpecifier:v11 animated:1];
+        [(STCommunicationLimitsDowntimeDetailListController *)self insertContiguousSpecifiers:allowedContactsSpecifiers afterSpecifier:v11 animated:1];
       }
     }
 
     else
     {
-      v14 = [(STCommunicationLimitsDowntimeDetailListController *)self _allowedContactsSpecifiers];
-      [(STCommunicationLimitsDowntimeDetailListController *)self insertContiguousSpecifiers:v14 afterSpecifier:v11 animated:1];
+      _allowedContactsSpecifiers = [(STCommunicationLimitsDowntimeDetailListController *)self _allowedContactsSpecifiers];
+      [(STCommunicationLimitsDowntimeDetailListController *)self insertContiguousSpecifiers:_allowedContactsSpecifiers afterSpecifier:v11 animated:1];
     }
 
-    v15 = [(STCommunicationLimitsDowntimeDetailListController *)self allowSpecificContactsSpecifier];
-    v16 = [(STCommunicationLimitsDowntimeDetailListController *)self _allowedCommunicationGroupFooterText:v15];
-    v17 = [(STCommunicationLimitsDowntimeDetailListController *)self allowedCommunicationGroupSpecifier];
-    [v17 setObject:v16 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+    allowSpecificContactsSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowSpecificContactsSpecifier];
+    v16 = [(STCommunicationLimitsDowntimeDetailListController *)self _allowedCommunicationGroupFooterText:allowSpecificContactsSpecifier];
+    allowedCommunicationGroupSpecifier = [(STCommunicationLimitsDowntimeDetailListController *)self allowedCommunicationGroupSpecifier];
+    [allowedCommunicationGroupSpecifier setObject:v16 forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
     [(STCommunicationLimitsDowntimeDetailListController *)self _updateAllowedCommunicationGroupFooterText];
   }
 
   else
   {
-    [v18 performInteraction:0];
+    [whitelistedContactsController performInteraction:0];
   }
 }
 

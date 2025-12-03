@@ -1,30 +1,30 @@
 @interface CarEVChargingAvailabilityViewController
 - (NSArray)focusOrderSubItems;
 - (NSArray)preferredFocusEnvironments;
-- (_TtC4Maps39CarEVChargingAvailabilityViewController)initWithCoder:(id)a3;
-- (_TtC4Maps39CarEVChargingAvailabilityViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC4Maps39CarEVChargingAvailabilityViewController)initWithViewModal:(id)a3;
+- (_TtC4Maps39CarEVChargingAvailabilityViewController)initWithCoder:(id)coder;
+- (_TtC4Maps39CarEVChargingAvailabilityViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC4Maps39CarEVChargingAvailabilityViewController)initWithViewModal:(id)modal;
 - (void)configureForModalPresentation;
-- (void)evChargingViewModelDidUpdate:(id)a3;
+- (void)evChargingViewModelDidUpdate:(id)update;
 - (void)loadView;
 - (void)viewDidLoad;
 @end
 
 @implementation CarEVChargingAvailabilityViewController
 
-- (_TtC4Maps39CarEVChargingAvailabilityViewController)initWithViewModal:(id)a3
+- (_TtC4Maps39CarEVChargingAvailabilityViewController)initWithViewModal:(id)modal
 {
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC4Maps39CarEVChargingAvailabilityViewController_viewModal) = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC4Maps39CarEVChargingAvailabilityViewController_viewModal) = modal;
   v7.receiver = self;
   v7.super_class = type metadata accessor for CarEVChargingAvailabilityViewController();
-  v4 = a3;
+  modalCopy = modal;
   v5 = [(CarEVChargingAvailabilityViewController *)&v7 initWithNibName:0 bundle:0];
   swift_unknownObjectWeakAssign();
 
   return v5;
 }
 
-- (_TtC4Maps39CarEVChargingAvailabilityViewController)initWithCoder:(id)a3
+- (_TtC4Maps39CarEVChargingAvailabilityViewController)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -35,9 +35,9 @@
 {
   type metadata accessor for CarEVChargingAvailabilityView();
   v3 = objc_allocWithZone(swift_getObjCClassFromMetadata());
-  v5 = self;
+  selfCopy = self;
   v4 = [v3 init];
-  [(CarEVChargingAvailabilityViewController *)v5 setView:v4];
+  [(CarEVChargingAvailabilityViewController *)selfCopy setView:v4];
 }
 
 - (void)viewDidLoad
@@ -46,10 +46,10 @@
   v6.super_class = type metadata accessor for CarEVChargingAvailabilityViewController();
   v2 = v6.receiver;
   [(CarEVChargingAvailabilityViewController *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
+    v4 = view;
     type metadata accessor for CarEVChargingAvailabilityView();
     if (swift_dynamicCastClass())
     {
@@ -67,11 +67,11 @@
   }
 }
 
-- (void)evChargingViewModelDidUpdate:(id)a3
+- (void)evChargingViewModelDidUpdate:(id)update
 {
-  v6 = self;
-  v5 = [(CarEVChargingAvailabilityViewController *)v6 view];
-  if (v5)
+  selfCopy = self;
+  view = [(CarEVChargingAvailabilityViewController *)selfCopy view];
+  if (view)
   {
     type metadata accessor for CarEVChargingAvailabilityView();
     if (swift_dynamicCastClass())
@@ -82,12 +82,12 @@
       return;
     }
 
-    v4 = v5;
+    v4 = view;
   }
 
   else
   {
-    v4 = v6;
+    v4 = selfCopy;
   }
 }
 
@@ -109,12 +109,12 @@
 
 - (void)configureForModalPresentation
 {
-  v4 = self;
-  v2 = [(CarEVChargingAvailabilityViewController *)v4 view];
-  if (v2)
+  selfCopy = self;
+  view = [(CarEVChargingAvailabilityViewController *)selfCopy view];
+  if (view)
   {
-    v3 = v2;
-    [v2 setDirectionalLayoutMargins:{16.0, 16.0, 16.0, 16.0}];
+    v3 = view;
+    [view setDirectionalLayoutMargins:{16.0, 16.0, 16.0, 16.0}];
   }
 
   else
@@ -123,7 +123,7 @@
   }
 }
 
-- (_TtC4Maps39CarEVChargingAvailabilityViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps39CarEVChargingAvailabilityViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

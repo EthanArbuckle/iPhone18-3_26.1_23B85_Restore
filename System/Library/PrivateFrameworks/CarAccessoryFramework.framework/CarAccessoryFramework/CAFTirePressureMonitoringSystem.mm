@@ -3,26 +3,26 @@
 - (BOOL)hasReset;
 - (BOOL)registeredForReset;
 - (CAFResetControl)resetControl;
-- (void)registerObserver:(id)a3;
-- (void)resetWithCompletion:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)resetWithCompletion:(id)completion;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFTirePressureMonitoringSystem
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFTirePressureMonitoringSystem;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -35,12 +35,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -70,24 +70,24 @@
   return v4;
 }
 
-- (void)resetWithCompletion:(id)a3
+- (void)resetWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CAFTirePressureMonitoringSystem *)self resetControl];
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  resetControl = [(CAFTirePressureMonitoringSystem *)self resetControl];
+  v6 = resetControl;
+  if (resetControl)
   {
-    [v5 resetWithCompletion:v4];
+    [resetControl resetWithCompletion:completionCopy];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v7 = dispatch_get_global_queue(33, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __55__CAFTirePressureMonitoringSystem_resetWithCompletion___block_invoke;
     block[3] = &unk_27890D5E8;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_async(v7, block);
   }
 }
@@ -101,8 +101,8 @@ void __55__CAFTirePressureMonitoringSystem_resetWithCompletion___block_invoke(ui
 
 - (BOOL)hasReset
 {
-  v2 = [(CAFTirePressureMonitoringSystem *)self resetControl];
-  v3 = v2 != 0;
+  resetControl = [(CAFTirePressureMonitoringSystem *)self resetControl];
+  v3 = resetControl != 0;
 
   return v3;
 }
@@ -110,13 +110,13 @@ void __55__CAFTirePressureMonitoringSystem_resetWithCompletion___block_invoke(ui
 - (BOOL)registeredForReset
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x0000000030000062"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x0000000030000062"];
 
   return v10;
 }

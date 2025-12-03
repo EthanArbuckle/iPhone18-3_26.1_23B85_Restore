@@ -1,61 +1,61 @@
 @interface BuddyExpressWalletFeatureCardView
-- (BuddyExpressWalletFeatureCardView)initWithTitle:(id)a3 subtitle:(id)a4 icon:(id)a5;
+- (BuddyExpressWalletFeatureCardView)initWithTitle:(id)title subtitle:(id)subtitle icon:(id)icon;
 - (CGSize)setupAssistantCredentialCardArtSize;
-- (void)addCardCell:(id)a3;
-- (void)setupAssistantCredentialUpdatedCardArt:(id)a3;
+- (void)addCardCell:(id)cell;
+- (void)setupAssistantCredentialUpdatedCardArt:(id)art;
 @end
 
 @implementation BuddyExpressWalletFeatureCardView
 
-- (BuddyExpressWalletFeatureCardView)initWithTitle:(id)a3 subtitle:(id)a4 icon:(id)a5
+- (BuddyExpressWalletFeatureCardView)initWithTitle:(id)title subtitle:(id)subtitle icon:(id)icon
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, title);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, subtitle);
   v14 = 0;
-  objc_storeStrong(&v14, a5);
-  v7 = v17;
-  v17 = 0;
+  objc_storeStrong(&v14, icon);
+  v7 = selfCopy;
+  selfCopy = 0;
   v13.receiver = v7;
   v13.super_class = BuddyExpressWalletFeatureCardView;
   v8 = [(BuddyExpressSetupFeatureCardView *)&v13 initWithTitle:location[0] subtitle:v15 icon:v14];
-  v17 = v8;
-  objc_storeStrong(&v17, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
     v9 = +[NSMutableDictionary dictionary];
-    v10 = *(v17 + 7);
-    *(v17 + 7) = v9;
+    v10 = *(selfCopy + 7);
+    *(selfCopy + 7) = v9;
   }
 
-  v11 = v17;
+  v11 = selfCopy;
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 
-- (void)addCardCell:(id)a3
+- (void)addCardCell:(id)cell
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [location[0] uniqueIdentifier];
+  objc_storeStrong(location, cell);
+  uniqueIdentifier = [location[0] uniqueIdentifier];
 
-  if (v3)
+  if (uniqueIdentifier)
   {
     v4 = location[0];
-    v5 = [(BuddyExpressWalletFeatureCardView *)v9 featureCardCellMap];
-    v6 = [location[0] uniqueIdentifier];
-    [(NSMutableDictionary *)v5 setObject:v4 forKeyedSubscript:v6];
+    featureCardCellMap = [(BuddyExpressWalletFeatureCardView *)selfCopy featureCardCellMap];
+    uniqueIdentifier2 = [location[0] uniqueIdentifier];
+    [(NSMutableDictionary *)featureCardCellMap setObject:v4 forKeyedSubscript:uniqueIdentifier2];
   }
 
-  v7.receiver = v9;
+  v7.receiver = selfCopy;
   v7.super_class = BuddyExpressWalletFeatureCardView;
   [(BuddyExpressSetupFeatureCardView *)&v7 addCardCell:location[0]];
   objc_storeStrong(location, 0);
@@ -69,21 +69,21 @@
   return result;
 }
 
-- (void)setupAssistantCredentialUpdatedCardArt:(id)a3
+- (void)setupAssistantCredentialUpdatedCardArt:(id)art
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyExpressWalletFeatureCardView *)v9 featureCardCellMap];
-  v4 = [location[0] uniqueIdentifier];
-  v7 = [(NSMutableDictionary *)v3 objectForKeyedSubscript:v4];
+  objc_storeStrong(location, art);
+  featureCardCellMap = [(BuddyExpressWalletFeatureCardView *)selfCopy featureCardCellMap];
+  uniqueIdentifier = [location[0] uniqueIdentifier];
+  v7 = [(NSMutableDictionary *)featureCardCellMap objectForKeyedSubscript:uniqueIdentifier];
 
   if (v7)
   {
-    v5 = [v7 accessoryView];
-    v6 = [location[0] passSnapshot];
-    [v5 setImage:v6];
+    accessoryView = [v7 accessoryView];
+    passSnapshot = [location[0] passSnapshot];
+    [accessoryView setImage:passSnapshot];
   }
 
   objc_storeStrong(&v7, 0);

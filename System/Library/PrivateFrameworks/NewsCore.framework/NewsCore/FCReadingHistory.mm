@@ -1,28 +1,28 @@
 @interface FCReadingHistory
 + (id)backingRecordZoneIDs;
-+ (id)commandsToMergeLocalDataToCloud:(id)a3 privateDataDirectory:(id)a4;
-+ (void)populateLocalStoreClassRegistry:(id)a3;
-- (BOOL)hasArticleBeenConsumed:(id)a3;
-- (BOOL)hasArticleBeenMarkedAsOffensive:(id)a3;
-- (BOOL)hasArticleBeenRead:(id)a3;
-- (BOOL)hasArticleBeenReadMoreThanThreshold:(id)a3;
-- (BOOL)hasArticleBeenRemovedFromAudio:(id)a3;
-- (BOOL)hasArticleBeenSeen:(id)a3;
-- (BOOL)hasArticleBeenVisited:(id)a3;
-- (BOOL)hasArticleCompletedListening:(id)a3;
-- (BOOL)hasArticleCompletedReading:(id)a3;
-- (BOOL)markArticle:(id)a3 withCompletedListening:(BOOL)a4;
-- (BOOL)markArticle:(id)a3 withCompletedReading:(BOOL)a4;
-- (BOOL)markArticle:(id)a3 withLikingStatus:(unint64_t)a4;
-- (BOOL)markArticle:(id)a3 withRemovedFromAudio:(BOOL)a4;
-- (BOOL)markArticleAsReadWithArticleID:(id)a3 articleVersion:(int64_t)a4 readDate:(id)a5;
-- (BOOL)markArticleAsSeenWithArticleID:(id)a3 articleVersion:(int64_t)a4 seenDate:(id)a5;
-- (BOOL)markArticleAsSeenWithHeadline:(id)a3;
-- (BOOL)markArticleAsSeenWithHeadline:(id)a3 rememberForever:(BOOL)a4;
-- (BOOL)toggleArticleHasBeenMarkedAsOffensive:(id)a3;
-- (BOOL)toggleDislikeForArticleWithID:(id)a3;
-- (BOOL)toggleLikeForArticleWithID:(id)a3;
-- (FCReadingHistory)initWithContext:(id)a3 pushNotificationCenter:(id)a4 storeDirectory:(id)a5;
++ (id)commandsToMergeLocalDataToCloud:(id)cloud privateDataDirectory:(id)directory;
++ (void)populateLocalStoreClassRegistry:(id)registry;
+- (BOOL)hasArticleBeenConsumed:(id)consumed;
+- (BOOL)hasArticleBeenMarkedAsOffensive:(id)offensive;
+- (BOOL)hasArticleBeenRead:(id)read;
+- (BOOL)hasArticleBeenReadMoreThanThreshold:(id)threshold;
+- (BOOL)hasArticleBeenRemovedFromAudio:(id)audio;
+- (BOOL)hasArticleBeenSeen:(id)seen;
+- (BOOL)hasArticleBeenVisited:(id)visited;
+- (BOOL)hasArticleCompletedListening:(id)listening;
+- (BOOL)hasArticleCompletedReading:(id)reading;
+- (BOOL)markArticle:(id)article withCompletedListening:(BOOL)listening;
+- (BOOL)markArticle:(id)article withCompletedReading:(BOOL)reading;
+- (BOOL)markArticle:(id)article withLikingStatus:(unint64_t)status;
+- (BOOL)markArticle:(id)article withRemovedFromAudio:(BOOL)audio;
+- (BOOL)markArticleAsReadWithArticleID:(id)d articleVersion:(int64_t)version readDate:(id)date;
+- (BOOL)markArticleAsSeenWithArticleID:(id)d articleVersion:(int64_t)version seenDate:(id)date;
+- (BOOL)markArticleAsSeenWithHeadline:(id)headline;
+- (BOOL)markArticleAsSeenWithHeadline:(id)headline rememberForever:(BOOL)forever;
+- (BOOL)toggleArticleHasBeenMarkedAsOffensive:(id)offensive;
+- (BOOL)toggleDislikeForArticleWithID:(id)d;
+- (BOOL)toggleLikeForArticleWithID:(id)d;
+- (FCReadingHistory)initWithContext:(id)context pushNotificationCenter:(id)center storeDirectory:(id)directory;
 - (NSArray)readingHistoryItems;
 - (NSArray)sortedListenedArticleIDs;
 - (NSArray)sortedVisitedArticleIDs;
@@ -32,46 +32,46 @@
 - (NSSet)allLikedArticleIDs;
 - (NSSet)allReadArticleIDs;
 - (NSSet)allSeenArticleIDs;
-- (double)listeningProgressFor:(id)a3;
-- (id)_markHistoryItemsAsSeenWithItemExposures:(int)a3 rememberForever:;
-- (id)_readingHistoryItemForArticleID:(uint64_t)a1;
-- (id)_sortedReadingHistoryItemsWithMaxCount:(void *)a1;
-- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)a3;
-- (id)consumedArticleIDsForTagID:(id)a3 fromTime:(id)a4;
-- (id)firstSeenDateFor:(id)a3;
-- (id)historyItemsByArticleIDForArticleIDs:(id)a3;
-- (id)historyItemsForArticleIDs:(id)a3;
-- (id)lastListenedFor:(id)a3;
-- (id)lastVisitedDateForArticleID:(id)a3;
-- (id)listeningProgressSavedDateFor:(id)a3;
+- (double)listeningProgressFor:(id)for;
+- (id)_markHistoryItemsAsSeenWithItemExposures:(int)exposures rememberForever:;
+- (id)_readingHistoryItemForArticleID:(uint64_t)d;
+- (id)_sortedReadingHistoryItemsWithMaxCount:(void *)count;
+- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)d;
+- (id)consumedArticleIDsForTagID:(id)d fromTime:(id)time;
+- (id)firstSeenDateFor:(id)for;
+- (id)historyItemsByArticleIDForArticleIDs:(id)ds;
+- (id)historyItemsForArticleIDs:(id)ds;
+- (id)lastListenedFor:(id)for;
+- (id)lastVisitedDateForArticleID:(id)d;
+- (id)listeningProgressSavedDateFor:(id)for;
 - (id)localStoreMigrator;
-- (id)markArticlesAsSeenWithHeadlines:(int)a3 rememberForever:;
-- (id)mostRecentlyCompletedListeningArticlesWithMaxCount:(unint64_t)a3;
-- (id)readDateFor:(id)a3;
-- (id)readingPositionJSONFor:(id)a3;
-- (id)readingPositionSavedDateFor:(id)a3;
-- (id)recordsForRestoringZoneName:(id)a3;
-- (id)sortedVisitedArticleIDsSatisfying:(id)a3;
-- (int64_t)listenedCountFor:(id)a3;
-- (unint64_t)likingStatusForArticleID:(id)a3;
-- (void)_addHistoryItems:(uint64_t)a1 addToStore:(void *)a2;
-- (void)_cacheHistoryItemByArticleID:(uint64_t)a1;
-- (void)_markArticle:(uint64_t)a3 withLikingStatus:;
-- (void)_markArticleAsSeenWithArticleID:(int)a3 rememberForever:(uint64_t)a4 articleVersion:(void *)a5 seenDate:(void *)a6 firstSeenDate:(void *)a7 historyItem:(uint64_t *)a8 modifiedHistoryFeaturesOut:;
-- (void)_modifyHistoryForArticleID:(void *)a3 withBlock:;
-- (void)addObserver:(id)a3;
+- (id)markArticlesAsSeenWithHeadlines:(int)headlines rememberForever:;
+- (id)mostRecentlyCompletedListeningArticlesWithMaxCount:(unint64_t)count;
+- (id)readDateFor:(id)for;
+- (id)readingPositionJSONFor:(id)for;
+- (id)readingPositionSavedDateFor:(id)for;
+- (id)recordsForRestoringZoneName:(id)name;
+- (id)sortedVisitedArticleIDsSatisfying:(id)satisfying;
+- (int64_t)listenedCountFor:(id)for;
+- (unint64_t)likingStatusForArticleID:(id)d;
+- (void)_addHistoryItems:(uint64_t)items addToStore:(void *)store;
+- (void)_cacheHistoryItemByArticleID:(uint64_t)d;
+- (void)_markArticle:(uint64_t)article withLikingStatus:;
+- (void)_markArticleAsSeenWithArticleID:(int)d rememberForever:(uint64_t)forever articleVersion:(void *)version seenDate:(void *)date firstSeenDate:(void *)seenDate historyItem:(uint64_t *)item modifiedHistoryFeaturesOut:;
+- (void)_modifyHistoryForArticleID:(void *)d withBlock:;
+- (void)addObserver:(id)observer;
 - (void)clearHistory;
-- (void)handleSyncWithChangedRecords:(id)a3 deletedRecordNames:(id)a4;
+- (void)handleSyncWithChangedRecords:(id)records deletedRecordNames:(id)names;
 - (void)loadLocalCachesFromStore;
-- (void)markArticle:(id)a3 asArticleConsumed:(BOOL)a4 sourceChannelTagID:(id)a5;
-- (void)markArticle:(id)a3 asOffensive:(BOOL)a4;
-- (void)markArticle:(id)a3 withLastListened:(id)a4;
-- (void)markArticle:(id)a3 withListeningProgress:(double)a4;
-- (void)markArticle:(id)a3 withReadingPositionJSON:(id)a4;
-- (void)markArticleAsReadWithHeadline:(id)a3 fromGroupType:(int64_t)a4 swipedToArticle:(BOOL)a5 onScreenChecker:(id)a6;
-- (void)removeArticleFromHistory:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)willAccessArticleIDs:(id)a3;
+- (void)markArticle:(id)article asArticleConsumed:(BOOL)consumed sourceChannelTagID:(id)d;
+- (void)markArticle:(id)article asOffensive:(BOOL)offensive;
+- (void)markArticle:(id)article withLastListened:(id)listened;
+- (void)markArticle:(id)article withListeningProgress:(double)progress;
+- (void)markArticle:(id)article withReadingPositionJSON:(id)n;
+- (void)markArticleAsReadWithHeadline:(id)headline fromGroupType:(int64_t)type swipedToArticle:(BOOL)article onScreenChecker:(id)checker;
+- (void)removeArticleFromHistory:(id)history;
+- (void)removeObserver:(id)observer;
+- (void)willAccessArticleIDs:(id)ds;
 @end
 
 @implementation FCReadingHistory
@@ -392,11 +392,11 @@ void __39__FCReadingHistory_readingHistoryItems__block_invoke(uint64_t a1)
   objc_storeStrong((*(*(a1 + 40) + 8) + 40), v6);
 }
 
-- (FCReadingHistory)initWithContext:(id)a3 pushNotificationCenter:(id)a4 storeDirectory:(id)a5
+- (FCReadingHistory)initWithContext:(id)context pushNotificationCenter:(id)center storeDirectory:(id)directory
 {
   v9.receiver = self;
   v9.super_class = FCReadingHistory;
-  v5 = [(FCPrivateDataController *)&v9 initWithContext:a3 pushNotificationCenter:a4 storeDirectory:a5];
+  v5 = [(FCPrivateDataController *)&v9 initWithContext:context pushNotificationCenter:center storeDirectory:directory];
   if (v5)
   {
     v6 = objc_alloc_init(FCMTWriterLock);
@@ -407,20 +407,20 @@ void __39__FCReadingHistory_readingHistoryItems__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)_addHistoryItems:(uint64_t)a1 addToStore:(void *)a2
+- (void)_addHistoryItems:(uint64_t)items addToStore:(void *)store
 {
-  v3 = a2;
+  storeCopy = store;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v3)
+  if (storeCopy)
   {
-    v4 = *(a1 + 112);
+    v4 = *(items + 112);
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __48__FCReadingHistory__addHistoryItems_addToStore___block_invoke;
     v5[3] = &unk_1E7C37678;
-    v5[4] = a1;
+    v5[4] = items;
     v7 = 1;
-    v6 = v3;
+    v6 = storeCopy;
     [v4 performWriteSync:v5];
   }
 }
@@ -521,23 +521,23 @@ void __44__FCReadingHistory_loadLocalCachesFromStore__block_invoke_2(void *a1, v
   return v4;
 }
 
-+ (void)populateLocalStoreClassRegistry:(id)a3
++ (void)populateLocalStoreClassRegistry:(id)registry
 {
-  v3 = a3;
-  [v3 registerClass:objc_opt_class()];
+  registryCopy = registry;
+  [registryCopy registerClass:objc_opt_class()];
 }
 
-+ (id)commandsToMergeLocalDataToCloud:(id)a3 privateDataDirectory:(id)a4
++ (id)commandsToMergeLocalDataToCloud:(id)cloud privateDataDirectory:(id)directory
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
+  cloudCopy = cloud;
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [v5 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  allKeys = [cloudCopy allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -548,24 +548,24 @@ void __44__FCReadingHistory_loadLocalCachesFromStore__block_invoke_2(void *a1, v
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        if (([a1 isLocalStoreKeyInternal:v12] & 1) == 0)
+        if (([self isLocalStoreKeyInternal:v12] & 1) == 0)
         {
-          v13 = [v5 objectForKeyedSubscript:v12];
-          [v6 addObject:v13];
+          v13 = [cloudCopy objectForKeyedSubscript:v12];
+          [array addObject:v13];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v9);
   }
 
-  v14 = [[FCModifyHistoryCommand alloc] initWithHistoryItems:v6 merge:1];
+  v14 = [[FCModifyHistoryCommand alloc] initWithHistoryItems:array merge:1];
   v22 = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
 
@@ -574,13 +574,13 @@ void __44__FCReadingHistory_loadLocalCachesFromStore__block_invoke_2(void *a1, v
   return v15;
 }
 
-- (void)handleSyncWithChangedRecords:(id)a3 deletedRecordNames:(id)a4
+- (void)handleSyncWithChangedRecords:(id)records deletedRecordNames:(id)names
 {
   v238 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  recordsCopy = records;
+  namesCopy = names;
   [MEMORY[0x1E696AF00] isMainThread];
-  v8 = v7;
+  v8 = namesCopy;
   v9 = "bly";
   v174 = v8;
   if (self)
@@ -590,12 +590,12 @@ void __44__FCReadingHistory_loadLocalCachesFromStore__block_invoke_2(void *a1, v
     if ([v10 count])
     {
       v11 = MEMORY[0x1E695DFA8];
-      v12 = [(NSMutableDictionary *)self->_itemsByIdentifier allKeys];
-      v13 = [v11 setWithArray:v12];
+      allKeys = [(NSMutableDictionary *)self->_itemsByIdentifier allKeys];
+      v13 = [v11 setWithArray:allKeys];
 
       [v13 fc_removeObjectsFromArray:v10];
-      v14 = [(FCPrivateDataController *)self recordNamesPendingSaveToCloud];
-      [v13 fc_removeObjectsFromArray:v14];
+      recordNamesPendingSaveToCloud = [(FCPrivateDataController *)self recordNamesPendingSaveToCloud];
+      [v13 fc_removeObjectsFromArray:recordNamesPendingSaveToCloud];
 
       v15 = [v13 count];
       v172 = v15 == 0;
@@ -615,24 +615,24 @@ void __44__FCReadingHistory_loadLocalCachesFromStore__block_invoke_2(void *a1, v
 
         v21 = [MEMORY[0x1E695DF00] fc_dateWithTimeIntervalBeforeNow:864000.0];
         v22 = MEMORY[0x1E695DFD8];
-        v23 = [(FCReadingHistory *)self articleExposureRegistry];
-        v24 = [v23 subsetOfItemIDs:v174 accessedSinceDate:v21];
+        articleExposureRegistry = [(FCReadingHistory *)self articleExposureRegistry];
+        v24 = [articleExposureRegistry subsetOfItemIDs:v174 accessedSinceDate:v21];
         v25 = [v22 setWithArray:v24];
 
-        v26 = [MEMORY[0x1E695DF70] array];
-        v27 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
         itemsLock = self->_itemsLock;
         *&buf = MEMORY[0x1E69E9820];
         *(&buf + 1) = 3221225472;
         v224 = __67__FCReadingHistory__preprocessSyncedDeletions_didUserClearHistory___block_invoke_135;
         v225 = &unk_1E7C376C8;
         v226 = v174;
-        v227 = self;
+        selfCopy2 = self;
         v29 = v25;
         v228 = v29;
-        v30 = v27;
+        v30 = array2;
         v229 = v30;
-        v31 = v26;
+        v31 = array;
         v230 = v31;
         [(FCMTWriterLock *)itemsLock performReadSync:&buf];
         if ([v30 count])
@@ -695,7 +695,7 @@ void __44__FCReadingHistory_loadLocalCachesFromStore__block_invoke_2(void *a1, v
   v213 = 0u;
   v214 = 0u;
   v215 = 0u;
-  obj = v6;
+  obj = recordsCopy;
   v43 = [obj countByEnumeratingWithState:&v212 objects:v222 count:16];
   if (v43)
   {
@@ -711,8 +711,8 @@ void __44__FCReadingHistory_loadLocalCachesFromStore__block_invoke_2(void *a1, v
         }
 
         v47 = *(*(&v212 + 1) + 8 * i);
-        v48 = [v47 recordType];
-        v49 = [v48 isEqualToString:@"ReadingHistoryItem"];
+        recordType = [v47 recordType];
+        v49 = [recordType isEqualToString:@"ReadingHistoryItem"];
 
         if (v49)
         {
@@ -760,17 +760,17 @@ void __44__FCReadingHistory_loadLocalCachesFromStore__block_invoke_2(void *a1, v
         }
 
         v57 = [(NSMutableDictionary *)itemsByIdentifier objectForKeyedSubscript:*(*(&v208 + 1) + 8 * v54)];
-        v58 = [v57 articleID];
+        articleID = [v57 articleID];
 
-        if (v58)
+        if (articleID)
         {
-          v59 = [v57 articleID];
-          [v185 addObject:v59];
+          articleID2 = [v57 articleID];
+          [v185 addObject:articleID2];
         }
 
-        v60 = [v57 articleID];
+        articleID3 = [v57 articleID];
         v61 = v55;
-        v62 = v60;
+        v62 = articleID3;
         if (self)
         {
           [MEMORY[0x1E696AF00] isMainThread];
@@ -794,7 +794,7 @@ void __44__FCReadingHistory_loadLocalCachesFromStore__block_invoke_2(void *a1, v
           v224 = __59__FCReadingHistory__removeHistoryItemWithItemID_articleID___block_invoke;
           v225 = &unk_1E7C376A0;
           v226 = v61;
-          v227 = self;
+          selfCopy2 = self;
           v228 = v62;
           [(FCMTWriterLock *)v63 performWriteSync:&buf];
         }
@@ -917,76 +917,76 @@ void __44__FCReadingHistory_loadLocalCachesFromStore__block_invoke_2(void *a1, v
           [v75 setPruningDisabled:{objc_msgSend(v94, "BOOLValue")}];
 
           v95 = [v74 objectForKeyedSubscript:@"liked"];
-          v96 = [v95 BOOLValue];
+          bOOLValue = [v95 BOOLValue];
 
-          if (v96)
+          if (bOOLValue)
           {
             [v75 setArticleLikingStatus:1];
           }
 
           v97 = [v74 objectForKeyedSubscript:@"disliked"];
-          v98 = [v97 BOOLValue];
+          bOOLValue2 = [v97 BOOLValue];
 
-          if (v98)
+          if (bOOLValue2)
           {
             [v75 setArticleLikingStatus:2];
           }
 
           if ([v75 hasArticleBeenSeen])
           {
-            v99 = [v75 lastVisitedDate];
-            if (v99)
+            lastVisitedDate = [v75 lastVisitedDate];
+            if (lastVisitedDate)
             {
-              [v75 setFirstSeenDate:v99];
+              [v75 setFirstSeenDate:lastVisitedDate];
             }
 
             else
             {
-              v100 = [v75 lastListened];
-              if (v100)
+              lastListened = [v75 lastListened];
+              if (lastListened)
               {
-                [v75 setFirstSeenDate:v100];
+                [v75 setFirstSeenDate:lastListened];
               }
 
               else
               {
                 [v74 creationDate];
                 v102 = v101 = v70;
-                v103 = [v102 pbDate];
-                [v75 setFirstSeenDate:v103];
+                pbDate = [v102 pbDate];
+                [v75 setFirstSeenDate:pbDate];
 
                 v70 = v101;
                 v67 = v176;
               }
             }
 
-            v104 = [v75 firstSeenDate];
-            [v75 setFirstSeenDateOfMaxVersionSeen:v104];
+            firstSeenDate = [v75 firstSeenDate];
+            [v75 setFirstSeenDateOfMaxVersionSeen:firstSeenDate];
 
             v71 = 0x1E69B6000;
           }
 
-          v105 = [v75 articleID];
-          if (v105)
+          articleID4 = [v75 articleID];
+          if (articleID4)
           {
-            v106 = [(NSMutableDictionary *)self->_itemsByArticleID objectForKeyedSubscript:v105];
+            v106 = [(NSMutableDictionary *)self->_itemsByArticleID objectForKeyedSubscript:articleID4];
             v107 = v106;
             if (v106)
             {
-              v108 = [v106 lastVisitedAt];
-              if (v108)
+              lastVisitedAt = [v106 lastVisitedAt];
+              if (lastVisitedAt)
               {
-                v109 = v108;
-                v110 = [v75 lastVisitedAt];
+                v109 = lastVisitedAt;
+                lastVisitedAt2 = [v75 lastVisitedAt];
 
-                if (v110)
+                if (lastVisitedAt2)
                 {
                   v111 = 0;
                 }
 
                 else
                 {
-                  [v177 addObject:v105];
+                  [v177 addObject:articleID4];
                   v111 = 1;
                 }
 
@@ -1007,7 +1007,7 @@ void __44__FCReadingHistory_loadLocalCachesFromStore__block_invoke_2(void *a1, v
               v112 = v178;
             }
 
-            [v112 addObject:v105];
+            [v112 addObject:articleID4];
             [v67 addObject:v75];
           }
         }
@@ -1088,8 +1088,8 @@ void __44__FCReadingHistory_loadLocalCachesFromStore__block_invoke_2(void *a1, v
   }
 
   v126 = newlyCreatedArticleIDs;
-  v127 = [(FCReadingHistory *)self articleExposureRegistry];
-  v128 = v127;
+  articleExposureRegistry2 = [(FCReadingHistory *)self articleExposureRegistry];
+  v128 = articleExposureRegistry2;
   if (v116)
   {
     articleExposures = v116->_articleExposures;
@@ -1100,7 +1100,7 @@ void __44__FCReadingHistory_loadLocalCachesFromStore__block_invoke_2(void *a1, v
     articleExposures = 0;
   }
 
-  [v127 registerExposures:articleExposures];
+  [articleExposureRegistry2 registerExposures:articleExposures];
 
   if ((v114 & 1) != 0 || [v175 count])
   {
@@ -1108,8 +1108,8 @@ void __44__FCReadingHistory_loadLocalCachesFromStore__block_invoke_2(void *a1, v
     v207 = 0u;
     v204 = 0u;
     v205 = 0u;
-    v130 = [(FCPrivateDataController *)self observers];
-    v131 = [v130 copy];
+    observers = [(FCPrivateDataController *)self observers];
+    v131 = [observers copy];
 
     v132 = [v131 countByEnumeratingWithState:&v204 objects:v220 count:16];
     if (v132)
@@ -1160,8 +1160,8 @@ void __44__FCReadingHistory_loadLocalCachesFromStore__block_invoke_2(void *a1, v
     v203 = 0u;
     v200 = 0u;
     v201 = 0u;
-    v139 = [(FCPrivateDataController *)self observers];
-    v140 = [v139 copy];
+    observers2 = [(FCPrivateDataController *)self observers];
+    v140 = [observers2 copy];
 
     v141 = [v140 countByEnumeratingWithState:&v200 objects:v219 count:16];
     if (v141)
@@ -1226,8 +1226,8 @@ void __44__FCReadingHistory_loadLocalCachesFromStore__block_invoke_2(void *a1, v
     v195 = 0u;
     v192 = 0u;
     v193 = 0u;
-    v152 = [(FCPrivateDataController *)self observers];
-    v153 = [v152 copy];
+    observers3 = [(FCPrivateDataController *)self observers];
+    v153 = [observers3 copy];
 
     v154 = [v153 countByEnumeratingWithState:&v192 objects:v217 count:16];
     if (v154)
@@ -1259,23 +1259,23 @@ void __44__FCReadingHistory_loadLocalCachesFromStore__block_invoke_2(void *a1, v
 
   if (v172)
   {
-    v159 = [(FCPrivateDataController *)self context];
-    v160 = [v159 personalizationData];
-    [v160 markAsDirty];
+    context = [(FCPrivateDataController *)self context];
+    personalizationData = [context personalizationData];
+    [personalizationData markAsDirty];
 
-    v161 = [(FCPrivateDataController *)self context];
-    v162 = [v161 userEventHistory];
-    [v162 markAsDirty];
+    context2 = [(FCPrivateDataController *)self context];
+    userEventHistory = [context2 userEventHistory];
+    [userEventHistory markAsDirty];
 
-    v163 = [(FCReadingHistory *)self articleExposureRegistry];
-    [v163 eraseAll];
+    articleExposureRegistry3 = [(FCReadingHistory *)self articleExposureRegistry];
+    [articleExposureRegistry3 eraseAll];
 
     v190 = 0u;
     v191 = 0u;
     v188 = 0u;
     v189 = 0u;
-    v164 = [(FCPrivateDataController *)self observers];
-    v165 = [v164 copy];
+    observers4 = [(FCPrivateDataController *)self observers];
+    v165 = [observers4 copy];
 
     v166 = [v165 countByEnumeratingWithState:&v188 objects:v216 count:16];
     if (v166)
@@ -1308,7 +1308,7 @@ void __44__FCReadingHistory_loadLocalCachesFromStore__block_invoke_2(void *a1, v
   v171 = *MEMORY[0x1E69E9840];
 }
 
-- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)a3
+- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)d
 {
   [MEMORY[0x1E696AF00] isMainThread];
   if (self)
@@ -1324,41 +1324,41 @@ void __44__FCReadingHistory_loadLocalCachesFromStore__block_invoke_2(void *a1, v
   return [(NSMutableDictionary *)itemsByIdentifier allKeys];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = FCReadingHistory;
-  [(FCPrivateDataController *)&v3 addObserver:a3];
+  [(FCPrivateDataController *)&v3 addObserver:observer];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = FCReadingHistory;
-  [(FCPrivateDataController *)&v3 removeObserver:a3];
+  [(FCPrivateDataController *)&v3 removeObserver:observer];
 }
 
-- (id)recordsForRestoringZoneName:(id)a3
+- (id)recordsForRestoringZoneName:(id)name
 {
-  v3 = [(FCReadingHistory *)self readingHistoryItems];
-  v4 = _FCPruneHistoryForUpload(v3, &__block_literal_global_99, &__block_literal_global_11_1);
+  readingHistoryItems = [(FCReadingHistory *)self readingHistoryItems];
+  v4 = _FCPruneHistoryForUpload(readingHistoryItems, &__block_literal_global_99, &__block_literal_global_11_1);
   v5 = [v4 fc_arrayByTransformingWithBlock:&__block_literal_global_46_0];
 
   return v5;
 }
 
-- (id)historyItemsForArticleIDs:(id)a3
+- (id)historyItemsForArticleIDs:(id)ds
 {
-  v3 = [(FCReadingHistory *)self historyItemsByArticleIDForArticleIDs:a3];
-  v4 = [v3 allValues];
+  v3 = [(FCReadingHistory *)self historyItemsByArticleIDForArticleIDs:ds];
+  allValues = [v3 allValues];
 
-  return v4;
+  return allValues;
 }
 
-- (id)historyItemsByArticleIDForArticleIDs:(id)a3
+- (id)historyItemsByArticleIDForArticleIDs:(id)ds
 {
-  v4 = a3;
-  if (v4)
+  dsCopy = ds;
+  if (dsCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -1382,7 +1382,7 @@ void __44__FCReadingHistory_loadLocalCachesFromStore__block_invoke_2(void *a1, v
     v9[2] = __57__FCReadingHistory_historyItemsByArticleIDForArticleIDs___block_invoke_50;
     v9[3] = &unk_1E7C37408;
     v9[4] = self;
-    v10 = v4;
+    v10 = dsCopy;
     v11 = &v12;
     [(FCMTWriterLock *)v6 performReadSync:v9];
 
@@ -1456,20 +1456,20 @@ id __57__FCReadingHistory_historyItemsByArticleIDForArticleIDs___block_invoke_2(
   return v4;
 }
 
-- (void)_cacheHistoryItemByArticleID:(uint64_t)a1
+- (void)_cacheHistoryItemByArticleID:(uint64_t)d
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && v3)
+  if (d && v3)
   {
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
-      v5 = *(a1 + 112);
+      v5 = *(d + 112);
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __49__FCReadingHistory__cacheHistoryItemByArticleID___block_invoke_2;
       v10[3] = &unk_1E7C36C58;
-      v10[4] = a1;
+      v10[4] = d;
       v11 = v4;
       [v5 performWriteSync:v10];
       v6 = v11;
@@ -1482,24 +1482,24 @@ id __57__FCReadingHistory_historyItemsByArticleIDForArticleIDs___block_invoke_2(
       v7[2] = __49__FCReadingHistory__cacheHistoryItemByArticleID___block_invoke_3;
       v7[3] = &unk_1E7C36C58;
       v8 = v4;
-      v9 = a1;
+      dCopy = d;
       dispatch_async(MEMORY[0x1E69E96A0], v7);
       v6 = v8;
     }
   }
 }
 
-- (id)_sortedReadingHistoryItemsWithMaxCount:(void *)a1
+- (id)_sortedReadingHistoryItemsWithMaxCount:(void *)count
 {
-  if (a1)
+  if (count)
   {
-    v4 = [a1 context];
-    v5 = [v4 bundleSubscriptionManager];
-    v6 = [v5 bundleSubscription];
-    v7 = objc_getAssociatedObject(v6, (v6 + 1));
-    v8 = [v7 unsignedIntegerValue];
-    v9 = v8;
-    v10 = objc_getAssociatedObject(v6, ~v8);
+    context = [count context];
+    bundleSubscriptionManager = [context bundleSubscriptionManager];
+    bundleSubscription = [bundleSubscriptionManager bundleSubscription];
+    v7 = objc_getAssociatedObject(bundleSubscription, (bundleSubscription + 1));
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
+    v9 = unsignedIntegerValue;
+    v10 = objc_getAssociatedObject(bundleSubscription, ~unsignedIntegerValue);
     v11 = [v10 unsignedIntegerValue] ^ v9;
 
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -1508,13 +1508,13 @@ id __57__FCReadingHistory_historyItemsByArticleIDForArticleIDs___block_invoke_2(
     aBlock[3] = &__block_descriptor_33_e40___NSDate_16__0___FCReadingHistoryItem__8l;
     v24 = v11 & 1;
     v12 = _Block_copy(aBlock);
-    v13 = [a1 readingHistoryItems];
+    readingHistoryItems = [count readingHistoryItems];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __59__FCReadingHistory__sortedReadingHistoryItemsWithMaxCount___block_invoke_2;
     v21[3] = &__block_descriptor_33_e32_B16__0___FCReadingHistoryItem__8l;
     v22 = v11 & 1;
-    v14 = [v13 fc_arrayOfObjectsPassingTest:v21];
+    v14 = [readingHistoryItems fc_arrayOfObjectsPassingTest:v21];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __59__FCReadingHistory__sortedReadingHistoryItemsWithMaxCount___block_invoke_3;
@@ -1533,7 +1533,7 @@ id __57__FCReadingHistory_historyItemsByArticleIDForArticleIDs___block_invoke_2(
   return v17;
 }
 
-- (id)mostRecentlyCompletedListeningArticlesWithMaxCount:(unint64_t)a3
+- (id)mostRecentlyCompletedListeningArticlesWithMaxCount:(unint64_t)count
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"lastListenedAt" ascending:0];
@@ -1541,14 +1541,14 @@ id __57__FCReadingHistory_historyItemsByArticleIDForArticleIDs___block_invoke_2(
   {
     v6 = &__block_literal_global_58;
     v7 = v5;
-    v8 = [(FCReadingHistory *)self readingHistoryItems];
-    v9 = [v8 fc_arrayOfObjectsPassingTest:&__block_literal_global_58];
+    readingHistoryItems = [(FCReadingHistory *)self readingHistoryItems];
+    v9 = [readingHistoryItems fc_arrayOfObjectsPassingTest:&__block_literal_global_58];
 
     v15[0] = v7;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
 
     v11 = [v9 sortedArrayUsingDescriptors:v10];
-    v12 = [v11 fc_subarrayWithMaxCount:a3];
+    v12 = [v11 fc_subarrayWithMaxCount:count];
   }
 
   else
@@ -1561,16 +1561,16 @@ id __57__FCReadingHistory_historyItemsByArticleIDForArticleIDs___block_invoke_2(
   return v12;
 }
 
-- (id)sortedVisitedArticleIDsSatisfying:(id)a3
+- (id)sortedVisitedArticleIDsSatisfying:(id)satisfying
 {
-  v4 = a3;
+  satisfyingCopy = satisfying;
   v5 = [(FCReadingHistory *)self _sortedReadingHistoryItemsWithMaxCount:?];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__FCReadingHistory_sortedVisitedArticleIDsSatisfying___block_invoke;
   v9[3] = &unk_1E7C37430;
-  v10 = v4;
-  v6 = v4;
+  v10 = satisfyingCopy;
+  v6 = satisfyingCopy;
   v7 = [v5 fc_arrayByTransformingWithBlock:v9];
 
   return v7;
@@ -1594,8 +1594,8 @@ id __54__FCReadingHistory_sortedVisitedArticleIDsSatisfying___block_invoke(uint6
 
 - (NSArray)sortedListenedArticleIDs
 {
-  v2 = [(FCReadingHistory *)self readingHistoryItems];
-  v3 = [v2 fc_arrayOfObjectsPassingTest:&__block_literal_global_63];
+  readingHistoryItems = [(FCReadingHistory *)self readingHistoryItems];
+  v3 = [readingHistoryItems fc_arrayOfObjectsPassingTest:&__block_literal_global_63];
   v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_66_0];
   v5 = [v4 fc_arrayByTransformingWithBlock:&__block_literal_global_68_0];
 
@@ -1967,23 +1967,23 @@ void __50__FCReadingHistory_readingHistoryItemsByArticleID__block_invoke(uint64_
   *(v4 + 40) = v3;
 }
 
-- (id)consumedArticleIDsForTagID:(id)a3 fromTime:(id)a4
+- (id)consumedArticleIDsForTagID:(id)d fromTime:(id)time
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [(FCReadingHistory *)self readingHistoryItems];
+  dCopy = d;
+  timeCopy = time;
+  array = [MEMORY[0x1E695DF70] array];
+  readingHistoryItems = [(FCReadingHistory *)self readingHistoryItems];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __56__FCReadingHistory_consumedArticleIDsForTagID_fromTime___block_invoke;
   v16[3] = &unk_1E7C37500;
-  v17 = v6;
-  v18 = v7;
-  v10 = v8;
+  v17 = dCopy;
+  v18 = timeCopy;
+  v10 = array;
   v19 = v10;
-  v11 = v7;
-  v12 = v6;
-  [v9 enumerateObjectsUsingBlock:v16];
+  v11 = timeCopy;
+  v12 = dCopy;
+  [readingHistoryItems enumerateObjectsUsingBlock:v16];
   v13 = v19;
   v14 = v10;
 
@@ -2024,20 +2024,20 @@ void __56__FCReadingHistory_consumedArticleIDsForTagID_fromTime___block_invoke(v
 LABEL_8:
 }
 
-- (id)lastVisitedDateForArticleID:(id)a3
+- (id)lastVisitedDateForArticleID:(id)d
 {
-  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:a3];
-  v4 = [v3 lastVisitedAt];
+  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:d];
+  lastVisitedAt = [v3 lastVisitedAt];
 
-  return v4;
+  return lastVisitedAt;
 }
 
-- (id)_readingHistoryItemForArticleID:(uint64_t)a1
+- (id)_readingHistoryItemForArticleID:(uint64_t)d
 {
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (d && v3)
   {
     v11 = 0;
     v12 = &v11;
@@ -2045,13 +2045,13 @@ LABEL_8:
     v14 = __Block_byref_object_copy__1;
     v15 = __Block_byref_object_dispose__1;
     v16 = 0;
-    v6 = *(a1 + 112);
+    v6 = *(d + 112);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __52__FCReadingHistory__readingHistoryItemForArticleID___block_invoke_2;
     v8[3] = &unk_1E7C37138;
     v10 = &v11;
-    v8[4] = a1;
+    v8[4] = d;
     v9 = v4;
     [v6 performReadSync:v8];
 
@@ -2062,52 +2062,52 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)hasArticleBeenRead:(id)a3
+- (BOOL)hasArticleBeenRead:(id)read
 {
-  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:a3];
-  v4 = [v3 hasArticleBeenRead];
+  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:read];
+  hasArticleBeenRead = [v3 hasArticleBeenRead];
 
-  return v4;
+  return hasArticleBeenRead;
 }
 
-- (BOOL)hasArticleBeenReadMoreThanThreshold:(id)a3
+- (BOOL)hasArticleBeenReadMoreThanThreshold:(id)threshold
 {
-  v4 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:a3];
-  v5 = [v4 readCount];
-  v6 = [(FCPrivateDataController *)self context];
-  v7 = [v6 appConfigurationManager];
-  v8 = [v7 appConfiguration];
-  LOBYTE(v5) = v5 > [v8 articleReadCountThreshold];
+  v4 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:threshold];
+  readCount = [v4 readCount];
+  context = [(FCPrivateDataController *)self context];
+  appConfigurationManager = [context appConfigurationManager];
+  appConfiguration = [appConfigurationManager appConfiguration];
+  LOBYTE(readCount) = readCount > [appConfiguration articleReadCountThreshold];
+
+  return readCount;
+}
+
+- (BOOL)hasArticleBeenVisited:(id)visited
+{
+  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:visited];
+  lastVisitedAt = [v3 lastVisitedAt];
+  v5 = lastVisitedAt != 0;
 
   return v5;
 }
 
-- (BOOL)hasArticleBeenVisited:(id)a3
+- (BOOL)hasArticleBeenSeen:(id)seen
 {
-  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:a3];
-  v4 = [v3 lastVisitedAt];
-  v5 = v4 != 0;
+  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:seen];
+  hasArticleBeenSeen = [v3 hasArticleBeenSeen];
 
-  return v5;
+  return hasArticleBeenSeen;
 }
 
-- (BOOL)hasArticleBeenSeen:(id)a3
-{
-  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:a3];
-  v4 = [v3 hasArticleBeenSeen];
-
-  return v4;
-}
-
-- (BOOL)markArticleAsSeenWithHeadline:(id)a3
+- (BOOL)markArticleAsSeenWithHeadline:(id)headline
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (headline)
   {
-    v11 = a3;
+    headlineCopy = headline;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v11 count:1];
+    headlineCopy2 = headline;
+    v6 = [v4 arrayWithObjects:&headlineCopy count:1];
 
     v7 = [(FCReadingHistory *)self markArticlesAsSeenWithHeadlines:v6 rememberForever:0];
     v8 = [v7 count] != 0;
@@ -2122,21 +2122,21 @@ LABEL_8:
   return v8;
 }
 
-- (id)markArticlesAsSeenWithHeadlines:(int)a3 rememberForever:
+- (id)markArticlesAsSeenWithHeadlines:(int)headlines rememberForever:
 {
-  if (a1)
+  if (self)
   {
     v5 = MEMORY[0x1E695DF00];
     v6 = a2;
-    v7 = [v5 date];
+    date = [v5 date];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __68__FCReadingHistory_markArticlesAsSeenWithHeadlines_rememberForever___block_invoke;
     v16[3] = &unk_1E7C37528;
-    v17 = v7;
-    v8 = v7;
+    v17 = date;
+    v8 = date;
     v9 = [v6 fc_arrayByTransformingWithBlock:v16];
-    v10 = [(FCReadingHistory *)a1 _markHistoryItemsAsSeenWithItemExposures:v9 rememberForever:a3];
+    v10 = [(FCReadingHistory *)self _markHistoryItemsAsSeenWithItemExposures:v9 rememberForever:headlines];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __68__FCReadingHistory_markArticlesAsSeenWithHeadlines_rememberForever___block_invoke_2;
@@ -2154,18 +2154,18 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)markArticleAsSeenWithHeadline:(id)a3 rememberForever:(BOOL)a4
+- (BOOL)markArticleAsSeenWithHeadline:(id)headline rememberForever:(BOOL)forever
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (headline)
   {
-    v4 = a4;
-    v13 = a3;
+    foreverCopy = forever;
+    headlineCopy = headline;
     v6 = MEMORY[0x1E695DEC8];
-    v7 = a3;
-    v8 = [v6 arrayWithObjects:&v13 count:1];
+    headlineCopy2 = headline;
+    v8 = [v6 arrayWithObjects:&headlineCopy count:1];
 
-    v9 = [(FCReadingHistory *)self markArticlesAsSeenWithHeadlines:v8 rememberForever:v4];
+    v9 = [(FCReadingHistory *)self markArticlesAsSeenWithHeadlines:v8 rememberForever:foreverCopy];
     v10 = [v9 count] != 0;
   }
 
@@ -2178,36 +2178,36 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)markArticleAsSeenWithArticleID:(id)a3 articleVersion:(int64_t)a4 seenDate:(id)a5
+- (BOOL)markArticleAsSeenWithArticleID:(id)d articleVersion:(int64_t)version seenDate:(id)date
 {
   v5 = 0;
   v16[1] = *MEMORY[0x1E69E9840];
-  if (a3 && a5)
+  if (d && date)
   {
-    v9 = a5;
-    v10 = a3;
-    v11 = [[FCItemExposure alloc] initWithItemID:v10 exposedAt:v9 version:a4];
+    dateCopy = date;
+    dCopy = d;
+    v11 = [[FCItemExposure alloc] initWithItemID:dCopy exposedAt:dateCopy version:version];
 
     v16[0] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
     v13 = [(FCReadingHistory *)self _markHistoryItemsAsSeenWithItemExposures:v12 rememberForever:0];
 
-    v5 = [v13 containsObject:v10];
+    v5 = [v13 containsObject:dCopy];
   }
 
   v14 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (id)_markHistoryItemsAsSeenWithItemExposures:(int)a3 rememberForever:
+- (id)_markHistoryItemsAsSeenWithItemExposures:(int)exposures rememberForever:
 {
   v47 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  if (a1)
+  if (self)
   {
     [MEMORY[0x1E696AF00] isMainThread];
-    v33 = [MEMORY[0x1E695DF70] array];
-    v34 = [MEMORY[0x1E695DF90] dictionary];
+    array = [MEMORY[0x1E695DF70] array];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
@@ -2229,30 +2229,30 @@ LABEL_8:
           }
 
           v9 = *(*(&v41 + 1) + 8 * i);
-          v10 = [v9 itemID];
-          v11 = [(FCReadingHistory *)a1 _readingHistoryItemForArticleID:v10];
+          itemID = [v9 itemID];
+          v11 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:itemID];
           v12 = [v11 mutableCopyWithZone:0];
 
           if (!v12)
           {
             v12 = objc_alloc_init(MEMORY[0x1E69B6F78]);
-            v13 = [v9 itemID];
-            [v12 setArticleID:v13];
+            itemID2 = [v9 itemID];
+            [v12 setArticleID:itemID2];
           }
 
           v40 = 0;
-          v14 = [v9 itemID];
-          v15 = [v9 maxExposedVersion];
-          v16 = [v9 maxExposedVersionFirstExposedAt];
-          v17 = [v9 firstExposedAt];
-          [(FCReadingHistory *)a1 _markArticleAsSeenWithArticleID:v14 rememberForever:a3 articleVersion:v15 seenDate:v16 firstSeenDate:v17 historyItem:v12 modifiedHistoryFeaturesOut:&v40];
+          itemID3 = [v9 itemID];
+          maxExposedVersion = [v9 maxExposedVersion];
+          maxExposedVersionFirstExposedAt = [v9 maxExposedVersionFirstExposedAt];
+          firstExposedAt = [v9 firstExposedAt];
+          [(FCReadingHistory *)self _markArticleAsSeenWithArticleID:itemID3 rememberForever:exposures articleVersion:maxExposedVersion seenDate:maxExposedVersionFirstExposedAt firstSeenDate:firstExposedAt historyItem:v12 modifiedHistoryFeaturesOut:&v40];
 
           if (v40)
           {
-            [v33 addObject:v12];
+            [array addObject:v12];
             v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v40];
-            v19 = [v9 itemID];
-            [v34 setObject:v18 forKey:v19];
+            itemID4 = [v9 itemID];
+            [dictionary setObject:v18 forKey:itemID4];
           }
         }
 
@@ -2262,20 +2262,20 @@ LABEL_8:
       while (v6);
     }
 
-    [FCReadingHistory _addHistoryItems:a1 addToStore:v33];
-    v20 = [a1 articleExposureRegistry];
-    [v20 registerExposures:obj];
+    [FCReadingHistory _addHistoryItems:self addToStore:array];
+    articleExposureRegistry = [self articleExposureRegistry];
+    [articleExposureRegistry registerExposures:obj];
 
-    v21 = [[FCModifyHistoryCommand alloc] initWithHistoryItems:v33 merge:0];
-    [a1 addCommandToCommandQueue:v21];
-    if ([v34 count])
+    v21 = [[FCModifyHistoryCommand alloc] initWithHistoryItems:array merge:0];
+    [self addCommandToCommandQueue:v21];
+    if ([dictionary count])
     {
       v38 = 0u;
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v22 = [a1 observers];
-      v23 = [v22 copy];
+      observers = [self observers];
+      v23 = [observers copy];
 
       v24 = [v23 countByEnumeratingWithState:&v36 objects:v45 count:16];
       if (v24)
@@ -2294,7 +2294,7 @@ LABEL_8:
             v28 = *(*(&v36 + 1) + 8 * j);
             if (objc_opt_respondsToSelector())
             {
-              [v28 readingHistory:a1 didChangeFeaturesForArticles:v34];
+              [v28 readingHistory:self didChangeFeaturesForArticles:dictionary];
             }
           }
 
@@ -2305,14 +2305,14 @@ LABEL_8:
       }
     }
 
-    a1 = [v33 fc_setByTransformingWithBlock:&__block_literal_global_89];
+    self = [array fc_setByTransformingWithBlock:&__block_literal_global_89];
 
     v4 = v31;
   }
 
   v29 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
 FCItemExposure *__68__FCReadingHistory_markArticlesAsSeenWithHeadlines_rememberForever___block_invoke(uint64_t a1, void *a2)
@@ -2342,13 +2342,13 @@ uint64_t __68__FCReadingHistory_markArticlesAsSeenWithHeadlines_rememberForever_
   return v4;
 }
 
-- (void)_markArticleAsSeenWithArticleID:(int)a3 rememberForever:(uint64_t)a4 articleVersion:(void *)a5 seenDate:(void *)a6 firstSeenDate:(void *)a7 historyItem:(uint64_t *)a8 modifiedHistoryFeaturesOut:
+- (void)_markArticleAsSeenWithArticleID:(int)d rememberForever:(uint64_t)forever articleVersion:(void *)version seenDate:(void *)date firstSeenDate:(void *)seenDate historyItem:(uint64_t *)item modifiedHistoryFeaturesOut:
 {
   v41 = *MEMORY[0x1E69E9840];
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!a1)
+  versionCopy = version;
+  dateCopy = date;
+  seenDateCopy = seenDate;
+  if (!self)
   {
     goto LABEL_25;
   }
@@ -2369,13 +2369,13 @@ uint64_t __68__FCReadingHistory_markArticlesAsSeenWithHeadlines_rememberForever_
     v40 = v30;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v17)
+    if (seenDateCopy)
     {
       goto LABEL_7;
     }
   }
 
-  else if (v17)
+  else if (seenDateCopy)
   {
     goto LABEL_7;
   }
@@ -2395,8 +2395,8 @@ uint64_t __68__FCReadingHistory_markArticlesAsSeenWithHeadlines_rememberForever_
   }
 
 LABEL_7:
-  v20 = [v17 articleID];
-  v21 = [v19 isEqualToString:v20];
+  articleID = [seenDateCopy articleID];
+  v21 = [v19 isEqualToString:articleID];
 
   if ((v21 & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -2411,13 +2411,13 @@ LABEL_7:
     v40 = v29;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (a8)
+    if (item)
     {
       goto LABEL_12;
     }
   }
 
-  else if (a8)
+  else if (item)
   {
     goto LABEL_12;
   }
@@ -2437,14 +2437,14 @@ LABEL_7:
   }
 
 LABEL_12:
-  v22 = [v17 hasArticleBeenSeen];
-  if (!v22)
+  hasArticleBeenSeen = [seenDateCopy hasArticleBeenSeen];
+  if (!hasArticleBeenSeen)
   {
-    [v17 setHasArticleBeenSeen:1];
+    [seenDateCopy setHasArticleBeenSeen:1];
     v27 = 9;
 LABEL_17:
-    [v17 setFirstSeenAt:v16];
-    if (a3)
+    [seenDateCopy setFirstSeenAt:dateCopy];
+    if (d)
     {
       goto LABEL_18;
     }
@@ -2452,60 +2452,60 @@ LABEL_17:
     goto LABEL_21;
   }
 
-  v23 = [v17 firstSeenAt];
-  if (!v23 || (v24 = v23, [v17 firstSeenAt], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v16, "fc_isEarlierThan:", v25), v25, v24, (v26 & 1) != 0))
+  firstSeenAt = [seenDateCopy firstSeenAt];
+  if (!firstSeenAt || (v24 = firstSeenAt, [seenDateCopy firstSeenAt], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(dateCopy, "fc_isEarlierThan:", v25), v25, v24, (v26 & 1) != 0))
   {
     v27 = 8;
     goto LABEL_17;
   }
 
   v27 = 0;
-  if (a3)
+  if (d)
   {
 LABEL_18:
-    if (([v17 isPruningDisabled] & 1) == 0)
+    if (([seenDateCopy isPruningDisabled] & 1) == 0)
     {
-      [v17 setPruningDisabled:1];
+      [seenDateCopy setPruningDisabled:1];
       v27 |= 0x8000uLL;
     }
   }
 
 LABEL_21:
-  if (!v22 || [v17 maxVersionSeen] < a4)
+  if (!hasArticleBeenSeen || [seenDateCopy maxVersionSeen] < forever)
   {
-    [v17 setMaxVersionSeen:a4];
-    [v17 setFirstSeenAtOfMaxVersionSeen:v15];
+    [seenDateCopy setMaxVersionSeen:forever];
+    [seenDateCopy setFirstSeenAtOfMaxVersionSeen:versionCopy];
     v27 |= 0x90uLL;
   }
 
-  *a8 = v27;
+  *item = v27;
 LABEL_25:
 
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)hasArticleCompletedListening:(id)a3
+- (BOOL)hasArticleCompletedListening:(id)listening
 {
-  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:a3];
-  v4 = [v3 hasArticleCompletedListening];
+  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:listening];
+  hasArticleCompletedListening = [v3 hasArticleCompletedListening];
 
-  return v4;
+  return hasArticleCompletedListening;
 }
 
-- (BOOL)markArticle:(id)a3 withCompletedListening:(BOOL)a4
+- (BOOL)markArticle:(id)article withCompletedListening:(BOOL)listening
 {
-  v4 = a4;
-  v6 = a3;
+  listeningCopy = listening;
+  articleCopy = article;
   [MEMORY[0x1E696AF00] isMainThread];
-  v7 = [(FCReadingHistory *)self hasArticleCompletedListening:v6]^ v4;
+  v7 = [(FCReadingHistory *)self hasArticleCompletedListening:articleCopy]^ listeningCopy;
   if (v7 == 1)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __55__FCReadingHistory_markArticle_withCompletedListening___block_invoke;
     v9[3] = &__block_descriptor_33_e43_v24__0___FCMutableReadingHistoryItem__8_Q16l;
-    v10 = v4;
-    [(FCReadingHistory *)self _modifyHistoryForArticleID:v6 withBlock:v9];
+    v10 = listeningCopy;
+    [(FCReadingHistory *)self _modifyHistoryForArticleID:articleCopy withBlock:v9];
   }
 
   return v7;
@@ -2521,13 +2521,13 @@ void __55__FCReadingHistory_markArticle_withCompletedListening___block_invoke(ui
   }
 }
 
-- (void)_modifyHistoryForArticleID:(void *)a3 withBlock:
+- (void)_modifyHistoryForArticleID:(void *)d withBlock:
 {
   v44 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (!a1)
+  dCopy = d;
+  v7 = dCopy;
+  if (!self)
   {
     goto LABEL_24;
   }
@@ -2556,7 +2556,7 @@ void __55__FCReadingHistory_markArticle_withCompletedListening___block_invoke(ui
     goto LABEL_21;
   }
 
-  if (!v6)
+  if (!dCopy)
   {
 LABEL_21:
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -2579,7 +2579,7 @@ LABEL_23:
   }
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v8 = [(FCReadingHistory *)a1 _readingHistoryItemForArticleID:v5];
+  v8 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:v5];
   v9 = [v8 mutableCopyWithZone:0];
 
   if (!v9)
@@ -2592,14 +2592,14 @@ LABEL_23:
   (v7)[2](v7, v9, buf);
   v36 = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v36 count:1];
-  [FCReadingHistory _addHistoryItems:a1 addToStore:v10];
+  [FCReadingHistory _addHistoryItems:self addToStore:v10];
 
   v11 = [FCModifyHistoryCommand alloc];
   v35 = v9;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1];
   v13 = [(FCModifyHistoryCommand *)v11 initWithHistoryItems:v12 merge:0];
 
-  [a1 addCommandToCommandQueue:v13];
+  [self addCommandToCommandQueue:v13];
   if (*buf)
   {
     v26 = v7;
@@ -2613,8 +2613,8 @@ LABEL_23:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v16 = [a1 observers];
-    v17 = [v16 copy];
+    observers = [self observers];
+    v17 = [observers copy];
 
     v18 = [v17 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v18)
@@ -2633,7 +2633,7 @@ LABEL_23:
           v22 = *(*(&v28 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            [v22 readingHistory:a1 didChangeFeaturesForArticles:v15];
+            [v22 readingHistory:self didChangeFeaturesForArticles:v15];
           }
         }
 
@@ -2651,28 +2651,28 @@ LABEL_24:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)hasArticleCompletedReading:(id)a3
+- (BOOL)hasArticleCompletedReading:(id)reading
 {
-  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:a3];
-  v4 = [v3 hasArticleCompletedReading];
+  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:reading];
+  hasArticleCompletedReading = [v3 hasArticleCompletedReading];
 
-  return v4;
+  return hasArticleCompletedReading;
 }
 
-- (BOOL)markArticle:(id)a3 withCompletedReading:(BOOL)a4
+- (BOOL)markArticle:(id)article withCompletedReading:(BOOL)reading
 {
-  v4 = a4;
-  v6 = a3;
+  readingCopy = reading;
+  articleCopy = article;
   [MEMORY[0x1E696AF00] isMainThread];
-  v7 = [(FCReadingHistory *)self hasArticleCompletedReading:v6]^ v4;
+  v7 = [(FCReadingHistory *)self hasArticleCompletedReading:articleCopy]^ readingCopy;
   if (v7 == 1)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __53__FCReadingHistory_markArticle_withCompletedReading___block_invoke;
     v9[3] = &__block_descriptor_33_e43_v24__0___FCMutableReadingHistoryItem__8_Q16l;
-    v10 = v4;
-    [(FCReadingHistory *)self _modifyHistoryForArticleID:v6 withBlock:v9];
+    v10 = readingCopy;
+    [(FCReadingHistory *)self _modifyHistoryForArticleID:articleCopy withBlock:v9];
   }
 
   return v7;
@@ -2688,28 +2688,28 @@ void __53__FCReadingHistory_markArticle_withCompletedReading___block_invoke(uint
   }
 }
 
-- (BOOL)hasArticleBeenRemovedFromAudio:(id)a3
+- (BOOL)hasArticleBeenRemovedFromAudio:(id)audio
 {
-  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:a3];
-  v4 = [v3 hasArticleBeenRemovedFromAudio];
+  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:audio];
+  hasArticleBeenRemovedFromAudio = [v3 hasArticleBeenRemovedFromAudio];
 
-  return v4;
+  return hasArticleBeenRemovedFromAudio;
 }
 
-- (BOOL)markArticle:(id)a3 withRemovedFromAudio:(BOOL)a4
+- (BOOL)markArticle:(id)article withRemovedFromAudio:(BOOL)audio
 {
-  v4 = a4;
-  v6 = a3;
+  audioCopy = audio;
+  articleCopy = article;
   [MEMORY[0x1E696AF00] isMainThread];
-  v7 = [(FCReadingHistory *)self hasArticleBeenRemovedFromAudio:v6]^ v4;
+  v7 = [(FCReadingHistory *)self hasArticleBeenRemovedFromAudio:articleCopy]^ audioCopy;
   if (v7 == 1)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __53__FCReadingHistory_markArticle_withRemovedFromAudio___block_invoke;
     v9[3] = &__block_descriptor_33_e43_v24__0___FCMutableReadingHistoryItem__8_Q16l;
-    v10 = v4;
-    [(FCReadingHistory *)self _modifyHistoryForArticleID:v6 withBlock:v9];
+    v10 = audioCopy;
+    [(FCReadingHistory *)self _modifyHistoryForArticleID:articleCopy withBlock:v9];
   }
 
   return v7;
@@ -2725,30 +2725,30 @@ void __53__FCReadingHistory_markArticle_withRemovedFromAudio___block_invoke(uint
   }
 }
 
-- (unint64_t)likingStatusForArticleID:(id)a3
+- (unint64_t)likingStatusForArticleID:(id)d
 {
-  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:a3];
-  v4 = [v3 articleLikingStatus];
+  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:d];
+  articleLikingStatus = [v3 articleLikingStatus];
 
-  return v4;
+  return articleLikingStatus;
 }
 
-- (BOOL)markArticle:(id)a3 withLikingStatus:(unint64_t)a4
+- (BOOL)markArticle:(id)article withLikingStatus:(unint64_t)status
 {
-  v6 = a3;
+  articleCopy = article;
   [MEMORY[0x1E696AF00] isMainThread];
-  v7 = [(FCReadingHistory *)self likingStatusForArticleID:v6];
-  if (v7 != a4)
+  v7 = [(FCReadingHistory *)self likingStatusForArticleID:articleCopy];
+  if (v7 != status)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __49__FCReadingHistory_markArticle_withLikingStatus___block_invoke;
     v9[3] = &__block_descriptor_40_e43_v24__0___FCMutableReadingHistoryItem__8_Q16l;
-    v9[4] = a4;
-    [(FCReadingHistory *)self _modifyHistoryForArticleID:v6 withBlock:v9];
+    v9[4] = status;
+    [(FCReadingHistory *)self _modifyHistoryForArticleID:articleCopy withBlock:v9];
   }
 
-  return v7 != a4;
+  return v7 != status;
 }
 
 void __49__FCReadingHistory_markArticle_withLikingStatus___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2761,9 +2761,9 @@ void __49__FCReadingHistory_markArticle_withLikingStatus___block_invoke(uint64_t
   }
 }
 
-- (void)_markArticle:(uint64_t)a3 withLikingStatus:
+- (void)_markArticle:(uint64_t)article withLikingStatus:
 {
-  if (a1)
+  if (self)
   {
     v5 = MEMORY[0x1E696AF00];
     v6 = a2;
@@ -2772,8 +2772,8 @@ void __49__FCReadingHistory_markArticle_withLikingStatus___block_invoke(uint64_t
     v7[1] = 3221225472;
     v7[2] = __50__FCReadingHistory__markArticle_withLikingStatus___block_invoke;
     v7[3] = &__block_descriptor_40_e43_v24__0___FCMutableReadingHistoryItem__8_Q16l;
-    v7[4] = a3;
-    [(FCReadingHistory *)a1 _modifyHistoryForArticleID:v6 withBlock:v7];
+    v7[4] = article;
+    [(FCReadingHistory *)self _modifyHistoryForArticleID:v6 withBlock:v7];
   }
 }
 
@@ -2784,12 +2784,12 @@ uint64_t __50__FCReadingHistory__markArticle_withLikingStatus___block_invoke(uin
   return result;
 }
 
-- (BOOL)toggleLikeForArticleWithID:(id)a3
+- (BOOL)toggleLikeForArticleWithID:(id)d
 {
-  v4 = a3;
-  v5 = [(FCPrivateDataController *)self context];
-  v6 = [v5 appConfigurationManager];
-  v7 = [v6 appConfiguration];
+  dCopy = d;
+  context = [(FCPrivateDataController *)self context];
+  appConfigurationManager = [context appConfigurationManager];
+  appConfiguration = [appConfigurationManager appConfiguration];
   v8 = objc_opt_respondsToSelector();
 
   if ((v8 & 1) == 0)
@@ -2797,24 +2797,24 @@ uint64_t __50__FCReadingHistory__markArticle_withLikingStatus___block_invoke(uin
     goto LABEL_9;
   }
 
-  v9 = [(FCPrivateDataController *)self context];
-  v10 = [v9 appConfigurationManager];
-  v11 = [v10 appConfiguration];
-  v12 = [v11 likeDislikeBehavior];
+  context2 = [(FCPrivateDataController *)self context];
+  appConfigurationManager2 = [context2 appConfigurationManager];
+  appConfiguration2 = [appConfigurationManager2 appConfiguration];
+  likeDislikeBehavior = [appConfiguration2 likeDislikeBehavior];
 
-  if (v12 == 2)
+  if (likeDislikeBehavior == 2)
   {
     goto LABEL_7;
   }
 
-  if (v12 != 1)
+  if (likeDislikeBehavior != 1)
   {
 LABEL_9:
     v14 = 0;
     goto LABEL_10;
   }
 
-  v13 = [(FCReadingHistory *)self likingStatusForArticleID:v4];
+  v13 = [(FCReadingHistory *)self likingStatusForArticleID:dCopy];
   if (v13 == 2)
   {
     goto LABEL_7;
@@ -2833,7 +2833,7 @@ LABEL_7:
     v15 = 1;
     v14 = 1;
 LABEL_8:
-    [(FCReadingHistory *)self _markArticle:v4 withLikingStatus:v15];
+    [(FCReadingHistory *)self _markArticle:dCopy withLikingStatus:v15];
   }
 
 LABEL_10:
@@ -2841,32 +2841,32 @@ LABEL_10:
   return v14;
 }
 
-- (BOOL)toggleDislikeForArticleWithID:(id)a3
+- (BOOL)toggleDislikeForArticleWithID:(id)d
 {
-  v4 = a3;
-  v5 = [(FCPrivateDataController *)self context];
-  v6 = [v5 appConfigurationManager];
-  v7 = [v6 appConfiguration];
+  dCopy = d;
+  context = [(FCPrivateDataController *)self context];
+  appConfigurationManager = [context appConfigurationManager];
+  appConfiguration = [appConfigurationManager appConfiguration];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(FCPrivateDataController *)self context];
-    v10 = [v9 appConfigurationManager];
-    v11 = [v10 appConfiguration];
-    v12 = [v11 likeDislikeBehavior];
+    context2 = [(FCPrivateDataController *)self context];
+    appConfigurationManager2 = [context2 appConfigurationManager];
+    appConfiguration2 = [appConfigurationManager2 appConfiguration];
+    likeDislikeBehavior = [appConfiguration2 likeDislikeBehavior];
 
-    if (v12 == 2)
+    if (likeDislikeBehavior == 2)
     {
       v14 = 1;
 LABEL_8:
-      [(FCReadingHistory *)self _markArticle:v4 withLikingStatus:v12];
+      [(FCReadingHistory *)self _markArticle:dCopy withLikingStatus:likeDislikeBehavior];
       goto LABEL_9;
     }
 
-    if (v12 == 1)
+    if (likeDislikeBehavior == 1)
     {
-      v13 = [(FCReadingHistory *)self likingStatusForArticleID:v4];
+      v13 = [(FCReadingHistory *)self likingStatusForArticleID:dCopy];
       if (v13 >= 2)
       {
         v14 = 0;
@@ -2875,13 +2875,13 @@ LABEL_8:
           goto LABEL_9;
         }
 
-        v12 = 0;
+        likeDislikeBehavior = 0;
       }
 
       else
       {
         v14 = 1;
-        v12 = 2;
+        likeDislikeBehavior = 2;
       }
 
       goto LABEL_8;
@@ -2894,44 +2894,44 @@ LABEL_9:
   return v14;
 }
 
-- (BOOL)hasArticleBeenMarkedAsOffensive:(id)a3
+- (BOOL)hasArticleBeenMarkedAsOffensive:(id)offensive
 {
-  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:a3];
-  v4 = [v3 hasArticleBeenMarkedOffensive];
+  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:offensive];
+  hasArticleBeenMarkedOffensive = [v3 hasArticleBeenMarkedOffensive];
 
-  return v4;
+  return hasArticleBeenMarkedOffensive;
 }
 
-- (BOOL)toggleArticleHasBeenMarkedAsOffensive:(id)a3
+- (BOOL)toggleArticleHasBeenMarkedAsOffensive:(id)offensive
 {
-  v4 = a3;
-  v5 = [(FCReadingHistory *)self hasArticleBeenMarkedAsOffensive:v4];
+  offensiveCopy = offensive;
+  v5 = [(FCReadingHistory *)self hasArticleBeenMarkedAsOffensive:offensiveCopy];
   v6 = v5;
-  [(FCReadingHistory *)self markArticle:v4 asOffensive:!v5];
+  [(FCReadingHistory *)self markArticle:offensiveCopy asOffensive:!v5];
 
   return !v6;
 }
 
-- (void)markArticle:(id)a3 asOffensive:(BOOL)a4
+- (void)markArticle:(id)article asOffensive:(BOOL)offensive
 {
-  v4 = a4;
+  offensiveCopy = offensive;
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  articleCopy = article;
   [MEMORY[0x1E696AF00] isMainThread];
-  if ([(FCReadingHistory *)self hasArticleBeenMarkedAsOffensive:v6]!= v4)
+  if ([(FCReadingHistory *)self hasArticleBeenMarkedAsOffensive:articleCopy]!= offensiveCopy)
   {
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __44__FCReadingHistory_markArticle_asOffensive___block_invoke;
     v20[3] = &__block_descriptor_33_e43_v24__0___FCMutableReadingHistoryItem__8_Q16l;
-    v21 = v4;
-    [(FCReadingHistory *)self _modifyHistoryForArticleID:v6 withBlock:v20];
+    v21 = offensiveCopy;
+    [(FCReadingHistory *)self _modifyHistoryForArticleID:articleCopy withBlock:v20];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(FCPrivateDataController *)self observers];
-    v8 = [v7 copy];
+    observers = [(FCPrivateDataController *)self observers];
+    v8 = [observers copy];
 
     v9 = [v8 countByEnumeratingWithState:&v16 objects:v23 count:16];
     if (v9)
@@ -2951,7 +2951,7 @@ LABEL_9:
           v13 = *(*(&v16 + 1) + 8 * v12);
           if (objc_opt_respondsToSelector())
           {
-            v22 = v6;
+            v22 = articleCopy;
             v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
             [v13 readingHistory:self didChangeOffensiveStateForArticlesWithIDs:v14];
           }
@@ -2980,29 +2980,29 @@ void __44__FCReadingHistory_markArticle_asOffensive___block_invoke(uint64_t a1, 
   }
 }
 
-- (BOOL)hasArticleBeenConsumed:(id)a3
+- (BOOL)hasArticleBeenConsumed:(id)consumed
 {
-  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:a3];
-  v4 = [v3 hasArticleBeenConsumed];
+  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:consumed];
+  hasArticleBeenConsumed = [v3 hasArticleBeenConsumed];
 
-  return v4;
+  return hasArticleBeenConsumed;
 }
 
-- (void)markArticle:(id)a3 asArticleConsumed:(BOOL)a4 sourceChannelTagID:(id)a5
+- (void)markArticle:(id)article asArticleConsumed:(BOOL)consumed sourceChannelTagID:(id)d
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  consumedCopy = consumed;
+  articleCopy = article;
+  dCopy = d;
   [MEMORY[0x1E696AF00] isMainThread];
-  if ([(FCReadingHistory *)self hasArticleBeenConsumed:v8]!= v6)
+  if ([(FCReadingHistory *)self hasArticleBeenConsumed:articleCopy]!= consumedCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __69__FCReadingHistory_markArticle_asArticleConsumed_sourceChannelTagID___block_invoke;
     v10[3] = &unk_1E7C375B8;
-    v12 = v6;
-    v11 = v9;
-    [(FCReadingHistory *)self _modifyHistoryForArticleID:v8 withBlock:v10];
+    v12 = consumedCopy;
+    v11 = dCopy;
+    [(FCReadingHistory *)self _modifyHistoryForArticleID:articleCopy withBlock:v10];
   }
 }
 
@@ -3023,11 +3023,11 @@ void __69__FCReadingHistory_markArticle_asArticleConsumed_sourceChannelTagID___b
   }
 }
 
-- (BOOL)markArticleAsReadWithArticleID:(id)a3 articleVersion:(int64_t)a4 readDate:(id)a5
+- (BOOL)markArticleAsReadWithArticleID:(id)d articleVersion:(int64_t)version readDate:(id)date
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  dateCopy = date;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -3036,25 +3036,25 @@ void __69__FCReadingHistory_markArticle_asArticleConsumed_sourceChannelTagID___b
   v17[1] = 3221225472;
   v17[2] = __75__FCReadingHistory_markArticleAsReadWithArticleID_articleVersion_readDate___block_invoke;
   v17[3] = &unk_1E7C375E0;
-  v10 = v9;
-  v22 = a4;
+  v10 = dateCopy;
+  versionCopy = version;
   v18 = v10;
-  v19 = self;
-  v11 = v8;
+  selfCopy = self;
+  v11 = dCopy;
   v20 = v11;
   v21 = &v23;
   [(FCReadingHistory *)self _modifyHistoryForArticleID:v11 withBlock:v17];
-  v12 = [[FCItemExposure alloc] initWithItemID:v11 exposedAt:v10 version:a4];
-  v13 = [(FCReadingHistory *)self articleExposureRegistry];
+  v12 = [[FCItemExposure alloc] initWithItemID:v11 exposedAt:v10 version:version];
+  articleExposureRegistry = [(FCReadingHistory *)self articleExposureRegistry];
   v27[0] = v12;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
-  [v13 registerExposures:v14];
+  [articleExposureRegistry registerExposures:v14];
 
-  LOBYTE(v13) = *(v24 + 24);
+  LOBYTE(articleExposureRegistry) = *(v24 + 24);
   _Block_object_dispose(&v23, 8);
 
   v15 = *MEMORY[0x1E69E9840];
-  return v13 & 1;
+  return articleExposureRegistry & 1;
 }
 
 void __75__FCReadingHistory_markArticleAsReadWithArticleID_articleVersion_readDate___block_invoke(uint64_t a1, void *a2, uint64_t *a3)
@@ -3085,32 +3085,32 @@ void __75__FCReadingHistory_markArticleAsReadWithArticleID_articleVersion_readDa
   *(*(*(a1 + 56) + 8) + 24) = v5 ^ 1;
 }
 
-- (void)markArticleAsReadWithHeadline:(id)a3 fromGroupType:(int64_t)a4 swipedToArticle:(BOOL)a5 onScreenChecker:(id)a6
+- (void)markArticleAsReadWithHeadline:(id)headline fromGroupType:(int64_t)type swipedToArticle:(BOOL)article onScreenChecker:(id)checker
 {
-  v31 = a5;
+  articleCopy = article;
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a6;
-  v10 = v8;
-  v32 = v9;
-  v11 = [v8 articleID];
-  if (v11)
+  headlineCopy = headline;
+  checkerCopy = checker;
+  v10 = headlineCopy;
+  v32 = checkerCopy;
+  articleID = [headlineCopy articleID];
+  if (articleID)
   {
-    v12 = [v8 articleID];
-    v13 = [v8 publisherArticleVersion];
-    v14 = [MEMORY[0x1E695DF00] date];
-    LODWORD(v13) = [(FCReadingHistory *)self markArticleAsReadWithArticleID:v12 articleVersion:v13 readDate:v14];
+    articleID2 = [headlineCopy articleID];
+    publisherArticleVersion = [headlineCopy publisherArticleVersion];
+    date = [MEMORY[0x1E695DF00] date];
+    LODWORD(publisherArticleVersion) = [(FCReadingHistory *)self markArticleAsReadWithArticleID:articleID2 articleVersion:publisherArticleVersion readDate:date];
 
-    if (v13)
+    if (publisherArticleVersion)
     {
-      v28 = v11;
+      v28 = articleID;
       v35 = 0u;
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v15 = [(FCPrivateDataController *)self observers];
-      v29 = v8;
-      v16 = [v15 copy];
+      observers = [(FCPrivateDataController *)self observers];
+      v29 = headlineCopy;
+      v16 = [observers copy];
 
       v17 = v16;
       v18 = v16;
@@ -3132,13 +3132,13 @@ void __75__FCReadingHistory_markArticleAsReadWithArticleID_articleVersion_readDa
             v23 = *(*(&v33 + 1) + 8 * i);
             if (objc_opt_respondsToSelector())
             {
-              [v23 readingHistory:self didAddHeadline:v10 fromGroupType:a4 swipedToArticle:v31 withOnScreenChecker:v32];
+              [v23 readingHistory:self didAddHeadline:v10 fromGroupType:type swipedToArticle:articleCopy withOnScreenChecker:v32];
             }
 
             if (objc_opt_respondsToSelector())
             {
-              v24 = [v10 articleID];
-              v37 = v24;
+              articleID3 = [v10 articleID];
+              v37 = articleID3;
               v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v37 count:1];
               [v23 readingHistory:self didAddArticlesWithIDs:v25];
 
@@ -3152,7 +3152,7 @@ void __75__FCReadingHistory_markArticleAsReadWithArticleID_articleVersion_readDa
         while (v20);
       }
 
-      v11 = v28;
+      articleID = v28;
     }
   }
 
@@ -3173,12 +3173,12 @@ void __75__FCReadingHistory_markArticleAsReadWithArticleID_articleVersion_readDa
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeArticleFromHistory:(id)a3
+- (void)removeArticleFromHistory:(id)history
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  historyCopy = history;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!historyCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "articleID"];
     *buf = 136315906;
@@ -3192,20 +3192,20 @@ void __75__FCReadingHistory_markArticleAsReadWithArticleID_articleVersion_readDa
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:v4];
+  v5 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:historyCopy];
 
   if (v5)
   {
-    [(FCReadingHistory *)self _modifyHistoryForArticleID:v4 withBlock:&__block_literal_global_116];
-    v6 = [(FCReadingHistory *)self articleExposureRegistry];
-    [v6 removeExposureForItemID:v4];
+    [(FCReadingHistory *)self _modifyHistoryForArticleID:historyCopy withBlock:&__block_literal_global_116];
+    articleExposureRegistry = [(FCReadingHistory *)self articleExposureRegistry];
+    [articleExposureRegistry removeExposureForItemID:historyCopy];
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [(FCPrivateDataController *)self observers];
-    v8 = [v7 copy];
+    observers = [(FCPrivateDataController *)self observers];
+    v8 = [observers copy];
 
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v9)
@@ -3222,12 +3222,12 @@ void __75__FCReadingHistory_markArticleAsReadWithArticleID_articleVersion_readDa
             objc_enumerationMutation(v8);
           }
 
-          if (v4)
+          if (historyCopy)
           {
             v13 = *(*(&v17 + 1) + 8 * v12);
             if (objc_opt_respondsToSelector())
             {
-              v21 = v4;
+              v21 = historyCopy;
               v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
               [v13 readingHistory:self didRemoveArticlesWithIDs:v14];
             }
@@ -3336,8 +3336,8 @@ void __45__FCReadingHistory_removeArticleFromHistory___block_invoke(uint64_t a1,
     itemsByIdentifier = 0;
   }
 
-  v4 = [(NSMutableDictionary *)itemsByIdentifier allKeys];
-  if ([v4 count])
+  allKeys = [(NSMutableDictionary *)itemsByIdentifier allKeys];
+  if ([allKeys count])
   {
     if (self)
     {
@@ -3349,11 +3349,11 @@ void __45__FCReadingHistory_removeArticleFromHistory___block_invoke(uint64_t a1,
       v5 = 0;
     }
 
-    v6 = [(NSMutableDictionary *)v5 allValues];
-    v7 = [v6 fc_arrayByTransformingWithBlock:&__block_literal_global_119];
+    allValues = [(NSMutableDictionary *)v5 allValues];
+    v7 = [allValues fc_arrayByTransformingWithBlock:&__block_literal_global_119];
 
-    v8 = [(FCPrivateDataController *)self localStore];
-    [v8 removeObjectsForKeys:v4];
+    localStore = [(FCPrivateDataController *)self localStore];
+    [localStore removeObjectsForKeys:allKeys];
 
     if (self)
     {
@@ -3371,7 +3371,7 @@ void __45__FCReadingHistory_removeArticleFromHistory___block_invoke(uint64_t a1,
     v45[3] = &unk_1E7C36EA0;
     v45[4] = self;
     [(FCMTWriterLock *)itemsLock performWriteSync:v45];
-    v31 = [[FCRemoveHistoryCommand alloc] initWithHistoryItemIDs:v4];
+    v31 = [[FCRemoveHistoryCommand alloc] initWithHistoryItemIDs:allKeys];
     [(FCPrivateDataController *)self addCommandToCommandQueue:?];
     v10 = objc_opt_new();
     v41 = 0u;
@@ -3402,14 +3402,14 @@ void __45__FCReadingHistory_removeArticleFromHistory___block_invoke(uint64_t a1,
       while (v13);
     }
 
-    v32 = v4;
+    v32 = allKeys;
 
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v16 = [(FCPrivateDataController *)self observers];
-    v17 = [v16 copy];
+    observers = [(FCPrivateDataController *)self observers];
+    v17 = [observers copy];
 
     v18 = [v17 countByEnumeratingWithState:&v37 objects:v47 count:16];
     if (v18)
@@ -3438,15 +3438,15 @@ void __45__FCReadingHistory_removeArticleFromHistory___block_invoke(uint64_t a1,
       while (v19);
     }
 
-    v4 = v32;
+    allKeys = v32;
   }
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v23 = [(FCPrivateDataController *)self observers];
-  v24 = [v23 copy];
+  observers2 = [(FCPrivateDataController *)self observers];
+  v24 = [observers2 copy];
 
   v25 = [v24 countByEnumeratingWithState:&v33 objects:v46 count:16];
   if (v25)
@@ -3506,47 +3506,47 @@ uint64_t __32__FCReadingHistory_clearHistory__block_invoke_2(uint64_t a1)
   return [v5 removeAllObjects];
 }
 
-- (double)listeningProgressFor:(id)a3
+- (double)listeningProgressFor:(id)for
 {
-  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:a3];
+  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:for];
   [v3 listeningProgress];
   v5 = v4;
 
   return v5;
 }
 
-- (id)listeningProgressSavedDateFor:(id)a3
+- (id)listeningProgressSavedDateFor:(id)for
 {
-  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:a3];
-  v4 = [v3 listeningProgressSavedAt];
+  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:for];
+  listeningProgressSavedAt = [v3 listeningProgressSavedAt];
 
-  return v4;
+  return listeningProgressSavedAt;
 }
 
-- (id)firstSeenDateFor:(id)a3
+- (id)firstSeenDateFor:(id)for
 {
-  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:a3];
-  v4 = [v3 firstSeenAt];
+  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:for];
+  firstSeenAt = [v3 firstSeenAt];
 
-  return v4;
+  return firstSeenAt;
 }
 
-- (id)readDateFor:(id)a3
+- (id)readDateFor:(id)for
 {
-  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:a3];
-  v4 = [v3 lastVisitedAt];
+  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:for];
+  lastVisitedAt = [v3 lastVisitedAt];
 
-  return v4;
+  return lastVisitedAt;
 }
 
-- (void)markArticle:(id)a3 withListeningProgress:(double)a4
+- (void)markArticle:(id)article withListeningProgress:(double)progress
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __54__FCReadingHistory_markArticle_withListeningProgress___block_invoke;
   v4[3] = &__block_descriptor_40_e43_v24__0___FCMutableReadingHistoryItem__8_Q16l;
-  *&v4[4] = a4;
-  [(FCReadingHistory *)self _modifyHistoryForArticleID:a3 withBlock:v4];
+  *&v4[4] = progress;
+  [(FCReadingHistory *)self _modifyHistoryForArticleID:article withBlock:v4];
 }
 
 void __54__FCReadingHistory_markArticle_withListeningProgress___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3565,24 +3565,24 @@ void __54__FCReadingHistory_markArticle_withListeningProgress___block_invoke(uin
   }
 }
 
-- (id)lastListenedFor:(id)a3
+- (id)lastListenedFor:(id)for
 {
-  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:a3];
-  v4 = [v3 lastListenedAt];
+  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:for];
+  lastListenedAt = [v3 lastListenedAt];
 
-  return v4;
+  return lastListenedAt;
 }
 
-- (void)markArticle:(id)a3 withLastListened:(id)a4
+- (void)markArticle:(id)article withLastListened:(id)listened
 {
-  v6 = a4;
+  listenedCopy = listened;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__FCReadingHistory_markArticle_withLastListened___block_invoke;
   v8[3] = &unk_1E7C37628;
-  v9 = v6;
-  v7 = v6;
-  [(FCReadingHistory *)self _modifyHistoryForArticleID:a3 withBlock:v8];
+  v9 = listenedCopy;
+  v7 = listenedCopy;
+  [(FCReadingHistory *)self _modifyHistoryForArticleID:article withBlock:v8];
 }
 
 void __49__FCReadingHistory_markArticle_withLastListened___block_invoke(uint64_t a1, void *a2, uint64_t *a3)
@@ -3609,40 +3609,40 @@ void __49__FCReadingHistory_markArticle_withLastListened___block_invoke(uint64_t
   *a3 = v9;
 }
 
-- (int64_t)listenedCountFor:(id)a3
+- (int64_t)listenedCountFor:(id)for
 {
-  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:a3];
-  v4 = [v3 listenedCount];
+  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:for];
+  listenedCount = [v3 listenedCount];
 
-  return v4;
+  return listenedCount;
 }
 
-- (id)readingPositionJSONFor:(id)a3
+- (id)readingPositionJSONFor:(id)for
 {
-  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:a3];
-  v4 = [v3 readingPosition];
+  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:for];
+  readingPosition = [v3 readingPosition];
 
-  return v4;
+  return readingPosition;
 }
 
-- (id)readingPositionSavedDateFor:(id)a3
+- (id)readingPositionSavedDateFor:(id)for
 {
-  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:a3];
-  v4 = [v3 readingPositionSavedAt];
+  v3 = [(FCReadingHistory *)self _readingHistoryItemForArticleID:for];
+  readingPositionSavedAt = [v3 readingPositionSavedAt];
 
-  return v4;
+  return readingPositionSavedAt;
 }
 
-- (void)markArticle:(id)a3 withReadingPositionJSON:(id)a4
+- (void)markArticle:(id)article withReadingPositionJSON:(id)n
 {
-  v6 = a4;
+  nCopy = n;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__FCReadingHistory_markArticle_withReadingPositionJSON___block_invoke;
   v8[3] = &unk_1E7C37628;
-  v9 = v6;
-  v7 = v6;
-  [(FCReadingHistory *)self _modifyHistoryForArticleID:a3 withBlock:v8];
+  v9 = nCopy;
+  v7 = nCopy;
+  [(FCReadingHistory *)self _modifyHistoryForArticleID:article withBlock:v8];
 }
 
 void __56__FCReadingHistory_markArticle_withReadingPositionJSON___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3664,11 +3664,11 @@ void __56__FCReadingHistory_markArticle_withReadingPositionJSON___block_invoke(u
   }
 }
 
-- (void)willAccessArticleIDs:(id)a3
+- (void)willAccessArticleIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(FCReadingHistory *)self articleExposureRegistry];
-  [v5 willAccessItemIDs:v4];
+  dsCopy = ds;
+  articleExposureRegistry = [(FCReadingHistory *)self articleExposureRegistry];
+  [articleExposureRegistry willAccessItemIDs:dsCopy];
 }
 
 void __52__FCReadingHistory__readingHistoryItemForArticleID___block_invoke_2(void *a1)

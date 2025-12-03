@@ -7,8 +7,8 @@
 - (id)_accessibilityNextElementsForSpeakThis
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 _accessibilityAncestorIsKindOf:objc_opt_class()];
-  v3 = [v2 sxaxNextSpeakThisElementFromElement:a1];
+  v2 = [self _accessibilityAncestorIsKindOf:objc_opt_class()];
+  v3 = [v2 sxaxNextSpeakThisElementFromElement:self];
   v4 = v3;
   if (v3)
   {
@@ -18,7 +18,7 @@
 
   else
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &off_1F542D0F8;
     v5 = objc_msgSendSuper2(&v8, sel__accessibilityNextElementsForSpeakThis);
   }

@@ -40,14 +40,14 @@
   v16.receiver = self;
   v16.super_class = CrossPlatformTransferIntroViewController;
   [(TSOBWelcomeController *)&v16 viewDidLoad];
-  v3 = [MEMORY[0x277D37618] boldButton];
-  [v3 addTarget:self action:sel__doneButtonTapped forControlEvents:64];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [boldButton addTarget:self action:sel__doneButtonTapped forControlEvents:64];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"CONTINUE" value:&stru_28753DF48 table:@"Localizable"];
-  [v3 setTitle:v5 forState:0];
+  [boldButton setTitle:v5 forState:0];
 
-  v6 = [(CrossPlatformTransferIntroViewController *)self buttonTray];
-  [v6 addButton:v3];
+  buttonTray = [(CrossPlatformTransferIntroViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
   v7 = +[SSOBLinkTrayButton linkButton];
   LearnMoreButton = self->_LearnMoreButton;
@@ -59,24 +59,24 @@
   [(SSOBLinkTrayButton *)v9 setTitle:v11 forState:0];
 
   [(SSOBLinkTrayButton *)self->_LearnMoreButton addTarget:self action:sel__LearnMoreButtonTapped forControlEvents:64];
-  v12 = [(CrossPlatformTransferIntroViewController *)self buttonTray];
-  [v12 addButton:self->_LearnMoreButton];
+  buttonTray2 = [(CrossPlatformTransferIntroViewController *)self buttonTray];
+  [buttonTray2 addButton:self->_LearnMoreButton];
 
   v13 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancelButtonTapped];
   if (!+[TSUtilities isPad])
   {
-    v15 = [(OBBaseWelcomeController *)self navigationItem];
-    [v15 setHidesBackButton:1 animated:0];
+    navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem setHidesBackButton:1 animated:0];
 
-    v14 = [(OBBaseWelcomeController *)self navigationItem];
-    [v14 setLeftBarButtonItem:v13];
+    navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:v13];
     goto LABEL_5;
   }
 
   if (!+[TSUtilities inBuddy])
   {
-    v14 = [(OBBaseWelcomeController *)self navigationItem];
-    [v14 setRightBarButtonItem:v13];
+    navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:v13];
 LABEL_5:
   }
 }

@@ -1,15 +1,15 @@
 @interface MPCPlaybackEngineEvent
-+ (MPCPlaybackEngineEvent)eventFromRowResult:(uint64_t)a1;
++ (MPCPlaybackEngineEvent)eventFromRowResult:(uint64_t)result;
 - ($C192BC3A89177E9F9906E5732115C753)monotonicTime;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesPayload:(id)a3;
-- (MPCPlaybackEngineEvent)initWithType:(id)a3 payload:(id)a4 monotonicTime:(id *)a5 threadPriority:(int)a6 identifier:(id)a7;
-- (double)durationSinceEvent:(id)a3;
-- (double)timeIntervalSinceEvent:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesPayload:(id)payload;
+- (MPCPlaybackEngineEvent)initWithType:(id)type payload:(id)payload monotonicTime:(id *)time threadPriority:(int)priority identifier:(id)identifier;
+- (double)durationSinceEvent:(id)event;
+- (double)timeIntervalSinceEvent:(id)event;
 - (id)description;
-- (id)earlierEvent:(id)a3;
-- (id)previousItemEventWithCursor:(id)a3 type:(id)a4;
-- (int64_t)compare:(id)a3;
+- (id)earlierEvent:(id)event;
+- (id)previousItemEventWithCursor:(id)cursor type:(id)type;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation MPCPlaybackEngineEvent
@@ -23,9 +23,9 @@
   return self;
 }
 
-- (BOOL)matchesPayload:(id)a3
+- (BOOL)matchesPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -36,7 +36,7 @@
   v8[3] = &unk_1E82322C8;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = payloadCopy;
   v9 = v5;
   [v5 enumerateKeysAndObjectsUsingBlock:v8];
   v6 = *(v12 + 24);
@@ -75,22 +75,22 @@ void __62__MPCPlaybackEngineEvent_MPCRTCEventConsumer__matchesPayload___block_in
   }
 }
 
-- (id)previousItemEventWithCursor:(id)a3 type:(id)a4
+- (id)previousItemEventWithCursor:(id)cursor type:(id)type
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPCPlaybackEngineEvent *)self payload];
-  v9 = [v8 objectForKeyedSubscript:@"queue-item-id"];
+  cursorCopy = cursor;
+  typeCopy = type;
+  payload = [(MPCPlaybackEngineEvent *)self payload];
+  v9 = [payload objectForKeyedSubscript:@"queue-item-id"];
 
   if (v9)
   {
     v15 = @"queue-item-id";
-    v10 = [(MPCPlaybackEngineEvent *)self payload];
-    v11 = [v10 objectForKeyedSubscript:@"queue-item-id"];
+    payload2 = [(MPCPlaybackEngineEvent *)self payload];
+    v11 = [payload2 objectForKeyedSubscript:@"queue-item-id"];
     v16[0] = v11;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-    v13 = [v6 findPreviousEventWithType:v7 matchingPayload:v12];
+    v13 = [cursorCopy findPreviousEventWithType:typeCopy matchingPayload:v12];
   }
 
   else
@@ -101,18 +101,18 @@ void __62__MPCPlaybackEngineEvent_MPCRTCEventConsumer__matchesPayload___block_in
   return v13;
 }
 
-- (double)timeIntervalSinceEvent:(id)a3
+- (double)timeIntervalSinceEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
+  eventCopy = event;
+  v5 = eventCopy;
   v6 = self->_monotonicTime.rawNanoSeconds + self->_monotonicTime.timebase;
-  if (!v4)
+  if (!eventCopy)
   {
     v7 = 0;
     goto LABEL_5;
   }
 
-  [v4 monotonicTime];
+  [eventCopy monotonicTime];
   [v5 monotonicTime];
   v7 = v12 + v13;
   v8 = v12 + v13 - v6;
@@ -131,16 +131,16 @@ LABEL_6:
   return v10;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   rawNanoSeconds = self->_monotonicTime.rawNanoSeconds;
   timebase = self->_monotonicTime.timebase;
-  if (a3)
+  if (compare)
   {
-    v5 = a3;
-    [v5 monotonicTime];
+    compareCopy = compare;
+    [compareCopy monotonicTime];
     v6 = v12;
-    [v5 monotonicTime];
+    [compareCopy monotonicTime];
 
     v7 = v11 + v6;
   }
@@ -163,25 +163,25 @@ LABEL_6:
   }
 }
 
-- (id)earlierEvent:(id)a3
+- (id)earlierEvent:(id)event
 {
-  v4 = a3;
-  if ([(MPCPlaybackEngineEvent *)self compare:v4]== 1)
+  eventCopy = event;
+  if ([(MPCPlaybackEngineEvent *)self compare:eventCopy]== 1)
   {
-    self = v4;
+    self = eventCopy;
   }
 
-  v5 = self;
+  selfCopy = self;
 
   return self;
 }
 
-- (double)durationSinceEvent:(id)a3
+- (double)durationSinceEvent:(id)event
 {
   rawNanoSeconds = self->_monotonicTime.rawNanoSeconds;
-  if (a3)
+  if (event)
   {
-    [a3 monotonicTime];
+    [event monotonicTime];
     v4 = v6;
   }
 
@@ -196,24 +196,24 @@ LABEL_6:
 - (id)description
 {
   v3 = MEMORY[0x1E696AC80];
-  v4 = [(MPCPlaybackEngineEvent *)self date];
-  v5 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-  v6 = [v3 stringFromDate:v4 timeZone:v5 formatOptions:3955];
+  date = [(MPCPlaybackEngineEvent *)self date];
+  defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+  v6 = [v3 stringFromDate:date timeZone:defaultTimeZone formatOptions:3955];
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(NSUUID *)self->_identifier MSVBase64UUIDString];
-  v9 = [v7 stringWithFormat:@"<MPCPlaybackEngineEvent: %@ %@ [%llu] %@>", v8, v6, self->_monotonicTime.rawNanoSeconds + self->_monotonicTime.timebase, self->_type];
+  mSVBase64UUIDString = [(NSUUID *)self->_identifier MSVBase64UUIDString];
+  v9 = [v7 stringWithFormat:@"<MPCPlaybackEngineEvent: %@ %@ [%llu] %@>", mSVBase64UUIDString, v6, self->_monotonicTime.rawNanoSeconds + self->_monotonicTime.timebase, self->_type];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (v5 = objc_opt_class(), v5 == objc_opt_class()))
+  equalCopy = equal;
+  if (equalCopy && (v5 = objc_opt_class(), v5 == objc_opt_class()))
   {
     identifier = self->_identifier;
-    v8 = v4[2];
+    v8 = equalCopy[2];
     v9 = identifier;
     v10 = v9;
     if (v9 == v8)
@@ -235,23 +235,23 @@ LABEL_6:
   return v6;
 }
 
-- (MPCPlaybackEngineEvent)initWithType:(id)a3 payload:(id)a4 monotonicTime:(id *)a5 threadPriority:(int)a6 identifier:(id)a7
+- (MPCPlaybackEngineEvent)initWithType:(id)type payload:(id)payload monotonicTime:(id *)time threadPriority:(int)priority identifier:(id)identifier
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  if (v14)
+  typeCopy = type;
+  payloadCopy = payload;
+  identifierCopy = identifier;
+  if (typeCopy)
   {
-    if (v15)
+    if (payloadCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEvent.m" lineNumber:116 description:{@"Invalid parameter not satisfying: %@", @"payload"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEvent.m" lineNumber:116 description:{@"Invalid parameter not satisfying: %@", @"payload"}];
 
-    if (v16)
+    if (identifierCopy)
     {
       goto LABEL_4;
     }
@@ -259,23 +259,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEvent.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"type"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEvent.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"type"}];
 
-  if (!v15)
+  if (!payloadCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v16)
+  if (identifierCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEvent.m" lineNumber:117 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEvent.m" lineNumber:117 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
 LABEL_4:
   v25.receiver = self;
@@ -284,21 +284,21 @@ LABEL_4:
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_type, a3);
-    objc_storeStrong(&v18->_payload, a4);
-    objc_storeStrong(&v18->_identifier, a7);
-    v19 = *&a5->var0;
-    v20 = *&a5->var2;
-    v18->_monotonicTime.userSecondsSinceReferenceDate = a5->var4;
+    objc_storeStrong(&v17->_type, type);
+    objc_storeStrong(&v18->_payload, payload);
+    objc_storeStrong(&v18->_identifier, identifier);
+    v19 = *&time->var0;
+    v20 = *&time->var2;
+    v18->_monotonicTime.userSecondsSinceReferenceDate = time->var4;
     *&v18->_monotonicTime.flags = v19;
     *&v18->_monotonicTime.rawNanoSeconds = v20;
-    v18->_threadPriority = a6;
+    v18->_threadPriority = priority;
   }
 
   return v18;
 }
 
-+ (MPCPlaybackEngineEvent)eventFromRowResult:(uint64_t)a1
++ (MPCPlaybackEngineEvent)eventFromRowResult:(uint64_t)result
 {
   v32 = *MEMORY[0x1E69E9840];
   v2 = a2;

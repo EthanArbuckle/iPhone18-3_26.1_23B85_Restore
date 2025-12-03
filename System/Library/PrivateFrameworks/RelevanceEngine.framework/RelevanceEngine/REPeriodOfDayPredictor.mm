@@ -1,17 +1,17 @@
 @interface REPeriodOfDayPredictor
 - (NSDateInterval)intervalForCurrentPeriodOfDay;
-- (id)_defaultDayPeriodsOfDayForDate:(id)a3;
+- (id)_defaultDayPeriodsOfDayForDate:(id)date;
 - (id)_init;
 - (id)_nextDayPeriodUpdateDate;
-- (id)_periodsOfDayForSleepIntervals:(id)a3;
-- (id)dateIntervalForNextPeriodOfDay:(unint64_t)a3;
-- (id)dateIntervalForNextPeriodOfDay:(unint64_t)a3 afterDate:(id)a4;
-- (id)dateIntervalForPreviousPeriodOfDay:(unint64_t)a3;
-- (id)dateIntervalForPreviousPeriodOfDay:(unint64_t)a3 beforeDate:(id)a4;
+- (id)_periodsOfDayForSleepIntervals:(id)intervals;
+- (id)dateIntervalForNextPeriodOfDay:(unint64_t)day;
+- (id)dateIntervalForNextPeriodOfDay:(unint64_t)day afterDate:(id)date;
+- (id)dateIntervalForPreviousPeriodOfDay:(unint64_t)day;
+- (id)dateIntervalForPreviousPeriodOfDay:(unint64_t)day beforeDate:(id)date;
 - (unint64_t)currentPeriodOfDay;
-- (void)_getAllSleepIntervalsWithCompletion:(id)a3;
-- (void)_getHistoricSleepIntervalsWithCompletion:(id)a3;
-- (void)_getPredictedSleepIntervalsWithCompletion:(id)a3;
+- (void)_getAllSleepIntervalsWithCompletion:(id)completion;
+- (void)_getHistoricSleepIntervalsWithCompletion:(id)completion;
+- (void)_getPredictedSleepIntervalsWithCompletion:(id)completion;
 - (void)_handleSignificantTimeChange;
 - (void)_queue_updateNextDateUpdateTimer;
 - (void)currentPeriodOfDay;
@@ -25,61 +25,61 @@
 {
   v17.receiver = self;
   v17.super_class = REPeriodOfDayPredictor;
-  v2 = [(REPredictor *)&v17 _init];
-  if (v2)
+  _init = [(REPredictor *)&v17 _init];
+  if (_init)
   {
     v3 = objc_opt_new();
-    v4 = v2[9];
-    v2[9] = v3;
+    v4 = _init[9];
+    _init[9] = v3;
 
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v6 = [v2 _defaultDayPeriodsOfDayForDate:v5];
-    v7 = v2[8];
-    v2[8] = v6;
+    date = [MEMORY[0x277CBEAA8] date];
+    v6 = [_init _defaultDayPeriodsOfDayForDate:date];
+    v7 = _init[8];
+    _init[8] = v6;
 
     v8 = +[(RESingleton *)REDuetKnowledgeStore];
-    v9 = v2[11];
-    v2[11] = v8;
+    v9 = _init[11];
+    _init[11] = v8;
 
     v10 = [objc_alloc(MEMORY[0x277D62528]) initWithIdentifier:@"com.apple.RelevanceEngine.REPeriodOfDayPredictor"];
-    v11 = v2[12];
-    v2[12] = v10;
+    v11 = _init[12];
+    _init[12] = v10;
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v13 = RESignificantTimeChangeNotification();
-    [v12 addObserver:v2 selector:sel__handleSignificantTimeChange name:v13 object:0];
+    [defaultCenter addObserver:_init selector:sel__handleSignificantTimeChange name:v13 object:0];
 
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __31__REPeriodOfDayPredictor__init__block_invoke;
     v15[3] = &unk_2785F9AB8;
-    v16 = v2;
+    v16 = _init;
     [v16 onQueue:v15];
   }
 
-  return v2;
+  return _init;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = RESignificantTimeChangeNotification();
-  [v3 removeObserver:self name:v4 object:0];
+  [defaultCenter removeObserver:self name:v4 object:0];
 
   v5.receiver = self;
   v5.super_class = REPeriodOfDayPredictor;
   [(REPredictor *)&v5 dealloc];
 }
 
-- (id)_defaultDayPeriodsOfDayForDate:(id)a3
+- (id)_defaultDayPeriodsOfDayForDate:(id)date
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
+  dateCopy = date;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __57__REPeriodOfDayPredictor__defaultDayPeriodsOfDayForDate___block_invoke;
   v26[3] = &unk_2785FA9B8;
-  v5 = v4;
+  v5 = currentCalendar;
   v27 = v5;
   v6 = MEMORY[0x22AABC5E0](v26);
   v24[0] = MEMORY[0x277D85DD0];
@@ -96,9 +96,9 @@
   v18 = v7;
   v23 = v18;
   v9 = MEMORY[0x22AABC5E0](v22);
-  v21 = v3;
-  v10 = (v9)[2](v9, v3, -3);
-  v20 = [MEMORY[0x277CBEB18] array];
+  v21 = dateCopy;
+  v10 = (v9)[2](v9, dateCopy, -3);
+  array = [MEMORY[0x277CBEB18] array];
   for (i = -2; i != 4; ++i)
   {
     v12 = v10;
@@ -107,10 +107,10 @@
     v14 = (v6)[2](v6, v10);
 
     v15 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v13 endDate:v14];
-    [v20 addObject:v15];
+    [array addObject:v15];
   }
 
-  v16 = [(REPeriodOfDayPredictor *)self _periodsOfDayForSleepIntervals:v20];
+  v16 = [(REPeriodOfDayPredictor *)self _periodsOfDayForSleepIntervals:array];
 
   return v16;
 }
@@ -159,8 +159,8 @@ void __54__REPeriodOfDayPredictor__handleSignificantTimeChange__block_invoke_2(u
   [(NSLock *)self->_storedPeriodsLock lock];
   v3 = [(NSArray *)self->_storedPeriods copy];
   [(NSLock *)self->_storedPeriodsLock unlock];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = REIndexOfDateInPeriodsOfDay(v4, v3);
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = REIndexOfDateInPeriodsOfDay(date, v3);
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = RELogForDomain(8);
@@ -169,18 +169,18 @@ void __54__REPeriodOfDayPredictor__handleSignificantTimeChange__block_invoke_2(u
       [REPeriodOfDayPredictor currentPeriodOfDay];
     }
 
-    v7 = [(REPeriodOfDayPredictor *)self _defaultDayPeriodsOfDayForDate:v4];
-    v8 = [v7 objectAtIndexedSubscript:{REIndexOfDateInPeriodsOfDay(v4, v7)}];
-    v9 = [v8 periodOfDay];
+    v7 = [(REPeriodOfDayPredictor *)self _defaultDayPeriodsOfDayForDate:date];
+    v8 = [v7 objectAtIndexedSubscript:{REIndexOfDateInPeriodsOfDay(date, v7)}];
+    periodOfDay = [v8 periodOfDay];
   }
 
   else
   {
     v7 = [v3 objectAtIndexedSubscript:v5];
-    v9 = [v7 periodOfDay];
+    periodOfDay = [v7 periodOfDay];
   }
 
-  return v9;
+  return periodOfDay;
 }
 
 - (NSDateInterval)intervalForCurrentPeriodOfDay
@@ -188,8 +188,8 @@ void __54__REPeriodOfDayPredictor__handleSignificantTimeChange__block_invoke_2(u
   [(NSLock *)self->_storedPeriodsLock lock];
   v3 = [(NSArray *)self->_storedPeriods copy];
   [(NSLock *)self->_storedPeriodsLock unlock];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = REIndexOfDateInPeriodsOfDay(v4, v3);
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = REIndexOfDateInPeriodsOfDay(date, v3);
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = RELogForDomain(8);
@@ -198,61 +198,61 @@ void __54__REPeriodOfDayPredictor__handleSignificantTimeChange__block_invoke_2(u
       [REPeriodOfDayPredictor currentPeriodOfDay];
     }
 
-    v7 = [(REPeriodOfDayPredictor *)self _defaultDayPeriodsOfDayForDate:v4];
-    v8 = [v7 objectAtIndexedSubscript:{REIndexOfDateInPeriodsOfDay(v4, v7)}];
-    v9 = [v8 interval];
+    v7 = [(REPeriodOfDayPredictor *)self _defaultDayPeriodsOfDayForDate:date];
+    v8 = [v7 objectAtIndexedSubscript:{REIndexOfDateInPeriodsOfDay(date, v7)}];
+    interval = [v8 interval];
   }
 
   else
   {
     v7 = [v3 objectAtIndexedSubscript:v5];
-    v9 = [v7 interval];
+    interval = [v7 interval];
   }
 
-  return v9;
+  return interval;
 }
 
-- (id)dateIntervalForNextPeriodOfDay:(unint64_t)a3
+- (id)dateIntervalForNextPeriodOfDay:(unint64_t)day
 {
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [(REPeriodOfDayPredictor *)self dateIntervalForNextPeriodOfDay:a3 afterDate:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = [(REPeriodOfDayPredictor *)self dateIntervalForNextPeriodOfDay:day afterDate:date];
   if (!v6)
   {
     v7 = MEMORY[0x277CBEAD8];
     v8 = *MEMORY[0x277CBE658];
-    if (a3 > 2)
+    if (day > 2)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = off_2785FAB38[a3];
+      v9 = off_2785FAB38[day];
     }
 
-    v10 = [(REPeriodOfDayPredictor *)self _defaultDayPeriodsOfDayForDate:v5];
-    [v7 raise:v8 format:{@"Unable to find %@ after date %@ in default dates: %@", v9, v5, v10}];
+    v10 = [(REPeriodOfDayPredictor *)self _defaultDayPeriodsOfDayForDate:date];
+    [v7 raise:v8 format:{@"Unable to find %@ after date %@ in default dates: %@", v9, date, v10}];
   }
 
   return v6;
 }
 
-- (id)dateIntervalForNextPeriodOfDay:(unint64_t)a3 afterDate:(id)a4
+- (id)dateIntervalForNextPeriodOfDay:(unint64_t)day afterDate:(id)date
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dateCopy = date;
   [(NSLock *)self->_storedPeriodsLock lock];
   v7 = [(NSArray *)self->_storedPeriods copy];
   [(NSLock *)self->_storedPeriodsLock unlock];
-  v8 = REIndexOfDateInPeriodsOfDay(v6, v7);
+  v8 = REIndexOfDateInPeriodsOfDay(dateCopy, v7);
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     for (i = v8 + 1; i < [v7 count]; ++i)
     {
       v12 = [v7 objectAtIndexedSubscript:i];
-      if ([v12 periodOfDay] == a3)
+      if ([v12 periodOfDay] == day)
       {
-        v17 = [v12 interval];
+        interval = [v12 interval];
 
         goto LABEL_18;
       }
@@ -262,14 +262,14 @@ void __54__REPeriodOfDayPredictor__handleSignificantTimeChange__block_invoke_2(u
   v9 = RELogForDomain(8);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    if (a3 > 2)
+    if (day > 2)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = off_2785FAB38[a3];
+      v10 = off_2785FAB38[day];
     }
 
     v20 = 138412546;
@@ -279,81 +279,81 @@ void __54__REPeriodOfDayPredictor__handleSignificantTimeChange__block_invoke_2(u
     _os_log_impl(&dword_22859F000, v9, OS_LOG_TYPE_INFO, "Unable to find %@ in current data: %@\nfalling back to default data", &v20, 0x16u);
   }
 
-  v13 = [MEMORY[0x277CBEAA8] date];
-  v14 = [(REPeriodOfDayPredictor *)self _defaultDayPeriodsOfDayForDate:v13];
+  date = [MEMORY[0x277CBEAA8] date];
+  v14 = [(REPeriodOfDayPredictor *)self _defaultDayPeriodsOfDayForDate:date];
 
-  for (j = REIndexOfDateInPeriodsOfDay(v6, v14) + 1; ; ++j)
+  for (j = REIndexOfDateInPeriodsOfDay(dateCopy, v14) + 1; ; ++j)
   {
     if (j >= [v14 count])
     {
-      v17 = 0;
+      interval = 0;
       goto LABEL_17;
     }
 
     v16 = [v14 objectAtIndexedSubscript:j];
-    if ([v16 periodOfDay] == a3)
+    if ([v16 periodOfDay] == day)
     {
       break;
     }
   }
 
-  v17 = [v16 interval];
+  interval = [v16 interval];
 
 LABEL_17:
 LABEL_18:
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return interval;
 }
 
-- (id)dateIntervalForPreviousPeriodOfDay:(unint64_t)a3
+- (id)dateIntervalForPreviousPeriodOfDay:(unint64_t)day
 {
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [(REPeriodOfDayPredictor *)self dateIntervalForPreviousPeriodOfDay:a3 beforeDate:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = [(REPeriodOfDayPredictor *)self dateIntervalForPreviousPeriodOfDay:day beforeDate:date];
   if (!v6)
   {
     v7 = MEMORY[0x277CBEAD8];
     v8 = *MEMORY[0x277CBE658];
-    if (a3 > 2)
+    if (day > 2)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = off_2785FAB38[a3];
+      v9 = off_2785FAB38[day];
     }
 
-    v10 = [(REPeriodOfDayPredictor *)self _defaultDayPeriodsOfDayForDate:v5];
-    [v7 raise:v8 format:{@"Unable to find %@ before date %@ in default dates: %@", v9, v5, v10}];
+    v10 = [(REPeriodOfDayPredictor *)self _defaultDayPeriodsOfDayForDate:date];
+    [v7 raise:v8 format:{@"Unable to find %@ before date %@ in default dates: %@", v9, date, v10}];
   }
 
   return v6;
 }
 
-- (id)dateIntervalForPreviousPeriodOfDay:(unint64_t)a3 beforeDate:(id)a4
+- (id)dateIntervalForPreviousPeriodOfDay:(unint64_t)day beforeDate:(id)date
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dateCopy = date;
   [(NSLock *)self->_storedPeriodsLock lock];
   v7 = [(NSArray *)self->_storedPeriods copy];
   [(NSLock *)self->_storedPeriodsLock unlock];
-  v8 = REIndexOfDateInPeriodsOfDay(v6, v7);
+  v8 = REIndexOfDateInPeriodsOfDay(dateCopy, v7);
   if ((v8 - 0x7FFFFFFFFFFFFFFFLL) < 0x8000000000000002)
   {
 LABEL_5:
     v11 = RELogForDomain(8);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      if (a3 > 2)
+      if (day > 2)
       {
         v12 = 0;
       }
 
       else
       {
-        v12 = off_2785FAB38[a3];
+        v12 = off_2785FAB38[day];
       }
 
       v21 = 138412546;
@@ -363,14 +363,14 @@ LABEL_5:
       _os_log_impl(&dword_22859F000, v11, OS_LOG_TYPE_INFO, "Unable to find %@ in current data: %@\nfalling back to default data", &v21, 0x16u);
     }
 
-    v14 = [MEMORY[0x277CBEAA8] date];
-    v15 = [(REPeriodOfDayPredictor *)self _defaultDayPeriodsOfDayForDate:v14];
+    date = [MEMORY[0x277CBEAA8] date];
+    v15 = [(REPeriodOfDayPredictor *)self _defaultDayPeriodsOfDayForDate:date];
 
-    v16 = REIndexOfDateInPeriodsOfDay(v6, v15);
+    v16 = REIndexOfDateInPeriodsOfDay(dateCopy, v15);
     if ((v16 - 0x7FFFFFFFFFFFFFFFLL) < 0x8000000000000002)
     {
 LABEL_15:
-      v13 = 0;
+      interval = 0;
     }
 
     else
@@ -379,7 +379,7 @@ LABEL_15:
       while (1)
       {
         v18 = [v15 objectAtIndexedSubscript:v17 - 2];
-        if ([v18 periodOfDay] == a3)
+        if ([v18 periodOfDay] == day)
         {
           break;
         }
@@ -390,7 +390,7 @@ LABEL_15:
         }
       }
 
-      v13 = [v18 interval];
+      interval = [v18 interval];
     }
   }
 
@@ -400,7 +400,7 @@ LABEL_15:
     while (1)
     {
       v10 = [v7 objectAtIndexedSubscript:v9 - 2];
-      if ([v10 periodOfDay] == a3)
+      if ([v10 periodOfDay] == day)
       {
         break;
       }
@@ -411,12 +411,12 @@ LABEL_15:
       }
     }
 
-    v13 = [v10 interval];
+    interval = [v10 interval];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return interval;
 }
 
 - (void)update
@@ -618,18 +618,18 @@ void __32__REPeriodOfDayPredictor_update__block_invoke_3(uint64_t a1, void *a2)
   }
 }
 
-- (void)_getAllSleepIntervalsWithCompletion:(id)a3
+- (void)_getAllSleepIntervalsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __62__REPeriodOfDayPredictor__getAllSleepIntervalsWithCompletion___block_invoke;
     v6[3] = &unk_2785FAAA0;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     [(REPeriodOfDayPredictor *)self _getHistoricSleepIntervalsWithCompletion:v6];
   }
 }
@@ -654,18 +654,18 @@ void __62__REPeriodOfDayPredictor__getAllSleepIntervalsWithCompletion___block_in
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_periodsOfDayForSleepIntervals:(id)a3
+- (id)_periodsOfDayForSleepIntervals:(id)intervals
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  intervalsCopy = intervals;
+  array = [MEMORY[0x277CBEB18] array];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __57__REPeriodOfDayPredictor__periodsOfDayForSleepIntervals___block_invoke;
   v12 = &unk_2785FAAC8;
-  v13 = v4;
-  v14 = v3;
-  v5 = v3;
-  v6 = v4;
+  v13 = array;
+  v14 = intervalsCopy;
+  v5 = intervalsCopy;
+  v6 = array;
   [v5 enumerateObjectsUsingBlock:&v9];
   v7 = [v6 copy];
 
@@ -713,11 +713,11 @@ void __57__REPeriodOfDayPredictor__periodsOfDayForSleepIntervals___block_invoke(
   }
 }
 
-- (void)_getPredictedSleepIntervalsWithCompletion:(id)a3
+- (void)_getPredictedSleepIntervalsWithCompletion:(id)completion
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     [(REPredictor *)self beginFetchingData];
     v50[0] = MEMORY[0x277D85DD0];
@@ -725,12 +725,12 @@ void __57__REPeriodOfDayPredictor__periodsOfDayForSleepIntervals___block_invoke(
     v50[2] = __68__REPeriodOfDayPredictor__getPredictedSleepIntervalsWithCompletion___block_invoke;
     v50[3] = &unk_2785FAAA0;
     v50[4] = self;
-    v5 = v4;
+    v5 = completionCopy;
     v51 = v5;
     v6 = MEMORY[0x22AABC5E0](v50);
-    v7 = [MEMORY[0x277CBEB18] array];
-    v8 = [MEMORY[0x277CBEA80] currentCalendar];
-    v9 = [MEMORY[0x277CBEAA8] date];
+    array = [MEMORY[0x277CBEB18] array];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    date = [MEMORY[0x277CBEAA8] date];
     sleepStore = self->_sleepStore;
     v49 = 0;
     v43 = [(HKSPSleepStore *)sleepStore currentSleepScheduleWithError:&v49];
@@ -750,17 +750,17 @@ void __57__REPeriodOfDayPredictor__periodsOfDayForSleepIntervals___block_invoke(
     if (v43)
     {
       v37 = v5;
-      v38 = self;
+      selfCopy = self;
       v41 = v6;
       v47[0] = MEMORY[0x277D85DD0];
       v47[1] = 3221225472;
       v47[2] = __68__REPeriodOfDayPredictor__getPredictedSleepIntervalsWithCompletion___block_invoke_377;
       v47[3] = &unk_2785FA9E0;
-      v40 = v8;
-      v48 = v8;
+      v40 = currentCalendar;
+      v48 = currentCalendar;
       v13 = MEMORY[0x22AABC5E0](v47);
-      v39 = v9;
-      v14 = v9;
+      v39 = date;
+      v14 = date;
       v15 = 1;
       v16 = v14;
       do
@@ -768,12 +768,12 @@ void __57__REPeriodOfDayPredictor__periodsOfDayForSleepIntervals___block_invoke(
         v17 = v16;
         v16 = (v13)[2](v13, v14, v15);
         v18 = [_TtC15RelevanceEngine20RESleepScheduleEntry sleepEntryForDatesWithCurrent:v17 next:v16 schedule:v43];
-        v19 = [v18 bedtime];
-        v20 = [v18 wakeupTime];
+        bedtime = [v18 bedtime];
+        wakeupTime = [v18 wakeupTime];
 
-        if (v19)
+        if (bedtime)
         {
-          v21 = v20 == 0;
+          v21 = wakeupTime == 0;
         }
 
         else
@@ -783,62 +783,62 @@ void __57__REPeriodOfDayPredictor__periodsOfDayForSleepIntervals___block_invoke(
 
         if (!v21)
         {
-          v22 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v19 endDate:v20];
-          [v7 addObject:v22];
+          v22 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:bedtime endDate:wakeupTime];
+          [array addObject:v22];
         }
 
         ++v15;
       }
 
       while (v15 != 4);
-      if ([v7 count])
+      if ([array count])
       {
-        [(REPredictor *)v38 finishFetchingData];
-        v37[2](v37, v7);
+        [(REPredictor *)selfCopy finishFetchingData];
+        v37[2](v37, array);
 
-        v23 = v48;
+        sleepInterval = v48;
         v6 = v41;
-        v9 = v39;
-        v8 = v40;
+        date = v39;
+        currentCalendar = v40;
 LABEL_27:
 
         goto LABEL_28;
       }
 
       v6 = v41;
-      v9 = v39;
-      v8 = v40;
-      self = v38;
+      date = v39;
+      currentCalendar = v40;
+      self = selfCopy;
     }
 
-    v23 = [(REDuetKnowledgeStore *)self->_knowledgeStore sleepInterval];
+    sleepInterval = [(REDuetKnowledgeStore *)self->_knowledgeStore sleepInterval];
     v24 = RELogForDomain(8);
     v25 = v24;
-    if (v23)
+    if (sleepInterval)
     {
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v53 = v23;
+        v53 = sleepInterval;
         _os_log_impl(&dword_22859F000, v25, OS_LOG_TYPE_DEFAULT, "Received expected in bed period: %@", buf, 0xCu);
       }
 
-      v26 = [v23 startDate];
-      v27 = [v8 components:224 fromDate:v26];
+      startDate = [sleepInterval startDate];
+      v27 = [currentCalendar components:224 fromDate:startDate];
 
-      v28 = [MEMORY[0x277CBEAA8] date];
-      v29 = [v8 nextDateAfterDate:v28 matchingHour:objc_msgSend(v27 minute:"hour") second:objc_msgSend(v27 options:{"minute"), objc_msgSend(v27, "second"), 1024}];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      v29 = [currentCalendar nextDateAfterDate:date2 matchingHour:objc_msgSend(v27 minute:"hour") second:objc_msgSend(v27 options:{"minute"), objc_msgSend(v27, "second"), 1024}];
 
       v30 = objc_alloc(MEMORY[0x277CCA970]);
-      [v23 duration];
+      [sleepInterval duration];
       if (v31 < 0.0)
       {
         v31 = 0.0;
       }
 
       v32 = [v30 initWithStartDate:v29 duration:v31];
-      [v7 addObject:v32];
-      v33 = [v7 copy];
+      [array addObject:v32];
+      v33 = [array copy];
       (v6)[2](v6, v33);
     }
 
@@ -851,14 +851,14 @@ LABEL_27:
 
       v27 = [(REDuetKnowledgeStore *)self->_knowledgeStore queryForPredictedChargingEventsWithMinimumDuration:60.0];
       knowledgeStore = self->_knowledgeStore;
-      v35 = [(REPredictor *)self queue];
+      queue = [(REPredictor *)self queue];
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
       v44[2] = __68__REPeriodOfDayPredictor__getPredictedSleepIntervalsWithCompletion___block_invoke_379;
       v44[3] = &unk_2785FAB18;
-      v45 = v7;
+      v45 = array;
       v46 = v6;
-      [(REDuetKnowledgeStore *)knowledgeStore executeQuery:v27 responseQueue:v35 completion:v44];
+      [(REDuetKnowledgeStore *)knowledgeStore executeQuery:v27 responseQueue:queue completion:v44];
 
       v29 = v45;
     }
@@ -951,15 +951,15 @@ void __68__REPeriodOfDayPredictor__getPredictedSleepIntervalsWithCompletion___bl
   }
 }
 
-- (void)_getHistoricSleepIntervalsWithCompletion:(id)a3
+- (void)_getHistoricSleepIntervalsWithCompletion:(id)completion
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
-    v6 = [MEMORY[0x277CBEA80] currentCalendar];
-    v41 = [MEMORY[0x277CBEAA8] date];
+    array = [MEMORY[0x277CBEB18] array];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    date = [MEMORY[0x277CBEAA8] date];
     sleepStore = self->_sleepStore;
     v47 = 0;
     v40 = [(HKSPSleepStore *)sleepStore currentSleepScheduleWithError:&v47];
@@ -977,27 +977,27 @@ void __68__REPeriodOfDayPredictor__getPredictedSleepIntervalsWithCompletion___bl
 
     if (v40)
     {
-      v38 = self;
+      selfCopy = self;
       v45[0] = MEMORY[0x277D85DD0];
       v45[1] = 3221225472;
       v45[2] = __67__REPeriodOfDayPredictor__getHistoricSleepIntervalsWithCompletion___block_invoke;
       v45[3] = &unk_2785FA9E0;
-      v39 = v6;
-      v46 = v6;
+      v39 = currentCalendar;
+      v46 = currentCalendar;
       v10 = MEMORY[0x22AABC5E0](v45);
       v11 = -3;
-      v12 = (v10)[2](v10, v41, -3);
+      v12 = (v10)[2](v10, date, -3);
       do
       {
         v13 = v12;
-        v12 = (v10)[2](v10, v41, ++v11);
+        v12 = (v10)[2](v10, date, ++v11);
         v14 = [_TtC15RelevanceEngine20RESleepScheduleEntry sleepEntryForDatesWithCurrent:v13 next:v12 schedule:v40];
-        v15 = [v14 bedtime];
-        v16 = [v14 wakeupTime];
+        bedtime = [v14 bedtime];
+        wakeupTime = [v14 wakeupTime];
 
-        if (v15)
+        if (bedtime)
         {
-          v17 = v16 == 0;
+          v17 = wakeupTime == 0;
         }
 
         else
@@ -1007,64 +1007,64 @@ void __68__REPeriodOfDayPredictor__getPredictedSleepIntervalsWithCompletion___bl
 
         if (!v17)
         {
-          v18 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v15 endDate:v16];
-          [v5 addObject:v18];
+          v18 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:bedtime endDate:wakeupTime];
+          [array addObject:v18];
         }
       }
 
       while (v11);
-      if ([v5 count])
+      if ([array count])
       {
-        v19 = [v5 copy];
-        v4[2](v4, v19);
+        v19 = [array copy];
+        completionCopy[2](completionCopy, v19);
 
-        v20 = v46;
-        v6 = v39;
+        sleepInterval = v46;
+        currentCalendar = v39;
 LABEL_31:
 
         goto LABEL_32;
       }
 
-      v6 = v39;
-      self = v38;
+      currentCalendar = v39;
+      self = selfCopy;
     }
 
-    v20 = [(REDuetKnowledgeStore *)self->_knowledgeStore sleepInterval];
+    sleepInterval = [(REDuetKnowledgeStore *)self->_knowledgeStore sleepInterval];
     v21 = RELogForDomain(8);
     v22 = v21;
-    if (v20)
+    if (sleepInterval)
     {
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v50 = v20;
+        v50 = sleepInterval;
         _os_log_impl(&dword_22859F000, v22, OS_LOG_TYPE_DEFAULT, "Received expected in bed period (using for historic calculation): %@", buf, 0xCu);
       }
 
-      v23 = [v20 containsDate:v41];
-      v24 = [v20 startDate];
+      v23 = [sleepInterval containsDate:date];
+      startDate = [sleepInterval startDate];
       if ((v23 & 1) == 0)
       {
-        v25 = [v6 components:224 fromDate:v24];
+        v25 = [currentCalendar components:224 fromDate:startDate];
 
-        v26 = [MEMORY[0x277CBEAA8] date];
-        v27 = [v6 dateByAddingUnit:16 value:-1 toDate:v26 options:0];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        v27 = [currentCalendar dateByAddingUnit:16 value:-1 toDate:date2 options:0];
 
-        v24 = [v6 nextDateAfterDate:v27 matchingHour:objc_msgSend(v25 minute:"hour") second:objc_msgSend(v25 options:{"minute"), objc_msgSend(v25, "second"), 1024}];
+        startDate = [currentCalendar nextDateAfterDate:v27 matchingHour:objc_msgSend(v25 minute:"hour") second:objc_msgSend(v25 options:{"minute"), objc_msgSend(v25, "second"), 1024}];
       }
 
       v28 = objc_alloc(MEMORY[0x277CCA970]);
-      [v20 duration];
+      [sleepInterval duration];
       if (v29 < 0.0)
       {
         v29 = 0.0;
       }
 
-      v30 = [v28 initWithStartDate:v24 duration:v29];
+      v30 = [v28 initWithStartDate:startDate duration:v29];
       v48 = v30;
       v31 = [MEMORY[0x277CBEA60] arrayWithObjects:&v48 count:1];
       v32 = REUpNextDuplicateIntervalsByAddingUnit(v31, 16, 0xFFFFFFFFFFFFFFFFLL, 3);
-      [v5 addObjectsFromArray:v32];
+      [array addObjectsFromArray:v32];
 
       v33 = RELogForDomain(8);
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -1072,8 +1072,8 @@ LABEL_31:
         [REPeriodOfDayPredictor _getHistoricSleepIntervalsWithCompletion:];
       }
 
-      v34 = [v5 copy];
-      v4[2](v4, v34);
+      v34 = [array copy];
+      completionCopy[2](completionCopy, v34);
     }
 
     else
@@ -1083,16 +1083,16 @@ LABEL_31:
         [REPeriodOfDayPredictor _getHistoricSleepIntervalsWithCompletion:];
       }
 
-      v24 = [(REDuetKnowledgeStore *)self->_knowledgeStore queryForHistoricChargingEventsWithMinimumDuration:3 inThePastDays:60.0];
+      startDate = [(REDuetKnowledgeStore *)self->_knowledgeStore queryForHistoricChargingEventsWithMinimumDuration:3 inThePastDays:60.0];
       knowledgeStore = self->_knowledgeStore;
-      v36 = [(REPredictor *)self queue];
+      queue = [(REPredictor *)self queue];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __67__REPeriodOfDayPredictor__getHistoricSleepIntervalsWithCompletion___block_invoke_384;
       v42[3] = &unk_2785FAB18;
-      v43 = v5;
-      v44 = v4;
-      [(REDuetKnowledgeStore *)knowledgeStore executeQuery:v24 responseQueue:v36 completion:v42];
+      v43 = array;
+      v44 = completionCopy;
+      [(REDuetKnowledgeStore *)knowledgeStore executeQuery:startDate responseQueue:queue completion:v42];
 
       v30 = v43;
     }
@@ -1177,15 +1177,15 @@ void __67__REPeriodOfDayPredictor__getHistoricSleepIntervalsWithCompletion___blo
     [(REUpNextTimer *)periodOfDayUpdateTimer invalidate];
   }
 
-  v4 = [(REPeriodOfDayPredictor *)self _nextDayPeriodUpdateDate];
+  _nextDayPeriodUpdateDate = [(REPeriodOfDayPredictor *)self _nextDayPeriodUpdateDate];
   objc_initWeak(&location, self);
-  v5 = [(REPredictor *)self queue];
+  queue = [(REPredictor *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__REPeriodOfDayPredictor__queue_updateNextDateUpdateTimer__block_invoke;
   v8[3] = &unk_2785F9B58;
   objc_copyWeak(&v9, &location);
-  v6 = [REUpNextTimer timerWithFireDate:v4 queue:v5 block:v8];
+  v6 = [REUpNextTimer timerWithFireDate:_nextDayPeriodUpdateDate queue:queue block:v8];
   v7 = self->_periodOfDayUpdateTimer;
   self->_periodOfDayUpdateTimer = v6;
 
@@ -1225,9 +1225,9 @@ void __58__REPeriodOfDayPredictor__queue_updateNextDateUpdateTimer__block_invoke
 
 - (id)_nextDayPeriodUpdateDate
 {
-  v2 = [(REPeriodOfDayPredictor *)self intervalForCurrentPeriodOfDay];
-  v3 = [v2 endDate];
-  v4 = [v3 dateByAddingTimeInterval:60.0];
+  intervalForCurrentPeriodOfDay = [(REPeriodOfDayPredictor *)self intervalForCurrentPeriodOfDay];
+  endDate = [intervalForCurrentPeriodOfDay endDate];
+  v4 = [endDate dateByAddingTimeInterval:60.0];
 
   return v4;
 }

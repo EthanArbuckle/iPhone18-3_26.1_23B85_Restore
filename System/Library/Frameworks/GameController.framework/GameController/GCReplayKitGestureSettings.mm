@@ -1,11 +1,11 @@
 @interface GCReplayKitGestureSettings
 - (GCReplayKitGestureSettings)init;
-- (GCReplayKitGestureSettings)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)gestureModeForGestureType:(int64_t)a3;
-- (int64_t)gestureTypeForGestureMode:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setGestureMode:(int64_t)a3 forGestureType:(int64_t)a4;
+- (GCReplayKitGestureSettings)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)gestureModeForGestureType:(int64_t)type;
+- (int64_t)gestureTypeForGestureMode:(int64_t)mode;
+- (void)encodeWithCoder:(id)coder;
+- (void)setGestureMode:(int64_t)mode forGestureType:(int64_t)type;
 @end
 
 @implementation GCReplayKitGestureSettings
@@ -25,40 +25,40 @@
   return result;
 }
 
-- (int64_t)gestureModeForGestureType:(int64_t)a3
+- (int64_t)gestureModeForGestureType:(int64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return -1;
   }
 
   else
   {
-    return *(&self->super.isa + qword_1D2DEE148[a3]);
+    return *(&self->super.isa + qword_1D2DEE148[type]);
   }
 }
 
-- (void)setGestureMode:(int64_t)a3 forGestureType:(int64_t)a4
+- (void)setGestureMode:(int64_t)mode forGestureType:(int64_t)type
 {
-  if (a4 <= 2)
+  if (type <= 2)
   {
-    *(&self->super.isa + qword_1D2DEE148[a4]) = a3;
+    *(&self->super.isa + qword_1D2DEE148[type]) = mode;
   }
 }
 
-- (int64_t)gestureTypeForGestureMode:(int64_t)a3
+- (int64_t)gestureTypeForGestureMode:(int64_t)mode
 {
-  if (self->_singlePressGesture == a3)
+  if (self->_singlePressGesture == mode)
   {
     return 0;
   }
 
-  if (self->_doublePressGesture == a3)
+  if (self->_doublePressGesture == mode)
   {
     return 2;
   }
 
-  if (self->_longPressGesture == a3)
+  if (self->_longPressGesture == mode)
   {
     return 1;
   }
@@ -66,18 +66,18 @@
   return -1;
 }
 
-- (GCReplayKitGestureSettings)initWithCoder:(id)a3
+- (GCReplayKitGestureSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = GCReplayKitGestureSettings;
   v5 = [(GCReplayKitGestureSettings *)&v9 init];
   if (v5)
   {
-    v5->_singlePressGesture = [v4 decodeInt64ForKey:@"_singlePressGesture"];
-    v5->_doublePressGesture = [v4 decodeInt64ForKey:@"_doublePressGesture"];
-    v5->_longPressGesture = [v4 decodeInt64ForKey:@"_longPressGesture"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_controllerElementMappingKey"];
+    v5->_singlePressGesture = [coderCopy decodeInt64ForKey:@"_singlePressGesture"];
+    v5->_doublePressGesture = [coderCopy decodeInt64ForKey:@"_doublePressGesture"];
+    v5->_longPressGesture = [coderCopy decodeInt64ForKey:@"_longPressGesture"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_controllerElementMappingKey"];
     controllerElementMappingKey = v5->_controllerElementMappingKey;
     v5->_controllerElementMappingKey = v6;
   }
@@ -85,17 +85,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   singlePressGesture = self->_singlePressGesture;
-  v5 = a3;
-  [v5 encodeInt64:singlePressGesture forKey:@"_singlePressGesture"];
-  [v5 encodeInt64:self->_doublePressGesture forKey:@"_doublePressGesture"];
-  [v5 encodeInt64:self->_longPressGesture forKey:@"_longPressGesture"];
-  [v5 encodeObject:self->_controllerElementMappingKey forKey:@"_controllerElementMappingKey"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:singlePressGesture forKey:@"_singlePressGesture"];
+  [coderCopy encodeInt64:self->_doublePressGesture forKey:@"_doublePressGesture"];
+  [coderCopy encodeInt64:self->_longPressGesture forKey:@"_longPressGesture"];
+  [coderCopy encodeObject:self->_controllerElementMappingKey forKey:@"_controllerElementMappingKey"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[GCReplayKitGestureSettings allocWithZone:?]];
   v4->_singlePressGesture = self->_singlePressGesture;

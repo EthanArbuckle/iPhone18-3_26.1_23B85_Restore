@@ -2,9 +2,9 @@
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
 - (FLExtensionHostContextInterface)delegate;
-- (id)remoteContextWithErrorHandler:(id)a3;
+- (id)remoteContextWithErrorHandler:(id)handler;
 - (void)extensionDidFinish;
-- (void)extensionDidFinishWithUserInfo:(id)a3 completionHandler:(id)a4;
+- (void)extensionDidFinishWithUserInfo:(id)info completionHandler:(id)handler;
 @end
 
 @implementation FLExtensionHostContext
@@ -62,11 +62,11 @@ void __59__FLExtensionHostContext__extensionAuxiliaryVendorProtocol__block_invok
   [v4 setClasses:v5 forSelector:sel_processFollowUpItem_selectedAction_completion_ argumentIndex:1 ofReply:0];
 }
 
-- (id)remoteContextWithErrorHandler:(id)a3
+- (id)remoteContextWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(FLExtensionHostContext *)self _auxiliaryConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _auxiliaryConnection = [(FLExtensionHostContext *)self _auxiliaryConnection];
+  v6 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
@@ -94,11 +94,11 @@ void __59__FLExtensionHostContext__extensionAuxiliaryVendorProtocol__block_invok
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)extensionDidFinishWithUserInfo:(id)a3 completionHandler:(id)a4
+- (void)extensionDidFinishWithUserInfo:(id)info completionHandler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  infoCopy = info;
   v8 = _FLLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -107,16 +107,16 @@ void __59__FLExtensionHostContext__extensionAuxiliaryVendorProtocol__block_invok
     _os_log_impl(&dword_22E696000, v8, OS_LOG_TYPE_DEFAULT, "-- %s --", &v13, 0xCu);
   }
 
-  v9 = [(FLExtensionHostContext *)self delegate];
+  delegate = [(FLExtensionHostContext *)self delegate];
   v10 = _FLLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v9;
+    v14 = delegate;
     _os_log_impl(&dword_22E696000, v10, OS_LOG_TYPE_DEFAULT, "Extension responded to tear down: %@", &v13, 0xCu);
   }
 
-  [v9 extensionDidFinishWithUserInfo:v7 completionHandler:v6];
+  [delegate extensionDidFinishWithUserInfo:infoCopy completionHandler:handlerCopy];
   v11 = _FLLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {

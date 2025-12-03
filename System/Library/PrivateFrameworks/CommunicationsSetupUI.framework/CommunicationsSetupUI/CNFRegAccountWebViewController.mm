@@ -1,8 +1,8 @@
 @interface CNFRegAccountWebViewController
 - (BOOL)_loadURLFromBag;
-- (BOOL)canSendURLRequest:(id)a3;
-- (BOOL)shouldSetHeadersForRequest:(id)a3;
-- (CNFRegAccountWebViewController)initWithRegController:(id)a3;
+- (BOOL)canSendURLRequest:(id)request;
+- (BOOL)shouldSetHeadersForRequest:(id)request;
+- (CNFRegAccountWebViewController)initWithRegController:(id)controller;
 - (id)_nonModalParentController;
 - (id)_viewPortForNormalPresentation;
 - (id)clientInfoHeaderValue;
@@ -11,7 +11,7 @@
 - (id)securityHeaderValue;
 - (id)serviceHeaderValue;
 - (id)viewPortHeaderValue;
-- (void)_bagLoadTimeout:(id)a3;
+- (void)_bagLoadTimeout:(id)timeout;
 - (void)_handleFTServerBagFinishedLoading;
 - (void)_reload;
 - (void)_reloadDelayed;
@@ -23,15 +23,15 @@
 - (void)_stopListeningForBagLoad;
 - (void)dealloc;
 - (void)loadView;
-- (void)setHeadersForRequest:(id)a3;
+- (void)setHeadersForRequest:(id)request;
 - (void)viewDidLoad;
 @end
 
 @implementation CNFRegAccountWebViewController
 
-- (CNFRegAccountWebViewController)initWithRegController:(id)a3
+- (CNFRegAccountWebViewController)initWithRegController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if ([(CNFRegServerWebViewController *)self _shouldLog])
   {
     v5 = OSLogHandleForIDSCategory();
@@ -49,15 +49,15 @@
 
   v13.receiver = self;
   v13.super_class = CNFRegAccountWebViewController;
-  v6 = [(CNFRegServerWebViewController *)&v13 initWithRegController:v4];
+  v6 = [(CNFRegServerWebViewController *)&v13 initWithRegController:controllerCopy];
   if (v6)
   {
-    v7 = [MEMORY[0x277D07DF0] sharedInstance];
-    v8 = [v7 isLoaded];
-    v9 = [(CNFRegServerWebViewController *)v6 _shouldLog];
-    if (v8)
+    mEMORY[0x277D07DF0] = [MEMORY[0x277D07DF0] sharedInstance];
+    isLoaded = [mEMORY[0x277D07DF0] isLoaded];
+    _shouldLog = [(CNFRegServerWebViewController *)v6 _shouldLog];
+    if (isLoaded)
     {
-      if (v9)
+      if (_shouldLog)
       {
         v10 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -75,7 +75,7 @@
 
     else
     {
-      if (v9)
+      if (_shouldLog)
       {
         v11 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -90,7 +90,7 @@
         }
       }
 
-      [v7 startBagLoad];
+      [mEMORY[0x277D07DF0] startBagLoad];
     }
   }
 
@@ -99,8 +99,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(NSTimer *)self->_bagLoadTimer invalidate];
   bagLoadTimer = self->_bagLoadTimer;
@@ -132,34 +132,34 @@
   v19.super_class = CNFRegAccountWebViewController;
   [(CNFRegServerWebViewController *)&v19 loadView];
   v4 = +[CNFRegAppearanceController globalAppearanceController];
-  v5 = [v4 webViewBackgroundColor];
-  v6 = [(CNFRegAccountWebViewController *)self view];
-  [v6 setBackgroundColor:v5];
+  webViewBackgroundColor = [v4 webViewBackgroundColor];
+  view = [(CNFRegAccountWebViewController *)self view];
+  [view setBackgroundColor:webViewBackgroundColor];
 
-  v7 = [v4 webViewIsOpaque];
-  v8 = [(CNFRegAccountWebViewController *)self view];
-  [v8 setOpaque:v7];
+  webViewIsOpaque = [v4 webViewIsOpaque];
+  view2 = [(CNFRegAccountWebViewController *)self view];
+  [view2 setOpaque:webViewIsOpaque];
 
-  v9 = [v4 webViewBackgroundView];
-  v10 = [(CNFRegAccountWebViewController *)self view];
-  [v10 bounds];
-  [v9 setFrame:?];
+  webViewBackgroundView = [v4 webViewBackgroundView];
+  view3 = [(CNFRegAccountWebViewController *)self view];
+  [view3 bounds];
+  [webViewBackgroundView setFrame:?];
 
-  v11 = [(CNFRegAccountWebViewController *)self view];
-  [v11 addSubview:v9];
+  view4 = [(CNFRegAccountWebViewController *)self view];
+  [view4 addSubview:webViewBackgroundView];
 
-  v12 = [(CNFRegAccountWebViewController *)self view];
-  [v12 sendSubviewToBack:v9];
+  view5 = [(CNFRegAccountWebViewController *)self view];
+  [view5 sendSubviewToBack:webViewBackgroundView];
 
   v13 = CommunicationsSetupUIBundle();
   v14 = CNFRegStringTableName();
   v15 = [v13 localizedStringForKey:@"FACETIME_ACCOUNT_PAGE_TITLE" value:&stru_2856D3978 table:v14];
-  v16 = [(CNFRegAccountWebViewController *)self navigationItem];
-  [v16 setTitle:v15];
+  navigationItem = [(CNFRegAccountWebViewController *)self navigationItem];
+  [navigationItem setTitle:v15];
 
   v17 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelTapped];
-  v18 = [(CNFRegAccountWebViewController *)self navigationItem];
-  [v18 setLeftBarButtonItem:v17];
+  navigationItem2 = [(CNFRegAccountWebViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v17];
 }
 
 - (void)viewDidLoad
@@ -185,10 +185,10 @@
   if (![(CNFRegAccountWebViewController *)self _loadURLFromBag])
   {
     [(CNFRegServerWebViewController *)self showSpinner];
-    v4 = [MEMORY[0x277D07DF0] sharedInstance];
-    v5 = [v4 isLoaded];
+    mEMORY[0x277D07DF0] = [MEMORY[0x277D07DF0] sharedInstance];
+    isLoaded = [mEMORY[0x277D07DF0] isLoaded];
 
-    if (v5)
+    if (isLoaded)
     {
       [(CNFRegAccountWebViewController *)self setFailedBagLoad:1];
     }
@@ -201,63 +201,63 @@
   }
 }
 
-- (BOOL)shouldSetHeadersForRequest:(id)a3
+- (BOOL)shouldSetHeadersForRequest:(id)request
 {
-  v3 = [a3 valueForHTTPHeaderField:@"x-protocol-version"];
+  v3 = [request valueForHTTPHeaderField:@"x-protocol-version"];
   v4 = v3 == 0;
 
   return v4;
 }
 
-- (void)setHeadersForRequest:(id)a3
+- (void)setHeadersForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v10.receiver = self;
   v10.super_class = CNFRegAccountWebViewController;
-  [(CNFRegServerWebViewController *)&v10 setHeadersForRequest:v4];
-  [v4 addValue:@"6" forHTTPHeaderField:@"x-protocol-version"];
-  v5 = [(CNFRegAccountWebViewController *)self clientInfoHeaderValue];
-  if (v5)
+  [(CNFRegServerWebViewController *)&v10 setHeadersForRequest:requestCopy];
+  [requestCopy addValue:@"6" forHTTPHeaderField:@"x-protocol-version"];
+  clientInfoHeaderValue = [(CNFRegAccountWebViewController *)self clientInfoHeaderValue];
+  if (clientInfoHeaderValue)
   {
-    [v4 addValue:v5 forHTTPHeaderField:@"x-apple-client-info"];
+    [requestCopy addValue:clientInfoHeaderValue forHTTPHeaderField:@"x-apple-client-info"];
   }
 
-  v6 = [(CNFRegAccountWebViewController *)self viewPortHeaderValue];
-  if (v6)
+  viewPortHeaderValue = [(CNFRegAccountWebViewController *)self viewPortHeaderValue];
+  if (viewPortHeaderValue)
   {
-    [v4 addValue:v6 forHTTPHeaderField:@"x-vc-view-res"];
+    [requestCopy addValue:viewPortHeaderValue forHTTPHeaderField:@"x-vc-view-res"];
   }
 
-  v7 = [(CNFRegAccountWebViewController *)self securityHeaderValue];
-  if (v7)
+  securityHeaderValue = [(CNFRegAccountWebViewController *)self securityHeaderValue];
+  if (securityHeaderValue)
   {
-    [v4 addValue:v7 forHTTPHeaderField:@"x-ds-client-id"];
+    [requestCopy addValue:securityHeaderValue forHTTPHeaderField:@"x-ds-client-id"];
   }
 
-  v8 = [(CNFRegAccountWebViewController *)self serviceHeaderValue];
-  if (v8)
+  serviceHeaderValue = [(CNFRegAccountWebViewController *)self serviceHeaderValue];
+  if (serviceHeaderValue)
   {
-    [v4 addValue:v8 forHTTPHeaderField:@"x-vc-service"];
+    [requestCopy addValue:serviceHeaderValue forHTTPHeaderField:@"x-vc-service"];
   }
 
-  v9 = [(CNFRegAccountWebViewController *)self interfaceLayoutHeaderValue];
-  if (v9)
+  interfaceLayoutHeaderValue = [(CNFRegAccountWebViewController *)self interfaceLayoutHeaderValue];
+  if (interfaceLayoutHeaderValue)
   {
-    [v4 addValue:v9 forHTTPHeaderField:@"x-vc-ui-layout"];
+    [requestCopy addValue:interfaceLayoutHeaderValue forHTTPHeaderField:@"x-vc-ui-layout"];
   }
 }
 
-- (BOOL)canSendURLRequest:(id)a3
+- (BOOL)canSendURLRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v20.receiver = self;
   v20.super_class = CNFRegAccountWebViewController;
-  if (![(CNFRegServerWebViewController *)&v20 canSendURLRequest:v4])
+  if (![(CNFRegServerWebViewController *)&v20 canSendURLRequest:requestCopy])
   {
     goto LABEL_45;
   }
 
-  v5 = [v4 valueForHTTPHeaderField:@"x-apple-client-info"];
+  v5 = [requestCopy valueForHTTPHeaderField:@"x-apple-client-info"];
 
   if (!v5)
   {
@@ -285,7 +285,7 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  v6 = [v4 valueForHTTPHeaderField:@"x-ds-client-id"];
+  v6 = [requestCopy valueForHTTPHeaderField:@"x-ds-client-id"];
 
   if (!v6)
   {
@@ -309,7 +309,7 @@ LABEL_45:
     goto LABEL_44;
   }
 
-  v7 = [v4 valueForHTTPHeaderField:@"x-protocol-version"];
+  v7 = [requestCopy valueForHTTPHeaderField:@"x-protocol-version"];
 
   if (!v7)
   {
@@ -333,7 +333,7 @@ LABEL_45:
     goto LABEL_44;
   }
 
-  v8 = [v4 valueForHTTPHeaderField:@"x-vc-service"];
+  v8 = [requestCopy valueForHTTPHeaderField:@"x-vc-service"];
 
   if (!v8)
   {
@@ -357,7 +357,7 @@ LABEL_45:
     goto LABEL_44;
   }
 
-  v9 = [v4 valueForHTTPHeaderField:@"x-vc-ui-layout"];
+  v9 = [requestCopy valueForHTTPHeaderField:@"x-vc-ui-layout"];
 
   if (!v9)
   {
@@ -381,7 +381,7 @@ LABEL_45:
     goto LABEL_44;
   }
 
-  v10 = [v4 valueForHTTPHeaderField:@"x-vc-view-res"];
+  v10 = [requestCopy valueForHTTPHeaderField:@"x-vc-view-res"];
 
   if (!v10)
   {
@@ -430,11 +430,11 @@ LABEL_46:
 - (BOOL)_loadURLFromBag
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(CNFRegAccountWebViewController *)self bagKey];
-  v4 = [MEMORY[0x277CBEBD0] CNFRegServerURLOverride];
-  if (v4)
+  bagKey = [(CNFRegAccountWebViewController *)self bagKey];
+  cNFRegServerURLOverride = [MEMORY[0x277CBEBD0] CNFRegServerURLOverride];
+  if (cNFRegServerURLOverride)
   {
-    v5 = [MEMORY[0x277CBEBC0] URLWithString:v4];
+    v5 = [MEMORY[0x277CBEBC0] URLWithString:cNFRegServerURLOverride];
     if (v5)
     {
       v6 = @"defaults override";
@@ -446,14 +446,14 @@ LABEL_46:
     }
   }
 
-  else if (v3)
+  else if (bagKey)
   {
-    v12 = [MEMORY[0x277D07DF0] sharedInstance];
-    v5 = [v12 urlWithKey:v3];
+    mEMORY[0x277D07DF0] = [MEMORY[0x277D07DF0] sharedInstance];
+    v5 = [mEMORY[0x277D07DF0] urlWithKey:bagKey];
 
     if (v5)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"bag key {%@}", v3];
+      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"bag key {%@}", bagKey];
     }
 
     else
@@ -514,15 +514,15 @@ LABEL_46:
     v3 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(CNFRegAccountWebViewController *)self bagKey];
+      bagKey = [(CNFRegAccountWebViewController *)self bagKey];
       *buf = 138412290;
-      v20 = v4;
+      v20 = bagKey;
       _os_log_impl(&dword_243BE5000, v3, OS_LOG_TYPE_DEFAULT, "Server bag finished loading, but could not find url for key : %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v17 = [(CNFRegAccountWebViewController *)self bagKey];
+      bagKey2 = [(CNFRegAccountWebViewController *)self bagKey];
       IMLogString();
     }
   }
@@ -552,9 +552,9 @@ LABEL_46:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_bagLoadTimeout:(id)a3
+- (void)_bagLoadTimeout:(id)timeout
 {
-  v4 = a3;
+  timeoutCopy = timeout;
   if ([(CNFRegServerWebViewController *)self _shouldLog])
   {
     v5 = OSLogHandleForIDSCategory();
@@ -649,9 +649,9 @@ LABEL_46:
       }
     }
 
-    v4 = [MEMORY[0x277D07DF0] sharedInstance];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:self selector:sel__handleFTServerBagFinishedLoading name:*MEMORY[0x277D07D98] object:v4];
+    mEMORY[0x277D07DF0] = [MEMORY[0x277D07DF0] sharedInstance];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__handleFTServerBagFinishedLoading name:*MEMORY[0x277D07D98] object:mEMORY[0x277D07DF0]];
     self->_listeningForBagLoad = 1;
   }
 }
@@ -678,9 +678,9 @@ LABEL_46:
       }
     }
 
-    v4 = [MEMORY[0x277D07DF0] sharedInstance];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 removeObserver:self name:*MEMORY[0x277D07D98] object:v4];
+    mEMORY[0x277D07DF0] = [MEMORY[0x277D07DF0] sharedInstance];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D07D98] object:mEMORY[0x277D07DF0]];
     self->_listeningForBagLoad = 0;
   }
 }
@@ -723,10 +723,10 @@ LABEL_46:
 
 - (id)_nonModalParentController
 {
-  v2 = [(CNFRegAccountWebViewController *)self parentViewController];
-  if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  parentViewController = [(CNFRegAccountWebViewController *)self parentViewController];
+  if (parentViewController && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = v2;
+    v3 = parentViewController;
   }
 
   else
@@ -739,30 +739,30 @@ LABEL_46:
 
 - (id)_viewPortForNormalPresentation
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
   v7 = v6;
 
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v10 = [(CNFRegAccountWebViewController *)self _nonModalParentController];
-  if (v10)
+  _nonModalParentController = [(CNFRegAccountWebViewController *)self _nonModalParentController];
+  if (_nonModalParentController)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [(CNFRegAccountWebViewController *)self navigationController];
-      v12 = [v11 navigationBar];
-      [v12 defaultSizeForOrientation:1];
+      navigationController = [(CNFRegAccountWebViewController *)self navigationController];
+      navigationBar = [navigationController navigationBar];
+      [navigationBar defaultSizeForOrientation:1];
       v14 = v13;
 
       v7 = v7 - v14;
     }
   }
 
-  if (v9 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v15 = 320.0;
   }
@@ -779,23 +779,23 @@ LABEL_46:
 
 - (id)viewPortHeaderValue
 {
-  v2 = self;
-  v3 = [(CNFRegAccountWebViewController *)v2 _nonModalParentController];
-  v4 = v3;
-  v5 = v2;
-  if (v3)
+  selfCopy = self;
+  _nonModalParentController = [(CNFRegAccountWebViewController *)selfCopy _nonModalParentController];
+  v4 = _nonModalParentController;
+  v5 = selfCopy;
+  if (_nonModalParentController)
   {
-    v5 = v3;
+    v5 = _nonModalParentController;
   }
 
   if ([(CNFRegAccountWebViewController *)v5 modalPresentationStyle]== 2)
   {
-    [(CNFRegAccountWebViewController *)v2 _viewPortForFormSheetPresentation];
+    [(CNFRegAccountWebViewController *)selfCopy _viewPortForFormSheetPresentation];
   }
 
   else
   {
-    [(CNFRegAccountWebViewController *)v2 _viewPortForNormalPresentation];
+    [(CNFRegAccountWebViewController *)selfCopy _viewPortForNormalPresentation];
   }
   v6 = ;
 
@@ -804,31 +804,31 @@ LABEL_46:
 
 - (id)securityHeaderValue
 {
-  v2 = CUTWeakLinkClass();
-  if (v2)
+  appleIDClientIdentifier = CUTWeakLinkClass();
+  if (appleIDClientIdentifier)
   {
-    v2 = [v2 appleIDClientIdentifier];
+    appleIDClientIdentifier = [appleIDClientIdentifier appleIDClientIdentifier];
   }
 
-  return v2;
+  return appleIDClientIdentifier;
 }
 
 - (id)pushTokenHeaderValue
 {
-  v2 = CUTWeakLinkClass();
-  if (v2)
+  publicToken = CUTWeakLinkClass();
+  if (publicToken)
   {
     if (pushTokenHeaderValue__pred__APSEnvironmentProduction != -1)
     {
       [CNFRegAccountWebViewController pushTokenHeaderValue];
     }
 
-    v3 = [v2 alloc];
+    v3 = [publicToken alloc];
     v4 = [v3 initWithEnvironmentName:pushTokenHeaderValue__APSEnvironmentProduction queue:MEMORY[0x277D85CD0]];
-    v2 = [v4 publicToken];
+    publicToken = [v4 publicToken];
   }
 
-  return v2;
+  return publicToken;
 }
 
 void __54__CNFRegAccountWebViewController_pushTokenHeaderValue__block_invoke()
@@ -849,17 +849,17 @@ void __54__CNFRegAccountWebViewController_pushTokenHeaderValue__block_invoke()
 
 - (id)serviceHeaderValue
 {
-  v2 = [(CNFRegServerWebViewController *)self regController];
-  v3 = [v2 serviceType];
+  regController = [(CNFRegServerWebViewController *)self regController];
+  serviceType = [regController serviceType];
 
-  if (v3 > 2)
+  if (serviceType > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_278DE8700[v3];
+    return off_278DE8700[serviceType];
   }
 }
 

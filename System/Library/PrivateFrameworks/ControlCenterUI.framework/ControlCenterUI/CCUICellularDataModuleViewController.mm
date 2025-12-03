@@ -3,44 +3,44 @@
 - (BOOL)_isCellularDataRestricted;
 - (BOOL)_multipleSubscriptionsAvailable;
 - (BOOL)_toggleState;
-- (CCUICellularDataModuleViewController)initWithContentModuleContext:(id)a3;
+- (CCUICellularDataModuleViewController)initWithContentModuleContext:(id)context;
 - (CCUIConnectivityManager)connectivityManager;
 - (CCUIContentModuleContext)contentModuleContext;
 - (NSString)menuDisplayName;
 - (UIMenu)contextMenu;
-- (id)_actionFromSubscriptionContext:(id)a3;
+- (id)_actionFromSubscriptionContext:(id)context;
 - (id)_currentCellularPlanName;
-- (id)_debugDescriptionForState:(BOOL)a3;
-- (id)_formatPhoneNumber:(id)a3;
-- (id)_glyphImageForSignalStrength:(id)a3;
-- (id)_subtitleTextWithState:(BOOL)a3;
-- (id)contextMenuPreviewForControlTemplateView:(id)a3;
+- (id)_debugDescriptionForState:(BOOL)state;
+- (id)_formatPhoneNumber:(id)number;
+- (id)_glyphImageForSignalStrength:(id)strength;
+- (id)_subtitleTextWithState:(BOOL)state;
+- (id)contextMenuPreviewForControlTemplateView:(id)view;
 - (void)_updateContentMenuActions;
-- (void)_updateGlyphImagesWithSignalStrength:(id)a3;
+- (void)_updateGlyphImagesWithSignalStrength:(id)strength;
 - (void)_updateSignalStrength;
 - (void)_updateState;
 - (void)activeSubscriptionsDidChange;
-- (void)buttonTapped:(id)a3 forEvent:(id)a4;
-- (void)contextMenuShouldPresentForControlTemplateView:(id)a3 withCompletion:(id)a4;
+- (void)buttonTapped:(id)tapped forEvent:(id)event;
+- (void)contextMenuShouldPresentForControlTemplateView:(id)view withCompletion:(id)completion;
 - (void)dealloc;
-- (void)operatorNameChanged:(id)a3 name:(id)a4;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)signalStrengthChanged:(id)a3 info:(id)a4;
+- (void)operatorNameChanged:(id)changed name:(id)name;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)signalStrengthChanged:(id)changed info:(id)info;
 - (void)startObservingStateChanges;
 - (void)startObservingStateChangesIfNecessary;
 - (void)stopObservingStateChanges;
 - (void)stopObservingStateChangesIfNecessary;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CCUICellularDataModuleViewController
 
-- (CCUICellularDataModuleViewController)initWithContentModuleContext:(id)a3
+- (CCUICellularDataModuleViewController)initWithContentModuleContext:(id)context
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = CCUICellularDataModuleViewController;
   v5 = [(CCUICellularDataModuleViewController *)&v14 init];
@@ -54,7 +54,7 @@
       _os_log_impl(&dword_21E9F5000, v6, OS_LOG_TYPE_DEFAULT, "[Cellular Data Module] (%{public}p) Initialization", buf, 0xCu);
     }
 
-    objc_storeWeak(&v5->_contentModuleContext, v4);
+    objc_storeWeak(&v5->_contentModuleContext, contextCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     contentMenuActions = v5->_contentMenuActions;
     v5->_contentMenuActions = v7;
@@ -79,7 +79,7 @@
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21E9F5000, v3, OS_LOG_TYPE_DEFAULT, "[Cellular Data Module] (%{public}p) Dealloc", buf, 0xCu);
   }
 
@@ -103,20 +103,20 @@
   v27 = [(CoreTelephonyClient *)v5 getPublicSignalStrength:v28 error:&v29];
   v26 = v29;
 
-  v6 = [v27 displayBars];
-  v7 = v6;
+  displayBars = [v27 displayBars];
+  v7 = displayBars;
   v8 = &unk_28302E418;
-  if (v6)
+  if (displayBars)
   {
-    v8 = v6;
+    v8 = displayBars;
   }
 
   v9 = v8;
 
   v10 = [(CCUICellularDataModuleViewController *)self _glyphImageForSignalStrength:v9];
 
-  v11 = [MEMORY[0x277D75348] systemGreenColor];
-  v12 = [objc_alloc(MEMORY[0x277CFC9B0]) initWithGlyphImage:v10 highlightColor:v11 useLightStyle:1];
+  systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+  v12 = [objc_alloc(MEMORY[0x277CFC9B0]) initWithGlyphImage:v10 highlightColor:systemGreenColor useLightStyle:1];
   [v12 setUseAutomaticSymbolColors:1];
   v13 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__glyphViewForExpandedConnectivityModuleTapped];
   [v12 addGestureRecognizer:v13];
@@ -138,7 +138,7 @@
 
   [(CCUIButtonModuleViewController *)self setTitle:v20];
   [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setTitle:v20];
-  v21 = [objc_alloc(MEMORY[0x277CFC9B0]) initWithGlyphImage:v10 highlightColor:v11 useLightStyle:1];
+  v21 = [objc_alloc(MEMORY[0x277CFC9B0]) initWithGlyphImage:v10 highlightColor:systemGreenColor useLightStyle:1];
   [v21 setUseIndependentAlpha:1];
   [v21 setDynamicLayoutEnabled:1];
   [v21 setUseAutomaticSymbolColors:1];
@@ -147,30 +147,30 @@
   self->_buttonViewForCollapsedConnectivityModule = v21;
   v23 = v21;
 
-  v24 = [MEMORY[0x277D75348] systemGreenColor];
+  systemGreenColor2 = [MEMORY[0x277D75348] systemGreenColor];
 
-  [(CCUIButtonModuleViewController *)self setSelectedGlyphColor:v24];
-  v25 = [(CCUIButtonModuleViewController *)self _templateView];
-  [v25 setContextMenuDelegate:self];
-  [v25 setShowsMenuAsPrimaryAction:0];
+  [(CCUIButtonModuleViewController *)self setSelectedGlyphColor:systemGreenColor2];
+  _templateView = [(CCUIButtonModuleViewController *)self _templateView];
+  [_templateView setContextMenuDelegate:self];
+  [_templateView setShowsMenuAsPrimaryAction:0];
   [(CCUICellularDataModuleViewController *)self startObservingStateChangesIfNecessary];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = CCUICellularDataModuleViewController;
-  [(CCUICellularDataModuleViewController *)&v4 viewIsAppearing:a3];
+  [(CCUICellularDataModuleViewController *)&v4 viewIsAppearing:appearing];
   [(CCUICellularDataModuleViewController *)self _updateState];
   [(CCUICellularDataModuleViewController *)self _updateContentMenuActions];
   [(CCUICellularDataModuleViewController *)self _updateSignalStrength];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CCUICellularDataModuleViewController;
-  [(CCUICellularDataModuleViewController *)&v4 viewWillDisappear:a3];
+  [(CCUICellularDataModuleViewController *)&v4 viewWillDisappear:disappear];
   [(CCUICellularDataModuleViewController *)self stopObservingStateChangesIfNecessary];
 }
 
@@ -193,29 +193,29 @@
 - (void)startObservingStateChanges
 {
   self->_observingStateChanges = 1;
-  v4 = [(CCUICellularDataModuleViewController *)self connectivityManager];
-  [v4 addCellularDataViewControllerObservingStateChanges:self];
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  [v3 registerObserver:self];
+  connectivityManager = [(CCUICellularDataModuleViewController *)self connectivityManager];
+  [connectivityManager addCellularDataViewControllerObservingStateChanges:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] registerObserver:self];
 }
 
 - (void)stopObservingStateChanges
 {
   self->_observingStateChanges = 0;
-  v4 = [(CCUICellularDataModuleViewController *)self connectivityManager];
-  [v4 removeCellularDataViewControllerObservingStateChanges:self];
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  [v3 unregisterObserver:self];
+  connectivityManager = [(CCUICellularDataModuleViewController *)self connectivityManager];
+  [connectivityManager removeCellularDataViewControllerObservingStateChanges:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unregisterObserver:self];
 }
 
-- (void)buttonTapped:(id)a3 forEvent:(id)a4
+- (void)buttonTapped:(id)tapped forEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  tappedCopy = tapped;
   [(CCUICellularDataModuleViewController *)self _toggleState];
   v8.receiver = self;
   v8.super_class = CCUICellularDataModuleViewController;
-  [(CCUIButtonModuleViewController *)&v8 buttonTapped:v7 forEvent:v6];
+  [(CCUIButtonModuleViewController *)&v8 buttonTapped:tappedCopy forEvent:eventCopy];
 }
 
 - (NSString)menuDisplayName
@@ -256,38 +256,38 @@ void __51__CCUICellularDataModuleViewController_contextMenu__block_invoke(uint64
   [v3 openURL:v4 completionHandler:0];
 }
 
-- (void)contextMenuShouldPresentForControlTemplateView:(id)a3 withCompletion:(id)a4
+- (void)contextMenuShouldPresentForControlTemplateView:(id)view withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = [(CCUICellularDataModuleViewController *)self contentModuleContext];
+  completionCopy = completion;
+  contentModuleContext = [(CCUICellularDataModuleViewController *)self contentModuleContext];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __102__CCUICellularDataModuleViewController_contextMenuShouldPresentForControlTemplateView_withCompletion___block_invoke;
   v8[3] = &unk_278381DA0;
-  v9 = v5;
-  v7 = v5;
-  [v6 requestAuthenticationWithCompletionHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [contentModuleContext requestAuthenticationWithCompletionHandler:v8];
 }
 
-- (id)contextMenuPreviewForControlTemplateView:(id)a3
+- (id)contextMenuPreviewForControlTemplateView:(id)view
 {
-  if (self->_templateViewForExpandedConnectivityModule == a3)
+  if (self->_templateViewForExpandedConnectivityModule == view)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = [(CCUICellularDataModuleViewController *)self view];
-    v4 = [v3 superview];
+    view = [(CCUICellularDataModuleViewController *)self view];
+    superview = [view superview];
 
-    v5 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:v4];
+    v5 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:superview];
   }
 
   return v5;
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
   v5 = *MEMORY[0x277CFC8F8];
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
@@ -299,16 +299,16 @@ void __51__CCUICellularDataModuleViewController_contextMenu__block_invoke(uint64
   [(CCUICellularDataModuleViewController *)self _updateState];
 }
 
-- (void)signalStrengthChanged:(id)a3 info:(id)a4
+- (void)signalStrengthChanged:(id)changed info:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__CCUICellularDataModuleViewController_signalStrengthChanged_info___block_invoke;
   v7[3] = &unk_278381DC8;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = infoCopy;
+  selfCopy = self;
+  v6 = infoCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -356,7 +356,7 @@ uint64_t __68__CCUICellularDataModuleViewController_activeSubscriptionsDidChange
   return [*(a1 + 32) _updateContentMenuActions];
 }
 
-- (void)operatorNameChanged:(id)a3 name:(id)a4
+- (void)operatorNameChanged:(id)changed name:(id)name
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -437,11 +437,11 @@ uint64_t __65__CCUICellularDataModuleViewController_operatorNameChanged_name___b
   [(CCUIButtonModuleViewController *)self setSelected:0];
   [(CCUIRoundButton *)self->_glyphViewForExpandedConnectivityModule setSelected:0];
   [(CCUIRoundButton *)self->_buttonViewForCollapsedConnectivityModule setSelected:0];
-  v6 = [(CCUICellularDataModuleViewController *)self _multipleSubscriptionsAvailable];
-  [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setShowsMenuAsPrimaryAction:v6];
-  [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setShowsMenuAffordance:v6];
-  v7 = [(CCUIButtonModuleViewController *)self _templateView];
-  [v7 setShowsMenuAsPrimaryAction:v6];
+  _multipleSubscriptionsAvailable = [(CCUICellularDataModuleViewController *)self _multipleSubscriptionsAvailable];
+  [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setShowsMenuAsPrimaryAction:_multipleSubscriptionsAvailable];
+  [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setShowsMenuAffordance:_multipleSubscriptionsAvailable];
+  _templateView = [(CCUIButtonModuleViewController *)self _templateView];
+  [_templateView setShowsMenuAsPrimaryAction:_multipleSubscriptionsAvailable];
   v8 = *MEMORY[0x277CFC8F8];
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
   {
@@ -472,26 +472,26 @@ uint64_t __65__CCUICellularDataModuleViewController_operatorNameChanged_name___b
   v7 = [(CoreTelephonyClient *)v6 getPublicSignalStrength:v4 error:&v10];
   v8 = v10;
 
-  v9 = [v7 displayBars];
-  [(CCUICellularDataModuleViewController *)self _updateGlyphImagesWithSignalStrength:v9];
+  displayBars = [v7 displayBars];
+  [(CCUICellularDataModuleViewController *)self _updateGlyphImagesWithSignalStrength:displayBars];
 }
 
-- (void)_updateGlyphImagesWithSignalStrength:(id)a3
+- (void)_updateGlyphImagesWithSignalStrength:(id)strength
 {
-  v6 = [(CCUICellularDataModuleViewController *)self _glyphImageForSignalStrength:a3];
+  v6 = [(CCUICellularDataModuleViewController *)self _glyphImageForSignalStrength:strength];
   [(CCUIButtonModuleViewController *)self setGlyphImage:v6];
-  v4 = [(CCUICellularDataModuleViewController *)self buttonViewForCollapsedConnectivityModule];
-  [v4 setGlyphImage:v6];
-  v5 = [(CCUICellularDataModuleViewController *)self glyphViewForExpandedConnectivityModule];
-  [v5 setGlyphImage:v6];
+  buttonViewForCollapsedConnectivityModule = [(CCUICellularDataModuleViewController *)self buttonViewForCollapsedConnectivityModule];
+  [buttonViewForCollapsedConnectivityModule setGlyphImage:v6];
+  glyphViewForExpandedConnectivityModule = [(CCUICellularDataModuleViewController *)self glyphViewForExpandedConnectivityModule];
+  [glyphViewForExpandedConnectivityModule setGlyphImage:v6];
 }
 
-- (id)_glyphImageForSignalStrength:(id)a3
+- (id)_glyphImageForSignalStrength:(id)strength
 {
-  [a3 doubleValue];
+  [strength doubleValue];
   v5 = v4 * 0.25;
-  v6 = [(CCUIButtonModuleViewController *)self contentMetrics];
-  v7 = [v6 symbolConfiguration];
+  contentMetrics = [(CCUIButtonModuleViewController *)self contentMetrics];
+  symbolConfiguration = [contentMetrics symbolConfiguration];
   if ([(CCUIButtonModuleViewController *)self contentRenderingMode]== 1)
   {
     v8 = 2;
@@ -503,12 +503,12 @@ uint64_t __65__CCUICellularDataModuleViewController_operatorNameChanged_name___b
   }
 
   v9 = [MEMORY[0x277D755D0] configurationWithScale:v8];
-  v10 = [v7 configurationByApplyingConfiguration:v9];
+  v10 = [symbolConfiguration configurationByApplyingConfiguration:v9];
 
   v11 = [MEMORY[0x277D755B8] systemImageNamed:@"cellularbars" variableValue:v10 withConfiguration:v5];
-  v12 = [v11 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection = [v11 imageFlippedForRightToLeftLayoutDirection];
 
-  return v12;
+  return imageFlippedForRightToLeftLayoutDirection;
 }
 
 - (id)_currentCellularPlanName
@@ -541,8 +541,8 @@ LABEL_7:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v9 = [v4 subscriptionsInUse];
-    v10 = [v9 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    subscriptionsInUse = [v4 subscriptionsInUse];
+    v10 = [subscriptionsInUse countByEnumeratingWithState:&v28 objects:v33 count:16];
     v7 = v10;
     if (v10)
     {
@@ -553,21 +553,21 @@ LABEL_10:
       {
         if (*v29 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(subscriptionsInUse);
         }
 
         v13 = *(*(&v28 + 1) + 8 * v12);
-        v14 = [v13 userDataPreferred];
-        v15 = [v14 BOOLValue];
+        userDataPreferred = [v13 userDataPreferred];
+        bOOLValue = [userDataPreferred BOOLValue];
 
-        if (v15)
+        if (bOOLValue)
         {
           break;
         }
 
         if (v7 == ++v12)
         {
-          v7 = [v9 countByEnumeratingWithState:&v28 objects:v33 count:16];
+          v7 = [subscriptionsInUse countByEnumeratingWithState:&v28 objects:v33 count:16];
           if (v7)
           {
             goto LABEL_10;
@@ -610,27 +610,27 @@ LABEL_10:
     {
 LABEL_16:
       v8 = 0;
-      v16 = v9;
+      v16 = subscriptionsInUse;
     }
   }
 
   return v8;
 }
 
-- (id)_subtitleTextWithState:(BOOL)a3
+- (id)_subtitleTextWithState:(BOOL)state
 {
-  if (!a3)
+  if (!state)
   {
-    v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v4 = [v3 localizedStringForKey:@"CONTROL_CENTER_STATUS_CELLULAR_DATA_OFF" value:&stru_28301B138 table:@"ControlCenterUI+SystemModules"];
+    _currentCellularPlanName = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    v4 = [_currentCellularPlanName localizedStringForKey:@"CONTROL_CENTER_STATUS_CELLULAR_DATA_OFF" value:&stru_28301B138 table:@"ControlCenterUI+SystemModules"];
     goto LABEL_5;
   }
 
-  v3 = [(CCUICellularDataModuleViewController *)self _currentCellularPlanName];
-  if ([v3 length])
+  _currentCellularPlanName = [(CCUICellularDataModuleViewController *)self _currentCellularPlanName];
+  if ([_currentCellularPlanName length])
   {
-    v4 = v3;
-    v3 = v4;
+    v4 = _currentCellularPlanName;
+    _currentCellularPlanName = v4;
 LABEL_5:
     v5 = v4;
     goto LABEL_6;
@@ -646,8 +646,8 @@ LABEL_6:
 
 - (BOOL)_isCellularDataRestricted
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x277D25D10]] == 2;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25D10]] == 2;
 
   return v3;
 }
@@ -657,8 +657,8 @@ LABEL_6:
   v2 = CCSIsInternalInstall();
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [v3 BOOLForKey:@"ControlCenterCellularDataButtonDemoMode"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v4 = [standardUserDefaults BOOLForKey:@"ControlCenterCellularDataButtonDemoMode"];
 
     LOBYTE(v2) = v4;
   }
@@ -686,8 +686,8 @@ LABEL_6:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v13 = [v4 subscriptionsInUse];
-  v14 = [v13 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  subscriptionsInUse = [v4 subscriptionsInUse];
+  v14 = [subscriptionsInUse countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v14)
   {
     v15 = 0;
@@ -698,21 +698,21 @@ LABEL_6:
       {
         if (*v21 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(subscriptionsInUse);
         }
 
         v15 += [*(*(&v20 + 1) + 8 * i) isSimHidden] ^ 1;
       }
 
-      v14 = [v13 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v14 = [subscriptionsInUse countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v14);
     v14 = v15 > 1;
   }
 
-  v18 = [(CCUICellularDataModuleViewController *)self _isEnabled];
-  return v18 & v14;
+  _isEnabled = [(CCUICellularDataModuleViewController *)self _isEnabled];
+  return _isEnabled & v14;
 }
 
 - (void)_updateContentMenuActions
@@ -743,8 +743,8 @@ LABEL_6:
         v26 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v14 = [v5 subscriptionsInUse];
-        v15 = [v14 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        subscriptionsInUse = [v5 subscriptionsInUse];
+        v15 = [subscriptionsInUse countByEnumeratingWithState:&v23 objects:v28 count:16];
         if (v15)
         {
           v16 = v15;
@@ -755,7 +755,7 @@ LABEL_6:
             {
               if (*v24 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(subscriptionsInUse);
               }
 
               v19 = [(CCUICellularDataModuleViewController *)self _actionFromSubscriptionContext:*(*(&v23 + 1) + 8 * i)];
@@ -765,17 +765,17 @@ LABEL_6:
               }
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v23 objects:v28 count:16];
+            v16 = [subscriptionsInUse countByEnumeratingWithState:&v23 objects:v28 count:16];
           }
 
           while (v16);
         }
       }
 
-      v20 = [(CCUIButtonModuleViewController *)self _templateView];
-      v21 = [v20 isPresentingContextMenu];
-      templateViewForExpandedConnectivityModule = v20;
-      if ((v21 & 1) == 0)
+      _templateView = [(CCUIButtonModuleViewController *)self _templateView];
+      isPresentingContextMenu = [_templateView isPresentingContextMenu];
+      templateViewForExpandedConnectivityModule = _templateView;
+      if ((isPresentingContextMenu & 1) == 0)
       {
         templateViewForExpandedConnectivityModule = self->_templateViewForExpandedConnectivityModule;
       }
@@ -785,11 +785,11 @@ LABEL_6:
   }
 }
 
-- (id)_formatPhoneNumber:(id)a3
+- (id)_formatPhoneNumber:(id)number
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length] && (v5 = CFPhoneNumberCreate()) != 0)
+  numberCopy = number;
+  v4 = numberCopy;
+  if (numberCopy && [numberCopy length] && (v5 = CFPhoneNumberCreate()) != 0)
   {
     v6 = v5;
     String = CFPhoneNumberCreateString();
@@ -804,10 +804,10 @@ LABEL_6:
   return String;
 }
 
-- (id)_actionFromSubscriptionContext:(id)a3
+- (id)_actionFromSubscriptionContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CoreTelephonyClient *)self->_coreTelephonyClient getSubscriptionUserFacingName:v4 error:0];
+  contextCopy = context;
+  v5 = [(CoreTelephonyClient *)self->_coreTelephonyClient getSubscriptionUserFacingName:contextCopy error:0];
   if (v5)
   {
     objc_initWeak(&location, self);
@@ -817,20 +817,20 @@ LABEL_6:
     v14[2] = __71__CCUICellularDataModuleViewController__actionFromSubscriptionContext___block_invoke;
     v14[3] = &unk_278381E40;
     objc_copyWeak(&v16, &location);
-    v7 = v4;
+    v7 = contextCopy;
     v15 = v7;
     v8 = [v6 actionWithTitle:v5 image:0 identifier:0 handler:v14];
-    v9 = [v7 phoneNumber];
-    v10 = [(CCUICellularDataModuleViewController *)self _formatPhoneNumber:v9];
+    phoneNumber = [v7 phoneNumber];
+    v10 = [(CCUICellularDataModuleViewController *)self _formatPhoneNumber:phoneNumber];
     if (v10)
     {
       [v8 setSubtitle:v10];
     }
 
-    v11 = [v7 userDataPreferred];
-    v12 = [v11 BOOLValue];
+    userDataPreferred = [v7 userDataPreferred];
+    bOOLValue = [userDataPreferred BOOLValue];
 
-    [v8 setState:v12];
+    [v8 setState:bOOLValue];
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
   }
@@ -879,9 +879,9 @@ void __71__CCUICellularDataModuleViewController__actionFromSubscriptionContext__
   }
 }
 
-- (id)_debugDescriptionForState:(BOOL)a3
+- (id)_debugDescriptionForState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     return @"on";
   }

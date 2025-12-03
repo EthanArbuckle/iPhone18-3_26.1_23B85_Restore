@@ -3,7 +3,7 @@
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation UIStatusBarDataNetworkItemViewAccessibility
@@ -22,20 +22,20 @@
 
 - (id)accessibilityLabel
 {
-  v49 = self;
+  selfCopy = self;
   v48[1] = a2;
   v48[0] = 0;
   v41 = [(UIStatusBarDataNetworkItemViewAccessibility *)self safeValueForKey:@"_showRSSI"];
-  v42 = [v41 BOOLValue];
+  bOOLValue = [v41 BOOLValue];
   *&v2 = MEMORY[0x29EDC9740](v41).n128_u64[0];
-  if (v42)
+  if (bOOLValue)
   {
-    v36 = [(UIStatusBarDataNetworkItemViewAccessibility *)v49 safeValueForKey:@"_wifiStrengthRaw", v2];
-    v37 = [v36 intValue];
+    v36 = [(UIStatusBarDataNetworkItemViewAccessibility *)selfCopy safeValueForKey:@"_wifiStrengthRaw", v2];
+    intValue = [v36 intValue];
     *&v3 = MEMORY[0x29EDC9740](v36).n128_u64[0];
-    v47 = v37;
+    v47 = intValue;
     v38 = MEMORY[0x29EDBA0F8];
-    if ([(UIStatusBarDataNetworkItemViewAccessibility *)v49 isWLAN])
+    if ([(UIStatusBarDataNetworkItemViewAccessibility *)selfCopy isWLAN])
     {
       v4 = @"status.network.wlan.rssi.strength";
     }
@@ -57,13 +57,13 @@
 
   else
   {
-    v34 = [(UIStatusBarDataNetworkItemViewAccessibility *)v49 safeValueForKey:@"_dataNetworkType", v2];
-    v35 = [v34 intValue];
+    v34 = [(UIStatusBarDataNetworkItemViewAccessibility *)selfCopy safeValueForKey:@"_dataNetworkType", v2];
+    intValue2 = [v34 intValue];
     *&v7 = MEMORY[0x29EDC9740](v34).n128_u64[0];
-    v46 = v35;
-    if (v35)
+    v46 = intValue2;
+    if (intValue2)
     {
-      switch(v35)
+      switch(intValue2)
       {
         case 1:
           v12 = accessibilityLocalizedString(@"status.network.edge");
@@ -90,15 +90,15 @@
           MEMORY[0x29EDC9740](v23);
           break;
         case 5:
-          v45 = [(UIStatusBarDataNetworkItemViewAccessibility *)v49 isWLAN];
-          v32 = [(UIStatusBarDataNetworkItemViewAccessibility *)v49 safeValueForKey:@"_wifiStrengthBars"];
-          v33 = [v32 intValue];
+          isWLAN = [(UIStatusBarDataNetworkItemViewAccessibility *)selfCopy isWLAN];
+          v32 = [(UIStatusBarDataNetworkItemViewAccessibility *)selfCopy safeValueForKey:@"_wifiStrengthBars"];
+          intValue3 = [v32 intValue];
           MEMORY[0x29EDC9740](v32);
-          v44 = v33;
-          if (v33)
+          v44 = intValue3;
+          if (intValue3)
           {
             location = 0;
-            if (v45)
+            if (isWLAN)
             {
               objc_storeStrong(&location, @"status.network.wlan.signal.bars");
             }
@@ -120,7 +120,7 @@
 
           else
           {
-            if (v45)
+            if (isWLAN)
             {
               v8 = accessibilityLocalizedString(@"status.network.wlan.no.signal");
             }
@@ -177,33 +177,33 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = UIStatusBarDataNetworkItemViewAccessibility;
   return [(UIStatusBarDataNetworkItemViewAccessibility *)&v3 accessibilityTraits]| *MEMORY[0x29EDC7580];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, ended);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v6 = [(UIStatusBarDataNetworkItemViewAccessibility *)v15 safeValueForKey:?];
-  v7 = [v6 BOOLValue];
+  objc_storeStrong(&v13, event);
+  v6 = [(UIStatusBarDataNetworkItemViewAccessibility *)selfCopy safeValueForKey:?];
+  bOOLValue = [v6 BOOLValue];
   *&v4 = MEMORY[0x29EDC9740](v6).n128_u64[0];
-  v12 = v7;
-  v11.receiver = v15;
+  v12 = bOOLValue;
+  v11.receiver = selfCopy;
   v11.super_class = UIStatusBarDataNetworkItemViewAccessibility;
   [(UIStatusBarDataNetworkItemViewAccessibility *)&v11 touchesEnded:location[0] withEvent:v13, v4];
   v10 = v12 & 1;
-  v8 = [(UIStatusBarDataNetworkItemViewAccessibility *)v15 safeValueForKey:@"_showRSSI"];
-  v9 = [v8 BOOLValue];
+  v8 = [(UIStatusBarDataNetworkItemViewAccessibility *)selfCopy safeValueForKey:@"_showRSSI"];
+  bOOLValue2 = [v8 BOOLValue];
   MEMORY[0x29EDC9740](v8);
-  if (v10 != v9)
+  if (v10 != bOOLValue2)
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
   }
@@ -214,7 +214,7 @@
 
 - (BOOL)isWLAN
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   *&v8[1] = [(UIStatusBarDataNetworkItemViewAccessibility *)self _accessibilityValueForKey:@"axIsWLAN"];
   if (!*&v8[1])
@@ -224,12 +224,12 @@
     v2 = [v7 numberWithBool:v8[0] & 1];
     v3 = *&v8[1];
     *&v8[1] = v2;
-    [(UIStatusBarDataNetworkItemViewAccessibility *)v10 _accessibilitySetRetainedValue:v2 forKey:@"axIsWLAN", MEMORY[0x29EDC9740](v3).n128_f64[0]];
+    [(UIStatusBarDataNetworkItemViewAccessibility *)selfCopy _accessibilitySetRetainedValue:v2 forKey:@"axIsWLAN", MEMORY[0x29EDC9740](v3).n128_f64[0]];
   }
 
-  v6 = [*&v8[1] BOOLValue];
+  bOOLValue = [*&v8[1] BOOLValue];
   objc_storeStrong(location, 0);
-  return v6;
+  return bOOLValue;
 }
 
 @end

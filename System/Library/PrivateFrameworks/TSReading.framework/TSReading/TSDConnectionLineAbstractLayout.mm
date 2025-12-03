@@ -1,7 +1,7 @@
 @interface TSDConnectionLineAbstractLayout
 - (BOOL)isStraightLine;
-- (CGPoint)controlPointForPointA:(CGPoint)a3 pointB:(CGPoint)a4 andOriginalA:(CGPoint)a5 originalB:(CGPoint)a6;
-- (CGPoint)getControlKnobPosition:(unint64_t)a3;
+- (CGPoint)controlPointForPointA:(CGPoint)a pointB:(CGPoint)b andOriginalA:(CGPoint)originalA originalB:(CGPoint)originalB;
+- (CGPoint)getControlKnobPosition:(unint64_t)position;
 - (CGPoint)i_accumulatedDrag;
 - (CGPoint)unclippedHeadPoint;
 - (CGPoint)unclippedTailPoint;
@@ -10,16 +10,16 @@
 - (double)outsetFrom;
 - (double)outsetTo;
 - (id)additionalLayoutsForRepCreation;
-- (id)clipPath:(id)a3 onLayout:(id)a4 outset:(double)a5 reversed:(BOOL)a6 isValid:(BOOL *)a7;
+- (id)clipPath:(id)path onLayout:(id)layout outset:(double)outset reversed:(BOOL)reversed isValid:(BOOL *)valid;
 - (id)layoutInfoGeometry;
-- (id)p_infoForConnectingToInfo:(id)a3;
+- (id)p_infoForConnectingToInfo:(id)info;
 - (id)path;
 - (id)pathSource;
 - (id)reliedOnLayouts;
 - (int)wrapType;
 - (void)beginDynamicOperation;
 - (void)checkConnections;
-- (void)connectedLayoutInvalidated:(id)a3;
+- (void)connectedLayoutInvalidated:(id)invalidated;
 - (void)dealloc;
 - (void)endDynamicOperation;
 - (void)invalidateConnections;
@@ -27,10 +27,10 @@
 - (void)invalidatePosition;
 - (void)parentDidChange;
 - (void)pauseDynamicTransformation;
-- (void)processChangedProperty:(int)a3;
+- (void)processChangedProperty:(int)property;
 - (void)removeConnections;
-- (void)setConnectedFrom:(id)a3;
-- (void)setConnectedTo:(id)a3;
+- (void)setConnectedFrom:(id)from;
+- (void)setConnectedTo:(id)to;
 - (void)updateConnectedPath;
 - (void)updateRepPath;
 - (void)validate;
@@ -42,16 +42,16 @@
 {
   if (self->mConnectedFrom)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDConnectionLineAbstractLayout dealloc]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDConnectionLineAbstractLayout.m"), 53, @"expected nil value for '%s'", "mConnectedFrom"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDConnectionLineAbstractLayout.m"), 53, @"expected nil value for '%s'", "mConnectedFrom"}];
   }
 
   if (self->mConnectedTo)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDConnectionLineAbstractLayout dealloc]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDConnectionLineAbstractLayout.m"), 54, @"expected nil value for '%s'", "mConnectedTo"}];
+    [currentHandler2 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDConnectionLineAbstractLayout.m"), 54, @"expected nil value for '%s'", "mConnectedTo"}];
   }
 
   v7.receiver = self;
@@ -66,9 +66,9 @@
     return self->mDynamicOutsetFrom;
   }
 
-  v5 = [-[TSDShapeLayout shapeInfo](self shapeInfo];
+  shapeInfo = [-[TSDShapeLayout shapeInfo](self shapeInfo];
 
-  [v5 outsetFrom];
+  [shapeInfo outsetFrom];
   return result;
 }
 
@@ -79,34 +79,34 @@
     return self->mDynamicOutsetTo;
   }
 
-  v5 = [-[TSDShapeLayout shapeInfo](self shapeInfo];
+  shapeInfo = [-[TSDShapeLayout shapeInfo](self shapeInfo];
 
-  [v5 outsetTo];
+  [shapeInfo outsetTo];
   return result;
 }
 
-- (void)setConnectedFrom:(id)a3
+- (void)setConnectedFrom:(id)from
 {
-  if (a3 == self)
+  if (from == self)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDConnectionLineAbstractLayout setConnectedFrom:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDConnectionLineAbstractLayout.m"), 85, @"trying to connect a c-line to itself"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDConnectionLineAbstractLayout.m"), 85, @"trying to connect a c-line to itself"}];
   }
 
-  self->mConnectedFrom = a3;
+  self->mConnectedFrom = from;
 }
 
-- (void)setConnectedTo:(id)a3
+- (void)setConnectedTo:(id)to
 {
-  if (a3 == self)
+  if (to == self)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDConnectionLineAbstractLayout setConnectedTo:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDConnectionLineAbstractLayout.m"), 91, @"trying to connect a c-line to itself"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDConnectionLineAbstractLayout.m"), 91, @"trying to connect a c-line to itself"}];
   }
 
-  self->mConnectedTo = a3;
+  self->mConnectedTo = to;
 }
 
 - (id)reliedOnLayouts
@@ -129,9 +129,9 @@
 
 - (id)additionalLayoutsForRepCreation
 {
-  v2 = [(TSDConnectionLineAbstractLayout *)self reliedOnLayouts];
+  reliedOnLayouts = [(TSDConnectionLineAbstractLayout *)self reliedOnLayouts];
 
-  return [v2 allObjects];
+  return [reliedOnLayouts allObjects];
 }
 
 - (void)updateRepPath
@@ -154,12 +154,12 @@
   [(TSDDrawableLayout *)&v3 parentDidChange];
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
-  v3 = *&a3;
-  if ((a3 - 539) > 1)
+  v3 = *&property;
+  if ((property - 539) > 1)
   {
-    if (a3 == 526)
+    if (property == 526)
     {
       v5 = objc_opt_class();
       if (v5 != [(TSDInfo *)[(TSDLayout *)self info] layoutClass])
@@ -179,12 +179,12 @@
   [(TSDShapeLayout *)&v6 processChangedProperty:v3];
 }
 
-- (void)connectedLayoutInvalidated:(id)a3
+- (void)connectedLayoutInvalidated:(id)invalidated
 {
   v27 = *MEMORY[0x277D85DE8];
   if ([(TSDLayout *)self layoutState]!= 2 || ![(TSDLayout *)self isBeingTransformed])
   {
-    if (a3)
+    if (invalidated)
     {
       v23 = 0u;
       v24 = 0u;
@@ -310,13 +310,13 @@
 {
   if (!self->mValidConnections)
   {
-    v3 = [(TSDLayout *)self layoutController];
-    v4 = [(TSDConnectionLineAbstractLayout *)self connectionLineInfo];
-    v5 = -[TSDConnectionLineAbstractLayout p_infoForConnectingToInfo:](self, "p_infoForConnectingToInfo:", [v4 connectedFrom]);
-    v6 = -[TSDConnectionLineAbstractLayout p_infoForConnectingToInfo:](self, "p_infoForConnectingToInfo:", [v4 connectedTo]);
-    v7 = [(TSDAbstractLayout *)self parent];
-    v8 = [v3 layoutForInfo:v5 childOfLayout:v7];
-    v9 = [v3 layoutForInfo:v6 childOfLayout:v7];
+    layoutController = [(TSDLayout *)self layoutController];
+    connectionLineInfo = [(TSDConnectionLineAbstractLayout *)self connectionLineInfo];
+    v5 = -[TSDConnectionLineAbstractLayout p_infoForConnectingToInfo:](self, "p_infoForConnectingToInfo:", [connectionLineInfo connectedFrom]);
+    v6 = -[TSDConnectionLineAbstractLayout p_infoForConnectingToInfo:](self, "p_infoForConnectingToInfo:", [connectionLineInfo connectedTo]);
+    parent = [(TSDAbstractLayout *)self parent];
+    v8 = [layoutController layoutForInfo:v5 childOfLayout:parent];
+    v9 = [layoutController layoutForInfo:v6 childOfLayout:parent];
     mConnectedFrom = self->mConnectedFrom;
     if (v8 != mConnectedFrom)
     {
@@ -357,7 +357,7 @@
   }
 }
 
-- (CGPoint)controlPointForPointA:(CGPoint)a3 pointB:(CGPoint)a4 andOriginalA:(CGPoint)a5 originalB:(CGPoint)a6
+- (CGPoint)controlPointForPointA:(CGPoint)a pointB:(CGPoint)b andOriginalA:(CGPoint)originalA originalB:(CGPoint)originalB
 {
   v6 = *MEMORY[0x277CBF348];
   v7 = *(MEMORY[0x277CBF348] + 8);
@@ -366,48 +366,48 @@
   return result;
 }
 
-- (id)clipPath:(id)a3 onLayout:(id)a4 outset:(double)a5 reversed:(BOOL)a6 isValid:(BOOL *)a7
+- (id)clipPath:(id)path onLayout:(id)layout outset:(double)outset reversed:(BOOL)reversed isValid:(BOOL *)valid
 {
-  v8 = a6;
+  reversedCopy = reversed;
   v50[2] = *MEMORY[0x277D85DE8];
-  [a3 length];
+  [path length];
   v14 = v13;
-  v15 = [a4 i_externalWrapPath];
-  if (!v15)
+  i_externalWrapPath = [layout i_externalWrapPath];
+  if (!i_externalWrapPath)
   {
     return 0;
   }
 
-  v16 = v15;
-  if ([(TSDBezierPath *)v15 isEmpty])
+  v16 = i_externalWrapPath;
+  if ([(TSDBezierPath *)i_externalWrapPath isEmpty])
   {
     return 0;
   }
 
-  v48 = a7;
-  if (a5 <= 0.0)
+  validCopy = valid;
+  if (outset <= 0.0)
   {
     v19 = v16;
   }
 
   else
   {
-    if (self->mCachedFromWrapPath == v16 && self->mCachedFromOutset == a5)
+    if (self->mCachedFromWrapPath == v16 && self->mCachedFromOutset == outset)
     {
       v21 = 696;
     }
 
     else
     {
-      if (self->mCachedToWrapPath != v16 || self->mCachedToOutset != a5)
+      if (self->mCachedToWrapPath != v16 || self->mCachedToOutset != outset)
       {
-        [(TSDBezierPath *)v16 setLineWidth:a5 + a5];
+        [(TSDBezierPath *)v16 setLineWidth:outset + outset];
         [(TSDBezierPath *)v16 setLineJoinStyle:1];
         [(TSDBezierPath *)v16 setLineCapStyle:1];
         v50[0] = v16;
         v50[1] = [(TSDBezierPath *)v16 outlineStroke];
         v19 = +[TSDBezierPath uniteBezierPaths:](TSDBezierPath, "uniteBezierPaths:", [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:2]);
-        if (self->mConnectedFrom == a4)
+        if (self->mConnectedFrom == layout)
         {
 
           self->mCachedFromOutsetWrapPath = v19;
@@ -423,7 +423,7 @@
           v20 = 688;
         }
 
-        *(&self->super.super.super.super.super.super.isa + v20) = a5;
+        *(&self->super.super.super.super.super.super.isa + v20) = outset;
         goto LABEL_18;
       }
 
@@ -435,10 +435,10 @@
 
 LABEL_18:
   v22 = [(TSDBezierPath *)v19 copy];
-  v23 = [a4 geometry];
-  if (v23)
+  geometry = [layout geometry];
+  if (geometry)
   {
-    [v23 transform];
+    [geometry transform];
   }
 
   else
@@ -447,28 +447,28 @@ LABEL_18:
   }
 
   [v22 transformUsingAffineTransform:v49];
-  v24 = [MEMORY[0x277CBEB18] array];
-  [a3 addIntersectionsWithPath:v22 to:v24 allIntersections:1 reversed:0];
-  if (![v24 count])
+  array = [MEMORY[0x277CBEB18] array];
+  [path addIntersectionsWithPath:v22 to:array allIntersections:1 reversed:0];
+  if (![array count])
   {
     goto LABEL_43;
   }
 
-  [v24 sortUsingSelector:sel_compareSegmentAndT_];
-  v25 = [v24 count];
+  [array sortUsingSelector:sel_compareSegmentAndT_];
+  v25 = [array count];
   if ((v25 & 0x8000000000000000) != 0)
   {
     [TSDConnectionLineAbstractLayout clipPath:onLayout:outset:reversed:isValid:];
     v25 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v26 = v8 ? v25 - 1 : 0;
-  v27 = v8 ? -1 : 1;
+  v26 = reversedCopy ? v25 - 1 : 0;
+  v27 = reversedCopy ? -1 : 1;
   if (v26 >= v25)
   {
 LABEL_43:
-    v41 = v48;
-    *v48 = 1;
+    v41 = validCopy;
+    *validCopy = 1;
     goto LABEL_44;
   }
 
@@ -476,42 +476,42 @@ LABEL_43:
   v29 = 1.0 - 1.0 / v14;
   while (1)
   {
-    v17 = [v24 objectAtIndex:v26];
+    v17 = [array objectAtIndex:v26];
     v26 += v27;
     if (v26 >= v25)
     {
-      if (v8)
+      if (reversedCopy)
       {
-        v31 = 0;
+        segment = 0;
         v33 = 0.0;
       }
 
       else
       {
-        v31 = [a3 elementCount] - 1;
+        segment = [path elementCount] - 1;
         v33 = 1.0;
       }
     }
 
     else
     {
-      v30 = [v24 objectAtIndex:v26];
-      v31 = [v30 segment];
+      v30 = [array objectAtIndex:v26];
+      segment = [v30 segment];
       [v30 t];
       v33 = v32;
     }
 
-    v34 = vcvtd_n_f64_s64([(TSDPathIntersection *)v17 segment]+ v31, 1uLL);
+    v34 = vcvtd_n_f64_s64([(TSDPathIntersection *)v17 segment]+ segment, 1uLL);
     v35 = ceil(v34);
     v36 = floor(v34);
-    if (v8)
+    if (reversedCopy)
     {
       v36 = v35;
     }
 
     v37 = v36;
     [(TSDPathIntersection *)v17 t];
-    [a3 pointAt:v37 fromElement:(v33 + v38) * 0.5];
+    [path pointAt:v37 fromElement:(v33 + v38) * 0.5];
     if (([v22 containsPoint:?] & 1) == 0)
     {
       [(TSDPathIntersection *)v17 t];
@@ -531,14 +531,14 @@ LABEL_43:
     }
   }
 
-  v41 = v48;
-  *v48 = 1;
+  v41 = validCopy;
+  *validCopy = 1;
   if (!v17)
   {
 LABEL_44:
-    if (v8)
+    if (reversedCopy)
     {
-      [a3 pointAt:objc_msgSend(a3 fromElement:{"elementCount") - 1, 0.99}];
+      [path pointAt:objc_msgSend(path fromElement:{"elementCount") - 1, 0.99}];
       if ([v22 containsPoint:?])
       {
         v42 = [TSDPathIntersection alloc];
@@ -555,11 +555,11 @@ LABEL_49:
 
     else
     {
-      [a3 pointAt:1 fromElement:0.01];
+      [path pointAt:1 fromElement:0.01];
       if ([v22 containsPoint:?])
       {
         v47 = [TSDPathIntersection alloc];
-        v46 = [a3 elementCount] - 1;
+        v46 = [path elementCount] - 1;
         v43 = *MEMORY[0x277CBF348];
         v44 = *(MEMORY[0x277CBF348] + 8);
         v45 = 1.0;
@@ -626,9 +626,9 @@ LABEL_49:
     mResizeInfoGeometry = [TSDInfoGeometry initWithPosition:v12 size:"initWithPosition:size:"];
     if (TSDNearlyEqualPoints(*&v55, *(&v55 + 1), *&v56, *(&v56 + 1)))
     {
-      v13 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDConnectionLineAbstractLayout updateConnectedPath]"];
-      [v13 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDConnectionLineAbstractLayout.m"), 435, @"head and tail should no longer be equal"}];
+      [currentHandler handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDConnectionLineAbstractLayout.m"), 435, @"head and tail should no longer be equal"}];
     }
   }
 
@@ -810,9 +810,9 @@ LABEL_49:
 - (id)pathSource
 {
   [(TSDConnectionLineAbstractLayout *)self checkConnections];
-  v3 = [(TSDConnectionLineAbstractLayout *)self connectedPathSource];
+  connectedPathSource = [(TSDConnectionLineAbstractLayout *)self connectedPathSource];
 
-  return v3;
+  return connectedPathSource;
 }
 
 - (id)layoutInfoGeometry
@@ -955,10 +955,10 @@ LABEL_49:
 
   p_mLooseEndPosition->x = v4;
   self->mLooseEndPosition.y = v5;
-  v6 = [(TSDLayout *)self pureGeometry];
-  if (v6)
+  pureGeometry = [(TSDLayout *)self pureGeometry];
+  if (pureGeometry)
   {
-    [v6 transform];
+    [pureGeometry transform];
     v7 = v10;
     v8 = v11;
     v9 = v12;
@@ -1075,26 +1075,26 @@ LABEL_49:
   return v16;
 }
 
-- (CGPoint)getControlKnobPosition:(unint64_t)a3
+- (CGPoint)getControlKnobPosition:(unint64_t)position
 {
-  v4 = [(TSDConnectionLineAbstractLayout *)self connectedPathSource];
+  connectedPathSource = [(TSDConnectionLineAbstractLayout *)self connectedPathSource];
 
-  [(TSDConnectionLinePathSource *)v4 getControlKnobPosition:a3];
+  [(TSDConnectionLinePathSource *)connectedPathSource getControlKnobPosition:position];
   result.y = v6;
   result.x = v5;
   return result;
 }
 
-- (id)p_infoForConnectingToInfo:(id)a3
+- (id)p_infoForConnectingToInfo:(id)info
 {
   [objc_msgSend(-[TSDLayout layoutController](self "layoutController")];
   v4 = TSUProtocolCast();
   if (!v4)
   {
-    return a3;
+    return info;
   }
 
-  return [v4 infoToConnectToForConnectionLineConnectedToInfo:a3];
+  return [v4 infoToConnectToForConnectionLineConnectedToInfo:info];
 }
 
 - (uint64_t)clipPath:onLayout:outset:reversed:isValid:.cold.1()

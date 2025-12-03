@@ -1,10 +1,10 @@
 @interface VFXCommonProfileProgramGenerator
-+ (id)commonProfileGeneratorAllowingHotReload:(BOOL)a3;
++ (id)commonProfileGeneratorAllowingHotReload:(BOOL)reload;
 - (VFXCommonProfileProgramGenerator)init;
-- (__CFXProgram)programWithHashCode:(__CFXProgramHashCode *)a3 engineContext:(__CFXEngineContext *)a4 trackedResource:(id)a5 introspectionDataPtr:(void *)a6;
+- (__CFXProgram)programWithHashCode:(__CFXProgramHashCode *)code engineContext:(__CFXEngineContext *)context trackedResource:(id)resource introspectionDataPtr:(void *)ptr;
 - (void)dealloc;
 - (void)emptyShaderCache;
-- (void)releaseProgramForResource:(id)a3;
+- (void)releaseProgramForResource:(id)resource;
 @end
 
 @implementation VFXCommonProfileProgramGenerator
@@ -59,9 +59,9 @@
   CFDictionaryRemoveAllValues(trackedResourcesToHashcode);
 }
 
-+ (id)commonProfileGeneratorAllowingHotReload:(BOOL)a3
++ (id)commonProfileGeneratorAllowingHotReload:(BOOL)reload
 {
-  if (a3)
+  if (reload)
   {
     if (qword_1EB658668 != -1)
     {
@@ -84,10 +84,10 @@
   return *v3;
 }
 
-- (__CFXProgram)programWithHashCode:(__CFXProgramHashCode *)a3 engineContext:(__CFXEngineContext *)a4 trackedResource:(id)a5 introspectionDataPtr:(void *)a6
+- (__CFXProgram)programWithHashCode:(__CFXProgramHashCode *)code engineContext:(__CFXEngineContext *)context trackedResource:(id)resource introspectionDataPtr:(void *)ptr
 {
   v44 = *MEMORY[0x1E69E9840];
-  v11 = sub_1AF13E494(a3);
+  v11 = sub_1AF13E494(code);
   if (v11)
   {
     v12 = v11;
@@ -96,11 +96,11 @@
     if (Value)
     {
       v14 = Value;
-      v15 = CFSetContainsValue(Value[2], a5);
+      v15 = CFSetContainsValue(Value[2], resource);
       v16 = v15 == 0;
       if (!v15)
       {
-        CFSetAddValue(v14[2], a5);
+        CFSetAddValue(v14[2], resource);
       }
 
       v17 = v14[1];
@@ -122,7 +122,7 @@
         }
       }
 
-      v17 = objc_msgSend__newProgramWithHashCode_engineContext_introspectionDataPtr_(self, v30, a3, a4, a6);
+      v17 = objc_msgSend__newProgramWithHashCode_engineContext_introspectionDataPtr_(self, v30, code, context, ptr);
       v32 = sub_1AF0D5194();
       if (v28 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
@@ -137,7 +137,7 @@
       objc_autoreleasePoolPop(v26);
       if (!v17)
       {
-        v37 = CFCopyDescription(a3);
+        v37 = CFCopyDescription(code);
         v38 = sub_1AF0D5194();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
         {
@@ -156,7 +156,7 @@
       sub_1AF16CC34(v17, v12);
       v34 = objc_alloc_init(VFXCommonProfileProgramCache);
       v34->_program = CFRetain(v17);
-      CFSetAddValue(v34->_owners, a5);
+      CFSetAddValue(v34->_owners, resource);
       CFDictionarySetValue(self->_shaders, v12, v34);
 
       CFRelease(v17);
@@ -165,11 +165,11 @@
 
     if (v16 && v17 != 0)
     {
-      Mutable = CFDictionaryGetValue(self->_trackedResourcesToHashcode, a5);
+      Mutable = CFDictionaryGetValue(self->_trackedResourcesToHashcode, resource);
       if (!Mutable)
       {
         Mutable = CFArrayCreateMutable(0, 0, MEMORY[0x1E695E9C0]);
-        CFDictionarySetValue(self->_trackedResourcesToHashcode, a5, Mutable);
+        CFDictionarySetValue(self->_trackedResourcesToHashcode, resource, Mutable);
         CFRelease(Mutable);
       }
 
@@ -190,9 +190,9 @@ LABEL_27:
   return 0;
 }
 
-- (void)releaseProgramForResource:(id)a3
+- (void)releaseProgramForResource:(id)resource
 {
-  if (!a3)
+  if (!resource)
   {
     v5 = sub_1AF0D5194();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -202,7 +202,7 @@ LABEL_27:
   }
 
   os_unfair_lock_lock(&self->_programMutex);
-  Value = CFDictionaryGetValue(self->_trackedResourcesToHashcode, a3);
+  Value = CFDictionaryGetValue(self->_trackedResourcesToHashcode, resource);
   if (Value)
   {
     v14 = Value;
@@ -217,7 +217,7 @@ LABEL_27:
         if (v19)
         {
           v20 = v19;
-          CFSetRemoveValue(v19[2], a3);
+          CFSetRemoveValue(v19[2], resource);
           if (!CFSetGetCount(v20[2]))
           {
             CFDictionaryRemoveValue(self->_shaders, ValueAtIndex);
@@ -237,7 +237,7 @@ LABEL_27:
     }
   }
 
-  CFDictionaryRemoveValue(self->_trackedResourcesToHashcode, a3);
+  CFDictionaryRemoveValue(self->_trackedResourcesToHashcode, resource);
   os_unfair_lock_unlock(&self->_programMutex);
 }
 

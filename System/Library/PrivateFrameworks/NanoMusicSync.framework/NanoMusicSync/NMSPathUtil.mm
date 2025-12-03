@@ -10,34 +10,34 @@
 
 + (id)mediaSyncInfoDirectory
 {
-  v2 = [a1 _nanoMusicSyncDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"MediaSyncInfo"];
+  _nanoMusicSyncDirectory = [self _nanoMusicSyncDirectory];
+  v3 = [_nanoMusicSyncDirectory stringByAppendingPathComponent:@"MediaSyncInfo"];
 
   return v3;
 }
 
 + (id)podcastsDirectory
 {
-  v2 = [a1 _nanoMusicSyncDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"Podcasts"];
+  _nanoMusicSyncDirectory = [self _nanoMusicSyncDirectory];
+  v3 = [_nanoMusicSyncDirectory stringByAppendingPathComponent:@"Podcasts"];
 
   return v3;
 }
 
 + (id)recentMusicDirectory
 {
-  v2 = [a1 _nanoMusicSyncDirectory];
+  _nanoMusicSyncDirectory = [self _nanoMusicSyncDirectory];
   v3 = [MEMORY[0x277CCACA8] pathWithComponents:&unk_286C8D370];
-  v4 = [v2 stringByAppendingPathComponent:v3];
+  v4 = [_nanoMusicSyncDirectory stringByAppendingPathComponent:v3];
 
   return v4;
 }
 
 + (id)musicBackupDirectory
 {
-  v2 = [a1 _nanoMusicSyncDirectory];
+  _nanoMusicSyncDirectory = [self _nanoMusicSyncDirectory];
   v3 = [MEMORY[0x277CCACA8] pathWithComponents:&unk_286C8D388];
-  v4 = [v2 stringByAppendingPathComponent:v3];
+  v4 = [_nanoMusicSyncDirectory stringByAppendingPathComponent:v3];
 
   return v4;
 }

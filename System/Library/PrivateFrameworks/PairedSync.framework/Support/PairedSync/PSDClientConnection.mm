@@ -1,14 +1,14 @@
 @interface PSDClientConnection
-- (void)startSyncWithOptions:(id)a3;
+- (void)startSyncWithOptions:(id)options;
 @end
 
 @implementation PSDClientConnection
 
-- (void)startSyncWithOptions:(id)a3
+- (void)startSyncWithOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = +[PSDSyncInitiator sharedSyncInitiator];
-  [v4 startExternalSyncWithOptions:v3];
+  [v4 startExternalSyncWithOptions:optionsCopy];
 }
 
 @end

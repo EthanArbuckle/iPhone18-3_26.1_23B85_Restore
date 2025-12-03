@@ -1,9 +1,9 @@
 @interface PXPlacesMapViewPort
 - ($3BFE36E7F21C9C4470F2C816F6078BCC)mapRect;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)viewSize;
-- (PXPlacesMapViewPort)initWithMapRect:(id)a3 andViewSize:(CGSize)a4 zoomLevel:(double)a5 pitch:(double)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PXPlacesMapViewPort)initWithMapRect:(id)rect andViewSize:(CGSize)size zoomLevel:(double)level pitch:(double)pitch;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)viewPortsBySplitingAt180thMerdian;
 @end
 
@@ -75,7 +75,7 @@
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PXPlacesMapViewPort alloc];
   [(PXPlacesMapViewPort *)self mapRect];
@@ -95,13 +95,13 @@
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(PXPlacesMapViewPort *)self mapRect];
     v7 = v6;
     v9 = v8;
@@ -132,14 +132,14 @@
   return v20;
 }
 
-- (PXPlacesMapViewPort)initWithMapRect:(id)a3 andViewSize:(CGSize)a4 zoomLevel:(double)a5 pitch:(double)a6
+- (PXPlacesMapViewPort)initWithMapRect:(id)rect andViewSize:(CGSize)size zoomLevel:(double)level pitch:(double)pitch
 {
-  height = a4.height;
-  width = a4.width;
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v12 = a3.var0.var1;
-  v13 = a3.var0.var0;
+  height = size.height;
+  width = size.width;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v12 = rect.var0.var1;
+  v13 = rect.var0.var0;
   v16.receiver = self;
   v16.super_class = PXPlacesMapViewPort;
   result = [(PXPlacesMapViewPort *)&v16 init];
@@ -150,8 +150,8 @@
     result->_mapRect.size.height = var1;
     result->_viewSize.height = height;
     result->_mapRect.origin.x = v13;
-    result->_zoomLevel = a5;
-    result->_pitch = a6;
+    result->_zoomLevel = level;
+    result->_pitch = pitch;
     v15 = var0 / width;
     if (width <= 0.0)
     {

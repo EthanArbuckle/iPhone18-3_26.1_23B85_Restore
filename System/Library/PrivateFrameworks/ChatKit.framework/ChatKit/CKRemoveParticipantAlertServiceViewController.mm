@@ -2,7 +2,7 @@
 + (id)_exportedInterface;
 + (id)_remoteViewControllerInterface;
 - (void)_dismissAndCleanup;
-- (void)promptToRemoveParticipant:(id)a3 fromHighlight:(id)a4 usingPreferredStyle:(int64_t)a5;
+- (void)promptToRemoveParticipant:(id)participant fromHighlight:(id)highlight usingPreferredStyle:(int64_t)style;
 - (void)viewDidLoad;
 @end
 
@@ -13,15 +13,15 @@
   v5.receiver = self;
   v5.super_class = CKRemoveParticipantAlertServiceViewController;
   [(CKRemoveParticipantAlertServiceViewController *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  v4 = [(CKRemoveParticipantAlertServiceViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view = [(CKRemoveParticipantAlertServiceViewController *)self view];
+  [view setBackgroundColor:clearColor];
 }
 
-- (void)promptToRemoveParticipant:(id)a3 fromHighlight:(id)a4 usingPreferredStyle:(int64_t)a5
+- (void)promptToRemoveParticipant:(id)participant fromHighlight:(id)highlight usingPreferredStyle:(int64_t)style
 {
-  v8 = a3;
-  v9 = a4;
+  participantCopy = participant;
+  highlightCopy = highlight;
   v10 = IMLogHandleForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -30,20 +30,20 @@
   }
 
   objc_initWeak(buf, self);
-  v11 = [v8 displayName];
-  v12 = [MEMORY[0x1E69A5C78] sharedController];
+  displayName = [participantCopy displayName];
+  mEMORY[0x1E69A5C78] = [MEMORY[0x1E69A5C78] sharedController];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __109__CKRemoveParticipantAlertServiceViewController_promptToRemoveParticipant_fromHighlight_usingPreferredStyle___block_invoke;
   v15[3] = &unk_1E72F6408;
   objc_copyWeak(v19, buf);
-  v13 = v8;
+  v13 = participantCopy;
   v16 = v13;
-  v14 = v11;
-  v19[1] = a5;
+  v14 = displayName;
+  v19[1] = style;
   v17 = v14;
-  v18 = self;
-  [v12 fetchAttributionsForHighlight:v9 completionHandler:v15];
+  selfCopy = self;
+  [mEMORY[0x1E69A5C78] fetchAttributionsForHighlight:highlightCopy completionHandler:v15];
 
   objc_destroyWeak(v19);
   objc_destroyWeak(buf);
@@ -279,8 +279,8 @@ void __109__CKRemoveParticipantAlertServiceViewController_promptToRemoveParticip
 
 - (void)_dismissAndCleanup
 {
-  v2 = [(CKRemoveParticipantAlertServiceViewController *)self _remoteViewControllerProxy];
-  [v2 dismissAlert];
+  _remoteViewControllerProxy = [(CKRemoveParticipantAlertServiceViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy dismissAlert];
 }
 
 + (id)_remoteViewControllerInterface

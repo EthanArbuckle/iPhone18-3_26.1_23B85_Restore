@@ -1,19 +1,19 @@
 @interface WBSCloudTabParameters
-- (WBSCloudTabParameters)initWithURL:(id)a3;
+- (WBSCloudTabParameters)initWithURL:(id)l;
 @end
 
 @implementation WBSCloudTabParameters
 
-- (WBSCloudTabParameters)initWithURL:(id)a3
+- (WBSCloudTabParameters)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = WBSCloudTabParameters;
   v6 = [(WBSCloudTabParameters *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
     v8 = v7;
   }
 

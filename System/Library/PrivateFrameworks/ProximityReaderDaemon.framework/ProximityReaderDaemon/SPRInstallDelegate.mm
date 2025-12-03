@@ -1,17 +1,17 @@
 @interface SPRInstallDelegate
-- (void)onUpdateWithEvent:(int64_t)a3 progress:(int64_t)a4;
+- (void)onUpdateWithEvent:(int64_t)event progress:(int64_t)progress;
 @end
 
 @implementation SPRInstallDelegate
 
-- (void)onUpdateWithEvent:(int64_t)a3 progress:(int64_t)a4
+- (void)onUpdateWithEvent:(int64_t)event progress:(int64_t)progress
 {
-  if (a3 == 3)
+  if (event == 3)
   {
     v7 = *self->installProgress;
     v6 = *&self->installProgress[8];
 
-    v7(a4);
+    v7(progress);
   }
 }
 

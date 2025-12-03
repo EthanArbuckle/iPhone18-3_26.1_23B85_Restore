@@ -8,9 +8,9 @@
 - (void)encodeWithCAMLWriter:()CAMLWriter
 {
   v50 = *MEMORY[0x1E69E9840];
-  v5 = [a1 objCType];
-  v6 = v5;
-  if (!v5)
+  objCType = [self objCType];
+  v6 = objCType;
+  if (!objCType)
   {
 LABEL_9:
     if (strcmp(v6, "{CAColorMatrix=ffffffffffffffffffff}"))
@@ -23,9 +23,9 @@ LABEL_9:
     v42 = 0u;
     v43 = 0u;
     v41 = 0u;
-    if (a1)
+    if (self)
     {
-      [a1 CAColorMatrixValue];
+      [self CAColorMatrixValue];
     }
 
     v7 = CACreateStringWithFloatArray(&v41, 0x14uLL, 0.000001);
@@ -37,9 +37,9 @@ LABEL_9:
     goto LABEL_59;
   }
 
-  if (!strcmp(v5, "{CGRect={CGPoint=dd}{CGSize=dd}}"))
+  if (!strcmp(objCType, "{CGRect={CGPoint=dd}{CGSize=dd}}"))
   {
-    [a1 rectValue];
+    [self rectValue];
     *&v41 = v10;
     *(&v41 + 1) = v11;
     *&v42 = v12;
@@ -52,7 +52,7 @@ LABEL_18:
 
   if (!strcmp(v6, "{CGPoint=dd}"))
   {
-    [a1 pointValue];
+    [self pointValue];
 LABEL_17:
     *&v41 = v15;
     *(&v41 + 1) = v16;
@@ -62,13 +62,13 @@ LABEL_17:
 
   if (!strcmp(v6, "{CGSize=dd}"))
   {
-    [a1 sizeValue];
+    [self sizeValue];
     goto LABEL_17;
   }
 
   if (!strcmp(v6, "{CAPoint3D=ddd}"))
   {
-    [a1 CAPoint3DValue];
+    [self CAPoint3DValue];
     *&v41 = v17;
     *(&v41 + 1) = v18;
     *&v42 = v19;
@@ -82,9 +82,9 @@ LABEL_17:
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    if (a1)
+    if (self)
     {
-      [a1 CACornerRadiiValue];
+      [self CACornerRadiiValue];
     }
 
     v14 = 8;
@@ -96,9 +96,9 @@ LABEL_17:
     v42 = 0u;
     v43 = 0u;
     v41 = 0u;
-    if (a1)
+    if (self)
     {
-      [a1 CA_CGAffineTransformValue];
+      [self CA_CGAffineTransformValue];
     }
 
     v7 = CACreateStringWithDoubleArray(&v41, 6uLL, 1.0e-12);
@@ -131,9 +131,9 @@ LABEL_13:
   v26 = 0uLL;
   v27 = 0uLL;
   v41 = 0u;
-  if (a1)
+  if (self)
   {
-    [a1 CATransform3DValue];
+    [self CATransform3DValue];
     v27 = v32;
     v26 = v33;
     v25 = v34;
@@ -239,14 +239,14 @@ LABEL_19:
 
 - (__CFString)CAMLType
 {
-  v1 = [a1 objCType];
-  v2 = v1;
-  if (!v1)
+  objCType = [self objCType];
+  v2 = objCType;
+  if (!objCType)
   {
     goto LABEL_21;
   }
 
-  if (!strcmp(v1, "{CGRect={CGPoint=dd}{CGSize=dd}}"))
+  if (!strcmp(objCType, "{CGRect={CGPoint=dd}{CGSize=dd}}"))
   {
     return @"CGRect";
   }

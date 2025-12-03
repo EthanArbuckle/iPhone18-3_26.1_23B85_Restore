@@ -6,16 +6,16 @@
 
 - (id)linkResponseContext
 {
-  v2 = [a1 turnIdentifier];
+  turnIdentifier = [self turnIdentifier];
 
-  if (v2)
+  if (turnIdentifier)
   {
-    v2 = objc_alloc_init(MEMORY[0x1E69ACFF8]);
-    v3 = [a1 turnIdentifier];
-    [v2 setIdentifier:v3];
+    turnIdentifier = objc_alloc_init(MEMORY[0x1E69ACFF8]);
+    turnIdentifier2 = [self turnIdentifier];
+    [turnIdentifier setIdentifier:turnIdentifier2];
   }
 
-  return v2;
+  return turnIdentifier;
 }
 
 @end

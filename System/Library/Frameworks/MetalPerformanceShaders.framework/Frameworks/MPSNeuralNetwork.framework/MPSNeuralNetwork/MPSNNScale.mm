@@ -1,18 +1,18 @@
 @interface MPSNNScale
-- (MPSNNScale)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNNScale)initWithDevice:(id)a3;
-- (MPSNNScale)initWithDevice:(id)a3 transformProvider:(id)a4 handle:(id)a5 outputSize:(id *)a6 scaleClass:(Class)a7;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (MPSNNScale)initWithCoder:(id)coder device:(id)device;
+- (MPSNNScale)initWithDevice:(id)device;
+- (MPSNNScale)initWithDevice:(id)device transformProvider:(id)provider handle:(id)handle outputSize:(id *)size scaleClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLabel:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLabel:(id)label;
 @end
 
 @implementation MPSNNScale
 
-- (MPSNNScale)initWithDevice:(id)a3
+- (MPSNNScale)initWithDevice:(id)device
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -24,22 +24,22 @@
   return 0;
 }
 
-- (MPSNNScale)initWithDevice:(id)a3 transformProvider:(id)a4 handle:(id)a5 outputSize:(id *)a6 scaleClass:(Class)a7
+- (MPSNNScale)initWithDevice:(id)device transformProvider:(id)provider handle:(id)handle outputSize:(id *)size scaleClass:(Class)class
 {
-  v12 = [a7 alloc];
-  v19 = objc_msgSend_initWithDevice_(v12, v13, a3, v14, v15, v16, v17, v18);
+  v12 = [class alloc];
+  v19 = objc_msgSend_initWithDevice_(v12, v13, device, v14, v15, v16, v17, v18);
   if (v19)
   {
     v20 = v19;
     v48.receiver = self;
     v48.super_class = MPSNNScale;
-    v21 = [(MPSCNNKernel *)&v48 initWithDevice:a3];
+    v21 = [(MPSCNNKernel *)&v48 initWithDevice:device];
     if (v21)
     {
-      v21->_transformProvider = a4;
-      v21->_handle = a5;
-      var2 = a6->var2;
-      *&v21->_destSize.width = *&a6->var0;
+      v21->_transformProvider = provider;
+      v21->_handle = handle;
+      var2 = size->var2;
+      *&v21->_destSize.width = *&size->var0;
       v21->_destSize.depth = var2;
       v21->_filter = v20;
       v21->super._checkFlags |= 0x4000u;
@@ -93,7 +93,7 @@
   return v21;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v57.receiver = self;
@@ -101,35 +101,35 @@
   [(MPSCNNKernel *)&v57 encodeWithCoder:?];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  objc_msgSend_encodeObject_forKey_(a3, v7, v6, @"MPSNNScale.className", v8, v9, v10, v11);
-  objc_msgSend_encodeObject_forKey_(a3, v12, self->_filter, @"MPSNNScale.o", v13, v14, v15, v16);
+  objc_msgSend_encodeObject_forKey_(coder, v7, v6, @"MPSNNScale.className", v8, v9, v10, v11);
+  objc_msgSend_encodeObject_forKey_(coder, v12, self->_filter, @"MPSNNScale.o", v13, v14, v15, v16);
   if (self->_transformProvider)
   {
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
-    objc_msgSend_encodeObject_forKey_(a3, v24, v23, @"MPSNNScale.transformProviderName", v25, v26, v27, v28);
-    objc_msgSend_encodeObject_forKey_(a3, v29, self->_transformProvider, @"MPSNNScale.o", v30, v31, v32, v33);
+    objc_msgSend_encodeObject_forKey_(coder, v24, v23, @"MPSNNScale.transformProviderName", v25, v26, v27, v28);
+    objc_msgSend_encodeObject_forKey_(coder, v29, self->_transformProvider, @"MPSNNScale.o", v30, v31, v32, v33);
   }
 
   if (self->_handle)
   {
     v34 = objc_opt_class();
     v35 = NSStringFromClass(v34);
-    objc_msgSend_encodeObject_forKey_(a3, v36, v35, @"MPSNNScale.handleName", v37, v38, v39, v40);
-    objc_msgSend_encodeObject_forKey_(a3, v41, self->_handle, @"MPSNNScale.handle.o", v42, v43, v44, v45);
+    objc_msgSend_encodeObject_forKey_(coder, v36, v35, @"MPSNNScale.handleName", v37, v38, v39, v40);
+    objc_msgSend_encodeObject_forKey_(coder, v41, self->_handle, @"MPSNNScale.handle.o", v42, v43, v44, v45);
   }
 
   p_destSize = &self->_destSize;
-  objc_msgSend_encodeInteger_forKey_(a3, v17, p_destSize->width, @"MPSNNScale.destSize.x", v18, v19, v20, v21);
-  objc_msgSend_encodeInteger_forKey_(a3, v47, p_destSize->height, @"MPSNNScale.destSize.y", v48, v49, v50, v51);
-  objc_msgSend_encodeInteger_forKey_(a3, v52, p_destSize->depth, @"MPSNNScale.destSize.z", v53, v54, v55, v56);
+  objc_msgSend_encodeInteger_forKey_(coder, v17, p_destSize->width, @"MPSNNScale.destSize.x", v18, v19, v20, v21);
+  objc_msgSend_encodeInteger_forKey_(coder, v47, p_destSize->height, @"MPSNNScale.destSize.y", v48, v49, v50, v51);
+  objc_msgSend_encodeInteger_forKey_(coder, v52, p_destSize->depth, @"MPSNNScale.destSize.z", v53, v54, v55, v56);
 }
 
-- (MPSNNScale)initWithCoder:(id)a3 device:(id)a4
+- (MPSNNScale)initWithCoder:(id)coder device:(id)device
 {
   v66.receiver = self;
   v66.super_class = MPSNNScale;
-  v5 = [(MPSCNNKernel *)&v66 initWithCoder:a3 device:a4];
+  v5 = [(MPSCNNKernel *)&v66 initWithCoder:coder device:device];
   v6 = v5;
   if (!v5)
   {
@@ -139,44 +139,44 @@
   if (*(&v5->super.super.super.isa + *MEMORY[0x277CD7358] + 2) << 16 == 0x10000)
   {
     v7 = objc_opt_class();
-    v13 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v8, v7, @"MPSNNScale.className", v9, v10, v11, v12);
+    v13 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v8, v7, @"MPSNNScale.className", v9, v10, v11, v12);
     if (v13)
     {
       v14 = NSClassFromString(v13);
       if (v14)
       {
-        v20 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v15, v14, @"MPSNNScale.o", v16, v17, v18, v19);
+        v20 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v15, v14, @"MPSNNScale.o", v16, v17, v18, v19);
         if (v20)
         {
           v21 = v20;
           v22 = objc_opt_class();
-          v28 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v23, v22, @"MPSNNScale.transformProviderName", v24, v25, v26, v27);
+          v28 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v23, v22, @"MPSNNScale.transformProviderName", v24, v25, v26, v27);
           if (v28)
           {
             v28 = NSClassFromString(v28);
             if (v28)
             {
-              v28 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v29, v28, @"MPSNNScale.o", v30, v31, v32, v33);
+              v28 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v29, v28, @"MPSNNScale.o", v30, v31, v32, v33);
             }
           }
 
           v6->_transformProvider = v28;
           v34 = objc_opt_class();
-          v40 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v35, v34, @"MPSNNScale.handleName", v36, v37, v38, v39);
+          v40 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v35, v34, @"MPSNNScale.handleName", v36, v37, v38, v39);
           if (v40)
           {
             v40 = NSClassFromString(v40);
             if (v40)
             {
-              v40 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v41, v40, @"MPSNNScale.handle.o", v42, v43, v44, v45);
+              v40 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v41, v40, @"MPSNNScale.handle.o", v42, v43, v44, v45);
             }
           }
 
           v6->_handle = v40;
           v6->_filter = v21;
-          v6->_destSize.width = objc_msgSend_decodeIntegerForKey_(a3, v46, @"MPSNNScale.destSize.x", v47, v48, v49, v50, v51);
-          v6->_destSize.height = objc_msgSend_decodeIntegerForKey_(a3, v52, @"MPSNNScale.destSize.y", v53, v54, v55, v56, v57);
-          v6->_destSize.depth = objc_msgSend_decodeIntegerForKey_(a3, v58, @"MPSNNScale.destSize.z", v59, v60, v61, v62, v63);
+          v6->_destSize.width = objc_msgSend_decodeIntegerForKey_(coder, v46, @"MPSNNScale.destSize.x", v47, v48, v49, v50, v51);
+          v6->_destSize.height = objc_msgSend_decodeIntegerForKey_(coder, v52, @"MPSNNScale.destSize.y", v53, v54, v55, v56, v57);
+          v6->_destSize.depth = objc_msgSend_decodeIntegerForKey_(coder, v58, @"MPSNNScale.destSize.z", v59, v60, v61, v62, v63);
           v6->super._encode = sub_239BDFDD4;
           v6->super._encodeData = v6;
           return v6;
@@ -195,7 +195,7 @@
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v15.receiver = self;
   v15.super_class = MPSNNScale;
@@ -204,7 +204,7 @@
   {
     v7[41] = self->_transformProvider;
     v7[46] = self->_handle;
-    v7[45] = objc_msgSend_copyWithZone_device_(self->_filter, v8, a3, a4, v9, v10, v11, v12);
+    v7[45] = objc_msgSend_copyWithZone_device_(self->_filter, v8, zone, device, v9, v10, v11, v12);
     depth = self->_destSize.depth;
     *(v7 + 21) = *&self->_destSize.width;
     v7[44] = depth;
@@ -240,17 +240,17 @@
   [(MPSCNNKernel *)&v3 dealloc];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   v11.receiver = self;
   v11.super_class = MPSNNScale;
   [(MPSKernel *)&v11 setLabel:?];
-  objc_msgSend_setLabel_(self->_filter, v5, a3, v6, v7, v8, v9, v10);
+  objc_msgSend_setLabel_(self->_filter, v5, label, v6, v7, v8, v9, v10);
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset
 {
-  v12 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, a4, a5, a6, v6, v7);
+  v12 = objc_msgSend_objectAtIndexedSubscript_(images, a2, 0, states, method, offset, v6, v7);
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 1) == 0)
   {
     if (self->_destSize.depth != 1 && MTLReportFailureTypeEnabled())
@@ -264,7 +264,7 @@
     {
       v39 = objc_opt_class();
       v41 = NSStringFromClass(v39);
-      v42 = self;
+      selfCopy = self;
       MTLReportFailure();
     }
 
@@ -285,9 +285,9 @@
 
   v47.receiver = self;
   v47.super_class = MPSNNScale;
-  v13 = [(MPSCNNKernel *)&v47 destinationImageDescriptorForSourceImages:a3 sourceStates:a4 paddingMethod:a5 sourceOffset:0, v41, v42];
-  *&v13[*MEMORY[0x277CD7340]] = self->_destSize.width;
-  *&v13[*MEMORY[0x277CD7338]] = self->_destSize.height;
+  selfCopy = [(MPSCNNKernel *)&v47 destinationImageDescriptorForSourceImages:images sourceStates:states paddingMethod:method sourceOffset:0, v41, selfCopy];
+  *&selfCopy[*MEMORY[0x277CD7340]] = self->_destSize.width;
+  *&selfCopy[*MEMORY[0x277CD7338]] = self->_destSize.height;
   v43 = 0;
   v44 = 0;
   v45 = 0;
@@ -308,7 +308,7 @@
     objc_msgSend_setScaleTransform_(self->_filter, v20, 0, v21, v22, v23, v24, v25);
   }
 
-  return v13;
+  return selfCopy;
 }
 
 @end

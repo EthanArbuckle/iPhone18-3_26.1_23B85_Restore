@@ -1,7 +1,7 @@
 @interface TPLCDSubImageView
 - (TPLCDSubImageView)initWithDefaultSize;
-- (void)drawRect:(CGRect)a3;
-- (void)setImage:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setImage:(id)image;
 @end
 
 @implementation TPLCDSubImageView
@@ -18,26 +18,26 @@
   return v3;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_image, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     [(TPLCDSubImageView *)self setNeedsDisplay];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = MEMORY[0x1E69DC728];
-  v16 = CGRectInset(a3, 1.5, 1.5);
+  v16 = CGRectInset(rect, 1.5, 1.5);
   v14 = [v8 bezierPathWithOvalInRect:{v16.origin.x, v16.origin.y, v16.size.width, v16.size.height}];
   v9 = MEMORY[0x1E69DC728];
   v17.origin.x = x;

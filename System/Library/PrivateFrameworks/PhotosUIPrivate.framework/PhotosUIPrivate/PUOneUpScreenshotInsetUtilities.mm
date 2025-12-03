@@ -1,13 +1,13 @@
 @interface PUOneUpScreenshotInsetUtilities
-+ (double)cornerRadiusForAspectRatio:(double)a3 traitCollection:(id)a4;
++ (double)cornerRadiusForAspectRatio:(double)ratio traitCollection:(id)collection;
 @end
 
 @implementation PUOneUpScreenshotInsetUtilities
 
-+ (double)cornerRadiusForAspectRatio:(double)a3 traitCollection:(id)a4
++ (double)cornerRadiusForAspectRatio:(double)ratio traitCollection:(id)collection
 {
-  v6 = a4;
-  v7 = static OneUpScreenshotInsetUtilities.cornerRadiusForAspectRatio(_:traitCollection:)(a4, a3);
+  collectionCopy = collection;
+  v7 = static OneUpScreenshotInsetUtilities.cornerRadiusForAspectRatio(_:traitCollection:)(collection, ratio);
 
   return v7;
 }

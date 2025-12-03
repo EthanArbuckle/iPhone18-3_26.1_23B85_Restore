@@ -1,20 +1,20 @@
 @interface CKAssistantUIContentView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKAssistantUIContentView)initWithFrame:(CGRect)a3;
-- (double)_balloonMaxWidthForBoundsWidth:(double)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKAssistantUIContentView)initWithFrame:(CGRect)frame;
+- (double)_balloonMaxWidthForBoundsWidth:(double)width;
 - (void)layoutSubviews;
-- (void)setChatContent:(id)a3;
-- (void)setMessageContent:(id)a3 sent:(BOOL)a4;
+- (void)setChatContent:(id)content;
+- (void)setMessageContent:(id)content sent:(BOOL)sent;
 @end
 
 @implementation CKAssistantUIContentView
 
-- (CKAssistantUIContentView)initWithFrame:(CGRect)a3
+- (CKAssistantUIContentView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v19.receiver = self;
   v19.super_class = CKAssistantUIContentView;
   v7 = [(CKAssistantUIContentView *)&v19 initWithFrame:?];
@@ -29,9 +29,9 @@
     [(UIView *)v10 setBackgroundColor:v11];
 
     [(CKAssistantUIContentView *)v7 addSubview:v7->_chatBackgroundView];
-    v12 = [[CKAssistantUIAvatarView alloc] initWithFrame:x, y, width, height];
+    height = [[CKAssistantUIAvatarView alloc] initWithFrame:x, y, width, height];
     avatarView = v7->_avatarView;
-    v7->_avatarView = v12;
+    v7->_avatarView = height;
 
     [(CKAssistantUIContentView *)v7 addSubview:v7->_avatarView];
     v14 = [[UILabel alloc] initWithFrame:{x, y, width, height}];
@@ -49,16 +49,16 @@
   return v7;
 }
 
-- (void)setMessageContent:(id)a3 sent:(BOOL)a4
+- (void)setMessageContent:(id)content sent:(BOOL)sent
 {
-  v9 = a3;
+  contentCopy = content;
   [(CKTextBalloonView *)self->_balloonView removeFromSuperview];
   balloonView = self->_balloonView;
   self->_balloonView = 0;
 
-  if (!a4)
+  if (!sent)
   {
-    v7 = [(CKAssistantUIContentView *)self _balloonViewWithText:v9 color:0xFFFFFFFFLL];
+    v7 = [(CKAssistantUIContentView *)self _balloonViewWithText:contentCopy color:0xFFFFFFFFLL];
     v8 = self->_balloonView;
     self->_balloonView = v7;
 
@@ -68,9 +68,9 @@
   [(CKAssistantUIContentView *)self setNeedsLayout];
 }
 
-- (void)setChatContent:(id)a3
+- (void)setChatContent:(id)content
 {
-  v6 = a3;
+  contentCopy = content;
   chatView = self->_chatView;
   if (chatView)
   {
@@ -79,8 +79,8 @@
     self->_chatView = 0;
   }
 
-  [(CKAssistantUIContentView *)self setChatView:v6];
-  [(CKAssistantUIContentView *)self insertSubview:v6 aboveSubview:self->_chatBackgroundView];
+  [(CKAssistantUIContentView *)self setChatView:contentCopy];
+  [(CKAssistantUIContentView *)self insertSubview:contentCopy aboveSubview:self->_chatBackgroundView];
   [(CKAssistantUIContentView *)self setNeedsLayout];
 }
 
@@ -126,9 +126,9 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   [(CKAssistantUIAvatarView *)self->_avatarView sizeThatFits:?];
   v6 = v5;
   v8 = v7;
@@ -152,14 +152,14 @@
   return result;
 }
 
-- (double)_balloonMaxWidthForBoundsWidth:(double)a3
+- (double)_balloonMaxWidthForBoundsWidth:(double)width
 {
   v4 = +[CKUIBehavior sharedBehaviors];
-  [v4 balloonMaxWidthForTranscriptWidth:0 marginInsets:0 shouldShowPluginButtons:0 shouldShowCharacterCount:0 shouldCoverSendButton:a3 isStewieMode:{0.0, 22.0, 0.0, 22.0}];
+  [v4 balloonMaxWidthForTranscriptWidth:0 marginInsets:0 shouldShowPluginButtons:0 shouldShowCharacterCount:0 shouldCoverSendButton:width isStewieMode:{0.0, 22.0, 0.0, 22.0}];
   v6 = v5;
 
-  result = a3 + -44.0;
-  if (v6 < a3 + -44.0)
+  result = width + -44.0;
+  if (v6 < width + -44.0)
   {
     return v6;
   }

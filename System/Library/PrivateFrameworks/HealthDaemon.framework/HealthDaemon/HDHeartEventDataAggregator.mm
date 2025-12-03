@@ -1,8 +1,8 @@
 @interface HDHeartEventDataAggregator
-- (BOOL)didPersistObjects:(id)a3 lastDatum:(id)a4 collector:(id)a5 error:(id *)a6;
+- (BOOL)didPersistObjects:(id)objects lastDatum:(id)datum collector:(id)collector error:(id *)error;
 - (id)_categoryType;
-- (id)dataObjectsFromSensorDatum:(id)a3 error:(id *)a4;
-- (void)triggerImmediateCloudSyncWithReason:(void *)a1;
+- (id)dataObjectsFromSensorDatum:(id)datum error:(id *)error;
+- (void)triggerImmediateCloudSyncWithReason:(void *)reason;
 @end
 
 @implementation HDHeartEventDataAggregator
@@ -14,19 +14,19 @@
   return 0;
 }
 
-- (id)dataObjectsFromSensorDatum:(id)a3 error:(id *)a4
+- (id)dataObjectsFromSensorDatum:(id)datum error:(id *)error
 {
   v5 = MEMORY[0x277CCD0B0];
-  v6 = a3;
-  v7 = [(HDHeartEventDataAggregator *)self _categoryType];
-  v8 = [v6 dateInterval];
-  v9 = [v8 startDate];
-  v10 = [v6 dateInterval];
-  v11 = [v10 endDate];
-  if (v6)
+  datumCopy = datum;
+  _categoryType = [(HDHeartEventDataAggregator *)self _categoryType];
+  dateInterval = [datumCopy dateInterval];
+  startDate = [dateInterval startDate];
+  dateInterval2 = [datumCopy dateInterval];
+  endDate = [dateInterval2 endDate];
+  if (datumCopy)
   {
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [v12 setObject:v6[6] forKeyedSubscript:*MEMORY[0x277CCE048]];
+    [v12 setObject:datumCopy[6] forKeyedSubscript:*MEMORY[0x277CCE048]];
   }
 
   else
@@ -34,24 +34,24 @@
     v12 = 0;
   }
 
-  v13 = [v5 _categorySamplesSplittingDurationWithType:v7 value:0 startDate:v9 endDate:v11 device:0 metadata:v12];
+  v13 = [v5 _categorySamplesSplittingDurationWithType:_categoryType value:0 startDate:startDate endDate:endDate device:0 metadata:v12];
 
   return v13;
 }
 
-- (BOOL)didPersistObjects:(id)a3 lastDatum:(id)a4 collector:(id)a5 error:(id *)a6
+- (BOOL)didPersistObjects:(id)objects lastDatum:(id)datum collector:(id)collector error:(id *)error
 {
   v54 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  objectsCopy = objects;
+  datumCopy = datum;
+  collectorCopy = collector;
   v13 = objc_alloc_init(MEMORY[0x277CBEB28]);
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v14 = [v11 associatedSampleUUIDs];
-  v15 = [v14 countByEnumeratingWithState:&v41 objects:v53 count:16];
+  associatedSampleUUIDs = [datumCopy associatedSampleUUIDs];
+  v15 = [associatedSampleUUIDs countByEnumeratingWithState:&v41 objects:v53 count:16];
   if (v15)
   {
     v16 = v15;
@@ -62,27 +62,27 @@
       {
         if (*v42 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(associatedSampleUUIDs);
         }
 
         [v13 hk_appendBytesWithUUID:*(*(&v41 + 1) + 8 * i)];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v41 objects:v53 count:16];
+      v16 = [associatedSampleUUIDs countByEnumeratingWithState:&v41 objects:v53 count:16];
     }
 
     while (v16);
   }
 
-  if ([v10 count] == 1)
+  if ([objectsCopy count] == 1)
   {
-    v39 = v12;
-    v19 = [v10 firstObject];
-    v20 = [v19 UUID];
+    v39 = collectorCopy;
+    firstObject = [objectsCopy firstObject];
+    uUID = [firstObject UUID];
     [(HDDataAggregator *)self dataCollectionManager];
-    v22 = v21 = a6;
-    v23 = [v22 profile];
-    v24 = [HDAssociationEntity insertEntriesWithAssociationUUID:v20 objectUUIDsData:v13 type:0 behavior:0 destinationSubObjectReference:0 profile:v23 error:v21];
+    v22 = v21 = error;
+    profile = [v22 profile];
+    v24 = [HDAssociationEntity insertEntriesWithAssociationUUID:uUID objectUUIDsData:v13 type:0 behavior:0 destinationSubObjectReference:0 profile:profile error:v21];
 
     v25 = v21;
     if (!v24)
@@ -97,7 +97,7 @@
         *buf = 138543874;
         v46 = v36;
         v47 = 2112;
-        v48 = v11;
+        v48 = datumCopy;
         v49 = 2114;
         v50 = v37;
         v38 = v36;
@@ -107,8 +107,8 @@
 
     v40.receiver = self;
     v40.super_class = HDHeartEventDataAggregator;
-    v12 = v39;
-    v27 = [(HDDataAggregator *)&v40 didPersistObjects:v10 lastDatum:v11 collector:v39 error:v25];
+    collectorCopy = v39;
+    v27 = [(HDDataAggregator *)&v40 didPersistObjects:objectsCopy lastDatum:datumCopy collector:v39 error:v25];
   }
 
   else
@@ -119,13 +119,13 @@
     {
       v31 = v28;
       v32 = objc_opt_class();
-      v33 = *a6;
+      v33 = *error;
       *buf = 138544130;
       v46 = v32;
       v47 = 2112;
-      v48 = v10;
+      v48 = objectsCopy;
       v49 = 2112;
-      v50 = v11;
+      v50 = datumCopy;
       v51 = 2114;
       v52 = v33;
       v34 = v32;
@@ -139,14 +139,14 @@
   return v27;
 }
 
-- (void)triggerImmediateCloudSyncWithReason:(void *)a1
+- (void)triggerImmediateCloudSyncWithReason:(void *)reason
 {
   v3 = a2;
-  if (a1)
+  if (reason)
   {
-    v4 = [a1 dataCollectionManager];
-    v5 = [v4 profile];
-    v6 = [v5 cloudSyncManager];
+    dataCollectionManager = [reason dataCollectionManager];
+    profile = [dataCollectionManager profile];
+    cloudSyncManager = [profile cloudSyncManager];
 
     v7 = objc_alloc(MEMORY[0x277CCD140]);
     v8 = [objc_alloc(MEMORY[0x277CCD0C8]) initWithPush:1 pull:0 lite:1];
@@ -155,9 +155,9 @@
     v10[1] = 3221225472;
     v10[2] = __66__HDHeartEventDataAggregator_triggerImmediateCloudSyncWithReason___block_invoke;
     v10[3] = &unk_278616020;
-    v10[4] = a1;
+    v10[4] = reason;
     v11 = v3;
-    [v6 syncWithRequest:v9 reason:v11 completion:v10];
+    [cloudSyncManager syncWithRequest:v9 reason:v11 completion:v10];
   }
 }
 

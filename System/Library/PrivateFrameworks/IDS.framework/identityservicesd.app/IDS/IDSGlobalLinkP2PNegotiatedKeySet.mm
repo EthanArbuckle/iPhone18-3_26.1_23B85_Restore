@@ -7,7 +7,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_100937248(44);
 
   v6._countAndFlagsBits = sub_100936CF8();

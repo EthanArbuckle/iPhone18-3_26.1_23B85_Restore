@@ -1,66 +1,66 @@
 @interface VIPManager
 + (VIPManager)defaultInstance;
-+ (void)setBackingManager:(id)a3;
++ (void)setBackingManager:(id)manager;
 - (BOOL)hasVIPs;
-- (BOOL)isVIPAddress:(id)a3;
+- (BOOL)isVIPAddress:(id)address;
 - (EAEmailAddressSet)allVIPEmailAddresses;
 - (NSSet)allVIPs;
-- (VIPManager)initWithBackingManager:(id)a3;
+- (VIPManager)initWithBackingManager:(id)manager;
 - (id)allVIPEmailAddressesCriterion;
-- (id)criterionForEmailAddresses:(id)a3;
+- (id)criterionForEmailAddresses:(id)addresses;
 - (id)sortedVIPs;
 - (id)vipCriteria;
-- (id)vipForEmailAddresses:(id)a3 andDisplayNames:(id)a4;
-- (id)vipWithIdentifier:(id)a3;
-- (void)_vipsDidChange:(id)a3;
-- (void)deleteVIPWithIdentifier:(id)a3;
-- (void)existingPersonForVIP:(id)a3 usingAddressBook:(void *)a4;
-- (void)getAllVIPsWithCompletion:(id)a3;
-- (void)removeVIPsWithEmailAddresses:(id)a3;
-- (void)removeVIPsWithIdentifiers:(id)a3;
-- (void)saveVIP:(id)a3;
-- (void)saveVIPs:(id)a3;
+- (id)vipForEmailAddresses:(id)addresses andDisplayNames:(id)names;
+- (id)vipWithIdentifier:(id)identifier;
+- (void)_vipsDidChange:(id)change;
+- (void)deleteVIPWithIdentifier:(id)identifier;
+- (void)existingPersonForVIP:(id)p usingAddressBook:(void *)book;
+- (void)getAllVIPsWithCompletion:(id)completion;
+- (void)removeVIPsWithEmailAddresses:(id)addresses;
+- (void)removeVIPsWithIdentifiers:(id)identifiers;
+- (void)saveVIP:(id)p;
+- (void)saveVIPs:(id)ps;
 @end
 
 @implementation VIPManager
 
-+ (void)setBackingManager:(id)a3
++ (void)setBackingManager:(id)manager
 {
-  v7 = a3;
-  v4 = [a1 defaultInstanceLock];
-  os_unfair_lock_lock(v4);
-  v5 = [[VIPManager alloc] initWithBackingManager:v7];
+  managerCopy = manager;
+  defaultInstanceLock = [self defaultInstanceLock];
+  os_unfair_lock_lock(defaultInstanceLock);
+  v5 = [[VIPManager alloc] initWithBackingManager:managerCopy];
   v6 = qword_100185B60;
   qword_100185B60 = v5;
 
-  os_unfair_lock_unlock(v4);
+  os_unfair_lock_unlock(defaultInstanceLock);
 }
 
 + (VIPManager)defaultInstance
 {
-  v4 = [a1 defaultInstanceLock];
-  os_unfair_lock_lock(v4);
+  defaultInstanceLock = [self defaultInstanceLock];
+  os_unfair_lock_lock(defaultInstanceLock);
   v5 = qword_100185B60;
-  os_unfair_lock_unlock(v4);
+  os_unfair_lock_unlock(defaultInstanceLock);
   if (!v5)
   {
     v7 = +[NSAssertionHandler currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"VIPManager.m" lineNumber:55 description:@"+setBackingManager: must be called before attempting to get the default instance"];
+    [v7 handleFailureInMethod:a2 object:self file:@"VIPManager.m" lineNumber:55 description:@"+setBackingManager: must be called before attempting to get the default instance"];
   }
 
   return v5;
 }
 
-- (VIPManager)initWithBackingManager:(id)a3
+- (VIPManager)initWithBackingManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = VIPManager;
   v6 = [(VIPManager *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backingManager, a3);
+    objc_storeStrong(&v6->_backingManager, manager);
     v8 = objc_alloc_init(NSLock);
     abPersonByVIPIdentifierLock = v7->_abPersonByVIPIdentifierLock;
     v7->_abPersonByVIPIdentifierLock = v8;
@@ -75,79 +75,79 @@
 
 - (BOOL)hasVIPs
 {
-  v2 = [(VIPManager *)self backingManager];
-  v3 = [v2 hasVIPs];
+  backingManager = [(VIPManager *)self backingManager];
+  hasVIPs = [backingManager hasVIPs];
 
-  return v3;
+  return hasVIPs;
 }
 
 - (NSSet)allVIPs
 {
-  v2 = [(VIPManager *)self backingManager];
-  v3 = [v2 allVIPs];
+  backingManager = [(VIPManager *)self backingManager];
+  allVIPs = [backingManager allVIPs];
 
-  return v3;
+  return allVIPs;
 }
 
 - (EAEmailAddressSet)allVIPEmailAddresses
 {
-  v2 = [(VIPManager *)self backingManager];
-  v3 = [v2 allVIPEmailAddresses];
+  backingManager = [(VIPManager *)self backingManager];
+  allVIPEmailAddresses = [backingManager allVIPEmailAddresses];
 
-  return v3;
+  return allVIPEmailAddresses;
 }
 
-- (id)vipWithIdentifier:(id)a3
+- (id)vipWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(VIPManager *)self backingManager];
-  v6 = [v5 vipWithIdentifier:v4];
+  identifierCopy = identifier;
+  backingManager = [(VIPManager *)self backingManager];
+  v6 = [backingManager vipWithIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)isVIPAddress:(id)a3
+- (BOOL)isVIPAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(VIPManager *)self backingManager];
-  v6 = [v5 isVIPAddress:v4];
+  addressCopy = address;
+  backingManager = [(VIPManager *)self backingManager];
+  v6 = [backingManager isVIPAddress:addressCopy];
 
   return v6;
 }
 
-- (void)saveVIPs:(id)a3
+- (void)saveVIPs:(id)ps
 {
-  v5 = a3;
-  v4 = [(VIPManager *)self backingManager];
-  [v4 saveVIPs:v5];
+  psCopy = ps;
+  backingManager = [(VIPManager *)self backingManager];
+  [backingManager saveVIPs:psCopy];
 }
 
-- (void)removeVIPsWithIdentifiers:(id)a3
+- (void)removeVIPsWithIdentifiers:(id)identifiers
 {
-  v5 = a3;
-  v4 = [(VIPManager *)self backingManager];
-  [v4 removeVIPsWithIdentifiers:v5];
+  identifiersCopy = identifiers;
+  backingManager = [(VIPManager *)self backingManager];
+  [backingManager removeVIPsWithIdentifiers:identifiersCopy];
 }
 
-- (void)removeVIPsWithEmailAddresses:(id)a3
+- (void)removeVIPsWithEmailAddresses:(id)addresses
 {
-  v5 = a3;
-  v4 = [(VIPManager *)self backingManager];
-  [v4 removeVIPsWithEmailAddresses:v5];
+  addressesCopy = addresses;
+  backingManager = [(VIPManager *)self backingManager];
+  [backingManager removeVIPsWithEmailAddresses:addressesCopy];
 }
 
-- (void)getAllVIPsWithCompletion:(id)a3
+- (void)getAllVIPsWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = [(VIPManager *)self backingManager];
-  [v4 getAllVIPsWithCompletion:v5];
+  completionCopy = completion;
+  backingManager = [(VIPManager *)self backingManager];
+  [backingManager getAllVIPsWithCompletion:completionCopy];
 }
 
-- (void)_vipsDidChange:(id)a3
+- (void)_vipsDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:EMVIPsRemovedKey];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:EMVIPsRemovedKey];
   if ([v6 count])
   {
     v7 = dispatch_get_global_queue(0, 0);
@@ -160,58 +160,58 @@
     dispatch_async(v7, block);
   }
 
-  v11 = self;
-  v8 = v4;
+  selfCopy = self;
+  v8 = changeCopy;
   v12 = v8;
   v9 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v9 performBlock:&v10];
 }
 
-- (void)saveVIP:(id)a3
+- (void)saveVIP:(id)p
 {
-  v4 = a3;
+  pCopy = p;
   v5 = MFLogGeneral();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = pCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#MailServices saveVIP: %@", buf, 0xCu);
   }
 
-  v6 = [[NSSet alloc] initWithObjects:{v4, 0}];
+  v6 = [[NSSet alloc] initWithObjects:{pCopy, 0}];
   [(VIPManager *)self saveVIPs:v6];
 }
 
-- (void)deleteVIPWithIdentifier:(id)a3
+- (void)deleteVIPWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MFLogGeneral();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#MailServices deleteVIPWithIdentifier: %@", buf, 0xCu);
   }
 
-  v6 = [[NSSet alloc] initWithObjects:{v4, 0}];
+  v6 = [[NSSet alloc] initWithObjects:{identifierCopy, 0}];
   [(VIPManager *)self removeVIPsWithIdentifiers:v6];
 }
 
 - (id)sortedVIPs
 {
-  v2 = [(VIPManager *)self allVIPs];
-  v3 = [v2 allObjects];
-  v4 = [v3 mutableCopy];
+  allVIPs = [(VIPManager *)self allVIPs];
+  allObjects = [allVIPs allObjects];
+  v4 = [allObjects mutableCopy];
 
   [v4 sortUsingComparator:&stru_10015AAA8];
 
   return v4;
 }
 
-- (id)vipForEmailAddresses:(id)a3 andDisplayNames:(id)a4
+- (id)vipForEmailAddresses:(id)addresses andDisplayNames:(id)names
 {
-  v25 = a3;
-  v22 = a4;
+  addressesCopy = addresses;
+  namesCopy = names;
   [(VIPManager *)self allVIPs];
   v34 = 0u;
   v35 = 0u;
@@ -238,9 +238,9 @@
       }
 
       v9 = *(*(&v32 + 1) + 8 * i);
-      v10 = [v25 mutableCopy];
-      v11 = [v9 emailAddresses];
-      [v10 intersectSet:v11];
+      v10 = [addressesCopy mutableCopy];
+      emailAddresses = [v9 emailAddresses];
+      [v10 intersectSet:emailAddresses];
 
       v12 = [v10 count];
       v13 = v12;
@@ -260,7 +260,7 @@ LABEL_20:
         v31 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v14 = v22;
+        v14 = namesCopy;
         v15 = [v14 countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v15)
         {
@@ -275,8 +275,8 @@ LABEL_20:
               }
 
               v18 = *(*(&v28 + 1) + 8 * j);
-              v19 = [v9 name];
-              LODWORD(v18) = [v18 isEqualToString:v19];
+              name = [v9 name];
+              LODWORD(v18) = [v18 isEqualToString:name];
 
               if (v18)
               {
@@ -314,24 +314,24 @@ LABEL_25:
   return v27;
 }
 
-- (void)existingPersonForVIP:(id)a3 usingAddressBook:(void *)a4
+- (void)existingPersonForVIP:(id)p usingAddressBook:(void *)book
 {
-  v6 = a3;
+  pCopy = p;
   [(NSLock *)self->_abPersonByVIPIdentifierLock lock];
-  v7 = [v6 identifier];
-  Value = CFDictionaryGetValue(self->_abPersonByVIPIdentifier, v7);
+  identifier = [pCopy identifier];
+  Value = CFDictionaryGetValue(self->_abPersonByVIPIdentifier, identifier);
   v9 = Value;
-  if (a4 && !Value)
+  if (book && !Value)
   {
-    v10 = [v6 emailAddresses];
-    v11 = [v6 name];
+    emailAddresses = [pCopy emailAddresses];
+    name = [pCopy name];
     v12 = MFCopyClosestMatchingExistingPersonUsingAddressesAndDisplayName();
 
     if (v12)
     {
       abPersonByVIPIdentifier = self->_abPersonByVIPIdentifier;
-      v14 = [v6 identifier];
-      CFDictionarySetValue(abPersonByVIPIdentifier, v14, v12);
+      identifier2 = [pCopy identifier];
+      CFDictionarySetValue(abPersonByVIPIdentifier, identifier2, v12);
 
       v9 = v12;
     }
@@ -346,10 +346,10 @@ LABEL_25:
   return v9;
 }
 
-- (id)criterionForEmailAddresses:(id)a3
+- (id)criterionForEmailAddresses:(id)addresses
 {
-  v19 = a3;
-  v3 = [v19 count];
+  addressesCopy = addresses;
+  v3 = [addressesCopy count];
   if (v3)
   {
     v4 = [[NSMutableArray alloc] initWithCapacity:v3];
@@ -357,7 +357,7 @@ LABEL_25:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v5 = v19;
+    v5 = addressesCopy;
     v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v6)
     {
@@ -372,23 +372,23 @@ LABEL_25:
           }
 
           v9 = *(*(&v20 + 1) + 8 * i);
-          v10 = [v9 emailAddressValue];
-          v11 = [v10 simpleAddress];
-          v12 = v11;
-          if (v11)
+          emailAddressValue = [v9 emailAddressValue];
+          simpleAddress = [emailAddressValue simpleAddress];
+          v12 = simpleAddress;
+          if (simpleAddress)
           {
-            v13 = v11;
+            stringValue = simpleAddress;
           }
 
           else
           {
-            v13 = [v9 stringValue];
+            stringValue = [v9 stringValue];
           }
 
-          v14 = v13;
+          v14 = stringValue;
 
-          v15 = [v14 mf_copyIDNADecodedEmailAddress];
-          v16 = [[MFMessageCriterion alloc] initWithType:35 qualifier:8 expression:v15];
+          mf_copyIDNADecodedEmailAddress = [v14 mf_copyIDNADecodedEmailAddress];
+          v16 = [[MFMessageCriterion alloc] initWithType:35 qualifier:8 expression:mf_copyIDNADecodedEmailAddress];
           [v4 addObject:v16];
         }
 
@@ -416,8 +416,8 @@ LABEL_25:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(VIPManager *)self sortedVIPs];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  sortedVIPs = [(VIPManager *)self sortedVIPs];
+  v5 = [sortedVIPs countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v5)
   {
     v7 = *v17;
@@ -429,19 +429,19 @@ LABEL_25:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sortedVIPs);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 name];
+        name = [v9 name];
 
-        if (v10)
+        if (name)
         {
-          v11 = [v9 emailAddresses];
-          v12 = [(VIPManager *)self criterionForEmailAddresses:v11];
+          emailAddresses = [v9 emailAddresses];
+          v12 = [(VIPManager *)self criterionForEmailAddresses:emailAddresses];
 
-          v13 = [v9 name];
-          [v12 setName:v13];
+          name2 = [v9 name];
+          [v12 setName:name2];
 
           [v3 addObject:v12];
         }
@@ -458,7 +458,7 @@ LABEL_25:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v16 objects:v22 count:16];
+      v5 = [sortedVIPs countByEnumeratingWithState:&v16 objects:v22 count:16];
     }
 
     while (v5);
@@ -469,8 +469,8 @@ LABEL_25:
 
 - (id)allVIPEmailAddressesCriterion
 {
-  v3 = [(VIPManager *)self allVIPEmailAddresses];
-  v4 = [(VIPManager *)self criterionForEmailAddresses:v3];
+  allVIPEmailAddresses = [(VIPManager *)self allVIPEmailAddresses];
+  v4 = [(VIPManager *)self criterionForEmailAddresses:allVIPEmailAddresses];
 
   return v4;
 }

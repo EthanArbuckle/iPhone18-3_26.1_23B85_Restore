@@ -1,25 +1,25 @@
 @interface SRWristTemperatureSession
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)startDate;
 - (NSEnumerator)temperatures;
 - (NSString)description;
 - (NSString)version;
 - (NSTimeInterval)duration;
 - (SRWristTemperatureSession)init;
-- (SRWristTemperatureSession)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (SRWristTemperatureSession)initWithCoder:(id)a3;
-- (SRWristTemperatureSession)initWithSession:(id)a3;
+- (SRWristTemperatureSession)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (SRWristTemperatureSession)initWithCoder:(id)coder;
+- (SRWristTemperatureSession)initWithSession:(id)session;
 - (id)sr_dictionaryRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRWristTemperatureSession
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRLogWristTemperatureReading = os_log_create("com.apple.SensorKit", "SRLogWristTemperatureReading");
   }
@@ -32,14 +32,14 @@
   return 0;
 }
 
-- (SRWristTemperatureSession)initWithSession:(id)a3
+- (SRWristTemperatureSession)initWithSession:(id)session
 {
   v6.receiver = self;
   v6.super_class = SRWristTemperatureSession;
   v4 = [(SRWristTemperatureSession *)&v6 init];
   if (v4)
   {
-    v4->_healthwristTemperatureSession = a3;
+    v4->_healthwristTemperatureSession = session;
   }
 
   return v4;
@@ -47,16 +47,16 @@
 
 - (NSDate)startDate
 {
-  v2 = [(HAWristTemperatureSession *)self->_healthwristTemperatureSession sessionInterval];
+  sessionInterval = [(HAWristTemperatureSession *)self->_healthwristTemperatureSession sessionInterval];
 
-  return [v2 startDate];
+  return [sessionInterval startDate];
 }
 
 - (NSTimeInterval)duration
 {
-  v2 = [(HAWristTemperatureSession *)self->_healthwristTemperatureSession sessionInterval];
+  sessionInterval = [(HAWristTemperatureSession *)self->_healthwristTemperatureSession sessionInterval];
 
-  [v2 duration];
+  [sessionInterval duration];
   return result;
 }
 
@@ -80,14 +80,14 @@
   [(SRWristTemperatureSession *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeObject:-[SRWristTemperatureSession startDate](self forKey:{"startDate"), @"startDate"}];
+  [coder encodeObject:-[SRWristTemperatureSession startDate](self forKey:{"startDate"), @"startDate"}];
   if (self)
   {
     dataRepresentation = self->_dataRepresentation;
@@ -98,18 +98,18 @@
     dataRepresentation = 0;
   }
 
-  [a3 encodeObject:dataRepresentation forKey:@"dataRepresentation"];
+  [coder encodeObject:dataRepresentation forKey:@"dataRepresentation"];
 }
 
-- (SRWristTemperatureSession)initWithCoder:(id)a3
+- (SRWristTemperatureSession)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
-  v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"dataRepresentation"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+  v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"dataRepresentation"];
   if (v7)
   {
     v8 = v7;
@@ -131,22 +131,22 @@
   }
 }
 
-- (SRWristTemperatureSession)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SRWristTemperatureSession)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  if (![a3 length])
+  if (![representation length])
   {
     goto LABEL_8;
   }
 
   if (self)
   {
-    objc_setProperty_nonatomic_copy(self, v9, a3, 16);
+    objc_setProperty_nonatomic_copy(self, v9, representation, 16);
   }
 
-  v10 = [MEMORY[0x1E695DF00] dateWithSRAbsoluteTime:a5];
+  v10 = [MEMORY[0x1E695DF00] dateWithSRAbsoluteTime:timestamp];
   v11 = objc_alloc(MEMORY[0x1E69A2B68]);
   v12 = self ? self->_dataRepresentation : 0;
-  v13 = [v11 initWithBinarySampleRepresentation:v12 metadata:a4 timestamp:v10];
+  v13 = [v11 initWithBinarySampleRepresentation:v12 metadata:metadata timestamp:v10];
   if (v13)
   {
     v14 = v13;
@@ -175,26 +175,26 @@ LABEL_8:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SRWristTemperatureSession *)self startDate];
+  startDate = [(SRWristTemperatureSession *)self startDate];
   [(SRWristTemperatureSession *)self duration];
-  return [v3 stringWithFormat:@"%@ (%p) {start date: %@, duration: %f, version: %@, temperatures: %@}", v5, self, v6, v7, -[SRWristTemperatureSession version](self, "version"), -[SRWristTemperatureSession temperatures](self, "temperatures")];
+  return [v3 stringWithFormat:@"%@ (%p) {start date: %@, duration: %f, version: %@, temperatures: %@}", v5, self, startDate, v7, -[SRWristTemperatureSession version](self, "version"), -[SRWristTemperatureSession temperatures](self, "temperatures")];
 }
 
 - (id)sr_dictionaryRepresentation
 {
   v18[4] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(SRWristTemperatureSession *)self temperatures];
+  array = [MEMORY[0x1E695DF70] array];
+  temperatures = [(SRWristTemperatureSession *)self temperatures];
   while (1)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [(NSEnumerator *)v4 nextObject];
-    if (!v6)
+    nextObject = [(NSEnumerator *)temperatures nextObject];
+    if (!nextObject)
     {
       break;
     }
 
-    [v3 addObject:{objc_msgSend(v6, "sr_dictionaryRepresentation")}];
+    [array addObject:{objc_msgSend(nextObject, "sr_dictionaryRepresentation")}];
     objc_autoreleasePoolPop(v5);
   }
 
@@ -232,15 +232,15 @@ LABEL_8:
   v17[2] = @"version";
   v17[3] = @"temperatures";
   v18[2] = [(SRWristTemperatureSession *)self version];
-  v18[3] = v3;
+  v18[3] = array;
   result = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:4];
   v16 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
     return v5;
@@ -252,7 +252,7 @@ LABEL_8:
     goto LABEL_14;
   }
 
-  v5 = -[NSDate isEqualToDate:](-[SRWristTemperatureSession startDate](self, "startDate"), "isEqualToDate:", [a3 startDate]);
+  v5 = -[NSDate isEqualToDate:](-[SRWristTemperatureSession startDate](self, "startDate"), "isEqualToDate:", [equal startDate]);
   if (!v5)
   {
     return v5;
@@ -260,19 +260,19 @@ LABEL_8:
 
   [(SRWristTemperatureSession *)self duration];
   v7 = v6;
-  [a3 duration];
+  [equal duration];
   if (v7 != v8)
   {
     goto LABEL_14;
   }
 
-  v5 = -[NSString isEqualToString:](-[SRWristTemperatureSession version](self, "version"), "isEqualToString:", [a3 version]);
+  v5 = -[NSString isEqualToString:](-[SRWristTemperatureSession version](self, "version"), "isEqualToString:", [equal version]);
   if (!v5)
   {
     return v5;
   }
 
-  v5 = -[NSArray isEqualToArray:](-[NSEnumerator allObjects](-[SRWristTemperatureSession temperatures](self, "temperatures"), "allObjects"), "isEqualToArray:", [objc_msgSend(a3 "temperatures")]);
+  v5 = -[NSArray isEqualToArray:](-[NSEnumerator allObjects](-[SRWristTemperatureSession temperatures](self, "temperatures"), "allObjects"), "isEqualToArray:", [objc_msgSend(equal "temperatures")]);
   if (!v5)
   {
     return v5;
@@ -280,21 +280,21 @@ LABEL_8:
 
   [(SRWristTemperatureSession *)self a0CorrectionCoefficient];
   v10 = v9;
-  [a3 a0CorrectionCoefficient];
-  if (v10 != v11 || (-[SRWristTemperatureSession c0CorrectionCoefficient](self, "c0CorrectionCoefficient"), v13 = v12, [a3 c0CorrectionCoefficient], v13 != v14) || (-[SRWristTemperatureSession c0UserDeviceCorrectionCoefficient](self, "c0UserDeviceCorrectionCoefficient"), v16 = v15, objc_msgSend(a3, "c0UserDeviceCorrectionCoefficient"), v16 != v17))
+  [equal a0CorrectionCoefficient];
+  if (v10 != v11 || (-[SRWristTemperatureSession c0CorrectionCoefficient](self, "c0CorrectionCoefficient"), v13 = v12, [equal c0CorrectionCoefficient], v13 != v14) || (-[SRWristTemperatureSession c0UserDeviceCorrectionCoefficient](self, "c0UserDeviceCorrectionCoefficient"), v16 = v15, objc_msgSend(equal, "c0UserDeviceCorrectionCoefficient"), v16 != v17))
   {
 LABEL_14:
     LOBYTE(v5) = 0;
     return v5;
   }
 
-  v5 = -[NSMeasurement isEqual:](-[SRWristTemperatureSession meanQuiescentPower](self, "meanQuiescentPower"), "isEqual:", [a3 meanQuiescentPower]);
+  v5 = -[NSMeasurement isEqual:](-[SRWristTemperatureSession meanQuiescentPower](self, "meanQuiescentPower"), "isEqual:", [equal meanQuiescentPower]);
   if (v5)
   {
-    v18 = [(SRWristTemperatureSession *)self standardDeviationQuiescentPower];
-    v19 = [a3 standardDeviationQuiescentPower];
+    standardDeviationQuiescentPower = [(SRWristTemperatureSession *)self standardDeviationQuiescentPower];
+    standardDeviationQuiescentPower2 = [equal standardDeviationQuiescentPower];
 
-    LOBYTE(v5) = [(NSMeasurement *)v18 isEqual:v19];
+    LOBYTE(v5) = [(NSMeasurement *)standardDeviationQuiescentPower isEqual:standardDeviationQuiescentPower2];
   }
 
   return v5;

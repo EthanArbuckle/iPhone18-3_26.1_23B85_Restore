@@ -1,5 +1,5 @@
 @interface MTLResourceList
-- (MTLResourceList)initWithCapacity:(int)a3;
+- (MTLResourceList)initWithCapacity:(int)capacity;
 - (void)dealloc;
 - (void)releaseAllObjectsAndReset;
 @end
@@ -40,7 +40,7 @@
   }
 }
 
-- (MTLResourceList)initWithCapacity:(int)a3
+- (MTLResourceList)initWithCapacity:(int)capacity
 {
   v7.receiver = self;
   v7.super_class = MTLResourceList;
@@ -49,10 +49,10 @@
   v4->_listPriv.hopInfo = v4->_defaultHopInfo;
   v4->_listPriv.hashTable = v4->_defaultHashTable;
   v4->_listPriv.usedInfo = v4->_defaultUsedInfo;
-  v4->_listPriv.chunkEntryCapacity = a3;
+  v4->_listPriv.chunkEntryCapacity = capacity;
   v4->_listPriv.currentChunk.currentEntry = 0;
   v4->_listPriv.currentChunk.nextChunk = 0;
-  v5 = malloc_type_malloc(8 * a3 + 24, 0x1030040B05087B7uLL);
+  v5 = malloc_type_malloc(8 * capacity + 24, 0x1030040B05087B7uLL);
   *v5 = 0;
   v5[1] = v5 + 3;
   v5[2] = 0;

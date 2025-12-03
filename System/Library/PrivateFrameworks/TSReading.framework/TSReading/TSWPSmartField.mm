@@ -1,30 +1,30 @@
 @interface TSWPSmartField
-+ (id)allocWithZone:(_NSZone *)a3;
-- (TSWPSmartField)initWithContext:(id)a3;
++ (id)allocWithZone:(_NSZone *)zone;
+- (TSWPSmartField)initWithContext:(id)context;
 - (_NSRange)range;
-- (id)copyWithContext:(id)a3;
+- (id)copyWithContext:(id)context;
 - (void)dealloc;
 @end
 
 @implementation TSWPSmartField
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"It is illegal to instantiate TSWPSmartField; it is abstract" userInfo:0]);
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___TSWPSmartField;
-  return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+  return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
 }
 
-- (TSWPSmartField)initWithContext:(id)a3
+- (TSWPSmartField)initWithContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = TSWPSmartField;
-  return [(TSPObject *)&v4 initWithContext:a3];
+  return [(TSPObject *)&v4 initWithContext:context];
 }
 
 - (void)dealloc
@@ -34,11 +34,11 @@
   [(TSWPSmartField *)&v2 dealloc];
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
   v4 = [objc_opt_class() allocWithZone:{-[TSWPSmartField zone](self, "zone")}];
 
-  return [v4 initWithContext:a3];
+  return [v4 initWithContext:context];
 }
 
 - (_NSRange)range

@@ -1,16 +1,16 @@
 @interface TVRUIPagingButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation TVRUIPagingButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TVRUIPagingButton" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TVRUIPagingButton" hasInstanceMethod:@"topButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TVRUIPagingButton" hasInstanceMethod:@"bottomButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TVRUIPagingButton" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TVRUIPagingButton" hasInstanceMethod:@"topButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TVRUIPagingButton" hasInstanceMethod:@"bottomButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

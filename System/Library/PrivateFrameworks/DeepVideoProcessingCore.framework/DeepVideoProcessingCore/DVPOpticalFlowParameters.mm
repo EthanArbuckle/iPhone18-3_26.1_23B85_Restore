@@ -1,14 +1,14 @@
 @interface DVPOpticalFlowParameters
-- (DVPOpticalFlowParameters)initWithSourceFrame:(id)a3 nextFrame:(id)a4 submissionMode:(int64_t)a5 opticalFlow:(id)a6;
+- (DVPOpticalFlowParameters)initWithSourceFrame:(id)frame nextFrame:(id)nextFrame submissionMode:(int64_t)mode opticalFlow:(id)flow;
 @end
 
 @implementation DVPOpticalFlowParameters
 
-- (DVPOpticalFlowParameters)initWithSourceFrame:(id)a3 nextFrame:(id)a4 submissionMode:(int64_t)a5 opticalFlow:(id)a6
+- (DVPOpticalFlowParameters)initWithSourceFrame:(id)frame nextFrame:(id)nextFrame submissionMode:(int64_t)mode opticalFlow:(id)flow
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  frameCopy = frame;
+  nextFrameCopy = nextFrame;
+  flowCopy = flow;
   v18.receiver = self;
   v18.super_class = DVPOpticalFlowParameters;
   v14 = [(DVPOpticalFlowParameters *)&v18 init];
@@ -18,11 +18,11 @@
     goto LABEL_6;
   }
 
-  objc_storeStrong(&v14->_sourceFrame, a3);
-  objc_storeStrong(&v15->_nextFrame, a4);
-  v15->_submissionMode = a5;
-  objc_storeStrong(&v15->_opticalFlow, a6);
-  if (!isSameFormat([v11 buffer], objc_msgSend(v12, "buffer")))
+  objc_storeStrong(&v14->_sourceFrame, frame);
+  objc_storeStrong(&v15->_nextFrame, nextFrame);
+  v15->_submissionMode = mode;
+  objc_storeStrong(&v15->_opticalFlow, flow);
+  if (!isSameFormat([frameCopy buffer], objc_msgSend(nextFrameCopy, "buffer")))
   {
     NSLog(&cfstr_FailToToInitia_0.isa);
 LABEL_6:

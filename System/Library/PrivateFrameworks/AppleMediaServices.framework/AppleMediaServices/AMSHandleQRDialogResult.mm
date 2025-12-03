@@ -1,21 +1,21 @@
 @interface AMSHandleQRDialogResult
-+ (id)_dismissalIdentifierFromDialogResult:(id)a3;
-+ (void)_observeQRDialogDismissalNotificationForIdentifier:(id)a3 dialog:(id)a4;
-+ (void)_removeQRDialogDismissalObserverForIdentifier:(id)a3;
-+ (void)handleQRDialogPresentationForRequest:(id)a3 result:(id)a4 logKey:(id)a5;
++ (id)_dismissalIdentifierFromDialogResult:(id)result;
++ (void)_observeQRDialogDismissalNotificationForIdentifier:(id)identifier dialog:(id)dialog;
++ (void)_removeQRDialogDismissalObserverForIdentifier:(id)identifier;
++ (void)handleQRDialogPresentationForRequest:(id)request result:(id)result logKey:(id)key;
 @end
 
 @implementation AMSHandleQRDialogResult
 
-+ (void)handleQRDialogPresentationForRequest:(id)a3 result:(id)a4 logKey:(id)a5
++ (void)handleQRDialogPresentationForRequest:(id)request result:(id)result logKey:(id)key
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(AMSSystemAlertDialogTask *)[AMSQRCodeDialogTask alloc] initWithRequest:v10];
+  keyCopy = key;
+  resultCopy = result;
+  requestCopy = request;
+  v11 = [(AMSSystemAlertDialogTask *)[AMSQRCodeDialogTask alloc] initWithRequest:requestCopy];
 
-  v12 = [AMSHandleQRDialogResult _dismissalIdentifierFromDialogResult:v9];
+  v12 = [AMSHandleQRDialogResult _dismissalIdentifierFromDialogResult:resultCopy];
 
   if (+[AMSHandleQRDialogResult _isDismissQRDialogEnabled])
   {
@@ -33,30 +33,30 @@
         v13 = +[AMSLogConfig sharedConfig];
       }
 
-      v14 = [v13 OSLogObject];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v13 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
         v24 = objc_opt_class();
         v25 = 2114;
-        v26 = v8;
+        v26 = keyCopy;
         v15 = v24;
-        _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error observing for QR code dialog dismissal. No dialog identifier or link code found on the dialog result.", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error observing for QR code dialog dismissal. No dialog identifier or link code found on the dialog result.", buf, 0x16u);
       }
     }
   }
 
-  v16 = [(AMSSystemAlertDialogTask *)v11 present];
+  present = [(AMSSystemAlertDialogTask *)v11 present];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __78__AMSHandleQRDialogResult_handleQRDialogPresentationForRequest_result_logKey___block_invoke;
   v19[3] = &unk_1E73B85C8;
   v21 = v12;
-  v22 = a1;
-  v20 = v8;
+  selfCopy = self;
+  v20 = keyCopy;
   v17 = v12;
-  v18 = v8;
-  [v16 addFinishBlock:v19];
+  v18 = keyCopy;
+  [present addFinishBlock:v19];
 }
 
 void __78__AMSHandleQRDialogResult_handleQRDialogPresentationForRequest_result_logKey___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -125,30 +125,30 @@ LABEL_10:
   }
 }
 
-+ (void)_observeQRDialogDismissalNotificationForIdentifier:(id)a3 dialog:(id)a4
++ (void)_observeQRDialogDismissalNotificationForIdentifier:(id)identifier dialog:(id)dialog
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  dialogCopy = dialog;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__34;
   v20 = __Block_byref_object_dispose__34;
   v21 = objc_alloc_init(AMSDaemonConnection);
-  v7 = [v17[5] dismissQRDialogServiceProxy];
+  dismissQRDialogServiceProxy = [v17[5] dismissQRDialogServiceProxy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __85__AMSHandleQRDialogResult__observeQRDialogDismissalNotificationForIdentifier_dialog___block_invoke;
   v13[3] = &unk_1E73B85F0;
-  v8 = v5;
+  v8 = identifierCopy;
   v14 = v8;
   v15 = &v16;
-  v9 = [v7 thenWithBlock:v13];
+  v9 = [dismissQRDialogServiceProxy thenWithBlock:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __85__AMSHandleQRDialogResult__observeQRDialogDismissalNotificationForIdentifier_dialog___block_invoke_3;
   v11[3] = &unk_1E73B8618;
-  v10 = v6;
+  v10 = dialogCopy;
   v12 = v10;
   [v9 addFinishBlock:v11];
 
@@ -181,24 +181,24 @@ void __85__AMSHandleQRDialogResult__observeQRDialogDismissalNotificationForIdent
   *(v2 + 40) = 0;
 }
 
-+ (void)_removeQRDialogDismissalObserverForIdentifier:(id)a3
++ (void)_removeQRDialogDismissalObserverForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__34;
   v17 = __Block_byref_object_dispose__34;
   v18 = objc_alloc_init(AMSDaemonConnection);
-  v4 = [v14[5] dismissQRDialogServiceProxy];
+  dismissQRDialogServiceProxy = [v14[5] dismissQRDialogServiceProxy];
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __73__AMSHandleQRDialogResult__removeQRDialogDismissalObserverForIdentifier___block_invoke;
   v10 = &unk_1E73B85F0;
-  v5 = v3;
+  v5 = identifierCopy;
   v11 = v5;
   v12 = &v13;
-  v6 = [v4 thenWithBlock:&v7];
+  v6 = [dismissQRDialogServiceProxy thenWithBlock:&v7];
   [v6 addFinishBlock:{&__block_literal_global_67, v7, v8, v9, v10}];
 
   _Block_object_dispose(&v13, 8);
@@ -230,17 +230,17 @@ void __73__AMSHandleQRDialogResult__removeQRDialogDismissalObserverForIdentifier
   *(v2 + 40) = 0;
 }
 
-+ (id)_dismissalIdentifierFromDialogResult:(id)a3
++ (id)_dismissalIdentifierFromDialogResult:(id)result
 {
-  v3 = a3;
-  v4 = [v3 originalRequest];
-  v5 = [v4 metricsEvent];
-  v6 = [v5 underlyingDictionary];
+  resultCopy = result;
+  originalRequest = [resultCopy originalRequest];
+  metricsEvent = [originalRequest metricsEvent];
+  underlyingDictionary = [metricsEvent underlyingDictionary];
 
-  v7 = [v3 originalRequest];
+  originalRequest2 = [resultCopy originalRequest];
 
-  v8 = [v7 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"AMSDialogRequestUserInfoKeyServerPayload"];
+  userInfo = [originalRequest2 userInfo];
+  v9 = [userInfo objectForKeyedSubscript:@"AMSDialogRequestUserInfoKeyServerPayload"];
 
   v10 = [v9 objectForKeyedSubscript:@"okButtonAction"];
   v11 = [v10 objectForKeyedSubscript:@"PINCode"];
@@ -256,7 +256,7 @@ void __73__AMSHandleQRDialogResult__removeQRDialogDismissalObserverForIdentifier
     v12 = 0;
   }
 
-  v13 = [v6 objectForKeyedSubscript:@"dialogId"];
+  v13 = [underlyingDictionary objectForKeyedSubscript:@"dialogId"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

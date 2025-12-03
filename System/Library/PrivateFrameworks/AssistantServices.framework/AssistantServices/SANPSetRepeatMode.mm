@@ -1,15 +1,15 @@
 @interface SANPSetRepeatMode
-- (void)_ad_performWithMediaRemoteService:(id)a3 replyHandler:(id)a4;
+- (void)_ad_performWithMediaRemoteService:(id)service replyHandler:(id)handler;
 @end
 
 @implementation SANPSetRepeatMode
 
-- (void)_ad_performWithMediaRemoteService:(id)a3 replyHandler:(id)a4
+- (void)_ad_performWithMediaRemoteService:(id)service replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SANPSetRepeatMode *)self repeatMode];
-  v9 = [v8 isEqualToString:SANPRepeatModeNoneValue];
+  handlerCopy = handler;
+  serviceCopy = service;
+  repeatMode = [(SANPSetRepeatMode *)self repeatMode];
+  v9 = [repeatMode isEqualToString:SANPRepeatModeNoneValue];
 
   if (v9)
   {
@@ -18,8 +18,8 @@
 
   else
   {
-    v11 = [(SANPSetRepeatMode *)self repeatMode];
-    v12 = [v11 isEqualToString:SANPRepeatModeOneValue];
+    repeatMode2 = [(SANPSetRepeatMode *)self repeatMode];
+    v12 = [repeatMode2 isEqualToString:SANPRepeatModeOneValue];
 
     if (v12)
     {
@@ -28,8 +28,8 @@
 
     else
     {
-      v13 = [(SANPSetRepeatMode *)self repeatMode];
-      v14 = [v13 isEqualToString:SANPRepeatModeAllValue];
+      repeatMode3 = [(SANPSetRepeatMode *)self repeatMode];
+      v14 = [repeatMode3 isEqualToString:SANPRepeatModeAllValue];
 
       if (v14)
       {
@@ -48,9 +48,9 @@
   v19 = v15;
   v16 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
 
-  v17 = [v7 targetQueue];
+  targetQueue = [serviceCopy targetQueue];
 
-  sub_1001B7630(25, self, v16, v17, v6);
+  sub_1001B7630(25, self, v16, targetQueue, handlerCopy);
 }
 
 @end

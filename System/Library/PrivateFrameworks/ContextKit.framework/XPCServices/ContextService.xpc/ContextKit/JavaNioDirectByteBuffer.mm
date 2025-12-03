@@ -11,10 +11,10 @@
 - (id)asShortBuffer;
 - (id)compact;
 - (id)protectedArray;
-- (id)putCharWithChar:(unsigned __int16)a3;
-- (id)putDoubleWithDouble:(double)a3;
-- (id)putFloatWithFloat:(float)a3;
-- (id)putLongWithLong:(int64_t)a3;
+- (id)putCharWithChar:(unsigned __int16)char;
+- (id)putDoubleWithDouble:(double)double;
+- (id)putFloatWithFloat:(float)float;
+- (id)putLongWithLong:(int64_t)long;
 - (id)slice;
 - (int)getInt;
 - (int64_t)getLong;
@@ -57,13 +57,13 @@
 {
   [JavaNioDirectByteBuffer checkNotFreed]_0(self);
   block = self->super.block_;
-  v4 = [(JavaNioBuffer *)self remaining];
+  remaining = [(JavaNioBuffer *)self remaining];
   offset = self->offset_;
   position = self->super.super.super.position_;
   isReadOnly = self->isReadOnly_;
   mapMode = self->super.mapMode_;
   v9 = [JavaNioDirectByteBuffer alloc];
-  JavaNioDirectByteBuffer_initWithJavaNioMemoryBlock_withInt_withInt_withBoolean_withJavaNioChannelsFileChannel_MapMode_(v9, block, v4, position + offset, isReadOnly, mapMode);
+  JavaNioDirectByteBuffer_initWithJavaNioMemoryBlock_withInt_withInt_withBoolean_withJavaNioChannelsFileChannel_MapMode_(v9, block, remaining, position + offset, isReadOnly, mapMode);
 
   return v9;
 }
@@ -321,7 +321,7 @@ LABEL_8:
   return JavaNioByteBufferAsShortBuffer_asShortBufferWithJavaNioByteBuffer_(self);
 }
 
-- (id)putCharWithChar:(unsigned __int16)a3
+- (id)putCharWithChar:(unsigned __int16)char
 {
   [JavaNioDirectByteBuffer checkNotFreed]_0(self);
   if (self->isReadOnly_)
@@ -345,12 +345,12 @@ LABEL_8:
     JreThrowNullPointerException();
   }
 
-  [(JavaNioMemoryBlock *)block pokeShortWithInt:(self->offset_ + position) withShort:a3 withJavaNioByteOrder:self->super.super.order_];
+  [(JavaNioMemoryBlock *)block pokeShortWithInt:(self->offset_ + position) withShort:char withJavaNioByteOrder:self->super.super.order_];
   self->super.super.super.position_ = v6;
   return self;
 }
 
-- (id)putDoubleWithDouble:(double)a3
+- (id)putDoubleWithDouble:(double)double
 {
   [JavaNioDirectByteBuffer checkNotFreed]_0(self);
   if (self->isReadOnly_)
@@ -373,12 +373,12 @@ LABEL_8:
     JreThrowNullPointerException();
   }
 
-  [(JavaNioMemoryBlock *)block pokeLongWithInt:(self->offset_ + position) withLong:JavaLangDouble_doubleToRawLongBitsWithDouble_(a3) withJavaNioByteOrder:self->super.super.order_];
+  [(JavaNioMemoryBlock *)block pokeLongWithInt:(self->offset_ + position) withLong:JavaLangDouble_doubleToRawLongBitsWithDouble_(double) withJavaNioByteOrder:self->super.super.order_];
   self->super.super.super.position_ = position + 8;
   return self;
 }
 
-- (id)putFloatWithFloat:(float)a3
+- (id)putFloatWithFloat:(float)float
 {
   [JavaNioDirectByteBuffer checkNotFreed]_0(self);
   if (self->isReadOnly_)
@@ -401,12 +401,12 @@ LABEL_8:
     JreThrowNullPointerException();
   }
 
-  [(JavaNioMemoryBlock *)block pokeIntWithInt:(self->offset_ + position) withInt:JavaLangFloat_floatToRawIntBitsWithFloat_(a3) withJavaNioByteOrder:self->super.super.order_];
+  [(JavaNioMemoryBlock *)block pokeIntWithInt:(self->offset_ + position) withInt:JavaLangFloat_floatToRawIntBitsWithFloat_(float) withJavaNioByteOrder:self->super.super.order_];
   self->super.super.super.position_ = position + 4;
   return self;
 }
 
-- (id)putLongWithLong:(int64_t)a3
+- (id)putLongWithLong:(int64_t)long
 {
   [JavaNioDirectByteBuffer checkNotFreed]_0(self);
   if (self->isReadOnly_)
@@ -430,7 +430,7 @@ LABEL_8:
     JreThrowNullPointerException();
   }
 
-  [(JavaNioMemoryBlock *)block pokeLongWithInt:(self->offset_ + position) withLong:a3 withJavaNioByteOrder:self->super.super.order_];
+  [(JavaNioMemoryBlock *)block pokeLongWithInt:(self->offset_ + position) withLong:long withJavaNioByteOrder:self->super.super.order_];
   self->super.super.super.position_ = v6;
   return self;
 }

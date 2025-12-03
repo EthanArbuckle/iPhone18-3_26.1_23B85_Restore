@@ -1,34 +1,34 @@
 @interface CSUserPictureViewController
 + (BOOL)isUserPictureSupported;
-- (BOOL)handleEvent:(id)a3;
-- (CSUserPictureViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)handleEvent:(id)event;
+- (CSUserPictureViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)view;
-- (void)aggregateAppearance:(id)a3;
+- (void)aggregateAppearance:(id)appearance;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CSUserPictureViewController
 
 + (BOOL)isUserPictureSupported
 {
-  v2 = [MEMORY[0x277D77BF8] sharedManager];
-  v3 = [v2 isMultiUser];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  isMultiUser = [mEMORY[0x277D77BF8] isMultiUser];
 
-  return v3;
+  return isMultiUser;
 }
 
-- (CSUserPictureViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CSUserPictureViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = CSUserPictureViewController;
-  v4 = [(CSCoverSheetViewControllerBase *)&v9 initWithNibName:a3 bundle:a4];
+  v4 = [(CSCoverSheetViewControllerBase *)&v9 initWithNibName:name bundle:bundle];
   if (v4)
   {
-    v5 = [MEMORY[0x277D77BF8] sharedManager];
-    v6 = [v5 currentUser];
+    mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+    currentUser = [mEMORY[0x277D77BF8] currentUser];
     user = v4->_user;
-    v4->_user = v6;
+    v4->_user = currentUser;
   }
 
   return v4;
@@ -38,71 +38,71 @@
 {
   v4.receiver = self;
   v4.super_class = CSUserPictureViewController;
-  v2 = [(CSUserPictureViewController *)&v4 view];
+  view = [(CSUserPictureViewController *)&v4 view];
 
-  return v2;
+  return view;
 }
 
 - (void)viewDidLoad
 {
-  v3 = [(CSUserPictureViewController *)self view];
+  view = [(CSUserPictureViewController *)self view];
   v4 = [MEMORY[0x277CBDA58] contactForUser:self->_user];
-  [v3 setContact:v4];
+  [view setContact:v4];
 
-  [(CSCoverSheetViewControllerBase *)self registerView:v3 forRole:2];
+  [(CSCoverSheetViewControllerBase *)self registerView:view forRole:2];
   v5.receiver = self;
   v5.super_class = CSUserPictureViewController;
   [(CSCoverSheetViewControllerBase *)&v5 viewDidLoad];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   userPictureView = self->_userPictureView;
-  v8 = a4;
+  coordinatorCopy = coordinator;
   [(CSUserPictureView *)userPictureView setFrame:0.0, 0.0, width, height];
   v9.receiver = self;
   v9.super_class = CSUserPictureViewController;
-  [(CSCoverSheetViewControllerBase *)&v9 viewWillTransitionToSize:v8 withTransitionCoordinator:width, height];
+  [(CSCoverSheetViewControllerBase *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
   v7.receiver = self;
   v7.super_class = CSUserPictureViewController;
-  v3 = a3;
-  [(CSCoverSheetViewControllerBase *)&v7 aggregateAppearance:v3];
+  appearanceCopy = appearance;
+  [(CSCoverSheetViewControllerBase *)&v7 aggregateAppearance:appearanceCopy];
   v4 = objc_opt_new();
   v5 = [v4 priority:{60, v7.receiver, v7.super_class}];
   v6 = [v5 style:&unk_28307A520];
-  [v3 addComponent:v6];
+  [appearanceCopy addComponent:v6];
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v10.receiver = self;
   v10.super_class = CSUserPictureViewController;
-  if (-[CSCoverSheetViewControllerBase handleEvent:](&v10, sel_handleEvent_, v4) && ([v4 isConsumable] & 1) != 0)
+  if (-[CSCoverSheetViewControllerBase handleEvent:](&v10, sel_handleEvent_, eventCopy) && ([eventCopy isConsumable] & 1) != 0)
   {
-    v5 = [v4 isConsumable];
+    isConsumable = [eventCopy isConsumable];
   }
 
   else
   {
-    if ([v4 type] == 1)
+    if ([eventCopy type] == 1)
     {
       userPictureView = self->_userPictureView;
-      v7 = [(CSCoverSheetViewControllerBase *)self activeAppearance];
-      v8 = [v7 legibilitySettings];
-      [(CSUserPictureView *)userPictureView setLegibilitySettings:v8];
+      activeAppearance = [(CSCoverSheetViewControllerBase *)self activeAppearance];
+      legibilitySettings = [activeAppearance legibilitySettings];
+      [(CSUserPictureView *)userPictureView setLegibilitySettings:legibilitySettings];
     }
 
-    v5 = 0;
+    isConsumable = 0;
   }
 
-  return v5;
+  return isConsumable;
 }
 
 @end

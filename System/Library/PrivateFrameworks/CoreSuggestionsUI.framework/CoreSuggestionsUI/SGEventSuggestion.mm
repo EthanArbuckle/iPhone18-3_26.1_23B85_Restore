@@ -1,50 +1,50 @@
 @interface SGEventSuggestion
 - (BOOL)_isSourceAccountManaged;
-- (id)_icsDataEkEvent:(id)a3;
+- (id)_icsDataEkEvent:(id)event;
 - (id)suggestionAttributedSubtitle;
 - (id)suggestionPrimaryAction;
-- (void)_dismissViewController:(id)a3 retainBanner:(BOOL)a4;
-- (void)_previewControllerForICSEvent:(id)a3 eventStore:(id)a4;
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4;
-- (void)icsPreviewControllerWantsDismissal:(id)a3;
+- (void)_dismissViewController:(id)controller retainBanner:(BOOL)banner;
+- (void)_previewControllerForICSEvent:(id)event eventStore:(id)store;
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action;
+- (void)icsPreviewControllerWantsDismissal:(id)dismissal;
 @end
 
 @implementation SGEventSuggestion
 
-- (id)_icsDataEkEvent:(id)a3
+- (id)_icsDataEkEvent:(id)event
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(SGRealtimeEvent *)self->super._realtimeEvent event:a3];
-  v4 = [v3 tags];
+  v3 = [(SGRealtimeEvent *)self->super._realtimeEvent event:event];
+  tags = [v3 tags];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
-  if (v5)
+  icsAttachmentData = [tags countByEnumeratingWithState:&v10 objects:v14 count:16];
+  if (icsAttachmentData)
   {
     v6 = *v11;
     while (2)
     {
-      for (i = 0; i != v5; i = i + 1)
+      for (i = 0; i != icsAttachmentData; i = i + 1)
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tags);
         }
 
         v8 = [MEMORY[0x1E6999208] resolveName:*(*(&v10 + 1) + 8 * i)];
         if ([v8 isIcsAttachmentData])
         {
-          v5 = [v8 icsAttachmentData];
+          icsAttachmentData = [v8 icsAttachmentData];
 
           goto LABEL_11;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
-      if (v5)
+      icsAttachmentData = [tags countByEnumeratingWithState:&v10 objects:v14 count:16];
+      if (icsAttachmentData)
       {
         continue;
       }
@@ -55,27 +55,27 @@
 
 LABEL_11:
 
-  return v5;
+  return icsAttachmentData;
 }
 
-- (void)_previewControllerForICSEvent:(id)a3 eventStore:(id)a4
+- (void)_previewControllerForICSEvent:(id)event eventStore:(id)store
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(SGEventSuggestion *)self _icsDataEkEvent:a3];
+  storeCopy = store;
+  v7 = [(SGEventSuggestion *)self _icsDataEkEvent:event];
   if (v7)
   {
-    v8 = [(SGEventSuggestionBase *)self suggestionDelegate];
-    v9 = [v8 icsPreviewControllerForData:v7 andEventStore:v6];
+    suggestionDelegate = [(SGEventSuggestionBase *)self suggestionDelegate];
+    v9 = [suggestionDelegate icsPreviewControllerForData:v7 andEventStore:storeCopy];
 
     [v9 setAllowsImport:1];
     [v9 setAllowsEditing:1];
     [v9 setPreviewDelegate:self];
-    v10 = [v9 viewController];
-    [v10 setHidesBottomBarWhenPushed:0];
+    viewController = [v9 viewController];
+    [viewController setHidesBottomBarWhenPushed:0];
 
-    v11 = [(SGEventSuggestionBase *)self suggestionDelegate];
-    [v9 setCancelButtonWithTarget:v11 action:sel_dismissICSPreviewController_];
+    suggestionDelegate2 = [(SGEventSuggestionBase *)self suggestionDelegate];
+    [v9 setCancelButtonWithTarget:suggestionDelegate2 action:sel_dismissICSPreviewController_];
 
     icsPreviewController = self->_icsPreviewController;
     self->_icsPreviewController = v9;
@@ -86,10 +86,10 @@ LABEL_11:
     v13 = sgEventsLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(SGRealtimeEvent *)self->super._realtimeEvent event];
-      v15 = [v14 loggingIdentifier];
+      event = [(SGRealtimeEvent *)self->super._realtimeEvent event];
+      loggingIdentifier = [event loggingIdentifier];
       v16 = 138543362;
-      v17 = v15;
+      v17 = loggingIdentifier;
       _os_log_impl(&dword_1B8182000, v13, OS_LOG_TYPE_DEFAULT, "No ICS Data found for event [SGEvent (%{public}@)]", &v16, 0xCu);
     }
   }
@@ -102,10 +102,10 @@ LABEL_11:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(SGRealtimeEvent *)self->super._realtimeEvent event];
-  v3 = [v2 tags];
+  event = [(SGRealtimeEvent *)self->super._realtimeEvent event];
+  tags = [event tags];
 
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [tags countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -116,14 +116,14 @@ LABEL_11:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(tags);
         }
 
         v8 = [MEMORY[0x1E6999208] resolveName:*(*(&v13 + 1) + 8 * i)];
         if ([v8 isManagedSourceAccount])
         {
-          v9 = [v8 value];
-          v10 = [v9 isEqualToString:@"MCAccountIsManaged"];
+          value = [v8 value];
+          v10 = [value isEqualToString:@"MCAccountIsManaged"];
 
           if (v10)
           {
@@ -134,7 +134,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [tags countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -150,63 +150,63 @@ LABEL_12:
   return v11;
 }
 
-- (void)icsPreviewControllerWantsDismissal:(id)a3
+- (void)icsPreviewControllerWantsDismissal:(id)dismissal
 {
-  v4 = [a3 viewController];
-  [(SGEventSuggestion *)self _dismissViewController:v4 retainBanner:1];
+  viewController = [dismissal viewController];
+  [(SGEventSuggestion *)self _dismissViewController:viewController retainBanner:1];
 }
 
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action
 {
-  v6 = a3;
-  v8 = v6;
-  if (a4)
+  controllerCopy = controller;
+  v8 = controllerCopy;
+  if (action)
   {
     [objc_opt_class() confirm:1 event:self->super._realtimeEvent completion:0];
-    [(SGEventSuggestion *)self _dismissViewController:v8 retainBanner:a4 == 1];
-    if (a4 == 1)
+    [(SGEventSuggestion *)self _dismissViewController:v8 retainBanner:action == 1];
+    if (action == 1)
     {
-      v7 = [(SGEventSuggestionBase *)self suggestionDelegate];
-      [v7 suggestionWasUpdated:self];
+      suggestionDelegate = [(SGEventSuggestionBase *)self suggestionDelegate];
+      [suggestionDelegate suggestionWasUpdated:self];
     }
   }
 
   else
   {
-    [(SGEventSuggestion *)self _dismissViewController:v6 retainBanner:1];
+    [(SGEventSuggestion *)self _dismissViewController:controllerCopy retainBanner:1];
   }
 }
 
-- (void)_dismissViewController:(id)a3 retainBanner:(BOOL)a4
+- (void)_dismissViewController:(id)controller retainBanner:(BOOL)banner
 {
-  v4 = a4;
+  bannerCopy = banner;
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  controllerCopy = controller;
   v7 = sgEventsLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(SGRealtimeEvent *)self->super._realtimeEvent event];
-    v9 = [v8 loggingIdentifier];
-    v10 = v9;
+    event = [(SGRealtimeEvent *)self->super._realtimeEvent event];
+    loggingIdentifier = [event loggingIdentifier];
+    v10 = loggingIdentifier;
     v11 = @"not";
-    if (v4)
+    if (bannerCopy)
     {
       v11 = @" ";
     }
 
     v16 = 138543618;
-    v17 = v9;
+    v17 = loggingIdentifier;
     v18 = 2114;
     v19 = v11;
     _os_log_impl(&dword_1B8182000, v7, OS_LOG_TYPE_DEFAULT, "SGEventSuggestion - SGEvent %{public}@ ViewController dismissed. Did %{public}@ add event to calendar", &v16, 0x16u);
   }
 
-  v12 = [(SGEventSuggestionBase *)self suggestionDelegate];
-  v13 = v12;
-  if (v12)
+  suggestionDelegate = [(SGEventSuggestionBase *)self suggestionDelegate];
+  v13 = suggestionDelegate;
+  if (suggestionDelegate)
   {
-    [v12 dismissViewController:v6];
-    [v13 suggestion:self actionFinished:!v4];
+    [suggestionDelegate dismissViewController:controllerCopy];
+    [v13 suggestion:self actionFinished:!bannerCopy];
   }
 
   else
@@ -218,8 +218,8 @@ LABEL_12:
       _os_log_error_impl(&dword_1B8182000, v14, OS_LOG_TYPE_ERROR, "SGEventSuggestion - can't find suggestionDelegate", &v16, 2u);
     }
 
-    v15 = [v6 presentingViewController];
-    [v15 dismissViewControllerAnimated:1 completion:&__block_literal_global];
+    presentingViewController = [controllerCopy presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:&__block_literal_global];
   }
 }
 
@@ -229,20 +229,20 @@ LABEL_12:
   v3 = sgEventsLogHandle();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(SGRealtimeEvent *)self->super._realtimeEvent event];
-    v8 = [v7 loggingIdentifier];
+    event = [(SGRealtimeEvent *)self->super._realtimeEvent event];
+    loggingIdentifier = [event loggingIdentifier];
     *buf = 138543362;
-    v11 = v8;
+    v11 = loggingIdentifier;
     _os_log_debug_impl(&dword_1B8182000, v3, OS_LOG_TYPE_DEBUG, "SGEventSuggestion - SGEvent %{public}@ PrimaryAction initialized", buf, 0xCu);
   }
 
-  v4 = [(SGEventSuggestionBase *)self primaryActionTitle];
+  primaryActionTitle = [(SGEventSuggestionBase *)self primaryActionTitle];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__SGEventSuggestion_suggestionPrimaryAction__block_invoke;
   v9[3] = &unk_1E7CD9340;
   v9[4] = self;
-  v5 = [SGSuggestionAction actionWithTitle:v4 handler:v9];
+  v5 = [SGSuggestionAction actionWithTitle:primaryActionTitle handler:v9];
 
   return v5;
 }
@@ -557,11 +557,11 @@ void __44__SGEventSuggestion_suggestionPrimaryAction__block_invoke_34(uint64_t a
   if ([(SGRealtimeEvent *)self->super._realtimeEvent state]== 3)
   {
     v3 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v4 = [(SGEventSuggestionBase *)self suggestionSubtitle];
+    suggestionSubtitle = [(SGEventSuggestionBase *)self suggestionSubtitle];
     v8 = *MEMORY[0x1E69DB6B8];
     v9[0] = &unk_1F30163E8;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-    v6 = [v3 initWithString:v4 attributes:v5];
+    v6 = [v3 initWithString:suggestionSubtitle attributes:v5];
   }
 
   else

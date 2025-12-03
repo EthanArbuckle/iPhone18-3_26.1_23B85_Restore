@@ -1,12 +1,12 @@
 @interface DCRebootDevice
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation DCRebootDevice
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = os_log_create("com.apple.ace.devicecontrol", "DeviceControl");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -22,7 +22,7 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     sub_12BC(v6);
-    if (!v5)
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
@@ -30,12 +30,12 @@
     goto LABEL_5;
   }
 
-  if (v5)
+  if (completionCopy)
   {
 LABEL_5:
     v9 = objc_alloc_init(SACommandSucceeded);
-    v10 = [v9 dictionary];
-    v5[2](v5, v10);
+    dictionary = [v9 dictionary];
+    completionCopy[2](completionCopy, dictionary);
   }
 
 LABEL_6:

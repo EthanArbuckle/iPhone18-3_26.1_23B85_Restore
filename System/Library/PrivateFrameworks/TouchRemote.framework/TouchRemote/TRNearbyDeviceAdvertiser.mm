@@ -1,17 +1,17 @@
 @interface TRNearbyDeviceAdvertiser
 - (TRNearbyDeviceAdvertiser)init;
 - (TRNearbyDeviceAdvertiserDelegate)delegate;
-- (void)_handleActivationWithError:(id)a3;
-- (void)_handleEventMessage:(id)a3;
+- (void)_handleActivationWithError:(id)error;
+- (void)_handleEventMessage:(id)message;
 - (void)_handleInterruption;
 - (void)_handleInvalidation;
-- (void)_handleNewConnectionFromPeerDevice:(id)a3 withCompletionHandler:(id)a4;
-- (void)_handleRequestMessage:(id)a3;
-- (void)_requestSessionForMessage:(id)a3 withCallback:(id)a4;
-- (void)_respondToRequest:(id)a3 withError:(id)a4;
+- (void)_handleNewConnectionFromPeerDevice:(id)device withCompletionHandler:(id)handler;
+- (void)_handleRequestMessage:(id)message;
+- (void)_requestSessionForMessage:(id)message withCallback:(id)callback;
+- (void)_respondToRequest:(id)request withError:(id)error;
 - (void)pauseAdvertising;
 - (void)resumeAdvertising;
-- (void)startAdvertisingWithService:(unint64_t)a3;
+- (void)startAdvertisingWithService:(unint64_t)service;
 - (void)stopAdvertising;
 @end
 
@@ -28,9 +28,9 @@
     advertiserQ = v2->_advertiserQ;
     v2->_advertiserQ = v3;
 
-    v5 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     sessionsTable = v2->_sessionsTable;
-    v2->_sessionsTable = v5;
+    v2->_sessionsTable = strongToWeakObjectsMapTable;
 
     v7 = dispatch_queue_create("com.apple.TRNearbyDeviceAdvertiser.sessionsTableQ", MEMORY[0x277D85CD8]);
     sessionsTableQ = v2->_sessionsTableQ;
@@ -42,12 +42,12 @@
   return v2;
 }
 
-- (void)startAdvertisingWithService:(unint64_t)a3
+- (void)startAdvertisingWithService:(unint64_t)service
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = [(TRNearbyDeviceAdvertiser *)self delegate];
+  delegate = [(TRNearbyDeviceAdvertiser *)self delegate];
 
-  if (!v5)
+  if (!delegate)
   {
     v9 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"TRNearbyDeviceAdvertiser requires a delegate." userInfo:0];
     objc_exception_throw(v9);
@@ -61,7 +61,7 @@
       *buf = 136315394;
       v12 = "[TRNearbyDeviceAdvertiser startAdvertisingWithService:]";
       v13 = 2048;
-      v14 = a3;
+      serviceCopy = service;
       _os_log_impl(&dword_26F2A2000, v6, OS_LOG_TYPE_DEFAULT, "%s Start advertising with service: %lu.", buf, 0x16u);
     }
   }
@@ -72,7 +72,7 @@
   v10[2] = __56__TRNearbyDeviceAdvertiser_startAdvertisingWithService___block_invoke;
   v10[3] = &unk_279DCEB80;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = service;
   dispatch_async(advertiserQ, v10);
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -428,17 +428,17 @@ LABEL_24:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleActivationWithError:(id)a3
+- (void)_handleActivationWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   advertiserQ = self->_advertiserQ;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__TRNearbyDeviceAdvertiser__handleActivationWithError___block_invoke;
   v7[3] = &unk_279DCEC20;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = errorCopy;
+  selfCopy = self;
+  v6 = errorCopy;
   dispatch_sync(advertiserQ, v7);
 }
 
@@ -619,15 +619,15 @@ void __47__TRNearbyDeviceAdvertiser__handleInvalidation__block_invoke_33(uint64_
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleEventMessage:(id)a3
+- (void)_handleEventMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__TRNearbyDeviceAdvertiser__handleEventMessage___block_invoke;
   v6[3] = &unk_279DCF250;
-  v7 = v4;
-  v5 = v4;
+  v7 = messageCopy;
+  v5 = messageCopy;
   [(TRNearbyDeviceAdvertiser *)self _requestSessionForMessage:v5 withCallback:v6];
 }
 
@@ -659,16 +659,16 @@ void __48__TRNearbyDeviceAdvertiser__handleEventMessage___block_invoke(uint64_t 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleRequestMessage:(id)a3
+- (void)_handleRequestMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__TRNearbyDeviceAdvertiser__handleRequestMessage___block_invoke;
   v6[3] = &unk_279DCF278;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = messageCopy;
+  selfCopy = self;
+  v5 = messageCopy;
   [(TRNearbyDeviceAdvertiser *)self _requestSessionForMessage:v5 withCallback:v6];
 }
 
@@ -690,11 +690,11 @@ void __50__TRNearbyDeviceAdvertiser__handleRequestMessage___block_invoke(uint64_
   }
 }
 
-- (void)_requestSessionForMessage:(id)a3 withCallback:(id)a4
+- (void)_requestSessionForMessage:(id)message withCallback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 peerDevice];
+  messageCopy = message;
+  callbackCopy = callback;
+  peerDevice = [messageCopy peerDevice];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -708,7 +708,7 @@ void __50__TRNearbyDeviceAdvertiser__handleRequestMessage___block_invoke(uint64_
   block[3] = &unk_279DCF2A0;
   v17 = &v18;
   block[4] = self;
-  v10 = v8;
+  v10 = peerDevice;
   v16 = v10;
   dispatch_sync(sessionsTableQ, block);
   v11 = v19[5];
@@ -718,7 +718,7 @@ void __50__TRNearbyDeviceAdvertiser__handleRequestMessage___block_invoke(uint64_
     v13[1] = 3221225472;
     v13[2] = __67__TRNearbyDeviceAdvertiser__requestSessionForMessage_withCallback___block_invoke_2;
     v13[3] = &unk_279DCF2C8;
-    v14 = v7;
+    v14 = callbackCopy;
     [(TRNearbyDeviceAdvertiser *)self _handleNewConnectionFromPeerDevice:v10 withCompletionHandler:v13];
     v12 = v14;
 LABEL_6:
@@ -729,11 +729,11 @@ LABEL_6:
   if (([v11 isConnected] & 1) == 0)
   {
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TRNearbyDeviceErrorDomain" code:-9101 userInfo:0];
-    (*(v7 + 2))(v7, 0, v12);
+    (*(callbackCopy + 2))(callbackCopy, 0, v12);
     goto LABEL_6;
   }
 
-  (*(v7 + 2))(v7, v19[5], 0);
+  (*(callbackCopy + 2))(callbackCopy, v19[5], 0);
 LABEL_7:
 
   _Block_object_dispose(&v18, 8);
@@ -749,37 +749,37 @@ void __67__TRNearbyDeviceAdvertiser__requestSessionForMessage_withCallback___blo
   *(v4 + 40) = v3;
 }
 
-- (void)_handleNewConnectionFromPeerDevice:(id)a3 withCompletionHandler:(id)a4
+- (void)_handleNewConnectionFromPeerDevice:(id)device withCompletionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  handlerCopy = handler;
   if (_TRLogEnabled == 1)
   {
     v8 = TRLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v6 identifier];
+      identifier = [deviceCopy identifier];
       *buf = 136315394;
       v19 = "[TRNearbyDeviceAdvertiser _handleNewConnectionFromPeerDevice:withCompletionHandler:]";
       v20 = 2112;
-      v21 = v9;
+      v21 = identifier;
       _os_log_impl(&dword_26F2A2000, v8, OS_LOG_TYPE_DEFAULT, "%s New connection request from device: %@", buf, 0x16u);
     }
   }
 
-  v10 = [[TRNearbyDevice alloc] initWithRepresentedDevice:v6 supportedService:[(TRNearbyDeviceAdvertiser *)self requestedService]];
-  v11 = [(TRNearbyDeviceAdvertiser *)self delegate];
+  v10 = [[TRNearbyDevice alloc] initWithRepresentedDevice:deviceCopy supportedService:[(TRNearbyDeviceAdvertiser *)self requestedService]];
+  delegate = [(TRNearbyDeviceAdvertiser *)self delegate];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __85__TRNearbyDeviceAdvertiser__handleNewConnectionFromPeerDevice_withCompletionHandler___block_invoke;
   v15[3] = &unk_279DCF2F0;
   v15[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v12 = v7;
-  v13 = v6;
-  [v11 nearbyDeviceAdvertiser:self didReceiveConnectionRequestFromDevice:v10 requestHandler:v15];
+  v16 = deviceCopy;
+  v17 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = deviceCopy;
+  [delegate nearbyDeviceAdvertiser:self didReceiveConnectionRequestFromDevice:v10 requestHandler:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -830,20 +830,20 @@ void __85__TRNearbyDeviceAdvertiser__handleNewConnectionFromPeerDevice_withCompl
   [v4 setObject:v2 forKey:v3];
 }
 
-- (void)_respondToRequest:(id)a3 withError:(id)a4
+- (void)_respondToRequest:(id)request withError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  requestCopy = request;
   v11 = objc_alloc_init(TRErrorResponse);
-  [(TRErrorResponse *)v11 setError:v6];
+  [(TRErrorResponse *)v11 setError:errorCopy];
 
-  v8 = [objc_alloc(MEMORY[0x277D54CD8]) initWithRequestMessage:v7];
+  v8 = [objc_alloc(MEMORY[0x277D54CD8]) initWithRequestMessage:requestCopy];
   v9 = [TRMessageEncoder encodeMessage:v11];
   [v8 setBodyData:v9];
 
-  v10 = [v7 peerDevice];
+  peerDevice = [requestCopy peerDevice];
 
-  [v8 setPeerDevice:v10];
+  [v8 setPeerDevice:peerDevice];
   [(SFService *)self->_service sendResponse:v8];
 }
 

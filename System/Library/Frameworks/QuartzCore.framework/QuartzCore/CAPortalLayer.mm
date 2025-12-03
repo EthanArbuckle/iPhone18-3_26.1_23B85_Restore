@@ -1,7 +1,7 @@
 @interface CAPortalLayer
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3;
-+ (id)defaultValueForKey:(id)a3;
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3;
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers;
++ (id)defaultValueForKey:(id)key;
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property;
 - (BOOL)allowedInContextTransform;
 - (BOOL)allowsBackdropGroups;
 - (BOOL)crossDisplay;
@@ -15,22 +15,22 @@
 - (float)sourceLayerOpacityScale;
 - (unint64_t)sourceLayerRenderId;
 - (unsigned)sourceContextId;
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5;
-- (void)didChangeValueForKey:(id)a3;
-- (void)layerDidBecomeVisible:(BOOL)a3;
-- (void)setAllowedInContextTransform:(BOOL)a3;
-- (void)setAllowsBackdropGroups:(BOOL)a3;
-- (void)setCrossDisplay:(BOOL)a3;
-- (void)setHidesSourceLayer:(BOOL)a3;
-- (void)setHidesSourceLayerInOtherPortals:(BOOL)a3;
-- (void)setMatchesOpacity:(BOOL)a3;
-- (void)setMatchesPosition:(BOOL)a3;
-- (void)setMatchesTransform:(BOOL)a3;
-- (void)setOverrides:(id)a3;
-- (void)setSourceContextId:(unsigned int)a3;
-- (void)setSourceLayer:(id)a3;
-- (void)setSourceLayerOpacityScale:(float)a3;
-- (void)setSourceLayerRenderId:(unint64_t)a3;
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags;
+- (void)didChangeValueForKey:(id)key;
+- (void)layerDidBecomeVisible:(BOOL)visible;
+- (void)setAllowedInContextTransform:(BOOL)transform;
+- (void)setAllowsBackdropGroups:(BOOL)groups;
+- (void)setCrossDisplay:(BOOL)display;
+- (void)setHidesSourceLayer:(BOOL)layer;
+- (void)setHidesSourceLayerInOtherPortals:(BOOL)portals;
+- (void)setMatchesOpacity:(BOOL)opacity;
+- (void)setMatchesPosition:(BOOL)position;
+- (void)setMatchesTransform:(BOOL)transform;
+- (void)setOverrides:(id)overrides;
+- (void)setSourceContextId:(unsigned int)id;
+- (void)setSourceLayer:(id)layer;
+- (void)setSourceLayerOpacityScale:(float)scale;
+- (void)setSourceLayerRenderId:(unint64_t)id;
 @end
 
 @implementation CAPortalLayer
@@ -131,80 +131,80 @@
   return v3;
 }
 
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == observers)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CAPortalLayer;
-  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, a3);
+  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, observers);
 }
 
-- (void)setAllowedInContextTransform:(BOOL)a3
+- (void)setAllowedInContextTransform:(BOOL)transform
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0xA, 6, &v3);
+  transformCopy = transform;
+  CA::Layer::setter(self->super._attr.layer, 0xA, 6, &transformCopy);
 }
 
-- (void)setOverrides:(id)a3
+- (void)setOverrides:(id)overrides
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = overrides;
   CA::Layer::setter(self->super._attr.layer, 0x226, 3, v3);
 }
 
-- (void)setSourceLayerOpacityScale:(float)a3
+- (void)setSourceLayerOpacityScale:(float)scale
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x29A, 0x11, &v3);
+  scaleCopy = scale;
+  CA::Layer::setter(self->super._attr.layer, 0x29A, 0x11, &scaleCopy);
 }
 
-- (void)setCrossDisplay:(BOOL)a3
+- (void)setCrossDisplay:(BOOL)display
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0xA7, 6, &v3);
+  displayCopy = display;
+  CA::Layer::setter(self->super._attr.layer, 0xA7, 6, &displayCopy);
 }
 
-- (void)setAllowsBackdropGroups:(BOOL)a3
+- (void)setAllowsBackdropGroups:(BOOL)groups
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0xB, 6, &v3);
+  groupsCopy = groups;
+  CA::Layer::setter(self->super._attr.layer, 0xB, 6, &groupsCopy);
 }
 
-- (void)setMatchesTransform:(BOOL)a3
+- (void)setMatchesTransform:(BOOL)transform
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x1FF, 6, &v3);
+  transformCopy = transform;
+  CA::Layer::setter(self->super._attr.layer, 0x1FF, 6, &transformCopy);
 }
 
-- (void)setMatchesPosition:(BOOL)a3
+- (void)setMatchesPosition:(BOOL)position
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x1FE, 6, &v3);
+  positionCopy = position;
+  CA::Layer::setter(self->super._attr.layer, 0x1FE, 6, &positionCopy);
 }
 
-- (void)setMatchesOpacity:(BOOL)a3
+- (void)setMatchesOpacity:(BOOL)opacity
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x1FD, 6, &v3);
+  opacityCopy = opacity;
+  CA::Layer::setter(self->super._attr.layer, 0x1FD, 6, &opacityCopy);
 }
 
-- (void)setHidesSourceLayerInOtherPortals:(BOOL)a3
+- (void)setHidesSourceLayerInOtherPortals:(BOOL)portals
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x12A, 6, &v3);
+  portalsCopy = portals;
+  CA::Layer::setter(self->super._attr.layer, 0x12A, 6, &portalsCopy);
 }
 
 - (BOOL)hidesSourceLayerInOtherPortals
@@ -215,39 +215,39 @@
   return v3;
 }
 
-- (void)setHidesSourceLayer:(BOOL)a3
+- (void)setHidesSourceLayer:(BOOL)layer
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x129, 6, &v3);
+  layerCopy = layer;
+  CA::Layer::setter(self->super._attr.layer, 0x129, 6, &layerCopy);
 }
 
-- (void)setSourceContextId:(unsigned int)a3
+- (void)setSourceContextId:(unsigned int)id
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x297, 0xC, &v3);
+  idCopy = id;
+  CA::Layer::setter(self->super._attr.layer, 0x297, 0xC, &idCopy);
 }
 
-- (void)setSourceLayerRenderId:(unint64_t)a3
+- (void)setSourceLayerRenderId:(unint64_t)id
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = id;
   CA::Layer::setter(self->super._attr.layer, 0x29B, 0x10, v3);
 }
 
-- (void)setSourceLayer:(id)a3
+- (void)setSourceLayer:(id)layer
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = layer;
   CA::Layer::setter(self->super._attr.layer, 0x299, 4, v3);
 }
 
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   v7 = *MEMORY[0x1E69E9840];
-  if (CAAtomIndexInArray(12, &[CAPortalLayer _renderLayerDefinesProperty:]::atoms, a3) != -1)
+  if (CAAtomIndexInArray(12, &[CAPortalLayer _renderLayerDefinesProperty:]::atoms, property) != -1)
   {
     return 1;
   }
@@ -257,13 +257,13 @@
   return [(CALayer *)&v6 _renderLayerDefinesProperty:v3];
 }
 
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags
 {
   v34 = *MEMORY[0x1E69E9840];
   v33.receiver = self;
   v33.super_class = CAPortalLayer;
-  v7 = [(CALayer *)&v33 _copyRenderLayer:a3 layerFlags:*&a4 commitFlags:?];
-  if (!v7 || (*(a5 + 2) & 1) == 0)
+  v7 = [(CALayer *)&v33 _copyRenderLayer:layer layerFlags:*&flags commitFlags:?];
+  if (!v7 || (*(commitFlags + 2) & 1) == 0)
   {
     return v7;
   }
@@ -289,46 +289,46 @@
     *(v8 + 7) = 0;
   }
 
-  v10 = [(CAPortalLayer *)self hidesSourceLayer];
-  v11 = [(CAPortalLayer *)self matchesOpacity];
-  v12 = [(CAPortalLayer *)self matchesPosition];
-  v13 = [(CAPortalLayer *)self matchesTransform];
-  v14 = [(CAPortalLayer *)self allowsBackdropGroups];
-  v15 = [(CAPortalLayer *)self crossDisplay];
-  v16 = [(CAPortalLayer *)self allowedInContextTransform];
-  v17 = [(CAPortalLayer *)self hidesSourceLayerInOtherPortals];
-  v18 = v10 | 2;
-  if (!v11)
+  hidesSourceLayer = [(CAPortalLayer *)self hidesSourceLayer];
+  matchesOpacity = [(CAPortalLayer *)self matchesOpacity];
+  matchesPosition = [(CAPortalLayer *)self matchesPosition];
+  matchesTransform = [(CAPortalLayer *)self matchesTransform];
+  allowsBackdropGroups = [(CAPortalLayer *)self allowsBackdropGroups];
+  crossDisplay = [(CAPortalLayer *)self crossDisplay];
+  allowedInContextTransform = [(CAPortalLayer *)self allowedInContextTransform];
+  hidesSourceLayerInOtherPortals = [(CAPortalLayer *)self hidesSourceLayerInOtherPortals];
+  v18 = hidesSourceLayer | 2;
+  if (!matchesOpacity)
   {
-    v18 = v10;
+    v18 = hidesSourceLayer;
   }
 
-  if (v12)
+  if (matchesPosition)
   {
     v18 |= 4u;
   }
 
-  if (v13)
+  if (matchesTransform)
   {
     v18 |= 8u;
   }
 
-  if (v14)
+  if (allowsBackdropGroups)
   {
     v18 |= 0x10u;
   }
 
-  if (v15)
+  if (crossDisplay)
   {
     v18 |= 0x20u;
   }
 
-  if (v16)
+  if (allowedInContextTransform)
   {
     v18 |= 0x80u;
   }
 
-  if (v17)
+  if (hidesSourceLayerInOtherPortals)
   {
     v18 |= 0x100u;
   }
@@ -339,22 +339,22 @@
   }
 
   *(v9 + 3) = CA::Render::Object::render_id(self->super._attr.layer);
-  v19 = [(CAPortalLayer *)self sourceLayer];
-  v20 = v19;
-  if (v19)
+  sourceLayer = [(CAPortalLayer *)self sourceLayer];
+  v20 = sourceLayer;
+  if (sourceLayer)
   {
-    *(v9 + 4) = CA::Render::Object::render_id(v19->_attr.layer);
-    v21 = [-[CALayer context](v20 "context")];
+    *(v9 + 4) = CA::Render::Object::render_id(sourceLayer->_attr.layer);
+    sourceContextId = [-[CALayer context](v20 "context")];
 LABEL_27:
-    v9[10] = v21;
+    v9[10] = sourceContextId;
     goto LABEL_28;
   }
 
-  v22 = [(CAPortalLayer *)self sourceLayerRenderId];
-  if (v22)
+  sourceLayerRenderId = [(CAPortalLayer *)self sourceLayerRenderId];
+  if (sourceLayerRenderId)
   {
-    *(v9 + 4) = v22;
-    v21 = [(CAPortalLayer *)self sourceContextId];
+    *(v9 + 4) = sourceLayerRenderId;
+    sourceContextId = [(CAPortalLayer *)self sourceContextId];
     goto LABEL_27;
   }
 
@@ -372,30 +372,30 @@ LABEL_28:
   }
 
   *(v9 + 44) = ((v26 * 255.0) + 0.5);
-  v29 = [(NSDictionary *)[(CAPortalLayer *)self overrides] CA_copyRenderKeyPathValueArray];
-  if (v29)
+  cA_copyRenderKeyPathValueArray = [(NSDictionary *)[(CAPortalLayer *)self overrides] CA_copyRenderKeyPathValueArray];
+  if (cA_copyRenderKeyPathValueArray)
   {
     v30 = *(v9 + 6);
-    if (v30 != v29)
+    if (v30 != cA_copyRenderKeyPathValueArray)
     {
       if (v30 && atomic_fetch_add(v30 + 2, 0xFFFFFFFF) == 1)
       {
         (*(*v30 + 16))(v30);
       }
 
-      v31 = v29;
-      if (!atomic_fetch_add(v29 + 2, 1u))
+      v31 = cA_copyRenderKeyPathValueArray;
+      if (!atomic_fetch_add(cA_copyRenderKeyPathValueArray + 2, 1u))
       {
         v31 = 0;
-        atomic_fetch_add(v29 + 2, 0xFFFFFFFF);
+        atomic_fetch_add(cA_copyRenderKeyPathValueArray + 2, 0xFFFFFFFF);
       }
 
       *(v9 + 6) = v31;
     }
 
-    if (atomic_fetch_add(v29 + 2, 0xFFFFFFFF) == 1)
+    if (atomic_fetch_add(cA_copyRenderKeyPathValueArray + 2, 0xFFFFFFFF) == 1)
     {
-      (*(*v29 + 16))(v29);
+      (*(*cA_copyRenderKeyPathValueArray + 16))(cA_copyRenderKeyPathValueArray);
     }
   }
 
@@ -408,13 +408,13 @@ LABEL_28:
   return v7;
 }
 
-- (void)layerDidBecomeVisible:(BOOL)a3
+- (void)layerDidBecomeVisible:(BOOL)visible
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = CAPortalLayer;
   v5 = [(CALayer *)&v7 layerDidBecomeVisible:?];
-  if (!a3)
+  if (!visible)
   {
     v6 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
     if (!v6)
@@ -426,10 +426,10 @@ LABEL_28:
   }
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   v6 = CAAtomIndexInArray(12, &[CAPortalLayer didChangeValueForKey:]::atoms, v5);
   if (v6 != -1)
   {
@@ -439,20 +439,20 @@ LABEL_28:
 
   v8.receiver = self;
   v8.super_class = CAPortalLayer;
-  [(CAPortalLayer *)&v8 didChangeValueForKey:a3];
+  [(CAPortalLayer *)&v8 didChangeValueForKey:key];
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"sourceLayerOpacityScale"])
+  if ([key isEqualToString:@"sourceLayerOpacityScale"])
   {
     return &unk_1EF22BA30;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CAPortalLayer;
-  return objc_msgSendSuper2(&v6, sel_defaultValueForKey_, a3);
+  return objc_msgSendSuper2(&v6, sel_defaultValueForKey_, key);
 }
 
 @end

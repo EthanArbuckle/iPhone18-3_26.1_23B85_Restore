@@ -1,7 +1,7 @@
 @interface AACloudPolicyRestrictions
-+ (BOOL)policyRestrictsDataclass:(id)a3;
++ (BOOL)policyRestrictsDataclass:(id)dataclass;
 + (id)_managedIcloudPolicyIdentifierForDataclass;
-+ (id)_policyRestrictionIdentifierForDataclass:(id)a3;
++ (id)_policyRestrictionIdentifierForDataclass:(id)dataclass;
 @end
 
 @implementation AACloudPolicyRestrictions
@@ -18,19 +18,19 @@
   return v3;
 }
 
-+ (id)_policyRestrictionIdentifierForDataclass:(id)a3
++ (id)_policyRestrictionIdentifierForDataclass:(id)dataclass
 {
-  v3 = a3;
+  dataclassCopy = dataclass;
   v6 = objc_msgSend__managedIcloudPolicyIdentifierForDataclass(AACloudPolicyRestrictions, v4, v5);
-  v8 = objc_msgSend_objectForKey_(v6, v7, v3);
+  v8 = objc_msgSend_objectForKey_(v6, v7, dataclassCopy);
 
   return v8;
 }
 
-+ (BOOL)policyRestrictsDataclass:(id)a3
++ (BOOL)policyRestrictsDataclass:(id)dataclass
 {
-  v3 = a3;
-  v5 = objc_msgSend__policyRestrictionIdentifierForDataclass_(AACloudPolicyRestrictions, v4, v3);
+  dataclassCopy = dataclass;
+  v5 = objc_msgSend__policyRestrictionIdentifierForDataclass_(AACloudPolicyRestrictions, v4, dataclassCopy);
   v6 = v5;
   if (v5)
   {
@@ -39,7 +39,7 @@
     v9 = _AALogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      sub_29C85D17C(v3, AppBooleanValue != 0, v9);
+      sub_29C85D17C(dataclassCopy, AppBooleanValue != 0, v9);
     }
   }
 
@@ -48,7 +48,7 @@
     v9 = _AALogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      sub_29C85D21C(v3, v9);
+      sub_29C85D21C(dataclassCopy, v9);
     }
 
     v8 = 0;

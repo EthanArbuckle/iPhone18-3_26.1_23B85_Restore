@@ -1,31 +1,31 @@
 @interface CNCountryInformation
-- (BOOL)isEqual:(id)a3;
-- (CNCountryInformation)initWithISOCountryCode:(id)a3 name:(id)a4 phoneticName:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (CNCountryInformation)initWithISOCountryCode:(id)code name:(id)name phoneticName:(id)phoneticName;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation CNCountryInformation
 
-- (CNCountryInformation)initWithISOCountryCode:(id)a3 name:(id)a4 phoneticName:(id)a5
+- (CNCountryInformation)initWithISOCountryCode:(id)code name:(id)name phoneticName:(id)phoneticName
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  codeCopy = code;
+  nameCopy = name;
+  phoneticNameCopy = phoneticName;
   v20.receiver = self;
   v20.super_class = CNCountryInformation;
   v11 = [(CNCountryInformation *)&v20 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [codeCopy copy];
     isoCountryCode = v11->_isoCountryCode;
     v11->_isoCountryCode = v12;
 
-    v14 = [v9 copy];
+    v14 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v14;
 
-    v16 = [v10 copy];
+    v16 = [phoneticNameCopy copy];
     phoneticName = v11->_phoneticName;
     v11->_phoneticName = v16;
 
@@ -35,9 +35,9 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v6 = objc_opt_class();
   v16[0] = MEMORY[0x1E69E9820];
@@ -45,7 +45,7 @@
   v16[2] = __32__CNCountryInformation_isEqual___block_invoke;
   v16[3] = &unk_1E7412228;
   v16[4] = self;
-  v17 = v4;
+  v17 = equalCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __32__CNCountryInformation_isEqual___block_invoke_2;
@@ -152,10 +152,10 @@ uint64_t __28__CNCountryInformation_hash__block_invoke_3(uint64_t a1)
 - (id)description
 {
   v3 = MEMORY[0x1E69966B0];
-  v4 = [(CNCountryInformation *)self isoCountryCode];
-  v5 = [(CNCountryInformation *)self name];
-  v6 = [(CNCountryInformation *)self phoneticName];
-  v7 = [v3 descriptionForObject:self withNamesAndObjects:{@"country code", v4, @"name", v5, @"phonetic name", v6, 0}];
+  isoCountryCode = [(CNCountryInformation *)self isoCountryCode];
+  name = [(CNCountryInformation *)self name];
+  phoneticName = [(CNCountryInformation *)self phoneticName];
+  v7 = [v3 descriptionForObject:self withNamesAndObjects:{@"country code", isoCountryCode, @"name", name, @"phonetic name", phoneticName, 0}];
 
   return v7;
 }

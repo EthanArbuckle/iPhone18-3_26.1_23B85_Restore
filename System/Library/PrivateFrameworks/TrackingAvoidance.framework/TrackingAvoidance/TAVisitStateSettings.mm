@@ -1,97 +1,97 @@
 @interface TAVisitStateSettings
-- (BOOL)isEqual:(id)a3;
-- (TAVisitStateSettings)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (TAVisitStateSettings)initWithCoder:(id)coder;
 - (TAVisitStateSettings)initWithDefaults;
-- (TAVisitStateSettings)initWithVisitSnapshotCapacity:(unint64_t)a3 visitDisplayBufferCapacity:(unint64_t)a4 interVisitMetricSnapshotCapacity:(unint64_t)a5 interVisitSnapshotUpdateInterval:(double)a6 thresholdOfLocationRelevance:(double)a7 snapshotBufferTimeIntervalOfRetention:(double)a8 loiBufferPerTypeCapacity:(unint64_t)a9 loiBufferTimeIntervalOfRetention:(double)a10 maxNSigmaBetweenLastLocationAndVisit:(unint64_t)a11 qualitySnapshotDwellDuration:(double)a12 qualitySnapshotDisplayOnDuration:(double)a13 uniqueUTObservationCapPerVisit:(unint64_t)a14 sensitiveLOITypes:(id)a15;
-- (TAVisitStateSettings)initWithVisitSnapshotCapacityOrDefault:(id)a3 visitDisplayBufferCapacityOrDefault:(id)a4 interVisitMetricSnapshotCapacityOrDefault:(id)a5 interVisitSnapshotUpdateIntervalOrDefault:(id)a6 thresholdOfLocationRelevanceOrDefault:(id)a7 snapshotBufferTimeIntervalOfRetentionOrDefault:(id)a8 loiBufferPerTypeCapacityOrDefault:(id)a9 loiBufferTimeIntervalOfRetentionOrDefault:(id)a10 maxNSigmaBetweenLastLocationAndVisitOrDefault:(id)a11 qualitySnapshotDwellDurationOrDefault:(id)a12 qualitySnapshotDisplayOnDurationOrDefault:(id)a13 uniqueUTObservationCapPerVisitOrDefault:(id)a14 sensitiveLOITypesOrDefault:(id)a15;
-- (void)encodeWithCoder:(id)a3;
+- (TAVisitStateSettings)initWithVisitSnapshotCapacity:(unint64_t)capacity visitDisplayBufferCapacity:(unint64_t)bufferCapacity interVisitMetricSnapshotCapacity:(unint64_t)snapshotCapacity interVisitSnapshotUpdateInterval:(double)interval thresholdOfLocationRelevance:(double)relevance snapshotBufferTimeIntervalOfRetention:(double)retention loiBufferPerTypeCapacity:(unint64_t)typeCapacity loiBufferTimeIntervalOfRetention:(double)self0 maxNSigmaBetweenLastLocationAndVisit:(unint64_t)self1 qualitySnapshotDwellDuration:(double)self2 qualitySnapshotDisplayOnDuration:(double)self3 uniqueUTObservationCapPerVisit:(unint64_t)self4 sensitiveLOITypes:(id)self5;
+- (TAVisitStateSettings)initWithVisitSnapshotCapacityOrDefault:(id)default visitDisplayBufferCapacityOrDefault:(id)orDefault interVisitMetricSnapshotCapacityOrDefault:(id)capacityOrDefault interVisitSnapshotUpdateIntervalOrDefault:(id)intervalOrDefault thresholdOfLocationRelevanceOrDefault:(id)relevanceOrDefault snapshotBufferTimeIntervalOfRetentionOrDefault:(id)retentionOrDefault loiBufferPerTypeCapacityOrDefault:(id)typeCapacityOrDefault loiBufferTimeIntervalOfRetentionOrDefault:(id)self0 maxNSigmaBetweenLastLocationAndVisitOrDefault:(id)self1 qualitySnapshotDwellDurationOrDefault:(id)self2 qualitySnapshotDisplayOnDurationOrDefault:(id)self3 uniqueUTObservationCapPerVisitOrDefault:(id)self4 sensitiveLOITypesOrDefault:(id)self5;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TAVisitStateSettings
 
-- (TAVisitStateSettings)initWithVisitSnapshotCapacity:(unint64_t)a3 visitDisplayBufferCapacity:(unint64_t)a4 interVisitMetricSnapshotCapacity:(unint64_t)a5 interVisitSnapshotUpdateInterval:(double)a6 thresholdOfLocationRelevance:(double)a7 snapshotBufferTimeIntervalOfRetention:(double)a8 loiBufferPerTypeCapacity:(unint64_t)a9 loiBufferTimeIntervalOfRetention:(double)a10 maxNSigmaBetweenLastLocationAndVisit:(unint64_t)a11 qualitySnapshotDwellDuration:(double)a12 qualitySnapshotDisplayOnDuration:(double)a13 uniqueUTObservationCapPerVisit:(unint64_t)a14 sensitiveLOITypes:(id)a15
+- (TAVisitStateSettings)initWithVisitSnapshotCapacity:(unint64_t)capacity visitDisplayBufferCapacity:(unint64_t)bufferCapacity interVisitMetricSnapshotCapacity:(unint64_t)snapshotCapacity interVisitSnapshotUpdateInterval:(double)interval thresholdOfLocationRelevance:(double)relevance snapshotBufferTimeIntervalOfRetention:(double)retention loiBufferPerTypeCapacity:(unint64_t)typeCapacity loiBufferTimeIntervalOfRetention:(double)self0 maxNSigmaBetweenLastLocationAndVisit:(unint64_t)self1 qualitySnapshotDwellDuration:(double)self2 qualitySnapshotDisplayOnDuration:(double)self3 uniqueUTObservationCapPerVisit:(unint64_t)self4 sensitiveLOITypes:(id)self5
 {
-  v28 = a15;
+  typesCopy = types;
   v32.receiver = self;
   v32.super_class = TAVisitStateSettings;
   v29 = [(TAVisitStateSettings *)&v32 init];
   v30 = v29;
   if (v29)
   {
-    v29->_visitSnapshotCapacity = a3;
-    v29->_visitDisplayBufferCapacity = a4;
-    v29->_interVisitMetricSnapshotCapacity = a5;
-    v29->_thresholdOfLocationRelevance = a7;
-    v29->_interVisitSnapshotUpdateInterval = a6;
-    v29->_snapshotBufferTimeIntervalOfRetention = a8;
-    v29->_loiBufferPerTypeCapacity = a9;
-    v29->_loiBufferTimeIntervalOfRetention = a10;
-    v29->_maxNSigmaBetweenLastLocationAndVisit = a11;
-    v29->_qualitySnapshotDwellDuration = a12;
-    v29->_qualitySnapshotDisplayOnDuration = a13;
-    v29->_uniqueUTObservationCapPerVisit = a14;
-    objc_storeStrong(&v29->_sensitiveLOITypes, a15);
+    v29->_visitSnapshotCapacity = capacity;
+    v29->_visitDisplayBufferCapacity = bufferCapacity;
+    v29->_interVisitMetricSnapshotCapacity = snapshotCapacity;
+    v29->_thresholdOfLocationRelevance = relevance;
+    v29->_interVisitSnapshotUpdateInterval = interval;
+    v29->_snapshotBufferTimeIntervalOfRetention = retention;
+    v29->_loiBufferPerTypeCapacity = typeCapacity;
+    v29->_loiBufferTimeIntervalOfRetention = ofRetention;
+    v29->_maxNSigmaBetweenLastLocationAndVisit = visit;
+    v29->_qualitySnapshotDwellDuration = duration;
+    v29->_qualitySnapshotDisplayOnDuration = onDuration;
+    v29->_uniqueUTObservationCapPerVisit = perVisit;
+    objc_storeStrong(&v29->_sensitiveLOITypes, types);
   }
 
   return v30;
 }
 
-- (TAVisitStateSettings)initWithVisitSnapshotCapacityOrDefault:(id)a3 visitDisplayBufferCapacityOrDefault:(id)a4 interVisitMetricSnapshotCapacityOrDefault:(id)a5 interVisitSnapshotUpdateIntervalOrDefault:(id)a6 thresholdOfLocationRelevanceOrDefault:(id)a7 snapshotBufferTimeIntervalOfRetentionOrDefault:(id)a8 loiBufferPerTypeCapacityOrDefault:(id)a9 loiBufferTimeIntervalOfRetentionOrDefault:(id)a10 maxNSigmaBetweenLastLocationAndVisitOrDefault:(id)a11 qualitySnapshotDwellDurationOrDefault:(id)a12 qualitySnapshotDisplayOnDurationOrDefault:(id)a13 uniqueUTObservationCapPerVisitOrDefault:(id)a14 sensitiveLOITypesOrDefault:(id)a15
+- (TAVisitStateSettings)initWithVisitSnapshotCapacityOrDefault:(id)default visitDisplayBufferCapacityOrDefault:(id)orDefault interVisitMetricSnapshotCapacityOrDefault:(id)capacityOrDefault interVisitSnapshotUpdateIntervalOrDefault:(id)intervalOrDefault thresholdOfLocationRelevanceOrDefault:(id)relevanceOrDefault snapshotBufferTimeIntervalOfRetentionOrDefault:(id)retentionOrDefault loiBufferPerTypeCapacityOrDefault:(id)typeCapacityOrDefault loiBufferTimeIntervalOfRetentionOrDefault:(id)self0 maxNSigmaBetweenLastLocationAndVisitOrDefault:(id)self1 qualitySnapshotDwellDurationOrDefault:(id)self2 qualitySnapshotDisplayOnDurationOrDefault:(id)self3 uniqueUTObservationCapPerVisitOrDefault:(id)self4 sensitiveLOITypesOrDefault:(id)self5
 {
-  v20 = a3;
-  v58 = a4;
-  v21 = a5;
-  v63 = a6;
-  v22 = a7;
-  v62 = a8;
-  v23 = a9;
-  v61 = a10;
-  v60 = a11;
-  v24 = a12;
-  v25 = a13;
-  v59 = a14;
-  v26 = a15;
-  if (v20)
+  defaultCopy = default;
+  orDefaultCopy = orDefault;
+  capacityOrDefaultCopy = capacityOrDefault;
+  intervalOrDefaultCopy = intervalOrDefault;
+  relevanceOrDefaultCopy = relevanceOrDefault;
+  retentionOrDefaultCopy = retentionOrDefault;
+  typeCapacityOrDefaultCopy = typeCapacityOrDefault;
+  ofRetentionOrDefaultCopy = ofRetentionOrDefault;
+  visitOrDefaultCopy = visitOrDefault;
+  durationOrDefaultCopy = durationOrDefault;
+  onDurationOrDefaultCopy = onDurationOrDefault;
+  perVisitOrDefaultCopy = perVisitOrDefault;
+  typesOrDefaultCopy = typesOrDefault;
+  if (defaultCopy)
   {
-    v55 = [v20 unsignedIntegerValue];
+    unsignedIntegerValue = [defaultCopy unsignedIntegerValue];
   }
 
   else
   {
-    v55 = 288;
+    unsignedIntegerValue = 288;
   }
 
-  v27 = v58;
-  if (v58)
+  v27 = orDefaultCopy;
+  if (orDefaultCopy)
   {
-    v54 = [v58 unsignedIntegerValue];
-    if (v21)
+    unsignedIntegerValue2 = [orDefaultCopy unsignedIntegerValue];
+    if (capacityOrDefaultCopy)
     {
 LABEL_6:
-      v53 = [v21 unsignedIntegerValue];
+      unsignedIntegerValue3 = [capacityOrDefaultCopy unsignedIntegerValue];
       goto LABEL_9;
     }
   }
 
   else
   {
-    v54 = 200;
-    if (v21)
+    unsignedIntegerValue2 = 200;
+    if (capacityOrDefaultCopy)
     {
       goto LABEL_6;
     }
   }
 
-  v53 = 288;
+  unsignedIntegerValue3 = 288;
 LABEL_9:
-  if (v63)
+  if (intervalOrDefaultCopy)
   {
-    [v63 doubleValue];
+    [intervalOrDefaultCopy doubleValue];
     v29 = v28;
-    if (v22)
+    if (relevanceOrDefaultCopy)
     {
 LABEL_11:
-      [v22 doubleValue];
+      [relevanceOrDefaultCopy doubleValue];
       v31 = v30;
       goto LABEL_14;
     }
@@ -100,19 +100,19 @@ LABEL_11:
   else
   {
     v29 = 900.0;
-    if (v22)
+    if (relevanceOrDefaultCopy)
     {
       goto LABEL_11;
     }
   }
 
-  v52 = [[TAFilterGeneralSettings alloc] initWithDefaults];
-  [(TAFilterGeneralSettings *)v52 thresholdOfLocationRelevance];
+  initWithDefaults = [[TAFilterGeneralSettings alloc] initWithDefaults];
+  [(TAFilterGeneralSettings *)initWithDefaults thresholdOfLocationRelevance];
   v31 = v32;
 LABEL_14:
-  if (v62)
+  if (retentionOrDefaultCopy)
   {
-    [v62 doubleValue];
+    [retentionOrDefaultCopy doubleValue];
     v34 = v33;
   }
 
@@ -121,20 +121,20 @@ LABEL_14:
     v34 = 86400.0;
   }
 
-  v57 = v21;
-  if (v23)
+  v57 = capacityOrDefaultCopy;
+  if (typeCapacityOrDefaultCopy)
   {
-    v35 = [v23 unsignedIntegerValue];
+    unsignedIntegerValue4 = [typeCapacityOrDefaultCopy unsignedIntegerValue];
   }
 
   else
   {
-    v35 = 3;
+    unsignedIntegerValue4 = 3;
   }
 
-  if (v61)
+  if (ofRetentionOrDefaultCopy)
   {
-    [v61 doubleValue];
+    [ofRetentionOrDefaultCopy doubleValue];
     v37 = v36;
   }
 
@@ -143,13 +143,13 @@ LABEL_14:
     v37 = 86400.0;
   }
 
-  if (v60)
+  if (visitOrDefaultCopy)
   {
-    v38 = [v60 unsignedIntValue];
-    if (v24)
+    unsignedIntValue = [visitOrDefaultCopy unsignedIntValue];
+    if (durationOrDefaultCopy)
     {
 LABEL_25:
-      [v24 doubleValue];
+      [durationOrDefaultCopy doubleValue];
       v40 = v39;
       goto LABEL_28;
     }
@@ -157,8 +157,8 @@ LABEL_25:
 
   else
   {
-    v38 = 2;
-    if (v24)
+    unsignedIntValue = 2;
+    if (durationOrDefaultCopy)
     {
       goto LABEL_25;
     }
@@ -166,10 +166,10 @@ LABEL_25:
 
   v40 = 600.0;
 LABEL_28:
-  v41 = v25;
-  if (v25)
+  v41 = onDurationOrDefaultCopy;
+  if (onDurationOrDefaultCopy)
   {
-    v42 = v24;
+    v42 = durationOrDefaultCopy;
     v43 = v41;
     [v41 doubleValue];
     v45 = v44;
@@ -178,27 +178,27 @@ LABEL_28:
   else
   {
     v43 = 0;
-    v42 = v24;
+    v42 = durationOrDefaultCopy;
     v45 = 120.0;
   }
 
-  v46 = v23;
-  if (v59)
+  v46 = typeCapacityOrDefaultCopy;
+  if (perVisitOrDefaultCopy)
   {
-    v47 = [v59 unsignedIntegerValue];
-    if (v26)
+    unsignedIntegerValue5 = [perVisitOrDefaultCopy unsignedIntegerValue];
+    if (typesOrDefaultCopy)
     {
       goto LABEL_33;
     }
 
 LABEL_37:
     +[TAFilterVisitsSettings defaultVisitsSensitiveLOITypes];
-    v51 = v50 = v20;
-    v48 = [(TAVisitStateSettings *)self initWithVisitSnapshotCapacity:v55 visitDisplayBufferCapacity:v54 interVisitMetricSnapshotCapacity:v53 interVisitSnapshotUpdateInterval:v35 thresholdOfLocationRelevance:v38 snapshotBufferTimeIntervalOfRetention:v47 loiBufferPerTypeCapacity:v29 loiBufferTimeIntervalOfRetention:v31 maxNSigmaBetweenLastLocationAndVisit:v34 qualitySnapshotDwellDuration:v37 qualitySnapshotDisplayOnDuration:v40 uniqueUTObservationCapPerVisit:v45 sensitiveLOITypes:v51];
+    v51 = v50 = defaultCopy;
+    v48 = [(TAVisitStateSettings *)self initWithVisitSnapshotCapacity:unsignedIntegerValue visitDisplayBufferCapacity:unsignedIntegerValue2 interVisitMetricSnapshotCapacity:unsignedIntegerValue3 interVisitSnapshotUpdateInterval:unsignedIntegerValue4 thresholdOfLocationRelevance:unsignedIntValue snapshotBufferTimeIntervalOfRetention:unsignedIntegerValue5 loiBufferPerTypeCapacity:v29 loiBufferTimeIntervalOfRetention:v31 maxNSigmaBetweenLastLocationAndVisit:v34 qualitySnapshotDwellDuration:v37 qualitySnapshotDisplayOnDuration:v40 uniqueUTObservationCapPerVisit:v45 sensitiveLOITypes:v51];
 
-    v20 = v50;
-    v27 = v58;
-    if (v22)
+    defaultCopy = v50;
+    v27 = orDefaultCopy;
+    if (relevanceOrDefaultCopy)
     {
       goto LABEL_35;
     }
@@ -206,15 +206,15 @@ LABEL_37:
     goto LABEL_34;
   }
 
-  v47 = 200;
-  if (!v26)
+  unsignedIntegerValue5 = 200;
+  if (!typesOrDefaultCopy)
   {
     goto LABEL_37;
   }
 
 LABEL_33:
-  v48 = [(TAVisitStateSettings *)self initWithVisitSnapshotCapacity:v55 visitDisplayBufferCapacity:v54 interVisitMetricSnapshotCapacity:v53 interVisitSnapshotUpdateInterval:v35 thresholdOfLocationRelevance:v38 snapshotBufferTimeIntervalOfRetention:v47 loiBufferPerTypeCapacity:v29 loiBufferTimeIntervalOfRetention:v31 maxNSigmaBetweenLastLocationAndVisit:v34 qualitySnapshotDwellDuration:v37 qualitySnapshotDisplayOnDuration:v40 uniqueUTObservationCapPerVisit:v45 sensitiveLOITypes:v26];
-  if (!v22)
+  v48 = [(TAVisitStateSettings *)self initWithVisitSnapshotCapacity:unsignedIntegerValue visitDisplayBufferCapacity:unsignedIntegerValue2 interVisitMetricSnapshotCapacity:unsignedIntegerValue3 interVisitSnapshotUpdateInterval:unsignedIntegerValue4 thresholdOfLocationRelevance:unsignedIntValue snapshotBufferTimeIntervalOfRetention:unsignedIntegerValue5 loiBufferPerTypeCapacity:v29 loiBufferTimeIntervalOfRetention:v31 maxNSigmaBetweenLastLocationAndVisit:v34 qualitySnapshotDwellDuration:v37 qualitySnapshotDisplayOnDuration:v40 uniqueUTObservationCapPerVisit:v45 sensitiveLOITypes:typesOrDefaultCopy];
+  if (!relevanceOrDefaultCopy)
   {
 LABEL_34:
   }
@@ -226,8 +226,8 @@ LABEL_35:
 
 - (TAVisitStateSettings)initWithDefaults
 {
-  v3 = [[TAFilterGeneralSettings alloc] initWithDefaults];
-  [(TAFilterGeneralSettings *)v3 thresholdOfLocationRelevance];
+  initWithDefaults = [[TAFilterGeneralSettings alloc] initWithDefaults];
+  [(TAFilterGeneralSettings *)initWithDefaults thresholdOfLocationRelevance];
   v5 = v4;
   v6 = +[TAFilterVisitsSettings defaultVisitsSensitiveLOITypes];
   v7 = [(TAVisitStateSettings *)self initWithVisitSnapshotCapacity:288 visitDisplayBufferCapacity:200 interVisitMetricSnapshotCapacity:288 interVisitSnapshotUpdateInterval:3 thresholdOfLocationRelevance:2 snapshotBufferTimeIntervalOfRetention:200 loiBufferPerTypeCapacity:900.0 loiBufferTimeIntervalOfRetention:v5 maxNSigmaBetweenLastLocationAndVisit:86400.0 qualitySnapshotDwellDuration:86400.0 qualitySnapshotDisplayOnDuration:600.0 uniqueUTObservationCapPerVisit:120.0 sensitiveLOITypes:v6];
@@ -235,10 +235,10 @@ LABEL_35:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v33 = 1;
   }
@@ -248,21 +248,21 @@ LABEL_35:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(TAVisitStateSettings *)self visitSnapshotCapacity];
-      if (v6 != [(TAVisitStateSettings *)v5 visitSnapshotCapacity])
+      v5 = equalCopy;
+      visitSnapshotCapacity = [(TAVisitStateSettings *)self visitSnapshotCapacity];
+      if (visitSnapshotCapacity != [(TAVisitStateSettings *)v5 visitSnapshotCapacity])
       {
         goto LABEL_18;
       }
 
-      v7 = [(TAVisitStateSettings *)self visitDisplayBufferCapacity];
-      if (v7 != [(TAVisitStateSettings *)v5 visitDisplayBufferCapacity])
+      visitDisplayBufferCapacity = [(TAVisitStateSettings *)self visitDisplayBufferCapacity];
+      if (visitDisplayBufferCapacity != [(TAVisitStateSettings *)v5 visitDisplayBufferCapacity])
       {
         goto LABEL_18;
       }
 
-      v8 = [(TAVisitStateSettings *)self interVisitMetricSnapshotCapacity];
-      if (v8 != [(TAVisitStateSettings *)v5 interVisitMetricSnapshotCapacity])
+      interVisitMetricSnapshotCapacity = [(TAVisitStateSettings *)self interVisitMetricSnapshotCapacity];
+      if (interVisitMetricSnapshotCapacity != [(TAVisitStateSettings *)v5 interVisitMetricSnapshotCapacity])
       {
         goto LABEL_18;
       }
@@ -291,8 +291,8 @@ LABEL_35:
         goto LABEL_18;
       }
 
-      v18 = [(TAVisitStateSettings *)self loiBufferPerTypeCapacity];
-      if (v18 != [(TAVisitStateSettings *)v5 loiBufferPerTypeCapacity])
+      loiBufferPerTypeCapacity = [(TAVisitStateSettings *)self loiBufferPerTypeCapacity];
+      if (loiBufferPerTypeCapacity != [(TAVisitStateSettings *)v5 loiBufferPerTypeCapacity])
       {
         goto LABEL_18;
       }
@@ -305,21 +305,21 @@ LABEL_35:
         goto LABEL_18;
       }
 
-      v22 = [(TAVisitStateSettings *)self maxNSigmaBetweenLastLocationAndVisit];
-      if (v22 == [(TAVisitStateSettings *)v5 maxNSigmaBetweenLastLocationAndVisit]&& ([(TAVisitStateSettings *)self qualitySnapshotDwellDuration], v24 = v23, [(TAVisitStateSettings *)v5 qualitySnapshotDwellDuration], v24 == v25) && ([(TAVisitStateSettings *)self qualitySnapshotDisplayOnDuration], v27 = v26, [(TAVisitStateSettings *)v5 qualitySnapshotDisplayOnDuration], v27 == v28))
+      maxNSigmaBetweenLastLocationAndVisit = [(TAVisitStateSettings *)self maxNSigmaBetweenLastLocationAndVisit];
+      if (maxNSigmaBetweenLastLocationAndVisit == [(TAVisitStateSettings *)v5 maxNSigmaBetweenLastLocationAndVisit]&& ([(TAVisitStateSettings *)self qualitySnapshotDwellDuration], v24 = v23, [(TAVisitStateSettings *)v5 qualitySnapshotDwellDuration], v24 == v25) && ([(TAVisitStateSettings *)self qualitySnapshotDisplayOnDuration], v27 = v26, [(TAVisitStateSettings *)v5 qualitySnapshotDisplayOnDuration], v27 == v28))
       {
-        v29 = [(TAVisitStateSettings *)self sensitiveLOITypes];
-        v30 = [(TAVisitStateSettings *)v5 sensitiveLOITypes];
-        if (v29 == v30)
+        sensitiveLOITypes = [(TAVisitStateSettings *)self sensitiveLOITypes];
+        sensitiveLOITypes2 = [(TAVisitStateSettings *)v5 sensitiveLOITypes];
+        if (sensitiveLOITypes == sensitiveLOITypes2)
         {
           v33 = 1;
         }
 
         else
         {
-          v31 = [(TAVisitStateSettings *)self sensitiveLOITypes];
-          v32 = [(TAVisitStateSettings *)v5 sensitiveLOITypes];
-          v33 = [v31 isEqual:v32];
+          sensitiveLOITypes3 = [(TAVisitStateSettings *)self sensitiveLOITypes];
+          sensitiveLOITypes4 = [(TAVisitStateSettings *)v5 sensitiveLOITypes];
+          v33 = [sensitiveLOITypes3 isEqual:sensitiveLOITypes4];
         }
       }
 
@@ -339,53 +339,53 @@ LABEL_18:
   return v33;
 }
 
-- (TAVisitStateSettings)initWithCoder:(id)a3
+- (TAVisitStateSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"VisitCap"];
-  v6 = [v4 decodeIntegerForKey:@"VisitDisplayCap"];
-  v7 = [v4 decodeIntegerForKey:@"InterCap"];
-  [v4 decodeDoubleForKey:@"InterUpdateInterval"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"VisitCap"];
+  v6 = [coderCopy decodeIntegerForKey:@"VisitDisplayCap"];
+  v7 = [coderCopy decodeIntegerForKey:@"InterCap"];
+  [coderCopy decodeDoubleForKey:@"InterUpdateInterval"];
   v9 = v8;
-  [v4 decodeDoubleForKey:@"ThresLocRel"];
+  [coderCopy decodeDoubleForKey:@"ThresLocRel"];
   v11 = v10;
-  [v4 decodeDoubleForKey:@"SnapshotRetention"];
+  [coderCopy decodeDoubleForKey:@"SnapshotRetention"];
   v13 = v12;
-  v14 = [v4 decodeIntegerForKey:@"LOICap"];
-  [v4 decodeDoubleForKey:@"LOIRetention"];
+  v14 = [coderCopy decodeIntegerForKey:@"LOICap"];
+  [coderCopy decodeDoubleForKey:@"LOIRetention"];
   v16 = v15;
-  v17 = [v4 decodeIntegerForKey:@"MaxNSigma"];
-  [v4 decodeDoubleForKey:@"MinDwell"];
+  v17 = [coderCopy decodeIntegerForKey:@"MaxNSigma"];
+  [coderCopy decodeDoubleForKey:@"MinDwell"];
   v19 = v18;
-  [v4 decodeDoubleForKey:@"MinDisplay"];
+  [coderCopy decodeDoubleForKey:@"MinDisplay"];
   v21 = v20;
-  v22 = [v4 decodeIntegerForKey:@"PerVisitCacheCap"];
+  v22 = [coderCopy decodeIntegerForKey:@"PerVisitCacheCap"];
   v23 = MEMORY[0x277CBEB98];
   v24 = objc_opt_class();
   v25 = [v23 setWithObjects:{v24, objc_opt_class(), 0}];
-  v26 = [v4 decodeObjectOfClasses:v25 forKey:@"SensitiveLOITypes"];
+  v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"SensitiveLOITypes"];
 
   v27 = [(TAVisitStateSettings *)self initWithVisitSnapshotCapacity:v5 visitDisplayBufferCapacity:v6 interVisitMetricSnapshotCapacity:v7 interVisitSnapshotUpdateInterval:v14 thresholdOfLocationRelevance:v17 snapshotBufferTimeIntervalOfRetention:v22 loiBufferPerTypeCapacity:v9 loiBufferTimeIntervalOfRetention:v11 maxNSigmaBetweenLastLocationAndVisit:v13 qualitySnapshotDwellDuration:v16 qualitySnapshotDisplayOnDuration:v19 uniqueUTObservationCapPerVisit:v21 sensitiveLOITypes:v26];
   return v27;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   visitSnapshotCapacity = self->_visitSnapshotCapacity;
-  v5 = a3;
-  [v5 encodeInteger:visitSnapshotCapacity forKey:@"VisitCap"];
-  [v5 encodeInteger:self->_visitDisplayBufferCapacity forKey:@"VisitDisplayCap"];
-  [v5 encodeInteger:self->_interVisitMetricSnapshotCapacity forKey:@"InterCap"];
-  [v5 encodeDouble:@"InterUpdateInterval" forKey:self->_interVisitSnapshotUpdateInterval];
-  [v5 encodeDouble:@"ThresLocRel" forKey:self->_thresholdOfLocationRelevance];
-  [v5 encodeDouble:@"SnapshotRetention" forKey:self->_snapshotBufferTimeIntervalOfRetention];
-  [v5 encodeInteger:self->_loiBufferPerTypeCapacity forKey:@"LOICap"];
-  [v5 encodeDouble:@"LOIRetention" forKey:self->_loiBufferTimeIntervalOfRetention];
-  [v5 encodeInteger:self->_maxNSigmaBetweenLastLocationAndVisit forKey:@"MaxNSigma"];
-  [v5 encodeDouble:@"MinDwell" forKey:self->_qualitySnapshotDwellDuration];
-  [v5 encodeDouble:@"MinDisplay" forKey:self->_qualitySnapshotDisplayOnDuration];
-  [v5 encodeInteger:self->_uniqueUTObservationCapPerVisit forKey:@"PerVisitCacheCap"];
-  [v5 encodeObject:self->_sensitiveLOITypes forKey:@"SensitiveLOITypes"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:visitSnapshotCapacity forKey:@"VisitCap"];
+  [coderCopy encodeInteger:self->_visitDisplayBufferCapacity forKey:@"VisitDisplayCap"];
+  [coderCopy encodeInteger:self->_interVisitMetricSnapshotCapacity forKey:@"InterCap"];
+  [coderCopy encodeDouble:@"InterUpdateInterval" forKey:self->_interVisitSnapshotUpdateInterval];
+  [coderCopy encodeDouble:@"ThresLocRel" forKey:self->_thresholdOfLocationRelevance];
+  [coderCopy encodeDouble:@"SnapshotRetention" forKey:self->_snapshotBufferTimeIntervalOfRetention];
+  [coderCopy encodeInteger:self->_loiBufferPerTypeCapacity forKey:@"LOICap"];
+  [coderCopy encodeDouble:@"LOIRetention" forKey:self->_loiBufferTimeIntervalOfRetention];
+  [coderCopy encodeInteger:self->_maxNSigmaBetweenLastLocationAndVisit forKey:@"MaxNSigma"];
+  [coderCopy encodeDouble:@"MinDwell" forKey:self->_qualitySnapshotDwellDuration];
+  [coderCopy encodeDouble:@"MinDisplay" forKey:self->_qualitySnapshotDisplayOnDuration];
+  [coderCopy encodeInteger:self->_uniqueUTObservationCapPerVisit forKey:@"PerVisitCacheCap"];
+  [coderCopy encodeObject:self->_sensitiveLOITypes forKey:@"SensitiveLOITypes"];
 }
 
 @end

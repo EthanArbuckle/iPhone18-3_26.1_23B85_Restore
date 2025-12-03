@@ -1,14 +1,14 @@
 @interface ICNotesImporterClient
 - (ICNotesImporterClient)init;
-- (void)archiveEvernoteNotesFromFileURL:(id)a3 completionBlock:(id)a4;
-- (void)cleanupArchiveId:(id)a3 completionBlock:(id)a4;
-- (void)countEvernoteNotesFromFileURL:(id)a3 completionBlock:(id)a4;
-- (void)parseHTMLStringFromEvernoteContentString:(id)a3 completionBlock:(id)a4;
-- (void)parseTitleFromHTMLString:(id)a3 completionBlock:(id)a4;
+- (void)archiveEvernoteNotesFromFileURL:(id)l completionBlock:(id)block;
+- (void)cleanupArchiveId:(id)id completionBlock:(id)block;
+- (void)countEvernoteNotesFromFileURL:(id)l completionBlock:(id)block;
+- (void)parseHTMLStringFromEvernoteContentString:(id)string completionBlock:(id)block;
+- (void)parseTitleFromHTMLString:(id)string completionBlock:(id)block;
 - (void)resumeConnectionIfNeeded;
 - (void)suspendConnectionIfNeeded;
-- (void)unarchiveEvernoteNoteFromArchiveId:(id)a3 noteArchiveId:(id)a4 completionBlock:(id)a5;
-- (void)unarchiveEvernoteResourceFromArchiveId:(id)a3 resourceArchiveId:(id)a4 completionBlock:(id)a5;
+- (void)unarchiveEvernoteNoteFromArchiveId:(id)id noteArchiveId:(id)archiveId completionBlock:(id)block;
+- (void)unarchiveEvernoteResourceFromArchiveId:(id)id resourceArchiveId:(id)archiveId completionBlock:(id)block;
 @end
 
 @implementation ICNotesImporterClient
@@ -31,10 +31,10 @@
   return v2;
 }
 
-- (void)parseHTMLStringFromEvernoteContentString:(id)a3 completionBlock:(id)a4
+- (void)parseHTMLStringFromEvernoteContentString:(id)string completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  stringCopy = string;
   [(ICNotesImporterClient *)self resumeConnectionIfNeeded];
   connectionToService = self->_connectionToService;
   v14[0] = MEMORY[0x1E69E9820];
@@ -42,7 +42,7 @@
   v14[2] = __82__ICNotesImporterClient_parseHTMLStringFromEvernoteContentString_completionBlock___block_invoke;
   v14[3] = &unk_1E846B048;
   v14[4] = self;
-  v9 = v6;
+  v9 = blockCopy;
   v15 = v9;
   v10 = [(NSXPCConnection *)connectionToService remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
@@ -52,7 +52,7 @@
   v12[4] = self;
   v13 = v9;
   v11 = v9;
-  [v10 parseHTMLStringFromEvernoteContentString:v7 completionBlock:v12];
+  [v10 parseHTMLStringFromEvernoteContentString:stringCopy completionBlock:v12];
 }
 
 void __82__ICNotesImporterClient_parseHTMLStringFromEvernoteContentString_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -83,20 +83,20 @@ void __82__ICNotesImporterClient_parseHTMLStringFromEvernoteContentString_comple
   }
 }
 
-- (void)countEvernoteNotesFromFileURL:(id)a3 completionBlock:(id)a4
+- (void)countEvernoteNotesFromFileURL:(id)l completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  lCopy = l;
   [(ICNotesImporterClient *)self resumeConnectionIfNeeded];
-  v8 = [(NSXPCConnection *)self->_connectionToService remoteObjectProxy];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connectionToService remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __71__ICNotesImporterClient_countEvernoteNotesFromFileURL_completionBlock___block_invoke;
   v14[3] = &unk_1E846B048;
   v14[4] = self;
-  v9 = v6;
+  v9 = blockCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [remoteObjectProxy remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __71__ICNotesImporterClient_countEvernoteNotesFromFileURL_completionBlock___block_invoke_10;
@@ -104,7 +104,7 @@ void __82__ICNotesImporterClient_parseHTMLStringFromEvernoteContentString_comple
   v12[4] = self;
   v13 = v9;
   v11 = v9;
-  [v10 countEvernoteNotesFromFileURL:v7 completionBlock:v12];
+  [v10 countEvernoteNotesFromFileURL:lCopy completionBlock:v12];
 }
 
 void __71__ICNotesImporterClient_countEvernoteNotesFromFileURL_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -138,20 +138,20 @@ uint64_t __71__ICNotesImporterClient_countEvernoteNotesFromFileURL_completionBlo
   return result;
 }
 
-- (void)parseTitleFromHTMLString:(id)a3 completionBlock:(id)a4
+- (void)parseTitleFromHTMLString:(id)string completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  stringCopy = string;
   [(ICNotesImporterClient *)self resumeConnectionIfNeeded];
-  v8 = [(NSXPCConnection *)self->_connectionToService remoteObjectProxy];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connectionToService remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __66__ICNotesImporterClient_parseTitleFromHTMLString_completionBlock___block_invoke;
   v14[3] = &unk_1E846B048;
   v14[4] = self;
-  v9 = v6;
+  v9 = blockCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [remoteObjectProxy remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __66__ICNotesImporterClient_parseTitleFromHTMLString_completionBlock___block_invoke_12;
@@ -159,7 +159,7 @@ uint64_t __71__ICNotesImporterClient_countEvernoteNotesFromFileURL_completionBlo
   v12[4] = self;
   v13 = v9;
   v11 = v9;
-  [v10 parseTitleFromHTMLString:v7 completionBlock:v12];
+  [v10 parseTitleFromHTMLString:stringCopy completionBlock:v12];
 }
 
 void __66__ICNotesImporterClient_parseTitleFromHTMLString_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -190,20 +190,20 @@ void __66__ICNotesImporterClient_parseTitleFromHTMLString_completionBlock___bloc
   }
 }
 
-- (void)archiveEvernoteNotesFromFileURL:(id)a3 completionBlock:(id)a4
+- (void)archiveEvernoteNotesFromFileURL:(id)l completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  lCopy = l;
   [(ICNotesImporterClient *)self resumeConnectionIfNeeded];
-  v8 = [(NSXPCConnection *)self->_connectionToService remoteObjectProxy];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connectionToService remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __73__ICNotesImporterClient_archiveEvernoteNotesFromFileURL_completionBlock___block_invoke;
   v14[3] = &unk_1E846B048;
   v14[4] = self;
-  v9 = v6;
+  v9 = blockCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [remoteObjectProxy remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __73__ICNotesImporterClient_archiveEvernoteNotesFromFileURL_completionBlock___block_invoke_13;
@@ -211,7 +211,7 @@ void __66__ICNotesImporterClient_parseTitleFromHTMLString_completionBlock___bloc
   v12[4] = self;
   v13 = v9;
   v11 = v9;
-  [v10 archiveEvernoteNotesFromFileURL:v7 completionBlock:v12];
+  [v10 archiveEvernoteNotesFromFileURL:lCopy completionBlock:v12];
 }
 
 void __73__ICNotesImporterClient_archiveEvernoteNotesFromFileURL_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -243,21 +243,21 @@ void __73__ICNotesImporterClient_archiveEvernoteNotesFromFileURL_completionBlock
   }
 }
 
-- (void)unarchiveEvernoteNoteFromArchiveId:(id)a3 noteArchiveId:(id)a4 completionBlock:(id)a5
+- (void)unarchiveEvernoteNoteFromArchiveId:(id)id noteArchiveId:(id)archiveId completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  blockCopy = block;
+  archiveIdCopy = archiveId;
+  idCopy = id;
   [(ICNotesImporterClient *)self resumeConnectionIfNeeded];
-  v11 = [(NSXPCConnection *)self->_connectionToService remoteObjectProxy];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connectionToService remoteObjectProxy];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __90__ICNotesImporterClient_unarchiveEvernoteNoteFromArchiveId_noteArchiveId_completionBlock___block_invoke;
   v17[3] = &unk_1E846B048;
   v17[4] = self;
-  v12 = v8;
+  v12 = blockCopy;
   v18 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v17];
+  v13 = [remoteObjectProxy remoteObjectProxyWithErrorHandler:v17];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __90__ICNotesImporterClient_unarchiveEvernoteNoteFromArchiveId_noteArchiveId_completionBlock___block_invoke_15;
@@ -265,7 +265,7 @@ void __73__ICNotesImporterClient_archiveEvernoteNotesFromFileURL_completionBlock
   v15[4] = self;
   v16 = v12;
   v14 = v12;
-  [v13 unarchiveEvernoteNoteFromArchiveId:v10 noteArchiveId:v9 completionBlock:v15];
+  [v13 unarchiveEvernoteNoteFromArchiveId:idCopy noteArchiveId:archiveIdCopy completionBlock:v15];
 }
 
 void __90__ICNotesImporterClient_unarchiveEvernoteNoteFromArchiveId_noteArchiveId_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -296,21 +296,21 @@ void __90__ICNotesImporterClient_unarchiveEvernoteNoteFromArchiveId_noteArchiveI
   }
 }
 
-- (void)unarchiveEvernoteResourceFromArchiveId:(id)a3 resourceArchiveId:(id)a4 completionBlock:(id)a5
+- (void)unarchiveEvernoteResourceFromArchiveId:(id)id resourceArchiveId:(id)archiveId completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  blockCopy = block;
+  archiveIdCopy = archiveId;
+  idCopy = id;
   [(ICNotesImporterClient *)self resumeConnectionIfNeeded];
-  v11 = [(NSXPCConnection *)self->_connectionToService remoteObjectProxy];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connectionToService remoteObjectProxy];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __98__ICNotesImporterClient_unarchiveEvernoteResourceFromArchiveId_resourceArchiveId_completionBlock___block_invoke;
   v17[3] = &unk_1E846B048;
   v17[4] = self;
-  v12 = v8;
+  v12 = blockCopy;
   v18 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v17];
+  v13 = [remoteObjectProxy remoteObjectProxyWithErrorHandler:v17];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __98__ICNotesImporterClient_unarchiveEvernoteResourceFromArchiveId_resourceArchiveId_completionBlock___block_invoke_17;
@@ -318,7 +318,7 @@ void __90__ICNotesImporterClient_unarchiveEvernoteNoteFromArchiveId_noteArchiveI
   v15[4] = self;
   v16 = v12;
   v14 = v12;
-  [v13 unarchiveEvernoteResourceFromArchiveId:v10 resourceArchiveId:v9 completionBlock:v15];
+  [v13 unarchiveEvernoteResourceFromArchiveId:idCopy resourceArchiveId:archiveIdCopy completionBlock:v15];
 }
 
 void __98__ICNotesImporterClient_unarchiveEvernoteResourceFromArchiveId_resourceArchiveId_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -349,20 +349,20 @@ void __98__ICNotesImporterClient_unarchiveEvernoteResourceFromArchiveId_resource
   }
 }
 
-- (void)cleanupArchiveId:(id)a3 completionBlock:(id)a4
+- (void)cleanupArchiveId:(id)id completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  idCopy = id;
   [(ICNotesImporterClient *)self resumeConnectionIfNeeded];
-  v8 = [(NSXPCConnection *)self->_connectionToService remoteObjectProxy];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connectionToService remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __58__ICNotesImporterClient_cleanupArchiveId_completionBlock___block_invoke;
   v14[3] = &unk_1E846B048;
   v14[4] = self;
-  v9 = v6;
+  v9 = blockCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [remoteObjectProxy remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __58__ICNotesImporterClient_cleanupArchiveId_completionBlock___block_invoke_19;
@@ -370,7 +370,7 @@ void __98__ICNotesImporterClient_unarchiveEvernoteResourceFromArchiveId_resource
   v12[4] = self;
   v13 = v9;
   v11 = v9;
-  [v10 cleanupArchiveId:v7 completionBlock:v12];
+  [v10 cleanupArchiveId:idCopy completionBlock:v12];
 }
 
 void __58__ICNotesImporterClient_cleanupArchiveId_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -406,13 +406,13 @@ uint64_t __58__ICNotesImporterClient_cleanupArchiveId_completionBlock___block_in
 
 - (void)resumeConnectionIfNeeded
 {
-  v3 = [(ICNotesImporterClient *)self requestCountQueue];
+  requestCountQueue = [(ICNotesImporterClient *)self requestCountQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__ICNotesImporterClient_resumeConnectionIfNeeded__block_invoke;
   block[3] = &unk_1E8468BA0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(requestCountQueue, block);
 }
 
 uint64_t __49__ICNotesImporterClient_resumeConnectionIfNeeded__block_invoke(uint64_t a1)
@@ -448,13 +448,13 @@ uint64_t __49__ICNotesImporterClient_resumeConnectionIfNeeded__block_invoke(uint
 
 - (void)suspendConnectionIfNeeded
 {
-  v3 = [(ICNotesImporterClient *)self requestCountQueue];
+  requestCountQueue = [(ICNotesImporterClient *)self requestCountQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__ICNotesImporterClient_suspendConnectionIfNeeded__block_invoke;
   block[3] = &unk_1E8468BA0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(requestCountQueue, block);
 }
 
 uint64_t __50__ICNotesImporterClient_suspendConnectionIfNeeded__block_invoke(uint64_t a1)

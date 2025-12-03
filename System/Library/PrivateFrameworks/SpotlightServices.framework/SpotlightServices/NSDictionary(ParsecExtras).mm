@@ -19,15 +19,15 @@
 
 - (uint64_t)prs_BOOLForKey:()ParsecExtras
 {
-  v1 = [a1 prs_numberForKey:?];
-  v2 = [v1 BOOLValue];
+  v1 = [self prs_numberForKey:?];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)prs_stringForKey:()ParsecExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -46,7 +46,7 @@
 
 - (void)prs_numberForKey:()ParsecExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -65,7 +65,7 @@
 
 - (void)prs_dataForKey:()ParsecExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -84,7 +84,7 @@
 
 - (void)prs_dateForKey:()ParsecExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -103,7 +103,7 @@
 
 - (void)prs_arrayForKey:()ParsecExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -122,7 +122,7 @@
 
 - (void)prs_dictionaryForKey:()ParsecExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -141,7 +141,7 @@
 
 - (id)prs_URLForKey:()ParsecExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -182,7 +182,7 @@
 
 - (uint64_t)prs_integerForKey:()ParsecExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -194,14 +194,14 @@
     v2 = 0;
   }
 
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (uint64_t)prs_intForKey:()ParsecExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -213,14 +213,14 @@
     v2 = 0;
   }
 
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (float)prs_floatForKey:()ParsecExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -241,7 +241,7 @@
 - (id)prs_arrayWithClass:()ParsecExtras forKey:
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [a1 prs_arrayForKey:a4];
+  v5 = [self prs_arrayForKey:a4];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
@@ -298,7 +298,7 @@
 {
   v6 = a4;
   v7 = [a3 alloc];
-  v8 = [a1 prs_dictionaryForKey:v6];
+  v8 = [self prs_dictionaryForKey:v6];
 
   v9 = [v7 initWithData:v8];
 
@@ -309,7 +309,7 @@
 {
   v6 = a4;
   v7 = [a3 alloc];
-  v8 = [a1 prs_arrayForKey:v6];
+  v8 = [self prs_arrayForKey:v6];
 
   v9 = [v7 initWithArray:v8];
 

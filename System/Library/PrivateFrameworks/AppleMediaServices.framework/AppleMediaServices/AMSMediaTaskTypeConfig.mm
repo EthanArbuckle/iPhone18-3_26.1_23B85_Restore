@@ -1,34 +1,34 @@
 @interface AMSMediaTaskTypeConfig
-+ (id)configForType:(int64_t)a3 environment:(int64_t)a4;
-- (AMSMediaTaskTypeConfig)initWithType:(int64_t)a3 typeString:(id)a4 hostBagKey:(id)a5 realm:(id)a6 includePlatform:(BOOL)a7;
++ (id)configForType:(int64_t)type environment:(int64_t)environment;
+- (AMSMediaTaskTypeConfig)initWithType:(int64_t)type typeString:(id)string hostBagKey:(id)key realm:(id)realm includePlatform:(BOOL)platform;
 @end
 
 @implementation AMSMediaTaskTypeConfig
 
-- (AMSMediaTaskTypeConfig)initWithType:(int64_t)a3 typeString:(id)a4 hostBagKey:(id)a5 realm:(id)a6 includePlatform:(BOOL)a7
+- (AMSMediaTaskTypeConfig)initWithType:(int64_t)type typeString:(id)string hostBagKey:(id)key realm:(id)realm includePlatform:(BOOL)platform
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  stringCopy = string;
+  keyCopy = key;
+  realmCopy = realm;
   v19.receiver = self;
   v19.super_class = AMSMediaTaskTypeConfig;
   v16 = [(AMSMediaTaskTypeConfig *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    v16->_type = a3;
-    objc_storeStrong(&v16->_typeString, a4);
-    objc_storeStrong(&v17->_hostBagKey, a5);
-    objc_storeStrong(&v17->_realm, a6);
-    v17->_includePlatform = a7;
+    v16->_type = type;
+    objc_storeStrong(&v16->_typeString, string);
+    objc_storeStrong(&v17->_hostBagKey, key);
+    objc_storeStrong(&v17->_realm, realm);
+    v17->_includePlatform = platform;
   }
 
   return v17;
 }
 
-+ (id)configForType:(int64_t)a3 environment:(int64_t)a4
++ (id)configForType:(int64_t)type environment:(int64_t)environment
 {
-  if (a4 == 1)
+  if (environment == 1)
   {
     v6 = @"sandbox-media-api-host";
   }
@@ -38,13 +38,13 @@
     v6 = 0;
   }
 
-  if (a3 > 103)
+  if (type > 103)
   {
-    if (a3 <= 205)
+    if (type <= 205)
     {
-      if (a3 <= 201)
+      if (type <= 201)
       {
-        switch(a3)
+        switch(type)
         {
           case 104:
             v7 = [AMSMediaTaskTypeConfig alloc];
@@ -99,9 +99,9 @@
         }
       }
 
-      else if (a3 > 203)
+      else if (type > 203)
       {
-        if (a3 == 204)
+        if (type == 204)
         {
           v7 = [AMSMediaTaskTypeConfig alloc];
           if (v6)
@@ -138,7 +138,7 @@
         }
       }
 
-      else if (a3 == 202)
+      else if (type == 202)
       {
         v7 = [AMSMediaTaskTypeConfig alloc];
         if (v6)
@@ -175,11 +175,11 @@
       }
     }
 
-    else if (a3 > 301)
+    else if (type > 301)
     {
-      if (a3 > 400)
+      if (type > 400)
       {
-        if (a3 == 401)
+        if (type == 401)
         {
           v7 = [AMSMediaTaskTypeConfig alloc];
           if (v6)
@@ -199,7 +199,7 @@
 
         else
         {
-          if (a3 != 402)
+          if (type != 402)
           {
             goto LABEL_165;
           }
@@ -221,7 +221,7 @@
         }
       }
 
-      else if (a3 == 302)
+      else if (type == 302)
       {
         v7 = [AMSMediaTaskTypeConfig alloc];
         if (v6)
@@ -241,7 +241,7 @@
 
       else
       {
-        if (a3 != 400)
+        if (type != 400)
         {
           goto LABEL_165;
         }
@@ -263,9 +263,9 @@
       }
     }
 
-    else if (a3 > 299)
+    else if (type > 299)
     {
-      if (a3 == 300)
+      if (type == 300)
       {
         v7 = [AMSMediaTaskTypeConfig alloc];
         if (v6)
@@ -302,7 +302,7 @@
       }
     }
 
-    else if (a3 == 206)
+    else if (type == 206)
     {
       v7 = [AMSMediaTaskTypeConfig alloc];
       if (v6)
@@ -322,7 +322,7 @@
 
     else
     {
-      if (a3 != 207)
+      if (type != 207)
       {
         goto LABEL_165;
       }
@@ -346,13 +346,13 @@
     goto LABEL_163;
   }
 
-  if (a3 > 6)
+  if (type > 6)
   {
-    if (a3 <= 99)
+    if (type <= 99)
     {
-      if (a3 > 8)
+      if (type > 8)
       {
-        if (a3 == 9)
+        if (type == 9)
         {
           v7 = [AMSMediaTaskTypeConfig alloc];
           if (v6)
@@ -372,7 +372,7 @@
 
         else
         {
-          if (a3 != 10)
+          if (type != 10)
           {
             goto LABEL_165;
           }
@@ -394,7 +394,7 @@
         }
       }
 
-      else if (a3 == 7)
+      else if (type == 7)
       {
         if (_os_feature_enabled_impl())
         {
@@ -443,9 +443,9 @@
       goto LABEL_158;
     }
 
-    if (a3 > 101)
+    if (type > 101)
     {
-      if (a3 == 102)
+      if (type == 102)
       {
         v7 = [AMSMediaTaskTypeConfig alloc];
         if (v6)
@@ -482,7 +482,7 @@
       }
     }
 
-    else if (a3 == 100)
+    else if (type == 100)
     {
       v7 = [AMSMediaTaskTypeConfig alloc];
       if (v6)
@@ -523,11 +523,11 @@ LABEL_163:
     goto LABEL_164;
   }
 
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         v7 = [AMSMediaTaskTypeConfig alloc];
         if (v6)
@@ -547,7 +547,7 @@ LABEL_163:
 
       else
       {
-        if (a3 != 2)
+        if (type != 2)
         {
           goto LABEL_165;
         }
@@ -588,9 +588,9 @@ LABEL_163:
     }
   }
 
-  else if (a3 > 4)
+  else if (type > 4)
   {
-    if (a3 == 5)
+    if (type == 5)
     {
       v7 = [AMSMediaTaskTypeConfig alloc];
       if (v6)
@@ -627,7 +627,7 @@ LABEL_163:
     }
   }
 
-  else if (a3 == 3)
+  else if (type == 3)
   {
     v7 = [AMSMediaTaskTypeConfig alloc];
     if (v6)

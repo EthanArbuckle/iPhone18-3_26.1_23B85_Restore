@@ -1,35 +1,35 @@
 @interface HMFMessageDestination
 + (HMFMessageDestination)allMessageDestinations;
-- (BOOL)isEqual:(id)a3;
-- (HMFMessageDestination)initWithCoder:(id)a3;
-- (HMFMessageDestination)initWithTarget:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMFMessageDestination)initWithCoder:(id)coder;
+- (HMFMessageDestination)initWithTarget:(id)target;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMFMessageDestination
 
 + (HMFMessageDestination)allMessageDestinations
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[HMFMessageDestination allMessageTargets];
   v4 = [v2 initWithTarget:v3];
 
   return v4;
 }
 
-- (HMFMessageDestination)initWithTarget:(id)a3
+- (HMFMessageDestination)initWithTarget:(id)target
 {
-  v5 = a3;
+  targetCopy = target;
   v9.receiver = self;
   v9.super_class = HMFMessageDestination;
   v6 = [(HMFMessageDestination *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_target, a3);
+    objc_storeStrong(&v6->_target, target);
   }
 
   return v7;
@@ -37,16 +37,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMFMessageDestination *)self target];
-  v3 = [v2 hash];
+  target = [(HMFMessageDestination *)self target];
+  v3 = [target hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -56,9 +56,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HMFMessageDestination *)self target];
-      v6 = [(HMFMessageDestination *)v4 target];
-      v7 = [v5 isEqual:v6];
+      target = [(HMFMessageDestination *)self target];
+      target2 = [(HMFMessageDestination *)equalCopy target];
+      v7 = [target isEqual:target2];
     }
 
     else
@@ -73,10 +73,10 @@
 - (NSString)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMFMessageDestination *)self target];
-  v6 = [v5 UUIDString];
-  v7 = [v3 stringWithFormat:@"%@ %@", v4, v6];
+  shortDescription = [objc_opt_class() shortDescription];
+  target = [(HMFMessageDestination *)self target];
+  uUIDString = [target UUIDString];
+  v7 = [v3 stringWithFormat:@"%@ %@", shortDescription, uUIDString];
 
   return v7;
 }
@@ -85,9 +85,9 @@
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v3 = [HMFAttributeDescription alloc];
-  v4 = [(HMFMessageDestination *)self target];
-  v5 = [v4 UUIDString];
-  v6 = [(HMFAttributeDescription *)v3 initWithName:@"Target" value:v5];
+  target = [(HMFMessageDestination *)self target];
+  uUIDString = [target UUIDString];
+  v6 = [(HMFAttributeDescription *)v3 initWithName:@"Target" value:uUIDString];
   v10[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
 
@@ -96,32 +96,32 @@
   return v7;
 }
 
-- (HMFMessageDestination)initWithCoder:(id)a3
+- (HMFMessageDestination)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMF.target"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMF.target"];
   if (v5)
   {
     self = [(HMFMessageDestination *)self initWithTarget:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
     v7 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:11 reason:@"HMFMessageDestination.target is required"];
-    [v4 failWithError:v7];
+    [coderCopy failWithError:v7];
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMFMessageDestination *)self target];
-  [v4 encodeObject:v5 forKey:@"HMF.target"];
+  coderCopy = coder;
+  target = [(HMFMessageDestination *)self target];
+  [coderCopy encodeObject:target forKey:@"HMF.target"];
 }
 
 @end

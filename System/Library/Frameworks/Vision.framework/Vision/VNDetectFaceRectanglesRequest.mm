@@ -1,32 +1,32 @@
 @interface VNDetectFaceRectanglesRequest
 + (NSIndexSet)revisionsSupportingPrecisionRecallThresholdOverride;
-+ (id)descriptionForPrivateRevision:(unint64_t)a3;
++ (id)descriptionForPrivateRevision:(unint64_t)revision;
 + (id)privateRevisionsSet;
 - (BOOL)canOverridePrecisionRecallThreshold;
 - (BOOL)faceCoreEnhanceEyesAndMouthLocalization;
 - (BOOL)faceCoreExtractBlink;
 - (BOOL)faceCoreExtractSmile;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (BOOL)warmUpSession:(id)a3 error:(id *)a4;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (BOOL)warmUpSession:(id)session error:(id *)error;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
 - (NSNumber)faceCoreInitialAngle;
 - (NSNumber)faceCoreMinFaceSize;
 - (NSNumber)faceCoreNumberOfDetectionAngles;
 - (NSNumber)precisionRecallThresholdOverride;
 - (float)precisionRecallThreshold;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
 - (unint64_t)faceCoreType;
-- (void)_setPrecisionRecallThresholdOverride:(void *)a1;
-- (void)applyConfigurationOfRequest:(id)a3;
-- (void)setFaceCoreEnhanceEyesAndMouthLocalization:(BOOL)a3;
-- (void)setFaceCoreExtractBlink:(BOOL)a3;
-- (void)setFaceCoreExtractSmile:(BOOL)a3;
-- (void)setFaceCoreInitialAngle:(id)a3;
-- (void)setFaceCoreMinFaceSize:(id)a3;
-- (void)setFaceCoreNumberOfDetectionAngles:(id)a3;
-- (void)setFaceCoreType:(unint64_t)a3;
-- (void)setPrecisionRecallThreshold:(float)a3;
-- (void)setProcessedResults:(id)a3;
+- (void)_setPrecisionRecallThresholdOverride:(void *)override;
+- (void)applyConfigurationOfRequest:(id)request;
+- (void)setFaceCoreEnhanceEyesAndMouthLocalization:(BOOL)localization;
+- (void)setFaceCoreExtractBlink:(BOOL)blink;
+- (void)setFaceCoreExtractSmile:(BOOL)smile;
+- (void)setFaceCoreInitialAngle:(id)angle;
+- (void)setFaceCoreMinFaceSize:(id)size;
+- (void)setFaceCoreNumberOfDetectionAngles:(id)angles;
+- (void)setFaceCoreType:(unint64_t)type;
+- (void)setPrecisionRecallThreshold:(float)threshold;
+- (void)setProcessedResults:(id)results;
 @end
 
 @implementation VNDetectFaceRectanglesRequest
@@ -43,19 +43,19 @@
   return v3;
 }
 
-- (void)_setPrecisionRecallThresholdOverride:(void *)a1
+- (void)_setPrecisionRecallThresholdOverride:(void *)override
 {
   v4 = a2;
-  if (a1)
+  if (override)
   {
-    v3 = [a1 configuration];
-    [v3 setPrecisionRecallThresholdOverride:v4];
+    configuration = [override configuration];
+    [configuration setPrecisionRecallThresholdOverride:v4];
   }
 }
 
-- (void)setPrecisionRecallThreshold:(float)a3
+- (void)setPrecisionRecallThreshold:(float)threshold
 {
-  if (a3 >= 0.0 && a3 <= 1.0)
+  if (threshold >= 0.0 && threshold <= 1.0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithFloat:?];
     [(VNDetectFaceRectanglesRequest *)self _setPrecisionRecallThresholdOverride:v5];
@@ -65,11 +65,11 @@
 - (float)precisionRecallThreshold
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(VNDetectFaceRectanglesRequest *)self precisionRecallThresholdOverride];
-  v5 = v4;
-  if (v4)
+  precisionRecallThresholdOverride = [(VNDetectFaceRectanglesRequest *)self precisionRecallThresholdOverride];
+  v5 = precisionRecallThresholdOverride;
+  if (precisionRecallThresholdOverride)
   {
-    [v4 floatValue];
+    [precisionRecallThresholdOverride floatValue];
     v7 = v6;
   }
 
@@ -98,10 +98,10 @@
 
 - (NSNumber)precisionRecallThresholdOverride
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 precisionRecallThresholdOverride];
+  configuration = [(VNRequest *)self configuration];
+  precisionRecallThresholdOverride = [configuration precisionRecallThresholdOverride];
 
-  return v3;
+  return precisionRecallThresholdOverride;
 }
 
 - (BOOL)canOverridePrecisionRecallThreshold
@@ -126,145 +126,145 @@
   return v8;
 }
 
-- (void)setFaceCoreExtractSmile:(BOOL)a3
+- (void)setFaceCoreExtractSmile:(BOOL)smile
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setFaceCoreExtractSmile:v3];
+  smileCopy = smile;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setFaceCoreExtractSmile:smileCopy];
 }
 
 - (BOOL)faceCoreExtractSmile
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 faceCoreExtractSmile];
+  configuration = [(VNRequest *)self configuration];
+  faceCoreExtractSmile = [configuration faceCoreExtractSmile];
 
-  return v3;
+  return faceCoreExtractSmile;
 }
 
-- (void)setFaceCoreExtractBlink:(BOOL)a3
+- (void)setFaceCoreExtractBlink:(BOOL)blink
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setFaceCoreExtractBlink:v3];
+  blinkCopy = blink;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setFaceCoreExtractBlink:blinkCopy];
 }
 
 - (BOOL)faceCoreExtractBlink
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 faceCoreExtractBlink];
+  configuration = [(VNRequest *)self configuration];
+  faceCoreExtractBlink = [configuration faceCoreExtractBlink];
 
-  return v3;
+  return faceCoreExtractBlink;
 }
 
-- (void)setFaceCoreEnhanceEyesAndMouthLocalization:(BOOL)a3
+- (void)setFaceCoreEnhanceEyesAndMouthLocalization:(BOOL)localization
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setFaceCoreEnhanceEyesAndMouthLocalization:v3];
+  localizationCopy = localization;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setFaceCoreEnhanceEyesAndMouthLocalization:localizationCopy];
 }
 
 - (BOOL)faceCoreEnhanceEyesAndMouthLocalization
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 faceCoreEnhanceEyesAndMouthLocalization];
+  configuration = [(VNRequest *)self configuration];
+  faceCoreEnhanceEyesAndMouthLocalization = [configuration faceCoreEnhanceEyesAndMouthLocalization];
 
-  return v3;
+  return faceCoreEnhanceEyesAndMouthLocalization;
 }
 
-- (void)setFaceCoreInitialAngle:(id)a3
+- (void)setFaceCoreInitialAngle:(id)angle
 {
-  v5 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setFaceCoreInitialAngle:v5];
+  angleCopy = angle;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setFaceCoreInitialAngle:angleCopy];
 }
 
 - (NSNumber)faceCoreInitialAngle
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 faceCoreInitialAngle];
+  configuration = [(VNRequest *)self configuration];
+  faceCoreInitialAngle = [configuration faceCoreInitialAngle];
 
-  return v3;
+  return faceCoreInitialAngle;
 }
 
-- (void)setFaceCoreNumberOfDetectionAngles:(id)a3
+- (void)setFaceCoreNumberOfDetectionAngles:(id)angles
 {
-  v5 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setFaceCoreNumberOfDetectionAngles:v5];
+  anglesCopy = angles;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setFaceCoreNumberOfDetectionAngles:anglesCopy];
 }
 
 - (NSNumber)faceCoreNumberOfDetectionAngles
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 faceCoreNumberOfDetectionAngles];
+  configuration = [(VNRequest *)self configuration];
+  faceCoreNumberOfDetectionAngles = [configuration faceCoreNumberOfDetectionAngles];
 
-  return v3;
+  return faceCoreNumberOfDetectionAngles;
 }
 
-- (void)setFaceCoreMinFaceSize:(id)a3
+- (void)setFaceCoreMinFaceSize:(id)size
 {
-  v5 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setFaceCoreMinFaceSize:v5];
+  sizeCopy = size;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setFaceCoreMinFaceSize:sizeCopy];
 }
 
 - (NSNumber)faceCoreMinFaceSize
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 faceCoreMinFaceSize];
+  configuration = [(VNRequest *)self configuration];
+  faceCoreMinFaceSize = [configuration faceCoreMinFaceSize];
 
-  return v3;
+  return faceCoreMinFaceSize;
 }
 
-- (void)setFaceCoreType:(unint64_t)a3
+- (void)setFaceCoreType:(unint64_t)type
 {
-  v4 = [(VNRequest *)self configuration];
-  [v4 setFaceCoreType:a3];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setFaceCoreType:type];
 }
 
 - (unint64_t)faceCoreType
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 faceCoreType];
+  configuration = [(VNRequest *)self configuration];
+  faceCoreType = [configuration faceCoreType];
 
-  return v3;
+  return faceCoreType;
 }
 
-- (void)setProcessedResults:(id)a3
+- (void)setProcessedResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   if ([(VNRequest *)self resolvedRevision]== 1)
   {
-    v5 = [v4 indexesOfObjectsPassingTest:&__block_literal_global_25779];
+    v5 = [resultsCopy indexesOfObjectsPassingTest:&__block_literal_global_25779];
     if ([v5 count])
     {
-      v6 = [v4 mutableCopy];
+      v6 = [resultsCopy mutableCopy];
       [v6 removeObjectsAtIndexes:v5];
 
-      v4 = v6;
+      resultsCopy = v6;
     }
   }
 
   v7.receiver = self;
   v7.super_class = VNDetectFaceRectanglesRequest;
-  [(VNRequest *)&v7 setProcessedResults:v4];
+  [(VNRequest *)&v7 setProcessedResults:resultsCopy];
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(VNRequest *)self resolvedRevision];
-  v6 = [v4 resolvedRevision];
-  if (v5 != 3737841665 && v6 != 3737841665)
+  configurationCopy = configuration;
+  resolvedRevision = [(VNRequest *)self resolvedRevision];
+  resolvedRevision2 = [configurationCopy resolvedRevision];
+  if (resolvedRevision != 3737841665 && resolvedRevision2 != 3737841665)
   {
-    v7 = v6 - 3737841667;
-    if (v5 - 3737841667u <= 4 && v7 < 5)
+    v7 = resolvedRevision2 - 3737841667;
+    if (resolvedRevision - 3737841667u <= 4 && v7 < 5)
     {
       v8 = 1;
       goto LABEL_20;
     }
 
-    if (v5 - 3737841667u < 5 != v7 < 5)
+    if (resolvedRevision - 3737841667u < 5 != v7 < 5)
     {
 LABEL_19:
       v8 = 0;
@@ -272,16 +272,16 @@ LABEL_19:
     }
 
 LABEL_16:
-    v16 = [(VNRequest *)self configuration];
-    v17 = [v16 precisionRecallThresholdOverride];
-    v18 = [v4 precisionRecallThresholdOverride];
+    configuration = [(VNRequest *)self configuration];
+    precisionRecallThresholdOverride = [configuration precisionRecallThresholdOverride];
+    precisionRecallThresholdOverride2 = [configurationCopy precisionRecallThresholdOverride];
     v19 = VisionCoreEqualOrNilObjects();
 
     if (v19)
     {
       v23.receiver = self;
       v23.super_class = VNDetectFaceRectanglesRequest;
-      v8 = [(VNImageBasedRequest *)&v23 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+      v8 = [(VNImageBasedRequest *)&v23 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
       goto LABEL_20;
     }
 
@@ -289,32 +289,32 @@ LABEL_16:
   }
 
   v8 = 0;
-  if (v5 == 3737841665 && v6 == 3737841665)
+  if (resolvedRevision == 3737841665 && resolvedRevision2 == 3737841665)
   {
-    v9 = [(VNDetectFaceRectanglesRequest *)self faceCoreType];
-    if (v9 != [v4 faceCoreType])
+    faceCoreType = [(VNDetectFaceRectanglesRequest *)self faceCoreType];
+    if (faceCoreType != [configurationCopy faceCoreType])
     {
       goto LABEL_19;
     }
 
-    v10 = [(VNDetectFaceRectanglesRequest *)self faceCoreMinFaceSize];
-    v11 = [v4 faceCoreMinFaceSize];
-    if (v10 == v11)
+    faceCoreMinFaceSize = [(VNDetectFaceRectanglesRequest *)self faceCoreMinFaceSize];
+    faceCoreMinFaceSize2 = [configurationCopy faceCoreMinFaceSize];
+    if (faceCoreMinFaceSize == faceCoreMinFaceSize2)
     {
-      v12 = [(VNDetectFaceRectanglesRequest *)self faceCoreNumberOfDetectionAngles];
-      v13 = [v4 faceCoreNumberOfDetectionAngles];
-      if (v12 == v13)
+      faceCoreNumberOfDetectionAngles = [(VNDetectFaceRectanglesRequest *)self faceCoreNumberOfDetectionAngles];
+      faceCoreNumberOfDetectionAngles2 = [configurationCopy faceCoreNumberOfDetectionAngles];
+      if (faceCoreNumberOfDetectionAngles == faceCoreNumberOfDetectionAngles2)
       {
-        v14 = [(VNDetectFaceRectanglesRequest *)self faceCoreEnhanceEyesAndMouthLocalization];
-        if (v14 == [v4 faceCoreEnhanceEyesAndMouthLocalization])
+        faceCoreEnhanceEyesAndMouthLocalization = [(VNDetectFaceRectanglesRequest *)self faceCoreEnhanceEyesAndMouthLocalization];
+        if (faceCoreEnhanceEyesAndMouthLocalization == [configurationCopy faceCoreEnhanceEyesAndMouthLocalization])
         {
-          v15 = [(VNDetectFaceRectanglesRequest *)self faceCoreExtractBlink];
-          if (v15 == [v4 faceCoreExtractBlink])
+          faceCoreExtractBlink = [(VNDetectFaceRectanglesRequest *)self faceCoreExtractBlink];
+          if (faceCoreExtractBlink == [configurationCopy faceCoreExtractBlink])
           {
-            v20 = [(VNDetectFaceRectanglesRequest *)self faceCoreExtractSmile];
-            v21 = [v4 faceCoreExtractSmile];
+            faceCoreExtractSmile = [(VNDetectFaceRectanglesRequest *)self faceCoreExtractSmile];
+            faceCoreExtractSmile2 = [configurationCopy faceCoreExtractSmile];
 
-            if (v20 != v21)
+            if (faceCoreExtractSmile != faceCoreExtractSmile2)
             {
               goto LABEL_19;
             }
@@ -333,48 +333,48 @@ LABEL_20:
   return v8;
 }
 
-- (void)applyConfigurationOfRequest:(id)a3
+- (void)applyConfigurationOfRequest:(id)request
 {
-  v4 = a3;
-  if (self != v4)
+  requestCopy = request;
+  if (self != requestCopy)
   {
     v10.receiver = self;
     v10.super_class = VNDetectFaceRectanglesRequest;
-    [(VNImageBasedRequest *)&v10 applyConfigurationOfRequest:v4];
+    [(VNImageBasedRequest *)&v10 applyConfigurationOfRequest:requestCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = requestCopy;
       [(VNDetectFaceRectanglesRequest *)self setFaceCoreType:[(VNDetectFaceRectanglesRequest *)v5 faceCoreType]];
-      v6 = [(VNDetectFaceRectanglesRequest *)v5 faceCoreMinFaceSize];
-      [(VNDetectFaceRectanglesRequest *)self setFaceCoreMinFaceSize:v6];
+      faceCoreMinFaceSize = [(VNDetectFaceRectanglesRequest *)v5 faceCoreMinFaceSize];
+      [(VNDetectFaceRectanglesRequest *)self setFaceCoreMinFaceSize:faceCoreMinFaceSize];
 
-      v7 = [(VNDetectFaceRectanglesRequest *)v5 faceCoreNumberOfDetectionAngles];
-      [(VNDetectFaceRectanglesRequest *)self setFaceCoreNumberOfDetectionAngles:v7];
+      faceCoreNumberOfDetectionAngles = [(VNDetectFaceRectanglesRequest *)v5 faceCoreNumberOfDetectionAngles];
+      [(VNDetectFaceRectanglesRequest *)self setFaceCoreNumberOfDetectionAngles:faceCoreNumberOfDetectionAngles];
 
-      v8 = [(VNDetectFaceRectanglesRequest *)v5 faceCoreInitialAngle];
-      [(VNDetectFaceRectanglesRequest *)self setFaceCoreInitialAngle:v8];
+      faceCoreInitialAngle = [(VNDetectFaceRectanglesRequest *)v5 faceCoreInitialAngle];
+      [(VNDetectFaceRectanglesRequest *)self setFaceCoreInitialAngle:faceCoreInitialAngle];
 
       [(VNDetectFaceRectanglesRequest *)self setFaceCoreEnhanceEyesAndMouthLocalization:[(VNDetectFaceRectanglesRequest *)v5 faceCoreEnhanceEyesAndMouthLocalization]];
       [(VNDetectFaceRectanglesRequest *)self setFaceCoreExtractBlink:[(VNDetectFaceRectanglesRequest *)v5 faceCoreExtractBlink]];
       [(VNDetectFaceRectanglesRequest *)self setFaceCoreExtractSmile:[(VNDetectFaceRectanglesRequest *)v5 faceCoreExtractSmile]];
-      v9 = [(VNDetectFaceRectanglesRequest *)v5 precisionRecallThresholdOverride];
-      [(VNDetectFaceRectanglesRequest *)self _setPrecisionRecallThresholdOverride:v9];
+      precisionRecallThresholdOverride = [(VNDetectFaceRectanglesRequest *)v5 precisionRecallThresholdOverride];
+      [(VNDetectFaceRectanglesRequest *)self _setPrecisionRecallThresholdOverride:precisionRecallThresholdOverride];
     }
   }
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  contextCopy = context;
   VNValidatedLog(1, @"Processing DetectFaceRectangles1 request\n", v9, v10, v11, v12, v13, v14, v36);
-  v15 = [v8 imageBufferAndReturnError:a5];
-  if (v15 && [(VNRequest *)self validateImageBuffer:v15 ofNonZeroWidth:0 andHeight:0 error:a5])
+  v15 = [contextCopy imageBufferAndReturnError:error];
+  if (v15 && [(VNRequest *)self validateImageBuffer:v15 ofNonZeroWidth:0 andHeight:0 error:error])
   {
-    v16 = [v8 session];
+    session = [contextCopy session];
     v37 = 0;
-    v17 = [(VNRequest *)self applicableDetectorAndOptions:&v37 forRevision:a3 loadedInSession:v16 error:a5];
+    v17 = [(VNRequest *)self applicableDetectorAndOptions:&v37 forRevision:revision loadedInSession:session error:error];
     v18 = v37;
     if (v17)
     {
@@ -385,13 +385,13 @@ LABEL_20:
         v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:1];
         [v18 setObject:v19 forKeyedSubscript:@"VNDetectorProcessOption_InputImageBuffers"];
 
-        if (a3 == 3737841665)
+        if (revision == 3737841665)
         {
           v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[VNDetectFaceRectanglesRequest faceCoreType](self, "faceCoreType")}];
           [v18 setObject:v20 forKeyedSubscript:@"VNFaceDetectorPrivateRevisionLegacyFaceCoreProcessOption_Type"];
 
-          v21 = [(VNDetectFaceRectanglesRequest *)self faceCoreInitialAngle];
-          [v18 setObject:v21 forKeyedSubscript:@"VNFaceDetectorPrivateRevisionLegacyFaceCoreProcessOption_InitialAngle"];
+          faceCoreInitialAngle = [(VNDetectFaceRectanglesRequest *)self faceCoreInitialAngle];
+          [v18 setObject:faceCoreInitialAngle forKeyedSubscript:@"VNFaceDetectorPrivateRevisionLegacyFaceCoreProcessOption_InitialAngle"];
 
           v22 = [MEMORY[0x1E696AD98] numberWithBool:{-[VNDetectFaceRectanglesRequest faceCoreEnhanceEyesAndMouthLocalization](self, "faceCoreEnhanceEyesAndMouthLocalization")}];
           [v18 setObject:v22 forKeyedSubscript:@"VNFaceDetectorPrivateRevisionLegacyFaceCoreProcessOption_EnhanceEyesAndMouthLocalization"];
@@ -402,16 +402,16 @@ LABEL_20:
           v24 = [MEMORY[0x1E696AD98] numberWithBool:{-[VNDetectFaceRectanglesRequest faceCoreExtractSmile](self, "faceCoreExtractSmile")}];
           [v18 setObject:v24 forKeyedSubscript:@"VNFaceDetectorPrivateRevisionLegacyFaceCoreProcessOption_ExtractSmile"];
 
-          v25 = [(VNDetectFaceRectanglesRequest *)self faceCoreMinFaceSize];
-          [v18 setObject:v25 forKeyedSubscript:@"VNFaceDetectorPrivateRevisionLegacyFaceCoreProcessOption_MinFaceSize"];
+          faceCoreMinFaceSize = [(VNDetectFaceRectanglesRequest *)self faceCoreMinFaceSize];
+          [v18 setObject:faceCoreMinFaceSize forKeyedSubscript:@"VNFaceDetectorPrivateRevisionLegacyFaceCoreProcessOption_MinFaceSize"];
 
-          v26 = [(VNDetectFaceRectanglesRequest *)self faceCoreNumberOfDetectionAngles];
-          [v18 setObject:v26 forKeyedSubscript:@"VNFaceDetectorPrivateRevisionLegacyFaceCoreProcessOption_NumberOfDetectionAngles"];
+          faceCoreNumberOfDetectionAngles = [(VNDetectFaceRectanglesRequest *)self faceCoreNumberOfDetectionAngles];
+          [v18 setObject:faceCoreNumberOfDetectionAngles forKeyedSubscript:@"VNFaceDetectorPrivateRevisionLegacyFaceCoreProcessOption_NumberOfDetectionAngles"];
         }
 
-        v27 = [v8 qosClass];
+        qosClass = [contextCopy qosClass];
         [(VNImageBasedRequest *)self regionOfInterest];
-        v28 = [v17 processUsingQualityOfServiceClass:v27 options:v18 regionOfInterest:self warningRecorder:a5 error:0 progressHandler:?];
+        v28 = [v17 processUsingQualityOfServiceClass:qosClass options:v18 regionOfInterest:self warningRecorder:error error:0 progressHandler:?];
         if (v28)
         {
           [(VNRequest *)self setResults:v28];
@@ -426,17 +426,17 @@ LABEL_20:
         goto LABEL_14;
       }
 
-      if (a5)
+      if (error)
       {
-        v30 = [(VNRequest *)self applicableDetectorClassAndOptions:0 forRevision:a3 error:0];
+        v30 = [(VNRequest *)self applicableDetectorClassAndOptions:0 forRevision:revision error:0];
         v31 = objc_alloc(MEMORY[0x1E696AEC0]);
         v32 = objc_opt_class();
-        v33 = VNRequestRevisionString(v32, a3);
+        v33 = VNRequestRevisionString(v32, revision);
         v34 = NSStringFromClass(v30);
         v28 = [v31 initWithFormat:@"%@ is handled by %@", v33, v34];
 
         [VNError errorForInternalErrorWithLocalizedDescription:v28];
-        *a5 = v29 = 0;
+        *error = v29 = 0;
 LABEL_14:
 
         goto LABEL_15;
@@ -455,18 +455,18 @@ LABEL_16:
   return v29;
 }
 
-- (BOOL)warmUpSession:(id)a3 error:(id *)a4
+- (BOOL)warmUpSession:(id)session error:(id *)error
 {
-  v6 = a3;
+  sessionCopy = session;
   v11.receiver = self;
   v11.super_class = VNDetectFaceRectanglesRequest;
-  if ([(VNRequest *)&v11 warmUpSession:v6 error:a4])
+  if ([(VNRequest *)&v11 warmUpSession:sessionCopy error:error])
   {
-    v7 = [(VNDetectFaceRectanglesRequest *)self applicableDetectorTypeForRevision:[(VNRequest *)self resolvedRevision] error:a4];
+    v7 = [(VNDetectFaceRectanglesRequest *)self applicableDetectorTypeForRevision:[(VNRequest *)self resolvedRevision] error:error];
     v8 = v7;
     if (v7)
     {
-      v9 = ([v7 isEqualToString:@"VNANFDMultiDetectorType"] & 1) != 0 || -[VNRequest warmUpApplicableDetectorInSession:error:](self, "warmUpApplicableDetectorInSession:error:", v6, a4);
+      v9 = ([v7 isEqualToString:@"VNANFDMultiDetectorType"] & 1) != 0 || -[VNRequest warmUpApplicableDetectorInSession:error:](self, "warmUpApplicableDetectorInSession:error:", sessionCopy, error);
     }
 
     else
@@ -483,16 +483,16 @@ LABEL_16:
   return v9;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 <= 3737841664)
+  if (revision <= 3737841664)
   {
-    if (a3 - 1 < 2)
+    if (revision - 1 < 2)
     {
       goto LABEL_9;
     }
 
-    if (a3 == 3 || a3 == 3737841664)
+    if (revision == 3 || revision == 3737841664)
     {
       goto LABEL_3;
     }
@@ -500,7 +500,7 @@ LABEL_16:
 
   else
   {
-    if (a3 - 3737841666u < 6)
+    if (revision - 3737841666u < 6)
     {
 LABEL_3:
       v5 = @"VNANFDMultiDetectorType";
@@ -509,7 +509,7 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    if (a3 == 3737841665)
+    if (revision == 3737841665)
     {
 LABEL_9:
       v5 = @"VNFaceDetectorType";
@@ -517,10 +517,10 @@ LABEL_9:
     }
   }
 
-  if (a4)
+  if (error)
   {
     [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-    *a4 = v5 = 0;
+    *error = v5 = 0;
   }
 
   else
@@ -536,13 +536,13 @@ LABEL_11:
 + (NSIndexSet)revisionsSupportingPrecisionRecallThresholdOverride
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [a1 allSupportedRevisions];
+  allSupportedRevisions = [self allSupportedRevisions];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __84__VNDetectFaceRectanglesRequest_revisionsSupportingPrecisionRecallThresholdOverride__block_invoke;
   v7[3] = &__block_descriptor_40_e12_B24__0Q8_B16l;
-  v7[4] = a1;
-  v5 = [v4 indexesPassingTest:v7];
+  v7[4] = self;
+  v5 = [allSupportedRevisions indexesPassingTest:v7];
 
   objc_autoreleasePoolPop(v3);
 
@@ -560,20 +560,20 @@ uint64_t __84__VNDetectFaceRectanglesRequest_revisionsSupportingPrecisionRecallT
   return v5;
 }
 
-+ (id)descriptionForPrivateRevision:(unint64_t)a3
++ (id)descriptionForPrivateRevision:(unint64_t)revision
 {
-  if (a3 - 3737841664u >= 8)
+  if (revision - 3737841664u >= 8)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___VNDetectFaceRectanglesRequest;
     v5 = objc_msgSendSuper2(&v7, sel_descriptionForPrivateRevision_);
   }
 
   else
   {
-    v5 = off_1E77B4CE0[a3 - 3737841664u];
+    v5 = off_1E77B4CE0[revision - 3737841664u];
   }
 
   return v5;

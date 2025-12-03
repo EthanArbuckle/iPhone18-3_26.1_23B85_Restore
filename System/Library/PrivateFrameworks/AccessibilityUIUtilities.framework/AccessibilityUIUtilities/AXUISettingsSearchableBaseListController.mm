@@ -1,10 +1,10 @@
 @interface AXUISettingsSearchableBaseListController
-- (BOOL)shouldShowSpecifier:(id)a3 withSearchText:(id)a4;
+- (BOOL)shouldShowSpecifier:(id)specifier withSearchText:(id)text;
 - (id)specifiers;
 - (void)_loadAllSpecifiersIfNeeded;
 - (void)deactivateAndPersistSearchText;
-- (void)searchBarTextDidEndEditing:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)searchBarTextDidEndEditing:(id)editing;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -21,32 +21,32 @@
 
   [(NSString *)self->_cachedSearchTextWhileDeactivating setSearchResultsUpdater:self];
   [(NSString *)self->_cachedSearchTextWhileDeactivating setObscuresBackgroundDuringPresentation:0];
-  v5 = [(NSString *)self->_cachedSearchTextWhileDeactivating searchBar];
-  [v5 setDelegate:self];
+  searchBar = [(NSString *)self->_cachedSearchTextWhileDeactivating searchBar];
+  [searchBar setDelegate:self];
 
-  v6 = [(NSString *)self->_cachedSearchTextWhileDeactivating searchBar];
-  [v6 setAutocapitalizationType:0];
+  searchBar2 = [(NSString *)self->_cachedSearchTextWhileDeactivating searchBar];
+  [searchBar2 setAutocapitalizationType:0];
 
-  v7 = [(NSString *)self->_cachedSearchTextWhileDeactivating searchBar];
-  [v7 setKeyboardType:0];
+  searchBar3 = [(NSString *)self->_cachedSearchTextWhileDeactivating searchBar];
+  [searchBar3 setKeyboardType:0];
 
-  v8 = [(NSString *)self->_cachedSearchTextWhileDeactivating searchBar];
-  [v8 setAutocorrectionType:1];
+  searchBar4 = [(NSString *)self->_cachedSearchTextWhileDeactivating searchBar];
+  [searchBar4 setAutocorrectionType:1];
 
   v9 = self->_cachedSearchTextWhileDeactivating;
-  v10 = [(AXUISettingsSearchableBaseListController *)self navigationItem];
-  [v10 setSearchController:v9];
+  navigationItem = [(AXUISettingsSearchableBaseListController *)self navigationItem];
+  [navigationItem setSearchController:v9];
 
-  v11 = [(AXUISettingsSearchableBaseListController *)self navigationItem];
-  [v11 setHidesSearchBarWhenScrolling:0];
+  navigationItem2 = [(AXUISettingsSearchableBaseListController *)self navigationItem];
+  [navigationItem2 setHidesSearchBarWhenScrolling:0];
 
   [(AXUISettingsSearchableBaseListController *)self setDefinesPresentationContext:1];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
   v4 = *&self->_needsSpecifierRefresh;
-  v5 = a3;
+  controllerCopy = controller;
   if ([v4 length])
   {
     [(AXUISettingsSearchableBaseListController *)self setSearchText:*&self->_needsSpecifierRefresh];
@@ -54,14 +54,14 @@
 
   else
   {
-    v6 = [v5 searchBar];
-    v7 = [v6 text];
-    [(AXUISettingsSearchableBaseListController *)self setSearchText:v7];
+    searchBar = [controllerCopy searchBar];
+    text = [searchBar text];
+    [(AXUISettingsSearchableBaseListController *)self setSearchText:text];
   }
 
-  v8 = [v5 isActive];
+  isActive = [controllerCopy isActive];
 
-  if ((v8 & 1) == 0)
+  if ((isActive & 1) == 0)
   {
     v9 = *&self->_needsSpecifierRefresh;
     *&self->_needsSpecifierRefresh = 0;
@@ -70,12 +70,12 @@
   [(AXUISettingsSearchableBaseListController *)self reloadSpecifiers];
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   if ([*&self->_needsSpecifierRefresh length])
   {
-    [v4 setText:*&self->_needsSpecifierRefresh];
+    [editingCopy setText:*&self->_needsSpecifierRefresh];
   }
 }
 
@@ -122,16 +122,16 @@
 
               v12 = v11;
 
-              v13 = [MEMORY[0x1E695DF70] array];
+              array = [MEMORY[0x1E695DF70] array];
 
-              v7 = v13;
+              v7 = array;
               v8 = v12;
             }
 
             else
             {
-              v14 = [(AXUISettingsSearchableBaseListController *)self searchText];
-              v15 = [(AXUISettingsSearchableBaseListController *)self shouldShowSpecifier:v11 withSearchText:v14];
+              searchText = [(AXUISettingsSearchableBaseListController *)self searchText];
+              v15 = [(AXUISettingsSearchableBaseListController *)self shouldShowSpecifier:v11 withSearchText:searchText];
 
               if (v15)
               {
@@ -178,17 +178,17 @@
 
 - (void)deactivateAndPersistSearchText
 {
-  v3 = [(AXUISettingsSearchableBaseListController *)self searchController];
-  v4 = [v3 isActive];
+  searchController = [(AXUISettingsSearchableBaseListController *)self searchController];
+  isActive = [searchController isActive];
 
-  if (v4)
+  if (isActive)
   {
-    v5 = [(AXUISettingsSearchableBaseListController *)self searchText];
+    searchText = [(AXUISettingsSearchableBaseListController *)self searchText];
     v6 = *&self->_needsSpecifierRefresh;
-    *&self->_needsSpecifierRefresh = v5;
+    *&self->_needsSpecifierRefresh = searchText;
 
-    v7 = [(AXUISettingsSearchableBaseListController *)self searchController];
-    [v7 setActive:0];
+    searchController2 = [(AXUISettingsSearchableBaseListController *)self searchController];
+    [searchController2 setActive:0];
   }
 }
 
@@ -203,14 +203,14 @@
   }
 }
 
-- (BOOL)shouldShowSpecifier:(id)a3 withSearchText:(id)a4
+- (BOOL)shouldShowSpecifier:(id)specifier withSearchText:(id)text
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 length])
+  specifierCopy = specifier;
+  textCopy = text;
+  if ([textCopy length])
   {
-    v7 = [v5 name];
-    v8 = [v7 rangeOfString:v6 options:1] != 0x7FFFFFFFFFFFFFFFLL;
+    name = [specifierCopy name];
+    v8 = [name rangeOfString:textCopy options:1] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else

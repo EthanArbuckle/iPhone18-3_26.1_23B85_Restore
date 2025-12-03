@@ -1,27 +1,27 @@
 @interface SocialProfilesFlowCollectionViewLayout
 - (_TtC16MusicApplication38SocialProfilesFlowCollectionViewLayout)init;
-- (_TtC16MusicApplication38SocialProfilesFlowCollectionViewLayout)initWithCoder:(id)a3;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (_TtC16MusicApplication38SocialProfilesFlowCollectionViewLayout)initWithCoder:(id)coder;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 @end
 
 @implementation SocialProfilesFlowCollectionViewLayout
 
-- (_TtC16MusicApplication38SocialProfilesFlowCollectionViewLayout)initWithCoder:(id)a3
+- (_TtC16MusicApplication38SocialProfilesFlowCollectionViewLayout)initWithCoder:(id)coder
 {
   result = sub_ABAFD0();
   __break(1u);
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v8 = sub_4BC530(x, y, width, height);
 
   if (v8)
@@ -38,7 +38,7 @@
   return v9.super.isa;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   v7 = sub_AB3820();
   v8 = *(v7 - 8);
@@ -47,9 +47,9 @@
   v11 = sub_AB92A0();
   v13 = v12;
   sub_AB3790();
-  v14 = a3;
-  v15 = a4;
-  v16 = self;
+  kindCopy = kind;
+  pathCopy = path;
+  selfCopy = self;
   v17 = sub_4BC6D4(v11, v13);
 
   (*(v8 + 8))(v10, v7);
@@ -57,13 +57,13 @@
   return v17;
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  selfCopy = self;
   v8 = sub_4BC998(x, y, width, height);
 
   return v8;

@@ -1,13 +1,13 @@
 @interface IHKSliderNetCPModelV1
 - (CGSize)imageSize;
-- (EspressoTensor)newTensorWithCorrectShape:(SEL)a3 shape:(EspressoTensor *)a4;
-- (IHKSliderNetCPModelV1)initWithModel:(id)a3 options:(id)a4 error:(id *)a5;
+- (EspressoTensor)newTensorWithCorrectShape:(SEL)shape shape:(EspressoTensor *)a4;
+- (IHKSliderNetCPModelV1)initWithModel:(id)model options:(id)options error:(id *)error;
 - (id).cxx_construct;
-- (id)applyAdjustments:(id)a3 toCIImage:(id)a4 error:(id *)a5;
-- (id)getValueForAdjustment:(id)a3 adjustments:(id)a4;
-- (id)predictContentVectorForPixelBuffer:(__CVBuffer *)a3 scenePrint:(id)a4 error:(id *)a5;
-- (id)predictSlidersForStyleVector:(id)a3 contentVector:(id)a4 error:(id *)a5;
-- (id)predictStyleVectorForPixelBuffer:(__CVBuffer *)a3 scenePrint:(id)a4 error:(id *)a5;
+- (id)applyAdjustments:(id)adjustments toCIImage:(id)image error:(id *)error;
+- (id)getValueForAdjustment:(id)adjustment adjustments:(id)adjustments;
+- (id)predictContentVectorForPixelBuffer:(__CVBuffer *)buffer scenePrint:(id)print error:(id *)error;
+- (id)predictSlidersForStyleVector:(id)vector contentVector:(id)contentVector error:(id *)error;
+- (id)predictStyleVectorForPixelBuffer:(__CVBuffer *)buffer scenePrint:(id)print error:(id *)error;
 - (unint64_t)contentFVecSize;
 - (unint64_t)styleFVecSize;
 @end
@@ -30,17 +30,17 @@
   return v10;
 }
 
-- (IHKSliderNetCPModelV1)initWithModel:(id)a3 options:(id)a4 error:(id *)a5
+- (IHKSliderNetCPModelV1)initWithModel:(id)model options:(id)options error:(id *)error
 {
   v132 = *MEMORY[0x277D85DE8];
   v131.receiver = self;
   v131.super_class = IHKSliderNetCPModelV1;
-  v129 = a3;
-  v127 = a4;
-  v130 = [IHKSliderNetCPModel initWithModel:sel_initWithModel_options_error_ options:v129 error:?];
+  modelCopy = model;
+  optionsCopy = options;
+  v130 = [IHKSliderNetCPModel initWithModel:sel_initWithModel_options_error_ options:modelCopy error:?];
   if (v130)
   {
-    v9 = objc_msgSend_stringByAppendingPathComponent_(v129, v6, @"net_info.json", v7, v8);
+    v9 = objc_msgSend_stringByAppendingPathComponent_(modelCopy, v6, @"net_info.json", v7, v8);
     v13 = objc_msgSend_loadJSonFrom_(IHKSliderNetCPModel, v10, v9, v11, v12);
     objc_msgSend_setInfo_(v130, v14, v13, v15, v16);
 
@@ -77,7 +77,7 @@
     v112 = objc_msgSend_info(v130, v108, v109, v110, v111);
     v130->_colorSpace = objc_msgSend_extractColorSpaceFromInfo_(v130, v113, v112, v114, v115);
 
-    v119 = objc_msgSend_stringByAppendingPathComponent_(v129, v116, @"contentFVec.espresso.net", v117, v118);
+    v119 = objc_msgSend_stringByAppendingPathComponent_(modelCopy, v116, @"contentFVec.espresso.net", v117, v118);
 
     v120 = v119;
     objc_msgSend_UTF8String(v119, v121, v122, v123, v124);
@@ -88,17 +88,17 @@
   return 0;
 }
 
-- (id)predictStyleVectorForPixelBuffer:(__CVBuffer *)a3 scenePrint:(id)a4 error:(id *)a5
+- (id)predictStyleVectorForPixelBuffer:(__CVBuffer *)buffer scenePrint:(id)print error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  printCopy = print;
   v16.receiver = self;
   v16.super_class = IHKSliderNetCPModelV1;
-  v11 = [(IHKSliderNetCPModel *)&v16 predictStyleVectorForPixelBuffer:a3 scenePrint:v8 error:a5];
-  if (!a5 || !*a5)
+  v11 = [(IHKSliderNetCPModel *)&v16 predictStyleVectorForPixelBuffer:buffer scenePrint:printCopy error:error];
+  if (!error || !*error)
   {
-    v12 = objc_msgSend_preprocessPixelBuffer_error_(self, v9, a3, a5, v10);
-    if (!a5 || !*a5)
+    v12 = objc_msgSend_preprocessPixelBuffer_error_(self, v9, buffer, error, v10);
+    if (!error || !*error)
     {
       sub_254AD3B2C(&v15, v12);
     }
@@ -109,17 +109,17 @@
   return 0;
 }
 
-- (id)predictContentVectorForPixelBuffer:(__CVBuffer *)a3 scenePrint:(id)a4 error:(id *)a5
+- (id)predictContentVectorForPixelBuffer:(__CVBuffer *)buffer scenePrint:(id)print error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  printCopy = print;
   v16.receiver = self;
   v16.super_class = IHKSliderNetCPModelV1;
-  v11 = [(IHKSliderNetCPModel *)&v16 predictContentVectorForPixelBuffer:a3 scenePrint:v8 error:a5];
-  if (!a5 || !*a5)
+  v11 = [(IHKSliderNetCPModel *)&v16 predictContentVectorForPixelBuffer:buffer scenePrint:printCopy error:error];
+  if (!error || !*error)
   {
-    v12 = objc_msgSend_preprocessPixelBuffer_error_(self, v9, a3, a5, v10);
-    if (!a5 || !*a5)
+    v12 = objc_msgSend_preprocessPixelBuffer_error_(self, v9, buffer, error, v10);
+    if (!error || !*error)
     {
       sub_254AD3B2C(&v15, v12);
     }
@@ -130,7 +130,7 @@
   return 0;
 }
 
-- (EspressoTensor)newTensorWithCorrectShape:(SEL)a3 shape:(EspressoTensor *)a4
+- (EspressoTensor)newTensorWithCorrectShape:(SEL)shape shape:(EspressoTensor *)a4
 {
   v5 = a5;
   v10 = objc_msgSend_count(v5, v6, v7, v8, v9);
@@ -170,11 +170,11 @@
   sub_254ACDCBC();
 }
 
-- (id)predictSlidersForStyleVector:(id)a3 contentVector:(id)a4 error:(id *)a5
+- (id)predictSlidersForStyleVector:(id)vector contentVector:(id)contentVector error:(id *)error
 {
   v283 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v240 = a4;
+  vectorCopy = vector;
+  contentVectorCopy = contentVector;
   v268 = 4;
   v269 = 0u;
   v270 = 0u;
@@ -187,15 +187,15 @@
   v262 = &unk_2866F58A0;
   if (objc_msgSend_useClipEmbedding(self, v8, v9, v10, v11))
   {
-    v16 = objc_msgSend_size(v7, v12, v13, v14, v15);
+    v16 = objc_msgSend_size(vectorCopy, v12, v13, v14, v15);
     v21 = objc_msgSend_styleFVecSize(self, v17, v18, v19, v20);
     v26 = objc_msgSend_styleFVecSize(self, v22, v23, v24, v25);
-    v237 = objc_msgSend_subFeatureVectorWithRange_(v7, v27, v16 - v21, v26, v28);
+    v237 = objc_msgSend_subFeatureVectorWithRange_(vectorCopy, v27, v16 - v21, v26, v28);
 
-    v33 = objc_msgSend_size(v240, v29, v30, v31, v32);
+    v33 = objc_msgSend_size(contentVectorCopy, v29, v30, v31, v32);
     v38 = objc_msgSend_contentFVecSize(self, v34, v35, v36, v37);
     v43 = objc_msgSend_contentFVecSize(self, v39, v40, v41, v42);
-    v46 = objc_msgSend_subFeatureVectorWithRange_(v240, v44, v33 - v38, v43, v45);
+    v46 = objc_msgSend_subFeatureVectorWithRange_(contentVectorCopy, v44, v33 - v38, v43, v45);
 
     if (v237)
     {
@@ -319,15 +319,15 @@
       operator delete(v255[0]);
     }
 
-    v240 = v46;
-    v7 = v238;
+    contentVectorCopy = v46;
+    vectorCopy = v238;
   }
 
   else
   {
-    if (v7)
+    if (vectorCopy)
     {
-      objc_msgSend_tensor(v7, v12, v13, v14, v15);
+      objc_msgSend_tensor(vectorCopy, v12, v13, v14, v15);
       v51 = DWORD2(__dst[0]);
       v53 = *(&__dst[1] + 1);
       v52 = *&__dst[1];
@@ -375,9 +375,9 @@
       operator delete(*&__dst[1]);
     }
 
-    if (v240)
+    if (contentVectorCopy)
     {
-      objc_msgSend_tensor(v240, v54, v55, v56, v57);
+      objc_msgSend_tensor(contentVectorCopy, v54, v55, v56, v57);
       v62 = DWORD2(__dst[0]);
       v64 = *(&__dst[1] + 1);
       v63 = *&__dst[1];
@@ -433,7 +433,7 @@
   v248 = 0u;
   v249 = 0u;
   v250 = 0u;
-  v93 = objc_msgSend_adjustmentEndpoints(self, v65, v66, v67, v68, v7);
+  v93 = objc_msgSend_adjustmentEndpoints(self, v65, v66, v67, v68, vectorCopy);
   v95 = objc_msgSend_countByEnumeratingWithState_objects_count_(v93, v94, &v247, v282, 16);
   if (v95)
   {
@@ -448,7 +448,7 @@
         }
 
         v99 = *(*(&v247 + 1) + 8 * i);
-        v100 = self;
+        selfCopy = self;
         v105 = objc_msgSend_UTF8String(v99, v101, v102, v103, v104);
         v106 = strlen(v105);
         if (v106 >= 0x7FFFFFFFFFFFFFF8)
@@ -541,7 +541,7 @@ LABEL_68:
 
 LABEL_69:
         v252 = v98;
-        self = v100;
+        self = selfCopy;
       }
 
       v95 = objc_msgSend_countByEnumeratingWithState_objects_count_(v93, v107, &v247, v282, 16);
@@ -896,15 +896,15 @@ LABEL_175:
   return v218;
 }
 
-- (id)getValueForAdjustment:(id)a3 adjustments:(id)a4
+- (id)getValueForAdjustment:(id)adjustment adjustments:(id)adjustments
 {
-  v6 = a3;
-  v14 = objc_msgSend_objectForKeyedSubscript_(a4, v7, v6, v8, v9);
+  adjustmentCopy = adjustment;
+  v14 = objc_msgSend_objectForKeyedSubscript_(adjustments, v7, adjustmentCopy, v8, v9);
   if (!v14)
   {
     v15 = MEMORY[0x277CCABB0];
     v16 = objc_msgSend_sliderSpecs(self, v10, v11, v12, v13);
-    v20 = objc_msgSend_objectForKeyedSubscript_(v16, v17, v6, v18, v19);
+    v20 = objc_msgSend_objectForKeyedSubscript_(v16, v17, adjustmentCopy, v18, v19);
     objc_msgSend_identity(v20, v21, v22, v23, v24);
     v14 = objc_msgSend_numberWithDouble_(v15, v25, v26, v27, v28);
   }
@@ -912,12 +912,12 @@ LABEL_175:
   return v14;
 }
 
-- (id)applyAdjustments:(id)a3 toCIImage:(id)a4 error:(id *)a5
+- (id)applyAdjustments:(id)adjustments toCIImage:(id)image error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  adjustmentsCopy = adjustments;
+  imageCopy = image;
   v14 = objc_msgSend_filterSequence(self, v10, v11, v12, v13);
-  v16 = objc_msgSend_applySliders_image_error_(v14, v15, v8, v9, a5);
+  v16 = objc_msgSend_applySliders_image_error_(v14, v15, adjustmentsCopy, imageCopy, error);
 
   return v16;
 }

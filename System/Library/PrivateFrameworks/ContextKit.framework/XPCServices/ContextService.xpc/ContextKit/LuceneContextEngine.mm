@@ -1,24 +1,24 @@
 @interface LuceneContextEngine
-+ (unint64_t)queryTypeForRequest:(id)a3;
++ (unint64_t)queryTypeForRequest:(id)request;
 + (void)initialize;
 - (BOOL)disabled;
 - (BOOL)fallbackModeEnabled;
-- (LuceneContextEngine)initWithAssets:(id)a3;
-- (id)ancestorsForTopics:(id)a3;
+- (LuceneContextEngine)initWithAssets:(id)assets;
+- (id)ancestorsForTopics:(id)topics;
 - (id)debugStatus;
-- (id)groupResponses:(id)a3;
+- (id)groupResponses:(id)responses;
 - (id)indexId;
 - (id)warmUpDatPath;
 - (void)dealloc;
-- (void)findResultsForRequest:(id)a3 withReply:(id)a4;
-- (void)updateConfigurationWithConfig:(id)a3;
+- (void)findResultsForRequest:(id)request withReply:(id)reply;
+- (void)updateConfigurationWithConfig:(id)config;
 @end
 
 @implementation LuceneContextEngine
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = os_log_create("com.apple.siri.context.service", "LuceneEngine");
     v3 = qword_100557168;
@@ -50,9 +50,9 @@
   }
 }
 
-- (LuceneContextEngine)initWithAssets:(id)a3
+- (LuceneContextEngine)initWithAssets:(id)assets
 {
-  v5 = a3;
+  assetsCopy = assets;
   v18.receiver = self;
   v18.super_class = LuceneContextEngine;
   v6 = [(LuceneContextEngine *)&v18 init];
@@ -61,7 +61,7 @@
   {
     pthread_mutex_init(&v6->_indexLock, 0);
     v8 = +[OrgApacheLuceneUtilStringHelper randomId];
-    objc_storeStrong(&v7->_assets, a3);
+    objc_storeStrong(&v7->_assets, assets);
     v9 = qword_100557168;
     if (os_log_type_enabled(qword_100557168, OS_LOG_TYPE_DEBUG))
     {
@@ -96,145 +96,145 @@
   [(LuceneContextEngine *)&v3 dealloc];
 }
 
-- (void)updateConfigurationWithConfig:(id)a3
+- (void)updateConfigurationWithConfig:(id)config
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v29.receiver = v5;
+  configCopy = config;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v29.receiver = selfCopy;
   v29.super_class = LuceneContextEngine;
-  [(ContextEngine *)&v29 updateConfigurationWithConfig:v4];
-  v6 = [v4 luceneIndexPath];
-  v7 = [v6 length];
+  [(ContextEngine *)&v29 updateConfigurationWithConfig:configCopy];
+  luceneIndexPath = [configCopy luceneIndexPath];
+  v7 = [luceneIndexPath length];
   if (v7)
   {
-    v8 = [v4 luceneIndexPath];
+    luceneIndexPath2 = [configCopy luceneIndexPath];
   }
 
   else
   {
-    v8 = 0;
+    luceneIndexPath2 = 0;
   }
 
-  objc_storeStrong(&v5->_overrideIndexPath, v8);
+  objc_storeStrong(&selfCopy->_overrideIndexPath, luceneIndexPath2);
   if (v7)
   {
   }
 
-  v5->_minFileSizeForNSDataMMap = [v4 luceneMinFileSizeForNSDataMMap];
-  v5->_nsDataBufferSize = [v4 debugNSDataBufferSize];
-  v9 = [v4 nGramBreakingSeparators];
+  selfCopy->_minFileSizeForNSDataMMap = [configCopy luceneMinFileSizeForNSDataMMap];
+  selfCopy->_nsDataBufferSize = [configCopy debugNSDataBufferSize];
+  nGramBreakingSeparators = [configCopy nGramBreakingSeparators];
 
-  if (v9)
+  if (nGramBreakingSeparators)
   {
-    v10 = [v4 nGramBreakingSeparators];
-    v11 = [v10 trim];
-    v12 = [NSCharacterSet characterSetWithCharactersInString:v11];
-    nGramBreakingSeparators = v5->_nGramBreakingSeparators;
-    v5->_nGramBreakingSeparators = v12;
+    nGramBreakingSeparators2 = [configCopy nGramBreakingSeparators];
+    trim = [nGramBreakingSeparators2 trim];
+    v12 = [NSCharacterSet characterSetWithCharactersInString:trim];
+    nGramBreakingSeparators = selfCopy->_nGramBreakingSeparators;
+    selfCopy->_nGramBreakingSeparators = v12;
   }
 
-  v14 = [v4 allowedNGramSeparators];
+  allowedNGramSeparators = [configCopy allowedNGramSeparators];
 
-  if (v14)
+  if (allowedNGramSeparators)
   {
-    v15 = [v4 allowedNGramSeparators];
-    v16 = [v15 trim];
+    allowedNGramSeparators2 = [configCopy allowedNGramSeparators];
+    trim2 = [allowedNGramSeparators2 trim];
 
-    if ([v16 isEmpty])
+    if ([trim2 isEmpty])
     {
       v17 = 0;
     }
 
     else
     {
-      v17 = [NSCharacterSet characterSetWithCharactersInString:v16];
+      v17 = [NSCharacterSet characterSetWithCharactersInString:trim2];
     }
 
-    allowedNGramSeparators = v5->_allowedNGramSeparators;
-    v5->_allowedNGramSeparators = v17;
+    allowedNGramSeparators = selfCopy->_allowedNGramSeparators;
+    selfCopy->_allowedNGramSeparators = v17;
   }
 
-  v19 = [v4 quotedTokenCharacterSet];
+  quotedTokenCharacterSet = [configCopy quotedTokenCharacterSet];
 
-  if (v19)
+  if (quotedTokenCharacterSet)
   {
-    v20 = [v4 quotedTokenCharacterSet];
-    v21 = [v20 trim];
-    v22 = [NSCharacterSet characterSetWithCharactersInString:v21];
-    quotedTokenCharacterSet = v5->_quotedTokenCharacterSet;
-    v5->_quotedTokenCharacterSet = v22;
+    quotedTokenCharacterSet2 = [configCopy quotedTokenCharacterSet];
+    trim3 = [quotedTokenCharacterSet2 trim];
+    v22 = [NSCharacterSet characterSetWithCharactersInString:trim3];
+    quotedTokenCharacterSet = selfCopy->_quotedTokenCharacterSet;
+    selfCopy->_quotedTokenCharacterSet = v22;
   }
 
-  v24 = [v4 partialNGramCharacterSet];
+  partialNGramCharacterSet = [configCopy partialNGramCharacterSet];
 
-  if (v24)
+  if (partialNGramCharacterSet)
   {
-    v25 = [v4 partialNGramCharacterSet];
-    v26 = [v25 trim];
-    v27 = [NSCharacterSet characterSetWithCharactersInString:v26];
-    partialNGramCharacterSet = v5->_partialNGramCharacterSet;
-    v5->_partialNGramCharacterSet = v27;
+    partialNGramCharacterSet2 = [configCopy partialNGramCharacterSet];
+    trim4 = [partialNGramCharacterSet2 trim];
+    v27 = [NSCharacterSet characterSetWithCharactersInString:trim4];
+    partialNGramCharacterSet = selfCopy->_partialNGramCharacterSet;
+    selfCopy->_partialNGramCharacterSet = v27;
   }
 
-  sub_10029CA0C(v5);
-  objc_sync_exit(v5);
+  sub_10029CA0C(selfCopy);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)findResultsForRequest:(id)a3 withReply:(id)a4
+- (void)findResultsForRequest:(id)request withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(LuceneContextEngine *)self reader];
+  requestCopy = request;
+  replyCopy = reply;
+  reader = [(LuceneContextEngine *)self reader];
 
-  if (v8)
+  if (reader)
   {
     ++self->_requestCount;
-    v9 = [v6 text];
-    if (v9)
+    text = [requestCopy text];
+    if (text)
     {
-      v10 = v9;
-      v11 = [v6 text];
-      v12 = [v11 length];
+      v10 = text;
+      text2 = [requestCopy text];
+      v12 = [text2 length];
 
       if (!v12)
       {
-        [v6 setText:0];
+        [requestCopy setText:0];
       }
     }
 
-    v13 = [v6 text];
-    if (v13)
+    text3 = [requestCopy text];
+    if (text3)
     {
     }
 
-    else if ([v6 textIsRaw])
+    else if ([requestCopy textIsRaw])
     {
-      [v6 setTextIsRaw:0];
+      [requestCopy setTextIsRaw:0];
     }
 
     v19 = mach_absolute_time();
-    v20 = [v6 desiredLanguageTags];
+    desiredLanguageTags = [requestCopy desiredLanguageTags];
 
-    if (!v20)
+    if (!desiredLanguageTags)
     {
-      v21 = [(ContextEngine *)self config];
-      v22 = [v21 desiredLanguageTags];
-      [v6 setDesiredLanguageTags:v22];
+      config = [(ContextEngine *)self config];
+      desiredLanguageTags2 = [config desiredLanguageTags];
+      [requestCopy setDesiredLanguageTags:desiredLanguageTags2];
     }
 
     v23 = objc_autoreleasePoolPush();
     pthread_mutex_lock(&self->_indexLock);
-    v24 = [[LuceneContextRequest alloc] initWithEngine:self forRequest:v6];
+    v24 = [[LuceneContextRequest alloc] initWithEngine:self forRequest:requestCopy];
     pthread_mutex_unlock(&self->_indexLock);
     v25 = _NSConcreteStackBlock;
     v26 = 3221225472;
     v27 = sub_10029DDC0;
     v28 = &unk_100483C48;
     v32 = v19;
-    v31 = v7;
-    v29 = v6;
-    v30 = self;
+    v31 = replyCopy;
+    v29 = requestCopy;
+    selfCopy = self;
     [(LuceneContextRequest *)v24 findResultsWithReply:&v25];
     [(LuceneContextRequest *)v24 discard:v25];
 
@@ -247,31 +247,31 @@
     v15 = ContextKitErrorDomain;
     v16 = [NSDictionary dictionaryWithObject:@"Index is unavailable" forKey:NSLocalizedFailureReasonErrorKey];
     v17 = [NSError errorWithDomain:v15 code:1 userInfo:v16];
-    v18 = [v14 initWithError:v17 requestType:{objc_msgSend(v6, "type")}];
-    (*(v7 + 2))(v7, v18);
+    v18 = [v14 initWithError:v17 requestType:{objc_msgSend(requestCopy, "type")}];
+    (*(replyCopy + 2))(replyCopy, v18);
   }
 }
 
-+ (unint64_t)queryTypeForRequest:(id)a3
++ (unint64_t)queryTypeForRequest:(id)request
 {
-  v3 = a3;
-  if ([v3 textIsRaw])
+  requestCopy = request;
+  if ([requestCopy textIsRaw])
   {
     v4 = 3;
   }
 
   else
   {
-    v5 = [v3 text];
+    text = [requestCopy text];
 
-    if (v5)
+    if (text)
     {
       v4 = 2;
     }
 
     else
     {
-      v6 = [v3 url];
+      v6 = [requestCopy url];
 
       v4 = v6 != 0;
     }
@@ -283,8 +283,8 @@
 - (id)debugStatus
 {
   effectiveIndexPath = self->_effectiveIndexPath;
-  v3 = [(LuceneContextEngine *)self indexId];
-  v4 = [NSString stringWithFormat:@"effectiveIndexPath: %@\neffectiveIndexId: %@\n", effectiveIndexPath, v3];
+  indexId = [(LuceneContextEngine *)self indexId];
+  v4 = [NSString stringWithFormat:@"effectiveIndexPath: %@\neffectiveIndexId: %@\n", effectiveIndexPath, indexId];
 
   return v4;
 }
@@ -323,8 +323,8 @@
 
 - (BOOL)fallbackModeEnabled
 {
-  v2 = [(LuceneContextEngine *)self indexId];
-  v3 = [@"fallback" isEqualToString:v2];
+  indexId = [(LuceneContextEngine *)self indexId];
+  v3 = [@"fallback" isEqualToString:indexId];
 
   return v3;
 }
@@ -341,18 +341,18 @@
   return effectiveIndexPath;
 }
 
-- (id)ancestorsForTopics:(id)a3
+- (id)ancestorsForTopics:(id)topics
 {
-  v4 = a3;
+  topicsCopy = topics;
   if (self->_constellation)
   {
-    v5 = -[JavaUtilArrayList initWithInt:]([JavaUtilArrayList alloc], "initWithInt:", [v4 count]);
+    v5 = -[JavaUtilArrayList initWithInt:]([JavaUtilArrayList alloc], "initWithInt:", [topicsCopy count]);
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v30 = v4;
-    v6 = v4;
+    v30 = topicsCopy;
+    v6 = topicsCopy;
     v7 = [v6 countByEnumeratingWithState:&v45 objects:v51 count:16];
     if (v7)
     {
@@ -380,9 +380,9 @@
     }
 
     constellation = self->_constellation;
-    v12 = [(ComAppleContextkitCategoriesConstellation *)constellation newQIDMapper];
+    newQIDMapper = [(ComAppleContextkitCategoriesConstellation *)constellation newQIDMapper];
     v29 = v5;
-    v13 = [(ComAppleContextkitCategoriesConstellation *)constellation ancestorCategoriesForQIDs:v5 usingMapper:v12];
+    v13 = [(ComAppleContextkitCategoriesConstellation *)constellation ancestorCategoriesForQIDs:v5 usingMapper:newQIDMapper];
 
     v33 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v13, "size")}];
     v41 = 0u;
@@ -405,16 +405,16 @@
           }
 
           v15 = *(*(&v41 + 1) + 8 * j);
-          v36 = [v15 getKey];
-          v16 = [v15 getValue];
-          v17 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v16, "size")}];
+          getKey = [v15 getKey];
+          getValue = [v15 getValue];
+          v17 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(getValue, "size")}];
           v37 = 0u;
           v38 = 0u;
           v39 = 0u;
           v40 = 0u;
-          v35 = v16;
-          v18 = [v16 entrySet];
-          v19 = [v18 countByEnumeratingWithState:&v37 objects:v49 count:16];
+          v35 = getValue;
+          entrySet = [getValue entrySet];
+          v19 = [entrySet countByEnumeratingWithState:&v37 objects:v49 count:16];
           if (v19)
           {
             v20 = v19;
@@ -425,24 +425,24 @@
               {
                 if (*v38 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(entrySet);
                 }
 
                 v23 = *(*(&v37 + 1) + 8 * k);
-                v24 = [v23 getKey];
-                v25 = [v23 getValue];
-                v26 = +[CKContextCountedString string:withCount:](CKContextCountedString, "string:withCount:", v24, [v25 intValue]);
+                getKey2 = [v23 getKey];
+                getValue2 = [v23 getValue];
+                v26 = +[CKContextCountedString string:withCount:](CKContextCountedString, "string:withCount:", getKey2, [getValue2 intValue]);
 
                 [v17 addObject:v26];
               }
 
-              v20 = [v18 countByEnumeratingWithState:&v37 objects:v49 count:16];
+              v20 = [entrySet countByEnumeratingWithState:&v37 objects:v49 count:16];
             }
 
             while (v20);
           }
 
-          [v33 setObject:v17 forKey:v36];
+          [v33 setObject:v17 forKey:getKey];
         }
 
         v34 = [obj countByEnumeratingWithState:&v41 objects:v50 count:16];
@@ -451,7 +451,7 @@
       while (v34);
     }
 
-    v4 = v30;
+    topicsCopy = v30;
   }
 
   else
@@ -462,16 +462,16 @@
   return v33;
 }
 
-- (id)groupResponses:(id)a3
+- (id)groupResponses:(id)responses
 {
-  v4 = a3;
-  if (![v4 count])
+  responsesCopy = responses;
+  if (![responsesCopy count])
   {
     v63 = +[MetricsLogging instance];
     v64 = qword_100557188;
 LABEL_68:
-    v65 = [(LuceneContextEngine *)self indexId];
-    [v63 recordQueryEventWithLuceneResultCount:0 error:v64 requestType:17 indexId:v65];
+    indexId = [(LuceneContextEngine *)self indexId];
+    [v63 recordQueryEventWithLuceneResultCount:0 error:v64 requestType:17 indexId:indexId];
 
     v66 = 0;
     goto LABEL_76;
@@ -485,23 +485,23 @@ LABEL_68:
     goto LABEL_68;
   }
 
-  v6 = [(ComAppleContextkitCategoriesConstellation *)constellation newGroupingRequest];
-  v7 = [(ContextEngine *)self config];
-  [v6 setMaxTopicDistance:{objc_msgSend(v7, "constellationMaxTopicDistance")}];
+  newGroupingRequest = [(ComAppleContextkitCategoriesConstellation *)constellation newGroupingRequest];
+  config = [(ContextEngine *)self config];
+  [newGroupingRequest setMaxTopicDistance:{objc_msgSend(config, "constellationMaxTopicDistance")}];
 
-  v8 = [(ContextEngine *)self config];
-  [v6 setMaxOverallTopics:{objc_msgSend(v8, "constellationMaxOverallTopics")}];
+  config2 = [(ContextEngine *)self config];
+  [newGroupingRequest setMaxOverallTopics:{objc_msgSend(config2, "constellationMaxOverallTopics")}];
 
-  v102 = v6;
-  if (v6)
+  v102 = newGroupingRequest;
+  if (newGroupingRequest)
   {
-    v93 = self;
+    selfCopy = self;
     v133 = 0u;
     v134 = 0u;
     v131 = 0u;
     v132 = 0u;
-    v90 = v4;
-    obj = v4;
+    v90 = responsesCopy;
+    obj = responsesCopy;
     v9 = [obj countByEnumeratingWithState:&v131 objects:v141 count:16];
     if (v9)
     {
@@ -516,13 +516,13 @@ LABEL_68:
             objc_enumerationMutation(obj);
           }
 
-          v13 = [*(*(&v131 + 1) + 8 * i) results];
+          results = [*(*(&v131 + 1) + 8 * i) results];
           v14 = -[JavaUtilArrayList initWithInt:]([JavaUtilArrayList alloc], "initWithInt:", [obj count]);
           v127 = 0u;
           v128 = 0u;
           v129 = 0u;
           v130 = 0u;
-          v15 = v13;
+          v15 = results;
           v16 = [v15 countByEnumeratingWithState:&v127 objects:v140 count:16];
           if (v16)
           {
@@ -537,8 +537,8 @@ LABEL_68:
                   objc_enumerationMutation(v15);
                 }
 
-                v20 = [*(*(&v127 + 1) + 8 * j) topicId];
-                [(JavaUtilArrayList *)v14 addWithId:v20];
+                topicId = [*(*(&v127 + 1) + 8 * j) topicId];
+                [(JavaUtilArrayList *)v14 addWithId:topicId];
               }
 
               v17 = [v15 countByEnumeratingWithState:&v127 objects:v140 count:16];
@@ -557,12 +557,12 @@ LABEL_68:
     }
 
     v21 = objc_alloc_init(NSMutableArray);
-    v22 = [v102 overallCategories];
+    overallCategories = [v102 overallCategories];
     v123 = 0u;
     v124 = 0u;
     v125 = 0u;
     v126 = 0u;
-    v23 = [v22 countByEnumeratingWithState:&v123 objects:v139 count:16];
+    v23 = [overallCategories countByEnumeratingWithState:&v123 objects:v139 count:16];
     if (v23)
     {
       v24 = v23;
@@ -573,7 +573,7 @@ LABEL_68:
         {
           if (*v124 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(overallCategories);
           }
 
           v27 = *(*(&v123 + 1) + 8 * k);
@@ -588,18 +588,18 @@ LABEL_68:
           }
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v123 objects:v139 count:16];
+        v24 = [overallCategories countByEnumeratingWithState:&v123 objects:v139 count:16];
       }
 
       while (v24);
     }
 
-    v30 = v93;
-    v31 = [(ContextEngine *)v93 config];
-    v32 = [v31 desiredLanguageTags];
-    v33 = [v32 containsObject:@"en"];
+    v30 = selfCopy;
+    config3 = [(ContextEngine *)selfCopy config];
+    desiredLanguageTags = [config3 desiredLanguageTags];
+    v33 = [desiredLanguageTags containsObject:@"en"];
 
-    v91 = v22;
+    v91 = overallCategories;
     v92 = v21;
     if (v33)
     {
@@ -629,8 +629,8 @@ LABEL_68:
             v116 = 0u;
             v117 = 0u;
             v118 = 0u;
-            v37 = [v36 level1Topics];
-            v38 = [v37 countByEnumeratingWithState:&v115 objects:v137 count:16];
+            level1Topics = [v36 level1Topics];
+            v38 = [level1Topics countByEnumeratingWithState:&v115 objects:v137 count:16];
             if (v38)
             {
               v39 = v38;
@@ -641,12 +641,12 @@ LABEL_68:
                 {
                   if (*v116 != v40)
                   {
-                    objc_enumerationMutation(v37);
+                    objc_enumerationMutation(level1Topics);
                   }
 
                   v42 = *(*(&v115 + 1) + 8 * m);
-                  v43 = [v42 topicId];
-                  v44 = [v43 isEqualToString:@"DH1009"];
+                  topicId2 = [v42 topicId];
+                  v44 = [topicId2 isEqualToString:@"DH1009"];
 
                   if ((v44 & 1) == 0)
                   {
@@ -665,7 +665,7 @@ LABEL_68:
                   }
                 }
 
-                v39 = [v37 countByEnumeratingWithState:&v115 objects:v137 count:16];
+                v39 = [level1Topics countByEnumeratingWithState:&v115 objects:v137 count:16];
               }
 
               while (v39);
@@ -685,13 +685,13 @@ LABEL_68:
       v21 = v92;
       [v92 addObjectsFromArray:v48];
 
-      v30 = v93;
-      v22 = v91;
+      v30 = selfCopy;
+      overallCategories = v91;
     }
 
     v49 = objc_alloc_init(NSMutableArray);
-    v50 = [v102 groupingResults];
-    if (v50)
+    groupingResults = [v102 groupingResults];
+    if (groupingResults)
     {
       v89 = v49;
       v99 = objc_alloc_init(NSMutableDictionary);
@@ -699,9 +699,9 @@ LABEL_68:
       v112 = 0u;
       v113 = 0u;
       v114 = 0u;
-      v88 = v50;
-      v95 = [v50 entrySet];
-      v101 = [v95 countByEnumeratingWithState:&v111 objects:v136 count:16];
+      v88 = groupingResults;
+      entrySet = [groupingResults entrySet];
+      v101 = [entrySet countByEnumeratingWithState:&v111 objects:v136 count:16];
       if (v101)
       {
         v97 = *v112;
@@ -711,21 +711,21 @@ LABEL_68:
           {
             if (*v112 != v97)
             {
-              objc_enumerationMutation(v95);
+              objc_enumerationMutation(entrySet);
             }
 
             v52 = *(*(&v111 + 1) + 8 * n);
-            v53 = [v52 getKey];
+            getKey = [v52 getKey];
             v54 = objc_alloc_init(CKContextItem);
-            [v54 setTitle:v53[2]];
-            [v54 setTopicId:v53[1]];
-            v55 = [v52 getValue];
+            [v54 setTitle:getKey[2]];
+            [v54 setTopicId:getKey[1]];
+            getValue = [v52 getValue];
             v56 = objc_alloc_init(NSMutableArray);
             v107 = 0u;
             v108 = 0u;
             v109 = 0u;
             v110 = 0u;
-            v57 = v55;
+            v57 = getValue;
             v58 = [v57 countByEnumeratingWithState:&v107 objects:v135 count:16];
             if (v58)
             {
@@ -757,7 +757,7 @@ LABEL_68:
             [v99 setObject:v56 forKey:v54];
           }
 
-          v101 = [v95 countByEnumeratingWithState:&v111 objects:v136 count:16];
+          v101 = [entrySet countByEnumeratingWithState:&v111 objects:v136 count:16];
         }
 
         while (v101);
@@ -773,9 +773,9 @@ LABEL_68:
       [v99 enumerateKeysAndObjectsUsingBlock:v104];
 
       v21 = v92;
-      v30 = v93;
-      v22 = v91;
-      v50 = v88;
+      v30 = selfCopy;
+      overallCategories = v91;
+      groupingResults = v88;
     }
 
     else
@@ -791,10 +791,10 @@ LABEL_68:
     [v66 setLevel2Topics:v49];
     v84 = +[MetricsLogging instance];
     v85 = [v21 count];
-    v86 = [(LuceneContextEngine *)v30 indexId];
-    [v84 recordQueryEventWithLuceneResultCount:v85 error:0 requestType:17 indexId:v86];
+    indexId2 = [(LuceneContextEngine *)v30 indexId];
+    [v84 recordQueryEventWithLuceneResultCount:v85 error:0 requestType:17 indexId:indexId2];
 
-    v4 = v90;
+    responsesCopy = v90;
   }
 
   else
@@ -807,8 +807,8 @@ LABEL_68:
 
     v21 = +[MetricsLogging instance];
     v75 = qword_100557190;
-    v22 = [(LuceneContextEngine *)self indexId];
-    [v21 recordQueryEventWithLuceneResultCount:0 error:v75 requestType:17 indexId:v22];
+    overallCategories = [(LuceneContextEngine *)self indexId];
+    [v21 recordQueryEventWithLuceneResultCount:0 error:v75 requestType:17 indexId:overallCategories];
     v66 = 0;
   }
 

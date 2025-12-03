@@ -1,14 +1,14 @@
 @interface CDMContextualSpanMatcherResponseCommand
-- (CDMContextualSpanMatcherResponseCommand)initWithContextualSpanMatcherResponse:(id)a3;
-- (CDMContextualSpanMatcherResponseCommand)initWithMentions:(id)a3;
+- (CDMContextualSpanMatcherResponseCommand)initWithContextualSpanMatcherResponse:(id)response;
+- (CDMContextualSpanMatcherResponseCommand)initWithMentions:(id)mentions;
 @end
 
 @implementation CDMContextualSpanMatcherResponseCommand
 
-- (CDMContextualSpanMatcherResponseCommand)initWithMentions:(id)a3
+- (CDMContextualSpanMatcherResponseCommand)initWithMentions:(id)mentions
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mentionsCopy = mentions;
   v18.receiver = self;
   v18.super_class = CDMContextualSpanMatcherResponseCommand;
   v5 = [(CDMBaseCommand *)&v18 init];
@@ -16,13 +16,13 @@
   {
     v6 = objc_alloc_init(MEMORY[0x1E69D1290]);
     objc_storeStrong(&v5->_contextualSpanMatcherResponse, v6);
-    if (v4)
+    if (mentionsCopy)
     {
       v16 = 0u;
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v7 = v4;
+      v7 = mentionsCopy;
       v8 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
       if (v8)
       {
@@ -54,16 +54,16 @@
   return v5;
 }
 
-- (CDMContextualSpanMatcherResponseCommand)initWithContextualSpanMatcherResponse:(id)a3
+- (CDMContextualSpanMatcherResponseCommand)initWithContextualSpanMatcherResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   v9.receiver = self;
   v9.super_class = CDMContextualSpanMatcherResponseCommand;
   v6 = [(CDMBaseCommand *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contextualSpanMatcherResponse, a3);
+    objc_storeStrong(&v6->_contextualSpanMatcherResponse, response);
   }
 
   return v7;

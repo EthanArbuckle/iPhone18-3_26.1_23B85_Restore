@@ -1,14 +1,14 @@
 @interface PRRenderer
-- (id)wk_extendRenderSessionForReason:(id)a3;
-- (void)wk_setPreferredProminentColor:(id)a3;
+- (id)wk_extendRenderSessionForReason:(id)reason;
+- (void)wk_setPreferredProminentColor:(id)color;
 @end
 
 @implementation PRRenderer
 
-- (id)wk_extendRenderSessionForReason:(id)a3
+- (id)wk_extendRenderSessionForReason:(id)reason
 {
-  v4 = self;
-  v5 = [(PRRenderer *)v4 extendRenderingSessionForReason:a3];
+  selfCopy = self;
+  v5 = [(PRRenderer *)selfCopy extendRenderingSessionForReason:reason];
   v6 = type metadata accessor for CollectionsPosterInvalidatable();
   v7 = objc_allocWithZone(v6);
   *&v7[OBJC_IVAR____TtC17CollectionsPoster30CollectionsPosterInvalidatable_posterKitInvalidatable] = v5;
@@ -20,10 +20,10 @@
   return v9;
 }
 
-- (void)wk_setPreferredProminentColor:(id)a3
+- (void)wk_setPreferredProminentColor:(id)color
 {
   v5 = swift_allocObject();
-  *(v5 + 16) = a3;
+  *(v5 + 16) = color;
   v6 = swift_allocObject();
   *(v6 + 16) = sub_1000102FC;
   *(v6 + 24) = v5;
@@ -34,10 +34,10 @@
   v10[2] = sub_10001033C;
   v10[3] = &unk_100018FA8;
   v7 = _Block_copy(v10);
-  v8 = a3;
-  v9 = self;
+  colorCopy = color;
+  selfCopy = self;
 
-  [(PRRenderer *)v9 updatePreferences:v7];
+  [(PRRenderer *)selfCopy updatePreferences:v7];
   _Block_release(v7);
   LOBYTE(v7) = swift_isEscapingClosureAtFileLocation();
 

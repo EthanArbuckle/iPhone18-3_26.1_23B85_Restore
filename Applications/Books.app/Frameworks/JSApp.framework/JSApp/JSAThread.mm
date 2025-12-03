@@ -1,24 +1,24 @@
 @interface JSAThread
 - (BOOL)isRunningOnThread;
-- (JSAThread)initWithName:(id)a3;
+- (JSAThread)initWithName:(id)name;
 - (void)_performPendingBlocks;
 - (void)_scriptingThreadMain;
-- (void)enqueueBlock:(id)a3;
-- (void)enqueueBlockSync:(id)a3;
+- (void)enqueueBlock:(id)block;
+- (void)enqueueBlockSync:(id)sync;
 @end
 
 @implementation JSAThread
 
-- (JSAThread)initWithName:(id)a3
+- (JSAThread)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = JSAThread;
   v6 = [(JSAThread *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
     v8 = objc_alloc_init(NSObject);
     scriptingThreadContext = v7->_scriptingThreadContext;
     v7->_scriptingThreadContext = v8;
@@ -41,31 +41,31 @@
 - (BOOL)isRunningOnThread
 {
   v3 = +[NSThread currentThread];
-  v4 = [v3 threadDictionary];
-  v5 = [v4 objectForKeyedSubscript:kScriptingThreadIdentifier];
+  threadDictionary = [v3 threadDictionary];
+  v5 = [threadDictionary objectForKeyedSubscript:kScriptingThreadIdentifier];
   LOBYTE(self) = v5 == self->_scriptingThreadContext;
 
   return self;
 }
 
-- (void)enqueueBlock:(id)a3
+- (void)enqueueBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
   objc_initWeak(&location, self);
-  v5 = [(JSAThread *)self accessQueue];
+  accessQueue = [(JSAThread *)self accessQueue];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_10720;
   v11 = &unk_B2A38;
   objc_copyWeak(&v14, &location);
   v13 = &v16;
-  v6 = v4;
+  v6 = blockCopy;
   v12 = v6;
-  dispatch_sync(v5, &v8);
+  dispatch_sync(accessQueue, &v8);
 
   v7 = v17[3];
   if (v7)
@@ -87,9 +87,9 @@
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)enqueueBlockSync:(id)a3
+- (void)enqueueBlockSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   if ([(JSAThread *)self isRunningOnThread])
   {
     v7 = JSALog();
@@ -110,9 +110,9 @@
   v11[2] = sub_10928;
   v11[3] = &unk_B2A60;
   v12 = dispatch_semaphore_create(0);
-  v13 = v4;
+  v13 = syncCopy;
   v5 = v12;
-  v6 = v4;
+  v6 = syncCopy;
   [(JSAThread *)self enqueueBlock:v11];
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
 }
@@ -126,14 +126,14 @@
   v19 = sub_10B74;
   v20 = sub_10B84;
   v21 = 0;
-  v4 = [(JSAThread *)self accessQueue];
+  accessQueue = [(JSAThread *)self accessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10B8C;
   block[3] = &unk_B2508;
   block[4] = self;
   block[5] = &v16;
-  dispatch_sync(v4, block);
+  dispatch_sync(accessQueue, block);
 
   v13 = 0u;
   v14 = 0u;
@@ -176,8 +176,8 @@
 {
   scriptingThreadContext = self->_scriptingThreadContext;
   v4 = +[NSThread currentThread];
-  v5 = [v4 threadDictionary];
-  [v5 setObject:scriptingThreadContext forKeyedSubscript:kScriptingThreadIdentifier];
+  threadDictionary = [v4 threadDictionary];
+  [threadDictionary setObject:scriptingThreadContext forKeyedSubscript:kScriptingThreadIdentifier];
 
   context.version = 0;
   memset(&context.retain, 0, 56);
@@ -191,14 +191,14 @@
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v7 = [(JSAThread *)self accessQueue];
+  accessQueue = [(JSAThread *)self accessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10DF0;
   block[3] = &unk_B2A88;
   block[4] = self;
   block[5] = &v11;
-  dispatch_sync(v7, block);
+  dispatch_sync(accessQueue, block);
 
   if (*(v12 + 24) == 1)
   {
@@ -207,14 +207,14 @@
   }
 
   CFRunLoopRun();
-  v8 = [(JSAThread *)self accessQueue];
+  accessQueue2 = [(JSAThread *)self accessQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10E60;
   v9[3] = &unk_B2A88;
   v9[4] = self;
   v9[5] = &v11;
-  dispatch_sync(v8, v9);
+  dispatch_sync(accessQueue2, v9);
 
   if (*(v12 + 24) == 1)
   {

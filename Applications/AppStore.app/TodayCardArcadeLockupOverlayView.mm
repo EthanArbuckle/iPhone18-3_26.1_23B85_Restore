@@ -1,7 +1,7 @@
 @interface TodayCardArcadeLockupOverlayView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)_continuousCornerRadius;
-- (void)_setContinuousCornerRadius:(double)a3;
+- (void)_setContinuousCornerRadius:(double)radius;
 - (void)layoutSubviews;
 @end
 
@@ -15,21 +15,21 @@
   return result;
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
   v4 = v6.receiver;
-  [(TodayCardArcadeLockupOverlayView *)&v6 _setContinuousCornerRadius:a3];
-  [*&v4[OBJC_IVAR____TtC8AppStore32TodayCardArcadeLockupOverlayView_backgroundEffectView] _setCornerRadius:1 continuous:12 maskedCorners:{a3, v6.receiver, v6.super_class}];
-  v5 = [*&v4[OBJC_IVAR____TtC8AppStore32TodayCardArcadeLockupOverlayView_arcadeLockupView] layer];
-  [v5 setMaskedCorners:12];
+  [(TodayCardArcadeLockupOverlayView *)&v6 _setContinuousCornerRadius:radius];
+  [*&v4[OBJC_IVAR____TtC8AppStore32TodayCardArcadeLockupOverlayView_backgroundEffectView] _setCornerRadius:1 continuous:12 maskedCorners:{radius, v6.receiver, v6.super_class}];
+  layer = [*&v4[OBJC_IVAR____TtC8AppStore32TodayCardArcadeLockupOverlayView_arcadeLockupView] layer];
+  [layer setMaskedCorners:12];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [*(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore32TodayCardArcadeLockupOverlayView_arcadeLockupView) sizeThatFits:{a3.width, a3.height}];
+  width = fits.width;
+  [*(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore32TodayCardArcadeLockupOverlayView_arcadeLockupView) sizeThatFits:{fits.width, fits.height}];
   v5 = width;
   result.height = v4;
   result.width = v5;
@@ -38,7 +38,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006A857C();
 }
 

@@ -1,35 +1,35 @@
 @interface PlayerViewControllerBehavior
-- (void)contextWillHandleUserAction:(int64_t)a3;
+- (void)contextWillHandleUserAction:(int64_t)action;
 - (void)skipToNextItem;
 - (void)skipToPreviousItem;
-- (void)willMoveToContext:(id)a3;
+- (void)willMoveToContext:(id)context;
 @end
 
 @implementation PlayerViewControllerBehavior
 
 - (void)skipToPreviousItem
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5DE58C4();
 }
 
 - (void)skipToNextItem
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5DE5914();
 }
 
-- (void)contextWillHandleUserAction:(int64_t)a3
+- (void)contextWillHandleUserAction:(int64_t)action
 {
-  v4 = self;
-  sub_1C5DE5964(a3);
+  selfCopy = self;
+  sub_1C5DE5964(action);
 }
 
-- (void)willMoveToContext:(id)a3
+- (void)willMoveToContext:(id)context
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1C5DE6308(a3);
+  selfCopy = self;
+  sub_1C5DE6308(context);
   swift_unknownObjectRelease();
 }
 

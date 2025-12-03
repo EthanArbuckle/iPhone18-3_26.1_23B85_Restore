@@ -12,24 +12,24 @@
 - (unsigned)getVerticalScalingTablePhaseNumber;
 - (unsigned)getVerticalScalingTableTapNumber;
 - (unsigned)polynomialTableScale;
-- (void)dovi_ootf_getTmLutInput:(unint64_t)a3 lutInput:(float *)a4;
-- (void)getDegammaLutInput:(float *)a3;
-- (void)getRegammaLutInput:(float *)a3;
-- (void)getTmUnequalLutInput:(unint64_t)a3 lutInput:(float *)a4;
-- (void)hdr10_getTmLutInput:(unint64_t)a3 lutInput:(float *)a4;
-- (void)hdr10_tm_updateLUT:(int64_t)a3 ScalingFactorBuffer:(float *)a4 LumaMixFactorBuffer:(float *)a5;
-- (void)hlg_getTmLutInput:(unint64_t)a3 lutInput:(float *)a4;
-- (void)hlg_tm_updateLUT:(int64_t)a3 ScalingFactorBuffer:(float *)a4;
-- (void)populateMSRColorConfigStageB02HDR10:(id *)a3 DMConfig:(id *)a4;
-- (void)populateMSRColorConfigStageB02HLG:(id *)a3 hdrControl:(id *)a4;
-- (void)populateMSRColorConfigStageDownSampleFilter:(id *)a3 Enabled:(BOOL)a4 Prefix:(char *)a5 DMConfig:(id *)a6 DMData:(id *)a7 tcControl:(ToneCurve_Control *)a8 hdrControl:(id *)a9 MSRHDRContext:(MSRHDRContext *)a10;
-- (void)populateMSRColorConfigStageHwOOTF:(id *)a3 Enabled:(BOOL)a4 Prefix:(char *)a5 DMConfig:(id *)a6 DMData:(id *)a7 tcControl:(ToneCurve_Control *)a8 hdrControl:(id *)a9 MSRHDRContext:(MSRHDRContext *)a10;
+- (void)dovi_ootf_getTmLutInput:(unint64_t)input lutInput:(float *)lutInput;
+- (void)getDegammaLutInput:(float *)input;
+- (void)getRegammaLutInput:(float *)input;
+- (void)getTmUnequalLutInput:(unint64_t)input lutInput:(float *)lutInput;
+- (void)hdr10_getTmLutInput:(unint64_t)input lutInput:(float *)lutInput;
+- (void)hdr10_tm_updateLUT:(int64_t)t ScalingFactorBuffer:(float *)buffer LumaMixFactorBuffer:(float *)factorBuffer;
+- (void)hlg_getTmLutInput:(unint64_t)input lutInput:(float *)lutInput;
+- (void)hlg_tm_updateLUT:(int64_t)t ScalingFactorBuffer:(float *)buffer;
+- (void)populateMSRColorConfigStageB02HDR10:(id *)r10 DMConfig:(id *)config;
+- (void)populateMSRColorConfigStageB02HLG:(id *)g hdrControl:(id *)control;
+- (void)populateMSRColorConfigStageDownSampleFilter:(id *)filter Enabled:(BOOL)enabled Prefix:(char *)prefix DMConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl MSRHDRContext:(MSRHDRContext *)self0;
+- (void)populateMSRColorConfigStageHwOOTF:(id *)f Enabled:(BOOL)enabled Prefix:(char *)prefix DMConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl MSRHDRContext:(MSRHDRContext *)self0;
 - (void)setupHardwareConfigUnit;
-- (void)setupMSRMappingTableWithMetadata:(id *)a3;
+- (void)setupMSRMappingTableWithMetadata:(id *)metadata;
 - (void)setupMSRPolynomialTableForHDR10;
-- (void)updateMmrReshapeChromaForComponent:(unsigned __int16)a3 mmrReshapeChroma:(int)a4;
-- (void)updateMmrTableForComponent:(unsigned __int16)a3 mmrClipValMin:(unsigned __int16 *)a4 mmrClipValMax:(unsigned __int16 *)a5 mmrCoeff:(float *)a6;
-- (void)updatePolynomialTablesForComponent:(unsigned __int16 *)a3 Component:(unsigned __int16)a4 TableSize:(unint64_t)a5;
+- (void)updateMmrReshapeChromaForComponent:(unsigned __int16)component mmrReshapeChroma:(int)chroma;
+- (void)updateMmrTableForComponent:(unsigned __int16)component mmrClipValMin:(unsigned __int16 *)min mmrClipValMax:(unsigned __int16 *)max mmrCoeff:(float *)coeff;
+- (void)updatePolynomialTablesForComponent:(unsigned __int16 *)component Component:(unsigned __int16)a4 TableSize:(unint64_t)size;
 @end
 
 @implementation MSRHDRProcessingByCapabilities
@@ -203,14 +203,14 @@
   }
 }
 
-- (void)setupMSRMappingTableWithMetadata:(id *)a3
+- (void)setupMSRMappingTableWithMetadata:(id *)metadata
 {
   v28 = *MEMORY[0x277D85DE8];
   if (byte_280C71972)
   {
-    v5 = a3->var0 + 8;
-    v22 = (1 << (LOBYTE(a3->var0) + 8));
-    v6 = malloc_type_malloc(6 << (LOBYTE(a3->var0) + 8), 0x1000040BDFB0063uLL);
+    v5 = metadata->var0 + 8;
+    v22 = (1 << (LOBYTE(metadata->var0) + 8));
+    v6 = malloc_type_malloc(6 << (LOBYTE(metadata->var0) + 8), 0x1000040BDFB0063uLL);
     v7 = malloc_type_calloc(0x2CuLL, 4uLL, 0x100004052888210uLL);
     v9 = v7;
     if (v6)
@@ -262,7 +262,7 @@
     v21 = v8;
     do
     {
-      v16 = *(&a3->var0 + v15);
+      v16 = *(&metadata->var0 + v15);
       if (v16 >= 2)
       {
         if (enableLogInstance)
@@ -293,7 +293,7 @@
           _os_log_impl(&dword_250836000, v14, OS_LOG_TYPE_DEFAULT, " [1.450.54] Assertion: metadata->mapping_idc[0][0][cmp][0] == 0 || metadata->mapping_idc[0][0][cmp][0] == 1 warned in /Library/Caches/com.apple.xbs/Sources/HDRProcessing/MSR/MSRHDRProcessingByCapabilities.mm at line 292\n", buf, 2u);
         }
 
-        v16 = *(&a3->var0 + v15);
+        v16 = *(&metadata->var0 + v15);
       }
 
       if (v16 && (v16 != 1 || [(MSRHDRProcessing *)self isMMREnabled]))
@@ -329,14 +329,14 @@
           }
         }
 
-        createMmrTableForComponent(a3, v12, v24, v23, &v9[v13 & 0xFFFFFFFE]);
+        createMmrTableForComponent(metadata, v12, v24, v23, &v9[v13 & 0xFFFFFFFE]);
         [(MSRHDRProcessingByCapabilities *)self updateMmrTableForComponent:v12 mmrClipValMin:v24 mmrClipValMax:v23 mmrCoeff:&v9[v13 & 0xFFFFFFFE]];
         v19 = 0;
       }
 
       else
       {
-        createPolynomialTableForComponent(a3, v12, v6 + 2 * (v12 << v5));
+        createPolynomialTableForComponent(metadata, v12, v6 + 2 * (v12 << v5));
         [(MSRHDRProcessingByCapabilities *)self updatePolynomialTablesForComponent:v6 Component:v12 TableSize:v22];
         v19 = 1;
       }
@@ -355,7 +355,7 @@
   {
     v25.receiver = self;
     v25.super_class = MSRHDRProcessingByCapabilities;
-    [(MSRHDRProcessing *)&v25 setupMSRMappingTableWithMetadata:a3];
+    [(MSRHDRProcessing *)&v25 setupMSRMappingTableWithMetadata:metadata];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -375,29 +375,29 @@
   return [(MSRHDRProcessing *)&v5 polynomialTableScale];
 }
 
-- (void)updatePolynomialTablesForComponent:(unsigned __int16 *)a3 Component:(unsigned __int16)a4 TableSize:(unint64_t)a5
+- (void)updatePolynomialTablesForComponent:(unsigned __int16 *)component Component:(unsigned __int16)a4 TableSize:(unint64_t)size
 {
   if (byte_280C71972 == 1)
   {
     self->super._reshapeLUTCreated = 1;
-    self->super._reshapeLUTSize = a5;
-    if (a5)
+    self->super._reshapeLUTSize = size;
+    if (size)
     {
-      v5 = &a3[a4 * a5];
+      v5 = &component[a4 * size];
       v6 = self->super._reshapeLUT[a4];
       do
       {
         v7 = *v5++;
         *v6++ = 4 * v7;
-        --a5;
+        --size;
       }
 
-      while (a5);
+      while (size);
     }
   }
 }
 
-- (void)updateMmrTableForComponent:(unsigned __int16)a3 mmrClipValMin:(unsigned __int16 *)a4 mmrClipValMax:(unsigned __int16 *)a5 mmrCoeff:(float *)a6
+- (void)updateMmrTableForComponent:(unsigned __int16)component mmrClipValMin:(unsigned __int16 *)min mmrClipValMax:(unsigned __int16 *)max mmrCoeff:(float *)coeff
 {
   if (byte_280C71972 == 1)
   {
@@ -406,22 +406,22 @@
     v8 = 3;
     do
     {
-      v9 = *a4++;
+      v9 = *min++;
       *(var4 - 3) = v9;
-      v10 = *a5++;
+      v10 = *max++;
       *var4++ = v10;
       --v8;
     }
 
     while (v8);
-    if (a3 == 1)
+    if (component == 1)
     {
       v11 = 42044;
     }
 
     else
     {
-      if (a3 != 2)
+      if (component != 2)
       {
         return;
       }
@@ -433,7 +433,7 @@
     v13 = msrCU + v11;
     do
     {
-      *&v13[v12 * 4] = a6[v12];
+      *&v13[v12 * 4] = coeff[v12];
       ++v12;
     }
 
@@ -441,20 +441,20 @@
   }
 }
 
-- (void)updateMmrReshapeChromaForComponent:(unsigned __int16)a3 mmrReshapeChroma:(int)a4
+- (void)updateMmrReshapeChromaForComponent:(unsigned __int16)component mmrReshapeChroma:(int)chroma
 {
   if (byte_280C71972 == 1)
   {
     v4 = &self->super._msrCU->var4[1016];
     self->super._msrCU->var6.var2 = 4;
-    if (a3 == 2)
+    if (component == 2)
     {
-      *(v4 + 1069) = a4 != 0;
+      *(v4 + 1069) = chroma != 0;
     }
 
-    else if (a3 == 1)
+    else if (component == 1)
     {
-      *(v4 + 1068) = a4 != 0;
+      *(v4 + 1068) = chroma != 0;
     }
   }
 }
@@ -478,7 +478,7 @@
   return [(MSRHDRProcessing *)&v5 getDegammaLutSize];
 }
 
-- (void)getDegammaLutInput:(float *)a3
+- (void)getDegammaLutInput:(float *)input
 {
   if (useCurvatureLUTs == 1)
   {
@@ -496,7 +496,7 @@
       do
       {
         v4 = v5 + v4;
-        *a3++ = v4;
+        *input++ = v4;
         --v6;
       }
 
@@ -522,7 +522,7 @@
   {
     v16.receiver = self;
     v16.super_class = MSRHDRProcessingByCapabilities;
-    [(MSRHDRProcessing *)&v16 getDegammaLutInput:a3];
+    [(MSRHDRProcessing *)&v16 getDegammaLutInput:input];
   }
 
   else
@@ -530,7 +530,7 @@
     v8 = 0;
     v9 = xmmword_2508CD900;
     v10 = xmmword_2508CD910;
-    v11 = a3 + 2;
+    v11 = input + 2;
     v12 = vdupq_n_s64(0x401uLL);
     v13 = vdupq_n_s64(4uLL);
     do
@@ -562,7 +562,7 @@
     v15 = 1.0;
     do
     {
-      a3[v14 + 1024] = v15;
+      input[v14 + 1024] = v15;
       v15 = v15 + 0.03125;
       ++v14;
     }
@@ -585,12 +585,12 @@
   return [(MSRHDRProcessing *)&v5 getRegammaLutSize];
 }
 
-- (void)getRegammaLutInput:(float *)a3
+- (void)getRegammaLutInput:(float *)input
 {
   if (useCurvatureLUTs == 1)
   {
 
-    getCurvatureRegammaLutInput(a3);
+    getCurvatureRegammaLutInput(input);
   }
 
   else
@@ -599,7 +599,7 @@
     v7 = v4;
     v5.receiver = self;
     v5.super_class = MSRHDRProcessingByCapabilities;
-    [(MSRHDRProcessing *)&v5 getRegammaLutInput:a3];
+    [(MSRHDRProcessing *)&v5 getRegammaLutInput:input];
   }
 }
 
@@ -617,7 +617,7 @@
   return [(MSRHDRProcessing *)&v5 getTmLutSize];
 }
 
-- (void)getTmUnequalLutInput:(unint64_t)a3 lutInput:(float *)a4
+- (void)getTmUnequalLutInput:(unint64_t)input lutInput:(float *)lutInput
 {
   v4 = 0;
   v5 = 0.0;
@@ -658,7 +658,7 @@ LABEL_10:
     do
     {
 LABEL_12:
-      *a4++ = v5;
+      *lutInput++ = v5;
       v5 = v6 + v5;
       --v7;
     }
@@ -680,12 +680,12 @@ LABEL_12:
   while (v4 != 18);
 }
 
-- (void)hdr10_getTmLutInput:(unint64_t)a3 lutInput:(float *)a4
+- (void)hdr10_getTmLutInput:(unint64_t)input lutInput:(float *)lutInput
 {
   if (self->super._enableUnequalSpacingLUT)
   {
 
-    [(MSRHDRProcessingByCapabilities *)self getTmUnequalLutInput:a3 lutInput:a4];
+    [(MSRHDRProcessingByCapabilities *)self getTmUnequalLutInput:input lutInput:lutInput];
   }
 
   else
@@ -694,16 +694,16 @@ LABEL_12:
     v8 = v5;
     v6.receiver = self;
     v6.super_class = MSRHDRProcessingByCapabilities;
-    [(MSRHDRProcessing *)&v6 hdr10_getTmLutInput:a3 lutInput:a4];
+    [(MSRHDRProcessing *)&v6 hdr10_getTmLutInput:input lutInput:lutInput];
   }
 }
 
-- (void)hlg_getTmLutInput:(unint64_t)a3 lutInput:(float *)a4
+- (void)hlg_getTmLutInput:(unint64_t)input lutInput:(float *)lutInput
 {
   if (self->super._enableUnequalSpacingLUT)
   {
 
-    [(MSRHDRProcessingByCapabilities *)self getTmUnequalLutInput:a3 lutInput:a4];
+    [(MSRHDRProcessingByCapabilities *)self getTmUnequalLutInput:input lutInput:lutInput];
   }
 
   else
@@ -712,16 +712,16 @@ LABEL_12:
     v8 = v5;
     v6.receiver = self;
     v6.super_class = MSRHDRProcessingByCapabilities;
-    [(MSRHDRProcessing *)&v6 hlg_getTmLutInput:a3 lutInput:a4];
+    [(MSRHDRProcessing *)&v6 hlg_getTmLutInput:input lutInput:lutInput];
   }
 }
 
-- (void)dovi_ootf_getTmLutInput:(unint64_t)a3 lutInput:(float *)a4
+- (void)dovi_ootf_getTmLutInput:(unint64_t)input lutInput:(float *)lutInput
 {
   if (self->super._enableUnequalSpacingLUT)
   {
 
-    [(MSRHDRProcessingByCapabilities *)self getTmUnequalLutInput:a3 lutInput:a4];
+    [(MSRHDRProcessingByCapabilities *)self getTmUnequalLutInput:input lutInput:lutInput];
   }
 
   else
@@ -730,27 +730,27 @@ LABEL_12:
     v8 = v5;
     v6.receiver = self;
     v6.super_class = MSRHDRProcessingByCapabilities;
-    [(MSRHDRProcessing *)&v6 dovi_ootf_getTmLutInput:a3 lutInput:a4];
+    [(MSRHDRProcessing *)&v6 dovi_ootf_getTmLutInput:input lutInput:lutInput];
   }
 }
 
-- (void)hdr10_tm_updateLUT:(int64_t)a3 ScalingFactorBuffer:(float *)a4 LumaMixFactorBuffer:(float *)a5
+- (void)hdr10_tm_updateLUT:(int64_t)t ScalingFactorBuffer:(float *)buffer LumaMixFactorBuffer:(float *)factorBuffer
 {
   if (self->super._enableUnequalSpacingLUT)
   {
-    if (a3 == 6)
+    if (t == 6)
     {
       *(&self->super._regamma + 2833) = 1;
-      memcpy(&self->_unequalSpacingTmLutMode, a4, 0x404uLL);
-      memcpy(&self->_toneMapLUT1[256], a4 + 257, 0x7C4uLL);
+      memcpy(&self->_unequalSpacingTmLutMode, buffer, 0x404uLL);
+      memcpy(&self->_toneMapLUT1[256], buffer + 257, 0x7C4uLL);
       for (i = 0; i != 257; ++i)
       {
-        self->_toneMapLUT0[i + 256] = a5[i] * 0.015625;
+        self->_toneMapLUT0[i + 256] = factorBuffer[i] * 0.015625;
       }
 
       for (j = 0; j != 497; ++j)
       {
-        self->_toneMapLUT2[j + 496] = a5[j + 257] * 0.015625;
+        self->_toneMapLUT2[j + 496] = factorBuffer[j + 257] * 0.015625;
       }
     }
   }
@@ -759,20 +759,20 @@ LABEL_12:
   {
     v10.receiver = self;
     v10.super_class = MSRHDRProcessingByCapabilities;
-    [(MSRHDRProcessing *)&v10 hdr10_tm_updateLUT:a3 ScalingFactorBuffer:a4 LumaMixFactorBuffer:a5];
+    [(MSRHDRProcessing *)&v10 hdr10_tm_updateLUT:t ScalingFactorBuffer:buffer LumaMixFactorBuffer:factorBuffer];
   }
 }
 
-- (void)hlg_tm_updateLUT:(int64_t)a3 ScalingFactorBuffer:(float *)a4
+- (void)hlg_tm_updateLUT:(int64_t)t ScalingFactorBuffer:(float *)buffer
 {
   if (self->super._enableUnequalSpacingLUT)
   {
-    if (a3 == 6)
+    if (t == 6)
     {
       *(&self->super._regamma + 2833) = 1;
-      memcpy(&self->_unequalSpacingTmLutMode, a4, 0x404uLL);
+      memcpy(&self->_unequalSpacingTmLutMode, buffer, 0x404uLL);
 
-      memcpy(&self->_toneMapLUT1[256], a4 + 257, 0x7C4uLL);
+      memcpy(&self->_toneMapLUT1[256], buffer + 257, 0x7C4uLL);
     }
   }
 
@@ -780,7 +780,7 @@ LABEL_12:
   {
     v6.receiver = self;
     v6.super_class = MSRHDRProcessingByCapabilities;
-    [(MSRHDRProcessing *)&v6 hlg_tm_updateLUT:a3 ScalingFactorBuffer:a4];
+    [(MSRHDRProcessing *)&v6 hlg_tm_updateLUT:t ScalingFactorBuffer:buffer];
   }
 }
 
@@ -797,12 +797,12 @@ LABEL_12:
   }
 }
 
-- (void)populateMSRColorConfigStageB02HDR10:(id *)a3 DMConfig:(id *)a4
+- (void)populateMSRColorConfigStageB02HDR10:(id *)r10 DMConfig:(id *)config
 {
   if (self->super._enableUnequalSpacingLUT)
   {
     msrCU = self->super._msrCU;
-    a3->var2.var0.var0[3946] = 8;
+    r10->var2.var0.var0[3946] = 8;
     msrCU->var8.var0 = *(&self->super._regamma + 2833);
     msrCU->var8.var1 = 0;
     msrCU->var8.var3 = [(MSRHDRProcessingByCapabilities *)self getLumaShiftBits];
@@ -813,7 +813,7 @@ LABEL_12:
     v8 = -3;
     do
     {
-      *(var8 - 4) = vcvts_n_s32_f32(*(&a4[1].var22 + ((v8 - 1) & 3)), 7uLL);
+      *(var8 - 4) = vcvts_n_s32_f32(*(&config[1].var22 + ((v8 - 1) & 3)), 7uLL);
       *var8++ = 128;
     }
 
@@ -832,27 +832,27 @@ LABEL_12:
   {
     v11.receiver = self;
     v11.super_class = MSRHDRProcessingByCapabilities;
-    [(MSRHDRProcessing *)&v11 populateMSRColorConfigStageB02HDR10:a3 DMConfig:a4];
+    [(MSRHDRProcessing *)&v11 populateMSRColorConfigStageB02HDR10:r10 DMConfig:config];
   }
 }
 
-- (void)populateMSRColorConfigStageB02HLG:(id *)a3 hdrControl:(id *)a4
+- (void)populateMSRColorConfigStageB02HLG:(id *)g hdrControl:(id *)control
 {
   if (self->super._enableUnequalSpacingLUT)
   {
     msrCU = self->super._msrCU;
-    a3->var2.var0.var0[3946] = 8;
+    g->var2.var0.var0[3946] = 8;
     msrCU->var8.var0 = *(&self->super._regamma + 2833);
     msrCU->var8.var1 = 0;
-    v7 = [(MSRHDRProcessingByCapabilities *)self getLumaShiftBits];
+    getLumaShiftBits = [(MSRHDRProcessingByCapabilities *)self getLumaShiftBits];
     v8 = 0;
     *&msrCU->var8.var4 = 0;
-    msrCU->var8.var3 = v7;
+    msrCU->var8.var3 = getLumaShiftBits;
     msrCU->var8.var7 = 0;
     msrCU->var8.var2 = 24;
     do
     {
-      var15 = a4->var15;
+      var15 = control->var15;
       if (var15 == 1)
       {
         v10 = &RGB709toHLGY_coeff;
@@ -891,25 +891,25 @@ LABEL_12:
   {
     v14.receiver = self;
     v14.super_class = MSRHDRProcessingByCapabilities;
-    [(MSRHDRProcessing *)&v14 populateMSRColorConfigStageB02HLG:a3 hdrControl:a4];
+    [(MSRHDRProcessing *)&v14 populateMSRColorConfigStageB02HLG:g hdrControl:control];
   }
 }
 
-- (void)populateMSRColorConfigStageHwOOTF:(id *)a3 Enabled:(BOOL)a4 Prefix:(char *)a5 DMConfig:(id *)a6 DMData:(id *)a7 tcControl:(ToneCurve_Control *)a8 hdrControl:(id *)a9 MSRHDRContext:(MSRHDRContext *)a10
+- (void)populateMSRColorConfigStageHwOOTF:(id *)f Enabled:(BOOL)enabled Prefix:(char *)prefix DMConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl MSRHDRContext:(MSRHDRContext *)self0
 {
   if (byte_280C71973 == 1)
   {
     v26 = v10;
     v27 = v11;
     v13 = &self->super._msrCU->var8.var12[175];
-    if (a4)
+    if (enabled)
     {
       self->super._msrCU->var10.var0 = 1;
       *(v13 + 3288) = 24;
       *(v13 + 3289) = [(MSRHDRProcessingByCapabilities *)self getOotfLumaShiftBits];
       v13[827] = 0.0;
       v13[823] = 0.0;
-      var15 = a9->var15;
+      var15 = hdrControl->var15;
       v20 = v13 + 828;
       v21 = &RGB2020toHLGY_coeff;
       if (var15 == 1)
@@ -938,10 +938,10 @@ LABEL_12:
       }
 
       while (v23);
-      v13[831] = a6->var67 + 1.0;
+      v13[831] = config->var67 + 1.0;
       v25.receiver = self;
       v25.super_class = MSRHDRProcessingByCapabilities;
-      [(MSRHDRProcessing *)&v25 populateMSRColorConfigStageHwOOTF:a3 Enabled:1 Prefix:a5 DMConfig:a6 DMData:a7 tcControl:a8 hdrControl:a9 MSRHDRContext:a10];
+      [(MSRHDRProcessing *)&v25 populateMSRColorConfigStageHwOOTF:f Enabled:1 Prefix:prefix DMConfig:config DMData:data tcControl:control hdrControl:hdrControl MSRHDRContext:context];
     }
 
     else
@@ -951,7 +951,7 @@ LABEL_12:
   }
 }
 
-- (void)populateMSRColorConfigStageDownSampleFilter:(id *)a3 Enabled:(BOOL)a4 Prefix:(char *)a5 DMConfig:(id *)a6 DMData:(id *)a7 tcControl:(ToneCurve_Control *)a8 hdrControl:(id *)a9 MSRHDRContext:(MSRHDRContext *)a10
+- (void)populateMSRColorConfigStageDownSampleFilter:(id *)filter Enabled:(BOOL)enabled Prefix:(char *)prefix DMConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl MSRHDRContext:(MSRHDRContext *)self0
 {
   if (dword_280C7197C)
   {
@@ -966,7 +966,7 @@ LABEL_12:
   if (!v10)
   {
     msrCU = self->super._msrCU;
-    if (a4)
+    if (enabled)
     {
       if (GetConfig() && (v12 = GetConfig(), *(v12 + 1523)) && (v12[3044] & 0x80) != 0)
       {
@@ -984,7 +984,7 @@ LABEL_12:
 
       else
       {
-        v13 = 2 * (a9->var0 == 1);
+        v13 = 2 * (hdrControl->var0 == 1);
       }
 
       v14 = v13 | msrCU->var12.var0.var1 & 0xFFFFFFFFFFFFFFFCLL | 1;

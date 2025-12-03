@@ -1,7 +1,7 @@
 @interface AppPromotionDetailPageViewController
 - (BOOL)accessibilityPerformEscape;
-- (_TtC18ASMessagesProvider36AppPromotionDetailPageViewController)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProvider36AppPromotionDetailPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18ASMessagesProvider36AppPromotionDetailPageViewController)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProvider36AppPromotionDetailPageViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)appEnteredWhileAppeared;
 - (void)appExitedWhileAppeared;
@@ -9,18 +9,18 @@
 - (void)as_viewDidBecomePartiallyVisible;
 - (void)as_viewWillBecomeFullyVisible;
 - (void)as_viewWillBecomePartiallyVisible;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation AppPromotionDetailPageViewController
 
-- (_TtC18ASMessagesProvider36AppPromotionDetailPageViewController)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider36AppPromotionDetailPageViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider36AppPromotionDetailPageViewController_isCollapsing) = 0;
   v4 = OBJC_IVAR____TtC18ASMessagesProvider36AppPromotionDetailPageViewController_learnMoreActionMetrics;
@@ -36,78 +36,78 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_9477C();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_94948(a3);
+  selfCopy = self;
+  sub_94948(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_94C08(a3);
+  selfCopy = self;
+  sub_94C08(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_94F48(a3);
+  selfCopy = self;
+  sub_94F48(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_95318(a3);
+  selfCopy = self;
+  sub_95318(disappear);
 }
 
 - (void)as_viewWillBecomeFullyVisible
 {
-  v2 = self;
+  selfCopy = self;
   sub_95AA8(&selRef_as_viewWillBecomeFullyVisible, &enum case for StoreViewControllerLifecycleEvent.willAppear(_:), &dispatch thunk of VideoPlaybackCoordinator.resumeAutoPlayVideo());
 }
 
 - (void)as_viewDidBecomeFullyVisible
 {
-  v2 = self;
+  selfCopy = self;
   sub_9568C();
 }
 
 - (void)as_viewWillBecomePartiallyVisible
 {
-  v2 = self;
+  selfCopy = self;
   sub_9588C();
 }
 
 - (void)as_viewDidBecomePartiallyVisible
 {
-  v2 = self;
+  selfCopy = self;
   sub_95AA8(&selRef_as_viewDidBecomePartiallyVisible, &enum case for StoreViewControllerLifecycleEvent.didDisappear(_:), &dispatch thunk of VideoPlaybackCoordinator.pauseAutoPlayVideo());
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_95CC0();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_95E44(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_95E44(change);
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
-  v3 = [(AppPromotionDetailPageViewController *)v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  selfCopy = self;
+  traitCollection = [(AppPromotionDetailPageViewController *)selfCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     return 30;
   }
@@ -120,7 +120,7 @@
 
 - (void)appEnteredWhileAppeared
 {
-  v2 = self;
+  selfCopy = self;
   sub_960E8();
 }
 
@@ -132,7 +132,7 @@
   v6 = &v8 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_B170((&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider36AppPromotionDetailPageViewController_lifecycleObserver), *&self->lifecycleObserver[OBJC_IVAR____TtC18ASMessagesProvider36AppPromotionDetailPageViewController_lifecycleObserver + 16]);
   (*(v4 + 104))(v6, enum case for StoreViewControllerLifecycleEvent.appExitedWhileAppeared(_:), v3);
-  v7 = self;
+  selfCopy = self;
   sub_7587C0();
 
   (*(v4 + 8))(v6, v3);
@@ -147,15 +147,15 @@
   (*(v4 + 104))(v7, enum case for StoreViewControllerLifecycleEvent.didDisappear(_:), v3, v5);
   sub_758620();
   sub_98150(&qword_942480, &type metadata accessor for AppPromotionDetailPagePresenter);
-  v8 = self;
+  selfCopy = self;
   sub_75EBD0();
   (*(v4 + 8))(v7, v3);
-  [(AppPromotionDetailPageViewController *)v8 dismissViewControllerAnimated:1 completion:0];
+  [(AppPromotionDetailPageViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
 
   return 1;
 }
 
-- (_TtC18ASMessagesProvider36AppPromotionDetailPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18ASMessagesProvider36AppPromotionDetailPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

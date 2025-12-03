@@ -1,15 +1,15 @@
 @interface CAMBurstYUVImage
-- (CAMBurstYUVImage)initWithCGImage:(CGImage *)a3 maxDimension:(int)a4;
-- (CAMBurstYUVImage)initWithCIImage:(id)a3 ctx:(id)a4 maxDimension:(int)a5;
-- (CAMBurstYUVImage)initWithIOSurface:(__IOSurface *)a3 maxDimension:(int)a4;
+- (CAMBurstYUVImage)initWithCGImage:(CGImage *)image maxDimension:(int)dimension;
+- (CAMBurstYUVImage)initWithCIImage:(id)image ctx:(id)ctx maxDimension:(int)dimension;
+- (CAMBurstYUVImage)initWithIOSurface:(__IOSurface *)surface maxDimension:(int)dimension;
 - (__CVBuffer)pixelBuffer;
-- (void)convertRGBAToYUV420:(char *)a3 rgbaBytesPerRow:(int)a4;
+- (void)convertRGBAToYUV420:(char *)v420 rgbaBytesPerRow:(int)row;
 - (void)dealloc;
 @end
 
 @implementation CAMBurstYUVImage
 
-- (void)convertRGBAToYUV420:(char *)a3 rgbaBytesPerRow:(int)a4
+- (void)convertRGBAToYUV420:(char *)v420 rgbaBytesPerRow:(int)row
 {
   v7 = malloc_type_malloc((self->height + (self->height >> 1)) * self->bytesPerRow, 0x7267E243uLL);
   height = self->height;
@@ -20,15 +20,15 @@
   if (height >= 1)
   {
     v11 = 0;
-    v12 = a4;
-    v13 = a4 + 4;
-    v14 = a4 + 1;
-    v15 = a4 + 5;
-    v16 = a4 + 2;
-    v17 = a4 + 6;
+    rowCopy = row;
+    v13 = row + 4;
+    v14 = row + 1;
+    v15 = row + 5;
+    v16 = row + 2;
+    v17 = row + 6;
     width = self->width;
-    v19 = a3 + 4;
-    v45 = 2 * a4;
+    v19 = v420 + 4;
+    v45 = 2 * row;
     v20.i64[0] = 0xFF000000FFLL;
     v20.i64[1] = 0xFF000000FFLL;
     do
@@ -46,7 +46,7 @@
         {
           v25 = *(v22 - 4);
           v26 = *v22;
-          v27 = v22[v12 - 4];
+          v27 = v22[rowCopy - 4];
           v28 = *(v22 - 3);
           v29 = v22[1];
           v30 = v22[v14 - 4];
@@ -104,35 +104,35 @@
   }
 }
 
-- (CAMBurstYUVImage)initWithCGImage:(CGImage *)a3 maxDimension:(int)a4
+- (CAMBurstYUVImage)initWithCGImage:(CGImage *)image maxDimension:(int)dimension
 {
   self->dataPtr = 0;
   self->pixelBuffer = 0;
   self->ioSurf = 0;
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
   BurstLoggingMessage("initWithCGImage: %dx%d\n", Width, Height);
-  if (Width > a4 || Height > a4)
+  if (Width > dimension || Height > dimension)
   {
-    v15 = a4;
+    dimensionCopy = dimension;
     if (Width <= Height)
     {
-      v11 = v15 / Height;
+      v11 = dimensionCopy / Height;
       v12 = (v11 * Width);
       v9 = 28;
       v10 = 24;
-      v13 = a4;
-      v14 = v12;
+      dimensionCopy2 = dimension;
+      dimensionCopy3 = v12;
     }
 
     else
     {
-      v11 = v15 / Width;
+      v11 = dimensionCopy / Width;
       v12 = (v11 * Height);
       v9 = 24;
       v10 = 28;
-      v13 = v12;
-      v14 = a4;
+      dimensionCopy2 = v12;
+      dimensionCopy3 = dimension;
     }
   }
 
@@ -142,16 +142,16 @@
     v10 = 24;
     v11 = 1.0;
     v12 = Width;
-    a4 = Height;
-    v13 = Height;
-    v14 = Width;
+    dimension = Height;
+    dimensionCopy2 = Height;
+    dimensionCopy3 = Width;
   }
 
   *(&self->super.isa + v10) = v12;
-  *(&self->super.isa + v9) = a4;
-  v16 = (v14 + 3) & 0xFFFFFFFC;
+  *(&self->super.isa + v9) = dimension;
+  v16 = (dimensionCopy3 + 3) & 0xFFFFFFFC;
   self->bytesPerRow = v16;
-  v17 = malloc_type_malloc((4 * v13 * v16), 0xD91D3657uLL);
+  v17 = malloc_type_malloc((4 * dimensionCopy2 * v16), 0xD91D3657uLL);
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v19 = CGBitmapContextCreate(v17, self->width, self->height, 8uLL, 4 * self->bytesPerRow, DeviceRGB, 5u);
   if (v19)
@@ -162,7 +162,7 @@
     v22.size.height = Height;
     v22.origin.x = 0.0;
     v22.origin.y = 0.0;
-    CGContextDrawImage(v20, v22, a3);
+    CGContextDrawImage(v20, v22, image);
     CGContextRelease(v20);
   }
 
@@ -172,17 +172,17 @@
   return self;
 }
 
-- (CAMBurstYUVImage)initWithCIImage:(id)a3 ctx:(id)a4 maxDimension:(int)a5
+- (CAMBurstYUVImage)initWithCIImage:(id)image ctx:(id)ctx maxDimension:(int)dimension
 {
-  [a3 extent];
+  [image extent];
   v10 = v9;
   v12 = v11;
   v13 = v7;
   v14 = v8;
   v15 = v7;
-  v16 = v8;
+  dimensionCopy = v8;
   v17 = 24;
-  v18 = ((a5 / v8) * v7);
+  v18 = ((dimension / v8) * v7);
   v19 = 28;
   v20 = 24;
   if (v7 > v8)
@@ -190,13 +190,13 @@
     v20 = 28;
   }
 
-  if (v15 > v16)
+  if (v15 > dimensionCopy)
   {
-    v18 = ((a5 / v7) * v8);
+    v18 = ((dimension / v7) * v8);
     v19 = 24;
   }
 
-  v21 = v15 <= a5 && v16 <= a5;
+  v21 = v15 <= dimension && dimensionCopy <= dimension;
   if (!v21)
   {
     v17 = v20;
@@ -208,10 +208,10 @@
   if (!v21)
   {
     v22 = v19;
-    v16 = a5;
+    dimensionCopy = dimension;
   }
 
-  *(&self->super.isa + v22) = v16;
+  *(&self->super.isa + v22) = dimensionCopy;
   self->pixelBuffer = 0;
   self->ioSurf = 0;
   self->dataPtr = 0;
@@ -251,7 +251,7 @@
   self->ioSurf = v38;
   if (v38)
   {
-    [a4 render:a3 toIOSurface:v38 bounds:0 colorSpace:{v10, v12, v13, v14}];
+    [ctx render:image toIOSurface:v38 bounds:0 colorSpace:{v10, v12, v13, v14}];
     IOSurfaceLock(self->ioSurf, 0, 0);
     self->width = IOSurfaceGetWidth(self->ioSurf);
     self->height = IOSurfaceGetHeight(self->ioSurf);
@@ -273,24 +273,24 @@
   return self;
 }
 
-- (CAMBurstYUVImage)initWithIOSurface:(__IOSurface *)a3 maxDimension:(int)a4
+- (CAMBurstYUVImage)initWithIOSurface:(__IOSurface *)surface maxDimension:(int)dimension
 {
-  Width = IOSurfaceGetWidth(a3);
-  Height = IOSurfaceGetHeight(a3);
+  Width = IOSurfaceGetWidth(surface);
+  Height = IOSurfaceGetHeight(surface);
   v9 = Height;
-  if (Width > a4 || Height > a4)
+  if (Width > dimension || Height > dimension)
   {
-    v13 = a4;
+    dimensionCopy = dimension;
     if (Width <= Height)
     {
-      v12 = ((v13 / Height) * Width);
+      v12 = ((dimensionCopy / Height) * Width);
       v10 = 28;
       v11 = 24;
     }
 
     else
     {
-      v12 = ((v13 / Width) * Height);
+      v12 = ((dimensionCopy / Width) * Height);
       v10 = 24;
       v11 = 28;
     }
@@ -301,19 +301,19 @@
     v10 = 28;
     v11 = 24;
     v12 = Width;
-    a4 = Height;
+    dimension = Height;
   }
 
   *(&self->super.isa + v11) = v12;
-  *(&self->super.isa + v10) = a4;
+  *(&self->super.isa + v10) = dimension;
   self->pixelBuffer = 0;
   self->ioSurf = 0;
   self->dataPtr = 0;
-  PixelFormat = IOSurfaceGetPixelFormat(a3);
+  PixelFormat = IOSurfaceGetPixelFormat(surface);
   if (self->width == Width && self->height == v9 && PixelFormat == 875704422)
   {
-    self->ioSurf = a3;
-    CFRetain(a3);
+    self->ioSurf = surface;
+    CFRetain(surface);
     IOSurfaceLock(self->ioSurf, 1u, 0);
     self->width = IOSurfaceGetWidth(self->ioSurf);
     self->height = IOSurfaceGetHeight(self->ioSurf);
@@ -325,7 +325,7 @@
   else
   {
     pixelBufferOut = 0;
-    CVPixelBufferCreateWithIOSurface(0, a3, 0, &pixelBufferOut);
+    CVPixelBufferCreateWithIOSurface(0, surface, 0, &pixelBufferOut);
     pixelBuffer = 0;
     v15 = MEMORY[0x1E695E9D8];
     v16 = MEMORY[0x1E695E9E8];

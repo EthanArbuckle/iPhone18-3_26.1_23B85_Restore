@@ -1,29 +1,29 @@
 @interface SBUIStartupToLoginWindowAnimationController
-- (SBUIStartupToLoginWindowAnimationController)initWithTransitionContextProvider:(id)a3 overlay:(id)a4;
+- (SBUIStartupToLoginWindowAnimationController)initWithTransitionContextProvider:(id)provider overlay:(id)overlay;
 - (id)_getTransitionWindow;
 - (void)_cleanupAnimation;
-- (void)_setHidden:(BOOL)a3;
+- (void)_setHidden:(BOOL)hidden;
 - (void)_startAnimation;
 @end
 
 @implementation SBUIStartupToLoginWindowAnimationController
 
-- (SBUIStartupToLoginWindowAnimationController)initWithTransitionContextProvider:(id)a3 overlay:(id)a4
+- (SBUIStartupToLoginWindowAnimationController)initWithTransitionContextProvider:(id)provider overlay:(id)overlay
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  providerCopy = provider;
+  overlayCopy = overlay;
+  if (!providerCopy)
   {
     [SBUIStartupToLoginWindowAnimationController initWithTransitionContextProvider:a2 overlay:self];
   }
 
   v17.receiver = self;
   v17.super_class = SBUIStartupToLoginWindowAnimationController;
-  v9 = [(SBUIMainScreenAnimationController *)&v17 initWithTransitionContextProvider:v7];
+  v9 = [(SBUIMainScreenAnimationController *)&v17 initWithTransitionContextProvider:providerCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_persistentSnapshotOverlay, a4);
+    objc_storeStrong(&v9->_persistentSnapshotOverlay, overlay);
     v11 = objc_alloc_init(MEMORY[0x277CF0D08]);
     waitForLoginAppToFinishLaunchingTransaction = v10->_waitForLoginAppToFinishLaunchingTransaction;
     v10->_waitForLoginAppToFinishLaunchingTransaction = v11;
@@ -32,10 +32,10 @@
     [(SBUIAnimationController *)v10 delayAnimationUntilTransactionFinishes:v10->_waitForLoginAppToFinishLaunchingTransaction];
     [(BSTransaction *)v10->_waitForLoginAppToFinishLaunchingTransaction begin];
     v13 = +[SBLockScreenManager sharedInstance];
-    v14 = [v13 lockScreenEnvironment];
-    v15 = [v14 rootViewController];
+    lockScreenEnvironment = [v13 lockScreenEnvironment];
+    rootViewController = [lockScreenEnvironment rootViewController];
 
-    [v15 addLoginObserver:v10];
+    [rootViewController addLoginObserver:v10];
   }
 
   return v10;
@@ -75,26 +75,26 @@ uint64_t __67__SBUIStartupToLoginWindowAnimationController__getTransitionWindow_
   return [v7 setUserInteractionEnabled:0];
 }
 
-- (void)_setHidden:(BOOL)a3
+- (void)_setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(SBUIStartupToLoginWindowAnimationController *)self _getTransitionWindow];
-  [v5 setHidden:v3];
+  hiddenCopy = hidden;
+  _getTransitionWindow = [(SBUIStartupToLoginWindowAnimationController *)self _getTransitionWindow];
+  [_getTransitionWindow setHidden:hiddenCopy];
 
   v6.receiver = self;
   v6.super_class = SBUIStartupToLoginWindowAnimationController;
-  [(SBUIAnimationController *)&v6 _setHidden:v3];
+  [(SBUIAnimationController *)&v6 _setHidden:hiddenCopy];
 }
 
 - (void)_startAnimation
 {
-  v3 = [(SBUIAnimationController *)self containerView];
-  v4 = [MEMORY[0x277D75348] blackColor];
-  [v3 setBackgroundColor:v4];
+  containerView = [(SBUIAnimationController *)self containerView];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [containerView setBackgroundColor:blackColor];
 
   persistentSnapshotOverlay = self->_persistentSnapshotOverlay;
-  v6 = [(SBUIStartupToLoginWindowAnimationController *)self animationSettings];
-  [(BKSDisplayRenderOverlay *)persistentSnapshotOverlay dismissWithAnimation:v6];
+  animationSettings = [(SBUIStartupToLoginWindowAnimationController *)self animationSettings];
+  [(BKSDisplayRenderOverlay *)persistentSnapshotOverlay dismissWithAnimation:animationSettings];
 
   v7 = dispatch_time(0, 500000000);
   block[0] = MEMORY[0x277D85DD0];
@@ -129,10 +129,10 @@ void __62__SBUIStartupToLoginWindowAnimationController__startAnimation__block_in
 - (void)_cleanupAnimation
 {
   v5 = +[SBLockScreenManager sharedInstance];
-  v3 = [v5 lockScreenEnvironment];
-  v4 = [v3 rootViewController];
+  lockScreenEnvironment = [v5 lockScreenEnvironment];
+  rootViewController = [lockScreenEnvironment rootViewController];
 
-  [v4 removeLoginObserver:self];
+  [rootViewController removeLoginObserver:self];
 }
 
 - (void)initWithTransitionContextProvider:(uint64_t)a1 overlay:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

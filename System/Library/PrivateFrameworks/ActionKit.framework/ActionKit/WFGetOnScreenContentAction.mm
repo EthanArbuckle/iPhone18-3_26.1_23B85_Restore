@@ -1,22 +1,22 @@
 @interface WFGetOnScreenContentAction
 - (id)disabledOnPlatforms;
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFGetOnScreenContentAction
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a5;
+  nameCopy = name;
   v7 = WFLocalizedString(@"Allow “%1$@” to get current on screen content?");
-  v8 = [v5 localizedStringWithFormat:v7, v6];
+  nameCopy = [v5 localizedStringWithFormat:v7, nameCopy];
 
-  return v8;
+  return nameCopy;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v4 = objc_alloc_init(MEMORY[0x277D7A068]);
   v5[0] = MEMORY[0x277D85DD0];
@@ -43,8 +43,8 @@ uint64_t __57__WFGetOnScreenContentAction_runAsynchronouslyWithInput___block_inv
 {
   v5.receiver = self;
   v5.super_class = WFGetOnScreenContentAction;
-  v2 = [(WFGetOnScreenContentAction *)&v5 disabledOnPlatforms];
-  v3 = [v2 arrayByAddingObject:*MEMORY[0x277D7CC80]];
+  disabledOnPlatforms = [(WFGetOnScreenContentAction *)&v5 disabledOnPlatforms];
+  v3 = [disabledOnPlatforms arrayByAddingObject:*MEMORY[0x277D7CC80]];
 
   return v3;
 }

@@ -1,41 +1,41 @@
 @interface BMLocationSemantic
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMLocationSemantic)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMLocationSemantic)initWithStarting:(id)a3 userSpecificPlaceType:(int)a4 placeType:(int)a5 loiIdentifier:(id)a6;
-- (BOOL)isEqual:(id)a3;
+- (BMLocationSemantic)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMLocationSemantic)initWithStarting:(id)starting userSpecificPlaceType:(int)type placeType:(int)placeType loiIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSUUID)loiIdentifier;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMLocationSemantic
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if ((!-[BMLocationSemantic hasStarting](self, "hasStarting") && ![v5 hasStarting] || -[BMLocationSemantic hasStarting](self, "hasStarting") && objc_msgSend(v5, "hasStarting") && (v6 = -[BMLocationSemantic starting](self, "starting"), v6 == objc_msgSend(v5, "starting"))) && (v7 = -[BMLocationSemantic userSpecificPlaceType](self, "userSpecificPlaceType"), v7 == objc_msgSend(v5, "userSpecificPlaceType")) && (v8 = -[BMLocationSemantic placeType](self, "placeType"), v8 == objc_msgSend(v5, "placeType")))
     {
-      v9 = [(BMLocationSemantic *)self loiIdentifier];
-      v10 = [v5 loiIdentifier];
-      if (v9 == v10)
+      loiIdentifier = [(BMLocationSemantic *)self loiIdentifier];
+      loiIdentifier2 = [v5 loiIdentifier];
+      if (loiIdentifier == loiIdentifier2)
       {
         v13 = 1;
       }
 
       else
       {
-        v11 = [(BMLocationSemantic *)self loiIdentifier];
-        v12 = [v5 loiIdentifier];
-        v13 = [v11 isEqual:v12];
+        loiIdentifier3 = [(BMLocationSemantic *)self loiIdentifier];
+        loiIdentifier4 = [v5 loiIdentifier];
+        v13 = [loiIdentifier3 isEqual:loiIdentifier4];
       }
     }
 
@@ -84,43 +84,43 @@
 
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMLocationSemantic userSpecificPlaceType](self, "userSpecificPlaceType")}];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMLocationSemantic placeType](self, "placeType")}];
-  v6 = [(BMLocationSemantic *)self loiIdentifier];
-  v7 = [v6 UUIDString];
+  loiIdentifier = [(BMLocationSemantic *)self loiIdentifier];
+  uUIDString = [loiIdentifier UUIDString];
 
   v15[0] = @"starting";
-  v8 = v3;
+  null = v3;
   if (!v3)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[0] = v8;
+  v16[0] = null;
   v15[1] = @"userSpecificPlaceType";
-  v9 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[1] = v9;
+  v16[1] = null2;
   v15[2] = @"placeType";
-  v10 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[2] = v10;
+  v16[2] = null3;
   v15[3] = @"loiIdentifier";
-  v11 = v7;
-  if (!v7)
+  null4 = uUIDString;
+  if (!uUIDString)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[3] = v11;
+  v16[3] = null4;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:4];
-  if (v7)
+  if (uUIDString)
   {
     if (v5)
     {
@@ -169,16 +169,16 @@ LABEL_16:
   return v12;
 }
 
-- (BMLocationSemantic)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMLocationSemantic)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"starting"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"starting"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v41 = 0;
 LABEL_4:
-    v8 = [v6 objectForKeyedSubscript:@"userSpecificPlaceType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"userSpecificPlaceType"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -192,10 +192,10 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v13 = 0;
-            v14 = 0;
+            selfCopy = 0;
             goto LABEL_44;
           }
 
@@ -207,8 +207,8 @@ LABEL_4:
           v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
           v27 = [v25 initWithDomain:v26 code:2 userInfo:v15];
           v13 = 0;
-          v14 = 0;
-          *a4 = v27;
+          selfCopy = 0;
+          *error = v27;
           goto LABEL_43;
         }
 
@@ -223,11 +223,11 @@ LABEL_4:
       v9 = 0;
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"placeType"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"placeType"];
     v40 = v9;
     if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      v16 = a4;
+      errorCopy2 = error;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -239,10 +239,10 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v17 = 0;
-            v14 = 0;
+            selfCopy = 0;
             v13 = v40;
             goto LABEL_43;
           }
@@ -253,7 +253,7 @@ LABEL_4:
           v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"placeType"];
           v47 = v19;
           v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
-          *v16 = [v28 initWithDomain:v29 code:2 userInfo:v30];
+          *errorCopy2 = [v28 initWithDomain:v29 code:2 userInfo:v30];
 
           v17 = 0;
           goto LABEL_37;
@@ -267,11 +267,11 @@ LABEL_4:
 
     else
     {
-      v16 = a4;
+      errorCopy2 = error;
       v17 = 0;
     }
 
-    v19 = [v6 objectForKeyedSubscript:@"loiIdentifier"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"loiIdentifier"];
     if (!v19 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v20 = 0;
@@ -279,7 +279,7 @@ LABEL_27:
       v13 = v40;
       self = -[BMLocationSemantic initWithStarting:userSpecificPlaceType:placeType:loiIdentifier:](self, "initWithStarting:userSpecificPlaceType:placeType:loiIdentifier:", v41, [v40 intValue], objc_msgSend(v17, "intValue"), v20);
 
-      v14 = self;
+      selfCopy = self;
 LABEL_42:
 
 LABEL_43:
@@ -289,12 +289,12 @@ LABEL_43:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v38 = self;
+      selfCopy2 = self;
       v21 = v19;
       v22 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v21];
       if (!v22)
       {
-        if (v16)
+        if (errorCopy2)
         {
           v37 = objc_alloc(MEMORY[0x1E696ABC0]);
           v31 = *MEMORY[0x1E698F240];
@@ -302,23 +302,23 @@ LABEL_43:
           v32 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"-initWithUUIDString: for %@ returned nil", @"loiIdentifier"];
           v45 = v32;
           v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
-          *v16 = [v37 initWithDomain:v31 code:2 userInfo:v33];
+          *errorCopy2 = [v37 initWithDomain:v31 code:2 userInfo:v33];
         }
 
-        v14 = 0;
+        selfCopy = 0;
         v19 = v21;
-        self = v38;
+        self = selfCopy2;
         v13 = v40;
         goto LABEL_42;
       }
 
       v20 = v22;
 
-      self = v38;
+      self = selfCopy2;
       goto LABEL_27;
     }
 
-    if (v16)
+    if (errorCopy2)
     {
       v39 = objc_alloc(MEMORY[0x1E696ABC0]);
       v36 = *MEMORY[0x1E698F240];
@@ -326,11 +326,11 @@ LABEL_43:
       v23 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"loiIdentifier"];
       v43 = v23;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-      *v16 = [v39 initWithDomain:v36 code:2 userInfo:v24];
+      *errorCopy2 = [v39 initWithDomain:v36 code:2 userInfo:v24];
     }
 
 LABEL_37:
-    v14 = 0;
+    selfCopy = 0;
     v13 = v40;
     goto LABEL_42;
   }
@@ -342,7 +342,7 @@ LABEL_37:
     goto LABEL_4;
   }
 
-  if (a4)
+  if (error)
   {
     v11 = objc_alloc(MEMORY[0x1E696ABC0]);
     v12 = *MEMORY[0x1E698F240];
@@ -351,33 +351,33 @@ LABEL_37:
     v51[0] = v13;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v51 forKeys:&v50 count:1];
     v41 = 0;
-    v14 = 0;
-    *a4 = [v11 initWithDomain:v12 code:2 userInfo:v8];
+    selfCopy = 0;
+    *error = [v11 initWithDomain:v12 code:2 userInfo:v8];
 LABEL_44:
 
     goto LABEL_45;
   }
 
   v41 = 0;
-  v14 = 0;
+  selfCopy = 0;
 LABEL_45:
 
   v34 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMLocationSemantic *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (self->_hasStarting)
   {
     starting = self->_starting;
@@ -394,9 +394,9 @@ LABEL_45:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v41.receiver = self;
   v41.super_class = BMLocationSemantic;
   v5 = [(BMEventBase *)&v41 init];
@@ -405,12 +405,12 @@ LABEL_45:
     goto LABEL_67;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_65;
       }
@@ -421,18 +421,18 @@ LABEL_45:
       while (1)
       {
         v42 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v42 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v42 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v42 & 0x7F) << v7;
@@ -450,9 +450,9 @@ LABEL_45:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_65;
       }
@@ -482,18 +482,18 @@ LABEL_41:
         while (1)
         {
           v42 = 0;
-          v25 = [v4 position] + 1;
-          if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 1, v26 <= objc_msgSend(v4, "length")))
+          v25 = [fromCopy position] + 1;
+          if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 1, v26 <= objc_msgSend(fromCopy, "length")))
           {
-            v27 = [v4 data];
-            [v27 getBytes:&v42 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v42 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v42 & 0x7F) << v23;
@@ -510,7 +510,7 @@ LABEL_41:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v18 > 3)
+        if (([fromCopy hasError] & 1) != 0 || v18 > 3)
         {
 LABEL_59:
           LODWORD(v18) = 0;
@@ -527,8 +527,8 @@ LABEL_61:
       v5->_raw_loiIdentifier = v35;
 
 LABEL_64:
-      v38 = [v4 position];
-      if (v38 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_65;
       }
@@ -543,18 +543,18 @@ LABEL_64:
       while (1)
       {
         v42 = 0;
-        v31 = [v4 position] + 1;
-        if (v31 >= [v4 position] && (v32 = objc_msgSend(v4, "position") + 1, v32 <= objc_msgSend(v4, "length")))
+        v31 = [fromCopy position] + 1;
+        if (v31 >= [fromCopy position] && (v32 = objc_msgSend(fromCopy, "position") + 1, v32 <= objc_msgSend(fromCopy, "length")))
         {
-          v33 = [v4 data];
-          [v33 getBytes:&v42 range:{objc_msgSend(v4, "position"), 1}];
+          data3 = [fromCopy data];
+          [data3 getBytes:&v42 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v30 |= (v42 & 0x7F) << v28;
@@ -572,7 +572,7 @@ LABEL_64:
         }
       }
 
-      v34 = (v30 != 0) & ~[v4 hasError];
+      v34 = (v30 != 0) & ~[fromCopy hasError];
 LABEL_63:
       v5->_starting = v34;
       goto LABEL_64;
@@ -589,18 +589,18 @@ LABEL_63:
     while (1)
     {
       v42 = 0;
-      v19 = [v4 position] + 1;
-      if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+      v19 = [fromCopy position] + 1;
+      if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
       {
-        v21 = [v4 data];
-        [v21 getBytes:&v42 range:{objc_msgSend(v4, "position"), 1}];
+        data4 = [fromCopy data];
+        [data4 getBytes:&v42 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v18 |= (v42 & 0x7F) << v16;
@@ -617,7 +617,7 @@ LABEL_63:
       }
     }
 
-    if (([v4 hasError] & 1) != 0 || v18 > 4)
+    if (([fromCopy hasError] & 1) != 0 || v18 > 4)
     {
 LABEL_55:
       LODWORD(v18) = 0;
@@ -628,7 +628,7 @@ LABEL_55:
   }
 
 LABEL_65:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_66:
     v39 = 0;
@@ -649,26 +649,26 @@ LABEL_67:
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMLocationSemantic starting](self, "starting")}];
   v5 = BMLocationSemanticUserSpecificPlaceTypeAsString([(BMLocationSemantic *)self userSpecificPlaceType]);
   v6 = BMLocationSemanticPlaceTypeAsString([(BMLocationSemantic *)self placeType]);
-  v7 = [(BMLocationSemantic *)self loiIdentifier];
-  v8 = [v3 initWithFormat:@"BMLocationSemantic with starting: %@, userSpecificPlaceType: %@, placeType: %@, loiIdentifier: %@", v4, v5, v6, v7];
+  loiIdentifier = [(BMLocationSemantic *)self loiIdentifier];
+  v8 = [v3 initWithFormat:@"BMLocationSemantic with starting: %@, userSpecificPlaceType: %@, placeType: %@, loiIdentifier: %@", v4, v5, v6, loiIdentifier];
 
   return v8;
 }
 
-- (BMLocationSemantic)initWithStarting:(id)a3 userSpecificPlaceType:(int)a4 placeType:(int)a5 loiIdentifier:(id)a6
+- (BMLocationSemantic)initWithStarting:(id)starting userSpecificPlaceType:(int)type placeType:(int)placeType loiIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a6;
+  startingCopy = starting;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = BMLocationSemantic;
   v12 = [(BMEventBase *)&v16 init];
   if (v12)
   {
     v12->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v10)
+    if (startingCopy)
     {
       v12->_hasStarting = 1;
-      v12->_starting = [v10 BOOLValue];
+      v12->_starting = [startingCopy BOOLValue];
     }
 
     else
@@ -677,20 +677,20 @@ LABEL_67:
       v12->_starting = 0;
     }
 
-    v12->_userSpecificPlaceType = a4;
-    v12->_placeType = a5;
-    if (v11)
+    v12->_userSpecificPlaceType = type;
+    v12->_placeType = placeType;
+    if (identifierCopy)
     {
-      v13 = [v11 UUIDString];
+      uUIDString = [identifierCopy UUIDString];
     }
 
     else
     {
-      v13 = 0;
+      uUIDString = 0;
     }
 
     raw_loiIdentifier = v12->_raw_loiIdentifier;
-    v12->_raw_loiIdentifier = v13;
+    v12->_raw_loiIdentifier = uUIDString;
   }
 
   return v12;
@@ -732,24 +732,24 @@ LABEL_67:
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  if (a4)
+  dataCopy = data;
+  if (version)
   {
-    if (a4 != 1)
+    if (version != 1)
     {
       v9 = 0;
       goto LABEL_9;
     }
 
-    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:v5];
+    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:dataCopy];
     v7 = BMLocationSemantic;
   }
 
   else
   {
-    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:v5];
+    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:dataCopy];
     v7 = BMLocationSemantic_v0;
   }
 
@@ -757,7 +757,7 @@ LABEL_67:
   v9 = v8;
   if (v8)
   {
-    *(v8 + 28) = a4;
+    *(v8 + 28) = version;
   }
 
 LABEL_9:

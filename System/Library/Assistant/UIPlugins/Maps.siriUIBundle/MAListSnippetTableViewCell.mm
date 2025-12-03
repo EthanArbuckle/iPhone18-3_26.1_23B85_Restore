@@ -1,27 +1,27 @@
 @interface MAListSnippetTableViewCell
-- (MAListSnippetTableViewCell)initWithReuseIdentifier:(id)a3;
+- (MAListSnippetTableViewCell)initWithReuseIdentifier:(id)identifier;
 @end
 
 @implementation MAListSnippetTableViewCell
 
-- (MAListSnippetTableViewCell)initWithReuseIdentifier:(id)a3
+- (MAListSnippetTableViewCell)initWithReuseIdentifier:(id)identifier
 {
   v22.receiver = self;
   v22.super_class = MAListSnippetTableViewCell;
-  v3 = [(MAListSnippetTableViewCell *)&v22 initWithStyle:0 reuseIdentifier:a3];
+  v3 = [(MAListSnippetTableViewCell *)&v22 initWithStyle:0 reuseIdentifier:identifier];
   if (v3)
   {
     v4 = [MAResultView alloc];
-    v5 = [(MAListSnippetTableViewCell *)v3 contentView];
-    [v5 frame];
+    contentView = [(MAListSnippetTableViewCell *)v3 contentView];
+    [contentView frame];
     v6 = [(MAResultView *)v4 initWithFrame:?];
     resultView = v3->_resultView;
     v3->_resultView = v6;
 
     [(MAResultView *)v3->_resultView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(MAResultView *)v3->_resultView _ma_updateSemanticContentAttribute];
-    v8 = [(MAListSnippetTableViewCell *)v3 contentView];
-    [v8 addSubview:v3->_resultView];
+    contentView2 = [(MAListSnippetTableViewCell *)v3 contentView];
+    [contentView2 addSubview:v3->_resultView];
 
     v9 = objc_opt_new();
     v18 = 0u;

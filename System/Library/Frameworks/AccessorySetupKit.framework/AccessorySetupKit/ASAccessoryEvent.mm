@@ -1,12 +1,12 @@
 @interface ASAccessoryEvent
-- (ASAccessoryEvent)initWithEventType:(int64_t)a3;
-- (ASAccessoryEvent)initWithEventType:(int64_t)a3 error:(id)a4;
-- (id)descriptionWithLevel:(int)a3;
+- (ASAccessoryEvent)initWithEventType:(int64_t)type;
+- (ASAccessoryEvent)initWithEventType:(int64_t)type error:(id)error;
+- (id)descriptionWithLevel:(int)level;
 @end
 
 @implementation ASAccessoryEvent
 
-- (ASAccessoryEvent)initWithEventType:(int64_t)a3
+- (ASAccessoryEvent)initWithEventType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = ASAccessoryEvent;
@@ -14,30 +14,30 @@
   v5 = v4;
   if (v4)
   {
-    v4->_eventType = a3;
+    v4->_eventType = type;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (ASAccessoryEvent)initWithEventType:(int64_t)a3 error:(id)a4
+- (ASAccessoryEvent)initWithEventType:(int64_t)type error:(id)error
 {
-  v7 = a4;
-  v8 = [(ASAccessoryEvent *)self initWithEventType:a3];
+  errorCopy = error;
+  v8 = [(ASAccessoryEvent *)self initWithEventType:type];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_error, a4);
+    objc_storeStrong(&v8->_error, error);
     v10 = v9;
   }
 
   return v9;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }

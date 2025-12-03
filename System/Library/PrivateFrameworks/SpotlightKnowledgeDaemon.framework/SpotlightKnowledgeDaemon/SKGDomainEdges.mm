@@ -1,6 +1,6 @@
 @interface SKGDomainEdges
 + (id)labels;
-- (SKGDomainEdges)initWithDomainNode:(id)a3 inGraph:(id)a4;
+- (SKGDomainEdges)initWithDomainNode:(id)node inGraph:(id)graph;
 @end
 
 @implementation SKGDomainEdges
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (SKGDomainEdges)initWithDomainNode:(id)a3 inGraph:(id)a4
+- (SKGDomainEdges)initWithDomainNode:(id)node inGraph:(id)graph
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB98] setWithObject:a3];
-  v8 = [v6 graph];
+  graphCopy = graph;
+  v7 = [MEMORY[0x277CBEB98] setWithObject:node];
+  graph = [graphCopy graph];
   v11.receiver = self;
   v11.super_class = SKGDomainEdges;
-  v9 = [(MAElementCollection *)&v11 initWithSet:v7 graph:v8];
+  v9 = [(MAElementCollection *)&v11 initWithSet:v7 graph:graph];
 
   return v9;
 }

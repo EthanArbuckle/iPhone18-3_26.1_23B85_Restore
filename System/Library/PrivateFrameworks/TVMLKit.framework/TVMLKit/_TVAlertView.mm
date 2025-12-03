@@ -1,23 +1,23 @@
 @interface _TVAlertView
-+ (id)_newLabelWithText:(id)a3;
++ (id)_newLabelWithText:(id)text;
 - (CGSize)imageSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TVAlertView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TVAlertView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setAdditionalLabels:(id)a3;
-- (void)setImageProxy:(id)a3;
-- (void)setImageSize:(CGSize)a3;
-- (void)setMessage:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setAdditionalLabels:(id)labels;
+- (void)setImageProxy:(id)proxy;
+- (void)setImageSize:(CGSize)size;
+- (void)setMessage:(id)message;
+- (void)setTitle:(id)title;
 @end
 
 @implementation _TVAlertView
 
-- (_TVAlertView)initWithFrame:(CGRect)a3
+- (_TVAlertView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = _TVAlertView;
-  v3 = [(_TVAlertView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVAlertView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(_TVImageView);
@@ -40,8 +40,8 @@
     [(UILabel *)v10 setFont:v11];
 
     v12 = v3->_titleLabel;
-    v13 = [MEMORY[0x277D75348] blackColor];
-    [(UILabel *)v12 setTextColor:v13];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UILabel *)v12 setTextColor:blackColor];
 
     [(UILabel *)v3->_titleLabel setTextAlignment:1];
     [(UILabel *)v3->_titleLabel setNumberOfLines:0];
@@ -55,8 +55,8 @@
     [(UILabel *)v16 setFont:v17];
 
     v18 = v3->_messageLabel;
-    v19 = [MEMORY[0x277D75348] blackColor];
-    [(UILabel *)v18 setTextColor:v19];
+    blackColor2 = [MEMORY[0x277D75348] blackColor];
+    [(UILabel *)v18 setTextColor:blackColor2];
 
     [(UILabel *)v3->_messageLabel setTextAlignment:1];
     [(UILabel *)v3->_messageLabel setNumberOfLines:0];
@@ -87,8 +87,8 @@
     [(_TVImageView *)self->_imageView setHidden:1];
   }
 
-  v3 = [(UILabel *)self->_titleLabel text];
-  v4 = [v3 length];
+  text = [(UILabel *)self->_titleLabel text];
+  v4 = [text length];
 
   titleLabel = self->_titleLabel;
   if (v4)
@@ -109,8 +109,8 @@
     [(UILabel *)titleLabel setHidden:1];
   }
 
-  v6 = [(UILabel *)self->_messageLabel text];
-  v7 = [v6 length];
+  text2 = [(UILabel *)self->_messageLabel text];
+  v7 = [text2 length];
 
   messageLabel = self->_messageLabel;
   if (v7)
@@ -168,9 +168,9 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v33 = *MEMORY[0x277D85DE8];
   if (self->_imageProxy)
   {
@@ -259,13 +259,13 @@
   return result;
 }
 
-- (void)setAdditionalLabels:(id)a3
+- (void)setAdditionalLabels:(id)labels
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![(NSArray *)self->_additionalLabels isEqualToArray:v4])
+  labelsCopy = labels;
+  if (![(NSArray *)self->_additionalLabels isEqualToArray:labelsCopy])
   {
-    v5 = [v4 copy];
+    v5 = [labelsCopy copy];
     additionalLabels = self->_additionalLabels;
     self->_additionalLabels = v5;
 
@@ -315,34 +315,34 @@
   }
 }
 
-- (void)setImageProxy:(id)a3
+- (void)setImageProxy:(id)proxy
 {
-  v5 = a3;
-  if (self->_imageProxy != v5)
+  proxyCopy = proxy;
+  if (self->_imageProxy != proxyCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_imageProxy, a3);
+    v6 = proxyCopy;
+    objc_storeStrong(&self->_imageProxy, proxy);
     [(_TVImageView *)self->_imageView setImageProxy:self->_imageProxy];
     [(_TVAlertView *)self setNeedsLayout];
-    v5 = v6;
+    proxyCopy = v6;
   }
 }
 
-- (void)setImageSize:(CGSize)a3
+- (void)setImageSize:(CGSize)size
 {
-  if (self->_imageSize.width != a3.width || self->_imageSize.height != a3.height)
+  if (self->_imageSize.width != size.width || self->_imageSize.height != size.height)
   {
-    self->_imageSize = a3;
+    self->_imageSize = size;
     [(_TVAlertView *)self setNeedsLayout];
   }
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v7 = a3;
+  messageCopy = message;
   if (![(NSString *)self->_message isEqualToString:?])
   {
-    v4 = [v7 copy];
+    v4 = [messageCopy copy];
     message = self->_message;
     self->_message = v4;
 
@@ -353,12 +353,12 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v7 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_title isEqualToString:?])
   {
-    v4 = [v7 copy];
+    v4 = [titleCopy copy];
     title = self->_title;
     self->_title = v4;
 
@@ -369,19 +369,19 @@
   }
 }
 
-+ (id)_newLabelWithText:(id)a3
++ (id)_newLabelWithText:(id)text
 {
   v3 = MEMORY[0x277D756B8];
-  v4 = a3;
+  textCopy = text;
   v5 = objc_alloc_init(v3);
   v6 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76940]];
   [v5 setFont:v6];
 
-  v7 = [MEMORY[0x277D75348] systemGrayColor];
-  [v5 setTextColor:v7];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [v5 setTextColor:systemGrayColor];
 
   [v5 setTextAlignment:1];
-  [v5 setText:v4];
+  [v5 setText:textCopy];
 
   [v5 setNumberOfLines:0];
   return v5;

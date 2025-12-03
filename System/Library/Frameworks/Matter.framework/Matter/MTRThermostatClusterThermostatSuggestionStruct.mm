@@ -1,6 +1,6 @@
 @interface MTRThermostatClusterThermostatSuggestionStruct
 - (MTRThermostatClusterThermostatSuggestionStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -17,9 +17,9 @@
     uniqueID = v2->_uniqueID;
     v2->_uniqueID = &unk_284C3E588;
 
-    v5 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     presetHandle = v3->_presetHandle;
-    v3->_presetHandle = v5;
+    v3->_presetHandle = data;
 
     effectiveTime = v3->_effectiveTime;
     v3->_effectiveTime = &unk_284C3E588;
@@ -31,20 +31,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThermostatClusterThermostatSuggestionStruct);
-  v5 = [(MTRThermostatClusterThermostatSuggestionStruct *)self uniqueID];
-  [(MTRThermostatClusterThermostatSuggestionStruct *)v4 setUniqueID:v5];
+  uniqueID = [(MTRThermostatClusterThermostatSuggestionStruct *)self uniqueID];
+  [(MTRThermostatClusterThermostatSuggestionStruct *)v4 setUniqueID:uniqueID];
 
-  v6 = [(MTRThermostatClusterThermostatSuggestionStruct *)self presetHandle];
-  [(MTRThermostatClusterThermostatSuggestionStruct *)v4 setPresetHandle:v6];
+  presetHandle = [(MTRThermostatClusterThermostatSuggestionStruct *)self presetHandle];
+  [(MTRThermostatClusterThermostatSuggestionStruct *)v4 setPresetHandle:presetHandle];
 
-  v7 = [(MTRThermostatClusterThermostatSuggestionStruct *)self effectiveTime];
-  [(MTRThermostatClusterThermostatSuggestionStruct *)v4 setEffectiveTime:v7];
+  effectiveTime = [(MTRThermostatClusterThermostatSuggestionStruct *)self effectiveTime];
+  [(MTRThermostatClusterThermostatSuggestionStruct *)v4 setEffectiveTime:effectiveTime];
 
-  v8 = [(MTRThermostatClusterThermostatSuggestionStruct *)self expirationTime];
-  [(MTRThermostatClusterThermostatSuggestionStruct *)v4 setExpirationTime:v8];
+  expirationTime = [(MTRThermostatClusterThermostatSuggestionStruct *)self expirationTime];
+  [(MTRThermostatClusterThermostatSuggestionStruct *)v4 setExpirationTime:expirationTime];
 
   return v4;
 }

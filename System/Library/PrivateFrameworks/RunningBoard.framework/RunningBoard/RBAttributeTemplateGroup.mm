@@ -10,15 +10,15 @@
   attributes = self->_attributes;
   if (attributes)
   {
-    v3 = attributes;
+    array = attributes;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSString)description

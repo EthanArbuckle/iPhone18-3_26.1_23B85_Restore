@@ -1,33 +1,33 @@
 @interface AAUSBSupportedDeviceManagerDaemon
 + (id)sharedAAUSBSupportedDeviceManagerDaemon;
 - (AAUSBSupportedDeviceManagerDaemon)init;
-- (BOOL)_isWxPaired:(id)a3;
+- (BOOL)_isWxPaired:(id)paired;
 - (void)_accessoryDiscoveryEnsureStarted;
 - (void)_accessoryDiscoveryEnsureStopped;
 - (void)_activate;
-- (void)_bluetoothDeviceFound:(id)a3;
-- (void)_bluetoothDeviceLost:(id)a3;
-- (void)_bluetoothStateChanged:(int64_t)a3;
-- (void)_connectToUSBDevice:(id)a3 isUserInitiate:(BOOL)a4;
+- (void)_bluetoothDeviceFound:(id)found;
+- (void)_bluetoothDeviceLost:(id)lost;
+- (void)_bluetoothStateChanged:(int64_t)changed;
+- (void)_connectToUSBDevice:(id)device isUserInitiate:(BOOL)initiate;
 - (void)_dismissAnyPairingProxCard;
 - (void)_invalidate;
-- (void)_invokeAnyProxCardUserActionCompletion:(id)a3 result:(unsigned __int8)a4;
+- (void)_invokeAnyProxCardUserActionCompletion:(id)completion result:(unsigned __int8)result;
 - (void)_logCurrentListOfUSBDevice;
 - (void)_pairedDeviceMonitorEnsureStarted;
 - (void)_pairedDeviceMonitorEnsureStopped;
 - (void)_powerMonitorEnsureStarted;
 - (void)_powerMonitorEnsureStopped;
 - (void)_prefsChanged;
-- (void)_startEffectiveUnlockedAfterBootTimer:(unint64_t)a3;
-- (void)_startPairingCompletionTimer:(id)a3;
-- (void)_startPairingModeTimer:(id)a3;
+- (void)_startEffectiveUnlockedAfterBootTimer:(unint64_t)timer;
+- (void)_startPairingCompletionTimer:(id)timer;
+- (void)_startPairingModeTimer:(id)timer;
 - (void)activate;
 - (void)invalidate;
-- (void)proxCardUserActionOnHeadphone:(id)a3 btAddress:(id)a4 withAction:(unsigned __int8)a5 completion:(id)a6;
-- (void)usbDeviceAirplaneModeChanged:(BOOL)a3 address:(id)a4;
-- (void)usbDeviceFound:(id)a3;
-- (void)usbDeviceLost:(id)a3;
-- (void)usbDevicePairingModeChanged:(BOOL)a3 address:(id)a4;
+- (void)proxCardUserActionOnHeadphone:(id)headphone btAddress:(id)address withAction:(unsigned __int8)action completion:(id)completion;
+- (void)usbDeviceAirplaneModeChanged:(BOOL)changed address:(id)address;
+- (void)usbDeviceFound:(id)found;
+- (void)usbDeviceLost:(id)lost;
+- (void)usbDevicePairingModeChanged:(BOOL)changed address:(id)address;
 @end
 
 @implementation AAUSBSupportedDeviceManagerDaemon
@@ -120,7 +120,7 @@
     v7[3] = &unk_1002B68A8;
     v3 = v4;
     v8 = v3;
-    v9 = self;
+    selfCopy = self;
     [(AADeviceManager *)v3 activateWithCompletion:v7];
   }
 }
@@ -136,14 +136,14 @@
   }
 }
 
-- (void)_connectToUSBDevice:(id)a3 isUserInitiate:(BOOL)a4
+- (void)_connectToUSBDevice:(id)device isUserInitiate:(BOOL)initiate
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
+  initiateCopy = initiate;
+  deviceCopy = device;
+  v7 = deviceCopy;
   if (self->_prefUSBAudioDevice)
   {
-    if (v6)
+    if (deviceCopy)
     {
       v8 = objc_alloc_init(CBDevice);
       [v8 setIdentifier:v7];
@@ -151,7 +151,7 @@
       [v9 setPeerDevice:v8];
       [v9 setDispatchQueue:self->_dispatchQueue];
       [v9 setConnectionFlags:2];
-      if (v4)
+      if (initiateCopy)
       {
         [v9 setConnectionFlags:{objc_msgSend(v9, "connectionFlags") | 0x30}];
       }
@@ -178,13 +178,13 @@
   }
 }
 
-- (void)_bluetoothDeviceFound:(id)a3
+- (void)_bluetoothDeviceFound:(id)found
 {
-  v4 = [a3 bluetoothAddress];
-  v10 = v4;
-  if (v4)
+  bluetoothAddress = [found bluetoothAddress];
+  v10 = bluetoothAddress;
+  if (bluetoothAddress)
   {
-    v5 = [(NSMutableDictionary *)self->_aaUSBDeviceMap objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_aaUSBDeviceMap objectForKeyedSubscript:bluetoothAddress];
     v6 = v5;
     if (v5)
     {
@@ -218,13 +218,13 @@
   }
 }
 
-- (void)_bluetoothDeviceLost:(id)a3
+- (void)_bluetoothDeviceLost:(id)lost
 {
-  v4 = [a3 bluetoothAddress];
-  v7 = v4;
-  if (v4)
+  bluetoothAddress = [lost bluetoothAddress];
+  v7 = bluetoothAddress;
+  if (bluetoothAddress)
   {
-    v5 = [(NSMutableDictionary *)self->_aaUSBDeviceMap objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_aaUSBDeviceMap objectForKeyedSubscript:bluetoothAddress];
     v6 = v5;
     if (v5)
     {
@@ -243,15 +243,15 @@
   }
 }
 
-- (void)_bluetoothStateChanged:(int64_t)a3
+- (void)_bluetoothStateChanged:(int64_t)changed
 {
   if (dword_1002F72A0 <= 30 && (dword_1002F72A0 != -1 || _LogCategory_Initialize()))
   {
-    sub_1001F8C34(self, a3);
+    sub_1001F8C34(self, changed);
   }
 
-  self->_bluetoothState = a3;
-  if (a3 == 4)
+  self->_bluetoothState = changed;
+  if (changed == 4)
   {
 
     [(AAUSBSupportedDeviceManagerDaemon *)self _dismissAnyPairingProxCard];
@@ -281,20 +281,20 @@
   [(AAUSBSupportedDeviceManagerDaemon *)self _dismissAnyPairingProxCard];
 }
 
-- (void)_invokeAnyProxCardUserActionCompletion:(id)a3 result:(unsigned __int8)a4
+- (void)_invokeAnyProxCardUserActionCompletion:(id)completion result:(unsigned __int8)result
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
+  resultCopy = result;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (!self->_proxCardUserActionCompletion)
   {
     goto LABEL_20;
   }
 
-  switch(v4)
+  switch(resultCopy)
   {
     case 3:
-      v14 = v6;
+      v14 = completionCopy;
       if (dword_1002F72A0 <= 90 && (dword_1002F72A0 != -1 || _LogCategory_Initialize()))
       {
         sub_1001F8CB0();
@@ -306,7 +306,7 @@
       v12 = 3;
       goto LABEL_17;
     case 2:
-      v14 = v6;
+      v14 = completionCopy;
       if (dword_1002F72A0 <= 90 && (dword_1002F72A0 != -1 || _LogCategory_Initialize()))
       {
         sub_1001F8CF0();
@@ -327,7 +327,7 @@ LABEL_19:
       v7 = v14;
       goto LABEL_20;
     case 1:
-      v14 = v6;
+      v14 = completionCopy;
       if (dword_1002F72A0 <= 30 && (dword_1002F72A0 != -1 || _LogCategory_Initialize()))
       {
         sub_1001F8D30();
@@ -339,17 +339,17 @@ LABEL_19:
 
   if (dword_1002F72A0 <= 90)
   {
-    v14 = v6;
-    if (dword_1002F72A0 != -1 || (v6 = _LogCategory_Initialize(), v7 = v14, v6))
+    v14 = completionCopy;
+    if (dword_1002F72A0 != -1 || (completionCopy = _LogCategory_Initialize(), v7 = v14, completionCopy))
     {
-      v6 = sub_1001F8D70();
+      completionCopy = sub_1001F8D70();
       goto LABEL_19;
     }
   }
 
 LABEL_20:
 
-  _objc_release_x1(v6, v7);
+  _objc_release_x1(completionCopy, v7);
 }
 
 - (void)_prefsChanged
@@ -479,7 +479,7 @@ LABEL_20:
   }
 }
 
-- (void)_startEffectiveUnlockedAfterBootTimer:(unint64_t)a3
+- (void)_startEffectiveUnlockedAfterBootTimer:(unint64_t)timer
 {
   if (dword_1002F72A0 <= 30 && (dword_1002F72A0 != -1 || _LogCategory_Initialize()))
   {
@@ -501,17 +501,17 @@ LABEL_20:
   dispatch_activate(v6);
 }
 
-- (void)usbDeviceFound:(id)a3
+- (void)usbDeviceFound:(id)found
 {
-  v4 = a3;
+  foundCopy = found;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000CECE8;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = foundCopy;
+  v6 = foundCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -526,61 +526,61 @@ LABEL_20:
   [(AAUSBSupportedDeviceManagerDaemon *)self _invokeAnyProxCardUserActionCompletion:0 result:3];
 }
 
-- (void)usbDeviceLost:(id)a3
+- (void)usbDeviceLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000CF598;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = lostCopy;
+  v6 = lostCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)usbDeviceAirplaneModeChanged:(BOOL)a3 address:(id)a4
+- (void)usbDeviceAirplaneModeChanged:(BOOL)changed address:(id)address
 {
-  v6 = a4;
+  addressCopy = address;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000CF904;
   block[3] = &unk_1002B7170;
-  v11 = a3;
+  changedCopy = changed;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = addressCopy;
+  v8 = addressCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)usbDevicePairingModeChanged:(BOOL)a3 address:(id)a4
+- (void)usbDevicePairingModeChanged:(BOOL)changed address:(id)address
 {
-  v6 = a4;
+  addressCopy = address;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000CFCCC;
   block[3] = &unk_1002B7170;
-  v11 = a3;
+  changedCopy = changed;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = addressCopy;
+  v8 = addressCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (BOOL)_isWxPaired:(id)a3
+- (BOOL)_isWxPaired:(id)paired
 {
-  v4 = a3;
-  if (v4)
+  pairedCopy = paired;
+  if (pairedCopy)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(CBDiscovery *)self->_pairedDiscovery discoveredDevices];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    discoveredDevices = [(CBDiscovery *)self->_pairedDiscovery discoveredDevices];
+    v6 = [discoveredDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = *v13;
@@ -590,13 +590,13 @@ LABEL_20:
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(discoveredDevices);
           }
 
-          v9 = [*(*(&v12 + 1) + 8 * i) btAddressData];
+          btAddressData = [*(*(&v12 + 1) + 8 * i) btAddressData];
           v10 = CUPrintNSDataAddress();
 
-          if (v10 && ([v4 isEqualToString:v10] & 1) != 0)
+          if (v10 && ([pairedCopy isEqualToString:v10] & 1) != 0)
           {
 
             LOBYTE(v6) = 1;
@@ -604,7 +604,7 @@ LABEL_20:
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [discoveredDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v6)
         {
           continue;
@@ -625,28 +625,28 @@ LABEL_14:
   return v6;
 }
 
-- (void)proxCardUserActionOnHeadphone:(id)a3 btAddress:(id)a4 withAction:(unsigned __int8)a5 completion:(id)a6
+- (void)proxCardUserActionOnHeadphone:(id)headphone btAddress:(id)address withAction:(unsigned __int8)action completion:(id)completion
 {
-  v9 = a4;
-  v10 = a6;
+  addressCopy = address;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000D01A8;
   v14[3] = &unk_1002B7AF0;
   v14[4] = self;
-  v15 = v9;
-  v17 = a5;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
+  v15 = addressCopy;
+  actionCopy = action;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = addressCopy;
   dispatch_async(dispatchQueue, v14);
 }
 
-- (void)_startPairingModeTimer:(id)a3
+- (void)_startPairingModeTimer:(id)timer
 {
-  v4 = a3;
-  v5 = [v4 btAddress];
+  timerCopy = timer;
+  btAddress = [timerCopy btAddress];
   if (dword_1002F72A0 <= 30 && (dword_1002F72A0 != -1 || _LogCategory_Initialize()))
   {
     sub_1001F91C0();
@@ -661,20 +661,20 @@ LABEL_14:
   handler[1] = 3221225472;
   handler[2] = sub_1000D088C;
   handler[3] = &unk_1002B6CF0;
-  v12 = v5;
-  v13 = v4;
-  v14 = self;
-  v9 = v4;
-  v10 = v5;
+  v12 = btAddress;
+  v13 = timerCopy;
+  selfCopy = self;
+  v9 = timerCopy;
+  v10 = btAddress;
   dispatch_source_set_event_handler(v8, handler);
   CUDispatchTimerSet();
   dispatch_activate(v8);
 }
 
-- (void)_startPairingCompletionTimer:(id)a3
+- (void)_startPairingCompletionTimer:(id)timer
 {
-  v4 = a3;
-  v5 = [v4 btAddress];
+  timerCopy = timer;
+  btAddress = [timerCopy btAddress];
   if (dword_1002F72A0 <= 30 && (dword_1002F72A0 != -1 || _LogCategory_Initialize()))
   {
     sub_1001F9248();
@@ -689,11 +689,11 @@ LABEL_14:
   handler[1] = 3221225472;
   handler[2] = sub_1000D0AA0;
   handler[3] = &unk_1002B6CF0;
-  v12 = v5;
-  v13 = v4;
-  v14 = self;
-  v9 = v4;
-  v10 = v5;
+  v12 = btAddress;
+  v13 = timerCopy;
+  selfCopy = self;
+  v9 = timerCopy;
+  v10 = btAddress;
   dispatch_source_set_event_handler(v8, handler);
   CUDispatchTimerSet();
   dispatch_activate(v8);

@@ -1,23 +1,23 @@
 @interface ASCloudKitFetchConfiguration
-- (ASCloudKitFetchConfiguration)initWithRecordType:(id)a3 shouldSkip:(BOOL)a4 shouldCoalesce:(BOOL)a5 oldestAllowedModificationDate:(id)a6;
+- (ASCloudKitFetchConfiguration)initWithRecordType:(id)type shouldSkip:(BOOL)skip shouldCoalesce:(BOOL)coalesce oldestAllowedModificationDate:(id)date;
 @end
 
 @implementation ASCloudKitFetchConfiguration
 
-- (ASCloudKitFetchConfiguration)initWithRecordType:(id)a3 shouldSkip:(BOOL)a4 shouldCoalesce:(BOOL)a5 oldestAllowedModificationDate:(id)a6
+- (ASCloudKitFetchConfiguration)initWithRecordType:(id)type shouldSkip:(BOOL)skip shouldCoalesce:(BOOL)coalesce oldestAllowedModificationDate:(id)date
 {
-  v11 = a3;
-  v12 = a6;
+  typeCopy = type;
+  dateCopy = date;
   v16.receiver = self;
   v16.super_class = ASCloudKitFetchConfiguration;
   v13 = [(ASCloudKitFetchConfiguration *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_recordType, a3);
-    v14->_shouldSkip = a4;
-    v14->_shouldCoalesce = a5;
-    objc_storeStrong(&v14->_oldestAllowedModificationDate, a6);
+    objc_storeStrong(&v13->_recordType, type);
+    v14->_shouldSkip = skip;
+    v14->_shouldCoalesce = coalesce;
+    objc_storeStrong(&v14->_oldestAllowedModificationDate, date);
   }
 
   return v14;

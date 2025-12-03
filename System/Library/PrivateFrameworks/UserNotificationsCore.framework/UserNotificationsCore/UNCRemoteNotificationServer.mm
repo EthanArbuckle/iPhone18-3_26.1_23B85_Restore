@@ -1,106 +1,106 @@
 @interface UNCRemoteNotificationServer
-+ (id)_newPushServiceConnectionWithEnvironmentName:(id)a3 namedDelegatePort:(id)a4 queue:(id)a5;
-- (BOOL)_canMoveTopic:(id)a3 fromList:(unint64_t)a4 toList:(unint64_t)a5 connection:(id)a6;
-- (BOOL)_queue_allowServiceExtensionFilteringForMessage:(id)a3;
-- (BOOL)_queue_canDeliverMessageToBundle:(id)a3;
-- (BOOL)_queue_enforcePushTypeForMessage:(id)a3;
-- (BOOL)_queue_isApplicationForeground:(id)a3;
-- (BOOL)_queue_isApplicationRunning:(id)a3;
-- (BOOL)_queue_isBackgroundAppRefreshAllowedForBundleIdentifier:(id)a3;
-- (BOOL)_queue_isPushEnabledForApplication:(id)a3;
-- (BOOL)_queue_isUserNotificationEnabledForApplication:(id)a3;
-- (BOOL)_queue_isVisibleUserNotificationEnabledForApplication:(id)a3;
-- (BOOL)_queue_messageIsValidForDelivery:(id)a3;
-- (BOOL)_queue_shouldBoostTopicToEnabled:(id)a3;
-- (BOOL)_requestContainsDisallowedPrivateUserInfo:(id)a3;
-- (BOOL)allowsRemoteNotificationsForBundleIdentifier:(id)a3;
-- (UNCRemoteNotificationServer)initWithNotificationRepository:(id)a3 attachmentsService:(id)a4 pushRegistrationRepository:(id)a5 platform:(id)a6;
-- (id)_initWithNotificationRepository:(id)a3 attachmentsService:(id)a4 pushRegistrationRepository:(id)a5 platform:(id)a6 queue:(id)a7 apsQueue:(id)a8 duetActivityScheduler:(id)a9 serviceExtensionManager:(id)a10;
-- (id)_portNameForEnvironmentName:(id)a3;
-- (id)_queue_allTopicsForApplication:(id)a3;
-- (id)_topicsForList:(unint64_t)a3 connection:(id)a4;
-- (void)_extensionQueue_modifyNotificationRequest:(id)a3 bundleIdentifier:(id)a4 message:(id)a5 extension:(id)a6 enforcePushType:(BOOL)a7;
-- (void)_queue_applicationDidBecomeBackground:(id)a3;
-- (void)_queue_applicationDidBecomeForeground:(id)a3;
-- (void)_queue_applicationDidLaunch:(id)a3;
-- (void)_queue_applicationDidTerminate:(id)a3;
++ (id)_newPushServiceConnectionWithEnvironmentName:(id)name namedDelegatePort:(id)port queue:(id)queue;
+- (BOOL)_canMoveTopic:(id)topic fromList:(unint64_t)list toList:(unint64_t)toList connection:(id)connection;
+- (BOOL)_queue_allowServiceExtensionFilteringForMessage:(id)message;
+- (BOOL)_queue_canDeliverMessageToBundle:(id)bundle;
+- (BOOL)_queue_enforcePushTypeForMessage:(id)message;
+- (BOOL)_queue_isApplicationForeground:(id)foreground;
+- (BOOL)_queue_isApplicationRunning:(id)running;
+- (BOOL)_queue_isBackgroundAppRefreshAllowedForBundleIdentifier:(id)identifier;
+- (BOOL)_queue_isPushEnabledForApplication:(id)application;
+- (BOOL)_queue_isUserNotificationEnabledForApplication:(id)application;
+- (BOOL)_queue_isVisibleUserNotificationEnabledForApplication:(id)application;
+- (BOOL)_queue_messageIsValidForDelivery:(id)delivery;
+- (BOOL)_queue_shouldBoostTopicToEnabled:(id)enabled;
+- (BOOL)_requestContainsDisallowedPrivateUserInfo:(id)info;
+- (BOOL)allowsRemoteNotificationsForBundleIdentifier:(id)identifier;
+- (UNCRemoteNotificationServer)initWithNotificationRepository:(id)repository attachmentsService:(id)service pushRegistrationRepository:(id)registrationRepository platform:(id)platform;
+- (id)_initWithNotificationRepository:(id)repository attachmentsService:(id)service pushRegistrationRepository:(id)registrationRepository platform:(id)platform queue:(id)queue apsQueue:(id)apsQueue duetActivityScheduler:(id)scheduler serviceExtensionManager:(id)self0;
+- (id)_portNameForEnvironmentName:(id)name;
+- (id)_queue_allTopicsForApplication:(id)application;
+- (id)_topicsForList:(unint64_t)list connection:(id)connection;
+- (void)_extensionQueue_modifyNotificationRequest:(id)request bundleIdentifier:(id)identifier message:(id)message extension:(id)extension enforcePushType:(BOOL)type;
+- (void)_queue_applicationDidBecomeBackground:(id)background;
+- (void)_queue_applicationDidBecomeForeground:(id)foreground;
+- (void)_queue_applicationDidLaunch:(id)launch;
+- (void)_queue_applicationDidTerminate:(id)terminate;
 - (void)_queue_backgroundRefreshApplicationsDidChange;
 - (void)_queue_calculateTopics;
-- (void)_queue_connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)_queue_connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
-- (void)_queue_deliverNotificationRequest:(id)a3 bundleIdentifier:(id)a4 message:(id)a5 enforcePushType:(BOOL)a6 extensionStart:(id)a7 extensionEnd:(id)a8;
-- (void)_queue_didChangeNotificationSettings:(id)a3 forBundleIdentifier:(id)a4;
-- (void)_queue_didChangeProcessState:(id)a3 forBundleIdentifier:(id)a4;
+- (void)_queue_connection:(id)_queue_connection didReceivePublicToken:(id)token;
+- (void)_queue_connection:(id)_queue_connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
+- (void)_queue_deliverNotificationRequest:(id)request bundleIdentifier:(id)identifier message:(id)message enforcePushType:(BOOL)type extensionStart:(id)start extensionEnd:(id)end;
+- (void)_queue_didChangeNotificationSettings:(id)settings forBundleIdentifier:(id)identifier;
+- (void)_queue_didChangeProcessState:(id)state forBundleIdentifier:(id)identifier;
 - (void)_queue_didCompleteInitialization;
-- (void)_queue_didReceiveIncomingMessage:(id)a3;
-- (void)_queue_invalidateTokenForBundleIdentifier:(id)a3;
-- (void)_queue_moveTopicsForApplication:(id)a3 fromList:(unint64_t)a4 toList:(unint64_t)a5;
-- (void)_queue_registerApplicationWithBundleIdentifier:(id)a3 forEnvironment:(id)a4;
+- (void)_queue_didReceiveIncomingMessage:(id)message;
+- (void)_queue_invalidateTokenForBundleIdentifier:(id)identifier;
+- (void)_queue_moveTopicsForApplication:(id)application fromList:(unint64_t)list toList:(unint64_t)toList;
+- (void)_queue_registerApplicationWithBundleIdentifier:(id)identifier forEnvironment:(id)environment;
 - (void)_queue_reloadBackgroundAppRefreshDisabledList;
 - (void)_queue_reloadRegistrations;
-- (void)_queue_removeRegistrationForBundleIdentifier:(id)a3;
-- (void)_queue_setPushRegistration:(id)a3 forBundleIdentifier:(id)a4;
-- (void)_scheduleContentAvailablePushActivityForMessage:(id)a3 bundleIdentifier:(id)a4;
+- (void)_queue_removeRegistrationForBundleIdentifier:(id)identifier;
+- (void)_queue_setPushRegistration:(id)registration forBundleIdentifier:(id)identifier;
+- (void)_scheduleContentAvailablePushActivityForMessage:(id)message bundleIdentifier:(id)identifier;
 - (void)backgroundRefreshApplicationsDidChange;
 - (void)bluelistStatusChanged;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
 - (void)dealloc;
-- (void)didChangeNotificationSettings:(id)a3 forBundleIdentifier:(id)a4;
-- (void)didChangeProcessState:(id)a3 forBundleIdentifier:(id)a4;
+- (void)didChangeNotificationSettings:(id)settings forBundleIdentifier:(id)identifier;
+- (void)didChangeProcessState:(id)state forBundleIdentifier:(id)identifier;
 - (void)didCompleteInitialization;
-- (void)invalidateTokenForRemoteNotificationsForBundleIdentifier:(id)a3;
-- (void)notificationSourcesDidInstall:(id)a3;
-- (void)notificationSourcesDidUninstall:(id)a3;
-- (void)requestRemoteNotificationTokenWithEnvironment:(id)a3 forBundleIdentifier:(id)a4;
+- (void)invalidateTokenForRemoteNotificationsForBundleIdentifier:(id)identifier;
+- (void)notificationSourcesDidInstall:(id)install;
+- (void)notificationSourcesDidUninstall:(id)uninstall;
+- (void)requestRemoteNotificationTokenWithEnvironment:(id)environment forBundleIdentifier:(id)identifier;
 @end
 
 @implementation UNCRemoteNotificationServer
 
-- (UNCRemoteNotificationServer)initWithNotificationRepository:(id)a3 attachmentsService:(id)a4 pushRegistrationRepository:(id)a5 platform:(id)a6
+- (UNCRemoteNotificationServer)initWithNotificationRepository:(id)repository attachmentsService:(id)service pushRegistrationRepository:(id)registrationRepository platform:(id)platform
 {
   v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  platformCopy = platform;
+  registrationRepositoryCopy = registrationRepository;
+  serviceCopy = service;
+  repositoryCopy = repository;
   v16 = dispatch_queue_create("com.apple.usernotificationsserver.RemoteNotificationServer", v11);
 
   v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v18 = dispatch_queue_create("com.apple.usernotificationsserver.RemoteNotificationServer.APSConnection", v17);
 
-  v19 = [MEMORY[0x1E699A4B8] scheduler];
+  scheduler = [MEMORY[0x1E699A4B8] scheduler];
   v20 = objc_alloc_init(UNCNotificationServiceExtensionManager);
-  v21 = [(UNCRemoteNotificationServer *)self _initWithNotificationRepository:v15 attachmentsService:v14 pushRegistrationRepository:v13 platform:v12 queue:v16 apsQueue:v18 duetActivityScheduler:v19 serviceExtensionManager:v20];
+  v21 = [(UNCRemoteNotificationServer *)self _initWithNotificationRepository:repositoryCopy attachmentsService:serviceCopy pushRegistrationRepository:registrationRepositoryCopy platform:platformCopy queue:v16 apsQueue:v18 duetActivityScheduler:scheduler serviceExtensionManager:v20];
 
   return v21;
 }
 
-- (id)_initWithNotificationRepository:(id)a3 attachmentsService:(id)a4 pushRegistrationRepository:(id)a5 platform:(id)a6 queue:(id)a7 apsQueue:(id)a8 duetActivityScheduler:(id)a9 serviceExtensionManager:(id)a10
+- (id)_initWithNotificationRepository:(id)repository attachmentsService:(id)service pushRegistrationRepository:(id)registrationRepository platform:(id)platform queue:(id)queue apsQueue:(id)apsQueue duetActivityScheduler:(id)scheduler serviceExtensionManager:(id)self0
 {
-  v51 = a3;
-  v50 = a4;
-  v49 = a5;
-  v48 = a6;
-  v47 = a7;
-  v46 = a8;
-  v45 = a9;
-  v17 = a10;
+  repositoryCopy = repository;
+  serviceCopy = service;
+  registrationRepositoryCopy = registrationRepository;
+  platformCopy = platform;
+  queueCopy = queue;
+  apsQueueCopy = apsQueue;
+  schedulerCopy = scheduler;
+  managerCopy = manager;
   v52.receiver = self;
   v52.super_class = UNCRemoteNotificationServer;
   v18 = [(UNCRemoteNotificationServer *)&v52 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_notificationRepository, a3);
-    objc_storeStrong(&v19->_attachmentsService, a4);
-    objc_storeStrong(&v19->_pushRegistrationRepository, a5);
-    objc_storeStrong(&v19->_platform, a6);
-    objc_storeStrong(&v19->_duetActivityScheduler, a9);
-    objc_storeStrong(&v19->_serviceExtensionManager, a10);
-    objc_storeStrong(&v19->_queue, a7);
-    objc_storeStrong(&v19->_apsQueue, a8);
+    objc_storeStrong(&v18->_notificationRepository, repository);
+    objc_storeStrong(&v19->_attachmentsService, service);
+    objc_storeStrong(&v19->_pushRegistrationRepository, registrationRepository);
+    objc_storeStrong(&v19->_platform, platform);
+    objc_storeStrong(&v19->_duetActivityScheduler, scheduler);
+    objc_storeStrong(&v19->_serviceExtensionManager, manager);
+    objc_storeStrong(&v19->_queue, queue);
+    objc_storeStrong(&v19->_apsQueue, apsQueue);
     v20 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     cloudKitBundleIdentifiers = v19->_cloudKitBundleIdentifiers;
     v19->_cloudKitBundleIdentifiers = v20;
@@ -161,37 +161,37 @@
   [(UNCRemoteNotificationServer *)&v3 dealloc];
 }
 
-- (void)didChangeNotificationSettings:(id)a3 forBundleIdentifier:(id)a4
+- (void)didChangeNotificationSettings:(id)settings forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __81__UNCRemoteNotificationServer_didChangeNotificationSettings_forBundleIdentifier___block_invoke;
   block[3] = &unk_1E85D6F20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = settingsCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = settingsCopy;
   dispatch_async(queue, block);
 }
 
-- (void)didChangeProcessState:(id)a3 forBundleIdentifier:(id)a4
+- (void)didChangeProcessState:(id)state forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__UNCRemoteNotificationServer_didChangeProcessState_forBundleIdentifier___block_invoke;
   block[3] = &unk_1E85D6F20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = stateCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = stateCopy;
   dispatch_async(queue, block);
 }
 
@@ -206,70 +206,70 @@
   dispatch_async(queue, block);
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  connectionCopy = connection;
+  tokenCopy = token;
+  topicCopy = topic;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__UNCRemoteNotificationServer_connection_didReceiveToken_forTopic_identifier___block_invoke;
   block[3] = &unk_1E85D7110;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = connectionCopy;
+  v21 = tokenCopy;
+  v22 = topicCopy;
+  v23 = identifierCopy;
+  v15 = identifierCopy;
+  v16 = topicCopy;
+  v17 = tokenCopy;
+  v18 = connectionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  tokenCopy = token;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__UNCRemoteNotificationServer_connection_didReceivePublicToken___block_invoke;
   block[3] = &unk_1E85D6F20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = connectionCopy;
+  v13 = tokenCopy;
+  v9 = tokenCopy;
+  v10 = connectionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_queue_connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)_queue_connection:(id)_queue_connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  tokenCopy = token;
+  topicCopy = topic;
   dispatch_assert_queue_V2(self->_queue);
-  if (v8)
+  if (tokenCopy)
   {
-    if (v9)
+    if (topicCopy)
     {
-      if ([v9 hasPrefix:@"com.apple.icloud-container."])
+      if ([topicCopy hasPrefix:@"com.apple.icloud-container."])
       {
         v10 = *MEMORY[0x1E6983390];
         if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_DEFAULT))
         {
           *v39 = 138543362;
-          *&v39[4] = v9;
+          *&v39[4] = topicCopy;
           _os_log_impl(&dword_1DA7A9000, v10, OS_LOG_TYPE_DEFAULT, "Do not deliver per-app token for CloudKit topic %{public}@", v39, 0xCu);
         }
 
         goto LABEL_34;
       }
 
-      v12 = [(NSMutableDictionary *)self->_bundleIdentifierToRegistration objectForKey:v9];
+      v12 = [(NSMutableDictionary *)self->_bundleIdentifierToRegistration objectForKey:topicCopy];
       v13 = v12;
       if (!v12)
       {
@@ -277,15 +277,15 @@
         if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_DEFAULT))
         {
           *v39 = 138543362;
-          *&v39[4] = v9;
+          *&v39[4] = topicCopy;
           _os_log_impl(&dword_1DA7A9000, v21, OS_LOG_TYPE_DEFAULT, "Received per-app token for topic %{public}@ for unregistered app", v39, 0xCu);
         }
 
         goto LABEL_33;
       }
 
-      v14 = [v12 token];
-      v15 = [v14 isEqual:v8];
+      token = [v12 token];
+      v15 = [token isEqual:tokenCopy];
 
       v16 = MEMORY[0x1E6983390];
       v17 = *MEMORY[0x1E6983390];
@@ -299,9 +299,9 @@
 
         v19 = v17;
         *v39 = 134349314;
-        *&v39[4] = [v8 length];
+        *&v39[4] = [tokenCopy length];
         *&v39[12] = 2114;
-        *&v39[14] = v9;
+        *&v39[14] = topicCopy;
         v20 = "Received same per-app token [%{public}lu] for topic %{public}@";
       }
 
@@ -314,17 +314,17 @@
 
         v19 = v17;
         *v39 = 134349314;
-        *&v39[4] = [v8 length];
+        *&v39[4] = [tokenCopy length];
         *&v39[12] = 2114;
-        *&v39[14] = v9;
+        *&v39[14] = topicCopy;
         v20 = "Received new per-app token [%{public}lu] for topic %{public}@";
       }
 
       _os_log_impl(&dword_1DA7A9000, v19, OS_LOG_TYPE_DEFAULT, v20, v39, 0x16u);
 
 LABEL_19:
-      v22 = [(NSMutableSet *)self->_bundleIdentifiersNeedingToken containsObject:v9, *v39, *&v39[16], v40]| v15 ^ 1;
-      [(NSMutableSet *)self->_bundleIdentifiersNeedingToken removeObject:v9];
+      v22 = [(NSMutableSet *)self->_bundleIdentifiersNeedingToken containsObject:topicCopy, *v39, *&v39[16], v40]| v15 ^ 1;
+      [(NSMutableSet *)self->_bundleIdentifiersNeedingToken removeObject:topicCopy];
       if (![(NSMutableSet *)self->_bundleIdentifiersNeedingToken count])
       {
         bundleIdentifiersNeedingToken = self->_bundleIdentifiersNeedingToken;
@@ -336,7 +336,7 @@ LABEL_19:
         goto LABEL_31;
       }
 
-      v24 = [(NSMutableSet *)self->_installedBundleIdentifiers containsObject:v9];
+      v24 = [(NSMutableSet *)self->_installedBundleIdentifiers containsObject:topicCopy];
       v25 = *v16;
       v26 = os_log_type_enabled(*v16, OS_LOG_TYPE_DEFAULT);
       if (v24)
@@ -344,25 +344,25 @@ LABEL_19:
         if (v26)
         {
           v27 = v25;
-          v28 = [v8 length];
+          v28 = [tokenCopy length];
           *v39 = 134349314;
           *&v39[4] = v28;
           *&v39[12] = 2114;
-          *&v39[14] = v9;
+          *&v39[14] = topicCopy;
           _os_log_impl(&dword_1DA7A9000, v27, OS_LOG_TYPE_DEFAULT, "Send per-app token [%{public}lu] to client for topic %{public}@", v39, 0x16u);
         }
 
         observer = self->_observer;
         if (objc_opt_respondsToSelector())
         {
-          [(UNCRemoteNotificationServerObserver *)self->_observer didReceiveDeviceToken:v8 forBundleIdentifier:v9];
+          [(UNCRemoteNotificationServerObserver *)self->_observer didReceiveDeviceToken:tokenCopy forBundleIdentifier:topicCopy];
         }
 
-        v30 = [v13 environment];
-        v31 = [v13 tokenIdentifier];
-        v32 = [UNCPushRegistration pushRegistrationWithEnvironment:v30 tokenIdentifier:v31 token:v8];
+        environment = [v13 environment];
+        tokenIdentifier = [v13 tokenIdentifier];
+        v32 = [UNCPushRegistration pushRegistrationWithEnvironment:environment tokenIdentifier:tokenIdentifier token:tokenCopy];
 
-        [(UNCRemoteNotificationServer *)self _queue_setPushRegistration:v32 forBundleIdentifier:v9];
+        [(UNCRemoteNotificationServer *)self _queue_setPushRegistration:v32 forBundleIdentifier:topicCopy];
       }
 
       else
@@ -373,11 +373,11 @@ LABEL_19:
         }
 
         v32 = v25;
-        v33 = [v8 length];
+        v33 = [tokenCopy length];
         *v39 = 134349314;
         *&v39[4] = v33;
         *&v39[12] = 2114;
-        *&v39[14] = v9;
+        *&v39[14] = topicCopy;
         _os_log_impl(&dword_1DA7A9000, v32, OS_LOG_TYPE_DEFAULT, "Do not send per-app token [%{public}lu] to client for topic %{public}@", v39, 0x16u);
       }
 
@@ -415,43 +415,43 @@ LABEL_34:
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_queue_connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)_queue_connection:(id)_queue_connection didReceivePublicToken:(id)token
 {
   v80 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  _queue_connectionCopy = _queue_connection;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(NSMutableDictionary *)self->_environmentsToConnections allKeysForObject:v6];
-  v9 = [v8 lastObject];
+  v8 = [(NSMutableDictionary *)self->_environmentsToConnections allKeysForObject:_queue_connectionCopy];
+  lastObject = [v8 lastObject];
 
   v10 = *MEMORY[0x1E6983390];
-  v65 = v9;
+  v65 = lastObject;
   v11 = *MEMORY[0x1E6983390];
-  if (v9)
+  if (lastObject)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v10;
       *buf = 134349314;
-      v77 = [v7 length];
+      v77 = [tokenCopy length];
       v78 = 2114;
-      v79 = v9;
+      v79 = lastObject;
       _os_log_impl(&dword_1DA7A9000, v12, OS_LOG_TYPE_DEFAULT, "Received new public token [%{public}lu] for environment %{public}@", buf, 0x16u);
     }
 
-    v13 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v14 = [v13 dictionaryForKey:@"SBEnvironmentsToLastKnownTokens"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v14 = [standardUserDefaults dictionaryForKey:@"SBEnvironmentsToLastKnownTokens"];
     v15 = [v14 mutableCopy];
 
-    v16 = [v15 objectForKey:v9];
+    v16 = [v15 objectForKey:lastObject];
     v17 = v16;
-    if (v16 == v7 || v16 && [v7 isEqualToData:v16])
+    if (v16 == tokenCopy || v16 && [tokenCopy isEqualToData:v16])
     {
       v18 = *MEMORY[0x1E6983390];
       if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_DEFAULT))
       {
         v19 = v18;
-        v20 = [v7 length];
+        v20 = [tokenCopy length];
         *buf = 134349056;
         v77 = v20;
         _os_log_impl(&dword_1DA7A9000, v19, OS_LOG_TYPE_DEFAULT, "Received same public token [%{public}lu]", buf, 0xCu);
@@ -465,7 +465,7 @@ LABEL_34:
       if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_DEFAULT))
       {
         v22 = v21;
-        v23 = [v7 length];
+        v23 = [tokenCopy length];
         *buf = 134349056;
         v77 = v23;
         _os_log_impl(&dword_1DA7A9000, v22, OS_LOG_TYPE_DEFAULT, "Received new public token [%{public}lu]", buf, 0xCu);
@@ -476,21 +476,21 @@ LABEL_34:
         v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
       }
 
-      v64 = v6;
-      if (v7)
+      v64 = _queue_connectionCopy;
+      if (tokenCopy)
       {
-        [v15 setObject:v7 forKey:v9];
+        [v15 setObject:tokenCopy forKey:lastObject];
       }
 
       else
       {
-        [v15 removeObjectForKey:v9];
+        [v15 removeObjectForKey:lastObject];
       }
 
-      v63 = v7;
-      v24 = [MEMORY[0x1E695E000] standardUserDefaults];
+      v63 = tokenCopy;
+      standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
       v62 = v15;
-      [v24 setValue:v15 forKey:@"SBEnvironmentsToLastKnownTokens"];
+      [standardUserDefaults2 setValue:v15 forKey:@"SBEnvironmentsToLastKnownTokens"];
 
       v25 = *MEMORY[0x1E6983390];
       if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_DEFAULT))
@@ -507,8 +507,8 @@ LABEL_34:
       v73 = 0u;
       v70 = 0u;
       v71 = 0u;
-      v29 = [(NSMutableDictionary *)self->_bundleIdentifierToRegistration allKeys];
-      v30 = [v29 countByEnumeratingWithState:&v70 objects:v75 count:16];
+      allKeys = [(NSMutableDictionary *)self->_bundleIdentifierToRegistration allKeys];
+      v30 = [allKeys countByEnumeratingWithState:&v70 objects:v75 count:16];
       if (v30)
       {
         v31 = v30;
@@ -519,25 +519,25 @@ LABEL_34:
           {
             if (*v71 != v32)
             {
-              objc_enumerationMutation(v29);
+              objc_enumerationMutation(allKeys);
             }
 
             v34 = *(*(&v70 + 1) + 8 * i);
             v35 = [(NSMutableDictionary *)self->_bundleIdentifierToRegistration objectForKey:v34];
-            v36 = [v35 environment];
-            v37 = [v36 isEqualToString:v65];
+            environment = [v35 environment];
+            v37 = [environment isEqualToString:v65];
 
             if (v37)
             {
-              v38 = [v35 environment];
-              v39 = [v35 tokenIdentifier];
-              v40 = [UNCPushRegistration pushRegistrationWithEnvironment:v38 tokenIdentifier:v39 token:0];
+              environment2 = [v35 environment];
+              tokenIdentifier = [v35 tokenIdentifier];
+              v40 = [UNCPushRegistration pushRegistrationWithEnvironment:environment2 tokenIdentifier:tokenIdentifier token:0];
 
               [(UNCRemoteNotificationServer *)self _queue_setPushRegistration:v40 forBundleIdentifier:v34];
             }
           }
 
-          v31 = [v29 countByEnumeratingWithState:&v70 objects:v75 count:16];
+          v31 = [allKeys countByEnumeratingWithState:&v70 objects:v75 count:16];
         }
 
         while (v31);
@@ -558,9 +558,9 @@ LABEL_34:
       v69 = 0u;
       v66 = 0u;
       v67 = 0u;
-      v45 = [(NSMutableSet *)self->_runningBundleIdentifiers allObjects];
-      v46 = [v45 countByEnumeratingWithState:&v66 objects:v74 count:16];
-      v6 = v64;
+      allObjects = [(NSMutableSet *)self->_runningBundleIdentifiers allObjects];
+      v46 = [allObjects countByEnumeratingWithState:&v66 objects:v74 count:16];
+      _queue_connectionCopy = v64;
       if (v46)
       {
         v47 = v46;
@@ -571,7 +571,7 @@ LABEL_34:
           {
             if (*v67 != v48)
             {
-              objc_enumerationMutation(v45);
+              objc_enumerationMutation(allObjects);
             }
 
             v50 = *(*(&v66 + 1) + 8 * j);
@@ -579,8 +579,8 @@ LABEL_34:
             v52 = v51;
             if (v51)
             {
-              v53 = [v51 environment];
-              v54 = [v53 isEqual:v65];
+              environment3 = [v51 environment];
+              v54 = [environment3 isEqual:v65];
 
               if (v54)
               {
@@ -588,28 +588,28 @@ LABEL_34:
                 if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_DEFAULT))
                 {
                   v56 = v55;
-                  v57 = [v52 tokenIdentifier];
+                  tokenIdentifier2 = [v52 tokenIdentifier];
                   *buf = 138543618;
                   v77 = v50;
                   v78 = 2114;
-                  v79 = v57;
+                  v79 = tokenIdentifier2;
                   _os_log_impl(&dword_1DA7A9000, v56, OS_LOG_TYPE_DEFAULT, "Request per-app token with topic %{public}@ identifier %{public}@", buf, 0x16u);
                 }
 
-                v58 = [v52 tokenIdentifier];
-                [v64 requestTokenForTopic:v50 identifier:v58];
+                tokenIdentifier3 = [v52 tokenIdentifier];
+                [v64 requestTokenForTopic:v50 identifier:tokenIdentifier3];
               }
             }
           }
 
-          v47 = [v45 countByEnumeratingWithState:&v66 objects:v74 count:16];
+          v47 = [allObjects countByEnumeratingWithState:&v66 objects:v74 count:16];
         }
 
         while (v47);
       }
 
       v15 = v62;
-      v7 = v63;
+      tokenCopy = v63;
       v17 = v61;
     }
   }
@@ -622,32 +622,32 @@ LABEL_34:
   v59 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v5 = a4;
+  messageCopy = message;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __68__UNCRemoteNotificationServer_connection_didReceiveIncomingMessage___block_invoke;
   v8[3] = &unk_1E85D6E70;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = messageCopy;
+  v7 = messageCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)_queue_didReceiveIncomingMessage:(id)a3
+- (void)_queue_didReceiveIncomingMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   dispatch_assert_queue_V2(self->_queue);
   v5 = _os_activity_create(&dword_1DA7A9000, "PushNotification", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__UNCRemoteNotificationServer__queue_didReceiveIncomingMessage___block_invoke;
   v7[3] = &unk_1E85D6E70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = messageCopy;
+  selfCopy = self;
+  v6 = messageCopy;
   os_activity_apply(v5, v7);
 }
 
@@ -815,20 +815,20 @@ LABEL_25:
   v44 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_queue_canDeliverMessageToBundle:(id)a3
+- (BOOL)_queue_canDeliverMessageToBundle:(id)bundle
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bundleCopy = bundle;
   dispatch_assert_queue_V2(self->_queue);
-  if (([(NSMutableSet *)self->_installedBundleIdentifiers containsObject:v4]& 1) != 0)
+  if (([(NSMutableSet *)self->_installedBundleIdentifiers containsObject:bundleCopy]& 1) != 0)
   {
-    if ([(NSMutableSet *)self->_restrictedBundleIdentifiers containsObject:v4])
+    if ([(NSMutableSet *)self->_restrictedBundleIdentifiers containsObject:bundleCopy])
     {
       v5 = *MEMORY[0x1E6983390];
       if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138543362;
-        v16 = v4;
+        v16 = bundleCopy;
         v6 = "[%{public}@] Received incoming message for restricted app";
 LABEL_7:
         _os_log_impl(&dword_1DA7A9000, v5, OS_LOG_TYPE_DEFAULT, v6, &v15, 0xCu);
@@ -838,10 +838,10 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    v8 = [(NSMutableDictionary *)self->_bundleIdentifierToRegistration objectForKey:v4];
+    v8 = [(NSMutableDictionary *)self->_bundleIdentifierToRegistration objectForKey:bundleCopy];
     if (v8)
     {
-      if ([(UNCRemoteNotificationServer *)self _queue_isPushEnabledForApplication:v4])
+      if ([(UNCRemoteNotificationServer *)self _queue_isPushEnabledForApplication:bundleCopy])
       {
         v7 = 1;
 LABEL_17:
@@ -855,13 +855,13 @@ LABEL_17:
         contentAvailableBundleIdentifiers = self->_contentAvailableBundleIdentifiers;
         v12 = v10;
         v15 = 138544130;
-        v16 = v4;
+        v16 = bundleCopy;
         v17 = 1024;
-        v18 = [(NSMutableSet *)contentAvailableBundleIdentifiers containsObject:v4];
+        v18 = [(NSMutableSet *)contentAvailableBundleIdentifiers containsObject:bundleCopy];
         v19 = 1024;
-        v20 = [(UNCRemoteNotificationServer *)self _queue_isBackgroundAppRefreshAllowedForBundleIdentifier:v4];
+        v20 = [(UNCRemoteNotificationServer *)self _queue_isBackgroundAppRefreshAllowedForBundleIdentifier:bundleCopy];
         v21 = 1024;
-        v22 = [(UNCRemoteNotificationServer *)self _queue_isUserNotificationEnabledForApplication:v4];
+        v22 = [(UNCRemoteNotificationServer *)self _queue_isUserNotificationEnabledForApplication:bundleCopy];
         _os_log_impl(&dword_1DA7A9000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received incoming message for push disabled app [ supportsContentAvailableRemoteNotification: %{BOOL}d; backgroundRefreshEnabled: %{BOOL}d; allowsUserNotifications: %{BOOL}d ]", &v15, 0x1Eu);
       }
     }
@@ -872,7 +872,7 @@ LABEL_17:
       if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138543362;
-        v16 = v4;
+        v16 = bundleCopy;
         _os_log_impl(&dword_1DA7A9000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received incoming message for unregistered app", &v15, 0xCu);
       }
     }
@@ -885,7 +885,7 @@ LABEL_17:
   if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543362;
-    v16 = v4;
+    v16 = bundleCopy;
     v6 = "[%{public}@] Received incoming message for uninstalled app";
     goto LABEL_7;
   }
@@ -898,14 +898,14 @@ LABEL_18:
   return v7;
 }
 
-- (BOOL)_queue_enforcePushTypeForMessage:(id)a3
+- (BOOL)_queue_enforcePushTypeForMessage:(id)message
 {
   platform = self->_platform;
-  v4 = a3;
+  messageCopy = message;
   v5 = [(BSPlatform *)platform deviceClass]== 4;
-  v6 = [v4 pushType];
+  pushType = [messageCopy pushType];
 
-  if (v6 == 8 || v6 == 4)
+  if (pushType == 8 || pushType == 4)
   {
     return 1;
   }
@@ -913,19 +913,19 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)_queue_messageIsValidForDelivery:(id)a3
+- (BOOL)_queue_messageIsValidForDelivery:(id)delivery
 {
-  v4 = a3;
-  v5 = [v4 pushType];
+  deliveryCopy = delivery;
+  pushType = [deliveryCopy pushType];
   if ([(BSPlatform *)self->_platform deviceClass]== 4)
   {
     v6 = 1;
-    if (v5 != 4 && v5 != 8)
+    if (pushType != 4 && pushType != 8)
     {
       v7 = *MEMORY[0x1E6983390];
       if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_ERROR))
       {
-        [(UNCRemoteNotificationServer *)v7 _queue_messageIsValidForDelivery:v4];
+        [(UNCRemoteNotificationServer *)v7 _queue_messageIsValidForDelivery:deliveryCopy];
       }
 
 LABEL_11:
@@ -935,12 +935,12 @@ LABEL_11:
 
   else
   {
-    if (v5 > 8 || ((1 << v5) & 0x111) == 0)
+    if (pushType > 8 || ((1 << pushType) & 0x111) == 0)
     {
       v8 = *MEMORY[0x1E6983390];
       if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_ERROR))
       {
-        [(UNCRemoteNotificationServer *)v8 _queue_messageIsValidForDelivery:v4];
+        [(UNCRemoteNotificationServer *)v8 _queue_messageIsValidForDelivery:deliveryCopy];
       }
 
       goto LABEL_11;
@@ -952,23 +952,23 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)_queue_allowServiceExtensionFilteringForMessage:(id)a3
+- (BOOL)_queue_allowServiceExtensionFilteringForMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 unc_bundleIdentifier];
-  if (![(NSMutableSet *)self->_quietServiceExtensionBundleIdentifiers containsObject:v5])
+  messageCopy = message;
+  unc_bundleIdentifier = [messageCopy unc_bundleIdentifier];
+  if (![(NSMutableSet *)self->_quietServiceExtensionBundleIdentifiers containsObject:unc_bundleIdentifier])
   {
 LABEL_6:
     v6 = 0;
     goto LABEL_7;
   }
 
-  if ([v4 pushType] != 8)
+  if ([messageCopy pushType] != 8)
   {
     v7 = *MEMORY[0x1E6983390];
     if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_ERROR))
     {
-      [(UNCRemoteNotificationServer *)v5 _queue_allowServiceExtensionFilteringForMessage:v7, v4];
+      [(UNCRemoteNotificationServer *)unc_bundleIdentifier _queue_allowServiceExtensionFilteringForMessage:v7, messageCopy];
     }
 
     goto LABEL_6;
@@ -980,65 +980,65 @@ LABEL_7:
   return v6;
 }
 
-- (void)_extensionQueue_modifyNotificationRequest:(id)a3 bundleIdentifier:(id)a4 message:(id)a5 extension:(id)a6 enforcePushType:(BOOL)a7
+- (void)_extensionQueue_modifyNotificationRequest:(id)request bundleIdentifier:(id)identifier message:(id)message extension:(id)extension enforcePushType:(BOOL)type
 {
   v97 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [v15 queue];
-  dispatch_assert_queue_V2(v16);
+  requestCopy = request;
+  identifierCopy = identifier;
+  messageCopy = message;
+  extensionCopy = extension;
+  queue = [extensionCopy queue];
+  dispatch_assert_queue_V2(queue);
 
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v17 = _os_activity_create(&dword_1DA7A9000, "PushNotificationModification", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v17, &state);
-  v76 = self;
-  v74 = v14;
-  v18 = [(UNCRemoteNotificationServer *)self _queue_allowServiceExtensionFilteringForMessage:v14];
-  v19 = v12;
-  v77 = [MEMORY[0x1E695DF00] date];
-  v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.NSE-runtime", v13];
+  selfCopy = self;
+  v74 = messageCopy;
+  v18 = [(UNCRemoteNotificationServer *)self _queue_allowServiceExtensionFilteringForMessage:messageCopy];
+  v19 = requestCopy;
+  date = [MEMORY[0x1E695DF00] date];
+  identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.NSE-runtime", identifierCopy];
   AssertionID = 0;
-  [v15 serviceTime];
-  v73 = v20;
-  IOPMAssertionCreateWithDescription(@"NoIdleSleepAssertion", v20, 0, 0, 0, v21 + v21, @"TimeoutActionRelease", &AssertionID);
+  [extensionCopy serviceTime];
+  v73 = identifierCopy;
+  IOPMAssertionCreateWithDescription(@"NoIdleSleepAssertion", identifierCopy, 0, 0, 0, v21 + v21, @"TimeoutActionRelease", &AssertionID);
   v86 = 0;
-  v22 = [v15 mutateContentForNotificationRequest:v19 error:&v86];
+  v22 = [extensionCopy mutateContentForNotificationRequest:v19 error:&v86];
   v75 = v86;
   if (AssertionID)
   {
     IOPMAssertionRelease(AssertionID);
   }
 
-  v23 = [MEMORY[0x1E695DF00] date];
-  [v23 timeIntervalSinceReferenceDate];
+  date2 = [MEMORY[0x1E695DF00] date];
+  [date2 timeIntervalSinceReferenceDate];
   v25 = v24;
-  [v77 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   v27 = v25 - v26;
   if (!v22)
   {
     if (v18)
     {
-      v72 = a7;
+      typeCopy2 = type;
       v42 = v17;
       v43 = MEMORY[0x1E6983298];
-      v44 = [v19 identifier];
+      identifier = [v19 identifier];
       v45 = objc_alloc_init(MEMORY[0x1E6983288]);
-      v46 = [v19 trigger];
-      v34 = [v43 requestWithIdentifier:v44 content:v45 trigger:v46];
+      trigger = [v19 trigger];
+      v34 = [v43 requestWithIdentifier:identifier content:v45 trigger:trigger];
 
       v47 = *MEMORY[0x1E6983390];
       if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_DEFAULT))
       {
         v48 = v47;
-        v49 = [v19 identifier];
-        v50 = [v49 un_logDigest];
+        identifier2 = [v19 identifier];
+        un_logDigest = [identifier2 un_logDigest];
         *buf = 138544130;
-        v90 = v13;
+        v90 = identifierCopy;
         v91 = 2114;
-        v92 = v50;
+        v92 = un_logDigest;
         v93 = 2114;
         v94 = *&v75;
         v95 = 2048;
@@ -1050,7 +1050,7 @@ LABEL_14:
 
 LABEL_15:
       v17 = v42;
-      a7 = v72;
+      type = typeCopy2;
       goto LABEL_20;
     }
 
@@ -1062,11 +1062,11 @@ LABEL_15:
     }
 
     v57 = v56;
-    v58 = [v19 identifier];
-    [v58 un_logDigest];
+    identifier3 = [v19 identifier];
+    [identifier3 un_logDigest];
     v60 = v59 = v17;
     *buf = 138544130;
-    v90 = v13;
+    v90 = identifierCopy;
     v91 = 2114;
     v92 = v60;
     v93 = 2114;
@@ -1085,23 +1085,23 @@ LABEL_18:
   {
     if (v18)
     {
-      v72 = a7;
+      typeCopy2 = type;
       v42 = v17;
       v52 = MEMORY[0x1E6983298];
-      v53 = [v19 identifier];
-      v54 = [v19 trigger];
-      v34 = [v52 requestWithIdentifier:v53 content:v22 trigger:v54];
+      identifier4 = [v19 identifier];
+      trigger2 = [v19 trigger];
+      v34 = [v52 requestWithIdentifier:identifier4 content:v22 trigger:trigger2];
 
       v55 = *MEMORY[0x1E6983390];
       if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_DEFAULT))
       {
         v48 = v55;
-        v49 = [v19 identifier];
-        v50 = [v49 un_logDigest];
+        identifier2 = [v19 identifier];
+        un_logDigest = [identifier2 un_logDigest];
         *buf = 138544130;
-        v90 = v13;
+        v90 = identifierCopy;
         v91 = 2114;
-        v92 = v50;
+        v92 = un_logDigest;
         v93 = 2114;
         v94 = *&v75;
         v95 = 2048;
@@ -1121,11 +1121,11 @@ LABEL_18:
     }
 
     v57 = v61;
-    v58 = [v19 identifier];
-    [v58 un_logDigest];
+    identifier3 = [v19 identifier];
+    [identifier3 un_logDigest];
     v60 = v59 = v17;
     *buf = 138543874;
-    v90 = v13;
+    v90 = identifierCopy;
     v91 = 2114;
     v92 = v60;
     v93 = 2048;
@@ -1136,27 +1136,27 @@ LABEL_18:
 
   v70 = v17;
   v28 = MEMORY[0x1E6983298];
-  v29 = [v19 identifier];
-  v30 = [v19 trigger];
-  v31 = [v28 requestWithIdentifier:v29 content:v22 trigger:v30];
+  identifier5 = [v19 identifier];
+  trigger3 = [v19 trigger];
+  v31 = [v28 requestWithIdentifier:identifier5 content:v22 trigger:trigger3];
 
-  attachmentsService = v76->_attachmentsService;
-  v33 = [v15 proxy];
-  v34 = [(UNCAttachmentsService *)attachmentsService resolveAttachmentsSkippingErrorsForRequest:v31 bundleIdentifier:v13 fromBundleProxyForServiceExtension:v33];
+  attachmentsService = selfCopy->_attachmentsService;
+  proxy = [extensionCopy proxy];
+  v34 = [(UNCAttachmentsService *)attachmentsService resolveAttachmentsSkippingErrorsForRequest:v31 bundleIdentifier:identifierCopy fromBundleProxyForServiceExtension:proxy];
 
-  v35 = [v34 content];
-  v36 = [v35 attachments];
-  v37 = [v36 count];
+  content = [v34 content];
+  attachments = [content attachments];
+  v37 = [attachments count];
 
   v38 = *MEMORY[0x1E6983390];
   if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_DEFAULT))
   {
     v39 = v38;
-    v40 = [v19 identifier];
-    [v40 un_logDigest];
-    v41 = v71 = a7;
+    identifier6 = [v19 identifier];
+    [identifier6 un_logDigest];
+    v41 = v71 = type;
     *buf = 138544130;
-    v90 = v13;
+    v90 = identifierCopy;
     v91 = 2114;
     v92 = v41;
     v93 = 2048;
@@ -1165,30 +1165,30 @@ LABEL_18:
     v96 = v27;
     _os_log_impl(&dword_1DA7A9000, v39, OS_LOG_TYPE_DEFAULT, "[%{public}@] Will deliver mutated notification content; notificationRequest=%{public}@, attachmentCount=%lu, runtime: %f", buf, 0x2Au);
 
-    a7 = v71;
+    type = v71;
   }
 
   v17 = v70;
 LABEL_20:
   os_activity_scope_leave(&state);
-  queue = v76->_queue;
+  queue = selfCopy->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __124__UNCRemoteNotificationServer__extensionQueue_modifyNotificationRequest_bundleIdentifier_message_extension_enforcePushType___block_invoke;
   block[3] = &unk_1E85D7160;
-  block[4] = v76;
+  block[4] = selfCopy;
   v79 = v34;
-  v80 = v13;
+  v80 = identifierCopy;
   v81 = v74;
-  v85 = a7;
-  v82 = v77;
-  v83 = v23;
-  v84 = v15;
-  v63 = v15;
-  v64 = v23;
-  v65 = v77;
+  typeCopy3 = type;
+  v82 = date;
+  v83 = date2;
+  v84 = extensionCopy;
+  v63 = extensionCopy;
+  v64 = date2;
+  v65 = date;
   v66 = v74;
-  v67 = v13;
+  v67 = identifierCopy;
   v68 = v34;
   dispatch_async(queue, block);
 
@@ -1207,59 +1207,59 @@ void __124__UNCRemoteNotificationServer__extensionQueue_modifyNotificationReques
   dispatch_async(v2, block);
 }
 
-- (void)_queue_deliverNotificationRequest:(id)a3 bundleIdentifier:(id)a4 message:(id)a5 enforcePushType:(BOOL)a6 extensionStart:(id)a7 extensionEnd:(id)a8
+- (void)_queue_deliverNotificationRequest:(id)request bundleIdentifier:(id)identifier message:(id)message enforcePushType:(BOOL)type extensionStart:(id)start extensionEnd:(id)end
 {
-  v10 = a6;
+  typeCopy = type;
   v71 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v60 = a7;
-  v59 = a8;
+  requestCopy = request;
+  identifierCopy = identifier;
+  messageCopy = message;
+  startCopy = start;
+  endCopy = end;
   dispatch_assert_queue_V2(self->_queue);
   v17 = MEMORY[0x1E6983390];
   v18 = *MEMORY[0x1E6983390];
   if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_DEFAULT))
   {
     v19 = v18;
-    v20 = [v14 identifier];
-    v21 = [v20 un_logDigest];
+    identifier = [requestCopy identifier];
+    un_logDigest = [identifier un_logDigest];
     *buf = 138543618;
-    v64 = v15;
+    v64 = identifierCopy;
     v65 = 2114;
-    v66 = v21;
+    v66 = un_logDigest;
     _os_log_impl(&dword_1DA7A9000, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] Process delivery of push notification %{public}@", buf, 0x16u);
   }
 
-  v22 = [v16 pushType];
-  v23 = [v14 content];
-  v24 = [v23 unc_willNotifyUser];
+  pushType = [messageCopy pushType];
+  content = [requestCopy content];
+  unc_willNotifyUser = [content unc_willNotifyUser];
 
-  v25 = [(UNCRemoteNotificationServer *)self _queue_allowServiceExtensionFilteringForMessage:v16];
-  v58 = [v14 trigger];
-  if ([v58 isContentAvailable])
+  v25 = [(UNCRemoteNotificationServer *)self _queue_allowServiceExtensionFilteringForMessage:messageCopy];
+  trigger = [requestCopy trigger];
+  if ([trigger isContentAvailable])
   {
-    if (!v10 || v22 == 4 || ((v22 == 8) & (v24 | v25)) != 0)
+    if (!typeCopy || pushType == 4 || ((pushType == 8) & (unc_willNotifyUser | v25)) != 0)
     {
-      [(UNCRemoteNotificationServer *)self _scheduleContentAvailablePushActivityForMessage:v16 bundleIdentifier:v15];
+      [(UNCRemoteNotificationServer *)self _scheduleContentAvailablePushActivityForMessage:messageCopy bundleIdentifier:identifierCopy];
     }
 
-    else if (!((v22 != 8) | (v24 | v25) & 1))
+    else if (!((pushType != 8) | (unc_willNotifyUser | v25) & 1))
     {
       v26 = *v17;
       if (os_log_type_enabled(*v17, OS_LOG_TYPE_ERROR))
       {
         v27 = v26;
-        v61 = [v14 identifier];
-        v57 = [v61 un_logDigest];
-        v28 = [v16 unc_pushTypeDescription];
+        identifier2 = [requestCopy identifier];
+        un_logDigest2 = [identifier2 un_logDigest];
+        unc_pushTypeDescription = [messageCopy unc_pushTypeDescription];
         *buf = 138544130;
-        v64 = v15;
+        v64 = identifierCopy;
         v65 = 2114;
-        v66 = v57;
+        v66 = un_logDigest2;
         v67 = 2114;
-        v68 = v28;
-        v29 = v28;
+        v68 = unc_pushTypeDescription;
+        v29 = unc_pushTypeDescription;
         v69 = 1024;
         v70 = 0;
         _os_log_error_impl(&dword_1DA7A9000, v27, OS_LOG_TYPE_ERROR, "[%{public}@] NOT requesting DUET deliver content-available, non-notifiying push notification %{public}@ [pushType: %{public}@ willNotifyUser: %d]", buf, 0x26u);
@@ -1267,40 +1267,40 @@ void __124__UNCRemoteNotificationServer__extensionQueue_modifyNotificationReques
     }
   }
 
-  v30 = v14;
-  v31 = v16;
-  v32 = v24;
-  v33 = v15;
-  v34 = v10;
+  v30 = requestCopy;
+  v31 = messageCopy;
+  v32 = unc_willNotifyUser;
+  v33 = identifierCopy;
+  v34 = typeCopy;
   v62 = v30;
-  v35 = [v30 content];
-  v36 = [v35 userInfo];
-  v37 = [(UNCRemoteNotificationServer *)self _requestContainsDisallowedPrivateUserInfo:v36];
+  content2 = [v30 content];
+  userInfo = [content2 userInfo];
+  v37 = [(UNCRemoteNotificationServer *)self _requestContainsDisallowedPrivateUserInfo:userInfo];
 
   if (!v37)
   {
     v41 = !v34;
-    v42 = v22 == 8 || !v34;
+    v42 = pushType == 8 || !v34;
     v43 = v42 & v32;
     if ((v42 & v32) == 1)
     {
       v40 = v31;
       [(UNCNotificationRepository *)self->_notificationRepository saveNotificationRequest:v62 shouldRepost:1 withMessage:v31 forBundleIdentifier:v33];
 LABEL_28:
-      v51 = [v40 pushFlags];
+      pushFlags = [v40 pushFlags];
       v52 = [(UNCRemoteNotificationServer *)self _queue_isVisibleUserNotificationEnabledForApplication:v33];
-      v39 = v59;
-      v38 = v60;
-      UNCPowerLogUserNotificationExtendedTriggerEvent(v33, 3u, v51 & 1, v60, v59, v43 & v52);
+      v39 = endCopy;
+      v38 = startCopy;
+      UNCPowerLogUserNotificationExtendedTriggerEvent(v33, 3u, pushFlags & 1, startCopy, endCopy, v43 & v52);
       goto LABEL_29;
     }
 
     v44 = v32;
-    v45 = (v22 != 8) | v32;
+    v45 = (pushType != 8) | v32;
     v40 = v31;
     if ((v45 & 1) != 0 || !v25)
     {
-      if (v22 == 4)
+      if (pushType == 4)
       {
         v41 = 1;
       }
@@ -1317,16 +1317,16 @@ LABEL_28:
       }
 
       v47 = v50;
-      v54 = [v62 identifier];
-      [v54 un_logDigest];
-      v49 = v55 = v44;
-      v56 = [v31 unc_pushTypeDescription];
+      identifier3 = [v62 identifier];
+      [identifier3 un_logDigest];
+      un_logDigest3 = v55 = v44;
+      unc_pushTypeDescription2 = [v31 unc_pushTypeDescription];
       *buf = 138544130;
       v64 = v33;
       v65 = 2114;
-      v66 = v49;
+      v66 = un_logDigest3;
       v67 = 2114;
-      v68 = v56;
+      v68 = unc_pushTypeDescription2;
       v69 = 1024;
       v70 = v55;
       v40 = v31;
@@ -1342,20 +1342,20 @@ LABEL_28:
       }
 
       v47 = v46;
-      v48 = [v62 identifier];
-      v49 = [v48 un_logDigest];
+      identifier4 = [v62 identifier];
+      un_logDigest3 = [identifier4 un_logDigest];
       *buf = 138543618;
       v64 = v33;
       v65 = 2114;
-      v66 = v49;
+      v66 = un_logDigest3;
       _os_log_impl(&dword_1DA7A9000, v47, OS_LOG_TYPE_DEFAULT, "[%{public}@] NOT delivering filtered push notification %{public}@", buf, 0x16u);
     }
 
     goto LABEL_28;
   }
 
-  v39 = v59;
-  v38 = v60;
+  v39 = endCopy;
+  v38 = startCopy;
   v40 = v31;
   if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_ERROR))
   {
@@ -1367,13 +1367,13 @@ LABEL_29:
   v53 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_requestContainsDisallowedPrivateUserInfo:(id)a3
+- (BOOL)_requestContainsDisallowedPrivateUserInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   if (os_variant_has_internal_content())
   {
-    v4 = [v3 allKeys];
-    v5 = [v4 containsObject:@"com.apple.private.untool.override"];
+    allKeys = [infoCopy allKeys];
+    v5 = [allKeys containsObject:@"com.apple.private.untool.override"];
   }
 
   else
@@ -1384,40 +1384,40 @@ LABEL_29:
   return v5;
 }
 
-- (void)_scheduleContentAvailablePushActivityForMessage:(id)a3 bundleIdentifier:(id)a4
+- (void)_scheduleContentAvailablePushActivityForMessage:(id)message bundleIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  identifierCopy = identifier;
   v8 = *MEMORY[0x1E6983390];
   if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543362;
-    v16 = v7;
+    v16 = identifierCopy;
     _os_log_impl(&dword_1DA7A9000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Request DUET delivers content-available push notification to application", &v15, 0xCu);
   }
 
-  v9 = [v6 priority] > 9;
+  v9 = [messageCopy priority] > 9;
   v10 = MEMORY[0x1E699A488];
-  v11 = [v6 topic];
-  v12 = [v6 userInfo];
-  v13 = [v10 launchForRemoteNotificationWithTopic:v11 withPayload:v12 highPriority:v9];
+  topic = [messageCopy topic];
+  userInfo = [messageCopy userInfo];
+  v13 = [v10 launchForRemoteNotificationWithTopic:topic withPayload:userInfo highPriority:v9];
 
   [(_DASActivityScheduler *)self->_duetActivityScheduler submitActivity:v13];
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notificationSourcesDidInstall:(id)a3
+- (void)notificationSourcesDidInstall:(id)install
 {
-  v4 = a3;
+  installCopy = install;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__UNCRemoteNotificationServer_notificationSourcesDidInstall___block_invoke;
   v7[3] = &unk_1E85D6E70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = installCopy;
+  selfCopy = self;
+  v6 = installCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -1506,17 +1506,17 @@ uint64_t __61__UNCRemoteNotificationServer_notificationSourcesDidInstall___block
   return result;
 }
 
-- (void)notificationSourcesDidUninstall:(id)a3
+- (void)notificationSourcesDidUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__UNCRemoteNotificationServer_notificationSourcesDidUninstall___block_invoke;
   v7[3] = &unk_1E85D6E70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = uninstallCopy;
+  selfCopy = self;
+  v6 = uninstallCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -1571,7 +1571,7 @@ uint64_t __63__UNCRemoteNotificationServer_notificationSourcesDidUninstall___blo
 - (void)_queue_reloadRegistrations
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   [(UNCPushRegistrationRepository *)self->_pushRegistrationRepository allBundleIdentifiers];
   v14 = 0u;
   v15 = 0u;
@@ -1597,7 +1597,7 @@ uint64_t __63__UNCRemoteNotificationServer_notificationSourcesDidUninstall___blo
         v11 = [(UNCPushRegistrationRepository *)self->_pushRegistrationRepository registrationForBundleIdentifier:v9, v14];
         if (v11)
         {
-          [(NSMutableDictionary *)v3 setObject:v11 forKey:v9];
+          [(NSMutableDictionary *)dictionary setObject:v11 forKey:v9];
         }
 
         objc_autoreleasePoolPop(v10);
@@ -1612,7 +1612,7 @@ uint64_t __63__UNCRemoteNotificationServer_notificationSourcesDidUninstall___blo
   }
 
   bundleIdentifierToRegistration = self->_bundleIdentifierToRegistration;
-  self->_bundleIdentifierToRegistration = v3;
+  self->_bundleIdentifierToRegistration = dictionary;
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -1626,8 +1626,8 @@ uint64_t __63__UNCRemoteNotificationServer_notificationSourcesDidUninstall___blo
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [v4 allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1638,20 +1638,20 @@ uint64_t __63__UNCRemoteNotificationServer_notificationSourcesDidUninstall___blo
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [v4 objectForKey:v10];
-        v12 = [v11 BOOLValue];
+        bOOLValue = [v11 BOOLValue];
 
-        if ((v12 & 1) == 0)
+        if ((bOOLValue & 1) == 0)
         {
           [(NSSet *)v3 addObject:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -1673,8 +1673,8 @@ uint64_t __63__UNCRemoteNotificationServer_notificationSourcesDidUninstall___blo
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(NSMutableDictionary *)self->_bundleIdentifierToRegistration allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  allKeys = [(NSMutableDictionary *)self->_bundleIdentifierToRegistration allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v6)
   {
     v8 = v6;
@@ -1688,7 +1688,7 @@ uint64_t __63__UNCRemoteNotificationServer_notificationSourcesDidUninstall___blo
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
@@ -1707,7 +1707,7 @@ uint64_t __63__UNCRemoteNotificationServer_notificationSourcesDidUninstall___blo
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v17 objects:v23 count:16];
     }
 
     while (v8);
@@ -1716,18 +1716,18 @@ uint64_t __63__UNCRemoteNotificationServer_notificationSourcesDidUninstall___blo
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_queue_moveTopicsForApplication:(id)a3 fromList:(unint64_t)a4 toList:(unint64_t)a5
+- (void)_queue_moveTopicsForApplication:(id)application fromList:(unint64_t)list toList:(unint64_t)toList
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  applicationCopy = application;
   dispatch_assert_queue_V2(self->_queue);
-  v24 = v8;
-  v9 = [(UNCRemoteNotificationServer *)self _queue_allTopicsForApplication:v8];
+  v24 = applicationCopy;
+  v9 = [(UNCRemoteNotificationServer *)self _queue_allTopicsForApplication:applicationCopy];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v27 = self;
+  selfCopy = self;
   obj = self->_environmentsToConnections;
   v10 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v32 objects:v43 count:16];
   if (v10)
@@ -1743,20 +1743,20 @@ uint64_t __63__UNCRemoteNotificationServer_notificationSourcesDidUninstall___blo
           objc_enumerationMutation(obj);
         }
 
-        v13 = [(NSMutableDictionary *)v27->_environmentsToConnections objectForKey:*(*(&v32 + 1) + 8 * i)];
+        v13 = [(NSMutableDictionary *)selfCopy->_environmentsToConnections objectForKey:*(*(&v32 + 1) + 8 * i)];
         v14 = *MEMORY[0x1E6983390];
         if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_DEFAULT))
         {
           v15 = @"Unknown";
-          if (a4 <= 3)
+          if (list <= 3)
           {
-            v15 = off_1E85D7180[a4];
+            v15 = off_1E85D7180[list];
           }
 
           v16 = @"Unknown";
-          if (a5 <= 3)
+          if (toList <= 3)
           {
-            v16 = off_1E85D7180[a5];
+            v16 = off_1E85D7180[toList];
           }
 
           *buf = 138543874;
@@ -1788,7 +1788,7 @@ uint64_t __63__UNCRemoteNotificationServer_notificationSourcesDidUninstall___blo
                 objc_enumerationMutation(v18);
               }
 
-              [v13 moveTopic:*(*(&v28 + 1) + 8 * j) fromList:a4 toList:a5];
+              [v13 moveTopic:*(*(&v28 + 1) + 8 * j) fromList:list toList:toList];
             }
 
             v20 = [v18 countByEnumeratingWithState:&v28 objects:v36 count:16];
@@ -1807,100 +1807,100 @@ uint64_t __63__UNCRemoteNotificationServer_notificationSourcesDidUninstall___blo
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_canMoveTopic:(id)a3 fromList:(unint64_t)a4 toList:(unint64_t)a5 connection:(id)a6
+- (BOOL)_canMoveTopic:(id)topic fromList:(unint64_t)list toList:(unint64_t)toList connection:(id)connection
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = [(UNCRemoteNotificationServer *)self _topicsForList:a4 connection:v10];
-  v12 = [(UNCRemoteNotificationServer *)self _topicsForList:a5 connection:v10];
+  topicCopy = topic;
+  connectionCopy = connection;
+  v11 = [(UNCRemoteNotificationServer *)self _topicsForList:list connection:connectionCopy];
+  v12 = [(UNCRemoteNotificationServer *)self _topicsForList:toList connection:connectionCopy];
 
-  LOBYTE(a4) = 0;
+  LOBYTE(list) = 0;
   if (v11 && v12)
   {
-    if ([v11 containsObject:v9])
+    if ([v11 containsObject:topicCopy])
     {
-      LODWORD(a4) = [v12 containsObject:v9] ^ 1;
+      LODWORD(list) = [v12 containsObject:topicCopy] ^ 1;
     }
 
     else
     {
-      LOBYTE(a4) = 0;
+      LOBYTE(list) = 0;
     }
   }
 
-  return a4;
+  return list;
 }
 
-- (id)_topicsForList:(unint64_t)a3 connection:(id)a4
+- (id)_topicsForList:(unint64_t)list connection:(id)connection
 {
-  v5 = a4;
-  v6 = v5;
+  connectionCopy = connection;
+  v6 = connectionCopy;
   v7 = 0;
-  if (a3 > 1)
+  if (list > 1)
   {
-    if (a3 == 2)
+    if (list == 2)
     {
-      v8 = [v5 ignoredTopics];
+      ignoredTopics = [connectionCopy ignoredTopics];
     }
 
     else
     {
-      if (a3 != 3)
+      if (list != 3)
       {
         goto LABEL_11;
       }
 
-      v8 = [v5 nonWakingTopics];
+      ignoredTopics = [connectionCopy nonWakingTopics];
     }
   }
 
-  else if (a3)
+  else if (list)
   {
-    if (a3 != 1)
+    if (list != 1)
     {
       goto LABEL_11;
     }
 
-    v8 = [v5 opportunisticTopics];
+    ignoredTopics = [connectionCopy opportunisticTopics];
   }
 
   else
   {
-    v8 = [v5 enabledTopics];
+    ignoredTopics = [connectionCopy enabledTopics];
   }
 
-  v7 = v8;
+  v7 = ignoredTopics;
 LABEL_11:
 
   return v7;
 }
 
-- (void)_queue_didChangeProcessState:(id)a3 forBundleIdentifier:(id)a4
+- (void)_queue_didChangeProcessState:(id)state forBundleIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
   v8 = *MEMORY[0x1E6983390];
   v9 = *MEMORY[0x1E6983390];
-  if (v7)
+  if (identifierCopy)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543874;
-      v17 = v7;
+      v17 = identifierCopy;
       v18 = 2114;
-      v19 = v7;
+      v19 = identifierCopy;
       v20 = 2114;
-      v21 = v6;
+      v21 = stateCopy;
       _os_log_impl(&dword_1DA7A9000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] %{public}@ application state changed to %{public}@", &v16, 0x20u);
     }
 
-    v10 = [(UNCRemoteNotificationServer *)self _queue_isApplicationForeground:v7];
-    if ([v6 isRunning])
+    v10 = [(UNCRemoteNotificationServer *)self _queue_isApplicationForeground:identifierCopy];
+    if ([stateCopy isRunning])
     {
-      v11 = [v6 endowmentNamespaces];
-      v12 = [v11 containsObject:@"com.apple.frontboard.visibility"];
+      endowmentNamespaces = [stateCopy endowmentNamespaces];
+      v12 = [endowmentNamespaces containsObject:@"com.apple.frontboard.visibility"];
 
       if (v10 == v12)
       {
@@ -1909,7 +1909,7 @@ LABEL_11:
 
       if (v12)
       {
-        [(UNCRemoteNotificationServer *)self _queue_applicationDidBecomeForeground:v7];
+        [(UNCRemoteNotificationServer *)self _queue_applicationDidBecomeForeground:identifierCopy];
         goto LABEL_12;
       }
     }
@@ -1919,20 +1919,20 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    [(UNCRemoteNotificationServer *)self _queue_applicationDidBecomeBackground:v7];
+    [(UNCRemoteNotificationServer *)self _queue_applicationDidBecomeBackground:identifierCopy];
 LABEL_12:
-    v13 = [(UNCRemoteNotificationServer *)self _queue_isApplicationRunning:v7];
-    v14 = [v6 isRunning];
-    if (v13 != v14)
+    v13 = [(UNCRemoteNotificationServer *)self _queue_isApplicationRunning:identifierCopy];
+    isRunning = [stateCopy isRunning];
+    if (v13 != isRunning)
     {
-      if (v14)
+      if (isRunning)
       {
-        [(UNCRemoteNotificationServer *)self _queue_applicationDidLaunch:v7];
+        [(UNCRemoteNotificationServer *)self _queue_applicationDidLaunch:identifierCopy];
       }
 
       else
       {
-        [(UNCRemoteNotificationServer *)self _queue_applicationDidTerminate:v7];
+        [(UNCRemoteNotificationServer *)self _queue_applicationDidTerminate:identifierCopy];
       }
     }
 
@@ -1949,28 +1949,28 @@ LABEL_16:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_queue_isApplicationForeground:(id)a3
+- (BOOL)_queue_isApplicationForeground:(id)foreground
 {
-  v3 = self;
+  selfCopy = self;
   queue = self->_queue;
-  v5 = a3;
+  foregroundCopy = foreground;
   dispatch_assert_queue_V2(queue);
-  LOBYTE(v3) = [(NSMutableSet *)v3->_foregroundBundleIdentifiers containsObject:v5];
+  LOBYTE(selfCopy) = [(NSMutableSet *)selfCopy->_foregroundBundleIdentifiers containsObject:foregroundCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)_queue_applicationDidBecomeForeground:(id)a3
+- (void)_queue_applicationDidBecomeForeground:(id)foreground
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  foregroundCopy = foreground;
   dispatch_assert_queue_V2(self->_queue);
-  [(NSMutableSet *)self->_foregroundBundleIdentifiers addObject:v4];
-  v5 = [(NSMutableDictionary *)self->_bundleIdentifierToRegistration objectForKey:v4];
+  [(NSMutableSet *)self->_foregroundBundleIdentifiers addObject:foregroundCopy];
+  v5 = [(NSMutableDictionary *)self->_bundleIdentifierToRegistration objectForKey:foregroundCopy];
 
   if (v5)
   {
-    if ([(UNCRemoteNotificationServer *)self _queue_isUserNotificationEnabledForApplication:v4])
+    if ([(UNCRemoteNotificationServer *)self _queue_isUserNotificationEnabledForApplication:foregroundCopy])
     {
       v6 = 1;
     }
@@ -1980,7 +1980,7 @@ LABEL_16:
       v6 = 3;
     }
 
-    [(UNCRemoteNotificationServer *)self _queue_moveTopicsForApplication:v4 fromList:v6 toList:0];
+    [(UNCRemoteNotificationServer *)self _queue_moveTopicsForApplication:foregroundCopy fromList:v6 toList:0];
   }
 
   else
@@ -1989,7 +1989,7 @@ LABEL_16:
     if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v4;
+      v10 = foregroundCopy;
       _os_log_impl(&dword_1DA7A9000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Ignore becoming foreground for application without push registration", &v9, 0xCu);
     }
   }
@@ -1997,23 +1997,23 @@ LABEL_16:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_queue_applicationDidBecomeBackground:(id)a3
+- (void)_queue_applicationDidBecomeBackground:(id)background
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  backgroundCopy = background;
   dispatch_assert_queue_V2(self->_queue);
-  [(NSMutableSet *)self->_foregroundBundleIdentifiers removeObject:v4];
-  v5 = [(NSMutableDictionary *)self->_bundleIdentifierToRegistration objectForKey:v4];
+  [(NSMutableSet *)self->_foregroundBundleIdentifiers removeObject:backgroundCopy];
+  v5 = [(NSMutableDictionary *)self->_bundleIdentifierToRegistration objectForKey:backgroundCopy];
 
   if (v5)
   {
-    if ([(UNCRemoteNotificationServer *)self _queue_shouldBoostTopicToEnabled:v4])
+    if ([(UNCRemoteNotificationServer *)self _queue_shouldBoostTopicToEnabled:backgroundCopy])
     {
       v6 = *MEMORY[0x1E6983390];
       if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_DEFAULT))
       {
         v10 = 138543362;
-        v11 = v4;
+        v11 = backgroundCopy;
         v7 = "[%{public}@] Leaving topic enabled for application becoming background";
 LABEL_7:
         _os_log_impl(&dword_1DA7A9000, v6, OS_LOG_TYPE_DEFAULT, v7, &v10, 0xCu);
@@ -2022,7 +2022,7 @@ LABEL_7:
 
     else
     {
-      if ([(UNCRemoteNotificationServer *)self _queue_isUserNotificationEnabledForApplication:v4])
+      if ([(UNCRemoteNotificationServer *)self _queue_isUserNotificationEnabledForApplication:backgroundCopy])
       {
         v8 = 1;
       }
@@ -2032,7 +2032,7 @@ LABEL_7:
         v8 = 3;
       }
 
-      [(UNCRemoteNotificationServer *)self _queue_moveTopicsForApplication:v4 fromList:0 toList:v8];
+      [(UNCRemoteNotificationServer *)self _queue_moveTopicsForApplication:backgroundCopy fromList:0 toList:v8];
     }
   }
 
@@ -2042,7 +2042,7 @@ LABEL_7:
     if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543362;
-      v11 = v4;
+      v11 = backgroundCopy;
       v7 = "[%{public}@] Ignore becoming background for application without push registration";
       goto LABEL_7;
     }
@@ -2051,88 +2051,88 @@ LABEL_7:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_queue_isApplicationRunning:(id)a3
+- (BOOL)_queue_isApplicationRunning:(id)running
 {
-  v3 = self;
+  selfCopy = self;
   queue = self->_queue;
-  v5 = a3;
+  runningCopy = running;
   dispatch_assert_queue_V2(queue);
-  LOBYTE(v3) = [(NSMutableSet *)v3->_runningBundleIdentifiers containsObject:v5];
+  LOBYTE(selfCopy) = [(NSMutableSet *)selfCopy->_runningBundleIdentifiers containsObject:runningCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)_queue_applicationDidLaunch:(id)a3
+- (void)_queue_applicationDidLaunch:(id)launch
 {
   queue = self->_queue;
-  v5 = a3;
+  launchCopy = launch;
   dispatch_assert_queue_V2(queue);
-  [(NSMutableSet *)self->_runningBundleIdentifiers addObject:v5];
+  [(NSMutableSet *)self->_runningBundleIdentifiers addObject:launchCopy];
 }
 
-- (void)_queue_applicationDidTerminate:(id)a3
+- (void)_queue_applicationDidTerminate:(id)terminate
 {
   queue = self->_queue;
-  v5 = a3;
+  terminateCopy = terminate;
   dispatch_assert_queue_V2(queue);
-  [(NSMutableSet *)self->_runningBundleIdentifiers removeObject:v5];
+  [(NSMutableSet *)self->_runningBundleIdentifiers removeObject:terminateCopy];
 }
 
-- (BOOL)_queue_isBackgroundAppRefreshAllowedForBundleIdentifier:(id)a3
+- (BOOL)_queue_isBackgroundAppRefreshAllowedForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = CFPreferencesCopyAppValue(@"KeepAppsUpToDateAppList", @"com.apple.mt");
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:identifierCopy];
 
   if ([v5 BOOLValue])
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
+  return bOOLValue;
+}
+
+- (BOOL)_queue_isPushEnabledForApplication:(id)application
+{
+  applicationCopy = application;
+  v5 = [(NSMutableDictionary *)self->_bundleIdentifierToRegistration objectForKey:applicationCopy];
+  v6 = v5 && ([(NSMutableSet *)self->_contentAvailableBundleIdentifiers containsObject:applicationCopy]&& [(UNCRemoteNotificationServer *)self _queue_isBackgroundAppRefreshAllowedForBundleIdentifier:applicationCopy]|| [(UNCRemoteNotificationServer *)self _queue_isUserNotificationEnabledForApplication:applicationCopy]);
+
   return v6;
 }
 
-- (BOOL)_queue_isPushEnabledForApplication:(id)a3
+- (BOOL)_queue_shouldBoostTopicToEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_bundleIdentifierToRegistration objectForKey:v4];
-  v6 = v5 && ([(NSMutableSet *)self->_contentAvailableBundleIdentifiers containsObject:v4]&& [(UNCRemoteNotificationServer *)self _queue_isBackgroundAppRefreshAllowedForBundleIdentifier:v4]|| [(UNCRemoteNotificationServer *)self _queue_isUserNotificationEnabledForApplication:v4]);
-
-  return v6;
-}
-
-- (BOOL)_queue_shouldBoostTopicToEnabled:(id)a3
-{
-  v4 = a3;
+  enabledCopy = enabled;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NSMutableSet *)self->_userNotificationEnabledBundleIdentifiers containsObject:v4]&& ([(NSMutableSet *)self->_quietServiceExtensionBundleIdentifiers containsObject:v4]& 1) == 0 && [(UNCBlueListMonitor *)self->_blueListMonitor shouldBoostOpportunisticTopicsToEnabled];
+  shouldBoostOpportunisticTopicsToEnabled = [(NSMutableSet *)self->_userNotificationEnabledBundleIdentifiers containsObject:enabledCopy]&& ([(NSMutableSet *)self->_quietServiceExtensionBundleIdentifiers containsObject:enabledCopy]& 1) == 0 && [(UNCBlueListMonitor *)self->_blueListMonitor shouldBoostOpportunisticTopicsToEnabled];
 
-  return v5;
+  return shouldBoostOpportunisticTopicsToEnabled;
 }
 
-- (BOOL)_queue_isUserNotificationEnabledForApplication:(id)a3
+- (BOOL)_queue_isUserNotificationEnabledForApplication:(id)application
 {
-  v3 = self;
+  selfCopy = self;
   queue = self->_queue;
-  v5 = a3;
+  applicationCopy = application;
   dispatch_assert_queue_V2(queue);
-  LOBYTE(v3) = [(NSMutableSet *)v3->_userNotificationEnabledBundleIdentifiers containsObject:v5];
+  LOBYTE(selfCopy) = [(NSMutableSet *)selfCopy->_userNotificationEnabledBundleIdentifiers containsObject:applicationCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)_queue_didChangeNotificationSettings:(id)a3 forBundleIdentifier:(id)a4
+- (void)_queue_didChangeNotificationSettings:(id)settings forBundleIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 hasEnabledSettings];
-  v9 = v8 ^ [(NSMutableSet *)self->_userNotificationEnabledBundleIdentifiers containsObject:v7];
+  settingsCopy = settings;
+  identifierCopy = identifier;
+  hasEnabledSettings = [settingsCopy hasEnabledSettings];
+  v9 = hasEnabledSettings ^ [(NSMutableSet *)self->_userNotificationEnabledBundleIdentifiers containsObject:identifierCopy];
   v10 = MEMORY[0x1E6983390];
   if (v9 == 1)
   {
@@ -2140,24 +2140,24 @@ LABEL_7:
     if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138543618;
-      v20 = v7;
+      v20 = identifierCopy;
       v21 = 1024;
-      v22 = v8;
+      v22 = hasEnabledSettings;
       _os_log_impl(&dword_1DA7A9000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Update enabled user notifications for remote notifications: %{BOOL}d", &v19, 0x12u);
     }
 
     v12 = *v10;
     v13 = os_log_type_enabled(*v10, OS_LOG_TYPE_DEFAULT);
-    if (v8)
+    if (hasEnabledSettings)
     {
       if (v13)
       {
         v19 = 138543362;
-        v20 = v7;
+        v20 = identifierCopy;
         _os_log_impl(&dword_1DA7A9000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Enable user notifications for remote notifications", &v19, 0xCu);
       }
 
-      [(NSMutableSet *)self->_userNotificationEnabledBundleIdentifiers addObject:v7];
+      [(NSMutableSet *)self->_userNotificationEnabledBundleIdentifiers addObject:identifierCopy];
     }
 
     else
@@ -2165,16 +2165,16 @@ LABEL_7:
       if (v13)
       {
         v19 = 138543362;
-        v20 = v7;
+        v20 = identifierCopy;
         _os_log_impl(&dword_1DA7A9000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Disable user notifications for remote notifications", &v19, 0xCu);
       }
 
-      [(NSMutableSet *)self->_userNotificationEnabledBundleIdentifiers removeObject:v7];
+      [(NSMutableSet *)self->_userNotificationEnabledBundleIdentifiers removeObject:identifierCopy];
     }
   }
 
-  v14 = [v6 hasEnabledAlertSettings];
-  if (v14 == [(NSMutableSet *)self->_visibleUserNotificationEnabledBundleIdentifiers containsObject:v7])
+  hasEnabledAlertSettings = [settingsCopy hasEnabledAlertSettings];
+  if (hasEnabledAlertSettings == [(NSMutableSet *)self->_visibleUserNotificationEnabledBundleIdentifiers containsObject:identifierCopy])
   {
     if (!v9)
     {
@@ -2186,16 +2186,16 @@ LABEL_7:
   {
     v15 = *MEMORY[0x1E6983378];
     v16 = os_log_type_enabled(*MEMORY[0x1E6983378], OS_LOG_TYPE_DEFAULT);
-    if (v14)
+    if (hasEnabledAlertSettings)
     {
       if (v16)
       {
         v19 = 138543362;
-        v20 = v7;
+        v20 = identifierCopy;
         _os_log_impl(&dword_1DA7A9000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] Enabled visible user notifications for remote notifications", &v19, 0xCu);
       }
 
-      [(NSMutableSet *)self->_visibleUserNotificationEnabledBundleIdentifiers addObject:v7];
+      [(NSMutableSet *)self->_visibleUserNotificationEnabledBundleIdentifiers addObject:identifierCopy];
     }
 
     else
@@ -2203,11 +2203,11 @@ LABEL_7:
       if (v16)
       {
         v19 = 138543362;
-        v20 = v7;
+        v20 = identifierCopy;
         _os_log_impl(&dword_1DA7A9000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] Disable visible user notifications for remote notifications", &v19, 0xCu);
       }
 
-      [(NSMutableSet *)self->_visibleUserNotificationEnabledBundleIdentifiers removeObject:v7];
+      [(NSMutableSet *)self->_visibleUserNotificationEnabledBundleIdentifiers removeObject:identifierCopy];
     }
   }
 
@@ -2224,15 +2224,15 @@ LABEL_24:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_queue_isVisibleUserNotificationEnabledForApplication:(id)a3
+- (BOOL)_queue_isVisibleUserNotificationEnabledForApplication:(id)application
 {
-  v3 = self;
+  selfCopy = self;
   queue = self->_queue;
-  v5 = a3;
+  applicationCopy = application;
   dispatch_assert_queue_V2(queue);
-  LOBYTE(v3) = [(NSMutableSet *)v3->_visibleUserNotificationEnabledBundleIdentifiers containsObject:v5];
+  LOBYTE(selfCopy) = [(NSMutableSet *)selfCopy->_visibleUserNotificationEnabledBundleIdentifiers containsObject:applicationCopy];
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)_queue_calculateTopics
@@ -2275,29 +2275,29 @@ LABEL_24:
             v11 = v10;
             if (v10)
             {
-              v12 = [v10 environment];
-              if (v12)
+              environment = [v10 environment];
+              if (environment)
               {
                 v61 = [(UNCRemoteNotificationServer *)self _queue_isApplicationForeground:v9];
                 v13 = [(UNCRemoteNotificationServer *)self _queue_isUserNotificationEnabledForApplication:v9];
                 v60 = v13 && [(UNCRemoteNotificationServer *)self _queue_shouldBoostTopicToEnabled:v9];
                 v59 = [(UNCRemoteNotificationServer *)self _queue_isPushEnabledForApplication:v9];
-                v16 = [v58 indexOfObject:v12];
+                v16 = [v58 indexOfObject:environment];
                 if (v16 == 0x7FFFFFFFFFFFFFFFLL)
                 {
                   v16 = [v58 count];
-                  [v58 addObject:v12];
-                  v17 = [MEMORY[0x1E695DF70] array];
-                  [v57 addObject:v17];
+                  [v58 addObject:environment];
+                  array = [MEMORY[0x1E695DF70] array];
+                  [v57 addObject:array];
 
-                  v18 = [MEMORY[0x1E695DF70] array];
-                  [v56 addObject:v18];
+                  array2 = [MEMORY[0x1E695DF70] array];
+                  [v56 addObject:array2];
 
-                  v19 = [MEMORY[0x1E695DF70] array];
-                  [v55 addObject:v19];
+                  array3 = [MEMORY[0x1E695DF70] array];
+                  [v55 addObject:array3];
 
-                  v20 = [MEMORY[0x1E695DF70] array];
-                  [v54 addObject:v20];
+                  array4 = [MEMORY[0x1E695DF70] array];
+                  [v54 addObject:array4];
                 }
 
                 v21 = [(UNCRemoteNotificationServer *)self _queue_allTopicsForApplication:v9];
@@ -2477,15 +2477,15 @@ LABEL_24:
   v51 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_portNameForEnvironmentName:(id)a3
+- (id)_portNameForEnvironmentName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E698CF20]])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:*MEMORY[0x1E698CF20]])
   {
     v4 = @"com.apple.aps.usernotifications";
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E698CF18]])
+  else if ([nameCopy isEqualToString:*MEMORY[0x1E698CF18]])
   {
     v4 = @"com.apple.aps.usernotifications.dev";
   }
@@ -2498,48 +2498,48 @@ LABEL_24:
   return v4;
 }
 
-- (id)_queue_allTopicsForApplication:(id)a3
+- (id)_queue_allTopicsForApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [MEMORY[0x1E695DF70] arrayWithObject:v4];
-  if ([(NSMutableSet *)self->_cloudKitBundleIdentifiers containsObject:v4])
+  v5 = [MEMORY[0x1E695DF70] arrayWithObject:applicationCopy];
+  if ([(NSMutableSet *)self->_cloudKitBundleIdentifiers containsObject:applicationCopy])
   {
-    v6 = [@"com.apple.icloud-container." stringByAppendingString:v4];
+    v6 = [@"com.apple.icloud-container." stringByAppendingString:applicationCopy];
     [v5 addObject:v6];
   }
 
   return v5;
 }
 
-- (void)requestRemoteNotificationTokenWithEnvironment:(id)a3 forBundleIdentifier:(id)a4
+- (void)requestRemoteNotificationTokenWithEnvironment:(id)environment forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  environmentCopy = environment;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __97__UNCRemoteNotificationServer_requestRemoteNotificationTokenWithEnvironment_forBundleIdentifier___block_invoke;
   block[3] = &unk_1E85D6F20;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = identifierCopy;
+  v13 = environmentCopy;
+  v9 = environmentCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
-- (void)invalidateTokenForRemoteNotificationsForBundleIdentifier:(id)a3
+- (void)invalidateTokenForRemoteNotificationsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __88__UNCRemoteNotificationServer_invalidateTokenForRemoteNotificationsForBundleIdentifier___block_invoke;
   v7[3] = &unk_1E85D6E70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(queue, v7);
 }
 
@@ -2552,18 +2552,18 @@ uint64_t __88__UNCRemoteNotificationServer_invalidateTokenForRemoteNotifications
   return [v2 _queue_calculateTopics];
 }
 
-- (void)_queue_registerApplicationWithBundleIdentifier:(id)a3 forEnvironment:(id)a4
+- (void)_queue_registerApplicationWithBundleIdentifier:(id)identifier forEnvironment:(id)environment
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  environmentCopy = environment;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(NSMutableDictionary *)self->_bundleIdentifierToRegistration objectForKey:v6];
+  v8 = [(NSMutableDictionary *)self->_bundleIdentifierToRegistration objectForKey:identifierCopy];
   if (v8)
   {
-    v9 = v8;
-    v10 = [v8 environment];
-    v11 = [v10 isEqual:v7];
+    uUIDString = v8;
+    environment = [v8 environment];
+    v11 = [environment isEqual:environmentCopy];
 
     if (v11)
     {
@@ -2571,30 +2571,30 @@ uint64_t __88__UNCRemoteNotificationServer_invalidateTokenForRemoteNotifications
       goto LABEL_7;
     }
 
-    v13 = [v9 tokenIdentifier];
-    v14 = v7;
-    v15 = v13;
+    tokenIdentifier = [uUIDString tokenIdentifier];
+    v14 = environmentCopy;
+    v15 = tokenIdentifier;
   }
 
   else
   {
-    v13 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v13 UUIDString];
-    v14 = v7;
-    v15 = v9;
+    tokenIdentifier = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [tokenIdentifier UUIDString];
+    v14 = environmentCopy;
+    v15 = uUIDString;
   }
 
   v16 = [UNCPushRegistration pushRegistrationWithEnvironment:v14 tokenIdentifier:v15 token:0];
 
-  [(UNCRemoteNotificationServer *)self _queue_setPushRegistration:v16 forBundleIdentifier:v6];
+  [(UNCRemoteNotificationServer *)self _queue_setPushRegistration:v16 forBundleIdentifier:identifierCopy];
   v12 = 1;
-  v9 = v16;
+  uUIDString = v16;
 LABEL_7:
-  v17 = [(NSMutableDictionary *)self->_environmentsToConnections objectForKey:v7];
+  v17 = [(NSMutableDictionary *)self->_environmentsToConnections objectForKey:environmentCopy];
   if (!v17)
   {
     [(UNCRemoteNotificationServer *)self _queue_calculateTopics];
-    v17 = [(NSMutableDictionary *)self->_environmentsToConnections objectForKey:v7];
+    v17 = [(NSMutableDictionary *)self->_environmentsToConnections objectForKey:environmentCopy];
   }
 
   if (!self->_bundleIdentifiersNeedingToken)
@@ -2604,21 +2604,21 @@ LABEL_7:
     self->_bundleIdentifiersNeedingToken = v18;
   }
 
-  v20 = [v9 tokenIdentifier];
+  tokenIdentifier2 = [uUIDString tokenIdentifier];
   v21 = *MEMORY[0x1E6983390];
   if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_DEFAULT))
   {
     v22 = v21;
-    v23 = [v9 tokenIdentifier];
+    tokenIdentifier3 = [uUIDString tokenIdentifier];
     v25 = 138543618;
-    v26 = v6;
+    v26 = identifierCopy;
     v27 = 2114;
-    v28 = v23;
+    v28 = tokenIdentifier3;
     _os_log_impl(&dword_1DA7A9000, v22, OS_LOG_TYPE_DEFAULT, "[%{public}@] Request per-app token with token identifier %{public}@", &v25, 0x16u);
   }
 
-  [(NSMutableSet *)self->_bundleIdentifiersNeedingToken addObject:v6];
-  [v17 requestTokenForTopic:v6 identifier:v20];
+  [(NSMutableSet *)self->_bundleIdentifiersNeedingToken addObject:identifierCopy];
+  [v17 requestTokenForTopic:identifierCopy identifier:tokenIdentifier2];
   if (v12)
   {
     [(UNCRemoteNotificationServer *)self _queue_calculateTopics];
@@ -2661,9 +2661,9 @@ uint64_t __52__UNCRemoteNotificationServer_bluelistStatusChanged__block_invoke(u
   return [*(a1 + 32) _queue_calculateTopics];
 }
 
-- (BOOL)allowsRemoteNotificationsForBundleIdentifier:(id)a3
+- (BOOL)allowsRemoteNotificationsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -2673,10 +2673,10 @@ uint64_t __52__UNCRemoteNotificationServer_bluelistStatusChanged__block_invoke(u
   block[1] = 3221225472;
   block[2] = __76__UNCRemoteNotificationServer_allowsRemoteNotificationsForBundleIdentifier___block_invoke;
   block[3] = &unk_1E85D6F48;
-  v9 = v4;
+  v9 = identifierCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -2691,16 +2691,16 @@ uint64_t __76__UNCRemoteNotificationServer_allowsRemoteNotificationsForBundleIde
   return result;
 }
 
-- (void)_queue_invalidateTokenForBundleIdentifier:(id)a3
+- (void)_queue_invalidateTokenForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_bundleIdentifierToRegistration objectForKey:v4];
-  v6 = [v5 environment];
-  if (v6)
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_bundleIdentifierToRegistration objectForKey:identifierCopy];
+  environment = [v5 environment];
+  if (environment)
   {
-    v7 = [v5 tokenIdentifier];
-    v8 = [(NSMutableDictionary *)self->_environmentsToConnections objectForKey:v6];
-    [v8 invalidateTokenForTopic:v4 identifier:v7];
+    tokenIdentifier = [v5 tokenIdentifier];
+    v8 = [(NSMutableDictionary *)self->_environmentsToConnections objectForKey:environment];
+    [v8 invalidateTokenForTopic:identifierCopy identifier:tokenIdentifier];
   }
 
   else if (os_log_type_enabled(*MEMORY[0x1E6983390], OS_LOG_TYPE_ERROR))
@@ -2709,21 +2709,21 @@ uint64_t __76__UNCRemoteNotificationServer_allowsRemoteNotificationsForBundleIde
   }
 }
 
-- (void)_queue_setPushRegistration:(id)a3 forBundleIdentifier:(id)a4
+- (void)_queue_setPushRegistration:(id)registration forBundleIdentifier:(id)identifier
 {
   bundleIdentifierToRegistration = self->_bundleIdentifierToRegistration;
-  v7 = a4;
-  v8 = a3;
-  [(NSMutableDictionary *)bundleIdentifierToRegistration setObject:v8 forKey:v7];
-  [(UNCPushRegistrationRepository *)self->_pushRegistrationRepository setRegistration:v8 forBundleIdentifier:v7];
+  identifierCopy = identifier;
+  registrationCopy = registration;
+  [(NSMutableDictionary *)bundleIdentifierToRegistration setObject:registrationCopy forKey:identifierCopy];
+  [(UNCPushRegistrationRepository *)self->_pushRegistrationRepository setRegistration:registrationCopy forBundleIdentifier:identifierCopy];
 }
 
-- (void)_queue_removeRegistrationForBundleIdentifier:(id)a3
+- (void)_queue_removeRegistrationForBundleIdentifier:(id)identifier
 {
   bundleIdentifierToRegistration = self->_bundleIdentifierToRegistration;
-  v5 = a3;
-  [(NSMutableDictionary *)bundleIdentifierToRegistration removeObjectForKey:v5];
-  [(UNCPushRegistrationRepository *)self->_pushRegistrationRepository removeRegistrationForBundleIdentifier:v5];
+  identifierCopy = identifier;
+  [(NSMutableDictionary *)bundleIdentifierToRegistration removeObjectForKey:identifierCopy];
+  [(UNCPushRegistrationRepository *)self->_pushRegistrationRepository removeRegistrationForBundleIdentifier:identifierCopy];
 }
 
 - (void)_queue_didCompleteInitialization
@@ -2743,13 +2743,13 @@ uint64_t __76__UNCRemoteNotificationServer_allowsRemoteNotificationsForBundleIde
   [MEMORY[0x1E698CF30] notifySafeToSendFilter];
 }
 
-+ (id)_newPushServiceConnectionWithEnvironmentName:(id)a3 namedDelegatePort:(id)a4 queue:(id)a5
++ (id)_newPushServiceConnectionWithEnvironmentName:(id)name namedDelegatePort:(id)port queue:(id)queue
 {
   v7 = MEMORY[0x1E698CF30];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v7 alloc] initWithEnvironmentName:v10 namedDelegatePort:v9 queue:v8];
+  queueCopy = queue;
+  portCopy = port;
+  nameCopy = name;
+  v11 = [[v7 alloc] initWithEnvironmentName:nameCopy namedDelegatePort:portCopy queue:queueCopy];
 
   return v11;
 }

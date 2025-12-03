@@ -1,17 +1,17 @@
 @interface CPSAppClipUnavailableView
-- (CPSAppClipUnavailableView)initWithFrame:(CGRect)a3;
-- (void)_openButtonTapped:(id)a3;
+- (CPSAppClipUnavailableView)initWithFrame:(CGRect)frame;
+- (void)_openButtonTapped:(id)tapped;
 - (void)_setUpViews;
-- (void)enableURLFallbackWithAction:(id)a3;
+- (void)enableURLFallbackWithAction:(id)action;
 @end
 
 @implementation CPSAppClipUnavailableView
 
-- (CPSAppClipUnavailableView)initWithFrame:(CGRect)a3
+- (CPSAppClipUnavailableView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CPSAppClipUnavailableView;
-  v3 = [(CPSAppClipUnavailableView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CPSAppClipUnavailableView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -38,41 +38,41 @@
   [(CPSVibrantLabel *)self->_reasonLabel setAdjustsFontSizeToFitWidth:1];
   [(CPSAppClipUnavailableView *)self addSubview:self->_reasonLabel];
   v16 = MEMORY[0x277CCAAD0];
-  v19 = [(CPSVibrantLabel *)self->_reasonLabel centerXAnchor];
-  v18 = [(CPSAppClipUnavailableView *)self centerXAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  centerXAnchor = [(CPSVibrantLabel *)self->_reasonLabel centerXAnchor];
+  centerXAnchor2 = [(CPSAppClipUnavailableView *)self centerXAnchor];
+  v17 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v20[0] = v17;
-  v6 = [(CPSVibrantLabel *)self->_reasonLabel centerYAnchor];
-  v7 = [(CPSAppClipUnavailableView *)self centerYAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  centerYAnchor = [(CPSVibrantLabel *)self->_reasonLabel centerYAnchor];
+  centerYAnchor2 = [(CPSAppClipUnavailableView *)self centerYAnchor];
+  v8 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v20[1] = v8;
-  v9 = [(CPSAppClipUnavailableView *)self widthAnchor];
-  v10 = [(CPSVibrantLabel *)self->_reasonLabel widthAnchor];
-  v11 = [v9 constraintGreaterThanOrEqualToAnchor:v10 multiplier:1.0 constant:60.0];
+  widthAnchor = [(CPSAppClipUnavailableView *)self widthAnchor];
+  widthAnchor2 = [(CPSVibrantLabel *)self->_reasonLabel widthAnchor];
+  v11 = [widthAnchor constraintGreaterThanOrEqualToAnchor:widthAnchor2 multiplier:1.0 constant:60.0];
   v20[2] = v11;
-  v12 = [(CPSAppClipUnavailableView *)self heightAnchor];
-  v13 = [(CPSVibrantLabel *)self->_reasonLabel heightAnchor];
-  v14 = [v12 constraintGreaterThanOrEqualToAnchor:v13];
+  heightAnchor = [(CPSAppClipUnavailableView *)self heightAnchor];
+  heightAnchor2 = [(CPSVibrantLabel *)self->_reasonLabel heightAnchor];
+  v14 = [heightAnchor constraintGreaterThanOrEqualToAnchor:heightAnchor2];
   v20[3] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:4];
   [v16 activateConstraints:v15];
 }
 
-- (void)enableURLFallbackWithAction:(id)a3
+- (void)enableURLFallbackWithAction:(id)action
 {
   v28[3] = *MEMORY[0x277D85DE8];
-  v27 = a3;
+  actionCopy = action;
   v4 = [CPSButton alloc];
   v5 = _CPSLocalizedString();
-  v6 = [MEMORY[0x277D75348] systemBlueColor];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
   v7 = *MEMORY[0x277D76988];
-  v8 = [(CPSButton *)v4 initWithTitle:v5 enabledTitleColor:v6 disabledTitleColor:0 backgroundColor:0 textStyle:*MEMORY[0x277D76988] cornerRadius:1 animatesAlphaWhenHighlighted:0.0];
+  v8 = [(CPSButton *)v4 initWithTitle:v5 enabledTitleColor:systemBlueColor disabledTitleColor:0 backgroundColor:0 textStyle:*MEMORY[0x277D76988] cornerRadius:1 animatesAlphaWhenHighlighted:0.0];
   fallbackOpenButton = self->_fallbackOpenButton;
   self->_fallbackOpenButton = v8;
 
   v10 = [MEMORY[0x277D74300] _preferredFontForTextStyle:v7 variant:8];
-  v11 = [(CPSButton *)self->_fallbackOpenButton titleLabel];
-  [v11 setFont:v10];
+  titleLabel = [(CPSButton *)self->_fallbackOpenButton titleLabel];
+  [titleLabel setFont:v10];
 
   [(CPSButton *)self->_fallbackOpenButton setContentEdgeInsets:8.0, 27.0, 8.0, 27.0];
   [(CPSButton *)self->_fallbackOpenButton addTarget:self action:sel__openButtonTapped_ forControlEvents:64];
@@ -83,32 +83,32 @@
   LODWORD(v13) = 1132134400;
   [(CPSButton *)self->_fallbackOpenButton setContentHuggingPriority:0 forAxis:v13];
   v25 = MEMORY[0x277CCAAD0];
-  v26 = [(CPSButton *)self->_fallbackOpenButton centerXAnchor];
-  v14 = [(CPSAppClipUnavailableView *)self centerXAnchor];
-  v15 = [v26 constraintEqualToAnchor:v14];
+  centerXAnchor = [(CPSButton *)self->_fallbackOpenButton centerXAnchor];
+  centerXAnchor2 = [(CPSAppClipUnavailableView *)self centerXAnchor];
+  v15 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v28[0] = v15;
-  v16 = [(CPSButton *)self->_fallbackOpenButton topAnchor];
-  v17 = [(CPSVibrantLabel *)self->_reasonLabel bottomAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  topAnchor = [(CPSButton *)self->_fallbackOpenButton topAnchor];
+  bottomAnchor = [(CPSVibrantLabel *)self->_reasonLabel bottomAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:bottomAnchor];
   v28[1] = v18;
-  v19 = [(CPSAppClipUnavailableView *)self bottomAnchor];
-  v20 = [(CPSButton *)self->_fallbackOpenButton bottomAnchor];
-  v21 = [v19 constraintGreaterThanOrEqualToAnchor:v20 constant:16.0];
+  bottomAnchor2 = [(CPSAppClipUnavailableView *)self bottomAnchor];
+  bottomAnchor3 = [(CPSButton *)self->_fallbackOpenButton bottomAnchor];
+  v21 = [bottomAnchor2 constraintGreaterThanOrEqualToAnchor:bottomAnchor3 constant:16.0];
   v28[2] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:3];
   [v25 activateConstraints:v22];
 
-  v23 = MEMORY[0x245D3DDC0](v27);
+  v23 = MEMORY[0x245D3DDC0](actionCopy);
   fallbackURLAction = self->_fallbackURLAction;
   self->_fallbackURLAction = v23;
 }
 
-- (void)_openButtonTapped:(id)a3
+- (void)_openButtonTapped:(id)tapped
 {
   fallbackURLAction = self->_fallbackURLAction;
   if (fallbackURLAction)
   {
-    fallbackURLAction[2](fallbackURLAction, a2, a3);
+    fallbackURLAction[2](fallbackURLAction, a2, tapped);
     fallbackURLAction = self->_fallbackURLAction;
   }
 

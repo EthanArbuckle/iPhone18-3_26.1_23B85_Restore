@@ -1,36 +1,36 @@
 @interface PLPairingProcessor
-- (BOOL)_copyFromURL:(id)a3 toURL:(id)a4 error:(id *)a5;
-- (BOOL)_copyResourceOfType:(unsigned int)a3 onAsset:(id)a4 toType:(unsigned int)a5 onAsset:(id)a6 error:(id *)a7;
-- (BOOL)processPairingForFetchRequest:(id)a3 inContext:(id)a4 error:(id *)a5;
-- (BOOL)updatePrimaryAsset:(id)a3 andRemoveAssetIfPossible:(id)a4;
+- (BOOL)_copyFromURL:(id)l toURL:(id)rL error:(id *)error;
+- (BOOL)_copyResourceOfType:(unsigned int)type onAsset:(id)asset toType:(unsigned int)toType onAsset:(id)onAsset error:(id *)error;
+- (BOOL)processPairingForFetchRequest:(id)request inContext:(id)context error:(id *)error;
+- (BOOL)updatePrimaryAsset:(id)asset andRemoveAssetIfPossible:(id)possible;
 - (PLPairingProcessor)init;
-- (void)_deleteResourceOfType:(unsigned int)a3 forAsset:(id)a4 verifyInserted:(BOOL)a5 deleteFile:(BOOL)a6;
+- (void)_deleteResourceOfType:(unsigned int)type forAsset:(id)asset verifyInserted:(BOOL)inserted deleteFile:(BOOL)file;
 @end
 
 @implementation PLPairingProcessor
 
-- (void)_deleteResourceOfType:(unsigned int)a3 forAsset:(id)a4 verifyInserted:(BOOL)a5 deleteFile:(BOOL)a6
+- (void)_deleteResourceOfType:(unsigned int)type forAsset:(id)asset verifyInserted:(BOOL)inserted deleteFile:(BOOL)file
 {
-  v6 = a6;
-  v7 = a5;
+  fileCopy = file;
+  insertedCopy = inserted;
   v23 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = _originalResourceOfType(v9, a3);
+  assetCopy = asset;
+  v10 = _originalResourceOfType(assetCopy, type);
   v11 = v10;
-  if (v10 && (!v7 || [v10 isInserted]))
+  if (v10 && (!insertedCopy || [v10 isInserted]))
   {
     [v11 deleteResource];
   }
 
-  if (v6)
+  if (fileCopy)
   {
-    v12 = _pathForResourceType(v9, a3);
+    v12 = _pathForResourceType(assetCopy, type);
     if (v12)
     {
       v13 = [MEMORY[0x1E695DFF8] fileURLWithPath:v12];
-      v14 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v18 = 0;
-      v15 = [v14 removeItemAtURL:v13 error:&v18];
+      v15 = [defaultManager removeItemAtURL:v13 error:&v18];
       v16 = v18;
 
       if ((v15 & 1) == 0)
@@ -60,20 +60,20 @@
   }
 }
 
-- (BOOL)updatePrimaryAsset:(id)a3 andRemoveAssetIfPossible:(id)a4
+- (BOOL)updatePrimaryAsset:(id)asset andRemoveAssetIfPossible:(id)possible
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 hasAdjustments];
-  if ((v7 & 1) == 0)
+  assetCopy = asset;
+  possibleCopy = possible;
+  hasAdjustments = [possibleCopy hasAdjustments];
+  if ((hasAdjustments & 1) == 0)
   {
-    v8 = [v6 albums];
+    albums = [possibleCopy albums];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v33 objects:v39 count:16];
+    v9 = [albums countByEnumeratingWithState:&v33 objects:v39 count:16];
     if (v9)
     {
       v10 = v9;
@@ -84,89 +84,89 @@
         {
           if (*v34 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(albums);
           }
 
           v13 = *(*(&v33 + 1) + 8 * i);
           if ([v13 kindValue] == 2)
           {
-            v14 = [v13 mutableAssets];
-            v15 = [v14 indexOfObject:v6];
+            mutableAssets = [v13 mutableAssets];
+            v15 = [mutableAssets indexOfObject:possibleCopy];
             if (v15 != 0x7FFFFFFFFFFFFFFFLL)
             {
-              [v14 insertObject:v5 atIndex:v15];
+              [mutableAssets insertObject:assetCopy atIndex:v15];
             }
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v33 objects:v39 count:16];
+        v10 = [albums countByEnumeratingWithState:&v33 objects:v39 count:16];
       }
 
       while (v10);
     }
 
-    v16 = [v6 addedDate];
-    [v16 timeIntervalSinceReferenceDate];
+    addedDate = [possibleCopy addedDate];
+    [addedDate timeIntervalSinceReferenceDate];
     v18 = v17;
-    v19 = [v5 addedDate];
-    [v19 timeIntervalSinceReferenceDate];
+    addedDate2 = [assetCopy addedDate];
+    [addedDate2 timeIntervalSinceReferenceDate];
     v21 = v20;
 
     if (v18 > v21)
     {
-      v22 = [v6 importSession];
-      [v5 setImportSession:v22];
+      importSession = [possibleCopy importSession];
+      [assetCopy setImportSession:importSession];
 
-      v23 = [v5 importSession];
-      [v23 updateImportDatesFromAddedAsset:v5];
+      importSession2 = [assetCopy importSession];
+      [importSession2 updateImportDatesFromAddedAsset:assetCopy];
     }
 
     v24 = PLBackendGetLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      v25 = [v6 additionalAttributes];
-      v26 = [v25 originalFilename];
+      additionalAttributes = [possibleCopy additionalAttributes];
+      originalFilename = [additionalAttributes originalFilename];
       *buf = 138412290;
-      v38 = v26;
+      v38 = originalFilename;
       _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_DEBUG, "PLPairing: deleting asset %@", buf, 0xCu);
     }
 
     v27 = MEMORY[0x1E696AEC0];
-    v28 = [v6 uuid];
-    v29 = [v5 uuid];
-    v30 = [v27 stringWithFormat:@"Asset (%@) was paired as a resource of another asset (%@)", v28, v29];
+    uuid = [possibleCopy uuid];
+    uuid2 = [assetCopy uuid];
+    v30 = [v27 stringWithFormat:@"Asset (%@) was paired as a resource of another asset (%@)", uuid, uuid2];
     v31 = [PLAssetTransactionReason transactionReason:v30];
-    [v6 deleteWithReason:v31];
+    [possibleCopy deleteWithReason:v31];
   }
 
-  return v7 ^ 1;
+  return hasAdjustments ^ 1;
 }
 
-- (BOOL)_copyFromURL:(id)a3 toURL:(id)a4 error:(id *)a5
+- (BOOL)_copyFromURL:(id)l toURL:(id)rL error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v9 = PLBackendGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v22 = v7;
+    v22 = lCopy;
     v23 = 2112;
-    v24 = v8;
+    v24 = rLCopy;
     _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEBUG, "PLPairing: copying %@ to %@", buf, 0x16u);
   }
 
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v20 = 0;
-  v11 = [v10 copyItemAtURL:v7 toURL:v8 error:&v20];
+  v11 = [defaultManager copyItemAtURL:lCopy toURL:rLCopy error:&v20];
   v12 = v20;
 
   if (v11)
   {
     v13 = *MEMORY[0x1E69BFDE8];
     v19 = 0;
-    v14 = [MEMORY[0x1E69BF238] stripExtendedAttributesFromFileAtURL:v8 inDomain:v13 error:&v19];
+    v14 = [MEMORY[0x1E69BF238] stripExtendedAttributesFromFileAtURL:rLCopy inDomain:v13 error:&v19];
     v15 = v19;
     if ((v14 & 1) == 0)
     {
@@ -174,7 +174,7 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v22 = v8;
+        v22 = rLCopy;
         v23 = 2112;
         v24 = v15;
         _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, "Failed to strip extended attributes from %@: %@", buf, 0x16u);
@@ -188,68 +188,68 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v22 = v7;
+      v22 = lCopy;
       v23 = 2112;
-      v24 = v8;
+      v24 = rLCopy;
       v25 = 2112;
       v26 = v12;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "Error trying to copy %@ to %@: %@", buf, 0x20u);
     }
   }
 
-  if (a5)
+  if (error)
   {
     v17 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v12 == 0;
 }
 
-- (BOOL)_copyResourceOfType:(unsigned int)a3 onAsset:(id)a4 toType:(unsigned int)a5 onAsset:(id)a6 error:(id *)a7
+- (BOOL)_copyResourceOfType:(unsigned int)type onAsset:(id)asset toType:(unsigned int)toType onAsset:(id)onAsset error:(id *)error
 {
-  v9 = *&a5;
+  v9 = *&toType;
   v51 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v33 = a6;
+  assetCopy = asset;
+  onAssetCopy = onAsset;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
   v42 = __Block_byref_object_copy__60370;
   v43 = __Block_byref_object_dispose__60371;
   v44 = 0;
-  v12 = _originalResourceOfType(v11, a3);
+  v12 = _originalResourceOfType(assetCopy, type);
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 fileURL];
-    if (v14)
+    fileURL = [v12 fileURL];
+    if (fileURL)
     {
-      v15 = [v11 pathManager];
-      if ([v15 isUBF])
+      pathManager = [assetCopy pathManager];
+      if ([pathManager isUBF])
       {
         v30 = objc_alloc(MEMORY[0x1E69BF298]);
-        v31 = [v33 uuid];
-        v16 = [v13 uniformTypeIdentifier];
-        v17 = [v16 identifier];
-        v18 = [v13 fileURL];
-        v19 = [v18 lastPathComponent];
-        v20 = [v30 initWithAssetUuid:v31 bundleScope:0 uti:v17 resourceVersion:0 resourceType:v9 recipeID:0 originalFilename:v19 customSuffix:0];
+        uuid = [onAssetCopy uuid];
+        uniformTypeIdentifier = [v13 uniformTypeIdentifier];
+        identifier = [uniformTypeIdentifier identifier];
+        fileURL2 = [v13 fileURL];
+        lastPathComponent = [fileURL2 lastPathComponent];
+        uuid2 = [v30 initWithAssetUuid:uuid bundleScope:0 uti:identifier resourceVersion:0 resourceType:v9 recipeID:0 originalFilename:lastPathComponent customSuffix:0];
 
         v35[0] = MEMORY[0x1E69E9820];
         v35[1] = 3221225472;
         v35[2] = __71__PLPairingProcessor__copyResourceOfType_onAsset_toType_onAsset_error___block_invoke;
         v35[3] = &unk_1E756E8C0;
-        v36 = v14;
-        v37 = self;
+        v36 = fileURL;
+        selfCopy = self;
         v38 = &v39;
-        [v15 obtainAccessAndWaitWithFileWithIdentifier:v20 mode:2 toURLWithHandler:v35];
+        [pathManager obtainAccessAndWaitWithFileWithIdentifier:uuid2 mode:2 toURLWithHandler:v35];
         v21 = v36;
       }
 
       else
       {
-        v21 = _pathForResourceType(v33, v9);
+        v21 = _pathForResourceType(onAssetCopy, v9);
         if (v21)
         {
           v27 = [MEMORY[0x1E695DFF8] fileURLWithPath:v21];
@@ -257,20 +257,20 @@
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412546;
-            v48 = v14;
+            v48 = fileURL;
             v49 = 2112;
             v50 = v27;
             _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_DEBUG, "PLPairing: copying %@ to %@", buf, 0x16u);
           }
 
           v34 = 0;
-          [(PLPairingProcessor *)self _copyFromURL:v14 toURL:v27 error:&v34];
-          v20 = v34;
+          [(PLPairingProcessor *)self _copyFromURL:fileURL toURL:v27 error:&v34];
+          uuid2 = v34;
         }
 
         else
         {
-          v20 = 0;
+          uuid2 = 0;
         }
       }
     }
@@ -282,11 +282,11 @@
       v46[0] = @"Couldn't get file URL.";
       v45[0] = v24;
       v45[1] = @"Resource Object Id";
-      v15 = [v13 objectID];
-      v46[1] = v15;
+      pathManager = [v13 objectID];
+      v46[1] = pathManager;
       v45[2] = @"Asset UUID";
-      v20 = [v11 uuid];
-      v46[2] = v20;
+      uuid2 = [assetCopy uuid];
+      v46[2] = uuid2;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:v45 count:3];
       v25 = [v23 errorWithDomain:*MEMORY[0x1E69BFF48] code:41003 userInfo:v21];
       v26 = v40[5];
@@ -301,9 +301,9 @@
     v22 = 0;
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = v40[5];
+    *error = v40[5];
   }
 
   _Block_object_dispose(&v39, 8);
@@ -346,18 +346,18 @@ void __71__PLPairingProcessor__copyResourceOfType_onAsset_toType_onAsset_error__
   objc_storeStrong(v13, v12);
 }
 
-- (BOOL)processPairingForFetchRequest:(id)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)processPairingForFetchRequest:(id)request inContext:(id)context error:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  requestCopy = request;
+  contextCopy = context;
   if ((!MEMORY[0x19EAEE520]() || (PLIsAssetsd() & 1) == 0) && (PLIsReallyAssetsd() & 1) == 0)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v28 = NSStringFromSelector(a2);
-    [v27 handleFailureInMethod:a2 object:self file:@"PLPairing.m" lineNumber:168 description:{@"%@: Only do pairing in server", v28}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPairing.m" lineNumber:168 description:{@"%@: Only do pairing in server", v28}];
 
-    if (v9)
+    if (requestCopy)
     {
       goto LABEL_5;
     }
@@ -372,25 +372,25 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (!v9)
+  if (!requestCopy)
   {
     goto LABEL_24;
   }
 
 LABEL_5:
-  v34 = a5;
-  v11 = [MEMORY[0x1E695DF90] dictionary];
+  errorCopy = error;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v44 = 0;
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = __68__PLPairingProcessor_processPairingForFetchRequest_inContext_error___block_invoke;
   v42[3] = &unk_1E75781C0;
   v42[4] = self;
-  v12 = v11;
+  v12 = dictionary;
   v43 = v12;
-  v33 = v10;
-  v35 = v9;
-  v13 = [v10 enumerateObjectsFromFetchRequest:v9 count:&v44 batchSize:100 usingBlock:v42];
+  v33 = contextCopy;
+  v35 = requestCopy;
+  v13 = [contextCopy enumerateObjectsFromFetchRequest:requestCopy count:&v44 batchSize:100 usingBlock:v42];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -435,8 +435,8 @@ LABEL_5:
               [(PLPairingProcessor *)self setDeferredProcessingIfNescessaryForAsset:v25];
             }
 
-            v26 = [v24 allValues];
-            [v21 removeObjectsInArray:v26];
+            allValues = [v24 allValues];
+            [v21 removeObjectsInArray:allValues];
 
             v22 = v17;
             if ([v21 count] <= 1)
@@ -464,15 +464,15 @@ LABEL_18:
     v17 = 0;
   }
 
-  a5 = v34;
-  v9 = v35;
-  v10 = v33;
+  error = errorCopy;
+  requestCopy = v35;
+  contextCopy = v33;
 LABEL_25:
 
-  if (a5)
+  if (error)
   {
     v31 = v17;
-    *a5 = v17;
+    *error = v17;
   }
 
   return v17 == 0;

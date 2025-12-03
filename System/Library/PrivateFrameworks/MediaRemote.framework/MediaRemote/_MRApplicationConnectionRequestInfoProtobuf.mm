@@ -1,11 +1,11 @@
 @interface _MRApplicationConnectionRequestInfoProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRApplicationConnectionRequestInfoProtobuf
@@ -16,87 +16,87 @@
   v8.receiver = self;
   v8.super_class = _MRApplicationConnectionRequestInfoProtobuf;
   v4 = [(_MRApplicationConnectionRequestInfoProtobuf *)&v8 description];
-  v5 = [(_MRApplicationConnectionRequestInfoProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRApplicationConnectionRequestInfoProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   deviceInfo = self->_deviceInfo;
   if (deviceInfo)
   {
-    v5 = [(_MRDeviceInfoMessageProtobuf *)deviceInfo dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"deviceInfo"];
+    dictionaryRepresentation = [(_MRDeviceInfoMessageProtobuf *)deviceInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"deviceInfo"];
   }
 
   client = self->_client;
   if (client)
   {
-    v7 = [(_MRNowPlayingClientProtobuf *)client dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"client"];
+    dictionaryRepresentation2 = [(_MRNowPlayingClientProtobuf *)client dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"client"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_deviceInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_client)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_deviceInfo)
   {
-    [v4 setDeviceInfo:?];
-    v4 = v5;
+    [toCopy setDeviceInfo:?];
+    toCopy = v5;
   }
 
   if (self->_client)
   {
     [v5 setClient:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(_MRDeviceInfoMessageProtobuf *)self->_deviceInfo copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(_MRDeviceInfoMessageProtobuf *)self->_deviceInfo copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(_MRNowPlayingClientProtobuf *)self->_client copyWithZone:a3];
+  v8 = [(_MRNowPlayingClientProtobuf *)self->_client copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((deviceInfo = self->_deviceInfo, !(deviceInfo | v4[2])) || -[_MRDeviceInfoMessageProtobuf isEqual:](deviceInfo, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((deviceInfo = self->_deviceInfo, !(deviceInfo | equalCopy[2])) || -[_MRDeviceInfoMessageProtobuf isEqual:](deviceInfo, "isEqual:")))
   {
     client = self->_client;
-    if (client | v4[1])
+    if (client | equalCopy[1])
     {
       v7 = [(_MRNowPlayingClientProtobuf *)client isEqual:?];
     }
@@ -115,12 +115,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   deviceInfo = self->_deviceInfo;
-  v6 = v4[2];
-  v9 = v4;
+  v6 = fromCopy[2];
+  v9 = fromCopy;
   if (deviceInfo)
   {
     if (!v6)
@@ -141,10 +141,10 @@
     [(_MRApplicationConnectionRequestInfoProtobuf *)self setDeviceInfo:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   client = self->_client;
-  v8 = v4[1];
+  v8 = fromCopy[1];
   if (client)
   {
     if (!v8)
@@ -165,7 +165,7 @@ LABEL_7:
     [(_MRApplicationConnectionRequestInfoProtobuf *)self setClient:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
 }
 

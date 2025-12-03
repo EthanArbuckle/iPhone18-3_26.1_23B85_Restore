@@ -1,10 +1,10 @@
 @interface TNUICoordinator
-- (void)dismissButtonTapped:(id)a3;
+- (void)dismissButtonTapped:(id)tapped;
 @end
 
 @implementation TNUICoordinator
 
-- (void)dismissButtonTapped:(id)a3
+- (void)dismissButtonTapped:(id)tapped
 {
   v4 = type metadata accessor for TNCLogger.Category();
   v5 = *(v4 - 8);
@@ -25,7 +25,7 @@
   static TNCLogger.logFunctionCall(category:functionName:)();
   (*(v5 + 8))(v8, v4);
   v10 = 4;
-  TNUICoordinator.handle(action:from:)(&v10, a3);
+  TNUICoordinator.handle(action:from:)(&v10, tapped);
 
   swift_unknownObjectRelease();
 }

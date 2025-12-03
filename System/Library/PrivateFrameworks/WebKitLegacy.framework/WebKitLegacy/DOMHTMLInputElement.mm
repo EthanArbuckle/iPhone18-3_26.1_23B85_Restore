@@ -57,62 +57,62 @@
 - (int)selectionStart;
 - (unsigned)height;
 - (unsigned)width;
-- (void)_setAutoFilledAndViewable:(BOOL)a3;
-- (void)_setAutofilled:(BOOL)a3;
+- (void)_setAutoFilledAndViewable:(BOOL)viewable;
+- (void)_setAutofilled:(BOOL)autofilled;
 - (void)click;
-- (void)insertTextSuggestion:(id)a3;
+- (void)insertTextSuggestion:(id)suggestion;
 - (void)select;
 - (void)setAccept:(NSString *)accept;
 - (void)setAccessKey:(NSString *)accessKey;
 - (void)setAlign:(NSString *)align;
 - (void)setAlt:(NSString *)alt;
-- (void)setAutocomplete:(id)a3;
+- (void)setAutocomplete:(id)autocomplete;
 - (void)setAutofocus:(BOOL)autofocus;
-- (void)setCanShowPlaceholder:(BOOL)a3;
-- (void)setCapture:(BOOL)a3;
+- (void)setCanShowPlaceholder:(BOOL)placeholder;
+- (void)setCapture:(BOOL)capture;
 - (void)setChecked:(BOOL)checked;
-- (void)setCustomValidity:(id)a3;
+- (void)setCustomValidity:(id)validity;
 - (void)setDefaultChecked:(BOOL)defaultChecked;
 - (void)setDefaultValue:(NSString *)defaultValue;
-- (void)setDirName:(id)a3;
+- (void)setDirName:(id)name;
 - (void)setDisabled:(BOOL)disabled;
 - (void)setFiles:(DOMFileList *)files;
-- (void)setFormAction:(id)a3;
-- (void)setFormEnctype:(id)a3;
-- (void)setFormMethod:(id)a3;
-- (void)setFormNoValidate:(BOOL)a3;
-- (void)setFormTarget:(id)a3;
-- (void)setHeight:(unsigned int)a3;
+- (void)setFormAction:(id)action;
+- (void)setFormEnctype:(id)enctype;
+- (void)setFormMethod:(id)method;
+- (void)setFormNoValidate:(BOOL)validate;
+- (void)setFormTarget:(id)target;
+- (void)setHeight:(unsigned int)height;
 - (void)setIndeterminate:(BOOL)indeterminate;
-- (void)setMax:(id)a3;
+- (void)setMax:(id)max;
 - (void)setMaxLength:(int)maxLength;
-- (void)setMin:(id)a3;
+- (void)setMin:(id)min;
 - (void)setMultiple:(BOOL)multiple;
 - (void)setName:(NSString *)name;
-- (void)setPattern:(id)a3;
-- (void)setPlaceholder:(id)a3;
-- (void)setRangeText:(id)a3;
-- (void)setRangeText:(id)a3 start:(unsigned int)a4 end:(unsigned int)a5 selectionMode:(id)a6;
+- (void)setPattern:(id)pattern;
+- (void)setPlaceholder:(id)placeholder;
+- (void)setRangeText:(id)text;
+- (void)setRangeText:(id)text start:(unsigned int)start end:(unsigned int)end selectionMode:(id)mode;
 - (void)setReadOnly:(BOOL)readOnly;
-- (void)setRequired:(BOOL)a3;
-- (void)setSelectionDirection:(id)a3;
+- (void)setRequired:(BOOL)required;
+- (void)setSelectionDirection:(id)direction;
 - (void)setSelectionEnd:(int)selectionEnd;
 - (void)setSelectionRange:(int)start end:(int)end;
 - (void)setSelectionStart:(int)selectionStart;
 - (void)setSize:(NSString *)size;
 - (void)setSrc:(NSString *)src;
-- (void)setStep:(id)a3;
+- (void)setStep:(id)step;
 - (void)setType:(NSString *)type;
 - (void)setUseMap:(NSString *)useMap;
 - (void)setValue:(NSString *)value;
-- (void)setValueAsDate:(double)a3;
-- (void)setValueAsNumber:(double)a3;
-- (void)setValueAsNumberWithChangeEvent:(double)a3;
-- (void)setValueForUser:(id)a3;
-- (void)setValueWithChangeEvent:(id)a3;
-- (void)setWidth:(unsigned int)a3;
-- (void)stepDown:(int)a3;
-- (void)stepUp:(int)a3;
+- (void)setValueAsDate:(double)date;
+- (void)setValueAsNumber:(double)number;
+- (void)setValueAsNumberWithChangeEvent:(double)event;
+- (void)setValueForUser:(id)user;
+- (void)setValueWithChangeEvent:(id)event;
+- (void)setWidth:(unsigned int)width;
+- (void)stepDown:(int)down;
+- (void)stepUp:(int)up;
 @end
 
 @implementation DOMHTMLInputElement
@@ -156,10 +156,10 @@
   }
 }
 
-- (void)setValueWithChangeEvent:(id)a3
+- (void)setValueWithChangeEvent:(id)event
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v10);
-  MEMORY[0x1CCA63A40](&v7, a3);
+  MEMORY[0x1CCA63A40](&v7, event);
   WebCore::HTMLInputElement::setValue();
   if (v9 == 1)
   {
@@ -184,7 +184,7 @@
   WebCore::JSMainThreadNullState::~JSMainThreadNullState(v10, v4);
 }
 
-- (void)setValueAsNumberWithChangeEvent:(double)a3
+- (void)setValueAsNumberWithChangeEvent:(double)event
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v6);
   WebCore::HTMLInputElement::setValueAsNumber();
@@ -340,10 +340,10 @@
   return v5;
 }
 
-- (void)setAutocomplete:(id)a3
+- (void)setAutocomplete:(id)autocomplete
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, autocomplete, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -533,10 +533,10 @@ LABEL_13:
   return v4;
 }
 
-- (void)setDirName:(id)a3
+- (void)setDirName:(id)name
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, name, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -767,10 +767,10 @@ LABEL_22:
   return v5;
 }
 
-- (void)setFormAction:(id)a3
+- (void)setFormAction:(id)action
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, action, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -825,10 +825,10 @@ LABEL_22:
   return v5;
 }
 
-- (void)setFormEnctype:(id)a3
+- (void)setFormEnctype:(id)enctype
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, enctype, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -883,10 +883,10 @@ LABEL_22:
   return v5;
 }
 
-- (void)setFormMethod:(id)a3
+- (void)setFormMethod:(id)method
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, method, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -954,7 +954,7 @@ LABEL_13:
   return v12;
 }
 
-- (void)setFormNoValidate:(BOOL)a3
+- (void)setFormNoValidate:(BOOL)validate
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v4);
   WebCore::Element::setBooleanAttribute();
@@ -997,10 +997,10 @@ LABEL_13:
   return v4;
 }
 
-- (void)setFormTarget:(id)a3
+- (void)setFormTarget:(id)target
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, target, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -1019,7 +1019,7 @@ LABEL_13:
   return self;
 }
 
-- (void)setHeight:(unsigned int)a3
+- (void)setHeight:(unsigned int)height
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v4);
   WebCore::Element::setUnsignedIntegralAttribute();
@@ -1164,10 +1164,10 @@ LABEL_17:
   return v14;
 }
 
-- (void)setMax:(id)a3
+- (void)setMax:(id)max
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, max, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -1299,10 +1299,10 @@ LABEL_17:
   return v14;
 }
 
-- (void)setMin:(id)a3
+- (void)setMin:(id)min
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, min, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -1585,10 +1585,10 @@ LABEL_17:
   return v14;
 }
 
-- (void)setPattern:(id)a3
+- (void)setPattern:(id)pattern
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, pattern, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -1698,10 +1698,10 @@ LABEL_17:
   return v14;
 }
 
-- (void)setPlaceholder:(id)a3
+- (void)setPlaceholder:(id)placeholder
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, placeholder, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -1833,7 +1833,7 @@ LABEL_13:
   return v12;
 }
 
-- (void)setRequired:(BOOL)a3
+- (void)setRequired:(BOOL)required
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v4);
   WebCore::Element::setBooleanAttribute();
@@ -2049,10 +2049,10 @@ LABEL_17:
   return v14;
 }
 
-- (void)setStep:(id)a3
+- (void)setStep:(id)step
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, step, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -2307,7 +2307,7 @@ LABEL_17:
   return v4;
 }
 
-- (void)setValueAsDate:(double)a3
+- (void)setValueAsDate:(double)date
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
   WebCore::HTMLInputElement::setValueAsDate();
@@ -2330,7 +2330,7 @@ LABEL_17:
   return v4;
 }
 
-- (void)setValueAsNumber:(double)a3
+- (void)setValueAsNumber:(double)number
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
   WebCore::HTMLInputElement::setValueAsNumber();
@@ -2352,7 +2352,7 @@ LABEL_17:
   return self;
 }
 
-- (void)setWidth:(unsigned int)a3
+- (void)setWidth:(unsigned int)width
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v4);
   WebCore::Element::setUnsignedIntegralAttribute();
@@ -2501,11 +2501,11 @@ LABEL_17:
   return v5;
 }
 
-- (void)setSelectionDirection:(id)a3
+- (void)setSelectionDirection:(id)direction
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v9);
   internal = self->super.super.super.super._internal;
-  MEMORY[0x1CCA63A40](&v8, a3);
+  MEMORY[0x1CCA63A40](&v8, direction);
   WebCore::HTMLTextFormControlElement::setSelectionDirection(internal, &v8);
   v7 = v8;
   v8 = 0;
@@ -2854,14 +2854,14 @@ LABEL_13:
   return v12;
 }
 
-- (void)setCapture:(BOOL)a3
+- (void)setCapture:(BOOL)capture
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v4);
   WebCore::Element::setBooleanAttribute();
   WebCore::JSMainThreadNullState::~JSMainThreadNullState(v4, v3);
 }
 
-- (void)stepUp:(int)a3
+- (void)stepUp:(int)up
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v8);
   WebCore::HTMLInputElement::stepUp(self->super.super.super.super._internal);
@@ -2875,7 +2875,7 @@ LABEL_13:
   WebCore::JSMainThreadNullState::~JSMainThreadNullState(v8, v4);
 }
 
-- (void)stepDown:(int)a3
+- (void)stepDown:(int)down
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v8);
   WebCore::HTMLInputElement::stepDown(self->super.super.super.super._internal);
@@ -2897,11 +2897,11 @@ LABEL_13:
   return v2;
 }
 
-- (void)setCustomValidity:(id)a3
+- (void)setCustomValidity:(id)validity
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v9);
   internal = self->super.super.super.super._internal;
-  MEMORY[0x1CCA63A40](&v8, a3);
+  MEMORY[0x1CCA63A40](&v8, validity);
   WebCore::ValidatedFormListedElement::setCustomValidity((internal + 120), &v8);
   v7 = v8;
   v8 = 0;
@@ -2920,10 +2920,10 @@ LABEL_13:
   WebCore::JSMainThreadNullState::~JSMainThreadNullState(v3, v2);
 }
 
-- (void)setRangeText:(id)a3
+- (void)setRangeText:(id)text
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v11);
-  MEMORY[0x1CCA63A40](&v7, a3);
+  MEMORY[0x1CCA63A40](&v7, text);
   WebCore::HTMLTextFormControlElement::setRangeText();
   if (v10 == 1)
   {
@@ -2944,11 +2944,11 @@ LABEL_13:
   WebCore::JSMainThreadNullState::~JSMainThreadNullState(v11, v4);
 }
 
-- (void)setRangeText:(id)a3 start:(unsigned int)a4 end:(unsigned int)a5 selectionMode:(id)a6
+- (void)setRangeText:(id)text start:(unsigned int)start end:(unsigned int)end selectionMode:(id)mode
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v17);
-  MEMORY[0x1CCA63A40](&v13, a3);
-  MEMORY[0x1CCA63A40](&v12, a6);
+  MEMORY[0x1CCA63A40](&v13, text);
+  MEMORY[0x1CCA63A40](&v12, mode);
   WebCore::HTMLInputElement::setRangeText();
   if (v16 == 1)
   {
@@ -2990,11 +2990,11 @@ LABEL_13:
   WebCore::JSMainThreadNullState::~JSMainThreadNullState(v4, v3);
 }
 
-- (void)setValueForUser:(id)a3
+- (void)setValueForUser:(id)user
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v9);
   internal = self->super.super.super.super._internal;
-  MEMORY[0x1CCA63A40](&v8, a3);
+  MEMORY[0x1CCA63A40](&v8, user);
   WebCore::HTMLInputElement::setValueForUser(internal, &v8);
   v7 = v8;
   v8 = 0;
@@ -3114,7 +3114,7 @@ LABEL_20:
   return v9;
 }
 
-- (void)insertTextSuggestion:(id)a3
+- (void)insertTextSuggestion:(id)suggestion
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v21);
   internal = self->super.super.super.super._internal;
@@ -3146,8 +3146,8 @@ LABEL_20:
     }
   }
 
-  MEMORY[0x1CCA63A40](&v15, [a3 username]);
-  MEMORY[0x1CCA63A40](&v14, [a3 password]);
+  MEMORY[0x1CCA63A40](&v15, [suggestion username]);
+  MEMORY[0x1CCA63A40](&v14, [suggestion password]);
   WebCore::AutofillElements::autofill();
   v8 = v14;
   v14 = 0;
@@ -3243,7 +3243,7 @@ LABEL_23:
   return self;
 }
 
-- (void)setCanShowPlaceholder:(BOOL)a3
+- (void)setCanShowPlaceholder:(BOOL)placeholder
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v5);
   WebCore::HTMLTextFormControlElement::setCanShowPlaceholder(self->super.super.super.super._internal);
@@ -3280,13 +3280,13 @@ LABEL_23:
   return v3;
 }
 
-- (void)_setAutofilled:(BOOL)a3
+- (void)_setAutofilled:(BOOL)autofilled
 {
-  v3 = a3;
+  autofilledCopy = autofilled;
   v4 = core(self);
   if (!v4 || (*(v4 + 32) & 0x10) != 0 && *(*(v4 + 104) + 24) == *(*MEMORY[0x1E69E2C70] + 24))
   {
-    v7 = v3;
+    v7 = autofilledCopy;
   }
 
   else
@@ -3301,13 +3301,13 @@ LABEL_23:
   MEMORY[0x1EEE563F8](v4, v7, v5, v6);
 }
 
-- (void)_setAutoFilledAndViewable:(BOOL)a3
+- (void)_setAutoFilledAndViewable:(BOOL)viewable
 {
-  v3 = a3;
+  viewableCopy = viewable;
   v4 = core(self);
   if (!v4 || (*(v4 + 32) & 0x10) != 0 && *(*(v4 + 104) + 24) == *(*MEMORY[0x1E69E2C70] + 24))
   {
-    v7 = v3;
+    v7 = viewableCopy;
   }
 
   else

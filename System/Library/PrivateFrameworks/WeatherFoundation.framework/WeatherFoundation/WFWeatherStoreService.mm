@@ -1,45 +1,45 @@
 @interface WFWeatherStoreService
-- (BOOL)_cacheParsedForecastData:(id)a3 types:(unint64_t)a4 location:(id)a5 date:(id)a6 requestIdentifier:(id)a7;
-- (BOOL)_handleDataTaskCompletionWithData:(id)a3 httpResponse:(id)a4 apiVersion:(id)a5 identifier:(id)a6 requestURL:(id)a7 dataTask:(id)a8 dataTaskError:(id)a9 startDate:(id)a10;
-- (BOOL)_isConnectivityAvailableForWeatherHost:(id *)a3;
-- (WFWeatherStoreService)initWithConfiguration:(id)a3 error:(id *)a4;
-- (id)_cachedData:(unint64_t)a3 forLocation:(id)a4 date:(id)a5;
-- (id)_currentScaleCategoryForScale:(id)a3 index:(unint64_t)a4;
-- (id)_taskForURL:(id)a3;
-- (id)apiVersionForSettings:(id)a3;
-- (id)languageForLocale:(id)a3;
-- (void)_addCallback:(id)a3 requestIdentifier:(id)a4 forURL:(id)a5;
-- (void)_cacheObject:(id)a3 type:(unint64_t)a4 date:(id)a5 forLocation:(id)a6;
-- (void)_cancelWithRequestIdentifier:(id)a3;
-- (void)_cleanupCallbacksAndTasksForURL:(id)a3;
-- (void)_enumerateForecastTypesIn:(unint64_t)a3 usingBlock:(id)a4;
-- (void)_executeCallbacksForURL:(id)a3 responseData:(id)a4 error:(id)a5;
-- (void)_forecastConditionsForTWCAQIAndTypes:(unint64_t)a3 location:(id)a4 locale:(id)a5 date:(id)a6 requestIdentifier:(id)a7 completionHandler:(id)a8;
-- (void)_forecastConditionsForTypes:(unint64_t)a3 location:(id)a4 units:(int)a5 locale:(id)a6 date:(id)a7 requestIdentifier:(id)a8 requestOptions:(id)a9 completionHandler:(id)a10;
-- (void)_setTask:(id)a3 requestIdentifier:(id)a4 callback:(id)a5 forURL:(id)a6;
-- (void)_submitRequest:(id)a3 withIdentifier:(id)a4 forLocation:(id)a5 forecastTypes:(unint64_t)a6 configuration:(id)a7 units:(int)a8 locale:(id)a9 date:(id)a10 apiVersion:(id)a11 completionHandler:(id)a12;
-- (void)_submitRequest:(id)a3 withIdentifier:(id)a4 forScaleNamed:(id)a5 language:(id)a6 configuration:(id)a7 apiVersion:(id)a8 completionHandler:(id)a9;
-- (void)airQualityForLocation:(id)a3 locale:(id)a4 requestIdentifier:(id)a5 options:(id)a6 completionHandler:(id)a7;
-- (void)cancelTaskWithIdentifier:(id)a3;
-- (void)completeErroneousForecastRequestWithHandler:(id)a3 requestIdentifier:(id)a4 error:(id)a5;
-- (void)dailyForecastForLocation:(id)a3 locale:(id)a4 requestIdentifier:(id)a5 completionHandler:(id)a6;
+- (BOOL)_cacheParsedForecastData:(id)data types:(unint64_t)types location:(id)location date:(id)date requestIdentifier:(id)identifier;
+- (BOOL)_handleDataTaskCompletionWithData:(id)data httpResponse:(id)response apiVersion:(id)version identifier:(id)identifier requestURL:(id)l dataTask:(id)task dataTaskError:(id)error startDate:(id)self0;
+- (BOOL)_isConnectivityAvailableForWeatherHost:(id *)host;
+- (WFWeatherStoreService)initWithConfiguration:(id)configuration error:(id *)error;
+- (id)_cachedData:(unint64_t)data forLocation:(id)location date:(id)date;
+- (id)_currentScaleCategoryForScale:(id)scale index:(unint64_t)index;
+- (id)_taskForURL:(id)l;
+- (id)apiVersionForSettings:(id)settings;
+- (id)languageForLocale:(id)locale;
+- (void)_addCallback:(id)callback requestIdentifier:(id)identifier forURL:(id)l;
+- (void)_cacheObject:(id)object type:(unint64_t)type date:(id)date forLocation:(id)location;
+- (void)_cancelWithRequestIdentifier:(id)identifier;
+- (void)_cleanupCallbacksAndTasksForURL:(id)l;
+- (void)_enumerateForecastTypesIn:(unint64_t)in usingBlock:(id)block;
+- (void)_executeCallbacksForURL:(id)l responseData:(id)data error:(id)error;
+- (void)_forecastConditionsForTWCAQIAndTypes:(unint64_t)types location:(id)location locale:(id)locale date:(id)date requestIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)_forecastConditionsForTypes:(unint64_t)types location:(id)location units:(int)units locale:(id)locale date:(id)date requestIdentifier:(id)identifier requestOptions:(id)options completionHandler:(id)self0;
+- (void)_setTask:(id)task requestIdentifier:(id)identifier callback:(id)callback forURL:(id)l;
+- (void)_submitRequest:(id)request withIdentifier:(id)identifier forLocation:(id)location forecastTypes:(unint64_t)types configuration:(id)configuration units:(int)units locale:(id)locale date:(id)self0 apiVersion:(id)self1 completionHandler:(id)self2;
+- (void)_submitRequest:(id)request withIdentifier:(id)identifier forScaleNamed:(id)named language:(id)language configuration:(id)configuration apiVersion:(id)version completionHandler:(id)handler;
+- (void)airQualityForLocation:(id)location locale:(id)locale requestIdentifier:(id)identifier options:(id)options completionHandler:(id)handler;
+- (void)cancelTaskWithIdentifier:(id)identifier;
+- (void)completeErroneousForecastRequestWithHandler:(id)handler requestIdentifier:(id)identifier error:(id)error;
+- (void)dailyForecastForLocation:(id)location locale:(id)locale requestIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)dealloc;
-- (void)forecast:(unint64_t)a3 forLocation:(id)a4 withUnits:(int)a5 locale:(id)a6 requestIdentifier:(id)a7 requestOptions:(id)a8 completionHandler:(id)a9;
-- (void)forecastForLocation:(id)a3 locale:(id)a4 onDate:(id)a5 requestIdentifier:(id)a6 options:(id)a7 completionHandler:(id)a8;
-- (void)hourlyForecastForLocation:(id)a3 locale:(id)a4 requestIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)invalidateCacheWithIdentifier:(id)a3;
-- (void)requestFailureForAPIVersion:(id)a3 error:(id)a4;
-- (void)requestSuccessForAPIVersion:(id)a3;
+- (void)forecast:(unint64_t)forecast forLocation:(id)location withUnits:(int)units locale:(id)locale requestIdentifier:(id)identifier requestOptions:(id)options completionHandler:(id)handler;
+- (void)forecastForLocation:(id)location locale:(id)locale onDate:(id)date requestIdentifier:(id)identifier options:(id)options completionHandler:(id)handler;
+- (void)hourlyForecastForLocation:(id)location locale:(id)locale requestIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)invalidateCacheWithIdentifier:(id)identifier;
+- (void)requestFailureForAPIVersion:(id)version error:(id)error;
+- (void)requestSuccessForAPIVersion:(id)version;
 @end
 
 @implementation WFWeatherStoreService
 
-- (WFWeatherStoreService)initWithConfiguration:(id)a3 error:(id *)a4
+- (WFWeatherStoreService)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
-    v7 = v6;
+    v7 = configurationCopy;
   }
 
   else
@@ -60,12 +60,12 @@
     if (v8)
     {
       [(WFWeatherStoreService *)v8 setConfiguration:v7];
-      v9 = [(WFWeatherStoreService *)self configuration];
-      v10 = [v9 cacheClass];
+      configuration = [(WFWeatherStoreService *)self configuration];
+      cacheClass = [configuration cacheClass];
 
-      v11 = [v7 cacheURL];
+      cacheURL = [v7 cacheURL];
       v27 = 0;
-      v12 = [v10 createCacheIfNecessary:v11 error:&v27];
+      v12 = [cacheClass createCacheIfNecessary:cacheURL error:&v27];
       v13 = v27;
       [(WFWeatherStoreService *)self setCache:v12];
 
@@ -77,14 +77,14 @@
           [WFWeatherStoreService initWithConfiguration:error:];
         }
 
-        if (a4)
+        if (error)
         {
           v15 = v13;
-          *a4 = v13;
+          *error = v13;
         }
 
 LABEL_16:
-        v17 = 0;
+        selfCopy = 0;
         goto LABEL_19;
       }
 
@@ -116,7 +116,7 @@ LABEL_16:
     }
 
     self = self;
-    v17 = self;
+    selfCopy = self;
     goto LABEL_19;
   }
 
@@ -127,81 +127,81 @@ LABEL_12:
     [WFWeatherStoreService initWithConfiguration:error:];
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_16;
   }
 
   [MEMORY[0x277CCA9B8] wf_errorWithCode:7];
-  *a4 = v17 = 0;
+  *error = selfCopy = 0;
 LABEL_19:
 
-  return v17;
+  return selfCopy;
 }
 
-- (void)invalidateCacheWithIdentifier:(id)a3
+- (void)invalidateCacheWithIdentifier:(id)identifier
 {
-  v3 = [(WFWeatherStoreService *)self cache];
-  [v3 removeAllObjects];
+  cache = [(WFWeatherStoreService *)self cache];
+  [cache removeAllObjects];
 }
 
 - (void)dealloc
 {
-  v3 = [(WFWeatherStoreService *)self configuration];
-  [v3 invalidate];
+  configuration = [(WFWeatherStoreService *)self configuration];
+  [configuration invalidate];
 
   v4.receiver = self;
   v4.super_class = WFWeatherStoreService;
   [(WFWeatherStoreService *)&v4 dealloc];
 }
 
-- (void)cancelTaskWithIdentifier:(id)a3
+- (void)cancelTaskWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v6 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"requestIdentifier is mandatory." userInfo:0];
     objc_exception_throw(v6);
   }
 
-  v7 = v4;
-  v5 = [v4 UUID];
-  [(WFWeatherStoreService *)self _cancelWithRequestIdentifier:v5];
+  v7 = identifierCopy;
+  uUID = [identifierCopy UUID];
+  [(WFWeatherStoreService *)self _cancelWithRequestIdentifier:uUID];
 }
 
-- (void)completeErroneousForecastRequestWithHandler:(id)a3 requestIdentifier:(id)a4 error:(id)a5
+- (void)completeErroneousForecastRequestWithHandler:(id)handler requestIdentifier:(id)identifier error:(id)error
 {
-  v13 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (!v13 || !v7)
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  errorCopy = error;
+  if (!handlerCopy || !identifierCopy)
   {
     v12 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"completionHandler / requestIdentifier are mandatory." userInfo:0];
     objc_exception_throw(v12);
   }
 
-  v9 = [(WFResponse *)[WFForecastResponse alloc] initWithIdentifier:v7 error:v8];
-  v10 = [(WFResponse *)v9 error];
+  v9 = [(WFResponse *)[WFForecastResponse alloc] initWithIdentifier:identifierCopy error:errorCopy];
+  error = [(WFResponse *)v9 error];
 
-  if (!v10)
+  if (!error)
   {
     v11 = [MEMORY[0x277CCA9B8] wf_errorWithCode:0];
     [(WFResponse *)v9 setError:v11];
   }
 
-  v13[2](v13, v9);
+  handlerCopy[2](handlerCopy, v9);
 }
 
-- (void)forecastForLocation:(id)a3 locale:(id)a4 onDate:(id)a5 requestIdentifier:(id)a6 options:(id)a7 completionHandler:(id)a8
+- (void)forecastForLocation:(id)location locale:(id)locale onDate:(id)date requestIdentifier:(id)identifier options:(id)options completionHandler:(id)handler
 {
   v60 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v43 = a7;
-  v17 = a8;
-  if (!v16 || (v18 = v17) == 0)
+  locationCopy = location;
+  localeCopy = locale;
+  dateCopy = date;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!identifierCopy || (v18 = handlerCopy) == 0)
   {
     v40 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"completionHandler / requestIdentifier are mandatory." userInfo:0];
     objc_exception_throw(v40);
@@ -211,19 +211,19 @@ LABEL_19:
   v49[1] = 3221225472;
   v49[2] = __103__WFWeatherStoreService_forecastForLocation_locale_onDate_requestIdentifier_options_completionHandler___block_invoke;
   v49[3] = &unk_279E6F158;
-  v19 = v16;
+  v19 = identifierCopy;
   v50 = v19;
-  v20 = v15;
+  v20 = dateCopy;
   v51 = v20;
-  v21 = v13;
+  v21 = locationCopy;
   v52 = v21;
   v22 = v18;
   v53 = v22;
   v23 = MEMORY[0x2743D5580](v49);
   if (v21)
   {
-    v24 = [v21 geoLocation];
-    [v24 coordinate];
+    geoLocation = [v21 geoLocation];
+    [geoLocation coordinate];
     v25 = CLLocationCoordinate2DIsValid(v61);
 
     if (v25)
@@ -264,7 +264,7 @@ LABEL_12:
       v32 = WFForecastTypeForDate(v20);
       if (v32 || ([MEMORY[0x277CCA9B8] wf_errorWithCode:6], v33 = objc_claimAutoreleasedReturnValue(), v34 = (v23)[2](v23, 0, 0, 0, 0, v33), v33, (v34 & 1) == 0))
       {
-        v41 = v14;
+        v41 = localeCopy;
         v48 = 0x7FFFFFFFFFFFFFFFLL;
         v35 = WFCacheKeyForForecastType(v32, v21, v20);
         v47 = 0;
@@ -282,8 +282,8 @@ LABEL_12:
           _os_log_debug_impl(&dword_272B94000, v37, OS_LOG_TYPE_DEBUG, "(%{public}@) Check Cache Domain %{public}@ for Key %{public}@", buf, 0x20u);
         }
 
-        v38 = [(WFWeatherStoreService *)self cache];
-        v39 = [v38 cachedObjectWithinDomain:v36 forKey:v35 staleness:v48];
+        cache = [(WFWeatherStoreService *)self cache];
+        v39 = [cache cachedObjectWithinDomain:v36 forKey:v35 staleness:v48];
         if (!v39 || ((v23)[2](v23, v39, v32, 1, 0, 0) & 1) == 0)
         {
           v44[0] = MEMORY[0x277D85DD0];
@@ -295,7 +295,7 @@ LABEL_12:
           [(WFWeatherStoreService *)self _forecastConditionsForTypes:v32 location:v21 locale:v41 date:v20 requestIdentifier:v19 completionHandler:v44];
         }
 
-        v14 = v41;
+        localeCopy = v41;
       }
     }
   }
@@ -398,13 +398,13 @@ LABEL_11:
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)hourlyForecastForLocation:(id)a3 locale:(id)a4 requestIdentifier:(id)a5 completionHandler:(id)a6
+- (void)hourlyForecastForLocation:(id)location locale:(id)locale requestIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v12 || (v14 = v13) == 0)
+  locationCopy = location;
+  localeCopy = locale;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (!identifierCopy || (v14 = handlerCopy) == 0)
   {
     v27 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"completionHandler / requestIdentifier are mandatory." userInfo:0];
     objc_exception_throw(v27);
@@ -414,9 +414,9 @@ LABEL_11:
   v30[1] = 3221225472;
   v30[2] = __94__WFWeatherStoreService_hourlyForecastForLocation_locale_requestIdentifier_completionHandler___block_invoke;
   v30[3] = &unk_279E6F1A8;
-  v15 = v12;
+  v15 = identifierCopy;
   v31 = v15;
-  v16 = v10;
+  v16 = locationCopy;
   v32 = v16;
   v17 = v14;
   v33 = v17;
@@ -439,8 +439,8 @@ LABEL_11:
     [WFWeatherStoreService hourlyForecastForLocation:locale:requestIdentifier:completionHandler:];
   }
 
-  v24 = [MEMORY[0x277CBEAA8] date];
-  v25 = [(WFWeatherStoreService *)self _cachedHourlyForecastedConditionsForLocation:v16 date:v24];
+  date = [MEMORY[0x277CBEAA8] date];
+  v25 = [(WFWeatherStoreService *)self _cachedHourlyForecastedConditionsForLocation:v16 date:date];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v25 count])
   {
@@ -460,7 +460,7 @@ LABEL_11:
     v28[2] = __94__WFWeatherStoreService_hourlyForecastForLocation_locale_requestIdentifier_completionHandler___block_invoke_126;
     v28[3] = &unk_279E6F1D0;
     v29 = v18;
-    [(WFWeatherStoreService *)self _forecastConditionsForTypes:4 location:v16 locale:v11 date:v24 requestIdentifier:v15 completionHandler:v28];
+    [(WFWeatherStoreService *)self _forecastConditionsForTypes:4 location:v16 locale:localeCopy date:date requestIdentifier:v15 completionHandler:v28];
   }
 }
 
@@ -484,13 +484,13 @@ void __94__WFWeatherStoreService_hourlyForecastForLocation_locale_requestIdentif
   (*(v4 + 16))(v4, v6, 0, v5);
 }
 
-- (void)dailyForecastForLocation:(id)a3 locale:(id)a4 requestIdentifier:(id)a5 completionHandler:(id)a6
+- (void)dailyForecastForLocation:(id)location locale:(id)locale requestIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v12 || (v14 = v13) == 0)
+  locationCopy = location;
+  localeCopy = locale;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (!identifierCopy || (v14 = handlerCopy) == 0)
   {
     v26 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"completionHandler / requestIdentifier are mandatory." userInfo:0];
     objc_exception_throw(v26);
@@ -500,9 +500,9 @@ void __94__WFWeatherStoreService_hourlyForecastForLocation_locale_requestIdentif
   v29[1] = 3221225472;
   v29[2] = __93__WFWeatherStoreService_dailyForecastForLocation_locale_requestIdentifier_completionHandler___block_invoke;
   v29[3] = &unk_279E6F1A8;
-  v15 = v12;
+  v15 = identifierCopy;
   v30 = v15;
-  v16 = v10;
+  v16 = locationCopy;
   v31 = v16;
   v17 = v14;
   v32 = v17;
@@ -515,8 +515,8 @@ void __94__WFWeatherStoreService_hourlyForecastForLocation_locale_requestIdentif
       [WFWeatherStoreService dailyForecastForLocation:locale:requestIdentifier:completionHandler:];
     }
 
-    v22 = [MEMORY[0x277CBEAA8] date];
-    v23 = [(WFWeatherStoreService *)self _cachedDailyForecastedConditionsForLocation:v16 date:v22];
+    date = [MEMORY[0x277CBEAA8] date];
+    v23 = [(WFWeatherStoreService *)self _cachedDailyForecastedConditionsForLocation:v16 date:date];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v23 count])
     {
@@ -536,7 +536,7 @@ void __94__WFWeatherStoreService_hourlyForecastForLocation_locale_requestIdentif
       v27[2] = __93__WFWeatherStoreService_dailyForecastForLocation_locale_requestIdentifier_completionHandler___block_invoke_127;
       v27[3] = &unk_279E6F1D0;
       v28 = v18;
-      [(WFWeatherStoreService *)self _forecastConditionsForTypes:8 location:v16 locale:v11 date:v22 requestIdentifier:v15 completionHandler:v27];
+      [(WFWeatherStoreService *)self _forecastConditionsForTypes:8 location:v16 locale:localeCopy date:date requestIdentifier:v15 completionHandler:v27];
     }
   }
 
@@ -548,8 +548,8 @@ void __94__WFWeatherStoreService_hourlyForecastForLocation_locale_requestIdentif
       [WFWeatherStoreService dailyForecastForLocation:locale:requestIdentifier:completionHandler:];
     }
 
-    v22 = [MEMORY[0x277CCA9B8] wf_errorWithCode:4];
-    (v18)[2](v18, 0, 0, v22);
+    date = [MEMORY[0x277CCA9B8] wf_errorWithCode:4];
+    (v18)[2](v18, 0, 0, date);
   }
 }
 
@@ -573,14 +573,14 @@ void __93__WFWeatherStoreService_dailyForecastForLocation_locale_requestIdentifi
   (*(v4 + 16))(v4, v6, 0, v5);
 }
 
-- (void)airQualityForLocation:(id)a3 locale:(id)a4 requestIdentifier:(id)a5 options:(id)a6 completionHandler:(id)a7
+- (void)airQualityForLocation:(id)location locale:(id)locale requestIdentifier:(id)identifier options:(id)options completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v12 || !v13 || !v14 || (v17 = v16) == 0)
+  locationCopy = location;
+  localeCopy = locale;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!locationCopy || !localeCopy || !identifierCopy || (v17 = handlerCopy) == 0)
   {
     v30 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"completionHandler / requestIdentifier are mandatory." userInfo:0];
     objc_exception_throw(v30);
@@ -590,15 +590,15 @@ void __93__WFWeatherStoreService_dailyForecastForLocation_locale_requestIdentifi
   v33[1] = 3221225472;
   v33[2] = __98__WFWeatherStoreService_airQualityForLocation_locale_requestIdentifier_options_completionHandler___block_invoke;
   v33[3] = &unk_279E6F1F8;
-  v18 = v14;
+  v18 = identifierCopy;
   v34 = v18;
-  v19 = v12;
+  v19 = locationCopy;
   v35 = v19;
   v20 = v17;
   v36 = v20;
   v21 = MEMORY[0x2743D5580](v33);
-  v22 = [v19 geoLocation];
-  [v22 coordinate];
+  geoLocation = [v19 geoLocation];
+  [geoLocation coordinate];
   v23 = CLLocationCoordinate2DIsValid(v37);
 
   v24 = WFLogForCategory(2uLL);
@@ -610,8 +610,8 @@ void __93__WFWeatherStoreService_dailyForecastForLocation_locale_requestIdentifi
       [WFWeatherStoreService airQualityForLocation:locale:requestIdentifier:options:completionHandler:];
     }
 
-    v26 = [MEMORY[0x277CBEAA8] date];
-    v27 = [(WFWeatherStoreService *)self _cachedAirQualityConditionsForLocation:v19 date:v26];
+    date = [MEMORY[0x277CBEAA8] date];
+    v27 = [(WFWeatherStoreService *)self _cachedAirQualityConditionsForLocation:v19 date:date];
     v28 = v27;
     if (v27 && ([v27 isExpired] & 1) == 0)
     {
@@ -631,7 +631,7 @@ void __93__WFWeatherStoreService_dailyForecastForLocation_locale_requestIdentifi
       v31[2] = __98__WFWeatherStoreService_airQualityForLocation_locale_requestIdentifier_options_completionHandler___block_invoke_130;
       v31[3] = &unk_279E6F1D0;
       v32 = v21;
-      [(WFWeatherStoreService *)self _forecastConditionsForTypes:1 location:v19 locale:v13 date:v26 requestIdentifier:v18 completionHandler:v31];
+      [(WFWeatherStoreService *)self _forecastConditionsForTypes:1 location:v19 locale:localeCopy date:date requestIdentifier:v18 completionHandler:v31];
     }
   }
 
@@ -642,8 +642,8 @@ void __93__WFWeatherStoreService_dailyForecastForLocation_locale_requestIdentifi
       [WFWeatherStoreService airQualityForLocation:locale:requestIdentifier:options:completionHandler:];
     }
 
-    v26 = [MEMORY[0x277CCA9B8] wf_errorWithCode:4];
-    (v21)[2](v21, 0, 0, v26);
+    date = [MEMORY[0x277CCA9B8] wf_errorWithCode:4];
+    (v21)[2](v21, 0, 0, date);
   }
 }
 
@@ -667,23 +667,23 @@ void __98__WFWeatherStoreService_airQualityForLocation_locale_requestIdentifier_
   (*(v4 + 16))(v4, v6, 0, v5);
 }
 
-- (void)forecast:(unint64_t)a3 forLocation:(id)a4 withUnits:(int)a5 locale:(id)a6 requestIdentifier:(id)a7 requestOptions:(id)a8 completionHandler:(id)a9
+- (void)forecast:(unint64_t)forecast forLocation:(id)location withUnits:(int)units locale:(id)locale requestIdentifier:(id)identifier requestOptions:(id)options completionHandler:(id)handler
 {
   v50 = *MEMORY[0x277D85DE8];
-  v15 = a4;
-  v35 = a6;
-  v16 = a7;
-  v36 = a8;
-  v17 = a9;
+  locationCopy = location;
+  localeCopy = locale;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  handlerCopy = handler;
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __114__WFWeatherStoreService_forecast_forLocation_withUnits_locale_requestIdentifier_requestOptions_completionHandler___block_invoke;
   v44[3] = &unk_279E6F220;
-  v18 = v16;
+  v18 = identifierCopy;
   v45 = v18;
-  v19 = v15;
+  v19 = locationCopy;
   v46 = v19;
-  v20 = v17;
+  v20 = handlerCopy;
   v47 = v20;
   v21 = MEMORY[0x2743D5580](v44);
   if (!v18 || !v20)
@@ -695,12 +695,12 @@ void __98__WFWeatherStoreService_airQualityForLocation_locale_requestIdentifier_
   v22 = v21;
   if (v19 && ([v19 geoLocation], v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "coordinate"), v24 = CLLocationCoordinate2DIsValid(v51), v23, v24))
   {
-    v34 = a5;
+    unitsCopy = units;
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     LOBYTE(v49) = 1;
-    v25 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v26 = objc_opt_new();
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
@@ -709,12 +709,12 @@ void __98__WFWeatherStoreService_airQualityForLocation_locale_requestIdentifier_
     v39[4] = self;
     v27 = v19;
     v40 = v27;
-    v28 = v25;
+    v28 = date;
     v41 = v28;
     v29 = v26;
     v42 = v29;
     v43 = buf;
-    [(WFWeatherStoreService *)self _enumerateForecastTypesIn:a3 usingBlock:v39];
+    [(WFWeatherStoreService *)self _enumerateForecastTypesIn:forecast usingBlock:v39];
     if (*(*&buf[8] + 24) == 1)
     {
       (v22)[2](v22, v29, 1, 0);
@@ -727,7 +727,7 @@ void __98__WFWeatherStoreService_airQualityForLocation_locale_requestIdentifier_
       v37[2] = __114__WFWeatherStoreService_forecast_forLocation_withUnits_locale_requestIdentifier_requestOptions_completionHandler___block_invoke_2;
       v37[3] = &unk_279E6F1D0;
       v38 = v22;
-      [(WFWeatherStoreService *)self _forecastConditionsForTypes:a3 location:v27 units:v34 locale:v35 date:v28 requestIdentifier:v18 requestOptions:v36 completionHandler:v37];
+      [(WFWeatherStoreService *)self _forecastConditionsForTypes:forecast location:v27 units:unitsCopy locale:localeCopy date:v28 requestIdentifier:v18 requestOptions:optionsCopy completionHandler:v37];
     }
 
     _Block_object_dispose(buf, 8);
@@ -738,13 +738,13 @@ void __98__WFWeatherStoreService_airQualityForLocation_locale_requestIdentifier_
     v30 = WFLogForCategory(2uLL);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      v32 = [v19 geoLocation];
+      geoLocation = [v19 geoLocation];
       *buf = 138543875;
       *&buf[4] = v18;
       *&buf[12] = 2048;
-      *&buf[14] = a3;
+      *&buf[14] = forecast;
       *&buf[22] = 2113;
-      v49 = v32;
+      v49 = geoLocation;
       _os_log_error_impl(&dword_272B94000, v30, OS_LOG_TYPE_ERROR, "(%{public}@) Invalid location given for %lu Forecast request: %{private}@", buf, 0x20u);
     }
 
@@ -961,61 +961,61 @@ LABEL_31:
   MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (id)_cachedData:(unint64_t)a3 forLocation:(id)a4 date:(id)a5
+- (id)_cachedData:(unint64_t)data forLocation:(id)location date:(id)date
 {
   v15 = 0;
   v16 = 0x7FFFFFFFFFFFFFFFLL;
-  v8 = a5;
-  v9 = a4;
-  WFCacheDetailsForForecastType(a3, &v16, &v15);
+  dateCopy = date;
+  locationCopy = location;
+  WFCacheDetailsForForecastType(data, &v16, &v15);
   v10 = v15;
-  v11 = [(WFWeatherStoreService *)self cache];
-  v12 = WFCacheKeyForForecastType(a3, v9, v8);
+  cache = [(WFWeatherStoreService *)self cache];
+  v12 = WFCacheKeyForForecastType(data, locationCopy, dateCopy);
 
-  v13 = [v11 cachedObjectWithinDomain:v10 forKey:v12 staleness:v16];
+  v13 = [cache cachedObjectWithinDomain:v10 forKey:v12 staleness:v16];
 
   return v13;
 }
 
-- (BOOL)_isConnectivityAvailableForWeatherHost:(id *)a3
+- (BOOL)_isConnectivityAvailableForWeatherHost:(id *)host
 {
-  v4 = [(WFWeatherStoreService *)self configuration];
-  v5 = [v4 isServiceAvailable];
+  configuration = [(WFWeatherStoreService *)self configuration];
+  isServiceAvailable = [configuration isServiceAvailable];
 
-  if (a3 && (v5 & 1) == 0)
+  if (host && (isServiceAvailable & 1) == 0)
   {
-    *a3 = [MEMORY[0x277CCA9B8] wf_errorWithCode:14];
+    *host = [MEMORY[0x277CCA9B8] wf_errorWithCode:14];
   }
 
-  return v5;
+  return isServiceAvailable;
 }
 
-- (void)_forecastConditionsForTypes:(unint64_t)a3 location:(id)a4 units:(int)a5 locale:(id)a6 date:(id)a7 requestIdentifier:(id)a8 requestOptions:(id)a9 completionHandler:(id)a10
+- (void)_forecastConditionsForTypes:(unint64_t)types location:(id)location units:(int)units locale:(id)locale date:(id)date requestIdentifier:(id)identifier requestOptions:(id)options completionHandler:(id)self0
 {
-  v13 = *&a5;
+  v13 = *&units;
   v61 = *MEMORY[0x277D85DE8];
-  v41 = a4;
-  v38 = a6;
-  v16 = a7;
-  v40 = a8;
-  v17 = a9;
-  v18 = a10;
-  v39 = a3;
-  if (!a3 || !v41 || !v16 || !v40 || (v19 = v18) == 0)
+  locationCopy = location;
+  localeCopy = locale;
+  dateCopy = date;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  handlerCopy = handler;
+  typesCopy = types;
+  if (!types || !locationCopy || !dateCopy || !identifierCopy || (v19 = handlerCopy) == 0)
   {
     v32 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"completionHandler / requestIdentifier are mandatory." userInfo:0];
     objc_exception_throw(v32);
   }
 
-  v20 = [(WFWeatherStoreService *)self configuration];
-  v21 = [v20 settingsManager];
-  v22 = [(WFWeatherStoreService *)self apiVersionForSettings:v21];
+  configuration = [(WFWeatherStoreService *)self configuration];
+  settingsManager = [configuration settingsManager];
+  v22 = [(WFWeatherStoreService *)self apiVersionForSettings:settingsManager];
 
-  if ([@"twc_v2" isEqualToString:v22] && a3 != 1 && (a3 & 1) != 0)
+  if ([@"twc_v2" isEqualToString:v22] && types != 1 && (types & 1) != 0)
   {
-    v23 = self;
-    v24 = v38;
-    [(WFWeatherStoreService *)v23 _forecastConditionsForTWCAQIAndTypes:a3 location:v41 locale:v38 date:v16 requestIdentifier:v40 completionHandler:v19];
+    selfCopy = self;
+    v24 = localeCopy;
+    [(WFWeatherStoreService *)selfCopy _forecastConditionsForTWCAQIAndTypes:types location:locationCopy locale:localeCopy date:dateCopy requestIdentifier:identifierCopy completionHandler:v19];
     v25 = 0;
   }
 
@@ -1030,23 +1030,23 @@ LABEL_31:
     v54 = v37;
     v26 = MEMORY[0x2743D5580](v53);
     v52 = 0;
-    v27 = [v20 forecastRequestForTypes:v39 location:v41 units:v13 date:v16 apiVersion:v22 error:&v52 requestOptions:v17];
+    v27 = [configuration forecastRequestForTypes:typesCopy location:locationCopy units:v13 date:dateCopy apiVersion:v22 error:&v52 requestOptions:optionsCopy];
     v28 = v52;
     v25 = v28;
     if (v27)
     {
       v34 = v28;
       v35 = v13;
-      v36 = v17;
+      v36 = optionsCopy;
       v29 = WFLogForCategory(2uLL);
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138543874;
-        v56 = v40;
+        v56 = identifierCopy;
         v57 = 2112;
         v58 = v27;
         v59 = 2112;
-        v60 = v41;
+        v60 = locationCopy;
         _os_log_debug_impl(&dword_272B94000, v29, OS_LOG_TYPE_DEBUG, "(%{public}@) Built forecast request '%@' for location %@", buf, 0x20u);
       }
 
@@ -1054,22 +1054,22 @@ LABEL_31:
       v42[1] = 3221225472;
       v42[2] = __131__WFWeatherStoreService__forecastConditionsForTypes_location_units_locale_date_requestIdentifier_requestOptions_completionHandler___block_invoke_137;
       v42[3] = &unk_279E6F2C0;
-      v33 = self;
+      selfCopy2 = self;
       v42[4] = self;
       v49 = v26;
-      v51 = v39;
-      v43 = v41;
-      v44 = v16;
-      v45 = v40;
-      v46 = v20;
+      v51 = typesCopy;
+      v43 = locationCopy;
+      v44 = dateCopy;
+      v45 = identifierCopy;
+      v46 = configuration;
       v47 = v22;
       v30 = v27;
       v48 = v27;
       v50 = v37;
-      v24 = v38;
-      [(WFWeatherStoreService *)v33 _submitRequest:v48 withIdentifier:v45 forLocation:v43 forecastTypes:v39 configuration:v46 units:v35 locale:v38 date:v44 apiVersion:v47 completionHandler:v42];
+      v24 = localeCopy;
+      [(WFWeatherStoreService *)selfCopy2 _submitRequest:v48 withIdentifier:v45 forLocation:v43 forecastTypes:typesCopy configuration:v46 units:v35 locale:localeCopy date:v44 apiVersion:v47 completionHandler:v42];
 
-      v17 = v36;
+      optionsCopy = v36;
       v25 = v34;
     }
 
@@ -1081,7 +1081,7 @@ LABEL_31:
       }
 
       v31 = WFLogForCategory(2uLL);
-      v24 = v38;
+      v24 = localeCopy;
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
         [WFWeatherStoreService _forecastConditionsForTypes:location:units:locale:date:requestIdentifier:requestOptions:completionHandler:];
@@ -1288,28 +1288,28 @@ void __131__WFWeatherStoreService__forecastConditionsForTypes_location_units_loc
   (*(*(a1 + 80) + 16))();
 }
 
-- (id)languageForLocale:(id)a3
+- (id)languageForLocale:(id)locale
 {
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 preferredLocalizations];
-  v5 = [v4 objectAtIndex:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  preferredLocalizations = [mainBundle preferredLocalizations];
+  v5 = [preferredLocalizations objectAtIndex:0];
 
   v6 = [v5 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
 
   return v6;
 }
 
-- (void)_forecastConditionsForTWCAQIAndTypes:(unint64_t)a3 location:(id)a4 locale:(id)a5 date:(id)a6 requestIdentifier:(id)a7 completionHandler:(id)a8
+- (void)_forecastConditionsForTWCAQIAndTypes:(unint64_t)types location:(id)location locale:(id)locale date:(id)date requestIdentifier:(id)identifier completionHandler:(id)handler
 {
   v74 = *MEMORY[0x277D85DE8];
-  v13 = a4;
-  v32 = a5;
-  v14 = a6;
-  v35 = a7;
-  v31 = a8;
-  v15 = [(WFWeatherStoreService *)self configuration];
-  v16 = [v15 settingsManager];
-  v17 = [(WFWeatherStoreService *)self apiVersionForSettings:v16];
+  locationCopy = location;
+  localeCopy = locale;
+  dateCopy = date;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  configuration = [(WFWeatherStoreService *)self configuration];
+  settingsManager = [configuration settingsManager];
+  v17 = [(WFWeatherStoreService *)self apiVersionForSettings:settingsManager];
 
   group = dispatch_group_create();
   v66[0] = 0;
@@ -1337,7 +1337,7 @@ void __131__WFWeatherStoreService__forecastConditionsForTypes_location_units_loc
   v60 = __Block_byref_object_dispose__2;
   v61 = 0;
   v55 = 0;
-  v18 = [v15 forecastRequestForTypes:a3 & 0xFFFFFFFFFFFFFFFELL location:v13 date:v14 apiVersion:v17 error:&v55];
+  v18 = [configuration forecastRequestForTypes:types & 0xFFFFFFFFFFFFFFFELL location:locationCopy date:dateCopy apiVersion:v17 error:&v55];
   v19 = v55;
   v30 = v19;
   if (v18)
@@ -1347,11 +1347,11 @@ void __131__WFWeatherStoreService__forecastConditionsForTypes_location_units_loc
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138543874;
-      v69 = v35;
+      v69 = identifierCopy;
       v70 = 2112;
       v71 = v18;
       v72 = 2112;
-      v73 = v13;
+      v73 = locationCopy;
       _os_log_debug_impl(&dword_272B94000, v20, OS_LOG_TYPE_DEBUG, "(%{public}@) Built forecast request '%@' for location %@", buf, 0x20u);
     }
 
@@ -1363,10 +1363,10 @@ void __131__WFWeatherStoreService__forecastConditionsForTypes_location_units_loc
     v54 = v62;
     v21 = group;
     v52 = v21;
-    [(WFWeatherStoreService *)self _submitRequest:v18 withIdentifier:v35 forLocation:v13 forecastTypes:a3 configuration:v15 units:0 locale:v32 date:v14 apiVersion:v17 completionHandler:v51];
+    [(WFWeatherStoreService *)self _submitRequest:v18 withIdentifier:identifierCopy forLocation:locationCopy forecastTypes:types configuration:configuration units:0 locale:localeCopy date:dateCopy apiVersion:v17 completionHandler:v51];
 
     v50 = 0;
-    v22 = [v15 forecastRequestForTypes:1 location:v13 date:v14 apiVersion:v17 error:&v50];
+    v22 = [configuration forecastRequestForTypes:1 location:locationCopy date:dateCopy apiVersion:v17 error:&v50];
     v23 = v50;
     v29 = v50;
     if (v22)
@@ -1377,10 +1377,10 @@ void __131__WFWeatherStoreService__forecastConditionsForTypes_location_units_loc
       v45[2] = __119__WFWeatherStoreService__forecastConditionsForTWCAQIAndTypes_location_locale_date_requestIdentifier_completionHandler___block_invoke_153;
       v45[3] = &unk_279E6F310;
       v48 = v64;
-      v46 = v13;
+      v46 = locationCopy;
       v49 = &v56;
       v47 = v21;
-      [(WFWeatherStoreService *)self _submitRequest:v22 withIdentifier:v35 forLocation:v46 forecastTypes:1 configuration:v15 units:0 locale:v32 date:v14 apiVersion:v17 completionHandler:v45];
+      [(WFWeatherStoreService *)self _submitRequest:v22 withIdentifier:identifierCopy forLocation:v46 forecastTypes:1 configuration:configuration units:0 locale:localeCopy date:dateCopy apiVersion:v17 completionHandler:v45];
 
       v24 = v46;
     }
@@ -1402,7 +1402,7 @@ void __131__WFWeatherStoreService__forecastConditionsForTypes_location_units_loc
       }
     }
 
-    v28 = [(WFWeatherStoreService *)self parseQueue];
+    parseQueue = [(WFWeatherStoreService *)self parseQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __119__WFWeatherStoreService__forecastConditionsForTWCAQIAndTypes_location_locale_date_requestIdentifier_completionHandler___block_invoke_154;
@@ -1410,13 +1410,13 @@ void __131__WFWeatherStoreService__forecastConditionsForTypes_location_units_loc
     v41 = v66;
     v42 = v64;
     block[4] = self;
-    v44 = a3;
-    v37 = v13;
-    v38 = v14;
-    v39 = v35;
-    v40 = v31;
+    typesCopy = types;
+    v37 = locationCopy;
+    v38 = dateCopy;
+    v39 = identifierCopy;
+    v40 = handlerCopy;
     v43 = v62;
-    dispatch_group_notify(v21, v28, block);
+    dispatch_group_notify(v21, parseQueue, block);
   }
 
   else
@@ -1432,7 +1432,7 @@ void __131__WFWeatherStoreService__forecastConditionsForTypes_location_units_loc
       [WFWeatherStoreService _forecastConditionsForTypes:location:units:locale:date:requestIdentifier:requestOptions:completionHandler:];
     }
 
-    (*(v31 + 2))(v31, 0, v30);
+    (*(handlerCopy + 2))(handlerCopy, 0, v30);
   }
 
   _Block_object_dispose(&v56, 8);
@@ -1493,14 +1493,14 @@ uint64_t __119__WFWeatherStoreService__forecastConditionsForTWCAQIAndTypes_locat
   return v3();
 }
 
-- (id)_currentScaleCategoryForScale:(id)a3 index:(unint64_t)a4
+- (id)_currentScaleCategoryForScale:(id)scale index:(unint64_t)index
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 && ([v5 categories], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8 >= a4))
+  scaleCopy = scale;
+  v6 = scaleCopy;
+  if (index && ([scaleCopy categories], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8 >= index))
   {
-    v11 = [v6 categories];
-    v10 = [v11 objectAtIndexedSubscript:a4 - 1];
+    categories = [v6 categories];
+    v10 = [categories objectAtIndexedSubscript:index - 1];
   }
 
   else
@@ -1517,27 +1517,27 @@ uint64_t __119__WFWeatherStoreService__forecastConditionsForTWCAQIAndTypes_locat
   return v10;
 }
 
-- (void)_cacheObject:(id)a3 type:(unint64_t)a4 date:(id)a5 forLocation:(id)a6
+- (void)_cacheObject:(id)object type:(unint64_t)type date:(id)date forLocation:(id)location
 {
-  v10 = a3;
-  v11 = WFCacheKeyForForecastType(a4, a6, a5);
+  objectCopy = object;
+  v11 = WFCacheKeyForForecastType(type, location, date);
   v14 = 0;
-  WFCacheDetailsForForecastType(a4, 0, &v14);
+  WFCacheDetailsForForecastType(type, 0, &v14);
   v12 = v14;
-  v13 = [(WFWeatherStoreService *)self cache];
-  [v13 cache:v10 withinDomain:v12 forKey:v11];
+  cache = [(WFWeatherStoreService *)self cache];
+  [cache cache:objectCopy withinDomain:v12 forKey:v11];
 }
 
-- (BOOL)_cacheParsedForecastData:(id)a3 types:(unint64_t)a4 location:(id)a5 date:(id)a6 requestIdentifier:(id)a7
+- (BOOL)_cacheParsedForecastData:(id)data types:(unint64_t)types location:(id)location date:(id)date requestIdentifier:(id)identifier
 {
   v33 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v12)
+  dataCopy = data;
+  locationCopy = location;
+  dateCopy = date;
+  identifierCopy = identifier;
+  if (dataCopy)
   {
-    v16 = v13 == 0;
+    v16 = locationCopy == 0;
   }
 
   else
@@ -1545,7 +1545,7 @@ uint64_t __119__WFWeatherStoreService__forecastConditionsForTWCAQIAndTypes_locat
     v16 = 1;
   }
 
-  v18 = v16 || v14 == 0 || a4 == 0;
+  v18 = v16 || dateCopy == 0 || types == 0;
   v19 = !v18;
   if (v18)
   {
@@ -1553,11 +1553,11 @@ uint64_t __119__WFWeatherStoreService__forecastConditionsForTWCAQIAndTypes_locat
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v28 = v15;
+      v28 = identifierCopy;
       v29 = 2048;
-      v30 = a4;
+      typesCopy = types;
       v31 = 2112;
-      v32 = v14;
+      v32 = dateCopy;
       _os_log_error_impl(&dword_272B94000, v20, OS_LOG_TYPE_ERROR, "(%@) Failed to cache result.  Forecast Type: %lu / Date: %@", buf, 0x20u);
     }
   }
@@ -1568,11 +1568,11 @@ uint64_t __119__WFWeatherStoreService__forecastConditionsForTWCAQIAndTypes_locat
     v22[1] = 3221225472;
     v22[2] = __88__WFWeatherStoreService__cacheParsedForecastData_types_location_date_requestIdentifier___block_invoke;
     v22[3] = &unk_279E6F360;
-    v23 = v12;
-    v24 = self;
-    v25 = v14;
-    v26 = v13;
-    [(WFWeatherStoreService *)self _enumerateForecastTypesIn:a4 usingBlock:v22];
+    v23 = dataCopy;
+    selfCopy = self;
+    v25 = dateCopy;
+    v26 = locationCopy;
+    [(WFWeatherStoreService *)self _enumerateForecastTypesIn:types usingBlock:v22];
 
     v20 = v23;
   }
@@ -1594,17 +1594,17 @@ uint64_t __88__WFWeatherStoreService__cacheParsedForecastData_types_location_dat
   return MEMORY[0x2821F96F8](v4, v5);
 }
 
-- (void)_enumerateForecastTypesIn:(unint64_t)a3 usingBlock:(id)a4
+- (void)_enumerateForecastTypesIn:(unint64_t)in usingBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = WFForecastTypes();
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__WFWeatherStoreService__enumerateForecastTypesIn_usingBlock___block_invoke;
   v8[3] = &unk_279E6F388;
-  v9 = v5;
-  v10 = a3;
-  v7 = v5;
+  v9 = blockCopy;
+  inCopy = in;
+  v7 = blockCopy;
   [v6 enumerateIndexesUsingBlock:v8];
 }
 
@@ -1618,46 +1618,46 @@ uint64_t __62__WFWeatherStoreService__enumerateForecastTypesIn_usingBlock___bloc
   return result;
 }
 
-- (void)_submitRequest:(id)a3 withIdentifier:(id)a4 forLocation:(id)a5 forecastTypes:(unint64_t)a6 configuration:(id)a7 units:(int)a8 locale:(id)a9 date:(id)a10 apiVersion:(id)a11 completionHandler:(id)a12
+- (void)_submitRequest:(id)request withIdentifier:(id)identifier forLocation:(id)location forecastTypes:(unint64_t)types configuration:(id)configuration units:(int)units locale:(id)locale date:(id)self0 apiVersion:(id)self1 completionHandler:(id)self2
 {
-  v16 = a3;
-  v32 = a4;
-  v17 = a5;
-  v31 = a7;
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
-  v21 = a12;
-  v22 = [v16 URL];
+  requestCopy = request;
+  identifierCopy = identifier;
+  locationCopy = location;
+  configurationCopy = configuration;
+  localeCopy = locale;
+  dateCopy = date;
+  versionCopy = version;
+  handlerCopy = handler;
+  v22 = [requestCopy URL];
   queue = [(WFWeatherStoreService *)self incomingRequestQueue];
-  v23 = [(WFWeatherStoreService *)self parseQueue];
+  parseQueue = [(WFWeatherStoreService *)self parseQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __142__WFWeatherStoreService__submitRequest_withIdentifier_forLocation_forecastTypes_configuration_units_locale_date_apiVersion_completionHandler___block_invoke;
   block[3] = &unk_279E6F400;
   block[4] = self;
-  v40 = v32;
+  v40 = identifierCopy;
   v41 = v22;
-  v42 = v31;
-  v43 = v16;
-  v44 = v20;
-  v45 = v23;
-  v49 = v21;
-  v50 = a6;
-  v46 = v17;
-  v47 = v18;
-  v51 = a8;
-  v48 = v19;
-  v38 = v19;
-  v36 = v18;
-  v34 = v17;
-  v24 = v23;
-  v25 = v20;
-  v26 = v16;
-  v27 = v31;
+  v42 = configurationCopy;
+  v43 = requestCopy;
+  v44 = versionCopy;
+  v45 = parseQueue;
+  v49 = handlerCopy;
+  typesCopy = types;
+  v46 = locationCopy;
+  v47 = localeCopy;
+  unitsCopy = units;
+  v48 = dateCopy;
+  v38 = dateCopy;
+  v36 = localeCopy;
+  v34 = locationCopy;
+  v24 = parseQueue;
+  v25 = versionCopy;
+  v26 = requestCopy;
+  v27 = configurationCopy;
   v28 = v22;
-  v29 = v32;
-  v30 = v21;
+  v29 = identifierCopy;
+  v30 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -1874,56 +1874,56 @@ void __142__WFWeatherStoreService__submitRequest_withIdentifier_forLocation_fore
   [*(a1 + 96) _executeCallbacksForURL:*(a1 + 88) responseData:v13 error:v11];
 }
 
-- (BOOL)_handleDataTaskCompletionWithData:(id)a3 httpResponse:(id)a4 apiVersion:(id)a5 identifier:(id)a6 requestURL:(id)a7 dataTask:(id)a8 dataTaskError:(id)a9 startDate:(id)a10
+- (BOOL)_handleDataTaskCompletionWithData:(id)data httpResponse:(id)response apiVersion:(id)version identifier:(id)identifier requestURL:(id)l dataTask:(id)task dataTaskError:(id)error startDate:(id)self0
 {
   v62 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v53 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  if (v16 && [v17 statusCode] == 200)
+  dataCopy = data;
+  responseCopy = response;
+  versionCopy = version;
+  identifierCopy = identifier;
+  lCopy = l;
+  taskCopy = task;
+  errorCopy = error;
+  dateCopy = date;
+  if (dataCopy && [responseCopy statusCode] == 200)
   {
     v23 = WFLogForCategory(2uLL);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
-      v24 = [v16 length];
-      [v20 description];
-      v51 = v22;
-      v26 = v25 = v20;
+      v24 = [dataCopy length];
+      [taskCopy description];
+      v51 = dateCopy;
+      v26 = v25 = taskCopy;
       *buf = 138543874;
-      v57 = v53;
+      v57 = identifierCopy;
       v58 = 2048;
       v59 = v24;
       v60 = 2114;
       v61 = v26;
       _os_log_impl(&dword_272B94000, v23, OS_LOG_TYPE_INFO, "(%{public}@) Received data (%lu bytes) from %{public}@.", buf, 0x20u);
 
-      v20 = v25;
-      v22 = v51;
+      taskCopy = v25;
+      dateCopy = v51;
     }
 
-    [(WFWeatherStoreService *)self requestSuccessForAPIVersion:v18];
+    [(WFWeatherStoreService *)self requestSuccessForAPIVersion:versionCopy];
     v27 = 1;
     goto LABEL_22;
   }
 
-  [(WFWeatherStoreService *)self requestFailureForAPIVersion:v18 error:v21];
-  v28 = [v21 domain];
-  v52 = v20;
-  if ([v28 isEqualToString:*MEMORY[0x277CCA738]])
+  [(WFWeatherStoreService *)self requestFailureForAPIVersion:versionCopy error:errorCopy];
+  domain = [errorCopy domain];
+  v52 = taskCopy;
+  if ([domain isEqualToString:*MEMORY[0x277CCA738]])
   {
-    v29 = [v21 code];
+    code = [errorCopy code];
 
-    if (v29 == -999)
+    if (code == -999)
     {
       v30 = MEMORY[0x277CCA9B8];
       v31 = &unk_288254F28;
       v32 = 13;
-      v33 = v21;
+      v33 = errorCopy;
       goto LABEL_14;
     }
   }
@@ -1932,23 +1932,23 @@ void __142__WFWeatherStoreService__submitRequest_withIdentifier_forLocation_fore
   {
   }
 
-  if ([v17 statusCode] == 200)
+  if ([responseCopy statusCode] == 200)
   {
-    if (!v16)
+    if (!dataCopy)
     {
       v34 = [MEMORY[0x277CCA9B8] wf_errorWithCode:9];
       goto LABEL_18;
     }
 
     v30 = MEMORY[0x277CCA9B8];
-    if (!v21)
+    if (!errorCopy)
     {
       v34 = [MEMORY[0x277CCA9B8] wf_errorWithCode:17 userInfo:0];
       goto LABEL_18;
     }
 
     v32 = 5;
-    v33 = v21;
+    v33 = errorCopy;
     v31 = 0;
 LABEL_14:
     v34 = [v30 wf_errorWithCode:v32 encapsulatedError:v33 userInfo:v31];
@@ -1959,33 +1959,33 @@ LABEL_18:
 
   v35 = MEMORY[0x277CCA9B8];
   v54 = @"statusCode";
-  v36 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v17, "statusCode")}];
+  v36 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(responseCopy, "statusCode")}];
   v55 = v36;
   [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
-  v37 = v18;
-  v38 = self;
-  v39 = v17;
-  v40 = v16;
-  v41 = v22;
-  v43 = v42 = v19;
+  v37 = versionCopy;
+  selfCopy = self;
+  v39 = responseCopy;
+  v40 = dataCopy;
+  v41 = dateCopy;
+  v43 = v42 = lCopy;
   v44 = [v35 wf_errorWithCode:8 userInfo:v43];
 
-  v19 = v42;
-  v22 = v41;
-  v16 = v40;
-  v17 = v39;
-  self = v38;
-  v18 = v37;
+  lCopy = v42;
+  dateCopy = v41;
+  dataCopy = v40;
+  responseCopy = v39;
+  self = selfCopy;
+  versionCopy = v37;
 
 LABEL_19:
-  v45 = v19;
-  [(WFWeatherStoreService *)self _executeCallbacksForURL:v19 responseData:0 error:v44];
+  v45 = lCopy;
+  [(WFWeatherStoreService *)self _executeCallbacksForURL:lCopy responseData:0 error:v44];
   v46 = WFLogForCategory(2uLL);
   if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
   {
     v50 = [v52 description];
     *buf = 138543874;
-    v57 = v53;
+    v57 = identifierCopy;
     v58 = 2114;
     v59 = v50;
     v60 = 2112;
@@ -1993,51 +1993,51 @@ LABEL_19:
     _os_log_error_impl(&dword_272B94000, v46, OS_LOG_TYPE_ERROR, "(%{public}@) Error received from %{public}@: %@", buf, 0x20u);
   }
 
-  v47 = [[WFNetworkEvent alloc] initWithEventType:WFNetworkEventTypeFromAPIVersion(v18) startDate:v22 error:v21];
+  v47 = [[WFNetworkEvent alloc] initWithEventType:WFNetworkEventTypeFromAPIVersion(versionCopy) startDate:dateCopy error:errorCopy];
   v48 = +[WFNetworkBehaviorMonitor sharedInstance];
   [v48 logNetworkEvent:v47];
 
   v27 = 0;
-  v19 = v45;
-  v20 = v52;
+  lCopy = v45;
+  taskCopy = v52;
 LABEL_22:
 
   return v27;
 }
 
-- (void)_submitRequest:(id)a3 withIdentifier:(id)a4 forScaleNamed:(id)a5 language:(id)a6 configuration:(id)a7 apiVersion:(id)a8 completionHandler:(id)a9
+- (void)_submitRequest:(id)request withIdentifier:(id)identifier forScaleNamed:(id)named language:(id)language configuration:(id)configuration apiVersion:(id)version completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = [v14 URL];
-  v21 = [(WFWeatherStoreService *)self incomingRequestQueue];
-  v22 = [(WFWeatherStoreService *)self parseQueue];
+  requestCopy = request;
+  identifierCopy = identifier;
+  namedCopy = named;
+  configurationCopy = configuration;
+  versionCopy = version;
+  handlerCopy = handler;
+  v20 = [requestCopy URL];
+  incomingRequestQueue = [(WFWeatherStoreService *)self incomingRequestQueue];
+  parseQueue = [(WFWeatherStoreService *)self parseQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __121__WFWeatherStoreService__submitRequest_withIdentifier_forScaleNamed_language_configuration_apiVersion_completionHandler___block_invoke;
   block[3] = &unk_279E6F450;
-  v38 = v16;
-  v39 = v19;
+  v38 = namedCopy;
+  v39 = handlerCopy;
   block[4] = self;
-  v32 = v15;
+  v32 = identifierCopy;
   v33 = v20;
-  v34 = v17;
-  v35 = v14;
-  v36 = v18;
-  v37 = v22;
-  v23 = v16;
-  v24 = v22;
-  v25 = v18;
-  v26 = v14;
-  v27 = v17;
+  v34 = configurationCopy;
+  v35 = requestCopy;
+  v36 = versionCopy;
+  v37 = parseQueue;
+  v23 = namedCopy;
+  v24 = parseQueue;
+  v25 = versionCopy;
+  v26 = requestCopy;
+  v27 = configurationCopy;
   v28 = v20;
-  v29 = v15;
-  v30 = v19;
-  dispatch_async(v21, block);
+  v29 = identifierCopy;
+  v30 = handlerCopy;
+  dispatch_async(incomingRequestQueue, block);
 }
 
 void __121__WFWeatherStoreService__submitRequest_withIdentifier_forScaleNamed_language_configuration_apiVersion_completionHandler___block_invoke(uint64_t a1)
@@ -2231,14 +2231,14 @@ void __121__WFWeatherStoreService__submitRequest_withIdentifier_forScaleNamed_la
   [*(a1 + 80) _executeCallbacksForURL:*(a1 + 72) responseData:v9 error:v7];
 }
 
-- (id)apiVersionForSettings:(id)a3
+- (id)apiVersionForSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   os_unfair_lock_lock_with_options();
-  v5 = [(WFWeatherStoreService *)self retryManager];
-  v6 = [v4 settings];
+  retryManager = [(WFWeatherStoreService *)self retryManager];
+  settings = [settingsCopy settings];
 
-  v7 = [v5 apiVersionForSettings:v6];
+  v7 = [retryManager apiVersionForSettings:settings];
   v8 = v7;
   v9 = @"wds_v1";
   if (v7)
@@ -2253,39 +2253,39 @@ void __121__WFWeatherStoreService__submitRequest_withIdentifier_forScaleNamed_la
   return v10;
 }
 
-- (void)requestSuccessForAPIVersion:(id)a3
+- (void)requestSuccessForAPIVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   os_unfair_lock_lock_with_options();
-  v5 = [(WFWeatherStoreService *)self retryManager];
-  [v5 requestSuccessForAPIVersion:v4];
+  retryManager = [(WFWeatherStoreService *)self retryManager];
+  [retryManager requestSuccessForAPIVersion:versionCopy];
 
   os_unfair_lock_unlock(&self->_retryLock);
 }
 
-- (void)requestFailureForAPIVersion:(id)a3 error:(id)a4
+- (void)requestFailureForAPIVersion:(id)version error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  versionCopy = version;
   os_unfair_lock_lock_with_options();
-  v8 = [(WFWeatherStoreService *)self retryManager];
-  [v8 requestFailureForAPIVersion:v7 error:v6];
+  retryManager = [(WFWeatherStoreService *)self retryManager];
+  [retryManager requestFailureForAPIVersion:versionCopy error:errorCopy];
 
   os_unfair_lock_unlock(&self->_retryLock);
 }
 
-- (void)_cancelWithRequestIdentifier:(id)a3
+- (void)_cancelWithRequestIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WFWeatherStoreService *)self incomingRequestQueue];
+  identifierCopy = identifier;
+  incomingRequestQueue = [(WFWeatherStoreService *)self incomingRequestQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__WFWeatherStoreService__cancelWithRequestIdentifier___block_invoke;
   v7[3] = &unk_279E6EA40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_sync(incomingRequestQueue, v7);
 }
 
 void __54__WFWeatherStoreService__cancelWithRequestIdentifier___block_invoke(uint64_t a1)
@@ -2358,25 +2358,25 @@ LABEL_9:
 LABEL_12:
 }
 
-- (id)_taskForURL:(id)a3
+- (id)_taskForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__2;
   v16 = __Block_byref_object_dispose__2;
   v17 = 0;
-  v5 = [(WFWeatherStoreService *)self mapQueue];
+  mapQueue = [(WFWeatherStoreService *)self mapQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__WFWeatherStoreService__taskForURL___block_invoke;
   block[3] = &unk_279E6F478;
-  v10 = v4;
+  v10 = lCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = lCopy;
+  dispatch_sync(mapQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -2393,27 +2393,27 @@ void __37__WFWeatherStoreService__taskForURL___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)_setTask:(id)a3 requestIdentifier:(id)a4 callback:(id)a5 forURL:(id)a6
+- (void)_setTask:(id)task requestIdentifier:(id)identifier callback:(id)callback forURL:(id)l
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(WFWeatherStoreService *)self mapQueue];
+  taskCopy = task;
+  identifierCopy = identifier;
+  callbackCopy = callback;
+  lCopy = l;
+  mapQueue = [(WFWeatherStoreService *)self mapQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__WFWeatherStoreService__setTask_requestIdentifier_callback_forURL___block_invoke;
   block[3] = &unk_279E6F4A0;
   block[4] = self;
-  v20 = v11;
-  v21 = v13;
-  v22 = v12;
-  v23 = v10;
-  v15 = v10;
-  v16 = v12;
-  v17 = v13;
-  v18 = v11;
-  dispatch_async(v14, block);
+  v20 = identifierCopy;
+  v21 = lCopy;
+  v22 = callbackCopy;
+  v23 = taskCopy;
+  v15 = taskCopy;
+  v16 = callbackCopy;
+  v17 = lCopy;
+  v18 = identifierCopy;
+  dispatch_async(mapQueue, block);
 }
 
 void __68__WFWeatherStoreService__setTask_requestIdentifier_callback_forURL___block_invoke(uint64_t a1)
@@ -2429,24 +2429,24 @@ void __68__WFWeatherStoreService__setTask_requestIdentifier_callback_forURL___bl
   [v4 setObject:v5 forKeyedSubscript:*(a1 + 48)];
 }
 
-- (void)_addCallback:(id)a3 requestIdentifier:(id)a4 forURL:(id)a5
+- (void)_addCallback:(id)callback requestIdentifier:(id)identifier forURL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFWeatherStoreService *)self mapQueue];
+  callbackCopy = callback;
+  identifierCopy = identifier;
+  lCopy = l;
+  mapQueue = [(WFWeatherStoreService *)self mapQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __63__WFWeatherStoreService__addCallback_requestIdentifier_forURL___block_invoke;
   v15[3] = &unk_279E6F4C8;
   v15[4] = self;
-  v16 = v10;
-  v17 = v8;
-  v18 = v9;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
-  dispatch_async(v11, v15);
+  v16 = lCopy;
+  v17 = callbackCopy;
+  v18 = identifierCopy;
+  v12 = identifierCopy;
+  v13 = callbackCopy;
+  v14 = lCopy;
+  dispatch_async(mapQueue, v15);
 }
 
 void __63__WFWeatherStoreService__addCallback_requestIdentifier_forURL___block_invoke(uint64_t a1)
@@ -2460,24 +2460,24 @@ void __63__WFWeatherStoreService__addCallback_requestIdentifier_forURL___block_i
   [v4 setObject:*(a1 + 48) forKeyedSubscript:*(a1 + 56)];
 }
 
-- (void)_executeCallbacksForURL:(id)a3 responseData:(id)a4 error:(id)a5
+- (void)_executeCallbacksForURL:(id)l responseData:(id)data error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFWeatherStoreService *)self mapQueue];
+  lCopy = l;
+  dataCopy = data;
+  errorCopy = error;
+  mapQueue = [(WFWeatherStoreService *)self mapQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __68__WFWeatherStoreService__executeCallbacksForURL_responseData_error___block_invoke;
   v15[3] = &unk_279E6F4C8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = lCopy;
+  v17 = dataCopy;
+  v18 = errorCopy;
+  v12 = errorCopy;
+  v13 = dataCopy;
+  v14 = lCopy;
+  dispatch_async(mapQueue, v15);
 }
 
 void __68__WFWeatherStoreService__executeCallbacksForURL_responseData_error___block_invoke(uint64_t a1)
@@ -2494,22 +2494,22 @@ void __68__WFWeatherStoreService__executeCallbacksForURL_responseData_error___bl
   [*(a1 + 32) _cleanupCallbacksAndTasksForURL:{*(a1 + 40), v4, v5, v6, v7}];
 }
 
-- (void)_cleanupCallbacksAndTasksForURL:(id)a3
+- (void)_cleanupCallbacksAndTasksForURL:(id)l
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFWeatherStoreService *)self UUIDToURLMap];
+  lCopy = l;
+  uUIDToURLMap = [(WFWeatherStoreService *)self UUIDToURLMap];
   v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:3];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __57__WFWeatherStoreService__cleanupCallbacksAndTasksForURL___block_invoke;
   v26[3] = &unk_279E6F518;
-  v7 = v4;
+  v7 = lCopy;
   v27 = v7;
   v8 = v6;
   v28 = v8;
-  [v5 enumerateKeysAndObjectsUsingBlock:v26];
-  v9 = [(WFWeatherStoreService *)self UUIDToCallbackMap];
+  [uUIDToURLMap enumerateKeysAndObjectsUsingBlock:v26];
+  uUIDToCallbackMap = [(WFWeatherStoreService *)self UUIDToCallbackMap];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -2530,8 +2530,8 @@ void __68__WFWeatherStoreService__executeCallbacksForURL_responseData_error___bl
         }
 
         v15 = *(*(&v22 + 1) + 8 * i);
-        [v5 removeObjectForKey:{v15, v22}];
-        [v9 removeObjectForKey:v15];
+        [uUIDToURLMap removeObjectForKey:{v15, v22}];
+        [uUIDToCallbackMap removeObjectForKey:v15];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v22 objects:v33 count:16];
@@ -2540,10 +2540,10 @@ void __68__WFWeatherStoreService__executeCallbacksForURL_responseData_error___bl
     while (v12);
   }
 
-  v16 = [(WFWeatherStoreService *)self URLToCallbackMap];
-  [v16 removeObjectForKey:v7];
-  v17 = [(WFWeatherStoreService *)self URLToTaskMap];
-  v18 = [v17 objectForKeyedSubscript:v7];
+  uRLToCallbackMap = [(WFWeatherStoreService *)self URLToCallbackMap];
+  [uRLToCallbackMap removeObjectForKey:v7];
+  uRLToTaskMap = [(WFWeatherStoreService *)self URLToTaskMap];
+  v18 = [uRLToTaskMap objectForKeyedSubscript:v7];
   if (v18)
   {
     v19 = WFLogForCategory(2uLL);
@@ -2558,7 +2558,7 @@ void __68__WFWeatherStoreService__executeCallbacksForURL_responseData_error___bl
       _os_log_impl(&dword_272B94000, v19, OS_LOG_TYPE_DEFAULT, "(%{public}@) Finished processing %{public}@.", buf, 0x16u);
     }
 
-    [v17 removeObjectForKey:v7];
+    [uRLToTaskMap removeObjectForKey:v7];
   }
 }
 

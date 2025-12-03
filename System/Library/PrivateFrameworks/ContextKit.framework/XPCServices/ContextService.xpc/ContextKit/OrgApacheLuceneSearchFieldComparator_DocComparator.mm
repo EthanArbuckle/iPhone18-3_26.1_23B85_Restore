@@ -1,30 +1,30 @@
 @interface OrgApacheLuceneSearchFieldComparator_DocComparator
-- (id)getLeafComparatorWithOrgApacheLuceneIndexLeafReaderContext:(id)a3;
+- (id)getLeafComparatorWithOrgApacheLuceneIndexLeafReaderContext:(id)context;
 - (void)dealloc;
-- (void)setTopValueWithId:(id)a3;
+- (void)setTopValueWithId:(id)id;
 @end
 
 @implementation OrgApacheLuceneSearchFieldComparator_DocComparator
 
-- (id)getLeafComparatorWithOrgApacheLuceneIndexLeafReaderContext:(id)a3
+- (id)getLeafComparatorWithOrgApacheLuceneIndexLeafReaderContext:(id)context
 {
-  if (!a3)
+  if (!context)
   {
     JreThrowNullPointerException();
   }
 
-  *(self + 4) = *(a3 + 8);
+  *(self + 4) = *(context + 8);
   return self;
 }
 
-- (void)setTopValueWithId:(id)a3
+- (void)setTopValueWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
 
-  self->topValue_ = [a3 intValue];
+  self->topValue_ = [id intValue];
 }
 
 - (void)dealloc

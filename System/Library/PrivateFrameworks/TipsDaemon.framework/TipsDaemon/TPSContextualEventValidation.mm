@@ -1,24 +1,24 @@
 @interface TPSContextualEventValidation
-+ (id)_eventProviderForContextualEvent:(id)a3;
-+ (id)contextualEventFromEventDictionary:(id)a3;
++ (id)_eventProviderForContextualEvent:(id)event;
++ (id)contextualEventFromEventDictionary:(id)dictionary;
 - (BOOL)isRegistrable;
-- (TPSContextualEventValidation)initWithContextualEvent:(id)a3;
-- (void)dataProvider:(id)a3 didFinishQueryWithResults:(id)a4;
-- (void)validateWithCompletion:(id)a3;
+- (TPSContextualEventValidation)initWithContextualEvent:(id)event;
+- (void)dataProvider:(id)provider didFinishQueryWithResults:(id)results;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSContextualEventValidation
 
-- (TPSContextualEventValidation)initWithContextualEvent:(id)a3
+- (TPSContextualEventValidation)initWithContextualEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = TPSContextualEventValidation;
   v6 = [(TPSTargetingValidation *)&v9 initWithTargetContext:MEMORY[0x277CBEC10]];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_event, a3);
+    objc_storeStrong(&v6->_event, event);
   }
 
   return v7;
@@ -27,65 +27,65 @@
 - (BOOL)isRegistrable
 {
   v2 = MEMORY[0x277D71730];
-  v3 = [(TPSTargetingValidation *)self value];
-  v4 = [v2 typeFromEventDictionary:v3];
+  value = [(TPSTargetingValidation *)self value];
+  v4 = [v2 typeFromEventDictionary:value];
 
   return v4 == 3;
 }
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TPSContextualEventValidation *)self event];
+  completionCopy = completion;
+  event = [(TPSContextualEventValidation *)self event];
 
-  if (!v5)
+  if (!event)
   {
     v6 = objc_opt_class();
-    v7 = [(TPSTargetingValidation *)self value];
-    v8 = [v6 contextualEventFromEventDictionary:v7];
+    value = [(TPSTargetingValidation *)self value];
+    v8 = [v6 contextualEventFromEventDictionary:value];
     [(TPSContextualEventValidation *)self setEvent:v8];
 
-    v9 = [(TPSContextualEventValidation *)self event];
+    event2 = [(TPSContextualEventValidation *)self event];
 
-    if (!v9)
+    if (!event2)
     {
-      v22 = [MEMORY[0x277D71778] targeting];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
+      targeting = [MEMORY[0x277D71778] targeting];
+      if (os_log_type_enabled(targeting, OS_LOG_TYPE_INFO))
       {
-        v23 = [(TPSTargetingValidation *)self value];
+        value2 = [(TPSTargetingValidation *)self value];
         *buf = 138412290;
-        v29 = v23;
+        v29 = value2;
         v24 = "Failed to create event from value: %@";
         goto LABEL_11;
       }
 
 LABEL_12:
 
-      v15 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-      v4[2](v4, 0, v15);
+      eventSinceDate = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
+      completionCopy[2](completionCopy, 0, eventSinceDate);
       goto LABEL_16;
     }
   }
 
   v10 = objc_opt_class();
-  v11 = [(TPSContextualEventValidation *)self event];
-  v12 = [v10 _eventProviderForContextualEvent:v11];
+  event3 = [(TPSContextualEventValidation *)self event];
+  v12 = [v10 _eventProviderForContextualEvent:event3];
   [(TPSContextualEventValidation *)self setEventProvider:v12];
 
-  v13 = [(TPSContextualEventValidation *)self eventProvider];
+  eventProvider = [(TPSContextualEventValidation *)self eventProvider];
 
-  if (!v13)
+  if (!eventProvider)
   {
-    v22 = [MEMORY[0x277D71778] targeting];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
+    targeting = [MEMORY[0x277D71778] targeting];
+    if (os_log_type_enabled(targeting, OS_LOG_TYPE_INFO))
     {
-      v23 = [(TPSContextualEventValidation *)self event];
+      value2 = [(TPSContextualEventValidation *)self event];
       *buf = 138412290;
-      v29 = v23;
+      v29 = value2;
       v24 = "Failed to create event provider from event: %@";
 LABEL_11:
-      _os_log_impl(&dword_232D6F000, v22, OS_LOG_TYPE_INFO, v24, buf, 0xCu);
+      _os_log_impl(&dword_232D6F000, targeting, OS_LOG_TYPE_INFO, v24, buf, 0xCu);
 
       goto LABEL_12;
     }
@@ -93,33 +93,33 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v14 = [(TPSContextualEventValidation *)self event];
-  v15 = [v14 eventSinceDate];
+  event4 = [(TPSContextualEventValidation *)self event];
+  eventSinceDate = [event4 eventSinceDate];
 
-  if (v15 && ([MEMORY[0x277CBEAA8] now], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "compare:", v15), v16, v17 == -1))
+  if (eventSinceDate && ([MEMORY[0x277CBEAA8] now], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "compare:", eventSinceDate), v16, v17 == -1))
   {
-    v25 = [MEMORY[0x277D71778] targeting];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
+    targeting2 = [MEMORY[0x277D71778] targeting];
+    if (os_log_type_enabled(targeting2, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v29 = v15;
-      _os_log_impl(&dword_232D6F000, v25, OS_LOG_TYPE_INFO, "Event since date (%@) is the future - skipping", buf, 0xCu);
+      v29 = eventSinceDate;
+      _os_log_impl(&dword_232D6F000, targeting2, OS_LOG_TYPE_INFO, "Event since date (%@) is the future - skipping", buf, 0xCu);
     }
 
-    v4[2](v4, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 
   else
   {
-    [(TPSContextualEventValidation *)self setCompletionHandler:v4];
-    v18 = [(TPSContextualEventValidation *)self eventProvider];
-    [v18 setDelegate:self];
+    [(TPSContextualEventValidation *)self setCompletionHandler:completionCopy];
+    eventProvider2 = [(TPSContextualEventValidation *)self eventProvider];
+    [eventProvider2 setDelegate:self];
 
-    v19 = [(TPSContextualEventValidation *)self eventProvider];
-    v20 = [(TPSContextualEventValidation *)self event];
-    v27 = v20;
+    eventProvider3 = [(TPSContextualEventValidation *)self eventProvider];
+    event5 = [(TPSContextualEventValidation *)self event];
+    v27 = event5;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
-    [v19 queryEvents:v21];
+    [eventProvider3 queryEvents:v21];
   }
 
 LABEL_16:
@@ -127,35 +127,35 @@ LABEL_16:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)contextualEventFromEventDictionary:(id)a3
++ (id)contextualEventFromEventDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D71730] typeFromEventDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [MEMORY[0x277D71730] typeFromEventDictionary:dictionaryCopy];
   if (v4 == 3)
   {
-    v6 = [MEMORY[0x277D71718] contextualBiomeEventFromDictionary:v3];
+    v6 = [MEMORY[0x277D71718] contextualBiomeEventFromDictionary:dictionaryCopy];
     goto LABEL_7;
   }
 
   v5 = v4;
   if (v4 == 2)
   {
-    v6 = [objc_alloc(MEMORY[0x277D71728]) initWithDictionary:v3];
+    v6 = [objc_alloc(MEMORY[0x277D71728]) initWithDictionary:dictionaryCopy];
     goto LABEL_7;
   }
 
   if (!v4)
   {
-    v6 = [MEMORY[0x277D71718] contextualBiomeEventFromDuetEventDictionary:v3];
+    v6 = [MEMORY[0x277D71718] contextualBiomeEventFromDuetEventDictionary:dictionaryCopy];
 LABEL_7:
     v7 = v6;
     goto LABEL_11;
   }
 
-  v8 = [MEMORY[0x277D71778] targeting];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  targeting = [MEMORY[0x277D71778] targeting];
+  if (os_log_type_enabled(targeting, OS_LOG_TYPE_ERROR))
   {
-    [(TPSContextualEventValidation *)v5 contextualEventFromEventDictionary:v8];
+    [(TPSContextualEventValidation *)v5 contextualEventFromEventDictionary:targeting];
   }
 
   v7 = 0;
@@ -164,22 +164,22 @@ LABEL_11:
   return v7;
 }
 
-+ (id)_eventProviderForContextualEvent:(id)a3
++ (id)_eventProviderForContextualEvent:(id)event
 {
-  v3 = [a3 type];
-  if (v3 == 3)
+  type = [event type];
+  if (type == 3)
   {
     goto LABEL_4;
   }
 
-  v4 = v3;
-  if (v3 == 2)
+  v4 = type;
+  if (type == 2)
   {
     v5 = MEMORY[0x277D71700];
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!type)
   {
 LABEL_4:
     v5 = MEMORY[0x277D716C0];
@@ -188,10 +188,10 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  v7 = [MEMORY[0x277D71778] targeting];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  targeting = [MEMORY[0x277D71778] targeting];
+  if (os_log_type_enabled(targeting, OS_LOG_TYPE_ERROR))
   {
-    [(TPSContextualEventValidation *)v4 _eventProviderForContextualEvent:v7];
+    [(TPSContextualEventValidation *)v4 _eventProviderForContextualEvent:targeting];
   }
 
   v6 = 0;
@@ -200,47 +200,47 @@ LABEL_10:
   return v6;
 }
 
-- (void)dataProvider:(id)a3 didFinishQueryWithResults:(id)a4
+- (void)dataProvider:(id)provider didFinishQueryWithResults:(id)results
 {
-  v5 = [a4 firstObject];
-  v6 = [(TPSContextualEventValidation *)self event];
-  v7 = [v6 status];
+  firstObject = [results firstObject];
+  event = [(TPSContextualEventValidation *)self event];
+  status = [event status];
 
-  if (v7 == 1)
+  if (status == 1)
   {
-    v8 = [v5 observationMap];
-    v10 = [v8 count];
-    v11 = [(TPSContextualEventValidation *)self event];
-    v9 = v10 >= [v11 minObservationCount];
+    observationMap = [firstObject observationMap];
+    v10 = [observationMap count];
+    event2 = [(TPSContextualEventValidation *)self event];
+    v9 = v10 >= [event2 minObservationCount];
 
     goto LABEL_5;
   }
 
-  if (!v7)
+  if (!status)
   {
-    v8 = [v5 observationMap];
-    v9 = [v8 count] == 0;
+    observationMap = [firstObject observationMap];
+    v9 = [observationMap count] == 0;
 LABEL_5:
 
     goto LABEL_9;
   }
 
-  v12 = [MEMORY[0x277D71778] targeting];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+  targeting = [MEMORY[0x277D71778] targeting];
+  if (os_log_type_enabled(targeting, OS_LOG_TYPE_ERROR))
   {
-    [TPSContextualEventValidation dataProvider:v12 didFinishQueryWithResults:?];
+    [TPSContextualEventValidation dataProvider:targeting didFinishQueryWithResults:?];
   }
 
   v9 = 0;
 LABEL_9:
-  v13 = [MEMORY[0x277D71778] targeting];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+  targeting2 = [MEMORY[0x277D71778] targeting];
+  if (os_log_type_enabled(targeting2, OS_LOG_TYPE_DEBUG))
   {
-    [(TPSContextualEventValidation *)self dataProvider:v9 didFinishQueryWithResults:v13];
+    [(TPSContextualEventValidation *)self dataProvider:v9 didFinishQueryWithResults:targeting2];
   }
 
-  v14 = [(TPSContextualEventValidation *)self completionHandler];
-  v14[2](v14, v9, 0);
+  completionHandler = [(TPSContextualEventValidation *)self completionHandler];
+  completionHandler[2](completionHandler, v9, 0);
 
   [(TPSContextualEventValidation *)self setCompletionHandler:0];
 }

@@ -1,8 +1,8 @@
 @interface MTRLevelControlClusterMoveToLevelParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRLevelControlClusterMoveToLevelParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -38,26 +38,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRLevelControlClusterMoveToLevelParams);
-  v5 = [(MTRLevelControlClusterMoveToLevelParams *)self level];
-  [(MTRLevelControlClusterMoveToLevelParams *)v4 setLevel:v5];
+  level = [(MTRLevelControlClusterMoveToLevelParams *)self level];
+  [(MTRLevelControlClusterMoveToLevelParams *)v4 setLevel:level];
 
-  v6 = [(MTRLevelControlClusterMoveToLevelParams *)self transitionTime];
-  [(MTRLevelControlClusterMoveToLevelParams *)v4 setTransitionTime:v6];
+  transitionTime = [(MTRLevelControlClusterMoveToLevelParams *)self transitionTime];
+  [(MTRLevelControlClusterMoveToLevelParams *)v4 setTransitionTime:transitionTime];
 
-  v7 = [(MTRLevelControlClusterMoveToLevelParams *)self optionsMask];
-  [(MTRLevelControlClusterMoveToLevelParams *)v4 setOptionsMask:v7];
+  optionsMask = [(MTRLevelControlClusterMoveToLevelParams *)self optionsMask];
+  [(MTRLevelControlClusterMoveToLevelParams *)v4 setOptionsMask:optionsMask];
 
-  v8 = [(MTRLevelControlClusterMoveToLevelParams *)self optionsOverride];
-  [(MTRLevelControlClusterMoveToLevelParams *)v4 setOptionsOverride:v8];
+  optionsOverride = [(MTRLevelControlClusterMoveToLevelParams *)self optionsOverride];
+  [(MTRLevelControlClusterMoveToLevelParams *)v4 setOptionsOverride:optionsOverride];
 
-  v9 = [(MTRLevelControlClusterMoveToLevelParams *)self timedInvokeTimeoutMs];
-  [(MTRLevelControlClusterMoveToLevelParams *)v4 setTimedInvokeTimeoutMs:v9];
+  timedInvokeTimeoutMs = [(MTRLevelControlClusterMoveToLevelParams *)self timedInvokeTimeoutMs];
+  [(MTRLevelControlClusterMoveToLevelParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v10 = [(MTRLevelControlClusterMoveToLevelParams *)self serverSideProcessingTimeout];
-  [(MTRLevelControlClusterMoveToLevelParams *)v4 setServerSideProcessingTimeout:v10];
+  serverSideProcessingTimeout = [(MTRLevelControlClusterMoveToLevelParams *)self serverSideProcessingTimeout];
+  [(MTRLevelControlClusterMoveToLevelParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -72,33 +72,33 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   LOBYTE(v26) = 0;
-  LOBYTE(v27) = 0;
+  LOBYTE(unsignedShortValue) = 0;
   v28 = 0;
   v29 = 0;
   v25[0] = 0;
   v25[1] = 0;
   v24 = v25;
-  v5 = [(MTRLevelControlClusterMoveToLevelParams *)self level];
-  LOBYTE(v26) = [v5 unsignedCharValue];
+  level = [(MTRLevelControlClusterMoveToLevelParams *)self level];
+  LOBYTE(v26) = [level unsignedCharValue];
 
-  v6 = [(MTRLevelControlClusterMoveToLevelParams *)self transitionTime];
+  transitionTime = [(MTRLevelControlClusterMoveToLevelParams *)self transitionTime];
 
-  if (v6)
+  if (transitionTime)
   {
-    v27 = 0;
+    unsignedShortValue = 0;
     v28 = 1;
-    v7 = [(MTRLevelControlClusterMoveToLevelParams *)self transitionTime];
-    v27 = [v7 unsignedShortValue];
+    transitionTime2 = [(MTRLevelControlClusterMoveToLevelParams *)self transitionTime];
+    unsignedShortValue = [transitionTime2 unsignedShortValue];
   }
 
-  v8 = [(MTRLevelControlClusterMoveToLevelParams *)self optionsMask];
-  LOBYTE(v29) = [v8 unsignedCharValue];
+  optionsMask = [(MTRLevelControlClusterMoveToLevelParams *)self optionsMask];
+  LOBYTE(v29) = [optionsMask unsignedCharValue];
 
-  v9 = [(MTRLevelControlClusterMoveToLevelParams *)self optionsOverride];
-  HIBYTE(v29) = [v9 unsignedCharValue];
+  optionsOverride = [(MTRLevelControlClusterMoveToLevelParams *)self optionsOverride];
+  HIBYTE(v29) = [optionsOverride unsignedCharValue];
 
   sub_2393D9C18(0x62FuLL, 0, &v23);
   if (v23)
@@ -119,8 +119,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v23);
-      v10 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v23);
+      v10 = sub_2393C7114(reader, 21, 256);
       v13 = v17;
       v12 = v10;
     }
@@ -148,19 +148,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRLevelControlClusterMoveToLevelParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -171,7 +171,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x6FC00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

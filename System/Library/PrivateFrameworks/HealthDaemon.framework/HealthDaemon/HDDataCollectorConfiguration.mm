@@ -1,11 +1,11 @@
 @interface HDDataCollectorConfiguration
-+ (HDDataCollectorConfiguration)configurationWithType:(unint64_t)a3 aggregatorConfiguration:(id)a4;
-+ (HDDataCollectorConfiguration)configurationWithType:(unint64_t)a3 interval:(double)a4 latency:(double)a5;
++ (HDDataCollectorConfiguration)configurationWithType:(unint64_t)type aggregatorConfiguration:(id)configuration;
++ (HDDataCollectorConfiguration)configurationWithType:(unint64_t)type interval:(double)interval latency:(double)latency;
 + (id)disabledConfiguration;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HDDataCollectorConfiguration)init;
 - (id)description;
-- (id)mergedConfiguration:(id)a3;
+- (id)mergedConfiguration:(id)configuration;
 @end
 
 @implementation HDDataCollectorConfiguration
@@ -20,7 +20,7 @@
   return 0;
 }
 
-+ (HDDataCollectorConfiguration)configurationWithType:(unint64_t)a3 interval:(double)a4 latency:(double)a5
++ (HDDataCollectorConfiguration)configurationWithType:(unint64_t)type interval:(double)interval latency:(double)latency
 {
   v8 = [HDDataCollectorConfiguration alloc];
   if (v8)
@@ -30,22 +30,22 @@
     v8 = objc_msgSendSuper2(&v10, sel_init);
     if (v8)
     {
-      v8->_collectionInterval = fmax(a4, 0.0);
-      v8->_collectionLatency = fmax(a5, 0.0);
-      v8->_collectionType = a3;
+      v8->_collectionInterval = fmax(interval, 0.0);
+      v8->_collectionLatency = fmax(latency, 0.0);
+      v8->_collectionType = type;
     }
   }
 
   return v8;
 }
 
-+ (HDDataCollectorConfiguration)configurationWithType:(unint64_t)a3 aggregatorConfiguration:(id)a4
++ (HDDataCollectorConfiguration)configurationWithType:(unint64_t)type aggregatorConfiguration:(id)configuration
 {
-  v5 = a4;
+  configurationCopy = configuration;
   v6 = [HDDataCollectorConfiguration alloc];
-  [v5 aggregationInterval];
+  [configurationCopy aggregationInterval];
   v8 = v7;
-  [v5 collectionLatency];
+  [configurationCopy collectionLatency];
   v10 = v9;
 
   if (v6)
@@ -57,7 +57,7 @@
     {
       v11[2] = fmax(v8, 0.0);
       v11[3] = fmax(v10, 0.0);
-      *(v11 + 1) = a3;
+      *(v11 + 1) = type;
     }
   }
 
@@ -89,14 +89,14 @@
   return v2;
 }
 
-- (id)mergedConfiguration:(id)a3
+- (id)mergedConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [HDDataCollectorConfiguration alloc];
   collectionType = self->_collectionType;
-  v7 = [v4 collectionType];
-  v9 = collectionType == 1 || v7 == 1;
-  if (v7 == 2 || collectionType == 2)
+  collectionType = [configurationCopy collectionType];
+  v9 = collectionType == 1 || collectionType == 1;
+  if (collectionType == 2 || collectionType == 2)
   {
     v11 = 2;
   }
@@ -107,7 +107,7 @@
   }
 
   collectionInterval = self->_collectionInterval;
-  [v4 collectionInterval];
+  [configurationCopy collectionInterval];
   if (collectionInterval >= v13)
   {
     v14 = v13;
@@ -119,7 +119,7 @@
   }
 
   collectionLatency = self->_collectionLatency;
-  [v4 collectionLatency];
+  [configurationCopy collectionLatency];
   v17 = v16;
 
   if (collectionLatency < v17)
@@ -158,11 +158,11 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_collectionType == *(v4 + 1) && vabdd_f64(self->_collectionInterval, *(v4 + 2)) < 2.22044605e-16 && vabdd_f64(self->_collectionLatency, *(v4 + 3)) < 2.22044605e-16;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_collectionType == *(equalCopy + 1) && vabdd_f64(self->_collectionInterval, *(equalCopy + 2)) < 2.22044605e-16 && vabdd_f64(self->_collectionLatency, *(equalCopy + 3)) < 2.22044605e-16;
 
   return v5;
 }

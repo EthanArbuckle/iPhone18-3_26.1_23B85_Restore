@@ -1,36 +1,36 @@
 @interface CRLWPStyle
 - (_TtC8Freeform10CRLWPStyle)init;
-- (float)floatValueForProperty:(unint64_t)a3;
-- (id)boxedValueForProperty:(unint64_t)a3;
-- (id)valueForProperty:(unint64_t)a3;
-- (int)intValueForProperty:(unint64_t)a3;
+- (float)floatValueForProperty:(unint64_t)property;
+- (id)boxedValueForProperty:(unint64_t)property;
+- (id)valueForProperty:(unint64_t)property;
+- (int)intValueForProperty:(unint64_t)property;
 @end
 
 @implementation CRLWPStyle
 
-- (id)boxedValueForProperty:(unint64_t)a3
+- (id)boxedValueForProperty:(unint64_t)property
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_100BE5D8C();
   swift_unknownObjectRetain();
 
   return v4;
 }
 
-- (id)valueForProperty:(unint64_t)a3
+- (id)valueForProperty:(unint64_t)property
 {
   v4 = *((swift_isaMask & self->super.isa) + 0x58);
-  v5 = self;
-  v6 = v4(a3);
+  selfCopy = self;
+  v6 = v4(property);
 
   return v6;
 }
 
-- (int)intValueForProperty:(unint64_t)a3
+- (int)intValueForProperty:(unint64_t)property
 {
   v4 = *((swift_isaMask & self->super.isa) + 0x58);
-  v5 = self;
-  if (!v4(a3))
+  selfCopy = self;
+  if (!v4(property))
   {
     goto LABEL_5;
   }
@@ -41,22 +41,22 @@
   {
     swift_unknownObjectRelease();
 LABEL_5:
-    v7 = 0x80000000;
+    intValue = 0x80000000;
     goto LABEL_6;
   }
 
-  v7 = [v6 intValue];
+  intValue = [v6 intValue];
   swift_unknownObjectRelease();
 LABEL_6:
 
-  return v7;
+  return intValue;
 }
 
-- (float)floatValueForProperty:(unint64_t)a3
+- (float)floatValueForProperty:(unint64_t)property
 {
   v4 = *((swift_isaMask & self->super.isa) + 0x58);
-  v5 = self;
-  if (!v4(a3))
+  selfCopy = self;
+  if (!v4(property))
   {
     goto LABEL_5;
   }

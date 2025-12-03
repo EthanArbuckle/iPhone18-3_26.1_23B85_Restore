@@ -1,15 +1,15 @@
 @interface CSAttSiriAudioCoordinator
-- (CSAttSiriAudioCoordinator)initWithTargetQueue:(id)a3;
+- (CSAttSiriAudioCoordinator)initWithTargetQueue:(id)queue;
 - (void)_handleClientDidStopIfNeeded;
-- (void)addReceiver:(id)a3;
-- (void)attSiriAudioSrcNodeDidStartRecording:(id)a3 successfully:(BOOL)a4 error:(id)a5;
-- (void)attSiriAudioSrcNodeDidStop:(id)a3;
-- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)a3 audioChunk:(id)a4;
-- (void)attSiriNode:(id)a3 didDetectHardEndpointAtTime:(double)a4 withMetrics:(id)a5 usesAutomaticEndpointing:(BOOL)a6;
-- (void)intuitiveConvAudioCaptureMonitorDidStopAudioCapture:(id)a3 stopStreamOption:(id)a4 eventUUID:(id)a5;
-- (void)removeReceiver:(id)a3;
+- (void)addReceiver:(id)receiver;
+- (void)attSiriAudioSrcNodeDidStartRecording:(id)recording successfully:(BOOL)successfully error:(id)error;
+- (void)attSiriAudioSrcNodeDidStop:(id)stop;
+- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)available audioChunk:(id)chunk;
+- (void)attSiriNode:(id)node didDetectHardEndpointAtTime:(double)time withMetrics:(id)metrics usesAutomaticEndpointing:(BOOL)endpointing;
+- (void)intuitiveConvAudioCaptureMonitorDidStopAudioCapture:(id)capture stopStreamOption:(id)option eventUUID:(id)d;
+- (void)removeReceiver:(id)receiver;
 - (void)reset;
-- (void)siriClientBehaviorMonitor:(id)a3 didStopStream:(id)a4 withEventUUID:(id)a5;
+- (void)siriClientBehaviorMonitor:(id)monitor didStopStream:(id)stream withEventUUID:(id)d;
 @end
 
 @implementation CSAttSiriAudioCoordinator
@@ -62,7 +62,7 @@
   }
 }
 
-- (void)intuitiveConvAudioCaptureMonitorDidStopAudioCapture:(id)a3 stopStreamOption:(id)a4 eventUUID:(id)a5
+- (void)intuitiveConvAudioCaptureMonitorDidStopAudioCapture:(id)capture stopStreamOption:(id)option eventUUID:(id)d
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -73,7 +73,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 didStopStream:(id)a4 withEventUUID:(id)a5
+- (void)siriClientBehaviorMonitor:(id)monitor didStopStream:(id)stream withEventUUID:(id)d
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -84,64 +84,64 @@
   dispatch_async(queue, block);
 }
 
-- (void)attSiriNode:(id)a3 didDetectHardEndpointAtTime:(double)a4 withMetrics:(id)a5 usesAutomaticEndpointing:(BOOL)a6
+- (void)attSiriNode:(id)node didDetectHardEndpointAtTime:(double)time withMetrics:(id)metrics usesAutomaticEndpointing:(BOOL)endpointing
 {
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10004C964;
   v7[3] = &unk_100253BF8;
-  v8 = a6;
+  endpointingCopy = endpointing;
   v7[4] = self;
   dispatch_async(queue, v7);
 }
 
-- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)a3 audioChunk:(id)a4
+- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)available audioChunk:(id)chunk
 {
-  v6 = a3;
-  v7 = a4;
+  availableCopy = available;
+  chunkCopy = chunk;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004CAEC;
   block[3] = &unk_100253680;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = availableCopy;
+  v13 = chunkCopy;
+  v9 = chunkCopy;
+  v10 = availableCopy;
   dispatch_async(queue, block);
 }
 
-- (void)attSiriAudioSrcNodeDidStop:(id)a3
+- (void)attSiriAudioSrcNodeDidStop:(id)stop
 {
-  v4 = a3;
+  stopCopy = stop;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10004CC98;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stopCopy;
+  v6 = stopCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)attSiriAudioSrcNodeDidStartRecording:(id)a3 successfully:(BOOL)a4 error:(id)a5
+- (void)attSiriAudioSrcNodeDidStartRecording:(id)recording successfully:(BOOL)successfully error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  recordingCopy = recording;
+  errorCopy = error;
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10004CEBC;
   v13[3] = &unk_100252420;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = recordingCopy;
+  successfullyCopy = successfully;
+  v15 = errorCopy;
+  v11 = errorCopy;
+  v12 = recordingCopy;
   dispatch_async(queue, v13);
 }
 
@@ -156,45 +156,45 @@
   dispatch_async(queue, block);
 }
 
-- (void)removeReceiver:(id)a3
+- (void)removeReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10004D1E4;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = receiverCopy;
+  v6 = receiverCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addReceiver:(id)a3
+- (void)addReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10004D288;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = receiverCopy;
+  v6 = receiverCopy;
   dispatch_async(queue, v7);
 }
 
-- (CSAttSiriAudioCoordinator)initWithTargetQueue:(id)a3
+- (CSAttSiriAudioCoordinator)initWithTargetQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = CSAttSiriAudioCoordinator;
   v5 = [(CSAttSiriAudioCoordinator *)&v11 init];
   if (v5)
   {
-    if (v4)
+    if (queueCopy)
     {
-      v6 = dispatch_queue_create_with_target_V2("CSAttSiriAudioCoordinator Queue", 0, v4);
+      v6 = dispatch_queue_create_with_target_V2("CSAttSiriAudioCoordinator Queue", 0, queueCopy);
     }
 
     else

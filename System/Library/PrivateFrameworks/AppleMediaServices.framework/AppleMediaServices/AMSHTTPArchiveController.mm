@@ -1,13 +1,13 @@
 @interface AMSHTTPArchiveController
 + (BOOL)_disabled;
-+ (BOOL)_shouldAddRequest:(id)a3;
++ (BOOL)_shouldAddRequest:(id)request;
 + (BOOL)isRemoveDisabled;
 + (id)_harURLFilters;
 + (id)harURLFilters;
 + (void)_updateHarFileFilters;
-+ (void)addHTTPArchive:(id)a3;
++ (void)addHTTPArchive:(id)archive;
 + (void)initialize;
-+ (void)setRemoveDisabled:(BOOL)a3;
++ (void)setRemoveDisabled:(BOOL)disabled;
 @end
 
 @implementation AMSHTTPArchiveController
@@ -26,7 +26,7 @@
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, a1, _AMSHTTPArchiveControllerUpdateHarURLFilters, @"AMSUpdateHARFiltersNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _AMSHTTPArchiveControllerUpdateHarURLFilters, @"AMSUpdateHARFiltersNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
 + (id)harURLFilters
@@ -35,7 +35,7 @@
   block[1] = 3221225472;
   block[2] = __41__AMSHTTPArchiveController_harURLFilters__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED6E2A70 != -1)
   {
     dispatch_once(&qword_1ED6E2A70, block);
@@ -48,33 +48,33 @@
 
 + (BOOL)isRemoveDisabled
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = AMSHTTPArchiveControllerRemoveDisabled;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-+ (void)setRemoveDisabled:(BOOL)a3
++ (void)setRemoveDisabled:(BOOL)disabled
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
-  AMSHTTPArchiveControllerRemoveDisabled = a3;
+  AMSHTTPArchiveControllerRemoveDisabled = disabled;
   objc_sync_exit(obj);
 }
 
-+ (void)addHTTPArchive:(id)a3
++ (void)addHTTPArchive:(id)archive
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  archiveCopy = archive;
   v5 = AMSSetLogKeyIfNeeded();
-  if (![a1 _disabled])
+  if (![self _disabled])
   {
-    v10 = [a1 harURLFilters];
-    if (v10 && (v11 = v10, [a1 harURLFilters], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, v11, v13))
+    harURLFilters = [self harURLFilters];
+    if (harURLFilters && (v11 = harURLFilters, [self harURLFilters], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, v11, v13))
     {
-      if (![a1 _shouldAddRequest:v4])
+      if (![self _shouldAddRequest:archiveCopy])
       {
         goto LABEL_25;
       }
@@ -85,13 +85,13 @@
         v14 = +[AMSLogConfig sharedConfig];
       }
 
-      v15 = [v14 OSLogObject];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v14 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v16 = objc_opt_class();
-        v17 = [v4 urlString];
-        v18 = AMSHashIfNeeded(v17);
-        v19 = [a1 harURLFilters];
+        urlString = [archiveCopy urlString];
+        v18 = AMSHashIfNeeded(urlString);
+        harURLFilters2 = [self harURLFilters];
         v29 = 138544130;
         v30 = v16;
         v31 = 2114;
@@ -99,8 +99,8 @@
         v33 = 2114;
         v34 = v18;
         v35 = 2114;
-        v36 = v19;
-        _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Write HTTP Archive to disk for URL string: %{public}@ with HAR URL Filters: %{public}@", &v29, 0x2Au);
+        v36 = harURLFilters2;
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Write HTTP Archive to disk for URL string: %{public}@ with HAR URL Filters: %{public}@", &v29, 0x2Au);
       }
     }
 
@@ -109,8 +109,8 @@
       if (!+[AMSDefaults streamHARToDisk])
       {
         v20 = +[AMSProcessInfo currentProcess];
-        v21 = [v20 executableName];
-        v22 = [v21 isEqualToString:@"amstoold"];
+        executableName = [v20 executableName];
+        v22 = [executableName isEqualToString:@"amstoold"];
 
         if (v22)
         {
@@ -120,19 +120,19 @@
             v6 = +[AMSLogConfig sharedConfig];
           }
 
-          v7 = [v6 OSLogObject];
-          if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+          oSLogObject2 = [v6 OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
           {
             v23 = objc_opt_class();
-            v24 = [v4 urlString];
-            v25 = AMSHashIfNeeded(v24);
+            urlString2 = [archiveCopy urlString];
+            v25 = AMSHashIfNeeded(urlString2);
             v29 = 138543874;
             v30 = v23;
             v31 = 2114;
             v32 = v5;
             v33 = 2114;
             v34 = v25;
-            _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Skipping HTTP Archive, we should not hit this path. URL: %{public}@", &v29, 0x20u);
+            _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Skipping HTTP Archive, we should not hit this path. URL: %{public}@", &v29, 0x20u);
           }
 
           goto LABEL_6;
@@ -145,23 +145,23 @@
         v14 = +[AMSLogConfig sharedConfig];
       }
 
-      v15 = [v14 OSLogObject];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v14 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v26 = objc_opt_class();
-        v27 = [v4 urlString];
-        v28 = AMSHashIfNeeded(v27);
+        urlString3 = [archiveCopy urlString];
+        v28 = AMSHashIfNeeded(urlString3);
         v29 = 138543874;
         v30 = v26;
         v31 = 2114;
         v32 = v5;
         v33 = 2114;
         v34 = v28;
-        _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Write HTTP Archive to disk for URL string: %{public}@", &v29, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Write HTTP Archive to disk for URL string: %{public}@", &v29, 0x20u);
       }
     }
 
-    [v4 writeToDiskWithError:0 compressed:0];
+    [archiveCopy writeToDiskWithError:0 compressed:0];
     goto LABEL_25;
   }
 
@@ -171,8 +171,8 @@
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
     v9 = AMSLogKey();
@@ -180,7 +180,7 @@
     v30 = v8;
     v31 = 2114;
     v32 = v9;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Error adding HAR, disabled", &v29, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Error adding HAR, disabled", &v29, 0x16u);
   }
 
 LABEL_6:
@@ -198,7 +198,7 @@ void __37__AMSHTTPArchiveController__disabled__block_invoke()
 
 + (id)_harURLFilters
 {
-  if ([a1 _disabled])
+  if ([self _disabled])
   {
     v2 = 0;
     goto LABEL_12;
@@ -216,15 +216,15 @@ void __37__AMSHTTPArchiveController__disabled__block_invoke()
   if (!v5)
   {
     v6 = +[AMSProcessInfo currentProcess];
-    v7 = [v6 bundleIdentifier];
+    bundleIdentifier = [v6 bundleIdentifier];
 
-    if (v7)
+    if (bundleIdentifier)
     {
-      v8 = [v4 objectForKeyedSubscript:v7];
+      v8 = [v4 objectForKeyedSubscript:bundleIdentifier];
 
       if (v8)
       {
-        v2 = [v4 objectForKeyedSubscript:v7];
+        v2 = [v4 objectForKeyedSubscript:bundleIdentifier];
 
         goto LABEL_11;
       }
@@ -243,12 +243,12 @@ LABEL_12:
   return v2;
 }
 
-+ (BOOL)_shouldAddRequest:(id)a3
++ (BOOL)_shouldAddRequest:(id)request
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 urlString];
-  v5 = [v4 length];
+  requestCopy = request;
+  urlString = [requestCopy urlString];
+  v5 = [urlString length];
 
   if (v5)
   {
@@ -271,8 +271,8 @@ LABEL_12:
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
-          v11 = [v3 urlString];
-          LOBYTE(v10) = [v11 containsString:v10];
+          urlString2 = [requestCopy urlString];
+          LOBYTE(v10) = [urlString2 containsString:v10];
 
           if (v10)
           {
@@ -304,11 +304,11 @@ LABEL_12:
 
 + (void)_updateHarFileFilters
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
-  v2 = [obj _harURLFilters];
+  _harURLFilters = [obj _harURLFilters];
   v3 = qword_1ED6E2A68;
-  qword_1ED6E2A68 = v2;
+  qword_1ED6E2A68 = _harURLFilters;
 
   objc_sync_exit(obj);
 }

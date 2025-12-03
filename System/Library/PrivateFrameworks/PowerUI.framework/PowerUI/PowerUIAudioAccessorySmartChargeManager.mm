@@ -1,47 +1,47 @@
 @interface PowerUIAudioAccessorySmartChargeManager
-+ (id)readArrayForPreferenceKey:(id)a3;
-+ (id)readNumberForPreferenceKeyPrefix:(id)a3 andDevice:(id)a4;
-+ (id)readStringForPreferenceKeyPrefix:(id)a3 andDevice:(id)a4;
-+ (void)setNumber:(id)a3 forPreferenceKeyPrefix:(id)a4 andDevice:(id)a5;
-+ (void)setString:(id)a3 forPreferenceKeyPrefix:(id)a4 andDevice:(id)a5;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)runUpdateForDevice:(BTDeviceImpl *)a3 withHash:(id)a4 asInitialUpdate:(BOOL)a5;
-- (BOOL)setOBCState:(BOOL)a3 forDevice:(id)a4;
-- (BOOL)setStateViaV2Protocol:(unint64_t)a3 forDevice:(BTDeviceImpl *)a4;
++ (id)readArrayForPreferenceKey:(id)key;
++ (id)readNumberForPreferenceKeyPrefix:(id)prefix andDevice:(id)device;
++ (id)readStringForPreferenceKeyPrefix:(id)prefix andDevice:(id)device;
++ (void)setNumber:(id)number forPreferenceKeyPrefix:(id)prefix andDevice:(id)device;
++ (void)setString:(id)string forPreferenceKeyPrefix:(id)prefix andDevice:(id)device;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)runUpdateForDevice:(BTDeviceImpl *)device withHash:(id)hash asInitialUpdate:(BOOL)update;
+- (BOOL)setOBCState:(BOOL)state forDevice:(id)device;
+- (BOOL)setStateViaV2Protocol:(unint64_t)protocol forDevice:(BTDeviceImpl *)device;
 - (PowerUIAudioAccessorySmartChargeManager)init;
-- (id)defaultDateToDisableUntilGivenDate:(id)a3;
-- (id)firstUseNotificationRequestForDeviceType:(unsigned int)a3;
-- (id)getOBCDeadlineFromCBDevice:(id)a3;
-- (id)nameForProductID:(unsigned int)a3;
-- (id)returnAccessoryStatusForDevice:(id)a3;
-- (id)stringFromState:(unint64_t)a3;
-- (void)addTimeSeriesDataToStream:(timeSeriesData *)a3 withSide:(unsigned __int8)a4 withFirmwareVersion:(unsigned __int16)a5 withLog:(id)a6;
-- (void)clearLastActionForDevice:(id)a3;
-- (void)client:(id)a3 connectAndDisableOBCforDevice:(id)a4 withHandler:(id)a5;
-- (void)client:(id)a3 setState:(unint64_t)a4 forDevice:(id)a5 withHandler:(id)a6;
-- (void)client:(id)a3 updateOBCDeadline:(id)a4 forDevice:(id)a5 withHandler:(id)a6;
-- (void)currentLeewayWithHandler:(id)a3;
-- (void)deleteRecordsForDevices:(id)a3;
-- (void)engageUntil:(id)a3 forDevice:(id)a4 overrideAllSignals:(BOOL)a5 withHandler:(id)a6;
-- (void)fakeConnectionForDevice:(id)a3;
-- (void)fullChargeDeadlineForDevice:(id)a3 withHandler:(id)a4;
-- (void)getAvailableDevicesWithHandler:(id)a3;
-- (void)getStatusForDevice:(id)a3 withHandler:(id)a4;
-- (void)isSmartChargingCurrentlyEnabledForDevice:(id)a3 withHandler:(id)a4;
-- (void)lastActionForDevice:(id)a3 withHandler:(id)a4;
-- (void)monitor:(id)a3 maySuggestNewFullChargeDeadline:(id)a4;
-- (void)persistentlyHandleSeeingDevice:(id)a3;
-- (void)persistentlySetExpectedHash:(id)a3 forDevice:(id)a4;
-- (void)persistentlySetLastSentDate:(id)a3 forDevice:(id)a4;
-- (void)persistentlySetLastTimeseriesDate:(id)a3 forDevice:(id)a4;
-- (void)persistentlySetLastUnderchargeRecordedForPrediction:(id)a3 forDevice:(id)a4;
-- (void)recordBudMetricsLocallyForDevice:(id)a3 withTimeSpendAtLowerSoC:(unsigned __int16)a4 timeSpentAtHigherSoC:(unsigned __int16)a5 engagementEventsSinceLastReport:(unsigned __int8)a6 underchargeEventsSinceLastReport:(unsigned __int8)a7 chargingEventsSinceLastReport:(unsigned __int8)a8 budSocAtLastEngagement:(unsigned __int8)a9 successRatio:(unsigned __int16)a10;
+- (id)defaultDateToDisableUntilGivenDate:(id)date;
+- (id)firstUseNotificationRequestForDeviceType:(unsigned int)type;
+- (id)getOBCDeadlineFromCBDevice:(id)device;
+- (id)nameForProductID:(unsigned int)d;
+- (id)returnAccessoryStatusForDevice:(id)device;
+- (id)stringFromState:(unint64_t)state;
+- (void)addTimeSeriesDataToStream:(timeSeriesData *)stream withSide:(unsigned __int8)side withFirmwareVersion:(unsigned __int16)version withLog:(id)log;
+- (void)clearLastActionForDevice:(id)device;
+- (void)client:(id)client connectAndDisableOBCforDevice:(id)device withHandler:(id)handler;
+- (void)client:(id)client setState:(unint64_t)state forDevice:(id)device withHandler:(id)handler;
+- (void)client:(id)client updateOBCDeadline:(id)deadline forDevice:(id)device withHandler:(id)handler;
+- (void)currentLeewayWithHandler:(id)handler;
+- (void)deleteRecordsForDevices:(id)devices;
+- (void)engageUntil:(id)until forDevice:(id)device overrideAllSignals:(BOOL)signals withHandler:(id)handler;
+- (void)fakeConnectionForDevice:(id)device;
+- (void)fullChargeDeadlineForDevice:(id)device withHandler:(id)handler;
+- (void)getAvailableDevicesWithHandler:(id)handler;
+- (void)getStatusForDevice:(id)device withHandler:(id)handler;
+- (void)isSmartChargingCurrentlyEnabledForDevice:(id)device withHandler:(id)handler;
+- (void)lastActionForDevice:(id)device withHandler:(id)handler;
+- (void)monitor:(id)monitor maySuggestNewFullChargeDeadline:(id)deadline;
+- (void)persistentlyHandleSeeingDevice:(id)device;
+- (void)persistentlySetExpectedHash:(id)hash forDevice:(id)device;
+- (void)persistentlySetLastSentDate:(id)date forDevice:(id)device;
+- (void)persistentlySetLastTimeseriesDate:(id)date forDevice:(id)device;
+- (void)persistentlySetLastUnderchargeRecordedForPrediction:(id)prediction forDevice:(id)device;
+- (void)recordBudMetricsLocallyForDevice:(id)device withTimeSpendAtLowerSoC:(unsigned __int16)c timeSpentAtHigherSoC:(unsigned __int16)soC engagementEventsSinceLastReport:(unsigned __int8)report underchargeEventsSinceLastReport:(unsigned __int8)lastReport chargingEventsSinceLastReport:(unsigned __int8)sinceLastReport budSocAtLastEngagement:(unsigned __int8)engagement successRatio:(unsigned __int16)self0;
 - (void)reportDailyMetrics;
-- (void)setTemporarilyDisabled:(BOOL)a3 until:(id)a4 forDevice:(id)a5;
-- (void)startMockingBluetoothForFakeDevice:(id)a3;
+- (void)setTemporarilyDisabled:(BOOL)disabled until:(id)until forDevice:(id)device;
+- (void)startMockingBluetoothForFakeDevice:(id)device;
 - (void)stopMockingBluetooth;
-- (void)timeSeriesForDevice:(id)a3;
-- (void)unfilteredDeadlineForDevice:(id)a3 withHandler:(id)a4;
+- (void)timeSeriesForDevice:(id)device;
+- (void)unfilteredDeadlineForDevice:(id)device withHandler:(id)handler;
 @end
 
 @implementation PowerUIAudioAccessorySmartChargeManager
@@ -70,9 +70,9 @@
     queue = v2->_queue;
     v2->_queue = v7;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     latestAnalyticsForDevice = v2->_latestAnalyticsForDevice;
-    v2->_latestAnalyticsForDevice = v9;
+    v2->_latestAnalyticsForDevice = dictionary;
 
     v11 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     deviceArrayLock = v2->_deviceArrayLock;
@@ -248,9 +248,9 @@ LABEL_36:
           v52 = [v51 dateWithTimeIntervalSinceReferenceDate:?];
           [(PowerUIAccessoryStatus *)v30 setLastSeenDate:v52];
 
-          v53 = [MEMORY[0x277CBEAA8] date];
-          v54 = [(PowerUIAccessoryStatus *)v30 lastSeenDate];
-          [v53 timeIntervalSinceDate:v54];
+          date = [MEMORY[0x277CBEAA8] date];
+          lastSeenDate = [(PowerUIAccessoryStatus *)v30 lastSeenDate];
+          [date timeIntervalSinceDate:lastSeenDate];
           v56 = v55;
 
           v25 = v115;
@@ -351,9 +351,9 @@ LABEL_37:
 
     [(NSXPCListener *)v25->_listener setDelegate:v25];
     [(NSXPCListener *)v25->_listener resume];
-    v78 = [MEMORY[0x277CCA9A0] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
     notificationCenter = v25->_notificationCenter;
-    v25->_notificationCenter = v78;
+    v25->_notificationCenter = defaultCenter;
 
     v80 = dispatch_semaphore_create(0);
     btConnectionSemaphore = v25->_btConnectionSemaphore;
@@ -622,30 +622,30 @@ uint64_t __47__PowerUIAudioAccessorySmartChargeManager_init__block_invoke_307(ui
   return [*(*(a1 + 32) + 152) invalidate];
 }
 
-- (id)returnAccessoryStatusForDevice:(id)a3
+- (id)returnAccessoryStatusForDevice:(id)device
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  deviceCopy = device;
+  if (deviceCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_accessoryStates objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_accessoryStates objectForKey:deviceCopy];
     if (!v5)
     {
       v5 = objc_alloc_init(PowerUIAccessoryStatus);
-      [(NSMutableDictionary *)self->_accessoryStates setObject:v5 forKey:v4];
-      v6 = [(PowerUIAccessoryStatus *)v5 currentState];
-      v7 = [(PowerUIAccessoryStatus *)v5 enabled];
-      v8 = [(PowerUIAccessoryStatus *)v5 disabledUntilDate];
-      [(PowerUIAudioAccessorySmartChargeManager *)self persistentlySetStatusForDevice:v4 withCurrentState:v6 withEnabled:v7 withDisabledUntilDate:v8 withTemporarilyDisabled:[(PowerUIAccessoryStatus *)v5 temporarilyDisabled]];
+      [(NSMutableDictionary *)self->_accessoryStates setObject:v5 forKey:deviceCopy];
+      currentState = [(PowerUIAccessoryStatus *)v5 currentState];
+      enabled = [(PowerUIAccessoryStatus *)v5 enabled];
+      disabledUntilDate = [(PowerUIAccessoryStatus *)v5 disabledUntilDate];
+      [(PowerUIAudioAccessorySmartChargeManager *)self persistentlySetStatusForDevice:deviceCopy withCurrentState:currentState withEnabled:enabled withDisabledUntilDate:disabledUntilDate withTemporarilyDisabled:[(PowerUIAccessoryStatus *)v5 temporarilyDisabled]];
 
       [(NSLock *)self->_deviceArrayLock lock];
-      [(NSMutableArray *)self->_deviceArray addObject:v4];
+      [(NSMutableArray *)self->_deviceArray addObject:deviceCopy];
       [PowerUIAudioAccessorySmartChargeManager setArray:self->_deviceArray forPreferenceKey:@"com.apple.smartcharging.audioaccessories.deviceArray"];
       accessoryLog = self->_accessoryLog;
       if (os_log_type_enabled(accessoryLog, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138412290;
-        v13 = v4;
+        v13 = deviceCopy;
         _os_log_impl(&dword_21B766000, accessoryLog, OS_LOG_TYPE_DEFAULT, "Add new device '%@' to deviceArray", &v12, 0xCu);
       }
 
@@ -668,33 +668,33 @@ uint64_t __47__PowerUIAudioAccessorySmartChargeManager_init__block_invoke_307(ui
   return v5;
 }
 
-- (void)addTimeSeriesDataToStream:(timeSeriesData *)a3 withSide:(unsigned __int8)a4 withFirmwareVersion:(unsigned __int16)a5 withLog:(id)a6
+- (void)addTimeSeriesDataToStream:(timeSeriesData *)stream withSide:(unsigned __int8)side withFirmwareVersion:(unsigned __int16)version withLog:(id)log
 {
-  v47 = a5;
-  v6 = a4;
+  versionCopy = version;
+  sideCopy = side;
   v61 = *MEMORY[0x277D85DE8];
-  v8 = a6;
+  logCopy = log;
   v55 = 0;
   v56 = &v55;
   v57 = 0x2020000000;
   v58 = 0;
   v49 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:0 endDate:0 maxEvents:0 lastN:0 reversed:1];
   v9 = BiomeLibrary();
-  v10 = [v9 Device];
-  v11 = [v10 Charging];
-  v12 = [v11 AccessoryChargingSession];
-  v13 = [v12 publisherWithOptions:v49];
+  device = [v9 Device];
+  charging = [device Charging];
+  accessoryChargingSession = [charging AccessoryChargingSession];
+  v13 = [accessoryChargingSession publisherWithOptions:v49];
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
   v53[2] = __106__PowerUIAudioAccessorySmartChargeManager_addTimeSeriesDataToStream_withSide_withFirmwareVersion_withLog___block_invoke;
   v53[3] = &__block_descriptor_33_e22_B16__0__BMStoreEvent_8l;
-  v54 = v6;
+  v54 = sideCopy;
   v14 = [v13 filterWithIsIncluded:v53];
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
   v51[2] = __106__PowerUIAudioAccessorySmartChargeManager_addTimeSeriesDataToStream_withSide_withFirmwareVersion_withLog___block_invoke_2;
   v51[3] = &unk_2782D3E10;
-  v15 = v8;
+  v15 = logCopy;
   v52 = v15;
   v50[0] = MEMORY[0x277D85DD0];
   v50[1] = 3221225472;
@@ -709,14 +709,14 @@ uint64_t __47__PowerUIAudioAccessorySmartChargeManager_init__block_invoke_307(ui
     *buf = 134218240;
     *v60 = v17;
     *&v60[8] = 1024;
-    *&v60[10] = v6;
+    *&v60[10] = sideCopy;
     _os_log_impl(&dword_21B766000, v15, OS_LOG_TYPE_INFO, "Previous end date set to %llu from previous record for bud side: %hhu.", buf, 0x12u);
   }
 
   v48 = 0;
   v18 = 0;
-  v19 = v6 == 2;
-  if (v6 == 1)
+  v19 = sideCopy == 2;
+  if (sideCopy == 1)
   {
     v19 = 2;
   }
@@ -724,13 +724,13 @@ uint64_t __47__PowerUIAudioAccessorySmartChargeManager_init__block_invoke_307(ui
   v46 = v19;
   while (1)
   {
-    v20 = &a3[v18];
+    v20 = &stream[v18];
     if (!v20->var1)
     {
       break;
     }
 
-    if (v20->var2 && (v21 = v18 + 1, v22 = &a3[v18 + 1], v22->var2))
+    if (v20->var2 && (v21 = v18 + 1, v22 = &stream[v18 + 1], v22->var2))
     {
       if (v20->var1 == 1)
       {
@@ -757,17 +757,17 @@ uint64_t __47__PowerUIAudioAccessorySmartChargeManager_init__block_invoke_307(ui
             if (v22->var0 - v20->var0 < 0x278D01)
             {
               v31 = objc_alloc(MEMORY[0x277CF1080]);
-              v32 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v47];
+              v32 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:versionCopy];
               v33 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v20->var0];
               v34 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v22->var0];
               v35 = [v31 initWithProductID:&unk_282D4E578 firmwareVersion:v32 startTimestamp:v33 endTimestamp:v34 side:v46];
 
               v36 = BiomeLibrary();
-              v37 = [v36 Device];
-              v38 = [v37 Charging];
-              v39 = [v38 AccessoryChargingSession];
-              v40 = [v39 source];
-              [v40 sendEvent:v35];
+              device2 = [v36 Device];
+              charging2 = [device2 Charging];
+              accessoryChargingSession2 = [charging2 AccessoryChargingSession];
+              source = [accessoryChargingSession2 source];
+              [source sendEvent:v35];
 
               ++v48;
               v18 = v21;
@@ -939,16 +939,16 @@ uint64_t __106__PowerUIAudioAccessorySmartChargeManager_addTimeSeriesDataToStrea
   return 0;
 }
 
-- (void)recordBudMetricsLocallyForDevice:(id)a3 withTimeSpendAtLowerSoC:(unsigned __int16)a4 timeSpentAtHigherSoC:(unsigned __int16)a5 engagementEventsSinceLastReport:(unsigned __int8)a6 underchargeEventsSinceLastReport:(unsigned __int8)a7 chargingEventsSinceLastReport:(unsigned __int8)a8 budSocAtLastEngagement:(unsigned __int8)a9 successRatio:(unsigned __int16)a10
+- (void)recordBudMetricsLocallyForDevice:(id)device withTimeSpendAtLowerSoC:(unsigned __int16)c timeSpentAtHigherSoC:(unsigned __int16)soC engagementEventsSinceLastReport:(unsigned __int8)report underchargeEventsSinceLastReport:(unsigned __int8)lastReport chargingEventsSinceLastReport:(unsigned __int8)sinceLastReport budSocAtLastEngagement:(unsigned __int8)engagement successRatio:(unsigned __int16)self0
 {
-  v47 = a7;
-  v48 = a8;
-  v45 = a5;
-  v46 = a6;
-  v44 = a4;
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.budMetrics", a3];
+  lastReportCopy = lastReport;
+  sinceLastReportCopy = sinceLastReport;
+  soCCopy = soC;
+  reportCopy = report;
+  cCopy = c;
+  device = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.budMetrics", device];
   v11 = MEMORY[0x277CBEB38];
-  v49 = v10;
+  v49 = device;
   v12 = [PowerUISmartChargeUtilities readDictForPreferenceKey:"readDictForPreferenceKey:inDomain:" inDomain:?];
   v13 = [v11 dictionaryWithDictionary:v12];
 
@@ -995,50 +995,50 @@ uint64_t __106__PowerUIAudioAccessorySmartChargeManager_addTimeSeriesDataToStrea
   }
 
   while (v14 != 0 && v36);
-  v37 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v44];
+  v37 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:cCopy];
   [v13 setObject:v37 forKeyedSubscript:@"1.timeSpentAtLowerSoC"];
 
-  v38 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v45];
+  v38 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:soCCopy];
   [v13 setObject:v38 forKeyedSubscript:@"1.timeSpentAtHigherSoC"];
 
-  v39 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v46];
+  v39 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:reportCopy];
   [v13 setObject:v39 forKeyedSubscript:@"1.engagementEventsSinceLastReport"];
 
-  v40 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v47];
+  v40 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:lastReportCopy];
   [v13 setObject:v40 forKeyedSubscript:@"1.underchargeEventsSinceLastReport"];
 
-  v41 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v48];
+  v41 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:sinceLastReportCopy];
   [v13 setObject:v41 forKeyedSubscript:@"1.chargingEventsSinceLastReport"];
 
-  v42 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a9];
+  v42 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:engagement];
   [v13 setObject:v42 forKeyedSubscript:@"1.budSocAtLastEngagement"];
 
-  v43 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:a10];
+  v43 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:ratio];
   [v13 setObject:v43 forKeyedSubscript:@"1.successRatio"];
 
   [PowerUISmartChargeUtilities setDict:v13 forPreferenceKey:v49 inDomain:@"com.apple.smartcharging.topoffprotection.audioaccessories"];
 }
 
-- (BOOL)runUpdateForDevice:(BTDeviceImpl *)a3 withHash:(id)a4 asInitialUpdate:(BOOL)a5
+- (BOOL)runUpdateForDevice:(BTDeviceImpl *)device withHash:(id)hash asInitialUpdate:(BOOL)update
 {
-  v5 = a5;
+  updateCopy = update;
   v117 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  if (a3)
+  hashCopy = hash;
+  if (device)
   {
     v9 = os_transaction_create();
     hardcodedTimeDelta = self->_hardcodedTimeDelta;
-    v11 = [(PowerUIBluetoothHandler *)self->_btHandler getAddressStringForDevice:a3];
+    v11 = [(PowerUIBluetoothHandler *)self->_btHandler getAddressStringForDevice:device];
     v12 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:v11];
     v13 = v12;
-    if (v8)
+    if (hashCopy)
     {
-      v14 = [v12 expectedHash];
+      expectedHash = [v12 expectedHash];
 
-      if (v14 != v8)
+      if (expectedHash != hashCopy)
       {
         accessoryLog = self->_accessoryLog;
-        LOBYTE(a3) = 0;
+        LOBYTE(device) = 0;
         if (!os_log_type_enabled(accessoryLog, OS_LOG_TYPE_DEFAULT))
         {
 LABEL_37:
@@ -1047,10 +1047,10 @@ LABEL_37:
         }
 
         *buf = 138412290;
-        v114 = *&v8;
+        v114 = *&hashCopy;
         _os_log_impl(&dword_21B766000, accessoryLog, OS_LOG_TYPE_DEFAULT, "runUpdate hash '%@' does not match, this message must be old.", buf, 0xCu);
 LABEL_16:
-        LOBYTE(a3) = 0;
+        LOBYTE(device) = 0;
         goto LABEL_37;
       }
     }
@@ -1065,7 +1065,7 @@ LABEL_16:
       }
     }
 
-    if (![(PowerUIBluetoothHandler *)self->_btHandler isDeviceConnected:a3 forSession:self->_session])
+    if (![(PowerUIBluetoothHandler *)self->_btHandler isDeviceConnected:device forSession:self->_session])
     {
       v22 = self->_accessoryLog;
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -1080,13 +1080,13 @@ LABEL_16:
     }
 
     v109 = v9;
-    v18 = [(PowerUIWalletSignalMonitor *)self->_walletMonitor requiredFullChargeDate];
-    v108 = v18;
-    if (v18)
+    requiredFullChargeDate = [(PowerUIWalletSignalMonitor *)self->_walletMonitor requiredFullChargeDate];
+    v108 = requiredFullChargeDate;
+    if (requiredFullChargeDate)
     {
-      v19 = v18;
-      v20 = [MEMORY[0x277CBEAA8] distantPast];
-      v21 = [v19 isEqualToDate:v20];
+      v19 = requiredFullChargeDate;
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
+      v21 = [v19 isEqualToDate:distantPast];
     }
 
     else
@@ -1094,8 +1094,8 @@ LABEL_16:
       v21 = 0;
     }
 
-    v23 = [(PowerUIAudioAccessorySmartChargeManager *)self btHandler];
-    v24 = [v23 protocolForDevice:a3];
+    btHandler = [(PowerUIAudioAccessorySmartChargeManager *)self btHandler];
+    v24 = [btHandler protocolForDevice:device];
 
     if (v24 == 3)
     {
@@ -1108,12 +1108,12 @@ LABEL_16:
           _os_log_impl(&dword_21B766000, v25, OS_LOG_TYPE_DEFAULT, "A boarding pass was found within 24 hours, temporarily disable OBC via v2 protocol", buf, 2u);
         }
 
-        LOBYTE(a3) = [(PowerUIAudioAccessorySmartChargeManager *)self setStateViaV2Protocol:3 forDevice:a3];
+        LOBYTE(device) = [(PowerUIAudioAccessorySmartChargeManager *)self setStateViaV2Protocol:3 forDevice:device];
       }
 
       else
       {
-        LOBYTE(a3) = 1;
+        LOBYTE(device) = 1;
       }
 
       goto LABEL_36;
@@ -1148,7 +1148,7 @@ LABEL_34:
 
 LABEL_35:
       [v13 setManagerState:2];
-      LOBYTE(a3) = 0;
+      LOBYTE(device) = 0;
 LABEL_36:
       v9 = v109;
 
@@ -1164,29 +1164,29 @@ LABEL_36:
         _os_log_impl(&dword_21B766000, v28, OS_LOG_TYPE_DEFAULT, "A boarding pass was found within 24 hours, temporarily disable OBC", buf, 2u);
       }
 
-      v29 = [MEMORY[0x277CBEAA8] date];
-      v30 = [(PowerUIAudioAccessorySmartChargeManager *)self defaultDateToDisableUntilGivenDate:v29];
-      LOBYTE(a3) = 1;
+      date = [MEMORY[0x277CBEAA8] date];
+      v30 = [(PowerUIAudioAccessorySmartChargeManager *)self defaultDateToDisableUntilGivenDate:date];
+      LOBYTE(device) = 1;
       [(PowerUIAudioAccessorySmartChargeManager *)self setTemporarilyDisabled:1 until:v30 forDevice:v11];
 
       [v13 setManagerState:5];
       goto LABEL_36;
     }
 
-    v33 = [v13 lastSentDate];
+    lastSentDate = [v13 lastSentDate];
     v34 = self->_accessoryLog;
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
       v114 = *&v11;
       v115 = 2112;
-      v116 = v8;
+      v116 = hashCopy;
       _os_log_impl(&dword_21B766000, v34, OS_LOG_TYPE_DEFAULT, "runUpdate called for device '%@', hash: %@", buf, 0x16u);
     }
 
-    v35 = [MEMORY[0x277CBEAA8] date];
-    v107 = v35;
-    if (v5)
+    date2 = [MEMORY[0x277CBEAA8] date];
+    v107 = date2;
+    if (updateCopy)
     {
       v36 = self->_accessoryLog;
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -1195,21 +1195,21 @@ LABEL_36:
         _os_log_impl(&dword_21B766000, v36, OS_LOG_TYPE_DEFAULT, "This is the initial update, re-send last prediction.", buf, 2u);
       }
 
-      v37 = v33;
-      [v33 timeIntervalSinceDate:v35];
+      v37 = lastSentDate;
+      [lastSentDate timeIntervalSinceDate:date2];
       v39 = v38;
       v40 = _os_feature_enabled_impl();
       v41 = 0;
       if (v40 && v39 > 0.0)
       {
-        v41 = [(PowerUIAudioAccessorySmartChargeManager *)self sendTimeDeltaInSeconds:v39 toAccessory:a3];
+        v41 = [(PowerUIAudioAccessorySmartChargeManager *)self sendTimeDeltaInSeconds:v39 toAccessory:device];
       }
 
       v106 = v41;
       [v13 setManagerState:1];
-      v42 = 60;
+      integerValue2 = 60;
 LABEL_85:
-      v90 = dispatch_walltime(0, 1000000000 * v42);
+      v90 = dispatch_walltime(0, 1000000000 * integerValue2);
       v91 = objc_alloc_init(MEMORY[0x277CCAD78]);
       [(PowerUIAudioAccessorySmartChargeManager *)self persistentlySetExpectedHash:v91 forDevice:v11];
       queue = self->_queue;
@@ -1218,7 +1218,7 @@ LABEL_85:
       block[2] = __87__PowerUIAudioAccessorySmartChargeManager_runUpdateForDevice_withHash_asInitialUpdate___block_invoke;
       block[3] = &unk_2782D4B58;
       block[4] = self;
-      v112 = a3;
+      deviceCopy = device;
       v93 = v91;
       v111 = v93;
       dispatch_after(v90, queue, block);
@@ -1227,18 +1227,18 @@ LABEL_85:
       {
         v95 = MEMORY[0x277CCABB0];
         v96 = v94;
-        v97 = [v95 numberWithDouble:v42 / 60.0];
+        v97 = [v95 numberWithDouble:integerValue2 / 60.0];
         *buf = 138412290;
         v114 = *&v97;
         _os_log_impl(&dword_21B766000, v96, OS_LOG_TYPE_DEFAULT, "Next update queued in %@ minutes", buf, 0xCu);
       }
 
-      LOBYTE(a3) = v106 == 0;
+      LOBYTE(device) = v106 == 0;
 
       goto LABEL_36;
     }
 
-    v105 = [(PowerUIMLAudioAccessoryModelPredictor *)self->_predictor chargingDecisionForDate:v35 forAudioAccessory:v11];
+    v105 = [(PowerUIMLAudioAccessoryModelPredictor *)self->_predictor chargingDecisionForDate:date2 forAudioAccessory:v11];
     if ([v105 state] != 1 || hardcodedTimeDelta)
     {
       if ([v105 state] != 2 || hardcodedTimeDelta)
@@ -1250,24 +1250,24 @@ LABEL_85:
             [v105 smartChargeDuration];
             if (hardcodedTimeDelta)
             {
-              v99 = [(NSNumber *)self->_hardcodedTimeDelta integerValue];
+              integerValue = [(NSNumber *)self->_hardcodedTimeDelta integerValue];
               v100 = self->_accessoryLog;
               if (os_log_type_enabled(v100, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 134217984;
-                v114 = v99;
+                v114 = integerValue;
                 _os_log_impl(&dword_21B766000, v100, OS_LOG_TYPE_DEFAULT, "Applied manual override for prediction, it is now: %f", buf, 0xCu);
               }
             }
 
             else
             {
-              v99 = v98 * 60.0;
+              integerValue = v98 * 60.0;
             }
 
             if (_os_feature_enabled_impl())
             {
-              v106 = [(PowerUIAudioAccessorySmartChargeManager *)self sendTimeDeltaInSeconds:v99 toAccessory:a3];
+              v106 = [(PowerUIAudioAccessorySmartChargeManager *)self sendTimeDeltaInSeconds:integerValue toAccessory:device];
             }
 
             else
@@ -1294,24 +1294,24 @@ LABEL_85:
 LABEL_64:
           v106 = 0;
 LABEL_65:
-          v48 = [MEMORY[0x277CBEB38] dictionary];
-          v49 = [(PowerUIAudioAccessorySmartChargeManager *)self btHandler];
-          v50 = -[PowerUIAudioAccessorySmartChargeManager nameForProductID:](self, "nameForProductID:", [v49 productIDForDevice:a3]);
-          [v48 setObject:v50 forKeyedSubscript:@"AudioAccessoryType"];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          btHandler2 = [(PowerUIAudioAccessorySmartChargeManager *)self btHandler];
+          v50 = -[PowerUIAudioAccessorySmartChargeManager nameForProductID:](self, "nameForProductID:", [btHandler2 productIDForDevice:device]);
+          [dictionary setObject:v50 forKeyedSubscript:@"AudioAccessoryType"];
 
           v51 = MEMORY[0x277CCABB0];
           [v105 engagementConfidence];
           v52 = [v51 numberWithDouble:?];
-          [v48 setObject:v52 forKeyedSubscript:@"EngagementModelPrediction"];
+          [dictionary setObject:v52 forKeyedSubscript:@"EngagementModelPrediction"];
 
           v53 = MEMORY[0x277CCABB0];
           [v105 engagementConfidence];
           v104 = [v53 numberWithInt:(5 * ((v54 * 100.0) / 5))];
-          [v48 setObject:? forKeyedSubscript:?];
+          [dictionary setObject:? forKeyedSubscript:?];
           v55 = MEMORY[0x277CCABB0];
           [v105 smartChargeDuration];
           v56 = [v55 numberWithDouble:?];
-          [v48 setObject:v56 forKeyedSubscript:@"DurationModelPrediction"];
+          [dictionary setObject:v56 forKeyedSubscript:@"DurationModelPrediction"];
 
           v57 = MEMORY[0x277CCABB0];
           [v105 smartChargeDuration];
@@ -1327,19 +1327,19 @@ LABEL_65:
           }
 
           v103 = [v57 numberWithInt:v60];
-          [v48 setObject:? forKeyedSubscript:?];
-          v61 = [v105 modelVersion];
-          [v48 setObject:v61 forKeyedSubscript:@"ModelVersion"];
+          [dictionary setObject:? forKeyedSubscript:?];
+          modelVersion = [v105 modelVersion];
+          [dictionary setObject:modelVersion forKeyedSubscript:@"ModelVersion"];
 
           v62 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v105, "state")}];
-          [v48 setObject:v62 forKeyedSubscript:@"PredictionContainerState"];
+          [dictionary setObject:v62 forKeyedSubscript:@"PredictionContainerState"];
 
-          v63 = [v13 lastSeenDate];
-          [v63 timeIntervalSinceDate:v33];
+          lastSeenDate = [v13 lastSeenDate];
+          [lastSeenDate timeIntervalSinceDate:lastSentDate];
           v65 = v64;
 
           v66 = [MEMORY[0x277CCABB0] numberWithDouble:v65];
-          [v48 setObject:v66 forKeyedSubscript:@"PredictionRealityDelta"];
+          [dictionary setObject:v66 forKeyedSubscript:@"PredictionRealityDelta"];
 
           v67 = v65 / 3600.0;
           if (v65 / 3600.0 > 48.0)
@@ -1348,11 +1348,11 @@ LABEL_65:
           }
 
           v102 = [MEMORY[0x277CCABB0] numberWithDouble:v67];
-          [v48 setObject:? forKeyedSubscript:?];
-          [v33 timeIntervalSinceDate:v107];
+          [dictionary setObject:? forKeyedSubscript:?];
+          [lastSentDate timeIntervalSinceDate:v107];
           v69 = v68;
           v70 = [(NSMutableDictionary *)self->_latestAnalyticsForDevice objectForKey:v11];
-          v37 = v33;
+          v37 = lastSentDate;
           if (!v70)
           {
             goto LABEL_104;
@@ -1366,13 +1366,13 @@ LABEL_65:
           {
             v74 = [(NSMutableDictionary *)self->_latestAnalyticsForDevice objectForKeyedSubscript:v11];
             v75 = [v74 objectForKey:@"UnderchargeHappened"];
-            [v48 setObject:v75 forKeyedSubscript:@"UnderchargeHappened"];
+            [dictionary setObject:v75 forKeyedSubscript:@"UnderchargeHappened"];
 
             v76 = self->_accessoryLog;
             if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
             {
               v77 = v76;
-              v78 = [v48 objectForKeyedSubscript:@"UnderchargeHappened"];
+              v78 = [dictionary objectForKeyedSubscript:@"UnderchargeHappened"];
               *buf = 138412290;
               v114 = *&v78;
               _os_log_impl(&dword_21B766000, v77, OS_LOG_TYPE_DEFAULT, "Undercharge decision already made, it was: %@", buf, 0xCu);
@@ -1397,7 +1397,7 @@ LABEL_104:
                 _os_log_impl(&dword_21B766000, v83, OS_LOG_TYPE_DEFAULT, "Not an undercharge, either last prediciton delta  %@ < 0 or already recorded for last prediction %@", buf, 0x16u);
               }
 
-              [v48 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"UnderchargeHappened"];
+              [dictionary setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"UnderchargeHappened"];
             }
 
             else
@@ -1415,22 +1415,22 @@ LABEL_104:
                 _os_log_impl(&dword_21B766000, v87, OS_LOG_TYPE_DEFAULT, "New undercharge, last prediciton delta %@ > 0 and not already recorded for last prediction %@", buf, 0x16u);
               }
 
-              [v48 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"UnderchargeHappened"];
+              [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"UnderchargeHappened"];
               [(PowerUIAudioAccessorySmartChargeManager *)self persistentlySetLastUnderchargeRecordedForPrediction:v37 forDevice:v11];
             }
           }
 
-          [(NSMutableDictionary *)self->_latestAnalyticsForDevice setObject:v48 forKeyedSubscript:v11];
+          [(NSMutableDictionary *)self->_latestAnalyticsForDevice setObject:dictionary forKeyedSubscript:v11];
 
           hardcodedTimeBetweenUpdates = self->_hardcodedTimeBetweenUpdates;
           if (hardcodedTimeBetweenUpdates)
           {
-            v42 = [(NSNumber *)hardcodedTimeBetweenUpdates integerValue];
+            integerValue2 = [(NSNumber *)hardcodedTimeBetweenUpdates integerValue];
           }
 
           else
           {
-            v42 = 3600;
+            integerValue2 = 3600;
           }
 
           goto LABEL_85;
@@ -1484,22 +1484,22 @@ LABEL_104:
   {
     *buf = 0;
     _os_log_impl(&dword_21B766000, v16, OS_LOG_TYPE_DEFAULT, "runUpdate called for nil device.", buf, 2u);
-    LOBYTE(a3) = 0;
+    LOBYTE(device) = 0;
   }
 
 LABEL_38:
 
   v31 = *MEMORY[0x277D85DE8];
-  return a3;
+  return device;
 }
 
-- (id)nameForProductID:(unsigned int)a3
+- (id)nameForProductID:(unsigned int)d
 {
-  if (a3 > 8218)
+  if (d > 8218)
   {
-    if (a3 > 8227)
+    if (d > 8227)
     {
-      switch(a3)
+      switch(d)
       {
         case 0x2024u:
           return @"B698c";
@@ -1512,7 +1512,7 @@ LABEL_38:
 
     else
     {
-      switch(a3)
+      switch(d)
       {
         case 0x201Bu:
           return @"B768M";
@@ -1524,9 +1524,9 @@ LABEL_38:
     }
   }
 
-  else if (a3 > 8210)
+  else if (d > 8210)
   {
-    switch(a3)
+    switch(d)
     {
       case 0x2013u:
         return @"B688";
@@ -1539,7 +1539,7 @@ LABEL_38:
 
   else
   {
-    switch(a3)
+    switch(d)
     {
       case 0x2002u:
         return @"B188";
@@ -1594,9 +1594,9 @@ LABEL_18:
           }
 
           v11 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:*(*(&v22 + 1) + 8 * i)];
-          v12 = [v11 enabled];
-          v7 = v7 + (v12 ^ 1);
-          v8 = (v8 + v12);
+          enabled = [v11 enabled];
+          v7 = v7 + (enabled ^ 1);
+          v8 = (v8 + enabled);
           v6 = v6 + [v11 temporarilyDisabled];
         }
 
@@ -1614,17 +1614,17 @@ LABEL_18:
     }
 
     [(NSLock *)self->_deviceArrayLock unlock];
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v16 = [MEMORY[0x277CCABB0] numberWithInt:v8];
-    [v15 setObject:v16 forKeyedSubscript:@"NumberOfEnabledDevices"];
+    [dictionary setObject:v16 forKeyedSubscript:@"NumberOfEnabledDevices"];
 
     v17 = [MEMORY[0x277CCABB0] numberWithInt:v7];
-    [v15 setObject:v17 forKeyedSubscript:@"NumberOfDisabledDevices"];
+    [dictionary setObject:v17 forKeyedSubscript:@"NumberOfDisabledDevices"];
 
     v18 = [MEMORY[0x277CCABB0] numberWithInt:v6];
-    [v15 setObject:v18 forKeyedSubscript:@"NumberOfTemporarilyDisabledDevices"];
+    [dictionary setObject:v18 forKeyedSubscript:@"NumberOfTemporarilyDisabledDevices"];
 
-    v19 = v15;
+    v19 = dictionary;
     AnalyticsSendEventLazy();
     accessoryLog = self->_accessoryLog;
     if (os_log_type_enabled(accessoryLog, OS_LOG_TYPE_DEFAULT))
@@ -1643,7 +1643,7 @@ LABEL_18:
   [(NSLock *)deviceArrayLock unlock];
 }
 
-- (id)firstUseNotificationRequestForDeviceType:(unsigned int)a3
+- (id)firstUseNotificationRequestForDeviceType:(unsigned int)type
 {
   v4 = objc_alloc_init(MEMORY[0x277CE1F60]);
   v5 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:@"/System/Library/PrivateFrameworks/PowerUI.framework"];
@@ -1653,14 +1653,14 @@ LABEL_18:
   [v4 setTitle:v8];
 
   v9 = objc_alloc_init(MEMORY[0x277CCABB8]);
-  v10 = [MEMORY[0x277CBEAF8] currentLocale];
-  [v9 setLocale:v10];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  [v9 setLocale:currentLocale];
 
   [v9 setNumberStyle:3];
   [v9 setMaximumFractionDigits:0];
   [v9 setMultiplier:&unk_282D4E548];
   v11 = [v9 stringFromNumber:&unk_282D4E590];
-  if (a3 - 8206 > 0x16 || ((1 << (a3 - 14)) & 0x400041) == 0)
+  if (type - 8206 > 0x16 || ((1 << (type - 14)) & 0x400041) == 0)
   {
     v7 = @"Localizable-B688";
   }
@@ -1686,21 +1686,21 @@ LABEL_18:
   return v17;
 }
 
-- (void)client:(id)a3 connectAndDisableOBCforDevice:(id)a4 withHandler:(id)a5
+- (void)client:(id)client connectAndDisableOBCforDevice:(id)device withHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  clientCopy = client;
+  deviceCopy = device;
+  handlerCopy = handler;
   accessoryLog = self->_accessoryLog;
   if (os_log_type_enabled(accessoryLog, OS_LOG_TYPE_DEFAULT))
   {
     v28 = 138412290;
-    v29 = v9;
+    v29 = deviceCopy;
     _os_log_impl(&dword_21B766000, accessoryLog, OS_LOG_TYPE_DEFAULT, "Request connectAndDisableOBCforDevice for address: %@", &v28, 0xCu);
   }
 
-  v12 = [(PowerUIBluetoothHandler *)self->_btHandler getDeviceForAddressString:v9 forSession:self->_session];
+  v12 = [(PowerUIBluetoothHandler *)self->_btHandler getDeviceForAddressString:deviceCopy forSession:self->_session];
   if (!v12)
   {
     v22 = self->_accessoryLog;
@@ -1734,34 +1734,34 @@ LABEL_18:
         v25 = v23;
         v26 = [v24 numberWithLong:v20];
         v28 = 138412546;
-        v29 = v9;
+        v29 = deviceCopy;
         v30 = 2112;
         v31 = v26;
         _os_log_impl(&dword_21B766000, v25, OS_LOG_TYPE_DEFAULT, "Connecting device '%@' was not successful. timeout = %@", &v28, 0x16u);
       }
 
 LABEL_12:
-      (*(v10 + 2))(v10, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
       goto LABEL_13;
     }
   }
 
-  [(PowerUIAudioAccessorySmartChargeManager *)self client:v8 setState:3 forDevice:v9 withHandler:v10];
-  v21 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:v9];
+  [(PowerUIAudioAccessorySmartChargeManager *)self client:clientCopy setState:3 forDevice:deviceCopy withHandler:handlerCopy];
+  v21 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:deviceCopy];
   [v21 setManagerState:8];
 
 LABEL_13:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)isSmartChargingCurrentlyEnabledForDevice:(id)a3 withHandler:(id)a4
+- (void)isSmartChargingCurrentlyEnabledForDevice:(id)device withHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  deviceCopy = device;
+  handlerCopy = handler;
+  if (deviceCopy)
   {
-    v8 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:v6];
+    v8 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:deviceCopy];
     accessoryLog = self->_accessoryLog;
     if (os_log_type_enabled(accessoryLog, OS_LOG_TYPE_DEFAULT))
     {
@@ -1773,7 +1773,7 @@ LABEL_13:
       _os_log_impl(&dword_21B766000, v11, OS_LOG_TYPE_DEFAULT, "Returning current state: %@", &v14, 0xCu);
     }
 
-    v7[2](v7, [v8 currentState], 0);
+    handlerCopy[2](handlerCopy, [v8 currentState], 0);
   }
 
   else
@@ -1783,20 +1783,20 @@ LABEL_13:
       [PowerUIAudioAccessorySmartChargeManager isSmartChargingCurrentlyEnabledForDevice:withHandler:];
     }
 
-    v7[2](v7, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setOBCState:(BOOL)a3 forDevice:(id)a4
+- (BOOL)setOBCState:(BOOL)state forDevice:(id)device
 {
-  v4 = a3;
+  stateCopy = state;
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  deviceCopy = device;
   if (self->_session)
   {
-    v7 = [(PowerUIBluetoothHandler *)self->_btHandler getDeviceForAddressString:v6 forSession:?];
+    v7 = [(PowerUIBluetoothHandler *)self->_btHandler getDeviceForAddressString:deviceCopy forSession:?];
     session = self->_session;
     BTAccessoryManagerGetDefault();
     v9 = [(PowerUIBluetoothHandler *)self->_btHandler isDeviceConnected:v7 forSession:self->_session];
@@ -1804,7 +1804,7 @@ LABEL_13:
     v11 = os_log_type_enabled(accessoryLog, OS_LOG_TYPE_DEFAULT);
     if (v9)
     {
-      if (v4)
+      if (stateCopy)
       {
         if (v11)
         {
@@ -1814,7 +1814,7 @@ LABEL_13:
           *buf = 138412546;
           v35 = v14;
           v36 = 2112;
-          v37 = v6;
+          v37 = deviceCopy;
           _os_log_impl(&dword_21B766000, v13, OS_LOG_TYPE_DEFAULT, "Sending enabling state '%@' to device with address '%@'.", buf, 0x16u);
         }
 
@@ -1832,14 +1832,14 @@ LABEL_25:
         *buf = 138412546;
         v35 = v21;
         v36 = 2112;
-        v37 = v6;
+        v37 = deviceCopy;
         _os_log_impl(&dword_21B766000, v20, OS_LOG_TYPE_DEFAULT, "Sending disabling state '%@' to device with address '%@'.", buf, 0x16u);
       }
 
       v33 = 0;
       v32 = 0;
-      v22 = [(PowerUIAudioAccessorySmartChargeManager *)self btHandler];
-      v23 = [v22 protocolForDevice:v7];
+      btHandler = [(PowerUIAudioAccessorySmartChargeManager *)self btHandler];
+      v23 = [btHandler protocolForDevice:v7];
       if (v23 == 3)
       {
         v24 = 2;
@@ -1872,7 +1872,7 @@ LABEL_21:
         v28 = v26;
         v29 = [v27 numberWithUnsignedLong:v25];
         *buf = 138412546;
-        v35 = v6;
+        v35 = deviceCopy;
         v36 = 2112;
         v37 = v29;
         _os_log_impl(&dword_21B766000, v28, OS_LOG_TYPE_DEFAULT, "Message sent to disable OBC for device '%@' - Error code: %@", buf, 0x16u);
@@ -1894,7 +1894,7 @@ LABEL_24:
     }
 
     *buf = 138412290;
-    v35 = v6;
+    v35 = deviceCopy;
     v17 = "Device with address '%@' is not connected to AACP, do not try to set OBC state.";
     v18 = accessoryLog;
 LABEL_11:
@@ -1907,7 +1907,7 @@ LABEL_11:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v35 = v6;
+    v35 = deviceCopy;
     v17 = "Bluetooth session has not been intialized, device with address '%@' is not connected, do not try to set OBC state.";
     v18 = v15;
     goto LABEL_11;
@@ -1919,13 +1919,13 @@ LABEL_26:
   return v16;
 }
 
-- (void)client:(id)a3 setState:(unint64_t)a4 forDevice:(id)a5 withHandler:(id)a6
+- (void)client:(id)client setState:(unint64_t)state forDevice:(id)device withHandler:(id)handler
 {
   v47 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(PowerUIBluetoothHandler *)self->_btHandler getDeviceForAddressString:v11 forSession:self->_session];
+  clientCopy = client;
+  deviceCopy = device;
+  handlerCopy = handler;
+  v13 = [(PowerUIBluetoothHandler *)self->_btHandler getDeviceForAddressString:deviceCopy forSession:self->_session];
   if (v13)
   {
     v14 = v13;
@@ -1934,11 +1934,11 @@ LABEL_26:
     if (os_log_type_enabled(accessoryLog, OS_LOG_TYPE_DEFAULT))
     {
       v17 = accessoryLog;
-      v18 = [(PowerUIAudioAccessorySmartChargeManager *)self stringFromState:a4];
+      v18 = [(PowerUIAudioAccessorySmartChargeManager *)self stringFromState:state];
       v41 = 138412802;
-      v42 = v10;
+      v42 = clientCopy;
       v43 = 2112;
-      v44 = v18;
+      stateCopy = v18;
       v45 = 1024;
       v46 = v15;
       _os_log_impl(&dword_21B766000, v17, OS_LOG_TYPE_DEFAULT, "%@ requests state %@. Using protocol: %hhu", &v41, 0x1Cu);
@@ -1946,82 +1946,82 @@ LABEL_26:
 
     if ((v15 - 1) <= 1)
     {
-      v19 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:v11];
-      v20 = [v19 currentState];
+      v19 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:deviceCopy];
+      currentState = [v19 currentState];
       v21 = self->_accessoryLog;
       v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
-      if (v20 == a4)
+      if (currentState == state)
       {
         if (v22)
         {
           v23 = v21;
-          v24 = [(PowerUIAudioAccessorySmartChargeManager *)self stringFromState:a4];
+          v24 = [(PowerUIAudioAccessorySmartChargeManager *)self stringFromState:state];
           v41 = 138412546;
-          v42 = v10;
+          v42 = clientCopy;
           v43 = 2112;
-          v44 = v24;
+          stateCopy = v24;
           _os_log_impl(&dword_21B766000, v23, OS_LOG_TYPE_DEFAULT, "%@ requests state %@, but this is already the current state. Do nothing.", &v41, 0x16u);
         }
 
-        v12[2](v12, 1, 0);
+        handlerCopy[2](handlerCopy, 1, 0);
         goto LABEL_38;
       }
 
       if (v22)
       {
         v30 = v21;
-        v31 = [(PowerUIAudioAccessorySmartChargeManager *)self stringFromState:a4];
+        v31 = [(PowerUIAudioAccessorySmartChargeManager *)self stringFromState:state];
         v41 = 138412546;
-        v42 = v10;
+        v42 = clientCopy;
         v43 = 2112;
-        v44 = v31;
+        stateCopy = v31;
         _os_log_impl(&dword_21B766000, v30, OS_LOG_TYPE_DEFAULT, "%@ requests state: %@", &v41, 0x16u);
       }
 
-      if (a4 > 1)
+      if (state > 1)
       {
-        if (a4 == 2)
+        if (state == 2)
         {
-          v12[2](v12, 0, 0);
+          handlerCopy[2](handlerCopy, 0, 0);
           goto LABEL_38;
         }
 
-        if (a4 == 3)
+        if (state == 3)
         {
-          v36 = [MEMORY[0x277CBEAA8] date];
-          v37 = [(PowerUIAudioAccessorySmartChargeManager *)self defaultDateToDisableUntilGivenDate:v36];
-          [(PowerUIAudioAccessorySmartChargeManager *)self setTemporarilyDisabled:1 until:v37 forDevice:v11];
+          date = [MEMORY[0x277CBEAA8] date];
+          v37 = [(PowerUIAudioAccessorySmartChargeManager *)self defaultDateToDisableUntilGivenDate:date];
+          [(PowerUIAudioAccessorySmartChargeManager *)self setTemporarilyDisabled:1 until:v37 forDevice:deviceCopy];
 
 LABEL_37:
-          v12[2](v12, 1, 0);
-          [(NSDistributedNotificationCenter *)self->_notificationCenter postNotificationName:@"com.apple.powerui.audioaccessorysmartchargestatuschanged" object:v11];
+          handlerCopy[2](handlerCopy, 1, 0);
+          [(NSDistributedNotificationCenter *)self->_notificationCenter postNotificationName:@"com.apple.powerui.audioaccessorysmartchargestatuschanged" object:deviceCopy];
           goto LABEL_38;
         }
       }
 
       else
       {
-        if (!a4)
+        if (!state)
         {
-          [(PowerUIAudioAccessorySmartChargeManager *)self persistentlySetStatusForDevice:v11 withCurrentState:0 withEnabled:0 withDisabledUntilDate:0 withTemporarilyDisabled:0];
-          v32 = self;
+          [(PowerUIAudioAccessorySmartChargeManager *)self persistentlySetStatusForDevice:deviceCopy withCurrentState:0 withEnabled:0 withDisabledUntilDate:0 withTemporarilyDisabled:0];
+          selfCopy2 = self;
           v33 = 0;
           goto LABEL_36;
         }
 
-        if (a4 == 1)
+        if (state == 1)
         {
-          [(PowerUIAudioAccessorySmartChargeManager *)self persistentlySetStatusForDevice:v11 withCurrentState:1 withEnabled:1 withDisabledUntilDate:0 withTemporarilyDisabled:0];
-          v32 = self;
+          [(PowerUIAudioAccessorySmartChargeManager *)self persistentlySetStatusForDevice:deviceCopy withCurrentState:1 withEnabled:1 withDisabledUntilDate:0 withTemporarilyDisabled:0];
+          selfCopy2 = self;
           v33 = 1;
 LABEL_36:
-          [(PowerUIAudioAccessorySmartChargeManager *)v32 setOBCState:v33 forDevice:v11];
+          [(PowerUIAudioAccessorySmartChargeManager *)selfCopy2 setOBCState:v33 forDevice:deviceCopy];
           goto LABEL_37;
         }
       }
 
       v38 = [MEMORY[0x277CCA9B8] errorWithDomain:@"PowerUISmartChargingErrorDomain" code:1 userInfo:0];
-      (v12)[2](v12, 0, v38);
+      (handlerCopy)[2](handlerCopy, 0, v38);
 
 LABEL_38:
       goto LABEL_39;
@@ -2031,26 +2031,26 @@ LABEL_38:
     {
       if (v15 == 3)
       {
-        switch(a4)
+        switch(state)
         {
           case 0uLL:
-            [(PowerUIAudioAccessorySmartChargeManager *)self persistentlySetStatusForDevice:v11 withCurrentState:0 withEnabled:0 withDisabledUntilDate:0 withTemporarilyDisabled:0];
-            v28 = self;
+            [(PowerUIAudioAccessorySmartChargeManager *)self persistentlySetStatusForDevice:deviceCopy withCurrentState:0 withEnabled:0 withDisabledUntilDate:0 withTemporarilyDisabled:0];
+            selfCopy5 = self;
             v29 = 0;
             goto LABEL_43;
           case 3uLL:
             v40 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:86400.0];
-            [(PowerUIAudioAccessorySmartChargeManager *)self setTemporarilyDisabled:1 until:v40 forDevice:v11];
+            [(PowerUIAudioAccessorySmartChargeManager *)self setTemporarilyDisabled:1 until:v40 forDevice:deviceCopy];
 
-            v28 = self;
+            selfCopy5 = self;
             v29 = 3;
             goto LABEL_43;
           case 1uLL:
-            [(PowerUIAudioAccessorySmartChargeManager *)self persistentlySetStatusForDevice:v11 withCurrentState:1 withEnabled:1 withDisabledUntilDate:0 withTemporarilyDisabled:0];
-            v28 = self;
+            [(PowerUIAudioAccessorySmartChargeManager *)self persistentlySetStatusForDevice:deviceCopy withCurrentState:1 withEnabled:1 withDisabledUntilDate:0 withTemporarilyDisabled:0];
+            selfCopy5 = self;
             v29 = 1;
 LABEL_43:
-            v12[2](v12, [(PowerUIAudioAccessorySmartChargeManager *)v28 setStateViaV2Protocol:v29 forDevice:v14], 0);
+            handlerCopy[2](handlerCopy, [(PowerUIAudioAccessorySmartChargeManager *)selfCopy5 setStateViaV2Protocol:v29 forDevice:v14], 0);
             goto LABEL_39;
         }
 
@@ -2080,9 +2080,9 @@ LABEL_43:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     v41 = 138412546;
-    v42 = v10;
+    v42 = clientCopy;
     v43 = 2048;
-    v44 = a4;
+    stateCopy = state;
     _os_log_impl(&dword_21B766000, v25, OS_LOG_TYPE_DEFAULT, "No device for client '%@' setState '%lu' request.", &v41, 0x16u);
   }
 
@@ -2091,13 +2091,13 @@ LABEL_12:
   v27 = 1;
 LABEL_30:
   v35 = [v26 errorWithDomain:@"PowerUISmartChargingErrorDomain" code:v27 userInfo:0];
-  (v12)[2](v12, 0, v35);
+  (handlerCopy)[2](handlerCopy, 0, v35);
 
 LABEL_39:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setStateViaV2Protocol:(unint64_t)a3 forDevice:(BTDeviceImpl *)a4
+- (BOOL)setStateViaV2Protocol:(unint64_t)protocol forDevice:(BTDeviceImpl *)device
 {
   v25 = *MEMORY[0x277D85DE8];
   if (!self->_session)
@@ -2116,7 +2116,7 @@ LABEL_39:
   }
 
   BTAccessoryManagerGetDefault();
-  if (![(PowerUIBluetoothHandler *)self->_btHandler isDeviceConnected:a4 forSession:self->_session])
+  if (![(PowerUIBluetoothHandler *)self->_btHandler isDeviceConnected:device forSession:self->_session])
   {
     accessoryLog = self->_accessoryLog;
     v12 = os_log_type_enabled(accessoryLog, OS_LOG_TYPE_DEFAULT);
@@ -2134,7 +2134,7 @@ LABEL_11:
   }
 
   v24 = 0;
-  switch(a3)
+  switch(protocol)
   {
     case 3uLL:
       v7 = 254;
@@ -2160,7 +2160,7 @@ LABEL_12:
 
   v22 = 2;
   v23 = v7;
-  v13 = [(PowerUIBluetoothHandler *)self->_btHandler sendCustomMessageWrapperWithManager:0 withMessageType:0x20000 withDeviceHandle:a4 withData:&v22 withDataSize:9];
+  v13 = [(PowerUIBluetoothHandler *)self->_btHandler sendCustomMessageWrapperWithManager:0 withMessageType:0x20000 withDeviceHandle:device withData:&v22 withDataSize:9];
   for (i = 0; i != 9; ++i)
   {
     v15 = self->_accessoryLog;
@@ -2168,7 +2168,7 @@ LABEL_12:
     {
       v16 = *(&v22 + i);
       *buf = 67109120;
-      LODWORD(v21) = v16;
+      LODWORD(protocolCopy) = v16;
       _os_log_debug_impl(&dword_21B766000, v15, OS_LOG_TYPE_DEBUG, "  var: %u", buf, 8u);
     }
   }
@@ -2189,7 +2189,7 @@ LABEL_12:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v21 = a3;
+    protocolCopy = protocol;
     _os_log_impl(&dword_21B766000, v17, OS_LOG_TYPE_DEFAULT, "OBC Message (%lu) sent to device", buf, 0xCu);
   }
 
@@ -2199,17 +2199,17 @@ LABEL_26:
   return v10;
 }
 
-- (id)getOBCDeadlineFromCBDevice:(id)a3
+- (id)getOBCDeadlineFromCBDevice:(id)device
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = dispatch_semaphore_create(0);
   v6 = objc_alloc_init(MEMORY[0x277CBE030]);
   discovery = self->_discovery;
   self->_discovery = v6;
 
   [(CBDiscovery *)self->_discovery setDiscoveryFlags:0x20000000];
-  v35[0] = v4;
+  v35[0] = deviceCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:1];
   [(CBDiscovery *)self->_discovery setDeviceFilter:v8];
 
@@ -2249,7 +2249,7 @@ LABEL_26:
   {
     v14 = v26[5];
     *buf = 138412546;
-    v32 = v4;
+    v32 = deviceCopy;
     v33 = 2112;
     v34 = v14;
     _os_log_impl(&dword_21B766000, accessoryLog, OS_LOG_TYPE_DEFAULT, "Got deadline from device (%@): %@", buf, 0x16u);
@@ -2257,8 +2257,8 @@ LABEL_26:
 
   [(CBDiscovery *)self->_discovery invalidate];
   v15 = v26[5];
-  v16 = [MEMORY[0x277CBEAA8] date];
-  v17 = [v15 laterDate:v16];
+  date = [MEMORY[0x277CBEAA8] date];
+  v17 = [v15 laterDate:date];
   LODWORD(v15) = v17 == v26[5];
 
   if (v15)
@@ -2320,16 +2320,16 @@ void __70__PowerUIAudioAccessorySmartChargeManager_getOBCDeadlineFromCBDevice___
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fullChargeDeadlineForDevice:(id)a3 withHandler:(id)a4
+- (void)fullChargeDeadlineForDevice:(id)device withHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PowerUIAudioAccessorySmartChargeManager *)self btHandler];
-  v9 = [v8 getDeviceForAddressString:v6 forSession:self->_session];
+  deviceCopy = device;
+  handlerCopy = handler;
+  btHandler = [(PowerUIAudioAccessorySmartChargeManager *)self btHandler];
+  v9 = [btHandler getDeviceForAddressString:deviceCopy forSession:self->_session];
 
-  v10 = [(PowerUIAudioAccessorySmartChargeManager *)self btHandler];
-  v11 = [v10 protocolForDevice:v9];
+  btHandler2 = [(PowerUIAudioAccessorySmartChargeManager *)self btHandler];
+  v11 = [btHandler2 protocolForDevice:v9];
 
   if (v11 == 3)
   {
@@ -2338,24 +2338,24 @@ void __70__PowerUIAudioAccessorySmartChargeManager_getOBCDeadlineFromCBDevice___
       [PowerUIAudioAccessorySmartChargeManager fullChargeDeadlineForDevice:withHandler:];
     }
 
-    v12 = [(PowerUIAudioAccessorySmartChargeManager *)self getOBCDeadlineFromCBDevice:v6];
+    v12 = [(PowerUIAudioAccessorySmartChargeManager *)self getOBCDeadlineFromCBDevice:deviceCopy];
     if (v12)
     {
       v13 = [PowerUISmartChargeUtilities roundedDateFromDate:v12];
-      v7[2](v7, v13, 0);
+      handlerCopy[2](handlerCopy, v13, 0);
     }
 
     else
     {
-      v7[2](v7, 0, 0);
+      handlerCopy[2](handlerCopy, 0, 0);
     }
   }
 
   else if ((v11 - 255) > 0xFFFFFF01)
   {
-    v12 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:v6];
-    v15 = [v12 lastSentDate];
-    v16 = [PowerUISmartChargeUtilities roundedDateFromDate:v15];
+    v12 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:deviceCopy];
+    lastSentDate = [v12 lastSentDate];
+    v16 = [PowerUISmartChargeUtilities roundedDateFromDate:lastSentDate];
 
     [v16 timeIntervalSinceNow];
     if (v17 <= 0.0)
@@ -2372,7 +2372,7 @@ void __70__PowerUIAudioAccessorySmartChargeManager_getOBCDeadlineFromCBDevice___
       _os_log_impl(&dword_21B766000, accessoryLog, OS_LOG_TYPE_DEFAULT, "fullChargeDeadline requested, returning: %@", &v20, 0xCu);
     }
 
-    v7[2](v7, v16, 0);
+    handlerCopy[2](handlerCopy, v16, 0);
   }
 
   else
@@ -2381,93 +2381,93 @@ void __70__PowerUIAudioAccessorySmartChargeManager_getOBCDeadlineFromCBDevice___
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138412546;
-      v21 = v6;
+      v21 = deviceCopy;
       v22 = 1024;
       v23 = v11;
       _os_log_impl(&dword_21B766000, v14, OS_LOG_TYPE_DEFAULT, "Query for OBC deadline for device %@, but protocol is: %hhu", &v20, 0x12u);
     }
 
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"PowerUISmartChargingErrorDomain" code:4 userInfo:0];
-    (v7)[2](v7, 0, v12);
+    (handlerCopy)[2](handlerCopy, 0, v12);
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unfilteredDeadlineForDevice:(id)a3 withHandler:(id)a4
+- (void)unfilteredDeadlineForDevice:(id)device withHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:a3];
-  v8 = [v7 lastSentDate];
+  handlerCopy = handler;
+  v7 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:device];
+  lastSentDate = [v7 lastSentDate];
   accessoryLog = self->_accessoryLog;
   if (os_log_type_enabled(accessoryLog, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v8;
+    v12 = lastSentDate;
     _os_log_impl(&dword_21B766000, accessoryLog, OS_LOG_TYPE_DEFAULT, "Unfiltered deadline requested, returning: %@", &v11, 0xCu);
   }
 
-  v6[2](v6, v8, 0);
+  handlerCopy[2](handlerCopy, lastSentDate, 0);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)client:(id)a3 updateOBCDeadline:(id)a4 forDevice:(id)a5 withHandler:(id)a6
+- (void)client:(id)client updateOBCDeadline:(id)deadline forDevice:(id)device withHandler:(id)handler
 {
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x277CBEAA8] date];
-  if (v11 && ([v11 timeIntervalSinceDate:v14], v15 <= 172800.0))
+  clientCopy = client;
+  deadlineCopy = deadline;
+  deviceCopy = device;
+  handlerCopy = handler;
+  date = [MEMORY[0x277CBEAA8] date];
+  if (deadlineCopy && ([deadlineCopy timeIntervalSinceDate:date], v15 <= 172800.0))
   {
-    v17 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:v12];
-    v18 = [v17 lastSentDate];
-    if (v18 && (v19 = v18, [v17 lastSentDate], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "compare:", v11), v20, v19, v21 == 1))
+    v17 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:deviceCopy];
+    lastSentDate = [v17 lastSentDate];
+    if (lastSentDate && (v19 = lastSentDate, [v17 lastSentDate], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "compare:", deadlineCopy), v20, v19, v21 == 1))
     {
       accessoryLog = self->_accessoryLog;
       if (os_log_type_enabled(accessoryLog, OS_LOG_TYPE_DEFAULT))
       {
         v23 = accessoryLog;
-        v24 = [v17 lastSentDate];
+        lastSentDate2 = [v17 lastSentDate];
         v34 = 138413058;
-        v35 = v10;
+        v35 = clientCopy;
         v36 = 2112;
-        v37 = v11;
+        v37 = deadlineCopy;
         v38 = 2112;
-        v39 = v12;
+        v39 = deviceCopy;
         v40 = 2112;
-        v41 = v24;
+        v41 = lastSentDate2;
         _os_log_impl(&dword_21B766000, v23, OS_LOG_TYPE_DEFAULT, "%@ requests deadline update '%@' for device '%@', but on device deadline (%@) is newer", &v34, 0x2Au);
       }
 
-      [(NSDistributedNotificationCenter *)self->_notificationCenter postNotificationName:@"com.apple.powerui.audioaccessorysmartchargedeadlinechanged" object:v12];
+      [(NSDistributedNotificationCenter *)self->_notificationCenter postNotificationName:@"com.apple.powerui.audioaccessorysmartchargedeadlinechanged" object:deviceCopy];
     }
 
     else
     {
-      v25 = [v17 lastSentDate];
-      if (!v25 || (v26 = v25, [v17 lastSentDate], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "compare:", v11), v27, v26, v28 == -1))
+      lastSentDate3 = [v17 lastSentDate];
+      if (!lastSentDate3 || (v26 = lastSentDate3, [v17 lastSentDate], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "compare:", deadlineCopy), v27, v26, v28 == -1))
       {
         v30 = self->_accessoryLog;
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
           v31 = v30;
-          v32 = [v17 lastSentDate];
+          lastSentDate4 = [v17 lastSentDate];
           v34 = 138413058;
-          v35 = v10;
+          v35 = clientCopy;
           v36 = 2112;
-          v37 = v11;
+          v37 = deadlineCopy;
           v38 = 2112;
-          v39 = v12;
+          v39 = deviceCopy;
           v40 = 2112;
-          v41 = v32;
+          v41 = lastSentDate4;
           _os_log_impl(&dword_21B766000, v31, OS_LOG_TYPE_DEFAULT, "%@ requests deadline update '%@' for device '%@'. Update on device deadline (%@)", &v34, 0x2Au);
         }
 
-        [(PowerUIAudioAccessorySmartChargeManager *)self persistentlySetLastSentDate:v11 forDevice:v12];
+        [(PowerUIAudioAccessorySmartChargeManager *)self persistentlySetLastSentDate:deadlineCopy forDevice:deviceCopy];
       }
 
       else
@@ -2476,18 +2476,18 @@ void __70__PowerUIAudioAccessorySmartChargeManager_getOBCDeadlineFromCBDevice___
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
           v34 = 138412802;
-          v35 = v10;
+          v35 = clientCopy;
           v36 = 2112;
-          v37 = v11;
+          v37 = deadlineCopy;
           v38 = 2112;
-          v39 = v12;
+          v39 = deviceCopy;
           _os_log_impl(&dword_21B766000, v29, OS_LOG_TYPE_DEFAULT, "%@ requests deadline update '%@' for device '%@', but dates are equal", &v34, 0x20u);
         }
       }
     }
 
     [v17 setManagerState:9];
-    v13[2](v13, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
   else
@@ -2496,119 +2496,119 @@ void __70__PowerUIAudioAccessorySmartChargeManager_getOBCDeadlineFromCBDevice___
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v34 = 138412802;
-      v35 = v10;
+      v35 = clientCopy;
       v36 = 2112;
-      v37 = v11;
+      v37 = deadlineCopy;
       v38 = 2112;
-      v39 = v12;
+      v39 = deviceCopy;
       _os_log_impl(&dword_21B766000, v16, OS_LOG_TYPE_DEFAULT, "ERROR: %@ requests invalid deadline update '%@' for device '%@'", &v34, 0x20u);
     }
 
     v17 = [MEMORY[0x277CCA9B8] errorWithDomain:@"PowerUISmartChargingErrorDomain" code:3 userInfo:0];
-    (v13)[2](v13, 0, v17);
+    (handlerCopy)[2](handlerCopy, 0, v17);
   }
 
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)persistentlySetLastSentDate:(id)a3 forDevice:(id)a4
+- (void)persistentlySetLastSentDate:(id)date forDevice:(id)device
 {
-  v6 = a4;
-  v7 = a3;
-  v12 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:v6];
-  [v12 setLastSentDate:v7];
+  deviceCopy = device;
+  dateCopy = date;
+  v12 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:deviceCopy];
+  [v12 setLastSentDate:dateCopy];
   v8 = MEMORY[0x277CCABB0];
-  [v7 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v10 = v9;
 
   v11 = [v8 numberWithDouble:v10];
-  [PowerUIAudioAccessorySmartChargeManager setNumber:v11 forPreferenceKeyPrefix:@"com.apple.smartcharging.audioaccessories.lastSentDate." andDevice:v6];
+  [PowerUIAudioAccessorySmartChargeManager setNumber:v11 forPreferenceKeyPrefix:@"com.apple.smartcharging.audioaccessories.lastSentDate." andDevice:deviceCopy];
 
-  [(NSDistributedNotificationCenter *)self->_notificationCenter postNotificationName:@"com.apple.powerui.audioaccessorysmartchargedeadlinechanged" object:v6];
+  [(NSDistributedNotificationCenter *)self->_notificationCenter postNotificationName:@"com.apple.powerui.audioaccessorysmartchargedeadlinechanged" object:deviceCopy];
 }
 
-- (void)persistentlySetLastTimeseriesDate:(id)a3 forDevice:(id)a4
+- (void)persistentlySetLastTimeseriesDate:(id)date forDevice:(id)device
 {
-  v6 = a4;
-  v7 = a3;
-  v12 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:v6];
-  [v12 setLastTimeseriesDate:v7];
+  deviceCopy = device;
+  dateCopy = date;
+  v12 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:deviceCopy];
+  [v12 setLastTimeseriesDate:dateCopy];
   v8 = MEMORY[0x277CCABB0];
-  [v7 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v10 = v9;
 
   v11 = [v8 numberWithDouble:v10];
-  [PowerUIAudioAccessorySmartChargeManager setNumber:v11 forPreferenceKeyPrefix:@"com.apple.smartcharging.audioaccessories.lastTimeseriesDate." andDevice:v6];
+  [PowerUIAudioAccessorySmartChargeManager setNumber:v11 forPreferenceKeyPrefix:@"com.apple.smartcharging.audioaccessories.lastTimeseriesDate." andDevice:deviceCopy];
 }
 
-- (void)persistentlySetLastUnderchargeRecordedForPrediction:(id)a3 forDevice:(id)a4
+- (void)persistentlySetLastUnderchargeRecordedForPrediction:(id)prediction forDevice:(id)device
 {
-  v6 = a4;
-  v7 = a3;
-  v12 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:v6];
-  [v12 setLastUnderchargeRecordedForPrediction:v7];
+  deviceCopy = device;
+  predictionCopy = prediction;
+  v12 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:deviceCopy];
+  [v12 setLastUnderchargeRecordedForPrediction:predictionCopy];
   v8 = MEMORY[0x277CCABB0];
-  [v7 timeIntervalSinceReferenceDate];
+  [predictionCopy timeIntervalSinceReferenceDate];
   v10 = v9;
 
   v11 = [v8 numberWithDouble:v10];
-  [PowerUIAudioAccessorySmartChargeManager setNumber:v11 forPreferenceKeyPrefix:@"com.apple.smartcharging.audioaccessories.lastUnderchargeRecordedForPrediction." andDevice:v6];
+  [PowerUIAudioAccessorySmartChargeManager setNumber:v11 forPreferenceKeyPrefix:@"com.apple.smartcharging.audioaccessories.lastUnderchargeRecordedForPrediction." andDevice:deviceCopy];
 }
 
-- (void)persistentlyHandleSeeingDevice:(id)a3
+- (void)persistentlyHandleSeeingDevice:(id)device
 {
-  v4 = a3;
-  v9 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:v4];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [v9 setLastSeenDate:v5];
+  deviceCopy = device;
+  v9 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:deviceCopy];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v9 setLastSeenDate:date];
 
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v9 lastSeenDate];
-  [v7 timeIntervalSinceReferenceDate];
+  lastSeenDate = [v9 lastSeenDate];
+  [lastSeenDate timeIntervalSinceReferenceDate];
   v8 = [v6 numberWithDouble:?];
-  [PowerUIAudioAccessorySmartChargeManager setNumber:v8 forPreferenceKeyPrefix:@"com.apple.smartcharging.audioaccessories.lastSeenDate." andDevice:v4];
+  [PowerUIAudioAccessorySmartChargeManager setNumber:v8 forPreferenceKeyPrefix:@"com.apple.smartcharging.audioaccessories.lastSeenDate." andDevice:deviceCopy];
 }
 
-- (void)persistentlySetExpectedHash:(id)a3 forDevice:(id)a4
+- (void)persistentlySetExpectedHash:(id)hash forDevice:(id)device
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:v6];
-  [v9 setExpectedHash:v7];
-  v8 = [v7 UUIDString];
+  deviceCopy = device;
+  hashCopy = hash;
+  v9 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:deviceCopy];
+  [v9 setExpectedHash:hashCopy];
+  uUIDString = [hashCopy UUIDString];
 
-  [PowerUIAudioAccessorySmartChargeManager setString:v8 forPreferenceKeyPrefix:@"com.apple.smartcharging.audioaccessories.expectedHash." andDevice:v6];
+  [PowerUIAudioAccessorySmartChargeManager setString:uUIDString forPreferenceKeyPrefix:@"com.apple.smartcharging.audioaccessories.expectedHash." andDevice:deviceCopy];
 }
 
-+ (void)setNumber:(id)a3 forPreferenceKeyPrefix:(id)a4 andDevice:(id)a5
++ (void)setNumber:(id)number forPreferenceKeyPrefix:(id)prefix andDevice:(id)device
 {
-  value = a3;
-  CFPreferencesSetAppValue([a4 stringByAppendingString:a5], value, @"com.apple.smartcharging.topoffprotection.audioaccessories");
+  value = number;
+  CFPreferencesSetAppValue([prefix stringByAppendingString:device], value, @"com.apple.smartcharging.topoffprotection.audioaccessories");
 }
 
-+ (id)readNumberForPreferenceKeyPrefix:(id)a3 andDevice:(id)a4
++ (id)readNumberForPreferenceKeyPrefix:(id)prefix andDevice:(id)device
 {
-  v4 = CFPreferencesCopyAppValue([a3 stringByAppendingString:a4], @"com.apple.smartcharging.topoffprotection.audioaccessories");
+  v4 = CFPreferencesCopyAppValue([prefix stringByAppendingString:device], @"com.apple.smartcharging.topoffprotection.audioaccessories");
 
   return v4;
 }
 
-+ (void)setString:(id)a3 forPreferenceKeyPrefix:(id)a4 andDevice:(id)a5
++ (void)setString:(id)string forPreferenceKeyPrefix:(id)prefix andDevice:(id)device
 {
-  value = a3;
-  CFPreferencesSetAppValue([a4 stringByAppendingString:a5], value, @"com.apple.smartcharging.topoffprotection.audioaccessories");
+  value = string;
+  CFPreferencesSetAppValue([prefix stringByAppendingString:device], value, @"com.apple.smartcharging.topoffprotection.audioaccessories");
 }
 
-+ (id)readStringForPreferenceKeyPrefix:(id)a3 andDevice:(id)a4
++ (id)readStringForPreferenceKeyPrefix:(id)prefix andDevice:(id)device
 {
-  v4 = CFPreferencesCopyAppValue([a3 stringByAppendingString:a4], @"com.apple.smartcharging.topoffprotection.audioaccessories");
+  v4 = CFPreferencesCopyAppValue([prefix stringByAppendingString:device], @"com.apple.smartcharging.topoffprotection.audioaccessories");
 
   return v4;
 }
 
-+ (id)readArrayForPreferenceKey:(id)a3
++ (id)readArrayForPreferenceKey:(id)key
 {
-  v3 = CFPreferencesCopyAppValue(a3, @"com.apple.smartcharging.topoffprotection.audioaccessories");
+  v3 = CFPreferencesCopyAppValue(key, @"com.apple.smartcharging.topoffprotection.audioaccessories");
   if (v3)
   {
     v4 = [MEMORY[0x277CBEB18] arrayWithArray:v3];
@@ -2622,29 +2622,29 @@ void __70__PowerUIAudioAccessorySmartChargeManager_getOBCDeadlineFromCBDevice___
   return v4;
 }
 
-- (id)stringFromState:(unint64_t)a3
+- (id)stringFromState:(unint64_t)state
 {
-  if (a3 > 3)
+  if (state > 3)
   {
     return @"Unknown state";
   }
 
   else
   {
-    return off_2782D4BA0[a3];
+    return off_2782D4BA0[state];
   }
 }
 
-- (id)defaultDateToDisableUntilGivenDate:(id)a3
+- (id)defaultDateToDisableUntilGivenDate:(id)date
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   if (defaultDateToDisableUntilGivenDate__onceToken != -1)
   {
     [PowerUIAudioAccessorySmartChargeManager defaultDateToDisableUntilGivenDate:];
   }
 
-  v5 = [defaultDateToDisableUntilGivenDate__calendar components:60 fromDate:v4];
+  v5 = [defaultDateToDisableUntilGivenDate__calendar components:60 fromDate:dateCopy];
   if ([v5 hour] >= 6)
   {
     [v5 setDay:{objc_msgSend(v5, "day") + 1}];
@@ -2672,21 +2672,21 @@ uint64_t __78__PowerUIAudioAccessorySmartChargeManager_defaultDateToDisableUntil
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setTemporarilyDisabled:(BOOL)a3 until:(id)a4 forDevice:(id)a5
+- (void)setTemporarilyDisabled:(BOOL)disabled until:(id)until forDevice:(id)device
 {
-  v6 = a3;
+  disabledCopy = disabled;
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  untilCopy = until;
+  deviceCopy = device;
+  if (deviceCopy)
   {
-    if (v8)
+    if (untilCopy)
     {
-      [v8 timeIntervalSinceNow];
+      [untilCopy timeIntervalSinceNow];
       v11 = v10;
       if (v10 < 0.0)
       {
-        v6 = 0;
+        disabledCopy = 0;
       }
     }
 
@@ -2695,37 +2695,37 @@ uint64_t __78__PowerUIAudioAccessorySmartChargeManager_defaultDateToDisableUntil
       v11 = 0.0;
     }
 
-    v12 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:v9];
-    v13 = [(PowerUIBluetoothHandler *)self->_btHandler getDeviceForAddressString:v9 forSession:self->_session];
+    v12 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:deviceCopy];
+    v13 = [(PowerUIBluetoothHandler *)self->_btHandler getDeviceForAddressString:deviceCopy forSession:self->_session];
     if (!v13 && os_log_type_enabled(self->_accessoryLog, OS_LOG_TYPE_ERROR))
     {
       [PowerUIAudioAccessorySmartChargeManager setTemporarilyDisabled:until:forDevice:];
     }
 
     v14 = [(PowerUIBluetoothHandler *)self->_btHandler protocolForDevice:v13];
-    v15 = [v12 temporarilyDisabled];
-    if (v6)
+    temporarilyDisabled = [v12 temporarilyDisabled];
+    if (disabledCopy)
     {
-      v16 = v15 ^ 1;
-      if (!v8)
+      v16 = temporarilyDisabled ^ 1;
+      if (!untilCopy)
       {
         v16 = 1;
       }
 
-      if ((v16 & 1) != 0 || ([v12 disabledUntilDate], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v8, "isEqualToDate:", v17), v17, (v18 & 1) == 0))
+      if ((v16 & 1) != 0 || ([v12 disabledUntilDate], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(untilCopy, "isEqualToDate:", v17), v17, (v18 & 1) == 0))
       {
-        [(PowerUIAudioAccessorySmartChargeManager *)self persistentlySetStatusForDevice:v9 withCurrentState:3 withEnabled:1 withDisabledUntilDate:v8 withTemporarilyDisabled:1];
+        [(PowerUIAudioAccessorySmartChargeManager *)self persistentlySetStatusForDevice:deviceCopy withCurrentState:3 withEnabled:1 withDisabledUntilDate:untilCopy withTemporarilyDisabled:1];
         if ((v14 - 1) <= 1)
         {
-          [(PowerUIAudioAccessorySmartChargeManager *)self setOBCState:0 forDevice:v9];
+          [(PowerUIAudioAccessorySmartChargeManager *)self setOBCState:0 forDevice:deviceCopy];
         }
 
-        [(NSDistributedNotificationCenter *)self->_notificationCenter postNotificationName:@"com.apple.powerui.audioaccessorysmartchargestatuschanged" object:v9];
+        [(NSDistributedNotificationCenter *)self->_notificationCenter postNotificationName:@"com.apple.powerui.audioaccessorysmartchargestatuschanged" object:deviceCopy];
         accessoryLog = self->_accessoryLog;
         if (os_log_type_enabled(accessoryLog, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v30 = v9;
+          v30 = deviceCopy;
           _os_log_impl(&dword_21B766000, accessoryLog, OS_LOG_TYPE_DEFAULT, "Set state to temporarilyDisabled for device '%@'", buf, 0xCu);
         }
 
@@ -2736,7 +2736,7 @@ uint64_t __78__PowerUIAudioAccessorySmartChargeManager_defaultDateToDisableUntil
         v27[2] = __82__PowerUIAudioAccessorySmartChargeManager_setTemporarilyDisabled_until_forDevice___block_invoke;
         v27[3] = &unk_2782D4AC0;
         v27[4] = self;
-        v22 = v9;
+        v22 = deviceCopy;
         v28 = v22;
         dispatch_after(v20, queue, v27);
         v23 = self->_accessoryLog;
@@ -2753,15 +2753,15 @@ uint64_t __78__PowerUIAudioAccessorySmartChargeManager_defaultDateToDisableUntil
       goto LABEL_29;
     }
 
-    if (v15)
+    if (temporarilyDisabled)
     {
-      [(PowerUIAudioAccessorySmartChargeManager *)self persistentlySetStatusForDevice:v9 withCurrentState:1 withEnabled:1 withDisabledUntilDate:0 withTemporarilyDisabled:0];
+      [(PowerUIAudioAccessorySmartChargeManager *)self persistentlySetStatusForDevice:deviceCopy withCurrentState:1 withEnabled:1 withDisabledUntilDate:0 withTemporarilyDisabled:0];
       if ((v14 - 1) <= 1)
       {
-        [(PowerUIAudioAccessorySmartChargeManager *)self setOBCState:1 forDevice:v9];
+        [(PowerUIAudioAccessorySmartChargeManager *)self setOBCState:1 forDevice:deviceCopy];
       }
 
-      [(NSDistributedNotificationCenter *)self->_notificationCenter postNotificationName:@"com.apple.powerui.audioaccessorysmartchargestatuschanged" object:v9];
+      [(NSDistributedNotificationCenter *)self->_notificationCenter postNotificationName:@"com.apple.powerui.audioaccessorysmartchargestatuschanged" object:deviceCopy];
       v24 = self->_accessoryLog;
       if (!os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
@@ -2769,7 +2769,7 @@ uint64_t __78__PowerUIAudioAccessorySmartChargeManager_defaultDateToDisableUntil
       }
 
       *buf = 138412290;
-      v30 = v9;
+      v30 = deviceCopy;
       v25 = "Re-enable device '%@' (previously temporarily disabled)";
     }
 
@@ -2784,7 +2784,7 @@ LABEL_29:
       }
 
       *buf = 138412290;
-      v30 = v9;
+      v30 = deviceCopy;
       v25 = "Attempted to re-enable device '%@', but it was not temporarily disabled";
     }
 
@@ -2797,20 +2797,20 @@ LABEL_30:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v25 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   accessoryLog = self->_accessoryLog;
   if (os_log_type_enabled(accessoryLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v6;
+    v24 = connectionCopy;
     _os_log_impl(&dword_21B766000, accessoryLog, OS_LOG_TYPE_DEFAULT, "Received new connection: %@", buf, 0xCu);
   }
 
-  v8 = [v6 valueForEntitlement:@"com.apple.powerui.smartcharging.AudioAccessory"];
+  v8 = [connectionCopy valueForEntitlement:@"com.apple.powerui.smartcharging.AudioAccessory"];
   v9 = v8;
   if ((!v8 || ([v8 BOOLValue] & 1) == 0) && os_log_type_enabled(self->_accessoryLog, OS_LOG_TYPE_ERROR))
   {
@@ -2831,33 +2831,33 @@ LABEL_30:
   v19 = [v14 setWithObjects:{v15, v16, v17, v18, objc_opt_class(), 0}];
   [v10 setClasses:v19 forSelector:sel_getStatusForDevice_withHandler_ argumentIndex:0 ofReply:1];
 
-  [v6 setExportedInterface:v10];
-  [v6 setExportedObject:self];
-  [v6 resume];
+  [connectionCopy setExportedInterface:v10];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   v20 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (void)engageUntil:(id)a3 forDevice:(id)a4 overrideAllSignals:(BOOL)a5 withHandler:(id)a6
+- (void)engageUntil:(id)until forDevice:(id)device overrideAllSignals:(BOOL)signals withHandler:(id)handler
 {
   btHandler = self->_btHandler;
   session = self->_session;
-  v11 = a6;
-  v12 = a3;
-  v13 = [(PowerUIBluetoothHandler *)btHandler getDeviceForAddressString:a4 forSession:session];
-  v16 = [MEMORY[0x277CBEAA8] date];
-  [v12 timeIntervalSinceDate:v16];
+  handlerCopy = handler;
+  untilCopy = until;
+  v13 = [(PowerUIBluetoothHandler *)btHandler getDeviceForAddressString:device forSession:session];
+  date = [MEMORY[0x277CBEAA8] date];
+  [untilCopy timeIntervalSinceDate:date];
   v15 = v14;
 
-  v11[2](v11, [(PowerUIAudioAccessorySmartChargeManager *)self sendTimeDeltaInSeconds:v15 toAccessory:v13]== 0, 0);
+  handlerCopy[2](handlerCopy, [(PowerUIAudioAccessorySmartChargeManager *)self sendTimeDeltaInSeconds:v15 toAccessory:v13]== 0, 0);
 }
 
-- (void)getAvailableDevicesWithHandler:(id)a3
+- (void)getAvailableDevicesWithHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
   deviceArrayLock = self->_deviceArrayLock;
-  v5 = a3;
+  handlerCopy = handler;
   [(NSLock *)deviceArrayLock lock];
   v6 = [(NSMutableArray *)self->_deviceArray copy];
   accessoryLog = self->_accessoryLog;
@@ -2876,19 +2876,19 @@ LABEL_30:
   }
 
   [(NSLock *)self->_deviceArrayLock unlock];
-  v5[2](v5, v6);
+  handlerCopy[2](handlerCopy, v6);
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getStatusForDevice:(id)a3 withHandler:(id)a4
+- (void)getStatusForDevice:(id)device withHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 dictionary];
-  v10 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:v8];
+  handlerCopy = handler;
+  deviceCopy = device;
+  dictionary = [v6 dictionary];
+  v10 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:deviceCopy];
   if ([v10 enabled])
   {
     v11 = @"YES";
@@ -2899,7 +2899,7 @@ LABEL_30:
     v11 = @"NO";
   }
 
-  [v9 setValue:v11 forKey:@"enabled"];
+  [dictionary setValue:v11 forKey:@"enabled"];
   if ([v10 temporarilyDisabled])
   {
     v12 = @"YES";
@@ -2910,27 +2910,27 @@ LABEL_30:
     v12 = @"NO";
   }
 
-  [v9 setValue:v12 forKey:@"temporarilyDisabled"];
+  [dictionary setValue:v12 forKey:@"temporarilyDisabled"];
   v13 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v13 setDateFormat:@"yyyy-MM-dd 'at' HH:mm"];
-  v14 = [v10 lastSentDate];
-  v15 = [v13 stringFromDate:v14];
+  lastSentDate = [v10 lastSentDate];
+  v15 = [v13 stringFromDate:lastSentDate];
 
-  [v9 setValue:v15 forKey:@"lastSentDate"];
+  [dictionary setValue:v15 forKey:@"lastSentDate"];
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(v10, "minutesSavedSinceLastReport")}];
   v17 = [v16 description];
-  [v9 setValue:v17 forKey:@"minutesSavedSinceLastReport"];
+  [dictionary setValue:v17 forKey:@"minutesSavedSinceLastReport"];
 
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v10, "underchargesSinceLastReport")}];
   v19 = [v18 description];
-  [v9 setValue:v19 forKey:@"underchargesSinceLastReport"];
+  [dictionary setValue:v19 forKey:@"underchargesSinceLastReport"];
 
   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v10, "chargingEventsSinceLastReport")}];
   v21 = [v20 description];
-  [v9 setValue:v21 forKey:@"chargingEventsSinceLastReport"];
+  [dictionary setValue:v21 forKey:@"chargingEventsSinceLastReport"];
 
-  [v9 setValue:v8 forKey:@"deviceName"];
-  v22 = [v9 copy];
+  [dictionary setValue:deviceCopy forKey:@"deviceName"];
+  v22 = [dictionary copy];
   accessoryLog = self->_accessoryLog;
   if (os_log_type_enabled(accessoryLog, OS_LOG_TYPE_DEFAULT))
   {
@@ -2939,21 +2939,21 @@ LABEL_30:
     _os_log_impl(&dword_21B766000, accessoryLog, OS_LOG_TYPE_DEFAULT, "Status Requested: %@", &v25, 0xCu);
   }
 
-  v7[2](v7, v22);
+  handlerCopy[2](handlerCopy, v22);
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteRecordsForDevices:(id)a3
+- (void)deleteRecordsForDevices:(id)devices
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  devicesCopy = devices;
   [(NSLock *)self->_deviceArrayLock lock];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v4;
+  obj = devicesCopy;
   v25 = [obj countByEnumeratingWithState:&v27 objects:v36 count:16];
   if (v25)
   {
@@ -3020,23 +3020,23 @@ LABEL_30:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)lastActionForDevice:(id)a3 withHandler:(id)a4
+- (void)lastActionForDevice:(id)device withHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:a3];
-  v6[2](v6, [v7 managerState]);
+  handlerCopy = handler;
+  v7 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:device];
+  handlerCopy[2](handlerCopy, [v7 managerState]);
 }
 
-- (void)clearLastActionForDevice:(id)a3
+- (void)clearLastActionForDevice:(id)device
 {
-  v3 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:a3];
+  v3 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:device];
   [v3 setManagerState:0];
 }
 
-- (void)startMockingBluetoothForFakeDevice:(id)a3
+- (void)startMockingBluetoothForFakeDevice:(id)device
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   if (!+[PowerUISmartChargeUtilities isInternalBuild]&& os_log_type_enabled(self->_accessoryLog, OS_LOG_TYPE_ERROR))
   {
     [PowerUIAudioAccessorySmartChargeManager startMockingBluetoothForFakeDevice:];
@@ -3046,15 +3046,15 @@ LABEL_30:
   if (os_log_type_enabled(accessoryLog, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = deviceCopy;
     _os_log_impl(&dword_21B766000, accessoryLog, OS_LOG_TYPE_DEFAULT, "Start mocking bluetooth for fake device name: %@", &v11, 0xCu);
   }
 
-  v6 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:v4];
+  v6 = [(PowerUIAudioAccessorySmartChargeManager *)self returnAccessoryStatusForDevice:deviceCopy];
   v7 = objc_alloc_init(MEMORY[0x277CCAD78]);
   [v6 setExpectedHash:v7];
 
-  v8 = [[PowerUIBluetoothHandlerFake alloc] init:v4];
+  v8 = [[PowerUIBluetoothHandlerFake alloc] init:deviceCopy];
   btHandler = self->_btHandler;
   self->_btHandler = v8;
 
@@ -3086,14 +3086,14 @@ LABEL_30:
   }
 }
 
-- (void)fakeConnectionForDevice:(id)a3
+- (void)fakeConnectionForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   btHandler = self->_btHandler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(PowerUIBluetoothHandler *)self->_btHandler getDeviceForAddressString:v4 forSession:self->_session];
+    v6 = [(PowerUIBluetoothHandler *)self->_btHandler getDeviceForAddressString:deviceCopy forSession:self->_session];
     btConnectionUpdateCallback(v6, v7, 0, 11, 0, self);
     accessoryLog = self->_accessoryLog;
     if (os_log_type_enabled(accessoryLog, OS_LOG_TYPE_DEFAULT))
@@ -3119,32 +3119,32 @@ LABEL_6:
   }
 }
 
-- (void)currentLeewayWithHandler:(id)a3
+- (void)currentLeewayWithHandler:(id)handler
 {
   v5 = MEMORY[0x277CCABB0];
-  v6 = a3;
-  v8 = [(PowerUIAudioAccessorySmartChargeManager *)self predictor];
-  [v8 lastUsedLeeway];
+  handlerCopy = handler;
+  predictor = [(PowerUIAudioAccessorySmartChargeManager *)self predictor];
+  [predictor lastUsedLeeway];
   v7 = [v5 numberWithDouble:?];
-  (*(a3 + 2))(v6, v7, 0);
+  (*(handler + 2))(handlerCopy, v7, 0);
 }
 
-- (void)timeSeriesForDevice:(id)a3
+- (void)timeSeriesForDevice:(id)device
 {
   buf[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   accessoryLog = self->_accessoryLog;
   if (os_log_type_enabled(accessoryLog, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf[0]) = 138412290;
-    *(buf + 4) = v4;
+    *(buf + 4) = deviceCopy;
     _os_log_impl(&dword_21B766000, accessoryLog, OS_LOG_TYPE_DEFAULT, "Triggering time series response for device '%@'.", buf, 0xCu);
   }
 
   buf[0] = 0;
   session = self->_session;
   BTAccessoryManagerGetDefault();
-  v7 = [(PowerUIBluetoothHandler *)self->_btHandler getDeviceForAddressString:v4 forSession:self->_session];
+  v7 = [(PowerUIBluetoothHandler *)self->_btHandler getDeviceForAddressString:deviceCopy forSession:self->_session];
   if (v7)
   {
     v8 = v7;
@@ -3182,12 +3182,12 @@ LABEL_6:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)monitor:(id)a3 maySuggestNewFullChargeDeadline:(id)a4
+- (void)monitor:(id)monitor maySuggestNewFullChargeDeadline:(id)deadline
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEAA8] distantFuture];
-  v7 = [v5 isEqualToDate:v6];
+  deadlineCopy = deadline;
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v7 = [deadlineCopy isEqualToDate:distantFuture];
 
   if ((v7 & 1) == 0)
   {
@@ -3195,11 +3195,11 @@ LABEL_6:
     if (os_log_type_enabled(accessoryLog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v24 = v5;
+      v24 = deadlineCopy;
       _os_log_impl(&dword_21B766000, accessoryLog, OS_LOG_TYPE_DEFAULT, "Force reevaluation, signal monitor sent a new deadline: %@", buf, 0xCu);
     }
 
-    v17 = v5;
+    v17 = deadlineCopy;
     [(NSLock *)self->_deviceArrayLock lock];
     v20 = 0u;
     v21 = 0u;
@@ -3239,7 +3239,7 @@ LABEL_6:
     }
 
     [(NSLock *)self->_deviceArrayLock unlock];
-    v5 = v17;
+    deadlineCopy = v17;
   }
 
   v16 = *MEMORY[0x277D85DE8];

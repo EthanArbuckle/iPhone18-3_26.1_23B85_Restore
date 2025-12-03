@@ -1,8 +1,8 @@
 @interface SCNMetalLibraryProvider
-- (id)iniWithBlock:(id)a3;
-- (id)iniWithLibrary:(id)a3;
-- (id)iniWithLibraryURL:(id)a3;
-- (id)libraryForDevice:(id)a3;
+- (id)iniWithBlock:(id)block;
+- (id)iniWithLibrary:(id)library;
+- (id)iniWithLibraryURL:(id)l;
+- (id)libraryForDevice:(id)device;
 - (unint64_t)_libraryHash;
 - (void)_libraryHash;
 - (void)dealloc;
@@ -18,60 +18,60 @@
   [(SCNMetalLibraryProvider *)&v3 dealloc];
 }
 
-- (id)iniWithLibrary:(id)a3
+- (id)iniWithLibrary:(id)library
 {
   v6.receiver = self;
   v6.super_class = SCNMetalLibraryProvider;
   v4 = [(SCNMetalLibraryProvider *)&v6 init];
   if (v4)
   {
-    v4->_library = a3;
+    v4->_library = library;
   }
 
   return v4;
 }
 
-- (id)iniWithLibraryURL:(id)a3
+- (id)iniWithLibraryURL:(id)l
 {
   v6.receiver = self;
   v6.super_class = SCNMetalLibraryProvider;
   v4 = [(SCNMetalLibraryProvider *)&v6 init];
   if (v4)
   {
-    v4->_libraryURL = a3;
+    v4->_libraryURL = l;
   }
 
   return v4;
 }
 
-- (id)iniWithBlock:(id)a3
+- (id)iniWithBlock:(id)block
 {
   v6.receiver = self;
   v6.super_class = SCNMetalLibraryProvider;
   v4 = [(SCNMetalLibraryProvider *)&v6 init];
   if (v4)
   {
-    v4->_block = _Block_copy(a3);
+    v4->_block = _Block_copy(block);
   }
 
   return v4;
 }
 
-- (id)libraryForDevice:(id)a3
+- (id)libraryForDevice:(id)device
 {
-  if ([(MTLLibrary *)self->_library device]== a3)
+  if ([(MTLLibrary *)self->_library device]== device)
   {
     return self->_library;
   }
 
   block = self->_block;
-  if (!block || (result = block[2](block, a3)) == 0)
+  if (!block || (result = block[2](block, device)) == 0)
   {
     libraryURL = self->_libraryURL;
     if (libraryURL)
     {
       v11 = 0;
-      v8 = [a3 newLibraryWithURL:libraryURL error:&v11];
+      v8 = [device newLibraryWithURL:libraryURL error:&v11];
       if (v8)
       {
         return v8;

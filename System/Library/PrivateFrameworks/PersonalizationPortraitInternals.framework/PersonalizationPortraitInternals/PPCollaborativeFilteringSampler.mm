@@ -1,28 +1,28 @@
 @interface PPCollaborativeFilteringSampler
-- (BOOL)constructAndSendMessageForSamplingRate:(double)a3 shouldContinueBlock:(id)a4 error:(id *)a5;
+- (BOOL)constructAndSendMessageForSamplingRate:(double)rate shouldContinueBlock:(id)block error:(id *)error;
 - (PPCollaborativeFilteringSampler)init;
-- (PPCollaborativeFilteringSampler)initWithSamplingWeightTrie:(id)a3;
-- (id)_weightedSampleFeedbackItems:(id)a3;
-- (unsigned)_probabilityForItemString:(id)a3 clientIdentifier:(id)a4;
+- (PPCollaborativeFilteringSampler)initWithSamplingWeightTrie:(id)trie;
+- (id)_weightedSampleFeedbackItems:(id)items;
+- (unsigned)_probabilityForItemString:(id)string clientIdentifier:(id)identifier;
 @end
 
 @implementation PPCollaborativeFilteringSampler
 
-- (BOOL)constructAndSendMessageForSamplingRate:(double)a3 shouldContinueBlock:(id)a4 error:(id *)a5
+- (BOOL)constructAndSendMessageForSamplingRate:(double)rate shouldContinueBlock:(id)block error:(id *)error
 {
   v95 = *MEMORY[0x277D85DE8];
-  v72 = a4;
-  if ([MEMORY[0x277D3A578] yesWithProbability:a3])
+  blockCopy = block;
+  if ([MEMORY[0x277D3A578] yesWithProbability:rate])
   {
     v8 = +[PPLocalTopicStore defaultStore];
     v9 = objc_opt_new();
-    v10 = [v8 rankedTopicsWithQuery:v9 error:a5];
+    v10 = [v8 rankedTopicsWithQuery:v9 error:error];
 
     if (v10)
     {
       v73 = [v10 _pas_shuffledArrayUsingRng:0];
 
-      if ((v72[2]() & 1) == 0)
+      if ((blockCopy[2]() & 1) == 0)
       {
         v46 = pp_default_log_handle();
         if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
@@ -36,23 +36,23 @@
       }
 
       v11 = objc_opt_new();
-      v69 = [v11 pendingTopicFeedback];
+      pendingTopicFeedback = [v11 pendingTopicFeedback];
 
-      v74 = [(PPCollaborativeFilteringSampler *)self _weightedSampleFeedbackItems:v69];
+      v74 = [(PPCollaborativeFilteringSampler *)self _weightedSampleFeedbackItems:pendingTopicFeedback];
       v12 = +[PPTrialWrapper sharedInstance];
-      v13 = [v12 concatenatedTreatmentNames];
-      v70 = [v13 _pas_stringBackedByUTF8CString];
+      concatenatedTreatmentNames = [v12 concatenatedTreatmentNames];
+      _pas_stringBackedByUTF8CString = [concatenatedTreatmentNames _pas_stringBackedByUTF8CString];
 
       v14 = +[PPConfiguration sharedInstance];
-      LODWORD(v13) = [v14 portraitAnalyticsMaximumNumberOfRecords];
+      LODWORD(concatenatedTreatmentNames) = [v14 portraitAnalyticsMaximumNumberOfRecords];
 
-      if (v13)
+      if (concatenatedTreatmentNames)
       {
         v15 = 0;
         while (1)
         {
           v16 = objc_autoreleasePoolPush();
-          if ((v72[2]() & 1) == 0)
+          if ((blockCopy[2]() & 1) == 0)
           {
             break;
           }
@@ -66,48 +66,48 @@
           v17 = objc_opt_new();
           if (v74)
           {
-            v18 = [v74 clientIdentifier];
+            clientIdentifier = [v74 clientIdentifier];
 
-            if (v18)
+            if (clientIdentifier)
             {
-              v19 = [v74 clientIdentifier];
-              v20 = [v19 _pas_stringBackedByUTF8CString];
-              [v17 setObject:v20 forKeyedSubscript:@"clientIdentifier"];
+              clientIdentifier2 = [v74 clientIdentifier];
+              _pas_stringBackedByUTF8CString2 = [clientIdentifier2 _pas_stringBackedByUTF8CString];
+              [v17 setObject:_pas_stringBackedByUTF8CString2 forKeyedSubscript:@"clientIdentifier"];
             }
 
-            v21 = [v74 feedbackItems];
-            v22 = [v21 firstObject];
-            v23 = [v22 itemString];
+            feedbackItems = [v74 feedbackItems];
+            firstObject = [feedbackItems firstObject];
+            itemString = [firstObject itemString];
 
-            if (v23)
+            if (itemString)
             {
-              v24 = [v74 feedbackItems];
-              v25 = [v24 firstObject];
-              v26 = [v25 itemString];
-              v27 = [v26 _pas_stringBackedByUTF8CString];
-              [v17 setObject:v27 forKeyedSubscript:@"clientTopic"];
+              feedbackItems2 = [v74 feedbackItems];
+              firstObject2 = [feedbackItems2 firstObject];
+              itemString2 = [firstObject2 itemString];
+              _pas_stringBackedByUTF8CString3 = [itemString2 _pas_stringBackedByUTF8CString];
+              [v17 setObject:_pas_stringBackedByUTF8CString3 forKeyedSubscript:@"clientTopic"];
             }
 
-            v28 = [v74 feedbackItems];
-            v29 = [v28 firstObject];
-            v30 = [v29 itemFeedbackType];
+            feedbackItems3 = [v74 feedbackItems];
+            firstObject3 = [feedbackItems3 firstObject];
+            itemFeedbackType = [firstObject3 itemFeedbackType];
 
-            if (v30)
+            if (itemFeedbackType)
             {
               v31 = MEMORY[0x277CCABB0];
-              v32 = [v74 feedbackItems];
-              v33 = [v32 firstObject];
-              v34 = [v31 numberWithUnsignedInt:{objc_msgSend(v33, "itemFeedbackType")}];
+              feedbackItems4 = [v74 feedbackItems];
+              firstObject4 = [feedbackItems4 firstObject];
+              v34 = [v31 numberWithUnsignedInt:{objc_msgSend(firstObject4, "itemFeedbackType")}];
               [v17 setObject:v34 forKeyedSubscript:@"engagementType"];
             }
           }
 
-          [v17 setObject:v70 forKeyedSubscript:@"activeTreatments"];
+          [v17 setObject:_pas_stringBackedByUTF8CString forKeyedSubscript:@"activeTreatments"];
           v35 = [v73 objectAtIndexedSubscript:v15];
-          v36 = [v35 item];
-          v37 = [v36 topicIdentifier];
-          v38 = [v37 _pas_stringBackedByUTF8CString];
-          [v17 setObject:v38 forKeyedSubscript:@"topic"];
+          item = [v35 item];
+          topicIdentifier = [item topicIdentifier];
+          _pas_stringBackedByUTF8CString4 = [topicIdentifier _pas_stringBackedByUTF8CString];
+          [v17 setObject:_pas_stringBackedByUTF8CString4 forKeyedSubscript:@"topic"];
 
           v39 = MEMORY[0x277CCABB0];
           v40 = [v73 objectAtIndexedSubscript:v15];
@@ -164,7 +164,7 @@ LABEL_29:
       [v48 makeRequestWithCompletion:v79];
       v68 = v51;
       v52 = [MEMORY[0x277D425A0] waitForGroup:v51 timeoutSeconds:8.0];
-      v71 = v72[2]();
+      v71 = blockCopy[2]();
       if (v71)
       {
         if (v52 == 1 || !*(v83 + 5))
@@ -197,11 +197,11 @@ LABEL_29:
               if (os_log_type_enabled(v59, OS_LOG_TYPE_DEBUG))
               {
                 v63 = [v57 ID];
-                v64 = [v57 name];
+                name = [v57 name];
                 *v90 = 138740227;
                 v91 = v63;
                 v92 = 2117;
-                v93 = v64;
+                v93 = name;
                 _os_log_debug_impl(&dword_23224A000, v59, OS_LOG_TYPE_DEBUG, "PPMaintenance: TV app favorite: %{sensitive}@: \t\t %{sensitive}@", v90, 0x16u);
               }
 
@@ -308,11 +308,11 @@ void __100__PPCollaborativeFilteringSampler_constructAndSendMessageForSamplingRa
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_weightedSampleFeedbackItems:(id)a3
+- (id)_weightedSampleFeedbackItems:(id)items
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (![v3 count])
+  itemsCopy = items;
+  if (![itemsCopy count])
   {
     v25 = 0;
     goto LABEL_26;
@@ -323,12 +323,12 @@ void __100__PPCollaborativeFilteringSampler_constructAndSendMessageForSamplingRa
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v6)
   {
     v7 = v6;
-    v28 = v3;
+    v28 = itemsCopy;
     obj = v5;
     v8 = 0;
     v9 = *v33;
@@ -343,14 +343,14 @@ void __100__PPCollaborativeFilteringSampler_constructAndSendMessageForSamplingRa
 
         v11 = *(*(&v32 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        v13 = [v11 feedbackItems];
-        v14 = [v13 firstObject];
-        v15 = [v14 itemString];
+        feedbackItems = [v11 feedbackItems];
+        firstObject = [feedbackItems firstObject];
+        itemString = [firstObject itemString];
 
-        if (v15)
+        if (itemString)
         {
-          v16 = [v11 clientIdentifier];
-          v17 = [(PPCollaborativeFilteringSampler *)self _probabilityForItemString:v15 clientIdentifier:v16];
+          clientIdentifier = [v11 clientIdentifier];
+          v17 = [(PPCollaborativeFilteringSampler *)self _probabilityForItemString:itemString clientIdentifier:clientIdentifier];
 
           v8 += v17;
           v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v17];
@@ -380,18 +380,18 @@ void __100__PPCollaborativeFilteringSampler_constructAndSendMessageForSamplingRa
     {
       v25 = 0;
 LABEL_24:
-      v3 = v28;
+      itemsCopy = v28;
       goto LABEL_25;
     }
 
     v19 = objc_opt_new();
-    v20 = [v19 next];
+    next = [v19 next];
 
     if ([v4 count])
     {
       v21 = 0;
       v22 = 0;
-      v23 = v20 % v8;
+      v23 = next % v8;
       while (1)
       {
         v24 = [v4 objectAtIndexedSubscript:v21];
@@ -414,7 +414,7 @@ LABEL_24:
 
 LABEL_18:
     v5 = pp_default_log_handle();
-    v3 = v28;
+    itemsCopy = v28;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
@@ -431,20 +431,20 @@ LABEL_26:
   return v25;
 }
 
-- (unsigned)_probabilityForItemString:(id)a3 clientIdentifier:(id)a4
+- (unsigned)_probabilityForItemString:(id)string clientIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   samplingWeightTrie = self->_samplingWeightTrie;
   v8 = MEMORY[0x277CCACA8];
-  v9 = a3;
-  v10 = [[v8 alloc] initWithFormat:@"%@:%@", v6, v9];
+  stringCopy = string;
+  stringCopy = [[v8 alloc] initWithFormat:@"%@:%@", identifierCopy, stringCopy];
 
-  v11 = [(_PASCFBurstTrie *)samplingWeightTrie payloadForString:v10];
+  v11 = [(_PASCFBurstTrie *)samplingWeightTrie payloadForString:stringCopy];
   if (!v11)
   {
     v12 = self->_samplingWeightTrie;
-    v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@:*", v6];
-    v14 = [(_PASCFBurstTrie *)v12 payloadForString:v13];
+    identifierCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@:*", identifierCopy];
+    v14 = [(_PASCFBurstTrie *)v12 payloadForString:identifierCopy];
 
     if (v14)
     {
@@ -470,27 +470,27 @@ LABEL_26:
     v5 = [objc_alloc(MEMORY[0x277D42558]) initWithPath:v4];
     self = [(PPCollaborativeFilteringSampler *)self initWithSamplingWeightTrie:v5];
 
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (PPCollaborativeFilteringSampler)initWithSamplingWeightTrie:(id)a3
+- (PPCollaborativeFilteringSampler)initWithSamplingWeightTrie:(id)trie
 {
-  v5 = a3;
+  trieCopy = trie;
   v9.receiver = self;
   v9.super_class = PPCollaborativeFilteringSampler;
   v6 = [(PPCollaborativeFilteringSampler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_samplingWeightTrie, a3);
+    objc_storeStrong(&v6->_samplingWeightTrie, trie);
   }
 
   return v7;

@@ -1,37 +1,37 @@
 @interface MOFSM
-- (BOOL)compareRegionCode:(id)a3 regionName:(id)a4 otherRegionCode:(id)a5 otherRegionName:(id)a6;
-- (BOOL)stayAtTheSameDestinationWithPrevDestinationCode:(id)a3 prevDestinationName:(id)a4 newDestinationCode:(id)a5 newDestinationName:(id)a6;
-- (MOFSM)initWithCoder:(id)a3;
-- (MOFSM)initWithFSMMO:(id)a3;
-- (MOFSM)initWithName:(id)a3 mode:(unint64_t)a4 state:(unint64_t)a5 subState:(id)a6 timeRangeStartDate:(id)a7 timeRangeEndDate:(id)a8 lastProcessedDate:(id)a9 metaData:(id)a10;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)compareRegionCode:(id)code regionName:(id)name otherRegionCode:(id)regionCode otherRegionName:(id)regionName;
+- (BOOL)stayAtTheSameDestinationWithPrevDestinationCode:(id)code prevDestinationName:(id)name newDestinationCode:(id)destinationCode newDestinationName:(id)destinationName;
+- (MOFSM)initWithCoder:(id)coder;
+- (MOFSM)initWithFSMMO:(id)o;
+- (MOFSM)initWithName:(id)name mode:(unint64_t)mode state:(unint64_t)state subState:(id)subState timeRangeStartDate:(id)date timeRangeEndDate:(id)endDate lastProcessedDate:(id)processedDate metaData:(id)self0;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)destination;
-- (id)destinationFromVisitEvent:(id)a3 state:(unint64_t)a4;
-- (id)processVisitEvent:(id)a3;
+- (id)destinationFromVisitEvent:(id)event state:(unint64_t)state;
+- (id)processVisitEvent:(id)event;
 - (id)referenceCountry;
 - (id)referenceCountryCode;
 - (id)referenceState;
 - (id)referenceStateCode;
-- (id)stringFromState:(unint64_t)a3;
-- (id)subStateFromVisitEvent:(id)a3 state:(unint64_t)a4;
-- (unint64_t)tripStateFromVisitEvent:(id)a3;
+- (id)stringFromState:(unint64_t)state;
+- (id)subStateFromVisitEvent:(id)event state:(unint64_t)state;
+- (unint64_t)tripStateFromVisitEvent:(id)event;
 - (void)cleanUpBeforeUpdate;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDestination:(id)a3;
-- (void)setReferenceDataWithCountry:(id)a3 countryCode:(id)a4 state:(id)a5 stateCode:(id)a6;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDestination:(id)destination;
+- (void)setReferenceDataWithCountry:(id)country countryCode:(id)code state:(id)state stateCode:(id)stateCode;
 @end
 
 @implementation MOFSM
 
 - (id)referenceState
 {
-  v3 = [(MOFSM *)self metaData];
+  metaData = [(MOFSM *)self metaData];
 
-  if (v3)
+  if (metaData)
   {
-    v4 = [(MOFSM *)self metaData];
-    v5 = [v4 objectForKey:@"state"];
+    metaData2 = [(MOFSM *)self metaData];
+    v5 = [metaData2 objectForKey:@"state"];
   }
 
   else
@@ -44,12 +44,12 @@
 
 - (id)referenceStateCode
 {
-  v3 = [(MOFSM *)self metaData];
+  metaData = [(MOFSM *)self metaData];
 
-  if (v3)
+  if (metaData)
   {
-    v4 = [(MOFSM *)self metaData];
-    v5 = [v4 objectForKey:@"stateCode"];
+    metaData2 = [(MOFSM *)self metaData];
+    v5 = [metaData2 objectForKey:@"stateCode"];
   }
 
   else
@@ -62,12 +62,12 @@
 
 - (id)referenceCountry
 {
-  v3 = [(MOFSM *)self metaData];
+  metaData = [(MOFSM *)self metaData];
 
-  if (v3)
+  if (metaData)
   {
-    v4 = [(MOFSM *)self metaData];
-    v5 = [v4 objectForKey:@"country"];
+    metaData2 = [(MOFSM *)self metaData];
+    v5 = [metaData2 objectForKey:@"country"];
   }
 
   else
@@ -80,12 +80,12 @@
 
 - (id)referenceCountryCode
 {
-  v3 = [(MOFSM *)self metaData];
+  metaData = [(MOFSM *)self metaData];
 
-  if (v3)
+  if (metaData)
   {
-    v4 = [(MOFSM *)self metaData];
-    v5 = [v4 objectForKey:@"countryCode"];
+    metaData2 = [(MOFSM *)self metaData];
+    v5 = [metaData2 objectForKey:@"countryCode"];
   }
 
   else
@@ -96,35 +96,35 @@
   return v5;
 }
 
-- (void)setReferenceDataWithCountry:(id)a3 countryCode:(id)a4 state:(id)a5 stateCode:(id)a6
+- (void)setReferenceDataWithCountry:(id)country countryCode:(id)code state:(id)state stateCode:(id)stateCode
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(MOFSM *)self metaData];
+  countryCopy = country;
+  codeCopy = code;
+  stateCopy = state;
+  stateCodeCopy = stateCode;
+  metaData = [(MOFSM *)self metaData];
 
-  if (v13)
+  if (metaData)
   {
-    v14 = [(MOFSM *)self metaData];
+    metaData2 = [(MOFSM *)self metaData];
   }
 
   else
   {
-    v14 = objc_opt_new();
+    metaData2 = objc_opt_new();
   }
 
-  v15 = v14;
-  if (v16 && v10)
+  v15 = metaData2;
+  if (countryCopy && codeCopy)
   {
-    [v14 setObject:v16 forKey:@"country"];
-    [v15 setObject:v10 forKey:@"countryCode"];
+    [metaData2 setObject:countryCopy forKey:@"country"];
+    [v15 setObject:codeCopy forKey:@"countryCode"];
   }
 
-  if (v11 && v12)
+  if (stateCopy && stateCodeCopy)
   {
-    [v15 setObject:v11 forKey:@"state"];
-    [v15 setObject:v12 forKey:@"stateCode"];
+    [v15 setObject:stateCopy forKey:@"state"];
+    [v15 setObject:stateCodeCopy forKey:@"stateCode"];
   }
 
   else if ([(MOFSM *)self mode]== 2)
@@ -142,12 +142,12 @@
 
 - (id)destination
 {
-  v3 = [(MOFSM *)self metaData];
+  metaData = [(MOFSM *)self metaData];
 
-  if (v3)
+  if (metaData)
   {
-    v4 = [(MOFSM *)self metaData];
-    v5 = [v4 objectForKeyedSubscript:@"destination"];
+    metaData2 = [(MOFSM *)self metaData];
+    v5 = [metaData2 objectForKeyedSubscript:@"destination"];
   }
 
   else
@@ -158,40 +158,40 @@
   return v5;
 }
 
-- (void)setDestination:(id)a3
+- (void)setDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(MOFSM *)self metaData];
+  destinationCopy = destination;
+  metaData = [(MOFSM *)self metaData];
 
-  if (v5)
+  if (metaData)
   {
-    v6 = [(MOFSM *)self metaData];
+    metaData2 = [(MOFSM *)self metaData];
   }
 
   else
   {
-    v6 = objc_opt_new();
+    metaData2 = objc_opt_new();
   }
 
-  v7 = v6;
-  [v6 setObject:v4 forKeyedSubscript:@"destination"];
+  v7 = metaData2;
+  [metaData2 setObject:destinationCopy forKeyedSubscript:@"destination"];
 
   [(MOFSM *)self setMetaData:v7];
 }
 
-- (id)processVisitEvent:(id)a3
+- (id)processVisitEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 category] != 1)
+  eventCopy = event;
+  if ([eventCopy category] != 1)
   {
     goto LABEL_11;
   }
 
-  v5 = [v4 startDate];
-  v6 = [(MOFSM *)self lastProcessedDate];
-  v7 = [v5 isBeforeDate:v6];
+  startDate = [eventCopy startDate];
+  lastProcessedDate = [(MOFSM *)self lastProcessedDate];
+  v7 = [startDate isBeforeDate:lastProcessedDate];
 
-  if ((v7 & 1) != 0 || (v8 = [(MOFSM *)self tripStateFromVisitEvent:v4]) == 0)
+  if ((v7 & 1) != 0 || (v8 = [(MOFSM *)self tripStateFromVisitEvent:eventCopy]) == 0)
   {
 LABEL_11:
     v20 = 0;
@@ -199,22 +199,22 @@ LABEL_11:
   }
 
   v9 = v8;
-  v10 = [(MOFSM *)self subStateFromVisitEvent:v4 state:v8];
-  v11 = [(MOFSM *)self destinationFromVisitEvent:v4 state:v9];
+  v10 = [(MOFSM *)self subStateFromVisitEvent:eventCopy state:v8];
+  v11 = [(MOFSM *)self destinationFromVisitEvent:eventCopy state:v9];
   v12 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
     v15 = [(MOFSM *)self stringFromState:[(MOFSM *)self state]];
-    v16 = [(MOFSM *)self substate];
-    [v16 mask];
+    substate = [(MOFSM *)self substate];
+    [substate mask];
     v17 = v37 = v11;
     v18 = [(MOFSM *)self stringFromState:v9];
     *buf = 138413570;
     v39 = v14;
     v40 = 2112;
-    v41 = v15;
+    selfCopy = v15;
     v42 = 2112;
     v43 = v17;
     v44 = 2112;
@@ -222,19 +222,19 @@ LABEL_11:
     v46 = 2112;
     v47 = v10;
     v48 = 2112;
-    v49 = v4;
+    v49 = eventCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%@: FSM, prevState, %@, prevSubState, %@, newState, %@, newSubState, %@, event, %@", buf, 0x3Eu);
 
     v11 = v37;
   }
 
-  v19 = [(MOFSM *)self state];
-  if (v19 - 2 >= 2)
+  state = [(MOFSM *)self state];
+  if (state - 2 >= 2)
   {
-    if (v19 != 1)
+    if (state != 1)
     {
       v20 = 0;
-      if (v19 || v9 != 1)
+      if (state || v9 != 1)
       {
         goto LABEL_33;
       }
@@ -264,9 +264,9 @@ LABEL_25:
       goto LABEL_25;
     }
 
-    v22 = [(MOFSM *)self substate];
-    v23 = [(MOFSM *)self destination];
-    v24 = [(MOFSM *)self stayAtTheSameDestinationWithPrevDestinationCode:v22 prevDestinationName:v23 newDestinationCode:v10 newDestinationName:v11];
+    substate2 = [(MOFSM *)self substate];
+    destination = [(MOFSM *)self destination];
+    v24 = [(MOFSM *)self stayAtTheSameDestinationWithPrevDestinationCode:substate2 prevDestinationName:destination newDestinationCode:v10 newDestinationName:v11];
 
     if (v24)
     {
@@ -274,9 +274,9 @@ LABEL_25:
     }
   }
 
-  v25 = [(MOFSM *)self destination];
+  destination2 = [(MOFSM *)self destination];
 
-  if (v25)
+  if (destination2)
   {
     if ([(MOFSM *)self state]== 3)
     {
@@ -294,10 +294,10 @@ LABEL_25:
     }
 
     v27 = [MOTripPlan alloc];
-    v28 = [(MOFSM *)self destination];
-    v29 = [(MOFSM *)self timeRangeStartDate];
-    v30 = [(MOFSM *)self timeRangeEndDate];
-    v20 = [(MOTripPlan *)v27 initWithDestination:v28 destinationType:v26 startDate:v29 endDate:v30];
+    destination3 = [(MOFSM *)self destination];
+    timeRangeStartDate = [(MOFSM *)self timeRangeStartDate];
+    timeRangeEndDate = [(MOFSM *)self timeRangeEndDate];
+    v20 = [(MOTripPlan *)v27 initWithDestination:destination3 destinationType:v26 startDate:timeRangeStartDate endDate:timeRangeEndDate];
 
     goto LABEL_31;
   }
@@ -308,16 +308,16 @@ LABEL_31:
   [(MOFSM *)self setState:v9];
   [(MOFSM *)self setSubstate:v10];
   [(MOFSM *)self setDestination:v11];
-  v31 = [v4 startDate];
-  [(MOFSM *)self setTimeRangeStartDate:v31];
+  startDate2 = [eventCopy startDate];
+  [(MOFSM *)self setTimeRangeStartDate:startDate2];
 
 LABEL_32:
-  v32 = [v4 endDate];
-  [(MOFSM *)self setTimeRangeEndDate:v32];
+  endDate = [eventCopy endDate];
+  [(MOFSM *)self setTimeRangeEndDate:endDate];
 
 LABEL_33:
-  v33 = [v4 endDate];
-  [(MOFSM *)self setLastProcessedDate:v33];
+  endDate2 = [eventCopy endDate];
+  [(MOFSM *)self setLastProcessedDate:endDate2];
 
   v34 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
   if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
@@ -327,7 +327,7 @@ LABEL_33:
     *buf = 138412802;
     v39 = v36;
     v40 = 2112;
-    v41 = self;
+    selfCopy = self;
     v42 = 2112;
     v43 = v20;
     _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "%@: FSM, %@, completed trip, %@", buf, 0x20u);
@@ -340,48 +340,48 @@ LABEL_12:
 
 - (void)cleanUpBeforeUpdate
 {
-  v3 = [(MOFSM *)self metaData];
+  metaData = [(MOFSM *)self metaData];
 
-  if (v3)
+  if (metaData)
   {
-    v4 = [(MOFSM *)self metaData];
+    metaData2 = [(MOFSM *)self metaData];
     v6[0] = @"state";
     v6[1] = @"stateCode";
     v6[2] = @"country";
     v6[3] = @"countryCode";
     v5 = [NSArray arrayWithObjects:v6 count:4];
-    [v4 removeObjectsForKeys:v5];
+    [metaData2 removeObjectsForKeys:v5];
   }
 }
 
-- (BOOL)stayAtTheSameDestinationWithPrevDestinationCode:(id)a3 prevDestinationName:(id)a4 newDestinationCode:(id)a5 newDestinationName:(id)a6
+- (BOOL)stayAtTheSameDestinationWithPrevDestinationCode:(id)code prevDestinationName:(id)name newDestinationCode:(id)destinationCode newDestinationName:(id)destinationName
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = (v10 != 0) == (v12 != 0) && (!(v10 | v12) || v10 && v12 && [(MOFSM *)self compareRegionCode:v10 regionName:v11 otherRegionCode:v12 otherRegionName:v13]);
+  codeCopy = code;
+  nameCopy = name;
+  destinationCodeCopy = destinationCode;
+  destinationNameCopy = destinationName;
+  v14 = (codeCopy != 0) == (destinationCodeCopy != 0) && (!(codeCopy | destinationCodeCopy) || codeCopy && destinationCodeCopy && [(MOFSM *)self compareRegionCode:codeCopy regionName:nameCopy otherRegionCode:destinationCodeCopy otherRegionName:destinationNameCopy]);
 
   return v14;
 }
 
-- (BOOL)compareRegionCode:(id)a3 regionName:(id)a4 otherRegionCode:(id)a5 otherRegionName:(id)a6
+- (BOOL)compareRegionCode:(id)code regionName:(id)name otherRegionCode:(id)regionCode otherRegionName:(id)regionName
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!(v10 | v12))
+  codeCopy = code;
+  nameCopy = name;
+  regionCodeCopy = regionCode;
+  regionNameCopy = regionName;
+  if (!(nameCopy | regionNameCopy))
   {
-    v10 = 0;
+    nameCopy = 0;
     v13 = 0;
     goto LABEL_7;
   }
 
-  v13 = v12;
-  if (v10)
+  v13 = regionNameCopy;
+  if (nameCopy)
   {
-    if (v12)
+    if (regionNameCopy)
     {
       goto LABEL_4;
     }
@@ -389,19 +389,19 @@ LABEL_12:
 
   else
   {
-    v10 = v9;
+    nameCopy = codeCopy;
     if (v13)
     {
       goto LABEL_4;
     }
   }
 
-  v13 = v11;
+  v13 = regionCodeCopy;
 LABEL_4:
-  if (([v10 isEqualToString:v13] & 1) == 0)
+  if (([nameCopy isEqualToString:v13] & 1) == 0)
   {
 LABEL_7:
-    v14 = [v9 isEqualToString:v11];
+    v14 = [codeCopy isEqualToString:regionCodeCopy];
     goto LABEL_8;
   }
 
@@ -411,20 +411,20 @@ LABEL_8:
   return v14;
 }
 
-- (unint64_t)tripStateFromVisitEvent:(id)a3
+- (unint64_t)tripStateFromVisitEvent:(id)event
 {
-  v4 = a3;
-  if (-[MOFSM mode](self, "mode") && [v4 category] == 1)
+  eventCopy = event;
+  if (-[MOFSM mode](self, "mode") && [eventCopy category] == 1)
   {
     if ([(MOFSM *)self mode]== 2)
     {
-      v5 = [v4 routineEvent];
-      v6 = [v5 address];
-      v7 = [MOFSM stateFromAddress:v6];
+      routineEvent = [eventCopy routineEvent];
+      address = [routineEvent address];
+      v7 = [MOFSM stateFromAddress:address];
 
-      v8 = [v4 routineEvent];
-      v9 = [v8 address];
-      v10 = [MOFSM stateCodeFromAddress:v9];
+      routineEvent2 = [eventCopy routineEvent];
+      address2 = [routineEvent2 address];
+      v10 = [MOFSM stateCodeFromAddress:address2];
     }
 
     else
@@ -433,9 +433,9 @@ LABEL_8:
       v7 = 0;
     }
 
-    v12 = [v4 routineEvent];
-    v13 = [v12 address];
-    v14 = [MOFSM countryCodeFromAddress:v13];
+    routineEvent3 = [eventCopy routineEvent];
+    address3 = [routineEvent3 address];
+    v14 = [MOFSM countryCodeFromAddress:address3];
 
     v15 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -453,75 +453,75 @@ LABEL_8:
     {
       if (v14)
       {
-        v11 = [(MOFSM *)self referenceCountryCode];
+        referenceCountryCode = [(MOFSM *)self referenceCountryCode];
 
-        if (v11)
+        if (referenceCountryCode)
         {
-          v16 = [(MOFSM *)self referenceCountryCode];
-          v17 = [v16 isEqualToString:v14];
+          referenceCountryCode2 = [(MOFSM *)self referenceCountryCode];
+          v17 = [referenceCountryCode2 isEqualToString:v14];
 
           if (v17)
           {
-            v18 = [(MOFSM *)self referenceStateCode];
-            v19 = v18;
-            if (v18 && v10)
+            referenceStateCode = [(MOFSM *)self referenceStateCode];
+            v19 = referenceStateCode;
+            if (referenceStateCode && v10)
             {
-              v20 = [(MOFSM *)self referenceStateCode];
-              v21 = [v20 isEqualToString:v10];
+              referenceStateCode2 = [(MOFSM *)self referenceStateCode];
+              v21 = [referenceStateCode2 isEqualToString:v10];
 
               if (v21)
               {
-                v11 = 1;
+                referenceCountryCode = 1;
               }
 
               else
               {
-                v11 = 2;
+                referenceCountryCode = 2;
               }
             }
 
             else
             {
 
-              v11 = 1;
+              referenceCountryCode = 1;
             }
           }
 
           else
           {
-            v11 = 3;
+            referenceCountryCode = 3;
           }
         }
       }
 
       else
       {
-        v11 = 0;
+        referenceCountryCode = 0;
       }
     }
 
     else
     {
-      v11 = 0;
+      referenceCountryCode = 0;
       if ([(MOFSM *)self mode]== 1)
       {
         if (v14)
         {
-          v11 = [(MOFSM *)self referenceCountryCode];
+          referenceCountryCode = [(MOFSM *)self referenceCountryCode];
 
-          if (v11)
+          if (referenceCountryCode)
           {
-            v22 = [(MOFSM *)self referenceCountryCode];
-            v23 = [v22 isEqualToString:v14];
+            referenceCountryCode3 = [(MOFSM *)self referenceCountryCode];
+            v23 = [referenceCountryCode3 isEqualToString:v14];
 
             if (v23)
             {
-              v11 = 1;
+              referenceCountryCode = 1;
             }
 
             else
             {
-              v11 = 3;
+              referenceCountryCode = 3;
             }
           }
         }
@@ -531,32 +531,32 @@ LABEL_8:
 
   else
   {
-    v11 = 0;
+    referenceCountryCode = 0;
   }
 
-  return v11;
+  return referenceCountryCode;
 }
 
-- (id)subStateFromVisitEvent:(id)a3 state:(unint64_t)a4
+- (id)subStateFromVisitEvent:(id)event state:(unint64_t)state
 {
-  v5 = a3;
-  v6 = v5;
-  switch(a4)
+  eventCopy = event;
+  v6 = eventCopy;
+  switch(state)
   {
     case 3uLL:
-      v7 = [v5 routineEvent];
-      v8 = [v7 address];
-      v9 = [MOFSM countryCodeFromAddress:v8];
+      routineEvent = [eventCopy routineEvent];
+      address = [routineEvent address];
+      v9 = [MOFSM countryCodeFromAddress:address];
       goto LABEL_7;
     case 2uLL:
-      v7 = [v5 routineEvent];
-      v8 = [v7 address];
-      v9 = [MOFSM stateCodeFromAddress:v8];
+      routineEvent = [eventCopy routineEvent];
+      address = [routineEvent address];
+      v9 = [MOFSM stateCodeFromAddress:address];
       goto LABEL_7;
     case 1uLL:
-      v7 = [v5 routineEvent];
-      v8 = [v7 address];
-      v9 = [MOFSM cityFromAddress:v8];
+      routineEvent = [eventCopy routineEvent];
+      address = [routineEvent address];
+      v9 = [MOFSM cityFromAddress:address];
 LABEL_7:
       v10 = v9;
 
@@ -569,26 +569,26 @@ LABEL_9:
   return v10;
 }
 
-- (id)destinationFromVisitEvent:(id)a3 state:(unint64_t)a4
+- (id)destinationFromVisitEvent:(id)event state:(unint64_t)state
 {
-  v5 = a3;
-  v6 = v5;
-  switch(a4)
+  eventCopy = event;
+  v6 = eventCopy;
+  switch(state)
   {
     case 3uLL:
-      v7 = [v5 routineEvent];
-      v8 = [v7 address];
-      v9 = [MOFSM countryFromAddress:v8];
+      routineEvent = [eventCopy routineEvent];
+      address = [routineEvent address];
+      v9 = [MOFSM countryFromAddress:address];
       goto LABEL_7;
     case 2uLL:
-      v7 = [v5 routineEvent];
-      v8 = [v7 address];
-      v9 = [MOFSM stateFromAddress:v8];
+      routineEvent = [eventCopy routineEvent];
+      address = [routineEvent address];
+      v9 = [MOFSM stateFromAddress:address];
       goto LABEL_7;
     case 1uLL:
-      v7 = [v5 routineEvent];
-      v8 = [v7 address];
-      v9 = [MOFSM cityFromAddress:v8];
+      routineEvent = [eventCopy routineEvent];
+      address = [routineEvent address];
+      v9 = [MOFSM cityFromAddress:address];
 LABEL_7:
       v10 = v9;
 
@@ -601,71 +601,71 @@ LABEL_9:
   return v10;
 }
 
-- (id)stringFromState:(unint64_t)a3
+- (id)stringFromState:(unint64_t)state
 {
-  if (a3 - 1 > 2)
+  if (state - 1 > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_100336E88[a3 - 1];
+    return off_100336E88[state - 1];
   }
 }
 
-- (MOFSM)initWithFSMMO:(id)a3
+- (MOFSM)initWithFSMMO:(id)o
 {
-  if (a3)
+  if (o)
   {
-    v4 = a3;
-    v15 = [v4 name];
-    v5 = [v4 mode];
-    v6 = [v4 state];
-    v7 = [v4 substate];
-    v8 = [v4 timeRangeStartDate];
-    v9 = [v4 timeRangeEndDate];
-    v10 = [v4 lastProcessedDate];
-    v11 = [v4 metaData];
+    oCopy = o;
+    name = [oCopy name];
+    mode = [oCopy mode];
+    state = [oCopy state];
+    substate = [oCopy substate];
+    timeRangeStartDate = [oCopy timeRangeStartDate];
+    timeRangeEndDate = [oCopy timeRangeEndDate];
+    lastProcessedDate = [oCopy lastProcessedDate];
+    metaData = [oCopy metaData];
 
-    v12 = [MODictionaryEncoder decodeToDictionary:v11];
-    self = [(MOFSM *)self initWithName:v15 mode:v5 state:v6 subState:v7 timeRangeStartDate:v8 timeRangeEndDate:v9 lastProcessedDate:v10 metaData:v12];
+    v12 = [MODictionaryEncoder decodeToDictionary:metaData];
+    self = [(MOFSM *)self initWithName:name mode:mode state:state subState:substate timeRangeStartDate:timeRangeStartDate timeRangeEndDate:timeRangeEndDate lastProcessedDate:lastProcessedDate metaData:v12];
 
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (MOFSM)initWithName:(id)a3 mode:(unint64_t)a4 state:(unint64_t)a5 subState:(id)a6 timeRangeStartDate:(id)a7 timeRangeEndDate:(id)a8 lastProcessedDate:(id)a9 metaData:(id)a10
+- (MOFSM)initWithName:(id)name mode:(unint64_t)mode state:(unint64_t)state subState:(id)subState timeRangeStartDate:(id)date timeRangeEndDate:(id)endDate lastProcessedDate:(id)processedDate metaData:(id)self0
 {
-  v15 = a3;
-  v27 = a6;
-  v26 = a7;
-  v16 = a8;
-  v17 = a9;
-  v18 = a10;
+  nameCopy = name;
+  subStateCopy = subState;
+  dateCopy = date;
+  endDateCopy = endDate;
+  processedDateCopy = processedDate;
+  dataCopy = data;
   v28.receiver = self;
   v28.super_class = MOFSM;
   v19 = [(MOFSM *)&v28 init];
   if (v19)
   {
-    v20 = [v15 copy];
+    v20 = [nameCopy copy];
     name = v19->_name;
     v19->_name = v20;
 
-    v19->_mode = a4;
-    v19->_state = a5;
-    objc_storeStrong(&v19->_substate, a6);
-    objc_storeStrong(&v19->_timeRangeStartDate, a7);
-    objc_storeStrong(&v19->_timeRangeEndDate, a8);
-    objc_storeStrong(&v19->_lastProcessedDate, a9);
-    v22 = [v18 mutableCopy];
+    v19->_mode = mode;
+    v19->_state = state;
+    objc_storeStrong(&v19->_substate, subState);
+    objc_storeStrong(&v19->_timeRangeStartDate, date);
+    objc_storeStrong(&v19->_timeRangeEndDate, endDate);
+    objc_storeStrong(&v19->_lastProcessedDate, processedDate);
+    v22 = [dataCopy mutableCopy];
     metaData = v19->_metaData;
     v19->_metaData = v22;
   }
@@ -675,61 +675,61 @@ LABEL_9:
 
 - (id)description
 {
-  v3 = [(MOFSM *)self name];
-  v4 = [(MOFSM *)self mode];
-  v5 = [(MOFSM *)self state];
-  v6 = [(MOFSM *)self substate];
-  v7 = [(MOFSM *)self timeRangeStartDate];
-  v8 = [(MOFSM *)self timeRangeEndDate];
-  v9 = [(MOFSM *)self lastProcessedDate];
-  v10 = [NSString stringWithFormat:@"<MOFSM name, %@, mode, %lu, state, %lu, substate, %@, startDate, %@, endDate, %@, lastProcessedDate, %@>", v3, v4, v5, v6, v7, v8, v9];
+  name = [(MOFSM *)self name];
+  mode = [(MOFSM *)self mode];
+  state = [(MOFSM *)self state];
+  substate = [(MOFSM *)self substate];
+  timeRangeStartDate = [(MOFSM *)self timeRangeStartDate];
+  timeRangeEndDate = [(MOFSM *)self timeRangeEndDate];
+  lastProcessedDate = [(MOFSM *)self lastProcessedDate];
+  v10 = [NSString stringWithFormat:@"<MOFSM name, %@, mode, %lu, state, %lu, substate, %@, startDate, %@, endDate, %@, lastProcessedDate, %@>", name, mode, state, substate, timeRangeStartDate, timeRangeEndDate, lastProcessedDate];
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeInteger:self->_mode forKey:@"mode"];
-  [v5 encodeInteger:self->_state forKey:@"state"];
-  [v5 encodeObject:self->_substate forKey:@"substate"];
-  [v5 encodeObject:self->_timeRangeStartDate forKey:@"timeRangeStartDate"];
-  [v5 encodeObject:self->_timeRangeEndDate forKey:@"timeRangeEndDate"];
-  [v5 encodeObject:self->_lastProcessedDate forKey:@"lastProcessedDate"];
-  [v5 encodeObject:self->_metaData forKey:@"timeRangeMetaData"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeInteger:self->_mode forKey:@"mode"];
+  [coderCopy encodeInteger:self->_state forKey:@"state"];
+  [coderCopy encodeObject:self->_substate forKey:@"substate"];
+  [coderCopy encodeObject:self->_timeRangeStartDate forKey:@"timeRangeStartDate"];
+  [coderCopy encodeObject:self->_timeRangeEndDate forKey:@"timeRangeEndDate"];
+  [coderCopy encodeObject:self->_lastProcessedDate forKey:@"lastProcessedDate"];
+  [coderCopy encodeObject:self->_metaData forKey:@"timeRangeMetaData"];
 }
 
-- (MOFSM)initWithCoder:(id)a3
+- (MOFSM)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeIntegerForKey:@"mode"];
-  v7 = [v4 decodeIntegerForKey:@"state"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"substate"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeRangeStartDate"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeRangeEndDate"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastProcessedDate"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeRangeMetaData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeIntegerForKey:@"mode"];
+  v7 = [coderCopy decodeIntegerForKey:@"state"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"substate"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeRangeStartDate"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeRangeEndDate"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastProcessedDate"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeRangeMetaData"];
 
   v13 = [(MOFSM *)self initWithName:v5 mode:v6 state:v7 subState:v8 timeRangeStartDate:v9 timeRangeEndDate:v10 lastProcessedDate:v11 metaData:v12];
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [MOFSM alloc];
-  v6 = [(MOFSM *)self name];
-  v7 = [(MOFSM *)self mode];
-  v8 = [(MOFSM *)self state];
-  v9 = [(MOFSM *)self substate];
-  v10 = [(MOFSM *)self timeRangeStartDate];
-  v11 = [(MOFSM *)self timeRangeEndDate];
-  v12 = [(MOFSM *)self lastProcessedDate];
-  v13 = [(MOFSM *)self metaData];
-  v14 = [v13 copyWithZone:a3];
-  v15 = [(MOFSM *)v5 initWithName:v6 mode:v7 state:v8 subState:v9 timeRangeStartDate:v10 timeRangeEndDate:v11 lastProcessedDate:v12 metaData:v14];
+  name = [(MOFSM *)self name];
+  mode = [(MOFSM *)self mode];
+  state = [(MOFSM *)self state];
+  substate = [(MOFSM *)self substate];
+  timeRangeStartDate = [(MOFSM *)self timeRangeStartDate];
+  timeRangeEndDate = [(MOFSM *)self timeRangeEndDate];
+  lastProcessedDate = [(MOFSM *)self lastProcessedDate];
+  metaData = [(MOFSM *)self metaData];
+  v14 = [metaData copyWithZone:zone];
+  v15 = [(MOFSM *)v5 initWithName:name mode:mode state:state subState:substate timeRangeStartDate:timeRangeStartDate timeRangeEndDate:timeRangeEndDate lastProcessedDate:lastProcessedDate metaData:v14];
 
   return v15;
 }

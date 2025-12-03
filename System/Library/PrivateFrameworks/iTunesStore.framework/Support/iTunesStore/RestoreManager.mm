@@ -37,7 +37,7 @@
     if (_os_feature_enabled_impl())
     {
       v6 = ISWeakLinkedStringConstantForString();
-      v7 = [v6 UTF8String];
+      uTF8String = [v6 UTF8String];
 
       v8 = v2->_dispatchQueue;
       handler[0] = _NSConcreteStackBlock;
@@ -46,7 +46,7 @@
       handler[3] = &unk_10032C278;
       v9 = v2;
       v15 = v9;
-      notify_register_dispatch(v7, &v2->_restoreStateToken, v8, handler);
+      notify_register_dispatch(uTF8String, &v2->_restoreStateToken, v8, handler);
       v10 = v2->_dispatchQueue;
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
@@ -146,19 +146,19 @@
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v9 = v7;
     }
@@ -182,7 +182,7 @@ LABEL_15:
         return;
       }
 
-      v8 = [NSString stringWithCString:v10 encoding:4, &v30, v27];
+      oSLogObject = [NSString stringWithCString:v10 encoding:4, &v30, v27];
       free(v10);
       SSFileLog();
     }
@@ -195,19 +195,19 @@ LABEL_15:
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v11 = [v5 shouldLog];
+  shouldLog2 = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v12 = v11 | 2;
+    v12 = shouldLog2 | 2;
   }
 
   else
   {
-    v12 = v11;
+    v12 = shouldLog2;
   }
 
-  v13 = [v5 OSLogObject];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+  oSLogObject2 = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
   {
     v14 = v12;
   }
@@ -230,9 +230,9 @@ LABEL_15:
 
   if (v15)
   {
-    v13 = [NSString stringWithCString:v15 encoding:4, &v30, v27];
+    oSLogObject2 = [NSString stringWithCString:v15 encoding:4, &v30, v27];
     free(v15);
-    v26 = v13;
+    v26 = oSLogObject2;
     SSFileLog();
 LABEL_27:
   }
@@ -245,19 +245,19 @@ LABEL_27:
       v16 = +[SSLogConfig sharedConfig];
     }
 
-    v17 = [v16 shouldLog];
+    shouldLog3 = [v16 shouldLog];
     if ([v16 shouldLogToDisk])
     {
-      v18 = v17 | 2;
+      v18 = shouldLog3 | 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shouldLog3;
     }
 
-    v19 = [v16 OSLogObject];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    oSLogObject3 = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
       v20 = v18;
     }
@@ -281,19 +281,19 @@ LABEL_42:
         restoreManager = self->_restoreManager;
         self->_restoreManager = v22;
 
-        v24 = [@"com.apple.private.restrict-post.MobileBackup.backgroundCellularAccessChanged" UTF8String];
+        uTF8String = [@"com.apple.private.restrict-post.MobileBackup.backgroundCellularAccessChanged" UTF8String];
         dispatchQueue = self->_dispatchQueue;
         handler[0] = _NSConcreteStackBlock;
         handler[1] = 3221225472;
         handler[2] = sub_1001F8FE0;
         handler[3] = &unk_10032C278;
         handler[4] = self;
-        notify_register_dispatch(v24, &self->_restoreCellularToken, dispatchQueue, handler);
+        notify_register_dispatch(uTF8String, &self->_restoreCellularToken, dispatchQueue, handler);
         [(RestoreManager *)self _queue_fetchRestoreCellularAccess];
         return;
       }
 
-      v19 = [NSString stringWithCString:v21 encoding:4, &v30, v27];
+      oSLogObject3 = [NSString stringWithCString:v21 encoding:4, &v30, v27];
       free(v21);
       SSFileLog();
     }

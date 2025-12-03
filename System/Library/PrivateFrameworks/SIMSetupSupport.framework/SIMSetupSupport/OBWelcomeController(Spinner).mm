@@ -10,38 +10,38 @@
 
 - (void)_prepareSpinner
 {
-  v2 = [a1 spinnerContainer];
+  spinnerContainer = [self spinnerContainer];
 
-  if (!v2)
+  if (!spinnerContainer)
   {
     v3 = [MEMORY[0x277D37690] buttonWithType:1];
-    [a1 setSpinnerContainer:v3];
+    [self setSpinnerContainer:v3];
 
-    v4 = [a1 spinnerContainer];
-    [v4 setTitle:@" " forState:0];
+    spinnerContainer2 = [self spinnerContainer];
+    [spinnerContainer2 setTitle:@" " forState:0];
 
     v5 = [[SSSpinner alloc] initWithText:@" "];
-    [a1 setSpinner:v5];
+    [self setSpinner:v5];
 
-    v6 = [a1 spinner];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    spinner = [self spinner];
+    [spinner setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v7 = [a1 spinnerContainer];
-    v8 = [a1 spinner];
-    [v7 addSubview:v8];
+    spinnerContainer3 = [self spinnerContainer];
+    spinner2 = [self spinner];
+    [spinnerContainer3 addSubview:spinner2];
 
-    v9 = [a1 spinner];
-    v10 = [v9 centerXAnchor];
-    v11 = [a1 spinnerContainer];
-    v12 = [v11 centerXAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12];
+    spinner3 = [self spinner];
+    centerXAnchor = [spinner3 centerXAnchor];
+    spinnerContainer4 = [self spinnerContainer];
+    centerXAnchor2 = [spinnerContainer4 centerXAnchor];
+    v13 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v13 setActive:1];
 
-    v18 = [a1 spinner];
-    v14 = [v18 centerYAnchor];
-    v15 = [a1 spinnerContainer];
-    v16 = [v15 centerYAnchor];
-    v17 = [v14 constraintEqualToAnchor:v16];
+    spinner4 = [self spinner];
+    centerYAnchor = [spinner4 centerYAnchor];
+    spinnerContainer5 = [self spinnerContainer];
+    centerYAnchor2 = [spinnerContainer5 centerYAnchor];
+    v17 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v17 setActive:1];
   }
 }
@@ -49,14 +49,14 @@
 - (void)_showButtonTraySpinnerWithBusyText:()Spinner
 {
   v4 = a3;
-  v5 = [a1 animating];
-  [a1 setAnimating:1];
+  animating = [self animating];
+  [self setAnimating:1];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__OBWelcomeController_Spinner___showButtonTraySpinnerWithBusyText___block_invoke;
   block[3] = &unk_279B44700;
-  v9 = v5;
-  block[4] = a1;
+  v9 = animating;
+  block[4] = self;
   v8 = v4;
   v6 = v4;
   dispatch_async(MEMORY[0x277D85CD0], block);
@@ -68,20 +68,20 @@
   block[1] = 3221225472;
   block[2] = __54__OBWelcomeController_Spinner___hideButtonTraySpinner__block_invoke;
   block[3] = &unk_279B44578;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
 - (void)_updateTrayButtonText:()Spinner
 {
   v10 = a3;
-  v4 = [v10 userInfo];
+  userInfo = [v10 userInfo];
 
   v5 = v10;
-  if (v4)
+  if (userInfo)
   {
-    v6 = [v10 userInfo];
-    v7 = [v6 objectForKey:@"InstallStateKey"];
+    userInfo2 = [v10 userInfo];
+    v7 = [userInfo2 objectForKey:@"InstallStateKey"];
 
     v5 = v10;
     if (v7)
@@ -90,13 +90,13 @@
       {
         v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v9 = [v8 localizedStringForKey:@"CONNECTING_TO_NETWORK" value:&stru_28753DF48 table:@"Localizable"];
-        [a1 _updateBusyText:v9];
+        [self _updateBusyText:v9];
       }
 
       else
       {
         v8 = +[TSUtilities getSpinnerBusyText];
-        [a1 _showButtonTraySpinnerWithBusyText:v8];
+        [self _showButtonTraySpinnerWithBusyText:v8];
       }
 
       v5 = v10;
@@ -112,10 +112,10 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a1 buttonTray];
-  v6 = [v5 allButtons];
+  buttonTray = [self buttonTray];
+  allButtons = [buttonTray allButtons];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [allButtons countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -127,7 +127,7 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allButtons);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
@@ -142,7 +142,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [allButtons countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v8)
       {
         continue;
@@ -152,8 +152,8 @@
     }
   }
 
-  v6 = [a1 spinner];
-  [v6 updateText:v4];
+  allButtons = [self spinner];
+  [allButtons updateText:v4];
 LABEL_11:
 
   v12 = *MEMORY[0x277D85DE8];

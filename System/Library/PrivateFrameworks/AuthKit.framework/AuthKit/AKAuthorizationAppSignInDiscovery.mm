@@ -1,7 +1,7 @@
 @interface AKAuthorizationAppSignInDiscovery
 - (AKAuthorizationAppSignInDiscovery)init;
 - (void)dealloc;
-- (void)startDiscoveryWithCompletion:(id)a3;
+- (void)startDiscoveryWithCompletion:(id)completion;
 @end
 
 @implementation AKAuthorizationAppSignInDiscovery
@@ -30,35 +30,35 @@
 - (void)dealloc
 {
   v7 = *MEMORY[0x1E69E9840];
-  v5 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _AKLogSiwa();
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_1_8_64(v6, v5);
+    __os_log_helper_16_2_1_8_64(v6, selfCopy);
     _os_log_debug_impl(&dword_193225000, oslog[0], type, "%@ deallocated", v6, 0xCu);
   }
 
   objc_storeStrong(oslog, 0);
-  if (v5->_daemonConnection)
+  if (selfCopy->_daemonConnection)
   {
-    objc_storeStrong(&v5->_daemonConnection, 0);
+    objc_storeStrong(&selfCopy->_daemonConnection, 0);
   }
 
-  v2.receiver = v5;
+  v2.receiver = selfCopy;
   v2.super_class = AKAuthorizationAppSignInDiscovery;
   [(AKAuthorizationAppSignInDiscovery *)&v2 dealloc];
   *MEMORY[0x1E69E9840];
 }
 
-- (void)startDiscoveryWithCompletion:(id)a3
+- (void)startDiscoveryWithCompletion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  daemonConnection = v12->_daemonConnection;
+  objc_storeStrong(location, completion);
+  daemonConnection = selfCopy->_daemonConnection;
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;

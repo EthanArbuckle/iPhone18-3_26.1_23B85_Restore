@@ -1,19 +1,19 @@
 @interface FCANEFHeader
 - (FCANEFHeader)init;
-- (void)initWithFileHandle:(void *)a1;
-- (void)initWithFilePath:(void *)a1;
-- (void)initWithHeaderData:(void *)a3 wrappingKeyID:(void *)a4 wrappedKey:(void *)a5 contentType:;
+- (void)initWithFileHandle:(void *)handle;
+- (void)initWithFilePath:(void *)path;
+- (void)initWithHeaderData:(void *)data wrappingKeyID:(void *)d wrappedKey:(void *)key contentType:;
 @end
 
 @implementation FCANEFHeader
 
-- (void)initWithHeaderData:(void *)a3 wrappingKeyID:(void *)a4 wrappedKey:(void *)a5 contentType:
+- (void)initWithHeaderData:(void *)data wrappingKeyID:(void *)d wrappedKey:(void *)key contentType:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v23.receiver = a1;
+  dataCopy = data;
+  dCopy = d;
+  keyCopy = key;
+  v23.receiver = self;
   v23.super_class = FCANEFHeader;
   v13 = objc_msgSendSuper2(&v23, sel_init);
   if (v13)
@@ -22,15 +22,15 @@
     v15 = v13[4];
     v13[4] = v14;
 
-    v16 = [v10 copy];
+    v16 = [dataCopy copy];
     v17 = v13[1];
     v13[1] = v16;
 
-    v18 = [v11 copy];
+    v18 = [dCopy copy];
     v19 = v13[2];
     v13[2] = v18;
 
-    v20 = [v12 copy];
+    v20 = [keyCopy copy];
     v21 = v13[3];
     v13[3] = v20;
   }
@@ -38,25 +38,25 @@
   return v13;
 }
 
-- (void)initWithFilePath:(void *)a1
+- (void)initWithFilePath:(void *)path
 {
-  v2 = a1;
-  if (a1)
+  pathCopy = path;
+  if (path)
   {
     v3 = [MEMORY[0x1E696AC00] fileHandleForReadingAtPath:a2];
-    v4 = [(FCANEFHeader *)v2 initWithFileHandle:v3];
+    v4 = [(FCANEFHeader *)pathCopy initWithFileHandle:v3];
     [v3 closeFile];
-    v2 = v4;
+    pathCopy = v4;
   }
 
-  return v2;
+  return pathCopy;
 }
 
-- (void)initWithFileHandle:(void *)a1
+- (void)initWithFileHandle:(void *)handle
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (handle)
   {
     v5 = [v3 readDataOfLength:4];
     if ([v5 length] == 4 && *objc_msgSend(v5, "bytes") == 1178947137)
@@ -71,7 +71,7 @@
           v11 = *[v10 bytes];
           if ([v9 length] <= v11)
           {
-            v6 = 0;
+            handleCopy = 0;
           }
 
           else
@@ -89,7 +89,7 @@
                 v17 = [v9 subdataWithRange:{v13, v15}];
                 if (v16 >= [v9 length])
                 {
-                  v6 = 0;
+                  handleCopy = 0;
                   v12 = v27;
                 }
 
@@ -114,18 +114,18 @@
                     }
 
                     v12 = v27;
-                    v22 = [MEMORY[0x1E695DF88] data];
-                    [v22 appendData:v5];
-                    [v22 appendData:v8];
-                    [v22 appendData:v9];
-                    a1 = [(FCANEFHeader *)a1 initWithHeaderData:v22 wrappingKeyID:v27 wrappedKey:v26 contentType:v21];
+                    data = [MEMORY[0x1E695DF88] data];
+                    [data appendData:v5];
+                    [data appendData:v8];
+                    [data appendData:v9];
+                    handle = [(FCANEFHeader *)handle initWithHeaderData:data wrappingKeyID:v27 wrappedKey:v26 contentType:v21];
 
-                    v6 = a1;
+                    handleCopy = handle;
                   }
 
                   else
                   {
-                    v6 = 0;
+                    handleCopy = 0;
                     v12 = v27;
                   }
 
@@ -135,42 +135,42 @@
 
               else
               {
-                v6 = 0;
+                handleCopy = 0;
                 v12 = v27;
               }
             }
 
             else
             {
-              v6 = 0;
+              handleCopy = 0;
             }
           }
         }
 
         else
         {
-          v6 = 0;
+          handleCopy = 0;
         }
       }
 
       else
       {
-        v6 = 0;
+        handleCopy = 0;
       }
     }
 
     else
     {
-      v6 = 0;
+      handleCopy = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    handleCopy = 0;
   }
 
-  return v6;
+  return handleCopy;
 }
 
 - (FCANEFHeader)init

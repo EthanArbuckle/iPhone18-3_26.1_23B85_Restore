@@ -1,24 +1,24 @@
 @interface TSKModalNavigationController
-- (TSKModalNavigationController)initWithRootViewController:(id)a3;
-- (int64_t)positionForBar:(id)a3;
+- (TSKModalNavigationController)initWithRootViewController:(id)controller;
+- (int64_t)positionForBar:(id)bar;
 - (void)dealloc;
 - (void)layoutViews;
-- (void)p_statusBarWillChange:(id)a3;
-- (void)setShowTopSeparator:(BOOL)a3;
+- (void)p_statusBarWillChange:(id)change;
+- (void)setShowTopSeparator:(BOOL)separator;
 - (void)viewDidLoad;
 @end
 
 @implementation TSKModalNavigationController
 
-- (TSKModalNavigationController)initWithRootViewController:(id)a3
+- (TSKModalNavigationController)initWithRootViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = TSKModalNavigationController;
-  v3 = [(TSKModalNavigationController *)&v6 initWithRootViewController:a3];
+  v3 = [(TSKModalNavigationController *)&v6 initWithRootViewController:controller];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel_p_statusBarWillChange_ name:*MEMORY[0x277D76748] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_p_statusBarWillChange_ name:*MEMORY[0x277D76748] object:0];
     v3->mIsFullscreenViewController = 1;
   }
 
@@ -35,11 +35,11 @@
   [(TSKModalNavigationController *)&v3 dealloc];
 }
 
-- (void)setShowTopSeparator:(BOOL)a3
+- (void)setShowTopSeparator:(BOOL)separator
 {
-  if (self->mShowTopSeparator != a3)
+  if (self->mShowTopSeparator != separator)
   {
-    self->mShowTopSeparator = a3;
+    self->mShowTopSeparator = separator;
     if ([(TSKModalNavigationController *)self isViewLoaded])
     {
 
@@ -48,7 +48,7 @@
   }
 }
 
-- (void)p_statusBarWillChange:(id)a3
+- (void)p_statusBarWillChange:(id)change
 {
   if (TSUPhoneUI())
   {
@@ -70,8 +70,8 @@
           v8 = v6;
         }
 
-        v9 = [(TSKModalNavigationController *)self navigationBar];
-        [v9 frame];
+        navigationBar = [(TSKModalNavigationController *)self navigationBar];
+        [navigationBar frame];
         v13[0] = MEMORY[0x277D85DD0];
         v13[1] = 3221225472;
         v13[2] = __54__TSKModalNavigationController_p_statusBarWillChange___block_invoke;
@@ -80,7 +80,7 @@
         *&v13[7] = v8;
         v13[8] = v11;
         v13[9] = v12;
-        v13[4] = v9;
+        v13[4] = navigationBar;
         v13[5] = self;
         [MEMORY[0x277D75D18] animateWithDuration:4 delay:v13 options:0 animations:0.35 completion:0.0];
       }
@@ -99,14 +99,14 @@ uint64_t __54__TSKModalNavigationController_p_statusBarWillChange___block_invoke
 
 - (void)layoutViews
 {
-  v3 = [(TSKModalNavigationController *)self showTopSeparator];
+  showTopSeparator = [(TSKModalNavigationController *)self showTopSeparator];
   mTopSeparator = self->mTopSeparator;
-  if (v3)
+  if (showTopSeparator)
   {
     if (!mTopSeparator)
     {
-      v5 = [(TSKModalNavigationController *)self navigationBar];
-      [v5 bounds];
+      navigationBar = [(TSKModalNavigationController *)self navigationBar];
+      [navigationBar bounds];
       v7 = v6;
       v9 = v8;
       v11 = v10;
@@ -122,7 +122,7 @@ uint64_t __54__TSKModalNavigationController_p_statusBarWillChange___block_invoke
       [(UIView *)self->mTopSeparator setAutoresizingMask:34];
       v14 = self->mTopSeparator;
 
-      [v5 addSubview:v14];
+      [navigationBar addSubview:v14];
     }
   }
 
@@ -142,7 +142,7 @@ uint64_t __54__TSKModalNavigationController_p_statusBarWillChange___block_invoke
   [(TSKModalNavigationController *)self layoutViews];
 }
 
-- (int64_t)positionForBar:(id)a3
+- (int64_t)positionForBar:(id)bar
 {
   if (self->mIsFullscreenViewController)
   {

@@ -1,6 +1,6 @@
 @interface TSTWPRep
 - (id)tableLayout;
-- (void)recursivelyDrawInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4;
+- (void)recursivelyDrawInContext:(CGContext *)context keepingChildrenPassingTest:(id)test;
 @end
 
 @implementation TSTWPRep
@@ -15,12 +15,12 @@
   return v13;
 }
 
-- (void)recursivelyDrawInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4
+- (void)recursivelyDrawInContext:(CGContext *)context keepingChildrenPassingTest:(id)test
 {
-  v6 = a4;
+  testCopy = test;
   v11 = objc_msgSend_layout(self, v7, v8, v9, v10);
   v16 = objc_msgSend_tableLayout(self, v12, v13, v14, v15);
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   objc_msgSend_maskRect(v11, v17, v18, v19, v20);
   v25 = objc_msgSend_cachedCellID(v11, v21, v22, v23, v24);
   v26 = 0x100000001;
@@ -41,9 +41,9 @@
   CGContextClipToRectSafe();
   v44.receiver = self;
   v44.super_class = TSTWPRep;
-  [(TSDRep *)&v44 recursivelyDrawInContext:a3 keepingChildrenPassingTest:v6];
+  [(TSDRep *)&v44 recursivelyDrawInContext:context keepingChildrenPassingTest:testCopy];
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
 @end

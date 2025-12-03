@@ -1,8 +1,8 @@
 @interface FBAPartialSheetNavigationController
-+ (id)detentForCustomHeight:(double)a3;
++ (id)detentForCustomHeight:(double)height;
 - (id)detentForPreferredContentSize;
-- (void)_presentationController:(id)a3 prepareAdaptivePresentationController:(id)a4;
-- (void)setCustomDetentHeight:(double)a3;
+- (void)_presentationController:(id)controller prepareAdaptivePresentationController:(id)presentationController;
+- (void)setCustomDetentHeight:(double)height;
 - (void)viewDidLoad;
 @end
 
@@ -17,15 +17,15 @@
   [(FBAPartialSheetNavigationController *)self setCustomDetentHeight:-1.0];
 }
 
-- (void)_presentationController:(id)a3 prepareAdaptivePresentationController:(id)a4
+- (void)_presentationController:(id)controller prepareAdaptivePresentationController:(id)presentationController
 {
-  v5 = a4;
+  presentationControllerCopy = presentationController;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = presentationControllerCopy;
     [v6 _setShouldDismissWhenTappedOutside:1];
-    v7 = [v6 presentedViewController];
+    presentedViewController = [v6 presentedViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -36,8 +36,8 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v9 = [v6 presentedViewController];
-    v10 = [v9 topViewController];
+    presentedViewController2 = [v6 presentedViewController];
+    topViewController = [presentedViewController2 topViewController];
     objc_opt_class();
     v11 = objc_opt_isKindOfClass();
 
@@ -48,29 +48,29 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v12 = [(FBAPartialSheetNavigationController *)self detentBehavior];
-    switch(v12)
+    detentBehavior = [(FBAPartialSheetNavigationController *)self detentBehavior];
+    switch(detentBehavior)
     {
       case 0uLL:
         goto LABEL_8;
       case 1uLL:
-        v14 = +[_UISheetDetent _mediumDetent];
+        detentForPreferredContentSize = +[_UISheetDetent _mediumDetent];
         break;
       case 2uLL:
         v13 = objc_opt_class();
         [(FBAPartialSheetNavigationController *)self customDetentHeight];
-        v14 = [v13 detentForCustomHeight:?];
+        detentForPreferredContentSize = [v13 detentForCustomHeight:?];
         break;
       default:
 LABEL_8:
-        v14 = [(FBAPartialSheetNavigationController *)self detentForPreferredContentSize];
+        detentForPreferredContentSize = [(FBAPartialSheetNavigationController *)self detentForPreferredContentSize];
         break;
     }
 
-    v15 = v14;
-    if (v14)
+    v15 = detentForPreferredContentSize;
+    if (detentForPreferredContentSize)
     {
-      v21[0] = v14;
+      v21[0] = detentForPreferredContentSize;
       v16 = +[_UISheetDetent _largeDetent];
       v21[1] = v16;
       v17 = v21;
@@ -94,27 +94,27 @@ LABEL_8:
 LABEL_16:
 }
 
-- (void)setCustomDetentHeight:(double)a3
+- (void)setCustomDetentHeight:(double)height
 {
-  v4 = -1.0;
-  if (a3 > 0.0)
+  heightCopy = -1.0;
+  if (height > 0.0)
   {
     v6 = +[UIScreen mainScreen];
     [v6 bounds];
     v8 = v7;
 
-    if (v8 > a3)
+    if (v8 > height)
     {
-      v4 = a3;
+      heightCopy = height;
     }
   }
 
-  self->_customDetentHeight = v4;
+  self->_customDetentHeight = heightCopy;
 }
 
-+ (id)detentForCustomHeight:(double)a3
++ (id)detentForCustomHeight:(double)height
 {
-  if (a3 == -1.0)
+  if (height == -1.0)
   {
     v5 = 0;
   }
@@ -127,7 +127,7 @@ LABEL_16:
     v7[1] = 3221225472;
     v7[2] = sub_10002F31C;
     v7[3] = &unk_1000DF6E0;
-    *&v7[4] = a3;
+    *&v7[4] = height;
     v5 = [_UISheetDetent _detentWithContainerViewBlock:v7];
   }
 

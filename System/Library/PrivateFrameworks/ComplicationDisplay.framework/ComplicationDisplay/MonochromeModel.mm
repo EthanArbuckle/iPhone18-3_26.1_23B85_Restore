@@ -1,15 +1,15 @@
 @interface MonochromeModel
-- (id)colorForView:(id)a3 accented:(BOOL)a4;
-- (id)filtersForView:(id)a3 style:(int64_t)a4;
-- (id)filtersForView:(id)a3 style:(int64_t)a4 fraction:(double)a5;
+- (id)colorForView:(id)view accented:(BOOL)accented;
+- (id)filtersForView:(id)view style:(int64_t)style;
+- (id)filtersForView:(id)view style:(int64_t)style fraction:(double)fraction;
 @end
 
 @implementation MonochromeModel
 
-- (id)filtersForView:(id)a3 style:(int64_t)a4
+- (id)filtersForView:(id)view style:(int64_t)style
 {
-  v5 = a3;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   v7 = sub_243D99838();
 
   if (v7)
@@ -26,10 +26,10 @@
   return v8;
 }
 
-- (id)filtersForView:(id)a3 style:(int64_t)a4 fraction:(double)a5
+- (id)filtersForView:(id)view style:(int64_t)style fraction:(double)fraction
 {
-  v6 = a3;
-  v7 = self;
+  viewCopy = view;
+  selfCopy = self;
   v8 = sub_243D99994();
 
   if (v8)
@@ -46,10 +46,10 @@
   return v9;
 }
 
-- (id)colorForView:(id)a3 accented:(BOOL)a4
+- (id)colorForView:(id)view accented:(BOOL)accented
 {
-  v5 = a3;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   v7 = sub_243D99AFC();
 
   return v7;

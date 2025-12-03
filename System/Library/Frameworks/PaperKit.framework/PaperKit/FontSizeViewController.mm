@@ -1,5 +1,5 @@
 @interface FontSizeViewController
-- (_TtC8PaperKit22FontSizeViewController)initWithCoder:(id)a3;
+- (_TtC8PaperKit22FontSizeViewController)initWithCoder:(id)coder;
 - (void)viewDidLoad;
 @end
 
@@ -7,16 +7,16 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   FontSizeViewController.viewDidLoad()();
 }
 
-- (_TtC8PaperKit22FontSizeViewController)initWithCoder:(id)a3
+- (_TtC8PaperKit22FontSizeViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(ValueEditingViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ValueEditingViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

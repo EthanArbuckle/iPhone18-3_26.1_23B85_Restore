@@ -1,39 +1,39 @@
 @interface MUPlaceDescriptionConfiguration
-+ (id)configurationWithEncyclopedicInfo:(id)a3;
-- (MUPlaceDescriptionConfiguration)initWithTitle:(id)a3 descriptionText:(id)a4 attribution:(id)a5;
++ (id)configurationWithEncyclopedicInfo:(id)info;
+- (MUPlaceDescriptionConfiguration)initWithTitle:(id)title descriptionText:(id)text attribution:(id)attribution;
 @end
 
 @implementation MUPlaceDescriptionConfiguration
 
-- (MUPlaceDescriptionConfiguration)initWithTitle:(id)a3 descriptionText:(id)a4 attribution:(id)a5
+- (MUPlaceDescriptionConfiguration)initWithTitle:(id)title descriptionText:(id)text attribution:(id)attribution
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  titleCopy = title;
+  textCopy = text;
+  attributionCopy = attribution;
   v15.receiver = self;
   v15.super_class = MUPlaceDescriptionConfiguration;
   v12 = [(MUPlaceDescriptionConfiguration *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_titleText, a3);
-    objc_storeStrong(&v13->_textBlockText, a4);
-    objc_storeStrong(&v13->_attribution, a5);
+    objc_storeStrong(&v12->_titleText, title);
+    objc_storeStrong(&v13->_textBlockText, text);
+    objc_storeStrong(&v13->_attribution, attribution);
     v13->_showSectionTitle = 1;
   }
 
   return v13;
 }
 
-+ (id)configurationWithEncyclopedicInfo:(id)a3
++ (id)configurationWithEncyclopedicInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = [MUPlaceDescriptionConfiguration alloc];
-  v5 = [v3 textBlockTitle];
-  v6 = [v3 textBlockText];
-  v7 = [v3 encyclopedicAttribution];
+  textBlockTitle = [infoCopy textBlockTitle];
+  textBlockText = [infoCopy textBlockText];
+  encyclopedicAttribution = [infoCopy encyclopedicAttribution];
 
-  v8 = [(MUPlaceDescriptionConfiguration *)v4 initWithTitle:v5 descriptionText:v6 attribution:v7];
+  v8 = [(MUPlaceDescriptionConfiguration *)v4 initWithTitle:textBlockTitle descriptionText:textBlockText attribution:encyclopedicAttribution];
 
   return v8;
 }

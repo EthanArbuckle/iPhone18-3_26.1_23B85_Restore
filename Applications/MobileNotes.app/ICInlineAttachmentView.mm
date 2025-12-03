@@ -1,41 +1,41 @@
 @interface ICInlineAttachmentView
 - (id)containerTableTextView;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (void)app_updateViewAnnotation;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)openURL:(id)a3;
-- (void)respondToTapGesture:(id)a3;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)openURL:(id)l;
+- (void)respondToTapGesture:(id)gesture;
 - (void)setupEventHandling;
 @end
 
 @implementation ICInlineAttachmentView
 
-- (void)openURL:(id)a3
+- (void)openURL:(id)l
 {
-  v8 = a3;
+  lCopy = l;
   objc_opt_class();
-  v4 = [(ICInlineAttachmentView *)self window];
+  window = [(ICInlineAttachmentView *)self window];
   v5 = ICCheckedDynamicCast();
 
-  v6 = [v5 ic_viewControllerManager];
-  v7 = v6;
-  if (v6)
+  ic_viewControllerManager = [v5 ic_viewControllerManager];
+  v7 = ic_viewControllerManager;
+  if (ic_viewControllerManager)
   {
-    [v6 openURL:v8];
+    [ic_viewControllerManager openURL:lCopy];
   }
 }
 
 - (void)app_updateViewAnnotation
 {
-  v3 = [(ICInlineAttachmentView *)self textAttachment];
-  v8 = [v3 attachment];
+  textAttachment = [(ICInlineAttachmentView *)self textAttachment];
+  attachment = [textAttachment attachment];
 
-  if ([v8 isHashtagAttachment])
+  if ([attachment isHashtagAttachment])
   {
-    v4 = [v8 tokenContentIdentifier];
-    v5 = [v8 note];
-    v6 = [v5 account];
-    v7 = [ICHashtag hashtagWithStandardizedContent:v4 account:v6];
+    tokenContentIdentifier = [attachment tokenContentIdentifier];
+    note = [attachment note];
+    account = [note account];
+    v7 = [ICHashtag hashtagWithStandardizedContent:tokenContentIdentifier account:account];
 
     [(ICInlineAttachmentView *)self ic_annotateWithTag:v7];
   }
@@ -53,32 +53,32 @@
 
   if (([(ICInlineAttachmentView *)self isLinkAttachmentView]& 1) != 0 || [(ICInlineAttachmentView *)self isCalculateResultAttachmentView])
   {
-    v4 = [(ICInlineAttachmentView *)self contextInteraction];
+    contextInteraction = [(ICInlineAttachmentView *)self contextInteraction];
 
-    if (!v4)
+    if (!contextInteraction)
     {
       v5 = [[UIContextMenuInteraction alloc] initWithDelegate:self];
       [(ICInlineAttachmentView *)self setContextInteraction:v5];
 
-      v6 = [(ICInlineAttachmentView *)self contextInteraction];
-      [(ICInlineAttachmentView *)self addInteraction:v6];
+      contextInteraction2 = [(ICInlineAttachmentView *)self contextInteraction];
+      [(ICInlineAttachmentView *)self addInteraction:contextInteraction2];
     }
   }
 }
 
-- (void)respondToTapGesture:(id)a3
+- (void)respondToTapGesture:(id)gesture
 {
-  v8 = a3;
+  gestureCopy = gesture;
   if ([(ICInlineAttachmentView *)self isLinkAttachmentView])
   {
-    v4 = [(ICInlineAttachmentView *)self textAttachment];
-    v5 = [v4 attachment];
-    v6 = [v5 tokenContentIdentifier];
-    v7 = NotesAppURLForNoteIdentifierOrTokenContentIdentifier();
+    textAttachment = [(ICInlineAttachmentView *)self textAttachment];
+    attachment = [textAttachment attachment];
+    tokenContentIdentifier = [attachment tokenContentIdentifier];
+    contextInteraction = NotesAppURLForNoteIdentifierOrTokenContentIdentifier();
 
-    if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (contextInteraction && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [(ICInlineAttachmentView *)self openURL:v7];
+      [(ICInlineAttachmentView *)self openURL:contextInteraction];
     }
   }
 
@@ -89,52 +89,52 @@
       goto LABEL_8;
     }
 
-    v7 = [(ICInlineAttachmentView *)self contextInteraction];
-    [v8 location];
-    [v7 _presentMenuAtLocation:?];
+    contextInteraction = [(ICInlineAttachmentView *)self contextInteraction];
+    [gestureCopy location];
+    [contextInteraction _presentMenuAtLocation:?];
   }
 
 LABEL_8:
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   if ([(ICInlineAttachmentView *)self isLinkAttachmentView])
   {
     objc_opt_class();
-    v7 = [(ICInlineAttachmentView *)self window];
-    v8 = ICCheckedDynamicCast();
+    window = [(ICInlineAttachmentView *)self window];
+    attachment2 = ICCheckedDynamicCast();
 
-    v9 = [v8 ic_viewControllerManager];
-    v10 = [v9 noteEditorViewController];
-    v11 = [(ICInlineAttachmentView *)self textAttachment];
-    v12 = [v11 attachment];
+    ic_viewControllerManager = [attachment2 ic_viewControllerManager];
+    noteEditorViewController = [ic_viewControllerManager noteEditorViewController];
+    textAttachment = [(ICInlineAttachmentView *)self textAttachment];
+    attachment = [textAttachment attachment];
 
-    v13 = [(ICInlineAttachmentView *)self containerTableTextView];
-    [(ICInlineAttachmentView *)self convertPoint:v13 toView:x, y];
-    v14 = [v10 contextMenuInteraction:v12 atLocation:v13 inTableTextView:?];
+    containerTableTextView = [(ICInlineAttachmentView *)self containerTableTextView];
+    [(ICInlineAttachmentView *)self convertPoint:containerTableTextView toView:x, y];
+    v14 = [noteEditorViewController contextMenuInteraction:attachment atLocation:containerTableTextView inTableTextView:?];
 
     goto LABEL_6;
   }
 
   if ([(ICInlineAttachmentView *)self isCalculateResultAttachmentView])
   {
-    v15 = [(ICInlineAttachmentView *)self textAttachment];
-    v8 = [v15 attachment];
+    textAttachment2 = [(ICInlineAttachmentView *)self textAttachment];
+    attachment2 = [textAttachment2 attachment];
 
-    v16 = [v8 note];
-    v9 = [v16 calculateDocumentController];
+    note = [attachment2 note];
+    ic_viewControllerManager = [note calculateDocumentController];
 
-    if (!v9)
+    if (!ic_viewControllerManager)
     {
       v14 = 0;
       goto LABEL_7;
     }
 
-    [v9 updateAffectingChangeCounts:0];
-    v14 = [v9 contextMenuForResultAttachment:v8];
+    [ic_viewControllerManager updateAffectingChangeCounts:0];
+    v14 = [ic_viewControllerManager contextMenuForResultAttachment:attachment2];
 LABEL_6:
 
 LABEL_7:
@@ -149,10 +149,10 @@ LABEL_9:
 
 - (id)containerTableTextView
 {
-  v2 = [(ICInlineAttachmentView *)self superview];
-  if (v2)
+  superview = [(ICInlineAttachmentView *)self superview];
+  if (superview)
   {
-    v3 = v2;
+    v3 = superview;
     while (1)
     {
       objc_opt_class();
@@ -161,37 +161,37 @@ LABEL_9:
         break;
       }
 
-      v4 = [v3 superview];
+      superview2 = [v3 superview];
 
-      v3 = v4;
-      if (!v4)
+      v3 = superview2;
+      if (!superview2)
       {
         goto LABEL_8;
       }
     }
 
     objc_opt_class();
-    v4 = ICDynamicCast();
+    superview2 = ICDynamicCast();
   }
 
   else
   {
-    v4 = 0;
+    superview2 = 0;
   }
 
 LABEL_8:
 
-  return v4;
+  return superview2;
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a5;
+  animatorCopy = animator;
   if ([(ICInlineAttachmentView *)self isLinkAttachmentView])
   {
-    v7 = [(ICInlineAttachmentView *)self textAttachment];
-    v8 = [v7 attachment];
-    v9 = [v8 tokenContentIdentifier];
+    textAttachment = [(ICInlineAttachmentView *)self textAttachment];
+    attachment = [textAttachment attachment];
+    tokenContentIdentifier = [attachment tokenContentIdentifier];
     v10 = NotesAppURLForNoteIdentifierOrTokenContentIdentifier();
 
     if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
@@ -202,7 +202,7 @@ LABEL_8:
       v11[3] = &unk_100645BA0;
       v11[4] = self;
       v12 = v10;
-      [v6 addCompletion:v11];
+      [animatorCopy addCompletion:v11];
     }
   }
 }

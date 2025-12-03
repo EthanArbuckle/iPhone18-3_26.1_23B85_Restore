@@ -15,7 +15,7 @@
 
   [v5 setReturnsObjectsAsFaults:0];
   v14 = 0;
-  v7 = [a1 executeFetchRequest:v5 error:&v14];
+  v7 = [self executeFetchRequest:v5 error:&v14];
   v8 = v14;
   v9 = v8;
   if (!v7)
@@ -37,17 +37,17 @@
     }
   }
 
-  v12 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
-  return v12;
+  return firstObject;
 }
 
 - (id)colorThemeForUuid:()MTTheme
 {
-  v1 = [a1 themeForUuid:?];
-  v2 = [v1 convertToColorTheme];
+  v1 = [self themeForUuid:?];
+  convertToColorTheme = [v1 convertToColorTheme];
 
-  return v2;
+  return convertToColorTheme;
 }
 
 @end

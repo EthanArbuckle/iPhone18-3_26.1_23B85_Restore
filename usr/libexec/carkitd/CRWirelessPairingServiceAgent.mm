@@ -1,41 +1,41 @@
 @interface CRWirelessPairingServiceAgent
-- (BOOL)_shouldAcceptHeadUnitPairingPromptServiceConnection:(id)a3;
-- (BOOL)_shouldAcceptPairingServiceConnection:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)shouldPresentHeadUnitPairingPromptSession:(id)a3;
+- (BOOL)_shouldAcceptHeadUnitPairingPromptServiceConnection:(id)connection;
+- (BOOL)_shouldAcceptPairingServiceConnection:(id)connection;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)shouldPresentHeadUnitPairingPromptSession:(id)session;
 - (CRHeadUnitPairingPresenting)presenter;
 - (CRHeadUnitPairingPromptServiceSession)currentPromptSession;
-- (CRWirelessPairingServiceAgent)initWithBluetoothManager:(id)a3 preferences:(id)a4 vehicleStore:(id)a5;
-- (void)pairingServiceSession:(id)a3 didFailPairingAttemptWithError:(id)a4;
-- (void)pairingServiceSessionDidFinishPairing:(id)a3;
-- (void)presentHeadUnitPairingForPromptSession:(id)a3;
-- (void)setCurrentPairingSession:(id)a3;
+- (CRWirelessPairingServiceAgent)initWithBluetoothManager:(id)manager preferences:(id)preferences vehicleStore:(id)store;
+- (void)pairingServiceSession:(id)session didFailPairingAttemptWithError:(id)error;
+- (void)pairingServiceSessionDidFinishPairing:(id)pairing;
+- (void)presentHeadUnitPairingForPromptSession:(id)session;
+- (void)setCurrentPairingSession:(id)session;
 @end
 
 @implementation CRWirelessPairingServiceAgent
 
-- (CRWirelessPairingServiceAgent)initWithBluetoothManager:(id)a3 preferences:(id)a4 vehicleStore:(id)a5
+- (CRWirelessPairingServiceAgent)initWithBluetoothManager:(id)manager preferences:(id)preferences vehicleStore:(id)store
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  preferencesCopy = preferences;
+  storeCopy = store;
   v15.receiver = self;
   v15.super_class = CRWirelessPairingServiceAgent;
   v12 = [(CRWirelessPairingServiceAgent *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_bluetoothManager, a3);
-    objc_storeStrong(&v13->_carPlayPreferences, a4);
-    objc_storeStrong(&v13->_vehicleStore, a5);
+    objc_storeStrong(&v12->_bluetoothManager, manager);
+    objc_storeStrong(&v13->_carPlayPreferences, preferences);
+    objc_storeStrong(&v13->_vehicleStore, store);
   }
 
   return v13;
 }
 
-- (void)setCurrentPairingSession:(id)a3
+- (void)setCurrentPairingSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   currentPairingSession = self->_currentPairingSession;
   if (currentPairingSession)
   {
@@ -45,24 +45,24 @@
   }
 
   v7 = self->_currentPairingSession;
-  self->_currentPairingSession = v4;
+  self->_currentPairingSession = sessionCopy;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 serviceName];
-  v7 = [v6 isEqualToString:@"com.apple.carkit.pairing.service"];
+  connectionCopy = connection;
+  serviceName = [connectionCopy serviceName];
+  v7 = [serviceName isEqualToString:@"com.apple.carkit.pairing.service"];
 
   if (v7)
   {
-    v8 = [(CRWirelessPairingServiceAgent *)self _shouldAcceptPairingServiceConnection:v5];
+    v8 = [(CRWirelessPairingServiceAgent *)self _shouldAcceptPairingServiceConnection:connectionCopy];
   }
 
   else
   {
-    v9 = [v5 serviceName];
-    v10 = [v9 isEqualToString:@"com.apple.carkit.headUnitPairingPrompt.service"];
+    serviceName2 = [connectionCopy serviceName];
+    v10 = [serviceName2 isEqualToString:@"com.apple.carkit.headUnitPairingPrompt.service"];
 
     if (!v10)
     {
@@ -70,7 +70,7 @@
       goto LABEL_7;
     }
 
-    v8 = [(CRWirelessPairingServiceAgent *)self _shouldAcceptHeadUnitPairingPromptServiceConnection:v5];
+    v8 = [(CRWirelessPairingServiceAgent *)self _shouldAcceptHeadUnitPairingPromptServiceConnection:connectionCopy];
   }
 
   v11 = v8;
@@ -79,16 +79,16 @@ LABEL_7:
   return v11;
 }
 
-- (BOOL)_shouldAcceptPairingServiceConnection:(id)a3
+- (BOOL)_shouldAcceptPairingServiceConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [v4 valueForEntitlement:@"com.apple.private.carkit.pairing"];
-  v6 = [v5 BOOLValue];
+  connectionCopy = connection;
+  v5 = [connectionCopy valueForEntitlement:@"com.apple.private.carkit.pairing"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CRWirelessPairingService];
-    [v4 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
     v17 = 0;
     v18 = &v17;
     v19 = 0x3032000000;
@@ -102,32 +102,32 @@ LABEL_7:
     block[4] = self;
     block[5] = &v17;
     dispatch_sync(&_dispatch_main_q, block);
-    [v4 setExportedObject:v18[5]];
-    objc_initWeak(&location, v4);
+    [connectionCopy setExportedObject:v18[5]];
+    objc_initWeak(&location, connectionCopy);
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10001F5D8;
     v13[3] = &unk_1000DD8E8;
     objc_copyWeak(&v14, &location);
     v13[4] = self;
-    [v4 setInterruptionHandler:v13];
+    [connectionCopy setInterruptionHandler:v13];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10001F798;
     v11[3] = &unk_1000DD8E8;
     objc_copyWeak(&v12, &location);
     v11[4] = self;
-    [v4 setInvalidationHandler:v11];
+    [connectionCopy setInvalidationHandler:v11];
     v8 = CarPairingLogging();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 processIdentifier]);
+      v9 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [connectionCopy processIdentifier]);
       *buf = 138412290;
       v24 = v9;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Receiving pairing service connection from %@", buf, 0xCu);
     }
 
-    [v4 resume];
+    [connectionCopy resume];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -139,50 +139,50 @@ LABEL_7:
     v7 = CarPairingLogging();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_100083994(v4);
+      sub_100083994(connectionCopy);
     }
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (BOOL)_shouldAcceptHeadUnitPairingPromptServiceConnection:(id)a3
+- (BOOL)_shouldAcceptHeadUnitPairingPromptServiceConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [v4 valueForEntitlement:@"com.apple.private.carkit.headUnitPairingPrompt"];
-  v6 = [v5 BOOLValue];
+  connectionCopy = connection;
+  v5 = [connectionCopy valueForEntitlement:@"com.apple.private.carkit.headUnitPairingPrompt"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CRHeadUnitPairingPromptService];
-    [v4 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
     v8 = objc_alloc_init(CRHeadUnitPairingPromptServiceSession);
     [(CRWirelessPairingServiceAgent *)self setCurrentPromptSession:v8];
     [(CRHeadUnitPairingPromptServiceSession *)v8 setDelegate:self];
-    [v4 setExportedObject:v8];
-    objc_initWeak(&location, v4);
+    [connectionCopy setExportedObject:v8];
+    objc_initWeak(&location, connectionCopy);
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10001FC18;
     v14[3] = &unk_1000DDA60;
     objc_copyWeak(&v15, &location);
-    [v4 setInterruptionHandler:v14];
+    [connectionCopy setInterruptionHandler:v14];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10001FCCC;
     v12[3] = &unk_1000DDA60;
     objc_copyWeak(&v13, &location);
-    [v4 setInvalidationHandler:v12];
+    [connectionCopy setInvalidationHandler:v12];
     v9 = CarPairingLogging();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 processIdentifier]);
+      v10 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [connectionCopy processIdentifier]);
       *buf = 138412290;
       v18 = v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Receiving HUP prompt service connection from %@", buf, 0xCu);
     }
 
-    [v4 resume];
+    [connectionCopy resume];
     objc_destroyWeak(&v13);
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -193,19 +193,19 @@ LABEL_7:
     v7 = CarPairingLogging();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_100083A50(v4);
+      sub_100083A50(connectionCopy);
     }
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (BOOL)shouldPresentHeadUnitPairingPromptSession:(id)a3
+- (BOOL)shouldPresentHeadUnitPairingPromptSession:(id)session
 {
-  v4 = a3;
-  v5 = [(CRWirelessPairingServiceAgent *)self currentPairingSession];
+  sessionCopy = session;
+  currentPairingSession = [(CRWirelessPairingServiceAgent *)self currentPairingSession];
 
-  if (!v5)
+  if (!currentPairingSession)
   {
     v15 = CarPairingLogging();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -222,10 +222,10 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v6 = [(CRWirelessPairingServiceAgent *)self currentPairingSession];
-  v7 = [v6 isPairingAvailable];
+  currentPairingSession2 = [(CRWirelessPairingServiceAgent *)self currentPairingSession];
+  isPairingAvailable = [currentPairingSession2 isPairingAvailable];
 
-  if ((v7 & 1) == 0)
+  if ((isPairingAvailable & 1) == 0)
   {
     v15 = CarPairingLogging();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -236,10 +236,10 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v8 = [(CRWirelessPairingServiceAgent *)self currentPairingSession];
-  v9 = [v8 isActive];
+  currentPairingSession3 = [(CRWirelessPairingServiceAgent *)self currentPairingSession];
+  isActive = [currentPairingSession3 isActive];
 
-  if ((v9 & 1) == 0)
+  if ((isActive & 1) == 0)
   {
     v15 = CarPairingLogging();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -252,23 +252,23 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v10 = [(CRWirelessPairingServiceAgent *)self currentPairingSession];
-  v11 = [v10 keyIdentifier];
-  v12 = [v4 keyIdentifier];
-  v13 = [v11 isEqualToString:v12];
+  currentPairingSession4 = [(CRWirelessPairingServiceAgent *)self currentPairingSession];
+  keyIdentifier = [currentPairingSession4 keyIdentifier];
+  keyIdentifier2 = [sessionCopy keyIdentifier];
+  v13 = [keyIdentifier isEqualToString:keyIdentifier2];
 
   if ((v13 & 1) == 0)
   {
     v15 = CarPairingLogging();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(CRWirelessPairingServiceAgent *)self currentPairingSession];
-      v19 = [v18 keyIdentifier];
-      v20 = [v4 keyIdentifier];
+      currentPairingSession5 = [(CRWirelessPairingServiceAgent *)self currentPairingSession];
+      keyIdentifier3 = [currentPairingSession5 keyIdentifier];
+      keyIdentifier4 = [sessionCopy keyIdentifier];
       v21 = 138478083;
-      v22 = v19;
+      v22 = keyIdentifier3;
       v23 = 2113;
-      v24 = v20;
+      v24 = keyIdentifier4;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "not presenting head unit pairing prompt, key identifier mismatch: %{private}@ vs %{private}@, ", &v21, 0x16u);
     }
 
@@ -281,20 +281,20 @@ LABEL_14:
   return v14;
 }
 
-- (void)presentHeadUnitPairingForPromptSession:(id)a3
+- (void)presentHeadUnitPairingForPromptSession:(id)session
 {
-  if ([(CRWirelessPairingServiceAgent *)self shouldPresentHeadUnitPairingPromptSession:a3])
+  if ([(CRWirelessPairingServiceAgent *)self shouldPresentHeadUnitPairingPromptSession:session])
   {
-    v4 = [(CRWirelessPairingServiceAgent *)self currentPairingSession];
-    v5 = [v4 bluetoothAddress];
+    currentPairingSession = [(CRWirelessPairingServiceAgent *)self currentPairingSession];
+    bluetoothAddress = [currentPairingSession bluetoothAddress];
 
-    v6 = [CRBluetoothManager addressStringForData:v5];
+    v6 = [CRBluetoothManager addressStringForData:bluetoothAddress];
     if (v6)
     {
-      v7 = [(CRWirelessPairingServiceAgent *)self presenter];
-      if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+      presenter = [(CRWirelessPairingServiceAgent *)self presenter];
+      if (presenter && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [v7 presentHeadUnitPairingForBluetoothAddress:v6 showBluetoothOnlyOption:0];
+        [presenter presentHeadUnitPairingForBluetoothAddress:v6 showBluetoothOnlyOption:0];
       }
 
       else
@@ -322,18 +322,18 @@ LABEL_14:
   }
 }
 
-- (void)pairingServiceSessionDidFinishPairing:(id)a3
+- (void)pairingServiceSessionDidFinishPairing:(id)pairing
 {
-  v4 = [(CRWirelessPairingServiceAgent *)self presenter];
-  if (v4)
+  presenter = [(CRWirelessPairingServiceAgent *)self presenter];
+  if (presenter)
   {
-    v8 = v4;
+    v8 = presenter;
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(CRWirelessPairingServiceAgent *)self currentPairingSession];
-      v6 = [v5 bluetoothAddress];
+      currentPairingSession = [(CRWirelessPairingServiceAgent *)self currentPairingSession];
+      bluetoothAddress = [currentPairingSession bluetoothAddress];
 
-      v7 = [CRBluetoothManager addressStringForData:v6];
+      v7 = [CRBluetoothManager addressStringForData:bluetoothAddress];
       [v8 didHeadUnitPairWithBluetoothAddress:v7];
     }
   }
@@ -341,17 +341,17 @@ LABEL_14:
   _objc_release_x2();
 }
 
-- (void)pairingServiceSession:(id)a3 didFailPairingAttemptWithError:(id)a4
+- (void)pairingServiceSession:(id)session didFailPairingAttemptWithError:(id)error
 {
-  v9 = a4;
-  v5 = [(CRWirelessPairingServiceAgent *)self presenter];
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  errorCopy = error;
+  presenter = [(CRWirelessPairingServiceAgent *)self presenter];
+  if (presenter && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v6 = [(CRWirelessPairingServiceAgent *)self currentPairingSession];
-    v7 = [v6 bluetoothAddress];
+    currentPairingSession = [(CRWirelessPairingServiceAgent *)self currentPairingSession];
+    bluetoothAddress = [currentPairingSession bluetoothAddress];
 
-    v8 = [CRBluetoothManager addressStringForData:v7];
-    [v5 didFailToHeadUnitPairWithBluetoothAddress:v8 error:v9];
+    v8 = [CRBluetoothManager addressStringForData:bluetoothAddress];
+    [presenter didFailToHeadUnitPairWithBluetoothAddress:v8 error:errorCopy];
   }
 }
 

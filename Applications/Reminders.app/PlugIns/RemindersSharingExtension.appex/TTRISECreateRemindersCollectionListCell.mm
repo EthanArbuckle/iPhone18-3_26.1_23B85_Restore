@@ -1,12 +1,12 @@
 @interface TTRISECreateRemindersCollectionListCell
-- (_TtC25RemindersSharingExtension39TTRISECreateRemindersCollectionListCell)initWithCoder:(id)a3;
+- (_TtC25RemindersSharingExtension39TTRISECreateRemindersCollectionListCell)initWithCoder:(id)coder;
 - (void)invalidateIntrinsicContentSize;
 - (void)prepareForReuse;
 @end
 
 @implementation TTRISECreateRemindersCollectionListCell
 
-- (_TtC25RemindersSharingExtension39TTRISECreateRemindersCollectionListCell)initWithCoder:(id)a3
+- (_TtC25RemindersSharingExtension39TTRISECreateRemindersCollectionListCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC25RemindersSharingExtension39TTRISECreateRemindersCollectionListCell_viewModelObserver) = 0;
   result = sub_10004CD40();
@@ -48,7 +48,7 @@
   v8[2] = sub_10003415C;
   v8[3] = &unk_10005FB50;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
 
   [v3 performWithoutAnimation:v6];
   _Block_release(v6);

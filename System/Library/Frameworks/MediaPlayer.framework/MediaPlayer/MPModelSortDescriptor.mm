@@ -1,35 +1,35 @@
 @interface MPModelSortDescriptor
-+ (id)sortDescriptorWithKeyPath:(id)a3 ascending:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (MPModelSortDescriptor)initWithCoder:(id)a3;
++ (id)sortDescriptorWithKeyPath:(id)path ascending:(BOOL)ascending;
+- (BOOL)isEqual:(id)equal;
+- (MPModelSortDescriptor)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPModelSortDescriptor
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = MPModelSortDescriptor;
-  v4 = a3;
-  [(MPModelSortDescriptor *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(MPModelSortDescriptor *)&v6 encodeWithCoder:coderCopy];
   v5 = [(MPModelSortDescriptor *)self keyPath:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"keyPath"];
+  [coderCopy encodeObject:v5 forKey:@"keyPath"];
 }
 
-- (MPModelSortDescriptor)initWithCoder:(id)a3
+- (MPModelSortDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MPModelSortDescriptor;
-  v5 = [(MPModelSortDescriptor *)&v11 initWithCoder:v4];
+  v5 = [(MPModelSortDescriptor *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"keyPath"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"keyPath"];
     [(MPModelSortDescriptor *)v5 setKeyPath:v9];
   }
 
@@ -227,9 +227,9 @@
 
     else
     {
-      v38 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v39 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppend64(MSVHasher * _Nonnull, uint64_t)"}];
-      [v38 handleFailureInFunction:v39 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
+      [currentHandler handleFailureInFunction:v39 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
     }
   }
 
@@ -266,8 +266,8 @@
   v206 = 0u;
   v207 = 0u;
   v208 = 0u;
-  v58 = [(MPModelSortDescriptor *)self keyPath];
-  v59 = [v58 countByEnumeratingWithState:&v205 objects:v212 count:16];
+  keyPath = [(MPModelSortDescriptor *)self keyPath];
+  v59 = [keyPath countByEnumeratingWithState:&v205 objects:v212 count:16];
   if (v59)
   {
     v60 = v59;
@@ -278,11 +278,11 @@
       {
         if (*v206 != v61)
         {
-          objc_enumerationMutation(v58);
+          objc_enumerationMutation(keyPath);
         }
 
         v63 = *(*(&v205 + 1) + 8 * i);
-        v64 = [v63 UTF8String];
+        uTF8String = [v63 UTF8String];
         v65 = [v63 length];
         v66 = v65;
         if (v210 > 3000)
@@ -291,12 +291,12 @@
           {
             if (v210 == 3001)
             {
-              _MSV_XXH_XXH64_update(&v211, v64, v65);
+              _MSV_XXH_XXH64_update(&v211, uTF8String, v65);
             }
 
             else if (v210 == 4000)
             {
-              CC_MD5_Update(&v211, v64, v65);
+              CC_MD5_Update(&v211, uTF8String, v65);
             }
           }
 
@@ -305,13 +305,13 @@
             switch(v210)
             {
               case 4001:
-                CC_SHA1_Update(&v211, v64, v65);
+                CC_SHA1_Update(&v211, uTF8String, v65);
                 break;
               case 4256:
-                CC_SHA256_Update(&v211, v64, v65);
+                CC_SHA256_Update(&v211, uTF8String, v65);
                 break;
               case 4512:
-                CC_SHA512_Update(&v211, v64, v65);
+                CC_SHA512_Update(&v211, uTF8String, v65);
                 break;
             }
           }
@@ -323,9 +323,9 @@
         {
           if (!v210)
           {
-            v99 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
             v100 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppendBytes(MSVHasher * _Nonnull, const void * _Nonnull, size_t)"}];
-            [v99 handleFailureInFunction:v100 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
+            [currentHandler2 handleFailureInFunction:v100 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
 
             goto LABEL_117;
           }
@@ -345,7 +345,7 @@
             if (v65 >= 8 - v69)
             {
               v72 = 8 * v69;
-              v73 = v64;
+              v73 = uTF8String;
               v74 = v211.hash[2] & 0xFFFFFFFFFFFFFFLL;
               do
               {
@@ -365,7 +365,7 @@
               v211.hash[1] = v80;
               v211.count[0] = v79 ^ v74;
               v211.count[1] = v81 ^ __ROR8__(v76, 47);
-              v64 = (v64 + v70);
+              uTF8String = (uTF8String + v70);
               v211.hash[2] = (v70 + v67) << 56;
               v66 = v71;
               goto LABEL_63;
@@ -383,8 +383,8 @@ LABEL_63:
               v84 = v211.hash[1];
               do
               {
-                v86 = *v64;
-                v64 += 4;
+                v86 = *uTF8String;
+                uTF8String += 4;
                 v87 = v84 ^ v86;
                 v88 = v82 + v83;
                 v89 = v88 ^ __ROR8__(v83, 51);
@@ -417,8 +417,8 @@ LABEL_63:
             v96 = v66;
             do
             {
-              v97 = *v64;
-              v64 = (v64 + 1);
+              v97 = *uTF8String;
+              uTF8String = (uTF8String + 1);
               v95 |= v97 << v94;
               v94 += 8;
               --v96;
@@ -468,18 +468,18 @@ LABEL_116:
 
               if (v102 == 1)
               {
-                *v103 = *v64;
+                *v103 = *uTF8String;
                 goto LABEL_116;
               }
 
 LABEL_100:
-              memcpy(v103, v64, v102);
+              memcpy(v103, uTF8String, v102);
               goto LABEL_116;
             }
 
             if (v102 == 2)
             {
-              v107 = *v64;
+              v107 = *uTF8String;
             }
 
             else
@@ -489,8 +489,8 @@ LABEL_100:
                 goto LABEL_100;
               }
 
-              v107 = *v64;
-              v103[2] = *(v64 + 2);
+              v107 = *uTF8String;
+              v103[2] = *(uTF8String + 2);
             }
 
             *v103 = v107;
@@ -504,7 +504,7 @@ LABEL_100:
             {
               v105 = LOBYTE(v211.count[1]);
               v104 = HIBYTE(LOWORD(v211.count[1]));
-              v106 = *v64;
+              v106 = *uTF8String;
 LABEL_105:
               v108 = v106;
               v109 = v106 >> 8;
@@ -520,7 +520,7 @@ LABEL_105:
                 v105 = LOBYTE(v211.count[1]);
                 v104 = HIBYTE(LOWORD(v211.count[1]));
                 v108 = BYTE2(v211.count[1]);
-                v109 = *v64;
+                v109 = *uTF8String;
               }
             }
           }
@@ -530,15 +530,15 @@ LABEL_105:
             if (BYTE3(v211.count[1]))
             {
               v105 = LOBYTE(v211.count[1]);
-              v104 = *v64;
-              v106 = *(v64 + 1);
+              v104 = *uTF8String;
+              v106 = *(uTF8String + 1);
               goto LABEL_105;
             }
 
-            v104 = BYTE1(*v64);
-            v105 = *v64;
-            v108 = BYTE2(*v64);
-            v109 = HIBYTE(*v64);
+            v104 = BYTE1(*uTF8String);
+            v105 = *uTF8String;
+            v108 = BYTE2(*uTF8String);
+            v109 = HIBYTE(*uTF8String);
           }
 
           v110 = (v108 << 16) | (v109 << 24) | v105 | (v104 << 8);
@@ -546,8 +546,8 @@ LABEL_105:
           LODWORD(v111) = HIDWORD(v111);
           v112 = 5 * (v111 >> 19) - 430675100;
           LODWORD(v211.count[0]) = v112;
-          v113 = (v64 - BYTE3(v211.count[1]) + 4);
-          v114 = v64 + (v101 & 0xFFFFFFFFFFFFFFFCLL) - BYTE3(v211.count[1]);
+          v113 = (uTF8String - BYTE3(v211.count[1]) + 4);
+          v114 = uTF8String + (v101 & 0xFFFFFFFFFFFFFFFCLL) - BYTE3(v211.count[1]);
           while (v113 < v114)
           {
             v115 = *v113++;
@@ -584,13 +584,13 @@ LABEL_105:
 
         if (v210 == 3000)
         {
-          _MSV_XXH_XXH32_update_27340(&v211, v64, v65);
+          _MSV_XXH_XXH32_update_27340(&v211, uTF8String, v65);
         }
 
 LABEL_117:
       }
 
-      v60 = [v58 countByEnumeratingWithState:&v205 objects:v212 count:16];
+      v60 = [keyPath countByEnumeratingWithState:&v205 objects:v212 count:16];
     }
 
     while (v60);
@@ -604,9 +604,9 @@ LABEL_117:
     {
       if (!v210)
       {
-        v152 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
         v153 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"MSVHash _MSVHasherFinalize(MSVHasher * _Nonnull)"];
-        [v152 handleFailureInFunction:v153 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
+        [currentHandler3 handleFailureInFunction:v153 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
 
         goto LABEL_166;
       }
@@ -923,9 +923,9 @@ LABEL_166:
   if (*&data[0] != 3001)
   {
 LABEL_194:
-    v203 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
     v204 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSUInteger _MSVHashGetHash(MSVHash)"];
-    [v203 handleFailureInFunction:v204 file:@"MSVHasher+Algorithms.h" lineNumber:301 description:@"Cannot obtain hash from unknown hasher algorithm"];
+    [currentHandler4 handleFailureInFunction:v204 file:@"MSVHasher+Algorithms.h" lineNumber:301 description:@"Cannot obtain hash from unknown hasher algorithm"];
 
     return 0;
   }
@@ -933,21 +933,21 @@ LABEL_194:
   return *(&data[0] + 1);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = MPModelSortDescriptor;
-  if ([(MPModelSortDescriptor *)&v10 isEqual:v4])
+  if ([(MPModelSortDescriptor *)&v10 isEqual:equalCopy])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MPModelSortDescriptor *)self keyPath];
-      v7 = [v5 keyPath];
+      v5 = equalCopy;
+      keyPath = [(MPModelSortDescriptor *)self keyPath];
+      keyPath2 = [v5 keyPath];
 
-      v8 = [v6 isEqualToArray:v7];
+      v8 = [keyPath isEqualToArray:keyPath2];
     }
 
     else
@@ -964,16 +964,16 @@ LABEL_194:
   return v8;
 }
 
-+ (id)sortDescriptorWithKeyPath:(id)a3 ascending:(BOOL)a4
++ (id)sortDescriptorWithKeyPath:(id)path ascending:(BOOL)ascending
 {
-  v4 = a4;
-  v5 = a3;
+  ascendingCopy = ascending;
+  pathCopy = path;
   v6 = objc_alloc(objc_opt_class());
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [v6 initWithKey:v8 ascending:v4];
+  v9 = [v6 initWithKey:v8 ascending:ascendingCopy];
 
-  [v9 setKeyPath:v5];
+  [v9 setKeyPath:pathCopy];
 
   return v9;
 }

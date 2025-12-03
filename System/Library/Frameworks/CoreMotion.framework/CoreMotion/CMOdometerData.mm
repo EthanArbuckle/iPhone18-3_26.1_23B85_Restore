@@ -4,42 +4,42 @@
 - (CLLocationDistance)deltaAltitude;
 - (CLLocationSpeed)speed;
 - (CLLocationSpeedAccuracy)speedAccuracy;
-- (CMOdometerData)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (CMOdometerData)initWithCoder:(id)a3;
-- (CMOdometerData)initWithDeltaDistance:(double)a3 startDate:(id)a4 endDate:(id)a5 accuracy:(id)a6 rawSpeed:(id)a7 gpsSpeedAccuracy:(id)a8 timestampGps:(id)a9 deltaGroundAltitude:(id)a10 groundAltitudeUncertainty:(id)a11 originDevice:(int64_t)a12 slope:(id)a13 maxAbsSlope:(id)a14;
-- (CMOdometerData)initWithDistance:(id)a3 startDate:(id)a4 endDate:(id)a5 currentSpeed:(id)a6 averageSpeed:(id)a7;
+- (CMOdometerData)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (CMOdometerData)initWithCoder:(id)coder;
+- (CMOdometerData)initWithDeltaDistance:(double)distance startDate:(id)date endDate:(id)endDate accuracy:(id)accuracy rawSpeed:(id)speed gpsSpeedAccuracy:(id)speedAccuracy timestampGps:(id)gps deltaGroundAltitude:(id)self0 groundAltitudeUncertainty:(id)self1 originDevice:(int64_t)self2 slope:(id)self3 maxAbsSlope:(id)self4;
+- (CMOdometerData)initWithDistance:(id)distance startDate:(id)date endDate:(id)endDate currentSpeed:(id)speed averageSpeed:(id)averageSpeed;
 - (NSDate)gpsDate;
 - (NSNumber)maxAbsSlope;
 - (NSNumber)slope;
 - (NSString)description;
 - (id)binarySampleRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)relativeTimestampGps;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMOdometerData
 
-- (CMOdometerData)initWithDeltaDistance:(double)a3 startDate:(id)a4 endDate:(id)a5 accuracy:(id)a6 rawSpeed:(id)a7 gpsSpeedAccuracy:(id)a8 timestampGps:(id)a9 deltaGroundAltitude:(id)a10 groundAltitudeUncertainty:(id)a11 originDevice:(int64_t)a12 slope:(id)a13 maxAbsSlope:(id)a14
+- (CMOdometerData)initWithDeltaDistance:(double)distance startDate:(id)date endDate:(id)endDate accuracy:(id)accuracy rawSpeed:(id)speed gpsSpeedAccuracy:(id)speedAccuracy timestampGps:(id)gps deltaGroundAltitude:(id)self0 groundAltitudeUncertainty:(id)self1 originDevice:(int64_t)self2 slope:(id)self3 maxAbsSlope:(id)self4
 {
   v25.receiver = self;
   v25.super_class = CMOdometerData;
   v21 = [(CMOdometerData *)&v25 init];
   if (v21)
   {
-    *(v21 + 3) = a4;
-    *(v21 + 4) = a5;
-    *(v21 + 6) = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v22, v23, a3);
-    *(v21 + 9) = a6;
-    *(v21 + 11) = a7;
-    *(v21 + 13) = a8;
-    *(v21 + 14) = a9;
-    *(v21 + 21) = a10;
-    *(v21 + 16) = a11;
-    *(v21 + 5) = a12;
-    *(v21 + 1) = a13;
-    *(v21 + 2) = a14;
+    *(v21 + 3) = date;
+    *(v21 + 4) = endDate;
+    *(v21 + 6) = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v22, v23, distance);
+    *(v21 + 9) = accuracy;
+    *(v21 + 11) = speed;
+    *(v21 + 13) = speedAccuracy;
+    *(v21 + 14) = gps;
+    *(v21 + 21) = altitude;
+    *(v21 + 16) = uncertainty;
+    *(v21 + 5) = device;
+    *(v21 + 1) = slope;
+    *(v21 + 2) = absSlope;
     *(v21 + 10) = 0;
     *(v21 + 15) = 0;
     *(v21 + 7) = 0;
@@ -51,20 +51,20 @@
   return v21;
 }
 
-- (CMOdometerData)initWithDistance:(id)a3 startDate:(id)a4 endDate:(id)a5 currentSpeed:(id)a6 averageSpeed:(id)a7
+- (CMOdometerData)initWithDistance:(id)distance startDate:(id)date endDate:(id)endDate currentSpeed:(id)speed averageSpeed:(id)averageSpeed
 {
   v15.receiver = self;
   v15.super_class = CMOdometerData;
   v12 = [(CMOdometerData *)&v15 init];
   if (v12)
   {
-    *(v12 + 3) = a4;
-    *(v12 + 4) = a5;
-    *(v12 + 7) = a6;
-    *(v12 + 8) = a7;
-    v13 = a3;
+    *(v12 + 3) = date;
+    *(v12 + 4) = endDate;
+    *(v12 + 7) = speed;
+    *(v12 + 8) = averageSpeed;
+    distanceCopy = distance;
     *(v12 + 5) = 0;
-    *(v12 + 6) = v13;
+    *(v12 + 6) = distanceCopy;
     *(v12 + 1) = 0;
     *(v12 + 2) = 0;
     *(v12 + 72) = 0u;
@@ -86,10 +86,10 @@
   [(CMOdometerData *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   started = objc_msgSend_initWithDistance_startDate_endDate_currentSpeed_averageSpeed_(v7, v8, self->_distance, self->_startDate, self->_endDate, self->_currentSpeed, self->_averageSpeed);
   started[9] = objc_msgSend_copy(self->_accuracy, v10, v11);
   started[10] = objc_msgSend_copy(self->_gpsAltitude, v12, v13);
@@ -110,7 +110,7 @@
   return started;
 }
 
-- (CMOdometerData)initWithCoder:(id)a3
+- (CMOdometerData)initWithCoder:(id)coder
 {
   v47.receiver = self;
   v47.super_class = CMOdometerData;
@@ -118,76 +118,76 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v4->_startDate = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"kCMOdometerDataCodingKeyStartDate");
+    v4->_startDate = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"kCMOdometerDataCodingKeyStartDate");
     v7 = objc_opt_class();
-    v4->_endDate = objc_msgSend_decodeObjectOfClass_forKey_(a3, v8, v7, @"kCMOdometerDataCodingKeyEndDate");
+    v4->_endDate = objc_msgSend_decodeObjectOfClass_forKey_(coder, v8, v7, @"kCMOdometerDataCodingKeyEndDate");
     v9 = objc_opt_class();
-    v4->_distance = objc_msgSend_decodeObjectOfClass_forKey_(a3, v10, v9, @"kCMOdometerDataCodingKeyDistance");
+    v4->_distance = objc_msgSend_decodeObjectOfClass_forKey_(coder, v10, v9, @"kCMOdometerDataCodingKeyDistance");
     v11 = objc_opt_class();
-    v4->_currentSpeed = objc_msgSend_decodeObjectOfClass_forKey_(a3, v12, v11, @"kCMOdometerDataCodingKeyCurrentSpeed");
+    v4->_currentSpeed = objc_msgSend_decodeObjectOfClass_forKey_(coder, v12, v11, @"kCMOdometerDataCodingKeyCurrentSpeed");
     v13 = objc_opt_class();
-    v4->_averageSpeed = objc_msgSend_decodeObjectOfClass_forKey_(a3, v14, v13, @"kCMOdometerDataCodingKeyAverageSpeed");
+    v4->_averageSpeed = objc_msgSend_decodeObjectOfClass_forKey_(coder, v14, v13, @"kCMOdometerDataCodingKeyAverageSpeed");
     v15 = objc_opt_class();
-    v4->_accuracy = objc_msgSend_decodeObjectOfClass_forKey_(a3, v16, v15, @"kCMOdometerDataCodingKeyAccuracy");
+    v4->_accuracy = objc_msgSend_decodeObjectOfClass_forKey_(coder, v16, v15, @"kCMOdometerDataCodingKeyAccuracy");
     v17 = objc_opt_class();
-    v4->_gpsAltitude = objc_msgSend_decodeObjectOfClass_forKey_(a3, v18, v17, @"kCMOdometerDataCodingKeyGPSAltitude");
+    v4->_gpsAltitude = objc_msgSend_decodeObjectOfClass_forKey_(coder, v18, v17, @"kCMOdometerDataCodingKeyGPSAltitude");
     v19 = objc_opt_class();
-    v4->_rawSpeed = objc_msgSend_decodeObjectOfClass_forKey_(a3, v20, v19, @"kCMOdometerDataCodingKeyRawSpeed");
+    v4->_rawSpeed = objc_msgSend_decodeObjectOfClass_forKey_(coder, v20, v19, @"kCMOdometerDataCodingKeyRawSpeed");
     v21 = objc_opt_class();
-    v4->_odometer = objc_msgSend_decodeObjectOfClass_forKey_(a3, v22, v21, @"kCMOdometerDataCodingKeyOdometer");
+    v4->_odometer = objc_msgSend_decodeObjectOfClass_forKey_(coder, v22, v21, @"kCMOdometerDataCodingKeyOdometer");
     v23 = objc_opt_class();
-    v4->_gpsSpeedAccuracy = objc_msgSend_decodeObjectOfClass_forKey_(a3, v24, v23, @"kCMOdometerDataCodingKeyGPSSpeedAccuracy");
+    v4->_gpsSpeedAccuracy = objc_msgSend_decodeObjectOfClass_forKey_(coder, v24, v23, @"kCMOdometerDataCodingKeyGPSSpeedAccuracy");
     v25 = objc_opt_class();
-    v4->_timestampGps = objc_msgSend_decodeObjectOfClass_forKey_(a3, v26, v25, @"kCMOdometerDataCodingKeyTimestampGPS");
+    v4->_timestampGps = objc_msgSend_decodeObjectOfClass_forKey_(coder, v26, v25, @"kCMOdometerDataCodingKeyTimestampGPS");
     v27 = objc_opt_class();
-    v4->_groundAltitude = objc_msgSend_decodeObjectOfClass_forKey_(a3, v28, v27, @"kCMOdometerDataCodingKeyGroundAltitude");
+    v4->_groundAltitude = objc_msgSend_decodeObjectOfClass_forKey_(coder, v28, v27, @"kCMOdometerDataCodingKeyGroundAltitude");
     v29 = objc_opt_class();
-    v4->_groundAltitudeUncertainty = objc_msgSend_decodeObjectOfClass_forKey_(a3, v30, v29, @"kCMOdometerDataCodingKeyGroundAltitudeUncertainty");
+    v4->_groundAltitudeUncertainty = objc_msgSend_decodeObjectOfClass_forKey_(coder, v30, v29, @"kCMOdometerDataCodingKeyGroundAltitudeUncertainty");
     v31 = objc_opt_class();
-    v4->_smoothedGPSAltitude = objc_msgSend_decodeObjectOfClass_forKey_(a3, v32, v31, @"kCMOdometerDataCodingKeySmoothedGPSAltitude");
+    v4->_smoothedGPSAltitude = objc_msgSend_decodeObjectOfClass_forKey_(coder, v32, v31, @"kCMOdometerDataCodingKeySmoothedGPSAltitude");
     v33 = objc_opt_class();
-    v4->_smoothedGPSAltitudeUncertainty = objc_msgSend_decodeObjectOfClass_forKey_(a3, v34, v33, @"kCMOdometerDataCodingKeySmoothedGPSAltitudeUncertainty");
+    v4->_smoothedGPSAltitudeUncertainty = objc_msgSend_decodeObjectOfClass_forKey_(coder, v34, v33, @"kCMOdometerDataCodingKeySmoothedGPSAltitudeUncertainty");
     v35 = objc_opt_class();
-    v4->_gpsCourseRadians = objc_msgSend_decodeObjectOfClass_forKey_(a3, v36, v35, @"kCMOdometerDataCodingKeyGPSCourseRadians");
+    v4->_gpsCourseRadians = objc_msgSend_decodeObjectOfClass_forKey_(coder, v36, v35, @"kCMOdometerDataCodingKeyGPSCourseRadians");
     v37 = objc_opt_class();
-    v4->_gpsCourseAccuracy = objc_msgSend_decodeObjectOfClass_forKey_(a3, v38, v37, @"kCMOdometerDataCodingKeyGPSCourseAccuracy");
-    v4->_originDevice = objc_msgSend_decodeIntegerForKey_(a3, v39, @"kCMOdometerDataCodingKeyOriginDevice");
+    v4->_gpsCourseAccuracy = objc_msgSend_decodeObjectOfClass_forKey_(coder, v38, v37, @"kCMOdometerDataCodingKeyGPSCourseAccuracy");
+    v4->_originDevice = objc_msgSend_decodeIntegerForKey_(coder, v39, @"kCMOdometerDataCodingKeyOriginDevice");
     v40 = objc_opt_class();
-    v4->_deltaGroundAltitude = objc_msgSend_decodeObjectOfClass_forKey_(a3, v41, v40, @"kCMOdometerDataCodingKeyDeltaGroundAltitude");
+    v4->_deltaGroundAltitude = objc_msgSend_decodeObjectOfClass_forKey_(coder, v41, v40, @"kCMOdometerDataCodingKeyDeltaGroundAltitude");
     v42 = objc_opt_class();
-    v4->_slope = objc_msgSend_decodeObjectOfClass_forKey_(a3, v43, v42, @"kCMOdometerDataCodingKeySlope");
+    v4->_slope = objc_msgSend_decodeObjectOfClass_forKey_(coder, v43, v42, @"kCMOdometerDataCodingKeySlope");
     v44 = objc_opt_class();
-    v4->_maxAbsSlope = objc_msgSend_decodeObjectOfClass_forKey_(a3, v45, v44, @"kCMOdometerDataCodingKeyMaxAbsSlope");
+    v4->_maxAbsSlope = objc_msgSend_decodeObjectOfClass_forKey_(coder, v45, v44, @"kCMOdometerDataCodingKeyMaxAbsSlope");
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeObject_forKey_(a3, a2, self->_startDate, @"kCMOdometerDataCodingKeyStartDate");
-  objc_msgSend_encodeObject_forKey_(a3, v5, self->_endDate, @"kCMOdometerDataCodingKeyEndDate");
-  objc_msgSend_encodeObject_forKey_(a3, v6, self->_distance, @"kCMOdometerDataCodingKeyDistance");
-  objc_msgSend_encodeObject_forKey_(a3, v7, self->_currentSpeed, @"kCMOdometerDataCodingKeyCurrentSpeed");
-  objc_msgSend_encodeObject_forKey_(a3, v8, self->_averageSpeed, @"kCMOdometerDataCodingKeyAverageSpeed");
-  objc_msgSend_encodeObject_forKey_(a3, v9, self->_accuracy, @"kCMOdometerDataCodingKeyAccuracy");
-  objc_msgSend_encodeObject_forKey_(a3, v10, self->_gpsAltitude, @"kCMOdometerDataCodingKeyGPSAltitude");
-  objc_msgSend_encodeObject_forKey_(a3, v11, self->_rawSpeed, @"kCMOdometerDataCodingKeyRawSpeed");
-  objc_msgSend_encodeObject_forKey_(a3, v12, self->_odometer, @"kCMOdometerDataCodingKeyOdometer");
-  objc_msgSend_encodeObject_forKey_(a3, v13, self->_gpsSpeedAccuracy, @"kCMOdometerDataCodingKeyGPSSpeedAccuracy");
-  objc_msgSend_encodeObject_forKey_(a3, v14, self->_timestampGps, @"kCMOdometerDataCodingKeyTimestampGPS");
-  objc_msgSend_encodeObject_forKey_(a3, v15, self->_groundAltitude, @"kCMOdometerDataCodingKeyGroundAltitude");
-  objc_msgSend_encodeObject_forKey_(a3, v16, self->_groundAltitudeUncertainty, @"kCMOdometerDataCodingKeyGroundAltitudeUncertainty");
-  objc_msgSend_encodeObject_forKey_(a3, v17, self->_smoothedGPSAltitude, @"kCMOdometerDataCodingKeySmoothedGPSAltitude");
-  objc_msgSend_encodeObject_forKey_(a3, v18, self->_smoothedGPSAltitudeUncertainty, @"kCMOdometerDataCodingKeySmoothedGPSAltitudeUncertainty");
-  objc_msgSend_encodeObject_forKey_(a3, v19, self->_gpsCourseRadians, @"kCMOdometerDataCodingKeyGPSCourseRadians");
-  objc_msgSend_encodeObject_forKey_(a3, v20, self->_gpsCourseAccuracy, @"kCMOdometerDataCodingKeyGPSCourseAccuracy");
-  objc_msgSend_encodeInteger_forKey_(a3, v21, self->_originDevice, @"kCMOdometerDataCodingKeyOriginDevice");
-  objc_msgSend_encodeObject_forKey_(a3, v22, self->_deltaGroundAltitude, @"kCMOdometerDataCodingKeyDeltaGroundAltitude");
-  objc_msgSend_encodeObject_forKey_(a3, v23, self->_slope, @"kCMOdometerDataCodingKeySlope");
+  objc_msgSend_encodeObject_forKey_(coder, a2, self->_startDate, @"kCMOdometerDataCodingKeyStartDate");
+  objc_msgSend_encodeObject_forKey_(coder, v5, self->_endDate, @"kCMOdometerDataCodingKeyEndDate");
+  objc_msgSend_encodeObject_forKey_(coder, v6, self->_distance, @"kCMOdometerDataCodingKeyDistance");
+  objc_msgSend_encodeObject_forKey_(coder, v7, self->_currentSpeed, @"kCMOdometerDataCodingKeyCurrentSpeed");
+  objc_msgSend_encodeObject_forKey_(coder, v8, self->_averageSpeed, @"kCMOdometerDataCodingKeyAverageSpeed");
+  objc_msgSend_encodeObject_forKey_(coder, v9, self->_accuracy, @"kCMOdometerDataCodingKeyAccuracy");
+  objc_msgSend_encodeObject_forKey_(coder, v10, self->_gpsAltitude, @"kCMOdometerDataCodingKeyGPSAltitude");
+  objc_msgSend_encodeObject_forKey_(coder, v11, self->_rawSpeed, @"kCMOdometerDataCodingKeyRawSpeed");
+  objc_msgSend_encodeObject_forKey_(coder, v12, self->_odometer, @"kCMOdometerDataCodingKeyOdometer");
+  objc_msgSend_encodeObject_forKey_(coder, v13, self->_gpsSpeedAccuracy, @"kCMOdometerDataCodingKeyGPSSpeedAccuracy");
+  objc_msgSend_encodeObject_forKey_(coder, v14, self->_timestampGps, @"kCMOdometerDataCodingKeyTimestampGPS");
+  objc_msgSend_encodeObject_forKey_(coder, v15, self->_groundAltitude, @"kCMOdometerDataCodingKeyGroundAltitude");
+  objc_msgSend_encodeObject_forKey_(coder, v16, self->_groundAltitudeUncertainty, @"kCMOdometerDataCodingKeyGroundAltitudeUncertainty");
+  objc_msgSend_encodeObject_forKey_(coder, v17, self->_smoothedGPSAltitude, @"kCMOdometerDataCodingKeySmoothedGPSAltitude");
+  objc_msgSend_encodeObject_forKey_(coder, v18, self->_smoothedGPSAltitudeUncertainty, @"kCMOdometerDataCodingKeySmoothedGPSAltitudeUncertainty");
+  objc_msgSend_encodeObject_forKey_(coder, v19, self->_gpsCourseRadians, @"kCMOdometerDataCodingKeyGPSCourseRadians");
+  objc_msgSend_encodeObject_forKey_(coder, v20, self->_gpsCourseAccuracy, @"kCMOdometerDataCodingKeyGPSCourseAccuracy");
+  objc_msgSend_encodeInteger_forKey_(coder, v21, self->_originDevice, @"kCMOdometerDataCodingKeyOriginDevice");
+  objc_msgSend_encodeObject_forKey_(coder, v22, self->_deltaGroundAltitude, @"kCMOdometerDataCodingKeyDeltaGroundAltitude");
+  objc_msgSend_encodeObject_forKey_(coder, v23, self->_slope, @"kCMOdometerDataCodingKeySlope");
   maxAbsSlope = self->_maxAbsSlope;
 
-  objc_msgSend_encodeObject_forKey_(a3, v24, maxAbsSlope, @"kCMOdometerDataCodingKeyMaxAbsSlope");
+  objc_msgSend_encodeObject_forKey_(coder, v24, maxAbsSlope, @"kCMOdometerDataCodingKeyMaxAbsSlope");
 }
 
 - (CLLocationAccuracy)deltaDistanceAccuracy
@@ -368,9 +368,9 @@
   return v5;
 }
 
-- (CMOdometerData)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (CMOdometerData)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  if (objc_msgSend_length(a3, a2, a3, a4, a5))
+  if (objc_msgSend_length(representation, a2, representation, metadata, timestamp))
   {
     v14.receiver = self;
     v14.super_class = CMOdometerData;
@@ -379,7 +379,7 @@
     {
       v8 = MEMORY[0x1E696ACD0];
       v9 = objc_opt_class();
-      v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v8, v10, v9, a3, 0);
+      v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v8, v10, v9, representation, 0);
       if (v11)
       {
         v12 = v11;

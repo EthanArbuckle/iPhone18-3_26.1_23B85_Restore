@@ -1,25 +1,25 @@
 @interface HDEncryptedArchiveSymmetricKey
-+ (id)fetchFromKeychainForLabel:(id)a3 error:(id *)a4;
-+ (id)randomKeyWithError:(id *)a3;
-- (BOOL)addToKeychainWithLabel:(id)a3 error:(id *)a4;
-- (BOOL)deleteFromKeychainWithLabel:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (HDEncryptedArchiveSymmetricKey)initWithCoder:(id)a3;
-- (HDEncryptedArchiveSymmetricKey)initWithData:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)fetchFromKeychainForLabel:(id)label error:(id *)error;
++ (id)randomKeyWithError:(id *)error;
+- (BOOL)addToKeychainWithLabel:(id)label error:(id *)error;
+- (BOOL)deleteFromKeychainWithLabel:(id)label error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (HDEncryptedArchiveSymmetricKey)initWithCoder:(id)coder;
+- (HDEncryptedArchiveSymmetricKey)initWithData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HDEncryptedArchiveSymmetricKey
 
-- (HDEncryptedArchiveSymmetricKey)initWithData:(id)a3
+- (HDEncryptedArchiveSymmetricKey)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = HDEncryptedArchiveSymmetricKey;
   v5 = [(HDEncryptedArchiveSymmetricKey *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dataCopy copy];
     key = v5->_key;
     v5->_key = v6;
   }
@@ -27,13 +27,13 @@
   return v5;
 }
 
-+ (id)randomKeyWithError:(id *)a3
++ (id)randomKeyWithError:(id *)error
 {
   v4 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:32];
   v5 = SecRandomCopyBytes(*MEMORY[0x277CDC540], [v4 length], objc_msgSend(v4, "mutableBytes"));
   if (v5)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:2000 format:{@"Failed to generate random symmetric key: %d", v5}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:2000 format:{@"Failed to generate random symmetric key: %d", v5}];
     v6 = 0;
   }
 
@@ -45,16 +45,16 @@
   return v6;
 }
 
-+ (id)fetchFromKeychainForLabel:(id)a3 error:(id *)a4
++ (id)fetchFromKeychainForLabel:(id)label error:(id *)error
 {
   v33[7] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  labelCopy = label;
   result = 0;
   v6 = *MEMORY[0x277CDC228];
   v32[0] = *MEMORY[0x277CDC080];
   v32[1] = v6;
   v7 = *MEMORY[0x277CDC250];
-  v33[0] = v5;
+  v33[0] = labelCopy;
   v33[1] = v7;
   v8 = *MEMORY[0x277CDC008];
   v9 = *MEMORY[0x277CDC5C8];
@@ -85,10 +85,10 @@
       v18 = [v14 errorWithDomain:v15 code:v16 userInfo:v17];
       if (v18)
       {
-        if (a4)
+        if (error)
         {
           v19 = v18;
-          *a4 = v18;
+          *error = v18;
         }
 
         else
@@ -106,7 +106,7 @@
   if (!result)
   {
 LABEL_9:
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:118 format:@"No matching key found."];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:118 format:@"No matching key found."];
     goto LABEL_13;
   }
 
@@ -123,7 +123,7 @@ LABEL_9:
   v24 = MEMORY[0x277CCA9B8];
   v25 = CFGetTypeID(result);
   v26 = CFCopyTypeIDDescription(v25);
-  [v24 hk_assignError:a4 code:3 format:{@"Unexpected return type %@ during keychain fetch.", v26}];
+  [v24 hk_assignError:error code:3 format:{@"Unexpected return type %@ during keychain fetch.", v26}];
 
   CFRelease(result);
 LABEL_13:
@@ -135,10 +135,10 @@ LABEL_14:
   return v23;
 }
 
-- (BOOL)addToKeychainWithLabel:(id)a3 error:(id *)a4
+- (BOOL)addToKeychainWithLabel:(id)label error:(id *)error
 {
   v29[8] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  labelCopy = label;
   key = self->_key;
   v8 = *MEMORY[0x277CDC228];
   v28[0] = *MEMORY[0x277CDC5E8];
@@ -156,7 +156,7 @@ LABEL_14:
   v28[3] = v11;
   v28[4] = v13;
   v14 = *MEMORY[0x277CDC5C8];
-  v29[4] = v6;
+  v29[4] = labelCopy;
   v29[5] = MEMORY[0x277CBEC38];
   v15 = *MEMORY[0x277CDC140];
   v28[5] = v14;
@@ -178,10 +178,10 @@ LABEL_14:
     v22 = [v19 errorWithDomain:v20 code:v18 userInfo:v21];
     if (v22)
     {
-      if (a4)
+      if (error)
       {
         v23 = v22;
-        *a4 = v22;
+        *error = v22;
       }
 
       else
@@ -195,15 +195,15 @@ LABEL_14:
   return v18 == 0;
 }
 
-- (BOOL)deleteFromKeychainWithLabel:(id)a3 error:(id *)a4
+- (BOOL)deleteFromKeychainWithLabel:(id)label error:(id *)error
 {
   v24[5] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  labelCopy = label;
   v6 = *MEMORY[0x277CDC228];
   v23[0] = *MEMORY[0x277CDC080];
   v23[1] = v6;
   v7 = *MEMORY[0x277CDC250];
-  v24[0] = v5;
+  v24[0] = labelCopy;
   v24[1] = v7;
   v8 = *MEMORY[0x277CDC140];
   v23[2] = *MEMORY[0x277CDC5C8];
@@ -225,10 +225,10 @@ LABEL_14:
     v15 = [v12 errorWithDomain:v13 code:v11 userInfo:v14];
     if (v15)
     {
-      if (a4)
+      if (error)
       {
         v16 = v15;
-        *a4 = v15;
+        *error = v15;
       }
 
       else
@@ -254,40 +254,40 @@ LABEL_14:
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSData *)self->_key isEqualToData:v4[1]];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSData *)self->_key isEqualToData:equalCopy[1]];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HDEncryptedArchiveSymmetricKey allocWithZone:a3];
+  v4 = [HDEncryptedArchiveSymmetricKey allocWithZone:zone];
   key = self->_key;
 
   return [(HDEncryptedArchiveSymmetricKey *)v4 initWithData:key];
 }
 
-- (HDEncryptedArchiveSymmetricKey)initWithCoder:(id)a3
+- (HDEncryptedArchiveSymmetricKey)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sym_key"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sym_key"];
 
   if (v5)
   {
     self = [(HDEncryptedArchiveSymmetricKey *)self initWithData:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

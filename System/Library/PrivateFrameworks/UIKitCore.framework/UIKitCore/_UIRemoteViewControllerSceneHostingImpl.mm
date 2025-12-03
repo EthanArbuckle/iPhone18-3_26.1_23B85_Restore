@@ -1,5 +1,5 @@
 @interface _UIRemoteViewControllerSceneHostingImpl
-+ (id)_requestViewController:(id)a3 traitCollection:(id)a4 fromServiceWithBundleIdentifier:(id)a5 service:(id)a6 connectionHandler:(id)a7 newRemoteViewController:(id)a8 remoteViewControllerImpl:(id)a9;
++ (id)_requestViewController:(id)controller traitCollection:(id)collection fromServiceWithBundleIdentifier:(id)identifier service:(id)service connectionHandler:(id)handler newRemoteViewController:(id)viewController remoteViewControllerImpl:(id)impl;
 - ($115C4C562B26FF47E01F9F4EA65B5887)serviceAuditToken;
 - (BOOL)_viewClipsToBounds;
 - (BOOL)inheritsSecurity;
@@ -10,7 +10,7 @@
 - (NSString)debugDescription;
 - (_UIRemoteViewController)_owningRemoteViewController;
 - (id)_cancelTouchesForCurrentEventInHostedContent;
-- (id)_initWithViewServiceBundleIdentifier:(id)a3 owningRemoteViewController:(id)a4;
+- (id)_initWithViewServiceBundleIdentifier:(id)identifier owningRemoteViewController:(id)controller;
 - (id)_multitaskingDragExclusionRects;
 - (id)disconnect;
 - (id)succinctDescription;
@@ -21,75 +21,75 @@
 - (int64_t)preferredWhitePointAdaptivityStyle;
 - (unint64_t)preferredScreenEdgesDeferringSystemGestures;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_didReceiveProductivityGestureAction:(id)a3;
-- (void)_movedToParentSceneWithSettings:(id)a3;
-- (void)_parentSceneDidUpdateWithDiff:(id)a3;
-- (void)_setViewClipsToBounds:(BOOL)a3;
-- (void)_viewServiceHostSessionDidConnectToClient:(id)a3;
-- (void)_viewServiceHostSessionDidInvalidate:(id)a3 withError:(id)a4;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)callConnectionHandlerWithError:(uint64_t)a1;
+- (void)_didReceiveProductivityGestureAction:(id)action;
+- (void)_movedToParentSceneWithSettings:(id)settings;
+- (void)_parentSceneDidUpdateWithDiff:(id)diff;
+- (void)_setViewClipsToBounds:(BOOL)bounds;
+- (void)_viewServiceHostSessionDidConnectToClient:(id)client;
+- (void)_viewServiceHostSessionDidInvalidate:(id)invalidate withError:(id)error;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)callConnectionHandlerWithError:(uint64_t)error;
 - (void)dealloc;
 - (void)loadView;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)sceneDidInvalidateWithError:(id)a3;
-- (void)setInheritsSecurity:(BOOL)a3;
-- (void)setServiceViewShouldShareTouchesWithHost:(BOOL)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)sceneDidInvalidateWithError:(id)error;
+- (void)setInheritsSecurity:(BOOL)security;
+- (void)setServiceViewShouldShareTouchesWithHost:(BOOL)host;
 - (void)supportedInterfaceOrientationsDidUpdate;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewServiceClientIsReady;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation _UIRemoteViewControllerSceneHostingImpl
 
-- (id)_initWithViewServiceBundleIdentifier:(id)a3 owningRemoteViewController:(id)a4
+- (id)_initWithViewServiceBundleIdentifier:(id)identifier owningRemoteViewController:(id)controller
 {
-  v5 = a4;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = _UIRemoteViewControllerSceneHostingImpl;
   v6 = [(_UIRemoteViewControllerSceneHostingImpl *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_owningRemoteViewController, v5);
+    objc_storeWeak(&v6->_owningRemoteViewController, controllerCopy);
   }
 
   return v7;
 }
 
-+ (id)_requestViewController:(id)a3 traitCollection:(id)a4 fromServiceWithBundleIdentifier:(id)a5 service:(id)a6 connectionHandler:(id)a7 newRemoteViewController:(id)a8 remoteViewControllerImpl:(id)a9
++ (id)_requestViewController:(id)controller traitCollection:(id)collection fromServiceWithBundleIdentifier:(id)identifier service:(id)service connectionHandler:(id)handler newRemoteViewController:(id)viewController remoteViewControllerImpl:(id)impl
 {
   v53 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v38 = a8;
-  v19 = a9;
-  v20 = v14;
-  v21 = v15;
-  v22 = v16;
-  v23 = v17;
-  v24 = v18;
-  if (v19)
+  controllerCopy = controller;
+  collectionCopy = collection;
+  identifierCopy = identifier;
+  serviceCopy = service;
+  handlerCopy = handler;
+  viewControllerCopy = viewController;
+  implCopy = impl;
+  v20 = controllerCopy;
+  v21 = collectionCopy;
+  v22 = identifierCopy;
+  v23 = serviceCopy;
+  v24 = handlerCopy;
+  if (implCopy)
   {
-    objc_storeStrong(v19 + 10, a6);
-    objc_storeStrong(v19 + 4, a3);
+    objc_storeStrong(implCopy + 10, service);
+    objc_storeStrong(implCopy + 4, controller);
     v25 = _Block_copy(v24);
-    v26 = v19[5];
-    v19[5] = v25;
+    v26 = implCopy[5];
+    implCopy[5] = v25;
 
-    v27 = [v19 _owningRemoteViewController];
-    v28 = v19[6];
-    v19[6] = v27;
+    _owningRemoteViewController = [implCopy _owningRemoteViewController];
+    v28 = implCopy[6];
+    implCopy[6] = _owningRemoteViewController;
 
-    if (v19[3])
+    if (implCopy[3])
     {
-      v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"!_session", v38];
+      viewControllerCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"!_session", viewControllerCopy];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         v34 = NSStringFromSelector(sel__beginViewControllerRequestWithViewController_traitCollection_fromServiceWithBundleIdentifier_service_connectionHandler_);
@@ -100,29 +100,29 @@
         v43 = 2114;
         v44 = v36;
         v45 = 2048;
-        v46 = v19;
+        v46 = implCopy;
         v47 = 2114;
         v48 = @"_UIRemoteViewControllerSceneHostingImpl.m";
         v49 = 1024;
         v50 = 102;
         v51 = 2114;
-        v52 = v33;
+        v52 = viewControllerCopy;
         _os_log_error_impl(&dword_188A29000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", location, 0x3Au);
       }
 
-      v37 = v33;
-      [v33 UTF8String];
+      v37 = viewControllerCopy;
+      [viewControllerCopy UTF8String];
       _bs_set_crash_log_message();
       __break(0);
       JUMPOUT(0x189D7F928);
     }
 
-    v29 = [[_UIViewServiceHostSession alloc] initWithService:v23 viewServiceAppBundleId:v22 delegate:v19];
-    v30 = v19[3];
-    v19[3] = v29;
+    v29 = [[_UIViewServiceHostSession alloc] initWithService:v23 viewServiceAppBundleId:v22 delegate:implCopy];
+    v30 = implCopy[3];
+    implCopy[3] = v29;
   }
 
-  objc_initWeak(location, v19);
+  objc_initWeak(location, implCopy);
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __189___UIRemoteViewControllerSceneHostingImpl__requestViewController_traitCollection_fromServiceWithBundleIdentifier_service_connectionHandler_newRemoteViewController_remoteViewControllerImpl___block_invoke;
@@ -135,42 +135,42 @@
   return v31;
 }
 
-- (void)callConnectionHandlerWithError:(uint64_t)a1
+- (void)callConnectionHandlerWithError:(uint64_t)error
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (error)
   {
-    if (*(a1 + 40) || (WeakRetained = objc_loadWeakRetained((a1 + 16)), WeakRetained, WeakRetained))
+    if (*(error + 40) || (WeakRetained = objc_loadWeakRetained((error + 16)), WeakRetained, WeakRetained))
     {
-      objc_storeWeak((a1 + 16), 0);
-      v5 = [a1 _owningRemoteViewController];
-      [v5 viewServiceDidTerminateWithError:v3];
+      objc_storeWeak((error + 16), 0);
+      _owningRemoteViewController = [error _owningRemoteViewController];
+      [_owningRemoteViewController viewServiceDidTerminateWithError:v3];
 
-      v6 = *(a1 + 40);
+      v6 = *(error + 40);
       if (v6)
       {
         (*(v6 + 16))(v6, 0, v3);
-        v7 = *(a1 + 40);
-        *(a1 + 40) = 0;
+        v7 = *(error + 40);
+        *(error + 40) = 0;
 
         v8 = *(__UILogGetCategoryCachedImpl("ViewServices", &callConnectionHandlerWithError____s_category_0) + 8);
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
           v9 = v8;
-          v10 = [v3 localizedDescription];
-          v11 = [a1 succinctDescription];
+          localizedDescription = [v3 localizedDescription];
+          succinctDescription = [error succinctDescription];
           v13 = 138543618;
-          v14 = v10;
+          v14 = localizedDescription;
           v15 = 2114;
-          v16 = v11;
+          v16 = succinctDescription;
           _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEFAULT, "Calling connection handler with error %{public}@ for %{public}@", &v13, 0x16u);
         }
       }
 
-      [*(a1 + 8) invalidate];
-      v12 = *(a1 + 48);
-      *(a1 + 48) = 0;
+      [*(error + 8) invalidate];
+      v12 = *(error + 48);
+      *(error + 48) = 0;
     }
   }
 }
@@ -189,8 +189,8 @@
 - (void)viewServiceClientIsReady
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(_UIRemoteViewControllerSceneHostingImpl *)self _owningRemoteViewController];
-  [v3 loadViewIfRequired];
+  _owningRemoteViewController = [(_UIRemoteViewControllerSceneHostingImpl *)self _owningRemoteViewController];
+  [_owningRemoteViewController loadViewIfRequired];
 
   if (self)
   {
@@ -219,29 +219,29 @@
     *(&v11 + 1) = 3221225472;
     v12 = __75___UIRemoteViewControllerSceneHostingImpl_callConnectionHandlerWithSuccess__block_invoke;
     v13 = &unk_1E70F3590;
-    v14 = self;
+    selfCopy = self;
     dispatch_async(MEMORY[0x1E69E96A0], &v11);
   }
 }
 
-- (void)sceneDidInvalidateWithError:(id)a3
+- (void)sceneDidInvalidateWithError:(id)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = *(__UILogGetCategoryCachedImpl("ViewServices", &sceneDidInvalidateWithError____s_category) + 8);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(_UIRemoteViewControllerSceneHostingImpl *)self succinctDescription];
-    v8 = [v4 localizedDescription];
+    succinctDescription = [(_UIRemoteViewControllerSceneHostingImpl *)self succinctDescription];
+    localizedDescription = [errorCopy localizedDescription];
     v9 = 138543618;
-    v10 = v7;
+    v10 = succinctDescription;
     v11 = 2114;
-    v12 = v8;
+    v12 = localizedDescription;
     _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_DEFAULT, "Scene for %{public}@ invalidated with error %{public}@", &v9, 0x16u);
   }
 
-  [(_UIRemoteViewControllerSceneHostingImpl *)self callConnectionHandlerWithError:v4];
+  [(_UIRemoteViewControllerSceneHostingImpl *)self callConnectionHandlerWithError:errorCopy];
 }
 
 - (void)supportedInterfaceOrientationsDidUpdate
@@ -257,21 +257,21 @@
 - (BOOL)_viewClipsToBounds
 {
   WeakRetained = objc_loadWeakRetained(&self->_owningRemoteViewController);
-  v3 = [WeakRetained view];
-  v4 = [v3 clipsToBounds];
+  view = [WeakRetained view];
+  clipsToBounds = [view clipsToBounds];
 
-  return v4;
+  return clipsToBounds;
 }
 
-- (void)_setViewClipsToBounds:(BOOL)a3
+- (void)_setViewClipsToBounds:(BOOL)bounds
 {
-  v3 = a3;
+  boundsCopy = bounds;
   WeakRetained = objc_loadWeakRetained(&self->_owningRemoteViewController);
-  v6 = [WeakRetained view];
-  [v6 setClipsToBounds:v3];
+  view = [WeakRetained view];
+  [view setClipsToBounds:boundsCopy];
 
-  v7 = [(_UISceneHostingController *)self->_sceneHostingController sceneView];
-  [v7 setClipsToBounds:v3];
+  sceneView = [(_UISceneHostingController *)self->_sceneHostingController sceneView];
+  [sceneView setClipsToBounds:boundsCopy];
 }
 
 - (int)serviceProcessIdentifier
@@ -292,25 +292,25 @@
 
 - (BOOL)serviceViewShouldShareTouchesWithHost
 {
-  v2 = [(_UISceneHostingController *)self->_sceneHostingController touchSharing];
-  v3 = [v2 shareTouchesWithHost];
+  touchSharing = [(_UISceneHostingController *)self->_sceneHostingController touchSharing];
+  shareTouchesWithHost = [touchSharing shareTouchesWithHost];
 
-  return v3;
+  return shareTouchesWithHost;
 }
 
-- (void)setServiceViewShouldShareTouchesWithHost:(BOOL)a3
+- (void)setServiceViewShouldShareTouchesWithHost:(BOOL)host
 {
-  v3 = a3;
-  v4 = [(_UISceneHostingController *)self->_sceneHostingController touchSharing];
-  [v4 setShareTouchesWithHost:v3];
+  hostCopy = host;
+  touchSharing = [(_UISceneHostingController *)self->_sceneHostingController touchSharing];
+  [touchSharing setShareTouchesWithHost:hostCopy];
 }
 
 - (id)_cancelTouchesForCurrentEventInHostedContent
 {
-  v2 = [(_UISceneHostingController *)self->_sceneHostingController touchSharing];
-  v3 = [v2 cancelTouchesForCurrentEventInClient];
+  touchSharing = [(_UISceneHostingController *)self->_sceneHostingController touchSharing];
+  cancelTouchesForCurrentEventInClient = [touchSharing cancelTouchesForCurrentEventInClient];
 
-  return v3;
+  return cancelTouchesForCurrentEventInClient;
 }
 
 - (id)disconnect
@@ -323,39 +323,39 @@
   v6[4] = self;
   objc_copyWeak(&v7, &location);
   v3 = [_UIAsyncInvocation invocationWithBlock:v6];
-  v4 = [v3 invoke];
+  invoke = [v3 invoke];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 
-  return v4;
+  return invoke;
 }
 
 - (BOOL)inheritsSecurity
 {
-  v2 = [(_UISceneHostingController *)self->_sceneHostingController sceneView];
-  v3 = [v2 inheritsSecurity];
+  sceneView = [(_UISceneHostingController *)self->_sceneHostingController sceneView];
+  inheritsSecurity = [sceneView inheritsSecurity];
 
-  return v3;
+  return inheritsSecurity;
 }
 
-- (void)setInheritsSecurity:(BOOL)a3
+- (void)setInheritsSecurity:(BOOL)security
 {
-  v3 = a3;
+  securityCopy = security;
   WeakRetained = objc_loadWeakRetained(&self->_owningRemoteViewController);
-  v6 = [WeakRetained view];
-  v7 = [v6 layer];
-  v8 = v7;
+  view = [WeakRetained view];
+  layer = [view layer];
+  v8 = layer;
   v9 = MEMORY[0x1E6979E68];
-  if (!v3)
+  if (!securityCopy)
   {
     v9 = MEMORY[0x1E6979E58];
   }
 
-  [v7 setSecurityMode:*v9];
+  [layer setSecurityMode:*v9];
 
-  v10 = [(_UISceneHostingController *)self->_sceneHostingController sceneView];
-  [v10 setInheritsSecurity:v3];
+  sceneView = [(_UISceneHostingController *)self->_sceneHostingController sceneView];
+  [sceneView setInheritsSecurity:securityCopy];
 }
 
 - (NSSet)_keyboardSceneLayers
@@ -371,7 +371,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"_UIRemoteViewControllerSceneHostingImpl.m";
     v17 = 1024;
@@ -387,9 +387,9 @@
   return result;
 }
 
-- (void)_movedToParentSceneWithSettings:(id)a3
+- (void)_movedToParentSceneWithSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Legacy infrastructure required for %s", "-[_UIRemoteViewControllerSceneHostingImpl _movedToParentSceneWithSettings:]"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -401,7 +401,7 @@
     v12 = 2114;
     v13 = v9;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"_UIRemoteViewControllerSceneHostingImpl.m";
     v18 = 1024;
@@ -416,9 +416,9 @@
   __break(0);
 }
 
-- (void)_parentSceneDidUpdateWithDiff:(id)a3
+- (void)_parentSceneDidUpdateWithDiff:(id)diff
 {
-  v5 = a3;
+  diffCopy = diff;
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Legacy infrastructure required for %s", "-[_UIRemoteViewControllerSceneHostingImpl _parentSceneDidUpdateWithDiff:]"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -430,7 +430,7 @@
     v12 = 2114;
     v13 = v9;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"_UIRemoteViewControllerSceneHostingImpl.m";
     v18 = 1024;
@@ -445,9 +445,9 @@
   __break(0);
 }
 
-- (void)_didReceiveProductivityGestureAction:(id)a3
+- (void)_didReceiveProductivityGestureAction:(id)action
 {
-  v9 = a3;
+  actionCopy = action;
   sceneHostingController = self->_sceneHostingController;
   if (sceneHostingController)
   {
@@ -464,7 +464,7 @@
     }
 
     v7 = v6;
-    v8 = [MEMORY[0x1E695DFD8] setWithObject:v9];
+    v8 = [MEMORY[0x1E695DFD8] setWithObject:actionCopy];
     [(_UISceneHostingController *)v7 sendActions:v8];
   }
 }
@@ -472,11 +472,11 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   WeakRetained = objc_loadWeakRetained(&self->_hostComponent);
-  v3 = [(_UIViewServiceHostSceneComponent *)WeakRetained clientSupportedInterfaceOrientations];
+  clientSupportedInterfaceOrientations = [(_UIViewServiceHostSceneComponent *)WeakRetained clientSupportedInterfaceOrientations];
 
-  if (v3)
+  if (clientSupportedInterfaceOrientations)
   {
-    return v3;
+    return clientSupportedInterfaceOrientations;
   }
 
   else
@@ -487,136 +487,136 @@
 
 - (int64_t)preferredUserInterfaceStyle
 {
-  v2 = [(_UISceneHostingController *)self->_sceneHostingController sceneViewController];
-  v3 = [v2 preferredUserInterfaceStyle];
+  sceneViewController = [(_UISceneHostingController *)self->_sceneHostingController sceneViewController];
+  preferredUserInterfaceStyle = [sceneViewController preferredUserInterfaceStyle];
 
-  return v3;
+  return preferredUserInterfaceStyle;
 }
 
 - (int64_t)preferredWhitePointAdaptivityStyle
 {
-  v2 = [(_UISceneHostingController *)self->_sceneHostingController sceneViewController];
-  v3 = [v2 preferredWhitePointAdaptivityStyle];
+  sceneViewController = [(_UISceneHostingController *)self->_sceneHostingController sceneViewController];
+  preferredWhitePointAdaptivityStyle = [sceneViewController preferredWhitePointAdaptivityStyle];
 
-  return v3;
+  return preferredWhitePointAdaptivityStyle;
 }
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = [(_UISceneHostingController *)self->_sceneHostingController sceneViewController];
-  v3 = [v2 preferredStatusBarStyle];
+  sceneViewController = [(_UISceneHostingController *)self->_sceneHostingController sceneViewController];
+  preferredStatusBarStyle = [sceneViewController preferredStatusBarStyle];
 
-  return v3;
+  return preferredStatusBarStyle;
 }
 
 - (int)_preferredStatusBarVisibility
 {
-  v2 = [(_UISceneHostingController *)self->_sceneHostingController sceneViewController];
-  v3 = [v2 _preferredStatusBarVisibility];
+  sceneViewController = [(_UISceneHostingController *)self->_sceneHostingController sceneViewController];
+  _preferredStatusBarVisibility = [sceneViewController _preferredStatusBarVisibility];
 
-  return v3;
+  return _preferredStatusBarVisibility;
 }
 
 - (id)_multitaskingDragExclusionRects
 {
-  v2 = [(_UISceneHostingController *)self->_sceneHostingController sceneViewController];
-  v3 = [v2 _multitaskingDragExclusionRects];
+  sceneViewController = [(_UISceneHostingController *)self->_sceneHostingController sceneViewController];
+  _multitaskingDragExclusionRects = [sceneViewController _multitaskingDragExclusionRects];
 
-  return v3;
+  return _multitaskingDragExclusionRects;
 }
 
 - (BOOL)prefersPointerLocked
 {
-  v2 = [(_UISceneHostingController *)self->_sceneHostingController sceneViewController];
-  v3 = [v2 prefersPointerLocked];
+  sceneViewController = [(_UISceneHostingController *)self->_sceneHostingController sceneViewController];
+  prefersPointerLocked = [sceneViewController prefersPointerLocked];
 
-  return v3;
+  return prefersPointerLocked;
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden
 {
-  v2 = [(_UISceneHostingController *)self->_sceneHostingController sceneViewController];
-  v3 = [v2 prefersHomeIndicatorAutoHidden];
+  sceneViewController = [(_UISceneHostingController *)self->_sceneHostingController sceneViewController];
+  prefersHomeIndicatorAutoHidden = [sceneViewController prefersHomeIndicatorAutoHidden];
 
-  return v3;
+  return prefersHomeIndicatorAutoHidden;
 }
 
 - (unint64_t)preferredScreenEdgesDeferringSystemGestures
 {
-  v2 = [(_UISceneHostingController *)self->_sceneHostingController sceneViewController];
-  v3 = [v2 preferredScreenEdgesDeferringSystemGestures];
+  sceneViewController = [(_UISceneHostingController *)self->_sceneHostingController sceneViewController];
+  preferredScreenEdgesDeferringSystemGestures = [sceneViewController preferredScreenEdgesDeferringSystemGestures];
 
-  return v3;
+  return preferredScreenEdgesDeferringSystemGestures;
 }
 
 - (void)loadView
 {
   WeakRetained = objc_loadWeakRetained(&self->_owningRemoteViewController);
-  v8 = [WeakRetained view];
+  view = [WeakRetained view];
 
-  v4 = [(_UISceneHostingController *)self->_sceneHostingController sceneViewController];
-  v5 = [v4 view];
+  sceneViewController = [(_UISceneHostingController *)self->_sceneHostingController sceneViewController];
+  view2 = [sceneViewController view];
 
-  [v8 addSubview:v5];
-  v6 = [(_UISceneHostingController *)self->_sceneHostingController sceneViewController];
+  [view addSubview:view2];
+  sceneViewController2 = [(_UISceneHostingController *)self->_sceneHostingController sceneViewController];
   v7 = objc_loadWeakRetained(&self->_owningRemoteViewController);
-  [v6 didMoveToParentViewController:v7];
+  [sceneViewController2 didMoveToParentViewController:v7];
 
-  [v8 bounds];
-  [v5 setFrame:?];
-  [v5 setAutoresizingMask:18];
-  [v8 setClipsToBounds:1];
+  [view bounds];
+  [view2 setFrame:?];
+  [view2 setAutoresizingMask:18];
+  [view setClipsToBounds:1];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v4 = a3;
-  v9 = [(_UIRemoteViewControllerSceneHostingImpl *)self _owningRemoteViewController];
-  [v4 preferredContentSize];
+  containerCopy = container;
+  _owningRemoteViewController = [(_UIRemoteViewControllerSceneHostingImpl *)self _owningRemoteViewController];
+  [containerCopy preferredContentSize];
   v6 = v5;
   v8 = v7;
 
-  [v9 setPreferredContentSize:{v6, v8}];
+  [_owningRemoteViewController setPreferredContentSize:{v6, v8}];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   WeakRetained = objc_loadWeakRetained(&self->_hostComponent);
   [(_UIViewServiceHostSceneComponent *)WeakRetained sendAppearanceAction:?];
 
   if (self && (*&self->_flags & 1) == 0)
   {
     *&self->_flags |= 1u;
-    v6 = [(_UIRemoteViewControllerSceneHostingImpl *)self _owningRemoteViewController];
-    v7 = [v6 _appProtectionMetrics];
+    _owningRemoteViewController = [(_UIRemoteViewControllerSceneHostingImpl *)self _owningRemoteViewController];
+    _appProtectionMetrics = [_owningRemoteViewController _appProtectionMetrics];
 
-    if (v7)
+    if (_appProtectionMetrics)
     {
-      v8 = [(_UISceneHostingController *)self->_sceneHostingController interfaceProtectionComponent];
+      interfaceProtectionComponent = [(_UISceneHostingController *)self->_sceneHostingController interfaceProtectionComponent];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __76___UIRemoteViewControllerSceneHostingImpl_configureAppProtectionIfNecessary__block_invoke;
       v9[3] = &unk_1E711AB10;
-      v10 = v7;
-      v11 = self;
-      [v8 configureSelfMonitoringWithConfiguration:v9];
+      v10 = _appProtectionMetrics;
+      selfCopy = self;
+      [interfaceProtectionComponent configureSelfMonitoringWithConfiguration:v9];
     }
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   WeakRetained = objc_loadWeakRetained(&self->_hostComponent);
   [(_UIViewServiceHostSceneComponent *)WeakRetained sendAppearanceAction:?];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   WeakRetained = objc_loadWeakRetained(&self->_hostComponent);
   v6 = WeakRetained;
-  if (v3)
+  if (disappearCopy)
   {
     v5 = 3;
   }
@@ -629,15 +629,15 @@
   [(_UIViewServiceHostSceneComponent *)WeakRetained sendAppearanceAction:v5];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   WeakRetained = objc_loadWeakRetained(&self->_hostComponent);
   [(_UIViewServiceHostSceneComponent *)WeakRetained sendAppearanceAction:?];
 }
 
-- (void)_viewServiceHostSessionDidConnectToClient:(id)a3
+- (void)_viewServiceHostSessionDidConnectToClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   objc_initWeak(&location, self);
   objc_copyWeak(&v5, &location);
   BSDispatchMain();
@@ -645,41 +645,41 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_viewServiceHostSessionDidInvalidate:(id)a3 withError:(id)a4
+- (void)_viewServiceHostSessionDidInvalidate:(id)invalidate withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  invalidateCopy = invalidate;
+  errorCopy = error;
   objc_initWeak(&location, self);
   objc_copyWeak(&v9, &location);
-  v8 = v7;
+  v8 = errorCopy;
   BSDispatchMain();
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __69___UIRemoteViewControllerSceneHostingImpl_appendDescriptionToStream___block_invoke;
   v11[3] = &unk_1E70F35B8;
-  v5 = v4;
+  v5 = streamCopy;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   [v5 appendProem:self block:v11];
-  v6 = [v5 style];
-  v7 = [v6 verbosity];
+  style = [v5 style];
+  verbosity = [style verbosity];
 
-  if (v7 != 2)
+  if (verbosity != 2)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __69___UIRemoteViewControllerSceneHostingImpl_appendDescriptionToStream___block_invoke_2;
     v8[3] = &unk_1E70F35B8;
     v9 = v5;
-    v10 = self;
+    selfCopy2 = self;
     [v9 appendBodySectionWithName:0 block:v8];
   }
 }
@@ -687,8 +687,8 @@
 - (id)succinctDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] succinctStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  succinctStyle = [MEMORY[0x1E698E690] succinctStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:succinctStyle];
 
   return v5;
 }
@@ -696,8 +696,8 @@
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] debugStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  debugStyle = [MEMORY[0x1E698E690] debugStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:debugStyle];
 
   return v5;
 }

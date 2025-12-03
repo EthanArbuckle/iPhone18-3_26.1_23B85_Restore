@@ -1,13 +1,13 @@
 @interface MediaSuggestionsPresenter
 - (_TtC13MediaControls25MediaSuggestionsPresenter)init;
-- (void)lockscreenMonitor:(id)a3 didUpdateDeviceLocked:(BOOL)a4;
+- (void)lockscreenMonitor:(id)monitor didUpdateDeviceLocked:(BOOL)locked;
 @end
 
 @implementation MediaSuggestionsPresenter
 
-- (void)lockscreenMonitor:(id)a3 didUpdateDeviceLocked:(BOOL)a4
+- (void)lockscreenMonitor:(id)monitor didUpdateDeviceLocked:(BOOL)locked
 {
-  v4 = self;
+  selfCopy = self;
   sub_1A21048C8();
 }
 

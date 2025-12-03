@@ -9,7 +9,7 @@
 - (uint64_t)receivedAllFrames;
 - (uint64_t)useFrameForMultiFrameProcessing:(uint64_t)result;
 - (void)dealloc;
-- (void)initWithConfiguration:(void *)a3 input:(void *)a4 output:(void *)a5 rawNightModeOutputFrame:(void *)a6 deepFusionOutput:(char)a7 processErrorRecoveryFrame:(char)a8 processErrorRecoveryProxy:(char)a9 processOriginalImage:(char)a10 processToneMapping:(char)a11 processInferenceInputImage:(int)a12 clientBracketSequenceNumber:(char)a13 processSemanticRendering:(char)a14 provideInferenceInputImageForProcessing:(char)a15 inferencesAvailable:(char)a16 processSmartStyleRenderingInput:(void *)a17 delegate:;
+- (void)initWithConfiguration:(void *)configuration input:(void *)input output:(void *)output rawNightModeOutputFrame:(void *)frame deepFusionOutput:(char)fusionOutput processErrorRecoveryFrame:(char)recoveryFrame processErrorRecoveryProxy:(char)proxy processOriginalImage:(char)self0 processToneMapping:(char)self1 processInferenceInputImage:(int)self2 clientBracketSequenceNumber:(char)self3 processSemanticRendering:(char)self4 provideInferenceInputImageForProcessing:(char)self5 inferencesAvailable:(char)self6 processSmartStyleRenderingInput:(void *)self7 delegate:;
 @end
 
 @implementation BWNRFProcessorRequest
@@ -18,9 +18,9 @@
 {
   if (result)
   {
-    v3 = [(BWNRFProcessorRequest *)result processingType];
+    processingType = [(BWNRFProcessorRequest *)result processingType];
     result = 0;
-    v4 = 1 << v3;
+    v4 = 1 << processingType;
     if ((v4 & 0x1E1) == 0)
     {
       if ((v4 & 0xE0A) != 0)
@@ -43,39 +43,39 @@
 {
   v7 = MEMORY[0x1E696AEC0];
   v6 = objc_opt_class();
-  v5 = [(BWStillImageCaptureSettings *)[(BWStillImageProcessorControllerInput *)self->_input captureSettings] settingsID];
+  settingsID = [(BWStillImageCaptureSettings *)[(BWStillImageProcessorControllerInput *)self->_input captureSettings] settingsID];
   v4 = BWPhotoEncoderStringFromEncodingScheme([(BWStillImageCaptureStreamSettings *)[(BWStillImageProcessorControllerInput *)self->_input captureStreamSettings] captureType]);
-  return [v7 stringWithFormat:@"<%@ %p>: captureID:%lld, captureType=%@, %@, errorRecovery=%d errorRecoveryProxy=%d original=%d tonemap=%d inferenceInput=%d semanticRendering=%d inferenceInputForProcessing=%d inferences=%d input:<%@ %p>", v6, self, v5, v4, -[BWStillImageCaptureStreamSettings portType](-[BWStillImageProcessorControllerInput captureStreamSettings](self->_input, "captureStreamSettings"), "portType"), self->_processErrorRecoveryFrame, self->_processErrorRecoveryProxy, self->_processOriginalImage, self->_processToneMapping, self->_processInferenceInputImage, self->_processSemanticRendering, self->_provideInferenceInputImageForProcessing, self->_inferencesAvailable, objc_opt_class(), self->_input];
+  return [v7 stringWithFormat:@"<%@ %p>: captureID:%lld, captureType=%@, %@, errorRecovery=%d errorRecoveryProxy=%d original=%d tonemap=%d inferenceInput=%d semanticRendering=%d inferenceInputForProcessing=%d inferences=%d input:<%@ %p>", v6, self, settingsID, v4, -[BWStillImageCaptureStreamSettings portType](-[BWStillImageProcessorControllerInput captureStreamSettings](self->_input, "captureStreamSettings"), "portType"), self->_processErrorRecoveryFrame, self->_processErrorRecoveryProxy, self->_processOriginalImage, self->_processToneMapping, self->_processInferenceInputImage, self->_processSemanticRendering, self->_provideInferenceInputImageForProcessing, self->_inferencesAvailable, objc_opt_class(), self->_input];
 }
 
-- (void)initWithConfiguration:(void *)a3 input:(void *)a4 output:(void *)a5 rawNightModeOutputFrame:(void *)a6 deepFusionOutput:(char)a7 processErrorRecoveryFrame:(char)a8 processErrorRecoveryProxy:(char)a9 processOriginalImage:(char)a10 processToneMapping:(char)a11 processInferenceInputImage:(int)a12 clientBracketSequenceNumber:(char)a13 processSemanticRendering:(char)a14 provideInferenceInputImageForProcessing:(char)a15 inferencesAvailable:(char)a16 processSmartStyleRenderingInput:(void *)a17 delegate:
+- (void)initWithConfiguration:(void *)configuration input:(void *)input output:(void *)output rawNightModeOutputFrame:(void *)frame deepFusionOutput:(char)fusionOutput processErrorRecoveryFrame:(char)recoveryFrame processErrorRecoveryProxy:(char)proxy processOriginalImage:(char)self0 processToneMapping:(char)self1 processInferenceInputImage:(int)self2 clientBracketSequenceNumber:(char)self3 processSemanticRendering:(char)self4 provideInferenceInputImageForProcessing:(char)self5 inferencesAvailable:(char)self6 processSmartStyleRenderingInput:(void *)self7 delegate:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v26.receiver = a1;
+  v26.receiver = self;
   v26.super_class = BWNRFProcessorRequest;
   v24 = objc_msgSendSuper2(&v26, sel_init);
   if (v24)
   {
     v24[1] = a2;
-    v24[2] = a3;
-    v24[3] = a4;
-    v24[4] = a5;
-    v24[5] = a6;
-    *(v24 + 48) = a7;
-    *(v24 + 49) = a8;
-    *(v24 + 50) = a9;
-    *(v24 + 51) = a10;
-    *(v24 + 52) = a11;
-    *(v24 + 14) = a12;
-    *(v24 + 60) = a13;
-    *(v24 + 61) = a14;
-    *(v24 + 62) = a15;
-    *(v24 + 72) = a16;
-    v24[8] = a17;
+    v24[2] = configuration;
+    v24[3] = input;
+    v24[4] = output;
+    v24[5] = frame;
+    *(v24 + 48) = fusionOutput;
+    *(v24 + 49) = recoveryFrame;
+    *(v24 + 50) = proxy;
+    *(v24 + 51) = image;
+    *(v24 + 52) = mapping;
+    *(v24 + 14) = inputImage;
+    *(v24 + 60) = number;
+    *(v24 + 61) = rendering;
+    *(v24 + 62) = processing;
+    *(v24 + 72) = available;
+    v24[8] = renderingInput;
     *(v24 + 92) = 0x8000007F7FFFFFLL;
   }
 
@@ -122,9 +122,9 @@
 
 - (const)clientBracketFrame
 {
-  if (a1 && *(a1 + 56) >= 1)
+  if (self && *(self + 56) >= 1)
   {
-    v2 = *(a1 + 16);
+    v2 = *(self + 16);
     if (v2)
     {
       v3 = *(v2 + 56);
@@ -141,7 +141,7 @@
     v7 = v4;
     while (v7 >= 1)
     {
-      v8 = *(a1 + 16);
+      v8 = *(self + 16);
       if (v8)
       {
         v9 = *(v8 + 56);
@@ -153,7 +153,7 @@
       }
 
       v10 = [v9 objectAtIndexedSubscript:--v7];
-      if ([objc_msgSend(CMGetAttachment(v10 v5] == *(a1 + 56))
+      if ([objc_msgSend(CMGetAttachment(v10 v5] == *(self + 56))
       {
         return v10;
       }
@@ -461,8 +461,8 @@ LABEL_13:
   {
     if ([objc_msgSend(*(result + 16) "captureStreamSettings")] != 13 || (objc_msgSend(objc_msgSend(*(v2 + 16), "captureSettings"), "deliverDeferredPhotoProxyImage") & 1) != 0)
     {
-      v3 = [*(v2 + 16) errorRecoveryFrame];
-      return v3 != 0;
+      errorRecoveryFrame = [*(v2 + 16) errorRecoveryFrame];
+      return errorRecoveryFrame != 0;
     }
 
     v6 = *(v2 + 16);
@@ -481,8 +481,8 @@ LABEL_13:
 
   if (*(result + 50) == 1)
   {
-    v3 = [*(result + 16) originalImage];
-    return v3 != 0;
+    errorRecoveryFrame = [*(result + 16) originalImage];
+    return errorRecoveryFrame != 0;
   }
 
   if ((*(result + 52) & 1) != 0 || (*(result + 51) & 1) != 0 || [(BWNRFProcessorRequest *)result processingType]== 7)
@@ -498,14 +498,14 @@ LABEL_13:
       v5 = 0;
     }
 
-    v3 = [v5 count];
-    return v3 != 0;
+    errorRecoveryFrame = [v5 count];
+    return errorRecoveryFrame != 0;
   }
 
   if (*(v2 + 56) >= 1)
   {
-    v3 = [(BWNRFProcessorRequest *)v2 clientBracketFrame];
-    return v3 != 0;
+    errorRecoveryFrame = [(BWNRFProcessorRequest *)v2 clientBracketFrame];
+    return errorRecoveryFrame != 0;
   }
 
   v10 = [objc_msgSend(objc_msgSend(*(v2 + 16) "captureStreamSettings")];
@@ -522,15 +522,15 @@ LABEL_18:
     v8 = OUTLINED_FUNCTION_27_0();
     if ([(BWNRFProcessorRequest *)v8 processingType])
     {
-      v9 = [*(v2 + 16) expectedFrameCount];
+      expectedFrameCount = [*(v2 + 16) expectedFrameCount];
     }
 
     else
     {
-      v9 = 1;
+      expectedFrameCount = 1;
     }
 
-    return v1 == v9;
+    return v1 == expectedFrameCount;
   }
 
   return [v7 receivedAllFrames];

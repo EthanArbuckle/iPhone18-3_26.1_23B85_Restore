@@ -1,29 +1,29 @@
 @interface AXVisualAlertSBScheduledAlarmObserver
-- (void)_updateAlarmFiringChangedWithAlarm:(id)a3;
+- (void)_updateAlarmFiringChangedWithAlarm:(id)alarm;
 @end
 
 @implementation AXVisualAlertSBScheduledAlarmObserver
 
-- (void)_updateAlarmFiringChangedWithAlarm:(id)a3
+- (void)_updateAlarmFiringChangedWithAlarm:(id)alarm
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CE6998] sharedInstance];
-  v6 = [v5 ignoreLogging];
+  alarmCopy = alarm;
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v6 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v7 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v8 = AXLoggerForFacility();
 
     v9 = AXOSLogLevelFromAXLogLevel();
     if (os_log_type_enabled(v8, v9))
     {
       v10 = AXColorizeFormatLog();
-      v11 = [v4 alarmID];
-      v15 = [v4 isFiring];
-      v16 = [v4 isSnoozed];
-      v14 = v11;
+      alarmID = [alarmCopy alarmID];
+      isFiring = [alarmCopy isFiring];
+      isSnoozed = [alarmCopy isSnoozed];
+      v14 = alarmID;
       v12 = _AXStringForArgs();
 
       if (os_log_type_enabled(v8, v9))
@@ -35,7 +35,7 @@
     }
   }
 
-  if ([v4 isFiring])
+  if ([alarmCopy isFiring])
   {
     [_VisualAlertManager _handleBeginVisualAlertForAlarmWithSound:1];
   }
@@ -47,7 +47,7 @@
 
   v17.receiver = self;
   v17.super_class = AXVisualAlertSBScheduledAlarmObserver;
-  [(AXVisualAlertSBScheduledAlarmObserver *)&v17 _updateAlarmFiringChangedWithAlarm:v4];
+  [(AXVisualAlertSBScheduledAlarmObserver *)&v17 _updateAlarmFiringChangedWithAlarm:alarmCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }

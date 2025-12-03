@@ -1,45 +1,45 @@
 @interface PICropAdjustmentController
 - (BOOL)isCropConstrained;
-- (BOOL)isCropIdentityForImageSize:(CGSize)a3;
-- (BOOL)isGeometryIdentityForImageSize:(CGSize)a3;
-- (BOOL)isSettingEqual:(id)a3 forKey:(id)a4;
+- (BOOL)isCropIdentityForImageSize:(CGSize)size;
+- (BOOL)isGeometryIdentityForImageSize:(CGSize)size;
+- (BOOL)isSettingEqual:(id)equal forKey:(id)key;
 - (CGRect)cropRect;
-- (PICropAdjustmentController)initWithAdjustment:(id)a3;
+- (PICropAdjustmentController)initWithAdjustment:(id)adjustment;
 - (double)angle;
 - (double)pitch;
 - (double)yaw;
 - (id)visualInputKeys;
 - (int64_t)constraintHeight;
 - (int64_t)constraintWidth;
-- (void)setAngle:(double)a3;
-- (void)setConstraintHeight:(int64_t)a3;
-- (void)setConstraintWidth:(int64_t)a3;
-- (void)setCropRect:(CGRect)a3;
-- (void)setPitch:(double)a3;
-- (void)setYaw:(double)a3;
+- (void)setAngle:(double)angle;
+- (void)setConstraintHeight:(int64_t)height;
+- (void)setConstraintWidth:(int64_t)width;
+- (void)setCropRect:(CGRect)rect;
+- (void)setPitch:(double)pitch;
+- (void)setYaw:(double)yaw;
 @end
 
 @implementation PICropAdjustmentController
 
-- (BOOL)isSettingEqual:(id)a3 forKey:(id)a4
+- (BOOL)isSettingEqual:(id)equal forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PIAdjustmentController *)self adjustment];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  equalCopy = equal;
+  keyCopy = key;
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  v9 = [adjustment objectForKeyedSubscript:keyCopy];
 
-  v10 = [v6 objectForKeyedSubscript:v7];
+  v10 = [equalCopy objectForKeyedSubscript:keyCopy];
   v11 = +[PICropAdjustmentController angleKey];
-  if ([v7 isEqualToString:v11])
+  if ([keyCopy isEqualToString:v11])
   {
     goto LABEL_4;
   }
 
   v12 = +[PICropAdjustmentController pitchKey];
-  if (![v7 isEqualToString:v12])
+  if (![keyCopy isEqualToString:v12])
   {
     v20 = +[PICropAdjustmentController yawKey];
-    v21 = [v7 isEqualToString:v20];
+    v21 = [keyCopy isEqualToString:v20];
 
     if (v21)
     {
@@ -47,22 +47,22 @@
     }
 
     v22 = +[PICropAdjustmentController xOriginKey];
-    if (([v7 isEqualToString:v22] & 1) == 0)
+    if (([keyCopy isEqualToString:v22] & 1) == 0)
     {
       v23 = +[PICropAdjustmentController yOriginKey];
-      if (([v7 isEqualToString:v23] & 1) == 0)
+      if (([keyCopy isEqualToString:v23] & 1) == 0)
       {
         v24 = +[PICropAdjustmentController widthKey];
-        if (![v7 isEqualToString:v24])
+        if (![keyCopy isEqualToString:v24])
         {
           v28 = +[PICropAdjustmentController heightKey];
-          v29 = [v7 isEqualToString:v28];
+          v29 = [keyCopy isEqualToString:v28];
 
           if ((v29 & 1) == 0)
           {
             v30.receiver = self;
             v30.super_class = PICropAdjustmentController;
-            v18 = [(PIAdjustmentController *)&v30 isSettingEqual:v6 forKey:v7];
+            v18 = [(PIAdjustmentController *)&v30 isSettingEqual:equalCopy forKey:keyCopy];
             goto LABEL_7;
           }
 
@@ -94,7 +94,7 @@ LABEL_7:
   return v18;
 }
 
-- (void)setYaw:(double)a3
+- (void)setYaw:(double)yaw
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -107,21 +107,21 @@ LABEL_7:
   }
 
   v5 = *&setYaw__minAngle;
-  v6 = *&setYaw__maxAngle;
-  if (*&setYaw__maxAngle > a3)
+  yawCopy = *&setYaw__maxAngle;
+  if (*&setYaw__maxAngle > yaw)
   {
-    v6 = a3;
+    yawCopy = yaw;
   }
 
-  if (*&setYaw__minAngle < v6)
+  if (*&setYaw__minAngle < yawCopy)
   {
-    v5 = v6;
+    v5 = yawCopy;
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:v5];
-  v8 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v9 = +[PICropAdjustmentController yawKey];
-  [v8 setObject:v7 forKeyedSubscript:v9];
+  [adjustment setObject:v7 forKeyedSubscript:v9];
 }
 
 void __37__PICropAdjustmentController_setYaw___block_invoke(uint64_t a1)
@@ -141,7 +141,7 @@ void __37__PICropAdjustmentController_setYaw___block_invoke(uint64_t a1)
   setYaw__maxAngle = v8;
 }
 
-- (void)setPitch:(double)a3
+- (void)setPitch:(double)pitch
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -154,21 +154,21 @@ void __37__PICropAdjustmentController_setYaw___block_invoke(uint64_t a1)
   }
 
   v5 = *&setPitch__minAngle;
-  v6 = *&setPitch__maxAngle;
-  if (*&setPitch__maxAngle > a3)
+  pitchCopy = *&setPitch__maxAngle;
+  if (*&setPitch__maxAngle > pitch)
   {
-    v6 = a3;
+    pitchCopy = pitch;
   }
 
-  if (*&setPitch__minAngle < v6)
+  if (*&setPitch__minAngle < pitchCopy)
   {
-    v5 = v6;
+    v5 = pitchCopy;
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:v5];
-  v8 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v9 = +[PICropAdjustmentController pitchKey];
-  [v8 setObject:v7 forKeyedSubscript:v9];
+  [adjustment setObject:v7 forKeyedSubscript:v9];
 }
 
 void __39__PICropAdjustmentController_setPitch___block_invoke(uint64_t a1)
@@ -188,7 +188,7 @@ void __39__PICropAdjustmentController_setPitch___block_invoke(uint64_t a1)
   setPitch__maxAngle = v8;
 }
 
-- (void)setAngle:(double)a3
+- (void)setAngle:(double)angle
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -201,21 +201,21 @@ void __39__PICropAdjustmentController_setPitch___block_invoke(uint64_t a1)
   }
 
   v5 = *&setAngle__minAngle;
-  v6 = *&setAngle__maxAngle;
-  if (*&setAngle__maxAngle > a3)
+  angleCopy = *&setAngle__maxAngle;
+  if (*&setAngle__maxAngle > angle)
   {
-    v6 = a3;
+    angleCopy = angle;
   }
 
-  if (*&setAngle__minAngle < v6)
+  if (*&setAngle__minAngle < angleCopy)
   {
-    v5 = v6;
+    v5 = angleCopy;
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:v5];
-  v8 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v9 = +[PICropAdjustmentController angleKey];
-  [v8 setObject:v7 forKeyedSubscript:v9];
+  [adjustment setObject:v7 forKeyedSubscript:v9];
 }
 
 void __39__PICropAdjustmentController_setAngle___block_invoke(uint64_t a1)
@@ -235,50 +235,50 @@ void __39__PICropAdjustmentController_setAngle___block_invoke(uint64_t a1)
   setAngle__maxAngle = v8;
 }
 
-- (void)setConstraintHeight:(int64_t)a3
+- (void)setConstraintHeight:(int64_t)height
 {
-  if (a3)
+  if (height)
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-    v4 = [(PIAdjustmentController *)self adjustment];
+    adjustment2 = [MEMORY[0x1E696AD98] numberWithInteger:?];
+    adjustment = [(PIAdjustmentController *)self adjustment];
     v5 = +[PICropAdjustmentController constraintHeightKey];
-    [v4 setObject:v6 forKeyedSubscript:v5];
+    [adjustment setObject:adjustment2 forKeyedSubscript:v5];
   }
 
   else
   {
-    v6 = [(PIAdjustmentController *)self adjustment];
-    v4 = +[PICropAdjustmentController constraintHeightKey];
-    [v6 setObject:0 forKeyedSubscript:v4];
+    adjustment2 = [(PIAdjustmentController *)self adjustment];
+    adjustment = +[PICropAdjustmentController constraintHeightKey];
+    [adjustment2 setObject:0 forKeyedSubscript:adjustment];
   }
 }
 
-- (void)setConstraintWidth:(int64_t)a3
+- (void)setConstraintWidth:(int64_t)width
 {
-  if (a3)
+  if (width)
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-    v4 = [(PIAdjustmentController *)self adjustment];
+    adjustment2 = [MEMORY[0x1E696AD98] numberWithInteger:?];
+    adjustment = [(PIAdjustmentController *)self adjustment];
     v5 = +[PICropAdjustmentController constraintWidthKey];
-    [v4 setObject:v6 forKeyedSubscript:v5];
+    [adjustment setObject:adjustment2 forKeyedSubscript:v5];
   }
 
   else
   {
-    v6 = [(PIAdjustmentController *)self adjustment];
-    v4 = +[PICropAdjustmentController constraintWidthKey];
-    [v6 setObject:0 forKeyedSubscript:v4];
+    adjustment2 = [(PIAdjustmentController *)self adjustment];
+    adjustment = +[PICropAdjustmentController constraintWidthKey];
+    [adjustment2 setObject:0 forKeyedSubscript:adjustment];
   }
 }
 
-- (void)setCropRect:(CGRect)a3
+- (void)setCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v37 = *MEMORY[0x1E69E9840];
-  if (CGRectIsEmpty(a3))
+  if (CGRectIsEmpty(rect))
   {
     v19 = NUAssertLogger_12487();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -300,8 +300,8 @@ void __39__PICropAdjustmentController_setAngle___block_invoke(uint64_t a1)
         v27 = dispatch_get_specific(*v21);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v34 = v27;
         v35 = 2114;
@@ -312,8 +312,8 @@ void __39__PICropAdjustmentController_setAngle___block_invoke(uint64_t a1)
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v34 = v26;
       _os_log_error_impl(&dword_1C7694000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -323,31 +323,31 @@ void __39__PICropAdjustmentController_setAngle___block_invoke(uint64_t a1)
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:x];
-  v9 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v10 = +[PICropAdjustmentController xOriginKey];
-  [v9 setObject:v8 forKeyedSubscript:v10];
+  [adjustment setObject:v8 forKeyedSubscript:v10];
 
   v11 = [MEMORY[0x1E696AD98] numberWithDouble:y];
-  v12 = [(PIAdjustmentController *)self adjustment];
+  adjustment2 = [(PIAdjustmentController *)self adjustment];
   v13 = +[PICropAdjustmentController yOriginKey];
-  [v12 setObject:v11 forKeyedSubscript:v13];
+  [adjustment2 setObject:v11 forKeyedSubscript:v13];
 
   v14 = [MEMORY[0x1E696AD98] numberWithDouble:width];
-  v15 = [(PIAdjustmentController *)self adjustment];
+  adjustment3 = [(PIAdjustmentController *)self adjustment];
   v16 = +[PICropAdjustmentController widthKey];
-  [v15 setObject:v14 forKeyedSubscript:v16];
+  [adjustment3 setObject:v14 forKeyedSubscript:v16];
 
   v32 = [MEMORY[0x1E696AD98] numberWithDouble:height];
-  v17 = [(PIAdjustmentController *)self adjustment];
+  adjustment4 = [(PIAdjustmentController *)self adjustment];
   v18 = +[PICropAdjustmentController heightKey];
-  [v17 setObject:v32 forKeyedSubscript:v18];
+  [adjustment4 setObject:v32 forKeyedSubscript:v18];
 }
 
 - (double)yaw
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PICropAdjustmentController yawKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
   [v4 doubleValue];
   v6 = v5;
 
@@ -356,9 +356,9 @@ void __39__PICropAdjustmentController_setAngle___block_invoke(uint64_t a1)
 
 - (double)pitch
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PICropAdjustmentController pitchKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
   [v4 doubleValue];
   v6 = v5;
 
@@ -367,9 +367,9 @@ void __39__PICropAdjustmentController_setAngle___block_invoke(uint64_t a1)
 
 - (double)angle
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PICropAdjustmentController angleKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
   [v4 doubleValue];
   v6 = v5;
 
@@ -378,44 +378,44 @@ void __39__PICropAdjustmentController_setAngle___block_invoke(uint64_t a1)
 
 - (int64_t)constraintHeight
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PICropAdjustmentController constraintHeightKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
-  v5 = [v4 integerValue];
+  v4 = [adjustment objectForKeyedSubscript:v3];
+  integerValue = [v4 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (int64_t)constraintWidth
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PICropAdjustmentController constraintWidthKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
-  v5 = [v4 integerValue];
+  v4 = [adjustment objectForKeyedSubscript:v3];
+  integerValue = [v4 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (CGRect)cropRect
 {
-  v26 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v25 = +[PICropAdjustmentController xOriginKey];
-  v3 = [v26 objectForKeyedSubscript:v25];
+  v3 = [adjustment objectForKeyedSubscript:v25];
   [v3 doubleValue];
   v5 = v4;
-  v6 = [(PIAdjustmentController *)self adjustment];
+  adjustment2 = [(PIAdjustmentController *)self adjustment];
   v7 = +[PICropAdjustmentController yOriginKey];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [adjustment2 objectForKeyedSubscript:v7];
   [v8 doubleValue];
   v10 = v9;
-  v11 = [(PIAdjustmentController *)self adjustment];
+  adjustment3 = [(PIAdjustmentController *)self adjustment];
   v12 = +[PICropAdjustmentController widthKey];
-  v13 = [v11 objectForKeyedSubscript:v12];
+  v13 = [adjustment3 objectForKeyedSubscript:v12];
   [v13 doubleValue];
   v15 = v14;
-  v16 = [(PIAdjustmentController *)self adjustment];
+  adjustment4 = [(PIAdjustmentController *)self adjustment];
   v17 = +[PICropAdjustmentController heightKey];
-  v18 = [v16 objectForKeyedSubscript:v17];
+  v18 = [adjustment4 objectForKeyedSubscript:v17];
   [v18 doubleValue];
   v20 = v19;
 
@@ -430,10 +430,10 @@ void __39__PICropAdjustmentController_setAngle___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)isCropIdentityForImageSize:(CGSize)a3
+- (BOOL)isCropIdentityForImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PICropAdjustmentController *)self cropRect];
   v12.origin.x = 0.0;
   v12.origin.y = 0.0;
@@ -460,22 +460,22 @@ void __39__PICropAdjustmentController_setAngle___block_invoke(uint64_t a1)
 
 - (BOOL)isCropConstrained
 {
-  v3 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v4 = +[PICropAdjustmentController constraintWidthKey];
-  v5 = [v3 objectForKeyedSubscript:v4];
-  v6 = [v5 integerValue];
+  v5 = [adjustment objectForKeyedSubscript:v4];
+  integerValue = [v5 integerValue];
 
-  v7 = [(PIAdjustmentController *)self adjustment];
+  adjustment2 = [(PIAdjustmentController *)self adjustment];
   v8 = +[PICropAdjustmentController constraintHeightKey];
-  v9 = [v7 objectForKeyedSubscript:v8];
-  v10 = [v9 integerValue];
+  v9 = [adjustment2 objectForKeyedSubscript:v8];
+  integerValue2 = [v9 integerValue];
 
-  return v6 > 0 && v10 > 0;
+  return integerValue > 0 && integerValue2 > 0;
 }
 
-- (BOOL)isGeometryIdentityForImageSize:(CGSize)a3
+- (BOOL)isGeometryIdentityForImageSize:(CGSize)size
 {
-  v4 = [(PICropAdjustmentController *)self isCropIdentityForImageSize:a3.width, a3.height];
+  v4 = [(PICropAdjustmentController *)self isCropIdentityForImageSize:size.width, size.height];
   if (v4)
   {
     LOBYTE(v4) = ![(PICropAdjustmentController *)self isCropConstrained];
@@ -509,11 +509,11 @@ void __39__PICropAdjustmentController_setAngle___block_invoke(uint64_t a1)
   return v11;
 }
 
-- (PICropAdjustmentController)initWithAdjustment:(id)a3
+- (PICropAdjustmentController)initWithAdjustment:(id)adjustment
 {
   v4.receiver = self;
   v4.super_class = PICropAdjustmentController;
-  return [(PIAdjustmentController *)&v4 initWithAdjustment:a3];
+  return [(PIAdjustmentController *)&v4 initWithAdjustment:adjustment];
 }
 
 @end

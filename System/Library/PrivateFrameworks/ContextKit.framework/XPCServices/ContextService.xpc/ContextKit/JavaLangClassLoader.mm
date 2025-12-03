@@ -1,12 +1,12 @@
 @interface JavaLangClassLoader
 + (id)getSystemClassLoader;
-- (id)findSystemClassWithNSString:(id)a3;
-- (id)getPackageWithNSString:(id)a3;
+- (id)findSystemClassWithNSString:(id)string;
+- (id)getPackageWithNSString:(id)string;
 - (id)getPackages;
-- (id)getResourceAsStreamWithNSString:(id)a3;
-- (id)getResourceWithNSString:(id)a3;
-- (id)getResourcesWithNSString:(id)a3;
-- (id)loadClassWithNSString:(id)a3 withBoolean:(BOOL)a4;
+- (id)getResourceAsStreamWithNSString:(id)string;
+- (id)getResourceWithNSString:(id)string;
+- (id)getResourcesWithNSString:(id)string;
+- (id)loadClassWithNSString:(id)string withBoolean:(BOOL)boolean;
 - (void)dealloc;
 @end
 
@@ -22,7 +22,7 @@
   return JavaLangSystemClassLoader_loader_;
 }
 
-- (id)findSystemClassWithNSString:(id)a3
+- (id)findSystemClassWithNSString:(id)string
 {
   if ((atomic_load_explicit(&JavaLangSystemClassLoader__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -31,10 +31,10 @@
 
   v4 = JavaLangSystemClassLoader_loader_;
 
-  return IOSClass_forName_initialize_classLoader_(a3, 0, v4);
+  return IOSClass_forName_initialize_classLoader_(string, 0, v4);
 }
 
-- (id)getResourceWithNSString:(id)a3
+- (id)getResourceWithNSString:(id)string
 {
   parent = self->parent_;
   if (!parent)
@@ -46,13 +46,13 @@
   if (!result)
   {
 
-    return [(JavaLangClassLoader *)self findResourceWithNSString:a3];
+    return [(JavaLangClassLoader *)self findResourceWithNSString:string];
   }
 
   return result;
 }
 
-- (id)getResourcesWithNSString:(id)a3
+- (id)getResourcesWithNSString:(id)string
 {
   parent = self->parent_;
   if (!parent)
@@ -60,14 +60,14 @@
     JreThrowNullPointerException();
   }
 
-  v5 = new_JavaLangTwoEnumerationsInOne_initWithJavaUtilEnumeration_withJavaUtilEnumeration_([(JavaLangClassLoader *)parent getResourcesWithNSString:?], [(JavaLangClassLoader *)self findResourcesWithNSString:a3]);
+  v5 = new_JavaLangTwoEnumerationsInOne_initWithJavaUtilEnumeration_withJavaUtilEnumeration_([(JavaLangClassLoader *)parent getResourcesWithNSString:?], [(JavaLangClassLoader *)self findResourcesWithNSString:string]);
 
   return v5;
 }
 
-- (id)getResourceAsStreamWithNSString:(id)a3
+- (id)getResourceAsStreamWithNSString:(id)string
 {
-  result = [(JavaLangClassLoader *)self getResourceWithNSString:a3];
+  result = [(JavaLangClassLoader *)self getResourceWithNSString:string];
   if (result)
   {
     return [result openStream];
@@ -76,9 +76,9 @@
   return result;
 }
 
-- (id)loadClassWithNSString:(id)a3 withBoolean:(BOOL)a4
+- (id)loadClassWithNSString:(id)string withBoolean:(BOOL)boolean
 {
-  result = sub_10017F598(a3);
+  result = sub_10017F598(string);
   if (!result)
   {
     parent = self->parent_;
@@ -87,18 +87,18 @@
       JreThrowNullPointerException();
     }
 
-    result = [(JavaLangClassLoader *)parent loadClassWithNSString:a3 withBoolean:0];
+    result = [(JavaLangClassLoader *)parent loadClassWithNSString:string withBoolean:0];
     if (!result)
     {
 
-      return [(JavaLangClassLoader *)self findClassWithNSString:a3];
+      return [(JavaLangClassLoader *)self findClassWithNSString:string];
     }
   }
 
   return result;
 }
 
-- (id)getPackageWithNSString:(id)a3
+- (id)getPackageWithNSString:(id)string
 {
   packages = self->packages_;
   objc_sync_enter(packages);
@@ -108,7 +108,7 @@
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaUtilMap *)v6 getWithId:a3];
+  v7 = [(JavaUtilMap *)v6 getWithId:string];
   objc_sync_exit(packages);
   return v7;
 }
@@ -123,14 +123,14 @@
     JreThrowNullPointerException();
   }
 
-  v5 = [(JavaUtilMap *)v4 values];
-  v6 = v5;
-  if (!v5)
+  values = [(JavaUtilMap *)v4 values];
+  v6 = values;
+  if (!values)
   {
     JreThrowNullPointerException();
   }
 
-  v7 = +[IOSObjectArray arrayWithLength:type:](IOSObjectArray, "arrayWithLength:type:", [v5 size], JavaLangPackage_class_());
+  v7 = +[IOSObjectArray arrayWithLength:type:](IOSObjectArray, "arrayWithLength:type:", [values size], JavaLangPackage_class_());
   [v6 toArrayWithNSObjectArray:v7];
   objc_sync_exit(packages);
   return v7;

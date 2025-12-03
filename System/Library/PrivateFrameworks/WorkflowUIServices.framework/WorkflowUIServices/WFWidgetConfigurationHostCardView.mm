@@ -1,12 +1,12 @@
 @interface WFWidgetConfigurationHostCardView
-- (WFWidgetConfigurationHostCardView)initWithRequest:(id)a3;
-- (void)showMessage:(id)a3;
+- (WFWidgetConfigurationHostCardView)initWithRequest:(id)request;
+- (void)showMessage:(id)message;
 - (void)startLoading;
 @end
 
 @implementation WFWidgetConfigurationHostCardView
 
-- (void)showMessage:(id)a3
+- (void)showMessage:(id)message
 {
   v7 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   v4 = WFLocalizedStringFromTable(@"Unable to Load", @"WidgetConfiguration");
@@ -18,8 +18,8 @@
   [v7 setAdjustsFontForContentSizeCategory:1];
   [v7 setNumberOfLines:0];
   [v7 setTextAlignment:1];
-  v6 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v7 setTextColor:v6];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v7 setTextColor:secondaryLabelColor];
 
   [(WFWidgetConfigurationCardView *)self setContentView:v7 stretchToFit:0];
 }
@@ -31,11 +31,11 @@
   [(WFWidgetConfigurationCardView *)self setContentView:v3 stretchToFit:0];
 }
 
-- (WFWidgetConfigurationHostCardView)initWithRequest:(id)a3
+- (WFWidgetConfigurationHostCardView)initWithRequest:(id)request
 {
   v7.receiver = self;
   v7.super_class = WFWidgetConfigurationHostCardView;
-  v3 = [(WFWidgetConfigurationCardView *)&v7 initWithRequest:a3 contentView:0];
+  v3 = [(WFWidgetConfigurationCardView *)&v7 initWithRequest:request contentView:0];
   v4 = v3;
   if (v3)
   {

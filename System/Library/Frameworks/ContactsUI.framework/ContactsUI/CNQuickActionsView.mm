@@ -1,30 +1,30 @@
 @interface CNQuickActionsView
-+ (id)actionsManagerForContact:(id)a3;
++ (id)actionsManagerForContact:(id)contact;
 + (id)defaultCategories;
 + (id)descriptorForRequiredKeys;
-- (BOOL)quickActionButton:(id)a3 performAction:(id)a4;
+- (BOOL)quickActionButton:(id)button performAction:(id)action;
 - (CGSize)cachedContentSize;
-- (CNQuickActionsView)initWithContact:(id)a3;
-- (CNQuickActionsView)initWithFrame:(CGRect)a3;
+- (CNQuickActionsView)initWithContact:(id)contact;
+- (CNQuickActionsView)initWithFrame:(CGRect)frame;
 - (CNQuickActionsViewDelegate)delegate;
-- (double)_widthForButtonCount:(int64_t)a3 itemSize:(CGSize *)a4;
+- (double)_widthForButtonCount:(int64_t)count itemSize:(CGSize *)size;
 - (double)interspace;
 - (double)maximumWidth;
-- (id)actionsManager:(id)a3 presentingViewControllerForAction:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)actionsManager:(id)manager presentingViewControllerForAction:(id)action;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)_updateActions;
-- (void)actionsManager:(id)a3 actionDidPerform:(id)a4;
-- (void)contactActionsController:(id)a3 didSelectAction:(id)a4;
-- (void)didDisambiguateActionType:(id)a3 withActionItem:(id)a4;
-- (void)performAction:(id)a3;
+- (void)actionsManager:(id)manager actionDidPerform:(id)perform;
+- (void)contactActionsController:(id)controller didSelectAction:(id)action;
+- (void)didDisambiguateActionType:(id)type withActionItem:(id)item;
+- (void)performAction:(id)action;
 - (void)reloadData;
-- (void)setContact:(id)a3;
-- (void)setInterspace:(double)a3;
-- (void)setSortsWithDuet:(BOOL)a3;
-- (void)showDisambiguationControllerWithDataSource:(id)a3 actionType:(id)a4 onController:(id)a5 sourceView:(id)a6;
+- (void)setContact:(id)contact;
+- (void)setInterspace:(double)interspace;
+- (void)setSortsWithDuet:(BOOL)duet;
+- (void)showDisambiguationControllerWithDataSource:(id)source actionType:(id)type onController:(id)controller sourceView:(id)view;
 - (void)updateContentSize;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation CNQuickActionsView
@@ -45,55 +45,55 @@
   return WeakRetained;
 }
 
-- (void)contactActionsController:(id)a3 didSelectAction:(id)a4
+- (void)contactActionsController:(id)controller didSelectAction:(id)action
 {
-  v5 = a4;
-  v6 = [(CNQuickActionsView *)self alertController];
+  actionCopy = action;
+  alertController = [(CNQuickActionsView *)self alertController];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__CNQuickActionsView_contactActionsController_didSelectAction___block_invoke;
   v7[3] = &unk_1E74E6A88;
   v7[4] = self;
-  [v6 dismissViewControllerAnimated:1 completion:v7];
+  [alertController dismissViewControllerAnimated:1 completion:v7];
 
-  [(CNQuickActionsView *)self performAction:v5];
+  [(CNQuickActionsView *)self performAction:actionCopy];
   [(CNQuickActionsView *)self setActionsController:0];
 }
 
-- (void)didDisambiguateActionType:(id)a3 withActionItem:(id)a4
+- (void)didDisambiguateActionType:(id)type withActionItem:(id)item
 {
   v6 = MEMORY[0x1E6996BE8];
-  v7 = a4;
-  v8 = a3;
+  itemCopy = item;
+  typeCopy = type;
   v9 = [v6 alloc];
   v10 = +[CNUIContactsEnvironment currentEnvironment];
-  v11 = [v10 actionDiscoveringEnvironment];
-  v13 = [v9 initWithDiscoveringEnvironment:v11];
+  actionDiscoveringEnvironment = [v10 actionDiscoveringEnvironment];
+  v13 = [v9 initWithDiscoveringEnvironment:actionDiscoveringEnvironment];
 
-  v12 = [(CNQuickActionsView *)self contact];
-  [v13 consumer:self didSelectItem:v7 forContact:v12 actionType:v8];
+  contact = [(CNQuickActionsView *)self contact];
+  [v13 consumer:self didSelectItem:itemCopy forContact:contact actionType:typeCopy];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = objc_alloc_init(MEMORY[0x1E6996BD0]);
-  v6 = [v4 performActionWithContext:v5];
+  v6 = [actionCopy performActionWithContext:v5];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __36__CNQuickActionsView_performAction___block_invoke;
   v12[3] = &unk_1E74E48F8;
-  v7 = v4;
+  v7 = actionCopy;
   v13 = v7;
-  v14 = self;
+  selfCopy = self;
   [v6 addSuccessBlock:v12];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __36__CNQuickActionsView_performAction___block_invoke_2;
   v9[3] = &unk_1E74E5CD8;
   v10 = v7;
-  v11 = self;
+  selfCopy2 = self;
   v8 = v7;
   [v6 addFailureBlock:v9];
 }
@@ -129,22 +129,22 @@ void __36__CNQuickActionsView_performAction___block_invoke_2(uint64_t a1, uint64
   [v3 didDisambiguateActionType:v4 withActionItem:*(a1 + 32)];
 }
 
-- (void)showDisambiguationControllerWithDataSource:(id)a3 actionType:(id)a4 onController:(id)a5 sourceView:(id)a6
+- (void)showDisambiguationControllerWithDataSource:(id)source actionType:(id)type onController:(id)controller sourceView:(id)view
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
+  typeCopy = type;
+  controllerCopy = controller;
+  viewCopy = view;
+  sourceCopy = source;
   v14 = [CNContactActionsController alloc];
-  v15 = [(CNQuickActionsView *)self contact];
-  v29[0] = v10;
+  contact = [(CNQuickActionsView *)self contact];
+  v29[0] = typeCopy;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
-  v17 = [(CNContactActionsController *)v14 initWithContact:v15 dataSource:v13 actionTypes:v16];
+  v17 = [(CNContactActionsController *)v14 initWithContact:contact dataSource:sourceCopy actionTypes:v16];
 
   [(CNQuickActionsView *)self setActionsController:v17];
-  v18 = [(CNQuickActionsView *)self actionsController];
-  [v18 setDelegate:self];
+  actionsController = [(CNQuickActionsView *)self actionsController];
+  [actionsController setDelegate:self];
 
   v19 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:0];
   v20 = MEMORY[0x1E69DC648];
@@ -158,35 +158,35 @@ void __36__CNQuickActionsView_performAction___block_invoke_2(uint64_t a1, uint64
   v23 = [v20 actionWithTitle:v22 style:1 handler:v28];
   [v19 addAction:v23];
 
-  v24 = [(CNQuickActionsView *)self actionsController];
-  v25 = [v24 viewController];
-  [v19 setContentViewController:v25];
+  actionsController2 = [(CNQuickActionsView *)self actionsController];
+  viewController = [actionsController2 viewController];
+  [v19 setContentViewController:viewController];
 
-  v26 = [v19 popoverPresentationController];
-  v27 = v26;
-  if (v26)
+  popoverPresentationController = [v19 popoverPresentationController];
+  v27 = popoverPresentationController;
+  if (popoverPresentationController)
   {
-    [v26 setSourceView:v12];
-    [v12 bounds];
+    [popoverPresentationController setSourceView:viewCopy];
+    [viewCopy bounds];
     [v27 setSourceRect:?];
   }
 
-  [v11 presentViewController:v19 animated:1 completion:0];
+  [controllerCopy presentViewController:v19 animated:1 completion:0];
 }
 
-- (BOOL)quickActionButton:(id)a3 performAction:(id)a4
+- (BOOL)quickActionButton:(id)button performAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNQuickActionsView *)self delegate];
+  buttonCopy = button;
+  actionCopy = action;
+  delegate = [(CNQuickActionsView *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v9 = [(CNQuickActionsView *)self delegate];
-  v10 = [v9 viewControllerForActionsView:self];
+  delegate2 = [(CNQuickActionsView *)self delegate];
+  v10 = [delegate2 viewControllerForActionsView:self];
 
   if (!v10)
   {
@@ -195,41 +195,41 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  v11 = [v7 userActionType];
+  userActionType = [actionCopy userActionType];
   v12 = objc_alloc(MEMORY[0x1E6996BE8]);
   v13 = +[CNUIContactsEnvironment currentEnvironment];
-  v14 = [v13 actionDiscoveringEnvironment];
-  v15 = [v12 initWithDiscoveringEnvironment:v14];
+  actionDiscoveringEnvironment = [v13 actionDiscoveringEnvironment];
+  v15 = [v12 initWithDiscoveringEnvironment:actionDiscoveringEnvironment];
 
-  [(CNQuickActionsView *)self setPerformingAction:v7];
-  if ([v7 isLongPress])
+  [(CNQuickActionsView *)self setPerformingAction:actionCopy];
+  if ([actionCopy isLongPress])
   {
     goto LABEL_11;
   }
 
   v16 = objc_alloc_init(MEMORY[0x1E69967D0]);
-  v17 = [(CNQuickActionsView *)self contact];
+  contact = [(CNQuickActionsView *)self contact];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __54__CNQuickActionsView_quickActionButton_performAction___block_invoke;
   v34[3] = &unk_1E74E48D0;
   v18 = v16;
   v35 = v18;
-  v32 = v11;
-  v19 = [v15 consumer:self actionModelsForContact:v17 actionType:v11 handler:v34];
+  v32 = userActionType;
+  v19 = [v15 consumer:self actionModelsForContact:contact actionType:userActionType handler:v34];
 
-  v20 = [v18 future];
+  future = [v18 future];
   v21 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:1.0];
   v33 = 0;
-  v22 = [v20 resultBeforeDate:v21 error:&v33];
+  v22 = [future resultBeforeDate:v21 error:&v33];
   v23 = v33;
 
-  v24 = [v22 defaultAction];
+  defaultAction = [v22 defaultAction];
 
-  if (v24)
+  if (defaultAction)
   {
-    v29 = [v22 defaultAction];
-    [(CNQuickActionsView *)self performAction:v29];
+    defaultAction2 = [v22 defaultAction];
+    [(CNQuickActionsView *)self performAction:defaultAction2];
   }
 
   else if (!v22)
@@ -237,11 +237,11 @@ LABEL_7:
     _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNQuickActionsView.m", 365, 5, @"Failed to retrieve default action with %@", v25, v26, v27, v28, v23);
   }
 
-  v11 = v32;
-  if (!v24)
+  userActionType = v32;
+  if (!defaultAction)
   {
 LABEL_11:
-    [(CNQuickActionsView *)self showDisambiguationControllerWithDataSource:v15 actionType:v11 onController:v10 sourceView:v6];
+    [(CNQuickActionsView *)self showDisambiguationControllerWithDataSource:v15 actionType:userActionType onController:v10 sourceView:buttonCopy];
   }
 
   v30 = 1;
@@ -250,20 +250,20 @@ LABEL_13:
   return v30;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"actionCell" forIndexPath:v6];
-  v8 = [(CNQuickActionsView *)self actions];
-  v9 = [v6 item];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"actionCell" forIndexPath:pathCopy];
+  actions = [(CNQuickActionsView *)self actions];
+  item = [pathCopy item];
 
-  v10 = [v8 objectAtIndex:v9];
+  v10 = [actions objectAtIndex:item];
 
-  v11 = [v7 button];
-  [v11 setAction:v10];
+  button = [v7 button];
+  [button setAction:v10];
 
-  v12 = [v7 button];
-  [v12 setDelegate:self];
+  button2 = [v7 button];
+  [button2 setDelegate:self];
 
   [v7 setShowTitle:{-[CNQuickActionsView showTitles](self, "showTitles")}];
   [v7 setShowBackgroundPlatter:{-[CNQuickActionsView showBackgroundPlatters](self, "showBackgroundPlatters")}];
@@ -271,36 +271,36 @@ LABEL_13:
   return v7;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(CNQuickActionsView *)self actions:a3];
+  v4 = [(CNQuickActionsView *)self actions:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (void)actionsManager:(id)a3 actionDidPerform:(id)a4
+- (void)actionsManager:(id)manager actionDidPerform:(id)perform
 {
-  v8 = a4;
-  v5 = [(CNQuickActionsView *)self delegate];
+  performCopy = perform;
+  delegate = [(CNQuickActionsView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CNQuickActionsView *)self delegate];
-    [v7 actionsView:self didPerformAction:v8];
+    delegate2 = [(CNQuickActionsView *)self delegate];
+    [delegate2 actionsView:self didPerformAction:performCopy];
   }
 }
 
-- (id)actionsManager:(id)a3 presentingViewControllerForAction:(id)a4
+- (id)actionsManager:(id)manager presentingViewControllerForAction:(id)action
 {
-  v5 = [(CNQuickActionsView *)self delegate:a3];
+  v5 = [(CNQuickActionsView *)self delegate:manager];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CNQuickActionsView *)self delegate];
-    v8 = [v7 viewControllerForActionsView:self];
+    delegate = [(CNQuickActionsView *)self delegate];
+    v8 = [delegate viewControllerForActionsView:self];
   }
 
   else
@@ -313,17 +313,17 @@ LABEL_13:
 
 - (double)maximumWidth
 {
-  v3 = [(CNQuickActionsView *)self categories];
-  v4 = [v3 count];
+  categories = [(CNQuickActionsView *)self categories];
+  v4 = [categories count];
 
   [(CNQuickActionsView *)self _widthForButtonCount:v4 itemSize:0];
   return result;
 }
 
-- (double)_widthForButtonCount:(int64_t)a3 itemSize:(CGSize *)a4
+- (double)_widthForButtonCount:(int64_t)count itemSize:(CGSize *)size
 {
-  v4 = a3 - 1;
-  if (a3 < 1)
+  v4 = count - 1;
+  if (count < 1)
   {
     return 0.0;
   }
@@ -333,17 +333,17 @@ LABEL_13:
   v21 = 0x3010000000;
   v22 = "";
   v23 = *MEMORY[0x1E695F060];
-  v8 = [(CNQuickActionsView *)self actions];
+  actions = [(CNQuickActionsView *)self actions];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __52__CNQuickActionsView__widthForButtonCount_itemSize___block_invoke;
   v18[3] = &unk_1E74E48A8;
   v18[4] = self;
   v18[5] = &v19;
-  [v8 enumerateObjectsUsingBlock:v18];
+  [actions enumerateObjectsUsingBlock:v18];
 
-  v9 = [(CNQuickActionsView *)self collectionLayout];
-  [v9 minimumInteritemSpacing];
+  collectionLayout = [(CNQuickActionsView *)self collectionLayout];
+  [collectionLayout minimumInteritemSpacing];
   v11 = v10;
 
   if ([(CNQuickActionsView *)self showTitles])
@@ -357,20 +357,20 @@ LABEL_13:
   }
 
   v14 = v20[5];
-  v15 = [(CNQuickActionsView *)self showTitles];
-  if (a4)
+  showTitles = [(CNQuickActionsView *)self showTitles];
+  if (size)
   {
     v16 = 0.0;
-    if (v15)
+    if (showTitles)
     {
       v16 = 25.0;
     }
 
-    a4->width = v12;
-    a4->height = v14 + v16;
+    size->width = v12;
+    size->height = v14 + v16;
   }
 
-  v13 = v11 * v4 + a3 * v12;
+  v13 = v11 * v4 + count * v12;
   _Block_object_dispose(&v19, 8);
   return v13;
 }
@@ -408,12 +408,12 @@ void __52__CNQuickActionsView__widthForButtonCount_itemSize___block_invoke(uint6
   *(v14 + 40) = v15;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v5.receiver = self;
   v5.super_class = CNQuickActionsView;
   [(CNQuickActionsView *)&v5 willMoveToWindow:?];
-  if (a3)
+  if (window)
   {
     [(CNQuickActionsView *)self _updateActions];
   }
@@ -421,8 +421,8 @@ void __52__CNQuickActionsView__widthForButtonCount_itemSize___block_invoke(uint6
 
 - (void)updateContentSize
 {
-  v3 = [(CNQuickActionsView *)self actions];
-  v4 = [v3 count];
+  actions = [(CNQuickActionsView *)self actions];
+  v4 = [actions count];
 
   v5 = MEMORY[0x1E695F060];
   v11 = *MEMORY[0x1E695F060];
@@ -438,8 +438,8 @@ void __52__CNQuickActionsView__widthForButtonCount_itemSize___block_invoke(uint6
     v7 = v6;
     v8 = *(&v11 + 1);
     v9 = *&v11;
-    v10 = [(CNQuickActionsView *)self collectionLayout];
-    [v10 setItemSize:{v9, v8}];
+    collectionLayout = [(CNQuickActionsView *)self collectionLayout];
+    [collectionLayout setItemSize:{v9, v8}];
   }
 
   [(CNQuickActionsView *)self setCachedContentSize:v7, v8];
@@ -449,16 +449,16 @@ void __52__CNQuickActionsView__widthForButtonCount_itemSize___block_invoke(uint6
 - (void)reloadData
 {
   [(CNQuickActionsView *)self updateContentSize];
-  v3 = [(CNQuickActionsView *)self collectionView];
-  [v3 reloadData];
+  collectionView = [(CNQuickActionsView *)self collectionView];
+  [collectionView reloadData];
 }
 
 - (void)_updateActions
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNQuickActionsView *)self actionsManager];
-  v4 = v3;
-  if (v3 && ([v3 contacts], v5 = objc_claimAutoreleasedReturnValue(), -[CNQuickActionsView contact](self, "contact"), v6 = objc_claimAutoreleasedReturnValue(), v18[0] = v6, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v18, 1), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v5, "isEqual:", v7), v7, v6, v5, (v8 & 1) != 0))
+  actionsManager = [(CNQuickActionsView *)self actionsManager];
+  v4 = actionsManager;
+  if (actionsManager && ([actionsManager contacts], v5 = objc_claimAutoreleasedReturnValue(), -[CNQuickActionsView contact](self, "contact"), v6 = objc_claimAutoreleasedReturnValue(), v18[0] = v6, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v18, 1), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v5, "isEqual:", v7), v7, v6, v5, (v8 & 1) != 0))
   {
     v9 = v4;
   }
@@ -466,11 +466,11 @@ void __52__CNQuickActionsView__widthForButtonCount_itemSize___block_invoke(uint6
   else
   {
     v10 = objc_opt_class();
-    v11 = [(CNQuickActionsView *)self contact];
-    v9 = [v10 actionsManagerForContact:v11];
+    contact = [(CNQuickActionsView *)self contact];
+    v9 = [v10 actionsManagerForContact:contact];
 
-    v12 = [(CNQuickActionsView *)self categories];
-    [v9 setCategories:v12];
+    categories = [(CNQuickActionsView *)self categories];
+    [v9 setCategories:categories];
 
     [v9 setSortsWithDuet:{-[CNQuickActionsView sortsWithDuet](self, "sortsWithDuet")}];
     [v9 setUseDuetIfAvailable:{-[CNQuickActionsView useDuetIfAvailable](self, "useDuetIfAvailable")}];
@@ -514,67 +514,67 @@ void __36__CNQuickActionsView__updateActions__block_invoke(uint64_t a1)
 
 - (double)interspace
 {
-  v2 = [(CNQuickActionsView *)self collectionLayout];
-  [v2 minimumInteritemSpacing];
+  collectionLayout = [(CNQuickActionsView *)self collectionLayout];
+  [collectionLayout minimumInteritemSpacing];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setSortsWithDuet:(BOOL)a3
+- (void)setSortsWithDuet:(BOOL)duet
 {
-  v3 = a3;
-  self->_sortsWithDuet = a3;
-  v4 = [(CNQuickActionsView *)self actionsManager];
-  [v4 setSortsWithDuet:v3];
+  duetCopy = duet;
+  self->_sortsWithDuet = duet;
+  actionsManager = [(CNQuickActionsView *)self actionsManager];
+  [actionsManager setSortsWithDuet:duetCopy];
 }
 
-- (void)setInterspace:(double)a3
+- (void)setInterspace:(double)interspace
 {
-  v4 = [(CNQuickActionsView *)self collectionLayout];
-  [v4 setMinimumInteritemSpacing:a3];
+  collectionLayout = [(CNQuickActionsView *)self collectionLayout];
+  [collectionLayout setMinimumInteritemSpacing:interspace];
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_contact != v5)
+  contactCopy = contact;
+  if (self->_contact != contactCopy)
   {
-    v6 = [objc_opt_class() descriptorForRequiredKeys];
-    v9[0] = v6;
+    descriptorForRequiredKeys = [objc_opt_class() descriptorForRequiredKeys];
+    v9[0] = descriptorForRequiredKeys;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-    [(CNContact *)v5 assertKeysAreAvailable:v7];
+    [(CNContact *)contactCopy assertKeysAreAvailable:v7];
 
-    objc_storeStrong(&self->_contact, a3);
-    v8 = [(CNQuickActionsView *)self window];
+    objc_storeStrong(&self->_contact, contact);
+    window = [(CNQuickActionsView *)self window];
 
-    if (v8)
+    if (window)
     {
       [(CNQuickActionsView *)self _updateActions];
     }
   }
 }
 
-- (CNQuickActionsView)initWithContact:(id)a3
+- (CNQuickActionsView)initWithContact:(id)contact
 {
   v4 = *MEMORY[0x1E695F058];
   v5 = *(MEMORY[0x1E695F058] + 8);
   v6 = *(MEMORY[0x1E695F058] + 16);
   v7 = *(MEMORY[0x1E695F058] + 24);
-  v8 = a3;
+  contactCopy = contact;
   v9 = [(CNQuickActionsView *)self initWithFrame:v4, v5, v6, v7];
-  [(CNQuickActionsView *)v9 setContact:v8];
+  [(CNQuickActionsView *)v9 setContact:contactCopy];
 
   return v9;
 }
 
-- (CNQuickActionsView)initWithFrame:(CGRect)a3
+- (CNQuickActionsView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v19[4] = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = CNQuickActionsView;
@@ -603,22 +603,22 @@ void __36__CNQuickActionsView__updateActions__block_invoke(uint64_t a1)
   [v9 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"actionCell"];
   [v9 setDataSource:v7];
   [v9 setDelegate:v7];
-  v16 = [objc_opt_class() defaultCategories];
-  [(CNQuickActionsView *)v7 setCategories:v16];
+  defaultCategories = [objc_opt_class() defaultCategories];
+  [(CNQuickActionsView *)v7 setCategories:defaultCategories];
 
   return v7;
 }
 
-+ (id)actionsManagerForContact:(id)a3
++ (id)actionsManagerForContact:(id)contact
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (contact)
   {
-    v8 = a3;
+    contactCopy = contact;
     v3 = MEMORY[0x1E695DEC8];
-    v4 = a3;
-    v5 = [v3 arrayWithObjects:&v8 count:1];
-    v6 = [CNQuickActionsManager actionsManagerForContacts:v5, v8, v9];
+    contactCopy2 = contact;
+    v5 = [v3 arrayWithObjects:&contactCopy count:1];
+    v6 = [CNQuickActionsManager actionsManagerForContacts:v5, contactCopy, v9];
   }
 
   else
@@ -647,8 +647,8 @@ void __36__CNQuickActionsView__updateActions__block_invoke(uint64_t a1)
   v2 = MEMORY[0x1E695CD58];
   v3 = +[CNQuickActionsManager descriptorForRequiredKeys];
   v9[0] = v3;
-  v4 = [MEMORY[0x1E6996BE8] descriptorForRequiredKeys];
-  v9[1] = v4;
+  descriptorForRequiredKeys = [MEMORY[0x1E6996BE8] descriptorForRequiredKeys];
+  v9[1] = descriptorForRequiredKeys;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[CNQuickActionsView descriptorForRequiredKeys]"];
   v7 = [v2 descriptorWithKeyDescriptors:v5 description:v6];

@@ -1,16 +1,16 @@
 @interface BMFileHandle
-- (BMFileHandle)initWithCoder:(id)a3;
-- (BMFileHandle)initWithFileDescriptor:(int)a3 attributes:(id)a4;
+- (BMFileHandle)initWithCoder:(id)coder;
+- (BMFileHandle)initWithFileDescriptor:(int)descriptor attributes:(id)attributes;
 - (BOOL)isStale;
-- (BOOL)overwriteWithData:(id)a3 error:(id *)a4;
+- (BOOL)overwriteWithData:(id)data error:(id *)error;
 - (NSFileHandle)nsFileHandle;
-- (id)_initWithFileDescriptor:(int)a3 attributes:(id)a4;
-- (id)readDataWithError:(id *)a3;
+- (id)_initWithFileDescriptor:(int)descriptor attributes:(id)attributes;
+- (id)readDataWithError:(id *)error;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)isStale;
 - (void)nsFileHandle;
-- (void)performWithInProcessLock:(id)a3;
+- (void)performWithInProcessLock:(id)lock;
 @end
 
 @implementation BMFileHandle
@@ -33,8 +33,8 @@
   if (v21.st_nlink)
   {
     v3 = bm_fd_get_path(self->_fd);
-    v4 = [(BMFileAttributes *)self->_attributes path];
-    v5 = [v3 isEqualToString:v4];
+    path = [(BMFileAttributes *)self->_attributes path];
+    v5 = [v3 isEqualToString:path];
 
     if (v5)
     {
@@ -121,41 +121,41 @@ LABEL_29:
 - (void)dealloc
 {
   v9 = *MEMORY[0x1E69E9840];
-  v7 = *a1;
+  v7 = *self;
   v8 = *__error();
   OUTLINED_FUNCTION_0_1();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xEu);
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BMFileHandle)initWithFileDescriptor:(int)a3 attributes:(id)a4
+- (BMFileHandle)initWithFileDescriptor:(int)descriptor attributes:(id)attributes
 {
-  if (a3 < 0)
+  if (descriptor < 0)
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [BMFileHandle _initWithFileDescriptor:"_initWithFileDescriptor:attributes:" attributes:?];
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)_initWithFileDescriptor:(int)a3 attributes:(id)a4
+- (id)_initWithFileDescriptor:(int)descriptor attributes:(id)attributes
 {
-  v7 = a4;
+  attributesCopy = attributes;
   v11.receiver = self;
   v11.super_class = BMFileHandle;
   v8 = [(BMFileHandle *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_fd = a3;
+    v8->_fd = descriptor;
     v8->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v8->_attributes, a4);
+    objc_storeStrong(&v8->_attributes, attributes);
     v9->_initialized = 1;
   }
 
@@ -189,7 +189,7 @@ LABEL_29:
   return v4;
 }
 
-- (id)readDataWithError:(id *)a3
+- (id)readDataWithError:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
   if (!self->_initialized)
@@ -201,16 +201,16 @@ LABEL_29:
   v6 = v5;
   if (v5)
   {
-    if ([v5 seekToOffset:0 error:a3])
+    if ([v5 seekToOffset:0 error:error])
     {
-      a3 = [v6 readDataToEndOfFileAndReturnError:a3];
+      error = [v6 readDataToEndOfFileAndReturnError:error];
       goto LABEL_9;
     }
   }
 
   else
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -219,21 +219,21 @@ LABEL_29:
     v11 = *MEMORY[0x1E696A578];
     v12[0] = @"Unspecified failure";
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-    *a3 = [v7 errorWithDomain:@"BiomeStorageError" code:0 userInfo:v8];
+    *error = [v7 errorWithDomain:@"BiomeStorageError" code:0 userInfo:v8];
   }
 
-  a3 = 0;
+  error = 0;
 LABEL_9:
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)overwriteWithData:(id)a3 error:(id *)a4
+- (BOOL)overwriteWithData:(id)data error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dataCopy = data;
   if (!self->_initialized)
   {
     [BMFileHandle overwriteWithData:error:];
@@ -243,7 +243,7 @@ LABEL_9:
   v8 = v7;
   if (!v7)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -252,45 +252,45 @@ LABEL_9:
     v13 = *MEMORY[0x1E696A578];
     v14[0] = @"Unspecified failure";
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    *a4 = [v9 errorWithDomain:@"BiomeStorageError" code:0 userInfo:v10];
+    *error = [v9 errorWithDomain:@"BiomeStorageError" code:0 userInfo:v10];
 
 LABEL_8:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_9;
   }
 
-  if (![v7 truncateAtOffset:0 error:a4])
+  if (![v7 truncateAtOffset:0 error:error])
   {
     goto LABEL_8;
   }
 
-  LOBYTE(a4) = [v8 writeData:v6 error:a4];
+  LOBYTE(error) = [v8 writeData:dataCopy error:error];
 LABEL_9:
 
   v11 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
-- (void)performWithInProcessLock:(id)a3
+- (void)performWithInProcessLock:(id)lock
 {
-  v4 = a3;
-  if (!v4)
+  lockCopy = lock;
+  if (!lockCopy)
   {
     [BMFileHandle performWithInProcessLock:];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v4[2]();
+  lockCopy[2]();
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BMFileHandle)initWithCoder:(id)a3
+- (BMFileHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9EA0] forKey:@"xfd"];
+    v5 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9EA0] forKey:@"xfd"];
     v6 = xpc_fd_dup(v5);
     self->_fd = v6;
     if (v6 < 0)
@@ -298,36 +298,36 @@ LABEL_9:
       self->_error = *__error();
     }
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attr"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attr"];
     attributes = self->_attributes;
     self->_attributes = v7;
 
     self->_initialized = 1;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
     v5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BiomeStorageError" code:4 userInfo:0];
-    [v4 failWithError:v5];
-    v9 = 0;
+    [coderCopy failWithError:v5];
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = xpc_fd_create(self->_fd);
     if (v5)
     {
-      [v4 encodeXPCObject:v5 forKey:@"xfd"];
-      [v4 encodeObject:self->_attributes forKey:@"attr"];
+      [coderCopy encodeXPCObject:v5 forKey:@"xfd"];
+      [coderCopy encodeObject:self->_attributes forKey:@"attr"];
     }
 
     else
@@ -339,14 +339,14 @@ LABEL_9:
       v13[0] = v8;
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
       v10 = [v7 errorWithDomain:@"BiomeStorageError" code:7 userInfo:v9];
-      [v4 failWithError:v10];
+      [coderCopy failWithError:v10];
     }
   }
 
   else
   {
     v5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BiomeStorageError" code:4 userInfo:0];
-    [v4 failWithError:v5];
+    [coderCopy failWithError:v5];
   }
 
   v11 = *MEMORY[0x1E69E9840];

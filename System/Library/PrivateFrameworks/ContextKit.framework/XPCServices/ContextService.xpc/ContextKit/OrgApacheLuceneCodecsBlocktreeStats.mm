@@ -1,27 +1,27 @@
 @interface OrgApacheLuceneCodecsBlocktreeStats
 - (id)description;
 - (void)dealloc;
-- (void)endBlockWithOrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame:(id)a3;
-- (void)termWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (void)endBlockWithOrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame:(id)frame;
+- (void)termWithOrgApacheLuceneUtilBytesRef:(id)ref;
 @end
 
 @implementation OrgApacheLuceneCodecsBlocktreeStats
 
-- (void)endBlockWithOrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame:(id)a3
+- (void)endBlockWithOrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame:(id)frame
 {
-  if (!a3)
+  if (!frame)
   {
     goto LABEL_20;
   }
 
-  if (*(a3 + 117) == 1)
+  if (*(frame + 117) == 1)
   {
-    v5 = (a3 + 108);
+    v5 = (frame + 108);
   }
 
   else
   {
-    v6 = *(a3 + 18);
+    v6 = *(frame + 18);
     if (!v6)
     {
       goto LABEL_20;
@@ -30,7 +30,7 @@
     v5 = (v6 + 32);
   }
 
-  v7 = *(a3 + 27);
+  v7 = *(frame + 27);
   v8 = *v5;
   self->totalTermCount_ += v8;
   if (v8)
@@ -65,8 +65,8 @@
 
   ++*(&self->super.isa + v12);
   ++self->endBlockCount_;
-  v13 = *(a3 + 8);
-  if (!v13 || (v14 = *(a3 + 6), v15 = *(a3 + 4), v16 = [v13 length], (v17 = *(a3 + 10)) == 0))
+  v13 = *(frame + 8);
+  if (!v13 || (v14 = *(frame + 6), v15 = *(frame + 4), v16 = [v13 length], (v17 = *(frame + 10)) == 0))
   {
 LABEL_20:
     JreThrowNullPointerException();
@@ -75,14 +75,14 @@ LABEL_20:
   self->totalBlockOtherBytes_ += v14 - (v15 + v16 + [v17 length]);
 }
 
-- (void)termWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (void)termWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  if (!a3)
+  if (!ref)
   {
     JreThrowNullPointerException();
   }
 
-  self->totalTermBytes_ += *(a3 + 5);
+  self->totalTermBytes_ += *(ref + 5);
 }
 
 - (id)description

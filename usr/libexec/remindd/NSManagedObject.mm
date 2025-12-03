@@ -1,35 +1,35 @@
 @interface NSManagedObject
-+ (id)_ic_objectsFromObjectIDs:(id)a3 propertiesToFetch:(id)a4 relationshipKeyPathsForPrefetching:(id)a5 context:(id)a6;
-+ (id)_ic_resultsMatchingPredicate:(id)a3 sortDescriptors:(id)a4 resultType:(unint64_t)a5 fetchBatchSize:(unint64_t)a6 propertiesToFetch:(id)a7 relationshipKeyPathsForPrefetching:(id)a8 context:(id)a9;
-+ (id)ic_objectFromObjectID:(id)a3 context:(id)a4;
-+ (id)ic_objectIDsFromObjects:(id)a3;
-+ (id)ic_permanentObjectIDsFromObjects:(id)a3;
++ (id)_ic_objectsFromObjectIDs:(id)ds propertiesToFetch:(id)fetch relationshipKeyPathsForPrefetching:(id)prefetching context:(id)context;
++ (id)_ic_resultsMatchingPredicate:(id)predicate sortDescriptors:(id)descriptors resultType:(unint64_t)type fetchBatchSize:(unint64_t)size propertiesToFetch:(id)fetch relationshipKeyPathsForPrefetching:(id)prefetching context:(id)context;
++ (id)ic_objectFromObjectID:(id)d context:(id)context;
++ (id)ic_objectIDsFromObjects:(id)objects;
++ (id)ic_permanentObjectIDsFromObjects:(id)objects;
 - (BOOL)ic_obtainPermanentObjectIDIfNecessary;
 - (id)ic_permanentObjectID;
-- (id)ic_postNotificationOnMainThreadAfterSaveWithName:(id)a3;
-- (void)ic_postNotificationOnMainThreadWithName:(id)a3;
+- (id)ic_postNotificationOnMainThreadAfterSaveWithName:(id)name;
+- (void)ic_postNotificationOnMainThreadWithName:(id)name;
 @end
 
 @implementation NSManagedObject
 
-+ (id)ic_objectFromObjectID:(id)a3 context:(id)a4
++ (id)ic_objectFromObjectID:(id)d context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  dCopy = d;
+  contextCopy = context;
+  if (dCopy)
   {
     objc_opt_class();
     v14 = 0;
-    v7 = [v6 existingObjectWithID:v5 error:&v14];
+    v7 = [contextCopy existingObjectWithID:dCopy error:&v14];
     v8 = v14;
     v9 = REMCheckedDynamicCast();
 
     if (v8)
     {
-      v10 = [v8 code];
+      code = [v8 code];
       v11 = +[REMLog cloudkit];
       v12 = os_log_type_enabled(v11, OS_LOG_TYPE_ERROR);
-      if (v10 == 133000)
+      if (code == 133000)
       {
         if (v12)
         {
@@ -58,15 +58,15 @@
   return v9;
 }
 
-+ (id)ic_objectIDsFromObjects:(id)a3
++ (id)ic_objectIDsFromObjects:(id)objects
 {
-  v3 = a3;
+  objectsCopy = objects;
   v4 = +[NSMutableArray array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = objectsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -81,10 +81,10 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) objectID];
-        if (v10)
+        objectID = [*(*(&v12 + 1) + 8 * i) objectID];
+        if (objectID)
         {
-          [v4 addObject:v10];
+          [v4 addObject:objectID];
         }
       }
 
@@ -97,16 +97,16 @@
   return v4;
 }
 
-+ (id)ic_permanentObjectIDsFromObjects:(id)a3
++ (id)ic_permanentObjectIDsFromObjects:(id)objects
 {
-  v4 = a3;
-  v5 = [v4 firstObject];
-  if (v5)
+  objectsCopy = objects;
+  firstObject = [objectsCopy firstObject];
+  if (firstObject)
   {
-    v6 = [v4 ic_objectsPassingTest:&stru_1008DB7B8];
-    v7 = [v5 managedObjectContext];
+    v6 = [objectsCopy ic_objectsPassingTest:&stru_1008DB7B8];
+    managedObjectContext = [firstObject managedObjectContext];
     v13 = 0;
-    v8 = [v7 obtainPermanentIDsForObjects:v6 error:&v13];
+    v8 = [managedObjectContext obtainPermanentIDsForObjects:v6 error:&v13];
     v9 = v13;
 
     if ((v8 & 1) == 0)
@@ -119,26 +119,26 @@
     }
   }
 
-  v11 = [a1 ic_objectIDsFromObjects:v4];
+  v11 = [self ic_objectIDsFromObjects:objectsCopy];
 
   return v11;
 }
 
 - (BOOL)ic_obtainPermanentObjectIDIfNecessary
 {
-  v3 = [(NSManagedObject *)self objectID];
-  v4 = [v3 isTemporaryID];
+  objectID = [(NSManagedObject *)self objectID];
+  isTemporaryID = [objectID isTemporaryID];
 
-  if (!v4)
+  if (!isTemporaryID)
   {
     return 1;
   }
 
-  v5 = [(NSManagedObject *)self managedObjectContext];
-  v12 = self;
-  v6 = [NSArray arrayWithObjects:&v12 count:1];
+  managedObjectContext = [(NSManagedObject *)self managedObjectContext];
+  selfCopy = self;
+  v6 = [NSArray arrayWithObjects:&selfCopy count:1];
   v11 = 0;
-  v7 = [v5 obtainPermanentIDsForObjects:v6 error:&v11];
+  v7 = [managedObjectContext obtainPermanentIDsForObjects:v6 error:&v11];
   v8 = v11;
 
   if ((v7 & 1) == 0)
@@ -160,27 +160,27 @@
   return [(NSManagedObject *)self objectID];
 }
 
-- (void)ic_postNotificationOnMainThreadWithName:(id)a3
+- (void)ic_postNotificationOnMainThreadWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   objc_initWeak(&location, self);
-  v5 = [(NSManagedObject *)self managedObjectContext];
+  managedObjectContext = [(NSManagedObject *)self managedObjectContext];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000A7AF8;
   v7[3] = &unk_1008D9B20;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = nameCopy;
   v8 = v6;
-  [v5 performBlock:v7];
+  [managedObjectContext performBlock:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (id)ic_postNotificationOnMainThreadAfterSaveWithName:(id)a3
+- (id)ic_postNotificationOnMainThreadAfterSaveWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   objc_initWeak(&location, self);
   v15 = 0;
   v16 = &v15;
@@ -189,16 +189,16 @@
   v19 = sub_1000A7DF4;
   v20 = 0;
   v5 = +[NSNotificationCenter defaultCenter];
-  v6 = [(NSManagedObject *)self managedObjectContext];
+  managedObjectContext = [(NSManagedObject *)self managedObjectContext];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000A7DFC;
   v11[3] = &unk_1008DB7E0;
   objc_copyWeak(&v14, &location);
-  v7 = v4;
+  v7 = nameCopy;
   v12 = v7;
   v13 = &v15;
-  v8 = [v5 addObserverForName:NSManagedObjectContextDidSaveObjectIDsNotification object:v6 queue:0 usingBlock:v11];
+  v8 = [v5 addObserverForName:NSManagedObjectContextDidSaveObjectIDsNotification object:managedObjectContext queue:0 usingBlock:v11];
   objc_storeWeak(v16 + 5, v8);
 
   WeakRetained = objc_loadWeakRetained(v16 + 5);
@@ -211,30 +211,30 @@
   return WeakRetained;
 }
 
-+ (id)_ic_objectsFromObjectIDs:(id)a3 propertiesToFetch:(id)a4 relationshipKeyPathsForPrefetching:(id)a5 context:(id)a6
++ (id)_ic_objectsFromObjectIDs:(id)ds propertiesToFetch:(id)fetch relationshipKeyPathsForPrefetching:(id)prefetching context:(id)context
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [a1 entity];
-  v15 = [v14 name];
+  dsCopy = ds;
+  contextCopy = context;
+  prefetchingCopy = prefetching;
+  fetchCopy = fetch;
+  entity = [self entity];
+  name = [entity name];
 
-  if (!v15)
+  if (!name)
   {
     sub_100767860();
   }
 
-  v16 = [NSFetchRequest fetchRequestWithEntityName:v15];
+  v16 = [NSFetchRequest fetchRequestWithEntityName:name];
   [v16 setIncludesSubentities:1];
-  v17 = [NSPredicate predicateWithFormat:@"SELF in %@", v10];
-  [v16 setPredicate:v17];
+  dsCopy = [NSPredicate predicateWithFormat:@"SELF in %@", dsCopy];
+  [v16 setPredicate:dsCopy];
 
-  [v16 setPropertiesToFetch:v13];
-  [v16 setRelationshipKeyPathsForPrefetching:v12];
+  [v16 setPropertiesToFetch:fetchCopy];
+  [v16 setRelationshipKeyPathsForPrefetching:prefetchingCopy];
 
   v22 = 0;
-  v18 = [v11 executeFetchRequest:v16 error:&v22];
+  v18 = [contextCopy executeFetchRequest:v16 error:&v22];
 
   v19 = v22;
   if (v19)
@@ -242,26 +242,26 @@
     v20 = +[REMLog cloudkit];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      sub_1007678D4(v10, v19, v20);
+      sub_1007678D4(dsCopy, v19, v20);
     }
   }
 
   return v18;
 }
 
-+ (id)_ic_resultsMatchingPredicate:(id)a3 sortDescriptors:(id)a4 resultType:(unint64_t)a5 fetchBatchSize:(unint64_t)a6 propertiesToFetch:(id)a7 relationshipKeyPathsForPrefetching:(id)a8 context:(id)a9
++ (id)_ic_resultsMatchingPredicate:(id)predicate sortDescriptors:(id)descriptors resultType:(unint64_t)type fetchBatchSize:(unint64_t)size propertiesToFetch:(id)fetch relationshipKeyPathsForPrefetching:(id)prefetching context:(id)context
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  fetchCopy = fetch;
+  prefetchingCopy = prefetching;
+  contextCopy = context;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
   v35 = sub_1000AD248;
   v36 = sub_1000AD258;
-  v37 = [a1 fetchRequest];
+  fetchRequest = [self fetchRequest];
   v20 = v33[5];
   if (!v20)
   {
@@ -270,24 +270,24 @@
     v31[2] = sub_1000AD260;
     v31[3] = &unk_1008DB948;
     v31[4] = &v32;
-    v31[5] = a1;
-    [v19 performBlockAndWait:v31];
+    v31[5] = self;
+    [contextCopy performBlockAndWait:v31];
     v20 = v33[5];
   }
 
-  [v20 setPredicate:v15];
-  [v33[5] setResultType:a5];
-  [v33[5] setFetchBatchSize:a6];
-  [v33[5] setSortDescriptors:v16];
-  [v33[5] setRelationshipKeyPathsForPrefetching:v18];
-  if (v17)
+  [v20 setPredicate:predicateCopy];
+  [v33[5] setResultType:type];
+  [v33[5] setFetchBatchSize:size];
+  [v33[5] setSortDescriptors:descriptorsCopy];
+  [v33[5] setRelationshipKeyPathsForPrefetching:prefetchingCopy];
+  if (fetchCopy)
   {
-    [v33[5] setPropertiesToFetch:v17];
+    [v33[5] setPropertiesToFetch:fetchCopy];
   }
 
   v21 = v33[5];
   v30 = 0;
-  v22 = [v19 executeFetchRequest:v21 error:&v30];
+  v22 = [contextCopy executeFetchRequest:v21 error:&v30];
   v23 = v30;
   if (v23)
   {
@@ -298,9 +298,9 @@
       *buf = 138544130;
       v39 = v28;
       v40 = 2112;
-      v41 = v15;
+      v41 = predicateCopy;
       v42 = 2114;
-      v43 = v16;
+      v43 = descriptorsCopy;
       v44 = 2114;
       v45 = v23;
       v29 = v28;
@@ -321,11 +321,11 @@ LABEL_8:
       *buf = 138544130;
       v39 = v26;
       v40 = 2112;
-      v41 = v15;
+      v41 = predicateCopy;
       v42 = 2114;
-      v43 = v16;
+      v43 = descriptorsCopy;
       v44 = 2114;
-      v45 = v19;
+      v45 = contextCopy;
       v27 = v26;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Nil objects array fetching %{public}@ (predicate=%@ sortDescriptors=%{public}@ context=%{public}@)", buf, 0x2Au);
     }

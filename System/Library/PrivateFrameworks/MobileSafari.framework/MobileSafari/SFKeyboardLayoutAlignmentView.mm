@@ -1,51 +1,51 @@
 @interface SFKeyboardLayoutAlignmentView
-- (CGRect)_frameInBoundsForKeyboardFrame:(CGRect)a3;
-- (SFKeyboardLayoutAlignmentView)initWithFrame:(CGRect)a3;
+- (CGRect)_frameInBoundsForKeyboardFrame:(CGRect)frame;
+- (SFKeyboardLayoutAlignmentView)initWithFrame:(CGRect)frame;
 - (void)_addConstraints;
 - (void)_matchInitialKeyboardFrame;
 - (void)_removeConstraints;
-- (void)_startObservingKeyboardNotificationsForScreen:(id)a3;
+- (void)_startObservingKeyboardNotificationsForScreen:(id)screen;
 - (void)_stopObservingKeyboardNotifications;
-- (void)_updateConstraintsForKeyboardNotification:(id)a3;
-- (void)_updateConstraintsToMatchKeyboardFrame:(CGRect)a3;
+- (void)_updateConstraintsForKeyboardNotification:(id)notification;
+- (void)_updateConstraintsToMatchKeyboardFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)setAutomaticKeyboardFrameTrackingDisabled:(BOOL)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setAutomaticKeyboardFrameTrackingDisabled:(BOOL)disabled;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation SFKeyboardLayoutAlignmentView
 
-- (void)setAutomaticKeyboardFrameTrackingDisabled:(BOOL)a3
+- (void)setAutomaticKeyboardFrameTrackingDisabled:(BOOL)disabled
 {
-  if (self->_automaticKeyboardFrameTrackingDisabled != a3)
+  if (self->_automaticKeyboardFrameTrackingDisabled != disabled)
   {
     [(SFKeyboardLayoutAlignmentView *)self _stopObservingKeyboardNotifications];
-    self->_automaticKeyboardFrameTrackingDisabled = a3;
-    if (!a3)
+    self->_automaticKeyboardFrameTrackingDisabled = disabled;
+    if (!disabled)
     {
-      v6 = [(SFKeyboardLayoutAlignmentView *)self window];
-      v5 = [v6 screen];
-      [(SFKeyboardLayoutAlignmentView *)self _startObservingKeyboardNotificationsForScreen:v5];
+      window = [(SFKeyboardLayoutAlignmentView *)self window];
+      screen = [window screen];
+      [(SFKeyboardLayoutAlignmentView *)self _startObservingKeyboardNotificationsForScreen:screen];
     }
   }
 }
 
-- (CGRect)_frameInBoundsForKeyboardFrame:(CGRect)a3
+- (CGRect)_frameInBoundsForKeyboardFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(SFKeyboardLayoutAlignmentView *)self superview];
-  v9 = [(SFKeyboardLayoutAlignmentView *)self _window];
-  [v9 convertRect:0 fromWindow:{x, y, width, height}];
-  [v9 convertRect:v8 toView:?];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  superview = [(SFKeyboardLayoutAlignmentView *)self superview];
+  _window = [(SFKeyboardLayoutAlignmentView *)self _window];
+  [_window convertRect:0 fromWindow:{x, y, width, height}];
+  [_window convertRect:superview toView:?];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  [v8 bounds];
+  [superview bounds];
   v33.origin.x = v18;
   v33.origin.y = v19;
   v33.size.width = v20;
@@ -78,11 +78,11 @@
   return result;
 }
 
-- (void)_updateConstraintsToMatchKeyboardFrame:(CGRect)a3
+- (void)_updateConstraintsToMatchKeyboardFrame:(CGRect)frame
 {
-  height = a3.size.height;
+  height = frame.size.height;
   v8[2] = *MEMORY[0x1E69E9840];
-  [(NSLayoutConstraint *)self->widthConstraint setConstant:a3.size.width, a3.origin.y];
+  [(NSLayoutConstraint *)self->widthConstraint setConstant:frame.size.width, frame.origin.y];
   [(NSLayoutConstraint *)self->heightConstraint setConstant:height];
   v5 = MEMORY[0x1E696ACD8];
   disambiguatingLeftConstraint = self->disambiguatingLeftConstraint;
@@ -92,36 +92,36 @@
   [v5 activateConstraints:v7];
 }
 
-- (void)_updateConstraintsForKeyboardNotification:(id)a3
+- (void)_updateConstraintsForKeyboardNotification:(id)notification
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  notificationCopy = notification;
+  v5 = notificationCopy;
+  if (notificationCopy)
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 valueForKey:*MEMORY[0x1E69DDF98]];
+    userInfo = [notificationCopy userInfo];
+    v7 = [userInfo valueForKey:*MEMORY[0x1E69DDF98]];
     [v7 CGRectValue];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
 
-    v16 = [v5 userInfo];
-    v17 = [v16 valueForKey:*MEMORY[0x1E69DDFA0]];
+    userInfo2 = [v5 userInfo];
+    v17 = [userInfo2 valueForKey:*MEMORY[0x1E69DDFA0]];
     [v17 CGRectValue];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
 
-    v26 = [v5 userInfo];
-    v27 = [v26 valueForKey:*MEMORY[0x1E69DDF40]];
+    userInfo3 = [v5 userInfo];
+    v27 = [userInfo3 valueForKey:*MEMORY[0x1E69DDF40]];
     [v27 floatValue];
     v50 = v28;
 
-    v29 = [v5 userInfo];
-    v30 = [v29 valueForKey:*MEMORY[0x1E69DDF38]];
-    v31 = [v30 integerValue];
+    userInfo4 = [v5 userInfo];
+    v30 = [userInfo4 valueForKey:*MEMORY[0x1E69DDF38]];
+    integerValue = [v30 integerValue];
 
     [(SFKeyboardLayoutAlignmentView *)self _frameInBoundsForKeyboardFrame:v9, v11, v13, v15];
     v33 = v32;
@@ -181,7 +181,7 @@
         v51[3] = &unk_1E721C1A8;
         v51[4] = self;
         v52 = v48;
-        [v49 animateWithDuration:v31 delay:v51 options:0 animations:v50 completion:0.0];
+        [v49 animateWithDuration:integerValue delay:v51 options:0 animations:v50 completion:0.0];
       }
     }
   }
@@ -194,20 +194,20 @@ void __75__SFKeyboardLayoutAlignmentView__updateConstraintsForKeyboardNotificati
   [v2 layoutIfNeeded];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   [(SFKeyboardLayoutAlignmentView *)self _stopObservingKeyboardNotifications];
-  v5 = [v4 screen];
+  screen = [windowCopy screen];
 
-  [(SFKeyboardLayoutAlignmentView *)self _startObservingKeyboardNotificationsForScreen:v5];
+  [(SFKeyboardLayoutAlignmentView *)self _startObservingKeyboardNotificationsForScreen:screen];
 }
 
 - (void)didMoveToWindow
 {
-  v12 = [(SFKeyboardLayoutAlignmentView *)self superview];
+  superview = [(SFKeyboardLayoutAlignmentView *)self superview];
   [(SFKeyboardLayoutAlignmentView *)self _removeConstraints];
-  v3 = [MEMORY[0x1E696ACD8] constraintWithItem:self attribute:4 relatedBy:0 toItem:v12 attribute:4 multiplier:1.0 constant:0.0];
+  v3 = [MEMORY[0x1E696ACD8] constraintWithItem:self attribute:4 relatedBy:0 toItem:superview attribute:4 multiplier:1.0 constant:0.0];
   bottomConstraint = self->bottomConstraint;
   self->bottomConstraint = v3;
 
@@ -219,13 +219,13 @@ void __75__SFKeyboardLayoutAlignmentView__updateConstraintsForKeyboardNotificati
   heightConstraint = self->heightConstraint;
   self->heightConstraint = v7;
 
-  v9 = [MEMORY[0x1E696ACD8] constraintWithItem:self attribute:1 relatedBy:0 toItem:v12 attribute:1 multiplier:1.0 constant:0.0];
+  v9 = [MEMORY[0x1E696ACD8] constraintWithItem:self attribute:1 relatedBy:0 toItem:superview attribute:1 multiplier:1.0 constant:0.0];
   disambiguatingLeftConstraint = self->disambiguatingLeftConstraint;
   self->disambiguatingLeftConstraint = v9;
 
   [(SFKeyboardLayoutAlignmentView *)self _addConstraints];
-  v11 = [(SFKeyboardLayoutAlignmentView *)self window];
-  if (v11)
+  window = [(SFKeyboardLayoutAlignmentView *)self window];
+  if (window)
   {
     [(SFKeyboardLayoutAlignmentView *)self _matchInitialKeyboardFrame];
   }
@@ -269,11 +269,11 @@ void __75__SFKeyboardLayoutAlignmentView__updateConstraintsForKeyboardNotificati
   self->disambiguatingLeftConstraint = 0;
 }
 
-- (SFKeyboardLayoutAlignmentView)initWithFrame:(CGRect)a3
+- (SFKeyboardLayoutAlignmentView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SFKeyboardLayoutAlignmentView;
-  v3 = [(SFKeyboardLayoutAlignmentView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFKeyboardLayoutAlignmentView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -294,18 +294,18 @@ void __75__SFKeyboardLayoutAlignmentView__updateConstraintsForKeyboardNotificati
 
 - (void)_stopObservingKeyboardNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DE018] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE018] object:0];
 }
 
-- (void)_startObservingKeyboardNotificationsForScreen:(id)a3
+- (void)_startObservingKeyboardNotificationsForScreen:(id)screen
 {
-  if (a3)
+  if (screen)
   {
     v4 = MEMORY[0x1E696AD88];
-    v5 = a3;
-    v6 = [v4 defaultCenter];
-    [v6 addObserver:self selector:sel__keyboardChanged_ name:*MEMORY[0x1E69DE018] object:v5];
+    screenCopy = screen;
+    defaultCenter = [v4 defaultCenter];
+    [defaultCenter addObserver:self selector:sel__keyboardChanged_ name:*MEMORY[0x1E69DE018] object:screenCopy];
   }
 }
 

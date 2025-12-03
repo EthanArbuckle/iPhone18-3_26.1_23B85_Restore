@@ -2,21 +2,21 @@
 - (NSLocale)locale;
 - (NSNumberFormatter)numberFormatter;
 - (NSUnitFormatter)init;
-- (NSUnitFormatter)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)stringForObjectValue:(id)a3;
-- (id)stringForValue1:(double)a3 unit1:(unint64_t)a4 value2:(double)a5 unit2:(unint64_t)a6;
-- (id)stringForValue:(double)a3 unit:(unint64_t)a4;
-- (id)stringFromUnit:(id)a3;
-- (id)unitStringFromValue:(double)a3 unit:(unint64_t)a4;
-- (int)_determineUnitsToFormat:(int *)a3 fromMeasurement:(id)a4;
+- (NSUnitFormatter)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)stringForObjectValue:(id)value;
+- (id)stringForValue1:(double)value1 unit1:(unint64_t)unit1 value2:(double)value2 unit2:(unint64_t)unit2;
+- (id)stringForValue:(double)value unit:(unint64_t)unit;
+- (id)stringFromUnit:(id)unit;
+- (id)unitStringFromValue:(double)value unit:(unint64_t)unit;
+- (int)_determineUnitsToFormat:(int *)format fromMeasurement:(id)measurement;
 - (void)checkIfModified;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLocale:(id)a3;
-- (void)setNumberFormatter:(id)a3;
-- (void)setUnitOptions:(unint64_t)a3;
-- (void)setUnitStyle:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLocale:(id)locale;
+- (void)setNumberFormatter:(id)formatter;
+- (void)setUnitOptions:(unint64_t)options;
+- (void)setUnitStyle:(int64_t)style;
 @end
 
 @implementation NSUnitFormatter
@@ -89,8 +89,8 @@
       uameasfmt_close();
     }
 
-    v3 = [(NSUnitFormatter *)self numberFormatter];
-    if (![(NSNumberFormatter *)v3 getFormatter]&& os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
+    numberFormatter = [(NSUnitFormatter *)self numberFormatter];
+    if (![(NSNumberFormatter *)numberFormatter getFormatter]&& os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
       v22 = 0;
@@ -108,7 +108,7 @@
       _os_log_impl(&dword_18075C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "*** unum_clone() failed in NSUnitFormatter: %s, icuNF: %p", buf, 0x16u);
     }
 
-    [(NSString *)[(NSLocale *)[(NSNumberFormatter *)v3 locale] localeIdentifier] getCString:buf maxLength:100 encoding:4];
+    [(NSString *)[(NSLocale *)[(NSNumberFormatter *)numberFormatter locale] localeIdentifier] getCString:buf maxLength:100 encoding:4];
     unitStyle = self->_unitStyle;
     if (unitStyle == 1)
     {
@@ -144,50 +144,50 @@
   }
 }
 
-- (void)setNumberFormatter:(id)a3
+- (void)setNumberFormatter:(id)formatter
 {
   numberFormatter = self->_numberFormatter;
-  if (numberFormatter != a3)
+  if (numberFormatter != formatter)
   {
     [(NSNumberFormatter *)numberFormatter clearPropertyBit];
 
-    v6 = [a3 copyWithZone:0];
+    v6 = [formatter copyWithZone:0];
     self->_numberFormatter = v6;
     [(NSNumberFormatter *)v6 setPropertyBit];
     self->_modified = 1;
   }
 }
 
-- (void)setUnitOptions:(unint64_t)a3
+- (void)setUnitOptions:(unint64_t)options
 {
-  if (self->_unitOptions != a3)
+  if (self->_unitOptions != options)
   {
-    self->_unitOptions = a3;
+    self->_unitOptions = options;
     self->_modified = 1;
   }
 }
 
-- (void)setUnitStyle:(int64_t)a3
+- (void)setUnitStyle:(int64_t)style
 {
-  if (self->_unitStyle != a3)
+  if (self->_unitStyle != style)
   {
-    self->_unitStyle = a3;
+    self->_unitStyle = style;
     self->_modified = 1;
   }
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
-  v3 = a3;
-  if (!a3)
+  localeCopy = locale;
+  if (!locale)
   {
-    v3 = [MEMORY[0x1E695DF58] currentLocale];
+    localeCopy = [MEMORY[0x1E695DF58] currentLocale];
   }
 
-  if (([(NSLocale *)self->_locale isEqual:v3]& 1) == 0)
+  if (([(NSLocale *)self->_locale isEqual:localeCopy]& 1) == 0)
   {
     locale = self->_locale;
-    self->_locale = v3;
+    self->_locale = localeCopy;
 
     [(NSUnitFormatter *)self setNumberFormatter:0];
     self->_modified = 1;
@@ -208,17 +208,17 @@
   return v4;
 }
 
-- (int)_determineUnitsToFormat:(int *)a3 fromMeasurement:(id)a4
+- (int)_determineUnitsToFormat:(int *)format fromMeasurement:(id)measurement
 {
   v22 = *MEMORY[0x1E69E9840];
   unitOptions = self->_unitOptions;
-  if (!_unitHasSpecifierAndIsDimensional([a4 unit]))
+  if (!_unitHasSpecifierAndIsDimensional([measurement unit]))
   {
     return 0;
   }
 
-  v8 = [objc_msgSend(a4 "unit")];
-  v9 = [MEMORY[0x1E695DF58] _preferredTemperatureUnit];
+  v8 = [objc_msgSend(measurement "unit")];
+  _preferredTemperatureUnit = [MEMORY[0x1E695DF58] _preferredTemperatureUnit];
   if ((v8 - 2560) > 2)
   {
     if (unitOptions)
@@ -236,22 +236,22 @@
       {
         v11 = 2563;
 LABEL_25:
-        *a3 = v11;
+        *format = v11;
         return 1;
       }
 
 LABEL_38:
-      *a3 = v8;
+      *format = v8;
       return 1;
     }
 
-    if (v9 == *MEMORY[0x1E695D9F8])
+    if (_preferredTemperatureUnit == *MEMORY[0x1E695D9F8])
     {
       v11 = 2560;
       goto LABEL_25;
     }
 
-    if (v9 == *MEMORY[0x1E695DA00])
+    if (_preferredTemperatureUnit == *MEMORY[0x1E695DA00])
     {
       v11 = 2561;
       goto LABEL_25;
@@ -263,8 +263,8 @@ LABEL_38:
     return 0;
   }
 
-  v12 = [objc_opt_class() icuType];
-  if (![v12 length] || (v13 = v19, (objc_msgSend(v12, "getCString:maxLength:encoding:", v19, 100, 4) & 1) == 0))
+  icuType = [objc_opt_class() icuType];
+  if (![icuType length] || (v13 = v19, (objc_msgSend(icuType, "getCString:maxLength:encoding:", v19, 100, 4) & 1) == 0))
   {
     v13 = 0;
   }
@@ -285,34 +285,34 @@ LABEL_38:
       _os_log_impl(&dword_18075C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "*** uameasfmt_getUnitsForUsage() failed in NSUnitFormatter: %s", buf, 0xCu);
     }
 
-    a3[v15++] = v8;
+    format[v15++] = v8;
   }
 
   else
   {
-    memcpy(a3, __src, 4 * UnitsForUsage);
+    memcpy(format, __src, 4 * UnitsForUsage);
   }
 
   return v15;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
   v34[92] = *MEMORY[0x1E69E9840];
-  [a3 doubleValue];
+  [value doubleValue];
   v6 = v5;
-  v7 = [a3 unit];
-  if (_unitHasSpecifierAndIsDimensional(v7))
+  unit = [value unit];
+  if (_unitHasSpecifierAndIsDimensional(unit))
   {
     *&v8 = -1;
     *(&v8 + 1) = -1;
     v32[0] = v8;
     v32[1] = v8;
-    if ([(NSUnitFormatter *)self _determineUnitsToFormat:v32 fromMeasurement:a3]!= 1)
+    if ([(NSUnitFormatter *)self _determineUnitsToFormat:v32 fromMeasurement:value]!= 1)
     {
-      v18 = [(NSUnitFormatter *)self numberFormatter];
-      [a3 doubleValue];
-      return +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ %@", -[NSNumberFormatter stringFromNumber:](v18, "stringFromNumber:", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:")), [objc_msgSend(a3 "unit")]);
+      numberFormatter = [(NSUnitFormatter *)self numberFormatter];
+      [value doubleValue];
+      return +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ %@", -[NSNumberFormatter stringFromNumber:](numberFormatter, "stringFromNumber:", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:")), [objc_msgSend(value "unit")]);
     }
 
     v9 = LODWORD(v32[0]);
@@ -320,19 +320,19 @@ LABEL_38:
     {
       if (LODWORD(v32[0]) == 2563)
       {
-        v10 = [v7 specifier];
+        specifier = [unit specifier];
         if ((self->_unitOptions & 1) == 0)
         {
-          v11 = v10;
-          v12 = [MEMORY[0x1E695DF58] _preferredTemperatureUnit];
-          if (v11 == 2561 && v12 == *MEMORY[0x1E695D9F8])
+          v11 = specifier;
+          _preferredTemperatureUnit = [MEMORY[0x1E695DF58] _preferredTemperatureUnit];
+          if (v11 == 2561 && _preferredTemperatureUnit == *MEMORY[0x1E695D9F8])
           {
             v13 = 2560;
           }
 
           else
           {
-            if (v11 != 2560 || v12 != *MEMORY[0x1E695DA00])
+            if (v11 != 2560 || _preferredTemperatureUnit != *MEMORY[0x1E695DA00])
             {
               return [(NSUnitFormatter *)self stringForValue:2563 unit:v6];
             }
@@ -340,14 +340,14 @@ LABEL_38:
             v13 = 2561;
           }
 
-          [objc_msgSend(a3 measurementByConvertingToUnit:{getDimensionUnitFromUnitSpecifier(v13)), "doubleValue"}];
+          [objc_msgSend(value measurementByConvertingToUnit:{getDimensionUnitFromUnitSpecifier(v13)), "doubleValue"}];
           v6 = v27;
         }
 
         return [(NSUnitFormatter *)self stringForValue:2563 unit:v6];
       }
 
-      v21 = [[NSMeasurement alloc] initWithDoubleValue:v7 unit:v6];
+      v21 = [[NSMeasurement alloc] initWithDoubleValue:unit unit:v6];
       unitOptions = self->_unitOptions;
       DimensionUnitFromUnitSpecifier = getDimensionUnitFromUnitSpecifier(v9);
       v24 = v21;
@@ -545,18 +545,18 @@ LABEL_38:
         v25 = [objc_msgSend(MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:{92), "objectForKeyedSubscript:", +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", v9)}];
         if (v25)
         {
-          v26 = [v25 unsignedIntegerValue];
+          unsignedIntegerValue = [v25 unsignedIntegerValue];
         }
 
         else
         {
-          v26 = 3;
+          unsignedIntegerValue = 3;
         }
 
         [(NSMeasurement *)v24 unit];
         if (objc_opt_isKindOfClass())
         {
-          v24 = [objc_opt_class() _measurementWithNaturalScale:v24 system:v26];
+          v24 = [objc_opt_class() _measurementWithNaturalScale:v24 system:unsignedIntegerValue];
         }
       }
 
@@ -576,9 +576,9 @@ LABEL_38:
 
       else
       {
-        v31 = [(NSUnitFormatter *)self numberFormatter];
+        numberFormatter2 = [(NSUnitFormatter *)self numberFormatter];
         [(NSMeasurement *)v24 doubleValue];
-        v30 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ %@", -[NSNumberFormatter stringFromNumber:](v31, "stringFromNumber:", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:")), [-[NSMeasurement unit](v24 "unit")]);
+        v30 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ %@", -[NSNumberFormatter stringFromNumber:](numberFormatter2, "stringFromNumber:", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:")), [-[NSMeasurement unit](v24 "unit")]);
       }
 
       v20 = v30;
@@ -593,21 +593,21 @@ LABEL_38:
   isKindOfClass = objc_opt_isKindOfClass();
   if (([(NSUnitFormatter *)self unitOptions]& 1) != 0 || (isKindOfClass & 1) == 0)
   {
-    return +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ %@", -[NSNumberFormatter stringFromNumber:](-[NSUnitFormatter numberFormatter](self, "numberFormatter"), "stringFromNumber:", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v6)), [v7 symbol]);
+    return +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ %@", -[NSNumberFormatter stringFromNumber:](-[NSUnitFormatter numberFormatter](self, "numberFormatter"), "stringFromNumber:", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v6)), [unit symbol]);
   }
 
-  v15 = [objc_opt_class() baseUnit];
-  if (!_unitHasSpecifierAndIsDimensional(v15))
+  baseUnit = [objc_opt_class() baseUnit];
+  if (!_unitHasSpecifierAndIsDimensional(baseUnit))
   {
     return 0;
   }
 
-  v16 = [a3 measurementByConvertingToUnit:v15];
+  v16 = [value measurementByConvertingToUnit:baseUnit];
 
   return [(NSUnitFormatter *)self stringForObjectValue:v16];
 }
 
-- (id)stringForValue:(double)a3 unit:(unint64_t)a4
+- (id)stringForValue:(double)value unit:(unint64_t)unit
 {
   v27 = *MEMORY[0x1E69E9840];
   [(NSUnitFormatter *)self checkIfModified];
@@ -657,9 +657,9 @@ LABEL_38:
     v19 = 1024;
     v20 = v8;
     v21 = 2048;
-    v22 = a3;
+    valueCopy = value;
     v23 = 2048;
-    v24 = a4;
+    unitCopy = unit;
     v10 = MEMORY[0x1E69E9C10];
     v11 = "*** uameasfmt_format() failed in NSUnitFormatter: %s, len = %d, value = %f, unit = %lu";
     v12 = 38;
@@ -670,7 +670,7 @@ LABEL_7:
   return 0;
 }
 
-- (id)stringForValue1:(double)a3 unit1:(unint64_t)a4 value2:(double)a5 unit2:(unint64_t)a6
+- (id)stringForValue1:(double)value1 unit1:(unint64_t)unit1 value2:(double)value2 unit2:(unint64_t)unit2
 {
   v21 = *MEMORY[0x1E69E9840];
   [(NSUnitFormatter *)self checkIfModified];
@@ -722,7 +722,7 @@ LABEL_4:
   return 0;
 }
 
-- (id)unitStringFromValue:(double)a3 unit:(unint64_t)a4
+- (id)unitStringFromValue:(double)value unit:(unint64_t)unit
 {
   v24 = *MEMORY[0x1E69E9840];
   if (qword_1EA7C44C0 != -1)
@@ -730,12 +730,12 @@ LABEL_4:
     dispatch_once(&qword_1EA7C44C0, &__block_literal_global_72);
   }
 
-  v6 = [(NSUnitFormatter *)self numberFormatter];
-  v7 = [(NSLocale *)self->_locale localeIdentifier];
+  numberFormatter = [(NSUnitFormatter *)self numberFormatter];
+  localeIdentifier = [(NSLocale *)self->_locale localeIdentifier];
   if (self->_prules)
   {
-    v8 = v7;
-    if (![(NSNumberFormatter *)v6 checkLocaleChange]&& [(NSString *)v8 isEqualToString:[(NSLocale *)[(NSNumberFormatter *)v6 locale] localeIdentifier]])
+    v8 = localeIdentifier;
+    if (![(NSNumberFormatter *)numberFormatter checkLocaleChange]&& [(NSString *)v8 isEqualToString:[(NSLocale *)[(NSNumberFormatter *)numberFormatter locale] localeIdentifier]])
     {
       goto LABEL_9;
     }
@@ -750,7 +750,7 @@ LABEL_4:
   self->_prules = uplrules_open();
   [(NSNumberFormatter *)[(NSUnitFormatter *)self numberFormatter] resetCheckLocaleChange];
 LABEL_9:
-  v9 = [_MergedGlobals_8 objectForKey:{+[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", a4)}];
+  v9 = [_MergedGlobals_8 objectForKey:{+[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", unit)}];
   v10 = self->_unitStyle - 1;
   if (v10 > 2)
   {
@@ -783,28 +783,28 @@ LABEL_9:
   else
   {
     v13 = [+[NSString stringWithCharacters:length:](NSString uppercaseString:v22];
-    v14 = [(NSNumberFormatter *)[(NSUnitFormatter *)self numberFormatter] formattingContext];
-    if (v14 > NSFormattingContextMiddleOfSentence)
+    formattingContext = [(NSNumberFormatter *)[(NSUnitFormatter *)self numberFormatter] formattingContext];
+    if (formattingContext > NSFormattingContextMiddleOfSentence)
     {
       v15 = 0;
     }
 
     else
     {
-      v15 = off_1E69F7708[v14];
+      v15 = off_1E69F7708[formattingContext];
     }
 
     return [_NSFoundationBundle() localizedStringForKey:+[NSString stringWithFormat:](NSString value:"stringWithFormat:" table:{@"%@_%@_%@_%@", v9, v11, v13, v15), &stru_1EEEFDF90, @"UnitFormatting"}];
   }
 }
 
-- (id)stringFromUnit:(id)a3
+- (id)stringFromUnit:(id)unit
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (_unitHasSpecifierAndIsDimensional(a3))
+  if (_unitHasSpecifierAndIsDimensional(unit))
   {
     [(NSUnitFormatter *)self checkIfModified];
-    [a3 specifier];
+    [unit specifier];
     v20 = 0;
     memset(v19, 0, sizeof(v19));
     UnitName = uameasfmt_getUnitName();
@@ -871,22 +871,22 @@ LABEL_5:
     return 0;
   }
 
-  return [a3 symbol];
+  return [unit symbol];
 }
 
-- (NSUnitFormatter)initWithCoder:(id)a3
+- (NSUnitFormatter)initWithCoder:(id)coder
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSUnitFormatter cannot be decoded by non-keyed archivers" userInfo:0]);
   }
 
-  v5 = [a3 decodeIntegerForKey:@"NS.unitOptions"];
-  if ([a3 containsValueForKey:@"NS.unitStyle"])
+  v5 = [coder decodeIntegerForKey:@"NS.unitOptions"];
+  if ([coder containsValueForKey:@"NS.unitStyle"])
   {
-    v6 = [a3 decodeIntegerForKey:@"NS.unitStyle"];
+    v6 = [coder decodeIntegerForKey:@"NS.unitStyle"];
   }
 
   else
@@ -894,9 +894,9 @@ LABEL_5:
     v6 = 2;
   }
 
-  if ([a3 containsValueForKey:@"NS.locale"])
+  if ([coder containsValueForKey:@"NS.locale"])
   {
-    v7 = [a3 decodeObjectOfClass:MEMORY[0x1E695DF58] forKey:@"NS.locale"];
+    v7 = [coder decodeObjectOfClass:MEMORY[0x1E695DF58] forKey:@"NS.locale"];
     if (!v7)
     {
 
@@ -906,7 +906,7 @@ LABEL_5:
       v9 = v19;
       v10 = &v18;
 LABEL_18:
-      [a3 failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(v8, "dictionaryWithObjects:forKeys:count:", v9, v10, 1))}];
+      [coder failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(v8, "dictionaryWithObjects:forKeys:count:", v9, v10, 1))}];
       return 0;
     }
   }
@@ -916,9 +916,9 @@ LABEL_18:
     v7 = 0;
   }
 
-  if ([a3 containsValueForKey:@"NS.numberFormatter"])
+  if ([coder containsValueForKey:@"NS.numberFormatter"])
   {
-    v11 = [a3 decodeObjectOfClass:NSNumberFormatter forKey:@"NS.numberFormatter"];
+    v11 = [coder decodeObjectOfClass:NSNumberFormatter forKey:@"NS.numberFormatter"];
     if (!v11)
     {
 
@@ -957,36 +957,36 @@ LABEL_18:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSUnitFormatter cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
-  [a3 encodeInteger:self->_unitOptions forKey:@"NS.unitOptions"];
+  [coder encodeInteger:self->_unitOptions forKey:@"NS.unitOptions"];
   unitStyle = self->_unitStyle;
   if (unitStyle != 2)
   {
-    [a3 encodeInteger:unitStyle forKey:@"NS.unitStyle"];
+    [coder encodeInteger:unitStyle forKey:@"NS.unitStyle"];
   }
 
   locale = self->_locale;
   if (locale)
   {
-    [a3 encodeObject:locale forKey:@"NS.locale"];
+    [coder encodeObject:locale forKey:@"NS.locale"];
   }
 
   if (self->_numberFormatter)
   {
 
-    [a3 encodeObject:? forKey:?];
+    [coder encodeObject:? forKey:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setUnitStyle:self->_unitStyle];
   [v4 setNumberFormatter:self->_numberFormatter];
   [v4 setLocale:self->_locale];

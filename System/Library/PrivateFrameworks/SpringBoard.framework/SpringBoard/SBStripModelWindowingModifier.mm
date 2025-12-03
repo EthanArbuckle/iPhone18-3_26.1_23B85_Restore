@@ -1,12 +1,12 @@
 @interface SBStripModelWindowingModifier
 - (id)_currentCycleResetGenerationCount;
-- (id)_stageStripIdentifiersFromStrip:(id)a3;
-- (id)_stripIdentifierForAppLayout:(void *)a1;
+- (id)_stageStripIdentifiersFromStrip:(id)strip;
+- (id)_stripIdentifierForAppLayout:(void *)layout;
 - (id)stateModel;
 - (void)didUpdate;
-- (void)timerFired:(id)a3;
-- (void)transitionDidUpdate:(id)a3;
-- (void)transitionWillBegin:(id)a3;
+- (void)timerFired:(id)fired;
+- (void)transitionDidUpdate:(id)update;
+- (void)transitionWillBegin:(id)begin;
 - (void)willBegin;
 - (void)willUpdate;
 @end
@@ -17,50 +17,50 @@
 {
   v7.receiver = self;
   v7.super_class = SBStripModelWindowingModifier;
-  v3 = [(SBStripModelWindowingModifier *)&v7 strip];
+  strip = [(SBStripModelWindowingModifier *)&v7 strip];
   nextStrip = self->_nextStrip;
-  self->_nextStrip = v3;
+  self->_nextStrip = strip;
 
-  v5 = [(SBStripModelWindowingModifier *)self peekingAppLayout];
+  peekingAppLayout = [(SBStripModelWindowingModifier *)self peekingAppLayout];
   peekingAppLayout = self->_peekingAppLayout;
-  self->_peekingAppLayout = v5;
+  self->_peekingAppLayout = peekingAppLayout;
 }
 
 - (id)stateModel
 {
   v5.receiver = self;
   v5.super_class = SBStripModelWindowingModifier;
-  v3 = [(SBWindowingModifier *)&v5 stateModel];
-  [v3 setStrip:self->_nextStrip];
+  stateModel = [(SBWindowingModifier *)&v5 stateModel];
+  [stateModel setStrip:self->_nextStrip];
 
-  return v3;
+  return stateModel;
 }
 
-- (void)transitionWillBegin:(id)a3
+- (void)transitionWillBegin:(id)begin
 {
-  v9 = a3;
-  v4 = [v9 toAppExposeBundleID];
-  v5 = [v9 fromAppExposeBundleID];
+  beginCopy = begin;
+  toAppExposeBundleID = [beginCopy toAppExposeBundleID];
+  fromAppExposeBundleID = [beginCopy fromAppExposeBundleID];
   v6 = BSEqualObjects();
 
   if ((v6 & 1) == 0)
   {
     self->_needsUpdate = 1;
-    v7 = [v9 toAppLayout];
+    toAppLayout = [beginCopy toAppLayout];
     upcomingAppLayoutForExitingAppExpose = self->_upcomingAppLayoutForExitingAppExpose;
-    self->_upcomingAppLayoutForExitingAppExpose = v7;
+    self->_upcomingAppLayoutForExitingAppExpose = toAppLayout;
   }
 }
 
-- (void)transitionDidUpdate:(id)a3
+- (void)transitionDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 fromAppLayout];
-  v6 = [v4 toAppLayout];
-  v7 = v6;
-  if (v5 && v6 && ([v5 isEqual:v6] & 1) == 0)
+  updateCopy = update;
+  fromAppLayout = [updateCopy fromAppLayout];
+  toAppLayout = [updateCopy toAppLayout];
+  v7 = toAppLayout;
+  if (fromAppLayout && toAppLayout && ([fromAppLayout isEqual:toAppLayout] & 1) == 0)
   {
-    v17 = [(SBStripModelWindowingModifier *)self _stripIdentifierForAppLayout:v5];
+    v17 = [(SBStripModelWindowingModifier *)self _stripIdentifierForAppLayout:fromAppLayout];
     v18 = [(SBStripModelWindowingModifier *)self _stripIdentifierForAppLayout:v7];
     if ([v17 isEqual:v18])
     {
@@ -93,8 +93,8 @@
       v26 = v25;
 
       [v26 removeObject:v7];
-      [v26 removeObject:v5];
-      [v26 addObject:v5];
+      [v26 removeObject:fromAppLayout];
+      [v26 addObject:fromAppLayout];
       [v22 setObject:v26 forKey:v17];
       v27 = [v22 copy];
       cycleOrderForIdentifier = self->_cycleOrderForIdentifier;
@@ -102,30 +102,30 @@
 
       ++self->_cycleResetGenerationCount;
       v29 = [SBTimerEventSwitcherEventResponse alloc];
-      v30 = [(SBStripModelWindowingModifier *)self _currentCycleResetGenerationCount];
-      v31 = [(SBTimerEventSwitcherEventResponse *)v29 initWithDelay:0 validator:v30 reason:1.5];
+      _currentCycleResetGenerationCount = [(SBStripModelWindowingModifier *)self _currentCycleResetGenerationCount];
+      v31 = [(SBTimerEventSwitcherEventResponse *)v29 initWithDelay:0 validator:_currentCycleResetGenerationCount reason:1.5];
       [(SBWindowingModifier *)self appendResponse:v31];
     }
   }
 
-  v8 = [v4 fromDisplayItemLayoutAttributesMap];
-  v9 = [v4 toDisplayItemLayoutAttributesMap];
-  if (BSEqualObjects() && (v10 = [v4 fromEnvironmentMode], v10 == objc_msgSend(v4, "toEnvironmentMode")))
+  fromDisplayItemLayoutAttributesMap = [updateCopy fromDisplayItemLayoutAttributesMap];
+  toDisplayItemLayoutAttributesMap = [updateCopy toDisplayItemLayoutAttributesMap];
+  if (BSEqualObjects() && (v10 = [updateCopy fromEnvironmentMode], v10 == objc_msgSend(updateCopy, "toEnvironmentMode")))
   {
-    v32 = [v8 allKeys];
+    allKeys = [fromDisplayItemLayoutAttributesMap allKeys];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __53__SBStripModelWindowingModifier_transitionDidUpdate___block_invoke;
     v35[3] = &unk_2783A8C90;
-    v36 = v8;
-    v11 = [v32 bs_firstObjectPassingTest:v35];
-    v12 = [v9 allKeys];
+    v36 = fromDisplayItemLayoutAttributesMap;
+    v11 = [allKeys bs_firstObjectPassingTest:v35];
+    allKeys2 = [toDisplayItemLayoutAttributesMap allKeys];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __53__SBStripModelWindowingModifier_transitionDidUpdate___block_invoke_2;
     v33[3] = &unk_2783A8C90;
-    v34 = v9;
-    v13 = [v12 bs_firstObjectPassingTest:v33];
+    v34 = toDisplayItemLayoutAttributesMap;
+    v13 = [allKeys2 bs_firstObjectPassingTest:v33];
     v14 = BSEqualObjects();
 
     if ((v14 & 1) == 0)
@@ -140,9 +140,9 @@
   }
 
   objc_storeStrong(&self->_previousPeekingAppLayout, self->_peekingAppLayout);
-  v15 = [(SBStripModelWindowingModifier *)self peekingAppLayout];
+  peekingAppLayout = [(SBStripModelWindowingModifier *)self peekingAppLayout];
   peekingAppLayout = self->_peekingAppLayout;
-  self->_peekingAppLayout = v15;
+  self->_peekingAppLayout = peekingAppLayout;
 }
 
 uint64_t __53__SBStripModelWindowingModifier_transitionDidUpdate___block_invoke(uint64_t a1, uint64_t a2)
@@ -163,11 +163,11 @@ uint64_t __53__SBStripModelWindowingModifier_transitionDidUpdate___block_invoke_
   return IsValid;
 }
 
-- (void)timerFired:(id)a3
+- (void)timerFired:(id)fired
 {
-  v4 = [a3 reason];
-  v5 = [(SBStripModelWindowingModifier *)self _currentCycleResetGenerationCount];
-  v6 = [v4 isEqualToString:v5];
+  reason = [fired reason];
+  _currentCycleResetGenerationCount = [(SBStripModelWindowingModifier *)self _currentCycleResetGenerationCount];
+  v6 = [reason isEqualToString:_currentCycleResetGenerationCount];
 
   if (v6)
   {
@@ -181,8 +181,8 @@ uint64_t __53__SBStripModelWindowingModifier_transitionDidUpdate___block_invoke_
 - (void)willUpdate
 {
   appLayoutsCount = self->_appLayoutsCount;
-  v4 = [(SBStripModelWindowingModifier *)self recentAppLayouts];
-  self->_appLayoutsCount = [v4 count];
+  recentAppLayouts = [(SBStripModelWindowingModifier *)self recentAppLayouts];
+  self->_appLayoutsCount = [recentAppLayouts count];
 
   if (appLayoutsCount != self->_appLayoutsCount)
   {
@@ -203,16 +203,16 @@ uint64_t __53__SBStripModelWindowingModifier_transitionDidUpdate___block_invoke_
   upcomingAppLayoutForExitingAppExpose = self->_upcomingAppLayoutForExitingAppExpose;
   if (upcomingAppLayoutForExitingAppExpose)
   {
-    v5 = upcomingAppLayoutForExitingAppExpose;
+    appLayout = upcomingAppLayoutForExitingAppExpose;
   }
 
   else
   {
-    v5 = [(SBStripModelWindowingModifier *)self appLayout];
+    appLayout = [(SBStripModelWindowingModifier *)self appLayout];
   }
 
   appLayout = self->_appLayout;
-  self->_appLayout = v5;
+  self->_appLayout = appLayout;
 
   v7 = self->_upcomingAppLayoutForExitingAppExpose;
   self->_upcomingAppLayoutForExitingAppExpose = 0;
@@ -230,16 +230,16 @@ uint64_t __53__SBStripModelWindowingModifier_transitionDidUpdate___block_invoke_
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 allItems];
-      v12 = [v11 count];
+      allItems = [v9 allItems];
+      v12 = [allItems count];
 
       v3 = v107;
       if (v12 == 1)
       {
         previousPeekingAppLayout = self->_previousPeekingAppLayout;
-        v14 = [v10 allItems];
-        v15 = [v14 firstObject];
-        v16 = [(SBAppLayout *)previousPeekingAppLayout appLayoutByInsertingItem:v15];
+        allItems2 = [v10 allItems];
+        firstObject = [allItems2 firstObject];
+        v16 = [(SBAppLayout *)previousPeekingAppLayout appLayoutByInsertingItem:firstObject];
         v17 = self->_appLayout;
         self->_appLayout = v16;
 
@@ -248,21 +248,21 @@ uint64_t __53__SBStripModelWindowingModifier_transitionDidUpdate___block_invoke_
     }
   }
 
-  v106 = [(SBWindowingModifier *)self windowingConfiguration];
-  v116 = [v106 numberOfRowsWhileInApp];
-  v18 = [(SBStripModelWindowingModifier *)self recentAppLayouts];
-  v19 = [(SBStripModelWindowingModifier *)self displayItemsToExcludeFromStrip];
-  v105 = v19;
-  if ([v19 count])
+  windowingConfiguration = [(SBWindowingModifier *)self windowingConfiguration];
+  numberOfRowsWhileInApp = [windowingConfiguration numberOfRowsWhileInApp];
+  recentAppLayouts = [(SBStripModelWindowingModifier *)self recentAppLayouts];
+  displayItemsToExcludeFromStrip = [(SBStripModelWindowingModifier *)self displayItemsToExcludeFromStrip];
+  v105 = displayItemsToExcludeFromStrip;
+  if ([displayItemsToExcludeFromStrip count])
   {
     v156[0] = MEMORY[0x277D85DD0];
     v156[1] = 3221225472;
     v156[2] = __42__SBStripModelWindowingModifier_didUpdate__block_invoke_2;
     v156[3] = &unk_2783AE218;
-    v157 = v19;
-    v20 = [v18 bs_compactMap:v156];
+    v157 = displayItemsToExcludeFromStrip;
+    v20 = [recentAppLayouts bs_compactMap:v156];
 
-    v18 = v20;
+    recentAppLayouts = v20;
   }
 
   v104 = [(SBStripModelWindowingModifier *)self _stageStripIdentifiersFromStrip:self->_nextStrip];
@@ -279,15 +279,15 @@ uint64_t __53__SBStripModelWindowingModifier_transitionDidUpdate___block_invoke_
         v154[2] = __42__SBStripModelWindowingModifier_didUpdate__block_invoke_4;
         v154[3] = &unk_2783AF5D8;
         v154[4] = self;
-        v155 = v18;
+        v155 = recentAppLayouts;
         v21 = [(SBAppLayout *)v3 appLayoutWithItemsPassingTest:v154];
-        v22 = [v21 leafAppLayouts];
+        leafAppLayouts = [v21 leafAppLayouts];
         v153[0] = MEMORY[0x277D85DD0];
         v153[1] = 3221225472;
         v153[2] = __42__SBStripModelWindowingModifier_didUpdate__block_invoke_6;
         v153[3] = &unk_2783AE218;
         v153[4] = self;
-        v23 = [v22 bs_map:v153];
+        v23 = [leafAppLayouts bs_map:v153];
 
         [v118 addObjectsFromArray:v23];
       }
@@ -333,8 +333,8 @@ uint64_t __53__SBStripModelWindowingModifier_transitionDidUpdate___block_invoke_
       v99 = v97;
       if (v97 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v124 = [(SBWindowingStrip *)self->_nextStrip appLayoutsInStrip];
-        v100 = [v124 objectAtIndex:v99];
+        appLayoutsInStrip = [(SBWindowingStrip *)self->_nextStrip appLayoutsInStrip];
+        v100 = [appLayoutsInStrip objectAtIndex:v99];
 
         if ([v100 count] == 1)
         {
@@ -371,12 +371,12 @@ LABEL_116:
 
 LABEL_21:
   obj = objc_opt_new();
-  v24 = [(SBAppLayout *)self->_appLayout leafAppLayouts];
-  v25 = [v24 bs_set];
-  v26 = v25;
-  if (v25)
+  leafAppLayouts2 = [(SBAppLayout *)self->_appLayout leafAppLayouts];
+  bs_set = [leafAppLayouts2 bs_set];
+  v26 = bs_set;
+  if (bs_set)
   {
-    v27 = v25;
+    v27 = bs_set;
   }
 
   else
@@ -388,18 +388,18 @@ LABEL_21:
 
   if ([(SBWindowingModifier *)self transitioningToEnvironmentMode]== 1)
   {
-    v29 = [(SBWindowingModifier *)self transitioningFromAppLayout];
-    v30 = [v29 leafAppLayouts];
-    v31 = [v28 setByAddingObjectsFromArray:v30];
+    transitioningFromAppLayout = [(SBWindowingModifier *)self transitioningFromAppLayout];
+    leafAppLayouts3 = [transitioningFromAppLayout leafAppLayouts];
+    v31 = [v28 setByAddingObjectsFromArray:leafAppLayouts3];
 
     v28 = v31;
   }
 
   if ([(SBWindowingModifier *)self transitioningToEnvironmentMode]== 3)
   {
-    v32 = [(SBWindowingModifier *)self transitioningToAppLayout];
-    v33 = [v32 leafAppLayouts];
-    v34 = [v28 setByAddingObjectsFromArray:v33];
+    transitioningToAppLayout = [(SBWindowingModifier *)self transitioningToAppLayout];
+    leafAppLayouts4 = [transitioningToAppLayout leafAppLayouts];
+    v34 = [v28 setByAddingObjectsFromArray:leafAppLayouts4];
 
     v28 = v34;
   }
@@ -411,23 +411,23 @@ LABEL_21:
   v152[3] = &unk_2783AE218;
   v152[4] = self;
   v117 = [v28 bs_map:v152];
-  v35 = [(SBStripModelWindowingModifier *)self displayOrdinal];
-  v36 = [(SBStripModelWindowingModifier *)self draggingAppLayoutsForWindowDrag];
+  displayOrdinal = [(SBStripModelWindowingModifier *)self displayOrdinal];
+  draggingAppLayoutsForWindowDrag = [(SBStripModelWindowingModifier *)self draggingAppLayoutsForWindowDrag];
   v151[0] = MEMORY[0x277D85DD0];
   v151[1] = 3221225472;
   v151[2] = __42__SBStripModelWindowingModifier_didUpdate__block_invoke_9;
   v151[3] = &__block_descriptor_40_e21__16__0__SBAppLayout_8l;
-  v151[4] = v35;
-  v37 = [v36 bs_compactMap:v151];
-  v38 = [v37 bs_array];
-  v39 = [v38 bs_flatten];
-  v123 = [v39 bs_set];
+  v151[4] = displayOrdinal;
+  v37 = [draggingAppLayoutsForWindowDrag bs_compactMap:v151];
+  bs_array = [v37 bs_array];
+  bs_flatten = [bs_array bs_flatten];
+  bs_set2 = [bs_flatten bs_set];
 
   v149 = 0u;
   v150 = 0u;
   v147 = 0u;
   v148 = 0u;
-  v40 = v18;
+  v40 = recentAppLayouts;
   v41 = [v40 countByEnumeratingWithState:&v147 objects:v164 count:16];
   v42 = v28;
   v112 = v40;
@@ -447,7 +447,7 @@ LABEL_21:
 
         v46 = *(*(&v147 + 1) + 8 * v45);
         v47 = self->_appLayout;
-        if ((!v47 || !-[SBAppLayout isOrContainsAppLayout:](v47, "isOrContainsAppLayout:", *(*(&v147 + 1) + 8 * v45)) && ([v46 isOrContainsAppLayout:self->_appLayout] & 1) == 0) && (objc_msgSend(v46, "containsAnyItemFromSet:", v123) & 1) == 0)
+        if ((!v47 || !-[SBAppLayout isOrContainsAppLayout:](v47, "isOrContainsAppLayout:", *(*(&v147 + 1) + 8 * v45)) && ([v46 isOrContainsAppLayout:self->_appLayout] & 1) == 0) && (objc_msgSend(v46, "containsAnyItemFromSet:", bs_set2) & 1) == 0)
         {
           v48 = [(SBStripModelWindowingModifier *)self _stripIdentifierForAppLayout:v46];
           if (![v117 containsObject:v48])
@@ -455,8 +455,8 @@ LABEL_21:
             goto LABEL_43;
           }
 
-          v49 = [v46 allItems];
-          if ([v49 count] == 1)
+          allItems3 = [v46 allItems];
+          if ([allItems3 count] == 1)
           {
             v50 = [v42 containsObject:v46];
 
@@ -498,14 +498,14 @@ LABEL_43:
 
   v111 = v52;
   v55 = [v52 count];
-  if ([v54 count] < v116 && v55 >= 1)
+  if ([v54 count] < numberOfRowsWhileInApp && v55 >= 1)
   {
     for (i = 0; i < v55; ++i)
     {
       v57 = [v111 objectAtIndex:i];
       [v54 addObject:v57];
 
-      if ([v54 count] >= v116)
+      if ([v54 count] >= numberOfRowsWhileInApp)
       {
         break;
       }
@@ -513,9 +513,9 @@ LABEL_43:
   }
 
   v103 = v42;
-  if ([v54 count] > v116)
+  if ([v54 count] > numberOfRowsWhileInApp)
   {
-    [v54 removeObjectsInRange:{v116, objc_msgSend(v54, "count") - v116}];
+    [v54 removeObjectsInRange:{numberOfRowsWhileInApp, objc_msgSend(v54, "count") - numberOfRowsWhileInApp}];
   }
 
   v143[0] = MEMORY[0x277D85DD0];
@@ -525,8 +525,8 @@ LABEL_43:
   v58 = v54;
   v144 = v58;
   v59 = [v109 bs_filter:v143];
-  v60 = [v59 array];
-  v61 = [v60 mutableCopy];
+  array = [v59 array];
+  v61 = [array mutableCopy];
 
   v141[0] = MEMORY[0x277D85DD0];
   v141[1] = 3221225472;
@@ -555,8 +555,8 @@ LABEL_43:
         }
 
         v67 = *(*(&v137 + 1) + 8 * j);
-        v68 = [v61 _sb_dequeue];
-        v69 = [v62 indexOfObject:v68];
+        _sb_dequeue = [v61 _sb_dequeue];
+        v69 = [v62 indexOfObject:_sb_dequeue];
         if (v69 == 0x7FFFFFFFFFFFFFFFLL)
         {
           [v62 addObject:v67];
@@ -597,10 +597,10 @@ LABEL_43:
 
         v75 = *(*(&v133 + 1) + 8 * v74);
         v76 = self->_appLayout;
-        if ((!v76 || !-[SBAppLayout isOrContainsAppLayout:](v76, "isOrContainsAppLayout:", v75) && ([v75 isOrContainsAppLayout:self->_appLayout] & 1) == 0) && (objc_msgSend(v75, "containsAnyItemFromSet:", v123) & 1) == 0 && (objc_msgSend(v75, "containsAnyItemFromSet:", v120) & 1) == 0)
+        if ((!v76 || !-[SBAppLayout isOrContainsAppLayout:](v76, "isOrContainsAppLayout:", v75) && ([v75 isOrContainsAppLayout:self->_appLayout] & 1) == 0) && (objc_msgSend(v75, "containsAnyItemFromSet:", bs_set2) & 1) == 0 && (objc_msgSend(v75, "containsAnyItemFromSet:", v120) & 1) == 0)
         {
           v77 = [(SBStripModelWindowingModifier *)self _stripIdentifierForAppLayout:v75];
-          if ([v62 containsObject:?] && (objc_msgSend(v75, "containsAnyItemFromSet:", v123) & 1) == 0)
+          if ([v62 containsObject:?] && (objc_msgSend(v75, "containsAnyItemFromSet:", bs_set2) & 1) == 0)
           {
             v78 = [v119 objectForKey:v77];
             if (!v78)
@@ -680,7 +680,7 @@ LABEL_85:
 
       v91 = [v80 count];
 
-      if (v91 == v116)
+      if (v91 == numberOfRowsWhileInApp)
       {
         break;
       }
@@ -763,17 +763,17 @@ id __42__SBStripModelWindowingModifier_didUpdate__block_invoke_9(uint64_t a1, vo
   return v4;
 }
 
-- (id)_stageStripIdentifiersFromStrip:(id)a3
+- (id)_stageStripIdentifiersFromStrip:(id)strip
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stripCopy = strip;
   v5 = objc_alloc_init(MEMORY[0x277CBEB40]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v4 appLayoutsInStrip];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  appLayoutsInStrip = [stripCopy appLayoutsInStrip];
+  v7 = [appLayoutsInStrip countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -784,15 +784,15 @@ id __42__SBStripModelWindowingModifier_didUpdate__block_invoke_9(uint64_t a1, vo
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(appLayoutsInStrip);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) firstObject];
-        v12 = [(SBStripModelWindowingModifier *)self _stripIdentifierForAppLayout:v11];
+        firstObject = [*(*(&v14 + 1) + 8 * i) firstObject];
+        v12 = [(SBStripModelWindowingModifier *)self _stripIdentifierForAppLayout:firstObject];
         [v5 addObject:v12];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [appLayoutsInStrip countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -811,23 +811,23 @@ id __42__SBStripModelWindowingModifier_didUpdate__block_invoke_9(uint64_t a1, vo
   return v6;
 }
 
-- (id)_stripIdentifierForAppLayout:(void *)a1
+- (id)_stripIdentifierForAppLayout:(void *)layout
 {
   v4 = a2;
-  if (a1)
+  if (layout)
   {
-    v5 = [a1 groupsWindowsByApp];
-    if ((v5 & 1) != 0 || ([v4 allItems], v2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "count") > 1))
+    groupsWindowsByApp = [layout groupsWindowsByApp];
+    if ((groupsWindowsByApp & 1) != 0 || ([v4 allItems], v2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "count") > 1))
     {
-      v6 = [a1 peekingAppLayout];
+      peekingAppLayout = [layout peekingAppLayout];
 
-      if ((v5 & 1) == 0)
+      if ((groupsWindowsByApp & 1) == 0)
       {
       }
 
-      if (!v6)
+      if (!peekingAppLayout)
       {
-        a1 = [v4 continuousExposeIdentifier];
+        layout = [v4 continuousExposeIdentifier];
         goto LABEL_10;
       }
     }
@@ -836,14 +836,14 @@ id __42__SBStripModelWindowingModifier_didUpdate__block_invoke_9(uint64_t a1, vo
     {
     }
 
-    v7 = [v4 allItems];
-    v8 = [v7 firstObject];
-    a1 = [v8 uniqueIdentifier];
+    allItems = [v4 allItems];
+    firstObject = [allItems firstObject];
+    layout = [firstObject uniqueIdentifier];
   }
 
 LABEL_10:
 
-  return a1;
+  return layout;
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface VCPAdaptiveSegmentAnalyzer
-- (float)calculateTimestamp:(unint64_t)a3 videoEmbeddings:(id)a4;
+- (float)calculateTimestamp:(unint64_t)timestamp videoEmbeddings:(id)embeddings;
 - (id).cxx_construct;
-- (int)calculateAdaptiveSegments:(id)a3;
-- (int)calculateAdaptiveSegments:(id)a3 videoEmbeddingsX3D:(id)a4;
-- (vector<float,)averagedEmbedding:(VCPAdaptiveSegmentAnalyzer *)self startTime:(SEL)a3 endTime:(id)a4;
+- (int)calculateAdaptiveSegments:(id)segments;
+- (int)calculateAdaptiveSegments:(id)segments videoEmbeddingsX3D:(id)d;
+- (vector<float,)averagedEmbedding:(VCPAdaptiveSegmentAnalyzer *)self startTime:(SEL)time endTime:(id)endTime;
 @end
 
 @implementation VCPAdaptiveSegmentAnalyzer
 
-- (int)calculateAdaptiveSegments:(id)a3
+- (int)calculateAdaptiveSegments:(id)segments
 {
   v42 = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  if ([v29 embeddingType] == 2)
+  segmentsCopy = segments;
+  if ([segmentsCopy embeddingType] == 2)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     adaptiveSegments = self->_adaptiveSegments;
-    self->_adaptiveSegments = v4;
+    self->_adaptiveSegments = array;
 
-    v6 = [v29 embeddingsArray];
+    embeddingsArray = [segmentsCopy embeddingsArray];
     videoEmbeddings = self->_videoEmbeddings;
-    self->_videoEmbeddings = v6;
+    self->_videoEmbeddings = embeddingsArray;
 
-    self->_embeddingSize = [v29 embeddingSize];
+    self->_embeddingSize = [segmentsCopy embeddingSize];
     if ([(NSArray *)self->_videoEmbeddings count])
     {
       v35 = 0;
@@ -65,13 +65,13 @@
           estimateNumberOfSegmentsBySpectralClustering();
         }
 
-        v10 = [(NSArray *)self->_videoEmbeddings lastObject];
-        v11 = [v10 objectForKeyedSubscript:@"start"];
+        lastObject = [(NSArray *)self->_videoEmbeddings lastObject];
+        v11 = [lastObject objectForKeyedSubscript:@"start"];
         CMTimeMakeFromDictionary(&v38, v11);
         Seconds = CMTimeGetSeconds(&v38);
 
-        v13 = [(NSArray *)self->_videoEmbeddings lastObject];
-        v14 = [v13 objectForKeyedSubscript:@"duration"];
+        lastObject2 = [(NSArray *)self->_videoEmbeddings lastObject];
+        v14 = [lastObject2 objectForKeyedSubscript:@"duration"];
         CMTimeMakeFromDictionary(&v38, v14);
         v15 = CMTimeGetSeconds(&v38);
 
@@ -142,15 +142,15 @@
   return v27;
 }
 
-- (int)calculateAdaptiveSegments:(id)a3 videoEmbeddingsX3D:(id)a4
+- (int)calculateAdaptiveSegments:(id)segments videoEmbeddingsX3D:(id)d
 {
   v10 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if ([v8 embeddingType] == 1)
+  dCopy = d;
+  if ([dCopy embeddingType] == 1)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     adaptiveSegments = self->_adaptiveSegments;
-    self->_adaptiveSegments = v5;
+    self->_adaptiveSegments = array;
 
     operator new[]();
   }
@@ -164,46 +164,46 @@
   return -18;
 }
 
-- (float)calculateTimestamp:(unint64_t)a3 videoEmbeddings:(id)a4
+- (float)calculateTimestamp:(unint64_t)timestamp videoEmbeddings:(id)embeddings
 {
-  v5 = a4;
-  v6 = [v5 objectAtIndexedSubscript:(a3 >> 4)];
+  embeddingsCopy = embeddings;
+  v6 = [embeddingsCopy objectAtIndexedSubscript:(timestamp >> 4)];
   v7 = [v6 objectForKeyedSubscript:@"start"];
   CMTimeMakeFromDictionary(&time, v7);
   Seconds = CMTimeGetSeconds(&time);
 
-  v9 = [v5 objectAtIndexedSubscript:(a3 >> 4)];
+  v9 = [embeddingsCopy objectAtIndexedSubscript:(timestamp >> 4)];
   v10 = [v9 objectForKeyedSubscript:@"duration"];
   CMTimeMakeFromDictionary(&time, v10);
   v11 = CMTimeGetSeconds(&time);
 
   *&Seconds = Seconds;
-  return (((a3 & 0xF) * v11) * 0.0625) + *&Seconds;
+  return (((timestamp & 0xF) * v11) * 0.0625) + *&Seconds;
 }
 
-- (vector<float,)averagedEmbedding:(VCPAdaptiveSegmentAnalyzer *)self startTime:(SEL)a3 endTime:(id)a4
+- (vector<float,)averagedEmbedding:(VCPAdaptiveSegmentAnalyzer *)self startTime:(SEL)time endTime:(id)endTime
 {
   v52 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  endTimeCopy = endTime;
   v48 = 0;
   v49 = 0;
   v50 = 0;
   memset(v47, 0, sizeof(v47));
   memset(v46, 0, sizeof(v46));
-  v9 = [v8 embeddingSize];
-  if (v9 >> 62)
+  embeddingSize = [endTimeCopy embeddingSize];
+  if (embeddingSize >> 62)
   {
     v10 = -1;
   }
 
   else
   {
-    v10 = 4 * v9;
+    v10 = 4 * embeddingSize;
   }
 
   v11 = operator new[](v10, MEMORY[0x1E69E5398]);
   memset(v45, 0, sizeof(v45));
-  obj = [v8 embeddingsArray];
+  obj = [endTimeCopy embeddingsArray];
   if ([obj countByEnumeratingWithState:v45 objects:v51 count:16])
   {
     v12 = **(&v45[0] + 1);
@@ -221,16 +221,16 @@
     v44 = *v37 + v18;
     std::vector<float>::push_back[abi:ne200100](v47, v37);
     std::vector<float>::push_back[abi:ne200100](v46, &v44);
-    bzero(v11, 4 * [v8 embeddingSize]);
+    bzero(v11, 4 * [endTimeCopy embeddingSize]);
     v19 = [v12 objectForKeyedSubscript:@"attributes"];
     v20 = [v19 objectForKeyedSubscript:@"embeddings"];
-    [v20 getBytes:v11 length:{4 * objc_msgSend(v8, "embeddingSize")}];
+    [v20 getBytes:v11 length:{4 * objc_msgSend(endTimeCopy, "embeddingSize")}];
 
-    v21 = [v8 embeddingSize];
+    embeddingSize2 = [endTimeCopy embeddingSize];
     __p = v11;
     v40 = 1;
-    v41 = v21;
-    v42 = v21;
+    v41 = embeddingSize2;
+    v42 = embeddingSize2;
     dlib::matrix<float,0l,0l,dlib::memory_manager_stateless_kernel_1<char>,dlib::row_major_layout>::matrix<dlib::matrix_op<dlib::op_pointer_to_mat<float>>>(&time.value);
   }
 
@@ -306,7 +306,7 @@
   }
 
   v37[0] = 1;
-  v37[1] = [v8 embeddingSize];
+  v37[1] = [endTimeCopy embeddingSize];
   v38 = 0;
   dlib::matrix<float,0l,0l,dlib::memory_manager_stateless_kernel_1<char>,dlib::row_major_layout>::matrix<dlib::matrix_op<dlib::op_uniform_matrix_3<float>>>(&time.value);
 }

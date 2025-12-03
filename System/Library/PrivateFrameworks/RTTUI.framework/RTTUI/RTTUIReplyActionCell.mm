@@ -1,22 +1,22 @@
 @interface RTTUIReplyActionCell
-- (RTTUIReplyActionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 andDelegate:(id)a5;
+- (RTTUIReplyActionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier andDelegate:(id)delegate;
 - (RTTUIReplyActionCellDelegate)delegate;
 @end
 
 @implementation RTTUIReplyActionCell
 
-- (RTTUIReplyActionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 andDelegate:(id)a5
+- (RTTUIReplyActionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier andDelegate:(id)delegate
 {
-  v8 = a5;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = RTTUIReplyActionCell;
-  v9 = [(RTTUIReplyActionCell *)&v12 initWithStyle:a3 reuseIdentifier:a4];
+  v9 = [(RTTUIReplyActionCell *)&v12 initWithStyle:style reuseIdentifier:identifier];
   if (v9)
   {
-    v10 = [MEMORY[0x277D75348] clearColor];
-    [(RTTUIReplyActionCell *)v9 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(RTTUIReplyActionCell *)v9 setBackgroundColor:clearColor];
 
-    [(RTTUIReplyActionCell *)v9 setDelegate:v8];
+    [(RTTUIReplyActionCell *)v9 setDelegate:delegateCopy];
   }
 
   return v9;

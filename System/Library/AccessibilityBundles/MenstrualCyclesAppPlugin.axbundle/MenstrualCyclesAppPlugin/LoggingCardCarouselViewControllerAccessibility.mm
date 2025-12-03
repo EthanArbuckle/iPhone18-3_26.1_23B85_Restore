@@ -1,21 +1,21 @@
 @interface LoggingCardCarouselViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityScroll:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (id)cardProgressLabel;
-- (id)collectionViewFrom:(id)a3;
+- (id)collectionViewFrom:(id)from;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation LoggingCardCarouselViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MenstrualCyclesAppPlugin.LoggingCardHeaderView"];
-  [v3 validateClass:@"MenstrualCyclesAppPlugin.LoggingCardCarouselViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"MenstrualCyclesAppPlugin.LoggingCardCarouselViewController" conformsToProtocol:@"UIScrollViewDelegate"];
-  [v3 validateClass:@"MenstrualCyclesAppPlugin.LoggingCardCarouselViewController" hasInstanceMethod:@"_accessibilityCardProgressLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MenstrualCyclesAppPlugin.LoggingCardHeaderView"];
+  [validationsCopy validateClass:@"MenstrualCyclesAppPlugin.LoggingCardCarouselViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"MenstrualCyclesAppPlugin.LoggingCardCarouselViewController" conformsToProtocol:@"UIScrollViewDelegate"];
+  [validationsCopy validateClass:@"MenstrualCyclesAppPlugin.LoggingCardCarouselViewController" hasInstanceMethod:@"_accessibilityCardProgressLabel" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -25,12 +25,12 @@
   [(LoggingCardCarouselViewControllerAccessibility *)&v7 _accessibilityLoadAccessibilityInformation];
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 view];
-  v4 = [v3 subviews];
+  view = [v2 view];
+  subviews = [view subviews];
 
-  v5 = [v4 axFilterObjectsUsingBlock:&__block_literal_global_1];
-  v6 = [v5 lastObject];
-  [v6 setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
+  v5 = [subviews axFilterObjectsUsingBlock:&__block_literal_global_1];
+  lastObject = [v5 lastObject];
+  [lastObject setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
 }
 
 uint64_t __92__LoggingCardCarouselViewControllerAccessibility__accessibilityLoadAccessibilityInformation__block_invoke(uint64_t a1, void *a2)
@@ -42,7 +42,7 @@ uint64_t __92__LoggingCardCarouselViewControllerAccessibility__accessibilityLoad
   return isKindOfClass & 1;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   v48 = *MEMORY[0x29EDCA608];
   LOBYTE(v42[0]) = 0;
@@ -65,13 +65,13 @@ uint64_t __92__LoggingCardCarouselViewControllerAccessibility__accessibilityLoad
     if (v12)
     {
       v13 = v12;
-      v38 = self;
+      selfCopy = self;
       v39 = v5;
       v14 = 0;
       v16 = *MEMORY[0x29EDB90B8];
       v15 = *(MEMORY[0x29EDB90B8] + 8);
       v17 = *v44;
-      v40 = a3;
+      scrollCopy = scroll;
       while (2)
       {
         for (i = 0; i != v13; ++i)
@@ -89,7 +89,7 @@ uint64_t __92__LoggingCardCarouselViewControllerAccessibility__accessibilityLoad
           v49.y = v11;
           if (CGRectContainsPoint(v50, v49))
           {
-            if (a3 == 2)
+            if (scroll == 2)
             {
               v16 = 0.5;
               v21 = 1;
@@ -97,7 +97,7 @@ uint64_t __92__LoggingCardCarouselViewControllerAccessibility__accessibilityLoad
 
             else
             {
-              if (a3 != 1)
+              if (scroll != 1)
               {
 
                 v5 = v39;
@@ -112,7 +112,7 @@ uint64_t __92__LoggingCardCarouselViewControllerAccessibility__accessibilityLoad
             v23 = [v7 cellForItemAtIndexPath:v22];
 
             v14 = v23;
-            a3 = v40;
+            scroll = scrollCopy;
           }
         }
 
@@ -143,18 +143,18 @@ uint64_t __92__LoggingCardCarouselViewControllerAccessibility__accessibilityLoad
       v42[1] = v29;
       if (objc_opt_respondsToSelector())
       {
-        [(LoggingCardCarouselViewControllerAccessibility *)v38 scrollViewWillEndDragging:v7 withVelocity:v42 targetContentOffset:v16, v15];
+        [(LoggingCardCarouselViewControllerAccessibility *)selfCopy scrollViewWillEndDragging:v7 withVelocity:v42 targetContentOffset:v16, v15];
       }
 
       v30 = accessibilityLocalizedString(@"card");
-      v31 = [(LoggingCardCarouselViewControllerAccessibility *)v38 cardProgressLabel];
-      v32 = [v31 text];
+      cardProgressLabel = [(LoggingCardCarouselViewControllerAccessibility *)selfCopy cardProgressLabel];
+      text = [cardProgressLabel text];
 
-      LODWORD(v31) = *MEMORY[0x29EDC7EF0];
+      LODWORD(cardProgressLabel) = *MEMORY[0x29EDC7EF0];
       v33 = __UIAXStringForVariables();
-      UIAccessibilityPostNotification(v31, v33);
+      UIAccessibilityPostNotification(cardProgressLabel, v33);
 
-      v34 = [v14 _accessibilityFindSubviewDescendant:{&__block_literal_global_314, v32, @"__AXStringForVariablesSentinel"}];
+      v34 = [v14 _accessibilityFindSubviewDescendant:{&__block_literal_global_314, text, @"__AXStringForVariablesSentinel"}];
       UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], v34);
 
       v35 = 1;
@@ -199,10 +199,10 @@ uint64_t __70__LoggingCardCarouselViewControllerAccessibility_accessibilityScrol
   return v4;
 }
 
-- (id)collectionViewFrom:(id)a3
+- (id)collectionViewFrom:(id)from
 {
-  v3 = [a3 view];
-  v4 = [v3 _accessibilityFindSubviewDescendant:&__block_literal_global_316];
+  view = [from view];
+  v4 = [view _accessibilityFindSubviewDescendant:&__block_literal_global_316];
 
   return v4;
 }

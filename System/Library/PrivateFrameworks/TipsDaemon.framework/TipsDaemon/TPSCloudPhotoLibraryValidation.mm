@@ -1,22 +1,22 @@
 @interface TPSCloudPhotoLibraryValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSCloudPhotoLibraryValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
   v4 = *MEMORY[0x277CB9100];
-  v5 = a3;
+  completionCopy = completion;
   v6 = [TPSCloudAccountChecker isiCloudDataClassEnabled:v4];
   v7 = v6 ^ [(TPSTargetingValidation *)self BOOLValue];
-  v8 = [MEMORY[0x277D71778] targeting];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  targeting = [MEMORY[0x277D71778] targeting];
+  if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
   {
-    [(TPSDictationLanguageValidation *)self validateWithCompletion:v8];
+    [(TPSDictationLanguageValidation *)self validateWithCompletion:targeting];
   }
 
-  (*(v5 + 2))(v5, v7 ^ 1u, 0);
+  (*(completionCopy + 2))(completionCopy, v7 ^ 1u, 0);
 }
 
 @end

@@ -1,48 +1,48 @@
 @interface AEAConcreteNetworkPrimitives
-- (id)machOUUIDsForBundleIdentifier:(id)a3;
-- (id)machOUUIDsForExecutableURL:(id)a3;
-- (id)restrictNetworkExcludingProcessesWithIdentifiers:(id)a3 machOUUIDs:(id)a4;
-- (void)fetchNetworkContentFilterBundleIdentifiersWithCompletion:(id)a3;
+- (id)machOUUIDsForBundleIdentifier:(id)identifier;
+- (id)machOUUIDsForExecutableURL:(id)l;
+- (id)restrictNetworkExcludingProcessesWithIdentifiers:(id)identifiers machOUUIDs:(id)ds;
+- (void)fetchNetworkContentFilterBundleIdentifiersWithCompletion:(id)completion;
 @end
 
 @implementation AEAConcreteNetworkPrimitives
 
-- (void)fetchNetworkContentFilterBundleIdentifiersWithCompletion:(id)a3
+- (void)fetchNetworkContentFilterBundleIdentifiersWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000022D8;
   v4[3] = &unk_1000A6000;
-  v5 = a3;
-  v3 = v5;
+  completionCopy = completion;
+  v3 = completionCopy;
   [NEFilterManager loadAllFromPreferencesWithCompletionHandler:v4];
 }
 
-- (id)machOUUIDsForExecutableURL:(id)a3
+- (id)machOUUIDsForExecutableURL:(id)l
 {
-  v3 = [a3 path];
-  v4 = [NEProcessInfo copyUUIDsForExecutable:v3];
+  path = [l path];
+  v4 = [NEProcessInfo copyUUIDsForExecutable:path];
 
   return v4;
 }
 
-- (id)machOUUIDsForBundleIdentifier:(id)a3
+- (id)machOUUIDsForBundleIdentifier:(id)identifier
 {
-  v3 = [NEProcessInfo copyUUIDsForBundleID:a3 uid:0];
+  v3 = [NEProcessInfo copyUUIDsForBundleID:identifier uid:0];
 
   return v3;
 }
 
-- (id)restrictNetworkExcludingProcessesWithIdentifiers:(id)a3 machOUUIDs:(id)a4
+- (id)restrictNetworkExcludingProcessesWithIdentifiers:(id)identifiers machOUUIDs:(id)ds
 {
-  v5 = a3;
-  v161 = a4;
+  identifiersCopy = identifiers;
+  dsCopy = ds;
   v164 = objc_opt_new();
   v201 = 0u;
   v202 = 0u;
   v203 = 0u;
   v204 = 0u;
-  obj = v5;
+  obj = identifiersCopy;
   v6 = [obj countByEnumeratingWithState:&v201 objects:v227 count:16];
   if (v6)
   {
@@ -92,7 +92,7 @@
   v200 = 0u;
   v197 = 0u;
   v198 = 0u;
-  v162 = v161;
+  v162 = dsCopy;
   v19 = [v162 countByEnumeratingWithState:&v197 objects:v225 count:16];
   if (v19)
   {

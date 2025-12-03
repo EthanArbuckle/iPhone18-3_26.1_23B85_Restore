@@ -1,38 +1,38 @@
 @interface CHBTrendLineLabel
-+ (id)readFrom:(void *)a3 state:(id)a4;
++ (id)readFrom:(void *)from state:(id)state;
 @end
 
 @implementation CHBTrendLineLabel
 
-+ (id)readFrom:(void *)a3 state:(id)a4
++ (id)readFrom:(void *)from state:(id)state
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3)
+  stateCopy = state;
+  v6 = stateCopy;
+  if (from)
   {
-    v7 = [v5 resources];
-    v8 = [CHDTrendlineLabel trendlineLabelWithResources:v7];
+    resources = [stateCopy resources];
+    v8 = [CHDTrendlineLabel trendlineLabelWithResources:resources];
 
-    if (((*(a3 + 20) - *(a3 + 18)) & 0x7FFF8) != 0)
+    if (((*(from + 20) - *(from + 18)) & 0x7FFF8) != 0)
     {
-      CachedCustomLabel = XlChartDataSeries::getCachedCustomLabel(a3, 0);
+      CachedCustomLabel = XlChartDataSeries::getCachedCustomLabel(from, 0);
       v10 = CachedCustomLabel;
       if (CachedCustomLabel)
       {
         v11 = *(CachedCustomLabel + 104);
         v12 = *(CachedCustomLabel + 178);
         v13 = objc_opt_class();
-        v14 = [v6 ebReaderSheetState];
-        v15 = [EBFormula edFormulaFromXlFmlaDefinition:v11 withFormulaLength:v12 formulaClass:v13 state:v14];
+        ebReaderSheetState = [v6 ebReaderSheetState];
+        v15 = [EBFormula edFormulaFromXlFmlaDefinition:v11 withFormulaLength:v12 formulaClass:v13 state:ebReaderSheetState];
 
         if (v15)
         {
-          v16 = [v6 workbook];
-          [v15 setWorkbook:v16];
+          workbook = [v6 workbook];
+          [v15 setWorkbook:workbook];
         }
 
-        v17 = [v6 chart];
-        [v8 setName:v15 chart:v17];
+        chart = [v6 chart];
+        [v8 setName:v15 chart:chart];
 
         [v8 setContentFormatId:*(v10 + 184)];
         [v8 setIsContentFormatDerivedFromDataPoints:*(v10 + 202)];

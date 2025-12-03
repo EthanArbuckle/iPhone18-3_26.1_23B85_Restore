@@ -1,8 +1,8 @@
 @interface MTGenericDataSourceSection
 - (MTGenericDataSourceSection)init;
-- (MTGenericDataSourceSection)initWithTitle:(id)a3;
+- (MTGenericDataSourceSection)initWithTitle:(id)title;
 - (id)shouldIncludeSeeAllBlock;
-- (void)setShouldIncludeSeeAllBlock:(id)a3;
+- (void)setShouldIncludeSeeAllBlock:(id)block;
 @end
 
 @implementation MTGenericDataSourceSection
@@ -24,9 +24,9 @@
   return v5;
 }
 
-- (void)setShouldIncludeSeeAllBlock:(id)a3
+- (void)setShouldIncludeSeeAllBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = (self + OBJC_IVAR___MTGenericDataSourceSection_shouldIncludeSeeAllBlock);
@@ -36,7 +36,7 @@
   v6[1] = v5;
 }
 
-- (MTGenericDataSourceSection)initWithTitle:(id)a3
+- (MTGenericDataSourceSection)initWithTitle:(id)title
 {
   v4 = sub_1D917820C();
   v5 = (self + OBJC_IVAR___MTGenericDataSourceSection_shouldIncludeSeeAllBlock);

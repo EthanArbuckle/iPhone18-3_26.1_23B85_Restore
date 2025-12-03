@@ -1,7 +1,7 @@
 @interface SagaCollaborationEndOperation
-- (SagaCollaborationEndOperation)initWithCoder:(id)a3;
-- (SagaCollaborationEndOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 collaborationPersistentID:(int64_t)a5;
-- (void)encodeWithCoder:(id)a3;
+- (SagaCollaborationEndOperation)initWithCoder:(id)coder;
+- (SagaCollaborationEndOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity collaborationPersistentID:(int64_t)d;
+- (void)encodeWithCoder:(id)coder;
 - (void)start;
 @end
 
@@ -13,7 +13,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v33 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting operation to end collaboration", buf, 0xCu);
   }
 
@@ -27,8 +27,8 @@
   [v6 beginTransaction];
   v7 = [ML3Container alloc];
   v8 = *(&self->super._finished + 1);
-  v9 = [(CloudLibraryOperation *)self musicLibrary];
-  v10 = [v7 initWithPersistentID:v8 inLibrary:v9];
+  musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+  v10 = [v7 initWithPersistentID:v8 inLibrary:musicLibrary];
 
   v11 = ML3ContainerPropertyCloudGlobalID;
   v12 = ML3ContainerPropertyStoreCloudID;
@@ -40,7 +40,7 @@
   v15 = [v10 getValuesForProperties:v14];
 
   v16 = [v15 objectForKeyedSubscript:v13];
-  v17 = [v16 BOOLValue];
+  bOOLValue = [v16 BOOLValue];
 
   if (![*(&self->_collaborationPersistentID + 2) length])
   {
@@ -58,15 +58,15 @@
 
   if ([*(&self->_collaborationPersistentID + 2) length] && objc_msgSend(*(&self->_globalPlaylistID + 2), "unsignedLongLongValue"))
   {
-    v22 = [(CloudLibraryOperation *)self connection];
-    if (v17)
+    connection = [(CloudLibraryOperation *)self connection];
+    if (bOOLValue)
     {
-      v23 = -[ICCollaborationEndRequest initWithDatabaseID:playlistSagaID:]([ICCollaborationEndRequest alloc], "initWithDatabaseID:playlistSagaID:", [v22 databaseID], objc_msgSend(*(&self->_globalPlaylistID + 2), "unsignedLongLongValue"));
+      v23 = -[ICCollaborationEndRequest initWithDatabaseID:playlistSagaID:]([ICCollaborationEndRequest alloc], "initWithDatabaseID:playlistSagaID:", [connection databaseID], objc_msgSend(*(&self->_globalPlaylistID + 2), "unsignedLongLongValue"));
     }
 
     else
     {
-      v23 = -[ICCollaborationLeaveRequest initWithDatabaseID:globalPlaylistID:]([ICCollaborationLeaveRequest alloc], "initWithDatabaseID:globalPlaylistID:", [v22 databaseID], *(&self->_collaborationPersistentID + 2));
+      v23 = -[ICCollaborationLeaveRequest initWithDatabaseID:globalPlaylistID:]([ICCollaborationLeaveRequest alloc], "initWithDatabaseID:globalPlaylistID:", [connection databaseID], *(&self->_collaborationPersistentID + 2));
     }
 
     v25 = v23;
@@ -76,10 +76,10 @@
     v26[2] = sub_10007A2CC;
     v26[3] = &unk_1001DC030;
     v26[4] = self;
-    v29 = v17;
+    v29 = bOOLValue;
     v27 = v10;
     v28 = v6;
-    [v22 sendRequest:v25 withResponseHandler:v26];
+    [connection sendRequest:v25 withResponseHandler:v26];
   }
 
   else
@@ -93,31 +93,31 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SagaCollaborationEndOperation;
-  v4 = a3;
-  [(CloudLibraryOperation *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:*(&self->super._finished + 1) forKey:{@"SagaCollaborationEndOperationCollaborationPersistentIDKey", v5.receiver, v5.super_class}];
-  [v4 encodeObject:*(&self->_collaborationPersistentID + 2) forKey:@"SagaCollaborationEndOperationCollaborationGlobalPlaylistIDKey"];
-  [v4 encodeObject:*(&self->_globalPlaylistID + 2) forKey:@"SagaCollaborationEndOperationCollaborationCloudLibraryIDKey"];
+  coderCopy = coder;
+  [(CloudLibraryOperation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:*(&self->super._finished + 1) forKey:{@"SagaCollaborationEndOperationCollaborationPersistentIDKey", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:*(&self->_collaborationPersistentID + 2) forKey:@"SagaCollaborationEndOperationCollaborationGlobalPlaylistIDKey"];
+  [coderCopy encodeObject:*(&self->_globalPlaylistID + 2) forKey:@"SagaCollaborationEndOperationCollaborationCloudLibraryIDKey"];
 }
 
-- (SagaCollaborationEndOperation)initWithCoder:(id)a3
+- (SagaCollaborationEndOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SagaCollaborationEndOperation;
-  v5 = [(CloudLibraryOperation *)&v11 initWithCoder:v4];
+  v5 = [(CloudLibraryOperation *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    *(v5 + 90) = [v4 decodeInt64ForKey:@"SagaCollaborationEndOperationCollaborationPersistentIDKey"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SagaCollaborationEndOperationCollaborationGlobalPlaylistIDKey"];
+    *(v5 + 90) = [coderCopy decodeInt64ForKey:@"SagaCollaborationEndOperationCollaborationPersistentIDKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SagaCollaborationEndOperationCollaborationGlobalPlaylistIDKey"];
     v7 = *(v5 + 98);
     *(v5 + 98) = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SagaCollaborationEndOperationCollaborationCloudLibraryIDKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SagaCollaborationEndOperationCollaborationCloudLibraryIDKey"];
     v9 = *(v5 + 106);
     *(v5 + 106) = v8;
   }
@@ -125,14 +125,14 @@
   return v5;
 }
 
-- (SagaCollaborationEndOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 collaborationPersistentID:(int64_t)a5
+- (SagaCollaborationEndOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity collaborationPersistentID:(int64_t)d
 {
   v7.receiver = self;
   v7.super_class = SagaCollaborationEndOperation;
-  result = [(CloudLibraryOperation *)&v7 initWithConfiguration:a3 clientIdentity:a4];
+  result = [(CloudLibraryOperation *)&v7 initWithConfiguration:configuration clientIdentity:identity];
   if (result)
   {
-    *(&result->super._finished + 1) = a5;
+    *(&result->super._finished + 1) = d;
   }
 
   return result;

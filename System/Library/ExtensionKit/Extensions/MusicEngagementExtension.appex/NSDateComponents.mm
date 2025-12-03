@@ -6,7 +6,7 @@
 
 - (NSString)lastUpdatedDateString
 {
-  v2 = self;
+  selfCopy = self;
   NSDateComponents.lastUpdatedDateString.getter();
   v4 = v3;
 

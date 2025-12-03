@@ -1,32 +1,32 @@
 @interface MOAssetProperty
-- (MOAssetProperty)initWithCoder:(id)a3;
-- (MOAssetProperty)initWithLocalToPhotoLibraryIdentifier:(id)a3 location:(id)a4 mediaType:(int64_t)a5 mediaSubtypes:(unint64_t)a6 favorite:(BOOL)a7;
+- (MOAssetProperty)initWithCoder:(id)coder;
+- (MOAssetProperty)initWithLocalToPhotoLibraryIdentifier:(id)identifier location:(id)location mediaType:(int64_t)type mediaSubtypes:(unint64_t)subtypes favorite:(BOOL)favorite;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOAssetProperty
 
-- (MOAssetProperty)initWithLocalToPhotoLibraryIdentifier:(id)a3 location:(id)a4 mediaType:(int64_t)a5 mediaSubtypes:(unint64_t)a6 favorite:(BOOL)a7
+- (MOAssetProperty)initWithLocalToPhotoLibraryIdentifier:(id)identifier location:(id)location mediaType:(int64_t)type mediaSubtypes:(unint64_t)subtypes favorite:(BOOL)favorite
 {
-  v12 = a3;
-  v13 = a4;
+  identifierCopy = identifier;
+  locationCopy = location;
   v20.receiver = self;
   v20.super_class = MOAssetProperty;
   v14 = [(MOAssetProperty *)&v20 init];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [identifierCopy copy];
     localToPhotoLibraryIdentifier = v14->_localToPhotoLibraryIdentifier;
     v14->_localToPhotoLibraryIdentifier = v15;
 
-    v17 = [v13 copy];
+    v17 = [locationCopy copy];
     location = v14->_location;
     v14->_location = v17;
 
-    v14->_mediaType = a5;
-    v14->_mediaSubtypes = a6;
-    v14->_favorite = a7;
+    v14->_mediaType = type;
+    v14->_mediaSubtypes = subtypes;
+    v14->_favorite = favorite;
   }
 
   return v14;
@@ -127,60 +127,60 @@
       goto LABEL_38;
     }
 
-    v5 = [v4 firstObject];
+    firstObject = [v4 firstObject];
   }
 
   else
   {
-    v5 = [v4 componentsJoinedByString:@"_"];
+    firstObject = [v4 componentsJoinedByString:@"_"];
   }
 
-  v6 = v5;
+  v6 = firstObject;
 LABEL_38:
 
 LABEL_39:
-  v7 = [(MOAssetProperty *)self localToPhotoLibraryIdentifier];
-  v8 = [(MOAssetProperty *)self location];
-  v9 = [(MOAssetProperty *)self favorite];
+  localToPhotoLibraryIdentifier = [(MOAssetProperty *)self localToPhotoLibraryIdentifier];
+  location = [(MOAssetProperty *)self location];
+  favorite = [(MOAssetProperty *)self favorite];
   v10 = @"NO";
-  if (v9)
+  if (favorite)
   {
     v10 = @"YES";
   }
 
-  v11 = [NSString stringWithFormat:@"<MOAssetProperty localToPhotoLibraryIdentifier: %@, location: %@, mediaType: %@, mediaSubtypes: %@, favorite: %@>", v7, v8, v3, v6, v10];
+  v11 = [NSString stringWithFormat:@"<MOAssetProperty localToPhotoLibraryIdentifier: %@, location: %@, mediaType: %@, mediaSubtypes: %@, favorite: %@>", localToPhotoLibraryIdentifier, location, v3, v6, v10];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   localToPhotoLibraryIdentifier = self->_localToPhotoLibraryIdentifier;
-  v7 = a3;
-  [v7 encodeObject:localToPhotoLibraryIdentifier forKey:@"localToPhotoLibraryIdentifier"];
-  [v7 encodeObject:self->_location forKey:@"location"];
+  coderCopy = coder;
+  [coderCopy encodeObject:localToPhotoLibraryIdentifier forKey:@"localToPhotoLibraryIdentifier"];
+  [coderCopy encodeObject:self->_location forKey:@"location"];
   v5 = [NSNumber numberWithInteger:self->_mediaType];
-  [v7 encodeObject:v5 forKey:@"mediaType"];
+  [coderCopy encodeObject:v5 forKey:@"mediaType"];
 
   v6 = [NSNumber numberWithUnsignedInteger:self->_mediaSubtypes];
-  [v7 encodeObject:v6 forKey:@"mediaSubtypes"];
+  [coderCopy encodeObject:v6 forKey:@"mediaSubtypes"];
 
-  [v7 encodeBool:self->_favorite forKey:@"favorite"];
+  [coderCopy encodeBool:self->_favorite forKey:@"favorite"];
 }
 
-- (MOAssetProperty)initWithCoder:(id)a3
+- (MOAssetProperty)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localToPhotoLibraryIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mediaType"];
-  v8 = [v7 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localToPhotoLibraryIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mediaType"];
+  integerValue = [v7 integerValue];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mediaSubtypes"];
-  v10 = [v9 unsignedIntegerValue];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mediaSubtypes"];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-  v11 = [v4 decodeBoolForKey:@"favorite"];
-  v12 = [(MOAssetProperty *)self initWithLocalToPhotoLibraryIdentifier:v5 location:v6 mediaType:v8 mediaSubtypes:v10 favorite:v11];
+  v11 = [coderCopy decodeBoolForKey:@"favorite"];
+  v12 = [(MOAssetProperty *)self initWithLocalToPhotoLibraryIdentifier:v5 location:v6 mediaType:integerValue mediaSubtypes:unsignedIntegerValue favorite:v11];
 
   return v12;
 }

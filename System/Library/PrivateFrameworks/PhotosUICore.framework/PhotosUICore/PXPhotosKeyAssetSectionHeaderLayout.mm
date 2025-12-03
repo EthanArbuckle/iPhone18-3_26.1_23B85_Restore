@@ -1,13 +1,13 @@
 @interface PXPhotosKeyAssetSectionHeaderLayout
-- (CGRect)_bestCropRectForAspectRatio:(double)a3;
+- (CGRect)_bestCropRectForAspectRatio:(double)ratio;
 - (CGRect)titleBaseFrame;
 - (CGSize)_keyAssetSize;
 - (CGSize)bannerViewSize;
-- (PXPhotosKeyAssetSectionHeaderLayout)initWithViewModel:(id)a3;
+- (PXPhotosKeyAssetSectionHeaderLayout)initWithViewModel:(id)model;
 - (PXSimpleIndexPath)sectionIndexPath;
 - (id)axSpriteIndexes;
-- (id)displayAssetFetchResultForSpritesInRange:(_PXGSpriteIndexRange)a3 inLayout:(id)a4;
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (id)displayAssetFetchResultForSpritesInRange:(_PXGSpriteIndexRange)range inLayout:(id)layout;
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (void)_invalidateAnimations;
 - (void)_invalidateBannerView;
 - (void)_invalidateContent;
@@ -17,7 +17,7 @@
 - (void)_invalidateTitle;
 - (void)_invalidateTitleMetrics;
 - (void)_loadBannerIfNecessary;
-- (void)_transitionToBannerView:(id)a3 version:(int64_t)a4;
+- (void)_transitionToBannerView:(id)view version:(int64_t)version;
 - (void)_updateAnimations;
 - (void)_updateBannerView;
 - (void)_updateContent;
@@ -28,19 +28,19 @@
 - (void)_updateTitleMetrics;
 - (void)appearStateDidChange;
 - (void)didUpdate;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)photosBannerProviderInvalidateLoadedBanner:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)photosBannerProviderInvalidateLoadedBanner:(id)banner;
 - (void)referenceSizeDidChange;
-- (void)setBannerProvider:(id)a3;
-- (void)setBannerView:(id)a3;
-- (void)setBannerViewSize:(CGSize)a3;
-- (void)setDataSource:(id)a3;
-- (void)setSectionIndexPath:(PXSimpleIndexPath *)a3;
-- (void)setShouldHideBanner:(BOOL)a3;
-- (void)setSpec:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleAttributes:(id)a3;
-- (void)setTitleBaseFrame:(CGRect)a3;
+- (void)setBannerProvider:(id)provider;
+- (void)setBannerView:(id)view;
+- (void)setBannerViewSize:(CGSize)size;
+- (void)setDataSource:(id)source;
+- (void)setSectionIndexPath:(PXSimpleIndexPath *)path;
+- (void)setShouldHideBanner:(BOOL)banner;
+- (void)setSpec:(id)spec;
+- (void)setTitle:(id)title;
+- (void)setTitleAttributes:(id)attributes;
+- (void)setTitleBaseFrame:(CGRect)frame;
 - (void)update;
 - (void)visibleRectDidChange;
 - (void)willUpdate;
@@ -94,12 +94,12 @@
   return v2;
 }
 
-- (void)photosBannerProviderInvalidateLoadedBanner:(id)a3
+- (void)photosBannerProviderInvalidateLoadedBanner:(id)banner
 {
-  v4 = a3;
-  v5 = [(PXPhotosKeyAssetSectionHeaderLayout *)self bannerProvider];
+  bannerCopy = banner;
+  bannerProvider = [(PXPhotosKeyAssetSectionHeaderLayout *)self bannerProvider];
 
-  if (v5 == v4)
+  if (bannerProvider == bannerCopy)
   {
     [(PXPhotosKeyAssetSectionHeaderLayout *)self _invalidateBannerRequest];
 
@@ -107,13 +107,13 @@
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  if (BannerAppearanceAnimatorObservationContext != a5)
+  observableCopy = observable;
+  if (BannerAppearanceAnimatorObservationContext != context)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:537 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:537 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -121,14 +121,14 @@
   [(PXPhotosKeyAssetSectionHeaderLayout *)self _invalidateAnimations];
 }
 
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v5 = [(PXPhotosKeyAssetSectionHeaderLayout *)self bannerView:*&a3];
+  v5 = [(PXPhotosKeyAssetSectionHeaderLayout *)self bannerView:*&index];
   if (v5)
   {
     v6 = [off_1E77216C0 alloc];
-    v7 = [(PXPhotosKeyAssetSectionHeaderLayout *)self bannerView];
-    v8 = [v6 initWithContentView:v7];
+    bannerView = [(PXPhotosKeyAssetSectionHeaderLayout *)self bannerView];
+    v8 = [v6 initWithContentView:bannerView];
   }
 
   else
@@ -139,9 +139,9 @@
   return v8;
 }
 
-- (id)displayAssetFetchResultForSpritesInRange:(_PXGSpriteIndexRange)a3 inLayout:(id)a4
+- (id)displayAssetFetchResultForSpritesInRange:(_PXGSpriteIndexRange)range inLayout:(id)layout
 {
-  if ([(PXDisplayAssetFetchResult *)self->_keyAssetFetch count:a3]< 1)
+  if ([(PXDisplayAssetFetchResult *)self->_keyAssetFetch count:range]< 1)
   {
     keyAssetFetch = 0;
   }
@@ -154,10 +154,10 @@
   return keyAssetFetch;
 }
 
-- (CGRect)_bestCropRectForAspectRatio:(double)a3
+- (CGRect)_bestCropRectForAspectRatio:(double)ratio
 {
-  v4 = [(PXDisplayAssetFetchResult *)self->_keyAssetFetch firstObject];
-  [v4 bestCropRectForAspectRatioV2:2 verticalContentMode:1 cropMode:a3];
+  firstObject = [(PXDisplayAssetFetchResult *)self->_keyAssetFetch firstObject];
+  [firstObject bestCropRectForAspectRatioV2:2 verticalContentMode:1 cropMode:ratio];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -186,26 +186,26 @@
   return result;
 }
 
-- (void)_transitionToBannerView:(id)a3 version:(int64_t)a4
+- (void)_transitionToBannerView:(id)view version:(int64_t)version
 {
-  v12 = a3;
+  viewCopy = view;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:433 description:{@"%s must be called on the main thread", "-[PXPhotosKeyAssetSectionHeaderLayout _transitionToBannerView:version:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:433 description:{@"%s must be called on the main thread", "-[PXPhotosKeyAssetSectionHeaderLayout _transitionToBannerView:version:]"}];
   }
 
-  if (self->_desiredBannerRequestVersion == a4)
+  if (self->_desiredBannerRequestVersion == version)
   {
-    self->_currentBannerRequestVersion = a4;
-    v7 = (v12 == 0) | [(PXPhotosKeyAssetSectionHeaderLayout *)self shouldHideBanner];
+    self->_currentBannerRequestVersion = version;
+    v7 = (viewCopy == 0) | [(PXPhotosKeyAssetSectionHeaderLayout *)self shouldHideBanner];
     isDisplayingBanner = self->_isDisplayingBanner;
     if (isDisplayingBanner || (v7 & 1) != 0)
     {
       if ((isDisplayingBanner & v7) != 1)
       {
 LABEL_10:
-        [(PXPhotosKeyAssetSectionHeaderLayout *)self setBannerView:v12];
+        [(PXPhotosKeyAssetSectionHeaderLayout *)self setBannerView:viewCopy];
         goto LABEL_11;
       }
 
@@ -231,8 +231,8 @@ LABEL_11:
 {
   if (self->_currentBannerRequestVersion != self->_desiredBannerRequestVersion && [(PXPhotosKeyAssetSectionHeaderLayout *)self appearState]== 1)
   {
-    v3 = [(PXPhotosKeyAssetSectionHeaderLayout *)self bannerProvider];
-    if (v3)
+    bannerProvider = [(PXPhotosKeyAssetSectionHeaderLayout *)self bannerProvider];
+    if (bannerProvider)
     {
       objc_initWeak(&location, self);
       desiredBannerRequestVersion = self->_desiredBannerRequestVersion;
@@ -242,7 +242,7 @@ LABEL_11:
       v5[3] = &unk_1E7741620;
       objc_copyWeak(v6, &location);
       v6[1] = desiredBannerRequestVersion;
-      [v3 loadBannerView:v5];
+      [bannerProvider loadBannerView:v5];
       objc_destroyWeak(v6);
       objc_destroyWeak(&location);
     }
@@ -428,9 +428,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_postUpdateFlags.updated & 0x400) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout _invalidateFloatParameters]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:382 description:{@"invalidating %lu after it already has been updated", 1024}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:382 description:{@"invalidating %lu after it already has been updated", 1024}];
 
       abort();
     }
@@ -490,9 +490,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_postUpdateFlags.updated & 0x800) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout _invalidateAnimations]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:368 description:{@"invalidating %lu after it already has been updated", 2048}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:368 description:{@"invalidating %lu after it already has been updated", 2048}];
 
       abort();
     }
@@ -627,9 +627,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x20) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout _invalidateContent]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:328 description:{@"invalidating %lu after it already has been updated", 32}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:328 description:{@"invalidating %lu after it already has been updated", 32}];
 
       abort();
     }
@@ -651,11 +651,11 @@ LABEL_5:
   }
 }
 
-- (void)setBannerViewSize:(CGSize)a3
+- (void)setBannerViewSize:(CGSize)size
 {
-  if (self->_bannerViewSize.width != a3.width || self->_bannerViewSize.height != a3.height)
+  if (self->_bannerViewSize.width != size.width || self->_bannerViewSize.height != size.height)
   {
-    self->_bannerViewSize = a3;
+    self->_bannerViewSize = size;
     [(PXPhotosKeyAssetSectionHeaderLayout *)self _invalidateContent];
 
     [(PXPhotosKeyAssetSectionHeaderLayout *)self _invalidateFloatParameters];
@@ -664,12 +664,12 @@ LABEL_5:
 
 - (void)_updateBannerView
 {
-  v4 = [(PXPhotosKeyAssetSectionHeaderLayout *)self bannerView];
-  v3 = [(PXPhotosKeyAssetSectionHeaderLayout *)self spec];
-  [v4 setSpec:v3];
+  bannerView = [(PXPhotosKeyAssetSectionHeaderLayout *)self bannerView];
+  spec = [(PXPhotosKeyAssetSectionHeaderLayout *)self spec];
+  [bannerView setSpec:spec];
 
   [(PXPhotosKeyAssetSectionHeaderLayout *)self referenceSize];
-  [v4 sizeThatFits:?];
+  [bannerView sizeThatFits:?];
   [(PXPhotosKeyAssetSectionHeaderLayout *)self setBannerViewSize:?];
 }
 
@@ -689,9 +689,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x10) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout _invalidateBannerView]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:304 description:{@"invalidating %lu after it already has been updated", 16}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:304 description:{@"invalidating %lu after it already has been updated", 16}];
 
       abort();
     }
@@ -716,30 +716,30 @@ LABEL_5:
 - (void)_updateTitleMetrics
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PXPhotosKeyAssetSectionHeaderLayout *)self spec];
-  v4 = [v3 headerTitleFont];
-  [v4 lineHeight];
+  spec = [(PXPhotosKeyAssetSectionHeaderLayout *)self spec];
+  headerTitleFont = [spec headerTitleFont];
+  [headerTitleFont lineHeight];
   v6 = v5;
-  [v4 leading];
+  [headerTitleFont leading];
   v8 = v6 + v7;
-  [v3 headerTitleLeadingSpacing];
+  [spec headerTitleLeadingSpacing];
   v10 = v9;
-  [v3 headerTitleButtonAlignmentSpacing];
+  [spec headerTitleButtonAlignmentSpacing];
   v12 = v10 + v11;
   [(PXPhotosKeyAssetSectionHeaderLayout *)self referenceSize];
   v14 = v13 + v12 * -2.0;
   v15 = *MEMORY[0x1E69DB648];
-  v25[0] = v4;
+  v25[0] = headerTitleFont;
   v16 = *MEMORY[0x1E69DB650];
   v24[0] = v15;
   v24[1] = v16;
-  v17 = [v3 headerTitleOverContentColor];
-  v25[1] = v17;
+  headerTitleOverContentColor = [spec headerTitleOverContentColor];
+  v25[1] = headerTitleOverContentColor;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:2];
 
   [(PXPhotosKeyAssetSectionHeaderLayout *)self setTitleAttributes:v18];
-  v19 = [(PXPhotosKeyAssetSectionHeaderLayout *)self title];
-  [v19 boundingRectWithSize:35 options:v18 attributes:0 context:{v14, v8 * 1.1}];
+  title = [(PXPhotosKeyAssetSectionHeaderLayout *)self title];
+  [title boundingRectWithSize:35 options:v18 attributes:0 context:{v14, v8 * 1.1}];
   v21 = v20;
   v23 = v22;
 
@@ -762,9 +762,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 8) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout _invalidateTitleMetrics]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:277 description:{@"invalidating %lu after it already has been updated", 8}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:277 description:{@"invalidating %lu after it already has been updated", 8}];
 
       abort();
     }
@@ -788,21 +788,21 @@ LABEL_5:
 
 - (void)_updateTitle
 {
-  v3 = [(PXPhotosKeyAssetSectionHeaderLayout *)self viewModel];
-  v8 = [v3 title];
+  viewModel = [(PXPhotosKeyAssetSectionHeaderLayout *)self viewModel];
+  title = [viewModel title];
 
-  v4 = [(PXPhotosKeyAssetSectionHeaderLayout *)self dataSource];
-  v5 = [v4 containerCollection];
+  dataSource = [(PXPhotosKeyAssetSectionHeaderLayout *)self dataSource];
+  containerCollection = [dataSource containerCollection];
 
-  v6 = [v5 localizedTitle];
-  if (v8)
+  localizedTitle = [containerCollection localizedTitle];
+  if (title)
   {
-    v7 = v8;
+    v7 = title;
   }
 
   else
   {
-    v7 = v6;
+    v7 = localizedTitle;
   }
 
   [(PXPhotosKeyAssetSectionHeaderLayout *)self setTitle:v7];
@@ -824,9 +824,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 4) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout _invalidateTitle]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:265 description:{@"invalidating %lu after it already has been updated", 4}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:265 description:{@"invalidating %lu after it already has been updated", 4}];
 
       abort();
     }
@@ -873,9 +873,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout _invalidateContentSize]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:254 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:254 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -899,17 +899,17 @@ LABEL_5:
 
 - (void)_updateKeyAssetFetch
 {
-  v3 = [(PXDisplayAssetFetchResult *)self->_keyAssetFetch firstObject];
-  v4 = [(PXPhotosKeyAssetSectionHeaderLayout *)self dataSource];
+  firstObject = [(PXDisplayAssetFetchResult *)self->_keyAssetFetch firstObject];
+  dataSource = [(PXPhotosKeyAssetSectionHeaderLayout *)self dataSource];
   [(PXPhotosKeyAssetSectionHeaderLayout *)self sectionIndexPath];
-  v5 = [v4 keyAssetsInSectionIndexPath:&v13];
+  v5 = [dataSource keyAssetsInSectionIndexPath:&v13];
   keyAssetFetch = self->_keyAssetFetch;
   self->_keyAssetFetch = v5;
 
-  v7 = [(PXDisplayAssetFetchResult *)self->_keyAssetFetch firstObject];
-  v8 = v3;
+  firstObject2 = [(PXDisplayAssetFetchResult *)self->_keyAssetFetch firstObject];
+  v8 = firstObject;
   v9 = v8;
-  if (v7 == v8)
+  if (firstObject2 == v8)
   {
   }
 
@@ -917,7 +917,7 @@ LABEL_5:
   {
     if (v8)
     {
-      v10 = v7 == 0;
+      v10 = firstObject2 == 0;
     }
 
     else
@@ -933,11 +933,11 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v11 = [v7 isContentEqualTo:v8];
+    v11 = [firstObject2 isContentEqualTo:v8];
     v12 = v11;
     if (!v11)
     {
-      v12 = [v9 isContentEqualTo:v7];
+      v12 = [v9 isContentEqualTo:firstObject2];
     }
 
     if (v12 != 2)
@@ -965,9 +965,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout _invalidateKeyAssetFetch]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:241 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:241 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -1023,16 +1023,16 @@ LABEL_5:
   [(PXPhotosKeyAssetSectionHeaderLayout *)&v7 didUpdate];
   if (self->_updateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:216 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:216 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
   }
 
   if (self->_postUpdateFlags.willPerformUpdate)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout didUpdate]"];
-    [v5 handleFailureInFunction:v6 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:217 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.willPerformUpdate"}];
+    [currentHandler2 handleFailureInFunction:v6 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:217 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.willPerformUpdate"}];
   }
 }
 
@@ -1044,17 +1044,17 @@ LABEL_5:
   self->_updateFlags.willPerformUpdate = 1;
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout willUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:210 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:210 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 
   self->_postUpdateFlags.willPerformUpdate = 1;
   if (self->_postUpdateFlags.isPerformingUpdate)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout willUpdate]"];
-    [v5 handleFailureInFunction:v6 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:211 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
+    [currentHandler2 handleFailureInFunction:v6 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:211 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
   }
 }
 
@@ -1067,9 +1067,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout update]"];
-      [v13 handleFailureInFunction:v14 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v14 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -1082,9 +1082,9 @@ LABEL_5:
       [(PXPhotosKeyAssetSectionHeaderLayout *)self _updateKeyAssetFetch];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v15 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout update]"];
-        [v15 handleFailureInFunction:v16 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:181 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v16 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:181 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -1098,9 +1098,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout update]"];
-      [v17 handleFailureInFunction:v18 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:184 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v18 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:184 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v6 = p_updateFlags->needsUpdate;
@@ -1113,9 +1113,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout update]"];
-      [v19 handleFailureInFunction:v20 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:187 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler4 handleFailureInFunction:v20 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:187 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v7 = p_updateFlags->needsUpdate;
@@ -1128,9 +1128,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout update]"];
-      [v21 handleFailureInFunction:v22 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler5 handleFailureInFunction:v22 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v8 = p_updateFlags->needsUpdate;
@@ -1143,9 +1143,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
       v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout update]"];
-      [v23 handleFailureInFunction:v24 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler6 handleFailureInFunction:v24 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v9 = p_updateFlags->needsUpdate;
@@ -1160,9 +1160,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (v9)
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
       v26 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout update]"];
-      [v25 handleFailureInFunction:v26 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:196 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler7 handleFailureInFunction:v26 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:196 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -1175,9 +1175,9 @@ LABEL_5:
   {
     if (self->_postUpdateFlags.isPerformingUpdate)
     {
-      v27 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler8 = [MEMORY[0x1E696AAA8] currentHandler];
       v28 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout update]"];
-      [v27 handleFailureInFunction:v28 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:198 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
+      [currentHandler8 handleFailureInFunction:v28 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:198 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
     }
 
     self->_postUpdateFlags.isPerformingUpdate = 1;
@@ -1186,9 +1186,9 @@ LABEL_5:
     p_updateFlags->updated = -1;
     if (!self->_postUpdateFlags.isPerformingUpdate)
     {
-      v29 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler9 = [MEMORY[0x1E696AAA8] currentHandler];
       v30 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout update]"];
-      [v29 handleFailureInFunction:v30 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:199 description:{@"Invalid parameter not satisfying: %@", @"_postUpdateFlags.isPerformingUpdate"}];
+      [currentHandler9 handleFailureInFunction:v30 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:199 description:{@"Invalid parameter not satisfying: %@", @"_postUpdateFlags.isPerformingUpdate"}];
     }
 
     v11 = p_postUpdateFlags->needsUpdate;
@@ -1201,9 +1201,9 @@ LABEL_5:
 
     if (!self->_postUpdateFlags.isPerformingUpdate)
     {
-      v31 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler10 = [MEMORY[0x1E696AAA8] currentHandler];
       v32 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout update]"];
-      [v31 handleFailureInFunction:v32 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:202 description:{@"Invalid parameter not satisfying: %@", @"_postUpdateFlags.isPerformingUpdate"}];
+      [currentHandler10 handleFailureInFunction:v32 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:202 description:{@"Invalid parameter not satisfying: %@", @"_postUpdateFlags.isPerformingUpdate"}];
     }
 
     v12 = p_postUpdateFlags->needsUpdate;
@@ -1220,71 +1220,71 @@ LABEL_5:
     self->_postUpdateFlags.isPerformingUpdate = 0;
     if (v12)
     {
-      v33 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler11 = [MEMORY[0x1E696AAA8] currentHandler];
       v34 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXPhotosKeyAssetSectionHeaderLayout update]"];
-      [v33 handleFailureInFunction:v34 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:205 description:{@"still needing to update %lu after update pass", p_postUpdateFlags->needsUpdate}];
+      [currentHandler11 handleFailureInFunction:v34 file:@"PXPhotosKeyAssetSectionHeaderLayout.m" lineNumber:205 description:{@"still needing to update %lu after update pass", p_postUpdateFlags->needsUpdate}];
     }
   }
 }
 
-- (void)setShouldHideBanner:(BOOL)a3
+- (void)setShouldHideBanner:(BOOL)banner
 {
-  if (self->_shouldHideBanner != a3)
+  if (self->_shouldHideBanner != banner)
   {
-    self->_shouldHideBanner = a3;
-    v5 = [(PXPhotosKeyAssetSectionHeaderLayout *)self bannerView];
-    [(PXPhotosKeyAssetSectionHeaderLayout *)self _transitionToBannerView:v5 version:self->_currentBannerRequestVersion];
+    self->_shouldHideBanner = banner;
+    bannerView = [(PXPhotosKeyAssetSectionHeaderLayout *)self bannerView];
+    [(PXPhotosKeyAssetSectionHeaderLayout *)self _transitionToBannerView:bannerView version:self->_currentBannerRequestVersion];
   }
 }
 
-- (void)setBannerView:(id)a3
+- (void)setBannerView:(id)view
 {
-  v5 = a3;
-  if (self->_bannerView != v5)
+  viewCopy = view;
+  if (self->_bannerView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_bannerView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_bannerView, view);
     [(PXPhotosKeyAssetSectionHeaderLayout *)self _invalidateBannerView];
     [(PXPhotosKeyAssetSectionHeaderLayout *)self _bumpBannerVersion];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setBannerProvider:(id)a3
+- (void)setBannerProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_bannerProvider != v5)
+  providerCopy = provider;
+  if (self->_bannerProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_bannerProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_bannerProvider, provider);
     [(PXPhotosBannerProvider *)self->_bannerProvider setInvalidationDelegate:self];
     [(PXPhotosKeyAssetSectionHeaderLayout *)self _invalidateBannerRequest];
     [(PXPhotosKeyAssetSectionHeaderLayout *)self _loadBannerIfNecessary];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_spec != v5)
+  specCopy = spec;
+  if (self->_spec != specCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_spec, a3);
+    v6 = specCopy;
+    objc_storeStrong(&self->_spec, spec);
     [(PXPhotosKeyAssetSectionHeaderLayout *)self _invalidateTitleMetrics];
     [(PXPhotosKeyAssetSectionHeaderLayout *)self _invalidateBannerView];
-    v5 = v6;
+    specCopy = v6;
   }
 }
 
-- (void)setTitleAttributes:(id)a3
+- (void)setTitleAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_titleAttributes != v4)
+  attributesCopy = attributes;
+  v5 = attributesCopy;
+  if (self->_titleAttributes != attributesCopy)
   {
-    v9 = v4;
-    v6 = [(NSDictionary *)v4 isEqual:?];
+    v9 = attributesCopy;
+    v6 = [(NSDictionary *)attributesCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -1298,14 +1298,14 @@ LABEL_5:
   }
 }
 
-- (void)setTitleBaseFrame:(CGRect)a3
+- (void)setTitleBaseFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_titleBaseFrame = &self->_titleBaseFrame;
-  if (!CGRectEqualToRect(a3, self->_titleBaseFrame))
+  if (!CGRectEqualToRect(frame, self->_titleBaseFrame))
   {
     p_titleBaseFrame->origin.x = x;
     p_titleBaseFrame->origin.y = y;
@@ -1317,15 +1317,15 @@ LABEL_5:
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   title = self->_title;
-  if (title != v4)
+  if (title != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)title isEqual:v4];
-    v4 = v9;
+    v9 = titleCopy;
+    v6 = [(NSString *)title isEqual:titleCopy];
+    titleCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSString *)v9 copy];
@@ -1334,44 +1334,44 @@ LABEL_5:
 
       [(PXPhotosKeyAssetSectionHeaderLayout *)self _invalidateTitleMetrics];
       [(PXPhotosKeyAssetSectionHeaderLayout *)self _bumpTitleVersion];
-      v4 = v9;
+      titleCopy = v9;
     }
   }
 }
 
-- (void)setSectionIndexPath:(PXSimpleIndexPath *)a3
+- (void)setSectionIndexPath:(PXSimpleIndexPath *)path
 {
-  if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_s64(*&self->_sectionIndexPath.dataSourceIdentifier, *&a3->dataSourceIdentifier), vceqq_s64(*&self->_sectionIndexPath.item, *&a3->item)))) & 1) == 0)
+  if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_s64(*&self->_sectionIndexPath.dataSourceIdentifier, *&path->dataSourceIdentifier), vceqq_s64(*&self->_sectionIndexPath.item, *&path->item)))) & 1) == 0)
   {
-    v3 = *&a3->item;
-    *&self->_sectionIndexPath.dataSourceIdentifier = *&a3->dataSourceIdentifier;
+    v3 = *&path->item;
+    *&self->_sectionIndexPath.dataSourceIdentifier = *&path->dataSourceIdentifier;
     *&self->_sectionIndexPath.item = v3;
     [(PXPhotosKeyAssetSectionHeaderLayout *)self _invalidateKeyAssetFetch];
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v5 = a3;
-  if (self->_dataSource != v5)
+  sourceCopy = source;
+  if (self->_dataSource != sourceCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_dataSource, a3);
+    v6 = sourceCopy;
+    objc_storeStrong(&self->_dataSource, source);
     [(PXPhotosKeyAssetSectionHeaderLayout *)self _invalidateKeyAssetFetch];
-    v5 = v6;
+    sourceCopy = v6;
   }
 }
 
-- (PXPhotosKeyAssetSectionHeaderLayout)initWithViewModel:(id)a3
+- (PXPhotosKeyAssetSectionHeaderLayout)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v12.receiver = self;
   v12.super_class = PXPhotosKeyAssetSectionHeaderLayout;
   v6 = [(PXPhotosKeyAssetSectionHeaderLayout *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
     v8 = *(off_1E7722228 + 1);
     *&v7->_sectionIndexPath.dataSourceIdentifier = *off_1E7722228;
     *&v7->_sectionIndexPath.item = v8;

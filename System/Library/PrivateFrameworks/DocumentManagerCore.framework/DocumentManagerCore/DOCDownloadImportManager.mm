@@ -1,36 +1,36 @@
 @interface DOCDownloadImportManager
-- (BOOL)_doc_destinationLocationExists:(int64_t)a3;
-- (id)_moveItemAtURL:(id)a3 toNamedLocation:(int64_t)a4 error:(id *)a5;
+- (BOOL)_doc_destinationLocationExists:(int64_t)exists;
+- (id)_moveItemAtURL:(id)l toNamedLocation:(int64_t)location error:(id *)error;
 - (id)interface;
-- (void)importPlaceholderAtURLToDownloadsDirectory:(id)a3 completion:(id)a4;
-- (void)replacePlaceholder:(id)a3 withFinalFileURL:(id)a4 completionHandler:(id)a5;
+- (void)importPlaceholderAtURLToDownloadsDirectory:(id)directory completion:(id)completion;
+- (void)replacePlaceholder:(id)placeholder withFinalFileURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation DOCDownloadImportManager
 
-- (void)importPlaceholderAtURLToDownloadsDirectory:(id)a3 completion:(id)a4
+- (void)importPlaceholderAtURLToDownloadsDirectory:(id)directory completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  directoryCopy = directory;
+  completionCopy = completion;
+  if (!directoryCopy)
   {
     [DOCDownloadImportManager importPlaceholderAtURLToDownloadsDirectory:a2 completion:self];
   }
 
   v9 = [objc_alloc(MEMORY[0x277CCAE80]) initWithServiceName:@"com.apple.DocumentManagerCore.Downloads"];
-  v10 = [(DOCDownloadImportManager *)self interface];
-  [v9 setRemoteObjectInterface:v10];
+  interface = [(DOCDownloadImportManager *)self interface];
+  [v9 setRemoteObjectInterface:interface];
 
   [v9 resume];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __82__DOCDownloadImportManager_importPlaceholderAtURLToDownloadsDirectory_completion___block_invoke;
   v18[3] = &unk_278F9B7B0;
-  v11 = v8;
+  v11 = completionCopy;
   v19 = v11;
   v12 = [v9 remoteObjectProxyWithErrorHandler:v18];
   v17 = 0;
-  v13 = [MEMORY[0x277CC6438] wrapperWithURL:v7 readonly:0 error:&v17];
+  v13 = [MEMORY[0x277CC6438] wrapperWithURL:directoryCopy readonly:0 error:&v17];
   v14 = v17;
   if (v13)
   {
@@ -98,24 +98,24 @@ void __82__DOCDownloadImportManager_importPlaceholderAtURLToDownloadsDirectory_c
   }
 }
 
-- (void)replacePlaceholder:(id)a3 withFinalFileURL:(id)a4 completionHandler:(id)a5
+- (void)replacePlaceholder:(id)placeholder withFinalFileURL:(id)l completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCAE80];
-  v10 = a4;
-  v11 = a3;
+  lCopy = l;
+  placeholderCopy = placeholder;
   v12 = [[v9 alloc] initWithServiceName:@"com.apple.DocumentManagerCore.Downloads"];
-  v13 = [(DOCDownloadImportManager *)self interface];
-  [v12 setRemoteObjectInterface:v13];
+  interface = [(DOCDownloadImportManager *)self interface];
+  [v12 setRemoteObjectInterface:interface];
 
   [v12 resume];
   v14 = [v12 remoteObjectProxyWithErrorHandler:&__block_literal_global_6];
   v22 = 0;
-  v15 = [MEMORY[0x277CC6438] wrapperWithURL:v11 readonly:0 error:&v22];
+  v15 = [MEMORY[0x277CC6438] wrapperWithURL:placeholderCopy readonly:0 error:&v22];
 
   v16 = v22;
   v21 = v16;
-  v17 = [MEMORY[0x277CC6438] wrapperWithURL:v10 readonly:0 error:&v21];
+  v17 = [MEMORY[0x277CC6438] wrapperWithURL:lCopy readonly:0 error:&v21];
 
   v18 = v21;
   if (v15 && v17)
@@ -124,13 +124,13 @@ void __82__DOCDownloadImportManager_importPlaceholderAtURLToDownloadsDirectory_c
     v19[1] = 3221225472;
     v19[2] = __82__DOCDownloadImportManager_replacePlaceholder_withFinalFileURL_completionHandler___block_invoke_19;
     v19[3] = &unk_278F9BAB8;
-    v20 = v8;
+    v20 = handlerCopy;
     [v14 replacePlaceholder:v15 withFinalFileURL:v17 completionHandler:v19];
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0, v18);
+    (*(handlerCopy + 2))(handlerCopy, 0, v18);
   }
 }
 
@@ -213,21 +213,21 @@ void __82__DOCDownloadImportManager_replacePlaceholder_withFinalFileURL_completi
   return v2;
 }
 
-- (id)_moveItemAtURL:(id)a3 toNamedLocation:(int64_t)a4 error:(id *)a5
+- (id)_moveItemAtURL:(id)l toNamedLocation:(int64_t)location error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 startAccessingSecurityScopedResource];
+  lCopy = l;
+  startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
   v34[0] = 0;
-  v10 = [MEMORY[0x277CC6438] wrapperWithURL:v8 readonly:0 error:v34];
+  v10 = [MEMORY[0x277CC6438] wrapperWithURL:lCopy readonly:0 error:v34];
   v11 = v34[0];
   v12 = v11;
   if (v11)
   {
-    if (a5)
+    if (error)
     {
       v13 = v11;
       v14 = 0;
-      *a5 = v12;
+      *error = v12;
     }
 
     else
@@ -239,8 +239,8 @@ void __82__DOCDownloadImportManager_replacePlaceholder_withFinalFileURL_completi
   else
   {
     v15 = [objc_alloc(MEMORY[0x277CCAE80]) initWithServiceName:@"com.apple.DocumentManagerCore.Downloads"];
-    v16 = [(DOCDownloadImportManager *)self interface];
-    [v15 setRemoteObjectInterface:v16];
+    interface = [(DOCDownloadImportManager *)self interface];
+    [v15 setRemoteObjectInterface:interface];
 
     [v15 resume];
     v28 = 0;
@@ -267,19 +267,19 @@ void __82__DOCDownloadImportManager_replacePlaceholder_withFinalFileURL_completi
     v20[3] = &unk_278F9BB28;
     v20[4] = &v22;
     v20[5] = &v28;
-    [v17 importItemAtURL:v10 toLocation:a4 completionHandler:v20];
-    if (a5)
+    [v17 importItemAtURL:v10 toLocation:location completionHandler:v20];
+    if (error)
     {
       v18 = v29[5];
       if (v18)
       {
-        *a5 = v18;
+        *error = v18;
       }
     }
 
-    if (v9)
+    if (startAccessingSecurityScopedResource)
     {
-      [v8 stopAccessingSecurityScopedResource];
+      [lCopy stopAccessingSecurityScopedResource];
     }
 
     v14 = v23[5];
@@ -332,16 +332,16 @@ void __65__DOCDownloadImportManager__moveItemAtURL_toNamedLocation_error___block
   }
 }
 
-- (BOOL)_doc_destinationLocationExists:(int64_t)a3
+- (BOOL)_doc_destinationLocationExists:(int64_t)exists
 {
-  if (a3 != 2)
+  if (exists != 2)
   {
     [(DOCDownloadImportManager *)a2 _doc_destinationLocationExists:?];
   }
 
   v5 = [objc_alloc(MEMORY[0x277CCAE80]) initWithServiceName:@"com.apple.DocumentManagerCore.Downloads"];
-  v6 = [(DOCDownloadImportManager *)self interface];
-  [v5 setRemoteObjectInterface:v6];
+  interface = [(DOCDownloadImportManager *)self interface];
+  [v5 setRemoteObjectInterface:interface];
 
   [v5 resume];
   v16[0] = 0;
@@ -365,7 +365,7 @@ void __65__DOCDownloadImportManager__moveItemAtURL_toNamedLocation_error___block
   v10[2] = __59__DOCDownloadImportManager__doc_destinationLocationExists___block_invoke_39;
   v10[3] = &unk_278F9BB50;
   v10[4] = &v12;
-  [v7 namedLocationExists:a3 completionHandler:v10];
+  [v7 namedLocationExists:exists completionHandler:v10];
   v8 = *(v13 + 24);
 
   _Block_object_dispose(&v12, 8);

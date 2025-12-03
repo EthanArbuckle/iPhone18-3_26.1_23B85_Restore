@@ -1,47 +1,47 @@
 @interface PDRelevantPassProvider
-- (BOOL)_findMatchingLocation:(id *)a3 beacon:(id *)a4 forCandidatePass:(id)a5 passStyleRadius:(double)a6 usingNearbyLocations:(id)a7;
-- (BOOL)_handleNewLocation:(id)a3 forceAcceptance:(BOOL)a4 from:(id)a5;
-- (BOOL)_locationIsNewEnoughAndHasGoodAccuracy:(id)a3;
+- (BOOL)_findMatchingLocation:(id *)location beacon:(id *)beacon forCandidatePass:(id)pass passStyleRadius:(double)radius usingNearbyLocations:(id)locations;
+- (BOOL)_handleNewLocation:(id)location forceAcceptance:(BOOL)acceptance from:(id)from;
+- (BOOL)_locationIsNewEnoughAndHasGoodAccuracy:(id)accuracy;
 - (BOOL)_proxPendingPassExistsWithBeacon;
 - (BOOL)_proxPendingPassExistsWithLocation;
 - (NSArray)currentRelevantPassCollectionInfo;
 - (NSArray)currentRelevantPassInfo;
-- (PDRelevantPassProvider)initWithDatabaseManager:(id)a3 cardFileManager:(id)a4 dynamicStateManager:(id)a5 notificationManager:(id)a6;
+- (PDRelevantPassProvider)initWithDatabaseManager:(id)manager cardFileManager:(id)fileManager dynamicStateManager:(id)stateManager notificationManager:(id)notificationManager;
 - (PDRelevantPassProviderDelegate)delegate;
-- (id)_findDateRelevantPassesFromCandidates:(id)a3 betweenWindowStart:(id)a4 windowEnd:(id)a5 aroundDate:(id)a6;
+- (id)_findDateRelevantPassesFromCandidates:(id)candidates betweenWindowStart:(id)start windowEnd:(id)end aroundDate:(id)date;
 - (id)createCurrentNotificationRegistrationState;
-- (void)_addDateRelevantAndLocationPendingCardsForStyle:(int64_t)a3 locationAvailable:(BOOL)a4;
+- (void)_addDateRelevantAndLocationPendingCardsForStyle:(int64_t)style locationAvailable:(BOOL)available;
 - (void)_beginBeaconSearchTimer;
 - (void)_beginLocationSearchTimeout;
 - (void)_clearBeaconSearchTimer;
 - (void)_clearLocationSearchTimer;
 - (void)_clearPersistedProximityInfo;
-- (void)_handleNewBeacons:(id)a3;
+- (void)_handleNewBeacons:(id)beacons;
 - (void)_loadPersistedLocationInfoIfNecessary;
-- (void)_processStateChangesFromCatalog:(id)a3;
-- (void)_reallyStartCardSearchUpdatingWithCachedProximity:(BOOL)a3 refreshingProximity:(BOOL)a4 searchMode:(int64_t)a5;
+- (void)_processStateChangesFromCatalog:(id)catalog;
+- (void)_reallyStartCardSearchUpdatingWithCachedProximity:(BOOL)proximity refreshingProximity:(BOOL)refreshingProximity searchMode:(int64_t)mode;
 - (void)_relevantCardExpirationTimerFired;
-- (void)_scheduleEagerRecalculationWithCatalog:(id)a3 fenceLocation:(BOOL)a4 minRadius:(double)a5 beaconUUIDs:(id)a6;
-- (void)_sendCatalog:(id)a3;
+- (void)_scheduleEagerRecalculationWithCatalog:(id)catalog fenceLocation:(BOOL)location minRadius:(double)radius beaconUUIDs:(id)ds;
+- (void)_sendCatalog:(id)catalog;
 - (void)_startBeaconSearchIfNecessary;
-- (void)_startCardSearchUpdatingWithCachedProximity:(BOOL)a3 refreshingProximity:(BOOL)a4 searchMode:(int64_t)a5;
-- (void)_startLocationSearchIfNecessaryWithSearchMode:(int64_t)a3;
+- (void)_startCardSearchUpdatingWithCachedProximity:(BOOL)proximity refreshingProximity:(BOOL)refreshingProximity searchMode:(int64_t)mode;
+- (void)_startLocationSearchIfNecessaryWithSearchMode:(int64_t)mode;
 - (void)_stopBeaconSearch;
 - (void)_stopLocationSearch;
 - (void)_tearDownExitFenceTimerFired;
 - (void)_unscheduleEagerRecalculation;
 - (void)_updateAndSendRelevantCatalog;
 - (void)dealloc;
-- (void)handleNotificationWithName:(id)a3 event:(id)a4 forStream:(int64_t)a5;
+- (void)handleNotificationWithName:(id)name event:(id)event forStream:(int64_t)stream;
 - (void)handleSignificantTimeChangedEvent;
-- (void)locationManager:(id)a3 didExitRegion:(id)a4;
-- (void)locationManager:(id)a3 didFailRangingBeaconsForConstraint:(id)a4 error:(id)a5;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didRangeBeacons:(id)a4 satisfyingConstraint:(id)a5;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)performScheduledActivityWithIdentifier:(id)a3 activityCriteria:(id)a4;
-- (void)recomputeRelevantPassesWithSearchMode:(int64_t)a3;
+- (void)locationManager:(id)manager didExitRegion:(id)region;
+- (void)locationManager:(id)manager didFailRangingBeaconsForConstraint:(id)constraint error:(id)error;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didRangeBeacons:(id)beacons satisfyingConstraint:(id)constraint;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)performScheduledActivityWithIdentifier:(id)identifier activityCriteria:(id)criteria;
+- (void)recomputeRelevantPassesWithSearchMode:(int64_t)mode;
 - (void)requestWhenInUseAuthorizationIfNeeded;
 - (void)resetRelevantPasses;
 - (void)startObservingEvents;
@@ -49,12 +49,12 @@
 
 @implementation PDRelevantPassProvider
 
-- (PDRelevantPassProvider)initWithDatabaseManager:(id)a3 cardFileManager:(id)a4 dynamicStateManager:(id)a5 notificationManager:(id)a6
+- (PDRelevantPassProvider)initWithDatabaseManager:(id)manager cardFileManager:(id)fileManager dynamicStateManager:(id)stateManager notificationManager:(id)notificationManager
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  managerCopy = manager;
+  fileManagerCopy = fileManager;
+  stateManagerCopy = stateManager;
+  notificationManagerCopy = notificationManager;
   v26.receiver = self;
   v26.super_class = PDRelevantPassProvider;
   v14 = [(PDRelevantPassProvider *)&v26 init];
@@ -71,10 +71,10 @@
     block[2] = sub_100109260;
     block[3] = &unk_10083DE38;
     v21 = v14;
-    v22 = v10;
-    v23 = v11;
-    v24 = v12;
-    v25 = v13;
+    v22 = managerCopy;
+    v23 = fileManagerCopy;
+    v24 = stateManagerCopy;
+    v25 = notificationManagerCopy;
     dispatch_sync(v18, block);
   }
 
@@ -105,7 +105,7 @@
   }
 }
 
-- (void)recomputeRelevantPassesWithSearchMode:(int64_t)a3
+- (void)recomputeRelevantPassesWithSearchMode:(int64_t)mode
 {
   relevancySerialQueue = self->_relevancySerialQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -113,7 +113,7 @@
   v4[2] = sub_1001096BC;
   v4[3] = &unk_10083D700;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = mode;
   dispatch_async(relevancySerialQueue, v4);
 }
 
@@ -184,15 +184,15 @@
   dispatch_sync(relevancySerialQueue, block);
 }
 
-- (void)performScheduledActivityWithIdentifier:(id)a3 activityCriteria:(id)a4
+- (void)performScheduledActivityWithIdentifier:(id)identifier activityCriteria:(id)criteria
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"RelevanceExpiration"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"RelevanceExpiration"])
   {
     [(PDRelevantPassProvider *)self _relevantCardExpirationTimerFired];
   }
 
-  else if ([v5 isEqualToString:@"RelevantTearDownFence"])
+  else if ([identifierCopy isEqualToString:@"RelevantTearDownFence"])
   {
     [(PDRelevantPassProvider *)self _tearDownExitFenceTimerFired];
   }
@@ -223,10 +223,10 @@
   [(PDRelevantPassProvider *)self _startCardSearchUpdatingWithCachedProximity:1 refreshingProximity:0];
 }
 
-- (void)_startCardSearchUpdatingWithCachedProximity:(BOOL)a3 refreshingProximity:(BOOL)a4 searchMode:(int64_t)a5
+- (void)_startCardSearchUpdatingWithCachedProximity:(BOOL)proximity refreshingProximity:(BOOL)refreshingProximity searchMode:(int64_t)mode
 {
-  v6 = a4;
-  v7 = a3;
+  refreshingProximityCopy = refreshingProximity;
+  proximityCopy = proximity;
   v9 = [PDRelevantPassProvider updateTypeFromCachedProximity:"updateTypeFromCachedProximity:refreshingProximity:searchMode:" refreshingProximity:? searchMode:?];
   pendingUpdates = self->_pendingUpdates;
   v11 = [NSNumber numberWithInteger:v9];
@@ -238,11 +238,11 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218496;
-      v22 = v7;
+      v22 = proximityCopy;
       v23 = 2048;
-      v24 = v6;
+      v24 = refreshingProximityCopy;
       v25 = 2048;
-      v26 = a5;
+      modeCopy = mode;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Relevance update already pending for %ld, %ld, %ld", buf, 0x20u);
     }
   }
@@ -259,18 +259,18 @@
     block[1] = 3221225472;
     block[2] = sub_100109E38;
     block[3] = &unk_100846A90;
-    v19 = v7;
-    v20 = v6;
+    v19 = proximityCopy;
+    v20 = refreshingProximityCopy;
     block[4] = self;
-    block[5] = a5;
+    block[5] = mode;
     dispatch_after(v16, relevancySerialQueue, block);
   }
 }
 
-- (void)_reallyStartCardSearchUpdatingWithCachedProximity:(BOOL)a3 refreshingProximity:(BOOL)a4 searchMode:(int64_t)a5
+- (void)_reallyStartCardSearchUpdatingWithCachedProximity:(BOOL)proximity refreshingProximity:(BOOL)refreshingProximity searchMode:(int64_t)mode
 {
-  v6 = a4;
-  v7 = a3;
+  refreshingProximityCopy = refreshingProximity;
+  proximityCopy = proximity;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = [WeakRetained relevantPassProviderShouldDelayRecompute:self];
 
@@ -289,16 +289,16 @@
     block[1] = 3221225472;
     block[2] = sub_10010A19C;
     block[3] = &unk_100846A90;
-    v23 = v7;
-    v24 = v6;
+    v23 = proximityCopy;
+    v24 = refreshingProximityCopy;
     block[4] = self;
-    block[5] = a5;
+    block[5] = mode;
     dispatch_after(v12, relevancySerialQueue, block);
   }
 
   else
   {
-    v14 = [(PDRelevantPassProvider *)self updateTypeFromCachedProximity:v7 refreshingProximity:v6 searchMode:a5];
+    v14 = [(PDRelevantPassProvider *)self updateTypeFromCachedProximity:proximityCopy refreshingProximity:refreshingProximityCopy searchMode:mode];
     pendingUpdates = self->_pendingUpdates;
     v16 = [NSNumber numberWithInteger:v14];
     [(NSMutableDictionary *)pendingUpdates removeObjectForKey:v16];
@@ -316,20 +316,20 @@
       v20 = PKLogFacilityTypeGetObject();
       PKLogTimeToPerformBlockWithIdentifier();
 
-      if (!v19 || v7)
+      if (!v19 || proximityCopy)
       {
         [(PDRelevantPassProvider *)self _loadPersistedLocationInfoIfNecessary];
         [(PDRelevantPassProvider *)self _updateAndSendRelevantCatalog];
       }
 
-      if (v6)
+      if (refreshingProximityCopy)
       {
         v21 = [(NSMutableSet *)self->_proxPendingCards count];
         if (v19)
         {
           if (v21)
           {
-            [(PDRelevantPassProvider *)self _startLocationSearchIfNecessaryWithSearchMode:a5];
+            [(PDRelevantPassProvider *)self _startLocationSearchIfNecessaryWithSearchMode:mode];
             [(PDRelevantPassProvider *)self _startBeaconSearchIfNecessary];
           }
         }
@@ -501,16 +501,16 @@ LABEL_33:
   sub_10010A80C(0);
 }
 
-- (void)_scheduleEagerRecalculationWithCatalog:(id)a3 fenceLocation:(BOOL)a4 minRadius:(double)a5 beaconUUIDs:(id)a6
+- (void)_scheduleEagerRecalculationWithCatalog:(id)catalog fenceLocation:(BOOL)location minRadius:(double)radius beaconUUIDs:(id)ds
 {
-  v6 = a4;
-  v8 = a6;
+  locationCopy = location;
+  dsCopy = ds;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v9 = [a3 allPasses];
-  v10 = [v9 countByEnumeratingWithState:&v73 objects:v79 count:16];
+  allPasses = [catalog allPasses];
+  v10 = [allPasses countByEnumeratingWithState:&v73 objects:v79 count:16];
   if (!v10)
   {
     v12 = 0;
@@ -518,8 +518,8 @@ LABEL_33:
   }
 
   v11 = v10;
-  v66 = v6;
-  v67 = v8;
+  v66 = locationCopy;
+  v67 = dsCopy;
   v12 = 0;
   v13 = *v74;
   do
@@ -530,24 +530,24 @@ LABEL_33:
     {
       if (*v74 != v13)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(allPasses);
       }
 
       v16 = *(*(&v73 + 1) + 8 * v14);
-      v17 = [v16 embeddedBeacons];
-      if ([v17 count])
+      embeddedBeacons = [v16 embeddedBeacons];
+      if ([embeddedBeacons count])
       {
-        v18 = 1;
+        hasLocations = 1;
       }
 
       else
       {
-        v18 = [v16 hasLocations];
+        hasLocations = [v16 hasLocations];
       }
 
       v19 = v16;
-      v20 = [v19 matchedRelevantDate];
-      if (!v20)
+      matchedRelevantDate = [v19 matchedRelevantDate];
+      if (!matchedRelevantDate)
       {
         v36 = 0;
         goto LABEL_45;
@@ -562,8 +562,8 @@ LABEL_33:
       v27 = v21[6];
       v28 = v21[7];
       v29 = +[NSDate date];
-      v30 = [v20 date];
-      v31 = v30;
+      date = [matchedRelevantDate date];
+      v31 = date;
       if (v24 == 0.0)
       {
         v32 = 0;
@@ -571,18 +571,18 @@ LABEL_33:
 
       else
       {
-        v32 = v18;
+        v32 = hasLocations;
       }
 
-      if (v32 != 1 || v30 == 0)
+      if (v32 != 1 || date == 0)
       {
-        if (!v30)
+        if (!date)
         {
-          v40 = [v20 effectiveEndDate];
+          effectiveEndDate = [matchedRelevantDate effectiveEndDate];
           goto LABEL_40;
         }
 
-        if (!PDDateIsWithinWindowAroundReferenceDate(v29, v20, v22, v23))
+        if (!PDDateIsWithinWindowAroundReferenceDate(v29, matchedRelevantDate, v22, v23))
         {
           goto LABEL_43;
         }
@@ -594,8 +594,8 @@ LABEL_33:
 
       else
       {
-        IsWithinWindowAroundReferenceDate = PDDateIsWithinWindowAroundReferenceDate(v29, v20, v25, v26);
-        v38 = PDDateIsWithinWindowAroundReferenceDate(v29, v20, v27, v28);
+        IsWithinWindowAroundReferenceDate = PDDateIsWithinWindowAroundReferenceDate(v29, matchedRelevantDate, v25, v26);
+        v38 = PDDateIsWithinWindowAroundReferenceDate(v29, matchedRelevantDate, v27, v28);
         if (!IsWithinWindowAroundReferenceDate || !v38)
         {
           if (IsWithinWindowAroundReferenceDate)
@@ -652,10 +652,10 @@ LABEL_43:
         }
       }
 
-      PDGetStartAndEndDatesForWindowAroundDate(0, buf, v20, v34, v35);
-      v40 = *buf;
+      PDGetStartAndEndDatesForWindowAroundDate(0, buf, matchedRelevantDate, v34, v35);
+      effectiveEndDate = *buf;
 LABEL_40:
-      v36 = v40;
+      v36 = effectiveEndDate;
 LABEL_44:
 
 LABEL_45:
@@ -666,19 +666,19 @@ LABEL_45:
     }
 
     while (v11 != v14);
-    v11 = [v9 countByEnumeratingWithState:&v73 objects:v79 count:16];
+    v11 = [allPasses countByEnumeratingWithState:&v73 objects:v79 count:16];
   }
 
   while (v11);
 
   if (v12)
   {
-    v9 = [PDScheduledActivityCriteria maintenanceActivityCriteriaWithStartDate:v12];
+    allPasses = [PDScheduledActivityCriteria maintenanceActivityCriteriaWithStartDate:v12];
     v41 = [v12 dateByAddingTimeInterval:1800.0];
-    [v9 setEndDate:v41];
+    [allPasses setEndDate:v41];
 
     v42 = PKLogFacilityTypeGetObject();
-    v8 = v67;
+    dsCopy = v67;
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
@@ -687,17 +687,17 @@ LABEL_45:
     }
 
     PDScheduledActivityRegister();
-    v6 = v66;
+    locationCopy = v66;
 LABEL_52:
   }
 
   else
   {
-    v8 = v67;
-    v6 = v66;
+    dsCopy = v67;
+    locationCopy = v66;
   }
 
-  if ([v8 count] >= 4 && self->_lastLocation)
+  if ([dsCopy count] >= 4 && self->_lastLocation)
   {
 
     v43 = PKLogFacilityTypeGetObject();
@@ -707,7 +707,7 @@ LABEL_52:
       _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "Too many beacons to fence each one separately; using region fence instead.", buf, 2u);
     }
 
-    v8 = 0;
+    dsCopy = 0;
 LABEL_60:
     lastLocation = self->_lastLocation;
     if (lastLocation)
@@ -730,16 +730,16 @@ LABEL_60:
       }
 
       [(CLLocationManager *)self->_proximityManager startMonitoringForRegion:v47];
-      LOBYTE(v6) = 1;
+      LOBYTE(locationCopy) = 1;
     }
 
     else
     {
-      LOBYTE(v6) = 0;
+      LOBYTE(locationCopy) = 0;
     }
   }
 
-  else if (v6)
+  else if (locationCopy)
   {
     goto LABEL_60;
   }
@@ -748,7 +748,7 @@ LABEL_60:
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v49 = v8;
+  v49 = dsCopy;
   v50 = [v49 countByEnumeratingWithState:&v69 objects:v77 count:16];
   if (v50)
   {
@@ -783,8 +783,8 @@ LABEL_69:
         _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "Monitoring region with beacon UUID %@", buf, 0xCu);
       }
 
-      v58 = [v56 UUIDString];
-      v59 = [NSString stringWithFormat:@"passd-%@", v58];
+      uUIDString = [v56 UUIDString];
+      v59 = [NSString stringWithFormat:@"passd-%@", uUIDString];
 
       v60 = [[CLBeaconRegion alloc] initWithUUID:v56 identifier:v59];
       [(CLLocationManager *)self->_proximityManager startMonitoringForRegion:v60];
@@ -830,7 +830,7 @@ LABEL_81:
   else
   {
 
-    if (v6)
+    if (locationCopy)
     {
       goto LABEL_81;
     }
@@ -850,8 +850,8 @@ LABEL_81:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(CLLocationManager *)self->_proximityManager monitoredRegions];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+  monitoredRegions = [(CLLocationManager *)self->_proximityManager monitoredRegions];
+  v5 = [monitoredRegions countByEnumeratingWithState:&v12 objects:v18 count:16];
   if (v5)
   {
     v7 = v5;
@@ -864,7 +864,7 @@ LABEL_81:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(monitoredRegions);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -877,7 +877,7 @@ LABEL_81:
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+      v7 = [monitoredRegions countByEnumeratingWithState:&v12 objects:v18 count:16];
     }
 
     while (v7);
@@ -887,18 +887,18 @@ LABEL_81:
   PDScheduledActivityRemove();
 }
 
-- (void)_startLocationSearchIfNecessaryWithSearchMode:(int64_t)a3
+- (void)_startLocationSearchIfNecessaryWithSearchMode:(int64_t)mode
 {
   if ([(PDRelevantPassProvider *)self _proxPendingPassExistsWithLocation])
   {
-    v5 = a3 ? &kCLLocationAccuracyHundredMeters : &kCLLocationAccuracyLeech;
-    if (![(PDRelevantPassProvider *)self _isDoingLocationSearch]|| self->_locationSearchMode < a3)
+    v5 = mode ? &kCLLocationAccuracyHundredMeters : &kCLLocationAccuracyLeech;
+    if (![(PDRelevantPassProvider *)self _isDoingLocationSearch]|| self->_locationSearchMode < mode)
     {
       v6 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v7 = "eager";
-        if (!a3)
+        if (!mode)
         {
           v7 = "opportunistic";
         }
@@ -923,9 +923,9 @@ LABEL_81:
       self->_locationSearchStartDate = v11;
 
       [(CLLocationManager *)self->_proximityManager setDesiredAccuracy:v8];
-      self->_locationSearchMode = a3;
-      v13 = [(CLLocationManager *)self->_proximityManager location];
-      v14 = [(PDRelevantPassProvider *)self _handleNewLocation:v13 forceAcceptance:0 from:@"CLLocationManager cache"];
+      self->_locationSearchMode = mode;
+      location = [(CLLocationManager *)self->_proximityManager location];
+      v14 = [(PDRelevantPassProvider *)self _handleNewLocation:location forceAcceptance:0 from:@"CLLocationManager cache"];
 
       if ((v14 & 1) == 0)
       {
@@ -944,22 +944,22 @@ LABEL_81:
   }
 }
 
-- (BOOL)_handleNewLocation:(id)a3 forceAcceptance:(BOOL)a4 from:(id)a5
+- (BOOL)_handleNewLocation:(id)location forceAcceptance:(BOOL)acceptance from:(id)from
 {
-  v9 = a3;
-  v10 = a5;
+  locationCopy = location;
+  fromCopy = from;
   v11 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412546;
-    v18 = v10;
+    v18 = fromCopy;
     v19 = 2112;
-    v20 = v9;
+    v20 = locationCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Handling new location from '%@': %@", &v17, 0x16u);
   }
 
-  v12 = [(PDRelevantPassProvider *)self _locationIsNewEnoughAndHasGoodAccuracy:v9];
-  v13 = v12 | a4;
+  v12 = [(PDRelevantPassProvider *)self _locationIsNewEnoughAndHasGoodAccuracy:locationCopy];
+  v13 = v12 | acceptance;
   v14 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
   if (v13)
   {
@@ -977,9 +977,9 @@ LABEL_81:
     }
 
     [(PDRelevantPassProvider *)self _stopLocationSearch];
-    if (v9 && self->_lastLocation != v9)
+    if (locationCopy && self->_lastLocation != locationCopy)
     {
-      objc_storeStrong(&self->_lastLocation, a3);
+      objc_storeStrong(&self->_lastLocation, location);
     }
 
     sub_10010A730(self->_lastLocation);
@@ -994,7 +994,7 @@ LABEL_81:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "   Not good enough, we'll hold onto it and keep searching", &v17, 2u);
     }
 
-    objc_storeStrong(&self->_roughLocation, a3);
+    objc_storeStrong(&self->_roughLocation, location);
   }
 
   return v13;
@@ -1096,15 +1096,15 @@ LABEL_81:
   }
 }
 
-- (void)_handleNewBeacons:(id)a3
+- (void)_handleNewBeacons:(id)beacons
 {
-  v5 = a3;
+  beaconsCopy = beacons;
   [(PDRelevantPassProvider *)self _stopBeaconSearch];
   p_lastBeacons = &self->_lastBeacons;
   lastBeacons = self->_lastBeacons;
-  if (lastBeacons != v5)
+  if (lastBeacons != beaconsCopy)
   {
-    objc_storeStrong(&self->_lastBeacons, a3);
+    objc_storeStrong(&self->_lastBeacons, beacons);
     lastBeacons = *p_lastBeacons;
   }
 
@@ -1189,16 +1189,16 @@ LABEL_81:
   }
 }
 
-- (void)_addDateRelevantAndLocationPendingCardsForStyle:(int64_t)a3 locationAvailable:(BOOL)a4
+- (void)_addDateRelevantAndLocationPendingCardsForStyle:(int64_t)style locationAvailable:(BOOL)available
 {
-  v6 = (&__PassStyleMatchConditions + 64 * a3);
+  v6 = (&__PassStyleMatchConditions + 64 * style);
   v7 = *v6;
   v8 = v6[1];
   v10 = v6[4];
   v9 = v6[5];
   v12 = v6[6];
   v11 = v6[7];
-  if (a4)
+  if (available)
   {
     v13 = v6[3];
     v14 = v6[2] != 0.0;
@@ -1227,12 +1227,12 @@ LABEL_3:
       candidatePassFactory = self->_candidatePassFactory;
       if (v13 == 0.0)
       {
-        [(PDCandidateRelevantPassFactory *)candidatePassFactory resolvedCandidatePassesOfStyle:a3];
+        [(PDCandidateRelevantPassFactory *)candidatePassFactory resolvedCandidatePassesOfStyle:style];
       }
 
       else
       {
-        [(PDCandidateRelevantPassFactory *)candidatePassFactory resolvedUnlocatedCandidatePassesOfStyle:a3];
+        [(PDCandidateRelevantPassFactory *)candidatePassFactory resolvedUnlocatedCandidatePassesOfStyle:style];
       }
       v19 = ;
       dateRelevantCards = self->_dateRelevantCards;
@@ -1274,7 +1274,7 @@ LABEL_3:
           v54 = 0.0;
           v55 = 0.0;
           sub_10010C404(&v58, &v56, &v54, v10, v9, v12, v11);
-          v31 = [(PDCandidateRelevantPassFactory *)self->_candidatePassFactory resolvedLocatedCandidatePassesOfStyle:a3];
+          v31 = [(PDCandidateRelevantPassFactory *)self->_candidatePassFactory resolvedLocatedCandidatePassesOfStyle:style];
           if (v56 != 0.0 || v57 != 0.0)
           {
             v52 = v17;
@@ -1341,7 +1341,7 @@ LABEL_3:
 
       v25 = v24;
 
-      v26 = [(PDCandidateRelevantPassFactory *)self->_candidatePassFactory resolvedLocatedCandidatePassesOfStyle:a3];
+      v26 = [(PDCandidateRelevantPassFactory *)self->_candidatePassFactory resolvedLocatedCandidatePassesOfStyle:style];
       v27 = self->_proxPendingCards;
       v28 = [(PDRelevantPassProvider *)self _findDateRelevantPassesFromCandidates:v26 betweenWindowStart:v23 windowEnd:v25 aroundDate:v15];
       [(NSMutableSet *)v27 unionSet:v28];
@@ -1360,25 +1360,25 @@ LABEL_25:
 
 LABEL_24:
     v29 = self->_proxPendingCards;
-    v30 = [(PDCandidateRelevantPassFactory *)self->_candidatePassFactory resolvedLocatedDatelessCandidatePassesOfStyle:a3];
+    v30 = [(PDCandidateRelevantPassFactory *)self->_candidatePassFactory resolvedLocatedDatelessCandidatePassesOfStyle:style];
     [(NSMutableSet *)v29 unionSet:v30];
 
     goto LABEL_25;
   }
 }
 
-- (id)_findDateRelevantPassesFromCandidates:(id)a3 betweenWindowStart:(id)a4 windowEnd:(id)a5 aroundDate:(id)a6
+- (id)_findDateRelevantPassesFromCandidates:(id)candidates betweenWindowStart:(id)start windowEnd:(id)end aroundDate:(id)date
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v38 = a6;
+  candidatesCopy = candidates;
+  startCopy = start;
+  endCopy = end;
+  dateCopy = date;
   v33 = objc_alloc_init(NSMutableSet);
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v9;
+  obj = candidatesCopy;
   v35 = [obj countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (v35)
   {
@@ -1400,8 +1400,8 @@ LABEL_24:
         v42 = 0u;
         v36 = v13;
         v37 = v12;
-        v14 = [v13 relevantDates];
-        v15 = [v14 countByEnumeratingWithState:&v39 objects:v47 count:16];
+        relevantDates = [v13 relevantDates];
+        v15 = [relevantDates countByEnumeratingWithState:&v39 objects:v47 count:16];
         if (!v15)
         {
           goto LABEL_25;
@@ -1415,31 +1415,31 @@ LABEL_24:
           {
             if (*v40 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(relevantDates);
             }
 
             v19 = *(*(&v39 + 1) + 8 * i);
-            v20 = [v19 date];
-            v21 = [v19 effectiveStartDate];
-            v22 = [v19 effectiveEndDate];
-            v23 = v22;
-            if (v20)
+            date = [v19 date];
+            effectiveStartDate = [v19 effectiveStartDate];
+            effectiveEndDate = [v19 effectiveEndDate];
+            v23 = effectiveEndDate;
+            if (date)
             {
-              [v10 timeIntervalSinceDate:v20];
+              [startCopy timeIntervalSinceDate:date];
               if (v24 >= 0.0)
               {
                 goto LABEL_21;
               }
 
-              v25 = v11;
-              v26 = v20;
+              v25 = endCopy;
+              v26 = date;
             }
 
             else
             {
-              if (v21)
+              if (effectiveStartDate)
               {
-                v27 = v22 == 0;
+                v27 = effectiveEndDate == 0;
               }
 
               else
@@ -1452,14 +1452,14 @@ LABEL_24:
                 goto LABEL_21;
               }
 
-              [v21 timeIntervalSinceDate:v38];
+              [effectiveStartDate timeIntervalSinceDate:dateCopy];
               if (v28 >= 0.0)
               {
                 goto LABEL_21;
               }
 
               v25 = v23;
-              v26 = v38;
+              v26 = dateCopy;
             }
 
             [v25 timeIntervalSinceDate:v26];
@@ -1474,7 +1474,7 @@ LABEL_24:
 LABEL_21:
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v39 objects:v47 count:16];
+          v16 = [relevantDates countByEnumeratingWithState:&v39 objects:v47 count:16];
           if (v16)
           {
             continue;
@@ -1524,8 +1524,8 @@ LABEL_25:
         v7 = *(*(&v12 + 1) + 8 * i);
         if (([v7 hasLocations] & 1) == 0)
         {
-          v8 = [v7 embeddedBeacons];
-          v9 = [v8 count];
+          embeddedBeacons = [v7 embeddedBeacons];
+          v9 = [embeddedBeacons count];
 
           if (!v9)
           {
@@ -1578,8 +1578,8 @@ LABEL_13:
           objc_enumerationMutation(v2);
         }
 
-        v6 = [*(*(&v9 + 1) + 8 * i) embeddedBeacons];
-        v7 = [v6 count];
+        embeddedBeacons = [*(*(&v9 + 1) + 8 * i) embeddedBeacons];
+        v7 = [embeddedBeacons count];
 
         if (v7)
         {
@@ -1609,10 +1609,10 @@ LABEL_11:
   PKLogTimeToPerformBlockWithIdentifier();
 }
 
-- (BOOL)_findMatchingLocation:(id *)a3 beacon:(id *)a4 forCandidatePass:(id)a5 passStyleRadius:(double)a6 usingNearbyLocations:(id)a7
+- (BOOL)_findMatchingLocation:(id *)location beacon:(id *)beacon forCandidatePass:(id)pass passStyleRadius:(double)radius usingNearbyLocations:(id)locations
 {
-  v70 = a5;
-  v11 = a7;
+  passCopy = pass;
+  locationsCopy = locations;
   lastLocation = self->_lastLocation;
   if (!lastLocation)
   {
@@ -1628,8 +1628,8 @@ LABEL_11:
     v13 = v15;
   }
 
-  v16 = [v70 uniqueIdentifier];
-  v17 = [v11 locationsForUniqueID:v16];
+  uniqueIdentifier = [passCopy uniqueIdentifier];
+  v17 = [locationsCopy locationsForUniqueID:uniqueIdentifier];
 
   v80 = 0u;
   v81 = 0u;
@@ -1650,7 +1650,7 @@ LABEL_37:
 
   v21 = v19;
   v64 = v19 != 0;
-  v66 = v11;
+  v66 = locationsCopy;
   v22 = 0;
   v23 = 0;
   v24 = *v79;
@@ -1669,29 +1669,29 @@ LABEL_37:
 
       v27 = *(*(&v78 + 1) + 8 * v26);
       [v27 maxDistance];
-      if (v28 <= a6)
+      if (v28 <= radius)
       {
-        v29 = v28;
+        radiusCopy = v28;
       }
 
       else
       {
-        v29 = a6;
+        radiusCopy = radius;
       }
 
       if (v28 <= 0.0)
       {
-        v30 = a6;
+        radiusCopy2 = radius;
       }
 
       else
       {
-        v30 = v29;
+        radiusCopy2 = radiusCopy;
       }
 
-      v31 = v13 + v30;
-      v32 = [v27 CLLocation];
-      [v32 distanceFromLocation:self->_lastLocation];
+      v31 = v13 + radiusCopy2;
+      cLLocation = [v27 CLLocation];
+      [cLLocation distanceFromLocation:self->_lastLocation];
       v34 = v33;
 
       if (v34 >= v31)
@@ -1705,16 +1705,16 @@ LABEL_37:
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
         {
           v41 = v24;
-          v42 = self;
+          selfCopy = self;
           v43 = v22;
-          v44 = a3;
+          locationCopy = location;
           v45 = v23;
-          v46 = [v70 passTypeIdentifier];
-          v47 = [v70 serialNumber];
+          passTypeIdentifier = [passCopy passTypeIdentifier];
+          serialNumber = [passCopy serialNumber];
           *buf = 138413314;
-          v84 = v46;
+          v84 = passTypeIdentifier;
           v85 = 2112;
-          v86 = v47;
+          v86 = serialNumber;
           v87 = 2112;
           v88 = v27;
           v89 = 2048;
@@ -1724,9 +1724,9 @@ LABEL_37:
           _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "   %@:%@ card location %@ does NOT match because %g meters away. r: %g", buf, 0x34u);
 
           v23 = v45;
-          a3 = v44;
+          location = locationCopy;
           v22 = v43;
-          self = v42;
+          self = selfCopy;
           v24 = v41;
           v21 = v68;
 
@@ -1747,12 +1747,12 @@ LABEL_37:
       v36 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
-        v37 = [v70 passTypeIdentifier];
-        v38 = [v70 serialNumber];
+        passTypeIdentifier2 = [passCopy passTypeIdentifier];
+        serialNumber2 = [passCopy serialNumber];
         *buf = 138413314;
-        v84 = v37;
+        v84 = passTypeIdentifier2;
         v85 = 2112;
-        v86 = v38;
+        v86 = serialNumber2;
         v87 = 2112;
         v88 = v27;
         v89 = 2048;
@@ -1764,11 +1764,11 @@ LABEL_37:
         v18 = v69;
       }
 
-      if (a3)
+      if (location)
       {
         v39 = v27;
-        v40 = *a3;
-        *a3 = v39;
+        v40 = *location;
+        *location = v39;
         v23 = 1;
 LABEL_26:
 
@@ -1791,12 +1791,12 @@ LABEL_28:
     v48 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
     {
-      v49 = [v70 passTypeIdentifier];
-      v50 = [v70 serialNumber];
+      passTypeIdentifier3 = [passCopy passTypeIdentifier];
+      serialNumber3 = [passCopy serialNumber];
       *buf = 138413058;
-      v84 = v49;
+      v84 = passTypeIdentifier3;
       v85 = 2112;
-      v86 = v50;
+      v86 = serialNumber3;
       v87 = 2112;
       v88 = v22;
       v89 = 2048;
@@ -1804,13 +1804,13 @@ LABEL_28:
       _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "   %@:%@ card closest location: %@ (%g meters away)", buf, 0x2Au);
     }
 
-    v11 = v66;
+    locationsCopy = v66;
     v20 = v64;
-    if (a3)
+    if (location)
     {
       v22 = v22;
-      v51 = *a3;
-      *a3 = v22;
+      v51 = *location;
+      *location = v22;
       goto LABEL_37;
     }
 
@@ -1819,7 +1819,7 @@ LABEL_28:
 
   else
   {
-    v11 = v66;
+    locationsCopy = v66;
   }
 
 LABEL_40:
@@ -1827,14 +1827,14 @@ LABEL_40:
 LABEL_41:
   if (self->_lastBeacons && (v23 & 1) == 0)
   {
-    v67 = v11;
+    v67 = locationsCopy;
     v52 = objc_alloc_init(NSMutableArray);
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
     v77 = 0u;
-    v53 = [v70 embeddedBeacons];
-    v54 = [v53 countByEnumeratingWithState:&v74 objects:v82 count:16];
+    embeddedBeacons = [passCopy embeddedBeacons];
+    v54 = [embeddedBeacons countByEnumeratingWithState:&v74 objects:v82 count:16];
     if (v54)
     {
       v55 = v54;
@@ -1845,7 +1845,7 @@ LABEL_41:
         {
           if (*v75 != v56)
           {
-            objc_enumerationMutation(v53);
+            objc_enumerationMutation(embeddedBeacons);
           }
 
           v58 = *(*(&v74 + 1) + 8 * i);
@@ -1856,11 +1856,11 @@ LABEL_41:
           v71[3] = &unk_100846AB8;
           v71[4] = v58;
           v72 = v52;
-          v73 = v70;
+          v73 = passCopy;
           [(NSArray *)lastBeacons enumerateObjectsUsingBlock:v71];
         }
 
-        v55 = [v53 countByEnumeratingWithState:&v74 objects:v82 count:16];
+        v55 = [embeddedBeacons countByEnumeratingWithState:&v74 objects:v82 count:16];
       }
 
       while (v55);
@@ -1871,15 +1871,15 @@ LABEL_41:
     if (v60)
     {
       [v52 sortUsingComparator:&stru_100846AF8];
-      if (a4)
+      if (beacon)
       {
         v61 = [v52 objectAtIndex:0];
-        v62 = *a4;
-        *a4 = v61;
+        v62 = *beacon;
+        *beacon = v61;
       }
     }
 
-    v11 = v67;
+    locationsCopy = v67;
   }
 
   return v23 & 1;
@@ -1904,33 +1904,33 @@ LABEL_41:
   [WeakRetained relevantPassProvider:self didUpdateCatalog:0];
 }
 
-- (void)_processStateChangesFromCatalog:(id)a3
+- (void)_processStateChangesFromCatalog:(id)catalog
 {
-  v4 = a3;
+  catalogCopy = catalog;
   databaseManager = self->_databaseManager;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010DC68;
   v7[3] = &unk_10083C2B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = catalogCopy;
+  v6 = catalogCopy;
   [(PDDatabaseManager *)databaseManager performTransactionWithBlock:v7];
 }
 
-- (void)_sendCatalog:(id)a3
+- (void)_sendCatalog:(id)catalog
 {
-  v4 = a3;
-  v5 = [v4 passesInfo];
+  catalogCopy = catalog;
+  passesInfo = [catalogCopy passesInfo];
   currentRelevantPassInfo = self->_currentRelevantPassInfo;
-  self->_currentRelevantPassInfo = v5;
+  self->_currentRelevantPassInfo = passesInfo;
 
-  v7 = [v4 collectionsInfo];
+  collectionsInfo = [catalogCopy collectionsInfo];
   currentRelevantPassCollectionInfo = self->_currentRelevantPassCollectionInfo;
-  self->_currentRelevantPassCollectionInfo = v7;
+  self->_currentRelevantPassCollectionInfo = collectionsInfo;
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained relevantPassProvider:self didUpdateCatalog:v4];
+  [WeakRetained relevantPassProvider:self didUpdateCatalog:catalogCopy];
 }
 
 - (id)createCurrentNotificationRegistrationState
@@ -1948,110 +1948,110 @@ LABEL_41:
   return v2;
 }
 
-- (void)handleNotificationWithName:(id)a3 event:(id)a4 forStream:(int64_t)a5
+- (void)handleNotificationWithName:(id)name event:(id)event forStream:(int64_t)stream
 {
-  v6 = a3;
+  nameCopy = name;
   relevancySerialQueue = self->_relevancySerialQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10010DFD8;
   v9[3] = &unk_10083C420;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  v10 = nameCopy;
+  selfCopy = self;
+  v8 = nameCopy;
   dispatch_async(relevancySerialQueue, v9);
 }
 
-- (BOOL)_locationIsNewEnoughAndHasGoodAccuracy:(id)a3
+- (BOOL)_locationIsNewEnoughAndHasGoodAccuracy:(id)accuracy
 {
-  v4 = a3;
-  v11 = v4 && (locationSearchStartDate = self->_locationSearchStartDate, [v4 timestamp], v7 = v5 = v4;
+  accuracyCopy = accuracy;
+  v11 = accuracyCopy && (locationSearchStartDate = self->_locationSearchStartDate, [accuracyCopy timestamp], v7 = v5 = accuracyCopy;
 
   return v11;
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   relevancySerialQueue = self->_relevancySerialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010E1D4;
   block[3] = &unk_10083C4C0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = managerCopy;
+  v13 = locationsCopy;
+  v9 = locationsCopy;
+  v10 = managerCopy;
   dispatch_async(relevancySerialQueue, block);
 }
 
-- (void)locationManager:(id)a3 didExitRegion:(id)a4
+- (void)locationManager:(id)manager didExitRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  regionCopy = region;
   relevancySerialQueue = self->_relevancySerialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010E330;
   block[3] = &unk_10083C4C0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = managerCopy;
+  selfCopy = self;
+  v14 = regionCopy;
+  v9 = regionCopy;
+  v10 = managerCopy;
   dispatch_async(relevancySerialQueue, block);
 }
 
-- (void)locationManager:(id)a3 didRangeBeacons:(id)a4 satisfyingConstraint:(id)a5
+- (void)locationManager:(id)manager didRangeBeacons:(id)beacons satisfyingConstraint:(id)constraint
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  beaconsCopy = beacons;
   relevancySerialQueue = self->_relevancySerialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010E46C;
   block[3] = &unk_10083C4C0;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = managerCopy;
+  v14 = beaconsCopy;
+  v10 = beaconsCopy;
+  v11 = managerCopy;
   dispatch_async(relevancySerialQueue, block);
 }
 
-- (void)locationManager:(id)a3 didFailRangingBeaconsForConstraint:(id)a4 error:(id)a5
+- (void)locationManager:(id)manager didFailRangingBeaconsForConstraint:(id)constraint error:(id)error
 {
-  v7 = a3;
-  v8 = a5;
+  managerCopy = manager;
+  errorCopy = error;
   relevancySerialQueue = self->_relevancySerialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010E58C;
   block[3] = &unk_10083C4C0;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = managerCopy;
+  selfCopy = self;
+  v15 = errorCopy;
+  v10 = errorCopy;
+  v11 = managerCopy;
   dispatch_async(relevancySerialQueue, block);
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 code])
+  managerCopy = manager;
+  errorCopy = error;
+  if ([errorCopy code])
   {
     relevancySerialQueue = self->_relevancySerialQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10010E7B4;
     block[3] = &unk_10083C4C0;
-    v13 = v6;
-    v14 = self;
-    v15 = v7;
+    v13 = managerCopy;
+    selfCopy = self;
+    v15 = errorCopy;
     dispatch_async(relevancySerialQueue, block);
 
     v9 = v13;
@@ -2067,25 +2067,25 @@ LABEL_41:
       *buf = 138412546;
       v17 = v11;
       v18 = 2112;
-      v19 = v6;
+      v19 = managerCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@: Location Manager %@ unable to retreve location, will retry.", buf, 0x16u);
     }
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
-  v5 = [v4 authorizationStatus];
+  authorizationCopy = authorization;
+  authorizationStatus = [authorizationCopy authorizationStatus];
   relevancySerialQueue = self->_relevancySerialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010E93C;
   block[3] = &unk_100846B48;
   block[4] = self;
-  v9 = v4;
-  v10 = v5;
-  v7 = v4;
+  v9 = authorizationCopy;
+  v10 = authorizationStatus;
+  v7 = authorizationCopy;
   dispatch_async(relevancySerialQueue, block);
 }
 

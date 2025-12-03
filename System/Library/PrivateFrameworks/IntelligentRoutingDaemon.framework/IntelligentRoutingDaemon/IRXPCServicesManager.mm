@@ -1,5 +1,5 @@
 @interface IRXPCServicesManager
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (IRXPCServicesManager)init;
 - (void)_createServices;
 - (void)_setupXPCListeners;
@@ -58,9 +58,9 @@
         if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
         {
           v11 = v10;
-          v12 = [v9 serviceName];
+          serviceName = [v9 serviceName];
           *buf = v14;
-          v20 = v12;
+          v20 = serviceName;
           _os_log_impl(&dword_25543D000, v11, OS_LOG_TYPE_DEFAULT, "[IRXPCServicesManager] resuming listener for mach service: %@", buf, 0xCu);
         }
 
@@ -94,8 +94,8 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [v7 machServicesNames];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v25 count:16];
+  machServicesNames = [v7 machServicesNames];
+  v9 = [machServicesNames countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v9)
   {
     v11 = v9;
@@ -110,7 +110,7 @@
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(machServicesNames);
         }
 
         v15 = *(*(&v19 + 1) + 8 * v14);
@@ -127,7 +127,7 @@
       }
 
       while (v11 != v14);
-      v11 = [v8 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      v11 = [machServicesNames countByEnumeratingWithState:&v19 objects:v25 count:16];
     }
 
     while (v11);
@@ -151,8 +151,8 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSMutableDictionary *)self->_machServices allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  allKeys = [(NSMutableDictionary *)self->_machServices allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -163,7 +163,7 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -180,7 +180,7 @@
         [(NSMutableArray *)self->_listeners addObject:v12];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v14 objects:v20 count:16];
     }
 
     while (v7);
@@ -189,27 +189,27 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = MEMORY[0x277D21260];
   v9 = *MEMORY[0x277D21260];
   if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v7;
+    v18 = connectionCopy;
     _os_log_impl(&dword_25543D000, v9, OS_LOG_TYPE_DEFAULT, "[IRXPCServicesManager] listener shouldAcceptNewConnection. Connection: %@", &v17, 0xCu);
   }
 
   machServices = self->_machServices;
-  v11 = [v7 serviceName];
-  v12 = [(NSMutableDictionary *)machServices objectForKey:v11];
+  serviceName = [connectionCopy serviceName];
+  v12 = [(NSMutableDictionary *)machServices objectForKey:serviceName];
 
   if (v12)
   {
-    v13 = [v12 shouldAcceptNewConnection:v7];
+    v13 = [v12 shouldAcceptNewConnection:connectionCopy];
   }
 
   else
@@ -217,7 +217,7 @@
     v14 = *v8;
     if (os_log_type_enabled(*v8, OS_LOG_TYPE_ERROR))
     {
-      [IRXPCServicesManager listener:v14 shouldAcceptNewConnection:v7];
+      [IRXPCServicesManager listener:v14 shouldAcceptNewConnection:connectionCopy];
     }
 
     v13 = 0;

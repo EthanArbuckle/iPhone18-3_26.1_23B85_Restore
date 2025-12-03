@@ -1,8 +1,8 @@
 @interface AVRouteConfigUpdatedFigRoutingContextRouteChangeOperation
 + (void)initialize;
 - (AVOutputContextDestinationChange)result;
-- (void)_routeConfigUpdateWithID:(__CFString *)a3 endedWithReason:(__CFString *)a4;
-- (void)_setResultIfNotAlreadySet:(id)a3;
+- (void)_routeConfigUpdateWithID:(__CFString *)d endedWithReason:(__CFString *)reason;
+- (void)_setResultIfNotAlreadySet:(id)set;
 - (void)dealloc;
 - (void)start;
 @end
@@ -11,7 +11,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -78,7 +78,7 @@ id __67__AVRouteConfigUpdatedFigRoutingContextRouteChangeOperation_result__block
   return result;
 }
 
-- (void)_setResultIfNotAlreadySet:(id)a3
+- (void)_setResultIfNotAlreadySet:(id)set
 {
   routeChangeIvarAccessQueue = self->_routeChangeIvarAccessQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -86,7 +86,7 @@ id __67__AVRouteConfigUpdatedFigRoutingContextRouteChangeOperation_result__block
   v4[2] = __87__AVRouteConfigUpdatedFigRoutingContextRouteChangeOperation__setResultIfNotAlreadySet___block_invoke;
   v4[3] = &unk_1E7460DF0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = set;
   dispatch_sync(routeChangeIvarAccessQueue, v4);
 }
 
@@ -118,12 +118,12 @@ id *__87__AVRouteConfigUpdatedFigRoutingContextRouteChangeOperation__setResultIf
   }
 }
 
-- (void)_routeConfigUpdateWithID:(__CFString *)a3 endedWithReason:(__CFString *)a4
+- (void)_routeConfigUpdateWithID:(__CFString *)d endedWithReason:(__CFString *)reason
 {
   v7 = objc_alloc_init(MEMORY[0x1E69587F8]);
   if (FigCFEqual())
   {
-    [v7 changeToTerminalStatusBasedOnRouteConfigUpdatedReason:a4];
+    [v7 changeToTerminalStatusBasedOnRouteConfigUpdatedReason:reason];
     [(AVRouteConfigUpdatedFigRoutingContextRouteChangeOperation *)self _setResultIfNotAlreadySet:v7];
     if ([v7 status] == 2)
     {

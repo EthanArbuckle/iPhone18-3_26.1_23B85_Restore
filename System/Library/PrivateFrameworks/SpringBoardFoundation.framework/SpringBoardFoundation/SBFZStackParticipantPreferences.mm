@@ -1,12 +1,12 @@
 @interface SBFZStackParticipantPreferences
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initInternal;
 - (id)succinctDescription;
-- (void)_appendBodyDescriptionToStream:(id)a3;
-- (void)_describeDifferencesFromOriginal:(id)a3 differenceStream:(id)a4;
-- (void)appendDescriptionToStream:(id)a3;
+- (void)_appendBodyDescriptionToStream:(id)stream;
+- (void)_describeDifferencesFromOriginal:(id)original differenceStream:(id)stream;
+- (void)appendDescriptionToStream:(id)stream;
 @end
 
 @implementation SBFZStackParticipantPreferences
@@ -24,15 +24,15 @@
   return result;
 }
 
-- (void)_describeDifferencesFromOriginal:(id)a3 differenceStream:(id)a4
+- (void)_describeDifferencesFromOriginal:(id)original differenceStream:(id)stream
 {
-  v33 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v33)
+  originalCopy = original;
+  streamCopy = stream;
+  v7 = streamCopy;
+  if (originalCopy)
   {
     activationPolicyForParticipantsBelow = self->_activationPolicyForParticipantsBelow;
-    if (activationPolicyForParticipantsBelow != v33[2])
+    if (activationPolicyForParticipantsBelow != originalCopy[2])
     {
       if (activationPolicyForParticipantsBelow > 2)
       {
@@ -44,7 +44,7 @@
         v9 = off_1E8080170[activationPolicyForParticipantsBelow];
       }
 
-      v10 = [v6 appendObject:v9 withName:@"activationPolicyForParticipantsBelow"];
+      v10 = [streamCopy appendObject:v9 withName:@"activationPolicyForParticipantsBelow"];
     }
 
     if ((BSEqualObjects() & 1) == 0)
@@ -53,8 +53,8 @@
     }
 
     homeGestureConsumption = self->_homeGestureConsumption;
-    v13 = v33;
-    if (homeGestureConsumption != v33[4])
+    v13 = originalCopy;
+    if (homeGestureConsumption != originalCopy[4])
     {
       if (homeGestureConsumption > 2)
       {
@@ -67,7 +67,7 @@
       }
 
       [v7 appendString:v14 withName:@"homeGestureConsumption"];
-      v13 = v33;
+      v13 = originalCopy;
     }
 
     homeAffordanceDrawingSuppression = self->_homeAffordanceDrawingSuppression;
@@ -84,7 +84,7 @@
       }
 
       [v7 appendString:v16 withName:@"homeAffordanceDrawingSuppression"];
-      v13 = v33;
+      v13 = originalCopy;
     }
 
     suppressSystemApertureForSystemChromeSuppression = self->_suppressSystemApertureForSystemChromeSuppression;
@@ -124,8 +124,8 @@
     }
 
     allowsDimmingWhenForegroundInactive = self->_allowsDimmingWhenForegroundInactive;
-    v26 = v33;
-    if (allowsDimmingWhenForegroundInactive != v33[12])
+    v26 = originalCopy;
+    if (allowsDimmingWhenForegroundInactive != originalCopy[12])
     {
       if (allowsDimmingWhenForegroundInactive > 2)
       {
@@ -138,7 +138,7 @@
       }
 
       [v7 appendString:v27 withName:@"allowsDimmingWhenForegroundInactive"];
-      v26 = v33;
+      v26 = originalCopy;
     }
 
     allowsKeyboardArbiterToDetermineFocusTarget = self->_allowsKeyboardArbiterToDetermineFocusTarget;
@@ -163,7 +163,7 @@
     }
 
     allowCameraButtonDeferringWhileFocusLocked = self->_allowCameraButtonDeferringWhileFocusLocked;
-    if (allowCameraButtonDeferringWhileFocusLocked != v33[15])
+    if (allowCameraButtonDeferringWhileFocusLocked != originalCopy[15])
     {
       if (allowCameraButtonDeferringWhileFocusLocked > 2)
       {
@@ -181,11 +181,11 @@
 
   else
   {
-    [(SBFZStackParticipantPreferences *)self _appendBodyDescriptionToStream:v6];
+    [(SBFZStackParticipantPreferences *)self _appendBodyDescriptionToStream:streamCopy];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setActivationPolicyForParticipantsBelow:self->_activationPolicyForParticipantsBelow];
@@ -209,16 +209,16 @@
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] debugStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  debugStyle = [MEMORY[0x1E698E690] debugStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:debugStyle];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -228,54 +228,54 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SBFZStackParticipantPreferences *)self activationPolicyForParticipantsBelow];
-      if (v6 == [(SBFZStackParticipantPreferences *)v5 activationPolicyForParticipantsBelow])
+      v5 = equalCopy;
+      activationPolicyForParticipantsBelow = [(SBFZStackParticipantPreferences *)self activationPolicyForParticipantsBelow];
+      if (activationPolicyForParticipantsBelow == [(SBFZStackParticipantPreferences *)v5 activationPolicyForParticipantsBelow])
       {
-        v7 = [(SBFZStackParticipantPreferences *)self assertIsAboveParticipantIdentifiers];
-        v8 = [(SBFZStackParticipantPreferences *)v5 assertIsAboveParticipantIdentifiers];
+        assertIsAboveParticipantIdentifiers = [(SBFZStackParticipantPreferences *)self assertIsAboveParticipantIdentifiers];
+        assertIsAboveParticipantIdentifiers2 = [(SBFZStackParticipantPreferences *)v5 assertIsAboveParticipantIdentifiers];
         if (BSEqualObjects() && (v9 = [(SBFZStackParticipantPreferences *)self homeGestureConsumption], v9 == [(SBFZStackParticipantPreferences *)v5 homeGestureConsumption]) && (v10 = [(SBFZStackParticipantPreferences *)self homeAffordanceDrawingSuppression], v10 == [(SBFZStackParticipantPreferences *)v5 homeAffordanceDrawingSuppression]) && (v11 = [(SBFZStackParticipantPreferences *)self suppressSystemApertureForSystemChromeSuppression], v11 == [(SBFZStackParticipantPreferences *)v5 suppressSystemApertureForSystemChromeSuppression]))
         {
-          v14 = [(SBFZStackParticipantPreferences *)self associatedBundleIdentifiersToSuppressInSystemAperture];
-          v15 = [(SBFZStackParticipantPreferences *)v5 associatedBundleIdentifiersToSuppressInSystemAperture];
+          associatedBundleIdentifiersToSuppressInSystemAperture = [(SBFZStackParticipantPreferences *)self associatedBundleIdentifiersToSuppressInSystemAperture];
+          associatedBundleIdentifiersToSuppressInSystemAperture2 = [(SBFZStackParticipantPreferences *)v5 associatedBundleIdentifiersToSuppressInSystemAperture];
           if (BSEqualSets())
           {
-            v16 = [(SBFZStackParticipantPreferences *)self associatedSceneIdentifiersToSuppressInSystemAperture];
-            v17 = [(SBFZStackParticipantPreferences *)v5 associatedSceneIdentifiersToSuppressInSystemAperture];
+            associatedSceneIdentifiersToSuppressInSystemAperture = [(SBFZStackParticipantPreferences *)self associatedSceneIdentifiersToSuppressInSystemAperture];
+            associatedSceneIdentifiersToSuppressInSystemAperture2 = [(SBFZStackParticipantPreferences *)v5 associatedSceneIdentifiersToSuppressInSystemAperture];
             if (BSEqualSets())
             {
-              v18 = [(SBFZStackParticipantPreferences *)self physicalButtonSceneTargets];
+              physicalButtonSceneTargets = [(SBFZStackParticipantPreferences *)self physicalButtonSceneTargets];
               [(SBFZStackParticipantPreferences *)v5 physicalButtonSceneTargets];
-              v19 = v36 = v18;
+              v19 = v36 = physicalButtonSceneTargets;
               if (BSEqualArrays())
               {
                 v35 = v19;
-                v20 = [(SBFZStackParticipantPreferences *)self captureButtonFullFidelityEventRequestingScenes];
-                v33 = [(SBFZStackParticipantPreferences *)v5 captureButtonFullFidelityEventRequestingScenes];
-                v34 = v20;
+                captureButtonFullFidelityEventRequestingScenes = [(SBFZStackParticipantPreferences *)self captureButtonFullFidelityEventRequestingScenes];
+                captureButtonFullFidelityEventRequestingScenes2 = [(SBFZStackParticipantPreferences *)v5 captureButtonFullFidelityEventRequestingScenes];
+                v34 = captureButtonFullFidelityEventRequestingScenes;
                 if (BSEqualArrays())
                 {
-                  v21 = [(SBFZStackParticipantPreferences *)self foregroundCaptureSceneTargets];
-                  v31 = [(SBFZStackParticipantPreferences *)v5 foregroundCaptureSceneTargets];
-                  v32 = v21;
+                  foregroundCaptureSceneTargets = [(SBFZStackParticipantPreferences *)self foregroundCaptureSceneTargets];
+                  foregroundCaptureSceneTargets2 = [(SBFZStackParticipantPreferences *)v5 foregroundCaptureSceneTargets];
+                  v32 = foregroundCaptureSceneTargets;
                   if (BSEqualArrays())
                   {
-                    v22 = [(SBFZStackParticipantPreferences *)self audioCategoriesDisablingVolumeHUD];
-                    v29 = [(SBFZStackParticipantPreferences *)v5 audioCategoriesDisablingVolumeHUD];
-                    v30 = v22;
+                    audioCategoriesDisablingVolumeHUD = [(SBFZStackParticipantPreferences *)self audioCategoriesDisablingVolumeHUD];
+                    audioCategoriesDisablingVolumeHUD2 = [(SBFZStackParticipantPreferences *)v5 audioCategoriesDisablingVolumeHUD];
+                    v30 = audioCategoriesDisablingVolumeHUD;
                     v19 = v35;
                     if (BSEqualSets() && (v27 = [(SBFZStackParticipantPreferences *)self allowsDimmingWhenForegroundInactive], v27 == [(SBFZStackParticipantPreferences *)v5 allowsDimmingWhenForegroundInactive]))
                     {
-                      v23 = [(SBFZStackParticipantPreferences *)self allowsKeyboardArbiterToDetermineFocusTarget];
-                      if (v23 == [(SBFZStackParticipantPreferences *)v5 allowsKeyboardArbiterToDetermineFocusTarget])
+                      allowsKeyboardArbiterToDetermineFocusTarget = [(SBFZStackParticipantPreferences *)self allowsKeyboardArbiterToDetermineFocusTarget];
+                      if (allowsKeyboardArbiterToDetermineFocusTarget == [(SBFZStackParticipantPreferences *)v5 allowsKeyboardArbiterToDetermineFocusTarget])
                       {
-                        v24 = [(SBFZStackParticipantPreferences *)self overrideKeyboardFocusTarget];
+                        overrideKeyboardFocusTarget = [(SBFZStackParticipantPreferences *)self overrideKeyboardFocusTarget];
                         [(SBFZStackParticipantPreferences *)v5 overrideKeyboardFocusTarget];
-                        v25 = v28 = v24;
+                        v25 = v28 = overrideKeyboardFocusTarget;
                         if (BSEqualObjects())
                         {
-                          v26 = [(SBFZStackParticipantPreferences *)self allowCameraButtonDeferringWhileFocusLocked];
-                          v12 = v26 == [(SBFZStackParticipantPreferences *)v5 allowCameraButtonDeferringWhileFocusLocked];
+                          allowCameraButtonDeferringWhileFocusLocked = [(SBFZStackParticipantPreferences *)self allowCameraButtonDeferringWhileFocusLocked];
+                          v12 = allowCameraButtonDeferringWhileFocusLocked == [(SBFZStackParticipantPreferences *)v5 allowCameraButtonDeferringWhileFocusLocked];
                         }
 
                         else
@@ -354,52 +354,52 @@
 - (id)succinctDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] succinctStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  succinctStyle = [MEMORY[0x1E698E690] succinctStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:succinctStyle];
 
   return v5;
 }
 
-- (void)_appendBodyDescriptionToStream:(id)a3
+- (void)_appendBodyDescriptionToStream:(id)stream
 {
-  v4 = a3;
-  v5 = [(SBFZStackParticipantPreferences *)self activationPolicyForParticipantsBelow];
-  if (v5 > 2)
+  streamCopy = stream;
+  activationPolicyForParticipantsBelow = [(SBFZStackParticipantPreferences *)self activationPolicyForParticipantsBelow];
+  if (activationPolicyForParticipantsBelow > 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = off_1E8080170[v5];
+    v6 = off_1E8080170[activationPolicyForParticipantsBelow];
   }
 
-  [v4 appendString:v6 withName:@"activationPolicyForParticipantsBelow"];
-  v7 = [(SBFZStackParticipantPreferences *)self homeGestureConsumption];
-  if (v7 > 2)
+  [streamCopy appendString:v6 withName:@"activationPolicyForParticipantsBelow"];
+  homeGestureConsumption = [(SBFZStackParticipantPreferences *)self homeGestureConsumption];
+  if (homeGestureConsumption > 2)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = off_1E8080188[v7];
+    v8 = off_1E8080188[homeGestureConsumption];
   }
 
-  [v4 appendString:v8 withName:@"homeGestureConsumption"];
-  v9 = [(SBFZStackParticipantPreferences *)self homeAffordanceDrawingSuppression];
-  if (v9 > 2)
+  [streamCopy appendString:v8 withName:@"homeGestureConsumption"];
+  homeAffordanceDrawingSuppression = [(SBFZStackParticipantPreferences *)self homeAffordanceDrawingSuppression];
+  if (homeAffordanceDrawingSuppression > 2)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = off_1E80801A0[v9];
+    v10 = off_1E80801A0[homeAffordanceDrawingSuppression];
   }
 
-  [v4 appendString:v10 withName:@"homeAffordanceDrawingSuppression"];
-  v11 = [(SBFZStackParticipantPreferences *)self assertIsAboveParticipantIdentifiers];
+  [streamCopy appendString:v10 withName:@"homeAffordanceDrawingSuppression"];
+  assertIsAboveParticipantIdentifiers = [(SBFZStackParticipantPreferences *)self assertIsAboveParticipantIdentifiers];
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
@@ -407,73 +407,73 @@
   v37[3] = &unk_1E8080040;
   v13 = v12;
   v38 = v13;
-  [v11 enumerateIndexesUsingBlock:v37];
+  [assertIsAboveParticipantIdentifiers enumerateIndexesUsingBlock:v37];
 
-  v14 = [v4 appendObject:v13 withName:@"assertIsAboveParticipantIdentifiers"];
-  v15 = [v4 appendBool:-[SBFZStackParticipantPreferences suppressSystemApertureForSystemChromeSuppression](self withName:"suppressSystemApertureForSystemChromeSuppression") ifEqualTo:{@"suppressSystemApertureForSystemChromeSuppression", 1}];
-  v16 = [(SBFZStackParticipantPreferences *)self associatedSceneIdentifiersToSuppressInSystemAperture];
-  v17 = [v16 description];
-  [v4 appendString:v17 withName:@"associatedSceneIdentifiersToSuppressInSystemAperture" skipIfEmpty:1];
+  v14 = [streamCopy appendObject:v13 withName:@"assertIsAboveParticipantIdentifiers"];
+  v15 = [streamCopy appendBool:-[SBFZStackParticipantPreferences suppressSystemApertureForSystemChromeSuppression](self withName:"suppressSystemApertureForSystemChromeSuppression") ifEqualTo:{@"suppressSystemApertureForSystemChromeSuppression", 1}];
+  associatedSceneIdentifiersToSuppressInSystemAperture = [(SBFZStackParticipantPreferences *)self associatedSceneIdentifiersToSuppressInSystemAperture];
+  v17 = [associatedSceneIdentifiersToSuppressInSystemAperture description];
+  [streamCopy appendString:v17 withName:@"associatedSceneIdentifiersToSuppressInSystemAperture" skipIfEmpty:1];
 
-  v18 = [(SBFZStackParticipantPreferences *)self associatedBundleIdentifiersToSuppressInSystemAperture];
-  v19 = [v18 description];
-  [v4 appendString:v19 withName:@"associatedBundleIdentifiersToSuppressInSystemAperture" skipIfEmpty:1];
+  associatedBundleIdentifiersToSuppressInSystemAperture = [(SBFZStackParticipantPreferences *)self associatedBundleIdentifiersToSuppressInSystemAperture];
+  v19 = [associatedBundleIdentifiersToSuppressInSystemAperture description];
+  [streamCopy appendString:v19 withName:@"associatedBundleIdentifiersToSuppressInSystemAperture" skipIfEmpty:1];
 
-  v20 = [(SBFZStackParticipantPreferences *)self physicalButtonSceneTargets];
-  v21 = [v20 description];
-  [v4 appendString:v21 withName:@"physicalButtonSceneTargets" skipIfEmpty:1];
+  physicalButtonSceneTargets = [(SBFZStackParticipantPreferences *)self physicalButtonSceneTargets];
+  v21 = [physicalButtonSceneTargets description];
+  [streamCopy appendString:v21 withName:@"physicalButtonSceneTargets" skipIfEmpty:1];
 
-  v22 = [(SBFZStackParticipantPreferences *)self captureButtonFullFidelityEventRequestingScenes];
-  v23 = [v22 bs_map:&__block_literal_global_346];
+  captureButtonFullFidelityEventRequestingScenes = [(SBFZStackParticipantPreferences *)self captureButtonFullFidelityEventRequestingScenes];
+  v23 = [captureButtonFullFidelityEventRequestingScenes bs_map:&__block_literal_global_346];
   v24 = [v23 description];
-  [v4 appendString:v24 withName:@"captureButtonFullFidelityEventRequestingScenes" skipIfEmpty:1];
+  [streamCopy appendString:v24 withName:@"captureButtonFullFidelityEventRequestingScenes" skipIfEmpty:1];
 
-  v25 = [(SBFZStackParticipantPreferences *)self foregroundCaptureSceneTargets];
-  v26 = [v25 description];
-  [v4 appendString:v26 withName:@"foregroundCaptureSceneTargets" skipIfEmpty:1];
+  foregroundCaptureSceneTargets = [(SBFZStackParticipantPreferences *)self foregroundCaptureSceneTargets];
+  v26 = [foregroundCaptureSceneTargets description];
+  [streamCopy appendString:v26 withName:@"foregroundCaptureSceneTargets" skipIfEmpty:1];
 
-  v27 = [(SBFZStackParticipantPreferences *)self audioCategoriesDisablingVolumeHUD];
-  v28 = [v27 description];
-  [v4 appendString:v28 withName:@"audioCategoriesDisablingVolumeHUD" skipIfEmpty:1];
+  audioCategoriesDisablingVolumeHUD = [(SBFZStackParticipantPreferences *)self audioCategoriesDisablingVolumeHUD];
+  v28 = [audioCategoriesDisablingVolumeHUD description];
+  [streamCopy appendString:v28 withName:@"audioCategoriesDisablingVolumeHUD" skipIfEmpty:1];
 
-  v29 = [(SBFZStackParticipantPreferences *)self allowsDimmingWhenForegroundInactive];
-  if (v29 > 2)
+  allowsDimmingWhenForegroundInactive = [(SBFZStackParticipantPreferences *)self allowsDimmingWhenForegroundInactive];
+  if (allowsDimmingWhenForegroundInactive > 2)
   {
     v30 = 0;
   }
 
   else
   {
-    v30 = off_1E80801B8[v29];
+    v30 = off_1E80801B8[allowsDimmingWhenForegroundInactive];
   }
 
-  [v4 appendString:v30 withName:@"allowsDimmingWhenForegroundInactive"];
-  v31 = [(SBFZStackParticipantPreferences *)self allowsKeyboardArbiterToDetermineFocusTarget];
-  if (v31 > 2)
+  [streamCopy appendString:v30 withName:@"allowsDimmingWhenForegroundInactive"];
+  allowsKeyboardArbiterToDetermineFocusTarget = [(SBFZStackParticipantPreferences *)self allowsKeyboardArbiterToDetermineFocusTarget];
+  if (allowsKeyboardArbiterToDetermineFocusTarget > 2)
   {
     v32 = 0;
   }
 
   else
   {
-    v32 = off_1E80801B8[v31];
+    v32 = off_1E80801B8[allowsKeyboardArbiterToDetermineFocusTarget];
   }
 
-  [v4 appendString:v32 withName:@"allowsKeyboardArbiterToDetermineFocusTarget"];
-  v33 = [(SBFZStackParticipantPreferences *)self allowCameraButtonDeferringWhileFocusLocked];
-  if (v33 > 2)
+  [streamCopy appendString:v32 withName:@"allowsKeyboardArbiterToDetermineFocusTarget"];
+  allowCameraButtonDeferringWhileFocusLocked = [(SBFZStackParticipantPreferences *)self allowCameraButtonDeferringWhileFocusLocked];
+  if (allowCameraButtonDeferringWhileFocusLocked > 2)
   {
     v34 = 0;
   }
 
   else
   {
-    v34 = off_1E80801B8[v33];
+    v34 = off_1E80801B8[allowCameraButtonDeferringWhileFocusLocked];
   }
 
-  [v4 appendString:v34 withName:@"allowCameraButtonDeferringWhileFocusLocked"];
-  v35 = [(SBFZStackParticipantPreferences *)self overrideKeyboardFocusTarget];
-  v36 = [v4 appendObject:v35 withName:@"overrideKeyboardFocusTarget"];
+  [streamCopy appendString:v34 withName:@"allowCameraButtonDeferringWhileFocusLocked"];
+  overrideKeyboardFocusTarget = [(SBFZStackParticipantPreferences *)self overrideKeyboardFocusTarget];
+  v36 = [streamCopy appendObject:overrideKeyboardFocusTarget withName:@"overrideKeyboardFocusTarget"];
 }
 
 id __66__SBFZStackParticipantPreferences__appendBodyDescriptionToStream___block_invoke(uint64_t a1, void *a2)
@@ -484,17 +484,17 @@ id __66__SBFZStackParticipantPreferences__appendBodyDescriptionToStream___block_
   return v3;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
-  [v4 appendProem:self block:&__block_literal_global_348];
+  streamCopy = stream;
+  [streamCopy appendProem:self block:&__block_literal_global_348];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__SBFZStackParticipantPreferences_appendDescriptionToStream___block_invoke_2;
   v6[3] = &unk_1E807F290;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = streamCopy;
+  v5 = streamCopy;
   [v5 appendBodySectionWithName:0 block:v6];
 }
 

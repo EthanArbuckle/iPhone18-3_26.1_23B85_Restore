@@ -1,13 +1,13 @@
 @interface CSPlaybackVolumeStatusMonitor
 + (id)sharedInstance;
 - (CSPlaybackVolumeStatusMonitor)init;
-- (unint64_t)_volumeStatusFromLevel:(float)a3;
+- (unint64_t)_volumeStatusFromLevel:(float)level;
 - (unint64_t)playbackVolumeStatus;
-- (void)CSVolumeMonitor:(id)a3 systemVolumeDidChange:(id)a4;
+- (void)CSVolumeMonitor:(id)monitor systemVolumeDidChange:(id)change;
 - (void)_fetchAndUpdatePlaybackVolumeStatus;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)_updatePlaybackVolumeStatusWithNotification:(id)a3;
+- (void)_updatePlaybackVolumeStatusWithNotification:(id)notification;
 @end
 
 @implementation CSPlaybackVolumeStatusMonitor
@@ -55,9 +55,9 @@
 {
   v18 = *MEMORY[0x1E69E9840];
   v11 = 0.0;
-  v3 = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
   v10 = 0;
-  v4 = [v3 getActiveCategoryVolume:&v11 andName:&v10];
+  v4 = [mEMORY[0x1E69AED08] getActiveCategoryVolume:&v11 andName:&v10];
   v5 = v10;
 
   if (v4)
@@ -87,21 +87,21 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)_volumeStatusFromLevel:(float)a3
+- (unint64_t)_volumeStatusFromLevel:(float)level
 {
-  if (a3 > 0.0)
+  if (level > 0.0)
   {
     v4 = +[CSFPreferences sharedPreferences];
     [v4 nearlyMutedPlaybackVolumeLevel];
     v6 = v5;
 
-    if (v6 >= a3)
+    if (v6 >= level)
     {
       return 1;
     }
   }
 
-  if (a3 <= 0.0)
+  if (level <= 0.0)
   {
     return 2;
   }
@@ -109,20 +109,20 @@
   return 0;
 }
 
-- (void)_updatePlaybackVolumeStatusWithNotification:(id)a3
+- (void)_updatePlaybackVolumeStatusWithNotification:(id)notification
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 userInfo];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
   v8 = MEMORY[0x1E69AEA20];
-  v9 = [v7 objectForKey:*MEMORY[0x1E69AEA20]];
+  v9 = [userInfo objectForKey:*MEMORY[0x1E69AEA20]];
   [v9 floatValue];
   v11 = v10;
   v12 = 1.0;
   if (v10 <= 1.0)
   {
-    v3 = [v6 userInfo];
-    v4 = [v3 objectForKey:*v8];
+    userInfo2 = [notificationCopy userInfo];
+    v4 = [userInfo2 objectForKey:*v8];
     [v4 floatValue];
     v13 = 0.0;
     if (v14 < 0.0)
@@ -131,13 +131,13 @@
     }
   }
 
-  v15 = [v6 userInfo];
-  v16 = [v15 objectForKey:*v8];
+  userInfo3 = [notificationCopy userInfo];
+  v16 = [userInfo3 objectForKey:*v8];
   [v16 floatValue];
   if (v17 <= 1.0)
   {
-    v18 = [v6 userInfo];
-    v19 = [v18 objectForKey:*v8];
+    userInfo4 = [notificationCopy userInfo];
+    v19 = [userInfo4 objectForKey:*v8];
     [v19 floatValue];
     v12 = v20;
   }
@@ -179,11 +179,11 @@ LABEL_6:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)CSVolumeMonitor:(id)a3 systemVolumeDidChange:(id)a4
+- (void)CSVolumeMonitor:(id)monitor systemVolumeDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [v5 userInfo];
-  v7 = [v6 objectForKey:*MEMORY[0x1E69AE9B0]];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v7 = [userInfo objectForKey:*MEMORY[0x1E69AE9B0]];
 
   if (v7)
   {
@@ -193,7 +193,7 @@ LABEL_6:
     v9[2] = __71__CSPlaybackVolumeStatusMonitor_CSVolumeMonitor_systemVolumeDidChange___block_invoke;
     v9[3] = &unk_1E865C970;
     v9[4] = self;
-    v10 = v5;
+    v10 = changeCopy;
     dispatch_async(queue, v9);
   }
 }
@@ -215,7 +215,7 @@ LABEL_6:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v11 = *MEMORY[0x1E69E9840];
   queue = self->_queue;

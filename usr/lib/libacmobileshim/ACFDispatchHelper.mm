@@ -1,19 +1,19 @@
 @interface ACFDispatchHelper
-- (ACFDispatchHelper)initWithBlock:(id)a3;
+- (ACFDispatchHelper)initWithBlock:(id)block;
 - (void)dealloc;
 - (void)dispatch;
 @end
 
 @implementation ACFDispatchHelper
 
-- (ACFDispatchHelper)initWithBlock:(id)a3
+- (ACFDispatchHelper)initWithBlock:(id)block
 {
   v6.receiver = self;
   v6.super_class = ACFDispatchHelper;
   v4 = [(ACFDispatchHelper *)&v6 init];
   if (v4)
   {
-    v4->_block = [a3 copy];
+    v4->_block = [block copy];
   }
 
   return v4;

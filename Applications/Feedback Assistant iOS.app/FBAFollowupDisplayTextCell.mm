@@ -1,7 +1,7 @@
 @interface FBAFollowupDisplayTextCell
 - (UILabel)displayText;
-- (_TtC18Feedback_Assistant26FBAFollowupDisplayTextCell)initWithCoder:(id)a3;
-- (_TtC18Feedback_Assistant26FBAFollowupDisplayTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC18Feedback_Assistant26FBAFollowupDisplayTextCell)initWithCoder:(id)coder;
+- (_TtC18Feedback_Assistant26FBAFollowupDisplayTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)awakeFromNib;
 @end
 
@@ -25,8 +25,8 @@
   if (Strong)
   {
     v4 = Strong;
-    v5 = [objc_opt_self() secondaryLabelColor];
-    [v4 setTextColor:v5];
+    secondaryLabelColor = [objc_opt_self() secondaryLabelColor];
+    [v4 setTextColor:secondaryLabelColor];
   }
 
   else
@@ -35,9 +35,9 @@
   }
 }
 
-- (_TtC18Feedback_Assistant26FBAFollowupDisplayTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18Feedback_Assistant26FBAFollowupDisplayTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = (self + OBJC_IVAR____TtC18Feedback_Assistant26FBAFollowupDisplayTextCell_itemIdentifier);
@@ -58,12 +58,12 @@
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for FBAFollowupDisplayTextCell();
-  v9 = [(FBAFollowupDisplayTextCell *)&v11 initWithStyle:a3 reuseIdentifier:v7];
+  v9 = [(FBAFollowupDisplayTextCell *)&v11 initWithStyle:style reuseIdentifier:v7];
 
   return v9;
 }
 
-- (_TtC18Feedback_Assistant26FBAFollowupDisplayTextCell)initWithCoder:(id)a3
+- (_TtC18Feedback_Assistant26FBAFollowupDisplayTextCell)initWithCoder:(id)coder
 {
   v5 = (self + OBJC_IVAR____TtC18Feedback_Assistant26FBAFollowupDisplayTextCell_itemIdentifier);
   *v5 = 0;
@@ -71,8 +71,8 @@
   swift_unknownObjectWeakInit();
   v9.receiver = self;
   v9.super_class = type metadata accessor for FBAFollowupDisplayTextCell();
-  v6 = a3;
-  v7 = [(FBAFollowupDisplayTextCell *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(FBAFollowupDisplayTextCell *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

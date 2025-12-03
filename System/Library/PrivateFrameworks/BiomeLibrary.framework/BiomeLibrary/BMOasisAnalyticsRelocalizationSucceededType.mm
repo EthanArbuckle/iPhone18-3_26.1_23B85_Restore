@@ -1,28 +1,28 @@
 @interface BMOasisAnalyticsRelocalizationSucceededType
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMOasisAnalyticsRelocalizationSucceededType)initWithDescriptorType:(int)a3 localizedSubmapId:(id)a4 timeToLocalizationInSecond:(id)a5;
-- (BMOasisAnalyticsRelocalizationSucceededType)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMOasisAnalyticsRelocalizationSucceededType)initWithDescriptorType:(int)type localizedSubmapId:(id)id timeToLocalizationInSecond:(id)second;
+- (BMOasisAnalyticsRelocalizationSucceededType)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMOasisAnalyticsRelocalizationSucceededType
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMOasisAnalyticsRelocalizationSucceededType *)self descriptorType];
-    if (v6 != [v5 descriptorType])
+    v5 = equalCopy;
+    descriptorType = [(BMOasisAnalyticsRelocalizationSucceededType *)self descriptorType];
+    if (descriptorType != [v5 descriptorType])
     {
       goto LABEL_14;
     }
@@ -39,8 +39,8 @@
         goto LABEL_14;
       }
 
-      v7 = [(BMOasisAnalyticsRelocalizationSucceededType *)self localizedSubmapId];
-      if (v7 != [v5 localizedSubmapId])
+      localizedSubmapId = [(BMOasisAnalyticsRelocalizationSucceededType *)self localizedSubmapId];
+      if (localizedSubmapId != [v5 localizedSubmapId])
       {
         goto LABEL_14;
       }
@@ -105,29 +105,29 @@ LABEL_16:
   }
 
   v14[0] = @"descriptorType";
-  v8 = v3;
+  null = v3;
   if (!v3)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v8;
+  v15[0] = null;
   v14[1] = @"localizedSubmapId";
-  v9 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v9;
+  v15[1] = null2;
   v14[2] = @"timeToLocalizationInSecond";
-  v10 = v7;
+  null3 = v7;
   if (!v7)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[2] = v10;
+  v15[2] = null3;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:3];
   if (v7)
   {
@@ -165,25 +165,25 @@ LABEL_17:
   return v11;
 }
 
-- (BMOasisAnalyticsRelocalizationSucceededType)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMOasisAnalyticsRelocalizationSucceededType)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"descriptorType"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"descriptorType"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_9:
-    v10 = [v6 objectForKeyedSubscript:@"localizedSubmapId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"localizedSubmapId"];
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v11 = 0;
-          v14 = 0;
+          selfCopy = 0;
           goto LABEL_17;
         }
 
@@ -195,8 +195,8 @@ LABEL_9:
         v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
         v18 = [v24 initWithDomain:v17 code:2 userInfo:v12];
         v11 = 0;
-        v14 = 0;
-        *a4 = v18;
+        selfCopy = 0;
+        *error = v18;
         goto LABEL_16;
       }
 
@@ -208,13 +208,13 @@ LABEL_9:
       v11 = 0;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"timeToLocalizationInSecond"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"timeToLocalizationInSecond"];
     if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v25 = objc_alloc(MEMORY[0x1E696ABC0]);
           v23 = *MEMORY[0x1E698F240];
@@ -222,11 +222,11 @@ LABEL_9:
           v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"timeToLocalizationInSecond"];
           v27 = v19;
           v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-          *a4 = [v25 initWithDomain:v23 code:2 userInfo:v20];
+          *error = [v25 initWithDomain:v23 code:2 userInfo:v20];
         }
 
         v13 = 0;
-        v14 = 0;
+        selfCopy = 0;
         goto LABEL_16;
       }
 
@@ -239,7 +239,7 @@ LABEL_9:
     }
 
     self = -[BMOasisAnalyticsRelocalizationSucceededType initWithDescriptorType:localizedSubmapId:timeToLocalizationInSecond:](self, "initWithDescriptorType:localizedSubmapId:timeToLocalizationInSecond:", [v8 intValue], v11, v13);
-    v14 = self;
+    selfCopy = self;
 LABEL_16:
 
     goto LABEL_17;
@@ -261,10 +261,10 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
@@ -275,29 +275,29 @@ LABEL_8:
   v31[0] = v11;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
   v8 = 0;
-  v14 = 0;
-  *a4 = [v21 initWithDomain:v22 code:2 userInfo:v10];
+  selfCopy = 0;
+  *error = [v21 initWithDomain:v22 code:2 userInfo:v10];
 LABEL_17:
 
 LABEL_18:
   v15 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMOasisAnalyticsRelocalizationSucceededType *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   descriptorType = self->_descriptorType;
-  v8 = v4;
+  v8 = toCopy;
   PBDataWriterWriteUint32Field();
   if (self->_hasLocalizedSubmapId)
   {
@@ -312,9 +312,9 @@ LABEL_18:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v36.receiver = self;
   v36.super_class = BMOasisAnalyticsRelocalizationSucceededType;
   v5 = [(BMEventBase *)&v36 init];
@@ -323,12 +323,12 @@ LABEL_18:
     goto LABEL_57;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -339,18 +339,18 @@ LABEL_18:
       while (1)
       {
         LOBYTE(v37) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v37 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v37) & 0x7F) << v7;
@@ -368,9 +368,9 @@ LABEL_18:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -380,18 +380,18 @@ LABEL_16:
       {
         v5->_hasTimeToLocalizationInSecond = 1;
         v37 = 0.0;
-        v30 = [v4 position] + 4;
-        if (v30 >= [v4 position] && (v31 = objc_msgSend(v4, "position") + 4, v31 <= objc_msgSend(v4, "length")))
+        v30 = [fromCopy position] + 4;
+        if (v30 >= [fromCopy position] && (v31 = objc_msgSend(fromCopy, "position") + 4, v31 <= objc_msgSend(fromCopy, "length")))
         {
-          v32 = [v4 data];
-          [v32 getBytes:&v37 range:{objc_msgSend(v4, "position"), 4}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_timeToLocalizationInSecond = v37;
@@ -406,18 +406,18 @@ LABEL_16:
         while (1)
         {
           LOBYTE(v37) = 0;
-          v26 = [v4 position] + 1;
-          if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+          v26 = [fromCopy position] + 1;
+          if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 1, v27 <= objc_msgSend(fromCopy, "length")))
           {
-            v28 = [v4 data];
-            [v28 getBytes:&v37 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v25 |= (LOBYTE(v37) & 0x7F) << v23;
@@ -435,7 +435,7 @@ LABEL_16:
           }
         }
 
-        v29 = [v4 hasError] ? 0 : v25;
+        v29 = [fromCopy hasError] ? 0 : v25;
 LABEL_47:
         v5->_localizedSubmapId = v29;
       }
@@ -448,18 +448,18 @@ LABEL_47:
         while (1)
         {
           LOBYTE(v37) = 0;
-          v19 = [v4 position] + 1;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 1;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v21 = [v4 data];
-            [v21 getBytes:&v37 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (LOBYTE(v37) & 0x7F) << v16;
@@ -475,7 +475,7 @@ LABEL_47:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v18 > 3)
+        if (([fromCopy hasError] & 1) != 0 || v18 > 3)
         {
 LABEL_50:
           LODWORD(v18) = 0;
@@ -489,13 +489,13 @@ LABEL_50:
         goto LABEL_56;
       }
 
-      v33 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v33 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_56:
     v34 = 0;
@@ -523,34 +523,34 @@ LABEL_57:
   return v8;
 }
 
-- (BMOasisAnalyticsRelocalizationSucceededType)initWithDescriptorType:(int)a3 localizedSubmapId:(id)a4 timeToLocalizationInSecond:(id)a5
+- (BMOasisAnalyticsRelocalizationSucceededType)initWithDescriptorType:(int)type localizedSubmapId:(id)id timeToLocalizationInSecond:(id)second
 {
-  v8 = a4;
-  v9 = a5;
+  idCopy = id;
+  secondCopy = second;
   v14.receiver = self;
   v14.super_class = BMOasisAnalyticsRelocalizationSucceededType;
   v10 = [(BMEventBase *)&v14 init];
   if (v10)
   {
     v10->_dataVersion = [objc_opt_class() latestDataVersion];
-    v10->_descriptorType = a3;
-    if (v8)
+    v10->_descriptorType = type;
+    if (idCopy)
     {
       v10->_hasLocalizedSubmapId = 1;
-      v11 = [v8 unsignedLongLongValue];
+      unsignedLongLongValue = [idCopy unsignedLongLongValue];
     }
 
     else
     {
-      v11 = 0;
+      unsignedLongLongValue = 0;
       v10->_hasLocalizedSubmapId = 0;
     }
 
-    v10->_localizedSubmapId = v11;
-    if (v9)
+    v10->_localizedSubmapId = unsignedLongLongValue;
+    if (secondCopy)
     {
       v10->_hasTimeToLocalizationInSecond = 1;
-      [v9 floatValue];
+      [secondCopy floatValue];
     }
 
     else
@@ -596,9 +596,9 @@ LABEL_57:
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -606,8 +606,8 @@ LABEL_57:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMOasisAnalyticsRelocalizationSucceededType alloc] initByReadFrom:v7];
     v4 = v8;

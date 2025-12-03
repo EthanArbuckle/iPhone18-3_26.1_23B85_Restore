@@ -1,17 +1,17 @@
 @interface _CATRemoteConnectionSendDataContext
-- (_CATRemoteConnectionSendDataContext)initWithData:(id)a3 userInfo:(id)a4;
-- (id)bufferedDataWithError:(id *)a3;
+- (_CATRemoteConnectionSendDataContext)initWithData:(id)data userInfo:(id)info;
+- (id)bufferedDataWithError:(id *)error;
 - (unint64_t)clientBytesWritten;
 - (unint64_t)headerLength;
 @end
 
 @implementation _CATRemoteConnectionSendDataContext
 
-- (_CATRemoteConnectionSendDataContext)initWithData:(id)a3 userInfo:(id)a4
+- (_CATRemoteConnectionSendDataContext)initWithData:(id)data userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dataCopy = data;
+  infoCopy = info;
+  if (!dataCopy)
   {
     [_CATRemoteConnectionSendDataContext initWithData:userInfo:];
   }
@@ -21,11 +21,11 @@
   v8 = [(_CATRemoteConnectionSendDataContext *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dataCopy copy];
     data = v8->_data;
     v8->_data = v9;
 
-    objc_storeStrong(&v8->_userInfo, a4);
+    objc_storeStrong(&v8->_userInfo, info);
     v11 = [CATHTTPMessageParser encodeRequestData:v8->_data];
     mEncodedData = v8->mEncodedData;
     v8->mEncodedData = v11;
@@ -36,33 +36,33 @@
 
 - (unint64_t)clientBytesWritten
 {
-  v3 = [(_CATRemoteConnectionSendDataContext *)self bytesWritten];
-  if (v3 <= [(_CATRemoteConnectionSendDataContext *)self headerLength])
+  bytesWritten = [(_CATRemoteConnectionSendDataContext *)self bytesWritten];
+  if (bytesWritten <= [(_CATRemoteConnectionSendDataContext *)self headerLength])
   {
     return 0;
   }
 
-  v4 = [(_CATRemoteConnectionSendDataContext *)self bytesWritten];
-  return v4 - [(_CATRemoteConnectionSendDataContext *)self headerLength];
+  bytesWritten2 = [(_CATRemoteConnectionSendDataContext *)self bytesWritten];
+  return bytesWritten2 - [(_CATRemoteConnectionSendDataContext *)self headerLength];
 }
 
 - (unint64_t)headerLength
 {
   v3 = [(NSData *)self->mEncodedData length];
-  v4 = [(_CATRemoteConnectionSendDataContext *)self data];
-  v5 = v3 - [v4 length];
+  data = [(_CATRemoteConnectionSendDataContext *)self data];
+  v5 = v3 - [data length];
 
   return v5;
 }
 
-- (id)bufferedDataWithError:(id *)a3
+- (id)bufferedDataWithError:(id *)error
 {
   mEncodedData = self->mEncodedData;
-  v5 = [(_CATRemoteConnectionSendDataContext *)self bytesWritten];
+  bytesWritten = [(_CATRemoteConnectionSendDataContext *)self bytesWritten];
   v6 = [(NSData *)self->mEncodedData length];
   v7 = v6 - [(_CATRemoteConnectionSendDataContext *)self bytesWritten];
 
-  return [(NSData *)mEncodedData subdataWithRange:v5, v7];
+  return [(NSData *)mEncodedData subdataWithRange:bytesWritten, v7];
 }
 
 - (void)initWithData:userInfo:.cold.1()

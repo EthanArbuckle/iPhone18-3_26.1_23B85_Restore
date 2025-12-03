@@ -1,20 +1,20 @@
 @interface CNSharingProfilePhotoPickerViewController
-- (CNSharingProfilePhotoPickerViewController)initWithContact:(id)a3 avatarRecord:(id)a4 avatarItemProviderConfiguration:(id)a5 logger:(id)a6;
+- (CNSharingProfilePhotoPickerViewController)initWithContact:(id)contact avatarRecord:(id)record avatarItemProviderConfiguration:(id)configuration logger:(id)logger;
 - (CNSharingProfilePhotoPickerViewControllerDelegate)delegate;
 - (double)previewEdgeSize;
 - (id)buildItems;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)didSelectCustomizeButton:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)didSelectCustomizeButton:(id)button;
 - (void)reloadData;
 - (void)reloadItems;
 - (void)setupConstraints;
 - (void)updateInteritemSpacing;
 - (void)updatePreviewForSelectedItem;
-- (void)updateWithContact:(id)a3 fromFullPhotoPicker:(BOOL)a4;
+- (void)updateWithContact:(id)contact fromFullPhotoPicker:(BOOL)picker;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CNSharingProfilePhotoPickerViewController
@@ -26,26 +26,26 @@
   return WeakRetained;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v15 = a3;
-  v6 = [v15 cellForItemAtIndexPath:a4];
-  v7 = [v6 pickerItem];
-  v8 = [v7 avatarItem];
+  viewCopy = view;
+  v6 = [viewCopy cellForItemAtIndexPath:path];
+  pickerItem = [v6 pickerItem];
+  avatarItem = [pickerItem avatarItem];
 
-  if (v8)
+  if (avatarItem)
   {
-    v9 = [v6 pickerItem];
+    pickerItem2 = [v6 pickerItem];
     selectedItem = self->_selectedItem;
-    self->_selectedItem = v9;
+    self->_selectedItem = pickerItem2;
 
     [(CNSharingProfilePhotoPickerViewController *)self updatePreviewForSelectedItem];
   }
 
   else
   {
-    v11 = [(CNSharingProfilePhotoPickerViewController *)self delegate];
-    [v11 sharingPhotoPickerDidSelectAddItem:self];
+    delegate = [(CNSharingProfilePhotoPickerViewController *)self delegate];
+    [delegate sharingPhotoPickerDidSelectAddItem:self];
 
     v12 = [(NSArray *)self->_items indexOfObject:self->_selectedItem];
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
@@ -59,21 +59,21 @@
     }
 
     v14 = [MEMORY[0x1E696AC88] indexPathForItem:v13 inSection:0];
-    [v15 selectItemAtIndexPath:v14 animated:0 scrollPosition:0];
+    [viewCopy selectItemAtIndexPath:v14 animated:0 scrollPosition:0];
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[CNSharingProfilePhotoPickerItemCell reuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
   v10 = [(NSArray *)self->_items count];
-  if (v10 > [v6 item])
+  if (v10 > [pathCopy item])
   {
-    v11 = -[NSArray objectAtIndexedSubscript:](self->_items, "objectAtIndexedSubscript:", [v6 item]);
+    v11 = -[NSArray objectAtIndexedSubscript:](self->_items, "objectAtIndexedSubscript:", [pathCopy item]);
     [v9 setIsSmallScreen:self->_isSmallScreenDevice];
     [v9 setPickerItem:v11];
   }
@@ -81,22 +81,22 @@
   return v9;
 }
 
-- (void)didSelectCustomizeButton:(id)a3
+- (void)didSelectCustomizeButton:(id)button
 {
-  v4 = [(CNSharingProfilePhotoPickerViewController *)self delegate];
-  [v4 sharingPhotoPickerDidSelectAddItem:self];
+  delegate = [(CNSharingProfilePhotoPickerViewController *)self delegate];
+  [delegate sharingPhotoPickerDidSelectAddItem:self];
 }
 
 - (void)updatePreviewForSelectedItem
 {
-  v3 = [(CNSharingProfilePhotoPickerItem *)self->_selectedItem avatarItem];
+  avatarItem = [(CNSharingProfilePhotoPickerItem *)self->_selectedItem avatarItem];
 
-  if (v3)
+  if (avatarItem)
   {
-    v4 = [(CNSharingProfilePhotoPickerItem *)self->_selectedItem cachedPreviewImage];
-    if (v4)
+    cachedPreviewImage = [(CNSharingProfilePhotoPickerItem *)self->_selectedItem cachedPreviewImage];
+    if (cachedPreviewImage)
     {
-      v5 = v4;
+      v5 = cachedPreviewImage;
     }
 
     else
@@ -113,32 +113,32 @@
   }
 }
 
-- (void)updateWithContact:(id)a3 fromFullPhotoPicker:(BOOL)a4
+- (void)updateWithContact:(id)contact fromFullPhotoPicker:(BOOL)picker
 {
-  v4 = a4;
-  v6 = a3;
-  [(CNSharingProfileAvatarItemProvider *)self->_itemProvider updateWithContact:v6 fromFullPhotoPicker:v4];
+  pickerCopy = picker;
+  contactCopy = contact;
+  [(CNSharingProfileAvatarItemProvider *)self->_itemProvider updateWithContact:contactCopy fromFullPhotoPicker:pickerCopy];
   [(CNSharingProfilePhotoPickerViewController *)self reloadItems];
-  v7 = [(CNSharingProfilePhotoPickerViewController *)self view];
-  [v7 setNeedsLayout];
+  view = [(CNSharingProfilePhotoPickerViewController *)self view];
+  [view setNeedsLayout];
 
-  if ([v6 imageDataAvailable])
+  if ([contactCopy imageDataAvailable])
   {
-    v8 = [v6 rawImageType];
+    rawImageType = [contactCopy rawImageType];
     itemProvider = self->_itemProvider;
-    if (v8 == 1 || v8 == 4)
+    if (rawImageType == 1 || rawImageType == 4)
     {
-      v10 = [(CNSharingProfileAvatarItemProvider *)itemProvider photoItem];
-      if (!v10)
+      photoItem = [(CNSharingProfileAvatarItemProvider *)itemProvider photoItem];
+      if (!photoItem)
       {
         goto LABEL_13;
       }
     }
 
-    else if (v8 == 2)
+    else if (rawImageType == 2)
     {
-      v10 = [(CNSharingProfileAvatarItemProvider *)itemProvider monogramItem];
-      if (!v10)
+      photoItem = [(CNSharingProfileAvatarItemProvider *)itemProvider monogramItem];
+      if (!photoItem)
       {
         goto LABEL_13;
       }
@@ -146,8 +146,8 @@
 
     else
     {
-      v10 = [(CNSharingProfileAvatarItemProvider *)itemProvider animojiItem];
-      if (!v10)
+      photoItem = [(CNSharingProfileAvatarItemProvider *)itemProvider animojiItem];
+      if (!photoItem)
       {
         goto LABEL_13;
       }
@@ -158,7 +158,7 @@
     v19[1] = 3221225472;
     v19[2] = __83__CNSharingProfilePhotoPickerViewController_updateWithContact_fromFullPhotoPicker___block_invoke;
     v19[3] = &unk_1E74E23F0;
-    v12 = v10;
+    v12 = photoItem;
     v20 = v12;
     v13 = [(NSArray *)items _cn_indexOfFirstObjectPassingTest:v19];
     if (v13 != 0x7FFFFFFFFFFFFFFFLL)
@@ -190,13 +190,13 @@ BOOL __83__CNSharingProfilePhotoPickerViewController_updateWithContact_fromFullP
 - (id)buildItems
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [(CNSharingProfileAvatarItemProvider *)self->_itemProvider avatarItems];
-  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v2, "count") + 1}];
+  avatarItems = [(CNSharingProfileAvatarItemProvider *)self->_itemProvider avatarItems];
+  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(avatarItems, "count") + 1}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v2;
+  v4 = avatarItems;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -233,9 +233,9 @@ BOOL __83__CNSharingProfilePhotoPickerViewController_updateWithContact_fromFullP
 
 - (void)reloadItems
 {
-  v3 = [(CNSharingProfilePhotoPickerViewController *)self buildItems];
+  buildItems = [(CNSharingProfilePhotoPickerViewController *)self buildItems];
   items = self->_items;
-  self->_items = v3;
+  self->_items = buildItems;
 
   selectorView = self->_selectorView;
 
@@ -255,10 +255,10 @@ BOOL __83__CNSharingProfilePhotoPickerViewController_updateWithContact_fromFullP
 
 - (void)reloadData
 {
-  v4 = [(UICollectionView *)self->_selectorView indexPathsForSelectedItems];
-  if ([v4 count])
+  indexPathsForSelectedItems = [(UICollectionView *)self->_selectorView indexPathsForSelectedItems];
+  if ([indexPathsForSelectedItems count])
   {
-    v3 = [v4 objectAtIndexedSubscript:0];
+    v3 = [indexPathsForSelectedItems objectAtIndexedSubscript:0];
   }
 
   else
@@ -284,8 +284,8 @@ BOOL __83__CNSharingProfilePhotoPickerViewController_updateWithContact_fromFullP
       v4 = [(NSArray *)self->_items count];
       [(UICollectionViewFlowLayout *)self->_selectorLayout itemSize];
       v6 = v5 * v4;
-      v7 = [(CNSharingProfilePhotoPickerViewController *)self view];
-      [v7 bounds];
+      view = [(CNSharingProfilePhotoPickerViewController *)self view];
+      [view bounds];
       v8 = CGRectGetWidth(v11) - v6;
 
       v3 = floor(v8 / [(NSArray *)self->_items count]);
@@ -320,8 +320,8 @@ BOOL __83__CNSharingProfilePhotoPickerViewController_updateWithContact_fromFullP
     v5 = v4;
     [(UICollectionViewFlowLayout *)self->_selectorLayout minimumLineSpacing];
     v7 = v6 * ([(NSArray *)self->_items count]- 1) + v3 * v5;
-    v8 = [(CNSharingProfilePhotoPickerViewController *)self view];
-    [v8 bounds];
+    view = [(CNSharingProfilePhotoPickerViewController *)self view];
+    [view bounds];
     v9 = CGRectGetWidth(v17) - v7;
 
     v10 = floor(v9 * 0.5);
@@ -343,13 +343,13 @@ BOOL __83__CNSharingProfilePhotoPickerViewController_updateWithContact_fromFullP
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = CNSharingProfilePhotoPickerViewController;
-  [(CNSharingProfilePhotoPickerViewController *)&v10 viewWillAppear:a3];
-  v4 = [(CNSharingProfilePhotoPickerViewController *)self view];
-  [v4 layoutIfNeeded];
+  [(CNSharingProfilePhotoPickerViewController *)&v10 viewWillAppear:appear];
+  view = [(CNSharingProfilePhotoPickerViewController *)self view];
+  [view layoutIfNeeded];
 
   [(CNSharingProfilePhotoPickerViewController *)self updatePreviewForSelectedItem];
   if ([(NSArray *)self->_items count])
@@ -373,58 +373,58 @@ BOOL __83__CNSharingProfilePhotoPickerViewController_updateWithContact_fromFullP
 
 - (void)setupConstraints
 {
-  v33 = [MEMORY[0x1E695DF70] array];
-  v3 = [(UIImageView *)self->_previewView widthAnchor];
+  array = [MEMORY[0x1E695DF70] array];
+  widthAnchor = [(UIImageView *)self->_previewView widthAnchor];
   [(CNSharingProfilePhotoPickerViewController *)self previewEdgeSize];
-  v4 = [v3 constraintEqualToConstant:?];
-  [v33 addObject:v4];
+  v4 = [widthAnchor constraintEqualToConstant:?];
+  [array addObject:v4];
 
-  v5 = [(UIImageView *)self->_previewView widthAnchor];
-  v6 = [(UIImageView *)self->_previewView heightAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
-  [v33 addObject:v7];
+  widthAnchor2 = [(UIImageView *)self->_previewView widthAnchor];
+  heightAnchor = [(UIImageView *)self->_previewView heightAnchor];
+  v7 = [widthAnchor2 constraintEqualToAnchor:heightAnchor];
+  [array addObject:v7];
 
-  v8 = [(UIImageView *)self->_previewView centerXAnchor];
-  v9 = [(CNSharingProfilePhotoPickerViewController *)self view];
-  v10 = [v9 centerXAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
-  [v33 addObject:v11];
+  centerXAnchor = [(UIImageView *)self->_previewView centerXAnchor];
+  view = [(CNSharingProfilePhotoPickerViewController *)self view];
+  centerXAnchor2 = [view centerXAnchor];
+  v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  [array addObject:v11];
 
-  v12 = [(UIImageView *)self->_previewView topAnchor];
-  v13 = [(CNSharingProfilePhotoPickerViewController *)self view];
-  v14 = [v13 topAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14 constant:28.0];
-  [v33 addObject:v15];
+  topAnchor = [(UIImageView *)self->_previewView topAnchor];
+  view2 = [(CNSharingProfilePhotoPickerViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:28.0];
+  [array addObject:v15];
 
-  v16 = [(UICollectionView *)self->_selectorView leadingAnchor];
-  v17 = [(CNSharingProfilePhotoPickerViewController *)self view];
-  v18 = [v17 leadingAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
-  [v33 addObject:v19];
+  leadingAnchor = [(UICollectionView *)self->_selectorView leadingAnchor];
+  view3 = [(CNSharingProfilePhotoPickerViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v19];
 
-  v20 = [(UICollectionView *)self->_selectorView trailingAnchor];
-  v21 = [(CNSharingProfilePhotoPickerViewController *)self view];
-  v22 = [v21 trailingAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
-  [v33 addObject:v23];
+  trailingAnchor = [(UICollectionView *)self->_selectorView trailingAnchor];
+  view4 = [(CNSharingProfilePhotoPickerViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v23];
 
-  v24 = [(UICollectionView *)self->_selectorView topAnchor];
-  v25 = [(UIImageView *)self->_previewView bottomAnchor];
+  topAnchor3 = [(UICollectionView *)self->_selectorView topAnchor];
+  bottomAnchor = [(UIImageView *)self->_previewView bottomAnchor];
   [(CNSharingProfilePhotoPickerViewController *)self previewToSelectorSpacing];
-  v26 = [v24 constraintEqualToAnchor:v25 constant:?];
-  [v33 addObject:v26];
+  v26 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:?];
+  [array addObject:v26];
 
-  v27 = [(UICollectionView *)self->_selectorView heightAnchor];
-  v28 = [v27 constraintEqualToConstant:100.0];
-  [v33 addObject:v28];
+  heightAnchor2 = [(UICollectionView *)self->_selectorView heightAnchor];
+  v28 = [heightAnchor2 constraintEqualToConstant:100.0];
+  [array addObject:v28];
 
-  v29 = [(UICollectionView *)self->_selectorView bottomAnchor];
-  v30 = [(CNSharingProfilePhotoPickerViewController *)self view];
-  v31 = [v30 bottomAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31];
-  [v33 addObject:v32];
+  bottomAnchor2 = [(UICollectionView *)self->_selectorView bottomAnchor];
+  view5 = [(CNSharingProfilePhotoPickerViewController *)self view];
+  bottomAnchor3 = [view5 bottomAnchor];
+  v32 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
+  [array addObject:v32];
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v33];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
 }
 
 - (void)viewDidLoad
@@ -432,8 +432,8 @@ BOOL __83__CNSharingProfilePhotoPickerViewController_updateWithContact_fromFullP
   v31.receiver = self;
   v31.super_class = CNSharingProfilePhotoPickerViewController;
   [(CNSharingProfilePhotoPickerViewController *)&v31 viewDidLoad];
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
 
   self->_isSmallScreenDevice = v5 <= 568.0;
@@ -451,11 +451,11 @@ BOOL __83__CNSharingProfilePhotoPickerViewController_updateWithContact_fromFullP
   [(UIImageView *)self->_previewView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(CNSharingProfilePhotoPickerViewController *)self previewEdgeSize];
   v14 = floor(v13 * 0.5);
-  v15 = [(UIImageView *)self->_previewView layer];
-  [v15 setCornerRadius:v14];
+  layer = [(UIImageView *)self->_previewView layer];
+  [layer setCornerRadius:v14];
 
-  v16 = [(CNSharingProfilePhotoPickerViewController *)self view];
-  [v16 addSubview:self->_previewView];
+  view = [(CNSharingProfilePhotoPickerViewController *)self view];
+  [view addSubview:self->_previewView];
 
   v17 = objc_alloc_init(MEMORY[0x1E69DC840]);
   selectorLayout = self->_selectorLayout;
@@ -475,8 +475,8 @@ BOOL __83__CNSharingProfilePhotoPickerViewController_updateWithContact_fromFullP
   selectorView = self->_selectorView;
   self->_selectorView = v20;
 
-  v22 = [MEMORY[0x1E69DC888] clearColor];
-  [(UICollectionView *)self->_selectorView setBackgroundColor:v22];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UICollectionView *)self->_selectorView setBackgroundColor:clearColor];
 
   [(UICollectionView *)self->_selectorView setContentInsetAdjustmentBehavior:2];
   [(UICollectionView *)self->_selectorView setShowsVerticalScrollIndicator:0];
@@ -484,8 +484,8 @@ BOOL __83__CNSharingProfilePhotoPickerViewController_updateWithContact_fromFullP
   [(UICollectionView *)self->_selectorView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UICollectionView *)self->_selectorView setDataSource:self];
   [(UICollectionView *)self->_selectorView setDelegate:self];
-  v23 = [(CNSharingProfilePhotoPickerViewController *)self view];
-  [v23 addSubview:self->_selectorView];
+  view2 = [(CNSharingProfilePhotoPickerViewController *)self view];
+  [view2 addSubview:self->_selectorView];
 
   v24 = self->_selectorView;
   v25 = objc_opt_class();
@@ -509,22 +509,22 @@ BOOL __83__CNSharingProfilePhotoPickerViewController_updateWithContact_fromFullP
   [(CNSharingProfilePhotoPickerViewController *)self setupConstraints];
 }
 
-- (CNSharingProfilePhotoPickerViewController)initWithContact:(id)a3 avatarRecord:(id)a4 avatarItemProviderConfiguration:(id)a5 logger:(id)a6
+- (CNSharingProfilePhotoPickerViewController)initWithContact:(id)contact avatarRecord:(id)record avatarItemProviderConfiguration:(id)configuration logger:(id)logger
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contactCopy = contact;
+  recordCopy = record;
+  configurationCopy = configuration;
+  loggerCopy = logger;
   v19.receiver = self;
   v19.super_class = CNSharingProfilePhotoPickerViewController;
   v15 = [(CNSharingProfilePhotoPickerViewController *)&v19 initWithNibName:0 bundle:0];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_contact, a3);
-    objc_storeStrong(&v16->_avatarRecord, a4);
-    objc_storeStrong(&v16->_avatarItemProviderConfiguration, a5);
-    objc_storeStrong(&v16->_logger, a6);
+    objc_storeStrong(&v15->_contact, contact);
+    objc_storeStrong(&v16->_avatarRecord, record);
+    objc_storeStrong(&v16->_avatarItemProviderConfiguration, configuration);
+    objc_storeStrong(&v16->_logger, logger);
     v17 = v16;
   }
 

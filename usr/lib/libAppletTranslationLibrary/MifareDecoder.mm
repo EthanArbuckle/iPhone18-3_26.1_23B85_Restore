@@ -1,47 +1,47 @@
 @interface MifareDecoder
-+ (id)ParseEndEventShort:(id)a3 withApplet:(id)a4 error:(id *)a5;
-+ (id)ParseTimeoutEventISO:(id)a3 withApplet:(id)a4 error:(id *)a5;
-+ (id)ParseTimeoutEventNative:(id)a3 withApplet:(id)a4 error:(id *)a5;
-+ (id)getSPID:(id)a3 withApplet:(id)a4 withError:(id *)a5;
-+ (id)parseEndEvent:(id)a3 withApplet:(id)a4 error:(id *)a5;
-+ (id)parseEndEventISO:(id)a3 withApplet:(id)a4 error:(id *)a5;
-+ (id)parseStartEventISO:(id)a3 withApplet:(id)a4 error:(id *)a5;
-+ (id)parseStartEventNative:(id)a3 withApplet:(id)a4 error:(id *)a5;
-- (BOOL)supportsPlasticCardMode:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6;
-- (id)GetAppletProperties:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7;
-- (id)getAppletStateAndHistory:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7;
-- (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withPublicKey:(id)a6 withEncryptionScheme:(id)a7 withTransceiver:(id)a8 withError:(id *)a9;
-- (id)parseHCIEvent:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withTransceiver:(id)a7 withError:(id *)a8;
-- (id)processEndOfTransaction:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7;
++ (id)ParseEndEventShort:(id)short withApplet:(id)applet error:(id *)error;
++ (id)ParseTimeoutEventISO:(id)o withApplet:(id)applet error:(id *)error;
++ (id)ParseTimeoutEventNative:(id)native withApplet:(id)applet error:(id *)error;
++ (id)getSPID:(id)d withApplet:(id)applet withError:(id *)error;
++ (id)parseEndEvent:(id)event withApplet:(id)applet error:(id *)error;
++ (id)parseEndEventISO:(id)o withApplet:(id)applet error:(id *)error;
++ (id)parseStartEventISO:(id)o withApplet:(id)applet error:(id *)error;
++ (id)parseStartEventNative:(id)native withApplet:(id)applet error:(id *)error;
+- (BOOL)supportsPlasticCardMode:(id)mode withApplet:(id)applet withPackage:(id)package withModule:(id)module;
+- (id)GetAppletProperties:(id)properties withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error;
+- (id)getAppletStateAndHistory:(id)history withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error;
+- (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withPublicKey:(id)key withEncryptionScheme:(id)scheme withTransceiver:(id)transceiver withError:(id *)error;
+- (id)parseHCIEvent:(id)event withApplet:(id)applet withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error;
+- (id)processEndOfTransaction:(id)transaction withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error;
 @end
 
 @implementation MifareDecoder
 
-- (id)parseHCIEvent:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withTransceiver:(id)a7 withError:(id *)a8
+- (id)parseHCIEvent:(id)event withApplet:(id)applet withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  if ([v10 length] <= 1)
+  eventCopy = event;
+  appletCopy = applet;
+  if ([eventCopy length] <= 1)
   {
     v12 = ATLLogObject();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v47 = [v10 length];
+      v47 = [eventCopy length];
       _os_log_impl(&dword_22EEF5000, v12, OS_LOG_TYPE_ERROR, "Short eventData? %u", buf, 8u);
     }
 
-    v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Short eventData? %u", objc_msgSend(v10, "length")];
+    v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Short eventData? %u", objc_msgSend(eventCopy, "length")];
     v14 = v13;
-    if (!a8)
+    if (!error)
     {
       goto LABEL_33;
     }
 
-    v15 = *a8;
+    v15 = *error;
     v16 = MEMORY[0x277CCA9B8];
-    if (*a8)
+    if (*error)
     {
       v17 = *MEMORY[0x277CCA7E8];
       v50[0] = *MEMORY[0x277CCA450];
@@ -68,27 +68,27 @@
     v27 = v16;
     v28 = 6;
 LABEL_32:
-    *a8 = [v27 errorWithDomain:@"ATL" code:v28 userInfo:v26];
+    *error = [v27 errorWithDomain:@"ATL" code:v28 userInfo:v26];
 
 LABEL_33:
     v39 = 0;
     goto LABEL_36;
   }
 
-  v22 = [v10 u8:0];
-  v23 = [v10 u8:1];
+  v22 = [eventCopy u8:0];
+  v23 = [eventCopy u8:1];
   v24 = v23;
   if (v22 == 16)
   {
     if ((v23 - 3) <= 1)
     {
-      v25 = [MifareDecoder ParseTimeoutEventNative:v10 withApplet:v11 error:a8];
+      v25 = [MifareDecoder ParseTimeoutEventNative:eventCopy withApplet:appletCopy error:error];
       goto LABEL_35;
     }
 
     if (v23 == 255)
     {
-      v25 = [MifareDecoder ParseTimeoutEventISO:v10 withApplet:v11 error:a8];
+      v25 = [MifareDecoder ParseTimeoutEventISO:eventCopy withApplet:appletCopy error:error];
       goto LABEL_35;
     }
 
@@ -99,19 +99,19 @@ LABEL_33:
   {
     if ((v23 - 3) <= 1)
     {
-      v25 = [MifareDecoder parseEndEvent:v10 withApplet:v11 error:a8];
+      v25 = [MifareDecoder parseEndEvent:eventCopy withApplet:appletCopy error:error];
       goto LABEL_35;
     }
 
     if (v23 == 240)
     {
-      v25 = [MifareDecoder ParseEndEventShort:v10 withApplet:v11 error:a8];
+      v25 = [MifareDecoder ParseEndEventShort:eventCopy withApplet:appletCopy error:error];
       goto LABEL_35;
     }
 
     if (v23 == 255)
     {
-      v25 = [MifareDecoder parseEndEventISO:v10 withApplet:v11 error:a8];
+      v25 = [MifareDecoder parseEndEventISO:eventCopy withApplet:appletCopy error:error];
       goto LABEL_35;
     }
 
@@ -128,15 +128,15 @@ LABEL_25:
 
     v30 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Invalid event type 0x%x version 0x%x", v22, v24];
     v14 = v30;
-    if (!a8)
+    if (!error)
     {
       goto LABEL_33;
     }
 
-    v31 = *a8;
+    v31 = *error;
     v32 = MEMORY[0x277CCA9B8];
     v33 = *MEMORY[0x277CCA450];
-    if (*a8)
+    if (*error)
     {
       v34 = *MEMORY[0x277CCA7E8];
       v42[0] = *MEMORY[0x277CCA450];
@@ -174,14 +174,14 @@ LABEL_25:
   {
     if (v23 == 255)
     {
-      v25 = [MifareDecoder parseStartEventISO:v10 withApplet:v11 error:a8];
+      v25 = [MifareDecoder parseStartEventISO:eventCopy withApplet:appletCopy error:error];
       goto LABEL_35;
     }
 
     goto LABEL_25;
   }
 
-  v25 = [MifareDecoder parseStartEventNative:v10 withApplet:v11 error:a8];
+  v25 = [MifareDecoder parseStartEventNative:eventCopy withApplet:appletCopy error:error];
 LABEL_35:
   v39 = v25;
 LABEL_36:
@@ -191,39 +191,39 @@ LABEL_36:
   return v39;
 }
 
-+ (id)parseStartEventNative:(id)a3 withApplet:(id)a4 error:(id *)a5
++ (id)parseStartEventNative:(id)native withApplet:(id)applet error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 length] == 7)
+  nativeCopy = native;
+  appletCopy = applet;
+  if ([nativeCopy length] == 7)
   {
-    v9 = [v7 bytes];
+    bytes = [nativeCopy bytes];
     v28[0] = @"EventType";
     v28[1] = @"appletIdentifier";
     v29[0] = @"StartEvent";
-    v29[1] = v8;
+    v29[1] = appletCopy;
     v28[2] = @"Version";
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v9 + 1)];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(bytes + 1)];
     v29[2] = v10;
     v28[3] = @"command";
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*(v9 + 4)) >> 16];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*(bytes + 4)) >> 16];
     v29[3] = v11;
     v28[4] = @"selectStatus";
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v9 + 2)];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(bytes + 2)];
     v29[4] = v12;
     v28[5] = @"spIdentifier";
-    v13 = [MifareDecoder getServiceProvider:*(v9 + 6)];
+    v13 = [MifareDecoder getServiceProvider:*(bytes + 6)];
     v29[5] = v13;
     v29[6] = MEMORY[0x277CBEC38];
     v28[6] = @"IgnoreRFEvents";
     v28[7] = @"DontWaitForEOT";
-    v14 = [MEMORY[0x277CCABB0] numberWithBool:{+[MifareDecoder getDontWaitForEOT:](MifareDecoder, "getDontWaitForEOT:", *(v9 + 6))}];
+    v14 = [MEMORY[0x277CCABB0] numberWithBool:{+[MifareDecoder getDontWaitForEOT:](MifareDecoder, "getDontWaitForEOT:", *(bytes + 6))}];
     v29[7] = v14;
     v29[8] = MEMORY[0x277CBEC28];
     v28[8] = @"RequiresPowerCycle";
     v28[9] = @"DelayExpressReentry";
-    v15 = [MifareDecoder getEmReentryDelayMs:*(v9 + 6)];
+    v15 = [MifareDecoder getEmReentryDelayMs:*(bytes + 6)];
     v29[9] = v15;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:10];
   }
@@ -234,23 +234,23 @@ LABEL_36:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v35 = [v7 length];
+      v35 = [nativeCopy length];
       v36 = 2048;
       v37 = 7;
       _os_log_impl(&dword_22EEF5000, v17, OS_LOG_TYPE_ERROR, "Start event length %zu (exp) %zu", buf, 0x16u);
     }
 
-    v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Start event length %zu (exp) %zu", objc_msgSend(v7, "length"), 7];
+    v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Start event length %zu (exp) %zu", objc_msgSend(nativeCopy, "length"), 7];
     v10 = v18;
-    if (!a5)
+    if (!error)
     {
       v16 = 0;
       goto LABEL_12;
     }
 
-    v19 = *a5;
+    v19 = *error;
     v20 = MEMORY[0x277CCA9B8];
-    if (*a5)
+    if (*error)
     {
       v21 = *MEMORY[0x277CCA7E8];
       v30[0] = *MEMORY[0x277CCA450];
@@ -275,7 +275,7 @@ LABEL_36:
 
     v11 = [v22 dictionaryWithObjects:v23 forKeys:v24 count:v25];
     [v20 errorWithDomain:@"ATL" code:3 userInfo:v11];
-    *a5 = v16 = 0;
+    *error = v16 = 0;
   }
 
 LABEL_12:
@@ -284,39 +284,39 @@ LABEL_12:
   return v16;
 }
 
-+ (id)parseStartEventISO:(id)a3 withApplet:(id)a4 error:(id *)a5
++ (id)parseStartEventISO:(id)o withApplet:(id)applet error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 length] == 10)
+  oCopy = o;
+  appletCopy = applet;
+  if ([oCopy length] == 10)
   {
-    v9 = [v7 bytes];
+    bytes = [oCopy bytes];
     v28[0] = @"EventType";
     v28[1] = @"appletIdentifier";
     v29[0] = @"StartEvent";
-    v29[1] = v8;
+    v29[1] = appletCopy;
     v28[2] = @"Version";
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v9 + 1)];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(bytes + 1)];
     v29[2] = v10;
     v28[3] = @"command";
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(v9 + 5))];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(bytes + 5))];
     v29[3] = v11;
     v28[4] = @"selectStatus";
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*(v9 + 2)) >> 16];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*(bytes + 2)) >> 16];
     v29[4] = v12;
     v28[5] = @"spIdentifier";
-    v13 = [MifareDecoder getServiceProvider:*(v9 + 9)];
+    v13 = [MifareDecoder getServiceProvider:*(bytes + 9)];
     v29[5] = v13;
     v29[6] = MEMORY[0x277CBEC38];
     v28[6] = @"IgnoreRFEvents";
     v28[7] = @"DontWaitForEOT";
-    v14 = [MEMORY[0x277CCABB0] numberWithBool:{+[MifareDecoder getDontWaitForEOT:](MifareDecoder, "getDontWaitForEOT:", *(v9 + 9))}];
+    v14 = [MEMORY[0x277CCABB0] numberWithBool:{+[MifareDecoder getDontWaitForEOT:](MifareDecoder, "getDontWaitForEOT:", *(bytes + 9))}];
     v29[7] = v14;
     v29[8] = MEMORY[0x277CBEC28];
     v28[8] = @"RequiresPowerCycle";
     v28[9] = @"DelayExpressReentry";
-    v15 = [MifareDecoder getEmReentryDelayMs:*(v9 + 9)];
+    v15 = [MifareDecoder getEmReentryDelayMs:*(bytes + 9)];
     v29[9] = v15;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:10];
   }
@@ -327,23 +327,23 @@ LABEL_12:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v35 = [v7 length];
+      v35 = [oCopy length];
       v36 = 2048;
       v37 = 10;
       _os_log_impl(&dword_22EEF5000, v17, OS_LOG_TYPE_ERROR, "Start event length %zu (exp) %zu", buf, 0x16u);
     }
 
-    v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Start event length %zu (exp) %zu", objc_msgSend(v7, "length"), 10];
+    v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Start event length %zu (exp) %zu", objc_msgSend(oCopy, "length"), 10];
     v10 = v18;
-    if (!a5)
+    if (!error)
     {
       v16 = 0;
       goto LABEL_12;
     }
 
-    v19 = *a5;
+    v19 = *error;
     v20 = MEMORY[0x277CCA9B8];
-    if (*a5)
+    if (*error)
     {
       v21 = *MEMORY[0x277CCA7E8];
       v30[0] = *MEMORY[0x277CCA450];
@@ -368,7 +368,7 @@ LABEL_12:
 
     v11 = [v22 dictionaryWithObjects:v23 forKeys:v24 count:v25];
     [v20 errorWithDomain:@"ATL" code:3 userInfo:v11];
-    *a5 = v16 = 0;
+    *error = v16 = 0;
   }
 
 LABEL_12:
@@ -377,29 +377,29 @@ LABEL_12:
   return v16;
 }
 
-+ (id)parseEndEvent:(id)a3 withApplet:(id)a4 error:(id *)a5
++ (id)parseEndEvent:(id)event withApplet:(id)applet error:(id *)error
 {
   v81[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 length] <= 0x2D)
+  eventCopy = event;
+  appletCopy = applet;
+  if ([eventCopy length] <= 0x2D)
   {
     v9 = ATLLogObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = [v7 length];
+      *(&buf + 4) = [eventCopy length];
       _os_log_impl(&dword_22EEF5000, v9, OS_LOG_TYPE_ERROR, "End event length %zu", &buf, 0xCu);
     }
 
-    v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"End event length %zu", objc_msgSend(v7, "length")];
+    v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"End event length %zu", objc_msgSend(eventCopy, "length")];
     v11 = v10;
-    if (a5)
+    if (error)
     {
-      v12 = *a5;
+      v12 = *error;
       v13 = MEMORY[0x277CCA9B8];
       v14 = *MEMORY[0x277CCA450];
-      if (*a5)
+      if (*error)
       {
         v15 = *MEMORY[0x277CCA7E8];
         v78[0] = *MEMORY[0x277CCA450];
@@ -423,14 +423,14 @@ LABEL_12:
       }
 
       v41 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:v19];
-      *a5 = [v13 errorWithDomain:@"ATL" code:3 userInfo:v41];
+      *error = [v13 errorWithDomain:@"ATL" code:3 userInfo:v41];
     }
 
     goto LABEL_29;
   }
 
-  v20 = [v7 bytes];
-  v11 = [v7 subdataWithRange:{46, objc_msgSend(v7, "length") - 46}];
+  bytes = [eventCopy bytes];
+  v11 = [eventCopy subdataWithRange:{46, objc_msgSend(eventCopy, "length") - 46}];
   v57[0] = [v11 bytes];
   v57[1] = [v11 length];
   buf = 0uLL;
@@ -451,15 +451,15 @@ LABEL_12:
     v35 = objc_alloc(MEMORY[0x277CCACA8]);
     v36 = [v35 initWithFormat:@"Failed to decode E1 tag %d or wrong tag 0x%llx", v21, buf];
     v26 = v36;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_28;
     }
 
-    v37 = *a5;
+    v37 = *error;
     v28 = MEMORY[0x277CCA9B8];
     v38 = *MEMORY[0x277CCA450];
-    if (*a5)
+    if (*error)
     {
       v39 = *MEMORY[0x277CCA7E8];
       v70[0] = *MEMORY[0x277CCA450];
@@ -488,7 +488,7 @@ LABEL_26:
   if (!v22)
   {
     *v68 = -1;
-    v42 = [MifareDecoder didTransactionError:**v74 withParameters:v20 withTransactionResult:v68];
+    v42 = [MifareDecoder didTransactionError:**v74 withParameters:bytes withTransactionResult:v68];
     v62 = @"State";
     v60[0] = @"SP";
     v43 = [MifareDecoder getServiceProvider:**v74];
@@ -503,24 +503,24 @@ LABEL_26:
     v58[0] = @"EventType";
     v58[1] = @"appletIdentifier";
     v59[0] = @"EndEvent";
-    v59[1] = v8;
+    v59[1] = appletCopy;
     v58[2] = @"Version";
-    v56 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v20 + 1)];
+    v56 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(bytes + 1)];
     v59[2] = v56;
     v58[3] = @"didError";
     v46 = [MEMORY[0x277CCABB0] numberWithBool:v42];
     v59[3] = v46;
     v58[4] = @"command";
-    v47 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*(v20 + 3)) >> 16];
+    v47 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*(bytes + 3)) >> 16];
     v59[4] = v47;
     v58[5] = @"status";
-    v48 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v20 + 2)];
+    v48 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(bytes + 2)];
     v59[5] = v48;
     v58[6] = @"result";
     v49 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*v68];
     v59[6] = v49;
     v58[7] = @"informative";
-    v50 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*(v20 + 39)) >> 16];
+    v50 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*(bytes + 39)) >> 16];
     v59[7] = v50;
     v59[8] = &unk_2843C6A70;
     v58[8] = @"type";
@@ -544,15 +544,15 @@ LABEL_26:
 
   v25 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode E1 contents %d", v23];
   v26 = v25;
-  if (!a5)
+  if (!error)
   {
     goto LABEL_28;
   }
 
-  v27 = *a5;
+  v27 = *error;
   v28 = MEMORY[0x277CCA9B8];
   v29 = *MEMORY[0x277CCA450];
-  if (!*a5)
+  if (!*error)
   {
     v66 = *MEMORY[0x277CCA450];
     v67 = v25;
@@ -574,7 +574,7 @@ LABEL_20:
   v40 = 2;
 LABEL_27:
   v52 = [v31 dictionaryWithObjects:v32 forKeys:v33 count:v40];
-  *a5 = [v28 errorWithDomain:@"ATL" code:3 userInfo:v52];
+  *error = [v28 errorWithDomain:@"ATL" code:3 userInfo:v52];
 
 LABEL_28:
 LABEL_29:
@@ -586,29 +586,29 @@ LABEL_30:
   return v51;
 }
 
-+ (id)parseEndEventISO:(id)a3 withApplet:(id)a4 error:(id *)a5
++ (id)parseEndEventISO:(id)o withApplet:(id)applet error:(id *)error
 {
   v81[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 length] <= 0x30)
+  oCopy = o;
+  appletCopy = applet;
+  if ([oCopy length] <= 0x30)
   {
     v9 = ATLLogObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = [v7 length];
+      *(&buf + 4) = [oCopy length];
       _os_log_impl(&dword_22EEF5000, v9, OS_LOG_TYPE_ERROR, "End event length %zu", &buf, 0xCu);
     }
 
-    v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"End event length %zu", objc_msgSend(v7, "length")];
+    v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"End event length %zu", objc_msgSend(oCopy, "length")];
     v11 = v10;
-    if (a5)
+    if (error)
     {
-      v12 = *a5;
+      v12 = *error;
       v13 = MEMORY[0x277CCA9B8];
       v14 = *MEMORY[0x277CCA450];
-      if (*a5)
+      if (*error)
       {
         v15 = *MEMORY[0x277CCA7E8];
         v78[0] = *MEMORY[0x277CCA450];
@@ -632,14 +632,14 @@ LABEL_30:
       }
 
       v41 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:v19];
-      *a5 = [v13 errorWithDomain:@"ATL" code:3 userInfo:v41];
+      *error = [v13 errorWithDomain:@"ATL" code:3 userInfo:v41];
     }
 
     goto LABEL_29;
   }
 
-  v20 = [v7 bytes];
-  v11 = [v7 subdataWithRange:{49, objc_msgSend(v7, "length") - 49}];
+  bytes = [oCopy bytes];
+  v11 = [oCopy subdataWithRange:{49, objc_msgSend(oCopy, "length") - 49}];
   v57[0] = [v11 bytes];
   v57[1] = [v11 length];
   buf = 0uLL;
@@ -660,15 +660,15 @@ LABEL_30:
     v35 = objc_alloc(MEMORY[0x277CCACA8]);
     v36 = [v35 initWithFormat:@"Failed to decode E1 tag %d or wrong tag 0x%llx", v21, buf];
     v26 = v36;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_28;
     }
 
-    v37 = *a5;
+    v37 = *error;
     v28 = MEMORY[0x277CCA9B8];
     v38 = *MEMORY[0x277CCA450];
-    if (*a5)
+    if (*error)
     {
       v39 = *MEMORY[0x277CCA7E8];
       v70[0] = *MEMORY[0x277CCA450];
@@ -697,7 +697,7 @@ LABEL_26:
   if (!v22)
   {
     *v68 = -1;
-    v42 = [MifareDecoder didTransactionError:**v74 withISOParameters:v20 withTransactionResult:v68];
+    v42 = [MifareDecoder didTransactionError:**v74 withISOParameters:bytes withTransactionResult:v68];
     v62 = @"State";
     v60[0] = @"SP";
     v43 = [MifareDecoder getServiceProvider:**v74];
@@ -712,24 +712,24 @@ LABEL_26:
     v58[0] = @"EventType";
     v58[1] = @"appletIdentifier";
     v59[0] = @"EndEvent";
-    v59[1] = v8;
+    v59[1] = appletCopy;
     v58[2] = @"Version";
-    v56 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v20 + 1)];
+    v56 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(bytes + 1)];
     v59[2] = v56;
     v58[3] = @"didError";
     v46 = [MEMORY[0x277CCABB0] numberWithBool:v42];
     v59[3] = v46;
     v58[4] = @"command";
-    v47 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(v20 + 4))];
+    v47 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(bytes + 4))];
     v59[4] = v47;
     v58[5] = @"status";
-    v48 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*(v20 + 2)) >> 16];
+    v48 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*(bytes + 2)) >> 16];
     v59[5] = v48;
     v58[6] = @"result";
     v49 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*v68];
     v59[6] = v49;
     v58[7] = @"informative";
-    v50 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*(v20 + 42)) >> 16];
+    v50 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*(bytes + 42)) >> 16];
     v59[7] = v50;
     v59[8] = &unk_2843C6A70;
     v58[8] = @"type";
@@ -753,15 +753,15 @@ LABEL_26:
 
   v25 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode E1 contents %d", v23];
   v26 = v25;
-  if (!a5)
+  if (!error)
   {
     goto LABEL_28;
   }
 
-  v27 = *a5;
+  v27 = *error;
   v28 = MEMORY[0x277CCA9B8];
   v29 = *MEMORY[0x277CCA450];
-  if (!*a5)
+  if (!*error)
   {
     v66 = *MEMORY[0x277CCA450];
     v67 = v25;
@@ -783,7 +783,7 @@ LABEL_20:
   v40 = 2;
 LABEL_27:
   v52 = [v31 dictionaryWithObjects:v32 forKeys:v33 count:v40];
-  *a5 = [v28 errorWithDomain:@"ATL" code:3 userInfo:v52];
+  *error = [v28 errorWithDomain:@"ATL" code:3 userInfo:v52];
 
 LABEL_28:
 LABEL_29:
@@ -795,28 +795,28 @@ LABEL_30:
   return v51;
 }
 
-+ (id)ParseEndEventShort:(id)a3 withApplet:(id)a4 error:(id *)a5
++ (id)ParseEndEventShort:(id)short withApplet:(id)applet error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 length] == 3)
+  shortCopy = short;
+  appletCopy = applet;
+  if ([shortCopy length] == 3)
   {
-    v9 = [v7 bytes];
+    bytes = [shortCopy bytes];
     v24[0] = @"EndEvent";
     v23[0] = @"EventType";
     v23[1] = @"Version";
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v9 + 1)];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(bytes + 1)];
     v23[2] = @"appletIdentifier";
     v23[3] = @"didError";
     v24[1] = v10;
-    v24[2] = v8;
+    v24[2] = appletCopy;
     v24[3] = MEMORY[0x277CBEC28];
     v24[4] = &unk_2843C6A88;
     v23[4] = @"result";
     v23[5] = @"type";
     v24[5] = &unk_2843C6A70;
-    a5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:6];
+    error = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:6];
   }
 
   else
@@ -825,17 +825,17 @@ LABEL_30:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v30 = [v7 length];
+      v30 = [shortCopy length];
       _os_log_impl(&dword_22EEF5000, v11, OS_LOG_TYPE_ERROR, "End event length %zu", buf, 0xCu);
     }
 
-    v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"End event length %zu", objc_msgSend(v7, "length")];
+    v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"End event length %zu", objc_msgSend(shortCopy, "length")];
     v10 = v12;
-    if (a5)
+    if (error)
     {
-      v13 = *a5;
+      v13 = *error;
       v14 = MEMORY[0x277CCA9B8];
-      if (*a5)
+      if (*error)
       {
         v15 = *MEMORY[0x277CCA7E8];
         v25[0] = *MEMORY[0x277CCA450];
@@ -859,39 +859,39 @@ LABEL_30:
       }
 
       v20 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:v19];
-      *a5 = [v14 errorWithDomain:@"ATL" code:3 userInfo:v20];
+      *error = [v14 errorWithDomain:@"ATL" code:3 userInfo:v20];
 
-      a5 = 0;
+      error = 0;
     }
   }
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return a5;
+  return error;
 }
 
-+ (id)ParseTimeoutEventNative:(id)a3 withApplet:(id)a4 error:(id *)a5
++ (id)ParseTimeoutEventNative:(id)native withApplet:(id)applet error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 length] == 8)
+  nativeCopy = native;
+  appletCopy = applet;
+  if ([nativeCopy length] == 8)
   {
-    v9 = [v7 bytes];
+    bytes = [nativeCopy bytes];
     v26[0] = @"EndEvent";
     v25[0] = @"EventType";
     v25[1] = @"Version";
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v9 + 1)];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(bytes + 1)];
     v26[1] = v10;
-    v26[2] = v8;
+    v26[2] = appletCopy;
     v25[2] = @"appletIdentifier";
     v25[3] = @"didError";
     v26[3] = MEMORY[0x277CBEC38];
     v25[4] = @"command";
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*(v9 + 4)) >> 16];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*(bytes + 4)) >> 16];
     v26[4] = v11;
     v25[5] = @"status";
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v9 + 3)];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(bytes + 3)];
     v26[5] = v12;
     v26[6] = &unk_2843C6AA0;
     v25[6] = @"result";
@@ -906,21 +906,21 @@ LABEL_30:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v32 = [v7 length];
+      v32 = [nativeCopy length];
       _os_log_impl(&dword_22EEF5000, v14, OS_LOG_TYPE_ERROR, "event length %zu", buf, 0xCu);
     }
 
-    v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"event length %zu", objc_msgSend(v7, "length")];
+    v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"event length %zu", objc_msgSend(nativeCopy, "length")];
     v10 = v15;
-    if (!a5)
+    if (!error)
     {
       v13 = 0;
       goto LABEL_12;
     }
 
-    v16 = *a5;
+    v16 = *error;
     v17 = MEMORY[0x277CCA9B8];
-    if (*a5)
+    if (*error)
     {
       v18 = *MEMORY[0x277CCA7E8];
       v27[0] = *MEMORY[0x277CCA450];
@@ -945,7 +945,7 @@ LABEL_30:
 
     v11 = [v19 dictionaryWithObjects:v20 forKeys:v21 count:v22];
     [v17 errorWithDomain:@"ATL" code:3 userInfo:v11];
-    *a5 = v13 = 0;
+    *error = v13 = 0;
   }
 
 LABEL_12:
@@ -954,28 +954,28 @@ LABEL_12:
   return v13;
 }
 
-+ (id)ParseTimeoutEventISO:(id)a3 withApplet:(id)a4 error:(id *)a5
++ (id)ParseTimeoutEventISO:(id)o withApplet:(id)applet error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 length] == 11)
+  oCopy = o;
+  appletCopy = applet;
+  if ([oCopy length] == 11)
   {
-    v9 = [v7 bytes];
+    bytes = [oCopy bytes];
     v26[0] = @"EndEvent";
     v25[0] = @"EventType";
     v25[1] = @"Version";
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v9 + 1)];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(bytes + 1)];
     v26[1] = v10;
-    v26[2] = v8;
+    v26[2] = appletCopy;
     v25[2] = @"appletIdentifier";
     v25[3] = @"didError";
     v26[3] = MEMORY[0x277CBEC38];
     v25[4] = @"command";
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(v9 + 5))];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(bytes + 5))];
     v26[4] = v11;
     v25[5] = @"status";
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*(v9 + 3)) >> 16];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*(bytes + 3)) >> 16];
     v26[5] = v12;
     v26[6] = &unk_2843C6AA0;
     v25[6] = @"result";
@@ -990,21 +990,21 @@ LABEL_12:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v32 = [v7 length];
+      v32 = [oCopy length];
       _os_log_impl(&dword_22EEF5000, v14, OS_LOG_TYPE_ERROR, "event length %zu", buf, 0xCu);
     }
 
-    v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"event length %zu", objc_msgSend(v7, "length")];
+    v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"event length %zu", objc_msgSend(oCopy, "length")];
     v10 = v15;
-    if (!a5)
+    if (!error)
     {
       v13 = 0;
       goto LABEL_12;
     }
 
-    v16 = *a5;
+    v16 = *error;
     v17 = MEMORY[0x277CCA9B8];
-    if (*a5)
+    if (*error)
     {
       v18 = *MEMORY[0x277CCA7E8];
       v27[0] = *MEMORY[0x277CCA450];
@@ -1029,7 +1029,7 @@ LABEL_12:
 
     v11 = [v19 dictionaryWithObjects:v20 forKeys:v21 count:v22];
     [v17 errorWithDomain:@"ATL" code:3 userInfo:v11];
-    *a5 = v13 = 0;
+    *error = v13 = 0;
   }
 
 LABEL_12:
@@ -1038,17 +1038,17 @@ LABEL_12:
   return v13;
 }
 
-- (id)getAppletStateAndHistory:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7
+- (id)getAppletStateAndHistory:(id)history withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [MifareDecoder getSPID:v11 withApplet:v12 withError:a7];
+  historyCopy = history;
+  appletCopy = applet;
+  packageCopy = package;
+  moduleCopy = module;
+  v15 = [MifareDecoder getSPID:historyCopy withApplet:appletCopy withError:error];
   v16 = v15;
   if (v15)
   {
-    v17 = +[MifareDecoder getAppletStateAndHistory:withTransceiver:withApplet:withPackage:withModule:withError:](MifareDecoder, "getAppletStateAndHistory:withTransceiver:withApplet:withPackage:withModule:withError:", [v15 unsignedCharValue], v11, v12, v13, v14, a7);
+    v17 = +[MifareDecoder getAppletStateAndHistory:withTransceiver:withApplet:withPackage:withModule:withError:](MifareDecoder, "getAppletStateAndHistory:withTransceiver:withApplet:withPackage:withModule:withError:", [v15 unsignedCharValue], historyCopy, appletCopy, packageCopy, moduleCopy, error);
   }
 
   else
@@ -1059,12 +1059,12 @@ LABEL_12:
   return v17;
 }
 
-- (id)GetAppletProperties:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7
+- (id)GetAppletProperties:(id)properties withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = [TransceiverWrapper withTransceiver:a6];
-  v11 = [MifareDecoder getSPID:v10 withApplet:v9 withError:a7];
+  propertiesCopy = properties;
+  v10 = [TransceiverWrapper withTransceiver:transceiver];
+  v11 = [MifareDecoder getSPID:v10 withApplet:propertiesCopy withError:error];
 
   if (v11)
   {
@@ -1086,7 +1086,7 @@ LABEL_12:
   return v13;
 }
 
-- (id)processEndOfTransaction:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7
+- (id)processEndOfTransaction:(id)transaction withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
   v8 = ATLLogObject();
@@ -1098,12 +1098,12 @@ LABEL_12:
 
   v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Mifare decoder doesn't expect processEndOfTransaction"];
   v10 = v9;
-  if (a7)
+  if (error)
   {
-    v11 = *a7;
+    v11 = *error;
     v12 = MEMORY[0x277CCA9B8];
     v13 = *MEMORY[0x277CCA450];
-    if (*a7)
+    if (*error)
     {
       v14 = *MEMORY[0x277CCA7E8];
       v23[0] = *MEMORY[0x277CCA450];
@@ -1127,18 +1127,18 @@ LABEL_12:
     }
 
     v19 = [v15 dictionaryWithObjects:v16 forKeys:v17 count:v18];
-    *a7 = [v12 errorWithDomain:@"ATL" code:7 userInfo:v19];
+    *error = [v12 errorWithDomain:@"ATL" code:7 userInfo:v19];
   }
 
   v20 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (BOOL)supportsPlasticCardMode:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6
+- (BOOL)supportsPlasticCardMode:(id)mode withApplet:(id)applet withPackage:(id)package withModule:(id)module
 {
-  v7 = a3;
+  modeCopy = mode;
   v14 = 0;
-  v8 = [MifareDecoder getSPID:v7 withApplet:a4 withError:&v14];
+  v8 = [MifareDecoder getSPID:modeCopy withApplet:applet withError:&v14];
   v9 = v8;
   if (v14)
   {
@@ -1158,20 +1158,20 @@ LABEL_12:
   else
   {
     v11 = +[MifareDecoder getSubDecoder:](MifareDecoder, "getSubDecoder:", [v8 unsignedCharValue]);
-    v12 = [objc_opt_class() supportsPlasticCardMode:objc_msgSend(v9 withTransceiver:{"unsignedCharValue"), v7}];
+    v12 = [objc_opt_class() supportsPlasticCardMode:objc_msgSend(v9 withTransceiver:{"unsignedCharValue"), modeCopy}];
   }
 
   return v12;
 }
 
-+ (id)getSPID:(id)a3 withApplet:(id)a4 withError:(id *)a5
++ (id)getSPID:(id)d withApplet:(id)applet withError:(id *)error
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [MEMORY[0x277CBEA90] dataWithHexString:a4];
+  dCopy = d;
+  v8 = [MEMORY[0x277CBEA90] dataWithHexString:applet];
   v9 = SelectByNameCmd(v8);
 
-  v10 = [v7 transceiveAndCheckSW:v9 error:a5];
+  v10 = [dCopy transceiveAndCheckSW:v9 error:error];
   if (!v10)
   {
     v14 = 0;
@@ -1179,7 +1179,7 @@ LABEL_12:
   }
 
   v11 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:&getSPID_withApplet_withError__getDataSpid length:6 freeWhenDone:0];
-  v12 = [v7 transceiveAndCheckSW:v11 error:a5];
+  v12 = [dCopy transceiveAndCheckSW:v11 error:error];
   v13 = v12;
   if (!v12)
   {
@@ -1197,12 +1197,12 @@ LABEL_12:
 
     v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Invalid response length to GET DATA SPID != 1"];
     v17 = v16;
-    if (a5)
+    if (error)
     {
-      v18 = *a5;
+      v18 = *error;
       v19 = MEMORY[0x277CCA9B8];
       v20 = *MEMORY[0x277CCA450];
-      if (*a5)
+      if (*error)
       {
         v21 = *MEMORY[0x277CCA7E8];
         v30[0] = *MEMORY[0x277CCA450];
@@ -1226,7 +1226,7 @@ LABEL_12:
       }
 
       v26 = [v22 dictionaryWithObjects:v23 forKeys:v24 count:v25];
-      *a5 = [v19 errorWithDomain:@"ATL" code:3 userInfo:v26];
+      *error = [v19 errorWithDomain:@"ATL" code:3 userInfo:v26];
     }
 
 LABEL_14:
@@ -1243,18 +1243,18 @@ LABEL_16:
   return v14;
 }
 
-- (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withPublicKey:(id)a6 withEncryptionScheme:(id)a7 withTransceiver:(id)a8 withError:(id *)a9
+- (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withPublicKey:(id)key withEncryptionScheme:(id)scheme withTransceiver:(id)transceiver withError:(id *)error
 {
-  v14 = a9;
+  errorCopy = error;
   v42[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  dataCopy = data;
+  packageCopy = package;
+  moduleCopy = module;
+  keyCopy = key;
+  schemeCopy = scheme;
+  transceiverCopy = transceiver;
   v38 = 0;
-  v21 = [MifareDecoder getSPID:v20 withApplet:v15 withError:&v38];
+  v21 = [MifareDecoder getSPID:transceiverCopy withApplet:dataCopy withError:&v38];
   v22 = v38;
   if (v22 || !v21)
   {
@@ -1267,12 +1267,12 @@ LABEL_16:
 
     v25 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Service Provider Opaque Data for Mifare not supported when SPID not available."];
     v23 = v25;
-    if (a9)
+    if (error)
     {
-      v26 = *a9;
+      v26 = *error;
       v36 = MEMORY[0x277CCA9B8];
       v27 = *MEMORY[0x277CCA450];
-      if (*a9)
+      if (*error)
       {
         v28 = *MEMORY[0x277CCA7E8];
         v39[0] = *MEMORY[0x277CCA450];
@@ -1296,21 +1296,21 @@ LABEL_16:
       }
 
       v33 = [v29 dictionaryWithObjects:v30 forKeys:v31 count:v32];
-      *a9 = [v36 errorWithDomain:@"ATL" code:2 userInfo:v33];
+      *error = [v36 errorWithDomain:@"ATL" code:2 userInfo:v33];
 
-      v14 = 0;
+      errorCopy = 0;
     }
   }
 
   else
   {
     v23 = +[MifareDecoder getSubDecoder:](MifareDecoder, "getSubDecoder:", [v21 unsignedCharValue]);
-    v14 = [objc_opt_class() getServiceProviderData:v15 withPackage:v16 withModule:v17 withPublicKey:v18 withEncryptionScheme:v19 withTransceiver:v20 withError:a9];
+    errorCopy = [objc_opt_class() getServiceProviderData:dataCopy withPackage:packageCopy withModule:moduleCopy withPublicKey:keyCopy withEncryptionScheme:schemeCopy withTransceiver:transceiverCopy withError:error];
   }
 
   v34 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return errorCopy;
 }
 
 @end

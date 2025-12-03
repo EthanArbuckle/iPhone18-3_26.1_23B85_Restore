@@ -1,153 +1,153 @@
 @interface CPSPointsOfInterestMapControlsViewController
-- (CPSPointsOfInterestMapControlsViewController)initWithMapDelegate:(id)a3;
+- (CPSPointsOfInterestMapControlsViewController)initWithMapDelegate:(id)delegate;
 - (CPSPointsOfInterestMapDelegate)mapDelegate;
 - (id)_linearFocusItems;
-- (void)centerPressed:(id)a3;
-- (void)didSelectButton:(id)a3;
-- (void)panPressed:(id)a3;
+- (void)centerPressed:(id)pressed;
+- (void)didSelectButton:(id)button;
+- (void)panPressed:(id)pressed;
 - (void)setupViews;
 - (void)viewDidLoad;
-- (void)zoomInPressed:(id)a3;
-- (void)zoomOutPressed:(id)a3;
+- (void)zoomInPressed:(id)pressed;
+- (void)zoomOutPressed:(id)pressed;
 @end
 
 @implementation CPSPointsOfInterestMapControlsViewController
 
-- (CPSPointsOfInterestMapControlsViewController)initWithMapDelegate:(id)a3
+- (CPSPointsOfInterestMapControlsViewController)initWithMapDelegate:(id)delegate
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, delegate);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = CPSPointsOfInterestMapControlsViewController;
-  v8 = [(CPSPointsOfInterestMapControlsViewController *)&v6 initWithNibName:0 bundle:?];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(CPSPointsOfInterestMapControlsViewController *)&v6 initWithNibName:0 bundle:?];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeWeak(&v8->_mapDelegate, location[0]);
+    objc_storeWeak(&selfCopy->_mapDelegate, location[0]);
   }
 
-  v5 = MEMORY[0x277D82BE0](v8);
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
 - (void)viewDidLoad
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = CPSPointsOfInterestMapControlsViewController;
   [(CPSPointsOfInterestMapControlsViewController *)&v2 viewDidLoad];
-  [(CPSPointsOfInterestMapControlsViewController *)v4 setupViews];
+  [(CPSPointsOfInterestMapControlsViewController *)selfCopy setupViews];
 }
 
 - (void)setupViews
 {
   v140[1] = *MEMORY[0x277D85DE8];
-  v132 = self;
+  selfCopy = self;
   v131[1] = a2;
   v9 = [CPSEntityMapButton buttonWithEntityMapButtonType:3];
-  [(CPSPointsOfInterestMapControlsViewController *)v132 setPanButton:?];
-  v10 = [(CPSPointsOfInterestMapControlsViewController *)v132 panButton];
-  [(CPSEntityMapButton *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [(CPSPointsOfInterestMapControlsViewController *)v132 panButton];
-  [(CPUITemplateButton *)v11 setDelegate:v132];
-  MEMORY[0x277D82BD8](v11);
+  [(CPSPointsOfInterestMapControlsViewController *)selfCopy setPanButton:?];
+  panButton = [(CPSPointsOfInterestMapControlsViewController *)selfCopy panButton];
+  [(CPSEntityMapButton *)panButton setTranslatesAutoresizingMaskIntoConstraints:0];
+  panButton2 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy panButton];
+  [(CPUITemplateButton *)panButton2 setDelegate:selfCopy];
+  MEMORY[0x277D82BD8](panButton2);
   v14 = CPUILocalizedStringForKey();
   v140[0] = v14;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v140 count:?];
-  v12 = [(CPSPointsOfInterestMapControlsViewController *)v132 panButton];
-  [(CPSEntityMapButton *)v12 setAccessibilityUserInputLabels:v13];
-  MEMORY[0x277D82BD8](v12);
+  panButton3 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy panButton];
+  [(CPSEntityMapButton *)panButton3 setAccessibilityUserInputLabels:v13];
+  MEMORY[0x277D82BD8](panButton3);
   MEMORY[0x277D82BD8](v13);
-  v16 = [(CPSPointsOfInterestMapControlsViewController *)v132 view];
-  v15 = [(CPSPointsOfInterestMapControlsViewController *)v132 panButton];
-  [v16 addSubview:?];
-  MEMORY[0x277D82BD8](v15);
-  v17 = [CPSEntityMapButton buttonWithEntityMapButtonType:1, MEMORY[0x277D82BD8](v16).n128_f64[0]];
-  [(CPSPointsOfInterestMapControlsViewController *)v132 setZoomInButton:?];
-  v18 = [(CPSPointsOfInterestMapControlsViewController *)v132 zoomInButton];
-  [(CPSEntityMapButton *)v18 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v19 = [(CPSPointsOfInterestMapControlsViewController *)v132 zoomInButton];
-  [(CPUITemplateButton *)v19 setDelegate:v132];
-  MEMORY[0x277D82BD8](v19);
+  view = [(CPSPointsOfInterestMapControlsViewController *)selfCopy view];
+  panButton4 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy panButton];
+  [view addSubview:?];
+  MEMORY[0x277D82BD8](panButton4);
+  v17 = [CPSEntityMapButton buttonWithEntityMapButtonType:1, MEMORY[0x277D82BD8](view).n128_f64[0]];
+  [(CPSPointsOfInterestMapControlsViewController *)selfCopy setZoomInButton:?];
+  zoomInButton = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomInButton];
+  [(CPSEntityMapButton *)zoomInButton setTranslatesAutoresizingMaskIntoConstraints:0];
+  zoomInButton2 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomInButton];
+  [(CPUITemplateButton *)zoomInButton2 setDelegate:selfCopy];
+  MEMORY[0x277D82BD8](zoomInButton2);
   v22 = CPUILocalizedStringForKey();
   v139 = v22;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v139 count:1];
-  v20 = [(CPSPointsOfInterestMapControlsViewController *)v132 zoomInButton];
-  [(CPSEntityMapButton *)v20 setAccessibilityUserInputLabels:v21];
-  MEMORY[0x277D82BD8](v20);
+  zoomInButton3 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomInButton];
+  [(CPSEntityMapButton *)zoomInButton3 setAccessibilityUserInputLabels:v21];
+  MEMORY[0x277D82BD8](zoomInButton3);
   MEMORY[0x277D82BD8](v21);
-  v24 = [(CPSPointsOfInterestMapControlsViewController *)v132 view];
-  v23 = [(CPSPointsOfInterestMapControlsViewController *)v132 zoomInButton];
-  [v24 addSubview:?];
-  MEMORY[0x277D82BD8](v23);
-  v25 = [CPSEntityMapButton buttonWithEntityMapButtonType:2, MEMORY[0x277D82BD8](v24).n128_f64[0]];
-  [(CPSPointsOfInterestMapControlsViewController *)v132 setZoomOutButton:?];
-  v26 = [(CPSPointsOfInterestMapControlsViewController *)v132 zoomOutButton];
-  [(CPSEntityMapButton *)v26 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v27 = [(CPSPointsOfInterestMapControlsViewController *)v132 zoomOutButton];
-  [(CPUITemplateButton *)v27 setDelegate:v132];
-  MEMORY[0x277D82BD8](v27);
+  view2 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy view];
+  zoomInButton4 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomInButton];
+  [view2 addSubview:?];
+  MEMORY[0x277D82BD8](zoomInButton4);
+  v25 = [CPSEntityMapButton buttonWithEntityMapButtonType:2, MEMORY[0x277D82BD8](view2).n128_f64[0]];
+  [(CPSPointsOfInterestMapControlsViewController *)selfCopy setZoomOutButton:?];
+  zoomOutButton = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomOutButton];
+  [(CPSEntityMapButton *)zoomOutButton setTranslatesAutoresizingMaskIntoConstraints:0];
+  zoomOutButton2 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomOutButton];
+  [(CPUITemplateButton *)zoomOutButton2 setDelegate:selfCopy];
+  MEMORY[0x277D82BD8](zoomOutButton2);
   v30 = CPUILocalizedStringForKey();
   v138 = v30;
   v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v138 count:1];
-  v28 = [(CPSPointsOfInterestMapControlsViewController *)v132 zoomOutButton];
-  [(CPSEntityMapButton *)v28 setAccessibilityUserInputLabels:v29];
-  MEMORY[0x277D82BD8](v28);
+  zoomOutButton3 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomOutButton];
+  [(CPSEntityMapButton *)zoomOutButton3 setAccessibilityUserInputLabels:v29];
+  MEMORY[0x277D82BD8](zoomOutButton3);
   MEMORY[0x277D82BD8](v29);
-  v32 = [(CPSPointsOfInterestMapControlsViewController *)v132 view];
-  v31 = [(CPSPointsOfInterestMapControlsViewController *)v132 zoomOutButton];
-  [v32 addSubview:?];
-  MEMORY[0x277D82BD8](v31);
-  v33 = [CPSEntityMapButton buttonWithEntityMapButtonType:MEMORY[0x277D82BD8](v32).n128_f64[0]];
-  [(CPSPointsOfInterestMapControlsViewController *)v132 setCenterButton:?];
-  v34 = [(CPSPointsOfInterestMapControlsViewController *)v132 centerButton];
-  [(CPSEntityMapButton *)v34 setTranslatesAutoresizingMaskIntoConstraints:0];
-  MEMORY[0x277D82BD8](v34);
+  view3 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy view];
+  zoomOutButton4 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomOutButton];
+  [view3 addSubview:?];
+  MEMORY[0x277D82BD8](zoomOutButton4);
+  v33 = [CPSEntityMapButton buttonWithEntityMapButtonType:MEMORY[0x277D82BD8](view3).n128_f64[0]];
+  [(CPSPointsOfInterestMapControlsViewController *)selfCopy setCenterButton:?];
+  centerButton = [(CPSPointsOfInterestMapControlsViewController *)selfCopy centerButton];
+  [(CPSEntityMapButton *)centerButton setTranslatesAutoresizingMaskIntoConstraints:0];
+  MEMORY[0x277D82BD8](centerButton);
   v37 = CPUILocalizedStringForKey();
   v137 = v37;
   v36 = [MEMORY[0x277CBEA60] arrayWithObjects:&v137 count:1];
-  v35 = [(CPSPointsOfInterestMapControlsViewController *)v132 centerButton];
-  [(CPSEntityMapButton *)v35 setAccessibilityUserInputLabels:v36];
-  MEMORY[0x277D82BD8](v35);
+  centerButton2 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy centerButton];
+  [(CPSEntityMapButton *)centerButton2 setAccessibilityUserInputLabels:v36];
+  MEMORY[0x277D82BD8](centerButton2);
   MEMORY[0x277D82BD8](v36);
-  v38 = [(CPSPointsOfInterestMapControlsViewController *)v132 centerButton];
-  [(CPUITemplateButton *)v38 setDelegate:v132];
-  v40 = [(CPSPointsOfInterestMapControlsViewController *)v132 view];
-  v39 = [(CPSPointsOfInterestMapControlsViewController *)v132 centerButton];
-  [v40 addSubview:?];
-  MEMORY[0x277D82BD8](v39);
-  MEMORY[0x277D82BD8](v40);
+  centerButton3 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy centerButton];
+  [(CPUITemplateButton *)centerButton3 setDelegate:selfCopy];
+  view4 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy view];
+  centerButton4 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy centerButton];
+  [view4 addSubview:?];
+  MEMORY[0x277D82BD8](centerButton4);
+  MEMORY[0x277D82BD8](view4);
   v131[0] = objc_opt_new();
-  v61 = [(CPSPointsOfInterestMapControlsViewController *)v132 zoomOutButton];
-  v60 = [(CPSEntityMapButton *)v61 bottomAnchor];
-  v59 = [(CPSPointsOfInterestMapControlsViewController *)v132 view];
-  v58 = [v59 safeAreaLayoutGuide];
-  v57 = [v58 bottomAnchor];
-  v56 = [v60 constraintEqualToAnchor:?];
+  zoomOutButton5 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomOutButton];
+  bottomAnchor = [(CPSEntityMapButton *)zoomOutButton5 bottomAnchor];
+  view5 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy view];
+  safeAreaLayoutGuide = [view5 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+  v56 = [bottomAnchor constraintEqualToAnchor:?];
   v136[0] = v56;
-  v55 = [(CPSPointsOfInterestMapControlsViewController *)v132 zoomOutButton];
-  v54 = [(CPSEntityMapButton *)v55 leadingAnchor];
-  v53 = [(CPSPointsOfInterestMapControlsViewController *)v132 view];
-  v52 = [v53 safeAreaLayoutGuide];
-  v51 = [v52 leadingAnchor];
-  v50 = [v54 constraintEqualToAnchor:?];
+  zoomOutButton6 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomOutButton];
+  leadingAnchor = [(CPSEntityMapButton *)zoomOutButton6 leadingAnchor];
+  view6 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy view];
+  safeAreaLayoutGuide2 = [view6 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide2 leadingAnchor];
+  v50 = [leadingAnchor constraintEqualToAnchor:?];
   v136[1] = v50;
-  v49 = [(CPSPointsOfInterestMapControlsViewController *)v132 zoomOutButton];
-  v48 = [(CPSEntityMapButton *)v49 trailingAnchor];
-  v47 = [(CPSPointsOfInterestMapControlsViewController *)v132 view];
-  v46 = [v47 safeAreaLayoutGuide];
-  v45 = [v46 trailingAnchor];
-  v44 = [v48 constraintEqualToAnchor:?];
+  zoomOutButton7 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomOutButton];
+  trailingAnchor = [(CPSEntityMapButton *)zoomOutButton7 trailingAnchor];
+  view7 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy view];
+  safeAreaLayoutGuide3 = [view7 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide3 trailingAnchor];
+  v44 = [trailingAnchor constraintEqualToAnchor:?];
   v136[2] = v44;
-  v43 = [(CPSPointsOfInterestMapControlsViewController *)v132 zoomOutButton];
-  v42 = [(CPSEntityMapButton *)v43 heightAnchor];
+  zoomOutButton8 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomOutButton];
+  heightAnchor = [(CPSEntityMapButton *)zoomOutButton8 heightAnchor];
   v2 = _UISolariumEnabled();
   v3 = 36.0;
   if ((v2 & 1) == 0)
@@ -155,51 +155,51 @@
     v3 = 34.5;
   }
 
-  v41 = [v42 constraintEqualToConstant:v3];
+  v41 = [heightAnchor constraintEqualToConstant:v3];
   v136[3] = v41;
   v130 = [MEMORY[0x277CBEA60] arrayWithObjects:v136 count:4];
   MEMORY[0x277D82BD8](v41);
-  MEMORY[0x277D82BD8](v42);
-  MEMORY[0x277D82BD8](v43);
+  MEMORY[0x277D82BD8](heightAnchor);
+  MEMORY[0x277D82BD8](zoomOutButton8);
   MEMORY[0x277D82BD8](v44);
-  MEMORY[0x277D82BD8](v45);
-  MEMORY[0x277D82BD8](v46);
-  MEMORY[0x277D82BD8](v47);
-  MEMORY[0x277D82BD8](v48);
-  MEMORY[0x277D82BD8](v49);
+  MEMORY[0x277D82BD8](trailingAnchor2);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide3);
+  MEMORY[0x277D82BD8](view7);
+  MEMORY[0x277D82BD8](trailingAnchor);
+  MEMORY[0x277D82BD8](zoomOutButton7);
   MEMORY[0x277D82BD8](v50);
-  MEMORY[0x277D82BD8](v51);
-  MEMORY[0x277D82BD8](v52);
-  MEMORY[0x277D82BD8](v53);
-  MEMORY[0x277D82BD8](v54);
-  MEMORY[0x277D82BD8](v55);
+  MEMORY[0x277D82BD8](leadingAnchor2);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide2);
+  MEMORY[0x277D82BD8](view6);
+  MEMORY[0x277D82BD8](leadingAnchor);
+  MEMORY[0x277D82BD8](zoomOutButton6);
   MEMORY[0x277D82BD8](v56);
-  MEMORY[0x277D82BD8](v57);
-  MEMORY[0x277D82BD8](v58);
-  MEMORY[0x277D82BD8](v59);
-  MEMORY[0x277D82BD8](v60);
-  v81 = [(CPSPointsOfInterestMapControlsViewController *)v132 zoomInButton];
-  v80 = [(CPSEntityMapButton *)v81 bottomAnchor];
-  v79 = [(CPSPointsOfInterestMapControlsViewController *)v132 zoomOutButton];
-  v78 = [(CPSEntityMapButton *)v79 topAnchor];
-  v77 = [v80 constraintEqualToAnchor:? constant:?];
+  MEMORY[0x277D82BD8](bottomAnchor2);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide);
+  MEMORY[0x277D82BD8](view5);
+  MEMORY[0x277D82BD8](bottomAnchor);
+  zoomInButton5 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomInButton];
+  bottomAnchor3 = [(CPSEntityMapButton *)zoomInButton5 bottomAnchor];
+  zoomOutButton9 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomOutButton];
+  topAnchor = [(CPSEntityMapButton *)zoomOutButton9 topAnchor];
+  v77 = [bottomAnchor3 constraintEqualToAnchor:? constant:?];
   v135[0] = v77;
-  v76 = [(CPSPointsOfInterestMapControlsViewController *)v132 zoomInButton];
-  v75 = [(CPSEntityMapButton *)v76 leadingAnchor];
-  v74 = [(CPSPointsOfInterestMapControlsViewController *)v132 view];
-  v73 = [v74 safeAreaLayoutGuide];
-  v72 = [v73 leadingAnchor];
-  v71 = [v75 constraintEqualToAnchor:?];
+  zoomInButton6 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomInButton];
+  leadingAnchor3 = [(CPSEntityMapButton *)zoomInButton6 leadingAnchor];
+  view8 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy view];
+  safeAreaLayoutGuide4 = [view8 safeAreaLayoutGuide];
+  leadingAnchor4 = [safeAreaLayoutGuide4 leadingAnchor];
+  v71 = [leadingAnchor3 constraintEqualToAnchor:?];
   v135[1] = v71;
-  v70 = [(CPSPointsOfInterestMapControlsViewController *)v132 zoomInButton];
-  v69 = [(CPSEntityMapButton *)v70 trailingAnchor];
-  v68 = [(CPSPointsOfInterestMapControlsViewController *)v132 view];
-  v67 = [v68 safeAreaLayoutGuide];
-  v66 = [v67 trailingAnchor];
-  v65 = [v69 constraintEqualToAnchor:?];
+  zoomInButton7 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomInButton];
+  trailingAnchor3 = [(CPSEntityMapButton *)zoomInButton7 trailingAnchor];
+  view9 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy view];
+  safeAreaLayoutGuide5 = [view9 safeAreaLayoutGuide];
+  trailingAnchor4 = [safeAreaLayoutGuide5 trailingAnchor];
+  v65 = [trailingAnchor3 constraintEqualToAnchor:?];
   v135[2] = v65;
-  v64 = [(CPSPointsOfInterestMapControlsViewController *)v132 zoomInButton];
-  v63 = [(CPSEntityMapButton *)v64 heightAnchor];
+  zoomInButton8 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomInButton];
+  heightAnchor2 = [(CPSEntityMapButton *)zoomInButton8 heightAnchor];
   v4 = _UISolariumEnabled();
   v5 = 36.0;
   if ((v4 & 1) == 0)
@@ -207,129 +207,129 @@
     v5 = 34.5;
   }
 
-  v62 = [v63 constraintEqualToConstant:v5];
+  v62 = [heightAnchor2 constraintEqualToConstant:v5];
   v135[3] = v62;
   v129 = [MEMORY[0x277CBEA60] arrayWithObjects:v135 count:4];
   MEMORY[0x277D82BD8](v62);
-  MEMORY[0x277D82BD8](v63);
-  MEMORY[0x277D82BD8](v64);
+  MEMORY[0x277D82BD8](heightAnchor2);
+  MEMORY[0x277D82BD8](zoomInButton8);
   MEMORY[0x277D82BD8](v65);
-  MEMORY[0x277D82BD8](v66);
-  MEMORY[0x277D82BD8](v67);
-  MEMORY[0x277D82BD8](v68);
-  MEMORY[0x277D82BD8](v69);
-  MEMORY[0x277D82BD8](v70);
+  MEMORY[0x277D82BD8](trailingAnchor4);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide5);
+  MEMORY[0x277D82BD8](view9);
+  MEMORY[0x277D82BD8](trailingAnchor3);
+  MEMORY[0x277D82BD8](zoomInButton7);
   MEMORY[0x277D82BD8](v71);
-  MEMORY[0x277D82BD8](v72);
-  MEMORY[0x277D82BD8](v73);
-  MEMORY[0x277D82BD8](v74);
-  MEMORY[0x277D82BD8](v75);
-  MEMORY[0x277D82BD8](v76);
+  MEMORY[0x277D82BD8](leadingAnchor4);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide4);
+  MEMORY[0x277D82BD8](view8);
+  MEMORY[0x277D82BD8](leadingAnchor3);
+  MEMORY[0x277D82BD8](zoomInButton6);
   MEMORY[0x277D82BD8](v77);
-  MEMORY[0x277D82BD8](v78);
-  MEMORY[0x277D82BD8](v79);
-  MEMORY[0x277D82BD8](v80);
-  *&v6 = MEMORY[0x277D82BD8](v81).n128_u64[0];
-  v103 = [(CPSPointsOfInterestMapControlsViewController *)v132 panButton];
-  v102 = [(CPSEntityMapButton *)v103 bottomAnchor];
-  v101 = [(CPSPointsOfInterestMapControlsViewController *)v132 zoomInButton];
-  v100 = [(CPSEntityMapButton *)v101 topAnchor];
-  v99 = [v102 constraintEqualToAnchor:-8.0 constant:?];
+  MEMORY[0x277D82BD8](topAnchor);
+  MEMORY[0x277D82BD8](zoomOutButton9);
+  MEMORY[0x277D82BD8](bottomAnchor3);
+  *&v6 = MEMORY[0x277D82BD8](zoomInButton5).n128_u64[0];
+  panButton5 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy panButton];
+  bottomAnchor4 = [(CPSEntityMapButton *)panButton5 bottomAnchor];
+  zoomInButton9 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomInButton];
+  topAnchor2 = [(CPSEntityMapButton *)zoomInButton9 topAnchor];
+  v99 = [bottomAnchor4 constraintEqualToAnchor:-8.0 constant:?];
   v134[0] = v99;
-  v98 = [(CPSPointsOfInterestMapControlsViewController *)v132 panButton];
-  v97 = [(CPSEntityMapButton *)v98 leadingAnchor];
-  v96 = [(CPSPointsOfInterestMapControlsViewController *)v132 view];
-  v95 = [v96 safeAreaLayoutGuide];
-  v94 = [v95 leadingAnchor];
-  v93 = [v97 constraintEqualToAnchor:?];
+  panButton6 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy panButton];
+  leadingAnchor5 = [(CPSEntityMapButton *)panButton6 leadingAnchor];
+  view10 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy view];
+  safeAreaLayoutGuide6 = [view10 safeAreaLayoutGuide];
+  leadingAnchor6 = [safeAreaLayoutGuide6 leadingAnchor];
+  v93 = [leadingAnchor5 constraintEqualToAnchor:?];
   v134[1] = v93;
-  v92 = [(CPSPointsOfInterestMapControlsViewController *)v132 panButton];
-  v91 = [(CPSEntityMapButton *)v92 trailingAnchor];
-  v90 = [(CPSPointsOfInterestMapControlsViewController *)v132 view];
-  v89 = [v90 safeAreaLayoutGuide];
-  v88 = [v89 trailingAnchor];
-  v87 = [v91 constraintEqualToAnchor:?];
+  panButton7 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy panButton];
+  trailingAnchor5 = [(CPSEntityMapButton *)panButton7 trailingAnchor];
+  view11 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy view];
+  safeAreaLayoutGuide7 = [view11 safeAreaLayoutGuide];
+  trailingAnchor6 = [safeAreaLayoutGuide7 trailingAnchor];
+  v87 = [trailingAnchor5 constraintEqualToAnchor:?];
   v134[2] = v87;
-  v86 = [(CPSPointsOfInterestMapControlsViewController *)v132 panButton];
-  v85 = [(CPSEntityMapButton *)v86 heightAnchor];
-  v84 = [(CPSPointsOfInterestMapControlsViewController *)v132 panButton];
-  v83 = [(CPSEntityMapButton *)v84 widthAnchor];
-  v82 = [v85 constraintEqualToAnchor:?];
+  panButton8 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy panButton];
+  heightAnchor3 = [(CPSEntityMapButton *)panButton8 heightAnchor];
+  panButton9 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy panButton];
+  widthAnchor = [(CPSEntityMapButton *)panButton9 widthAnchor];
+  v82 = [heightAnchor3 constraintEqualToAnchor:?];
   v134[3] = v82;
   v128 = [MEMORY[0x277CBEA60] arrayWithObjects:v134 count:4];
   MEMORY[0x277D82BD8](v82);
-  MEMORY[0x277D82BD8](v83);
-  MEMORY[0x277D82BD8](v84);
-  MEMORY[0x277D82BD8](v85);
-  MEMORY[0x277D82BD8](v86);
+  MEMORY[0x277D82BD8](widthAnchor);
+  MEMORY[0x277D82BD8](panButton9);
+  MEMORY[0x277D82BD8](heightAnchor3);
+  MEMORY[0x277D82BD8](panButton8);
   MEMORY[0x277D82BD8](v87);
-  MEMORY[0x277D82BD8](v88);
-  MEMORY[0x277D82BD8](v89);
-  MEMORY[0x277D82BD8](v90);
-  MEMORY[0x277D82BD8](v91);
-  MEMORY[0x277D82BD8](v92);
+  MEMORY[0x277D82BD8](trailingAnchor6);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide7);
+  MEMORY[0x277D82BD8](view11);
+  MEMORY[0x277D82BD8](trailingAnchor5);
+  MEMORY[0x277D82BD8](panButton7);
   MEMORY[0x277D82BD8](v93);
-  MEMORY[0x277D82BD8](v94);
-  MEMORY[0x277D82BD8](v95);
-  MEMORY[0x277D82BD8](v96);
-  MEMORY[0x277D82BD8](v97);
-  MEMORY[0x277D82BD8](v98);
+  MEMORY[0x277D82BD8](leadingAnchor6);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide6);
+  MEMORY[0x277D82BD8](view10);
+  MEMORY[0x277D82BD8](leadingAnchor5);
+  MEMORY[0x277D82BD8](panButton6);
   MEMORY[0x277D82BD8](v99);
-  MEMORY[0x277D82BD8](v100);
-  MEMORY[0x277D82BD8](v101);
-  MEMORY[0x277D82BD8](v102);
-  *&v7 = MEMORY[0x277D82BD8](v103).n128_u64[0];
-  v126 = [(CPSPointsOfInterestMapControlsViewController *)v132 centerButton];
-  v125 = [(CPSEntityMapButton *)v126 topAnchor];
-  v124 = [(CPSPointsOfInterestMapControlsViewController *)v132 view];
-  v123 = [v124 safeAreaLayoutGuide];
-  v122 = [v123 topAnchor];
-  v121 = [v125 constraintEqualToAnchor:?];
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](zoomInButton9);
+  MEMORY[0x277D82BD8](bottomAnchor4);
+  *&v7 = MEMORY[0x277D82BD8](panButton5).n128_u64[0];
+  centerButton5 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy centerButton];
+  topAnchor3 = [(CPSEntityMapButton *)centerButton5 topAnchor];
+  view12 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy view];
+  safeAreaLayoutGuide8 = [view12 safeAreaLayoutGuide];
+  topAnchor4 = [safeAreaLayoutGuide8 topAnchor];
+  v121 = [topAnchor3 constraintEqualToAnchor:?];
   v133[0] = v121;
-  v120 = [(CPSPointsOfInterestMapControlsViewController *)v132 centerButton];
-  v119 = [(CPSEntityMapButton *)v120 trailingAnchor];
-  v118 = [(CPSPointsOfInterestMapControlsViewController *)v132 view];
-  v117 = [v118 safeAreaLayoutGuide];
-  v116 = [v117 trailingAnchor];
-  v115 = [v119 constraintEqualToAnchor:?];
+  centerButton6 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy centerButton];
+  trailingAnchor7 = [(CPSEntityMapButton *)centerButton6 trailingAnchor];
+  view13 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy view];
+  safeAreaLayoutGuide9 = [view13 safeAreaLayoutGuide];
+  trailingAnchor8 = [safeAreaLayoutGuide9 trailingAnchor];
+  v115 = [trailingAnchor7 constraintEqualToAnchor:?];
   v133[1] = v115;
-  v114 = [(CPSPointsOfInterestMapControlsViewController *)v132 centerButton];
-  v113 = [(CPSEntityMapButton *)v114 leadingAnchor];
-  v112 = [(CPSPointsOfInterestMapControlsViewController *)v132 view];
-  v111 = [v112 safeAreaLayoutGuide];
-  v110 = [v111 leadingAnchor];
-  v109 = [v113 constraintEqualToAnchor:?];
+  centerButton7 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy centerButton];
+  leadingAnchor7 = [(CPSEntityMapButton *)centerButton7 leadingAnchor];
+  view14 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy view];
+  safeAreaLayoutGuide10 = [view14 safeAreaLayoutGuide];
+  leadingAnchor8 = [safeAreaLayoutGuide10 leadingAnchor];
+  v109 = [leadingAnchor7 constraintEqualToAnchor:?];
   v133[2] = v109;
-  v108 = [(CPSPointsOfInterestMapControlsViewController *)v132 centerButton];
-  v107 = [(CPSEntityMapButton *)v108 heightAnchor];
-  v106 = [(CPSPointsOfInterestMapControlsViewController *)v132 centerButton];
-  v105 = [(CPSEntityMapButton *)v106 widthAnchor];
-  v104 = [v107 constraintEqualToAnchor:1.0 multiplier:?];
+  centerButton8 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy centerButton];
+  heightAnchor4 = [(CPSEntityMapButton *)centerButton8 heightAnchor];
+  centerButton9 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy centerButton];
+  widthAnchor2 = [(CPSEntityMapButton *)centerButton9 widthAnchor];
+  v104 = [heightAnchor4 constraintEqualToAnchor:1.0 multiplier:?];
   v133[3] = v104;
   v127 = [MEMORY[0x277CBEA60] arrayWithObjects:v133 count:4];
   MEMORY[0x277D82BD8](v104);
-  MEMORY[0x277D82BD8](v105);
-  MEMORY[0x277D82BD8](v106);
-  MEMORY[0x277D82BD8](v107);
-  MEMORY[0x277D82BD8](v108);
+  MEMORY[0x277D82BD8](widthAnchor2);
+  MEMORY[0x277D82BD8](centerButton9);
+  MEMORY[0x277D82BD8](heightAnchor4);
+  MEMORY[0x277D82BD8](centerButton8);
   MEMORY[0x277D82BD8](v109);
-  MEMORY[0x277D82BD8](v110);
-  MEMORY[0x277D82BD8](v111);
-  MEMORY[0x277D82BD8](v112);
-  MEMORY[0x277D82BD8](v113);
-  MEMORY[0x277D82BD8](v114);
+  MEMORY[0x277D82BD8](leadingAnchor8);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide10);
+  MEMORY[0x277D82BD8](view14);
+  MEMORY[0x277D82BD8](leadingAnchor7);
+  MEMORY[0x277D82BD8](centerButton7);
   MEMORY[0x277D82BD8](v115);
-  MEMORY[0x277D82BD8](v116);
-  MEMORY[0x277D82BD8](v117);
-  MEMORY[0x277D82BD8](v118);
-  MEMORY[0x277D82BD8](v119);
-  MEMORY[0x277D82BD8](v120);
+  MEMORY[0x277D82BD8](trailingAnchor8);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide9);
+  MEMORY[0x277D82BD8](view13);
+  MEMORY[0x277D82BD8](trailingAnchor7);
+  MEMORY[0x277D82BD8](centerButton6);
   MEMORY[0x277D82BD8](v121);
-  MEMORY[0x277D82BD8](v122);
-  MEMORY[0x277D82BD8](v123);
-  MEMORY[0x277D82BD8](v124);
-  MEMORY[0x277D82BD8](v125);
-  *&v8 = MEMORY[0x277D82BD8](v126).n128_u64[0];
+  MEMORY[0x277D82BD8](topAnchor4);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide8);
+  MEMORY[0x277D82BD8](view12);
+  MEMORY[0x277D82BD8](topAnchor3);
+  *&v8 = MEMORY[0x277D82BD8](centerButton5).n128_u64[0];
   [v131[0] addObjectsFromArray:{v130, v8}];
   [v131[0] addObjectsFromArray:v129];
   [v131[0] addObjectsFromArray:v128];
@@ -342,67 +342,67 @@
   objc_storeStrong(v131, 0);
 }
 
-- (void)zoomInPressed:(id)a3
+- (void)zoomInPressed:(id)pressed
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(CPSPointsOfInterestMapControlsViewController *)v8 mapDelegate];
+  objc_storeStrong(location, pressed);
+  mapDelegate = [(CPSPointsOfInterestMapControlsViewController *)selfCopy mapDelegate];
   v6 = objc_opt_respondsToSelector();
-  *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
+  *&v3 = MEMORY[0x277D82BD8](mapDelegate).n128_u64[0];
   if (v6)
   {
-    v4 = [(CPSPointsOfInterestMapControlsViewController *)v8 mapDelegate];
-    [(CPSPointsOfInterestMapDelegate *)v4 zoomIn];
-    MEMORY[0x277D82BD8](v4);
+    mapDelegate2 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy mapDelegate];
+    [(CPSPointsOfInterestMapDelegate *)mapDelegate2 zoomIn];
+    MEMORY[0x277D82BD8](mapDelegate2);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)zoomOutPressed:(id)a3
+- (void)zoomOutPressed:(id)pressed
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(CPSPointsOfInterestMapControlsViewController *)v8 mapDelegate];
+  objc_storeStrong(location, pressed);
+  mapDelegate = [(CPSPointsOfInterestMapControlsViewController *)selfCopy mapDelegate];
   v6 = objc_opt_respondsToSelector();
-  *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
+  *&v3 = MEMORY[0x277D82BD8](mapDelegate).n128_u64[0];
   if (v6)
   {
-    v4 = [(CPSPointsOfInterestMapControlsViewController *)v8 mapDelegate];
-    [(CPSPointsOfInterestMapDelegate *)v4 zoomOut];
-    MEMORY[0x277D82BD8](v4);
+    mapDelegate2 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy mapDelegate];
+    [(CPSPointsOfInterestMapDelegate *)mapDelegate2 zoomOut];
+    MEMORY[0x277D82BD8](mapDelegate2);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)panPressed:(id)a3
+- (void)panPressed:(id)pressed
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [(CPSPointsOfInterestMapControlsViewController *)v16 mapDelegate];
+  objc_storeStrong(location, pressed);
+  mapDelegate = [(CPSPointsOfInterestMapControlsViewController *)selfCopy mapDelegate];
   v8 = objc_opt_respondsToSelector();
-  *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
+  *&v3 = MEMORY[0x277D82BD8](mapDelegate).n128_u64[0];
   if (v8)
   {
-    v5 = [(CPSPointsOfInterestMapControlsViewController *)v16 mapDelegate];
+    mapDelegate2 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy mapDelegate];
     v9 = MEMORY[0x277D85DD0];
     v10 = -1073741824;
     v11 = 0;
     v12 = __59__CPSPointsOfInterestMapControlsViewController_panPressed___block_invoke;
     v13 = &unk_278D913E8;
-    v14 = MEMORY[0x277D82BE0](v16);
-    [(CPSPointsOfInterestMapDelegate *)v5 beginPanningWithCompletion:&v9];
-    *&v4 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-    v6 = [(CPSPointsOfInterestMapControlsViewController *)v16 panButton];
-    [(CPSEntityMapButton *)v6 setAlpha:0.0];
-    MEMORY[0x277D82BD8](v6);
+    v14 = MEMORY[0x277D82BE0](selfCopy);
+    [(CPSPointsOfInterestMapDelegate *)mapDelegate2 beginPanningWithCompletion:&v9];
+    *&v4 = MEMORY[0x277D82BD8](mapDelegate2).n128_u64[0];
+    panButton = [(CPSPointsOfInterestMapControlsViewController *)selfCopy panButton];
+    [(CPSEntityMapButton *)panButton setAlpha:0.0];
+    MEMORY[0x277D82BD8](panButton);
     objc_storeStrong(&v14, 0);
   }
 
@@ -417,67 +417,67 @@ double __59__CPSPointsOfInterestMapControlsViewController_panPressed___block_inv
   return result;
 }
 
-- (void)centerPressed:(id)a3
+- (void)centerPressed:(id)pressed
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(CPSPointsOfInterestMapControlsViewController *)v8 mapDelegate];
+  objc_storeStrong(location, pressed);
+  mapDelegate = [(CPSPointsOfInterestMapControlsViewController *)selfCopy mapDelegate];
   v6 = objc_opt_respondsToSelector();
-  *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
+  *&v3 = MEMORY[0x277D82BD8](mapDelegate).n128_u64[0];
   if (v6)
   {
-    v4 = [(CPSPointsOfInterestMapControlsViewController *)v8 mapDelegate];
-    [(CPSPointsOfInterestMapDelegate *)v4 centerMap];
-    MEMORY[0x277D82BD8](v4);
+    mapDelegate2 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy mapDelegate];
+    [(CPSPointsOfInterestMapDelegate *)mapDelegate2 centerMap];
+    MEMORY[0x277D82BD8](mapDelegate2);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)didSelectButton:(id)a3
+- (void)didSelectButton:(id)button
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, button);
   v14 = location[0];
-  v13 = [(CPSPointsOfInterestMapControlsViewController *)v16 zoomInButton];
-  *&v3 = MEMORY[0x277D82BD8](v13).n128_u64[0];
-  if (v14 == v13)
+  zoomInButton = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomInButton];
+  *&v3 = MEMORY[0x277D82BD8](zoomInButton).n128_u64[0];
+  if (v14 == zoomInButton)
   {
-    [(CPSPointsOfInterestMapControlsViewController *)v16 zoomInPressed:location[0], v3];
+    [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomInPressed:location[0], v3];
   }
 
   else
   {
     v12 = location[0];
-    v11 = [(CPSPointsOfInterestMapControlsViewController *)v16 zoomOutButton];
-    *&v4 = MEMORY[0x277D82BD8](v11).n128_u64[0];
-    if (v12 == v11)
+    zoomOutButton = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomOutButton];
+    *&v4 = MEMORY[0x277D82BD8](zoomOutButton).n128_u64[0];
+    if (v12 == zoomOutButton)
     {
-      [(CPSPointsOfInterestMapControlsViewController *)v16 zoomOutPressed:location[0], v4];
+      [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomOutPressed:location[0], v4];
     }
 
     else
     {
       v10 = location[0];
-      v9 = [(CPSPointsOfInterestMapControlsViewController *)v16 panButton];
-      *&v5 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-      if (v10 == v9)
+      panButton = [(CPSPointsOfInterestMapControlsViewController *)selfCopy panButton];
+      *&v5 = MEMORY[0x277D82BD8](panButton).n128_u64[0];
+      if (v10 == panButton)
       {
-        [(CPSPointsOfInterestMapControlsViewController *)v16 panPressed:location[0], v5];
+        [(CPSPointsOfInterestMapControlsViewController *)selfCopy panPressed:location[0], v5];
       }
 
       else
       {
         v8 = location[0];
-        v7 = [(CPSPointsOfInterestMapControlsViewController *)v16 centerButton];
-        *&v6 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-        if (v8 == v7)
+        centerButton = [(CPSPointsOfInterestMapControlsViewController *)selfCopy centerButton];
+        *&v6 = MEMORY[0x277D82BD8](centerButton).n128_u64[0];
+        if (v8 == centerButton)
         {
-          [(CPSPointsOfInterestMapControlsViewController *)v16 centerPressed:location[0], v6];
+          [(CPSPointsOfInterestMapControlsViewController *)selfCopy centerPressed:location[0], v6];
         }
       }
     }
@@ -488,37 +488,37 @@ double __59__CPSPointsOfInterestMapControlsViewController_panPressed___block_inv
 
 - (id)_linearFocusItems
 {
-  v16 = self;
+  selfCopy = self;
   v15[1] = a2;
   v15[0] = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v13 = [(CPSPointsOfInterestMapControlsViewController *)v16 panButton];
-  [(CPSEntityMapButton *)v13 alpha];
+  panButton = [(CPSPointsOfInterestMapControlsViewController *)selfCopy panButton];
+  [(CPSEntityMapButton *)panButton alpha];
   v14 = v2;
-  MEMORY[0x277D82BD8](v13);
+  MEMORY[0x277D82BD8](panButton);
   v3 = v14;
   if (v14 == 1.0)
   {
-    v12 = [(CPSPointsOfInterestMapControlsViewController *)v16 panButton];
+    panButton2 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy panButton];
     [v15[0] addObject:?];
-    *&v3 = MEMORY[0x277D82BD8](v12).n128_u64[0];
+    *&v3 = MEMORY[0x277D82BD8](panButton2).n128_u64[0];
   }
 
-  v11 = [(CPSPointsOfInterestMapControlsViewController *)v16 zoomInButton];
-  v4 = MEMORY[0x277D82BD8](v11).n128_u64[0];
-  if (v11)
+  zoomInButton = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomInButton];
+  v4 = MEMORY[0x277D82BD8](zoomInButton).n128_u64[0];
+  if (zoomInButton)
   {
-    v10 = [(CPSPointsOfInterestMapControlsViewController *)v16 zoomInButton];
+    zoomInButton2 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomInButton];
     [v15[0] addObject:?];
-    v4 = MEMORY[0x277D82BD8](v10).n128_u64[0];
+    v4 = MEMORY[0x277D82BD8](zoomInButton2).n128_u64[0];
   }
 
-  v9 = [(CPSPointsOfInterestMapControlsViewController *)v16 zoomOutButton];
-  *&v5 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-  if (v9)
+  zoomOutButton = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomOutButton];
+  *&v5 = MEMORY[0x277D82BD8](zoomOutButton).n128_u64[0];
+  if (zoomOutButton)
   {
-    v8 = [(CPSPointsOfInterestMapControlsViewController *)v16 zoomOutButton];
+    zoomOutButton2 = [(CPSPointsOfInterestMapControlsViewController *)selfCopy zoomOutButton];
     [v15[0] addObject:?];
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](zoomOutButton2);
   }
 
   v7 = MEMORY[0x277D82BE0](v15[0]);

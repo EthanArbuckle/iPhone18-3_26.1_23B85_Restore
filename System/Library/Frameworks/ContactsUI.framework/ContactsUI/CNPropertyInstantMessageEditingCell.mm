@@ -1,51 +1,51 @@
 @interface CNPropertyInstantMessageEditingCell
 - (CNInstantMessageAddress)imAddress;
-- (void)labelButtonClicked:(id)a3;
-- (void)picker:(id)a3 didPickItem:(id)a4;
-- (void)pickerDidCancel:(id)a3;
+- (void)labelButtonClicked:(id)clicked;
+- (void)picker:(id)picker didPickItem:(id)item;
+- (void)pickerDidCancel:(id)cancel;
 @end
 
 @implementation CNPropertyInstantMessageEditingCell
 
-- (void)pickerDidCancel:(id)a3
+- (void)pickerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = [(CNPropertyCell *)self presentingDelegate];
+  cancelCopy = cancel;
+  presentingDelegate = [(CNPropertyCell *)self presentingDelegate];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__CNPropertyInstantMessageEditingCell_pickerDidCancel___block_invoke;
   v6[3] = &unk_1E74E6A88;
   v6[4] = self;
-  [v5 sender:self dismissViewController:v4 completionHandler:v6];
+  [presentingDelegate sender:self dismissViewController:cancelCopy completionHandler:v6];
 }
 
-- (void)picker:(id)a3 didPickItem:(id)a4
+- (void)picker:(id)picker didPickItem:(id)item
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNPropertyCell *)self propertyItem];
-  v9 = [v8 labeledValue];
-  v10 = [v9 value];
-  v11 = [v10 mutableCopy];
+  itemCopy = item;
+  pickerCopy = picker;
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  labeledValue = [propertyItem labeledValue];
+  value = [labeledValue value];
+  v11 = [value mutableCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v6;
-    v13 = [v12 name];
-    [v11 setService:v13];
+    v12 = itemCopy;
+    name = [v12 name];
+    [v11 setService:name];
 
-    v14 = [v12 teamIdentifier];
-    [v11 setTeamIdentifier:v14];
+    teamIdentifier = [v12 teamIdentifier];
+    [v11 setTeamIdentifier:teamIdentifier];
 
-    v15 = [v11 bundleIdentifiers];
+    bundleIdentifiers = [v11 bundleIdentifiers];
 
-    if (v15)
+    if (bundleIdentifiers)
     {
-      v16 = [v11 bundleIdentifiers];
-      v17 = [v12 bundleIdentifier];
-      v18 = [v16 containsObject:v17];
+      bundleIdentifiers2 = [v11 bundleIdentifiers];
+      bundleIdentifier = [v12 bundleIdentifier];
+      v18 = [bundleIdentifiers2 containsObject:bundleIdentifier];
 
       if (v18)
       {
@@ -54,65 +54,65 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      v19 = [v11 bundleIdentifiers];
-      v20 = [v12 bundleIdentifier];
-      v21 = [v19 arrayByAddingObject:v20];
+      bundleIdentifiers3 = [v11 bundleIdentifiers];
+      bundleIdentifier2 = [v12 bundleIdentifier];
+      v21 = [bundleIdentifiers3 arrayByAddingObject:bundleIdentifier2];
       [v11 setBundleIdentifiers:v21];
     }
 
     else
     {
-      v19 = [v12 bundleIdentifier];
-      v29[0] = v19;
-      v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
-      [v11 setBundleIdentifiers:v20];
+      bundleIdentifiers3 = [v12 bundleIdentifier];
+      v29[0] = bundleIdentifiers3;
+      bundleIdentifier2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
+      [v11 setBundleIdentifiers:bundleIdentifier2];
     }
 
     goto LABEL_8;
   }
 
-  [v11 setService:v6];
+  [v11 setService:itemCopy];
   [v11 setBundleIdentifiers:0];
   [v11 setTeamIdentifier:0];
 LABEL_9:
-  v22 = [(CNPropertyCell *)self delegate];
-  v23 = [(CNPropertyCell *)self propertyItem];
-  v24 = [v11 service];
-  [v22 propertyCell:self didUpdateItem:v23 withNewLabel:v24];
+  delegate = [(CNPropertyCell *)self delegate];
+  propertyItem2 = [(CNPropertyCell *)self propertyItem];
+  service = [v11 service];
+  [delegate propertyCell:self didUpdateItem:propertyItem2 withNewLabel:service];
 
-  v25 = [(CNPropertyCell *)self delegate];
-  v26 = [(CNPropertyCell *)self propertyItem];
-  [v25 propertyCell:self didUpdateItem:v26 withNewValue:v11];
+  delegate2 = [(CNPropertyCell *)self delegate];
+  propertyItem3 = [(CNPropertyCell *)self propertyItem];
+  [delegate2 propertyCell:self didUpdateItem:propertyItem3 withNewValue:v11];
 
-  v27 = [(CNPropertyCell *)self presentingDelegate];
+  presentingDelegate = [(CNPropertyCell *)self presentingDelegate];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __58__CNPropertyInstantMessageEditingCell_picker_didPickItem___block_invoke;
   v28[3] = &unk_1E74E6A88;
   v28[4] = self;
-  [v27 sender:self dismissViewController:v7 completionHandler:v28];
+  [presentingDelegate sender:self dismissViewController:pickerCopy completionHandler:v28];
 }
 
-- (void)labelButtonClicked:(id)a3
+- (void)labelButtonClicked:(id)clicked
 {
   v27[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNPropertyCell *)self propertyItem];
-  v6 = [v5 extendedLabels];
-  v7 = [v6 count];
+  clickedCopy = clicked;
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  extendedLabels = [propertyItem extendedLabels];
+  v7 = [extendedLabels count];
 
   if (v7 >= 2)
   {
     v8 = [[CNInstantMessagePickerController alloc] initWithStyle:2];
     [(CNPickerController *)v8 setDelegate:self];
-    v9 = [(CNPropertyCell *)self delegate];
-    v10 = [v9 sharedActionsDataSource];
+    delegate = [(CNPropertyCell *)self delegate];
+    sharedActionsDataSource = [delegate sharedActionsDataSource];
     v11 = *MEMORY[0x1E695C1B8];
     v27[0] = *MEMORY[0x1E695C150];
     v27[1] = v11;
     v27[2] = *MEMORY[0x1E695C178];
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:3];
-    v13 = [v10 thirdPartyTargetsForActionTypes:v12];
+    v13 = [sharedActionsDataSource thirdPartyTargetsForActionTypes:v12];
     v26 = 0;
     v14 = [v13 result:&v26];
     v15 = v26;
@@ -121,9 +121,9 @@ LABEL_9:
     {
       [(CNPickerController *)v8 setDiscoveredItems:v14];
       [(CNPickerController *)v8 setAllowsDiscoveredItems:1];
-      v16 = [(CNPropertyInstantMessageEditingCell *)self imAddress];
-      v17 = [v16 bundleIdentifiers];
-      v18 = [v17 count];
+      imAddress = [(CNPropertyInstantMessageEditingCell *)self imAddress];
+      bundleIdentifiers = [imAddress bundleIdentifiers];
+      v18 = [bundleIdentifiers count];
 
       if (v18)
       {
@@ -137,18 +137,18 @@ LABEL_9:
       }
     }
 
-    v20 = [(CNPickerController *)v8 selectedItem];
+    selectedItem = [(CNPickerController *)v8 selectedItem];
 
-    if (!v20)
+    if (!selectedItem)
     {
-      v21 = [(CNPropertyInstantMessageEditingCell *)self imAddress];
-      v22 = [v21 service];
-      [(CNPickerController *)v8 setSelectedItem:v22];
+      imAddress2 = [(CNPropertyInstantMessageEditingCell *)self imAddress];
+      service = [imAddress2 service];
+      [(CNPickerController *)v8 setSelectedItem:service];
     }
 
     v23 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v8];
-    v24 = [(CNPropertyCell *)self presentingDelegate];
-    [v24 sender:v4 presentViewController:v23];
+    presentingDelegate = [(CNPropertyCell *)self presentingDelegate];
+    [presentingDelegate sender:clickedCopy presentViewController:v23];
   }
 }
 
@@ -166,23 +166,23 @@ uint64_t __58__CNPropertyInstantMessageEditingCell_labelButtonClicked___block_in
 
 - (CNInstantMessageAddress)imAddress
 {
-  v4 = [(CNPropertyCell *)self propertyItem];
-  v5 = [v4 labeledValue];
-  v6 = [v5 value];
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  labeledValue = [propertyItem labeledValue];
+  value = [labeledValue value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"CNPropertyInstantMessageCell.m" lineNumber:39 description:@"Unexpected instant message profile value"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNPropertyInstantMessageCell.m" lineNumber:39 description:@"Unexpected instant message profile value"];
   }
 
-  v8 = [(CNPropertyCell *)self propertyItem];
-  v9 = [v8 labeledValue];
-  v10 = [v9 value];
+  propertyItem2 = [(CNPropertyCell *)self propertyItem];
+  labeledValue2 = [propertyItem2 labeledValue];
+  value2 = [labeledValue2 value];
 
-  return v10;
+  return value2;
 }
 
 @end

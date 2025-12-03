@@ -1,22 +1,22 @@
 @interface _ACCBTConnectionStatusAccessory
 + (id)accessoryList;
-- (_ACCBTConnectionStatusAccessory)initWithUID:(id)a3;
-- (void)componentUpdate:(id)a3;
+- (_ACCBTConnectionStatusAccessory)initWithUID:(id)d;
+- (void)componentUpdate:(id)update;
 - (void)dealloc;
 @end
 
 @implementation _ACCBTConnectionStatusAccessory
 
-- (_ACCBTConnectionStatusAccessory)initWithUID:(id)a3
+- (_ACCBTConnectionStatusAccessory)initWithUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = _ACCBTConnectionStatusAccessory;
   v6 = [(_ACCBTConnectionStatusAccessory *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accessoryUID, a3);
+    objc_storeStrong(&v6->_accessoryUID, d);
     v8 = objc_alloc_init(NSMutableDictionary);
     components = v7->_components;
     v7->_components = v8;
@@ -38,9 +38,9 @@
   [(_ACCBTConnectionStatusAccessory *)&v4 dealloc];
 }
 
-- (void)componentUpdate:(id)a3
+- (void)componentUpdate:(id)update
 {
-  v4 = [a3 userInfo];
+  userInfo = [update userInfo];
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 8;
@@ -73,17 +73,17 @@
     v12 = 138412546;
     v13 = accessoryUID;
     v14 = 2112;
-    v15 = v4;
+    v15 = userInfo;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[#BT Connection Status] componentUpdate: _accessoryUID=%@, userInfo=%@", &v12, 0x16u);
   }
 
-  if (v4)
+  if (userInfo)
   {
-    v9 = [v4 objectForKey:@"ACCBluetoothStatusComponentUpdateInfoAccessoryUID"];
+    v9 = [userInfo objectForKey:@"ACCBluetoothStatusComponentUpdateInfoAccessoryUID"];
     if ([v9 isEqualToString:self->_accessoryUID])
     {
-      v10 = [v4 objectForKey:@"ACCBluetoothStatusComponentUpdateInfoUID"];
-      v11 = [v4 objectForKey:@"ACCBluetoothStatusComponentUpdateInfoProfiles"];
+      v10 = [userInfo objectForKey:@"ACCBluetoothStatusComponentUpdateInfoUID"];
+      v11 = [userInfo objectForKey:@"ACCBluetoothStatusComponentUpdateInfoProfiles"];
       platform_btConnectionStatus_updateHandler(v9, v10, v11);
     }
   }

@@ -4,14 +4,14 @@
 - (BOOL)isSearchAddressBook;
 - (BOOL)isSharedAddressBook;
 - (id)description;
-- (void)applyParsedProperties:(id)a3;
+- (void)applyParsedProperties:(id)properties;
 @end
 
 @implementation CardDAVAddressBookContainer
 
 + (id)copyPropertyMappingsForParser
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CardDAVAddressBookContainer;
   v2 = objc_msgSendSuper2(&v5, sel_copyPropertyMappingsForParser);
   v3 = [v2 mutableCopy];
@@ -36,47 +36,47 @@
   v7 = [v4 stringWithFormat:@"%@ %p: ", v6, self];
 
   [v7 appendFormat:@" PARENT CLASS: %@", v3];
-  v8 = [(CardDAVAddressBookContainer *)self maxResourceSize];
-  [v7 appendFormat:@"\n\tmaxResourceSize: %@", v8];
+  maxResourceSize = [(CardDAVAddressBookContainer *)self maxResourceSize];
+  [v7 appendFormat:@"\n\tmaxResourceSize: %@", maxResourceSize];
 
-  v9 = [(CardDAVAddressBookContainer *)self maxImageSize];
-  [v7 appendFormat:@"\n\tmaxImageSize: %@", v9];
+  maxImageSize = [(CardDAVAddressBookContainer *)self maxImageSize];
+  [v7 appendFormat:@"\n\tmaxImageSize: %@", maxImageSize];
 
   return v7;
 }
 
-- (void)applyParsedProperties:(id)a3
+- (void)applyParsedProperties:(id)properties
 {
   v17.receiver = self;
   v17.super_class = CardDAVAddressBookContainer;
-  v4 = a3;
-  [(CoreDAVContainer *)&v17 applyParsedProperties:v4];
-  v5 = [v4 CDVObjectForKeyWithNameSpace:@"urn:ietf:params:xml:ns:carddav" andName:{@"max-resource-size", v17.receiver, v17.super_class}];
-  v6 = [v5 payloadAsString];
-  [(CardDAVAddressBookContainer *)self setMaxResourceSize:v6];
+  propertiesCopy = properties;
+  [(CoreDAVContainer *)&v17 applyParsedProperties:propertiesCopy];
+  v5 = [propertiesCopy CDVObjectForKeyWithNameSpace:@"urn:ietf:params:xml:ns:carddav" andName:{@"max-resource-size", v17.receiver, v17.super_class}];
+  payloadAsString = [v5 payloadAsString];
+  [(CardDAVAddressBookContainer *)self setMaxResourceSize:payloadAsString];
 
-  v7 = [v4 CDVObjectForKeyWithNameSpace:@"urn:ietf:params:xml:ns:carddav" andName:@"max-image-size"];
-  v8 = [v7 payloadAsString];
-  [(CardDAVAddressBookContainer *)self setMaxImageSize:v8];
+  v7 = [propertiesCopy CDVObjectForKeyWithNameSpace:@"urn:ietf:params:xml:ns:carddav" andName:@"max-image-size"];
+  payloadAsString2 = [v7 payloadAsString];
+  [(CardDAVAddressBookContainer *)self setMaxImageSize:payloadAsString2];
 
-  v9 = [v4 CDVObjectForKeyWithNameSpace:@"http://calendarserver.org/ns/" andName:@"me-card"];
-  v10 = [v9 href];
-  v11 = [v10 payloadAsFullURL];
-  [(CardDAVAddressBookContainer *)self setMeCardURL:v11];
+  v9 = [propertiesCopy CDVObjectForKeyWithNameSpace:@"http://calendarserver.org/ns/" andName:@"me-card"];
+  href = [v9 href];
+  payloadAsFullURL = [href payloadAsFullURL];
+  [(CardDAVAddressBookContainer *)self setMeCardURL:payloadAsFullURL];
 
-  v12 = [v4 CDVObjectForKeyWithNameSpace:@"http://me.com/_namespace/" andName:@"guardian-restricted"];
-  v13 = [v12 payloadAsString];
-  -[CardDAVAddressBookContainer setIsGuardianRestricted:](self, "setIsGuardianRestricted:", [v13 isEqualToString:@"true"]);
+  v12 = [propertiesCopy CDVObjectForKeyWithNameSpace:@"http://me.com/_namespace/" andName:@"guardian-restricted"];
+  payloadAsString3 = [v12 payloadAsString];
+  -[CardDAVAddressBookContainer setIsGuardianRestricted:](self, "setIsGuardianRestricted:", [payloadAsString3 isEqualToString:@"true"]);
 
-  v14 = [v4 CDVObjectForKeyWithNameSpace:@"urn:mobileme:davservices" andName:@"quota-available"];
+  v14 = [propertiesCopy CDVObjectForKeyWithNameSpace:@"urn:mobileme:davservices" andName:@"quota-available"];
 
   if (v14)
   {
-    v15 = [v14 otherBytes];
-    if (v15)
+    otherBytes = [v14 otherBytes];
+    if (otherBytes)
     {
-      v16 = [v14 otherBytes];
-      -[CardDAVAddressBookContainer setIsImageUploadRestricted:](self, "setIsImageUploadRestricted:", [v16 payloadAsNSInteger] < 1);
+      otherBytes2 = [v14 otherBytes];
+      -[CardDAVAddressBookContainer setIsImageUploadRestricted:](self, "setIsImageUploadRestricted:", [otherBytes2 payloadAsNSInteger] < 1);
     }
 
     else
@@ -93,12 +93,12 @@
 
 - (BOOL)isAddressBook
 {
-  v3 = [(CoreDAVContainer *)self resourceType];
-  if (v3)
+  resourceType = [(CoreDAVContainer *)self resourceType];
+  if (resourceType)
   {
-    v4 = [(CoreDAVContainer *)self resourceType];
-    v5 = [v4 addressBook];
-    v6 = v5 != 0;
+    resourceType2 = [(CoreDAVContainer *)self resourceType];
+    addressBook = [resourceType2 addressBook];
+    v6 = addressBook != 0;
   }
 
   else
@@ -111,20 +111,20 @@
 
 - (BOOL)isSearchAddressBook
 {
-  v3 = [(CoreDAVContainer *)self resourceType];
-  if (v3)
+  resourceType = [(CoreDAVContainer *)self resourceType];
+  if (resourceType)
   {
-    v4 = [(CoreDAVContainer *)self resourceType];
-    v5 = [v4 searchAddressBook];
-    if (v5)
+    resourceType2 = [(CoreDAVContainer *)self resourceType];
+    searchAddressBook = [resourceType2 searchAddressBook];
+    if (searchAddressBook)
     {
       v6 = 1;
     }
 
     else
     {
-      v7 = [(CoreDAVContainer *)self resourceType];
-      v6 = [v7 isTypeWithNameSpace:@"urn:ietf:params:xml:ns:carddav" andName:@"directory"];
+      resourceType3 = [(CoreDAVContainer *)self resourceType];
+      v6 = [resourceType3 isTypeWithNameSpace:@"urn:ietf:params:xml:ns:carddav" andName:@"directory"];
     }
   }
 
@@ -143,12 +143,12 @@
     return 0;
   }
 
-  v3 = [(CoreDAVContainer *)self resourceType];
-  if (v3)
+  resourceType = [(CoreDAVContainer *)self resourceType];
+  if (resourceType)
   {
-    v4 = [(CoreDAVContainer *)self resourceType];
-    v5 = [v4 shared];
-    v6 = v5 != 0;
+    resourceType2 = [(CoreDAVContainer *)self resourceType];
+    shared = [resourceType2 shared];
+    v6 = shared != 0;
   }
 
   else

@@ -1,10 +1,10 @@
 @interface ADArgumentParserPositionalArgument
-+ (id)enumArgument:(SEL)a3 description:(id)a4 conversionDictionary:(id)a5;
-+ (id)floatArgument:(SEL)a3 description:(id)a4;
-+ (id)integerArgument:(SEL)a3 description:(id)a4;
-+ (id)stringArgument:(SEL)a3 description:(id)a4;
-- (ADArgumentParserPositionalArgument)initWithName:(SEL)a3 description:(id)a4 type:(unint64_t)a5 conversionDictionary:(id)a6;
-- (BOOL)setPropertyFromMap:()map<std:()docopt:()std:(std:(docopt:(id)a4 :value>>> *)a3 :allocator<std::pair<const)std::string :less<std::string> :value :string toCommand:;
++ (id)enumArgument:(SEL)argument description:(id)description conversionDictionary:(id)dictionary;
++ (id)floatArgument:(SEL)argument description:(id)description;
++ (id)integerArgument:(SEL)argument description:(id)description;
++ (id)stringArgument:(SEL)argument description:(id)description;
+- (ADArgumentParserPositionalArgument)initWithName:(SEL)name description:(id)description type:(unint64_t)type conversionDictionary:(id)dictionary;
+- (BOOL)setPropertyFromMap:()map<std:()docopt:()std:(std:(docopt:(id)std :value>>> *)a3 :allocator<std::pair<const)std::string :less<std::string> :value :string toCommand:;
 - (id)fullUsage;
 - (id)legalValuesString;
 - (id)shortUsage;
@@ -12,9 +12,9 @@
 
 @implementation ADArgumentParserPositionalArgument
 
-- (BOOL)setPropertyFromMap:()map<std:()docopt:()std:(std:(docopt:(id)a4 :value>>> *)a3 :allocator<std::pair<const)std::string :less<std::string> :value :string toCommand:
+- (BOOL)setPropertyFromMap:()map<std:()docopt:()std:(std:(docopt:(id)std :value>>> *)a3 :allocator<std::pair<const)std::string :less<std::string> :value :string toCommand:
 {
-  v6 = a4;
+  stdCopy = std;
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@>", self->_name];
   std::map<std::string,docopt::value>::map[abi:ne200100](v14, a3);
   getDocoptValueFromMap(v7, v14, &v15);
@@ -55,7 +55,7 @@
     __p.__r_.__value_.__r.__words[0] = v16.__r_.__value_.__r.__words[0];
   }
 
-  v10 = setProperty(v6, name, type, &v12, self->_conversionDictionary);
+  v10 = setProperty(stdCopy, name, type, &v12, self->_conversionDictionary);
   if (v12 == 4)
   {
     p_p = &__p;
@@ -83,39 +83,39 @@
 
 - (id)fullUsage
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(ADArgumentParserPositionalArgument *)self name];
-  v5 = [v4 mutableCopy];
+  string = [MEMORY[0x277CCAB68] string];
+  name = [(ADArgumentParserPositionalArgument *)self name];
+  v5 = [name mutableCopy];
 
   [v5 rightPaddToLength:45];
-  v6 = [(ADArgumentParserPositionalArgument *)self descriptionString];
-  [v3 appendFormat:@"%@%@", v5, v6];
+  descriptionString = [(ADArgumentParserPositionalArgument *)self descriptionString];
+  [string appendFormat:@"%@%@", v5, descriptionString];
 
-  v7 = [(ADArgumentParserPositionalArgument *)self legalValuesString];
+  legalValuesString = [(ADArgumentParserPositionalArgument *)self legalValuesString];
 
-  if (v7)
+  if (legalValuesString)
   {
-    v8 = [(ADArgumentParserPositionalArgument *)self legalValuesString];
-    [v3 appendString:v8];
+    legalValuesString2 = [(ADArgumentParserPositionalArgument *)self legalValuesString];
+    [string appendString:legalValuesString2];
   }
 
-  return v3;
+  return string;
 }
 
 - (id)shortUsage
 {
   v3 = [(ADArgumentParserPositionalArgument *)self type]- 5;
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(ADArgumentParserPositionalArgument *)self name];
-  v6 = v5;
+  name = [(ADArgumentParserPositionalArgument *)self name];
+  v6 = name;
   if (v3 > 2)
   {
-    [v4 stringWithFormat:@"<%@>", v5];
+    [v4 stringWithFormat:@"<%@>", name];
   }
 
   else
   {
-    [v4 stringWithFormat:@"<%@...>", v5];
+    [v4 stringWithFormat:@"<%@...>", name];
   }
   v7 = ;
 
@@ -125,19 +125,19 @@
 - (id)legalValuesString
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(ADArgumentParserPositionalArgument *)self conversionDictionary];
-  if (v4 && (-[ADArgumentParserPositionalArgument conversionDictionary](self, "conversionDictionary"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
+  string = [MEMORY[0x277CCAB68] string];
+  conversionDictionary = [(ADArgumentParserPositionalArgument *)self conversionDictionary];
+  if (conversionDictionary && (-[ADArgumentParserPositionalArgument conversionDictionary](self, "conversionDictionary"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, conversionDictionary, v6))
   {
-    objc_msgSend(v3, "appendString:", @" (");
+    objc_msgSend(string, "appendString:", @" (");
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(ADArgumentParserPositionalArgument *)self conversionDictionary];
-    v8 = [v7 allKeys];
+    conversionDictionary2 = [(ADArgumentParserPositionalArgument *)self conversionDictionary];
+    allKeys = [conversionDictionary2 allKeys];
 
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v9 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
       v10 = *v15;
@@ -147,21 +147,21 @@
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allKeys);
           }
 
-          [v3 appendFormat:@"%@|", *(*(&v14 + 1) + 8 * i)];
+          [string appendFormat:@"%@|", *(*(&v14 + 1) + 8 * i)];
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);
     }
 
-    [v3 deleteCharactersInRange:{objc_msgSend(v3, "length") - 1, 1}];
-    [v3 appendString:@""]);
-    v12 = v3;
+    [string deleteCharactersInRange:{objc_msgSend(string, "length") - 1, 1}];
+    [string appendString:@""]);
+    v12 = string;
   }
 
   else
@@ -172,56 +172,56 @@
   return v12;
 }
 
-- (ADArgumentParserPositionalArgument)initWithName:(SEL)a3 description:(id)a4 type:(unint64_t)a5 conversionDictionary:(id)a6
+- (ADArgumentParserPositionalArgument)initWithName:(SEL)name description:(id)description type:(unint64_t)type conversionDictionary:(id)dictionary
 {
-  v11 = a4;
-  v12 = a6;
+  descriptionCopy = description;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = ADArgumentParserPositionalArgument;
   v13 = [(ADArgumentParserPositionalArgument *)&v17 init];
   if (v13)
   {
-    v14 = NSStringFromSelector(a3);
+    v14 = NSStringFromSelector(name);
     name = v13->_name;
     v13->_name = v14;
 
-    objc_storeStrong(&v13->_descriptionString, a4);
-    v13->_type = a5;
-    objc_storeStrong(&v13->_conversionDictionary, a6);
+    objc_storeStrong(&v13->_descriptionString, description);
+    v13->_type = type;
+    objc_storeStrong(&v13->_conversionDictionary, dictionary);
   }
 
   return v13;
 }
 
-+ (id)floatArgument:(SEL)a3 description:(id)a4
++ (id)floatArgument:(SEL)argument description:(id)description
 {
-  v5 = a4;
-  v6 = [[ADArgumentParserPositionalArgument alloc] initWithName:a3 description:v5 type:3 conversionDictionary:0];
+  descriptionCopy = description;
+  v6 = [[ADArgumentParserPositionalArgument alloc] initWithName:argument description:descriptionCopy type:3 conversionDictionary:0];
 
   return v6;
 }
 
-+ (id)integerArgument:(SEL)a3 description:(id)a4
++ (id)integerArgument:(SEL)argument description:(id)description
 {
-  v5 = a4;
-  v6 = [[ADArgumentParserPositionalArgument alloc] initWithName:a3 description:v5 type:2 conversionDictionary:0];
+  descriptionCopy = description;
+  v6 = [[ADArgumentParserPositionalArgument alloc] initWithName:argument description:descriptionCopy type:2 conversionDictionary:0];
 
   return v6;
 }
 
-+ (id)stringArgument:(SEL)a3 description:(id)a4
++ (id)stringArgument:(SEL)argument description:(id)description
 {
-  v5 = a4;
-  v6 = [[ADArgumentParserPositionalArgument alloc] initWithName:a3 description:v5 type:4 conversionDictionary:0];
+  descriptionCopy = description;
+  v6 = [[ADArgumentParserPositionalArgument alloc] initWithName:argument description:descriptionCopy type:4 conversionDictionary:0];
 
   return v6;
 }
 
-+ (id)enumArgument:(SEL)a3 description:(id)a4 conversionDictionary:(id)a5
++ (id)enumArgument:(SEL)argument description:(id)description conversionDictionary:(id)dictionary
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [[ADArgumentParserPositionalArgument alloc] initWithName:a3 description:v7 type:0 conversionDictionary:v8];
+  descriptionCopy = description;
+  dictionaryCopy = dictionary;
+  v9 = [[ADArgumentParserPositionalArgument alloc] initWithName:argument description:descriptionCopy type:0 conversionDictionary:dictionaryCopy];
 
   return v9;
 }

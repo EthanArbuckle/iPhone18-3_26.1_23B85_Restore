@@ -1,28 +1,28 @@
 @interface IMBloomFilter
-- (BOOL)mightContainKey:(const void *)a3;
-- (IMBloomFilter)initWithCoder:(id)a3;
-- (IMBloomFilter)initWithSpecification:(id *)a3 hashProvider:(id)a4;
+- (BOOL)mightContainKey:(const void *)key;
+- (IMBloomFilter)initWithCoder:(id)coder;
+- (IMBloomFilter)initWithSpecification:(id *)specification hashProvider:(id)provider;
 - (NSString)usageDescription;
-- (void)addKey:(const void *)a3;
+- (void)addKey:(const void *)key;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IMBloomFilter
 
-- (IMBloomFilter)initWithSpecification:(id *)a3 hashProvider:(id)a4
+- (IMBloomFilter)initWithSpecification:(id *)specification hashProvider:(id)provider
 {
-  v6 = a4;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = IMBloomFilter;
   v7 = [(IMBloomFilter *)&v15 init];
   v8 = v7;
   if (v7)
   {
-    v9 = *&a3->var0;
-    v7->_specification.numberOfHashFunctions = a3->var2;
+    v9 = *&specification->var0;
+    v7->_specification.numberOfHashFunctions = specification->var2;
     *&v7->_specification.expectedNumberOfInsertions = v9;
-    v10 = [v6 copy];
+    v10 = [providerCopy copy];
     hashProvider = v8->_hashProvider;
     v8->_hashProvider = v10;
 
@@ -40,28 +40,28 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBytes:&self->_specification length:24 forKey:@"specification"];
-  [v4 encodeBytes:self->_bitVector.bytes length:self->_bitVector.byteCount forKey:@"bytes"];
+  coderCopy = coder;
+  [coderCopy encodeBytes:&self->_specification length:24 forKey:@"specification"];
+  [coderCopy encodeBytes:self->_bitVector.bytes length:self->_bitVector.byteCount forKey:@"bytes"];
 }
 
-- (IMBloomFilter)initWithCoder:(id)a3
+- (IMBloomFilter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = IMBloomFilter;
   v5 = [(IMBloomFilter *)&v17 init];
   if (v5)
   {
     v16 = 0;
-    v6 = [v4 decodeBytesForKey:@"specification" returnedLength:&v16];
+    v6 = [coderCopy decodeBytesForKey:@"specification" returnedLength:&v16];
     v7 = v6[2];
     *&v5->_specification.expectedNumberOfInsertions = *v6;
     v5->_specification.numberOfHashFunctions = v7;
     size = 0;
-    v8 = [v4 decodeBytesForKey:@"bytes" returnedLength:&size];
+    v8 = [coderCopy decodeBytesForKey:@"bytes" returnedLength:&size];
     v9 = size;
     v5->_bitVector.byteCount = size;
     v10 = malloc_type_malloc(v9, 0xEF4A4EBCuLL);
@@ -90,7 +90,7 @@
   [(IMBloomFilter *)&v4 dealloc];
 }
 
-- (void)addKey:(const void *)a3
+- (void)addKey:(const void *)key
 {
   memset(v8, 0, sizeof(v8));
   sub_177428(v8, self);
@@ -111,7 +111,7 @@
   }
 }
 
-- (BOOL)mightContainKey:(const void *)a3
+- (BOOL)mightContainKey:(const void *)key
 {
   memset(v9, 0, sizeof(v9));
   sub_177428(v9, self);

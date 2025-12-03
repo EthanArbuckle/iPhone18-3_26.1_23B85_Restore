@@ -1,22 +1,22 @@
 @interface SBModalUIFluidDismissGestureManager
-- (SBModalUIFluidDismissGestureManager)initWithWindowScene:(id)a3 systemGestureManager:(id)a4;
+- (SBModalUIFluidDismissGestureManager)initWithWindowScene:(id)scene systemGestureManager:(id)manager;
 - (SBWindowScene)windowScene;
-- (id)customScreenEdgePanGestureRecognizerForHomeGestureInteraction:(id)a3;
-- (id)viewForSystemGestureRecognizer:(id)a3;
+- (id)customScreenEdgePanGestureRecognizerForHomeGestureInteraction:(id)interaction;
+- (id)viewForSystemGestureRecognizer:(id)recognizer;
 - (int64_t)_dismissalTypeForCurrentContext;
-- (int64_t)touchInterfaceOrientationForGestureRecognizer:(id)a3;
-- (unint64_t)homeGestureInteraction:(id)a3 systemGestureTypeForType:(int64_t)a4;
+- (int64_t)touchInterfaceOrientationForGestureRecognizer:(id)recognizer;
+- (unint64_t)homeGestureInteraction:(id)interaction systemGestureTypeForType:(int64_t)type;
 - (void)_addOrRemoveGestureForCurrentSettings;
 - (void)_notifyObserversDismissalEnded;
 - (void)dealloc;
-- (void)handleGestureBegan:(id)a3 initiatedFromBottomEdge:(BOOL)a4 dismissalThreshold:(double)a5 initiatedFromIndirectEdge:(BOOL)a6;
-- (void)handleGestureChanged:(id)a3;
-- (void)handleGestureEnded:(id)a3;
-- (void)homeGestureInteractionBegan:(id)a3;
-- (void)homeGestureInteractionChanged:(id)a3;
-- (void)homeGestureInteractionEnded:(id)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)transactionDidComplete:(id)a3;
+- (void)handleGestureBegan:(id)began initiatedFromBottomEdge:(BOOL)edge dismissalThreshold:(double)threshold initiatedFromIndirectEdge:(BOOL)indirectEdge;
+- (void)handleGestureChanged:(id)changed;
+- (void)handleGestureEnded:(id)ended;
+- (void)homeGestureInteractionBegan:(id)began;
+- (void)homeGestureInteractionChanged:(id)changed;
+- (void)homeGestureInteractionEnded:(id)ended;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)transactionDidComplete:(id)complete;
 @end
 
 @implementation SBModalUIFluidDismissGestureManager
@@ -26,96 +26,96 @@
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
   if (+[SBAssistantController isVisible])
   {
-    v3 = [WeakRetained assistantController];
-    v4 = [v3 assistantRootViewController];
+    assistantController = [WeakRetained assistantController];
+    assistantRootViewController = [assistantController assistantRootViewController];
 
-    if ([v4 ownsHomeGesture])
+    if ([assistantRootViewController ownsHomeGesture])
     {
-      v5 = [WeakRetained assistantController];
-      v6 = [v5 presentationContext];
-      v7 = [v6 hasVisionModality];
+      assistantController2 = [WeakRetained assistantController];
+      presentationContext = [assistantController2 presentationContext];
+      hasVisionModality = [presentationContext hasVisionModality];
 
-      if (v7)
+      if (hasVisionModality)
       {
-        v8 = 2;
+        viewControllerForGestureDismissal = 2;
       }
 
       else
       {
-        v8 = 1;
+        viewControllerForGestureDismissal = 1;
       }
 
       goto LABEL_21;
     }
   }
 
-  v4 = [WeakRetained transientOverlayPresenter];
-  v8 = [v4 viewControllerForGestureDismissal];
-  if (v8)
+  assistantRootViewController = [WeakRetained transientOverlayPresenter];
+  viewControllerForGestureDismissal = [assistantRootViewController viewControllerForGestureDismissal];
+  if (viewControllerForGestureDismissal)
   {
-    v9 = [v4 ownsHomeGesture];
+    ownsHomeGesture = [assistantRootViewController ownsHomeGesture];
 
-    if (v9)
+    if (ownsHomeGesture)
     {
-      v10 = [v4 preferredGestureDismissalStyle];
+      preferredGestureDismissalStyle = [assistantRootViewController preferredGestureDismissalStyle];
       v11 = 3;
       v12 = 6;
-      if (v10 != 5)
+      if (preferredGestureDismissalStyle != 5)
       {
         v12 = 0;
       }
 
-      if (v10 != 4)
+      if (preferredGestureDismissalStyle != 4)
       {
         v11 = v12;
       }
 
       v13 = 5;
       v14 = 4;
-      if (v10 != 2)
+      if (preferredGestureDismissalStyle != 2)
       {
         v14 = 0;
       }
 
-      if (v10 != 1)
+      if (preferredGestureDismissalStyle != 1)
       {
         v13 = v14;
       }
 
-      if (v10 <= 3)
+      if (preferredGestureDismissalStyle <= 3)
       {
-        v8 = v13;
+        viewControllerForGestureDismissal = v13;
       }
 
       else
       {
-        v8 = v11;
+        viewControllerForGestureDismissal = v11;
       }
     }
 
     else
     {
-      v8 = 0;
+      viewControllerForGestureDismissal = 0;
     }
   }
 
 LABEL_21:
 
-  return v8;
+  return viewControllerForGestureDismissal;
 }
 
-- (SBModalUIFluidDismissGestureManager)initWithWindowScene:(id)a3 systemGestureManager:(id)a4
+- (SBModalUIFluidDismissGestureManager)initWithWindowScene:(id)scene systemGestureManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = SBModalUIFluidDismissGestureManager;
   v8 = [(SBModalUIFluidDismissGestureManager *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_systemGestureManager, a4);
-    objc_storeWeak(&v9->_windowScene, v6);
+    objc_storeStrong(&v8->_systemGestureManager, manager);
+    objc_storeWeak(&v9->_windowScene, sceneCopy);
     v10 = +[SBHomeGestureDomain rootSettings];
     homeGestureSettings = v9->_homeGestureSettings;
     v9->_homeGestureSettings = v10;
@@ -144,9 +144,9 @@ LABEL_21:
 
 - (void)_addOrRemoveGestureForCurrentSettings
 {
-  v3 = [(SBHomeGestureSettings *)self->_homeGestureSettings isHomeGestureEnabled];
+  isHomeGestureEnabled = [(SBHomeGestureSettings *)self->_homeGestureSettings isHomeGestureEnabled];
   homeGestureInteraction = self->_homeGestureInteraction;
-  if (v3)
+  if (isHomeGestureEnabled)
   {
     if (homeGestureInteraction)
     {
@@ -171,26 +171,26 @@ LABEL_21:
   self->_homeGestureInteraction = v5;
 }
 
-- (void)handleGestureBegan:(id)a3 initiatedFromBottomEdge:(BOOL)a4 dismissalThreshold:(double)a5 initiatedFromIndirectEdge:(BOOL)a6
+- (void)handleGestureBegan:(id)began initiatedFromBottomEdge:(BOOL)edge dismissalThreshold:(double)threshold initiatedFromIndirectEdge:(BOOL)indirectEdge
 {
-  v10 = a3;
-  v11 = [(SBModalUIFluidDismissGestureManager *)self currentTransaction];
+  beganCopy = began;
+  currentTransaction = [(SBModalUIFluidDismissGestureManager *)self currentTransaction];
 
-  if (!v11)
+  if (!currentTransaction)
   {
     v12 = +[SBWorkspace mainWorkspace];
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v14 = [WeakRetained _fbsDisplayConfiguration];
+    _fbsDisplayConfiguration = [WeakRetained _fbsDisplayConfiguration];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __127__SBModalUIFluidDismissGestureManager_handleGestureBegan_initiatedFromBottomEdge_dismissalThreshold_initiatedFromIndirectEdge___block_invoke_3;
     v15[3] = &unk_2783BD778;
-    v16 = v10;
-    v17 = self;
-    v19 = a4;
-    v18 = a5;
-    v20 = a6;
-    [v12 requestTransitionWithOptions:0 displayConfiguration:v14 builder:&__block_literal_global_276 validator:v15];
+    v16 = beganCopy;
+    selfCopy = self;
+    edgeCopy = edge;
+    thresholdCopy = threshold;
+    indirectEdgeCopy = indirectEdge;
+    [v12 requestTransitionWithOptions:0 displayConfiguration:_fbsDisplayConfiguration builder:&__block_literal_global_276 validator:v15];
   }
 }
 
@@ -260,48 +260,48 @@ SBModalUIFluidDismissGestureWorkspaceTransaction *__127__SBModalUIFluidDismissGe
   return v6;
 }
 
-- (void)handleGestureChanged:(id)a3
+- (void)handleGestureChanged:(id)changed
 {
-  v6 = a3;
-  v4 = [(SBModalUIFluidDismissGestureManager *)self currentTransaction];
-  v5 = v4;
-  if (v4)
+  changedCopy = changed;
+  currentTransaction = [(SBModalUIFluidDismissGestureManager *)self currentTransaction];
+  v5 = currentTransaction;
+  if (currentTransaction)
   {
-    [v4 systemGestureStateChanged:v6];
+    [currentTransaction systemGestureStateChanged:changedCopy];
   }
 }
 
-- (void)handleGestureEnded:(id)a3
+- (void)handleGestureEnded:(id)ended
 {
-  v6 = a3;
-  v4 = [(SBModalUIFluidDismissGestureManager *)self currentTransaction];
-  v5 = v4;
-  if (v4)
+  endedCopy = ended;
+  currentTransaction = [(SBModalUIFluidDismissGestureManager *)self currentTransaction];
+  v5 = currentTransaction;
+  if (currentTransaction)
   {
-    [v4 systemGestureStateChanged:v6];
+    [currentTransaction systemGestureStateChanged:endedCopy];
   }
 
-  else if ([v6 state] != 4)
+  else if ([endedCopy state] != 4)
   {
-    [v6 setEnabled:0];
-    [v6 setEnabled:1];
+    [endedCopy setEnabled:0];
+    [endedCopy setEnabled:1];
   }
 }
 
-- (unint64_t)homeGestureInteraction:(id)a3 systemGestureTypeForType:(int64_t)a4
+- (unint64_t)homeGestureInteraction:(id)interaction systemGestureTypeForType:(int64_t)type
 {
-  if ((a4 - 1) > 2)
+  if ((type - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_21F8A7A98[a4 - 1];
+    return qword_21F8A7A98[type - 1];
   }
 }
 
-- (id)customScreenEdgePanGestureRecognizerForHomeGestureInteraction:(id)a3
+- (id)customScreenEdgePanGestureRecognizerForHomeGestureInteraction:(id)interaction
 {
   v4 = [SBHomeGesturePanGestureRecognizer homeGesturePanGestureRecognizerWithTarget:0 action:0];
   [v4 setInterfaceDelegate:self];
@@ -310,13 +310,13 @@ SBModalUIFluidDismissGestureWorkspaceTransaction *__127__SBModalUIFluidDismissGe
   return v4;
 }
 
-- (void)homeGestureInteractionBegan:(id)a3
+- (void)homeGestureInteractionBegan:(id)began
 {
-  v8 = a3;
-  v4 = [v8 recognizedGestureType];
-  if (v4 == 2)
+  beganCopy = began;
+  recognizedGestureType = [beganCopy recognizedGestureType];
+  if (recognizedGestureType == 2)
   {
-    [v8 indirectScreenEdgeGestureRecognitionDistance];
+    [beganCopy indirectScreenEdgeGestureRecognitionDistance];
     v6 = -v5;
   }
 
@@ -325,53 +325,53 @@ SBModalUIFluidDismissGestureWorkspaceTransaction *__127__SBModalUIFluidDismissGe
     v6 = -200.0;
   }
 
-  v7 = [v8 recognizedGestureRecognizer];
-  [(SBModalUIFluidDismissGestureManager *)self handleGestureBegan:v7 initiatedFromBottomEdge:1 dismissalThreshold:v4 == 2 initiatedFromIndirectEdge:v6];
+  recognizedGestureRecognizer = [beganCopy recognizedGestureRecognizer];
+  [(SBModalUIFluidDismissGestureManager *)self handleGestureBegan:recognizedGestureRecognizer initiatedFromBottomEdge:1 dismissalThreshold:recognizedGestureType == 2 initiatedFromIndirectEdge:v6];
 }
 
-- (void)homeGestureInteractionChanged:(id)a3
+- (void)homeGestureInteractionChanged:(id)changed
 {
-  v4 = [a3 recognizedGestureRecognizer];
-  [(SBModalUIFluidDismissGestureManager *)self handleGestureChanged:v4];
+  recognizedGestureRecognizer = [changed recognizedGestureRecognizer];
+  [(SBModalUIFluidDismissGestureManager *)self handleGestureChanged:recognizedGestureRecognizer];
 }
 
-- (void)homeGestureInteractionEnded:(id)a3
+- (void)homeGestureInteractionEnded:(id)ended
 {
-  v4 = [a3 recognizedGestureRecognizer];
-  [(SBModalUIFluidDismissGestureManager *)self handleGestureEnded:v4];
+  recognizedGestureRecognizer = [ended recognizedGestureRecognizer];
+  [(SBModalUIFluidDismissGestureManager *)self handleGestureEnded:recognizedGestureRecognizer];
 }
 
-- (id)viewForSystemGestureRecognizer:(id)a3
+- (id)viewForSystemGestureRecognizer:(id)recognizer
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v5 = [(SBModalUIFluidDismissGestureManager *)self _dismissalTypeForCurrentContext];
-  if ((v5 - 3) < 4)
+  _dismissalTypeForCurrentContext = [(SBModalUIFluidDismissGestureManager *)self _dismissalTypeForCurrentContext];
+  if ((_dismissalTypeForCurrentContext - 3) < 4)
   {
-    v6 = [WeakRetained transientOverlayPresenter];
-    v7 = [v6 viewControllerForGestureDismissal];
+    transientOverlayPresenter = [WeakRetained transientOverlayPresenter];
+    viewControllerForGestureDismissal = [transientOverlayPresenter viewControllerForGestureDismissal];
 LABEL_5:
-    v8 = v7;
-    v9 = [v7 view];
+    v8 = viewControllerForGestureDismissal;
+    view = [viewControllerForGestureDismissal view];
 
     goto LABEL_6;
   }
 
-  if ((v5 - 1) <= 1)
+  if ((_dismissalTypeForCurrentContext - 1) <= 1)
   {
-    v6 = [WeakRetained assistantController];
-    v7 = [v6 assistantRootViewController];
+    transientOverlayPresenter = [WeakRetained assistantController];
+    viewControllerForGestureDismissal = [transientOverlayPresenter assistantRootViewController];
     goto LABEL_5;
   }
 
-  v9 = 0;
+  view = 0;
 LABEL_6:
 
-  return v9;
+  return view;
 }
 
-- (int64_t)touchInterfaceOrientationForGestureRecognizer:(id)a3
+- (int64_t)touchInterfaceOrientationForGestureRecognizer:(id)recognizer
 {
-  v3 = [(SBModalUIFluidDismissGestureManager *)self viewForSystemGestureRecognizer:a3];
+  v3 = [(SBModalUIFluidDismissGestureManager *)self viewForSystemGestureRecognizer:recognizer];
   v4 = v3;
   if (v3 && (([v3 window], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "window"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "convertPoint:toView:", v6, 1.0, 1.0), objc_msgSend(v5, "_convertPointToSceneReferenceSpace:"), v8 = v7, v10 = v9, objc_msgSend(v4, "window"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "window"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "convertPoint:toView:", v12, 0.0, 0.0), objc_msgSend(v11, "_convertPointToSceneReferenceSpace:"), v14 = v13, v16 = v15, v12, v11, v6, v5, v17 = v8 <= v14) || v10 <= v16))
   {
@@ -410,12 +410,12 @@ LABEL_6:
 - (void)_notifyObserversDismissalEnded
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(BSCompoundAssertion *)self->_observers orderedContext];
+  orderedContext = [(BSCompoundAssertion *)self->_observers orderedContext];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [orderedContext countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -427,26 +427,26 @@ LABEL_6:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(orderedContext);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) noteModalUIFluidDismissalDidEnd:self];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [orderedContext countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)transactionDidComplete:(id)a3
+- (void)transactionDidComplete:(id)complete
 {
-  v4 = a3;
-  v5 = [(SBModalUIFluidDismissGestureManager *)self currentTransaction];
+  completeCopy = complete;
+  currentTransaction = [(SBModalUIFluidDismissGestureManager *)self currentTransaction];
 
-  if (v5 == v4)
+  if (currentTransaction == completeCopy)
   {
     [(SBModalUIFluidDismissGestureManager *)self setCurrentTransaction:0];
   }
@@ -454,9 +454,9 @@ LABEL_6:
   [(SBModalUIFluidDismissGestureManager *)self _notifyObserversDismissalEnded];
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (self->_homeGestureSettings == a3)
+  if (self->_homeGestureSettings == settings)
   {
     block[5] = v4;
     block[6] = v5;

@@ -1,32 +1,32 @@
 @interface TradeInToolViewController
 - (CGRect)frameForConfirmation;
-- (CGRect)frameForPage:(int)a3;
+- (CGRect)frameForPage:(int)page;
 - (int)maxNumPages;
-- (void)didUpdateCurrentImageView:(id)a3;
-- (void)endTestWithStatusCode:(id)a3;
+- (void)didUpdateCurrentImageView:(id)view;
+- (void)endTestWithStatusCode:(id)code;
 - (void)setUpViewAccessibilitySettings;
 - (void)setupView;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 @end
 
 @implementation TradeInToolViewController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  v6 = a3;
-  v7 = a4;
-  [(TradeInToolViewController *)self setInputs:v6];
-  v35 = v7;
-  [(DisplayViewController *)self setDiagnosticResponder:v7];
+  inputsCopy = inputs;
+  responderCopy = responder;
+  [(TradeInToolViewController *)self setInputs:inputsCopy];
+  v35 = responderCopy;
+  [(DisplayViewController *)self setDiagnosticResponder:responderCopy];
   v36 = dispatch_semaphore_create(0);
   v34 = +[NSMutableArray array];
   v8 = NSTemporaryDirectory();
   v37 = [NSURL fileURLWithPath:v8 isDirectory:1];
 
-  v9 = [(TradeInToolViewController *)self inputs];
-  v10 = [v9 imageFileNames];
-  v11 = [v10 count];
+  inputs = [(TradeInToolViewController *)self inputs];
+  imageFileNames = [inputs imageFileNames];
+  v11 = [imageFileNames count];
 
   if (v11)
   {
@@ -35,15 +35,15 @@
     v33 = v12;
     while (1)
     {
-      v14 = [(TradeInToolViewController *)self inputs];
-      v15 = [v14 imageFileNames];
-      v16 = [v15 objectAtIndexedSubscript:v13];
+      inputs2 = [(TradeInToolViewController *)self inputs];
+      imageFileNames2 = [inputs2 imageFileNames];
+      v16 = [imageFileNames2 objectAtIndexedSubscript:v13];
 
       v17 = +[NSUUID UUID];
-      v18 = [v17 UUIDString];
-      v19 = [v37 URLByAppendingPathComponent:v18];
-      v20 = [v16 pathExtension];
-      v21 = [v19 URLByAppendingPathExtension:v20];
+      uUIDString = [v17 UUIDString];
+      v19 = [v37 URLByAppendingPathComponent:uUIDString];
+      pathExtension = [v16 pathExtension];
+      v21 = [v19 URLByAppendingPathExtension:pathExtension];
 
       v43 = 0;
       v44 = &v43;
@@ -105,9 +105,9 @@
         goto LABEL_18;
       }
 
-      v29 = [(TradeInToolViewController *)self inputs];
-      v30 = [v29 imageFileNames];
-      v31 = [v30 count];
+      inputs3 = [(TradeInToolViewController *)self inputs];
+      imageFileNames3 = [inputs3 imageFileNames];
+      v31 = [imageFileNames3 count];
 
       if (v31 <= ++v13)
       {
@@ -141,43 +141,43 @@ LABEL_18:
   v29.super_class = TradeInToolViewController;
   [(DisplayViewController *)&v29 setupView];
   [(TradeInToolViewController *)self setShouldShowPressHomeLabel:0];
-  v3 = [(DisplayViewController *)self scrollView];
-  v4 = [v3 panGestureRecognizer];
-  [v4 setMinimumNumberOfTouches:1];
+  scrollView = [(DisplayViewController *)self scrollView];
+  panGestureRecognizer = [scrollView panGestureRecognizer];
+  [panGestureRecognizer setMinimumNumberOfTouches:1];
 
-  v5 = [(DisplayViewController *)self scrollView];
-  v6 = [v5 panGestureRecognizer];
-  [v6 setMaximumNumberOfTouches:2];
+  scrollView2 = [(DisplayViewController *)self scrollView];
+  panGestureRecognizer2 = [scrollView2 panGestureRecognizer];
+  [panGestureRecognizer2 setMaximumNumberOfTouches:2];
 
-  v7 = [(TradeInToolViewController *)self view];
-  [v7 frame];
+  view = [(TradeInToolViewController *)self view];
+  [view frame];
   v9 = v8;
-  v10 = [(TradeInToolViewController *)self tradeInImages];
-  v11 = v9 * ([v10 count] + 1);
-  v12 = [(TradeInToolViewController *)self view];
-  [v12 frame];
+  tradeInImages = [(TradeInToolViewController *)self tradeInImages];
+  v11 = v9 * ([tradeInImages count] + 1);
+  view2 = [(TradeInToolViewController *)self view];
+  [view2 frame];
   v14 = v13;
-  v15 = [(DisplayViewController *)self scrollView];
-  [v15 setContentSize:{v11, v14}];
+  scrollView3 = [(DisplayViewController *)self scrollView];
+  [scrollView3 setContentSize:{v11, v14}];
 
   v16 = +[NSBundle mainBundle];
   v17 = [v16 localizedStringForKey:@"TRADE_IN_TOOL_COMPLETE_TITLE" value:&stru_100008398 table:0];
-  v18 = [(DisplayViewController *)self confirmPageView];
-  [v18 setMessage:v17];
+  confirmPageView = [(DisplayViewController *)self confirmPageView];
+  [confirmPageView setMessage:v17];
 
   v19 = +[NSBundle mainBundle];
   v20 = [v19 localizedStringForKey:@"DONE" value:&stru_100008398 table:0];
-  v21 = [(DisplayViewController *)self confirmPageView];
-  [v21 setButtonTitle:v20];
+  confirmPageView2 = [(DisplayViewController *)self confirmPageView];
+  [confirmPageView2 setButtonTitle:v20];
 
   objc_initWeak(&location, self);
-  v22 = [(DisplayViewController *)self confirmPageView];
+  confirmPageView3 = [(DisplayViewController *)self confirmPageView];
   v23 = _NSConcreteStackBlock;
   v24 = 3221225472;
   v25 = sub_100002AC8;
   v26 = &unk_100008288;
   objc_copyWeak(&v27, &location);
-  [v22 setButtonAction:&v23];
+  [confirmPageView3 setButtonAction:&v23];
 
   [(TradeInToolViewController *)self setUpViewAccessibilitySettings:v23];
   objc_destroyWeak(&v27);
@@ -186,22 +186,22 @@ LABEL_18:
 
 - (void)setUpViewAccessibilitySettings
 {
-  v3 = [(DisplayViewController *)self scrollView];
-  [v3 setIsAccessibilityElement:1];
+  scrollView = [(DisplayViewController *)self scrollView];
+  [scrollView setIsAccessibilityElement:1];
 
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"TRADE_IN_TOOL_QR_IMAGE_AREA" value:&stru_100008398 table:0];
-  v6 = [(DisplayViewController *)self scrollView];
-  [v6 setAccessibilityLabel:v5];
+  scrollView2 = [(DisplayViewController *)self scrollView];
+  [scrollView2 setAccessibilityLabel:v5];
 
-  v7 = [(DisplayViewController *)self confirmPageView];
-  [v7 setIsAccessibilityElement:1];
+  confirmPageView = [(DisplayViewController *)self confirmPageView];
+  [confirmPageView setIsAccessibilityElement:1];
 
-  v8 = [(DisplayViewController *)self scrollView];
-  v11 = v8;
+  scrollView3 = [(DisplayViewController *)self scrollView];
+  v11 = scrollView3;
   v9 = [NSArray arrayWithObjects:&v11 count:1];
-  v10 = [(TradeInToolViewController *)self view];
-  [v10 setAccessibilityElements:v9];
+  view = [(TradeInToolViewController *)self view];
+  [view setAccessibilityElements:v9];
 }
 
 - (void)start
@@ -213,26 +213,26 @@ LABEL_18:
   [(TradeInToolViewController *)self setupView];
 }
 
-- (void)endTestWithStatusCode:(id)a3
+- (void)endTestWithStatusCode:(id)code
 {
-  v4 = a3;
-  v5 = [(TradeInToolViewController *)self result];
-  [v5 setStatusCode:v4];
+  codeCopy = code;
+  result = [(TradeInToolViewController *)self result];
+  [result setStatusCode:codeCopy];
 
   [(TradeInToolViewController *)self setFinished:1];
 }
 
-- (CGRect)frameForPage:(int)a3
+- (CGRect)frameForPage:(int)page
 {
-  v4 = a3;
-  v5 = [(TradeInToolViewController *)self view];
-  [v5 frame];
-  v7 = v6 * v4;
-  v8 = [(TradeInToolViewController *)self view];
-  [v8 frame];
+  pageCopy = page;
+  view = [(TradeInToolViewController *)self view];
+  [view frame];
+  v7 = v6 * pageCopy;
+  view2 = [(TradeInToolViewController *)self view];
+  [view2 frame];
   v10 = v9;
-  v11 = [(TradeInToolViewController *)self view];
-  [v11 frame];
+  view3 = [(TradeInToolViewController *)self view];
+  [view3 frame];
   v13 = v12;
 
   v14 = 0.0;
@@ -248,8 +248,8 @@ LABEL_18:
 
 - (CGRect)frameForConfirmation
 {
-  v3 = [(TradeInToolViewController *)self tradeInImages];
-  -[TradeInToolViewController frameForPage:](self, "frameForPage:", [v3 count]);
+  tradeInImages = [(TradeInToolViewController *)self tradeInImages];
+  -[TradeInToolViewController frameForPage:](self, "frameForPage:", [tradeInImages count]);
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -268,53 +268,53 @@ LABEL_18:
 
 - (int)maxNumPages
 {
-  v2 = [(TradeInToolViewController *)self tradeInImages];
-  v3 = [v2 count];
+  tradeInImages = [(TradeInToolViewController *)self tradeInImages];
+  v3 = [tradeInImages count];
 
   return v3;
 }
 
-- (void)didUpdateCurrentImageView:(id)a3
+- (void)didUpdateCurrentImageView:(id)view
 {
-  v5 = a3;
-  if (a3)
+  viewCopy = view;
+  if (view)
   {
-    v6 = [(DisplayViewController *)self scrollView];
-    v22[0] = v6;
-    v22[1] = v5;
+    scrollView = [(DisplayViewController *)self scrollView];
+    v22[0] = scrollView;
+    v22[1] = viewCopy;
     v7 = [NSArray arrayWithObjects:v22 count:2];
-    v8 = [(TradeInToolViewController *)self view];
-    [v8 setAccessibilityElements:v7];
+    view = [(TradeInToolViewController *)self view];
+    [view setAccessibilityElements:v7];
 
-    UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, v5);
+    UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, viewCopy);
   }
 
   else
   {
-    v9 = [(DisplayViewController *)self confirmPageView];
-    v10 = [v9 _actionButton];
-    v21[0] = v10;
-    v11 = [(DisplayViewController *)self scrollView];
-    v21[1] = v11;
+    confirmPageView = [(DisplayViewController *)self confirmPageView];
+    _actionButton = [confirmPageView _actionButton];
+    v21[0] = _actionButton;
+    scrollView2 = [(DisplayViewController *)self scrollView];
+    v21[1] = scrollView2;
     v12 = [NSArray arrayWithObjects:v21 count:2];
-    v13 = [(TradeInToolViewController *)self view];
-    [v13 setAccessibilityElements:v12];
+    view2 = [(TradeInToolViewController *)self view];
+    [view2 setAccessibilityElements:v12];
 
     v14 = +[NSBundle mainBundle];
 
     v15 = [v14 localizedStringForKey:@"ANNOUNCE_TRADE_IN_TOOL_DONE" value:&stru_100008398 table:0];
-    v16 = [(DisplayViewController *)self confirmPageView];
-    v17 = [v16 _actionButton];
-    [v17 setAccessibilityLabel:v15];
+    confirmPageView2 = [(DisplayViewController *)self confirmPageView];
+    _actionButton2 = [confirmPageView2 _actionButton];
+    [_actionButton2 setAccessibilityLabel:v15];
 
-    v18 = [(DisplayViewController *)self confirmPageView];
-    v19 = [v18 _actionButton];
-    [v19 becomeFirstResponder];
+    confirmPageView3 = [(DisplayViewController *)self confirmPageView];
+    _actionButton3 = [confirmPageView3 _actionButton];
+    [_actionButton3 becomeFirstResponder];
 
-    LODWORD(v19) = UIAccessibilityLayoutChangedNotification;
-    v5 = [(DisplayViewController *)self confirmPageView];
-    v20 = [v5 _actionButton];
-    UIAccessibilityPostNotification(v19, v20);
+    LODWORD(_actionButton3) = UIAccessibilityLayoutChangedNotification;
+    viewCopy = [(DisplayViewController *)self confirmPageView];
+    _actionButton4 = [viewCopy _actionButton];
+    UIAccessibilityPostNotification(_actionButton3, _actionButton4);
   }
 }
 

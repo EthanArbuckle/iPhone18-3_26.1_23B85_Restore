@@ -1,5 +1,5 @@
 @interface HMDHomeDataPushDestination
-- (HMDHomeDataPushDestination)initWithUser:(id)a3 destination:(id)a4;
+- (HMDHomeDataPushDestination)initWithUser:(id)user destination:(id)destination;
 - (NSString)pushDestination;
 - (id)description;
 @end
@@ -8,60 +8,60 @@
 
 - (NSString)pushDestination
 {
-  v3 = [(HMDHomeDataPushDestination *)self destination];
+  destination = [(HMDHomeDataPushDestination *)self destination];
 
-  if (v3)
+  if (destination)
   {
-    v4 = [(HMDHomeDataPushDestination *)self destination];
+    destination2 = [(HMDHomeDataPushDestination *)self destination];
   }
 
   else
   {
-    v5 = [(HMDHomeDataPushDestination *)self user];
-    v4 = [v5 userID];
+    user = [(HMDHomeDataPushDestination *)self user];
+    destination2 = [user userID];
   }
 
-  return v4;
+  return destination2;
 }
 
 - (id)description
 {
   if (shouldLogPrivateInformation())
   {
-    v3 = [(HMDHomeDataPushDestination *)self destination];
+    destination = [(HMDHomeDataPushDestination *)self destination];
   }
 
   else
   {
-    v3 = @"...";
+    destination = @"...";
     v4 = @"...";
   }
 
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(HMDHomeDataPushDestination *)self user];
+  user = [(HMDHomeDataPushDestination *)self user];
   [(HMDHomeDataPushDestination *)self ignoreConfigCompare];
   v7 = HMFBooleanToString();
-  v8 = [v5 stringWithFormat:@"[Push-Destination: User: %@, Dest: %@, Ignore-config: %@]", v6, v3, v7];
+  v8 = [v5 stringWithFormat:@"[Push-Destination: User: %@, Dest: %@, Ignore-config: %@]", user, destination, v7];
 
   return v8;
 }
 
-- (HMDHomeDataPushDestination)initWithUser:(id)a3 destination:(id)a4
+- (HMDHomeDataPushDestination)initWithUser:(id)user destination:(id)destination
 {
-  v7 = a3;
-  v8 = a4;
+  userCopy = user;
+  destinationCopy = destination;
   v14.receiver = self;
   v14.super_class = HMDHomeDataPushDestination;
   v9 = [(HMDHomeDataPushDestination *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_user, a3);
-    v11 = [v7 userID];
+    objc_storeStrong(&v9->_user, user);
+    userID = [userCopy userID];
     username = v10->_username;
-    v10->_username = v11;
+    v10->_username = userID;
 
-    objc_storeStrong(&v10->_destination, a4);
+    objc_storeStrong(&v10->_destination, destination);
   }
 
   return v10;

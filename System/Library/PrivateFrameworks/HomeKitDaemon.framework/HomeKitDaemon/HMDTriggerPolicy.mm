@@ -1,20 +1,20 @@
 @interface HMDTriggerPolicy
-- (BOOL)isEqual:(id)a3;
-- (HMDTriggerPolicy)initWithCoder:(id)a3;
-- (HMDTriggerPolicy)initWithIdentifier:(id)a3;
-- (void)applyPolicy:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMDTriggerPolicy)initWithCoder:(id)coder;
+- (HMDTriggerPolicy)initWithIdentifier:(id)identifier;
+- (void)applyPolicy:(id)policy;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDTriggerPolicy
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -25,9 +25,9 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMDTriggerPolicy *)self uuid];
-    v8 = [v6 uuid];
-    v9 = [v7 isEqual:v8];
+    uuid = [(HMDTriggerPolicy *)self uuid];
+    uuid2 = [v6 uuid];
+    v9 = [uuid isEqual:uuid2];
   }
 
   else
@@ -38,18 +38,18 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(HMDTriggerPolicy *)self uuid];
-  v5 = [v6 UUIDString];
-  [v4 encodeObject:v5 forKey:*MEMORY[0x277CD1280]];
+  coderCopy = coder;
+  uuid = [(HMDTriggerPolicy *)self uuid];
+  uUIDString = [uuid UUIDString];
+  [coderCopy encodeObject:uUIDString forKey:*MEMORY[0x277CD1280]];
 }
 
-- (HMDTriggerPolicy)initWithCoder:(id)a3
+- (HMDTriggerPolicy)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD1280]];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD1280]];
 
   v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v5];
   v7 = [(HMDTriggerPolicy *)self initWithIdentifier:v6];
@@ -57,9 +57,9 @@
   return v7;
 }
 
-- (void)applyPolicy:(id)a3
+- (void)applyPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -71,16 +71,16 @@
   objc_exception_throw(v10);
 }
 
-- (HMDTriggerPolicy)initWithIdentifier:(id)a3
+- (HMDTriggerPolicy)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HMDTriggerPolicy;
   v6 = [(HMDTriggerPolicy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uuid, a3);
+    objc_storeStrong(&v6->_uuid, identifier);
   }
 
   return v7;

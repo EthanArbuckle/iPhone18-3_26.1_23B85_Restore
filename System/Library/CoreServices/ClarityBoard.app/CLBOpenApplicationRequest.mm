@@ -1,31 +1,31 @@
 @interface CLBOpenApplicationRequest
 - (BOOL)isForeground;
 - (BOOL)requiresNewScene;
-- (CLBOpenApplicationRequest)initWithPPTActivationContext:(id)a3 completion:(id)a4;
-- (CLBOpenApplicationRequest)initWithRequest:(id)a3 completion:(id)a4;
+- (CLBOpenApplicationRequest)initWithPPTActivationContext:(id)context completion:(id)completion;
+- (CLBOpenApplicationRequest)initWithRequest:(id)request completion:(id)completion;
 - (id)_requestOptionsDictionary;
 @end
 
 @implementation CLBOpenApplicationRequest
 
-- (CLBOpenApplicationRequest)initWithRequest:(id)a3 completion:(id)a4
+- (CLBOpenApplicationRequest)initWithRequest:(id)request completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v18.receiver = self;
   v18.super_class = CLBOpenApplicationRequest;
   v9 = [(CLBOpenApplicationRequest *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_systemRequest, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_systemRequest, request);
+    v11 = [completionCopy copy];
     systemCompletion = v10->_systemCompletion;
     v10->_systemCompletion = v11;
 
     v13 = +[ClarityBoard sharedApplicationLibrary];
-    v14 = [v7 bundleIdentifier];
-    v15 = [v13 installedApplicationWithBundleIdentifier:v14];
+    bundleIdentifier = [requestCopy bundleIdentifier];
+    v15 = [v13 installedApplicationWithBundleIdentifier:bundleIdentifier];
     application = v10->_application;
     v10->_application = v15;
   }
@@ -33,23 +33,23 @@
   return v10;
 }
 
-- (CLBOpenApplicationRequest)initWithPPTActivationContext:(id)a3 completion:(id)a4
+- (CLBOpenApplicationRequest)initWithPPTActivationContext:(id)context completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v15.receiver = self;
   v15.super_class = CLBOpenApplicationRequest;
   v9 = [(CLBOpenApplicationRequest *)&v15 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [completionCopy copy];
     systemCompletion = v9->_systemCompletion;
     v9->_systemCompletion = v10;
 
-    objc_storeStrong(&v9->_pptActivationContext, a3);
-    v12 = [v7 applicationInfo];
+    objc_storeStrong(&v9->_pptActivationContext, context);
+    applicationInfo = [contextCopy applicationInfo];
     application = v9->_application;
-    v9->_application = v12;
+    v9->_application = applicationInfo;
   }
 
   return v9;
@@ -57,16 +57,16 @@
 
 - (BOOL)isForeground
 {
-  v3 = [(CLBOpenApplicationRequest *)self _requestOptionsDictionary];
-  if ([v3 bs_BOOLForKey:FBSOpenApplicationOptionKeyActivateSuspended])
+  _requestOptionsDictionary = [(CLBOpenApplicationRequest *)self _requestOptionsDictionary];
+  if ([_requestOptionsDictionary bs_BOOLForKey:FBSOpenApplicationOptionKeyActivateSuspended])
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v5 = [(CLBOpenApplicationRequest *)self application];
-    v4 = [v5 alwaysLaunchesInBackground] ^ 1;
+    application = [(CLBOpenApplicationRequest *)self application];
+    v4 = [application alwaysLaunchesInBackground] ^ 1;
   }
 
   return v4;
@@ -74,19 +74,19 @@
 
 - (BOOL)requiresNewScene
 {
-  v2 = [(CLBOpenApplicationRequest *)self _requestOptionsDictionary];
-  v3 = [v2 bs_BOOLForKey:FBSOpenApplicationWithNewScene];
+  _requestOptionsDictionary = [(CLBOpenApplicationRequest *)self _requestOptionsDictionary];
+  v3 = [_requestOptionsDictionary bs_BOOLForKey:FBSOpenApplicationWithNewScene];
 
   return v3;
 }
 
 - (id)_requestOptionsDictionary
 {
-  v2 = [(CLBOpenApplicationRequest *)self systemRequest];
-  v3 = [v2 options];
-  v4 = [v3 dictionary];
+  systemRequest = [(CLBOpenApplicationRequest *)self systemRequest];
+  options = [systemRequest options];
+  dictionary = [options dictionary];
 
-  return v4;
+  return dictionary;
 }
 
 @end

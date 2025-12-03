@@ -1,54 +1,54 @@
 @interface _UIContextGraphTrackingAssertion
-- (BOOL)isContextIDRelevant:(unsigned int)a3;
-- (_UIContextGraphTrackingAssertion)initWithContextID:(unsigned int)a3 windowGraph:(id)a4 clientHandlerBlock:(id)a5 invalidationBlock:(id)a6;
-- (void)_setWindowGraph:(id)a3 callHandler:(BOOL)a4;
+- (BOOL)isContextIDRelevant:(unsigned int)relevant;
+- (_UIContextGraphTrackingAssertion)initWithContextID:(unsigned int)d windowGraph:(id)graph clientHandlerBlock:(id)block invalidationBlock:(id)invalidationBlock;
+- (void)_setWindowGraph:(id)graph callHandler:(BOOL)handler;
 @end
 
 @implementation _UIContextGraphTrackingAssertion
 
-- (_UIContextGraphTrackingAssertion)initWithContextID:(unsigned int)a3 windowGraph:(id)a4 clientHandlerBlock:(id)a5 invalidationBlock:(id)a6
+- (_UIContextGraphTrackingAssertion)initWithContextID:(unsigned int)d windowGraph:(id)graph clientHandlerBlock:(id)block invalidationBlock:(id)invalidationBlock
 {
-  v10 = a4;
-  v11 = a5;
+  graphCopy = graph;
+  blockCopy = block;
   v12 = MEMORY[0x1E696AFB0];
-  v13 = a6;
-  v14 = [v12 UUID];
-  v15 = [v14 UUIDString];
+  invalidationBlockCopy = invalidationBlock;
+  uUID = [v12 UUID];
+  uUIDString = [uUID UUIDString];
   v20.receiver = self;
   v20.super_class = _UIContextGraphTrackingAssertion;
-  v16 = [(BSSimpleAssertion *)&v20 initWithIdentifier:v15 forReason:@"observerTrackingAssertion" queue:MEMORY[0x1E69E96A0] invalidationBlock:v13];
+  v16 = [(BSSimpleAssertion *)&v20 initWithIdentifier:uUIDString forReason:@"observerTrackingAssertion" queue:MEMORY[0x1E69E96A0] invalidationBlock:invalidationBlockCopy];
 
   if (v16)
   {
-    v16->_contextID = a3;
-    v17 = [v11 copy];
+    v16->_contextID = d;
+    v17 = [blockCopy copy];
     clientHandlerBlock = v16->_clientHandlerBlock;
     v16->_clientHandlerBlock = v17;
 
-    [(_UIContextGraphTrackingAssertion *)v16 _setWindowGraph:v10 callHandler:0];
+    [(_UIContextGraphTrackingAssertion *)v16 _setWindowGraph:graphCopy callHandler:0];
   }
 
   return v16;
 }
 
-- (void)_setWindowGraph:(id)a3 callHandler:(BOOL)a4
+- (void)_setWindowGraph:(id)graph callHandler:(BOOL)handler
 {
-  v4 = a4;
-  v8 = a3;
-  v6 = [v8 bs_map:&__block_literal_global_36_0];
+  handlerCopy = handler;
+  graphCopy = graph;
+  v6 = [graphCopy bs_map:&__block_literal_global_36_0];
   contextIDGraph = self->_contextIDGraph;
   self->_contextIDGraph = v6;
 
-  if (v4)
+  if (handlerCopy)
   {
     (*(self->_clientHandlerBlock + 2))();
   }
 }
 
-- (BOOL)isContextIDRelevant:(unsigned int)a3
+- (BOOL)isContextIDRelevant:(unsigned int)relevant
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->_contextID == a3)
+  if (self->_contextID == relevant)
   {
     return 1;
   }
@@ -72,7 +72,7 @@
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) unsignedIntValue] == a3)
+        if ([*(*(&v11 + 1) + 8 * i) unsignedIntValue] == relevant)
         {
           v3 = 1;
           goto LABEL_13;

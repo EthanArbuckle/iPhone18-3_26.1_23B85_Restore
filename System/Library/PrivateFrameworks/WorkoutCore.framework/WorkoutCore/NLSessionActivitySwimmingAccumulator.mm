@@ -1,27 +1,27 @@
 @interface NLSessionActivitySwimmingAccumulator
 - (CMSwimTracker)swimTracker;
 - (NLSessionActivitySwimmingAccumulator)init;
-- (NLSessionActivitySwimmingAccumulator)initWithCoder:(id)a3;
+- (NLSessionActivitySwimmingAccumulator)initWithCoder:(id)coder;
 - (double)distance;
-- (void)_accumulateSwimData:(id)a3;
-- (void)_handleSwimData:(id)a3 error:(id)a4 handler:(id)a5;
-- (void)_startSwimTrackerWithSessionUUID:(id)a3 handler:(id)a4;
-- (void)accumulatorDidStartWithStartDate:(id)a3 sessionUUID:(id)a4 handler:(id)a5;
+- (void)_accumulateSwimData:(id)data;
+- (void)_handleSwimData:(id)data error:(id)error handler:(id)handler;
+- (void)_startSwimTrackerWithSessionUUID:(id)d handler:(id)handler;
+- (void)accumulatorDidStartWithStartDate:(id)date sessionUUID:(id)d handler:(id)handler;
 - (void)accumulatorDidStop;
 - (void)commonInit;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSwimTracker:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSwimTracker:(id)tracker;
 @end
 
 @implementation NLSessionActivitySwimmingAccumulator
 
-- (void)setSwimTracker:(id)a3
+- (void)setSwimTracker:(id)tracker
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_swimTracker, location[0]);
+  objc_storeStrong(location, tracker);
+  objc_storeStrong(&selfCopy->_swimTracker, location[0]);
   objc_storeStrong(location, 0);
 }
 
@@ -40,17 +40,17 @@
   return v4;
 }
 
-- (void)accumulatorDidStartWithStartDate:(id)a3 sessionUUID:(id)a4 handler:(id)a5
+- (void)accumulatorDidStartWithStartDate:(id)date sessionUUID:(id)d handler:(id)handler
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, d);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
-  [(NLSessionActivitySwimmingAccumulator *)v10 _startSwimTrackerWithSessionUUID:v8 handler:v7];
+  objc_storeStrong(&v7, handler);
+  [(NLSessionActivitySwimmingAccumulator *)selfCopy _startSwimTrackerWithSessionUUID:v8 handler:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
@@ -82,43 +82,43 @@
   return v3;
 }
 
-- (NLSessionActivitySwimmingAccumulator)initWithCoder:(id)a3
+- (NLSessionActivitySwimmingAccumulator)initWithCoder:(id)coder
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, coder);
   v3 = [location[0] decodeObjectForKey:@"sessionUUID"];
-  sessionUUID = v8->_sessionUUID;
-  v8->_sessionUUID = v3;
+  sessionUUID = selfCopy->_sessionUUID;
+  selfCopy->_sessionUUID = v3;
   MEMORY[0x277D82BD8](sessionUUID);
-  [(NLSessionActivitySwimmingAccumulator *)v8 commonInit];
-  v6 = MEMORY[0x277D82BE0](v8);
+  [(NLSessionActivitySwimmingAccumulator *)selfCopy commonInit];
+  v6 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeObject:v4->_sessionUUID forKey:@"sessionUUID"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeObject:selfCopy->_sessionUUID forKey:@"sessionUUID"];
   objc_storeStrong(location, 0);
 }
 
-- (void)_startSwimTrackerWithSessionUUID:(id)a3 handler:(id)a4
+- (void)_startSwimTrackerWithSessionUUID:(id)d handler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
-  objc_storeStrong(&v21->_sessionUUID, location[0]);
+  objc_storeStrong(&v19, handler);
+  objc_storeStrong(&selfCopy->_sessionUUID, location[0]);
   _HKInitializeLogging();
   v18 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v17 = OS_LOG_TYPE_DEFAULT;
@@ -129,10 +129,10 @@
   }
 
   objc_storeStrong(&v18, 0);
-  objc_initWeak(&from, v21);
+  objc_initWeak(&from, selfCopy);
   v6 = objc_alloc(MEMORY[0x277CC1D58]);
-  v15 = [v6 initWithSessionId:v21->_sessionUUID];
-  v4 = [(NLSessionActivitySwimmingAccumulator *)v21 swimTracker];
+  v15 = [v6 initWithSessionId:selfCopy->_sessionUUID];
+  swimTracker = [(NLSessionActivitySwimmingAccumulator *)selfCopy swimTracker];
   v5 = v15;
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
@@ -141,8 +141,8 @@
   v12 = &unk_277D88AC8;
   objc_copyWeak(v14, &from);
   v13 = MEMORY[0x277D82BE0](v19);
-  [(CMSwimTracker *)v4 startUpdatesFromRecord:v5 handler:&v8];
-  MEMORY[0x277D82BD8](v4);
+  [(CMSwimTracker *)swimTracker startUpdatesFromRecord:v5 handler:&v8];
+  MEMORY[0x277D82BD8](swimTracker);
   objc_storeStrong(&v13, 0);
   objc_destroyWeak(v14);
   objc_storeStrong(&v15, 0);
@@ -189,17 +189,17 @@ uint64_t __81__NLSessionActivitySwimmingAccumulator__startSwimTrackerWithSession
   return MEMORY[0x277D82BD8](WeakRetained);
 }
 
-- (void)_handleSwimData:(id)a3 error:(id)a4 handler:(id)a5
+- (void)_handleSwimData:(id)data error:(id)error handler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, error);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
+  objc_storeStrong(&v10, handler);
   if (v11)
   {
     _HKInitializeLogging();
@@ -215,10 +215,10 @@ uint64_t __81__NLSessionActivitySwimmingAccumulator__startSwimTrackerWithSession
 
   if ([location[0] count])
   {
-    v5 = v13;
-    v6 = [location[0] lastObject];
+    v5 = selfCopy;
+    lastObject = [location[0] lastObject];
     [(NLSessionActivitySwimmingAccumulator *)v5 _accumulateSwimData:?];
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](lastObject);
   }
 
   if (v10)
@@ -232,24 +232,24 @@ uint64_t __81__NLSessionActivitySwimmingAccumulator__startSwimTrackerWithSession
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_accumulateSwimData:(id)a3
+- (void)_accumulateSwimData:(id)data
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   if ([MEMORY[0x277CCDD30] isAppleInternalInstall])
   {
     _LogRecord(@"CMSwimData received:", location[0]);
   }
 
-  objc_storeStrong(&v4->_lastSwimDataRecord, location[0]);
+  objc_storeStrong(&selfCopy->_lastSwimDataRecord, location[0]);
   objc_storeStrong(location, 0);
 }
 
 - (void)accumulatorDidStop
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   _HKInitializeLogging();
   location[0] = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -263,9 +263,9 @@ uint64_t __81__NLSessionActivitySwimmingAccumulator__startSwimTrackerWithSession
   }
 
   objc_storeStrong(location, 0);
-  v2 = [(NLSessionActivitySwimmingAccumulator *)v8 swimTracker];
-  [(CMSwimTracker *)v2 stopUpdates];
-  MEMORY[0x277D82BD8](v2);
+  swimTracker = [(NLSessionActivitySwimmingAccumulator *)selfCopy swimTracker];
+  [(CMSwimTracker *)swimTracker stopUpdates];
+  MEMORY[0x277D82BD8](swimTracker);
 }
 
 - (double)distance

@@ -1,20 +1,20 @@
 @interface THWInteractiveImageWidgetController
-- (THWInteractiveImageWidgetController)initWithLayout:(id)a3;
+- (THWInteractiveImageWidgetController)initWithLayout:(id)layout;
 - (void)dealloc;
-- (void)selectOption:(unint64_t)a3 contentOffset:(CGPoint)a4 force:(BOOL)a5 animated:(BOOL)a6;
-- (void)selectOption:(unint64_t)a3 force:(BOOL)a4 animated:(BOOL)a5;
+- (void)selectOption:(unint64_t)option contentOffset:(CGPoint)offset force:(BOOL)force animated:(BOOL)animated;
+- (void)selectOption:(unint64_t)option force:(BOOL)force animated:(BOOL)animated;
 @end
 
 @implementation THWInteractiveImageWidgetController
 
-- (THWInteractiveImageWidgetController)initWithLayout:(id)a3
+- (THWInteractiveImageWidgetController)initWithLayout:(id)layout
 {
   v5.receiver = self;
   v5.super_class = THWInteractiveImageWidgetController;
   result = [(THWInteractiveImageWidgetController *)&v5 init];
   if (result)
   {
-    result->_layout = a3;
+    result->_layout = layout;
   }
 
   return result;
@@ -30,59 +30,59 @@
   [(THWInteractiveImageWidgetController *)&v3 dealloc];
 }
 
-- (void)selectOption:(unint64_t)a3 force:(BOOL)a4 animated:(BOOL)a5
+- (void)selectOption:(unint64_t)option force:(BOOL)force animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  if (a4)
+  animatedCopy = animated;
+  forceCopy = force;
+  if (force)
   {
-    v8 = a3;
+    optionCopy = option;
   }
 
   else
   {
-    v8 = 0;
+    optionCopy = 0;
   }
 
   calloutIndex = self->_calloutIndex;
   layout = self->_layout;
-  if (calloutIndex == a3)
+  if (calloutIndex == option)
   {
-    v11 = v8;
+    optionCopy2 = optionCopy;
   }
 
   else
   {
-    v11 = a3;
+    optionCopy2 = option;
   }
 
   [objc_msgSend(-[THWInteractiveImageWidgetLayout info](layout "info")];
 
-  [(THWInteractiveImageWidgetController *)self selectOption:v11 contentOffset:v6 force:v5 animated:?];
+  [(THWInteractiveImageWidgetController *)self selectOption:optionCopy2 contentOffset:forceCopy force:animatedCopy animated:?];
 }
 
-- (void)selectOption:(unint64_t)a3 contentOffset:(CGPoint)a4 force:(BOOL)a5 animated:(BOOL)a6
+- (void)selectOption:(unint64_t)option contentOffset:(CGPoint)offset force:(BOOL)force animated:(BOOL)animated
 {
-  v6 = a6;
-  y = a4.y;
-  x = a4.x;
+  animatedCopy = animated;
+  y = offset.y;
+  x = offset.x;
   if (!+[NSThread isMainThread])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (a5 || [(THWInteractiveImageWidgetControllerDelegate *)self->_delegate userInteractionEnabled])
+  if (force || [(THWInteractiveImageWidgetControllerDelegate *)self->_delegate userInteractionEnabled])
   {
     [(THWInteractiveImageWidgetControllerDelegate *)self->_delegate setUserInteractionEnabled:0];
     calloutIndex = self->_calloutIndex;
     layout = self->_layout;
-    self->_calloutIndex = a3;
-    [(THWInteractiveImageWidgetLayout *)layout setSelectedCalloutIndex:a3];
-    [(THWInteractiveImageWidgetControllerDelegate *)self->_delegate selectedCalloutIndexUpdatedAnimated:v6];
-    [(THWInteractiveImageWidgetControllerDelegate *)self->_delegate changeToViewport:a3 previousCalloutIndex:calloutIndex contentOffset:v6 animated:x, y];
+    self->_calloutIndex = option;
+    [(THWInteractiveImageWidgetLayout *)layout setSelectedCalloutIndex:option];
+    [(THWInteractiveImageWidgetControllerDelegate *)self->_delegate selectedCalloutIndexUpdatedAnimated:animatedCopy];
+    [(THWInteractiveImageWidgetControllerDelegate *)self->_delegate changeToViewport:option previousCalloutIndex:calloutIndex contentOffset:animatedCopy animated:x, y];
     transportControlsRep = self->_transportControlsRep;
 
-    [(THWInteractiveImageRadioPanelRep *)transportControlsRep setSelectedCallout:a3];
+    [(THWInteractiveImageRadioPanelRep *)transportControlsRep setSelectedCallout:option];
   }
 }
 

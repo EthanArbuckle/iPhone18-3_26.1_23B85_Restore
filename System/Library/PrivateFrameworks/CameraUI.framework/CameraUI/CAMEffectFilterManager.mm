@@ -1,27 +1,27 @@
 @interface CAMEffectFilterManager
-+ (BOOL)areFilters:(id)a3 equalTo:(id)a4;
-+ (BOOL)isDepthEffectInFilters:(id)a3;
-+ (BOOL)isLightingEffectInFilters:(id)a3;
-+ (id)ciFilterNameForFilterType:(int64_t)a3;
-+ (id)ciFilterNameForFilterType:(int64_t)a3 lightingType:(int64_t)a4;
-+ (id)displayNameForType:(int64_t)a3;
-+ (id)filtersForFilterType:(int64_t)a3 lightingType:(int64_t)a4 applyDepthEffect:(BOOL)a5;
-+ (id)namesFromFilters:(id)a3;
++ (BOOL)areFilters:(id)filters equalTo:(id)to;
++ (BOOL)isDepthEffectInFilters:(id)filters;
++ (BOOL)isLightingEffectInFilters:(id)filters;
++ (id)ciFilterNameForFilterType:(int64_t)type;
++ (id)ciFilterNameForFilterType:(int64_t)type lightingType:(int64_t)lightingType;
++ (id)displayNameForType:(int64_t)type;
++ (id)filtersForFilterType:(int64_t)type lightingType:(int64_t)lightingType applyDepthEffect:(BOOL)effect;
++ (id)namesFromFilters:(id)filters;
 @end
 
 @implementation CAMEffectFilterManager
 
-+ (id)filtersForFilterType:(int64_t)a3 lightingType:(int64_t)a4 applyDepthEffect:(BOOL)a5
++ (id)filtersForFilterType:(int64_t)type lightingType:(int64_t)lightingType applyDepthEffect:(BOOL)effect
 {
-  v5 = a5;
+  effectCopy = effect;
   v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
   v10 = v9;
-  if (v5)
+  if (effectCopy)
   {
     [v9 addObject:@"CIDepthEffect"];
   }
 
-  v11 = [a1 ciFilterNameForFilterType:a3 lightingType:a4];
+  v11 = [self ciFilterNameForFilterType:type lightingType:lightingType];
   if (v11)
   {
     [v10 addObject:v11];
@@ -73,12 +73,12 @@ uint64_t __77__CAMEffectFilterManager_filtersForFilterType_lightingType_applyDep
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-+ (id)ciFilterNameForFilterType:(int64_t)a3 lightingType:(int64_t)a4
++ (id)ciFilterNameForFilterType:(int64_t)type lightingType:(int64_t)lightingType
 {
   v7 = +[CAMCaptureCapabilities capabilities];
-  v8 = [v7 supportedPortraitLightingVersion];
+  supportedPortraitLightingVersion = [v7 supportedPortraitLightingVersion];
 
-  v9 = [MEMORY[0x1E6993870] ciFilterNameForLightingType:a4 version:v8];
+  v9 = [MEMORY[0x1E6993870] ciFilterNameForLightingType:lightingType version:supportedPortraitLightingVersion];
   if ([v9 length])
   {
     v10 = v9;
@@ -86,7 +86,7 @@ uint64_t __77__CAMEffectFilterManager_filtersForFilterType_lightingType_applyDep
 
   else
   {
-    v10 = [a1 ciFilterNameForFilterType:a3];
+    v10 = [self ciFilterNameForFilterType:type];
   }
 
   v11 = v10;
@@ -94,28 +94,28 @@ uint64_t __77__CAMEffectFilterManager_filtersForFilterType_lightingType_applyDep
   return v11;
 }
 
-+ (id)ciFilterNameForFilterType:(int64_t)a3
++ (id)ciFilterNameForFilterType:(int64_t)type
 {
-  if ((a3 - 1) > 0xE)
+  if ((type - 1) > 0xE)
   {
     return 0;
   }
 
   else
   {
-    return off_1E76FC8C0[a3 - 1];
+    return off_1E76FC8C0[type - 1];
   }
 }
 
-+ (BOOL)areFilters:(id)a3 equalTo:(id)a4
++ (BOOL)areFilters:(id)filters equalTo:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 == [v6 count])
+  filtersCopy = filters;
+  toCopy = to;
+  v7 = [filtersCopy count];
+  if (v7 == [toCopy count])
   {
-    v8 = [CAMEffectFilterManager namesFromFilters:v5];
-    v9 = [CAMEffectFilterManager namesFromFilters:v6];
+    v8 = [CAMEffectFilterManager namesFromFilters:filtersCopy];
+    v9 = [CAMEffectFilterManager namesFromFilters:toCopy];
     v10 = [v8 isEqualToArray:v9];
   }
 
@@ -127,18 +127,18 @@ uint64_t __77__CAMEffectFilterManager_filtersForFilterType_lightingType_applyDep
   return v10;
 }
 
-+ (id)namesFromFilters:(id)a3
++ (id)namesFromFilters:(id)filters
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  filtersCopy = filters;
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(filtersCopy, "count")}];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__CAMEffectFilterManager_namesFromFilters___block_invoke;
   v8[3] = &unk_1E76FC8A0;
   v6 = v5;
   v9 = v6;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [filtersCopy enumerateObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -150,9 +150,9 @@ void __43__CAMEffectFilterManager_namesFromFilters___block_invoke(uint64_t a1, v
   [v2 addObject:v3];
 }
 
-+ (id)displayNameForType:(int64_t)a3
++ (id)displayNameForType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 0:
       v4 = @"FILTER_NONE";
@@ -220,15 +220,15 @@ LABEL_23:
   return v6;
 }
 
-+ (BOOL)isDepthEffectInFilters:(id)a3
++ (BOOL)isDepthEffectInFilters:(id)filters
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  filtersCopy = filters;
+  v4 = [filtersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -239,11 +239,11 @@ LABEL_23:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(filtersCopy);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) name];
-        v9 = [v8 isEqualToString:@"CIDepthEffect"];
+        name = [*(*(&v12 + 1) + 8 * i) name];
+        v9 = [name isEqualToString:@"CIDepthEffect"];
 
         if (v9)
         {
@@ -252,7 +252,7 @@ LABEL_23:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [filtersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -268,15 +268,15 @@ LABEL_11:
   return v10;
 }
 
-+ (BOOL)isLightingEffectInFilters:(id)a3
++ (BOOL)isLightingEffectInFilters:(id)filters
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  filtersCopy = filters;
+  v4 = [filtersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -286,12 +286,12 @@ LABEL_11:
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(filtersCopy);
         }
 
         v7 = MEMORY[0x1E6993870];
-        v8 = [*(*(&v11 + 1) + 8 * i) name];
-        v9 = [v7 ciLightingTypeForFilterName:v8];
+        name = [*(*(&v11 + 1) + 8 * i) name];
+        v9 = [v7 ciLightingTypeForFilterName:name];
 
         if ((v9 - 7) > 0xFFFFFFFFFFFFFFFALL)
         {
@@ -300,7 +300,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [filtersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v4)
       {
         continue;

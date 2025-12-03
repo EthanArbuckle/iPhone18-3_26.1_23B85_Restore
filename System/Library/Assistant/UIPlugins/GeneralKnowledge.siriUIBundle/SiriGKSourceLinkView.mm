@@ -1,15 +1,15 @@
 @interface SiriGKSourceLinkView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SiriGKSourceLinkView)initWithLinkText:(id)a3 punchOut:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SiriGKSourceLinkView)initWithLinkText:(id)text punchOut:(id)out;
 - (void)updateConstraints;
 @end
 
 @implementation SiriGKSourceLinkView
 
-- (SiriGKSourceLinkView)initWithLinkText:(id)a3 punchOut:(id)a4
+- (SiriGKSourceLinkView)initWithLinkText:(id)text punchOut:(id)out
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  outCopy = out;
   v26.receiver = self;
   v26.super_class = SiriGKSourceLinkView;
   v8 = [(SiriGKSourceLinkView *)&v26 init];
@@ -17,9 +17,9 @@
   if (v8)
   {
     [(SiriGKView *)v8 setEdgeInsets:0.0, SiriUIPlatterStyle[32], 0.0, SiriUIPlatterStyle[34]];
-    if (v7)
+    if (outCopy)
     {
-      [(SiriGKView *)v9 setCommand:v7];
+      [(SiriGKView *)v9 setCommand:outCopy];
     }
 
     v10 = [UIImageView alloc];
@@ -38,7 +38,7 @@
     [(UIImageView *)v9->_safariIconImageView setContentHuggingPriority:1 forAxis:v18];
     [(UIImageView *)v9->_safariIconImageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SiriGKSourceLinkView *)v9 addSubview:v9->_safariIconImageView];
-    if (v6)
+    if (textCopy)
     {
       v19 = +[SiriSharedUIContentLabel label];
       titleLabel = v9->_titleLabel;
@@ -55,7 +55,7 @@
       v24 = [UIFont siriui_lightWeightFontWithSize:v23];
       [(UILabel *)v21 setFont:v24];
 
-      [(UILabel *)v9->_titleLabel setText:v6];
+      [(UILabel *)v9->_titleLabel setText:textCopy];
       [(UILabel *)v9->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
       [(SiriGKSourceLinkView *)v9 addSubview:v9->_titleLabel];
     }
@@ -66,10 +66,10 @@
   return v9;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(SiriGKView *)self edgeInsets:a3.width];
+  width = fits.width;
+  [(SiriGKView *)self edgeInsets:fits.width];
   v6 = width - (v4 + v5);
   v7 = SiriUIPlatterStyle[26];
   result.height = v7;

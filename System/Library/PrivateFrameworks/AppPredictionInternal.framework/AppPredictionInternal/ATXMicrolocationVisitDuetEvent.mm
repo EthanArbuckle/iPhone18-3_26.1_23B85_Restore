@@ -1,52 +1,52 @@
 @interface ATXMicrolocationVisitDuetEvent
-+ (id)mapVisitProbabilitiesByUUID:(id)a3;
-- (ATXMicrolocationVisitDuetEvent)initWithATXEvent:(id)a3;
-- (ATXMicrolocationVisitDuetEvent)initWithCurrentContextStoreValuesWithTwoHourLimit:(BOOL)a3;
-- (ATXMicrolocationVisitDuetEvent)initWithDominantMicrolocationUUID:(id)a3 microlocationProbabilities:(id)a4 startDate:(id)a5 endDate:(id)a6;
++ (id)mapVisitProbabilitiesByUUID:(id)d;
+- (ATXMicrolocationVisitDuetEvent)initWithATXEvent:(id)event;
+- (ATXMicrolocationVisitDuetEvent)initWithCurrentContextStoreValuesWithTwoHourLimit:(BOOL)limit;
+- (ATXMicrolocationVisitDuetEvent)initWithDominantMicrolocationUUID:(id)d microlocationProbabilities:(id)probabilities startDate:(id)date endDate:(id)endDate;
 - (id)description;
 - (id)identifier;
 @end
 
 @implementation ATXMicrolocationVisitDuetEvent
 
-- (ATXMicrolocationVisitDuetEvent)initWithDominantMicrolocationUUID:(id)a3 microlocationProbabilities:(id)a4 startDate:(id)a5 endDate:(id)a6
+- (ATXMicrolocationVisitDuetEvent)initWithDominantMicrolocationUUID:(id)d microlocationProbabilities:(id)probabilities startDate:(id)date endDate:(id)endDate
 {
-  v11 = a3;
-  v12 = a4;
+  dCopy = d;
+  probabilitiesCopy = probabilities;
   v16.receiver = self;
   v16.super_class = ATXMicrolocationVisitDuetEvent;
-  v13 = [(ATXDuetEvent *)&v16 initWithStartDate:a5 endDate:a6];
+  v13 = [(ATXDuetEvent *)&v16 initWithStartDate:date endDate:endDate];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_dominantMicrolocationUUID, a3);
-    objc_storeStrong(&v14->_microlocationUUIDProbabilities, a4);
+    objc_storeStrong(&v13->_dominantMicrolocationUUID, d);
+    objc_storeStrong(&v14->_microlocationUUIDProbabilities, probabilities);
   }
 
   return v14;
 }
 
-- (ATXMicrolocationVisitDuetEvent)initWithATXEvent:(id)a3
+- (ATXMicrolocationVisitDuetEvent)initWithATXEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = eventCopy;
     v6 = objc_alloc(MEMORY[0x277CCAD78]);
-    v7 = [v5 maxProbabilityMicroLocationIdentifier];
-    v8 = [v6 initWithUUIDString:v7];
+    maxProbabilityMicroLocationIdentifier = [v5 maxProbabilityMicroLocationIdentifier];
+    v8 = [v6 initWithUUIDString:maxProbabilityMicroLocationIdentifier];
 
-    v9 = [v5 probabilityVector];
-    v10 = [ATXMicrolocationVisitDuetEvent mapVisitProbabilitiesByUUID:v9];
+    probabilityVector = [v5 probabilityVector];
+    v10 = [ATXMicrolocationVisitDuetEvent mapVisitProbabilitiesByUUID:probabilityVector];
 
     if (v8 && v10)
     {
-      v11 = [v5 timestamp];
-      v12 = [v5 timestamp];
-      self = [(ATXMicrolocationVisitDuetEvent *)self initWithDominantMicrolocationUUID:v8 microlocationProbabilities:v10 startDate:v11 endDate:v12];
+      timestamp = [v5 timestamp];
+      timestamp2 = [v5 timestamp];
+      self = [(ATXMicrolocationVisitDuetEvent *)self initWithDominantMicrolocationUUID:v8 microlocationProbabilities:v10 startDate:timestamp endDate:timestamp2];
 
-      v13 = self;
+      selfCopy = self;
     }
 
     else
@@ -57,7 +57,7 @@
         [(ATXMicrolocationVisitDuetEvent *)v8 initWithATXEvent:v10, v14];
       }
 
-      v13 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -66,18 +66,18 @@
     v5 = __atxlog_handle_default();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(ATXMicrolocationVisitDuetEvent *)v4 initWithATXEvent:v5];
+      [(ATXMicrolocationVisitDuetEvent *)eventCopy initWithATXEvent:v5];
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (ATXMicrolocationVisitDuetEvent)initWithCurrentContextStoreValuesWithTwoHourLimit:(BOOL)a3
+- (ATXMicrolocationVisitDuetEvent)initWithCurrentContextStoreValuesWithTwoHourLimit:(BOOL)limit
 {
-  v3 = a3;
+  limitCopy = limit;
   v25 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CEBCA0]);
   v17 = 0;
@@ -94,15 +94,15 @@
   [v5 enumerateMicroLocationVisitEventsFromStartDate:0 endDate:0 filterBlock:&__block_literal_global_246 limit:1 ascending:0 block:v16];
   if (v18[5])
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
-    v7 = [v18[5] timestamp];
-    [v6 timeIntervalSinceDate:v7];
+    date = [MEMORY[0x277CBEAA8] date];
+    timestamp = [v18[5] timestamp];
+    [date timeIntervalSinceDate:timestamp];
     v9 = v8;
 
-    if (!v3 || v9 <= 7200.0)
+    if (!limitCopy || v9 <= 7200.0)
     {
       self = [(ATXMicrolocationVisitDuetEvent *)self initWithATXEvent:v18[5]];
-      v13 = self;
+      selfCopy = self;
       goto LABEL_11;
     }
 
@@ -128,12 +128,12 @@
     }
   }
 
-  v13 = 0;
+  selfCopy = 0;
 LABEL_11:
   _Block_object_dispose(&v17, 8);
 
   v14 = *MEMORY[0x277D85DE8];
-  return v13;
+  return selfCopy;
 }
 
 BOOL __84__ATXMicrolocationVisitDuetEvent_initWithCurrentContextStoreValuesWithTwoHourLimit___block_invoke(uint64_t a1, void *a2)
@@ -145,18 +145,18 @@ BOOL __84__ATXMicrolocationVisitDuetEvent_initWithCurrentContextStoreValuesWithT
   return v4;
 }
 
-+ (id)mapVisitProbabilitiesByUUID:(id)a3
++ (id)mapVisitProbabilitiesByUUID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  dCopy = d;
+  if ([dCopy count])
   {
-    v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(dCopy, "count")}];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v5 = v3;
+    v5 = dCopy;
     v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v6)
     {
@@ -172,11 +172,11 @@ BOOL __84__ATXMicrolocationVisitDuetEvent_initWithCurrentContextStoreValuesWithT
           }
 
           v10 = *(*(&v18 + 1) + 8 * i);
-          v11 = [v10 microLocationIdentifier];
-          v12 = [v10 probability];
-          if ([v11 length])
+          microLocationIdentifier = [v10 microLocationIdentifier];
+          probability = [v10 probability];
+          if ([microLocationIdentifier length])
           {
-            v13 = v12 == 0;
+            v13 = probability == 0;
           }
 
           else
@@ -186,10 +186,10 @@ BOOL __84__ATXMicrolocationVisitDuetEvent_initWithCurrentContextStoreValuesWithT
 
           if (!v13)
           {
-            v14 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v11];
+            v14 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:microLocationIdentifier];
             if (v14)
             {
-              [v4 setObject:v12 forKeyedSubscript:v14];
+              [v4 setObject:probability forKeyedSubscript:v14];
             }
           }
         }
@@ -215,8 +215,8 @@ BOOL __84__ATXMicrolocationVisitDuetEvent_initWithCurrentContextStoreValuesWithT
 
 - (id)identifier
 {
-  v3 = [(ATXDuetEvent *)self startDate];
-  v4 = [_ATXActionUtils localHourOfDayFromDate:v3];
+  startDate = [(ATXDuetEvent *)self startDate];
+  v4 = [_ATXActionUtils localHourOfDayFromDate:startDate];
 
   v5 = @"6_to_12";
   v6 = @"18_to_24";
@@ -249,9 +249,9 @@ BOOL __84__ATXMicrolocationVisitDuetEvent_initWithCurrentContextStoreValuesWithT
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   dominantMicrolocationUUID = self->_dominantMicrolocationUUID;
-  v5 = [(ATXDuetEvent *)self startDate];
-  v6 = [(ATXDuetEvent *)self endDate];
-  v7 = [v3 initWithFormat:@"Dominant microlocation: %@, start date: %@, end date: %@", dominantMicrolocationUUID, v5, v6];
+  startDate = [(ATXDuetEvent *)self startDate];
+  endDate = [(ATXDuetEvent *)self endDate];
+  v7 = [v3 initWithFormat:@"Dominant microlocation: %@, start date: %@, end date: %@", dominantMicrolocationUUID, startDate, endDate];
 
   return v7;
 }

@@ -6,13 +6,13 @@
 - (_TtC8Freeform20CRLFollowCoordinator)followCoordinator;
 - (_TtC8Freeform27CRLCollaborationParticipant)lastFollowedParticipant;
 - (_TtC8Freeform43CRLFollowAccessibilityExperienceCoordinator)init;
-- (id)makeAccessibilityHistoryActionsFor:(id)a3;
+- (id)makeAccessibilityHistoryActionsFor:(id)for;
 - (void)accessibilityStatusDidChange;
 - (void)prepareForViewportChange;
-- (void)registerHost:(id)a3 andFocus:(BOOL)a4;
-- (void)setLastFollowedParticipant:(id)a3;
-- (void)submitEventForEditOf:(id)a3;
-- (void)submitEventForSelectionOf:(id)a3;
+- (void)registerHost:(id)host andFocus:(BOOL)focus;
+- (void)setLastFollowedParticipant:(id)participant;
+- (void)submitEventForEditOf:(id)of;
+- (void)submitEventForSelectionOf:(id)of;
 @end
 
 @implementation CRLFollowAccessibilityExperienceCoordinator
@@ -31,34 +31,34 @@
   return Strong;
 }
 
-- (void)setLastFollowedParticipant:(id)a3
+- (void)setLastFollowedParticipant:(id)participant
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   swift_unknownObjectWeakAssign();
-  v6 = a3;
-  v7 = self;
+  participantCopy = participant;
+  selfCopy = self;
   sub_100CC4840(Strong);
 }
 
-- (void)registerHost:(id)a3 andFocus:(BOOL)a4
+- (void)registerHost:(id)host andFocus:(BOOL)focus
 {
-  v6 = a3;
-  v7 = self;
-  sub_100CC4944(v6, a4);
+  hostCopy = host;
+  selfCopy = self;
+  sub_100CC4944(hostCopy, focus);
 }
 
-- (void)submitEventForSelectionOf:(id)a3
+- (void)submitEventForSelectionOf:(id)of
 {
-  v4 = a3;
-  v5 = self;
-  sub_100CC55FC(v4);
+  ofCopy = of;
+  selfCopy = self;
+  sub_100CC55FC(ofCopy);
 }
 
-- (void)submitEventForEditOf:(id)a3
+- (void)submitEventForEditOf:(id)of
 {
-  v4 = a3;
-  v5 = self;
-  sub_100CC590C(v4);
+  ofCopy = of;
+  selfCopy = self;
+  sub_100CC590C(ofCopy);
 }
 
 - (BOOL)requestPauseFollow
@@ -66,7 +66,7 @@
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
-    v4 = self;
+    selfCopy = self;
     sub_1008FEE94(1);
   }
 
@@ -86,11 +86,11 @@
   if (v5)
   {
     v6 = v5;
-    v7 = self;
+    selfCopy = self;
     sub_100900650(v6, 0);
 
     v8 = 1;
-    v4 = v7;
+    v4 = selfCopy;
   }
 
   else
@@ -101,11 +101,11 @@
   return v8;
 }
 
-- (id)makeAccessibilityHistoryActionsFor:(id)a3
+- (id)makeAccessibilityHistoryActionsFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  sub_100CC5DD8(v4);
+  forCopy = for;
+  selfCopy = self;
+  sub_100CC5DD8(forCopy);
 
   sub_100006370(0, &qword_101A00130);
   v6.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -127,7 +127,7 @@
 
 - (NSString)crlaxInstructions
 {
-  v2 = self;
+  selfCopy = self;
   sub_100CC7AB0();
   v4 = v3;
 
@@ -146,14 +146,14 @@
 
 - (void)prepareForViewportChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_100CC7EB8();
 }
 
 - (void)accessibilityStatusDidChange
 {
   v3 = objc_opt_self();
-  v4 = self;
+  selfCopy = self;
   if ([v3 isVoiceOverOrSwitchControlEnabled])
   {
     sub_100CC4F54();

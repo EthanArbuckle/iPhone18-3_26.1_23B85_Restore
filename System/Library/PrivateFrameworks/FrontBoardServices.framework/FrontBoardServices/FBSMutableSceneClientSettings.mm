@@ -1,16 +1,16 @@
 @interface FBSMutableSceneClientSettings
-- (void)_applySafeValuesFromUntrustedSettings:(id)a3;
-- (void)addLayer:(id)a3;
-- (void)removeLayer:(id)a3;
+- (void)_applySafeValuesFromUntrustedSettings:(id)settings;
+- (void)addLayer:(id)layer;
+- (void)removeLayer:(id)layer;
 @end
 
 @implementation FBSMutableSceneClientSettings
 
-- (void)addLayer:(id)a3
+- (void)addLayer:(id)layer
 {
-  v8 = a3;
+  layerCopy = layer;
   NSClassFromString(&cfstr_Fbsscenelayer.isa);
-  if (!v8)
+  if (!layerCopy)
   {
     [FBSMutableSceneClientSettings addLayer:a2];
   }
@@ -27,16 +27,16 @@
     [(FBSSettings *)self setValue:v5 forProperty:sel_layers];
   }
 
-  v6 = [v8 capture];
-  v7 = [v6 stringRepresentation];
-  [v5 setObject:v6 forKey:v7];
+  capture = [layerCopy capture];
+  stringRepresentation = [capture stringRepresentation];
+  [v5 setObject:capture forKey:stringRepresentation];
 }
 
-- (void)removeLayer:(id)a3
+- (void)removeLayer:(id)layer
 {
-  v7 = a3;
+  layerCopy = layer;
   NSClassFromString(&cfstr_Fbsscenelayer.isa);
-  if (!v7)
+  if (!layerCopy)
   {
     [FBSMutableSceneClientSettings removeLayer:a2];
   }
@@ -49,33 +49,33 @@
   v5 = [(FBSSettings *)self valueForProperty:sel_layers expectedClass:objc_opt_class()];
   if (v5)
   {
-    v6 = [v7 stringRepresentation];
-    [v5 setObject:0 forKey:v6];
+    stringRepresentation = [layerCopy stringRepresentation];
+    [v5 setObject:0 forKey:stringRepresentation];
   }
 }
 
-- (void)_applySafeValuesFromUntrustedSettings:(id)a3
+- (void)_applySafeValuesFromUntrustedSettings:(id)settings
 {
-  v4 = a3;
-  [v4 preferredLevel];
+  settingsCopy = settings;
+  [settingsCopy preferredLevel];
   [(FBSMutableSceneClientSettings *)self setPreferredLevel:?];
-  -[FBSMutableSceneClientSettings setPreferredInterfaceOrientation:](self, "setPreferredInterfaceOrientation:", [v4 preferredInterfaceOrientation]);
-  v5 = [v4 preferredSceneHostIdentifier];
-  [(FBSMutableSceneClientSettings *)self setPreferredSceneHostIdentifier:v5];
+  -[FBSMutableSceneClientSettings setPreferredInterfaceOrientation:](self, "setPreferredInterfaceOrientation:", [settingsCopy preferredInterfaceOrientation]);
+  preferredSceneHostIdentifier = [settingsCopy preferredSceneHostIdentifier];
+  [(FBSMutableSceneClientSettings *)self setPreferredSceneHostIdentifier:preferredSceneHostIdentifier];
 
-  v6 = [v4 preferredSceneHostIdentity];
-  [(FBSMutableSceneClientSettings *)self setPreferredSceneHostIdentity:v6];
+  preferredSceneHostIdentity = [settingsCopy preferredSceneHostIdentity];
+  [(FBSMutableSceneClientSettings *)self setPreferredSceneHostIdentity:preferredSceneHostIdentity];
 
-  v10 = [(FBSSettings *)self _legacyOtherSettings];
-  [v10 removeAllSettings];
-  v7 = [(FBSSettings *)v4 _legacyOtherSettings];
-  [v10 applySettings:v7];
+  _legacyOtherSettings = [(FBSSettings *)self _legacyOtherSettings];
+  [_legacyOtherSettings removeAllSettings];
+  _legacyOtherSettings2 = [(FBSSettings *)settingsCopy _legacyOtherSettings];
+  [_legacyOtherSettings applySettings:_legacyOtherSettings2];
 
-  v8 = [(FBSSettings *)self _legacyLocalSettings];
-  [v8 removeAllSettings];
-  v9 = [(FBSSettings *)v4 _legacyLocalSettings];
+  _legacyLocalSettings = [(FBSSettings *)self _legacyLocalSettings];
+  [_legacyLocalSettings removeAllSettings];
+  _legacyLocalSettings2 = [(FBSSettings *)settingsCopy _legacyLocalSettings];
 
-  [v8 applySettings:v9];
+  [_legacyLocalSettings applySettings:_legacyLocalSettings2];
 }
 
 - (void)addLayer:(char *)a1 .cold.1(char *a1)

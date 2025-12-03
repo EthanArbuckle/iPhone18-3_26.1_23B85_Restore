@@ -1,19 +1,19 @@
 @interface NSDerivedAttributeDescription
-- (BOOL)_isSchemaEqual:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (NSDerivedAttributeDescription)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)_isSchemaEqual:(id)equal;
+- (BOOL)isEqual:(id)equal;
+- (NSDerivedAttributeDescription)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (uint64_t)_validateKeypaths:(uint64_t)result;
 - (void)_createCachesAndOptimizeState;
-- (void)_versionHash:(char *)a3 inStyle:(unint64_t)a4;
-- (void)_writeIntoData:(id)a3 propertiesDict:(id)a4 uniquedPropertyNames:(id)a5 uniquedStrings:(id)a6 uniquedData:(id)a7 entitiesSlots:(id)a8 fetchRequests:(id)a9;
+- (void)_versionHash:(char *)hash inStyle:(unint64_t)style;
+- (void)_writeIntoData:(id)data propertiesDict:(id)dict uniquedPropertyNames:(id)names uniquedStrings:(id)strings uniquedData:(id)uniquedData entitiesSlots:(id)slots fetchRequests:(id)requests;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDefaultValue:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDefaultValue:(id)value;
 - (void)setDerivationExpression:(NSExpression *)derivationExpression;
-- (void)setFilteringPredicate:(id)a3;
-- (void)setRenamingIdentifier:(id)a3;
+- (void)setFilteringPredicate:(id)predicate;
+- (void)setRenamingIdentifier:(id)identifier;
 @end
 
 @implementation NSDerivedAttributeDescription
@@ -97,23 +97,23 @@
   v14.receiver = self;
   v14.super_class = NSDerivedAttributeDescription;
   v5 = [(NSAttributeDescription *)&v14 description];
-  v6 = [(NSAttributeDescription *)self attributeType];
-  v7 = [(NSAttributeDescription *)self attributeValueClassName];
+  attributeType = [(NSAttributeDescription *)self attributeType];
+  attributeValueClassName = [(NSAttributeDescription *)self attributeValueClassName];
   derivationExpression = self->_derivationExpression;
   filteringPredicate = self->_filteringPredicate;
-  v10 = [(NSAttributeDescription *)self preservesValueInHistoryOnDeletion];
+  preservesValueInHistoryOnDeletion = [(NSAttributeDescription *)self preservesValueInHistoryOnDeletion];
   v11 = @"NO";
-  if (v10)
+  if (preservesValueInHistoryOnDeletion)
   {
     v11 = @"YES";
   }
 
-  v12 = [v4 stringWithFormat:@"%@, attributeType %lu, attributeValueClassName %@, derivationExpression %@, filteringPredicate %@, preservesValueInHistoryOnDeletion %@", v5, v6, v7, derivationExpression, filteringPredicate, v11];
+  v12 = [v4 stringWithFormat:@"%@, attributeType %lu, attributeValueClassName %@, derivationExpression %@, filteringPredicate %@, preservesValueInHistoryOnDeletion %@", v5, attributeType, attributeValueClassName, derivationExpression, filteringPredicate, v11];
   objc_autoreleasePoolPop(v3);
   return v12;
 }
 
-- (NSDerivedAttributeDescription)initWithCoder:(id)a3
+- (NSDerivedAttributeDescription)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = NSDerivedAttributeDescription;
@@ -122,29 +122,29 @@
   {
     v5 = MEMORY[0x1E695DFD8];
     v6 = objc_opt_class();
-    v4->_derivationExpression = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"NSDerivationExpression"}];
+    v4->_derivationExpression = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"NSDerivationExpression"}];
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
-    v4->_filteringPredicate = [a3 decodeObjectOfClasses:objc_msgSend(v7 forKey:{"setWithObjects:", v8, objc_opt_class(), 0), @"NSFilteringPredicate"}];
+    v4->_filteringPredicate = [coder decodeObjectOfClasses:objc_msgSend(v7 forKey:{"setWithObjects:", v8, objc_opt_class(), 0), @"NSFilteringPredicate"}];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = NSDerivedAttributeDescription;
   [(NSAttributeDescription *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->_derivationExpression forKey:@"NSDerivationExpression"];
-  [a3 encodeObject:self->_filteringPredicate forKey:@"NSFilteringPredicate"];
+  [coder encodeObject:self->_derivationExpression forKey:@"NSDerivationExpression"];
+  [coder encodeObject:self->_filteringPredicate forKey:@"NSFilteringPredicate"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NSDerivedAttributeDescription;
-  v4 = [(NSAttributeDescription *)&v6 copyWithZone:a3];
+  v4 = [(NSAttributeDescription *)&v6 copyWithZone:zone];
   if (v4)
   {
     v4[15] = self->_derivationExpression;
@@ -169,33 +169,33 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v5 = [(NSExpression *)derivationExpression keyPath];
-    if ([(NSString *)v5 hasSuffix:@".@sum"])
+    keyPath = [(NSExpression *)derivationExpression keyPath];
+    if ([(NSString *)keyPath hasSuffix:@".@sum"])
     {
       v6 = MEMORY[0x1E696ABC8];
-      v15[0] = [MEMORY[0x1E696ABC8] expressionForKeyPath:{-[NSString substringToIndex:](v5, "substringToIndex:", -[NSString length](v5, "length") - 5)}];
+      v15[0] = [MEMORY[0x1E696ABC8] expressionForKeyPath:{-[NSString substringToIndex:](keyPath, "substringToIndex:", -[NSString length](keyPath, "length") - 5)}];
       v7 = MEMORY[0x1E695DEC8];
       v8 = v15;
     }
 
     else
     {
-      if (![(NSString *)v5 hasSuffix:@".@total"])
+      if (![(NSString *)keyPath hasSuffix:@".@total"])
       {
-        if (![(NSString *)v5 hasSuffix:@".@count"])
+        if (![(NSString *)keyPath hasSuffix:@".@count"])
         {
           goto LABEL_9;
         }
 
         v6 = MEMORY[0x1E696ABC8];
-        v13 = [MEMORY[0x1E696ABC8] expressionForKeyPath:{-[NSString substringToIndex:](v5, "substringToIndex:", -[NSString length](v5, "length") - 7)}];
+        v13 = [MEMORY[0x1E696ABC8] expressionForKeyPath:{-[NSString substringToIndex:](keyPath, "substringToIndex:", -[NSString length](keyPath, "length") - 7)}];
         v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
         v10 = @"count:";
         goto LABEL_8;
       }
 
       v6 = MEMORY[0x1E696ABC8];
-      v14 = [MEMORY[0x1E696ABC8] expressionForKeyPath:{-[NSString substringToIndex:](v5, "substringToIndex:", -[NSString length](v5, "length") - 7)}];
+      v14 = [MEMORY[0x1E696ABC8] expressionForKeyPath:{-[NSString substringToIndex:](keyPath, "substringToIndex:", -[NSString length](keyPath, "length") - 7)}];
       v7 = MEMORY[0x1E695DEC8];
       v8 = &v14;
     }
@@ -211,37 +211,37 @@ LABEL_10:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setFilteringPredicate:(id)a3
+- (void)setFilteringPredicate:(id)predicate
 {
   [(NSPropertyDescription *)self _throwIfNotEditable];
-  if (self->_filteringPredicate != a3)
+  if (self->_filteringPredicate != predicate)
   {
-    v5 = a3;
+    predicateCopy = predicate;
 
-    self->_filteringPredicate = a3;
+    self->_filteringPredicate = predicate;
   }
 }
 
-- (BOOL)_isSchemaEqual:(id)a3
+- (BOOL)_isSchemaEqual:(id)equal
 {
   v7.receiver = self;
   v7.super_class = NSDerivedAttributeDescription;
   v5 = [(NSAttributeDescription *)&v7 _isSchemaEqual:?];
   if (v5)
   {
-    v5 = -[NSExpression isEqual:](self->_derivationExpression, "isEqual:", [a3 derivationExpression]);
+    v5 = -[NSExpression isEqual:](self->_derivationExpression, "isEqual:", [equal derivationExpression]);
     if (v5)
     {
-      LOBYTE(v5) = -[NSPredicate isEqual:](self->_filteringPredicate, "isEqual:", [a3 filteringPredicate]) ^ 1;
+      LOBYTE(v5) = -[NSPredicate isEqual:](self->_filteringPredicate, "isEqual:", [equal filteringPredicate]) ^ 1;
     }
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v7) = 1;
     return v7;
@@ -255,15 +255,15 @@ LABEL_10:
   if (v7)
   {
     derivationExpression = self->_derivationExpression;
-    v9 = [a3 derivationExpression];
-    if (derivationExpression == v9)
+    derivationExpression = [equal derivationExpression];
+    if (derivationExpression == derivationExpression)
     {
       goto LABEL_9;
     }
 
     if (derivationExpression)
     {
-      v10 = v9 == 0;
+      v10 = derivationExpression == 0;
     }
 
     else
@@ -276,13 +276,13 @@ LABEL_10:
       goto LABEL_15;
     }
 
-    v7 = [(NSExpression *)derivationExpression isEqual:v9];
+    v7 = [(NSExpression *)derivationExpression isEqual:derivationExpression];
     if (v7)
     {
 LABEL_9:
       filteringPredicate = self->_filteringPredicate;
-      v12 = [a3 filteringPredicate];
-      if (filteringPredicate == v12)
+      filteringPredicate = [equal filteringPredicate];
+      if (filteringPredicate == filteringPredicate)
       {
         LOBYTE(v7) = 1;
         return v7;
@@ -290,7 +290,7 @@ LABEL_9:
 
       if (filteringPredicate)
       {
-        v13 = v12 == 0;
+        v13 = filteringPredicate == 0;
       }
 
       else
@@ -300,7 +300,7 @@ LABEL_9:
 
       if (!v13)
       {
-        LOBYTE(v7) = [(NSPredicate *)filteringPredicate isEqual:v12];
+        LOBYTE(v7) = [(NSPredicate *)filteringPredicate isEqual:filteringPredicate];
         return v7;
       }
 
@@ -312,7 +312,7 @@ LABEL_15:
   return v7;
 }
 
-- (void)setDefaultValue:(id)a3
+- (void)setDefaultValue:(id)value
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E695D940];
@@ -321,10 +321,10 @@ LABEL_15:
   objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:v3 reason:@"Can't set a default value for a derived attribute" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v5, &v4, 1)}]);
 }
 
-- (void)setRenamingIdentifier:(id)a3
+- (void)setRenamingIdentifier:(id)identifier
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (([(NSString *)[(NSPropertyDescription *)self renamingIdentifier] isEqual:a3]& 1) == 0)
+  if (([(NSString *)[(NSPropertyDescription *)self renamingIdentifier] isEqual:identifier]& 1) == 0)
   {
     v5 = *MEMORY[0x1E695D940];
     v6 = @"derived attribute";
@@ -362,7 +362,7 @@ LABEL_15:
 
           v18 = *(*(&v22 + 1) + 8 * v2);
           v3 = [v18 componentsSeparatedByString:@"."];
-          v4 = [v20 entity];
+          entity = [v20 entity];
           if ([v3 count])
           {
             v5 = 1;
@@ -385,7 +385,7 @@ LABEL_15:
 
               if ([v7 rangeOfString:@"@"] == 0x7FFFFFFFFFFFFFFFLL)
               {
-                if (!v4 || (v8 = [objc_msgSend(v4 "propertiesByName")]) == 0)
+                if (!entity || (v8 = [objc_msgSend(entity "propertiesByName")]) == 0)
                 {
                   v13 = MEMORY[0x1E695DF30];
                   v14 = *MEMORY[0x1E695D940];
@@ -401,8 +401,8 @@ LABEL_15:
                 }
 
                 v9 = v8;
-                v10 = [v8 _propertyType];
-                if (v10 == 2)
+                _propertyType = [v8 _propertyType];
+                if (_propertyType == 2)
                 {
                   if (v6 != [v3 count] - 1)
                   {
@@ -441,7 +441,7 @@ LABEL_32:
 
                 else
                 {
-                  if (v10 != 4)
+                  if (_propertyType != 4)
                   {
                     v13 = MEMORY[0x1E695DF30];
                     v14 = *MEMORY[0x1E695D940];
@@ -456,7 +456,7 @@ LABEL_32:
                     goto LABEL_32;
                   }
 
-                  v4 = [v9 destinationEntity];
+                  entity = [v9 destinationEntity];
                 }
               }
 
@@ -493,22 +493,22 @@ LABEL_32:
   return result;
 }
 
-- (void)_versionHash:(char *)a3 inStyle:(unint64_t)a4
+- (void)_versionHash:(char *)hash inStyle:(unint64_t)style
 {
   v19 = *MEMORY[0x1E69E9840];
   memset(&c, 0, sizeof(c));
   CC_SHA256_Init(&c);
   v16.receiver = self;
   v16.super_class = NSDerivedAttributeDescription;
-  [(NSAttributeDescription *)&v16 _versionHash:v18 inStyle:a4];
+  [(NSAttributeDescription *)&v16 _versionHash:v18 inStyle:style];
   derivationExpression = self->_derivationExpression;
   if (derivationExpression)
   {
-    v8 = [(NSExpression *)derivationExpression predicateFormat];
-    CStringPtr = CFStringGetCStringPtr(v8, 0x8000100u);
+    predicateFormat = [(NSExpression *)derivationExpression predicateFormat];
+    CStringPtr = CFStringGetCStringPtr(predicateFormat, 0x8000100u);
     if (!CStringPtr)
     {
-      CStringPtr = [(__CFString *)v8 UTF8String];
+      CStringPtr = [(__CFString *)predicateFormat UTF8String];
     }
 
     v10 = strlen(CStringPtr);
@@ -518,31 +518,31 @@ LABEL_32:
   filteringPredicate = self->_filteringPredicate;
   if (filteringPredicate)
   {
-    v12 = [(NSPredicate *)filteringPredicate predicateFormat];
-    v13 = CFStringGetCStringPtr(v12, 0x8000100u);
-    if (!v13)
+    predicateFormat2 = [(NSPredicate *)filteringPredicate predicateFormat];
+    uTF8String = CFStringGetCStringPtr(predicateFormat2, 0x8000100u);
+    if (!uTF8String)
     {
-      v13 = [(__CFString *)v12 UTF8String];
+      uTF8String = [(__CFString *)predicateFormat2 UTF8String];
     }
 
-    v14 = strlen(v13);
-    CC_SHA256_Update(&c, v13, v14);
+    v14 = strlen(uTF8String);
+    CC_SHA256_Update(&c, uTF8String, v14);
   }
 
-  CC_SHA256_Final(a3, &c);
+  CC_SHA256_Final(hash, &c);
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_writeIntoData:(id)a3 propertiesDict:(id)a4 uniquedPropertyNames:(id)a5 uniquedStrings:(id)a6 uniquedData:(id)a7 entitiesSlots:(id)a8 fetchRequests:(id)a9
+- (void)_writeIntoData:(id)data propertiesDict:(id)dict uniquedPropertyNames:(id)names uniquedStrings:(id)strings uniquedData:(id)uniquedData entitiesSlots:(id)slots fetchRequests:(id)requests
 {
-  v16 = [a3 length];
-  v17 = [a3 length];
+  v16 = [data length];
+  v17 = [data length];
   v21.receiver = self;
   v21.super_class = NSDerivedAttributeDescription;
-  [(NSAttributeDescription *)&v21 _writeIntoData:a3 propertiesDict:a4 uniquedPropertyNames:a5 uniquedStrings:a6 uniquedData:a7 entitiesSlots:a8 fetchRequests:a9];
+  [(NSAttributeDescription *)&v21 _writeIntoData:data propertiesDict:dict uniquedPropertyNames:names uniquedStrings:strings uniquedData:uniquedData entitiesSlots:slots fetchRequests:requests];
   if (self->_derivationExpression)
   {
-    v18 = [objc_msgSend(a7 "objectForKey:"unsignedIntegerValue"")];
+    v18 = [objc_msgSend(uniquedData "objectForKey:"unsignedIntegerValue"")];
   }
 
   else
@@ -550,10 +550,10 @@ LABEL_32:
     v18 = 0;
   }
 
-  _writeInt32IntoData(a3, v18);
+  _writeInt32IntoData(data, v18);
   if (self->_filteringPredicate)
   {
-    v19 = [objc_msgSend(a7 "objectForKey:"unsignedIntegerValue"")];
+    v19 = [objc_msgSend(uniquedData "objectForKey:"unsignedIntegerValue"")];
   }
 
   else
@@ -561,9 +561,9 @@ LABEL_32:
     v19 = 0;
   }
 
-  _writeInt32IntoData(a3, v19);
-  v20 = bswap32([a3 length] - v16);
-  [a3 replaceBytesInRange:v17 withBytes:{4, &v20}];
+  _writeInt32IntoData(data, v19);
+  v20 = bswap32([data length] - v16);
+  [data replaceBytesInRange:v17 withBytes:{4, &v20}];
 }
 
 @end

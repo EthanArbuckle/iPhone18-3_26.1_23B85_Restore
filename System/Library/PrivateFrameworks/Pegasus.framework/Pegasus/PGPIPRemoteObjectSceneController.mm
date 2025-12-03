@@ -1,16 +1,16 @@
 @interface PGPIPRemoteObjectSceneController
 + (id)sharedSceneWorkspace;
 - (BOOL)isInvalidated;
-- (PGPIPRemoteObjectSceneController)initWithRemoteObject:(id)a3 requestedSceneIdentifier:(id)a4 affectsAppLifeCycle:(BOOL)a5;
+- (PGPIPRemoteObjectSceneController)initWithRemoteObject:(id)object requestedSceneIdentifier:(id)identifier affectsAppLifeCycle:(BOOL)cycle;
 - (UIView)sceneView;
-- (void)_performAnimationWithType:(int64_t)a3 initialSpringVelocity:(double)a4 animations:(id)a5 completion:(id)a6;
+- (void)_performAnimationWithType:(int64_t)type initialSpringVelocity:(double)velocity animations:(id)animations completion:(id)completion;
 - (void)activateIfNeeded;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setForeground:(BOOL)a3;
-- (void)setInvalidated:(BOOL)a3;
+- (void)setForeground:(BOOL)foreground;
+- (void)setInvalidated:(BOOL)invalidated;
 - (void)updateInterfaceOrientation;
-- (void)updateSize:(CGSize)a3 animationType:(int64_t)a4 initialSpringVelocity:(double)a5;
+- (void)updateSize:(CGSize)size animationType:(int64_t)type initialSpringVelocity:(double)velocity;
 @end
 
 @implementation PGPIPRemoteObjectSceneController
@@ -36,11 +36,11 @@ uint64_t __56__PGPIPRemoteObjectSceneController_sharedSceneWorkspace__block_invo
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (PGPIPRemoteObjectSceneController)initWithRemoteObject:(id)a3 requestedSceneIdentifier:(id)a4 affectsAppLifeCycle:(BOOL)a5
+- (PGPIPRemoteObjectSceneController)initWithRemoteObject:(id)object requestedSceneIdentifier:(id)identifier affectsAppLifeCycle:(BOOL)cycle
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  identifierCopy = identifier;
   v39.receiver = self;
   v39.super_class = PGPIPRemoteObjectSceneController;
   v9 = [(PGPIPRemoteObjectSceneController *)&v39 init];
@@ -48,9 +48,9 @@ uint64_t __56__PGPIPRemoteObjectSceneController_sharedSceneWorkspace__block_invo
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v9->_remoteObject, v7);
-    v11 = [objc_opt_class() sharedSceneWorkspace];
-    v12 = [v11 sceneWithIdentifier:v8];
+    objc_storeWeak(&v9->_remoteObject, objectCopy);
+    sharedSceneWorkspace = [objc_opt_class() sharedSceneWorkspace];
+    v12 = [sharedSceneWorkspace sceneWithIdentifier:identifierCopy];
     v13 = v12;
     if (v12)
     {
@@ -63,51 +63,51 @@ uint64_t __56__PGPIPRemoteObjectSceneController_sharedSceneWorkspace__block_invo
     {
       v16 = MEMORY[0x1E69C75D0];
       v17 = MEMORY[0x1E69C75E0];
-      v18 = [v7 pictureInPictureApplication];
-      v19 = [v17 identifierWithPid:{objc_msgSend(v18, "processIdentifier")}];
+      pictureInPictureApplication = [objectCopy pictureInPictureApplication];
+      v19 = [v17 identifierWithPid:{objc_msgSend(pictureInPictureApplication, "processIdentifier")}];
       v38 = 0;
       v20 = [v16 handleForIdentifier:v19 error:&v38];
       scene = v38;
 
       if (v20)
       {
-        v21 = [v20 identity];
-        v22 = [MEMORY[0x1E699FBD8] identityForProcessIdentity:v21];
+        identity = [v20 identity];
+        v22 = [MEMORY[0x1E699FBD8] identityForProcessIdentity:identity];
         v35[0] = MEMORY[0x1E69E9820];
         v35[1] = 3221225472;
         v35[2] = __102__PGPIPRemoteObjectSceneController_initWithRemoteObject_requestedSceneIdentifier_affectsAppLifeCycle___block_invoke;
         v35[3] = &unk_1E7F33468;
         v36 = v22;
-        v37 = v8;
+        v37 = identifierCopy;
         v31 = v22;
-        v23 = [v11 createScene:v35];
+        v23 = [sharedSceneWorkspace createScene:v35];
         v24 = v10->_scene;
         v10->_scene = v23;
 
-        v25 = [v7 sourceSceneSettingsInterfaceOrientation];
-        v26 = [v7 sourceSceneSettingsDisplayConfiguration];
+        sourceSceneSettingsInterfaceOrientation = [objectCopy sourceSceneSettingsInterfaceOrientation];
+        sourceSceneSettingsDisplayConfiguration = [objectCopy sourceSceneSettingsDisplayConfiguration];
         v27 = v10->_scene;
         v32[0] = MEMORY[0x1E69E9820];
         v32[1] = 3221225472;
         v32[2] = __102__PGPIPRemoteObjectSceneController_initWithRemoteObject_requestedSceneIdentifier_affectsAppLifeCycle___block_invoke_2;
         v32[3] = &unk_1E7F334B8;
-        v33 = v26;
-        v34 = v25;
-        v28 = v26;
+        v33 = sourceSceneSettingsDisplayConfiguration;
+        v34 = sourceSceneSettingsInterfaceOrientation;
+        v28 = sourceSceneSettingsDisplayConfiguration;
         [(FBScene *)v27 configureParameters:v32];
       }
 
       else
       {
-        v21 = PGLogCommon();
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+        identity = PGLogCommon();
+        if (os_log_type_enabled(identity, OS_LOG_TYPE_ERROR))
         {
           v30 = _PGLogMethodProem(v10, 1);
           *buf = 138412546;
           v41 = v30;
           v42 = 2112;
           v43 = scene;
-          _os_log_error_impl(&dword_1BB282000, v21, OS_LOG_TYPE_ERROR, "%@ not able to create scene, RBSProcessHandle look up failed with error: %@", buf, 0x16u);
+          _os_log_error_impl(&dword_1BB282000, identity, OS_LOG_TYPE_ERROR, "%@ not able to create scene, RBSProcessHandle look up failed with error: %@", buf, 0x16u);
         }
       }
     }
@@ -165,10 +165,10 @@ void __102__PGPIPRemoteObjectSceneController_initWithRemoteObject_requestedScene
     scenePresenter = self->_scenePresenter;
     if (!scenePresenter)
     {
-      v5 = [(FBScene *)self->_scene uiPresentationManager];
-      v6 = [MEMORY[0x1E696AFB0] UUID];
-      v7 = [v6 UUIDString];
-      v8 = [v5 createPresenterWithIdentifier:v7];
+      uiPresentationManager = [(FBScene *)self->_scene uiPresentationManager];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      v8 = [uiPresentationManager createPresenterWithIdentifier:uUIDString];
       v9 = self->_scenePresenter;
       self->_scenePresenter = v8;
 
@@ -177,9 +177,9 @@ void __102__PGPIPRemoteObjectSceneController_initWithRemoteObject_requestedScene
 
     [(UIScenePresenter *)scenePresenter modifyPresentationContext:&__block_literal_global_115];
     [(UIScenePresenter *)self->_scenePresenter activate];
-    v10 = [(UIScenePresenter *)self->_scenePresenter presentationView];
+    presentationView = [(UIScenePresenter *)self->_scenePresenter presentationView];
     v11 = self->_sceneView;
-    self->_sceneView = v10;
+    self->_sceneView = presentationView;
 
     sceneView = self->_sceneView;
   }
@@ -214,28 +214,28 @@ void __45__PGPIPRemoteObjectSceneController_sceneView__block_invoke(uint64_t a1,
 - (void)updateInterfaceOrientation
 {
   WeakRetained = objc_loadWeakRetained(&self->_remoteObject);
-  v4 = [WeakRetained sourceSceneSettingsInterfaceOrientation];
+  sourceSceneSettingsInterfaceOrientation = [WeakRetained sourceSceneSettingsInterfaceOrientation];
 
-  v8 = [(FBScene *)self->_scene settings];
-  if ([v8 interfaceOrientation] == v4)
+  settings = [(FBScene *)self->_scene settings];
+  if ([settings interfaceOrientation] == sourceSceneSettingsInterfaceOrientation)
   {
   }
 
   else
   {
-    v5 = [(FBScene *)self->_scene isValid];
+    isValid = [(FBScene *)self->_scene isValid];
 
-    if (v5)
+    if (isValid)
     {
-      v6 = [(FBScene *)self->_scene isActive];
+      isActive = [(FBScene *)self->_scene isActive];
       scene = self->_scene;
-      if (v6)
+      if (isActive)
       {
         v9[0] = MEMORY[0x1E69E9820];
         v9[1] = 3221225472;
         v9[2] = __62__PGPIPRemoteObjectSceneController_updateInterfaceOrientation__block_invoke_2;
         v9[3] = &__block_descriptor_40_e33_v16__0__FBSMutableSceneSettings_8l;
-        v9[4] = v4;
+        v9[4] = sourceSceneSettingsInterfaceOrientation;
         [(FBScene *)scene updateSettings:v9];
       }
 
@@ -245,30 +245,30 @@ void __45__PGPIPRemoteObjectSceneController_sceneView__block_invoke(uint64_t a1,
         v10[1] = 3221225472;
         v10[2] = __62__PGPIPRemoteObjectSceneController_updateInterfaceOrientation__block_invoke;
         v10[3] = &__block_descriptor_40_e63_v24__0__FBSMutableSceneSettings_8__FBSSceneTransitionContext_16l;
-        v10[4] = v4;
+        v10[4] = sourceSceneSettingsInterfaceOrientation;
         [(FBScene *)scene performUpdate:v10];
       }
     }
   }
 }
 
-- (void)updateSize:(CGSize)a3 animationType:(int64_t)a4 initialSpringVelocity:(double)a5
+- (void)updateSize:(CGSize)size animationType:(int64_t)type initialSpringVelocity:(double)velocity
 {
-  self->_currentFrame.size = a3;
+  self->_currentFrame.size = size;
   self->_currentFrame.origin = *MEMORY[0x1E695EFF8];
   if ([(FBScene *)self->_scene isActive])
   {
-    v8 = [(FBScene *)self->_scene settings];
-    v9 = [v8 isForeground];
+    settings = [(FBScene *)self->_scene settings];
+    isForeground = [settings isForeground];
 
-    if (v9)
+    if (isForeground)
     {
       v12[0] = 0;
       v12[1] = v12;
       v12[2] = 0x3032000000;
       v12[3] = __Block_byref_object_copy__2;
       v12[4] = __Block_byref_object_dispose__2;
-      v13 = [MEMORY[0x1E69DCE70] _synchronizedDrawingFence];
+      _synchronizedDrawingFence = [MEMORY[0x1E69DCE70] _synchronizedDrawingFence];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __83__PGPIPRemoteObjectSceneController_updateSize_animationType_initialSpringVelocity___block_invoke;
@@ -280,7 +280,7 @@ void __45__PGPIPRemoteObjectSceneController_sceneView__block_invoke(uint64_t a1,
       v10[2] = __83__PGPIPRemoteObjectSceneController_updateSize_animationType_initialSpringVelocity___block_invoke_3;
       v10[3] = &unk_1E7F335B8;
       v10[4] = v12;
-      [(PGPIPRemoteObjectSceneController *)self _performAnimationWithType:a4 initialSpringVelocity:v11 animations:v10 completion:a5];
+      [(PGPIPRemoteObjectSceneController *)self _performAnimationWithType:type initialSpringVelocity:v11 animations:v10 completion:velocity];
       _Block_object_dispose(v12, 8);
     }
   }
@@ -323,47 +323,47 @@ void __83__PGPIPRemoteObjectSceneController_updateSize_animationType_initialSpri
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_performAnimationWithType:(int64_t)a3 initialSpringVelocity:(double)a4 animations:(id)a5 completion:(id)a6
+- (void)_performAnimationWithType:(int64_t)type initialSpringVelocity:(double)velocity animations:(id)animations completion:(id)completion
 {
-  v10 = a5;
-  v9 = a6;
-  switch(a3)
+  animationsCopy = animations;
+  completionCopy = completion;
+  switch(type)
   {
     case 2:
-      [MEMORY[0x1E69DD250] PG_animateUsingDefaultDampedSpringWithInitialSpringVelocity:v10 animations:v9 completion:a4];
+      [MEMORY[0x1E69DD250] PG_animateUsingDefaultDampedSpringWithInitialSpringVelocity:animationsCopy animations:completionCopy completion:velocity];
       break;
     case 1:
-      [MEMORY[0x1E69DD250] PG_animateUsingDefaultTimingWithAnimations:v10 completion:v9];
+      [MEMORY[0x1E69DD250] PG_animateUsingDefaultTimingWithAnimations:animationsCopy completion:completionCopy];
       break;
     case 0:
-      [MEMORY[0x1E69DD250] PG_performWithoutAnimation:v10];
-      v9[2](v9, 1);
+      [MEMORY[0x1E69DD250] PG_performWithoutAnimation:animationsCopy];
+      completionCopy[2](completionCopy, 1);
       break;
   }
 }
 
-- (void)setForeground:(BOOL)a3
+- (void)setForeground:(BOOL)foreground
 {
-  v3 = a3;
-  v8 = [(FBScene *)self->_scene settings];
-  if ([v8 isForeground] == v3)
+  foregroundCopy = foreground;
+  settings = [(FBScene *)self->_scene settings];
+  if ([settings isForeground] == foregroundCopy)
   {
   }
 
   else
   {
-    v5 = [(FBScene *)self->_scene isValid];
+    isValid = [(FBScene *)self->_scene isValid];
 
-    if (v5)
+    if (isValid)
     {
-      if (v3 && ([(FBScene *)self->_scene isActive]& 1) == 0)
+      if (foregroundCopy && ([(FBScene *)self->_scene isActive]& 1) == 0)
       {
         scene = self->_scene;
         v11[0] = MEMORY[0x1E69E9820];
         v11[1] = 3221225472;
         v11[2] = __50__PGPIPRemoteObjectSceneController_setForeground___block_invoke;
         v11[3] = &unk_1E7F335E0;
-        v12 = v3;
+        v12 = foregroundCopy;
         v11[4] = self;
         [(FBScene *)scene performUpdate:v11];
       }
@@ -375,7 +375,7 @@ void __83__PGPIPRemoteObjectSceneController_updateSize_animationType_initialSpri
         v9[1] = 3221225472;
         v9[2] = __50__PGPIPRemoteObjectSceneController_setForeground___block_invoke_2;
         v9[3] = &unk_1E7F33608;
-        v10 = v3;
+        v10 = foregroundCopy;
         v9[4] = self;
         [(FBScene *)v6 updateSettings:v9];
       }
@@ -407,10 +407,10 @@ void __50__PGPIPRemoteObjectSceneController_setForeground___block_invoke_2(uint6
   return lock_invalidated;
 }
 
-- (void)setInvalidated:(BOOL)a3
+- (void)setInvalidated:(BOOL)invalidated
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_invalidated = a3;
+  self->_lock_invalidated = invalidated;
 
   os_unfair_lock_unlock(&self->_lock);
 }

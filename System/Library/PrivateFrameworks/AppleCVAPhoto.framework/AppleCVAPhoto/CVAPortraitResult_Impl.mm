@@ -1,6 +1,6 @@
 @interface CVAPortraitResult_Impl
-- (CVAPortraitResult_Impl)initWithMattingResult:(id)a3 portraitPixelBuffer:(__CVBuffer *)a4 portraitStability:(float)a5;
-- (CVAPortraitResult_Impl)initWithMattingResult:(id)a3 portraitPixelBuffer:(__CVBuffer *)a4 portraitStability:(float)a5 relightingStability:(float)a6;
+- (CVAPortraitResult_Impl)initWithMattingResult:(id)result portraitPixelBuffer:(__CVBuffer *)buffer portraitStability:(float)stability;
+- (CVAPortraitResult_Impl)initWithMattingResult:(id)result portraitPixelBuffer:(__CVBuffer *)buffer portraitStability:(float)stability relightingStability:(float)relightingStability;
 - (void)dealloc;
 @end
 
@@ -15,31 +15,31 @@
   [(CVAPortraitResult_Impl *)&v3 dealloc];
 }
 
-- (CVAPortraitResult_Impl)initWithMattingResult:(id)a3 portraitPixelBuffer:(__CVBuffer *)a4 portraitStability:(float)a5 relightingStability:(float)a6
+- (CVAPortraitResult_Impl)initWithMattingResult:(id)result portraitPixelBuffer:(__CVBuffer *)buffer portraitStability:(float)stability relightingStability:(float)relightingStability
 {
-  v11 = a3;
+  resultCopy = result;
   v14.receiver = self;
   v14.super_class = CVAPortraitResult_Impl;
   v12 = [(CVAPortraitResult_Impl *)&v14 init];
-  objc_storeStrong(&v12->_mattingResult, a3);
-  v12->_portraitPixelBuffer = a4;
-  CVPixelBufferRetain(a4);
-  v12->_portraitStability = a5;
-  v12->_relightingStability = a6;
+  objc_storeStrong(&v12->_mattingResult, result);
+  v12->_portraitPixelBuffer = buffer;
+  CVPixelBufferRetain(buffer);
+  v12->_portraitStability = stability;
+  v12->_relightingStability = relightingStability;
 
   return v12;
 }
 
-- (CVAPortraitResult_Impl)initWithMattingResult:(id)a3 portraitPixelBuffer:(__CVBuffer *)a4 portraitStability:(float)a5
+- (CVAPortraitResult_Impl)initWithMattingResult:(id)result portraitPixelBuffer:(__CVBuffer *)buffer portraitStability:(float)stability
 {
-  v9 = a3;
+  resultCopy = result;
   v12.receiver = self;
   v12.super_class = CVAPortraitResult_Impl;
   v10 = [(CVAPortraitResult_Impl *)&v12 init];
-  objc_storeStrong(&v10->_mattingResult, a3);
-  v10->_portraitPixelBuffer = a4;
-  CVPixelBufferRetain(a4);
-  v10->_portraitStability = a5;
+  objc_storeStrong(&v10->_mattingResult, result);
+  v10->_portraitPixelBuffer = buffer;
+  CVPixelBufferRetain(buffer);
+  v10->_portraitStability = stability;
   v10->_relightingStability = 1.0;
 
   return v10;

@@ -1,24 +1,24 @@
 @interface NTKUltraCubePhotosReader
-+ (id)readerForResourceDirectory:(id)a3;
-- (NTKUltraCubePhotosReader)initWithResourceDirectory:(id)a3;
++ (id)readerForResourceDirectory:(id)directory;
+- (NTKUltraCubePhotosReader)initWithResourceDirectory:(id)directory;
 - (id)firstObject;
 - (id)lastObject;
-- (id)objectAtIndex:(unint64_t)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (id)objectAtIndex:(unint64_t)index;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation NTKUltraCubePhotosReader
 
-- (NTKUltraCubePhotosReader)initWithResourceDirectory:(id)a3
+- (NTKUltraCubePhotosReader)initWithResourceDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v24.receiver = self;
   v24.super_class = NTKUltraCubePhotosReader;
   v5 = [(NTKUltraCubePhotosReader *)&v24 init];
   v6 = v5;
-  if (v4 && v5)
+  if (directoryCopy && v5)
   {
-    v7 = [v4 copy];
+    v7 = [directoryCopy copy];
     resourceDirectory = v6->_resourceDirectory;
     v6->_resourceDirectory = v7;
 
@@ -35,8 +35,8 @@
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v13 = [v12 imageList];
-      v14 = [v13 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      imageList = [v12 imageList];
+      v14 = [imageList countByEnumeratingWithState:&v20 objects:v25 count:16];
       if (v14)
       {
         v15 = v14;
@@ -48,10 +48,10 @@
           {
             if (*v21 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(imageList);
             }
 
-            v18 = [NTKUltraCubePhoto decodeFromDictionary:*(*(&v20 + 1) + 8 * v17) forResourceDirectory:v4];
+            v18 = [NTKUltraCubePhoto decodeFromDictionary:*(*(&v20 + 1) + 8 * v17) forResourceDirectory:directoryCopy];
             if (v18)
             {
               [(NSMutableArray *)v6->_photos addObject:v18];
@@ -61,7 +61,7 @@
           }
 
           while (v15 != v17);
-          v15 = [v13 countByEnumeratingWithState:&v20 objects:v25 count:16];
+          v15 = [imageList countByEnumeratingWithState:&v20 objects:v25 count:16];
         }
 
         while (v15);
@@ -72,24 +72,24 @@
   return v6;
 }
 
-+ (id)readerForResourceDirectory:(id)a3
++ (id)readerForResourceDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithResourceDirectory:v4];
+  directoryCopy = directory;
+  v5 = [[self alloc] initWithResourceDirectory:directoryCopy];
 
   return v5;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_photos count]<= a3)
+  if ([(NSMutableArray *)self->_photos count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_photos objectAtIndexedSubscript:a3];
+    v5 = [(NSMutableArray *)self->_photos objectAtIndexedSubscript:index];
   }
 
   return v5;
@@ -117,13 +117,13 @@
   return v3;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  a3->var2 = &self->_mutationCount;
-  a3->var0 = 1;
-  v8 = a3->var3[0];
-  v9 = v8 + a5;
-  if (v8 + a5 > [(NTKUltraCubePhotosReader *)self count])
+  state->var2 = &self->_mutationCount;
+  state->var0 = 1;
+  v8 = state->var3[0];
+  v9 = v8 + count;
+  if (v8 + count > [(NTKUltraCubePhotosReader *)self count])
   {
     v9 = [(NTKUltraCubePhotosReader *)self count];
   }
@@ -131,17 +131,17 @@
   v10 = v9 - v8;
   if (v9 > v8)
   {
-    v11 = a4;
+    objectsCopy = objects;
     do
     {
-      *v11++ = [(NTKUltraCubePhotosReader *)self objectAtIndex:v8++];
+      *objectsCopy++ = [(NTKUltraCubePhotosReader *)self objectAtIndex:v8++];
     }
 
     while (v9 != v8);
   }
 
-  a3->var3[0] = v9;
-  a3->var1 = a4;
+  state->var3[0] = v9;
+  state->var1 = objects;
   return v10;
 }
 

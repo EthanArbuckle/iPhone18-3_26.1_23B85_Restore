@@ -19,7 +19,7 @@
   v6 = a3;
   v7 = [[HFTriggerNaturalLanguageOptions alloc] initWithHome:v6 nameType:a4];
 
-  v8 = [a1 hf_naturalLanguageNameWithOptions:v7];
+  v8 = [self hf_naturalLanguageNameWithOptions:v7];
 
   return v8;
 }
@@ -27,45 +27,45 @@
 - (id)hf_naturalLanguageNameWithOptions:()NaturalLanguage
 {
   v4 = a3;
-  v5 = [a1 recurrences];
-  v6 = v5;
-  if (v5)
+  recurrences = [self recurrences];
+  v6 = recurrences;
+  if (recurrences)
   {
-    v7 = v5;
+    v7 = recurrences;
   }
 
   else
   {
     v8 = MEMORY[0x277CBEA60];
-    v9 = [a1 recurrence];
-    v7 = [v8 na_arrayWithSafeObject:v9];
+    recurrence = [self recurrence];
+    v7 = [v8 na_arrayWithSafeObject:recurrence];
   }
 
   v10 = _HFLocalizedStringWithDefaultValue(@"HFUnknownTimerTriggerName", @"HFUnknownTimerTriggerName", 1);
-  v11 = [a1 fireDate];
+  fireDate = [self fireDate];
 
-  if (v11)
+  if (fireDate)
   {
     v12 = objc_opt_class();
-    v13 = [a1 fireDate];
-    v14 = [v12 hf_naturalLanguageNameWithOptions:v4 fireDate:v13 recurrences:v7];
+    fireDate2 = [self fireDate];
+    v14 = [v12 hf_naturalLanguageNameWithOptions:v4 fireDate:fireDate2 recurrences:v7];
   }
 
   else
   {
-    v15 = [a1 significantEvent];
+    significantEvent = [self significantEvent];
 
-    if (!v15)
+    if (!significantEvent)
     {
       goto LABEL_9;
     }
 
     v16 = objc_opt_class();
-    v13 = [a1 significantEvent];
-    v17 = [a1 significantEventOffset];
-    v14 = [v16 hf_naturalLanguageNameWithOptions:v4 significantEvent:v13 offset:v17 recurrences:v7];
+    fireDate2 = [self significantEvent];
+    significantEventOffset = [self significantEventOffset];
+    v14 = [v16 hf_naturalLanguageNameWithOptions:v4 significantEvent:fireDate2 offset:significantEventOffset recurrences:v7];
 
-    v10 = v17;
+    v10 = significantEventOffset;
   }
 
   v10 = v14;
@@ -86,29 +86,29 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  v11 = [v8 overrideCalendar];
-  if (v11)
+  overrideCalendar = [v8 overrideCalendar];
+  if (overrideCalendar)
   {
   }
 
   else
   {
-    v13 = [v8 overrideLocale];
+    overrideLocale = [v8 overrideLocale];
 
-    if (!v13)
+    if (!overrideLocale)
     {
       v15 = [MEMORY[0x277CCA968] localizedStringFromDate:v9 dateStyle:0 timeStyle:1];
       goto LABEL_7;
     }
   }
 
-  v14 = [a1 _dateFormatterWithOptions:v8];
+  v14 = [self _dateFormatterWithOptions:v8];
   [v14 setDateStyle:0];
   [v14 setTimeStyle:1];
   v15 = [v14 stringFromDate:v9];
 
 LABEL_7:
-  v12 = [a1 _hf_naturalLanguageNameWithOptions:v8 timeString:v15 fireDate:v9 recurrences:v10];
+  v12 = [self _hf_naturalLanguageNameWithOptions:v8 timeString:v15 fireDate:v9 recurrences:v10];
 
 LABEL_8:
 
@@ -127,7 +127,7 @@ LABEL_8:
   }
 
   v14 = [objc_opt_class() hf_localizedStringForSignficantEvent:v11 offset:v12];
-  v15 = [a1 _hf_naturalLanguageNameWithOptions:v10 timeString:v14 fireDate:0 recurrences:v13];
+  v15 = [self _hf_naturalLanguageNameWithOptions:v10 timeString:v14 fireDate:0 recurrences:v13];
 
   return v15;
 }
@@ -137,10 +137,10 @@ LABEL_8:
   v65 = *MEMORY[0x277D85DE8];
   v7 = a3;
   v8 = a4;
-  v9 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   if (!v8)
   {
-    v8 = [MEMORY[0x277CBEAB8] hf_dailyWeekdayIntervalComponentsWithCalendar:v9];
+    v8 = [MEMORY[0x277CBEAB8] hf_dailyWeekdayIntervalComponentsWithCalendar:currentCalendar];
   }
 
   if ([v8 na_any:&__block_literal_global_36])
@@ -150,20 +150,20 @@ LABEL_8:
     v12 = [v10 setWithArray:v11];
 
     v54 = v12;
-    v13 = [v12 allObjects];
-    v14 = [v13 sortedArrayUsingSelector:sel_compare_];
+    allObjects = [v12 allObjects];
+    v14 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
     v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v56 = a5;
     v55 = v7;
-    if ([v9 firstWeekday] == 7)
+    if ([currentCalendar firstWeekday] == 7)
     {
       v16 = 0;
     }
 
     else
     {
-      v16 = [v9 firstWeekday] - 1;
+      v16 = [currentCalendar firstWeekday] - 1;
     }
 
     v61 = 0u;
@@ -205,7 +205,7 @@ LABEL_8:
     }
 
     v30 = [v23 count];
-    [v9 maximumRangeOfUnit:512];
+    [currentCalendar maximumRangeOfUnit:512];
     v32 = v31;
     if (v30 == v31)
     {
@@ -276,19 +276,19 @@ LABEL_38:
               v7 = v55;
               if ([v23 count] == 1 || (objc_msgSend(v55, "shouldUseFullDayNames") & 1) != 0)
               {
-                v45 = [v9 weekdaySymbols];
+                weekdaySymbols = [currentCalendar weekdaySymbols];
               }
 
               else
               {
-                v45 = [v9 shortWeekdaySymbols];
+                weekdaySymbols = [currentCalendar shortWeekdaySymbols];
               }
 
               v57[0] = MEMORY[0x277D85DD0];
               v57[1] = 3221225472;
               v57[2] = __125__HMTimerTrigger_NaturalLanguage__hf_recurrenceNaturalLanguageStringKeyWithOptions_recurrences_intendedForTimeTriggerEditor___block_invoke_4;
               v57[3] = &unk_277DF5910;
-              v46 = v45;
+              v46 = weekdaySymbols;
               v58 = v46;
               v47 = [v15 na_map:v57];
               v48 = [v47 count];
@@ -360,9 +360,9 @@ LABEL_27:
 
   if ([v8 count] == 1)
   {
-    v17 = [v8 firstObject];
-    v18 = [MEMORY[0x277CBEAB8] hf_dailyIntervalComponents];
-    v19 = [v17 hf_isEqualToHomeKitRecurrence:v18];
+    firstObject = [v8 firstObject];
+    hf_dailyIntervalComponents = [MEMORY[0x277CBEAB8] hf_dailyIntervalComponents];
+    v19 = [firstObject hf_isEqualToHomeKitRecurrence:hf_dailyIntervalComponents];
 
     if (v19)
     {
@@ -402,13 +402,13 @@ LABEL_58:
 {
   v6 = a3;
   v7 = +[HFHomeKitDispatcher sharedDispatcher];
-  v8 = [v7 homeManager];
-  v9 = [v8 homes];
-  v10 = [v9 firstObject];
-  v11 = [HFTriggerNaturalLanguageOptions optionsWithHome:v10 nameType:2];
+  homeManager = [v7 homeManager];
+  homes = [homeManager homes];
+  firstObject = [homes firstObject];
+  v11 = [HFTriggerNaturalLanguageOptions optionsWithHome:firstObject nameType:2];
 
   [v11 setShouldUseFullDayNames:1];
-  v12 = [a1 hf_recurrenceNaturalLanguageStringKeyWithOptions:v11 recurrences:v6 intendedForTimeTriggerEditor:a4];
+  v12 = [self hf_recurrenceNaturalLanguageStringKeyWithOptions:v11 recurrences:v6 intendedForTimeTriggerEditor:a4];
 
   if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -430,33 +430,33 @@ LABEL_58:
   v10 = a4;
   v66 = a5;
   v11 = a6;
-  v12 = [v9 overrideCalendar];
-  v13 = v12;
-  if (v12)
+  overrideCalendar = [v9 overrideCalendar];
+  v13 = overrideCalendar;
+  if (overrideCalendar)
   {
-    v14 = v12;
+    currentCalendar = overrideCalendar;
   }
 
   else
   {
-    v14 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   }
 
-  v15 = v14;
+  v15 = currentCalendar;
 
-  v16 = [v9 overrideNowDate];
-  v17 = v16;
-  if (v16)
+  overrideNowDate = [v9 overrideNowDate];
+  v17 = overrideNowDate;
+  if (overrideNowDate)
   {
-    v18 = v16;
+    date = overrideNowDate;
   }
 
   else
   {
-    v18 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  v64 = v18;
+  v64 = date;
 
   if (qword_280E02DF0 != -1)
   {
@@ -482,7 +482,7 @@ LABEL_58:
   v67[3] = &unk_277DF75E8;
   v67[4] = v19;
   v20 = __102__HMTimerTrigger_NaturalLanguage___hf_naturalLanguageNameWithOptions_timeString_fireDate_recurrences___block_invoke_7(v67);
-  v21 = [a1 hf_recurrenceNaturalLanguageStringKeyWithOptions:v9 recurrences:v11];
+  v21 = [self hf_recurrenceNaturalLanguageStringKeyWithOptions:v9 recurrences:v11];
 
   v63 = v15;
   if (v21)
@@ -512,8 +512,8 @@ LABEL_58:
       v26 = [HFLocalizableStringKey stringKeyWithKey:@"HFSomeDaysTimerTriggerName" argumentKeys:v27];
 
       v28 = [v21 localizedStringWithArgumentBlock:0];
-      v29 = [v26 argumentMap];
-      [v29 setObject:v28 forKeyedSubscript:v61];
+      argumentMap = [v26 argumentMap];
+      [argumentMap setObject:v28 forKeyedSubscript:v61];
 
       v15 = v63;
     }
@@ -550,7 +550,7 @@ LABEL_58:
     {
       if (![v15 isDate:v66 inSameDayAsDate:v30])
       {
-        v32 = [a1 _dateFormatterWithOptions:v9];
+        v32 = [self _dateFormatterWithOptions:v9];
         [v32 setLocalizedDateFormatFromTemplate:{@"d MMM, h:mm a"}];
         v33 = [v32 stringFromDate:v66];
         v68 = v33;
@@ -598,17 +598,17 @@ LABEL_42:
     v26 = [HFLocalizableStringKey stringKeyWithKey:v37 argumentKeys:v40];
   }
 
-  v41 = [v9 actions];
-  v42 = [v41 count];
+  actions = [v9 actions];
+  v42 = [actions count];
 
   if (v42)
   {
-    v43 = [v9 actionNaturalLanguageOptions];
-    [v43 setFormattingContext:5];
+    actionNaturalLanguageOptions = [v9 actionNaturalLanguageOptions];
+    [actionNaturalLanguageOptions setFormattingContext:5];
 
-    v44 = [v9 actions];
-    v45 = [v9 actionNaturalLanguageOptions];
-    v46 = [HFActionNaturalLanguageUtilities hf_naturalLanguageDescriptionForActions:v44 withOptions:v45];
+    actions2 = [v9 actions];
+    actionNaturalLanguageOptions2 = [v9 actionNaturalLanguageOptions];
+    v46 = [HFActionNaturalLanguageUtilities hf_naturalLanguageDescriptionForActions:actions2 withOptions:actionNaturalLanguageOptions2];
 
     v47 = [v26 key];
     v48 = [v47 stringByAppendingString:@"_WithAction"];
@@ -622,12 +622,12 @@ LABEL_42:
       if (v51)
       {
         [v26 setKey:v48];
-        v52 = [v26 argumentKeys];
-        v53 = [v52 arrayByAddingObject:v62];
+        argumentKeys = [v26 argumentKeys];
+        v53 = [argumentKeys arrayByAddingObject:v62];
         [v26 setArgumentKeys:v53];
 
-        v54 = [v26 argumentMap];
-        [v54 setObject:v46 forKeyedSubscript:v62];
+        argumentMap2 = [v26 argumentMap];
+        [argumentMap2 setObject:v46 forKeyedSubscript:v62];
       }
     }
 
@@ -641,8 +641,8 @@ LABEL_42:
 
   if (![v9 nameType])
   {
-    v57 = [v9 home];
-    v58 = [a1 hf_sanitizeTriggerName:v56 home:v57];
+    home = [v9 home];
+    v58 = [self hf_sanitizeTriggerName:v56 home:home];
 
     v56 = v58;
   }
@@ -656,24 +656,24 @@ LABEL_42:
 {
   v3 = a3;
   v4 = objc_alloc_init(MEMORY[0x277CCA968]);
-  v5 = [v3 overrideCalendar];
+  overrideCalendar = [v3 overrideCalendar];
 
-  if (v5)
+  if (overrideCalendar)
   {
-    v6 = [v3 overrideCalendar];
-    [v4 setCalendar:v6];
+    overrideCalendar2 = [v3 overrideCalendar];
+    [v4 setCalendar:overrideCalendar2];
 
-    v7 = [v3 overrideCalendar];
-    v8 = [v7 timeZone];
-    [v4 setTimeZone:v8];
+    overrideCalendar3 = [v3 overrideCalendar];
+    timeZone = [overrideCalendar3 timeZone];
+    [v4 setTimeZone:timeZone];
   }
 
-  v9 = [v3 overrideLocale];
+  overrideLocale = [v3 overrideLocale];
 
-  if (v9)
+  if (overrideLocale)
   {
-    v10 = [v3 overrideLocale];
-    [v4 setLocale:v10];
+    overrideLocale2 = [v3 overrideLocale];
+    [v4 setLocale:overrideLocale2];
   }
 
   return v4;
@@ -683,17 +683,17 @@ LABEL_42:
 {
   v4 = a3;
   v5 = objc_opt_class();
-  v6 = [a1 recurrences];
-  if (v6)
+  recurrences = [self recurrences];
+  if (recurrences)
   {
-    v7 = [v5 _hf_naturalLanguageDetailsSentenceElementsWithRecurrences:v6 withOptions:v4];
+    v7 = [v5 _hf_naturalLanguageDetailsSentenceElementsWithRecurrences:recurrences withOptions:v4];
   }
 
   else
   {
     v8 = MEMORY[0x277CBEA60];
-    v9 = [a1 recurrence];
-    v10 = [v8 na_arrayWithSafeObject:v9];
+    recurrence = [self recurrence];
+    v10 = [v8 na_arrayWithSafeObject:recurrence];
     v7 = [v5 _hf_naturalLanguageDetailsSentenceElementsWithRecurrences:v10 withOptions:v4];
   }
 
@@ -702,7 +702,7 @@ LABEL_42:
 
 + (id)hf_naturalLanguageDetailsWithRecurrences:()NaturalLanguage withOptions:
 {
-  v1 = [a1 _hf_naturalLanguageDetailsSentenceElementsWithRecurrences:? withOptions:?];
+  v1 = [self _hf_naturalLanguageDetailsSentenceElementsWithRecurrences:? withOptions:?];
   v2 = [v1 mutableCopy];
 
   if ([v2 count])
@@ -714,8 +714,8 @@ LABEL_42:
 
     v3 = qword_280E02E48;
     [v3 setListStyle:2];
-    v4 = [v2 array];
-    v5 = [v3 stringForObjectValue:v4];
+    array = [v2 array];
+    v5 = [v3 stringForObjectValue:array];
   }
 
   else
@@ -730,7 +730,7 @@ LABEL_42:
 {
   v5 = a3;
   v6 = a4;
-  v7 = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
   v8 = v5;
   if ([v8 count])
   {
@@ -741,12 +741,12 @@ LABEL_42:
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v10 = [v9 localizedStringWithArgumentBlock:0];
-        [v7 addObject:v10];
+        [orderedSet addObject:v10];
       }
     }
   }
 
-  v11 = [v7 copy];
+  v11 = [orderedSet copy];
 
   return v11;
 }

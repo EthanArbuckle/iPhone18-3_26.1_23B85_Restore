@@ -1,16 +1,16 @@
 @interface GTMTLReplayActivityCollectCounters
-- (GTMTLReplayActivityCollectCounters)initWithCounters:(id)a3 statLocations:(unint64_t)a4 index:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (GTMTLReplayActivityCollectCounters)initWithCounters:(id)counters statLocations:(unint64_t)locations index:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)jsonObject;
-- (void)outputToLog:(id)a3;
+- (void)outputToLog:(id)log;
 @end
 
 @implementation GTMTLReplayActivityCollectCounters
 
-- (void)outputToLog:(id)a3
+- (void)outputToLog:(id)log
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (os_log_type_enabled(a3, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     activityType = self->super._activityType;
     index = self->_index;
@@ -24,7 +24,7 @@
     v15 = locations;
     v16 = 2114;
     v17 = counterNames;
-    _os_log_impl(&dword_24D764000, a3, OS_LOG_TYPE_INFO, "%{public}@(%llu):\t0x%08llx %{public}@", &v10, 0x2Au);
+    _os_log_impl(&dword_24D764000, log, OS_LOG_TYPE_INFO, "%{public}@(%llu):\t0x%08llx %{public}@", &v10, 0x2Au);
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -58,11 +58,11 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = GTMTLReplayActivityCollectCounters;
-  v4 = [(GTMTLReplayActivity *)&v7 copyWithZone:a3];
+  v4 = [(GTMTLReplayActivity *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -74,18 +74,18 @@
   return v5;
 }
 
-- (GTMTLReplayActivityCollectCounters)initWithCounters:(id)a3 statLocations:(unint64_t)a4 index:(unint64_t)a5
+- (GTMTLReplayActivityCollectCounters)initWithCounters:(id)counters statLocations:(unint64_t)locations index:(unint64_t)index
 {
-  v9 = a3;
+  countersCopy = counters;
   v13.receiver = self;
   v13.super_class = GTMTLReplayActivityCollectCounters;
   v10 = [(GTMTLReplayActivity *)&v13 initWithType:@"collectCounters"];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_counterNames, a3);
-    v11->_locations = a4;
-    v11->_index = a5;
+    objc_storeStrong(&v10->_counterNames, counters);
+    v11->_locations = locations;
+    v11->_index = index;
   }
 
   return v11;

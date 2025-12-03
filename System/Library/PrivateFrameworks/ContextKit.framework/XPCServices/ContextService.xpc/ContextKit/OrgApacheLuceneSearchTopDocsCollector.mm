@@ -1,20 +1,20 @@
 @interface OrgApacheLuceneSearchTopDocsCollector
 + (void)initialize;
-- (id)newTopDocsWithOrgApacheLuceneSearchScoreDocArray:(id)a3 withInt:(int)a4;
+- (id)newTopDocsWithOrgApacheLuceneSearchScoreDocArray:(id)array withInt:(int)int;
 - (id)topDocs;
 - (int)topDocsSize;
 - (void)dealloc;
-- (void)populateResultsWithOrgApacheLuceneSearchScoreDocArray:(id)a3 withInt:(int)a4;
+- (void)populateResultsWithOrgApacheLuceneSearchScoreDocArray:(id)array withInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneSearchTopDocsCollector
 
-- (void)populateResultsWithOrgApacheLuceneSearchScoreDocArray:(id)a3 withInt:(int)a4
+- (void)populateResultsWithOrgApacheLuceneSearchScoreDocArray:(id)array withInt:(int)int
 {
-  v4 = (a4 - 1);
-  if (a4 - 1 >= 0)
+  v4 = (int - 1);
+  if (int - 1 >= 0)
   {
-    if (a3)
+    if (array)
     {
       while (1)
       {
@@ -24,7 +24,7 @@
           break;
         }
 
-        IOSObjectArray_Set(a3, v4, [(OrgApacheLuceneUtilPriorityQueue *)pq pop]);
+        IOSObjectArray_Set(array, v4, [(OrgApacheLuceneUtilPriorityQueue *)pq pop]);
         if (v4-- <= 0)
         {
           return;
@@ -36,14 +36,14 @@
   }
 }
 
-- (id)newTopDocsWithOrgApacheLuceneSearchScoreDocArray:(id)a3 withInt:(int)a4
+- (id)newTopDocsWithOrgApacheLuceneSearchScoreDocArray:(id)array withInt:(int)int
 {
-  if (!a3)
+  if (!array)
   {
     return OrgApacheLuceneSearchTopDocsCollector_EMPTY_TOPDOCS_;
   }
 
-  v4 = new_OrgApacheLuceneSearchTopDocs_initWithInt_withOrgApacheLuceneSearchScoreDocArray_(self->totalHits_, a3);
+  v4 = new_OrgApacheLuceneSearchTopDocs_initWithInt_withOrgApacheLuceneSearchScoreDocArray_(self->totalHits_, array);
 
   return v4;
 }
@@ -69,9 +69,9 @@
 
 - (id)topDocs
 {
-  v3 = [(OrgApacheLuceneSearchTopDocsCollector *)self topDocsSize];
+  topDocsSize = [(OrgApacheLuceneSearchTopDocsCollector *)self topDocsSize];
 
-  return [(OrgApacheLuceneSearchTopDocsCollector *)self topDocsWithInt:0 withInt:v3];
+  return [(OrgApacheLuceneSearchTopDocsCollector *)self topDocsWithInt:0 withInt:topDocsSize];
 }
 
 - (void)dealloc
@@ -83,7 +83,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [IOSObjectArray arrayWithLength:0 type:OrgApacheLuceneSearchScoreDoc_class_()];
     v3 = new_OrgApacheLuceneSearchTopDocs_initWithInt_withOrgApacheLuceneSearchScoreDocArray_withFloat_(0, v2, NAN);

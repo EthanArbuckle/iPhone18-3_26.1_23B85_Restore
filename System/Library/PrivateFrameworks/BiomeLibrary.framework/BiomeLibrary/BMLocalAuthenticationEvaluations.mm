@@ -1,15 +1,15 @@
 @interface BMLocalAuthenticationEvaluations
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMLocalAuthenticationEvaluations)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMLocalAuthenticationEvaluations)initWithPolicy:(id)a3 result:(id)a4 biometry:(id)a5 passcode:(id)a6 ratchetState:(int)a7 ratchetArmingState:(int)a8;
-- (BOOL)isEqual:(id)a3;
+- (BMLocalAuthenticationEvaluations)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMLocalAuthenticationEvaluations)initWithPolicy:(id)policy result:(id)result biometry:(id)biometry passcode:(id)passcode ratchetState:(int)state ratchetArmingState:(int)armingState;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMLocalAuthenticationEvaluations
@@ -36,13 +36,13 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMLocalAuthenticationEvaluations hasPolicy](self, "hasPolicy") || [v5 hasPolicy])
     {
       if (![(BMLocalAuthenticationEvaluations *)self hasPolicy])
@@ -55,8 +55,8 @@
         goto LABEL_23;
       }
 
-      v6 = [(BMLocalAuthenticationEvaluations *)self policy];
-      if (v6 != [v5 policy])
+      policy = [(BMLocalAuthenticationEvaluations *)self policy];
+      if (policy != [v5 policy])
       {
         goto LABEL_23;
       }
@@ -74,25 +74,25 @@
         goto LABEL_23;
       }
 
-      v7 = [(BMLocalAuthenticationEvaluations *)self result];
-      if (v7 != [v5 result])
+      result = [(BMLocalAuthenticationEvaluations *)self result];
+      if (result != [v5 result])
       {
         goto LABEL_23;
       }
     }
 
-    v8 = [(BMLocalAuthenticationEvaluations *)self biometry];
-    v9 = [v5 biometry];
-    v10 = v9;
-    if (v8 == v9)
+    biometry = [(BMLocalAuthenticationEvaluations *)self biometry];
+    biometry2 = [v5 biometry];
+    v10 = biometry2;
+    if (biometry == biometry2)
     {
     }
 
     else
     {
-      v11 = [(BMLocalAuthenticationEvaluations *)self biometry];
-      v12 = [v5 biometry];
-      v13 = [v11 isEqual:v12];
+      biometry3 = [(BMLocalAuthenticationEvaluations *)self biometry];
+      biometry4 = [v5 biometry];
+      v13 = [biometry3 isEqual:biometry4];
 
       if (!v13)
       {
@@ -100,18 +100,18 @@
       }
     }
 
-    v15 = [(BMLocalAuthenticationEvaluations *)self passcode];
-    v16 = [v5 passcode];
-    v17 = v16;
-    if (v15 == v16)
+    passcode = [(BMLocalAuthenticationEvaluations *)self passcode];
+    passcode2 = [v5 passcode];
+    v17 = passcode2;
+    if (passcode == passcode2)
     {
     }
 
     else
     {
-      v18 = [(BMLocalAuthenticationEvaluations *)self passcode];
-      v19 = [v5 passcode];
-      v20 = [v18 isEqual:v19];
+      passcode3 = [(BMLocalAuthenticationEvaluations *)self passcode];
+      passcode4 = [v5 passcode];
+      v20 = [passcode3 isEqual:passcode4];
 
       if (!v20)
       {
@@ -119,11 +119,11 @@
       }
     }
 
-    v21 = [(BMLocalAuthenticationEvaluations *)self ratchetState];
-    if (v21 == [v5 ratchetState])
+    ratchetState = [(BMLocalAuthenticationEvaluations *)self ratchetState];
+    if (ratchetState == [v5 ratchetState])
     {
-      v22 = [(BMLocalAuthenticationEvaluations *)self ratchetArmingState];
-      v14 = v22 == [v5 ratchetArmingState];
+      ratchetArmingState = [(BMLocalAuthenticationEvaluations *)self ratchetArmingState];
+      v14 = ratchetArmingState == [v5 ratchetArmingState];
 LABEL_24:
 
       goto LABEL_25;
@@ -163,65 +163,65 @@ LABEL_25:
     v4 = 0;
   }
 
-  v5 = [(BMLocalAuthenticationEvaluations *)self biometry];
-  v6 = [v5 jsonDictionary];
+  biometry = [(BMLocalAuthenticationEvaluations *)self biometry];
+  jsonDictionary = [biometry jsonDictionary];
 
-  v7 = [(BMLocalAuthenticationEvaluations *)self passcode];
-  v8 = [v7 jsonDictionary];
+  passcode = [(BMLocalAuthenticationEvaluations *)self passcode];
+  jsonDictionary2 = [passcode jsonDictionary];
 
   v9 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMLocalAuthenticationEvaluations ratchetState](self, "ratchetState")}];
   v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMLocalAuthenticationEvaluations ratchetArmingState](self, "ratchetArmingState")}];
   v24[0] = @"policy";
-  v11 = v3;
+  null = v3;
   if (!v3)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v11;
+  v22 = null;
   v23 = v3;
-  v25[0] = v11;
+  v25[0] = null;
   v24[1] = @"result";
-  v12 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v12;
-  v25[1] = v12;
+  v20 = null2;
+  v25[1] = null2;
   v24[2] = @"biometry";
-  v13 = v6;
-  if (!v6)
+  null3 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[2] = v13;
+  v25[2] = null3;
   v24[3] = @"passcode";
-  v14 = v8;
-  if (!v8)
+  null4 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[3] = v14;
+  v25[3] = null4;
   v24[4] = @"ratchetState";
-  v15 = v9;
+  null5 = v9;
   if (!v9)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[4] = v15;
+  v25[4] = null5;
   v24[5] = @"ratchetArmingState";
-  v16 = v10;
+  null6 = v10;
   if (!v10)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[5] = v16;
+  v25[5] = null6;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:{6, v20}];
   if (v10)
   {
@@ -237,7 +237,7 @@ LABEL_25:
     if (v9)
     {
 LABEL_21:
-      if (v8)
+      if (jsonDictionary2)
       {
         goto LABEL_22;
       }
@@ -246,10 +246,10 @@ LABEL_21:
     }
   }
 
-  if (v8)
+  if (jsonDictionary2)
   {
 LABEL_22:
-    if (v6)
+    if (jsonDictionary)
     {
       goto LABEL_23;
     }
@@ -266,7 +266,7 @@ LABEL_32:
 
 LABEL_31:
 
-  if (!v6)
+  if (!jsonDictionary)
   {
     goto LABEL_32;
   }
@@ -289,22 +289,22 @@ LABEL_24:
   return v17;
 }
 
-- (BMLocalAuthenticationEvaluations)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMLocalAuthenticationEvaluations)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v82[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"policy"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"policy"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"result"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"result"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v10 = 0;
           v17 = 0;
@@ -315,11 +315,11 @@ LABEL_4:
         v25 = v8;
         v26 = *MEMORY[0x1E698F240];
         v79 = *MEMORY[0x1E696A578];
-        v27 = self;
+        selfCopy = self;
         v28 = objc_alloc(MEMORY[0x1E696AEC0]);
         v55 = objc_opt_class();
         v29 = v28;
-        self = v27;
+        self = selfCopy;
         v15 = [v29 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v55, @"result"];
         v80 = v15;
         v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v80 forKeys:&v79 count:1];
@@ -329,7 +329,7 @@ LABEL_4:
         v32 = [v24 initWithDomain:v31 code:2 userInfo:?];
         v10 = 0;
         v17 = 0;
-        *a4 = v32;
+        *error = v32;
         goto LABEL_59;
       }
 
@@ -341,14 +341,14 @@ LABEL_4:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"biometry"];
-    v60 = a4;
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"biometry"];
+    errorCopy = error;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v17 = 0;
           goto LABEL_60;
@@ -359,11 +359,11 @@ LABEL_4:
         v63 = v8;
         v35 = *MEMORY[0x1E698F240];
         v77 = *MEMORY[0x1E696A578];
-        v36 = self;
+        selfCopy2 = self;
         v37 = objc_alloc(MEMORY[0x1E696AEC0]);
         v56 = objc_opt_class();
         v38 = v37;
-        self = v36;
+        self = selfCopy2;
         v68 = [v38 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v56, @"biometry"];
         v78 = v68;
         v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v78 forKeys:&v77 count:1];
@@ -371,7 +371,7 @@ LABEL_4:
         v41 = v35;
         v8 = v63;
         v10 = v65;
-        *a4 = [v40 initWithDomain:v41 code:2 userInfo:v39];
+        *error = [v40 initWithDomain:v41 code:2 userInfo:v39];
 
         v17 = 0;
         goto LABEL_58;
@@ -383,10 +383,10 @@ LABEL_4:
       v16 = v70;
       if (v16)
       {
-        if (a4)
+        if (error)
         {
           v16 = v16;
-          *a4 = v16;
+          *error = v16;
         }
 
         v17 = 0;
@@ -399,7 +399,7 @@ LABEL_4:
       v68 = 0;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"passcode"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"passcode"];
     v62 = v8;
     v64 = v10;
     if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -407,24 +407,24 @@ LABEL_4:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v60)
+        if (!errorCopy)
         {
           v17 = 0;
           goto LABEL_57;
         }
 
         v42 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v67 = self;
+        selfCopy3 = self;
         v43 = *MEMORY[0x1E698F240];
         v75 = *MEMORY[0x1E696A578];
         v61 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"passcode"];
         v76 = v61;
         v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v76 forKeys:&v75 count:1];
         v44 = v43;
-        self = v67;
+        self = selfCopy3;
         v45 = [v42 initWithDomain:v44 code:2 userInfo:v14];
         v17 = 0;
-        *v60 = v45;
+        *errorCopy = v45;
         goto LABEL_55;
       }
 
@@ -434,26 +434,26 @@ LABEL_4:
       v18 = v69;
       if (v18)
       {
-        if (v60)
+        if (errorCopy)
         {
           v18 = v18;
-          *v60 = v18;
+          *errorCopy = v18;
         }
 
         v17 = 0;
         goto LABEL_56;
       }
 
-      v66 = self;
+      selfCopy5 = self;
     }
 
     else
     {
-      v66 = self;
+      selfCopy5 = self;
       v61 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"ratchetState"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"ratchetState"];
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -467,7 +467,7 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v60)
+          if (!errorCopy)
           {
             v14 = 0;
             v17 = 0;
@@ -483,7 +483,7 @@ LABEL_4:
           v52 = [v58 initWithDomain:v51 code:2 userInfo:v46];
           v14 = 0;
           v17 = 0;
-          *v60 = v52;
+          *errorCopy = v52;
           goto LABEL_53;
         }
 
@@ -498,7 +498,7 @@ LABEL_4:
       v14 = 0;
     }
 
-    v46 = [v6 objectForKeyedSubscript:@"ratchetArmingState"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"ratchetArmingState"];
     if (v46 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -512,7 +512,7 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (v60)
+          if (errorCopy)
           {
             v59 = objc_alloc(MEMORY[0x1E696ABC0]);
             v57 = *MEMORY[0x1E698F240];
@@ -520,7 +520,7 @@ LABEL_4:
             v53 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"ratchetArmingState"];
             v72 = v53;
             v54 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
-            *v60 = [v59 initWithDomain:v57 code:2 userInfo:v54];
+            *errorCopy = [v59 initWithDomain:v57 code:2 userInfo:v54];
           }
 
           v47 = 0;
@@ -539,12 +539,12 @@ LABEL_4:
       v47 = 0;
     }
 
-    v17 = -[BMLocalAuthenticationEvaluations initWithPolicy:result:biometry:passcode:ratchetState:ratchetArmingState:](v66, "initWithPolicy:result:biometry:passcode:ratchetState:ratchetArmingState:", v62, v64, v68, v61, [v14 intValue], objc_msgSend(v47, "intValue"));
-    v66 = v17;
+    v17 = -[BMLocalAuthenticationEvaluations initWithPolicy:result:biometry:passcode:ratchetState:ratchetArmingState:](selfCopy5, "initWithPolicy:result:biometry:passcode:ratchetState:ratchetArmingState:", v62, v64, v68, v61, [v14 intValue], objc_msgSend(v47, "intValue"));
+    selfCopy5 = v17;
 LABEL_53:
 
 LABEL_54:
-    self = v66;
+    self = selfCopy5;
 LABEL_55:
     v10 = v64;
 LABEL_56:
@@ -569,7 +569,7 @@ LABEL_60:
     goto LABEL_4;
   }
 
-  if (a4)
+  if (error)
   {
     v19 = objc_alloc(MEMORY[0x1E696ABC0]);
     v20 = *MEMORY[0x1E698F240];
@@ -582,7 +582,7 @@ LABEL_60:
     v23 = [v22 initWithDomain:v20 code:2 userInfo:v9];
     v8 = 0;
     v17 = 0;
-    *a4 = v23;
+    *error = v23;
 LABEL_61:
 
     goto LABEL_62;
@@ -600,14 +600,14 @@ LABEL_62:
 {
   v3 = objc_opt_new();
   [(BMLocalAuthenticationEvaluations *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_hasPolicy)
   {
     policy = self->_policy;
@@ -623,14 +623,14 @@ LABEL_62:
   if (self->_biometry)
   {
     PBDataWriterPlaceMark();
-    [(BMLocalAuthenticationEvaluationsMechanism *)self->_biometry writeTo:v4];
+    [(BMLocalAuthenticationEvaluationsMechanism *)self->_biometry writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_passcode)
   {
     PBDataWriterPlaceMark();
-    [(BMLocalAuthenticationEvaluationsMechanism *)self->_passcode writeTo:v4];
+    [(BMLocalAuthenticationEvaluationsMechanism *)self->_passcode writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -640,9 +640,9 @@ LABEL_62:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v49.receiver = self;
   v49.super_class = BMLocalAuthenticationEvaluations;
   v5 = [(BMEventBase *)&v49 init];
@@ -651,12 +651,12 @@ LABEL_62:
     goto LABEL_91;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_89;
       }
@@ -667,18 +667,18 @@ LABEL_62:
       while (1)
       {
         LOBYTE(v50) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v50 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v50 & 0x7F) << v7;
@@ -696,9 +696,9 @@ LABEL_62:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_89;
       }
@@ -719,7 +719,7 @@ LABEL_16:
             goto LABEL_90;
           }
 
-          v16 = [[BMLocalAuthenticationEvaluationsMechanism alloc] initByReadFrom:v4];
+          v16 = [[BMLocalAuthenticationEvaluationsMechanism alloc] initByReadFrom:fromCopy];
           if (!v16)
           {
             goto LABEL_90;
@@ -739,18 +739,18 @@ LABEL_49:
           while (1)
           {
             LOBYTE(v50) = 0;
-            v41 = [v4 position] + 1;
-            if (v41 >= [v4 position] && (v42 = objc_msgSend(v4, "position") + 1, v42 <= objc_msgSend(v4, "length")))
+            v41 = [fromCopy position] + 1;
+            if (v41 >= [fromCopy position] && (v42 = objc_msgSend(fromCopy, "position") + 1, v42 <= objc_msgSend(fromCopy, "length")))
             {
-              v43 = [v4 data];
-              [v43 getBytes:&v50 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v20 |= (v50 & 0x7F) << v39;
@@ -767,7 +767,7 @@ LABEL_49:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v20 > 8)
+          if (([fromCopy hasError] & 1) != 0 || v20 > 8)
           {
 LABEL_85:
             LODWORD(v20) = 0;
@@ -782,18 +782,18 @@ LABEL_85:
           while (1)
           {
             LOBYTE(v50) = 0;
-            v21 = [v4 position] + 1;
-            if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+            v21 = [fromCopy position] + 1;
+            if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
             {
-              v23 = [v4 data];
-              [v23 getBytes:&v50 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v20 |= (v50 & 0x7F) << v18;
@@ -810,7 +810,7 @@ LABEL_85:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v20 > 5)
+          if (([fromCopy hasError] & 1) != 0 || v20 > 5)
           {
 LABEL_76:
             LODWORD(v20) = 0;
@@ -830,8 +830,8 @@ LABEL_50:
 
       *(&v5->super.super.isa + v45) = v20;
 LABEL_88:
-      v46 = [v4 position];
-      if (v46 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_89;
       }
@@ -846,18 +846,18 @@ LABEL_88:
       while (1)
       {
         LOBYTE(v50) = 0;
-        v28 = [v4 position] + 1;
-        if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+        v28 = [fromCopy position] + 1;
+        if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
         {
-          v30 = [v4 data];
-          [v30 getBytes:&v50 range:{objc_msgSend(v4, "position"), 1}];
+          data4 = [fromCopy data];
+          [data4 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v27 |= (v50 & 0x7F) << v25;
@@ -875,7 +875,7 @@ LABEL_88:
         }
       }
 
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         v31 = 0;
       }
@@ -899,18 +899,18 @@ LABEL_73:
       while (1)
       {
         LOBYTE(v50) = 0;
-        v36 = [v4 position] + 1;
-        if (v36 >= [v4 position] && (v37 = objc_msgSend(v4, "position") + 1, v37 <= objc_msgSend(v4, "length")))
+        v36 = [fromCopy position] + 1;
+        if (v36 >= [fromCopy position] && (v37 = objc_msgSend(fromCopy, "position") + 1, v37 <= objc_msgSend(fromCopy, "length")))
         {
-          v38 = [v4 data];
-          [v38 getBytes:&v50 range:{objc_msgSend(v4, "position"), 1}];
+          data5 = [fromCopy data];
+          [data5 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v35 |= (v50 & 0x7F) << v33;
@@ -928,7 +928,7 @@ LABEL_73:
         }
       }
 
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         v31 = 0;
       }
@@ -957,7 +957,7 @@ LABEL_82:
       goto LABEL_90;
     }
 
-    v16 = [[BMLocalAuthenticationEvaluationsMechanism alloc] initByReadFrom:v4];
+    v16 = [[BMLocalAuthenticationEvaluationsMechanism alloc] initByReadFrom:fromCopy];
     if (!v16)
     {
       goto LABEL_90;
@@ -968,7 +968,7 @@ LABEL_82:
   }
 
 LABEL_89:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_90:
     v47 = 0;
@@ -988,57 +988,57 @@ LABEL_91:
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMLocalAuthenticationEvaluations policy](self, "policy")}];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMLocalAuthenticationEvaluations result](self, "result")}];
-  v6 = [(BMLocalAuthenticationEvaluations *)self biometry];
-  v7 = [(BMLocalAuthenticationEvaluations *)self passcode];
+  biometry = [(BMLocalAuthenticationEvaluations *)self biometry];
+  passcode = [(BMLocalAuthenticationEvaluations *)self passcode];
   v8 = BMLocalAuthenticationEvaluationsRatchetStateAsString([(BMLocalAuthenticationEvaluations *)self ratchetState]);
   v9 = BMLocalAuthenticationEvaluationsRatchetArmingStateAsString([(BMLocalAuthenticationEvaluations *)self ratchetArmingState]);
-  v10 = [v3 initWithFormat:@"BMLocalAuthenticationEvaluations with policy: %@, result: %@, biometry: %@, passcode: %@, ratchetState: %@, ratchetArmingState: %@", v4, v5, v6, v7, v8, v9];
+  v10 = [v3 initWithFormat:@"BMLocalAuthenticationEvaluations with policy: %@, result: %@, biometry: %@, passcode: %@, ratchetState: %@, ratchetArmingState: %@", v4, v5, biometry, passcode, v8, v9];
 
   return v10;
 }
 
-- (BMLocalAuthenticationEvaluations)initWithPolicy:(id)a3 result:(id)a4 biometry:(id)a5 passcode:(id)a6 ratchetState:(int)a7 ratchetArmingState:(int)a8
+- (BMLocalAuthenticationEvaluations)initWithPolicy:(id)policy result:(id)result biometry:(id)biometry passcode:(id)passcode ratchetState:(int)state ratchetArmingState:(int)armingState
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  policyCopy = policy;
+  resultCopy = result;
+  biometryCopy = biometry;
+  passcodeCopy = passcode;
   v22.receiver = self;
   v22.super_class = BMLocalAuthenticationEvaluations;
   v18 = [(BMEventBase *)&v22 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v14)
+    if (policyCopy)
     {
       v18->_hasPolicy = 1;
-      v19 = [v14 intValue];
+      intValue = [policyCopy intValue];
     }
 
     else
     {
       v18->_hasPolicy = 0;
-      v19 = -1;
+      intValue = -1;
     }
 
-    v18->_policy = v19;
-    if (v15)
+    v18->_policy = intValue;
+    if (resultCopy)
     {
       v18->_hasResult = 1;
-      v20 = [v15 intValue];
+      intValue2 = [resultCopy intValue];
     }
 
     else
     {
       v18->_hasResult = 0;
-      v20 = -1;
+      intValue2 = -1;
     }
 
-    v18->_result = v20;
-    objc_storeStrong(&v18->_biometry, a5);
-    objc_storeStrong(&v18->_passcode, a6);
-    v18->_ratchetState = a7;
-    v18->_ratchetArmingState = a8;
+    v18->_result = intValue2;
+    objc_storeStrong(&v18->_biometry, biometry);
+    objc_storeStrong(&v18->_passcode, passcode);
+    v18->_ratchetState = state;
+    v18->_ratchetArmingState = armingState;
   }
 
   return v18;
@@ -1086,9 +1086,9 @@ id __43__BMLocalAuthenticationEvaluations_columns__block_invoke(uint64_t a1, voi
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1096,8 +1096,8 @@ id __43__BMLocalAuthenticationEvaluations_columns__block_invoke(uint64_t a1, voi
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMLocalAuthenticationEvaluations alloc] initByReadFrom:v7];
     v4 = v8;

@@ -7,27 +7,27 @@
 - (id)underlyingRequest
 {
   v3 = objc_alloc_init(OPTTSMutableStartTextToSpeechStreamingRequest);
-  v4 = [(SiriTTSOspreyRequest *)self speechId];
-  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v3 setSpeech_id:v4];
+  speechId = [(SiriTTSOspreyRequest *)self speechId];
+  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v3 setSpeech_id:speechId];
 
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v6 = [v5 UUIDString];
-  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v3 setSession_id:v6];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v3 setSession_id:uUIDString];
 
-  v7 = [MEMORY[0x1E696AFB0] UUID];
-  v8 = [v7 UUIDString];
-  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v3 setStream_id:v8];
+  uUID2 = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString2 = [uUID2 UUIDString];
+  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v3 setStream_id:uUIDString2];
 
-  v9 = [(SiriTTSOspreyRequest *)self language];
-  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v3 setLanguage:v9];
+  language = [(SiriTTSOspreyRequest *)self language];
+  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v3 setLanguage:language];
 
-  v10 = [(SiriTTSOspreyRequest *)self voiceName];
-  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v3 setVoice_name:v10];
+  voiceName = [(SiriTTSOspreyRequest *)self voiceName];
+  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v3 setVoice_name:voiceName];
 
-  v11 = [(SiriTTSOspreyRequest *)self preferredType];
-  LOBYTE(v8) = [v11 isEqualToString:@"neural"];
+  preferredType = [(SiriTTSOspreyRequest *)self preferredType];
+  LOBYTE(uUIDString2) = [preferredType isEqualToString:@"neural"];
 
-  if (v8)
+  if (uUIDString2)
   {
     v12 = 1;
 LABEL_5:
@@ -35,8 +35,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v13 = [(SiriTTSOspreyRequest *)self preferredType];
-  v14 = [v13 isEqualToString:@"gryphon"];
+  preferredType2 = [(SiriTTSOspreyRequest *)self preferredType];
+  v14 = [preferredType2 isEqualToString:@"gryphon"];
 
   if (v14)
   {
@@ -57,7 +57,7 @@ LABEL_6:
   [(SiriTTSOspreyRequest *)self neuralSentenceTilt];
   [(OPTTSMutableTextToSpeechRequestProsodyControlConfig *)v15 setGlobal_sent_tilt:?];
   [(OPTTSMutableStartTextToSpeechStreamingRequest *)v3 setProsody_control_config:v15];
-  v16 = [(SiriTTSOspreyRequest *)self text];
+  text = [(SiriTTSOspreyRequest *)self text];
   [(SiriTTSOspreyRequest *)self volume];
   if (v17 != 0.8)
   {
@@ -66,9 +66,9 @@ LABEL_6:
     {
       v19 = MEMORY[0x1E696AEC0];
       [(SiriTTSOspreyRequest *)self volume];
-      v21 = [v19 stringWithFormat:@"\x1B\\vol=%d\\%@", (v20 * 100.0), v16];
+      v21 = [v19 stringWithFormat:@"\x1B\\vol=%d\\%@", (v20 * 100.0), text];
 
-      v16 = v21;
+      text = v21;
     }
   }
 
@@ -80,9 +80,9 @@ LABEL_6:
     {
       v24 = MEMORY[0x1E696AEC0];
       [(SiriTTSOspreyRequest *)self rate];
-      v26 = [v24 stringWithFormat:@"\x1B\\rate=%d\\%@", (v25 * 100.0), v16];
+      v26 = [v24 stringWithFormat:@"\x1B\\rate=%d\\%@", (v25 * 100.0), text];
 
-      v16 = v26;
+      text = v26;
     }
   }
 
@@ -94,13 +94,13 @@ LABEL_6:
     {
       v29 = MEMORY[0x1E696AEC0];
       [(SiriTTSOspreyRequest *)self pitch];
-      v31 = [v29 stringWithFormat:@"\x1B\\pitch=%d\\%@", (v30 * 100.0), v16];
+      v31 = [v29 stringWithFormat:@"\x1B\\pitch=%d\\%@", (v30 * 100.0), text];
 
-      v16 = v31;
+      text = v31;
     }
   }
 
-  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v3 setText:v16];
+  [(OPTTSMutableStartTextToSpeechStreamingRequest *)v3 setText:text];
   [(OPTTSMutableStartTextToSpeechStreamingRequest *)v3 setAudio_type:1];
   [(OPTTSMutableStartTextToSpeechStreamingRequest *)v3 setEnable_word_timing_info:1];
   if ([(SiriTTSOspreyRequest *)self serverLogs])
@@ -111,18 +111,18 @@ LABEL_6:
   }
 
   v33 = objc_alloc_init(OPTTSMutableTextToSpeechRequestMeta);
-  v34 = [(SiriTTSOspreyRequest *)self appId];
-  [(OPTTSMutableTextToSpeechRequestMeta *)v33 setApp_id:v34];
+  appId = [(SiriTTSOspreyRequest *)self appId];
+  [(OPTTSMutableTextToSpeechRequestMeta *)v33 setApp_id:appId];
 
   [(OPTTSMutableTextToSpeechRequestMeta *)v33 setChannel_type:2];
   [(OPTTSMutableStartTextToSpeechStreamingRequest *)v3 setMeta_info:v33];
-  v35 = [(SiriTTSOspreyRequest *)self experimentId];
+  experimentId = [(SiriTTSOspreyRequest *)self experimentId];
 
-  if (v35)
+  if (experimentId)
   {
     v36 = objc_alloc_init(OPTTSMutableTextToSpeechRequestExperiment);
-    v37 = [(SiriTTSOspreyRequest *)self experimentId];
-    [(OPTTSMutableTextToSpeechRequestExperiment *)v36 setExperiment_identifier:v37];
+    experimentId2 = [(SiriTTSOspreyRequest *)self experimentId];
+    [(OPTTSMutableTextToSpeechRequestExperiment *)v36 setExperiment_identifier:experimentId2];
 
     [(OPTTSMutableStartTextToSpeechStreamingRequest *)v3 setExperiment:v36];
   }

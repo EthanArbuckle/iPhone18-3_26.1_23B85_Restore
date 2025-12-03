@@ -1,30 +1,30 @@
 @interface ISImageDescriptor
-+ (id)imageDescriptorNamed:(id)a3;
-- (BOOL)digest:(void *)a3 size:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)imageDescriptorNamed:(id)named;
+- (BOOL)digest:(void *)digest size:(unint64_t)size;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)sanitizedSize;
 - (CGSize)size;
 - (IFColor)tintColor;
 - (ISImageDescriptor)init;
-- (ISImageDescriptor)initWithCoder:(id)a3;
-- (ISImageDescriptor)initWithSize:(CGSize)a3 scale:(double)a4;
+- (ISImageDescriptor)initWithCoder:(id)coder;
+- (ISImageDescriptor)initWithSize:(CGSize)size scale:(double)scale;
 - (NSString)description;
 - (NSUUID)digest;
 - (double)continuousCornerRadius;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)appearance;
 - (int64_t)appearanceVariant;
 - (int64_t)layoutDirection;
 - (unint64_t)hash;
 - (unint64_t)platform;
 - (unint64_t)shape;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDrawBadge:(BOOL)a3;
-- (void)setDrawBorder:(BOOL)a3;
-- (void)setSelectedVariant:(BOOL)a3;
-- (void)setShape:(unint64_t)a3;
-- (void)setShouldApplyMask:(BOOL)a3;
-- (void)setTemplateVariant:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDrawBadge:(BOOL)badge;
+- (void)setDrawBorder:(BOOL)border;
+- (void)setSelectedVariant:(BOOL)variant;
+- (void)setShape:(unint64_t)shape;
+- (void)setShouldApplyMask:(BOOL)mask;
+- (void)setTemplateVariant:(BOOL)variant;
 @end
 
 @implementation ISImageDescriptor
@@ -32,11 +32,11 @@
 - (IFColor)tintColor
 {
   v3 = +[ISDefaults sharedInstance];
-  v4 = [v3 tintColor];
+  tintColor = [v3 tintColor];
 
-  if (v4)
+  if (tintColor)
   {
-    objc_storeStrong(&self->_tintColor, v4);
+    objc_storeStrong(&self->_tintColor, tintColor);
   }
 
   tintColor = self->_tintColor;
@@ -64,52 +64,52 @@
 
 - (int64_t)layoutDirection
 {
-  v2 = [(ISImageDescriptor *)self languageDirection];
-  if (v2 == 1)
+  languageDirection = [(ISImageDescriptor *)self languageDirection];
+  if (languageDirection == 1)
   {
     return 5;
   }
 
   else
   {
-    return 4 * (v2 == 2);
+    return 4 * (languageDirection == 2);
   }
 }
 
 - (int64_t)appearance
 {
   v3 = +[ISDefaults sharedInstance];
-  v4 = [v3 forceApperance];
+  forceApperance = [v3 forceApperance];
 
-  if (v4 < 0)
+  if (forceApperance < 0)
   {
     return self->_appearance;
   }
 
-  if (v4 != self->_appearance)
+  if (forceApperance != self->_appearance)
   {
-    self->_appearance = v4;
+    self->_appearance = forceApperance;
   }
 
-  return v4;
+  return forceApperance;
 }
 
 - (int64_t)appearanceVariant
 {
   v3 = +[ISDefaults sharedInstance];
-  v4 = [v3 forceApperanceVariant];
+  forceApperanceVariant = [v3 forceApperanceVariant];
 
-  if (v4 < 0)
+  if (forceApperanceVariant < 0)
   {
     return self->_appearanceVariant;
   }
 
-  if (v4 != self->_appearanceVariant)
+  if (forceApperanceVariant != self->_appearanceVariant)
   {
-    self->_appearanceVariant = v4;
+    self->_appearanceVariant = forceApperanceVariant;
   }
 
-  return v4;
+  return forceApperanceVariant;
 }
 
 - (NSString)description
@@ -121,32 +121,32 @@
   v6 = v5;
   [(ISImageDescriptor *)self scale];
   v8 = v7;
-  v33 = [(ISImageDescriptor *)self variantOptions];
-  v32 = [(ISImageDescriptor *)self layoutDirection];
-  v31 = [(ISImageDescriptor *)self appearance];
-  v30 = [(ISImageDescriptor *)self contrast];
-  v29 = [(ISImageDescriptor *)self vibrancy];
-  v28 = [(ISImageDescriptor *)self appearanceVariant];
-  v35 = [(ISImageDescriptor *)self tintColor];
-  v34 = [v35 ciColor];
-  [v34 red];
+  variantOptions = [(ISImageDescriptor *)self variantOptions];
+  layoutDirection = [(ISImageDescriptor *)self layoutDirection];
+  appearance = [(ISImageDescriptor *)self appearance];
+  contrast = [(ISImageDescriptor *)self contrast];
+  vibrancy = [(ISImageDescriptor *)self vibrancy];
+  appearanceVariant = [(ISImageDescriptor *)self appearanceVariant];
+  tintColor = [(ISImageDescriptor *)self tintColor];
+  ciColor = [tintColor ciColor];
+  [ciColor red];
   v10 = v9;
-  v11 = [(ISImageDescriptor *)self tintColor];
-  v12 = [v11 ciColor];
-  [v12 green];
+  tintColor2 = [(ISImageDescriptor *)self tintColor];
+  ciColor2 = [tintColor2 ciColor];
+  [ciColor2 green];
   v14 = v13;
-  v15 = [(ISImageDescriptor *)self tintColor];
-  v16 = [v15 ciColor];
-  [v16 blue];
+  tintColor3 = [(ISImageDescriptor *)self tintColor];
+  ciColor3 = [tintColor3 ciColor];
+  [ciColor3 blue];
   v18 = v17;
-  v19 = [(ISImageDescriptor *)self tintColor];
-  v20 = [v19 ciColor];
-  [v20 alpha];
+  tintColor4 = [(ISImageDescriptor *)self tintColor];
+  ciColor4 = [tintColor4 ciColor];
+  [ciColor4 alpha];
   v22 = v21;
-  v23 = [(ISImageDescriptor *)self specialIconOptions];
-  v24 = [(ISImageDescriptor *)self platformStyle];
-  v25 = [(ISImageDescriptor *)self digest];
-  v26 = [v36 initWithFormat:@"<ISImageDescriptor: %p> (%0.2f, %0.2f)@%.0fx v:%lx l:%lu a:%ld:%ld:%ld:%ld t:%g:%g:%g:%g s:%ld ps: %ld digest: %@", self, v4, v6, v8, v33, v32, v31, v30, v29, v28, v10, v14, v18, v22, v23, v24, v25];
+  specialIconOptions = [(ISImageDescriptor *)self specialIconOptions];
+  platformStyle = [(ISImageDescriptor *)self platformStyle];
+  digest = [(ISImageDescriptor *)self digest];
+  v26 = [v36 initWithFormat:@"<ISImageDescriptor: %p> (%0.2f, %0.2f)@%.0fx v:%lx l:%lu a:%ld:%ld:%ld:%ld t:%g:%g:%g:%g s:%ld ps: %ld digest: %@", self, v4, v6, v8, variantOptions, layoutDirection, appearance, contrast, vibrancy, appearanceVariant, v10, v14, v18, v22, specialIconOptions, platformStyle, digest];
 
   return v26;
 }
@@ -167,10 +167,10 @@
   return [(ISImageDescriptor *)self initWithSize:60.0 scale:60.0, v3];
 }
 
-- (ISImageDescriptor)initWithSize:(CGSize)a3 scale:(double)a4
+- (ISImageDescriptor)initWithSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = ISImageDescriptor;
   v7 = [(ISImageDescriptor *)&v10 init];
@@ -179,7 +179,7 @@
   {
     v7->_size.width = width;
     v7->_size.height = height;
-    v7->_scale = a4;
+    v7->_scale = scale;
     v7->_preferExtendedColorResources = MGGetBoolAnswer();
     *&v8->_appearance = 0u;
     *&v8->_contrast = 0u;
@@ -191,68 +191,68 @@
   return v8;
 }
 
-- (ISImageDescriptor)initWithCoder:(id)a3
+- (ISImageDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ISImageDescriptor *)self init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"size.width"];
+    [coderCopy decodeDoubleForKey:@"size.width"];
     v7 = v6;
-    [v4 decodeDoubleForKey:@"size.height"];
+    [coderCopy decodeDoubleForKey:@"size.height"];
     v5->_size.width = v7;
     v5->_size.height = v8;
-    [v4 decodeDoubleForKey:@"scale"];
+    [coderCopy decodeDoubleForKey:@"scale"];
     v5->_scale = v9;
-    v5->_variantOptions = [v4 decodeIntegerForKey:@"variantOptions"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferedResourceName"];
+    v5->_variantOptions = [coderCopy decodeIntegerForKey:@"variantOptions"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferedResourceName"];
     preferedResourceName = v5->_preferedResourceName;
     v5->_preferedResourceName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
     tintColor = v5->_tintColor;
     v5->_tintColor = v12;
 
-    v5->_ignoreCache = [v4 decodeBoolForKey:@"ignoreCache"];
-    v5->_graphicVariant = [v4 decodeBoolForKey:@"graphicVariant"];
-    v5->_appearance = [v4 decodeIntegerForKey:@"appearance"];
-    v5->_contrast = [v4 decodeIntegerForKey:@"contrast"];
-    v5->_vibrancy = [v4 decodeIntegerForKey:@"vibrancy"];
-    v5->_appearanceVariant = [v4 decodeIntegerForKey:@"appearanceVariant"];
-    v5->_background = [v4 decodeIntegerForKey:@"background"];
-    v5->_specialIconOptions = [v4 decodeIntegerForKey:@"specialIconOptions"];
-    v5->_platformStyle = [v4 decodeIntegerForKey:@"platformStyle"];
-    v5->_languageDirection = [v4 decodeIntegerForKey:@"languageDirection"];
-    v5->_layoutDirection = [v4 decodeIntegerForKey:@"layoutDirection"];
+    v5->_ignoreCache = [coderCopy decodeBoolForKey:@"ignoreCache"];
+    v5->_graphicVariant = [coderCopy decodeBoolForKey:@"graphicVariant"];
+    v5->_appearance = [coderCopy decodeIntegerForKey:@"appearance"];
+    v5->_contrast = [coderCopy decodeIntegerForKey:@"contrast"];
+    v5->_vibrancy = [coderCopy decodeIntegerForKey:@"vibrancy"];
+    v5->_appearanceVariant = [coderCopy decodeIntegerForKey:@"appearanceVariant"];
+    v5->_background = [coderCopy decodeIntegerForKey:@"background"];
+    v5->_specialIconOptions = [coderCopy decodeIntegerForKey:@"specialIconOptions"];
+    v5->_platformStyle = [coderCopy decodeIntegerForKey:@"platformStyle"];
+    v5->_languageDirection = [coderCopy decodeIntegerForKey:@"languageDirection"];
+    v5->_layoutDirection = [coderCopy decodeIntegerForKey:@"layoutDirection"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   width = self->_size.width;
-  v5 = a3;
-  [v5 encodeDouble:@"size.width" forKey:width];
-  [v5 encodeDouble:@"size.height" forKey:self->_size.height];
-  [v5 encodeDouble:@"scale" forKey:self->_scale];
-  [v5 encodeInteger:self->_variantOptions forKey:@"variantOptions"];
-  [v5 encodeObject:self->_preferedResourceName forKey:@"preferedResourceName"];
-  [v5 encodeObject:self->_tintColor forKey:@"tintColor"];
-  [v5 encodeBool:self->_ignoreCache forKey:@"ignoreCache"];
-  [v5 encodeBool:self->_graphicVariant forKey:@"graphicVariant"];
-  [v5 encodeInteger:self->_appearance forKey:@"appearance"];
-  [v5 encodeInteger:self->_contrast forKey:@"contrast"];
-  [v5 encodeInteger:self->_vibrancy forKey:@"vibrancy"];
-  [v5 encodeInteger:self->_appearanceVariant forKey:@"appearanceVariant"];
-  [v5 encodeInteger:self->_background forKey:@"background"];
-  [v5 encodeInteger:self->_specialIconOptions forKey:@"specialIconOptions"];
-  [v5 encodeInteger:self->_platformStyle forKey:@"platformStyle"];
-  [v5 encodeInteger:self->_languageDirection forKey:@"languageDirection"];
-  [v5 encodeInteger:self->_layoutDirection forKey:@"layoutDirection"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"size.width" forKey:width];
+  [coderCopy encodeDouble:@"size.height" forKey:self->_size.height];
+  [coderCopy encodeDouble:@"scale" forKey:self->_scale];
+  [coderCopy encodeInteger:self->_variantOptions forKey:@"variantOptions"];
+  [coderCopy encodeObject:self->_preferedResourceName forKey:@"preferedResourceName"];
+  [coderCopy encodeObject:self->_tintColor forKey:@"tintColor"];
+  [coderCopy encodeBool:self->_ignoreCache forKey:@"ignoreCache"];
+  [coderCopy encodeBool:self->_graphicVariant forKey:@"graphicVariant"];
+  [coderCopy encodeInteger:self->_appearance forKey:@"appearance"];
+  [coderCopy encodeInteger:self->_contrast forKey:@"contrast"];
+  [coderCopy encodeInteger:self->_vibrancy forKey:@"vibrancy"];
+  [coderCopy encodeInteger:self->_appearanceVariant forKey:@"appearanceVariant"];
+  [coderCopy encodeInteger:self->_background forKey:@"background"];
+  [coderCopy encodeInteger:self->_specialIconOptions forKey:@"specialIconOptions"];
+  [coderCopy encodeInteger:self->_platformStyle forKey:@"platformStyle"];
+  [coderCopy encodeInteger:self->_languageDirection forKey:@"languageDirection"];
+  [coderCopy encodeInteger:self->_layoutDirection forKey:@"layoutDirection"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [ISImageDescriptor alloc];
   [(ISImageDescriptor *)v4 setSize:self->_size.width, self->_size.height];
@@ -276,10 +276,10 @@
   return v4;
 }
 
-- (void)setTemplateVariant:(BOOL)a3
+- (void)setTemplateVariant:(BOOL)variant
 {
   v3 = 8;
-  if (!a3)
+  if (!variant)
   {
     v3 = 0;
   }
@@ -287,10 +287,10 @@
   self->_variantOptions = self->_variantOptions & 0xFFFFFFFFFFFFFFF7 | v3;
 }
 
-- (void)setSelectedVariant:(BOOL)a3
+- (void)setSelectedVariant:(BOOL)variant
 {
   v3 = 16;
-  if (!a3)
+  if (!variant)
   {
     v3 = 0;
   }
@@ -330,20 +330,20 @@
   return 0;
 }
 
-- (void)setShape:(unint64_t)a3
+- (void)setShape:(unint64_t)shape
 {
-  if (a3 <= 2)
+  if (shape <= 2)
   {
-    if (a3)
+    if (shape)
     {
-      if (a3 == 1)
+      if (shape == 1)
       {
         v3 = self->_variantOptions & 0xFFFFFFFFFF92FFFDLL | 0x10000;
       }
 
       else
       {
-        if (a3 != 2)
+        if (shape != 2)
         {
           return;
         }
@@ -358,16 +358,16 @@
     }
   }
 
-  else if (a3 > 4)
+  else if (shape > 4)
   {
-    if (a3 == 5)
+    if (shape == 5)
     {
       v3 = self->_variantOptions & 0xFFFFFFFFFF92FFFDLL | 0x200000;
     }
 
     else
     {
-      if (a3 != 6)
+      if (shape != 6)
       {
         return;
       }
@@ -376,7 +376,7 @@
     }
   }
 
-  else if (a3 == 3)
+  else if (shape == 3)
   {
     v3 = self->_variantOptions & 0xFFFFFFFFFF92FFFDLL | 0x40000;
   }
@@ -392,14 +392,14 @@
 - (double)continuousCornerRadius
 {
   v3 = +[ISDefaults sharedInstance];
-  v4 = [v3 isSolariumEnabled];
+  isSolariumEnabled = [v3 isSolariumEnabled];
 
-  if (v4)
+  if (isSolariumEnabled)
   {
     v5 = +[ISPlatformInfo sharedInstance];
-    v6 = [v5 nativePlatform];
+    nativePlatform = [v5 nativePlatform];
 
-    if (v6 <= 0x20 && ((1 << v6) & 0x100010100) != 0)
+    if (nativePlatform <= 0x20 && ((1 << nativePlatform) & 0x100010100) != 0)
     {
       return 0.0;
     }
@@ -408,13 +408,13 @@
   else
   {
     v9 = +[ISDeviceInfo sharedInstance];
-    v10 = [v9 ideom];
+    ideom = [v9 ideom];
 
-    v11 = [(ISImageDescriptor *)self shape];
-    v12 = v10 < 4;
-    if (v11)
+    shape = [(ISImageDescriptor *)self shape];
+    v12 = ideom < 4;
+    if (shape)
     {
-      v12 = v11 == 1;
+      v12 = shape == 1;
     }
 
     if (!v12)
@@ -429,10 +429,10 @@
   return result;
 }
 
-- (void)setShouldApplyMask:(BOOL)a3
+- (void)setShouldApplyMask:(BOOL)mask
 {
   v3 = 0x20000;
-  if (a3)
+  if (mask)
   {
     v3 = 0;
   }
@@ -440,10 +440,10 @@
   self->_variantOptions = self->_variantOptions & 0xFFFFFFFFFFFDFFFFLL | v3;
 }
 
-- (void)setDrawBorder:(BOOL)a3
+- (void)setDrawBorder:(BOOL)border
 {
   v3 = 4;
-  if (!a3)
+  if (!border)
   {
     v3 = 0;
   }
@@ -451,10 +451,10 @@
   self->_variantOptions = self->_variantOptions & 0xFFFFFFFFFFFFFFFBLL | v3;
 }
 
-- (void)setDrawBadge:(BOOL)a3
+- (void)setDrawBadge:(BOOL)badge
 {
   v3 = 0x100000;
-  if (a3)
+  if (badge)
   {
     v3 = 0;
   }
@@ -489,8 +489,8 @@
 
 - (unint64_t)platform
 {
-  v2 = [(ISImageDescriptor *)self platformStyle];
-  switch(v2)
+  platformStyle = [(ISImageDescriptor *)self platformStyle];
+  switch(platformStyle)
   {
     case 4uLL:
       return 8;
@@ -501,17 +501,17 @@
   }
 
   v4 = +[ISPlatformInfo sharedInstance];
-  v5 = [v4 nativePlatform];
+  nativePlatform = [v4 nativePlatform];
 
-  return v5;
+  return nativePlatform;
 }
 
-- (BOOL)digest:(void *)a3 size:(unint64_t)a4
+- (BOOL)digest:(void *)digest size:(unint64_t)size
 {
   data[4] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (digest)
   {
-    v4 = a4 == 0;
+    v4 = size == 0;
   }
 
   else
@@ -539,15 +539,15 @@
     CC_SHA256_Update(&v23, data, 8u);
     data[0] = [(ISImageDescriptor *)self appearanceVariant];
     CC_SHA256_Update(&v23, data, 8u);
-    v10 = [(ISImageDescriptor *)self tintColor];
+    tintColor = [(ISImageDescriptor *)self tintColor];
 
-    if (v10)
+    if (tintColor)
     {
       data[0] = 0;
       data[1] = 0;
-      v11 = [(ISImageDescriptor *)self tintColor];
-      v12 = [v11 digest];
-      [v12 getUUIDBytes:data];
+      tintColor2 = [(ISImageDescriptor *)self tintColor];
+      digest = [tintColor2 digest];
+      [digest getUUIDBytes:data];
 
       CC_SHA256_Update(&v23, data, 0x10u);
     }
@@ -560,8 +560,8 @@
     CC_SHA256_Update(&v23, data, 8u);
     CC_SHA256_Final(data, &v23);
     v13 = 0;
-    v14 = 31 - a4;
-    if (a4 > 0x1F)
+    v14 = 31 - size;
+    if (size > 0x1F)
     {
       v14 = 0;
     }
@@ -579,20 +579,20 @@
         v16 = *(data + v13);
       }
 
-      *(a3 + v13++) = v16;
+      *(digest + v13++) = v16;
     }
 
-    while (a4 != v13);
-    if (a4 <= 0x1F)
+    while (size != v13);
+    if (size <= 0x1F)
     {
-      v17 = data + a4;
-      v18 = a4;
+      v17 = data + size;
+      sizeCopy = size;
       do
       {
-        v19 = v18 % a4;
+        v19 = sizeCopy % size;
         v20 = *v17++;
-        *(a3 + v19) ^= v20;
-        v18 = v19 + 1;
+        *(digest + v19) ^= v20;
+        sizeCopy = v19 + 1;
         --v15;
       }
 
@@ -604,10 +604,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -617,9 +617,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(ISImageDescriptor *)self digest];
-      v6 = [(ISImageDescriptor *)v4 digest];
-      v7 = [v5 isEqual:v6];
+      digest = [(ISImageDescriptor *)self digest];
+      digest2 = [(ISImageDescriptor *)equalCopy digest];
+      v7 = [digest isEqual:digest2];
     }
 
     else
@@ -638,17 +638,17 @@
   return v3;
 }
 
-+ (id)imageDescriptorNamed:(id)a3
++ (id)imageDescriptorNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = +[ISDeviceInfo sharedInstance];
-  v5 = [v4 ideom];
+  ideom = [v4 ideom];
 
   v6 = +[ISDeviceInfo sharedInstance];
   [v6 screenScale];
   v8 = v7;
 
-  if ([v3 isEqualToString:@"com.apple.IconServices.ImageDescriptor.TableUIName"])
+  if ([namedCopy isEqualToString:@"com.apple.IconServices.ImageDescriptor.TableUIName"])
   {
     v9 = 0;
     v10 = 28.0;
@@ -656,7 +656,7 @@
     goto LABEL_17;
   }
 
-  if ([v3 isEqualToString:@"com.apple.IconServices.ImageDescriptor.Spotlight"])
+  if ([namedCopy isEqualToString:@"com.apple.IconServices.ImageDescriptor.Spotlight"])
   {
     v9 = 0;
     *&v12 = 40.0;
@@ -667,7 +667,7 @@ LABEL_6:
     goto LABEL_17;
   }
 
-  if ([v3 isEqualToString:@"com.apple.IconServices.ImageDescriptor.HomeScreen"])
+  if ([namedCopy isEqualToString:@"com.apple.IconServices.ImageDescriptor.HomeScreen"])
   {
     v13 = +[ISDeviceInfo sharedInstance];
     [v13 homeScreenIconSize];
@@ -679,7 +679,7 @@ LABEL_11:
     goto LABEL_17;
   }
 
-  if ([v3 isEqualToString:@"com.apple.IconServices.ImageDescriptor.LargeHomeScreen"])
+  if ([namedCopy isEqualToString:@"com.apple.IconServices.ImageDescriptor.LargeHomeScreen"])
   {
     v13 = +[ISDeviceInfo sharedInstance];
     [v13 largeHomeScreenIconSize];
@@ -687,7 +687,7 @@ LABEL_11:
   }
 
   v11 = 37.0;
-  if ([v3 isEqualToString:@"com.apple.IconServices.ImageDescriptor.CustomDocumentSize"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.IconServices.ImageDescriptor.BadgedDocumentSize"))
+  if ([namedCopy isEqualToString:@"com.apple.IconServices.ImageDescriptor.CustomDocumentSize"] & 1) != 0 || (objc_msgSend(namedCopy, "isEqualToString:", @"com.apple.IconServices.ImageDescriptor.BadgedDocumentSize"))
   {
     *&v16 = 48.0;
 LABEL_15:
@@ -698,17 +698,17 @@ LABEL_16:
   }
 
   v10 = 20.0;
-  if ([v3 isEqualToString:@"com.apple.IconServices.ImageDescriptor.Notification"])
+  if ([namedCopy isEqualToString:@"com.apple.IconServices.ImageDescriptor.Notification"])
   {
     v9 = 0;
     v11 = 20.0;
     goto LABEL_17;
   }
 
-  if (([v3 isEqualToString:@"com.apple.IconServices.ImageDescriptor.CustomDocumentScalableSize"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"com.apple.IconServices.ImageDescriptor.BadgedDocumentScalableSize"))
+  if (([namedCopy isEqualToString:@"com.apple.IconServices.ImageDescriptor.CustomDocumentScalableSize"] & 1) != 0 || objc_msgSend(namedCopy, "isEqualToString:", @"com.apple.IconServices.ImageDescriptor.BadgedDocumentScalableSize"))
   {
-    v11 = dbl_1A7825240[v5 == 2];
-    if (v5 == 2)
+    v11 = dbl_1A7825240[ideom == 2];
+    if (ideom == 2)
     {
       v10 = 320.0;
     }
@@ -721,7 +721,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:@"com.apple.IconServices.ImageDescriptor.CarLauncher"])
+  if ([namedCopy isEqualToString:@"com.apple.IconServices.ImageDescriptor.CarLauncher"])
   {
 LABEL_30:
     v9 = 0;
@@ -729,7 +729,7 @@ LABEL_30:
     goto LABEL_5;
   }
 
-  if ([v3 isEqualToString:@"com.apple.IconServices.ImageDescriptor.CarNotification"])
+  if ([namedCopy isEqualToString:@"com.apple.IconServices.ImageDescriptor.CarNotification"])
   {
     v9 = 0;
     v10 = 29.0;
@@ -737,30 +737,30 @@ LABEL_30:
     goto LABEL_17;
   }
 
-  if (![v3 isEqualToString:@"com.apple.IconServices.ImageDescriptor.Activity"])
+  if (![namedCopy isEqualToString:@"com.apple.IconServices.ImageDescriptor.Activity"])
   {
-    if ([v3 isEqualToString:@"com.apple.IconServices.ImageDescriptor.CustomDocumentCompact"])
+    if ([namedCopy isEqualToString:@"com.apple.IconServices.ImageDescriptor.CustomDocumentCompact"])
     {
       v11 = 64.0;
       *&v16 = 84.0;
       goto LABEL_15;
     }
 
-    if ([v3 isEqualToString:@"com.apple.IconServices.ImageDescriptor.CustomDocumentRegular"])
+    if ([namedCopy isEqualToString:@"com.apple.IconServices.ImageDescriptor.CustomDocumentRegular"])
     {
       v11 = 96.0;
       *&v16 = 128.0;
       goto LABEL_15;
     }
 
-    if ([v3 isEqualToString:@"com.apple.IconServices.ImageDescriptor.CustomDocumentTable"])
+    if ([namedCopy isEqualToString:@"com.apple.IconServices.ImageDescriptor.CustomDocumentTable"])
     {
       v11 = 34.0;
       *&v16 = 44.0;
       goto LABEL_15;
     }
 
-    if ([v3 isEqualToString:@"com.apple.IconServices.ImageDescriptor.MessagesExtensionLauncher"])
+    if ([namedCopy isEqualToString:@"com.apple.IconServices.ImageDescriptor.MessagesExtensionLauncher"])
     {
       v22 = +[ISDeviceInfo sharedInstance];
       [v22 messagesLauncherIconSize];
@@ -768,7 +768,7 @@ LABEL_30:
       v10 = v24;
     }
 
-    else if ([v3 isEqualToString:@"com.apple.IconServices.ImageDescriptor.MessagesExtensionBadge"])
+    else if ([namedCopy isEqualToString:@"com.apple.IconServices.ImageDescriptor.MessagesExtensionBadge"])
     {
       v10 = 24.0;
       v11 = 32.0;
@@ -776,9 +776,9 @@ LABEL_30:
 
     else
     {
-      if (([v3 isEqualToString:@"com.apple.IconServices.ImageDescriptor.MessagesExtensionStatus"] & 1) == 0)
+      if (([namedCopy isEqualToString:@"com.apple.IconServices.ImageDescriptor.MessagesExtensionStatus"] & 1) == 0)
       {
-        if ([v3 isEqualToString:@"com.apple.IconServices.ImageDescriptor.WidgetAddGallery"])
+        if ([namedCopy isEqualToString:@"com.apple.IconServices.ImageDescriptor.WidgetAddGallery"])
         {
           v10 = 24.0;
           v9 = 1;
@@ -802,32 +802,32 @@ LABEL_30:
     goto LABEL_17;
   }
 
-  if (v5 == 2)
+  if (ideom == 2)
   {
     v9 = 0;
     *&v12 = 76.0;
     goto LABEL_5;
   }
 
-  if (v5 != 1)
+  if (ideom != 1)
   {
     goto LABEL_30;
   }
 
   v20 = +[ISDeviceInfo sharedInstance];
-  v21 = [v20 deviceSubtype];
+  deviceSubtype = [v20 deviceSubtype];
 
   v9 = 0;
   v10 = 64.0;
-  if (v21 > 2777)
+  if (deviceSubtype > 2777)
   {
-    if (v21 == 2778)
+    if (deviceSubtype == 2778)
     {
       goto LABEL_6;
     }
 
     v11 = 64.0;
-    if (v21 != 2796)
+    if (deviceSubtype != 2796)
     {
       goto LABEL_30;
     }
@@ -835,13 +835,13 @@ LABEL_30:
 
   else
   {
-    if (v21 == 1792)
+    if (deviceSubtype == 1792)
     {
       goto LABEL_6;
     }
 
     v11 = 64.0;
-    if (v21 != 2688)
+    if (deviceSubtype != 2688)
     {
       goto LABEL_30;
     }
@@ -853,7 +853,7 @@ LABEL_17:
   v18 = _ISDefaultLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    [(ISImageDescriptor(iOSConvenience) *)v3 imageDescriptorNamed:v17, v18];
+    [(ISImageDescriptor(iOSConvenience) *)namedCopy imageDescriptorNamed:v17, v18];
   }
 
   return v17;

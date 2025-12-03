@@ -1,21 +1,21 @@
 @interface CARDisplayInfo
-- (BOOL)_showsInstrumentsWithIdentifier:(id)a3 isPrimaryDisplay:(BOOL)a4;
-- (BOOL)hasPunchThroughWithIdentifier:(id)a3;
-- (BOOL)hasVideoStreamWithIdentifier:(id)a3;
-- (BOOL)updateStreamsWithPhysicalDisplayDictionary:(id)a3 displayPluginDictionary:(id)a4;
-- (CARDisplayInfo)initWithLogicalScreenDictionary:(id)a3 isPrimaryDisplay:(BOOL)a4;
-- (CARDisplayInfo)initWithPhysicalScreenDictionary:(id)a3;
-- (CARDisplayInfo)initWithPhysicalScreenDictionary:(id)a3 displayPluginDictionary:(id)a4;
-- (CGPoint)originForScreenInfoIdentifier:(id)a3;
+- (BOOL)_showsInstrumentsWithIdentifier:(id)identifier isPrimaryDisplay:(BOOL)display;
+- (BOOL)hasPunchThroughWithIdentifier:(id)identifier;
+- (BOOL)hasVideoStreamWithIdentifier:(id)identifier;
+- (BOOL)updateStreamsWithPhysicalDisplayDictionary:(id)dictionary displayPluginDictionary:(id)pluginDictionary;
+- (CARDisplayInfo)initWithLogicalScreenDictionary:(id)dictionary isPrimaryDisplay:(BOOL)display;
+- (CARDisplayInfo)initWithPhysicalScreenDictionary:(id)dictionary;
+- (CARDisplayInfo)initWithPhysicalScreenDictionary:(id)dictionary displayPluginDictionary:(id)pluginDictionary;
+- (CGPoint)originForScreenInfoIdentifier:(id)identifier;
 - (CGSize)physicalSize;
 - (CGSize)pixelSize;
 - (NSSet)punchThroughIdentifiers;
 - (NSSet)videoStreamIdentifiers;
 - (id)description;
-- (id)punchThroughWithIdentifier:(id)a3;
-- (id)videoStreamWithIdentifier:(id)a3;
-- (void)_updateOEMViews:(id)a3;
-- (void)updateStreams:(id)a3;
+- (id)punchThroughWithIdentifier:(id)identifier;
+- (id)videoStreamWithIdentifier:(id)identifier;
+- (void)_updateOEMViews:(id)views;
+- (void)updateStreams:(id)streams;
 @end
 
 @implementation CARDisplayInfo
@@ -29,10 +29,10 @@
   return result;
 }
 
-- (CARDisplayInfo)initWithPhysicalScreenDictionary:(id)a3 displayPluginDictionary:(id)a4
+- (CARDisplayInfo)initWithPhysicalScreenDictionary:(id)dictionary displayPluginDictionary:(id)pluginDictionary
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  pluginDictionaryCopy = pluginDictionary;
   v26.receiver = self;
   v26.super_class = CARDisplayInfo;
   v8 = [(CARDisplayInfo *)&v26 init];
@@ -44,7 +44,7 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  if ((CRSizeFromAirPlayDictionary(v6, &v8->_pixelSize.width) & 1) == 0)
+  if ((CRSizeFromAirPlayDictionary(dictionaryCopy, &v8->_pixelSize.width) & 1) == 0)
   {
     v12 = CarGeneralLogging();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -55,7 +55,7 @@ LABEL_32:
     goto LABEL_23;
   }
 
-  if ((CRPhysicalSizeFromAirPlayDictionary(v6, &v9->_physicalSize.width) & 1) == 0)
+  if ((CRPhysicalSizeFromAirPlayDictionary(dictionaryCopy, &v9->_physicalSize.width) & 1) == 0)
   {
     v12 = CarGeneralLogging();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -67,7 +67,7 @@ LABEL_32:
   }
 
   objc_opt_class();
-  v10 = [v7 objectForKey:@"uid"];
+  v10 = [pluginDictionaryCopy objectForKey:@"uid"];
   if (v10 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v11 = v10;
@@ -96,7 +96,7 @@ LABEL_23:
   v9->_identifier = v13;
 
   objc_opt_class();
-  v15 = [v6 objectForKey:@"properties"];
+  v15 = [dictionaryCopy objectForKey:@"properties"];
   if (v15 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v16 = v15;
@@ -115,11 +115,11 @@ LABEL_23:
   v25 = v17;
   [v16 enumerateObjectsUsingBlock:v24];
   v17->_supportsDDPContent = 1;
-  v18 = [(CARDisplayInfo *)v17 updateStreamsWithPhysicalDisplayDictionary:v6 displayPluginDictionary:v7];
+  v18 = [(CARDisplayInfo *)v17 updateStreamsWithPhysicalDisplayDictionary:dictionaryCopy displayPluginDictionary:pluginDictionaryCopy];
   if (v18)
   {
     objc_opt_class();
-    v19 = [v7 objectForKey:@"automakerInputStreams"];
+    v19 = [pluginDictionaryCopy objectForKey:@"automakerInputStreams"];
     if (v19 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v20 = v19;
@@ -223,9 +223,9 @@ void __75__CARDisplayInfo_initWithPhysicalScreenDictionary_displayPluginDictiona
 LABEL_18:
 }
 
-- (CARDisplayInfo)initWithPhysicalScreenDictionary:(id)a3
+- (CARDisplayInfo)initWithPhysicalScreenDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = CARDisplayInfo;
   v5 = [(CARDisplayInfo *)&v24 init];
@@ -237,7 +237,7 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  if ((CRSizeFromAirPlayDictionary(v4, &v5->_pixelSize.width) & 1) == 0)
+  if ((CRSizeFromAirPlayDictionary(dictionaryCopy, &v5->_pixelSize.width) & 1) == 0)
   {
     v9 = CarGeneralLogging();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -248,7 +248,7 @@ LABEL_36:
     goto LABEL_27;
   }
 
-  if ((CRPhysicalSizeFromAirPlayDictionary(v4, &v6->_physicalSize.width) & 1) == 0)
+  if ((CRPhysicalSizeFromAirPlayDictionary(dictionaryCopy, &v6->_physicalSize.width) & 1) == 0)
   {
     v9 = CarGeneralLogging();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -260,7 +260,7 @@ LABEL_36:
   }
 
   objc_opt_class();
-  v7 = [v4 objectForKey:@"uid"];
+  v7 = [dictionaryCopy objectForKey:@"uid"];
   if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v8 = v7;
@@ -289,7 +289,7 @@ LABEL_27:
   v6->_identifier = v10;
 
   objc_opt_class();
-  v12 = [v4 objectForKey:@"properties"];
+  v12 = [dictionaryCopy objectForKey:@"properties"];
   if (v12 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v13 = v12;
@@ -308,7 +308,7 @@ LABEL_27:
   v23 = v14;
   [v13 enumerateObjectsUsingBlock:v22];
   objc_opt_class();
-  v15 = [v4 objectForKey:@"initialVideoStreams"];
+  v15 = [dictionaryCopy objectForKey:@"initialVideoStreams"];
   if (v15 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v16 = v15;
@@ -323,7 +323,7 @@ LABEL_27:
   {
     [(CARDisplayInfo *)v14 updateStreams:v16];
     objc_opt_class();
-    v17 = [v4 objectForKey:@"automakerInputStreams"];
+    v17 = [dictionaryCopy objectForKey:@"automakerInputStreams"];
     if (v17 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v18 = v17;
@@ -434,11 +434,11 @@ LABEL_16:
 LABEL_17:
 }
 
-- (CARDisplayInfo)initWithLogicalScreenDictionary:(id)a3 isPrimaryDisplay:(BOOL)a4
+- (CARDisplayInfo)initWithLogicalScreenDictionary:(id)dictionary isPrimaryDisplay:(BOOL)display
 {
-  v4 = a4;
+  displayCopy = display;
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = CARDisplayInfo;
   v7 = [(CARDisplayInfo *)&v21 init];
@@ -449,12 +449,12 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (CRSizeFromDictionary([v6 objectForKey:*MEMORY[0x1E6962440]], (v7 + 56)))
+  if (CRSizeFromDictionary([dictionaryCopy objectForKey:*MEMORY[0x1E6962440]], (v7 + 56)))
   {
-    if (CRSizeFromDictionary([v6 objectForKey:*MEMORY[0x1E6962438]], (v7 + 40)))
+    if (CRSizeFromDictionary([dictionaryCopy objectForKey:*MEMORY[0x1E6962438]], (v7 + 40)))
     {
       objc_opt_class();
-      v8 = [v6 objectForKey:@"ScreenID"];
+      v8 = [dictionaryCopy objectForKey:@"ScreenID"];
       if (v8 && (objc_opt_isKindOfClass() & 1) != 0)
       {
         v9 = v8;
@@ -473,8 +473,8 @@ LABEL_20:
 
         v7[9] = 1;
         *(v7 + 11) = 257;
-        v7[13] = [v7 _showsInstrumentsWithIdentifier:v9 isPrimaryDisplay:v4];
-        v13 = [[CARStreamInfo alloc] initWithStreamInfoDictionary:v6];
+        v7[13] = [v7 _showsInstrumentsWithIdentifier:v9 isPrimaryDisplay:displayCopy];
+        v13 = [[CARStreamInfo alloc] initWithStreamInfoDictionary:dictionaryCopy];
         v14 = v13;
         v15 = MEMORY[0x1E695E0F0];
         if (v13)
@@ -529,17 +529,17 @@ LABEL_21:
   return v17;
 }
 
-- (id)punchThroughWithIdentifier:(id)a3
+- (id)punchThroughWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CARDisplayInfo *)self oemPunchThroughs];
+  identifierCopy = identifier;
+  oemPunchThroughs = [(CARDisplayInfo *)self oemPunchThroughs];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __45__CARDisplayInfo_punchThroughWithIdentifier___block_invoke;
   v9[3] = &unk_1E82FCDD8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 bs_firstObjectPassingTest:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [oemPunchThroughs bs_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -552,9 +552,9 @@ uint64_t __45__CARDisplayInfo_punchThroughWithIdentifier___block_invoke(uint64_t
   return v4;
 }
 
-- (BOOL)hasPunchThroughWithIdentifier:(id)a3
+- (BOOL)hasPunchThroughWithIdentifier:(id)identifier
 {
-  v3 = [(CARDisplayInfo *)self punchThroughWithIdentifier:a3];
+  v3 = [(CARDisplayInfo *)self punchThroughWithIdentifier:identifier];
   v4 = v3 != 0;
 
   return v4;
@@ -562,25 +562,25 @@ uint64_t __45__CARDisplayInfo_punchThroughWithIdentifier___block_invoke(uint64_t
 
 - (NSSet)punchThroughIdentifiers
 {
-  v2 = [(CARDisplayInfo *)self oemPunchThroughs];
-  v3 = [v2 bs_map:&__block_literal_global_18];
+  oemPunchThroughs = [(CARDisplayInfo *)self oemPunchThroughs];
+  v3 = [oemPunchThroughs bs_map:&__block_literal_global_18];
 
   v4 = [MEMORY[0x1E695DFD8] setWithArray:v3];
 
   return v4;
 }
 
-- (id)videoStreamWithIdentifier:(id)a3
+- (id)videoStreamWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CARDisplayInfo *)self streams];
+  identifierCopy = identifier;
+  streams = [(CARDisplayInfo *)self streams];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__CARDisplayInfo_videoStreamWithIdentifier___block_invoke;
   v9[3] = &unk_1E82FCC50;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 bs_firstObjectPassingTest:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [streams bs_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -593,9 +593,9 @@ uint64_t __44__CARDisplayInfo_videoStreamWithIdentifier___block_invoke(uint64_t 
   return v4;
 }
 
-- (BOOL)hasVideoStreamWithIdentifier:(id)a3
+- (BOOL)hasVideoStreamWithIdentifier:(id)identifier
 {
-  v3 = [(CARDisplayInfo *)self videoStreamWithIdentifier:a3];
+  v3 = [(CARDisplayInfo *)self videoStreamWithIdentifier:identifier];
   v4 = v3 != 0;
 
   return v4;
@@ -603,8 +603,8 @@ uint64_t __44__CARDisplayInfo_videoStreamWithIdentifier___block_invoke(uint64_t 
 
 - (NSSet)videoStreamIdentifiers
 {
-  v2 = [(CARDisplayInfo *)self streams];
-  v3 = [v2 bs_map:&__block_literal_global_97];
+  streams = [(CARDisplayInfo *)self streams];
+  v3 = [streams bs_map:&__block_literal_global_97];
 
   v4 = [MEMORY[0x1E695DFD8] setWithArray:v3];
 
@@ -645,13 +645,13 @@ uint64_t __44__CARDisplayInfo_videoStreamWithIdentifier___block_invoke(uint64_t 
   return v10;
 }
 
-- (BOOL)updateStreamsWithPhysicalDisplayDictionary:(id)a3 displayPluginDictionary:(id)a4
+- (BOOL)updateStreamsWithPhysicalDisplayDictionary:(id)dictionary displayPluginDictionary:(id)pluginDictionary
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  pluginDictionaryCopy = pluginDictionary;
   objc_opt_class();
-  v8 = [v6 objectForKey:@"initialVideoStreams"];
+  v8 = [dictionaryCopy objectForKey:@"initialVideoStreams"];
   if (v8 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v9 = v8;
@@ -662,9 +662,9 @@ uint64_t __44__CARDisplayInfo_videoStreamWithIdentifier___block_invoke(uint64_t 
     v9 = 0;
   }
 
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   objc_opt_class();
-  v11 = [v7 objectForKey:@"managedVideoStreams"];
+  v11 = [pluginDictionaryCopy objectForKey:@"managedVideoStreams"];
   if (v11 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v12 = v11;
@@ -677,9 +677,9 @@ uint64_t __44__CARDisplayInfo_videoStreamWithIdentifier___block_invoke(uint64_t 
 
   if (v12)
   {
-    v34 = self;
-    v35 = v7;
-    v36 = v6;
+    selfCopy = self;
+    v35 = pluginDictionaryCopy;
+    v36 = dictionaryCopy;
     v13 = CarGeneralLogging();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -760,7 +760,7 @@ uint64_t __44__CARDisplayInfo_videoStreamWithIdentifier___block_invoke(uint64_t 
                 {
                   v27 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v41];
                   [v27 addEntriesFromDictionary:v23];
-                  [v10 addObject:v27];
+                  [array addObject:v27];
 
                   goto LABEL_35;
                 }
@@ -789,25 +789,25 @@ LABEL_35:
       while (v40);
     }
 
-    v7 = v35;
-    v6 = v36;
+    pluginDictionaryCopy = v35;
+    dictionaryCopy = v36;
     v9 = v33;
-    self = v34;
+    self = selfCopy;
   }
 
-  if ([v10 count])
+  if ([array count])
   {
-    v28 = self;
-    v29 = v10;
+    selfCopy3 = self;
+    v29 = array;
 LABEL_42:
-    [(CARDisplayInfo *)v28 updateStreams:v29];
+    [(CARDisplayInfo *)selfCopy3 updateStreams:v29];
     v30 = 1;
     goto LABEL_43;
   }
 
   if (v9)
   {
-    v28 = self;
+    selfCopy3 = self;
     v29 = v9;
     goto LABEL_42;
   }
@@ -824,10 +824,10 @@ LABEL_43:
   return v30;
 }
 
-- (void)updateStreams:(id)a3
+- (void)updateStreams:(id)streams
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  streamsCopy = streams;
   v6 = objc_alloc_init(v4);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -835,7 +835,7 @@ LABEL_43:
   v10[3] = &unk_1E82FCC00;
   v11 = v6;
   v7 = v6;
-  [v5 enumerateObjectsUsingBlock:v10];
+  [streamsCopy enumerateObjectsUsingBlock:v10];
 
   v8 = [v7 copy];
   streams = self->_streams;
@@ -869,17 +869,17 @@ void __32__CARDisplayInfo_updateStreams___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (CGPoint)originForScreenInfoIdentifier:(id)a3
+- (CGPoint)originForScreenInfoIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CARDisplayInfo *)self streams];
+  identifierCopy = identifier;
+  streams = [(CARDisplayInfo *)self streams];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __48__CARDisplayInfo_originForScreenInfoIdentifier___block_invoke;
   v14[3] = &unk_1E82FCC50;
-  v15 = v4;
-  v6 = v4;
-  v7 = [v5 bs_firstObjectPassingTest:v14];
+  v15 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [streams bs_firstObjectPassingTest:v14];
 
   if (v7)
   {
@@ -909,10 +909,10 @@ uint64_t __48__CARDisplayInfo_originForScreenInfoIdentifier___block_invoke(uint6
   return v4;
 }
 
-- (void)_updateOEMViews:(id)a3
+- (void)_updateOEMViews:(id)views
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  viewsCopy = views;
   v6 = objc_alloc_init(v4);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -920,7 +920,7 @@ uint64_t __48__CARDisplayInfo_originForScreenInfoIdentifier___block_invoke(uint6
   v10[3] = &unk_1E82FCC00;
   v11 = v6;
   v7 = v6;
-  [v5 enumerateObjectsUsingBlock:v10];
+  [viewsCopy enumerateObjectsUsingBlock:v10];
 
   v8 = [v7 copy];
   oemPunchThroughs = self->_oemPunchThroughs;
@@ -954,18 +954,18 @@ void __34__CARDisplayInfo__updateOEMViews___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (BOOL)_showsInstrumentsWithIdentifier:(id)a3 isPrimaryDisplay:(BOOL)a4
+- (BOOL)_showsInstrumentsWithIdentifier:(id)identifier isPrimaryDisplay:(BOOL)display
 {
-  v4 = a4;
+  displayCopy = display;
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (displayCopy)
   {
     v6 = CarGeneralLogging();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v5;
+      v15 = identifierCopy;
       _os_log_impl(&dword_1C81FC000, v6, OS_LOG_TYPE_DEFAULT, "Setting showsInstruments to NO for primary display with identifier: %@", &v14, 0xCu);
     }
 
@@ -977,12 +977,12 @@ void __34__CARDisplayInfo__updateOEMViews___block_invoke(uint64_t a1, void *a2)
     v8 = +[CRCarPlayCapabilities capabilitiesIdentifier];
     v6 = [CRCarPlayCapabilities fetchCarCapabilitiesWithIdentifier:v8];
 
-    v9 = [v6 userInfo];
-    v10 = [v9 objectForKey:@"showsInstrumentsIdentifier"];
+    userInfo = [v6 userInfo];
+    v10 = [userInfo objectForKey:@"showsInstrumentsIdentifier"];
 
     if (v10)
     {
-      v7 = [v5 isEqualToString:v10];
+      v7 = [identifierCopy isEqualToString:v10];
       v11 = CarGeneralLogging();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
@@ -993,7 +993,7 @@ void __34__CARDisplayInfo__updateOEMViews___block_invoke(uint64_t a1, void *a2)
         }
 
         v14 = 138412546;
-        v15 = v5;
+        v15 = identifierCopy;
         v16 = 2112;
         v17 = v12;
         _os_log_impl(&dword_1C81FC000, v11, OS_LOG_TYPE_DEFAULT, "Found a cluster display identifier in capabilities for secondary screen with identifier %@, setting showsInstruments to %@", &v14, 0x16u);
@@ -1006,7 +1006,7 @@ void __34__CARDisplayInfo__updateOEMViews___block_invoke(uint64_t a1, void *a2)
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138412290;
-        v15 = v5;
+        v15 = identifierCopy;
         _os_log_impl(&dword_1C81FC000, v11, OS_LOG_TYPE_DEFAULT, "No cluster display identifier found in capabilities for secondary screen with identifier %@, setting showsInstruments to YES", &v14, 0xCu);
       }
 

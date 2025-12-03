@@ -1,13 +1,13 @@
 @interface SBAccessibilityUIServerUISceneController
 + (id)_setupInfo;
-+ (id)_setupInfoForSceneSpecification:(id)a3;
-- (void)_activeSceneControllersAfterRemoving:(id)a3;
-- (void)_evaluateAvailablePresenters:(id)a3 forSceneControllers:(id)a4;
++ (id)_setupInfoForSceneSpecification:(id)specification;
+- (void)_activeSceneControllersAfterRemoving:(id)removing;
+- (void)_evaluateAvailablePresenters:(id)presenters forSceneControllers:(id)controllers;
 - (void)_invalidateAllSceneControllers;
-- (void)_invalidateSceneControllersForWindowScene:(id)a3;
+- (void)_invalidateSceneControllersForWindowScene:(id)scene;
 - (void)dealloc;
-- (void)setActiveWindowScenePresenter:(id)a3;
-- (void)windowSceneDidDisconnect:(id)a3;
+- (void)setActiveWindowScenePresenter:(id)presenter;
+- (void)windowSceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation SBAccessibilityUIServerUISceneController
@@ -37,13 +37,13 @@
   return v3;
 }
 
-+ (id)_setupInfoForSceneSpecification:(id)a3
++ (id)_setupInfoForSceneSpecification:(id)specification
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _setupInfo];
-  v5 = [v4 mutableCopy];
+  specificationCopy = specification;
+  _setupInfo = [objc_opt_class() _setupInfo];
+  v5 = [_setupInfo mutableCopy];
 
-  v6 = [v3 uiSceneSessionRole];
+  uiSceneSessionRole = [specificationCopy uiSceneSessionRole];
 
   v7 = SBLogSystemUIScene();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -51,7 +51,7 @@
     +[SBAccessibilityUIServerUISceneController _setupInfoForSceneSpecification:];
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x277D67F38]])
+  if ([uiSceneSessionRole isEqualToString:*MEMORY[0x277D67F38]])
   {
     [v5 setObject:&unk_28336F908 forKey:@"presentationStyle"];
     v8 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D76EE8] + 30.0 + -1.0];
@@ -69,19 +69,19 @@
   [(SBSystemUISceneController *)&v3 dealloc];
 }
 
-- (void)_evaluateAvailablePresenters:(id)a3 forSceneControllers:(id)a4
+- (void)_evaluateAvailablePresenters:(id)presenters forSceneControllers:(id)controllers
 {
   v31 = a2;
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  controllersCopy = controllers;
   v39.receiver = self;
   v39.super_class = SBAccessibilityUIServerUISceneController;
-  [(SBSystemUISceneController *)&v39 _evaluateAvailablePresenters:a3 forSceneControllers:v6];
+  [(SBSystemUISceneController *)&v39 _evaluateAvailablePresenters:presenters forSceneControllers:controllersCopy];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v7 = v6;
+  v7 = controllersCopy;
   v8 = [v7 countByEnumeratingWithState:&v35 objects:v44 count:16];
   if (v8)
   {
@@ -98,33 +98,33 @@
         }
 
         v11 = *(*(&v35 + 1) + 8 * i);
-        v12 = [v11 sceneOptions];
-        v13 = [v12 specification];
-        v14 = [objc_opt_class() _setupInfoForSceneSpecification:v13];
+        sceneOptions = [v11 sceneOptions];
+        specification = [sceneOptions specification];
+        v14 = [objc_opt_class() _setupInfoForSceneSpecification:specification];
         v15 = [v14 objectForKey:@"presentationStyle"];
-        v16 = [v15 integerValue];
+        integerValue = [v15 integerValue];
 
-        if (v16 == 2)
+        if (integerValue == 2)
         {
           v17 = SBLogSystemUIScene();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
           {
-            v30 = [(SBAccessibilityUIServerUISceneController *)self activeWindowScenePresenter];
+            activeWindowScenePresenter = [(SBAccessibilityUIServerUISceneController *)self activeWindowScenePresenter];
             *buf = 138543618;
-            v41 = v30;
+            v41 = activeWindowScenePresenter;
             v42 = 2114;
             v43 = v11;
             _os_log_debug_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEBUG, "AXUIServer activeWindowScenePresenter: %{public}@ for sceneController: %{public}@", buf, 0x16u);
           }
 
-          v18 = [(SBAccessibilityUIServerUISceneController *)self activeWindowScenePresenter];
+          activeWindowScenePresenter2 = [(SBAccessibilityUIServerUISceneController *)self activeWindowScenePresenter];
 
-          if (!v18)
+          if (!activeWindowScenePresenter2)
           {
-            v19 = [SBApp windowSceneManager];
-            v20 = [v19 activeDisplayWindowScene];
+            windowSceneManager = [SBApp windowSceneManager];
+            activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
 
-            if ([v20 isContinuityDisplayWindowScene])
+            if ([activeDisplayWindowScene isContinuityDisplayWindowScene])
             {
               v21 = SBLogSystemUIScene();
               if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -133,25 +133,25 @@
                 _os_log_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_INFO, "AXUIServer Active display is continuity - forcing main display", buf, 2u);
               }
 
-              v22 = [SBApp windowSceneManager];
-              v23 = [v22 embeddedDisplayWindowScene];
+              windowSceneManager2 = [SBApp windowSceneManager];
+              embeddedDisplayWindowScene = [windowSceneManager2 embeddedDisplayWindowScene];
 
-              v20 = v23;
+              activeDisplayWindowScene = embeddedDisplayWindowScene;
             }
 
-            v24 = [[SBSystemUISceneDefaultPresenter alloc] initWithWindowHostingPresentationOnWindowScene:v20];
+            v24 = [[SBSystemUISceneDefaultPresenter alloc] initWithWindowHostingPresentationOnWindowScene:activeDisplayWindowScene];
             [(SBAccessibilityUIServerUISceneController *)self setActiveWindowScenePresenter:v24];
 
             v25 = [v14 objectForKey:@"hostLevel"];
-            v26 = [(SBAccessibilityUIServerUISceneController *)self activeWindowScenePresenter];
-            [v26 setPreferredWindowLevel:v25];
+            activeWindowScenePresenter3 = [(SBAccessibilityUIServerUISceneController *)self activeWindowScenePresenter];
+            [activeWindowScenePresenter3 setPreferredWindowLevel:v25];
 
             v27 = SBLogSystemUIScene();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
             {
-              v32 = [(SBAccessibilityUIServerUISceneController *)self activeWindowScenePresenter];
+              activeWindowScenePresenter4 = [(SBAccessibilityUIServerUISceneController *)self activeWindowScenePresenter];
               *buf = 138543618;
-              v41 = v32;
+              v41 = activeWindowScenePresenter4;
               v42 = 2114;
               v43 = v11;
               _os_log_debug_impl(&dword_21ED4E000, v27, OS_LOG_TYPE_DEBUG, "AXUIServer Created activeWindowScenePresenter: %{public}@ for sceneController: %{public}@", buf, 0x16u);
@@ -160,15 +160,15 @@
             v7 = v33;
           }
 
-          v28 = [(SBAccessibilityUIServerUISceneController *)self activeWindowScenePresenter];
+          activeWindowScenePresenter5 = [(SBAccessibilityUIServerUISceneController *)self activeWindowScenePresenter];
 
-          if (!v28)
+          if (!activeWindowScenePresenter5)
           {
             [SBAccessibilityUIServerUISceneController _evaluateAvailablePresenters:v31 forSceneControllers:self];
           }
 
-          v29 = [(SBAccessibilityUIServerUISceneController *)self activeWindowScenePresenter];
-          [v11 setPresenter:v29];
+          activeWindowScenePresenter6 = [(SBAccessibilityUIServerUISceneController *)self activeWindowScenePresenter];
+          [v11 setPresenter:activeWindowScenePresenter6];
         }
       }
 
@@ -179,26 +179,26 @@
   }
 }
 
-- (void)_activeSceneControllersAfterRemoving:(id)a3
+- (void)_activeSceneControllersAfterRemoving:(id)removing
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  removingCopy = removing;
   v5 = SBLogSystemUIScene();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SBAccessibilityUIServerUISceneController _activeSceneControllersAfterRemoving:?];
   }
 
-  v6 = [(SBAccessibilityUIServerUISceneController *)self activeWindowScenePresenter];
+  activeWindowScenePresenter = [(SBAccessibilityUIServerUISceneController *)self activeWindowScenePresenter];
 
-  if (v6)
+  if (activeWindowScenePresenter)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v18 = v4;
-    v7 = v4;
+    v18 = removingCopy;
+    v7 = removingCopy;
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
@@ -215,10 +215,10 @@
             objc_enumerationMutation(v7);
           }
 
-          v13 = [*(*(&v19 + 1) + 8 * v12) sceneOptions];
-          v14 = [v13 specification];
-          v15 = [v14 uiSceneSessionRole];
-          if ([v15 isEqualToString:v11])
+          sceneOptions = [*(*(&v19 + 1) + 8 * v12) sceneOptions];
+          specification = [sceneOptions specification];
+          uiSceneSessionRole = [specification uiSceneSessionRole];
+          if ([uiSceneSessionRole isEqualToString:v11])
           {
             v17 = SBLogSystemUIScene();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -251,25 +251,25 @@
 
     [(SBAccessibilityUIServerUISceneController *)self setActiveWindowScenePresenter:0];
 LABEL_18:
-    v4 = v18;
+    removingCopy = v18;
   }
 }
 
-- (void)windowSceneDidDisconnect:(id)a3
+- (void)windowSceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v10.receiver = self;
   v10.super_class = SBAccessibilityUIServerUISceneController;
-  [(SBSystemUISceneController *)&v10 windowSceneDidDisconnect:v4];
+  [(SBSystemUISceneController *)&v10 windowSceneDidDisconnect:disconnectCopy];
   v5 = SBLogSystemUIScene();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SBAccessibilityUIServerUISceneController windowSceneDidDisconnect:];
   }
 
-  v6 = [(SBAccessibilityUIServerUISceneController *)self activeWindowScenePresenter];
-  v7 = [v6 targetWindowScene];
-  v8 = [v7 isEqual:v4];
+  activeWindowScenePresenter = [(SBAccessibilityUIServerUISceneController *)self activeWindowScenePresenter];
+  targetWindowScene = [activeWindowScenePresenter targetWindowScene];
+  v8 = [targetWindowScene isEqual:disconnectCopy];
 
   if (v8)
   {
@@ -283,21 +283,21 @@ LABEL_18:
   }
 }
 
-- (void)_invalidateSceneControllersForWindowScene:(id)a3
+- (void)_invalidateSceneControllersForWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v10.receiver = self;
   v10.super_class = SBAccessibilityUIServerUISceneController;
-  [(SBSystemUISceneController *)&v10 _invalidateSceneControllersForWindowScene:v4];
+  [(SBSystemUISceneController *)&v10 _invalidateSceneControllersForWindowScene:sceneCopy];
   v5 = SBLogSystemUIScene();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SBAccessibilityUIServerUISceneController _invalidateSceneControllersForWindowScene:];
   }
 
-  v6 = [(SBAccessibilityUIServerUISceneController *)self activeWindowScenePresenter];
-  v7 = [v6 targetWindowScene];
-  v8 = [v7 isEqual:v4];
+  activeWindowScenePresenter = [(SBAccessibilityUIServerUISceneController *)self activeWindowScenePresenter];
+  targetWindowScene = [activeWindowScenePresenter targetWindowScene];
+  v8 = [targetWindowScene isEqual:sceneCopy];
 
   if (v8)
   {
@@ -313,22 +313,22 @@ LABEL_18:
 
 - (void)_invalidateAllSceneControllers
 {
-  v1 = [a1 activeWindowScenePresenter];
+  activeWindowScenePresenter = [self activeWindowScenePresenter];
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_4();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);
 }
 
-- (void)setActiveWindowScenePresenter:(id)a3
+- (void)setActiveWindowScenePresenter:(id)presenter
 {
-  v5 = a3;
+  presenterCopy = presenter;
   activeWindowScenePresenter = self->_activeWindowScenePresenter;
-  if (activeWindowScenePresenter != v5)
+  if (activeWindowScenePresenter != presenterCopy)
   {
-    v7 = v5;
+    v7 = presenterCopy;
     [(SBSystemUISceneDefaultPresenter *)activeWindowScenePresenter dismissAllScenes];
-    objc_storeStrong(&self->_activeWindowScenePresenter, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_activeWindowScenePresenter, presenter);
+    presenterCopy = v7;
   }
 }
 

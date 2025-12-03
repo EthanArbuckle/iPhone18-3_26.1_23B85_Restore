@@ -1,20 +1,20 @@
 @interface CRKFetchChaptersFromBooksServiceOperation
-- (CRKFetchChaptersFromBooksServiceOperation)initWithRequest:(id)a3;
+- (CRKFetchChaptersFromBooksServiceOperation)initWithRequest:(id)request;
 - (void)main;
 @end
 
 @implementation CRKFetchChaptersFromBooksServiceOperation
 
-- (CRKFetchChaptersFromBooksServiceOperation)initWithRequest:(id)a3
+- (CRKFetchChaptersFromBooksServiceOperation)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = CRKFetchChaptersFromBooksServiceOperation;
   v6 = [(CRKFetchChaptersFromBooksServiceOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mRequest, a3);
+    objc_storeStrong(&v6->mRequest, request);
   }
 
   return v7;

@@ -1,12 +1,12 @@
 @interface HMDWakeConfiguration
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDWakeConfiguration)init;
-- (HMDWakeConfiguration)initWithReserved:(id)a3 custom1:(id)a4 custom2:(id)a5;
+- (HMDWakeConfiguration)initWithReserved:(id)reserved custom1:(id)custom1 custom2:(id)custom2;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HMDWakeConfiguration
@@ -14,18 +14,18 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDWakeConfiguration *)self reserved];
-  v5 = [(HMDWakeConfiguration *)self custom1];
-  v6 = [(HMDWakeConfiguration *)self custom2];
-  v7 = [v3 stringWithFormat:@"<HMDWakeConfiguration reserved=%@, custom1=%@, custom2=%@>", v4, v5, v6];
+  reserved = [(HMDWakeConfiguration *)self reserved];
+  custom1 = [(HMDWakeConfiguration *)self custom1];
+  custom2 = [(HMDWakeConfiguration *)self custom2];
+  v7 = [v3 stringWithFormat:@"<HMDWakeConfiguration reserved=%@, custom1=%@, custom2=%@>", reserved, custom1, custom2];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -35,46 +35,46 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(HMDWakeConfiguration *)self reserved];
-      v9 = [(HMDWakeConfiguration *)v7 reserved];
-      if (v8 != v9)
+      v7 = equalCopy;
+      reserved = [(HMDWakeConfiguration *)self reserved];
+      reserved2 = [(HMDWakeConfiguration *)v7 reserved];
+      if (reserved != reserved2)
       {
-        v3 = [(HMDWakeConfiguration *)self reserved];
-        v4 = [(HMDWakeConfiguration *)v7 reserved];
-        if (![v3 isEqual:v4])
+        reserved3 = [(HMDWakeConfiguration *)self reserved];
+        reserved4 = [(HMDWakeConfiguration *)v7 reserved];
+        if (![reserved3 isEqual:reserved4])
         {
           v10 = 0;
           goto LABEL_19;
         }
       }
 
-      v11 = [(HMDWakeConfiguration *)self custom1];
-      v12 = [(HMDWakeConfiguration *)v7 custom1];
-      v13 = v12;
-      if (v11 == v12)
+      custom1 = [(HMDWakeConfiguration *)self custom1];
+      custom12 = [(HMDWakeConfiguration *)v7 custom1];
+      v13 = custom12;
+      if (custom1 == custom12)
       {
-        v28 = v12;
+        v28 = custom12;
       }
 
       else
       {
-        v14 = [(HMDWakeConfiguration *)self custom1];
-        v27 = [(HMDWakeConfiguration *)v7 custom1];
-        if (![v14 isEqual:?])
+        custom13 = [(HMDWakeConfiguration *)self custom1];
+        custom14 = [(HMDWakeConfiguration *)v7 custom1];
+        if (![custom13 isEqual:?])
         {
           v10 = 0;
           goto LABEL_17;
         }
 
-        v26 = v14;
+        v26 = custom13;
         v28 = v13;
       }
 
-      v15 = [(HMDWakeConfiguration *)self custom2];
-      v16 = [(HMDWakeConfiguration *)v7 custom2];
-      v17 = v16;
-      if (v15 == v16)
+      custom2 = [(HMDWakeConfiguration *)self custom2];
+      custom22 = [(HMDWakeConfiguration *)v7 custom2];
+      v17 = custom22;
+      if (custom2 == custom22)
       {
 
         v10 = 1;
@@ -83,29 +83,29 @@
       else
       {
         [(HMDWakeConfiguration *)self custom2];
-        v18 = v25 = v3;
+        v18 = v25 = reserved3;
         [(HMDWakeConfiguration *)v7 custom2];
-        v24 = v11;
-        v19 = v4;
-        v20 = v9;
-        v22 = v21 = v8;
+        v24 = custom1;
+        v19 = reserved4;
+        v20 = reserved2;
+        v22 = v21 = reserved;
         v10 = [v18 isEqual:v22];
 
-        v8 = v21;
-        v9 = v20;
-        v4 = v19;
-        v11 = v24;
+        reserved = v21;
+        reserved2 = v20;
+        reserved4 = v19;
+        custom1 = v24;
 
-        v3 = v25;
+        reserved3 = v25;
       }
 
       v13 = v28;
-      v14 = v26;
-      if (v11 == v28)
+      custom13 = v26;
+      if (custom1 == v28)
       {
 LABEL_18:
 
-        if (v8 == v9)
+        if (reserved == reserved2)
         {
 LABEL_20:
 
@@ -130,18 +130,18 @@ LABEL_21:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDWakeConfiguration allocWithZone:a3];
-  v5 = [(HMDWakeConfiguration *)self reserved];
-  v6 = [(HMDWakeConfiguration *)self custom1];
-  v7 = [(HMDWakeConfiguration *)self custom2];
-  v8 = [(HMDWakeConfiguration *)v4 initWithReserved:v5 custom1:v6 custom2:v7];
+  v4 = [HMDWakeConfiguration allocWithZone:zone];
+  reserved = [(HMDWakeConfiguration *)self reserved];
+  custom1 = [(HMDWakeConfiguration *)self custom1];
+  custom2 = [(HMDWakeConfiguration *)self custom2];
+  v8 = [(HMDWakeConfiguration *)v4 initWithReserved:reserved custom1:custom1 custom2:custom2];
 
   return v8;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v54 = *MEMORY[0x277D85DE8];
   v52 = 0u;
@@ -166,29 +166,29 @@ LABEL_21:
   v35 = 0u;
   v33 = 0u;
   TLV8BufferInit();
-  v5 = [(HMDWakeConfiguration *)self reserved];
+  reserved = [(HMDWakeConfiguration *)self reserved];
 
-  if (v5)
+  if (reserved)
   {
-    v6 = [(HMDWakeConfiguration *)self reserved];
+    reserved2 = [(HMDWakeConfiguration *)self reserved];
     v32 = 0;
-    v7 = [v6 serializeWithError:&v32];
+    v7 = [reserved2 serializeWithError:&v32];
     v8 = v32;
 
     if (!v8)
     {
-      v9 = [v7 bytes];
-      v10 = v9 + [v7 length];
+      bytes = [v7 bytes];
+      v10 = bytes + [v7 length];
       while (1)
       {
-        v11 = (v10 - v9) >= 255 ? 255 : v10 - v9;
+        v11 = (v10 - bytes) >= 255 ? 255 : v10 - bytes;
         if (TLV8BufferAppend())
         {
           goto LABEL_23;
         }
 
-        v9 += v11;
-        if (v9 >= v10)
+        bytes += v11;
+        if (bytes >= v10)
         {
 
           goto LABEL_10;
@@ -200,29 +200,29 @@ LABEL_21:
   }
 
 LABEL_10:
-  v12 = [(HMDWakeConfiguration *)self custom1];
+  custom1 = [(HMDWakeConfiguration *)self custom1];
 
-  if (v12)
+  if (custom1)
   {
-    v13 = [(HMDWakeConfiguration *)self custom1];
+    custom12 = [(HMDWakeConfiguration *)self custom1];
     v31 = 0;
-    v7 = [v13 serializeWithError:&v31];
+    v7 = [custom12 serializeWithError:&v31];
     v8 = v31;
 
     if (!v8)
     {
-      v14 = [v7 bytes];
-      v15 = v14 + [v7 length];
+      bytes2 = [v7 bytes];
+      v15 = bytes2 + [v7 length];
       while (1)
       {
-        v16 = (v15 - v14) >= 255 ? 255 : v15 - v14;
+        v16 = (v15 - bytes2) >= 255 ? 255 : v15 - bytes2;
         if (TLV8BufferAppend())
         {
           break;
         }
 
-        v14 += v16;
-        if (v14 >= v15)
+        bytes2 += v16;
+        if (bytes2 >= v15)
         {
 
           goto LABEL_19;
@@ -232,11 +232,11 @@ LABEL_10:
 LABEL_23:
 
 LABEL_24:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus();
         v8 = 0;
-        *a3 = v20 = 0;
+        *error = v20 = 0;
         goto LABEL_42;
       }
 
@@ -246,11 +246,11 @@ LABEL_24:
 
 LABEL_21:
 
-    if (a3)
+    if (error)
     {
       v19 = v8;
       v20 = 0;
-      *a3 = v8;
+      *error = v8;
       goto LABEL_42;
     }
 
@@ -260,13 +260,13 @@ LABEL_27:
   }
 
 LABEL_19:
-  v17 = [(HMDWakeConfiguration *)self custom2];
+  custom2 = [(HMDWakeConfiguration *)self custom2];
 
-  if (v17)
+  if (custom2)
   {
-    v18 = [(HMDWakeConfiguration *)self custom2];
+    custom22 = [(HMDWakeConfiguration *)self custom2];
     v30 = 0;
-    v7 = [v18 serializeWithError:&v30];
+    v7 = [custom22 serializeWithError:&v30];
     v8 = v30;
 
     if (v8)
@@ -274,18 +274,18 @@ LABEL_19:
       goto LABEL_21;
     }
 
-    v21 = [v7 bytes];
-    v22 = v21 + [v7 length];
+    bytes3 = [v7 bytes];
+    v22 = bytes3 + [v7 length];
     do
     {
-      if ((v22 - v21) >= 255)
+      if ((v22 - bytes3) >= 255)
       {
         v23 = 255;
       }
 
       else
       {
-        v23 = v22 - v21;
+        v23 = v22 - bytes3;
       }
 
       v24 = TLV8BufferAppend();
@@ -299,7 +299,7 @@ LABEL_19:
         v25 = v23;
       }
 
-      v21 += v25;
+      bytes3 += v25;
       if (v24)
       {
         v26 = 1;
@@ -307,7 +307,7 @@ LABEL_19:
 
       else
       {
-        v26 = v21 >= v22;
+        v26 = bytes3 >= v22;
       }
     }
 
@@ -330,11 +330,11 @@ LABEL_42:
   return v20;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v10 = 0;
@@ -353,7 +353,7 @@ LABEL_21:
   v10 = 0;
   v11 = 0;
   v12 = 0;
-  v13 = v7 + v8;
+  v13 = bytes + v8;
   while (1)
   {
     v31 = 0;
@@ -362,10 +362,10 @@ LABEL_21:
     v28 = 0;
     if (TLV8GetNext())
     {
-      if (a4)
+      if (error)
       {
         HMErrorFromOSStatus();
-        *a4 = v18 = 0;
+        *error = v18 = 0;
         goto LABEL_28;
       }
 
@@ -453,11 +453,11 @@ LABEL_16:
   }
 
 LABEL_25:
-  if (a4)
+  if (error)
   {
     v20 = v9;
     v18 = 0;
-    *a4 = v9;
+    *error = v9;
     goto LABEL_28;
   }
 
@@ -468,20 +468,20 @@ LABEL_28:
   return v18;
 }
 
-- (HMDWakeConfiguration)initWithReserved:(id)a3 custom1:(id)a4 custom2:(id)a5
+- (HMDWakeConfiguration)initWithReserved:(id)reserved custom1:(id)custom1 custom2:(id)custom2
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  reservedCopy = reserved;
+  custom1Copy = custom1;
+  custom2Copy = custom2;
   v15.receiver = self;
   v15.super_class = HMDWakeConfiguration;
   v12 = [(HMDWakeConfiguration *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_reserved, a3);
-    objc_storeStrong(&v13->_custom1, a4);
-    objc_storeStrong(&v13->_custom2, a5);
+    objc_storeStrong(&v12->_reserved, reserved);
+    objc_storeStrong(&v13->_custom1, custom1);
+    objc_storeStrong(&v13->_custom2, custom2);
   }
 
   return v13;
@@ -494,24 +494,24 @@ LABEL_28:
   return [(HMDWakeConfiguration *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDWakeConfiguration);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDWakeConfiguration *)v6 parseFromData:v5 error:&v11];
+    [(HMDWakeConfiguration *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

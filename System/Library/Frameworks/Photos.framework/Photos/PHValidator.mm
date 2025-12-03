@@ -1,62 +1,62 @@
 @interface PHValidator
-+ (BOOL)isSupportedAudioAtPath:(id)a3;
-+ (BOOL)isSupportedImageAtPath:(id)a3;
-+ (BOOL)isSupportedMovieAtPath:(id)a3;
-+ (unsigned)mediaTypeForContentType:(id)a3;
-+ (unsigned)mediaTypeForURL:(id)a3;
-- (BOOL)_validateImageSource:(CGImageSource *)a3 error:(id *)a4;
-- (BOOL)_validateLivePhotoResourceURLs:(id)a3 videoComplementMetadata:(id)a4 error:(id *)a5;
-- (BOOL)_validateVideoURL:(id)a3 error:(id *)a4;
-- (BOOL)getLivePhotoVideoMetadataFromURL:(id)a3 videoComplementMetadata:(id)a4 pairingIdentifier:(id *)a5 videoDuration:(id *)a6 imageDisplayTime:(id *)a7 error:(id *)a8;
-- (BOOL)isValidImagePathExtension:(id)a3;
-- (BOOL)isValidVideoPathExtension:(id)a3;
-- (BOOL)validateData:(id)a3 withOptions:(unint64_t)a4 error:(id *)a5;
-- (BOOL)validateURL:(id)a3 withOptions:(unint64_t)a4 error:(id *)a5;
-- (BOOL)validateURLs:(id)a3 withOptions:(unint64_t)a4 videoComplementMetadata:(id)a5 error:(id *)a6;
++ (BOOL)isSupportedAudioAtPath:(id)path;
++ (BOOL)isSupportedImageAtPath:(id)path;
++ (BOOL)isSupportedMovieAtPath:(id)path;
++ (unsigned)mediaTypeForContentType:(id)type;
++ (unsigned)mediaTypeForURL:(id)l;
+- (BOOL)_validateImageSource:(CGImageSource *)source error:(id *)error;
+- (BOOL)_validateLivePhotoResourceURLs:(id)ls videoComplementMetadata:(id)metadata error:(id *)error;
+- (BOOL)_validateVideoURL:(id)l error:(id *)error;
+- (BOOL)getLivePhotoVideoMetadataFromURL:(id)l videoComplementMetadata:(id)metadata pairingIdentifier:(id *)identifier videoDuration:(id *)duration imageDisplayTime:(id *)time error:(id *)error;
+- (BOOL)isValidImagePathExtension:(id)extension;
+- (BOOL)isValidVideoPathExtension:(id)extension;
+- (BOOL)validateData:(id)data withOptions:(unint64_t)options error:(id *)error;
+- (BOOL)validateURL:(id)l withOptions:(unint64_t)options error:(id *)error;
+- (BOOL)validateURLs:(id)ls withOptions:(unint64_t)options videoComplementMetadata:(id)metadata error:(id *)error;
 @end
 
 @implementation PHValidator
 
-+ (BOOL)isSupportedImageAtPath:(id)a3
++ (BOOL)isSupportedImageAtPath:(id)path
 {
   v3 = MEMORY[0x1E69C08F0];
-  v4 = [a3 pathExtension];
-  v5 = [MEMORY[0x1E69C08F0] supportedImageTypes];
-  LOBYTE(v3) = [v3 filenameExtension:v4 conformsToOneOfTypes:v5];
+  pathExtension = [path pathExtension];
+  supportedImageTypes = [MEMORY[0x1E69C08F0] supportedImageTypes];
+  LOBYTE(v3) = [v3 filenameExtension:pathExtension conformsToOneOfTypes:supportedImageTypes];
 
   return v3;
 }
 
-+ (BOOL)isSupportedMovieAtPath:(id)a3
++ (BOOL)isSupportedMovieAtPath:(id)path
 {
   v3 = MEMORY[0x1E69C08F0];
-  v4 = [a3 pathExtension];
-  v5 = [MEMORY[0x1E69C08F0] supportedMovieTypes];
-  LOBYTE(v3) = [v3 filenameExtension:v4 conformsToOneOfTypes:v5];
+  pathExtension = [path pathExtension];
+  supportedMovieTypes = [MEMORY[0x1E69C08F0] supportedMovieTypes];
+  LOBYTE(v3) = [v3 filenameExtension:pathExtension conformsToOneOfTypes:supportedMovieTypes];
 
   return v3;
 }
 
-+ (BOOL)isSupportedAudioAtPath:(id)a3
++ (BOOL)isSupportedAudioAtPath:(id)path
 {
   v3 = MEMORY[0x1E69C08F0];
-  v4 = [a3 pathExtension];
-  v5 = [MEMORY[0x1E69C08F0] supportedAudioTypes];
-  LOBYTE(v3) = [v3 filenameExtension:v4 conformsToOneOfTypes:v5];
+  pathExtension = [path pathExtension];
+  supportedAudioTypes = [MEMORY[0x1E69C08F0] supportedAudioTypes];
+  LOBYTE(v3) = [v3 filenameExtension:pathExtension conformsToOneOfTypes:supportedAudioTypes];
 
   return v3;
 }
 
-+ (unsigned)mediaTypeForURL:(id)a3
++ (unsigned)mediaTypeForURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    v5 = [MEMORY[0x1E69C08F0] typeForURL:v4 error:0];
-    v6 = [a1 mediaTypeForContentType:v5];
+    v5 = [MEMORY[0x1E69C08F0] typeForURL:lCopy error:0];
+    v6 = [self mediaTypeForContentType:v5];
     if (v6 == 4)
     {
-      v8 = [objc_alloc(MEMORY[0x1E6988168]) initWithURL:v4 options:0];
+      v8 = [objc_alloc(MEMORY[0x1E6988168]) initWithURL:lCopy options:0];
       v11 = [v8 isPlayable] == 0;
       v12 = 4;
       v13 = 8;
@@ -72,11 +72,11 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v8 = [objc_alloc(MEMORY[0x1E6988168]) initWithURL:v4 options:0];
+      v8 = [objc_alloc(MEMORY[0x1E6988168]) initWithURL:lCopy options:0];
       v9 = [MEMORY[0x1E69C0708] mainVideoTrackForAsset:v8];
-      v10 = [v9 isDecodable];
+      isDecodable = [v9 isDecodable];
 
-      v11 = v10 == 0;
+      v11 = isDecodable == 0;
       v12 = 16;
       v13 = 32;
     }
@@ -100,18 +100,18 @@ LABEL_12:
   return v7;
 }
 
-+ (unsigned)mediaTypeForContentType:(id)a3
++ (unsigned)mediaTypeForContentType:(id)type
 {
   v44 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  typeCopy = type;
+  if (typeCopy)
   {
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v4 = [MEMORY[0x1E69C08F0] supportedImageTypes];
-    v5 = [v4 countByEnumeratingWithState:&v36 objects:v43 count:16];
+    supportedImageTypes = [MEMORY[0x1E69C08F0] supportedImageTypes];
+    v5 = [supportedImageTypes countByEnumeratingWithState:&v36 objects:v43 count:16];
     if (v5)
     {
       v6 = v5;
@@ -122,17 +122,17 @@ LABEL_12:
         {
           if (*v37 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(supportedImageTypes);
           }
 
-          if ([v3 conformsToType:*(*(&v36 + 1) + 8 * i)])
+          if ([typeCopy conformsToType:*(*(&v36 + 1) + 8 * i)])
           {
             v34 = 0u;
             v35 = 0u;
             v32 = 0u;
             v33 = 0u;
-            v18 = [MEMORY[0x1E69C08F0] imageTypesUnsupportedForImport];
-            v19 = [v18 countByEnumeratingWithState:&v32 objects:v42 count:16];
+            imageTypesUnsupportedForImport = [MEMORY[0x1E69C08F0] imageTypesUnsupportedForImport];
+            v19 = [imageTypesUnsupportedForImport countByEnumeratingWithState:&v32 objects:v42 count:16];
             if (v19)
             {
               v20 = v19;
@@ -143,17 +143,17 @@ LABEL_12:
                 {
                   if (*v33 != v21)
                   {
-                    objc_enumerationMutation(v18);
+                    objc_enumerationMutation(imageTypesUnsupportedForImport);
                   }
 
-                  if ([v3 conformsToType:*(*(&v32 + 1) + 8 * j)])
+                  if ([typeCopy conformsToType:*(*(&v32 + 1) + 8 * j)])
                   {
                     v17 = 1;
                     goto LABEL_38;
                   }
                 }
 
-                v20 = [v18 countByEnumeratingWithState:&v32 objects:v42 count:16];
+                v20 = [imageTypesUnsupportedForImport countByEnumeratingWithState:&v32 objects:v42 count:16];
                 if (v20)
                 {
                   continue;
@@ -170,7 +170,7 @@ LABEL_38:
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v36 objects:v43 count:16];
+        v6 = [supportedImageTypes countByEnumeratingWithState:&v36 objects:v43 count:16];
         if (v6)
         {
           continue;
@@ -184,8 +184,8 @@ LABEL_38:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v4 = [MEMORY[0x1E69C08F0] supportedMovieTypes];
-    v9 = [v4 countByEnumeratingWithState:&v28 objects:v41 count:16];
+    supportedImageTypes = [MEMORY[0x1E69C08F0] supportedMovieTypes];
+    v9 = [supportedImageTypes countByEnumeratingWithState:&v28 objects:v41 count:16];
     if (v9)
     {
       v10 = v9;
@@ -196,17 +196,17 @@ LABEL_38:
         {
           if (*v29 != v11)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(supportedImageTypes);
           }
 
-          if ([v3 conformsToType:*(*(&v28 + 1) + 8 * k)])
+          if ([typeCopy conformsToType:*(*(&v28 + 1) + 8 * k)])
           {
             v17 = 16;
             goto LABEL_41;
           }
         }
 
-        v10 = [v4 countByEnumeratingWithState:&v28 objects:v41 count:16];
+        v10 = [supportedImageTypes countByEnumeratingWithState:&v28 objects:v41 count:16];
         if (v10)
         {
           continue;
@@ -220,8 +220,8 @@ LABEL_38:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v4 = [MEMORY[0x1E69C08F0] supportedAudioTypes];
-    v13 = [v4 countByEnumeratingWithState:&v24 objects:v40 count:16];
+    supportedImageTypes = [MEMORY[0x1E69C08F0] supportedAudioTypes];
+    v13 = [supportedImageTypes countByEnumeratingWithState:&v24 objects:v40 count:16];
     if (v13)
     {
       v14 = v13;
@@ -232,17 +232,17 @@ LABEL_38:
         {
           if (*v25 != v15)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(supportedImageTypes);
           }
 
-          if ([v3 conformsToType:*(*(&v24 + 1) + 8 * m)])
+          if ([typeCopy conformsToType:*(*(&v24 + 1) + 8 * m)])
           {
             v17 = 4;
             goto LABEL_41;
           }
         }
 
-        v14 = [v4 countByEnumeratingWithState:&v24 objects:v40 count:16];
+        v14 = [supportedImageTypes countByEnumeratingWithState:&v24 objects:v40 count:16];
         if (v14)
         {
           continue;
@@ -264,15 +264,15 @@ LABEL_41:
   return v17;
 }
 
-- (BOOL)getLivePhotoVideoMetadataFromURL:(id)a3 videoComplementMetadata:(id)a4 pairingIdentifier:(id *)a5 videoDuration:(id *)a6 imageDisplayTime:(id *)a7 error:(id *)a8
+- (BOOL)getLivePhotoVideoMetadataFromURL:(id)l videoComplementMetadata:(id)metadata pairingIdentifier:(id *)identifier videoDuration:(id *)duration imageDisplayTime:(id *)time error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  if (v14)
+  lCopy = l;
+  metadataCopy = metadata;
+  if (metadataCopy)
   {
-    v15 = v14;
+    v15 = metadataCopy;
     v16 = 0;
-    if (!a5)
+    if (!identifier)
     {
       goto LABEL_4;
     }
@@ -280,18 +280,18 @@ LABEL_41:
     goto LABEL_3;
   }
 
-  v17 = [v13 path];
+  path = [lCopy path];
   v15 = PFVideoComplementMetadataForVideoAtPath();
   v16 = 0;
 
-  if (a5)
+  if (identifier)
   {
 LABEL_3:
-    *a5 = [v15 pairingIdentifier];
+    *identifier = [v15 pairingIdentifier];
   }
 
 LABEL_4:
-  if (a6)
+  if (duration)
   {
     if (v15)
     {
@@ -304,11 +304,11 @@ LABEL_4:
       v21 = 0;
     }
 
-    *&a6->var0 = v20;
-    a6->var3 = v21;
+    *&duration->var0 = v20;
+    duration->var3 = v21;
   }
 
-  if (a7)
+  if (time)
   {
     if (v15)
     {
@@ -321,24 +321,24 @@ LABEL_4:
       v21 = 0;
     }
 
-    *&a7->var0 = v20;
-    a7->var3 = v21;
+    *&time->var0 = v20;
+    time->var3 = v21;
   }
 
-  if (a8)
+  if (error)
   {
     v18 = v16;
-    *a8 = v16;
+    *error = v16;
   }
 
   return v15 != 0;
 }
 
-- (BOOL)_validateLivePhotoResourceURLs:(id)a3 videoComplementMetadata:(id)a4 error:(id *)a5
+- (BOOL)_validateLivePhotoResourceURLs:(id)ls videoComplementMetadata:(id)metadata error:(id *)error
 {
   v86 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v52 = a4;
+  lsCopy = ls;
+  metadataCopy = metadata;
   v75 = 0;
   v76 = &v75;
   v77 = 0x3032000000;
@@ -357,7 +357,7 @@ LABEL_4:
   v68 = &v71;
   v69 = &v75;
   v70 = a2;
-  v9 = v8;
+  v9 = lsCopy;
   v67 = v9;
   v49 = _Block_copy(aBlock);
   v64 = 0u;
@@ -388,8 +388,8 @@ LABEL_4:
       }
 
       v17 = *(*(&v62 + 1) + 8 * i);
-      v18 = [v17 pathExtension];
-      if ([(PHValidator *)self isValidImagePathExtension:v18])
+      pathExtension = [v17 pathExtension];
+      if ([(PHValidator *)self isValidImagePathExtension:pathExtension])
       {
         if (v12)
         {
@@ -401,7 +401,7 @@ LABEL_4:
 
       else
       {
-        if (![(PHValidator *)self isValidVideoPathExtension:v18])
+        if (![(PHValidator *)self isValidVideoPathExtension:pathExtension])
         {
           goto LABEL_13;
         }
@@ -459,7 +459,7 @@ LABEL_20:
   {
     v22 = v20;
 
-    v23 = [v12 path];
+    path = [v12 path];
     v60 = 0;
     v61 = 0;
     v24 = PFReadPairingIdentifierFromImageAtPath();
@@ -529,7 +529,7 @@ LABEL_36:
     v34 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v54 = 0;
     v55 = 0;
-    v35 = [(PHValidator *)self getLivePhotoVideoMetadataFromURL:v51 videoComplementMetadata:v52 pairingIdentifier:&v55 videoDuration:&v58 imageDisplayTime:&v56 error:&v54];
+    v35 = [(PHValidator *)self getLivePhotoVideoMetadataFromURL:v51 videoComplementMetadata:metadataCopy pairingIdentifier:&v55 videoDuration:&v58 imageDisplayTime:&v56 error:&v54];
     v31 = v55;
     v30 = v54;
     if (!v35)
@@ -616,10 +616,10 @@ LABEL_36:
   if ((v45 & 1) == 0)
   {
 LABEL_62:
-    if (a5)
+    if (error)
     {
       v28 = v28;
-      *a5 = v28;
+      *error = v28;
     }
   }
 
@@ -666,24 +666,24 @@ void __76__PHValidator__validateLivePhotoResourceURLs_videoComplementMetadata_er
   }
 }
 
-- (BOOL)_validateVideoURL:(id)a3 error:(id *)a4
+- (BOOL)_validateVideoURL:(id)l error:(id *)error
 {
   v44[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  if (v5)
+  if (lCopy)
   {
     v6 = objc_autoreleasePoolPush();
     v7 = MEMORY[0x1E69BE670];
-    v8 = [v5 path];
-    v9 = [v7 canSaveVideoToLibrary:v8];
+    path = [lCopy path];
+    v9 = [v7 canSaveVideoToLibrary:path];
 
     if (v9)
     {
-      v10 = [MEMORY[0x1E6987E28] assetWithURL:v5];
+      v10 = [MEMORY[0x1E6987E28] assetWithURL:lCopy];
       v11 = dispatch_semaphore_create(0);
       v12 = MEMORY[0x1E6987E60];
       v13 = *MEMORY[0x1E69872E8];
@@ -718,7 +718,7 @@ void __76__PHValidator__validateLivePhotoResourceURLs_videoComplementMetadata_er
       v44[0] = @"Incompatible video";
       v44[1] = &unk_1F102D988;
       v43[2] = @"_PHResourceUrlsErrorKey";
-      v42 = v5;
+      v42 = lCopy;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v42 count:1];
       v44[2] = v20;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:3];
@@ -729,7 +729,7 @@ void __76__PHValidator__validateLivePhotoResourceURLs_videoComplementMetadata_er
       {
         v23 = *(v31 + 24);
         *buf = 138413058;
-        v35 = v5;
+        v35 = lCopy;
         v36 = 1024;
         v37 = v9;
         v38 = 1024;
@@ -749,10 +749,10 @@ void __76__PHValidator__validateLivePhotoResourceURLs_videoComplementMetadata_er
   }
 
   v24 = *(v31 + 24);
-  if (a4 && (v31[3] & 1) == 0)
+  if (error && (v31[3] & 1) == 0)
   {
     v25 = v18;
-    *a4 = v18;
+    *error = v18;
     v24 = *(v31 + 24);
   }
 
@@ -760,14 +760,14 @@ void __76__PHValidator__validateLivePhotoResourceURLs_videoComplementMetadata_er
   return v24 & 1;
 }
 
-- (BOOL)_validateImageSource:(CGImageSource *)a3 error:(id *)a4
+- (BOOL)_validateImageSource:(CGImageSource *)source error:(id *)error
 {
-  if (a3)
+  if (source)
   {
-    v6 = [MEMORY[0x1E69C08F0] typeWithIdentifier:CGImageSourceGetType(a3)];
+    v6 = [MEMORY[0x1E69C08F0] typeWithIdentifier:CGImageSourceGetType(source)];
     if ([v6 conformsToType:*MEMORY[0x1E6982E30]])
     {
-      if (CGImageSourceGetCount(a3))
+      if (CGImageSourceGetCount(source))
       {
         v7 = 0;
         v8 = 1;
@@ -786,7 +786,7 @@ void __76__PHValidator__validateLivePhotoResourceURLs_videoComplementMetadata_er
     v8 = 0;
 LABEL_10:
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -796,7 +796,7 @@ LABEL_10:
 
   v7 = PHValidatorError(3303, 6, @"Missing image source");
   v8 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_13;
   }
@@ -805,7 +805,7 @@ LABEL_11:
   if (!v8)
   {
     v10 = v7;
-    *a4 = v7;
+    *error = v7;
   }
 
 LABEL_13:
@@ -813,43 +813,43 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)isValidVideoPathExtension:(id)a3
+- (BOOL)isValidVideoPathExtension:(id)extension
 {
   v3 = MEMORY[0x1E69C08F0];
-  v4 = a3;
-  v5 = [v3 supportedMovieTypes];
-  LOBYTE(v3) = [v3 filenameExtension:v4 conformsToOneOfTypes:v5];
+  extensionCopy = extension;
+  supportedMovieTypes = [v3 supportedMovieTypes];
+  LOBYTE(v3) = [v3 filenameExtension:extensionCopy conformsToOneOfTypes:supportedMovieTypes];
 
   return v3;
 }
 
-- (BOOL)isValidImagePathExtension:(id)a3
+- (BOOL)isValidImagePathExtension:(id)extension
 {
   v3 = MEMORY[0x1E69C08F0];
-  v4 = a3;
-  v5 = [v3 supportedImageTypes];
-  LOBYTE(v3) = [v3 filenameExtension:v4 conformsToOneOfTypes:v5];
+  extensionCopy = extension;
+  supportedImageTypes = [v3 supportedImageTypes];
+  LOBYTE(v3) = [v3 filenameExtension:extensionCopy conformsToOneOfTypes:supportedImageTypes];
 
   return v3;
 }
 
-- (BOOL)validateData:(id)a3 withOptions:(unint64_t)a4 error:(id *)a5
+- (BOOL)validateData:(id)data withOptions:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
-  v9 = [[_PHValidation alloc] initWithOptions:a4];
+  dataCopy = data;
+  v9 = [[_PHValidation alloc] initWithOptions:options];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __46__PHValidator_validateData_withOptions_error___block_invoke;
   v13[3] = &unk_1E75AB248;
-  v14 = v8;
-  v15 = self;
+  v14 = dataCopy;
+  selfCopy = self;
   v16 = v9;
   v10 = v9;
-  v11 = v8;
+  v11 = dataCopy;
   [(_PHValidation *)v10 validateOption:16 usingBlock:v13];
-  LOBYTE(a5) = [(_PHValidation *)v10 isValid:a5];
+  LOBYTE(error) = [(_PHValidation *)v10 isValid:error];
 
-  return a5;
+  return error;
 }
 
 void __46__PHValidator_validateData_withOptions_error___block_invoke(uint64_t a1)
@@ -866,23 +866,23 @@ void __46__PHValidator_validateData_withOptions_error___block_invoke(uint64_t a1
   }
 }
 
-- (BOOL)validateURLs:(id)a3 withOptions:(unint64_t)a4 videoComplementMetadata:(id)a5 error:(id *)a6
+- (BOOL)validateURLs:(id)ls withOptions:(unint64_t)options videoComplementMetadata:(id)metadata error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  if ((a4 & 0x70) != 0)
+  lsCopy = ls;
+  metadataCopy = metadata;
+  if ((options & 0x70) != 0)
   {
-    a4 |= 2uLL;
+    options |= 2uLL;
   }
 
-  v12 = [[_PHValidation alloc] initWithOptions:(a4 >> 1) & 1 | a4];
+  options = [[_PHValidation alloc] initWithOptions:(options >> 1) & 1 | options];
   v57[0] = MEMORY[0x1E69E9820];
   v57[1] = 3221225472;
   v57[2] = __70__PHValidator_validateURLs_withOptions_videoComplementMetadata_error___block_invoke;
   v57[3] = &unk_1E75AAEB0;
-  v13 = v10;
+  v13 = lsCopy;
   v58 = v13;
-  v14 = v12;
+  v14 = options;
   v59 = v14;
   [(_PHValidation *)v14 validateOption:1 usingBlock:v57];
   v54[0] = MEMORY[0x1E69E9820];
@@ -902,7 +902,7 @@ void __46__PHValidator_validateData_withOptions_error___block_invoke(uint64_t a1
   v51 = v17;
   v18 = v16;
   v52 = v18;
-  v53 = self;
+  selfCopy = self;
   [(_PHValidation *)v18 validateOption:4 usingBlock:v50];
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
@@ -912,7 +912,7 @@ void __46__PHValidator_validateData_withOptions_error___block_invoke(uint64_t a1
   v47 = v19;
   v20 = v18;
   v48 = v20;
-  v49 = self;
+  selfCopy2 = self;
   [(_PHValidation *)v20 validateOption:8 usingBlock:v46];
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
@@ -920,7 +920,7 @@ void __46__PHValidator_validateData_withOptions_error___block_invoke(uint64_t a1
   v42[3] = &unk_1E75AB248;
   v21 = v19;
   v43 = v21;
-  v44 = self;
+  selfCopy3 = self;
   v22 = v20;
   v45 = v22;
   [(_PHValidation *)v22 validateOption:16 usingBlock:v42];
@@ -930,7 +930,7 @@ void __46__PHValidator_validateData_withOptions_error___block_invoke(uint64_t a1
   v38[3] = &unk_1E75AB248;
   v23 = v21;
   v39 = v23;
-  v40 = self;
+  selfCopy4 = self;
   v24 = v22;
   v41 = v24;
   [(_PHValidation *)v24 validateOption:32 usingBlock:v38];
@@ -938,17 +938,17 @@ void __46__PHValidator_validateData_withOptions_error___block_invoke(uint64_t a1
   v31 = 3221225472;
   v32 = __70__PHValidator_validateURLs_withOptions_videoComplementMetadata_error___block_invoke_7;
   v33 = &unk_1E75A9E40;
-  v34 = self;
+  selfCopy5 = self;
   v35 = v23;
-  v36 = v11;
+  v36 = metadataCopy;
   v37 = v24;
   v25 = v24;
-  v26 = v11;
+  v26 = metadataCopy;
   v27 = v23;
   [(_PHValidation *)v25 validateOption:64 usingBlock:&v30];
-  v28 = [(_PHValidation *)v25 isValid:a6, v30, v31, v32, v33, v34];
+  selfCopy5 = [(_PHValidation *)v25 isValid:error, v30, v31, v32, v33, selfCopy5];
 
-  return v28;
+  return selfCopy5;
 }
 
 void __70__PHValidator_validateURLs_withOptions_videoComplementMetadata_error___block_invoke(uint64_t a1)
@@ -1197,16 +1197,16 @@ void __70__PHValidator_validateURLs_withOptions_videoComplementMetadata_error___
   [*(a1 + 56) assert:v5 error:v6];
 }
 
-- (BOOL)validateURL:(id)a3 withOptions:(unint64_t)a4 error:(id *)a5
+- (BOOL)validateURL:(id)l withOptions:(unint64_t)options error:(id *)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  lCopy = l;
   v8 = MEMORY[0x1E695DEC8];
-  v9 = a3;
-  v10 = [v8 arrayWithObjects:&v12 count:1];
+  lCopy2 = l;
+  v10 = [v8 arrayWithObjects:&lCopy count:1];
 
-  LOBYTE(a5) = [(PHValidator *)self validateURLs:v10 withOptions:a4 videoComplementMetadata:0 error:a5, v12, v13];
-  return a5;
+  LOBYTE(error) = [(PHValidator *)self validateURLs:v10 withOptions:options videoComplementMetadata:0 error:error, lCopy, v13];
+  return error;
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface MTFrontendSimple
-- (MTFrontendSimple)initWithString:(id)a3;
-- (MTFrontendSimple)initWithStringAndLocale:(id)a3 locale:(id)a4;
+- (MTFrontendSimple)initWithString:(id)string;
+- (MTFrontendSimple)initWithStringAndLocale:(id)locale locale:(id)a4;
 - (id)nextObject;
 - (void)dealloc;
 @end
 
 @implementation MTFrontendSimple
 
-- (MTFrontendSimple)initWithString:(id)a3
+- (MTFrontendSimple)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:@"en-US"];
-  v6 = [(MTFrontendSimple *)self initWithStringAndLocale:v4 locale:v5];
+  v6 = [(MTFrontendSimple *)self initWithStringAndLocale:stringCopy locale:v5];
 
   return v6;
 }
 
-- (MTFrontendSimple)initWithStringAndLocale:(id)a3 locale:(id)a4
+- (MTFrontendSimple)initWithStringAndLocale:(id)locale locale:(id)a4
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  localeCopy = locale;
   v7 = a4;
   v14.receiver = self;
   v14.super_class = MTFrontendSimple;
@@ -27,8 +27,8 @@
   if (v9)
   {
     [(MTFrontendSimple *)v9 setFDictLookup:SLDictLookup::Create(v7, v8)];
-    v10 = [(MTFrontendSimple *)v9 fDictLookup];
-    [(MTFrontendSimple *)v9 setFPronouncer:SLPronouncer::Create(v7, v10, v11)];
+    fDictLookup = [(MTFrontendSimple *)v9 fDictLookup];
+    [(MTFrontendSimple *)v9 setFPronouncer:SLPronouncer::Create(v7, fDictLookup, v11)];
     operator new();
   }
 
@@ -57,34 +57,34 @@
 
 - (void)dealloc
 {
-  v3 = [(MTFrontendSimple *)self builder];
-  if (v3)
+  builder = [(MTFrontendSimple *)self builder];
+  if (builder)
   {
-    (*(v3->var0 + 1))(v3);
+    (*(builder->var0 + 1))(builder);
   }
 
-  v4 = [(MTFrontendSimple *)self fLexer];
-  if (v4)
+  fLexer = [(MTFrontendSimple *)self fLexer];
+  if (fLexer)
   {
-    (*(v4->var0 + 7))(v4);
+    (*(fLexer->var0 + 7))(fLexer);
   }
 
-  v5 = [(MTFrontendSimple *)self fPronouncer];
-  if (v5)
+  fPronouncer = [(MTFrontendSimple *)self fPronouncer];
+  if (fPronouncer)
   {
-    (*(v5->var0 + 1))(v5);
+    (*(fPronouncer->var0 + 1))(fPronouncer);
   }
 
-  v6 = [(MTFrontendSimple *)self fDictLookup];
-  if (v6)
+  fDictLookup = [(MTFrontendSimple *)self fDictLookup];
+  if (fDictLookup)
   {
-    (*(v6->var0 + 1))(v6);
+    (*(fDictLookup->var0 + 1))(fDictLookup);
   }
 
-  v7 = [(MTFrontendSimple *)self fTextSource];
-  if (v7)
+  fTextSource = [(MTFrontendSimple *)self fTextSource];
+  if (fTextSource)
   {
-    (*(v7->var0 + 2))(v7);
+    (*(fTextSource->var0 + 2))(fTextSource);
   }
 
   v8.receiver = self;

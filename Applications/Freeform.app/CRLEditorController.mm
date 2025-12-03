@@ -1,55 +1,55 @@
 @interface CRLEditorController
-- (BOOL)anyEditorProhibitsAction:(SEL)a3;
+- (BOOL)anyEditorProhibitsAction:(SEL)action;
 - (BOOL)isChangingSelection;
 - (CRLEditorController)init;
-- (CRLEditorController)initWithEditingCoordinator:(id)a3 rootEditor:(id)a4 debugName:(id)a5;
+- (CRLEditorController)initWithEditingCoordinator:(id)coordinator rootEditor:(id)editor debugName:(id)name;
 - (CRLSelectionPath)selectionPath;
 - (CRLTextInputEditor)textInputEditor;
 - (_TtC8Freeform21CRLEditingCoordinator)editingCoordinator;
-- (id)currentEditorsConformingToProtocol:(id)a3;
-- (id)currentEditorsOfClass:(Class)a3;
+- (id)currentEditorsConformingToProtocol:(id)protocol;
+- (id)currentEditorsOfClass:(Class)class;
 - (id)description;
-- (id)editorForEditAction:(SEL)a3 withSender:(id)a4 response:(int64_t *)a5;
-- (id)mostSpecificCurrentEditorOfClass:(Class)a3;
-- (id)mostSpecificCurrentEditorOfClass:(Class)a3 conformingToProtocol:(id)a4;
-- (id)selectionForEditor:(id)a3;
-- (id)selectionPathToPopEditor:(id)a3;
-- (void)editorDidChangeSelectionAndWantsKeyboard:(id)a3;
-- (void)enumerateEditorsOnStackLeastToMostSpecificUsingBlock:(id)a3;
-- (void)enumerateEditorsOnStackUsingBlock:(id)a3;
+- (id)editorForEditAction:(SEL)action withSender:(id)sender response:(int64_t *)response;
+- (id)mostSpecificCurrentEditorOfClass:(Class)class;
+- (id)mostSpecificCurrentEditorOfClass:(Class)class conformingToProtocol:(id)protocol;
+- (id)selectionForEditor:(id)editor;
+- (id)selectionPathToPopEditor:(id)editor;
+- (void)editorDidChangeSelectionAndWantsKeyboard:(id)keyboard;
+- (void)enumerateEditorsOnStackLeastToMostSpecificUsingBlock:(id)block;
+- (void)enumerateEditorsOnStackUsingBlock:(id)block;
 - (void)notifyResignedTextInputEditors;
 - (void)p_didChangeCurrentEditors;
 - (void)p_didChangeTextInputEditor;
 - (void)p_endTransaction;
-- (void)p_enumerateEditorsWithEnumerator:(id)a3 usingBlock:(id)a4;
-- (void)p_popEditor:(id)a3;
-- (void)p_pushEditor:(id)a3;
-- (void)p_refreshTextInputEditorWithFlags:(unint64_t)a3;
-- (void)performBlockAfterSettingSelection:(id)a3;
-- (void)pushSelection:(id)a3;
+- (void)p_enumerateEditorsWithEnumerator:(id)enumerator usingBlock:(id)block;
+- (void)p_popEditor:(id)editor;
+- (void)p_pushEditor:(id)editor;
+- (void)p_refreshTextInputEditorWithFlags:(unint64_t)flags;
+- (void)performBlockAfterSettingSelection:(id)selection;
+- (void)pushSelection:(id)selection;
 - (void)refreshTextInputEditor;
-- (void)setSelection:(id)a3 forEditor:(id)a4 withFlags:(unint64_t)a5;
-- (void)setSelectionPath:(id)a3 withFlags:(unint64_t)a4;
-- (void)setSelectionPathToPopEditor:(id)a3;
-- (void)setSelectionPathToPopToEditor:(id)a3;
+- (void)setSelection:(id)selection forEditor:(id)editor withFlags:(unint64_t)flags;
+- (void)setSelectionPath:(id)path withFlags:(unint64_t)flags;
+- (void)setSelectionPathToPopEditor:(id)editor;
+- (void)setSelectionPathToPopToEditor:(id)editor;
 - (void)teardown;
 @end
 
 @implementation CRLEditorController
 
-- (CRLEditorController)initWithEditingCoordinator:(id)a3 rootEditor:(id)a4 debugName:(id)a5
+- (CRLEditorController)initWithEditingCoordinator:(id)coordinator rootEditor:(id)editor debugName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  coordinatorCopy = coordinator;
+  editorCopy = editor;
+  nameCopy = name;
   v34.receiver = self;
   v34.super_class = CRLEditorController;
   v11 = [(CRLEditorController *)&v34 init];
   if (v11)
   {
-    if (v8)
+    if (coordinatorCopy)
     {
-      if (v9)
+      if (editorCopy)
       {
         goto LABEL_4;
       }
@@ -83,13 +83,13 @@
       v14 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLEditorController.m"];
       [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:68 isFatal:0 description:"invalid nil value for '%{public}s'", "editingCoordinator"];
 
-      if (v9)
+      if (editorCopy)
       {
 LABEL_4:
-        if (v10)
+        if (nameCopy)
         {
 LABEL_33:
-          objc_storeWeak(&v11->mEditingCoordinator, v8);
+          objc_storeWeak(&v11->mEditingCoordinator, coordinatorCopy);
           v21 = objc_alloc_init(NSMutableArray);
           mEditorStack = v11->mEditorStack;
           v11->mEditorStack = v21;
@@ -102,7 +102,7 @@ LABEL_33:
           mInspectorPropertyValueMap = v11->mInspectorPropertyValueMap;
           v11->mInspectorPropertyValueMap = v25;
 
-          v27 = [v10 copy];
+          v27 = [nameCopy copy];
           mDebugName = v11->mDebugName;
           v11->mDebugName = v27;
 
@@ -113,8 +113,8 @@ LABEL_33:
           mSelectionPath = v11->mSelectionPath;
           v11->mSelectionPath = v31;
 
-          [v9 setEditorController:v11];
-          [(CRLEditorController *)v11 p_pushEditor:v9];
+          [editorCopy setEditorController:v11];
+          [(CRLEditorController *)v11 p_pushEditor:editorCopy];
           goto LABEL_34;
         }
 
@@ -175,7 +175,7 @@ LABEL_24:
     v17 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLEditorController.m"];
     [CRLAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:69 isFatal:0 description:"invalid nil value for '%{public}s'", "rootEditor"];
 
-    if (v10)
+    if (nameCopy)
     {
       goto LABEL_33;
     }
@@ -258,9 +258,9 @@ LABEL_34:
 - (void)teardown
 {
   [(CRLEditorController *)self p_beginTransaction];
-  v3 = [(NSMutableArray *)self->mEditorStack firstObject];
+  firstObject = [(NSMutableArray *)self->mEditorStack firstObject];
   v4 = [(NSMutableArray *)self->mEditorStack copy];
-  [(CRLEditorController *)self p_popEditor:v3];
+  [(CRLEditorController *)self p_popEditor:firstObject];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -377,9 +377,9 @@ LABEL_34:
   return self->mReentrancyValue > 0;
 }
 
-- (void)setSelectionPath:(id)a3 withFlags:(unint64_t)a4
+- (void)setSelectionPath:(id)path withFlags:(unint64_t)flags
 {
-  v5 = a3;
+  pathCopy = path;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -446,7 +446,7 @@ LABEL_21:
     goto LABEL_197;
   }
 
-  if (!v5)
+  if (!pathCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -470,9 +470,9 @@ LABEL_21:
       sub_10130DA10(v34);
     }
 
-    v5 = [NSString stringWithUTF8String:"[CRLEditorController setSelectionPath:withFlags:]"];
+    pathCopy = [NSString stringWithUTF8String:"[CRLEditorController setSelectionPath:withFlags:]"];
     v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLEditorController.m"];
-    [CRLAssertionHandler handleFailureInFunction:v5 file:v11 lineNumber:146 isFatal:0 description:"Should never set a nil selection path on the editor controller!"];
+    [CRLAssertionHandler handleFailureInFunction:pathCopy file:v11 lineNumber:146 isFatal:0 description:"Should never set a nil selection path on the editor controller!"];
     goto LABEL_197;
   }
 
@@ -509,7 +509,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v143 = v5;
+  v143 = pathCopy;
   if (self->mReentrancyValue)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -582,17 +582,17 @@ LABEL_21:
 
   v11 = +[NSMutableArray array];
   v36 = self->mSelectionPath;
-  v37 = [(CRLEditorController *)self selectionPath];
-  v38 = [v5 isEqual:v37];
+  selectionPath = [(CRLEditorController *)self selectionPath];
+  v38 = [pathCopy isEqual:selectionPath];
 
-  if (a4 & 0x400) == 0 && (v38)
+  if (flags & 0x400) == 0 && (v38)
   {
     v39 = 0;
     goto LABEL_194;
   }
 
-  v40 = [(CRLEditorController *)self selectionPath];
-  v41 = [v5 isEqual:v40];
+  selectionPath2 = [(CRLEditorController *)self selectionPath];
+  v41 = [pathCopy isEqual:selectionPath2];
 
   if (qword_101AD5C68 != -1)
   {
@@ -602,25 +602,25 @@ LABEL_21:
   v42 = off_1019EEB30;
   if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
   {
-    sub_10133A0F8(self, v5, v42);
+    sub_10133A0F8(self, pathCopy, v42);
   }
 
   v43 = v41 ^ 1;
 
   v146 = +[NSMutableArray array];
-  v44 = [(CRLSelectionPath *)v36 orderedSelections];
+  orderedSelections = [(CRLSelectionPath *)v36 orderedSelections];
   p_mSelectionPath = &self->mSelectionPath;
-  if (![v44 count])
+  if (![orderedSelections count])
   {
-    v70 = [v5 orderedSelections];
-    v71 = [v70 count];
+    orderedSelections2 = [pathCopy orderedSelections];
+    v71 = [orderedSelections2 count];
 
     if (!v71)
     {
       goto LABEL_71;
     }
 
-    v44 = [v5 selectionAtIndex:0];
+    orderedSelections = [pathCopy selectionAtIndex:0];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -649,26 +649,26 @@ LABEL_21:
 
       v74 = [NSString stringWithUTF8String:"[CRLEditorController setSelectionPath:withFlags:]"];
       v75 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLEditorController.m"];
-      [CRLAssertionHandler handleFailureInFunction:v74 file:v75 lineNumber:218 isFatal:0 description:"Least specific selection MUST be a board selection. Selection path is malformed. %@", v5];
+      [CRLAssertionHandler handleFailureInFunction:v74 file:v75 lineNumber:218 isFatal:0 description:"Least specific selection MUST be a board selection. Selection path is malformed. %@", pathCopy];
     }
   }
 
 LABEL_71:
   v140 = v43;
-  v45 = [v5 orderedSelections];
-  [v45 objectEnumerator];
+  orderedSelections3 = [pathCopy orderedSelections];
+  [orderedSelections3 objectEnumerator];
   v47 = v46 = self;
 
-  v48 = [v47 nextObject];
+  nextObject = [v47 nextObject];
   v167 = 0u;
   v168 = 0u;
   v169 = 0u;
   v170 = 0u;
   v141 = v46;
-  v49 = [(CRLEditorController *)v46 currentEditors];
-  v50 = [v49 objectEnumerator];
+  currentEditors = [(CRLEditorController *)v46 currentEditors];
+  objectEnumerator = [currentEditors objectEnumerator];
 
-  v51 = [v50 countByEnumeratingWithState:&v167 objects:v182 count:16];
+  v51 = [objectEnumerator countByEnumeratingWithState:&v167 objects:v182 count:16];
   v142 = v11;
   v138 = v36;
   if (!v51)
@@ -681,25 +681,25 @@ LABEL_71:
   v52 = v51;
   v53 = 0;
   v54 = *v168;
-  v55 = v48;
+  nextObject2 = nextObject;
   v153 = v47;
 LABEL_73:
   v56 = 0;
   while (1)
   {
-    v48 = v55;
+    nextObject = nextObject2;
     if (*v168 != v54)
     {
-      objc_enumerationMutation(v50);
+      objc_enumerationMutation(objectEnumerator);
     }
 
     v57 = *(*(&v167 + 1) + 8 * v56);
-    v58 = [(CRLEditorController *)v141 currentEditors];
-    v59 = [v58 objectAtIndex:0];
+    currentEditors2 = [(CRLEditorController *)v141 currentEditors];
+    v59 = [currentEditors2 objectAtIndex:0];
 
     if (v57 == v59)
     {
-      if (v48)
+      if (nextObject)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -755,7 +755,7 @@ LABEL_73:
       goto LABEL_79;
     }
 
-    if (!v48 || ([v57 shouldRemainOnEditorStackForSelection:v48 inSelectionPath:v143 withNewEditors:v146] & 1) == 0)
+    if (!nextObject || ([v57 shouldRemainOnEditorStackForSelection:nextObject inSelectionPath:v143 withNewEditors:v146] & 1) == 0)
     {
       break;
     }
@@ -763,19 +763,19 @@ LABEL_73:
 LABEL_79:
     v60 = v57;
 
-    v55 = [v47 nextObject];
+    nextObject2 = [v47 nextObject];
 
     v61 = v60;
     v53 = v61;
     [v146 addObject:v61];
     if (v52 == ++v56)
     {
-      v69 = [v50 countByEnumeratingWithState:&v167 objects:v182 count:16];
+      v69 = [objectEnumerator countByEnumeratingWithState:&v167 objects:v182 count:16];
       v52 = v69;
       if (!v69)
       {
         v139 = 0;
-        v48 = v55;
+        nextObject = nextObject2;
         goto LABEL_95;
       }
 
@@ -790,20 +790,20 @@ LABEL_95:
   v36 = v138;
 LABEL_108:
 
-  v5 = v143;
+  pathCopy = v143;
   v154 = v53;
-  if (v48)
+  if (nextObject)
   {
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v53 shouldDiscardAllSubselectionsStartingWithSelection:v48 withNewEditorStack:v146 selectionPath:v143])
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [v53 shouldDiscardAllSubselectionsStartingWithSelection:nextObject withNewEditorStack:v146 selectionPath:v143])
     {
-      [v143 selectionPathPoppingOffSelection:v48];
-      v5 = v76 = v143;
+      [v143 selectionPathPoppingOffSelection:nextObject];
+      pathCopy = v76 = v143;
       v77 = p_mSelectionPath;
     }
 
     else
     {
-      v78 = [v53 nextEditorForSelection:v48 withNewEditorStack:v146 selectionPath:v143];
+      v78 = [v53 nextEditorForSelection:nextObject withNewEditorStack:v146 selectionPath:v143];
       if (v78)
       {
         v79 = v78;
@@ -813,27 +813,27 @@ LABEL_108:
           [v146 addObject:v79];
           if (v47)
           {
-            v80 = [v47 nextObject];
+            nextObject3 = [v47 nextObject];
 
-            v48 = v80;
-            if (!v80)
+            nextObject = nextObject3;
+            if (!nextObject3)
             {
               v76 = v79;
               goto LABEL_141;
             }
           }
 
-          if ((objc_opt_respondsToSelector() & 1) != 0 && [v79 shouldDiscardAllSubselectionsStartingWithSelection:v48 withNewEditorStack:v146 selectionPath:v143])
+          if ((objc_opt_respondsToSelector() & 1) != 0 && [v79 shouldDiscardAllSubselectionsStartingWithSelection:nextObject withNewEditorStack:v146 selectionPath:v143])
           {
-            v90 = [v143 selectionPathPoppingOffSelection:v48];
+            v90 = [v143 selectionPathPoppingOffSelection:nextObject];
 
             v76 = v79;
-            v5 = v90;
+            pathCopy = v90;
             goto LABEL_141;
           }
 
           v76 = v79;
-          v79 = [v76 nextEditorForSelection:v48 withNewEditorStack:v146 selectionPath:v143];
+          v79 = [v76 nextEditorForSelection:nextObject withNewEditorStack:v146 selectionPath:v143];
 
           if (!v79)
           {
@@ -861,7 +861,7 @@ LABEL_108:
           v176 = 2112;
           v177 = v76;
           v178 = 2112;
-          v179 = v48;
+          v179 = nextObject;
           v180 = 2112;
           v181 = v143;
           _os_log_error_impl(&_mh_execute_header, v86, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d oldEditor %@ didn't push editor for selection %@ in selection path %@", buf, 0x40u);
@@ -885,8 +885,8 @@ LABEL_108:
 
         v88 = [NSString stringWithUTF8String:"[CRLEditorController setSelectionPath:withFlags:]"];
         v89 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLEditorController.m"];
-        v5 = v143;
-        [CRLAssertionHandler handleFailureInFunction:v88 file:v89 lineNumber:307 isFatal:0 description:"oldEditor %@ didn't push editor for selection %@ in selection path %@", v76, v48, v143];
+        pathCopy = v143;
+        [CRLAssertionHandler handleFailureInFunction:v88 file:v89 lineNumber:307 isFatal:0 description:"oldEditor %@ didn't push editor for selection %@ in selection path %@", v76, nextObject, v143];
 
         v11 = v142;
 LABEL_141:
@@ -916,7 +916,7 @@ LABEL_141:
           v176 = 2112;
           v177 = v53;
           v178 = 2112;
-          v179 = v48;
+          v179 = nextObject;
           v180 = 2112;
           v181 = v143;
           _os_log_error_impl(&_mh_execute_header, v82, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d oldEditor %@ didn't push editor for selection %@ in selection path %@", buf, 0x40u);
@@ -935,8 +935,8 @@ LABEL_141:
 
         v76 = [NSString stringWithUTF8String:"[CRLEditorController setSelectionPath:withFlags:]"];
         v84 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLEditorController.m"];
-        v5 = v143;
-        [CRLAssertionHandler handleFailureInFunction:v76 file:v84 lineNumber:277 isFatal:0 description:"oldEditor %@ didn't push editor for selection %@ in selection path %@", v53, v48, v143];
+        pathCopy = v143;
+        [CRLAssertionHandler handleFailureInFunction:v76 file:v84 lineNumber:277 isFatal:0 description:"oldEditor %@ didn't push editor for selection %@ in selection path %@", v53, nextObject, v143];
       }
     }
   }
@@ -948,15 +948,15 @@ LABEL_141:
 
   if (v53)
   {
-    v91 = [(CRLSelectionPath *)v36 orderedSelections];
-    v92 = [v91 objectEnumerator];
+    orderedSelections4 = [(CRLSelectionPath *)v36 orderedSelections];
+    objectEnumerator2 = [orderedSelections4 objectEnumerator];
 
-    v93 = [v92 nextObject];
-    v94 = [v5 orderedSelections];
-    v95 = [v94 objectEnumerator];
+    nextObject4 = [objectEnumerator2 nextObject];
+    orderedSelections5 = [pathCopy orderedSelections];
+    objectEnumerator3 = [orderedSelections5 objectEnumerator];
 
-    v151 = v95;
-    v96 = [v95 nextObject];
+    v151 = objectEnumerator3;
+    nextObject5 = [objectEnumerator3 nextObject];
     v163 = 0u;
     v164 = 0u;
     v165 = 0u;
@@ -971,8 +971,8 @@ LABEL_141:
       do
       {
         v100 = 0;
-        v101 = v93;
-        v102 = v96;
+        v101 = nextObject4;
+        v102 = nextObject5;
         do
         {
           if (*v164 != v149)
@@ -983,7 +983,7 @@ LABEL_141:
           v103 = *(*(&v163 + 1) + 8 * v100);
           if (v101 | v102 && ([v101 isEqual:v102] & 1) == 0)
           {
-            v104 = [v103 selectionWillChangeFromSelection:v101 toSelection:v102 withFlags:a4 inSelectionPath:v5 withNewEditors:v146];
+            v104 = [v103 selectionWillChangeFromSelection:v101 toSelection:v102 withFlags:flags inSelectionPath:pathCopy withNewEditors:v146];
             v105 = v104;
             if (v104 && ([v104 isEqual:v102] & 1) == 0)
             {
@@ -1004,14 +1004,14 @@ LABEL_141:
                 _os_log_debug_impl(&_mh_execute_header, v106, OS_LOG_TYPE_DEBUG, "editor %@ modified its selection component from %@ to %@", buf, 0x20u);
               }
 
-              v107 = [v5 orderedSelections];
-              v144 = v5;
-              v108 = [v107 mutableCopy];
+              orderedSelections6 = [pathCopy orderedSelections];
+              v144 = pathCopy;
+              v108 = [orderedSelections6 mutableCopy];
 
               [v108 replaceObjectAtIndex:v99 withObject:v105];
               v109 = [CRLSelectionPath selectionPathWithSelectionArray:v108];
 
-              v5 = v109;
+              pathCopy = v109;
               v11 = v142;
             }
 
@@ -1021,21 +1021,21 @@ LABEL_141:
           if (v103 == v154)
           {
 
-            v93 = 0;
-            v92 = 0;
+            nextObject4 = 0;
+            objectEnumerator2 = 0;
           }
 
           else
           {
-            v93 = [v92 nextObject];
+            nextObject4 = [objectEnumerator2 nextObject];
           }
 
-          v96 = [v151 nextObject];
+          nextObject5 = [v151 nextObject];
 
           ++v99;
           v100 = v100 + 1;
-          v101 = v93;
-          v102 = v96;
+          v101 = nextObject4;
+          v102 = nextObject5;
         }
 
         while (v98 != v100);
@@ -1057,7 +1057,7 @@ LABEL_141:
     [(CRLEditorController *)v141 p_popEditor:?];
   }
 
-  objc_storeStrong(v77, v5);
+  objc_storeStrong(v77, pathCopy);
   v161 = 0u;
   v162 = 0u;
   v159 = 0u;
@@ -1094,21 +1094,21 @@ LABEL_141:
   v115 = v154;
   if (v154)
   {
-    v145 = v5;
-    v116 = [(CRLSelectionPath *)v36 orderedSelections];
-    v117 = [v116 objectEnumerator];
+    v145 = pathCopy;
+    orderedSelections7 = [(CRLSelectionPath *)v36 orderedSelections];
+    objectEnumerator4 = [orderedSelections7 objectEnumerator];
 
-    v118 = [v117 nextObject];
-    v119 = [*v77 orderedSelections];
-    v120 = [v119 objectEnumerator];
+    nextObject6 = [objectEnumerator4 nextObject];
+    orderedSelections8 = [*v77 orderedSelections];
+    objectEnumerator5 = [orderedSelections8 objectEnumerator];
 
-    v121 = [v120 nextObject];
+    nextObject7 = [objectEnumerator5 nextObject];
     v155 = 0u;
     v156 = 0u;
     v157 = 0u;
     v158 = 0u;
-    v122 = [v152 objectEnumerator];
-    v123 = [v122 countByEnumeratingWithState:&v155 objects:v171 count:16];
+    objectEnumerator6 = [v152 objectEnumerator];
+    v123 = [objectEnumerator6 countByEnumeratingWithState:&v155 objects:v171 count:16];
     if (v123)
     {
       v124 = v123;
@@ -1116,56 +1116,56 @@ LABEL_141:
       do
       {
         v126 = 0;
-        v127 = v118;
-        v128 = v121;
+        v127 = nextObject6;
+        v128 = nextObject7;
         do
         {
           if (*v156 != v125)
           {
-            objc_enumerationMutation(v122);
+            objc_enumerationMutation(objectEnumerator6);
           }
 
           v129 = *(*(&v155 + 1) + 8 * v126);
           if (v127 | v128 && ([v127 isEqual:v128] & 1) == 0)
           {
-            [v129 selectionDidChangeFromSelection:v127 toSelection:v128 withFlags:a4];
+            [v129 selectionDidChangeFromSelection:v127 toSelection:v128 withFlags:flags];
           }
 
           if (v129 == v154)
           {
 
-            v117 = 0;
-            v118 = 0;
+            objectEnumerator4 = 0;
+            nextObject6 = 0;
           }
 
           else
           {
-            v118 = [v117 nextObject];
+            nextObject6 = [objectEnumerator4 nextObject];
           }
 
-          v121 = [v120 nextObject];
+          nextObject7 = [objectEnumerator5 nextObject];
 
           v126 = v126 + 1;
-          v127 = v118;
-          v128 = v121;
+          v127 = nextObject6;
+          v128 = nextObject7;
         }
 
         while (v124 != v126);
-        v124 = [v122 countByEnumeratingWithState:&v155 objects:v171 count:16];
+        v124 = [objectEnumerator6 countByEnumeratingWithState:&v155 objects:v171 count:16];
       }
 
       while (v124);
     }
 
     v11 = v142;
-    v5 = v145;
+    pathCopy = v145;
     self = v141;
     v36 = v138;
     v39 = v140;
     v115 = v154;
   }
 
-  [(CRLEditorController *)self p_refreshTextInputEditorWithFlags:a4];
+  [(CRLEditorController *)self p_refreshTextInputEditorWithFlags:flags];
   if (v150)
   {
     [(CRLEditorController *)self p_didChangeCurrentEditors];
@@ -1177,7 +1177,7 @@ LABEL_194:
   if (v39)
   {
     v130 = [NSDictionary alloc];
-    v131 = [NSNumber numberWithUnsignedInteger:a4];
+    v131 = [NSNumber numberWithUnsignedInteger:flags];
     v132 = [v130 initWithObjectsAndKeys:{v131, @"CRLEditorControllerSelectionFlagsKey", v11, @"CRLEditorControllerEditorsKey", v36, @"CRLEditorControllerOldSelectionPathKey", 0}];
 
     v133 = +[NSNotificationCenter defaultCenter];
@@ -1192,9 +1192,9 @@ LABEL_194:
 LABEL_197:
 }
 
-- (void)performBlockAfterSettingSelection:(id)a3
+- (void)performBlockAfterSettingSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -1224,7 +1224,7 @@ LABEL_197:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:424 isFatal:0 description:"This operation must only be performed on the main thread."];
   }
 
-  if (!v4)
+  if (!selectionCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1271,7 +1271,7 @@ LABEL_197:
     self->mBlocksToPerform = v9;
 
     v14 = self->mBlocksToPerform;
-    v11 = [v4 copy];
+    v11 = [selectionCopy copy];
     v12 = objc_retainBlock(v11);
     [(NSMutableArray *)v14 addObject:v12];
 LABEL_27:
@@ -1279,51 +1279,51 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v4[2](v4);
+  selectionCopy[2](selectionCopy);
 LABEL_28:
 }
 
-- (void)setSelection:(id)a3 forEditor:(id)a4 withFlags:(unint64_t)a5
+- (void)setSelection:(id)selection forEditor:(id)editor withFlags:(unint64_t)flags
 {
-  v8 = a3;
-  v12 = [(CRLEditorController *)self selectionForEditor:a4];
-  v9 = [(CRLEditorController *)self selectionPath];
-  v10 = [v9 selectionPathPoppingOffSelection:v12];
+  selectionCopy = selection;
+  v12 = [(CRLEditorController *)self selectionForEditor:editor];
+  selectionPath = [(CRLEditorController *)self selectionPath];
+  v10 = [selectionPath selectionPathPoppingOffSelection:v12];
 
-  v11 = [v10 selectionPathWithAppendedSelection:v8];
+  v11 = [v10 selectionPathWithAppendedSelection:selectionCopy];
 
-  [(CRLEditorController *)self setSelectionPath:v11 withFlags:a5];
+  [(CRLEditorController *)self setSelectionPath:v11 withFlags:flags];
 }
 
-- (void)setSelectionPathToPopEditor:(id)a3
+- (void)setSelectionPathToPopEditor:(id)editor
 {
-  v4 = [(CRLEditorController *)self selectionPathToPopEditor:a3];
+  v4 = [(CRLEditorController *)self selectionPathToPopEditor:editor];
   [(CRLEditorController *)self setSelectionPath:v4];
 }
 
-- (void)setSelectionPathToPopToEditor:(id)a3
+- (void)setSelectionPathToPopToEditor:(id)editor
 {
-  v4 = a3;
-  v5 = [(CRLEditorController *)self selectionPath];
-  v11 = [v5 orderedSelections];
+  editorCopy = editor;
+  selectionPath = [(CRLEditorController *)self selectionPath];
+  orderedSelections = [selectionPath orderedSelections];
 
-  v6 = [(CRLEditorController *)self selectionForEditor:v4];
+  v6 = [(CRLEditorController *)self selectionForEditor:editorCopy];
 
-  v7 = [v11 indexOfObject:v6];
-  if (v7 < [v11 count] - 1)
+  v7 = [orderedSelections indexOfObject:v6];
+  if (v7 < [orderedSelections count] - 1)
   {
-    v8 = [v11 objectAtIndex:v7 + 1];
-    v9 = [(CRLEditorController *)self selectionPath];
-    v10 = [v9 selectionPathPoppingOffSelection:v8];
+    v8 = [orderedSelections objectAtIndex:v7 + 1];
+    selectionPath2 = [(CRLEditorController *)self selectionPath];
+    v10 = [selectionPath2 selectionPathPoppingOffSelection:v8];
 
     [(CRLEditorController *)self setSelectionPath:v10];
   }
 }
 
-- (void)pushSelection:(id)a3
+- (void)pushSelection:(id)selection
 {
-  v4 = a3;
-  if (!v4)
+  selectionCopy = selection;
+  if (!selectionCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1352,22 +1352,22 @@ LABEL_28:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:466 isFatal:0 description:"invalid nil value for '%{public}s'", "selection"];
   }
 
-  v8 = [(CRLEditorController *)self selectionPath];
-  v9 = [v8 selectionPathWithAppendedSelection:v4];
+  selectionPath = [(CRLEditorController *)self selectionPath];
+  v9 = [selectionPath selectionPathWithAppendedSelection:selectionCopy];
   [(CRLEditorController *)self setSelectionPath:v9];
 }
 
-- (id)selectionForEditor:(id)a3
+- (id)selectionForEditor:(id)editor
 {
-  v4 = a3;
-  if (!v4)
+  editorCopy = editor;
+  if (!editorCopy)
   {
 LABEL_12:
     v9 = 0;
     goto LABEL_14;
   }
 
-  v5 = [(NSMutableArray *)self->mEditorStack indexOfObject:v4];
+  v5 = [(NSMutableArray *)self->mEditorStack indexOfObject:editorCopy];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -1394,27 +1394,27 @@ LABEL_12:
 
     v7 = [NSString stringWithUTF8String:"[CRLEditorController selectionForEditor:]"];
     v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLEditorController.m"];
-    [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:475 isFatal:0 description:"Editor %@ must be on the stack to retrieve its associated selection", v4];
+    [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:475 isFatal:0 description:"Editor %@ must be on the stack to retrieve its associated selection", editorCopy];
 
     goto LABEL_12;
   }
 
   v10 = v5;
-  v11 = [(CRLEditorController *)self selectionPath];
-  v9 = [v11 selectionAtIndex:v10];
+  selectionPath = [(CRLEditorController *)self selectionPath];
+  v9 = [selectionPath selectionAtIndex:v10];
 
 LABEL_14:
 
   return v9;
 }
 
-- (id)selectionPathToPopEditor:(id)a3
+- (id)selectionPathToPopEditor:(id)editor
 {
-  v4 = [(CRLEditorController *)self selectionForEditor:a3];
+  v4 = [(CRLEditorController *)self selectionForEditor:editor];
   if (v4)
   {
-    v5 = [(CRLEditorController *)self selectionPath];
-    v6 = [v5 selectionPathPoppingOffSelection:v4];
+    selectionPath = [(CRLEditorController *)self selectionPath];
+    v6 = [selectionPath selectionPathPoppingOffSelection:v4];
   }
 
   else
@@ -1459,12 +1459,12 @@ LABEL_14:
   [(CRLEditorController *)self p_refreshTextInputEditorWithFlags:0];
 }
 
-- (id)editorForEditAction:(SEL)a3 withSender:(id)a4 response:(int64_t *)a5
+- (id)editorForEditAction:(SEL)action withSender:(id)sender response:(int64_t *)response
 {
-  v25 = a4;
-  v8 = [(CRLEditorController *)self editingDisabledReasons];
-  v9 = [(CRLEditorController *)self editingCoordinator];
-  v10 = [v9 canPerformUserAction];
+  senderCopy = sender;
+  editingDisabledReasons = [(CRLEditorController *)self editingDisabledReasons];
+  editingCoordinator = [(CRLEditorController *)self editingCoordinator];
+  canPerformUserAction = [editingCoordinator canPerformUserAction];
 
   v29 = 0u;
   v30 = 0u;
@@ -1475,8 +1475,8 @@ LABEL_14:
   if (v11)
   {
     v12 = v11;
-    v24 = a5;
-    v13 = v8 | v10 ^ 1;
+    responseCopy = response;
+    v13 = editingDisabledReasons | canPerformUserAction ^ 1;
     v14 = *v28;
 LABEL_3:
     v15 = 0;
@@ -1490,9 +1490,9 @@ LABEL_3:
       v16 = *(*(&v27 + 1) + 8 * v15);
       if (objc_opt_respondsToSelector())
       {
-        if (!v13 || ((objc_opt_respondsToSelector() & 1) == 0 ? (v17 = 0) : ([v16 permittedActionsForReasons:v13], v17 = objc_claimAutoreleasedReturnValue()), NSStringFromSelector(a3), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "containsObject:", v18), v18, v17, v19))
+        if (!v13 || ((objc_opt_respondsToSelector() & 1) == 0 ? (v17 = 0) : ([v16 permittedActionsForReasons:v13], v17 = objc_claimAutoreleasedReturnValue()), NSStringFromSelector(action), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "containsObject:", v18), v18, v17, v19))
         {
-          v20 = [v16 canPerformEditorAction:a3 withSender:{v25, v24}];
+          v20 = [v16 canPerformEditorAction:action withSender:{senderCopy, responseCopy}];
           if (v20)
           {
             break;
@@ -1523,7 +1523,7 @@ LABEL_3:
 LABEL_19:
     v22 = 0;
 LABEL_20:
-    a5 = v24;
+    response = responseCopy;
   }
 
   else
@@ -1532,22 +1532,22 @@ LABEL_20:
     v22 = 0;
   }
 
-  if (a5)
+  if (response)
   {
-    *a5 = v21;
+    *response = v21;
   }
 
   return v22;
 }
 
-- (BOOL)anyEditorProhibitsAction:(SEL)a3
+- (BOOL)anyEditorProhibitsAction:(SEL)action
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NSMutableArray *)self->mEditorStack reverseObjectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->mEditorStack reverseObjectEnumerator];
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1558,18 +1558,18 @@ LABEL_20:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if (objc_opt_respondsToSelector() & 1) != 0 && ([v9 shouldProhibitAction:a3])
+        if (objc_opt_respondsToSelector() & 1) != 0 && ([v9 shouldProhibitAction:action])
         {
           v10 = 1;
           goto LABEL_12;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -1585,9 +1585,9 @@ LABEL_12:
   return v10;
 }
 
-- (void)p_pushEditor:(id)a3
+- (void)p_pushEditor:(id)editor
 {
-  v4 = a3;
+  editorCopy = editor;
   if (qword_101AD5C70 != -1)
   {
     sub_10133AACC();
@@ -1596,17 +1596,17 @@ LABEL_12:
   v5 = off_1019EEB38;
   if (os_log_type_enabled(off_1019EEB38, OS_LOG_TYPE_DEBUG))
   {
-    sub_10133AAE0(v4, v5, v6, v7, v8, v9, v10, v11);
-    if (v4)
+    sub_10133AAE0(editorCopy, v5, v6, v7, v8, v9, v10, v11);
+    if (editorCopy)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v4)
+  else if (editorCopy)
   {
 LABEL_5:
-    if ([(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:v4]!= 0x7FFFFFFFFFFFFFFFLL)
+    if ([(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:editorCopy]!= 0x7FFFFFFFFFFFFFFFLL)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -1635,12 +1635,12 @@ LABEL_5:
       [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:603 isFatal:0 description:"shouldn't push the same editor twice"];
     }
 
-    if ([(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:v4]== 0x7FFFFFFFFFFFFFFFLL)
+    if ([(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:editorCopy]== 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(NSMutableArray *)self->mEditorStack addObject:v4];
+      [(NSMutableArray *)self->mEditorStack addObject:editorCopy];
       if (objc_opt_respondsToSelector())
       {
-        [v4 didBecomeCurrentEditorForEditorController:self];
+        [editorCopy didBecomeCurrentEditorForEditorController:self];
       }
     }
 
@@ -1676,9 +1676,9 @@ LABEL_5:
 LABEL_28:
 }
 
-- (void)p_popEditor:(id)a3
+- (void)p_popEditor:(id)editor
 {
-  v4 = a3;
+  editorCopy = editor;
   if (qword_101AD5C70 != -1)
   {
     sub_10133AD18();
@@ -1687,14 +1687,14 @@ LABEL_28:
   v5 = off_1019EEB38;
   if (os_log_type_enabled(off_1019EEB38, OS_LOG_TYPE_DEBUG))
   {
-    sub_10133AD2C(v4, v5, v6, v7, v8, v9, v10, v11);
-    if (v4)
+    sub_10133AD2C(editorCopy, v5, v6, v7, v8, v9, v10, v11);
+    if (editorCopy)
     {
       goto LABEL_14;
     }
   }
 
-  else if (v4)
+  else if (editorCopy)
   {
     goto LABEL_14;
   }
@@ -1726,7 +1726,7 @@ LABEL_28:
   [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:619 isFatal:0 description:"invalid nil value for '%{public}s'", "poppedEditor"];
 
 LABEL_14:
-  if ([(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:v4]== 0x7FFFFFFFFFFFFFFFLL)
+  if ([(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:editorCopy]== 0x7FFFFFFFFFFFFFFFLL)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1755,7 +1755,7 @@ LABEL_14:
     [CRLAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:620 isFatal:0 description:"shouldn't pop an editor that isn't on the stack"];
   }
 
-  if (v4 && [(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:v4]!= 0x7FFFFFFFFFFFFFFFLL)
+  if (editorCopy && [(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:editorCopy]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     v18 = [(NSMutableArray *)self->mEditorStack count]+ 1;
     do
@@ -1765,14 +1765,14 @@ LABEL_14:
         break;
       }
 
-      v19 = [(NSMutableArray *)self->mEditorStack lastObject];
+      lastObject = [(NSMutableArray *)self->mEditorStack lastObject];
       WeakRetained = objc_loadWeakRetained(&self->mTextInputEditor);
 
-      if (v19 == WeakRetained)
+      if (lastObject == WeakRetained)
       {
         if (objc_opt_respondsToSelector())
         {
-          [v19 willResignTextInputEditor];
+          [lastObject willResignTextInputEditor];
         }
 
         v21 = objc_loadWeakRetained(&self->mTextInputEditor);
@@ -1789,13 +1789,13 @@ LABEL_14:
 
       if (objc_opt_respondsToSelector())
       {
-        [v19 willResignCurrentEditor];
+        [lastObject willResignCurrentEditor];
       }
 
       [(NSMutableArray *)self->mEditorStack removeLastObject];
     }
 
-    while (v19 != v4);
+    while (lastObject != editorCopy);
   }
 }
 
@@ -1883,32 +1883,32 @@ LABEL_11:
   }
 }
 
-- (void)enumerateEditorsOnStackUsingBlock:(id)a3
+- (void)enumerateEditorsOnStackUsingBlock:(id)block
 {
   mEditorStack = self->mEditorStack;
-  v5 = a3;
-  v6 = [(NSMutableArray *)mEditorStack reverseObjectEnumerator];
-  [(CRLEditorController *)self p_enumerateEditorsWithEnumerator:v6 usingBlock:v5];
+  blockCopy = block;
+  reverseObjectEnumerator = [(NSMutableArray *)mEditorStack reverseObjectEnumerator];
+  [(CRLEditorController *)self p_enumerateEditorsWithEnumerator:reverseObjectEnumerator usingBlock:blockCopy];
 }
 
-- (void)enumerateEditorsOnStackLeastToMostSpecificUsingBlock:(id)a3
+- (void)enumerateEditorsOnStackLeastToMostSpecificUsingBlock:(id)block
 {
   mEditorStack = self->mEditorStack;
-  v5 = a3;
-  v6 = [(NSMutableArray *)mEditorStack objectEnumerator];
-  [(CRLEditorController *)self p_enumerateEditorsWithEnumerator:v6 usingBlock:v5];
+  blockCopy = block;
+  objectEnumerator = [(NSMutableArray *)mEditorStack objectEnumerator];
+  [(CRLEditorController *)self p_enumerateEditorsWithEnumerator:objectEnumerator usingBlock:blockCopy];
 }
 
-- (void)p_enumerateEditorsWithEnumerator:(id)a3 usingBlock:(id)a4
+- (void)p_enumerateEditorsWithEnumerator:(id)enumerator usingBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  enumeratorCopy = enumerator;
+  blockCopy = block;
   v16 = 0;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v5;
+  v7 = enumeratorCopy;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v8)
   {
@@ -1923,7 +1923,7 @@ LABEL_3:
         objc_enumerationMutation(v7);
       }
 
-      v6[2](v6, *(*(&v12 + 1) + 8 * v11), &v16);
+      blockCopy[2](blockCopy, *(*(&v12 + 1) + 8 * v11), &v16);
       if (v16)
       {
         break;
@@ -1943,7 +1943,7 @@ LABEL_3:
   }
 }
 
-- (id)currentEditorsOfClass:(Class)a3
+- (id)currentEditorsOfClass:(Class)class
 {
   v4 = objc_alloc_init(NSMutableArray);
   v12 = 0u;
@@ -1981,16 +1981,16 @@ LABEL_3:
   return v4;
 }
 
-- (id)mostSpecificCurrentEditorOfClass:(Class)a3
+- (id)mostSpecificCurrentEditorOfClass:(Class)class
 {
-  if (a3)
+  if (class)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(NSMutableArray *)self->mEditorStack reverseObjectEnumerator];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    reverseObjectEnumerator = [(NSMutableArray *)self->mEditorStack reverseObjectEnumerator];
+    v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -2001,19 +2001,19 @@ LABEL_3:
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v8 = *(*(&v11 + 1) + 8 * i);
           if (objc_opt_isKindOfClass())
           {
-            v9 = v8;
+            lastObject = v8;
 
             goto LABEL_13;
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v5)
         {
           continue;
@@ -2023,28 +2023,28 @@ LABEL_3:
       }
     }
 
-    v9 = 0;
+    lastObject = 0;
   }
 
   else
   {
-    v9 = [(NSMutableArray *)self->mEditorStack lastObject];
+    lastObject = [(NSMutableArray *)self->mEditorStack lastObject];
   }
 
 LABEL_13:
 
-  return v9;
+  return lastObject;
 }
 
-- (id)mostSpecificCurrentEditorOfClass:(Class)a3 conformingToProtocol:(id)a4
+- (id)mostSpecificCurrentEditorOfClass:(Class)class conformingToProtocol:(id)protocol
 {
-  v6 = a4;
+  protocolCopy = protocol;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(NSMutableArray *)self->mEditorStack reverseObjectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->mEditorStack reverseObjectEnumerator];
+  v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2055,18 +2055,18 @@ LABEL_13:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if (!a3 || (objc_opt_isKindOfClass()) && ([v12 conformsToProtocol:v6])
+        if (!class || (objc_opt_isKindOfClass()) && ([v12 conformsToProtocol:protocolCopy])
         {
           v13 = v12;
           goto LABEL_13;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         continue;
@@ -2082,9 +2082,9 @@ LABEL_13:
   return v13;
 }
 
-- (id)currentEditorsConformingToProtocol:(id)a3
+- (id)currentEditorsConformingToProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v5 = objc_alloc_init(NSMutableArray);
   v13 = 0u;
   v14 = 0u;
@@ -2106,7 +2106,7 @@ LABEL_13:
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if ([v11 conformsToProtocol:{v4, v13}])
+        if ([v11 conformsToProtocol:{protocolCopy, v13}])
         {
           [v5 addObject:v11];
         }
@@ -2121,10 +2121,10 @@ LABEL_13:
   return v5;
 }
 
-- (void)editorDidChangeSelectionAndWantsKeyboard:(id)a3
+- (void)editorDidChangeSelectionAndWantsKeyboard:(id)keyboard
 {
-  v4 = a3;
-  if (!v4)
+  keyboardCopy = keyboard;
+  if (!keyboardCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -2161,14 +2161,14 @@ LABEL_13:
   v8 = off_1019EEB38;
   if (os_log_type_enabled(off_1019EEB38, OS_LOG_TYPE_DEBUG))
   {
-    sub_10133B130(v4, v8, v9, v10, v11, v12, v13, v14);
+    sub_10133B130(keyboardCopy, v8, v9, v10, v11, v12, v13, v14);
   }
 
   v15 = +[NSNotificationCenter defaultCenter];
   [v15 postNotificationName:@"CRLEditorControllerSelectionDidChangeAndWantsKeyboard" object:self userInfo:0];
 }
 
-- (void)p_refreshTextInputEditorWithFlags:(unint64_t)a3
+- (void)p_refreshTextInputEditorWithFlags:(unint64_t)flags
 {
   WeakRetained = objc_loadWeakRetained(&self->mTextInputEditor);
   objc_storeWeak(&self->mTextInputEditor, 0);
@@ -2176,8 +2176,8 @@ LABEL_13:
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v5 = [(NSMutableArray *)self->mEditorStack reverseObjectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v32 objects:v44 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->mEditorStack reverseObjectEnumerator];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v32 objects:v44 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2188,7 +2188,7 @@ LABEL_13:
       {
         if (*v33 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v10 = *(*(&v32 + 1) + 8 * i);
@@ -2202,7 +2202,7 @@ LABEL_13:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v32 objects:v44 count:16];
+      v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v32 objects:v44 count:16];
       if (v7)
       {
         continue;
@@ -2228,7 +2228,7 @@ LABEL_13:
       v29 = v19;
       v30 = objc_loadWeakRetained(&self->mTextInputEditor);
       *buf = 134218498;
-      v39 = self;
+      selfCopy = self;
       v40 = 2112;
       v41 = WeakRetained;
       v42 = 2112;
@@ -2264,7 +2264,7 @@ LABEL_13:
     }
 
     v36 = @"CRLEditorControllerSelectionFlagsKey";
-    v26 = [NSNumber numberWithUnsignedLongLong:a3];
+    v26 = [NSNumber numberWithUnsignedLongLong:flags];
     v37 = v26;
     v27 = [NSDictionary dictionaryWithObjects:&v37 forKeys:&v36 count:1];
 

@@ -1,19 +1,19 @@
 @interface SFWebAppDataProvider
 - (SFWebAppDataProviderDelegate)delegate;
 - (UIViewController)activityViewController;
-- (void)_downloadManifestIconWithCompletionHandler:(id)a3;
+- (void)_downloadManifestIconWithCompletionHandler:(id)handler;
 - (void)_updateManifestValues;
 - (void)_updateMonogramIconForWebClip;
 - (void)dealloc;
-- (void)prepareWithManifestData:(id)a3;
+- (void)prepareWithManifestData:(id)data;
 - (void)setContentReadyForDisplay;
-- (void)updateWebClipIcon:(id)a3;
-- (void)updateWithStagedCookiesDirectoryURL:(id)a3 sandboxExtensionToken:(id)a4;
-- (void)updateWithWebClipMetadata:(id)a3;
-- (void)webClip:(id)a3 iconRequestDidFinishWithImage:(id)a4 precomposed:(BOOL)a5;
-- (void)webClip:(id)a3 startupImageRequestDidFinishWithImage:(id)a4;
-- (void)webClip:(id)a3 startupLandscapeImageRequestDidFinishWithImage:(id)a4;
-- (void)webClipViewController:(id)a3 didFinishWithResult:(BOOL)a4;
+- (void)updateWebClipIcon:(id)icon;
+- (void)updateWithStagedCookiesDirectoryURL:(id)l sandboxExtensionToken:(id)token;
+- (void)updateWithWebClipMetadata:(id)metadata;
+- (void)webClip:(id)clip iconRequestDidFinishWithImage:(id)image precomposed:(BOOL)precomposed;
+- (void)webClip:(id)clip startupImageRequestDidFinishWithImage:(id)image;
+- (void)webClip:(id)clip startupLandscapeImageRequestDidFinishWithImage:(id)image;
+- (void)webClipViewController:(id)controller didFinishWithResult:(BOOL)result;
 @end
 
 @implementation SFWebAppDataProvider
@@ -25,10 +25,10 @@
     wrappingNavigationController = self->_wrappingNavigationController;
     if (wrappingNavigationController)
     {
-      v4 = [(UINavigationController *)wrappingNavigationController topViewController];
+      topViewController = [(UINavigationController *)wrappingNavigationController topViewController];
       webClipViewController = self->_webClipViewController;
 
-      if (v4 != webClipViewController)
+      if (topViewController != webClipViewController)
       {
         v6 = self->_wrappingNavigationController;
         v7 = self->_webClipViewController;
@@ -66,11 +66,11 @@
   return wrappingNavigationController;
 }
 
-- (void)updateWithWebClipMetadata:(id)a3
+- (void)updateWithWebClipMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   [(SFWebAppDataProvider *)self setContentReadyForDisplay];
-  v5 = [v4 safari_dictionaryForKey:@"MetaAndLinkTags"];
+  v5 = [metadataCopy safari_dictionaryForKey:@"MetaAndLinkTags"];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -88,32 +88,32 @@
   }
 }
 
-- (void)updateWebClipIcon:(id)a3
+- (void)updateWebClipIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   webClip = self->_webClip;
   if (webClip && !self->_touchIcon)
   {
-    v6 = v4;
-    [(UIWebClip *)webClip setIconImage:v4 isPrecomposed:0];
+    v6 = iconCopy;
+    [(UIWebClip *)webClip setIconImage:iconCopy isPrecomposed:0];
     [(_SFWebClipViewController *)self->_webClipViewController updateUIAnimated:1];
-    v4 = v6;
+    iconCopy = v6;
   }
 }
 
-- (void)updateWithStagedCookiesDirectoryURL:(id)a3 sandboxExtensionToken:(id)a4
+- (void)updateWithStagedCookiesDirectoryURL:(id)l sandboxExtensionToken:(id)token
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [v7 UTF8String];
+  lCopy = l;
+  tokenCopy = token;
+  [tokenCopy UTF8String];
   v8 = sandbox_extension_consume();
   if (v8 == -1)
   {
     v16 = WBS_LOG_CHANNEL_PREFIXWebApp();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [SFWebAppDataProvider updateWithStagedCookiesDirectoryURL:v7 sandboxExtensionToken:v16];
+      [SFWebAppDataProvider updateWithStagedCookiesDirectoryURL:tokenCopy sandboxExtensionToken:v16];
     }
   }
 
@@ -127,13 +127,13 @@
     v23[3] = &__block_descriptor_40_e5_v8__0l;
     v23[4] = v9;
     [v10 setHandler:v23];
-    v11 = [(UIWebClip *)self->_webClip _sf_stagedCookiesURL];
-    v12 = v11;
-    if (v6 && v11)
+    _sf_stagedCookiesURL = [(UIWebClip *)self->_webClip _sf_stagedCookiesURL];
+    v12 = _sf_stagedCookiesURL;
+    if (lCopy && _sf_stagedCookiesURL)
     {
-      v13 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v22 = 0;
-      [v13 copyItemAtURL:v6 toURL:v12 error:&v22];
+      [defaultManager copyItemAtURL:lCopy toURL:v12 error:&v22];
       v14 = v22;
 
       if (v14)
@@ -152,39 +152,39 @@
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         v18 = v17;
-        v19 = [v6 absoluteString];
-        v20 = [v12 absoluteString];
-        v21 = [(UIWebClip *)self->_webClip identifier];
+        absoluteString = [lCopy absoluteString];
+        absoluteString2 = [v12 absoluteString];
+        identifier = [(UIWebClip *)self->_webClip identifier];
         *buf = 138543874;
-        v25 = v19;
+        v25 = absoluteString;
         v26 = 2114;
-        v27 = v20;
+        v27 = absoluteString2;
         v28 = 2114;
-        v29 = v21;
+        v29 = identifier;
         _os_log_error_impl(&dword_1D4644000, v18, OS_LOG_TYPE_ERROR, "Received invalid paths to copy cookies from: %{public}@ to: %{public}@, for web clip with identifier: %{public}@", buf, 0x20u);
       }
     }
   }
 }
 
-- (void)webClipViewController:(id)a3 didFinishWithResult:(BOOL)a4
+- (void)webClipViewController:(id)controller didFinishWithResult:(BOOL)result
 {
-  v4 = a4;
-  v6 = [(SFWebAppDataProvider *)self delegate];
-  [v6 dataProvider:self didFinishWithResult:v4];
+  resultCopy = result;
+  delegate = [(SFWebAppDataProvider *)self delegate];
+  [delegate dataProvider:self didFinishWithResult:resultCopy];
 
-  v7 = [(UIWebClip *)self->_webClip _sf_stagedCookiesURL];
-  if (!v4)
+  _sf_stagedCookiesURL = [(UIWebClip *)self->_webClip _sf_stagedCookiesURL];
+  if (!resultCopy)
   {
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [v7 path];
-    v10 = [v8 fileExistsAtPath:v9];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [_sf_stagedCookiesURL path];
+    v10 = [defaultManager fileExistsAtPath:path];
 
     if (v10)
     {
-      v11 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
       v17 = 0;
-      [v11 removeItemAtURL:v7 error:&v17];
+      [defaultManager2 removeItemAtURL:_sf_stagedCookiesURL error:&v17];
       v12 = v17;
 
       if (v12)
@@ -192,7 +192,7 @@
         v13 = WBS_LOG_CHANNEL_PREFIXWebApp();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
-          [SFWebAppDataProvider webClipViewController:v7 didFinishWithResult:v13];
+          [SFWebAppDataProvider webClipViewController:_sf_stagedCookiesURL didFinishWithResult:v13];
         }
       }
     }
@@ -210,88 +210,88 @@
   self->_webClip = 0;
 }
 
-- (void)webClip:(id)a3 iconRequestDidFinishWithImage:(id)a4 precomposed:(BOOL)a5
+- (void)webClip:(id)clip iconRequestDidFinishWithImage:(id)image precomposed:(BOOL)precomposed
 {
-  v5 = a5;
-  v9 = a3;
-  v8 = a4;
-  if (v8 && self->_webClip == v9)
+  precomposedCopy = precomposed;
+  clipCopy = clip;
+  imageCopy = image;
+  if (imageCopy && self->_webClip == clipCopy)
   {
-    [(UIWebClip *)v9 setIconImage:v8 isPrecomposed:v5];
+    [(UIWebClip *)clipCopy setIconImage:imageCopy isPrecomposed:precomposedCopy];
     [(_SFWebClipViewController *)self->_webClipViewController updateUIAnimated:1];
-    objc_storeStrong(&self->_touchIcon, a4);
-    self->_touchIconPrecomposed = v5;
+    objc_storeStrong(&self->_touchIcon, image);
+    self->_touchIconPrecomposed = precomposedCopy;
   }
 }
 
-- (void)webClip:(id)a3 startupImageRequestDidFinishWithImage:(id)a4
+- (void)webClip:(id)clip startupImageRequestDidFinishWithImage:(id)image
 {
-  v7 = a3;
-  v6 = a4;
-  if (v6 && self->_webClip == v7 && [v6 sf_isLaunchImageSizedForOrientation:1 includesStatusBar:0])
+  clipCopy = clip;
+  imageCopy = image;
+  if (imageCopy && self->_webClip == clipCopy && [imageCopy sf_isLaunchImageSizedForOrientation:1 includesStatusBar:0])
   {
-    [(UIWebClip *)v7 setStartupImage:v6];
+    [(UIWebClip *)clipCopy setStartupImage:imageCopy];
   }
 }
 
-- (void)webClip:(id)a3 startupLandscapeImageRequestDidFinishWithImage:(id)a4
+- (void)webClip:(id)clip startupLandscapeImageRequestDidFinishWithImage:(id)image
 {
-  v7 = a3;
-  v6 = a4;
-  if (v6 && self->_webClip == v7 && [v6 sf_isLaunchImageSizedForOrientation:4 includesStatusBar:0])
+  clipCopy = clip;
+  imageCopy = image;
+  if (imageCopy && self->_webClip == clipCopy && [imageCopy sf_isLaunchImageSizedForOrientation:4 includesStatusBar:0])
   {
-    [(UIWebClip *)v7 setStartupLandscapeImage:v6];
+    [(UIWebClip *)clipCopy setStartupLandscapeImage:imageCopy];
   }
 }
 
 - (void)_updateManifestValues
 {
-  v2 = self;
+  selfCopy = self;
   v45 = *MEMORY[0x1E69E9840];
   manifest = self->_manifest;
   if (manifest)
   {
-    v4 = [(_WKApplicationManifest *)manifest safari_name];
-    webClip = v2->_webClip;
-    if (v4)
+    safari_name = [(_WKApplicationManifest *)manifest safari_name];
+    webClip = selfCopy->_webClip;
+    if (safari_name)
     {
-      [(UIWebClip *)webClip setTitle:v4];
+      [(UIWebClip *)webClip setTitle:safari_name];
     }
 
     else
     {
-      v6 = [(UIWebClip *)webClip title];
-      [(UIWebClip *)v2->_webClip setTitle:v6];
+      title = [(UIWebClip *)webClip title];
+      [(UIWebClip *)selfCopy->_webClip setTitle:title];
     }
 
-    v7 = [(_WKApplicationManifest *)v2->_manifest startURL];
-    v8 = v2->_webClip;
-    if (v7)
+    startURL = [(_WKApplicationManifest *)selfCopy->_manifest startURL];
+    v8 = selfCopy->_webClip;
+    if (startURL)
     {
-      [(UIWebClip *)v8 setPageURL:v7];
+      [(UIWebClip *)v8 setPageURL:startURL];
     }
 
     else
     {
-      v9 = [(UIWebClip *)v8 pageURL];
-      [(UIWebClip *)v2->_webClip setPageURL:v9];
+      pageURL = [(UIWebClip *)v8 pageURL];
+      [(UIWebClip *)selfCopy->_webClip setPageURL:pageURL];
     }
 
-    v10 = [(_WKApplicationManifest *)v2->_manifest displayMode]== 3 || [(_WKApplicationManifest *)v2->_manifest displayMode]== 2;
-    [(UIWebClip *)v2->_webClip setFullScreen:v10];
-    v11 = [(_WKApplicationManifest *)v2->_manifest icons];
-    v12 = v11;
-    if (v11)
+    v10 = [(_WKApplicationManifest *)selfCopy->_manifest displayMode]== 3 || [(_WKApplicationManifest *)selfCopy->_manifest displayMode]== 2;
+    [(UIWebClip *)selfCopy->_webClip setFullScreen:v10];
+    icons = [(_WKApplicationManifest *)selfCopy->_manifest icons];
+    v12 = icons;
+    if (icons)
     {
-      v35 = v11;
-      v36 = v2;
-      v13 = [(_WKApplicationManifest *)v2->_manifest icons];
-      v37 = [MEMORY[0x1E695DF70] array];
+      v35 = icons;
+      v36 = selfCopy;
+      icons2 = [(_WKApplicationManifest *)selfCopy->_manifest icons];
+      array = [MEMORY[0x1E695DF70] array];
       v40 = 0u;
       v41 = 0u;
       v42 = 0u;
       v43 = 0u;
-      obj = v13;
+      obj = icons2;
       v14 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
       if (v14)
       {
@@ -307,8 +307,8 @@
             }
 
             v18 = *(*(&v40 + 1) + 8 * i);
-            v19 = [v18 purposes];
-            v20 = [v19 containsObject:&unk_1F5023098];
+            purposes = [v18 purposes];
+            v20 = [purposes containsObject:&unk_1F5023098];
 
             if (v20)
             {
@@ -318,23 +318,23 @@
 
               [v21 setSiteWide:1];
               [v21 setPrecomposed:0];
-              v23 = [v18 sizes];
+              sizes = [v18 sizes];
 
-              if (v23)
+              if (sizes)
               {
-                v24 = [v18 sizes];
-                v25 = [v24 firstObject];
-                v26 = [v25 componentsSeparatedByString:@"x"];
-                v27 = [v26 firstObject];
-                v28 = [v27 integerValue];
+                sizes2 = [v18 sizes];
+                firstObject = [sizes2 firstObject];
+                v26 = [firstObject componentsSeparatedByString:@"x"];
+                firstObject2 = [v26 firstObject];
+                integerValue = [firstObject2 integerValue];
 
-                if (v28)
+                if (integerValue)
                 {
-                  [v21 setBestSize:{v28, v28}];
+                  [v21 setBestSize:{integerValue, integerValue}];
                 }
               }
 
-              [v37 addObject:v21];
+              [array addObject:v21];
             }
           }
 
@@ -344,9 +344,9 @@
         while (v15);
       }
 
-      if ([v37 count])
+      if ([array count])
       {
-        v29 = v37;
+        v29 = array;
       }
 
       else
@@ -356,7 +356,7 @@
 
       v30 = v29;
 
-      v2 = v36;
+      selfCopy = v36;
       manifestIcons = v36->_manifestIcons;
       v36->_manifestIcons = v30;
 
@@ -365,36 +365,36 @@
 
     else
     {
-      v32 = v2->_manifestIcons;
-      v2->_manifestIcons = 0;
+      v32 = selfCopy->_manifestIcons;
+      selfCopy->_manifestIcons = 0;
     }
 
-    v33 = [(_WKApplicationManifest *)v2->_manifest manifestId];
-    [(UIWebClip *)v2->_webClip setManifestId:v33];
+    manifestId = [(_WKApplicationManifest *)selfCopy->_manifest manifestId];
+    [(UIWebClip *)selfCopy->_webClip setManifestId:manifestId];
 
-    [(UIWebClip *)v2->_webClip _sf_setApplicationManifest:v2->_manifest];
+    [(UIWebClip *)selfCopy->_webClip _sf_setApplicationManifest:selfCopy->_manifest];
   }
 
-  [(_SFWebClipViewController *)v2->_webClipViewController setCanEditAndSave:1];
-  [(_SFWebClipViewController *)v2->_webClipViewController updateUIAnimated:0];
-  v2->_webClipConfigured = 1;
-  touchIcon = v2->_touchIcon;
+  [(_SFWebClipViewController *)selfCopy->_webClipViewController setCanEditAndSave:1];
+  [(_SFWebClipViewController *)selfCopy->_webClipViewController updateUIAnimated:0];
+  selfCopy->_webClipConfigured = 1;
+  touchIcon = selfCopy->_touchIcon;
   if (touchIcon)
   {
-    [(UIWebClip *)v2->_webClip setIconImage:touchIcon isPrecomposed:v2->_touchIconPrecomposed];
+    [(UIWebClip *)selfCopy->_webClip setIconImage:touchIcon isPrecomposed:selfCopy->_touchIconPrecomposed];
   }
 
   else
   {
-    [(SFWebAppDataProvider *)v2 _updateMonogramIconForWebClip];
-    if (v2->_manifestIcons)
+    [(SFWebAppDataProvider *)selfCopy _updateMonogramIconForWebClip];
+    if (selfCopy->_manifestIcons)
     {
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
       v39[2] = __45__SFWebAppDataProvider__updateManifestValues__block_invoke;
       v39[3] = &unk_1E8491B58;
-      v39[4] = v2;
-      [(SFWebAppDataProvider *)v2 _downloadManifestIconWithCompletionHandler:v39];
+      v39[4] = selfCopy;
+      [(SFWebAppDataProvider *)selfCopy _downloadManifestIconWithCompletionHandler:v39];
     }
   }
 }
@@ -423,31 +423,31 @@ uint64_t __45__SFWebAppDataProvider__updateManifestValues__block_invoke(uint64_t
   webView = self->_webView;
   if (webView)
   {
-    v4 = [(WKWebView *)webView themeColor];
+    themeColor = [(WKWebView *)webView themeColor];
     pageThemeColor = self->_pageThemeColor;
-    self->_pageThemeColor = v4;
+    self->_pageThemeColor = themeColor;
 
-    v6 = [(WKWebView *)self->_webView underPageBackgroundColor];
+    underPageBackgroundColor = [(WKWebView *)self->_webView underPageBackgroundColor];
     underPageBackgroundColor = self->_underPageBackgroundColor;
-    self->_underPageBackgroundColor = v6;
+    self->_underPageBackgroundColor = underPageBackgroundColor;
   }
 
-  v27 = [MEMORY[0x1E69B1C58] defaultIconKeyColor];
+  defaultIconKeyColor = [MEMORY[0x1E69B1C58] defaultIconKeyColor];
   manifest = self->_manifest;
   if (manifest)
   {
-    v9 = [(_WKApplicationManifest *)manifest themeColor];
-    if (v9)
+    themeColor2 = [(_WKApplicationManifest *)manifest themeColor];
+    if (themeColor2)
     {
-      v10 = v9;
-      v11 = [(_WKApplicationManifest *)self->_manifest themeColor];
-      v12 = [v11 safari_isCloseToWhite];
+      v10 = themeColor2;
+      themeColor3 = [(_WKApplicationManifest *)self->_manifest themeColor];
+      safari_isCloseToWhite = [themeColor3 safari_isCloseToWhite];
 
-      if ((v12 & 1) == 0)
+      if ((safari_isCloseToWhite & 1) == 0)
       {
-        v17 = [(_WKApplicationManifest *)self->_manifest themeColor];
+        themeColor4 = [(_WKApplicationManifest *)self->_manifest themeColor];
 LABEL_18:
-        v18 = v17;
+        v18 = themeColor4;
 
         v15 = v18;
         goto LABEL_19;
@@ -460,7 +460,7 @@ LABEL_18:
   {
     v16 = self->_pageThemeColor;
 LABEL_17:
-    v17 = v16;
+    themeColor4 = v16;
     goto LABEL_18;
   }
 
@@ -471,14 +471,14 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v15 = v27;
+  v15 = defaultIconKeyColor;
 LABEL_19:
   v28 = v15;
   if (([(UIColor *)v15 sf_isDarkColor]& 1) == 0)
   {
-    v19 = [v28 sf_darkenedColor];
+    sf_darkenedColor = [v28 sf_darkenedColor];
 
-    v28 = v19;
+    v28 = sf_darkenedColor;
   }
 
   v20 = objc_alloc_init(MEMORY[0x1E69C9880]);
@@ -502,27 +502,27 @@ LABEL_19:
   [MEMORY[0x1E69B1C58] cornerRadius];
   [v20 setCornerRadius:?];
   v23 = MEMORY[0x1E69C9888];
-  v24 = [(UIWebClip *)self->_webClip title];
-  v25 = [(UIWebClip *)self->_webClip pageURL];
-  v26 = [v23 monogramWithTitle:v24 url:v25 monogramConfiguration:v20 shouldRemoveGrammaticalArticles:1];
+  title = [(UIWebClip *)self->_webClip title];
+  pageURL = [(UIWebClip *)self->_webClip pageURL];
+  v26 = [v23 monogramWithTitle:title url:pageURL monogramConfiguration:v20 shouldRemoveGrammaticalArticles:1];
 
   [(UIWebClip *)self->_webClip setIconImage:v26 isPrecomposed:1];
   [(_SFWebClipViewController *)self->_webClipViewController updateUIAnimated:1];
 }
 
-- (void)_downloadManifestIconWithCompletionHandler:(id)a3
+- (void)_downloadManifestIconWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (self->_bestManifestIcon)
   {
-    (*(v4 + 2))(v4);
+    (*(handlerCopy + 2))(handlerCopy);
   }
 
   else
   {
     v6 = [(NSArray *)self->_manifestIcons safari_maximumUsingComparator:&__block_literal_global_18];
-    v7 = [MEMORY[0x1E69C97D8] sharedManager];
+    mEMORY[0x1E69C97D8] = [MEMORY[0x1E69C97D8] sharedManager];
     v8 = [v6 url];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -530,7 +530,7 @@ LABEL_19:
     v9[3] = &unk_1E8491BA0;
     v9[4] = self;
     v10 = v5;
-    [v7 downloadImageWithURL:v8 options:1 completionHandler:v9];
+    [mEMORY[0x1E69C97D8] downloadImageWithURL:v8 options:1 completionHandler:v9];
   }
 }
 
@@ -565,42 +565,42 @@ LABEL_5:
   return WeakRetained;
 }
 
-- (void)prepareWithManifestData:(id)a3
+- (void)prepareWithManifestData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [[_SFWebClipViewController alloc] initWithStyle:1];
   webClipViewController = self->_webClipViewController;
   self->_webClipViewController = v5;
 
   [(_SFWebClipViewController *)self->_webClipViewController setDelegate:self];
-  v7 = [(NSDictionary *)v4 safari_applicationManifestForKey:?];
+  v7 = [(NSDictionary *)dataCopy safari_applicationManifestForKey:?];
   manifest = self->_manifest;
   self->_manifest = v7;
 
-  v9 = [(NSDictionary *)v4 safari_colorForKey:?];
+  v9 = [(NSDictionary *)dataCopy safari_colorForKey:?];
   pageThemeColor = self->_pageThemeColor;
   self->_pageThemeColor = v9;
 
-  v11 = [(NSDictionary *)v4 safari_colorForKey:?];
+  v11 = [(NSDictionary *)dataCopy safari_colorForKey:?];
   underPageBackgroundColor = self->_underPageBackgroundColor;
   self->_underPageBackgroundColor = v11;
 
-  v18 = [v4 safari_URLForKey:@"PageURL"];
+  v18 = [dataCopy safari_URLForKey:@"PageURL"];
   v13 = objc_alloc_init(MEMORY[0x1E69DD2B8]);
   webClip = self->_webClip;
   self->_webClip = v13;
 
   [(UIWebClip *)self->_webClip setDelegate:self];
-  v15 = [v4 safari_stringForKey:@"PageTitle"];
+  v15 = [dataCopy safari_stringForKey:@"PageTitle"];
 
   [(UIWebClip *)self->_webClip setTitle:v15];
   [(UIWebClip *)self->_webClip setPageURL:v18];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v17 = [WeakRetained trustedClientBundleIdentifier];
+  trustedClientBundleIdentifier = [WeakRetained trustedClientBundleIdentifier];
 
-  if ([v17 length] && (objc_opt_respondsToSelector() & 1) != 0)
+  if ([trustedClientBundleIdentifier length] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(UIWebClip *)self->_webClip addTrustedClientBundleIdentifier:v17];
+    [(UIWebClip *)self->_webClip addTrustedClientBundleIdentifier:trustedClientBundleIdentifier];
   }
 
   [(_SFWebClipViewController *)self->_webClipViewController setWebClip:self->_webClip];

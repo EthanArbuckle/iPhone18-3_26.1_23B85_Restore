@@ -19,8 +19,8 @@
 
   else
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"WFStaccatoActionTemplate_WorkflowKit.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplate_WorkflowKit.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"action"}];
 
     if (v9)
     {
@@ -28,11 +28,11 @@
     }
   }
 
-  v20 = [MEMORY[0x277CCA890] currentHandler];
-  [v20 handleFailureInMethod:a2 object:a1 file:@"WFStaccatoActionTemplate_WorkflowKit.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"parameter"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplate_WorkflowKit.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"parameter"}];
 
 LABEL_3:
-  v21.receiver = a1;
+  v21.receiver = self;
   v21.super_class = &off_28460C280;
   v10 = objc_msgSendSuper2(&v21, sel_init);
   if (v10)
@@ -51,10 +51,10 @@ LABEL_3:
     }
 
     v14 = [v9 key];
-    v15 = [v7 identifier];
-    v16 = [v9 localizedLabel];
-    v17 = [v9 localizedDescription];
-    v10 = [v10 initWithKey:v14 actionIdentifier:v15 localizedLabel:v16 localizedDescription:v17 defaultValue:v13];
+    identifier = [v7 identifier];
+    localizedLabel = [v9 localizedLabel];
+    localizedDescription = [v9 localizedDescription];
+    v10 = [v10 initWithKey:v14 actionIdentifier:identifier localizedLabel:localizedLabel localizedDescription:localizedDescription defaultValue:v13];
   }
 
   return v10;

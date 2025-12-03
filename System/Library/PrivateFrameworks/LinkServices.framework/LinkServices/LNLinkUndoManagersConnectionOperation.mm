@@ -1,6 +1,6 @@
 @interface LNLinkUndoManagersConnectionOperation
-- (_TtC12LinkServicesP33_EE3B95D90A41B46BC92A99E41AF6946437LNLinkUndoManagersConnectionOperation)initWithIdentifier:(id)a3 connectionInterface:(id)a4 priority:(int64_t)a5 queue:(id)a6 activity:(id)a7;
-- (void)finishWithError:(id)a3;
+- (_TtC12LinkServicesP33_EE3B95D90A41B46BC92A99E41AF6946437LNLinkUndoManagersConnectionOperation)initWithIdentifier:(id)identifier connectionInterface:(id)interface priority:(int64_t)priority queue:(id)queue activity:(id)activity;
+- (void)finishWithError:(id)error;
 - (void)start;
 @end
 
@@ -8,27 +8,27 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_197670530();
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  sub_197670714(a3);
+  selfCopy = self;
+  errorCopy = error;
+  sub_197670714(error);
 }
 
-- (_TtC12LinkServicesP33_EE3B95D90A41B46BC92A99E41AF6946437LNLinkUndoManagersConnectionOperation)initWithIdentifier:(id)a3 connectionInterface:(id)a4 priority:(int64_t)a5 queue:(id)a6 activity:(id)a7
+- (_TtC12LinkServicesP33_EE3B95D90A41B46BC92A99E41AF6946437LNLinkUndoManagersConnectionOperation)initWithIdentifier:(id)identifier connectionInterface:(id)interface priority:(int64_t)priority queue:(id)queue activity:(id)activity
 {
   v9 = sub_19774EBF0();
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x1EEE9AC00](v9 - 8);
-  v11 = _Block_copy(a7);
+  v11 = _Block_copy(activity);
   sub_19774EBC0();
   *(swift_allocObject() + 16) = v11;
   swift_unknownObjectRetain();
-  v12 = a6;
+  queueCopy = queue;
   sub_197670828();
 }
 

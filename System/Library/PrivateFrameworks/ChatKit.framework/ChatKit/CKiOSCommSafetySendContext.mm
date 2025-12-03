@@ -1,34 +1,34 @@
 @interface CKiOSCommSafetySendContext
-+ (id)contextWithComposition:(id)a3 sensitiveMediaObjects:(id)a4 identifiersOfShelvedImages:(id)a5;
-- (CKiOSCommSafetySendContext)initWithComposition:(id)a3 sensitiveMediaObjects:(id)a4 identifiersOfShelvedImages:(id)a5;
++ (id)contextWithComposition:(id)composition sensitiveMediaObjects:(id)objects identifiersOfShelvedImages:(id)images;
+- (CKiOSCommSafetySendContext)initWithComposition:(id)composition sensitiveMediaObjects:(id)objects identifiersOfShelvedImages:(id)images;
 @end
 
 @implementation CKiOSCommSafetySendContext
 
-+ (id)contextWithComposition:(id)a3 sensitiveMediaObjects:(id)a4 identifiersOfShelvedImages:(id)a5
++ (id)contextWithComposition:(id)composition sensitiveMediaObjects:(id)objects identifiersOfShelvedImages:(id)images
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[CKiOSCommSafetySendContext alloc] initWithComposition:v9 sensitiveMediaObjects:v8 identifiersOfShelvedImages:v7];
+  imagesCopy = images;
+  objectsCopy = objects;
+  compositionCopy = composition;
+  v10 = [[CKiOSCommSafetySendContext alloc] initWithComposition:compositionCopy sensitiveMediaObjects:objectsCopy identifiersOfShelvedImages:imagesCopy];
 
   return v10;
 }
 
-- (CKiOSCommSafetySendContext)initWithComposition:(id)a3 sensitiveMediaObjects:(id)a4 identifiersOfShelvedImages:(id)a5
+- (CKiOSCommSafetySendContext)initWithComposition:(id)composition sensitiveMediaObjects:(id)objects identifiersOfShelvedImages:(id)images
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  compositionCopy = composition;
+  objectsCopy = objects;
+  imagesCopy = images;
   v15.receiver = self;
   v15.super_class = CKiOSCommSafetySendContext;
   v12 = [(CKiOSCommSafetySendContext *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_composition, a3);
-    objc_storeStrong(&v13->_sensitiveMediaObjects, a4);
-    objc_storeStrong(&v13->_identifiersOfShelvedImages, a5);
+    objc_storeStrong(&v12->_composition, composition);
+    objc_storeStrong(&v13->_sensitiveMediaObjects, objects);
+    objc_storeStrong(&v13->_identifiersOfShelvedImages, images);
   }
 
   return v13;

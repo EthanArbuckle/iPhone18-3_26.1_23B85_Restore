@@ -1,11 +1,11 @@
 @interface ARObjectScanningConfiguration
 + (id)supportedVideoFormats;
 - (ARObjectScanningConfiguration)init;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)imageSensorSettings;
-- (void)createTechniques:(id)a3;
+- (void)createTechniques:(id)techniques;
 @end
 
 @implementation ARObjectScanningConfiguration
@@ -14,11 +14,11 @@
 {
   v5.receiver = self;
   v5.super_class = ARObjectScanningConfiguration;
-  v2 = [(ARConfiguration *)&v5 initPrivate];
-  v3 = v2;
-  if (v2)
+  initPrivate = [(ARConfiguration *)&v5 initPrivate];
+  v3 = initPrivate;
+  if (initPrivate)
   {
-    [(ARConfiguration *)v2 setAutoFocusEnabled:1];
+    [(ARConfiguration *)initPrivate setAutoFocusEnabled:1];
     [(ARObjectScanningConfiguration *)v3 setLowQosSchedulingEnabled:[ARKitUserDefaults BOOLForKey:@"com.apple.arkit.planeEstimation.enableLowQosScheduling"]];
   }
 
@@ -38,31 +38,31 @@
 {
   v4.receiver = self;
   v4.super_class = ARObjectScanningConfiguration;
-  v2 = [(ARConfiguration *)&v4 imageSensorSettings];
-  [v2 setVisionDataOutputEnabled:0];
+  imageSensorSettings = [(ARConfiguration *)&v4 imageSensorSettings];
+  [imageSensorSettings setVisionDataOutputEnabled:0];
 
-  return v2;
+  return imageSensorSettings;
 }
 
-- (void)createTechniques:(id)a3
+- (void)createTechniques:(id)techniques
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  techniquesCopy = techniques;
   v5 = objc_opt_new();
-  v6 = [(ARObjectScanningConfiguration *)self imageSensorSettings];
-  [v5 setImageSensorSettings:v6];
+  imageSensorSettings = [(ARObjectScanningConfiguration *)self imageSensorSettings];
+  [v5 setImageSensorSettings:imageSensorSettings];
 
-  v7 = [(ARConfiguration *)self deviceModel];
-  [v5 setDeviceModel:v7];
+  deviceModel = [(ARConfiguration *)self deviceModel];
+  [v5 setDeviceModel:deviceModel];
 
   [v5 setSlamConfiguration:@"ObjectDetectionMapBuilding"];
   [v5 setPlaneDetection:{-[ARObjectScanningConfiguration planeDetection](self, "planeDetection")}];
   [v5 setMlModelEnabled:{-[ARObjectScanningConfiguration isMLModelEnabled](self, "isMLModelEnabled")}];
   [v5 setLowQosSchedulingEnabled:{-[ARObjectScanningConfiguration isLowQosSchedulingEnabled](self, "isLowQosSchedulingEnabled")}];
   [v5 setPlaneEstimationShouldUseJasperData:0];
-  v8 = [(ARConfiguration *)self replaySensor];
-  v9 = v8;
-  if (v8 && [v8 replayMode])
+  replaySensor = [(ARConfiguration *)self replaySensor];
+  v9 = replaySensor;
+  if (replaySensor && [replaySensor replayMode])
   {
     [v5 setDeterministicMode:1];
   }
@@ -75,30 +75,30 @@
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
     v13 = [(ARParentTechnique *)v11 initWithParallelTechniques:v12];
 
-    [v4 addObject:v13];
-    v14 = [(ARWorldTrackingTechnique *)v10 options];
-    v15 = [v14 planeDetection];
+    [techniquesCopy addObject:v13];
+    options = [(ARWorldTrackingTechnique *)v10 options];
+    planeDetection = [options planeDetection];
 
-    if (v15)
+    if (planeDetection)
     {
       v16 = [[ARPlaneEstimationTechnique alloc] initWithTrackingTechnique:v10];
-      [v4 addObject:v16];
+      [techniquesCopy addObject:v16];
     }
 
     v17.receiver = self;
     v17.super_class = ARObjectScanningConfiguration;
-    [(ARConfiguration *)&v17 createTechniques:v4];
+    [(ARConfiguration *)&v17 createTechniques:techniquesCopy];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = ARObjectScanningConfiguration;
-  if ([(ARConfiguration *)&v8 isEqual:v4])
+  if ([(ARConfiguration *)&v8 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = self->_planeDetection == v5[15] && self->_mlModelEnabled == *(v5 + 112) && self->_lowQosSchedulingEnabled == *(v5 + 113) && self->_deliverRawSceneUnderstandingResults == *(v5 + 114);
   }
 
@@ -110,11 +110,11 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = ARObjectScanningConfiguration;
-  result = [(ARConfiguration *)&v5 copyWithZone:a3];
+  result = [(ARConfiguration *)&v5 copyWithZone:zone];
   *(result + 15) = self->_planeDetection;
   *(result + 112) = self->_mlModelEnabled;
   *(result + 113) = self->_lowQosSchedulingEnabled;
@@ -129,9 +129,9 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p", v5, self];
 
-  v7 = [(ARConfiguration *)self isAutoFocusEnabled];
+  isAutoFocusEnabled = [(ARConfiguration *)self isAutoFocusEnabled];
   v8 = @"Disabled";
-  if (v7)
+  if (isAutoFocusEnabled)
   {
     v8 = @"Enabled";
   }
@@ -140,8 +140,8 @@
   v9 = NSStringFromARPlaneDetection(self->_planeDetection);
   [v6 appendFormat:@" planeDetection=%@", v9];
 
-  v10 = [(ARConfiguration *)self descriptionWithoutBrackets];
-  [v6 appendString:v10];
+  descriptionWithoutBrackets = [(ARConfiguration *)self descriptionWithoutBrackets];
+  [v6 appendString:descriptionWithoutBrackets];
 
   [v6 appendString:@">"];
 

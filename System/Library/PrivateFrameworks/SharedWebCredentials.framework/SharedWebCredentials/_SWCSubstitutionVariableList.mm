@@ -1,14 +1,14 @@
 @interface _SWCSubstitutionVariableList
 + (_SWCSubstitutionVariableList)cheapBuiltInSubstitutionVariableList;
 + (_SWCSubstitutionVariableList)expensiveBuiltInSubstitutionVariableList;
-+ (_SWCSubstitutionVariableList)substitutionVariableListWithDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (_SWCSubstitutionVariableList)initWithCoder:(id)a3;
-- (id)_descriptionDebug:(BOOL)a3 redacted:(BOOL)a4;
++ (_SWCSubstitutionVariableList)substitutionVariableListWithDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (_SWCSubstitutionVariableList)initWithCoder:(id)coder;
+- (id)_descriptionDebug:(BOOL)debug redacted:(BOOL)redacted;
 - (unint64_t)count;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateSubstitutionVariablesWithBlock:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateSubstitutionVariablesWithBlock:(id)block;
 @end
 
 @implementation _SWCSubstitutionVariableList
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __68___SWCSubstitutionVariableList_cheapBuiltInSubstitutionVariableList__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280B217C8 != -1)
   {
     dispatch_once(&qword_280B217C8, block);
@@ -36,7 +36,7 @@
   block[1] = 3221225472;
   block[2] = __72___SWCSubstitutionVariableList_expensiveBuiltInSubstitutionVariableList__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280B217D8 != -1)
   {
     dispatch_once(&qword_280B217D8, block);
@@ -47,12 +47,12 @@
   return v2;
 }
 
-+ (_SWCSubstitutionVariableList)substitutionVariableListWithDictionary:(id)a3
++ (_SWCSubstitutionVariableList)substitutionVariableListWithDictionary:(id)dictionary
 {
   v5 = objc_autoreleasePoolPush();
   if (_NSIsNSDictionary())
   {
-    v6 = [a3 objectForKeyedSubscript:@"substitutionVariables"];
+    v6 = [dictionary objectForKeyedSubscript:@"substitutionVariables"];
     if (_NSIsNSDictionary())
     {
       v7 = objc_alloc_init(MEMORY[0x277CBEB28]);
@@ -69,7 +69,7 @@
       }
 
       [v8 appendBytes:&byte_280B217B9 length:SWCSubstitutionVariable::getSize(&byte_280B217B9)];
-      Instance = class_createInstance(a1, [v8 length]);
+      Instance = class_createInstance(self, [v8 length]);
       memcpy(Instance + 8, [v8 bytes], objc_msgSend(v8, "length"));
     }
 
@@ -110,7 +110,7 @@
   return v3;
 }
 
-- (void)enumerateSubstitutionVariablesWithBlock:(id)a3
+- (void)enumerateSubstitutionVariablesWithBlock:(id)block
 {
   v4 = 0;
   variables = self->_variables;
@@ -125,7 +125,7 @@
     v6 = objc_autoreleasePoolPush();
     v7 = SWCSubstitutionVariable::getNameNoCopy(variables);
     v8 = SWCSubstitutionVariable::getValuesNoCopy(variables);
-    (*(a3 + 2))(a3, v7, v8, v4, &v9);
+    (*(block + 2))(block, v7, v8, v4, &v9);
 
     objc_autoreleasePoolPop(v6);
     ++v4;
@@ -135,18 +135,18 @@
   while (v9 != 1);
 }
 
-- (id)_descriptionDebug:(BOOL)a3 redacted:(BOOL)a4
+- (id)_descriptionDebug:(BOOL)debug redacted:(BOOL)redacted
 {
-  v4 = a4;
-  v23 = a3;
+  redactedCopy = redacted;
+  debugCopy = debug;
   v25[1] = *MEMORY[0x277D85DE8];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v22 = self;
+  selfCopy = self;
   v8 = self->_variables[0];
   variables = self->_variables;
   if ((v8 & 1) == 0)
   {
-    if (v23)
+    if (debugCopy)
     {
       v9 = 11;
     }
@@ -158,7 +158,7 @@
 
     do
     {
-      if (v4)
+      if (redactedCopy)
       {
         [v6 addObject:@"<private>"];
       }
@@ -193,12 +193,12 @@
     while ((*variables & 1) == 0);
   }
 
-  if (v23)
+  if (debugCopy)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = objc_opt_class();
     v18 = [v6 componentsJoinedByString:{@", "}];
-    v19 = [v16 initWithFormat:@"<%@ %p> %@", v17, v22, v18];
+    v19 = [v16 initWithFormat:@"<%@ %p> %@", v17, selfCopy, v18];
   }
 
   else
@@ -211,9 +211,9 @@
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -226,7 +226,7 @@
 
   v6 = self->_variables[0];
   variables = self->_variables;
-  v7 = (a3 + 8);
+  v7 = (equal + 8);
   v8 = 0;
   if ((v6 & 1) == 0)
   {
@@ -283,7 +283,7 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -308,17 +308,17 @@
   v10 = [MEMORY[0x277CCAC58] dataWithPropertyList:v6 format:200 options:0 error:0];
   if (v10)
   {
-    [a3 encodeObject:v10 forKey:@"substitutionVariableData"];
+    [coder encodeObject:v10 forKey:@"substitutionVariableData"];
   }
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (_SWCSubstitutionVariableList)initWithCoder:(id)a3
+- (_SWCSubstitutionVariableList)initWithCoder:(id)coder
 {
   v47 = *MEMORY[0x277D85DE8];
   context = objc_autoreleasePoolPush();
-  v4 = [a3 swc_decodeObjectOfClass:objc_opt_class() forKey:@"substitutionVariableData"];
+  v4 = [coder swc_decodeObjectOfClass:objc_opt_class() forKey:@"substitutionVariableData"];
   v33 = v4;
   if (!v4)
   {
@@ -331,7 +331,7 @@
     v40[1] = v29;
     v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:v39 count:2];
     v32 = [v23 initWithDomain:*MEMORY[0x277CCA050] code:4865 userInfo:?];
-    [a3 failWithError:?];
+    [coder failWithError:?];
     v22 = 0;
 LABEL_27:
 
@@ -373,10 +373,10 @@ LABEL_27:
           {
             v11 = [v10 length];
             v12 = v10;
-            v13 = [v10 bytes];
+            bytes = [v10 bytes];
             if (v11)
             {
-              v14 = v13;
+              v14 = bytes;
               if (v11 + 2 < 0x401)
               {
                 v15 = v46;
@@ -434,14 +434,14 @@ LABEL_22:
     v42[1] = v32;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:v41 count:2];
     self = [v24 initWithDomain:*MEMORY[0x277CCA050] code:4864 userInfo:v21];
-    [a3 failWithError:?];
+    [coder failWithError:?];
     v22 = 0;
 LABEL_26:
 
     goto LABEL_27;
   }
 
-  [a3 failWithError:v29];
+  [coder failWithError:v29];
   v22 = 0;
 
 LABEL_28:

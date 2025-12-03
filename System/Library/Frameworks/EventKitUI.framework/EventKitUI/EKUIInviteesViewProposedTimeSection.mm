@@ -1,20 +1,20 @@
 @interface EKUIInviteesViewProposedTimeSection
-- (BOOL)canSelectRow:(id)a3;
-- (BOOL)isRowChecked:(int64_t)a3;
+- (BOOL)canSelectRow:(id)row;
+- (BOOL)isRowChecked:(int64_t)checked;
 - (BOOL)sectionShouldBeShown;
 - (EKEvent)event;
 - (EKUIInviteesViewProposedTimeSection)init;
-- (id)busyParticipantsForDate:(id)a3;
-- (id)cellForIndexPath:(id)a3 inTableView:(id)a4;
+- (id)busyParticipantsForDate:(id)date;
+- (id)cellForIndexPath:(id)path inTableView:(id)view;
 - (id)debugTitle;
-- (id)namesForParticipantsProposingDate:(id)a3;
+- (id)namesForParticipantsProposingDate:(id)date;
 - (unint64_t)numberOfRows;
-- (void)availabilitySearcherChangedState:(int64_t)a3;
+- (void)availabilitySearcherChangedState:(int64_t)state;
 - (void)clearCheckmark;
-- (void)reloadAndRegisterReusableCellsWithTableView:(id)a3;
-- (void)selectRow:(id)a3;
-- (void)setChecked:(int64_t)a3;
-- (void)updateWithEvent:(id)a3;
+- (void)reloadAndRegisterReusableCellsWithTableView:(id)view;
+- (void)selectRow:(id)row;
+- (void)setChecked:(int64_t)checked;
+- (void)updateWithEvent:(id)event;
 @end
 
 @implementation EKUIInviteesViewProposedTimeSection
@@ -43,20 +43,20 @@
   return v2;
 }
 
-- (void)updateWithEvent:(id)a3
+- (void)updateWithEvent:(id)event
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(EKUIInviteesViewProposedTimeSection *)self setEvent:v4];
-  v5 = [(EKUIInviteesViewProposedTimeSection *)self proposedTimes];
-  [v5 removeAllObjects];
+  eventCopy = event;
+  [(EKUIInviteesViewProposedTimeSection *)self setEvent:eventCopy];
+  proposedTimes = [(EKUIInviteesViewProposedTimeSection *)self proposedTimes];
+  [proposedTimes removeAllObjects];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v4 attendees];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  attendees = [eventCopy attendees];
+  v7 = [attendees countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -68,19 +68,19 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(attendees);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * v10) proposedStartDateForEvent:v4];
+        v11 = [*(*(&v16 + 1) + 8 * v10) proposedStartDateForEvent:eventCopy];
         if (v11)
         {
-          v12 = [(EKUIInviteesViewProposedTimeSection *)self proposedTimes];
-          v13 = [v12 containsObject:v11];
+          proposedTimes2 = [(EKUIInviteesViewProposedTimeSection *)self proposedTimes];
+          v13 = [proposedTimes2 containsObject:v11];
 
           if ((v13 & 1) == 0)
           {
-            v14 = [(EKUIInviteesViewProposedTimeSection *)self proposedTimes];
-            [v14 addObject:v11];
+            proposedTimes3 = [(EKUIInviteesViewProposedTimeSection *)self proposedTimes];
+            [proposedTimes3 addObject:v11];
           }
         }
 
@@ -88,14 +88,14 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [attendees countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
   }
 
-  v15 = [(EKUIInviteesViewProposedTimeSection *)self proposedTimes];
-  [v15 sortUsingComparator:&__block_literal_global_39];
+  proposedTimes4 = [(EKUIInviteesViewProposedTimeSection *)self proposedTimes];
+  [proposedTimes4 sortUsingComparator:&__block_literal_global_39];
 }
 
 - (id)debugTitle
@@ -107,8 +107,8 @@
 
 - (BOOL)sectionShouldBeShown
 {
-  v3 = [(EKUIInviteesViewProposedTimeSection *)self event];
-  if ([v3 isSelfOrganized])
+  event = [(EKUIInviteesViewProposedTimeSection *)self event];
+  if ([event isSelfOrganized])
   {
     v4 = [(EKUIInviteesViewProposedTimeSection *)self numberOfRows]!= 0;
   }
@@ -123,22 +123,22 @@
 
 - (unint64_t)numberOfRows
 {
-  v2 = [(EKUIInviteesViewProposedTimeSection *)self proposedTimes];
-  v3 = [v2 count];
+  proposedTimes = [(EKUIInviteesViewProposedTimeSection *)self proposedTimes];
+  v3 = [proposedTimes count];
 
   return v3;
 }
 
-- (id)cellForIndexPath:(id)a3 inTableView:(id)a4
+- (id)cellForIndexPath:(id)path inTableView:(id)view
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 row];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [pathCopy row];
   if ([(EKUIInviteesViewProposedTimeSection *)self _isValidRow:v8])
   {
-    v9 = [(EKUIInviteesViewProposedTimeSection *)self cachedCellReuseIdentifier];
-    v10 = [v7 dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+    cachedCellReuseIdentifier = [(EKUIInviteesViewProposedTimeSection *)self cachedCellReuseIdentifier];
+    v10 = [viewCopy dequeueReusableCellWithIdentifier:cachedCellReuseIdentifier forIndexPath:pathCopy];
 
     objc_initWeak(location, self);
     v35[0] = MEMORY[0x1E69E9820];
@@ -154,18 +154,18 @@
     objc_copyWeak(v34, location);
     v34[1] = v8;
     [(EKUIInviteesViewTimeSlotCell *)v10 setShowAllConflictedParticipantsTapped:v33];
-    v11 = [(EKUIInviteesViewProposedTimeSection *)self rowsShowingAllParticipants];
+    rowsShowingAllParticipants = [(EKUIInviteesViewProposedTimeSection *)self rowsShowingAllParticipants];
     v12 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
-    v32 = [v11 containsObject:v12];
+    v32 = [rowsShowingAllParticipants containsObject:v12];
 
-    v13 = [(EKUIInviteesViewProposedTimeSection *)self proposedTimes];
-    v14 = [v13 objectAtIndexedSubscript:v8];
+    proposedTimes = [(EKUIInviteesViewProposedTimeSection *)self proposedTimes];
+    v14 = [proposedTimes objectAtIndexedSubscript:v8];
 
-    v15 = [(EKUIInviteesViewProposedTimeSection *)self event];
-    v16 = [v15 endDateUnadjustedForLegacyClients];
-    v17 = [(EKUIInviteesViewProposedTimeSection *)self event];
-    v18 = [v17 startDate];
-    [v16 timeIntervalSinceDate:v18];
+    event = [(EKUIInviteesViewProposedTimeSection *)self event];
+    endDateUnadjustedForLegacyClients = [event endDateUnadjustedForLegacyClients];
+    event2 = [(EKUIInviteesViewProposedTimeSection *)self event];
+    startDate = [event2 startDate];
+    [endDateUnadjustedForLegacyClients timeIntervalSinceDate:startDate];
     v20 = v19;
 
     v21 = [v14 dateByAddingTimeInterval:v20];
@@ -174,9 +174,9 @@
     v23 = [(EKUIInviteesViewProposedTimeSection *)self namesForParticipantsProposingDate:v14];
     [(EKUIInviteesViewTimeSlotCell *)v10 setProposedBy:v23];
 
-    v24 = [(EKUIInviteesViewProposedTimeSection *)self event];
-    v25 = [v24 startTimeZone];
-    [(EKUIInviteesViewTimeSlotCell *)v10 updateWithStartDate:v14 endDate:v21 timeZone:v25 busyParticipants:v22 showAllParticipants:v32 checked:[(EKUIInviteesViewProposedTimeSection *)self isRowChecked:v8]];
+    event3 = [(EKUIInviteesViewProposedTimeSection *)self event];
+    startTimeZone = [event3 startTimeZone];
+    [(EKUIInviteesViewTimeSlotCell *)v10 updateWithStartDate:v14 endDate:v21 timeZone:startTimeZone busyParticipants:v22 showAllParticipants:v32 checked:[(EKUIInviteesViewProposedTimeSection *)self isRowChecked:v8]];
 
     objc_destroyWeak(v34);
     objc_destroyWeak(&v36);
@@ -228,9 +228,9 @@ void __68__EKUIInviteesViewProposedTimeSection_cellForIndexPath_inTableView___bl
   [v2 addObject:v3];
 }
 
-- (void)reloadAndRegisterReusableCellsWithTableView:(id)a3
+- (void)reloadAndRegisterReusableCellsWithTableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_opt_class();
   v6 = objc_alloc(MEMORY[0x1E696AEC0]);
   v7 = NSStringFromClass(v5);
@@ -238,18 +238,18 @@ void __68__EKUIInviteesViewProposedTimeSection_cellForIndexPath_inTableView___bl
   v9 = [v6 initWithFormat:@"%@-%@", v7, v8];
   [(EKUIInviteesViewProposedTimeSection *)self setCachedCellReuseIdentifier:v9];
 
-  v10 = [(EKUIInviteesViewProposedTimeSection *)self cachedCellReuseIdentifier];
-  [v4 registerClass:v5 forCellReuseIdentifier:v10];
+  cachedCellReuseIdentifier = [(EKUIInviteesViewProposedTimeSection *)self cachedCellReuseIdentifier];
+  [viewCopy registerClass:v5 forCellReuseIdentifier:cachedCellReuseIdentifier];
 
   v11 = [(EKUIInviteesViewProposedTimeSection *)self reuseIdentifierVersion]+ 1;
 
   [(EKUIInviteesViewProposedTimeSection *)self setReuseIdentifierVersion:v11];
 }
 
-- (BOOL)canSelectRow:(id)a3
+- (BOOL)canSelectRow:(id)row
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = [a3 row];
+  v4 = [row row];
   if (![(EKUIInviteesViewProposedTimeSection *)self _isValidRow:v4])
   {
     v5 = kEKUILogInviteesHandle;
@@ -267,25 +267,25 @@ void __68__EKUIInviteesViewProposedTimeSection_cellForIndexPath_inTableView___bl
   return ![(EKUIInviteesViewProposedTimeSection *)self isRowChecked:v4];
 }
 
-- (void)selectRow:(id)a3
+- (void)selectRow:(id)row
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = [a3 row];
+  v4 = [row row];
   if ([(EKUIInviteesViewProposedTimeSection *)self _isValidRow:v4])
   {
-    v5 = [(EKUIInviteesViewProposedTimeSection *)self proposedTimes];
-    v18 = [v5 objectAtIndexedSubscript:v4];
+    proposedTimes = [(EKUIInviteesViewProposedTimeSection *)self proposedTimes];
+    v18 = [proposedTimes objectAtIndexedSubscript:v4];
 
-    v6 = [(EKUIInviteesViewProposedTimeSection *)self event];
-    v7 = [v6 endDateUnadjustedForLegacyClients];
-    v8 = [(EKUIInviteesViewProposedTimeSection *)self event];
-    v9 = [v8 startDate];
-    [v7 timeIntervalSinceDate:v9];
+    event = [(EKUIInviteesViewProposedTimeSection *)self event];
+    endDateUnadjustedForLegacyClients = [event endDateUnadjustedForLegacyClients];
+    event2 = [(EKUIInviteesViewProposedTimeSection *)self event];
+    startDate = [event2 startDate];
+    [endDateUnadjustedForLegacyClients timeIntervalSinceDate:startDate];
     v11 = v10;
 
     v12 = [v18 dateByAddingTimeInterval:v11];
-    v13 = [(EKUIInviteesViewProposedTimeSection *)self newTimeChosen];
-    (v13)[2](v13, v18, v12);
+    newTimeChosen = [(EKUIInviteesViewProposedTimeSection *)self newTimeChosen];
+    (newTimeChosen)[2](newTimeChosen, v18, v12);
 
     [(EKUIInviteesViewProposedTimeSection *)self setChecked:v4];
   }
@@ -305,7 +305,7 @@ void __68__EKUIInviteesViewProposedTimeSection_cellForIndexPath_inTableView___bl
   }
 }
 
-- (void)setChecked:(int64_t)a3
+- (void)setChecked:(int64_t)checked
 {
   v23 = *MEMORY[0x1E69E9840];
   v5 = kEKUILogInviteesHandle;
@@ -313,32 +313,32 @@ void __68__EKUIInviteesViewProposedTimeSection_cellForIndexPath_inTableView___bl
   {
     v6 = MEMORY[0x1E696AD98];
     v7 = v5;
-    v8 = [v6 numberWithInteger:a3];
+    v8 = [v6 numberWithInteger:checked];
     v19 = 138412546;
     v20 = v8;
     v21 = 2112;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D3400000, v7, OS_LOG_TYPE_DEBUG, "Setting checked row to [%@] in section [%@]", &v19, 0x16u);
   }
 
-  v9 = [(EKUIInviteesViewProposedTimeSection *)self checkedRow];
-  [(EKUIInviteesViewProposedTimeSection *)self setCheckedRow:a3];
-  if ([(EKUIInviteesViewProposedTimeSection *)self _isValidRow:a3])
+  checkedRow = [(EKUIInviteesViewProposedTimeSection *)self checkedRow];
+  [(EKUIInviteesViewProposedTimeSection *)self setCheckedRow:checked];
+  if ([(EKUIInviteesViewProposedTimeSection *)self _isValidRow:checked])
   {
-    v10 = [(EKUIInviteesViewProposedTimeSection *)self tableViewCellHook];
+    tableViewCellHook = [(EKUIInviteesViewProposedTimeSection *)self tableViewCellHook];
 
-    if (v10)
+    if (tableViewCellHook)
     {
-      if ((v9 & 0x8000000000000000) == 0)
+      if ((checkedRow & 0x8000000000000000) == 0)
       {
-        v11 = [(EKUIInviteesViewProposedTimeSection *)self tableViewCellHook];
-        v12 = v11[2](v11, v9);
+        tableViewCellHook2 = [(EKUIInviteesViewProposedTimeSection *)self tableViewCellHook];
+        v12 = tableViewCellHook2[2](tableViewCellHook2, checkedRow);
 
         [v12 setChecked:0];
       }
 
-      v13 = [(EKUIInviteesViewProposedTimeSection *)self tableViewCellHook];
-      v14 = v13[2](v13, a3);
+      tableViewCellHook3 = [(EKUIInviteesViewProposedTimeSection *)self tableViewCellHook];
+      v14 = tableViewCellHook3[2](tableViewCellHook3, checked);
 
       [v14 setChecked:1];
       [v14 setSelected:0 animated:1];
@@ -352,7 +352,7 @@ void __68__EKUIInviteesViewProposedTimeSection_cellForIndexPath_inTableView___bl
     {
       v16 = MEMORY[0x1E696AD98];
       v17 = v15;
-      v18 = [v16 numberWithInteger:a3];
+      v18 = [v16 numberWithInteger:checked];
       v19 = 138412290;
       v20 = v18;
       _os_log_impl(&dword_1D3400000, v17, OS_LOG_TYPE_ERROR, "There is no row with index [%@].  Will not 'set checked row' to its row value.", &v19, 0xCu);
@@ -362,34 +362,34 @@ void __68__EKUIInviteesViewProposedTimeSection_cellForIndexPath_inTableView___bl
 
 - (void)clearCheckmark
 {
-  v3 = [(EKUIInviteesViewProposedTimeSection *)self tableViewCellHook];
-  v4 = v3[2](v3, [(EKUIInviteesViewProposedTimeSection *)self checkedRow]);
+  tableViewCellHook = [(EKUIInviteesViewProposedTimeSection *)self tableViewCellHook];
+  v4 = tableViewCellHook[2](tableViewCellHook, [(EKUIInviteesViewProposedTimeSection *)self checkedRow]);
 
   [v4 setChecked:0];
   [(EKUIInviteesViewProposedTimeSection *)self setCheckedRow:-1];
 }
 
-- (void)availabilitySearcherChangedState:(int64_t)a3
+- (void)availabilitySearcherChangedState:(int64_t)state
 {
-  v5 = [(EKUIInviteesViewProposedTimeSection *)self availabilitySearcher];
-  v4 = [v5 proposedTimes];
-  [(EKUIInviteesViewProposedTimeSection *)self setProposedTimeResults:v4];
+  availabilitySearcher = [(EKUIInviteesViewProposedTimeSection *)self availabilitySearcher];
+  proposedTimes = [availabilitySearcher proposedTimes];
+  [(EKUIInviteesViewProposedTimeSection *)self setProposedTimeResults:proposedTimes];
 }
 
-- (id)namesForParticipantsProposingDate:(id)a3
+- (id)namesForParticipantsProposingDate:(id)date
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dateCopy = date;
   v21 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(EKUIInviteesViewProposedTimeSection *)self event];
-  v6 = [v5 attendees];
+  event = [(EKUIInviteesViewProposedTimeSection *)self event];
+  attendees = [event attendees];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  obj = attendees;
+  v7 = [attendees countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
     v8 = v7;
@@ -404,25 +404,25 @@ void __68__EKUIInviteesViewProposedTimeSection_cellForIndexPath_inTableView___bl
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
-        v12 = [(EKUIInviteesViewProposedTimeSection *)self event];
-        v13 = [v11 proposedStartDateForEvent:v12];
+        event2 = [(EKUIInviteesViewProposedTimeSection *)self event];
+        v13 = [v11 proposedStartDateForEvent:event2];
 
-        if ([v13 isEqualToDate:v4])
+        if ([v13 isEqualToDate:dateCopy])
         {
           v14 = [MEMORY[0x1E6966A88] participantForSortingWithEKParticipant:v11];
-          v15 = [v14 displayName];
-          v16 = v15;
-          if (v15)
+          displayName = [v14 displayName];
+          v16 = displayName;
+          if (displayName)
           {
-            v17 = v15;
+            firstName = displayName;
           }
 
           else
           {
-            v17 = [v14 firstName];
+            firstName = [v14 firstName];
           }
 
-          v18 = v17;
+          v18 = firstName;
 
           if (![v18 length])
           {
@@ -447,43 +447,43 @@ void __68__EKUIInviteesViewProposedTimeSection_cellForIndexPath_inTableView___bl
   return v21;
 }
 
-- (id)busyParticipantsForDate:(id)a3
+- (id)busyParticipantsForDate:(id)date
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dateCopy = date;
   memset(v11, 0, sizeof(v11));
-  v5 = [(EKUIInviteesViewProposedTimeSection *)self proposedTimeResults];
-  if ([v5 countByEnumeratingWithState:v11 objects:v12 count:16])
+  proposedTimeResults = [(EKUIInviteesViewProposedTimeSection *)self proposedTimeResults];
+  if ([proposedTimeResults countByEnumeratingWithState:v11 objects:v12 count:16])
   {
     v6 = **(&v11[0] + 1);
-    v7 = [**(&v11[0] + 1) startDate];
-    v8 = [v7 isEqual:v4];
+    startDate = [**(&v11[0] + 1) startDate];
+    v8 = [startDate isEqual:dateCopy];
 
     if (v8)
     {
-      v9 = [v6 conflictedParticipants];
+      conflictedParticipants = [v6 conflictedParticipants];
     }
 
     else
     {
-      v9 = MEMORY[0x1E695E0F0];
+      conflictedParticipants = MEMORY[0x1E695E0F0];
     }
   }
 
   else
   {
-    v9 = 0;
+    conflictedParticipants = 0;
   }
 
-  return v9;
+  return conflictedParticipants;
 }
 
-- (BOOL)isRowChecked:(int64_t)a3
+- (BOOL)isRowChecked:(int64_t)checked
 {
   v5 = [(EKUIInviteesViewProposedTimeSection *)self _isValidRow:?];
   if (v5)
   {
-    LOBYTE(v5) = [(EKUIInviteesViewProposedTimeSection *)self checkedRow]== a3;
+    LOBYTE(v5) = [(EKUIInviteesViewProposedTimeSection *)self checkedRow]== checked;
   }
 
   return v5;

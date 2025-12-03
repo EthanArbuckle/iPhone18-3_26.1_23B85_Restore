@@ -1,39 +1,39 @@
 @interface BRCDiskSpaceReclaimer
-+ (double)accessTimeDeltaForUrgency:(int)a3;
-+ (int)simpleUrgencyForCacheDeleteUrgency:(int)a3;
-- (BOOL)performOptimizeStorageWithTimeDelta:(double)a3 onDiskAccessTimeDelta:(double)a4 error:(id *)a5;
-- (BRCDiskSpaceReclaimer)initWithAccountSession:(id)a3;
-- (int)urgencyForCacheDeleteUrgency:(int)a3;
-- (int64_t)_computeCiconiaSizeInBytes:(BOOL)a3;
-- (int64_t)_dbAutovacuumableSpaceInBytes:(id)a3;
-- (int64_t)_dbSizeInBytes:(id)a3;
-- (int64_t)_doIncrementalVacuum:(id)a3 amount:(int64_t)a4;
-- (int64_t)_fullVacuumIfPossible:(id)a3;
++ (double)accessTimeDeltaForUrgency:(int)urgency;
++ (int)simpleUrgencyForCacheDeleteUrgency:(int)urgency;
+- (BOOL)performOptimizeStorageWithTimeDelta:(double)delta onDiskAccessTimeDelta:(double)timeDelta error:(id *)error;
+- (BRCDiskSpaceReclaimer)initWithAccountSession:(id)session;
+- (int)urgencyForCacheDeleteUrgency:(int)urgency;
+- (int64_t)_computeCiconiaSizeInBytes:(BOOL)bytes;
+- (int64_t)_dbAutovacuumableSpaceInBytes:(id)bytes;
+- (int64_t)_dbSizeInBytes:(id)bytes;
+- (int64_t)_doIncrementalVacuum:(id)vacuum amount:(int64_t)amount;
+- (int64_t)_fullVacuumIfPossible:(id)possible;
 - (int64_t)_garbageCollectGroupContainerStage;
-- (int64_t)_vacuumDB:(id)a3 amount:(int64_t)a4 withUrgency:(int)a5;
+- (int64_t)_vacuumDB:(id)b amount:(int64_t)amount withUrgency:(int)urgency;
 - (int64_t)cachedNonPurgeableSpace;
 - (int64_t)periodicReclaimSpace;
-- (int64_t)purgeSpace:(int64_t)a3 withUrgency:(int)a4;
-- (unint64_t)nonPurgeableSizeWithPurgeableSize:(unint64_t)a3;
+- (int64_t)purgeSpace:(int64_t)space withUrgency:(int)urgency;
+- (unint64_t)nonPurgeableSizeWithPurgeableSize:(unint64_t)size;
 - (unint64_t)totalSize;
-- (void)_asyncAutovacuumIfNeeds:(id)a3;
-- (void)_cleanFPCreationItemIdentifier:(id)a3;
+- (void)_asyncAutovacuumIfNeeds:(id)needs;
+- (void)_cleanFPCreationItemIdentifier:(id)identifier;
 - (void)close;
-- (void)computePurgeableSpaceForAllUrgenciesWithReply:(id)a3;
+- (void)computePurgeableSpaceForAllUrgenciesWithReply:(id)reply;
 @end
 
 @implementation BRCDiskSpaceReclaimer
 
-- (BRCDiskSpaceReclaimer)initWithAccountSession:(id)a3
+- (BRCDiskSpaceReclaimer)initWithAccountSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v22.receiver = self;
   v22.super_class = BRCDiskSpaceReclaimer;
   v6 = [(BRCDiskSpaceReclaimer *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
+    objc_storeStrong(&v6->_session, session);
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UNSPECIFIED, 0);
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(v8, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_create("com.apple.bird.cache-delete", v9);
@@ -41,7 +41,7 @@
     queue = v7->_queue;
     v7->_queue = v10;
 
-    objc_initWeak(&location, v5);
+    objc_initWeak(&location, sessionCopy);
     v16 = MEMORY[0x277D85DD0];
     v17 = 3221225472;
     v18 = __48__BRCDiskSpaceReclaimer_initWithAccountSession___block_invoke;
@@ -125,17 +125,17 @@ void __48__BRCDiskSpaceReclaimer_initWithAccountSession___block_invoke_3(uint64_
   dispatch_sync(queue, block);
 }
 
-- (void)computePurgeableSpaceForAllUrgenciesWithReply:(id)a3
+- (void)computePurgeableSpaceForAllUrgenciesWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__BRCDiskSpaceReclaimer_computePurgeableSpaceForAllUrgenciesWithReply___block_invoke;
   v7[3] = &unk_278500048;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(queue, v7);
 }
 
@@ -362,34 +362,34 @@ void __71__BRCDiskSpaceReclaimer_computePurgeableSpaceForAllUrgenciesWithReply__
   [v3 forceBatchStart];
 }
 
-- (int64_t)_computeCiconiaSizeInBytes:(BOOL)a3
+- (int64_t)_computeCiconiaSizeInBytes:(BOOL)bytes
 {
-  v3 = a3;
+  bytesCopy = bytes;
   v43 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [MEMORY[0x277CBEBC0] brc_ciconiaDumpDirForCurrentPersona];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  brc_ciconiaDumpDirForCurrentPersona = [MEMORY[0x277CBEBC0] brc_ciconiaDumpDirForCurrentPersona];
   v41 = 0;
-  v6 = [v5 path];
-  v7 = [v4 fileExistsAtPath:v6 isDirectory:&v41];
+  path = [brc_ciconiaDumpDirForCurrentPersona path];
+  v7 = [defaultManager fileExistsAtPath:path isDirectory:&v41];
   v8 = v41;
 
   v9 = 0;
   if (v7 && (v8 & 1) != 0)
   {
-    v10 = [v5 path];
-    v11 = [v4 attributesOfItemAtPath:v10 error:0];
-    v12 = [v11 fileCreationDate];
+    path2 = [brc_ciconiaDumpDirForCurrentPersona path];
+    v11 = [defaultManager attributesOfItemAtPath:path2 error:0];
+    fileCreationDate = [v11 fileCreationDate];
 
-    [v12 timeIntervalSinceNow];
+    [fileCreationDate timeIntervalSinceNow];
     v9 = 0;
     if (fabs(v13) > 86400.0)
     {
-      v32 = v3;
-      v33 = v12;
+      v32 = bytesCopy;
+      v33 = fileCreationDate;
       v14 = *MEMORY[0x277CBE838];
       v15 = [MEMORY[0x277CBEA60] arrayWithObject:*MEMORY[0x277CBE838]];
-      v34 = v4;
-      v16 = [v4 enumeratorAtURL:v5 includingPropertiesForKeys:v15 options:0 errorHandler:0];
+      v34 = defaultManager;
+      v16 = [defaultManager enumeratorAtURL:brc_ciconiaDumpDirForCurrentPersona includingPropertiesForKeys:v15 options:0 errorHandler:0];
 
       v39 = 0u;
       v40 = 0u;
@@ -444,10 +444,10 @@ void __71__BRCDiskSpaceReclaimer_computePurgeableSpaceForAllUrgenciesWithReply__
       if (v32)
       {
         v35 = 0;
-        v4 = v34;
-        v26 = [v34 removeItemAtURL:v5 error:&v35];
+        defaultManager = v34;
+        v26 = [v34 removeItemAtURL:brc_ciconiaDumpDirForCurrentPersona error:&v35];
         v27 = v35;
-        v12 = v33;
+        fileCreationDate = v33;
         if ((v26 & 1) == 0)
         {
           v28 = brc_bread_crumbs();
@@ -463,8 +463,8 @@ void __71__BRCDiskSpaceReclaimer_computePurgeableSpaceForAllUrgenciesWithReply__
 
       else
       {
-        v12 = v33;
-        v4 = v34;
+        fileCreationDate = v33;
+        defaultManager = v34;
       }
     }
   }
@@ -473,24 +473,24 @@ void __71__BRCDiskSpaceReclaimer_computePurgeableSpaceForAllUrgenciesWithReply__
   return v9;
 }
 
-- (int64_t)_dbSizeInBytes:(id)a3
+- (int64_t)_dbSizeInBytes:(id)bytes
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  bytesCopy = bytes;
+  v4 = bytesCopy;
+  if (bytesCopy)
   {
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
     v14 = 0;
-    v5 = [v3 serialQueue];
+    serialQueue = [bytesCopy serialQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __40__BRCDiskSpaceReclaimer__dbSizeInBytes___block_invoke;
     v8[3] = &unk_278502000;
     v10 = &v11;
     v9 = v4;
-    dispatch_sync(v5, v8);
+    dispatch_sync(serialQueue, v8);
 
     v6 = v12[3];
     _Block_object_dispose(&v11, 8);
@@ -511,31 +511,31 @@ uint64_t __40__BRCDiskSpaceReclaimer__dbSizeInBytes___block_invoke(uint64_t a1)
   return result;
 }
 
-- (int64_t)_dbAutovacuumableSpaceInBytes:(id)a3
+- (int64_t)_dbAutovacuumableSpaceInBytes:(id)bytes
 {
-  v3 = a3;
-  v4 = [v3 serialQueue];
+  bytesCopy = bytes;
+  serialQueue = [bytesCopy serialQueue];
 
-  if (v4)
+  if (serialQueue)
   {
-    v5 = [v3 serialQueue];
-    dispatch_assert_queue_not_V2(v5);
+    serialQueue2 = [bytesCopy serialQueue];
+    dispatch_assert_queue_not_V2(serialQueue2);
   }
 
-  if (v3)
+  if (bytesCopy)
   {
     v12 = 0;
     v13 = &v12;
     v14 = 0x2020000000;
     v15 = 0;
-    v6 = [v3 serialQueue];
+    serialQueue3 = [bytesCopy serialQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __55__BRCDiskSpaceReclaimer__dbAutovacuumableSpaceInBytes___block_invoke;
     v9[3] = &unk_278502000;
     v11 = &v12;
-    v10 = v3;
-    dispatch_sync(v6, v9);
+    v10 = bytesCopy;
+    dispatch_sync(serialQueue3, v9);
 
     v7 = v13[3];
     _Block_object_dispose(&v12, 8);
@@ -556,20 +556,20 @@ uint64_t __55__BRCDiskSpaceReclaimer__dbAutovacuumableSpaceInBytes___block_invok
   return result;
 }
 
-- (int64_t)_fullVacuumIfPossible:(id)a3
+- (int64_t)_fullVacuumIfPossible:(id)possible
 {
-  v4 = a3;
-  v5 = [v4 serialQueue];
+  possibleCopy = possible;
+  serialQueue = [possibleCopy serialQueue];
 
-  if (v5)
+  if (serialQueue)
   {
-    v6 = [v4 serialQueue];
-    dispatch_assert_queue_not_V2(v6);
+    serialQueue2 = [possibleCopy serialQueue];
+    dispatch_assert_queue_not_V2(serialQueue2);
   }
 
-  if (v4)
+  if (possibleCopy)
   {
-    v7 = [(BRCDiskSpaceReclaimer *)self _doIncrementalVacuum:v4 amount:[(BRCDiskSpaceReclaimer *)self _dbAutovacuumableSpaceInBytes:v4]];
+    v7 = [(BRCDiskSpaceReclaimer *)self _doIncrementalVacuum:possibleCopy amount:[(BRCDiskSpaceReclaimer *)self _dbAutovacuumableSpaceInBytes:possibleCopy]];
   }
 
   else
@@ -580,66 +580,66 @@ uint64_t __55__BRCDiskSpaceReclaimer__dbAutovacuumableSpaceInBytes___block_invok
   return v7;
 }
 
-- (int64_t)_doIncrementalVacuum:(id)a3 amount:(int64_t)a4
+- (int64_t)_doIncrementalVacuum:(id)vacuum amount:(int64_t)amount
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 serialQueue];
+  vacuumCopy = vacuum;
+  serialQueue = [vacuumCopy serialQueue];
 
-  if (v7)
+  if (serialQueue)
   {
-    v8 = [v6 serialQueue];
-    dispatch_assert_queue_not_V2(v8);
+    serialQueue2 = [vacuumCopy serialQueue];
+    dispatch_assert_queue_not_V2(serialQueue2);
   }
 
   v23 = [BRCUserDefaults defaultsForMangledID:0];
-  v9 = [v23 dbAutovacuumBatchSize];
-  if (v9)
+  dbAutovacuumBatchSize = [v23 dbAutovacuumBatchSize];
+  if (dbAutovacuumBatchSize)
   {
-    v10 = v9;
+    amountCopy = dbAutovacuumBatchSize;
   }
 
   else
   {
-    v10 = a4;
+    amountCopy = amount;
   }
 
   mach_absolute_time();
-  v11 = [(BRCDiskSpaceReclaimer *)self _dbSizeInBytes:v6];
-  if (a4 >= 1)
+  v11 = [(BRCDiskSpaceReclaimer *)self _dbSizeInBytes:vacuumCopy];
+  if (amount >= 1)
   {
     v12 = 0;
     do
     {
-      v13 = [v6 serialQueue];
+      serialQueue3 = [vacuumCopy serialQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __53__BRCDiskSpaceReclaimer__doIncrementalVacuum_amount___block_invoke;
       block[3] = &unk_278503680;
-      v25 = v6;
-      v26 = a4;
+      v25 = vacuumCopy;
+      amountCopy2 = amount;
       v27 = v12;
-      v28 = v10;
-      dispatch_sync(v13, block);
+      v28 = amountCopy;
+      dispatch_sync(serialQueue3, block);
 
-      v12 += v10;
+      v12 += amountCopy;
     }
 
-    while (v12 < a4);
+    while (v12 < amount);
   }
 
-  v14 = v11 - [(BRCDiskSpaceReclaimer *)self _dbSizeInBytes:v6];
+  v14 = v11 - [(BRCDiskSpaceReclaimer *)self _dbSizeInBytes:vacuumCopy];
   mach_absolute_time();
   v15 = brc_bread_crumbs();
   v16 = brc_default_log();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v6 label];
+    label = [vacuumCopy label];
     brc_monotonic_time_diff_to_interval();
     v19 = v18;
     v20 = [BRCDumpContext stringFromByteCount:v14 context:0];
     *buf = 138413314;
-    v30 = v17;
+    v30 = label;
     v31 = 2048;
     v32 = v19;
     v33 = 2112;
@@ -672,20 +672,20 @@ uint64_t __53__BRCDiskSpaceReclaimer__doIncrementalVacuum_amount___block_invoke(
   return [*(a1 + 32) incrementalVacuum:v3];
 }
 
-- (int64_t)_vacuumDB:(id)a3 amount:(int64_t)a4 withUrgency:(int)a5
+- (int64_t)_vacuumDB:(id)b amount:(int64_t)amount withUrgency:(int)urgency
 {
-  v8 = a3;
-  v9 = [(BRCDiskSpaceReclaimer *)self _dbAutovacuumableSpaceInBytes:v8];
-  if (v8)
+  bCopy = b;
+  v9 = [(BRCDiskSpaceReclaimer *)self _dbAutovacuumableSpaceInBytes:bCopy];
+  if (bCopy)
   {
-    if (a5 < 3 || 2 * v9 >= a4)
+    if (urgency < 3 || 2 * v9 >= amount)
     {
-      v10 = [(BRCDiskSpaceReclaimer *)self _doIncrementalVacuum:v8 amount:a4];
+      v10 = [(BRCDiskSpaceReclaimer *)self _doIncrementalVacuum:bCopy amount:amount];
     }
 
     else
     {
-      v10 = [(BRCDiskSpaceReclaimer *)self _fullVacuumIfPossible:v8];
+      v10 = [(BRCDiskSpaceReclaimer *)self _fullVacuumIfPossible:bCopy];
     }
 
     v11 = v10;
@@ -699,11 +699,11 @@ uint64_t __53__BRCDiskSpaceReclaimer__doIncrementalVacuum_amount___block_invoke(
   return v11;
 }
 
-- (void)_asyncAutovacuumIfNeeds:(id)a3
+- (void)_asyncAutovacuumIfNeeds:(id)needs
 {
-  v4 = a3;
-  v5 = [v4 serialQueue];
-  if (v5)
+  needsCopy = needs;
+  serialQueue = [needsCopy serialQueue];
+  if (serialQueue)
   {
     session = self->_session;
     if (session)
@@ -714,8 +714,8 @@ uint64_t __53__BRCDiskSpaceReclaimer__doIncrementalVacuum_amount___block_invoke(
         block[1] = 3221225472;
         block[2] = __49__BRCDiskSpaceReclaimer__asyncAutovacuumIfNeeds___block_invoke;
         block[3] = &unk_2784FF450;
-        v8 = v4;
-        dispatch_async(v5, block);
+        v8 = needsCopy;
+        dispatch_async(serialQueue, block);
       }
     }
   }
@@ -755,9 +755,9 @@ uint64_t __79__BRCDiskSpaceReclaimer__garbageCollectGroupContainersStageOfType_m
   return result;
 }
 
-- (void)_cleanFPCreationItemIdentifier:(id)a3
+- (void)_cleanFPCreationItemIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -765,8 +765,8 @@ uint64_t __79__BRCDiskSpaceReclaimer__garbageCollectGroupContainersStageOfType_m
     [(BRCDiskSpaceReclaimer *)v5 _cleanFPCreationItemIdentifier:v6];
   }
 
-  v7 = [(BRCAccountSession *)self->_session clientState];
-  v8 = [v7 objectForKeyedSubscript:@"most-recent-item-creation-date"];
+  clientState = [(BRCAccountSession *)self->_session clientState];
+  v8 = [clientState objectForKeyedSubscript:@"most-recent-item-creation-date"];
 
   v9 = [BRCUserDefaults defaultsForMangledID:0];
   [v9 itemsCreationAgeDelta];
@@ -774,13 +774,13 @@ uint64_t __79__BRCDiskSpaceReclaimer__garbageCollectGroupContainersStageOfType_m
 
   if (v8)
   {
-    v12 = [MEMORY[0x277CBEAA8] date];
-    [v12 timeIntervalSinceDate:v8];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:v8];
     v14 = v13;
 
     if (v14 > v11)
     {
-      [v4 execute:@"UPDATE client_items SET fp_creation_item_identifier = NULL WHERE fp_creation_item_identifier IS NOT NULL"];
+      [identifierCopy execute:@"UPDATE client_items SET fp_creation_item_identifier = NULL WHERE fp_creation_item_identifier IS NOT NULL"];
       v15 = brc_bread_crumbs();
       v16 = brc_default_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -791,7 +791,7 @@ uint64_t __79__BRCDiskSpaceReclaimer__garbageCollectGroupContainersStageOfType_m
   }
 }
 
-- (int64_t)purgeSpace:(int64_t)a3 withUrgency:(int)a4
+- (int64_t)purgeSpace:(int64_t)space withUrgency:(int)urgency
 {
   v9 = 0;
   v10 = &v9;
@@ -804,8 +804,8 @@ uint64_t __79__BRCDiskSpaceReclaimer__garbageCollectGroupContainersStageOfType_m
   v7[3] = &unk_2785082E0;
   v7[4] = self;
   v7[5] = &v9;
-  v7[6] = a3;
-  v8 = a4;
+  v7[6] = space;
+  urgencyCopy = urgency;
   dispatch_sync(queue, v7);
   v5 = v10[3];
   _Block_object_dispose(&v9, 8);
@@ -931,41 +931,41 @@ uint64_t __45__BRCDiskSpaceReclaimer_periodicReclaimSpace__block_invoke_2(uint64
   return 1;
 }
 
-+ (int)simpleUrgencyForCacheDeleteUrgency:(int)a3
++ (int)simpleUrgencyForCacheDeleteUrgency:(int)urgency
 {
-  if ((a3 - 1) >= 4)
+  if ((urgency - 1) >= 4)
   {
     return 3;
   }
 
   else
   {
-    return a3;
+    return urgency;
   }
 }
 
-- (int)urgencyForCacheDeleteUrgency:(int)a3
+- (int)urgencyForCacheDeleteUrgency:(int)urgency
 {
-  v4 = [(BRCAccountSession *)self->_session clientDB];
-  [v4 assertOnQueue];
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
+  [clientDB assertOnQueue];
 
-  if ((a3 - 1) >= 4)
+  if ((urgency - 1) >= 4)
   {
     return 3;
   }
 
   else
   {
-    return a3;
+    return urgency;
   }
 }
 
-+ (double)accessTimeDeltaForUrgency:(int)a3
++ (double)accessTimeDeltaForUrgency:(int)urgency
 {
   v3 = 978307200.0;
-  if (a3 <= 1)
+  if (urgency <= 1)
   {
-    if (a3 == -2 || a3 == 1)
+    if (urgency == -2 || urgency == 1)
     {
       v4 = [BRCUserDefaults defaultsForMangledID:0];
       [v4 accessTimeDeltaInLowUrgency];
@@ -975,7 +975,7 @@ uint64_t __45__BRCDiskSpaceReclaimer_periodicReclaimSpace__block_invoke_2(uint64
 
   else
   {
-    switch(a3)
+    switch(urgency)
     {
       case 2:
         v4 = [BRCUserDefaults defaultsForMangledID:0];
@@ -1000,14 +1000,14 @@ LABEL_11:
 
 - (int64_t)cachedNonPurgeableSpace
 {
-  v2 = [(BRCAccountSession *)self->_session clientState];
-  v3 = [v2 objectForKeyedSubscript:@"nonPurgeableSpace"];
-  v4 = [v3 unsignedLongLongValue];
+  clientState = [(BRCAccountSession *)self->_session clientState];
+  v3 = [clientState objectForKeyedSubscript:@"nonPurgeableSpace"];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (BOOL)performOptimizeStorageWithTimeDelta:(double)a3 onDiskAccessTimeDelta:(double)a4 error:(id *)a5
+- (BOOL)performOptimizeStorageWithTimeDelta:(double)delta onDiskAccessTimeDelta:(double)timeDelta error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
   v6 = brc_task_tracker_create("com.apple.bird.eviction");
@@ -1042,7 +1042,7 @@ LABEL_11:
         v20 = 136315906;
         v21 = "[BRCDiskSpaceReclaimer performOptimizeStorageWithTimeDelta:onDiskAccessTimeDelta:error:]";
         v22 = 2080;
-        if (!a5)
+        if (!error)
         {
           v19 = "(ignored by caller)";
         }
@@ -1056,10 +1056,10 @@ LABEL_11:
       }
     }
 
-    if (a5)
+    if (error)
     {
       v16 = v13;
-      *a5 = v13;
+      *error = v13;
     }
   }
 
@@ -1067,12 +1067,12 @@ LABEL_11:
   return v10 == 0;
 }
 
-- (unint64_t)nonPurgeableSizeWithPurgeableSize:(unint64_t)a3
+- (unint64_t)nonPurgeableSizeWithPurgeableSize:(unint64_t)size
 {
-  v4 = [(BRCDiskSpaceReclaimer *)self totalSize];
-  if (v4 >= a3)
+  totalSize = [(BRCDiskSpaceReclaimer *)self totalSize];
+  if (totalSize >= size)
   {
-    return v4 - a3;
+    return totalSize - size;
   }
 
   else
@@ -1083,11 +1083,11 @@ LABEL_11:
 
 - (unint64_t)totalSize
 {
-  v3 = [(BRCAccountSession *)self->_session sessionDirPath];
-  v4 = BRCRecursivelySizeDirectoryAtPath(v3);
+  sessionDirPath = [(BRCAccountSession *)self->_session sessionDirPath];
+  v4 = BRCRecursivelySizeDirectoryAtPath(sessionDirPath);
 
-  v5 = [(BRCAccountSession *)self->_session cacheDirPath];
-  v6 = BRCRecursivelySizeDirectoryAtPath(v5);
+  cacheDirPath = [(BRCAccountSession *)self->_session cacheDirPath];
+  v6 = BRCRecursivelySizeDirectoryAtPath(cacheDirPath);
 
   return &v4[v6];
 }

@@ -1,14 +1,14 @@
 @interface Texture.Buffer.Allocator
 - (_TtCCV13IconRendering7Texture6Buffer9Allocator)init;
-- (id)newBufferWithLength:(unint64_t)a3;
+- (id)newBufferWithLength:(unint64_t)length;
 @end
 
 @implementation Texture.Buffer.Allocator
 
-- (id)newBufferWithLength:(unint64_t)a3
+- (id)newBufferWithLength:(unint64_t)length
 {
-  v4 = self;
-  v5 = sub_1B161561C(a3);
+  selfCopy = self;
+  v5 = sub_1B161561C(length);
 
   return v5;
 }

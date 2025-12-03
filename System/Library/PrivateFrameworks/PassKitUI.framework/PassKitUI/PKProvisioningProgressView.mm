@@ -1,12 +1,12 @@
 @interface PKProvisioningProgressView
-- (CGSize)_layoutWithBounds:(CGRect)a3 applyLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds applyLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PKProvisioningProgressView)init;
 - (void)createViews;
 - (void)layoutSubviews;
-- (void)setHeaderView:(id)a3;
-- (void)setPrimaryText:(id)a3;
-- (void)setShowingCheckmark:(BOOL)a3 animated:(BOOL)a4;
+- (void)setHeaderView:(id)view;
+- (void)setPrimaryText:(id)text;
+- (void)setShowingCheckmark:(BOOL)checkmark animated:(BOOL)animated;
 @end
 
 @implementation PKProvisioningProgressView
@@ -49,8 +49,8 @@
   [(UITextView *)self->_primaryLabel _setInteractiveTextSelectionDisabled:1];
   [(UITextView *)self->_primaryLabel setContentInset:v7, v8, v9, v10];
   [(UITextView *)self->_primaryLabel setContentInsetAdjustmentBehavior:2];
-  v11 = [(UITextView *)self->_primaryLabel textContainer];
-  [v11 setLineFragmentPadding:0.0];
+  textContainer = [(UITextView *)self->_primaryLabel textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
   [(UITextView *)self->_primaryLabel setTextAlignment:4];
   v12 = self->_primaryLabel;
@@ -61,9 +61,9 @@
   v15 = PKOBKHeaderTitleFont();
   [(UITextView *)v14 setFont:v15];
 
-  v32 = [(UITextView *)self->_primaryLabel textContainer];
-  [v32 setMaximumNumberOfLines:0];
-  [v32 setLineBreakMode:4];
+  textContainer2 = [(UITextView *)self->_primaryLabel textContainer];
+  [textContainer2 setMaximumNumberOfLines:0];
+  [textContainer2 setLineBreakMode:4];
   [(UIScrollView *)self->_scrollView addSubview:self->_primaryLabel];
   v16 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   secondaryLabel = self->_secondaryLabel;
@@ -107,15 +107,15 @@
   [(UIScrollView *)self->_scrollView addSubview:self->_checkmarkView];
 }
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   headerView = self->_headerView;
-  v7 = v5;
-  if (headerView != v5)
+  v7 = viewCopy;
+  if (headerView != viewCopy)
   {
     [(UIView *)headerView removeFromSuperview];
-    objc_storeStrong(&self->_headerView, a3);
+    objc_storeStrong(&self->_headerView, view);
     if (self->_headerView)
     {
       [(UIScrollView *)self->_scrollView addSubview:?];
@@ -124,14 +124,14 @@
   }
 }
 
-- (void)setPrimaryText:(id)a3
+- (void)setPrimaryText:(id)text
 {
-  v4 = a3;
-  v5 = [v4 length];
-  v11 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v4];
+  textCopy = text;
+  v5 = [textCopy length];
+  v11 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:textCopy];
 
-  v6 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v7 = [v6 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v7 = [defaultParagraphStyle mutableCopy];
 
   [v7 setLineBreakMode:0];
   [v7 setAlignment:1];
@@ -139,17 +139,17 @@
   [v11 addAttribute:*MEMORY[0x1E69DB648] value:v8 range:{0, v5}];
   [v11 addAttribute:*MEMORY[0x1E69DB688] value:v7 range:{0, v5}];
   v9 = *MEMORY[0x1E69DB650];
-  v10 = [MEMORY[0x1E69DC888] labelColor];
-  [v11 addAttribute:v9 value:v10 range:{0, v5}];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [v11 addAttribute:v9 value:labelColor range:{0, v5}];
 
   [(UITextView *)self->_primaryLabel setAttributedText:v11];
 }
 
-- (void)setShowingCheckmark:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowingCheckmark:(BOOL)checkmark animated:(BOOL)animated
 {
-  if (self->_showingCheckmark != a3)
+  if (self->_showingCheckmark != checkmark)
   {
-    self->_showingCheckmark = a3;
+    self->_showingCheckmark = checkmark;
     [PKCheckmarkView showCheckmark:"showCheckmark:animated:" animated:?];
   }
 }
@@ -163,21 +163,21 @@
   [(PKProvisioningProgressView *)self _layoutWithBounds:1 applyLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKProvisioningProgressView *)self _layoutWithBounds:0 applyLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKProvisioningProgressView *)self _layoutWithBounds:0 applyLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 applyLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds applyLayout:(BOOL)layout
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  layoutCopy = layout;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(PKProvisioningProgressView *)self layoutMargins];
   v11 = v10;
   v13 = width - (v10 + v12);
@@ -190,7 +190,7 @@
   v71.size.width = width;
   v71.size.height = height;
   v68 = CGRectGetMaxY(v71) - v17 - v15 + -50.0 + -13.0 + -10.0;
-  if (v4)
+  if (layoutCopy)
   {
     [(UIScrollView *)self->_scrollView frame];
     v75.origin.x = v18;
@@ -214,7 +214,7 @@
     [(UIView *)headerView sizeThatFits:width, 1.79769313e308];
     PKSizeRoundToPixel();
     v69 = v23 + 25.0;
-    if (v4)
+    if (layoutCopy)
     {
       [(UIView *)self->_headerView setFrame:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), width, v23];
     }
@@ -223,7 +223,7 @@
   v24 = x + v11;
   [(UITextView *)self->_primaryLabel sizeThatFits:v13 + -20.0, 1.79769313e308];
   v27 = v26;
-  if (v4)
+  if (layoutCopy)
   {
     [(UITextView *)self->_primaryLabel setFrame:v24, v69, v25, v26];
   }
@@ -239,20 +239,20 @@
   v66 = v29;
   checkmarkView = self->_checkmarkView;
   v67 = v17;
-  if (checkmarkView && v4)
+  if (checkmarkView && layoutCopy)
   {
     [(PKCheckmarkView *)checkmarkView sizeThatFits:width, height];
-    v31 = [(UITextView *)self->_primaryLabel layoutManager];
-    v32 = [(UITextView *)self->_primaryLabel textContainer];
-    [v31 ensureLayoutForTextContainer:v32];
+    layoutManager = [(UITextView *)self->_primaryLabel layoutManager];
+    textContainer = [(UITextView *)self->_primaryLabel textContainer];
+    [layoutManager ensureLayoutForTextContainer:textContainer];
 
     primaryLabel = self->_primaryLabel;
-    v34 = [(UITextView *)primaryLabel endOfDocument];
-    v35 = [(UITextView *)primaryLabel positionFromPosition:v34 offset:-1];
+    endOfDocument = [(UITextView *)primaryLabel endOfDocument];
+    v35 = [(UITextView *)primaryLabel positionFromPosition:endOfDocument offset:-1];
 
     v36 = self->_primaryLabel;
-    v37 = [(UITextView *)v36 endOfDocument];
-    v38 = [(UITextView *)v36 textRangeFromPosition:v35 toPosition:v37];
+    endOfDocument2 = [(UITextView *)v36 endOfDocument];
+    v38 = [(UITextView *)v36 textRangeFromPosition:v35 toPosition:endOfDocument2];
 
     [(UITextView *)self->_primaryLabel firstRectForRange:v38];
     [(PKProvisioningProgressView *)self convertRect:self->_primaryLabel fromView:?];
@@ -260,12 +260,12 @@
     v42 = v41;
     v44 = v43;
     v46 = v45;
-    v47 = [(PKProvisioningProgressView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(PKProvisioningProgressView *)self _shouldReverseLayoutDirection];
     v48 = v40;
     v49 = v42;
     v50 = v44;
     v51 = v46;
-    if (v47)
+    if (_shouldReverseLayoutDirection)
     {
       CGRectGetMinX(*&v48);
     }
@@ -282,7 +282,7 @@
   }
 
   [(UILabel *)self->_secondaryLabel sizeThatFits:v13, 1.79769313e308];
-  if (v4)
+  if (layoutCopy)
   {
     v53 = v52;
     [(UILabel *)self->_secondaryLabel setFrame:v24, v69 + v65 + v66, v13, v52];
@@ -300,7 +300,7 @@
   v59 = v55;
   v60 = v56;
   v61 = v57;
-  if (v4)
+  if (layoutCopy)
   {
     [(UIProgressView *)self->_progressView setFrame:v54, v55, v56, v57];
     v74.origin.x = v58;

@@ -3,12 +3,12 @@
 - (BOOL)_presentsSearchResultsTableAsPopover;
 - (BOOL)_shouldShowCorecipientsTableView;
 - (BOOL)_userInterfaceConfigurationSupportsCorecipientsTableView;
-- (BOOL)endEditing:(BOOL)a3;
+- (BOOL)endEditing:(BOOL)editing;
 - (BOOL)isBccFieldVisible;
 - (BOOL)isKeyboardVisible;
 - (BOOL)isSearchResultsPopoverVisible;
 - (BOOL)presentSearchResults;
-- (BOOL)presentSearchResults:(id)a3;
+- (BOOL)presentSearchResults:(id)results;
 - (BOOL)shouldScrollLastChangedRecipientViewToTop;
 - (CGPoint)_headerViewOriginWithScrollViewOffsetCalculation;
 - (CGRect)_headerFrame;
@@ -20,81 +20,81 @@
 - (MFMailComposeRecipientTextView)ccField;
 - (MFMailComposeRecipientTextViewDelegate)composeRecipientDelegate;
 - (MFMailComposeToFieldDelegate)toFieldDelegate;
-- (MFMailComposeView)initWithFrame:(CGRect)a3 options:(unint64_t)a4 isQuickReply:(BOOL)a5;
+- (MFMailComposeView)initWithFrame:(CGRect)frame options:(unint64_t)options isQuickReply:(BOOL)reply;
 - (MFMailComposeViewDelegate)composeViewDelegate;
 - (UITableView)searchTableView;
 - (UIViewController)popoverOwner;
 - (double)_heightForBottomView;
 - (double)_verticalPadding;
 - (id)_focusedRecipientView;
-- (id)dragSource:(id)a3 draggableItemsAtPoint:(CGPoint)a4;
-- (id)dragSource:(id)a3 suggestedNameForDraggableItem:(id)a4;
-- (id)dragSource:(id)a3 targetedPreviewForDraggableItem:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)sendingAccountProxyForComposeContactsSearchController:(id)a3;
-- (id)sendingAddressForDropTarget:(id)a3 withTargetView:(id)a4;
-- (int64_t)addressableGroupResultStyleForComposeContactsSearchController:(id)a3;
+- (id)dragSource:(id)source draggableItemsAtPoint:(CGPoint)point;
+- (id)dragSource:(id)source suggestedNameForDraggableItem:(id)item;
+- (id)dragSource:(id)source targetedPreviewForDraggableItem:(id)item;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)sendingAccountProxyForComposeContactsSearchController:(id)controller;
+- (id)sendingAddressForDropTarget:(id)target withTargetView:(id)view;
+- (int64_t)addressableGroupResultStyleForComposeContactsSearchController:(id)controller;
 - (void)_adjustHeaderFieldsPreferredContentSize;
 - (void)_adjustScrollerContentSize;
 - (void)_adjustScrollerForBottomView;
 - (void)_cancelAnimations;
 - (void)_cancelDelayedPopover;
-- (void)_collectKeyViews:(id)a3;
-- (void)_createCCAndBCCFieldIfNeededAndCompleteSetup:(BOOL)a3;
-- (void)_createImageSizeFieldIfNeededAndAddSubview:(BOOL)a3;
+- (void)_collectKeyViews:(id)views;
+- (void)_createCCAndBCCFieldIfNeededAndCompleteSetup:(BOOL)setup;
+- (void)_createImageSizeFieldIfNeededAndAddSubview:(BOOL)subview;
 - (void)_displayMetricsDidChange;
-- (void)_dropItems:(id)a3 recipientTextView:(id)a4;
-- (void)_finishUpRotationToInterfaceOrientation:(int64_t)a3;
-- (void)_layoutComposeHeaderViewsWithChangingHeader:(id)a3 toSize:(CGSize)a4 withPinFrame:(CGRect *)a5;
+- (void)_dropItems:(id)items recipientTextView:(id)view;
+- (void)_finishUpRotationToInterfaceOrientation:(int64_t)orientation;
+- (void)_layoutComposeHeaderViewsWithChangingHeader:(id)header toSize:(CGSize)size withPinFrame:(CGRect *)frame;
 - (void)_layoutFindPanelHostView;
 - (void)_layoutLoadingView;
-- (void)_layoutSubviews:(BOOL)a3 changingView:(id)a4 toSize:(CGSize)a5 searchResultsWereDismissed:(BOOL)a6;
-- (void)_layoutSubviewsWithActiveRecipientView:(BOOL)a3 changingView:(id)a4 toSize:(CGSize)a5;
+- (void)_layoutSubviews:(BOOL)subviews changingView:(id)view toSize:(CGSize)size searchResultsWereDismissed:(BOOL)dismissed;
+- (void)_layoutSubviewsWithActiveRecipientView:(BOOL)view changingView:(id)changingView toSize:(CGSize)size;
 - (void)_multiFieldClicked;
-- (void)_performBlockWithStrongComposeCoordinator:(id)a3;
+- (void)_performBlockWithStrongComposeCoordinator:(id)coordinator;
 - (void)_presentDelayedPopover;
-- (void)_setCorecipientsTableViewVisible:(BOOL)a3 withFieldFrame:(CGRect)a4;
-- (void)_setDragging:(BOOL)a3;
-- (void)_setHeaderFrame:(CGRect)a3;
-- (void)_setShadowViewVisible:(BOOL)a3 frame:(CGRect)a4;
+- (void)_setCorecipientsTableViewVisible:(BOOL)visible withFieldFrame:(CGRect)frame;
+- (void)_setDragging:(BOOL)dragging;
+- (void)_setHeaderFrame:(CGRect)frame;
+- (void)_setShadowViewVisible:(BOOL)visible frame:(CGRect)frame;
 - (void)_setUpContentView;
-- (void)_setupBodyFieldWithHeaderFrame:(CGFloat)a3 enclosingFrame:(CGFloat)a4 changingView:(CGFloat)a5 frameToPin:(uint64_t)a6 wasSearching:(void *)a7;
-- (void)_setupField:(id)a3 withLabel:(id)a4 navTitle:(id)a5;
+- (void)_setupBodyFieldWithHeaderFrame:(CGFloat)frame enclosingFrame:(CGFloat)enclosingFrame changingView:(CGFloat)view frameToPin:(uint64_t)pin wasSearching:(void *)searching;
+- (void)_setupField:(id)field withLabel:(id)label navTitle:(id)title;
 - (void)_updateFromField;
-- (void)_updateKeyboardIntersection:(CGRect)a3;
+- (void)_updateKeyboardIntersection:(CGRect)intersection;
 - (void)_updateMultiField;
-- (void)_updateOptionalHeaderVisibilityForceVisible:(BOOL)a3;
-- (void)autocompleteResultsController:(id)a3 didAskToRemoveRecipient:(id)a4;
-- (void)autocompleteResultsController:(id)a3 didRequestInfoAboutRecipient:(id)a4;
-- (void)autocompleteResultsController:(id)a3 didSelectRecipient:(id)a4 atIndex:(unint64_t)a5;
-- (void)automaticKeyboardFinishedAppearing:(id)a3;
-- (void)automaticKeyboardFinishedDisappearing:(id)a3;
-- (void)beginSearchForText:(id)a3 recipientView:(id)a4;
+- (void)_updateOptionalHeaderVisibilityForceVisible:(BOOL)visible;
+- (void)autocompleteResultsController:(id)controller didAskToRemoveRecipient:(id)recipient;
+- (void)autocompleteResultsController:(id)controller didRequestInfoAboutRecipient:(id)recipient;
+- (void)autocompleteResultsController:(id)controller didSelectRecipient:(id)recipient atIndex:(unint64_t)index;
+- (void)automaticKeyboardFinishedAppearing:(id)appearing;
+- (void)automaticKeyboardFinishedDisappearing:(id)disappearing;
+- (void)beginSearchForText:(id)text recipientView:(id)view;
 - (void)clearSearchForActiveRecipientView;
-- (void)clearSearchForRecipientView:(id)a3 reflow:(BOOL)a4 clear:(BOOL)a5;
-- (void)composeContactsSearchController:(id)a3 didFindCorecipients:(id)a4;
-- (void)composeContactsSearchController:(id)a3 finishedWithResults:(BOOL)a4;
-- (void)composeFromView:(id)a3 didSelectAddress:(id)a4;
-- (void)composeHeaderViewClicked:(id)a3;
-- (void)composeWebView:(id)a3 composeBodyIsEmpty:(BOOL)a4;
-- (void)composeWebView:(id)a3 didChangeHeight:(double)a4;
-- (void)composeWebView:(id)a3 hasActiveWritingToolsSession:(BOOL)a4;
-- (void)composeWebViewTextChanged:(id)a3;
+- (void)clearSearchForRecipientView:(id)view reflow:(BOOL)reflow clear:(BOOL)clear;
+- (void)composeContactsSearchController:(id)controller didFindCorecipients:(id)corecipients;
+- (void)composeContactsSearchController:(id)controller finishedWithResults:(BOOL)results;
+- (void)composeFromView:(id)view didSelectAddress:(id)address;
+- (void)composeHeaderViewClicked:(id)clicked;
+- (void)composeWebView:(id)view composeBodyIsEmpty:(BOOL)empty;
+- (void)composeWebView:(id)view didChangeHeight:(double)height;
+- (void)composeWebView:(id)view hasActiveWritingToolsSession:(BOOL)session;
+- (void)composeWebViewTextChanged:(id)changed;
 - (void)dealloc;
 - (void)didAppear;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3;
-- (void)disambiguateRecipient:(id)a3 recipientView:(id)a4;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation;
+- (void)disambiguateRecipient:(id)recipient recipientView:(id)view;
 - (void)dismissSearchResults;
 - (void)dismissSearchResultsIfDisambiguating;
-- (void)displayQuickReplyView:(BOOL)a3;
-- (void)dropTarget:(id)a3 didDropDragItems:(id)a4 atPoint:(CGPoint)a5;
-- (void)dropTarget:(id)a3 dragDidMoveToPoint:(CGPoint)a4;
-- (void)dropTarget:(id)a3 dragEnteredAtPoint:(CGPoint)a4;
-- (void)dropTargetDragExited:(id)a3;
-- (void)findCorecipientsWithRecipientView:(id)a3;
-- (void)focusFirstResponderAfterRecipientView:(id)a3;
-- (void)focusFirstResponderBeforeRecipientView:(id)a3;
-- (void)invalidateSearchResultRecipient:(id)a3;
+- (void)displayQuickReplyView:(BOOL)view;
+- (void)dropTarget:(id)target didDropDragItems:(id)items atPoint:(CGPoint)point;
+- (void)dropTarget:(id)target dragDidMoveToPoint:(CGPoint)point;
+- (void)dropTarget:(id)target dragEnteredAtPoint:(CGPoint)point;
+- (void)dropTargetDragExited:(id)exited;
+- (void)findCorecipientsWithRecipientView:(id)view;
+- (void)focusFirstResponderAfterRecipientView:(id)view;
+- (void)focusFirstResponderBeforeRecipientView:(id)view;
+- (void)invalidateSearchResultRecipient:(id)recipient;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
 - (void)menuDidHide;
@@ -103,31 +103,31 @@
 - (void)removeFromSuperview;
 - (void)resetContentSize;
 - (void)restoreFirstResponder;
-- (void)restoreFirstResponderWithKeyboardPinning:(BOOL)a3;
-- (void)saveFirstResponderWithKeyboardPinning:(BOOL)a3;
-- (void)scrollToRecipientTextView:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)scrollToTopAnimated:(BOOL)a3;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)restoreFirstResponderWithKeyboardPinning:(BOOL)pinning;
+- (void)saveFirstResponderWithKeyboardPinning:(BOOL)pinning;
+- (void)scrollToRecipientTextView:(id)view animated:(BOOL)animated completion:(id)completion;
+- (void)scrollToTopAnimated:(BOOL)animated;
+- (void)scrollViewDidScroll:(id)scroll;
 - (void)searchResultsPopoverWasDismissed;
-- (void)setAnimationDisabled:(BOOL)a3;
-- (void)setAutoresizingMask:(unint64_t)a3;
-- (void)setComposeRecipientDelegate:(id)a3;
-- (void)setComposeViewDelegate:(id)a3;
-- (void)setDisplayMetrics:(id)a3;
-- (void)setIsForEditing:(BOOL)a3;
-- (void)setKeyboardVisible:(BOOL)a3 animate:(BOOL)a4;
-- (void)setLoading:(BOOL)a3;
-- (void)setLoadingFromAddress:(BOOL)a3;
-- (void)setQuickReply:(BOOL)a3;
-- (void)setRecipientFieldsEditable:(BOOL)a3 animated:(BOOL)a4;
-- (void)setReplyToHME:(BOOL)a3;
-- (void)setSending:(BOOL)a3;
-- (void)setShowingPeoplePicker:(BOOL)a3;
-- (void)setToFieldDelegate:(id)a3;
+- (void)setAnimationDisabled:(BOOL)disabled;
+- (void)setAutoresizingMask:(unint64_t)mask;
+- (void)setComposeRecipientDelegate:(id)delegate;
+- (void)setComposeViewDelegate:(id)delegate;
+- (void)setDisplayMetrics:(id)metrics;
+- (void)setIsForEditing:(BOOL)editing;
+- (void)setKeyboardVisible:(BOOL)visible animate:(BOOL)animate;
+- (void)setLoading:(BOOL)loading;
+- (void)setLoadingFromAddress:(BOOL)address;
+- (void)setQuickReply:(BOOL)reply;
+- (void)setRecipientFieldsEditable:(BOOL)editable animated:(BOOL)animated;
+- (void)setReplyToHME:(BOOL)e;
+- (void)setSending:(BOOL)sending;
+- (void)setShowingPeoplePicker:(BOOL)picker;
+- (void)setToFieldDelegate:(id)delegate;
 - (void)toggleImageSizeFieldIfNecessary;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidBecomeFirstResponder:(id)a3;
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidBecomeFirstResponder:(id)responder;
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 @end
 
 @implementation MFMailComposeView
@@ -138,7 +138,7 @@
   block[1] = 3221225472;
   block[2] = __24__MFMailComposeView_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_4 != -1)
   {
     dispatch_once(&log_onceToken_4, block);
@@ -157,18 +157,18 @@ void __24__MFMailComposeView_log__block_invoke(uint64_t a1)
   log_log_4 = v1;
 }
 
-- (MFMailComposeView)initWithFrame:(CGRect)a3 options:(unint64_t)a4 isQuickReply:(BOOL)a5
+- (MFMailComposeView)initWithFrame:(CGRect)frame options:(unint64_t)options isQuickReply:(BOOL)reply
 {
-  v5 = a5;
-  width = a3.size.width;
+  replyCopy = reply;
+  width = frame.size.width;
   v37.receiver = self;
   v37.super_class = MFMailComposeView;
-  v8 = [(UITransitionView *)&v37 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v8 = [(UITransitionView *)&v37 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v9 = v8;
   if (v8)
   {
-    v8->_options = a4;
-    if (v5)
+    v8->_options = options;
+    if (replyCopy)
     {
       v10 = 64;
     }
@@ -187,8 +187,8 @@ void __24__MFMailComposeView_log__block_invoke(uint64_t a1)
 
     [(UIView *)v9->_headerView setAutoresizingMask:2];
     [(UIView *)v9->_headerView setAutoresizesSubviews:0];
-    v13 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(UIView *)v9->_headerView setBackgroundColor:v13];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(UIView *)v9->_headerView setBackgroundColor:systemBackgroundColor];
 
     [(UIView *)v9->_headerView setInsetsLayoutMarginsFromSafeArea:0];
     [(UIView *)v9->_headerView setClipsToBounds:1];
@@ -234,27 +234,27 @@ void __24__MFMailComposeView_log__block_invoke(uint64_t a1)
     [(MFComposeMultiView *)v9->_multiField setDelegate:v9];
     [(MFMailComposeView *)v9 _addHoverEffectToField:v9->_multiField];
     [(MFMailComposeView *)v9 _setUpContentView];
-    [(MFMailComposeView *)v9 displayQuickReplyView:v5];
+    [(MFMailComposeView *)v9 displayQuickReplyView:replyCopy];
     [(UIScrollView *)v9->_bodyScroller setKeyboardDismissMode:2];
-    v32 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v32 addObserver:v9 selector:sel_menuDidHide name:*MEMORY[0x1E69DE0E0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel_menuDidHide name:*MEMORY[0x1E69DE0E0] object:0];
 
-    v33 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v33 addObserver:v9 selector:sel_automaticKeyboardFinishedAppearing_ name:*MEMORY[0x1E69DDF78] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v9 selector:sel_automaticKeyboardFinishedAppearing_ name:*MEMORY[0x1E69DDF78] object:0];
 
-    v34 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v34 addObserver:v9 selector:sel_automaticKeyboardFinishedDisappearing_ name:*MEMORY[0x1E69DDF70] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v9 selector:sel_automaticKeyboardFinishedDisappearing_ name:*MEMORY[0x1E69DDF70] object:0];
 
-    v35 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v35 addObserver:v9 selector:sel__adjustHeaderFieldsPreferredContentSize name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v9 selector:sel__adjustHeaderFieldsPreferredContentSize name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v9;
 }
 
-- (void)displayQuickReplyView:(BOOL)a3
+- (void)displayQuickReplyView:(BOOL)view
 {
-  if (a3)
+  if (view)
   {
     v3 = 64;
   }
@@ -265,7 +265,7 @@ void __24__MFMailComposeView_log__block_invoke(uint64_t a1)
   }
 
   *(self + 777) = *(self + 777) & 0xBF | v3;
-  if (!a3)
+  if (!view)
   {
     [(UIScrollView *)self->_bodyScroller addSubview:self->_headerView];
     [(UIView *)self->_headerView addSubview:self->_fromField];
@@ -299,8 +299,8 @@ void __43__MFMailComposeView_displayQuickReplyView___block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(MFMailComposeContactsSearchController *)self->_searchController cancelSearch];
   [(MFMailComposeContactsSearchController *)self->_searchController setDelegate:0];
@@ -316,7 +316,7 @@ void __43__MFMailComposeView_displayQuickReplyView___block_invoke(uint64_t a1)
 
 - (void)_setUpContentView
 {
-  v19 = [(MFMailComposeView *)self _mainContainerView];
+  _mainContainerView = [(MFMailComposeView *)self _mainContainerView];
   v3 = [MFComposeWebView alloc];
   [(MFMailComposeView *)self _frameForMainContainerView];
   v8 = [(MFComposeWebView *)v3 initWithFrame:[(MFMailComposeView *)self isQuickReply] isQuickReply:v4, v5, v6, v7];
@@ -337,7 +337,7 @@ void __43__MFMailComposeView_displayQuickReplyView___block_invoke(uint64_t a1)
   v10 = ;
   [(UIView *)self->_contentView setBackgroundColor:v10];
 
-  [v19 addSubview:self->_contentView];
+  [_mainContainerView addSubview:self->_contentView];
   [(MFComposeWebView *)self->_webView setComposeWebViewDelegate:self];
   [(MFComposeWebView *)self->_webView _setEditable:1];
   v11 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -346,15 +346,15 @@ void __43__MFMailComposeView_displayQuickReplyView___block_invoke(uint64_t a1)
   self->_findPanelHostView = v12;
 
   v14 = self->_findPanelHostView;
-  v15 = [(MFComposeWebView *)self->_webView findInteraction];
-  [v15 _setHostView:v14];
+  findInteraction = [(MFComposeWebView *)self->_webView findInteraction];
+  [findInteraction _setHostView:v14];
 
-  v16 = [(MFComposeWebView *)self->_webView scrollView];
-  [v16 addSubview:self->_findPanelHostView];
+  scrollView = [(MFComposeWebView *)self->_webView scrollView];
+  [scrollView addSubview:self->_findPanelHostView];
 
-  v17 = [(MFComposeWebView *)self->_webView scrollView];
+  scrollView2 = [(MFComposeWebView *)self->_webView scrollView];
   bodyScroller = self->_bodyScroller;
-  self->_bodyScroller = v17;
+  self->_bodyScroller = scrollView2;
 
   [(UIScrollView *)self->_bodyScroller setAutoresizingMask:18];
   [(UIScrollView *)self->_bodyScroller setDelegate:self];
@@ -389,12 +389,12 @@ void __43__MFMailComposeView_displayQuickReplyView___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_setHeaderFrame:(CGRect)a3
+- (void)_setHeaderFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIScrollView *)self->_bodyScroller contentInset];
   [(UIScrollView *)self->_bodyScroller contentOffset];
   v9 = v8;
@@ -421,9 +421,9 @@ void __43__MFMailComposeView_displayQuickReplyView___block_invoke(uint64_t a1)
   [(UIView *)headerView setFrame:x, -(height + findPanelHeight), width, height];
 }
 
-- (void)setComposeViewDelegate:(id)a3
+- (void)setComposeViewDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_mailComposeViewDelegate);
 
   if (WeakRetained != obj)
@@ -433,9 +433,9 @@ void __43__MFMailComposeView_displayQuickReplyView___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setComposeRecipientDelegate:(id)a3
+- (void)setComposeRecipientDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_composeRecipientViewDelegate);
 
   if (WeakRetained != obj)
@@ -447,9 +447,9 @@ void __43__MFMailComposeView_displayQuickReplyView___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setToFieldDelegate:(id)a3
+- (void)setToFieldDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_toFieldDelegate);
 
   if (WeakRetained != obj)
@@ -461,10 +461,10 @@ void __43__MFMailComposeView_displayQuickReplyView___block_invoke(uint64_t a1)
 
 - (BOOL)_presentsSearchResultsTableAsPopover
 {
-  v2 = [(MFMailComposeView *)self traitCollection];
-  v3 = [v2 mf_supportsPopoverPresentation];
+  traitCollection = [(MFMailComposeView *)self traitCollection];
+  mf_supportsPopoverPresentation = [traitCollection mf_supportsPopoverPresentation];
 
-  return v3;
+  return mf_supportsPopoverPresentation;
 }
 
 - (CNAutocompleteResultsTableViewController)searchViewController
@@ -483,12 +483,12 @@ void __43__MFMailComposeView_displayQuickReplyView___block_invoke(uint64_t a1)
   return searchViewController;
 }
 
-- (void)setDisplayMetrics:(id)a3
+- (void)setDisplayMetrics:(id)metrics
 {
-  v5 = a3;
-  if (self->_displayMetrics != v5)
+  metricsCopy = metrics;
+  if (self->_displayMetrics != metricsCopy)
   {
-    objc_storeStrong(&self->_displayMetrics, a3);
+    objc_storeStrong(&self->_displayMetrics, metrics);
     [(MFMailComposeView *)self _displayMetricsDidChange];
   }
 }
@@ -528,8 +528,8 @@ void __43__MFMailComposeView_displayQuickReplyView___block_invoke(uint64_t a1)
 
   else
   {
-    v4 = [(MFMailComposeRecipientTextView *)v2 superview];
-    v5 = v4 != 0;
+    superview = [(MFMailComposeRecipientTextView *)v2 superview];
+    v5 = superview != 0;
   }
 
   return v5;
@@ -549,12 +549,12 @@ void __43__MFMailComposeView_displayQuickReplyView___block_invoke(uint64_t a1)
 
 - (void)_cancelAnimations
 {
-  v3 = [MEMORY[0x1E69DC660] sharedAnimator];
-  [v3 removeAnimationsForTarget:self->_toField];
-  [v3 removeAnimationsForTarget:self->_ccField];
-  [v3 removeAnimationsForTarget:self->_subjectField];
-  [v3 removeAnimationsForTarget:self->_headerView];
-  [v3 removeAnimationsForTarget:self->_bodyScroller];
+  mEMORY[0x1E69DC660] = [MEMORY[0x1E69DC660] sharedAnimator];
+  [mEMORY[0x1E69DC660] removeAnimationsForTarget:self->_toField];
+  [mEMORY[0x1E69DC660] removeAnimationsForTarget:self->_ccField];
+  [mEMORY[0x1E69DC660] removeAnimationsForTarget:self->_subjectField];
+  [mEMORY[0x1E69DC660] removeAnimationsForTarget:self->_headerView];
+  [mEMORY[0x1E69DC660] removeAnimationsForTarget:self->_bodyScroller];
 }
 
 - (void)resetContentSize
@@ -579,16 +579,16 @@ void __43__MFMailComposeView_displayQuickReplyView___block_invoke(uint64_t a1)
   [(MFMailComposeView *)&v3 removeFromSuperview];
 }
 
-- (void)_collectKeyViews:(id)a3
+- (void)_collectKeyViews:(id)views
 {
-  v4 = a3;
+  viewsCopy = views;
   v9.receiver = self;
   v9.super_class = MFMailComposeView;
-  [(MFMailComposeView *)&v9 _collectKeyViews:v4];
-  if ([v4 count])
+  [(MFMailComposeView *)&v9 _collectKeyViews:viewsCopy];
+  if ([viewsCopy count])
   {
-    v5 = [(CNComposeRecipientTextView *)self->_toField textView];
-    if (-[MFMailComposeView _presentsSearchResultsTableAsPopover](self, "_presentsSearchResultsTableAsPopover") && [v5 isFirstResponder])
+    textView = [(CNComposeRecipientTextView *)self->_toField textView];
+    if (-[MFMailComposeView _presentsSearchResultsTableAsPopover](self, "_presentsSearchResultsTableAsPopover") && [textView isFirstResponder])
     {
       v6 = self->_ccField;
       [(MFMailComposeRecipientTextView *)v6 alpha];
@@ -598,23 +598,23 @@ void __43__MFMailComposeView_displayQuickReplyView___block_invoke(uint64_t a1)
         goto LABEL_8;
       }
 
-      v8 = [(MFMailComposeRecipientTextView *)v6 superview];
+      superview = [(MFMailComposeRecipientTextView *)v6 superview];
 
-      if (!v8)
+      if (!superview)
       {
 LABEL_8:
         if ((*MEMORY[0x1E6996388] & 1) == 0)
         {
-          [v4 insertObject:self->_ccField atIndex:{objc_msgSend(v4, "indexOfObject:", v5) + 1}];
+          [viewsCopy insertObject:self->_ccField atIndex:{objc_msgSend(viewsCopy, "indexOfObject:", textView) + 1}];
         }
       }
     }
   }
 }
 
-- (void)composeHeaderViewClicked:(id)a3
+- (void)composeHeaderViewClicked:(id)clicked
 {
-  if (self->_multiField == a3)
+  if (self->_multiField == clicked)
   {
     [(MFMailComposeView *)self _multiFieldClicked];
   }
@@ -624,10 +624,10 @@ LABEL_8:
 {
   [(MFMailComposeView *)self bounds];
   v4 = v3;
-  v5 = [(MFMailComposeView *)self traitCollection];
-  v6 = [v5 verticalSizeClass];
+  traitCollection = [(MFMailComposeView *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
-  v7 = v4 <= 768.0 || v6 == 1;
+  v7 = v4 <= 768.0 || verticalSizeClass == 1;
   result = 44.0;
   if (v7)
   {
@@ -637,15 +637,15 @@ LABEL_8:
   return result;
 }
 
-- (void)_setShadowViewVisible:(BOOL)a3 frame:(CGRect)a4
+- (void)_setShadowViewVisible:(BOOL)visible frame:(CGRect)frame
 {
   shadowView = self->_shadowView;
-  if (a3)
+  if (visible)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
+    height = frame.size.height;
+    width = frame.size.width;
+    y = frame.origin.y;
+    x = frame.origin.x;
     if (shadowView)
     {
       [(UIView *)shadowView setAlpha:1.0];
@@ -654,7 +654,7 @@ LABEL_8:
 
     else
     {
-      v10 = [[MFSearchShadowView alloc] initWithFrame:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+      v10 = [[MFSearchShadowView alloc] initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
       v11 = self->_shadowView;
       self->_shadowView = &v10->super.super;
 
@@ -662,11 +662,11 @@ LABEL_8:
       [(UIView *)self->_shadowView setOpaque:0];
     }
 
-    v12 = [(UIView *)self->_shadowView superview];
+    superview = [(UIView *)self->_shadowView superview];
 
     bodyScroller = self->_bodyScroller;
     v14 = self->_shadowView;
-    if (v12)
+    if (superview)
     {
 
       [(UIScrollView *)bodyScroller bringSubviewToFront:v14];
@@ -682,7 +682,7 @@ LABEL_8:
   else
   {
 
-    [(UIView *)shadowView removeFromSuperview:a4.origin.x];
+    [(UIView *)shadowView removeFromSuperview:frame.origin.x];
   }
 }
 
@@ -707,19 +707,19 @@ LABEL_8:
   [(UIView *)findPanelHostView setFrame:0.0, v8];
 }
 
-- (void)_setupBodyFieldWithHeaderFrame:(CGFloat)a3 enclosingFrame:(CGFloat)a4 changingView:(CGFloat)a5 frameToPin:(uint64_t)a6 wasSearching:(void *)a7
+- (void)_setupBodyFieldWithHeaderFrame:(CGFloat)frame enclosingFrame:(CGFloat)enclosingFrame changingView:(CGFloat)view frameToPin:(uint64_t)pin wasSearching:(void *)searching
 {
   v39 = *MEMORY[0x1E69E9840];
-  v22 = a7;
-  [a1 _updateTextViewHeightWithHeaderFrame:{a2, a3, a4, a5}];
-  [a1 _adjustScrollerContentSize];
-  [a1 _layoutFindPanelHostView];
+  searchingCopy = searching;
+  [self _updateTextViewHeightWithHeaderFrame:{a2, frame, enclosingFrame, view}];
+  [self _adjustScrollerContentSize];
+  [self _layoutFindPanelHostView];
   v23 = +[MFMailComposeView log];
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    [*(a1 + 504) frame];
+    [*(self + 504) frame];
     v24 = NSStringFromCGRect(v41);
-    [a1 bounds];
+    [self bounds];
     v25 = NSStringFromCGRect(v42);
     v35 = 138543618;
     v36 = v24;
@@ -728,22 +728,22 @@ LABEL_8:
     _os_log_impl(&dword_1BE819000, v23, OS_LOG_TYPE_DEFAULT, "Setting body scroller frame from: %{public}@ to: %{public}@", &v35, 0x16u);
   }
 
-  [a1 bounds];
-  [*(a1 + 504) setFrame:?];
-  [*(a1 + 504) setScrollEnabled:1];
-  if (v22)
+  [self bounds];
+  [*(self + 504) setFrame:?];
+  [*(self + 504) setScrollEnabled:1];
+  if (searchingCopy)
   {
     v43.size.width = a15;
     v43.size.height = a16;
     v43.origin.x = a13;
     v43.origin.y = a14;
     MaxY = CGRectGetMaxY(v43);
-    [*(a1 + 504) contentOffset];
+    [*(self + 504) contentOffset];
     v29 = v28;
     if (a8)
     {
-      v30 = *(a1 + 712);
-      [*(a1 + 504) frame];
+      v30 = *(self + 712);
+      [*(self + 504) frame];
       if (v30 < MaxY - v31)
       {
         v30 = MaxY - v31;
@@ -759,9 +759,9 @@ LABEL_8:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       v44.origin.x = a2;
-      v44.origin.y = a3;
-      v44.size.width = a4;
-      v44.size.height = a5;
+      v44.origin.y = frame;
+      v44.size.width = enclosingFrame;
+      v44.size.height = view;
       v33 = NSStringFromCGRect(v44);
       v40.x = v29;
       v40.y = v30;
@@ -773,24 +773,24 @@ LABEL_8:
       _os_log_impl(&dword_1BE819000, v32, OS_LOG_TYPE_DEFAULT, "Setting up body field with header frame: %{public}@ and setting offset: %{public}@", &v35, 0x16u);
     }
 
-    [*(a1 + 504) setContentOffset:{v29, v30}];
+    [*(self + 504) setContentOffset:{v29, v30}];
   }
 
-  [a1 _revealSelectionIfNeededWithChangingView:v22];
+  [self _revealSelectionIfNeededWithChangingView:searchingCopy];
 }
 
-- (void)_layoutSubviewsWithActiveRecipientView:(BOOL)a3 changingView:(id)a4 toSize:(CGSize)a5
+- (void)_layoutSubviewsWithActiveRecipientView:(BOOL)view changingView:(id)changingView toSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v140[2] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  changingViewCopy = changingView;
   [(MFMailComposeView *)self _cancelAnimations];
   [(UIScrollView *)self->_bodyScroller setScrollEnabled:0];
   v9 = *(MEMORY[0x1E695F058] + 16);
   v139[0] = *MEMORY[0x1E695F058];
   v139[1] = v9;
-  [(MFMailComposeView *)self _layoutComposeHeaderViewsWithChangingHeader:v8 toSize:v139 withPinFrame:width, height];
+  [(MFMailComposeView *)self _layoutComposeHeaderViewsWithChangingHeader:changingViewCopy toSize:v139 withPinFrame:width, height];
   [(MFMailComposeView *)self _heightForBottomView];
   v11 = v10;
   [(MFMailComposeRecipientTextView *)self->_activeRecipientView frame];
@@ -802,15 +802,15 @@ LABEL_8:
   v21 = v20;
   v23 = v22;
   bodyScroller = self->_bodyScroller;
-  v25 = [(MFMailComposeRecipientTextView *)self->_activeRecipientView superview];
-  [(UIScrollView *)bodyScroller convertRect:v25 fromView:v13, v15, v17, v19];
+  superview = [(MFMailComposeRecipientTextView *)self->_activeRecipientView superview];
+  [(UIScrollView *)bodyScroller convertRect:superview fromView:v13, v15, v17, v19];
   v129 = v26;
   v130 = v27;
   v127 = v29;
   v128 = v28;
 
-  v30 = [(MFMailComposeRecipientTextView *)self->_activeRecipientView superview];
-  [(MFMailComposeView *)self convertRect:v30 fromView:v13, v15, v17, v19];
+  superview2 = [(MFMailComposeRecipientTextView *)self->_activeRecipientView superview];
+  [(MFMailComposeView *)self convertRect:superview2 fromView:v13, v15, v17, v19];
   v32 = v31;
   v34 = v33;
 
@@ -882,7 +882,7 @@ LABEL_8:
 
   [(MFMailComposeView *)self _updateTextViewOriginWithHeaderFrame:v131, v40, v133, MaxY];
   [(MFMailComposeView *)self _adjustScrollerContentSize];
-  v62 = [(MFMailComposeView *)self isSearchResultsPopoverVisible];
+  isSearchResultsPopoverVisible = [(MFMailComposeView *)self isSearchResultsPopoverVisible];
   [(UIScrollView *)self->_bodyScroller _effectiveContentInset];
   v64 = v63;
   v65 = v44 - v63;
@@ -890,14 +890,14 @@ LABEL_8:
   if (![(MFMailComposeView *)self shouldScrollLastChangedRecipientViewToTop])
   {
     [(UIScrollView *)self->_bodyScroller contentOffset];
-    if (v65 != v67 && !v62)
+    if (v65 != v67 && !isSearchResultsPopoverVisible)
     {
       v68 = [objc_alloc(MEMORY[0x1E69DCED0]) initWithTarget:self->_bodyScroller];
       [(UIScrollView *)self->_bodyScroller contentOffset];
       [v68 setStartPoint:?];
       [v68 setEndPoint:{0.0, v44 - v64}];
-      v69 = [MEMORY[0x1E69DC660] sharedAnimator];
-      [v69 addAnimation:v68 withDuration:1 start:0.349999994];
+      mEMORY[0x1E69DC660] = [MEMORY[0x1E69DC660] sharedAnimator];
+      [mEMORY[0x1E69DC660] addAnimation:v68 withDuration:1 start:0.349999994];
 
       [(UIScrollView *)self->_bodyScroller contentOffset];
       v71 = v70;
@@ -906,8 +906,8 @@ LABEL_8:
     }
   }
 
-  v72 = [(MFMailComposeView *)self _searchResultsTable];
-  [v72 frame];
+  _searchResultsTable = [(MFMailComposeView *)self _searchResultsTable];
+  [_searchResultsTable frame];
   v74 = v73;
   v76 = v75;
   v78 = v77;
@@ -927,9 +927,9 @@ LABEL_8:
     +[(CNComposeHeaderView *)MFMailComposeRecipientTextView];
     UIRoundToViewScale();
     v76 = v79;
-    v80 = [(MFMailComposeView *)self shouldScrollLastChangedRecipientViewToTop];
+    shouldScrollLastChangedRecipientViewToTop = [(MFMailComposeView *)self shouldScrollLastChangedRecipientViewToTop];
     v81 = MaxY + v130;
-    if (!v80)
+    if (!shouldScrollLastChangedRecipientViewToTop)
     {
       v81 = 0.0;
     }
@@ -944,15 +944,15 @@ LABEL_8:
       v82 = v43;
     }
 
-    [v72 setFrame:{v131, v76, v133, v82 - (v76 - v65) + v81}];
+    [_searchResultsTable setFrame:{v131, v76, v133, v82 - (v76 - v65) + v81}];
     +[MFSearchShadowView defaultHeight];
     [(UIView *)self->_shadowView setFrame:v131, v76, v133, v83];
   }
 
   if (![(MFMailComposeView *)self _presentsSearchResultsTableAsPopover])
   {
-    v86 = [v72 superview];
-    v87 = v86 == 0;
+    superview3 = [_searchResultsTable superview];
+    v87 = superview3 == 0;
 
     if (!v87)
     {
@@ -967,16 +967,16 @@ LABEL_8:
     goto LABEL_43;
   }
 
-  v84 = [(MFMailComposeView *)self toField];
-  if (([v84 isFirstResponder] & 1) == 0)
+  toField = [(MFMailComposeView *)self toField];
+  if (([toField isFirstResponder] & 1) == 0)
   {
-    v85 = [(MFMailComposeView *)self ccField];
-    if (![v85 isFirstResponder])
+    ccField = [(MFMailComposeView *)self ccField];
+    if (![ccField isFirstResponder])
     {
-      v125 = [(MFMailComposeView *)self bccField];
-      v126 = [v125 isFirstResponder];
+      bccField = [(MFMailComposeView *)self bccField];
+      isFirstResponder = [bccField isFirstResponder];
 
-      if ((v126 & 1) == 0)
+      if ((isFirstResponder & 1) == 0)
       {
         goto LABEL_43;
       }
@@ -986,46 +986,46 @@ LABEL_8:
   }
 
 LABEL_31:
-  v88 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
   if ([(MFMailComposeView *)self _presentsSearchResultsTableAsPopover])
   {
-    v89 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+    systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
 
-    v88 = v89;
+    systemBackgroundColor = systemGroupedBackgroundColor;
   }
 
-  v90 = [(MFMailComposeView *)self searchViewController];
-  v91 = [v90 view];
-  [v91 setBackgroundColor:v88];
+  searchViewController = [(MFMailComposeView *)self searchViewController];
+  view = [searchViewController view];
+  [view setBackgroundColor:systemBackgroundColor];
 
   WeakRetained = objc_loadWeakRetained(&self->_popoverOwner);
   if ([(MFMailComposeView *)self _presentsSearchResultsTableAsPopover])
   {
-    if (WeakRetained != 0 && !v62)
+    if (WeakRetained != 0 && !isSearchResultsPopoverVisible)
     {
-      v93 = [(MFMailComposeView *)self searchViewController];
-      v94 = [(MFMailComposeRecipientTextView *)self->_activeRecipientView navTitle];
-      [v93 setTitle:v94];
+      searchViewController2 = [(MFMailComposeView *)self searchViewController];
+      navTitle = [(MFMailComposeRecipientTextView *)self->_activeRecipientView navTitle];
+      [searchViewController2 setTitle:navTitle];
 
       v140[0] = self->_activeRecipientView;
-      v95 = [MEMORY[0x1E69DCBB8] activeKeyboard];
-      v140[1] = v95;
+      activeKeyboard = [MEMORY[0x1E69DCBB8] activeKeyboard];
+      v140[1] = activeKeyboard;
       v132 = [MEMORY[0x1E695DEC8] arrayWithObjects:v140 count:2];
 
       v96 = objc_alloc(MEMORY[0x1E69DCCD8]);
-      v97 = [(MFMailComposeView *)self searchViewController];
-      v98 = [v96 initWithRootViewController:v97];
+      searchViewController3 = [(MFMailComposeView *)self searchViewController];
+      v98 = [v96 initWithRootViewController:searchViewController3];
 
-      v134 = [(CNComposeRecipientTextView *)self->_activeRecipientView textView];
-      v99 = [v134 selectedTextRange];
-      v100 = [v99 end];
-      [v134 caretRectForPosition:v100];
+      textView = [(CNComposeRecipientTextView *)self->_activeRecipientView textView];
+      selectedTextRange = [textView selectedTextRange];
+      v100 = [selectedTextRange end];
+      [textView caretRectForPosition:v100];
       v102 = v101;
       v104 = v103;
       v106 = v105;
       v108 = v107;
 
-      [(MFMailComposeView *)self convertRect:v134 fromView:v102, v104, v106, v108];
+      [(MFMailComposeView *)self convertRect:textView fromView:v102, v104, v106, v108];
       v110 = v109;
       v112 = v111;
       v114 = v113;
@@ -1033,18 +1033,18 @@ LABEL_31:
       [v98 setModalPresentationStyle:7];
       obj = 0;
       [v98 setModalPresentationStyle:7];
-      v117 = [v98 popoverPresentationController];
-      [v117 setSourceView:self];
-      [v117 setSourceRect:{v110, v112 + v116 - v66, v114, v116}];
-      [v117 setPermittedArrowDirections:1];
-      [v117 setDelegate:self];
-      [v117 _setShouldDisableInteractionDuringTransitions:0];
+      popoverPresentationController = [v98 popoverPresentationController];
+      [popoverPresentationController setSourceView:self];
+      [popoverPresentationController setSourceRect:{v110, v112 + v116 - v66, v114, v116}];
+      [popoverPresentationController setPermittedArrowDirections:1];
+      [popoverPresentationController setDelegate:self];
+      [popoverPresentationController _setShouldDisableInteractionDuringTransitions:0];
       v118 = [WeakRetained pep_getInvocation:&obj];
       v135[0] = MEMORY[0x1E69E9820];
       v135[1] = 3221225472;
       v135[2] = __80__MFMailComposeView__layoutSubviewsWithActiveRecipientView_changingView_toSize___block_invoke;
       v135[3] = &unk_1E806C520;
-      v119 = v117;
+      v119 = popoverPresentationController;
       v136 = v119;
       v120 = v132;
       v137 = v120;
@@ -1069,8 +1069,8 @@ LABEL_31:
   else
   {
     v122 = self->_bodyScroller;
-    v123 = [(MFMailComposeView *)self _searchResultsTable];
-    [(UIScrollView *)v122 addSubview:v123];
+    _searchResultsTable2 = [(MFMailComposeView *)self _searchResultsTable];
+    [(UIScrollView *)v122 addSubview:_searchResultsTable2];
 
     +[MFSearchShadowView defaultHeight];
     [(MFMailComposeView *)self _setShadowViewVisible:1 frame:v131, v76, v133, v124];
@@ -1082,10 +1082,10 @@ LABEL_43:
 - (BOOL)isSearchResultsPopoverVisible
 {
   WeakRetained = objc_loadWeakRetained(&self->_popoverOwner);
-  v4 = [(MFMailComposeView *)self _presentsSearchResultsTableAsPopover];
+  _presentsSearchResultsTableAsPopover = [(MFMailComposeView *)self _presentsSearchResultsTableAsPopover];
   if (WeakRetained)
   {
-    v5 = v4;
+    v5 = _presentsSearchResultsTableAsPopover;
   }
 
   else
@@ -1095,14 +1095,14 @@ LABEL_43:
 
   if (v5)
   {
-    v6 = [WeakRetained presentedViewController];
+    presentedViewController = [WeakRetained presentedViewController];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v6 isBeingDismissed] & 1) == 0)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([presentedViewController isBeingDismissed] & 1) == 0)
     {
-      v8 = [v6 viewControllers];
-      if ([v8 count])
+      viewControllers = [presentedViewController viewControllers];
+      if ([viewControllers count])
       {
-        v9 = [v8 objectAtIndex:0];
+        v9 = [viewControllers objectAtIndex:0];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
       }
@@ -1133,10 +1133,10 @@ LABEL_43:
   v4 = v3;
   [(MFMailComposeView *)self _heightForBottomView];
   v6 = v5;
-  v7 = [(MFMailComposeView *)self traitCollection];
-  v8 = [v7 horizontalSizeClass];
+  traitCollection = [(MFMailComposeView *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  return v4 - v6 > 300.0 && v8 == 1;
+  return v4 - v6 > 300.0 && horizontalSizeClass == 1;
 }
 
 - (BOOL)_shouldShowCorecipientsTableView
@@ -1146,24 +1146,24 @@ LABEL_43:
     return 0;
   }
 
-  v3 = [(CNAutocompleteResultsTableViewController *)self->_corecipientsSearchViewController recipients];
-  v4 = [v3 count] != 0;
+  recipients = [(CNAutocompleteResultsTableViewController *)self->_corecipientsSearchViewController recipients];
+  v4 = [recipients count] != 0;
 
   return v4;
 }
 
-- (void)_setCorecipientsTableViewVisible:(BOOL)a3 withFieldFrame:(CGRect)a4
+- (void)_setCorecipientsTableViewVisible:(BOOL)visible withFieldFrame:(CGRect)frame
 {
-  if (a3)
+  if (visible)
   {
-    width = a4.size.width;
-    y = a4.origin.y;
-    v7 = [(MFMailComposeView *)self _corecipientResultsTable:a4.origin.x];
+    width = frame.size.width;
+    y = frame.origin.y;
+    v7 = [(MFMailComposeView *)self _corecipientResultsTable:frame.origin.x];
     [v7 setHidden:0];
-    v8 = [(MFMailComposeView *)self _corecipientResultsTable];
-    v9 = [v8 superview];
+    _corecipientResultsTable = [(MFMailComposeView *)self _corecipientResultsTable];
+    superview = [_corecipientResultsTable superview];
 
-    if (!v9)
+    if (!superview)
     {
       [(UIView *)self->_headerView insertSubview:v7 belowSubview:self->_ccField];
     }
@@ -1210,8 +1210,8 @@ LABEL_43:
       self->_corecipientsSearchTableViewSeparator = v23;
 
       v25 = self->_corecipientsSearchTableViewSeparator;
-      v26 = [MEMORY[0x1E69963F8] defaultSeparatorColor];
-      [(UIView *)v25 setBackgroundColor:v26];
+      defaultSeparatorColor = [MEMORY[0x1E69963F8] defaultSeparatorColor];
+      [(UIView *)v25 setBackgroundColor:defaultSeparatorColor];
     }
 
     [MEMORY[0x1E69963F8] separatorHeight];
@@ -1235,7 +1235,7 @@ LABEL_43:
       v29[2] = __69__MFMailComposeView__setCorecipientsTableViewVisible_withFieldFrame___block_invoke_3;
       v29[3] = &unk_1E806D6F0;
       v29[4] = self;
-      [MEMORY[0x1E69DD250] animateWithDuration:v30 animations:v29 completion:{0.8, a4.origin.y, a4.size.width, a4.size.height}];
+      [MEMORY[0x1E69DD250] animateWithDuration:v30 animations:v29 completion:{0.8, frame.origin.y, frame.size.width, frame.size.height}];
     }
 
     v28 = 0;
@@ -1267,11 +1267,11 @@ void __69__MFMailComposeView__setCorecipientsTableViewVisible_withFieldFrame___b
   }
 }
 
-- (void)_layoutComposeHeaderViewsWithChangingHeader:(id)a3 toSize:(CGSize)a4 withPinFrame:(CGRect *)a5
+- (void)_layoutComposeHeaderViewsWithChangingHeader:(id)header toSize:(CGSize)size withPinFrame:(CGRect *)frame
 {
-  height = a4.height;
-  width = a4.width;
-  v19 = a3;
+  height = size.height;
+  width = size.width;
+  headerCopy = header;
   [(MFMailComposeView *)self bounds];
   v10 = v9;
   [MEMORY[0x1E69963F8] separatorHeight];
@@ -1280,82 +1280,82 @@ void __69__MFMailComposeView__setCorecipientsTableViewVisible_withFieldFrame___b
   v21.width = v10;
   [objc_opt_class() preferredHeaderHeight];
   v21.height = v12;
-  _layoutField(self->_toField, v19, &v20.x, width, height);
-  if (self->_toField == v19)
+  _layoutField(self->_toField, headerCopy, &v20.x, width, height);
+  if (self->_toField == headerCopy)
   {
     v13 = v21;
-    a5->origin = v20;
-    a5->size = v13;
+    frame->origin = v20;
+    frame->size = v13;
   }
 
-  v14 = [(MFMailComposeView *)self _shouldShowCorecipientsTableView];
-  [(MFMailComposeView *)self _setCorecipientsTableViewVisible:v14 withFieldFrame:v20, v21];
-  if (v14)
+  _shouldShowCorecipientsTableView = [(MFMailComposeView *)self _shouldShowCorecipientsTableView];
+  [(MFMailComposeView *)self _setCorecipientsTableViewVisible:_shouldShowCorecipientsTableView withFieldFrame:v20, v21];
+  if (_shouldShowCorecipientsTableView)
   {
-    v15 = [(MFMailComposeView *)self _corecipientResultsTable];
-    [v15 frame];
+    _corecipientResultsTable = [(MFMailComposeView *)self _corecipientResultsTable];
+    [_corecipientResultsTable frame];
     v20.y = CGRectGetMaxY(v23);
   }
 
-  _layoutField(self->_ccField, v19, &v20.x, width, height);
-  _layoutField(self->_bccField, v19, &v20.x, width, height);
+  _layoutField(self->_ccField, headerCopy, &v20.x, width, height);
+  _layoutField(self->_bccField, headerCopy, &v20.x, width, height);
   [(MFMailComposeView *)self _updateFromField];
-  _layoutField(self->_fromField, v19, &v20.x, width, height);
-  v16 = [(MFMailComposeView *)self traitCollection];
-  v17 = [v16 horizontalSizeClass];
+  _layoutField(self->_fromField, headerCopy, &v20.x, width, height);
+  traitCollection = [(MFMailComposeView *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v17 == 2)
+  if (horizontalSizeClass == 2)
   {
-    _layoutField(self->_imageSizeField, v19, &v20.x, width, height);
+    _layoutField(self->_imageSizeField, headerCopy, &v20.x, width, height);
   }
 
   [(MFMailComposeView *)self _updateMultiField];
-  _layoutField(self->_multiField, v19, &v20.x, width, height);
-  if (self->_toField != v19)
+  _layoutField(self->_multiField, headerCopy, &v20.x, width, height);
+  if (self->_toField != headerCopy)
   {
     v18 = v21;
-    a5->origin = v20;
-    a5->size = v18;
+    frame->origin = v20;
+    frame->size = v18;
   }
 
-  _layoutField(self->_subjectField, v19, &v20.x, width, height);
-  _layoutField(self->_webContentVariationField, v19, &v20.x, width, height);
+  _layoutField(self->_subjectField, headerCopy, &v20.x, width, height);
+  _layoutField(self->_webContentVariationField, headerCopy, &v20.x, width, height);
 }
 
-- (void)_layoutSubviews:(BOOL)a3 changingView:(id)a4 toSize:(CGSize)a5 searchResultsWereDismissed:(BOOL)a6
+- (void)_layoutSubviews:(BOOL)subviews changingView:(id)view toSize:(CGSize)size searchResultsWereDismissed:(BOOL)dismissed
 {
-  v6 = a6;
-  height = a5.height;
-  width = a5.width;
-  v11 = a4;
-  v12 = a3 & (*(self + 777) >> 4);
-  if (!self->_activeRecipientView || [(MFMailComposeView *)self _presentsSearchResultsTableAsPopover]&& v6)
+  dismissedCopy = dismissed;
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  v12 = subviews & (*(self + 777) >> 4);
+  if (!self->_activeRecipientView || [(MFMailComposeView *)self _presentsSearchResultsTableAsPopover]&& dismissedCopy)
   {
     [(MFMailComposeView *)self _frameForContentView];
     [(UIView *)self->_contentView setFrame:?];
     if ([(MFMailComposeView *)self _presentsSearchResultsTableAsPopover])
     {
-      if (!v6)
+      if (!dismissedCopy)
       {
         [(MFMailComposeView *)self _cancelDelayedPopover];
         if ([(MFMailComposeView *)self isSearchResultsPopoverVisible])
         {
-          v13 = [(UIScrollView *)self->_bodyScroller mf_needsToAdjustContentOffset];
+          mf_needsToAdjustContentOffset = [(UIScrollView *)self->_bodyScroller mf_needsToAdjustContentOffset];
           WeakRetained = objc_loadWeakRetained(&self->_popoverOwner);
-          [WeakRetained dismissViewControllerAnimated:!v13 completion:0];
+          [WeakRetained dismissViewControllerAnimated:!mf_needsToAdjustContentOffset completion:0];
         }
       }
     }
 
     else
     {
-      v15 = [(MFMailComposeView *)self _searchResultsTable];
-      v16 = [v15 superview];
+      _searchResultsTable = [(MFMailComposeView *)self _searchResultsTable];
+      superview = [_searchResultsTable superview];
 
-      if (v16)
+      if (superview)
       {
-        v17 = [(MFMailComposeView *)self _searchResultsTable];
-        [v17 removeFromSuperview];
+        _searchResultsTable2 = [(MFMailComposeView *)self _searchResultsTable];
+        [_searchResultsTable2 removeFromSuperview];
 
         [(MFMailComposeView *)self _setShadowViewVisible:0 frame:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
         v18 = 1;
@@ -1365,7 +1365,7 @@ LABEL_10:
         aBlock[2] = __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResultsWereDismissed___block_invoke_2;
         aBlock[3] = &unk_1E806F8A0;
         aBlock[4] = self;
-        v29[0] = v11;
+        v29[0] = viewCopy;
         *&v29[1] = width;
         *&v29[2] = height;
         v30 = v18;
@@ -1405,7 +1405,7 @@ LABEL_10:
 
   if (![(MFMailComposeView *)self shouldScrollLastChangedRecipientViewToTop])
   {
-    [(MFMailComposeView *)self _layoutSubviewsWithActiveRecipientView:v12 changingView:v11 toSize:width, height];
+    [(MFMailComposeView *)self _layoutSubviewsWithActiveRecipientView:v12 changingView:viewCopy toSize:width, height];
     goto LABEL_15;
   }
 
@@ -1416,7 +1416,7 @@ LABEL_10:
   v31[3] = &unk_1E806F850;
   v31[4] = self;
   v33 = v12;
-  v32[0] = v11;
+  v32[0] = viewCopy;
   *&v32[1] = width;
   *&v32[2] = height;
   [(MFMailComposeView *)self scrollToRecipientTextView:lastChangedRecipientView animated:1 completion:v31];
@@ -1553,10 +1553,10 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
 
 - (void)toggleImageSizeFieldIfNecessary
 {
-  v3 = [(MFMailComposeView *)self traitCollection];
-  v4 = [v3 horizontalSizeClass];
+  traitCollection = [(MFMailComposeView *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v4 == 2)
+  if (horizontalSizeClass == 2)
   {
     [(MFMailComposeView *)self _beginBlockingBodyScroll];
     [(MFMailComposeView *)self _layoutSubviews:1];
@@ -1565,38 +1565,38 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
   }
 }
 
-- (void)setAutoresizingMask:(unint64_t)a3
+- (void)setAutoresizingMask:(unint64_t)mask
 {
   v5.receiver = self;
   v5.super_class = MFMailComposeView;
   [(MFMailComposeView *)&v5 setAutoresizingMask:?];
-  [(UIView *)self->_contentView setAutoresizingMask:a3];
+  [(UIView *)self->_contentView setAutoresizingMask:mask];
 }
 
-- (BOOL)endEditing:(BOOL)a3
+- (BOOL)endEditing:(BOOL)editing
 {
-  v3 = a3;
-  v4 = [(MFMailComposeView *)self subjectField];
-  LOBYTE(v3) = [v4 endEditing:v3];
+  editingCopy = editing;
+  subjectField = [(MFMailComposeView *)self subjectField];
+  LOBYTE(editingCopy) = [subjectField endEditing:editingCopy];
 
-  return v3;
+  return editingCopy;
 }
 
-- (void)setRecipientFieldsEditable:(BOOL)a3 animated:(BOOL)a4
+- (void)setRecipientFieldsEditable:(BOOL)editable animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editableCopy = editable;
   [CNComposeRecipientTextView setEditable:"setEditable:animated:" animated:?];
-  [(CNComposeRecipientTextView *)self->_ccField setEditable:v5 animated:v4];
+  [(CNComposeRecipientTextView *)self->_ccField setEditable:editableCopy animated:animatedCopy];
   bccField = self->_bccField;
 
-  [(CNComposeRecipientTextView *)bccField setEditable:v5 animated:v4];
+  [(CNComposeRecipientTextView *)bccField setEditable:editableCopy animated:animatedCopy];
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  v3 = a3;
-  if (a3)
+  loadingCopy = loading;
+  if (loading)
   {
     v5 = 2;
   }
@@ -1608,7 +1608,7 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
 
   *(self + 776) = *(self + 776) & 0xFD | v5;
   loadingView = self->_loadingView;
-  if (a3)
+  if (loading)
   {
     if (!loadingView)
     {
@@ -1618,11 +1618,11 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
       self->_loadingView = v8;
     }
 
-    v10 = [(MFMailComposeView *)self bodyScroller];
-    [v10 resignFirstResponder];
+    bodyScroller = [(MFMailComposeView *)self bodyScroller];
+    [bodyScroller resignFirstResponder];
 
-    v11 = [(MFMailComposeView *)self bodyScroller];
-    [v11 addSubview:self->_loadingView];
+    bodyScroller2 = [(MFMailComposeView *)self bodyScroller];
+    [bodyScroller2 addSubview:self->_loadingView];
 
     [(MFMailComposeView *)self _layoutLoadingView];
     [(MFMessageContentLoadingView *)self->_loadingView setLoadingIndicatorVisible:1 animated:1];
@@ -1630,9 +1630,9 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
 
   else
   {
-    v12 = [(MFMessageContentLoadingView *)loadingView superview];
+    superview = [(MFMessageContentLoadingView *)loadingView superview];
 
-    if (v12)
+    if (superview)
     {
       [(MFMessageContentLoadingView *)self->_loadingView removeFromSuperview];
     }
@@ -1640,15 +1640,15 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
 
   webView = self->_webView;
 
-  [(MFComposeWebView *)webView _setEditable:!v3];
+  [(MFComposeWebView *)webView _setEditable:!loadingCopy];
 }
 
-- (void)setSending:(BOOL)a3
+- (void)setSending:(BOOL)sending
 {
   v3 = *(self + 776);
-  if (((((v3 & 4) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 4) == 0) ^ sending) & 1) == 0)
   {
-    if (a3)
+    if (sending)
     {
       v4 = 4;
     }
@@ -1662,11 +1662,11 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = MFMailComposeView;
-  v5 = [(UITransitionView *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UITransitionView *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if ((*(self + 776) & 2) != 0 && v5 == self->_bodyScroller)
   {
@@ -1698,10 +1698,10 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
   }
 }
 
-- (void)setIsForEditing:(BOOL)a3
+- (void)setIsForEditing:(BOOL)editing
 {
   v3 = *(self + 777);
-  if (a3)
+  if (editing)
   {
     *(self + 777) = v3 | 1;
     v4 = *(self + 777) & 0xFD;
@@ -1717,9 +1717,9 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
   [(MFMailComposeView *)self _adjustScrollerContentSize];
 }
 
-- (void)setAnimationDisabled:(BOOL)a3
+- (void)setAnimationDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = 2;
   }
@@ -1732,9 +1732,9 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
   *(self + 777) = *(self + 777) & 0xFD | v3;
 }
 
-- (void)setShowingPeoplePicker:(BOOL)a3
+- (void)setShowingPeoplePicker:(BOOL)picker
 {
-  if (a3)
+  if (picker)
   {
     v3 = 8;
   }
@@ -1747,13 +1747,13 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
   *(self + 776) = *(self + 776) & 0xF7 | v3;
 }
 
-- (void)setLoadingFromAddress:(BOOL)a3
+- (void)setLoadingFromAddress:(BOOL)address
 {
   v3 = *(self + 776);
-  if (((((v3 & 0x10) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 0x10) == 0) ^ address) & 1) == 0)
   {
-    v4 = a3;
-    if (a3)
+    addressCopy = address;
+    if (address)
     {
       v6 = 16;
     }
@@ -1764,7 +1764,7 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
     }
 
     *(self + 776) = v3 & 0xEF | v6;
-    if (a3)
+    if (address)
     {
       [(CNComposeRecipientTextView *)self->_toField setEnabled:0];
       [(CNComposeRecipientTextView *)self->_ccField setEnabled:0];
@@ -1779,21 +1779,21 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
     }
 
     [(CNComposeRecipientTextView *)self->_bccField setEnabled:v7];
-    v8 = [(MFMailComposeView *)self fromField];
-    [v8 showLoadingState:v4];
+    fromField = [(MFMailComposeView *)self fromField];
+    [fromField showLoadingState:addressCopy];
 
-    v9 = [(MFMailComposeView *)self multiField];
-    [v9 showLoadingState:v4];
+    multiField = [(MFMailComposeView *)self multiField];
+    [multiField showLoadingState:addressCopy];
   }
 }
 
-- (void)setReplyToHME:(BOOL)a3
+- (void)setReplyToHME:(BOOL)e
 {
   v3 = *(self + 776);
-  if (((((v3 & 0x20) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 0x20) == 0) ^ e) & 1) == 0)
   {
-    v4 = a3;
-    if (a3)
+    eCopy = e;
+    if (e)
     {
       v6 = 32;
     }
@@ -1804,10 +1804,10 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
     }
 
     *(self + 776) = v3 & 0xDF | v6;
-    [(CNComposeRecipientTextView *)self->_toField setEnabled:!a3];
-    [(CNComposeRecipientTextView *)self->_ccField setEnabled:!v4];
-    [(CNComposeRecipientTextView *)self->_bccField setEnabled:!v4];
-    [(MFComposeFromView *)self->_fromField setUserInteractionEnabled:!v4];
+    [(CNComposeRecipientTextView *)self->_toField setEnabled:!e];
+    [(CNComposeRecipientTextView *)self->_ccField setEnabled:!eCopy];
+    [(CNComposeRecipientTextView *)self->_bccField setEnabled:!eCopy];
+    [(MFComposeFromView *)self->_fromField setUserInteractionEnabled:!eCopy];
     v7 = (*(self + 776) & 0x20) == 0;
     multiField = self->_multiField;
 
@@ -1815,15 +1815,15 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
   }
 }
 
-- (void)setQuickReply:(BOOL)a3
+- (void)setQuickReply:(BOOL)reply
 {
   v7 = *(self + 777);
-  if (((((v7 & 0x40) == 0) ^ a3) & 1) == 0)
+  if (((((v7 & 0x40) == 0) ^ reply) & 1) == 0)
   {
     v12 = v4;
     v13 = v3;
-    v8 = a3;
-    if (a3)
+    replyCopy = reply;
+    if (reply)
     {
       v10 = 64;
     }
@@ -1835,22 +1835,22 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
 
     *(self + 777) = v7 & 0xBF | v10;
     [(MFMailComposeToField *)self->_toField setHidden:v12, v13, v5];
-    [(MFMailComposeRecipientTextView *)self->_ccField setHidden:v8];
-    [(MFMailComposeRecipientTextView *)self->_bccField setHidden:v8];
-    [(MFComposeFromView *)self->_fromField setHidden:v8];
-    [(MFComposeMultiView *)self->_multiField setHidden:v8];
+    [(MFMailComposeRecipientTextView *)self->_ccField setHidden:replyCopy];
+    [(MFMailComposeRecipientTextView *)self->_bccField setHidden:replyCopy];
+    [(MFComposeFromView *)self->_fromField setHidden:replyCopy];
+    [(MFComposeMultiView *)self->_multiField setHidden:replyCopy];
     webView = self->_webView;
 
-    [(MFComposeWebView *)webView setIsQuickReply:v8];
+    [(MFComposeWebView *)webView setIsQuickReply:replyCopy];
   }
 }
 
-- (void)_createCCAndBCCFieldIfNeededAndCompleteSetup:(BOOL)a3
+- (void)_createCCAndBCCFieldIfNeededAndCompleteSetup:(BOOL)setup
 {
-  v3 = a3;
+  setupCopy = setup;
   if (self->_ccField)
   {
-    if (!a3)
+    if (!setup)
     {
       return;
     }
@@ -1876,7 +1876,7 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
     [(MFMailComposeRecipientTextView *)self->_bccField setAccessibilityIdentifier:*MEMORY[0x1E69ADB18]];
     [(MFMailComposeRecipientTextView *)self->_bccField setDelegate:WeakRetained];
 
-    if (!v3)
+    if (!setupCopy)
     {
       return;
     }
@@ -1901,12 +1901,12 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
   }
 }
 
-- (void)_createImageSizeFieldIfNeededAndAddSubview:(BOOL)a3
+- (void)_createImageSizeFieldIfNeededAndAddSubview:(BOOL)subview
 {
-  v3 = a3;
+  subviewCopy = subview;
   if (self->_imageSizeField)
   {
-    if (!a3)
+    if (!subview)
     {
       return;
     }
@@ -1923,15 +1923,15 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
 
     [(MFComposeImageSizeView *)self->_imageSizeField setAutoresizingMask:2];
     [(MFComposeImageSizeView *)self->_imageSizeField setAccessibilityIdentifier:*MEMORY[0x1E69ADB50]];
-    if (!v3)
+    if (!subviewCopy)
     {
       return;
     }
   }
 
-  v10 = [(MFComposeImageSizeView *)self->_imageSizeField superview];
+  superview = [(MFComposeImageSizeView *)self->_imageSizeField superview];
 
-  if (!v10)
+  if (!superview)
   {
     headerView = self->_headerView;
     v12 = self->_imageSizeField;
@@ -1948,24 +1948,24 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
   [(MFMailComposeRecipientTextView *)ccField becomeFirstResponder];
 }
 
-- (void)_setupField:(id)a3 withLabel:(id)a4 navTitle:(id)a5
+- (void)_setupField:(id)field withLabel:(id)label navTitle:(id)title
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v14 setAutoresizingMask:2];
+  fieldCopy = field;
+  labelCopy = label;
+  titleCopy = title;
+  [fieldCopy setAutoresizingMask:2];
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [MEMORY[0x1E695DF58] ef_directionalMarkForCurrentLocale];
-  v12 = [v10 stringWithFormat:@"%@%@", v11, v8];
-  [v14 setLabel:v12];
+  ef_directionalMarkForCurrentLocale = [MEMORY[0x1E695DF58] ef_directionalMarkForCurrentLocale];
+  labelCopy = [v10 stringWithFormat:@"%@%@", ef_directionalMarkForCurrentLocale, labelCopy];
+  [fieldCopy setLabel:labelCopy];
 
-  [v14 setNavTitle:v9];
+  [fieldCopy setNavTitle:titleCopy];
   WeakRetained = objc_loadWeakRetained(&self->_composeRecipientViewDelegate);
-  [v14 setDelegate:WeakRetained];
+  [fieldCopy setDelegate:WeakRetained];
 
-  [v14 setIndicatesUnsafeRecipientsWhenCollapsed:1];
-  [(MFMailComposeView *)self _addHoverEffectToField:v14];
-  [(UIView *)self->_headerView addSubview:v14];
+  [fieldCopy setIndicatesUnsafeRecipientsWhenCollapsed:1];
+  [(MFMailComposeView *)self _addHoverEffectToField:fieldCopy];
+  [(UIView *)self->_headerView addSubview:fieldCopy];
 }
 
 - (void)_updateFromField
@@ -1973,29 +1973,29 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
   WeakRetained = objc_loadWeakRetained(&self->_mailComposeViewDelegate);
   if ([WeakRetained canShowFromField] && (*(self + 776) & 4) == 0)
   {
-    v3 = [WeakRetained sendingEmailAddressIfExists];
-    if (v3 && [WeakRetained isAddressHideMyEmail:v3])
+    sendingEmailAddressIfExists = [WeakRetained sendingEmailAddressIfExists];
+    if (sendingEmailAddressIfExists && [WeakRetained isAddressHideMyEmail:sendingEmailAddressIfExists])
     {
-      [(MFComposeFromView *)self->_fromField setSelectedAddressToHME:v3];
+      [(MFComposeFromView *)self->_fromField setSelectedAddressToHME:sendingEmailAddressIfExists];
     }
 
     else
     {
-      v4 = v3;
-      v5 = [v4 emailAddressValue];
-      v6 = [v5 simpleAddress];
-      v7 = v6;
-      if (v6)
+      v4 = sendingEmailAddressIfExists;
+      emailAddressValue = [v4 emailAddressValue];
+      simpleAddress = [emailAddressValue simpleAddress];
+      v7 = simpleAddress;
+      if (simpleAddress)
       {
-        v8 = v6;
+        stringValue = simpleAddress;
       }
 
       else
       {
-        v8 = [v4 stringValue];
+        stringValue = [v4 stringValue];
       }
 
-      v9 = v8;
+      v9 = stringValue;
 
       [(MFComposeFromView *)self->_fromField setSelectedAddress:v9];
     }
@@ -2005,7 +2005,7 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
 - (void)_updateMultiField
 {
   WeakRetained = objc_loadWeakRetained(&self->_mailComposeViewDelegate);
-  v4 = [WeakRetained canShowFromField];
+  canShowFromField = [WeakRetained canShowFromField];
   v5 = self->_ccField;
   [(MFMailComposeRecipientTextView *)v5 alpha];
   if (v6 == 0.0)
@@ -2015,8 +2015,8 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
 
   else
   {
-    v7 = [(MFMailComposeRecipientTextView *)v5 superview];
-    v8 = v7 != 0;
+    superview = [(MFMailComposeRecipientTextView *)v5 superview];
+    v8 = superview != 0;
   }
 
   v9 = self->_bccField;
@@ -2028,8 +2028,8 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
 
   else
   {
-    v11 = [(MFMailComposeRecipientTextView *)v9 superview];
-    v12 = v11 != 0;
+    superview2 = [(MFMailComposeRecipientTextView *)v9 superview];
+    v12 = superview2 != 0;
   }
 
   v13 = self->_fromField;
@@ -2041,11 +2041,11 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
 
   else
   {
-    v15 = [(MFComposeFromView *)v13 superview];
-    v16 = v15 != 0;
+    superview3 = [(MFComposeFromView *)v13 superview];
+    v16 = superview3 != 0;
   }
 
-  v17 = v4 ^ 1;
+  v17 = canShowFromField ^ 1;
   if (v8 || v12 || v16 || (v17 & 1) != 0)
   {
     if (!v8 && !v12)
@@ -2053,7 +2053,7 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
       v24 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v31 = [v24 localizedStringForKey:@"CC/BCC" value:&stru_1F3CF3758 table:@"Main"];
 
-      if (v4)
+      if (canShowFromField)
       {
         v25 = 0;
         goto LABEL_35;
@@ -2067,7 +2067,7 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
       if (((v16 || v8) | v17))
       {
         v31 = 0;
-        if (v4)
+        if (canShowFromField)
         {
           goto LABEL_15;
         }
@@ -2092,51 +2092,51 @@ uint64_t __84__MFMailComposeView__layoutSubviews_changingView_toSize_searchResul
     v31 = [v18 localizedStringForKey:@"CC/BCC/FROM" value:&stru_1F3CF3758 table:@"Main"];
   }
 
-  if (v4)
+  if (canShowFromField)
   {
 LABEL_15:
-    v19 = [WeakRetained sendingEmailAddressIfExists];
-    v20 = [v19 emailAddressValue];
-    v21 = [v20 simpleAddress];
-    v22 = v21;
-    if (v21)
+    sendingEmailAddressIfExists = [WeakRetained sendingEmailAddressIfExists];
+    emailAddressValue = [sendingEmailAddressIfExists emailAddressValue];
+    simpleAddress = [emailAddressValue simpleAddress];
+    v20EmailAddressValue = simpleAddress;
+    if (simpleAddress)
     {
-      v23 = v21;
+      stringValue = simpleAddress;
     }
 
     else
     {
-      v23 = [v19 stringValue];
+      stringValue = [sendingEmailAddressIfExists stringValue];
     }
 
-    v25 = v23;
-    v26 = v19;
+    v25 = stringValue;
+    addresses = sendingEmailAddressIfExists;
 LABEL_33:
 
     goto LABEL_34;
   }
 
 LABEL_24:
-  v26 = [(CNComposeRecipientTextView *)self->_bccField addresses];
-  if ([v26 count] == 1)
+  addresses = [(CNComposeRecipientTextView *)self->_bccField addresses];
+  if ([addresses count] == 1)
   {
-    v20 = [v26 objectAtIndex:0];
-    v22 = [v20 emailAddressValue];
-    v27 = [v22 displayName];
-    v28 = v27;
-    if (v27)
+    emailAddressValue = [addresses objectAtIndex:0];
+    v20EmailAddressValue = [emailAddressValue emailAddressValue];
+    displayName = [v20EmailAddressValue displayName];
+    v28 = displayName;
+    if (displayName)
     {
-      v29 = v27;
+      stringValue2 = displayName;
     }
 
     else
     {
-      v29 = [v20 stringValue];
+      stringValue2 = [emailAddressValue stringValue];
     }
 
-    v25 = v29;
+    v25 = stringValue2;
 
-    v19 = v20;
+    sendingEmailAddressIfExists = emailAddressValue;
     goto LABEL_33;
   }
 
@@ -2154,15 +2154,15 @@ LABEL_35:
   {
     if ([WeakRetained canShowImageSizeField])
     {
-      v30 = [WeakRetained currentScaleImageSize];
+      currentScaleImageSize = [WeakRetained currentScaleImageSize];
     }
 
     else
     {
-      v30 = 0;
+      currentScaleImageSize = 0;
     }
 
-    [(MFComposeMultiView *)self->_multiField setImageSizeDescription:v30];
+    [(MFComposeMultiView *)self->_multiField setImageSizeDescription:currentScaleImageSize];
     [(MFComposeMultiView *)self->_multiField setShowsImageSize:1];
   }
 
@@ -2177,8 +2177,8 @@ LABEL_35:
 - (void)_adjustHeaderFieldsPreferredContentSize
 {
   v22[5] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69963A0] sharedFontMetricCache];
-  [v3 ensureCacheIsValid];
+  mEMORY[0x1E69963A0] = [MEMORY[0x1E69963A0] sharedFontMetricCache];
+  [mEMORY[0x1E69963A0] ensureCacheIsValid];
 
   [(MFMailComposeView *)self bounds];
   v5 = v4;
@@ -2246,39 +2246,39 @@ LABEL_35:
   self->_delayedPopoverInvocation = 0;
 }
 
-- (id)dragSource:(id)a3 draggableItemsAtPoint:(CGPoint)a4
+- (id)dragSource:(id)source draggableItemsAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 sourceView];
+  sourceCopy = source;
+  sourceView = [sourceCopy sourceView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [v7 sourceView];
+    sourceView2 = [sourceCopy sourceView];
     [(MFMailComposeView *)self _setDragging:1];
-    v11 = [v10 hitTest:0 withEvent:{x, y}];
+    v11 = [sourceView2 hitTest:0 withEvent:{x, y}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v12 = v11;
       [v12 setSelected:1];
-      v13 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       if (v12)
       {
-        v14 = [v12 recipient];
-        [v13 addObject:v14];
+        recipient = [v12 recipient];
+        [array addObject:recipient];
       }
 
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v15 = [v10 selectedAtoms];
-      v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      selectedAtoms = [sourceView2 selectedAtoms];
+      v16 = [selectedAtoms countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v16)
       {
         v17 = *v23;
@@ -2288,18 +2288,18 @@ LABEL_35:
           {
             if (*v23 != v17)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(selectedAtoms);
             }
 
             v19 = *(*(&v22 + 1) + 8 * i);
             if (v19 != v12)
             {
-              v20 = [v19 recipient];
-              [v13 addObject:v20];
+              recipient2 = [v19 recipient];
+              [array addObject:recipient2];
             }
           }
 
-          v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+          v16 = [selectedAtoms countByEnumeratingWithState:&v22 objects:v26 count:16];
         }
 
         while (v16);
@@ -2308,27 +2308,27 @@ LABEL_35:
 
     else
     {
-      v13 = 0;
+      array = 0;
     }
   }
 
   else
   {
-    v13 = 0;
+    array = 0;
   }
 
-  return v13;
+  return array;
 }
 
-- (id)dragSource:(id)a3 targetedPreviewForDraggableItem:(id)a4
+- (id)dragSource:(id)source targetedPreviewForDraggableItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  itemCopy = item;
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && ([v6 sourceView], v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v8, (isKindOfClass))
+  if (objc_opt_isKindOfClass() & 1) != 0 && ([sourceCopy sourceView], v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v8, (isKindOfClass))
   {
-    v10 = [v6 sourceView];
-    v11 = [v10 dragPreviewForDraggedItem:v7 withContainer:self->_bodyScroller];
+    sourceView = [sourceCopy sourceView];
+    v11 = [sourceView dragPreviewForDraggedItem:itemCopy withContainer:self->_bodyScroller];
   }
 
   else
@@ -2339,29 +2339,29 @@ LABEL_35:
   return v11;
 }
 
-- (id)dragSource:(id)a3 suggestedNameForDraggableItem:(id)a4
+- (id)dragSource:(id)source suggestedNameForDraggableItem:(id)item
 {
-  v4 = a4;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 displayString];
+    displayString = [itemCopy displayString];
   }
 
   else
   {
-    v5 = 0;
+    displayString = 0;
   }
 
-  return v5;
+  return displayString;
 }
 
-- (void)_setDragging:(BOOL)a3
+- (void)_setDragging:(BOOL)dragging
 {
-  if (self->_isDragging != a3)
+  if (self->_isDragging != dragging)
   {
-    self->_isDragging = a3;
-    if (a3)
+    self->_isDragging = dragging;
+    if (dragging)
     {
       [(MFMailComposeView *)self _updateOptionalHeaderVisibilityForceVisible:1];
 
@@ -2370,67 +2370,67 @@ LABEL_35:
   }
 }
 
-- (void)dropTarget:(id)a3 dragEnteredAtPoint:(CGPoint)a4
+- (void)dropTarget:(id)target dragEnteredAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
-  v7 = [v10 targetView];
+  y = point.y;
+  x = point.x;
+  targetCopy = target;
+  targetView = [targetCopy targetView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     [(MFMailComposeView *)self _setDragging:1];
-    v9 = [v10 targetView];
-    [v9 dragEnteredAtPoint:{x, y}];
+    targetView2 = [targetCopy targetView];
+    [targetView2 dragEnteredAtPoint:{x, y}];
   }
 }
 
-- (void)dropTarget:(id)a3 dragDidMoveToPoint:(CGPoint)a4
+- (void)dropTarget:(id)target dragDidMoveToPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
-  v7 = [v10 targetView];
+  y = point.y;
+  x = point.x;
+  targetCopy = target;
+  targetView = [targetCopy targetView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     [(MFMailComposeView *)self _setDragging:1];
-    v9 = [v10 targetView];
-    [v9 dragMovedToPoint:{x, y}];
+    targetView2 = [targetCopy targetView];
+    [targetView2 dragMovedToPoint:{x, y}];
   }
 }
 
-- (void)dropTargetDragExited:(id)a3
+- (void)dropTargetDragExited:(id)exited
 {
-  v7 = a3;
-  v4 = [v7 targetView];
+  exitedCopy = exited;
+  targetView = [exitedCopy targetView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     [(MFMailComposeView *)self _setDragging:0];
-    v6 = [v7 targetView];
-    [v6 dragExited];
+    targetView2 = [exitedCopy targetView];
+    [targetView2 dragExited];
   }
 }
 
-- (void)dropTarget:(id)a3 didDropDragItems:(id)a4 atPoint:(CGPoint)a5
+- (void)dropTarget:(id)target didDropDragItems:(id)items atPoint:(CGPoint)point
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 targetView];
+  targetCopy = target;
+  itemsCopy = items;
+  targetView = [targetCopy targetView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v11 = [v7 targetView];
-    v12 = [MEMORY[0x1E695DF70] array];
+    targetView2 = [targetCopy targetView];
+    array = [MEMORY[0x1E695DF70] array];
     v30[0] = 0;
     v30[1] = v30;
     v30[2] = 0x2020000000;
@@ -2440,12 +2440,12 @@ LABEL_35:
     aBlock[2] = __57__MFMailComposeView_dropTarget_didDropDragItems_atPoint___block_invoke;
     aBlock[3] = &unk_1E806F8F0;
     v29 = v30;
-    v13 = v8;
+    v13 = itemsCopy;
     v25 = v13;
-    v26 = self;
-    v14 = v12;
+    selfCopy = self;
+    v14 = array;
     v27 = v14;
-    v15 = v11;
+    v15 = targetView2;
     v28 = v15;
     v16 = _Block_copy(aBlock);
     v20[0] = MEMORY[0x1E69E9820];
@@ -2685,26 +2685,26 @@ void __57__MFMailComposeView_dropTarget_didDropDragItems_atPoint___block_invoke_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_dropItems:(id)a3 recipientTextView:(id)a4
+- (void)_dropItems:(id)items recipientTextView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  itemsCopy = items;
+  viewCopy = view;
+  array = [MEMORY[0x1E695DF70] array];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __50__MFMailComposeView__dropItems_recipientTextView___block_invoke;
   v16[3] = &unk_1E806C6D8;
-  v9 = v8;
+  v9 = array;
   v17 = v9;
-  [v6 enumerateObjectsUsingBlock:v16];
+  [itemsCopy enumerateObjectsUsingBlock:v16];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __50__MFMailComposeView__dropItems_recipientTextView___block_invoke_2;
   v12[3] = &unk_1E806CC80;
   v13 = v9;
-  v14 = v7;
-  v15 = self;
-  v10 = v7;
+  v14 = viewCopy;
+  selfCopy = self;
+  v10 = viewCopy;
   v11 = v9;
   dispatch_async(MEMORY[0x1E69E96A0], v12);
 }
@@ -2738,18 +2738,18 @@ uint64_t __50__MFMailComposeView__dropItems_recipientTextView___block_invoke_2(u
   return [v4 _setDragging:0];
 }
 
-- (id)sendingAddressForDropTarget:(id)a3 withTargetView:(id)a4
+- (id)sendingAddressForDropTarget:(id)target withTargetView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_mailComposeViewDelegate);
-  v5 = [WeakRetained sendingEmailAddressIfExists];
+  sendingEmailAddressIfExists = [WeakRetained sendingEmailAddressIfExists];
 
-  return v5;
+  return sendingEmailAddressIfExists;
 }
 
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   *(self + 776) |= 0x40u;
-  if ([(UIScrollView *)self->_bodyScroller isDecelerating:a3])
+  if ([(UIScrollView *)self->_bodyScroller isDecelerating:orientation])
   {
     [(UIScrollView *)self->_bodyScroller contentOffset];
     [(UIScrollView *)self->_bodyScroller setContentOffset:0 animated:?];
@@ -2788,8 +2788,8 @@ uint64_t __50__MFMailComposeView__dropItems_recipientTextView___block_invoke_2(u
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v8 textView];
-        if ([v9 isFirstResponder])
+        textView = [v8 textView];
+        if ([textView isFirstResponder])
         {
 
 LABEL_13:
@@ -2797,9 +2797,9 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v10 = [v8 textView];
+        textView2 = [v8 textView];
         WeakRetained = objc_loadWeakRetained(&self->_pinningResponder);
-        v12 = v10 == WeakRetained;
+        v12 = textView2 == WeakRetained;
 
         if (v12)
         {
@@ -2828,18 +2828,18 @@ LABEL_14:
   return v13;
 }
 
-- (void)_finishUpRotationToInterfaceOrientation:(int64_t)a3
+- (void)_finishUpRotationToInterfaceOrientation:(int64_t)orientation
 {
   [(MFMailComposeView *)self _layoutSubviews:0];
 
   [(MFMailComposeView *)self _adjustScrollerForBottomView];
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation
 {
   *(self + 776) &= ~0x40u;
-  v4 = [(MFMailComposeView *)self composeWebView];
-  [v4 didRotateFromInterfaceOrientation:a3];
+  composeWebView = [(MFMailComposeView *)self composeWebView];
+  [composeWebView didRotateFromInterfaceOrientation:orientation];
 }
 
 - (void)layoutSubviews
@@ -2849,26 +2849,26 @@ LABEL_14:
   [(UITransitionView *)&v4 layoutSubviews];
   [(MFMailComposeView *)self _adjustScrollerContentSize];
   [(MFMailComposeView *)self _layoutSubviews:0];
-  v3 = [(MFMailComposeView *)self _focusedRecipientView];
-  [v3 reflow];
+  _focusedRecipientView = [(MFMailComposeView *)self _focusedRecipientView];
+  [_focusedRecipientView reflow];
 
   [(MFMailComposeView *)self _layoutLoadingView];
 }
 
 - (void)_layoutLoadingView
 {
-  v7 = [(MFMailComposeView *)self bodyScroller];
-  [v7 adjustedContentInset];
+  bodyScroller = [(MFMailComposeView *)self bodyScroller];
+  [bodyScroller adjustedContentInset];
   v4 = v3;
-  [v7 bounds];
+  [bodyScroller bounds];
   [(MFMessageContentLoadingView *)self->_loadingView setFrame:v5 + 0.0, v4 + v6];
 }
 
 - (void)_adjustScrollerContentSize
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = [(MFMailComposeView *)self composeViewDelegate];
-  [v3 additionalContentInsetForComposeWebView:self->_webView];
+  composeViewDelegate = [(MFMailComposeView *)self composeViewDelegate];
+  [composeViewDelegate additionalContentInsetForComposeWebView:self->_webView];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -2894,16 +2894,16 @@ LABEL_14:
       v16 = v14;
     }
 
-    v17 = [(MFComposeWebView *)self->_webView scrollView];
-    [v17 adjustedContentInset];
+    scrollView = [(MFComposeWebView *)self->_webView scrollView];
+    [scrollView adjustedContentInset];
     v19 = v18;
-    v20 = [(MFComposeWebView *)self->_webView scrollView];
-    [v20 _contentScrollInset];
+    scrollView2 = [(MFComposeWebView *)self->_webView scrollView];
+    [scrollView2 _contentScrollInset];
     v9 = v16 - (v19 - v21);
   }
 
-  v22 = [(MFComposeWebView *)self->_webView scrollView];
-  [v22 _contentScrollInset];
+  scrollView3 = [(MFComposeWebView *)self->_webView scrollView];
+  [scrollView3 _contentScrollInset];
   v24 = v23;
   v26 = v25;
   v28 = v27;
@@ -2936,17 +2936,17 @@ LABEL_14:
     v34 = v9 - v35;
   }
 
-  v36 = [(MFComposeWebView *)self->_webView scrollView];
-  [v36 _setContentScrollInset:{v5, v7, v9, v11}];
+  scrollView4 = [(MFComposeWebView *)self->_webView scrollView];
+  [scrollView4 _setContentScrollInset:{v5, v7, v9, v11}];
 
-  v37 = [(MFComposeWebView *)self->_webView scrollView];
-  [v37 setHorizontalScrollIndicatorInsets:{v5, v7, v34, v11}];
+  scrollView5 = [(MFComposeWebView *)self->_webView scrollView];
+  [scrollView5 setHorizontalScrollIndicatorInsets:{v5, v7, v34, v11}];
 
-  v38 = [(MFComposeWebView *)self->_webView scrollView];
-  [v38 setVerticalScrollIndicatorInsets:{v5, v7, v9, v11}];
+  scrollView6 = [(MFComposeWebView *)self->_webView scrollView];
+  [scrollView6 setVerticalScrollIndicatorInsets:{v5, v7, v9, v11}];
 
-  v39 = [(MFComposeWebView *)self->_webView scrollView];
-  [v39 adjustedContentInset];
+  scrollView7 = [(MFComposeWebView *)self->_webView scrollView];
+  [scrollView7 adjustedContentInset];
   v41 = v40;
   v43 = v42;
 
@@ -2962,23 +2962,23 @@ LABEL_14:
   [(MFMailComposeView *)self _normalizeBodyFieldFrame];
   [(MFMailComposeView *)self _adjustScrollerContentSize];
   [(UIScrollView *)self->_bodyScroller setContentOffset:v4, v6];
-  v7 = [(MFMailComposeView *)self firstResponder];
+  firstResponder = [(MFMailComposeView *)self firstResponder];
 
-  if (v7)
+  if (firstResponder)
   {
-    v28 = [(MFMailComposeView *)self firstResponder];
+    firstResponder2 = [(MFMailComposeView *)self firstResponder];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v28;
+      v8 = firstResponder2;
       bodyScroller = self->_bodyScroller;
       [v8 frame];
       v11 = v10;
       v13 = v12;
       v15 = v14;
       v17 = v16;
-      v18 = [v8 superview];
-      [(UIScrollView *)bodyScroller convertRect:v18 fromView:v11, v13, v15, v17];
+      superview = [v8 superview];
+      [(UIScrollView *)bodyScroller convertRect:superview fromView:v11, v13, v15, v17];
       v20 = v19;
       v22 = v21;
       v24 = v23;
@@ -2992,8 +2992,8 @@ LABEL_14:
 
 - (BOOL)shouldScrollLastChangedRecipientViewToTop
 {
-  v3 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -3006,23 +3006,23 @@ LABEL_14:
   }
 }
 
-- (void)_updateKeyboardIntersection:(CGRect)a3
+- (void)_updateKeyboardIntersection:(CGRect)intersection
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(MFMailComposeView *)self window];
-  v9 = [v8 screen];
-  v31 = [v9 coordinateSpace];
+  height = intersection.size.height;
+  width = intersection.size.width;
+  y = intersection.origin.y;
+  x = intersection.origin.x;
+  window = [(MFMailComposeView *)self window];
+  screen = [window screen];
+  coordinateSpace = [screen coordinateSpace];
 
   [(MFMailComposeView *)self bounds];
-  [(MFMailComposeView *)self convertRect:v31 toCoordinateSpace:?];
+  [(MFMailComposeView *)self convertRect:coordinateSpace toCoordinateSpace:?];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  [v31 convertRect:v31 toCoordinateSpace:{x, y, width, height}];
+  [coordinateSpace convertRect:coordinateSpace toCoordinateSpace:{x, y, width, height}];
   v36.origin.x = v18;
   v36.origin.y = v19;
   v36.size.width = v20;
@@ -3067,11 +3067,11 @@ LABEL_14:
   }
 }
 
-- (void)automaticKeyboardFinishedAppearing:(id)a3
+- (void)automaticKeyboardFinishedAppearing:(id)appearing
 {
-  v14 = a3;
-  v4 = [v14 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69DDFA0]];
+  appearingCopy = appearing;
+  userInfo = [appearingCopy userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
@@ -3081,11 +3081,11 @@ LABEL_14:
   [(MFMailComposeView *)self _updateKeyboardIntersection:v7, v9, v11, v13];
 }
 
-- (void)automaticKeyboardFinishedDisappearing:(id)a3
+- (void)automaticKeyboardFinishedDisappearing:(id)disappearing
 {
-  v14 = a3;
-  v4 = [v14 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69DDFA0]];
+  disappearingCopy = disappearing;
+  userInfo = [disappearingCopy userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
@@ -3097,31 +3097,31 @@ LABEL_14:
   [(MFMailComposeView *)self _endPreventingScrollingToRevealSelection];
 }
 
-- (void)setKeyboardVisible:(BOOL)a3 animate:(BOOL)a4
+- (void)setKeyboardVisible:(BOOL)visible animate:(BOOL)animate
 {
-  v4 = a4;
-  v5 = a3;
+  animateCopy = animate;
+  visibleCopy = visible;
   IsAutomaticAppearanceEnabled = UIKeyboardIsAutomaticAppearanceEnabled();
-  if (v5)
+  if (visibleCopy)
   {
     if ((IsAutomaticAppearanceEnabled & 1) == 0)
     {
 
-      MEMORY[0x1EEE4DE18](v4);
+      MEMORY[0x1EEE4DE18](animateCopy);
     }
   }
 
   else if ((IsAutomaticAppearanceEnabled & 1) == 0)
   {
 
-    MEMORY[0x1EEE4DE28](v4);
+    MEMORY[0x1EEE4DE28](animateCopy);
   }
 }
 
 - (BOOL)isKeyboardVisible
 {
-  v2 = [MEMORY[0x1E69DCBB8] activeKeyboard];
-  if ([v2 isMinimized])
+  activeKeyboard = [MEMORY[0x1E69DCBB8] activeKeyboard];
+  if ([activeKeyboard isMinimized])
   {
     v3 = 0;
   }
@@ -3137,15 +3137,15 @@ LABEL_14:
 - (double)_heightForBottomView
 {
   keyboardIntersection = self->_keyboardIntersection;
-  v4 = [(MFMailComposeView *)self window];
-  [v4 frame];
+  window = [(MFMailComposeView *)self window];
+  [window frame];
   v6 = v5;
-  v7 = [(MFMailComposeView *)self window];
-  [v7 frame];
+  window2 = [(MFMailComposeView *)self window];
+  [window2 frame];
   v9 = v8;
 
-  v10 = [(MFMailComposeView *)self window];
-  [v10 convertRect:0 fromWindow:{0.0, v6, v9, 100.0}];
+  window3 = [(MFMailComposeView *)self window];
+  [window3 convertRect:0 fromWindow:{0.0, v6, v9, 100.0}];
   [(MFMailComposeView *)self convertRect:0 fromView:?];
   v12 = v11;
   v14 = v13;
@@ -3161,12 +3161,12 @@ LABEL_14:
   return keyboardIntersection + v21.size.height;
 }
 
-- (void)saveFirstResponderWithKeyboardPinning:(BOOL)a3
+- (void)saveFirstResponderWithKeyboardPinning:(BOOL)pinning
 {
-  v3 = a3;
+  pinningCopy = pinning;
   obj = [(MFMailComposeView *)self firstResponder];
   objc_storeWeak(&self->_firstResponderBeforeSheet, obj);
-  if (v3)
+  if (pinningCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_pinningResponder);
     if (WeakRetained != obj)
@@ -3185,13 +3185,13 @@ LABEL_14:
   objc_storeWeak(&self->_firstResponderBeforeSheet, 0);
 }
 
-- (void)restoreFirstResponderWithKeyboardPinning:(BOOL)a3
+- (void)restoreFirstResponderWithKeyboardPinning:(BOOL)pinning
 {
-  v3 = a3;
+  pinningCopy = pinning;
   WeakRetained = objc_loadWeakRetained(&self->_firstResponderBeforeSheet);
   [WeakRetained becomeFirstResponder];
 
-  if (v3)
+  if (pinningCopy)
   {
     v6 = objc_loadWeakRetained(&self->_pinningResponder);
     [v6 _endPinningInputViews];
@@ -3200,19 +3200,19 @@ LABEL_14:
   }
 }
 
-- (void)focusFirstResponderBeforeRecipientView:(id)a3
+- (void)focusFirstResponderBeforeRecipientView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   p_super = &self->_toField->super;
-  v6 = v4;
-  if (p_super == v4)
+  v6 = viewCopy;
+  if (p_super == viewCopy)
   {
     p_super = self->_webView;
   }
 
-  else if (self->_ccField != v4)
+  else if (self->_ccField != viewCopy)
   {
-    if (self->_bccField != v4)
+    if (self->_bccField != viewCopy)
     {
       goto LABEL_7;
     }
@@ -3224,21 +3224,21 @@ LABEL_14:
 LABEL_7:
 }
 
-- (void)focusFirstResponderAfterRecipientView:(id)a3
+- (void)focusFirstResponderAfterRecipientView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   ccField = self->_ccField;
-  v6 = v4;
-  if (self->_toField != v4)
+  v6 = viewCopy;
+  if (self->_toField != viewCopy)
   {
-    if (ccField == v4)
+    if (ccField == viewCopy)
     {
       ccField = self->_bccField;
     }
 
     else
     {
-      if (self->_bccField != v4)
+      if (self->_bccField != viewCopy)
       {
         goto LABEL_7;
       }
@@ -3251,38 +3251,38 @@ LABEL_7:
 LABEL_7:
 }
 
-- (void)scrollToTopAnimated:(BOOL)a3
+- (void)scrollToTopAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(UIScrollView *)self->_bodyScroller contentOffset];
   v6 = v5;
   [(UIScrollView *)self->_bodyScroller _effectiveContentInset];
   bodyScroller = self->_bodyScroller;
 
-  [(UIScrollView *)bodyScroller setContentOffset:v3 animated:v6, -v7];
+  [(UIScrollView *)bodyScroller setContentOffset:animatedCopy animated:v6, -v7];
 }
 
-- (void)scrollToRecipientTextView:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)scrollToRecipientTextView:(id)view animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 isDescendantOfView:self])
+  viewCopy = view;
+  completionCopy = completion;
+  if ([viewCopy isDescendantOfView:self])
   {
-    v10 = [(MFMailComposeView *)self navigationBarDelegate];
-    v11 = [v10 getPrefersLargeTitles];
-    [v10 setPrefersLargeTitles:0];
+    navigationBarDelegate = [(MFMailComposeView *)self navigationBarDelegate];
+    getPrefersLargeTitles = [navigationBarDelegate getPrefersLargeTitles];
+    [navigationBarDelegate setPrefersLargeTitles:0];
     v12 = MEMORY[0x1E6979518];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __67__MFMailComposeView_scrollToRecipientTextView_animated_completion___block_invoke;
     v15[3] = &unk_1E806FA30;
     v15[4] = self;
-    v16 = v8;
-    v19 = a4;
-    v13 = v10;
+    v16 = viewCopy;
+    animatedCopy = animated;
+    v13 = navigationBarDelegate;
     v17 = v13;
-    v20 = v11;
-    v18 = v9;
+    v20 = getPrefersLargeTitles;
+    v18 = completionCopy;
     [v12 setCompletionBlock:v15];
   }
 
@@ -3295,7 +3295,7 @@ LABEL_7:
       _os_log_impl(&dword_1BE819000, v14, OS_LOG_TYPE_DEFAULT, "Unable to scroll to unrelated recipient view.", buf, 2u);
     }
 
-    (*(v9 + 2))(v9, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
@@ -3356,23 +3356,23 @@ uint64_t __67__MFMailComposeView_scrollToRecipientTextView_animated_completion__
   return v2();
 }
 
-- (void)viewDidBecomeFirstResponder:(id)a3
+- (void)viewDidBecomeFirstResponder:(id)responder
 {
-  v4 = a3;
-  if (self->_toField == v4 && [(MFMailComposeView *)self _shouldShowCorecipientsTableView])
+  responderCopy = responder;
+  if (self->_toField == responderCopy && [(MFMailComposeView *)self _shouldShowCorecipientsTableView])
   {
     [(MFMailComposeView *)self _layoutSubviews:1];
   }
 
-  v5 = self->_ccField == v4 || self->_bccField == v4;
+  v5 = self->_ccField == responderCopy || self->_bccField == responderCopy;
   [(MFMailComposeView *)self _updateOptionalHeaderVisibilityForceVisible:v5];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__MFMailComposeView_viewDidBecomeFirstResponder___block_invoke;
   v7[3] = &unk_1E806E930;
-  v6 = v4;
+  v6 = responderCopy;
   v8 = v6;
-  v9 = self;
+  selfCopy = self;
   [(MFMailComposeView *)self _performBlockWithStrongComposeCoordinator:v7];
 }
 
@@ -3411,9 +3411,9 @@ void __49__MFMailComposeView_viewDidBecomeFirstResponder___block_invoke(uint64_t
 LABEL_10:
 }
 
-- (void)_updateOptionalHeaderVisibilityForceVisible:(BOOL)a3
+- (void)_updateOptionalHeaderVisibilityForceVisible:(BOOL)visible
 {
-  if (a3)
+  if (visible)
   {
     v4 = self + 777;
     if ((*(self + 777) & 8) != 0)
@@ -3424,32 +3424,32 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v5 = [(CNComposeRecipientTextView *)self->_ccField recipients];
-  if ([v5 count] || self->_isDragging)
+  recipients = [(CNComposeRecipientTextView *)self->_ccField recipients];
+  if ([recipients count] || self->_isDragging)
   {
-    v6 = 1;
+    bccAddressesDirtied = 1;
   }
 
   else
   {
-    v10 = [(CNComposeRecipientTextView *)self->_bccField recipients];
-    if ([v10 count])
+    recipients2 = [(CNComposeRecipientTextView *)self->_bccField recipients];
+    if ([recipients2 count])
     {
       WeakRetained = objc_loadWeakRetained(&self->_mailComposeViewDelegate);
-      v6 = [WeakRetained bccAddressesDirtied];
+      bccAddressesDirtied = [WeakRetained bccAddressesDirtied];
     }
 
     else
     {
-      v6 = 0;
+      bccAddressesDirtied = 0;
     }
   }
 
   v4 = self + 777;
   v7 = *(self + 777);
-  if (((v6 ^ ((v7 & 8) == 0)) & 1) == 0)
+  if (((bccAddressesDirtied ^ ((v7 & 8) == 0)) & 1) == 0)
   {
-    if (!v6)
+    if (!bccAddressesDirtied)
     {
       v8 = 0;
       goto LABEL_12;
@@ -3469,10 +3469,10 @@ LABEL_12:
 
 - (void)menuDidHide
 {
-  v3 = [(MFMailComposeView *)self composeWebView];
-  v4 = [v3 isFirstResponder];
+  composeWebView = [(MFMailComposeView *)self composeWebView];
+  isFirstResponder = [composeWebView isFirstResponder];
 
-  if (v4)
+  if (isFirstResponder)
   {
 
     [(MFMailComposeView *)self _updateQuoteLevelMenu];
@@ -3481,22 +3481,22 @@ LABEL_12:
 
 - (UITableView)searchTableView
 {
-  v2 = [(MFMailComposeView *)self searchViewController];
-  v3 = [v2 tableView];
+  searchViewController = [(MFMailComposeView *)self searchViewController];
+  tableView = [searchViewController tableView];
 
-  return v3;
+  return tableView;
 }
 
 - (BOOL)presentSearchResults
 {
-  v3 = [(MFMailComposeView *)self searchViewController];
-  v4 = [v3 recipients];
-  v5 = [v4 count];
+  searchViewController = [(MFMailComposeView *)self searchViewController];
+  recipients = [searchViewController recipients];
+  v5 = [recipients count];
 
   if (v5 && !self->_activeRecipientView)
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 postNotificationName:@"MFMailComposeViewDidSortSearchResults" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MFMailComposeViewDidSortSearchResults" object:0];
 
     objc_storeStrong(&self->_activeRecipientView, self->_lastChangedRecipientView);
     [(UIScrollView *)self->_bodyScroller contentOffset];
@@ -3516,30 +3516,30 @@ LABEL_12:
   }
 }
 
-- (BOOL)presentSearchResults:(id)a3
+- (BOOL)presentSearchResults:(id)results
 {
-  v4 = a3;
-  if ([v4 count])
+  resultsCopy = results;
+  if ([resultsCopy count])
   {
-    v5 = [(MFMailComposeView *)self searchViewController];
-    [v5 setRecipients:v4];
+    searchViewController = [(MFMailComposeView *)self searchViewController];
+    [searchViewController setRecipients:resultsCopy];
 
-    v6 = [(MFMailComposeView *)self presentSearchResults];
+    presentSearchResults = [(MFMailComposeView *)self presentSearchResults];
   }
 
   else
   {
-    v6 = 0;
+    presentSearchResults = 0;
   }
 
-  return v6;
+  return presentSearchResults;
 }
 
-- (void)beginSearchForText:(id)a3 recipientView:(id)a4
+- (void)beginSearchForText:(id)text recipientView:(id)view
 {
-  v17 = a3;
-  v6 = a4;
-  objc_storeStrong(&self->_lastChangedRecipientView, a4);
+  textCopy = text;
+  viewCopy = view;
+  objc_storeStrong(&self->_lastChangedRecipientView, view);
   if (!self->_searchController)
   {
     v7 = objc_alloc_init(MFMailComposeContactsSearchController);
@@ -3549,25 +3549,25 @@ LABEL_12:
     [(MFMailComposeContactsSearchController *)self->_searchController setDelegate:self];
   }
 
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = [(CNComposeRecipientTextView *)self->_toField recipients];
-  [v9 addObjectsFromArray:v10];
+  array = [MEMORY[0x1E695DF70] array];
+  recipients = [(CNComposeRecipientTextView *)self->_toField recipients];
+  [array addObjectsFromArray:recipients];
 
-  v11 = [(CNComposeRecipientTextView *)self->_ccField recipients];
-  [v9 addObjectsFromArray:v11];
+  recipients2 = [(CNComposeRecipientTextView *)self->_ccField recipients];
+  [array addObjectsFromArray:recipients2];
 
-  v12 = [(CNComposeRecipientTextView *)self->_bccField recipients];
-  [v9 addObjectsFromArray:v12];
+  recipients3 = [(CNComposeRecipientTextView *)self->_bccField recipients];
+  [array addObjectsFromArray:recipients3];
 
   v13 = self->_searchController;
-  v14 = [(MFComposeSubjectView *)self->_subjectField text];
-  [(MFMailComposeContactsSearchController *)v13 searchWithString:v17 enteredRecipients:v9 title:v14];
+  text = [(MFComposeSubjectView *)self->_subjectField text];
+  [(MFMailComposeContactsSearchController *)v13 searchWithString:textCopy enteredRecipients:array title:text];
 
-  v15 = [(MFMailComposeView *)self _searchResultsTable];
-  [v15 selectRowAtIndexPath:0 animated:0 scrollPosition:0];
+  _searchResultsTable = [(MFMailComposeView *)self _searchResultsTable];
+  [_searchResultsTable selectRowAtIndexPath:0 animated:0 scrollPosition:0];
 
-  v16 = [(MFMailComposeView *)self _searchResultsTable];
-  [v16 scrollRectToVisible:0 animated:{0.0, 0.0, 1.0, 1.0}];
+  _searchResultsTable2 = [(MFMailComposeView *)self _searchResultsTable];
+  [_searchResultsTable2 scrollRectToVisible:0 animated:{0.0, 0.0, 1.0, 1.0}];
 }
 
 - (void)clearSearchForActiveRecipientView
@@ -3575,16 +3575,16 @@ LABEL_12:
   if (self->_activeRecipientView || self->_lastChangedRecipientView)
   {
     [MFMailComposeView clearSearchForRecipientView:"clearSearchForRecipientView:reflow:clear:" reflow:? clear:?];
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 postNotificationName:@"_MFComposeRecipientTextViewSearchEnd" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"_MFComposeRecipientTextViewSearchEnd" object:self userInfo:0];
   }
 }
 
-- (void)invalidateSearchResultRecipient:(id)a3
+- (void)invalidateSearchResultRecipient:(id)recipient
 {
-  v6 = a3;
-  v4 = [(CNAutocompleteResultsTableViewController *)self->_searchViewController recipients];
-  v5 = [v4 count];
+  recipientCopy = recipient;
+  recipients = [(CNAutocompleteResultsTableViewController *)self->_searchViewController recipients];
+  v5 = [recipients count];
 
   if (v5 == 1)
   {
@@ -3593,13 +3593,13 @@ LABEL_12:
 
   else
   {
-    [(CNAutocompleteResultsTableViewController *)self->_searchViewController invalidateSearchResultRecipient:v6];
+    [(CNAutocompleteResultsTableViewController *)self->_searchViewController invalidateSearchResultRecipient:recipientCopy];
   }
 }
 
-- (void)findCorecipientsWithRecipientView:(id)a3
+- (void)findCorecipientsWithRecipientView:(id)view
 {
-  v7 = a3;
+  viewCopy = view;
   if ([(MFMailComposeView *)self _userInterfaceConfigurationSupportsCorecipientsTableView])
   {
     if (!self->_searchController)
@@ -3611,8 +3611,8 @@ LABEL_12:
       [(MFMailComposeContactsSearchController *)self->_searchController setDelegate:self];
     }
 
-    v6 = [v7 uncommentedAddresses];
-    if ([v6 count] < 2)
+    uncommentedAddresses = [viewCopy uncommentedAddresses];
+    if ([uncommentedAddresses count] < 2)
     {
       [(CNAutocompleteResultsTableViewController *)self->_corecipientsSearchViewController setDeferTableViewUpdates:1];
       [(CNAutocompleteResultsTableViewController *)self->_corecipientsSearchViewController setRecipients:0];
@@ -3621,16 +3621,16 @@ LABEL_12:
 
     else
     {
-      [(MFMailComposeContactsSearchController *)self->_searchController findCorecipientsWithRecipients:v6];
+      [(MFMailComposeContactsSearchController *)self->_searchController findCorecipientsWithRecipients:uncommentedAddresses];
     }
   }
 }
 
-- (void)disambiguateRecipient:(id)a3 recipientView:(id)a4
+- (void)disambiguateRecipient:(id)recipient recipientView:(id)view
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  recipientCopy = recipient;
+  viewCopy = view;
   if (!self->_searchController)
   {
     v8 = objc_alloc_init(MFMailComposeContactsSearchController);
@@ -3641,11 +3641,11 @@ LABEL_12:
   }
 
   *(self + 777) |= 4u;
-  objc_storeStrong(&self->_lastChangedRecipientView, a4);
-  v10 = [(MFMailComposeView *)self searchViewController];
-  v12[0] = v6;
+  objc_storeStrong(&self->_lastChangedRecipientView, view);
+  searchViewController = [(MFMailComposeView *)self searchViewController];
+  v12[0] = recipientCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  [v10 updateRecipients:v11 disambiguatingRecipient:v6];
+  [searchViewController updateRecipients:v11 disambiguatingRecipient:recipientCopy];
 
   [(MFMailComposeView *)self presentSearchResults];
 }
@@ -3659,20 +3659,20 @@ LABEL_12:
   }
 }
 
-- (void)autocompleteResultsController:(id)a3 didSelectRecipient:(id)a4 atIndex:(unint64_t)a5
+- (void)autocompleteResultsController:(id)controller didSelectRecipient:(id)recipient atIndex:(unint64_t)index
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  controllerCopy = controller;
+  recipientCopy = recipient;
+  v9 = recipientCopy;
+  if (recipientCopy)
   {
-    v10 = [v8 address];
+    address = [recipientCopy address];
 
-    if (v10)
+    if (address)
     {
-      [(MFMailComposeContactsSearchController *)self->_searchController didSelectRecipient:v9 atIndex:a5];
+      [(MFMailComposeContactsSearchController *)self->_searchController didSelectRecipient:v9 atIndex:index];
       p_super = self->_activeRecipientView;
-      if (self->_corecipientsSearchViewController == v14)
+      if (self->_corecipientsSearchViewController == controllerCopy)
       {
         v12 = self->_toField;
 
@@ -3688,51 +3688,51 @@ LABEL_12:
   }
 }
 
-- (void)autocompleteResultsController:(id)a3 didRequestInfoAboutRecipient:(id)a4
+- (void)autocompleteResultsController:(id)controller didRequestInfoAboutRecipient:(id)recipient
 {
-  v6 = a4;
+  recipientCopy = recipient;
   WeakRetained = objc_loadWeakRetained(&self->_composeRecipientViewDelegate);
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (recipientCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [WeakRetained composeRecipientView:self->_activeRecipientView showPersonCardForRecipient:v6];
+    [WeakRetained composeRecipientView:self->_activeRecipientView showPersonCardForRecipient:recipientCopy];
   }
 }
 
-- (void)autocompleteResultsController:(id)a3 didAskToRemoveRecipient:(id)a4
+- (void)autocompleteResultsController:(id)controller didAskToRemoveRecipient:(id)recipient
 {
-  v6 = a4;
-  v5 = [(MFMailComposeView *)self searchController];
-  [v5 removeRecipient:v6];
+  recipientCopy = recipient;
+  searchController = [(MFMailComposeView *)self searchController];
+  [searchController removeRecipient:recipientCopy];
 }
 
-- (id)sendingAccountProxyForComposeContactsSearchController:(id)a3
+- (id)sendingAccountProxyForComposeContactsSearchController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_mailComposeViewDelegate);
-  v4 = [WeakRetained sendingAccountProxy];
+  sendingAccountProxy = [WeakRetained sendingAccountProxy];
 
-  return v4;
+  return sendingAccountProxy;
 }
 
-- (int64_t)addressableGroupResultStyleForComposeContactsSearchController:(id)a3
+- (int64_t)addressableGroupResultStyleForComposeContactsSearchController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_mailComposeViewDelegate);
-  v4 = [WeakRetained isCloudKitShare];
+  isCloudKitShare = [WeakRetained isCloudKitShare];
 
-  return v4 ^ 1u;
+  return isCloudKitShare ^ 1u;
 }
 
-- (void)composeContactsSearchController:(id)a3 finishedWithResults:(BOOL)a4
+- (void)composeContactsSearchController:(id)controller finishedWithResults:(BOOL)results
 {
-  if (!a4 && (self->_activeRecipientView || self->_lastChangedRecipientView))
+  if (!results && (self->_activeRecipientView || self->_lastChangedRecipientView))
   {
     [MFMailComposeView clearSearchForRecipientView:"clearSearchForRecipientView:reflow:clear:" reflow:? clear:?];
   }
 }
 
-- (void)composeContactsSearchController:(id)a3 didFindCorecipients:(id)a4
+- (void)composeContactsSearchController:(id)controller didFindCorecipients:(id)corecipients
 {
-  v12 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  corecipientsCopy = corecipients;
   if (!self->_corecipientsSearchViewController)
   {
     v7 = [objc_alloc(MEMORY[0x1E69963B8]) initWithStyle:0];
@@ -3740,40 +3740,40 @@ LABEL_12:
     self->_corecipientsSearchViewController = v7;
 
     [(CNAutocompleteResultsTableViewController *)self->_corecipientsSearchViewController setDelegate:self];
-    v9 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-    v10 = [(CNAutocompleteResultsTableViewController *)self->_corecipientsSearchViewController view];
-    [v10 setBackgroundColor:v9];
+    systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+    view = [(CNAutocompleteResultsTableViewController *)self->_corecipientsSearchViewController view];
+    [view setBackgroundColor:systemGroupedBackgroundColor];
   }
 
-  if ([v6 count] >= 4)
+  if ([corecipientsCopy count] >= 4)
   {
-    v11 = [v6 subarrayWithRange:{0, 3}];
+    v11 = [corecipientsCopy subarrayWithRange:{0, 3}];
 
-    v6 = v11;
+    corecipientsCopy = v11;
   }
 
-  -[CNAutocompleteResultsTableViewController setDeferTableViewUpdates:](self->_corecipientsSearchViewController, "setDeferTableViewUpdates:", [v6 count] == 0);
-  [(CNAutocompleteResultsTableViewController *)self->_corecipientsSearchViewController setRecipients:v6];
+  -[CNAutocompleteResultsTableViewController setDeferTableViewUpdates:](self->_corecipientsSearchViewController, "setDeferTableViewUpdates:", [corecipientsCopy count] == 0);
+  [(CNAutocompleteResultsTableViewController *)self->_corecipientsSearchViewController setRecipients:corecipientsCopy];
   [(MFMailComposeView *)self _layoutSubviews:1];
 }
 
-- (void)clearSearchForRecipientView:(id)a3 reflow:(BOOL)a4 clear:(BOOL)a5
+- (void)clearSearchForRecipientView:(id)view reflow:(BOOL)reflow clear:(BOOL)clear
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = a3;
+  clearCopy = clear;
+  reflowCopy = reflow;
+  viewCopy = view;
   [(MFMailComposeContactsSearchController *)self->_searchController cancelSearch];
   activeRecipientView = self->_activeRecipientView;
   self->_activeRecipientView = 0;
 
-  if (v5)
+  if (clearCopy)
   {
-    [v9 clearText];
+    [viewCopy clearText];
   }
 
-  if (v6)
+  if (reflowCopy)
   {
-    [v9 reflow];
+    [viewCopy reflow];
   }
 
   [(MFMailComposeView *)self _layoutSubviews:0];
@@ -3823,8 +3823,8 @@ LABEL_12:
       v6 = 0.0;
     }
 
-    v7 = [(MFMailComposeView *)self composeWebView];
-    [v7 frame];
+    composeWebView = [(MFMailComposeView *)self composeWebView];
+    [composeWebView frame];
     v9 = v8;
     [(UIView *)self->_headerView frame];
     v11 = v9 - v10;
@@ -3846,16 +3846,16 @@ LABEL_12:
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v17 = [(MFMailComposeView *)self traitCollection];
+  traitCollection = [(MFMailComposeView *)self traitCollection];
   [(MFMailComposeView *)self directionalLayoutMargins];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
   [(MFMailComposeView *)self safeAreaInsets];
-  v16 = [MFComposeDisplayMetrics displayMetricsWithTraitCollection:v17 layoutMargins:v5 safeAreaInsets:v7, v9, v11, v12, v13, v14, v15];
+  v16 = [MFComposeDisplayMetrics displayMetricsWithTraitCollection:traitCollection layoutMargins:v5 safeAreaInsets:v7, v9, v11, v12, v13, v14, v15];
   [(MFMailComposeView *)self setDisplayMetrics:v16];
 }
 
@@ -3866,24 +3866,24 @@ LABEL_12:
   [(MFMailComposeView *)&v17 layoutMarginsDidChange];
   [(MFMailComposeView *)self layoutMargins];
   [(UIView *)self->_headerView setLayoutMargins:?];
-  v3 = [(MFMailComposeView *)self traitCollection];
+  traitCollection = [(MFMailComposeView *)self traitCollection];
   [(MFMailComposeView *)self directionalLayoutMargins];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
   [(MFMailComposeView *)self safeAreaInsets];
-  v16 = [MFComposeDisplayMetrics displayMetricsWithTraitCollection:v3 layoutMargins:v5 safeAreaInsets:v7, v9, v11, v12, v13, v14, v15];
+  v16 = [MFComposeDisplayMetrics displayMetricsWithTraitCollection:traitCollection layoutMargins:v5 safeAreaInsets:v7, v9, v11, v12, v13, v14, v15];
   [(MFMailComposeView *)self setDisplayMetrics:v16];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   if ((*(self + 777) & 0x40) == 0)
   {
     headerView = self->_headerView;
-    if (headerView && self->_bodyScroller == v4)
+    if (headerView && self->_bodyScroller == scrollCopy)
     {
       [(UIView *)headerView frame];
       [(MFMailComposeView *)self _headerViewOriginWithScrollViewOffsetCalculation];
@@ -3891,14 +3891,14 @@ LABEL_12:
       [(UIView *)self->_headerView setFrame:?];
       if (![(MFMailComposeView *)self _presentsSearchResultsTableAsPopover]&& self->_searchViewController && self->_shadowView)
       {
-        v9 = [(MFMailComposeView *)self _searchResultsTable];
-        [v9 frame];
+        _searchResultsTable = [(MFMailComposeView *)self _searchResultsTable];
+        [_searchResultsTable frame];
         v11 = v10;
         v13 = v12;
         v15 = v14;
 
-        v16 = [(MFMailComposeView *)self _searchResultsTable];
-        [v16 setFrame:{v8, v11, v13, v15}];
+        _searchResultsTable2 = [(MFMailComposeView *)self _searchResultsTable];
+        [_searchResultsTable2 setFrame:{v8, v11, v13, v15}];
 
         [(UIView *)self->_shadowView frame];
         [(UIView *)self->_shadowView setFrame:v8];
@@ -3912,76 +3912,76 @@ LABEL_12:
       v6 = +[MFMailComposeView log];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
-        [(MFMailComposeView *)v4 scrollViewDidScroll:v6];
+        [(MFMailComposeView *)scrollCopy scrollViewDidScroll:v6];
       }
     }
 
-    v17 = [(MFMailComposeView *)self composeWebView];
-    [v17 hideMakeLinkAccessoryButton];
+    composeWebView = [(MFMailComposeView *)self composeWebView];
+    [composeWebView hideMakeLinkAccessoryButton];
   }
 }
 
 - (void)_displayMetricsDidChange
 {
-  v6 = [(MFMailComposeView *)self displayMetrics];
-  [v6 trailingButtonMidlineOffset];
+  displayMetrics = [(MFMailComposeView *)self displayMetrics];
+  [displayMetrics trailingButtonMidlineOffset];
   v4 = v3;
-  v5 = [(MFMailComposeView *)self searchViewController];
-  [v5 setTrailingButtonMidlineInsetFromLayoutMargin:v4];
+  searchViewController = [(MFMailComposeView *)self searchViewController];
+  [searchViewController setTrailingButtonMidlineInsetFromLayoutMargin:v4];
 }
 
-- (void)composeWebViewTextChanged:(id)a3
+- (void)composeWebViewTextChanged:(id)changed
 {
-  v4 = [(MFMailComposeView *)self composeViewDelegate];
+  composeViewDelegate = [(MFMailComposeView *)self composeViewDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 composeViewBodyTextChanged:self];
+    [composeViewDelegate composeViewBodyTextChanged:self];
   }
 }
 
-- (void)composeWebView:(id)a3 didChangeHeight:(double)a4
+- (void)composeWebView:(id)view didChangeHeight:(double)height
 {
-  v7 = a3;
+  viewCopy = view;
   if (_os_feature_enabled_impl())
   {
-    v6 = [(MFMailComposeView *)self composeViewDelegate];
-    [v6 composeWebView:v7 didChangeHeight:a4];
+    composeViewDelegate = [(MFMailComposeView *)self composeViewDelegate];
+    [composeViewDelegate composeWebView:viewCopy didChangeHeight:height];
   }
 }
 
-- (void)composeWebView:(id)a3 composeBodyIsEmpty:(BOOL)a4
+- (void)composeWebView:(id)view composeBodyIsEmpty:(BOOL)empty
 {
-  v4 = a4;
-  v7 = a3;
+  emptyCopy = empty;
+  viewCopy = view;
   if (_os_feature_enabled_impl())
   {
-    v6 = [(MFMailComposeView *)self composeViewDelegate];
-    [v6 composeWebView:v7 composeBodyIsEmpty:v4];
+    composeViewDelegate = [(MFMailComposeView *)self composeViewDelegate];
+    [composeViewDelegate composeWebView:viewCopy composeBodyIsEmpty:emptyCopy];
   }
 }
 
-- (void)composeWebView:(id)a3 hasActiveWritingToolsSession:(BOOL)a4
+- (void)composeWebView:(id)view hasActiveWritingToolsSession:(BOOL)session
 {
-  v4 = a4;
-  v7 = a3;
-  v6 = [(MFMailComposeView *)self composeViewDelegate];
-  [v6 composeWebView:v7 hasActiveWritingToolsSession:v4];
+  sessionCopy = session;
+  viewCopy = view;
+  composeViewDelegate = [(MFMailComposeView *)self composeViewDelegate];
+  [composeViewDelegate composeWebView:viewCopy hasActiveWritingToolsSession:sessionCopy];
 }
 
-- (void)composeFromView:(id)a3 didSelectAddress:(id)a4
+- (void)composeFromView:(id)view didSelectAddress:(id)address
 {
-  v6 = a4;
-  v5 = [(MFMailComposeView *)self composeViewDelegate];
-  [v5 setSendingEmailAddress:v6];
+  addressCopy = address;
+  composeViewDelegate = [(MFMailComposeView *)self composeViewDelegate];
+  [composeViewDelegate setSendingEmailAddress:addressCopy];
 }
 
-- (void)_performBlockWithStrongComposeCoordinator:(id)a3
+- (void)_performBlockWithStrongComposeCoordinator:(id)coordinator
 {
-  v5 = a3;
+  coordinatorCopy = coordinator;
   WeakRetained = objc_loadWeakRetained(&self->_composeCoordinator);
   if (WeakRetained)
   {
-    v5[2](v5, WeakRetained);
+    coordinatorCopy[2](coordinatorCopy, WeakRetained);
   }
 }
 

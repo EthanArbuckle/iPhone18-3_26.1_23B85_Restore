@@ -1,26 +1,26 @@
 @interface ACUIUtils
-+ (id)_accountGroupIdentifier:(id)a3 ignoringGroups:(id)a4;
-+ (id)sortedAccountsFromAccounts:(id)a3;
-+ (id)sortedDataclassesFrom:(id)a3;
-+ (void)emitNavigationEventForSubPane:(id)a3 subPath:(id)a4 account:(id)a5 inHostAppBundleID:(id)a6;
-+ (void)filterAccounts:(id)a3 toTopLevel:(id)a4 grouped:(id)a5 ignoringGroups:(id)a6;
++ (id)_accountGroupIdentifier:(id)identifier ignoringGroups:(id)groups;
++ (id)sortedAccountsFromAccounts:(id)accounts;
++ (id)sortedDataclassesFrom:(id)from;
++ (void)emitNavigationEventForSubPane:(id)pane subPath:(id)path account:(id)account inHostAppBundleID:(id)d;
++ (void)filterAccounts:(id)accounts toTopLevel:(id)level grouped:(id)grouped ignoringGroups:(id)groups;
 @end
 
 @implementation ACUIUtils
 
-+ (void)filterAccounts:(id)a3 toTopLevel:(id)a4 grouped:(id)a5 ignoringGroups:(id)a6
++ (void)filterAccounts:(id)accounts toTopLevel:(id)level grouped:(id)grouped ignoringGroups:(id)groups
 {
   v30 = *MEMORY[0x277D85DE8];
-  v28 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, accounts);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
+  objc_storeStrong(&v26, level);
   v25 = 0;
-  objc_storeStrong(&v25, a5);
+  objc_storeStrong(&v25, grouped);
   v24 = 0;
-  objc_storeStrong(&v24, a6);
+  objc_storeStrong(&v24, groups);
   memset(__b, 0, sizeof(__b));
   v18 = MEMORY[0x277D82BE0](location[0]);
   v19 = [v18 countByEnumeratingWithState:__b objects:v29 count:16];
@@ -38,7 +38,7 @@
       }
 
       v23 = *(__b[1] + 8 * v13);
-      v21 = [v28 _accountGroupIdentifier:v23 ignoringGroups:v24];
+      v21 = [selfCopy _accountGroupIdentifier:v23 ignoringGroups:v24];
       if (v21)
       {
         v10 = [v25 objectForKey:v21];
@@ -87,19 +87,19 @@
   *MEMORY[0x277D85DE8];
 }
 
-+ (id)_accountGroupIdentifier:(id)a3 ignoringGroups:(id)a4
++ (id)_accountGroupIdentifier:(id)identifier ignoringGroups:(id)groups
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v8 = [location[0] accountType];
-  v7 = [v8 identifier];
-  v9 = [v7 isEqualToString:*MEMORY[0x277CB8D10]];
-  MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
+  objc_storeStrong(&v10, groups);
+  accountType = [location[0] accountType];
+  identifier = [accountType identifier];
+  v9 = [identifier isEqualToString:*MEMORY[0x277CB8D10]];
+  MEMORY[0x277D82BD8](identifier);
+  MEMORY[0x277D82BD8](accountType);
   if (v9 & 1) == 0 || ([v10 containsObject:*MEMORY[0x277CB8D10]])
   {
     v12 = 0;
@@ -117,12 +117,12 @@
   return v4;
 }
 
-+ (id)sortedAccountsFromAccounts:(id)a3
++ (id)sortedAccountsFromAccounts:(id)accounts
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, accounts);
   v8 = ACUISortedAccountTypes();
   v4 = location[0];
   v6 = MEMORY[0x277D82BE0](v8);
@@ -174,12 +174,12 @@ uint64_t __40__ACUIUtils_sortedAccountsFromAccounts___block_invoke(id *a1, void 
   return v16;
 }
 
-+ (id)sortedDataclassesFrom:(id)a3
++ (id)sortedDataclassesFrom:(id)from
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, from);
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if ([location[0] containsObject:*MEMORY[0x277CB91D8]])
   {
@@ -273,19 +273,19 @@ uint64_t __40__ACUIUtils_sortedAccountsFromAccounts___block_invoke(id *a1, void 
   return v4;
 }
 
-+ (void)emitNavigationEventForSubPane:(id)a3 subPath:(id)a4 account:(id)a5 inHostAppBundleID:(id)a6
++ (void)emitNavigationEventForSubPane:(id)pane subPath:(id)path account:(id)account inHostAppBundleID:(id)d
 {
   v82[3] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, pane);
   v80 = 0;
-  objc_storeStrong(&v80, a4);
+  objc_storeStrong(&v80, path);
   v79 = 0;
-  objc_storeStrong(&v79, a5);
+  objc_storeStrong(&v79, account);
   v78 = 0;
-  objc_storeStrong(&v78, a6);
+  objc_storeStrong(&v78, d);
   PreferencesExtendedLibrary();
   v77 = 0;
   if (v78)
@@ -311,52 +311,52 @@ uint64_t __40__ACUIUtils_sortedAccountsFromAccounts___block_invoke(id *a1, void 
   }
 
   v54 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v57 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v56 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v55 = [v56 bundleURL];
+  bundleURL = [v56 bundleURL];
   v76 = [v54 initWithKey:@"ACCOUNTS" table:? locale:? bundleURL:?];
-  MEMORY[0x277D82BD8](v55);
+  MEMORY[0x277D82BD8](bundleURL);
   MEMORY[0x277D82BD8](v56);
-  MEMORY[0x277D82BD8](v57);
+  MEMORY[0x277D82BD8](currentLocale);
   v58 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v61 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
   v60 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v59 = [v60 bundleURL];
-  v75 = [v58 initWithKey:@"APPS_NAVIGATION_PATH" table:0 locale:v61 bundleURL:?];
-  MEMORY[0x277D82BD8](v59);
+  bundleURL2 = [v60 bundleURL];
+  v75 = [v58 initWithKey:@"APPS_NAVIGATION_PATH" table:0 locale:currentLocale2 bundleURL:?];
+  MEMORY[0x277D82BD8](bundleURL2);
   MEMORY[0x277D82BD8](v60);
-  MEMORY[0x277D82BD8](v61);
+  MEMORY[0x277D82BD8](currentLocale2);
   v74 = 0;
   v73 = 0;
   v72 = [ACUILocalization localizedNameForApplicationBundleID:v78];
   if (v72)
   {
     v42 = objc_alloc(MEMORY[0x277CCAEB8]);
-    v45 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale3 = [MEMORY[0x277CBEAF8] currentLocale];
     v44 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v43 = [v44 bundleURL];
+    bundleURL3 = [v44 bundleURL];
     v10 = [v42 initWithKey:@"DO_NOT_LOCALIZE_HOST_APP_IN_DEFAULT_VALUE" defaultValue:v72 table:? locale:? bundleURL:?];
     v11 = v74;
     v74 = v10;
     MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v43);
+    MEMORY[0x277D82BD8](bundleURL3);
     MEMORY[0x277D82BD8](v44);
-    MEMORY[0x277D82BD8](v45);
+    MEMORY[0x277D82BD8](currentLocale3);
     v47 = objc_alloc(MEMORY[0x277CCAEB8]);
     v46 = MEMORY[0x277CCACA8];
     v53 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v52 = [v53 localizedStringForKey:@"HOST_APP_ACCOUNTS_PATH_FORMAT" value:&stru_2850054A0 table:@"Localizable"];
     v51 = [v46 localizedStringWithFormat:v72];
-    v50 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale4 = [MEMORY[0x277CBEAF8] currentLocale];
     v49 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v48 = [v49 bundleURL];
-    v12 = [v47 initWithKey:@"DO_NOT_LOCALIZE_HOST_APP_ACCOUNTS_FORMAT_IN_DEFAULT_VALUE" defaultValue:v51 table:0 locale:v50 bundleURL:?];
+    bundleURL4 = [v49 bundleURL];
+    v12 = [v47 initWithKey:@"DO_NOT_LOCALIZE_HOST_APP_ACCOUNTS_FORMAT_IN_DEFAULT_VALUE" defaultValue:v51 table:0 locale:currentLocale4 bundleURL:?];
     v13 = v73;
     v73 = v12;
     MEMORY[0x277D82BD8](v13);
-    MEMORY[0x277D82BD8](v48);
+    MEMORY[0x277D82BD8](bundleURL4);
     MEMORY[0x277D82BD8](v49);
-    MEMORY[0x277D82BD8](v50);
+    MEMORY[0x277D82BD8](currentLocale4);
     MEMORY[0x277D82BD8](v51);
     MEMORY[0x277D82BD8](v52);
     MEMORY[0x277D82BD8](v53);
@@ -365,27 +365,27 @@ uint64_t __40__ACUIUtils_sortedAccountsFromAccounts___block_invoke(id *a1, void 
   else
   {
     v34 = objc_alloc(MEMORY[0x277CCAEB8]);
-    v37 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale5 = [MEMORY[0x277CBEAF8] currentLocale];
     v36 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v35 = [v36 bundleURL];
+    bundleURL5 = [v36 bundleURL];
     v14 = [v34 initWithKey:@"CONTACTS_APP_PATH" table:? locale:? bundleURL:?];
     v15 = v74;
     v74 = v14;
     MEMORY[0x277D82BD8](v15);
-    MEMORY[0x277D82BD8](v35);
+    MEMORY[0x277D82BD8](bundleURL5);
     MEMORY[0x277D82BD8](v36);
-    MEMORY[0x277D82BD8](v37);
+    MEMORY[0x277D82BD8](currentLocale5);
     v38 = objc_alloc(MEMORY[0x277CCAEB8]);
-    v41 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale6 = [MEMORY[0x277CBEAF8] currentLocale];
     v40 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v39 = [v40 bundleURL];
-    v16 = [v38 initWithKey:@"CONTACTS_ACCOUNTS_PATH" table:0 locale:v41 bundleURL:?];
+    bundleURL6 = [v40 bundleURL];
+    v16 = [v38 initWithKey:@"CONTACTS_ACCOUNTS_PATH" table:0 locale:currentLocale6 bundleURL:?];
     v17 = v73;
     v73 = v16;
     MEMORY[0x277D82BD8](v17);
-    MEMORY[0x277D82BD8](v39);
+    MEMORY[0x277D82BD8](bundleURL6);
     MEMORY[0x277D82BD8](v40);
-    MEMORY[0x277D82BD8](v41);
+    MEMORY[0x277D82BD8](currentLocale6);
   }
 
   v82[0] = v75;
@@ -399,16 +399,16 @@ uint64_t __40__ACUIUtils_sortedAccountsFromAccounts___block_invoke(id *a1, void 
     if ([v80 hasPrefix:@"ADD_ACCOUNT"])
     {
       v29 = objc_alloc(MEMORY[0x277CCAEB8]);
-      v32 = [MEMORY[0x277CBEAF8] currentLocale];
+      currentLocale7 = [MEMORY[0x277CBEAF8] currentLocale];
       v31 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v30 = [v31 bundleURL];
-      v18 = [v29 initWithKey:@"ADD_ACCOUNT" table:0 locale:v32 bundleURL:?];
+      bundleURL7 = [v31 bundleURL];
+      v18 = [v29 initWithKey:@"ADD_ACCOUNT" table:0 locale:currentLocale7 bundleURL:?];
       v19 = v76;
       v76 = v18;
       MEMORY[0x277D82BD8](v19);
-      MEMORY[0x277D82BD8](v30);
+      MEMORY[0x277D82BD8](bundleURL7);
       MEMORY[0x277D82BD8](v31);
-      MEMORY[0x277D82BD8](v32);
+      MEMORY[0x277D82BD8](currentLocale7);
       [v71 addObject:v76];
     }
 
@@ -419,31 +419,31 @@ uint64_t __40__ACUIUtils_sortedAccountsFromAccounts___block_invoke(id *a1, void 
       if (v79)
       {
         v27 = v80;
-        v70 = [v79 identifier];
+        identifier = [v79 identifier];
         v69 = 1;
         v28 = [v27 hasPrefix:?];
       }
 
       if (v69)
       {
-        MEMORY[0x277D82BD8](v70);
+        MEMORY[0x277D82BD8](identifier);
       }
 
       if (v28)
       {
         v22 = objc_alloc(MEMORY[0x277CCAEB8]);
-        v26 = [v79 accountDescription];
-        v25 = [MEMORY[0x277CBEAF8] currentLocale];
+        accountDescription = [v79 accountDescription];
+        currentLocale8 = [MEMORY[0x277CBEAF8] currentLocale];
         v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-        v23 = [v24 bundleURL];
-        v20 = [v22 initWithKey:@"DO_NOT_LOCALIZE_ACCOUNT_DESCIRPTION_IN_DEFAULT_VALUE" defaultValue:v26 table:0 locale:v25 bundleURL:?];
+        bundleURL8 = [v24 bundleURL];
+        v20 = [v22 initWithKey:@"DO_NOT_LOCALIZE_ACCOUNT_DESCIRPTION_IN_DEFAULT_VALUE" defaultValue:accountDescription table:0 locale:currentLocale8 bundleURL:?];
         v21 = v76;
         v76 = v20;
         MEMORY[0x277D82BD8](v21);
-        MEMORY[0x277D82BD8](v23);
+        MEMORY[0x277D82BD8](bundleURL8);
         MEMORY[0x277D82BD8](v24);
-        MEMORY[0x277D82BD8](v25);
-        MEMORY[0x277D82BD8](v26);
+        MEMORY[0x277D82BD8](currentLocale8);
+        MEMORY[0x277D82BD8](accountDescription);
         [v71 addObject:v76];
       }
     }

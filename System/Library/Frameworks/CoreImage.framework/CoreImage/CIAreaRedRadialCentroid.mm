@@ -57,7 +57,7 @@
 - (id)outputImage
 {
   v71[1] = *MEMORY[0x1E69E9840];
-  v3 = [(NSNumber *)self->inputRadialMode integerValue];
+  integerValue = [(NSNumber *)self->inputRadialMode integerValue];
   inputCenter = self->inputCenter;
   if (self->super.super.super.inputExtent)
   {
@@ -69,20 +69,20 @@
     v5 = 1;
   }
 
-  if (!v5 && v3 <= 1)
+  if (!v5 && integerValue <= 1)
   {
-    v8 = v3;
+    v8 = integerValue;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
     {
-      v10 = [(CIAreaRedRadialCentroid *)self _kernelCenter];
+      _kernelCenter = [(CIAreaRedRadialCentroid *)self _kernelCenter];
       [(CIImage *)self->super.super.super.inputImage extent];
       v68 = self->inputCenter;
-      inputCenter = [v10 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v68, 1), v11, v12, v13, v14}];
+      inputCenter = [_kernelCenter applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v68, 1), v11, v12, v13, v14}];
     }
 
-    v15 = [(CIImage *)inputCenter imageByClampingToExtent];
+    imageByClampingToExtent = [(CIImage *)inputCenter imageByClampingToExtent];
     [(NSNumber *)self->inputRadius floatValue];
     v17 = v16;
     [(NSNumber *)self->inputRadius floatValue];
@@ -90,7 +90,7 @@
     if (v8)
     {
       v19 = 1.0 / (v19 / 9.0);
-      v20 = [(CIAreaRedRadialCentroid *)self _kernelGaussian];
+      _kernelGaussian = [(CIAreaRedRadialCentroid *)self _kernelGaussian];
       [(CIImage *)self->super.super.super.inputImage extent];
       v22 = v21;
       v24 = v23;
@@ -102,7 +102,7 @@
 
     else
     {
-      v20 = [(CIAreaRedRadialCentroid *)self _kernelDisk];
+      _kernelGaussian = [(CIAreaRedRadialCentroid *)self _kernelDisk];
       [(CIImage *)self->super.super.super.inputImage extent];
       v22 = v21;
       v24 = v30;
@@ -112,10 +112,10 @@
       p_inputImage = &v67;
     }
 
-    p_inputImage[1] = v15;
+    p_inputImage[1] = imageByClampingToExtent;
     *&v21 = v19;
     p_inputImage[2] = [MEMORY[0x1E696AD98] numberWithFloat:v21];
-    v33 = [v20 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", p_inputImage, 3), v22, v24, v26, v28}];
+    v33 = [_kernelGaussian applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", p_inputImage, 3), v22, v24, v26, v28}];
     inputExtent = self->super.super.super.inputExtent;
     v64 = @"inputExtent";
     v65 = inputExtent;
@@ -137,7 +137,7 @@
         v42 = v41;
         v44 = v43;
         v46 = v45;
-        [(CIImage *)v15 extent];
+        [(CIImage *)imageByClampingToExtent extent];
         v76.origin.x = v47;
         v76.origin.y = v48;
         v76.size.width = v49;
@@ -166,7 +166,7 @@
         v61 = v75.size.width;
         v62 = v75.size.height;
         v69[0] = inputCenter;
-        v69[1] = v15;
+        v69[1] = imageByClampingToExtent;
         v69[2] = v37;
         *&v75.origin.x = v63;
         v69[3] = [MEMORY[0x1E696AD98] numberWithFloat:v75.origin.x];

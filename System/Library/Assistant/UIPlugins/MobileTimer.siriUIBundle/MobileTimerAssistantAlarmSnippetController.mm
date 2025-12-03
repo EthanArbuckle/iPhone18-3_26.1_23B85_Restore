@@ -1,21 +1,21 @@
 @interface MobileTimerAssistantAlarmSnippetController
 - (BOOL)isAX;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (MobileTimerAssistantAlarmSnippetController)initWithAlarmSnippet:(id)a3;
-- (double)desiredHeightForWidth:(double)a3;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (MobileTimerAssistantAlarmSnippetController)initWithAlarmSnippet:(id)snippet;
+- (double)desiredHeightForWidth:(double)width;
 - (double)headerHeight;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (id)otherAlarmsHeaderString;
 - (id)sashItem;
 - (id)sleepHeaderString;
 - (id)sleepMetadata;
-- (id)snippetAlarmsFromSourceAlarms:(id)a3 assistantAlarms:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (void)alarmsChanged:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)loadAlarmPropertiesWithAssistantAlarms:(id)a3;
+- (id)snippetAlarmsFromSourceAlarms:(id)alarms assistantAlarms:(id)assistantAlarms;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (void)alarmsChanged:(id)changed;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)loadAlarmPropertiesWithAssistantAlarms:(id)alarms;
 - (void)loadView;
 - (void)setupSections;
 - (void)setupSleep;
@@ -24,9 +24,9 @@
 
 @implementation MobileTimerAssistantAlarmSnippetController
 
-- (MobileTimerAssistantAlarmSnippetController)initWithAlarmSnippet:(id)a3
+- (MobileTimerAssistantAlarmSnippetController)initWithAlarmSnippet:(id)snippet
 {
-  v4 = a3;
+  snippetCopy = snippet;
   v12.receiver = self;
   v12.super_class = MobileTimerAssistantAlarmSnippetController;
   v5 = [(MobileTimerAssistantAlarmSnippetController *)&v12 init];
@@ -35,11 +35,11 @@
     v6 = MTLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      sub_6D80(v5, v4, v6);
+      sub_6D80(v5, snippetCopy, v6);
     }
 
-    v7 = [v4 alarms];
-    v8 = [v7 na_map:&stru_10460];
+    alarms = [snippetCopy alarms];
+    v8 = [alarms na_map:&stru_10460];
 
     v9 = objc_opt_new();
     alarmManager = v5->_alarmManager;
@@ -62,16 +62,16 @@
   [(MobileTimerAssistantAlarmSnippetController *)self setHealthStore:v3];
 
   v4 = [HKSPSleepStore alloc];
-  v5 = [(MobileTimerAssistantAlarmSnippetController *)self healthStore];
-  v6 = [v4 initWithHealthStore:v5];
+  healthStore = [(MobileTimerAssistantAlarmSnippetController *)self healthStore];
+  v6 = [v4 initWithHealthStore:healthStore];
   [(MobileTimerAssistantAlarmSnippetController *)self setSleepStore:v6];
 
   v7 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
   [(MobileTimerAssistantAlarmSnippetController *)self setCalendar:v7];
 
-  v9 = [(MobileTimerAssistantAlarmSnippetController *)self calendar];
+  calendar = [(MobileTimerAssistantAlarmSnippetController *)self calendar];
   v8 = +[NSTimeZone systemTimeZone];
-  [v9 setTimeZone:v8];
+  [calendar setTimeZone:v8];
 }
 
 - (void)setupSections
@@ -79,21 +79,21 @@
   v3 = objc_opt_new();
   [(MobileTimerAssistantAlarmSnippetController *)self setSections:v3];
 
-  v4 = [(MobileTimerAssistantAlarmSnippetController *)self sleepAlarm];
+  sleepAlarm = [(MobileTimerAssistantAlarmSnippetController *)self sleepAlarm];
 
-  if (v4)
+  if (sleepAlarm)
   {
-    v5 = [(MobileTimerAssistantAlarmSnippetController *)self sections];
-    [v5 addObject:&off_10AB8];
+    sections = [(MobileTimerAssistantAlarmSnippetController *)self sections];
+    [sections addObject:&off_10AB8];
   }
 
-  v6 = [(MobileTimerAssistantAlarmSnippetController *)self alarms];
-  v7 = [v6 count];
+  alarms = [(MobileTimerAssistantAlarmSnippetController *)self alarms];
+  v7 = [alarms count];
 
   if (v7)
   {
-    v8 = [(MobileTimerAssistantAlarmSnippetController *)self sections];
-    [v8 addObject:&off_10AD0];
+    sections2 = [(MobileTimerAssistantAlarmSnippetController *)self sections];
+    [sections2 addObject:&off_10AD0];
   }
 }
 
@@ -102,25 +102,25 @@
   v14.receiver = self;
   v14.super_class = MobileTimerAssistantAlarmSnippetController;
   [(MobileTimerAssistantAlarmSnippetController *)&v14 loadView];
-  v3 = [(MobileTimerAssistantAlarmSnippetController *)self collectionView];
+  collectionView = [(MobileTimerAssistantAlarmSnippetController *)self collectionView];
   v4 = objc_opt_class();
   v5 = +[MobileTimerAssistantAlarmSnippetCell reuseIdentifier];
-  [v3 registerClass:v4 forCellWithReuseIdentifier:v5];
+  [collectionView registerClass:v4 forCellWithReuseIdentifier:v5];
 
-  v6 = [(MobileTimerAssistantAlarmSnippetController *)self collectionView];
-  [v6 registerClass:objc_opt_class() forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"MTSnippetHeaderIdentifier"];
+  collectionView2 = [(MobileTimerAssistantAlarmSnippetController *)self collectionView];
+  [collectionView2 registerClass:objc_opt_class() forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"MTSnippetHeaderIdentifier"];
 
-  v7 = [(MobileTimerAssistantAlarmSnippetController *)self sleepAlarm];
+  sleepAlarm = [(MobileTimerAssistantAlarmSnippetController *)self sleepAlarm];
 
-  if (v7)
+  if (sleepAlarm)
   {
-    v8 = [(MobileTimerAssistantAlarmSnippetController *)self collectionView];
-    v9 = [v8 collectionViewLayout];
-    v10 = [(MobileTimerAssistantAlarmSnippetController *)self collectionView];
-    [v10 frame];
+    collectionView3 = [(MobileTimerAssistantAlarmSnippetController *)self collectionView];
+    collectionViewLayout = [collectionView3 collectionViewLayout];
+    collectionView4 = [(MobileTimerAssistantAlarmSnippetController *)self collectionView];
+    [collectionView4 frame];
     v12 = v11;
     [(MobileTimerAssistantAlarmSnippetController *)self headerHeight];
-    [v9 setHeaderReferenceSize:{v12, v13}];
+    [collectionViewLayout setHeaderReferenceSize:{v12, v13}];
   }
 }
 
@@ -133,20 +133,20 @@
   [v3 addObserver:self selector:"alarmsChanged:" name:MTAlarmManagerAlarmsChanged object:self->_alarmManager];
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
-  v4 = [(MobileTimerAssistantAlarmSnippetController *)self alarms];
-  v5 = [v4 count];
+  alarms = [(MobileTimerAssistantAlarmSnippetController *)self alarms];
+  v5 = [alarms count];
 
-  v6 = [(MobileTimerAssistantAlarmSnippetController *)self sleepAlarm];
+  sleepAlarm = [(MobileTimerAssistantAlarmSnippetController *)self sleepAlarm];
 
-  if (v6)
+  if (sleepAlarm)
   {
     ++v5;
     [(MobileTimerAssistantAlarmSnippetController *)self headerHeight];
     v8 = v7 + 0.0;
-    v9 = [(MobileTimerAssistantAlarmSnippetController *)self alarms];
-    v10 = [v9 count];
+    alarms2 = [(MobileTimerAssistantAlarmSnippetController *)self alarms];
+    v10 = [alarms2 count];
 
     if (v10)
     {
@@ -172,9 +172,9 @@
   return v3;
 }
 
-- (void)loadAlarmPropertiesWithAssistantAlarms:(id)a3
+- (void)loadAlarmPropertiesWithAssistantAlarms:(id)alarms
 {
-  v4 = a3;
+  alarmsCopy = alarms;
   v5 = dispatch_group_create();
   v6 = dispatch_semaphore_create(0);
   v7 = MTLogForCategory();
@@ -188,8 +188,8 @@
   }
 
   v18 = objc_opt_new();
-  v8 = [(MobileTimerAssistantAlarmSnippetController *)self alarmManager];
-  v9 = [v8 alarms];
+  alarmManager = [(MobileTimerAssistantAlarmSnippetController *)self alarmManager];
+  alarms = [alarmManager alarms];
 
   *buf = 0;
   *&buf[8] = buf;
@@ -217,8 +217,8 @@
   v38 = 0;
   if (MTShouldHandleForEucalyptus())
   {
-    v10 = [(MobileTimerAssistantAlarmSnippetController *)self alarmManager];
-    v11 = [v10 nextSleepAlarm];
+    alarmManager2 = [(MobileTimerAssistantAlarmSnippetController *)self alarmManager];
+    nextSleepAlarm = [alarmManager2 nextSleepAlarm];
 
     objc_initWeak(&location, self);
     dispatch_group_enter(v5);
@@ -230,7 +230,7 @@
     v33 = v39;
     v34 = v37;
     v32 = v5;
-    v12 = [v11 addCompletionBlock:v31];
+    v12 = [nextSleepAlarm addCompletionBlock:v31];
 
     objc_destroyWeak(&v35);
     objc_destroyWeak(&location);
@@ -247,7 +247,7 @@
   v29 = v41;
   v13 = v5;
   v27 = v13;
-  v14 = [v9 addCompletionBlock:v26];
+  v14 = [alarms addCompletionBlock:v26];
   v15 = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -256,12 +256,12 @@
   v23 = v37;
   v24 = v39;
   block[4] = self;
-  v20 = v4;
+  v20 = alarmsCopy;
   v25 = buf;
   v21 = v6;
   v22 = v41;
   v16 = v6;
-  v17 = v4;
+  v17 = alarmsCopy;
   dispatch_group_notify(v13, v15, block);
 
   dispatch_semaphore_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
@@ -275,23 +275,23 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (id)snippetAlarmsFromSourceAlarms:(id)a3 assistantAlarms:(id)a4
+- (id)snippetAlarmsFromSourceAlarms:(id)alarms assistantAlarms:(id)assistantAlarms
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_214C;
   v8[3] = &unk_10550;
-  v9 = a3;
-  v5 = v9;
-  v6 = [a4 na_map:v8];
+  alarmsCopy = alarms;
+  v5 = alarmsCopy;
+  v6 = [assistantAlarms na_map:v8];
 
   return v6;
 }
 
-- (void)alarmsChanged:(id)a3
+- (void)alarmsChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:MTAlarmManagerAlarmsKey];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKeyedSubscript:MTAlarmManagerAlarmsKey];
 
   v28 = v5;
   if ([v5 count])
@@ -300,10 +300,10 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v6 = [(MobileTimerAssistantAlarmSnippetController *)self collectionView];
-    v7 = [v6 visibleCells];
+    collectionView = [(MobileTimerAssistantAlarmSnippetController *)self collectionView];
+    visibleCells = [collectionView visibleCells];
 
-    v8 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    v8 = [visibleCells countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v8)
     {
       v9 = v8;
@@ -314,30 +314,30 @@
         {
           if (*v32 != v27)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(visibleCells);
           }
 
           v11 = *(*(&v31 + 1) + 8 * i);
-          v12 = [v11 alarm];
+          alarm = [v11 alarm];
           v29[0] = _NSConcreteStackBlock;
           v29[1] = 3221225472;
           v29[2] = sub_25AC;
           v29[3] = &unk_10528;
-          v13 = v12;
+          v13 = alarm;
           v30 = v13;
           v14 = [v28 na_firstObjectPassingTest:v29];
           if (v14)
           {
-            v15 = [(MobileTimerAssistantAlarmSnippetController *)self collectionView];
-            v16 = [v15 indexPathForCell:v11];
+            collectionView2 = [(MobileTimerAssistantAlarmSnippetController *)self collectionView];
+            v16 = [collectionView2 indexPathForCell:v11];
 
-            v17 = [(MobileTimerAssistantAlarmSnippetController *)self sections];
-            v18 = [v17 objectAtIndexedSubscript:{objc_msgSend(v16, "section")}];
-            v19 = [v18 integerValue];
+            sections = [(MobileTimerAssistantAlarmSnippetController *)self sections];
+            v18 = [sections objectAtIndexedSubscript:{objc_msgSend(v16, "section")}];
+            integerValue = [v18 integerValue];
 
-            if (v19)
+            if (integerValue)
             {
-              if (v19 == &dword_0 + 1)
+              if (integerValue == &dword_0 + 1)
               {
                 [(MobileTimerAssistantAlarmSnippetController *)self setSleepAlarm:v14];
               }
@@ -345,8 +345,8 @@
 
             else
             {
-              v20 = [(MobileTimerAssistantAlarmSnippetController *)self alarms];
-              v21 = [v20 mutableCopy];
+              alarms = [(MobileTimerAssistantAlarmSnippetController *)self alarms];
+              v21 = [alarms mutableCopy];
 
               v22 = [v21 indexOfObject:v13];
               [v21 removeObject:v13];
@@ -356,14 +356,14 @@
               [(MobileTimerAssistantAlarmSnippetController *)self setAlarms:v24];
             }
 
-            v25 = [(MobileTimerAssistantAlarmSnippetController *)self collectionView];
+            collectionView3 = [(MobileTimerAssistantAlarmSnippetController *)self collectionView];
             v35 = v16;
             v26 = [NSArray arrayWithObjects:&v35 count:1];
-            [v25 reloadItemsAtIndexPaths:v26];
+            [collectionView3 reloadItemsAtIndexPaths:v26];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
+        v9 = [visibleCells countByEnumeratingWithState:&v31 objects:v36 count:16];
       }
 
       while (v9);
@@ -371,106 +371,106 @@
   }
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v3 = [(MobileTimerAssistantAlarmSnippetController *)self sections];
-  v4 = [v3 count];
+  sections = [(MobileTimerAssistantAlarmSnippetController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = [(MobileTimerAssistantAlarmSnippetController *)self sections];
-  v7 = [v6 objectAtIndexedSubscript:a4];
-  v8 = [v7 integerValue];
+  sections = [(MobileTimerAssistantAlarmSnippetController *)self sections];
+  v7 = [sections objectAtIndexedSubscript:section];
+  integerValue = [v7 integerValue];
 
-  if (v8)
+  if (integerValue)
   {
     return 1;
   }
 
-  v10 = [(MobileTimerAssistantAlarmSnippetController *)self alarms];
-  v11 = [v10 count];
+  alarms = [(MobileTimerAssistantAlarmSnippetController *)self alarms];
+  v11 = [alarms count];
 
   return v11;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[MobileTimerAssistantAlarmSnippetCell reuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = [(MobileTimerAssistantAlarmSnippetController *)self sections];
-  v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
-  v12 = [v11 integerValue];
+  sections = [(MobileTimerAssistantAlarmSnippetController *)self sections];
+  v11 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+  integerValue = [v11 integerValue];
 
-  if (v12)
+  if (integerValue)
   {
-    if (v12 != &dword_0 + 1 || !MTShouldHandleForEucalyptus())
+    if (integerValue != &dword_0 + 1 || !MTShouldHandleForEucalyptus())
     {
-      v13 = 0;
+      sleepAlarm = 0;
       goto LABEL_8;
     }
 
     [v9 setKeylineType:0];
-    v13 = [(MobileTimerAssistantAlarmSnippetController *)self sleepAlarm];
-    v14 = [(MobileTimerAssistantAlarmSnippetController *)self sleepMetadata];
-    [v9 setSleepMetaData:v14];
+    sleepAlarm = [(MobileTimerAssistantAlarmSnippetController *)self sleepAlarm];
+    sleepMetadata = [(MobileTimerAssistantAlarmSnippetController *)self sleepMetadata];
+    [v9 setSleepMetaData:sleepMetadata];
   }
 
   else
   {
-    v15 = [v6 row];
-    v16 = [(MobileTimerAssistantAlarmSnippetController *)self alarms];
-    v17 = v15 != [v16 count] - 1;
+    v15 = [pathCopy row];
+    alarms = [(MobileTimerAssistantAlarmSnippetController *)self alarms];
+    v17 = v15 != [alarms count] - 1;
 
     [v9 setKeylineType:v17];
-    v14 = [(MobileTimerAssistantAlarmSnippetController *)self alarms];
-    v13 = [v14 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+    sleepMetadata = [(MobileTimerAssistantAlarmSnippetController *)self alarms];
+    sleepAlarm = [sleepMetadata objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   }
 
 LABEL_8:
-  [v9 setAlarm:v13];
+  [v9 setAlarm:sleepAlarm];
   [v9 setDelegate:self];
 
   return v9;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(MobileTimerAssistantAlarmSnippetController *)self collectionView];
-  v8 = [v7 dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"MTSnippetHeaderIdentifier" forIndexPath:v6];
+  pathCopy = path;
+  collectionView = [(MobileTimerAssistantAlarmSnippetController *)self collectionView];
+  v8 = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"MTSnippetHeaderIdentifier" forIndexPath:pathCopy];
 
-  v9 = [(MobileTimerAssistantAlarmSnippetController *)self sections];
-  v10 = [v6 section];
+  sections = [(MobileTimerAssistantAlarmSnippetController *)self sections];
+  section = [pathCopy section];
 
-  v11 = [v9 objectAtIndexedSubscript:v10];
-  v12 = [v11 integerValue];
+  v11 = [sections objectAtIndexedSubscript:section];
+  integerValue = [v11 integerValue];
 
-  if (!v12)
+  if (!integerValue)
   {
-    v14 = [(MobileTimerAssistantAlarmSnippetController *)self sleepAlarm];
+    sleepAlarm = [(MobileTimerAssistantAlarmSnippetController *)self sleepAlarm];
 
-    if (!v14)
+    if (!sleepAlarm)
     {
       goto LABEL_8;
     }
 
-    v13 = [(MobileTimerAssistantAlarmSnippetController *)self otherAlarmsHeaderString];
+    otherAlarmsHeaderString = [(MobileTimerAssistantAlarmSnippetController *)self otherAlarmsHeaderString];
     goto LABEL_7;
   }
 
-  if (v12 == &dword_0 + 1 && MTShouldHandleForEucalyptus())
+  if (integerValue == &dword_0 + 1 && MTShouldHandleForEucalyptus())
   {
-    v13 = [(MobileTimerAssistantAlarmSnippetController *)self sleepHeaderString];
+    otherAlarmsHeaderString = [(MobileTimerAssistantAlarmSnippetController *)self sleepHeaderString];
 LABEL_7:
-    v15 = v13;
-    v16 = [v8 titleLabel];
-    [v16 setAttributedText:v15];
+    v15 = otherAlarmsHeaderString;
+    titleLabel = [v8 titleLabel];
+    [titleLabel setAttributedText:v15];
   }
 
 LABEL_8:
@@ -478,11 +478,11 @@ LABEL_8:
   return v8;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = [NSURL mtURLForClockAppSection:1, a4];
+  path = [NSURL mtURLForClockAppSection:1, path];
   v6 = +[NAScheduler mtMainThreadScheduler];
-  v7 = [v5 reschedule:v6];
+  v7 = [path reschedule:v6];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_2BE0;
@@ -491,9 +491,9 @@ LABEL_8:
   v8 = [v7 addSuccessBlock:v9];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = [(MobileTimerAssistantAlarmSnippetController *)self delegate:a3];
+  v6 = [(MobileTimerAssistantAlarmSnippetController *)self delegate:view];
   [v6 siriViewControllerExpectedWidth:self];
   v8 = v7;
   [(MobileTimerAssistantAlarmSnippetController *)self _cellHeight];
@@ -508,9 +508,9 @@ LABEL_8:
 
 - (id)sleepMetadata
 {
-  v3 = [(MobileTimerAssistantAlarmSnippetController *)self sleepStore];
-  v4 = [(MobileTimerAssistantAlarmSnippetController *)self calendar];
-  v5 = [v3 mt_sleepMetaDataForUpcomingAlarmInCalendar:v4 error:0];
+  sleepStore = [(MobileTimerAssistantAlarmSnippetController *)self sleepStore];
+  calendar = [(MobileTimerAssistantAlarmSnippetController *)self calendar];
+  v5 = [sleepStore mt_sleepMetaDataForUpcomingAlarmInCalendar:calendar error:0];
 
   return v5;
 }
@@ -531,8 +531,8 @@ LABEL_8:
 
   v11 = [NSMutableAttributedString alloc];
   v27[0] = NSFontAttributeName;
-  v12 = [(MobileTimerAssistantAlarmSnippetController *)self headerFont];
-  v28[0] = v12;
+  headerFont = [(MobileTimerAssistantAlarmSnippetController *)self headerFont];
+  v28[0] = headerFont;
   v27[1] = NSForegroundColorAttributeName;
   v13 = +[UIColor labelColor];
   v28[1] = v13;
@@ -566,8 +566,8 @@ LABEL_8:
   v4 = [NSBundle bundleWithIdentifier:@"com.apple.MobileTimerUI"];
   v5 = [v4 localizedStringForKey:@"REGULAR_ALARMS_SECTION_HEADER_TITLE" value:&stru_10788 table:@"MobileTimerUI_Burrito"];
   v11[0] = NSFontAttributeName;
-  v6 = [(MobileTimerAssistantAlarmSnippetController *)self headerFont];
-  v12[0] = v6;
+  headerFont = [(MobileTimerAssistantAlarmSnippetController *)self headerFont];
+  v12[0] = headerFont;
   v11[1] = NSForegroundColorAttributeName;
   v7 = +[UIColor labelColor];
   v12[1] = v7;
@@ -579,9 +579,9 @@ LABEL_8:
 
 - (double)headerHeight
 {
-  v2 = [(MobileTimerAssistantAlarmSnippetController *)self isAX];
+  isAX = [(MobileTimerAssistantAlarmSnippetController *)self isAX];
   result = 44.0;
-  if (v2)
+  if (isAX)
   {
     return 64.0;
   }
@@ -592,9 +592,9 @@ LABEL_8:
 - (BOOL)isAX
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v2 preferredContentSizeCategory];
 
-  LOBYTE(v2) = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  LOBYTE(v2) = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
   return v2;
 }
 

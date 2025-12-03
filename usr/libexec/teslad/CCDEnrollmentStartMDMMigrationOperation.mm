@@ -1,15 +1,15 @@
 @interface CCDEnrollmentStartMDMMigrationOperation
-- (id)errorForStatusCode:(int64_t)a3 responseData:(id)a4;
-- (id)responseWithResponseData:(id)a3 contentType:(id)a4 outError:(id *)a5;
+- (id)errorForStatusCode:(int64_t)code responseData:(id)data;
+- (id)responseWithResponseData:(id)data contentType:(id)type outError:(id *)error;
 @end
 
 @implementation CCDEnrollmentStartMDMMigrationOperation
 
-- (id)errorForStatusCode:(int64_t)a3 responseData:(id)a4
+- (id)errorForStatusCode:(int64_t)code responseData:(id)data
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 0x190)
+  if ((code & 0xFFFFFFFFFFFFFFFELL) == 0x190)
   {
-    v4 = [CCDError cloudConfigErrorInResponse:a4];
+    v4 = [CCDError cloudConfigErrorInResponse:data];
     v5 = v4;
     if (v4)
     {
@@ -32,10 +32,10 @@
   return v7;
 }
 
-- (id)responseWithResponseData:(id)a3 contentType:(id)a4 outError:(id *)a5
+- (id)responseWithResponseData:(id)data contentType:(id)type outError:(id *)error
 {
-  v5 = [NSDictionary dmc_jsonDictionaryFromData:a3, a4, a5];
-  v6 = [v5 mutableCopy];
+  error = [NSDictionary dmc_jsonDictionaryFromData:data, type, error];
+  v6 = [error mutableCopy];
 
   v7 = *(DEPLogObjects() + 8);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))

@@ -1,22 +1,22 @@
 @interface SUUIMediaSocialAuthor
-- (BOOL)isEqual:(id)a3;
-- (SUUIMediaSocialAuthor)initWithAuthorDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SUUIMediaSocialAuthor)initWithAuthorDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation SUUIMediaSocialAuthor
 
-- (SUUIMediaSocialAuthor)initWithAuthorDictionary:(id)a3
+- (SUUIMediaSocialAuthor)initWithAuthorDictionary:(id)dictionary
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v31.receiver = self;
   v31.super_class = SUUIMediaSocialAuthor;
   v5 = [(SUUIMediaSocialAuthor *)&v31 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"dsId"];
+    v6 = [dictionaryCopy objectForKey:@"dsId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -25,7 +25,7 @@
       v5->_dsid = v7;
     }
 
-    v9 = [v4 objectForKey:@"entityId"];
+    v9 = [dictionaryCopy objectForKey:@"entityId"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -35,7 +35,7 @@
       v5->_identifier = v10;
     }
 
-    v12 = [v4 objectForKey:@"entityType"];
+    v12 = [dictionaryCopy objectForKey:@"entityType"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -45,7 +45,7 @@
       v5->_authorType = v13;
     }
 
-    v15 = [v4 objectForKey:@"permissions"];
+    v15 = [dictionaryCopy objectForKey:@"permissions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -102,9 +102,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setAuthorType:self->_authorType];
   [v4 setDsid:self->_dsid];
   [v4 setIdentifier:self->_identifier];
@@ -144,19 +144,19 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = [(SUUIMediaSocialAuthor *)self identifier];
-    v8 = [v4 identifier];
-    if ([v7 isEqualToString:v8])
+    identifier = [(SUUIMediaSocialAuthor *)self identifier];
+    identifier2 = [equalCopy identifier];
+    if ([identifier isEqualToString:identifier2])
     {
-      v9 = [(SUUIMediaSocialAuthor *)self authorType];
-      v10 = [v4 authorType];
-      v6 = [v9 isEqualToString:v10];
+      authorType = [(SUUIMediaSocialAuthor *)self authorType];
+      authorType2 = [equalCopy authorType];
+      v6 = [authorType isEqualToString:authorType2];
     }
 
     else

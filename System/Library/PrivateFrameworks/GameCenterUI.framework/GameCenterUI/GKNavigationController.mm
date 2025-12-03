@@ -1,26 +1,26 @@
 @interface GKNavigationController
-+ (id)viewControllerWithRestorationIdentifierPath:(id)a3 coder:(id)a4;
++ (id)viewControllerWithRestorationIdentifierPath:(id)path coder:(id)coder;
 - (BOOL)hasEmbeddedPopoverNavigationStack;
 - (BOOL)shouldAutorotate;
 - (GKNavigationController)init;
-- (GKNavigationController)initWithCoder:(id)a3;
-- (GKNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (GKNavigationController)initWithRootViewController:(id)a3;
+- (GKNavigationController)initWithCoder:(id)coder;
+- (GKNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (GKNavigationController)initWithRootViewController:(id)controller;
 - (id)_gkViewControllersForRestoringPopover;
 - (id)popEmbeddedPopoverViewControllers;
-- (id)popToRootViewControllerAnimated:(BOOL)a3;
-- (id)popToViewController:(id)a3 animated:(BOOL)a4;
-- (id)popViewControllerAnimated:(BOOL)a3;
-- (id)targetViewControllerForAction:(SEL)a3;
+- (id)popToRootViewControllerAnimated:(BOOL)animated;
+- (id)popToViewController:(id)controller animated:(BOOL)animated;
+- (id)popViewControllerAnimated:(BOOL)animated;
+- (id)targetViewControllerForAction:(SEL)action;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_deferTransitionOfType:(int)a3 withViewController:(id)a4 animated:(BOOL)a5;
-- (void)_gkPushPresentedViewControllerForCompactSizeClass:(id)a3;
-- (void)_gkRestorePopoverWithViewControllers:(id)a3 completion:(id)a4;
+- (void)_deferTransitionOfType:(int)type withViewController:(id)controller animated:(BOOL)animated;
+- (void)_gkPushPresentedViewControllerForCompactSizeClass:(id)class;
+- (void)_gkRestorePopoverWithViewControllers:(id)controllers completion:(id)completion;
 - (void)_performDeferredTransition;
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
+- (void)didShowViewController:(id)controller animated:(BOOL)animated;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
 - (void)setupGKNavigationController;
-- (void)willShowViewController:(id)a3 animated:(BOOL)a4;
+- (void)willShowViewController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation GKNavigationController
@@ -39,11 +39,11 @@
   return v3;
 }
 
-- (GKNavigationController)initWithCoder:(id)a3
+- (GKNavigationController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = GKNavigationController;
-  v3 = [(GKNavigationController *)&v6 initWithCoder:a3];
+  v3 = [(GKNavigationController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -53,11 +53,11 @@
   return v4;
 }
 
-- (GKNavigationController)initWithRootViewController:(id)a3
+- (GKNavigationController)initWithRootViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = GKNavigationController;
-  v3 = [(GKNavigationController *)&v6 initWithRootViewController:a3];
+  v3 = [(GKNavigationController *)&v6 initWithRootViewController:controller];
   v4 = v3;
   if (v3)
   {
@@ -67,11 +67,11 @@
   return v4;
 }
 
-- (GKNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (GKNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = GKNavigationController;
-  v4 = [(GKNavigationController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(GKNavigationController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -81,26 +81,26 @@
   return v5;
 }
 
-+ (id)viewControllerWithRestorationIdentifierPath:(id)a3 coder:(id)a4
++ (id)viewControllerWithRestorationIdentifierPath:(id)path coder:(id)coder
 {
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
 
   return v4;
 }
 
 - (void)setupGKNavigationController
 {
-  v3 = [(GKNavigationController *)self navigationBar];
-  v4 = [v3 delegate];
+  navigationBar = [(GKNavigationController *)self navigationBar];
+  delegate = [navigationBar delegate];
 
-  if (v4 != self)
+  if (delegate != self)
   {
-    v5 = [(GKNavigationController *)self navigationBar];
-    [v5 setDelegate:self];
+    navigationBar2 = [(GKNavigationController *)self navigationBar];
+    [navigationBar2 setDelegate:self];
   }
 
-  v6 = [MEMORY[0x277CBEB18] array];
-  [(GKNavigationController *)self setDeferredTransitions:v6];
+  array = [MEMORY[0x277CBEB18] array];
+  [(GKNavigationController *)self setDeferredTransitions:array];
 
   [(GKNavigationController *)self setRestorationClass:objc_opt_class()];
 
@@ -109,23 +109,23 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [(GKNavigationController *)self traitCollection];
-  if ([v3 userInterfaceIdiom] || (*MEMORY[0x277D0C258] & 1) != 0)
+  traitCollection = [(GKNavigationController *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] || (*MEMORY[0x277D0C258] & 1) != 0)
   {
     goto LABEL_3;
   }
 
-  v9 = [MEMORY[0x277D75418] currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v10)
+  if (userInterfaceIdiom)
   {
 
     return 2;
   }
 
-  v11 = [MEMORY[0x277D759A0] mainScreen];
-  [v11 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v13 = v12;
   v15 = v14;
 
@@ -144,44 +144,44 @@ LABEL_3:
     }
   }
 
-  v4 = [(GKNavigationController *)self topViewController];
-  v5 = v4;
-  if (v4)
+  topViewController = [(GKNavigationController *)self topViewController];
+  v5 = topViewController;
+  if (topViewController)
   {
-    v6 = [v4 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [topViewController supportedInterfaceOrientations];
   }
 
   else
   {
     v17.receiver = self;
     v17.super_class = GKNavigationController;
-    v6 = [(GKNavigationController *)&v17 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [(GKNavigationController *)&v17 supportedInterfaceOrientations];
   }
 
-  v7 = v6;
+  v7 = supportedInterfaceOrientations;
 
   return v7;
 }
 
 - (BOOL)shouldAutorotate
 {
-  v3 = [(GKNavigationController *)self traitCollection];
-  if ([v3 userInterfaceIdiom] || (*MEMORY[0x277D0C258] & 1) != 0)
+  traitCollection = [(GKNavigationController *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] || (*MEMORY[0x277D0C258] & 1) != 0)
   {
     goto LABEL_3;
   }
 
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v6)
+  if (userInterfaceIdiom)
   {
 
     return 0;
   }
 
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v9 = v8;
   v11 = v10;
 
@@ -211,8 +211,8 @@ LABEL_4:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(GKNavigationController *)self viewControllers];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  viewControllers = [(GKNavigationController *)self viewControllers];
+  v3 = [viewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -222,7 +222,7 @@ LABEL_4:
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(viewControllers);
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
@@ -237,9 +237,9 @@ LABEL_4:
 
         else
         {
-          v7 = [v6 _gkSourcePresentingViewController];
+          _gkSourcePresentingViewController = [v6 _gkSourcePresentingViewController];
 
-          if (v7)
+          if (_gkSourcePresentingViewController)
           {
 LABEL_13:
             LOBYTE(v3) = 1;
@@ -248,7 +248,7 @@ LABEL_13:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [viewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -270,8 +270,8 @@ LABEL_14:
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v3 = [(GKNavigationController *)self viewControllers];
-  v4 = [v3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  viewControllers = [(GKNavigationController *)self viewControllers];
+  v4 = [viewControllers countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v4)
   {
 LABEL_16:
@@ -290,26 +290,26 @@ LABEL_3:
   {
     if (*v25 != v7)
     {
-      objc_enumerationMutation(v3);
+      objc_enumerationMutation(viewControllers);
     }
 
     v10 = *(*(&v24 + 1) + 8 * v8);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v10 popEmbeddedPopoverViewControllers];
-      if (v11)
+      popEmbeddedPopoverViewControllers = [v10 popEmbeddedPopoverViewControllers];
+      if (popEmbeddedPopoverViewControllers)
       {
-        v22 = v11;
+        v22 = popEmbeddedPopoverViewControllers;
         goto LABEL_17;
       }
 
       goto LABEL_10;
     }
 
-    v12 = [v10 _gkSourcePresentingViewController];
+    _gkSourcePresentingViewController = [v10 _gkSourcePresentingViewController];
 
-    if (v12)
+    if (_gkSourcePresentingViewController)
     {
       break;
     }
@@ -318,7 +318,7 @@ LABEL_10:
     ++v9;
     if (v5 == ++v8)
     {
-      v5 = [v3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v5 = [viewControllers countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v5)
       {
         goto LABEL_3;
@@ -328,26 +328,26 @@ LABEL_10:
     }
   }
 
-  v13 = [(GKNavigationController *)self viewControllers];
-  v14 = [v13 lastObject];
+  viewControllers2 = [(GKNavigationController *)self viewControllers];
+  lastObject = [viewControllers2 lastObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v16 = [(GKNavigationController *)self viewControllers];
-  v17 = [v16 count] - (isKindOfClass & 1) - v9;
+  viewControllers3 = [(GKNavigationController *)self viewControllers];
+  v17 = [viewControllers3 count] - (isKindOfClass & 1) - v9;
 
   if (v17 < 1)
   {
     goto LABEL_16;
   }
 
-  v18 = [(GKNavigationController *)self viewControllers];
-  v22 = [v18 subarrayWithRange:{v9, v17}];
+  viewControllers4 = [(GKNavigationController *)self viewControllers];
+  v22 = [viewControllers4 subarrayWithRange:{v9, v17}];
 
   if (v9)
   {
-    v19 = [(GKNavigationController *)self viewControllers];
-    v20 = [v19 objectAtIndexedSubscript:v9 - 1];
+    viewControllers5 = [(GKNavigationController *)self viewControllers];
+    v20 = [viewControllers5 objectAtIndexedSubscript:v9 - 1];
     v21 = [(GKNavigationController *)self popToViewController:v20 animated:0];
   }
 
@@ -356,10 +356,10 @@ LABEL_17:
   return v22;
 }
 
-- (void)_gkPushPresentedViewControllerForCompactSizeClass:(id)a3
+- (void)_gkPushPresentedViewControllerForCompactSizeClass:(id)class
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  classCopy = class;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -367,8 +367,8 @@ LABEL_17:
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [v4 viewControllers];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    viewControllers = [classCopy viewControllers];
+    v6 = [viewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -380,14 +380,14 @@ LABEL_17:
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(viewControllers);
           }
 
           [(GKNavigationController *)self pushViewController:*(*(&v10 + 1) + 8 * v9++) animated:0];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [viewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -399,42 +399,42 @@ LABEL_17:
 {
   if ([(GKNavigationController *)self hasEmbeddedPopoverNavigationStack])
   {
-    v3 = [(GKNavigationController *)self popEmbeddedPopoverViewControllers];
+    popEmbeddedPopoverViewControllers = [(GKNavigationController *)self popEmbeddedPopoverViewControllers];
   }
 
   else
   {
-    v3 = 0;
+    popEmbeddedPopoverViewControllers = 0;
   }
 
-  return v3;
+  return popEmbeddedPopoverViewControllers;
 }
 
-- (void)_gkRestorePopoverWithViewControllers:(id)a3 completion:(id)a4
+- (void)_gkRestorePopoverWithViewControllers:(id)controllers completion:(id)completion
 {
-  v8 = a3;
-  v5 = a4;
-  if (v8)
+  controllersCopy = controllers;
+  completionCopy = completion;
+  if (controllersCopy)
   {
-    v6 = [v8 firstObject];
-    v7 = [v6 _gkSourcePresentingViewController];
+    firstObject = [controllersCopy firstObject];
+    _gkSourcePresentingViewController = [firstObject _gkSourcePresentingViewController];
 
-    if (v7)
+    if (_gkSourcePresentingViewController)
     {
-      [v7 _gkRestorePopoverWithViewControllers:v8 completion:v5];
+      [_gkSourcePresentingViewController _gkRestorePopoverWithViewControllers:controllersCopy completion:completionCopy];
     }
   }
 }
 
-- (id)targetViewControllerForAction:(SEL)a3
+- (id)targetViewControllerForAction:(SEL)action
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(GKNavigationController *)self viewControllers];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  viewControllers = [(GKNavigationController *)self viewControllers];
+  v5 = [viewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (!v5)
   {
     goto LABEL_13;
@@ -448,14 +448,14 @@ LABEL_17:
     {
       if (*v14 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(viewControllers);
       }
 
       v9 = *(*(&v13 + 1) + 8 * i);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [v9 targetViewControllerForAction:a3];
+        v10 = [v9 targetViewControllerForAction:action];
       }
 
       else
@@ -475,7 +475,7 @@ LABEL_17:
       }
     }
 
-    v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v6 = [viewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
   }
 
   while (v6);
@@ -486,50 +486,50 @@ LABEL_14:
   return v11;
 }
 
-- (void)willShowViewController:(id)a3 animated:(BOOL)a4
+- (void)willShowViewController:(id)controller animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = GKNavigationController;
-  [(GKNavigationController *)&v4 willShowViewController:a3 animated:a4];
+  [(GKNavigationController *)&v4 willShowViewController:controller animated:animated];
 }
 
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4
+- (void)didShowViewController:(id)controller animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = GKNavigationController;
-  [(GKNavigationController *)&v5 didShowViewController:a3 animated:a4];
+  [(GKNavigationController *)&v5 didShowViewController:controller animated:animated];
   [(GKNavigationController *)self _performDeferredTransition];
 }
 
 - (void)_performDeferredTransition
 {
-  v12 = [(GKNavigationController *)self deferredTransitions];
-  if ([v12 count])
+  deferredTransitions = [(GKNavigationController *)self deferredTransitions];
+  if ([deferredTransitions count])
   {
-    v3 = [(GKNavigationController *)self _isTransitioning];
+    _isTransitioning = [(GKNavigationController *)self _isTransitioning];
 
-    if (v3)
+    if (_isTransitioning)
     {
       return;
     }
 
-    v4 = [(GKNavigationController *)self deferredTransitions];
-    v5 = [v4 lastObject];
+    deferredTransitions2 = [(GKNavigationController *)self deferredTransitions];
+    lastObject = [deferredTransitions2 lastObject];
 
-    v6 = [(GKNavigationController *)self deferredTransitions];
-    [v6 removeObject:v5];
+    deferredTransitions3 = [(GKNavigationController *)self deferredTransitions];
+    [deferredTransitions3 removeObject:lastObject];
 
-    v7 = [v5 type];
-    if (v7 > 1)
+    type = [lastObject type];
+    if (type > 1)
     {
-      if (v7 != 2)
+      if (type != 2)
       {
-        if (v7 == 3)
+        if (type == 3)
         {
-          v8 = [v5 viewController];
+          viewController = [lastObject viewController];
           v13.receiver = self;
           v13.super_class = GKNavigationController;
-          -[GKNavigationController pushViewController:animated:](&v13, sel_pushViewController_animated_, v8, [v5 animated]);
+          -[GKNavigationController pushViewController:animated:](&v13, sel_pushViewController_animated_, viewController, [lastObject animated]);
           goto LABEL_13;
         }
 
@@ -540,19 +540,19 @@ LABEL_17:
 
       v14.receiver = self;
       v14.super_class = GKNavigationController;
-      v10 = -[GKNavigationController popToRootViewControllerAnimated:](&v14, sel_popToRootViewControllerAnimated_, [v5 animated]);
+      v10 = -[GKNavigationController popToRootViewControllerAnimated:](&v14, sel_popToRootViewControllerAnimated_, [lastObject animated]);
     }
 
     else
     {
-      if (v7)
+      if (type)
       {
-        if (v7 == 1)
+        if (type == 1)
         {
-          v8 = [v5 viewController];
+          viewController = [lastObject viewController];
           v15.receiver = self;
           v15.super_class = GKNavigationController;
-          v9 = -[GKNavigationController popToViewController:animated:](&v15, sel_popToViewController_animated_, v8, [v5 animated]);
+          v9 = -[GKNavigationController popToViewController:animated:](&v15, sel_popToViewController_animated_, viewController, [lastObject animated]);
 LABEL_13:
 
           goto LABEL_17;
@@ -563,7 +563,7 @@ LABEL_13:
 
       v16.receiver = self;
       v16.super_class = GKNavigationController;
-      v10 = -[GKNavigationController popViewControllerAnimated:](&v16, sel_popViewControllerAnimated_, [v5 animated]);
+      v10 = -[GKNavigationController popViewControllerAnimated:](&v16, sel_popViewControllerAnimated_, [lastObject animated]);
     }
 
     v11 = v10;
@@ -571,26 +571,26 @@ LABEL_13:
   }
 }
 
-- (void)_deferTransitionOfType:(int)a3 withViewController:(id)a4 animated:(BOOL)a5
+- (void)_deferTransitionOfType:(int)type withViewController:(id)controller animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = *&a3;
-  v8 = a4;
+  animatedCopy = animated;
+  v6 = *&type;
+  controllerCopy = controller;
   v10 = objc_opt_new();
-  [v10 setViewController:v8];
+  [v10 setViewController:controllerCopy];
 
   [v10 setType:v6];
-  [v10 setAnimated:v5];
-  v9 = [(GKNavigationController *)self deferredTransitions];
-  [v9 addObject:v10];
+  [v10 setAnimated:animatedCopy];
+  deferredTransitions = [(GKNavigationController *)self deferredTransitions];
+  [deferredTransitions addObject:v10];
 }
 
-- (id)popViewControllerAnimated:(BOOL)a3
+- (id)popViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(GKNavigationController *)self _isTransitioning])
   {
-    [(GKNavigationController *)self _deferTransitionOfType:0 withViewController:0 animated:v3];
+    [(GKNavigationController *)self _deferTransitionOfType:0 withViewController:0 animated:animatedCopy];
     v5 = MEMORY[0x277D0C2A0];
     v6 = *MEMORY[0x277D0C2A0];
     if (!*MEMORY[0x277D0C2A0])
@@ -611,19 +611,19 @@ LABEL_13:
   {
     v10.receiver = self;
     v10.super_class = GKNavigationController;
-    v8 = [(GKNavigationController *)&v10 popViewControllerAnimated:v3];
+    v8 = [(GKNavigationController *)&v10 popViewControllerAnimated:animatedCopy];
   }
 
   return v8;
 }
 
-- (id)popToViewController:(id)a3 animated:(BOOL)a4
+- (id)popToViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   if ([(GKNavigationController *)self _isTransitioning])
   {
-    [(GKNavigationController *)self _deferTransitionOfType:1 withViewController:v6 animated:v4];
+    [(GKNavigationController *)self _deferTransitionOfType:1 withViewController:controllerCopy animated:animatedCopy];
 
     v7 = MEMORY[0x277D0C2A0];
     v8 = *MEMORY[0x277D0C2A0];
@@ -645,18 +645,18 @@ LABEL_13:
   {
     v12.receiver = self;
     v12.super_class = GKNavigationController;
-    v10 = [(GKNavigationController *)&v12 popToViewController:v6 animated:v4];
+    v10 = [(GKNavigationController *)&v12 popToViewController:controllerCopy animated:animatedCopy];
   }
 
   return v10;
 }
 
-- (id)popToRootViewControllerAnimated:(BOOL)a3
+- (id)popToRootViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(GKNavigationController *)self _isTransitioning])
   {
-    [(GKNavigationController *)self _deferTransitionOfType:2 withViewController:0 animated:v3];
+    [(GKNavigationController *)self _deferTransitionOfType:2 withViewController:0 animated:animatedCopy];
     v5 = MEMORY[0x277D0C2A0];
     v6 = *MEMORY[0x277D0C2A0];
     if (!*MEMORY[0x277D0C2A0])
@@ -677,19 +677,19 @@ LABEL_13:
   {
     v10.receiver = self;
     v10.super_class = GKNavigationController;
-    v8 = [(GKNavigationController *)&v10 popToRootViewControllerAnimated:v3];
+    v8 = [(GKNavigationController *)&v10 popToRootViewControllerAnimated:animatedCopy];
   }
 
   return v8;
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   if ([(GKNavigationController *)self _isTransitioning])
   {
-    [(GKNavigationController *)self _deferTransitionOfType:3 withViewController:v6 animated:v4];
+    [(GKNavigationController *)self _deferTransitionOfType:3 withViewController:controllerCopy animated:animatedCopy];
 
     v7 = MEMORY[0x277D0C2A0];
     v8 = *MEMORY[0x277D0C2A0];
@@ -709,7 +709,7 @@ LABEL_13:
   {
     v10.receiver = self;
     v10.super_class = GKNavigationController;
-    [(GKNavigationController *)&v10 pushViewController:v6 animated:v4];
+    [(GKNavigationController *)&v10 pushViewController:controllerCopy animated:animatedCopy];
   }
 }
 

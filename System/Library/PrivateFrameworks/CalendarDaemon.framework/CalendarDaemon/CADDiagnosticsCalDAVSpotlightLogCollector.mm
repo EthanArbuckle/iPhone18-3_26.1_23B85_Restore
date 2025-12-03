@@ -1,21 +1,21 @@
 @interface CADDiagnosticsCalDAVSpotlightLogCollector
-- (id)findAllLogFiles:(id)a3;
-- (id)parseFilenameDates:(id)a3 context:(id)a4;
-- (id)sortAndTrimLogFiles:(id)a3 context:(id)a4;
-- (void)collect:(id)a3;
-- (void)determineExpectedOutputFiles:(id)a3;
+- (id)findAllLogFiles:(id)files;
+- (id)parseFilenameDates:(id)dates context:(id)context;
+- (id)sortAndTrimLogFiles:(id)files context:(id)context;
+- (void)collect:(id)collect;
+- (void)determineExpectedOutputFiles:(id)files;
 @end
 
 @implementation CADDiagnosticsCalDAVSpotlightLogCollector
 
-- (void)determineExpectedOutputFiles:(id)a3
+- (void)determineExpectedOutputFiles:(id)files
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CADDiagnosticsCalDAVSpotlightLogCollector *)self findAllLogFiles:v4];
-  [v4 log:{@"Found %lu spotlight logs", objc_msgSend(v5, "count")}];
-  v6 = [(CADDiagnosticsCalDAVSpotlightLogCollector *)self sortAndTrimLogFiles:v5 context:v4];
-  [v4 log:{@"Including %lu spotlight logs", objc_msgSend(v6, "count")}];
+  filesCopy = files;
+  v5 = [(CADDiagnosticsCalDAVSpotlightLogCollector *)self findAllLogFiles:filesCopy];
+  [filesCopy log:{@"Found %lu spotlight logs", objc_msgSend(v5, "count")}];
+  v6 = [(CADDiagnosticsCalDAVSpotlightLogCollector *)self sortAndTrimLogFiles:v5 context:filesCopy];
+  [filesCopy log:{@"Including %lu spotlight logs", objc_msgSend(v6, "count")}];
   objc_storeStrong(&self->_orderedInputURLs, v6);
   v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
   v17 = 0u;
@@ -38,9 +38,9 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * v12) lastPathComponent];
-        v14 = [v4 temporaryFileForName:v13];
-        [v4 setStatus:0 forFile:v14];
+        lastPathComponent = [*(*(&v17 + 1) + 8 * v12) lastPathComponent];
+        v14 = [filesCopy temporaryFileForName:lastPathComponent];
+        [filesCopy setStatus:0 forFile:v14];
         [(NSArray *)v7 addObject:v14];
 
         ++v12;
@@ -59,19 +59,19 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)findAllLogFiles:(id)a3
+- (id)findAllLogFiles:(id)files
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  filesCopy = files;
   v4 = DACustomLogDirectory();
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v25 = 0;
-  v6 = [v5 contentsOfDirectoryAtPath:v4 error:&v25];
+  v6 = [defaultManager contentsOfDirectoryAtPath:v4 error:&v25];
   v7 = v25;
 
   if (!v6)
   {
-    [v3 logError:{@"Unable to find spotlight logs: %@", v7}];
+    [filesCopy logError:{@"Unable to find spotlight logs: %@", v7}];
   }
 
   v17 = v7;
@@ -103,19 +103,19 @@
           v14 = [v20 URLByAppendingPathComponent:v13];
           if (v14)
           {
-            [v3 log:{@"Found log file %@", v13}];
+            [filesCopy log:{@"Found log file %@", v13}];
             [v19 addObject:v14];
           }
 
           else
           {
-            [v3 logError:{@"Unable to construct URL for file %@; skipping", v13}];
+            [filesCopy logError:{@"Unable to construct URL for file %@; skipping", v13}];
           }
         }
 
         else
         {
-          [v3 log:{@"Ignoring irrelevant file %@", v13}];
+          [filesCopy log:{@"Ignoring irrelevant file %@", v13}];
         }
       }
 
@@ -130,12 +130,12 @@
   return v19;
 }
 
-- (id)sortAndTrimLogFiles:(id)a3 context:(id)a4
+- (id)sortAndTrimLogFiles:(id)files context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 mutableCopy];
-  v9 = [(CADDiagnosticsCalDAVSpotlightLogCollector *)self parseFilenameDates:v7 context:v6];
+  contextCopy = context;
+  filesCopy = files;
+  v8 = [filesCopy mutableCopy];
+  v9 = [(CADDiagnosticsCalDAVSpotlightLogCollector *)self parseFilenameDates:filesCopy context:contextCopy];
 
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
@@ -146,7 +146,7 @@
   [v8 sortUsingComparator:&v12];
   if ([v8 count] >= 0x15)
   {
-    [v6 log:{@"Too many spotlight logs; only including the most recent %i", 20, v12, v13, v14, v15}];
+    [contextCopy log:{@"Too many spotlight logs; only including the most recent %i", 20, v12, v13, v14, v15}];
     [v8 removeObjectsInRange:{20, objc_msgSend(v8, "count") - 20}];
   }
 
@@ -189,11 +189,11 @@ uint64_t __73__CADDiagnosticsCalDAVSpotlightLogCollector_sortAndTrimLogFiles_con
   return v14;
 }
 
-- (id)parseFilenameDates:(id)a3 context:(id)a4
+- (id)parseFilenameDates:(id)dates context:(id)context
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v25 = a4;
+  datesCopy = dates;
+  contextCopy = context;
   v22 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v6 setDateStyle:1];
@@ -203,7 +203,7 @@ uint64_t __73__CADDiagnosticsCalDAVSpotlightLogCollector_sortAndTrimLogFiles_con
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v5;
+  obj = datesCopy;
   v7 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v7)
   {
@@ -219,17 +219,17 @@ uint64_t __73__CADDiagnosticsCalDAVSpotlightLogCollector_sortAndTrimLogFiles_con
         }
 
         v11 = *(*(&v26 + 1) + 8 * i);
-        v12 = [v11 lastPathComponent];
-        v13 = [v12 rangeOfString:@".log"];
-        v14 = [v12 rangeOfString:@"_"];
+        lastPathComponent = [v11 lastPathComponent];
+        v13 = [lastPathComponent rangeOfString:@".log"];
+        v14 = [lastPathComponent rangeOfString:@"_"];
         if (v13 == 0x7FFFFFFFFFFFFFFFLL || v14 == 0x7FFFFFFFFFFFFFFFLL || v14 >= v13)
         {
-          [v25 logError:{@"Unexpected log file name: %@", v12}];
+          [contextCopy logError:{@"Unexpected log file name: %@", lastPathComponent}];
         }
 
         else
         {
-          v17 = [v12 substringWithRange:{v14 + 1, v13 + ~v14}];
+          v17 = [lastPathComponent substringWithRange:{v14 + 1, v13 + ~v14}];
           v18 = [v23 dateFromString:v17];
           v19 = v18;
           if (v18)
@@ -239,7 +239,7 @@ uint64_t __73__CADDiagnosticsCalDAVSpotlightLogCollector_sortAndTrimLogFiles_con
 
           else
           {
-            [v25 logError:{@"Couldn't parse %@ into a date", v17}];
+            [contextCopy logError:{@"Couldn't parse %@ into a date", v17}];
           }
         }
       }
@@ -255,15 +255,15 @@ uint64_t __73__CADDiagnosticsCalDAVSpotlightLogCollector_sortAndTrimLogFiles_con
   return v22;
 }
 
-- (void)collect:(id)a3
+- (void)collect:(id)collect
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  collectCopy = collect;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v18 = self;
+  selfCopy = self;
   obj = self->_orderedInputURLs;
   v5 = [(NSArray *)obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
@@ -281,25 +281,25 @@ LABEL_3:
       }
 
       v10 = *(*(&v20 + 1) + 8 * v9);
-      v11 = [(NSArray *)v18->_orderedOutputURLs objectAtIndexedSubscript:v7];
-      v12 = [MEMORY[0x277CCAA00] defaultManager];
+      v11 = [(NSArray *)selfCopy->_orderedOutputURLs objectAtIndexedSubscript:v7];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v19 = 0;
-      v13 = [v12 copyItemAtURL:v10 toURL:v11 error:&v19];
+      v13 = [defaultManager copyItemAtURL:v10 toURL:v11 error:&v19];
       v14 = v19;
 
       if (v13)
       {
-        [v4 setStatus:2 forFile:v11];
+        [collectCopy setStatus:2 forFile:v11];
       }
 
       else
       {
-        [v4 logError:{@"Failed to copy log from %@ to %@: %@", v10, v11, v14}];
+        [collectCopy logError:{@"Failed to copy log from %@ to %@: %@", v10, v11, v14}];
       }
 
-      v15 = [v4 canceled];
+      canceled = [collectCopy canceled];
 
-      if (v15)
+      if (canceled)
       {
         break;
       }

@@ -1,12 +1,12 @@
 @interface _UIViewServiceReplyAwaitingTrampoline
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation _UIViewServiceReplyAwaitingTrampoline
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v5 = dispatch_semaphore_create(0);
   v14 = 0;
   v15 = &v14;
@@ -21,7 +21,7 @@
   v13 = &v14;
   v6 = v5;
   v12 = v6;
-  [(_UIViewServiceReplyControlTrampoline *)self _forwardInvocation:v4 withIncomingReplyDispatchBlock:&v8];
+  [(_UIViewServiceReplyControlTrampoline *)self _forwardInvocation:invocationCopy withIncomingReplyDispatchBlock:&v8];
   v7 = dispatch_time(0, 2000000000);
   if (!dispatch_semaphore_wait(v6, v7))
   {

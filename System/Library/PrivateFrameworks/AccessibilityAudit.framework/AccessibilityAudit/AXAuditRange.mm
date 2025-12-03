@@ -1,23 +1,23 @@
 @interface AXAuditRange
-+ (id)createWithRange:(_NSRange)a3;
-+ (void)registerTransportableObjectWithManager:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)createWithRange:(_NSRange)range;
++ (void)registerTransportableObjectWithManager:(id)manager;
+- (BOOL)isEqual:(id)equal;
 - (_NSRange)range;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation AXAuditRange
 
-+ (void)registerTransportableObjectWithManager:(id)a3
++ (void)registerTransportableObjectWithManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v5 = [[AXAuditObjectTransportInfoPropertyBased alloc] initWithClass:objc_opt_class() transportKey:@"AXAuditRange_v1"];
   v4 = objc_alloc_init(AXAuditObjectTransportPropertyEntry);
   [(AXAuditObjectTransportPropertyEntry *)v4 setTransportKey:@"RangeValue_v1"];
   [(AXAuditObjectTransportPropertyEntry *)v4 setLocalValueToTransportValue:&__block_literal_global_8];
   [(AXAuditObjectTransportPropertyEntry *)v4 setPopulateLocalObjectWithTransportValue:&__block_literal_global_10_3];
   [(AXAuditObjectTransportInfoPropertyBased *)v5 addPropertyEntry:v4];
-  [v3 registerTransportInfoPropertyBased:v5];
+  [managerCopy registerTransportInfoPropertyBased:v5];
 }
 
 uint64_t __55__AXAuditRange_registerTransportableObjectWithManager___block_invoke(uint64_t a1, void *a2)
@@ -40,20 +40,20 @@ void __55__AXAuditRange_registerTransportableObjectWithManager___block_invoke_2(
   }
 }
 
-+ (id)createWithRange:(_NSRange)a3
++ (id)createWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v5 = objc_alloc_init(AXAuditRange);
   [(AXAuditRange *)v5 setRange:location, length];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -63,9 +63,9 @@ void __55__AXAuditRange_registerTransportableObjectWithManager___block_invoke_2(
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(AXAuditRange *)self range];
+      range = [(AXAuditRange *)self range];
       v7 = v6;
-      v10 = v5 == [(AXAuditRange *)v4 range]&& v7 == v8;
+      v10 = range == [(AXAuditRange *)equalCopy range]&& v7 == v8;
     }
 
     else
@@ -77,11 +77,11 @@ void __55__AXAuditRange_registerTransportableObjectWithManager___block_invoke_2(
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(AXAuditRange *)self range];
-  [v4 setRange:{v5, v6}];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  range = [(AXAuditRange *)self range];
+  [v4 setRange:{range, v6}];
   return v4;
 }
 

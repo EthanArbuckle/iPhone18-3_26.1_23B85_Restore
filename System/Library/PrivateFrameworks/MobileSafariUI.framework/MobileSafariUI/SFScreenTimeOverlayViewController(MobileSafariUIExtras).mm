@@ -6,8 +6,8 @@
 
 - (double)snapshotContentRectInBounds:()MobileSafariUIExtras
 {
-  v9 = [a1 view];
-  [v9 frame];
+  view = [self view];
+  [view frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -27,10 +27,10 @@
   v26.size.width = v15;
   v26.size.height = v17;
   CGRectGetMinY(v26);
-  v18 = [v9 window];
-  v19 = [v18 windowScene];
-  v20 = [v19 statusBarManager];
-  [v20 statusBarFrame];
+  window = [view window];
+  windowScene = [window windowScene];
+  statusBarManager = [windowScene statusBarManager];
+  [statusBarManager statusBarFrame];
   CGRectGetHeight(v27);
   v28.origin.x = a2;
   v28.origin.y = a3;

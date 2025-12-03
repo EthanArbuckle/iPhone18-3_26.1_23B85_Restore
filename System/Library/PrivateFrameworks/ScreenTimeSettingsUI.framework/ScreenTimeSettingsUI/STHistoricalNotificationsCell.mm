@@ -1,45 +1,45 @@
 @interface STHistoricalNotificationsCell
-- (STHistoricalNotificationsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (STHistoricalNotificationsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)value;
-- (void)_currentViewModeDidChangeFrom:(int64_t)a3 to:(int64_t)a4;
-- (void)_handleEffectiveChangeForViewMode:(int64_t)a3 hasMultilineLayout:(BOOL)a4;
-- (void)_hasMulitlineLayoutDidChangeFrom:(BOOL)a3 to:(BOOL)a4;
+- (void)_currentViewModeDidChangeFrom:(int64_t)from to:(int64_t)to;
+- (void)_handleEffectiveChangeForViewMode:(int64_t)mode hasMultilineLayout:(BOOL)layout;
+- (void)_hasMulitlineLayoutDidChangeFrom:(BOOL)from to:(BOOL)to;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setValue:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setValue:(id)value;
 @end
 
 @implementation STHistoricalNotificationsCell
 
-- (STHistoricalNotificationsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (STHistoricalNotificationsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v22.receiver = self;
   v22.super_class = STHistoricalNotificationsCell;
-  v5 = [(STTableCell *)&v22 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(STTableCell *)&v22 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   v6 = [STHistoricalUsageViewController historicalUsageViewControllerOfType:5 graphHeight:62.0];
   historicalUsageViewController = v5->_historicalUsageViewController;
   v5->_historicalUsageViewController = v6;
 
-  v8 = [(STTableCell *)v5 childViewControllers];
-  [v8 addObject:v5->_historicalUsageViewController];
+  childViewControllers = [(STTableCell *)v5 childViewControllers];
+  [childViewControllers addObject:v5->_historicalUsageViewController];
 
-  v9 = [(STHistoricalNotificationsCell *)v5 contentView];
-  v10 = [(STHistoricalUsageViewController *)v5->_historicalUsageViewController view];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v9 addSubview:v10];
-  v11 = _NSDictionaryOfVariableBindings(&cfstr_Historicalusag.isa, v10, 0);
+  contentView = [(STHistoricalNotificationsCell *)v5 contentView];
+  view = [(STHistoricalUsageViewController *)v5->_historicalUsageViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  [contentView addSubview:view];
+  v11 = _NSDictionaryOfVariableBindings(&cfstr_Historicalusag.isa, view, 0);
   v12 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|[historicalUsageView]-2.0-|" options:0 metrics:0 views:v11];
   v13 = [v12 mutableCopy];
 
-  v14 = [(STTableCell *)v5 contentLayoutGuide];
-  v15 = [v14 leadingAnchor];
-  v16 = [v10 leadingAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  contentLayoutGuide = [(STTableCell *)v5 contentLayoutGuide];
+  leadingAnchor = [contentLayoutGuide leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v13 addObject:v17];
 
-  v18 = [v14 trailingAnchor];
-  v19 = [v10 trailingAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  trailingAnchor = [contentLayoutGuide trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v13 addObject:v20];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v13];
@@ -58,29 +58,29 @@
   [(PSTableCell *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  if (a6 == "KVOContextHistoricalNotificationsCell")
+  pathCopy = path;
+  changeCopy = change;
+  if (context == "KVOContextHistoricalNotificationsCell")
   {
     [(STHistoricalNotificationsCell *)self historicalUsageViewController];
 
-    if ([v10 isEqualToString:@"currentViewMode"])
+    if ([pathCopy isEqualToString:@"currentViewMode"])
     {
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-      v13 = [MEMORY[0x277CBEB68] null];
+      v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v12 == v13)
+      if (v12 == null)
       {
 
         v12 = 0;
       }
 
-      v14 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v15 = [MEMORY[0x277CBEB68] null];
+      v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null2 = [MEMORY[0x277CBEB68] null];
 
-      if (v14 == v15)
+      if (v14 == null2)
       {
 
         v14 = 0;
@@ -93,24 +93,24 @@
     {
       [(STHistoricalNotificationsCell *)self historicalUsageViewController];
 
-      if (![v10 isEqualToString:@"titleView.hasMultilineLayout"])
+      if (![pathCopy isEqualToString:@"titleView.hasMultilineLayout"])
       {
         goto LABEL_16;
       }
 
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-      v16 = [MEMORY[0x277CBEB68] null];
+      v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+      null3 = [MEMORY[0x277CBEB68] null];
 
-      if (v12 == v16)
+      if (v12 == null3)
       {
 
         v12 = 0;
       }
 
-      v14 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v17 = [MEMORY[0x277CBEB68] null];
+      v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null4 = [MEMORY[0x277CBEB68] null];
 
-      if (v14 == v17)
+      if (v14 == null4)
       {
 
         v14 = 0;
@@ -124,69 +124,69 @@
 
   v18.receiver = self;
   v18.super_class = STHistoricalNotificationsCell;
-  [(STHistoricalNotificationsCell *)&v18 observeValueForKeyPath:v10 ofObject:a4 change:v11 context:a6];
+  [(STHistoricalNotificationsCell *)&v18 observeValueForKeyPath:pathCopy ofObject:object change:changeCopy context:context];
 LABEL_16:
 }
 
-- (void)_currentViewModeDidChangeFrom:(int64_t)a3 to:(int64_t)a4
+- (void)_currentViewModeDidChangeFrom:(int64_t)from to:(int64_t)to
 {
-  if (a3 != a4)
+  if (from != to)
   {
-    v7 = [(STHistoricalNotificationsCell *)self historicalUsageViewController];
-    v8 = [v7 titleView];
-    v9 = [v8 hasMultilineLayout];
+    historicalUsageViewController = [(STHistoricalNotificationsCell *)self historicalUsageViewController];
+    titleView = [historicalUsageViewController titleView];
+    hasMultilineLayout = [titleView hasMultilineLayout];
 
-    [(STHistoricalNotificationsCell *)self _handleEffectiveChangeForViewMode:a4 hasMultilineLayout:v9];
+    [(STHistoricalNotificationsCell *)self _handleEffectiveChangeForViewMode:to hasMultilineLayout:hasMultilineLayout];
   }
 }
 
-- (void)_hasMulitlineLayoutDidChangeFrom:(BOOL)a3 to:(BOOL)a4
+- (void)_hasMulitlineLayoutDidChangeFrom:(BOOL)from to:(BOOL)to
 {
-  if (a3 != a4)
+  if (from != to)
   {
-    v5 = a4;
-    v7 = [(STHistoricalNotificationsCell *)self historicalUsageViewController];
-    v8 = [v7 currentViewMode];
+    toCopy = to;
+    historicalUsageViewController = [(STHistoricalNotificationsCell *)self historicalUsageViewController];
+    currentViewMode = [historicalUsageViewController currentViewMode];
 
-    [(STHistoricalNotificationsCell *)self _handleEffectiveChangeForViewMode:v8 hasMultilineLayout:v5];
+    [(STHistoricalNotificationsCell *)self _handleEffectiveChangeForViewMode:currentViewMode hasMultilineLayout:toCopy];
   }
 }
 
-- (void)_handleEffectiveChangeForViewMode:(int64_t)a3 hasMultilineLayout:(BOOL)a4
+- (void)_handleEffectiveChangeForViewMode:(int64_t)mode hasMultilineLayout:(BOOL)layout
 {
-  v4 = a4;
+  layoutCopy = layout;
   v11[1] = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SpecifierIdentifierHistoricalNotificationsCell-%lu-%d", a3, v4];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  layoutCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SpecifierIdentifierHistoricalNotificationsCell-%lu-%d", mode, layoutCopy];
   v10 = @"HistoricalNotificationsSpecifierIdentifier";
-  v11[0] = v8;
+  v11[0] = layoutCopy;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  [v7 postNotificationName:@"HistoricalNotificationsSpecifierIdentifierDidChange" object:self userInfo:v9];
+  [defaultCenter postNotificationName:@"HistoricalNotificationsSpecifierIdentifierDidChange" object:self userInfo:v9];
 
   [(STHistoricalNotificationsCell *)self setNeedsUpdateConstraints];
-  [v7 postNotificationName:0x2876773C8 object:self];
+  [defaultCenter postNotificationName:0x2876773C8 object:self];
 }
 
 - (id)value
 {
   v4.receiver = self;
   v4.super_class = STHistoricalNotificationsCell;
-  v2 = [(PSTableCell *)&v4 value];
+  value = [(PSTableCell *)&v4 value];
 
-  return v2;
+  return value;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || [v4 conformsToProtocol:&unk_2876DCA10])
+  valueCopy = value;
+  v5 = valueCopy;
+  if (!valueCopy || [valueCopy conformsToProtocol:&unk_2876DCA10])
   {
     v7.receiver = self;
     v7.super_class = STHistoricalNotificationsCell;
     [(PSTableCell *)&v7 setValue:v5];
-    v6 = [(STHistoricalNotificationsCell *)self historicalUsageViewController];
-    [v6 setCoordinator:v5];
+    historicalUsageViewController = [(STHistoricalNotificationsCell *)self historicalUsageViewController];
+    [historicalUsageViewController setCoordinator:v5];
   }
 }
 

@@ -42,32 +42,32 @@
   {
     [MEMORY[0x277CBEAD8] raise:@"API Misuse" format:@"Cannot create a blend node definition with a nil blendMetaParameterDefinition"];
 LABEL_6:
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
   v12.receiver = self;
   v12.super_class = PHASEBlendNodeDefinition;
-  v6 = [(PHASEDefinition *)&v12 initInternal];
-  if (!v6)
+  initInternal = [(PHASEDefinition *)&v12 initInternal];
+  if (!initInternal)
   {
     self = 0;
     goto LABEL_6;
   }
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = *(v6 + 4);
-  *(v6 + 4) = v7;
+  v8 = *(initInternal + 4);
+  *(initInternal + 4) = v7;
 
-  objc_storeStrong(v6 + 2, blendMetaParameterDefinition);
-  v9 = *(v6 + 3);
-  *(v6 + 3) = 0;
+  objc_storeStrong(initInternal + 2, blendMetaParameterDefinition);
+  v9 = *(initInternal + 3);
+  *(initInternal + 3) = 0;
 
-  self = v6;
-  v10 = self;
+  self = initInternal;
+  selfCopy = self;
 LABEL_7:
 
-  return v10;
+  return selfCopy;
 }
 
 - (PHASEBlendNodeDefinition)initDistanceBlendWithSpatialMixerDefinition:(PHASESpatialMixerDefinition *)spatialMixerDefinition identifier:(NSString *)identifier
@@ -92,32 +92,32 @@ LABEL_7:
   {
     [MEMORY[0x277CBEAD8] raise:@"API Misuse" format:@"Cannot create a blend node definition with a nil spatialMixerDefinition"];
 LABEL_6:
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
   v12.receiver = self;
   v12.super_class = PHASEBlendNodeDefinition;
-  v6 = [(PHASEDefinition *)&v12 initInternal];
-  if (!v6)
+  initInternal = [(PHASEDefinition *)&v12 initInternal];
+  if (!initInternal)
   {
     self = 0;
     goto LABEL_6;
   }
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = *(v6 + 4);
-  *(v6 + 4) = v7;
+  v8 = *(initInternal + 4);
+  *(initInternal + 4) = v7;
 
-  v9 = *(v6 + 2);
-  *(v6 + 2) = 0;
+  v9 = *(initInternal + 2);
+  *(initInternal + 2) = 0;
 
-  objc_storeStrong(v6 + 3, spatialMixerDefinition);
-  self = v6;
-  v10 = self;
+  objc_storeStrong(initInternal + 3, spatialMixerDefinition);
+  self = initInternal;
+  selfCopy = self;
 LABEL_7:
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)children

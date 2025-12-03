@@ -1,59 +1,59 @@
 @interface MADUserSafetyVideoQRCodeDetector
-+ (int)generateDecoderSettings:(id)a3 decoderConfig:(id)a4 withRequest:(id)a5 videoDuration:(double)a6;
-- (id)sensitivityFromQRCodeForVideoURL:(id)a3 request:(id)a4 signpostPayload:(id)a5 progressHandler:(id)a6;
++ (int)generateDecoderSettings:(id)settings decoderConfig:(id)config withRequest:(id)request videoDuration:(double)duration;
+- (id)sensitivityFromQRCodeForVideoURL:(id)l request:(id)request signpostPayload:(id)payload progressHandler:(id)handler;
 @end
 
 @implementation MADUserSafetyVideoQRCodeDetector
 
-+ (int)generateDecoderSettings:(id)a3 decoderConfig:(id)a4 withRequest:(id)a5 videoDuration:(double)a6
++ (int)generateDecoderSettings:(id)settings decoderConfig:(id)config withRequest:(id)request videoDuration:(double)duration
 {
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9 && v10)
+  settingsCopy = settings;
+  configCopy = config;
+  requestCopy = request;
+  if (settingsCopy && configCopy)
   {
-    [v9 setObject:&unk_1F49BC310 forKeyedSubscript:*MEMORY[0x1E6966130]];
-    [v9 setObject:&unk_1F49BC328 forKeyedSubscript:*MEMORY[0x1E6966208]];
-    [v9 setObject:&unk_1F49BC328 forKeyedSubscript:*MEMORY[0x1E69660B8]];
-    v12 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v11, "appliesPreferredTrackTransform")}];
-    [v9 setObject:v12 forKeyedSubscript:@"AppliesPreferredTrackTransform"];
+    [settingsCopy setObject:&unk_1F49BC310 forKeyedSubscript:*MEMORY[0x1E6966130]];
+    [settingsCopy setObject:&unk_1F49BC328 forKeyedSubscript:*MEMORY[0x1E6966208]];
+    [settingsCopy setObject:&unk_1F49BC328 forKeyedSubscript:*MEMORY[0x1E69660B8]];
+    v12 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "appliesPreferredTrackTransform")}];
+    [settingsCopy setObject:v12 forKeyedSubscript:@"AppliesPreferredTrackTransform"];
 
-    v13 = [v11 sampling];
-    if (v13)
+    sampling = [requestCopy sampling];
+    if (sampling)
     {
-      v14 = [v11 sampling];
-      v15 = [v14 framesPerSync];
+      sampling2 = [requestCopy sampling];
+      framesPerSync = [sampling2 framesPerSync];
     }
 
     else
     {
-      v15 = 1;
+      framesPerSync = 1;
     }
 
-    v17 = [v11 sampling];
-    if (v17)
+    sampling3 = [requestCopy sampling];
+    if (sampling3)
     {
-      v18 = [v11 sampling];
-      v19 = [v18 uniformSampling];
+      sampling4 = [requestCopy sampling];
+      uniformSampling = [sampling4 uniformSampling];
     }
 
     else
     {
-      v19 = 1;
+      uniformSampling = 1;
     }
 
-    v20 = [objc_alloc(MEMORY[0x1E69AE500]) initWithFramesPerSync:v15 frameLimit:30 uniformSampling:v19];
-    if ([v11 requiresBlastdoor])
+    v20 = [objc_alloc(MEMORY[0x1E69AE500]) initWithFramesPerSync:framesPerSync frameLimit:30 uniformSampling:uniformSampling];
+    if ([requestCopy requiresBlastdoor])
     {
       v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v20, "framesPerSync")}];
-      [v9 setObject:v21 forKeyedSubscript:*MEMORY[0x1E6987D38]];
+      [settingsCopy setObject:v21 forKeyedSubscript:*MEMORY[0x1E6987D38]];
 
       v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v20, "frameLimit")}];
-      [v9 setObject:v22 forKeyedSubscript:@"FrameLimit"];
+      [settingsCopy setObject:v22 forKeyedSubscript:@"FrameLimit"];
 
       v23 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v20, "uniformSampling")}];
-      [v9 setObject:v23 forKeyedSubscript:@"UniformSampling"];
+      [settingsCopy setObject:v23 forKeyedSubscript:@"UniformSampling"];
     }
 
     else
@@ -69,16 +69,16 @@
       if ([v20 framesPerSync])
       {
         v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v20, "framesPerSync")}];
-        [v9 setObject:v26 forKeyedSubscript:*MEMORY[0x1E6987D38]];
+        [settingsCopy setObject:v26 forKeyedSubscript:*MEMORY[0x1E6987D38]];
 
         if ([v20 frameLimit])
         {
           v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v20, "frameLimit")}];
-          [v10 setObject:v27 forKeyedSubscript:@"FrameLimit"];
+          [configCopy setObject:v27 forKeyedSubscript:@"FrameLimit"];
 
           if ([v20 uniformSampling])
           {
-            v28 = a6 / (([v20 frameLimit] - 1) + 0.1);
+            v28 = duration / (([v20 frameLimit] - 1) + 0.1);
             if (v28 <= 0.0)
             {
               if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -102,7 +102,7 @@
               CMTimeMakeWithSeconds(&buf, v28, 1000);
               v35 = buf;
               v29 = CMTimeCopyAsDictionary(&v35, *MEMORY[0x1E695E480]);
-              [v9 setObject:v29 forKeyedSubscript:*MEMORY[0x1E6987C68]];
+              [settingsCopy setObject:v29 forKeyedSubscript:*MEMORY[0x1E6987C68]];
             }
           }
         }
@@ -111,12 +111,12 @@
       else if ([v20 frameLimit])
       {
         v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v20, "frameLimit")}];
-        [v10 setObject:v30 forKeyedSubscript:@"FrameLimit"];
+        [configCopy setObject:v30 forKeyedSubscript:@"FrameLimit"];
 
         if ([v20 uniformSampling])
         {
-          v31 = [MEMORY[0x1E696AD98] numberWithDouble:{objc_msgSend(v20, "frameLimit") / a6}];
-          [v10 setObject:v31 forKeyedSubscript:@"FramesPerSecond"];
+          v31 = [MEMORY[0x1E696AD98] numberWithDouble:{objc_msgSend(v20, "frameLimit") / duration}];
+          [configCopy setObject:v31 forKeyedSubscript:@"FramesPerSecond"];
         }
       }
     }
@@ -138,13 +138,13 @@
   return v16;
 }
 
-- (id)sensitivityFromQRCodeForVideoURL:(id)a3 request:(id)a4 signpostPayload:(id)a5 progressHandler:(id)a6
+- (id)sensitivityFromQRCodeForVideoURL:(id)l request:(id)request signpostPayload:(id)payload progressHandler:(id)handler
 {
   v71 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  requestCopy = request;
+  payloadCopy = payload;
+  handlerCopy = handler;
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
@@ -153,17 +153,17 @@
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[%@] running...", buf, 0xCu);
   }
 
-  v15 = [(MADUserSafetyQRCodeDetector *)self sensitivity];
-  v16 = v15 == 0;
+  sensitivity = [(MADUserSafetyQRCodeDetector *)self sensitivity];
+  v16 = sensitivity == 0;
 
   if (v16)
   {
     context = objc_autoreleasePoolPush();
-    v17 = [v11 sensitiveFrameCountThreshold];
-    if (v17)
+    sensitiveFrameCountThreshold = [requestCopy sensitiveFrameCountThreshold];
+    if (sensitiveFrameCountThreshold)
     {
-      v18 = [v11 sensitiveFrameCountThreshold];
-      v19 = [v18 unsignedIntegerValue] == 0;
+      sensitiveFrameCountThreshold2 = [requestCopy sensitiveFrameCountThreshold];
+      v19 = [sensitiveFrameCountThreshold2 unsignedIntegerValue] == 0;
 
       if (v19)
       {
@@ -176,7 +176,7 @@
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Invalid configuration, sensitiveFrameCountThreshold must be > 0", buf, 0xCu);
         }
 
-        v25 = [(MADUserSafetyQRCodeDetector *)self sensitivity];
+        sensitivity2 = [(MADUserSafetyQRCodeDetector *)self sensitivity];
         v26 = 0;
 LABEL_53:
         objc_autoreleasePoolPop(context);
@@ -189,9 +189,9 @@ LABEL_53:
       }
     }
 
-    if ([v11 requiresBlastdoor])
+    if ([requestCopy requiresBlastdoor])
     {
-      v20 = [[VCPBlastdoorVideoProcessor alloc] initWithURL:v10];
+      v20 = [[VCPBlastdoorVideoProcessor alloc] initWithURL:lCopy];
       v21 = 0.0;
       if (v20)
       {
@@ -201,21 +201,21 @@ LABEL_53:
 
     else
     {
-      v20 = [[VCPVideoProcessor alloc] initWithURL:v10];
+      v20 = [[VCPVideoProcessor alloc] initWithURL:lCopy];
       [(VCPBlastdoorVideoProcessor *)v20 videoDuration];
       v21 = v27;
       if (v20)
       {
 LABEL_9:
-        if (v13)
+        if (handlerCopy)
         {
-          [(VCPBlastdoorVideoProcessor *)v20 setProgressHandler:v13];
+          [(VCPBlastdoorVideoProcessor *)v20 setProgressHandler:handlerCopy];
         }
 
-        v22 = [MEMORY[0x1E695DF90] dictionary];
-        v56 = v22;
-        v57 = [MEMORY[0x1E695DF90] dictionary];
-        if ([objc_opt_class() generateDecoderSettings:v22 decoderConfig:v57 withRequest:v11 videoDuration:v21])
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        v56 = dictionary;
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+        if ([objc_opt_class() generateDecoderSettings:dictionary decoderConfig:dictionary2 withRequest:requestCopy videoDuration:v21])
         {
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -226,7 +226,7 @@ LABEL_9:
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Failed to generate settings and config for videoProcessor", buf, 0xCu);
           }
 
-          v25 = [(MADUserSafetyQRCodeDetector *)self sensitivity];
+          sensitivity2 = [(MADUserSafetyQRCodeDetector *)self sensitivity];
           v26 = 0;
           goto LABEL_51;
         }
@@ -234,35 +234,35 @@ LABEL_9:
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
           v33 = objc_opt_class();
-          v34 = [v11 requiresBlastdoor];
+          requiresBlastdoor = [requestCopy requiresBlastdoor];
           v35 = @"NO";
           *buf = 138413058;
           v64 = v33;
           v65 = 2112;
-          if (v34)
+          if (requiresBlastdoor)
           {
             v35 = @"YES";
           }
 
           v66 = v35;
           v67 = 2112;
-          v68 = v22;
+          v68 = dictionary;
           v69 = 2112;
-          v70 = v57;
+          v70 = dictionary2;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[%@] requiresBlastdoor: %@, decoder settings: %@, decoder configuration: %@", buf, 0x2Au);
         }
 
-        [(VCPBlastdoorVideoProcessor *)v20 setDecoderSettings:v22];
+        [(VCPBlastdoorVideoProcessor *)v20 setDecoderSettings:dictionary];
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __109__MADUserSafetyVideoQRCodeDetector_sensitivityFromQRCodeForVideoURL_request_signpostPayload_progressHandler___block_invoke;
         aBlock[3] = &unk_1E834E6F0;
         aBlock[4] = self;
-        v25 = v12;
-        v62 = v25;
+        sensitivity2 = payloadCopy;
+        v62 = sensitivity2;
         v55 = _Block_copy(aBlock);
         v60 = 0;
-        v36 = [(VCPBlastdoorVideoProcessor *)v20 addFrameProcessingRequest:v55 withConfiguration:v57 error:&v60];
+        v36 = [(VCPBlastdoorVideoProcessor *)v20 addFrameProcessingRequest:v55 withConfiguration:dictionary2 error:&v60];
         v37 = v60;
         if (v36)
         {
@@ -274,7 +274,7 @@ LABEL_9:
           if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v39))
           {
             *buf = 138412290;
-            v64 = v25;
+            v64 = sensitivity2;
             _os_signpost_emit_with_name_impl(&dword_1C9B70000, v40, OS_SIGNPOST_INTERVAL_BEGIN, spid, "VCPVideoProcessor_Analyze", "%@", buf, 0xCu);
           }
 
@@ -291,7 +291,7 @@ LABEL_9:
             if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v44))
             {
               *buf = 138412290;
-              v64 = v25;
+              v64 = sensitivity2;
               _os_signpost_emit_with_name_impl(&dword_1C9B70000, v45, OS_SIGNPOST_INTERVAL_END, spid, "VCPVideoProcessor_Analyze", "%@", buf, 0xCu);
             }
 
@@ -310,7 +310,7 @@ LABEL_9:
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Failed to process video (%@)", buf, 0x16u);
           }
 
-          v48 = [(MADUserSafetyQRCodeDetector *)self sensitivity];
+          sensitivity3 = [(MADUserSafetyQRCodeDetector *)self sensitivity];
         }
 
         else
@@ -326,10 +326,10 @@ LABEL_9:
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Failed to add request to video processor (%@)", buf, 0x16u);
           }
 
-          v48 = [(MADUserSafetyQRCodeDetector *)self sensitivity];
+          sensitivity3 = [(MADUserSafetyQRCodeDetector *)self sensitivity];
         }
 
-        v25 = v48;
+        sensitivity2 = sensitivity3;
         v26 = 0;
 LABEL_50:
 
@@ -343,9 +343,9 @@ LABEL_52:
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v28 = objc_opt_class();
-      v29 = [v11 requiresBlastdoor];
+      requiresBlastdoor2 = [requestCopy requiresBlastdoor];
       v30 = @"NO";
-      if (v29)
+      if (requiresBlastdoor2)
       {
         v30 = @"YES";
       }
@@ -357,7 +357,7 @@ LABEL_52:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Failed to create video processor (requiresBlastdoor: %@)", buf, 0x16u);
     }
 
-    v25 = [(MADUserSafetyQRCodeDetector *)self sensitivity];
+    sensitivity2 = [(MADUserSafetyQRCodeDetector *)self sensitivity];
     v26 = 0;
     goto LABEL_52;
   }
@@ -372,10 +372,10 @@ LABEL_54:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[%@] complete", buf, 0xCu);
   }
 
-  v25 = [(MADUserSafetyQRCodeDetector *)self sensitivity];
+  sensitivity2 = [(MADUserSafetyQRCodeDetector *)self sensitivity];
 LABEL_58:
 
-  return v25;
+  return sensitivity2;
 }
 
 void __109__MADUserSafetyVideoQRCodeDetector_sensitivityFromQRCodeForVideoURL_request_signpostPayload_progressHandler___block_invoke(uint64_t a1, opaqueCMSampleBuffer *a2, _BYTE *a3)

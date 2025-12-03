@@ -1,32 +1,32 @@
 @interface AvatarPickerCoordinator
 - (_TtC10StickerKit23AvatarPickerCoordinator)init;
-- (void)avatarPicker:(id)a3 didSelectAvatarRecord:(id)a4;
-- (void)dismissAvatarUIControllerWithIdentifier:(id)a3 animated:(BOOL)a4;
-- (void)presentAvatarUIController:(id)a3 animated:(BOOL)a4;
+- (void)avatarPicker:(id)picker didSelectAvatarRecord:(id)record;
+- (void)dismissAvatarUIControllerWithIdentifier:(id)identifier animated:(BOOL)animated;
+- (void)presentAvatarUIController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation AvatarPickerCoordinator
 
-- (void)avatarPicker:(id)a3 didSelectAvatarRecord:(id)a4
+- (void)avatarPicker:(id)picker didSelectAvatarRecord:(id)record
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_19A71819C(a4);
+  selfCopy = self;
+  sub_19A71819C(record);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)presentAvatarUIController:(id)a3 animated:(BOOL)a4
+- (void)presentAvatarUIController:(id)controller animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = self;
-  sub_19A717694(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_19A717694(controllerCopy, animated);
 }
 
-- (void)dismissAvatarUIControllerWithIdentifier:(id)a3 animated:(BOOL)a4
+- (void)dismissAvatarUIControllerWithIdentifier:(id)identifier animated:(BOOL)animated
 {
-  if (a3)
+  if (identifier)
   {
     v6 = sub_19A7AB014();
     v8 = v7;
@@ -38,8 +38,8 @@
     v8 = 0;
   }
 
-  v9 = self;
-  sub_19A717870(v6, v8, a4);
+  selfCopy = self;
+  sub_19A717870(v6, v8, animated);
 }
 
 - (_TtC10StickerKit23AvatarPickerCoordinator)init

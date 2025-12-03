@@ -1,39 +1,39 @@
 @interface CLIArguments
-- (id)consumeUpToIndex:(int64_t)a3;
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
+- (id)consumeUpToIndex:(int64_t)index;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
 @end
 
 @implementation CLIArguments
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
-  if ([(NSArray *)self->_arguments count]<= a3)
+  if ([(NSArray *)self->_arguments count]<= subscript)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_arguments objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self->_arguments objectAtIndexedSubscript:subscript];
   }
 
   return v5;
 }
 
-- (id)consumeUpToIndex:(int64_t)a3
+- (id)consumeUpToIndex:(int64_t)index
 {
   v5 = [(NSArray *)self->_arguments count];
-  if (v5 <= a3)
+  if (v5 <= index)
   {
-    v6 = MEMORY[0x277CBEBF8];
+    index = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v6 = [(NSArray *)self->_arguments subarrayWithRange:a3, v5 - a3];
+    index = [(NSArray *)self->_arguments subarrayWithRange:index, v5 - index];
   }
 
-  return v6;
+  return index;
 }
 
 @end

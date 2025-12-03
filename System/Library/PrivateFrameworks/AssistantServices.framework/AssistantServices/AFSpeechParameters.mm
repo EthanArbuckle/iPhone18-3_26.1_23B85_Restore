@@ -1,121 +1,121 @@
 @interface AFSpeechParameters
-+ (id)newWithBuilder:(id)a3;
-- (AFSpeechParameters)initWithBuilder:(id)a3;
-- (AFSpeechParameters)initWithCoder:(id)a3;
-- (AFSpeechParameters)initWithLanguage:(id)a3 interactionIdentifier:(id)a4 task:(id)a5 loggingContext:(id)a6 applicationName:(id)a7 profile:(id)a8 overrides:(id)a9 modelOverrideURL:(id)a10 originalAudioFileURL:(id)a11 narrowband:(BOOL)a12 detectUtterances:(BOOL)a13 censorSpeech:(BOOL)a14 farField:(BOOL)a15 secureOfflineOnly:(BOOL)a16 shouldStoreAudioOnDevice:(BOOL)a17 maximumRecognitionDuration:(double)a18 inputOrigin:(id)a19 location:(id)a20 jitGrammar:(id)a21;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFSpeechParameters)initWithBuilder:(id)builder;
+- (AFSpeechParameters)initWithCoder:(id)coder;
+- (AFSpeechParameters)initWithLanguage:(id)language interactionIdentifier:(id)identifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)overrides modelOverrideURL:(id)self0 originalAudioFileURL:(id)self1 narrowband:(BOOL)self2 detectUtterances:(BOOL)self3 censorSpeech:(BOOL)self4 farField:(BOOL)self5 secureOfflineOnly:(BOOL)self6 shouldStoreAudioOnDevice:(BOOL)self7 maximumRecognitionDuration:(double)self8 inputOrigin:(id)self9 location:(id)location jitGrammar:(id)grammar;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFSpeechParameters
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   language = self->_language;
-  v12 = a3;
-  [v12 encodeObject:language forKey:@"AFSpeechParameters::language"];
-  [v12 encodeObject:self->_interactionIdentifier forKey:@"AFSpeechParameters::interactionIdentifier"];
-  [v12 encodeObject:self->_task forKey:@"AFSpeechParameters::task"];
-  [v12 encodeObject:self->_loggingContext forKey:@"AFSpeechParameters::loggingContext"];
-  [v12 encodeObject:self->_applicationName forKey:@"AFSpeechParameters::applicationName"];
-  [v12 encodeObject:self->_profile forKey:@"AFSpeechParameters::profile"];
-  [v12 encodeObject:self->_overrides forKey:@"AFSpeechParameters::overrides"];
-  [v12 encodeObject:self->_modelOverrideURL forKey:@"AFSpeechParameters::modelOverrideURL"];
-  [v12 encodeObject:self->_originalAudioFileURL forKey:@"AFSpeechParameters::originalAudioFileURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:language forKey:@"AFSpeechParameters::language"];
+  [coderCopy encodeObject:self->_interactionIdentifier forKey:@"AFSpeechParameters::interactionIdentifier"];
+  [coderCopy encodeObject:self->_task forKey:@"AFSpeechParameters::task"];
+  [coderCopy encodeObject:self->_loggingContext forKey:@"AFSpeechParameters::loggingContext"];
+  [coderCopy encodeObject:self->_applicationName forKey:@"AFSpeechParameters::applicationName"];
+  [coderCopy encodeObject:self->_profile forKey:@"AFSpeechParameters::profile"];
+  [coderCopy encodeObject:self->_overrides forKey:@"AFSpeechParameters::overrides"];
+  [coderCopy encodeObject:self->_modelOverrideURL forKey:@"AFSpeechParameters::modelOverrideURL"];
+  [coderCopy encodeObject:self->_originalAudioFileURL forKey:@"AFSpeechParameters::originalAudioFileURL"];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_narrowband];
-  [v12 encodeObject:v5 forKey:@"AFSpeechParameters::narrowband"];
+  [coderCopy encodeObject:v5 forKey:@"AFSpeechParameters::narrowband"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_detectUtterances];
-  [v12 encodeObject:v6 forKey:@"AFSpeechParameters::detectUtterances"];
+  [coderCopy encodeObject:v6 forKey:@"AFSpeechParameters::detectUtterances"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_censorSpeech];
-  [v12 encodeObject:v7 forKey:@"AFSpeechParameters::censorSpeech"];
+  [coderCopy encodeObject:v7 forKey:@"AFSpeechParameters::censorSpeech"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_farField];
-  [v12 encodeObject:v8 forKey:@"AFSpeechParameters::farField"];
+  [coderCopy encodeObject:v8 forKey:@"AFSpeechParameters::farField"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_secureOfflineOnly];
-  [v12 encodeObject:v9 forKey:@"AFSpeechParameters::secureOfflineOnly"];
+  [coderCopy encodeObject:v9 forKey:@"AFSpeechParameters::secureOfflineOnly"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:self->_shouldStoreAudioOnDevice];
-  [v12 encodeObject:v10 forKey:@"AFSpeechParameters::shouldStoreAudioOnDevice"];
+  [coderCopy encodeObject:v10 forKey:@"AFSpeechParameters::shouldStoreAudioOnDevice"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithDouble:self->_maximumRecognitionDuration];
-  [v12 encodeObject:v11 forKey:@"AFSpeechParameters::maximumRecognitionDuration"];
+  [coderCopy encodeObject:v11 forKey:@"AFSpeechParameters::maximumRecognitionDuration"];
 
-  [v12 encodeObject:self->_inputOrigin forKey:@"AFSpeechParameters::inputOrigin"];
-  [v12 encodeObject:self->_location forKey:@"AFSpeechParameters::location"];
-  [v12 encodeObject:self->_jitGrammar forKey:@"AFSpeechParameters::jitGrammar"];
+  [coderCopy encodeObject:self->_inputOrigin forKey:@"AFSpeechParameters::inputOrigin"];
+  [coderCopy encodeObject:self->_location forKey:@"AFSpeechParameters::location"];
+  [coderCopy encodeObject:self->_jitGrammar forKey:@"AFSpeechParameters::jitGrammar"];
 }
 
-- (AFSpeechParameters)initWithCoder:(id)a3
+- (AFSpeechParameters)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v44 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::language"];
-  v41 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::interactionIdentifier"];
-  v40 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::task"];
+  coderCopy = coder;
+  v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::language"];
+  v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::interactionIdentifier"];
+  v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::task"];
   v4 = MEMORY[0x1E695DFD8];
   v5 = objc_opt_class();
   v6 = [v4 setWithObjects:{v5, objc_opt_class(), 0}];
-  v39 = [v3 decodeObjectOfClasses:v6 forKey:@"AFSpeechParameters::loggingContext"];
+  v39 = [coderCopy decodeObjectOfClasses:v6 forKey:@"AFSpeechParameters::loggingContext"];
 
-  v38 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::applicationName"];
-  v37 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::profile"];
+  v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::applicationName"];
+  v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::profile"];
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = [v7 setWithObjects:{v8, v9, objc_opt_class(), 0}];
-  v36 = [v3 decodeObjectOfClasses:v10 forKey:@"AFSpeechParameters::overrides"];
+  v36 = [coderCopy decodeObjectOfClasses:v10 forKey:@"AFSpeechParameters::overrides"];
 
-  v35 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::modelOverrideURL"];
-  v32 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::originalAudioFileURL"];
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::narrowband"];
-  v34 = [v11 BOOLValue];
+  v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::modelOverrideURL"];
+  v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::originalAudioFileURL"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::narrowband"];
+  bOOLValue = [v11 BOOLValue];
 
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::detectUtterances"];
-  v33 = [v12 BOOLValue];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::detectUtterances"];
+  bOOLValue2 = [v12 BOOLValue];
 
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::censorSpeech"];
-  v31 = [v13 BOOLValue];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::censorSpeech"];
+  bOOLValue3 = [v13 BOOLValue];
 
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::farField"];
-  v15 = [v14 BOOLValue];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::farField"];
+  bOOLValue4 = [v14 BOOLValue];
 
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::secureOfflineOnly"];
-  v17 = [v16 BOOLValue];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::secureOfflineOnly"];
+  bOOLValue5 = [v16 BOOLValue];
 
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::shouldStoreAudioOnDevice"];
-  v19 = [v18 BOOLValue];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::shouldStoreAudioOnDevice"];
+  bOOLValue6 = [v18 BOOLValue];
 
-  v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::maximumRecognitionDuration"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::maximumRecognitionDuration"];
   [v20 doubleValue];
   v22 = v21;
 
-  v30 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::inputOrigin"];
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::location"];
+  v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::inputOrigin"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechParameters::location"];
   v24 = MEMORY[0x1E695DFD8];
   v25 = objc_opt_class();
   v26 = [v24 setWithObjects:{v25, objc_opt_class(), 0}];
-  v27 = [v3 decodeObjectOfClasses:v26 forKey:@"AFSpeechParameters::jitGrammar"];
+  v27 = [coderCopy decodeObjectOfClasses:v26 forKey:@"AFSpeechParameters::jitGrammar"];
 
-  BYTE5(v29) = v19;
-  BYTE4(v29) = v17;
-  BYTE3(v29) = v15;
-  BYTE2(v29) = v31;
-  BYTE1(v29) = v33;
-  LOBYTE(v29) = v34;
+  BYTE5(v29) = bOOLValue6;
+  BYTE4(v29) = bOOLValue5;
+  BYTE3(v29) = bOOLValue4;
+  BYTE2(v29) = bOOLValue3;
+  BYTE1(v29) = bOOLValue2;
+  LOBYTE(v29) = bOOLValue;
   v43 = [AFSpeechParameters initWithLanguage:"initWithLanguage:interactionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:maximumRecognitionDuration:inputOrigin:location:jitGrammar:" interactionIdentifier:v44 task:v41 loggingContext:v40 applicationName:v39 profile:v38 overrides:v37 modelOverrideURL:v22 originalAudioFileURL:v36 narrowband:v35 detectUtterances:v32 censorSpeech:v29 farField:v30 secureOfflineOnly:v23 shouldStoreAudioOnDevice:v27 maximumRecognitionDuration:? inputOrigin:? location:? jitGrammar:?];
 
   return v43;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -125,62 +125,62 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       narrowband = self->_narrowband;
       if (narrowband == [(AFSpeechParameters *)v5 narrowband]&& (detectUtterances = self->_detectUtterances, detectUtterances == [(AFSpeechParameters *)v5 detectUtterances]) && (censorSpeech = self->_censorSpeech, censorSpeech == [(AFSpeechParameters *)v5 censorSpeech]) && (farField = self->_farField, farField == [(AFSpeechParameters *)v5 farField]) && (secureOfflineOnly = self->_secureOfflineOnly, secureOfflineOnly == [(AFSpeechParameters *)v5 secureOfflineOnly]) && (shouldStoreAudioOnDevice = self->_shouldStoreAudioOnDevice, shouldStoreAudioOnDevice == [(AFSpeechParameters *)v5 shouldStoreAudioOnDevice]) && (maximumRecognitionDuration = self->_maximumRecognitionDuration, [(AFSpeechParameters *)v5 maximumRecognitionDuration], maximumRecognitionDuration == v13))
       {
-        v16 = [(AFSpeechParameters *)v5 language];
+        language = [(AFSpeechParameters *)v5 language];
         language = self->_language;
-        if (language == v16 || [(NSString *)language isEqual:v16])
+        if (language == language || [(NSString *)language isEqual:language])
         {
-          v18 = [(AFSpeechParameters *)v5 interactionIdentifier];
+          interactionIdentifier = [(AFSpeechParameters *)v5 interactionIdentifier];
           interactionIdentifier = self->_interactionIdentifier;
-          if (interactionIdentifier == v18 || [(NSString *)interactionIdentifier isEqual:v18])
+          if (interactionIdentifier == interactionIdentifier || [(NSString *)interactionIdentifier isEqual:interactionIdentifier])
           {
-            v20 = [(AFSpeechParameters *)v5 task];
+            task = [(AFSpeechParameters *)v5 task];
             task = self->_task;
-            if (task == v20 || [(NSString *)task isEqual:v20])
+            if (task == task || [(NSString *)task isEqual:task])
             {
-              v22 = [(AFSpeechParameters *)v5 loggingContext];
+              loggingContext = [(AFSpeechParameters *)v5 loggingContext];
               loggingContext = self->_loggingContext;
-              if (loggingContext == v22 || [(NSArray *)loggingContext isEqual:v22])
+              if (loggingContext == loggingContext || [(NSArray *)loggingContext isEqual:loggingContext])
               {
-                v24 = [(AFSpeechParameters *)v5 applicationName];
+                applicationName = [(AFSpeechParameters *)v5 applicationName];
                 applicationName = self->_applicationName;
-                if (applicationName == v24 || [(NSString *)applicationName isEqual:v24])
+                if (applicationName == applicationName || [(NSString *)applicationName isEqual:applicationName])
                 {
-                  v26 = [(AFSpeechParameters *)v5 profile];
+                  profile = [(AFSpeechParameters *)v5 profile];
                   profile = self->_profile;
-                  if (profile == v26 || [(NSData *)profile isEqual:v26])
+                  if (profile == profile || [(NSData *)profile isEqual:profile])
                   {
-                    v28 = [(AFSpeechParameters *)v5 overrides];
+                    overrides = [(AFSpeechParameters *)v5 overrides];
                     overrides = self->_overrides;
-                    if (overrides == v28 || [(NSDictionary *)overrides isEqual:v28])
+                    if (overrides == overrides || [(NSDictionary *)overrides isEqual:overrides])
                     {
-                      v30 = [(AFSpeechParameters *)v5 modelOverrideURL];
+                      modelOverrideURL = [(AFSpeechParameters *)v5 modelOverrideURL];
                       modelOverrideURL = self->_modelOverrideURL;
-                      v44 = v30;
-                      if (modelOverrideURL == v30 || [(NSURL *)modelOverrideURL isEqual:v30])
+                      v44 = modelOverrideURL;
+                      if (modelOverrideURL == modelOverrideURL || [(NSURL *)modelOverrideURL isEqual:modelOverrideURL])
                       {
-                        v32 = [(AFSpeechParameters *)v5 originalAudioFileURL];
+                        originalAudioFileURL = [(AFSpeechParameters *)v5 originalAudioFileURL];
                         originalAudioFileURL = self->_originalAudioFileURL;
-                        v43 = v32;
-                        if (originalAudioFileURL == v32 || [(NSURL *)originalAudioFileURL isEqual:v32])
+                        v43 = originalAudioFileURL;
+                        if (originalAudioFileURL == originalAudioFileURL || [(NSURL *)originalAudioFileURL isEqual:originalAudioFileURL])
                         {
-                          v34 = [(AFSpeechParameters *)v5 inputOrigin];
+                          inputOrigin = [(AFSpeechParameters *)v5 inputOrigin];
                           inputOrigin = self->_inputOrigin;
-                          v42 = v34;
-                          if (inputOrigin == v34 || [(NSString *)inputOrigin isEqual:v34])
+                          v42 = inputOrigin;
+                          if (inputOrigin == inputOrigin || [(NSString *)inputOrigin isEqual:inputOrigin])
                           {
-                            v36 = [(AFSpeechParameters *)v5 location];
+                            location = [(AFSpeechParameters *)v5 location];
                             location = self->_location;
-                            v41 = v36;
-                            if (location == v36 || [(CLLocation *)location isEqual:v36])
+                            v41 = location;
+                            if (location == location || [(CLLocation *)location isEqual:location])
                             {
-                              v38 = [(AFSpeechParameters *)v5 jitGrammar];
+                              jitGrammar = [(AFSpeechParameters *)v5 jitGrammar];
                               jitGrammar = self->_jitGrammar;
-                              v40 = v38;
-                              v14 = jitGrammar == v38 || [(NSArray *)jitGrammar isEqual:v38];
+                              v40 = jitGrammar;
+                              v14 = jitGrammar == jitGrammar || [(NSArray *)jitGrammar isEqual:jitGrammar];
                             }
 
                             else
@@ -296,7 +296,7 @@
   return v25 ^ v27;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v18.receiver = self;
@@ -367,55 +367,55 @@
   return v14;
 }
 
-- (AFSpeechParameters)initWithLanguage:(id)a3 interactionIdentifier:(id)a4 task:(id)a5 loggingContext:(id)a6 applicationName:(id)a7 profile:(id)a8 overrides:(id)a9 modelOverrideURL:(id)a10 originalAudioFileURL:(id)a11 narrowband:(BOOL)a12 detectUtterances:(BOOL)a13 censorSpeech:(BOOL)a14 farField:(BOOL)a15 secureOfflineOnly:(BOOL)a16 shouldStoreAudioOnDevice:(BOOL)a17 maximumRecognitionDuration:(double)a18 inputOrigin:(id)a19 location:(id)a20 jitGrammar:(id)a21
+- (AFSpeechParameters)initWithLanguage:(id)language interactionIdentifier:(id)identifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)overrides modelOverrideURL:(id)self0 originalAudioFileURL:(id)self1 narrowband:(BOOL)self2 detectUtterances:(BOOL)self3 censorSpeech:(BOOL)self4 farField:(BOOL)self5 secureOfflineOnly:(BOOL)self6 shouldStoreAudioOnDevice:(BOOL)self7 maximumRecognitionDuration:(double)self8 inputOrigin:(id)self9 location:(id)location jitGrammar:(id)grammar
 {
-  v53 = a3;
-  v27 = a4;
-  v28 = a5;
-  v29 = a6;
-  v30 = a7;
-  v31 = a8;
-  v32 = a9;
-  v33 = a10;
-  v34 = a11;
-  v35 = a19;
-  v36 = a20;
-  v37 = a21;
+  languageCopy = language;
+  identifierCopy = identifier;
+  taskCopy = task;
+  contextCopy = context;
+  nameCopy = name;
+  profileCopy = profile;
+  overridesCopy = overrides;
+  lCopy = l;
+  rLCopy = rL;
+  originCopy = origin;
+  locationCopy = location;
+  grammarCopy = grammar;
   v54[0] = MEMORY[0x1E69E9820];
   v54[1] = 3221225472;
   v54[2] = __305__AFSpeechParameters_initWithLanguage_interactionIdentifier_task_loggingContext_applicationName_profile_overrides_modelOverrideURL_originalAudioFileURL_narrowband_detectUtterances_censorSpeech_farField_secureOfflineOnly_shouldStoreAudioOnDevice_maximumRecognitionDuration_inputOrigin_location_jitGrammar___block_invoke;
   v54[3] = &unk_1E7347218;
-  v55 = v53;
-  v56 = v27;
-  v57 = v28;
-  v58 = v29;
-  v59 = v30;
-  v60 = v31;
-  v61 = v32;
-  v62 = v33;
-  v68 = a12;
-  v69 = a13;
-  v70 = a14;
-  v71 = a15;
-  v72 = a16;
-  v73 = a17;
-  v67 = a18;
-  v63 = v34;
-  v64 = v35;
-  v65 = v36;
-  v66 = v37;
-  v51 = v37;
-  v50 = v36;
-  v49 = v35;
-  v48 = v34;
-  v47 = v33;
-  v46 = v32;
-  v38 = v31;
-  v39 = v30;
-  v40 = v29;
-  v41 = v28;
-  v42 = v27;
-  v43 = v53;
+  v55 = languageCopy;
+  v56 = identifierCopy;
+  v57 = taskCopy;
+  v58 = contextCopy;
+  v59 = nameCopy;
+  v60 = profileCopy;
+  v61 = overridesCopy;
+  v62 = lCopy;
+  narrowbandCopy = narrowband;
+  utterancesCopy = utterances;
+  speechCopy = speech;
+  fieldCopy = field;
+  onlyCopy = only;
+  deviceCopy = device;
+  durationCopy = duration;
+  v63 = rLCopy;
+  v64 = originCopy;
+  v65 = locationCopy;
+  v66 = grammarCopy;
+  v51 = grammarCopy;
+  v50 = locationCopy;
+  v49 = originCopy;
+  v48 = rLCopy;
+  v47 = lCopy;
+  v46 = overridesCopy;
+  v38 = profileCopy;
+  v39 = nameCopy;
+  v40 = contextCopy;
+  v41 = taskCopy;
+  v42 = identifierCopy;
+  v43 = languageCopy;
   v44 = [(AFSpeechParameters *)self initWithBuilder:v54];
 
   return v44;
@@ -446,61 +446,61 @@ void __305__AFSpeechParameters_initWithLanguage_interactionIdentifier_task_loggi
   [v4 setJitGrammar:*(a1 + 120)];
 }
 
-- (AFSpeechParameters)initWithBuilder:(id)a3
+- (AFSpeechParameters)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v46.receiver = self;
   v46.super_class = AFSpeechParameters;
   v5 = [(AFSpeechParameters *)&v46 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFSpeechParametersMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFSpeechParametersMutation *)v7 isDirty])
     {
-      v8 = [(_AFSpeechParametersMutation *)v7 getLanguage];
-      v9 = [v8 copy];
+      getLanguage = [(_AFSpeechParametersMutation *)v7 getLanguage];
+      v9 = [getLanguage copy];
       language = v6->_language;
       v6->_language = v9;
 
-      v11 = [(_AFSpeechParametersMutation *)v7 getInteractionIdentifier];
-      v12 = [v11 copy];
+      getInteractionIdentifier = [(_AFSpeechParametersMutation *)v7 getInteractionIdentifier];
+      v12 = [getInteractionIdentifier copy];
       interactionIdentifier = v6->_interactionIdentifier;
       v6->_interactionIdentifier = v12;
 
-      v14 = [(_AFSpeechParametersMutation *)v7 getTask];
-      v15 = [v14 copy];
+      getTask = [(_AFSpeechParametersMutation *)v7 getTask];
+      v15 = [getTask copy];
       task = v6->_task;
       v6->_task = v15;
 
-      v17 = [(_AFSpeechParametersMutation *)v7 getLoggingContext];
-      v18 = [v17 copy];
+      getLoggingContext = [(_AFSpeechParametersMutation *)v7 getLoggingContext];
+      v18 = [getLoggingContext copy];
       loggingContext = v6->_loggingContext;
       v6->_loggingContext = v18;
 
-      v20 = [(_AFSpeechParametersMutation *)v7 getApplicationName];
-      v21 = [v20 copy];
+      getApplicationName = [(_AFSpeechParametersMutation *)v7 getApplicationName];
+      v21 = [getApplicationName copy];
       applicationName = v6->_applicationName;
       v6->_applicationName = v21;
 
-      v23 = [(_AFSpeechParametersMutation *)v7 getProfile];
-      v24 = [v23 copy];
+      getProfile = [(_AFSpeechParametersMutation *)v7 getProfile];
+      v24 = [getProfile copy];
       profile = v6->_profile;
       v6->_profile = v24;
 
-      v26 = [(_AFSpeechParametersMutation *)v7 getOverrides];
-      v27 = [v26 copy];
+      getOverrides = [(_AFSpeechParametersMutation *)v7 getOverrides];
+      v27 = [getOverrides copy];
       overrides = v6->_overrides;
       v6->_overrides = v27;
 
-      v29 = [(_AFSpeechParametersMutation *)v7 getModelOverrideURL];
-      v30 = [v29 copy];
+      getModelOverrideURL = [(_AFSpeechParametersMutation *)v7 getModelOverrideURL];
+      v30 = [getModelOverrideURL copy];
       modelOverrideURL = v6->_modelOverrideURL;
       v6->_modelOverrideURL = v30;
 
-      v32 = [(_AFSpeechParametersMutation *)v7 getOriginalAudioFileURL];
-      v33 = [v32 copy];
+      getOriginalAudioFileURL = [(_AFSpeechParametersMutation *)v7 getOriginalAudioFileURL];
+      v33 = [getOriginalAudioFileURL copy];
       originalAudioFileURL = v6->_originalAudioFileURL;
       v6->_originalAudioFileURL = v33;
 
@@ -512,18 +512,18 @@ void __305__AFSpeechParameters_initWithLanguage_interactionIdentifier_task_loggi
       v6->_shouldStoreAudioOnDevice = [(_AFSpeechParametersMutation *)v7 getShouldStoreAudioOnDevice];
       [(_AFSpeechParametersMutation *)v7 getMaximumRecognitionDuration];
       v6->_maximumRecognitionDuration = v35;
-      v36 = [(_AFSpeechParametersMutation *)v7 getInputOrigin];
-      v37 = [v36 copy];
+      getInputOrigin = [(_AFSpeechParametersMutation *)v7 getInputOrigin];
+      v37 = [getInputOrigin copy];
       inputOrigin = v6->_inputOrigin;
       v6->_inputOrigin = v37;
 
-      v39 = [(_AFSpeechParametersMutation *)v7 getLocation];
-      v40 = [v39 copy];
+      getLocation = [(_AFSpeechParametersMutation *)v7 getLocation];
+      v40 = [getLocation copy];
       location = v6->_location;
       v6->_location = v40;
 
-      v42 = [(_AFSpeechParametersMutation *)v7 getJitGrammar];
-      v43 = [v42 copy];
+      getJitGrammar = [(_AFSpeechParametersMutation *)v7 getJitGrammar];
+      v43 = [getJitGrammar copy];
       jitGrammar = v6->_jitGrammar;
       v6->_jitGrammar = v43;
     }
@@ -532,66 +532,66 @@ void __305__AFSpeechParameters_initWithLanguage_interactionIdentifier_task_loggi
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFSpeechParametersMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFSpeechParametersMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFSpeechParameters);
-      v7 = [(_AFSpeechParametersMutation *)v5 getLanguage];
-      v8 = [v7 copy];
+      getLanguage = [(_AFSpeechParametersMutation *)v5 getLanguage];
+      v8 = [getLanguage copy];
       language = v6->_language;
       v6->_language = v8;
 
-      v10 = [(_AFSpeechParametersMutation *)v5 getInteractionIdentifier];
-      v11 = [v10 copy];
+      getInteractionIdentifier = [(_AFSpeechParametersMutation *)v5 getInteractionIdentifier];
+      v11 = [getInteractionIdentifier copy];
       interactionIdentifier = v6->_interactionIdentifier;
       v6->_interactionIdentifier = v11;
 
-      v13 = [(_AFSpeechParametersMutation *)v5 getTask];
-      v14 = [v13 copy];
+      getTask = [(_AFSpeechParametersMutation *)v5 getTask];
+      v14 = [getTask copy];
       task = v6->_task;
       v6->_task = v14;
 
-      v16 = [(_AFSpeechParametersMutation *)v5 getLoggingContext];
-      v17 = [v16 copy];
+      getLoggingContext = [(_AFSpeechParametersMutation *)v5 getLoggingContext];
+      v17 = [getLoggingContext copy];
       loggingContext = v6->_loggingContext;
       v6->_loggingContext = v17;
 
-      v19 = [(_AFSpeechParametersMutation *)v5 getApplicationName];
-      v20 = [v19 copy];
+      getApplicationName = [(_AFSpeechParametersMutation *)v5 getApplicationName];
+      v20 = [getApplicationName copy];
       applicationName = v6->_applicationName;
       v6->_applicationName = v20;
 
-      v22 = [(_AFSpeechParametersMutation *)v5 getProfile];
-      v23 = [v22 copy];
+      getProfile = [(_AFSpeechParametersMutation *)v5 getProfile];
+      v23 = [getProfile copy];
       profile = v6->_profile;
       v6->_profile = v23;
 
-      v25 = [(_AFSpeechParametersMutation *)v5 getOverrides];
-      v26 = [v25 copy];
+      getOverrides = [(_AFSpeechParametersMutation *)v5 getOverrides];
+      v26 = [getOverrides copy];
       overrides = v6->_overrides;
       v6->_overrides = v26;
 
-      v28 = [(_AFSpeechParametersMutation *)v5 getModelOverrideURL];
-      v29 = [v28 copy];
+      getModelOverrideURL = [(_AFSpeechParametersMutation *)v5 getModelOverrideURL];
+      v29 = [getModelOverrideURL copy];
       modelOverrideURL = v6->_modelOverrideURL;
       v6->_modelOverrideURL = v29;
 
-      v31 = [(_AFSpeechParametersMutation *)v5 getOriginalAudioFileURL];
-      v32 = [v31 copy];
+      getOriginalAudioFileURL = [(_AFSpeechParametersMutation *)v5 getOriginalAudioFileURL];
+      v32 = [getOriginalAudioFileURL copy];
       originalAudioFileURL = v6->_originalAudioFileURL;
       v6->_originalAudioFileURL = v32;
 
@@ -603,18 +603,18 @@ void __305__AFSpeechParameters_initWithLanguage_interactionIdentifier_task_loggi
       v6->_shouldStoreAudioOnDevice = [(_AFSpeechParametersMutation *)v5 getShouldStoreAudioOnDevice];
       [(_AFSpeechParametersMutation *)v5 getMaximumRecognitionDuration];
       v6->_maximumRecognitionDuration = v34;
-      v35 = [(_AFSpeechParametersMutation *)v5 getInputOrigin];
-      v36 = [v35 copy];
+      getInputOrigin = [(_AFSpeechParametersMutation *)v5 getInputOrigin];
+      v36 = [getInputOrigin copy];
       inputOrigin = v6->_inputOrigin;
       v6->_inputOrigin = v36;
 
-      v38 = [(_AFSpeechParametersMutation *)v5 getLocation];
-      v39 = [v38 copy];
+      getLocation = [(_AFSpeechParametersMutation *)v5 getLocation];
+      v39 = [getLocation copy];
       location = v6->_location;
       v6->_location = v39;
 
-      v41 = [(_AFSpeechParametersMutation *)v5 getJitGrammar];
-      v42 = [v41 copy];
+      getJitGrammar = [(_AFSpeechParametersMutation *)v5 getJitGrammar];
+      v42 = [getJitGrammar copy];
       jitGrammar = v6->_jitGrammar;
       v6->_jitGrammar = v42;
     }

@@ -1,18 +1,18 @@
 @interface LCSSessionFinalizer
-+ (BOOL)removeContentsOfExtensionDataContainerForBundleProvider:(id)a3;
-+ (id)finalizeTemporarySessionAtURL:(id)a3 forBundleProvider:(id)a4;
++ (BOOL)removeContentsOfExtensionDataContainerForBundleProvider:(id)provider;
++ (id)finalizeTemporarySessionAtURL:(id)l forBundleProvider:(id)provider;
 @end
 
 @implementation LCSSessionFinalizer
 
-+ (id)finalizeTemporarySessionAtURL:(id)a3 forBundleProvider:(id)a4
++ (id)finalizeTemporarySessionAtURL:(id)l forBundleProvider:(id)provider
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  lCopy = l;
+  providerCopy = provider;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v42 = 0;
-  v8 = [v7 contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:0 error:&v42];
+  v8 = [defaultManager contentsOfDirectoryAtURL:lCopy includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:0 error:&v42];
   v9 = v42;
   v10 = 0;
   if ([v8 count])
@@ -27,8 +27,8 @@
 
   if (!v11)
   {
-    v12 = [v5 pathComponents];
-    if ([v12 count] < 2)
+    pathComponents = [lCopy pathComponents];
+    if ([pathComponents count] < 2)
     {
       v10 = 0;
 LABEL_43:
@@ -36,14 +36,14 @@ LABEL_43:
       goto LABEL_44;
     }
 
-    v37 = [v12 objectAtIndex:{objc_msgSend(v12, "count") - 2}];
+    v37 = [pathComponents objectAtIndex:{objc_msgSend(pathComponents, "count") - 2}];
     v13 = [[LCSSessionURLBuilder alloc] initWithTypeIdentifier:v37];
-    v14 = [(LCSSessionURLBuilder *)v13 finalizationStagingSessionURLForBundleProvider:v6 fromTemporaryURL:v5];
+    v14 = [(LCSSessionURLBuilder *)v13 finalizationStagingSessionURLForBundleProvider:providerCopy fromTemporaryURL:lCopy];
     v15 = v14;
     if (!v14)
     {
-      v16 = LCSLogCommon();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      uRLByDeletingLastPathComponent = LCSLogCommon();
+      if (os_log_type_enabled(uRLByDeletingLastPathComponent, OS_LOG_TYPE_ERROR))
       {
         +[LCSSessionFinalizer finalizeTemporarySessionAtURL:forBundleProvider:];
       }
@@ -52,9 +52,9 @@ LABEL_43:
       goto LABEL_42;
     }
 
-    v16 = [v14 URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent = [v14 URLByDeletingLastPathComponent];
     v41 = 0;
-    v17 = [v7 createDirectoryAtURL:v16 withIntermediateDirectories:1 attributes:0 error:&v41];
+    v17 = [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v41];
     v36 = v41;
     if ((v17 & 1) == 0)
     {
@@ -69,7 +69,7 @@ LABEL_43:
     }
 
     v40 = 0;
-    v18 = [v7 copyItemAtURL:v5 toURL:v15 error:&v40];
+    v18 = [defaultManager copyItemAtURL:lCopy toURL:v15 error:&v40];
     v35 = v40;
     if ((v18 & 1) == 0)
     {
@@ -83,7 +83,7 @@ LABEL_43:
       goto LABEL_40;
     }
 
-    v19 = [(LCSSessionURLBuilder *)v13 finalizedSessionURLForBundleProvider:v6 fromSessionURL:v15];
+    v19 = [(LCSSessionURLBuilder *)v13 finalizedSessionURLForBundleProvider:providerCopy fromSessionURL:v15];
     v34 = v19;
     if (!v19)
     {
@@ -94,7 +94,7 @@ LABEL_43:
       }
 
       v39 = 0;
-      v33 = [v7 removeItemAtURL:v15 error:&v39];
+      v33 = [defaultManager removeItemAtURL:v15 error:&v39];
       v24 = v39;
       if (v33)
       {
@@ -124,12 +124,12 @@ LABEL_38:
 
     [v19 URLByDeletingLastPathComponent];
     v32 = v38[1] = 0;
-    v20 = [v7 createDirectoryAtURL:? withIntermediateDirectories:? attributes:? error:?];
+    v20 = [defaultManager createDirectoryAtURL:? withIntermediateDirectories:? attributes:? error:?];
     v31 = 0;
     if (v20)
     {
       v38[0] = 0;
-      v21 = [v7 moveItemAtURL:v15 toURL:v34 error:v38];
+      v21 = [defaultManager moveItemAtURL:v15 toURL:v34 error:v38];
       v30 = v38[0];
       v22 = LCSLogCommon();
       if (v21)
@@ -185,12 +185,12 @@ LABEL_44:
   return v10;
 }
 
-+ (BOOL)removeContentsOfExtensionDataContainerForBundleProvider:(id)a3
++ (BOOL)removeContentsOfExtensionDataContainerForBundleProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = MEMORY[0x277D46FA0];
-  v5 = [v3 bundleIdentifier];
-  v6 = [v4 predicateMatchingBundleIdentifier:v5];
+  bundleIdentifier = [providerCopy bundleIdentifier];
+  v6 = [v4 predicateMatchingBundleIdentifier:bundleIdentifier];
 
   v7 = [objc_alloc(MEMORY[0x277D47010]) initWithExplanation:@"LockedContentServices deleting contents of extension data container"];
   v8 = [objc_alloc(MEMORY[0x277D47020]) initWithPredicate:v6 context:v7];
@@ -199,8 +199,8 @@ LABEL_44:
   v10 = v17;
   if (v9)
   {
-    v11 = [v3 bundleIdentifier];
-    [v11 cStringUsingEncoding:4];
+    bundleIdentifier2 = [providerCopy bundleIdentifier];
+    [bundleIdentifier2 cStringUsingEncoding:4];
     v12 = container_delete_all_data_container_content_for_current_user();
 
     v13 = v12 == 1;
@@ -221,7 +221,7 @@ LABEL_44:
     v15 = LCSLogCommon();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [(LCSSessionFinalizer *)v3 removeContentsOfExtensionDataContainerForBundleProvider:v10, v15];
+      [(LCSSessionFinalizer *)providerCopy removeContentsOfExtensionDataContainerForBundleProvider:v10, v15];
     }
 
     v13 = 0;

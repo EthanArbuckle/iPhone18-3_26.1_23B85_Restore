@@ -2,12 +2,12 @@
 - (CAFCarConfiguration)currentCarConfiguration;
 - (CAFDStateCaptureManager)init;
 - (CAFDStateCaptureManagerDelegate)delegate;
-- (id)accessoryConfigForPluginID:(id)a3 instanceID:(id)a4;
+- (id)accessoryConfigForPluginID:(id)d instanceID:(id)iD;
 - (id)carConfigSummary;
-- (id)stateCaptureForPluginID:(id)a3;
-- (id)valueCaptureIIDsFromAccessoryConfig:(id)a3;
+- (id)stateCaptureForPluginID:(id)d;
+- (id)valueCaptureIIDsFromAccessoryConfig:(id)config;
 - (void)carConfigDidUpdate;
-- (void)setCurrentCarConfiguration:(id)a3;
+- (void)setCurrentCarConfiguration:(id)configuration;
 @end
 
 @implementation CAFDStateCaptureManager
@@ -145,18 +145,18 @@ __CFString *__31__CAFDStateCaptureManager_init__block_invoke_2(uint64_t a1)
   return v13;
 }
 
-- (void)setCurrentCarConfiguration:(id)a3
+- (void)setCurrentCarConfiguration:(id)configuration
 {
-  objc_storeWeak(&self->_currentCarConfiguration, a3);
+  objc_storeWeak(&self->_currentCarConfiguration, configuration);
 
   [(CAFDStateCaptureManager *)self carConfigDidUpdate];
 }
 
 - (void)carConfigDidUpdate
 {
-  v3 = [a1 pluginStateCaptures];
-  v4 = [v3 allKeys];
-  v5 = [v4 componentsJoinedByString:{@", "}];
+  pluginStateCaptures = [self pluginStateCaptures];
+  allKeys = [pluginStateCaptures allKeys];
+  v5 = [allKeys componentsJoinedByString:{@", "}];
   v6 = 136315394;
   v7 = "[CAFDStateCaptureManager carConfigDidUpdate]";
   v8 = 2112;
@@ -164,14 +164,14 @@ __CFString *__31__CAFDStateCaptureManager_init__block_invoke_2(uint64_t a1)
   _os_log_debug_impl(&_mh_execute_header, a2, OS_LOG_TYPE_DEBUG, "%s fired, capturing [%@]", &v6, 0x16u);
 }
 
-- (id)stateCaptureForPluginID:(id)a3
+- (id)stateCaptureForPluginID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_opt_new();
   objc_opt_class();
-  v6 = [(CAFDStateCaptureManager *)self currentCarConfiguration];
-  v7 = [v6 pluginConfigs];
-  v8 = [v7 objectForKeyedSubscript:v4];
+  currentCarConfiguration = [(CAFDStateCaptureManager *)self currentCarConfiguration];
+  pluginConfigs = [currentCarConfiguration pluginConfigs];
+  v8 = [pluginConfigs objectForKeyedSubscript:dCopy];
   v9 = [v8 objectForKeyedSubscript:kCarDataConfigurationAccessoriesKey];
   if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
   {
@@ -188,10 +188,10 @@ __CFString *__31__CAFDStateCaptureManager_init__block_invoke_2(uint64_t a1)
   v16[2] = __51__CAFDStateCaptureManager_stateCaptureForPluginID___block_invoke;
   v16[3] = &unk_100055250;
   v16[4] = self;
-  v17 = v4;
+  v17 = dCopy;
   v11 = v5;
   v18 = v11;
-  v12 = v4;
+  v12 = dCopy;
   [v10 enumerateObjectsUsingBlock:v16];
   v13 = v18;
   v14 = v11;
@@ -301,14 +301,14 @@ id __51__CAFDStateCaptureManager_stateCaptureForPluginID___block_invoke_3(uint64
   return v7;
 }
 
-- (id)accessoryConfigForPluginID:(id)a3 instanceID:(id)a4
+- (id)accessoryConfigForPluginID:(id)d instanceID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CAFDStateCaptureManager *)self accessoryConfigs];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  iDCopy = iD;
+  dCopy = d;
+  accessoryConfigs = [(CAFDStateCaptureManager *)self accessoryConfigs];
+  v9 = [accessoryConfigs objectForKeyedSubscript:dCopy];
 
-  v10 = [v9 objectForKeyedSubscript:v6];
+  v10 = [v9 objectForKeyedSubscript:iDCopy];
 
   return v10;
 }
@@ -316,15 +316,15 @@ id __51__CAFDStateCaptureManager_stateCaptureForPluginID___block_invoke_3(uint64
 - (id)carConfigSummary
 {
   v3 = objc_opt_new();
-  v4 = [(CAFDStateCaptureManager *)self currentCarConfiguration];
-  v5 = [v4 pluginConfigs];
+  currentCarConfiguration = [(CAFDStateCaptureManager *)self currentCarConfiguration];
+  pluginConfigs = [currentCarConfiguration pluginConfigs];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __43__CAFDStateCaptureManager_carConfigSummary__block_invoke;
   v8[3] = &unk_1000552A0;
   v6 = v3;
   v9 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v8];
+  [pluginConfigs enumerateKeysAndObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -514,12 +514,12 @@ void __43__CAFDStateCaptureManager_carConfigSummary__block_invoke_4(uint64_t a1,
   [*(a1 + 32) setObject:v8 forKeyedSubscript:v7];
 }
 
-- (id)valueCaptureIIDsFromAccessoryConfig:(id)a3
+- (id)valueCaptureIIDsFromAccessoryConfig:(id)config
 {
-  v3 = a3;
+  configCopy = config;
   v4 = objc_opt_new();
   objc_opt_class();
-  v5 = [v3 objectForKeyedSubscript:kCarDataConfigurationServicesKey];
+  v5 = [configCopy objectForKeyedSubscript:kCarDataConfigurationServicesKey];
 
   v6 = v5;
   if (v6 && (objc_opt_isKindOfClass() & 1) != 0)

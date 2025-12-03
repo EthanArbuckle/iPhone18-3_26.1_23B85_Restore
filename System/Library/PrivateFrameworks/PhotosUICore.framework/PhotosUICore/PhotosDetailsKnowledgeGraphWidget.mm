@@ -4,7 +4,7 @@
 - (PXWidgetInteractionDelegate)widgetInteractionDelegate;
 - (_TtC12PhotosUICore33PhotosDetailsKnowledgeGraphWidget)init;
 - (int64_t)contentLayoutStyle;
-- (void)setContext:(id)a3;
+- (void)setContext:(id)context;
 @end
 
 @implementation PhotosDetailsKnowledgeGraphWidget
@@ -19,17 +19,17 @@
 
 - (PXPhotosDetailsContext)context
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A4110EF8();
 
   return v3;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A4273264(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1A4273264(contextCopy);
 }
 
 - (NSString)snappableWidgetIdentifier
@@ -43,7 +43,7 @@
 {
   v2 = MEMORY[0x1E69E7D40];
   v3 = *((*MEMORY[0x1E69E7D40] & *self) + 0x168);
-  v4 = self;
+  selfCopy = self;
   if (v3())
   {
 
@@ -52,7 +52,7 @@
 
   else
   {
-    v6 = (*((*v2 & *v4) + 0x108))();
+    v6 = (*((*v2 & *selfCopy) + 0x108))();
     v7 = [v6 sizeClass] != 2;
 
     return 2 * v7;

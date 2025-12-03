@@ -1,17 +1,17 @@
 @interface SCMLHandler
-+ (BOOL)isImageSensitiveForLabel:(id)a3 confidenceScore:(double)a4 classificationMode:(unint64_t)a5;
-+ (BOOL)isImageSensitiveForLabel:(id)a3 confidenceScore:(double)a4 classificationMode:(unint64_t)a5 modelVersion:(id)a6 error:(id *)a7;
++ (BOOL)isImageSensitiveForLabel:(id)label confidenceScore:(double)score classificationMode:(unint64_t)mode;
++ (BOOL)isImageSensitiveForLabel:(id)label confidenceScore:(double)score classificationMode:(unint64_t)mode modelVersion:(id)version error:(id *)error;
 + (BOOL)supportsANE;
-- (SCMLHandler)initWithOptions:(id)a3 error:(id *)a4;
-- (SCMLHandler)initWithOptionsInternal:(id)a3 error:(id *)a4;
-- (id)analyzeImage:(CGImage *)a3 error:(id *)a4;
-- (id)analyzePixelBuffer:(__CVBuffer *)a3 error:(id *)a4;
-- (id)classifyPixelBuffer:(__CVBuffer *)a3 stagedText:(id)a4 inConversationWithIdentifier:(id)a5 error:(id *)a6;
-- (id)classifyPixelBuffer:(__CVBuffer *)a3 startDate:(id)a4 endDate:(id)a5 stagedText:(id)a6 inConversationWithIdentifier:(id)a7 error:(id *)a8;
-- (id)getOperatingPointDataForClassName:(id)a3 error:(id *)a4;
+- (SCMLHandler)initWithOptions:(id)options error:(id *)error;
+- (SCMLHandler)initWithOptionsInternal:(id)internal error:(id *)error;
+- (id)analyzeImage:(CGImage *)image error:(id *)error;
+- (id)analyzePixelBuffer:(__CVBuffer *)buffer error:(id *)error;
+- (id)classifyPixelBuffer:(__CVBuffer *)buffer stagedText:(id)text inConversationWithIdentifier:(id)identifier error:(id *)error;
+- (id)classifyPixelBuffer:(__CVBuffer *)buffer startDate:(id)date endDate:(id)endDate stagedText:(id)text inConversationWithIdentifier:(id)identifier error:(id *)error;
+- (id)getOperatingPointDataForClassName:(id)name error:(id *)error;
 - (id)performanceStatistics;
-- (int64_t)classifyImage:(CGImage *)a3 error:(id *)a4;
-- (int64_t)classifyPixelBuffer:(__CVBuffer *)a3 error:(id *)a4;
+- (int64_t)classifyImage:(CGImage *)image error:(id *)error;
+- (int64_t)classifyPixelBuffer:(__CVBuffer *)buffer error:(id *)error;
 - (uint64_t)analyzeImage:error:;
 - (uint64_t)analyzePixelBuffer:error:;
 - (uint64_t)classifyImage:error:;
@@ -26,10 +26,10 @@
 
 @implementation SCMLHandler
 
-- (SCMLHandler)initWithOptions:(id)a3 error:(id *)a4
+- (SCMLHandler)initWithOptions:(id)options error:(id *)error
 {
   v29[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  optionsCopy = options;
   scml::SignpostInterval::SignpostInterval(&v27);
   v7 = v27;
   v8 = v7;
@@ -53,7 +53,7 @@
   }
 
   v24 = 0;
-  v11 = [(SCMLHandler *)self initWithOptionsInternal:v6 error:&v24];
+  v11 = [(SCMLHandler *)self initWithOptionsInternal:optionsCopy error:&v24];
   v12 = v24;
   if (v11)
   {
@@ -73,10 +73,10 @@
       [(SCMLHandler *)v12 initWithOptions:v14 error:v15, v16, v17, v18, v19, v20];
     }
 
-    if (a4)
+    if (error)
     {
       v21 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -85,12 +85,12 @@
   return v11;
 }
 
-- (SCMLHandler)initWithOptionsInternal:(id)a3 error:(id *)a4
+- (SCMLHandler)initWithOptionsInternal:(id)internal error:(id *)error
 {
-  v7 = a3;
-  if (a4)
+  internalCopy = internal;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v48.receiver = self;
@@ -102,12 +102,12 @@
     goto LABEL_21;
   }
 
-  objc_storeStrong(&v8->_options, a3);
+  objc_storeStrong(&v8->_options, internal);
   v10 = dispatch_queue_create("comm_safety_handler", 0);
   clientQueue = v9->_clientQueue;
   v9->_clientQueue = v10;
 
-  v12 = [[SCMLPerformance alloc] initWithOptions:v7];
+  v12 = [[SCMLPerformance alloc] initWithOptions:internalCopy];
   perfResults = v9->_perfResults;
   v9->_perfResults = v12;
 
@@ -116,16 +116,16 @@
   v45 = &v44;
   v46 = 0x2020000000;
   v47 = 1;
-  v15 = [v7 objectForKey:SCMLUseImageAnalyzer[0]];
+  v15 = [internalCopy objectForKey:SCMLUseImageAnalyzer[0]];
 
   if (v15)
   {
-    v16 = [v7 objectForKeyedSubscript:SCMLUseImageAnalyzer[0]];
+    v16 = [internalCopy objectForKeyedSubscript:SCMLUseImageAnalyzer[0]];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
     {
-      v18 = [v7 objectForKeyedSubscript:SCMLUseImageAnalyzer[0]];
+      v18 = [internalCopy objectForKeyedSubscript:SCMLUseImageAnalyzer[0]];
     }
 
     else
@@ -133,8 +133,8 @@
       v18 = 0;
     }
 
-    v19 = [v18 BOOLValue];
-    *(v45 + 24) = v19;
+    bOOLValue = [v18 BOOLValue];
+    *(v45 + 24) = bOOLValue;
     if (isKindOfClass)
     {
     }
@@ -143,12 +143,12 @@
   v42[0] = 0;
   v42[1] = v42;
   v42[2] = 0x2020000000;
-  v20 = [v7 objectForKeyedSubscript:SCMLUseTextAnalyzer[0]];
+  v20 = [internalCopy objectForKeyedSubscript:SCMLUseTextAnalyzer[0]];
   objc_opt_class();
   v21 = objc_opt_isKindOfClass();
   if (v21)
   {
-    v22 = [v7 objectForKeyedSubscript:SCMLUseTextAnalyzer[0]];
+    v22 = [internalCopy objectForKeyedSubscript:SCMLUseTextAnalyzer[0]];
   }
 
   else
@@ -156,19 +156,19 @@
     v22 = 0;
   }
 
-  v23 = [v22 BOOLValue];
+  bOOLValue2 = [v22 BOOLValue];
   if (v21)
   {
   }
 
-  v43 = v23;
+  v43 = bOOLValue2;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
   v39 = __Block_byref_object_copy__3;
   v40 = __Block_byref_object_dispose__3;
   v41 = 0;
-  v24 = [(SCMLHandler *)v9 perfResults];
+  perfResults = [(SCMLHandler *)v9 perfResults];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __45__SCMLHandler_initWithOptionsInternal_error___block_invoke;
@@ -179,13 +179,13 @@
   v32 = v9;
   v34 = &v36;
   v35 = v42;
-  [v24 run:@"Create" block:v30];
+  [perfResults run:@"Create" block:v30];
 
   v26 = v37[5];
-  if (a4 && v26)
+  if (error && v26)
   {
     v27 = v26;
-    *a4 = v26;
+    *error = v26;
   }
 
   _Block_object_dispose(&v36, 8);
@@ -240,7 +240,7 @@ void __45__SCMLHandler_initWithOptionsInternal_error___block_invoke(uint64_t a1)
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)analyzeImage:(CGImage *)a3 error:(id *)a4
+- (id)analyzeImage:(CGImage *)image error:(id *)error
 {
   v33[4] = *MEMORY[0x1E69E9840];
   scml::SignpostInterval::SignpostInterval(&v31);
@@ -278,7 +278,7 @@ void __45__SCMLHandler_initWithOptionsInternal_error___block_invoke(uint64_t a1)
   v22[3] = __Block_byref_object_dispose__3;
   v23 = 0;
   v11 = objc_autoreleasePoolPush();
-  v12 = [(SCMLHandler *)self clientQueue];
+  clientQueue = [(SCMLHandler *)self clientQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __34__SCMLHandler_analyzeImage_error___block_invoke;
@@ -286,8 +286,8 @@ void __45__SCMLHandler_initWithOptionsInternal_error___block_invoke(uint64_t a1)
   block[4] = self;
   block[5] = buf;
   block[6] = &v21;
-  block[7] = a3;
-  dispatch_sync(v12, block);
+  block[7] = image;
+  dispatch_sync(clientQueue, block);
 
   objc_autoreleasePoolPop(v11);
   if (*(v25 + 5))
@@ -308,12 +308,12 @@ void __45__SCMLHandler_initWithOptionsInternal_error___block_invoke(uint64_t a1)
       [SCMLHandler analyzeImage:v22 error:?];
     }
 
-    if (a4)
+    if (error)
     {
       v15 = *(v22[0] + 40);
       if (v15)
       {
-        *a4 = v15;
+        *error = v15;
       }
     }
   }
@@ -341,7 +341,7 @@ void __34__SCMLHandler_analyzeImage_error___block_invoke(uint64_t a1)
   *(v6 + 40) = v5;
 }
 
-- (int64_t)classifyImage:(CGImage *)a3 error:(id *)a4
+- (int64_t)classifyImage:(CGImage *)image error:(id *)error
 {
   v30[4] = *MEMORY[0x1E69E9840];
   scml::SignpostInterval::SignpostInterval(&v28);
@@ -366,9 +366,9 @@ void __34__SCMLHandler_analyzeImage_error___block_invoke(uint64_t a1)
     _os_log_impl(&dword_1B8A3C000, v10, OS_LOG_TYPE_DEFAULT, "Begin SCMLHandler classifyImage", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v23 = 0;
@@ -382,7 +382,7 @@ void __34__SCMLHandler_analyzeImage_error___block_invoke(uint64_t a1)
   v21[3] = __Block_byref_object_dispose__3;
   v22 = 0;
   v11 = objc_autoreleasePoolPush();
-  v12 = [(SCMLHandler *)self clientQueue];
+  clientQueue = [(SCMLHandler *)self clientQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __35__SCMLHandler_classifyImage_error___block_invoke;
@@ -390,8 +390,8 @@ void __34__SCMLHandler_analyzeImage_error___block_invoke(uint64_t a1)
   block[4] = self;
   block[5] = buf;
   block[6] = &v23;
-  block[7] = a3;
-  dispatch_sync(v12, block);
+  block[7] = image;
+  dispatch_sync(clientQueue, block);
 
   objc_autoreleasePoolPop(v11);
   if (*(v21[0] + 40))
@@ -402,9 +402,9 @@ void __34__SCMLHandler_analyzeImage_error___block_invoke(uint64_t a1)
       [SCMLHandler classifyImage:v21 error:?];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = *(v21[0] + 40);
+      *error = *(v21[0] + 40);
     }
   }
 
@@ -443,7 +443,7 @@ void __35__SCMLHandler_classifyImage_error___block_invoke(uint64_t a1)
   }
 }
 
-- (id)analyzePixelBuffer:(__CVBuffer *)a3 error:(id *)a4
+- (id)analyzePixelBuffer:(__CVBuffer *)buffer error:(id *)error
 {
   v33[4] = *MEMORY[0x1E69E9840];
   scml::SignpostInterval::SignpostInterval(&v31);
@@ -481,7 +481,7 @@ void __35__SCMLHandler_classifyImage_error___block_invoke(uint64_t a1)
   v22[3] = __Block_byref_object_dispose__3;
   v23 = 0;
   v11 = objc_autoreleasePoolPush();
-  v12 = [(SCMLHandler *)self clientQueue];
+  clientQueue = [(SCMLHandler *)self clientQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__SCMLHandler_analyzePixelBuffer_error___block_invoke;
@@ -489,8 +489,8 @@ void __35__SCMLHandler_classifyImage_error___block_invoke(uint64_t a1)
   block[4] = self;
   block[5] = buf;
   block[6] = &v21;
-  block[7] = a3;
-  dispatch_sync(v12, block);
+  block[7] = buffer;
+  dispatch_sync(clientQueue, block);
 
   objc_autoreleasePoolPop(v11);
   if (*(v25 + 5))
@@ -511,12 +511,12 @@ void __35__SCMLHandler_classifyImage_error___block_invoke(uint64_t a1)
       [SCMLHandler analyzePixelBuffer:v22 error:?];
     }
 
-    if (a4)
+    if (error)
     {
       v15 = *(v22[0] + 40);
       if (v15)
       {
-        *a4 = v15;
+        *error = v15;
       }
     }
   }
@@ -544,7 +544,7 @@ void __40__SCMLHandler_analyzePixelBuffer_error___block_invoke(uint64_t a1)
   *(v6 + 40) = v5;
 }
 
-- (int64_t)classifyPixelBuffer:(__CVBuffer *)a3 error:(id *)a4
+- (int64_t)classifyPixelBuffer:(__CVBuffer *)buffer error:(id *)error
 {
   v30[4] = *MEMORY[0x1E69E9840];
   scml::SignpostInterval::SignpostInterval(&v28);
@@ -569,9 +569,9 @@ void __40__SCMLHandler_analyzePixelBuffer_error___block_invoke(uint64_t a1)
     _os_log_impl(&dword_1B8A3C000, v10, OS_LOG_TYPE_DEFAULT, "Begin SCMLHandler classifyPixelBuffer", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v23 = 0;
@@ -585,7 +585,7 @@ void __40__SCMLHandler_analyzePixelBuffer_error___block_invoke(uint64_t a1)
   v21[3] = __Block_byref_object_dispose__3;
   v22 = 0;
   v11 = objc_autoreleasePoolPush();
-  v12 = [(SCMLHandler *)self clientQueue];
+  clientQueue = [(SCMLHandler *)self clientQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__SCMLHandler_classifyPixelBuffer_error___block_invoke;
@@ -593,8 +593,8 @@ void __40__SCMLHandler_analyzePixelBuffer_error___block_invoke(uint64_t a1)
   block[4] = self;
   block[5] = buf;
   block[6] = &v23;
-  block[7] = a3;
-  dispatch_sync(v12, block);
+  block[7] = buffer;
+  dispatch_sync(clientQueue, block);
 
   objc_autoreleasePoolPop(v11);
   if (*(v21[0] + 40))
@@ -605,9 +605,9 @@ void __40__SCMLHandler_analyzePixelBuffer_error___block_invoke(uint64_t a1)
       [SCMLHandler classifyPixelBuffer:v21 error:?];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = *(v21[0] + 40);
+      *error = *(v21[0] + 40);
     }
   }
 
@@ -646,12 +646,12 @@ void __41__SCMLHandler_classifyPixelBuffer_error___block_invoke(uint64_t a1)
   }
 }
 
-- (id)getOperatingPointDataForClassName:(id)a3 error:(id *)a4
+- (id)getOperatingPointDataForClassName:(id)name error:(id *)error
 {
-  v6 = a3;
-  if (a4)
+  nameCopy = name;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v23 = 0;
@@ -667,24 +667,24 @@ void __41__SCMLHandler_classifyPixelBuffer_error___block_invoke(uint64_t a1)
   v21 = __Block_byref_object_dispose__3;
   v22 = 0;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(SCMLHandler *)self clientQueue];
+  clientQueue = [(SCMLHandler *)self clientQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__SCMLHandler_getOperatingPointDataForClassName_error___block_invoke;
   block[3] = &unk_1E7EB3F38;
   v15 = &v23;
-  v9 = v6;
+  v9 = nameCopy;
   v14 = v9;
   v16 = &v17;
-  dispatch_sync(v8, block);
+  dispatch_sync(clientQueue, block);
 
   objc_autoreleasePoolPop(v7);
-  if (a4)
+  if (error)
   {
     v10 = v18[5];
     if (v10)
     {
-      *a4 = v10;
+      *error = v10;
     }
   }
 
@@ -719,14 +719,14 @@ void __55__SCMLHandler_getOperatingPointDataForClassName_error___block_invoke(vo
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)classifyPixelBuffer:(__CVBuffer *)a3 stagedText:(id)a4 inConversationWithIdentifier:(id)a5 error:(id *)a6
+- (id)classifyPixelBuffer:(__CVBuffer *)buffer stagedText:(id)text inConversationWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = [(SCMLHandler *)self classifyPixelBuffer:a3 startDate:0 endDate:0 stagedText:a4 inConversationWithIdentifier:a5 error:a6];
+  v6 = [(SCMLHandler *)self classifyPixelBuffer:buffer startDate:0 endDate:0 stagedText:text inConversationWithIdentifier:identifier error:error];
 
   return v6;
 }
 
-- (id)classifyPixelBuffer:(__CVBuffer *)a3 startDate:(id)a4 endDate:(id)a5 stagedText:(id)a6 inConversationWithIdentifier:(id)a7 error:(id *)a8
+- (id)classifyPixelBuffer:(__CVBuffer *)buffer startDate:(id)date endDate:(id)endDate stagedText:(id)text inConversationWithIdentifier:(id)identifier error:(id *)error
 {
   v22 = 0;
   v23 = &v22;
@@ -740,7 +740,7 @@ void __55__SCMLHandler_getOperatingPointDataForClassName_error___block_invoke(vo
   v19 = __Block_byref_object_copy__3;
   v20 = __Block_byref_object_dispose__3;
   v21 = 0;
-  v11 = [(SCMLHandler *)self clientQueue:a3];
+  v11 = [(SCMLHandler *)self clientQueue:buffer];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __99__SCMLHandler_classifyPixelBuffer_startDate_endDate_stagedText_inConversationWithIdentifier_error___block_invoke;
@@ -748,15 +748,15 @@ void __55__SCMLHandler_getOperatingPointDataForClassName_error___block_invoke(vo
   v15[4] = self;
   v15[5] = &v22;
   v15[6] = &v16;
-  v15[7] = a3;
+  v15[7] = buffer;
   dispatch_sync(v11, v15);
 
-  if (a8)
+  if (error)
   {
     v12 = v17[5];
     if (v12)
     {
-      *a8 = v12;
+      *error = v12;
     }
   }
 
@@ -783,16 +783,16 @@ void __99__SCMLHandler_classifyPixelBuffer_startDate_endDate_stagedText_inConver
 
 - (id)performanceStatistics
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(SCMLHandler *)self perfResults];
-  v5 = [v4 results];
-  [v3 addEntriesFromDictionary:v5];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  perfResults = [(SCMLHandler *)self perfResults];
+  results = [perfResults results];
+  [dictionary addEntriesFromDictionary:results];
 
-  v6 = [(SCMLHandler *)self imageAnalyzer];
-  v7 = [v6 performanceResults];
-  [v3 addEntriesFromDictionary:v7];
+  imageAnalyzer = [(SCMLHandler *)self imageAnalyzer];
+  performanceResults = [imageAnalyzer performanceResults];
+  [dictionary addEntriesFromDictionary:performanceResults];
 
-  v8 = [v3 copy];
+  v8 = [dictionary copy];
 
   return v8;
 }
@@ -819,31 +819,31 @@ uint64_t __26__SCMLHandler_supportsANE__block_invoke()
   return result;
 }
 
-+ (BOOL)isImageSensitiveForLabel:(id)a3 confidenceScore:(double)a4 classificationMode:(unint64_t)a5
++ (BOOL)isImageSensitiveForLabel:(id)label confidenceScore:(double)score classificationMode:(unint64_t)mode
 {
-  v8 = a3;
+  labelCopy = label;
   v9 = +[SCMLHandler currentModelVersion];
   v11 = 0;
-  LOBYTE(a5) = [a1 isImageSensitiveForLabel:v8 confidenceScore:a5 classificationMode:v9 modelVersion:&v11 error:a4];
+  LOBYTE(mode) = [self isImageSensitiveForLabel:labelCopy confidenceScore:mode classificationMode:v9 modelVersion:&v11 error:score];
 
-  return a5;
+  return mode;
 }
 
-+ (BOOL)isImageSensitiveForLabel:(id)a3 confidenceScore:(double)a4 classificationMode:(unint64_t)a5 modelVersion:(id)a6 error:(id *)a7
++ (BOOL)isImageSensitiveForLabel:(id)label confidenceScore:(double)score classificationMode:(unint64_t)mode modelVersion:(id)version error:(id *)error
 {
-  v11 = a3;
-  v12 = a6;
+  labelCopy = label;
+  versionCopy = version;
   v13 = +[SCMLImageModelThresholds instance];
-  [v13 thresholdForLabel:v11 classificationMode:a5 modelVersion:v12 error:a7];
-  LOBYTE(a7) = v14 <= a4;
+  [v13 thresholdForLabel:labelCopy classificationMode:mode modelVersion:versionCopy error:error];
+  LOBYTE(error) = v14 <= score;
 
-  return a7;
+  return error;
 }
 
 - (uint64_t)initWithOptions:error:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -854,9 +854,9 @@ uint64_t __26__SCMLHandler_supportsANE__block_invoke()
 
 - (void)initWithOptions:error:
 {
-  v2 = **(a1 + 8);
+  v2 = **(self + 8);
   v3 = v2;
-  v4 = *(*(a1 + 8) + 8);
+  v4 = *(*(self + 8) + 8);
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v2))
   {
     *v5 = 0;
@@ -867,7 +867,7 @@ uint64_t __26__SCMLHandler_supportsANE__block_invoke()
 - (uint64_t)analyzeImage:error:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -878,9 +878,9 @@ uint64_t __26__SCMLHandler_supportsANE__block_invoke()
 
 - (void)analyzeImage:error:
 {
-  v2 = **(a1 + 8);
+  v2 = **(self + 8);
   v3 = v2;
-  v4 = *(*(a1 + 8) + 8);
+  v4 = *(*(self + 8) + 8);
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v2))
   {
     *v5 = 0;
@@ -891,7 +891,7 @@ uint64_t __26__SCMLHandler_supportsANE__block_invoke()
 - (uint64_t)classifyImage:error:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -902,9 +902,9 @@ uint64_t __26__SCMLHandler_supportsANE__block_invoke()
 
 - (void)classifyImage:error:
 {
-  v2 = **(a1 + 8);
+  v2 = **(self + 8);
   v3 = v2;
-  v4 = *(*(a1 + 8) + 8);
+  v4 = *(*(self + 8) + 8);
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v2))
   {
     *v5 = 0;
@@ -915,7 +915,7 @@ uint64_t __26__SCMLHandler_supportsANE__block_invoke()
 - (uint64_t)analyzePixelBuffer:error:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -926,9 +926,9 @@ uint64_t __26__SCMLHandler_supportsANE__block_invoke()
 
 - (void)analyzePixelBuffer:error:
 {
-  v2 = **(a1 + 8);
+  v2 = **(self + 8);
   v3 = v2;
-  v4 = *(*(a1 + 8) + 8);
+  v4 = *(*(self + 8) + 8);
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v2))
   {
     *v5 = 0;
@@ -939,7 +939,7 @@ uint64_t __26__SCMLHandler_supportsANE__block_invoke()
 - (uint64_t)classifyPixelBuffer:error:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -950,9 +950,9 @@ uint64_t __26__SCMLHandler_supportsANE__block_invoke()
 
 - (void)classifyPixelBuffer:error:
 {
-  v2 = **(a1 + 8);
+  v2 = **(self + 8);
   v3 = v2;
-  v4 = *(*(a1 + 8) + 8);
+  v4 = *(*(self + 8) + 8);
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v2))
   {
     *v5 = 0;

@@ -1,8 +1,8 @@
 @interface AXAuditDeduplicatorHeuristics
 - (AXAuditDeduplicatorHeuristics)init;
-- (BOOL)compareIssues:(id)a3 and:(id)a4;
-- (int)deduplicateIssues:(id)a3 forFeatureHashGroup:(id)a4;
-- (void)setPlatformThreshold:(id)a3;
+- (BOOL)compareIssues:(id)issues and:(id)and;
+- (int)deduplicateIssues:(id)issues forFeatureHashGroup:(id)group;
+- (void)setPlatformThreshold:(id)threshold;
 @end
 
 @implementation AXAuditDeduplicatorHeuristics
@@ -18,58 +18,58 @@
     [(AXAuditDeduplicatorHeuristics *)v2 setLog:v3];
 
     [(AXAuditDeduplicatorHeuristics *)v2 setTargetThreshold:0.4];
-    v4 = [MEMORY[0x277CBEB18] array];
-    [(AXAuditDeduplicatorHeuristics *)v2 setHashGroups:v4];
+    array = [MEMORY[0x277CBEB18] array];
+    [(AXAuditDeduplicatorHeuristics *)v2 setHashGroups:array];
   }
 
   return v2;
 }
 
-- (BOOL)compareIssues:(id)a3 and:(id)a4
+- (BOOL)compareIssues:(id)issues and:(id)and
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 issueClassification];
-  if (v7 != [v6 issueClassification])
+  issuesCopy = issues;
+  andCopy = and;
+  issueClassification = [issuesCopy issueClassification];
+  if (issueClassification != [andCopy issueClassification])
   {
     goto LABEL_18;
   }
 
-  v8 = [v5 auditTestType];
-  if ([v8 isEqualToString:@"testTypeNone"])
+  auditTestType = [issuesCopy auditTestType];
+  if ([auditTestType isEqualToString:@"testTypeNone"])
   {
   }
 
   else
   {
-    v9 = [v6 auditTestType];
-    v10 = [v9 isEqualToString:@"testTypeNone"];
+    auditTestType2 = [andCopy auditTestType];
+    v10 = [auditTestType2 isEqualToString:@"testTypeNone"];
 
     if (v10)
     {
       goto LABEL_18;
     }
 
-    v11 = [v5 auditTestType];
-    v12 = [v6 auditTestType];
-    v13 = [v11 isEqualToString:v12];
+    auditTestType3 = [issuesCopy auditTestType];
+    auditTestType4 = [andCopy auditTestType];
+    v13 = [auditTestType3 isEqualToString:auditTestType4];
 
     if (!v13)
     {
       goto LABEL_18;
     }
 
-    v14 = [v5 elementText];
-    if (v14)
+    elementText = [issuesCopy elementText];
+    if (elementText)
     {
-      v15 = v14;
-      v16 = [v6 elementText];
-      if (v16)
+      v15 = elementText;
+      elementText2 = [andCopy elementText];
+      if (elementText2)
       {
-        v17 = v16;
-        v18 = [v5 elementText];
-        v19 = [v6 elementText];
-        v20 = [v18 isEqualToString:v19];
+        v17 = elementText2;
+        elementText3 = [issuesCopy elementText];
+        elementText4 = [andCopy elementText];
+        v20 = [elementText3 isEqualToString:elementText4];
 
         if (!v20)
         {
@@ -82,17 +82,17 @@
       }
     }
 
-    v21 = [v5 elementDescription];
-    if (v21)
+    elementDescription = [issuesCopy elementDescription];
+    if (elementDescription)
     {
-      v22 = v21;
-      v23 = [v6 elementDescription];
-      if (v23)
+      v22 = elementDescription;
+      elementDescription2 = [andCopy elementDescription];
+      if (elementDescription2)
       {
-        v24 = v23;
-        v25 = [v5 elementDescription];
-        v26 = [v6 elementDescription];
-        v27 = [v25 isEqualToString:v26];
+        v24 = elementDescription2;
+        elementDescription3 = [issuesCopy elementDescription];
+        elementDescription4 = [andCopy elementDescription];
+        v27 = [elementDescription3 isEqualToString:elementDescription4];
 
         if (!v27)
         {
@@ -105,14 +105,14 @@
       }
     }
 
-    [v5 elementRect];
+    [issuesCopy elementRect];
     v29 = v28;
-    [v6 elementRect];
+    [andCopy elementRect];
     if (vabdd_f64(v29, v30) <= 5.0)
     {
-      [v5 elementRect];
+      [issuesCopy elementRect];
       v32 = v31;
-      [v6 elementRect];
+      [andCopy elementRect];
       if (vabdd_f64(v32, v33) <= 5.0)
       {
         v34 = 1;
@@ -128,17 +128,17 @@ LABEL_19:
   return v34;
 }
 
-- (int)deduplicateIssues:(id)a3 forFeatureHashGroup:(id)a4
+- (int)deduplicateIssues:(id)issues forFeatureHashGroup:(id)group
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v23 = a4;
-  v21 = [MEMORY[0x277CBEB18] array];
+  issuesCopy = issues;
+  groupCopy = group;
+  array = [MEMORY[0x277CBEB18] array];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v6;
+  obj = issuesCopy;
   v7 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v7)
   {
@@ -159,8 +159,8 @@ LABEL_19:
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v13 = [v23 issues];
-        v14 = [v13 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        issues = [groupCopy issues];
+        v14 = [issues countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v14)
         {
           v15 = v14;
@@ -171,7 +171,7 @@ LABEL_19:
             {
               if (*v25 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(issues);
               }
 
               if ([(AXAuditDeduplicatorHeuristics *)self compareIssues:v12 and:*(*(&v24 + 1) + 8 * j)])
@@ -183,7 +183,7 @@ LABEL_19:
               }
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v15 = [issues countByEnumeratingWithState:&v24 objects:v32 count:16];
             if (v15)
             {
               continue;
@@ -193,7 +193,7 @@ LABEL_19:
           }
         }
 
-        [v21 addObject:v12];
+        [array addObject:v12];
 LABEL_16:
         ;
       }
@@ -209,23 +209,23 @@ LABEL_16:
     v9 = 0;
   }
 
-  v18 = [v23 issues];
-  [v18 addObjectsFromArray:v21];
+  issues2 = [groupCopy issues];
+  [issues2 addObjectsFromArray:array];
 
   v19 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (void)setPlatformThreshold:(id)a3
+- (void)setPlatformThreshold:(id)threshold
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 localizedCaseInsensitiveContainsString:@"AppleTV"])
+  thresholdCopy = threshold;
+  if ([thresholdCopy localizedCaseInsensitiveContainsString:@"AppleTV"])
   {
     v5 = 0.45;
   }
 
-  else if ([v4 localizedCaseInsensitiveContainsString:@"Watch"])
+  else if ([thresholdCopy localizedCaseInsensitiveContainsString:@"Watch"])
   {
     v5 = 0.648;
   }
@@ -233,9 +233,9 @@ LABEL_16:
   else
   {
     v5 = 0.4;
-    if (([v4 localizedCaseInsensitiveContainsString:@"iPhone"] & 1) == 0 && (objc_msgSend(v4, "localizedCaseInsensitiveContainsString:", @"iPad") & 1) == 0 && (objc_msgSend(v4, "localizedCaseInsensitiveContainsString:", @"iPod") & 1) == 0)
+    if (([thresholdCopy localizedCaseInsensitiveContainsString:@"iPhone"] & 1) == 0 && (objc_msgSend(thresholdCopy, "localizedCaseInsensitiveContainsString:", @"iPad") & 1) == 0 && (objc_msgSend(thresholdCopy, "localizedCaseInsensitiveContainsString:", @"iPod") & 1) == 0)
     {
-      if ([v4 localizedCaseInsensitiveContainsString:@"RealityDevice"])
+      if ([thresholdCopy localizedCaseInsensitiveContainsString:@"RealityDevice"])
       {
         v5 = 0.4;
       }
@@ -255,7 +255,7 @@ LABEL_16:
     v9 = 134218242;
     v10 = v7;
     v11 = 2112;
-    v12 = v4;
+    v12 = thresholdCopy;
     _os_log_impl(&dword_23D6FE000, v6, OS_LOG_TYPE_DEFAULT, "Setting threshold to %fl for platform: %@", &v9, 0x16u);
   }
 

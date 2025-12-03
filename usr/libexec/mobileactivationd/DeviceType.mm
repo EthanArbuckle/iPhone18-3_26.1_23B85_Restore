@@ -4,9 +4,9 @@
 - (DeviceType)init;
 - (id)copyBootArgs;
 - (id)copyBootSessionUUID;
-- (id)copyDeviceTreeInt:(id)a3 key:(id)a4 defaultValue:(int)a5;
-- (id)copyDeviceTreeProperty:(id)a3 key:(id)a4;
-- (id)copyDeviceTreeString:(id)a3 key:(id)a4 defaultValue:(id)a5;
+- (id)copyDeviceTreeInt:(id)int key:(id)key defaultValue:(int)value;
+- (id)copyDeviceTreeProperty:(id)property key:(id)key;
+- (id)copyDeviceTreeString:(id)string key:(id)key defaultValue:(id)value;
 @end
 
 @implementation DeviceType
@@ -65,9 +65,9 @@ void __28__DeviceType_sharedInstance__block_invoke(id a1)
     v2->_has_baseband = [v3 getBoolAnswer:@"HasBaseband"];
     v13 = [@"IODeviceTree" stringByAppendingString:@":/arm-io"];
     v14 = [(DeviceType *)v2 copyDeviceTreeString:v13 key:@"soc-generation" defaultValue:0];
-    v15 = [v14 uppercaseString];
+    uppercaseString = [v14 uppercaseString];
     soc_generation = v2->_soc_generation;
-    v2->_soc_generation = v15;
+    v2->_soc_generation = uppercaseString;
 
     v17 = +[GestaltHlpr getSharedInstance];
     v18 = [v17 copyAnswer:@"ChipID"];
@@ -133,10 +133,10 @@ void __28__DeviceType_sharedInstance__block_invoke(id a1)
         v2->_should_hactivate = [v3 getBoolAnswer:@"ShouldHactivate"];
       }
 
-      v32 = [(DeviceType *)v2 copyBootArgs];
+      copyBootArgs = [(DeviceType *)v2 copyBootArgs];
       v33 = +[NSCharacterSet whitespaceCharacterSet];
-      v53 = v32;
-      v57 = [v32 componentsSeparatedByCharactersInSet:v33];
+      v53 = copyBootArgs;
+      v57 = [copyBootArgs componentsSeparatedByCharactersInSet:v33];
 
       if ([(NSString *)v2->_product_type containsString:@"iFPGA"])
       {
@@ -153,9 +153,9 @@ void __28__DeviceType_sharedInstance__block_invoke(id a1)
       if (v34)
       {
         v35 = v34;
-        v36 = [v23 BOOLValue];
+        bOOLValue = [v23 BOOLValue];
 
-        if (v36)
+        if (bOOLValue)
         {
           v2->_should_hactivate = 1;
         }
@@ -187,10 +187,10 @@ void __28__DeviceType_sharedInstance__block_invoke(id a1)
       {
         v44 = v43;
         v45 = [v41 objectForKeyedSubscript:@"DisableHactivation"];
-        v46 = [v45 BOOLValue];
+        bOOLValue2 = [v45 BOOLValue];
 
         v31 = v37;
-        if (v46)
+        if (bOOLValue2)
         {
           v2->_should_hactivate = 0;
         }
@@ -210,9 +210,9 @@ void __28__DeviceType_sharedInstance__block_invoke(id a1)
         if (v49)
         {
           v50 = v49;
-          v51 = [v48 BOOLValue];
+          bOOLValue3 = [v48 BOOLValue];
 
-          if (v51)
+          if (bOOLValue3)
           {
             v2->_should_hactivate = 0;
           }
@@ -232,14 +232,14 @@ void __28__DeviceType_sharedInstance__block_invoke(id a1)
   return v2;
 }
 
-- (id)copyDeviceTreeProperty:(id)a3 key:(id)a4
+- (id)copyDeviceTreeProperty:(id)property key:(id)key
 {
-  v5 = a4;
-  v6 = v5;
+  keyCopy = key;
+  v6 = keyCopy;
   CFProperty = 0;
-  if (a3 && v5)
+  if (property && keyCopy)
   {
-    v8 = IORegistryEntryFromPath(kIOMasterPortDefault, [a3 fileSystemRepresentation]);
+    v8 = IORegistryEntryFromPath(kIOMasterPortDefault, [property fileSystemRepresentation]);
     if (v8)
     {
       v9 = v8;
@@ -295,17 +295,17 @@ void __28__DeviceType_sharedInstance__block_invoke(id a1)
   return result;
 }
 
-- (id)copyDeviceTreeInt:(id)a3 key:(id)a4 defaultValue:(int)a5
+- (id)copyDeviceTreeInt:(id)int key:(id)key defaultValue:(int)value
 {
-  v5 = *&a5;
-  v8 = a3;
-  v9 = a4;
+  v5 = *&value;
+  intCopy = int;
+  keyCopy = key;
   v10 = [NSNumber numberWithInt:v5];
   v11 = 0;
   v17 = v5;
-  if (v8 && v9)
+  if (intCopy && keyCopy)
   {
-    v11 = [(DeviceType *)self copyDeviceTreeProperty:v8 key:v9];
+    v11 = [(DeviceType *)self copyDeviceTreeProperty:intCopy key:keyCopy];
     v12 = isNSData(v11);
     if (v12)
     {
@@ -347,20 +347,20 @@ LABEL_10:
   return v10;
 }
 
-- (id)copyDeviceTreeString:(id)a3 key:(id)a4 defaultValue:(id)a5
+- (id)copyDeviceTreeString:(id)string key:(id)key defaultValue:(id)value
 {
-  v8 = a5;
-  v9 = v8;
+  valueCopy = value;
+  v9 = valueCopy;
   v10 = 0;
-  if (!a3)
+  if (!string)
   {
     goto LABEL_6;
   }
 
-  v11 = v8;
-  if (a4)
+  v11 = valueCopy;
+  if (key)
   {
-    v10 = [(DeviceType *)self copyDeviceTreeProperty:a3 key:a4];
+    v10 = [(DeviceType *)self copyDeviceTreeProperty:string key:key];
     v12 = isNSData(v10);
     if (v12)
     {
@@ -386,8 +386,8 @@ LABEL_7:
 
 - (BOOL)runningInRAMDisk
 {
-  v2 = [(DeviceType *)self copyBootArgs];
-  if (v2 && (v3 = +[NSCharacterSet whitespaceCharacterSet](NSCharacterSet, "whitespaceCharacterSet"), v4 = [v2 componentsSeparatedByCharactersInSet:v3], v3, v4))
+  copyBootArgs = [(DeviceType *)self copyBootArgs];
+  if (copyBootArgs && (v3 = +[NSCharacterSet whitespaceCharacterSet](NSCharacterSet, "whitespaceCharacterSet"), v4 = [copyBootArgs componentsSeparatedByCharactersInSet:v3], v3, v4))
   {
     v5 = [v4 containsObject:@"-restore"];
   }

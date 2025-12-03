@@ -32,14 +32,14 @@
   v10 = __Block_byref_object_copy__71;
   v11 = __Block_byref_object_dispose__71;
   v12 = 0;
-  v3 = [(AMSUniversalLinksConnection *)self queue];
+  queue = [(AMSUniversalLinksConnection *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __36__AMSUniversalLinksConnection_proxy__block_invoke;
   v6[3] = &unk_1E73B82D0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -111,15 +111,15 @@ void __36__AMSUniversalLinksConnection_proxy__block_invoke_2(uint64_t a1, void *
 
 - (id)_newRemoteConnection
 {
-  v3 = [(AMSUniversalLinksConnection *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(AMSUniversalLinksConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.xpc.amsuniversallinks" options:0];
-  v5 = [(AMSUniversalLinksConnection *)self queue];
-  [v4 _setQueue:v5];
+  queue2 = [(AMSUniversalLinksConnection *)self queue];
+  [v4 _setQueue:queue2];
 
-  v6 = [(AMSUniversalLinksConnection *)self _makeRemoteConnectionInterface];
-  [v4 setRemoteObjectInterface:v6];
+  _makeRemoteConnectionInterface = [(AMSUniversalLinksConnection *)self _makeRemoteConnectionInterface];
+  [v4 setRemoteObjectInterface:_makeRemoteConnectionInterface];
 
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
@@ -155,8 +155,8 @@ void __51__AMSUniversalLinksConnection__newRemoteConnection__block_invoke_2(uint
 
 - (void)_removeRemoteConnection
 {
-  v3 = [(AMSUniversalLinksConnection *)self connection];
-  [v3 invalidate];
+  connection = [(AMSUniversalLinksConnection *)self connection];
+  [connection invalidate];
 
   [(AMSUniversalLinksConnection *)self setConnection:0];
 }

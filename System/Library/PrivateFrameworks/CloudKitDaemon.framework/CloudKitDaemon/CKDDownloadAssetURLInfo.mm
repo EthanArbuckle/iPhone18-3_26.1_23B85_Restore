@@ -1,8 +1,8 @@
 @interface CKDDownloadAssetURLInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setRecordPCS:(_OpaquePCSShareProtection *)a3;
+- (void)setRecordPCS:(_OpaquePCSShareProtection *)s;
 @end
 
 @implementation CKDDownloadAssetURLInfo
@@ -29,13 +29,13 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = objc_msgSend_asset(v4, v5, v6);
+    v7 = objc_msgSend_asset(equalCopy, v5, v6);
     v10 = objc_msgSend_asset(self, v8, v9);
     isEqual = objc_msgSend_isEqual_(v7, v11, v10);
   }
@@ -48,18 +48,18 @@
   return isEqual;
 }
 
-- (void)setRecordPCS:(_OpaquePCSShareProtection *)a3
+- (void)setRecordPCS:(_OpaquePCSShareProtection *)s
 {
   recordPCS = self->_recordPCS;
-  if (recordPCS != a3)
+  if (recordPCS != s)
   {
-    if (a3)
+    if (s)
     {
-      CFRetain(a3);
+      CFRetain(s);
       recordPCS = self->_recordPCS;
     }
 
-    self->_recordPCS = a3;
+    self->_recordPCS = s;
     if (recordPCS)
     {
 

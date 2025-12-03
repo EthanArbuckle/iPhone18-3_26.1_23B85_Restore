@@ -1,7 +1,7 @@
 @interface HSNowPlayingArtworkRequest
 - (CGSize)maximumSize;
-- (HSNowPlayingArtworkRequest)initWithInterfaceID:(unsigned int)a3 maximumSize:(CGSize)a4 playQueueIndex:(unsigned int)a5;
-- (id)canonicalResponseForResponse:(id)a3;
+- (HSNowPlayingArtworkRequest)initWithInterfaceID:(unsigned int)d maximumSize:(CGSize)size playQueueIndex:(unsigned int)index;
+- (id)canonicalResponseForResponse:(id)response;
 @end
 
 @implementation HSNowPlayingArtworkRequest
@@ -15,29 +15,29 @@
   return result;
 }
 
-- (id)canonicalResponseForResponse:(id)a3
+- (id)canonicalResponseForResponse:(id)response
 {
-  v3 = [(HSResponse *)HSNowPlayingArtworkResponse responseWithResponse:a3];
-  v4 = [v3 error];
+  v3 = [(HSResponse *)HSNowPlayingArtworkResponse responseWithResponse:response];
+  error = [v3 error];
 
-  if (!v4)
+  if (!error)
   {
-    v5 = [v3 MIMEType];
-    [v3 setArtworkMIMEType:v5];
+    mIMEType = [v3 MIMEType];
+    [v3 setArtworkMIMEType:mIMEType];
 
-    v6 = [v3 responseData];
-    [v3 setArtworkData:v6];
+    responseData = [v3 responseData];
+    [v3 setArtworkData:responseData];
   }
 
   return v3;
 }
 
-- (HSNowPlayingArtworkRequest)initWithInterfaceID:(unsigned int)a3 maximumSize:(CGSize)a4 playQueueIndex:(unsigned int)a5
+- (HSNowPlayingArtworkRequest)initWithInterfaceID:(unsigned int)d maximumSize:(CGSize)size playQueueIndex:(unsigned int)index
 {
-  v5 = *&a5;
-  height = a4.height;
-  width = a4.width;
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s/%u/%s", "ctrl-int", *&a3, "nowplayingartwork"];
+  v5 = *&index;
+  height = size.height;
+  width = size.width;
+  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s/%u/%s", "ctrl-int", *&d, "nowplayingartwork"];
   v18.receiver = self;
   v18.super_class = HSNowPlayingArtworkRequest;
   v11 = [(HSRequest *)&v18 initWithAction:v10];
@@ -62,7 +62,7 @@
       [(HSRequest *)v11 setValue:v16 forArgument:@"index"];
     }
 
-    v11->_interfaceID = a3;
+    v11->_interfaceID = d;
     v11->_maximumSize.width = width;
     v11->_maximumSize.height = height;
     v11->_playQueueIndex = v5;

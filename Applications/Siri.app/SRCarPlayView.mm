@@ -1,18 +1,18 @@
 @interface SRCarPlayView
-- (_TtC4Siri13SRCarPlayView)initWithFrame:(CGRect)a3;
-- (void)didTapToDismissWithSender:(id)a3;
+- (_TtC4Siri13SRCarPlayView)initWithFrame:(CGRect)frame;
+- (void)didTapToDismissWithSender:(id)sender;
 @end
 
 @implementation SRCarPlayView
 
-- (void)didTapToDismissWithSender:(id)a3
+- (void)didTapToDismissWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000C6494(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_1000C6494(senderCopy);
 }
 
-- (_TtC4Siri13SRCarPlayView)initWithFrame:(CGRect)a3
+- (_TtC4Siri13SRCarPlayView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

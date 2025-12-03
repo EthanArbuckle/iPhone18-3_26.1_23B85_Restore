@@ -1,15 +1,15 @@
 @interface WFContactHandleFieldParameter
 - (id)supportedContactProperties;
-- (void)setAllowsCustomHandles:(BOOL)a3;
+- (void)setAllowsCustomHandles:(BOOL)handles;
 @end
 
 @implementation WFContactHandleFieldParameter
 
-- (void)setAllowsCustomHandles:(BOOL)a3
+- (void)setAllowsCustomHandles:(BOOL)handles
 {
-  if (self->super._allowsCustomHandles != a3)
+  if (self->super._allowsCustomHandles != handles)
   {
-    self->super._allowsCustomHandles = a3;
+    self->super._allowsCustomHandles = handles;
     [(WFParameter *)self attributesDidChange];
   }
 }

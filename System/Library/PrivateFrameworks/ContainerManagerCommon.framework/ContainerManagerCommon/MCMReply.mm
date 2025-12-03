@@ -1,17 +1,17 @@
 @interface MCMReply
 - (BOOL)exitAfterSend;
-- (MCMReply)initWithXpcReply:(id)a3 slowWorkloop:(id)a4 fastWorkloop:(id)a5 resultPromise:(id)a6;
+- (MCMReply)initWithXpcReply:(id)reply slowWorkloop:(id)workloop fastWorkloop:(id)fastWorkloop resultPromise:(id)promise;
 - (MCMResultPromise)resultPromise;
 - (OS_dispatch_queue)fastWorkloop;
 - (OS_dispatch_queue)slowWorkloop;
 - (OS_xpc_object)xpcReply;
 - (void)_send;
-- (void)dispatchSyncToFastWorkloopWithBlock:(id)a3;
-- (void)encodeResult:(id)a3;
-- (void)handoffToSlowWorkloopforClientIdentity:(id)a3 withBlock:(id)a4;
+- (void)dispatchSyncToFastWorkloopWithBlock:(id)block;
+- (void)encodeResult:(id)result;
+- (void)handoffToSlowWorkloopforClientIdentity:(id)identity withBlock:(id)block;
 - (void)invalidate;
 - (void)send;
-- (void)setExitAfterSend:(BOOL)a3;
+- (void)setExitAfterSend:(BOOL)send;
 @end
 
 @implementation MCMReply
@@ -29,10 +29,10 @@
   v7 = *MEMORY[0x1E69E9840];
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(MCMReply *)obj resultPromise];
-  v3 = [v2 complete];
+  resultPromise = [(MCMReply *)obj resultPromise];
+  complete = [resultPromise complete];
 
-  if (v3 && !obj->_replySent)
+  if (complete && !obj->_replySent)
   {
     obj->_replySent = 1;
     objc_sync_exit(obj);
@@ -70,25 +70,25 @@
 - (void)_send
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MCMReply *)v2 xpcReply];
-  v4 = [(MCMReply *)v2 resultPromise];
-  v5 = [v4 result];
-  v6 = v5;
-  if (!v5)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  xpcReply = [(MCMReply *)selfCopy xpcReply];
+  resultPromise = [(MCMReply *)selfCopy resultPromise];
+  result = [resultPromise result];
+  v6 = result;
+  if (!result)
   {
     _os_crash();
     __break(1u);
   }
 
-  [v5 encodeResultOntoReply:v3];
-  [(MCMReply *)v2 invalidate];
+  [result encodeResultOntoReply:xpcReply];
+  [(MCMReply *)selfCopy invalidate];
 
-  objc_sync_exit(v2);
-  v7 = xpc_dictionary_get_remote_connection(v3);
-  xpc_connection_send_message(v7, v3);
-  if ([(MCMReply *)v2 exitAfterSend])
+  objc_sync_exit(selfCopy);
+  v7 = xpc_dictionary_get_remote_connection(xpcReply);
+  xpc_connection_send_message(v7, xpcReply);
+  if ([(MCMReply *)selfCopy exitAfterSend])
   {
     v8 = container_log_handle_for_category();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -119,10 +119,10 @@
   return result;
 }
 
-- (void)setExitAfterSend:(BOOL)a3
+- (void)setExitAfterSend:(BOOL)send
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_exitAfterSend = a3;
+  self->_exitAfterSend = send;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -142,38 +142,38 @@
   return result;
 }
 
-- (void)dispatchSyncToFastWorkloopWithBlock:(id)a3
+- (void)dispatchSyncToFastWorkloopWithBlock:(id)block
 {
   v7 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v6 = [(MCMReply *)self fastWorkloop];
-  dispatch_async_and_wait(v6, v4);
+  blockCopy = block;
+  fastWorkloop = [(MCMReply *)self fastWorkloop];
+  dispatch_async_and_wait(fastWorkloop, blockCopy);
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)encodeResult:(id)a3
+- (void)encodeResult:(id)result
 {
   v7 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v6 = [(MCMReply *)self xpcReply];
-  [v4 encodeResultOntoReply:?];
+  resultCopy = result;
+  xpcReply = [(MCMReply *)self xpcReply];
+  [resultCopy encodeResultOntoReply:?];
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handoffToSlowWorkloopforClientIdentity:(id)a3 withBlock:(id)a4
+- (void)handoffToSlowWorkloopforClientIdentity:(id)identity withBlock:(id)block
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  v6->_replySent = 1;
-  objc_sync_exit(v6);
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_replySent = 1;
+  objc_sync_exit(selfCopy);
 
-  v7 = [(MCMReply *)v6 xpcReply];
-  v8 = [(MCMReply *)v6 slowWorkloop];
-  v9 = v5;
+  xpcReply = [(MCMReply *)selfCopy xpcReply];
+  slowWorkloop = [(MCMReply *)selfCopy slowWorkloop];
+  v9 = blockCopy;
   xpc_dictionary_handoff_reply();
 
   v10 = *MEMORY[0x1E69E9840];
@@ -191,23 +191,23 @@ uint64_t __61__MCMReply_handoffToSlowWorkloopforClientIdentity_withBlock___block
   return [v3 _send];
 }
 
-- (MCMReply)initWithXpcReply:(id)a3 slowWorkloop:(id)a4 fastWorkloop:(id)a5 resultPromise:(id)a6
+- (MCMReply)initWithXpcReply:(id)reply slowWorkloop:(id)workloop fastWorkloop:(id)fastWorkloop resultPromise:(id)promise
 {
   v20 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  replyCopy = reply;
+  workloopCopy = workloop;
+  fastWorkloopCopy = fastWorkloop;
+  promiseCopy = promise;
   v19.receiver = self;
   v19.super_class = MCMReply;
   v15 = [(MCMReply *)&v19 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_xpcReply, a3);
-    objc_storeStrong(&v16->_slowWorkloop, a4);
-    objc_storeStrong(&v16->_fastWorkloop, a5);
-    objc_storeStrong(&v16->_resultPromise, a6);
+    objc_storeStrong(&v15->_xpcReply, reply);
+    objc_storeStrong(&v16->_slowWorkloop, workloop);
+    objc_storeStrong(&v16->_fastWorkloop, fastWorkloop);
+    objc_storeStrong(&v16->_resultPromise, promise);
     *&v16->_replySent = 0;
   }
 

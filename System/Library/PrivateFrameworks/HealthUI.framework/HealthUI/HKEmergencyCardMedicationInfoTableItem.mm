@@ -3,17 +3,17 @@
 - (id)_multilineStringValue;
 - (id)_placeholderText;
 - (id)title;
-- (void)_configureEditableCell:(id)a3;
-- (void)_updateMultilineStringValueWithValue:(id)a3;
+- (void)_configureEditableCell:(id)cell;
+- (void)_updateMultilineStringValueWithValue:(id)value;
 @end
 
 @implementation HKEmergencyCardMedicationInfoTableItem
 
 - (BOOL)hasPresentableData
 {
-  v2 = [(HKEmergencyCardTableItem *)self data];
-  v3 = [v2 medicationInfo];
-  v4 = v3 != 0;
+  data = [(HKEmergencyCardTableItem *)self data];
+  medicationInfo = [data medicationInfo];
+  v4 = medicationInfo != 0;
 
   return v4;
 }
@@ -36,23 +36,23 @@
 
 - (id)_multilineStringValue
 {
-  v2 = [(HKEmergencyCardTableItem *)self data];
-  v3 = [v2 medicationInfo];
+  data = [(HKEmergencyCardTableItem *)self data];
+  medicationInfo = [data medicationInfo];
 
-  return v3;
+  return medicationInfo;
 }
 
-- (void)_updateMultilineStringValueWithValue:(id)a3
+- (void)_updateMultilineStringValueWithValue:(id)value
 {
-  v4 = a3;
-  v5 = [(HKEmergencyCardTableItem *)self data];
-  [v5 setMedicationInfo:v4];
+  valueCopy = value;
+  data = [(HKEmergencyCardTableItem *)self data];
+  [data setMedicationInfo:valueCopy];
 }
 
-- (void)_configureEditableCell:(id)a3
+- (void)_configureEditableCell:(id)cell
 {
-  v3 = [a3 textView];
-  [v3 setAutocorrectionType:1];
+  textView = [cell textView];
+  [textView setAutocorrectionType:1];
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface LockedAppHub
-- (void)applicationContext:(id)a3 applicationStateDidChange:(int64_t)a4;
+- (void)applicationContext:(id)context applicationStateDidChange:(int64_t)change;
 @end
 
 @implementation LockedAppHub
 
-- (void)applicationContext:(id)a3 applicationStateDidChange:(int64_t)a4
+- (void)applicationContext:(id)context applicationStateDidChange:(int64_t)change
 {
-  v4 = a3;
+  contextCopy = context;
 
   sub_1CA611660();
 }

@@ -1,18 +1,18 @@
 @interface CIMedianProcessor
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
-+ (id)applyMedianToImage:(id)a3 width:(int)a4;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
++ (id)applyMedianToImage:(id)image width:(int)width;
 @end
 
 @implementation CIMedianProcessor
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = ([objc_msgSend(a4 objectForKeyedSubscript:{@"w", "intValue"}] / -2);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = ([objc_msgSend(arguments objectForKeyedSubscript:{@"w", "intValue"}] / -2);
   v10 = x;
   v11 = y;
   v12 = width;
@@ -21,20 +21,20 @@
   return CGRectInset(*&v10, v9, v9);
 }
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
-  v8 = [a4 objectForKeyedSubscript:@"w"];
-  v9 = [a3 objectAtIndexedSubscript:0];
-  v10 = [v8 intValue];
-  v11 = [a5 metalCommandBuffer];
-  if (v11)
+  v8 = [arguments objectForKeyedSubscript:@"w"];
+  v9 = [inputs objectAtIndexedSubscript:0];
+  intValue = [v8 intValue];
+  metalCommandBuffer = [output metalCommandBuffer];
+  if (metalCommandBuffer)
   {
-    v12 = v11;
-    v11 = [objc_alloc(MEMORY[0x1E6974600]) initWithDevice:objc_msgSend(v11 kernelDiameter:{"device"), v10}];
-    if (v11)
+    v12 = metalCommandBuffer;
+    metalCommandBuffer = [objc_alloc(MEMORY[0x1E6974600]) initWithDevice:objc_msgSend(metalCommandBuffer kernelDiameter:{"device"), intValue}];
+    if (metalCommandBuffer)
     {
-      v13 = v11;
-      [v11 setOptions:2];
+      v13 = metalCommandBuffer;
+      [metalCommandBuffer setOptions:2];
       [v13 setEdgeMode:1];
       [v9 region];
       x = v30.origin.x;
@@ -75,7 +75,7 @@
         }
       }
 
-      [a5 region];
+      [output region];
       v21 = v35.origin.x;
       v22 = v35.origin.y;
       v23 = v35.size.width;
@@ -118,20 +118,20 @@
       v29[1] = v18 + v20 - (v27 + v25);
       v29[2] = 0;
       [v13 setOffset:v29];
-      [v13 encodeToCommandBuffer:v12 sourceTexture:objc_msgSend(v9 destinationTexture:{"metalTexture"), objc_msgSend(a5, "metalTexture")}];
+      [v13 encodeToCommandBuffer:v12 sourceTexture:objc_msgSend(v9 destinationTexture:{"metalTexture"), objc_msgSend(output, "metalTexture")}];
 
-      LOBYTE(v11) = 1;
+      LOBYTE(metalCommandBuffer) = 1;
     }
   }
 
-  return v11;
+  return metalCommandBuffer;
 }
 
-+ (id)applyMedianToImage:(id)a3 width:(int)a4
++ (id)applyMedianToImage:(id)image width:(int)width
 {
-  v4 = *&a4;
+  v4 = *&width;
   v22[1] = *MEMORY[0x1E69E9840];
-  if ((a4 & 1) == 0)
+  if ((width & 1) == 0)
   {
     v5 = ci_logger_api();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -165,15 +165,15 @@
     return 0;
   }
 
-  [a3 extent];
+  [image extent];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v22[0] = a3;
+  v22[0] = image;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
   v21 = [MEMORY[0x1E696AD98] numberWithInt:{v4, @"w"}];
-  return [a1 applyWithExtent:v19 inputs:objc_msgSend(MEMORY[0x1E695DF20] arguments:"dictionaryWithObjects:forKeys:count:" error:{&v21, &v20, 1), 0, v12, v14, v16, v18}];
+  return [self applyWithExtent:v19 inputs:objc_msgSend(MEMORY[0x1E695DF20] arguments:"dictionaryWithObjects:forKeys:count:" error:{&v21, &v20, 1), 0, v12, v14, v16, v18}];
 }
 
 + (void)applyMedianToImage:(int)a1 width:(NSObject *)a2 .cold.3(int a1, NSObject *a2)

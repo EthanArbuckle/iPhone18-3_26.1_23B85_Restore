@@ -1,40 +1,40 @@
 @interface BRKAudioFileReader
-- (BOOL)readData:(signed __int16 *)a3 count:(int64_t *)a4;
-- (BRKAudioFileReader)initWithPath:(id)a3;
+- (BOOL)readData:(signed __int16 *)data count:(int64_t *)count;
+- (BRKAudioFileReader)initWithPath:(id)path;
 - (int64_t)fileFrameCount;
 - (void)dealloc;
 @end
 
 @implementation BRKAudioFileReader
 
-- (BRKAudioFileReader)initWithPath:(id)a3
+- (BRKAudioFileReader)initWithPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v10.receiver = self;
   v10.super_class = BRKAudioFileReader;
   v6 = [(BRKAudioFileReader *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_path, a3);
-    v8 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5 isDirectory:0];
+    objc_storeStrong(&v6->_path, path);
+    v8 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy isDirectory:0];
     ExtAudioFileOpenURL(v8, &v7->_audioFile);
   }
 
   return v7;
 }
 
-- (BOOL)readData:(signed __int16 *)a3 count:(int64_t *)a4
+- (BOOL)readData:(signed __int16 *)data count:(int64_t *)count
 {
   audioFile = self->_audioFile;
   if (audioFile)
   {
     *(&ioData.mNumberBuffers + 1) = 0;
     ioData.mNumberBuffers = 1;
-    v6 = *a4;
+    v6 = *count;
     ioData.mBuffers[0].mNumberChannels = 1;
     ioData.mBuffers[0].mDataByteSize = 2 * v6;
-    ioData.mBuffers[0].mData = a3;
+    ioData.mBuffers[0].mData = data;
     ioNumberFrames = v6;
     v7 = ExtAudioFileRead(audioFile, &ioNumberFrames, &ioData);
     if (v7)
@@ -54,7 +54,7 @@
       v10 = ioNumberFrames;
     }
 
-    *a4 = v10;
+    *count = v10;
     LOBYTE(audioFile) = v10 != 0;
   }
 

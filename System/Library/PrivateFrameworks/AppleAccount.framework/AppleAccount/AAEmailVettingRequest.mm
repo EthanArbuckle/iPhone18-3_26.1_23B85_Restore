@@ -1,32 +1,32 @@
 @interface AAEmailVettingRequest
-- (AAEmailVettingRequest)initWithAccount:(id)a3;
-- (AAEmailVettingRequest)initWithURLString:(id)a3 account:(id)a4;
+- (AAEmailVettingRequest)initWithAccount:(id)account;
+- (AAEmailVettingRequest)initWithURLString:(id)string account:(id)account;
 - (id)urlRequest;
 @end
 
 @implementation AAEmailVettingRequest
 
-- (AAEmailVettingRequest)initWithAccount:(id)a3
+- (AAEmailVettingRequest)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v8.receiver = self;
   v8.super_class = AAEmailVettingRequest;
   v5 = [(AAEmailVettingRequest *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(AAEmailVettingRequest *)v5 setAccount:v4];
+    [(AAEmailVettingRequest *)v5 setAccount:accountCopy];
   }
 
   return v6;
 }
 
-- (AAEmailVettingRequest)initWithURLString:(id)a3 account:(id)a4
+- (AAEmailVettingRequest)initWithURLString:(id)string account:(id)account
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 username];
-  v9 = [v7 stringByReplacingOccurrencesOfString:@"$APPLE_ID$" withString:v8];
+  accountCopy = account;
+  stringCopy = string;
+  username = [accountCopy username];
+  v9 = [stringCopy stringByReplacingOccurrencesOfString:@"$APPLE_ID$" withString:username];
 
   v13.receiver = self;
   v13.super_class = AAEmailVettingRequest;
@@ -34,7 +34,7 @@
   v11 = v10;
   if (v10)
   {
-    [(AAEmailVettingRequest *)v10 setAccount:v6];
+    [(AAEmailVettingRequest *)v10 setAccount:accountCopy];
   }
 
   return v11;
@@ -45,17 +45,17 @@
   v17 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = AAEmailVettingRequest;
-  v3 = [(AARequest *)&v14 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v14 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [v4 setHTTPMethod:@"POST"];
-  v5 = [(AAEmailVettingRequest *)self account];
-  [v4 aa_addBasicAuthorizationHeaderWithAccount:v5 preferUsingPassword:0];
+  account = [(AAEmailVettingRequest *)self account];
+  [v4 aa_addBasicAuthorizationHeaderWithAccount:account preferUsingPassword:0];
 
-  v6 = [(AARequest *)self bodyDictionary];
-  [v4 aa_setBodyWithParameters:v6];
-  v7 = [v4 HTTPBody];
-  v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:objc_msgSend(v7 length:"bytes") encoding:{objc_msgSend(v7, "length"), 4}];
+  bodyDictionary = [(AARequest *)self bodyDictionary];
+  [v4 aa_setBodyWithParameters:bodyDictionary];
+  hTTPBody = [v4 HTTPBody];
+  v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:objc_msgSend(hTTPBody length:"bytes") encoding:{objc_msgSend(hTTPBody, "length"), 4}];
   v9 = _AALogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {

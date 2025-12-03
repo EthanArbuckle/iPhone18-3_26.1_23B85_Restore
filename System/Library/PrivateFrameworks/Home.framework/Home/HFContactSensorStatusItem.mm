@@ -1,15 +1,15 @@
 @interface HFContactSensorStatusItem
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)defaultTitleForRepresentedHomeKitObjects:(id)a3;
-- (id)iconDescriptorForRepresentedHomeKitObjects:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)defaultTitleForRepresentedHomeKitObjects:(id)objects;
+- (id)iconDescriptorForRepresentedHomeKitObjects:(id)objects;
 @end
 
 @implementation HFContactSensorStatusItem
 
-- (id)defaultTitleForRepresentedHomeKitObjects:(id)a3
+- (id)defaultTitleForRepresentedHomeKitObjects:(id)objects
 {
-  v3 = a3;
-  if ([v3 count] == 1)
+  objectsCopy = objects;
+  if ([objectsCopy count] == 1)
   {
     v4 = _HFLocalizedStringWithDefaultValue(@"HFStatusTitleContactSensor_One", @"HFStatusTitleContactSensor_One", 1);
 LABEL_5:
@@ -17,9 +17,9 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 count] >= 2)
+  if ([objectsCopy count] >= 2)
   {
-    v5 = [v3 count];
+    v5 = [objectsCopy count];
     v4 = HFLocalizedStringWithFormat(@"HFStatusTitleContactSensor_Multiple", @"%lu", v6, v7, v8, v9, v10, v11, v5);
     goto LABEL_5;
   }
@@ -30,35 +30,35 @@ LABEL_7:
   return v12;
 }
 
-- (id)iconDescriptorForRepresentedHomeKitObjects:(id)a3
+- (id)iconDescriptorForRepresentedHomeKitObjects:(id)objects
 {
   v3 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:@"contact.sensor.fill"];
 
   return v3;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_opt_class() serviceTypes];
-  v6 = [v5 anyObject];
+  optionsCopy = options;
+  serviceTypes = [objc_opt_class() serviceTypes];
+  anyObject = [serviceTypes anyObject];
 
-  v7 = [objc_opt_class() characteristicTypesForServiceType:v6 includingAssociatedTypes:1];
-  v21[0] = v6;
+  v7 = [objc_opt_class() characteristicTypesForServiceType:anyObject includingAssociatedTypes:1];
+  v21[0] = anyObject;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
-  v9 = [v7 allObjects];
-  v10 = [(HFStatusItem *)self filteredServicesOfTypes:v8 containingCharacteristicTypes:v9];
+  allObjects = [v7 allObjects];
+  v10 = [(HFStatusItem *)self filteredServicesOfTypes:v8 containingCharacteristicTypes:allObjects];
 
   objc_initWeak(&location, self);
-  v11 = [(HFStatusItem *)self valueSource];
-  v12 = [v11 readValuesForCharacteristicTypes:v7 inServices:v10];
+  valueSource = [(HFStatusItem *)self valueSource];
+  v12 = [valueSource readValuesForCharacteristicTypes:v7 inServices:v10];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __57__HFContactSensorStatusItem__subclass_updateWithOptions___block_invoke;
   v17[3] = &unk_277DF61A0;
   objc_copyWeak(&v19, &location);
-  v13 = v6;
+  v13 = anyObject;
   v18 = v13;
   v14 = [v12 flatMap:v17];
 

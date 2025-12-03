@@ -1,26 +1,26 @@
 @interface AvatarPosterImagePositioningUtilities
-+ (UIEdgeInsets)transparencyInsetsForImage:(id)a3 requiringFullOpacity:(BOOL)a4;
-+ (id)croppedAndCenteredAvatarImageForImage:(id)a3 scaleMultiplier:(double)a4;
-+ (id)stickerGeneraterPosterOptionsWithSize:(CGSize)a3 minimumHorizontalMargin:(double)a4;
-+ (id)trimmedImageByTrimmingTransparentPixelsFromImage:(id)a3 requiringFullOpacity:(BOOL)a4;
++ (UIEdgeInsets)transparencyInsetsForImage:(id)image requiringFullOpacity:(BOOL)opacity;
++ (id)croppedAndCenteredAvatarImageForImage:(id)image scaleMultiplier:(double)multiplier;
++ (id)stickerGeneraterPosterOptionsWithSize:(CGSize)size minimumHorizontalMargin:(double)margin;
++ (id)trimmedImageByTrimmingTransparentPixelsFromImage:(id)image requiringFullOpacity:(BOOL)opacity;
 @end
 
 @implementation AvatarPosterImagePositioningUtilities
 
-+ (UIEdgeInsets)transparencyInsetsForImage:(id)a3 requiringFullOpacity:(BOOL)a4
++ (UIEdgeInsets)transparencyInsetsForImage:(id)image requiringFullOpacity:(BOOL)opacity
 {
-  v4 = a4;
-  v5 = a3;
-  Width = CGImageGetWidth([v5 CGImage]);
-  Height = CGImageGetHeight([v5 CGImage]);
+  opacityCopy = opacity;
+  imageCopy = image;
+  Width = CGImageGetWidth([imageCopy CGImage]);
+  Height = CGImageGetHeight([imageCopy CGImage]);
   v8 = malloc_type_calloc(Height * Width, 1uLL, 0x100004077774924uLL);
   v9 = CGBitmapContextCreate(v8, Width, Height, 8uLL, Width, 0, 7u);
-  v10 = [v5 CGImage];
+  cGImage = [imageCopy CGImage];
   v35.size.width = Width;
   v35.size.height = Height;
   v35.origin.x = 0.0;
   v35.origin.y = 0.0;
-  CGContextDrawImage(v9, v35, v10);
+  CGContextDrawImage(v9, v35, cGImage);
   v11 = malloc_type_calloc(Height, 2uLL, 0x1000040BDFB0063uLL);
   v12 = malloc_type_calloc(Width, 2uLL, 0x1000040BDFB0063uLL);
   v13 = v12;
@@ -47,7 +47,7 @@
         {
           v20 = *v16++;
           v19 = v20;
-          if (v4)
+          if (opacityCopy)
           {
             break;
           }
@@ -156,36 +156,36 @@ LABEL_27:
   return result;
 }
 
-+ (id)trimmedImageByTrimmingTransparentPixelsFromImage:(id)a3 requiringFullOpacity:(BOOL)a4
++ (id)trimmedImageByTrimmingTransparentPixelsFromImage:(id)image requiringFullOpacity:(BOOL)opacity
 {
-  v4 = a4;
-  v6 = a3;
-  [v6 size];
-  if (v7 >= 2.0 && ([v6 size], v8 >= 2.0))
+  opacityCopy = opacity;
+  imageCopy = image;
+  [imageCopy size];
+  if (v7 >= 2.0 && ([imageCopy size], v8 >= 2.0))
   {
-    [v6 size];
+    [imageCopy size];
     v12 = v11;
-    [v6 scale];
+    [imageCopy scale];
     v14 = v13;
-    [v6 size];
+    [imageCopy size];
     v16 = v15;
-    [v6 scale];
+    [imageCopy scale];
     v18 = v17;
-    [a1 transparencyInsetsForImage:v6 requiringFullOpacity:v4];
+    [self transparencyInsetsForImage:imageCopy requiringFullOpacity:opacityCopy];
     v20 = v19;
     v22 = v21;
     v24 = v23;
     v26 = v25;
-    v27 = v6;
+    v27 = imageCopy;
     v9 = v27;
     if (v20 != 0.0 || v24 != 0.0 || v22 != 0.0 || v26 != 0.0)
     {
-      v28 = [v27 CGImage];
+      cGImage = [v27 CGImage];
       v33.origin.x = v22 + 0.0;
       v33.origin.y = v20 + 0.0;
       v33.size.width = v12 * v14 - (v22 + v26);
       v33.size.height = v16 * v18 - (v20 + v24);
-      v29 = CGImageCreateWithImageInRect(v28, v33);
+      v29 = CGImageCreateWithImageInRect(cGImage, v33);
       [v9 scale];
       v31 = +[UIImage imageWithCGImage:scale:orientation:](UIImage, "imageWithCGImage:scale:orientation:", v29, [v9 imageOrientation], v30);
 
@@ -196,21 +196,21 @@ LABEL_27:
 
   else
   {
-    v9 = v6;
+    v9 = imageCopy;
   }
 
   return v9;
 }
 
-+ (id)croppedAndCenteredAvatarImageForImage:(id)a3 scaleMultiplier:(double)a4
++ (id)croppedAndCenteredAvatarImageForImage:(id)image scaleMultiplier:(double)multiplier
 {
-  v6 = a3;
-  v7 = [a1 trimmedImageByTrimmingTransparentPixelsFromImage:v6];
+  imageCopy = image;
+  v7 = [self trimmedImageByTrimmingTransparentPixelsFromImage:imageCopy];
   [v7 size];
-  v9 = v8 / a4;
+  v9 = v8 / multiplier;
   [v7 size];
-  v11 = v10 / a4;
-  [v6 scale];
+  v11 = v10 / multiplier;
+  [imageCopy scale];
   v13 = v12;
 
   v22.width = v9;
@@ -236,15 +236,15 @@ LABEL_27:
   return v19;
 }
 
-+ (id)stickerGeneraterPosterOptionsWithSize:(CGSize)a3 minimumHorizontalMargin:(double)a4
++ (id)stickerGeneraterPosterOptionsWithSize:(CGSize)size minimumHorizontalMargin:(double)margin
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = objc_alloc_init(AVTStickerGeneratorPosterOptions);
   [v7 setSize:{width, height}];
   if (objc_opt_respondsToSelector())
   {
-    [v7 setMinimumHorizontalMargin:a4];
+    [v7 setMinimumHorizontalMargin:margin];
   }
 
   return v7;

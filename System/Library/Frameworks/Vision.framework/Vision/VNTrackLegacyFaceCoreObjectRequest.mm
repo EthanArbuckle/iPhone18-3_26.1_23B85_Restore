@@ -1,42 +1,42 @@
 @interface VNTrackLegacyFaceCoreObjectRequest
 + (id)privateRevisionsSet;
 + (id)publicRevisionsSet;
-+ (id)trackerTypeForRequestRevision:(unint64_t)a3 error:(id *)a4;
-- (VNTrackLegacyFaceCoreObjectRequest)initWithDetectedObjectObservation:(id)a3;
-- (void)populateDetectorProcessingOptions:(id)a3 session:(id)a4;
++ (id)trackerTypeForRequestRevision:(unint64_t)revision error:(id *)error;
+- (VNTrackLegacyFaceCoreObjectRequest)initWithDetectedObjectObservation:(id)observation;
+- (void)populateDetectorProcessingOptions:(id)options session:(id)session;
 @end
 
 @implementation VNTrackLegacyFaceCoreObjectRequest
 
-- (void)populateDetectorProcessingOptions:(id)a3 session:(id)a4
+- (void)populateDetectorProcessingOptions:(id)options session:(id)session
 {
-  v12 = a3;
-  v5 = [(VNTrackLegacyFaceCoreObjectRequest *)self faceCoreMinFaceSize];
-  [v12 setObject:v5 forKeyedSubscript:@"VNTrackObjectPrivateRevisionLegacyFaceCoreProcessOption_MinFaceSize"];
+  optionsCopy = options;
+  faceCoreMinFaceSize = [(VNTrackLegacyFaceCoreObjectRequest *)self faceCoreMinFaceSize];
+  [optionsCopy setObject:faceCoreMinFaceSize forKeyedSubscript:@"VNTrackObjectPrivateRevisionLegacyFaceCoreProcessOption_MinFaceSize"];
 
-  v6 = [(VNTrackLegacyFaceCoreObjectRequest *)self faceCoreNumberOfDetectionAngles];
-  [v12 setObject:v6 forKeyedSubscript:@"VNTrackObjectPrivateRevisionLegacyFaceCoreProcessOption_NumberOfDetectionAngles"];
+  faceCoreNumberOfDetectionAngles = [(VNTrackLegacyFaceCoreObjectRequest *)self faceCoreNumberOfDetectionAngles];
+  [optionsCopy setObject:faceCoreNumberOfDetectionAngles forKeyedSubscript:@"VNTrackObjectPrivateRevisionLegacyFaceCoreProcessOption_NumberOfDetectionAngles"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[VNTrackLegacyFaceCoreObjectRequest faceCoreEnhanceEyesAndMouthLocalization](self, "faceCoreEnhanceEyesAndMouthLocalization")}];
-  [v12 setObject:v7 forKeyedSubscript:@"VNTrackObjectPrivateRevisionLegacyCoreProcessOption_EnhanceEyesAndMouthLocalization"];
+  [optionsCopy setObject:v7 forKeyedSubscript:@"VNTrackObjectPrivateRevisionLegacyCoreProcessOption_EnhanceEyesAndMouthLocalization"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[VNTrackLegacyFaceCoreObjectRequest faceCoreExtractBlink](self, "faceCoreExtractBlink")}];
-  [v12 setObject:v8 forKeyedSubscript:@"VNTrackObjectPrivateRevisionLegacyFaceCoreProcessOption_ExtractBlink"];
+  [optionsCopy setObject:v8 forKeyedSubscript:@"VNTrackObjectPrivateRevisionLegacyFaceCoreProcessOption_ExtractBlink"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[VNTrackLegacyFaceCoreObjectRequest faceCoreExtractSmile](self, "faceCoreExtractSmile")}];
-  [v12 setObject:v9 forKeyedSubscript:@"VNTrackObjectPrivateRevisionLegacyFaceCoreProcessOption_ExtractSmile"];
+  [optionsCopy setObject:v9 forKeyedSubscript:@"VNTrackObjectPrivateRevisionLegacyFaceCoreProcessOption_ExtractSmile"];
 
   v10 = MEMORY[0x1E696AD98];
   [(VNTrackLegacyFaceCoreObjectRequest *)self faceCoreKalmanFilter];
   v11 = [v10 numberWithFloat:?];
-  [v12 setObject:v11 forKeyedSubscript:@"VNTrackObjectPrivateRevisionLegacyFaceCoreProcessOption_KalmanFilter"];
+  [optionsCopy setObject:v11 forKeyedSubscript:@"VNTrackObjectPrivateRevisionLegacyFaceCoreProcessOption_KalmanFilter"];
 }
 
-- (VNTrackLegacyFaceCoreObjectRequest)initWithDetectedObjectObservation:(id)a3
+- (VNTrackLegacyFaceCoreObjectRequest)initWithDetectedObjectObservation:(id)observation
 {
   v4.receiver = self;
   v4.super_class = VNTrackLegacyFaceCoreObjectRequest;
-  result = [(VNTrackObjectRequest *)&v4 initWithDetectedObjectObservation:a3];
+  result = [(VNTrackObjectRequest *)&v4 initWithDetectedObjectObservation:observation];
   if (result)
   {
     result->_faceCoreKalmanFilter = 0.5;
@@ -45,18 +45,18 @@
   return result;
 }
 
-+ (id)trackerTypeForRequestRevision:(unint64_t)a3 error:(id *)a4
++ (id)trackerTypeForRequestRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 == 3737841664)
+  if (revision == 3737841664)
   {
     v4 = @"VNObjectTrackerRevisionLegacyFaceCoreType";
     v5 = @"VNObjectTrackerRevisionLegacyFaceCoreType";
   }
 
-  else if (a4)
+  else if (error)
   {
     [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequestClass:" ofRequestClass:?];
-    *a4 = v4 = 0;
+    *error = v4 = 0;
   }
 
   else

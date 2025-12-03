@@ -1,19 +1,19 @@
 @interface CESRSpeechProfileAdminServiceConnection
-- (BOOL)_isCustomerInstall:(id)a3;
-- (CESRSpeechProfileAdminServiceConnection)initWithServiceQueue:(id)a3 speechProfileSiteManager:(id)a4;
-- (int64_t)_deleteUserExclusiveSitesWithUserId:(id)a3;
+- (BOOL)_isCustomerInstall:(id)install;
+- (CESRSpeechProfileAdminServiceConnection)initWithServiceQueue:(id)queue speechProfileSiteManager:(id)manager;
+- (int64_t)_deleteUserExclusiveSitesWithUserId:(id)id;
 - (void)_clearAllState;
-- (void)beginEvaluationWithSetEnumerator:(id)a3 completion:(id)a4;
-- (void)endEvaluation:(id)a3;
-- (void)rebuildSpeechProfileForUserId:(id)a3 completion:(id)a4;
-- (void)triggerMaintenance:(BOOL)a3 completion:(id)a4;
+- (void)beginEvaluationWithSetEnumerator:(id)enumerator completion:(id)completion;
+- (void)endEvaluation:(id)evaluation;
+- (void)rebuildSpeechProfileForUserId:(id)id completion:(id)completion;
+- (void)triggerMaintenance:(BOOL)maintenance completion:(id)completion;
 @end
 
 @implementation CESRSpeechProfileAdminServiceConnection
 
-- (void)endEvaluation:(id)a3
+- (void)endEvaluation:(id)evaluation
 {
-  v4 = a3;
+  evaluationCopy = evaluation;
   v5 = os_transaction_create();
   serviceQueue = self->_serviceQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -21,10 +21,10 @@
   block[2] = __57__CESRSpeechProfileAdminServiceConnection_endEvaluation___block_invoke;
   block[3] = &unk_2785800F8;
   v10 = v5;
-  v11 = v4;
+  v11 = evaluationCopy;
   block[4] = self;
   v7 = v5;
-  v8 = v4;
+  v8 = evaluationCopy;
   dispatch_async(serviceQueue, block);
 }
 
@@ -77,10 +77,10 @@ LABEL_11:
   return v6();
 }
 
-- (void)beginEvaluationWithSetEnumerator:(id)a3 completion:(id)a4
+- (void)beginEvaluationWithSetEnumerator:(id)enumerator completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  enumeratorCopy = enumerator;
+  completionCopy = completion;
   v8 = os_transaction_create();
   serviceQueue = self->_serviceQueue;
   v13[0] = MEMORY[0x277D85DD0];
@@ -89,11 +89,11 @@ LABEL_11:
   v13[3] = &unk_2785801B8;
   v13[4] = self;
   v14 = v8;
-  v15 = v6;
-  v16 = v7;
-  v10 = v6;
+  v15 = enumeratorCopy;
+  v16 = completionCopy;
+  v10 = enumeratorCopy;
   v11 = v8;
-  v12 = v7;
+  v12 = completionCopy;
   dispatch_async(serviceQueue, v13);
 }
 
@@ -146,10 +146,10 @@ LABEL_11:
   return v7();
 }
 
-- (void)rebuildSpeechProfileForUserId:(id)a3 completion:(id)a4
+- (void)rebuildSpeechProfileForUserId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v8 = os_transaction_create();
   serviceQueue = self->_serviceQueue;
   v13[0] = MEMORY[0x277D85DD0];
@@ -157,12 +157,12 @@ LABEL_11:
   v13[2] = __84__CESRSpeechProfileAdminServiceConnection_rebuildSpeechProfileForUserId_completion___block_invoke;
   v13[3] = &unk_2785801B8;
   v13[4] = self;
-  v14 = v6;
+  v14 = idCopy;
   v15 = v8;
-  v16 = v7;
+  v16 = completionCopy;
   v10 = v8;
-  v11 = v7;
-  v12 = v6;
+  v11 = completionCopy;
+  v12 = idCopy;
   dispatch_async(serviceQueue, v13);
 }
 
@@ -180,12 +180,12 @@ uint64_t __84__CESRSpeechProfileAdminServiceConnection_rebuildSpeechProfileForUs
   return result;
 }
 
-- (void)triggerMaintenance:(BOOL)a3 completion:(id)a4
+- (void)triggerMaintenance:(BOOL)maintenance completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  maintenanceCopy = maintenance;
+  completionCopy = completion;
   v7 = os_transaction_create();
-  if (v4)
+  if (maintenanceCopy)
   {
     serviceQueue = self->_serviceQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -197,16 +197,16 @@ uint64_t __84__CESRSpeechProfileAdminServiceConnection_rebuildSpeechProfileForUs
   }
 
   [(CESRSpeechProfileSiteManager *)self->_speechProfileSiteManager performMaintenance:0 shouldDefer:0];
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
-- (BOOL)_isCustomerInstall:(id)a3
+- (BOOL)_isCustomerInstall:(id)install
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  installCopy = install;
   v4 = +[CESRUtilities isCustomerInstall];
   if (v4)
   {
@@ -218,9 +218,9 @@ uint64_t __84__CESRSpeechProfileAdminServiceConnection_rebuildSpeechProfileForUs
       _os_log_impl(&dword_225EEB000, v5, OS_LOG_TYPE_INFO, "%s Admin operations are not supported on customer installs.", &v8, 0xCu);
     }
 
-    if (v3)
+    if (installCopy)
     {
-      v3[2](v3, 2);
+      installCopy[2](installCopy, 2);
     }
   }
 
@@ -228,11 +228,11 @@ uint64_t __84__CESRSpeechProfileAdminServiceConnection_rebuildSpeechProfileForUs
   return v4;
 }
 
-- (int64_t)_deleteUserExclusiveSitesWithUserId:(id)a3
+- (int64_t)_deleteUserExclusiveSitesWithUserId:(id)id
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 length])
+  idCopy = id;
+  if (![idCopy length])
   {
     v6 = *MEMORY[0x277CEF0E8];
     if (!os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_ERROR))
@@ -245,7 +245,7 @@ LABEL_7:
     v13 = 136315394;
     v14 = "[CESRSpeechProfileAdminServiceConnection _deleteUserExclusiveSitesWithUserId:]";
     v15 = 2112;
-    v16 = v4;
+    v16 = idCopy;
     v7 = "%s Invalid userId: %@";
     v8 = v6;
     v9 = 22;
@@ -254,7 +254,7 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (![(CESRSpeechProfileSiteManager *)self->_speechProfileSiteManager clearSpeechProfileSiteWithUserId:v4])
+  if (![(CESRSpeechProfileSiteManager *)self->_speechProfileSiteManager clearSpeechProfileSiteWithUserId:idCopy])
   {
     v10 = *MEMORY[0x277CEF0E8];
     if (!os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_ERROR))
@@ -292,15 +292,15 @@ LABEL_8:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (CESRSpeechProfileAdminServiceConnection)initWithServiceQueue:(id)a3 speechProfileSiteManager:(id)a4
+- (CESRSpeechProfileAdminServiceConnection)initWithServiceQueue:(id)queue speechProfileSiteManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = CESRSpeechProfileAdminServiceConnection;
   v9 = [(CESRSpeechProfileAdminServiceConnection *)&v13 init];
   v10 = v9;
-  if (!v9 || (objc_storeStrong(&v9->_serviceQueue, a3), v10->_serviceQueue) && (objc_storeStrong(&v10->_speechProfileSiteManager, a4), v10->_speechProfileSiteManager))
+  if (!v9 || (objc_storeStrong(&v9->_serviceQueue, queue), v10->_serviceQueue) && (objc_storeStrong(&v10->_speechProfileSiteManager, manager), v10->_speechProfileSiteManager))
   {
     v11 = v10;
   }

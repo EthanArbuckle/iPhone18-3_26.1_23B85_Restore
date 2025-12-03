@@ -3,8 +3,8 @@
 - (ICPlayActivityCenter)init;
 - (id)_daemonPlayActivityControllerConnection;
 - (void)dealloc;
-- (void)flushPendingPlayActivityEventsWithCompletionHandler:(id)a3;
-- (void)recordPlayActivityEvents:(id)a3 shouldFlush:(BOOL)a4 withCompletionHandler:(id)a5;
+- (void)flushPendingPlayActivityEventsWithCompletionHandler:(id)handler;
+- (void)recordPlayActivityEvents:(id)events shouldFlush:(BOOL)flush withCompletionHandler:(id)handler;
 @end
 
 @implementation ICPlayActivityCenter
@@ -56,21 +56,21 @@ void __63__ICPlayActivityCenter__daemonPlayActivityControllerConnection__block_i
   }
 }
 
-- (void)recordPlayActivityEvents:(id)a3 shouldFlush:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)recordPlayActivityEvents:(id)events shouldFlush:(BOOL)flush withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  eventsCopy = events;
+  handlerCopy = handler;
   serialQueue = self->_serialQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __83__ICPlayActivityCenter_recordPlayActivityEvents_shouldFlush_withCompletionHandler___block_invoke;
   v13[3] = &unk_1E7BF9B18;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = eventsCopy;
+  v15 = handlerCopy;
+  flushCopy = flush;
+  v11 = handlerCopy;
+  v12 = eventsCopy;
   dispatch_async(serialQueue, v13);
 }
 
@@ -163,17 +163,17 @@ void __83__ICPlayActivityCenter_recordPlayActivityEvents_shouldFlush_withComplet
   }
 }
 
-- (void)flushPendingPlayActivityEventsWithCompletionHandler:(id)a3
+- (void)flushPendingPlayActivityEventsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __76__ICPlayActivityCenter_flushPendingPlayActivityEventsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7BF9EC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(serialQueue, v7);
 }
 

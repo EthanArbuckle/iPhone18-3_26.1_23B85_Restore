@@ -1,7 +1,7 @@
 @interface BKHIDEventDeliveryClient
 - (void)invalidate;
-- (void)setBufferTimer:(uint64_t)a1;
-- (void)setProcessDescription:(uint64_t)a1;
+- (void)setBufferTimer:(uint64_t)timer;
+- (void)setProcessDescription:(uint64_t)description;
 @end
 
 @implementation BKHIDEventDeliveryClient
@@ -13,19 +13,19 @@
   self->_bufferTimer = 0;
 }
 
-- (void)setBufferTimer:(uint64_t)a1
+- (void)setBufferTimer:(uint64_t)timer
 {
-  if (a1)
+  if (timer)
   {
-    objc_storeStrong((a1 + 64), a2);
+    objc_storeStrong((timer + 64), a2);
   }
 }
 
-- (void)setProcessDescription:(uint64_t)a1
+- (void)setProcessDescription:(uint64_t)description
 {
-  if (a1)
+  if (description)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((description + 16), a2);
   }
 }
 

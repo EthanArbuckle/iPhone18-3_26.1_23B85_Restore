@@ -1,12 +1,12 @@
 @interface EnvironmentalFeatureDiscoverySource
-- (EnvironmentalFeatureDiscoverySource)initWithPriority:(int64_t)a3 delegate:(id)a4;
+- (EnvironmentalFeatureDiscoverySource)initWithPriority:(int64_t)priority delegate:(id)delegate;
 - (FeatureDiscoveryModel)model;
 - (FeatureDiscoverySourceDelegate)delegate;
 - (id)_bestModelForCurrentState;
 - (void)_performActionHandler;
 - (void)_reloadAvailability;
 - (void)markAsShown;
-- (void)setTransportType:(int64_t)a3 routeCollection:(id)a4;
+- (void)setTransportType:(int64_t)type routeCollection:(id)collection;
 @end
 
 @implementation EnvironmentalFeatureDiscoverySource
@@ -27,10 +27,10 @@
 - (void)_performActionHandler
 {
   v2 = +[UIApplication sharedMapsDelegate];
-  v3 = [v2 appCoordinator];
-  v4 = [v3 baseActionCoordinator];
+  appCoordinator = [v2 appCoordinator];
+  baseActionCoordinator = [appCoordinator baseActionCoordinator];
 
-  [v4 switchRoutePlanningTransportTypeToType:3];
+  [baseActionCoordinator switchRoutePlanningTransportTypeToType:3];
 }
 
 - (id)_bestModelForCurrentState
@@ -100,17 +100,17 @@
   }
 }
 
-- (void)setTransportType:(int64_t)a3 routeCollection:(id)a4
+- (void)setTransportType:(int64_t)type routeCollection:(id)collection
 {
-  self->_transportType = a3;
+  self->_transportType = type;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [a4 currentRoute];
-  v6 = [v5 waypoints];
+  currentRoute = [collection currentRoute];
+  waypoints = [currentRoute waypoints];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [waypoints countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -122,12 +122,12 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(waypoints);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v10) mapItemStorage];
-        v12 = [v11 _bestAvailableCountryCode];
-        v13 = [v12 isEqual:@"FR"];
+        mapItemStorage = [*(*(&v15 + 1) + 8 * v10) mapItemStorage];
+        _bestAvailableCountryCode = [mapItemStorage _bestAvailableCountryCode];
+        v13 = [_bestAvailableCountryCode isEqual:@"FR"];
 
         if (!v13)
         {
@@ -139,7 +139,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [waypoints countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         continue;
@@ -161,9 +161,9 @@ LABEL_11:
   model = self->_model;
   if (!model)
   {
-    v4 = [(EnvironmentalFeatureDiscoverySource *)self _bestModelForCurrentState];
+    _bestModelForCurrentState = [(EnvironmentalFeatureDiscoverySource *)self _bestModelForCurrentState];
     v5 = self->_model;
-    self->_model = v4;
+    self->_model = _bestModelForCurrentState;
 
     model = self->_model;
   }
@@ -171,17 +171,17 @@ LABEL_11:
   return model;
 }
 
-- (EnvironmentalFeatureDiscoverySource)initWithPriority:(int64_t)a3 delegate:(id)a4
+- (EnvironmentalFeatureDiscoverySource)initWithPriority:(int64_t)priority delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = EnvironmentalFeatureDiscoverySource;
   v7 = [(EnvironmentalFeatureDiscoverySource *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_priority = a3;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_priority = priority;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
   }
 
   return v8;

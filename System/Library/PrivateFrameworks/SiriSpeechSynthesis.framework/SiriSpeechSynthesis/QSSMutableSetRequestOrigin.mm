@@ -3,9 +3,9 @@
 - (QSSMutableSetRequestOrigin)init;
 - (double)latitude;
 - (double)longitude;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setLatitude:(double)a3;
-- (void)setLongitude:(double)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setLatitude:(double)latitude;
+- (void)setLongitude:(double)longitude;
 @end
 
 @implementation QSSMutableSetRequestOrigin
@@ -13,14 +13,14 @@
 - (BOOL)enable_geo_location_features
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"enable_geo_location_features"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setLongitude:(double)a3
+- (void)setLongitude:(double)longitude
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:longitude];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
@@ -33,9 +33,9 @@
   return v4;
 }
 
-- (void)setLatitude:(double)a3
+- (void)setLatitude:(double)latitude
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:latitude];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
@@ -48,9 +48,9 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -65,9 +65,9 @@
   v2 = [(QSSMutableSetRequestOrigin *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;

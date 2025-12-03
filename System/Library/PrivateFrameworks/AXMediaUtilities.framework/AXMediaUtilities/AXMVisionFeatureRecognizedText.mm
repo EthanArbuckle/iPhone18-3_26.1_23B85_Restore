@@ -1,24 +1,24 @@
 @interface AXMVisionFeatureRecognizedText
-- (AXMVisionFeatureRecognizedText)initWithCoder:(id)a3;
-- (AXMVisionFeatureRecognizedText)initWithRecognizedText:(id)a3 range:(_NSRange)a4;
+- (AXMVisionFeatureRecognizedText)initWithCoder:(id)coder;
+- (AXMVisionFeatureRecognizedText)initWithRecognizedText:(id)text range:(_NSRange)range;
 - (_NSRange)textRange;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXMVisionFeatureRecognizedText
 
-- (AXMVisionFeatureRecognizedText)initWithRecognizedText:(id)a3 range:(_NSRange)a4
+- (AXMVisionFeatureRecognizedText)initWithRecognizedText:(id)text range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
   v12.receiver = self;
   v12.super_class = AXMVisionFeatureRecognizedText;
   v9 = [(AXMVisionFeatureRecognizedText *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_text, a3);
+    objc_storeStrong(&v9->_text, text);
     v10->_textRange.location = location;
     v10->_textRange.length = length;
   }
@@ -26,27 +26,27 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   text = self->_text;
   v5 = AXMVisionFeatureCodingKeyTextRecognition;
-  v6 = a3;
-  [v6 encodeObject:text forKey:v5];
+  coderCopy = coder;
+  [coderCopy encodeObject:text forKey:v5];
   v7 = [MEMORY[0x1E696B098] valueWithRange:{self->_textRange.location, self->_textRange.length}];
-  [v6 encodeObject:v7 forKey:AXMVisionFeatureCodingKeyRange];
+  [coderCopy encodeObject:v7 forKey:AXMVisionFeatureCodingKeyRange];
 }
 
-- (AXMVisionFeatureRecognizedText)initWithCoder:(id)a3
+- (AXMVisionFeatureRecognizedText)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AXMVisionFeatureRecognizedText *)self init];
   if (v5 && getVNRecognizedTextClass())
   {
-    v6 = [v4 decodeObjectOfClass:getVNRecognizedTextClass() forKey:AXMVisionFeatureCodingKeyTextRecognition];
+    v6 = [coderCopy decodeObjectOfClass:getVNRecognizedTextClass() forKey:AXMVisionFeatureCodingKeyTextRecognition];
     text = v5->_text;
     v5->_text = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureCodingKeyRange];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:AXMVisionFeatureCodingKeyRange];
     v5->_textRange.location = [v8 rangeValue];
     v5->_textRange.length = v9;
   }

@@ -1,14 +1,14 @@
 @interface SUUIClientContext
 + (AMSBag)amsBag;
 + (NSString)_cachePath;
-+ (id)_cachePathForStoreFrontIdentifier:(id)a3;
-+ (id)_configurationDictionaryWithBagDictionary:(id)a3;
++ (id)_cachePathForStoreFrontIdentifier:(id)identifier;
++ (id)_configurationDictionaryWithBagDictionary:(id)dictionary;
 + (id)defaultContext;
-+ (id)localizedStringForKey:(id)a3 inBundles:(id)a4 inTable:(id)a5;
++ (id)localizedStringForKey:(id)key inBundles:(id)bundles inTable:(id)table;
 - (BOOL)isBootstrapScriptFallbackDisabled;
 - (BOOL)isManagedAppleID;
 - (BOOL)isMultiUser;
-- (BOOL)supportsRenderingVersion:(unsigned int)a3;
+- (BOOL)supportsRenderingVersion:(unsigned int)version;
 - (Class)moviePlayerViewControllerClass;
 - (NSArray)navigationHistory;
 - (NSOperationQueue)resourceLoadQueue;
@@ -16,44 +16,44 @@
 - (SSURLBag)URLBag;
 - (SSVPlatformContext)platformContext;
 - (SUUIApplicationController)_applicationController;
-- (SUUIClientContext)initWithConfigurationDictionary:(id)a3;
+- (SUUIClientContext)initWithConfigurationDictionary:(id)dictionary;
 - (SUUITrendingSearchProvider)trendingSearchProvider;
-- (id)SAPSessionForVersion:(int64_t)a3;
+- (id)SAPSessionForVersion:(int64_t)version;
 - (id)_navigationHistory;
-- (id)existingBagValueForKey:(id)a3;
-- (id)localizedStringForKey:(id)a3 inTable:(id)a4;
-- (id)metricsPageContextForViewController:(id)a3;
-- (id)newLegacyStorePageViewControllerForURLResponse:(id)a3;
-- (id)newLoadStoreURLOperationWithURL:(id)a3;
-- (id)newLoadStoreURLOperationWithURLRequest:(id)a3;
-- (id)previewViewControllerForViewElement:(id)a3;
-- (id)scriptInterfaceForClientInterface:(id)a3;
-- (id)tabBarItemsForStyle:(int64_t)a3;
-- (int64_t)tabBarStyleForWidth:(double)a3;
-- (void)_setAdditionalPurchaseParameters:(id)a3;
-- (void)_setPurchaseAffiliateIdentifier:(id)a3;
-- (void)_setValue:(id)a3 forConfigurationKey:(id)a4;
-- (void)clientInterface:(id)a3 presentDialog:(id)a4;
-- (void)customizePurchase:(id)a3;
-- (void)customizeSoftwarePurchase:(id)a3;
+- (id)existingBagValueForKey:(id)key;
+- (id)localizedStringForKey:(id)key inTable:(id)table;
+- (id)metricsPageContextForViewController:(id)controller;
+- (id)newLegacyStorePageViewControllerForURLResponse:(id)response;
+- (id)newLoadStoreURLOperationWithURL:(id)l;
+- (id)newLoadStoreURLOperationWithURLRequest:(id)request;
+- (id)previewViewControllerForViewElement:(id)element;
+- (id)scriptInterfaceForClientInterface:(id)interface;
+- (id)tabBarItemsForStyle:(int64_t)style;
+- (int64_t)tabBarStyleForWidth:(double)width;
+- (void)_setAdditionalPurchaseParameters:(id)parameters;
+- (void)_setPurchaseAffiliateIdentifier:(id)identifier;
+- (void)_setValue:(id)value forConfigurationKey:(id)key;
+- (void)clientInterface:(id)interface presentDialog:(id)dialog;
+- (void)customizePurchase:(id)purchase;
+- (void)customizeSoftwarePurchase:(id)purchase;
 - (void)dealloc;
-- (void)getDefaultMetricsControllerWithCompletionBlock:(id)a3;
-- (void)loadValueForConfigurationKey:(id)a3 completionBlock:(id)a4;
-- (void)loadValueForConfigurationKeys:(id)a3 completionBlock:(id)a4;
-- (void)pushNavigationHistoryPageIdentifier:(id)a3;
-- (void)sendAppPreviewStateChanged:(BOOL)a3;
-- (void)sendApplicationWindowSizeDidUpdate:(CGSize)a3;
-- (void)sendOnPageResponseWithDocument:(id)a3 data:(id)a4 URLResponse:(id)a5 performanceMetrics:(id)a6;
-- (void)sendOnXEventWithDictionary:(id)a3 completionBlock:(id)a4;
-- (void)setMetricsPageContext:(id)a3 forViewController:(id)a4;
+- (void)getDefaultMetricsControllerWithCompletionBlock:(id)block;
+- (void)loadValueForConfigurationKey:(id)key completionBlock:(id)block;
+- (void)loadValueForConfigurationKeys:(id)keys completionBlock:(id)block;
+- (void)pushNavigationHistoryPageIdentifier:(id)identifier;
+- (void)sendAppPreviewStateChanged:(BOOL)changed;
+- (void)sendApplicationWindowSizeDidUpdate:(CGSize)update;
+- (void)sendOnPageResponseWithDocument:(id)document data:(id)data URLResponse:(id)response performanceMetrics:(id)metrics;
+- (void)sendOnXEventWithDictionary:(id)dictionary completionBlock:(id)block;
+- (void)setMetricsPageContext:(id)context forViewController:(id)controller;
 @end
 
 @implementation SUUIClientContext
 
 + (id)defaultContext
 {
-  v3 = [MEMORY[0x277D69A20] defaultStore];
-  v4 = [v3 activeAccount];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
   v5 = SSVStoreFrontIdentifierForAccount();
   if (!v5)
@@ -62,7 +62,7 @@
     goto LABEL_19;
   }
 
-  v6 = [a1 _cachePathForStoreFrontIdentifier:v5];
+  v6 = [self _cachePathForStoreFrontIdentifier:v5];
   if (v6)
   {
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v6];
@@ -72,8 +72,8 @@
     }
   }
 
-  v8 = [MEMORY[0x277CCA8D8] mainBundle];
-  v9 = [v8 pathForResource:@"SUUIStoreConfigurations" ofType:@"plist"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v9 = [mainBundle pathForResource:@"SUUIStoreConfigurations" ofType:@"plist"];
 
   if (v9)
   {
@@ -108,7 +108,7 @@
     if (v7)
     {
 LABEL_15:
-      v13 = [[a1 alloc] initWithConfigurationDictionary:v7];
+      v13 = [[self alloc] initWithConfigurationDictionary:v7];
       if (v13)
       {
         v15 = [v5 copy];
@@ -136,17 +136,17 @@ LABEL_19:
 + (NSString)_cachePath
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 firstObject];
-  if (v3)
+  firstObject = [v2 firstObject];
+  if (firstObject)
   {
-    v4 = [MEMORY[0x277CCA8D8] mainBundle];
-    v5 = [v4 bundleIdentifier];
-    v6 = [v3 stringByAppendingPathComponent:v5];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v6 = [firstObject stringByAppendingPathComponent:bundleIdentifier];
 
-    v3 = [v6 stringByAppendingPathComponent:@"SUUIClientContext"];
+    firstObject = [v6 stringByAppendingPathComponent:@"SUUIClientContext"];
   }
 
-  return v3;
+  return firstObject;
 }
 
 - (void)dealloc
@@ -193,9 +193,9 @@ LABEL_19:
   return v4;
 }
 
-- (SUUIClientContext)initWithConfigurationDictionary:(id)a3
+- (SUUIClientContext)initWithConfigurationDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = SUUIClientContext;
   v5 = [(SUUIClientContext *)&v16 init];
@@ -210,7 +210,7 @@ LABEL_19:
     v5->_clientInterface = v8;
 
     [(SUClientInterface *)v5->_clientInterface setDelegate:v5];
-    v10 = [v4 copy];
+    v10 = [dictionaryCopy copy];
     configurationDictionary = v5->_configurationDictionary;
     v5->_configurationDictionary = v10;
 
@@ -227,19 +227,19 @@ LABEL_19:
   return v5;
 }
 
-- (void)getDefaultMetricsControllerWithCompletionBlock:(id)a3
+- (void)getDefaultMetricsControllerWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SUUIClientContext *)self URLBag];
+  blockCopy = block;
+  uRLBag = [(SUUIClientContext *)self URLBag];
   v6 = *MEMORY[0x277D6A4F8];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __68__SUUIClientContext_getDefaultMetricsControllerWithCompletionBlock___block_invoke;
   v8[3] = &unk_2798FB3C8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v5 loadValueForKey:v6 completionBlock:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [uRLBag loadValueForKey:v6 completionBlock:v8];
 }
 
 void __68__SUUIClientContext_getDefaultMetricsControllerWithCompletionBlock___block_invoke(uint64_t a1, void *a2)
@@ -298,11 +298,11 @@ void __68__SUUIClientContext_getDefaultMetricsControllerWithCompletionBlock___bl
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)localizedStringForKey:(id)a3 inTable:(id)a4
+- (id)localizedStringForKey:(id)key inTable:(id)table
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  tableCopy = table;
   localizedStrings = self->_localizedStrings;
   if (!localizedStrings)
   {
@@ -321,46 +321,46 @@ void __68__SUUIClientContext_getDefaultMetricsControllerWithCompletionBlock___bl
     localizedStrings = self->_localizedStrings;
   }
 
-  v14 = [(SUUILocalizedStringDictionary *)localizedStrings localizedStringForKey:v6 inTable:v7];
+  v14 = [(SUUILocalizedStringDictionary *)localizedStrings localizedStringForKey:keyCopy inTable:tableCopy];
 
   return v14;
 }
 
-+ (id)localizedStringForKey:(id)a3 inBundles:(id)a4 inTable:(id)a5
++ (id)localizedStringForKey:(id)key inBundles:(id)bundles inTable:(id)table
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  keyCopy = key;
+  bundlesCopy = bundles;
+  tableCopy = table;
+  if (!bundlesCopy)
   {
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v16[0] = v10;
-    v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
+    bundlesCopy = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
   }
 
-  v11 = [MEMORY[0x277CBEAF8] currentLocale];
-  v12 = [v11 localeIdentifier];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v13 = [[SUUILocalizedStringDictionary alloc] initWithLocaleName:v12 bundles:v8];
-  v14 = [(SUUILocalizedStringDictionary *)v13 localizedStringForKey:v7 inTable:v9];
+  v13 = [[SUUILocalizedStringDictionary alloc] initWithLocaleName:localeIdentifier bundles:bundlesCopy];
+  v14 = [(SUUILocalizedStringDictionary *)v13 localizedStringForKey:keyCopy inTable:tableCopy];
 
   return v14;
 }
 
-- (id)metricsPageContextForViewController:(id)a3
+- (id)metricsPageContextForViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     do
     {
-      v5 = v4;
-      v6 = [(NSMapTable *)self->_metricsPageContexts objectForKey:v4];
-      v4 = [v4 parentViewController];
+      v5 = controllerCopy;
+      v6 = [(NSMapTable *)self->_metricsPageContexts objectForKey:controllerCopy];
+      controllerCopy = [controllerCopy parentViewController];
     }
 
-    while (v4 && !v6);
+    while (controllerCopy && !v6);
   }
 
   else
@@ -373,25 +373,25 @@ void __68__SUUIClientContext_getDefaultMetricsControllerWithCompletionBlock___bl
 
 - (NSArray)navigationHistory
 {
-  v2 = [(SUUIClientContext *)self _navigationHistory];
-  v3 = [v2 copy];
+  _navigationHistory = [(SUUIClientContext *)self _navigationHistory];
+  v3 = [_navigationHistory copy];
 
   return v3;
 }
 
-- (id)newLegacyStorePageViewControllerForURLResponse:(id)a3
+- (id)newLegacyStorePageViewControllerForURLResponse:(id)response
 {
   v4 = objc_alloc_init(MEMORY[0x277D7FE88]);
   [v4 setClientInterface:self->_clientInterface];
   return v4;
 }
 
-- (id)previewViewControllerForViewElement:(id)a3
+- (id)previewViewControllerForViewElement:(id)element
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 attributes];
-  v6 = [v5 objectForKey:@"data-preview-id"];
+  elementCopy = element;
+  attributes = [elementCopy attributes];
+  v6 = [attributes objectForKey:@"data-preview-id"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 length] || (objc_msgSend(MEMORY[0x277CBEBD0], "standardUserDefaults"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "BOOLForKey:", @"AllowPreviewForAllElements"), v7, v8))
@@ -401,7 +401,7 @@ void __68__SUUIClientContext_getDefaultMetricsControllerWithCompletionBlock___bl
     v13 = @"previewContainer";
     v14[0] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    [v4 dispatchEvent:@"preview" eventAttribute:@"onpreview" canBubble:1 isCancelable:1 extraInfo:v11 completionBlock:0];
+    [elementCopy dispatchEvent:@"preview" eventAttribute:@"onpreview" canBubble:1 isCancelable:1 extraInfo:v11 completionBlock:0];
   }
 
   else
@@ -412,30 +412,30 @@ void __68__SUUIClientContext_getDefaultMetricsControllerWithCompletionBlock___bl
   return v9;
 }
 
-- (void)pushNavigationHistoryPageIdentifier:(id)a3
+- (void)pushNavigationHistoryPageIdentifier:(id)identifier
 {
-  v6 = a3;
-  v4 = [(SUUIClientContext *)self _navigationHistory];
-  if ([v4 count] == 5)
+  identifierCopy = identifier;
+  _navigationHistory = [(SUUIClientContext *)self _navigationHistory];
+  if ([_navigationHistory count] == 5)
   {
-    [v4 removeObjectAtIndex:0];
+    [_navigationHistory removeObjectAtIndex:0];
   }
 
-  [v4 addObject:v6];
+  [_navigationHistory addObject:identifierCopy];
   if (self->_navigationHistoryPersistenceKey)
   {
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v5 setObject:v4 forKey:self->_navigationHistoryPersistenceKey];
-    [v5 synchronize];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setObject:_navigationHistory forKey:self->_navigationHistoryPersistenceKey];
+    [standardUserDefaults synchronize];
   }
 }
 
-- (void)setMetricsPageContext:(id)a3 forViewController:(id)a4
+- (void)setMetricsPageContext:(id)context forViewController:(id)controller
 {
-  v6 = a3;
-  objc_initWeak(&location, a4);
+  contextCopy = context;
+  objc_initWeak(&location, controller);
   metricsPageContexts = self->_metricsPageContexts;
-  if (v6)
+  if (contextCopy)
   {
     if (!metricsPageContexts)
     {
@@ -447,7 +447,7 @@ void __68__SUUIClientContext_getDefaultMetricsControllerWithCompletionBlock___bl
     }
 
     v10 = objc_loadWeakRetained(&location);
-    [(NSMapTable *)metricsPageContexts setObject:v6 forKey:v10];
+    [(NSMapTable *)metricsPageContexts setObject:contextCopy forKey:v10];
   }
 
   else
@@ -459,28 +459,28 @@ void __68__SUUIClientContext_getDefaultMetricsControllerWithCompletionBlock___bl
   objc_destroyWeak(&location);
 }
 
-- (BOOL)supportsRenderingVersion:(unsigned int)a3
+- (BOOL)supportsRenderingVersion:(unsigned int)version
 {
-  if (a3 == 0x80000)
+  if (version == 0x80000)
   {
     return 1;
   }
 
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 bundleIdentifier];
-  v6 = [v5 isEqualToString:@"com.apple.Music"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v6 = [bundleIdentifier isEqualToString:@"com.apple.Music"];
 
   return v6;
 }
 
-- (id)tabBarItemsForStyle:(int64_t)a3
+- (id)tabBarItemsForStyle:(int64_t)style
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = [(SUUIClientContext *)self valueForConfigurationKey:@"tabs"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (a3 || ([v4 objectForKey:@"compact"], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (style || ([v4 objectForKey:@"compact"], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v5 = [v4 objectForKey:@"standard"];
     }
@@ -601,11 +601,11 @@ void __68__SUUIClientContext_getDefaultMetricsControllerWithCompletionBlock___bl
   return resourceLoadQueue;
 }
 
-- (void)clientInterface:(id)a3 presentDialog:(id)a4
+- (void)clientInterface:(id)interface presentDialog:(id)dialog
 {
-  v10 = a3;
-  v6 = a4;
-  if (v6)
+  interfaceCopy = interface;
+  dialogCopy = dialog;
+  if (dialogCopy)
   {
     dialogController = self->_dialogController;
     if (!dialogController)
@@ -617,17 +617,17 @@ void __68__SUUIClientContext_getDefaultMetricsControllerWithCompletionBlock___bl
       dialogController = self->_dialogController;
     }
 
-    [(SUUIStoreDialogController *)dialogController presentDialog:v6];
+    [(SUUIStoreDialogController *)dialogController presentDialog:dialogCopy];
   }
 }
 
-- (id)scriptInterfaceForClientInterface:(id)a3
+- (id)scriptInterfaceForClientInterface:(id)interface
 {
-  v3 = [(SUUIClientContext *)self _applicationController];
-  v4 = [v3 delegate];
+  _applicationController = [(SUUIClientContext *)self _applicationController];
+  delegate = [_applicationController delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 legacyScriptInterfaceForApplication:v3];
+    v5 = [delegate legacyScriptInterfaceForApplication:_applicationController];
   }
 
   else
@@ -638,57 +638,57 @@ void __68__SUUIClientContext_getDefaultMetricsControllerWithCompletionBlock___bl
   return v5;
 }
 
-- (void)customizePurchase:(id)a3
+- (void)customizePurchase:(id)purchase
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  purchaseCopy = purchase;
   if ([(NSString *)self->_additionalPurchaseParameters length])
   {
-    v5 = [v4 buyParameters];
-    if (v5)
+    buyParameters = [purchaseCopy buyParameters];
+    if (buyParameters)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@&%@", v5, self->_additionalPurchaseParameters];
-      [v4 setBuyParameters:v6];
+      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@&%@", buyParameters, self->_additionalPurchaseParameters];
+      [purchaseCopy setBuyParameters:v6];
     }
   }
 
   purchaseReferrerURL = self->_purchaseReferrerURL;
   if (purchaseReferrerURL)
   {
-    v8 = [(SUUIURL *)purchaseReferrerURL referrerApplicationName];
-    [v4 setValue:v8 forDownloadProperty:*MEMORY[0x277D6A030]];
-    v9 = [(SUUIURL *)self->_purchaseReferrerURL referrerURLString];
-    [v4 setValue:v9 forDownloadProperty:*MEMORY[0x277D6A038]];
-    v10 = [v4 buyParameters];
-    v11 = v10;
-    if (v10 && v8 | v9)
+    referrerApplicationName = [(SUUIURL *)purchaseReferrerURL referrerApplicationName];
+    [purchaseCopy setValue:referrerApplicationName forDownloadProperty:*MEMORY[0x277D6A030]];
+    referrerURLString = [(SUUIURL *)self->_purchaseReferrerURL referrerURLString];
+    [purchaseCopy setValue:referrerURLString forDownloadProperty:*MEMORY[0x277D6A038]];
+    buyParameters2 = [purchaseCopy buyParameters];
+    v11 = buyParameters2;
+    if (buyParameters2 && referrerApplicationName | referrerURLString)
     {
-      v12 = [v10 mutableCopy];
-      if (v8)
+      v12 = [buyParameters2 mutableCopy];
+      if (referrerApplicationName)
       {
-        v13 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-        v14 = [v8 stringByAddingPercentEncodingWithAllowedCharacters:v13];
+        uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+        v14 = [referrerApplicationName stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
         [v12 appendFormat:@"&extRefApp=%@", v14];
       }
 
-      if (v9)
+      if (referrerURLString)
       {
-        v15 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-        v16 = [v9 stringByAddingPercentEncodingWithAllowedCharacters:v15];
+        uRLQueryAllowedCharacterSet2 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+        v16 = [referrerURLString stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet2];
         [v12 appendFormat:@"&extRefUrl=%@", v16];
       }
 
-      [v4 setBuyParameters:v12];
+      [purchaseCopy setBuyParameters:v12];
     }
   }
 
   if (self->_purchaseAffiliateIdentifier)
   {
-    [v4 setAffiliateIdentifier:?];
+    [purchaseCopy setAffiliateIdentifier:?];
   }
 
-  v17 = [v4 requestProperties];
-  v18 = [v17 mutableCopy];
+  requestProperties = [purchaseCopy requestProperties];
+  v18 = [requestProperties mutableCopy];
 
   if (!v18)
   {
@@ -700,15 +700,15 @@ void __68__SUUIClientContext_getDefaultMetricsControllerWithCompletionBlock___bl
     [v18 setURLBagType:?];
   }
 
-  v19 = [MEMORY[0x277D7FCD0] currentClient];
-  v20 = [v19 clientProvidedHeaders];
+  currentClient = [MEMORY[0x277D7FCD0] currentClient];
+  clientProvidedHeaders = [currentClient clientProvidedHeaders];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v21 = [v20 allKeys];
-  v22 = [v21 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  allKeys = [clientProvidedHeaders allKeys];
+  v22 = [allKeys countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v22)
   {
     v23 = v22;
@@ -719,84 +719,84 @@ void __68__SUUIClientContext_getDefaultMetricsControllerWithCompletionBlock___bl
       {
         if (*v29 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(allKeys);
         }
 
         v26 = *(*(&v28 + 1) + 8 * i);
-        v27 = [v20 objectForKeyedSubscript:v26];
+        v27 = [clientProvidedHeaders objectForKeyedSubscript:v26];
         [v18 setValue:v27 forHTTPHeaderField:v26];
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v23 = [allKeys countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v23);
   }
 
-  [v4 setRequestProperties:v18];
+  [purchaseCopy setRequestProperties:v18];
 }
 
-- (void)customizeSoftwarePurchase:(id)a3
+- (void)customizeSoftwarePurchase:(id)purchase
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  purchaseCopy = purchase;
   if ([(NSString *)self->_additionalPurchaseParameters length])
   {
-    v5 = [v4 buyParameters];
-    if (v5)
+    buyParameters = [purchaseCopy buyParameters];
+    if (buyParameters)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@&%@", v5, self->_additionalPurchaseParameters];
-      [v4 setBuyParameters:v6];
+      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@&%@", buyParameters, self->_additionalPurchaseParameters];
+      [purchaseCopy setBuyParameters:v6];
     }
   }
 
   purchaseReferrerURL = self->_purchaseReferrerURL;
   if (purchaseReferrerURL)
   {
-    v8 = [(SUUIURL *)purchaseReferrerURL referrerApplicationName];
-    v9 = [(SUUIURL *)self->_purchaseReferrerURL referrerApplicationName];
-    [v4 setReferrerName:v9];
+    referrerApplicationName = [(SUUIURL *)purchaseReferrerURL referrerApplicationName];
+    referrerApplicationName2 = [(SUUIURL *)self->_purchaseReferrerURL referrerApplicationName];
+    [purchaseCopy setReferrerName:referrerApplicationName2];
 
-    v10 = [(SUUIURL *)self->_purchaseReferrerURL referrerURLString];
-    [v4 setReferrerURL:v10];
-    v11 = [v4 buyParameters];
-    v12 = v11;
-    if (v11 && v8 | v10)
+    referrerURLString = [(SUUIURL *)self->_purchaseReferrerURL referrerURLString];
+    [purchaseCopy setReferrerURL:referrerURLString];
+    buyParameters2 = [purchaseCopy buyParameters];
+    v12 = buyParameters2;
+    if (buyParameters2 && referrerApplicationName | referrerURLString)
     {
-      v13 = [v11 mutableCopy];
-      if (v8)
+      v13 = [buyParameters2 mutableCopy];
+      if (referrerApplicationName)
       {
-        v14 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-        v15 = [v8 stringByAddingPercentEncodingWithAllowedCharacters:v14];
+        uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+        v15 = [referrerApplicationName stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
         [v13 appendFormat:@"&extRefApp=%@", v15];
       }
 
-      if (v10)
+      if (referrerURLString)
       {
-        v16 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-        v17 = [v10 stringByAddingPercentEncodingWithAllowedCharacters:v16];
+        uRLQueryAllowedCharacterSet2 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+        v17 = [referrerURLString stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet2];
         [v13 appendFormat:@"&extRefUrl=%@", v17];
       }
 
-      [v4 setBuyParameters:v13];
+      [purchaseCopy setBuyParameters:v13];
     }
   }
 
   if (self->_purchaseAffiliateIdentifier)
   {
-    [v4 setAffiliateIdentifier:?];
+    [purchaseCopy setAffiliateIdentifier:?];
   }
 
   v18 = objc_opt_new();
-  v19 = [MEMORY[0x277D7FCD0] currentClient];
-  v20 = [v19 clientProvidedHeaders];
+  currentClient = [MEMORY[0x277D7FCD0] currentClient];
+  clientProvidedHeaders = [currentClient clientProvidedHeaders];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v21 = [v20 allKeys];
-  v22 = [v21 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  allKeys = [clientProvidedHeaders allKeys];
+  v22 = [allKeys countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v22)
   {
     v23 = v22;
@@ -807,54 +807,54 @@ void __68__SUUIClientContext_getDefaultMetricsControllerWithCompletionBlock___bl
       {
         if (*v29 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(allKeys);
         }
 
         v26 = *(*(&v28 + 1) + 8 * i);
-        v27 = [v20 objectForKeyedSubscript:v26];
+        v27 = [clientProvidedHeaders objectForKeyedSubscript:v26];
         [v18 setValue:v27 forKey:v26];
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v23 = [allKeys countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v23);
   }
 
-  [v4 setAdditionalHeaders:v18];
+  [purchaseCopy setAdditionalHeaders:v18];
 }
 
 - (BOOL)isManagedAppleID
 {
-  v2 = [MEMORY[0x277D69A20] defaultStore];
-  v3 = [v2 activeAccount];
-  v4 = [v3 isManagedAppleID];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
+  isManagedAppleID = [activeAccount isManagedAppleID];
 
-  return v4;
+  return isManagedAppleID;
 }
 
 - (BOOL)isMultiUser
 {
-  v2 = [MEMORY[0x277D77BF8] sharedManager];
-  v3 = [v2 isMultiUser];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  isMultiUser = [mEMORY[0x277D77BF8] isMultiUser];
 
-  return v3;
+  return isMultiUser;
 }
 
-- (void)loadValueForConfigurationKey:(id)a3 completionBlock:(id)a4
+- (void)loadValueForConfigurationKey:(id)key completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUUIClientContext *)self valueForConfigurationKey:v6];
+  keyCopy = key;
+  blockCopy = block;
+  v8 = [(SUUIClientContext *)self valueForConfigurationKey:keyCopy];
   if (v8)
   {
-    if (v7)
+    if (blockCopy)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __66__SUUIClientContext_loadValueForConfigurationKey_completionBlock___block_invoke;
       block[3] = &unk_2798F5D58;
-      v17 = v7;
+      v17 = blockCopy;
       v16 = v8;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
@@ -863,16 +863,16 @@ void __68__SUUIClientContext_getDefaultMetricsControllerWithCompletionBlock___bl
   else
   {
     objc_initWeak(&location, self);
-    v9 = [(SUUIClientContext *)self URLBag];
+    uRLBag = [(SUUIClientContext *)self URLBag];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __66__SUUIClientContext_loadValueForConfigurationKey_completionBlock___block_invoke_2;
     v10[3] = &unk_2798FB418;
     v10[4] = self;
-    v11 = v6;
+    v11 = keyCopy;
     objc_copyWeak(&v13, &location);
-    v12 = v7;
-    [v9 loadWithCompletionBlock:v10];
+    v12 = blockCopy;
+    [uRLBag loadWithCompletionBlock:v10];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -932,10 +932,10 @@ uint64_t __66__SUUIClientContext_loadValueForConfigurationKey_completionBlock___
   return result;
 }
 
-- (void)loadValueForConfigurationKeys:(id)a3 completionBlock:(id)a4
+- (void)loadValueForConfigurationKeys:(id)keys completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  blockCopy = block;
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -944,14 +944,14 @@ uint64_t __66__SUUIClientContext_loadValueForConfigurationKey_completionBlock___
   v21[4] = self;
   v9 = v8;
   v22 = v9;
-  [v6 enumerateObjectsUsingBlock:v21];
-  if (v7 && (v10 = [v6 count], v10 == objc_msgSend(v9, "count")))
+  [keysCopy enumerateObjectsUsingBlock:v21];
+  if (blockCopy && (v10 = [keysCopy count], v10 == objc_msgSend(v9, "count")))
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __67__SUUIClientContext_loadValueForConfigurationKeys_completionBlock___block_invoke_2;
     block[3] = &unk_2798F5D58;
-    v20 = v7;
+    v20 = blockCopy;
     v19 = v9;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
@@ -959,17 +959,17 @@ uint64_t __66__SUUIClientContext_loadValueForConfigurationKey_completionBlock___
   else
   {
     objc_initWeak(&location, self);
-    v11 = [(SUUIClientContext *)self URLBag];
+    uRLBag = [(SUUIClientContext *)self URLBag];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __67__SUUIClientContext_loadValueForConfigurationKeys_completionBlock___block_invoke_3;
     v12[3] = &unk_2798FB4B8;
     v12[4] = self;
-    v13 = v6;
+    v13 = keysCopy;
     v14 = v9;
     objc_copyWeak(&v16, &location);
-    v15 = v7;
-    [v11 loadWithCompletionBlock:v12];
+    v15 = blockCopy;
+    [uRLBag loadWithCompletionBlock:v12];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -1067,16 +1067,16 @@ void __67__SUUIClientContext_loadValueForConfigurationKeys_completionBlock___blo
 
 - (SSVPlatformContext)platformContext
 {
-  v3 = [(SUUIURLBag *)self->_urlBag existingBagDictionary];
-  if (v3)
+  existingBagDictionary = [(SUUIURLBag *)self->_urlBag existingBagDictionary];
+  if (existingBagDictionary)
   {
-    v4 = [objc_alloc(MEMORY[0x277D69CE8]) initWithBagDictionary:v3];
+    v4 = [objc_alloc(MEMORY[0x277D69CE8]) initWithBagDictionary:existingBagDictionary];
   }
 
   else
   {
-    v5 = [(SUUIClientContext *)self URLBag];
-    [v5 loadWithCompletionBlock:&__block_literal_global_36];
+    uRLBag = [(SUUIClientContext *)self URLBag];
+    [uRLBag loadWithCompletionBlock:&__block_literal_global_36];
 
     v4 = 0;
   }
@@ -1089,45 +1089,45 @@ void __67__SUUIClientContext_loadValueForConfigurationKeys_completionBlock___blo
   v2 = [(SUUIClientContext *)self existingBagValueForKey:@"bootstrap-script-fallback-disabled"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
-- (id)existingBagValueForKey:(id)a3
+- (id)existingBagValueForKey:(id)key
 {
   urlBag = self->_urlBag;
-  v4 = a3;
-  v5 = [(SUUIURLBag *)urlBag existingBagDictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  existingBagDictionary = [(SUUIURLBag *)urlBag existingBagDictionary];
+  v6 = [existingBagDictionary objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (id)newLoadStoreURLOperationWithURL:(id)a3
+- (id)newLoadStoreURLOperationWithURL:(id)l
 {
   v4 = MEMORY[0x277CBABA0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithURL:v5];
+  lCopy = l;
+  v6 = [[v4 alloc] initWithURL:lCopy];
 
   v7 = [(SUUIClientContext *)self newLoadStoreURLOperationWithURLRequest:v6];
   return v7;
 }
 
-- (id)newLoadStoreURLOperationWithURLRequest:(id)a3
+- (id)newLoadStoreURLOperationWithURLRequest:(id)request
 {
   v4 = MEMORY[0x277D69CD8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithURLRequest:v5];
+  requestCopy = request;
+  v6 = [[v4 alloc] initWithURLRequest:requestCopy];
 
-  v7 = [(SUUIClientContext *)self URLBag];
-  [v6 configureWithURLBag:v7];
+  uRLBag = [(SUUIClientContext *)self URLBag];
+  [v6 configureWithURLBag:uRLBag];
 
   [v6 setITunesStoreRequest:1];
   [v6 setMachineDataStyle:2];
@@ -1140,9 +1140,9 @@ void __67__SUUIClientContext_loadValueForConfigurationKeys_completionBlock___blo
   return v6;
 }
 
-- (id)SAPSessionForVersion:(int64_t)a3
+- (id)SAPSessionForVersion:(int64_t)version
 {
-  if (a3 == 1)
+  if (version == 1)
   {
     [MEMORY[0x277D69CC0] sharedPrimeSession];
   }
@@ -1172,25 +1172,25 @@ void __55__SUUIClientContext_sendApplicationWillEnterForeground__block_invoke(ui
   [v3 sendApplicationWillEnterForeground];
 }
 
-- (void)sendOnPageResponseWithDocument:(id)a3 data:(id)a4 URLResponse:(id)a5 performanceMetrics:(id)a6
+- (void)sendOnPageResponseWithDocument:(id)document data:(id)data URLResponse:(id)response performanceMetrics:(id)metrics
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  documentCopy = document;
+  dataCopy = data;
+  responseCopy = response;
+  metricsCopy = metrics;
   scriptAppContext = self->_scriptAppContext;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __88__SUUIClientContext_sendOnPageResponseWithDocument_data_URLResponse_performanceMetrics___block_invoke;
   v19[3] = &unk_2798FA7E8;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = documentCopy;
+  v21 = dataCopy;
+  v22 = responseCopy;
+  v23 = metricsCopy;
+  v15 = metricsCopy;
+  v16 = responseCopy;
+  v17 = dataCopy;
+  v18 = documentCopy;
   [(IKAppContext *)scriptAppContext evaluate:v19 completionBlock:0];
 }
 
@@ -1202,10 +1202,10 @@ void __88__SUUIClientContext_sendOnPageResponseWithDocument_data_URLResponse_per
   [v4 sendOnPageResponseWithDocument:a1[4] data:a1[5] URLResponse:a1[6] performanceMetrics:a1[7]];
 }
 
-- (void)sendOnXEventWithDictionary:(id)a3 completionBlock:(id)a4
+- (void)sendOnXEventWithDictionary:(id)dictionary completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  blockCopy = block;
   v8 = self->_scriptAppContext;
   if (v8)
   {
@@ -1218,21 +1218,21 @@ void __88__SUUIClientContext_sendOnPageResponseWithDocument_data_URLResponse_per
     v12[2] = __64__SUUIClientContext_sendOnXEventWithDictionary_completionBlock___block_invoke;
     v12[3] = &unk_2798FB520;
     v14 = v15;
-    v13 = v6;
+    v13 = dictionaryCopy;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __64__SUUIClientContext_sendOnXEventWithDictionary_completionBlock___block_invoke_2;
     v9[3] = &unk_2798FB548;
-    v10 = v7;
+    v10 = blockCopy;
     v11 = v15;
     [(IKAppContext *)v8 evaluate:v12 completionBlock:v9];
 
     _Block_object_dispose(v15, 8);
   }
 
-  else if (v7)
+  else if (blockCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 
@@ -1255,14 +1255,14 @@ uint64_t __64__SUUIClientContext_sendOnXEventWithDictionary_completionBlock___bl
   return result;
 }
 
-- (void)sendAppPreviewStateChanged:(BOOL)a3
+- (void)sendAppPreviewStateChanged:(BOOL)changed
 {
   scriptAppContext = self->_scriptAppContext;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __48__SUUIClientContext_sendAppPreviewStateChanged___block_invoke;
   v4[3] = &__block_descriptor_33_e19_v16__0__JSContext_8l;
-  v5 = a3;
+  changedCopy = changed;
   [(IKAppContext *)scriptAppContext evaluate:v4 completionBlock:0];
 }
 
@@ -1274,14 +1274,14 @@ void __48__SUUIClientContext_sendAppPreviewStateChanged___block_invoke(uint64_t 
   [v4 sendAppPreviewStateChanged:*(a1 + 32)];
 }
 
-- (void)sendApplicationWindowSizeDidUpdate:(CGSize)a3
+- (void)sendApplicationWindowSizeDidUpdate:(CGSize)update
 {
   scriptAppContext = self->_scriptAppContext;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __56__SUUIClientContext_sendApplicationWindowSizeDidUpdate___block_invoke;
   v4[3] = &__block_descriptor_48_e19_v16__0__JSContext_8l;
-  v5 = a3;
+  updateCopy = update;
   [(IKAppContext *)scriptAppContext evaluate:v4 completionBlock:0];
 }
 
@@ -1293,7 +1293,7 @@ void __56__SUUIClientContext_sendApplicationWindowSizeDidUpdate___block_invoke(u
   [v4 sendApplicationWindowSizeDidUpdate:{*(a1 + 32), *(a1 + 40)}];
 }
 
-- (int64_t)tabBarStyleForWidth:(double)a3
+- (int64_t)tabBarStyleForWidth:(double)width
 {
   if (SUUIUserInterfaceIdiom(self) != 1)
   {
@@ -1305,17 +1305,17 @@ void __56__SUUIClientContext_sendApplicationWindowSizeDidUpdate___block_invoke(u
     [SUUIClientContext tabBarStyleForWidth:];
   }
 
-  return *&SUUICompactThreshold_threshold < a3;
+  return *&SUUICompactThreshold_threshold < width;
 }
 
-+ (id)_cachePathForStoreFrontIdentifier:(id)a3
++ (id)_cachePathForStoreFrontIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _cachePath];
-  if (v5)
+  identifierCopy = identifier;
+  _cachePath = [self _cachePath];
+  if (_cachePath)
   {
-    v6 = [v4 stringByAppendingPathExtension:@"plist"];
-    v7 = [v5 stringByAppendingPathComponent:v6];
+    v6 = [identifierCopy stringByAppendingPathExtension:@"plist"];
+    v7 = [_cachePath stringByAppendingPathComponent:v6];
   }
 
   else
@@ -1326,89 +1326,89 @@ void __56__SUUIClientContext_sendApplicationWindowSizeDidUpdate___block_invoke(u
   return v7;
 }
 
-+ (id)_configurationDictionaryWithBagDictionary:(id)a3
++ (id)_configurationDictionaryWithBagDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"language"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"language"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    [v5 setObject:v4 forKey:@"locale"];
-    v6 = [v3 objectForKey:@"isScheduledGiftingEnabled"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:v4 forKey:@"locale"];
+    v6 = [dictionaryCopy objectForKey:@"isScheduledGiftingEnabled"];
     if ((objc_opt_respondsToSelector() & 1) != 0 && ([v6 BOOLValue] & 1) == 0)
     {
-      [v5 setObject:MEMORY[0x277CBEC28] forKey:@"cgift"];
+      [dictionary setObject:MEMORY[0x277CBEC28] forKey:@"cgift"];
     }
 
-    v7 = [v3 objectForKey:@"isBuyingScheduledGiftCertificateEnabled"];
+    v7 = [dictionaryCopy objectForKey:@"isBuyingScheduledGiftCertificateEnabled"];
 
     if ((objc_opt_respondsToSelector() & 1) != 0 && ([v7 BOOLValue] & 1) == 0)
     {
-      [v5 setObject:MEMORY[0x277CBEC28] forKey:@"mgift"];
+      [dictionary setObject:MEMORY[0x277CBEC28] forKey:@"mgift"];
     }
 
-    v8 = [v3 objectForKey:@"storefront-header-suffix"];
+    v8 = [dictionaryCopy objectForKey:@"storefront-header-suffix"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v5 setObject:v8 forKey:@"sfsuffix"];
+      [dictionary setObject:v8 forKey:@"sfsuffix"];
     }
 
-    v9 = [v3 objectForKey:@"itml-store"];
+    v9 = [dictionaryCopy objectForKey:@"itml-store"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v5;
+      v10 = dictionary;
       v11 = v9;
     }
 
     else
     {
       v11 = &stru_286AECDE0;
-      v10 = v5;
+      v10 = dictionary;
     }
 
     [v10 setObject:v11 forKey:@"appjs.v2"];
-    v12 = [v3 objectForKey:@"has-in-apps-notice"];
+    v12 = [dictionaryCopy objectForKey:@"has-in-apps-notice"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v5 setObject:v12 forKey:@"inappnote"];
+      [dictionary setObject:v12 forKey:@"inappnote"];
     }
 
-    v13 = [v3 objectForKey:@"tabs"];
+    v13 = [dictionaryCopy objectForKey:@"tabs"];
     if (v13)
     {
-      [v5 setObject:v13 forKey:@"tabs"];
+      [dictionary setObject:v13 forKey:@"tabs"];
     }
 
-    v14 = [v3 objectForKey:@"itunes-stop-pages"];
+    v14 = [dictionaryCopy objectForKey:@"itunes-stop-pages"];
     if (v14)
     {
-      [v5 setObject:v14 forKey:@"itunes-stop-pages"];
+      [dictionary setObject:v14 forKey:@"itunes-stop-pages"];
     }
 
-    v15 = [v3 objectForKey:@"isSponsoredAdsEnabled"];
+    v15 = [dictionaryCopy objectForKey:@"isSponsoredAdsEnabled"];
     if (v15)
     {
-      [v5 setObject:v15 forKey:@"isSponsoredAdsEnabled"];
+      [dictionary setObject:v15 forKey:@"isSponsoredAdsEnabled"];
     }
   }
 
   else
   {
-    v5 = 0;
+    dictionary = 0;
   }
 
-  return v5;
+  return dictionary;
 }
 
-- (void)_setAdditionalPurchaseParameters:(id)a3
+- (void)_setAdditionalPurchaseParameters:(id)parameters
 {
-  if (self->_additionalPurchaseParameters != a3)
+  if (self->_additionalPurchaseParameters != parameters)
   {
-    v5 = [a3 copy];
+    v5 = [parameters copy];
     additionalPurchaseParameters = self->_additionalPurchaseParameters;
     self->_additionalPurchaseParameters = v5;
 
@@ -1416,11 +1416,11 @@ void __56__SUUIClientContext_sendApplicationWindowSizeDidUpdate___block_invoke(u
   }
 }
 
-- (void)_setPurchaseAffiliateIdentifier:(id)a3
+- (void)_setPurchaseAffiliateIdentifier:(id)identifier
 {
-  if (self->_purchaseAffiliateIdentifier != a3)
+  if (self->_purchaseAffiliateIdentifier != identifier)
   {
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     purchaseAffiliateIdentifier = self->_purchaseAffiliateIdentifier;
     self->_purchaseAffiliateIdentifier = v5;
 
@@ -1428,23 +1428,23 @@ void __56__SUUIClientContext_sendApplicationWindowSizeDidUpdate___block_invoke(u
   }
 }
 
-- (void)_setValue:(id)a3 forConfigurationKey:(id)a4
+- (void)_setValue:(id)value forConfigurationKey:(id)key
 {
-  v11 = a3;
-  v6 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v7 = [(NSDictionary *)self->_configurationDictionary mutableCopy];
   if (!v7)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   }
 
-  [v7 setObject:v11 forKey:v6];
+  [v7 setObject:valueCopy forKey:keyCopy];
   v8 = [v7 copy];
   configurationDictionary = self->_configurationDictionary;
   self->_configurationDictionary = v8;
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 postNotificationName:@"SUUIClientContextConfigurationDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SUUIClientContextConfigurationDidChangeNotification" object:self];
 }
 
 - (id)_navigationHistory
@@ -1457,8 +1457,8 @@ void __56__SUUIClientContext_sendApplicationWindowSizeDidUpdate___block_invoke(u
       goto LABEL_6;
     }
 
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v5 = [v4 arrayForKey:self->_navigationHistoryPersistenceKey];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v5 = [standardUserDefaults arrayForKey:self->_navigationHistoryPersistenceKey];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())

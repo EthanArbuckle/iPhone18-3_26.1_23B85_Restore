@@ -10,7 +10,7 @@
   ObjectType = swift_getObjectType();
   v4 = OBJC_IVAR____TtC7Measure23CardContainerController_draggingAnimator;
   v5 = *(&self->super.isa + OBJC_IVAR____TtC7Measure23CardContainerController_draggingAnimator);
-  v6 = self;
+  selfCopy = self;
   if (v5)
   {
     [v5 stopAnimation:1];

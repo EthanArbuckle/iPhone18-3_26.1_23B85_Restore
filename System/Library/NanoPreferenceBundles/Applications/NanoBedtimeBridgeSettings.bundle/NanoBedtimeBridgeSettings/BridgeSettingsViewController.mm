@@ -1,22 +1,22 @@
 @interface BridgeSettingsViewController
-- (_TtC25NanoBedtimeBridgeSettings28BridgeSettingsViewController)initWithCoder:(id)a3;
-- (_TtC25NanoBedtimeBridgeSettings28BridgeSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)sleepScoreNotificationsString:(id)a3;
+- (_TtC25NanoBedtimeBridgeSettings28BridgeSettingsViewController)initWithCoder:(id)coder;
+- (_TtC25NanoBedtimeBridgeSettings28BridgeSettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)sleepScoreNotificationsString:(id)string;
 - (id)specifiers;
-- (id)watchChargeReminder:(id)a3;
-- (void)_didTapSetUpNotificationsInHealth:(id)a3;
+- (id)watchChargeReminder:(id)reminder;
+- (void)_didTapSetUpNotificationsInHealth:(id)health;
 - (void)_didTapSleepApneaFooter;
 - (void)dealloc;
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)passcodeSettingsLinkTapped;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)wristDetectionSettingManagerDidObserveWristDetectChange:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)wristDetectionSettingManagerDidObserveWristDetectChange:(id)change;
 @end
 
 @implementation BridgeSettingsViewController
 
-- (_TtC25NanoBedtimeBridgeSettings28BridgeSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC25NanoBedtimeBridgeSettings28BridgeSettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_117CC();
   sub_117BC();
@@ -26,7 +26,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     sub_116EC();
     v7 = v6;
@@ -37,12 +37,12 @@
     v7 = 0;
   }
 
-  v8 = sub_41C4(a4, v7, a4);
+  v8 = sub_41C4(bundle, v7, bundle);
 
   return v8;
 }
 
-- (_TtC25NanoBedtimeBridgeSettings28BridgeSettingsViewController)initWithCoder:(id)a3
+- (_TtC25NanoBedtimeBridgeSettings28BridgeSettingsViewController)initWithCoder:(id)coder
 {
   sub_117CC();
   sub_117BC();
@@ -71,16 +71,16 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_117BC();
   sub_117AC();
 
   swift_task_deinitOnExecutor();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   sub_117CC();
   sub_117BC();
   sub_117AC();
@@ -89,8 +89,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_4E04(v3);
+  selfCopy = self;
+  sub_4E04(appearCopy);
 }
 
 - (id)specifiers
@@ -103,7 +103,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_52A0();
 
   v4.super.isa = sub_1176C().super.isa;
@@ -111,7 +111,7 @@
   return v4.super.isa;
 }
 
-- (id)watchChargeReminder:(id)a3
+- (id)watchChargeReminder:(id)reminder
 {
   sub_117CC();
   sub_117BC();
@@ -121,7 +121,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = self;
+  selfCopy = self;
   v5 = sub_5714();
   if (v5)
   {
@@ -137,7 +137,7 @@
   return v7;
 }
 
-- (id)sleepScoreNotificationsString:(id)a3
+- (id)sleepScoreNotificationsString:(id)string
 {
   sub_117CC();
   sub_117BC();
@@ -147,8 +147,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
+  stringCopy = string;
+  selfCopy = self;
   sub_CA48();
 
   v7 = sub_116BC();
@@ -156,7 +156,7 @@
   return v7;
 }
 
-- (void)_didTapSetUpNotificationsInHealth:(id)a3
+- (void)_didTapSetUpNotificationsInHealth:(id)health
 {
   v4 = sub_113FC();
   v5 = *(v4 - 8);
@@ -171,7 +171,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = self;
+  selfCopy = self;
   v10 = HKSPSleepURL();
   if (v10)
   {
@@ -198,7 +198,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_9BF0();
 }
 
@@ -215,7 +215,7 @@
   sub_CED0();
 }
 
-- (void)wristDetectionSettingManagerDidObserveWristDetectChange:(id)a3
+- (void)wristDetectionSettingManagerDidObserveWristDetectChange:(id)change
 {
   sub_117CC();
   sub_117BC();
@@ -225,12 +225,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_D10C("[%{public}s] wrist detect settings did change");
 }
 
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status
 {
   sub_117CC();
   sub_117BC();
@@ -241,25 +241,25 @@
   }
 
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
-  sub_D2D4(v6);
+  statusCopy = status;
+  selfCopy = self;
+  sub_D2D4(statusCopy);
 
   swift_unknownObjectRelease();
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a3)
+  if (path)
   {
     v10 = sub_116EC();
     v12 = v11;
-    if (a4)
+    if (object)
     {
 LABEL_3:
       swift_unknownObjectRetain();
-      v13 = a5;
-      v14 = self;
+      changeCopy = change;
+      selfCopy = self;
       sub_1186C();
       swift_unknownObjectRelease();
       goto LABEL_6;
@@ -270,17 +270,17 @@ LABEL_3:
   {
     v10 = 0;
     v12 = 0;
-    if (a4)
+    if (object)
     {
       goto LABEL_3;
     }
   }
 
   memset(v18, 0, sizeof(v18));
-  v15 = a5;
-  v16 = self;
+  changeCopy2 = change;
+  selfCopy2 = self;
 LABEL_6:
-  if (a5)
+  if (change)
   {
     type metadata accessor for NSKeyValueChangeKey(0);
     sub_D954(&qword_1D510, type metadata accessor for NSKeyValueChangeKey);
@@ -292,7 +292,7 @@ LABEL_6:
     v17 = 0;
   }
 
-  sub_A6C8(v10, v12, v18, v17, a6);
+  sub_A6C8(v10, v12, v18, v17, context);
 
   sub_D594(v18, &unk_1D6C0, &type metadata for Any[8], &type metadata accessor for Optional, sub_D518);
 }

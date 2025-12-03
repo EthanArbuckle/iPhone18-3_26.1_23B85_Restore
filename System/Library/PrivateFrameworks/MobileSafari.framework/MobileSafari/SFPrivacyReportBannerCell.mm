@@ -1,10 +1,10 @@
 @interface SFPrivacyReportBannerCell
-- (SFPrivacyReportBannerCell)initWithFrame:(CGRect)a3;
-- (void)_privacyProxyAvailabilityChanged:(id)a3;
+- (SFPrivacyReportBannerCell)initWithFrame:(CGRect)frame;
+- (void)_privacyProxyAvailabilityChanged:(id)changed;
 - (void)_updateState;
-- (void)configureUsingBanner:(id)a3;
-- (void)setNumberOfTrackers:(int64_t)a3;
-- (void)setPrivateBrowsingEnabled:(BOOL)a3;
+- (void)configureUsingBanner:(id)banner;
+- (void)setNumberOfTrackers:(int64_t)trackers;
+- (void)setPrivateBrowsingEnabled:(BOOL)enabled;
 @end
 
 @implementation SFPrivacyReportBannerCell
@@ -36,13 +36,13 @@
     }
   }
 
-  v11 = [(SFInteractiveBannerCell *)self leadingLabel];
-  [v11 setAttributedText:v7];
+  leadingLabel = [(SFInteractiveBannerCell *)self leadingLabel];
+  [leadingLabel setAttributedText:v7];
 
-  v12 = [MEMORY[0x1E69C9808] sharedManager];
-  v13 = [v12 isPrivacyProxyActive];
-  v14 = [v12 state];
-  v15 = [(SFInteractiveBannerCell *)self captionLabel];
+  mEMORY[0x1E69C9808] = [MEMORY[0x1E69C9808] sharedManager];
+  isPrivacyProxyActive = [mEMORY[0x1E69C9808] isPrivacyProxyActive];
+  state = [mEMORY[0x1E69C9808] state];
+  captionLabel = [(SFInteractiveBannerCell *)self captionLabel];
   numberOfTrackers = self->_numberOfTrackers;
   v34 = @"TrackingPreventionDataExists";
   if (numberOfTrackers)
@@ -58,17 +58,17 @@
   v35[0] = v17;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:&v34 count:1];
   v19 = WBSMakeAccessibilityIdentifier();
-  [v15 setAccessibilityIdentifier:v19];
+  [captionLabel setAccessibilityIdentifier:v19];
 
   if (!self->_privateBrowsingEnabled)
   {
-    v24 = [MEMORY[0x1E696AC60] sharedHTTPCookieStorage];
-    v25 = [v24 webui_trackerProtectionEnabled];
+    mEMORY[0x1E696AC60] = [MEMORY[0x1E696AC60] sharedHTTPCookieStorage];
+    webui_trackerProtectionEnabled = [mEMORY[0x1E696AC60] webui_trackerProtectionEnabled];
 
-    if ((v25 & 1) == 0)
+    if ((webui_trackerProtectionEnabled & 1) == 0)
     {
       v28 = _WBSLocalizedString();
-      [v15 setText:v28];
+      [captionLabel setText:v28];
 
       v29 = _WBSLocalizedString();
       [(SFPrivacyReportBannerCell *)self _setAction:0 text:v29];
@@ -76,21 +76,21 @@
       goto LABEL_39;
     }
 
-    if (v13)
+    if (isPrivacyProxyActive)
     {
-      if (v14 == 2)
+      if (state == 2)
       {
         v26 = MEMORY[0x1E696AEC0];
       }
 
-      else if (v14 == 1)
+      else if (state == 1)
       {
         v26 = MEMORY[0x1E696AEC0];
       }
 
       else
       {
-        if (v14)
+        if (state)
         {
           goto LABEL_39;
         }
@@ -106,24 +106,24 @@
 
     v30 = _WBSLocalizedString();
     v31 = [v26 localizedStringWithFormat:v30, self->_numberOfTrackers];
-    [v15 setText:v31];
+    [captionLabel setText:v31];
 
     [(SFInteractiveBannerCell *)self _removeActionButton];
     goto LABEL_39;
   }
 
   [(SFInteractiveBannerCell *)self _removeActionButton];
-  v20 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v21 = [v20 safari_enableAdvancedPrivacyProtections:1];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v21 = [safari_browserDefaults safari_enableAdvancedPrivacyProtections:1];
 
   if (!v21)
   {
     goto LABEL_25;
   }
 
-  if (v14)
+  if (state)
   {
-    v22 = v13;
+    v22 = isPrivacyProxyActive;
   }
 
   else
@@ -133,14 +133,14 @@
 
   if (!self->_numberOfTrackers)
   {
-    if (v22 && v14 != 2 && v14 != 1)
+    if (v22 && state != 2 && state != 1)
     {
       goto LABEL_39;
     }
 
 LABEL_25:
     v27 = _WBSLocalizedString();
-    [v15 setText:v27];
+    [captionLabel setText:v27];
 
     goto LABEL_39;
   }
@@ -151,38 +151,38 @@ LABEL_25:
     goto LABEL_38;
   }
 
-  if (v14 == 2)
+  if (state == 2)
   {
     v23 = MEMORY[0x1E696AEC0];
     goto LABEL_38;
   }
 
-  if (v14 == 1)
+  if (state == 1)
   {
     v23 = MEMORY[0x1E696AEC0];
 LABEL_38:
     v32 = _WBSLocalizedString();
     v33 = [v23 localizedStringWithFormat:v32, self->_numberOfTrackers];
-    [v15 setText:v33];
+    [captionLabel setText:v33];
   }
 
 LABEL_39:
 }
 
-- (SFPrivacyReportBannerCell)initWithFrame:(CGRect)a3
+- (SFPrivacyReportBannerCell)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SFPrivacyReportBannerCell;
-  v3 = [(SFInteractiveBannerCell *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFInteractiveBannerCell *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_numberOfTrackers = -1;
     [(SFPrivacyReportBannerCell *)v3 _updateState];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v6 = *MEMORY[0x1E69C9940];
-    v7 = [MEMORY[0x1E69C9808] sharedManager];
-    [v5 addObserver:v4 selector:sel__privacyProxyAvailabilityChanged_ name:v6 object:v7];
+    mEMORY[0x1E69C9808] = [MEMORY[0x1E69C9808] sharedManager];
+    [defaultCenter addObserver:v4 selector:sel__privacyProxyAvailabilityChanged_ name:v6 object:mEMORY[0x1E69C9808]];
 
     v8 = v4;
   }
@@ -190,15 +190,15 @@ LABEL_39:
   return v4;
 }
 
-- (void)configureUsingBanner:(id)a3
+- (void)configureUsingBanner:(id)banner
 {
   v4.receiver = self;
   v4.super_class = SFPrivacyReportBannerCell;
-  [(SFInteractiveBannerCell *)&v4 configureUsingBanner:a3];
+  [(SFInteractiveBannerCell *)&v4 configureUsingBanner:banner];
   [(SFPrivacyReportBannerCell *)self _updateState];
 }
 
-- (void)_privacyProxyAvailabilityChanged:(id)a3
+- (void)_privacyProxyAvailabilityChanged:(id)changed
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -222,20 +222,20 @@ void __62__SFPrivacyReportBannerCell__privacyProxyAvailabilityChanged___block_in
   [*(a1 + 32) layoutIfNeeded];
 }
 
-- (void)setNumberOfTrackers:(int64_t)a3
+- (void)setNumberOfTrackers:(int64_t)trackers
 {
-  if (self->_numberOfTrackers != a3)
+  if (self->_numberOfTrackers != trackers)
   {
-    self->_numberOfTrackers = a3;
+    self->_numberOfTrackers = trackers;
     [(SFPrivacyReportBannerCell *)self _updateState];
   }
 }
 
-- (void)setPrivateBrowsingEnabled:(BOOL)a3
+- (void)setPrivateBrowsingEnabled:(BOOL)enabled
 {
-  if (self->_privateBrowsingEnabled != a3)
+  if (self->_privateBrowsingEnabled != enabled)
   {
-    self->_privateBrowsingEnabled = a3;
+    self->_privateBrowsingEnabled = enabled;
     [(SFPrivacyReportBannerCell *)self _updateState];
   }
 }

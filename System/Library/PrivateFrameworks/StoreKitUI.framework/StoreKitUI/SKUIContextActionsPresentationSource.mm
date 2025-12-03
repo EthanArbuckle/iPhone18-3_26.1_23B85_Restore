@@ -1,14 +1,14 @@
 @interface SKUIContextActionsPresentationSource
 - (CGRect)sourceRect;
-- (SKUIContextActionsPresentationSource)initWithViewController:(id)a3;
-- (void)presentViewController:(id)a3 permittedArrowDirections:(unint64_t)a4 animated:(BOOL)a5;
+- (SKUIContextActionsPresentationSource)initWithViewController:(id)controller;
+- (void)presentViewController:(id)controller permittedArrowDirections:(unint64_t)directions animated:(BOOL)animated;
 @end
 
 @implementation SKUIContextActionsPresentationSource
 
-- (SKUIContextActionsPresentationSource)initWithViewController:(id)a3
+- (SKUIContextActionsPresentationSource)initWithViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIContextActionsPresentationSource initWithViewController:];
@@ -20,40 +20,40 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewController, a3);
+    objc_storeStrong(&v6->_viewController, controller);
   }
 
   return v7;
 }
 
-- (void)presentViewController:(id)a3 permittedArrowDirections:(unint64_t)a4 animated:(BOOL)a5
+- (void)presentViewController:(id)controller permittedArrowDirections:(unint64_t)directions animated:(BOOL)animated
 {
-  v5 = a5;
-  v35 = a3;
-  v8 = [(SKUIContextActionsPresentationSource *)self viewController];
-  v9 = [(SKUIContextActionsPresentationSource *)self sourceView];
-  if (v9)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewController = [(SKUIContextActionsPresentationSource *)self viewController];
+  sourceView = [(SKUIContextActionsPresentationSource *)self sourceView];
+  if (sourceView)
   {
     v10 = 1;
   }
 
   else
   {
-    v11 = [(SKUIContextActionsPresentationSource *)self barButtonItem];
-    v10 = v11 != 0;
+    barButtonItem = [(SKUIContextActionsPresentationSource *)self barButtonItem];
+    v10 = barButtonItem != 0;
   }
 
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  if ([v12 userInterfaceIdiom] == 1)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
-    v13 = [MEMORY[0x277D75128] sharedApplication];
-    v14 = [v13 keyWindow];
-    v15 = [v14 traitCollection];
-    v16 = [v15 horizontalSizeClass] == 2 && v10;
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    keyWindow = [mEMORY[0x277D75128] keyWindow];
+    traitCollection = [keyWindow traitCollection];
+    v16 = [traitCollection horizontalSizeClass] == 2 && v10;
 
     if (v16 == 1)
     {
-      [v35 setModalPresentationStyle:7];
+      [controllerCopy setModalPresentationStyle:7];
     }
   }
 
@@ -61,50 +61,50 @@
   {
   }
 
-  [v8 presentViewController:v35 animated:v5 completion:0];
-  v17 = [v35 popoverPresentationController];
-  v18 = v17 != 0 && v10;
+  [viewController presentViewController:controllerCopy animated:animatedCopy completion:0];
+  popoverPresentationController = [controllerCopy popoverPresentationController];
+  v18 = popoverPresentationController != 0 && v10;
 
   if (v18 == 1)
   {
-    if ([v35 conformsToProtocol:&unk_28290F8C0])
+    if ([controllerCopy conformsToProtocol:&unk_28290F8C0])
     {
-      v19 = [v35 presentationController];
-      [v19 setDelegate:v35];
+      presentationController = [controllerCopy presentationController];
+      [presentationController setDelegate:controllerCopy];
     }
 
-    v20 = [v35 popoverPresentationController];
-    [v20 setPermittedArrowDirections:a4];
+    popoverPresentationController2 = [controllerCopy popoverPresentationController];
+    [popoverPresentationController2 setPermittedArrowDirections:directions];
 
-    v21 = [(SKUIContextActionsPresentationSource *)self barButtonItem];
+    barButtonItem2 = [(SKUIContextActionsPresentationSource *)self barButtonItem];
 
-    if (v21)
+    if (barButtonItem2)
     {
-      v22 = [(SKUIContextActionsPresentationSource *)self barButtonItem];
-      v23 = [v35 popoverPresentationController];
-      [v23 setBarButtonItem:v22];
+      barButtonItem3 = [(SKUIContextActionsPresentationSource *)self barButtonItem];
+      popoverPresentationController3 = [controllerCopy popoverPresentationController];
+      [popoverPresentationController3 setBarButtonItem:barButtonItem3];
     }
 
     else
     {
-      v24 = [(SKUIContextActionsPresentationSource *)self sourceView];
+      sourceView2 = [(SKUIContextActionsPresentationSource *)self sourceView];
 
-      if (!v24)
+      if (!sourceView2)
       {
         goto LABEL_16;
       }
 
-      v25 = [(SKUIContextActionsPresentationSource *)self sourceView];
-      v26 = [v35 popoverPresentationController];
-      [v26 setSourceView:v25];
+      sourceView3 = [(SKUIContextActionsPresentationSource *)self sourceView];
+      popoverPresentationController4 = [controllerCopy popoverPresentationController];
+      [popoverPresentationController4 setSourceView:sourceView3];
 
       [(SKUIContextActionsPresentationSource *)self sourceRect];
       v28 = v27;
       v30 = v29;
       v32 = v31;
       v34 = v33;
-      v22 = [v35 popoverPresentationController];
-      [v22 setSourceRect:{v28, v30, v32, v34}];
+      barButtonItem3 = [controllerCopy popoverPresentationController];
+      [barButtonItem3 setSourceRect:{v28, v30, v32, v34}];
     }
   }
 

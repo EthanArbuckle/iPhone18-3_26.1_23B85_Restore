@@ -1,16 +1,16 @@
 @interface MapsSuggestionsHotelTitleFormatter
-- (BOOL)formatTitlesForEntry:(id)a3 eta:(id)a4;
+- (BOOL)formatTitlesForEntry:(id)entry eta:(id)eta;
 @end
 
 @implementation MapsSuggestionsHotelTitleFormatter
 
-- (BOOL)formatTitlesForEntry:(id)a3 eta:(id)a4
+- (BOOL)formatTitlesForEntry:(id)entry eta:(id)eta
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  entryCopy = entry;
+  etaCopy = eta;
+  v8 = etaCopy;
+  if (!entryCopy)
   {
     v16 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -32,7 +32,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v7)
+  if (!etaCopy)
   {
     v16 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -52,7 +52,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if ([v6 type] != 13)
+  if ([entryCopy type] != 13)
   {
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -77,17 +77,17 @@ LABEL_15:
 
   [v8 seconds];
   v10 = NSStringFromMapsSuggestionsShortETA(v9);
-  v11 = [v6 undecoratedSubtitle];
-  if ([v10 length] && -[MapsSuggestionsEventETATitleFormatter shouldDecorateEntry:withETA:](self, "shouldDecorateEntry:withETA:", v6, v8))
+  undecoratedSubtitle = [entryCopy undecoratedSubtitle];
+  if ([v10 length] && -[MapsSuggestionsEventETATitleFormatter shouldDecorateEntry:withETA:](self, "shouldDecorateEntry:withETA:", entryCopy, v8))
   {
     v12 = MapsSuggestionsLocalizedStringFromGEOTransportType([v8 transportType]);
     v13 = MapsSuggestionsLocalizedETAFormatString(v10, v12);
 
-    v11 = v13;
+    undecoratedSubtitle = v13;
   }
 
-  v14 = [v6 title];
-  v15 = [(MapsSuggestionsBaseTitleFormatter *)self updateMyChangedTitlesForEntry:v6 title:v14 subtitle:v11 includeLockedVersions:0];
+  title = [entryCopy title];
+  v15 = [(MapsSuggestionsBaseTitleFormatter *)self updateMyChangedTitlesForEntry:entryCopy title:title subtitle:undecoratedSubtitle includeLockedVersions:0];
 
 LABEL_16:
   return v15;

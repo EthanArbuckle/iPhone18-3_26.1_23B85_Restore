@@ -1,7 +1,7 @@
 @interface VideoMirrorView
 - (UIColor)backgroundColor;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation VideoMirrorView
@@ -10,32 +10,32 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for VideoMirrorView();
-  v2 = [(MirrorView *)&v4 backgroundColor];
+  backgroundColor = [(MirrorView *)&v4 backgroundColor];
 
-  return v2;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v10.receiver = self;
   v10.super_class = type metadata accessor for VideoMirrorView();
   v4 = v10.receiver;
-  v5 = a3;
-  [(MirrorView *)&v10 setBackgroundColor:v5];
+  colorCopy = color;
+  [(MirrorView *)&v10 setBackgroundColor:colorCopy];
   v6 = *&v4[OBJC_IVAR____TtC8AppStore15VideoMirrorView_videoLayer];
-  v7 = [v4 backgroundColor];
-  if (v7)
+  backgroundColor = [v4 backgroundColor];
+  if (backgroundColor)
   {
-    v8 = v7;
-    v9 = [v7 CGColor];
+    v8 = backgroundColor;
+    cGColor = [backgroundColor CGColor];
   }
 
   else
   {
-    v9 = 0;
+    cGColor = 0;
   }
 
-  [v6 setBackgroundColor:v9];
+  [v6 setBackgroundColor:cGColor];
 }
 
 - (void)layoutSubviews

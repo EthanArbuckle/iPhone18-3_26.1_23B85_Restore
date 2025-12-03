@@ -1,24 +1,24 @@
 @interface DNDStateUpdate
-- (BOOL)isEqual:(id)a3;
-- (DNDStateUpdate)initWithCoder:(id)a3;
-- (DNDStateUpdate)initWithPreviousState:(id)a3 state:(id)a4 reason:(unint64_t)a5 source:(int64_t)a6 options:(int64_t)a7;
+- (BOOL)isEqual:(id)equal;
+- (DNDStateUpdate)initWithCoder:(id)coder;
+- (DNDStateUpdate)initWithPreviousState:(id)state state:(id)a4 reason:(unint64_t)reason source:(int64_t)source options:(int64_t)options;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DNDStateUpdate
 
-- (DNDStateUpdate)initWithPreviousState:(id)a3 state:(id)a4 reason:(unint64_t)a5 source:(int64_t)a6 options:(int64_t)a7
+- (DNDStateUpdate)initWithPreviousState:(id)state state:(id)a4 reason:(unint64_t)reason source:(int64_t)source options:(int64_t)options
 {
-  v12 = a3;
+  stateCopy = state;
   v13 = a4;
   v20.receiver = self;
   v20.super_class = DNDStateUpdate;
   v14 = [(DNDStateUpdate *)&v20 init];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [stateCopy copy];
     previousState = v14->_previousState;
     v14->_previousState = v15;
 
@@ -26,9 +26,9 @@
     state = v14->_state;
     v14->_state = v17;
 
-    v14->_reason = a5;
-    v14->_source = a6;
-    v14->_options = a7;
+    v14->_reason = reason;
+    v14->_source = source;
+    v14->_options = options;
   }
 
   return v14;
@@ -36,21 +36,21 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DNDStateUpdate *)self previousState];
-  v4 = [v3 hash];
-  v5 = [(DNDStateUpdate *)self state];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(DNDStateUpdate *)self reason];
-  v8 = v7 ^ [(DNDStateUpdate *)self source];
+  previousState = [(DNDStateUpdate *)self previousState];
+  v4 = [previousState hash];
+  state = [(DNDStateUpdate *)self state];
+  v6 = [state hash] ^ v4;
+  reason = [(DNDStateUpdate *)self reason];
+  v8 = reason ^ [(DNDStateUpdate *)self source];
   v9 = v8 ^ [(DNDStateUpdate *)self options];
 
   return v6 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -60,21 +60,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(DNDStateUpdate *)self previousState];
-      v9 = [(DNDStateUpdate *)v7 previousState];
-      if (v8 != v9)
+      v7 = equalCopy;
+      previousState = [(DNDStateUpdate *)self previousState];
+      previousState2 = [(DNDStateUpdate *)v7 previousState];
+      if (previousState != previousState2)
       {
-        v10 = [(DNDStateUpdate *)self previousState];
-        if (!v10)
+        previousState3 = [(DNDStateUpdate *)self previousState];
+        if (!previousState3)
         {
           v13 = 0;
           goto LABEL_34;
         }
 
-        v3 = v10;
-        v11 = [(DNDStateUpdate *)v7 previousState];
-        if (!v11)
+        v3 = previousState3;
+        previousState4 = [(DNDStateUpdate *)v7 previousState];
+        if (!previousState4)
         {
           v13 = 0;
 LABEL_33:
@@ -82,9 +82,9 @@ LABEL_33:
           goto LABEL_34;
         }
 
-        v12 = [(DNDStateUpdate *)self previousState];
-        v4 = [(DNDStateUpdate *)v7 previousState];
-        if (![v12 isEqual:v4])
+        previousState5 = [(DNDStateUpdate *)self previousState];
+        previousState6 = [(DNDStateUpdate *)v7 previousState];
+        if (![previousState5 isEqual:previousState6])
         {
           v13 = 0;
 LABEL_32:
@@ -92,24 +92,24 @@ LABEL_32:
           goto LABEL_33;
         }
 
-        v28 = v4;
-        v29 = v12;
-        v30 = v11;
+        v28 = previousState6;
+        v29 = previousState5;
+        v30 = previousState4;
       }
 
-      v14 = [(DNDStateUpdate *)self state];
-      v15 = [(DNDStateUpdate *)v7 state];
-      if (v14 != v15)
+      state = [(DNDStateUpdate *)self state];
+      state2 = [(DNDStateUpdate *)v7 state];
+      if (state != state2)
       {
-        v16 = [(DNDStateUpdate *)self state];
-        if (!v16)
+        state3 = [(DNDStateUpdate *)self state];
+        if (!state3)
         {
           goto LABEL_22;
         }
 
-        v4 = v16;
-        v17 = [(DNDStateUpdate *)v7 state];
-        if (!v17)
+        previousState6 = state3;
+        state4 = [(DNDStateUpdate *)v7 state];
+        if (!state4)
         {
           v13 = 0;
 LABEL_29:
@@ -117,12 +117,12 @@ LABEL_29:
           goto LABEL_30;
         }
 
-        v18 = v17;
+        v18 = state4;
         v25 = v3;
-        v19 = [(DNDStateUpdate *)self state];
-        v26 = [(DNDStateUpdate *)v7 state];
-        v27 = v19;
-        if (![v19 isEqual:?])
+        state5 = [(DNDStateUpdate *)self state];
+        state6 = [(DNDStateUpdate *)v7 state];
+        v27 = state5;
+        if (![state5 isEqual:?])
         {
           v13 = 0;
           v3 = v25;
@@ -135,16 +135,16 @@ LABEL_28:
         v3 = v25;
       }
 
-      v20 = [(DNDStateUpdate *)self reason];
-      if (v20 == [(DNDStateUpdate *)v7 reason])
+      reason = [(DNDStateUpdate *)self reason];
+      if (reason == [(DNDStateUpdate *)v7 reason])
       {
-        v21 = [(DNDStateUpdate *)self source];
-        if (v21 == [(DNDStateUpdate *)v7 source])
+        source = [(DNDStateUpdate *)self source];
+        if (source == [(DNDStateUpdate *)v7 source])
         {
-          v22 = [(DNDStateUpdate *)self options];
-          v13 = v22 == [(DNDStateUpdate *)v7 options];
+          options = [(DNDStateUpdate *)self options];
+          v13 = options == [(DNDStateUpdate *)v7 options];
           v18 = v24;
-          if (v14 == v15)
+          if (state == state2)
           {
             goto LABEL_30;
           }
@@ -153,16 +153,16 @@ LABEL_28:
         }
       }
 
-      if (v14 == v15)
+      if (state == state2)
       {
         v13 = 0;
 LABEL_30:
 
 LABEL_31:
-        v12 = v29;
-        v11 = v30;
-        v4 = v28;
-        if (v8 != v9)
+        previousState5 = v29;
+        previousState4 = v30;
+        previousState6 = v28;
+        if (previousState != previousState2)
         {
           goto LABEL_32;
         }
@@ -192,23 +192,23 @@ LABEL_35:
   v5 = DNDStateUpdateReasonToString([(DNDStateUpdate *)self reason]);
   v6 = DNDStateUpdateSourceToString([(DNDStateUpdate *)self source]);
   v7 = DNDStateUpdateOptionsToString([(DNDStateUpdate *)self options]);
-  v8 = [(DNDStateUpdate *)self state];
-  v9 = [(DNDStateUpdate *)self previousState];
-  v10 = [v3 stringWithFormat:@"<%@: %p reason: %@; source: %@; options: %@; state: %@; previousState: %@>", v4, self, v5, v6, v7, v8, v9];;
+  state = [(DNDStateUpdate *)self state];
+  previousState = [(DNDStateUpdate *)self previousState];
+  v10 = [v3 stringWithFormat:@"<%@: %p reason: %@; source: %@; options: %@; state: %@; previousState: %@>", v4, self, v5, v6, v7, state, previousState];;
 
   return v10;
 }
 
-- (DNDStateUpdate)initWithCoder:(id)a3
+- (DNDStateUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"previousState"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"state"];
-  v7 = [v4 decodeIntegerForKey:@"reason"];
-  v8 = [v4 decodeIntegerForKey:@"options"];
-  if ([v4 containsValueForKey:@"source"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"previousState"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"state"];
+  v7 = [coderCopy decodeIntegerForKey:@"reason"];
+  v8 = [coderCopy decodeIntegerForKey:@"options"];
+  if ([coderCopy containsValueForKey:@"source"])
   {
-    v9 = [v4 decodeIntegerForKey:@"source"];
+    v9 = [coderCopy decodeIntegerForKey:@"source"];
   }
 
   else
@@ -221,18 +221,18 @@ LABEL_35:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(DNDStateUpdate *)self previousState];
-  [v6 encodeObject:v4 forKey:@"previousState"];
+  coderCopy = coder;
+  previousState = [(DNDStateUpdate *)self previousState];
+  [coderCopy encodeObject:previousState forKey:@"previousState"];
 
-  v5 = [(DNDStateUpdate *)self state];
-  [v6 encodeObject:v5 forKey:@"state"];
+  state = [(DNDStateUpdate *)self state];
+  [coderCopy encodeObject:state forKey:@"state"];
 
-  [v6 encodeInteger:-[DNDStateUpdate reason](self forKey:{"reason"), @"reason"}];
-  [v6 encodeInteger:-[DNDStateUpdate source](self forKey:{"source"), @"source"}];
-  [v6 encodeInteger:-[DNDStateUpdate options](self forKey:{"options"), @"options"}];
+  [coderCopy encodeInteger:-[DNDStateUpdate reason](self forKey:{"reason"), @"reason"}];
+  [coderCopy encodeInteger:-[DNDStateUpdate source](self forKey:{"source"), @"source"}];
+  [coderCopy encodeInteger:-[DNDStateUpdate options](self forKey:{"options"), @"options"}];
 }
 
 @end

@@ -1,43 +1,43 @@
 @interface HFServiceTreeCompoundPredicate
 + (NAIdentity)na_identity;
-- (BOOL)isEqual:(id)a3;
-- (HFServiceTreeCompoundPredicate)initWithRootServicePredicate:(id)a3 childServicePredicates:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HFServiceTreeCompoundPredicate)initWithRootServicePredicate:(id)predicate childServicePredicates:(id)predicates;
 - (NSString)description;
-- (id)matchingServicesForRootService:(id)a3;
+- (id)matchingServicesForRootService:(id)service;
 - (unint64_t)hash;
 @end
 
 @implementation HFServiceTreeCompoundPredicate
 
-- (HFServiceTreeCompoundPredicate)initWithRootServicePredicate:(id)a3 childServicePredicates:(id)a4
+- (HFServiceTreeCompoundPredicate)initWithRootServicePredicate:(id)predicate childServicePredicates:(id)predicates
 {
-  v7 = a3;
-  v8 = a4;
+  predicateCopy = predicate;
+  predicatesCopy = predicates;
   v12.receiver = self;
   v12.super_class = HFServiceTreeCompoundPredicate;
   v9 = [(HFServiceTreeCompoundPredicate *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_rootServicePredicate, a3);
-    objc_storeStrong(&v10->_childServicePredicates, a4);
+    objc_storeStrong(&v9->_rootServicePredicate, predicate);
+    objc_storeStrong(&v10->_childServicePredicates, predicates);
   }
 
   return v10;
 }
 
-- (id)matchingServicesForRootService:(id)a3
+- (id)matchingServicesForRootService:(id)service
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFServiceTreeCompoundPredicate *)self rootServicePredicate];
-  v6 = [v5 matchingServicesForRootService:v4];
+  serviceCopy = service;
+  rootServicePredicate = [(HFServiceTreeCompoundPredicate *)self rootServicePredicate];
+  v6 = [rootServicePredicate matchingServicesForRootService:serviceCopy];
   v7 = [v6 mutableCopy];
 
   if ([v7 count])
   {
-    v21 = v4;
-    v23 = [v4 hf_childServices];
+    v21 = serviceCopy;
+    hf_childServices = [serviceCopy hf_childServices];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -62,7 +62,7 @@
           v25 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v13 = v23;
+          v13 = hf_childServices;
           v14 = [v13 countByEnumeratingWithState:&v24 objects:v32 count:16];
           if (v14)
           {
@@ -94,7 +94,7 @@
       while (v9);
     }
 
-    v4 = v21;
+    serviceCopy = v21;
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -105,15 +105,15 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFServiceTreeCompoundPredicate *)self rootServicePredicate];
-  v5 = [v3 appendObject:v4 withName:@"rootServicePredicate"];
+  rootServicePredicate = [(HFServiceTreeCompoundPredicate *)self rootServicePredicate];
+  v5 = [v3 appendObject:rootServicePredicate withName:@"rootServicePredicate"];
 
-  v6 = [(HFServiceTreeCompoundPredicate *)self childServicePredicates];
-  [v3 appendArraySection:v6 withName:@"childServicePredicates" skipIfEmpty:0];
+  childServicePredicates = [(HFServiceTreeCompoundPredicate *)self childServicePredicates];
+  [v3 appendArraySection:childServicePredicates withName:@"childServicePredicates" skipIfEmpty:0];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 + (NAIdentity)na_identity
@@ -139,19 +139,19 @@ void __45__HFServiceTreeCompoundPredicate_na_identity__block_invoke_2()
   qword_280E03E50 = v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

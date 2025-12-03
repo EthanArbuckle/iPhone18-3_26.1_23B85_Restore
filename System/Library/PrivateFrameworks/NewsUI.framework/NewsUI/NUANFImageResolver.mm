@@ -1,24 +1,24 @@
 @interface NUANFImageResolver
-+ (id)imageResourceResponseForFileURL:(id)a3 perserveColorSpace:(BOOL)a4 withSize:(CGSize)a5 andQuality:(unint64_t)a6;
++ (id)imageResourceResponseForFileURL:(id)l perserveColorSpace:(BOOL)space withSize:(CGSize)size andQuality:(unint64_t)quality;
 @end
 
 @implementation NUANFImageResolver
 
-+ (id)imageResourceResponseForFileURL:(id)a3 perserveColorSpace:(BOOL)a4 withSize:(CGSize)a5 andQuality:(unint64_t)a6
++ (id)imageResourceResponseForFileURL:(id)l perserveColorSpace:(BOOL)space withSize:(CGSize)size andQuality:(unint64_t)quality
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v9 = MEMORY[0x277CBEA90];
-  v10 = a3;
-  v11 = [v9 dataWithContentsOfURL:v10];
-  v12 = [MEMORY[0x277D550A0] sharedInstance];
-  v13 = [v12 dataIsAnimatedImage:v11];
+  lCopy = l;
+  v11 = [v9 dataWithContentsOfURL:lCopy];
+  mEMORY[0x277D550A0] = [MEMORY[0x277D550A0] sharedInstance];
+  v13 = [mEMORY[0x277D550A0] dataIsAnimatedImage:v11];
 
-  v14 = [MEMORY[0x277D550A0] sharedInstance];
-  v15 = v14;
+  mEMORY[0x277D550A0]2 = [MEMORY[0x277D550A0] sharedInstance];
+  v15 = mEMORY[0x277D550A0]2;
   if (v13)
   {
-    v16 = [v14 loadAnimatedImageFromImageData:v11 size:{width, height}];
+    v16 = [mEMORY[0x277D550A0]2 loadAnimatedImageFromImageData:v11 size:{width, height}];
 
     v17 = objc_alloc_init(MEMORY[0x277D55068]);
     [v17 setAnimatedImage:v16];
@@ -26,15 +26,15 @@
 
   else
   {
-    v16 = [v14 imageFromData:v11 size:{width, height}];
+    v16 = [mEMORY[0x277D550A0]2 imageFromData:v11 size:{width, height}];
 
     v17 = objc_alloc_init(MEMORY[0x277D550A8]);
     [v17 setImage:v16];
   }
 
-  [v17 setFileURL:v10];
+  [v17 setFileURL:lCopy];
 
-  [v17 setImageQuality:a6];
+  [v17 setImageQuality:quality];
 
   return v17;
 }

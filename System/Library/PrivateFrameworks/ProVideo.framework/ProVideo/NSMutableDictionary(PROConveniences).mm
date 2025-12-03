@@ -9,7 +9,7 @@
 - (void)addObject:()PROConveniences toSetForKey:
 {
   v9 = a3;
-  v7 = [a1 objectForKey:a4];
+  v7 = [self objectForKey:a4];
   if (v7)
   {
 
@@ -18,21 +18,21 @@
 
   else
   {
-    v8 = [objc_msgSend(MEMORY[0x277CBEB58] allocWithZone:{objc_msgSend(a1, "zone")), "initWithObjects:count:", &v9, 1}];
-    [a1 setObject:v8 forKey:a4];
+    v8 = [objc_msgSend(MEMORY[0x277CBEB58] allocWithZone:{objc_msgSend(self, "zone")), "initWithObjects:count:", &v9, 1}];
+    [self setObject:v8 forKey:a4];
   }
 }
 
 - (void)removeObject:()PROConveniences fromSetForKey:
 {
-  result = [a1 objectForKey:a4];
+  result = [self objectForKey:a4];
   if (result)
   {
     v8 = result;
     if ([result count] == 1)
     {
 
-      return [a1 removeObjectForKey:a4];
+      return [self removeObjectForKey:a4];
     }
 
     else
@@ -47,15 +47,15 @@
 
 - (uint64_t)objectsInAllSetsForKeys:()PROConveniences
 {
-  v4 = [a3 objectEnumerator];
-  v5 = [v4 nextObject];
-  if (v5)
+  objectEnumerator = [a3 objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v6 = v5;
+    nextObject2 = nextObject;
     v7 = 0;
     while (1)
     {
-      v8 = [a1 objectForKey:v6];
+      v8 = [self objectForKey:nextObject2];
       if (!v8)
       {
         break;
@@ -71,8 +71,8 @@
         v7 = [v8 mutableCopy];
       }
 
-      v6 = [v4 nextObject];
-      if (!v6)
+      nextObject2 = [objectEnumerator nextObject];
+      if (!nextObject2)
       {
         if (!v7)
         {
@@ -87,17 +87,17 @@
     if (v7)
     {
 LABEL_9:
-      v9 = [v7 allObjects];
+      allObjects = [v7 allObjects];
       goto LABEL_12;
     }
   }
 
 LABEL_11:
-  v9 = [MEMORY[0x277CBEA60] array];
+  allObjects = [MEMORY[0x277CBEA60] array];
   v7 = 0;
 LABEL_12:
 
-  return v9;
+  return allObjects;
 }
 
 @end

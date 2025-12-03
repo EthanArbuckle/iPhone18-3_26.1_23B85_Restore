@@ -13,18 +13,18 @@
 
 - (void)pu_stillAssetTransformMetadataPair
 {
-  v2 = [a1 pu_stillImageTransformAssetTrack];
-  if (v2)
+  pu_stillImageTransformAssetTrack = [self pu_stillImageTransformAssetTrack];
+  if (pu_stillImageTransformAssetTrack)
   {
-    v3 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:v2 outputSettings:0];
+    v3 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:pu_stillImageTransformAssetTrack outputSettings:0];
     v25 = 0;
-    v4 = [MEMORY[0x1E6987E78] assetReaderWithAsset:a1 error:&v25];
+    v4 = [MEMORY[0x1E6987E78] assetReaderWithAsset:self error:&v25];
     v5 = v25;
     v6 = v5;
     if (v4)
     {
       v22 = v5;
-      v23 = v2;
+      v23 = pu_stillImageTransformAssetTrack;
       [v4 setPreparesMediaDataForRealTimeConsumption:1];
       [v4 addOutput:v3];
       [v4 startReading];
@@ -34,28 +34,28 @@
       v9 = *MEMORY[0x1E69603A8];
       while (1)
       {
-        v10 = [v3 copyNextSampleBuffer];
-        if (!v10)
+        copyNextSampleBuffer = [v3 copyNextSampleBuffer];
+        if (!copyNextSampleBuffer)
         {
           break;
         }
 
-        v11 = v10;
-        if (CMSampleBufferGetNumSamples(v10))
+        v11 = copyNextSampleBuffer;
+        if (CMSampleBufferGetNumSamples(copyNextSampleBuffer))
         {
           v12 = [objc_alloc(MEMORY[0x1E6988160]) initWithSampleBuffer:v11];
           v13 = MEMORY[0x1E6987FE0];
-          v14 = [v12 items];
-          v15 = [v13 metadataItemsFromArray:v14 filteredByIdentifier:v24];
-          v16 = [v15 firstObject];
+          items = [v12 items];
+          v15 = [v13 metadataItemsFromArray:items filteredByIdentifier:v24];
+          firstObject = [v15 firstObject];
 
           v17 = MEMORY[0x1E6987FE0];
-          v18 = [v12 items];
-          v19 = [v17 metadataItemsFromArray:v18 filteredByIdentifier:v9];
-          v20 = [v19 firstObject];
+          items2 = [v12 items];
+          v19 = [v17 metadataItemsFromArray:items2 filteredByIdentifier:v9];
+          firstObject2 = [v19 firstObject];
 
-          v7 = v20;
-          v8 = v16;
+          v7 = firstObject2;
+          v8 = firstObject;
         }
 
         CFRelease(v11);
@@ -70,7 +70,7 @@
 
       [v4 cancelReading];
       v6 = v22;
-      v2 = v23;
+      pu_stillImageTransformAssetTrack = v23;
     }
 
     else
@@ -92,7 +92,7 @@
   v3 = MEMORY[0x1E69E9B10];
   if (a3)
   {
-    v4 = [a3 value];
+    value = [a3 value];
     v5 = 0;
     v6 = v3[1];
     v14[0] = *v3;
@@ -104,7 +104,7 @@
       v8 = v5;
       do
       {
-        v9 = [v4 objectAtIndexedSubscript:v8];
+        v9 = [value objectAtIndexedSubscript:v8];
         [v9 floatValue];
         v11 = v7;
         if ((v7 & 0xFFFFFFFE) != 0)
@@ -136,8 +136,8 @@
 
 - (uint64_t)_pu_getVitalityTransform:()PUPerspectiveTransform dimensions:
 {
-  v7 = objc_getAssociatedObject(a1, VitalityTransformKey);
-  v8 = objc_getAssociatedObject(a1, DimensionsKey);
+  v7 = objc_getAssociatedObject(self, VitalityTransformKey);
+  v8 = objc_getAssociatedObject(self, DimensionsKey);
   v9 = v8;
   if (v7)
   {
@@ -151,16 +151,16 @@
 
   if (v10)
   {
-    v11 = [a1 pu_stillAssetTransformMetadataPair];
+    pu_stillAssetTransformMetadataPair = [self pu_stillAssetTransformMetadataPair];
     v13 = v12;
-    v14 = v11;
-    if (v11)
+    v14 = pu_stillAssetTransformMetadataPair;
+    if (pu_stillAssetTransformMetadataPair)
     {
       v15 = MEMORY[0x1E696B098];
-      [a1 pu_perspectiveTransformForMetadata:v14];
+      [self pu_perspectiveTransformForMetadata:v14];
       v16 = [v15 pu_valueWithPUPerspectiveTransform:?];
 
-      objc_setAssociatedObject(a1, VitalityTransformKey, v16, 1);
+      objc_setAssociatedObject(self, VitalityTransformKey, v16, 1);
       v7 = v16;
     }
 
@@ -168,10 +168,10 @@
     v18 = v17;
     if (v13)
     {
-      v19 = [v17 value];
+      value = [v17 value];
 
-      objc_setAssociatedObject(a1, DimensionsKey, v19, 1);
-      v9 = v19;
+      objc_setAssociatedObject(self, DimensionsKey, value, 1);
+      v9 = value;
     }
   }
 
@@ -206,17 +206,17 @@
 - (uint64_t)_pu_isVitalityLimitingAllowed
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [objc_alloc(MEMORY[0x1E69C0718]) initWithAVAsset:a1 timeZoneLookup:0];
+  v2 = [objc_alloc(MEMORY[0x1E69C0718]) initWithAVAsset:self timeZoneLookup:0];
   if (!v2 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v5 = 138412290;
-    v6 = a1;
+    selfCopy = self;
     _os_log_error_impl(&dword_1B36F3000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Attempted to load vitality limiting from asset %@, but an error occurred", &v5, 0xCu);
   }
 
-  v3 = [v2 livePhotoVitalityLimitingAllowed];
+  livePhotoVitalityLimitingAllowed = [v2 livePhotoVitalityLimitingAllowed];
 
-  return v3;
+  return livePhotoVitalityLimitingAllowed;
 }
 
 - (void)_pu_handleRequiredPropertiesLoadedWithAdditionalNormalizedTransform:()PUPerspectiveTransform completion:
@@ -251,7 +251,7 @@
 
         v15 = *(*(&v140 + 1) + 8 * v13);
         v139 = v14;
-        v16 = [a1 statusOfValueForKey:v15 error:&v139];
+        v16 = [self statusOfValueForKey:v15 error:&v139];
         v11 = v139;
 
         if (v16 != 2)
@@ -259,7 +259,7 @@
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
             *buf = 138412802;
-            *&buf[4] = a1;
+            *&buf[4] = self;
             *&buf[12] = 2112;
             *&buf[14] = v15;
             *&buf[22] = 2112;
@@ -300,21 +300,21 @@
   v117 = v18;
   v118 = v9[2];
   v138 = v118;
-  if ([a1 pu_supportsVitality])
+  if ([self pu_supportsVitality])
   {
     v135 = *MEMORY[0x1E696AA88];
     v17 = v131;
-    if ([a1 _pu_getVitalityTransform:&v136 dimensions:&v135])
+    if ([self _pu_getVitalityTransform:&v136 dimensions:&v135])
     {
       v133 = 0u;
       v134 = 0u;
       v132 = 0u;
-      v19 = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:a1];
-      v20 = [v19 firstObject];
-      v21 = v20;
-      if (v20)
+      v19 = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:self];
+      firstObject = [v19 firstObject];
+      v21 = firstObject;
+      if (firstObject)
       {
-        [v20 preferredTransform];
+        [firstObject preferredTransform];
       }
 
       else
@@ -669,16 +669,16 @@
       v138.i64[0] = v148.i64[0];
     }
 
-    v22 = [a1 _pu_isVitalityLimitingAllowed];
+    _pu_isVitalityLimitingAllowed = [self _pu_isVitalityLimitingAllowed];
   }
 
   else
   {
-    v22 = 0;
+    _pu_isVitalityLimitingAllowed = 0;
     v17 = v131;
   }
 
-  v17[2](v17, v22, v136, v137, v138);
+  v17[2](v17, _pu_isVitalityLimitingAllowed, v136, v137, v138);
 LABEL_55:
 }
 
@@ -693,7 +693,7 @@ LABEL_55:
   v14 = a2;
   v15 = a3;
   v16 = a4;
-  v17 = a1;
+  selfCopy = self;
   v18 = v7;
   v9 = v7;
   dispatch_async(v8, block);
@@ -706,7 +706,7 @@ LABEL_55:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E69875D0] forAsset:a1];
+  obj = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E69875D0] forAsset:self];
   v1 = [obj countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v1)
   {
@@ -727,8 +727,8 @@ LABEL_55:
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v7 = [v6 formatDescriptions];
-        v8 = [v7 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        formatDescriptions = [v6 formatDescriptions];
+        v8 = [formatDescriptions countByEnumeratingWithState:&v16 objects:v24 count:16];
         if (v8)
         {
           v9 = v8;
@@ -739,7 +739,7 @@ LABEL_8:
           {
             if (*v17 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(formatDescriptions);
             }
 
             v12 = CMMetadataFormatDescriptionGetIdentifiers(*(*(&v16 + 1) + 8 * v11));
@@ -750,7 +750,7 @@ LABEL_8:
 
             if (v9 == ++v11)
             {
-              v9 = [v7 countByEnumeratingWithState:&v16 objects:v24 count:16];
+              v9 = [formatDescriptions countByEnumeratingWithState:&v16 objects:v24 count:16];
               if (v9)
               {
                 goto LABEL_8;
@@ -789,20 +789,20 @@ LABEL_19:
 - (uint64_t)pu_supportsVitality
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = objc_getAssociatedObject(a1, SupportsVitalityKey);
+  v2 = objc_getAssociatedObject(self, SupportsVitalityKey);
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v5 = [objc_alloc(MEMORY[0x1E69C0718]) initWithAVAsset:a1 timeZoneLookup:0];
+    v5 = [objc_alloc(MEMORY[0x1E69C0718]) initWithAVAsset:self timeZoneLookup:0];
     v6 = v5;
     if (v5)
     {
-      v4 = [v5 hasVitality];
+      bOOLValue = [v5 hasVitality];
     }
 
     else
@@ -810,19 +810,19 @@ LABEL_19:
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         v10 = 138412290;
-        v11 = a1;
+        selfCopy = self;
         _os_log_error_impl(&dword_1B36F3000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Attempted to read vitality disabled metadata from asset %@, but failed", &v10, 0xCu);
       }
 
-      v4 = 1;
+      bOOLValue = 1;
     }
 
     v7 = SupportsVitalityKey;
-    v8 = [MEMORY[0x1E696AD98] numberWithBool:v4];
-    objc_setAssociatedObject(a1, v7, v8, 1);
+    v8 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue];
+    objc_setAssociatedObject(self, v7, v8, 1);
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

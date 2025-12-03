@@ -1,15 +1,15 @@
 @interface UIView
-+ (UIEdgeInsets)mt_layoutMarginsForWidth:(double)a3;
-+ (double)mt_horizontalMarginsForWidth:(double)a3;
++ (UIEdgeInsets)mt_layoutMarginsForWidth:(double)width;
++ (double)mt_horizontalMarginsForWidth:(double)width;
 - (BOOL)mt_areMarginsGenerous;
 - (BOOL)mt_enableAutomaticRTLMirroringForSubviews;
 - (BOOL)mt_isExcludedFromAutomaticRTLMirroring;
 - (UIEdgeInsets)mt_layoutMargins;
-- (UIEdgeInsets)mt_layoutMarginsForWidth:(double)a3;
-- (id)mt_recursivelyFindFirstViewMeetingCriteria:(id)a3;
+- (UIEdgeInsets)mt_layoutMarginsForWidth:(double)width;
+- (id)mt_recursivelyFindFirstViewMeetingCriteria:(id)criteria;
 - (void)mt_RTLMirrorIfNeeded;
-- (void)mt_setEnableAutomaticRTLMirroringForSubviews:(BOOL)a3;
-- (void)mt_setExcludedFromAutomaticRTLMirroring:(BOOL)a3;
+- (void)mt_setEnableAutomaticRTLMirroringForSubviews:(BOOL)subviews;
+- (void)mt_setExcludedFromAutomaticRTLMirroring:(BOOL)mirroring;
 - (void)mt_setShouldRTLMirror;
 @end
 
@@ -27,12 +27,12 @@
   return result;
 }
 
-- (UIEdgeInsets)mt_layoutMarginsForWidth:(double)a3
+- (UIEdgeInsets)mt_layoutMarginsForWidth:(double)width
 {
   [(UIView *)self layoutMargins];
   v5 = v4;
   v7 = v6;
-  [objc_opt_class() mt_horizontalMarginsForWidth:a3];
+  [objc_opt_class() mt_horizontalMarginsForWidth:width];
   v9 = v8;
   v10 = v5;
   v11 = v7;
@@ -52,9 +52,9 @@
   return [v3 mt_areMarginsGenerousForWidth:v4];
 }
 
-+ (double)mt_horizontalMarginsForWidth:(double)a3
++ (double)mt_horizontalMarginsForWidth:(double)width
 {
-  v3 = [a1 mt_areMarginsGenerousForWidth:a3];
+  v3 = [self mt_areMarginsGenerousForWidth:width];
   result = 16.0;
   if (v3)
   {
@@ -64,9 +64,9 @@
   return result;
 }
 
-+ (UIEdgeInsets)mt_layoutMarginsForWidth:(double)a3
++ (UIEdgeInsets)mt_layoutMarginsForWidth:(double)width
 {
-  v3 = [a1 mt_areMarginsGenerousForWidth:a3];
+  v3 = [self mt_areMarginsGenerousForWidth:width];
   v4 = 20.0;
   if (!v3)
   {
@@ -83,12 +83,12 @@
   return result;
 }
 
-- (id)mt_recursivelyFindFirstViewMeetingCriteria:(id)a3
+- (id)mt_recursivelyFindFirstViewMeetingCriteria:(id)criteria
 {
-  v4 = a3;
-  if (v4[2](v4, self))
+  criteriaCopy = criteria;
+  if (criteriaCopy[2](criteriaCopy, self))
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
@@ -97,8 +97,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [(UIView *)self subviews];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subviews = [(UIView *)self subviews];
+    v7 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -109,19 +109,19 @@
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subviews);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * i) mt_recursivelyFindFirstViewMeetingCriteria:v4];
+          v11 = [*(*(&v13 + 1) + 8 * i) mt_recursivelyFindFirstViewMeetingCriteria:criteriaCopy];
           if (v11)
           {
-            v5 = v11;
+            selfCopy = v11;
 
             goto LABEL_13;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v8)
         {
           continue;
@@ -131,20 +131,20 @@
       }
     }
 
-    v5 = 0;
+    selfCopy = 0;
   }
 
 LABEL_13:
 
-  return v5;
+  return selfCopy;
 }
 
 - (void)mt_setShouldRTLMirror
 {
   if ([(UIView *)self mt_isRTL])
   {
-    v4 = [(UIView *)self mt_shouldRTLMirrorStackDepth];
-    v3 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 integerValue] + 1);
+    mt_shouldRTLMirrorStackDepth = [(UIView *)self mt_shouldRTLMirrorStackDepth];
+    v3 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [mt_shouldRTLMirrorStackDepth integerValue] + 1);
     [(UIView *)self mt_setShouldRTLMirrorStackDepth:v3];
   }
 }
@@ -153,14 +153,14 @@ LABEL_13:
 {
   if ([(UIView *)self mt_isRTL])
   {
-    v3 = [(UIView *)self mt_shouldRTLMirrorStackDepth];
-    v4 = [v3 integerValue];
+    mt_shouldRTLMirrorStackDepth = [(UIView *)self mt_shouldRTLMirrorStackDepth];
+    integerValue = [mt_shouldRTLMirrorStackDepth integerValue];
 
-    v5 = v4 <= 1 ? 0 : v4 - 1;
+    v5 = integerValue <= 1 ? 0 : integerValue - 1;
     v6 = [NSNumber numberWithInteger:v5];
     [(UIView *)self mt_setShouldRTLMirrorStackDepth:v6];
 
-    if (v4 <= 1)
+    if (integerValue <= 1)
     {
       [(UIView *)self bounds];
       MaxX = CGRectGetMaxX(v28);
@@ -172,8 +172,8 @@ LABEL_13:
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v11 = [(UIView *)self subviews];
-      v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      subviews = [(UIView *)self subviews];
+      v12 = [subviews countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v12)
       {
         v13 = v12;
@@ -184,7 +184,7 @@ LABEL_13:
           {
             if (*v24 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(subviews);
             }
 
             v16 = *(*(&v23 + 1) + 8 * i);
@@ -209,7 +209,7 @@ LABEL_13:
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+          v13 = [subviews countByEnumeratingWithState:&v23 objects:v27 count:16];
         }
 
         while (v13);
@@ -218,39 +218,39 @@ LABEL_13:
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        v22 = [(UIView *)self contentView];
-        [v22 mt_RTLMirrorIfNeeded];
+        contentView = [(UIView *)self contentView];
+        [contentView mt_RTLMirrorIfNeeded];
       }
     }
   }
 }
 
-- (void)mt_setExcludedFromAutomaticRTLMirroring:(BOOL)a3
+- (void)mt_setExcludedFromAutomaticRTLMirroring:(BOOL)mirroring
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:mirroring];
   objc_setAssociatedObject(self, &unk_100583D80, v4, 1);
 }
 
 - (BOOL)mt_isExcludedFromAutomaticRTLMirroring
 {
   v2 = objc_getAssociatedObject(self, &unk_100583D80);
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)mt_setEnableAutomaticRTLMirroringForSubviews:(BOOL)a3
+- (void)mt_setEnableAutomaticRTLMirroringForSubviews:(BOOL)subviews
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:subviews];
   objc_setAssociatedObject(self, &unk_100583D81, v4, 1);
 }
 
 - (BOOL)mt_enableAutomaticRTLMirroringForSubviews
 {
   v2 = objc_getAssociatedObject(self, &unk_100583D81);
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

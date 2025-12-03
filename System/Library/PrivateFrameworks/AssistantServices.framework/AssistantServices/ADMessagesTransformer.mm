@@ -1,33 +1,33 @@
 @interface ADMessagesTransformer
-- (id)aceCommandForSiriResponse:(id)a3 responseError:(id)a4 forRequestCommand:(id)a5;
-- (void)getSiriRequestForClientBoundAceCommand:(id)a3 completionHandler:(id)a4;
+- (id)aceCommandForSiriResponse:(id)response responseError:(id)error forRequestCommand:(id)command;
+- (void)getSiriRequestForClientBoundAceCommand:(id)command completionHandler:(id)handler;
 @end
 
 @implementation ADMessagesTransformer
 
-- (id)aceCommandForSiriResponse:(id)a3 responseError:(id)a4 forRequestCommand:(id)a5
+- (id)aceCommandForSiriResponse:(id)response responseError:(id)error forRequestCommand:(id)command
 {
-  if (a4)
+  if (error)
   {
-    [a5 ad_aceResponseCommandGenericErrorRepresentation];
+    [command ad_aceResponseCommandGenericErrorRepresentation];
   }
 
   else
   {
-    [a5 _ad_replyCommandValue];
+    [command _ad_replyCommandValue];
   }
   v5 = ;
 
   return v5;
 }
 
-- (void)getSiriRequestForClientBoundAceCommand:(id)a3 completionHandler:(id)a4
+- (void)getSiriRequestForClientBoundAceCommand:(id)command completionHandler:(id)handler
 {
-  v6 = a3;
-  v5 = a4;
+  commandCopy = command;
+  handlerCopy = handler;
   if (objc_opt_respondsToSelector())
   {
-    [v6 _ad_getMessagesRequestValueWithCompletionHandler:v5];
+    [commandCopy _ad_getMessagesRequestValueWithCompletionHandler:handlerCopy];
   }
 }
 

@@ -9,8 +9,8 @@
   v3 = [CFXEffectType effectTypeWithIdentifier:CFXEffectTypeIdentifierAnimoji];
   v4 = [CFXEffect effectIdentifiersForEffectType:v3];
 
-  v5 = [(CFXEffect *)self identifier];
-  LOBYTE(v3) = [v4 containsObject:v5];
+  identifier = [(CFXEffect *)self identifier];
+  LOBYTE(v3) = [v4 containsObject:identifier];
 
   return v3;
 }

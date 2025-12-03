@@ -1,23 +1,23 @@
 @interface SBHStackConfigurationApertureView
-- (SBHStackConfigurationApertureView)initWithFrame:(CGRect)a3 iconViewBackgroundType:(int64_t)a4;
+- (SBHStackConfigurationApertureView)initWithFrame:(CGRect)frame iconViewBackgroundType:(int64_t)type;
 - (void)layoutSubviews;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
-- (void)setUsesConcentricCorners:(BOOL)a3;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
+- (void)setUsesConcentricCorners:(BOOL)corners;
 @end
 
 @implementation SBHStackConfigurationApertureView
 
-- (SBHStackConfigurationApertureView)initWithFrame:(CGRect)a3 iconViewBackgroundType:(int64_t)a4
+- (SBHStackConfigurationApertureView)initWithFrame:(CGRect)frame iconViewBackgroundType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = SBHStackConfigurationApertureView;
-  v4 = [(SBHStackConfigurationApertureView *)&v8 initWithFrame:a4, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(SBHStackConfigurationApertureView *)&v8 initWithFrame:type, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
     [(UIView *)v4 sbh_applyClearGlass];
-    v6 = [(SBHStackConfigurationApertureView *)v5 layer];
-    [v6 setCornerCurve:*MEMORY[0x1E69796E8]];
+    layer = [(SBHStackConfigurationApertureView *)v5 layer];
+    [layer setCornerCurve:*MEMORY[0x1E69796E8]];
 
     v5->_usesConcentricCorners = 0;
   }
@@ -25,16 +25,16 @@
   return v5;
 }
 
-- (void)setUsesConcentricCorners:(BOOL)a3
+- (void)setUsesConcentricCorners:(BOOL)corners
 {
-  if (self->_usesConcentricCorners != a3)
+  if (self->_usesConcentricCorners != corners)
   {
-    self->_usesConcentricCorners = a3;
+    self->_usesConcentricCorners = corners;
     [(SBHStackConfigurationApertureView *)self setNeedsLayout];
   }
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
@@ -67,8 +67,8 @@
   v11 = v10;
   if ([(SBHStackConfigurationApertureView *)self usesConcentricCorners])
   {
-    v12 = [(SBHStackConfigurationApertureView *)self layer];
-    v13 = v12;
+    layer = [(SBHStackConfigurationApertureView *)self layer];
+    v13 = layer;
     v14 = continuousCornerRadius + (v4 - width * v11) * 0.5;
   }
 
@@ -94,8 +94,8 @@
       v16 = continuousCornerRadius / v15;
     }
 
-    v12 = [(SBHStackConfigurationApertureView *)self layer];
-    v13 = v12;
+    layer = [(SBHStackConfigurationApertureView *)self layer];
+    v13 = layer;
     if (v4 <= v6)
     {
       v17 = v4;
@@ -109,7 +109,7 @@
     v14 = v16 * v17;
   }
 
-  [v12 setCornerRadius:v14];
+  [layer setCornerRadius:v14];
 
   UIEdgeInsetsMakeWithEdges();
   [(SBIconListView *)self->_iconListView setAdditionalLayoutInsets:?];

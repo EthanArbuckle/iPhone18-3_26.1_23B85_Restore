@@ -1,6 +1,6 @@
 @interface TSKMoviePlaybackRegistry
 + (id)sharedMoviePlaybackRegistry;
-- (void)objectWillBeginMoviePlayback:(id)a3;
+- (void)objectWillBeginMoviePlayback:(id)playback;
 @end
 
 @implementation TSKMoviePlaybackRegistry
@@ -22,11 +22,11 @@ TSKMoviePlaybackRegistry *__55__TSKMoviePlaybackRegistry_sharedMoviePlaybackRegi
   return result;
 }
 
-- (void)objectWillBeginMoviePlayback:(id)a3
+- (void)objectWillBeginMoviePlayback:(id)playback
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v4 postNotificationName:@"TSKMoviePlaybackRegistryObjectWillBeginMoviePlaybackNotification" object:self userInfo:0];
+  [defaultCenter postNotificationName:@"TSKMoviePlaybackRegistryObjectWillBeginMoviePlaybackNotification" object:self userInfo:0];
 }
 
 @end

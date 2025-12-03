@@ -1,7 +1,7 @@
 @interface CNContactDeleteAcceptedAction
 + (id)os_log;
 - (BOOL)deleteAccepted;
-- (void)performActionWithSender:(id)a3;
+- (void)performActionWithSender:(id)sender;
 @end
 
 @implementation CNContactDeleteAcceptedAction
@@ -30,29 +30,29 @@ uint64_t __39__CNContactDeleteAcceptedAction_os_log__block_invoke()
 - (BOOL)deleteAccepted
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_INFO))
   {
-    v4 = [(CNContactAction *)self contact];
-    v5 = [v4 identifier];
-    v6 = v5;
+    contact = [(CNContactAction *)self contact];
+    identifier = [contact identifier];
+    v6 = identifier;
     v7 = @"<no identifier>";
-    if (v5)
+    if (identifier)
     {
-      v7 = v5;
+      v7 = identifier;
     }
 
     *buf = 138412290;
     v35 = v7;
-    _os_log_impl(&dword_199A75000, v3, OS_LOG_TYPE_INFO, "Starting deleteAccepted for contact: %@", buf, 0xCu);
+    _os_log_impl(&dword_199A75000, os_log, OS_LOG_TYPE_INFO, "Starting deleteAccepted for contact: %@", buf, 0xCu);
   }
 
-  v8 = [(CNContactAction *)self contact];
+  contact2 = [(CNContactAction *)self contact];
 
-  if (!v8)
+  if (!contact2)
   {
-    v12 = [objc_opt_class() os_log];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    os_log2 = [objc_opt_class() os_log];
+    if (!os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_20;
     }
@@ -60,25 +60,25 @@ uint64_t __39__CNContactDeleteAcceptedAction_os_log__block_invoke()
     *buf = 0;
     v24 = "Cannot delete accepted contact: contact is nil";
 LABEL_41:
-    _os_log_error_impl(&dword_199A75000, v12, OS_LOG_TYPE_ERROR, v24, buf, 2u);
+    _os_log_error_impl(&dword_199A75000, os_log2, OS_LOG_TYPE_ERROR, v24, buf, 2u);
     goto LABEL_20;
   }
 
-  v9 = [(CNContactAction *)self delegate];
+  delegate = [(CNContactAction *)self delegate];
 
-  if (v9)
+  if (delegate)
   {
-    v10 = [(CNContactAction *)self delegate];
-    v11 = [v10 contactViewCache];
-    v12 = [v11 contactStore];
+    delegate2 = [(CNContactAction *)self delegate];
+    contactViewCache = [delegate2 contactViewCache];
+    os_log2 = [contactViewCache contactStore];
 
-    if (!v12)
+    if (!os_log2)
     {
-      v20 = [objc_opt_class() os_log];
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+      os_log3 = [objc_opt_class() os_log];
+      if (os_log_type_enabled(os_log3, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_error_impl(&dword_199A75000, v20, OS_LOG_TYPE_ERROR, "Cannot delete accepted contact: contactStore is nil", buf, 2u);
+        _os_log_error_impl(&dword_199A75000, os_log3, OS_LOG_TYPE_ERROR, "Cannot delete accepted contact: contactStore is nil", buf, 2u);
       }
 
       v25 = 0;
@@ -86,48 +86,48 @@ LABEL_41:
     }
 
     v13 = objc_alloc_init(MEMORY[0x1E695CE60]);
-    v14 = [objc_opt_class() os_log];
-    v15 = v14;
+    os_log4 = [objc_opt_class() os_log];
+    os_log6 = os_log4;
     if (v13)
     {
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(os_log4, OS_LOG_TYPE_INFO))
       {
-        v16 = [(CNContactAction *)self contact];
-        v17 = [v16 identifier];
+        contact3 = [(CNContactAction *)self contact];
+        identifier2 = [contact3 identifier];
         *buf = 138412546;
         v35 = v13;
         v36 = 2112;
-        v37 = v17;
-        _os_log_impl(&dword_199A75000, v15, OS_LOG_TYPE_INFO, "Created save request: %@, deleting contact: %@", buf, 0x16u);
+        v37 = identifier2;
+        _os_log_impl(&dword_199A75000, os_log6, OS_LOG_TYPE_INFO, "Created save request: %@, deleting contact: %@", buf, 0x16u);
       }
 
-      v18 = [(CNContactAction *)self contact];
-      [(__CFString *)v13 deleteRecentContact:v18];
+      contact4 = [(CNContactAction *)self contact];
+      [(__CFString *)v13 deleteRecentContact:contact4];
 
       v33 = 0;
-      v19 = [v12 executeSaveRequest:v13 error:&v33];
-      v20 = v33;
-      v21 = [objc_opt_class() os_log];
-      v15 = v21;
-      if (v20)
+      v19 = [os_log2 executeSaveRequest:v13 error:&v33];
+      os_log3 = v33;
+      os_log5 = [objc_opt_class() os_log];
+      os_log6 = os_log5;
+      if (os_log3)
       {
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(os_log5, OS_LOG_TYPE_ERROR))
         {
-          v30 = [v20 localizedDescription];
-          v31 = [v20 domain];
-          v32 = [v20 code];
+          localizedDescription = [os_log3 localizedDescription];
+          domain = [os_log3 domain];
+          code = [os_log3 code];
           *buf = 138412802;
-          v35 = v30;
+          v35 = localizedDescription;
           v36 = 2112;
-          v37 = v31;
+          v37 = domain;
           v38 = 2048;
-          v39 = v32;
-          _os_log_error_impl(&dword_199A75000, v15, OS_LOG_TYPE_ERROR, "Could not delete CoreRecents accepted contact. Error: %@, Error domain: %@, Error code: %ld", buf, 0x20u);
+          v39 = code;
+          _os_log_error_impl(&dword_199A75000, os_log6, OS_LOG_TYPE_ERROR, "Could not delete CoreRecents accepted contact. Error: %@, Error domain: %@, Error code: %ld", buf, 0x20u);
         }
 
-        v22 = [v20 userInfo];
+        userInfo = [os_log3 userInfo];
 
-        if (!v22)
+        if (!userInfo)
         {
           v25 = 0;
 LABEL_37:
@@ -136,13 +136,13 @@ LABEL_38:
           goto LABEL_39;
         }
 
-        v15 = [objc_opt_class() os_log];
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+        os_log6 = [objc_opt_class() os_log];
+        if (os_log_type_enabled(os_log6, OS_LOG_TYPE_ERROR))
         {
-          v23 = [v20 userInfo];
+          userInfo2 = [os_log3 userInfo];
           *buf = 138412290;
-          v35 = v23;
-          _os_log_error_impl(&dword_199A75000, v15, OS_LOG_TYPE_ERROR, "Error userInfo: %@", buf, 0xCu);
+          v35 = userInfo2;
+          _os_log_error_impl(&dword_199A75000, os_log6, OS_LOG_TYPE_ERROR, "Error userInfo: %@", buf, 0xCu);
         }
 
         goto LABEL_35;
@@ -151,20 +151,20 @@ LABEL_38:
       if (v19)
       {
         v25 = 1;
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
+        if (os_log_type_enabled(os_log5, OS_LOG_TYPE_INFO))
         {
-          v27 = [(CNContactAction *)self contact];
-          v28 = [v27 identifier];
+          contact5 = [(CNContactAction *)self contact];
+          identifier3 = [contact5 identifier];
           *buf = 138412290;
-          v35 = v28;
-          _os_log_impl(&dword_199A75000, v15, OS_LOG_TYPE_INFO, "Successfully deleted CoreRecents accepted contact: %@", buf, 0xCu);
+          v35 = identifier3;
+          _os_log_impl(&dword_199A75000, os_log6, OS_LOG_TYPE_INFO, "Successfully deleted CoreRecents accepted contact: %@", buf, 0xCu);
         }
 
-        v20 = 0;
+        os_log3 = 0;
         goto LABEL_36;
       }
 
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(os_log5, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
         v26 = "executeSaveRequest returned NO but no error was provided";
@@ -172,15 +172,15 @@ LABEL_38:
       }
     }
 
-    else if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    else if (os_log_type_enabled(os_log4, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
       v26 = "Failed to create CNCoreRecentsSaveRequest";
 LABEL_33:
-      _os_log_error_impl(&dword_199A75000, v15, OS_LOG_TYPE_ERROR, v26, buf, 2u);
+      _os_log_error_impl(&dword_199A75000, os_log6, OS_LOG_TYPE_ERROR, v26, buf, 2u);
     }
 
-    v20 = 0;
+    os_log3 = 0;
 LABEL_35:
     v25 = 0;
 LABEL_36:
@@ -188,8 +188,8 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  v12 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+  os_log2 = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
     v24 = "Cannot delete accepted contact: delegate is nil";
@@ -203,9 +203,9 @@ LABEL_39:
   return v25;
 }
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   v5 = CNContactsUIBundle();
   v6 = [v5 localizedStringForKey:@"CARD_ACTION_DELETE_ACCEPTED_ALERT_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
 
@@ -233,8 +233,8 @@ LABEL_39:
   v14 = [v11 actionWithTitle:v13 style:1 handler:v16];
   [v7 addAction:v14];
 
-  v15 = [(CNContactAction *)self delegate];
-  [v15 action:self presentViewController:v7 sender:v4];
+  delegate = [(CNContactAction *)self delegate];
+  [delegate action:self presentViewController:v7 sender:senderCopy];
 }
 
 void __57__CNContactDeleteAcceptedAction_performActionWithSender___block_invoke(uint64_t a1)

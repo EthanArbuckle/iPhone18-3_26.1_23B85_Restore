@@ -6,16 +6,16 @@
 
 + (void)_doc_swapMethodWithSelector:()DOCMethodSwizzling withMethodWithSelector:
 {
-  InstanceMethod = class_getInstanceMethod(a1, name);
+  InstanceMethod = class_getInstanceMethod(self, name);
   Implementation = method_getImplementation(InstanceMethod);
-  v9 = class_getInstanceMethod(a1, a3);
+  v9 = class_getInstanceMethod(self, a3);
   v10 = method_getImplementation(v9);
   TypeEncoding = method_getTypeEncoding(InstanceMethod);
-  if (class_addMethod(a1, a3, Implementation, TypeEncoding))
+  if (class_addMethod(self, a3, Implementation, TypeEncoding))
   {
     v12 = method_getTypeEncoding(v9);
 
-    class_replaceMethod(a1, name, v10, v12);
+    class_replaceMethod(self, name, v10, v12);
   }
 
   else

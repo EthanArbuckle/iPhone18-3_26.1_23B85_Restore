@@ -2,11 +2,11 @@
 - (CSLPRFLiveActivitiesBacklightPrivacySettingsDataSource)init;
 - (CSLPRFLiveActivitiesBacklightPrivacySettingsDataSourceDelegate)delegate;
 - (void)dealloc;
-- (void)setPrivacyDuringAlwaysOnForLiveActivities:(BOOL)a3;
-- (void)settingsModel:(id)a3 didAddSettings:(id)a4;
-- (void)settingsModel:(id)a3 didChangeGlobalSettings:(id)a4;
-- (void)settingsModel:(id)a3 didRemoveSettings:(id)a4;
-- (void)settingsModel:(id)a3 didUpdateSettings:(id)a4;
+- (void)setPrivacyDuringAlwaysOnForLiveActivities:(BOOL)activities;
+- (void)settingsModel:(id)model didAddSettings:(id)settings;
+- (void)settingsModel:(id)model didChangeGlobalSettings:(id)settings;
+- (void)settingsModel:(id)model didRemoveSettings:(id)settings;
+- (void)settingsModel:(id)model didUpdateSettings:(id)settings;
 @end
 
 @implementation CSLPRFLiveActivitiesBacklightPrivacySettingsDataSource
@@ -24,9 +24,9 @@
     settingsModel = v2->_settingsModel;
     v2->_settingsModel = v5;
 
-    v7 = [(CSLPRFPerApplicationSettingsModel *)v2->_settingsModel globalSettings];
+    globalSettings = [(CSLPRFPerApplicationSettingsModel *)v2->_settingsModel globalSettings];
     globalSettings = v2->_globalSettings;
-    v2->_globalSettings = v7;
+    v2->_globalSettings = globalSettings;
   }
 
   return v2;
@@ -40,58 +40,58 @@
   [(CSLPRFLiveActivitiesBacklightPrivacySettingsDataSource *)&v3 dealloc];
 }
 
-- (void)setPrivacyDuringAlwaysOnForLiveActivities:(BOOL)a3
+- (void)setPrivacyDuringAlwaysOnForLiveActivities:(BOOL)activities
 {
   globalSettings = self->_globalSettings;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_2950;
   v4[3] = &unk_35560;
-  v5 = a3;
+  activitiesCopy = activities;
   [(CSLPRFAppBacklightPrivacySettings *)globalSettings updateSettingsWithBlock:v4];
 }
 
-- (void)settingsModel:(id)a3 didAddSettings:(id)a4
+- (void)settingsModel:(id)model didAddSettings:(id)settings
 {
-  v5 = [(CSLPRFLiveActivitiesBacklightPrivacySettingsDataSource *)self delegate:a3];
+  v5 = [(CSLPRFLiveActivitiesBacklightPrivacySettingsDataSource *)self delegate:model];
 
   if (v5)
   {
-    v6 = [(CSLPRFLiveActivitiesBacklightPrivacySettingsDataSource *)self delegate];
-    [v6 dataSourceDidUpdate:self];
+    delegate = [(CSLPRFLiveActivitiesBacklightPrivacySettingsDataSource *)self delegate];
+    [delegate dataSourceDidUpdate:self];
   }
 }
 
-- (void)settingsModel:(id)a3 didChangeGlobalSettings:(id)a4
+- (void)settingsModel:(id)model didChangeGlobalSettings:(id)settings
 {
-  v5 = [(CSLPRFLiveActivitiesBacklightPrivacySettingsDataSource *)self delegate:a3];
+  v5 = [(CSLPRFLiveActivitiesBacklightPrivacySettingsDataSource *)self delegate:model];
 
   if (v5)
   {
-    v6 = [(CSLPRFLiveActivitiesBacklightPrivacySettingsDataSource *)self delegate];
-    [v6 dataSourceDidUpdate:self];
+    delegate = [(CSLPRFLiveActivitiesBacklightPrivacySettingsDataSource *)self delegate];
+    [delegate dataSourceDidUpdate:self];
   }
 }
 
-- (void)settingsModel:(id)a3 didRemoveSettings:(id)a4
+- (void)settingsModel:(id)model didRemoveSettings:(id)settings
 {
-  v5 = [(CSLPRFLiveActivitiesBacklightPrivacySettingsDataSource *)self delegate:a3];
+  v5 = [(CSLPRFLiveActivitiesBacklightPrivacySettingsDataSource *)self delegate:model];
 
   if (v5)
   {
-    v6 = [(CSLPRFLiveActivitiesBacklightPrivacySettingsDataSource *)self delegate];
-    [v6 dataSourceDidUpdate:self];
+    delegate = [(CSLPRFLiveActivitiesBacklightPrivacySettingsDataSource *)self delegate];
+    [delegate dataSourceDidUpdate:self];
   }
 }
 
-- (void)settingsModel:(id)a3 didUpdateSettings:(id)a4
+- (void)settingsModel:(id)model didUpdateSettings:(id)settings
 {
-  v5 = [(CSLPRFLiveActivitiesBacklightPrivacySettingsDataSource *)self delegate:a3];
+  v5 = [(CSLPRFLiveActivitiesBacklightPrivacySettingsDataSource *)self delegate:model];
 
   if (v5)
   {
-    v6 = [(CSLPRFLiveActivitiesBacklightPrivacySettingsDataSource *)self delegate];
-    [v6 dataSourceDidUpdate:self];
+    delegate = [(CSLPRFLiveActivitiesBacklightPrivacySettingsDataSource *)self delegate];
+    [delegate dataSourceDidUpdate:self];
   }
 }
 

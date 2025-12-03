@@ -1,6 +1,6 @@
 @interface NSSQLRelationshipFaultRequestContext
-- (BOOL)executeRequestCore:(id *)a3;
-- (NSSQLRelationshipFaultRequestContext)initWithObjectID:(id)a3 relationship:(id)a4 context:(id)a5 sqlCore:(id)a6;
+- (BOOL)executeRequestCore:(id *)core;
+- (NSSQLRelationshipFaultRequestContext)initWithObjectID:(id)d relationship:(id)relationship context:(id)context sqlCore:(id)core;
 - (void)dealloc;
 @end
 
@@ -16,30 +16,30 @@
   [(NSSQLStoreRequestContext *)&v3 dealloc];
 }
 
-- (NSSQLRelationshipFaultRequestContext)initWithObjectID:(id)a3 relationship:(id)a4 context:(id)a5 sqlCore:(id)a6
+- (NSSQLRelationshipFaultRequestContext)initWithObjectID:(id)d relationship:(id)relationship context:(id)context sqlCore:(id)core
 {
   v10.receiver = self;
   v10.super_class = NSSQLRelationshipFaultRequestContext;
-  v8 = [(NSSQLStoreRequestContext *)&v10 initWithRequest:0 context:a5 sqlCore:a6];
+  v8 = [(NSSQLStoreRequestContext *)&v10 initWithRequest:0 context:context sqlCore:core];
   if (v8)
   {
-    v8->_relationship = a4;
-    v8->_objectID = a3;
+    v8->_relationship = relationship;
+    v8->_objectID = d;
   }
 
   return v8;
 }
 
-- (BOOL)executeRequestCore:(id *)a3
+- (BOOL)executeRequestCore:(id *)core
 {
   v5 = _executeNewValuesForRelationshipFaultRequest(self);
   [(NSSQLStoreRequestContext *)self setResult:v5];
 
-  if (a3 && *a3)
+  if (core && *core)
   {
     if (self)
     {
-      objc_setProperty_nonatomic(self, v6, *a3, 40);
+      objc_setProperty_nonatomic(self, v6, *core, 40);
       return !self->super._exception && self->super._error == 0;
     }
 

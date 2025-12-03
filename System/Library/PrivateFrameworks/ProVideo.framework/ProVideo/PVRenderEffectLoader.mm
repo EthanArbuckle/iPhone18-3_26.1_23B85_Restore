@@ -1,11 +1,11 @@
 @interface PVRenderEffectLoader
 - (PVRenderEffectLoader)init;
-- (void)_loadEffects_noLock:(id)a3;
+- (void)_loadEffects_noLock:(id)lock;
 - (void)_removeTimedOutEffects_noLock;
-- (void)_removeUnusedEffects_noLock:(id)a3;
+- (void)_removeUnusedEffects_noLock:(id)lock;
 - (void)ageOutEffects;
 - (void)dealloc;
-- (void)loadEffectsForGraphs:(id)a3 loadContext:(HGRef<PVInstructionGraphContext>)a4;
+- (void)loadEffectsForGraphs:(id)graphs loadContext:(HGRef<PVInstructionGraphContext>)context;
 - (void)unloadEffects;
 @end
 
@@ -46,10 +46,10 @@
   [(PVRenderEffectLoader *)&v6 dealloc];
 }
 
-- (void)loadEffectsForGraphs:(id)a3 loadContext:(HGRef<PVInstructionGraphContext>)a4
+- (void)loadEffectsForGraphs:(id)graphs loadContext:(HGRef<PVInstructionGraphContext>)context
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  graphsCopy = graphs;
   if (HGLogger::getLevel("PVSignPost", v7) >= 1)
   {
     kdebug_trace();
@@ -64,7 +64,7 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = v6;
+  v10 = graphsCopy;
   v11 = [v10 countByEnumeratingWithState:&v26 objects:v33 count:16];
   if (v11)
   {
@@ -79,7 +79,7 @@
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
-        v15 = *a4.m_Obj;
+        v15 = *context.m_Obj;
         v25 = v15;
         if (v15)
         {
@@ -171,10 +171,10 @@
   HGSynchronizable::Unlock(lock);
 }
 
-- (void)_removeUnusedEffects_noLock:(id)a3
+- (void)_removeUnusedEffects_noLock:(id)lock
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lockCopy = lock;
   loadedEffects = self->_loadedEffects;
   if (loadedEffects[5])
   {
@@ -189,7 +189,7 @@
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v11 = v4;
+      v11 = lockCopy;
       v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v12)
       {
@@ -257,15 +257,15 @@ LABEL_16:
   }
 }
 
-- (void)_loadEffects_noLock:(id)a3
+- (void)_loadEffects_noLock:(id)lock
 {
   v28 = *MEMORY[0x277D85DE8];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  lockCopy = lock;
+  v5 = [lockCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v5)
   {
     v6 = *v24;
@@ -275,7 +275,7 @@ LABEL_16:
       {
         if (*v24 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(lockCopy);
         }
 
         PVLoadedEffectItem::PVLoadedEffectItem(v22, *(*(&v23 + 1) + 8 * i));
@@ -325,7 +325,7 @@ LABEL_16:
         std::deque<PVLoadedEffectItem>::push_front(self->_loadedEffects, v22);
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v5 = [lockCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v5);
@@ -334,7 +334,7 @@ LABEL_16:
 
 - (void)_removeTimedOutEffects_noLock
 {
-  v11 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   while (1)
   {
     loadedEffects = self->_loadedEffects;
@@ -347,7 +347,7 @@ LABEL_16:
     v5 = (*(loadedEffects[1] + (((v4 + loadedEffects[4] - 1) >> 5) & 0x7FFFFFFFFFFFFF8)) + 16 * (v4 + *(loadedEffects + 32) - 1));
     v6 = *v5;
     v7 = v5[1];
-    [v11 timeIntervalSinceDate:v7];
+    [date timeIntervalSinceDate:v7];
     v9 = v8;
 
     [(PVRenderEffectLoader *)self unusedEffectTimeout];

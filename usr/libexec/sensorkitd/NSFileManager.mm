@@ -1,14 +1,14 @@
 @interface NSFileManager
-- (int64_t)fileSizeOfURL:(id)a3;
+- (int64_t)fileSizeOfURL:(id)l;
 @end
 
 @implementation NSFileManager
 
-- (int64_t)fileSizeOfURL:(id)a3
+- (int64_t)fileSizeOfURL:(id)l
 {
   v10 = 0;
   v11 = 0;
-  if (([a3 getResourceValue:&v11 forKey:NSURLFileSizeKey error:&v10] & 1) == 0)
+  if (([l getResourceValue:&v11 forKey:NSURLFileSizeKey error:&v10] & 1) == 0)
   {
     if (qword_100071A00 == -1)
     {
@@ -30,7 +30,7 @@
     }
 
     *buf = 138543618;
-    v13 = a3;
+    lCopy2 = l;
     v14 = 2114;
     v15 = v10;
     v5 = "Failed to get file size for %{public}@. %{public}@";
@@ -58,7 +58,7 @@
     {
 LABEL_5:
       *buf = 138543362;
-      v13 = a3;
+      lCopy2 = l;
       v5 = "Failed to get file size for %{public}@ with no error";
       v6 = v4;
       v7 = 12;

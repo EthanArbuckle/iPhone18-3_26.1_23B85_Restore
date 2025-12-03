@@ -1,6 +1,6 @@
 @interface GKFriendActivityInternal
 + (id)secureCodedPropertyKeys;
-- (GKFriendActivityInternal)initWithServerRepresentation:(id)a3;
+- (GKFriendActivityInternal)initWithServerRepresentation:(id)representation;
 @end
 
 @implementation GKFriendActivityInternal
@@ -35,25 +35,25 @@ void __51__GKFriendActivityInternal_secureCodedPropertyKeys__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (GKFriendActivityInternal)initWithServerRepresentation:(id)a3
+- (GKFriendActivityInternal)initWithServerRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v13.receiver = self;
   v13.super_class = GKFriendActivityInternal;
   v5 = [(GKFriendActivityInternal *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"player-id"];
+    v6 = [representationCopy objectForKeyedSubscript:@"player-id"];
     [(GKFriendActivityInternal *)v5 setPlayerID:v6];
 
-    v7 = [v4 objectForKeyedSubscript:@"context"];
+    v7 = [representationCopy objectForKeyedSubscript:@"context"];
     [(GKFriendActivityInternal *)v5 setContext:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"image-url"];
+    v8 = [representationCopy objectForKeyedSubscript:@"image-url"];
     [(GKFriendActivityInternal *)v5 setImageURL:v8];
 
     v9 = MEMORY[0x277CBEAA8];
-    v10 = [v4 objectForKeyedSubscript:@"timestamp"];
+    v10 = [representationCopy objectForKeyedSubscript:@"timestamp"];
     v11 = [v9 _gkDateFromServerTimestamp:v10];
     [(GKFriendActivityInternal *)v5 setTimestamp:v11];
   }

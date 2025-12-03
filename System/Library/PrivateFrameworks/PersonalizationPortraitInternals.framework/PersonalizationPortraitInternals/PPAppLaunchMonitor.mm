@@ -1,24 +1,24 @@
 @interface PPAppLaunchMonitor
 + (id)sharedInstance;
 - (id)_init;
-- (id)registerForAppLaunchWithBundleId:(id)a3 queue:(id)a4 handler:(id)a5;
-- (void)deregisterForAppLaunchWithToken:(id)a3;
+- (id)registerForAppLaunchWithBundleId:(id)id queue:(id)queue handler:(id)handler;
+- (void)deregisterForAppLaunchWithToken:(id)token;
 @end
 
 @implementation PPAppLaunchMonitor
 
-- (void)deregisterForAppLaunchWithToken:(id)a3
+- (void)deregisterForAppLaunchWithToken:(id)token
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  tokenCopy = token;
+  v5 = tokenCopy;
+  if (tokenCopy)
   {
     lock = self->_lock;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __54__PPAppLaunchMonitor_deregisterForAppLaunchWithToken___block_invoke;
     v7[3] = &unk_2789747A0;
-    v8 = v4;
+    v8 = tokenCopy;
     [(_PASLock *)lock runWithLockAcquired:v7];
   }
 }
@@ -67,15 +67,15 @@ uint64_t __54__PPAppLaunchMonitor_deregisterForAppLaunchWithToken___block_invoke
   return [v2 isEqual:*(a1 + 32)] ^ 1;
 }
 
-- (id)registerForAppLaunchWithBundleId:(id)a3 queue:(id)a4 handler:(id)a5
+- (id)registerForAppLaunchWithBundleId:(id)id queue:(id)queue handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  idCopy = id;
+  queueCopy = queue;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  if (idCopy)
   {
-    if (v11)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -83,8 +83,8 @@ uint64_t __54__PPAppLaunchMonitor_deregisterForAppLaunchWithToken___block_invoke
 
   else
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PPAppLaunchMonitor.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"bundleId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPAppLaunchMonitor.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"bundleId"}];
 
     if (v12)
     {
@@ -92,8 +92,8 @@ uint64_t __54__PPAppLaunchMonitor_deregisterForAppLaunchWithToken___block_invoke
     }
   }
 
-  v20 = [MEMORY[0x277CCA890] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"PPAppLaunchMonitor.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PPAppLaunchMonitor.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
 
 LABEL_3:
   v26 = 0;
@@ -108,11 +108,11 @@ LABEL_3:
   v21[2] = __69__PPAppLaunchMonitor_registerForAppLaunchWithBundleId_queue_handler___block_invoke;
   v21[3] = &unk_278974728;
   v21[4] = self;
-  v14 = v10;
+  v14 = queueCopy;
   v22 = v14;
   v15 = v12;
   v24 = v15;
-  v16 = v9;
+  v16 = idCopy;
   v23 = v16;
   v25 = &v26;
   [(_PASLock *)lock runWithLockAcquired:v21];
@@ -321,7 +321,7 @@ uint64_t __68__PPAppLaunchMonitor__registerForAppChangesIfNeededWithGuardedData_
   block[1] = 3221225472;
   block[2] = __36__PPAppLaunchMonitor_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken2_11028 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken2_11028, block);

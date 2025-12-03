@@ -1,7 +1,7 @@
 @interface OffGridStateManagerDelegateAdaptor
 - (_TtC11SettingsApp34OffGridStateManagerDelegateAdaptor)init;
 - (void)dealloc;
-- (void)manager:(id)a3 offGridModeUpdated:(int64_t)a4 publishStatus:(int64_t)a5 context:(id)a6;
+- (void)manager:(id)manager offGridModeUpdated:(int64_t)updated publishStatus:(int64_t)status context:(id)context;
 @end
 
 @implementation OffGridStateManagerDelegateAdaptor
@@ -44,23 +44,23 @@
   __chkstk_darwin(v4);
   v8 = &v10 - v7;
   (*(v5 + 16))(&v10 - v7, self + OBJC_IVAR____TtC11SettingsApp34OffGridStateManagerDelegateAdaptor_offGridModeEnabledStreamContinuation, v4);
-  v9 = self;
+  selfCopy = self;
   AsyncStream.Continuation.finish()();
   (*(v5 + 8))(v8, v4);
-  v10.receiver = v9;
+  v10.receiver = selfCopy;
   v10.super_class = ObjectType;
   [(OffGridStateManagerDelegateAdaptor *)&v10 dealloc];
 }
 
-- (void)manager:(id)a3 offGridModeUpdated:(int64_t)a4 publishStatus:(int64_t)a5 context:(id)a6
+- (void)manager:(id)manager offGridModeUpdated:(int64_t)updated publishStatus:(int64_t)status context:(id)context
 {
   v8 = sub_10004DED0(&unk_100160940, &unk_100117DF0);
   v9 = *(v8 - 8);
   v10 = *(v9 + 64);
   __chkstk_darwin(v8);
   v12 = &v14[-v11];
-  v14[15] = a4 == 2;
-  v13 = self;
+  v14[15] = updated == 2;
+  selfCopy = self;
   sub_10004DED0(&unk_10015E9E0, &unk_1001173F0);
   AsyncStream.Continuation.yield(_:)();
 

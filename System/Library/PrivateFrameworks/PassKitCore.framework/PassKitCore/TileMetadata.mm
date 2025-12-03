@@ -1,57 +1,57 @@
 @interface TileMetadata
-+ (id)_predicateForTileType:(int64_t)a3;
-+ (id)insertMetadata:(id)a3 inDatabase:(id)a4;
-+ (id)passUniqueIdentifiersInDatabase:(id)a3 withTileOfType:(int64_t)a4;
-+ (void)addJoinClausesForProperty:(id)a3 toJoins:(id)a4;
++ (id)_predicateForTileType:(int64_t)type;
++ (id)insertMetadata:(id)metadata inDatabase:(id)database;
++ (id)passUniqueIdentifiersInDatabase:(id)database withTileOfType:(int64_t)type;
++ (void)addJoinClausesForProperty:(id)property toJoins:(id)joins;
 - (BOOL)deleteFromDatabase;
-- (TileMetadata)initWithMetadata:(id)a3 inDatabase:(id)a4;
+- (TileMetadata)initWithMetadata:(id)metadata inDatabase:(id)database;
 - (id)metadata;
 - (int64_t)type;
 @end
 
 @implementation TileMetadata
 
-+ (void)addJoinClausesForProperty:(id)a3 toJoins:(id)a4
++ (void)addJoinClausesForProperty:(id)property toJoins:(id)joins
 {
-  v5 = a4;
-  if ([a3 isEqualToString:@"pass.unique_id"])
+  joinsCopy = joins;
+  if ([property isEqualToString:@"pass.unique_id"])
   {
-    [v5 addObject:@"JOIN pass_tile_descriptor ON pass_tile_metadata.pid = pass_tile_descriptor.metadata_pid"];
-    [v5 addObject:@"JOIN pass ON pass_tile_descriptor.pass_pid = pass.pid"];
+    [joinsCopy addObject:@"JOIN pass_tile_descriptor ON pass_tile_metadata.pid = pass_tile_descriptor.metadata_pid"];
+    [joinsCopy addObject:@"JOIN pass ON pass_tile_descriptor.pass_pid = pass.pid"];
   }
 }
 
-- (TileMetadata)initWithMetadata:(id)a3 inDatabase:(id)a4
+- (TileMetadata)initWithMetadata:(id)metadata inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = a3;
+  databaseCopy = database;
+  metadataCopy = metadata;
   v8 = objc_alloc_init(NSMutableDictionary);
-  v9 = [v7 identifier];
-  [v8 setObjectOrNull:v9 forKey:@"identifier"];
+  identifier = [metadataCopy identifier];
+  [v8 setObjectOrNull:identifier forKey:@"identifier"];
 
-  [v7 type];
+  [metadataCopy type];
   v10 = PKPassTileTypeToString();
   [v8 setObjectOrNull:v10 forKey:@"type"];
 
-  [v7 preferredStyle];
+  [metadataCopy preferredStyle];
   v11 = PKPassTileStyleToString();
   [v8 setObjectOrNull:v11 forKey:@"style"];
 
-  [v8 setBool:objc_msgSend(v7 forKey:{"isSelectable"), @"selectable"}];
-  [v8 setBool:objc_msgSend(v7 forKey:{"showInPrearm"), @"show_in_prearm"}];
-  [v7 context];
+  [v8 setBool:objc_msgSend(metadataCopy forKey:{"isSelectable"), @"selectable"}];
+  [v8 setBool:objc_msgSend(metadataCopy forKey:{"showInPrearm"), @"show_in_prearm"}];
+  [metadataCopy context];
 
   v12 = PKPassTileContextToString();
   [v8 setObjectOrNull:v12 forKey:@"context_identifier"];
 
-  v13 = [(SQLiteEntity *)self initWithPropertyValues:v8 inDatabase:v6];
+  v13 = [(SQLiteEntity *)self initWithPropertyValues:v8 inDatabase:databaseCopy];
   return v13;
 }
 
-+ (id)insertMetadata:(id)a3 inDatabase:(id)a4
++ (id)insertMetadata:(id)metadata inDatabase:(id)database
 {
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  databaseCopy = database;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -62,10 +62,10 @@
   v12[1] = 3221225472;
   v12[2] = sub_10019110C;
   v12[3] = &unk_100840570;
-  v16 = a1;
-  v8 = v6;
+  selfCopy = self;
+  v8 = metadataCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = databaseCopy;
   v14 = v9;
   v15 = &v17;
   sub_1005D4424(v9, v12);
@@ -78,10 +78,10 @@
 
 - (BOOL)deleteFromDatabase
 {
-  v3 = [(TileMetadata *)self type];
-  if ((v3 - 1) <= 2)
+  type = [(TileMetadata *)self type];
+  if ((type - 1) <= 2)
   {
-    [(__objc2_class *)*off_10084A958[v3 - 1] deleteEntitiesForBaseMetadata:self inDatabase:self->super._database];
+    [(__objc2_class *)*off_10084A958[type - 1] deleteEntitiesForBaseMetadata:self inDatabase:self->super._database];
   }
 
   v5.receiver = self;
@@ -97,12 +97,12 @@
   return 0;
 }
 
-+ (id)passUniqueIdentifiersInDatabase:(id)a3 withTileOfType:(int64_t)a4
++ (id)passUniqueIdentifiersInDatabase:(id)database withTileOfType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [a1 _predicateForTileType:a4];
+  databaseCopy = database;
+  v7 = [self _predicateForTileType:type];
   LOBYTE(v12) = 1;
-  v8 = [(SQLiteEntity *)TileMetadata queryWithDatabase:v6 predicate:v7 orderingProperties:0 orderingDirections:0 limit:0 groupingProperties:0 returnsDistinctEntities:v12];
+  v8 = [(SQLiteEntity *)TileMetadata queryWithDatabase:databaseCopy predicate:v7 orderingProperties:0 orderingDirections:0 limit:0 groupingProperties:0 returnsDistinctEntities:v12];
 
   v14 = 0;
   v15 = &v14;
@@ -125,7 +125,7 @@
   return v10;
 }
 
-+ (id)_predicateForTileType:(int64_t)a3
++ (id)_predicateForTileType:(int64_t)type
 {
   v3 = PKPassTileTypeToString();
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"type" equalToValue:v3];
@@ -164,16 +164,16 @@
   switch(v4)
   {
     case 1:
-      v5 = [v10[5] metadataTypeVehicleFunction];
-      [TileMetadataRKE inflateMetadata:v5 forBaseMetadata:self inDatabase:self->super._database];
+      metadataTypeVehicleFunction = [v10[5] metadataTypeVehicleFunction];
+      [TileMetadataRKE inflateMetadata:metadataTypeVehicleFunction forBaseMetadata:self inDatabase:self->super._database];
       break;
     case 2:
-      v5 = [v10[5] metadataTypeHorizontalFlowGroup];
-      [TileMetadataHorizontalFlowGroup inflateMetadata:v5 forBaseMetadata:self inDatabase:self->super._database];
+      metadataTypeVehicleFunction = [v10[5] metadataTypeHorizontalFlowGroup];
+      [TileMetadataHorizontalFlowGroup inflateMetadata:metadataTypeVehicleFunction forBaseMetadata:self inDatabase:self->super._database];
       break;
     case 3:
-      v5 = [v10[5] metadataTypeVerticalFlowGroup];
-      [TileMetadataVerticalFlowGroup inflateMetadata:v5 forBaseMetadata:self inDatabase:self->super._database];
+      metadataTypeVehicleFunction = [v10[5] metadataTypeVerticalFlowGroup];
+      [TileMetadataVerticalFlowGroup inflateMetadata:metadataTypeVehicleFunction forBaseMetadata:self inDatabase:self->super._database];
       break;
     default:
       goto LABEL_8;

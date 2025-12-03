@@ -16,9 +16,9 @@
   }
 
   v4 = +[AXSpringBoardServer server];
-  v5 = [v4 isDarkModeActive];
+  isDarkModeActive = [v4 isDarkModeActive];
 
-  return v5 ^ 1;
+  return isDarkModeActive ^ 1;
 }
 
 - (BOOL)_accessibilityInvertColorsIsInHostedDarkWindow
@@ -32,9 +32,9 @@
   }
 
   v4 = +[AXSpringBoardServer server];
-  v5 = [v4 isDarkModeActive];
+  isDarkModeActive = [v4 isDarkModeActive];
 
-  return v5;
+  return isDarkModeActive;
 }
 
 @end

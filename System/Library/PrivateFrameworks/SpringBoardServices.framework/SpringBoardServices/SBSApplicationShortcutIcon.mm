@@ -1,8 +1,8 @@
 @interface SBSApplicationShortcutIcon
 - (SBSApplicationShortcutIcon)init;
-- (SBSApplicationShortcutIcon)initWithXPCDictionary:(id)a3;
+- (SBSApplicationShortcutIcon)initWithXPCDictionary:(id)dictionary;
 - (id)_initForSubclass;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation SBSApplicationShortcutIcon
@@ -25,7 +25,7 @@
   return [(SBSApplicationShortcutIcon *)self _initForSubclass];
 }
 
-- (SBSApplicationShortcutIcon)initWithXPCDictionary:(id)a3
+- (SBSApplicationShortcutIcon)initWithXPCDictionary:(id)dictionary
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
@@ -33,7 +33,7 @@
   return [(SBSApplicationShortcutIcon *)self _initForSubclass];
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
   objc_opt_class();
 

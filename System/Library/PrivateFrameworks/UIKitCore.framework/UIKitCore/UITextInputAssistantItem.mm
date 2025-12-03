@@ -2,12 +2,12 @@
 - (BOOL)_hasItemsToDisplay;
 - (NSString)description;
 - (UITextInputAssistantItem)init;
-- (void)_itemDidChangeEnabledState:(id)a3;
-- (void)_itemStandardViewNeedsUpdate:(id)a3;
-- (void)_setCenterBarButtonGroups:(id)a3;
-- (void)_setDictationReplacementAction:(id)a3;
-- (void)_setIndependentGroupSizes:(BOOL)a3;
-- (void)_setMarginOverride:(double)a3;
+- (void)_itemDidChangeEnabledState:(id)state;
+- (void)_itemStandardViewNeedsUpdate:(id)update;
+- (void)_setCenterBarButtonGroups:(id)groups;
+- (void)_setDictationReplacementAction:(id)action;
+- (void)_setIndependentGroupSizes:(BOOL)sizes;
+- (void)_setMarginOverride:(double)override;
 - (void)setLeadingBarButtonGroups:(NSArray *)leadingBarButtonGroups;
 - (void)setTrailingBarButtonGroups:(NSArray *)trailingBarButtonGroups;
 @end
@@ -85,52 +85,52 @@
   }
 }
 
-- (void)_setCenterBarButtonGroups:(id)a3
+- (void)_setCenterBarButtonGroups:(id)groups
 {
-  if (self->_centerBarButtonGroups != a3)
+  if (self->_centerBarButtonGroups != groups)
   {
     v11 = v3;
-    if (a3)
+    if (groups)
     {
-      v8 = a3;
+      groupsCopy = groups;
     }
 
     else
     {
-      v8 = MEMORY[0x1E695E0F0];
+      groupsCopy = MEMORY[0x1E695E0F0];
     }
 
-    v9 = [v8 copy];
+    v9 = [groupsCopy copy];
     centerBarButtonGroups = self->_centerBarButtonGroups;
     self->_centerBarButtonGroups = v9;
   }
 }
 
-- (void)_setIndependentGroupSizes:(BOOL)a3
+- (void)_setIndependentGroupSizes:(BOOL)sizes
 {
-  if (self->_independentGroupSizes != a3)
+  if (self->_independentGroupSizes != sizes)
   {
-    self->_independentGroupSizes = a3;
+    self->_independentGroupSizes = sizes;
   }
 }
 
-- (void)_setDictationReplacementAction:(id)a3
+- (void)_setDictationReplacementAction:(id)action
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  actionCopy = action;
   dictationReplacementAction = self->_dictationReplacementAction;
   p_dictationReplacementAction = &self->_dictationReplacementAction;
-  if (dictationReplacementAction != v5)
+  if (dictationReplacementAction != actionCopy)
   {
-    objc_storeStrong(p_dictationReplacementAction, a3);
-    v8 = [(UIMenuElement *)v5 image];
+    objc_storeStrong(p_dictationReplacementAction, action);
+    image = [(UIMenuElement *)actionCopy image];
 
-    if (v8)
+    if (image)
     {
-      v9 = [(UIMenuElement *)v5 image];
-      v10 = [v9 isSymbolImage];
+      image2 = [(UIMenuElement *)actionCopy image];
+      isSymbolImage = [image2 isSymbolImage];
 
-      if ((v10 & 1) == 0)
+      if ((isSymbolImage & 1) == 0)
       {
         if (os_variant_has_internal_diagnostics())
         {
@@ -140,9 +140,9 @@
             goto LABEL_9;
           }
 
-          v13 = [(UIMenuElement *)v5 image];
+          image3 = [(UIMenuElement *)actionCopy image];
           v14 = 138412290;
-          v15 = v13;
+          v15 = image3;
           _os_log_fault_impl(&dword_188A29000, v12, OS_LOG_TYPE_FAULT, "The dictationReplacementAction's image must be a symbol image %@", &v14, 0xCu);
         }
 
@@ -155,9 +155,9 @@
           }
 
           v12 = v11;
-          v13 = [(UIMenuElement *)v5 image];
+          image3 = [(UIMenuElement *)actionCopy image];
           v14 = 138412290;
-          v15 = v13;
+          v15 = image3;
           _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "The dictationReplacementAction's image must be a symbol image %@", &v14, 0xCu);
         }
 
@@ -169,31 +169,31 @@ LABEL_9:
 LABEL_4:
 }
 
-- (void)_setMarginOverride:(double)a3
+- (void)_setMarginOverride:(double)override
 {
-  if (a3 < 0.0)
+  if (override < 0.0)
   {
-    a3 = 0.0;
+    override = 0.0;
   }
 
-  if (self->_marginOverride != a3)
+  if (self->_marginOverride != override)
   {
-    self->_marginOverride = a3;
+    self->_marginOverride = override;
   }
 }
 
-- (void)_itemStandardViewNeedsUpdate:(id)a3
+- (void)_itemStandardViewNeedsUpdate:(id)update
 {
   v4 = +[UIKeyboardImpl activeInstance];
-  v3 = [v4 remoteTextInputPartner];
-  [v3 documentTraitsChanged];
+  remoteTextInputPartner = [v4 remoteTextInputPartner];
+  [remoteTextInputPartner documentTraitsChanged];
 }
 
-- (void)_itemDidChangeEnabledState:(id)a3
+- (void)_itemDidChangeEnabledState:(id)state
 {
   v4 = +[UIKeyboardImpl activeInstance];
-  v3 = [v4 remoteTextInputPartner];
-  [v3 documentTraitsChanged];
+  remoteTextInputPartner = [v4 remoteTextInputPartner];
+  [remoteTextInputPartner documentTraitsChanged];
 }
 
 - (NSString)description

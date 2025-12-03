@@ -1,13 +1,13 @@
 @interface PLAssetsdDemoClient
-- (BOOL)cleanupForStoreDemoMode:(id *)a3;
-- (BOOL)hasCompletedMomentAnalysis:(BOOL *)a3 error:(id *)a4;
-- (BOOL)hasCompletedRestorePostProcessing:(BOOL *)a3 error:(id *)a4;
-- (void)cleanupForStoreDemoModeWithCompletion:(id)a3;
+- (BOOL)cleanupForStoreDemoMode:(id *)mode;
+- (BOOL)hasCompletedMomentAnalysis:(BOOL *)analysis error:(id *)error;
+- (BOOL)hasCompletedRestorePostProcessing:(BOOL *)processing error:(id *)error;
+- (void)cleanupForStoreDemoModeWithCompletion:(id)completion;
 @end
 
 @implementation PLAssetsdDemoClient
 
-- (BOOL)hasCompletedMomentAnalysis:(BOOL *)a3 error:(id *)a4
+- (BOOL)hasCompletedMomentAnalysis:(BOOL *)analysis error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
   v30 = 0u;
@@ -38,10 +38,10 @@
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "PLXPC Sync", "%{public}s", &buf, 0xCu);
   }
 
-  if (!a3)
+  if (!analysis)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PLAssetsdDemoClient.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"result"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdDemoClient.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"result"}];
   }
 
   *&buf = 0;
@@ -50,27 +50,27 @@
   v34 = __Block_byref_object_copy__1659;
   v35 = __Block_byref_object_dispose__1660;
   v36 = 0;
-  v16 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __56__PLAssetsdDemoClient_hasCompletedMomentAnalysis_error___block_invoke;
   v28[3] = &unk_1E7932770;
   v28[4] = &buf;
-  v17 = [v16 synchronousRemoteObjectProxyWithErrorHandler:v28];
+  v17 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v28];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __56__PLAssetsdDemoClient_hasCompletedMomentAnalysis_error___block_invoke_22;
   v27[3] = &__block_descriptor_40_e8_v12__0B8l;
-  v27[4] = a3;
+  v27[4] = analysis;
   [v17 hasCompletedMomentAnalysisWithReply:v27];
 
   v18 = *(&buf + 1);
-  if (a4)
+  if (error)
   {
     v19 = *(*(&buf + 1) + 40);
     if (v19)
     {
-      *a4 = v19;
+      *error = v19;
       v18 = *(&buf + 1);
     }
   }
@@ -119,7 +119,7 @@ void __56__PLAssetsdDemoClient_hasCompletedMomentAnalysis_error___block_invoke(u
   *(v5 + 40) = v3;
 }
 
-- (BOOL)hasCompletedRestorePostProcessing:(BOOL *)a3 error:(id *)a4
+- (BOOL)hasCompletedRestorePostProcessing:(BOOL *)processing error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
   v30 = 0u;
@@ -150,10 +150,10 @@ void __56__PLAssetsdDemoClient_hasCompletedMomentAnalysis_error___block_invoke(u
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "PLXPC Sync", "%{public}s", &buf, 0xCu);
   }
 
-  if (!a3)
+  if (!processing)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PLAssetsdDemoClient.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"result"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdDemoClient.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"result"}];
   }
 
   *&buf = 0;
@@ -162,27 +162,27 @@ void __56__PLAssetsdDemoClient_hasCompletedMomentAnalysis_error___block_invoke(u
   v34 = __Block_byref_object_copy__1659;
   v35 = __Block_byref_object_dispose__1660;
   v36 = 0;
-  v16 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __63__PLAssetsdDemoClient_hasCompletedRestorePostProcessing_error___block_invoke;
   v28[3] = &unk_1E7932770;
   v28[4] = &buf;
-  v17 = [v16 synchronousRemoteObjectProxyWithErrorHandler:v28];
+  v17 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v28];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __63__PLAssetsdDemoClient_hasCompletedRestorePostProcessing_error___block_invoke_19;
   v27[3] = &__block_descriptor_40_e8_v12__0B8l;
-  v27[4] = a3;
+  v27[4] = processing;
   [v17 hasCompletedRestorePostProcessingWithReply:v27];
 
   v18 = *(&buf + 1);
-  if (a4)
+  if (error)
   {
     v19 = *(*(&buf + 1) + 40);
     if (v19)
     {
-      *a4 = v19;
+      *error = v19;
       v18 = *(&buf + 1);
     }
   }
@@ -231,7 +231,7 @@ void __63__PLAssetsdDemoClient_hasCompletedRestorePostProcessing_error___block_i
   *(v5 + 40) = v3;
 }
 
-- (BOOL)cleanupForStoreDemoMode:(id *)a3
+- (BOOL)cleanupForStoreDemoMode:(id *)mode
 {
   v30 = *MEMORY[0x1E69E9840];
   v23 = 0u;
@@ -258,14 +258,14 @@ void __63__PLAssetsdDemoClient_hasCompletedRestorePostProcessing_error___block_i
   v27 = __Block_byref_object_copy__1659;
   v28 = __Block_byref_object_dispose__1660;
   v29 = 0;
-  v8 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __47__PLAssetsdDemoClient_cleanupForStoreDemoMode___block_invoke;
   v17[3] = &unk_1E7932360;
   v17[4] = &v18;
   v17[5] = &buf;
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v17];
+  v9 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v17];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __47__PLAssetsdDemoClient_cleanupForStoreDemoMode___block_invoke_15;
@@ -275,9 +275,9 @@ void __63__PLAssetsdDemoClient_hasCompletedRestorePostProcessing_error___block_i
   [v9 cleanupForStoreDemoModeByStagingTemplateOrResettingLibrary:v16];
 
   v10 = *(v19 + 24);
-  if (a3 && (v19[3] & 1) == 0)
+  if (mode && (v19[3] & 1) == 0)
   {
-    *a3 = *(*(&buf + 1) + 40);
+    *mode = *(*(&buf + 1) + 40);
     v10 = *(v19 + 24);
   }
 
@@ -338,10 +338,10 @@ void __47__PLAssetsdDemoClient_cleanupForStoreDemoMode___block_invoke_15(uint64_
   }
 }
 
-- (void)cleanupForStoreDemoModeWithCompletion:(id)a3
+- (void)cleanupForStoreDemoModeWithCompletion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  completionCopy = completion;
   v26 = 0u;
   v27 = 0u;
   v25 = 0u;
@@ -356,18 +356,18 @@ void __47__PLAssetsdDemoClient_cleanupForStoreDemoMode___block_invoke_15(uint64_
     os_activity_scope_enter(v7, (&v26 + 8));
   }
 
-  if (!v5)
+  if (!completionCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PLAssetsdDemoClient.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdDemoClient.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
-  v9 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __61__PLAssetsdDemoClient_cleanupForStoreDemoModeWithCompletion___block_invoke;
   v23[3] = &unk_1E7932DA8;
-  v24 = v5;
+  v24 = completionCopy;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3254779904;
   v16[2] = __61__PLAssetsdDemoClient_cleanupForStoreDemoModeWithCompletion___block_invoke_9;
@@ -379,7 +379,7 @@ void __47__PLAssetsdDemoClient_cleanupForStoreDemoMode___block_invoke_15(uint64_
   v22 = a2;
   v10 = v24;
   v17 = v10;
-  [v9 remoteObjectProxyWithErrorHandler:v23 handler:v16];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v23 handler:v16];
 
   if (v25 == 1)
   {

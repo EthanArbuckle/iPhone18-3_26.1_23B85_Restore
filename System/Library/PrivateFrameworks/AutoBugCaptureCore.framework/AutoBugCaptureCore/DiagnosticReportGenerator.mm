@@ -1,72 +1,72 @@
 @interface DiagnosticReportGenerator
-- (BOOL)generateReportForCase:(id)a3 reportName:(id)a4 completion:(id)a5;
-- (DiagnosticReportGenerator)initWithQueue:(id)a3;
+- (BOOL)generateReportForCase:(id)case reportName:(id)name completion:(id)completion;
+- (DiagnosticReportGenerator)initWithQueue:(id)queue;
 - (DiagnosticReportGeneratorDelegate)delegate;
 @end
 
 @implementation DiagnosticReportGenerator
 
-- (DiagnosticReportGenerator)initWithQueue:(id)a3
+- (DiagnosticReportGenerator)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = DiagnosticReportGenerator;
   v6 = [(DiagnosticReportGenerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;
 }
 
-- (BOOL)generateReportForCase:(id)a3 reportName:(id)a4 completion:(id)a5
+- (BOOL)generateReportForCase:(id)case reportName:(id)name completion:(id)completion
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  caseCopy = case;
+  nameCopy = name;
+  completionCopy = completion;
   v11 = diagreportLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [v8 caseId];
+    caseId = [caseCopy caseId];
     *buf = 138412546;
-    v45 = v12;
+    v45 = caseId;
     v46 = 2112;
-    v47 = v9;
+    v47 = nameCopy;
     _os_log_impl(&dword_241804000, v11, OS_LOG_TYPE_DEBUG, "Generating a report for case ID %@, desired report file name %@", buf, 0x16u);
   }
 
-  [(DiagnosticReportGenerator *)self setDiagCase:v8];
-  if (v10)
+  [(DiagnosticReportGenerator *)self setDiagCase:caseCopy];
+  if (completionCopy)
   {
-    [(DiagnosticReportGenerator *)self setCompletionHandler:v10];
+    [(DiagnosticReportGenerator *)self setCompletionHandler:completionCopy];
   }
 
-  v13 = [MEMORY[0x277CBEAA8] date];
-  v14 = [(DiagnosticReportGenerator *)self delegate];
-  v15 = [(DiagnosticReportGenerator *)self startReportGeneration];
-  if (v15)
+  date = [MEMORY[0x277CBEAA8] date];
+  delegate = [(DiagnosticReportGenerator *)self delegate];
+  startReportGeneration = [(DiagnosticReportGenerator *)self startReportGeneration];
+  if (startReportGeneration)
   {
     [(DiagnosticReportGenerator *)self timeoutSeconds];
     v17 = dispatch_time(0, (v16 * 1000000000.0));
-    v18 = [(DiagnosticReportGenerator *)self queue];
+    queue = [(DiagnosticReportGenerator *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __73__DiagnosticReportGenerator_generateReportForCase_reportName_completion___block_invoke;
     block[3] = &unk_278CF00E0;
     block[4] = self;
-    v40 = v13;
-    v41 = v14;
-    dispatch_after(v17, v18, block);
+    v40 = date;
+    v41 = delegate;
+    dispatch_after(v17, queue, block);
   }
 
   else
   {
-    v36 = v14;
-    v37 = v9;
-    v38 = v8;
+    v36 = delegate;
+    v37 = nameCopy;
+    v38 = caseCopy;
     v19 = diagreportLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
@@ -75,13 +75,13 @@
     }
 
     v20 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [v20 setObject:v13 forKey:@"reportStart"];
+    [v20 setObject:date forKey:@"reportStart"];
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
     [v20 setObject:v22 forKey:@"reportCreator"];
 
-    v23 = [MEMORY[0x277CBEAA8] date];
-    [v20 setObject:v23 forKey:@"reportEnd"];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [v20 setObject:date2 forKey:@"reportEnd"];
 
     [v20 setObject:@"Error" forKey:@"reportEndStatus"];
     [v20 setObject:@"Failed to start report generation." forKey:@"reportError"];
@@ -96,24 +96,24 @@
     v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
     v31 = [v24 errorWithDomain:v25 code:5 userInfo:v30];
 
-    v32 = [(DiagnosticReportGenerator *)self completionHandler];
+    completionHandler = [(DiagnosticReportGenerator *)self completionHandler];
 
-    if (v32)
+    if (completionHandler)
     {
-      v33 = [(DiagnosticReportGenerator *)self completionHandler];
-      (v33)[2](v33, v20, v31);
+      completionHandler2 = [(DiagnosticReportGenerator *)self completionHandler];
+      (completionHandler2)[2](completionHandler2, v20, v31);
 
       [(DiagnosticReportGenerator *)self setCompletionHandler:0];
-      v9 = v37;
-      v8 = v38;
-      v14 = v36;
+      nameCopy = v37;
+      caseCopy = v38;
+      delegate = v36;
     }
 
     else
     {
-      v14 = v36;
-      v9 = v37;
-      v8 = v38;
+      delegate = v36;
+      nameCopy = v37;
+      caseCopy = v38;
       if (objc_opt_respondsToSelector())
       {
         [v36 reportGeneratorEnded:self reportInfo:v20 error:v31];
@@ -124,7 +124,7 @@
   }
 
   v34 = *MEMORY[0x277D85DE8];
-  return v15;
+  return startReportGeneration;
 }
 
 void __73__DiagnosticReportGenerator_generateReportForCase_reportName_completion___block_invoke(uint64_t a1)

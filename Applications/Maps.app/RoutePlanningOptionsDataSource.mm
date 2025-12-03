@@ -1,13 +1,13 @@
 @interface RoutePlanningOptionsDataSource
-+ (BOOL)_isGarage:(id)a3 significantlyDifferentFromGarage:(id)a4;
-+ (void)registerCellsInCollectionView:(id)a3;
++ (BOOL)_isGarage:(id)garage significantlyDifferentFromGarage:(id)fromGarage;
++ (void)registerCellsInCollectionView:(id)view;
 - (BOOL)_hasUnsavedChanges;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (void)_autosaveIfNeeded;
 - (void)_commitSelectedVehicle;
 - (void)_commitUsesPreferredNetworksForRouting;
 - (void)_configureForCurrentState;
-- (void)_performAutomaticSave:(id)a3;
+- (void)_performAutomaticSave:(id)save;
 - (void)_prepareForCycling;
 - (void)_prepareForDrive;
 - (void)_prepareForTransit;
@@ -18,24 +18,24 @@
 - (void)_updateCoordinatorWithPreferences;
 - (void)_updateFromCoordinator;
 - (void)_updateHasUnsavedChanges;
-- (void)_updateVirtualGarage:(id)a3;
+- (void)_updateVirtualGarage:(id)garage;
 - (void)commitPreferences;
-- (void)configureWithTransportType:(int64_t)a3 displayHints:(id)a4 virtualGarage:(id)a5;
+- (void)configureWithTransportType:(int64_t)type displayHints:(id)hints virtualGarage:(id)garage;
 - (void)dealloc;
 - (void)prepareContent;
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateCyclePreferences:(id)a4;
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateDrivePreferences:(id)a4;
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateTransitPreferences:(id)a4;
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateWalkPreferences:(id)a4;
-- (void)setAnalyticsTargetProvider:(id)a3;
-- (void)setAutomaticallySaveChanges:(BOOL)a3;
-- (void)setCyclePreferences:(id)a3;
-- (void)setDataCoordinator:(id)a3;
-- (void)setDrivePreferences:(id)a3;
-- (void)setHasUnsavedChanges:(BOOL)a3;
-- (void)setSelectedVehicle:(id)a3;
-- (void)setUsesPreferredNetworksForRouting:(id)a3;
-- (void)setWalkPreferences:(id)a3;
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateCyclePreferences:(id)preferences;
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateDrivePreferences:(id)preferences;
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateTransitPreferences:(id)preferences;
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateWalkPreferences:(id)preferences;
+- (void)setAnalyticsTargetProvider:(id)provider;
+- (void)setAutomaticallySaveChanges:(BOOL)changes;
+- (void)setCyclePreferences:(id)preferences;
+- (void)setDataCoordinator:(id)coordinator;
+- (void)setDrivePreferences:(id)preferences;
+- (void)setHasUnsavedChanges:(BOOL)changes;
+- (void)setSelectedVehicle:(id)vehicle;
+- (void)setUsesPreferredNetworksForRouting:(id)routing;
+- (void)setWalkPreferences:(id)preferences;
 @end
 
 @implementation RoutePlanningOptionsDataSource
@@ -55,13 +55,13 @@
   objc_destroyWeak(&location);
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = RoutePlanningOptionsDataSource;
-  v5 = a3;
-  v6 = [(PreferenceValuesDataSource *)&v10 collectionView:v5 cellForItemAtIndexPath:a4];
-  v7 = sub_10000FA08(v5);
+  viewCopy = view;
+  v6 = [(PreferenceValuesDataSource *)&v10 collectionView:viewCopy cellForItemAtIndexPath:path];
+  v7 = sub_10000FA08(viewCopy);
 
   if (v7 == 5)
   {
@@ -74,12 +74,12 @@
 
 - (void)_updateAnalyticsTarget
 {
-  v3 = [(RoutePlanningOptionsDataSource *)self analyticsTargetProvider];
+  analyticsTargetProvider = [(RoutePlanningOptionsDataSource *)self analyticsTargetProvider];
 
-  if (v3)
+  if (analyticsTargetProvider)
   {
-    v4 = [(RoutePlanningOptionsDataSource *)self analyticsTargetProvider];
-    self->_analyticsTarget = v4[2](v4, self->_transportType);
+    analyticsTargetProvider2 = [(RoutePlanningOptionsDataSource *)self analyticsTargetProvider];
+    self->_analyticsTarget = analyticsTargetProvider2[2](analyticsTargetProvider2, self->_transportType);
   }
 
   else
@@ -88,9 +88,9 @@
   }
 }
 
-- (void)setAnalyticsTargetProvider:(id)a3
+- (void)setAnalyticsTargetProvider:(id)provider
 {
-  v4 = [a3 copy];
+  v4 = [provider copy];
   analyticsTargetProvider = self->_analyticsTargetProvider;
   self->_analyticsTargetProvider = v4;
 
@@ -100,8 +100,8 @@
 - (void)_updateCoordinatorWithPreferences
 {
   transportType = self->_transportType;
-  v4 = sub_100798A3C();
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_INFO);
+  dataCoordinator = sub_100798A3C();
+  v5 = os_log_type_enabled(dataCoordinator, OS_LOG_TYPE_INFO);
   if (transportType > 1)
   {
     switch(transportType)
@@ -109,41 +109,41 @@
       case 2:
         if (v5)
         {
-          v9 = [(RoutePlanningOptionsDataSource *)self walkPreferences];
+          walkPreferences = [(RoutePlanningOptionsDataSource *)self walkPreferences];
           v12 = 138412290;
-          v13 = v9;
-          _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[Options] Updating coordinator with %@", &v12, 0xCu);
+          v13 = walkPreferences;
+          _os_log_impl(&_mh_execute_header, dataCoordinator, OS_LOG_TYPE_INFO, "[Options] Updating coordinator with %@", &v12, 0xCu);
         }
 
-        v4 = [(RoutePlanningOptionsDataSource *)self dataCoordinator];
-        v7 = [(RoutePlanningOptionsDataSource *)self walkPreferences];
-        [v4 updateWalkPreferences:v7];
+        dataCoordinator = [(RoutePlanningOptionsDataSource *)self dataCoordinator];
+        walkPreferences2 = [(RoutePlanningOptionsDataSource *)self walkPreferences];
+        [dataCoordinator updateWalkPreferences:walkPreferences2];
         goto LABEL_19;
       case 3:
         if (v5)
         {
-          v10 = [(RoutePlanningOptionsDataSource *)self transitPreferences];
+          transitPreferences = [(RoutePlanningOptionsDataSource *)self transitPreferences];
           v12 = 138412290;
-          v13 = v10;
-          _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[Options] Updating coordinator with %@", &v12, 0xCu);
+          v13 = transitPreferences;
+          _os_log_impl(&_mh_execute_header, dataCoordinator, OS_LOG_TYPE_INFO, "[Options] Updating coordinator with %@", &v12, 0xCu);
         }
 
-        v4 = [(RoutePlanningOptionsDataSource *)self dataCoordinator];
-        v7 = [(RoutePlanningOptionsDataSource *)self transitPreferences];
-        [v4 updateTransitPreferences:v7];
+        dataCoordinator = [(RoutePlanningOptionsDataSource *)self dataCoordinator];
+        walkPreferences2 = [(RoutePlanningOptionsDataSource *)self transitPreferences];
+        [dataCoordinator updateTransitPreferences:walkPreferences2];
         goto LABEL_19;
       case 5:
         if (v5)
         {
-          v6 = [(RoutePlanningOptionsDataSource *)self cyclePreferences];
+          cyclePreferences = [(RoutePlanningOptionsDataSource *)self cyclePreferences];
           v12 = 138412290;
-          v13 = v6;
-          _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[Options] Updating coordinator with %@", &v12, 0xCu);
+          v13 = cyclePreferences;
+          _os_log_impl(&_mh_execute_header, dataCoordinator, OS_LOG_TYPE_INFO, "[Options] Updating coordinator with %@", &v12, 0xCu);
         }
 
-        v4 = [(RoutePlanningOptionsDataSource *)self dataCoordinator];
-        v7 = [(RoutePlanningOptionsDataSource *)self cyclePreferences];
-        [v4 updateCyclePreferences:v7];
+        dataCoordinator = [(RoutePlanningOptionsDataSource *)self dataCoordinator];
+        walkPreferences2 = [(RoutePlanningOptionsDataSource *)self cyclePreferences];
+        [dataCoordinator updateCyclePreferences:walkPreferences2];
 LABEL_19:
 
 LABEL_20:
@@ -156,7 +156,7 @@ LABEL_25:
       v11 = self->_transportType;
       v12 = 134217984;
       v13 = v11;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[Options] Unsupported transport type %lu", &v12, 0xCu);
+      _os_log_impl(&_mh_execute_header, dataCoordinator, OS_LOG_TYPE_INFO, "[Options] Unsupported transport type %lu", &v12, 0xCu);
     }
 
     goto LABEL_20;
@@ -168,17 +168,17 @@ LABEL_25:
     {
       if (v5)
       {
-        v8 = [(RoutePlanningOptionsDataSource *)self drivePreferences];
+        drivePreferences = [(RoutePlanningOptionsDataSource *)self drivePreferences];
         v12 = 138412290;
-        v13 = v8;
-        _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[Options] Updating coordinator with %@", &v12, 0xCu);
+        v13 = drivePreferences;
+        _os_log_impl(&_mh_execute_header, dataCoordinator, OS_LOG_TYPE_INFO, "[Options] Updating coordinator with %@", &v12, 0xCu);
       }
 
       [(RoutePlanningOptionsDataSource *)self _commitSelectedVehicle];
       [(RoutePlanningOptionsDataSource *)self _commitUsesPreferredNetworksForRouting];
-      v4 = [(RoutePlanningOptionsDataSource *)self dataCoordinator];
-      v7 = [(RoutePlanningOptionsDataSource *)self drivePreferences];
-      [v4 updateDrivePreferences:v7];
+      dataCoordinator = [(RoutePlanningOptionsDataSource *)self dataCoordinator];
+      walkPreferences2 = [(RoutePlanningOptionsDataSource *)self drivePreferences];
+      [dataCoordinator updateDrivePreferences:walkPreferences2];
       goto LABEL_19;
     }
 
@@ -188,7 +188,7 @@ LABEL_25:
   if (v5)
   {
     LOWORD(v12) = 0;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[Options] Coordinator has no current session, updating defaults instead", &v12, 2u);
+    _os_log_impl(&_mh_execute_header, dataCoordinator, OS_LOG_TYPE_INFO, "[Options] Coordinator has no current session, updating defaults instead", &v12, 2u);
   }
 
   [(RoutePlanningOptionsDataSource *)self commitPreferences];
@@ -196,12 +196,12 @@ LABEL_25:
 
 - (void)_updateFromCoordinator
 {
-  v3 = [(RoutePlanningDataCoordination *)self->_dataCoordinator desiredTransportType];
-  v7 = [(RoutePlanningDataCoordination *)self->_dataCoordinator routeCollection];
-  v4 = [v7 currentRoute];
-  v5 = [v4 displayHints];
-  v6 = [(RoutePlanningDataCoordination *)self->_dataCoordinator virtualGarage];
-  [(RoutePlanningOptionsDataSource *)self configureWithTransportType:v3 displayHints:v5 virtualGarage:v6];
+  desiredTransportType = [(RoutePlanningDataCoordination *)self->_dataCoordinator desiredTransportType];
+  routeCollection = [(RoutePlanningDataCoordination *)self->_dataCoordinator routeCollection];
+  currentRoute = [routeCollection currentRoute];
+  displayHints = [currentRoute displayHints];
+  virtualGarage = [(RoutePlanningDataCoordination *)self->_dataCoordinator virtualGarage];
+  [(RoutePlanningOptionsDataSource *)self configureWithTransportType:desiredTransportType displayHints:displayHints virtualGarage:virtualGarage];
 }
 
 - (void)_prepareForCycling
@@ -252,16 +252,16 @@ LABEL_25:
 - (void)_prepareForTransit
 {
   v3 = objc_initWeak(&location, self);
-  v4 = [(RoutePlanningOptionsDataSource *)self transitDataSource];
+  transitDataSource = [(RoutePlanningOptionsDataSource *)self transitDataSource];
 
-  v5 = [v4 numberOfSections];
-  if (v5 >= 1)
+  numberOfSections = [transitDataSource numberOfSections];
+  if (numberOfSections >= 1)
   {
     v6 = 0;
     do
     {
-      v7 = [v4 numberOfRowsInSection:v6];
-      if ([v4 normalizedSectionIndex:v6])
+      v7 = [transitDataSource numberOfRowsInSection:v6];
+      if ([transitDataSource normalizedSectionIndex:v6])
       {
         break;
       }
@@ -270,7 +270,7 @@ LABEL_25:
       v8[1] = 3221225472;
       v8[2] = sub_100A709F4;
       v8[3] = &unk_101632D10;
-      v9 = v4;
+      v9 = transitDataSource;
       v10[1] = v6;
       v10[2] = 0;
       v10[3] = v7;
@@ -281,7 +281,7 @@ LABEL_25:
       ++v6;
     }
 
-    while (v5 != v6);
+    while (numberOfSections != v6);
   }
 
   objc_destroyWeak(&location);
@@ -382,26 +382,26 @@ LABEL_25:
   }
 }
 
-- (void)_updateVirtualGarage:(id)a3
+- (void)_updateVirtualGarage:(id)garage
 {
-  v5 = a3;
-  if ([objc_opt_class() _isGarage:self->_virtualGarage significantlyDifferentFromGarage:v5])
+  garageCopy = garage;
+  if ([objc_opt_class() _isGarage:self->_virtualGarage significantlyDifferentFromGarage:garageCopy])
   {
     v6 = sub_100798A3C();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v5;
+      v14 = garageCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[Options] Using updated garage: %@", &v13, 0xCu);
     }
 
-    objc_storeStrong(&self->_virtualGarage, a3);
+    objc_storeStrong(&self->_virtualGarage, garage);
     originalSelectedVehicle = self->_originalSelectedVehicle;
     self->_originalSelectedVehicle = 0;
 
-    v8 = [v5 selectedVehicle];
+    selectedVehicle = [garageCopy selectedVehicle];
     selectedVehicle = self->_selectedVehicle;
-    self->_selectedVehicle = v8;
+    self->_selectedVehicle = selectedVehicle;
 
     originalUsesPreferredNetworksForRouting = self->_originalUsesPreferredNetworksForRouting;
     self->_originalUsesPreferredNetworksForRouting = 0;
@@ -429,14 +429,14 @@ LABEL_25:
   }
 }
 
-- (void)setUsesPreferredNetworksForRouting:(id)a3
+- (void)setUsesPreferredNetworksForRouting:(id)routing
 {
-  v4 = a3;
+  routingCopy = routing;
   v5 = sub_100798A3C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v10[0] = 67109120;
-    v10[1] = [(NSNumber *)v4 intValue];
+    v10[1] = [(NSNumber *)routingCopy intValue];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[Options] Uses preferred networks for routing: %d", v10, 8u);
   }
 
@@ -458,19 +458,19 @@ LABEL_25:
   }
 
   v9 = self->_usesPreferredNetworksForRouting;
-  self->_usesPreferredNetworksForRouting = v4;
+  self->_usesPreferredNetworksForRouting = routingCopy;
 }
 
-- (void)setSelectedVehicle:(id)a3
+- (void)setSelectedVehicle:(id)vehicle
 {
-  v5 = a3;
+  vehicleCopy = vehicle;
   v6 = sub_100798A3C();
   if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     goto LABEL_13;
   }
 
-  v7 = v5;
+  v7 = vehicleCopy;
   if (!v7)
   {
     v12 = @"<nil>";
@@ -495,12 +495,12 @@ LABEL_25:
 LABEL_8:
 
 LABEL_10:
-  v13 = [v7 displayName];
-  v14 = v13;
+  displayName = [v7 displayName];
+  v14 = displayName;
   v15 = @"[Any]";
-  if (v13)
+  if (displayName)
   {
-    v15 = v13;
+    v15 = displayName;
   }
 
   *buf = 138412547;
@@ -527,7 +527,7 @@ LABEL_13:
     self->_originalSelectedVehicle = v17;
   }
 
-  objc_storeStrong(&self->_selectedVehicle, a3);
+  objc_storeStrong(&self->_selectedVehicle, vehicle);
   v19 = self->_selectedVehicle;
   if (v19)
   {
@@ -547,40 +547,40 @@ LABEL_13:
   objc_storeStrong(&self->_originalUsesPreferredNetworksForRouting, self->_usesPreferredNetworksForRouting);
 }
 
-- (void)setCyclePreferences:(id)a3
+- (void)setCyclePreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   if (!self->_originalPreferences || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_storeStrong(&self->_originalPreferences, self->_cyclePreferences);
   }
 
   cyclePreferences = self->_cyclePreferences;
-  self->_cyclePreferences = v4;
+  self->_cyclePreferences = preferencesCopy;
 }
 
-- (void)setWalkPreferences:(id)a3
+- (void)setWalkPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   if (!self->_originalPreferences || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_storeStrong(&self->_originalPreferences, self->_walkPreferences);
   }
 
   walkPreferences = self->_walkPreferences;
-  self->_walkPreferences = v4;
+  self->_walkPreferences = preferencesCopy;
 }
 
-- (void)setDrivePreferences:(id)a3
+- (void)setDrivePreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   if (!self->_originalPreferences || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_storeStrong(&self->_originalPreferences, self->_drivePreferences);
   }
 
   drivePreferences = self->_drivePreferences;
-  self->_drivePreferences = v4;
+  self->_drivePreferences = preferencesCopy;
 }
 
 - (void)commitPreferences
@@ -590,7 +590,7 @@ LABEL_13:
   {
     if (transportType == 3)
     {
-      v4 = [(RoutePlanningOptionsDataSource *)self transitPreferences];
+      transitPreferences = [(RoutePlanningOptionsDataSource *)self transitPreferences];
     }
 
     else
@@ -600,7 +600,7 @@ LABEL_13:
         return;
       }
 
-      v4 = [(RoutePlanningOptionsDataSource *)self cyclePreferences];
+      transitPreferences = [(RoutePlanningOptionsDataSource *)self cyclePreferences];
     }
   }
 
@@ -608,7 +608,7 @@ LABEL_13:
   {
     [(RoutePlanningOptionsDataSource *)self _commitSelectedVehicle];
     [(RoutePlanningOptionsDataSource *)self _commitUsesPreferredNetworksForRouting];
-    v4 = [(RoutePlanningOptionsDataSource *)self drivePreferences];
+    transitPreferences = [(RoutePlanningOptionsDataSource *)self drivePreferences];
   }
 
   else
@@ -618,44 +618,44 @@ LABEL_13:
       return;
     }
 
-    v4 = [(RoutePlanningOptionsDataSource *)self walkPreferences];
+    transitPreferences = [(RoutePlanningOptionsDataSource *)self walkPreferences];
   }
 
-  v5 = v4;
-  [v4 synchronize];
+  v5 = transitPreferences;
+  [transitPreferences synchronize];
 }
 
 - (void)_commitUsesPreferredNetworksForRouting
 {
   if (self->_transportType == 1)
   {
-    v3 = [(RoutePlanningOptionsDataSource *)self selectedVehicle];
+    selectedVehicle = [(RoutePlanningOptionsDataSource *)self selectedVehicle];
 
-    if (v3)
+    if (selectedVehicle)
     {
-      v4 = [(RoutePlanningOptionsDataSource *)self usesPreferredNetworksForRouting];
+      usesPreferredNetworksForRouting = [(RoutePlanningOptionsDataSource *)self usesPreferredNetworksForRouting];
       v5 = sub_100798A3C();
       if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
 LABEL_23:
 
         v23 = +[VGVirtualGarageService sharedService];
-        v24 = [v4 BOOLValue];
-        v25 = [(RoutePlanningOptionsDataSource *)self selectedVehicle];
-        [v23 virtualGarageSetShouldUsePreferredNetworks:v24 forVehicle:v25];
+        bOOLValue = [usesPreferredNetworksForRouting BOOLValue];
+        selectedVehicle2 = [(RoutePlanningOptionsDataSource *)self selectedVehicle];
+        [v23 virtualGarageSetShouldUsePreferredNetworks:bOOLValue forVehicle:selectedVehicle2];
 
         return;
       }
 
-      v6 = v4;
+      v6 = usesPreferredNetworksForRouting;
       if (!v6)
       {
         v11 = @"<nil>";
 LABEL_12:
 
         v12 = v11;
-        v13 = [(RoutePlanningOptionsDataSource *)self selectedVehicle];
-        if (!v13)
+        selectedVehicle3 = [(RoutePlanningOptionsDataSource *)self selectedVehicle];
+        if (!selectedVehicle3)
         {
           v18 = @"<nil>";
           goto LABEL_20;
@@ -665,29 +665,29 @@ LABEL_12:
         v15 = NSStringFromClass(v14);
         if (objc_opt_respondsToSelector())
         {
-          v16 = [v13 performSelector:"accessibilityIdentifier"];
+          v16 = [selectedVehicle3 performSelector:"accessibilityIdentifier"];
           v17 = v16;
           if (v16 && ![v16 isEqualToString:v15])
           {
-            v18 = [NSString stringWithFormat:@"%@<%p, %@>", v15, v13, v17];
+            v18 = [NSString stringWithFormat:@"%@<%p, %@>", v15, selectedVehicle3, v17];
 
             goto LABEL_18;
           }
         }
 
-        v18 = [NSString stringWithFormat:@"%@<%p>", v15, v13];
+        v18 = [NSString stringWithFormat:@"%@<%p>", v15, selectedVehicle3];
 LABEL_18:
 
 LABEL_20:
-        v19 = [(RoutePlanningOptionsDataSource *)self selectedVehicle];
-        v20 = [v19 displayName];
-        v21 = v20;
+        selectedVehicle4 = [(RoutePlanningOptionsDataSource *)self selectedVehicle];
+        displayName = [selectedVehicle4 displayName];
+        v21 = displayName;
         v22 = @"[Any]";
         *buf = 138412803;
         v27 = v12;
-        if (v20)
+        if (displayName)
         {
-          v22 = v20;
+          v22 = displayName;
         }
 
         v28 = 2112;
@@ -725,19 +725,19 @@ LABEL_10:
 {
   if (self->_transportType == 1)
   {
-    v2 = [(RoutePlanningOptionsDataSource *)self selectedVehicle];
+    selectedVehicle = [(RoutePlanningOptionsDataSource *)self selectedVehicle];
     v3 = sub_100798A3C();
     if (!os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
 LABEL_14:
 
       v13 = +[VGVirtualGarageService sharedService];
-      [v13 virtualGarageSelectVehicle:v2];
+      [v13 virtualGarageSelectVehicle:selectedVehicle];
 
       return;
     }
 
-    v4 = v2;
+    v4 = selectedVehicle;
     if (!v4)
     {
       v9 = @"<nil>";
@@ -762,12 +762,12 @@ LABEL_14:
 LABEL_9:
 
 LABEL_11:
-    v10 = [v4 displayName];
-    v11 = v10;
+    displayName = [v4 displayName];
+    v11 = displayName;
     v12 = @"[Any]";
-    if (v10)
+    if (displayName)
     {
-      v12 = v10;
+      v12 = displayName;
     }
 
     *buf = 138412547;
@@ -822,11 +822,11 @@ LABEL_11:
   {
     if (transportType == 3)
     {
-      v26 = [(RoutePlanningDataCoordination *)v12 transitPreferences];
-      v27 = v26;
-      if (v26)
+      transitPreferences = [(RoutePlanningDataCoordination *)v12 transitPreferences];
+      v27 = transitPreferences;
+      if (transitPreferences)
       {
-        v28 = v26;
+        v28 = transitPreferences;
       }
 
       else
@@ -841,8 +841,8 @@ LABEL_11:
       v45 = self->_transitDataSource;
       self->_transitDataSource = v44;
 
-      v46 = [(TransitPreferencesViewControllerDataSource *)self->_transitDataSource preferences];
-      v47 = [v46 copy];
+      preferences = [(TransitPreferencesViewControllerDataSource *)self->_transitDataSource preferences];
+      v47 = [preferences copy];
       v48 = self->_originalPreferences;
       self->_originalPreferences = v47;
 
@@ -859,11 +859,11 @@ LABEL_11:
 
     if (transportType == 5)
     {
-      v18 = [(RoutePlanningDataCoordination *)v12 cyclePreferences];
-      v19 = v18;
-      if (v18)
+      cyclePreferences = [(RoutePlanningDataCoordination *)v12 cyclePreferences];
+      v19 = cyclePreferences;
+      if (cyclePreferences)
       {
-        v20 = v18;
+        v20 = cyclePreferences;
         v21 = self->_cyclePreferences;
         self->_cyclePreferences = v20;
       }
@@ -894,11 +894,11 @@ LABEL_11:
   {
     if (transportType == 1)
     {
-      v22 = [(RoutePlanningDataCoordination *)v12 drivePreferences];
-      v23 = v22;
-      if (v22)
+      drivePreferences = [(RoutePlanningDataCoordination *)v12 drivePreferences];
+      v23 = drivePreferences;
+      if (drivePreferences)
       {
-        v24 = v22;
+        v24 = drivePreferences;
         v25 = self->_drivePreferences;
         self->_drivePreferences = v24;
       }
@@ -926,11 +926,11 @@ LABEL_11:
 
     if (transportType == 2)
     {
-      v14 = [(RoutePlanningDataCoordination *)v12 walkPreferences];
-      v15 = v14;
-      if (v14)
+      walkPreferences = [(RoutePlanningDataCoordination *)v12 walkPreferences];
+      v15 = walkPreferences;
+      if (walkPreferences)
       {
-        v16 = v14;
+        v16 = walkPreferences;
         v17 = self->_walkPreferences;
         self->_walkPreferences = v16;
       }
@@ -962,18 +962,18 @@ LABEL_31:
   [(PreferenceValuesDataSource *)self rebuildSections];
 }
 
-- (void)configureWithTransportType:(int64_t)a3 displayHints:(id)a4 virtualGarage:(id)a5
+- (void)configureWithTransportType:(int64_t)type displayHints:(id)hints virtualGarage:(id)garage
 {
-  v9 = a4;
-  v10 = a5;
+  hintsCopy = hints;
+  garageCopy = garage;
   [(RoutePlanningOptionsDataSource *)self _autosaveIfNeeded];
-  if (self->_transportType == a3)
+  if (self->_transportType == type)
   {
-    switch(a3)
+    switch(type)
     {
       case 3:
         displayHints = self->_displayHints;
-        v16 = v9;
+        v16 = hintsCopy;
         v17 = displayHints;
         if (v16 | v17)
         {
@@ -989,10 +989,10 @@ LABEL_31:
               _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "[Options] Reloading transit options for displayHints change", &v30, 2u);
             }
 
-            objc_storeStrong(&self->_displayHints, a4);
+            objc_storeStrong(&self->_displayHints, hints);
             v21 = [TransitPreferencesViewControllerDataSource alloc];
-            v22 = [(TransitPreferencesViewControllerDataSource *)self->_transitDataSource preferences];
-            v23 = [(TransitPreferencesViewControllerDataSource *)v21 initWithPreferences:v22 displayHints:v16];
+            preferences = [(TransitPreferencesViewControllerDataSource *)self->_transitDataSource preferences];
+            v23 = [(TransitPreferencesViewControllerDataSource *)v21 initWithPreferences:preferences displayHints:v16];
             transitDataSource = self->_transitDataSource;
             self->_transitDataSource = v23;
 
@@ -1011,7 +1011,7 @@ LABEL_31:
 
         goto LABEL_15;
       case 1:
-        if ([RoutePlanningOptionsDataSource _isGarage:v10 significantlyDifferentFromGarage:self->_virtualGarage])
+        if ([RoutePlanningOptionsDataSource _isGarage:garageCopy significantlyDifferentFromGarage:self->_virtualGarage])
         {
           v11 = sub_100798A3C();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -1020,7 +1020,7 @@ LABEL_31:
             _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[Options] Reloading drive options for significant virtual garage change", &v30, 2u);
           }
 
-          objc_storeStrong(&self->_virtualGarage, a5);
+          objc_storeStrong(&self->_virtualGarage, garage);
 LABEL_15:
           [(PreferenceValuesDataSource *)self rebuildSections];
         }
@@ -1043,31 +1043,31 @@ LABEL_15:
     v12 = sub_100798A3C();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      if ((a3 - 1) > 4)
+      if ((type - 1) > 4)
       {
         v13 = @"Undefined";
       }
 
       else
       {
-        v13 = *(&off_101632D50 + a3 - 1);
+        v13 = *(&off_101632D50 + type - 1);
       }
 
       v30 = 138412802;
       v31 = v13;
       v32 = 2112;
-      v33 = v9;
+      v33 = hintsCopy;
       v34 = 2112;
-      v35 = v10;
+      v35 = garageCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[Options] Configuring with transportType:%@, displayHints:%@, garage:%@", &v30, 0x20u);
     }
 
-    self->_transportType = a3;
-    objc_storeStrong(&self->_displayHints, a4);
-    objc_storeStrong(&self->_virtualGarage, a5);
-    v25 = [v10 selectedVehicle];
+    self->_transportType = type;
+    objc_storeStrong(&self->_displayHints, hints);
+    objc_storeStrong(&self->_virtualGarage, garage);
+    selectedVehicle = [garageCopy selectedVehicle];
     selectedVehicle = self->_selectedVehicle;
-    self->_selectedVehicle = v25;
+    self->_selectedVehicle = selectedVehicle;
 
     v27 = self->_selectedVehicle;
     if (v27)
@@ -1105,10 +1105,10 @@ LABEL_15:
   }
 }
 
-- (void)_performAutomaticSave:(id)a3
+- (void)_performAutomaticSave:(id)save
 {
   automaticSaveTimer = self->_automaticSaveTimer;
-  if (automaticSaveTimer != a3)
+  if (automaticSaveTimer != save)
   {
     return;
   }
@@ -1145,11 +1145,11 @@ LABEL_15:
 
 LABEL_8:
     [(RoutePlanningOptionsDataSource *)self setHasUnsavedChanges:[(RoutePlanningOptionsDataSource *)self _hasUnsavedChanges]];
-    v9 = [(RoutePlanningOptionsDataSource *)self dataCoordinator];
+    dataCoordinator = [(RoutePlanningOptionsDataSource *)self dataCoordinator];
 
     v10 = sub_100798A3C();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
-    if (v9)
+    if (dataCoordinator)
     {
       if (v11)
       {
@@ -1211,17 +1211,17 @@ LABEL_8:
   }
 }
 
-- (void)setAutomaticallySaveChanges:(BOOL)a3
+- (void)setAutomaticallySaveChanges:(BOOL)changes
 {
-  if (self->_automaticallySaveChanges != a3)
+  if (self->_automaticallySaveChanges != changes)
   {
-    v3 = a3;
-    self->_automaticallySaveChanges = a3;
+    changesCopy = changes;
+    self->_automaticallySaveChanges = changes;
     v5 = sub_100798A3C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = "disable";
-      if (v3)
+      if (changesCopy)
       {
         v6 = "enable";
       }
@@ -1231,7 +1231,7 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[Options] Will %s autosave", &v8, 0xCu);
     }
 
-    if (!v3)
+    if (!changesCopy)
     {
       [(NSTimer *)self->_automaticSaveTimer invalidate];
       automaticSaveTimer = self->_automaticSaveTimer;
@@ -1240,9 +1240,9 @@ LABEL_8:
   }
 }
 
-- (void)setHasUnsavedChanges:(BOOL)a3
+- (void)setHasUnsavedChanges:(BOOL)changes
 {
-  if (self->_hasUnsavedChanges == a3)
+  if (self->_hasUnsavedChanges == changes)
   {
     if (self->_automaticSaveTimer)
     {
@@ -1251,7 +1251,7 @@ LABEL_8:
 
     else
     {
-      v4 = !a3;
+      v4 = !changes;
     }
 
     if (!v4)
@@ -1269,8 +1269,8 @@ LABEL_8:
 
   else
   {
-    self->_hasUnsavedChanges = a3;
-    if (a3)
+    self->_hasUnsavedChanges = changes;
+    if (changes)
     {
 
       [(RoutePlanningOptionsDataSource *)self _scheduleAutomaticSave];
@@ -1294,9 +1294,9 @@ LABEL_8:
 
 - (void)_updateHasUnsavedChanges
 {
-  v3 = [(RoutePlanningOptionsDataSource *)self _hasUnsavedChanges];
+  _hasUnsavedChanges = [(RoutePlanningOptionsDataSource *)self _hasUnsavedChanges];
 
-  [(RoutePlanningOptionsDataSource *)self setHasUnsavedChanges:v3];
+  [(RoutePlanningOptionsDataSource *)self setHasUnsavedChanges:_hasUnsavedChanges];
 }
 
 - (BOOL)_hasUnsavedChanges
@@ -1307,8 +1307,8 @@ LABEL_8:
   }
 
   originalSelectedVehicle = self->_originalSelectedVehicle;
-  v4 = [(RoutePlanningOptionsDataSource *)self selectedVehicle];
-  if (originalSelectedVehicle != v4)
+  selectedVehicle = [(RoutePlanningOptionsDataSource *)self selectedVehicle];
+  if (originalSelectedVehicle != selectedVehicle)
   {
     LOBYTE(v5) = 1;
 LABEL_18:
@@ -1317,9 +1317,9 @@ LABEL_18:
   }
 
   originalUsesPreferredNetworksForRouting = self->_originalUsesPreferredNetworksForRouting;
-  v7 = [(RoutePlanningOptionsDataSource *)self usesPreferredNetworksForRouting];
+  usesPreferredNetworksForRouting = [(RoutePlanningOptionsDataSource *)self usesPreferredNetworksForRouting];
   v8 = originalUsesPreferredNetworksForRouting;
-  v9 = v7;
+  v9 = usesPreferredNetworksForRouting;
   if (!(v8 | v9))
   {
 
@@ -1334,38 +1334,38 @@ LABEL_18:
 LABEL_7:
     if (self->_originalPreferences)
     {
-      v12 = [(RoutePlanningOptionsDataSource *)self drivePreferences];
+      drivePreferences = [(RoutePlanningOptionsDataSource *)self drivePreferences];
 
-      if (v12)
+      if (drivePreferences)
       {
-        v13 = [(RoutePlanningOptionsDataSource *)self drivePreferences];
+        drivePreferences2 = [(RoutePlanningOptionsDataSource *)self drivePreferences];
 LABEL_17:
-        v4 = v13;
-        v5 = [v13 isEqual:self->_originalPreferences] ^ 1;
+        selectedVehicle = drivePreferences2;
+        v5 = [drivePreferences2 isEqual:self->_originalPreferences] ^ 1;
         goto LABEL_18;
       }
 
-      v14 = [(RoutePlanningOptionsDataSource *)self walkPreferences];
+      walkPreferences = [(RoutePlanningOptionsDataSource *)self walkPreferences];
 
-      if (v14)
+      if (walkPreferences)
       {
-        v13 = [(RoutePlanningOptionsDataSource *)self walkPreferences];
+        drivePreferences2 = [(RoutePlanningOptionsDataSource *)self walkPreferences];
         goto LABEL_17;
       }
 
-      v15 = [(RoutePlanningOptionsDataSource *)self transitDataSource];
+      transitDataSource = [(RoutePlanningOptionsDataSource *)self transitDataSource];
 
-      if (v15)
+      if (transitDataSource)
       {
-        v13 = [(RoutePlanningOptionsDataSource *)self transitPreferences];
+        drivePreferences2 = [(RoutePlanningOptionsDataSource *)self transitPreferences];
         goto LABEL_17;
       }
 
-      v16 = [(RoutePlanningOptionsDataSource *)self cyclePreferences];
+      cyclePreferences = [(RoutePlanningOptionsDataSource *)self cyclePreferences];
 
-      if (v16)
+      if (cyclePreferences)
       {
-        v13 = [(RoutePlanningOptionsDataSource *)self cyclePreferences];
+        drivePreferences2 = [(RoutePlanningOptionsDataSource *)self cyclePreferences];
         goto LABEL_17;
       }
     }
@@ -1391,22 +1391,22 @@ LABEL_17:
   [(RoutePlanningOptionsDataSource *)&v4 dealloc];
 }
 
-+ (BOOL)_isGarage:(id)a3 significantlyDifferentFromGarage:(id)a4
++ (BOOL)_isGarage:(id)garage significantlyDifferentFromGarage:(id)fromGarage
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 | v6)
+  garageCopy = garage;
+  fromGarageCopy = fromGarage;
+  if (garageCopy | fromGarageCopy)
   {
-    v7 = [v5 selectedVehicle];
-    v8 = [v6 selectedVehicle];
-    v9 = v7;
-    v10 = v8;
-    if ((!(v9 | v10) || (v11 = v10, v12 = [v9 isEqual:v10], v11, v9, v11, v9, v12)) && (objc_msgSend(v5, "selectedVehicle"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "usesPreferredNetworksForRouting"), objc_msgSend(v6, "selectedVehicle"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "usesPreferredNetworksForRouting"), v15, v13, v14 == v16))
+    selectedVehicle = [garageCopy selectedVehicle];
+    selectedVehicle2 = [fromGarageCopy selectedVehicle];
+    v9 = selectedVehicle;
+    v10 = selectedVehicle2;
+    if ((!(v9 | v10) || (v11 = v10, v12 = [v9 isEqual:v10], v11, v9, v11, v9, v12)) && (objc_msgSend(garageCopy, "selectedVehicle"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "usesPreferredNetworksForRouting"), objc_msgSend(fromGarageCopy, "selectedVehicle"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "usesPreferredNetworksForRouting"), v15, v13, v14 == v16))
     {
-      v18 = [v5 vehicles];
-      v19 = [v18 count];
-      v20 = [v6 vehicles];
-      v17 = v19 != [v20 count];
+      vehicles = [garageCopy vehicles];
+      v19 = [vehicles count];
+      vehicles2 = [fromGarageCopy vehicles];
+      v17 = v19 != [vehicles2 count];
     }
 
     else
@@ -1423,38 +1423,38 @@ LABEL_17:
   return v17;
 }
 
-+ (void)registerCellsInCollectionView:(id)a3
++ (void)registerCellsInCollectionView:(id)view
 {
-  v4 = a3;
-  [RoutePlanningVehicleCheckmarkRow registerCellsInCollectionView:v4];
-  v5.receiver = a1;
+  viewCopy = view;
+  [RoutePlanningVehicleCheckmarkRow registerCellsInCollectionView:viewCopy];
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___RoutePlanningOptionsDataSource;
-  objc_msgSendSuper2(&v5, "registerCellsInCollectionView:", v4);
+  objc_msgSendSuper2(&v5, "registerCellsInCollectionView:", viewCopy);
 }
 
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateCyclePreferences:(id)a4
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateCyclePreferences:(id)preferences
 {
-  v6 = a4;
+  preferencesCopy = preferences;
   if (self->_transportType == 5)
   {
-    v8 = v6;
-    v7 = [(WatchSyncedPreferences *)self->_cyclePreferences isEqual:v6];
-    v6 = v8;
+    v8 = preferencesCopy;
+    v7 = [(WatchSyncedPreferences *)self->_cyclePreferences isEqual:preferencesCopy];
+    preferencesCopy = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_cyclePreferences, a4);
+      objc_storeStrong(&self->_cyclePreferences, preferences);
       [(PreferenceValuesDataSource *)self rebuildSections];
-      v6 = v8;
+      preferencesCopy = v8;
     }
   }
 }
 
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateTransitPreferences:(id)a4
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateTransitPreferences:(id)preferences
 {
   if (self->_transportType == 3)
   {
-    v6 = a4;
-    v7 = [[TransitPreferencesViewControllerDataSource alloc] initWithPreferences:v6 displayHints:self->_displayHints];
+    preferencesCopy = preferences;
+    v7 = [[TransitPreferencesViewControllerDataSource alloc] initWithPreferences:preferencesCopy displayHints:self->_displayHints];
 
     transitDataSource = self->_transitDataSource;
     self->_transitDataSource = v7;
@@ -1463,52 +1463,52 @@ LABEL_17:
   }
 }
 
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateWalkPreferences:(id)a4
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateWalkPreferences:(id)preferences
 {
-  v6 = a4;
+  preferencesCopy = preferences;
   if (self->_transportType == 2)
   {
-    v8 = v6;
-    v7 = [(WatchSyncedPreferences *)self->_walkPreferences isEqual:v6];
-    v6 = v8;
+    v8 = preferencesCopy;
+    v7 = [(WatchSyncedPreferences *)self->_walkPreferences isEqual:preferencesCopy];
+    preferencesCopy = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_walkPreferences, a4);
+      objc_storeStrong(&self->_walkPreferences, preferences);
       [(PreferenceValuesDataSource *)self rebuildSections];
-      v6 = v8;
+      preferencesCopy = v8;
     }
   }
 }
 
-- (void)routePlanningDataCoordinator:(id)a3 didUpdateDrivePreferences:(id)a4
+- (void)routePlanningDataCoordinator:(id)coordinator didUpdateDrivePreferences:(id)preferences
 {
-  v6 = a4;
+  preferencesCopy = preferences;
   if (self->_transportType == 1)
   {
-    v8 = v6;
-    v7 = [(WatchSyncedPreferences *)self->_drivePreferences isEqual:v6];
-    v6 = v8;
+    v8 = preferencesCopy;
+    v7 = [(WatchSyncedPreferences *)self->_drivePreferences isEqual:preferencesCopy];
+    preferencesCopy = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_drivePreferences, a4);
+      objc_storeStrong(&self->_drivePreferences, preferences);
       [(PreferenceValuesDataSource *)self rebuildSections];
-      v6 = v8;
+      preferencesCopy = v8;
     }
   }
 }
 
-- (void)setDataCoordinator:(id)a3
+- (void)setDataCoordinator:(id)coordinator
 {
-  v5 = a3;
+  coordinatorCopy = coordinator;
   dataCoordinator = self->_dataCoordinator;
-  if (dataCoordinator != v5)
+  if (dataCoordinator != coordinatorCopy)
   {
-    v7 = v5;
+    v7 = coordinatorCopy;
     [(RoutePlanningDataCoordination *)dataCoordinator removeObserver:self];
-    objc_storeStrong(&self->_dataCoordinator, a3);
+    objc_storeStrong(&self->_dataCoordinator, coordinator);
     [(RoutePlanningDataCoordination *)self->_dataCoordinator addObserver:self];
     [(RoutePlanningOptionsDataSource *)self _updateFromCoordinator];
-    v5 = v7;
+    coordinatorCopy = v7;
   }
 }
 

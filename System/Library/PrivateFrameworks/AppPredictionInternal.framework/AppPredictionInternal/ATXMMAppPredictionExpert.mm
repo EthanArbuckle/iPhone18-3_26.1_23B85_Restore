@@ -1,34 +1,34 @@
 @interface ATXMMAppPredictionExpert
 + (BOOL)isExpertEnabledForPredictions;
-+ (BOOL)shouldHandleTriggerEventWithRateLimiter:(id)a3;
++ (BOOL)shouldHandleTriggerEventWithRateLimiter:(id)limiter;
 + (BOOL)shouldPredicateOnStartDateForTrigger;
 + (Class)supportedAnchorClass;
 + (NSString)notificationIdentifier;
 + (NSString)pathToPredictionTable;
 + (id)anchorTypeForExpert;
-+ (id)correlateTriggerEvents:(id)a3 withAppLaunches:(id)a4;
-+ (id)createTrainingDataForSubExpertsWithCorrelatedEvents:(id)a3;
++ (id)correlateTriggerEvents:(id)events withAppLaunches:(id)launches;
++ (id)createTrainingDataForSubExpertsWithCorrelatedEvents:(id)events;
 + (id)fetchAnchorOccurrences;
-+ (id)fetchPredictionsForTriggerEvent:(id)a3;
++ (id)fetchPredictionsForTriggerEvent:(id)event;
 + (id)predictionTable;
 + (id)predictionTableFromCache;
 + (id)sampleEventForExpert;
-+ (id)trainSubExpertWithCorrelatedEvents:(id)a3 appLaunchCountedSet:(id)a4;
-+ (int)mmAnchorTypeToMMProtobufAnchor:(int64_t)a3;
++ (id)trainSubExpertWithCorrelatedEvents:(id)events appLaunchCountedSet:(id)set;
++ (int)mmAnchorTypeToMMProtobufAnchor:(int64_t)anchor;
 + (unsigned)predictionReasonForExpert;
-+ (void)broadcastMMPredictionsForEvent:(id)a3 predictions:(id)a4;
++ (void)broadcastMMPredictionsForEvent:(id)event predictions:(id)predictions;
 + (void)fetchAnchorOccurrences;
 + (void)fetchAndHandleTriggerEvent;
-+ (void)logPredictedCountMMMetricsEntryForAnchorType:(int64_t)a3 numPredictions:(int)a4;
-+ (void)logPredictedScoreMMMetricsEntryForBundle:(id)a3 anchorType:(int64_t)a4 score:(double)a5;
-+ (void)logTriggeredMMMetricsEntryForAnchorType:(int64_t)a3;
++ (void)logPredictedCountMMMetricsEntryForAnchorType:(int64_t)type numPredictions:(int)predictions;
++ (void)logPredictedScoreMMMetricsEntryForBundle:(id)bundle anchorType:(int64_t)type score:(double)score;
++ (void)logTriggeredMMMetricsEntryForAnchorType:(int64_t)type;
 + (void)predictionTableFromCache;
-+ (void)serializeAndWritePredictionTable:(id)a3;
-+ (void)setupEventListenerForInferenceWithContext:(id)a3 rateLimiter:(id)a4;
-+ (void)tagEventWithLOIForEvent:(id)a3;
-+ (void)trainExpertWithAppLaunchEvents:(id)a3 appLaunchCountedSet:(id)a4;
-+ (void)trainSubExpertWithCorrelatedEvents:(id)a3 indices:(id)a4 predicates:(id)a5 appLaunchCountedSet:(id)a6 predictionTable:(id)a7;
-+ (void)trainSubExpertsWithTrainingData:(id)a3 correlatedEvents:(id)a4 appLaunchCountedSet:(id)a5;
++ (void)serializeAndWritePredictionTable:(id)table;
++ (void)setupEventListenerForInferenceWithContext:(id)context rateLimiter:(id)limiter;
++ (void)tagEventWithLOIForEvent:(id)event;
++ (void)trainExpertWithAppLaunchEvents:(id)events appLaunchCountedSet:(id)set;
++ (void)trainSubExpertWithCorrelatedEvents:(id)events indices:(id)indices predicates:(id)predicates appLaunchCountedSet:(id)set predictionTable:(id)table;
++ (void)trainSubExpertsWithTrainingData:(id)data correlatedEvents:(id)events appLaunchCountedSet:(id)set;
 - (ATXMMAppPredictionExpert)init;
 @end
 
@@ -51,8 +51,8 @@
 
 + (Class)supportedAnchorClass
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ATXMMAppPredictionExpert.m" lineNumber:74 description:@"Should be implemented by subclasses"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXMMAppPredictionExpert.m" lineNumber:74 description:@"Should be implemented by subclasses"];
 
   return 0;
 }
@@ -61,9 +61,9 @@
 {
   [objc_opt_class() supportedAnchorClass];
   v2 = objc_opt_new();
-  v3 = [objc_opt_class() sampleEvent];
+  sampleEvent = [objc_opt_class() sampleEvent];
 
-  return v3;
+  return sampleEvent;
 }
 
 + (id)anchorTypeForExpert
@@ -75,26 +75,26 @@
 
 + (unsigned)predictionReasonForExpert
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ATXMMAppPredictionExpert.m" lineNumber:91 description:@"Should be implemented by subclasses"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXMMAppPredictionExpert.m" lineNumber:91 description:@"Should be implemented by subclasses"];
 
   return 0;
 }
 
 + (NSString)pathToPredictionTable
 {
-  v2 = [MEMORY[0x277CEBCB0] magicalMomentsPredictionTablesRootDirectory];
-  v3 = [objc_opt_class() anchorTypeForExpert];
-  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"ATXMMPredictionTable-%@", v3];
-  v5 = [v2 stringByAppendingPathComponent:v4];
+  magicalMomentsPredictionTablesRootDirectory = [MEMORY[0x277CEBCB0] magicalMomentsPredictionTablesRootDirectory];
+  anchorTypeForExpert = [objc_opt_class() anchorTypeForExpert];
+  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"ATXMMPredictionTable-%@", anchorTypeForExpert];
+  v5 = [magicalMomentsPredictionTablesRootDirectory stringByAppendingPathComponent:v4];
 
   return v5;
 }
 
 + (NSString)notificationIdentifier
 {
-  v2 = [objc_opt_class() anchorTypeForExpert];
-  v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"com.apple.duetexpertd.ATXMMAppPredictor.%@", v2];
+  anchorTypeForExpert = [objc_opt_class() anchorTypeForExpert];
+  v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"com.apple.duetexpertd.ATXMMAppPredictor.%@", anchorTypeForExpert];
 
   return v3;
 }
@@ -102,10 +102,10 @@
 + (BOOL)isExpertEnabledForPredictions
 {
   v2 = +[_ATXGlobals sharedInstance];
-  v3 = [v2 magicalMomentsEnabledPredictionExperts];
+  magicalMomentsEnabledPredictionExperts = [v2 magicalMomentsEnabledPredictionExperts];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [v3 objectForKey:v5];
+  v6 = [magicalMomentsEnabledPredictionExperts objectForKey:v5];
 
   LOBYTE(v5) = [v6 BOOLValue];
   return v5;
@@ -115,18 +115,18 @@
 {
   v29 = *MEMORY[0x277D85DE8];
   v2 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceNow:-2592000.0];
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   [objc_opt_class() supportedAnchorClass];
   v4 = objc_opt_new();
-  v18 = v3;
+  v18 = date;
   v19 = v2;
-  v5 = [objc_opt_class() fetchAnchorOccurrencesBetweenStartDate:v2 endDate:v3];
+  v5 = [objc_opt_class() fetchAnchorOccurrencesBetweenStartDate:v2 endDate:date];
   v6 = __atxlog_handle_default();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [objc_opt_class() anchorTypeForExpert];
+    anchorTypeForExpert = [objc_opt_class() anchorTypeForExpert];
     *buf = 138412546;
-    v26 = v7;
+    v26 = anchorTypeForExpert;
     v27 = 2048;
     v28 = [v5 count];
     _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_INFO, "ATXMM: (%@) num anchor events: %lu.", buf, 0x16u);
@@ -184,46 +184,46 @@
 
 + (BOOL)shouldPredicateOnStartDateForTrigger
 {
-  v2 = [objc_opt_class() supportedAnchorClass];
+  supportedAnchorClass = [objc_opt_class() supportedAnchorClass];
 
-  return [v2 shouldPredicateOnStartDate];
+  return [supportedAnchorClass shouldPredicateOnStartDate];
 }
 
-+ (id)correlateTriggerEvents:(id)a3 withAppLaunches:(id)a4
++ (id)correlateTriggerEvents:(id)events withAppLaunches:(id)launches
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count] && objc_msgSend(v6, "count"))
+  eventsCopy = events;
+  launchesCopy = launches;
+  if ([eventsCopy count] && objc_msgSend(launchesCopy, "count"))
   {
     v7 = -[ATXCorrelatedEventsDateBuffer initWithBufferSeconds:andBufferType:]([ATXCorrelatedEventsDateBuffer alloc], "initWithBufferSeconds:andBufferType:", [objc_opt_class() dateBufferForTriggerEvent], 120.0);
     v8 = [[ATXCorrelatedEventsDateBuffer alloc] initWithBufferSeconds:0 andBufferType:0.0];
     v9 = [ATXCorrelatedEventsManager alloc];
     v10 = objc_opt_class();
     v11 = [(ATXCorrelatedEventsManager *)v9 initWithFirstEventType:v10 firstEventTypeDateBuffer:v7 secondEventType:objc_opt_class() secondEventTypeDateBuffer:v8];
-    [(ATXCorrelatedEventsManager *)v11 insertEvents:v5 forEventType:0];
-    [(ATXCorrelatedEventsManager *)v11 insertEvents:v6 forEventType:1];
-    v12 = [(ATXCorrelatedEventsManager *)v11 correlatedEvents];
+    [(ATXCorrelatedEventsManager *)v11 insertEvents:eventsCopy forEventType:0];
+    [(ATXCorrelatedEventsManager *)v11 insertEvents:launchesCopy forEventType:1];
+    correlatedEvents = [(ATXCorrelatedEventsManager *)v11 correlatedEvents];
   }
 
   else
   {
-    v12 = MEMORY[0x277CBEBF8];
+    correlatedEvents = MEMORY[0x277CBEBF8];
   }
 
-  return v12;
+  return correlatedEvents;
 }
 
-+ (void)tagEventWithLOIForEvent:(id)a3
++ (void)tagEventWithLOIForEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   if ([objc_opt_class() shouldPredicateOnStartDateForTrigger])
   {
-    [v3 startDate];
+    [eventCopy startDate];
   }
 
   else
   {
-    [v3 endDate];
+    [eventCopy endDate];
   }
   v4 = ;
   v5 = objc_alloc(MEMORY[0x277CCA970]);
@@ -239,15 +239,15 @@
       +[ATXMMAppPredictionExpert tagEventWithLOIForEvent:];
     }
 
-    v10 = [v8 uuid];
-    [v3 tagWithLocationOfInterestIdentifier:v10];
+    uuid = [v8 uuid];
+    [eventCopy tagWithLocationOfInterestIdentifier:uuid];
   }
 }
 
-+ (id)createTrainingDataForSubExpertsWithCorrelatedEvents:(id)a3
++ (id)createTrainingDataForSubExpertsWithCorrelatedEvents:(id)events
 {
   v59[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventsCopy = events;
   v53 = objc_opt_new();
   v57 = objc_opt_new();
   v4 = objc_opt_new();
@@ -255,34 +255,34 @@
   v55 = objc_opt_new();
   v6 = +[ATXMagicalMomentsContexts timeOfDayPredicatesWithRequestedDurationInHours:shouldPredicateOnStartDate:](ATXMagicalMomentsContexts, "timeOfDayPredicatesWithRequestedDurationInHours:shouldPredicateOnStartDate:", 6, [objc_opt_class() shouldPredicateOnStartDateForTrigger]);
   v7 = +[ATXMagicalMomentsContexts partOfWeekPredicatesUsingStartDate:](ATXMagicalMomentsContexts, "partOfWeekPredicatesUsingStartDate:", [objc_opt_class() shouldPredicateOnStartDateForTrigger]);
-  if ([v3 count])
+  if ([eventsCopy count])
   {
     v8 = 0;
-    v51 = v3;
+    v51 = eventsCopy;
     v52 = v6;
     v54 = v4;
     v50 = v5;
     do
     {
       v9 = objc_autoreleasePoolPush();
-      v56 = [v3 objectAtIndexedSubscript:v8];
-      v10 = [v56 firstEvent];
-      v58 = [v10 identifier];
-      if (([v53 containsObject:v10] & 1) == 0)
+      v56 = [eventsCopy objectAtIndexedSubscript:v8];
+      firstEvent = [v56 firstEvent];
+      identifier = [firstEvent identifier];
+      if (([v53 containsObject:firstEvent] & 1) == 0)
       {
-        [v53 addObject:v10];
-        [objc_opt_class() tagEventWithLOIForEvent:v10];
+        [v53 addObject:firstEvent];
+        [objc_opt_class() tagEventWithLOIForEvent:firstEvent];
       }
 
-      v11 = [v57 objectForKeyedSubscript:v58];
+      v11 = [v57 objectForKeyedSubscript:identifier];
 
       if (!v11)
       {
         v12 = objc_opt_new();
-        [v57 setObject:v12 forKeyedSubscript:v58];
+        [v57 setObject:v12 forKeyedSubscript:identifier];
 
         v13 = objc_opt_new();
-        [v54 setObject:v13 forKeyedSubscript:v58];
+        [v54 setObject:v13 forKeyedSubscript:identifier];
 
         if ([v52 count])
         {
@@ -290,7 +290,7 @@
           do
           {
             v15 = objc_opt_new();
-            v16 = [v54 objectForKeyedSubscript:v58];
+            v16 = [v54 objectForKeyedSubscript:identifier];
             v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v14];
             [v16 setObject:v15 forKeyedSubscript:v17];
 
@@ -301,7 +301,7 @@
         }
 
         v18 = objc_opt_new();
-        [v50 setObject:v18 forKeyedSubscript:v58];
+        [v50 setObject:v18 forKeyedSubscript:identifier];
 
         if ([v7 count])
         {
@@ -309,7 +309,7 @@
           do
           {
             v20 = objc_opt_new();
-            v21 = [v50 objectForKeyedSubscript:v58];
+            v21 = [v50 objectForKeyedSubscript:identifier];
             v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v19];
             [v21 setObject:v20 forKeyedSubscript:v22];
 
@@ -320,29 +320,29 @@
         }
 
         v23 = objc_opt_new();
-        [v55 setObject:v23 forKeyedSubscript:v58];
+        [v55 setObject:v23 forKeyedSubscript:identifier];
 
         v5 = v50;
       }
 
-      v24 = [v10 locationIdentifierUUIDString];
-      if (v24)
+      locationIdentifierUUIDString = [firstEvent locationIdentifierUUIDString];
+      if (locationIdentifierUUIDString)
       {
-        v25 = v24;
-        v26 = [v55 objectForKeyedSubscript:v58];
-        v27 = [v10 locationIdentifierUUIDString];
-        v28 = [v26 objectForKeyedSubscript:v27];
+        v25 = locationIdentifierUUIDString;
+        v26 = [v55 objectForKeyedSubscript:identifier];
+        locationIdentifierUUIDString2 = [firstEvent locationIdentifierUUIDString];
+        v28 = [v26 objectForKeyedSubscript:locationIdentifierUUIDString2];
 
         if (!v28)
         {
           v29 = objc_opt_new();
-          v30 = [v55 objectForKeyedSubscript:v58];
-          v31 = [v10 locationIdentifierUUIDString];
-          [v30 setObject:v29 forKeyedSubscript:v31];
+          v30 = [v55 objectForKeyedSubscript:identifier];
+          locationIdentifierUUIDString3 = [firstEvent locationIdentifierUUIDString];
+          [v30 setObject:v29 forKeyedSubscript:locationIdentifierUUIDString3];
         }
       }
 
-      v32 = [v57 objectForKeyedSubscript:v58];
+      v32 = [v57 objectForKeyedSubscript:identifier];
       [v32 addIndex:v8];
 
       v6 = v52;
@@ -352,7 +352,7 @@
         while (1)
         {
           v34 = [v52 objectAtIndexedSubscript:v33];
-          if ([v34 evaluateWithObject:v10])
+          if ([v34 evaluateWithObject:firstEvent])
           {
             break;
           }
@@ -363,7 +363,7 @@
           }
         }
 
-        v35 = [v54 objectForKeyedSubscript:v58];
+        v35 = [v54 objectForKeyedSubscript:identifier];
         v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v33];
         v37 = [v35 objectForKeyedSubscript:v36];
         [v37 addIndex:v8];
@@ -376,7 +376,7 @@ LABEL_22:
         while (1)
         {
           v39 = [v7 objectAtIndexedSubscript:v38];
-          if ([v39 evaluateWithObject:v10])
+          if ([v39 evaluateWithObject:firstEvent])
           {
             break;
           }
@@ -387,26 +387,26 @@ LABEL_22:
           }
         }
 
-        v40 = [v5 objectForKeyedSubscript:v58];
+        v40 = [v5 objectForKeyedSubscript:identifier];
         v41 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v38];
         v42 = [v40 objectForKeyedSubscript:v41];
         [v42 addIndex:v8];
       }
 
 LABEL_28:
-      v43 = [v10 locationIdentifierUUIDString];
+      locationIdentifierUUIDString4 = [firstEvent locationIdentifierUUIDString];
 
-      if (v43)
+      if (locationIdentifierUUIDString4)
       {
-        v44 = [v55 objectForKeyedSubscript:v58];
-        v45 = [v10 locationIdentifierUUIDString];
-        v46 = [v44 objectForKeyedSubscript:v45];
+        v44 = [v55 objectForKeyedSubscript:identifier];
+        locationIdentifierUUIDString5 = [firstEvent locationIdentifierUUIDString];
+        v46 = [v44 objectForKeyedSubscript:locationIdentifierUUIDString5];
         [v46 addIndex:v8];
       }
 
       objc_autoreleasePoolPop(v9);
       ++v8;
-      v3 = v51;
+      eventsCopy = v51;
       v4 = v54;
     }
 
@@ -424,60 +424,60 @@ LABEL_28:
   return v47;
 }
 
-+ (void)trainSubExpertWithCorrelatedEvents:(id)a3 indices:(id)a4 predicates:(id)a5 appLaunchCountedSet:(id)a6 predictionTable:(id)a7
++ (void)trainSubExpertWithCorrelatedEvents:(id)events indices:(id)indices predicates:(id)predicates appLaunchCountedSet:(id)set predictionTable:(id)table
 {
   v25 = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [a3 objectsAtIndexes:a4];
+  predicatesCopy = predicates;
+  setCopy = set;
+  tableCopy = table;
+  v15 = [events objectsAtIndexes:indices];
   if (v15)
   {
-    v16 = [a1 trainSubExpertWithCorrelatedEvents:v15 appLaunchCountedSet:v13];
+    v16 = [self trainSubExpertWithCorrelatedEvents:v15 appLaunchCountedSet:setCopy];
     v17 = __atxlog_handle_default();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v18 = [v16 count];
-      v19 = [v16 firstObject];
+      firstObject = [v16 firstObject];
       v21 = 134218242;
       v22 = v18;
       v23 = 2112;
-      v24 = v19;
+      v24 = firstObject;
       _os_log_impl(&dword_2263AA000, v17, OS_LOG_TYPE_DEFAULT, "ATXMM: Got back %lu predictions for subexpert. Sample prediction: %@", &v21, 0x16u);
     }
 
-    if (v12 && v16)
+    if (predicatesCopy && v16)
     {
-      [v14 addPredictions:v16 withApplicablePredicates:v12];
+      [tableCopy addPredictions:v16 withApplicablePredicates:predicatesCopy];
     }
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)trainSubExpertWithCorrelatedEvents:(id)a3 appLaunchCountedSet:(id)a4
++ (id)trainSubExpertWithCorrelatedEvents:(id)events appLaunchCountedSet:(id)set
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[ATXMagicalMomentsPredictionScorer alloc] initWithCorrelatedEvents:v6 andGlobalAppLaunchCountedSet:v5];
+  setCopy = set;
+  eventsCopy = events;
+  v7 = [[ATXMagicalMomentsPredictionScorer alloc] initWithCorrelatedEvents:eventsCopy andGlobalAppLaunchCountedSet:setCopy];
 
-  v8 = [(ATXMagicalMomentsPredictionScorer *)v7 generatePredictions];
+  generatePredictions = [(ATXMagicalMomentsPredictionScorer *)v7 generatePredictions];
 
-  return v8;
+  return generatePredictions;
 }
 
-+ (void)serializeAndWritePredictionTable:(id)a3
++ (void)serializeAndWritePredictionTable:(id)table
 {
-  v3 = a3;
+  tableCopy = table;
   v4 = objc_autoreleasePoolPush();
   v12 = 0;
-  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v12];
+  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:tableCopy requiringSecureCoding:1 error:&v12];
   v6 = v12;
   if (v5)
   {
-    v7 = [objc_opt_class() pathToPredictionTable];
+    pathToPredictionTable = [objc_opt_class() pathToPredictionTable];
     v11 = 0;
-    v8 = [v5 writeToFile:v7 options:1073741825 error:&v11];
+    v8 = [v5 writeToFile:pathToPredictionTable options:1073741825 error:&v11];
     v9 = v11;
 
     if ((v8 & 1) == 0)
@@ -502,20 +502,20 @@ LABEL_28:
   objc_autoreleasePoolPop(v4);
 }
 
-+ (void)trainSubExpertsWithTrainingData:(id)a3 correlatedEvents:(id)a4 appLaunchCountedSet:(id)a5
++ (void)trainSubExpertsWithTrainingData:(id)data correlatedEvents:(id)events appLaunchCountedSet:(id)set
 {
   v123 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v89 = a4;
-  v88 = a5;
-  v9 = [v8 objectAtIndexedSubscript:0];
-  v84 = [v8 objectAtIndexedSubscript:1];
-  v83 = [v8 objectAtIndexedSubscript:2];
-  v76 = v8;
-  v82 = [v8 objectAtIndexedSubscript:3];
+  dataCopy = data;
+  eventsCopy = events;
+  setCopy = set;
+  v9 = [dataCopy objectAtIndexedSubscript:0];
+  v84 = [dataCopy objectAtIndexedSubscript:1];
+  v83 = [dataCopy objectAtIndexedSubscript:2];
+  v76 = dataCopy;
+  v82 = [dataCopy objectAtIndexedSubscript:3];
   v87 = objc_opt_new();
   v86 = +[ATXMagicalMomentsContexts timeOfDayPredicatesWithRequestedDurationInHours:shouldPredicateOnStartDate:](ATXMagicalMomentsContexts, "timeOfDayPredicatesWithRequestedDurationInHours:shouldPredicateOnStartDate:", 6, [objc_opt_class() shouldPredicateOnStartDateForTrigger]);
-  v90 = a1;
+  selfCopy = self;
   v85 = +[ATXMagicalMomentsContexts partOfWeekPredicatesUsingStartDate:](ATXMagicalMomentsContexts, "partOfWeekPredicatesUsingStartDate:", [objc_opt_class() shouldPredicateOnStartDateForTrigger]);
   v103 = 0u;
   v104 = 0u;
@@ -542,12 +542,12 @@ LABEL_28:
         v12 = __atxlog_handle_default();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
-          v13 = [objc_opt_class() supportedAnchorClass];
+          supportedAnchorClass = [objc_opt_class() supportedAnchorClass];
           *buf = 138412546;
-          v119 = v13;
+          v119 = supportedAnchorClass;
           v120 = 2112;
           v121 = v11;
-          v14 = v13;
+          v14 = supportedAnchorClass;
           _os_log_impl(&dword_2263AA000, v12, OS_LOG_TYPE_INFO, "ATXMM: (%@) Training subexperts for event identifier %@", buf, 0x16u);
         }
 
@@ -555,10 +555,10 @@ LABEL_28:
         v16 = __atxlog_handle_default();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
-          v17 = [objc_opt_class() supportedAnchorClass];
+          supportedAnchorClass2 = [objc_opt_class() supportedAnchorClass];
           *buf = 138412290;
-          v119 = v17;
-          v18 = v17;
+          v119 = supportedAnchorClass2;
+          v18 = supportedAnchorClass2;
           _os_log_impl(&dword_2263AA000, v16, OS_LOG_TYPE_INFO, "ATXMM: (%@) Training Anchor ID expert", buf, 0xCu);
         }
 
@@ -575,15 +575,15 @@ LABEL_28:
         v20 = [obj objectForKeyedSubscript:v11];
         v116 = v15;
         v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v116 count:1];
-        [v90 trainSubExpertWithCorrelatedEvents:v89 indices:v20 predicates:v21 appLaunchCountedSet:v88 predictionTable:v87];
+        [selfCopy trainSubExpertWithCorrelatedEvents:eventsCopy indices:v20 predicates:v21 appLaunchCountedSet:setCopy predictionTable:v87];
 
         v22 = __atxlog_handle_default();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
-          v23 = [objc_opt_class() supportedAnchorClass];
+          supportedAnchorClass3 = [objc_opt_class() supportedAnchorClass];
           *buf = 138412290;
-          v119 = v23;
-          v24 = v23;
+          v119 = supportedAnchorClass3;
+          v24 = supportedAnchorClass3;
           _os_log_impl(&dword_2263AA000, v22, OS_LOG_TYPE_INFO, "ATXMM: (%@) Training Time of Day experts", buf, 0xCu);
         }
 
@@ -625,7 +625,7 @@ LABEL_28:
               v34 = [v86 objectAtIndexedSubscript:{objc_msgSend(v30, "integerValue")}];
               v113[1] = v34;
               v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v113 count:2];
-              [v90 trainSubExpertWithCorrelatedEvents:v89 indices:v33 predicates:v35 appLaunchCountedSet:v88 predictionTable:v87];
+              [selfCopy trainSubExpertWithCorrelatedEvents:eventsCopy indices:v33 predicates:v35 appLaunchCountedSet:setCopy predictionTable:v87];
             }
 
             v27 = [v25 countByEnumeratingWithState:&v99 objects:v115 count:16];
@@ -637,10 +637,10 @@ LABEL_28:
         v38 = __atxlog_handle_default();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
         {
-          v39 = [objc_opt_class() supportedAnchorClass];
+          supportedAnchorClass4 = [objc_opt_class() supportedAnchorClass];
           *buf = 138412290;
-          v119 = v39;
-          v40 = v39;
+          v119 = supportedAnchorClass4;
+          v40 = supportedAnchorClass4;
           _os_log_impl(&dword_2263AA000, v38, OS_LOG_TYPE_INFO, "ATXMM: (%@) Training Part of Week experts", buf, 0xCu);
         }
 
@@ -682,7 +682,7 @@ LABEL_28:
               v50 = [v85 objectAtIndexedSubscript:{objc_msgSend(v46, "integerValue")}];
               v110[1] = v50;
               v51 = [MEMORY[0x277CBEA60] arrayWithObjects:v110 count:2];
-              [v90 trainSubExpertWithCorrelatedEvents:v89 indices:v49 predicates:v51 appLaunchCountedSet:v88 predictionTable:v87];
+              [selfCopy trainSubExpertWithCorrelatedEvents:eventsCopy indices:v49 predicates:v51 appLaunchCountedSet:setCopy predictionTable:v87];
             }
 
             v43 = [v41 countByEnumeratingWithState:&v95 objects:v112 count:16];
@@ -694,10 +694,10 @@ LABEL_28:
         v54 = __atxlog_handle_default();
         if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
         {
-          v55 = [objc_opt_class() supportedAnchorClass];
+          supportedAnchorClass5 = [objc_opt_class() supportedAnchorClass];
           *buf = 138412290;
-          v119 = v55;
-          v56 = v55;
+          v119 = supportedAnchorClass5;
+          v56 = supportedAnchorClass5;
           _os_log_impl(&dword_2263AA000, v54, OS_LOG_TYPE_INFO, "ATXMM: (%@) Training LOI experts", buf, 0xCu);
         }
 
@@ -742,19 +742,19 @@ LABEL_28:
                 v107[0] = v15;
                 v107[1] = v63;
                 v67 = [MEMORY[0x277CBEA60] arrayWithObjects:v107 count:2];
-                [v90 trainSubExpertWithCorrelatedEvents:v89 indices:v66 predicates:v67 appLaunchCountedSet:v88 predictionTable:v87];
+                [selfCopy trainSubExpertWithCorrelatedEvents:eventsCopy indices:v66 predicates:v67 appLaunchCountedSet:setCopy predictionTable:v87];
 
                 goto LABEL_45;
               }
 
               if (os_log_type_enabled(v64, OS_LOG_TYPE_FAULT))
               {
-                v69 = [objc_opt_class() supportedAnchorClass];
+                supportedAnchorClass6 = [objc_opt_class() supportedAnchorClass];
                 *buf = 138412546;
-                v119 = v69;
+                v119 = supportedAnchorClass6;
                 v120 = 2112;
                 v121 = v62;
-                v66 = v69;
+                v66 = supportedAnchorClass6;
                 _os_log_fault_impl(&dword_2263AA000, v65, OS_LOG_TYPE_FAULT, "ATXMM: (%@) Couldn't produce a predicate for the provided LOI UUID string: %@", buf, 0x16u);
 LABEL_45:
               }
@@ -784,10 +784,10 @@ LABEL_45:
   v72 = __atxlog_handle_default();
   if (os_log_type_enabled(v72, OS_LOG_TYPE_INFO))
   {
-    v73 = [objc_opt_class() supportedAnchorClass];
+    supportedAnchorClass7 = [objc_opt_class() supportedAnchorClass];
     *buf = 138412290;
-    v119 = v73;
-    v74 = v73;
+    v119 = supportedAnchorClass7;
+    v74 = supportedAnchorClass7;
     _os_log_impl(&dword_2263AA000, v72, OS_LOG_TYPE_INFO, "ATXMM: (%@) Writing out prediction table.", buf, 0xCu);
   }
 
@@ -795,32 +795,32 @@ LABEL_45:
   v75 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)trainExpertWithAppLaunchEvents:(id)a3 appLaunchCountedSet:(id)a4
++ (void)trainExpertWithAppLaunchEvents:(id)events appLaunchCountedSet:(id)set
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  setCopy = set;
   v8 = objc_autoreleasePoolPush();
-  if (v6)
+  if (eventsCopy)
   {
-    v9 = [v6 count];
-    if (v7)
+    v9 = [eventsCopy count];
+    if (setCopy)
     {
-      if (v9 && [v7 count])
+      if (v9 && [setCopy count])
       {
-        v10 = [MEMORY[0x277CCAA00] defaultManager];
-        v11 = [a1 pathToPredictionTable];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        pathToPredictionTable = [self pathToPredictionTable];
         v33 = 0;
-        v12 = [v10 attributesOfItemAtPath:v11 error:&v33];
+        v12 = [defaultManager attributesOfItemAtPath:pathToPredictionTable error:&v33];
         v13 = v33;
 
         if (v12 && !v13)
         {
-          v14 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA150]];
-          if (v14)
+          fetchAnchorOccurrences = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA150]];
+          if (fetchAnchorOccurrences)
           {
             v15 = objc_opt_new();
-            [v15 timeIntervalSinceDate:v14];
+            [v15 timeIntervalSinceDate:fetchAnchorOccurrences];
             v17 = v16;
 
             if (v17 < 43200.0)
@@ -828,11 +828,11 @@ LABEL_45:
               v18 = __atxlog_handle_default();
               if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
               {
-                v19 = [objc_opt_class() anchorTypeForExpert];
+                anchorTypeForExpert = [objc_opt_class() anchorTypeForExpert];
                 *buf = 138412802;
-                v35 = v19;
+                v35 = anchorTypeForExpert;
                 v36 = 2112;
-                v37 = v14;
+                v37 = fetchAnchorOccurrences;
                 v38 = 2048;
                 v39 = 0x40E5180000000000;
                 _os_log_impl(&dword_2263AA000, v18, OS_LOG_TYPE_DEFAULT, "ATXMM: (%@) prediction table was last written to on %@, which is less than %f seconds ago. Skipping training", buf, 0x20u);
@@ -845,15 +845,15 @@ LABEL_21:
           }
         }
 
-        v14 = [objc_opt_class() fetchAnchorOccurrences];
-        v18 = [objc_opt_class() correlateTriggerEvents:v14 withAppLaunches:v6];
+        fetchAnchorOccurrences = [objc_opt_class() fetchAnchorOccurrences];
+        v18 = [objc_opt_class() correlateTriggerEvents:fetchAnchorOccurrences withAppLaunches:eventsCopy];
         v20 = __atxlog_handle_default();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
         {
-          v21 = [objc_opt_class() anchorTypeForExpert];
+          anchorTypeForExpert2 = [objc_opt_class() anchorTypeForExpert];
           v22 = [v18 count];
           *buf = 138412546;
-          v35 = v21;
+          v35 = anchorTypeForExpert2;
           v36 = 2048;
           v37 = v22;
           _os_log_impl(&dword_2263AA000, v20, OS_LOG_TYPE_INFO, "ATXMM: (%@) num correlated events: %lu.", buf, 0x16u);
@@ -865,18 +865,18 @@ LABEL_21:
         {
           [objc_opt_class() anchorTypeForExpert];
           v32 = v18;
-          v25 = v14;
+          v25 = fetchAnchorOccurrences;
           v27 = v26 = v12;
           *buf = 138412290;
           v35 = v27;
           _os_log_impl(&dword_2263AA000, v24, OS_LOG_TYPE_INFO, "ATXMM: (%@) Finished generating data for training sub-experts.", buf, 0xCu);
 
           v12 = v26;
-          v14 = v25;
+          fetchAnchorOccurrences = v25;
           v18 = v32;
         }
 
-        [objc_opt_class() trainSubExpertsWithTrainingData:v23 correlatedEvents:v18 appLaunchCountedSet:v7];
+        [objc_opt_class() trainSubExpertsWithTrainingData:v23 correlatedEvents:v18 appLaunchCountedSet:setCopy];
         v28 = __atxlog_handle_default();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
         {
@@ -916,9 +916,9 @@ LABEL_22:
 + (id)predictionTableFromCache
 {
   v2 = MEMORY[0x277CBEA90];
-  v3 = [objc_opt_class() pathToPredictionTable];
+  pathToPredictionTable = [objc_opt_class() pathToPredictionTable];
   v15 = 0;
-  v4 = [v2 dataWithContentsOfFile:v3 options:0 error:&v15];
+  v4 = [v2 dataWithContentsOfFile:pathToPredictionTable options:0 error:&v15];
   v5 = v15;
 
   if (v4)
@@ -967,20 +967,20 @@ LABEL_22:
   return v11;
 }
 
-+ (BOOL)shouldHandleTriggerEventWithRateLimiter:(id)a3
++ (BOOL)shouldHandleTriggerEventWithRateLimiter:(id)limiter
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  limiterCopy = limiter;
   [objc_opt_class() supportedAnchorClass];
   v4 = objc_opt_new();
-  v5 = [v3 tryToIncrementCountAndReturnSuccess];
+  tryToIncrementCountAndReturnSuccess = [limiterCopy tryToIncrementCountAndReturnSuccess];
 
-  v6 = [objc_opt_class() shouldProcessContextStoreNotification];
-  v7 = [objc_opt_class() isExpertEnabledForPredictions];
-  v8 = v7;
-  if (v5)
+  shouldProcessContextStoreNotification = [objc_opt_class() shouldProcessContextStoreNotification];
+  isExpertEnabledForPredictions = [objc_opt_class() isExpertEnabledForPredictions];
+  v8 = isExpertEnabledForPredictions;
+  if (tryToIncrementCountAndReturnSuccess)
   {
-    if (v6 & v7)
+    if (shouldProcessContextStoreNotification & isExpertEnabledForPredictions)
     {
       v9 = 1;
       goto LABEL_18;
@@ -999,10 +999,10 @@ LABEL_22:
   v11 = __atxlog_handle_default();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [objc_opt_class() anchorTypeForExpert];
-    v13 = v12;
+    anchorTypeForExpert = [objc_opt_class() anchorTypeForExpert];
+    v13 = anchorTypeForExpert;
     v14 = @"NO";
-    if (v6)
+    if (shouldProcessContextStoreNotification)
     {
       v15 = @"YES";
     }
@@ -1013,7 +1013,7 @@ LABEL_22:
     }
 
     v19 = 138413058;
-    v20 = v12;
+    v20 = anchorTypeForExpert;
     if (v8)
     {
       v16 = @"YES";
@@ -1027,7 +1027,7 @@ LABEL_22:
     v22 = v15;
     v21 = 2112;
     v23 = 2112;
-    if (v5)
+    if (tryToIncrementCountAndReturnSuccess)
     {
       v14 = @"YES";
     }
@@ -1045,50 +1045,50 @@ LABEL_18:
   return v9;
 }
 
-+ (void)setupEventListenerForInferenceWithContext:(id)a3 rateLimiter:(id)a4
++ (void)setupEventListenerForInferenceWithContext:(id)context rateLimiter:(id)limiter
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  limiterCopy = limiter;
   v8 = __atxlog_handle_default();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     +[ATXMMAppPredictionExpert setupEventListenerForInferenceWithContext:rateLimiter:];
   }
 
-  objc_initWeak(&location, a1);
-  objc_initWeak(&from, v7);
+  objc_initWeak(&location, self);
+  objc_initWeak(&from, limiterCopy);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __82__ATXMMAppPredictionExpert_setupEventListenerForInferenceWithContext_rateLimiter___block_invoke;
   aBlock[3] = &unk_278597D30;
   objc_copyWeak(&v21, &location);
   objc_copyWeak(v22, &from);
-  v22[1] = a1;
+  v22[1] = self;
   v9 = _Block_copy(aBlock);
   v10 = __atxlog_handle_default();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [objc_opt_class() anchorTypeForExpert];
+    anchorTypeForExpert = [objc_opt_class() anchorTypeForExpert];
     *buf = 138412290;
-    v26 = v11;
+    v26 = anchorTypeForExpert;
     _os_log_impl(&dword_2263AA000, v10, OS_LOG_TYPE_INFO, "ATXMM: (%@) Registering for trigger callbacks", buf, 0xCu);
   }
 
   [objc_opt_class() supportedAnchorClass];
   v12 = objc_opt_new();
-  v13 = [objc_opt_class() predicateForContextStoreRegistration];
+  predicateForContextStoreRegistration = [objc_opt_class() predicateForContextStoreRegistration];
   v14 = MEMORY[0x277CFE350];
-  v15 = [objc_opt_class() notificationIdentifier];
-  v16 = [v14 localWakingRegistrationWithIdentifier:v15 contextualPredicate:v13 clientIdentifier:@"com.apple.duetexpertd.cdidentifier" callback:v9];
+  notificationIdentifier = [objc_opt_class() notificationIdentifier];
+  v16 = [v14 localWakingRegistrationWithIdentifier:notificationIdentifier contextualPredicate:predicateForContextStoreRegistration clientIdentifier:@"com.apple.duetexpertd.cdidentifier" callback:v9];
 
-  [v6 registerCallback:v16];
+  [contextCopy registerCallback:v16];
   v17 = __atxlog_handle_default();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [objc_opt_class() anchorTypeForExpert];
+    anchorTypeForExpert2 = [objc_opt_class() anchorTypeForExpert];
     *buf = 138412290;
-    v26 = v18;
+    v26 = anchorTypeForExpert2;
     _os_log_impl(&dword_2263AA000, v17, OS_LOG_TYPE_DEFAULT, "ATXMM: (%@) Done registering with the ContextStore.", buf, 0xCu);
   }
 
@@ -1129,31 +1129,31 @@ void __82__ATXMMAppPredictionExpert_setupEventListenerForInferenceWithContext_ra
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)fetchPredictionsForTriggerEvent:(id)a3
++ (id)fetchPredictionsForTriggerEvent:(id)event
 {
-  v3 = a3;
-  v4 = [objc_opt_class() predictionTable];
-  v5 = [v4 predictionsForTriggerEvent:v3];
+  eventCopy = event;
+  predictionTable = [objc_opt_class() predictionTable];
+  v5 = [predictionTable predictionsForTriggerEvent:eventCopy];
 
   return v5;
 }
 
-+ (void)broadcastMMPredictionsForEvent:(id)a3 predictions:(id)a4
++ (void)broadcastMMPredictionsForEvent:(id)event predictions:(id)predictions
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() predictionReasonForExpert];
-  v8 = +[ATXMagicalMomentsPrediction convertPredictionsToPMMPredictionItems:reason:anchor:triggerEvent:](ATXMagicalMomentsPrediction, "convertPredictionsToPMMPredictionItems:reason:anchor:triggerEvent:", v5, v7, [objc_msgSend(objc_opt_class() "supportedAnchorClass")], v6);
+  predictionsCopy = predictions;
+  eventCopy = event;
+  predictionReasonForExpert = [objc_opt_class() predictionReasonForExpert];
+  v8 = +[ATXMagicalMomentsPrediction convertPredictionsToPMMPredictionItems:reason:anchor:triggerEvent:](ATXMagicalMomentsPrediction, "convertPredictionsToPMMPredictionItems:reason:anchor:triggerEvent:", predictionsCopy, predictionReasonForExpert, [objc_msgSend(objc_opt_class() "supportedAnchorClass")], eventCopy);
 
-  v9 = [MEMORY[0x277D41FB0] sharedInstance];
-  [v9 handlePredictedApplications:v8];
+  mEMORY[0x277D41FB0] = [MEMORY[0x277D41FB0] sharedInstance];
+  [mEMORY[0x277D41FB0] handlePredictedApplications:v8];
   v10 = __atxlog_handle_default();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [objc_opt_class() anchorTypeForExpert];
+    anchorTypeForExpert = [objc_opt_class() anchorTypeForExpert];
     v13 = 138412290;
-    v14 = v11;
+    v14 = anchorTypeForExpert;
     _os_log_impl(&dword_2263AA000, v10, OS_LOG_TYPE_DEFAULT, "ATXMM: (%@) Broadcast MM predictions to all listeners.", &v13, 0xCu);
   }
 
@@ -1164,8 +1164,8 @@ void __82__ATXMMAppPredictionExpert_setupEventListenerForInferenceWithContext_ra
 {
   OUTLINED_FUNCTION_2_1();
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [objc_opt_class() anchorTypeForExpert];
-  v2 = [v0 uuid];
+  anchorTypeForExpert = [objc_opt_class() anchorTypeForExpert];
+  uuid = [v0 uuid];
   [v0 type];
   OUTLINED_FUNCTION_4_0();
   OUTLINED_FUNCTION_1_1();
@@ -1174,53 +1174,53 @@ void __82__ATXMMAppPredictionExpert_setupEventListenerForInferenceWithContext_ra
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)logTriggeredMMMetricsEntryForAnchorType:(int64_t)a3
++ (void)logTriggeredMMMetricsEntryForAnchorType:(int64_t)type
 {
   v8 = objc_opt_new();
-  [v8 setAnchor:{+[ATXMMAppPredictionExpert mmAnchorTypeToMMProtobufAnchor:](ATXMMAppPredictionExpert, "mmAnchorTypeToMMProtobufAnchor:", a3)}];
+  [v8 setAnchor:{+[ATXMMAppPredictionExpert mmAnchorTypeToMMProtobufAnchor:](ATXMMAppPredictionExpert, "mmAnchorTypeToMMProtobufAnchor:", type)}];
   v4 = +[_ATXAppPredictor sharedInstance];
-  v5 = [v4 abGroupIdentifiers];
-  v6 = [v5 objectAtIndexedSubscript:16];
+  abGroupIdentifiers = [v4 abGroupIdentifiers];
+  v6 = [abGroupIdentifiers objectAtIndexedSubscript:16];
 
   [v8 setAbGroup:v6];
-  v7 = [MEMORY[0x277D41DA8] sharedInstance];
-  [v7 trackScalarForMessage:v8];
+  mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
+  [mEMORY[0x277D41DA8] trackScalarForMessage:v8];
 }
 
-+ (void)logPredictedScoreMMMetricsEntryForBundle:(id)a3 anchorType:(int64_t)a4 score:(double)a5
++ (void)logPredictedScoreMMMetricsEntryForBundle:(id)bundle anchorType:(int64_t)type score:(double)score
 {
-  v7 = a3;
+  bundleCopy = bundle;
   v12 = objc_opt_new();
-  [v12 setAnchor:{+[ATXMMAppPredictionExpert mmAnchorTypeToMMProtobufAnchor:](ATXMMAppPredictionExpert, "mmAnchorTypeToMMProtobufAnchor:", a4)}];
-  [v12 setTopBundleId:v7];
+  [v12 setAnchor:{+[ATXMMAppPredictionExpert mmAnchorTypeToMMProtobufAnchor:](ATXMMAppPredictionExpert, "mmAnchorTypeToMMProtobufAnchor:", type)}];
+  [v12 setTopBundleId:bundleCopy];
 
   v8 = +[_ATXAppPredictor sharedInstance];
-  v9 = [v8 abGroupIdentifiers];
-  v10 = [v9 objectAtIndexedSubscript:16];
+  abGroupIdentifiers = [v8 abGroupIdentifiers];
+  v10 = [abGroupIdentifiers objectAtIndexedSubscript:16];
 
   [v12 setAbGroup:v10];
-  v11 = [MEMORY[0x277D41DA8] sharedInstance];
-  [v11 trackDistributionForMessage:v12 value:a5];
+  mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
+  [mEMORY[0x277D41DA8] trackDistributionForMessage:v12 value:score];
 }
 
-+ (void)logPredictedCountMMMetricsEntryForAnchorType:(int64_t)a3 numPredictions:(int)a4
++ (void)logPredictedCountMMMetricsEntryForAnchorType:(int64_t)type numPredictions:(int)predictions
 {
   v10 = objc_opt_new();
-  [v10 setAnchor:{+[ATXMMAppPredictionExpert mmAnchorTypeToMMProtobufAnchor:](ATXMMAppPredictionExpert, "mmAnchorTypeToMMProtobufAnchor:", a3)}];
+  [v10 setAnchor:{+[ATXMMAppPredictionExpert mmAnchorTypeToMMProtobufAnchor:](ATXMMAppPredictionExpert, "mmAnchorTypeToMMProtobufAnchor:", type)}];
   v6 = +[_ATXAppPredictor sharedInstance];
-  v7 = [v6 abGroupIdentifiers];
-  v8 = [v7 objectAtIndexedSubscript:16];
+  abGroupIdentifiers = [v6 abGroupIdentifiers];
+  v8 = [abGroupIdentifiers objectAtIndexedSubscript:16];
 
   [v10 setAbGroup:v8];
-  v9 = [MEMORY[0x277D41DA8] sharedInstance];
-  [v9 trackDistributionForMessage:v10 value:a4];
+  mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
+  [mEMORY[0x277D41DA8] trackDistributionForMessage:v10 value:predictions];
 }
 
-+ (int)mmAnchorTypeToMMProtobufAnchor:(int64_t)a3
++ (int)mmAnchorTypeToMMProtobufAnchor:(int64_t)anchor
 {
-  if ((a3 - 1) < 0x11)
+  if ((anchor - 1) < 0x11)
   {
-    return a3;
+    return anchor;
   }
 
   else
@@ -1232,7 +1232,7 @@ void __82__ATXMMAppPredictionExpert_setupEventListenerForInferenceWithContext_ra
 + (void)fetchAnchorOccurrences
 {
   v6 = *MEMORY[0x277D85DE8];
-  v0 = [objc_opt_class() anchorTypeForExpert];
+  anchorTypeForExpert = [objc_opt_class() anchorTypeForExpert];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_1_1();
   _os_log_debug_impl(v1, v2, OS_LOG_TYPE_DEBUG, v3, v4, 0xCu);
@@ -1296,7 +1296,7 @@ void __82__ATXMMAppPredictionExpert_setupEventListenerForInferenceWithContext_ra
 {
   OUTLINED_FUNCTION_2_1();
   v6 = *MEMORY[0x277D85DE8];
-  v0 = [objc_opt_class() pathToPredictionTable];
+  pathToPredictionTable = [objc_opt_class() pathToPredictionTable];
   OUTLINED_FUNCTION_0_14();
   OUTLINED_FUNCTION_1_1();
   _os_log_error_impl(v1, v2, OS_LOG_TYPE_ERROR, v3, v4, 0x16u);

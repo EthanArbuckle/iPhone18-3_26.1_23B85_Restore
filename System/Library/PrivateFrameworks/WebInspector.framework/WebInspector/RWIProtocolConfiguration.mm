@@ -1,52 +1,52 @@
 @interface RWIProtocolConfiguration
 - (RWIProtocolCSSDomainEventDispatcher)cssEventDispatcher;
-- (RWIProtocolConfiguration)initWithController:(AugmentableInspectorController *)a3;
+- (RWIProtocolConfiguration)initWithController:(AugmentableInspectorController *)controller;
 - (RWIProtocolConsoleDomainEventDispatcher)consoleEventDispatcher;
 - (RWIProtocolDOMDomainEventDispatcher)domEventDispatcher;
 - (RWIProtocolDOMStorageDomainEventDispatcher)domStorageEventDispatcher;
 - (RWIProtocolNetworkDomainEventDispatcher)networkEventDispatcher;
 - (RWIProtocolPageDomainEventDispatcher)pageEventDispatcher;
 - (id).cxx_construct;
-- (void)setCSSHandler:(id)a3;
-- (void)setDOMHandler:(id)a3;
-- (void)setDOMStorageHandler:(id)a3;
-- (void)setNetworkHandler:(id)a3;
-- (void)setPageHandler:(id)a3;
+- (void)setCSSHandler:(id)handler;
+- (void)setDOMHandler:(id)handler;
+- (void)setDOMStorageHandler:(id)handler;
+- (void)setNetworkHandler:(id)handler;
+- (void)setPageHandler:(id)handler;
 @end
 
 @implementation RWIProtocolConfiguration
 
-- (RWIProtocolConfiguration)initWithController:(AugmentableInspectorController *)a3
+- (RWIProtocolConfiguration)initWithController:(AugmentableInspectorController *)controller
 {
   v5.receiver = self;
   v5.super_class = RWIProtocolConfiguration;
   result = [(RWIProtocolConfiguration *)&v5 init];
   if (result)
   {
-    result->_controller = a3;
+    result->_controller = controller;
   }
 
   return result;
 }
 
-- (void)setCSSHandler:(id)a3
+- (void)setCSSHandler:(id)handler
 {
   m_ptr = self->_cssHandler.m_ptr;
-  if (m_ptr != a3)
+  if (m_ptr != handler)
   {
-    if (a3)
+    if (handler)
     {
-      v6 = a3;
+      handlerCopy = handler;
       m_ptr = self->_cssHandler.m_ptr;
     }
 
-    self->_cssHandler.m_ptr = a3;
+    self->_cssHandler.m_ptr = handler;
     if (m_ptr)
     {
     }
 
     v7 = WTF::fastMalloc(0x18);
-    Inspector::ObjCInspectorCSSBackendDispatcher::ObjCInspectorCSSBackendDispatcher(v7, a3);
+    Inspector::ObjCInspectorCSSBackendDispatcher::ObjCInspectorCSSBackendDispatcher(v7, handler);
     v18 = v7;
     v16[0] = "CSS";
     v16[1] = 4;
@@ -111,24 +111,24 @@
   return result;
 }
 
-- (void)setDOMHandler:(id)a3
+- (void)setDOMHandler:(id)handler
 {
   m_ptr = self->_domHandler.m_ptr;
-  if (m_ptr != a3)
+  if (m_ptr != handler)
   {
-    if (a3)
+    if (handler)
     {
-      v6 = a3;
+      handlerCopy = handler;
       m_ptr = self->_domHandler.m_ptr;
     }
 
-    self->_domHandler.m_ptr = a3;
+    self->_domHandler.m_ptr = handler;
     if (m_ptr)
     {
     }
 
     v7 = WTF::fastMalloc(0x18);
-    Inspector::ObjCInspectorDOMBackendDispatcher::ObjCInspectorDOMBackendDispatcher(v7, a3);
+    Inspector::ObjCInspectorDOMBackendDispatcher::ObjCInspectorDOMBackendDispatcher(v7, handler);
     v18 = v7;
     v16[0] = "DOM";
     v16[1] = 4;
@@ -175,24 +175,24 @@
   return result;
 }
 
-- (void)setDOMStorageHandler:(id)a3
+- (void)setDOMStorageHandler:(id)handler
 {
   m_ptr = self->_domStorageHandler.m_ptr;
-  if (m_ptr != a3)
+  if (m_ptr != handler)
   {
-    if (a3)
+    if (handler)
     {
-      v6 = a3;
+      handlerCopy = handler;
       m_ptr = self->_domStorageHandler.m_ptr;
     }
 
-    self->_domStorageHandler.m_ptr = a3;
+    self->_domStorageHandler.m_ptr = handler;
     if (m_ptr)
     {
     }
 
     v7 = WTF::fastMalloc(0x18);
-    Inspector::ObjCInspectorDOMStorageBackendDispatcher::ObjCInspectorDOMStorageBackendDispatcher(v7, a3);
+    Inspector::ObjCInspectorDOMStorageBackendDispatcher::ObjCInspectorDOMStorageBackendDispatcher(v7, handler);
     v18 = v7;
     v16[0] = "DOMStorage";
     v16[1] = 11;
@@ -239,24 +239,24 @@
   return result;
 }
 
-- (void)setNetworkHandler:(id)a3
+- (void)setNetworkHandler:(id)handler
 {
   m_ptr = self->_networkHandler.m_ptr;
-  if (m_ptr != a3)
+  if (m_ptr != handler)
   {
-    if (a3)
+    if (handler)
     {
-      v6 = a3;
+      handlerCopy = handler;
       m_ptr = self->_networkHandler.m_ptr;
     }
 
-    self->_networkHandler.m_ptr = a3;
+    self->_networkHandler.m_ptr = handler;
     if (m_ptr)
     {
     }
 
     v7 = WTF::fastMalloc(0x18);
-    Inspector::ObjCInspectorNetworkBackendDispatcher::ObjCInspectorNetworkBackendDispatcher(v7, a3);
+    Inspector::ObjCInspectorNetworkBackendDispatcher::ObjCInspectorNetworkBackendDispatcher(v7, handler);
     v18 = v7;
     v16[0] = "Network";
     v16[1] = 8;
@@ -303,24 +303,24 @@
   return result;
 }
 
-- (void)setPageHandler:(id)a3
+- (void)setPageHandler:(id)handler
 {
   m_ptr = self->_pageHandler.m_ptr;
-  if (m_ptr != a3)
+  if (m_ptr != handler)
   {
-    if (a3)
+    if (handler)
     {
-      v6 = a3;
+      handlerCopy = handler;
       m_ptr = self->_pageHandler.m_ptr;
     }
 
-    self->_pageHandler.m_ptr = a3;
+    self->_pageHandler.m_ptr = handler;
     if (m_ptr)
     {
     }
 
     v7 = WTF::fastMalloc(0x18);
-    Inspector::ObjCInspectorPageBackendDispatcher::ObjCInspectorPageBackendDispatcher(v7, a3);
+    Inspector::ObjCInspectorPageBackendDispatcher::ObjCInspectorPageBackendDispatcher(v7, handler);
     v18 = v7;
     v16[0] = "Page";
     v16[1] = 5;

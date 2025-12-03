@@ -1,12 +1,12 @@
 @interface UIWheelEvent
 - (double)_wheelVelocity;
 - (int64_t)subtype;
-- (void)_setHIDEvent:(__IOHIDEvent *)a3;
+- (void)_setHIDEvent:(__IOHIDEvent *)event;
 @end
 
 @implementation UIWheelEvent
 
-- (void)_setHIDEvent:(__IOHIDEvent *)a3
+- (void)_setHIDEvent:(__IOHIDEvent *)event
 {
   v17.receiver = self;
   v17.super_class = UIWheelEvent;

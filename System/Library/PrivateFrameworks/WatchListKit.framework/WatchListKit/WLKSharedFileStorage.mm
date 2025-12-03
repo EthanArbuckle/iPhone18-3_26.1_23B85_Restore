@@ -1,18 +1,18 @@
 @interface WLKSharedFileStorage
-- (BOOL)_writeData:(id)a3 toURL:(id)a4 error:(id *)a5;
-- (WLKSharedFileStorage)initWithFileName:(id)a3 class:(Class)a4;
-- (id)_readDataFromURL:(id)a3 error:(id *)a4;
-- (void)delete:(id)a3;
-- (void)merge:(id)a3 completion:(id)a4;
-- (void)read:(id)a3;
-- (void)write:(id)a3 completion:(id)a4;
+- (BOOL)_writeData:(id)data toURL:(id)l error:(id *)error;
+- (WLKSharedFileStorage)initWithFileName:(id)name class:(Class)class;
+- (id)_readDataFromURL:(id)l error:(id *)error;
+- (void)delete:(id)delete;
+- (void)merge:(id)merge completion:(id)completion;
+- (void)read:(id)read;
+- (void)write:(id)write completion:(id)completion;
 @end
 
 @implementation WLKSharedFileStorage
 
-- (WLKSharedFileStorage)initWithFileName:(id)a3 class:(Class)a4
+- (WLKSharedFileStorage)initWithFileName:(id)name class:(Class)class
 {
-  v6 = a3;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = WLKSharedFileStorage;
   v7 = [(WLKSharedFileStorage *)&v18 init];
@@ -21,7 +21,7 @@
     v8 = WLKDefaultSupportPath();
     if ([v8 length])
     {
-      v9 = [v8 stringByAppendingPathComponent:v6];
+      v9 = [v8 stringByAppendingPathComponent:nameCopy];
       v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:v9];
       fileURL = v7->_fileURL;
       v7->_fileURL = v10;
@@ -38,10 +38,10 @@
     coordinator = v7->_coordinator;
     v7->_coordinator = v12;
 
-    v7->_class = a4;
-    v14 = [(NSURL *)v7->_fileURL lastPathComponent];
+    v7->_class = class;
+    lastPathComponent = [(NSURL *)v7->_fileURL lastPathComponent];
     debugString = v7->_debugString;
-    v7->_debugString = v14;
+    v7->_debugString = lastPathComponent;
 
     if (([(objc_class *)v7->_class conformsToProtocol:&unk_2882249B0]& 1) == 0)
     {
@@ -58,16 +58,16 @@ LABEL_9:
   return v16;
 }
 
-- (void)read:(id)a3
+- (void)read:(id)read
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  readCopy = read;
+  if (!readCopy)
   {
     [WLKSharedFileStorage read:];
   }
 
-  v5 = v4;
+  v5 = readCopy;
   v6 = WLKSystemLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -153,18 +153,18 @@ void __29__WLKSharedFileStorage_read___block_invoke(uint64_t a1, void *a2)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)write:(id)a3 completion:(id)a4
+- (void)write:(id)write completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  writeCopy = write;
+  completionCopy = completion;
+  if (!writeCopy)
   {
     [WLKSharedFileStorage write:completion:];
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = completionCopy;
+  if (!completionCopy)
   {
     [WLKSharedFileStorage write:completion:];
   }
@@ -191,7 +191,7 @@ void __29__WLKSharedFileStorage_read___block_invoke(uint64_t a1, void *a2)
   v18 = 0;
   v13 = v8;
   v20 = v13;
-  v14 = v6;
+  v14 = writeCopy;
   v19 = v14;
   [(NSFileCoordinator *)coordinator coordinateWritingItemAtURL:fileURL options:0 error:&v22 byAccessor:v17];
   v15 = v22;
@@ -256,18 +256,18 @@ void __41__WLKSharedFileStorage_write_completion___block_invoke(uint64_t a1, voi
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)merge:(id)a3 completion:(id)a4
+- (void)merge:(id)merge completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  mergeCopy = merge;
+  completionCopy = completion;
+  if (!mergeCopy)
   {
     [WLKSharedFileStorage merge:completion:];
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = completionCopy;
+  if (!completionCopy)
   {
     [WLKSharedFileStorage merge:completion:];
   }
@@ -294,7 +294,7 @@ void __41__WLKSharedFileStorage_write_completion___block_invoke(uint64_t a1, voi
   v18 = 0;
   v13 = v8;
   v20 = v13;
-  v14 = v6;
+  v14 = mergeCopy;
   v19 = v14;
   [(NSFileCoordinator *)coordinator coordinateWritingItemAtURL:fileURL options:8 error:&v22 byAccessor:v17];
   v15 = v22;
@@ -383,16 +383,16 @@ void __41__WLKSharedFileStorage_merge_completion___block_invoke(uint64_t a1, voi
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  deleteCopy = delete;
+  if (!deleteCopy)
   {
     [WLKSharedFileStorage delete:];
   }
 
-  v5 = v4;
+  v5 = deleteCopy;
   v6 = WLKSystemLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -476,12 +476,12 @@ void __31__WLKSharedFileStorage_delete___block_invoke(void *a1, void *a2)
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_readDataFromURL:(id)a3 error:(id *)a4
+- (id)_readDataFromURL:(id)l error:(id *)error
 {
-  v6 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:a3];
+  v6 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:l];
   if (v6)
   {
-    v7 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:self->_class fromData:v6 error:a4];
+    v7 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:self->_class fromData:v6 error:error];
   }
 
   else
@@ -492,10 +492,10 @@ void __31__WLKSharedFileStorage_delete___block_invoke(void *a1, void *a2)
   return v7;
 }
 
-- (BOOL)_writeData:(id)a3 toURL:(id)a4 error:(id *)a5
+- (BOOL)_writeData:(id)data toURL:(id)l error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  lCopy = l;
   v9 = WLKDefaultSupportPath();
   if (![v9 length])
   {
@@ -503,9 +503,9 @@ void __31__WLKSharedFileStorage_delete___block_invoke(void *a1, void *a2)
     goto LABEL_7;
   }
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:v9];
-  v12 = [v10 createDirectoryAtURL:v11 withIntermediateDirectories:1 attributes:0 error:a5];
+  v12 = [defaultManager createDirectoryAtURL:v11 withIntermediateDirectories:1 attributes:0 error:error];
 
   if (!v12)
   {
@@ -515,11 +515,11 @@ LABEL_7:
   }
 
   v13 = 1;
-  v14 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:a5];
+  v14 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:dataCopy requiringSecureCoding:1 error:error];
   v15 = v14;
   if (v14)
   {
-    v13 = [v14 writeToURL:v8 options:1 error:a5];
+    v13 = [v14 writeToURL:lCopy options:1 error:error];
   }
 
 LABEL_8:

@@ -1,81 +1,81 @@
 @interface CATTaskOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (id)new;
-- (BOOL)canSendNotificationWithName:(id)a3 userInfo:(id)a4;
+- (BOOL)canSendNotificationWithName:(id)name userInfo:(id)info;
 - (CATTaskOperation)init;
-- (CATTaskOperation)initWithRequest:(id)a3;
+- (CATTaskOperation)initWithRequest:(id)request;
 - (CATTaskOperationNotificationDelegate)notificationDelegate;
 - (id)cat_assertions;
-- (void)cat_addAssertion:(id)a3;
-- (void)postNotificationWithName:(id)a3 userInfo:(id)a4;
-- (void)processMessage:(id)a3;
+- (void)cat_addAssertion:(id)assertion;
+- (void)postNotificationWithName:(id)name userInfo:(id)info;
+- (void)processMessage:(id)message;
 @end
 
 @implementation CATTaskOperation
 
 + (id)new
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:a1 file:@"CATTaskOperation.m" lineNumber:31 description:{@"%@ cannot call %@", a1, v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CATTaskOperation.m" lineNumber:31 description:{@"%@ cannot call %@", self, v5}];
 
   return 0;
 }
 
 - (CATTaskOperation)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"CATTaskOperation.m" lineNumber:38 description:{@"%@ cannot call %@", v5, v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CATTaskOperation.m" lineNumber:38 description:{@"%@ cannot call %@", v5, v6}];
 
   return 0;
 }
 
-- (CATTaskOperation)initWithRequest:(id)a3
+- (CATTaskOperation)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = CATTaskOperation;
   v6 = [(CATOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_request, a3);
+    objc_storeStrong(&v6->_request, request);
   }
 
   return v7;
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v5 = a3;
+  requestCopy = request;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  if (a4 && (isKindOfClass & 1) == 0)
+  if (error && (isKindOfClass & 1) == 0)
   {
-    *a4 = CATErrorWithCodeAndUserInfo(2, &unk_28560C2A0);
+    *error = CATErrorWithCodeAndUserInfo(2, &unk_28560C2A0);
   }
 
   return isKindOfClass & 1;
 }
 
-- (BOOL)canSendNotificationWithName:(id)a3 userInfo:(id)a4
+- (BOOL)canSendNotificationWithName:(id)name userInfo:(id)info
 {
-  v4 = [(CATTaskOperation *)self request:a3];
-  v5 = [v4 handlesNotifications];
+  v4 = [(CATTaskOperation *)self request:name];
+  handlesNotifications = [v4 handlesNotifications];
 
-  return v5;
+  return handlesNotifications;
 }
 
-- (void)postNotificationWithName:(id)a3 userInfo:(id)a4
+- (void)postNotificationWithName:(id)name userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(CATTaskOperation *)self canSendNotificationWithName:v6 userInfo:v7])
+  nameCopy = name;
+  infoCopy = info;
+  if ([(CATTaskOperation *)self canSendNotificationWithName:nameCopy userInfo:infoCopy])
   {
-    v8 = [(CATTaskOperation *)self notificationDelegate];
+    notificationDelegate = [(CATTaskOperation *)self notificationDelegate];
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
 LABEL_5:
@@ -83,12 +83,12 @@ LABEL_5:
       goto LABEL_10;
     }
 
-    v9 = [(CATTaskOperation *)self canSendNotificationWithName:v6 userInfo:v7];
+    v9 = [(CATTaskOperation *)self canSendNotificationWithName:nameCopy userInfo:infoCopy];
 
     if (v9)
     {
-      v8 = [(CATTaskOperation *)self notificationDelegate];
-      [v8 taskOperation:self didPostNotificationWithName:v6 userInfo:v7];
+      notificationDelegate = [(CATTaskOperation *)self notificationDelegate];
+      [notificationDelegate taskOperation:self didPostNotificationWithName:nameCopy userInfo:infoCopy];
       goto LABEL_5;
     }
   }
@@ -103,27 +103,27 @@ LABEL_5:
     v10 = _CATLogGeneral_logObj_13;
     if (os_log_type_enabled(_CATLogGeneral_logObj_13, OS_LOG_TYPE_ERROR))
     {
-      [(CATRemoteTaskOperation *)self processNotificationWithName:v6 userInfo:v10];
+      [(CATRemoteTaskOperation *)self processNotificationWithName:nameCopy userInfo:v10];
     }
   }
 
 LABEL_10:
 }
 
-- (void)processMessage:(id)a3
+- (void)processMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = CATGetCatalystQueue();
   CATAssertIsQueue(v5);
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
-    v7 = [(CATTaskOperation *)self request];
-    v8 = [v7 handlesNotifications];
+    v6 = messageCopy;
+    request = [(CATTaskOperation *)self request];
+    handlesNotifications = [request handlesNotifications];
 
-    if (v8)
+    if (handlesNotifications)
     {
       objc_initWeak(&location, self);
       block[0] = MEMORY[0x277D85DD0];
@@ -167,11 +167,11 @@ void __35__CATTaskOperation_processMessage___block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-- (void)cat_addAssertion:(id)a3
+- (void)cat_addAssertion:(id)assertion
 {
-  if (a3)
+  if (assertion)
   {
-    v4 = a3;
+    assertionCopy = assertion;
     v5 = objc_getAssociatedObject(self, "cat_assertions");
     v6 = v5;
     if (v5)
@@ -186,7 +186,7 @@ void __35__CATTaskOperation_processMessage___block_invoke(uint64_t a1)
 
     value = v7;
 
-    [value addObject:v4];
+    [value addObject:assertionCopy];
     objc_setAssociatedObject(self, "cat_assertions", value, 0x301);
   }
 }

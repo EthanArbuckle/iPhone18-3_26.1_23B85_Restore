@@ -1,18 +1,18 @@
 @interface CustomSizeMeasurer
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5;
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview;
 - (_TtC51com_apple_ReminderKitUI_ReminderCreationViewServiceP33_D29EB792D2B5D2C81136FF4F45BEA45D18CustomSizeMeasurer)init;
 @end
 
 @implementation CustomSizeMeasurer
 
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
-  v11 = self;
-  sub_100007B0C(v10, width, height);
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  subviewCopy = subview;
+  selfCopy = self;
+  sub_100007B0C(subviewCopy, width, height);
   v13 = v12;
   v15 = v14;
 

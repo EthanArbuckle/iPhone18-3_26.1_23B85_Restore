@@ -1,14 +1,14 @@
 @interface IOSCardsOverlay
 - (ChromeOverlayHosting)host;
-- (void)_actuallyUpdateMapEdgeInsets:(UIEdgeInsets)a3;
+- (void)_actuallyUpdateMapEdgeInsets:(UIEdgeInsets)insets;
 - (void)_refreshViewportAndMapInsetConstraintsForCurrentLayoutStyle;
-- (void)containerStyleManagerConfigureLayoutForStyle:(unint64_t)a3;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)containerStyleManagerConfigureLayoutForStyle:(unint64_t)style;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)reset;
-- (void)setChromeHidden:(BOOL)a3;
-- (void)setControllerStack:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHost:(id)a3;
+- (void)setChromeHidden:(BOOL)hidden;
+- (void)setControllerStack:(id)stack animated:(BOOL)animated completion:(id)completion;
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setHost:(id)host;
 @end
 
 @implementation IOSCardsOverlay
@@ -20,54 +20,54 @@
   if (WeakRetained)
   {
     v44 = objc_loadWeakRetained(&self->_host);
-    v4 = [v44 overlayContentView];
-    v41 = [v44 viewportLayoutGuide];
-    v39 = [v41 topAnchor];
-    v37 = [v4 topAnchor];
-    v27 = [v39 constraintGreaterThanOrEqualToAnchor:v37];
-    v35 = [v44 viewportLayoutGuide];
-    v33 = [v35 leadingAnchor];
-    v31 = [v4 leadingAnchor];
-    v5 = [v33 constraintGreaterThanOrEqualToAnchor:v31];
-    v43 = v4;
-    v29 = [v4 bottomAnchor];
-    v6 = [v44 viewportLayoutGuide];
-    v7 = [v6 bottomAnchor];
-    v8 = [v29 constraintGreaterThanOrEqualToAnchor:v7];
-    v9 = [v4 trailingAnchor];
-    v10 = [v44 viewportLayoutGuide];
-    v11 = [v10 trailingAnchor];
-    v12 = [v9 constraintGreaterThanOrEqualToAnchor:v11];
+    overlayContentView = [v44 overlayContentView];
+    viewportLayoutGuide = [v44 viewportLayoutGuide];
+    topAnchor = [viewportLayoutGuide topAnchor];
+    topAnchor2 = [overlayContentView topAnchor];
+    v27 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
+    viewportLayoutGuide2 = [v44 viewportLayoutGuide];
+    leadingAnchor = [viewportLayoutGuide2 leadingAnchor];
+    leadingAnchor2 = [overlayContentView leadingAnchor];
+    v5 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
+    v43 = overlayContentView;
+    bottomAnchor = [overlayContentView bottomAnchor];
+    viewportLayoutGuide3 = [v44 viewportLayoutGuide];
+    bottomAnchor2 = [viewportLayoutGuide3 bottomAnchor];
+    v8 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
+    trailingAnchor = [overlayContentView trailingAnchor];
+    viewportLayoutGuide4 = [v44 viewportLayoutGuide];
+    trailingAnchor2 = [viewportLayoutGuide4 trailingAnchor];
+    v12 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
     v13 = [MapsEdgeConstraints edgeConstraintsWithTop:v27 leading:v5 bottom:v8 trailing:v12];
     overlayViewportConstraints = self->_overlayViewportConstraints;
     self->_overlayViewportConstraints = v13;
 
-    v15 = [(MapsEdgeConstraints *)self->_overlayViewportConstraints allConstraints];
-    [v44 setViewportConstraints:v15 forOverlay:self];
+    allConstraints = [(MapsEdgeConstraints *)self->_overlayViewportConstraints allConstraints];
+    [v44 setViewportConstraints:allConstraints forOverlay:self];
 
     [v44 setViewportConstraintsEnabled:0 forOverlay:self];
-    v42 = [v44 mapInsetsLayoutGuide];
-    v40 = [v42 topAnchor];
-    v38 = [v43 topAnchor];
-    v28 = [v40 constraintGreaterThanOrEqualToAnchor:v38];
-    v36 = [v44 mapInsetsLayoutGuide];
-    v34 = [v36 leadingAnchor];
-    v32 = [v43 leadingAnchor];
-    v16 = [v34 constraintGreaterThanOrEqualToAnchor:v32];
-    v30 = [v43 bottomAnchor];
-    v17 = [v44 mapInsetsLayoutGuide];
-    v18 = [v17 bottomAnchor];
-    v19 = [v30 constraintGreaterThanOrEqualToAnchor:v18];
-    v20 = [v43 trailingAnchor];
-    v21 = [v44 mapInsetsLayoutGuide];
-    v22 = [v21 trailingAnchor];
-    v23 = [v20 constraintGreaterThanOrEqualToAnchor:v22];
+    mapInsetsLayoutGuide = [v44 mapInsetsLayoutGuide];
+    topAnchor3 = [mapInsetsLayoutGuide topAnchor];
+    topAnchor4 = [v43 topAnchor];
+    v28 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4];
+    mapInsetsLayoutGuide2 = [v44 mapInsetsLayoutGuide];
+    leadingAnchor3 = [mapInsetsLayoutGuide2 leadingAnchor];
+    leadingAnchor4 = [v43 leadingAnchor];
+    v16 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4];
+    bottomAnchor3 = [v43 bottomAnchor];
+    mapInsetsLayoutGuide3 = [v44 mapInsetsLayoutGuide];
+    bottomAnchor4 = [mapInsetsLayoutGuide3 bottomAnchor];
+    v19 = [bottomAnchor3 constraintGreaterThanOrEqualToAnchor:bottomAnchor4];
+    trailingAnchor3 = [v43 trailingAnchor];
+    mapInsetsLayoutGuide4 = [v44 mapInsetsLayoutGuide];
+    trailingAnchor4 = [mapInsetsLayoutGuide4 trailingAnchor];
+    v23 = [trailingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor4];
     v24 = [MapsEdgeConstraints edgeConstraintsWithTop:v28 leading:v16 bottom:v19 trailing:v23];
     overlayMapInsetsConstraints = self->_overlayMapInsetsConstraints;
     self->_overlayMapInsetsConstraints = v24;
 
-    v26 = [(MapsEdgeConstraints *)self->_overlayMapInsetsConstraints allConstraints];
-    [v44 setMapInsetsConstraints:v26 forOverlay:self];
+    allConstraints2 = [(MapsEdgeConstraints *)self->_overlayMapInsetsConstraints allConstraints];
+    [v44 setMapInsetsConstraints:allConstraints2 forOverlay:self];
 
     [v44 setMapInsetsConstraintsEnabled:0 forOverlay:self];
   }
@@ -80,15 +80,15 @@
   return WeakRetained;
 }
 
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  if (self->_hidden != a3)
+  if (self->_hidden != hidden)
   {
     v9 = v4;
     v10 = v5;
-    self->_hidden = a3;
+    self->_hidden = hidden;
     v6 = 0.2;
-    if (!a4)
+    if (!animated)
     {
       v6 = 0.0;
     }
@@ -98,14 +98,14 @@
     v7[2] = sub_100FC8344;
     v7[3] = &unk_101661AE0;
     v7[4] = self;
-    v8 = a3;
+    hiddenCopy = hidden;
     [UIView animateWithDuration:v7 animations:v6];
   }
 }
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
-  obj = a3;
+  obj = host;
   WeakRetained = objc_loadWeakRetained(&self->_host);
 
   v5 = obj;
@@ -126,8 +126,8 @@
     v5 = obj;
     if (obj)
     {
-      v9 = [obj overlayContentView];
-      v10 = sub_10000FA08(v9);
+      overlayContentView = [obj overlayContentView];
+      v10 = sub_10000FA08(overlayContentView);
       v11 = _UISolariumEnabled();
       v12 = v10 == 5;
       v13 = v10 == 5;
@@ -146,14 +146,14 @@
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
       v17 = [NSString stringWithFormat:@"%@.OverlayVC", v16];
-      v18 = [(IOSCardsOverlay *)self view];
-      [v18 setAccessibilityIdentifier:v17];
+      view = [(IOSCardsOverlay *)self view];
+      [view setAccessibilityIdentifier:v17];
 
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
       v21 = [NSString stringWithFormat:@"%@.OverlayVC.OverlayView", v20];
-      v22 = [(OverlayContainerViewController *)self overlayView];
-      [v22 setAccessibilityIdentifier:v21];
+      overlayView = [(OverlayContainerViewController *)self overlayView];
+      [overlayView setAccessibilityIdentifier:v21];
 
       [(IOSCardsOverlay *)self _refreshViewportAndMapInsetConstraintsForCurrentLayoutStyle];
       v5 = obj;
@@ -169,29 +169,29 @@
   [(ContainerViewController *)self updateMapEdgeInsets];
 }
 
-- (void)_actuallyUpdateMapEdgeInsets:(UIEdgeInsets)a3
+- (void)_actuallyUpdateMapEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v8 = [(IOSCardsOverlay *)self viewIfLoaded];
-  if (!v8)
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  viewIfLoaded = [(IOSCardsOverlay *)self viewIfLoaded];
+  if (!viewIfLoaded)
   {
     goto LABEL_20;
   }
 
-  v9 = v8;
-  v10 = [(IOSCardsOverlay *)self view];
-  v11 = [v10 superview];
-  if (!v11)
+  v9 = viewIfLoaded;
+  view = [(IOSCardsOverlay *)self view];
+  superview = [view superview];
+  if (!superview)
   {
     goto LABEL_19;
   }
 
-  v12 = v11;
-  v13 = [(ContainerViewController *)self chromeContext];
-  if (!v13)
+  v12 = superview;
+  chromeContext = [(ContainerViewController *)self chromeContext];
+  if (!chromeContext)
   {
 LABEL_18:
 
@@ -199,49 +199,49 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v14 = v13;
-  v15 = [(ContainerViewController *)self currentViewController];
-  if (!v15)
+  v14 = chromeContext;
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  if (!currentViewController)
   {
 
     goto LABEL_18;
   }
 
-  v16 = v15;
-  v17 = [(ContainerViewController *)self currentViewController];
-  v18 = [v17 cardPresentationController];
-  v19 = [v18 containeeLayout];
+  v16 = currentViewController;
+  currentViewController2 = [(ContainerViewController *)self currentViewController];
+  cardPresentationController = [currentViewController2 cardPresentationController];
+  containeeLayout = [cardPresentationController containeeLayout];
 
-  if (!v19)
+  if (!containeeLayout)
   {
 LABEL_20:
-    v44 = [(IOSCardsOverlay *)self host];
-    [v44 setViewportConstraintsEnabled:0 forOverlay:self];
+    host = [(IOSCardsOverlay *)self host];
+    [host setViewportConstraintsEnabled:0 forOverlay:self];
 
-    v46 = [(IOSCardsOverlay *)self host];
-    [v46 setMapInsetsConstraintsEnabled:0 forOverlay:self];
+    host2 = [(IOSCardsOverlay *)self host];
+    [host2 setMapInsetsConstraintsEnabled:0 forOverlay:self];
 LABEL_21:
 
     return;
   }
 
-  v20 = [(MapsEdgeConstraints *)self->_overlayMapInsetsConstraints topConstraint];
-  [v20 constant];
+  topConstraint = [(MapsEdgeConstraints *)self->_overlayMapInsetsConstraints topConstraint];
+  [topConstraint constant];
   v22 = v21;
-  v23 = [(MapsEdgeConstraints *)self->_overlayMapInsetsConstraints leadingConstraint];
-  [v23 constant];
+  leadingConstraint = [(MapsEdgeConstraints *)self->_overlayMapInsetsConstraints leadingConstraint];
+  [leadingConstraint constant];
   v25 = v24;
-  v26 = [(MapsEdgeConstraints *)self->_overlayMapInsetsConstraints bottomConstraint];
-  [v26 constant];
+  bottomConstraint = [(MapsEdgeConstraints *)self->_overlayMapInsetsConstraints bottomConstraint];
+  [bottomConstraint constant];
   v45 = v27;
-  v28 = [(MapsEdgeConstraints *)self->_overlayMapInsetsConstraints trailingConstraint];
-  [v28 constant];
+  trailingConstraint = [(MapsEdgeConstraints *)self->_overlayMapInsetsConstraints trailingConstraint];
+  [trailingConstraint constant];
   v30 = v29;
 
-  v31 = [(IOSCardsOverlay *)self view];
-  v32 = [v31 effectiveUserInterfaceLayoutDirection];
+  view2 = [(IOSCardsOverlay *)self view];
+  effectiveUserInterfaceLayoutDirection = [view2 effectiveUserInterfaceLayoutDirection];
 
-  if (v32 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v33 = right;
   }
@@ -251,96 +251,96 @@ LABEL_21:
     v33 = left;
   }
 
-  if (v32 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     right = left;
   }
 
-  v34 = [(MapsEdgeConstraints *)self->_overlayViewportConstraints topConstraint];
-  [v34 setConstant:top];
-  v35 = [(MapsEdgeConstraints *)self->_overlayMapInsetsConstraints topConstraint];
-  [v35 setConstant:top];
+  topConstraint2 = [(MapsEdgeConstraints *)self->_overlayViewportConstraints topConstraint];
+  [topConstraint2 setConstant:top];
+  topConstraint3 = [(MapsEdgeConstraints *)self->_overlayMapInsetsConstraints topConstraint];
+  [topConstraint3 setConstant:top];
 
-  v36 = [(MapsEdgeConstraints *)self->_overlayViewportConstraints leadingConstraint];
-  [v36 setConstant:v33];
-  v37 = [(MapsEdgeConstraints *)self->_overlayMapInsetsConstraints leadingConstraint];
-  [v37 setConstant:v33];
+  leadingConstraint2 = [(MapsEdgeConstraints *)self->_overlayViewportConstraints leadingConstraint];
+  [leadingConstraint2 setConstant:v33];
+  leadingConstraint3 = [(MapsEdgeConstraints *)self->_overlayMapInsetsConstraints leadingConstraint];
+  [leadingConstraint3 setConstant:v33];
 
-  v38 = [(MapsEdgeConstraints *)self->_overlayViewportConstraints bottomConstraint];
-  [v38 setConstant:bottom];
-  v39 = [(MapsEdgeConstraints *)self->_overlayMapInsetsConstraints bottomConstraint];
-  [v39 setConstant:bottom];
+  bottomConstraint2 = [(MapsEdgeConstraints *)self->_overlayViewportConstraints bottomConstraint];
+  [bottomConstraint2 setConstant:bottom];
+  bottomConstraint3 = [(MapsEdgeConstraints *)self->_overlayMapInsetsConstraints bottomConstraint];
+  [bottomConstraint3 setConstant:bottom];
 
-  v40 = [(MapsEdgeConstraints *)self->_overlayViewportConstraints trailingConstraint];
-  [v40 setConstant:right];
-  v41 = [(MapsEdgeConstraints *)self->_overlayMapInsetsConstraints trailingConstraint];
-  [v41 setConstant:right];
+  trailingConstraint2 = [(MapsEdgeConstraints *)self->_overlayViewportConstraints trailingConstraint];
+  [trailingConstraint2 setConstant:right];
+  trailingConstraint3 = [(MapsEdgeConstraints *)self->_overlayMapInsetsConstraints trailingConstraint];
+  [trailingConstraint3 setConstant:right];
 
-  v42 = [(IOSCardsOverlay *)self host];
-  [v42 setViewportConstraintsEnabled:-[ContainerViewController chromeHidden](self forOverlay:{"chromeHidden") ^ 1, self}];
+  host3 = [(IOSCardsOverlay *)self host];
+  [host3 setViewportConstraintsEnabled:-[ContainerViewController chromeHidden](self forOverlay:{"chromeHidden") ^ 1, self}];
 
-  v43 = [(IOSCardsOverlay *)self host];
-  [v43 setMapInsetsConstraintsEnabled:-[ContainerViewController chromeHidden](self forOverlay:{"chromeHidden") ^ 1, self}];
+  host4 = [(IOSCardsOverlay *)self host];
+  [host4 setMapInsetsConstraintsEnabled:-[ContainerViewController chromeHidden](self forOverlay:{"chromeHidden") ^ 1, self}];
 
   if (![(ContainerViewController *)self chromeHidden]&& (v33 != v25 || top != v22 || right != v30 || bottom != *&v45))
   {
-    v46 = [(IOSCardsOverlay *)self host];
-    [v46 overlayDidUpdateExistingMapInsetConstraints:self];
+    host2 = [(IOSCardsOverlay *)self host];
+    [host2 overlayDidUpdateExistingMapInsetConstraints:self];
     goto LABEL_21;
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = IOSCardsOverlay;
-  [(PassThroughViewController *)&v4 didMoveToParentViewController:a3];
+  [(PassThroughViewController *)&v4 didMoveToParentViewController:controller];
   [(ContainerViewController *)self updateMapEdgeInsets];
 }
 
-- (void)setControllerStack:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setControllerStack:(id)stack animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  stackCopy = stack;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100FC8AF4;
   v12[3] = &unk_101661108;
   objc_copyWeak(&v14, &location);
-  v10 = v9;
+  v10 = completionCopy;
   v13 = v10;
   v11.receiver = self;
   v11.super_class = IOSCardsOverlay;
-  [(ContainerViewController *)&v11 setControllerStack:v8 animated:v6 completion:v12];
+  [(ContainerViewController *)&v11 setControllerStack:stackCopy animated:animatedCopy completion:v12];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)setChromeHidden:(BOOL)a3
+- (void)setChromeHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(ContainerViewController *)self chromeHidden];
+  hiddenCopy = hidden;
+  chromeHidden = [(ContainerViewController *)self chromeHidden];
   v8.receiver = self;
   v8.super_class = IOSCardsOverlay;
-  [(ContainerViewController *)&v8 setChromeHidden:v3];
-  if (v5 != v3)
+  [(ContainerViewController *)&v8 setChromeHidden:hiddenCopy];
+  if (chromeHidden != hiddenCopy)
   {
-    v6 = [(IOSCardsOverlay *)self host];
-    [v6 setViewportConstraintsEnabled:v3 ^ 1 forOverlay:self];
+    host = [(IOSCardsOverlay *)self host];
+    [host setViewportConstraintsEnabled:hiddenCopy ^ 1 forOverlay:self];
 
-    v7 = [(IOSCardsOverlay *)self host];
-    [v7 setMapInsetsConstraintsEnabled:v3 ^ 1 forOverlay:self];
+    host2 = [(IOSCardsOverlay *)self host];
+    [host2 setMapInsetsConstraintsEnabled:hiddenCopy ^ 1 forOverlay:self];
   }
 }
 
-- (void)containerStyleManagerConfigureLayoutForStyle:(unint64_t)a3
+- (void)containerStyleManagerConfigureLayoutForStyle:(unint64_t)style
 {
   v4.receiver = self;
   v4.super_class = IOSCardsOverlay;
-  [(OverlayContainerViewController *)&v4 containerStyleManagerConfigureLayoutForStyle:a3];
+  [(OverlayContainerViewController *)&v4 containerStyleManagerConfigureLayoutForStyle:style];
   [(IOSCardsOverlay *)self _refreshViewportAndMapInsetConstraintsForCurrentLayoutStyle];
 }
 

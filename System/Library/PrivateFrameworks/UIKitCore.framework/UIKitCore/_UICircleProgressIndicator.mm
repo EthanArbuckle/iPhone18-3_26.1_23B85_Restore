@@ -2,43 +2,43 @@
 + (id)_borderImage;
 + (id)_fillImage;
 + (id)_indeterminateImage;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)imageInsets;
-- (_UICircleProgressIndicator)initWithFrame:(CGRect)a3;
-- (void)_animateValueOnDisplayLink:(id)a3;
-- (void)_setHidesBorderView:(BOOL)a3;
+- (_UICircleProgressIndicator)initWithFrame:(CGRect)frame;
+- (void)_animateValueOnDisplayLink:(id)link;
+- (void)_setHidesBorderView:(BOOL)view;
 - (void)_startIndeterminateAnimation;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setImageInsets:(UIEdgeInsets)a3;
-- (void)setIndeterminate:(BOOL)a3;
-- (void)setProgress:(double)a3 animated:(BOOL)a4;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image;
+- (void)setImageInsets:(UIEdgeInsets)insets;
+- (void)setIndeterminate:(BOOL)indeterminate;
+- (void)setProgress:(double)progress animated:(BOOL)animated;
 - (void)tintColorDidChange;
 @end
 
 @implementation _UICircleProgressIndicator
 
-- (_UICircleProgressIndicator)initWithFrame:(CGRect)a3
+- (_UICircleProgressIndicator)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = _UICircleProgressIndicator;
-  v3 = [(UIView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(UIView *)v3 tintColor];
-    v6 = [objc_opt_class() _borderImage];
-    v7 = [v6 imageWithTintColor:v5];
+    tintColor = [(UIView *)v3 tintColor];
+    _borderImage = [objc_opt_class() _borderImage];
+    v7 = [_borderImage imageWithTintColor:tintColor];
     borderImage = v4->_borderImage;
     v4->_borderImage = v7;
 
-    v9 = [objc_opt_class() _fillImage];
+    _fillImage = [objc_opt_class() _fillImage];
 
-    v10 = [v9 imageWithTintColor:v5];
+    v10 = [_fillImage imageWithTintColor:tintColor];
     fillImage = v4->_fillImage;
     v4->_fillImage = v10;
 
@@ -51,18 +51,18 @@
 
 - (void)dealloc
 {
-  v3 = [(UIView *)self->_indeterminateView layer];
-  [v3 removeAllAnimations];
+  layer = [(UIView *)self->_indeterminateView layer];
+  [layer removeAllAnimations];
 
   v4.receiver = self;
   v4.super_class = _UICircleProgressIndicator;
   [(UIView *)&v4 dealloc];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   highlighted = self->_highlighted;
-  if (highlighted != a3)
+  if (highlighted != highlighted)
   {
     if (highlighted)
     {
@@ -73,27 +73,27 @@
 
     else
     {
-      v7 = [(UIView *)self backgroundColor];
+      backgroundColor = [(UIView *)self backgroundColor];
       v8 = self->_unhighlightedBackgroundColor;
-      self->_unhighlightedBackgroundColor = v7;
+      self->_unhighlightedBackgroundColor = backgroundColor;
 
       unhighlightedBackgroundColor = +[UIColor clearColor];
       [(UIView *)self setBackgroundColor:unhighlightedBackgroundColor];
     }
 
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
 
     [(UIView *)self setNeedsDisplay];
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  if (self->_centerImage != a3)
+  if (self->_centerImage != image)
   {
-    v5 = a3;
-    v6 = [(UIView *)self tintColor];
-    v7 = [v5 imageWithTintColor:v6];
+    imageCopy = image;
+    tintColor = [(UIView *)self tintColor];
+    v7 = [imageCopy imageWithTintColor:tintColor];
 
     [(_UICircleProgressIndicator *)self setImage:v7];
 
@@ -101,29 +101,29 @@
   }
 }
 
-- (void)setImageInsets:(UIEdgeInsets)a3
+- (void)setImageInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_centerImageInsets.top, v3), vceqq_f64(*&self->_centerImageInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_centerImageInsets = a3;
+    self->_centerImageInsets = insets;
     [(UIView *)self setNeedsDisplay];
   }
 }
 
-- (void)setIndeterminate:(BOOL)a3
+- (void)setIndeterminate:(BOOL)indeterminate
 {
   indeterminateView = self->_indeterminateView;
-  if (a3)
+  if (indeterminate)
   {
     if (!indeterminateView)
     {
-      v5 = [objc_opt_class() _indeterminateImage];
-      v6 = [(UIView *)self tintColor];
-      v11 = [v5 imageWithTintColor:v6];
+      _indeterminateImage = [objc_opt_class() _indeterminateImage];
+      tintColor = [(UIView *)self tintColor];
+      v11 = [_indeterminateImage imageWithTintColor:tintColor];
 
       v7 = [[UIImageView alloc] initWithImage:v11];
       v8 = self->_indeterminateView;
@@ -137,8 +137,8 @@
 
   else if (indeterminateView)
   {
-    v9 = [(UIView *)indeterminateView layer];
-    [v9 removeAllAnimations];
+    layer = [(UIView *)indeterminateView layer];
+    [layer removeAllAnimations];
 
     [(UIView *)self->_indeterminateView removeFromSuperview];
     v10 = self->_indeterminateView;
@@ -148,15 +148,15 @@
   }
 }
 
-- (void)setProgress:(double)a3 animated:(BOOL)a4
+- (void)setProgress:(double)progress animated:(BOOL)animated
 {
   progress = self->_progress;
-  if (progress == a3)
+  if (progress == progress)
   {
     return;
   }
 
-  if (a4)
+  if (animated)
   {
     if (self->_isAnimating)
     {
@@ -174,52 +174,52 @@
       goto LABEL_10;
     }
 
-    v8 = [objc_opt_self() mainScreen];
-    v9 = [v8 displayLinkWithTarget:self selector:sel__animateValueOnDisplayLink_];
+    mainScreen = [objc_opt_self() mainScreen];
+    v9 = [mainScreen displayLinkWithTarget:self selector:sel__animateValueOnDisplayLink_];
     displayLink = self->_displayLink;
     self->_displayLink = v9;
 
     v11 = self->_displayLink;
-    v12 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [(CADisplayLink *)v11 addToRunLoop:v12 forMode:*MEMORY[0x1E695DA28]];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [(CADisplayLink *)v11 addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695DA28]];
   }
 
   else
   {
     self->_isAnimating = 0;
     [(CADisplayLink *)self->_displayLink invalidate];
-    v12 = self->_displayLink;
+    currentRunLoop = self->_displayLink;
     self->_displayLink = 0;
   }
 
 LABEL_10:
-  self->_progress = a3;
+  self->_progress = progress;
 
   [(UIView *)self setNeedsDisplay];
 }
 
 - (void)didMoveToWindow
 {
-  v3 = [(UIView *)self window];
-  if (v3)
+  window = [(UIView *)self window];
+  if (window)
   {
     indeterminateView = self->_indeterminateView;
 
     if (indeterminateView)
     {
-      v5 = [(UIView *)self->_indeterminateView layer];
-      [v5 removeAllAnimations];
+      layer = [(UIView *)self->_indeterminateView layer];
+      [layer removeAllAnimations];
 
       [(_UICircleProgressIndicator *)self _startIndeterminateAnimation];
     }
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if (!self->_indeterminateView)
   {
-    v23 = [UIBezierPath bezierPath:a3.origin.x];
+    v23 = [UIBezierPath bezierPath:rect.origin.x];
     [(UIView *)self bounds];
     v6 = v5;
     v8 = v7;
@@ -281,9 +281,9 @@ LABEL_10:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIImage *)self->_fillImage size:a3.width];
+  [(UIImage *)self->_fillImage size:fits.width];
   result.height = v4;
   result.width = v3;
   return result;
@@ -294,46 +294,46 @@ LABEL_10:
   v12.receiver = self;
   v12.super_class = _UICircleProgressIndicator;
   [(UIView *)&v12 tintColorDidChange];
-  v3 = [(UIView *)self tintColor];
-  v4 = [(UIImage *)self->_centerImage imageWithTintColor:v3];
+  tintColor = [(UIView *)self tintColor];
+  v4 = [(UIImage *)self->_centerImage imageWithTintColor:tintColor];
   [(_UICircleProgressIndicator *)self setImage:v4];
 
   if (self->_borderImage)
   {
-    v5 = [objc_opt_class() _borderImage];
-    v6 = [v5 imageWithTintColor:v3];
+    _borderImage = [objc_opt_class() _borderImage];
+    v6 = [_borderImage imageWithTintColor:tintColor];
     [(_UICircleProgressIndicator *)self setBorderImage:v6];
   }
 
-  v7 = [objc_opt_class() _fillImage];
-  v8 = [v7 imageWithTintColor:v3];
+  _fillImage = [objc_opt_class() _fillImage];
+  v8 = [_fillImage imageWithTintColor:tintColor];
   [(_UICircleProgressIndicator *)self setFillImage:v8];
 
   if (self->_indeterminateView)
   {
-    v9 = [objc_opt_class() _indeterminateImage];
-    v10 = [(UIView *)self tintColor];
-    v11 = [v9 imageWithTintColor:v10];
+    _indeterminateImage = [objc_opt_class() _indeterminateImage];
+    tintColor2 = [(UIView *)self tintColor];
+    v11 = [_indeterminateImage imageWithTintColor:tintColor2];
 
     [(UIImageView *)self->_indeterminateView setImage:v11];
-    v7 = v11;
+    _fillImage = v11;
   }
 
   [(UIView *)self setNeedsDisplay];
 }
 
-- (void)_setHidesBorderView:(BOOL)a3
+- (void)_setHidesBorderView:(BOOL)view
 {
-  if (a3)
+  if (view)
   {
     [(_UICircleProgressIndicator *)self setBorderImage:0];
   }
 
   else
   {
-    v4 = [objc_opt_class() _borderImage];
-    v5 = [(UIView *)self tintColor];
-    v6 = [v4 imageWithTintColor:v5];
+    _borderImage = [objc_opt_class() _borderImage];
+    tintColor = [(UIView *)self tintColor];
+    v6 = [_borderImage imageWithTintColor:tintColor];
     [(_UICircleProgressIndicator *)self setBorderImage:v6];
   }
 
@@ -385,9 +385,9 @@ LABEL_10:
   return v2;
 }
 
-- (void)_animateValueOnDisplayLink:(id)a3
+- (void)_animateValueOnDisplayLink:(id)link
 {
-  [a3 timestamp];
+  [link timestamp];
   v5 = (v4 - self->_animationStartTime) / (self->_animationEndTime - self->_animationStartTime);
   if (v5 >= 0.99)
   {

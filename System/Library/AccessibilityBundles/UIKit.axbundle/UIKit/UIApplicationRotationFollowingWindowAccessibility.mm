@@ -1,18 +1,18 @@
 @interface UIApplicationRotationFollowingWindowAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_wantsFocusEngine;
 @end
 
 @implementation UIApplicationRotationFollowingWindowAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v5 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UIWindow";
   [location[0] validateClass:@"UIApplicationRotationFollowingWindow" isKindOfClass:?];
   [location[0] validateClass:@"UIWindow" hasInstanceMethod:@"_wantsFocusEngine" withFullSignature:{"B", 0}];
@@ -21,14 +21,14 @@
 
 - (BOOL)_wantsFocusEngine
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if (([(UIApplicationRotationFollowingWindowAccessibility *)self _accessibilityIsFKARunningForFocusItem]& 1) != 0)
   {
     return 1;
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = UIApplicationRotationFollowingWindowAccessibility;
   return [(UIApplicationRotationFollowingWindowAccessibility *)&v3 _wantsFocusEngine];
 }

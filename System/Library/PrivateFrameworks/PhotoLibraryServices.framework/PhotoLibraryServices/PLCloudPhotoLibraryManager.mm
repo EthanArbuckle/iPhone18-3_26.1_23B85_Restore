@@ -1,8 +1,8 @@
 @interface PLCloudPhotoLibraryManager
-+ (BOOL)needResetSyncErrorType:(id)a3;
-+ (id)_lastKnownCloudVersionInLibrary:(id)a3;
++ (BOOL)needResetSyncErrorType:(id)type;
++ (id)_lastKnownCloudVersionInLibrary:(id)library;
 - ($3CC19D079FD0B010EE84973AA846B91B)currentTransferProgress;
-- (BOOL)_canExternallyTransitionToNewLibraryStateIgnoringPause:(BOOL)a3;
+- (BOOL)_canExternallyTransitionToNewLibraryStateIgnoringPause:(BOOL)pause;
 - (BOOL)_hasAvalancheIncomingWork;
 - (BOOL)_hasIncomingWorkFileMarker;
 - (BOOL)_hasItemToDownload;
@@ -10,19 +10,19 @@
 - (BOOL)_shouldResetICloudBackupExclusionPaths;
 - (BOOL)isCloudPhotoLibraryEnabled;
 - (BOOL)isReadyForAnalysis;
-- (BOOL)isResourceTransferTaskAliveWithTaskWithIdentifier:(id)a3;
-- (BOOL)overrideSystemBudgetsForSyncSession:(BOOL)a3 pauseReason:(id)a4 forSystemBudgets:(unint64_t)a5;
-- (BOOL)setPrefetchMode:(int64_t)a3 error:(id *)a4;
-- (CGSize)_targetSizeForInputSize:(CGSize)a3 maxPixelSize:(unint64_t)a4;
-- (PLCloudPhotoLibraryManager)initWithLibraryServicesManager:(id)a3;
+- (BOOL)isResourceTransferTaskAliveWithTaskWithIdentifier:(id)identifier;
+- (BOOL)overrideSystemBudgetsForSyncSession:(BOOL)session pauseReason:(id)reason forSystemBudgets:(unint64_t)budgets;
+- (BOOL)setPrefetchMode:(int64_t)mode error:(id *)error;
+- (CGSize)_targetSizeForInputSize:(CGSize)size maxPixelSize:(unint64_t)pixelSize;
+- (PLCloudPhotoLibraryManager)initWithLibraryServicesManager:(id)manager;
 - (PLLibraryServicesManager)libraryServicesManager;
 - (PLPhotoLibraryPathManager)pathManager;
-- (id)_assetResourceForAsset:(id)a3 resourceType:(unint64_t)a4 masterResourceOnly:(BOOL)a5 isPhoto:(BOOL *)a6;
-- (id)_calculateUnpauseTimeForPauseTime:(id)a3;
-- (id)_convertToIdentifierMapFromCPLScopeIdentifierMap:(id)a3;
-- (id)_debugNameForState:(unint64_t)a3;
-- (id)_fetchEventsFromCloudChangeTrackerInLibrary:(id)a3;
-- (id)_identifierForResource:(id)a3;
+- (id)_assetResourceForAsset:(id)asset resourceType:(unint64_t)type masterResourceOnly:(BOOL)only isPhoto:(BOOL *)photo;
+- (id)_calculateUnpauseTimeForPauseTime:(id)time;
+- (id)_convertToIdentifierMapFromCPLScopeIdentifierMap:(id)map;
+- (id)_debugNameForState:(unint64_t)state;
+- (id)_fetchEventsFromCloudChangeTrackerInLibrary:(id)library;
+- (id)_identifierForResource:(id)resource;
 - (id)_inMemoryTrackerStateForDebug;
 - (id)cacheDeleteSupport;
 - (id)cplConfiguration;
@@ -31,190 +31,190 @@
 - (id)readCloudTrackerToken;
 - (id)readLocalVersion;
 - (id)readRulesTrackerToken;
-- (int64_t)sizeOfResourcesToUploadByCPL:(id *)a3;
-- (unint64_t)_inq_numberOfOtherItemsToDownloadInLibrary:(id)a3;
-- (unint64_t)_inq_numberOfOtherItemsToUploadInLibrary:(id)a3;
-- (unint64_t)_inq_numberOfPhotosToDownloadInLibrary:(id)a3;
-- (unint64_t)_inq_numberOfPhotosToUploadInLibrary:(id)a3;
-- (unint64_t)_inq_numberOfVideosToDownloadInLibrary:(id)a3;
-- (unint64_t)_inq_numberOfVideosToUploadInLibrary:(id)a3;
-- (void)_appWithBundleIdentifier:(id)a3 changedStateToForeground:(BOOL)a4;
+- (int64_t)sizeOfResourcesToUploadByCPL:(id *)l;
+- (unint64_t)_inq_numberOfOtherItemsToDownloadInLibrary:(id)library;
+- (unint64_t)_inq_numberOfOtherItemsToUploadInLibrary:(id)library;
+- (unint64_t)_inq_numberOfPhotosToDownloadInLibrary:(id)library;
+- (unint64_t)_inq_numberOfPhotosToUploadInLibrary:(id)library;
+- (unint64_t)_inq_numberOfVideosToDownloadInLibrary:(id)library;
+- (unint64_t)_inq_numberOfVideosToUploadInLibrary:(id)library;
+- (void)_appWithBundleIdentifier:(id)identifier changedStateToForeground:(BOOL)foreground;
 - (void)_callBlocksWaitingForLibraryOpen;
-- (void)_callDeviceLibraryConfigurationChangeRequestCompletionHandlersWithError:(id)a3;
+- (void)_callDeviceLibraryConfigurationChangeRequestCompletionHandlersWithError:(id)error;
 - (void)_callPushAllChangesCompletionHandlersIfNecessary;
-- (void)_cameraChangedStateToForeground:(BOOL)a3;
-- (void)_checkAndMarkPurgeableResources:(id)a3 checkIfSafe:(BOOL)a4 checkServerIfNecessary:(BOOL)a5 urgency:(int64_t)a6 completionHandler:(id)a7;
+- (void)_cameraChangedStateToForeground:(BOOL)foreground;
+- (void)_checkAndMarkPurgeableResources:(id)resources checkIfSafe:(BOOL)safe checkServerIfNecessary:(BOOL)necessary urgency:(int64_t)urgency completionHandler:(id)handler;
 - (void)_checkEnableState;
-- (void)_checkForPushedMastersInLibrary:(id)a3;
+- (void)_checkForPushedMastersInLibrary:(id)library;
 - (void)_checkForWorkInProgress;
 - (void)_checkIfSharedLibraryDedupeIsDisabled;
-- (void)_constructUnpauseTimerFrom:(id)a3 to:(id)a4;
+- (void)_constructUnpauseTimerFrom:(id)from to:(id)to;
 - (void)_createDeletionRecordsIfNecessary;
 - (void)_disableOpportunisticTasks;
-- (void)_disableaCPLAfterZoneWipedInCloudIfNecessaryWithStatus:(id)a3 transaction:(id)a4;
-- (void)_disableiCPLSyncWithResetMode:(int64_t)a3;
-- (void)_disableiCPLWillBecomeNonSyncablePhotoLibrary:(BOOL)a3 resetMode:(int64_t)a4;
+- (void)_disableaCPLAfterZoneWipedInCloudIfNecessaryWithStatus:(id)status transaction:(id)transaction;
+- (void)_disableiCPLSyncWithResetMode:(int64_t)mode;
+- (void)_disableiCPLWillBecomeNonSyncablePhotoLibrary:(BOOL)library resetMode:(int64_t)mode;
 - (void)_doPause;
-- (void)_doResetSync:(int64_t)a3 inLibrary:(id)a4;
+- (void)_doResetSync:(int64_t)sync inLibrary:(id)library;
 - (void)_doUnpause;
-- (void)_downloadFromCloudInLibrary:(id)a3;
+- (void)_downloadFromCloudInLibrary:(id)library;
 - (void)_enableOpportunisticTasks;
 - (void)_enableiCPL;
-- (void)_fetchNewEventsFromCloudChangeTrackerInLibrary:(id)a3;
-- (void)_finishUploadWithNoBatchesToUploadInLibrary:(id)a3;
-- (void)_finishedUnsharingPendingAssetsSharedToScopeWithTransaction:(id)a3 error:(id)a4;
-- (void)_fixMasterStatusIn:(id)a3 inLibrary:(id)a4;
-- (void)_getStatusChanges:(id)a3 transaction:(id)a4 notificationGeneration:(unint64_t)a5 inLibrary:(id)a6;
-- (void)_getStatusForPendingRecordsSharedToScopeWithIdentifier:(id)a3 maximumCount:(unint64_t)a4 completionHandler:(id)a5;
-- (void)_handleFinalizeSessionError:(id)a3 commitError:(id)a4 uploadBatchContainer:(id)a5 needResetSync:(BOOL)a6 forTransaction:(id)a7 inLibrary:(id)a8;
+- (void)_fetchNewEventsFromCloudChangeTrackerInLibrary:(id)library;
+- (void)_finishUploadWithNoBatchesToUploadInLibrary:(id)library;
+- (void)_finishedUnsharingPendingAssetsSharedToScopeWithTransaction:(id)transaction error:(id)error;
+- (void)_fixMasterStatusIn:(id)in inLibrary:(id)library;
+- (void)_getStatusChanges:(id)changes transaction:(id)transaction notificationGeneration:(unint64_t)generation inLibrary:(id)library;
+- (void)_getStatusForPendingRecordsSharedToScopeWithIdentifier:(id)identifier maximumCount:(unint64_t)count completionHandler:(id)handler;
+- (void)_handleFinalizeSessionError:(id)error commitError:(id)commitError uploadBatchContainer:(id)container needResetSync:(BOOL)sync forTransaction:(id)transaction inLibrary:(id)library;
 - (void)_handleOptimizeSettingChange;
-- (void)_handleOptimizeSettingChangeInLibrary:(id)a3 withCompletionHandler:(id)a4;
+- (void)_handleOptimizeSettingChangeInLibrary:(id)library withCompletionHandler:(id)handler;
 - (void)_handleStateTransistionAfterDisableiCPL;
 - (void)_initCPLLibraryMode;
 - (void)_initCacheDeleteSupport;
 - (void)_initDeviceLibraryConfiguration;
 - (void)_initRecoveryManager;
 - (void)_initResourceManager;
-- (void)_initializeMasterAndSizeCalculationinLibrary:(id)a3;
-- (void)_linkFileFrom:(id)a3 to:(id)a4;
-- (void)_markPurgeableNextBatchOfResources:(id)a3 urgency:(int64_t)a4 checkIfSafe:(BOOL)a5 inLibrary:(id)a6 completionHandler:(id)a7;
-- (void)_markResourceObjectIDsAsPurgeable:(id)a3 urgency:(int64_t)a4 inLibrary:(id)a5;
+- (void)_initializeMasterAndSizeCalculationinLibrary:(id)library;
+- (void)_linkFileFrom:(id)from to:(id)to;
+- (void)_markPurgeableNextBatchOfResources:(id)resources urgency:(int64_t)urgency checkIfSafe:(BOOL)safe inLibrary:(id)library completionHandler:(id)handler;
+- (void)_markResourceObjectIDsAsPurgeable:(id)purgeable urgency:(int64_t)urgency inLibrary:(id)library;
 - (void)_migrateFromChangeHubToCoreDataIfNecessary;
-- (void)_notifyCPLStatus:(id)a3 didChange:(BOOL)a4 andCPLConfiguration:(id)a5;
+- (void)_notifyCPLStatus:(id)status didChange:(BOOL)change andCPLConfiguration:(id)configuration;
 - (void)_openCPLLibrary;
 - (void)_pause;
-- (void)_processDownloadBatchWithSession:(id)a3 inLibrary:(id)a4;
+- (void)_processDownloadBatchWithSession:(id)session inLibrary:(id)library;
 - (void)_processNextTransaction;
 - (void)_processRulesEvaluationIfNeeded;
-- (void)_processUploadBatchInLibrary:(id)a3;
-- (void)_processUploadBatchWithStartupFailureCount:(unint64_t)a3 orderKeyManager:(id)a4 inLibrary:(id)a5;
-- (void)_reconcileNextCollectionShare:(id)a3 completionHandler:(id)a4;
-- (void)_reconcileSharedStreamCollectionShareParticipantsWithCPLSettings:(id)a3;
-- (void)_reportOptimizeSettingChangeWithCompletionHandler:(id)a3;
+- (void)_processUploadBatchInLibrary:(id)library;
+- (void)_processUploadBatchWithStartupFailureCount:(unint64_t)count orderKeyManager:(id)manager inLibrary:(id)library;
+- (void)_reconcileNextCollectionShare:(id)share completionHandler:(id)handler;
+- (void)_reconcileSharedStreamCollectionShareParticipantsWithCPLSettings:(id)settings;
+- (void)_reportOptimizeSettingChangeWithCompletionHandler:(id)handler;
 - (void)_repushAssetsWithImportedByBundleIdentifier;
 - (void)_repushMasterWithMissingMediaMetadata;
 - (void)_repushVideoAssetsMetadata;
 - (void)_resetCPLLibrary;
 - (void)_resetCacheDeleteSupport;
 - (void)_resetResourceManager;
-- (void)_runAsyncOnIsolationQueueWithTransaction:(id)a3 afterDelay:(double)a4 block:(id)a5;
-- (void)_runAsyncOnIsolationQueueWithTransaction:(id)a3 block:(id)a4;
-- (void)_runOnLibraryOpenWithTransaction:(id)a3 block:(id)a4;
-- (void)_runOneTimeMigrationStepsIfNecessaryInLibrary:(id)a3;
+- (void)_runAsyncOnIsolationQueueWithTransaction:(id)transaction afterDelay:(double)delay block:(id)block;
+- (void)_runAsyncOnIsolationQueueWithTransaction:(id)transaction block:(id)block;
+- (void)_runOnLibraryOpenWithTransaction:(id)transaction block:(id)block;
+- (void)_runOneTimeMigrationStepsIfNecessaryInLibrary:(id)library;
 - (void)_runOneTimeMigrationStepsWithoutiCPLIfNecessary;
-- (void)_runSyncOnIsolationQueueWithBlock:(id)a3;
-- (void)_saveLastKnownCloudChangeTrackerTokenToDiskWithContext:(id)a3;
-- (void)_setReadyForAnalysisWithCPLStatus:(id)a3;
-- (void)_setToDownloadCountsForImages:(unint64_t)a3 videos:(unint64_t)a4;
-- (void)_setupPLCPLPlistInLibrary:(id)a3;
+- (void)_runSyncOnIsolationQueueWithBlock:(id)block;
+- (void)_saveLastKnownCloudChangeTrackerTokenToDiskWithContext:(id)context;
+- (void)_setReadyForAnalysisWithCPLStatus:(id)status;
+- (void)_setToDownloadCountsForImages:(unint64_t)images videos:(unint64_t)videos;
+- (void)_setupPLCPLPlistInLibrary:(id)library;
 - (void)_startLibraryScopeRulesChangeTrackerInQueue;
 - (void)_startWorkInProgressTimer;
 - (void)_stopUnpauseTimer;
 - (void)_stopWorkInProgressTimer;
-- (void)_transitionToState:(unint64_t)a3;
+- (void)_transitionToState:(unint64_t)state;
 - (void)_unpause;
-- (void)_unshareBatchOfPendingAssetsSharedToScopeWithTransaction:(id)a3;
+- (void)_unshareBatchOfPendingAssetsSharedToScopeWithTransaction:(id)transaction;
 - (void)_updateBackupExclusionPathsAfterRemoveCPLDirectory;
-- (void)_updateLocalStaleResourceWithCPLResource:(id)a3 inLibrary:(id)a4;
+- (void)_updateLocalStaleResourceWithCPLResource:(id)resource inLibrary:(id)library;
 - (void)_updatePendingResetSyncDate;
-- (void)_updateThumbnailDataForAsset:(id)a3 withImageFileURL:(id)a4;
-- (void)_updateThumbnailForAsset:(id)a3 withCloudThumbnailImageFileURL:(id)a4;
-- (void)_updateTransferCountsInLibrary:(id)a3;
-- (void)_updateWithCPLResource:(id)a3 isHighPriority:(BOOL)a4 isForeground:(BOOL)a5 inLibrary:(id)a6 completionHandler:(id)a7;
-- (void)_uploadFullPhotoLibraryToCloud:(id)a3;
-- (void)_uploadToCloudForEventsResult:(id)a3 inLibrary:(id)a4;
-- (void)acceptCPLShare:(id)a3 completionHandler:(id)a4;
-- (void)activateScopeWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)beginsSignificantWorkWithResourcesSize:(unint64_t)a3;
-- (void)boostPriorityForMomentShareWithScopeIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)_updateThumbnailDataForAsset:(id)asset withImageFileURL:(id)l;
+- (void)_updateThumbnailForAsset:(id)asset withCloudThumbnailImageFileURL:(id)l;
+- (void)_updateTransferCountsInLibrary:(id)library;
+- (void)_updateWithCPLResource:(id)resource isHighPriority:(BOOL)priority isForeground:(BOOL)foreground inLibrary:(id)library completionHandler:(id)handler;
+- (void)_uploadFullPhotoLibraryToCloud:(id)cloud;
+- (void)_uploadToCloudForEventsResult:(id)result inLibrary:(id)library;
+- (void)acceptCPLShare:(id)share completionHandler:(id)handler;
+- (void)activateScopeWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)beginsSignificantWorkWithResourcesSize:(unint64_t)size;
+- (void)boostPriorityForMomentShareWithScopeIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)clearPrefetchState;
-- (void)clearPurgeableResourcesMatchingPredicate:(id)a3 inLibrary:(id)a4 completionHandler:(id)a5;
-- (void)cloudChangeTrackerDidReceiveChangesWithTransaction:(id)a3;
-- (void)configurationDidChange:(id)a3;
-- (void)cplConfigurationWithCompletionHandler:(id)a3;
-- (void)cplHasBackgroundDownloadOperationsWithCompletionHandler:(id)a3;
-- (void)deactivateScopeWithIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)clearPurgeableResourcesMatchingPredicate:(id)predicate inLibrary:(id)library completionHandler:(id)handler;
+- (void)cloudChangeTrackerDidReceiveChangesWithTransaction:(id)transaction;
+- (void)configurationDidChange:(id)change;
+- (void)cplConfigurationWithCompletionHandler:(id)handler;
+- (void)cplHasBackgroundDownloadOperationsWithCompletionHandler:(id)handler;
+- (void)deactivateScopeWithIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)dealloc;
-- (void)deleteResources:(id)a3 checkServerIfNecessary:(BOOL)a4 completionHandler:(id)a5;
-- (void)disableiCPLWithCompletionHandler:(id)a3;
-- (void)downloadAsset:(id)a3 resourceType:(unint64_t)a4 masterResourceOnly:(BOOL)a5 highPriority:(BOOL)a6 clientBundleID:(id)a7 proposedTaskIdentifier:(id)a8 taskDidBeginHandler:(id)a9 progressBlock:(id)a10 completionHandler:(id)a11;
-- (void)downloadResource:(id)a3 highPriority:(BOOL)a4 clientBundleID:(id)a5 proposedTaskIdentifier:(id)a6 taskDidBeginHandler:(id)a7 progressBlock:(id)a8 completionHandler:(id)a9;
-- (void)downloadResource:(id)a3 options:(id)a4 clientBundleID:(id)a5 proposedTaskIdentifier:(id)a6 taskDidBeginHandler:(id)a7 progressBlock:(id)a8 completionHandler:(id)a9;
-- (void)downloadResourceInMemory:(id)a3 clientBundleID:(id)a4 proposedTaskIdentifier:(id)a5 taskDidBeginHandler:(id)a6 completionHandler:(id)a7;
-- (void)downloadResourceInMemoryForAsset:(id)a3 resourceType:(unint64_t)a4 masterResourceOnly:(BOOL)a5 clientBundleID:(id)a6 proposedTaskIdentifier:(id)a7 taskDidBeginHandler:(id)a8 completionHandler:(id)a9;
-- (void)enableiCPLWithCompletionHandler:(id)a3;
-- (void)endUserSessionWithCompletionHandler:(id)a3;
+- (void)deleteResources:(id)resources checkServerIfNecessary:(BOOL)necessary completionHandler:(id)handler;
+- (void)disableiCPLWithCompletionHandler:(id)handler;
+- (void)downloadAsset:(id)asset resourceType:(unint64_t)type masterResourceOnly:(BOOL)only highPriority:(BOOL)priority clientBundleID:(id)d proposedTaskIdentifier:(id)identifier taskDidBeginHandler:(id)handler progressBlock:(id)self0 completionHandler:(id)self1;
+- (void)downloadResource:(id)resource highPriority:(BOOL)priority clientBundleID:(id)d proposedTaskIdentifier:(id)identifier taskDidBeginHandler:(id)handler progressBlock:(id)block completionHandler:(id)completionHandler;
+- (void)downloadResource:(id)resource options:(id)options clientBundleID:(id)d proposedTaskIdentifier:(id)identifier taskDidBeginHandler:(id)handler progressBlock:(id)block completionHandler:(id)completionHandler;
+- (void)downloadResourceInMemory:(id)memory clientBundleID:(id)d proposedTaskIdentifier:(id)identifier taskDidBeginHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)downloadResourceInMemoryForAsset:(id)asset resourceType:(unint64_t)type masterResourceOnly:(BOOL)only clientBundleID:(id)d proposedTaskIdentifier:(id)identifier taskDidBeginHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)enableiCPLWithCompletionHandler:(id)handler;
+- (void)endUserSessionWithCompletionHandler:(id)handler;
 - (void)endsSignificantWork;
-- (void)fetchAdjustmentDataForAsset:(id)a3 completionHandler:(id)a4;
-- (void)fetchComputeStatesForRecordsWithScopedIdentifiers:(id)a3 onDemand:(BOOL)a4 completionHandler:(id)a5;
-- (void)fetchResourcesForAsset:(id)a3 completionHandler:(id)a4;
-- (void)fetchShareFromShareURL:(id)a3 completionHandler:(id)a4;
-- (void)forceSyncMomentSharesWithScopeIdentifiers:(id)a3;
-- (void)getCPLStateForDebug:(BOOL)a3 completionHandler:(id)a4;
-- (void)getCloudScopedIdentifiersForLocalIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)getLibraryScopeStatusCountsForScopeWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)getStreamingURLForAsset:(id)a3 resourceType:(unint64_t)a4 intent:(unint64_t)a5 hints:(id)a6 timeRange:(id *)a7 clientBundleID:(id)a8 completionHandler:(id)a9;
-- (void)getSystemBudgetsWithCompletionHandler:(id)a3;
+- (void)fetchAdjustmentDataForAsset:(id)asset completionHandler:(id)handler;
+- (void)fetchComputeStatesForRecordsWithScopedIdentifiers:(id)identifiers onDemand:(BOOL)demand completionHandler:(id)handler;
+- (void)fetchResourcesForAsset:(id)asset completionHandler:(id)handler;
+- (void)fetchShareFromShareURL:(id)l completionHandler:(id)handler;
+- (void)forceSyncMomentSharesWithScopeIdentifiers:(id)identifiers;
+- (void)getCPLStateForDebug:(BOOL)debug completionHandler:(id)handler;
+- (void)getCloudScopedIdentifiersForLocalIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)getLibraryScopeStatusCountsForScopeWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getStreamingURLForAsset:(id)asset resourceType:(unint64_t)type intent:(unint64_t)intent hints:(id)hints timeRange:(id *)range clientBundleID:(id)d completionHandler:(id)handler;
+- (void)getSystemBudgetsWithCompletionHandler:(id)handler;
 - (void)invalidate;
 - (void)invalidateUploadDownloadCountCoalescer;
-- (void)libraryManager:(id)a3 backgroundDownloadDidFailForResource:(id)a4;
-- (void)libraryManager:(id)a3 backgroundDownloadDidFinishForResource:(id)a4;
-- (void)libraryManager:(id)a3 downloadDidFinishForResourceTransferTask:(id)a4 finalResource:(id)a5 withError:(id)a6;
-- (void)libraryManager:(id)a3 downloadDidProgress:(float)a4 forResourceTransferTask:(id)a5;
-- (void)libraryManager:(id)a3 downloadDidStartForResourceTransferTask:(id)a4;
-- (void)libraryManager:(id)a3 inMemoryDownloadDidFinishForResourceTransferTask:(id)a4 data:(id)a5 withError:(id)a6;
-- (void)libraryManager:(id)a3 provideLocalResource:(id)a4 recordClass:(Class)a5 completionHandler:(id)a6;
-- (void)libraryManager:(id)a3 providePayloadForComputeStates:(id)a4 inFolderWithURL:(id)a5 completionHandler:(id)a6;
-- (void)libraryManager:(id)a3 pushAllChangesWithCompletionHandler:(id)a4;
-- (void)libraryManager:(id)a3 uploadDidFinishForResourceTransferTask:(id)a4 withError:(id)a5;
-- (void)libraryManager:(id)a3 uploadDidProgress:(float)a4 forResourceTransferTask:(id)a5;
-- (void)libraryManager:(id)a3 uploadDidStartForResourceTransferTask:(id)a4;
-- (void)libraryManagerDidChangeConfiguration:(id)a3;
-- (void)libraryManagerHasChangesToPull:(id)a3;
-- (void)libraryManagerHasStatusChanges:(id)a3;
-- (void)libraryManagerStatusDidChange:(id)a3;
-- (void)markPurgeableResourcesMatchingPredicate:(id)a3 urgency:(int64_t)a4 checkIfSafe:(BOOL)a5 inLibrary:(id)a6 completionHandler:(id)a7;
+- (void)libraryManager:(id)manager backgroundDownloadDidFailForResource:(id)resource;
+- (void)libraryManager:(id)manager backgroundDownloadDidFinishForResource:(id)resource;
+- (void)libraryManager:(id)manager downloadDidFinishForResourceTransferTask:(id)task finalResource:(id)resource withError:(id)error;
+- (void)libraryManager:(id)manager downloadDidProgress:(float)progress forResourceTransferTask:(id)task;
+- (void)libraryManager:(id)manager downloadDidStartForResourceTransferTask:(id)task;
+- (void)libraryManager:(id)manager inMemoryDownloadDidFinishForResourceTransferTask:(id)task data:(id)data withError:(id)error;
+- (void)libraryManager:(id)manager provideLocalResource:(id)resource recordClass:(Class)class completionHandler:(id)handler;
+- (void)libraryManager:(id)manager providePayloadForComputeStates:(id)states inFolderWithURL:(id)l completionHandler:(id)handler;
+- (void)libraryManager:(id)manager pushAllChangesWithCompletionHandler:(id)handler;
+- (void)libraryManager:(id)manager uploadDidFinishForResourceTransferTask:(id)task withError:(id)error;
+- (void)libraryManager:(id)manager uploadDidProgress:(float)progress forResourceTransferTask:(id)task;
+- (void)libraryManager:(id)manager uploadDidStartForResourceTransferTask:(id)task;
+- (void)libraryManagerDidChangeConfiguration:(id)configuration;
+- (void)libraryManagerHasChangesToPull:(id)pull;
+- (void)libraryManagerHasStatusChanges:(id)changes;
+- (void)libraryManagerStatusDidChange:(id)change;
+- (void)markPurgeableResourcesMatchingPredicate:(id)predicate urgency:(int64_t)urgency checkIfSafe:(BOOL)safe inLibrary:(id)library completionHandler:(id)handler;
 - (void)photosPreferencesChanged;
-- (void)publishCPLScopeChange:(id)a3 completionHandler:(id)a4;
-- (void)publishLibraryScopeWithCPLShare:(id)a3 title:(id)a4 completionHandler:(id)a5;
-- (void)queryUserIdentitiesWithParticipants:(id)a3 completionHandler:(id)a4;
-- (void)refreshLibraryScopeWithIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)publishCPLScopeChange:(id)change completionHandler:(id)handler;
+- (void)publishLibraryScopeWithCPLShare:(id)share title:(id)title completionHandler:(id)handler;
+- (void)queryUserIdentitiesWithParticipants:(id)participants completionHandler:(id)handler;
+- (void)refreshLibraryScopeWithIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)removeAllChangeHubKeys;
-- (void)removeParticipantsWithParticipantUUIDs:(id)a3 fromLibraryScopeWithIdentifier:(id)a4 retentionPolicy:(int64_t)a5 exitSource:(int64_t)a6 completionHandler:(id)a7;
-- (void)reportMiscInformation:(id)a3;
-- (void)requestDeviceLibraryConfigurationChange:(int64_t)a3 completionHandler:(id)a4;
+- (void)removeParticipantsWithParticipantUUIDs:(id)ds fromLibraryScopeWithIdentifier:(id)identifier retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler;
+- (void)reportMiscInformation:(id)information;
+- (void)requestDeviceLibraryConfigurationChange:(int64_t)change completionHandler:(id)handler;
 - (void)resetSyncDueToMigrationMarker;
-- (void)resolveLocalIdentifiersForCloudIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)saveCloudTrackerToken:(id)a3 withContext:(id)a4;
-- (void)saveRulesTrackerToken:(id)a3;
-- (void)sendBudgetOverrideAnalytics:(BOOL)a3 pauseReason:(id)a4;
-- (void)setCPLConfiguration:(id)a3;
-- (void)setCPLLibrary:(id)a3;
-- (void)setCPLStatus:(id)a3;
-- (void)setPause:(BOOL)a3 reason:(signed __int16)a4;
-- (void)sharedLibraryRampCheckWithCompletionHandler:(id)a3;
-- (void)sizeOfResourcesToUploadDidChangeForLibraryManager:(id)a3;
-- (void)startAssetRecoveryWithTransaction:(id)a3;
+- (void)resolveLocalIdentifiersForCloudIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)saveCloudTrackerToken:(id)token withContext:(id)context;
+- (void)saveRulesTrackerToken:(id)token;
+- (void)sendBudgetOverrideAnalytics:(BOOL)analytics pauseReason:(id)reason;
+- (void)setCPLConfiguration:(id)configuration;
+- (void)setCPLLibrary:(id)library;
+- (void)setCPLStatus:(id)status;
+- (void)setPause:(BOOL)pause reason:(signed __int16)reason;
+- (void)sharedLibraryRampCheckWithCompletionHandler:(id)handler;
+- (void)sizeOfResourcesToUploadDidChangeForLibraryManager:(id)manager;
+- (void)startAssetRecoveryWithTransaction:(id)transaction;
 - (void)startAutomaticPrefetchOrPrune;
-- (void)startExitFromLibraryScopeWithIdentifier:(id)a3 retentionPolicy:(int64_t)a4 exitSource:(int64_t)a5 completionHandler:(id)a6;
+- (void)startExitFromLibraryScopeWithIdentifier:(id)identifier retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler;
 - (void)startLibraryScopeRulesChangeTracker;
-- (void)startUnsharingPendingAssetsSharedToScopeWithIdentifier:(id)a3;
-- (void)statusDidChange:(id)a3;
+- (void)startUnsharingPendingAssetsSharedToScopeWithIdentifier:(id)identifier;
+- (void)statusDidChange:(id)change;
 - (void)stopLibraryScopeRulesChangeTracker;
 - (void)sync;
-- (void)updateLibraryScopeWithCPLScopeChange:(id)a3 completionHandler:(id)a4;
-- (void)updateTransferCountsWithInsertedPhotoCount:(unint64_t)a3 insertedVideoCount:(unint64_t)a4 inLibrary:(id)a5;
-- (void)workerCoordinatorDidFinishAllSubmittedJobsOnBundle:(id)a3;
+- (void)updateLibraryScopeWithCPLScopeChange:(id)change completionHandler:(id)handler;
+- (void)updateTransferCountsWithInsertedPhotoCount:(unint64_t)count insertedVideoCount:(unint64_t)videoCount inLibrary:(id)library;
+- (void)workerCoordinatorDidFinishAllSubmittedJobsOnBundle:(id)bundle;
 @end
 
 @implementation PLCloudPhotoLibraryManager
 
 - (BOOL)isReadyForAnalysis
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  unsafe_readyForAnalysis = v2->_unsafe_readyForAnalysis;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  unsafe_readyForAnalysis = selfCopy->_unsafe_readyForAnalysis;
+  objc_sync_exit(selfCopy);
 
   return unsafe_readyForAnalysis;
 }
@@ -228,12 +228,12 @@
 
 - (id)_inMemoryTrackerStateForDebug
 {
-  v2 = [(PLCloudPhotoLibraryUploadTracker *)self->_uploadTracker currentStateForDebug];
-  v3 = v2;
+  currentStateForDebug = [(PLCloudPhotoLibraryUploadTracker *)self->_uploadTracker currentStateForDebug];
+  v3 = currentStateForDebug;
   v4 = MEMORY[0x1E696AEC0];
-  if (v2)
+  if (currentStateForDebug)
   {
-    v5 = [v2 componentsSeparatedByString:@"\n"];
+    v5 = [currentStateForDebug componentsSeparatedByString:@"\n"];
     v6 = [v5 componentsJoinedByString:@"\n\t"];
     v7 = [v4 stringWithFormat:@"In-memory tracker: %@", v6];
   }
@@ -246,19 +246,19 @@
   return v7;
 }
 
-- (id)_debugNameForState:(unint64_t)a3
+- (id)_debugNameForState:(unint64_t)state
 {
-  if (a3 > 4)
+  if (state > 4)
   {
-    if (a3 <= 6)
+    if (state <= 6)
     {
       v9 = @"Idle";
-      if (a3 != 6)
+      if (state != 6)
       {
         v9 = 0;
       }
 
-      if (a3 == 5)
+      if (state == 5)
       {
         v8 = @"Downloading";
       }
@@ -271,17 +271,17 @@
 
     else
     {
-      switch(a3)
+      switch(state)
       {
         case 7uLL:
           v8 = @"ForceResetSync";
           break;
         case 8uLL:
-          v10 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-          v11 = [v10 libraryBundle];
-          v12 = [v11 indicatorFileCoordinator];
+          libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+          libraryBundle = [libraryServicesManager libraryBundle];
+          indicatorFileCoordinator = [libraryBundle indicatorFileCoordinator];
 
-          v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Paused (%d)", objc_msgSend(v12, "currentPauseReason")];
+          v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Paused (%d)", objc_msgSend(indicatorFileCoordinator, "currentPauseReason")];
 
           break;
         case 9uLL:
@@ -299,34 +299,34 @@
     v3 = @"Opened";
     v4 = @"Fetching";
     v5 = @"Uploading";
-    if (a3 != 4)
+    if (state != 4)
     {
       v5 = 0;
     }
 
-    if (a3 != 3)
+    if (state != 3)
     {
       v4 = v5;
     }
 
-    if (a3 != 2)
+    if (state != 2)
     {
       v3 = v4;
     }
 
     v6 = @"Uninitialized";
     v7 = @"Opening";
-    if (a3 != 1)
+    if (state != 1)
     {
       v7 = 0;
     }
 
-    if (a3)
+    if (state)
     {
       v6 = v7;
     }
 
-    if (a3 <= 1)
+    if (state <= 1)
     {
       v8 = v6;
     }
@@ -340,16 +340,16 @@
   return v8;
 }
 
-- (id)_convertToIdentifierMapFromCPLScopeIdentifierMap:(id)a3
+- (id)_convertToIdentifierMapFromCPLScopeIdentifierMap:(id)map
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  mapCopy = map;
+  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(mapCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = mapCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -366,12 +366,12 @@
 
         v10 = *(*(&v17 + 1) + 8 * i);
         v11 = [v5 objectForKeyedSubscript:{v10, v17}];
-        v12 = [v10 identifier];
-        v13 = [v11 identifier];
-        v14 = v13;
-        if (v12)
+        identifier = [v10 identifier];
+        identifier2 = [v11 identifier];
+        v14 = identifier2;
+        if (identifier)
         {
-          v15 = v13 == 0;
+          v15 = identifier2 == 0;
         }
 
         else
@@ -381,7 +381,7 @@
 
         if (!v15)
         {
-          [v4 setObject:v13 forKey:v12];
+          [v4 setObject:identifier2 forKey:identifier];
         }
       }
 
@@ -394,20 +394,20 @@
   return v4;
 }
 
-- (void)getCloudScopedIdentifiersForLocalIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)getCloudScopedIdentifiersForLocalIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v8 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager getCloudScopedIdentifiersForLocalIdentifiers:completionHandler:]"];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __93__PLCloudPhotoLibraryManager_getCloudScopedIdentifiersForLocalIdentifiers_completionHandler___block_invoke;
   v11[3] = &unk_1E7576F38;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifiersCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifiersCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v8 block:v11];
 }
 
@@ -527,22 +527,22 @@ void __93__PLCloudPhotoLibraryManager_getCloudScopedIdentifiersForLocalIdentifie
   }
 }
 
-- (void)resolveLocalIdentifiersForCloudIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)resolveLocalIdentifiersForCloudIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v8 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager resolveLocalIdentifiersForCloudIdentifiers:completionHandler:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __91__PLCloudPhotoLibraryManager_resolveLocalIdentifiersForCloudIdentifiers_completionHandler___block_invoke;
   v12[3] = &unk_1E7573C00;
   v12[4] = self;
-  v13 = v6;
+  v13 = identifiersCopy;
   v14 = v8;
-  v15 = v7;
+  v15 = handlerCopy;
   v9 = v8;
-  v10 = v7;
-  v11 = v6;
+  v10 = handlerCopy;
+  v11 = identifiersCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v9 block:v12];
 }
 
@@ -629,22 +629,22 @@ void __91__PLCloudPhotoLibraryManager_resolveLocalIdentifiersForCloudIdentifiers
   [*(a1 + 40) stillAlive];
 }
 
-- (void)queryUserIdentitiesWithParticipants:(id)a3 completionHandler:(id)a4
+- (void)queryUserIdentitiesWithParticipants:(id)participants completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  participantsCopy = participants;
+  handlerCopy = handler;
   v8 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager queryUserIdentitiesWithParticipants:completionHandler:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __84__PLCloudPhotoLibraryManager_queryUserIdentitiesWithParticipants_completionHandler___block_invoke;
   v12[3] = &unk_1E7573C00;
   v12[4] = self;
-  v13 = v6;
+  v13 = participantsCopy;
   v14 = v8;
-  v15 = v7;
+  v15 = handlerCopy;
   v9 = v8;
-  v10 = v7;
-  v11 = v6;
+  v10 = handlerCopy;
+  v11 = participantsCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v9 block:v12];
 }
 
@@ -687,19 +687,19 @@ uint64_t __84__PLCloudPhotoLibraryManager_queryUserIdentitiesWithParticipants_co
   return [v3 stillAlive];
 }
 
-- (void)forceSyncMomentSharesWithScopeIdentifiers:(id)a3
+- (void)forceSyncMomentSharesWithScopeIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager forceSyncMomentSharesWithScopeIdentifiers:]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __72__PLCloudPhotoLibraryManager_forceSyncMomentSharesWithScopeIdentifiers___block_invoke;
   v8[3] = &unk_1E75761B8;
   v8[4] = self;
-  v9 = v4;
+  v9 = identifiersCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = identifiersCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v6 block:v8];
 }
 
@@ -822,22 +822,22 @@ void __72__PLCloudPhotoLibraryManager_forceSyncMomentSharesWithScopeIdentifiers_
   [*(a1 + 40) stillAlive];
 }
 
-- (void)boostPriorityForMomentShareWithScopeIdentifier:(id)a3 completionHandler:(id)a4
+- (void)boostPriorityForMomentShareWithScopeIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager boostPriorityForMomentShareWithScopeIdentifier:completionHandler:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __95__PLCloudPhotoLibraryManager_boostPriorityForMomentShareWithScopeIdentifier_completionHandler___block_invoke;
   v12[3] = &unk_1E7573C00;
   v12[4] = self;
-  v13 = v6;
+  v13 = identifierCopy;
   v14 = v8;
-  v15 = v7;
+  v15 = handlerCopy;
   v9 = v8;
-  v10 = v7;
-  v11 = v6;
+  v10 = handlerCopy;
+  v11 = identifierCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v9 block:v12];
 }
 
@@ -1037,22 +1037,22 @@ LABEL_22:
   [*(a1 + 48) stillAlive];
 }
 
-- (void)acceptCPLShare:(id)a3 completionHandler:(id)a4
+- (void)acceptCPLShare:(id)share completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  handlerCopy = handler;
   v8 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager acceptCPLShare:completionHandler:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __63__PLCloudPhotoLibraryManager_acceptCPLShare_completionHandler___block_invoke;
   v12[3] = &unk_1E7573C00;
   v12[4] = self;
-  v13 = v6;
+  v13 = shareCopy;
   v14 = v8;
-  v15 = v7;
+  v15 = handlerCopy;
   v9 = v8;
-  v10 = v7;
-  v11 = v6;
+  v10 = handlerCopy;
+  v11 = shareCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v9 block:v12];
 }
 
@@ -1107,22 +1107,22 @@ uint64_t __63__PLCloudPhotoLibraryManager_acceptCPLShare_completionHandler___blo
   return [v3 stillAlive];
 }
 
-- (void)fetchShareFromShareURL:(id)a3 completionHandler:(id)a4
+- (void)fetchShareFromShareURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager fetchShareFromShareURL:completionHandler:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __71__PLCloudPhotoLibraryManager_fetchShareFromShareURL_completionHandler___block_invoke;
   v12[3] = &unk_1E7573C00;
   v12[4] = self;
-  v13 = v6;
+  v13 = lCopy;
   v14 = v8;
-  v15 = v7;
+  v15 = handlerCopy;
   v9 = v8;
-  v10 = v7;
-  v11 = v6;
+  v10 = handlerCopy;
+  v11 = lCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v9 block:v12];
 }
 
@@ -1177,22 +1177,22 @@ uint64_t __71__PLCloudPhotoLibraryManager_fetchShareFromShareURL_completionHandl
   return [v3 stillAlive];
 }
 
-- (void)publishCPLScopeChange:(id)a3 completionHandler:(id)a4
+- (void)publishCPLScopeChange:(id)change completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  handlerCopy = handler;
   v8 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager publishCPLScopeChange:completionHandler:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __70__PLCloudPhotoLibraryManager_publishCPLScopeChange_completionHandler___block_invoke;
   v12[3] = &unk_1E7573C00;
   v12[4] = self;
-  v13 = v6;
+  v13 = changeCopy;
   v14 = v8;
-  v15 = v7;
+  v15 = handlerCopy;
   v9 = v8;
-  v10 = v6;
-  v11 = v7;
+  v10 = changeCopy;
+  v11 = handlerCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v9 block:v12];
 }
 
@@ -1272,21 +1272,21 @@ uint64_t __70__PLCloudPhotoLibraryManager_publishCPLScopeChange_completionHandle
   return [v3 stillAlive];
 }
 
-- (void)fetchComputeStatesForRecordsWithScopedIdentifiers:(id)a3 onDemand:(BOOL)a4 completionHandler:(id)a5
+- (void)fetchComputeStatesForRecordsWithScopedIdentifiers:(id)identifiers onDemand:(BOOL)demand completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v10 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager fetchComputeStatesForRecordsWithScopedIdentifiers:onDemand:completionHandler:]"];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __107__PLCloudPhotoLibraryManager_fetchComputeStatesForRecordsWithScopedIdentifiers_onDemand_completionHandler___block_invoke;
   v13[3] = &unk_1E75760C8;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = identifiersCopy;
+  demandCopy = demand;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = identifiersCopy;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v10 block:v13];
 }
 
@@ -1328,9 +1328,9 @@ void __107__PLCloudPhotoLibraryManager_fetchComputeStatesForRecordsWithScopedIde
   }
 }
 
-- (void)requestDeviceLibraryConfigurationChange:(int64_t)a3 completionHandler:(id)a4
+- (void)requestDeviceLibraryConfigurationChange:(int64_t)change completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager requestDeviceLibraryConfigurationChange:completionHandler:]"];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -1339,20 +1339,20 @@ void __107__PLCloudPhotoLibraryManager_fetchComputeStatesForRecordsWithScopedIde
   aBlock[4] = self;
   v8 = v7;
   v19 = v8;
-  v20 = a3;
+  changeCopy = change;
   v9 = _Block_copy(aBlock);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __88__PLCloudPhotoLibraryManager_requestDeviceLibraryConfigurationChange_completionHandler___block_invoke_583;
   v13[3] = &unk_1E7567218;
   v16 = v9;
-  v17 = a3;
+  changeCopy2 = change;
   v13[4] = self;
   v14 = v8;
-  v15 = v6;
+  v15 = handlerCopy;
   v10 = v9;
   v11 = v8;
-  v12 = v6;
+  v12 = handlerCopy;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v11 block:v13];
 }
 
@@ -1695,10 +1695,10 @@ void __88__PLCloudPhotoLibraryManager_requestDeviceLibraryConfigurationChange_co
   }
 }
 
-- (void)_callDeviceLibraryConfigurationChangeRequestCompletionHandlersWithError:(id)a3
+- (void)_callDeviceLibraryConfigurationChangeRequestCompletionHandlersWithError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v13 = 0u;
   v14 = 0u;
@@ -1735,19 +1735,19 @@ void __88__PLCloudPhotoLibraryManager_requestDeviceLibraryConfigurationChange_co
   self->_deviceLibraryConfigurationChangeCompletionHandlers = 0;
 }
 
-- (void)startUnsharingPendingAssetsSharedToScopeWithIdentifier:(id)a3
+- (void)startUnsharingPendingAssetsSharedToScopeWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager startUnsharingPendingAssetsSharedToScopeWithIdentifier:]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __85__PLCloudPhotoLibraryManager_startUnsharingPendingAssetsSharedToScopeWithIdentifier___block_invoke;
   v8[3] = &unk_1E75761B8;
   v8[4] = self;
-  v9 = v4;
+  v9 = identifierCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = identifierCopy;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v6 block:v8];
 }
 
@@ -1831,9 +1831,9 @@ void __85__PLCloudPhotoLibraryManager_startUnsharingPendingAssetsSharedToScopeWi
   }
 }
 
-- (void)_unshareBatchOfPendingAssetsSharedToScopeWithTransaction:(id)a3
+- (void)_unshareBatchOfPendingAssetsSharedToScopeWithTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v5 = self->_scopeIdentifierToUnsharePendingAssetsFrom;
   v8[0] = MEMORY[0x1E69E9820];
@@ -1842,8 +1842,8 @@ void __85__PLCloudPhotoLibraryManager_startUnsharingPendingAssetsSharedToScopeWi
   v8[3] = &unk_1E75671C8;
   v8[4] = self;
   v9 = v5;
-  v10 = v4;
-  v6 = v4;
+  v10 = transactionCopy;
+  v6 = transactionCopy;
   v7 = v5;
   [(PLCloudPhotoLibraryManager *)self _getStatusForPendingRecordsSharedToScopeWithIdentifier:v7 maximumCount:100 completionHandler:v8];
 }
@@ -2112,17 +2112,17 @@ uint64_t __87__PLCloudPhotoLibraryManager__unshareBatchOfPendingAssetsSharedToSc
   return result;
 }
 
-- (void)_finishedUnsharingPendingAssetsSharedToScopeWithTransaction:(id)a3 error:(id)a4
+- (void)_finishedUnsharingPendingAssetsSharedToScopeWithTransaction:(id)transaction error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __96__PLCloudPhotoLibraryManager__finishedUnsharingPendingAssetsSharedToScopeWithTransaction_error___block_invoke;
   v8[3] = &unk_1E7578848;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:a3 block:v8];
+  v9 = errorCopy;
+  v7 = errorCopy;
+  [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:transaction block:v8];
 }
 
 void __96__PLCloudPhotoLibraryManager__finishedUnsharingPendingAssetsSharedToScopeWithTransaction_error___block_invoke(uint64_t a1)
@@ -2168,23 +2168,23 @@ void __96__PLCloudPhotoLibraryManager__finishedUnsharingPendingAssetsSharedToSco
   *(v7 + 424) = 0;
 }
 
-- (void)_getStatusForPendingRecordsSharedToScopeWithIdentifier:(id)a3 maximumCount:(unint64_t)a4 completionHandler:(id)a5
+- (void)_getStatusForPendingRecordsSharedToScopeWithIdentifier:(id)identifier maximumCount:(unint64_t)count completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v10 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager _getStatusForPendingRecordsSharedToScopeWithIdentifier:maximumCount:completionHandler:]"];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __116__PLCloudPhotoLibraryManager__getStatusForPendingRecordsSharedToScopeWithIdentifier_maximumCount_completionHandler___block_invoke;
   v14[3] = &unk_1E7576190;
   v14[4] = self;
-  v15 = v8;
-  v17 = v9;
-  v18 = a4;
+  v15 = identifierCopy;
+  v17 = handlerCopy;
+  countCopy = count;
   v16 = v10;
   v11 = v10;
-  v12 = v8;
-  v13 = v9;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v11 block:v14];
 }
 
@@ -2305,22 +2305,22 @@ uint64_t __116__PLCloudPhotoLibraryManager__getStatusForPendingRecordsSharedToSc
   return [v3 stillAlive];
 }
 
-- (void)getLibraryScopeStatusCountsForScopeWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getLibraryScopeStatusCountsForScopeWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager getLibraryScopeStatusCountsForScopeWithIdentifier:completionHandler:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __98__PLCloudPhotoLibraryManager_getLibraryScopeStatusCountsForScopeWithIdentifier_completionHandler___block_invoke;
   v12[3] = &unk_1E7573C00;
   v12[4] = self;
-  v13 = v6;
+  v13 = identifierCopy;
   v14 = v8;
-  v15 = v7;
+  v15 = handlerCopy;
   v9 = v8;
-  v10 = v6;
-  v11 = v7;
+  v10 = identifierCopy;
+  v11 = handlerCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v9 block:v12];
 }
 
@@ -2396,22 +2396,22 @@ uint64_t __98__PLCloudPhotoLibraryManager_getLibraryScopeStatusCountsForScopeWit
   return result;
 }
 
-- (void)refreshLibraryScopeWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)refreshLibraryScopeWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager refreshLibraryScopeWithIdentifier:completionHandler:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __82__PLCloudPhotoLibraryManager_refreshLibraryScopeWithIdentifier_completionHandler___block_invoke;
   v12[3] = &unk_1E7573C00;
   v12[4] = self;
-  v13 = v6;
+  v13 = identifierCopy;
   v14 = v8;
-  v15 = v7;
+  v15 = handlerCopy;
   v9 = v8;
-  v10 = v6;
-  v11 = v7;
+  v10 = identifierCopy;
+  v11 = handlerCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v9 block:v12];
 }
 
@@ -2487,22 +2487,22 @@ uint64_t __82__PLCloudPhotoLibraryManager_refreshLibraryScopeWithIdentifier_comp
   return result;
 }
 
-- (void)updateLibraryScopeWithCPLScopeChange:(id)a3 completionHandler:(id)a4
+- (void)updateLibraryScopeWithCPLScopeChange:(id)change completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  handlerCopy = handler;
   v8 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager updateLibraryScopeWithCPLScopeChange:completionHandler:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __85__PLCloudPhotoLibraryManager_updateLibraryScopeWithCPLScopeChange_completionHandler___block_invoke;
   v12[3] = &unk_1E7573C00;
   v12[4] = self;
-  v13 = v6;
+  v13 = changeCopy;
   v14 = v8;
-  v15 = v7;
+  v15 = handlerCopy;
   v9 = v8;
-  v10 = v6;
-  v11 = v7;
+  v10 = changeCopy;
+  v11 = handlerCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v9 block:v12];
 }
 
@@ -2578,25 +2578,25 @@ uint64_t __85__PLCloudPhotoLibraryManager_updateLibraryScopeWithCPLScopeChange_c
   return result;
 }
 
-- (void)publishLibraryScopeWithCPLShare:(id)a3 title:(id)a4 completionHandler:(id)a5
+- (void)publishLibraryScopeWithCPLShare:(id)share title:(id)title completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  shareCopy = share;
+  titleCopy = title;
+  handlerCopy = handler;
   v11 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager publishLibraryScopeWithCPLShare:title:completionHandler:]"];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __86__PLCloudPhotoLibraryManager_publishLibraryScopeWithCPLShare_title_completionHandler___block_invoke;
   v16[3] = &unk_1E7576EE8;
   v19 = v11;
-  v20 = v10;
+  v20 = handlerCopy;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
+  v17 = shareCopy;
+  v18 = titleCopy;
   v12 = v11;
-  v13 = v9;
-  v14 = v8;
-  v15 = v10;
+  v13 = titleCopy;
+  v14 = shareCopy;
+  v15 = handlerCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v12 block:v16];
 }
 
@@ -2673,17 +2673,17 @@ uint64_t __86__PLCloudPhotoLibraryManager_publishLibraryScopeWithCPLShare_title_
   return result;
 }
 
-- (void)sharedLibraryRampCheckWithCompletionHandler:(id)a3
+- (void)sharedLibraryRampCheckWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager sharedLibraryRampCheckWithCompletionHandler:]"];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__PLCloudPhotoLibraryManager_sharedLibraryRampCheckWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7577C08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v5 block:v7];
 }
 
@@ -2757,27 +2757,27 @@ uint64_t __74__PLCloudPhotoLibraryManager_sharedLibraryRampCheckWithCompletionHa
   return result;
 }
 
-- (void)removeParticipantsWithParticipantUUIDs:(id)a3 fromLibraryScopeWithIdentifier:(id)a4 retentionPolicy:(int64_t)a5 exitSource:(int64_t)a6 completionHandler:(id)a7
+- (void)removeParticipantsWithParticipantUUIDs:(id)ds fromLibraryScopeWithIdentifier:(id)identifier retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  dsCopy = ds;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v15 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager removeParticipantsWithParticipantUUIDs:fromLibraryScopeWithIdentifier:retentionPolicy:exitSource:completionHandler:]"];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __145__PLCloudPhotoLibraryManager_removeParticipantsWithParticipantUUIDs_fromLibraryScopeWithIdentifier_retentionPolicy_exitSource_completionHandler___block_invoke;
   v20[3] = &unk_1E7567178;
   v20[4] = self;
-  v21 = v12;
-  v24 = v14;
-  v25 = a5;
-  v26 = a6;
-  v22 = v13;
+  v21 = dsCopy;
+  v24 = handlerCopy;
+  policyCopy = policy;
+  sourceCopy = source;
+  v22 = identifierCopy;
   v23 = v15;
   v16 = v15;
-  v17 = v13;
-  v18 = v12;
-  v19 = v14;
+  v17 = identifierCopy;
+  v18 = dsCopy;
+  v19 = handlerCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v16 block:v20];
 }
 
@@ -2915,24 +2915,24 @@ uint64_t __145__PLCloudPhotoLibraryManager_removeParticipantsWithParticipantUUID
   return [v3 stillAlive];
 }
 
-- (void)startExitFromLibraryScopeWithIdentifier:(id)a3 retentionPolicy:(int64_t)a4 exitSource:(int64_t)a5 completionHandler:(id)a6
+- (void)startExitFromLibraryScopeWithIdentifier:(id)identifier retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v12 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager startExitFromLibraryScopeWithIdentifier:retentionPolicy:exitSource:completionHandler:]"];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __115__PLCloudPhotoLibraryManager_startExitFromLibraryScopeWithIdentifier_retentionPolicy_exitSource_completionHandler___block_invoke;
   v16[3] = &unk_1E7570538;
   v16[4] = self;
-  v17 = v10;
-  v20 = a4;
-  v21 = a5;
+  v17 = identifierCopy;
+  policyCopy = policy;
+  sourceCopy = source;
   v18 = v12;
-  v19 = v11;
+  v19 = handlerCopy;
   v13 = v12;
-  v14 = v10;
-  v15 = v11;
+  v14 = identifierCopy;
+  v15 = handlerCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v13 block:v16];
 }
 
@@ -3013,22 +3013,22 @@ uint64_t __115__PLCloudPhotoLibraryManager_startExitFromLibraryScopeWithIdentifi
   return [v3 stillAlive];
 }
 
-- (void)deactivateScopeWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)deactivateScopeWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager deactivateScopeWithIdentifier:completionHandler:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __78__PLCloudPhotoLibraryManager_deactivateScopeWithIdentifier_completionHandler___block_invoke;
   v12[3] = &unk_1E7573C00;
   v12[4] = self;
-  v13 = v6;
+  v13 = identifierCopy;
   v14 = v8;
-  v15 = v7;
+  v15 = handlerCopy;
   v9 = v8;
-  v10 = v6;
-  v11 = v7;
+  v10 = identifierCopy;
+  v11 = handlerCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v9 block:v12];
 }
 
@@ -3107,22 +3107,22 @@ uint64_t __78__PLCloudPhotoLibraryManager_deactivateScopeWithIdentifier_completi
   return [v3 stillAlive];
 }
 
-- (void)activateScopeWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)activateScopeWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager activateScopeWithIdentifier:completionHandler:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __76__PLCloudPhotoLibraryManager_activateScopeWithIdentifier_completionHandler___block_invoke;
   v12[3] = &unk_1E7573C00;
   v12[4] = self;
-  v13 = v6;
+  v13 = identifierCopy;
   v14 = v8;
-  v15 = v7;
+  v15 = handlerCopy;
   v9 = v8;
-  v10 = v6;
-  v11 = v7;
+  v10 = identifierCopy;
+  v11 = handlerCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v9 block:v12];
 }
 
@@ -3201,17 +3201,17 @@ uint64_t __76__PLCloudPhotoLibraryManager_activateScopeWithIdentifier_completion
   return [v3 stillAlive];
 }
 
-- (void)configurationDidChange:(id)a3
+- (void)configurationDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager configurationDidChange:]"];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__PLCloudPhotoLibraryManager_configurationDidChange___block_invoke;
   v7[3] = &unk_1E7578848;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v5 block:v7];
 }
 
@@ -3225,10 +3225,10 @@ void __53__PLCloudPhotoLibraryManager_configurationDidChange___block_invoke(uint
   [v3 notifyCPLConfiguration:*(a1 + 40)];
 }
 
-- (void)statusDidChange:(id)a3
+- (void)statusDidChange:(id)change
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     libraryMode = self->_libraryMode;
@@ -3254,11 +3254,11 @@ void __53__PLCloudPhotoLibraryManager_configurationDidChange___block_invoke(uint
     v7 = v6;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 statusDescription];
+      statusDescription = [changeCopy statusDescription];
       *buf = 136315394;
       v16 = "[PLCloudPhotoLibraryManager statusDidChange:]";
       v17 = 2112;
-      v18 = v8;
+      v18 = statusDescription;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
     }
   }
@@ -3269,10 +3269,10 @@ void __53__PLCloudPhotoLibraryManager_configurationDidChange___block_invoke(uint
   v12[2] = __46__PLCloudPhotoLibraryManager_statusDidChange___block_invoke;
   v12[3] = &unk_1E75761B8;
   v12[4] = self;
-  v13 = v4;
+  v13 = changeCopy;
   v14 = v9;
   v10 = v9;
-  v11 = v4;
+  v11 = changeCopy;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v10 block:v12];
 }
 
@@ -3690,17 +3690,17 @@ uint64_t __46__PLCloudPhotoLibraryManager_statusDidChange___block_invoke_2(uint6
   return [*(a1 + 40) clearRunOnceFlag:4 error:0];
 }
 
-- (void)_setToDownloadCountsForImages:(unint64_t)a3 videos:(unint64_t)a4
+- (void)_setToDownloadCountsForImages:(unint64_t)images videos:(unint64_t)videos
 {
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PLCloudPhotoLibraryManager.m" lineNumber:5133 description:{@"Invalid parameter not satisfying: %@", @"PLIsAssetsd()"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCloudPhotoLibraryManager.m" lineNumber:5133 description:{@"Invalid parameter not satisfying: %@", @"PLIsAssetsd()"}];
   }
 
-  v8 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-  v9 = [v8 libraryBundle];
-  v10 = [v9 indicatorFileCoordinator];
+  libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+  libraryBundle = [libraryServicesManager libraryBundle];
+  indicatorFileCoordinator = [libraryBundle indicatorFileCoordinator];
 
   v11 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager _setToDownloadCountsForImages:videos:]"];
   serialQueue = self->_serialQueue;
@@ -3708,12 +3708,12 @@ uint64_t __46__PLCloudPhotoLibraryManager_statusDidChange___block_invoke_2(uint6
   block[1] = 3221225472;
   block[2] = __67__PLCloudPhotoLibraryManager__setToDownloadCountsForImages_videos___block_invoke;
   block[3] = &unk_1E7576400;
-  v19 = a3;
-  v20 = a4;
-  v17 = v10;
+  imagesCopy = images;
+  videosCopy = videos;
+  v17 = indicatorFileCoordinator;
   v18 = v11;
   v13 = v11;
-  v14 = v10;
+  v14 = indicatorFileCoordinator;
   dispatch_async(serialQueue, block);
 }
 
@@ -3729,36 +3729,36 @@ uint64_t __67__PLCloudPhotoLibraryManager__setToDownloadCountsForImages_videos__
 
 - (BOOL)_hasIncomingWorkFileMarker
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [MEMORY[0x1E69BF168] takingPhotoIndicatorFilePath];
-  v5 = [MEMORY[0x1E69BF168] takingVideoIndicatorFilePath];
-  v6 = [MEMORY[0x1E69BF168] nebuladkeepalivepath];
-  v7 = ([v3 fileExistsAtPath:v4] & 1) != 0 || (objc_msgSend(v3, "fileExistsAtPath:", v5) & 1) != 0 || (objc_msgSend(v3, "fileExistsAtPath:", v6) & 1) != 0 || -[PLCloudPhotoLibraryManager _hasAvalancheIncomingWork](self, "_hasAvalancheIncomingWork");
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  takingPhotoIndicatorFilePath = [MEMORY[0x1E69BF168] takingPhotoIndicatorFilePath];
+  takingVideoIndicatorFilePath = [MEMORY[0x1E69BF168] takingVideoIndicatorFilePath];
+  nebuladkeepalivepath = [MEMORY[0x1E69BF168] nebuladkeepalivepath];
+  v7 = ([defaultManager fileExistsAtPath:takingPhotoIndicatorFilePath] & 1) != 0 || (objc_msgSend(defaultManager, "fileExistsAtPath:", takingVideoIndicatorFilePath) & 1) != 0 || (objc_msgSend(defaultManager, "fileExistsAtPath:", nebuladkeepalivepath) & 1) != 0 || -[PLCloudPhotoLibraryManager _hasAvalancheIncomingWork](self, "_hasAvalancheIncomingWork");
 
   return v7;
 }
 
 - (BOOL)_hasAvalancheIncomingWork
 {
-  v2 = [MEMORY[0x1E69BF178] incomingDirectoryPath];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v3 enumeratorAtPath:v2];
+  incomingDirectoryPath = [MEMORY[0x1E69BF178] incomingDirectoryPath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [defaultManager enumeratorAtPath:incomingDirectoryPath];
   v5 = 0;
   v6 = *MEMORY[0x1E69C00B0];
   while (1)
   {
-    v7 = [v4 nextObject];
+    nextObject = [v4 nextObject];
 
-    if (!v7)
+    if (!nextObject)
     {
       break;
     }
 
-    v8 = [v7 pathExtension];
-    v9 = [v8 isEqualToString:v6];
+    pathExtension = [nextObject pathExtension];
+    v9 = [pathExtension isEqualToString:v6];
 
-    v5 = v7;
-    v10 = v7;
+    v5 = nextObject;
+    v10 = nextObject;
     if (v9)
     {
       goto LABEL_6;
@@ -3768,7 +3768,7 @@ uint64_t __67__PLCloudPhotoLibraryManager__setToDownloadCountsForImages_videos__
   v10 = 0;
 LABEL_6:
 
-  return v7 != 0;
+  return nextObject != 0;
 }
 
 - (void)_checkForWorkInProgress
@@ -3901,11 +3901,11 @@ LABEL_6:
         }
       }
 
-      v16 = [(PLCloudPhotoLibraryManager *)self _idleStateTransitionOneTimeAction];
-      v17 = v16;
-      if (v16)
+      _idleStateTransitionOneTimeAction = [(PLCloudPhotoLibraryManager *)self _idleStateTransitionOneTimeAction];
+      v17 = _idleStateTransitionOneTimeAction;
+      if (_idleStateTransitionOneTimeAction)
       {
-        (*(v16 + 16))(v16);
+        (*(_idleStateTransitionOneTimeAction + 16))(_idleStateTransitionOneTimeAction);
       }
     }
 
@@ -4012,9 +4012,9 @@ void *__55__PLCloudPhotoLibraryManager__startWorkInProgressTimer__block_invoke(u
   return result;
 }
 
-- (void)endUserSessionWithCompletionHandler:(id)a3
+- (void)endUserSessionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(PLCloudBatchUploader *)self->_uploader setShouldGenerateDerivatives:0];
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager endUserSessionWithCompletionHandler:]"];
   v7[0] = MEMORY[0x1E69E9820];
@@ -4022,8 +4022,8 @@ void *__55__PLCloudPhotoLibraryManager__startWorkInProgressTimer__block_invoke(u
   v7[2] = __66__PLCloudPhotoLibraryManager_endUserSessionWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7577C08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v5 block:v7];
 }
 
@@ -4170,14 +4170,14 @@ uint64_t __66__PLCloudPhotoLibraryManager_endUserSessionWithCompletionHandler___
   return result;
 }
 
-- (unint64_t)_inq_numberOfOtherItemsToDownloadInLibrary:(id)a3
+- (unint64_t)_inq_numberOfOtherItemsToDownloadInLibrary:(id)library
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v5 = [(PLCloudPhotoLibraryManager *)self _inq_numberOfOtherItemsToUploadInLibrary:v4];
-  v6 = [(PLCloudPhotoLibraryManager *)self cplStatus];
-  v7 = [v6 cloudAssetCountPerType];
+  v5 = [(PLCloudPhotoLibraryManager *)self _inq_numberOfOtherItemsToUploadInLibrary:libraryCopy];
+  cplStatus = [(PLCloudPhotoLibraryManager *)self cplStatus];
+  cloudAssetCountPerType = [cplStatus cloudAssetCountPerType];
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -4187,12 +4187,12 @@ uint64_t __66__PLCloudPhotoLibraryManager_endUserSessionWithCompletionHandler___
   v21[2] = __73__PLCloudPhotoLibraryManager__inq_numberOfOtherItemsToDownloadInLibrary___block_invoke;
   v21[3] = &unk_1E7567100;
   v21[4] = &v22;
-  [v7 enumerateKeysAndObjectsUsingBlock:v21];
+  [cloudAssetCountPerType enumerateKeysAndObjectsUsingBlock:v21];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v8 = v4;
+  v8 = libraryCopy;
   PLRunWithUnfairLock();
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -4294,23 +4294,23 @@ uint64_t __73__PLCloudPhotoLibraryManager__inq_numberOfOtherItemsToDownloadInLib
   return result;
 }
 
-- (unint64_t)_inq_numberOfVideosToDownloadInLibrary:(id)a3
+- (unint64_t)_inq_numberOfVideosToDownloadInLibrary:(id)library
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v5 = [(PLCloudPhotoLibraryManager *)self _inq_numberOfVideosToUploadInLibrary:v4];
-  v6 = [(PLCloudPhotoLibraryManager *)self cplStatus];
-  v7 = [v6 cloudAssetCountPerType];
-  v8 = [*MEMORY[0x1E6982EE8] identifier];
-  v9 = [v7 objectForKeyedSubscript:v8];
-  v10 = [v9 unsignedIntegerValue];
+  v5 = [(PLCloudPhotoLibraryManager *)self _inq_numberOfVideosToUploadInLibrary:libraryCopy];
+  cplStatus = [(PLCloudPhotoLibraryManager *)self cplStatus];
+  cloudAssetCountPerType = [cplStatus cloudAssetCountPerType];
+  identifier = [*MEMORY[0x1E6982EE8] identifier];
+  v9 = [cloudAssetCountPerType objectForKeyedSubscript:identifier];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v11 = v4;
+  v11 = libraryCopy;
   PLRunWithUnfairLock();
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -4339,7 +4339,7 @@ uint64_t __73__PLCloudPhotoLibraryManager__inq_numberOfOtherItemsToDownloadInLib
     {
       v15 = v19[3];
       *buf = 67109632;
-      v23 = v10;
+      v23 = unsignedIntegerValue;
       v24 = 1024;
       v25 = v15;
       v26 = 1024;
@@ -4351,7 +4351,7 @@ uint64_t __73__PLCloudPhotoLibraryManager__inq_numberOfOtherItemsToDownloadInLib
   v16 = v19[3];
 
   _Block_object_dispose(&v18, 8);
-  return (v10 - (v5 + v16)) & ~((v10 - (v5 + v16)) >> 63);
+  return (unsignedIntegerValue - (v5 + v16)) & ~((unsignedIntegerValue - (v5 + v16)) >> 63);
 }
 
 void __69__PLCloudPhotoLibraryManager__inq_numberOfVideosToDownloadInLibrary___block_invoke(void *a1)
@@ -4386,23 +4386,23 @@ uint64_t __69__PLCloudPhotoLibraryManager__inq_numberOfVideosToDownloadInLibrary
   return result;
 }
 
-- (unint64_t)_inq_numberOfPhotosToDownloadInLibrary:(id)a3
+- (unint64_t)_inq_numberOfPhotosToDownloadInLibrary:(id)library
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v5 = [(PLCloudPhotoLibraryManager *)self _inq_numberOfPhotosToUploadInLibrary:v4];
-  v6 = [(PLCloudPhotoLibraryManager *)self cplStatus];
-  v7 = [v6 cloudAssetCountPerType];
-  v8 = [*MEMORY[0x1E6982E30] identifier];
-  v9 = [v7 objectForKeyedSubscript:v8];
-  v10 = [v9 unsignedIntegerValue];
+  v5 = [(PLCloudPhotoLibraryManager *)self _inq_numberOfPhotosToUploadInLibrary:libraryCopy];
+  cplStatus = [(PLCloudPhotoLibraryManager *)self cplStatus];
+  cloudAssetCountPerType = [cplStatus cloudAssetCountPerType];
+  identifier = [*MEMORY[0x1E6982E30] identifier];
+  v9 = [cloudAssetCountPerType objectForKeyedSubscript:identifier];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v11 = v4;
+  v11 = libraryCopy;
   PLRunWithUnfairLock();
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -4431,7 +4431,7 @@ uint64_t __69__PLCloudPhotoLibraryManager__inq_numberOfVideosToDownloadInLibrary
     {
       v15 = v19[3];
       *buf = 67109632;
-      v23 = v10;
+      v23 = unsignedIntegerValue;
       v24 = 1024;
       v25 = v15;
       v26 = 1024;
@@ -4443,7 +4443,7 @@ uint64_t __69__PLCloudPhotoLibraryManager__inq_numberOfVideosToDownloadInLibrary
   v16 = v19[3];
 
   _Block_object_dispose(&v18, 8);
-  return (v10 - (v5 + v16)) & ~((v10 - (v5 + v16)) >> 63);
+  return (unsignedIntegerValue - (v5 + v16)) & ~((unsignedIntegerValue - (v5 + v16)) >> 63);
 }
 
 void __69__PLCloudPhotoLibraryManager__inq_numberOfPhotosToDownloadInLibrary___block_invoke(void *a1)
@@ -4478,19 +4478,19 @@ uint64_t __69__PLCloudPhotoLibraryManager__inq_numberOfPhotosToDownloadInLibrary
   return result;
 }
 
-- (unint64_t)_inq_numberOfVideosToUploadInLibrary:(id)a3
+- (unint64_t)_inq_numberOfVideosToUploadInLibrary:(id)library
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v5 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
-  v6 = [v5 numberOfVideosToUpload];
+  cplLibrary = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+  numberOfVideosToUpload = [cplLibrary numberOfVideosToUpload];
 
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v7 = v4;
+  v7 = libraryCopy;
   PLRunWithUnfairLock();
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -4521,19 +4521,19 @@ uint64_t __69__PLCloudPhotoLibraryManager__inq_numberOfPhotosToDownloadInLibrary
       *buf = 67109376;
       v19 = v11;
       v20 = 1024;
-      v21 = v6;
+      v21 = numberOfVideosToUpload;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEBUG, "_inq_numberOfVideosToUpload assetsdCount: %d, cplCount: %d", buf, 0xEu);
     }
   }
 
-  if (v15[3] + v6 >= self->_boundForUploadingVideos)
+  if (v15[3] + numberOfVideosToUpload >= self->_boundForUploadingVideos)
   {
     boundForUploadingVideos = self->_boundForUploadingVideos;
   }
 
   else
   {
-    boundForUploadingVideos = v15[3] + v6;
+    boundForUploadingVideos = v15[3] + numberOfVideosToUpload;
   }
 
   _Block_object_dispose(&v14, 8);
@@ -4565,19 +4565,19 @@ uint64_t __67__PLCloudPhotoLibraryManager__inq_numberOfVideosToUploadInLibrary__
   return result;
 }
 
-- (unint64_t)_inq_numberOfPhotosToUploadInLibrary:(id)a3
+- (unint64_t)_inq_numberOfPhotosToUploadInLibrary:(id)library
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v5 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
-  v6 = [v5 numberOfImagesToUpload];
+  cplLibrary = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+  numberOfImagesToUpload = [cplLibrary numberOfImagesToUpload];
 
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v7 = v4;
+  v7 = libraryCopy;
   PLRunWithUnfairLock();
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -4608,19 +4608,19 @@ uint64_t __67__PLCloudPhotoLibraryManager__inq_numberOfVideosToUploadInLibrary__
       *buf = 67109376;
       v19 = v11;
       v20 = 1024;
-      v21 = v6;
+      v21 = numberOfImagesToUpload;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEBUG, "_inq_numberOfPhotosToUpload assetsdCount: %d, cplCount: %d", buf, 0xEu);
     }
   }
 
-  if (v15[3] + v6 >= self->_boundForUploadingPhotos)
+  if (v15[3] + numberOfImagesToUpload >= self->_boundForUploadingPhotos)
   {
     boundForUploadingPhotos = self->_boundForUploadingPhotos;
   }
 
   else
   {
-    boundForUploadingPhotos = v15[3] + v6;
+    boundForUploadingPhotos = v15[3] + numberOfImagesToUpload;
   }
 
   _Block_object_dispose(&v14, 8);
@@ -4652,19 +4652,19 @@ uint64_t __67__PLCloudPhotoLibraryManager__inq_numberOfPhotosToUploadInLibrary__
   return result;
 }
 
-- (unint64_t)_inq_numberOfOtherItemsToUploadInLibrary:(id)a3
+- (unint64_t)_inq_numberOfOtherItemsToUploadInLibrary:(id)library
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v5 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
-  v6 = [v5 numberOfOtherItemsToUpload];
+  cplLibrary = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+  numberOfOtherItemsToUpload = [cplLibrary numberOfOtherItemsToUpload];
 
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v7 = v4;
+  v7 = libraryCopy;
   PLRunWithUnfairLock();
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -4695,19 +4695,19 @@ uint64_t __67__PLCloudPhotoLibraryManager__inq_numberOfPhotosToUploadInLibrary__
       *buf = 67109376;
       v19 = v11;
       v20 = 1024;
-      v21 = v6;
+      v21 = numberOfOtherItemsToUpload;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEBUG, "_inq_numberOfOtherItemsToUpload assetsdCount: %d, cplCount: %d", buf, 0xEu);
     }
   }
 
-  if (v15[3] + v6 >= self->_boundForUploadingOtherItems)
+  if (v15[3] + numberOfOtherItemsToUpload >= self->_boundForUploadingOtherItems)
   {
     boundForUploadingOtherItems = self->_boundForUploadingOtherItems;
   }
 
   else
   {
-    boundForUploadingOtherItems = v15[3] + v6;
+    boundForUploadingOtherItems = v15[3] + numberOfOtherItemsToUpload;
   }
 
   _Block_object_dispose(&v14, 8);
@@ -4740,27 +4740,27 @@ uint64_t __71__PLCloudPhotoLibraryManager__inq_numberOfOtherItemsToUploadInLibra
   return result;
 }
 
-- (void)_notifyCPLStatus:(id)a3 didChange:(BOOL)a4 andCPLConfiguration:(id)a5
+- (void)_notifyCPLStatus:(id)status didChange:(BOOL)change andCPLConfiguration:(id)configuration
 {
-  v6 = a4;
+  changeCopy = change;
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  statusCopy = status;
+  configurationCopy = configuration;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v10 = [v8 initialSyncDate];
+  initialSyncDate = [statusCopy initialSyncDate];
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v12 = [WeakRetained computeCacheManager];
+  computeCacheManager = [WeakRetained computeCacheManager];
 
-  if (v9)
+  if (configurationCopy)
   {
-    [v12 notifyCPLConfiguration:v9];
+    [computeCacheManager notifyCPLConfiguration:configurationCopy];
   }
 
-  v13 = [v8 hasFinishedInitialDownload];
-  v14 = v13;
-  if (self->_hasCompletedInitialDownload || !v13)
+  hasFinishedInitialDownload = [statusCopy hasFinishedInitialDownload];
+  v14 = hasFinishedInitialDownload;
+  if (self->_hasCompletedInitialDownload || !hasFinishedInitialDownload)
   {
-    if ([v8 isExceedingQuota] && v12)
+    if ([statusCopy isExceedingQuota] && computeCacheManager)
     {
       if ((*MEMORY[0x1E6994D48] & 1) == 0)
       {
@@ -4792,13 +4792,13 @@ uint64_t __71__PLCloudPhotoLibraryManager__inq_numberOfOtherItemsToUploadInLibra
         }
       }
 
-      [v12 notifyReadyToRestoreWithInitialSyncDate:v10];
+      [computeCacheManager notifyReadyToRestoreWithInitialSyncDate:initialSyncDate];
     }
   }
 
   else
   {
-    if (v12)
+    if (computeCacheManager)
     {
       if ((*MEMORY[0x1E6994D48] & 1) == 0)
       {
@@ -4830,15 +4830,15 @@ uint64_t __71__PLCloudPhotoLibraryManager__inq_numberOfOtherItemsToUploadInLibra
         }
       }
 
-      if (!v10)
+      if (!initialSyncDate)
       {
-        v10 = [MEMORY[0x1E695DF00] now];
+        initialSyncDate = [MEMORY[0x1E695DF00] now];
       }
 
-      [v12 notifyReadyToRestoreWithInitialSyncDate:v10];
+      [computeCacheManager notifyReadyToRestoreWithInitialSyncDate:initialSyncDate];
     }
 
-    if (v6 && [(PLCloudPhotoLibraryManager *)self _shouldResetICloudBackupExclusionPaths])
+    if (changeCopy && [(PLCloudPhotoLibraryManager *)self _shouldResetICloudBackupExclusionPaths])
     {
       if ((*MEMORY[0x1E6994D48] & 1) == 0)
       {
@@ -4865,33 +4865,33 @@ uint64_t __71__PLCloudPhotoLibraryManager__inq_numberOfOtherItemsToUploadInLibra
         v23 = v21;
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [(PLCloudPhotoLibraryManager *)self pathManager];
-          v25 = [v24 libraryURL];
+          pathManager = [(PLCloudPhotoLibraryManager *)self pathManager];
+          libraryURL = [pathManager libraryURL];
           v27 = 138412290;
-          v28 = v25;
+          v28 = libraryURL;
           _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_DEFAULT, "Setting iCPL-enabled exclusion flags on App Library because initial sync date was initially set: %@", &v27, 0xCu);
         }
       }
 
-      v26 = [(PLCloudPhotoLibraryManager *)self pathManager];
-      [v26 resetBackupExclusionPathsForBackupType:3];
+      pathManager2 = [(PLCloudPhotoLibraryManager *)self pathManager];
+      [pathManager2 resetBackupExclusionPathsForBackupType:3];
     }
   }
 
   self->_hasCompletedInitialDownload = v14;
 }
 
-- (void)_updateTransferCountsInLibrary:(id)a3
+- (void)_updateTransferCountsInLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager _updateTransferCountsInLibrary:]"];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__PLCloudPhotoLibraryManager__updateTransferCountsInLibrary___block_invoke;
   v7[3] = &unk_1E7578848;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = libraryCopy;
+  v6 = libraryCopy;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v5 block:v7];
 }
 
@@ -4955,9 +4955,9 @@ void __48__PLCloudPhotoLibraryManager_clearPrefetchState__block_invoke(uint64_t 
 {
   if (!self->_opportunisticTasksWasDisabled)
   {
-    v3 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-    v4 = [v3 databaseContext];
-    v5 = [v4 newShortLivedCplLibraryWithNameSuffix:"-[PLCloudPhotoLibraryManager _disableOpportunisticTasks]"];
+    libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+    databaseContext = [libraryServicesManager databaseContext];
+    v5 = [databaseContext newShortLivedCplLibraryWithNameSuffix:"-[PLCloudPhotoLibraryManager _disableOpportunisticTasks]"];
 
     if (v5)
     {
@@ -5003,9 +5003,9 @@ void __48__PLCloudPhotoLibraryManager_clearPrefetchState__block_invoke(uint64_t 
   {
     v16 = v2;
     v17 = v3;
-    v5 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-    v6 = [v5 databaseContext];
-    v7 = [v6 newShortLivedCplLibraryWithNameSuffix:"-[PLCloudPhotoLibraryManager _enableOpportunisticTasks]"];
+    libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+    databaseContext = [libraryServicesManager databaseContext];
+    v7 = [databaseContext newShortLivedCplLibraryWithNameSuffix:"-[PLCloudPhotoLibraryManager _enableOpportunisticTasks]"];
 
     if (v7)
     {
@@ -5075,44 +5075,44 @@ void __48__PLCloudPhotoLibraryManager_clearPrefetchState__block_invoke(uint64_t 
   }
 }
 
-- (void)_setReadyForAnalysisWithCPLStatus:(id)a3
+- (void)_setReadyForAnalysisWithCPLStatus:(id)status
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v6;
-  if (v6)
+  statusCopy = status;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isExceedingQuota = statusCopy;
+  if (statusCopy)
   {
-    if ([v6 hasFinishedInitialDownload])
+    if ([statusCopy hasFinishedInitialDownload])
     {
-      v5 = 1;
+      isExceedingQuota = 1;
     }
 
     else
     {
-      v5 = [v6 isExceedingQuota];
+      isExceedingQuota = [statusCopy isExceedingQuota];
     }
   }
 
-  v4->_unsafe_readyForAnalysis = v5;
-  objc_sync_exit(v4);
+  selfCopy->_unsafe_readyForAnalysis = isExceedingQuota;
+  objc_sync_exit(selfCopy);
 
-  if (v4->_unsafe_readyForAnalysis)
+  if (selfCopy->_unsafe_readyForAnalysis)
   {
-    [(PLCloudPhotoLibraryManager *)v4 _enableOpportunisticTasks];
+    [(PLCloudPhotoLibraryManager *)selfCopy _enableOpportunisticTasks];
   }
 }
 
-- (void)cplConfigurationWithCompletionHandler:(id)a3
+- (void)cplConfigurationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __68__PLCloudPhotoLibraryManager_cplConfigurationWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E7577C08;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:0 block:v6];
 }
 
@@ -5126,15 +5126,15 @@ void __68__PLCloudPhotoLibraryManager_cplConfigurationWithCompletionHandler___bl
   }
 }
 
-- (void)setCPLConfiguration:(id)a3
+- (void)setCPLConfiguration:(id)configuration
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  configurationCopy = configuration;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
-    libraryMode = v5->_libraryMode;
+    libraryMode = selfCopy->_libraryMode;
     if (libraryMode == 2)
     {
       v7 = __CPLAppLibraryOSLogDomain();
@@ -5158,27 +5158,27 @@ void __68__PLCloudPhotoLibraryManager_cplConfigurationWithCompletionHandler___bl
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134217984;
-      v11 = v4;
+      v11 = configurationCopy;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "PLCloudPhotoLibraryManager setting cplConfiguration to %p", &v10, 0xCu);
     }
   }
 
-  cplConfiguration = v5->_cplConfiguration;
-  v5->_cplConfiguration = v4;
+  cplConfiguration = selfCopy->_cplConfiguration;
+  selfCopy->_cplConfiguration = configurationCopy;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)cplConfiguration
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_cplConfiguration;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_cplConfiguration;
+  objc_sync_exit(selfCopy);
 
   if (!v3 && (*MEMORY[0x1E6994D48] & 1) == 0)
   {
-    libraryMode = v2->_libraryMode;
+    libraryMode = selfCopy->_libraryMode;
     if (libraryMode == 2)
     {
       v5 = __CPLAppLibraryOSLogDomain();
@@ -5209,15 +5209,15 @@ void __68__PLCloudPhotoLibraryManager_cplConfigurationWithCompletionHandler___bl
   return v3;
 }
 
-- (void)setCPLStatus:(id)a3
+- (void)setCPLStatus:(id)status
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  statusCopy = status;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
-    libraryMode = v5->_libraryMode;
+    libraryMode = selfCopy->_libraryMode;
     if (libraryMode == 2)
     {
       v7 = __CPLAppLibraryOSLogDomain();
@@ -5241,27 +5241,27 @@ void __68__PLCloudPhotoLibraryManager_cplConfigurationWithCompletionHandler___bl
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134217984;
-      v11 = v4;
+      v11 = statusCopy;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "PLCloudPhotoLibraryManager setting cplStatus to %p", &v10, 0xCu);
     }
   }
 
-  unsafe_cplStatus = v5->_unsafe_cplStatus;
-  v5->_unsafe_cplStatus = v4;
+  unsafe_cplStatus = selfCopy->_unsafe_cplStatus;
+  selfCopy->_unsafe_cplStatus = statusCopy;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)cplStatus
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_unsafe_cplStatus;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_unsafe_cplStatus;
+  objc_sync_exit(selfCopy);
 
   if (!v3 && (*MEMORY[0x1E6994D48] & 1) == 0)
   {
-    libraryMode = v2->_libraryMode;
+    libraryMode = selfCopy->_libraryMode;
     if (libraryMode == 2)
     {
       v5 = __CPLAppLibraryOSLogDomain();
@@ -5292,17 +5292,17 @@ void __68__PLCloudPhotoLibraryManager_cplConfigurationWithCompletionHandler___bl
   return v3;
 }
 
-- (void)getCPLStateForDebug:(BOOL)a3 completionHandler:(id)a4
+- (void)getCPLStateForDebug:(BOOL)debug completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __68__PLCloudPhotoLibraryManager_getCPLStateForDebug_completionHandler___block_invoke;
   v8[3] = &unk_1E7574750;
-  v10 = a3;
+  debugCopy = debug;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:0 block:v8];
 }
 
@@ -5318,18 +5318,18 @@ void __68__PLCloudPhotoLibraryManager_getCPLStateForDebug_completionHandler___bl
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_appWithBundleIdentifier:(id)a3 changedStateToForeground:(BOOL)a4
+- (void)_appWithBundleIdentifier:(id)identifier changedStateToForeground:(BOOL)foreground
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager _appWithBundleIdentifier:changedStateToForeground:]"];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __80__PLCloudPhotoLibraryManager__appWithBundleIdentifier_changedStateToForeground___block_invoke;
   v9[3] = &unk_1E7576AC8;
-  v11 = a4;
+  foregroundCopy = foreground;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = identifierCopy;
+  v8 = identifierCopy;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v7 block:v9];
 }
 
@@ -5410,7 +5410,7 @@ void __80__PLCloudPhotoLibraryManager__appWithBundleIdentifier_changedStateToFor
   kCPLMaximumOutgoingResourcesSize_block_invoke_bundleIdentifiersForCPLQuietNotification = v4;
 }
 
-- (void)_cameraChangedStateToForeground:(BOOL)a3
+- (void)_cameraChangedStateToForeground:(BOOL)foreground
 {
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager _cameraChangedStateToForeground:]"];
   v6[0] = MEMORY[0x1E69E9820];
@@ -5418,7 +5418,7 @@ void __80__PLCloudPhotoLibraryManager__appWithBundleIdentifier_changedStateToFor
   v6[2] = __62__PLCloudPhotoLibraryManager__cameraChangedStateToForeground___block_invoke;
   v6[3] = &unk_1E7576F80;
   v6[4] = self;
-  v7 = a3;
+  foregroundCopy = foreground;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v5 block:v6];
 }
 
@@ -5433,17 +5433,17 @@ void *__62__PLCloudPhotoLibraryManager__cameraChangedStateToForeground___block_i
   return result;
 }
 
-- (void)_updateThumbnailForAsset:(id)a3 withCloudThumbnailImageFileURL:(id)a4
+- (void)_updateThumbnailForAsset:(id)asset withCloudThumbnailImageFileURL:(id)l
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v7 options:1 error:0];
+  assetCopy = asset;
+  lCopy = l;
+  v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy options:1 error:0];
   if ([(__CFData *)v8 length])
   {
     v9 = MEMORY[0x1E69C08F0];
-    v10 = [v7 pathExtension];
-    v11 = [v9 typeWithFilenameExtension:v10 conformingToType:*MEMORY[0x1E6982E30]];
+    pathExtension = [lCopy pathExtension];
+    v11 = [v9 typeWithFilenameExtension:pathExtension conformingToType:*MEMORY[0x1E6982E30]];
 
     v12 = MEMORY[0x1E6982E58];
     if (v11)
@@ -5456,21 +5456,21 @@ void *__62__PLCloudPhotoLibraryManager__cameraChangedStateToForeground___block_i
       v13 = *MEMORY[0x1E6982E58];
     }
 
-    v16 = [v13 identifier];
+    identifier = [v13 identifier];
     v17 = MEMORY[0x1E695DF90];
     v38 = *MEMORY[0x1E696E118];
-    v39[0] = v16;
+    v39[0] = identifier;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:&v38 count:1];
     v19 = [v17 dictionaryWithDictionary:v18];
 
-    v20 = [v6 momentShare];
+    momentShare = [assetCopy momentShare];
 
-    if (v20)
+    if (momentShare)
     {
-      v21 = [*v12 identifier];
-      v37[0] = v21;
-      v22 = [*MEMORY[0x1E6982E00] identifier];
-      v37[1] = v22;
+      identifier2 = [*v12 identifier];
+      v37[0] = identifier2;
+      identifier3 = [*MEMORY[0x1E6982E00] identifier];
+      v37[1] = identifier3;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:2];
       [v19 setObject:v23 forKeyedSubscript:*MEMORY[0x1E696E010]];
     }
@@ -5479,7 +5479,7 @@ void *__62__PLCloudPhotoLibraryManager__cameraChangedStateToForeground___block_i
     if (v24)
     {
       v25 = v24;
-      [v6 generateAndUpdateThumbnailsWithPreviewImage:0 thumbnailImage:0 fromImageSource:v24 imageData:v8 forceSRGBConversion:0];
+      [assetCopy generateAndUpdateThumbnailsWithPreviewImage:0 thumbnailImage:0 fromImageSource:v24 imageData:v8 forceSRGBConversion:0];
       if ((*MEMORY[0x1E6994D48] & 1) == 0)
       {
         libraryMode = self->_libraryMode;
@@ -5506,9 +5506,9 @@ void *__62__PLCloudPhotoLibraryManager__cameraChangedStateToForeground___block_i
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
         {
           v33 = 138412546;
-          v34 = v6;
+          v34 = assetCopy;
           v35 = 2112;
-          v36 = v7;
+          v36 = lCopy;
           _os_log_impl(&dword_19BF1F000, v30, OS_LOG_TYPE_DEBUG, "Generated new thumbnail for asset %@ with %@", &v33, 0x16u);
         }
       }
@@ -5541,9 +5541,9 @@ void *__62__PLCloudPhotoLibraryManager__cameraChangedStateToForeground___block_i
       v31 = v29;
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
-        v32 = [v7 path];
+        path = [lCopy path];
         v33 = 138412290;
-        v34 = v32;
+        v34 = path;
         _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_ERROR, "Unable to create image source for '%@'.", &v33, 0xCu);
       }
     }
@@ -5578,7 +5578,7 @@ LABEL_39:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v33 = 138412290;
-      v34 = v7;
+      v34 = lCopy;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_ERROR, "Unable to read imageData from file '%@'.", &v33, 0xCu);
     }
 
@@ -5588,20 +5588,20 @@ LABEL_39:
 LABEL_40:
 }
 
-- (void)_updateThumbnailDataForAsset:(id)a3 withImageFileURL:(id)a4
+- (void)_updateThumbnailDataForAsset:(id)asset withImageFileURL:(id)l
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v7 options:1 error:0];
+  assetCopy = asset;
+  lCopy = l;
+  v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy options:1 error:0];
   if ([(__CFData *)v8 length])
   {
-    v9 = [v6 uniformTypeIdentifier];
-    v10 = v9;
-    if (v9)
+    uniformTypeIdentifier = [assetCopy uniformTypeIdentifier];
+    v10 = uniformTypeIdentifier;
+    if (uniformTypeIdentifier)
     {
       v22 = *MEMORY[0x1E696E118];
-      v23 = v9;
+      v23 = uniformTypeIdentifier;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     }
 
@@ -5618,7 +5618,7 @@ LABEL_40:
       v21 = *MEMORY[0x1E695E4D0];
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
       v17 = CGImageSourceCopyPropertiesAtIndex(v15, 0, v16);
-      [v6 setThumbnailDataFromImageProperties:v17];
+      [assetCopy setThumbnailDataFromImageProperties:v17];
       CFRelease(v15);
     }
 
@@ -5656,7 +5656,7 @@ LABEL_27:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v25 = v7;
+        v25 = lCopy;
         _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, "Unable to create image source for '%@'.", buf, 0xCu);
       }
     }
@@ -5690,7 +5690,7 @@ LABEL_27:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v25 = v7;
+      v25 = lCopy;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "Unable to read imageData from file '%@'.", buf, 0xCu);
     }
 
@@ -5700,22 +5700,22 @@ LABEL_27:
 LABEL_28:
 }
 
-- (void)_updateWithCPLResource:(id)a3 isHighPriority:(BOOL)a4 isForeground:(BOOL)a5 inLibrary:(id)a6 completionHandler:(id)a7
+- (void)_updateWithCPLResource:(id)resource isHighPriority:(BOOL)priority isForeground:(BOOL)foreground inLibrary:(id)library completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a6;
+  resourceCopy = resource;
+  libraryCopy = library;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __109__PLCloudPhotoLibraryManager__updateWithCPLResource_isHighPriority_isForeground_inLibrary_completionHandler___block_invoke;
   v16[3] = &unk_1E7575ED8;
-  v17 = v12;
-  v18 = self;
-  v19 = v13;
-  v20 = a4;
-  v21 = a5;
-  v14 = v13;
-  v15 = v12;
-  [v14 performTransaction:v16 completionHandler:a7];
+  v17 = resourceCopy;
+  selfCopy = self;
+  v19 = libraryCopy;
+  priorityCopy = priority;
+  foregroundCopy = foreground;
+  v14 = libraryCopy;
+  v15 = resourceCopy;
+  [v14 performTransaction:v16 completionHandler:handler];
 }
 
 void __109__PLCloudPhotoLibraryManager__updateWithCPLResource_isHighPriority_isForeground_inLibrary_completionHandler___block_invoke(uint64_t a1)
@@ -6908,19 +6908,19 @@ LABEL_164:
 LABEL_212:
 }
 
-- (void)_updateLocalStaleResourceWithCPLResource:(id)a3 inLibrary:(id)a4
+- (void)_updateLocalStaleResourceWithCPLResource:(id)resource inLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  resourceCopy = resource;
+  libraryCopy = library;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __81__PLCloudPhotoLibraryManager__updateLocalStaleResourceWithCPLResource_inLibrary___block_invoke;
   v10[3] = &unk_1E75761B8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = resourceCopy;
+  v12 = libraryCopy;
+  v8 = libraryCopy;
+  v9 = resourceCopy;
   [v8 performBlock:v10];
 }
 
@@ -7455,31 +7455,31 @@ LABEL_44:
   }
 }
 
-- (CGSize)_targetSizeForInputSize:(CGSize)a3 maxPixelSize:(unint64_t)a4
+- (CGSize)_targetSizeForInputSize:(CGSize)size maxPixelSize:(unint64_t)pixelSize
 {
   v4 = 1.0;
-  if (a3.height * a3.width > a4)
+  if (size.height * size.width > pixelSize)
   {
-    v4 = sqrt(a4 / (a3.height * a3.width));
+    v4 = sqrt(pixelSize / (size.height * size.width));
   }
 
-  v5 = a3.width * v4;
+  v5 = size.width * v4;
   v6 = roundf(v5);
-  v7 = a3.height * v4;
+  v7 = size.height * v4;
   v8 = roundf(v7);
   result.height = v8;
   result.width = v6;
   return result;
 }
 
-- (void)_linkFileFrom:(id)a3 to:(id)a4
+- (void)_linkFileFrom:(id)from to:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [v7 stringByDeletingLastPathComponent];
-  v10 = [v8 fileExistsAtPath:v9];
+  fromCopy = from;
+  toCopy = to;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  stringByDeletingLastPathComponent = [toCopy stringByDeletingLastPathComponent];
+  v10 = [defaultManager fileExistsAtPath:stringByDeletingLastPathComponent];
   v11 = MEMORY[0x1E6994D48];
   if (v10)
   {
@@ -7514,13 +7514,13 @@ LABEL_44:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v26 = v9;
+        v26 = stringByDeletingLastPathComponent;
         _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEBUG, "Creating destination path = %@", buf, 0xCu);
       }
     }
 
     v24 = 0;
-    [v8 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:&v24];
+    [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v24];
     v12 = v24;
   }
 
@@ -7550,15 +7550,15 @@ LABEL_44:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v26 = v6;
+      v26 = fromCopy;
       v27 = 2112;
-      v28 = v7;
+      v28 = toCopy;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEBUG, "Linking old thumb in %@ to new location in %@", buf, 0x16u);
     }
   }
 
   v23 = v12;
-  [v8 linkItemAtPath:v6 toPath:v7 error:&v23];
+  [defaultManager linkItemAtPath:fromCopy toPath:toCopy error:&v23];
   v19 = v23;
 
   if (v19 && (*v11 & 1) == 0)
@@ -7587,43 +7587,43 @@ LABEL_44:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v26 = v6;
+      v26 = fromCopy;
       v27 = 2112;
-      v28 = v7;
+      v28 = toCopy;
       _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_ERROR, "Unable to link file from '%@' to '%@'", buf, 0x16u);
     }
   }
 }
 
-- (void)libraryManager:(id)a3 providePayloadForComputeStates:(id)a4 inFolderWithURL:(id)a5 completionHandler:(id)a6
+- (void)libraryManager:(id)manager providePayloadForComputeStates:(id)states inFolderWithURL:(id)l completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  statesCopy = states;
+  lCopy = l;
+  handlerCopy = handler;
   v12 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager libraryManager:providePayloadForComputeStates:inFolderWithURL:completionHandler:]"];
-  v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
-  v14 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:{objc_msgSend(v9, "count")}];
-  v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
-  v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
+  v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
+  v14 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:{objc_msgSend(statesCopy, "count")}];
+  v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
+  v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __110__PLCloudPhotoLibraryManager_libraryManager_providePayloadForComputeStates_inFolderWithURL_completionHandler___block_invoke;
   v24[3] = &unk_1E75670B0;
   v24[4] = self;
-  v25 = v9;
+  v25 = statesCopy;
   v26 = v14;
   v27 = v16;
-  v28 = v10;
+  v28 = lCopy;
   v29 = v13;
   v30 = v15;
-  v31 = v11;
-  v17 = v11;
+  v31 = handlerCopy;
+  v17 = handlerCopy;
   v18 = v15;
   v19 = v13;
-  v20 = v10;
+  v20 = lCopy;
   v21 = v16;
   v22 = v14;
-  v23 = v9;
+  v23 = statesCopy;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v12 block:v24];
 }
 
@@ -7866,38 +7866,38 @@ uint64_t __110__PLCloudPhotoLibraryManager_libraryManager_providePayloadForCompu
   return (*(*(a1 + 72) + 16))();
 }
 
-- (void)libraryManager:(id)a3 inMemoryDownloadDidFinishForResourceTransferTask:(id)a4 data:(id)a5 withError:(id)a6
+- (void)libraryManager:(id)manager inMemoryDownloadDidFinishForResourceTransferTask:(id)task data:(id)data withError:(id)error
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [a4 resource];
+  dataCopy = data;
+  errorCopy = error;
+  resource = [task resource];
   v12 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager libraryManager:inMemoryDownloadDidFinishForResourceTransferTask:data:withError:]"];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __109__PLCloudPhotoLibraryManager_libraryManager_inMemoryDownloadDidFinishForResourceTransferTask_data_withError___block_invoke;
   v16[3] = &unk_1E7578100;
   v16[4] = self;
-  v17 = v11;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v11;
+  v17 = resource;
+  v18 = dataCopy;
+  v19 = errorCopy;
+  v13 = errorCopy;
+  v14 = dataCopy;
+  v15 = resource;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v12 block:v16];
 }
 
-- (void)libraryManager:(id)a3 uploadDidProgress:(float)a4 forResourceTransferTask:(id)a5
+- (void)libraryManager:(id)manager uploadDidProgress:(float)progress forResourceTransferTask:(id)task
 {
-  v7 = [a5 resource];
+  resource = [task resource];
   v8 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager libraryManager:uploadDidProgress:forResourceTransferTask:]"];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __87__PLCloudPhotoLibraryManager_libraryManager_uploadDidProgress_forResourceTransferTask___block_invoke;
   v10[3] = &unk_1E7567060;
-  v11 = v7;
-  v12 = self;
-  v13 = a4;
-  v9 = v7;
+  v11 = resource;
+  selfCopy = self;
+  progressCopy = progress;
+  v9 = resource;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v8 block:v10];
 }
 
@@ -7920,20 +7920,20 @@ void __87__PLCloudPhotoLibraryManager_libraryManager_uploadDidProgress_forResour
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.mobileslideshow.cpl.currenttransferprogresschange", 0, 0, 0);
 }
 
-- (void)libraryManager:(id)a3 uploadDidFinishForResourceTransferTask:(id)a4 withError:(id)a5
+- (void)libraryManager:(id)manager uploadDidFinishForResourceTransferTask:(id)task withError:(id)error
 {
-  v7 = a5;
-  v8 = [a4 resource];
+  errorCopy = error;
+  resource = [task resource];
   v9 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager libraryManager:uploadDidFinishForResourceTransferTask:withError:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __94__PLCloudPhotoLibraryManager_libraryManager_uploadDidFinishForResourceTransferTask_withError___block_invoke;
   v12[3] = &unk_1E75761B8;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = errorCopy;
+  v14 = resource;
+  v10 = resource;
+  v11 = errorCopy;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v9 block:v12];
 }
 
@@ -8057,18 +8057,18 @@ void __94__PLCloudPhotoLibraryManager_libraryManager_uploadDidFinishForResourceT
   }
 }
 
-- (void)libraryManager:(id)a3 uploadDidStartForResourceTransferTask:(id)a4
+- (void)libraryManager:(id)manager uploadDidStartForResourceTransferTask:(id)task
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.mobileslideshow.cpl.currenttransferprogresschange", 0, 0, 0);
 }
 
-- (void)libraryManager:(id)a3 backgroundDownloadDidFailForResource:(id)a4
+- (void)libraryManager:(id)manager backgroundDownloadDidFailForResource:(id)resource
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  resourceCopy = resource;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     libraryMode = self->_libraryMode;
@@ -8095,21 +8095,21 @@ void __94__PLCloudPhotoLibraryManager_libraryManager_uploadDidFinishForResourceT
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v7;
+      v14 = resourceCopy;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEFAULT, "backgroundDownloadDidFailForResource: %@", &v13, 0xCu);
     }
   }
 
   v11 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E6994990] code:26 userInfo:0];
-  v12 = [(PLCloudPhotoLibraryManager *)self _identifierForResource:v7];
+  v12 = [(PLCloudPhotoLibraryManager *)self _identifierForResource:resourceCopy];
   [(PLCloudTaskManager *)self->_taskManager reportCompletionForResourceIdentifier:v12 highPriority:0 withError:v11];
 }
 
-- (void)libraryManager:(id)a3 backgroundDownloadDidFinishForResource:(id)a4
+- (void)libraryManager:(id)manager backgroundDownloadDidFinishForResource:(id)resource
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  resourceCopy = resource;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     libraryMode = self->_libraryMode;
@@ -8136,24 +8136,24 @@ void __94__PLCloudPhotoLibraryManager_libraryManager_uploadDidFinishForResourceT
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v21 = v7;
+      v21 = resourceCopy;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEBUG, "Finished low priority download for resource: %@", buf, 0xCu);
     }
   }
 
-  v11 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-  v12 = [v11 databaseContext];
-  v13 = [v12 newShortLivedCplLibraryWithNameSuffix:"-[PLCloudPhotoLibraryManager libraryManager:backgroundDownloadDidFinishForResource:]"];
+  libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v13 = [databaseContext newShortLivedCplLibraryWithNameSuffix:"-[PLCloudPhotoLibraryManager libraryManager:backgroundDownloadDidFinishForResource:]"];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __84__PLCloudPhotoLibraryManager_libraryManager_backgroundDownloadDidFinishForResource___block_invoke;
   v16[3] = &unk_1E75761B8;
-  v17 = v7;
+  v17 = resourceCopy;
   v18 = v13;
-  v19 = self;
+  selfCopy = self;
   v14 = v13;
-  v15 = v7;
+  v15 = resourceCopy;
   [v14 performBlock:v16];
 }
 
@@ -8336,13 +8336,13 @@ LABEL_39:
 LABEL_42:
 }
 
-- (void)libraryManager:(id)a3 downloadDidFinishForResourceTransferTask:(id)a4 finalResource:(id)a5 withError:(id)a6
+- (void)libraryManager:(id)manager downloadDidFinishForResourceTransferTask:(id)task finalResource:(id)resource withError:(id)error
 {
   v77 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  managerCopy = manager;
+  taskCopy = task;
+  resourceCopy = resource;
+  errorCopy = error;
   v14 = MEMORY[0x1E6994D48];
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -8370,37 +8370,37 @@ LABEL_42:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v74 = v11;
+      v74 = taskCopy;
       v75 = 2112;
-      *v76 = v13;
+      *v76 = errorCopy;
       _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "downloadDidFinishForResourceTransferTask: %@, with error: %@", buf, 0x16u);
     }
   }
 
-  if (![v13 isCPLError] || objc_msgSend(v13, "code") != 10)
+  if (![errorCopy isCPLError] || objc_msgSend(errorCopy, "code") != 10)
   {
-    v20 = [v11 taskIdentifier];
-    v21 = [v20 hash];
+    taskIdentifier = [taskCopy taskIdentifier];
+    v21 = [taskIdentifier hash];
 
     kdebug_trace();
-    v63 = v12;
-    v60 = v10;
-    if (v12)
+    v63 = resourceCopy;
+    v60 = managerCopy;
+    if (resourceCopy)
     {
-      v22 = v12;
+      resource = resourceCopy;
     }
 
     else
     {
-      v22 = [v11 resource];
+      resource = [taskCopy resource];
     }
 
-    v23 = v22;
-    v24 = [v11 options];
-    v25 = [v24 isForeground];
+    v23 = resource;
+    options = [taskCopy options];
+    isForeground = [options isForeground];
 
-    v26 = [v11 options];
-    v59 = [v26 hasValidTimeRange];
+    options2 = [taskCopy options];
+    hasValidTimeRange = [options2 hasValidTimeRange];
 
     v27 = [(PLCloudPhotoLibraryManager *)self _identifierForResource:v23];
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -8409,24 +8409,24 @@ LABEL_42:
     aBlock[3] = &unk_1E75729B0;
     v71 = v21;
     aBlock[4] = self;
-    v61 = v13;
+    v61 = errorCopy;
     v62 = v27;
     v68 = v62;
-    v72 = v25;
-    v28 = v13;
+    v72 = isForeground;
+    v28 = errorCopy;
     v69 = v28;
     v29 = v23;
     v70 = v29;
     v30 = _Block_copy(aBlock);
     [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-    v32 = v31 = v11;
-    v33 = [v32 databaseContext];
-    v34 = [v33 newShortLivedCplLibraryWithNameSuffix:"-[PLCloudPhotoLibraryManager libraryManager:downloadDidFinishForResourceTransferTask:finalResource:withError:]"];
+    v32 = v31 = taskCopy;
+    databaseContext = [v32 databaseContext];
+    v34 = [databaseContext newShortLivedCplLibraryWithNameSuffix:"-[PLCloudPhotoLibraryManager libraryManager:downloadDidFinishForResourceTransferTask:finalResource:withError:]"];
 
     v64 = v31;
     if (v28)
     {
-      v10 = v60;
+      managerCopy = v60;
       v35 = v30;
       v36 = v29;
       if ((*v14 & 1) == 0)
@@ -8464,30 +8464,30 @@ LABEL_42:
 
       v47 = [v28 code] != 27;
       v43 = v34;
-      if (((v47 | v59) & 1) == 0)
+      if (((v47 | hasValidTimeRange) & 1) == 0)
       {
         [(PLCloudPhotoLibraryManager *)self _updateLocalStaleResourceWithCPLResource:v29 inLibrary:v34];
       }
 
       v30[2](v30);
-      v13 = v61;
+      errorCopy = v61;
       goto LABEL_73;
     }
 
-    v39 = [v31 options];
-    v40 = [v39 isHighPriority];
+    options3 = [v31 options];
+    isHighPriority = [options3 isHighPriority];
 
     v41 = *v14;
     v36 = v29;
     if (v29)
     {
-      v42 = v40;
-      v10 = v60;
+      v42 = isHighPriority;
+      managerCopy = v60;
       v43 = v34;
       v35 = v30;
-      if ((v59 & 1) == 0)
+      if ((hasValidTimeRange & 1) == 0)
       {
-        v13 = v61;
+        errorCopy = v61;
         if ((v41 & 1) == 0)
         {
           v50 = self->_libraryMode;
@@ -8518,7 +8518,7 @@ LABEL_42:
             v75 = 1024;
             *v76 = v42;
             *&v76[4] = 1024;
-            *&v76[6] = v25;
+            *&v76[6] = isForeground;
             _os_log_impl(&dword_19BF1F000, v58, OS_LOG_TYPE_DEBUG, "Update local state of resource %@, isHighPriority: %d, isForeground: %d", buf, 0x18u);
           }
         }
@@ -8528,12 +8528,12 @@ LABEL_42:
         v65[2] = __110__PLCloudPhotoLibraryManager_libraryManager_downloadDidFinishForResourceTransferTask_finalResource_withError___block_invoke_528;
         v65[3] = &unk_1E7576AA0;
         v66 = v35;
-        [(PLCloudPhotoLibraryManager *)self _updateWithCPLResource:v29 isHighPriority:v42 isForeground:v25 inLibrary:v43 completionHandler:v65];
+        [(PLCloudPhotoLibraryManager *)self _updateWithCPLResource:v29 isHighPriority:v42 isForeground:isForeground inLibrary:v43 completionHandler:v65];
 
         goto LABEL_73;
       }
 
-      v13 = v61;
+      errorCopy = v61;
       if (v41)
       {
         goto LABEL_67;
@@ -8570,7 +8570,7 @@ LABEL_42:
       v75 = 1024;
       *v76 = v42;
       *&v76[4] = 1024;
-      *&v76[6] = v25;
+      *&v76[6] = isForeground;
       v54 = "Skip updating local state of time ranged video resource %@, isHighPriority: %d, isForeground: %d";
       v55 = v53;
       v56 = OS_LOG_TYPE_DEBUG;
@@ -8580,8 +8580,8 @@ LABEL_42:
     else
     {
       v43 = v34;
-      v10 = v60;
-      v13 = v61;
+      managerCopy = v60;
+      errorCopy = v61;
       v35 = v30;
       if (*v14)
       {
@@ -8589,8 +8589,8 @@ LABEL_67:
         v35[2](v35);
 LABEL_73:
 
-        v12 = v63;
-        v11 = v64;
+        resourceCopy = v63;
+        taskCopy = v64;
 LABEL_74:
 
         goto LABEL_75;
@@ -8661,9 +8661,9 @@ LABEL_66:
     v36 = v19;
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      v52 = [v11 resource];
+      resource2 = [taskCopy resource];
       *buf = 138412290;
-      v74 = v52;
+      v74 = resource2;
       _os_log_impl(&dword_19BF1F000, v36, OS_LOG_TYPE_DEBUG, "resource %@ will be downloaded in background, skip reporting its completion", buf, 0xCu);
     }
 
@@ -8706,14 +8706,14 @@ void __110__PLCloudPhotoLibraryManager_libraryManager_downloadDidFinishForResour
   }
 }
 
-- (void)libraryManager:(id)a3 downloadDidStartForResourceTransferTask:(id)a4
+- (void)libraryManager:(id)manager downloadDidStartForResourceTransferTask:(id)task
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 resource];
-  v7 = [(PLCloudPhotoLibraryManager *)self _identifierForResource:v6];
-  v8 = [v5 options];
-  v9 = [v8 isForeground];
+  taskCopy = task;
+  resource = [taskCopy resource];
+  v7 = [(PLCloudPhotoLibraryManager *)self _identifierForResource:resource];
+  options = [taskCopy options];
+  isForeground = [options isForeground];
 
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -8741,22 +8741,22 @@ void __110__PLCloudPhotoLibraryManager_libraryManager_downloadDidFinishForResour
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       v13 = 138412290;
-      v14 = v5;
+      v14 = taskCopy;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEBUG, "downloadDidStartForResourceTransferTask: %@", &v13, 0xCu);
     }
   }
 
-  [(PLCloudTaskManager *)self->_taskManager reportProgress:v7 forResourceIdentifier:v9 highPriority:0.0];
+  [(PLCloudTaskManager *)self->_taskManager reportProgress:v7 forResourceIdentifier:isForeground highPriority:0.0];
 }
 
-- (void)libraryManager:(id)a3 downloadDidProgress:(float)a4 forResourceTransferTask:(id)a5
+- (void)libraryManager:(id)manager downloadDidProgress:(float)progress forResourceTransferTask:(id)task
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = [v7 resource];
-  v9 = [(PLCloudPhotoLibraryManager *)self _identifierForResource:v8];
-  v10 = [v7 options];
-  v11 = [v10 isForeground];
+  taskCopy = task;
+  resource = [taskCopy resource];
+  v9 = [(PLCloudPhotoLibraryManager *)self _identifierForResource:resource];
+  options = [taskCopy options];
+  isForeground = [options isForeground];
 
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -8784,28 +8784,28 @@ void __110__PLCloudPhotoLibraryManager_libraryManager_downloadDidFinishForResour
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       v16 = 134218242;
-      v17 = a4;
+      progressCopy = progress;
       v18 = 2112;
-      v19 = v7;
+      v19 = taskCopy;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEBUG, "downloadDidProgress %f forResourceTransferTask: %@", &v16, 0x16u);
     }
   }
 
-  *&v12 = a4;
-  [(PLCloudTaskManager *)self->_taskManager reportProgress:v9 forResourceIdentifier:v11 highPriority:v12];
+  *&v12 = progress;
+  [(PLCloudTaskManager *)self->_taskManager reportProgress:v9 forResourceIdentifier:isForeground highPriority:v12];
 }
 
-- (void)sizeOfResourcesToUploadDidChangeForLibraryManager:(id)a3
+- (void)sizeOfResourcesToUploadDidChangeForLibraryManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager sizeOfResourcesToUploadDidChangeForLibraryManager:]"];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __80__PLCloudPhotoLibraryManager_sizeOfResourcesToUploadDidChangeForLibraryManager___block_invoke;
   v7[3] = &unk_1E7578848;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = managerCopy;
+  v6 = managerCopy;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v5 block:v7];
 }
 
@@ -8826,17 +8826,17 @@ void __80__PLCloudPhotoLibraryManager_sizeOfResourcesToUploadDidChangeForLibrary
   [*(a1 + 32) _updateTransferCountsInLibrary:v5];
 }
 
-- (void)workerCoordinatorDidFinishAllSubmittedJobsOnBundle:(id)a3
+- (void)workerCoordinatorDidFinishAllSubmittedJobsOnBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager workerCoordinatorDidFinishAllSubmittedJobsOnBundle:]"];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __81__PLCloudPhotoLibraryManager_workerCoordinatorDidFinishAllSubmittedJobsOnBundle___block_invoke;
   v7[3] = &unk_1E7578848;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = bundleCopy;
+  v6 = bundleCopy;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v5 block:v7];
 }
 
@@ -8984,17 +8984,17 @@ void __81__PLCloudPhotoLibraryManager_workerCoordinatorDidFinishAllSubmittedJobs
   }
 }
 
-- (void)libraryManager:(id)a3 pushAllChangesWithCompletionHandler:(id)a4
+- (void)libraryManager:(id)manager pushAllChangesWithCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager libraryManager:pushAllChangesWithCompletionHandler:]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __81__PLCloudPhotoLibraryManager_libraryManager_pushAllChangesWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7577C08;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v6 block:v8];
 }
 
@@ -9072,12 +9072,12 @@ void __81__PLCloudPhotoLibraryManager_libraryManager_pushAllChangesWithCompletio
   }
 }
 
-- (void)libraryManager:(id)a3 provideLocalResource:(id)a4 recordClass:(Class)a5 completionHandler:(id)a6
+- (void)libraryManager:(id)manager provideLocalResource:(id)resource recordClass:(Class)class completionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  managerCopy = manager;
+  resourceCopy = resource;
+  handlerCopy = handler;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     libraryMode = self->_libraryMode;
@@ -9105,7 +9105,7 @@ void __81__PLCloudPhotoLibraryManager_libraryManager_pushAllChangesWithCompletio
     {
       v16 = [(PLCloudPhotoLibraryManager *)self _debugNameForState:self->_state];
       *buf = 138412546;
-      v25 = v11;
+      v25 = resourceCopy;
       v26 = 2112;
       v27 = v16;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "Requested to tentatively provide %@. assetsd state is currently in %@", buf, 0x16u);
@@ -9118,11 +9118,11 @@ void __81__PLCloudPhotoLibraryManager_libraryManager_pushAllChangesWithCompletio
   v20[2] = __96__PLCloudPhotoLibraryManager_libraryManager_provideLocalResource_recordClass_completionHandler___block_invoke;
   v20[3] = &unk_1E7567018;
   v20[4] = self;
-  v21 = v11;
-  v22 = v12;
-  v23 = a5;
-  v18 = v11;
-  v19 = v12;
+  v21 = resourceCopy;
+  v22 = handlerCopy;
+  classCopy = class;
+  v18 = resourceCopy;
+  v19 = handlerCopy;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v17 block:v20];
 }
 
@@ -9256,23 +9256,23 @@ LABEL_15:
 LABEL_17:
 }
 
-- (void)_getStatusChanges:(id)a3 transaction:(id)a4 notificationGeneration:(unint64_t)a5 inLibrary:(id)a6
+- (void)_getStatusChanges:(id)changes transaction:(id)transaction notificationGeneration:(unint64_t)generation inLibrary:(id)library
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  changesCopy = changes;
+  transactionCopy = transaction;
+  libraryCopy = library;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __93__PLCloudPhotoLibraryManager__getStatusChanges_transaction_notificationGeneration_inLibrary___block_invoke;
   v16[3] = &unk_1E7566FC8;
   v16[4] = self;
-  v17 = v11;
-  v19 = v10;
-  v20 = a5;
-  v18 = v12;
-  v13 = v10;
-  v14 = v12;
-  v15 = v11;
+  v17 = transactionCopy;
+  v19 = changesCopy;
+  generationCopy = generation;
+  v18 = libraryCopy;
+  v13 = changesCopy;
+  v14 = libraryCopy;
+  v15 = transactionCopy;
   [v13 getChangedStatusesWithCompletionHandler:v16];
 }
 
@@ -9961,9 +9961,9 @@ void __93__PLCloudPhotoLibraryManager__getStatusChanges_transaction_notification
   [v3 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_522];
 }
 
-- (void)libraryManagerHasStatusChanges:(id)a3
+- (void)libraryManagerHasStatusChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   if (PLIsAssetsd())
   {
     v5 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager libraryManagerHasStatusChanges:]"];
@@ -9972,7 +9972,7 @@ void __93__PLCloudPhotoLibraryManager__getStatusChanges_transaction_notification
     v10[2] = __61__PLCloudPhotoLibraryManager_libraryManagerHasStatusChanges___block_invoke;
     v10[3] = &unk_1E75761B8;
     v10[4] = self;
-    v11 = v4;
+    v11 = changesCopy;
     v12 = v5;
     v6 = v5;
     [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v6 block:v10];
@@ -10073,10 +10073,10 @@ void __61__PLCloudPhotoLibraryManager_libraryManagerHasStatusChanges___block_inv
   }
 }
 
-- (void)libraryManagerHasChangesToPull:(id)a3
+- (void)libraryManagerHasChangesToPull:(id)pull
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pullCopy = pull;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     libraryMode = self->_libraryMode;
@@ -10116,31 +10116,31 @@ void __61__PLCloudPhotoLibraryManager_libraryManagerHasStatusChanges___block_inv
 
   else
   {
-    v9 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-    v10 = [v9 libraryBundle];
-    v11 = [v10 assetsdClient];
-    v12 = [v11 cloudInternalClient];
-    [v12 syncCloudPhotoLibrary];
+    libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+    libraryBundle = [libraryServicesManager libraryBundle];
+    assetsdClient = [libraryBundle assetsdClient];
+    cloudInternalClient = [assetsdClient cloudInternalClient];
+    [cloudInternalClient syncCloudPhotoLibrary];
   }
 }
 
-- (void)libraryManagerDidChangeConfiguration:(id)a3
+- (void)libraryManagerDidChangeConfiguration:(id)configuration
 {
-  v4 = [(PLCloudPhotoLibraryManager *)self cplConfiguration];
-  [(PLCloudPhotoLibraryManager *)self configurationDidChange:v4];
+  cplConfiguration = [(PLCloudPhotoLibraryManager *)self cplConfiguration];
+  [(PLCloudPhotoLibraryManager *)self configurationDidChange:cplConfiguration];
 }
 
-- (void)libraryManagerStatusDidChange:(id)a3
+- (void)libraryManagerStatusDidChange:(id)change
 {
-  v4 = [(PLCloudPhotoLibraryManager *)self cplStatus];
-  [(PLCloudPhotoLibraryManager *)self statusDidChange:v4];
+  cplStatus = [(PLCloudPhotoLibraryManager *)self cplStatus];
+  [(PLCloudPhotoLibraryManager *)self statusDidChange:cplStatus];
 }
 
-- (void)_markResourceObjectIDsAsPurgeable:(id)a3 urgency:(int64_t)a4 inLibrary:(id)a5
+- (void)_markResourceObjectIDsAsPurgeable:(id)purgeable urgency:(int64_t)urgency inLibrary:(id)library
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  purgeableCopy = purgeable;
+  libraryCopy = library;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     libraryMode = self->_libraryMode;
@@ -10167,23 +10167,23 @@ void __61__PLCloudPhotoLibraryManager_libraryManagerHasStatusChanges___block_inv
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v22 = [v8 count];
+      v22 = [purgeableCopy count];
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "Marking %lu resources as purgeable", buf, 0xCu);
     }
   }
 
-  v13 = [v9 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __82__PLCloudPhotoLibraryManager__markResourceObjectIDsAsPurgeable_urgency_inLibrary___block_invoke;
   v16[3] = &unk_1E7576168;
-  v17 = v8;
-  v18 = v13;
-  v19 = self;
-  v20 = a4;
-  v14 = v13;
-  v15 = v8;
-  [v9 performBlock:v16];
+  v17 = purgeableCopy;
+  v18 = managedObjectContext;
+  selfCopy = self;
+  urgencyCopy = urgency;
+  v14 = managedObjectContext;
+  v15 = purgeableCopy;
+  [libraryCopy performBlock:v16];
 }
 
 void __82__PLCloudPhotoLibraryManager__markResourceObjectIDsAsPurgeable_urgency_inLibrary___block_invoke(uint64_t a1)
@@ -10327,10 +10327,10 @@ void __82__PLCloudPhotoLibraryManager__markResourceObjectIDsAsPurgeable_urgency_
   }
 }
 
-- (void)_processDownloadBatchWithSession:(id)a3 inLibrary:(id)a4
+- (void)_processDownloadBatchWithSession:(id)session inLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  libraryCopy = library;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v8 = PLCPLGetLog();
   v9 = os_signpost_id_generate(v8);
@@ -10343,11 +10343,11 @@ void __82__PLCloudPhotoLibraryManager__markResourceObjectIDsAsPurgeable_urgency_
   }
 
   v12 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager _processDownloadBatchWithSession:inLibrary:]"];
-  v13 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-  v14 = [v13 postRunningProgress];
-  v15 = [v14 isCancelled];
+  libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+  postRunningProgress = [libraryServicesManager postRunningProgress];
+  isCancelled = [postRunningProgress isCancelled];
 
-  if (v15)
+  if (isCancelled)
   {
     if ((*MEMORY[0x1E6994D48] & 1) == 0)
     {
@@ -10396,10 +10396,10 @@ void __82__PLCloudPhotoLibraryManager__markResourceObjectIDsAsPurgeable_urgency_
     v21[3] = &unk_1E7566F80;
     v21[4] = self;
     v22 = v12;
-    v23 = v7;
+    v23 = libraryCopy;
     v24 = v11;
     v26 = v9;
-    v25 = v6;
+    v25 = sessionCopy;
     [v25 getChangeBatchWithCompletionHandler:v21];
   }
 }
@@ -11369,9 +11369,9 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)_downloadFromCloudInLibrary:(id)a3
+- (void)_downloadFromCloudInLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v5 = PLCPLGetLog();
   v6 = os_signpost_id_generate(v5);
@@ -11384,8 +11384,8 @@ LABEL_23:
   }
 
   v9 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager _downloadFromCloudInLibrary:]"];
-  v10 = [objc_opt_class() _lastKnownCloudVersionInLibrary:v4];
-  v11 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+  v10 = [objc_opt_class() _lastKnownCloudVersionInLibrary:libraryCopy];
+  cplLibrary = [(PLCloudPhotoLibraryManager *)self cplLibrary];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __58__PLCloudPhotoLibraryManager__downloadFromCloudInLibrary___block_invoke;
@@ -11393,14 +11393,14 @@ LABEL_23:
   v16[4] = self;
   v17 = v9;
   v18 = v10;
-  v19 = v4;
+  v19 = libraryCopy;
   v20 = v8;
   v21 = v6;
   v12 = v8;
-  v13 = v4;
+  v13 = libraryCopy;
   v14 = v10;
   v15 = v9;
-  [v11 beginPullChangeSessionWithKnownLibraryVersion:v14 completionHandler:v16];
+  [cplLibrary beginPullChangeSessionWithKnownLibraryVersion:v14 completionHandler:v16];
 }
 
 void __58__PLCloudPhotoLibraryManager__downloadFromCloudInLibrary___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -11543,11 +11543,11 @@ uint64_t __58__PLCloudPhotoLibraryManager__downloadFromCloudInLibrary___block_in
   return [*(a1 + 32) _transitionToState:v6];
 }
 
-- (void)sendBudgetOverrideAnalytics:(BOOL)a3 pauseReason:(id)a4
+- (void)sendBudgetOverrideAnalytics:(BOOL)analytics pauseReason:(id)reason
 {
-  v4 = a3;
+  analyticsCopy = analytics;
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  reasonCopy = reason;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -11578,20 +11578,20 @@ uint64_t __58__PLCloudPhotoLibraryManager__downloadFromCloudInLibrary___block_in
   v20[7] = &v29;
   [(PLCloudPhotoLibraryManager *)self _runSyncOnIsolationQueueWithBlock:v20];
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v8 = [WeakRetained cloudPhotoLibraryManager];
+  cloudPhotoLibraryManager = [WeakRetained cloudPhotoLibraryManager];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __70__PLCloudPhotoLibraryManager_sendBudgetOverrideAnalytics_pauseReason___block_invoke_2;
   v19[3] = &unk_1E7566EB8;
   v19[4] = &v25;
   v19[5] = &v21;
-  [v8 getLibraryScopeStatusCountsForScopeWithIdentifier:@"PrimarySync" completionHandler:v19];
+  [cloudPhotoLibraryManager getLibraryScopeStatusCountsForScopeWithIdentifier:@"PrimarySync" completionHandler:v19];
 
   if (v30[3])
   {
-    v9 = v6;
+    v9 = reasonCopy;
     v10 = objc_alloc_init(MEMORY[0x1E69BF1F0]);
-    v11 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+    v11 = [MEMORY[0x1E696AD98] numberWithBool:analyticsCopy];
     v12 = *MEMORY[0x1E69BFAA0];
     [v10 setPayloadValue:v11 forKey:*MEMORY[0x1E69BFAD8] onEventWithName:*MEMORY[0x1E69BFAA0]];
 
@@ -11651,10 +11651,10 @@ void __70__PLCloudPhotoLibraryManager_sendBudgetOverrideAnalytics_pauseReason___
   *(*(*(a1 + 40) + 8) + 24) = v4;
 }
 
-- (BOOL)overrideSystemBudgetsForSyncSession:(BOOL)a3 pauseReason:(id)a4 forSystemBudgets:(unint64_t)a5
+- (BOOL)overrideSystemBudgetsForSyncSession:(BOOL)session pauseReason:(id)reason forSystemBudgets:(unint64_t)budgets
 {
-  v6 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  reasonCopy = reason;
   PLSAggregateDictionaryAddValueForScalarKey(@"com.apple.mobileslideshow.overrideBudgetCount", 1);
   v13 = 0;
   v14 = &v13;
@@ -11664,14 +11664,14 @@ void __70__PLCloudPhotoLibraryManager_sendBudgetOverrideAnalytics_pauseReason___
   v11[1] = 3221225472;
   v11[2] = __95__PLCloudPhotoLibraryManager_overrideSystemBudgetsForSyncSession_pauseReason_forSystemBudgets___block_invoke;
   v11[3] = &unk_1E7566E90;
-  v12 = v6;
+  v12 = sessionCopy;
   v11[5] = &v13;
-  v11[6] = a5;
+  v11[6] = budgets;
   v11[4] = self;
   [(PLCloudPhotoLibraryManager *)self _runSyncOnIsolationQueueWithBlock:v11];
-  if (v6)
+  if (sessionCopy)
   {
-    [(PLCloudPhotoLibraryManager *)self sendBudgetOverrideAnalytics:*(v14 + 24) pauseReason:v8];
+    [(PLCloudPhotoLibraryManager *)self sendBudgetOverrideAnalytics:*(v14 + 24) pauseReason:reasonCopy];
   }
 
   v9 = *(v14 + 24);
@@ -11692,17 +11692,17 @@ void __95__PLCloudPhotoLibraryManager_overrideSystemBudgetsForSyncSession_pauseR
   }
 }
 
-- (void)getSystemBudgetsWithCompletionHandler:(id)a3
+- (void)getSystemBudgetsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager getSystemBudgetsWithCompletionHandler:]"];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__PLCloudPhotoLibraryManager_getSystemBudgetsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7577C08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v5 block:v7];
 }
 
@@ -11746,11 +11746,11 @@ void __59__PLCloudPhotoLibraryManager_startAutomaticPrefetchOrPrune__block_invok
   [v3 updateCacheDeletePurgeableAmount];
 }
 
-- (void)_processUploadBatchWithStartupFailureCount:(unint64_t)a3 orderKeyManager:(id)a4 inLibrary:(id)a5
+- (void)_processUploadBatchWithStartupFailureCount:(unint64_t)count orderKeyManager:(id)manager inLibrary:(id)library
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  libraryCopy = library;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v10 = MEMORY[0x1E6994D48];
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
@@ -11778,17 +11778,17 @@ void __59__PLCloudPhotoLibraryManager_startAutomaticPrefetchOrPrune__block_invok
     v13 = v12;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [(PLCloudBatchUploader *)self->_uploader numberOfBatchesToUpload];
+      numberOfBatchesToUpload = [(PLCloudBatchUploader *)self->_uploader numberOfBatchesToUpload];
       *buf = 67109120;
-      LODWORD(v44) = v14;
+      LODWORD(v44) = numberOfBatchesToUpload;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEBUG, "Processing %d upload batches", buf, 8u);
     }
   }
 
   if ([(PLCloudBatchUploader *)self->_uploader hasBatchesToUpload])
   {
-    v30 = a3;
-    v15 = [(PLCloudPhotoLibraryUploadTracker *)self->_uploadTracker totalSizeOfUnpushedOriginals];
+    countCopy = count;
+    totalSizeOfUnpushedOriginals = [(PLCloudPhotoLibraryUploadTracker *)self->_uploadTracker totalSizeOfUnpushedOriginals];
     v16 = PLCPLGetLog();
     v17 = os_signpost_id_generate(v16);
     v18 = v16;
@@ -11796,7 +11796,7 @@ void __59__PLCloudPhotoLibraryManager_startAutomaticPrefetchOrPrune__block_invok
     if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
     {
       *buf = 134217984;
-      v44 = v15;
+      v44 = totalSizeOfUnpushedOriginals;
       _os_signpost_emit_with_name_impl(&dword_19BF1F000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v17, "Upload", "total size of unpushed originals: %llu", buf, 0xCu);
     }
 
@@ -11804,14 +11804,14 @@ void __59__PLCloudPhotoLibraryManager_startAutomaticPrefetchOrPrune__block_invok
     v39 = 3221225472;
     v40 = __99__PLCloudPhotoLibraryManager__processUploadBatchWithStartupFailureCount_orderKeyManager_inLibrary___block_invoke;
     v41 = &unk_1E75781E8;
-    v42 = self;
+    selfCopy = self;
     PLRunWithUnfairLock();
     v20 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager _processUploadBatchWithStartupFailureCount:orderKeyManager:inLibrary:]"];
-    v21 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-    v22 = [v21 postRunningProgress];
-    v23 = [v22 isCancelled];
+    libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+    postRunningProgress = [libraryServicesManager postRunningProgress];
+    isCancelled = [postRunningProgress isCancelled];
 
-    if (v23)
+    if (isCancelled)
     {
       if ((*v10 & 1) == 0)
       {
@@ -11854,26 +11854,26 @@ void __59__PLCloudPhotoLibraryManager_startAutomaticPrefetchOrPrune__block_invok
 
     else
     {
-      v26 = [objc_opt_class() _lastKnownCloudVersionInLibrary:v9];
-      v27 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+      v26 = [objc_opt_class() _lastKnownCloudVersionInLibrary:libraryCopy];
+      cplLibrary = [(PLCloudPhotoLibraryManager *)self cplLibrary];
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __99__PLCloudPhotoLibraryManager__processUploadBatchWithStartupFailureCount_orderKeyManager_inLibrary___block_invoke_415;
       v31[3] = &unk_1E7566E68;
       v31[4] = self;
       v32 = v20;
-      v33 = v9;
-      v34 = v8;
+      v33 = libraryCopy;
+      v34 = managerCopy;
       v35 = v19;
       v36 = v17;
-      v37 = v30;
-      [v27 beginPushChangeSessionWithKnownLibraryVersion:v26 completionHandler:v31];
+      v37 = countCopy;
+      [cplLibrary beginPushChangeSessionWithKnownLibraryVersion:v26 completionHandler:v31];
     }
   }
 
   else
   {
-    [(PLCloudPhotoLibraryManager *)self _finishUploadWithNoBatchesToUploadInLibrary:v9];
+    [(PLCloudPhotoLibraryManager *)self _finishUploadWithNoBatchesToUploadInLibrary:libraryCopy];
   }
 }
 
@@ -12777,9 +12777,9 @@ void __99__PLCloudPhotoLibraryManager__processUploadBatchWithStartupFailureCount
   }
 }
 
-- (void)_finishUploadWithNoBatchesToUploadInLibrary:(id)a3
+- (void)_finishUploadWithNoBatchesToUploadInLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     libraryMode = self->_libraryMode;
@@ -12810,10 +12810,10 @@ void __99__PLCloudPhotoLibraryManager__processUploadBatchWithStartupFailureCount
     }
   }
 
-  v8 = [v4 managedObjectContext];
-  [(PLCloudPhotoLibraryManager *)self _saveLastKnownCloudChangeTrackerTokenToDiskWithContext:v8];
+  managedObjectContext = [libraryCopy managedObjectContext];
+  [(PLCloudPhotoLibraryManager *)self _saveLastKnownCloudChangeTrackerTokenToDiskWithContext:managedObjectContext];
 
-  [(PLCloudBatchUploader *)self->_uploader processMomentSharesNeedingForceSyncInLibrary:v4];
+  [(PLCloudBatchUploader *)self->_uploader processMomentSharesNeedingForceSyncInLibrary:libraryCopy];
   if ([(PLCloudBatchUploader *)self->_uploader initialUpload])
   {
     v9 = 3;
@@ -12839,14 +12839,14 @@ void __99__PLCloudPhotoLibraryManager__processUploadBatchWithStartupFailureCount
   [(PLCloudPhotoLibraryManager *)self _transitionToState:v9];
 }
 
-- (void)_handleFinalizeSessionError:(id)a3 commitError:(id)a4 uploadBatchContainer:(id)a5 needResetSync:(BOOL)a6 forTransaction:(id)a7 inLibrary:(id)a8
+- (void)_handleFinalizeSessionError:(id)error commitError:(id)commitError uploadBatchContainer:(id)container needResetSync:(BOOL)sync forTransaction:(id)transaction inLibrary:(id)library
 {
   v36 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  errorCopy = error;
+  commitErrorCopy = commitError;
+  containerCopy = container;
+  transactionCopy = transaction;
+  libraryCopy = library;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     libraryMode = self->_libraryMode;
@@ -12873,7 +12873,7 @@ void __99__PLCloudPhotoLibraryManager__processUploadBatchWithStartupFailureCount
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v35 = v14;
+      v35 = errorCopy;
       _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEBUG, "finalizeError: %@", buf, 0xCu);
     }
   }
@@ -12883,17 +12883,17 @@ void __99__PLCloudPhotoLibraryManager__processUploadBatchWithStartupFailureCount
   v27[2] = __130__PLCloudPhotoLibraryManager__handleFinalizeSessionError_commitError_uploadBatchContainer_needResetSync_forTransaction_inLibrary___block_invoke;
   v27[3] = &unk_1E7573B88;
   v27[4] = self;
-  v28 = v15;
-  v29 = v14;
-  v30 = v16;
-  v33 = a6;
-  v31 = v18;
-  v32 = v17;
-  v22 = v17;
-  v23 = v18;
-  v24 = v16;
-  v25 = v14;
-  v26 = v15;
+  v28 = commitErrorCopy;
+  v29 = errorCopy;
+  v30 = containerCopy;
+  syncCopy = sync;
+  v31 = libraryCopy;
+  v32 = transactionCopy;
+  v22 = transactionCopy;
+  v23 = libraryCopy;
+  v24 = containerCopy;
+  v25 = errorCopy;
+  v26 = commitErrorCopy;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v22 block:v27];
 }
 
@@ -13281,21 +13281,21 @@ void __130__PLCloudPhotoLibraryManager__handleFinalizeSessionError_commitError_u
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.mobileslideshow.cpl.currenttransferprogresschange", 0, 0, 0);
 }
 
-- (void)_processUploadBatchInLibrary:(id)a3
+- (void)_processUploadBatchInLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [v4 libraryServicesManager];
-  v6 = [v5 databaseContext];
+  libraryCopy = library;
+  libraryServicesManager = [libraryCopy libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
 
   v7 = [PLRelationshipOrderKeyManager alloc];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __59__PLCloudPhotoLibraryManager__processUploadBatchInLibrary___block_invoke;
   v10[3] = &unk_1E7574C88;
-  v11 = v6;
-  v8 = v6;
+  v11 = databaseContext;
+  v8 = databaseContext;
   v9 = [(PLRelationshipOrderKeyManager *)v7 initWithGenerateContextBlock:v10];
-  [(PLCloudPhotoLibraryManager *)self _processUploadBatchWithStartupFailureCount:0 orderKeyManager:v9 inLibrary:v4];
+  [(PLCloudPhotoLibraryManager *)self _processUploadBatchWithStartupFailureCount:0 orderKeyManager:v9 inLibrary:libraryCopy];
 }
 
 uint64_t __59__PLCloudPhotoLibraryManager__processUploadBatchInLibrary___block_invoke(uint64_t a1, uint64_t a2)
@@ -13305,13 +13305,13 @@ uint64_t __59__PLCloudPhotoLibraryManager__processUploadBatchInLibrary___block_i
   return [v2 managedObjectContext];
 }
 
-- (void)updateTransferCountsWithInsertedPhotoCount:(unint64_t)a3 insertedVideoCount:(unint64_t)a4 inLibrary:(id)a5
+- (void)updateTransferCountsWithInsertedPhotoCount:(unint64_t)count insertedVideoCount:(unint64_t)videoCount inLibrary:(id)library
 {
-  if (a4 | a3)
+  if (videoCount | count)
   {
-    v6 = a5;
+    libraryCopy = library;
     PLRunWithUnfairLock();
-    [(PLCloudPhotoLibraryManager *)self _updateTransferCountsInLibrary:v6];
+    [(PLCloudPhotoLibraryManager *)self _updateTransferCountsInLibrary:libraryCopy];
   }
 }
 
@@ -13338,20 +13338,20 @@ void __102__PLCloudPhotoLibraryManager_updateTransferCountsWithInsertedPhotoCoun
   *(v12 + 384) = v11;
 }
 
-- (void)_uploadToCloudForEventsResult:(id)a3 inLibrary:(id)a4
+- (void)_uploadToCloudForEventsResult:(id)result inLibrary:(id)library
 {
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  libraryCopy = library;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __70__PLCloudPhotoLibraryManager__uploadToCloudForEventsResult_inLibrary___block_invoke;
   v11[3] = &unk_1E7576168;
   v11[4] = self;
-  v12 = v7;
-  v13 = v8;
+  v12 = resultCopy;
+  v13 = libraryCopy;
   v14 = a2;
-  v9 = v8;
-  v10 = v7;
+  v9 = libraryCopy;
+  v10 = resultCopy;
   [v9 performBlockAndWait:v11];
 }
 
@@ -13510,16 +13510,16 @@ void __70__PLCloudPhotoLibraryManager__uploadToCloudForEventsResult_inLibrary___
   }
 }
 
-- (void)_uploadFullPhotoLibraryToCloud:(id)a3
+- (void)_uploadFullPhotoLibraryToCloud:(id)cloud
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cloudCopy = cloud;
   dispatch_assert_queue_V2(self->_isolationQueue);
   [(PLCloudPhotoLibraryManager *)self _migrateFromChangeHubToCoreDataIfNecessary];
-  v5 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
-  [v5 willBeginPushSession];
+  cplLibrary = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+  [cplLibrary willBeginPushSession];
 
-  [(PLCloudBatchUploader *)self->_uploader uploadFullPhotoLibraryToCloud:v4];
+  [(PLCloudBatchUploader *)self->_uploader uploadFullPhotoLibraryToCloud:cloudCopy];
   if ([(PLCloudBatchUploader *)self->_uploader hasBatchesToUpload])
   {
     if (*MEMORY[0x1E6994D48])
@@ -13548,13 +13548,13 @@ void __70__PLCloudPhotoLibraryManager__uploadToCloudForEventsResult_inLibrary___
       v7 = ;
     }
 
-    v10 = v7;
+    globalValues = v7;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [(PLCloudBatchUploader *)self->_uploader numberOfBatchesToUpload];
+      numberOfBatchesToUpload = [(PLCloudBatchUploader *)self->_uploader numberOfBatchesToUpload];
       v14[0] = 67109120;
-      v14[1] = v11;
-      _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEBUG, "Uploading full library (%d batches) to cloud", v14, 8u);
+      v14[1] = numberOfBatchesToUpload;
+      _os_log_impl(&dword_19BF1F000, globalValues, OS_LOG_TYPE_DEBUG, "Uploading full library (%d batches) to cloud", v14, 8u);
     }
 
     v12 = 4;
@@ -13593,8 +13593,8 @@ void __70__PLCloudPhotoLibraryManager__uploadToCloudForEventsResult_inLibrary___
     }
 
     [(PLCloudBatchUploader *)self->_uploader setInitialUpload:0];
-    v10 = [v4 globalValues];
-    [v10 setCloudInitialUploadCompleted:1];
+    globalValues = [cloudCopy globalValues];
+    [globalValues setCloudInitialUploadCompleted:1];
     v12 = 6;
   }
 
@@ -13602,20 +13602,20 @@ LABEL_24:
   [(PLCloudPhotoLibraryManager *)self _transitionToState:v12];
 }
 
-- (void)_checkForPushedMastersInLibrary:(id)a3
+- (void)_checkForPushedMastersInLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v5 = [v4 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __62__PLCloudPhotoLibraryManager__checkForPushedMastersInLibrary___block_invoke;
   v8[3] = &unk_1E75761B8;
-  v9 = v5;
-  v10 = self;
-  v11 = v4;
-  v6 = v4;
-  v7 = v5;
+  v9 = managedObjectContext;
+  selfCopy = self;
+  v11 = libraryCopy;
+  v6 = libraryCopy;
+  v7 = managedObjectContext;
   [v6 performTransaction:v8];
 }
 
@@ -13723,21 +13723,21 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)_fixMasterStatusIn:(id)a3 inLibrary:(id)a4
+- (void)_fixMasterStatusIn:(id)in inLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  inCopy = in;
+  libraryCopy = library;
+  if ([inCopy count])
   {
-    v8 = [v6 copy];
-    v9 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+    v8 = [inCopy copy];
+    cplLibrary = [(PLCloudPhotoLibraryManager *)self cplLibrary];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __59__PLCloudPhotoLibraryManager__fixMasterStatusIn_inLibrary___block_invoke;
     v10[3] = &unk_1E7566D50;
     v10[4] = self;
-    v11 = v7;
-    [v9 getStatusForRecordsWithScopedIdentifiers:v8 completionHandler:v10];
+    v11 = libraryCopy;
+    [cplLibrary getStatusForRecordsWithScopedIdentifiers:v8 completionHandler:v10];
   }
 }
 
@@ -13876,9 +13876,9 @@ void __59__PLCloudPhotoLibraryManager__fixMasterStatusIn_inLibrary___block_invok
   }
 }
 
-- (id)_fetchEventsFromCloudChangeTrackerInLibrary:(id)a3
+- (id)_fetchEventsFromCloudChangeTrackerInLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -13891,7 +13891,7 @@ void __59__PLCloudPhotoLibraryManager__fixMasterStatusIn_inLibrary___block_invok
   v8[3] = &unk_1E7578820;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = libraryCopy;
   v9 = v5;
   [v5 performBlockAndWait:v8];
   v6 = v12[5];
@@ -13911,10 +13911,10 @@ void __74__PLCloudPhotoLibraryManager__fetchEventsFromCloudChangeTrackerInLibrar
   *(v4 + 40) = v3;
 }
 
-- (void)_fetchNewEventsFromCloudChangeTrackerInLibrary:(id)a3
+- (void)_fetchNewEventsFromCloudChangeTrackerInLibrary:(id)library
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   v5 = MEMORY[0x1E6994D48];
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -13981,7 +13981,7 @@ void __74__PLCloudPhotoLibraryManager__fetchEventsFromCloudChangeTrackerInLibrar
         }
       }
 
-      [(PLCloudPhotoLibraryManager *)self _uploadFullPhotoLibraryToCloud:v4];
+      [(PLCloudPhotoLibraryManager *)self _uploadFullPhotoLibraryToCloud:libraryCopy];
       goto LABEL_106;
     }
 
@@ -14015,7 +14015,7 @@ void __74__PLCloudPhotoLibraryManager__fetchEventsFromCloudChangeTrackerInLibrar
       }
     }
 
-    v18 = [(PLCloudPhotoLibraryManager *)self _fetchEventsFromCloudChangeTrackerInLibrary:v4];
+    v18 = [(PLCloudPhotoLibraryManager *)self _fetchEventsFromCloudChangeTrackerInLibrary:libraryCopy];
     if ([v18 resultType] == 4)
     {
       if ((*v5 & 1) == 0)
@@ -14081,7 +14081,7 @@ void __74__PLCloudPhotoLibraryManager__fetchEventsFromCloudChangeTrackerInLibrar
         }
 
         [MEMORY[0x1E6994B88] registerLikelyResetReason:@"assetsd changeStore has no history"];
-        [(PLCloudPhotoLibraryManager *)self _doResetSync:1 inLibrary:v4];
+        [(PLCloudPhotoLibraryManager *)self _doResetSync:1 inLibrary:libraryCopy];
         [(PLCloudPersistentHistoryChangeTracker *)self->_syncChangeTracker clearToken];
       }
 
@@ -14117,7 +14117,7 @@ void __74__PLCloudPhotoLibraryManager__fetchEventsFromCloudChangeTrackerInLibrar
           }
         }
 
-        [(PLCloudPhotoLibraryManager *)self _uploadFullPhotoLibraryToCloud:v4];
+        [(PLCloudPhotoLibraryManager *)self _uploadFullPhotoLibraryToCloud:libraryCopy];
       }
 
       goto LABEL_105;
@@ -14155,8 +14155,8 @@ void __74__PLCloudPhotoLibraryManager__fetchEventsFromCloudChangeTrackerInLibrar
         }
       }
 
-      v33 = [v4 managedObjectContext];
-      [(PLCloudPhotoLibraryManager *)self _saveLastKnownCloudChangeTrackerTokenToDiskWithContext:v33];
+      managedObjectContext = [libraryCopy managedObjectContext];
+      [(PLCloudPhotoLibraryManager *)self _saveLastKnownCloudChangeTrackerTokenToDiskWithContext:managedObjectContext];
 LABEL_92:
 
       goto LABEL_93;
@@ -14186,16 +14186,16 @@ LABEL_92:
           v24 = ;
         }
 
-        v33 = v24;
+        managedObjectContext = v24;
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
-          v38 = [v18 currentTokenDescription];
-          v39 = [(PLCloudPersistentHistoryChangeTracker *)self->_syncChangeTracker lastKnownTokenDescription];
+          currentTokenDescription = [v18 currentTokenDescription];
+          lastKnownTokenDescription = [(PLCloudPersistentHistoryChangeTracker *)self->_syncChangeTracker lastKnownTokenDescription];
           v47 = 138543618;
-          v48 = v38;
+          v48 = currentTokenDescription;
           v49 = 2114;
-          v50 = v39;
-          _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_DEFAULT, "We're not up to date, be there were no new events. Current token: %{public}@, we have %{public}@", &v47, 0x16u);
+          v50 = lastKnownTokenDescription;
+          _os_log_impl(&dword_19BF1F000, managedObjectContext, OS_LOG_TYPE_DEFAULT, "We're not up to date, be there were no new events. Current token: %{public}@, we have %{public}@", &v47, 0x16u);
         }
 
         goto LABEL_92;
@@ -14229,12 +14229,12 @@ LABEL_92:
         v40 = v26;
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
-          v41 = [(PLCloudPersistentHistoryChangeTracker *)self->_syncChangeTracker lastKnownTokenDescription];
-          v42 = [v18 resultType];
+          lastKnownTokenDescription2 = [(PLCloudPersistentHistoryChangeTracker *)self->_syncChangeTracker lastKnownTokenDescription];
+          resultType = [v18 resultType];
           v47 = 138543618;
-          v48 = v41;
+          v48 = lastKnownTokenDescription2;
           v49 = 2048;
-          v50 = v42;
+          v50 = resultType;
           _os_log_impl(&dword_19BF1F000, v40, OS_LOG_TYPE_DEFAULT, "fetched history from assetd since: %{public}@, resultType: %zd", &v47, 0x16u);
         }
       }
@@ -14243,7 +14243,7 @@ LABEL_92:
       {
         if ([v18 resultType] != 2)
         {
-          [(PLCloudPhotoLibraryManager *)self _uploadToCloudForEventsResult:v18 inLibrary:v4];
+          [(PLCloudPhotoLibraryManager *)self _uploadToCloudForEventsResult:v18 inLibrary:libraryCopy];
           goto LABEL_105;
         }
 
@@ -14272,19 +14272,19 @@ LABEL_92:
           v45 = v44;
           if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
           {
-            v46 = [(PLCloudPersistentHistoryChangeTracker *)self->_syncChangeTracker lastKnownTokenDescription];
+            lastKnownTokenDescription3 = [(PLCloudPersistentHistoryChangeTracker *)self->_syncChangeTracker lastKnownTokenDescription];
             v47 = 138543362;
-            v48 = v46;
+            v48 = lastKnownTokenDescription3;
             _os_log_impl(&dword_19BF1F000, v45, OS_LOG_TYPE_DEFAULT, "assetsd doesn't have change history for what we need. We're now going to re-push our current local library to the cloud, last token = %{public}@", &v47, 0xCu);
           }
         }
 
         [MEMORY[0x1E6994B88] registerLikelyResetReason:@"assetsd can't find its change history"];
-        [(PLCloudPhotoLibraryManager *)self _doResetSync:1 inLibrary:v4];
-        v34 = self;
+        [(PLCloudPhotoLibraryManager *)self _doResetSync:1 inLibrary:libraryCopy];
+        selfCopy2 = self;
         v35 = 3;
 LABEL_94:
-        [(PLCloudPhotoLibraryManager *)v34 _transitionToState:v35];
+        [(PLCloudPhotoLibraryManager *)selfCopy2 _transitionToState:v35];
 LABEL_105:
 
         goto LABEL_106;
@@ -14292,7 +14292,7 @@ LABEL_105:
     }
 
 LABEL_93:
-    v34 = self;
+    selfCopy2 = self;
     v35 = 6;
     goto LABEL_94;
   }
@@ -14336,9 +14336,9 @@ LABEL_106:
   dispatch_assert_queue_V2(self->_isolationQueue);
   if (self->_rulesChangeTracker)
   {
-    v3 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-    v4 = [v3 databaseContext];
-    v5 = [v4 newShortLivedLibraryWithName:"-[PLCloudPhotoLibraryManager _processRulesEvaluationIfNeeded]"];
+    libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+    databaseContext = [libraryServicesManager databaseContext];
+    v5 = [databaseContext newShortLivedLibraryWithName:"-[PLCloudPhotoLibraryManager _processRulesEvaluationIfNeeded]"];
 
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
@@ -14561,9 +14561,9 @@ void *__54__PLCloudPhotoLibraryManager_photosPreferencesChanged__block_invoke(ui
 - (void)resetSyncDueToMigrationMarker
 {
   [MEMORY[0x1E6994B88] registerLikelyResetReason:@"Change Hub migration marker found"];
-  v3 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-  v4 = [v3 databaseContext];
-  v5 = [v4 newShortLivedCplLibraryWithNameSuffix:"-[PLCloudPhotoLibraryManager resetSyncDueToMigrationMarker]"];
+  libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v5 = [databaseContext newShortLivedCplLibraryWithNameSuffix:"-[PLCloudPhotoLibraryManager resetSyncDueToMigrationMarker]"];
 
   [(PLCloudPhotoLibraryManager *)self _doResetSync:1 inLibrary:v5];
 }
@@ -14573,8 +14573,8 @@ void *__54__PLCloudPhotoLibraryManager_photosPreferencesChanged__block_invoke(ui
   objc_opt_class();
   v3 = MEMORY[0x1E69BF1C0];
   v4 = *MEMORY[0x1E69BF410];
-  v5 = [(PLCloudPhotoLibraryManager *)self pathManager];
-  v6 = [v3 readCPLPlistObjectWithKey:v4 pathManager:v5];
+  pathManager = [(PLCloudPhotoLibraryManager *)self pathManager];
+  v6 = [v3 readCPLPlistObjectWithKey:v4 pathManager:pathManager];
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -14594,8 +14594,8 @@ void *__54__PLCloudPhotoLibraryManager_photosPreferencesChanged__block_invoke(ui
 {
   v2 = MEMORY[0x1E69BF1C0];
   v3 = *MEMORY[0x1E69BF410];
-  v4 = [(PLCloudPhotoLibraryManager *)self pathManager];
-  [v2 saveCPLPlistObject:0 forKey:v3 pathManager:v4];
+  pathManager = [(PLCloudPhotoLibraryManager *)self pathManager];
+  [v2 saveCPLPlistObject:0 forKey:v3 pathManager:pathManager];
 }
 
 - (void)_startLibraryScopeRulesChangeTrackerInQueue
@@ -14605,16 +14605,16 @@ void *__54__PLCloudPhotoLibraryManager_photosPreferencesChanged__block_invoke(ui
   {
     if (PLIsSharedLibrarySuggestionsEnabled())
     {
-      v3 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-      v4 = [v3 databaseContext];
-      v5 = [v4 newShortLivedLibraryForHistoryPersistenceReadingWithName:"PLLibraryScopeChangeTracker persistence history tracker"];
+      libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+      databaseContext = [libraryServicesManager databaseContext];
+      v5 = [databaseContext newShortLivedLibraryForHistoryPersistenceReadingWithName:"PLLibraryScopeChangeTracker persistence history tracker"];
 
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __73__PLCloudPhotoLibraryManager__startLibraryScopeRulesChangeTrackerInQueue__block_invoke;
       v7[3] = &unk_1E7578848;
       v8 = v5;
-      v9 = self;
+      selfCopy = self;
       v6 = v5;
       [v6 performBlockAndWait:v7];
     }
@@ -14708,22 +14708,22 @@ void __73__PLCloudPhotoLibraryManager__startLibraryScopeRulesChangeTrackerInQueu
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:0 block:v2];
 }
 
-- (void)startAssetRecoveryWithTransaction:(id)a3
+- (void)startAssetRecoveryWithTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   if ([(PLCloudPhotoLibraryManager *)self isCloudPhotoLibraryEnabled])
   {
-    v4 = [(PLCloudPhotoLibraryManager *)self recoveryManager];
-    [v4 startRecoveryUsingCloudPhotoLibraryManager:self transaction:v5 shouldIdentifyInconsistentAssets:1];
+    recoveryManager = [(PLCloudPhotoLibraryManager *)self recoveryManager];
+    [recoveryManager startRecoveryUsingCloudPhotoLibraryManager:self transaction:transactionCopy shouldIdentifyInconsistentAssets:1];
   }
 }
 
-- (void)_doResetSync:(int64_t)a3 inLibrary:(id)a4
+- (void)_doResetSync:(int64_t)sync inLibrary:(id)library
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  libraryCopy = library;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  if (a3 != 2)
+  if (sync != 2)
   {
     self->_initializedMaster = 1;
   }
@@ -14755,7 +14755,7 @@ void __73__PLCloudPhotoLibraryManager__startLibraryScopeRulesChangeTrackerInQueu
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v34 = a3;
+      syncCopy = sync;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEFAULT, "Re-push local library to the cloud due to starting reset sync of type: %ld", buf, 0xCu);
     }
   }
@@ -14764,24 +14764,24 @@ void __73__PLCloudPhotoLibraryManager__startLibraryScopeRulesChangeTrackerInQueu
   v29 = 3221225472;
   v30 = __53__PLCloudPhotoLibraryManager__doResetSync_inLibrary___block_invoke;
   v31 = &unk_1E75781E8;
-  v32 = self;
+  selfCopy = self;
   PLRunWithUnfairLock();
   [(PLCloudPhotoLibraryUploadTracker *)self->_uploadTracker reset];
   [(PLCloudBatchUploader *)self->_uploader setInitialUpload:1];
   self->_pullOnIdle = 1;
   v11 = MEMORY[0x1E69BF1C0];
-  v12 = [(PLCloudPhotoLibraryManager *)self pathManager];
-  LODWORD(v11) = [v11 CPLPlistFileExistsWithPathManager:v12];
+  pathManager = [(PLCloudPhotoLibraryManager *)self pathManager];
+  LODWORD(v11) = [v11 CPLPlistFileExistsWithPathManager:pathManager];
 
   if (v11)
   {
-    self->_pendingResetSyncType = a3;
+    self->_pendingResetSyncType = sync;
   }
 
-  v13 = [(PLCloudPhotoLibraryManager *)self resourceManager];
-  [v13 stop];
+  resourceManager = [(PLCloudPhotoLibraryManager *)self resourceManager];
+  [resourceManager stop];
 
-  if (a3 == 2 && self->_syncChangeTracker)
+  if (sync == 2 && self->_syncChangeTracker)
   {
     if ((*v7 & 1) == 0)
     {
@@ -14816,7 +14816,7 @@ void __73__PLCloudPhotoLibraryManager__startLibraryScopeRulesChangeTrackerInQueu
 
   else
   {
-    PLResetSyncStatusWithLibrary(v6, 0, a3 == 2, 0, 0);
+    PLResetSyncStatusWithLibrary(libraryCopy, 0, sync == 2, 0, 0);
   }
 
   if ((*v7 & 1) == 0)
@@ -14849,14 +14849,14 @@ void __73__PLCloudPhotoLibraryManager__startLibraryScopeRulesChangeTrackerInQueu
     }
   }
 
-  v20 = [v6 globalValues];
+  globalValues = [libraryCopy globalValues];
   v23 = MEMORY[0x1E69E9820];
   v24 = 3221225472;
   v25 = __53__PLCloudPhotoLibraryManager__doResetSync_inLibrary___block_invoke_361;
   v26 = &unk_1E75781E8;
-  v27 = v20;
-  v21 = v20;
-  [v6 performTransactionAndWait:&v23];
+  v27 = globalValues;
+  v21 = globalValues;
+  [libraryCopy performTransactionAndWait:&v23];
   [(PLCloudPersistentHistoryChangeTracker *)self->_syncChangeTracker forceTokenToCurrent:v23];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.mobileslideshow.ResetSyncStateChanged", 0, 0, 1u);
@@ -14897,21 +14897,21 @@ uint64_t __53__PLCloudPhotoLibraryManager__doResetSync_inLibrary___block_invoke_
   return [v2 setCloudInitialUploadCompleted:0];
 }
 
-- (void)deleteResources:(id)a3 checkServerIfNecessary:(BOOL)a4 completionHandler:(id)a5
+- (void)deleteResources:(id)resources checkServerIfNecessary:(BOOL)necessary completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  resourcesCopy = resources;
+  handlerCopy = handler;
   v10 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager deleteResources:checkServerIfNecessary:completionHandler:]"];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __87__PLCloudPhotoLibraryManager_deleteResources_checkServerIfNecessary_completionHandler___block_invoke;
   v13[3] = &unk_1E75760C8;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = resourcesCopy;
+  necessaryCopy = necessary;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = resourcesCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v10 block:v13];
 }
 
@@ -14966,15 +14966,15 @@ void __87__PLCloudPhotoLibraryManager_deleteResources_checkServerIfNecessary_com
   }
 }
 
-- (void)downloadResourceInMemory:(id)a3 clientBundleID:(id)a4 proposedTaskIdentifier:(id)a5 taskDidBeginHandler:(id)a6 completionHandler:(id)a7
+- (void)downloadResourceInMemory:(id)memory clientBundleID:(id)d proposedTaskIdentifier:(id)identifier taskDidBeginHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (v12 && v16)
+  memoryCopy = memory;
+  dCopy = d;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v17 = completionHandlerCopy;
+  if (memoryCopy && completionHandlerCopy)
   {
     v18 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager downloadResourceInMemory:clientBundleID:proposedTaskIdentifier:taskDidBeginHandler:completionHandler:]"];
     v20[0] = MEMORY[0x1E69E9820];
@@ -14982,11 +14982,11 @@ void __87__PLCloudPhotoLibraryManager_deleteResources_checkServerIfNecessary_com
     v20[2] = __131__PLCloudPhotoLibraryManager_downloadResourceInMemory_clientBundleID_proposedTaskIdentifier_taskDidBeginHandler_completionHandler___block_invoke;
     v20[3] = &unk_1E7566D28;
     v20[4] = self;
-    v21 = v12;
-    v25 = v15;
-    v22 = v14;
+    v21 = memoryCopy;
+    v25 = handlerCopy;
+    v22 = identifierCopy;
     v26 = v17;
-    v23 = v13;
+    v23 = dCopy;
     v24 = v18;
     v19 = v18;
     [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v19 block:v20];
@@ -15261,41 +15261,41 @@ LABEL_21:
   [*(a1 + 56) stillAlive];
 }
 
-- (void)downloadResourceInMemoryForAsset:(id)a3 resourceType:(unint64_t)a4 masterResourceOnly:(BOOL)a5 clientBundleID:(id)a6 proposedTaskIdentifier:(id)a7 taskDidBeginHandler:(id)a8 completionHandler:(id)a9
+- (void)downloadResourceInMemoryForAsset:(id)asset resourceType:(unint64_t)type masterResourceOnly:(BOOL)only clientBundleID:(id)d proposedTaskIdentifier:(id)identifier taskDidBeginHandler:(id)handler completionHandler:(id)completionHandler
 {
-  if (a3 && a9)
+  if (asset && completionHandler)
   {
-    v12 = a5;
-    v16 = a9;
-    v17 = a8;
-    v18 = a7;
-    v19 = a6;
-    v20 = [(PLCloudPhotoLibraryManager *)self _assetResourceForAsset:a3 resourceType:a4 masterResourceOnly:v12 isPhoto:0];
-    [(PLCloudPhotoLibraryManager *)self downloadResourceInMemory:v20 clientBundleID:v19 proposedTaskIdentifier:v18 taskDidBeginHandler:v17 completionHandler:v16];
+    onlyCopy = only;
+    completionHandlerCopy = completionHandler;
+    handlerCopy = handler;
+    identifierCopy = identifier;
+    dCopy = d;
+    v20 = [(PLCloudPhotoLibraryManager *)self _assetResourceForAsset:asset resourceType:type masterResourceOnly:onlyCopy isPhoto:0];
+    [(PLCloudPhotoLibraryManager *)self downloadResourceInMemory:v20 clientBundleID:dCopy proposedTaskIdentifier:identifierCopy taskDidBeginHandler:handlerCopy completionHandler:completionHandlerCopy];
   }
 }
 
-- (void)downloadAsset:(id)a3 resourceType:(unint64_t)a4 masterResourceOnly:(BOOL)a5 highPriority:(BOOL)a6 clientBundleID:(id)a7 proposedTaskIdentifier:(id)a8 taskDidBeginHandler:(id)a9 progressBlock:(id)a10 completionHandler:(id)a11
+- (void)downloadAsset:(id)asset resourceType:(unint64_t)type masterResourceOnly:(BOOL)only highPriority:(BOOL)priority clientBundleID:(id)d proposedTaskIdentifier:(id)identifier taskDidBeginHandler:(id)handler progressBlock:(id)self0 completionHandler:(id)self1
 {
-  v13 = a6;
-  v14 = a5;
+  priorityCopy = priority;
+  onlyCopy = only;
   v46 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  if (!v20)
+  assetCopy = asset;
+  dCopy = d;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  blockCopy = block;
+  completionHandlerCopy = completionHandler;
+  if (!handlerCopy)
   {
-    v20 = &__block_literal_global_355;
+    handlerCopy = &__block_literal_global_355;
   }
 
   v33 = 0;
-  v23 = [(PLCloudPhotoLibraryManager *)self _assetResourceForAsset:v17 resourceType:a4 masterResourceOnly:v14 isPhoto:&v33];
+  v23 = [(PLCloudPhotoLibraryManager *)self _assetResourceForAsset:assetCopy resourceType:type masterResourceOnly:onlyCopy isPhoto:&v33];
   if (v23)
   {
-    [(PLCloudPhotoLibraryManager *)self downloadResource:v23 highPriority:v13 clientBundleID:v18 proposedTaskIdentifier:v19 taskDidBeginHandler:v20 progressBlock:v21 completionHandler:v22];
+    [(PLCloudPhotoLibraryManager *)self downloadResource:v23 highPriority:priorityCopy clientBundleID:dCopy proposedTaskIdentifier:identifierCopy taskDidBeginHandler:handlerCopy progressBlock:blockCopy completionHandler:completionHandlerCopy];
   }
 
   else
@@ -15311,8 +15311,8 @@ LABEL_21:
     }
 
     v25 = [PLCloudPhotoLibraryError createErrorWithType:v24];
-    v32 = [v17 allAssetCPLResources];
-    v31 = [v17 allMasterCPLResources];
+    allAssetCPLResources = [assetCopy allAssetCPLResources];
+    allMasterCPLResources = [assetCopy allMasterCPLResources];
     if ((*MEMORY[0x1E6994D48] & 1) == 0)
     {
       libraryMode = self->_libraryMode;
@@ -15338,33 +15338,33 @@ LABEL_21:
       v28 = v27;
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
-        [v17 master];
+        [assetCopy master];
         v29 = v30 = v25;
         *buf = 138413570;
         v35 = v30;
         v36 = 2112;
-        v37 = v17;
+        v37 = assetCopy;
         v38 = 2112;
-        v39 = v32;
+        v39 = allAssetCPLResources;
         v40 = 2112;
         v41 = v29;
         v42 = 2112;
-        v43 = v31;
+        v43 = allMasterCPLResources;
         v44 = 2048;
-        v45 = a4;
+        typeCopy = type;
         _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_ERROR, "%@. Asset: %@ %@, Master: %@ %@, resourceType: %lu", buf, 0x3Eu);
 
         v25 = v30;
       }
     }
 
-    v20[2](v20, 0, a4, v25);
+    handlerCopy[2](handlerCopy, 0, type, v25);
   }
 }
 
-- (id)_assetResourceForAsset:(id)a3 resourceType:(unint64_t)a4 masterResourceOnly:(BOOL)a5 isPhoto:(BOOL *)a6
+- (id)_assetResourceForAsset:(id)asset resourceType:(unint64_t)type masterResourceOnly:(BOOL)only isPhoto:(BOOL *)photo
 {
-  v9 = a3;
+  assetCopy = asset;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -15375,22 +15375,22 @@ LABEL_21:
   v23 = __Block_byref_object_copy__11895;
   v24 = __Block_byref_object_dispose__11896;
   v25 = 0;
-  v10 = [v9 photoLibrary];
+  photoLibrary = [assetCopy photoLibrary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __93__PLCloudPhotoLibraryManager__assetResourceForAsset_resourceType_masterResourceOnly_isPhoto___block_invoke;
   v14[3] = &unk_1E7566CD8;
   v16 = &v26;
-  v11 = v9;
-  v19 = a5;
+  v11 = assetCopy;
+  onlyCopy = only;
   v15 = v11;
   v17 = &v20;
-  v18 = a4;
-  [v10 performBlockAndWait:v14];
+  typeCopy = type;
+  [photoLibrary performBlockAndWait:v14];
 
-  if (a6)
+  if (photo)
   {
-    *a6 = *(v27 + 24);
+    *photo = *(v27 + 24);
   }
 
   v12 = v21[5];
@@ -15422,19 +15422,19 @@ void __93__PLCloudPhotoLibraryManager__assetResourceForAsset_resourceType_master
   *(v5 + 40) = v4;
 }
 
-- (void)downloadResource:(id)a3 options:(id)a4 clientBundleID:(id)a5 proposedTaskIdentifier:(id)a6 taskDidBeginHandler:(id)a7 progressBlock:(id)a8 completionHandler:(id)a9
+- (void)downloadResource:(id)resource options:(id)options clientBundleID:(id)d proposedTaskIdentifier:(id)identifier taskDidBeginHandler:(id)handler progressBlock:(id)block completionHandler:(id)completionHandler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = [v15 resourceType];
-  if (v21)
+  resourceCopy = resource;
+  optionsCopy = options;
+  dCopy = d;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  blockCopy = block;
+  completionHandlerCopy = completionHandler;
+  resourceType = [resourceCopy resourceType];
+  if (completionHandlerCopy)
   {
-    v23 = v21;
+    v23 = completionHandlerCopy;
   }
 
   else
@@ -15442,27 +15442,27 @@ void __93__PLCloudPhotoLibraryManager__assetResourceForAsset_resourceType_master
     v23 = &__block_literal_global_344;
   }
 
-  if (!v19)
+  if (!handlerCopy)
   {
-    v19 = &__block_literal_global_347;
+    handlerCopy = &__block_literal_global_347;
   }
 
-  if (v15)
+  if (resourceCopy)
   {
     v24 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager downloadResource:options:clientBundleID:proposedTaskIdentifier:taskDidBeginHandler:progressBlock:completionHandler:]"];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __145__PLCloudPhotoLibraryManager_downloadResource_options_clientBundleID_proposedTaskIdentifier_taskDidBeginHandler_progressBlock_completionHandler___block_invoke_3;
     v27[3] = &unk_1E7566CB0;
-    v28 = v16;
-    v29 = self;
-    v30 = v15;
-    v34 = v19;
-    v37 = v22;
-    v31 = v18;
-    v35 = v20;
+    v28 = optionsCopy;
+    selfCopy = self;
+    v30 = resourceCopy;
+    v34 = handlerCopy;
+    v37 = resourceType;
+    v31 = identifierCopy;
+    v35 = blockCopy;
     v36 = v23;
-    v32 = v17;
+    v32 = dCopy;
     v33 = v24;
     v25 = v24;
     [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v25 block:v27];
@@ -15471,7 +15471,7 @@ void __93__PLCloudPhotoLibraryManager__assetResourceForAsset_resourceType_master
   else
   {
     v26 = [PLCloudPhotoLibraryError createErrorWithType:12];
-    (*(v19 + 2))(v19, 0, v22, v26);
+    (*(handlerCopy + 2))(handlerCopy, 0, resourceType, v26);
   }
 }
 
@@ -15781,59 +15781,59 @@ LABEL_22:
   [*(a1 + 64) stillAlive];
 }
 
-- (void)downloadResource:(id)a3 highPriority:(BOOL)a4 clientBundleID:(id)a5 proposedTaskIdentifier:(id)a6 taskDidBeginHandler:(id)a7 progressBlock:(id)a8 completionHandler:(id)a9
+- (void)downloadResource:(id)resource highPriority:(BOOL)priority clientBundleID:(id)d proposedTaskIdentifier:(id)identifier taskDidBeginHandler:(id)handler progressBlock:(id)block completionHandler:(id)completionHandler
 {
-  v13 = a4;
+  priorityCopy = priority;
   v16 = MEMORY[0x1E6994BA8];
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a3;
-  v23 = [[v16 alloc] initWithHighPriority:v13];
-  [(PLCloudPhotoLibraryManager *)self downloadResource:v22 options:v23 clientBundleID:v21 proposedTaskIdentifier:v20 taskDidBeginHandler:v19 progressBlock:v18 completionHandler:v17];
+  completionHandlerCopy = completionHandler;
+  blockCopy = block;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  dCopy = d;
+  resourceCopy = resource;
+  v23 = [[v16 alloc] initWithHighPriority:priorityCopy];
+  [(PLCloudPhotoLibraryManager *)self downloadResource:resourceCopy options:v23 clientBundleID:dCopy proposedTaskIdentifier:identifierCopy taskDidBeginHandler:handlerCopy progressBlock:blockCopy completionHandler:completionHandlerCopy];
 }
 
-- (id)_identifierForResource:(id)a3
+- (id)_identifierForResource:(id)resource
 {
-  v3 = a3;
-  v4 = [v3 itemScopedIdentifier];
+  resourceCopy = resource;
+  itemScopedIdentifier = [resourceCopy itemScopedIdentifier];
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [v4 descriptionWithNoScopeIndex];
-  v7 = [v3 resourceType];
+  descriptionWithNoScopeIndex = [itemScopedIdentifier descriptionWithNoScopeIndex];
+  resourceType = [resourceCopy resourceType];
 
-  v8 = [v5 stringWithFormat:@"%@_%lu", v6, v7];
+  v8 = [v5 stringWithFormat:@"%@_%lu", descriptionWithNoScopeIndex, resourceType];
 
   return v8;
 }
 
-- (void)getStreamingURLForAsset:(id)a3 resourceType:(unint64_t)a4 intent:(unint64_t)a5 hints:(id)a6 timeRange:(id *)a7 clientBundleID:(id)a8 completionHandler:(id)a9
+- (void)getStreamingURLForAsset:(id)asset resourceType:(unint64_t)type intent:(unint64_t)intent hints:(id)hints timeRange:(id *)range clientBundleID:(id)d completionHandler:(id)handler
 {
-  v15 = a3;
-  v16 = a6;
-  v17 = a8;
-  v18 = a9;
+  assetCopy = asset;
+  hintsCopy = hints;
+  dCopy = d;
+  handlerCopy = handler;
   v19 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager getStreamingURLForAsset:resourceType:intent:hints:timeRange:clientBundleID:completionHandler:]"];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
-  v20 = *&a7->var0.var3;
-  v33 = *&a7->var0.var0;
+  v20 = *&range->var0.var3;
+  v33 = *&range->var0.var0;
   v34 = v20;
   v25[2] = __123__PLCloudPhotoLibraryManager_getStreamingURLForAsset_resourceType_intent_hints_timeRange_clientBundleID_completionHandler___block_invoke;
   v25[3] = &unk_1E7566C20;
-  v26 = v16;
-  v27 = v15;
-  v31 = a4;
-  v32 = a5;
-  v35 = *&a7->var1.var1;
-  v28 = self;
-  v29 = v17;
-  v30 = v18;
-  v21 = v18;
-  v22 = v17;
-  v23 = v15;
-  v24 = v16;
+  v26 = hintsCopy;
+  v27 = assetCopy;
+  typeCopy = type;
+  intentCopy = intent;
+  v35 = *&range->var1.var1;
+  selfCopy = self;
+  v29 = dCopy;
+  v30 = handlerCopy;
+  v21 = handlerCopy;
+  v22 = dCopy;
+  v23 = assetCopy;
+  v24 = hintsCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v19 block:v25];
 }
 
@@ -16068,20 +16068,20 @@ void __123__PLCloudPhotoLibraryManager_getStreamingURLForAsset_resourceType_inte
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchResourcesForAsset:(id)a3 completionHandler:(id)a4
+- (void)fetchResourcesForAsset:(id)asset completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  handlerCopy = handler;
   v8 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager fetchResourcesForAsset:completionHandler:]"];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __71__PLCloudPhotoLibraryManager_fetchResourcesForAsset_completionHandler___block_invoke;
   v11[3] = &unk_1E7576F38;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = assetCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = assetCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v8 block:v11];
 }
 
@@ -16177,20 +16177,20 @@ void __71__PLCloudPhotoLibraryManager_fetchResourcesForAsset_completionHandler__
   }
 }
 
-- (void)fetchAdjustmentDataForAsset:(id)a3 completionHandler:(id)a4
+- (void)fetchAdjustmentDataForAsset:(id)asset completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  handlerCopy = handler;
   v8 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager fetchAdjustmentDataForAsset:completionHandler:]"];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __76__PLCloudPhotoLibraryManager_fetchAdjustmentDataForAsset_completionHandler___block_invoke;
   v11[3] = &unk_1E7576F38;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = assetCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = assetCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v8 block:v11];
 }
 
@@ -16286,9 +16286,9 @@ void __76__PLCloudPhotoLibraryManager_fetchAdjustmentDataForAsset_completionHand
 LABEL_7:
 }
 
-- (BOOL)isResourceTransferTaskAliveWithTaskWithIdentifier:(id)a3
+- (BOOL)isResourceTransferTaskAliveWithTaskWithIdentifier:(id)identifier
 {
-  v3 = [(PLCloudTaskManager *)self->_taskManager getPendingTaskForTaskIdentifier:a3];
+  v3 = [(PLCloudTaskManager *)self->_taskManager getPendingTaskForTaskIdentifier:identifier];
   v4 = v3 != 0;
 
   return v4;
@@ -16380,43 +16380,43 @@ void __34__PLCloudPhotoLibraryManager_sync__block_invoke(uint64_t a1)
   }
 }
 
-- (void)saveRulesTrackerToken:(id)a3
+- (void)saveRulesTrackerToken:(id)token
 {
-  v4 = a3;
-  v5 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-  v6 = [v5 databaseContext];
-  v10 = [v6 newShortLivedLibraryForHistoryPersistenceReadingWithName:"-[PLCloudPhotoLibraryManager saveRulesTrackerToken:]"];
+  tokenCopy = token;
+  libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v10 = [databaseContext newShortLivedLibraryForHistoryPersistenceReadingWithName:"-[PLCloudPhotoLibraryManager saveRulesTrackerToken:]"];
 
   v7 = [PLGlobalValues alloc];
-  v8 = [v10 managedObjectContext];
-  v9 = [(PLGlobalValues *)v7 initWithManagedObjectContext:v8];
+  managedObjectContext = [v10 managedObjectContext];
+  v9 = [(PLGlobalValues *)v7 initWithManagedObjectContext:managedObjectContext];
 
-  [(PLGlobalValues *)v9 setLibraryScopeRulesTrackerLastKnownToken:v4];
+  [(PLGlobalValues *)v9 setLibraryScopeRulesTrackerLastKnownToken:tokenCopy];
 }
 
 - (id)readRulesTrackerToken
 {
-  v2 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-  v3 = [v2 databaseContext];
-  v4 = [v3 newShortLivedLibraryForHistoryPersistenceReadingWithName:"-[PLCloudPhotoLibraryManager readRulesTrackerToken]"];
+  libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v4 = [databaseContext newShortLivedLibraryForHistoryPersistenceReadingWithName:"-[PLCloudPhotoLibraryManager readRulesTrackerToken]"];
 
   v5 = [PLGlobalValues alloc];
-  v6 = [v4 managedObjectContext];
-  v7 = [(PLGlobalValues *)v5 initWithManagedObjectContext:v6];
+  managedObjectContext = [v4 managedObjectContext];
+  v7 = [(PLGlobalValues *)v5 initWithManagedObjectContext:managedObjectContext];
 
-  v8 = [(PLGlobalValues *)v7 libraryScopeRulesTrackerLastKnownToken];
+  libraryScopeRulesTrackerLastKnownToken = [(PLGlobalValues *)v7 libraryScopeRulesTrackerLastKnownToken];
 
-  return v8;
+  return libraryScopeRulesTrackerLastKnownToken;
 }
 
-- (void)cloudChangeTrackerDidReceiveChangesWithTransaction:(id)a3
+- (void)cloudChangeTrackerDidReceiveChangesWithTransaction:(id)transaction
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __81__PLCloudPhotoLibraryManager_cloudChangeTrackerDidReceiveChangesWithTransaction___block_invoke;
   v3[3] = &unk_1E75781E8;
   v3[4] = self;
-  [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:a3 block:v3];
+  [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:transaction block:v3];
 }
 
 uint64_t __81__PLCloudPhotoLibraryManager_cloudChangeTrackerDidReceiveChangesWithTransaction___block_invoke(uint64_t a1)
@@ -16465,41 +16465,41 @@ uint64_t __81__PLCloudPhotoLibraryManager_cloudChangeTrackerDidReceiveChangesWit
   return result;
 }
 
-- (void)saveCloudTrackerToken:(id)a3 withContext:(id)a4
+- (void)saveCloudTrackerToken:(id)token withContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PLGlobalValues alloc] initWithManagedObjectContext:v5];
+  contextCopy = context;
+  tokenCopy = token;
+  v7 = [[PLGlobalValues alloc] initWithManagedObjectContext:contextCopy];
 
-  [(PLGlobalValues *)v7 setCloudTrackerLastKnownToken:v6];
+  [(PLGlobalValues *)v7 setCloudTrackerLastKnownToken:tokenCopy];
 }
 
 - (id)readCloudTrackerToken
 {
   if (self->_wasRebuild)
   {
-    v2 = 0;
+    cloudTrackerLastKnownToken = 0;
   }
 
   else
   {
-    v3 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-    v4 = [v3 databaseContext];
-    v5 = [v4 newShortLivedLibraryForHistoryPersistenceReadingWithName:"-[PLCloudPhotoLibraryManager readCloudTrackerToken]"];
+    libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+    databaseContext = [libraryServicesManager databaseContext];
+    v5 = [databaseContext newShortLivedLibraryForHistoryPersistenceReadingWithName:"-[PLCloudPhotoLibraryManager readCloudTrackerToken]"];
 
     v6 = [PLGlobalValues alloc];
-    v7 = [v5 managedObjectContext];
-    v8 = [(PLGlobalValues *)v6 initWithManagedObjectContext:v7];
+    managedObjectContext = [v5 managedObjectContext];
+    v8 = [(PLGlobalValues *)v6 initWithManagedObjectContext:managedObjectContext];
 
-    v2 = [(PLGlobalValues *)v8 cloudTrackerLastKnownToken];
+    cloudTrackerLastKnownToken = [(PLGlobalValues *)v8 cloudTrackerLastKnownToken];
   }
 
-  return v2;
+  return cloudTrackerLastKnownToken;
 }
 
-- (void)_saveLastKnownCloudChangeTrackerTokenToDiskWithContext:(id)a3
+- (void)_saveLastKnownCloudChangeTrackerTokenToDiskWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     libraryMode = self->_libraryMode;
@@ -16530,7 +16530,7 @@ uint64_t __81__PLCloudPhotoLibraryManager_cloudChangeTrackerDidReceiveChangesWit
     }
   }
 
-  [(PLCloudPersistentHistoryChangeTracker *)self->_syncChangeTracker saveLastKnownChangeTrackerTokenToDiskWithContext:v4];
+  [(PLCloudPersistentHistoryChangeTracker *)self->_syncChangeTracker saveLastKnownChangeTrackerTokenToDiskWithContext:contextCopy];
 }
 
 - (void)_callPushAllChangesCompletionHandlersIfNecessary
@@ -16604,10 +16604,10 @@ uint64_t __81__PLCloudPhotoLibraryManager_cloudChangeTrackerDidReceiveChangesWit
   }
 }
 
-- (void)_setupPLCPLPlistInLibrary:(id)a3
+- (void)_setupPLCPLPlistInLibrary:(id)library
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     libraryMode = self->_libraryMode;
@@ -16640,15 +16640,15 @@ uint64_t __81__PLCloudPhotoLibraryManager_cloudChangeTrackerDidReceiveChangesWit
 
   v8 = MEMORY[0x1E69BF1C0];
   v9 = *MEMORY[0x1E69BF418];
-  v10 = [(PLCloudPhotoLibraryManager *)self pathManager];
-  v11 = [v8 readCPLPlistObjectWithKey:v9 pathManager:v10];
+  pathManager = [(PLCloudPhotoLibraryManager *)self pathManager];
+  v11 = [v8 readCPLPlistObjectWithKey:v9 pathManager:pathManager];
 
   self->_wasRebuild = 0;
-  v12 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-  v13 = [v12 libraryBundle];
-  v14 = [v13 persistentContainer];
+  libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+  libraryBundle = [libraryServicesManager libraryBundle];
+  persistentContainer = [libraryBundle persistentContainer];
   v47 = 0;
-  v15 = [v14 sharedPersistentStoreCoordinatorWithError:&v47];
+  v15 = [persistentContainer sharedPersistentStoreCoordinatorWithError:&v47];
   v16 = v47;
 
   if (!v15 && (*MEMORY[0x1E6994D48] & 1) == 0)
@@ -16682,10 +16682,10 @@ uint64_t __81__PLCloudPhotoLibraryManager_cloudChangeTrackerDidReceiveChangesWit
     }
   }
 
-  v20 = [v15 persistentStores];
-  v21 = [v20 firstObject];
-  v22 = [v21 metadata];
-  v23 = [v22 objectForKeyedSubscript:*MEMORY[0x1E695D4B8]];
+  persistentStores = [v15 persistentStores];
+  firstObject = [persistentStores firstObject];
+  metadata = [firstObject metadata];
+  v23 = [metadata objectForKeyedSubscript:*MEMORY[0x1E695D4B8]];
 
   if (v11)
   {
@@ -16693,12 +16693,12 @@ uint64_t __81__PLCloudPhotoLibraryManager_cloudChangeTrackerDidReceiveChangesWit
     self->_wasRebuild = v24 ^ 1;
     if (v24)
     {
-      v25 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-      v26 = [v25 libraryBundle];
-      v27 = [v26 indicatorFileCoordinator];
+      libraryServicesManager2 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+      libraryBundle2 = [libraryServicesManager2 libraryBundle];
+      indicatorFileCoordinator = [libraryBundle2 indicatorFileCoordinator];
 
-      v28 = [v27 isForceSoftResetSync];
-      if (v28)
+      isForceSoftResetSync = [indicatorFileCoordinator isForceSoftResetSync];
+      if (isForceSoftResetSync)
       {
         if ((*MEMORY[0x1E6994D48] & 1) == 0)
         {
@@ -16731,7 +16731,7 @@ uint64_t __81__PLCloudPhotoLibraryManager_cloudChangeTrackerDidReceiveChangesWit
         }
 
         [MEMORY[0x1E6994B88] registerLikelyResetReason:@"assetsd detected a reset sync marker"];
-        [(PLCloudPhotoLibraryManager *)self _doResetSync:1 inLibrary:v4];
+        [(PLCloudPhotoLibraryManager *)self _doResetSync:1 inLibrary:libraryCopy];
       }
     }
 
@@ -16768,19 +16768,19 @@ uint64_t __81__PLCloudPhotoLibraryManager_cloudChangeTrackerDidReceiveChangesWit
       }
 
       [MEMORY[0x1E6994B88] registerLikelyResetReason:@"assetsd detected a Photo Library rebuild"];
-      v37 = [(PLCloudPhotoLibraryManager *)self pathManager];
-      v38 = [PLRebuildJournalManager isEnabledWithPathManager:v37 error:0];
+      pathManager2 = [(PLCloudPhotoLibraryManager *)self pathManager];
+      v38 = [PLRebuildJournalManager isEnabledWithPathManager:pathManager2 error:0];
 
       if (v38)
       {
-        v28 = 1;
-        [(PLCloudPhotoLibraryManager *)self _doResetSync:1 inLibrary:v4];
+        isForceSoftResetSync = 1;
+        [(PLCloudPhotoLibraryManager *)self _doResetSync:1 inLibrary:libraryCopy];
       }
 
       else
       {
-        [(PLCloudPhotoLibraryManager *)self _doResetSync:2 inLibrary:v4];
-        v28 = 1;
+        [(PLCloudPhotoLibraryManager *)self _doResetSync:2 inLibrary:libraryCopy];
+        isForceSoftResetSync = 1;
       }
     }
   }
@@ -16818,14 +16818,14 @@ uint64_t __81__PLCloudPhotoLibraryManager_cloudChangeTrackerDidReceiveChangesWit
     }
 
     [MEMORY[0x1E6994B88] registerLikelyResetReason:@"missing previous store UUID"];
-    v28 = 1;
-    [(PLCloudPhotoLibraryManager *)self _doResetSync:1 inLibrary:v4];
+    isForceSoftResetSync = 1;
+    [(PLCloudPhotoLibraryManager *)self _doResetSync:1 inLibrary:libraryCopy];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v41 = [WeakRetained cplSettings];
+  cplSettings = [WeakRetained cplSettings];
 
-  if (v28 && [v41 runOnceFlagIsSet:4])
+  if (isForceSoftResetSync && [cplSettings runOnceFlagIsSet:4])
   {
     if ((*MEMORY[0x1E6994D48] & 1) == 0)
     {
@@ -16857,14 +16857,14 @@ uint64_t __81__PLCloudPhotoLibraryManager_cloudChangeTrackerDidReceiveChangesWit
       }
     }
 
-    [v41 setRunOnceFlag:4 error:0];
+    [cplSettings setRunOnceFlag:4 error:0];
   }
 
   if (([v23 isEqualToString:v11] & 1) == 0)
   {
     v45 = MEMORY[0x1E69BF1C0];
-    v46 = [(PLCloudPhotoLibraryManager *)self pathManager];
-    [v45 saveCPLPlistObject:v23 forKey:v9 pathManager:v46];
+    pathManager3 = [(PLCloudPhotoLibraryManager *)self pathManager];
+    [v45 saveCPLPlistObject:v23 forKey:v9 pathManager:pathManager3];
   }
 }
 
@@ -16906,11 +16906,11 @@ uint64_t __81__PLCloudPhotoLibraryManager_cloudChangeTrackerDidReceiveChangesWit
   v7 = +[PLAccountStore pl_sharedAccountStore];
   [v7 clearCachedProperties];
 
-  v8 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-  v9 = [v8 libraryBundle];
-  v10 = [v9 indicatorFileCoordinator];
+  libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+  libraryBundle = [libraryServicesManager libraryBundle];
+  indicatorFileCoordinator = [libraryBundle indicatorFileCoordinator];
 
-  if ([v10 isDisableICloudPhotos])
+  if ([indicatorFileCoordinator isDisableICloudPhotos])
   {
     if ((*v3 & 1) == 0)
     {
@@ -16943,13 +16943,13 @@ uint64_t __81__PLCloudPhotoLibraryManager_cloudChangeTrackerDidReceiveChangesWit
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-    v19 = [WeakRetained cplSettings];
-    [v19 setICPLEnabled:0 error:0];
+    cplSettings = [WeakRetained cplSettings];
+    [cplSettings setICPLEnabled:0 error:0];
 
-    v20 = self;
+    selfCopy2 = self;
     v21 = 2;
 LABEL_52:
-    [(PLCloudPhotoLibraryManager *)v20 _disableiCPLWillBecomeNonSyncablePhotoLibrary:0 resetMode:v21];
+    [(PLCloudPhotoLibraryManager *)selfCopy2 _disableiCPLWillBecomeNonSyncablePhotoLibrary:0 resetMode:v21];
     goto LABEL_53;
   }
 
@@ -16998,14 +16998,14 @@ LABEL_52:
       }
     }
 
-    v20 = self;
+    selfCopy2 = self;
     v21 = 3;
     goto LABEL_52;
   }
 
-  if (-[PLCloudPhotoLibraryManager isCloudPhotoLibraryEnabled](self, "isCloudPhotoLibraryEnabled") || [v10 isEnableICloudPhotos])
+  if (-[PLCloudPhotoLibraryManager isCloudPhotoLibraryEnabled](self, "isCloudPhotoLibraryEnabled") || [indicatorFileCoordinator isEnableICloudPhotos])
   {
-    if ([v10 isEnableICloudPhotos])
+    if ([indicatorFileCoordinator isEnableICloudPhotos])
     {
       if ((*v3 & 1) == 0)
       {
@@ -17037,16 +17037,16 @@ LABEL_52:
         }
       }
 
-      v29 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-      v30 = [v29 databaseContext];
-      v31 = [v30 newShortLivedLibraryForHistoryPersistenceReadingWithName:"CPL library: Global Values"];
+      libraryServicesManager2 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+      databaseContext = [libraryServicesManager2 databaseContext];
+      v31 = [databaseContext newShortLivedLibraryForHistoryPersistenceReadingWithName:"CPL library: Global Values"];
 
-      v32 = [v31 globalValues];
-      [v32 setLastInitialDuplicateDetectorProcessingCompletedDate:0];
+      globalValues = [v31 globalValues];
+      [globalValues setLastInitialDuplicateDetectorProcessingCompletedDate:0];
 
       v33 = objc_loadWeakRetained(&self->_libraryServicesManager);
-      v34 = [v33 cplSettings];
-      [v34 setICPLEnabled:1 error:0];
+      cplSettings2 = [v33 cplSettings];
+      [cplSettings2 setICPLEnabled:1 error:0];
     }
 
     else
@@ -17093,17 +17093,17 @@ LABEL_65:
 LABEL_53:
 }
 
-- (void)_disableaCPLAfterZoneWipedInCloudIfNecessaryWithStatus:(id)a3 transaction:(id)a4
+- (void)_disableaCPLAfterZoneWipedInCloudIfNecessaryWithStatus:(id)status transaction:(id)transaction
 {
-  v6 = a3;
+  statusCopy = status;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __97__PLCloudPhotoLibraryManager__disableaCPLAfterZoneWipedInCloudIfNecessaryWithStatus_transaction___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
-  [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:a4 block:v8];
+  v9 = statusCopy;
+  selfCopy = self;
+  v7 = statusCopy;
+  [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:transaction block:v8];
 }
 
 void __97__PLCloudPhotoLibraryManager__disableaCPLAfterZoneWipedInCloudIfNecessaryWithStatus_transaction___block_invoke(uint64_t a1)
@@ -17256,21 +17256,21 @@ LABEL_21:
 
 - (BOOL)isCloudPhotoLibraryEnabled
 {
-  v3 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-  v4 = v3;
-  if (v3)
+  libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+  v4 = libraryServicesManager;
+  if (libraryServicesManager)
   {
-    v5 = [v3 isCloudPhotoLibraryEnabled];
+    isCloudPhotoLibraryEnabled = [libraryServicesManager isCloudPhotoLibraryEnabled];
   }
 
   else
   {
-    v6 = [(PLCloudPhotoLibraryManager *)self pathManager];
-    v7 = [v6 libraryURL];
-    v5 = PLIsCloudPhotoLibraryEnabledForPhotoLibraryURL(v7);
+    pathManager = [(PLCloudPhotoLibraryManager *)self pathManager];
+    libraryURL = [pathManager libraryURL];
+    isCloudPhotoLibraryEnabled = PLIsCloudPhotoLibraryEnabledForPhotoLibraryURL(libraryURL);
   }
 
-  return v5;
+  return isCloudPhotoLibraryEnabled;
 }
 
 - (void)_checkIfSharedLibraryDedupeIsDisabled
@@ -17794,62 +17794,62 @@ uint64_t __53__PLCloudPhotoLibraryManager__processNextTransaction__block_invoke_
   return [v3 _fetchNewEventsFromCloudChangeTrackerInLibrary:v4];
 }
 
-- (void)_checkAndMarkPurgeableResources:(id)a3 checkIfSafe:(BOOL)a4 checkServerIfNecessary:(BOOL)a5 urgency:(int64_t)a6 completionHandler:(id)a7
+- (void)_checkAndMarkPurgeableResources:(id)resources checkIfSafe:(BOOL)safe checkServerIfNecessary:(BOOL)necessary urgency:(int64_t)urgency completionHandler:(id)handler
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a7;
-  v14 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
-  if (a4 || ![v12 count])
+  necessaryCopy = necessary;
+  resourcesCopy = resources;
+  handlerCopy = handler;
+  cplLibrary = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+  if (safe || ![resourcesCopy count])
   {
-    if (v14 && [v12 count])
+    if (cplLibrary && [resourcesCopy count])
     {
-      v17 = [v12 anyObject];
-      v18 = [v17 photoLibrary];
+      anyObject = [resourcesCopy anyObject];
+      photoLibrary = [anyObject photoLibrary];
 
-      v19 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v12, "count")}];
+      v19 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(resourcesCopy, "count")}];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __123__PLCloudPhotoLibraryManager__checkAndMarkPurgeableResources_checkIfSafe_checkServerIfNecessary_urgency_completionHandler___block_invoke_3;
       v29[3] = &unk_1E756B120;
       v20 = v19;
       v30 = v20;
-      [v12 enumerateObjectsUsingBlock:v29];
-      v21 = [v20 allKeys];
+      [resourcesCopy enumerateObjectsUsingBlock:v29];
+      allKeys = [v20 allKeys];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __123__PLCloudPhotoLibraryManager__checkAndMarkPurgeableResources_checkIfSafe_checkServerIfNecessary_urgency_completionHandler___block_invoke_309;
       v24[3] = &unk_1E7566B80;
       v24[4] = self;
-      v25 = v18;
+      v25 = photoLibrary;
       v26 = v20;
-      v27 = v13;
-      v28 = a6;
+      v27 = handlerCopy;
+      urgencyCopy = urgency;
       v22 = v20;
-      v23 = v18;
-      [v14 checkResourcesAreSafeToPrune:v21 checkServerIfNecessary:v9 completionHandler:v24];
+      v23 = photoLibrary;
+      [cplLibrary checkResourcesAreSafeToPrune:allKeys checkServerIfNecessary:necessaryCopy completionHandler:v24];
     }
 
     else
     {
-      v13[2](v13);
+      handlerCopy[2](handlerCopy);
     }
   }
 
   else
   {
-    v15 = [v12 anyObject];
-    v16 = [v15 photoLibrary];
+    anyObject2 = [resourcesCopy anyObject];
+    photoLibrary2 = [anyObject2 photoLibrary];
 
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __123__PLCloudPhotoLibraryManager__checkAndMarkPurgeableResources_checkIfSafe_checkServerIfNecessary_urgency_completionHandler___block_invoke;
     v31[3] = &unk_1E75782F8;
-    v32 = v12;
-    v33 = self;
-    v34 = a6;
-    [v16 performTransactionAndWait:v31];
-    v13[2](v13);
+    v32 = resourcesCopy;
+    selfCopy = self;
+    urgencyCopy2 = urgency;
+    [photoLibrary2 performTransactionAndWait:v31];
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -17998,24 +17998,24 @@ void __123__PLCloudPhotoLibraryManager__checkAndMarkPurgeableResources_checkIfSa
   }
 }
 
-- (void)_markPurgeableNextBatchOfResources:(id)a3 urgency:(int64_t)a4 checkIfSafe:(BOOL)a5 inLibrary:(id)a6 completionHandler:(id)a7
+- (void)_markPurgeableNextBatchOfResources:(id)resources urgency:(int64_t)urgency checkIfSafe:(BOOL)safe inLibrary:(id)library completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  resourcesCopy = resources;
+  libraryCopy = library;
+  handlerCopy = handler;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __113__PLCloudPhotoLibraryManager__markPurgeableNextBatchOfResources_urgency_checkIfSafe_inLibrary_completionHandler___block_invoke;
   v18[3] = &unk_1E7568670;
-  v19 = v12;
-  v20 = self;
-  v24 = a5;
-  v22 = v14;
-  v23 = a4;
-  v21 = v13;
-  v15 = v13;
-  v16 = v14;
-  v17 = v12;
+  v19 = resourcesCopy;
+  selfCopy = self;
+  safeCopy = safe;
+  v22 = handlerCopy;
+  urgencyCopy = urgency;
+  v21 = libraryCopy;
+  v15 = libraryCopy;
+  v16 = handlerCopy;
+  v17 = resourcesCopy;
   [v15 performBlockAndWait:v18];
 }
 
@@ -18079,13 +18079,13 @@ uint64_t __113__PLCloudPhotoLibraryManager__markPurgeableNextBatchOfResources_ur
   }
 }
 
-- (void)markPurgeableResourcesMatchingPredicate:(id)a3 urgency:(int64_t)a4 checkIfSafe:(BOOL)a5 inLibrary:(id)a6 completionHandler:(id)a7
+- (void)markPurgeableResourcesMatchingPredicate:(id)predicate urgency:(int64_t)urgency checkIfSafe:(BOOL)safe inLibrary:(id)library completionHandler:(id)handler
 {
-  v9 = a5;
+  safeCopy = safe;
   v43 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  predicateCopy = predicate;
+  libraryCopy = library;
+  handlerCopy = handler;
   v15 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager markPurgeableResourcesMatchingPredicate:urgency:checkIfSafe:inLibrary:completionHandler:]"];
   v35 = 0;
   v36 = &v35;
@@ -18103,9 +18103,9 @@ uint64_t __113__PLCloudPhotoLibraryManager__markPurgeableNextBatchOfResources_ur
   v24[1] = 3221225472;
   v24[2] = __118__PLCloudPhotoLibraryManager_markPurgeableResourcesMatchingPredicate_urgency_checkIfSafe_inLibrary_completionHandler___block_invoke;
   v24[3] = &unk_1E7578898;
-  v16 = v12;
+  v16 = predicateCopy;
   v25 = v16;
-  v17 = v13;
+  v17 = libraryCopy;
   v26 = v17;
   v27 = &v29;
   v28 = &v35;
@@ -18117,9 +18117,9 @@ uint64_t __113__PLCloudPhotoLibraryManager__markPurgeableNextBatchOfResources_ur
     v21[1] = 3221225472;
     v21[2] = __118__PLCloudPhotoLibraryManager_markPurgeableResourcesMatchingPredicate_urgency_checkIfSafe_inLibrary_completionHandler___block_invoke_305;
     v21[3] = &unk_1E7577C08;
-    v23 = v14;
+    v23 = handlerCopy;
     v22 = v15;
-    [(PLCloudPhotoLibraryManager *)self _markPurgeableNextBatchOfResources:v18 urgency:a4 checkIfSafe:v9 inLibrary:v17 completionHandler:v21];
+    [(PLCloudPhotoLibraryManager *)self _markPurgeableNextBatchOfResources:v18 urgency:urgency checkIfSafe:safeCopy inLibrary:v17 completionHandler:v21];
   }
 
   else
@@ -18133,9 +18133,9 @@ uint64_t __113__PLCloudPhotoLibraryManager__markPurgeableNextBatchOfResources_ur
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "Failed to fetch available resources to mark purgeable: %@", buf, 0xCu);
     }
 
-    if (v14)
+    if (handlerCopy)
     {
-      v14[2](v14);
+      handlerCopy[2](handlerCopy);
     }
   }
 
@@ -18179,34 +18179,34 @@ uint64_t __118__PLCloudPhotoLibraryManager_markPurgeableResourcesMatchingPredica
   return [v3 stillAlive];
 }
 
-- (void)clearPurgeableResourcesMatchingPredicate:(id)a3 inLibrary:(id)a4 completionHandler:(id)a5
+- (void)clearPurgeableResourcesMatchingPredicate:(id)predicate inLibrary:(id)library completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PLCloudPhotoLibraryManager *)self pathManager];
-  v12 = [v11 capabilities];
-  v13 = [v12 isCentralizedCacheDeleteCapable];
+  predicateCopy = predicate;
+  libraryCopy = library;
+  handlerCopy = handler;
+  pathManager = [(PLCloudPhotoLibraryManager *)self pathManager];
+  capabilities = [pathManager capabilities];
+  isCentralizedCacheDeleteCapable = [capabilities isCentralizedCacheDeleteCapable];
 
-  if (v13)
+  if (isCentralizedCacheDeleteCapable)
   {
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __99__PLCloudPhotoLibraryManager_clearPurgeableResourcesMatchingPredicate_inLibrary_completionHandler___block_invoke;
     v16[3] = &unk_1E7578848;
-    v17 = v8;
-    v18 = v9;
+    v17 = predicateCopy;
+    v18 = libraryCopy;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __99__PLCloudPhotoLibraryManager_clearPurgeableResourcesMatchingPredicate_inLibrary_completionHandler___block_invoke_304;
     v14[3] = &unk_1E7576AA0;
-    v15 = v10;
+    v15 = handlerCopy;
     [v18 performTransaction:v16 completionHandler:v14];
   }
 
-  else if (v10)
+  else if (handlerCopy)
   {
-    v10[2](v10);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -18303,30 +18303,30 @@ BOOL __99__PLCloudPhotoLibraryManager_clearPurgeableResourcesMatchingPredicate_i
   return result;
 }
 
-- (void)_reconcileNextCollectionShare:(id)a3 completionHandler:(id)a4
+- (void)_reconcileNextCollectionShare:(id)share completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 nextObject];
-  v9 = v8;
-  if (v8)
+  shareCopy = share;
+  handlerCopy = handler;
+  nextObject = [shareCopy nextObject];
+  v9 = nextObject;
+  if (nextObject)
   {
-    v10 = [v8 photoLibrary];
+    photoLibrary = [nextObject photoLibrary];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __78__PLCloudPhotoLibraryManager__reconcileNextCollectionShare_completionHandler___block_invoke;
     v12[3] = &unk_1E7573C00;
-    v13 = v10;
-    v14 = self;
-    v15 = v6;
-    v16 = v7;
-    v11 = v10;
+    v13 = photoLibrary;
+    selfCopy = self;
+    v15 = shareCopy;
+    v16 = handlerCopy;
+    v11 = photoLibrary;
     [v9 reconcileModelRelationshipsWithCompletionHandler:v12];
   }
 
   else
   {
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -18344,19 +18344,19 @@ void __78__PLCloudPhotoLibraryManager__reconcileNextCollectionShare_completionHa
   [v2 performBlock:v4];
 }
 
-- (void)_reconcileSharedStreamCollectionShareParticipantsWithCPLSettings:(id)a3
+- (void)_reconcileSharedStreamCollectionShareParticipantsWithCPLSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-  v6 = [v5 databaseContext];
+  settingsCopy = settings;
+  libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __95__PLCloudPhotoLibraryManager__reconcileSharedStreamCollectionShareParticipantsWithCPLSettings___block_invoke;
   v8[3] = &unk_1E756C1E8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 perform:v8 withName:"-[PLCloudPhotoLibraryManager _reconcileSharedStreamCollectionShareParticipantsWithCPLSettings:]"];
+  v9 = settingsCopy;
+  v7 = settingsCopy;
+  [databaseContext perform:v8 withName:"-[PLCloudPhotoLibraryManager _reconcileSharedStreamCollectionShareParticipantsWithCPLSettings:]"];
 }
 
 void __95__PLCloudPhotoLibraryManager__reconcileSharedStreamCollectionShareParticipantsWithCPLSettings___block_invoke(uint64_t a1, void *a2)
@@ -18487,14 +18487,14 @@ void __95__PLCloudPhotoLibraryManager__reconcileSharedStreamCollectionShareParti
 
 - (void)_repushAssetsWithImportedByBundleIdentifier
 {
-  v3 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-  v4 = [v3 databaseContext];
+  libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __73__PLCloudPhotoLibraryManager__repushAssetsWithImportedByBundleIdentifier__block_invoke;
   v5[3] = &unk_1E75685D0;
   v5[4] = self;
-  [v4 performTransactionSync:v5 withName:"-[PLCloudPhotoLibraryManager _repushAssetsWithImportedByBundleIdentifier]"];
+  [databaseContext performTransactionSync:v5 withName:"-[PLCloudPhotoLibraryManager _repushAssetsWithImportedByBundleIdentifier]"];
 }
 
 void __73__PLCloudPhotoLibraryManager__repushAssetsWithImportedByBundleIdentifier__block_invoke(uint64_t a1, void *a2)
@@ -18665,14 +18665,14 @@ void __73__PLCloudPhotoLibraryManager__repushAssetsWithImportedByBundleIdentifie
 
 - (void)_repushMasterWithMissingMediaMetadata
 {
-  v3 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-  v4 = [v3 databaseContext];
+  libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __67__PLCloudPhotoLibraryManager__repushMasterWithMissingMediaMetadata__block_invoke;
   v5[3] = &unk_1E75685D0;
   v5[4] = self;
-  [v4 performTransactionSync:v5 withName:"-[PLCloudPhotoLibraryManager _repushMasterWithMissingMediaMetadata]"];
+  [databaseContext performTransactionSync:v5 withName:"-[PLCloudPhotoLibraryManager _repushMasterWithMissingMediaMetadata]"];
 }
 
 void __67__PLCloudPhotoLibraryManager__repushMasterWithMissingMediaMetadata__block_invoke(uint64_t a1, void *a2)
@@ -19251,14 +19251,14 @@ LABEL_96:
 
 - (void)_repushVideoAssetsMetadata
 {
-  v3 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-  v4 = [v3 databaseContext];
+  libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __56__PLCloudPhotoLibraryManager__repushVideoAssetsMetadata__block_invoke;
   v5[3] = &unk_1E75685D0;
   v5[4] = self;
-  [v4 performTransactionSync:v5 withName:"-[PLCloudPhotoLibraryManager _repushVideoAssetsMetadata]"];
+  [databaseContext performTransactionSync:v5 withName:"-[PLCloudPhotoLibraryManager _repushVideoAssetsMetadata]"];
 }
 
 void __56__PLCloudPhotoLibraryManager__repushVideoAssetsMetadata__block_invoke(uint64_t a1, void *a2)
@@ -19522,18 +19522,18 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)_handleOptimizeSettingChangeInLibrary:(id)a3 withCompletionHandler:(id)a4
+- (void)_handleOptimizeSettingChangeInLibrary:(id)library withCompletionHandler:(id)handler
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  libraryCopy = library;
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v9 = [WeakRetained cplSettings];
-  v10 = [v9 isKeepOriginalsEnabled];
+  cplSettings = [WeakRetained cplSettings];
+  isKeepOriginalsEnabled = [cplSettings isKeepOriginalsEnabled];
 
   v11 = PLResourceCachingGetLog();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (v10)
+  if (isKeepOriginalsEnabled)
   {
     if (v12)
     {
@@ -19555,9 +19555,9 @@ LABEL_25:
     v25[3] = &unk_1E7577C08;
     v18 = &v26;
     v25[4] = self;
-    v26 = v6;
-    v19 = v6;
-    [(PLCloudPhotoLibraryManager *)self clearPurgeableResourcesMatchingPredicate:v17 inLibrary:v7 completionHandler:v25];
+    v26 = handlerCopy;
+    v19 = handlerCopy;
+    [(PLCloudPhotoLibraryManager *)self clearPurgeableResourcesMatchingPredicate:v17 inLibrary:libraryCopy completionHandler:v25];
   }
 
   else
@@ -19582,9 +19582,9 @@ LABEL_25:
     v23[3] = &unk_1E7577C08;
     v18 = &v24;
     v23[4] = self;
-    v24 = v6;
-    v22 = v6;
-    [(PLCloudPhotoLibraryManager *)self markPurgeableResourcesMatchingPredicate:v17 urgency:0 inLibrary:v7 completionHandler:v23];
+    v24 = handlerCopy;
+    v22 = handlerCopy;
+    [(PLCloudPhotoLibraryManager *)self markPurgeableResourcesMatchingPredicate:v17 urgency:0 inLibrary:libraryCopy completionHandler:v23];
   }
 }
 
@@ -19624,18 +19624,18 @@ uint64_t __90__PLCloudPhotoLibraryManager__handleOptimizeSettingChangeInLibrary_
 {
   v3 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager _handleOptimizeSettingChange]"];
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v5 = [WeakRetained cplSettings];
+  cplSettings = [WeakRetained cplSettings];
 
-  [v5 setRunOnceFlag:2 error:0];
+  [cplSettings setRunOnceFlag:2 error:0];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__PLCloudPhotoLibraryManager__handleOptimizeSettingChange__block_invoke;
   v8[3] = &unk_1E75761B8;
   v8[4] = self;
-  v9 = v5;
+  v9 = cplSettings;
   v10 = v3;
   v6 = v3;
-  v7 = v5;
+  v7 = cplSettings;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v6 block:v8];
 }
 
@@ -19704,26 +19704,26 @@ uint64_t __58__PLCloudPhotoLibraryManager__handleOptimizeSettingChange__block_in
   return result;
 }
 
-- (BOOL)setPrefetchMode:(int64_t)a3 error:(id *)a4
+- (BOOL)setPrefetchMode:(int64_t)mode error:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v8 = [WeakRetained cplSettings];
+  cplSettings = [WeakRetained cplSettings];
 
-  if ([v8 prefetchMode] == a3)
+  if ([cplSettings prefetchMode] == mode)
   {
     goto LABEL_2;
   }
 
-  if (![v8 setRunOnceFlag:1 error:a4])
+  if (![cplSettings setRunOnceFlag:1 error:error])
   {
 LABEL_7:
     v9 = 0;
     goto LABEL_8;
   }
 
-  if (([v8 setPrefetchMode:a3 error:a4] & 1) == 0)
+  if (([cplSettings setPrefetchMode:mode error:error] & 1) == 0)
   {
-    [v8 clearRunOnceFlag:1 error:0];
+    [cplSettings clearRunOnceFlag:1 error:0];
     goto LABEL_7;
   }
 
@@ -19735,13 +19735,13 @@ LABEL_8:
   return v9;
 }
 
-- (void)_reportOptimizeSettingChangeWithCompletionHandler:(id)a3
+- (void)_reportOptimizeSettingChangeWithCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v6 = [WeakRetained cplSettings];
-  v7 = [v6 prefetchMode];
+  cplSettings = [WeakRetained cplSettings];
+  prefetchMode = [cplSettings prefetchMode];
 
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -19769,7 +19769,7 @@ LABEL_8:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = @"Optimize";
-      if (v7 == 1)
+      if (prefetchMode == 1)
       {
         v11 = @"Keep Originals";
       }
@@ -19780,9 +19780,9 @@ LABEL_8:
     }
   }
 
-  v12 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
-  v13 = v12;
-  if (v7 == 1)
+  cplLibrary = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+  v13 = cplLibrary;
+  if (prefetchMode == 1)
   {
     v14 = @"false";
   }
@@ -19792,25 +19792,25 @@ LABEL_8:
     v14 = @"true";
   }
 
-  [v12 reportSetting:*MEMORY[0x1E69949B8] hasBeenSetToValue:v14];
+  [cplLibrary reportSetting:*MEMORY[0x1E69949B8] hasBeenSetToValue:v14];
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)reportMiscInformation:(id)a3
+- (void)reportMiscInformation:(id)information
 {
-  v4 = a3;
+  informationCopy = information;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager reportMiscInformation:]"];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__PLCloudPhotoLibraryManager_reportMiscInformation___block_invoke;
   v7[3] = &unk_1E7578848;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = informationCopy;
+  v6 = informationCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v5 block:v7];
 }
 
@@ -19860,25 +19860,25 @@ void __52__PLCloudPhotoLibraryManager_reportMiscInformation___block_invoke(uint6
   if (!pendingResetSyncType || self->_hasSettledInitialBatch)
   {
     self->_pendingResetSyncType = 0;
-    v4 = [(PLCloudPhotoLibraryManager *)self pathManager];
-    v5 = [v4 cplDataDirectoryCreateIfNeeded:0];
+    pathManager = [(PLCloudPhotoLibraryManager *)self pathManager];
+    v5 = [pathManager cplDataDirectoryCreateIfNeeded:0];
 
-    v6 = [(PLCloudPhotoLibraryManager *)self pathManager];
-    v7 = PLCloudPhotoLibraryLocalModeEnabled(v6);
+    pathManager2 = [(PLCloudPhotoLibraryManager *)self pathManager];
+    v7 = PLCloudPhotoLibraryLocalModeEnabled(pathManager2);
 
     if (v7)
     {
       v8 = objc_opt_class();
       v9 = [MEMORY[0x1E695DFF8] URLWithString:v5];
       v10 = [v8 fakeCPLStatusBaseURLWithBaseURL:v9];
-      v11 = [v10 absoluteString];
+      absoluteString = [v10 absoluteString];
 
-      v5 = v11;
+      v5 = absoluteString;
     }
 
     v12 = [v5 stringByAppendingPathComponent:@"resetevents.plist"];
-    v13 = [MEMORY[0x1E696AC08] defaultManager];
-    v14 = [v13 fileExistsAtPath:v12];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v14 = [defaultManager fileExistsAtPath:v12];
 
     if (!v14)
     {
@@ -19913,15 +19913,15 @@ LABEL_23:
             v25 = v24;
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
             {
-              v26 = [MEMORY[0x1E695DF00] date];
+              date = [MEMORY[0x1E695DF00] date];
               v30 = 138412290;
-              v31 = v26;
+              v31 = date;
               _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_DEFAULT, "Finished reset sync at %@, triggering prefetching/pruning", &v30, 0xCu);
             }
           }
 
-          v27 = [(PLCloudPhotoLibraryManager *)self resourceManager];
-          [v27 startAutomaticPrefetchAndPruneWithTimeout:0];
+          resourceManager = [(PLCloudPhotoLibraryManager *)self resourceManager];
+          [resourceManager startAutomaticPrefetchAndPruneWithTimeout:0];
 
           DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
           CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.mobileslideshow.ResetSyncStateChanged", 0, 0, 1u);
@@ -19947,9 +19947,9 @@ LABEL_41:
     }
 
     v15 = [MEMORY[0x1E695DEC8] arrayWithContentsOfFile:v12];
-    v16 = [v15 lastObject];
-    v17 = v16;
-    if (!v16 || ([v16 objectForKey:@"pending"], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "BOOLValue"), v18, !v19))
+    lastObject = [v15 lastObject];
+    v17 = lastObject;
+    if (!lastObject || ([lastObject objectForKey:@"pending"], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "BOOLValue"), v18, !v19))
     {
 LABEL_22:
 
@@ -20002,21 +20002,21 @@ LABEL_21:
 - (BOOL)_setupTimerForUnpause
 {
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v3 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-  v4 = [v3 libraryBundle];
-  v5 = [v4 indicatorFileCoordinator];
+  libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+  libraryBundle = [libraryServicesManager libraryBundle];
+  indicatorFileCoordinator = [libraryBundle indicatorFileCoordinator];
 
-  v6 = [v5 unpauseTime];
-  v7 = [MEMORY[0x1E695DF00] date];
-  v8 = [v7 compare:v6];
+  unpauseTime = [indicatorFileCoordinator unpauseTime];
+  date = [MEMORY[0x1E695DF00] date];
+  v8 = [date compare:unpauseTime];
   if (v8 == -1)
   {
-    [(PLCloudPhotoLibraryManager *)self _constructUnpauseTimerFrom:v7 to:v6];
+    [(PLCloudPhotoLibraryManager *)self _constructUnpauseTimerFrom:date to:unpauseTime];
   }
 
   else
   {
-    [v5 clearPauseMarkerForReason:3];
+    [indicatorFileCoordinator clearPauseMarkerForReason:3];
   }
 
   v9 = v8 == -1;
@@ -20027,14 +20027,14 @@ LABEL_21:
   return v9;
 }
 
-- (void)_constructUnpauseTimerFrom:(id)a3 to:(id)a4
+- (void)_constructUnpauseTimerFrom:(id)from to:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
   isolationQueue = self->_isolationQueue;
-  v7 = a4;
-  v8 = a3;
+  toCopy = to;
+  fromCopy = from;
   dispatch_assert_queue_V2(isolationQueue);
-  [v7 timeIntervalSinceDate:v8];
+  [toCopy timeIntervalSinceDate:fromCopy];
   v10 = v9;
 
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
@@ -20126,23 +20126,23 @@ void *__60__PLCloudPhotoLibraryManager__constructUnpauseTimerFrom_to___block_inv
   return result;
 }
 
-- (id)_calculateUnpauseTimeForPauseTime:(id)a3
+- (id)_calculateUnpauseTimeForPauseTime:(id)time
 {
   if (self->_pauseReason == 3)
   {
     v3 = MEMORY[0x1E695DEE8];
-    v4 = a3;
-    v5 = [v3 currentCalendar];
-    v6 = [v5 startOfDayForDate:v4];
+    timeCopy = time;
+    timeCopy2 = [v3 currentCalendar];
+    v6 = [timeCopy2 startOfDayForDate:timeCopy];
 
-    v7 = [v5 dateByAddingUnit:16 value:1 toDate:v6 options:0];
-    v8 = [v5 dateByAddingUnit:32 value:3 toDate:v7 options:0];
+    v7 = [timeCopy2 dateByAddingUnit:16 value:1 toDate:v6 options:0];
+    v8 = [timeCopy2 dateByAddingUnit:32 value:3 toDate:v7 options:0];
   }
 
   else
   {
-    v5 = a3;
-    v8 = [v5 dateByAddingTimeInterval:1800.0];
+    timeCopy2 = time;
+    v8 = [timeCopy2 dateByAddingTimeInterval:1800.0];
   }
 
   return v8;
@@ -20159,7 +20159,7 @@ void *__60__PLCloudPhotoLibraryManager__constructUnpauseTimerFrom_to___block_inv
   }
 }
 
-- (void)_transitionToState:(unint64_t)a3
+- (void)_transitionToState:(unint64_t)state
 {
   v33 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_isolationQueue);
@@ -20199,7 +20199,7 @@ void *__60__PLCloudPhotoLibraryManager__constructUnpauseTimerFrom_to___block_inv
     }
 
     v16 = [(PLCloudPhotoLibraryManager *)self _debugNameForState:self->_state];
-    v17 = [(PLCloudPhotoLibraryManager *)self _debugNameForState:a3];
+    v17 = [(PLCloudPhotoLibraryManager *)self _debugNameForState:state];
     v29 = 138412546;
     v30 = v16;
     v31 = 2112;
@@ -20212,7 +20212,7 @@ LABEL_31:
     return;
   }
 
-  if (a3 == 1 && state)
+  if (state == 1 && state)
   {
     if ((*MEMORY[0x1E6994D48] & 1) == 0)
     {
@@ -20252,7 +20252,7 @@ LABEL_31:
 
   else
   {
-    if ((a3 & 0xFFFFFFFFFFFFFFFDLL) != 0 && state == 1)
+    if ((state & 0xFFFFFFFFFFFFFFFDLL) != 0 && state == 1)
     {
       if (*MEMORY[0x1E6994D48])
       {
@@ -20286,7 +20286,7 @@ LABEL_31:
       }
 
       v16 = [(PLCloudPhotoLibraryManager *)self _debugNameForState:self->_state];
-      v17 = [(PLCloudPhotoLibraryManager *)self _debugNameForState:a3];
+      v17 = [(PLCloudPhotoLibraryManager *)self _debugNameForState:state];
       v29 = 138412546;
       v30 = v16;
       v31 = 2112;
@@ -20321,7 +20321,7 @@ LABEL_31:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v23 = [(PLCloudPhotoLibraryManager *)self _debugNameForState:self->_state];
-        v24 = [(PLCloudPhotoLibraryManager *)self _debugNameForState:a3];
+        v24 = [(PLCloudPhotoLibraryManager *)self _debugNameForState:state];
         v29 = 138412546;
         v30 = v23;
         v31 = 2112;
@@ -20336,13 +20336,13 @@ LABEL_31:
     if (state && ([(PLCloudPhotoLibraryManager *)self cplLibrary], (v25 = objc_claimAutoreleasedReturnValue()) != 0))
     {
 
-      if (a3 == 2)
+      if (state == 2)
       {
-        a3 = 6;
+        state = 6;
       }
     }
 
-    else if (a3 != 1)
+    else if (state != 1)
     {
       if ((*v6 & 1) == 0)
       {
@@ -20374,15 +20374,15 @@ LABEL_31:
         }
       }
 
-      a3 = 1;
+      state = 1;
     }
 
-    self->_state = a3;
+    self->_state = state;
     [(PLCloudPhotoLibraryManager *)self _processNextTransaction];
   }
 }
 
-- (BOOL)_canExternallyTransitionToNewLibraryStateIgnoringPause:(BOOL)a3
+- (BOOL)_canExternallyTransitionToNewLibraryStateIgnoringPause:(BOOL)pause
 {
   dispatch_assert_queue_V2(self->_isolationQueue);
   if (self->_stateChangePending)
@@ -20391,7 +20391,7 @@ LABEL_31:
   }
 
   state = self->_state;
-  v7 = state == 8 && a3;
+  v7 = state == 8 && pause;
   return state == 6 || v7;
 }
 
@@ -20408,7 +20408,7 @@ LABEL_31:
   v11 = 3221225472;
   v12 = __62__PLCloudPhotoLibraryManager__callBlocksWaitingForLibraryOpen__block_invoke;
   v13 = &unk_1E7578910;
-  v14 = self;
+  selfCopy = self;
   v15 = &v16;
   PLRunWithUnfairLock();
   v8 = 0u;
@@ -20456,19 +20456,19 @@ uint64_t __62__PLCloudPhotoLibraryManager__callBlocksWaitingForLibraryOpen__bloc
   return result;
 }
 
-- (void)_runOnLibraryOpenWithTransaction:(id)a3 block:(id)a4
+- (void)_runOnLibraryOpenWithTransaction:(id)transaction block:(id)block
 {
-  v5 = a3;
+  transactionCopy = transaction;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v6 = a4;
-  v7 = v5;
+  blockCopy = block;
+  v7 = transactionCopy;
   PLRunWithUnfairLock();
   if (*(v9 + 24) == 1)
   {
-    v6[2](v6);
+    blockCopy[2](blockCopy);
   }
 
   _Block_object_dispose(&v8, 8);
@@ -20499,12 +20499,12 @@ uint64_t __69__PLCloudPhotoLibraryManager__runOnLibraryOpenWithTransaction_block
   return [v2 stillAlive];
 }
 
-- (void)_runAsyncOnIsolationQueueWithTransaction:(id)a3 afterDelay:(double)a4 block:(id)a5
+- (void)_runAsyncOnIsolationQueueWithTransaction:(id)transaction afterDelay:(double)delay block:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (v8 && a4 > 30.0 && (*MEMORY[0x1E6994D48] & 1) == 0)
+  transactionCopy = transaction;
+  blockCopy = block;
+  if (transactionCopy && delay > 30.0 && (*MEMORY[0x1E6994D48] & 1) == 0)
   {
     libraryMode = self->_libraryMode;
     if (libraryMode == 2)
@@ -20530,16 +20530,16 @@ uint64_t __69__PLCloudPhotoLibraryManager__runOnLibraryOpenWithTransaction_block
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v18 = a4;
+      delayCopy = delay;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "warning: Cloud Photo Library scheduling work in %f seconds with open transaction", buf, 0xCu);
     }
   }
 
-  dispatch_time(0, (a4 * 1000000000.0));
-  v15 = v8;
-  v16 = v9;
-  v13 = v8;
-  v14 = v9;
+  dispatch_time(0, (delay * 1000000000.0));
+  v15 = transactionCopy;
+  v16 = blockCopy;
+  v13 = transactionCopy;
+  v14 = blockCopy;
   pl_dispatch_after();
 }
 
@@ -20551,12 +20551,12 @@ uint64_t __88__PLCloudPhotoLibraryManager__runAsyncOnIsolationQueueWithTransacti
   return [v2 stillAlive];
 }
 
-- (void)_runAsyncOnIsolationQueueWithTransaction:(id)a3 block:(id)a4
+- (void)_runAsyncOnIsolationQueueWithTransaction:(id)transaction block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v5 = v7;
-  v6 = v8;
+  transactionCopy = transaction;
+  blockCopy = block;
+  v5 = transactionCopy;
+  v6 = blockCopy;
   pl_dispatch_async();
 }
 
@@ -20568,10 +20568,10 @@ uint64_t __77__PLCloudPhotoLibraryManager__runAsyncOnIsolationQueueWithTransacti
   return [v2 stillAlive];
 }
 
-- (void)_runSyncOnIsolationQueueWithBlock:(id)a3
+- (void)_runSyncOnIsolationQueueWithBlock:(id)block
 {
-  v4 = a3;
-  v3 = v4;
+  blockCopy = block;
+  v3 = blockCopy;
   pl_dispatch_sync();
 }
 
@@ -20582,13 +20582,13 @@ uint64_t __77__PLCloudPhotoLibraryManager__runAsyncOnIsolationQueueWithTransacti
   if (self->_state != 9)
   {
     v5 = +[PLAccountStore pl_sharedAccountStore];
-    v6 = [v5 cachedPrimaryAppleAccount];
-    if (v6)
+    cachedPrimaryAppleAccount = [v5 cachedPrimaryAppleAccount];
+    if (cachedPrimaryAppleAccount)
     {
-      v7 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-      v8 = [v7 isCPLSyncablePhotoLibrary];
+      libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+      isCPLSyncablePhotoLibrary = [libraryServicesManager isCPLSyncablePhotoLibrary];
 
-      if (v8)
+      if (isCPLSyncablePhotoLibrary)
       {
         if ((*MEMORY[0x1E6994D48] & 1) == 0)
         {
@@ -20649,10 +20649,10 @@ uint64_t __77__PLCloudPhotoLibraryManager__runAsyncOnIsolationQueueWithTransacti
         v18 = v14;
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [(PLCloudPhotoLibraryManager *)self pathManager];
-          v21 = [v20 libraryURL];
+          pathManager = [(PLCloudPhotoLibraryManager *)self pathManager];
+          libraryURL = [pathManager libraryURL];
           v22 = 138412290;
-          v23 = v21;
+          v23 = libraryURL;
           _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "%@ is no longer syncable, keep CPL OFF", &v22, 0xCu);
         }
 
@@ -20723,10 +20723,10 @@ LABEL_46:
     v15 = v4;
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(PLCloudPhotoLibraryManager *)self pathManager];
-      v17 = [v16 libraryURL];
+      pathManager2 = [(PLCloudPhotoLibraryManager *)self pathManager];
+      libraryURL2 = [pathManager2 libraryURL];
       v22 = 138412290;
-      v23 = v17;
+      v23 = libraryURL2;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "%@ disabled after becoming non-syncable, keep CPL OFF", &v22, 0xCu);
     }
   }
@@ -20734,12 +20734,12 @@ LABEL_46:
   [(PLCloudPhotoLibraryManager *)self _callBlocksWaitingForLibraryOpen];
 }
 
-- (void)_disableiCPLWillBecomeNonSyncablePhotoLibrary:(BOOL)a3 resetMode:(int64_t)a4
+- (void)_disableiCPLWillBecomeNonSyncablePhotoLibrary:(BOOL)library resetMode:(int64_t)mode
 {
-  v5 = a3;
+  libraryCopy = library;
   v153 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_isolationQueue);
-  if (a4 == 3)
+  if (mode == 3)
   {
     v7 = MEMORY[0x1E696AEC0];
     deviceLibraryConfiguration = self->_deviceLibraryConfiguration;
@@ -20776,7 +20776,7 @@ LABEL_46:
     PLSetCPLDeviceLibraryConfiguration(0);
     [(PLCloudPhotoLibraryManager *)self _callDeviceLibraryConfigurationChangeRequestCompletionHandlersWithError:0];
     v10 = @"will become non-Syncable";
-    if (!v5)
+    if (!libraryCopy)
     {
       v10 = 0;
     }
@@ -20784,11 +20784,11 @@ LABEL_46:
     v141 = v10;
   }
 
-  v15 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-  v16 = [v15 libraryBundle];
-  v17 = [v16 indicatorFileCoordinator];
+  libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+  libraryBundle = [libraryServicesManager libraryBundle];
+  indicatorFileCoordinator = [libraryBundle indicatorFileCoordinator];
 
-  [v17 logCloudServiceEnableEvent:0 serviceName:@"CPL" reason:v141];
+  [indicatorFileCoordinator logCloudServiceEnableEvent:0 serviceName:@"CPL" reason:v141];
   v18 = MEMORY[0x1E6994D48];
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -20825,14 +20825,14 @@ LABEL_46:
         v22 = @"account setting changed";
       }
 
-      if (a4 > 3)
+      if (mode > 3)
       {
         v23 = @"unknown";
       }
 
       else
       {
-        v23 = off_1E756B2A8[a4];
+        v23 = off_1E756B2A8[mode];
       }
 
       v24 = v23;
@@ -20845,13 +20845,13 @@ LABEL_46:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v26 = [WeakRetained cplSettings];
+  cplSettings = [WeakRetained cplSettings];
 
-  [v26 setRunOnceFlag:8 error:0];
-  v27 = [(PLCloudPhotoLibraryManager *)self cacheDeleteSupport];
-  v28 = [v27 clearPurgeableFlagsForAllResources];
+  [cplSettings setRunOnceFlag:8 error:0];
+  cacheDeleteSupport = [(PLCloudPhotoLibraryManager *)self cacheDeleteSupport];
+  clearPurgeableFlagsForAllResources = [cacheDeleteSupport clearPurgeableFlagsForAllResources];
 
-  if (v28)
+  if (clearPurgeableFlagsForAllResources)
   {
     if ((*v18 & 1) == 0)
     {
@@ -20883,7 +20883,7 @@ LABEL_46:
       }
     }
 
-    [v26 clearRunOnceFlag:8 error:0];
+    [cplSettings clearRunOnceFlag:8 error:0];
   }
 
   else if ((*v18 & 1) == 0)
@@ -20965,11 +20965,11 @@ LABEL_46:
     }
   }
 
-  v42 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
-  [v42 setResourceProgressDelegate:0];
+  cplLibrary = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+  [cplLibrary setResourceProgressDelegate:0];
 
-  v43 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
-  [v43 setDelegate:0];
+  cplLibrary2 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+  [cplLibrary2 setDelegate:0];
 
   if ((*v18 & 1) == 0)
   {
@@ -21141,8 +21141,8 @@ LABEL_46:
     }
   }
 
-  v64 = [(PLCloudPhotoLibraryManager *)self resourceManager];
-  [v64 stop];
+  resourceManager = [(PLCloudPhotoLibraryManager *)self resourceManager];
+  [resourceManager stop];
 
   [(PLCloudPhotoLibraryManager *)self _resetResourceManager];
   if ((*v18 & 1) == 0)
@@ -21176,11 +21176,11 @@ LABEL_46:
   }
 
   v68 = MEMORY[0x1E69BF1C0];
-  v69 = [(PLCloudPhotoLibraryManager *)self pathManager];
-  [v68 deleteCPLPlistWithPathManager:v69];
+  pathManager = [(PLCloudPhotoLibraryManager *)self pathManager];
+  [v68 deleteCPLPlistWithPathManager:pathManager];
 
-  v70 = "[PLCloudPhotoLibraryManager _disableiCPLWillBecomeNonSyncablePhotoLibrary:resetMode:]";
-  if (a4 == 3)
+  uTF8String = "[PLCloudPhotoLibraryManager _disableiCPLWillBecomeNonSyncablePhotoLibrary:resetMode:]";
+  if (mode == 3)
   {
     v71 = MEMORY[0x1E696AEC0];
     v72 = self->_pendingDeviceLibraryConfiguration;
@@ -21197,15 +21197,15 @@ LABEL_46:
     v74 = v73;
     v75 = [v71 stringWithFormat:@"%s - %@", "-[PLCloudPhotoLibraryManager _disableiCPLWillBecomeNonSyncablePhotoLibrary:resetMode:]", v74];
     v76 = v75;
-    v70 = [v75 UTF8String];
+    uTF8String = [v75 UTF8String];
   }
 
-  v77 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-  v78 = [v77 databaseContext];
-  v79 = [v78 newShortLivedCplLibraryWithNameSuffix:v70];
+  libraryServicesManager2 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager2 databaseContext];
+  v79 = [databaseContext newShortLivedCplLibraryWithNameSuffix:uTF8String];
 
-  v80 = [v79 managedObjectContext];
-  [v80 setLocalOnlyDelete:1];
+  managedObjectContext = [v79 managedObjectContext];
+  [managedObjectContext setLocalOnlyDelete:1];
 
   v145[0] = MEMORY[0x1E69E9820];
   v145[1] = 3221225472;
@@ -21279,7 +21279,7 @@ LABEL_46:
   }
 
   v89 = 9;
-  if (!v5)
+  if (!libraryCopy)
   {
     v89 = 0;
   }
@@ -21322,8 +21322,8 @@ LABEL_46:
     }
   }
 
-  v93 = [MEMORY[0x1E69BF200] defaultDeviceConfiguration];
-  v94 = [v93 isTV];
+  defaultDeviceConfiguration = [MEMORY[0x1E69BF200] defaultDeviceConfiguration];
+  isTV = [defaultDeviceConfiguration isTV];
 
   [(PLCloudPhotoLibraryManager *)self _enableOpportunisticTasks];
   if ([(PLCloudPhotoLibraryManager *)self _shouldResetICloudBackupExclusionPaths])
@@ -21353,24 +21353,24 @@ LABEL_46:
       v97 = v96;
       if (os_log_type_enabled(v96, OS_LOG_TYPE_DEFAULT))
       {
-        v98 = [(PLCloudPhotoLibraryManager *)self pathManager];
-        v99 = [v98 libraryURL];
+        pathManager2 = [(PLCloudPhotoLibraryManager *)self pathManager];
+        libraryURL = [pathManager2 libraryURL];
         *buf = 138412290;
-        *&buf[4] = v99;
+        *&buf[4] = libraryURL;
         _os_log_impl(&dword_19BF1F000, v97, OS_LOG_TYPE_DEFAULT, "Setting iCPL-disabled exclusion flags on App Library because iCPL was disabled: %@", buf, 0xCu);
       }
     }
 
-    v100 = [(PLCloudPhotoLibraryManager *)self pathManager];
-    [v100 resetBackupExclusionPathsForBackupType:2];
+    pathManager3 = [(PLCloudPhotoLibraryManager *)self pathManager];
+    [pathManager3 resetBackupExclusionPathsForBackupType:2];
   }
 
-  v101 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
-  PLResetSyncStatusWithLibrary(v81, v101, a4, self->_pendingDeviceLibraryConfiguration, v94);
+  cplLibrary3 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+  PLResetSyncStatusWithLibrary(v81, cplLibrary3, mode, self->_pendingDeviceLibraryConfiguration, isTV);
 
-  v102 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+  cplLibrary4 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
 
-  if (v102)
+  if (cplLibrary4)
   {
     if ((*v18 & 1) == 0)
     {
@@ -21409,7 +21409,7 @@ LABEL_46:
     v151 = __Block_byref_object_dispose__11896;
     v152 = 0;
     v106 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &__block_literal_global_210);
-    v107 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+    cplLibrary5 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
     v142[0] = MEMORY[0x1E69E9820];
     v142[1] = 3221225472;
     v142[2] = __86__PLCloudPhotoLibraryManager__disableiCPLWillBecomeNonSyncablePhotoLibrary_resetMode___block_invoke_2;
@@ -21417,7 +21417,7 @@ LABEL_46:
     v144 = buf;
     v108 = v106;
     v143 = v108;
-    [v107 deactivateWithCompletionHandler:v142];
+    [cplLibrary5 deactivateWithCompletionHandler:v142];
 
     dispatch_block_wait(v108, 0xFFFFFFFFFFFFFFFFLL);
     v109 = *v18;
@@ -21492,9 +21492,9 @@ LABEL_46:
     _Block_object_dispose(buf, 8);
   }
 
-  v117 = a4 == 3;
-  v118 = [(PLCloudPhotoLibraryManager *)self pathManager];
-  [v118 removeCPLDataDirectory];
+  v117 = mode == 3;
+  pathManager4 = [(PLCloudPhotoLibraryManager *)self pathManager];
+  [pathManager4 removeCPLDataDirectory];
 
   [(PLCloudPhotoLibraryManager *)self _updateBackupExclusionPathsAfterRemoveCPLDirectory];
   if (v117)
@@ -21594,8 +21594,8 @@ LABEL_46:
 
   else
   {
-    v121 = [(PLCloudPhotoLibraryManager *)self pathManager];
-    [v121 removePartialVideoDirectory];
+    pathManager5 = [(PLCloudPhotoLibraryManager *)self pathManager];
+    [pathManager5 removePartialVideoDirectory];
 
     if ((*v18 & 1) == 0)
     {
@@ -21627,18 +21627,18 @@ LABEL_46:
       }
     }
 
-    [v17 deleteCPLDownloadFinishedMarkerFilePath];
-    [v17 updateICloudPhotosMarkerForEnable:0];
+    [indicatorFileCoordinator deleteCPLDownloadFinishedMarkerFilePath];
+    [indicatorFileCoordinator updateICloudPhotosMarkerForEnable:0];
     if (self->_state != 9)
     {
-      v134 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-      v135 = [v134 isCPLSyncablePhotoLibrary];
+      libraryServicesManager3 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+      isCPLSyncablePhotoLibrary = [libraryServicesManager3 isCPLSyncablePhotoLibrary];
 
-      if ((v135 & 1) == 0)
+      if ((isCPLSyncablePhotoLibrary & 1) == 0)
       {
         self->_state = 9;
-        v136 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-        [v136 didBecomeNonSyncablePhotoLibrary];
+        libraryServicesManager4 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+        [libraryServicesManager4 didBecomeNonSyncablePhotoLibrary];
       }
     }
 
@@ -21696,18 +21696,18 @@ void __86__PLCloudPhotoLibraryManager__disableiCPLWillBecomeNonSyncablePhotoLibr
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_disableiCPLSyncWithResetMode:(int64_t)a3
+- (void)_disableiCPLSyncWithResetMode:(int64_t)mode
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager _disableiCPLSyncWithResetMode:]"];
-  v6 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-  v7 = [v6 libraryBundle];
-  v8 = [v7 indicatorFileCoordinator];
+  libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+  libraryBundle = [libraryServicesManager libraryBundle];
+  indicatorFileCoordinator = [libraryBundle indicatorFileCoordinator];
 
-  [v8 writeDisableICloudPhotosMarker];
+  [indicatorFileCoordinator writeDisableICloudPhotosMarker];
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v10 = [WeakRetained cplSettings];
-  [v10 setICPLEnabled:0 error:0];
+  cplSettings = [WeakRetained cplSettings];
+  [cplSettings setICPLEnabled:0 error:0];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -21740,10 +21740,10 @@ void __86__PLCloudPhotoLibraryManager__disableiCPLWillBecomeNonSyncablePhotoLibr
     v13 = v12;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(PLCloudPhotoLibraryManager *)self pathManager];
-      v15 = [v14 libraryURL];
+      pathManager = [(PLCloudPhotoLibraryManager *)self pathManager];
+      libraryURL = [pathManager libraryURL];
       *buf = 138412290;
-      v20 = v15;
+      v20 = libraryURL;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Waiting for CPL to open for iCPL disable before library deletion: %@", buf, 0xCu);
     }
   }
@@ -21757,7 +21757,7 @@ void __86__PLCloudPhotoLibraryManager__disableiCPLWillBecomeNonSyncablePhotoLibr
   v17[2] = __60__PLCloudPhotoLibraryManager__disableiCPLSyncWithResetMode___block_invoke_2;
   v17[3] = &unk_1E7577B90;
   v17[4] = self;
-  v17[5] = a3;
+  v17[5] = mode;
   [(PLCloudPhotoLibraryManager *)self _runSyncOnIsolationQueueWithBlock:v17];
 }
 
@@ -21808,9 +21808,9 @@ void *__60__PLCloudPhotoLibraryManager__disableiCPLSyncWithResetMode___block_inv
   return result;
 }
 
-- (void)disableiCPLWithCompletionHandler:(id)a3
+- (void)disableiCPLWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager disableiCPLWithCompletionHandler:]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -21818,8 +21818,8 @@ void *__60__PLCloudPhotoLibraryManager__disableiCPLSyncWithResetMode___block_inv
   v8[3] = &unk_1E7576F38;
   v8[4] = self;
   v9 = v5;
-  v10 = v4;
-  v6 = v4;
+  v10 = handlerCopy;
+  v6 = handlerCopy;
   v7 = v5;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v7 block:v8];
 }
@@ -22215,16 +22215,16 @@ void __38__PLCloudPhotoLibraryManager__unpause__block_invoke(uint64_t a1)
   objc_sync_exit(v2);
 }
 
-- (void)setPause:(BOOL)a3 reason:(signed __int16)a4
+- (void)setPause:(BOOL)pause reason:(signed __int16)reason
 {
   v7 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager setPause:reason:]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__PLCloudPhotoLibraryManager_setPause_reason___block_invoke;
   v8[3] = &unk_1E7566AE0;
-  v9 = a4;
+  reasonCopy = reason;
   v8[4] = self;
-  v10 = a3;
+  pauseCopy = pause;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v7 block:v8];
 }
 
@@ -22258,11 +22258,11 @@ _WORD *__46__PLCloudPhotoLibraryManager_setPause_reason___block_invoke(uint64_t 
 {
   v15 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v3 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-  v4 = [v3 libraryBundle];
-  v5 = [v4 indicatorFileCoordinator];
+  libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+  libraryBundle = [libraryServicesManager libraryBundle];
+  indicatorFileCoordinator = [libraryBundle indicatorFileCoordinator];
 
-  if ([v5 clearPauseMarkerForReason:self->_pauseReason])
+  if ([indicatorFileCoordinator clearPauseMarkerForReason:self->_pauseReason])
   {
     [(PLCloudPhotoLibraryManager *)self _stopUnpauseTimer];
     self->_pauseReason = 0;
@@ -22296,10 +22296,10 @@ _WORD *__46__PLCloudPhotoLibraryManager_setPause_reason___block_invoke(uint64_t 
     v9 = v8;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v5 currentPauseReason];
+      currentPauseReason = [indicatorFileCoordinator currentPauseReason];
       pauseReason = self->_pauseReason;
       v12[0] = 67109376;
-      v12[1] = v10;
+      v12[1] = currentPauseReason;
       v13 = 1024;
       v14 = pauseReason;
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEFAULT, "Ignoring unpause request, currentPause reason %d, unpause reason %d", v12, 0xEu);
@@ -22321,15 +22321,15 @@ _WORD *__46__PLCloudPhotoLibraryManager_setPause_reason___block_invoke(uint64_t 
 
 - (void)_resetCPLLibrary
 {
-  v3 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+  cplLibrary = [(PLCloudPhotoLibraryManager *)self cplLibrary];
 
-  if (v3)
+  if (cplLibrary)
   {
-    v4 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
-    [v4 setResourceProgressDelegate:0];
+    cplLibrary2 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+    [cplLibrary2 setResourceProgressDelegate:0];
 
-    v5 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
-    [v5 setDelegate:0];
+    cplLibrary3 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+    [cplLibrary3 setDelegate:0];
 
     [(PLCloudPhotoLibraryManager *)self setCPLLibrary:0];
     [(PLCloudPhotoLibraryManager *)self setCPLStatus:0];
@@ -22338,17 +22338,17 @@ _WORD *__46__PLCloudPhotoLibraryManager_setPause_reason___block_invoke(uint64_t 
   }
 }
 
-- (void)cplHasBackgroundDownloadOperationsWithCompletionHandler:(id)a3
+- (void)cplHasBackgroundDownloadOperationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudPhotoLibraryManager cplHasBackgroundDownloadOperationsWithCompletionHandler:]"];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __86__PLCloudPhotoLibraryManager_cplHasBackgroundDownloadOperationsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7577C08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(PLCloudPhotoLibraryManager *)self _runOnLibraryOpenWithTransaction:v5 block:v7];
 }
 
@@ -22390,11 +22390,11 @@ uint64_t __86__PLCloudPhotoLibraryManager_cplHasBackgroundDownloadOperationsWith
 - (void)endsSignificantWork
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(PLCloudPhotoLibraryManager *)self cplStatus];
-  v4 = [v3 initialSyncDate];
+  cplStatus = [(PLCloudPhotoLibraryManager *)self cplStatus];
+  initialSyncDate = [cplStatus initialSyncDate];
 
-  v5 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
-  if (v5 && self->_significantWork && (-[PLCloudPhotoLibraryManager cplLibrary](self, "cplLibrary"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 sizeOfResourcesToUpload], v6, !v7) && v4)
+  cplLibrary = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+  if (cplLibrary && self->_significantWork && (-[PLCloudPhotoLibraryManager cplLibrary](self, "cplLibrary"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 sizeOfResourcesToUpload], v6, !v7) && initialSyncDate)
   {
     if ((*MEMORY[0x1E6994D48] & 1) == 0)
     {
@@ -22427,7 +22427,7 @@ uint64_t __86__PLCloudPhotoLibraryManager_cplHasBackgroundDownloadOperationsWith
     }
 
     self->_significantWork = 0;
-    [v5 noteClientIsEndingSignificantWork];
+    [cplLibrary noteClientIsEndingSignificantWork];
   }
 
   else if (self->_significantWork && (*MEMORY[0x1E6994D48] & 1) == 0)
@@ -22456,19 +22456,19 @@ uint64_t __86__PLCloudPhotoLibraryManager_cplHasBackgroundDownloadOperationsWith
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 134218240;
-      v15 = [v5 sizeOfResourcesToUpload];
+      sizeOfResourcesToUpload = [cplLibrary sizeOfResourcesToUpload];
       v16 = 1024;
-      v17 = v4 == 0;
+      v17 = initialSyncDate == 0;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "Keeping the significant work mode, sizeOfResourcesToUpload = %llu, inInitialSync = %d", &v14, 0x12u);
     }
   }
 }
 
-- (void)beginsSignificantWorkWithResourcesSize:(unint64_t)a3
+- (void)beginsSignificantWorkWithResourcesSize:(unint64_t)size
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
-  if (v5 && (PLIsEDUMode() & 1) == 0 && a3 >> 22 >= 0x19 && !self->_significantWork)
+  cplLibrary = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+  if (cplLibrary && (PLIsEDUMode() & 1) == 0 && size >> 22 >= 0x19 && !self->_significantWork)
   {
     if ((*MEMORY[0x1E6994D48] & 1) == 0)
     {
@@ -22496,13 +22496,13 @@ uint64_t __86__PLCloudPhotoLibraryManager_cplHasBackgroundDownloadOperationsWith
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 134217984;
-        v10 = a3 >> 20;
+        v10 = size >> 20;
         _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "Starting significant work with %lluMB of resources", &v9, 0xCu);
       }
     }
 
     self->_significantWork = 1;
-    [v5 noteClientIsBeginningSignificantWork];
+    [cplLibrary noteClientIsBeginningSignificantWork];
   }
 }
 
@@ -22551,36 +22551,36 @@ uint64_t __86__PLCloudPhotoLibraryManager_cplHasBackgroundDownloadOperationsWith
 
 - (void)_createDeletionRecordsIfNecessary
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(PLCloudPhotoLibraryManager *)self pathManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  pathManager = [(PLCloudPhotoLibraryManager *)self pathManager];
   v8 = 0;
-  v5 = [v4 photoDirectoryWithType:14 leafType:3 createIfNeeded:0 error:&v8];
+  v5 = [pathManager photoDirectoryWithType:14 leafType:3 createIfNeeded:0 error:&v8];
   v6 = v8;
 
   v7 = [v5 stringByAppendingPathComponent:@"recordstodelete.plist"];
-  if ([v3 fileExistsAtPath:v7])
+  if ([defaultManager fileExistsAtPath:v7])
   {
     [(PLCloudBatchUploader *)self->_uploader uploadDeletedRecordsFromPlist:v7];
   }
 }
 
-- (void)_runOneTimeMigrationStepsIfNecessaryInLibrary:(id)a3
+- (void)_runOneTimeMigrationStepsIfNecessaryInLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v6 = [WeakRetained cplSettings];
+  cplSettings = [WeakRetained cplSettings];
 
-  if ([v6 runOnceFlagIsSet:2])
+  if ([cplSettings runOnceFlagIsSet:2])
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __76__PLCloudPhotoLibraryManager__runOneTimeMigrationStepsIfNecessaryInLibrary___block_invoke;
     v18[3] = &unk_1E75781E8;
-    v19 = v6;
+    v19 = cplSettings;
     [(PLCloudPhotoLibraryManager *)self _reportOptimizeSettingChangeWithCompletionHandler:v18];
   }
 
-  if ([v6 runOnceFlagIsSet:1])
+  if ([cplSettings runOnceFlagIsSet:1])
   {
     v7 = self->_handlePrefetchModeChangeGeneration + 1;
     self->_handlePrefetchModeChangeGeneration = v7;
@@ -22590,43 +22590,43 @@ uint64_t __86__PLCloudPhotoLibraryManager_cplHasBackgroundDownloadOperationsWith
     v15[3] = &unk_1E75782F8;
     v17 = v7;
     v15[4] = self;
-    v16 = v6;
-    [(PLCloudPhotoLibraryManager *)self _handleOptimizeSettingChangeInLibrary:v4 withCompletionHandler:v15];
+    v16 = cplSettings;
+    [(PLCloudPhotoLibraryManager *)self _handleOptimizeSettingChangeInLibrary:libraryCopy withCompletionHandler:v15];
   }
 
-  if ([v6 runOnceFlagIsSet:16])
+  if ([cplSettings runOnceFlagIsSet:16])
   {
     [(PLCloudPhotoLibraryManager *)self _repushVideoAssetsMetadata];
-    [v6 clearRunOnceFlag:16 error:0];
+    [cplSettings clearRunOnceFlag:16 error:0];
   }
 
-  if ([v6 runOnceFlagIsSet:32])
+  if ([cplSettings runOnceFlagIsSet:32])
   {
     [(PLCloudPhotoLibraryManager *)self _repushMasterWithMissingMediaMetadata];
-    [v6 clearRunOnceFlag:32 error:0];
+    [cplSettings clearRunOnceFlag:32 error:0];
   }
 
-  if ([v6 runOnceFlagIsSet:4])
+  if ([cplSettings runOnceFlagIsSet:4])
   {
     v8 = +[PLInternalResource predicateForAvailableResources];
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __76__PLCloudPhotoLibraryManager__runOneTimeMigrationStepsIfNecessaryInLibrary___block_invoke_3;
     v12 = &unk_1E7578848;
-    v13 = self;
-    v14 = v6;
-    [(PLCloudPhotoLibraryManager *)self markPurgeableResourcesMatchingPredicate:v8 urgency:0 inLibrary:v4 completionHandler:&v9];
+    selfCopy = self;
+    v14 = cplSettings;
+    [(PLCloudPhotoLibraryManager *)self markPurgeableResourcesMatchingPredicate:v8 urgency:0 inLibrary:libraryCopy completionHandler:&v9];
   }
 
-  if ([v6 runOnceFlagIsSet:{64, v9, v10, v11, v12, v13}])
+  if ([cplSettings runOnceFlagIsSet:{64, v9, v10, v11, v12, selfCopy}])
   {
     [(PLCloudPhotoLibraryManager *)self _repushAssetsWithImportedByBundleIdentifier];
-    [v6 clearRunOnceFlag:64 error:0];
+    [cplSettings clearRunOnceFlag:64 error:0];
   }
 
-  if ([v6 runOnceFlagIsSet:128])
+  if ([cplSettings runOnceFlagIsSet:128])
   {
-    [v6 clearRunOnceFlag:128 error:0];
+    [cplSettings clearRunOnceFlag:128 error:0];
   }
 
   [(PLCloudPhotoLibraryManager *)self _createDeletionRecordsIfNecessary];
@@ -22655,14 +22655,14 @@ uint64_t __76__PLCloudPhotoLibraryManager__runOneTimeMigrationStepsIfNecessaryIn
 - (void)_runOneTimeMigrationStepsWithoutiCPLIfNecessary
 {
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v4 = [WeakRetained cplSettings];
+  cplSettings = [WeakRetained cplSettings];
 
-  if ([v4 runOnceFlagIsSet:8])
+  if ([cplSettings runOnceFlagIsSet:8])
   {
-    v5 = [(PLCloudPhotoLibraryManager *)self cacheDeleteSupport];
-    v6 = [v5 clearPurgeableFlagsForAllResources];
+    cacheDeleteSupport = [(PLCloudPhotoLibraryManager *)self cacheDeleteSupport];
+    clearPurgeableFlagsForAllResources = [cacheDeleteSupport clearPurgeableFlagsForAllResources];
 
-    if (v6)
+    if (clearPurgeableFlagsForAllResources)
     {
       if ((*MEMORY[0x1E6994D48] & 1) == 0)
       {
@@ -22694,7 +22694,7 @@ uint64_t __76__PLCloudPhotoLibraryManager__runOneTimeMigrationStepsIfNecessaryIn
         }
       }
 
-      [v4 clearRunOnceFlag:8 error:0];
+      [cplSettings clearRunOnceFlag:8 error:0];
     }
 
     else if ((*MEMORY[0x1E6994D48] & 1) == 0)
@@ -22728,27 +22728,27 @@ uint64_t __76__PLCloudPhotoLibraryManager__runOneTimeMigrationStepsIfNecessaryIn
     }
   }
 
-  if ([v4 runOnceFlagIsSet:256])
+  if ([cplSettings runOnceFlagIsSet:256])
   {
-    [(PLCloudPhotoLibraryManager *)self _reconcileSharedStreamCollectionShareParticipantsWithCPLSettings:v4];
+    [(PLCloudPhotoLibraryManager *)self _reconcileSharedStreamCollectionShareParticipantsWithCPLSettings:cplSettings];
   }
 }
 
-- (void)_initializeMasterAndSizeCalculationinLibrary:(id)a3
+- (void)_initializeMasterAndSizeCalculationinLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   uploadTracker = self->_uploadTracker;
-  v6 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
-  [(PLCloudPhotoLibraryUploadTracker *)uploadTracker setupFromCPLManager:v6];
+  cplLibrary = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+  [(PLCloudPhotoLibraryUploadTracker *)uploadTracker setupFromCPLManager:cplLibrary];
 
   if (!self->_initializedMaster)
   {
     if ([(PLCloudBatchUploader *)self->_uploader initialUpload])
     {
-      [PLManagedAsset createMastersInLibrary:v4];
+      [PLManagedAsset createMastersInLibrary:libraryCopy];
     }
 
-    [(PLCloudPhotoLibraryUploadTracker *)self->_uploadTracker setupFromLibrary:v4 isInitialUpload:[(PLCloudBatchUploader *)self->_uploader initialUpload]];
+    [(PLCloudPhotoLibraryUploadTracker *)self->_uploadTracker setupFromLibrary:libraryCopy isInitialUpload:[(PLCloudBatchUploader *)self->_uploader initialUpload]];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.mobileslideshow.cpl.currenttransferprogresschange", 0, 0, 0);
     self->_initializedMaster = 1;
@@ -22756,8 +22756,8 @@ uint64_t __76__PLCloudPhotoLibraryManager__runOneTimeMigrationStepsIfNecessaryIn
     v8[1] = 3221225472;
     v8[2] = __75__PLCloudPhotoLibraryManager__initializeMasterAndSizeCalculationinLibrary___block_invoke;
     v8[3] = &unk_1E7578848;
-    v9 = v4;
-    v10 = self;
+    v9 = libraryCopy;
+    selfCopy = self;
     [v9 performBlockAndWait:v8];
   }
 }
@@ -22787,13 +22787,13 @@ void __75__PLCloudPhotoLibraryManager__initializeMasterAndSizeCalculationinLibra
   [(PLCloudPhotoLibraryManager *)self _resetResourceManager];
   [(PLCloudPhotoLibraryManager *)self _resetDidCallBlocksWaitingForLibraryOpen];
   self->_isHandlingStatusChangesNotification = 0;
-  v3 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-  v4 = [v3 libraryBundle];
-  v5 = [v4 indicatorFileCoordinator];
+  libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+  libraryBundle = [libraryServicesManager libraryBundle];
+  indicatorFileCoordinator = [libraryBundle indicatorFileCoordinator];
 
-  v6 = [v5 isWipeCPLOnOpen];
+  isWipeCPLOnOpen = [indicatorFileCoordinator isWipeCPLOnOpen];
   v7 = MEMORY[0x1E6994D48];
-  if (v6)
+  if (isWipeCPLOnOpen)
   {
     if ((*MEMORY[0x1E6994D48] & 1) == 0)
     {
@@ -22825,17 +22825,17 @@ void __75__PLCloudPhotoLibraryManager__initializeMasterAndSizeCalculationinLibra
       }
     }
 
-    v11 = [(PLCloudPhotoLibraryManager *)self pathManager];
-    [v11 removeCPLDataDirectory];
+    pathManager = [(PLCloudPhotoLibraryManager *)self pathManager];
+    [pathManager removeCPLDataDirectory];
 
     [(PLCloudPhotoLibraryManager *)self _updateBackupExclusionPathsAfterRemoveCPLDirectory];
-    [v5 clearWipeCPLOnOpen];
+    [indicatorFileCoordinator clearWipeCPLOnOpen];
   }
 
   v12 = +[PLAccountStore pl_sharedAccountStore];
-  v13 = [v12 cachedPrimaryAppleAccount];
+  cachedPrimaryAppleAccount = [v12 cachedPrimaryAppleAccount];
 
-  if (!v13)
+  if (!cachedPrimaryAppleAccount)
   {
     if ((*v7 & 1) == 0)
     {
@@ -22903,20 +22903,20 @@ void __75__PLCloudPhotoLibraryManager__initializeMasterAndSizeCalculationinLibra
     }
   }
 
-  v19 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+  cplLibrary = [(PLCloudPhotoLibraryManager *)self cplLibrary];
 
-  if (v19)
+  if (cplLibrary)
   {
     goto LABEL_96;
   }
 
-  v20 = [(PLCloudPhotoLibraryManager *)self pathManager];
-  v21 = [v20 cplDataDirectoryCreateIfNeeded:0];
+  pathManager2 = [(PLCloudPhotoLibraryManager *)self pathManager];
+  v21 = [pathManager2 cplDataDirectoryCreateIfNeeded:0];
 
   v22 = [v21 stringByAppendingPathComponent:@"storage"];
-  v23 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v83 = 0;
-  v24 = [v23 createDirectoryIfNeededAtPath:v22 error:&v83];
+  v24 = [defaultManager createDirectoryIfNeededAtPath:v22 error:&v83];
   v25 = v83;
 
   if ((v24 & 1) == 0 && (*v7 & 1) == 0)
@@ -22966,8 +22966,8 @@ void __75__PLCloudPhotoLibraryManager__initializeMasterAndSizeCalculationinLibra
     v32 = 1;
     v37 = [PLPhotoLibraryIdentifier photoLibraryIdentifierWithPhotoLibraryURL:v36 createIfMissing:1 error:0];
 
-    v38 = [v37 containerIdentifier];
-    v39 = [v37 uuid];
+    containerIdentifier = [v37 containerIdentifier];
+    uuid = [v37 uuid];
     v33 = CPLLibraryIdentifierForApp();
 
     v30 = v35;
@@ -23005,8 +23005,8 @@ void __75__PLCloudPhotoLibraryManager__initializeMasterAndSizeCalculationinLibra
     v33 = *MEMORY[0x1E69949B0];
   }
 
-  v40 = [(PLCloudPhotoLibraryManager *)self pathManager];
-  v41 = PLCloudPhotoLibraryLocalModeEnabled(v40);
+  pathManager3 = [(PLCloudPhotoLibraryManager *)self pathManager];
+  v41 = PLCloudPhotoLibraryLocalModeEnabled(pathManager3);
 
   if (v41)
   {
@@ -23073,14 +23073,14 @@ LABEL_73:
   if (v43)
   {
     [(PLCloudPhotoLibraryManager *)self setCPLLibrary:v43];
-    v54 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
-    [v54 setDelegate:self];
+    cplLibrary2 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+    [cplLibrary2 setDelegate:self];
 
-    v55 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
-    [v55 setResourceProgressDelegate:self];
+    cplLibrary3 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+    [cplLibrary3 setResourceProgressDelegate:self];
 
-    v56 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
-    [v56 setRecordComputeStateDelegate:self];
+    cplLibrary4 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+    [cplLibrary4 setRecordComputeStateDelegate:self];
 
     if ((*v7 & 1) == 0)
     {
@@ -23107,11 +23107,11 @@ LABEL_73:
       v61 = v58;
       if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
       {
-        v62 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+        cplLibrary5 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
         [(PLCloudPhotoLibraryManager *)self cplLibrary];
         v64 = v63 = v30;
         *buf = 134218242;
-        v85 = v62;
+        v85 = cplLibrary5;
         v86 = 2112;
         v87 = v64;
         _os_log_impl(&dword_19BF1F000, v61, OS_LOG_TYPE_DEFAULT, "Created cplLibrary (%p) %@", buf, 0x16u);
@@ -23162,8 +23162,8 @@ LABEL_73:
   if (v43)
   {
 LABEL_96:
-    v67 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
-    if ([v67 state] == 2)
+    cplLibrary6 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+    if ([cplLibrary6 state] == 2)
     {
       if ((*v7 & 1) == 0)
       {
@@ -23191,9 +23191,9 @@ LABEL_96:
         if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218242;
-          v85 = v67;
+          v85 = cplLibrary6;
           v86 = 2112;
-          v87 = v67;
+          v87 = cplLibrary6;
           _os_log_impl(&dword_19BF1F000, v73, OS_LOG_TYPE_DEFAULT, "CPLLibrary is already open: (%p) %@", buf, 0x16u);
         }
       }
@@ -23231,9 +23231,9 @@ LABEL_96:
         if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218242;
-          v85 = v67;
+          v85 = cplLibrary6;
           v86 = 2112;
-          v87 = v67;
+          v87 = cplLibrary6;
           _os_log_impl(&dword_19BF1F000, v74, OS_LOG_TYPE_DEFAULT, "Opening cplLibrary: (%p) %@", buf, 0x16u);
         }
       }
@@ -23244,7 +23244,7 @@ LABEL_96:
       v80[3] = &unk_1E7566AB8;
       v80[4] = self;
       v81 = v70;
-      v82 = v67;
+      v82 = cplLibrary6;
       v75 = v70;
       [v82 openWithCompletionHandler:v80];
     }
@@ -23693,19 +23693,19 @@ LABEL_108:
   if (!self->_libraryMode)
   {
     v4 = MEMORY[0x1E69BF2A0];
-    v5 = [(PLCloudPhotoLibraryManager *)self pathManager];
-    v6 = [v5 libraryURL];
-    LOBYTE(v4) = [v4 isSystemPhotoLibraryURL:v6];
+    pathManager = [(PLCloudPhotoLibraryManager *)self pathManager];
+    libraryURL = [pathManager libraryURL];
+    LOBYTE(v4) = [v4 isSystemPhotoLibraryURL:libraryURL];
 
     if ((v4 & 1) == 0)
     {
-      v74 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v74 handleFailureInMethod:a2 object:self file:@"PLCloudPhotoLibraryManager.m" lineNumber:524 description:{@"Invalid parameter not satisfying: %@", @"[PLPhotoLibraryPathManager isSystemPhotoLibraryURL:self.pathManager.libraryURL]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLCloudPhotoLibraryManager.m" lineNumber:524 description:{@"Invalid parameter not satisfying: %@", @"[PLPhotoLibraryPathManager isSystemPhotoLibraryURL:self.pathManager.libraryURL]"}];
     }
   }
 
   v7 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &__block_literal_global_136);
-  v8 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+  cplLibrary = [(PLCloudPhotoLibraryManager *)self cplLibrary];
   v83 = 0;
   v84 = &v83;
   v85 = 0x3032000000;
@@ -23720,10 +23720,10 @@ LABEL_108:
     v80[3] = &unk_1E7570470;
     v82 = &v83;
     v81 = v7;
-    [v8 enableMainScopeWithCompletionHandler:v80];
+    [cplLibrary enableMainScopeWithCompletionHandler:v80];
   }
 
-  if (!v8)
+  if (!cplLibrary)
   {
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:41022 userInfo:0];
     v10 = v84[5];
@@ -23766,14 +23766,14 @@ LABEL_108:
       }
     }
 
-    v19 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-    v20 = [v19 libraryBundle];
-    v16 = [v20 indicatorFileCoordinator];
+    libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+    libraryBundle = [libraryServicesManager libraryBundle];
+    indicatorFileCoordinator = [libraryBundle indicatorFileCoordinator];
 
-    [v16 updateICloudPhotosMarkerForEnable:1];
-    v21 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-    v22 = [v21 databaseContext];
-    v23 = [v22 newShortLivedCplLibraryWithNameSuffix:"-[PLCloudPhotoLibraryManager _enableiCPL]"];
+    [indicatorFileCoordinator updateICloudPhotosMarkerForEnable:1];
+    libraryServicesManager2 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+    databaseContext = [libraryServicesManager2 databaseContext];
+    v23 = [databaseContext newShortLivedCplLibraryWithNameSuffix:"-[PLCloudPhotoLibraryManager _enableiCPL]"];
 
     self->_icplEnabled = 1;
     v24 = objc_alloc_init(PLCloudPhotoLibraryUploadTracker);
@@ -23786,8 +23786,8 @@ LABEL_108:
     uploader = self->_uploader;
     self->_uploader = v28;
 
-    v30 = [MEMORY[0x1E6994B90] cplShouldGenerateDerivatives];
-    if (v30 && (*v11 & 1) == 0)
+    cplShouldGenerateDerivatives = [MEMORY[0x1E6994B90] cplShouldGenerateDerivatives];
+    if (cplShouldGenerateDerivatives && (*v11 & 1) == 0)
     {
       v31 = self->_libraryMode;
       if (v31 == 2)
@@ -23817,9 +23817,9 @@ LABEL_108:
       }
     }
 
-    [(PLCloudBatchUploader *)self->_uploader setShouldGenerateDerivatives:v30 ^ 1u];
-    v34 = [v23 globalValues];
-    v35 = [v34 hasCloudInitialUploadCompleted];
+    [(PLCloudBatchUploader *)self->_uploader setShouldGenerateDerivatives:cplShouldGenerateDerivatives ^ 1u];
+    globalValues = [v23 globalValues];
+    hasCloudInitialUploadCompleted = [globalValues hasCloudInitialUploadCompleted];
 
     if ((*v11 & 1) == 0)
     {
@@ -23847,7 +23847,7 @@ LABEL_108:
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
         v39 = @"YES";
-        if (v35)
+        if (hasCloudInitialUploadCompleted)
         {
           v39 = @"NO";
         }
@@ -23858,7 +23858,7 @@ LABEL_108:
       }
     }
 
-    [(PLCloudBatchUploader *)self->_uploader setInitialUpload:v35 ^ 1u];
+    [(PLCloudBatchUploader *)self->_uploader setInitialUpload:hasCloudInitialUploadCompleted ^ 1u];
     if ((*v11 & 1) == 0)
     {
       v40 = self->_libraryMode;
@@ -23889,19 +23889,19 @@ LABEL_108:
       }
     }
 
-    v43 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-    v44 = [v43 libraryBundle];
-    v45 = [v44 persistentContainer];
+    libraryServicesManager3 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+    libraryBundle2 = [libraryServicesManager3 libraryBundle];
+    persistentContainer = [libraryBundle2 persistentContainer];
     v79 = 0;
-    v46 = [v45 sharedPersistentStoreCoordinatorWithError:&v79];
+    v46 = [persistentContainer sharedPersistentStoreCoordinatorWithError:&v79];
     v75 = v79;
 
     if (v46)
     {
       v47 = [PLCloudPersistentHistoryChangeTracker alloc];
-      v48 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-      v49 = [v48 libraryBundle];
-      v50 = [(PLCloudPersistentHistoryChangeTracker *)v47 initWithPersistentStoreCoordinator:v46 libraryBundle:v49];
+      libraryServicesManager4 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+      libraryBundle3 = [libraryServicesManager4 libraryBundle];
+      v50 = [(PLCloudPersistentHistoryChangeTracker *)v47 initWithPersistentStoreCoordinator:v46 libraryBundle:libraryBundle3];
       syncChangeTracker = self->_syncChangeTracker;
       self->_syncChangeTracker = v50;
 
@@ -23964,15 +23964,15 @@ LABEL_108:
       v57 = v56;
       if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
       {
-        v58 = [(PLCloudPersistentHistoryChangeTracker *)self->_syncChangeTracker name];
+        name = [(PLCloudPersistentHistoryChangeTracker *)self->_syncChangeTracker name];
         *buf = 138412290;
-        v90 = v58;
+        v90 = name;
         _os_log_impl(&dword_19BF1F000, v57, OS_LOG_TYPE_DEFAULT, "Cloud change tracker: %@", buf, 0xCu);
       }
     }
 
-    v59 = [v23 managedObjectContext];
-    v60 = [(PLCloudPhotoLibraryManager *)self _connectToCloudChangeTrackerWithContext:v59];
+    managedObjectContext = [v23 managedObjectContext];
+    v60 = [(PLCloudPhotoLibraryManager *)self _connectToCloudChangeTrackerWithContext:managedObjectContext];
 
     if (!v60 && (*v11 & 1) == 0)
     {
@@ -24060,9 +24060,9 @@ LABEL_108:
     uploadDownloadCountCoalescer = self->_uploadDownloadCountCoalescer;
     self->_uploadDownloadCountCoalescer = v70;
 
-    v72 = [v16 isICloudPhotosPaused];
-    self->_pauseReason = [v16 currentPauseReason];
-    if (v72)
+    isICloudPhotosPaused = [indicatorFileCoordinator isICloudPhotosPaused];
+    self->_pauseReason = [indicatorFileCoordinator currentPauseReason];
+    if (isICloudPhotosPaused)
     {
       if ([(PLCloudPhotoLibraryManager *)self _setupTimerForUnpause])
       {
@@ -24113,13 +24113,13 @@ LABEL_108:
       v13 = ;
     }
 
-    v16 = v13;
+    indicatorFileCoordinator = v13;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v17 = v84[5];
       *buf = 138412290;
       v90 = v17;
-      _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, "Failed to enable main scope: %@", buf, 0xCu);
+      _os_log_impl(&dword_19BF1F000, indicatorFileCoordinator, OS_LOG_TYPE_ERROR, "Failed to enable main scope: %@", buf, 0xCu);
     }
 
 LABEL_113:
@@ -24227,21 +24227,21 @@ void __41__PLCloudPhotoLibraryManager__enableiCPL__block_invoke_156(uint64_t a1,
 
 - (BOOL)_hasItemToDownload
 {
-  v2 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-  v3 = [v2 libraryBundle];
-  v4 = [v3 indicatorFileCoordinator];
+  libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+  libraryBundle = [libraryServicesManager libraryBundle];
+  indicatorFileCoordinator = [libraryBundle indicatorFileCoordinator];
 
-  LOBYTE(v2) = [v4 hasItemToDownload];
-  return v2;
+  LOBYTE(libraryServicesManager) = [indicatorFileCoordinator hasItemToDownload];
+  return libraryServicesManager;
 }
 
 - (void)_updateBackupExclusionPathsAfterRemoveCPLDirectory
 {
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v3 = [(PLCloudPhotoLibraryManager *)self pathManager];
-  v4 = [v3 isUBF];
+  pathManager = [(PLCloudPhotoLibraryManager *)self pathManager];
+  isUBF = [pathManager isUBF];
 
-  if (v4)
+  if (isUBF)
   {
     if ([(PLCloudPhotoLibraryManager *)self _shouldResetICloudBackupExclusionPaths])
     {
@@ -24259,15 +24259,15 @@ void __41__PLCloudPhotoLibraryManager__enableiCPL__block_invoke_156(uint64_t a1,
     v5 = 0;
   }
 
-  v6 = [(PLCloudPhotoLibraryManager *)self pathManager];
-  [v6 updateBackupExclusionPathsForBackupType:v5];
+  pathManager2 = [(PLCloudPhotoLibraryManager *)self pathManager];
+  [pathManager2 updateBackupExclusionPathsForBackupType:v5];
 }
 
 - (BOOL)_shouldResetICloudBackupExclusionPaths
 {
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v3 = [(PLCloudPhotoLibraryManager *)self pathManager];
-  if ([v3 isDeviceRestoreSupported] && self->_libraryMode == 2)
+  pathManager = [(PLCloudPhotoLibraryManager *)self pathManager];
+  if ([pathManager isDeviceRestoreSupported] && self->_libraryMode == 2)
   {
     WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
     v5 = ([WeakRetained createOptions] >> 5) & 1;
@@ -24357,9 +24357,9 @@ LABEL_3:
 - (void)_initCPLLibraryMode
 {
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v4 = [WeakRetained isSystemPhotoLibrary];
+  isSystemPhotoLibrary = [WeakRetained isSystemPhotoLibrary];
 
-  if (v4)
+  if (isSystemPhotoLibrary)
   {
     v5 = 0;
   }
@@ -24367,9 +24367,9 @@ LABEL_3:
   else
   {
     v6 = objc_loadWeakRetained(&self->_libraryServicesManager);
-    v7 = [v6 isSyndicationPhotoLibrary];
+    isSyndicationPhotoLibrary = [v6 isSyndicationPhotoLibrary];
 
-    if (v7)
+    if (isSyndicationPhotoLibrary)
     {
       v5 = 1;
     }
@@ -24377,9 +24377,9 @@ LABEL_3:
     else
     {
       v8 = objc_loadWeakRetained(&self->_libraryServicesManager);
-      v9 = [v8 isAppPhotoLibrary];
+      isAppPhotoLibrary = [v8 isAppPhotoLibrary];
 
-      if (!v9)
+      if (!isAppPhotoLibrary)
       {
         return;
       }
@@ -24453,7 +24453,7 @@ PLManagedAssetRecoveryManager *__50__PLCloudPhotoLibraryManager__initRecoveryMan
     v4 = 138412546;
     v5 = objc_opt_class();
     v6 = 2048;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "%@ %p _resetResourceManager", &v4, 0x16u);
   }
 
@@ -24559,7 +24559,7 @@ PLCloudResourceManager *__50__PLCloudPhotoLibraryManager__initResourceManager__b
     v4 = 138412546;
     v5 = objc_opt_class();
     v6 = 2048;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "%@ %p _resetCacheDeleteSupport", &v4, 0x16u);
   }
 
@@ -24573,14 +24573,14 @@ PLCloudResourceManager *__50__PLCloudPhotoLibraryManager__initResourceManager__b
   lazyCacheDeleteSupport = self->_lazyCacheDeleteSupport;
   if (!lazyCacheDeleteSupport)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLCloudPhotoLibraryManager.m" lineNumber:412 description:{@"Invalid parameter not satisfying: %@", @"_lazyCacheDeleteSupport != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCloudPhotoLibraryManager.m" lineNumber:412 description:{@"Invalid parameter not satisfying: %@", @"_lazyCacheDeleteSupport != nil"}];
 
     lazyCacheDeleteSupport = self->_lazyCacheDeleteSupport;
   }
 
-  v4 = [(PLLazyObject *)lazyCacheDeleteSupport objectValue];
-  if (!v4)
+  objectValue = [(PLLazyObject *)lazyCacheDeleteSupport objectValue];
+  if (!objectValue)
   {
     v5 = PLPhotosObjectLifecycleGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -24590,7 +24590,7 @@ PLCloudResourceManager *__50__PLCloudPhotoLibraryManager__initResourceManager__b
     }
   }
 
-  return v4;
+  return objectValue;
 }
 
 - (void)_initCacheDeleteSupport
@@ -24655,15 +24655,15 @@ PLCacheDeleteSupport *__53__PLCloudPhotoLibraryManager__initCacheDeleteSupport__
 
 - (PLPhotoLibraryPathManager)pathManager
 {
-  v2 = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
-  v3 = [v2 pathManager];
+  libraryServicesManager = [(PLCloudPhotoLibraryManager *)self libraryServicesManager];
+  pathManager = [libraryServicesManager pathManager];
 
-  return v3;
+  return pathManager;
 }
 
-- (void)enableiCPLWithCompletionHandler:(id)a3
+- (void)enableiCPLWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     libraryMode = self->_libraryMode;
@@ -24700,8 +24700,8 @@ PLCacheDeleteSupport *__53__PLCloudPhotoLibraryManager__initCacheDeleteSupport__
   v10[2] = __62__PLCloudPhotoLibraryManager_enableiCPLWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E7577C08;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [(PLCloudPhotoLibraryManager *)self _runAsyncOnIsolationQueueWithTransaction:v8 block:v10];
 }
 
@@ -24835,38 +24835,38 @@ void __62__PLCloudPhotoLibraryManager_enableiCPLWithCompletionHandler___block_in
   }
 }
 
-- (int64_t)sizeOfResourcesToUploadByCPL:(id *)a3
+- (int64_t)sizeOfResourcesToUploadByCPL:(id *)l
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = [(PLCloudPhotoLibraryManager *)self cplLibrary];
-  v5 = v4;
-  if (v4 && [v4 state] == 2)
+  cplLibrary = [(PLCloudPhotoLibraryManager *)self cplLibrary];
+  v5 = cplLibrary;
+  if (cplLibrary && [cplLibrary state] == 2)
   {
-    v6 = [v5 sizeOfResourcesToUpload];
+    sizeOfResourcesToUpload = [v5 sizeOfResourcesToUpload];
   }
 
   else
   {
-    if (a3)
+    if (l)
     {
       v7 = MEMORY[0x1E696ABC0];
       v8 = *MEMORY[0x1E6994990];
       v11 = *MEMORY[0x1E696A578];
       v12[0] = @"CPL hasn't been setup yet";
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-      *a3 = [v7 errorWithDomain:v8 code:2 userInfo:v9];
+      *l = [v7 errorWithDomain:v8 code:2 userInfo:v9];
     }
 
-    v6 = -1;
+    sizeOfResourcesToUpload = -1;
   }
 
-  return v6;
+  return sizeOfResourcesToUpload;
 }
 
-- (void)setCPLLibrary:(id)a3
+- (void)setCPLLibrary:(id)library
 {
-  v4 = a3;
-  v3 = v4;
+  libraryCopy = library;
+  v3 = libraryCopy;
   PLRunWithUnfairLock();
 }
 
@@ -24952,9 +24952,9 @@ void __62__PLCloudPhotoLibraryManager_enableiCPLWithCompletionHandler___block_in
   }
 }
 
-- (PLCloudPhotoLibraryManager)initWithLibraryServicesManager:(id)a3
+- (PLCloudPhotoLibraryManager)initWithLibraryServicesManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v35.receiver = self;
   v35.super_class = PLCloudPhotoLibraryManager;
   v6 = [(PLCloudPhotoLibraryManager *)&v35 init];
@@ -24962,11 +24962,11 @@ void __62__PLCloudPhotoLibraryManager_enableiCPLWithCompletionHandler___block_in
   {
     if ((PLIsAssetsd() & 1) == 0 && (PLIsInternalTool() & 1) == 0)
     {
-      v29 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v29 handleFailureInMethod:a2 object:v6 file:@"PLCloudPhotoLibraryManager.m" lineNumber:253 description:@"only assetsd"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"PLCloudPhotoLibraryManager.m" lineNumber:253 description:@"only assetsd"];
     }
 
-    objc_storeWeak(v6 + 58, v5);
+    objc_storeWeak(v6 + 58, managerCopy);
     if ((*MEMORY[0x1E6994D48] & 1) == 0)
     {
       v7 = *(v6 + 12);
@@ -25039,13 +25039,13 @@ void __62__PLCloudPhotoLibraryManager_enableiCPLWithCompletionHandler___block_in
     v26 = v6;
     v33 = v26;
     dispatch_async(v25, block);
-    v27 = [v5 cplReadiness];
+    cplReadiness = [managerCopy cplReadiness];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __61__PLCloudPhotoLibraryManager_initWithLibraryServicesManager___block_invoke_2;
     v30[3] = &unk_1E75781E8;
     v31 = v26;
-    [v27 performOnceLibraryIsReadyForCPLManager:v30];
+    [cplReadiness performOnceLibraryIsReadyForCPLManager:v30];
   }
 
   return v6;
@@ -25280,24 +25280,24 @@ void __61__PLCloudPhotoLibraryManager_initWithLibraryServicesManager___block_inv
   }
 }
 
-+ (BOOL)needResetSyncErrorType:(id)a3
++ (BOOL)needResetSyncErrorType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = 1;
-  if (([v3 isCPLErrorWithCode:1] & 1) == 0)
+  if (([typeCopy isCPLErrorWithCode:1] & 1) == 0)
   {
-    if ([v3 isCPLErrorWithCode:20])
+    if ([typeCopy isCPLErrorWithCode:20])
     {
       v4 = 1;
     }
 
     else
     {
-      v4 = [v3 isCPLErrorWithCode:21];
+      v4 = [typeCopy isCPLErrorWithCode:21];
     }
   }
 
-  if ([v3 isCPLErrorWithCode:1])
+  if ([typeCopy isCPLErrorWithCode:1])
   {
     v5 = @"Library version mismatch";
 LABEL_11:
@@ -25305,13 +25305,13 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v3 isCPLErrorWithCode:20])
+  if ([typeCopy isCPLErrorWithCode:20])
   {
     v5 = @"Client cache is invalid";
     goto LABEL_11;
   }
 
-  if ([v3 isCPLErrorWithCode:21])
+  if ([typeCopy isCPLErrorWithCode:21])
   {
     v5 = @"Cloud cache is invalid";
     goto LABEL_11;
@@ -25322,16 +25322,16 @@ LABEL_12:
   return v4;
 }
 
-+ (id)_lastKnownCloudVersionInLibrary:(id)a3
++ (id)_lastKnownCloudVersionInLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   v4 = [PLGlobalValues alloc];
-  v5 = [v3 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
 
-  v6 = [(PLGlobalValues *)v4 initWithManagedObjectContext:v5];
-  v7 = [(PLGlobalValues *)v6 cloudTrackerLastKnownCloudVersion];
+  v6 = [(PLGlobalValues *)v4 initWithManagedObjectContext:managedObjectContext];
+  cloudTrackerLastKnownCloudVersion = [(PLGlobalValues *)v6 cloudTrackerLastKnownCloudVersion];
 
-  return v7;
+  return cloudTrackerLastKnownCloudVersion;
 }
 
 @end

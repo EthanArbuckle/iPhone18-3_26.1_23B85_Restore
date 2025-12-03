@@ -3,8 +3,8 @@
 - (BOOL)waitForFinal;
 - (NSString)description;
 - (SecondPassConfig)init;
-- (void)setUseEndpointer:(BOOL)a3;
-- (void)setWaitForFinal:(BOOL)a3;
+- (void)setUseEndpointer:(BOOL)endpointer;
+- (void)setWaitForFinal:(BOOL)final;
 @end
 
 @implementation SecondPassConfig
@@ -16,11 +16,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setWaitForFinal:(BOOL)a3
+- (void)setWaitForFinal:(BOOL)final
 {
   v5 = OBJC_IVAR___SecondPassConfig_waitForFinal;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = final;
 }
 
 - (BOOL)useEndpointer
@@ -30,11 +30,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setUseEndpointer:(BOOL)a3
+- (void)setUseEndpointer:(BOOL)endpointer
 {
   v5 = OBJC_IVAR___SecondPassConfig_useEndpointer;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = endpointer;
 }
 
 - (SecondPassConfig)init
@@ -55,7 +55,7 @@
   v6 = *(v5 + 48);
   v7 = *(v5 + 52);
   swift_allocObject();
-  v8 = self;
+  selfCopy = self;
   sub_272376B2C();
   type metadata accessor for SecondPassConfig();
   sub_27227DA80(&qword_280882260, v9, type metadata accessor for SecondPassConfig);

@@ -1,19 +1,19 @@
 @interface _GPURawCounterSourceGroup
-- (_GPURawCounterSourceGroup)initWithAcceleratorPort:(unsigned int)a3;
+- (_GPURawCounterSourceGroup)initWithAcceleratorPort:(unsigned int)port;
 - (void)dealloc;
 @end
 
 @implementation _GPURawCounterSourceGroup
 
-- (_GPURawCounterSourceGroup)initWithAcceleratorPort:(unsigned int)a3
+- (_GPURawCounterSourceGroup)initWithAcceleratorPort:(unsigned int)port
 {
   v5.receiver = self;
   v5.super_class = _GPURawCounterSourceGroup;
   result = [(_GPURawCounterSourceGroup *)&v5 init];
   if (result)
   {
-    result->_acceleratorPort = a3;
-    if (!a3)
+    result->_acceleratorPort = port;
+    if (!port)
     {
 
       return 0;

@@ -1,22 +1,22 @@
 @interface LibcoreIoStructTimeval
-+ (id)fromMillisWithLong:(int64_t)a3;
-- (LibcoreIoStructTimeval)initWithLong:(int64_t)a3 withLong:(int64_t)a4;
++ (id)fromMillisWithLong:(int64_t)long;
+- (LibcoreIoStructTimeval)initWithLong:(int64_t)long withLong:(int64_t)withLong;
 - (id)description;
 @end
 
 @implementation LibcoreIoStructTimeval
 
-- (LibcoreIoStructTimeval)initWithLong:(int64_t)a3 withLong:(int64_t)a4
+- (LibcoreIoStructTimeval)initWithLong:(int64_t)long withLong:(int64_t)withLong
 {
-  self->tv_sec_ = a3;
-  self->tv_usec_ = a4;
+  self->tv_sec_ = long;
+  self->tv_usec_ = withLong;
   return self;
 }
 
-+ (id)fromMillisWithLong:(int64_t)a3
++ (id)fromMillisWithLong:(int64_t)long
 {
-  v3 = a3 / 1000;
-  v4 = 1000 * (a3 % 1000);
+  v3 = long / 1000;
+  v4 = 1000 * (long % 1000);
   v5 = [LibcoreIoStructTimeval alloc];
   v5->tv_sec_ = v3;
   v5->tv_usec_ = v4;

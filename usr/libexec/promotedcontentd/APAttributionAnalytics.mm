@@ -1,17 +1,17 @@
 @interface APAttributionAnalytics
-+ (id)_buildPayloadForTimingAnalytics:(id)a3 startDate:(id)a4 endDate:(id)a5 additionalFields:(id)a6;
-+ (id)storefrontCountryOnly:(id)a3;
-+ (int64_t)findBucketForDaemonRunningTime:(double)a3;
-+ (void)sendTimedAnalytic:(id)a3 fieldName:(id)a4 startDate:(id)a5 endDate:(id)a6 additionalFields:(id)a7;
-+ (void)sendTimingAnalytics:(id)a3 startDate:(id)a4 endDate:(id)a5 additionalFields:(id)a6;
-+ (void)sendTokenDuplicateAnalytics:(id)a3;
++ (id)_buildPayloadForTimingAnalytics:(id)analytics startDate:(id)date endDate:(id)endDate additionalFields:(id)fields;
++ (id)storefrontCountryOnly:(id)only;
++ (int64_t)findBucketForDaemonRunningTime:(double)time;
++ (void)sendTimedAnalytic:(id)analytic fieldName:(id)name startDate:(id)date endDate:(id)endDate additionalFields:(id)fields;
++ (void)sendTimingAnalytics:(id)analytics startDate:(id)date endDate:(id)endDate additionalFields:(id)fields;
++ (void)sendTokenDuplicateAnalytics:(id)analytics;
 - (APAttributionAnalytics)init;
 - (unint64_t)end;
 - (unint64_t)serverPostEnd;
 - (void)sendAnalytics;
 - (void)sendTokenAnalytics;
-- (void)setEnd:(unint64_t)a3;
-- (void)setServerPostEnd:(unint64_t)a3;
+- (void)setEnd:(unint64_t)end;
+- (void)setServerPostEnd:(unint64_t)end;
 @end
 
 @implementation APAttributionAnalytics
@@ -303,10 +303,10 @@
   }
 }
 
-- (void)setEnd:(unint64_t)a3
+- (void)setEnd:(unint64_t)end
 {
   [(APUnfairLock *)self->_analyticsLock lock];
-  self->_end = a3;
+  self->_end = end;
   state = self->_state;
   if (state)
   {
@@ -338,10 +338,10 @@ LABEL_6:
   return end;
 }
 
-- (void)setServerPostEnd:(unint64_t)a3
+- (void)setServerPostEnd:(unint64_t)end
 {
   [(APUnfairLock *)self->_analyticsLock lock];
-  self->_serverPostEnd = a3;
+  self->_serverPostEnd = end;
   state = self->_state;
   if (state)
   {
@@ -373,11 +373,11 @@ LABEL_6:
   return serverPostEnd;
 }
 
-+ (void)sendTokenDuplicateAnalytics:(id)a3
++ (void)sendTokenDuplicateAnalytics:(id)analytics
 {
-  v3 = a3;
+  analyticsCopy = analytics;
   v8 = @"source";
-  v9 = v3;
+  v9 = analyticsCopy;
   v4 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   [APAnalytics sendEvent:@"attribution.duplicate" customPayload:v4];
 
@@ -385,25 +385,25 @@ LABEL_6:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138543362;
-    v7 = v3;
+    v7 = analyticsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Analytics duplicate token event status %{public}@", &v6, 0xCu);
   }
 }
 
-+ (id)_buildPayloadForTimingAnalytics:(id)a3 startDate:(id)a4 endDate:(id)a5 additionalFields:(id)a6
++ (id)_buildPayloadForTimingAnalytics:(id)analytics startDate:(id)date endDate:(id)endDate additionalFields:(id)fields
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v9 length])
+  analyticsCopy = analytics;
+  dateCopy = date;
+  endDateCopy = endDate;
+  fieldsCopy = fields;
+  if ([analyticsCopy length])
   {
     v13 = 0.0;
-    if (v10)
+    if (dateCopy)
     {
-      if (v11)
+      if (endDateCopy)
       {
-        [v11 timeIntervalSinceDate:v10];
+        [endDateCopy timeIntervalSinceDate:dateCopy];
         v13 = v14;
         if (v14 < 0.0)
         {
@@ -418,14 +418,14 @@ LABEL_6:
       }
     }
 
-    v16 = [NSNumber numberWithInteger:(v13 * 1000.0), v9];
-    v22 = v16;
+    analyticsCopy = [NSNumber numberWithInteger:(v13 * 1000.0), analyticsCopy];
+    v22 = analyticsCopy;
     v17 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
 
-    if (v12)
+    if (fieldsCopy)
     {
       v18 = [v17 mutableCopy];
-      [v18 addEntriesFromDictionary:v12];
+      [v18 addEntriesFromDictionary:fieldsCopy];
       v19 = [v18 copy];
 
       v17 = v19;
@@ -440,11 +440,11 @@ LABEL_6:
   return v17;
 }
 
-+ (int64_t)findBucketForDaemonRunningTime:(double)a3
++ (int64_t)findBucketForDaemonRunningTime:(double)time
 {
   for (result = 0; result != 10; ++result)
   {
-    if (qword_1003EB678[result] >= (a3 * 1000.0))
+    if (qword_1003EB678[result] >= (time * 1000.0))
     {
       break;
     }
@@ -453,17 +453,17 @@ LABEL_6:
   return result;
 }
 
-+ (id)storefrontCountryOnly:(id)a3
++ (id)storefrontCountryOnly:(id)only
 {
-  v3 = a3;
-  v4 = v3;
+  onlyCopy = only;
+  v4 = onlyCopy;
   v5 = @"NONE";
-  if (v3 && ([v3 isEqualToString:@"NONE"] & 1) == 0)
+  if (onlyCopy && ([onlyCopy isEqualToString:@"NONE"] & 1) == 0)
   {
     v6 = [v4 componentsSeparatedByString:@"-"];
     if ([v6 count])
     {
-      v7 = [v6 firstObject];
+      firstObject = [v6 firstObject];
     }
 
     else
@@ -475,18 +475,18 @@ LABEL_6:
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Error extracting storefront country only.", v10, 2u);
       }
 
-      v7 = v4;
+      firstObject = v4;
     }
 
-    v5 = v7;
+    v5 = firstObject;
   }
 
   return v5;
 }
 
-+ (void)sendTimingAnalytics:(id)a3 startDate:(id)a4 endDate:(id)a5 additionalFields:(id)a6
++ (void)sendTimingAnalytics:(id)analytics startDate:(id)date endDate:(id)endDate additionalFields:(id)fields
 {
-  v6 = [a1 _buildPayloadForTimingAnalytics:a3 startDate:a4 endDate:a5 additionalFields:a6];
+  v6 = [self _buildPayloadForTimingAnalytics:analytics startDate:date endDate:endDate additionalFields:fields];
   if (v6)
   {
     [APAnalytics sendEvent:@"attribution.timings" customPayload:v6];
@@ -495,13 +495,13 @@ LABEL_6:
   _objc_release_x1();
 }
 
-+ (void)sendTimedAnalytic:(id)a3 fieldName:(id)a4 startDate:(id)a5 endDate:(id)a6 additionalFields:(id)a7
++ (void)sendTimedAnalytic:(id)analytic fieldName:(id)name startDate:(id)date endDate:(id)endDate additionalFields:(id)fields
 {
-  v13 = a3;
-  v12 = [a1 _buildPayloadForTimingAnalytics:a4 startDate:a5 endDate:a6 additionalFields:a7];
+  analyticCopy = analytic;
+  v12 = [self _buildPayloadForTimingAnalytics:name startDate:date endDate:endDate additionalFields:fields];
   if (v12)
   {
-    [APAnalytics sendEvent:v13 customPayload:v12];
+    [APAnalytics sendEvent:analyticCopy customPayload:v12];
   }
 }
 

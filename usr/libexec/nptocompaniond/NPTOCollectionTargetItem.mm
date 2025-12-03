@@ -1,23 +1,23 @@
 @interface NPTOCollectionTargetItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)subtypeAsString:(int)a3;
-- (id)typeAsString:(int)a3;
-- (int)StringAsSubtype:(id)a3;
-- (int)StringAsType:(id)a3;
-- (int)assetIndexAtIndex:(unint64_t)a3;
-- (int)keyAssetIndexAtIndex:(unint64_t)a3;
+- (id)subtypeAsString:(int)string;
+- (id)typeAsString:(int)string;
+- (int)StringAsSubtype:(id)subtype;
+- (int)StringAsType:(id)type;
+- (int)assetIndexAtIndex:(unint64_t)index;
+- (int)keyAssetIndexAtIndex:(unint64_t)index;
 - (int)subtype;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSubtype:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasSubtype:(BOOL)subtype;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPTOCollectionTargetItem
@@ -31,32 +31,32 @@
   [(NPTOCollectionTargetItem *)&v3 dealloc];
 }
 
-- (int)assetIndexAtIndex:(unint64_t)a3
+- (int)assetIndexAtIndex:(unint64_t)index
 {
   p_assetIndexs = &self->_assetIndexs;
   count = self->_assetIndexs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_assetIndexs->list[a3];
+  return p_assetIndexs->list[index];
 }
 
-- (int)keyAssetIndexAtIndex:(unint64_t)a3
+- (int)keyAssetIndexAtIndex:(unint64_t)index
 {
   p_keyAssetIndexs = &self->_keyAssetIndexs;
   count = self->_keyAssetIndexs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_keyAssetIndexs->list[a3];
+  return p_keyAssetIndexs->list[index];
 }
 
 - (int)type
@@ -72,9 +72,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -87,40 +87,40 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (id)typeAsString:(int)a3
+- (id)typeAsString:(int)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_10008B698[a3];
+    v4 = off_10008B698[string];
   }
 
   return v4;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Album"])
+  else if ([typeCopy isEqualToString:@"Album"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SmartAlbum"])
+  else if ([typeCopy isEqualToString:@"SmartAlbum"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Moment"])
+  else if ([typeCopy isEqualToString:@"Moment"])
   {
     v4 = 3;
   }
@@ -146,9 +146,9 @@
   }
 }
 
-- (void)setHasSubtype:(BOOL)a3
+- (void)setHasSubtype:(BOOL)subtype
 {
-  if (a3)
+  if (subtype)
   {
     v3 = 2;
   }
@@ -161,16 +161,16 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)subtypeAsString:(int)a3
+- (id)subtypeAsString:(int)string
 {
-  if (a3 <= 99)
+  if (string <= 99)
   {
-    if (a3)
+    if (string)
     {
-      if (a3 != 2)
+      if (string != 2)
       {
 LABEL_22:
-        v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+        v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
 
         return v4;
       }
@@ -186,7 +186,7 @@ LABEL_22:
 
   else
   {
-    switch(a3)
+    switch(string)
     {
       case 100:
         v4 = @"AlbumMyPhotoStream";
@@ -208,30 +208,30 @@ LABEL_22:
   return v4;
 }
 
-- (int)StringAsSubtype:(id)a3
+- (int)StringAsSubtype:(id)subtype
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AlbumAny"])
+  subtypeCopy = subtype;
+  if ([subtypeCopy isEqualToString:@"AlbumAny"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AlbumRegular"])
+  else if ([subtypeCopy isEqualToString:@"AlbumRegular"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AlbumMyPhotoStream"])
+  else if ([subtypeCopy isEqualToString:@"AlbumMyPhotoStream"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"AlbumCloudShared"])
+  else if ([subtypeCopy isEqualToString:@"AlbumCloudShared"])
   {
     v4 = 101;
   }
 
-  else if ([v3 isEqualToString:@"SmartAlbumFavorites"])
+  else if ([subtypeCopy isEqualToString:@"SmartAlbumFavorites"])
   {
     v4 = 203;
   }
@@ -249,8 +249,8 @@ LABEL_22:
   v7.receiver = self;
   v7.super_class = NPTOCollectionTargetItem;
   v3 = [(NPTOCollectionTargetItem *)&v7 description];
-  v4 = [(NPTOCollectionTargetItem *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NPTOCollectionTargetItem *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -360,20 +360,20 @@ LABEL_30:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_uuidData)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_assetIndexs.count)
@@ -382,7 +382,7 @@ LABEL_30:
     do
     {
       PBDataWriterWriteInt32Field();
-      v4 = v8;
+      toCopy = v8;
       ++v5;
     }
 
@@ -395,7 +395,7 @@ LABEL_30:
     do
     {
       PBDataWriterWriteInt32Field();
-      v4 = v8;
+      toCopy = v8;
       ++v6;
     }
 
@@ -405,59 +405,59 @@ LABEL_30:
   if (self->_title)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_subtitle)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_collectionMetadata)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v13 = v4;
+  toCopy = to;
+  v13 = toCopy;
   if (self->_uuidData)
   {
-    [v4 setUuidData:?];
-    v4 = v13;
+    [toCopy setUuidData:?];
+    toCopy = v13;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 16) = self->_collectionTarget;
-    *(v4 + 112) |= 1u;
+    *(toCopy + 16) = self->_collectionTarget;
+    *(toCopy + 112) |= 1u;
   }
 
   if ([(NPTOCollectionTargetItem *)self assetIndexsCount])
   {
     [v13 clearAssetIndexs];
-    v5 = [(NPTOCollectionTargetItem *)self assetIndexsCount];
-    if (v5)
+    assetIndexsCount = [(NPTOCollectionTargetItem *)self assetIndexsCount];
+    if (assetIndexsCount)
     {
-      v6 = v5;
+      v6 = assetIndexsCount;
       for (i = 0; i != v6; ++i)
       {
         [v13 addAssetIndex:{-[NPTOCollectionTargetItem assetIndexAtIndex:](self, "assetIndexAtIndex:", i)}];
@@ -468,10 +468,10 @@ LABEL_30:
   if ([(NPTOCollectionTargetItem *)self keyAssetIndexsCount])
   {
     [v13 clearKeyAssetIndexs];
-    v8 = [(NPTOCollectionTargetItem *)self keyAssetIndexsCount];
-    if (v8)
+    keyAssetIndexsCount = [(NPTOCollectionTargetItem *)self keyAssetIndexsCount];
+    if (keyAssetIndexsCount)
     {
-      v9 = v8;
+      v9 = keyAssetIndexsCount;
       for (j = 0; j != v9; ++j)
       {
         [v13 addKeyAssetIndex:{-[NPTOCollectionTargetItem keyAssetIndexAtIndex:](self, "keyAssetIndexAtIndex:", j)}];
@@ -512,10 +512,10 @@ LABEL_30:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_uuidData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_uuidData copyWithZone:zone];
   v7 = v5[13];
   v5[13] = v6;
 
@@ -527,15 +527,15 @@ LABEL_30:
 
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
-  v8 = [(NSString *)self->_title copyWithZone:a3];
+  v8 = [(NSString *)self->_title copyWithZone:zone];
   v9 = v5[11];
   v5[11] = v8;
 
-  v10 = [(NSString *)self->_subtitle copyWithZone:a3];
+  v10 = [(NSString *)self->_subtitle copyWithZone:zone];
   v11 = v5[9];
   v5[9] = v10;
 
-  v12 = [(NSData *)self->_collectionMetadata copyWithZone:a3];
+  v12 = [(NSData *)self->_collectionMetadata copyWithZone:zone];
   v13 = v5[7];
   v5[7] = v12;
 
@@ -556,16 +556,16 @@ LABEL_30:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   uuidData = self->_uuidData;
-  if (uuidData | *(v4 + 13))
+  if (uuidData | *(equalCopy + 13))
   {
     if (![(NSData *)uuidData isEqual:?])
     {
@@ -575,13 +575,13 @@ LABEL_30:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 112) & 1) == 0 || self->_collectionTarget != *(v4 + 16))
+    if ((*(equalCopy + 112) & 1) == 0 || self->_collectionTarget != *(equalCopy + 16))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 112))
+  else if (*(equalCopy + 112))
   {
 LABEL_26:
     v9 = 0;
@@ -599,7 +599,7 @@ LABEL_26:
   }
 
   title = self->_title;
-  if (title | *(v4 + 11))
+  if (title | *(equalCopy + 11))
   {
     if (![(NSString *)title isEqual:?])
     {
@@ -608,7 +608,7 @@ LABEL_26:
   }
 
   subtitle = self->_subtitle;
-  if (subtitle | *(v4 + 9))
+  if (subtitle | *(equalCopy + 9))
   {
     if (![(NSString *)subtitle isEqual:?])
     {
@@ -617,7 +617,7 @@ LABEL_26:
   }
 
   collectionMetadata = self->_collectionMetadata;
-  if (collectionMetadata | *(v4 + 7))
+  if (collectionMetadata | *(equalCopy + 7))
   {
     if (![(NSData *)collectionMetadata isEqual:?])
     {
@@ -627,21 +627,21 @@ LABEL_26:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 112) & 4) == 0 || self->_type != *(v4 + 24))
+    if ((*(equalCopy + 112) & 4) == 0 || self->_type != *(equalCopy + 24))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 112) & 4) != 0)
+  else if ((*(equalCopy + 112) & 4) != 0)
   {
     goto LABEL_26;
   }
 
-  v9 = (*(v4 + 112) & 2) == 0;
+  v9 = (*(equalCopy + 112) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 112) & 2) == 0 || self->_subtype != *(v4 + 20))
+    if ((*(equalCopy + 112) & 2) == 0 || self->_subtype != *(equalCopy + 20))
     {
       goto LABEL_26;
     }
@@ -696,36 +696,36 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v13 = v4;
-  if (*(v4 + 13))
+  fromCopy = from;
+  v13 = fromCopy;
+  if (*(fromCopy + 13))
   {
     [(NPTOCollectionTargetItem *)self setUuidData:?];
-    v4 = v13;
+    fromCopy = v13;
   }
 
-  if (*(v4 + 112))
+  if (*(fromCopy + 112))
   {
-    self->_collectionTarget = *(v4 + 16);
+    self->_collectionTarget = *(fromCopy + 16);
     *&self->_has |= 1u;
   }
 
-  v5 = [v4 assetIndexsCount];
-  if (v5)
+  assetIndexsCount = [fromCopy assetIndexsCount];
+  if (assetIndexsCount)
   {
-    v6 = v5;
+    v6 = assetIndexsCount;
     for (i = 0; i != v6; ++i)
     {
       -[NPTOCollectionTargetItem addAssetIndex:](self, "addAssetIndex:", [v13 assetIndexAtIndex:i]);
     }
   }
 
-  v8 = [v13 keyAssetIndexsCount];
-  if (v8)
+  keyAssetIndexsCount = [v13 keyAssetIndexsCount];
+  if (keyAssetIndexsCount)
   {
-    v9 = v8;
+    v9 = keyAssetIndexsCount;
     for (j = 0; j != v9; ++j)
     {
       -[NPTOCollectionTargetItem addKeyAssetIndex:](self, "addKeyAssetIndex:", [v13 keyAssetIndexAtIndex:j]);

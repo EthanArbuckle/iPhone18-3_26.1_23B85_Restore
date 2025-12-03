@@ -1,32 +1,32 @@
 @interface CKMomentSharePreviewAssetsDataSourceManager
-- (CKMomentSharePreviewAssetsDataSourceManager)initWithMomentShareURL:(id)a3;
+- (CKMomentSharePreviewAssetsDataSourceManager)initWithMomentShareURL:(id)l;
 - (id)createInitialDataSource;
 - (void)_fetchMomentShare;
-- (void)_handleFetchedMomentShare:(id)a3 error:(id)a4;
-- (void)_momentShareCacheDidChange:(id)a3;
+- (void)_handleFetchedMomentShare:(id)share error:(id)error;
+- (void)_momentShareCacheDidChange:(id)change;
 - (void)createInitialDataSource;
 @end
 
 @implementation CKMomentSharePreviewAssetsDataSourceManager
 
-- (CKMomentSharePreviewAssetsDataSourceManager)initWithMomentShareURL:(id)a3
+- (CKMomentSharePreviewAssetsDataSourceManager)initWithMomentShareURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = CKMomentSharePreviewAssetsDataSourceManager;
   v6 = [(PXSectionedDataSourceManager *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_momentShareURL, a3);
+    objc_storeStrong(&v6->_momentShareURL, l);
     if (v7->_momentShareURL)
     {
-      v8 = [MEMORY[0x1E69A5C00] sharedInstance];
+      mEMORY[0x1E69A5C00] = [MEMORY[0x1E69A5C00] sharedInstance];
       momentShareCache = v7->_momentShareCache;
-      v7->_momentShareCache = v8;
+      v7->_momentShareCache = mEMORY[0x1E69A5C00];
 
-      v10 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v10 addObserver:v7 selector:sel__momentShareCacheDidChange_ name:*MEMORY[0x1E69A59C8] object:v7->_momentShareCache];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v7 selector:sel__momentShareCacheDidChange_ name:*MEMORY[0x1E69A59C8] object:v7->_momentShareCache];
 
       [(CKMomentSharePreviewAssetsDataSourceManager *)v7 _fetchMomentShare];
     }
@@ -60,13 +60,13 @@
 {
   objc_initWeak(&location, self);
   momentShareCache = self->_momentShareCache;
-  v4 = [(NSURL *)self->_momentShareURL absoluteString];
+  absoluteString = [(NSURL *)self->_momentShareURL absoluteString];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __64__CKMomentSharePreviewAssetsDataSourceManager__fetchMomentShare__block_invoke;
   v5[3] = &unk_1E72F6E50;
   objc_copyWeak(&v6, &location);
-  [(IMMomentShareCache *)momentShareCache momentShareForURLString:v4 completionHandler:v5];
+  [(IMMomentShareCache *)momentShareCache momentShareForURLString:absoluteString completionHandler:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -80,17 +80,17 @@ void __64__CKMomentSharePreviewAssetsDataSourceManager__fetchMomentShare__block_
   [WeakRetained _handleFetchedMomentShare:v6 error:v5];
 }
 
-- (void)_handleFetchedMomentShare:(id)a3 error:(id)a4
+- (void)_handleFetchedMomentShare:(id)share error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  shareCopy = share;
+  errorCopy = error;
   v9 = IMLogHandleForCategory();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
-  if (v7)
+  if (shareCopy)
   {
     if (v10)
     {
-      [CKMomentSharePreviewAssetsDataSourceManager _handleFetchedMomentShare:v7 error:?];
+      [CKMomentSharePreviewAssetsDataSourceManager _handleFetchedMomentShare:shareCopy error:?];
     }
   }
 
@@ -99,12 +99,12 @@ void __64__CKMomentSharePreviewAssetsDataSourceManager__fetchMomentShare__block_
     [CKMomentSharePreviewAssetsDataSourceManager _handleFetchedMomentShare:error:];
   }
 
-  if (CKIsEqual(self->_momentShare, v7))
+  if (CKIsEqual(self->_momentShare, shareCopy))
   {
     v11 = IMLogHandleForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [CKMomentSharePreviewAssetsDataSourceManager _handleFetchedMomentShare:v7 error:?];
+      [CKMomentSharePreviewAssetsDataSourceManager _handleFetchedMomentShare:shareCopy error:?];
     }
 
 LABEL_15:
@@ -112,7 +112,7 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  objc_storeStrong(&self->_momentShare, a3);
+  objc_storeStrong(&self->_momentShare, share);
   currentDataSource = self->_currentDataSource;
   v11 = IMLogHandleForCategory();
   v13 = os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG);
@@ -126,11 +126,11 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (v7)
+  if (shareCopy)
   {
     if (v13)
     {
-      [CKMomentSharePreviewAssetsDataSourceManager _handleFetchedMomentShare:v7 error:?];
+      [CKMomentSharePreviewAssetsDataSourceManager _handleFetchedMomentShare:shareCopy error:?];
     }
   }
 
@@ -147,13 +147,13 @@ LABEL_15:
 LABEL_19:
 }
 
-- (void)_momentShareCacheDidChange:(id)a3
+- (void)_momentShareCacheDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69A59D0]];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69A59D0]];
 
-  v6 = [(NSURL *)self->_momentShareURL absoluteString];
-  v7 = [v5 containsObject:v6];
+  absoluteString = [(NSURL *)self->_momentShareURL absoluteString];
+  v7 = [v5 containsObject:absoluteString];
 
   if (v7)
   {
@@ -169,7 +169,7 @@ LABEL_19:
 
 - (void)createInitialDataSource
 {
-  v1 = [*(a1 + 192) uuid];
+  uuid = [*(self + 192) uuid];
   OUTLINED_FUNCTION_0_11();
   OUTLINED_FUNCTION_2_2(&dword_19020E000, v2, v3, "<%p> Create initial data source for moment share: %{public}@, URL: %@", v4, v5, v6, v7, v8);
 }

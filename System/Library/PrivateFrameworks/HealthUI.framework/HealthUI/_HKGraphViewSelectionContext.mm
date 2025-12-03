@@ -7,9 +7,9 @@
 
 - (double)minimumSelectionDistance
 {
-  v2 = [(_HKGraphViewSelectionContext *)self selectionState];
+  selectionState = [(_HKGraphViewSelectionContext *)self selectionState];
   result = 40.0;
-  if (v2 < 3)
+  if (selectionState < 3)
   {
     return 1.79769313e308;
   }

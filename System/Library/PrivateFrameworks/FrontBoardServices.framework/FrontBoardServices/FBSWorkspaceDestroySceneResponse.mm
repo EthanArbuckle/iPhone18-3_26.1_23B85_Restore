@@ -1,22 +1,22 @@
 @interface FBSWorkspaceDestroySceneResponse
-- (FBSWorkspaceDestroySceneResponse)initWithXPCDictionary:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (FBSWorkspaceDestroySceneResponse)initWithXPCDictionary:(id)dictionary;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation FBSWorkspaceDestroySceneResponse
 
-- (FBSWorkspaceDestroySceneResponse)initWithXPCDictionary:(id)a3
+- (FBSWorkspaceDestroySceneResponse)initWithXPCDictionary:(id)dictionary
 {
   v4.receiver = self;
   v4.super_class = FBSWorkspaceDestroySceneResponse;
-  return [(FBSWorkspaceResponse *)&v4 initWithXPCDictionary:a3];
+  return [(FBSWorkspaceResponse *)&v4 initWithXPCDictionary:dictionary];
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
   v3.receiver = self;
   v3.super_class = FBSWorkspaceDestroySceneResponse;
-  [(FBSWorkspaceResponse *)&v3 encodeWithXPCDictionary:a3];
+  [(FBSWorkspaceResponse *)&v3 encodeWithXPCDictionary:dictionary];
 }
 
 @end

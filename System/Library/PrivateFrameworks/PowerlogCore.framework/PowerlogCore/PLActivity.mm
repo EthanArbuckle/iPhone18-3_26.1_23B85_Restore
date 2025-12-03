@@ -3,19 +3,19 @@
 - (BOOL)allCriteriaSatisfied;
 - (BOOL)mustRunCriterionSatisfied;
 - (NSString)description;
-- (PLActivity)initWithIdentifier:(id)a3 withCriteria:(id)a4 withMustRunCriterion:(id)a5 withQueue:(id)a6 withInterruptBlock:(id)a7 withActivityBlock:(id)a8;
+- (PLActivity)initWithIdentifier:(id)identifier withCriteria:(id)criteria withMustRunCriterion:(id)criterion withQueue:(id)queue withInterruptBlock:(id)block withActivityBlock:(id)activityBlock;
 - (id)criteriaString;
 - (id)mustRunCriterionString;
 - (int64_t)state;
-- (void)didChangeCriterion:(id)a3;
+- (void)didChangeCriterion:(id)criterion;
 - (void)disable;
 - (void)enable;
-- (void)enumerateCriteriaWithBlock:(id)a3;
+- (void)enumerateCriteriaWithBlock:(id)block;
 - (void)interruptActivity;
 - (void)logEntry;
 - (void)runActivity;
-- (void)setEnabled:(BOOL)a3;
-- (void)setState:(int64_t)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setState:(int64_t)state;
 - (void)syncWithDB;
 @end
 
@@ -23,19 +23,19 @@
 
 - (BOOL)mustRunCriterionSatisfied
 {
-  v3 = [(PLActivity *)self mustRunCriterion];
-  if (v3)
+  mustRunCriterion = [(PLActivity *)self mustRunCriterion];
+  if (mustRunCriterion)
   {
-    v4 = [(PLActivity *)self mustRunCriterion];
-    v5 = [v4 satisfied];
+    mustRunCriterion2 = [(PLActivity *)self mustRunCriterion];
+    satisfied = [mustRunCriterion2 satisfied];
   }
 
   else
   {
-    v5 = 0;
+    satisfied = 0;
   }
 
-  return v5;
+  return satisfied;
 }
 
 - (BOOL)allCriteriaSatisfied
@@ -85,13 +85,13 @@ void __34__PLActivity_allCriteriaSatisfied__block_invoke(uint64_t a1, void *a2, 
 
 - (void)runActivity
 {
-  v3 = [(PLActivity *)self queue];
+  queue = [(PLActivity *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __25__PLActivity_runActivity__block_invoke;
   block[3] = &unk_1E85190B8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __25__PLActivity_runActivity__block_invoke(uint64_t a1)
@@ -161,54 +161,54 @@ uint64_t __25__PLActivity_runActivity__block_invoke(uint64_t a1)
 - (void)logEntry
 {
   v3 = [PLEntry alloc];
-  v4 = [objc_opt_class() activityStatesEntryKey];
-  v13 = [(PLEntry *)v3 initWithEntryKey:v4];
+  activityStatesEntryKey = [objc_opt_class() activityStatesEntryKey];
+  v13 = [(PLEntry *)v3 initWithEntryKey:activityStatesEntryKey];
 
   v5 = MEMORY[0x1E696AD98];
-  v6 = [(PLActivity *)self activityEntry];
-  v7 = [v5 numberWithLongLong:{objc_msgSend(v6, "entryID")}];
+  activityEntry = [(PLActivity *)self activityEntry];
+  v7 = [v5 numberWithLongLong:{objc_msgSend(activityEntry, "entryID")}];
   [(PLEntry *)v13 setObject:v7 forKeyedSubscript:@"ActivityID"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PLActivity state](self, "state")}];
   [(PLEntry *)v13 setObject:v8 forKeyedSubscript:@"State"];
 
   v9 = +[PowerlogCore sharedCore];
-  v10 = [v9 storage];
-  [v10 blockingWriteEntry:v13 withCompletionBlock:&__block_literal_global_20_0];
+  storage = [v9 storage];
+  [storage blockingWriteEntry:v13 withCompletionBlock:&__block_literal_global_20_0];
 
   v11 = +[PowerlogCore sharedCore];
-  v12 = [v11 storage];
-  [v12 flushCachesWithReason:@"ActivityStatesEntry"];
+  storage2 = [v11 storage];
+  [storage2 flushCachesWithReason:@"ActivityStatesEntry"];
 }
 
 - (int64_t)state
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  state = v2->_state;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  state = selfCopy->_state;
+  objc_sync_exit(selfCopy);
 
   return state;
 }
 
-- (PLActivity)initWithIdentifier:(id)a3 withCriteria:(id)a4 withMustRunCriterion:(id)a5 withQueue:(id)a6 withInterruptBlock:(id)a7 withActivityBlock:(id)a8
+- (PLActivity)initWithIdentifier:(id)identifier withCriteria:(id)criteria withMustRunCriterion:(id)criterion withQueue:(id)queue withInterruptBlock:(id)block withActivityBlock:(id)activityBlock
 {
-  v15 = a3;
-  v16 = a4;
-  v28 = a5;
-  v17 = a6;
-  v29 = a7;
-  v18 = a8;
-  v19 = 0;
-  if (v15)
+  identifierCopy = identifier;
+  criteriaCopy = criteria;
+  criterionCopy = criterion;
+  queueCopy = queue;
+  blockCopy = block;
+  activityBlockCopy = activityBlock;
+  selfCopy = 0;
+  if (identifierCopy)
   {
-    if (v16)
+    if (criteriaCopy)
     {
-      v20 = [v16 count];
-      v19 = 0;
-      if (v18)
+      v20 = [criteriaCopy count];
+      selfCopy = 0;
+      if (activityBlockCopy)
       {
-        if (v17 && v20)
+        if (queueCopy && v20)
         {
           v30.receiver = self;
           v30.super_class = PLActivity;
@@ -216,15 +216,15 @@ uint64_t __25__PLActivity_runActivity__block_invoke(uint64_t a1)
           v22 = v21;
           if (v21)
           {
-            objc_storeStrong(&v21->_identifier, a3);
-            objc_storeStrong(&v22->_criteria, a4);
-            objc_storeStrong(&v22->_mustRunCriterion, a5);
-            objc_storeStrong(&v22->_queue, a6);
-            v23 = [v18 copy];
+            objc_storeStrong(&v21->_identifier, identifier);
+            objc_storeStrong(&v22->_criteria, criteria);
+            objc_storeStrong(&v22->_mustRunCriterion, criterion);
+            objc_storeStrong(&v22->_queue, queue);
+            v23 = [activityBlockCopy copy];
             activityBlock = v22->_activityBlock;
             v22->_activityBlock = v23;
 
-            v25 = [v29 copy];
+            v25 = [blockCopy copy];
             interruptBlock = v22->_interruptBlock;
             v22->_interruptBlock = v25;
 
@@ -234,31 +234,31 @@ uint64_t __25__PLActivity_runActivity__block_invoke(uint64_t a1)
           }
 
           self = v22;
-          v19 = self;
+          selfCopy = self;
         }
       }
     }
   }
 
-  return v19;
+  return selfCopy;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_enabled == v3)
+  if (obj->_enabled == enabledCopy)
   {
     objc_sync_exit(obj);
   }
 
   else
   {
-    obj->_enabled = v3;
+    obj->_enabled = enabledCopy;
     objc_sync_exit(obj);
 
-    if (v3)
+    if (enabledCopy)
     {
 
       [(PLActivity *)obj enable];
@@ -272,46 +272,46 @@ uint64_t __25__PLActivity_runActivity__block_invoke(uint64_t a1)
   }
 }
 
-- (void)didChangeCriterion:(id)a3
+- (void)didChangeCriterion:(id)criterion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(PLActivity *)v5 enabled];
-  objc_sync_exit(v5);
+  criterionCopy = criterion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  enabled = [(PLActivity *)selfCopy enabled];
+  objc_sync_exit(selfCopy);
 
-  if (v6)
+  if (enabled)
   {
     v7 = PLLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(PLActivity *)v4 didChangeCriterion:v5, v7];
+      [(PLActivity *)criterionCopy didChangeCriterion:selfCopy, v7];
     }
 
-    if (-[PLActivity state](v5, "state") || ![v4 satisfied])
+    if (-[PLActivity state](selfCopy, "state") || ![criterionCopy satisfied])
     {
-      if (-[PLActivity state](v5, "state") == 1 && ([v4 satisfied] & 1) == 0)
+      if (-[PLActivity state](selfCopy, "state") == 1 && ([criterionCopy satisfied] & 1) == 0)
       {
-        [(PLActivity *)v5 setState:3];
-        [(PLActivity *)v5 interruptActivity];
+        [(PLActivity *)selfCopy setState:3];
+        [(PLActivity *)selfCopy interruptActivity];
       }
     }
 
     else
     {
-      if ([(PLActivity *)v5 mustRunCriterionSatisfied])
+      if ([(PLActivity *)selfCopy mustRunCriterionSatisfied])
       {
-        v8 = v5;
+        v8 = selfCopy;
         v9 = 2;
 LABEL_13:
         [(PLActivity *)v8 setState:v9];
-        [(PLActivity *)v5 runActivity];
+        [(PLActivity *)selfCopy runActivity];
         goto LABEL_14;
       }
 
-      if ([(PLActivity *)v5 allCriteriaSatisfied])
+      if ([(PLActivity *)selfCopy allCriteriaSatisfied])
       {
-        v8 = v5;
+        v8 = selfCopy;
         v9 = 1;
         goto LABEL_13;
       }
@@ -321,19 +321,19 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   obj = self;
   objc_sync_enter(obj);
   state = obj->_state;
-  if (state == a3 || a3 && state == -1)
+  if (state == state || state && state == -1)
   {
     goto LABEL_4;
   }
 
   if (state == 2)
   {
-    if ((a3 | 4) != 4)
+    if ((state | 4) != 4)
     {
       goto LABEL_4;
     }
@@ -341,7 +341,7 @@ LABEL_14:
 
   else if (state == 1)
   {
-    if (a3 > 4 || ((1 << a3) & 0x19) == 0)
+    if (state > 4 || ((1 << state) & 0x19) == 0)
     {
       goto LABEL_4;
     }
@@ -349,16 +349,16 @@ LABEL_14:
 
   else if (state)
   {
-    if (a3 && state == 3)
+    if (state && state == 3)
     {
       goto LABEL_4;
     }
 
     if (state == 3)
     {
-      v5 = [(PLActivity *)obj interruptBlock];
+      interruptBlock = [(PLActivity *)obj interruptBlock];
 
-      if (!v5)
+      if (!interruptBlock)
       {
         goto LABEL_4;
       }
@@ -366,7 +366,7 @@ LABEL_14:
       state = obj->_state;
     }
 
-    if (a3 && state == 4)
+    if (state && state == 4)
     {
 LABEL_4:
       objc_sync_exit(obj);
@@ -375,12 +375,12 @@ LABEL_4:
     }
   }
 
-  else if ((a3 + 1) > 3 || !a3)
+  else if ((state + 1) > 3 || !state)
   {
     goto LABEL_4;
   }
 
-  obj->_state = a3;
+  obj->_state = state;
   objc_sync_exit(obj);
 
   [(PLActivity *)obj logEntry];
@@ -426,8 +426,8 @@ void __24__PLActivity_syncWithDB__block_invoke(uint64_t a1)
   v5[3] = &unk_1E851AFB8;
   v5[4] = self;
   [(PLActivity *)self enumerateCriteriaWithBlock:v5];
-  v4 = [(PLActivity *)self mustRunCriterion];
-  [v4 didEnableActivity:self];
+  mustRunCriterion = [(PLActivity *)self mustRunCriterion];
+  [mustRunCriterion didEnableActivity:self];
 }
 
 - (void)disable
@@ -445,19 +445,19 @@ void __24__PLActivity_syncWithDB__block_invoke(uint64_t a1)
   v5[3] = &unk_1E851AFB8;
   v5[4] = self;
   [(PLActivity *)self enumerateCriteriaWithBlock:v5];
-  v4 = [(PLActivity *)self mustRunCriterion];
-  [v4 didDisableActivity:self];
+  mustRunCriterion = [(PLActivity *)self mustRunCriterion];
+  [mustRunCriterion didDisableActivity:self];
 }
 
 - (void)interruptActivity
 {
-  v3 = [(PLActivity *)self interruptBlock];
-  if (v3)
+  interruptBlock = [(PLActivity *)self interruptBlock];
+  if (interruptBlock)
   {
-    v4 = v3;
-    v5 = [(PLActivity *)self state];
+    v4 = interruptBlock;
+    state = [(PLActivity *)self state];
 
-    if (v5 == 3)
+    if (state == 3)
     {
       v6 = dispatch_get_global_queue(2, 0);
       block[0] = MEMORY[0x1E69E9820];
@@ -477,21 +477,21 @@ void __31__PLActivity_interruptActivity__block_invoke(uint64_t a1)
   v2[2](v2, v1);
 }
 
-- (void)enumerateCriteriaWithBlock:(id)a3
+- (void)enumerateCriteriaWithBlock:(id)block
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = [(PLActivity *)self criteria];
-    objc_sync_enter(v5);
+    criteria = [(PLActivity *)self criteria];
+    objc_sync_enter(criteria);
     v15 = 0;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [(PLActivity *)self criteria];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v16 count:16];
+    criteria2 = [(PLActivity *)self criteria];
+    v7 = [criteria2 countByEnumeratingWithState:&v11 objects:v16 count:16];
     if (v7)
     {
       v8 = *v12;
@@ -501,10 +501,10 @@ LABEL_4:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(criteria2);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v9), &v15);
+        blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v9), &v15);
         if (v15)
         {
           break;
@@ -512,7 +512,7 @@ LABEL_4:
 
         if (v7 == ++v9)
         {
-          v7 = [v6 countByEnumeratingWithState:&v11 objects:v16 count:16];
+          v7 = [criteria2 countByEnumeratingWithState:&v11 objects:v16 count:16];
           if (v7)
           {
             goto LABEL_4;
@@ -523,7 +523,7 @@ LABEL_4:
       }
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(criteria);
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -532,9 +532,9 @@ LABEL_4:
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PLActivity *)self criteriaString];
-  v5 = [(PLActivity *)self mustRunCriterionString];
-  v6 = [v3 stringWithFormat:@"{%@, %@}", v4, v5];
+  criteriaString = [(PLActivity *)self criteriaString];
+  mustRunCriterionString = [(PLActivity *)self mustRunCriterionString];
+  v6 = [v3 stringWithFormat:@"{%@, %@}", criteriaString, mustRunCriterionString];
 
   return v6;
 }
@@ -546,7 +546,7 @@ LABEL_4:
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__15;
   v12 = __Block_byref_object_dispose__15;
-  v13 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __28__PLActivity_criteriaString__block_invoke;
@@ -571,11 +571,11 @@ void __28__PLActivity_criteriaString__block_invoke(uint64_t a1, void *a2)
 
 - (id)mustRunCriterionString
 {
-  v3 = [(PLActivity *)self mustRunCriterion];
-  if (v3)
+  mustRunCriterion = [(PLActivity *)self mustRunCriterion];
+  if (mustRunCriterion)
   {
-    v4 = [(PLActivity *)self mustRunCriterion];
-    v5 = [v4 description];
+    mustRunCriterion2 = [(PLActivity *)self mustRunCriterion];
+    v5 = [mustRunCriterion2 description];
   }
 
   else

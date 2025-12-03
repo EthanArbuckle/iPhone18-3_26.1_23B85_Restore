@@ -1,20 +1,20 @@
 @interface PTEffectReactionBackgroundDimming
-- (PTEffectReactionBackgroundDimming)initWithMetalContext:(id)a3;
-- (int)backgroundDimAndConvertRGBLinearFromPTTexture:(id)a3 inPTTexture:(id)a4 inCenteredDisparity:(id)a5 inSegmentation:(id)a6 outRGBA:(id)a7 dimmingFactor:(float)a8 disparityRemapping:(CGRect)a9 outColorROI:(CGRect)a10;
+- (PTEffectReactionBackgroundDimming)initWithMetalContext:(id)context;
+- (int)backgroundDimAndConvertRGBLinearFromPTTexture:(id)texture inPTTexture:(id)tTexture inCenteredDisparity:(id)disparity inSegmentation:(id)segmentation outRGBA:(id)a dimmingFactor:(float)factor disparityRemapping:(CGRect)remapping outColorROI:(CGRect)self0;
 @end
 
 @implementation PTEffectReactionBackgroundDimming
 
-- (PTEffectReactionBackgroundDimming)initWithMetalContext:(id)a3
+- (PTEffectReactionBackgroundDimming)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = PTEffectReactionBackgroundDimming;
   v6 = [(PTEffectReactionBackgroundDimming *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metalContext, a3);
+    objc_storeStrong(&v6->_metalContext, context);
     v8 = objc_opt_new();
     v16 = 0;
     backgroundDimAndConvertYUVtoRGB = v7->_backgroundDimAndConvertYUVtoRGB;
@@ -22,7 +22,7 @@
     {
       [v8 reset];
       [v8 setConstantValue:&v16 type:29 withName:@"kColorTransferFunction"];
-      v10 = [v5 computePipelineStateFor:@"backgroundDimAndConvertYUVToRGB" withConstants:v8];
+      v10 = [contextCopy computePipelineStateFor:@"backgroundDimAndConvertYUVToRGB" withConstants:v8];
       v11 = backgroundDimAndConvertYUVtoRGB[v16];
       backgroundDimAndConvertYUVtoRGB[v16] = v10;
 
@@ -58,49 +58,49 @@ LABEL_10:
   return v13;
 }
 
-- (int)backgroundDimAndConvertRGBLinearFromPTTexture:(id)a3 inPTTexture:(id)a4 inCenteredDisparity:(id)a5 inSegmentation:(id)a6 outRGBA:(id)a7 dimmingFactor:(float)a8 disparityRemapping:(CGRect)a9 outColorROI:(CGRect)a10
+- (int)backgroundDimAndConvertRGBLinearFromPTTexture:(id)texture inPTTexture:(id)tTexture inCenteredDisparity:(id)disparity inSegmentation:(id)segmentation outRGBA:(id)a dimmingFactor:(float)factor disparityRemapping:(CGRect)remapping outColorROI:(CGRect)self0
 {
-  y = a9.origin.y;
-  width = a9.size.width;
-  height = a9.size.height;
-  x = a9.origin.x;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = v18;
-  _D1 = a8 * 0.6;
+  y = remapping.origin.y;
+  width = remapping.size.width;
+  height = remapping.size.height;
+  x = remapping.origin.x;
+  tTextureCopy = tTexture;
+  disparityCopy = disparity;
+  segmentationCopy = segmentation;
+  v19 = segmentationCopy;
+  _D1 = factor * 0.6;
   __asm { FCVT            H1, D1 }
 
   v56[0] = LOWORD(_D1);
-  _D1 = a8 * 0.85;
+  _D1 = factor * 0.85;
   __asm { FCVT            H1, D1 }
 
   v56[1] = LOWORD(_D1);
-  _D0 = a8 * 0.95;
+  _D0 = factor * 0.95;
   __asm { FCVT            H0, D0 }
 
   v56[2] = LOWORD(_D0);
   v57 = -1207911424;
-  if (v18)
+  if (segmentationCopy)
   {
-    v27 = v18;
+    v27 = segmentationCopy;
     v57 = 1006632960;
   }
 
   else
   {
-    v27 = v17;
+    v27 = disparityCopy;
   }
 
   memset(v55, 0, sizeof(v55));
-  v28 = a7;
-  v29 = a3;
-  v30 = [v16 transferFunction];
-  v31 = [PTColorConversion getTransferFunction:v30 toLinear:1];
+  aCopy = a;
+  textureCopy = texture;
+  transferFunction = [tTextureCopy transferFunction];
+  v31 = [PTColorConversion getTransferFunction:transferFunction toLinear:1];
 
-  v32 = [v29 computeCommandEncoder];
+  computeCommandEncoder = [textureCopy computeCommandEncoder];
 
-  if (!v32)
+  if (!computeCommandEncoder)
   {
     v34 = _PTLogSystem();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -109,51 +109,51 @@ LABEL_10:
     }
   }
 
-  [v32 setComputePipelineState:{self->_backgroundDimAndConvertYUVtoRGB[v31], *&a10.size.height, v33}];
-  if ([v16 isRGB])
+  [computeCommandEncoder setComputePipelineState:{self->_backgroundDimAndConvertYUVtoRGB[v31], *&i.size.height, v33}];
+  if ([tTextureCopy isRGB])
   {
-    v35 = [v16 texRGBA];
-    [v32 setTexture:v35 atIndex:0];
+    texRGBA = [tTextureCopy texRGBA];
+    [computeCommandEncoder setTexture:texRGBA atIndex:0];
 
-    [v32 setTexture:0 atIndex:1];
+    [computeCommandEncoder setTexture:0 atIndex:1];
   }
 
   else
   {
-    [PTColorConversion getColorMatrix:v16 toRGB:1];
-    v36 = v16;
-    v37 = [v36 texLuma];
-    [v32 setTexture:v37 atIndex:0];
+    [PTColorConversion getColorMatrix:tTextureCopy toRGB:1];
+    v36 = tTextureCopy;
+    texLuma = [v36 texLuma];
+    [computeCommandEncoder setTexture:texLuma atIndex:0];
 
-    v38 = [v36 texChroma];
+    texChroma = [v36 texChroma];
 
-    [v32 setTexture:v38 atIndex:1];
+    [computeCommandEncoder setTexture:texChroma atIndex:1];
   }
 
-  [v32 setTexture:v27 atIndex:2];
-  [v32 setTexture:v28 atIndex:3];
-  [v32 setBytes:v55 length:24 atIndex:0];
-  [v32 setBytes:v56 length:10 atIndex:1];
+  [computeCommandEncoder setTexture:v27 atIndex:2];
+  [computeCommandEncoder setTexture:aCopy atIndex:3];
+  [computeCommandEncoder setBytes:v55 length:24 atIndex:0];
+  [computeCommandEncoder setBytes:v56 length:10 atIndex:1];
   v39.f64[0] = width;
   v40.f64[0] = x;
   v39.f64[1] = height;
   v40.f64[1] = y;
   v54 = vcvt_hight_f32_f64(vcvt_f32_f64(v40), v39);
-  [v32 setBytes:&v54 length:16 atIndex:2];
-  v41.f64[0] = a10.size.width;
+  [computeCommandEncoder setBytes:&v54 length:16 atIndex:2];
+  v41.f64[0] = i.size.width;
   v41.f64[1] = v45;
-  v53 = vcvt_hight_f32_f64(vcvt_f32_f64(a10.origin), v41);
-  [v32 setBytes:&v53 length:16 atIndex:3];
-  v42 = [v28 width];
-  v43 = [v28 height];
+  v53 = vcvt_hight_f32_f64(vcvt_f32_f64(i.origin), v41);
+  [computeCommandEncoder setBytes:&v53 length:16 atIndex:3];
+  width = [aCopy width];
+  height = [aCopy height];
 
-  v52[0] = v42;
-  v52[1] = v43;
+  v52[0] = width;
+  v52[1] = height;
   v52[2] = 1;
   v50 = xmmword_2244A5230;
   v51 = 1;
-  [v32 dispatchThreads:v52 threadsPerThreadgroup:&v50];
-  [v32 endEncoding];
+  [computeCommandEncoder dispatchThreads:v52 threadsPerThreadgroup:&v50];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }

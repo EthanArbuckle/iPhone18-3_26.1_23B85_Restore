@@ -1,7 +1,7 @@
 @interface PKExternalDeviceMigrationExportController
 - (PKExternalDeviceMigrationExportController)init;
-- (void)exportableCardEntry:(id)a3 completion:(id)a4;
-- (void)exportableManifestWithCompletion:(id)a3;
+- (void)exportableCardEntry:(id)entry completion:(id)completion;
+- (void)exportableManifestWithCompletion:(id)completion;
 @end
 
 @implementation PKExternalDeviceMigrationExportController
@@ -21,9 +21,9 @@
   return v2;
 }
 
-- (void)exportableManifestWithCompletion:(id)a3
+- (void)exportableManifestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PKLogFacilityTypeGetObject(0x36uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -36,8 +36,8 @@
   v8[1] = 3221225472;
   v8[2] = __78__PKExternalDeviceMigrationExportController_exportableManifestWithCompletion___block_invoke;
   v8[3] = &unk_1E79E0B10;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [(PKPassLibrary *)passLibrary exportableManifestWithCompletion:v8];
 }
 
@@ -67,17 +67,17 @@ void __78__PKExternalDeviceMigrationExportController_exportableManifestWithCompl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)exportableCardEntry:(id)a3 completion:(id)a4
+- (void)exportableCardEntry:(id)entry completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 passUniqueIdentifier];
+  completionCopy = completion;
+  entryCopy = entry;
+  passUniqueIdentifier = [entryCopy passUniqueIdentifier];
   v9 = PKLogFacilityTypeGetObject(0x36uLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v17 = v8;
+    v17 = passUniqueIdentifier;
     _os_log_error_impl(&dword_1AD337000, v9, OS_LOG_TYPE_ERROR, "Creating exportable card for %@", buf, 0xCu);
   }
 
@@ -86,11 +86,11 @@ void __78__PKExternalDeviceMigrationExportController_exportableManifestWithCompl
   v13[1] = 3221225472;
   v13[2] = __76__PKExternalDeviceMigrationExportController_exportableCardEntry_completion___block_invoke;
   v13[3] = &unk_1E79CB178;
-  v14 = v8;
-  v15 = v6;
-  v11 = v8;
-  v12 = v6;
-  [(PKPassLibrary *)passLibrary exportableCardEntry:v7 completion:v13];
+  v14 = passUniqueIdentifier;
+  v15 = completionCopy;
+  v11 = passUniqueIdentifier;
+  v12 = completionCopy;
+  [(PKPassLibrary *)passLibrary exportableCardEntry:entryCopy completion:v13];
 }
 
 void __76__PKExternalDeviceMigrationExportController_exportableCardEntry_completion___block_invoke(uint64_t a1, void *a2, void *a3)

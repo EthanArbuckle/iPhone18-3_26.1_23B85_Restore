@@ -1,7 +1,7 @@
 @interface ADOpportuneSpeakingVoiceActivityModel
-- (ADOpportuneSpeakingVoiceActivityModel)initWithQueue:(id)a3 stateManager:(id)a4;
+- (ADOpportuneSpeakingVoiceActivityModel)initWithQueue:(id)queue stateManager:(id)manager;
 - (id)_detector;
-- (void)setSpeakable:(id)a3;
+- (void)setSpeakable:(id)speakable;
 - (void)stop;
 @end
 
@@ -16,9 +16,9 @@
   self->_detector = 0;
 }
 
-- (void)setSpeakable:(id)a3
+- (void)setSpeakable:(id)speakable
 {
-  v4 = a3;
+  speakableCopy = speakable;
   v5 = +[AFPreferences sharedPreferences];
   v15[0] = 0;
   v15[1] = v15;
@@ -36,10 +36,10 @@
   v10[2] = sub_100156C1C;
   v10[3] = &unk_1005137F0;
   v10[4] = self;
-  v11 = v4;
+  v11 = speakableCopy;
   v12 = v15;
   v13 = v14;
-  v9 = v4;
+  v9 = speakableCopy;
   dispatch_async(queue, v10);
 
   _Block_object_dispose(v14, 8);
@@ -61,18 +61,18 @@
   return detector;
 }
 
-- (ADOpportuneSpeakingVoiceActivityModel)initWithQueue:(id)a3 stateManager:(id)a4
+- (ADOpportuneSpeakingVoiceActivityModel)initWithQueue:(id)queue stateManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = ADOpportuneSpeakingVoiceActivityModel;
   v9 = [(ADOpportuneSpeakingVoiceActivityModel *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    objc_storeStrong(&v10->_stateManager, a4);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(&v10->_stateManager, manager);
     modelIdentifier = v10->_modelIdentifier;
     v10->_modelIdentifier = @"Voice Activity";
 

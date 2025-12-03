@@ -1,14 +1,14 @@
 @interface ToolKitIndexingScheduler
-- (BOOL)reindexWithDebouncer:(id)a3 error:(id *)a4;
+- (BOOL)reindexWithDebouncer:(id)debouncer error:(id *)error;
 @end
 
 @implementation ToolKitIndexingScheduler
 
-- (BOOL)reindexWithDebouncer:(id)a3 error:(id *)a4
+- (BOOL)reindexWithDebouncer:(id)debouncer error:(id *)error
 {
-  v4 = a3;
+  debouncerCopy = debouncer;
 
-  sub_2310844E4(v4);
+  sub_2310844E4(debouncerCopy);
 
   return 1;
 }

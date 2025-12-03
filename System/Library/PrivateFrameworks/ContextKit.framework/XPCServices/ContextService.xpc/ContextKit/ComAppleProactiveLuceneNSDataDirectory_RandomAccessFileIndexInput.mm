@@ -3,14 +3,14 @@
 - (void)__javaClone;
 - (void)close;
 - (void)dealloc;
-- (void)seekInternalWithLong:(int64_t)a3;
+- (void)seekInternalWithLong:(int64_t)long;
 @end
 
 @implementation ComAppleProactiveLuceneNSDataDirectory_RandomAccessFileIndexInput
 
-- (void)seekInternalWithLong:(int64_t)a3
+- (void)seekInternalWithLong:(int64_t)long
 {
-  self->pos_ = a3;
+  self->pos_ = long;
   raf = self->raf_;
   if (!raf)
   {
@@ -35,9 +35,9 @@
 {
   v6.receiver = self;
   v6.super_class = ComAppleProactiveLuceneNSDataDirectory_RandomAccessFileIndexInput;
-  v3 = [(OrgApacheLuceneStoreBufferedIndexInput *)&v6 clone];
+  clone = [(OrgApacheLuceneStoreBufferedIndexInput *)&v6 clone];
   objc_opt_class();
-  if (!v3)
+  if (!clone)
   {
     objc_loadWeak(&self->original_);
     JreThrowNullPointerException();
@@ -49,9 +49,9 @@
   }
 
   Weak = objc_loadWeak(&self->original_);
-  objc_storeWeak(v3 + 10, Weak);
-  objc_storeWeak(v3 + 11, 0);
-  return v3;
+  objc_storeWeak(clone + 10, Weak);
+  objc_storeWeak(clone + 11, 0);
+  return clone;
 }
 
 - (void)dealloc

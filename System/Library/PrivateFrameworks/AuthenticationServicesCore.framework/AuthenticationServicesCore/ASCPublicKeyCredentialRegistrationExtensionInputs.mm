@@ -1,19 +1,19 @@
 @interface ASCPublicKeyCredentialRegistrationExtensionInputs
 - (BOOL)hasAtLeastOneExtension;
 - (_TtC26AuthenticationServicesCore49ASCPublicKeyCredentialRegistrationExtensionInputs)init;
-- (id)copyWithZone:(void *)a3;
-- (id)descriptionForLoggingWithIndentationCount:(int64_t)a3;
+- (id)copyWithZone:(void *)zone;
+- (id)descriptionForLoggingWithIndentationCount:(int64_t)count;
 - (int64_t)caBLEAuthenticatorMinimumRequirement;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCPublicKeyCredentialRegistrationExtensionInputs
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C20D3018(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1C20D3018(coderCopy);
 }
 
 - (_TtC26AuthenticationServicesCore49ASCPublicKeyCredentialRegistrationExtensionInputs)init
@@ -29,11 +29,11 @@
   return [(ASCPublicKeyCredentialRegistrationExtensionInputs *)&v4 init];
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v4 = objc_allocWithZone(type metadata accessor for ASCPublicKeyCredentialRegistrationExtensionInputs());
-  v5 = self;
-  v6 = sub_1C20D84A8(v5);
+  selfCopy = self;
+  v6 = sub_1C20D84A8(selfCopy);
 
   return v6;
 }
@@ -52,9 +52,9 @@
   return *(v4 + 6) != 1;
 }
 
-- (id)descriptionForLoggingWithIndentationCount:(int64_t)a3
+- (id)descriptionForLoggingWithIndentationCount:(int64_t)count
 {
-  v3 = self;
+  selfCopy = self;
   sub_1C20D39C4();
 
   v4 = sub_1C21708F4();

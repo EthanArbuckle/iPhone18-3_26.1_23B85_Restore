@@ -1,16 +1,16 @@
 @interface SBControlSystemAction
-- (SBControlSystemAction)initWithConfiguredAction:(id)a3 instanceIdentity:(id)a4;
-- (id)acquireContentVisibilityAssertionForReason:(uint64_t)a1;
+- (SBControlSystemAction)initWithConfiguredAction:(id)action instanceIdentity:(id)identity;
+- (id)acquireContentVisibilityAssertionForReason:(uint64_t)reason;
 - (id)iconView;
 - (id)newExecutor;
 - (id)newSimplePreviewElement;
 - (uint64_t)properties;
 - (uint64_t)removeObserver:(uint64_t)result;
-- (void)addObserver:(uint64_t)a1;
-- (void)controlInstanceDescriptorDidChange:(id)a3;
-- (void)controlInstanceViewModelDidChange:(id)a3;
+- (void)addObserver:(uint64_t)observer;
+- (void)controlInstanceDescriptorDidChange:(id)change;
+- (void)controlInstanceViewModelDidChange:(id)change;
 - (void)dealloc;
-- (void)setProperties:(uint64_t)a1;
+- (void)setProperties:(uint64_t)properties;
 - (void)type;
 @end
 
@@ -23,34 +23,34 @@
   return [(SBSystemActionSimpleControlPreviewElement *)v3 initWithSystemAction:self];
 }
 
-- (SBControlSystemAction)initWithConfiguredAction:(id)a3 instanceIdentity:(id)a4
+- (SBControlSystemAction)initWithConfiguredAction:(id)action instanceIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  identityCopy = identity;
   v35.receiver = self;
   v35.super_class = SBControlSystemAction;
-  v8 = [(SBSystemAction *)&v35 initWithConfiguredAction:v6 instanceIdentity:v7];
+  v8 = [(SBSystemAction *)&v35 initWithConfiguredAction:actionCopy instanceIdentity:identityCopy];
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x277CFA258]);
-    v10 = [v6 extensionBundleIdentifier];
-    v11 = [v6 containerBundleIdentifier];
-    v12 = [v9 initWithExtensionBundleIdentifier:v10 containerBundleIdentifier:v11 deviceIdentifier:0];
+    extensionBundleIdentifier = [actionCopy extensionBundleIdentifier];
+    containerBundleIdentifier = [actionCopy containerBundleIdentifier];
+    v12 = [v9 initWithExtensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier deviceIdentifier:0];
 
     v13 = objc_alloc(MEMORY[0x277CFA228]);
-    v14 = [v6 kind];
-    v15 = [v6 intent];
-    v16 = [v13 initWithExtensionIdentity:v12 kind:v14 intent:v15];
+    kind = [actionCopy kind];
+    intent = [actionCopy intent];
+    v16 = [v13 initWithExtensionIdentity:v12 kind:kind intent:intent];
 
     v17 = objc_alloc(MEMORY[0x277CFA230]);
-    v18 = [v7 hostIdentifier];
-    v19 = [v7 configurationIdentifier];
-    v20 = [v17 initWithControl:v16 contentType:0 hostIdentifier:v18 configurationIdentifier:v19];
+    hostIdentifier = [identityCopy hostIdentifier];
+    configurationIdentifier = [identityCopy configurationIdentifier];
+    v20 = [v17 initWithControl:v16 contentType:0 hostIdentifier:hostIdentifier configurationIdentifier:configurationIdentifier];
 
-    v21 = [v6 controlType];
-    v22 = [v21 unsignedIntegerValue];
+    controlType = [actionCopy controlType];
+    unsignedIntegerValue = [controlType unsignedIntegerValue];
 
-    v23 = [MEMORY[0x277CFA528] instanceOfType:v22 instanceIdentity:v20];
+    v23 = [MEMORY[0x277CFA528] instanceOfType:unsignedIntegerValue instanceIdentity:v20];
     [v23 modifyConfiguration:&__block_literal_global_245];
     [v23 registerObserver:v8];
     [v23 activate];
@@ -130,26 +130,26 @@ uint64_t __68__SBControlSystemAction_acquireContentVisibilityAssertionForReason_
   return [(SBBlockSystemActionExecutor *)v3 initWithSystemAction:self];
 }
 
-- (void)controlInstanceDescriptorDidChange:(id)a3
+- (void)controlInstanceDescriptorDidChange:(id)change
 {
-  v4 = [SBControlSystemActionProperties propertiesForControlInstance:a3];
+  v4 = [SBControlSystemActionProperties propertiesForControlInstance:change];
   [(SBControlSystemAction *)self setProperties:v4];
 }
 
-- (void)addObserver:(uint64_t)a1
+- (void)addObserver:(uint64_t)observer
 {
   v3 = a2;
-  if (a1)
+  if (observer)
   {
-    v4 = *(a1 + 72);
+    v4 = *(observer + 72);
     v7 = v3;
     if (!v4)
     {
-      v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-      v6 = *(a1 + 72);
-      *(a1 + 72) = v5;
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      v6 = *(observer + 72);
+      *(observer + 72) = weakObjectsHashTable;
 
-      v4 = *(a1 + 72);
+      v4 = *(observer + 72);
     }
 
     [v4 addObject:v7];
@@ -171,11 +171,11 @@ uint64_t __68__SBControlSystemAction_acquireContentVisibilityAssertionForReason_
 {
   if (result)
   {
-    v1 = [result configuredAction];
-    v2 = [v1 controlType];
-    v3 = [v2 unsignedIntegerValue];
+    configuredAction = [result configuredAction];
+    controlType = [configuredAction controlType];
+    unsignedIntegerValue = [controlType unsignedIntegerValue];
 
-    return v3;
+    return unsignedIntegerValue;
   }
 
   return result;
@@ -183,24 +183,24 @@ uint64_t __68__SBControlSystemAction_acquireContentVisibilityAssertionForReason_
 
 - (id)iconView
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[7] iconView];
+    self = [self[7] iconView];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)acquireContentVisibilityAssertionForReason:(uint64_t)a1
+- (id)acquireContentVisibilityAssertionForReason:(uint64_t)reason
 {
   v3 = a2;
-  if (a1)
+  if (reason)
   {
-    v4 = *(a1 + 64);
+    v4 = *(reason + 64);
     if (!v4)
     {
-      v5 = *(a1 + 56);
+      v5 = *(reason + 56);
       v6 = MEMORY[0x277CF0BD0];
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
@@ -211,33 +211,33 @@ uint64_t __68__SBControlSystemAction_acquireContentVisibilityAssertionForReason_
       v14 = v5;
       v9 = v5;
       v10 = [v6 assertionWithIdentifier:v8 stateDidChangeHandler:v13];
-      v11 = *(a1 + 64);
-      *(a1 + 64) = v10;
+      v11 = *(reason + 64);
+      *(reason + 64) = v10;
 
-      v4 = *(a1 + 64);
+      v4 = *(reason + 64);
     }
 
-    a1 = [v4 acquireForReason:v3];
+    reason = [v4 acquireForReason:v3];
   }
 
-  return a1;
+  return reason;
 }
 
-- (void)setProperties:(uint64_t)a1
+- (void)setProperties:(uint64_t)properties
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  if (a1)
+  if (properties)
   {
-    v5 = *(a1 + 88);
+    v5 = *(properties + 88);
     if ((BSEqualObjects() & 1) == 0)
     {
-      objc_storeStrong((a1 + 88), a2);
+      objc_storeStrong((properties + 88), a2);
       v13 = 0u;
       v14 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v6 = [*(a1 + 72) copy];
+      v6 = [*(properties + 72) copy];
       v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v7)
       {
@@ -253,7 +253,7 @@ uint64_t __68__SBControlSystemAction_acquireContentVisibilityAssertionForReason_
               objc_enumerationMutation(v6);
             }
 
-            [*(*(&v11 + 1) + 8 * v10++) controlSystemAction:a1 propertiesDidChange:v5];
+            [*(*(&v11 + 1) + 8 * v10++) controlSystemAction:properties propertiesDidChange:v5];
           }
 
           while (v8 != v10);
@@ -266,9 +266,9 @@ uint64_t __68__SBControlSystemAction_acquireContentVisibilityAssertionForReason_
   }
 }
 
-- (void)controlInstanceViewModelDidChange:(id)a3
+- (void)controlInstanceViewModelDidChange:(id)change
 {
-  v4 = [SBControlSystemActionProperties propertiesForControlInstance:a3];
+  v4 = [SBControlSystemActionProperties propertiesForControlInstance:change];
   [(SBControlSystemAction *)self setProperties:v4];
 }
 

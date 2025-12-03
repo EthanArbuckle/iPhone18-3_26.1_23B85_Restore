@@ -1,37 +1,37 @@
 @interface PHMemoryUserFeedbackProperties
 + (id)propertiesToFetch;
 + (id)propertiesToSortBy;
-- (PHMemoryUserFeedbackProperties)initWithFetchDictionary:(id)a3 memory:(id)a4 prefetched:(BOOL)a5;
+- (PHMemoryUserFeedbackProperties)initWithFetchDictionary:(id)dictionary memory:(id)memory prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHMemoryUserFeedbackProperties
 
-- (PHMemoryUserFeedbackProperties)initWithFetchDictionary:(id)a3 memory:(id)a4 prefetched:(BOOL)a5
+- (PHMemoryUserFeedbackProperties)initWithFetchDictionary:(id)dictionary memory:(id)memory prefetched:(BOOL)prefetched
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  memoryCopy = memory;
   v23.receiver = self;
   v23.super_class = PHMemoryUserFeedbackProperties;
   v9 = [(PHMemoryUserFeedbackProperties *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->super._memory, v8);
-    v11 = [v7 objectForKeyedSubscript:@"uuid"];
+    objc_storeWeak(&v9->super._memory, memoryCopy);
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"uuid"];
     if (v11)
     {
-      v12 = [v7 objectForKeyedSubscript:@"type"];
-      v13 = [v12 integerValue];
+      v12 = [dictionaryCopy objectForKeyedSubscript:@"type"];
+      integerValue = [v12 integerValue];
 
-      v14 = [v7 objectForKeyedSubscript:@"feature"];
-      v15 = [v14 integerValue];
+      v14 = [dictionaryCopy objectForKeyedSubscript:@"feature"];
+      integerValue2 = [v14 integerValue];
 
-      v16 = [v7 objectForKeyedSubscript:@"creationType"];
-      v17 = [v16 integerValue];
+      v16 = [dictionaryCopy objectForKeyedSubscript:@"creationType"];
+      integerValue3 = [v16 integerValue];
 
-      v18 = [v7 objectForKeyedSubscript:@"context"];
-      v19 = [v7 objectForKeyedSubscript:@"lastModifiedDate"];
-      v20 = [[PHUserFeedback alloc] initWithUUID:v11 type:v13 feature:v15 creationType:v17 context:v18 lastModifiedDate:v19];
+      v18 = [dictionaryCopy objectForKeyedSubscript:@"context"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"lastModifiedDate"];
+      v20 = [[PHUserFeedback alloc] initWithUUID:v11 type:integerValue feature:integerValue2 creationType:integerValue3 context:v18 lastModifiedDate:v19];
       userFeedback = v10->_userFeedback;
       v10->_userFeedback = v20;
     }

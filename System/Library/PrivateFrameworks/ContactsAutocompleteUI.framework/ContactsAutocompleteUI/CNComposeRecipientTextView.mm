@@ -1,115 +1,115 @@
 @interface CNComposeRecipientTextView
 - (BOOL)_canAddAdditionalAtoms;
 - (BOOL)_delegateRespondsToSizeChange;
-- (BOOL)_hasRecipientsWithPresentationOptions:(unint64_t)a3;
-- (BOOL)_recipientAtomHitInView:(id)a3 atLocation:(CGPoint)a4;
+- (BOOL)_hasRecipientsWithPresentationOptions:(unint64_t)options;
+- (BOOL)_recipientAtomHitInView:(id)view atLocation:(CGPoint)location;
 - (BOOL)_textViewContainsAtomizedRecipients;
 - (BOOL)_useRightToLeftLayout;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)containsAddress:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)containsAddress:(id)address;
 - (BOOL)finishEnteringRecipient;
 - (BOOL)hasClearableText;
 - (BOOL)hasContent;
 - (BOOL)hostRecipientViewHasSearchResults;
 - (BOOL)resignFirstResponder;
-- (BOOL)shouldExpandRecipient:(id)a3;
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CNComposeRecipientTextView)initWithFrame:(CGRect)a3;
-- (CNComposeRecipientTextView)initWithFrame:(CGRect)a3 dragDropDelegate:(id)a4;
-- (CNComposeRecipientTextView)initWithOptions:(id)a3;
+- (BOOL)shouldExpandRecipient:(id)recipient;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CNComposeRecipientTextView)initWithFrame:(CGRect)frame;
+- (CNComposeRecipientTextView)initWithFrame:(CGRect)frame dragDropDelegate:(id)delegate;
+- (CNComposeRecipientTextView)initWithOptions:(id)options;
 - (NSArray)addresses;
 - (NSArray)recipients;
 - (NSArray)uncommentedAddresses;
 - (UIColor)inactiveTextColor;
 - (UIFont)baseFont;
 - (_NSRange)_placeholderAttachmentRange;
-- (_NSRange)_rangeForComposeRecipientAtom:(id)a3;
+- (_NSRange)_rangeForComposeRecipientAtom:(id)atom;
 - (double)labelTopPadding;
 - (double)offsetForRowWithTextField;
-- (double)textFieldOffsetForNumberOfRowsToScroll:(unint64_t)a3 numberOfRowsAboveField:(int64_t)a4;
-- (id)_atomAttachmentForRecipient:(id)a3;
-- (id)_atomViewAtCharacterIndex:(unint64_t)a3;
+- (double)textFieldOffsetForNumberOfRowsToScroll:(unint64_t)scroll numberOfRowsAboveField:(int64_t)field;
+- (id)_atomAttachmentForRecipient:(id)recipient;
+- (id)_atomViewAtCharacterIndex:(unint64_t)index;
 - (id)_attributedStringWithAtomizedRecipients;
 - (id)_baseAttributes;
 - (id)_placeholderAttachmentWithStaticWidth;
-- (id)_textContainerExclusionPathsWithAddButton:(BOOL)a3;
+- (id)_textContainerExclusionPathsWithAddButton:(BOOL)button;
 - (id)_toString;
-- (id)_userEnteredTextWithRange:(_NSRange *)a3;
-- (id)_valueForAtomLayoutOption:(id)a3 withRecipient:(id)a4;
-- (id)atomViewForRecipient:(id)a3;
-- (id)atomViewsInRange:(_NSRange)a3;
+- (id)_userEnteredTextWithRange:(_NSRange *)range;
+- (id)_valueForAtomLayoutOption:(id)option withRecipient:(id)recipient;
+- (id)atomViewForRecipient:(id)recipient;
+- (id)atomViewsInRange:(_NSRange)range;
 - (id)clearableTextRanges;
-- (id)dragPreviewForDraggedItem:(id)a3 withContainer:(id)a4;
+- (id)dragPreviewForDraggedItem:(id)item withContainer:(id)container;
 - (id)selectedAtoms;
 - (id)undoManager;
-- (unint64_t)_atomPresentationOptionsForRecipient:(id)a3;
-- (unint64_t)indexOfRecipientForInsertionAtPoint:(CGPoint)a3;
+- (unint64_t)_atomPresentationOptionsForRecipient:(id)recipient;
+- (unint64_t)indexOfRecipientForInsertionAtPoint:(CGPoint)point;
 - (unint64_t)numberOfRowsOfTextInField;
-- (void)_addAddressAtomSubview:(id)a3;
-- (void)_addButtonTapped:(id)a3;
-- (void)_didRemoveRecipient:(id)a3;
+- (void)_addAddressAtomSubview:(id)subview;
+- (void)_addButtonTapped:(id)tapped;
+- (void)_didRemoveRecipient:(id)recipient;
 - (void)_ensureAddButton;
 - (void)_ensureInactiveTextView;
-- (void)_insertAtomAttachment:(id)a3 andReplaceCharactersInRange:(_NSRange)a4;
+- (void)_insertAtomAttachment:(id)attachment andReplaceCharactersInRange:(_NSRange)range;
 - (void)_invalidateTextContainerExclusionPaths;
-- (void)_longPressGestureRecognized:(id)a3;
-- (void)_notifyDelegateOfNewSize:(CGSize)a3;
+- (void)_longPressGestureRecognized:(id)recognized;
+- (void)_notifyDelegateOfNewSize:(CGSize)size;
 - (void)_notifyDelegateOfSizeChange;
 - (void)_recomputeTextContainerExclusionPaths;
-- (void)_removeAddressAtomSubview:(id)a3;
+- (void)_removeAddressAtomSubview:(id)subview;
 - (void)_removeAllRecipients;
 - (void)_resetSelectionState;
-- (void)_setAddButtonVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setTextViewIsCollapsed:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setValue:(id)a3 forAtomLayoutOption:(id)a4 withRecipient:(id)a5;
-- (void)_tapGestureRecognized:(id)a3;
-- (void)_updateAddButtonVisibilityAnimated:(BOOL)a3;
+- (void)_setAddButtonVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)_setTextViewIsCollapsed:(BOOL)collapsed animated:(BOOL)animated;
+- (void)_setValue:(id)value forAtomLayoutOption:(id)option withRecipient:(id)recipient;
+- (void)_tapGestureRecognized:(id)recognized;
+- (void)_updateAddButtonVisibilityAnimated:(BOOL)animated;
 - (void)_updateInactiveTextView;
-- (void)addAddress:(id)a3;
-- (void)addRecipient:(id)a3;
-- (void)addRecipient:(id)a3 index:(unint64_t)a4 animate:(BOOL)a5;
-- (void)atomTextView:(id)a3 didChangeWritingDirection:(int64_t)a4;
-- (void)atomTextViewDidBecomeFirstResponder:(id)a3;
-- (void)atomTextViewDidResignFirstResponder:(id)a3;
+- (void)addAddress:(id)address;
+- (void)addRecipient:(id)recipient;
+- (void)addRecipient:(id)recipient index:(unint64_t)index animate:(BOOL)animate;
+- (void)atomTextView:(id)view didChangeWritingDirection:(int64_t)direction;
+- (void)atomTextViewDidBecomeFirstResponder:(id)responder;
+- (void)atomTextViewDidResignFirstResponder:(id)responder;
 - (void)clearText;
-- (void)composeRecipientAtomDisambiguate:(id)a3;
-- (void)composeRecipientAtomShowPersonCard:(id)a3;
+- (void)composeRecipientAtomDisambiguate:(id)disambiguate;
+- (void)composeRecipientAtomShowPersonCard:(id)card;
 - (void)dealloc;
 - (void)deselectAllAtoms;
-- (void)dragEnteredAtPoint:(CGPoint)a3;
+- (void)dragEnteredAtPoint:(CGPoint)point;
 - (void)dragExited;
-- (void)dragMovedToPoint:(CGPoint)a3;
-- (void)dropItems:(id)a3;
+- (void)dragMovedToPoint:(CGPoint)point;
+- (void)dropItems:(id)items;
 - (void)invalidateAtomPresentationOptions;
-- (void)invalidateAtomPresentationOptionsForRecipient:(id)a3;
-- (void)layoutManager:(id)a3 didCompleteLayoutForTextContainer:(id)a4 atEnd:(BOOL)a5;
+- (void)invalidateAtomPresentationOptionsForRecipient:(id)recipient;
+- (void)layoutManager:(id)manager didCompleteLayoutForTextContainer:(id)container atEnd:(BOOL)end;
 - (void)layoutSubviews;
 - (void)reflow;
 - (void)refreshGlass;
 - (void)refreshPreferredContentSize;
-- (void)removeRecipient:(id)a3;
-- (void)removeSingleRecipient:(id)a3;
+- (void)removeRecipient:(id)recipient;
+- (void)removeSingleRecipient:(id)recipient;
 - (void)selectAllAtoms;
-- (void)selectAtom:(id)a3;
-- (void)selectAtomForRecipient:(id)a3;
-- (void)setAddresses:(id)a3;
-- (void)setAtomPresentationOptions:(unint64_t)a3 forRecipient:(id)a4;
-- (void)setBaseFont:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setInactiveTextColor:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)setRecipients:(id)a3;
-- (void)setSeparatorHidden:(BOOL)a3;
-- (void)setShowGlassBackground:(BOOL)a3;
-- (void)setShowsAddButtonWhenExpanded:(BOOL)a3;
-- (void)setUsingActiveAppearance:(BOOL)usingActiveAppearance animated:(BOOL)a4;
-- (void)shiftSelectAtom:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidChangeSelection:(id)a3;
+- (void)selectAtom:(id)atom;
+- (void)selectAtomForRecipient:(id)recipient;
+- (void)setAddresses:(id)addresses;
+- (void)setAtomPresentationOptions:(unint64_t)options forRecipient:(id)recipient;
+- (void)setBaseFont:(id)font;
+- (void)setBounds:(CGRect)bounds;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setFrame:(CGRect)frame;
+- (void)setInactiveTextColor:(id)color;
+- (void)setLabel:(id)label;
+- (void)setRecipients:(id)recipients;
+- (void)setSeparatorHidden:(BOOL)hidden;
+- (void)setShowGlassBackground:(BOOL)background;
+- (void)setShowsAddButtonWhenExpanded:(BOOL)expanded;
+- (void)setUsingActiveAppearance:(BOOL)usingActiveAppearance animated:(BOOL)animated;
+- (void)shiftSelectAtom:(id)atom;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidChangeSelection:(id)selection;
 @end
 
 @implementation CNComposeRecipientTextView
@@ -118,54 +118,54 @@
 {
   [(_CNAtomTextView *)self->_textView setHostRecipientView:0];
   [(_CNAtomTextView *)self->_textView setDelegate:0];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  v4 = [(CNComposeRecipientTextView *)self keyboardWillHideNotificationObserver];
-  [v3 removeObserver:v4];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  keyboardWillHideNotificationObserver = [(CNComposeRecipientTextView *)self keyboardWillHideNotificationObserver];
+  [defaultCenter removeObserver:keyboardWillHideNotificationObserver];
 
-  v5 = [(CNComposeRecipientTextView *)self keyboardDidHideNotificationObserver];
-  [v3 removeObserver:v5];
+  keyboardDidHideNotificationObserver = [(CNComposeRecipientTextView *)self keyboardDidHideNotificationObserver];
+  [defaultCenter removeObserver:keyboardDidHideNotificationObserver];
 
   v6.receiver = self;
   v6.super_class = CNComposeRecipientTextView;
   [(CNComposeRecipientTextView *)&v6 dealloc];
 }
 
-- (CNComposeRecipientTextView)initWithFrame:(CGRect)a3 dragDropDelegate:(id)a4
+- (CNComposeRecipientTextView)initWithFrame:(CGRect)frame dragDropDelegate:(id)delegate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(CNComposeRecipientTextView *)self initWithFrame:x, y, width, height];
-  if (v10)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  delegateCopy = delegate;
+  height = [(CNComposeRecipientTextView *)self initWithFrame:x, y, width, height];
+  if (height)
   {
-    v11 = [[CNComposeDragSource alloc] initWithView:v10 delegate:v9];
-    dragSource = v10->_dragSource;
-    v10->_dragSource = v11;
+    v11 = [[CNComposeDragSource alloc] initWithView:height delegate:delegateCopy];
+    dragSource = height->_dragSource;
+    height->_dragSource = v11;
 
-    [(CNComposeDragSource *)v10->_dragSource setAllowsDragOverridingMasterSwitch:1];
-    v13 = [[CNComposeDropTarget alloc] initWithView:v10 delegate:v9];
-    dropTarget = v10->_dropTarget;
-    v10->_dropTarget = v13;
+    [(CNComposeDragSource *)height->_dragSource setAllowsDragOverridingMasterSwitch:1];
+    v13 = [[CNComposeDropTarget alloc] initWithView:height delegate:delegateCopy];
+    dropTarget = height->_dropTarget;
+    height->_dropTarget = v13;
 
     v15 = MEMORY[0x1E695DFA8];
     v16 = +[CNComposeRecipient readableTypeIdentifiersForItemProvider];
     v17 = [v15 setWithArray:v16];
 
-    v18 = [MEMORY[0x1E695D1B8] readableTypeIdentifiersForItemProvider];
-    [v17 addObjectsFromArray:v18];
+    readableTypeIdentifiersForItemProvider = [MEMORY[0x1E695D1B8] readableTypeIdentifiersForItemProvider];
+    [v17 addObjectsFromArray:readableTypeIdentifiersForItemProvider];
 
     v19 = +[CNComposeRecipients readableTypeIdentifiersForItemProvider];
     [v17 addObjectsFromArray:v19];
 
-    [(CNComposeDropTarget *)v10->_dropTarget setAcceptableUTIs:v17];
-    v20 = [(_CNAtomTextView *)v10->_textView interactions];
-    v21 = [v20 _cn_filter:&__block_literal_global_16];
-    [(_CNAtomTextView *)v10->_textView setInteractions:v21];
+    [(CNComposeDropTarget *)height->_dropTarget setAcceptableUTIs:v17];
+    interactions = [(_CNAtomTextView *)height->_textView interactions];
+    v21 = [interactions _cn_filter:&__block_literal_global_16];
+    [(_CNAtomTextView *)height->_textView setInteractions:v21];
   }
 
-  return v10;
+  return height;
 }
 
 BOOL __61__CNComposeRecipientTextView_initWithFrame_dragDropDelegate___block_invoke(uint64_t a1, void *a2)
@@ -205,45 +205,45 @@ BOOL __61__CNComposeRecipientTextView_initWithFrame_dragDropDelegate___block_inv
   [(CNComposeRecipientTextView *)self setSeparatorHidden:showGlassBackground];
 }
 
-- (void)setShowGlassBackground:(BOOL)a3
+- (void)setShowGlassBackground:(BOOL)background
 {
-  v5 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v6 = [v5 featureFlags];
-  v7 = [v6 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v7 = [featureFlags isFeatureEnabled:29];
 
-  self->_showGlassBackground = v7 & a3;
+  self->_showGlassBackground = v7 & background;
 
   [(CNComposeRecipientTextView *)self refreshGlass];
 }
 
-- (CNComposeRecipientTextView)initWithOptions:(id)a3
+- (CNComposeRecipientTextView)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v17.receiver = self;
   v17.super_class = CNComposeRecipientTextView;
   v5 = [(CNComposeRecipientTextView *)&v17 init];
   v6 = v5;
-  if (v4 && v5)
+  if (optionsCopy && v5)
   {
-    v7 = [v4 copy];
+    v7 = [optionsCopy copy];
     options = v6->_options;
     v6->_options = v7;
 
-    v9 = [(CNAutocompleteSearchControllerOptions *)v6->_options trailingButtonMidlineInsetFromLayoutMargin];
+    trailingButtonMidlineInsetFromLayoutMargin = [(CNAutocompleteSearchControllerOptions *)v6->_options trailingButtonMidlineInsetFromLayoutMargin];
 
-    if (v9)
+    if (trailingButtonMidlineInsetFromLayoutMargin)
     {
-      v10 = [(CNAutocompleteSearchControllerOptions *)v6->_options trailingButtonMidlineInsetFromLayoutMargin];
-      [v10 floatValue];
+      trailingButtonMidlineInsetFromLayoutMargin2 = [(CNAutocompleteSearchControllerOptions *)v6->_options trailingButtonMidlineInsetFromLayoutMargin];
+      [trailingButtonMidlineInsetFromLayoutMargin2 floatValue];
       [(CNComposeRecipientTextView *)v6 setTrailingButtonMidlineInsetFromLayoutMargin:v11];
     }
 
-    v12 = [(CNAutocompleteSearchControllerOptions *)v6->_options shouldAlwaysShowAddContactsButton];
+    shouldAlwaysShowAddContactsButton = [(CNAutocompleteSearchControllerOptions *)v6->_options shouldAlwaysShowAddContactsButton];
 
-    if (v12)
+    if (shouldAlwaysShowAddContactsButton)
     {
-      v13 = [(CNAutocompleteSearchControllerOptions *)v6->_options shouldAlwaysShowAddContactsButton];
-      -[CNComposeRecipientTextView setShouldAlwaysShowAddContactsButton:](v6, "setShouldAlwaysShowAddContactsButton:", [v13 BOOLValue]);
+      shouldAlwaysShowAddContactsButton2 = [(CNAutocompleteSearchControllerOptions *)v6->_options shouldAlwaysShowAddContactsButton];
+      -[CNComposeRecipientTextView setShouldAlwaysShowAddContactsButton:](v6, "setShouldAlwaysShowAddContactsButton:", [shouldAlwaysShowAddContactsButton2 BOOLValue]);
     }
 
     else
@@ -252,12 +252,12 @@ BOOL __61__CNComposeRecipientTextView_initWithFrame_dragDropDelegate___block_inv
     }
 
     [(CNComposeRecipientTextView *)v6 setBackgroundColor:0];
-    v14 = [(CNAutocompleteSearchControllerOptions *)v6->_options showGlassBackground];
+    showGlassBackground = [(CNAutocompleteSearchControllerOptions *)v6->_options showGlassBackground];
 
-    if (v14)
+    if (showGlassBackground)
     {
-      v15 = [(CNAutocompleteSearchControllerOptions *)v6->_options showGlassBackground];
-      -[CNComposeRecipientTextView setShowGlassBackground:](v6, "setShowGlassBackground:", [v15 BOOLValue]);
+      showGlassBackground2 = [(CNAutocompleteSearchControllerOptions *)v6->_options showGlassBackground];
+      -[CNComposeRecipientTextView setShowGlassBackground:](v6, "setShowGlassBackground:", [showGlassBackground2 BOOLValue]);
     }
 
     else
@@ -269,11 +269,11 @@ BOOL __61__CNComposeRecipientTextView_initWithFrame_dragDropDelegate___block_inv
   return v6;
 }
 
-- (CNComposeRecipientTextView)initWithFrame:(CGRect)a3
+- (CNComposeRecipientTextView)initWithFrame:(CGRect)frame
 {
   v39.receiver = self;
   v39.super_class = CNComposeRecipientTextView;
-  v3 = [(CNComposeHeaderView *)&v39 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNComposeHeaderView *)&v39 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -285,12 +285,12 @@ BOOL __61__CNComposeRecipientTextView_initWithFrame_dragDropDelegate___block_inv
     textView = v4->_textView;
     v4->_textView = v6;
 
-    v8 = [(_CNAtomTextView *)v4->_textView textContainer];
-    [v8 setLineFragmentPadding:0.0];
+    textContainer = [(_CNAtomTextView *)v4->_textView textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
     v9 = v4->_textView;
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [(_CNAtomTextView *)v9 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(_CNAtomTextView *)v9 setBackgroundColor:clearColor];
 
     [(_CNAtomTextView *)v4->_textView setDelegate:v4];
     v11 = v4->_textView;
@@ -304,11 +304,11 @@ BOOL __61__CNComposeRecipientTextView_initWithFrame_dragDropDelegate___block_inv
     [(_CNAtomTextView *)v4->_textView setBounces:0];
     [(_CNAtomTextView *)v4->_textView setAutoresizingMask:0];
     [(_CNAtomTextView *)v4->_textView setHostRecipientView:v4];
-    v13 = [(_CNAtomTextView *)v4->_textView layoutManager];
-    [v13 setDelegate:v4];
+    layoutManager = [(_CNAtomTextView *)v4->_textView layoutManager];
+    [layoutManager setDelegate:v4];
 
-    v14 = [(_CNAtomTextView *)v4->_textView layoutManager];
-    [v14 setAllowsNonContiguousLayout:1];
+    layoutManager2 = [(_CNAtomTextView *)v4->_textView layoutManager];
+    [layoutManager2 setAllowsNonContiguousLayout:1];
 
     [(_CNAtomTextView *)v4->_textView setScrollsToTop:0];
     v4->_enabled = 1;
@@ -317,12 +317,12 @@ BOOL __61__CNComposeRecipientTextView_initWithFrame_dragDropDelegate___block_inv
     atomViews = v4->_atomViews;
     v4->_atomViews = v15;
 
-    v17 = [(CNComposeHeaderView *)v4 labelView];
-    [v17 removeFromSuperview];
+    labelView = [(CNComposeHeaderView *)v4 labelView];
+    [labelView removeFromSuperview];
 
     v18 = v4->_textView;
-    v19 = [(CNComposeHeaderView *)v4 labelView];
-    [(_CNAtomTextView *)v18 addSubview:v19];
+    labelView2 = [(CNComposeHeaderView *)v4 labelView];
+    [(_CNAtomTextView *)v18 addSubview:labelView2];
 
     [(CNComposeRecipientTextView *)v4 _setAddButtonVisible:0 animated:0];
     v20 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v4 action:sel__tapGestureRecognized_];
@@ -353,7 +353,7 @@ BOOL __61__CNComposeRecipientTextView_initWithFrame_dragDropDelegate___block_inv
     v4->_showsAddButtonWhenExpanded = 1;
     *&v4->_expandRecipientsInNamedGroups = 1;
     v4->_showGlassBackground = 0;
-    v28 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     objc_initWeak(&location, v4);
     v29 = *MEMORY[0x1E69DE078];
     v36[0] = MEMORY[0x1E69E9820];
@@ -361,7 +361,7 @@ BOOL __61__CNComposeRecipientTextView_initWithFrame_dragDropDelegate___block_inv
     v36[2] = __44__CNComposeRecipientTextView_initWithFrame___block_invoke;
     v36[3] = &unk_1E7CD1EA8;
     objc_copyWeak(&v37, &location);
-    v30 = [v28 addObserverForName:v29 object:0 queue:0 usingBlock:v36];
+    v30 = [defaultCenter addObserverForName:v29 object:0 queue:0 usingBlock:v36];
     [(CNComposeRecipientTextView *)v4 setKeyboardWillHideNotificationObserver:v30];
 
     v31 = *MEMORY[0x1E69DDF70];
@@ -370,7 +370,7 @@ BOOL __61__CNComposeRecipientTextView_initWithFrame_dragDropDelegate___block_inv
     v34[2] = __44__CNComposeRecipientTextView_initWithFrame___block_invoke_2;
     v34[3] = &unk_1E7CD1EA8;
     objc_copyWeak(&v35, &location);
-    v32 = [v28 addObserverForName:v31 object:0 queue:0 usingBlock:v34];
+    v32 = [defaultCenter addObserverForName:v31 object:0 queue:0 usingBlock:v34];
     [(CNComposeRecipientTextView *)v4 setKeyboardDidHideNotificationObserver:v32];
 
     [(CNComposeRecipientTextView *)v4 refreshGlass];
@@ -399,8 +399,8 @@ void __44__CNComposeRecipientTextView_initWithFrame___block_invoke_2(uint64_t a1
   options = self->_options;
   if (options && ([(CNAutocompleteSearchControllerOptions *)options labelTopPadding], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [(CNAutocompleteSearchControllerOptions *)self->_options labelTopPadding];
-    [v5 floatValue];
+    labelTopPadding = [(CNAutocompleteSearchControllerOptions *)self->_options labelTopPadding];
+    [labelTopPadding floatValue];
     v7 = v6;
   }
 
@@ -420,7 +420,7 @@ void __44__CNComposeRecipientTextView_initWithFrame___block_invoke_2(uint64_t a1
   v59.receiver = self;
   v59.super_class = CNComposeRecipientTextView;
   [(CNComposeHeaderView *)&v59 layoutSubviews];
-  v3 = [(CNComposeRecipientTextView *)self _useRightToLeftLayout];
+  _useRightToLeftLayout = [(CNComposeRecipientTextView *)self _useRightToLeftLayout];
   [(CNComposeHeaderView *)self _contentRect];
   v5 = v4;
   v7 = v6;
@@ -438,7 +438,7 @@ void __44__CNComposeRecipientTextView_initWithFrame___block_invoke_2(uint64_t a1
 
   [textView bounds];
   v13 = v12;
-  if (v3)
+  if (_useRightToLeftLayout)
   {
     [(_CNAtomTextView *)self->_textView frame];
     v62.origin.x = v5;
@@ -454,8 +454,8 @@ void __44__CNComposeRecipientTextView_initWithFrame___block_invoke_2(uint64_t a1
   [(_CNAtomTextView *)self->_textView setFrame:v5, v7, v9, v13];
   [(CNComposeHeaderView *)self _recipientViewEdgeInsets];
   [(_CNAtomTextView *)self->_textView setTextContainerInset:?];
-  v14 = [objc_opt_class() defaultFont];
-  [v14 lineHeight];
+  defaultFont = [objc_opt_class() defaultFont];
+  [defaultFont lineHeight];
 
   [(CNComposeRecipientTextView *)self bounds];
   UIRoundToViewScale();
@@ -472,9 +472,9 @@ void __44__CNComposeRecipientTextView_initWithFrame___block_invoke_2(uint64_t a1
     self->_addButtonFrame.size.height = v22;
     UIRoundToViewScale();
     self->_addButtonFrame.origin.y = v23;
-    v24 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v25 = [v24 featureFlags];
-    v26 = [v25 isFeatureEnabled:29];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags = [currentEnvironment featureFlags];
+    v26 = [featureFlags isFeatureEnabled:29];
 
     v27 = -1.0;
     if (v26)
@@ -484,7 +484,7 @@ void __44__CNComposeRecipientTextView_initWithFrame___block_invoke_2(uint64_t a1
 
     self->_addButtonFrame.origin.y = self->_addButtonFrame.origin.y + v27;
     [(CNComposeHeaderView *)self _contentRect];
-    if (v3)
+    if (_useRightToLeftLayout)
     {
       MinX = CGRectGetMinX(*&v28);
     }
@@ -511,7 +511,7 @@ void __44__CNComposeRecipientTextView_initWithFrame___block_invoke_2(uint64_t a1
       v61.size.height = self->_addButtonFrame.size.height;
       v36 = v35 + CGRectGetWidth(v61) * -0.5;
       v37 = -1.0;
-      if (v3)
+      if (_useRightToLeftLayout)
       {
         v37 = 1.0;
       }
@@ -539,7 +539,7 @@ void __44__CNComposeRecipientTextView_initWithFrame___block_invoke_2(uint64_t a1
     [(CNComposeRecipientTextView *)self _updateInactiveTextView];
   }
 
-  if (v3)
+  if (_useRightToLeftLayout)
   {
     v58.receiver = self;
     v58.super_class = CNComposeRecipientTextView;
@@ -549,19 +549,19 @@ void __44__CNComposeRecipientTextView_initWithFrame___block_invoke_2(uint64_t a1
   options = self->_options;
   if (options)
   {
-    v43 = [(CNAutocompleteSearchControllerOptions *)options labelLeadingPadding];
+    labelLeadingPadding = [(CNAutocompleteSearchControllerOptions *)options labelLeadingPadding];
 
-    if (v43)
+    if (labelLeadingPadding)
     {
-      v44 = [(CNComposeHeaderView *)self labelView];
-      [v44 frame];
+      labelView = [(CNComposeHeaderView *)self labelView];
+      [labelView frame];
       v46 = v45;
       v48 = v47;
       v50 = v49;
       v52 = v51;
 
       [(CNAutocompleteSearchControllerOptions *)self->_options labelLeadingPadding];
-      if (v3)
+      if (_useRightToLeftLayout)
         v53 = {;
         [v53 floatValue];
         v55 = v46 - v54;
@@ -573,8 +573,8 @@ void __44__CNComposeRecipientTextView_initWithFrame___block_invoke_2(uint64_t a1
         v55 = v56;
       }
 
-      v57 = [(CNComposeHeaderView *)self labelView];
-      [v57 setFrame:{v55, v48, v50, v52}];
+      labelView2 = [(CNComposeHeaderView *)self labelView];
+      [labelView2 setFrame:{v55, v48, v50, v52}];
     }
   }
 
@@ -596,21 +596,21 @@ void __44__CNComposeRecipientTextView_initWithFrame___block_invoke_2(uint64_t a1
   [(CNComposeRecipientTextView *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(_CNAtomTextView *)self->_textView sizeThatFits:a3.width, a3.height];
+  [(_CNAtomTextView *)self->_textView sizeThatFits:fits.width, fits.height];
   v5 = v4 + -2.0;
   result.height = v5;
   result.width = v3;
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(CNComposeRecipientTextView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -633,12 +633,12 @@ void __44__CNComposeRecipientTextView_initWithFrame___block_invoke_2(uint64_t a1
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(CNComposeRecipientTextView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -663,38 +663,38 @@ void __44__CNComposeRecipientTextView_initWithFrame___block_invoke_2(uint64_t a1
 
 - (void)_removeAllRecipients
 {
-  v3 = [(_CNAtomTextView *)self->_textView textStorage];
-  v4 = [v3 length];
+  textStorage = [(_CNAtomTextView *)self->_textView textStorage];
+  v4 = [textStorage length];
 
   if (v4)
   {
-    v5 = [(_CNAtomTextView *)self->_textView textStorage];
-    v6 = [v5 length];
+    textStorage2 = [(_CNAtomTextView *)self->_textView textStorage];
+    v6 = [textStorage2 length];
 
-    v7 = [(_CNAtomTextView *)self->_textView textStorage];
-    [v7 deleteCharactersInRange:{0, v6}];
+    textStorage3 = [(_CNAtomTextView *)self->_textView textStorage];
+    [textStorage3 deleteCharactersInRange:{0, v6}];
 
-    v9 = [(_CNAtomTextView *)self->_textView layoutManager];
-    v8 = [(_CNAtomTextView *)self->_textView textContainer];
-    [v9 ensureLayoutForTextContainer:v8];
+    layoutManager = [(_CNAtomTextView *)self->_textView layoutManager];
+    textContainer = [(_CNAtomTextView *)self->_textView textContainer];
+    [layoutManager ensureLayoutForTextContainer:textContainer];
   }
 }
 
-- (void)setAddresses:(id)a3
+- (void)setAddresses:(id)addresses
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNComposeRecipientTextView *)self recipients];
-  v6 = [v5 copy];
+  addressesCopy = addresses;
+  recipients = [(CNComposeRecipientTextView *)self recipients];
+  v6 = [recipients copy];
 
   [(CNComposeRecipientTextView *)self _removeAllRecipients];
-  v7 = [(CNComposeHeaderView *)self delegate];
-  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  delegate = [(CNComposeHeaderView *)self delegate];
+  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(addressesCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v4;
+  v9 = addressesCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -710,7 +710,7 @@ void __44__CNComposeRecipientTextView_initWithFrame___block_invoke_2(uint64_t a1
           objc_enumerationMutation(v9);
         }
 
-        v14 = [v7 composeRecipientView:self composeRecipientForAddress:{*(*(&v17 + 1) + 8 * v13), v17}];
+        v14 = [delegate composeRecipientView:self composeRecipientForAddress:{*(*(&v17 + 1) + 8 * v13), v17}];
         if (([v8 containsObject:v14] & 1) == 0)
         {
           [(CNComposeRecipientTextView *)self addRecipient:v14];
@@ -749,7 +749,7 @@ void __44__CNComposeRecipientTextView_initWithFrame___block_invoke_2(uint64_t a1
       v16 = 0;
     }
 
-    [v7 composeRecipientView:self didReplaceRecipients:v15 withRecipients:v16];
+    [delegate composeRecipientView:self didReplaceRecipients:v15 withRecipients:v16];
   }
 
   [(CNComposeRecipientTextView *)self _updateInactiveTextView];
@@ -758,13 +758,13 @@ void __44__CNComposeRecipientTextView_initWithFrame___block_invoke_2(uint64_t a1
 
 - (NSArray)recipients
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   textView = self->_textView;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__CNComposeRecipientTextView_recipients__block_invoke;
   v7[3] = &unk_1E7CD2990;
-  v5 = v3;
+  v5 = array;
   v8 = v5;
   [(_CNAtomTextView *)textView enumerateAtoms:v7];
 
@@ -784,37 +784,37 @@ void __40__CNComposeRecipientTextView_recipients__block_invoke(uint64_t a1, void
   }
 }
 
-- (void)setRecipients:(id)a3
+- (void)setRecipients:(id)recipients
 {
-  v4 = a3;
+  recipientsCopy = recipients;
   [(CNComposeRecipientTextView *)self _removeAllRecipients];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __44__CNComposeRecipientTextView_setRecipients___block_invoke;
   v5[3] = &unk_1E7CD29B8;
   v5[4] = self;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [recipientsCopy enumerateObjectsUsingBlock:v5];
 
   [(CNComposeRecipientTextView *)self _updateInactiveTextView];
 }
 
-- (void)addRecipient:(id)a3
+- (void)addRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = [(CNComposeRecipientTextView *)self recipients];
-  -[CNComposeRecipientTextView addRecipient:index:animate:](self, "addRecipient:index:animate:", v4, [v5 count], 0);
+  recipientCopy = recipient;
+  recipients = [(CNComposeRecipientTextView *)self recipients];
+  -[CNComposeRecipientTextView addRecipient:index:animate:](self, "addRecipient:index:animate:", recipientCopy, [recipients count], 0);
 }
 
-- (void)addRecipient:(id)a3 index:(unint64_t)a4 animate:(BOOL)a5
+- (void)addRecipient:(id)recipient index:(unint64_t)index animate:(BOOL)animate
 {
-  v5 = a5;
+  animateCopy = animate;
   v59 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = v8;
-  if (v8)
+  recipientCopy = recipient;
+  v9 = recipientCopy;
+  if (recipientCopy)
   {
-    v39 = v8;
-    if (v5)
+    v39 = recipientCopy;
+    if (animateCopy)
     {
       [(CNComposeRecipientTextView *)self _beginAtomViewAnimations];
     }
@@ -823,9 +823,9 @@ void __40__CNComposeRecipientTextView_recipients__block_invoke(uint64_t a1, void
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v10 = [(CNComposeRecipientTextView *)self selectedAtoms];
-    v11 = [v10 countByEnumeratingWithState:&v52 objects:v58 count:16];
-    v40 = v5;
+    selectedAtoms = [(CNComposeRecipientTextView *)self selectedAtoms];
+    v11 = [selectedAtoms countByEnumeratingWithState:&v52 objects:v58 count:16];
+    v40 = animateCopy;
     if (v11)
     {
       v12 = v11;
@@ -836,19 +836,19 @@ void __40__CNComposeRecipientTextView_recipients__block_invoke(uint64_t a1, void
         {
           if (*v53 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(selectedAtoms);
           }
 
           v15 = *(*(&v52 + 1) + 8 * i);
-          v16 = [(CNComposeRecipientTextView *)self recipients];
-          v17 = [v15 recipient];
-          a4 = [v16 indexOfObject:v17];
+          recipients = [(CNComposeRecipientTextView *)self recipients];
+          recipient = [v15 recipient];
+          index = [recipients indexOfObject:recipient];
 
-          v18 = [v15 recipient];
-          [(CNComposeRecipientTextView *)self removeRecipient:v18];
+          recipient2 = [v15 recipient];
+          [(CNComposeRecipientTextView *)self removeRecipient:recipient2];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v52 objects:v58 count:16];
+        v12 = [selectedAtoms countByEnumeratingWithState:&v52 objects:v58 count:16];
       }
 
       while (v12);
@@ -861,13 +861,13 @@ void __40__CNComposeRecipientTextView_recipients__block_invoke(uint64_t a1, void
       v51 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v19 = [v39 sortedChildren];
-      v20 = [v19 countByEnumeratingWithState:&v48 objects:v57 count:16];
+      sortedChildren = [v39 sortedChildren];
+      v20 = [sortedChildren countByEnumeratingWithState:&v48 objects:v57 count:16];
       if (v20)
       {
         v21 = v20;
         v42 = *v49;
-        obj = v19;
+        obj = sortedChildren;
         do
         {
           for (j = 0; j != v21; ++j)
@@ -882,8 +882,8 @@ void __40__CNComposeRecipientTextView_recipients__block_invoke(uint64_t a1, void
             v45 = 0u;
             v46 = 0u;
             v47 = 0u;
-            v24 = [v23 children];
-            v25 = [v24 arrayByAddingObject:v23];
+            children = [v23 children];
+            v25 = [children arrayByAddingObject:v23];
 
             v26 = [v25 countByEnumeratingWithState:&v44 objects:v56 count:16];
             if (v26)
@@ -908,21 +908,21 @@ void __40__CNComposeRecipientTextView_recipients__block_invoke(uint64_t a1, void
               while (v27);
             }
 
-            v30 = [(CNComposeRecipientTextView *)self recipients];
+            recipients2 = [(CNComposeRecipientTextView *)self recipients];
             v43[0] = MEMORY[0x1E69E9820];
             v43[1] = 3221225472;
             v43[2] = __57__CNComposeRecipientTextView_addRecipient_index_animate___block_invoke;
             v43[3] = &unk_1E7CD1BE0;
             v43[4] = v23;
-            v31 = [v30 _cn_any:v43];
+            v31 = [recipients2 _cn_any:v43];
 
             if ((v31 & 1) == 0)
             {
-              [(CNComposeRecipientTextView *)self addRecipient:v23 index:a4++ animate:v40];
+              [(CNComposeRecipientTextView *)self addRecipient:v23 index:index++ animate:v40];
             }
           }
 
-          v19 = obj;
+          sortedChildren = obj;
           v21 = [obj countByEnumeratingWithState:&v48 objects:v57 count:16];
         }
 
@@ -934,35 +934,35 @@ void __40__CNComposeRecipientTextView_recipients__block_invoke(uint64_t a1, void
 
     else
     {
-      v32 = [(CNComposeRecipientTextView *)self recipients];
-      v33 = [v32 containsObject:v39];
+      recipients3 = [(CNComposeRecipientTextView *)self recipients];
+      v33 = [recipients3 containsObject:v39];
 
       if ((v33 & 1) == 0)
       {
         v34 = [(CNComposeRecipientTextView *)self _atomAttachmentForRecipient:v39];
-        [(CNComposeRecipientTextView *)self _insertAtomAttachment:v34 atCharacterIndex:a4];
-        v35 = [(CNComposeHeaderView *)self delegate];
+        [(CNComposeRecipientTextView *)self _insertAtomAttachment:v34 atCharacterIndex:index];
+        delegate = [(CNComposeHeaderView *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          [v35 composeRecipientView:self didAddRecipient:v39];
+          [delegate composeRecipientView:self didAddRecipient:v39];
         }
 
-        [(_CNAtomTextView *)self->_textView setSelectedRange:a4 + 1, 0];
-        v36 = [(CNComposeRecipientTextView *)self undoManager];
-        [v36 registerUndoWithTarget:self selector:sel_removeRecipient_ object:v39];
-        if (([v36 isUndoing] & 1) == 0)
+        [(_CNAtomTextView *)self->_textView setSelectedRange:index + 1, 0];
+        undoManager = [(CNComposeRecipientTextView *)self undoManager];
+        [undoManager registerUndoWithTarget:self selector:sel_removeRecipient_ object:v39];
+        if (([undoManager isUndoing] & 1) == 0)
         {
           v37 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
           v38 = [v37 localizedStringForKey:@"ADDRESS_ADDITION" value:&stru_1F3002C60 table:@"Localized"];
-          [v36 setActionName:v38];
+          [undoManager setActionName:v38];
 
           v9 = v39;
         }
       }
 
       [(CNComposeRecipientTextView *)self _updateAddButtonVisibility];
-      v19 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v19 postNotificationName:@"CNComposeRecipientTextViewDidChangeNotification" object:self userInfo:0];
+      sortedChildren = [MEMORY[0x1E696AD88] defaultCenter];
+      [sortedChildren postNotificationName:@"CNComposeRecipientTextViewDidChangeNotification" object:self userInfo:0];
     }
   }
 }
@@ -976,10 +976,10 @@ uint64_t __57__CNComposeRecipientTextView_addRecipient_index_animate___block_inv
   return v5;
 }
 
-- (BOOL)shouldExpandRecipient:(id)a3
+- (BOOL)shouldExpandRecipient:(id)recipient
 {
-  v4 = a3;
-  if ([v4 isGroup])
+  recipientCopy = recipient;
+  if ([recipientCopy isGroup])
   {
     if ([(CNComposeRecipientTextView *)self expandRecipientsInNamedGroups])
     {
@@ -989,8 +989,8 @@ uint64_t __57__CNComposeRecipientTextView_addRecipient_index_animate___block_inv
     else
     {
       v6 = *MEMORY[0x1E6996568];
-      v7 = [v4 displayString];
-      v5 = (*(v6 + 16))(v6, v7);
+      displayString = [recipientCopy displayString];
+      v5 = (*(v6 + 16))(v6, displayString);
     }
   }
 
@@ -1017,41 +1017,41 @@ uint64_t __57__CNComposeRecipientTextView_addRecipient_index_animate___block_inv
   return undoManager;
 }
 
-- (void)_didRemoveRecipient:(id)a3
+- (void)_didRemoveRecipient:(id)recipient
 {
-  v9 = a3;
-  v4 = [(CNComposeHeaderView *)self delegate];
+  recipientCopy = recipient;
+  delegate = [(CNComposeHeaderView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 composeRecipientView:self didRemoveRecipient:v9];
+    [delegate composeRecipientView:self didRemoveRecipient:recipientCopy];
   }
 
-  v5 = [(CNComposeRecipientTextView *)self undoManager];
-  [v5 registerUndoWithTarget:self selector:sel_addRecipient_ object:v9];
-  if (([v5 isUndoing] & 1) == 0)
+  undoManager = [(CNComposeRecipientTextView *)self undoManager];
+  [undoManager registerUndoWithTarget:self selector:sel_addRecipient_ object:recipientCopy];
+  if (([undoManager isUndoing] & 1) == 0)
   {
     v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"ADDRESS_DELETION" value:&stru_1F3002C60 table:@"Localized"];
-    [v5 setActionName:v7];
+    [undoManager setActionName:v7];
   }
 
   [(CNComposeRecipientTextView *)self _updateAddButtonVisibility];
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 postNotificationName:@"CNComposeRecipientTextViewDidChangeNotification" object:self userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"CNComposeRecipientTextViewDidChangeNotification" object:self userInfo:0];
 }
 
-- (void)removeRecipient:(id)a3
+- (void)removeRecipient:(id)recipient
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(CNComposeRecipientTextView *)self shouldExpandRecipient:v4])
+  recipientCopy = recipient;
+  if ([(CNComposeRecipientTextView *)self shouldExpandRecipient:recipientCopy])
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [v4 children];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    children = [recipientCopy children];
+    v6 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1063,14 +1063,14 @@ uint64_t __57__CNComposeRecipientTextView_addRecipient_index_animate___block_inv
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(children);
           }
 
           [(CNComposeRecipientTextView *)self removeSingleRecipient:*(*(&v10 + 1) + 8 * v9++)];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -1079,13 +1079,13 @@ uint64_t __57__CNComposeRecipientTextView_addRecipient_index_animate___block_inv
 
   else
   {
-    [(CNComposeRecipientTextView *)self removeSingleRecipient:v4];
+    [(CNComposeRecipientTextView *)self removeSingleRecipient:recipientCopy];
   }
 }
 
-- (void)removeSingleRecipient:(id)a3
+- (void)removeSingleRecipient:(id)recipient
 {
-  v4 = a3;
+  recipientCopy = recipient;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3010000000;
@@ -1096,7 +1096,7 @@ uint64_t __57__CNComposeRecipientTextView_addRecipient_index_animate___block_inv
   v9 = 3221225472;
   v10 = __52__CNComposeRecipientTextView_removeSingleRecipient___block_invoke;
   v11 = &unk_1E7CD29E0;
-  v6 = v4;
+  v6 = recipientCopy;
   v12 = v6;
   v13 = &v14;
   [(_CNAtomTextView *)textView enumerateAtomAttachments:&v8];
@@ -1125,11 +1125,11 @@ void __52__CNComposeRecipientTextView_removeSingleRecipient___block_invoke(uint6
   }
 }
 
-- (void)addAddress:(id)a3
+- (void)addAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(CNComposeHeaderView *)self delegate];
-  v6 = [v5 composeRecipientView:self composeRecipientForAddress:v4];
+  addressCopy = address;
+  delegate = [(CNComposeHeaderView *)self delegate];
+  v6 = [delegate composeRecipientView:self composeRecipientForAddress:addressCopy];
 
   if (v6)
   {
@@ -1154,17 +1154,17 @@ void __41__CNComposeRecipientTextView_addAddress___block_invoke(void *a1)
   [v2 deleteCharactersInRange:{a1[5], a1[6]}];
 }
 
-- (BOOL)containsAddress:(id)a3
+- (BOOL)containsAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(_CNAtomTextView *)self->_textView atoms];
+  addressCopy = address;
+  atoms = [(_CNAtomTextView *)self->_textView atoms];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __46__CNComposeRecipientTextView_containsAddress___block_invoke;
   v10[3] = &unk_1E7CD2A30;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 indexesOfObjectsPassingTest:v10];
+  v11 = addressCopy;
+  v6 = addressCopy;
+  v7 = [atoms indexesOfObjectsPassingTest:v10];
   v8 = [v7 count] != 0;
 
   return v8;
@@ -1179,38 +1179,38 @@ uint64_t __46__CNComposeRecipientTextView_containsAddress___block_invoke(uint64_
   return v5;
 }
 
-- (void)_addButtonTapped:(id)a3
+- (void)_addButtonTapped:(id)tapped
 {
-  v4 = [(CNComposeHeaderView *)self delegate];
+  delegate = [(CNComposeHeaderView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     self->_addButtonWasTapped = 1;
-    [v4 composeRecipientViewRequestAddRecipient:self];
+    [delegate composeRecipientViewRequestAddRecipient:self];
   }
 }
 
 - (NSArray)addresses
 {
-  v2 = [(CNComposeRecipientTextView *)self recipients];
-  v3 = [v2 arrayByApplyingSelector:sel_commentedAddress];
+  recipients = [(CNComposeRecipientTextView *)self recipients];
+  v3 = [recipients arrayByApplyingSelector:sel_commentedAddress];
 
   return v3;
 }
 
 - (NSArray)uncommentedAddresses
 {
-  v2 = [(CNComposeRecipientTextView *)self recipients];
-  v3 = [v2 arrayByApplyingSelector:sel_uncommentedAddress];
+  recipients = [(CNComposeRecipientTextView *)self recipients];
+  v3 = [recipients arrayByApplyingSelector:sel_uncommentedAddress];
 
   return v3;
 }
 
-- (void)setUsingActiveAppearance:(BOOL)usingActiveAppearance animated:(BOOL)a4
+- (void)setUsingActiveAppearance:(BOOL)usingActiveAppearance animated:(BOOL)animated
 {
-  v14 = a4;
+  animatedCopy = animated;
   if (self->_usingActiveAppearance != usingActiveAppearance)
   {
-    v4 = a4;
+    animatedCopy2 = animated;
     self->_usingActiveAppearance = usingActiveAppearance;
     collapsableUpdateTimer = self->_collapsableUpdateTimer;
     if (collapsableUpdateTimer)
@@ -1223,7 +1223,7 @@ uint64_t __46__CNComposeRecipientTextView_containsAddress___block_invoke(uint64_
     }
 
     v13 = !usingActiveAppearance;
-    if (v4)
+    if (animatedCopy2)
     {
       v8 = MEMORY[0x1E695DF50];
       v9 = [(CNComposeRecipientTextView *)self methodSignatureForSelector:sel__setTextViewIsCollapsed_animated_];
@@ -1232,7 +1232,7 @@ uint64_t __46__CNComposeRecipientTextView_containsAddress___block_invoke(uint64_
       [v10 setTarget:self];
       [v10 setSelector:sel__setTextViewIsCollapsed_animated_];
       [v10 setArgument:&v13 atIndex:2];
-      [v10 setArgument:&v14 atIndex:3];
+      [v10 setArgument:&animatedCopy atIndex:3];
       v11 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:v10 invocation:0 repeats:0.1];
       v12 = self->_collapsableUpdateTimer;
       self->_collapsableUpdateTimer = v11;
@@ -1245,57 +1245,57 @@ uint64_t __46__CNComposeRecipientTextView_containsAddress___block_invoke(uint64_
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    v4 = a3;
-    self->_enabled = a3;
+    enabledCopy = enabled;
+    self->_enabled = enabled;
     [(_CNAtomTextView *)self->_textView setEditable:?];
 
-    [(CNComposeRecipientTextView *)self setUserInteractionEnabled:v4];
+    [(CNComposeRecipientTextView *)self setUserInteractionEnabled:enabledCopy];
   }
 }
 
-- (void)setSeparatorHidden:(BOOL)a3
+- (void)setSeparatorHidden:(BOOL)hidden
 {
-  if (self->_separatorHidden != a3)
+  if (self->_separatorHidden != hidden)
   {
-    v4 = a3;
-    self->_separatorHidden = a3;
-    v5 = [(CNComposeHeaderView *)self separator];
-    [v5 setHidden:v4];
+    hiddenCopy = hidden;
+    self->_separatorHidden = hidden;
+    separator = [(CNComposeHeaderView *)self separator];
+    [separator setHidden:hiddenCopy];
   }
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  self->_expanded = a3;
+  self->_expanded = expanded;
   [(CNComposeRecipientTextView *)self _updateAddButtonVisibility];
 
   [(CNComposeRecipientTextView *)self _recomputeTextContainerExclusionPaths];
 }
 
-- (void)_updateAddButtonVisibilityAnimated:(BOOL)a3
+- (void)_updateAddButtonVisibilityAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = (self->_addButtonWasTapped || self->_usingActiveAppearance && self->_expanded) && self->_showsAddButtonWhenExpanded && [(CNComposeRecipientTextView *)self _canAddAdditionalAtoms];
 
-  [(CNComposeRecipientTextView *)self _setAddButtonVisible:v5 animated:v3];
+  [(CNComposeRecipientTextView *)self _setAddButtonVisible:v5 animated:animatedCopy];
 }
 
-- (void)setShowsAddButtonWhenExpanded:(BOOL)a3
+- (void)setShowsAddButtonWhenExpanded:(BOOL)expanded
 {
-  if (self->_showsAddButtonWhenExpanded != a3)
+  if (self->_showsAddButtonWhenExpanded != expanded)
   {
-    self->_showsAddButtonWhenExpanded = a3;
+    self->_showsAddButtonWhenExpanded = expanded;
     [(CNComposeRecipientTextView *)self _updateAddButtonVisibility];
 
     [(CNComposeRecipientTextView *)self _invalidateTextContainerExclusionPaths];
   }
 }
 
-- (BOOL)_hasRecipientsWithPresentationOptions:(unint64_t)a3
+- (BOOL)_hasRecipientsWithPresentationOptions:(unint64_t)options
 {
   v7 = 0;
   v8 = &v7;
@@ -1307,7 +1307,7 @@ uint64_t __46__CNComposeRecipientTextView_containsAddress___block_invoke(uint64_
   v6[2] = __68__CNComposeRecipientTextView__hasRecipientsWithPresentationOptions___block_invoke;
   v6[3] = &unk_1E7CD2A58;
   v6[5] = &v7;
-  v6[6] = a3;
+  v6[6] = options;
   v6[4] = self;
   [(_CNAtomTextView *)textView enumerateAtoms:v6];
   v4 = *(v8 + 24);
@@ -1327,28 +1327,28 @@ void __68__CNComposeRecipientTextView__hasRecipientsWithPresentationOptions___bl
   }
 }
 
-- (id)_userEnteredTextWithRange:(_NSRange *)a3
+- (id)_userEnteredTextWithRange:(_NSRange *)range
 {
-  v5 = [(_CNAtomTextView *)self->_textView textStorage];
-  v6 = [v5 string];
+  textStorage = [(_CNAtomTextView *)self->_textView textStorage];
+  string = [textStorage string];
 
-  v7 = [(_CNAtomTextView *)self->_textView selectedRange];
-  v9 = v7 + v8;
-  if (v7 + v8 == 0x7FFFFFFFFFFFFFFFLL)
+  selectedRange = [(_CNAtomTextView *)self->_textView selectedRange];
+  v9 = selectedRange + v8;
+  if (selectedRange + v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [v6 length];
+    v9 = [string length];
   }
 
-  v10 = [v6 length];
-  v11 = [v6 substringToIndex:v9];
-  v12 = [MEMORY[0x1E696AB08] _cn_textAttachmentCharacterSet];
-  v13 = [v11 rangeOfCharacterFromSet:v12 options:4];
+  v10 = [string length];
+  v11 = [string substringToIndex:v9];
+  _cn_textAttachmentCharacterSet = [MEMORY[0x1E696AB08] _cn_textAttachmentCharacterSet];
+  v13 = [v11 rangeOfCharacterFromSet:_cn_textAttachmentCharacterSet options:4];
   v15 = v14;
 
-  v16 = [v6 substringFromIndex:v9];
+  v16 = [string substringFromIndex:v9];
 
-  v17 = [MEMORY[0x1E696AB08] _cn_textAttachmentCharacterSet];
-  v18 = [v16 rangeOfCharacterFromSet:v17 options:0];
+  _cn_textAttachmentCharacterSet2 = [MEMORY[0x1E696AB08] _cn_textAttachmentCharacterSet];
+  v18 = [v16 rangeOfCharacterFromSet:_cn_textAttachmentCharacterSet2 options:0];
 
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1371,21 +1371,21 @@ void __68__CNComposeRecipientTextView__hasRecipientsWithPresentationOptions___bl
   if (v19 == 0x7FFFFFFFFFFFFFFFLL || v21 < 1)
   {
     v26 = &stru_1F3002C60;
-    if (a3)
+    if (range)
     {
 LABEL_16:
-      a3->location = v19;
-      a3->length = v22;
+      range->location = v19;
+      range->length = v22;
     }
   }
 
   else
   {
-    v24 = [v6 substringWithRange:{v19, v21 & ~(v21 >> 63)}];
-    v25 = [MEMORY[0x1E696AEC0] _cn_textAttachmentCharacterString];
-    v26 = [v24 stringByReplacingOccurrencesOfString:v25 withString:&stru_1F3002C60];
+    v24 = [string substringWithRange:{v19, v21 & ~(v21 >> 63)}];
+    _cn_textAttachmentCharacterString = [MEMORY[0x1E696AEC0] _cn_textAttachmentCharacterString];
+    v26 = [v24 stringByReplacingOccurrencesOfString:_cn_textAttachmentCharacterString withString:&stru_1F3002C60];
 
-    if (a3)
+    if (range)
     {
       goto LABEL_16;
     }
@@ -1408,71 +1408,71 @@ LABEL_16:
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(_CNAtomTextView *)self->_textView layoutManager];
-  v4 = [v3 numberOfGlyphs];
+  layoutManager = [(_CNAtomTextView *)self->_textView layoutManager];
+  numberOfGlyphs = [layoutManager numberOfGlyphs];
 
-  v5 = [(_CNAtomTextView *)self->_textView layoutManager];
+  layoutManager2 = [(_CNAtomTextView *)self->_textView layoutManager];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__CNComposeRecipientTextView_numberOfRowsOfTextInField__block_invoke;
   v8[3] = &unk_1E7CD2A80;
   v8[4] = &v9;
-  [v5 enumerateLineFragmentsForGlyphRange:0 usingBlock:{v4, v8}];
+  [layoutManager2 enumerateLineFragmentsForGlyphRange:0 usingBlock:{numberOfGlyphs, v8}];
 
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
   return v6;
 }
 
-- (void)setBaseFont:(id)a3
+- (void)setBaseFont:(id)font
 {
-  v5 = a3;
+  fontCopy = font;
   if (([(UIFont *)self->_baseFont isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_baseFont, a3);
+    objc_storeStrong(&self->_baseFont, font);
     [(_CNAtomTextView *)self->_textView setFont:self->_baseFont];
   }
 }
 
 - (UIFont)baseFont
 {
-  v2 = self->_baseFont;
-  if (!v2)
+  defaultFont = self->_baseFont;
+  if (!defaultFont)
   {
-    v2 = [objc_opt_class() defaultFont];
+    defaultFont = [objc_opt_class() defaultFont];
   }
 
-  return v2;
+  return defaultFont;
 }
 
 - (BOOL)hasContent
 {
-  v2 = [(_CNAtomTextView *)self->_textView textStorage];
-  v3 = [v2 length] != 0;
+  textStorage = [(_CNAtomTextView *)self->_textView textStorage];
+  v3 = [textStorage length] != 0;
 
   return v3;
 }
 
-- (double)textFieldOffsetForNumberOfRowsToScroll:(unint64_t)a3 numberOfRowsAboveField:(int64_t)a4
+- (double)textFieldOffsetForNumberOfRowsToScroll:(unint64_t)scroll numberOfRowsAboveField:(int64_t)field
 {
-  v7 = [(CNComposeRecipientTextView *)self numberOfRowsOfTextInField];
-  if (a4 >= a3)
+  numberOfRowsOfTextInField = [(CNComposeRecipientTextView *)self numberOfRowsOfTextInField];
+  if (field >= scroll)
   {
-    v8 = a3;
+    fieldCopy = scroll;
   }
 
   else
   {
-    v8 = a4;
+    fieldCopy = field;
   }
 
-  v9 = a3 - v8;
-  if (v7 < a3 - v8)
+  v9 = scroll - fieldCopy;
+  if (numberOfRowsOfTextInField < scroll - fieldCopy)
   {
-    v9 = v7;
+    v9 = numberOfRowsOfTextInField;
   }
 
-  if (a4 >= a3)
+  if (field >= scroll)
   {
     v10 = 0;
   }
@@ -1484,9 +1484,9 @@ LABEL_16:
 
   v11 = 0.0;
   v12 = 0.0;
-  if (v8 >= 1)
+  if (fieldCopy >= 1)
   {
-    v13 = v8;
+    v13 = fieldCopy;
     [objc_opt_class() preferredHeight];
     v12 = v14 * v13;
   }
@@ -1502,61 +1502,61 @@ LABEL_16:
   return v12 + v11;
 }
 
-- (unint64_t)_atomPresentationOptionsForRecipient:(id)a3
+- (unint64_t)_atomPresentationOptionsForRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = [(CNComposeHeaderView *)self delegate];
-  v6 = [(NSMutableDictionary *)self->_atomPresentationOptionsByRecipient objectForKey:v4];
+  recipientCopy = recipient;
+  delegate = [(CNComposeHeaderView *)self delegate];
+  v6 = [(NSMutableDictionary *)self->_atomPresentationOptionsByRecipient objectForKey:recipientCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v8 = [v5 presentationOptionsForRecipient:v4];
+    unsignedIntegerValue = [delegate presentationOptionsForRecipient:recipientCopy];
     atomPresentationOptionsByRecipient = self->_atomPresentationOptionsByRecipient;
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
-    [(NSMutableDictionary *)atomPresentationOptionsByRecipient setObject:v10 forKey:v4];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue];
+    [(NSMutableDictionary *)atomPresentationOptionsByRecipient setObject:v10 forKey:recipientCopy];
   }
 
   else
   {
-    v8 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  if (-[CNComposeDropTarget handlesDroppedContacts](self->_dropTarget, "handlesDroppedContacts") && ![v4 kind])
+  if (-[CNComposeDropTarget handlesDroppedContacts](self->_dropTarget, "handlesDroppedContacts") && ![recipientCopy kind])
   {
     v11 = *MEMORY[0x1E6996570];
-    v12 = [v4 address];
-    if ((*(v11 + 16))(v11, v12))
+    address = [recipientCopy address];
+    if ((*(v11 + 16))(v11, address))
     {
       v13 = MEMORY[0x1E699B240];
-      v14 = [v4 address];
-      v15 = [v13 emailAddressWithString:v14];
+      address2 = [recipientCopy address];
+      v15 = [v13 emailAddressWithString:address2];
 
       if (!v15)
       {
-        v8 |= 0x20000uLL;
+        unsignedIntegerValue |= 0x20000uLL;
       }
     }
 
     else
     {
 
-      v8 |= 0x20000uLL;
+      unsignedIntegerValue |= 0x20000uLL;
     }
   }
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   v4.receiver = self;
   v4.super_class = CNComposeRecipientTextView;
-  [(CNComposeHeaderView *)&v4 setLabel:a3];
+  [(CNComposeHeaderView *)&v4 setLabel:label];
   [(CNComposeRecipientTextView *)self _invalidateTextContainerExclusionPaths];
 }
 
@@ -1565,8 +1565,8 @@ LABEL_16:
   inactiveTextColor = self->_inactiveTextColor;
   if (!inactiveTextColor)
   {
-    v4 = [(CNComposeRecipientTextView *)self interactionTintColor];
-    v5 = [v4 copy];
+    interactionTintColor = [(CNComposeRecipientTextView *)self interactionTintColor];
+    v5 = [interactionTintColor copy];
     v6 = self->_inactiveTextColor;
     self->_inactiveTextColor = v5;
 
@@ -1576,9 +1576,9 @@ LABEL_16:
   return inactiveTextColor;
 }
 
-- (void)setInactiveTextColor:(id)a3
+- (void)setInactiveTextColor:(id)color
 {
-  objc_storeStrong(&self->_inactiveTextColor, a3);
+  objc_storeStrong(&self->_inactiveTextColor, color);
 
   [(CNComposeRecipientTextView *)self _updateInactiveTextView];
 }
@@ -1587,15 +1587,15 @@ LABEL_16:
 {
   v8.receiver = self;
   v8.super_class = CNComposeRecipientTextView;
-  v3 = [(CNComposeHeaderView *)&v8 _baseAttributes];
-  v4 = [v3 mutableCopy];
+  _baseAttributes = [(CNComposeHeaderView *)&v8 _baseAttributes];
+  v4 = [_baseAttributes mutableCopy];
 
-  v5 = [(CNComposeRecipientTextView *)self typingTextColor];
+  typingTextColor = [(CNComposeRecipientTextView *)self typingTextColor];
 
-  if (v5)
+  if (typingTextColor)
   {
-    v6 = [(CNComposeRecipientTextView *)self typingTextColor];
-    [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+    typingTextColor2 = [(CNComposeRecipientTextView *)self typingTextColor];
+    [v4 setObject:typingTextColor2 forKeyedSubscript:*MEMORY[0x1E69DB650]];
   }
 
   return v4;
@@ -1605,39 +1605,39 @@ LABEL_16:
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(_CNAtomTextView *)self->_textView textStorage];
-  v6 = [v5 string];
-  v7 = [v4 stringWithString:v6];
+  textStorage = [(_CNAtomTextView *)self->_textView textStorage];
+  string = [textStorage string];
+  v7 = [v4 stringWithString:string];
 
   if ([v7 length])
   {
-    v8 = [MEMORY[0x1E696AB08] _cn_textAttachmentCharacterSet];
+    _cn_textAttachmentCharacterSet = [MEMORY[0x1E696AB08] _cn_textAttachmentCharacterSet];
     v9 = [MEMORY[0x1E696AE88] scannerWithString:v7];
     [v9 setCharactersToBeSkipped:0];
     v10 = 0;
     while (1)
     {
-      v11 = [v9 scanLocation];
-      if (v11 >= [v7 length])
+      scanLocation = [v9 scanLocation];
+      if (scanLocation >= [v7 length])
       {
         break;
       }
 
       v19 = v10;
-      v12 = [v9 scanUpToCharactersFromSet:v8 intoString:&v19];
+      v12 = [v9 scanUpToCharactersFromSet:_cn_textAttachmentCharacterSet intoString:&v19];
       v13 = v19;
 
       if ([v13 length])
       {
-        v14 = [v9 scanLocation];
-        v15 = v14 - [v13 length];
+        scanLocation2 = [v9 scanLocation];
+        v15 = scanLocation2 - [v13 length];
         v16 = [v13 length];
         v17 = [MEMORY[0x1E696B098] valueWithRange:{v15, v16}];
         [v3 addObject:v17];
       }
 
       v10 = v13;
-      if (((v12 | [v9 scanCharactersFromSet:v8 intoString:0]) & 1) == 0)
+      if (((v12 | [v9 scanCharactersFromSet:_cn_textAttachmentCharacterSet intoString:0]) & 1) == 0)
       {
         goto LABEL_9;
       }
@@ -1652,20 +1652,20 @@ LABEL_9:
 
 - (void)clearText
 {
-  v3 = [(_CNAtomTextView *)self->_textView delegate];
+  delegate = [(_CNAtomTextView *)self->_textView delegate];
   [(_CNAtomTextView *)self->_textView setDelegate:0];
   [(_CNAtomTextView *)self->_textView unmarkText];
-  [(_CNAtomTextView *)self->_textView setDelegate:v3];
-  v4 = [(CNComposeRecipientTextView *)self clearableTextRanges];
-  if ([v4 count])
+  [(_CNAtomTextView *)self->_textView setDelegate:delegate];
+  clearableTextRanges = [(CNComposeRecipientTextView *)self clearableTextRanges];
+  if ([clearableTextRanges count])
   {
     textView = self->_textView;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __39__CNComposeRecipientTextView_clearText__block_invoke;
     v6[3] = &unk_1E7CD1E08;
-    v7 = v4;
-    v8 = self;
+    v7 = clearableTextRanges;
+    selfCopy = self;
     [(_CNAtomTextView *)textView batchTextStorageUpdates:v6];
   }
 }
@@ -1711,8 +1711,8 @@ void __39__CNComposeRecipientTextView_clearText__block_invoke(uint64_t a1)
 
 - (BOOL)hasClearableText
 {
-  v2 = [(CNComposeRecipientTextView *)self clearableTextRanges];
-  v3 = [v2 count] != 0;
+  clearableTextRanges = [(CNComposeRecipientTextView *)self clearableTextRanges];
+  v3 = [clearableTextRanges count] != 0;
 
   return v3;
 }
@@ -1741,34 +1741,34 @@ void __63__CNComposeRecipientTextView_invalidateAtomPresentationOptions__block_i
   }
 }
 
-- (void)invalidateAtomPresentationOptionsForRecipient:(id)a3
+- (void)invalidateAtomPresentationOptionsForRecipient:(id)recipient
 {
   atomPresentationOptionsByRecipient = self->_atomPresentationOptionsByRecipient;
-  v5 = a3;
-  [(NSMutableDictionary *)atomPresentationOptionsByRecipient removeObjectForKey:v5];
-  v7 = [(CNComposeRecipientTextView *)self atomViewForRecipient:v5];
-  v6 = [(CNComposeRecipientTextView *)self _atomPresentationOptionsForRecipient:v5];
+  recipientCopy = recipient;
+  [(NSMutableDictionary *)atomPresentationOptionsByRecipient removeObjectForKey:recipientCopy];
+  v7 = [(CNComposeRecipientTextView *)self atomViewForRecipient:recipientCopy];
+  v6 = [(CNComposeRecipientTextView *)self _atomPresentationOptionsForRecipient:recipientCopy];
 
   [v7 setPresentationOptions:v6];
   [(CNComposeRecipientTextView *)self reflow];
 }
 
-- (void)setAtomPresentationOptions:(unint64_t)a3 forRecipient:(id)a4
+- (void)setAtomPresentationOptions:(unint64_t)options forRecipient:(id)recipient
 {
-  v8 = a4;
+  recipientCopy = recipient;
   v6 = [(CNComposeRecipientTextView *)self atomViewForRecipient:?];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    [(NSMutableDictionary *)self->_atomPresentationOptionsByRecipient setObject:v7 forKeyedSubscript:v8];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:options];
+    [(NSMutableDictionary *)self->_atomPresentationOptionsByRecipient setObject:v7 forKeyedSubscript:recipientCopy];
 
-    [v6 setPresentationOptions:a3];
+    [v6 setPresentationOptions:options];
     [(CNComposeRecipientTextView *)self reflow];
   }
 
   else
   {
-    [(NSMutableDictionary *)self->_atomPresentationOptionsByRecipient removeObjectForKey:v8];
+    [(NSMutableDictionary *)self->_atomPresentationOptionsByRecipient removeObjectForKey:recipientCopy];
   }
 }
 
@@ -1776,37 +1776,37 @@ void __63__CNComposeRecipientTextView_invalidateAtomPresentationOptions__block_i
 {
   if (self->_parentIsClosing)
   {
-    LOBYTE(v2) = 0;
+    LOBYTE(usingActiveAppearance) = 0;
   }
 
   else
   {
-    v2 = [(CNComposeRecipientTextView *)self usingActiveAppearance];
-    if (v2)
+    usingActiveAppearance = [(CNComposeRecipientTextView *)self usingActiveAppearance];
+    if (usingActiveAppearance)
     {
-      v4 = [(CNComposeRecipientTextView *)self text];
-      v5 = [v4 length];
+      text = [(CNComposeRecipientTextView *)self text];
+      v5 = [text length];
 
       if (v5)
       {
-        v6 = [(CNComposeHeaderView *)self delegate];
+        delegate = [(CNComposeHeaderView *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          v7 = [(CNComposeRecipientTextView *)self text];
-          [v6 composeRecipientView:self didFinishEnteringAddress:v7];
+          text2 = [(CNComposeRecipientTextView *)self text];
+          [delegate composeRecipientView:self didFinishEnteringAddress:text2];
         }
 
-        LOBYTE(v2) = 1;
+        LOBYTE(usingActiveAppearance) = 1;
       }
 
       else
       {
-        LOBYTE(v2) = 0;
+        LOBYTE(usingActiveAppearance) = 0;
       }
     }
   }
 
-  return v2;
+  return usingActiveAppearance;
 }
 
 - (BOOL)resignFirstResponder
@@ -1819,8 +1819,8 @@ void __63__CNComposeRecipientTextView_invalidateAtomPresentationOptions__block_i
 
 - (BOOL)_useRightToLeftLayout
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 userInterfaceLayoutDirection] == 1;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  v3 = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection] == 1;
 
   return v3;
 }
@@ -1829,15 +1829,15 @@ void __63__CNComposeRecipientTextView_invalidateAtomPresentationOptions__block_i
 {
   if (![(_CNAtomTextView *)self->_textView isEditingTextStorage])
   {
-    v3 = [(_CNAtomTextView *)self->_textView layoutManager];
-    v4 = [v3 numberOfGlyphs];
+    layoutManager = [(_CNAtomTextView *)self->_textView layoutManager];
+    numberOfGlyphs = [layoutManager numberOfGlyphs];
 
-    v5 = [(_CNAtomTextView *)self->_textView layoutManager];
-    v6 = [v5 characterRangeForGlyphRange:0 actualGlyphRange:{v4, 0}];
+    layoutManager2 = [(_CNAtomTextView *)self->_textView layoutManager];
+    v6 = [layoutManager2 characterRangeForGlyphRange:0 actualGlyphRange:{numberOfGlyphs, 0}];
     v8 = v7;
 
-    v9 = [(_CNAtomTextView *)self->_textView layoutManager];
-    [v9 invalidateLayoutForCharacterRange:v6 actualCharacterRange:{v8, 0}];
+    layoutManager3 = [(_CNAtomTextView *)self->_textView layoutManager];
+    [layoutManager3 invalidateLayoutForCharacterRange:v6 actualCharacterRange:{v8, 0}];
 
     if ([(CNComposeRecipientTextView *)self _isTextViewCollapsed])
     {
@@ -1848,11 +1848,11 @@ void __63__CNComposeRecipientTextView_invalidateAtomPresentationOptions__block_i
   }
 }
 
-- (id)_textContainerExclusionPathsWithAddButton:(BOOL)a3
+- (id)_textContainerExclusionPathsWithAddButton:(BOOL)button
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  if (v3)
+  buttonCopy = button;
+  array = [MEMORY[0x1E695DF70] array];
+  if (buttonCopy)
   {
     [(CNComposeRecipientTextView *)self _ensureAddButton];
   }
@@ -1860,8 +1860,8 @@ void __63__CNComposeRecipientTextView_invalidateAtomPresentationOptions__block_i
   v30.receiver = self;
   v30.super_class = CNComposeRecipientTextView;
   [(CNComposeRecipientTextView *)&v30 layoutIfNeeded];
-  v6 = [(CNComposeRecipientTextView *)self _useRightToLeftLayout];
-  if (v6)
+  _useRightToLeftLayout = [(CNComposeRecipientTextView *)self _useRightToLeftLayout];
+  if (_useRightToLeftLayout)
   {
     v7 = 8;
   }
@@ -1871,25 +1871,25 @@ void __63__CNComposeRecipientTextView_invalidateAtomPresentationOptions__block_i
     v7 = 2;
   }
 
-  v8 = [(CNComposeHeaderView *)self labelView];
-  [(CNComposeHeaderView *)self _exclusionRectForView:v8 alongEdge:v7];
+  labelView = [(CNComposeHeaderView *)self labelView];
+  [(CNComposeHeaderView *)self _exclusionRectForView:labelView alongEdge:v7];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = [(CNComposeRecipientTextView *)self textView];
-  [(CNComposeRecipientTextView *)self convertRect:v17 toView:v10 + -3.0, v12 + 0.0, v14 + 6.0, v16];
+  textView = [(CNComposeRecipientTextView *)self textView];
+  [(CNComposeRecipientTextView *)self convertRect:textView toView:v10 + -3.0, v12 + 0.0, v14 + 6.0, v16];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
 
   v26 = [MEMORY[0x1E69DC728] bezierPathWithRect:{v19, v21, v23, v25}];
-  [v5 addObject:v26];
-  if (v3)
+  [array addObject:v26];
+  if (buttonCopy)
   {
-    if (v6)
+    if (_useRightToLeftLayout)
     {
       v27 = 2;
     }
@@ -1902,10 +1902,10 @@ void __63__CNComposeRecipientTextView_invalidateAtomPresentationOptions__block_i
     [(CNComposeHeaderView *)self _exclusionRectForView:self->_addButton alongEdge:v27];
     [(CNComposeRecipientTextView *)self convertRect:self->_textView toView:?];
     v28 = [MEMORY[0x1E69DC728] bezierPathWithRect:?];
-    [v5 addObject:v28];
+    [array addObject:v28];
   }
 
-  return v5;
+  return array;
 }
 
 - (void)_recomputeTextContainerExclusionPaths
@@ -1915,13 +1915,13 @@ void __63__CNComposeRecipientTextView_invalidateAtomPresentationOptions__block_i
     if (self->_expanded || (-[_CNAtomTextView attributedText](self->_textView, "attributedText"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 length], v3, v4))
     {
       v8 = [(CNComposeRecipientTextView *)self _textContainerExclusionPathsWithAddButton:self->_showsAddButtonWhenExpanded];
-      v5 = [(_CNAtomTextView *)self->_textView textContainer];
-      [v5 setExclusionPaths:v8];
+      textContainer = [(_CNAtomTextView *)self->_textView textContainer];
+      [textContainer setExclusionPaths:v8];
 
       self->_textViewExclusionPathsAreValid = 1;
       textView = self->_textView;
-      v7 = [(CNComposeRecipientTextView *)self _baseAttributes];
-      [(_CNAtomTextView *)textView setTypingAttributes:v7];
+      _baseAttributes = [(CNComposeRecipientTextView *)self _baseAttributes];
+      [(_CNAtomTextView *)textView setTypingAttributes:_baseAttributes];
 
       if ([(CNComposeRecipientTextView *)self _isTextViewCollapsed])
       {
@@ -1938,21 +1938,21 @@ void __63__CNComposeRecipientTextView_invalidateAtomPresentationOptions__block_i
     v8[9] = v2;
     v8[10] = v3;
     self->_textViewExclusionPathsAreValid = 0;
-    v5 = [MEMORY[0x1E6996820] defaultProvider];
-    v6 = [v5 mainThreadScheduler];
+    defaultProvider = [MEMORY[0x1E6996820] defaultProvider];
+    mainThreadScheduler = [defaultProvider mainThreadScheduler];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __68__CNComposeRecipientTextView__invalidateTextContainerExclusionPaths__block_invoke;
     v8[3] = &unk_1E7CD1F90;
     v8[4] = self;
-    v7 = [v6 afterDelay:v8 performBlock:0.0];
+    v7 = [mainThreadScheduler afterDelay:v8 performBlock:0.0];
   }
 }
 
-- (_NSRange)_rangeForComposeRecipientAtom:(id)a3
+- (_NSRange)_rangeForComposeRecipientAtom:(id)atom
 {
-  v4 = a3;
-  v5 = v4;
+  atomCopy = atom;
+  v5 = atomCopy;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3010000000;
@@ -1960,14 +1960,14 @@ void __63__CNComposeRecipientTextView_invalidateAtomPresentationOptions__block_i
   v6.f64[0] = NAN;
   v6.f64[1] = NAN;
   v19 = vnegq_f64(v6);
-  if (v4)
+  if (atomCopy)
   {
     textView = self->_textView;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __60__CNComposeRecipientTextView__rangeForComposeRecipientAtom___block_invoke;
     v12[3] = &unk_1E7CD29E0;
-    v13 = v4;
+    v13 = atomCopy;
     v14 = &v15;
     [(_CNAtomTextView *)textView enumerateAtomAttachments:v12];
 
@@ -2004,48 +2004,48 @@ void __60__CNComposeRecipientTextView__rangeForComposeRecipientAtom___block_invo
   }
 }
 
-- (id)_atomViewAtCharacterIndex:(unint64_t)a3
+- (id)_atomViewAtCharacterIndex:(unint64_t)index
 {
-  v4 = [(_CNAtomTextView *)self->_textView textStorage];
-  v5 = [v4 attributesAtIndex:a3 effectiveRange:0];
+  textStorage = [(_CNAtomTextView *)self->_textView textStorage];
+  v5 = [textStorage attributesAtIndex:index effectiveRange:0];
 
   v6 = [v5 objectForKey:*MEMORY[0x1E69DB5F8]];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = [v6 atomView];
+    atomView = [v6 atomView];
   }
 
   else
   {
-    v7 = 0;
+    atomView = 0;
   }
 
-  return v7;
+  return atomView;
 }
 
-- (void)_setValue:(id)a3 forAtomLayoutOption:(id)a4 withRecipient:(id)a5
+- (void)_setValue:(id)value forAtomLayoutOption:(id)option withRecipient:(id)recipient
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(NSMutableDictionary *)self->_atomLayoutOptionsByRecipient objectForKey:v9];
-  if (!v10)
+  valueCopy = value;
+  optionCopy = option;
+  recipientCopy = recipient;
+  dictionary = [(NSMutableDictionary *)self->_atomLayoutOptionsByRecipient objectForKey:recipientCopy];
+  if (!dictionary)
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
-    [(NSMutableDictionary *)self->_atomLayoutOptionsByRecipient setObject:v10 forKey:v9];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(NSMutableDictionary *)self->_atomLayoutOptionsByRecipient setObject:dictionary forKey:recipientCopy];
   }
 
-  [v10 setObject:v11 forKey:v8];
+  [dictionary setObject:valueCopy forKey:optionCopy];
 }
 
-- (id)_valueForAtomLayoutOption:(id)a3 withRecipient:(id)a4
+- (id)_valueForAtomLayoutOption:(id)option withRecipient:(id)recipient
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_atomLayoutOptionsByRecipient objectForKey:a4];
+  optionCopy = option;
+  v7 = [(NSMutableDictionary *)self->_atomLayoutOptionsByRecipient objectForKey:recipient];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 objectForKey:v6];
+    v9 = [v7 objectForKey:optionCopy];
   }
 
   else
@@ -2058,8 +2058,8 @@ void __60__CNComposeRecipientTextView__rangeForComposeRecipientAtom___block_invo
 
 - (void)_resetSelectionState
 {
-  v3 = [(_CNAtomTextView *)self->_textView text];
-  v4 = [v3 length];
+  text = [(_CNAtomTextView *)self->_textView text];
+  v4 = [text length];
 
   [(_CNAtomTextView *)self->_textView setSelectedRange:v4, 0];
   atomViews = self->_atomViews;
@@ -2069,11 +2069,11 @@ void __60__CNComposeRecipientTextView__rangeForComposeRecipientAtom___block_invo
 
 - (BOOL)_textViewContainsAtomizedRecipients
 {
-  v3 = [(_CNAtomTextView *)self->_textView textStorage];
-  if ([v3 length])
+  textStorage = [(_CNAtomTextView *)self->_textView textStorage];
+  if ([textStorage length])
   {
-    v4 = [(CNComposeRecipientTextView *)self recipients];
-    v5 = [v4 count] != 0;
+    recipients = [(CNComposeRecipientTextView *)self recipients];
+    v5 = [recipients count] != 0;
   }
 
   else
@@ -2088,22 +2088,22 @@ void __60__CNComposeRecipientTextView__rangeForComposeRecipientAtom___block_invo
 {
   v16[2] = *MEMORY[0x1E69E9840];
   v15[0] = *MEMORY[0x1E69DB650];
-  v3 = [(CNComposeHeaderView *)self labelView];
-  v4 = [v3 textColor];
-  v16[0] = v4;
+  labelView = [(CNComposeHeaderView *)self labelView];
+  textColor = [labelView textColor];
+  v16[0] = textColor;
   v15[1] = *MEMORY[0x1E69DB648];
-  v5 = [(CNComposeHeaderView *)self labelView];
-  v6 = [v5 font];
-  v16[1] = v6;
+  labelView2 = [(CNComposeHeaderView *)self labelView];
+  font = [labelView2 font];
+  v16[1] = font;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
 
   v8 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v9 = [(CNComposeHeaderView *)self labelView];
-  v10 = [v9 text];
-  v11 = v10;
-  if (v10)
+  labelView3 = [(CNComposeHeaderView *)self labelView];
+  text = [labelView3 text];
+  v11 = text;
+  if (text)
   {
-    v12 = v10;
+    v12 = text;
   }
 
   else
@@ -2126,8 +2126,8 @@ void __60__CNComposeRecipientTextView__rangeForComposeRecipientAtom___block_invo
     self->_inactiveTextView = v4;
 
     v6 = self->_inactiveTextView;
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    [(UITextView *)v6 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UITextView *)v6 setBackgroundColor:clearColor];
 
     [(UITextView *)self->_inactiveTextView setEditable:0];
     [(UITextView *)self->_inactiveTextView setSelectable:0];
@@ -2141,8 +2141,8 @@ void __60__CNComposeRecipientTextView__rangeForComposeRecipientAtom___block_invo
     }
 
     [(UITextView *)self->_inactiveTextView setAlpha:v8];
-    v9 = [(UITextView *)self->_inactiveTextView textContainer];
-    [v9 setLineFragmentPadding:0.0];
+    textContainer = [(UITextView *)self->_inactiveTextView textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
     v10 = self->_inactiveTextView;
 
@@ -2155,8 +2155,8 @@ void __60__CNComposeRecipientTextView__rangeForComposeRecipientAtom___block_invo
   [(CNComposeRecipientTextView *)self _ensureInactiveTextView];
   [(CNComposeHeaderView *)self _recipientViewEdgeInsets];
   [(UITextView *)self->_inactiveTextView setTextContainerInset:?];
-  v3 = [(CNComposeRecipientTextView *)self _attributedStringWithAtomizedRecipients];
-  [(UITextView *)self->_inactiveTextView setAttributedText:v3];
+  _attributedStringWithAtomizedRecipients = [(CNComposeRecipientTextView *)self _attributedStringWithAtomizedRecipients];
+  [(UITextView *)self->_inactiveTextView setAttributedText:_attributedStringWithAtomizedRecipients];
 
   [(UITextView *)self->_inactiveTextView frame];
   [(_CNAtomTextView *)self->_textView frame];
@@ -2174,35 +2174,35 @@ void __60__CNComposeRecipientTextView__rangeForComposeRecipientAtom___block_invo
 {
   if ([(CNComposeRecipientTextView *)self _textViewContainsAtomizedRecipients])
   {
-    v3 = [(CNComposeRecipientTextView *)self _baseAttributes];
-    v4 = [v3 mutableCopy];
+    _baseAttributes = [(CNComposeRecipientTextView *)self _baseAttributes];
+    v4 = [_baseAttributes mutableCopy];
 
     if ([(CNComposeRecipientTextView *)self _hasDowntimeBlockedRecipients]|| self->_indicatesUnsafeRecipientsWhenCollapsed && [(CNComposeRecipientTextView *)self _hasUnsafeRecipients])
     {
-      v5 = [MEMORY[0x1E69DC888] systemRedColor];
+      systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
     }
 
     else
     {
-      v5 = [(CNComposeRecipientTextView *)self inactiveTextColor];
+      systemRedColor = [(CNComposeRecipientTextView *)self inactiveTextColor];
     }
 
-    v7 = v5;
-    [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+    v7 = systemRedColor;
+    [v4 setObject:systemRedColor forKeyedSubscript:*MEMORY[0x1E69DB650]];
 
-    v8 = [(CNComposeRecipientTextView *)self recipients];
-    v9 = [(_CNAtomTextView *)self->_textView layoutManager];
-    [v9 lineFragmentRectForGlyphAtIndex:0 effectiveRange:0];
+    recipients = [(CNComposeRecipientTextView *)self recipients];
+    layoutManager = [(_CNAtomTextView *)self->_textView layoutManager];
+    [layoutManager lineFragmentRectForGlyphAtIndex:0 effectiveRange:0];
     v11 = v10;
 
     v12 = objc_alloc_init(CNNameListBuilderBlockDelegate);
-    -[CNNameListBuilderBlockDelegate setCountOfNames:](v12, "setCountOfNames:", [v8 count]);
+    -[CNNameListBuilderBlockDelegate setCountOfNames:](v12, "setCountOfNames:", [recipients count]);
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __69__CNComposeRecipientTextView__attributedStringWithAtomizedRecipients__block_invoke;
     v25[3] = &unk_1E7CD2AC8;
-    v26 = v8;
-    v13 = v8;
+    v26 = recipients;
+    v13 = recipients;
     [(CNNameListBuilderBlockDelegate *)v12 setNameProviderBlock:v25];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
@@ -2214,25 +2214,25 @@ void __60__CNComposeRecipientTextView__rangeForComposeRecipientAtom___block_invo
     [(CNNameListBuilderBlockDelegate *)v12 setLengthValidationBlock:v22];
     v15 = [[CNNameListBuilder alloc] initWithDelegate:v12];
     [(CNNameListBuilder *)v15 setShouldStripEllipses:0];
-    v16 = [(CNNameListBuilder *)v15 build];
-    v6 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v16 attributes:v14];
+    build = [(CNNameListBuilder *)v15 build];
+    _toString2 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:build attributes:v14];
     v17 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
     [v17 setBounds:{0.0, 0.0, 5.0, 5.0}];
     v18 = objc_opt_new();
     [v17 setImage:v18];
 
     v19 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v17];
-    [v6 insertAttributedString:v19 atIndex:0];
-    v20 = [(CNComposeRecipientTextView *)self _toString];
-    [v6 insertAttributedString:v20 atIndex:0];
+    [_toString2 insertAttributedString:v19 atIndex:0];
+    _toString = [(CNComposeRecipientTextView *)self _toString];
+    [_toString2 insertAttributedString:_toString atIndex:0];
   }
 
   else
   {
-    v6 = [(CNComposeRecipientTextView *)self _toString];
+    _toString2 = [(CNComposeRecipientTextView *)self _toString];
   }
 
-  return v6;
+  return _toString2;
 }
 
 id __69__CNComposeRecipientTextView__attributedStringWithAtomizedRecipients__block_invoke(uint64_t a1, uint64_t a2)
@@ -2243,15 +2243,15 @@ id __69__CNComposeRecipientTextView__attributedStringWithAtomizedRecipients__blo
   return v3;
 }
 
-- (void)_setTextViewIsCollapsed:(BOOL)a3 animated:(BOOL)a4
+- (void)_setTextViewIsCollapsed:(BOOL)collapsed animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  collapsedCopy = collapsed;
   collapsableUpdateTimer = self->_collapsableUpdateTimer;
   self->_collapsableUpdateTimer = 0;
 
-  v8 = [(CNComposeRecipientTextView *)self _isTextViewCollapsed];
-  if (v5)
+  _isTextViewCollapsed = [(CNComposeRecipientTextView *)self _isTextViewCollapsed];
+  if (collapsedCopy)
   {
     v9 = ![(CNComposeRecipientTextView *)self _textViewContainsAtomizedRecipients];
   }
@@ -2261,11 +2261,11 @@ id __69__CNComposeRecipientTextView__attributedStringWithAtomizedRecipients__blo
     v9 = 0;
   }
 
-  if (!self->_collapsedStateInitialized || ((v9 | v8 ^ v5 ^ 1) & 1) == 0)
+  if (!self->_collapsedStateInitialized || ((v9 | _isTextViewCollapsed ^ collapsedCopy ^ 1) & 1) == 0)
   {
     self->_collapsedStateInitialized = 1;
-    self->_isTextFieldCollapsed = v5;
-    if (v5)
+    self->_isTextFieldCollapsed = collapsedCopy;
+    if (collapsedCopy)
     {
       [(CNComposeRecipientTextView *)self _updateInactiveTextView];
     }
@@ -2277,19 +2277,19 @@ id __69__CNComposeRecipientTextView__attributedStringWithAtomizedRecipients__blo
     v32[2] = __63__CNComposeRecipientTextView__setTextViewIsCollapsed_animated___block_invoke;
     v32[3] = &unk_1E7CD2750;
     v32[4] = self;
-    v33 = v5;
+    v33 = collapsedCopy;
     v10 = MEMORY[0x1B8CB9350](v32);
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __63__CNComposeRecipientTextView__setTextViewIsCollapsed_animated___block_invoke_2;
     v30[3] = &unk_1E7CD2868;
     v30[4] = self;
-    v31 = v5;
+    v31 = collapsedCopy;
     v11 = MEMORY[0x1B8CB9350](v30);
-    if (v4)
+    if (animatedCopy)
     {
       [(UITextView *)self->_inactiveTextView setHidden:0];
-      if (v5)
+      if (collapsedCopy)
       {
         v12 = 0.0;
       }
@@ -2299,7 +2299,7 @@ id __69__CNComposeRecipientTextView__attributedStringWithAtomizedRecipients__blo
         v12 = 1.0;
       }
 
-      if (v5)
+      if (collapsedCopy)
       {
         v13 = 1.0;
       }
@@ -2312,7 +2312,7 @@ id __69__CNComposeRecipientTextView__attributedStringWithAtomizedRecipients__blo
       [(UITextView *)self->_inactiveTextView setAlpha:v12];
       [(_CNAtomTextView *)self->_textView setAlpha:v13];
       [MEMORY[0x1E69DD250] animateWithDuration:v10 animations:v11 completion:0.23];
-      if (!v5)
+      if (!collapsedCopy)
       {
         goto LABEL_16;
       }
@@ -2322,27 +2322,27 @@ id __69__CNComposeRecipientTextView__attributedStringWithAtomizedRecipients__blo
     {
       v10[2](v10);
       v11[2](v11, 1);
-      if (!v5)
+      if (!collapsedCopy)
       {
 LABEL_16:
-        v14 = [(_CNAtomTextView *)self->_textView layoutManager];
-        v15 = [(_CNAtomTextView *)self->_textView textStorage];
-        [v14 invalidateLayoutForCharacterRange:0 actualCharacterRange:{objc_msgSend(v15, "length"), 0}];
+        layoutManager = [(_CNAtomTextView *)self->_textView layoutManager];
+        textStorage = [(_CNAtomTextView *)self->_textView textStorage];
+        [layoutManager invalidateLayoutForCharacterRange:0 actualCharacterRange:{objc_msgSend(textStorage, "length"), 0}];
 
-        v16 = [(_CNAtomTextView *)self->_textView layoutManager];
-        v17 = [(_CNAtomTextView *)self->_textView textContainer];
-        [v16 ensureLayoutForTextContainer:v17];
+        layoutManager2 = [(_CNAtomTextView *)self->_textView layoutManager];
+        textContainer = [(_CNAtomTextView *)self->_textView textContainer];
+        [layoutManager2 ensureLayoutForTextContainer:textContainer];
 
         goto LABEL_21;
       }
     }
 
-    v16 = [(UITextView *)self->_inactiveTextView text];
-    if ([v16 length])
+    layoutManager2 = [(UITextView *)self->_inactiveTextView text];
+    if ([layoutManager2 length])
     {
-      v18 = [(CNComposeRecipientTextView *)self _delegateRespondsToSizeChange];
+      _delegateRespondsToSizeChange = [(CNComposeRecipientTextView *)self _delegateRespondsToSizeChange];
 
-      if (v18)
+      if (_delegateRespondsToSizeChange)
       {
         [(CNComposeRecipientTextView *)self bounds];
         v20 = v19;
@@ -2409,9 +2409,9 @@ uint64_t __63__CNComposeRecipientTextView__setTextViewIsCollapsed_animated___blo
 {
   if (!self->_addButton)
   {
-    v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v4 = [v3 featureFlags];
-    v5 = [v4 isFeatureEnabled:29];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags = [currentEnvironment featureFlags];
+    v5 = [featureFlags isFeatureEnabled:29];
 
     if (v5)
     {
@@ -2454,21 +2454,21 @@ uint64_t __63__CNComposeRecipientTextView__setTextViewIsCollapsed_animated___blo
   }
 }
 
-- (void)_setAddButtonVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)_setAddButtonVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(CNComposeRecipientTextView *)self _isAddButtonVisible]!= a3)
+  animatedCopy = animated;
+  visibleCopy = visible;
+  if ([(CNComposeRecipientTextView *)self _isAddButtonVisible]!= visible)
   {
-    if (v5 && !self->_addButton)
+    if (visibleCopy && !self->_addButton)
     {
       [(CNComposeRecipientTextView *)self _ensureAddButton];
     }
 
     if ([(CNComposeRecipientTextView *)self shouldAlwaysShowAddContactsButton])
     {
-      v12 = [(CNComposeRecipientTextView *)self addButton];
-      [v12 setAlpha:1.0];
+      addButton = [(CNComposeRecipientTextView *)self addButton];
+      [addButton setAlpha:1.0];
     }
 
     else
@@ -2478,19 +2478,19 @@ uint64_t __63__CNComposeRecipientTextView__setTextViewIsCollapsed_animated___blo
       v15[2] = __60__CNComposeRecipientTextView__setAddButtonVisible_animated___block_invoke;
       v15[3] = &unk_1E7CD2750;
       v15[4] = self;
-      v16 = v5;
+      v16 = visibleCopy;
       v7 = MEMORY[0x1B8CB9350](v15);
       v8 = v7;
-      if (v4)
+      if (animatedCopy)
       {
         v9 = 1.0;
-        if (v5)
+        if (visibleCopy)
         {
           v9 = 0.0;
         }
 
         [(UIButton *)self->_addButton setAlpha:v9];
-        if (v5)
+        if (visibleCopy)
         {
           CGAffineTransformMakeTranslation(&v14, 2.0, 0.0);
         }
@@ -2540,31 +2540,31 @@ void __60__CNComposeRecipientTextView__setAddButtonVisible_animated___block_invo
   [v4 setTransform:v6];
 }
 
-- (BOOL)_recipientAtomHitInView:(id)a3 atLocation:(CGPoint)a4
+- (BOOL)_recipientAtomHitInView:(id)view atLocation:(CGPoint)location
 {
-  v4 = [a3 hitTest:0 withEvent:{a4.x, a4.y}];
+  v4 = [view hitTest:0 withEvent:{location.x, location.y}];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)_tapGestureRecognized:(id)a3
+- (void)_tapGestureRecognized:(id)recognized
 {
-  v8 = a3;
-  if ([v8 state] == 3)
+  recognizedCopy = recognized;
+  if ([recognizedCopy state] == 3)
   {
-    v4 = [(CNComposeRecipientTextView *)self textView];
-    if ([v4 isEditable])
+    textView = [(CNComposeRecipientTextView *)self textView];
+    if ([textView isEditable])
     {
     }
 
     else
     {
-      v5 = [v8 view];
-      v6 = [v8 view];
-      [v8 locationInView:v6];
-      v7 = [(CNComposeRecipientTextView *)self _recipientAtomHitInView:v5 atLocation:?];
+      view = [recognizedCopy view];
+      view2 = [recognizedCopy view];
+      [recognizedCopy locationInView:view2];
+      v7 = [(CNComposeRecipientTextView *)self _recipientAtomHitInView:view atLocation:?];
 
       if (!v7)
       {
@@ -2578,22 +2578,22 @@ void __60__CNComposeRecipientTextView__setAddButtonVisible_animated___block_invo
 LABEL_6:
 }
 
-- (void)_longPressGestureRecognized:(id)a3
+- (void)_longPressGestureRecognized:(id)recognized
 {
-  v8 = a3;
-  if ([v8 state] == 1)
+  recognizedCopy = recognized;
+  if ([recognizedCopy state] == 1)
   {
-    v4 = [(CNComposeRecipientTextView *)self textView];
-    if ([v4 isEditable])
+    textView = [(CNComposeRecipientTextView *)self textView];
+    if ([textView isEditable])
     {
     }
 
     else
     {
-      v5 = [v8 view];
-      v6 = [v8 view];
-      [v8 locationInView:v6];
-      v7 = [(CNComposeRecipientTextView *)self _recipientAtomHitInView:v5 atLocation:?];
+      view = [recognizedCopy view];
+      view2 = [recognizedCopy view];
+      [recognizedCopy locationInView:view2];
+      v7 = [(CNComposeRecipientTextView *)self _recipientAtomHitInView:view atLocation:?];
 
       if (!v7)
       {
@@ -2614,18 +2614,18 @@ LABEL_6:
     return 1;
   }
 
-  v3 = [(CNComposeRecipientTextView *)self recipients];
-  v4 = [v3 count] < self->_maxRecipients;
+  recipients = [(CNComposeRecipientTextView *)self recipients];
+  v4 = [recipients count] < self->_maxRecipients;
 
   return v4;
 }
 
-- (id)_atomAttachmentForRecipient:(id)a3
+- (id)_atomAttachmentForRecipient:(id)recipient
 {
-  v4 = a3;
+  recipientCopy = recipient;
   v5 = [CNComposeRecipientAtom alloc];
-  v6 = [(CNComposeRecipientAtom *)v5 initWithFrame:v4 recipient:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  v7 = [(CNComposeRecipientTextView *)self _atomPresentationOptionsForRecipient:v4];
+  v6 = [(CNComposeRecipientAtom *)v5 initWithFrame:recipientCopy recipient:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  v7 = [(CNComposeRecipientTextView *)self _atomPresentationOptionsForRecipient:recipientCopy];
 
   [(CNAtomView *)v6 setPresentationOptions:v7];
   v8 = [[_CNAtomTextAttachment alloc] initWithAtomView:v6];
@@ -2633,23 +2633,23 @@ LABEL_6:
   return v8;
 }
 
-- (void)_insertAtomAttachment:(id)a3 andReplaceCharactersInRange:(_NSRange)a4
+- (void)_insertAtomAttachment:(id)attachment andReplaceCharactersInRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v8 = [(CNComposeRecipientTextView *)self _baseAttributes];
-  v10 = [v7 attributedStringWithBaseAttributes:v8];
+  length = range.length;
+  location = range.location;
+  attachmentCopy = attachment;
+  _baseAttributes = [(CNComposeRecipientTextView *)self _baseAttributes];
+  v10 = [attachmentCopy attributedStringWithBaseAttributes:_baseAttributes];
 
-  v9 = [(_CNAtomTextView *)self->_textView textStorage];
+  textStorage = [(_CNAtomTextView *)self->_textView textStorage];
   if (length)
   {
-    [v9 replaceCharactersInRange:location withAttributedString:{length, v10}];
+    [textStorage replaceCharactersInRange:location withAttributedString:{length, v10}];
   }
 
   else
   {
-    [v9 insertAttributedString:v10 atIndex:location];
+    [textStorage insertAttributedString:v10 atIndex:location];
   }
 
   if (![(_CNAtomTextView *)self->_textView isEditingTextStorage])
@@ -2658,29 +2658,29 @@ LABEL_6:
   }
 }
 
-- (void)_addAddressAtomSubview:(id)a3
+- (void)_addAddressAtomSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   if (([(NSMutableArray *)self->_atomViews containsObject:?]& 1) == 0)
   {
-    [v4 setDelegate:self];
-    [(NSMutableArray *)self->_atomViews addObject:v4];
-    [(_CNAtomTextView *)self->_textView addSubview:v4];
+    [subviewCopy setDelegate:self];
+    [(NSMutableArray *)self->_atomViews addObject:subviewCopy];
+    [(_CNAtomTextView *)self->_textView addSubview:subviewCopy];
   }
 }
 
-- (void)_removeAddressAtomSubview:(id)a3
+- (void)_removeAddressAtomSubview:(id)subview
 {
-  v4 = a3;
-  [v4 setDelegate:0];
-  [(NSMutableArray *)self->_atomViews removeObject:v4];
-  [v4 removeFromSuperview];
+  subviewCopy = subview;
+  [subviewCopy setDelegate:0];
+  [(NSMutableArray *)self->_atomViews removeObject:subviewCopy];
+  [subviewCopy removeFromSuperview];
 }
 
-- (id)atomViewForRecipient:(id)a3
+- (id)atomViewForRecipient:(id)recipient
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recipientCopy = recipient;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -2700,8 +2700,8 @@ LABEL_6:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 recipient];
-        v11 = [v10 isEqual:v4];
+        recipient = [v9 recipient];
+        v11 = [recipient isEqual:recipientCopy];
 
         if (v11)
         {
@@ -2725,17 +2725,17 @@ LABEL_11:
   return v6;
 }
 
-- (id)atomViewsInRange:(_NSRange)a3
+- (id)atomViewsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [MEMORY[0x1E695DF70] array];
+  length = range.length;
+  location = range.location;
+  array = [MEMORY[0x1E695DF70] array];
   textView = self->_textView;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __47__CNComposeRecipientTextView_atomViewsInRange___block_invoke;
   v10[3] = &unk_1E7CD2990;
-  v8 = v6;
+  v8 = array;
   v11 = v8;
   [(_CNAtomTextView *)textView enumerateAtomsInCharacterRange:location withBlock:length, v10];
 
@@ -2744,20 +2744,20 @@ LABEL_11:
 
 - (id)selectedAtoms
 {
-  v4 = [(_CNAtomTextView *)self->_textView selectedRange];
+  selectedRange = [(_CNAtomTextView *)self->_textView selectedRange];
 
-  return [(CNComposeRecipientTextView *)self atomViewsInRange:v4, v3];
+  return [(CNComposeRecipientTextView *)self atomViewsInRange:selectedRange, v3];
 }
 
-- (unint64_t)indexOfRecipientForInsertionAtPoint:(CGPoint)a3
+- (unint64_t)indexOfRecipientForInsertionAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(_CNAtomTextView *)self->_textView atoms];
+  y = point.y;
+  x = point.x;
+  atoms = [(_CNAtomTextView *)self->_textView atoms];
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
-  v12 = [v5 count];
+  v12 = [atoms count];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __66__CNComposeRecipientTextView_indexOfRecipientForInsertionAtPoint___block_invoke;
@@ -2765,7 +2765,7 @@ LABEL_11:
   *&v8[5] = x;
   *&v8[6] = y;
   v8[4] = &v9;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [atoms enumerateObjectsUsingBlock:v8];
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
 
@@ -2787,18 +2787,18 @@ void __66__CNComposeRecipientTextView_indexOfRecipientForInsertionAtPoint___bloc
   }
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = [v10 isEqualToString:@"\n"];
-  v12 = [v10 isEqualToString:@"\t"];
-  if ([v10 isEqualToString:{@", "}])
+  length = range.length;
+  location = range.location;
+  viewCopy = view;
+  textCopy = text;
+  v11 = [textCopy isEqualToString:@"\n"];
+  v12 = [textCopy isEqualToString:@"\t"];
+  if ([textCopy isEqualToString:{@", "}])
   {
-    v13 = [v9 markedTextRange];
-    v14 = v13 == 0;
+    markedTextRange = [viewCopy markedTextRange];
+    v14 = markedTextRange == 0;
   }
 
   else
@@ -2809,7 +2809,7 @@ void __66__CNComposeRecipientTextView_indexOfRecipientForInsertionAtPoint___bloc
   v15 = v11 | v12;
   if ((v15 & 1) == 0 && !v14)
   {
-    if ([v10 isEqualToString:&stru_1F3002C60])
+    if ([textCopy isEqualToString:&stru_1F3002C60])
     {
       if (length == 1)
       {
@@ -2817,11 +2817,11 @@ void __66__CNComposeRecipientTextView_indexOfRecipientForInsertionAtPoint___bloc
         if (v16)
         {
           v17 = v16;
-          if (([v16 isSelected] & 1) != 0 || objc_msgSend(v9, "_textInputSource") == 3)
+          if (([v16 isSelected] & 1) != 0 || objc_msgSend(viewCopy, "_textInputSource") == 3)
           {
             recipientsBeingRemoved = self->_recipientsBeingRemoved;
-            v19 = [v17 recipient];
-            [(NSMutableArray *)recipientsBeingRemoved addObject:v19];
+            recipient = [v17 recipient];
+            [(NSMutableArray *)recipientsBeingRemoved addObject:recipient];
 
             v20 = 1;
           }
@@ -2852,17 +2852,17 @@ void __66__CNComposeRecipientTextView_indexOfRecipientForInsertionAtPoint___bloc
     goto LABEL_22;
   }
 
-  v21 = [(CNComposeHeaderView *)self delegate];
+  delegate = [(CNComposeHeaderView *)self delegate];
   if (![(CNComposeRecipientTextView *)self finishEnteringRecipient])
   {
     if (v12 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v21 composeRecipientViewTabPressed:self];
+      [delegate composeRecipientViewTabPressed:self];
     }
 
     else if (v15 & 1) != 0 && (objc_opt_respondsToSelector())
     {
-      [v21 composeRecipientViewReturnPressed:self];
+      [delegate composeRecipientViewReturnPressed:self];
     }
   }
 
@@ -2886,25 +2886,25 @@ uint64_t __79__CNComposeRecipientTextView_textView_shouldChangeTextInRange_repla
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)textViewDidChangeSelection:(id)a3
+- (void)textViewDidChangeSelection:(id)selection
 {
-  v4 = [a3 selectedRange];
+  selectedRange = [selection selectedRange];
   v6 = v5;
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [(_CNAtomTextView *)self->_textView textStorage];
-  v9 = [v8 length];
+  array = [MEMORY[0x1E695DF70] array];
+  textStorage = [(_CNAtomTextView *)self->_textView textStorage];
+  v9 = [textStorage length];
 
-  v10 = [(_CNAtomTextView *)self->_textView layoutManager];
+  layoutManager = [(_CNAtomTextView *)self->_textView layoutManager];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __57__CNComposeRecipientTextView_textViewDidChangeSelection___block_invoke;
   v16 = &unk_1E7CD2B68;
-  v17 = self;
-  v19 = v4;
+  selfCopy = self;
+  v19 = selectedRange;
   v20 = v6;
-  v11 = v7;
+  v11 = array;
   v18 = v11;
-  [v10 enumerateLineFragmentsForGlyphRange:0 usingBlock:{v9, &v13}];
+  [layoutManager enumerateLineFragmentsForGlyphRange:0 usingBlock:{v9, &v13}];
 
   v12 = [(CNComposeHeaderView *)self delegate:v13];
   if (objc_opt_respondsToSelector())
@@ -2995,7 +2995,7 @@ void __57__CNComposeRecipientTextView_textViewDidChangeSelection___block_invoke_
   ++*(*(a1[5] + 8) + 24);
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
   v16 = *MEMORY[0x1E69E9840];
   if ([(NSMutableArray *)self->_recipientsBeingRemoved count])
@@ -3033,33 +3033,33 @@ void __57__CNComposeRecipientTextView_textViewDidChangeSelection___block_invoke_
     [(NSMutableArray *)self->_recipientsBeingRemoved removeAllObjects];
   }
 
-  v9 = [(CNComposeHeaderView *)self delegate];
+  delegate = [(CNComposeHeaderView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [(CNComposeRecipientTextView *)self text];
-    [v9 composeRecipientView:self textDidChange:v10];
+    text = [(CNComposeRecipientTextView *)self text];
+    [delegate composeRecipientView:self textDidChange:text];
   }
 }
 
-- (void)atomTextViewDidBecomeFirstResponder:(id)a3
+- (void)atomTextViewDidBecomeFirstResponder:(id)responder
 {
   self->_didIgnoreFirstResponderResign = 0;
   self->_addButtonWasTapped = 0;
-  v5 = [(CNComposeHeaderView *)self delegate];
+  delegate = [(CNComposeHeaderView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 recipientViewDidBecomeFirstResponder:self];
+    [delegate recipientViewDidBecomeFirstResponder:self];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v5 composeRecipientViewDidBecomeFirstResponder:self];
+    [delegate composeRecipientViewDidBecomeFirstResponder:self];
   }
 
   if (![(CNComposeRecipientTextView *)self _canAddAdditionalAtoms])
   {
-    v4 = [(NSMutableArray *)self->_atomViews lastObject];
-    [v4 setSelected:1 animated:1];
+    lastObject = [(NSMutableArray *)self->_atomViews lastObject];
+    [lastObject setSelected:1 animated:1];
   }
 
   if ([(CNComposeRecipientTextView *)self usingActiveAppearance])
@@ -3070,10 +3070,10 @@ void __57__CNComposeRecipientTextView_textViewDidChangeSelection___block_invoke_
 
 - (BOOL)hostRecipientViewHasSearchResults
 {
-  v3 = [(CNComposeHeaderView *)self delegate];
+  delegate = [(CNComposeHeaderView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 composeRecipientViewShowingSearchResults:self];
+    v4 = [delegate composeRecipientViewShowingSearchResults:self];
   }
 
   else
@@ -3084,7 +3084,7 @@ void __57__CNComposeRecipientTextView_textViewDidChangeSelection___block_invoke_
   return v4;
 }
 
-- (void)atomTextViewDidResignFirstResponder:(id)a3
+- (void)atomTextViewDidResignFirstResponder:(id)responder
 {
   if ([(CNComposeRecipientTextView *)self keyboardIsHiding]&& [(CNComposeRecipientTextView *)self hostRecipientViewHasSearchResults])
   {
@@ -3093,8 +3093,8 @@ void __57__CNComposeRecipientTextView_textViewDidChangeSelection___block_invoke_
 
   else
   {
-    v4 = [(CNComposeHeaderView *)self delegate];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 recipientViewShouldIgnoreFirstResponderChanges:self])
+    delegate = [(CNComposeHeaderView *)self delegate];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate recipientViewShouldIgnoreFirstResponderChanges:self])
     {
       self->_didIgnoreFirstResponderResign = 1;
     }
@@ -3104,7 +3104,7 @@ void __57__CNComposeRecipientTextView_textViewDidChangeSelection___block_invoke_
       [(CNComposeRecipientTextView *)self finishEnteringRecipient];
       if (objc_opt_respondsToSelector())
       {
-        [v4 recipientViewDidResignFirstResponder:self];
+        [delegate recipientViewDidResignFirstResponder:self];
       }
 
       [(CNComposeRecipientTextView *)self _resetSelectionState];
@@ -3113,45 +3113,45 @@ void __57__CNComposeRecipientTextView_textViewDidChangeSelection___block_invoke_
   }
 }
 
-- (void)atomTextView:(id)a3 didChangeWritingDirection:(int64_t)a4
+- (void)atomTextView:(id)view didChangeWritingDirection:(int64_t)direction
 {
   textView = self->_textView;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__CNComposeRecipientTextView_atomTextView_didChangeWritingDirection___block_invoke;
   v6[3] = &__block_descriptor_33_e32_v16__0__CNComposeRecipientAtom_8l;
-  v7 = a4 == 1;
+  v7 = direction == 1;
   [(_CNAtomTextView *)textView enumerateAtoms:v6];
   [(CNComposeRecipientTextView *)self reflow];
 }
 
-- (void)layoutManager:(id)a3 didCompleteLayoutForTextContainer:(id)a4 atEnd:(BOOL)a5
+- (void)layoutManager:(id)manager didCompleteLayoutForTextContainer:(id)container atEnd:(BOOL)end
 {
-  v5 = a5;
+  endCopy = end;
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v5)
+  managerCopy = manager;
+  containerCopy = container;
+  if (endCopy)
   {
     v10 = [MEMORY[0x1E695DFA8] setWithArray:self->_atomViews];
-    v11 = [(_CNAtomTextView *)self->_textView baseWritingDirection];
-    v12 = [v8 textStorage];
-    v13 = [v12 length];
+    baseWritingDirection = [(_CNAtomTextView *)self->_textView baseWritingDirection];
+    textStorage = [managerCopy textStorage];
+    v13 = [textStorage length];
 
-    v14 = [v8 textStorage];
+    textStorage2 = [managerCopy textStorage];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __84__CNComposeRecipientTextView_layoutManager_didCompleteLayoutForTextContainer_atEnd___block_invoke;
     v35[3] = &unk_1E7CD2BD8;
     v35[4] = self;
-    v39 = v11;
-    v15 = v8;
+    v39 = baseWritingDirection;
+    v15 = managerCopy;
     v36 = v15;
-    v16 = v9;
+    v16 = containerCopy;
     v37 = v16;
     v17 = v10;
     v38 = v17;
-    [v14 enumerateAttributesInRange:0 options:v13 usingBlock:{0, v35}];
+    [textStorage2 enumerateAttributesInRange:0 options:v13 usingBlock:{0, v35}];
 
     atomViewAnimationDepth = self->_atomViewAnimationDepth;
     if (atomViewAnimationDepth <= 1)
@@ -3385,7 +3385,7 @@ uint64_t __84__CNComposeRecipientTextView_layoutManager_didCompleteLayoutForText
 
 - (BOOL)_delegateRespondsToSizeChange
 {
-  v2 = [(CNComposeHeaderView *)self delegate];
+  delegate = [(CNComposeHeaderView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v3 = 1;
@@ -3399,19 +3399,19 @@ uint64_t __84__CNComposeRecipientTextView_layoutManager_didCompleteLayoutForText
   return v3 & 1;
 }
 
-- (void)_notifyDelegateOfNewSize:(CGSize)a3
+- (void)_notifyDelegateOfNewSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CNComposeHeaderView *)self delegate];
+  height = size.height;
+  width = size.width;
+  delegate = [(CNComposeHeaderView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 composeHeaderView:self didChangeSize:{width, height}];
+    [delegate composeHeaderView:self didChangeSize:{width, height}];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v6 composeRecipientView:self didChangeSize:{width, height}];
+    [delegate composeRecipientView:self didChangeSize:{width, height}];
   }
 }
 
@@ -3422,13 +3422,13 @@ uint64_t __84__CNComposeRecipientTextView_layoutManager_didCompleteLayoutForText
     v6[7] = v2;
     v6[8] = v3;
     self->_notifyDelegateOfSizeChange = 0;
-    v5 = [MEMORY[0x1E696ADC8] mainQueue];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __57__CNComposeRecipientTextView__notifyDelegateOfSizeChange__block_invoke;
     v6[3] = &unk_1E7CD1F90;
     v6[4] = self;
-    [v5 addOperationWithBlock:v6];
+    [mainQueue addOperationWithBlock:v6];
   }
 }
 
@@ -3449,23 +3449,23 @@ uint64_t __57__CNComposeRecipientTextView__notifyDelegateOfSizeChange__block_inv
   return result;
 }
 
-- (void)selectAtomForRecipient:(id)a3
+- (void)selectAtomForRecipient:(id)recipient
 {
-  v4 = [(CNComposeRecipientTextView *)self atomViewForRecipient:a3];
+  v4 = [(CNComposeRecipientTextView *)self atomViewForRecipient:recipient];
   [(CNComposeRecipientTextView *)self selectAtom:v4];
 }
 
-- (void)selectAtom:(id)a3
+- (void)selectAtom:(id)atom
 {
-  v5 = [(CNComposeRecipientTextView *)self _rangeForComposeRecipientAtom:a3];
+  v5 = [(CNComposeRecipientTextView *)self _rangeForComposeRecipientAtom:atom];
   textView = self->_textView;
 
   [(_CNAtomTextView *)textView setSelectedRange:v5, v4];
 }
 
-- (void)shiftSelectAtom:(id)a3
+- (void)shiftSelectAtom:(id)atom
 {
-  v4 = [(CNComposeRecipientTextView *)self _rangeForComposeRecipientAtom:a3];
+  v4 = [(CNComposeRecipientTextView *)self _rangeForComposeRecipientAtom:atom];
   v6 = v5;
   v10.location = [(_CNAtomTextView *)self->_textView selectedRange];
   textView = self->_textView;
@@ -3479,29 +3479,29 @@ uint64_t __57__CNComposeRecipientTextView__notifyDelegateOfSizeChange__block_inv
 - (void)selectAllAtoms
 {
   textView = self->_textView;
-  v3 = [(_CNAtomTextView *)textView textStorage];
-  -[_CNAtomTextView setSelectedRange:](textView, "setSelectedRange:", 0, [v3 length]);
+  textStorage = [(_CNAtomTextView *)textView textStorage];
+  -[_CNAtomTextView setSelectedRange:](textView, "setSelectedRange:", 0, [textStorage length]);
 }
 
 - (void)deselectAllAtoms
 {
   textView = self->_textView;
-  v3 = [(_CNAtomTextView *)textView textStorage];
-  -[_CNAtomTextView setSelectedRange:](textView, "setSelectedRange:", [v3 length], 0);
+  textStorage = [(_CNAtomTextView *)textView textStorage];
+  -[_CNAtomTextView setSelectedRange:](textView, "setSelectedRange:", [textStorage length], 0);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   v10.receiver = self;
   v10.super_class = CNComposeRecipientTextView;
-  v6 = [(CNComposeRecipientTextView *)&v10 canPerformAction:a3 withSender:a4];
-  if (sel_selectAll_ != a3)
+  v6 = [(CNComposeRecipientTextView *)&v10 canPerformAction:action withSender:sender];
+  if (sel_selectAll_ != action)
   {
     return v6;
   }
 
-  v8 = [(_CNAtomTextView *)self->_textView text];
-  v7 = [v8 length] != 0;
+  text = [(_CNAtomTextView *)self->_textView text];
+  v7 = [text length] != 0;
 
   return v7;
 }
@@ -3531,9 +3531,9 @@ uint64_t __57__CNComposeRecipientTextView__notifyDelegateOfSizeChange__block_inv
   v14 = 0;
   v15 = 0;
   v13 = &unk_1B815995B;
-  v3 = [(CNComposeRecipientTextView *)self placeholderAttachment];
+  placeholderAttachment = [(CNComposeRecipientTextView *)self placeholderAttachment];
 
-  if (v3)
+  if (placeholderAttachment)
   {
     textView = self->_textView;
     v9[0] = MEMORY[0x1E69E9820];
@@ -3570,19 +3570,19 @@ void __57__CNComposeRecipientTextView__placeholderAttachmentRange__block_invoke(
   }
 }
 
-- (id)dragPreviewForDraggedItem:(id)a3 withContainer:(id)a4
+- (id)dragPreviewForDraggedItem:(id)item withContainer:(id)container
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNComposeRecipientTextView *)self atomViewForRecipient:v7];
+  containerCopy = container;
+  itemCopy = item;
+  v8 = [(CNComposeRecipientTextView *)self atomViewForRecipient:itemCopy];
   v9 = [CNComposeRecipientAtom alloc];
   [v8 frame];
-  v14 = -[CNComposeRecipientAtom initWithFrame:recipient:presentationOptions:](v9, "initWithFrame:recipient:presentationOptions:", v7, [v8 presentationOptions], v10, v11, v12, v13);
+  v14 = -[CNComposeRecipientAtom initWithFrame:recipient:presentationOptions:](v9, "initWithFrame:recipient:presentationOptions:", itemCopy, [v8 presentationOptions], v10, v11, v12, v13);
 
   [(CNAtomView *)v14 setSeparatorHidden:1];
-  v15 = [v8 tintColor];
-  [(CNComposeRecipientAtom *)v14 setTintColor:v15];
+  tintColor = [v8 tintColor];
+  [(CNComposeRecipientAtom *)v14 setTintColor:tintColor];
 
   [(CNAtomView *)v14 setSelected:1];
   [(CNAtomView *)v14 layoutSubviews];
@@ -3592,9 +3592,9 @@ void __57__CNComposeRecipientTextView__placeholderAttachmentRange__block_invoke(
   v21 = v20;
   [(CNAtomView *)v14 preferredWidth];
   [(CNComposeRecipientAtom *)v14 setFrame:v17, v19, v22, v21];
-  v23 = [v8 superview];
+  superview = [v8 superview];
   [(CNComposeRecipientAtom *)v14 center];
-  [v23 convertPoint:v6 toView:?];
+  [superview convertPoint:containerCopy toView:?];
   v25 = v24;
   v27 = v26;
 
@@ -3603,7 +3603,7 @@ void __57__CNComposeRecipientTextView__placeholderAttachmentRange__block_invoke(
   v39[0] = *MEMORY[0x1E695EFD0];
   v39[1] = v29;
   v39[2] = *(MEMORY[0x1E695EFD0] + 32);
-  v30 = [v28 initWithContainer:v6 center:v39 transform:{v25, v27}];
+  v30 = [v28 initWithContainer:containerCopy center:v39 transform:{v25, v27}];
 
   v31 = objc_alloc(MEMORY[0x1E69DC9A0]);
   v32 = MEMORY[0x1E696B098];
@@ -3614,29 +3614,29 @@ void __57__CNComposeRecipientTextView__placeholderAttachmentRange__block_invoke(
   v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
   v35 = [v31 initWithTextLineRects:v34];
 
-  v36 = [(CNAtomView *)v14 effectiveTintColor];
-  [v35 setBackgroundColor:v36];
+  effectiveTintColor = [(CNAtomView *)v14 effectiveTintColor];
+  [v35 setBackgroundColor:effectiveTintColor];
 
   v37 = [objc_alloc(MEMORY[0x1E69DD068]) initWithView:v14 parameters:v35 target:v30];
 
   return v37;
 }
 
-- (void)dragEnteredAtPoint:(CGPoint)a3
+- (void)dragEnteredAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CNComposeRecipientTextView *)self placeholderAttachment];
+  y = point.y;
+  x = point.x;
+  placeholderAttachment = [(CNComposeRecipientTextView *)self placeholderAttachment];
 
-  if (!v6)
+  if (!placeholderAttachment)
   {
-    v7 = [(CNComposeRecipientTextView *)self _placeholderAttachmentWithStaticWidth];
-    [(CNComposeRecipientTextView *)self setPlaceholderAttachment:v7];
+    _placeholderAttachmentWithStaticWidth = [(CNComposeRecipientTextView *)self _placeholderAttachmentWithStaticWidth];
+    [(CNComposeRecipientTextView *)self setPlaceholderAttachment:_placeholderAttachmentWithStaticWidth];
 
     v14 = 0.0;
-    v8 = [(_CNAtomTextView *)self->_textView layoutManager];
-    v9 = [(_CNAtomTextView *)self->_textView textContainer];
-    v10 = [v8 glyphIndexForPoint:v9 inTextContainer:&v14 fractionOfDistanceThroughGlyph:{x, y}];
+    layoutManager = [(_CNAtomTextView *)self->_textView layoutManager];
+    textContainer = [(_CNAtomTextView *)self->_textView textContainer];
+    v10 = [layoutManager glyphIndexForPoint:textContainer inTextContainer:&v14 fractionOfDistanceThroughGlyph:{x, y}];
 
     [(CNComposeRecipientTextView *)self _beginAtomViewAnimations];
     if (v14 + -1.0 >= 0.0)
@@ -3649,38 +3649,38 @@ void __57__CNComposeRecipientTextView__placeholderAttachmentRange__block_invoke(
       v11 = -(v14 + -1.0);
     }
 
-    v12 = [(CNComposeRecipientTextView *)self placeholderAttachment];
+    placeholderAttachment2 = [(CNComposeRecipientTextView *)self placeholderAttachment];
     if (v11 >= 0.00000011920929)
     {
-      [(CNComposeRecipientTextView *)self _insertAtomAttachment:v12 atCharacterIndex:v10];
+      [(CNComposeRecipientTextView *)self _insertAtomAttachment:placeholderAttachment2 atCharacterIndex:v10];
     }
 
     else
     {
-      v13 = [(_CNAtomTextView *)self->_textView textStorage];
-      -[CNComposeRecipientTextView _insertAtomAttachment:atCharacterIndex:](self, "_insertAtomAttachment:atCharacterIndex:", v12, [v13 length]);
+      textStorage = [(_CNAtomTextView *)self->_textView textStorage];
+      -[CNComposeRecipientTextView _insertAtomAttachment:atCharacterIndex:](self, "_insertAtomAttachment:atCharacterIndex:", placeholderAttachment2, [textStorage length]);
     }
   }
 
   [(CNComposeRecipientTextView *)self _recomputeTextContainerExclusionPaths];
 }
 
-- (void)dragMovedToPoint:(CGPoint)a3
+- (void)dragMovedToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CNComposeRecipientTextView *)self placeholderAttachment];
+  y = point.y;
+  x = point.x;
+  placeholderAttachment = [(CNComposeRecipientTextView *)self placeholderAttachment];
 
-  if (v6)
+  if (placeholderAttachment)
   {
-    v7 = [(CNComposeRecipientTextView *)self _placeholderAttachmentRange];
+    _placeholderAttachmentRange = [(CNComposeRecipientTextView *)self _placeholderAttachmentRange];
     v9 = v8;
     v32 = 0.0;
-    v10 = [(_CNAtomTextView *)self->_textView layoutManager];
-    v11 = [(_CNAtomTextView *)self->_textView textContainer];
-    v12 = [v10 glyphIndexForPoint:v11 inTextContainer:&v32 fractionOfDistanceThroughGlyph:{x, y}];
+    layoutManager = [(_CNAtomTextView *)self->_textView layoutManager];
+    textContainer = [(_CNAtomTextView *)self->_textView textContainer];
+    v12 = [layoutManager glyphIndexForPoint:textContainer inTextContainer:&v32 fractionOfDistanceThroughGlyph:{x, y}];
 
-    if (v12 - v7 == 1)
+    if (v12 - _placeholderAttachmentRange == 1)
     {
       v13 = v32;
       if (v32 <= 0.4 || v32 >= 0.9)
@@ -3689,15 +3689,15 @@ void __57__CNComposeRecipientTextView__placeholderAttachmentRange__block_invoke(
       }
     }
 
-    else if (v12 == v7)
+    else if (v12 == _placeholderAttachmentRange)
     {
       goto LABEL_8;
     }
 
-    v14 = [(_CNAtomTextView *)self->_textView textStorage];
-    v15 = [(CNComposeRecipientTextView *)self placeholderAttachment];
-    v16 = [(CNComposeRecipientTextView *)self _baseAttributes];
-    v17 = [v15 attributedStringWithBaseAttributes:v16];
+    textStorage = [(_CNAtomTextView *)self->_textView textStorage];
+    placeholderAttachment2 = [(CNComposeRecipientTextView *)self placeholderAttachment];
+    _baseAttributes = [(CNComposeRecipientTextView *)self _baseAttributes];
+    v17 = [placeholderAttachment2 attributedStringWithBaseAttributes:_baseAttributes];
 
     [(CNComposeRecipientTextView *)self _beginAtomViewAnimations];
     textView = self->_textView;
@@ -3705,13 +3705,13 @@ void __57__CNComposeRecipientTextView__placeholderAttachmentRange__block_invoke(
     v24 = 3221225472;
     v25 = __47__CNComposeRecipientTextView_dragMovedToPoint___block_invoke;
     v26 = &unk_1E7CD2C00;
-    v29 = v7;
+    v29 = _placeholderAttachmentRange;
     v30 = v9;
-    v27 = v14;
+    v27 = textStorage;
     v28 = v17;
     v31 = v12;
     v19 = v17;
-    v20 = v14;
+    v20 = textStorage;
     [(_CNAtomTextView *)textView batchTextStorageUpdates:&v23];
 
 LABEL_8:
@@ -3738,9 +3738,9 @@ uint64_t __47__CNComposeRecipientTextView_dragMovedToPoint___block_invoke(uint64
 - (void)dragExited
 {
   [(CNComposeRecipientTextView *)self _beginAtomViewAnimations];
-  v3 = [(_CNAtomTextView *)self->_textView textStorage];
-  v4 = [(CNComposeRecipientTextView *)self _placeholderAttachmentRange];
-  [v3 deleteCharactersInRange:{v4, v5}];
+  textStorage = [(_CNAtomTextView *)self->_textView textStorage];
+  _placeholderAttachmentRange = [(CNComposeRecipientTextView *)self _placeholderAttachmentRange];
+  [textStorage deleteCharactersInRange:{_placeholderAttachmentRange, v5}];
 
   [(CNComposeRecipientTextView *)self setPlaceholderAttachment:0];
   textView = self->_textView;
@@ -3748,17 +3748,17 @@ uint64_t __47__CNComposeRecipientTextView_dragMovedToPoint___block_invoke(uint64
   [(_CNAtomTextView *)textView resignFirstResponder];
 }
 
-- (void)dropItems:(id)a3
+- (void)dropItems:(id)items
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __40__CNComposeRecipientTextView_dropItems___block_invoke;
   v28[3] = &unk_1E7CD29B8;
   v28[4] = self;
-  [v4 enumerateObjectsUsingBlock:v28];
-  v5 = [(CNComposeRecipientTextView *)self _placeholderAttachmentRange];
+  [itemsCopy enumerateObjectsUsingBlock:v28];
+  _placeholderAttachmentRange = [(CNComposeRecipientTextView *)self _placeholderAttachmentRange];
   v7 = v6;
   [(CNComposeRecipientTextView *)self _beginAtomViewAnimations];
   v16 = 544;
@@ -3767,10 +3767,10 @@ uint64_t __47__CNComposeRecipientTextView_dragMovedToPoint___block_invoke(uint64
   v23[1] = 3221225472;
   v23[2] = __40__CNComposeRecipientTextView_dropItems___block_invoke_4;
   v23[3] = &unk_1E7CD2C78;
-  v9 = v4;
+  v9 = itemsCopy;
   v24 = v9;
-  v25 = self;
-  v26 = v5;
+  selfCopy = self;
+  v26 = _placeholderAttachmentRange;
   v27 = v7;
   [(_CNAtomTextView *)textView batchTextStorageUpdates:v23];
   v21 = 0u;
@@ -3803,10 +3803,10 @@ uint64_t __47__CNComposeRecipientTextView_dragMovedToPoint___block_invoke(uint64
         v18[4] = self;
         v18[5] = v14;
         [MEMORY[0x1E69DD250] animateWithDuration:v18 animations:0.35];
-        v15 = [(CNComposeHeaderView *)self delegate];
+        delegate = [(CNComposeHeaderView *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          [v15 composeRecipientView:self didAddRecipient:v14];
+          [delegate composeRecipientView:self didAddRecipient:v14];
         }
 
         ++v13;
@@ -3904,18 +3904,18 @@ void __40__CNComposeRecipientTextView_dropItems___block_invoke_6(uint64_t a1)
   [v1 setAlpha:1.0];
 }
 
-- (void)composeRecipientAtomDisambiguate:(id)a3
+- (void)composeRecipientAtomDisambiguate:(id)disambiguate
 {
-  v7 = a3;
-  v4 = [(CNComposeHeaderView *)self delegate];
-  v5 = [(CNComposeRecipientTextView *)self selectedAtoms];
-  if ([v5 count] == 1)
+  disambiguateCopy = disambiguate;
+  delegate = [(CNComposeHeaderView *)self delegate];
+  selectedAtoms = [(CNComposeRecipientTextView *)self selectedAtoms];
+  if ([selectedAtoms count] == 1)
   {
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      [v4 composeRecipientView:self disambiguateRecipientForAtom:v7];
+      [delegate composeRecipientView:self disambiguateRecipientForAtom:disambiguateCopy];
     }
   }
 
@@ -3924,13 +3924,13 @@ void __40__CNComposeRecipientTextView_dropItems___block_invoke_6(uint64_t a1)
   }
 }
 
-- (void)composeRecipientAtomShowPersonCard:(id)a3
+- (void)composeRecipientAtomShowPersonCard:(id)card
 {
-  v5 = a3;
-  v4 = [(CNComposeHeaderView *)self delegate];
+  cardCopy = card;
+  delegate = [(CNComposeHeaderView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 composeRecipientView:self showPersonCardForAtom:v5];
+    [delegate composeRecipientView:self showPersonCardForAtom:cardCopy];
   }
 }
 

@@ -1,27 +1,27 @@
 @interface _TVProductTemplateZoomAnimator
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation _TVProductTemplateZoomAnimator
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v3 = a3;
-  v4 = [v3 containerView];
-  v5 = [v3 viewControllerForKey:*MEMORY[0x277D77240]];
-  v6 = [v3 viewControllerForKey:*MEMORY[0x277D77230]];
-  v7 = [v5 view];
-  [v4 bounds];
-  [v7 setFrame:?];
-  [v7 setAlpha:0.0];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
+  v5 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77240]];
+  v6 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77230]];
+  view = [v5 view];
+  [containerView bounds];
+  [view setFrame:?];
+  [view setAlpha:0.0];
   CGAffineTransformMakeScale(&v38, 1.5, 1.5);
-  [v7 setTransform:&v38];
-  v8 = [v7 layer];
-  [v8 setShouldRasterize:1];
+  [view setTransform:&v38];
+  layer = [view layer];
+  [layer setShouldRasterize:1];
 
-  v9 = [v7 layer];
-  v10 = [MEMORY[0x277D759A0] mainScreen];
-  [v10 scale];
+  layer2 = [view layer];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   if (v11 <= 1.0)
   {
     v12 = 1.0;
@@ -32,24 +32,24 @@
     v12 = 1.5;
   }
 
-  [v9 setRasterizationScale:v12];
+  [layer2 setRasterizationScale:v12];
 
-  v13 = [v6 view];
-  v14 = [v13 layer];
-  [v14 setShouldRasterize:1];
+  view2 = [v6 view];
+  layer3 = [view2 layer];
+  [layer3 setShouldRasterize:1];
 
-  v15 = [v13 layer];
-  [v15 setRasterizationScale:1.0];
+  layer4 = [view2 layer];
+  [layer4 setRasterizationScale:1.0];
 
-  [v4 insertSubview:v7 aboveSubview:v13];
-  objc_initWeak(&v38, v3);
+  [containerView insertSubview:view aboveSubview:view2];
+  objc_initWeak(&v38, transitionCopy);
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __52___TVProductTemplateZoomAnimator_animateTransition___block_invoke;
   v34[3] = &unk_279D70720;
-  v16 = v7;
+  v16 = view;
   v35 = v16;
-  v17 = v13;
+  v17 = view2;
   v36 = v17;
   objc_copyWeak(&v37, &v38);
   v18 = MEMORY[0x26D6AFBB0](v34);

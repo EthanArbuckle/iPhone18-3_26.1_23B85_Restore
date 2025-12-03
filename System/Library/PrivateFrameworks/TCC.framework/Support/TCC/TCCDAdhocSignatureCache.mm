@@ -1,16 +1,16 @@
 @interface TCCDAdhocSignatureCache
-- (TCCDAdhocSignatureCache)initWithDirectoryPath:(id)a3 capacity:(unint64_t)a4;
-- (id)cacheKeyForStaticCode:(__SecCode *)a3;
-- (id)getSignatureForStaticCode:(__SecCode *)a3;
-- (id)loadSignatureWithUUID:(id)a3;
+- (TCCDAdhocSignatureCache)initWithDirectoryPath:(id)path capacity:(unint64_t)capacity;
+- (id)cacheKeyForStaticCode:(__SecCode *)code;
+- (id)getSignatureForStaticCode:(__SecCode *)code;
+- (id)loadSignatureWithUUID:(id)d;
 - (id)logHandle;
 - (id)stateDump;
-- (void)addSignature:(id)a3 forStaticCode:(__SecCode *)a4;
+- (void)addSignature:(id)signature forStaticCode:(__SecCode *)code;
 - (void)createStateHandler;
 - (void)loadKeysFromDirectory;
 - (void)maintainSize;
 - (void)saveKeysToDirectory;
-- (void)saveSignature:(id)a3 withUUID:(id)a4;
+- (void)saveSignature:(id)signature withUUID:(id)d;
 @end
 
 @implementation TCCDAdhocSignatureCache
@@ -27,21 +27,21 @@
   return v3;
 }
 
-- (TCCDAdhocSignatureCache)initWithDirectoryPath:(id)a3 capacity:(unint64_t)a4
+- (TCCDAdhocSignatureCache)initWithDirectoryPath:(id)path capacity:(unint64_t)capacity
 {
-  v6 = a3;
+  pathCopy = path;
   v29.receiver = self;
   v29.super_class = TCCDAdhocSignatureCache;
   v7 = [(TCCDAdhocSignatureCache *)&v29 init];
   if (v7)
   {
-    if (!v6)
+    if (!pathCopy)
     {
       v25 = 0;
       goto LABEL_15;
     }
 
-    v8 = [v6 copy];
+    v8 = [pathCopy copy];
     directoryPath = v7->_directoryPath;
     v7->_directoryPath = v8;
 
@@ -49,7 +49,7 @@
     keysPath = v7->_keysPath;
     v7->_keysPath = v10;
 
-    v7->_capacity = a4;
+    v7->_capacity = capacity;
     v12 = +[NSFileManager defaultManager];
     fileManager = v7->_fileManager;
     v7->_fileManager = v12;
@@ -70,8 +70,8 @@
       v14 = v27;
       if ((v17 & 1) == 0)
       {
-        v18 = [(TCCDAdhocSignatureCache *)v7 logHandle];
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+        logHandle = [(TCCDAdhocSignatureCache *)v7 logHandle];
+        if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
         {
           sub_10004632C();
         }
@@ -134,9 +134,9 @@ LABEL_15:
         v12 = [v3 objectForKeyedSubscript:v9];
         v13 = [v12 objectForKeyedSubscript:@"UUID"];
 
-        v14 = [v13 UUIDString];
+        uUIDString = [v13 UUIDString];
         v15 = [v3 objectForKeyedSubscript:v9];
-        [v15 setObject:v14 forKeyedSubscript:@"UUID"];
+        [v15 setObject:uUIDString forKeyedSubscript:@"UUID"];
       }
 
       v6 = [(NSMutableDictionary *)v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -165,8 +165,8 @@ LABEL_15:
   if (v5)
   {
     v6 = v5;
-    v7 = [(TCCDAdhocSignatureCache *)self logHandle];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    logHandle = [(TCCDAdhocSignatureCache *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_10004644C();
     }
@@ -178,9 +178,9 @@ LABEL_15:
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = objc_opt_class();
-    v7 = [NSSet setWithObjects:v8, v9, v10, v11, objc_opt_class(), 0];
+    logHandle = [NSSet setWithObjects:v8, v9, v10, v11, objc_opt_class(), 0];
     v15 = 0;
-    v12 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v7 fromData:v4 error:&v15];
+    v12 = [NSKeyedUnarchiver unarchivedObjectOfClasses:logHandle fromData:v4 error:&v15];
     v6 = v15;
     if (v6)
     {
@@ -209,8 +209,8 @@ LABEL_15:
   if (v5)
   {
     v6 = v5;
-    v7 = [(TCCDAdhocSignatureCache *)self logHandle];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    logHandle = [(TCCDAdhocSignatureCache *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_10004651C();
     }
@@ -226,8 +226,8 @@ LABEL_7:
   v6 = v10;
   if ((v9 & 1) == 0)
   {
-    v7 = [(TCCDAdhocSignatureCache *)self logHandle];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    logHandle = [(TCCDAdhocSignatureCache *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_10004658C();
     }
@@ -238,19 +238,19 @@ LABEL_7:
 LABEL_8:
 }
 
-- (id)loadSignatureWithUUID:(id)a3
+- (id)loadSignatureWithUUID:(id)d
 {
   directoryPath = self->_directoryPath;
-  v5 = [a3 UUIDString];
-  v6 = [(NSString *)directoryPath stringByAppendingPathComponent:v5];
+  uUIDString = [d UUIDString];
+  v6 = [(NSString *)directoryPath stringByAppendingPathComponent:uUIDString];
 
   v11 = 0;
   v7 = [NSData dataWithContentsOfFile:v6 options:0 error:&v11];
   v8 = v11;
   if (v8)
   {
-    v9 = [(TCCDAdhocSignatureCache *)self logHandle];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    logHandle = [(TCCDAdhocSignatureCache *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_1000465F4();
     }
@@ -259,35 +259,35 @@ LABEL_8:
   return v7;
 }
 
-- (void)saveSignature:(id)a3 withUUID:(id)a4
+- (void)saveSignature:(id)signature withUUID:(id)d
 {
   directoryPath = self->_directoryPath;
-  v7 = a3;
-  v8 = [a4 UUIDString];
-  v9 = [(NSString *)directoryPath stringByAppendingPathComponent:v8];
+  signatureCopy = signature;
+  uUIDString = [d UUIDString];
+  v9 = [(NSString *)directoryPath stringByAppendingPathComponent:uUIDString];
 
   v12 = 0;
-  LOBYTE(v8) = [v7 writeToFile:v9 options:1 error:&v12];
+  LOBYTE(uUIDString) = [signatureCopy writeToFile:v9 options:1 error:&v12];
 
   v10 = v12;
-  if ((v8 & 1) == 0)
+  if ((uUIDString & 1) == 0)
   {
-    v11 = [(TCCDAdhocSignatureCache *)self logHandle];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    logHandle = [(TCCDAdhocSignatureCache *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_100046668();
     }
   }
 }
 
-- (id)cacheKeyForStaticCode:(__SecCode *)a3
+- (id)cacheKeyForStaticCode:(__SecCode *)code
 {
   path = 0;
   memset(&v36, 0, 512);
-  if (SecCodeCopyPath(a3, 0, &path) || (v4 = path) == 0)
+  if (SecCodeCopyPath(code, 0, &path) || (v4 = path) == 0)
   {
-    v11 = [(TCCDAdhocSignatureCache *)self logHandle];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    logHandle = [(TCCDAdhocSignatureCache *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_1000466DC();
     }
@@ -303,10 +303,10 @@ LABEL_8:
 
   if (statfs([(__CFURL *)path fileSystemRepresentation], &v36))
   {
-    v5 = [(TCCDAdhocSignatureCache *)self logHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    logHandle2 = [(TCCDAdhocSignatureCache *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
     {
-      sub_100046750(v4, v5);
+      sub_100046750(v4, logHandle2);
     }
 
     v6 = 0;
@@ -390,7 +390,7 @@ LABEL_8:
     }
 
     v6 = v15;
-    v18 = [(__CFURL *)v4 fileSystemRepresentation];
+    fileSystemRepresentation = [(__CFURL *)v4 fileSystemRepresentation];
     v68 = 0u;
     v67 = 0u;
     v66 = 0u;
@@ -425,7 +425,7 @@ LABEL_8:
     v37 = 0u;
     v35 = 0x1400000000;
     v34 = 0x8000080000000005;
-    v19 = getattrlist(v18, &v34, &v37, 0x43CuLL, 0x20u);
+    v19 = getattrlist(fileSystemRepresentation, &v34, &v37, 0x43CuLL, 0x20u);
     if (!v19)
     {
       if ((BYTE5(v37) & 8) != 0)
@@ -480,10 +480,10 @@ LABEL_8:
         goto LABEL_38;
       }
 
-      v30 = [(TCCDAdhocSignatureCache *)self logHandle];
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+      logHandle3 = [(TCCDAdhocSignatureCache *)self logHandle];
+      if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_ERROR))
       {
-        sub_100046A0C(v4, v30);
+        sub_100046A0C(v4, logHandle3);
       }
 
       goto LABEL_36;
@@ -498,7 +498,7 @@ LABEL_8:
     v21 = qword_1000C11D8;
     if (os_log_type_enabled(qword_1000C11D8, OS_LOG_TYPE_ERROR))
     {
-      sub_100046978(v18, v21, v20);
+      sub_100046978(fileSystemRepresentation, v21, v20);
     }
   }
 
@@ -524,7 +524,7 @@ LABEL_38:
   dispatch_async(queue, block);
 }
 
-- (id)getSignatureForStaticCode:(__SecCode *)a3
+- (id)getSignatureForStaticCode:(__SecCode *)code
 {
   v12 = 0;
   v13 = &v12;
@@ -532,7 +532,7 @@ LABEL_38:
   v15 = sub_100007540;
   v16 = sub_1000075A0;
   v17 = 0;
-  v4 = [(TCCDAdhocSignatureCache *)self cacheKeyForStaticCode:a3];
+  v4 = [(TCCDAdhocSignatureCache *)self cacheKeyForStaticCode:code];
   v5 = v4;
   if (v4)
   {
@@ -554,12 +554,12 @@ LABEL_38:
   return v7;
 }
 
-- (void)addSignature:(id)a3 forStaticCode:(__SecCode *)a4
+- (void)addSignature:(id)signature forStaticCode:(__SecCode *)code
 {
-  v6 = a3;
-  if (v6 && a4)
+  signatureCopy = signature;
+  if (signatureCopy && code)
   {
-    v7 = [(TCCDAdhocSignatureCache *)self cacheKeyForStaticCode:a4];
+    v7 = [(TCCDAdhocSignatureCache *)self cacheKeyForStaticCode:code];
     v8 = v7;
     if (v7)
     {
@@ -570,7 +570,7 @@ LABEL_38:
       block[3] = &unk_1000A5098;
       block[4] = self;
       v11 = v7;
-      v12 = v6;
+      v12 = signatureCopy;
       dispatch_async(queue, block);
     }
   }

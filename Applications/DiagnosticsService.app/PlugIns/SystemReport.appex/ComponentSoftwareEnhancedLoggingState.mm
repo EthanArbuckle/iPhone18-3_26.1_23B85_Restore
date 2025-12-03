@@ -1,55 +1,55 @@
 @interface ComponentSoftwareEnhancedLoggingState
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentSoftwareEnhancedLoggingState
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v3 = a3;
+  attributesCopy = attributes;
   v4 = +[ELSManager sharedManager];
-  v5 = [v4 snapshot];
+  snapshot = [v4 snapshot];
 
-  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 status]);
-  [v3 setObject:v6 forKeyedSubscript:ELSDefaultStatus];
+  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [snapshot status]);
+  [attributesCopy setObject:v6 forKeyedSubscript:ELSDefaultStatus];
 
-  v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 consent]);
-  [v3 setObject:v7 forKeyedSubscript:ELSDefaultConsent];
+  v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [snapshot consent]);
+  [attributesCopy setObject:v7 forKeyedSubscript:ELSDefaultConsent];
 
   v8 = +[DSDateFormatter sharedFormatter];
   v9 = [v8 formatterWithType:0];
 
-  v10 = [v5 startDate];
+  startDate = [snapshot startDate];
 
-  if (v10)
+  if (startDate)
   {
-    v11 = [v5 startDate];
-    v12 = [v9 stringFromDate:v11];
-    [v3 setObject:v12 forKeyedSubscript:ELSSubDefaultDatesStart];
+    startDate2 = [snapshot startDate];
+    v12 = [v9 stringFromDate:startDate2];
+    [attributesCopy setObject:v12 forKeyedSubscript:ELSSubDefaultDatesStart];
   }
 
-  v13 = [v5 endDate];
+  endDate = [snapshot endDate];
 
-  if (v13)
+  if (endDate)
   {
-    v14 = [v5 endDate];
-    v15 = [v9 stringFromDate:v14];
-    [v3 setObject:v15 forKeyedSubscript:ELSSubDefaultDatesEnd];
+    endDate2 = [snapshot endDate];
+    v15 = [v9 stringFromDate:endDate2];
+    [attributesCopy setObject:v15 forKeyedSubscript:ELSSubDefaultDatesEnd];
   }
 
-  v16 = [v5 queue];
+  queue = [snapshot queue];
 
-  if (v16)
+  if (queue)
   {
     v36 = v9;
-    v38 = v3;
+    v38 = attributesCopy;
     v40 = +[NSMutableArray array];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v37 = v5;
-    obj = [v5 queue];
+    v37 = snapshot;
+    obj = [snapshot queue];
     v17 = [obj countByEnumeratingWithState:&v41 objects:v47 count:16];
     if (v17)
     {
@@ -67,15 +67,15 @@
           }
 
           v23 = *(*(&v41 + 1) + 8 * i);
-          v24 = [v23 type];
-          v25 = [ELSWhitelist findEntryForBundleIdentifier:v24];
+          type = [v23 type];
+          v25 = [ELSWhitelist findEntryForBundleIdentifier:type];
 
           if (v25)
           {
             v45[0] = v20;
-            v26 = [v25 parameterName];
+            parameterName = [v25 parameterName];
             v45[1] = v21;
-            v46[0] = v26;
+            v46[0] = parameterName;
             [v23 executeAfterDuration];
             v27 = [NSNumber numberWithDouble:?];
             v46[1] = v27;
@@ -90,33 +90,33 @@
       while (v18);
     }
 
-    v3 = v38;
+    attributesCopy = v38;
     [v38 setObject:v40 forKeyedSubscript:ELSDefaultQueue];
 
     v9 = v36;
-    v5 = v37;
+    snapshot = v37;
   }
 
-  v29 = [v5 metadata];
+  metadata = [snapshot metadata];
 
-  if (v29)
+  if (metadata)
   {
-    v30 = [v5 metadata];
+    metadata2 = [snapshot metadata];
     v31 = ELSMetadataEnrollmentTicketNumber;
-    v32 = [v30 objectForKeyedSubscript:ELSMetadataEnrollmentTicketNumber];
+    v32 = [metadata2 objectForKeyedSubscript:ELSMetadataEnrollmentTicketNumber];
 
     if (v32)
     {
-      [v3 setObject:v32 forKeyedSubscript:v31];
+      [attributesCopy setObject:v32 forKeyedSubscript:v31];
     }
 
-    v33 = [v5 metadata];
+    metadata3 = [snapshot metadata];
     v34 = ELSMetadataGigafilesToken;
-    v35 = [v33 objectForKeyedSubscript:ELSMetadataGigafilesToken];
+    v35 = [metadata3 objectForKeyedSubscript:ELSMetadataGigafilesToken];
 
     if (v35)
     {
-      [v3 setObject:v35 forKeyedSubscript:v34];
+      [attributesCopy setObject:v35 forKeyedSubscript:v34];
     }
   }
 }

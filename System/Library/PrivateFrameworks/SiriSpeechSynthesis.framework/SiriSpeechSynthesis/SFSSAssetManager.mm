@@ -1,28 +1,28 @@
 @interface SFSSAssetManager
 + (id)sharedInstance;
-- (id)getResoruceAssetByVoice:(id)a3;
-- (id)getVoiceAssetByVoice:(id)a3;
+- (id)getResoruceAssetByVoice:(id)voice;
+- (id)getVoiceAssetByVoice:(id)voice;
 @end
 
 @implementation SFSSAssetManager
 
-- (id)getResoruceAssetByVoice:(id)a3
+- (id)getResoruceAssetByVoice:(id)voice
 {
-  v3 = [a3 locale];
-  v4 = [v3 localeIdentifier];
+  locale = [voice locale];
+  localeIdentifier = [locale localeIdentifier];
 
-  v5 = [[SFSSResourceAsset alloc] init:v4 contentVersion:0];
+  v5 = [[SFSSResourceAsset alloc] init:localeIdentifier contentVersion:0];
   [v5 setAssetPath:@"/Developer/ljc_asset/e58c8cb36e6fe72b3ed4652f9f8a3dd42bbdabb8.asset/AssetData/"];
 
   return v5;
 }
 
-- (id)getVoiceAssetByVoice:(id)a3
+- (id)getVoiceAssetByVoice:(id)voice
 {
-  v3 = [a3 locale];
-  v4 = [v3 localeIdentifier];
+  locale = [voice locale];
+  localeIdentifier = [locale localeIdentifier];
 
-  v5 = [[SFSSVoiceAsset alloc] init:v4 gender:2 name:@"nora" type:3 footprint:2 contentVersion:0];
+  v5 = [[SFSSVoiceAsset alloc] init:localeIdentifier gender:2 name:@"nora" type:3 footprint:2 contentVersion:0];
   [v5 setAssetPath:@"/Developer/ljc_asset/640ee391346ea788b19ff2560ecaeebdeab7db83.asset/AssetData/"];
 
   return v5;

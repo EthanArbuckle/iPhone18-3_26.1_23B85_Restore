@@ -1,12 +1,12 @@
 @interface CBSpatialInteractionDeviceTimestampInfo
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 @end
 
 @implementation CBSpatialInteractionDeviceTimestampInfo
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if (a3 > 5)
+  if (level > 5)
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%f", *&self->_timestamp];
     if (self->_timestamp == 0.0)

@@ -1,60 +1,60 @@
 @interface TSTFormulaTokenContext
-+ (id)tokenContextWithExpressionNode:(id)a3 parenNestingLevel:(unint64_t)a4;
-+ (id)tokenContextWithExpressionNode:(id)a3 parenNestingLevel:(unint64_t)a4 argumentIndex:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (TSTFormulaTokenContext)initWithExpressionNode:(id)a3 parenNestingLevel:(unint64_t)a4 argumentIndex:(unint64_t)a5;
++ (id)tokenContextWithExpressionNode:(id)node parenNestingLevel:(unint64_t)level;
++ (id)tokenContextWithExpressionNode:(id)node parenNestingLevel:(unint64_t)level argumentIndex:(unint64_t)index;
+- (BOOL)isEqual:(id)equal;
+- (TSTFormulaTokenContext)initWithExpressionNode:(id)node parenNestingLevel:(unint64_t)level argumentIndex:(unint64_t)index;
 - (id)debugDescription;
 @end
 
 @implementation TSTFormulaTokenContext
 
-- (TSTFormulaTokenContext)initWithExpressionNode:(id)a3 parenNestingLevel:(unint64_t)a4 argumentIndex:(unint64_t)a5
+- (TSTFormulaTokenContext)initWithExpressionNode:(id)node parenNestingLevel:(unint64_t)level argumentIndex:(unint64_t)index
 {
-  v9 = a3;
+  nodeCopy = node;
   v13.receiver = self;
   v13.super_class = TSTFormulaTokenContext;
   v10 = [(TSTFormulaTokenContext *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_expressionNode, a3);
-    v11->_parenNestingLevel = a4;
-    v11->_argumentIndex = a5;
+    objc_storeStrong(&v10->_expressionNode, node);
+    v11->_parenNestingLevel = level;
+    v11->_argumentIndex = index;
   }
 
   return v11;
 }
 
-+ (id)tokenContextWithExpressionNode:(id)a3 parenNestingLevel:(unint64_t)a4
++ (id)tokenContextWithExpressionNode:(id)node parenNestingLevel:(unint64_t)level
 {
-  v6 = a3;
-  v7 = [a1 alloc];
-  v10 = objc_msgSend_initWithExpressionNode_parenNestingLevel_(v7, v8, v6, a4, v9);
+  nodeCopy = node;
+  v7 = [self alloc];
+  v10 = objc_msgSend_initWithExpressionNode_parenNestingLevel_(v7, v8, nodeCopy, level, v9);
 
   return v10;
 }
 
-+ (id)tokenContextWithExpressionNode:(id)a3 parenNestingLevel:(unint64_t)a4 argumentIndex:(unint64_t)a5
++ (id)tokenContextWithExpressionNode:(id)node parenNestingLevel:(unint64_t)level argumentIndex:(unint64_t)index
 {
-  v8 = a3;
-  v9 = [a1 alloc];
-  v11 = objc_msgSend_initWithExpressionNode_parenNestingLevel_argumentIndex_(v9, v10, v8, a4, a5);
+  nodeCopy = node;
+  v9 = [self alloc];
+  v11 = objc_msgSend_initWithExpressionNode_parenNestingLevel_argumentIndex_(v9, v10, nodeCopy, level, index);
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && v5->_expressionNode == self->_expressionNode && v5->_parenNestingLevel == self->_parenNestingLevel && v5->_argumentIndex == self->_argumentIndex;
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && v5->_expressionNode == self->_expressionNode && v5->_parenNestingLevel == self->_parenNestingLevel && v5->_argumentIndex == self->_argumentIndex;
   }
 
   return v6;

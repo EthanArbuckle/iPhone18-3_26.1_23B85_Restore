@@ -1,33 +1,33 @@
 @interface BCChatSuggestRemoteViewController
 - (BCChatSuggestRemoteViewController)init;
-- (BCChatSuggestRemoteViewController)initWithDeviceState:(id)a3 presenter:(id)a4;
-- (id)callAlertActionForBizItem:(id)a3 dialRequestAction:(id)a4;
-- (id)callAlertActionForBizItem:(id)a3 dialRequestAction:(id)a4 senderId:(id)a5 localizedName:(id)a6;
-- (id)defaultAlertActionForDialRequestAction:(id)a3;
-- (id)headerAlertActionForBizItem:(id)a3;
-- (id)messageAlertActionForBizItem:(id)a3 dialRequestAction:(id)a4;
-- (id)supportActionForBizItem:(id)a3 dialRequestAction:(id)a4;
+- (BCChatSuggestRemoteViewController)initWithDeviceState:(id)state presenter:(id)presenter;
+- (id)callAlertActionForBizItem:(id)item dialRequestAction:(id)action;
+- (id)callAlertActionForBizItem:(id)item dialRequestAction:(id)action senderId:(id)id localizedName:(id)name;
+- (id)defaultAlertActionForDialRequestAction:(id)action;
+- (id)headerAlertActionForBizItem:(id)item;
+- (id)messageAlertActionForBizItem:(id)item dialRequestAction:(id)action;
+- (id)supportActionForBizItem:(id)item dialRequestAction:(id)action;
 - (int64_t)_latencyFromViewDidLoad;
 - (void)_dismiss;
 - (void)_logPhoneNumberDisplayedIfNecessary;
-- (void)addActionItemsToAlert:(id)a3 actionItems:(id)a4;
+- (void)addActionItemsToAlert:(id)alert actionItems:(id)items;
 - (void)addPendingActionItemsToAlert;
-- (void)brandedHeaderViewController:(id)a3 logoFetchingDidFinishForBusinessItem:(id)a4 success:(BOOL)a5;
-- (void)brandedHeaderViewController:(id)a3 logoFetchingWillBeginForBusinessItem:(id)a4;
-- (void)configureAlertControllerForBusinessItem:(id)a3 dialRequestAction:(id)a4;
-- (void)configureAlertControllerForDialRequestAction:(id)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)fetchBizInfoForDialRequestAction:(id)a3;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
-- (void)presentAppleSupportGuidedHelpWithPresenter:(id)a3;
+- (void)brandedHeaderViewController:(id)controller logoFetchingDidFinishForBusinessItem:(id)item success:(BOOL)success;
+- (void)brandedHeaderViewController:(id)controller logoFetchingWillBeginForBusinessItem:(id)item;
+- (void)configureAlertControllerForBusinessItem:(id)item dialRequestAction:(id)action;
+- (void)configureAlertControllerForDialRequestAction:(id)action;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)fetchBizInfoForDialRequestAction:(id)action;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
+- (void)presentAppleSupportGuidedHelpWithPresenter:(id)presenter;
 - (void)sendCancelDialResponseForDialRequestAction;
-- (void)setDialRequestAction:(id)a3;
+- (void)setDialRequestAction:(id)action;
 - (void)viewDidLoad;
 @end
 
 @implementation BCChatSuggestRemoteViewController
 
-- (void)presentAppleSupportGuidedHelpWithPresenter:(id)a3
+- (void)presentAppleSupportGuidedHelpWithPresenter:(id)presenter
 {
   swift_getObjectType();
   type metadata accessor for MainActor();
@@ -36,7 +36,7 @@
   _checkExpectedExecutor(_filenameStart:_filenameLength:_filenameIsASCII:_line:_executor:)();
   swift_unknownObjectRetain();
   self;
-  BCChatSuggestRemoteViewController.presentAppleSupportGuidedHelp(presenter:)(a3);
+  BCChatSuggestRemoteViewController.presentAppleSupportGuidedHelp(presenter:)(presenter);
   _objc_release(self);
   swift_unknownObjectRelease();
 }
@@ -55,18 +55,18 @@
   return v5;
 }
 
-- (BCChatSuggestRemoteViewController)initWithDeviceState:(id)a3 presenter:(id)a4
+- (BCChatSuggestRemoteViewController)initWithDeviceState:(id)state presenter:(id)presenter
 {
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  presenterCopy = presenter;
   v12.receiver = self;
   v12.super_class = BCChatSuggestRemoteViewController;
   v9 = [(BCChatSuggestRemoteViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_deviceState, a3);
-    objc_storeStrong(&v10->_presenter, a4);
+    objc_storeStrong(&v9->_deviceState, state);
+    objc_storeStrong(&v10->_presenter, presenter);
   }
 
   return v10;
@@ -79,35 +79,35 @@
   [(BCChatSuggestRemoteViewController *)&v5 viewDidLoad];
   [(BCChatSuggestRemoteViewController *)self setViewControllerDidLoadTime:CACurrentMediaTime()];
   v3 = +[UIColor clearColor];
-  v4 = [(BCChatSuggestRemoteViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(BCChatSuggestRemoteViewController *)self view];
+  [view setBackgroundColor:v3];
 }
 
 - (void)addPendingActionItemsToAlert
 {
-  v3 = [(BCChatSuggestRemoteViewController *)self alertController];
+  alertController = [(BCChatSuggestRemoteViewController *)self alertController];
 
-  if (v3 && [(BCChatSuggestRemoteViewController *)self chatSuggestUIPresented])
+  if (alertController && [(BCChatSuggestRemoteViewController *)self chatSuggestUIPresented])
   {
-    v4 = [(BCChatSuggestRemoteViewController *)self alertController];
-    v5 = [(BCChatSuggestRemoteViewController *)self pendingActionItems];
-    [(BCChatSuggestRemoteViewController *)self addActionItemsToAlert:v4 actionItems:v5];
+    alertController2 = [(BCChatSuggestRemoteViewController *)self alertController];
+    pendingActionItems = [(BCChatSuggestRemoteViewController *)self pendingActionItems];
+    [(BCChatSuggestRemoteViewController *)self addActionItemsToAlert:alertController2 actionItems:pendingActionItems];
 
-    v7 = [(BCChatSuggestRemoteViewController *)self alertController];
-    v6 = [v7 view];
-    [v6 setNeedsLayout];
+    alertController3 = [(BCChatSuggestRemoteViewController *)self alertController];
+    view = [alertController3 view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)addActionItemsToAlert:(id)a3 actionItems:(id)a4
+- (void)addActionItemsToAlert:(id)alert actionItems:(id)items
 {
-  v6 = a3;
-  v7 = a4;
+  alertCopy = alert;
+  itemsCopy = items;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v8 = [itemsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -119,24 +119,24 @@
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v12 = *(*(&v19 + 1) + 8 * v11);
         if ([v12 actionType] == 3 || objc_msgSend(v12, "actionType") == 4 || objc_msgSend(v12, "actionType") == 6 || objc_msgSend(v12, "actionType") == 5)
         {
-          v13 = [v12 title];
+          title = [v12 title];
           v18[0] = _NSConcreteStackBlock;
           v18[1] = 3221225472;
           v18[2] = sub_1000084E0;
           v18[3] = &unk_1000186E0;
           v18[4] = v12;
-          v14 = [UIAlertAction actionWithTitle:v13 style:0 handler:v18];
+          makeBrandedHeaderViewControllerForCallMenu = [UIAlertAction actionWithTitle:title style:0 handler:v18];
 
-          [v6 addAction:v14];
+          [alertCopy addAction:makeBrandedHeaderViewControllerForCallMenu];
           if (([v12 actionType] == 4 || objc_msgSend(v12, "actionType") == 5) && !-[BCChatSuggestRemoteViewController hasPreferredAction](self, "hasPreferredAction") || objc_msgSend(v12, "actionType") == 3 && !-[BCChatSuggestRemoteViewController hasPreferredAction](self, "hasPreferredAction"))
           {
-            [v6 setPreferredAction:v14];
+            [alertCopy setPreferredAction:makeBrandedHeaderViewControllerForCallMenu];
             [(BCChatSuggestRemoteViewController *)self setHasPreferredAction:1];
           }
 
@@ -145,12 +145,12 @@
 
         if ([v12 actionType] == 1)
         {
-          v15 = [(BCChatSuggestRemoteViewController *)self bizItem];
-          v14 = [v15 makeBrandedHeaderViewControllerForCallMenu];
+          bizItem = [(BCChatSuggestRemoteViewController *)self bizItem];
+          makeBrandedHeaderViewControllerForCallMenu = [bizItem makeBrandedHeaderViewControllerForCallMenu];
 
-          [v14 setDelegate:self];
-          [v6 setContentViewController:v14];
-          [v6 setTitle:&stru_100018B88];
+          [makeBrandedHeaderViewControllerForCallMenu setDelegate:self];
+          [alertCopy setContentViewController:makeBrandedHeaderViewControllerForCallMenu];
+          [alertCopy setTitle:&stru_100018B88];
 LABEL_16:
 
           goto LABEL_17;
@@ -158,8 +158,8 @@ LABEL_16:
 
         if ([v12 actionType] == 2)
         {
-          v16 = [v12 title];
-          [v6 setTitle:v16];
+          title2 = [v12 title];
+          [alertCopy setTitle:title2];
         }
 
 LABEL_17:
@@ -167,7 +167,7 @@ LABEL_17:
       }
 
       while (v9 != v11);
-      v17 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v17 = [itemsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
       v9 = v17;
     }
 
@@ -175,17 +175,17 @@ LABEL_17:
   }
 }
 
-- (void)setDialRequestAction:(id)a3
+- (void)setDialRequestAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = sub_10000BC3C();
   [(BCChatSuggestRemoteViewController *)self setTapId:os_signpost_id_generate(v5)];
 
   v6 = sub_10000BC3C();
-  v7 = [(BCChatSuggestRemoteViewController *)self tapId];
-  if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  tapId = [(BCChatSuggestRemoteViewController *)self tapId];
+  if (tapId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v8 = v7;
+    v8 = tapId;
     if (os_signpost_enabled(v6))
     {
       *buf = 0;
@@ -194,10 +194,10 @@ LABEL_17:
   }
 
   v9 = sub_10000BC3C();
-  v10 = [(BCChatSuggestRemoteViewController *)self tapId];
-  if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  tapId2 = [(BCChatSuggestRemoteViewController *)self tapId];
+  if (tapId2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v11 = v10;
+    v11 = tapId2;
     if (os_signpost_enabled(v9))
     {
       *v17 = 0;
@@ -206,10 +206,10 @@ LABEL_17:
   }
 
   v12 = sub_10000BC3C();
-  v13 = [(BCChatSuggestRemoteViewController *)self tapId];
-  if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  tapId3 = [(BCChatSuggestRemoteViewController *)self tapId];
+  if (tapId3 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v14 = v13;
+    v14 = tapId3;
     if (os_signpost_enabled(v12))
     {
       *v16 = 0;
@@ -217,72 +217,72 @@ LABEL_17:
     }
   }
 
-  if (v4)
+  if (actionCopy)
   {
-    [(BCChatSuggestRemoteViewController *)self fetchBizInfoForDialRequestAction:v4];
+    [(BCChatSuggestRemoteViewController *)self fetchBizInfoForDialRequestAction:actionCopy];
   }
 
   dialRequestAction = self->_dialRequestAction;
-  self->_dialRequestAction = v4;
+  self->_dialRequestAction = actionCopy;
 }
 
-- (void)configureAlertControllerForBusinessItem:(id)a3 dialRequestAction:(id)a4
+- (void)configureAlertControllerForBusinessItem:(id)item dialRequestAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BCChatSuggestRemoteViewController *)self deviceState];
-  v9 = [v8 isLocked];
+  itemCopy = item;
+  actionCopy = action;
+  deviceState = [(BCChatSuggestRemoteViewController *)self deviceState];
+  isLocked = [deviceState isLocked];
 
-  if (v9)
+  if (isLocked)
   {
     goto LABEL_2;
   }
 
-  v10 = [(BCChatSuggestRemoteViewController *)self headerActionItem];
+  headerActionItem = [(BCChatSuggestRemoteViewController *)self headerActionItem];
 
-  if (!v10)
+  if (!headerActionItem)
   {
-    v11 = [v7 info];
-    v12 = [v11 objectForSetting:1];
+    info = [actionCopy info];
+    v12 = [info objectForSetting:1];
 
     v13 = [TUHandle handleWithDictionaryRepresentation:v12];
-    v14 = [v13 value];
-    v15 = [(BCChatSuggestRemoteViewController *)self headerAlertActionForBizItem:v6];
+    value = [v13 value];
+    v15 = [(BCChatSuggestRemoteViewController *)self headerAlertActionForBizItem:itemCopy];
     [(BCChatSuggestRemoteViewController *)self setHeaderActionItem:v15];
 
-    v16 = [(BCChatSuggestRemoteViewController *)self messageAlertActionForBizItem:v6 dialRequestAction:v7];
-    v17 = [(BCChatSuggestRemoteViewController *)self headerActionItem];
-    v39[0] = v17;
+    v16 = [(BCChatSuggestRemoteViewController *)self messageAlertActionForBizItem:itemCopy dialRequestAction:actionCopy];
+    headerActionItem2 = [(BCChatSuggestRemoteViewController *)self headerActionItem];
+    v39[0] = headerActionItem2;
     v39[1] = v16;
     v18 = [NSArray arrayWithObjects:v39 count:2];
     [(BCChatSuggestRemoteViewController *)self setPendingActionItems:v18];
 
-    v19 = [(BCChatSuggestRemoteViewController *)self brandManager];
+    brandManager = [(BCChatSuggestRemoteViewController *)self brandManager];
     v20 = BSBrandServiceTypeOnDeviceSupport;
     v35[0] = _NSConcreteStackBlock;
     v35[1] = 3221225472;
     v35[2] = sub_100008AE4;
     v35[3] = &unk_100018708;
     v35[4] = self;
-    v36 = v6;
-    v37 = v7;
+    v36 = itemCopy;
+    v37 = actionCopy;
     v38 = v16;
     v21 = v16;
-    [v19 isBrandRegisteredWithIdentifier:v14 forService:v20 completion:v35];
+    [brandManager isBrandRegisteredWithIdentifier:value forService:v20 completion:v35];
 
-    v22 = [(BCChatSuggestRemoteViewController *)self bizItem];
-    if (v22)
+    bizItem = [(BCChatSuggestRemoteViewController *)self bizItem];
+    if (bizItem)
     {
-      v23 = v22;
-      v24 = [(BCChatSuggestRemoteViewController *)self bizItem];
-      v25 = [v24 isAvailableForCalling];
+      v23 = bizItem;
+      bizItem2 = [(BCChatSuggestRemoteViewController *)self bizItem];
+      isAvailableForCalling = [bizItem2 isAvailableForCalling];
 
-      if ((v25 & 1) == 0)
+      if ((isAvailableForCalling & 1) == 0)
       {
-        v26 = [(BCChatSuggestRemoteViewController *)self deviceState];
-        v27 = [v26 isLocked];
+        deviceState2 = [(BCChatSuggestRemoteViewController *)self deviceState];
+        isLocked2 = [deviceState2 isLocked];
 
-        if (v27)
+        if (isLocked2)
         {
           [(BCChatSuggestRemoteViewController *)self _dismiss];
 
@@ -296,13 +296,13 @@ LABEL_16:
   if (!-[BCChatSuggestRemoteViewController chatSuggestUIPresented](self, "chatSuggestUIPresented") || (-[BCChatSuggestRemoteViewController pendingActionItems](self, "pendingActionItems"), v28 = objc_claimAutoreleasedReturnValue(), v29 = [v28 count], v28, !v29))
   {
 LABEL_13:
-    [BCCoreAnalytics logEventForView:@"com.apple.BusinessChatViewService.ChatSuggestAppears" bizItem:v6 bizItemReturnedAfterAction:0 latency:[(BCChatSuggestRemoteViewController *)self _latencyFromViewDidLoad]];
+    [BCCoreAnalytics logEventForView:@"com.apple.BusinessChatViewService.ChatSuggestAppears" bizItem:itemCopy bizItemReturnedAfterAction:0 latency:[(BCChatSuggestRemoteViewController *)self _latencyFromViewDidLoad]];
     [(BCChatSuggestRemoteViewController *)self _logPhoneNumberDisplayedIfNecessary];
     v12 = sub_10000BC3C();
-    v32 = [(BCChatSuggestRemoteViewController *)self tapId];
-    if (v32 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    tapId = [(BCChatSuggestRemoteViewController *)self tapId];
+    if (tapId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v33 = v32;
+      v33 = tapId;
       if (os_signpost_enabled(v12))
       {
         *v34 = 0;
@@ -313,10 +313,10 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  v30 = [(BCChatSuggestRemoteViewController *)self deviceState];
-  v31 = [v30 isLocked];
+  deviceState3 = [(BCChatSuggestRemoteViewController *)self deviceState];
+  isLocked3 = [deviceState3 isLocked];
 
-  if (!v31)
+  if (!isLocked3)
   {
     [(BCChatSuggestRemoteViewController *)self addPendingActionItemsToAlert];
     [(BCChatSuggestRemoteViewController *)self setPendingActionItems:0];
@@ -328,47 +328,47 @@ LABEL_2:
 LABEL_17:
 }
 
-- (void)configureAlertControllerForDialRequestAction:(id)a3
+- (void)configureAlertControllerForDialRequestAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = objc_alloc_init(UIAlertController);
   [v5 setPreferredStyle:1];
   [v5 _setShouldAlignToKeyboard:0];
   v6 = [NSMutableArray arrayWithCapacity:2];
-  v80 = self;
+  selfCopy = self;
   if ([(BCChatSuggestRemoteViewController *)self simLinePickerEnabled])
   {
-    v7 = [v4 info];
-    v8 = [v7 objectForSetting:5];
+    info = [actionCopy info];
+    v8 = [info objectForSetting:5];
 
     if ([(BCChatSuggestRemoteViewController *)self simLinePickerEnabled]&& v8)
     {
       v76 = v5;
       [(BCChatSuggestRemoteViewController *)self setIsDualSim:1];
-      v9 = [v4 info];
-      v10 = [v9 objectForSetting:2];
+      info2 = [actionCopy info];
+      v10 = [info2 objectForSetting:2];
 
-      v11 = [v4 info];
-      v12 = [v11 objectForSetting:3];
+      info3 = [actionCopy info];
+      v12 = [info3 objectForSetting:3];
 
       v13 = +[NSBundle mainBundle];
       v14 = [v13 localizedStringForKey:@"DUAL_SIM_HEADER_TITLE" value:&stru_100018B88 table:0];
       v15 = [NSString stringWithFormat:v14, v12, v10];
 
       v16 = [[BCAlertActionItem alloc] initWithTitle:v15 subTitle:0 iconName:0 actionType:2 handler:0];
-      v17 = [(BCChatSuggestRemoteViewController *)self bizItem];
+      bizItem = [(BCChatSuggestRemoteViewController *)self bizItem];
 
-      if (v17)
+      if (bizItem)
       {
         v72 = v15;
-        v18 = [(BCChatSuggestRemoteViewController *)self pendingActionItems];
-        v79 = v4;
+        pendingActionItems = [(BCChatSuggestRemoteViewController *)self pendingActionItems];
+        v79 = actionCopy;
         v70 = v6;
         v71 = v16;
         v74 = v10;
         v75 = v8;
         v73 = v12;
-        if ([v18 count])
+        if ([pendingActionItems count])
         {
           v87 = 0u;
           v88 = 0u;
@@ -383,7 +383,7 @@ LABEL_17:
             do
             {
               v22 = 0;
-              v23 = v18;
+              v23 = pendingActionItems;
               do
               {
                 if (*v86 != v77)
@@ -397,13 +397,13 @@ LABEL_17:
                 v27 = [v19 objectForKeyedSubscript:v24];
                 v28 = [NSString stringWithFormat:@"%@ %@", v26, v27];
 
-                v29 = [(BCChatSuggestRemoteViewController *)v80 bizItem];
-                v30 = [(BCChatSuggestRemoteViewController *)v80 callAlertActionForBizItem:v29 dialRequestAction:v79 senderId:v24 localizedName:v28];
+                bizItem2 = [(BCChatSuggestRemoteViewController *)selfCopy bizItem];
+                v30 = [(BCChatSuggestRemoteViewController *)selfCopy callAlertActionForBizItem:bizItem2 dialRequestAction:v79 senderId:v24 localizedName:v28];
 
-                v18 = [v23 arrayByAddingObject:v30];
+                pendingActionItems = [v23 arrayByAddingObject:v30];
 
                 v22 = v22 + 1;
-                v23 = v18;
+                v23 = pendingActionItems;
               }
 
               while (v21 != v22);
@@ -413,22 +413,22 @@ LABEL_17:
             while (v21);
           }
 
-          self = v80;
-          [(BCChatSuggestRemoteViewController *)v80 setPendingActionItems:0];
-          v31 = v18;
+          self = selfCopy;
+          [(BCChatSuggestRemoteViewController *)selfCopy setPendingActionItems:0];
+          v31 = pendingActionItems;
         }
 
         else
         {
-          v51 = [(BCChatSuggestRemoteViewController *)self bizItem];
-          v52 = [(BCChatSuggestRemoteViewController *)self headerAlertActionForBizItem:v51];
+          bizItem3 = [(BCChatSuggestRemoteViewController *)self bizItem];
+          v52 = [(BCChatSuggestRemoteViewController *)self headerAlertActionForBizItem:bizItem3];
           [(BCChatSuggestRemoteViewController *)self setHeaderActionItem:v52];
 
-          v53 = [(BCChatSuggestRemoteViewController *)self bizItem];
-          v54 = [(BCChatSuggestRemoteViewController *)self messageAlertActionForBizItem:v53 dialRequestAction:v4];
+          bizItem4 = [(BCChatSuggestRemoteViewController *)self bizItem];
+          v54 = [(BCChatSuggestRemoteViewController *)self messageAlertActionForBizItem:bizItem4 dialRequestAction:actionCopy];
 
-          v55 = [(BCChatSuggestRemoteViewController *)self headerActionItem];
-          v96[0] = v55;
+          headerActionItem = [(BCChatSuggestRemoteViewController *)self headerActionItem];
+          v96[0] = headerActionItem;
           v96[1] = v54;
           v78 = v54;
           v31 = [NSArray arrayWithObjects:v96 count:2];
@@ -460,9 +460,9 @@ LABEL_17:
                 v65 = [v56 objectForKeyedSubscript:v62];
                 v66 = [NSString stringWithFormat:@"%@ %@", v64, v65];
 
-                self = v80;
-                v67 = [(BCChatSuggestRemoteViewController *)v80 bizItem];
-                v68 = [(BCChatSuggestRemoteViewController *)v80 callAlertActionForBizItem:v67 dialRequestAction:v79 senderId:v62 localizedName:v66];
+                self = selfCopy;
+                bizItem5 = [(BCChatSuggestRemoteViewController *)selfCopy bizItem];
+                v68 = [(BCChatSuggestRemoteViewController *)selfCopy callAlertActionForBizItem:bizItem5 dialRequestAction:v79 senderId:v62 localizedName:v66];
 
                 v31 = [v61 arrayByAddingObject:v68];
 
@@ -480,7 +480,7 @@ LABEL_17:
 
         v6 = v70;
         [v70 addObjectsFromArray:v31];
-        v4 = v79;
+        actionCopy = v79;
       }
 
       else
@@ -519,8 +519,8 @@ LABEL_40:
 
             v47 = *(*(&v81 + 1) + 8 * i);
             v48 = [v31 objectForKeyedSubscript:v47];
-            v49 = [(BCChatSuggestRemoteViewController *)self bizItem];
-            v50 = [(BCChatSuggestRemoteViewController *)self callAlertActionForBizItem:v49 dialRequestAction:v4 senderId:v47 localizedName:v48];
+            bizItem6 = [(BCChatSuggestRemoteViewController *)self bizItem];
+            v50 = [(BCChatSuggestRemoteViewController *)self callAlertActionForBizItem:bizItem6 dialRequestAction:actionCopy senderId:v47 localizedName:v48];
 
             [v44 addObject:v50];
           }
@@ -548,37 +548,37 @@ LABEL_40:
   }
 
   [(BCChatSuggestRemoteViewController *)self setIsDualSim:0];
-  v32 = [(BCChatSuggestRemoteViewController *)self bizItem];
+  bizItem7 = [(BCChatSuggestRemoteViewController *)self bizItem];
 
-  if (v32)
+  if (bizItem7)
   {
-    v33 = [(BCChatSuggestRemoteViewController *)self pendingActionItems];
-    v34 = [(BCChatSuggestRemoteViewController *)self bizItem];
-    v35 = [(BCChatSuggestRemoteViewController *)self callAlertActionForBizItem:v34 dialRequestAction:v4];
+    pendingActionItems2 = [(BCChatSuggestRemoteViewController *)self pendingActionItems];
+    bizItem8 = [(BCChatSuggestRemoteViewController *)self bizItem];
+    v35 = [(BCChatSuggestRemoteViewController *)self callAlertActionForBizItem:bizItem8 dialRequestAction:actionCopy];
 
-    if ([v33 count])
+    if ([pendingActionItems2 count])
     {
-      v36 = [v33 arrayByAddingObject:v35];
+      v36 = [pendingActionItems2 arrayByAddingObject:v35];
 
       [(BCChatSuggestRemoteViewController *)self setPendingActionItems:0];
     }
 
     else
     {
-      v37 = [(BCChatSuggestRemoteViewController *)self bizItem];
-      v38 = [(BCChatSuggestRemoteViewController *)self headerAlertActionForBizItem:v37];
+      bizItem9 = [(BCChatSuggestRemoteViewController *)self bizItem];
+      v38 = [(BCChatSuggestRemoteViewController *)self headerAlertActionForBizItem:bizItem9];
       [(BCChatSuggestRemoteViewController *)self setHeaderActionItem:v38];
 
-      v39 = [(BCChatSuggestRemoteViewController *)self bizItem];
-      v40 = [(BCChatSuggestRemoteViewController *)self messageAlertActionForBizItem:v39 dialRequestAction:v4];
+      bizItem10 = [(BCChatSuggestRemoteViewController *)self bizItem];
+      v40 = [(BCChatSuggestRemoteViewController *)self messageAlertActionForBizItem:bizItem10 dialRequestAction:actionCopy];
 
-      v41 = [(BCChatSuggestRemoteViewController *)self headerActionItem];
-      v97[0] = v41;
+      headerActionItem2 = [(BCChatSuggestRemoteViewController *)self headerActionItem];
+      v97[0] = headerActionItem2;
       v97[1] = v40;
       v97[2] = v35;
       v36 = [NSArray arrayWithObjects:v97 count:3];
 
-      self = v80;
+      self = selfCopy;
     }
 
     [v6 addObjectsFromArray:v36];
@@ -586,25 +586,25 @@ LABEL_40:
 
   else
   {
-    v36 = [(BCChatSuggestRemoteViewController *)self callAlertActionForBizItem:0 dialRequestAction:v4];
+    v36 = [(BCChatSuggestRemoteViewController *)self callAlertActionForBizItem:0 dialRequestAction:actionCopy];
     [v6 addObject:v36];
   }
 
 LABEL_41:
   [(BCChatSuggestRemoteViewController *)self addActionItemsToAlert:v5 actionItems:v6];
-  v69 = [(BCChatSuggestRemoteViewController *)self defaultAlertActionForDialRequestAction:v4];
+  v69 = [(BCChatSuggestRemoteViewController *)self defaultAlertActionForDialRequestAction:actionCopy];
   [v5 addAction:v69];
   [(BCChatSuggestRemoteViewController *)self setAlertController:v5];
   [(BCChatSuggestRemoteViewController *)self _logPhoneNumberDisplayedIfNecessary];
 }
 
-- (id)headerAlertActionForBizItem:(id)a3
+- (id)headerAlertActionForBizItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 name];
-  v5 = [v3 isVerified];
+  itemCopy = item;
+  name = [itemCopy name];
+  isVerified = [itemCopy isVerified];
 
-  if (v5)
+  if (isVerified)
   {
     v6 = +[BCVSUtilities classBundle];
     v7 = [v6 localizedStringForKey:@"VERIFIED" value:&stru_100018B88 table:0];
@@ -615,14 +615,14 @@ LABEL_41:
     v7 = 0;
   }
 
-  v8 = [[BCAlertActionItem alloc] initWithTitle:v4 subTitle:v7 iconName:0 actionType:1 handler:0];
+  v8 = [[BCAlertActionItem alloc] initWithTitle:name subTitle:v7 iconName:0 actionType:1 handler:0];
 
   return v8;
 }
 
-- (id)supportActionForBizItem:(id)a3 dialRequestAction:(id)a4
+- (id)supportActionForBizItem:(id)item dialRequestAction:(id)action
 {
-  v5 = [NSBundle mainBundle:a3];
+  v5 = [NSBundle mainBundle:item];
   v6 = [v5 localizedStringForKey:@"GUIDED_HELP_LABEL" value:&stru_100018B88 table:0];
 
   v9[0] = _NSConcreteStackBlock;
@@ -637,10 +637,10 @@ LABEL_41:
 
 - (void)sendCancelDialResponseForDialRequestAction
 {
-  v3 = [(BCChatSuggestRemoteViewController *)self dialRequestAction];
-  v4 = [v3 isValid];
+  dialRequestAction = [(BCChatSuggestRemoteViewController *)self dialRequestAction];
+  isValid = [dialRequestAction isValid];
 
-  if (v4)
+  if (isValid)
   {
     v5 = objc_alloc_init(BSMutableSettings);
     if ([(BCChatSuggestRemoteViewController *)self simLinePickerEnabled]&& [(BCChatSuggestRemoteViewController *)self isDualSim])
@@ -654,12 +654,12 @@ LABEL_41:
       [v5 setObject:@"Message" forSetting:10];
     }
 
-    v11 = [(BCChatSuggestRemoteViewController *)self dialRequestAction];
+    dialRequestAction2 = [(BCChatSuggestRemoteViewController *)self dialRequestAction];
     v12 = [BSActionResponse responseWithInfo:v5];
-    [v11 sendResponse:v12];
+    [dialRequestAction2 sendResponse:v12];
 
-    v7 = sub_10000BC3C();
-    if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    dialRequestAction3 = sub_10000BC3C();
+    if (!os_log_type_enabled(dialRequestAction3, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_11;
     }
@@ -667,7 +667,7 @@ LABEL_41:
     v13 = 136315138;
     v14 = "[BCChatSuggestRemoteViewController sendCancelDialResponseForDialRequestAction]";
     v8 = "%s Sending message to InCallService via XPC Action to place a call";
-    v9 = v7;
+    v9 = dialRequestAction3;
     v10 = 12;
 LABEL_10:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, v8, &v13, v10);
@@ -679,11 +679,11 @@ LABEL_11:
   v5 = sub_10000BC3C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(BCChatSuggestRemoteViewController *)self dialRequestAction];
+    dialRequestAction3 = [(BCChatSuggestRemoteViewController *)self dialRequestAction];
     v13 = 136315394;
     v14 = "[BCChatSuggestRemoteViewController sendCancelDialResponseForDialRequestAction]";
     v15 = 2112;
-    v16 = v7;
+    v16 = dialRequestAction3;
     v8 = "%s invalid dialrequest message action : %@";
     v9 = v5;
     v10 = 22;
@@ -693,80 +693,80 @@ LABEL_11:
 LABEL_12:
 }
 
-- (id)messageAlertActionForBizItem:(id)a3 dialRequestAction:(id)a4
+- (id)messageAlertActionForBizItem:(id)item dialRequestAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  actionCopy = action;
   v8 = [BCAlertActionItem alloc];
-  v9 = [v6 messageTitle];
+  messageTitle = [itemCopy messageTitle];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000099BC;
   v14[3] = &unk_100018758;
-  v15 = v6;
-  v16 = self;
-  v17 = v7;
-  v10 = v7;
-  v11 = v6;
-  v12 = [(BCAlertActionItem *)v8 initWithTitle:v9 subTitle:0 iconName:0 actionType:4 handler:v14];
+  v15 = itemCopy;
+  selfCopy = self;
+  v17 = actionCopy;
+  v10 = actionCopy;
+  v11 = itemCopy;
+  v12 = [(BCAlertActionItem *)v8 initWithTitle:messageTitle subTitle:0 iconName:0 actionType:4 handler:v14];
 
   return v12;
 }
 
-- (id)callAlertActionForBizItem:(id)a3 dialRequestAction:(id)a4
+- (id)callAlertActionForBizItem:(id)item dialRequestAction:(id)action
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 info];
-  v8 = [v7 objectForSetting:1];
+  actionCopy = action;
+  itemCopy = item;
+  info = [actionCopy info];
+  v8 = [info objectForSetting:1];
 
   v9 = [TUHandle handleWithDictionaryRepresentation:v8];
-  v10 = [v9 value];
-  v11 = [v5 info];
-  v12 = [v11 objectForSetting:2];
+  value = [v9 value];
+  info2 = [actionCopy info];
+  v12 = [info2 objectForSetting:2];
 
-  v13 = [v5 info];
-  v14 = [v13 objectForSetting:3];
+  info3 = [actionCopy info];
+  v14 = [info3 objectForSetting:3];
 
   v15 = +[NSBundle mainBundle];
   v16 = [v15 localizedStringForKey:@"CALL_ACTION_TITLE" value:&stru_100018B88 table:0];
   v17 = [NSString stringWithFormat:v16, v14, v12];
 
   v18 = [BCAlertActionItem alloc];
-  v19 = [v6 callSubtitle];
+  callSubtitle = [itemCopy callSubtitle];
 
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100009F48;
   v25[3] = &unk_100018758;
   v25[4] = self;
-  v26 = v5;
-  v27 = v10;
-  v20 = v10;
-  v21 = v5;
-  v22 = [(BCAlertActionItem *)v18 initWithTitle:v17 subTitle:v19 iconName:0 actionType:3 handler:v25];
+  v26 = actionCopy;
+  v27 = value;
+  v20 = value;
+  v21 = actionCopy;
+  v22 = [(BCAlertActionItem *)v18 initWithTitle:v17 subTitle:callSubtitle iconName:0 actionType:3 handler:v25];
 
   return v22;
 }
 
-- (id)callAlertActionForBizItem:(id)a3 dialRequestAction:(id)a4 senderId:(id)a5 localizedName:(id)a6
+- (id)callAlertActionForBizItem:(id)item dialRequestAction:(id)action senderId:(id)id localizedName:(id)name
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v9 info];
-  v13 = [v12 objectForSetting:1];
+  actionCopy = action;
+  idCopy = id;
+  nameCopy = name;
+  info = [actionCopy info];
+  v13 = [info objectForSetting:1];
 
   v14 = [TUHandle handleWithDictionaryRepresentation:v13];
-  v15 = [v14 value];
-  v16 = [NSString stringWithFormat:@"%@", v11];
-  v17 = [(BCChatSuggestRemoteViewController *)self isDefaultSimAdded];
-  if ((v17 & 1) == 0)
+  value = [v14 value];
+  nameCopy = [NSString stringWithFormat:@"%@", nameCopy];
+  isDefaultSimAdded = [(BCChatSuggestRemoteViewController *)self isDefaultSimAdded];
+  if ((isDefaultSimAdded & 1) == 0)
   {
     [(BCChatSuggestRemoteViewController *)self setIsDefaultSimAdded:1];
   }
 
-  v18 = v17 ^ 1;
+  v18 = isDefaultSimAdded ^ 1;
   v19 = [BCAlertActionItem alloc];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
@@ -774,38 +774,38 @@ LABEL_12:
   v25[3] = &unk_100018780;
   v29 = v18;
   v25[4] = self;
-  v26 = v9;
-  v27 = v10;
-  v28 = v15;
-  v20 = v15;
-  v21 = v10;
-  v22 = v9;
-  v23 = [(BCAlertActionItem *)v19 initWithTitle:v16 subTitle:0 iconName:0 actionType:3 handler:v25];
+  v26 = actionCopy;
+  v27 = idCopy;
+  v28 = value;
+  v20 = value;
+  v21 = idCopy;
+  v22 = actionCopy;
+  v23 = [(BCAlertActionItem *)v19 initWithTitle:nameCopy subTitle:0 iconName:0 actionType:3 handler:v25];
 
   return v23;
 }
 
-- (id)defaultAlertActionForDialRequestAction:(id)a3
+- (id)defaultAlertActionForDialRequestAction:(id)action
 {
-  v4 = a3;
-  v5 = [v4 info];
-  v6 = [v5 objectForSetting:4];
+  actionCopy = action;
+  info = [actionCopy info];
+  v6 = [info objectForSetting:4];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000A8EC;
   v10[3] = &unk_1000187A8;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
+  v11 = actionCopy;
+  selfCopy = self;
+  v7 = actionCopy;
   v8 = [UIAlertAction actionWithTitle:v6 style:1 handler:v10];
 
   return v8;
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = sub_10000BC3C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -821,16 +821,16 @@ LABEL_12:
   v8 = +[UIApplication sharedApplication];
   [v7 setLaunchingInterfaceOrientation:{objc_msgSend(v8, "activeInterfaceOrientation")}];
 
-  if (v5)
+  if (completionCopy)
   {
-    v5[2](v5);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = sub_10000BC3C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -844,15 +844,15 @@ LABEL_12:
   if ((byte_10001E928 & 1) == 0)
   {
     byte_10001E928 = 1;
-    v10 = [v6 actions];
-    v11 = [v10 allObjects];
-    v12 = [v11 firstObject];
-    [(BCChatSuggestRemoteViewController *)self setDialRequestAction:v12];
+    actions = [contextCopy actions];
+    allObjects = [actions allObjects];
+    firstObject = [allObjects firstObject];
+    [(BCChatSuggestRemoteViewController *)self setDialRequestAction:firstObject];
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -875,34 +875,34 @@ LABEL_12:
   self->_headerActionItem = 0;
 
   self->_chatSuggestRemoteViewControllerDismissed = 1;
-  v8 = [(BCChatSuggestRemoteViewController *)self _remoteViewControllerProxy];
-  [v8 deactivate];
+  _remoteViewControllerProxy = [(BCChatSuggestRemoteViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy deactivate];
 }
 
-- (void)fetchBizInfoForDialRequestAction:(id)a3
+- (void)fetchBizInfoForDialRequestAction:(id)action
 {
-  v4 = a3;
-  v5 = [v4 info];
-  v6 = [v5 objectForSetting:1];
+  actionCopy = action;
+  info = [actionCopy info];
+  v6 = [info objectForSetting:1];
 
   v7 = [TUHandle handleWithDictionaryRepresentation:v6];
   if ([v7 type] == 2)
   {
-    v8 = [v7 value];
-    v9 = [v8 length];
+    value = [v7 value];
+    v9 = [value length];
 
     if (v9)
     {
       objc_initWeak(&location, self);
       v10 = objc_alloc_init(BCSBusinessQueryService);
-      v11 = [v7 value];
+      value2 = [v7 value];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_10000AFDC;
       v12[3] = &unk_100018858;
       objc_copyWeak(&v14, &location);
-      v13 = v4;
-      [v10 fetchBusinessItemForPhoneNumber:v11 completion:v12];
+      v13 = actionCopy;
+      [v10 fetchBusinessItemForPhoneNumber:value2 completion:v12];
 
       objc_destroyWeak(&v14);
       objc_destroyWeak(&location);
@@ -915,23 +915,23 @@ LABEL_12:
   if (![(BCChatSuggestRemoteViewController *)self phoneNumberUIPresented])
   {
     [(BCChatSuggestRemoteViewController *)self setPhoneNumberUIPresentedTime:CACurrentMediaTime()];
-    v3 = [(BCChatSuggestRemoteViewController *)self bizItem];
-    [(BCChatSuggestRemoteViewController *)self setHadBizItemWhenPhoneNumberUIPresented:v3 != 0];
+    bizItem = [(BCChatSuggestRemoteViewController *)self bizItem];
+    [(BCChatSuggestRemoteViewController *)self setHadBizItemWhenPhoneNumberUIPresented:bizItem != 0];
   }
 
   [(BCChatSuggestRemoteViewController *)self setPhoneNumberUIPresented:1];
-  v4 = [(BCChatSuggestRemoteViewController *)self bizItem];
+  bizItem2 = [(BCChatSuggestRemoteViewController *)self bizItem];
 
-  if (v4 && ![(BCChatSuggestRemoteViewController *)self phoneNumberDisplayLogged])
+  if (bizItem2 && ![(BCChatSuggestRemoteViewController *)self phoneNumberDisplayLogged])
   {
     [(BCChatSuggestRemoteViewController *)self setPhoneNumberDisplayLogged:1];
     [(BCChatSuggestRemoteViewController *)self phoneNumberUIPresentedTime];
     v6 = v5;
     [(BCChatSuggestRemoteViewController *)self viewControllerDidLoadTime];
     v8 = ((v6 - v7) * 1000.0);
-    v9 = [(BCChatSuggestRemoteViewController *)self hadBizItemWhenPhoneNumberUIPresented];
-    v10 = [(BCChatSuggestRemoteViewController *)self bizItem];
-    [BCCoreAnalytics logEventForView:@"com.apple.BusinessChatViewService.PhoneNumberAppears" bizItem:v10 bizItemReturnedAfterAction:v9 ^ 1 latency:v8];
+    hadBizItemWhenPhoneNumberUIPresented = [(BCChatSuggestRemoteViewController *)self hadBizItemWhenPhoneNumberUIPresented];
+    bizItem3 = [(BCChatSuggestRemoteViewController *)self bizItem];
+    [BCCoreAnalytics logEventForView:@"com.apple.BusinessChatViewService.PhoneNumberAppears" bizItem:bizItem3 bizItemReturnedAfterAction:hadBizItemWhenPhoneNumberUIPresented ^ 1 latency:v8];
   }
 }
 
@@ -942,7 +942,7 @@ LABEL_12:
   return ((v3 - v4) * 1000.0);
 }
 
-- (void)brandedHeaderViewController:(id)a3 logoFetchingWillBeginForBusinessItem:(id)a4
+- (void)brandedHeaderViewController:(id)controller logoFetchingWillBeginForBusinessItem:(id)item
 {
   v5 = sub_10000BC3C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -953,10 +953,10 @@ LABEL_12:
   }
 
   v6 = sub_10000BC3C();
-  v7 = [(BCChatSuggestRemoteViewController *)self tapId];
-  if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  tapId = [(BCChatSuggestRemoteViewController *)self tapId];
+  if (tapId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v8 = v7;
+    v8 = tapId;
     if (os_signpost_enabled(v6))
     {
       LOWORD(v9) = 0;
@@ -965,7 +965,7 @@ LABEL_12:
   }
 }
 
-- (void)brandedHeaderViewController:(id)a3 logoFetchingDidFinishForBusinessItem:(id)a4 success:(BOOL)a5
+- (void)brandedHeaderViewController:(id)controller logoFetchingDidFinishForBusinessItem:(id)item success:(BOOL)success
 {
   v6 = sub_10000BC3C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -976,10 +976,10 @@ LABEL_12:
   }
 
   v7 = sub_10000BC3C();
-  v8 = [(BCChatSuggestRemoteViewController *)self tapId];
-  if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  tapId = [(BCChatSuggestRemoteViewController *)self tapId];
+  if (tapId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v9 = v8;
+    v9 = tapId;
     if (os_signpost_enabled(v7))
     {
       LOWORD(v16) = 0;
@@ -988,10 +988,10 @@ LABEL_12:
   }
 
   v10 = sub_10000BC3C();
-  v11 = [(BCChatSuggestRemoteViewController *)self tapId];
-  if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  tapId2 = [(BCChatSuggestRemoteViewController *)self tapId];
+  if (tapId2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v12 = v11;
+    v12 = tapId2;
     if (os_signpost_enabled(v10))
     {
       LOWORD(v16) = 0;
@@ -1000,10 +1000,10 @@ LABEL_12:
   }
 
   v13 = sub_10000BC3C();
-  v14 = [(BCChatSuggestRemoteViewController *)self tapId];
-  if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  tapId3 = [(BCChatSuggestRemoteViewController *)self tapId];
+  if (tapId3 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v15 = v14;
+    v15 = tapId3;
     if (os_signpost_enabled(v13))
     {
       LOWORD(v16) = 0;

@@ -1,26 +1,26 @@
 @interface CCHomeServiceArea
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCHomeServiceArea)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCHomeServiceArea)initWithName:(id)a3 areaIdentifier:(id)a4 associatedMapIdentifier:(id)a5 error:(id *)a6;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCHomeServiceArea)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCHomeServiceArea)initWithName:(id)name areaIdentifier:(id)identifier associatedMapIdentifier:(id)mapIdentifier error:(id *)error;
 - (NSString)name;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCHomeServiceArea
 
-- (CCHomeServiceArea)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCHomeServiceArea)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"name"];
-    v10 = [v6 objectForKeyedSubscript:@"areaIdentifier"];
-    v11 = [v6 objectForKeyedSubscript:@"associatedMapIdentifier"];
-    v12 = [[CCHomeServiceArea alloc] initWithName:v9 areaIdentifier:v10 associatedMapIdentifier:v11 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"name"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"areaIdentifier"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"associatedMapIdentifier"];
+    v12 = [[CCHomeServiceArea alloc] initWithName:v9 areaIdentifier:v10 associatedMapIdentifier:v11 error:error];
   }
 
   else
@@ -37,8 +37,8 @@
   v3 = objc_opt_new();
   if (self->_name)
   {
-    v4 = [(CCHomeServiceArea *)self name];
-    [v3 setObject:v4 forKeyedSubscript:@"name"];
+    name = [(CCHomeServiceArea *)self name];
+    [v3 setObject:name forKeyedSubscript:@"name"];
   }
 
   if (self->_hasAreaIdentifier)
@@ -58,25 +58,25 @@
   return v7;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v8 = a3;
+  blockCopy = block;
   if (self->_name)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:17037 stringValue:self->_name];
-    v8[2](v8, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_hasAreaIdentifier)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:17038 uint32Value:self->_areaIdentifier];
-    v8[2](v8, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_hasAssociatedMapIdentifier)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:17039 uint32Value:self->_associatedMapIdentifier];
-    v8[2](v8, v7);
+    blockCopy[2](blockCopy, v7);
   }
 }
 
@@ -87,10 +87,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   v10 = MEMORY[0x1E6993AA8];
@@ -101,7 +101,7 @@
 
   v11 = 0;
   v12 = MEMORY[0x1E6993AA0];
-  v49 = self;
+  selfCopy = self;
   while (2)
   {
     if (*&v7[*v10])
@@ -237,14 +237,14 @@ LABEL_44:
           {
             v39 = objc_opt_class();
             NSStringFromClass(v39);
-            v40 = a4;
-            v42 = v41 = v6;
+            errorCopy = error;
+            v42 = v41 = dataCopy;
             v43 = *&v7[*v10];
             v11 = CCSkipFieldErrorForMessage();
 
-            v6 = v41;
-            a4 = v40;
-            self = v49;
+            dataCopy = v41;
+            error = errorCopy;
+            self = selfCopy;
           }
 
 LABEL_51:
@@ -332,13 +332,13 @@ LABEL_58:
   return v47;
 }
 
-- (CCHomeServiceArea)initWithName:(id)a3 areaIdentifier:(id)a4 associatedMapIdentifier:(id)a5 error:(id *)a6
+- (CCHomeServiceArea)initWithName:(id)name areaIdentifier:(id)identifier associatedMapIdentifier:(id)mapIdentifier error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  nameCopy = name;
+  identifierCopy = identifier;
+  mapIdentifierCopy = mapIdentifier;
   v13 = objc_opt_new();
-  if (v10)
+  if (nameCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -356,7 +356,7 @@ LABEL_58:
     v15 = 0;
   }
 
-  if (v11)
+  if (identifierCopy)
   {
     objc_opt_class();
     v16 = CCValidateIsInstanceOfExpectedClass();
@@ -365,14 +365,14 @@ LABEL_58:
     if (!v16)
     {
       CCSetError();
-      v20 = 0;
+      selfCopy = 0;
       v15 = v17;
       goto LABEL_15;
     }
 
-    [v11 unsignedIntValue];
+    [identifierCopy unsignedIntValue];
     CCPBDataWriterWriteUint32Field();
-    if (!v12)
+    if (!mapIdentifierCopy)
     {
       goto LABEL_8;
     }
@@ -381,7 +381,7 @@ LABEL_58:
   }
 
   v17 = v15;
-  if (v12)
+  if (mapIdentifierCopy)
   {
 LABEL_10:
     objc_opt_class();
@@ -390,27 +390,27 @@ LABEL_10:
 
     if (v18)
     {
-      [v12 unsignedIntValue];
+      [mapIdentifierCopy unsignedIntValue];
       CCPBDataWriterWriteUint32Field();
       goto LABEL_12;
     }
 
 LABEL_13:
     CCSetError();
-    v20 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
 LABEL_8:
   v15 = v17;
 LABEL_12:
-  v19 = [v13 immutableData];
-  self = [(CCItemMessage *)self initWithData:v19 error:a6];
+  immutableData = [v13 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v20 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v20;
+  return selfCopy;
 }
 
 @end

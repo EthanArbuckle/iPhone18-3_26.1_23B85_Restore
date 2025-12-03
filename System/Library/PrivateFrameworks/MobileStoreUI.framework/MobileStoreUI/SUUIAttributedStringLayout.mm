@@ -1,33 +1,33 @@
 @interface SUUIAttributedStringLayout
 - (CGSize)boundingSize;
-- (SUUIAttributedStringLayout)initWithLayoutRequest:(id)a3;
+- (SUUIAttributedStringLayout)initWithLayoutRequest:(id)request;
 - (UIEdgeInsets)edgeInsetsForShadow;
 @end
 
 @implementation SUUIAttributedStringLayout
 
-- (SUUIAttributedStringLayout)initWithLayoutRequest:(id)a3
+- (SUUIAttributedStringLayout)initWithLayoutRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v61.receiver = self;
   v61.super_class = SUUIAttributedStringLayout;
   v5 = [(SUUIAttributedStringLayout *)&v61 init];
   if (v5)
   {
-    v6 = [v4 attributedString];
+    attributedString = [requestCopy attributedString];
     attributedString = v5->_attributedString;
-    v5->_attributedString = v6;
+    v5->_attributedString = attributedString;
 
     v8 = objc_alloc_init(MEMORY[0x277D74260]);
     context = v5->_context;
     v5->_context = v8;
 
-    v10 = [v4 numberOfLines];
+    numberOfLines = [requestCopy numberOfLines];
     [(NSStringDrawingContext *)v5->_context setCachesLayout:1];
-    [(NSStringDrawingContext *)v5->_context setMaximumNumberOfLines:v10];
-    -[NSStringDrawingContext setWantsBaselineOffset:](v5->_context, "setWantsBaselineOffset:", [v4 wantsBaselineOffset]);
-    [(NSStringDrawingContext *)v5->_context setWrapsForTruncationMode:v10 != 1];
-    [v4 width];
+    [(NSStringDrawingContext *)v5->_context setMaximumNumberOfLines:numberOfLines];
+    -[NSStringDrawingContext setWantsBaselineOffset:](v5->_context, "setWantsBaselineOffset:", [requestCopy wantsBaselineOffset]);
+    [(NSStringDrawingContext *)v5->_context setWrapsForTruncationMode:numberOfLines != 1];
+    [requestCopy width];
     v12 = v11;
     [(NSAttributedString *)v5->_attributedString boundingRectWithSize:33 options:v5->_context context:?];
     v15 = v14;
@@ -44,8 +44,8 @@
       [SUUIAttributedStringLayout initWithLayoutRequest:];
     }
 
-    v17 = [(NSAttributedString *)v5->_attributedString string];
-    v18 = [v17 rangeOfCharacterFromSet:initWithLayoutRequest__sTallCharactersSet];
+    string = [(NSAttributedString *)v5->_attributedString string];
+    v18 = [string rangeOfCharacterFromSet:initWithLayoutRequest__sTallCharactersSet];
 
     v19 = MEMORY[0x277D768C8];
     if (v18 != 0x7FFFFFFFFFFFFFFFLL)

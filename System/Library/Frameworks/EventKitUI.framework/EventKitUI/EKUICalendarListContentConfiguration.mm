@@ -1,5 +1,5 @@
 @interface EKUICalendarListContentConfiguration
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)makeContentView;
 @end
 
@@ -13,7 +13,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = EKUICalendarListContentConfiguration;

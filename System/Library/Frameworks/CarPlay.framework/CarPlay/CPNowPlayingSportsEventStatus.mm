@@ -1,32 +1,32 @@
 @interface CPNowPlayingSportsEventStatus
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToGameStatus:(id)a3;
-- (CPNowPlayingSportsEventStatus)initWithCoder:(id)a3;
-- (CPNowPlayingSportsEventStatus)initWithEventStatusText:(id)a3 eventStatusImage:(id)a4 eventClock:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToGameStatus:(id)status;
+- (CPNowPlayingSportsEventStatus)initWithCoder:(id)coder;
+- (CPNowPlayingSportsEventStatus)initWithEventStatusText:(id)text eventStatusImage:(id)image eventClock:(id)clock;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPNowPlayingSportsEventStatus
 
-- (CPNowPlayingSportsEventStatus)initWithEventStatusText:(id)a3 eventStatusImage:(id)a4 eventClock:(id)a5
+- (CPNowPlayingSportsEventStatus)initWithEventStatusText:(id)text eventStatusImage:(id)image eventClock:(id)clock
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  textCopy = text;
+  imageCopy = image;
+  clockCopy = clock;
   v17.receiver = self;
   v17.super_class = CPNowPlayingSportsEventStatus;
   v11 = [(CPNowPlayingSportsEventStatus *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [textCopy copy];
     eventStatusText = v11->_eventStatusText;
     v11->_eventStatusText = v12;
 
-    objc_storeStrong(&v11->_eventClock, a5);
-    if (v9)
+    objc_storeStrong(&v11->_eventClock, clock);
+    if (imageCopy)
     {
-      v14 = CPImageByScalingImageToSize(v9, 30.0, 30.0);
+      v14 = CPImageByScalingImageToSize(imageCopy, 30.0, 30.0);
       eventStatusImage = v11->_eventStatusImage;
       v11->_eventStatusImage = v14;
     }
@@ -35,25 +35,25 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CPNowPlayingSportsEventStatus *)self isEqualToGameStatus:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CPNowPlayingSportsEventStatus *)self isEqualToGameStatus:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToGameStatus:(id)a3
+- (BOOL)isEqualToGameStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(CPNowPlayingSportsEventStatus *)self eventClock];
+  statusCopy = status;
+  eventClock = [(CPNowPlayingSportsEventStatus *)self eventClock];
 
-  if (v5)
+  if (eventClock)
   {
-    v6 = [(CPNowPlayingSportsEventStatus *)self eventClock];
-    v7 = [v4 eventClock];
-    v8 = [v6 isEqual:v7];
+    eventClock2 = [(CPNowPlayingSportsEventStatus *)self eventClock];
+    eventClock3 = [statusCopy eventClock];
+    v8 = [eventClock2 isEqual:eventClock3];
 
     if (!v8)
     {
@@ -61,16 +61,16 @@
     }
   }
 
-  v9 = [(CPNowPlayingSportsEventStatus *)self eventStatusText];
+  eventStatusText = [(CPNowPlayingSportsEventStatus *)self eventStatusText];
 
-  if (!v9)
+  if (!eventStatusText)
   {
     goto LABEL_5;
   }
 
-  v10 = [(CPNowPlayingSportsEventStatus *)self eventStatusText];
-  v11 = [v4 eventStatusText];
-  v12 = [v10 isEqualToArray:v11];
+  eventStatusText2 = [(CPNowPlayingSportsEventStatus *)self eventStatusText];
+  eventStatusText3 = [statusCopy eventStatusText];
+  v12 = [eventStatusText2 isEqualToArray:eventStatusText3];
 
   if (!v12)
   {
@@ -81,13 +81,13 @@ LABEL_7:
   else
   {
 LABEL_5:
-    v13 = [(CPNowPlayingSportsEventStatus *)self eventStatusImage];
+    eventStatusImage = [(CPNowPlayingSportsEventStatus *)self eventStatusImage];
 
-    if (v13)
+    if (eventStatusImage)
     {
-      v14 = [(CPNowPlayingSportsEventStatus *)self eventStatusImage];
-      v15 = [v4 eventStatusImage];
-      v16 = [v14 isEqual:v15];
+      eventStatusImage2 = [(CPNowPlayingSportsEventStatus *)self eventStatusImage];
+      eventStatusImage3 = [statusCopy eventStatusImage];
+      v16 = [eventStatusImage2 isEqual:eventStatusImage3];
     }
 
     else
@@ -101,36 +101,36 @@ LABEL_5:
 
 - (unint64_t)hash
 {
-  v3 = [(CPNowPlayingSportsEventStatus *)self eventClock];
-  v4 = [v3 hash];
-  v5 = [(CPNowPlayingSportsEventStatus *)self eventStatusText];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(CPNowPlayingSportsEventStatus *)self eventStatusImage];
-  v8 = [v7 hash];
+  eventClock = [(CPNowPlayingSportsEventStatus *)self eventClock];
+  v4 = [eventClock hash];
+  eventStatusText = [(CPNowPlayingSportsEventStatus *)self eventStatusText];
+  v6 = [eventStatusText hash] ^ v4;
+  eventStatusImage = [(CPNowPlayingSportsEventStatus *)self eventStatusImage];
+  v8 = [eventStatusImage hash];
 
   return v6 ^ v8;
 }
 
-- (CPNowPlayingSportsEventStatus)initWithCoder:(id)a3
+- (CPNowPlayingSportsEventStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CPNowPlayingSportsEventStatus;
   v5 = [(CPNowPlayingSportsEventStatus *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPNowPlayingModeSportsEventStatusClockKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPNowPlayingModeSportsEventStatusClockKey"];
     eventClock = v5->_eventClock;
     v5->_eventClock = v6;
 
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"kCPNowPlayingModeSportsEventStatusTextKey"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"kCPNowPlayingModeSportsEventStatusTextKey"];
     eventStatusText = v5->_eventStatusText;
     v5->_eventStatusText = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPNowPlayingModeSportsEventtatusImageKey"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPNowPlayingModeSportsEventtatusImageKey"];
     eventStatusImage = v5->_eventStatusImage;
     v5->_eventStatusImage = v13;
   }
@@ -138,17 +138,17 @@ LABEL_5:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CPNowPlayingSportsEventStatus *)self eventClock];
-  [v4 encodeObject:v5 forKey:@"kCPNowPlayingModeSportsEventStatusClockKey"];
+  coderCopy = coder;
+  eventClock = [(CPNowPlayingSportsEventStatus *)self eventClock];
+  [coderCopy encodeObject:eventClock forKey:@"kCPNowPlayingModeSportsEventStatusClockKey"];
 
-  v6 = [(CPNowPlayingSportsEventStatus *)self eventStatusText];
-  [v4 encodeObject:v6 forKey:@"kCPNowPlayingModeSportsEventStatusTextKey"];
+  eventStatusText = [(CPNowPlayingSportsEventStatus *)self eventStatusText];
+  [coderCopy encodeObject:eventStatusText forKey:@"kCPNowPlayingModeSportsEventStatusTextKey"];
 
-  v7 = [(CPNowPlayingSportsEventStatus *)self eventStatusImage];
-  [v4 encodeObject:v7 forKey:@"kCPNowPlayingModeSportsEventtatusImageKey"];
+  eventStatusImage = [(CPNowPlayingSportsEventStatus *)self eventStatusImage];
+  [coderCopy encodeObject:eventStatusImage forKey:@"kCPNowPlayingModeSportsEventtatusImageKey"];
 }
 
 @end

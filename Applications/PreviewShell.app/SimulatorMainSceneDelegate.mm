@@ -1,14 +1,14 @@
 @interface SimulatorMainSceneDelegate
-- (void)setWindow:(id)a3;
+- (void)setWindow:(id)window;
 @end
 
 @implementation SimulatorMainSceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC12PreviewShell26SimulatorMainSceneDelegate_window);
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC12PreviewShell26SimulatorMainSceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC12PreviewShell26SimulatorMainSceneDelegate_window) = window;
+  windowCopy = window;
 }
 
 @end

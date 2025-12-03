@@ -1,6 +1,6 @@
 @interface MTLToolsDynamicLibrary
-- (BOOL)serializeToURL:(id)a3 error:(id *)a4;
-- (BOOL)serializeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
+- (BOOL)serializeToURL:(id)l error:(id *)error;
+- (BOOL)serializeToURL:(id)l options:(unint64_t)options error:(id *)error;
 - (BOOL)shaderValidationEnabled;
 - (MTLDebugInstrumentationData)debugInstrumentationData;
 - (MTLDevice)device;
@@ -14,27 +14,27 @@
 - (OS_dispatch_data)binaryData;
 - (OS_dispatch_data)reflectionData;
 - (const)libraryUUID;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)formattedDescription:(unint64_t)description;
 - (void)dealloc;
-- (void)setDebugInstrumentationData:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)setRelocations:(id)a3;
+- (void)setDebugInstrumentationData:(id)data;
+- (void)setLabel:(id)label;
+- (void)setRelocations:(id)relocations;
 @end
 
 @implementation MTLToolsDynamicLibrary
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setLabel:a3];
+  [baseObject setLabel:label];
 }
 
 - (MTLDevice)device
@@ -54,119 +54,119 @@
 
 - (OS_dispatch_data)binaryData
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 binaryData];
+  return [baseObject binaryData];
 }
 
 - (OS_dispatch_data)reflectionData
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 reflectionData];
+  return [baseObject reflectionData];
 }
 
 - (NSArray)exportedFunctions
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 exportedFunctions];
+  return [baseObject exportedFunctions];
 }
 
 - (NSArray)exportedVariables
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 exportedVariables];
+  return [baseObject exportedVariables];
 }
 
 - (NSArray)importedSymbols
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 importedSymbols];
+  return [baseObject importedSymbols];
 }
 
 - (NSArray)importedLibraries
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 importedLibraries];
+  return [baseObject importedLibraries];
 }
 
 - (NSString)installName
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 installName];
+  return [baseObject installName];
 }
 
 - (NSString)libraryPath
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 libraryPath];
+  return [baseObject libraryPath];
 }
 
 - (const)libraryUUID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 libraryUUID];
+  return [baseObject libraryUUID];
 }
 
-- (BOOL)serializeToURL:(id)a3 error:(id *)a4
+- (BOOL)serializeToURL:(id)l error:(id *)error
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 serializeToURL:a3 error:a4];
+  return [baseObject serializeToURL:l error:error];
 }
 
-- (BOOL)serializeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)serializeToURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v8 serializeToURL:a3 options:a4 error:a5];
+  return [baseObject serializeToURL:l options:options error:error];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 formattedDescription:a3];
+  return [baseObject formattedDescription:description];
 }
 
-- (void)setRelocations:(id)a3
+- (void)setRelocations:(id)relocations
 {
   relocations = self->_relocations;
-  if (relocations != a3)
+  if (relocations != relocations)
   {
 
-    self->_relocations = [a3 copy];
-    v6 = [MTLToolsDevice newUnwrappedMTLRelocations:a3];
+    self->_relocations = [relocations copy];
+    v6 = [MTLToolsDevice newUnwrappedMTLRelocations:relocations];
     [-[MTLToolsObject baseObject](self "baseObject")];
   }
 }
 
 - (BOOL)shaderValidationEnabled
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 shaderValidationEnabled];
+  return [baseObject shaderValidationEnabled];
 }
 
 - (MTLDebugInstrumentationData)debugInstrumentationData
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 debugInstrumentationData];
+  return [baseObject debugInstrumentationData];
 }
 
-- (void)setDebugInstrumentationData:(id)a3
+- (void)setDebugInstrumentationData:(id)data
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setDebugInstrumentationData:a3];
+  [baseObject setDebugInstrumentationData:data];
 }
 
 - (void)dealloc

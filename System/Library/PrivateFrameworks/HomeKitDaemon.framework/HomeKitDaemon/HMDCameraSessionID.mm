@@ -1,121 +1,121 @@
 @interface HMDCameraSessionID
 + (NSNumber)uptimeNumberInMilliseconds;
-+ (id)hostProcessBundleIdentifierForMessage:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HMDCameraSessionID)initWithSessionID:(id)a3 hostProcessBundleIdentifier:(id)a4 isSPIClient:(BOOL)a5 deviceSectionName:(id)a6 description:(id)a7;
-- (HMDCameraSessionID)initWithSessionID:(id)a3 message:(id)a4 description:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)hostProcessBundleIdentifierForMessage:(id)message;
+- (BOOL)isEqual:(id)equal;
+- (HMDCameraSessionID)initWithSessionID:(id)d hostProcessBundleIdentifier:(id)identifier isSPIClient:(BOOL)client deviceSectionName:(id)name description:(id)description;
+- (HMDCameraSessionID)initWithSessionID:(id)d message:(id)message description:(id)description;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)addParameterFor:(id)a3 value:(id)a4;
-- (void)markMilestoneFor:(id)a3;
-- (void)markMilestoneFor:(id)a3 withTimestamp:(id)a4;
-- (void)markMilestoneForPath:(id)a3;
-- (void)setParameterFor:(id)a3 value:(id)a4;
-- (void)setParameterForPath:(id)a3 value:(id)a4;
+- (void)addParameterFor:(id)for value:(id)value;
+- (void)markMilestoneFor:(id)for;
+- (void)markMilestoneFor:(id)for withTimestamp:(id)timestamp;
+- (void)markMilestoneForPath:(id)path;
+- (void)setParameterFor:(id)for value:(id)value;
+- (void)setParameterForPath:(id)path value:(id)value;
 @end
 
 @implementation HMDCameraSessionID
 
-- (void)addParameterFor:(id)a3 value:(id)a4
+- (void)addParameterFor:(id)for value:(id)value
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(HMDCameraSessionID *)self deviceMilestones];
-  v8 = [v7 objectForKeyedSubscript:v13];
+  forCopy = for;
+  valueCopy = value;
+  deviceMilestones = [(HMDCameraSessionID *)self deviceMilestones];
+  v8 = [deviceMilestones objectForKeyedSubscript:forCopy];
 
   if (!v8)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
-    v10 = [(HMDCameraSessionID *)self deviceMilestones];
-    [v10 setObject:v9 forKeyedSubscript:v13];
+    array = [MEMORY[0x277CBEB18] array];
+    deviceMilestones2 = [(HMDCameraSessionID *)self deviceMilestones];
+    [deviceMilestones2 setObject:array forKeyedSubscript:forCopy];
   }
 
-  v11 = [(HMDCameraSessionID *)self deviceMilestones];
-  v12 = [v11 objectForKeyedSubscript:v13];
-  [v12 addObject:v6];
+  deviceMilestones3 = [(HMDCameraSessionID *)self deviceMilestones];
+  v12 = [deviceMilestones3 objectForKeyedSubscript:forCopy];
+  [v12 addObject:valueCopy];
 }
 
-- (void)setParameterForPath:(id)a3 value:(id)a4
+- (void)setParameterForPath:(id)path value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDCameraSessionID *)self deviceMilestones];
-  v9 = [v7 firstObject];
-  v11 = [v8 objectForKeyedSubscript:v9];
+  valueCopy = value;
+  pathCopy = path;
+  deviceMilestones = [(HMDCameraSessionID *)self deviceMilestones];
+  firstObject = [pathCopy firstObject];
+  v11 = [deviceMilestones objectForKeyedSubscript:firstObject];
 
-  v10 = [v7 lastObject];
+  lastObject = [pathCopy lastObject];
 
-  [v11 setObject:v6 forKeyedSubscript:v10];
+  [v11 setObject:valueCopy forKeyedSubscript:lastObject];
 }
 
-- (void)setParameterFor:(id)a3 value:(id)a4
+- (void)setParameterFor:(id)for value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDCameraSessionID *)self deviceMilestones];
-  [v8 setObject:v6 forKeyedSubscript:v7];
+  valueCopy = value;
+  forCopy = for;
+  deviceMilestones = [(HMDCameraSessionID *)self deviceMilestones];
+  [deviceMilestones setObject:valueCopy forKeyedSubscript:forCopy];
 }
 
-- (void)markMilestoneForPath:(id)a3
+- (void)markMilestoneForPath:(id)path
 {
-  v11 = a3;
-  v4 = [(HMDCameraSessionID *)self deviceMilestones];
-  v5 = [v11 firstObject];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  pathCopy = path;
+  deviceMilestones = [(HMDCameraSessionID *)self deviceMilestones];
+  firstObject = [pathCopy firstObject];
+  dictionary = [deviceMilestones objectForKeyedSubscript:firstObject];
 
-  if (!v6)
+  if (!dictionary)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
-    v7 = [(HMDCameraSessionID *)self deviceMilestones];
-    v8 = [v11 firstObject];
-    [v7 setObject:v6 forKeyedSubscript:v8];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    deviceMilestones2 = [(HMDCameraSessionID *)self deviceMilestones];
+    firstObject2 = [pathCopy firstObject];
+    [deviceMilestones2 setObject:dictionary forKeyedSubscript:firstObject2];
   }
 
-  v9 = [objc_opt_class() uptimeNumberInMilliseconds];
-  v10 = [v11 lastObject];
-  [v6 setObject:v9 forKeyedSubscript:v10];
+  uptimeNumberInMilliseconds = [objc_opt_class() uptimeNumberInMilliseconds];
+  lastObject = [pathCopy lastObject];
+  [dictionary setObject:uptimeNumberInMilliseconds forKeyedSubscript:lastObject];
 }
 
-- (void)markMilestoneFor:(id)a3 withTimestamp:(id)a4
+- (void)markMilestoneFor:(id)for withTimestamp:(id)timestamp
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDCameraSessionID *)self deviceMilestones];
-  [v8 setObject:v6 forKeyedSubscript:v7];
+  timestampCopy = timestamp;
+  forCopy = for;
+  deviceMilestones = [(HMDCameraSessionID *)self deviceMilestones];
+  [deviceMilestones setObject:timestampCopy forKeyedSubscript:forCopy];
 }
 
-- (void)markMilestoneFor:(id)a3
+- (void)markMilestoneFor:(id)for
 {
-  v4 = a3;
-  v5 = [objc_opt_class() uptimeNumberInMilliseconds];
-  [(HMDCameraSessionID *)self markMilestoneFor:v4 withTimestamp:v5];
+  forCopy = for;
+  uptimeNumberInMilliseconds = [objc_opt_class() uptimeNumberInMilliseconds];
+  [(HMDCameraSessionID *)self markMilestoneFor:forCopy withTimestamp:uptimeNumberInMilliseconds];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(HMDCameraSessionID *)self sessionID];
-  v6 = [(HMDCameraSessionID *)self hostProcessBundleIdentifier];
-  v7 = [(HMDCameraSessionID *)self isSPIClient];
-  v8 = [(HMDCameraSessionID *)self deviceSectionName];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  sessionID = [(HMDCameraSessionID *)self sessionID];
+  hostProcessBundleIdentifier = [(HMDCameraSessionID *)self hostProcessBundleIdentifier];
+  isSPIClient = [(HMDCameraSessionID *)self isSPIClient];
+  deviceSectionName = [(HMDCameraSessionID *)self deviceSectionName];
   v9 = [(HMDCameraSessionID *)self description];
-  v10 = [v4 initWithSessionID:v5 hostProcessBundleIdentifier:v6 isSPIClient:v7 deviceSectionName:v8 description:v9];
+  v10 = [v4 initWithSessionID:sessionID hostProcessBundleIdentifier:hostProcessBundleIdentifier isSPIClient:isSPIClient deviceSectionName:deviceSectionName description:v9];
 
   return v10;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMDCameraSessionID *)self sessionID];
-  v3 = [v2 hash];
+  sessionID = [(HMDCameraSessionID *)self sessionID];
+  v3 = [sessionID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -125,9 +125,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HMDCameraSessionID *)self sessionID];
-      v6 = [(HMDCameraSessionID *)v4 sessionID];
-      v7 = [v5 isEqualToString:v6];
+      sessionID = [(HMDCameraSessionID *)self sessionID];
+      sessionID2 = [(HMDCameraSessionID *)equalCopy sessionID];
+      v7 = [sessionID isEqualToString:sessionID2];
     }
 
     else
@@ -139,34 +139,34 @@
   return v7;
 }
 
-- (HMDCameraSessionID)initWithSessionID:(id)a3 hostProcessBundleIdentifier:(id)a4 isSPIClient:(BOOL)a5 deviceSectionName:(id)a6 description:(id)a7
+- (HMDCameraSessionID)initWithSessionID:(id)d hostProcessBundleIdentifier:(id)identifier isSPIClient:(BOOL)client deviceSectionName:(id)name description:(id)description
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  if (!v13)
+  dCopy = d;
+  identifierCopy = identifier;
+  nameCopy = name;
+  descriptionCopy = description;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v14)
+  if (!identifierCopy)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v15)
+  if (!nameCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v17 = v16;
-  if (!v16)
+  v17 = descriptionCopy;
+  if (!descriptionCopy)
   {
 LABEL_11:
     v31 = _HMFPreconditionFailure();
@@ -179,13 +179,13 @@ LABEL_11:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_sessionID, a3);
-    v20 = [v14 copy];
+    objc_storeStrong(&v18->_sessionID, d);
+    v20 = [identifierCopy copy];
     hostProcessBundleIdentifier = v19->_hostProcessBundleIdentifier;
     v19->_hostProcessBundleIdentifier = v20;
 
-    v19->_spiClient = a5;
-    v22 = [v15 copy];
+    v19->_spiClient = client;
+    v22 = [nameCopy copy];
     deviceSectionName = v19->_deviceSectionName;
     v19->_deviceSectionName = v22;
 
@@ -193,13 +193,13 @@ LABEL_11:
     description = v19->_description;
     v19->_description = v24;
 
-    v26 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     deviceMilestones = v19->_deviceMilestones;
-    v19->_deviceMilestones = v26;
+    v19->_deviceMilestones = dictionary;
 
-    v28 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     milestones = v19->_milestones;
-    v19->_milestones = v28;
+    v19->_milestones = dictionary2;
 
     [(NSMutableDictionary *)v19->_milestones setObject:v19->_deviceMilestones forKeyedSubscript:v19->_deviceSectionName];
   }
@@ -207,40 +207,40 @@ LABEL_11:
   return v19;
 }
 
-- (HMDCameraSessionID)initWithSessionID:(id)a3 message:(id)a4 description:(id)a5
+- (HMDCameraSessionID)initWithSessionID:(id)d message:(id)message description:(id)description
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  dCopy = d;
+  messageCopy = message;
+  descriptionCopy = description;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_13;
   }
 
-  if (!v9)
+  if (!messageCopy)
   {
 LABEL_13:
     _HMFPreconditionFailure();
     goto LABEL_14;
   }
 
-  v11 = v10;
-  if (!v10)
+  v11 = descriptionCopy;
+  if (!descriptionCopy)
   {
 LABEL_14:
     v18 = _HMFPreconditionFailure();
     return +[(HMDCameraSessionID *)v18];
   }
 
-  v12 = [HMDCameraSessionID hostProcessBundleIdentifierForMessage:v9];
-  v13 = [v9 isEntitledForSPIAccess];
+  v12 = [HMDCameraSessionID hostProcessBundleIdentifierForMessage:messageCopy];
+  isEntitledForSPIAccess = [messageCopy isEntitledForSPIAccess];
   if (isWatch())
   {
     v14 = kCameraWatch;
   }
 
-  else if (isTVOSDevice() || isiPadDevice() && ([v9 isRemote] & 1) != 0)
+  else if (isTVOSDevice() || isiPadDevice() && ([messageCopy isRemote] & 1) != 0)
   {
     v14 = kCameraResident;
   }
@@ -251,7 +251,7 @@ LABEL_14:
   }
 
   v15 = *v14;
-  v16 = [(HMDCameraSessionID *)self initWithSessionID:v8 hostProcessBundleIdentifier:v12 isSPIClient:v13 deviceSectionName:v15 description:v11];
+  v16 = [(HMDCameraSessionID *)self initWithSessionID:dCopy hostProcessBundleIdentifier:v12 isSPIClient:isEntitledForSPIAccess deviceSectionName:v15 description:v11];
 
   return v16;
 }
@@ -259,15 +259,15 @@ LABEL_14:
 + (NSNumber)uptimeNumberInMilliseconds
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [a1 uptimeInMilliseconds];
+  uptimeInMilliseconds = [self uptimeInMilliseconds];
 
-  return [v2 numberWithInteger:v3];
+  return [v2 numberWithInteger:uptimeInMilliseconds];
 }
 
-+ (id)hostProcessBundleIdentifierForMessage:(id)a3
++ (id)hostProcessBundleIdentifierForMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 stringForKey:@"kCameraSessionApplicationID"];
+  messageCopy = message;
+  v4 = [messageCopy stringForKey:@"kCameraSessionApplicationID"];
   v5 = v4;
   if (v4)
   {
@@ -275,10 +275,10 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v7 = [v3 companionAppBundleIdentifier];
-  if (v7)
+  companionAppBundleIdentifier = [messageCopy companionAppBundleIdentifier];
+  if (companionAppBundleIdentifier)
   {
-    v6 = v7;
+    v6 = companionAppBundleIdentifier;
     if (!isWatch())
     {
       goto LABEL_14;
@@ -305,12 +305,12 @@ LABEL_14:
 
   else
   {
-    v10 = [v3 clientIdentifier];
-    v9 = v10;
+    clientIdentifier = [messageCopy clientIdentifier];
+    v9 = clientIdentifier;
     v11 = @"kDefaultCameraApplicationIdentifier";
-    if (v10)
+    if (clientIdentifier)
     {
-      v11 = v10;
+      v11 = clientIdentifier;
     }
 
     v6 = v11;

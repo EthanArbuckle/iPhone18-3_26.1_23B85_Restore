@@ -1,11 +1,11 @@
 @interface PSOpaqueStream
-+ (id)opaqueStreamWithKey:(char *)a3 allocator:(void *)a4 deallocator:(void *)a5;
-+ (id)opaqueStreamWithResourceKey:(id)a3 allocator:(void *)a4 deallocator:(void *)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validate:(id *)a3;
++ (id)opaqueStreamWithKey:(char *)key allocator:(void *)allocator deallocator:(void *)deallocator;
++ (id)opaqueStreamWithResourceKey:(id)key allocator:(void *)allocator deallocator:(void *)deallocator;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validate:(id *)validate;
 - (PSOpaqueStream)init;
-- (PSOpaqueStream)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PSOpaqueStream)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PSOpaqueStream
@@ -24,30 +24,30 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = PSOpaqueStream;
-  [(PSResourceStream *)&v3 encodeWithCoder:a3];
+  [(PSResourceStream *)&v3 encodeWithCoder:coder];
 }
 
-- (PSOpaqueStream)initWithCoder:(id)a3
+- (PSOpaqueStream)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = PSOpaqueStream;
-  return [(PSResourceStream *)&v4 initWithCoder:a3];
+  return [(PSResourceStream *)&v4 initWithCoder:coder];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v11.receiver = self;
@@ -72,27 +72,27 @@
   return v8;
 }
 
-+ (id)opaqueStreamWithKey:(char *)a3 allocator:(void *)a4 deallocator:(void *)a5
++ (id)opaqueStreamWithKey:(char *)key allocator:(void *)allocator deallocator:(void *)deallocator
 {
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", a3];
-  v8 = [PSOpaqueStream opaqueStreamWithResourceKey:v7 allocator:a4 deallocator:a5];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", key];
+  v8 = [PSOpaqueStream opaqueStreamWithResourceKey:v7 allocator:allocator deallocator:deallocator];
 
   return v8;
 }
 
-+ (id)opaqueStreamWithResourceKey:(id)a3 allocator:(void *)a4 deallocator:(void *)a5
++ (id)opaqueStreamWithResourceKey:(id)key allocator:(void *)allocator deallocator:(void *)deallocator
 {
-  v7 = a3;
+  keyCopy = key;
   v8 = objc_alloc_init(PSOpaqueStream);
-  [(PSResourceStream *)v8 setKey:v7];
-  v8->_allocator = a4;
-  v8->_deallocator = a5;
+  [(PSResourceStream *)v8 setKey:keyCopy];
+  v8->_allocator = allocator;
+  v8->_deallocator = deallocator;
   [(PSResourceStream *)v8 setOptions:1, 2];
 
   return v8;
 }
 
-- (BOOL)validate:(id *)a3
+- (BOOL)validate:(id *)validate
 {
   if ([(PSResourceStream *)self resourceClass]== 3)
   {
@@ -108,10 +108,10 @@
           if ([(PSResourceStream *)self options]== 2)
           {
             v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"X-process sharing mode (options.storage_mode) not supported for opaque stream"];
-            if (a3)
+            if (validate)
             {
 LABEL_23:
-              *a3 = [MEMORY[0x277CCA9B8] internalErrorWithCode:-4 description:v7];
+              *validate = [MEMORY[0x277CCA9B8] internalErrorWithCode:-4 description:v7];
             }
           }
 
@@ -126,7 +126,7 @@ LABEL_23:
               }
 
               v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Allocator and Deallocator required"];
-              if (a3)
+              if (validate)
               {
                 goto LABEL_23;
               }
@@ -135,7 +135,7 @@ LABEL_23:
             else
             {
               v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Only allocation mode (options.creation_mode) supported for opaque stream"];
-              if (a3)
+              if (validate)
               {
                 goto LABEL_23;
               }
@@ -146,7 +146,7 @@ LABEL_23:
         else
         {
           v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"options.storage_mode invalid for the stream"];
-          if (a3)
+          if (validate)
           {
             goto LABEL_23;
           }
@@ -156,7 +156,7 @@ LABEL_23:
       else
       {
         v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"options.creation_mode invalid for the stream"];
-        if (a3)
+        if (validate)
         {
           goto LABEL_23;
         }
@@ -166,7 +166,7 @@ LABEL_23:
     else
     {
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Stream key invalid"];
-      if (a3)
+      if (validate)
       {
         goto LABEL_23;
       }
@@ -176,7 +176,7 @@ LABEL_23:
   else
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Resource Class invalid"];
-    if (a3)
+    if (validate)
     {
       goto LABEL_23;
     }

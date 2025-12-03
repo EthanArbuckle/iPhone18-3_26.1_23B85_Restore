@@ -1,15 +1,15 @@
 @interface SUCoreConnectServerPolicy
-+ (id)_getAllowlistedClassesForKey:(id)a3;
++ (id)_getAllowlistedClassesForKey:(id)key;
 + (id)_getSharedServerAccessQueue;
 + (id)_getSharedServerAllowlistedClasses;
-+ (id)getAllowlistedClassesForKey:(id)a3;
++ (id)getAllowlistedClassesForKey:(id)key;
 + (void)clearAllowlistedClasses;
-+ (void)setAllowlistedClass:(Class)a3 forKey:(id)a4;
-+ (void)setAllowlistedClasses:(id)a3 forKey:(id)a4;
-+ (void)setAllowlistedClasses:(id)a3 forKeys:(id)a4;
++ (void)setAllowlistedClass:(Class)class forKey:(id)key;
++ (void)setAllowlistedClasses:(id)classes forKey:(id)key;
++ (void)setAllowlistedClasses:(id)classes forKeys:(id)keys;
 - (NSString)description;
 - (SUCoreConnectServerDelegate)serverDelegate;
-- (SUCoreConnectServerPolicy)initWithServiceName:(id)a3 entitlements:(id)a4 serverDelegate:(id)a5;
+- (SUCoreConnectServerPolicy)initWithServiceName:(id)name entitlements:(id)entitlements serverDelegate:(id)delegate;
 @end
 
 @implementation SUCoreConnectServerPolicy
@@ -48,29 +48,29 @@
   return v3;
 }
 
-- (SUCoreConnectServerPolicy)initWithServiceName:(id)a3 entitlements:(id)a4 serverDelegate:(id)a5
+- (SUCoreConnectServerPolicy)initWithServiceName:(id)name entitlements:(id)entitlements serverDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  entitlementsCopy = entitlements;
+  delegateCopy = delegate;
   v23.receiver = self;
   v23.super_class = SUCoreConnectServerPolicy;
   v12 = [(SUCoreConnectServerPolicy *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_serviceName, a3);
-    objc_storeStrong(&v13->_entitlements, a4);
-    objc_storeWeak(&v13->_serverDelegate, v11);
-    v14 = [@"com.apple.SUCoreConnect.ConnectionQueue" UTF8String];
+    objc_storeStrong(&v12->_serviceName, name);
+    objc_storeStrong(&v13->_entitlements, entitlements);
+    objc_storeWeak(&v13->_serverDelegate, delegateCopy);
+    uTF8String = [@"com.apple.SUCoreConnect.ConnectionQueue" UTF8String];
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v16 = dispatch_queue_create(v14, v15);
+    v16 = dispatch_queue_create(uTF8String, v15);
     connectionQueue = v13->_connectionQueue;
     v13->_connectionQueue = v16;
 
-    v18 = [@"com.apple.SUCoreConnect.ServerDelegateQueue" UTF8String];
+    uTF8String2 = [@"com.apple.SUCoreConnect.ServerDelegateQueue" UTF8String];
     v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v20 = dispatch_queue_create(v18, v19);
+    v20 = dispatch_queue_create(uTF8String2, v19);
     delegateQueue = v13->_delegateQueue;
     v13->_delegateQueue = v20;
   }
@@ -94,27 +94,27 @@ uint64_t __63__SUCoreConnectServerPolicy__getSharedServerAllowlistedClasses__blo
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)_getAllowlistedClassesForKey:(id)a3
++ (id)_getAllowlistedClassesForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[SUCoreConnectServerPolicy _getSharedServerAccessQueue];
   dispatch_assert_queue_V2(v4);
 
-  if (v3)
+  if (keyCopy)
   {
     v5 = +[SUCoreConnectServerPolicy _getSharedServerAllowlistedClasses];
-    v6 = [v5 safeObjectForKey:v3 ofClass:objc_opt_class()];
+    v6 = [v5 safeObjectForKey:keyCopy ofClass:objc_opt_class()];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D64460] sharedLogger];
-    v8 = [v7 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *v10 = 0;
-      _os_log_impl(&dword_22E2D6000, v8, OS_LOG_TYPE_DEFAULT, "[SUCoreConnectServerPolicy] Cannot get allowlisted for a nil key, returning no allowlisted classes", v10, 2u);
+      _os_log_impl(&dword_22E2D6000, oslog, OS_LOG_TYPE_DEFAULT, "[SUCoreConnectServerPolicy] Cannot get allowlisted for a nil key, returning no allowlisted classes", v10, 2u);
     }
 
     v6 = 0;
@@ -123,9 +123,9 @@ uint64_t __63__SUCoreConnectServerPolicy__getSharedServerAllowlistedClasses__blo
   return v6;
 }
 
-+ (id)getAllowlistedClassesForKey:(id)a3
++ (id)getAllowlistedClassesForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[SUCoreConnectServerPolicy _getSharedServerAccessQueue];
   dispatch_assert_queue_not_V2(v4);
 
@@ -140,9 +140,9 @@ uint64_t __63__SUCoreConnectServerPolicy__getSharedServerAllowlistedClasses__blo
   v9[1] = 3221225472;
   v9[2] = __57__SUCoreConnectServerPolicy_getAllowlistedClassesForKey___block_invoke;
   v9[3] = &unk_2787BC968;
-  v10 = v3;
+  v10 = keyCopy;
   v11 = &v12;
-  v6 = v3;
+  v6 = keyCopy;
   dispatch_sync(v5, v9);
 
   v7 = v13[5];
@@ -161,45 +161,45 @@ uint64_t __57__SUCoreConnectServerPolicy_getAllowlistedClassesForKey___block_inv
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)setAllowlistedClass:(Class)a3 forKey:(id)a4
++ (void)setAllowlistedClass:(Class)class forKey:(id)key
 {
   v5 = MEMORY[0x277CBEB98];
-  v6 = a4;
-  v8 = [v5 setWithObject:a3];
-  v7 = [MEMORY[0x277CBEB98] setWithObject:v6];
+  keyCopy = key;
+  v8 = [v5 setWithObject:class];
+  v7 = [MEMORY[0x277CBEB98] setWithObject:keyCopy];
 
   [SUCoreConnectServerPolicy setAllowlistedClasses:v8 forKeys:v7];
 }
 
-+ (void)setAllowlistedClasses:(id)a3 forKey:(id)a4
++ (void)setAllowlistedClasses:(id)classes forKey:(id)key
 {
   v5 = MEMORY[0x277CBEB98];
-  v6 = a3;
-  v7 = [v5 setWithObject:a4];
-  [SUCoreConnectServerPolicy setAllowlistedClasses:v6 forKeys:v7];
+  classesCopy = classes;
+  v7 = [v5 setWithObject:key];
+  [SUCoreConnectServerPolicy setAllowlistedClasses:classesCopy forKeys:v7];
 }
 
-+ (void)setAllowlistedClasses:(id)a3 forKeys:(id)a4
++ (void)setAllowlistedClasses:(id)classes forKeys:(id)keys
 {
-  v5 = a3;
-  v6 = a4;
+  classesCopy = classes;
+  keysCopy = keys;
   v7 = +[SUCoreConnectServerPolicy _getSharedServerAccessQueue];
   dispatch_assert_queue_not_V2(v7);
 
-  if (!v6 || ![v6 count])
+  if (!keysCopy || ![keysCopy count])
   {
-    v9 = [MEMORY[0x277D64428] sharedDiag];
-    [v9 trackAnomaly:@"SUCoreConnectServerPolicy" forReason:@"Cannot set allowlisted classes for a nil/empty NSSet of keys" withResult:8102 withError:0];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    [mEMORY[0x277D64428] trackAnomaly:@"SUCoreConnectServerPolicy" forReason:@"Cannot set allowlisted classes for a nil/empty NSSet of keys" withResult:8102 withError:0];
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  if (!v5 || ![v5 count])
+  if (!classesCopy || ![classesCopy count])
   {
-    v9 = [MEMORY[0x277D64428] sharedDiag];
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot set nil/empty NSSet of classes for keys %@", v6];
-    [v9 trackAnomaly:@"SUCoreConnectServerPolicy" forReason:v10 withResult:8102 withError:0];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    keysCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot set nil/empty NSSet of classes for keys %@", keysCopy];
+    [mEMORY[0x277D64428] trackAnomaly:@"SUCoreConnectServerPolicy" forReason:keysCopy withResult:8102 withError:0];
 
     goto LABEL_8;
   }
@@ -209,8 +209,8 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __59__SUCoreConnectServerPolicy_setAllowlistedClasses_forKeys___block_invoke;
   block[3] = &unk_2787BC990;
-  v12 = v6;
-  v13 = v5;
+  v12 = keysCopy;
+  v13 = classesCopy;
   dispatch_sync(v8, block);
 
 LABEL_9:
@@ -299,8 +299,8 @@ void __52__SUCoreConnectServerPolicy_clearAllowlistedClasses__block_invoke()
 - (NSString)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SUCoreConnectServerPolicy *)self serviceName];
-  v4 = [v2 stringWithFormat:@"SUCoreConnectServerPolicy(serviceName:%@)", v3];
+  serviceName = [(SUCoreConnectServerPolicy *)self serviceName];
+  v4 = [v2 stringWithFormat:@"SUCoreConnectServerPolicy(serviceName:%@)", serviceName];
 
   return v4;
 }

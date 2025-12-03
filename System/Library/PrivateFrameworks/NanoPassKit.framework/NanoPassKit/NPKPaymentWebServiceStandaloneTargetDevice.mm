@@ -1,22 +1,22 @@
 @interface NPKPaymentWebServiceStandaloneTargetDevice
-+ (id)standalonePaymentWebServiceWithDelegate:(id)a3;
++ (id)standalonePaymentWebServiceWithDelegate:(id)delegate;
 - (NPKPaymentWebServiceStandaloneTargetDeviceDelegate)delegate;
 - (void)endRequiringUpgradedPasscodeIfNecessary;
-- (void)enforceUpgradedPasscodePolicyWithCompletion:(id)a3;
+- (void)enforceUpgradedPasscodePolicyWithCompletion:(id)completion;
 @end
 
 @implementation NPKPaymentWebServiceStandaloneTargetDevice
 
-+ (id)standalonePaymentWebServiceWithDelegate:(id)a3
++ (id)standalonePaymentWebServiceWithDelegate:(id)delegate
 {
   v3 = MEMORY[0x277D380F0];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = objc_alloc_init(v3);
-  v6 = [v5 sharedPaymentWebServiceContext];
-  v7 = v6;
-  if (v6)
+  sharedPaymentWebServiceContext = [v5 sharedPaymentWebServiceContext];
+  v7 = sharedPaymentWebServiceContext;
+  if (sharedPaymentWebServiceContext)
   {
-    v8 = v6;
+    v8 = sharedPaymentWebServiceContext;
   }
 
   else
@@ -27,24 +27,24 @@
   v9 = v8;
 
   v10 = objc_alloc_init(NPKPaymentWebServiceStandaloneTargetDevice);
-  [(NPKPaymentWebServiceStandaloneTargetDevice *)v10 setDelegate:v4];
+  [(NPKPaymentWebServiceStandaloneTargetDevice *)v10 setDelegate:delegateCopy];
 
   v11 = objc_alloc(MEMORY[0x277D38170]);
-  v12 = [MEMORY[0x277D38298] sharedPaymentWebServiceArchiver];
-  v13 = [v11 initWithContext:v9 targetDevice:v10 archiver:v12];
+  mEMORY[0x277D38298] = [MEMORY[0x277D38298] sharedPaymentWebServiceArchiver];
+  v13 = [v11 initWithContext:v9 targetDevice:v10 archiver:mEMORY[0x277D38298]];
 
   return v13;
 }
 
-- (void)enforceUpgradedPasscodePolicyWithCompletion:(id)a3
+- (void)enforceUpgradedPasscodePolicyWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NPKPaymentWebServiceStandaloneTargetDevice *)self delegate];
+  completionCopy = completion;
+  delegate = [(NPKPaymentWebServiceStandaloneTargetDevice *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(NPKPaymentWebServiceStandaloneTargetDevice *)self delegate];
-    [v6 standaloneTargetDevice:self requestsEnforceUpgradedPasscodePolicyWithCompletion:v4];
+    delegate2 = [(NPKPaymentWebServiceStandaloneTargetDevice *)self delegate];
+    [delegate2 standaloneTargetDevice:self requestsEnforceUpgradedPasscodePolicyWithCompletion:completionCopy];
   }
 
   else
@@ -62,22 +62,22 @@
       }
     }
 
-    if (v4)
+    if (completionCopy)
     {
       v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPKErrorDomain" code:-1000 userInfo:0];
-      v4[2](v4, 0, v10);
+      completionCopy[2](completionCopy, 0, v10);
     }
   }
 }
 
 - (void)endRequiringUpgradedPasscodeIfNecessary
 {
-  v3 = [(NPKPaymentWebServiceStandaloneTargetDevice *)self delegate];
+  delegate = [(NPKPaymentWebServiceStandaloneTargetDevice *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v7 = [(NPKPaymentWebServiceStandaloneTargetDevice *)self delegate];
-    [v7 standaloneTargetDeviceRequestsEndRequiringUpgradedPasscodeIfNecessary:self];
+    delegate2 = [(NPKPaymentWebServiceStandaloneTargetDevice *)self delegate];
+    [delegate2 standaloneTargetDeviceRequestsEndRequiringUpgradedPasscodeIfNecessary:self];
   }
 
   else

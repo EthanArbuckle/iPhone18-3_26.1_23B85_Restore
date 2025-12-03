@@ -1,26 +1,26 @@
 @interface HUFakeXPCClient
-- (BOOL)sendMessage:(id)a3 errorBlock:(id)a4;
-- (void)registerMessageBlock:(id)a3;
+- (BOOL)sendMessage:(id)message errorBlock:(id)block;
+- (void)registerMessageBlock:(id)block;
 @end
 
 @implementation HUFakeXPCClient
 
-- (void)registerMessageBlock:(id)a3
+- (void)registerMessageBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   updateBlock = self->_updateBlock;
   self->_updateBlock = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)sendMessage:(id)a3 errorBlock:(id)a4
+- (BOOL)sendMessage:(id)message errorBlock:(id)block
 {
   updateBlock = self->_updateBlock;
   if (updateBlock)
   {
-    v5 = [a3 payload];
-    updateBlock[2](updateBlock, v5);
+    payload = [message payload];
+    updateBlock[2](updateBlock, payload);
   }
 
   return updateBlock != 0;

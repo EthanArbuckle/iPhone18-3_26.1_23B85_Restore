@@ -1,23 +1,23 @@
 @interface CKTranscriptSharingFooterView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
 @implementation CKTranscriptSharingFooterView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v7 = [v6 isEntryViewRefreshEnabled];
+  height = fits.height;
+  width = fits.width;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  v8 = [(CKTranscriptSharingFooterView *)self footerTextViewTitle];
-  [v8 sizeThatFits:{width + -40.0, height}];
+  footerTextViewTitle = [(CKTranscriptSharingFooterView *)self footerTextViewTitle];
+  [footerTextViewTitle sizeThatFits:{width + -40.0, height}];
   v10 = v9;
 
-  v11 = [(CKTranscriptSharingFooterView *)self footerTextViewDesc];
-  [v11 sizeThatFits:{width + -40.0, height}];
+  footerTextViewDesc = [(CKTranscriptSharingFooterView *)self footerTextViewDesc];
+  [footerTextViewDesc sizeThatFits:{width + -40.0, height}];
   v13 = v12;
 
   v14 = v10 + v13;
@@ -26,7 +26,7 @@
   v17 = v16;
 
   v18 = v14 + v17;
-  if (v7)
+  if (isEntryViewRefreshEnabled)
   {
     v19 = width + -40.0;
   }
@@ -36,7 +36,7 @@
     v19 = width;
   }
 
-  if (!v7)
+  if (!isEntryViewRefreshEnabled)
   {
     v18 = v14 + v17 * 3.0;
   }
@@ -51,37 +51,37 @@
   v34.receiver = self;
   v34.super_class = CKTranscriptSharingFooterView;
   [(CKTranscriptSharingFooterView *)&v34 layoutSubviews];
-  v3 = [(CKTranscriptSharingFooterView *)self toolbar];
+  toolbar = [(CKTranscriptSharingFooterView *)self toolbar];
   [(CKTranscriptSharingFooterView *)self bounds];
-  [v3 setFrame:?];
+  [toolbar setFrame:?];
 
   [(CKTranscriptSharingFooterView *)self bounds];
   v5 = v4;
   v7 = v6;
-  v8 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v9 = [v8 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (!v9)
+  if (!isEntryViewRefreshEnabled)
   {
     v5 = v5 + -40.0;
   }
 
-  v10 = [(CKTranscriptSharingFooterView *)self footerTextViewTitle];
-  [v10 sizeThatFits:{v5, v7}];
+  footerTextViewTitle = [(CKTranscriptSharingFooterView *)self footerTextViewTitle];
+  [footerTextViewTitle sizeThatFits:{v5, v7}];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(CKTranscriptSharingFooterView *)self footerTextViewDesc];
-  [v15 sizeThatFits:{v5, v7}];
+  footerTextViewDesc = [(CKTranscriptSharingFooterView *)self footerTextViewDesc];
+  [footerTextViewDesc sizeThatFits:{v5, v7}];
   v17 = v16;
   v19 = v18;
 
   v20 = MEMORY[0x1E695F058];
   v21 = *MEMORY[0x1E695F058];
-  v22 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v23 = [v22 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled2 = [mEMORY[0x1E69A8070]2 isEntryViewRefreshEnabled];
 
-  if (v23)
+  if (isEntryViewRefreshEnabled2)
   {
     v24 = *(v20 + 8);
     v25 = v21;
@@ -96,18 +96,18 @@
     v25 = 20.0;
   }
 
-  v28 = [(CKTranscriptSharingFooterView *)self footerTextViewTitle];
-  [v28 setFrame:{v25, v24, v12, v14}];
+  footerTextViewTitle2 = [(CKTranscriptSharingFooterView *)self footerTextViewTitle];
+  [footerTextViewTitle2 setFrame:{v25, v24, v12, v14}];
 
   v35.origin.x = v25;
   v35.origin.y = v24;
   v35.size.width = v12;
   v35.size.height = v14;
   MaxY = CGRectGetMaxY(v35);
-  v30 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v31 = [v30 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070]3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled3 = [mEMORY[0x1E69A8070]3 isEntryViewRefreshEnabled];
 
-  if (v31)
+  if (isEntryViewRefreshEnabled3)
   {
     v32 = v21;
   }
@@ -117,8 +117,8 @@
     v32 = 20.0;
   }
 
-  v33 = [(CKTranscriptSharingFooterView *)self footerTextViewDesc];
-  [v33 setFrame:{v32, MaxY, v17, v19}];
+  footerTextViewDesc2 = [(CKTranscriptSharingFooterView *)self footerTextViewDesc];
+  [footerTextViewDesc2 setFrame:{v32, MaxY, v17, v19}];
 }
 
 @end

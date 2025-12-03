@@ -1,14 +1,14 @@
 @interface ACLSIPv4Range
-- (ACLSIPv4Range)initWithFirst:(const in_addr *)a3 andLast:(const in_addr *)a4;
-- (BOOL)containsAddress:(const in_addr *)a3;
+- (ACLSIPv4Range)initWithFirst:(const in_addr *)first andLast:(const in_addr *)last;
+- (BOOL)containsAddress:(const in_addr *)address;
 - (id)description;
 @end
 
 @implementation ACLSIPv4Range
 
-- (ACLSIPv4Range)initWithFirst:(const in_addr *)a3 andLast:(const in_addr *)a4
+- (ACLSIPv4Range)initWithFirst:(const in_addr *)first andLast:(const in_addr *)last
 {
-  if (bswap32(a3->s_addr) <= bswap32(a4->s_addr))
+  if (bswap32(first->s_addr) <= bswap32(last->s_addr))
   {
     v10.receiver = self;
     v10.super_class = ACLSIPv4Range;
@@ -16,26 +16,26 @@
     v8 = v7;
     if (v7)
     {
-      [(ACLSIPv4Range *)v7 setFirst:a3->s_addr];
-      [(ACLSIPv4Range *)v8 setLast:a4->s_addr];
+      [(ACLSIPv4Range *)v7 setFirst:first->s_addr];
+      [(ACLSIPv4Range *)v8 setLast:last->s_addr];
     }
 
     self = v8;
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (BOOL)containsAddress:(const in_addr *)a3
+- (BOOL)containsAddress:(const in_addr *)address
 {
   v3 = bswap32(self->_first.s_addr);
-  v4 = bswap32(a3->s_addr);
+  v4 = bswap32(address->s_addr);
   v5 = v3 >= v4;
   v6 = v3 > v4;
   v7 = !v5;
@@ -44,7 +44,7 @@
     return 0;
   }
 
-  v9 = bswap32(a3->s_addr);
+  v9 = bswap32(address->s_addr);
   v10 = bswap32(self->_last.s_addr);
   v5 = v9 >= v10;
   v11 = v9 > v10;

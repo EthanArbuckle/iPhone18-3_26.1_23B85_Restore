@@ -1,5 +1,5 @@
 @interface CUIKCreateOperation
-- (BOOL)_executeWithUndoDelegate:(id)a3 error:(id *)a4;
+- (BOOL)_executeWithUndoDelegate:(id)delegate error:(id *)error;
 - (Class)_inverseOperationClass;
 - (id)_actionName;
 - (int64_t)_inverseOperationSpan;
@@ -10,38 +10,38 @@
 
 - (id)_actionName
 {
-  v3 = [(CUIKUserOperation *)self objects];
-  v4 = [v3 count];
+  objects = [(CUIKUserOperation *)self objects];
+  v4 = [objects count];
 
   if (v4 == 1)
   {
-    v5 = [(CUIKUserOperation *)self objects];
-    v6 = [v5 firstObject];
+    objects2 = [(CUIKUserOperation *)self objects];
+    firstObject = [objects2 firstObject];
 
     v7 = MEMORY[0x1E696AEC0];
     v8 = CUIKBundle();
     v9 = [v8 localizedStringForKey:@"Action: Create “%@”" value:@"Create “%@”" table:0];
-    v10 = [v6 title];
-    v11 = [v7 localizedStringWithFormat:v9, v10];
+    title = [firstObject title];
+    v11 = [v7 localizedStringWithFormat:v9, title];
   }
 
   else
   {
-    v6 = CUIKBundle();
-    v11 = [v6 localizedStringForKey:@"Action: Create events" value:@"Create Events" table:0];
+    firstObject = CUIKBundle();
+    v11 = [firstObject localizedStringForKey:@"Action: Create events" value:@"Create Events" table:0];
   }
 
   return v11;
 }
 
-- (BOOL)_executeWithUndoDelegate:(id)a3 error:(id *)a4
+- (BOOL)_executeWithUndoDelegate:(id)delegate error:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(CUIKUserOperation *)self objects:a3];
+  v6 = [(CUIKUserOperation *)self objects:delegate];
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -57,7 +57,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v10 &= [*(*(&v13 + 1) + 8 * i) CUIKEditingContext_saveWithSpan:3 error:a4];
+        v10 &= [*(*(&v13 + 1) + 8 * i) CUIKEditingContext_saveWithSpan:3 error:error];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -129,15 +129,15 @@ LABEL_11:
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(CUIKUserOperation *)self objects];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  objects = [(CUIKUserOperation *)self objects];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(objects, "count")}];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(CUIKUserOperation *)self objects];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  objects2 = [(CUIKUserOperation *)self objects];
+  v7 = [objects2 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -149,17 +149,17 @@ LABEL_11:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objects2);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) snapshotCopy];
-        [v5 addObject:v11];
+        snapshotCopy = [*(*(&v13 + 1) + 8 * v10) snapshotCopy];
+        [v5 addObject:snapshotCopy];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [objects2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -186,8 +186,8 @@ LABEL_13:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(CUIKUserOperation *)self objects];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    objects = [(CUIKUserOperation *)self objects];
+    v4 = [objects countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -199,7 +199,7 @@ LABEL_13:
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(objects);
           }
 
           v8 = *(*(&v11 + 1) + 8 * v7);
@@ -214,7 +214,7 @@ LABEL_13:
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [objects countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v5)
         {
           continue;

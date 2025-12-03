@@ -1,7 +1,7 @@
 @interface SDLockHandler
-+ (void)setLockHandlerWithDelegate:(id)a3 options:(unint64_t)a4;
++ (void)setLockHandlerWithDelegate:(id)delegate options:(unint64_t)options;
 - (BOOL)unlocked;
-- (SDLockHandler)initWithDelegate:(id)a3 options:(unint64_t)a4;
+- (SDLockHandler)initWithDelegate:(id)delegate options:(unint64_t)options;
 - (void)checkMigrationComplete;
 - (void)handleFirstUnlock;
 - (void)handleFirstUnlockHomeScreen;
@@ -65,17 +65,17 @@
   }
 }
 
-+ (void)setLockHandlerWithDelegate:(id)a3 options:(unint64_t)a4
++ (void)setLockHandlerWithDelegate:(id)delegate options:(unint64_t)options
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __52__SDLockHandler_setLockHandlerWithDelegate_options___block_invoke;
   v8[3] = &unk_2789343B0;
-  v9 = v5;
-  v10 = a4;
+  v9 = delegateCopy;
+  optionsCopy = options;
   v6 = setLockHandlerWithDelegate_options__onceToken;
-  v7 = v5;
+  v7 = delegateCopy;
   if (v6 != -1)
   {
     dispatch_once(&setLockHandlerWithDelegate_options__onceToken, v8);
@@ -100,13 +100,13 @@ uint64_t __52__SDLockHandler_setLockHandlerWithDelegate_options___block_invoke(u
       _os_log_impl(&dword_231A35000, v3, OS_LOG_TYPE_DEFAULT, "[LOCK] Migration Complete", buf, 2u);
     }
 
-    v4 = [(SDLockHandlerDelegate *)self->_delegate indexQueue];
+    indexQueue = [(SDLockHandlerDelegate *)self->_delegate indexQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __40__SDLockHandler_handleMigrationComplete__block_invoke;
     block[3] = &unk_278934050;
     block[4] = self;
-    dispatch_async(v4, block);
+    dispatch_async(indexQueue, block);
 
     notificationQueue = self->_notificationQueue;
     v6[0] = MEMORY[0x277D85DD0];
@@ -180,13 +180,13 @@ uint64_t __40__SDLockHandler_handleMigrationComplete__block_invoke_2(uint64_t re
       _os_log_impl(&dword_231A35000, v4, OS_LOG_TYPE_DEFAULT, "[LOCK] SpringBoard first unlock", buf, 2u);
     }
 
-    v5 = [(SDLockHandlerDelegate *)self->_delegate indexQueue];
+    indexQueue = [(SDLockHandlerDelegate *)self->_delegate indexQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __47__SDLockHandler_handleFirstUnlockInSpringBoard__block_invoke;
     block[3] = &unk_278934050;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(indexQueue, block);
   }
 }
 
@@ -229,19 +229,19 @@ uint64_t __47__SDLockHandler_handleFirstUnlockInSpringBoard__block_invoke_2(uint
   return result;
 }
 
-- (SDLockHandler)initWithDelegate:(id)a3 options:(unint64_t)a4
+- (SDLockHandler)initWithDelegate:(id)delegate options:(unint64_t)options
 {
   v59 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  delegateCopy = delegate;
   v49.receiver = self;
   v49.super_class = SDLockHandler;
   v8 = [(SDLockHandler *)&v49 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_delegate, a3);
+    objc_storeStrong(&v8->_delegate, delegate);
     *&v9->_notifyTokenKeybagLockStateNotifyToken = -1;
-    v9->_options = a4;
+    v9->_options = options;
     v9->_notifyTokenSBLockState = -1;
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_attr_make_initially_inactive(v10);

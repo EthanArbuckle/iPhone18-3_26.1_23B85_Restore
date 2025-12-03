@@ -1,5 +1,5 @@
 @interface NSString
-+ (id)restoreSystemContainerUUIDPathsInDict:(id)a3;
++ (id)restoreSystemContainerUUIDPathsInDict:(id)dict;
 - (BOOL)isSystemContainerPath;
 - (BOOL)isSystemContainerShared;
 - (NSString)getSystemContainerKeyword;
@@ -60,7 +60,7 @@
       v49 = 0;
       v45 = CStringPtr;
       v8 = [NSMutableData dataWithLength:v4 >> 1, v35, v36, v37, v38, v39, v40, v41, v42];
-      v9 = [v8 mutableBytes];
+      mutableBytes = [v8 mutableBytes];
       v10 = 0;
       v11 = 0;
       v12 = 64;
@@ -213,13 +213,13 @@ LABEL_27:
           v22 = -48;
         }
 
-        *v9++ = (v22 + v21) | (16 * (v17 + v16));
+        *mutableBytes++ = (v22 + v21) | (16 * (v17 + v16));
         v10 -= 2;
         v12 += 2;
         v11 += 2;
         if (!--v7)
         {
-          v33 = [v8 copy];
+          _dataUsingHexEncoding = [v8 copy];
           goto LABEL_56;
         }
       }
@@ -231,9 +231,9 @@ LABEL_12:
     }
 
     v8 = [@"0" stringByAppendingString:self];
-    v33 = [v8 _dataUsingHexEncoding];
+    _dataUsingHexEncoding = [v8 _dataUsingHexEncoding];
 LABEL_56:
-    v32 = v33;
+    v32 = _dataUsingHexEncoding;
 LABEL_57:
   }
 
@@ -245,18 +245,18 @@ LABEL_57:
   return v32;
 }
 
-+ (id)restoreSystemContainerUUIDPathsInDict:(id)a3
++ (id)restoreSystemContainerUUIDPathsInDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   v4 = +[NSMutableDictionary dictionary];
   v27 = +[NSMutableDictionary dictionary];
-  v28 = v3;
+  v28 = dictCopy;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = [v3 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v29 objects:v37 count:16];
+  allKeys = [dictCopy allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v6)
   {
     v8 = v6;
@@ -269,41 +269,41 @@ LABEL_57:
       {
         if (*v30 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
         if ([v11 isSystemContainerPath])
         {
-          v12 = [v11 getSystemContainerKeyword];
-          v13 = [v4 objectForKey:v12];
+          getSystemContainerKeyword = [v11 getSystemContainerKeyword];
+          lookupSystemContainerPathUUID = [v4 objectForKey:getSystemContainerKeyword];
 
-          if (v13)
+          if (lookupSystemContainerPathUUID)
           {
             goto LABEL_12;
           }
 
-          v13 = [v11 lookupSystemContainerPathUUID];
+          lookupSystemContainerPathUUID = [v11 lookupSystemContainerPathUUID];
           v14 = sub_100063A54();
           v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-          if (v13)
+          if (lookupSystemContainerPathUUID)
           {
             if (v15)
             {
-              v16 = [v11 getSystemContainerKeyword];
+              getSystemContainerKeyword2 = [v11 getSystemContainerKeyword];
               *buf = v26;
-              v34 = v16;
+              v34 = getSystemContainerKeyword2;
               v35 = 2114;
-              v36 = v13;
+              v36 = lookupSystemContainerPathUUID;
               _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "System container path mapping created: %{public}@ -> %{public}@", buf, 0x16u);
             }
 
-            v17 = [v11 getSystemContainerKeyword];
-            [v4 setObject:v13 forKey:v17];
+            getSystemContainerKeyword3 = [v11 getSystemContainerKeyword];
+            [v4 setObject:lookupSystemContainerPathUUID forKey:getSystemContainerKeyword3];
 
 LABEL_12:
-            v18 = [v11 getSystemContainerKeyword];
-            v19 = [v11 rangeOfString:v18];
+            getSystemContainerKeyword4 = [v11 getSystemContainerKeyword];
+            v19 = [v11 rangeOfString:getSystemContainerKeyword4];
             v21 = v20;
 
             if (v19 == 0x7FFFFFFFFFFFFFFFLL)
@@ -319,11 +319,11 @@ LABEL_12:
 
             else
             {
-              v23 = [v11 stringByReplacingCharactersInRange:v19 withString:{v21, v13}];
+              v23 = [v11 stringByReplacingCharactersInRange:v19 withString:{v21, lookupSystemContainerPathUUID}];
               v24 = [v28 objectForKey:v11];
               [v27 setObject:v24 forKey:v23];
 
-              v13 = v23;
+              lookupSystemContainerPathUUID = v23;
             }
           }
 
@@ -336,14 +336,14 @@ LABEL_12:
               _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Cannot lookup system container path UUID from path '%{public}@'. Skipping...", buf, 0xCu);
             }
 
-            v13 = v14;
+            lookupSystemContainerPathUUID = v14;
           }
 
           continue;
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v29 objects:v37 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v29 objects:v37 count:16];
     }
 
     while (v8);
@@ -354,20 +354,20 @@ LABEL_12:
 
 - (NSString)getSystemContainerKeyword
 {
-  v2 = [(NSString *)self pathComponents];
-  v3 = [v2 objectAtIndex:5];
+  pathComponents = [(NSString *)self pathComponents];
+  v3 = [pathComponents objectAtIndex:5];
 
   return v3;
 }
 
 - (BOOL)isSystemContainerPath
 {
-  v2 = [(NSString *)self stringByStandardizingPath];
+  stringByStandardizingPath = [(NSString *)self stringByStandardizingPath];
   v5 = 0;
-  if (([v2 hasPrefix:@"/var/containers/Data/System"] & 1) != 0 || objc_msgSend(v2, "hasPrefix:", @"/var/containers/Shared/SystemGroup"))
+  if (([stringByStandardizingPath hasPrefix:@"/var/containers/Data/System"] & 1) != 0 || objc_msgSend(stringByStandardizingPath, "hasPrefix:", @"/var/containers/Shared/SystemGroup"))
   {
-    v3 = [v2 pathComponents];
-    v4 = [v3 count];
+    pathComponents = [stringByStandardizingPath pathComponents];
+    v4 = [pathComponents count];
 
     if (v4 > 5)
     {
@@ -380,17 +380,17 @@ LABEL_12:
 
 - (BOOL)isSystemContainerShared
 {
-  v2 = [(NSString *)self pathComponents];
-  v3 = [v2 objectAtIndex:3];
+  pathComponents = [(NSString *)self pathComponents];
+  v3 = [pathComponents objectAtIndex:3];
 
-  LOBYTE(v2) = [v3 isEqualToString:@"Shared"];
-  return v2;
+  LOBYTE(pathComponents) = [v3 isEqualToString:@"Shared"];
+  return pathComponents;
 }
 
 - (id)getSystemContainerRootPath
 {
-  v2 = [(NSString *)self pathComponents];
-  v3 = [v2 subarrayWithRange:{0, 6}];
+  pathComponents = [(NSString *)self pathComponents];
+  v3 = [pathComponents subarrayWithRange:{0, 6}];
 
   v4 = [NSString pathWithComponents:v3];
 
@@ -400,8 +400,8 @@ LABEL_12:
 - (id)lookupSystemContainerPathUUID
 {
   [(NSString *)self isSystemContainerShared];
-  v3 = [(NSString *)self getSystemContainerKeyword];
-  [v3 UTF8String];
+  getSystemContainerKeyword = [(NSString *)self getSystemContainerKeyword];
+  [getSystemContainerKeyword UTF8String];
   container_create_or_lookup_path_for_current_user();
 
   return 0;

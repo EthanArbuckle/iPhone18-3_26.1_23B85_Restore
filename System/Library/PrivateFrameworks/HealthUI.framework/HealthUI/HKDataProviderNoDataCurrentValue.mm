@@ -1,11 +1,11 @@
 @interface HKDataProviderNoDataCurrentValue
-- (id)attributedStringWithDisplayType:(id)a3 unitController:(id)a4 valueFont:(id)a5 unitFont:(id)a6 dateCache:(id)a7;
-- (id)lastUpdatedDescriptionWithDateCache:(id)a3;
+- (id)attributedStringWithDisplayType:(id)type unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont dateCache:(id)cache;
+- (id)lastUpdatedDescriptionWithDateCache:(id)cache;
 @end
 
 @implementation HKDataProviderNoDataCurrentValue
 
-- (id)attributedStringWithDisplayType:(id)a3 unitController:(id)a4 valueFont:(id)a5 unitFont:(id)a6 dateCache:(id)a7
+- (id)attributedStringWithDisplayType:(id)type unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont dateCache:(id)cache
 {
   v7 = HKLocalizedNoDataString();
   v8 = HKAttributedString(v7);
@@ -13,11 +13,11 @@
   return v8;
 }
 
-- (id)lastUpdatedDescriptionWithDateCache:(id)a3
+- (id)lastUpdatedDescriptionWithDateCache:(id)cache
 {
-  v4 = a3;
-  v5 = [(HKDataProviderNoDataCurrentValue *)self date];
-  v6 = HKLastUpdatedText(v5, v4);
+  cacheCopy = cache;
+  date = [(HKDataProviderNoDataCurrentValue *)self date];
+  v6 = HKLastUpdatedText(date, cacheCopy);
 
   return v6;
 }

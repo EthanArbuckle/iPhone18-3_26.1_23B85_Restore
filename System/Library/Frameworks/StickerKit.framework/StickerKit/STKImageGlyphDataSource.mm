@@ -1,36 +1,36 @@
 @interface STKImageGlyphDataSource
 + (STKImageGlyphDataSource)sharedInstance;
 - (BOOL)didAcceptRestrictedDistributionTerms;
-- (BOOL)isEmojiSection:(int64_t)a3;
-- (BOOL)isMemojiSection:(int64_t)a3;
+- (BOOL)isEmojiSection:(int64_t)section;
+- (BOOL)isMemojiSection:(int64_t)section;
 - (BOOL)isReady;
-- (BOOL)isRecentSection:(int64_t)a3;
+- (BOOL)isRecentSection:(int64_t)section;
 - (NSDiffableDataSourceSnapshot)snapshot;
 - (STKImageGlyphDataSource)init;
-- (STKImageGlyphDataSource)initWithDataSources:(id)a3;
+- (STKImageGlyphDataSource)initWithDataSources:(id)sources;
 - (id)imageGlyphCompositionalLayout;
-- (id)indexPathForCategoryIndex:(int64_t)a3;
+- (id)indexPathForCategoryIndex:(int64_t)index;
 - (int64_t)emojiCategoryIndex;
 - (int64_t)emojiPrefixSectionCount;
 - (int64_t)memojiCategoryIndex;
 - (int64_t)recentCategoryIndex;
 - (int64_t)stickersCategoryIndex;
-- (uint64_t)allowsRearrangeForSection:(uint64_t)a3;
-- (void)configureWith:(id)a3;
-- (void)donateImageGlyphToRecents:(id)a3;
+- (uint64_t)allowsRearrangeForSection:(uint64_t)section;
+- (void)configureWith:(id)with;
+- (void)donateImageGlyphToRecents:(id)recents;
 - (void)makeSnapshot;
 - (void)refresh;
-- (void)setSnapshot:(id)a3;
+- (void)setSnapshot:(id)snapshot;
 @end
 
 @implementation STKImageGlyphDataSource
 
-- (uint64_t)allowsRearrangeForSection:(uint64_t)a3
+- (uint64_t)allowsRearrangeForSection:(uint64_t)section
 {
-  v4 = a1;
-  LOBYTE(a3) = sub_19A75BF80(a3);
+  selfCopy = self;
+  LOBYTE(section) = sub_19A75BF80(section);
 
-  return a3 & 1;
+  return section & 1;
 }
 
 + (STKImageGlyphDataSource)sharedInstance
@@ -54,7 +54,7 @@
 
   else
   {
-    v3 = self;
+    selfCopy = self;
     v2 = sub_19A652488();
   }
 
@@ -68,10 +68,10 @@
   MEMORY[0x1EEE9AC00](v3);
   v6 = &v11[-v5];
   v7 = *(&self->super.super.isa + OBJC_IVAR___STKImageGlyphDataSource_lock);
-  v15 = self;
+  selfCopy = self;
   v12 = sub_19A6814C0;
   v13 = &v14;
-  v8 = self;
+  selfCopy2 = self;
   os_unfair_lock_lock(v7 + 4);
   sub_19A763108();
   os_unfair_lock_unlock(v7 + 4);
@@ -82,7 +82,7 @@
   return v9;
 }
 
-- (void)setSnapshot:(id)a3
+- (void)setSnapshot:(id)snapshot
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCD6C8);
   MEMORY[0x1EEE9AC00](v4 - 8);
@@ -90,7 +90,7 @@
   sub_19A5F5028(0, &qword_1ED8B1FE0);
   sub_19A762B98();
   sub_19A7A94D4();
-  v7 = self;
+  selfCopy = self;
   sub_19A759EF0(v6);
 }
 
@@ -103,11 +103,11 @@
   return v3;
 }
 
-- (void)configureWith:(id)a3
+- (void)configureWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  sub_19A75AFA0(v4);
+  withCopy = with;
+  selfCopy = self;
+  sub_19A75AFA0(withCopy);
 }
 
 - (void)refresh
@@ -116,7 +116,7 @@
   MEMORY[0x1EEE9AC00](v3 - 8);
   v5 = &v10 - v4;
   v6 = objc_opt_self();
-  v7 = self;
+  selfCopy = self;
   if (([v6 useNewCollectionView] & 1) == 0)
   {
     v8 = sub_19A7AB394();
@@ -140,7 +140,7 @@
 
 - (int64_t)memojiCategoryIndex
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_19A65883C(2);
   v5 = v4;
 
@@ -157,7 +157,7 @@
 
 - (int64_t)stickersCategoryIndex
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_19A65883C(1);
   v5 = v4;
 
@@ -174,7 +174,7 @@
 
 - (int64_t)recentCategoryIndex
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_19A65883C(5);
   v5 = v4;
 
@@ -191,7 +191,7 @@
 
 - (int64_t)emojiCategoryIndex
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_19A65883C(3);
   v5 = v4;
 
@@ -208,7 +208,7 @@
 
 - (int64_t)emojiPrefixSectionCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_19A659378(3);
   v5 = v4;
 
@@ -221,37 +221,37 @@
   return v5;
 }
 
-- (BOOL)isEmojiSection:(int64_t)a3
+- (BOOL)isEmojiSection:(int64_t)section
 {
-  v4 = self;
-  LOBYTE(a3) = sub_19A75BAE8(a3);
+  selfCopy = self;
+  LOBYTE(section) = sub_19A75BAE8(section);
 
-  return a3 & 1;
+  return section & 1;
 }
 
-- (BOOL)isRecentSection:(int64_t)a3
+- (BOOL)isRecentSection:(int64_t)section
 {
-  v4 = self;
-  LOBYTE(a3) = sub_19A75BC70(a3);
+  selfCopy = self;
+  LOBYTE(section) = sub_19A75BC70(section);
 
-  return a3 & 1;
+  return section & 1;
 }
 
-- (BOOL)isMemojiSection:(int64_t)a3
+- (BOOL)isMemojiSection:(int64_t)section
 {
-  v4 = self;
-  LOBYTE(a3) = sub_19A75BDF8(a3);
+  selfCopy = self;
+  LOBYTE(section) = sub_19A75BDF8(section);
 
-  return a3 & 1;
+  return section & 1;
 }
 
-- (id)indexPathForCategoryIndex:(int64_t)a3
+- (id)indexPathForCategoryIndex:(int64_t)index
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCF110);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v15 - v6;
-  v8 = self;
-  sub_19A75C0D0(a3, v7);
+  selfCopy = self;
+  sub_19A75C0D0(index, v7);
 
   v9 = sub_19A7A9094();
   v10 = *(v9 - 8);
@@ -284,11 +284,11 @@
 
 - (void)makeSnapshot
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A75C7C0();
 }
 
-- (void)donateImageGlyphToRecents:(id)a3
+- (void)donateImageGlyphToRecents:(id)recents
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCD690);
   MEMORY[0x1EEE9AC00](v4 - 8);
@@ -298,8 +298,8 @@
   v8 = swift_allocObject();
   v8[2] = 0;
   v8[3] = 0;
-  v8[4] = a3;
-  v9 = a3;
+  v8[4] = recents;
+  recentsCopy = recents;
   sub_19A755944(0, 0, v6, &unk_19A7C1D98, v8);
 
   sub_19A5F2B54(v6, &unk_1EAFCD690);
@@ -307,13 +307,13 @@
 
 - (id)imageGlyphCompositionalLayout
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_19A75FAC8();
 
   return v3;
 }
 
-- (STKImageGlyphDataSource)initWithDataSources:(id)a3
+- (STKImageGlyphDataSource)initWithDataSources:(id)sources
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

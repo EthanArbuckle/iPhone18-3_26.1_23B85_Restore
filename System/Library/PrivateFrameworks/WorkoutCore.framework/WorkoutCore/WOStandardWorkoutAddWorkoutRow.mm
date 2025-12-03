@@ -1,8 +1,8 @@
 @interface WOStandardWorkoutAddWorkoutRow
 - (WOStandardWorkoutAddWorkoutRow)init;
-- (WOStandardWorkoutAddWorkoutRow)initWithActivityType:(id)a3;
+- (WOStandardWorkoutAddWorkoutRow)initWithActivityType:(id)type;
 - (int64_t)type;
-- (void)setType:(int64_t)a3;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation WOStandardWorkoutAddWorkoutRow
@@ -14,17 +14,17 @@
   return *(self + v3);
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   v5 = OBJC_IVAR___WOStandardWorkoutAddWorkoutRow_type;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
-- (WOStandardWorkoutAddWorkoutRow)initWithActivityType:(id)a3
+- (WOStandardWorkoutAddWorkoutRow)initWithActivityType:(id)type
 {
-  v3 = a3;
-  v4 = specialized StandardWorkoutAddWorkoutRow.init(activityType:)(v3);
+  typeCopy = type;
+  v4 = specialized StandardWorkoutAddWorkoutRow.init(activityType:)(typeCopy);
 
   return v4;
 }

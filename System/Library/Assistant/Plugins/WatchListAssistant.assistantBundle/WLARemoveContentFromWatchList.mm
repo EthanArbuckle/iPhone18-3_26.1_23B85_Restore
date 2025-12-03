@@ -1,20 +1,20 @@
 @interface WLARemoveContentFromWatchList
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation WLARemoveContentFromWatchList
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   NSLog(@"WLARemoveContentFromWatchList: Received remove content request.");
   v5 = +[WLKSettingsStore sharedSettings];
-  v6 = [v5 optedIn];
+  optedIn = [v5 optedIn];
 
-  if ((v6 & 1) == 0)
+  if ((optedIn & 1) == 0)
   {
     NSLog(@"WLARemoveContentFromWatchList: Not opted in.  Bailing.");
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_8;
     }
@@ -22,29 +22,29 @@
     v13 = [[SACommandFailed alloc] initWithErrorCode:9056];
 LABEL_6:
     v12 = v13;
-    v14 = [v13 dictionary];
-    v4[2](v4, v14);
+    dictionary = [v13 dictionary];
+    completionCopy[2](completionCopy, dictionary);
 
     goto LABEL_7;
   }
 
-  v7 = [(WLARemoveContentFromWatchList *)self canonicalId];
+  canonicalId = [(WLARemoveContentFromWatchList *)self canonicalId];
 
-  if (v7)
+  if (canonicalId)
   {
     v8 = [WLKRemoveFavoriteRequest alloc];
-    v9 = [(WLARemoveContentFromWatchList *)self canonicalId];
-    v10 = [v8 initWithCanonicalID:v9];
+    canonicalId2 = [(WLARemoveContentFromWatchList *)self canonicalId];
+    v10 = [v8 initWithCanonicalID:canonicalId2];
 
-    v11 = [(WLARemoveContentFromWatchList *)self canonicalId];
-    NSLog(@"WLARemoveContentFromWatchList: Will issue remove request %p for canonical ID %@", v10, v11);
+    canonicalId3 = [(WLARemoveContentFromWatchList *)self canonicalId];
+    NSLog(@"WLARemoveContentFromWatchList: Will issue remove request %p for canonical ID %@", v10, canonicalId3);
 
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = __55__WLARemoveContentFromWatchList_performWithCompletion___block_invoke;
     v27[3] = &unk_83C8;
     v28 = v10;
-    v29 = v4;
+    v29 = completionCopy;
     v12 = v10;
     [v12 makeRequestWithCompletion:v27];
 
@@ -52,13 +52,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v15 = [(WLARemoveContentFromWatchList *)self title];
-  v16 = [v15 length];
+  title = [(WLARemoveContentFromWatchList *)self title];
+  v16 = [title length];
 
   if (!v16)
   {
     NSLog(@"WLARemoveContentFromWatchList: No title to search.");
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_8;
     }
@@ -67,24 +67,24 @@ LABEL_7:
     goto LABEL_6;
   }
 
-  v17 = [(WLARemoveContentFromWatchList *)self title];
-  NSLog(@"WLARemoveContentFromWatchList: The title (%@) has a non-zero length.", v17);
+  title2 = [(WLARemoveContentFromWatchList *)self title];
+  NSLog(@"WLARemoveContentFromWatchList: The title (%@) has a non-zero length.", title2);
 
   v18 = objc_alloc_init(NSMutableDictionary);
-  v19 = [(WLARemoveContentFromWatchList *)self title];
-  v20 = [v19 length];
+  title3 = [(WLARemoveContentFromWatchList *)self title];
+  v20 = [title3 length];
 
   if (v20)
   {
-    v21 = [(WLARemoveContentFromWatchList *)self title];
-    [v18 setObject:v21 forKey:WLKSearchWatchListRequestOptionTitle];
+    title4 = [(WLARemoveContentFromWatchList *)self title];
+    [v18 setObject:title4 forKey:WLKSearchWatchListRequestOptionTitle];
 
-    v22 = [(WLARemoveContentFromWatchList *)self siriLocale];
+    siriLocale = [(WLARemoveContentFromWatchList *)self siriLocale];
 
-    if (v22)
+    if (siriLocale)
     {
-      v23 = [(WLARemoveContentFromWatchList *)self siriLocale];
-      [v18 setObject:v23 forKey:@"locale"];
+      siriLocale2 = [(WLARemoveContentFromWatchList *)self siriLocale];
+      [v18 setObject:siriLocale2 forKey:@"locale"];
     }
   }
 
@@ -94,7 +94,7 @@ LABEL_7:
   v25[1] = 3221225472;
   v25[2] = __55__WLARemoveContentFromWatchList_performWithCompletion___block_invoke_2;
   v25[3] = &unk_8418;
-  v26 = v4;
+  v26 = completionCopy;
   [v24 makeRequestWithCompletion:v25];
 
 LABEL_8:

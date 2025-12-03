@@ -1,32 +1,32 @@
 @interface HDSHBreathingDisturbanceAnalyzer
-+ (BOOL)_areSamplesInSameSleepDayWithFirstSample:(id)a3 secondSample:(id)a4 calendar:(id)a5;
-+ (BOOL)isAnalysisNeededWithAnchorDate:(id)a3 referenceDate:(id)a4 calendar:(id)a5;
-+ (id)_sampleWithHighestDurationWithFirstSample:(id)a3 secondSample:(id)a4;
-+ (id)constructAnalysisDateIntervalFromDate:(id)a3 withCalendar:(id)a4;
-+ (id)endDateFromMostRecentlyAnalyzedDateIntervalWithDate:(id)a3 numberOfAnalysisAttempts:(int64_t)a4 calendar:(id)a5;
-+ (id)samplesFilteredBySleepDay:(id)a3;
-+ (int64_t)numberOfExpectedAnalysisAttemptsStartingFromAnchorDate:(id)a3 referenceDate:(id)a4 calendar:(id)a5;
-- (BOOL)_requestBreathingDisturbanceAnalysisWithSamples:(id)a3 analysisInterval:(id)a4;
-- (BOOL)_writePossibleSleepApneaNotificationSampleWithAnalysisInterval:(id)a3 algorithmVersion:(id)a4 error:(id *)a5;
-- (BOOL)performBreathingDisturbanceAnalysisWithIsForced:(BOOL)a3 date:(id)a4 numberOfAnalysisAttempts:(int64_t)a5;
-- (HDSHBreathingDisturbanceAnalyzer)initWithProfile:(id)a3;
-- (id)_createEnumeratorWithAnalysisInterval:(id)a3 profile:(id)a4 includeTimeZones:(BOOL)a5;
-- (void)_sendAnalyticsWithPayload:(id)a3;
-- (void)_sendPossibleSleepApneaNotificationWithRequest:(id)a3;
++ (BOOL)_areSamplesInSameSleepDayWithFirstSample:(id)sample secondSample:(id)secondSample calendar:(id)calendar;
++ (BOOL)isAnalysisNeededWithAnchorDate:(id)date referenceDate:(id)referenceDate calendar:(id)calendar;
++ (id)_sampleWithHighestDurationWithFirstSample:(id)sample secondSample:(id)secondSample;
++ (id)constructAnalysisDateIntervalFromDate:(id)date withCalendar:(id)calendar;
++ (id)endDateFromMostRecentlyAnalyzedDateIntervalWithDate:(id)date numberOfAnalysisAttempts:(int64_t)attempts calendar:(id)calendar;
++ (id)samplesFilteredBySleepDay:(id)day;
++ (int64_t)numberOfExpectedAnalysisAttemptsStartingFromAnchorDate:(id)date referenceDate:(id)referenceDate calendar:(id)calendar;
+- (BOOL)_requestBreathingDisturbanceAnalysisWithSamples:(id)samples analysisInterval:(id)interval;
+- (BOOL)_writePossibleSleepApneaNotificationSampleWithAnalysisInterval:(id)interval algorithmVersion:(id)version error:(id *)error;
+- (BOOL)performBreathingDisturbanceAnalysisWithIsForced:(BOOL)forced date:(id)date numberOfAnalysisAttempts:(int64_t)attempts;
+- (HDSHBreathingDisturbanceAnalyzer)initWithProfile:(id)profile;
+- (id)_createEnumeratorWithAnalysisInterval:(id)interval profile:(id)profile includeTimeZones:(BOOL)zones;
+- (void)_sendAnalyticsWithPayload:(id)payload;
+- (void)_sendPossibleSleepApneaNotificationWithRequest:(id)request;
 @end
 
 @implementation HDSHBreathingDisturbanceAnalyzer
 
-- (HDSHBreathingDisturbanceAnalyzer)initWithProfile:(id)a3
+- (HDSHBreathingDisturbanceAnalyzer)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v13.receiver = self;
   v13.super_class = HDSHBreathingDisturbanceAnalyzer;
   v5 = [(HDSHBreathingDisturbanceAnalyzer *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = objc_alloc(MEMORY[0x277CCCFE8]);
     v8 = *MEMORY[0x277CCC320];
     WeakRetained = objc_loadWeakRetained(&v6->_profile);
@@ -38,28 +38,28 @@
   return v6;
 }
 
-- (BOOL)performBreathingDisturbanceAnalysisWithIsForced:(BOOL)a3 date:(id)a4 numberOfAnalysisAttempts:(int64_t)a5
+- (BOOL)performBreathingDisturbanceAnalysisWithIsForced:(BOOL)forced date:(id)date numberOfAnalysisAttempts:(int64_t)attempts
 {
-  v6 = a3;
+  forcedCopy = forced;
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  dateCopy = date;
   v9 = [MEMORY[0x277CBEAA8] now];
-  v10 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  if (v6)
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  if (forcedCopy)
   {
     v11 = objc_alloc_init(MEMORY[0x277CBEAB8]);
     [v11 setDay:~*MEMORY[0x277D62648]];
-    v12 = [v10 dateByAddingComponents:v11 toDate:v9 options:0];
+    v12 = [hk_gregorianCalendar dateByAddingComponents:v11 toDate:v9 options:0];
 
     v9 = v11;
   }
 
   else
   {
-    v12 = [HDSHBreathingDisturbanceAnalyzer endDateFromMostRecentlyAnalyzedDateIntervalWithDate:v8 numberOfAnalysisAttempts:a5 calendar:v10];
+    v12 = [HDSHBreathingDisturbanceAnalyzer endDateFromMostRecentlyAnalyzedDateIntervalWithDate:dateCopy numberOfAnalysisAttempts:attempts calendar:hk_gregorianCalendar];
   }
 
-  v13 = [HDSHBreathingDisturbanceAnalyzer constructAnalysisDateIntervalFromDate:v12 withCalendar:v10];
+  v13 = [HDSHBreathingDisturbanceAnalyzer constructAnalysisDateIntervalFromDate:v12 withCalendar:hk_gregorianCalendar];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v24 = 0;
   v15 = [(HDSHBreathingDisturbanceAnalyzer *)self fetchSamplesWithAnalysisInterval:v13 profile:WeakRetained includeTimeZones:0 error:&v24];
@@ -94,17 +94,17 @@
   return v18;
 }
 
-- (id)_createEnumeratorWithAnalysisInterval:(id)a3 profile:(id)a4 includeTimeZones:(BOOL)a5
+- (id)_createEnumeratorWithAnalysisInterval:(id)interval profile:(id)profile includeTimeZones:(BOOL)zones
 {
-  v5 = a5;
+  zonesCopy = zones;
   v35[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  intervalCopy = interval;
   v8 = MEMORY[0x277CCD720];
   v9 = *MEMORY[0x277CCC930];
-  v10 = a4;
+  profileCopy = profile;
   v11 = [v8 quantityTypeForIdentifier:v9];
   v12 = HDSampleEntityPredicateForDateInterval();
-  v13 = [MEMORY[0x277D10810] entityEnumeratorWithType:v11 profile:v10];
+  v13 = [MEMORY[0x277D10810] entityEnumeratorWithType:v11 profile:profileCopy];
 
   [v13 setPredicate:v12];
   v14 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:*MEMORY[0x277CCCD50] ascending:1];
@@ -112,7 +112,7 @@
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:1];
   [v13 setSortDescriptors:v15];
 
-  if (v5)
+  if (zonesCopy)
   {
     v33 = *MEMORY[0x277D10400];
     v34 = MEMORY[0x277CBEC38];
@@ -127,10 +127,10 @@
     v18 = v17;
     v19 = objc_opt_class();
     v26 = v19;
-    v20 = [v7 startDate];
-    v21 = [v20 description];
-    v22 = [v7 endDate];
-    v23 = [v22 description];
+    startDate = [intervalCopy startDate];
+    v21 = [startDate description];
+    endDate = [intervalCopy endDate];
+    v23 = [endDate description];
     *buf = 138543874;
     v28 = v19;
     v29 = 2112;
@@ -145,11 +145,11 @@
   return v13;
 }
 
-- (BOOL)_requestBreathingDisturbanceAnalysisWithSamples:(id)a3 analysisInterval:(id)a4
+- (BOOL)_requestBreathingDisturbanceAnalysisWithSamples:(id)samples analysisInterval:(id)interval
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  samplesCopy = samples;
+  intervalCopy = interval;
   _HKInitializeLogging();
   v8 = MEMORY[0x277CCC320];
   v9 = *MEMORY[0x277CCC320];
@@ -158,8 +158,8 @@
     v10 = v9;
     v11 = objc_opt_class();
     v12 = v11;
-    v13 = [v6 count];
-    v14 = [v7 description];
+    v13 = [samplesCopy count];
+    v14 = [intervalCopy description];
     *buf = 138543874;
     *&buf[4] = v11;
     *&buf[12] = 2048;
@@ -170,7 +170,7 @@
   }
 
   memset(buf, 0, sizeof(buf));
-  [MEMORY[0x277CF33B0] analyzeSamples:v6 dateInterval:v7];
+  [MEMORY[0x277CF33B0] analyzeSamples:samplesCopy dateInterval:intervalCopy];
   if (buf[16] == 1)
   {
     _HKInitializeLogging();
@@ -184,7 +184,7 @@
     }
 
     v29 = 0;
-    v17 = [(HDSHBreathingDisturbanceAnalyzer *)self _writePossibleSleepApneaNotificationSampleWithAnalysisInterval:v7 algorithmVersion:*buf error:&v29];
+    v17 = [(HDSHBreathingDisturbanceAnalyzer *)self _writePossibleSleepApneaNotificationSampleWithAnalysisInterval:intervalCopy algorithmVersion:*buf error:&v29];
     v18 = v29;
     if (!v17)
     {
@@ -238,46 +238,46 @@ LABEL_15:
   return v22;
 }
 
-- (BOOL)_writePossibleSleepApneaNotificationSampleWithAnalysisInterval:(id)a3 algorithmVersion:(id)a4 error:(id *)a5
+- (BOOL)_writePossibleSleepApneaNotificationSampleWithAnalysisInterval:(id)interval algorithmVersion:(id)version error:(id *)error
 {
   v44[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  versionCopy = version;
   v43 = *MEMORY[0x277CCC428];
-  v44[0] = v8;
+  v44[0] = versionCopy;
   v9 = MEMORY[0x277CBEAC0];
-  v10 = a3;
+  intervalCopy = interval;
   v11 = [v9 dictionaryWithObjects:v44 forKeys:&v43 count:1];
   v12 = MEMORY[0x277CCD0B0];
   v13 = [MEMORY[0x277CCD0C0] _typeWithIdentifier:*MEMORY[0x277CCBAC0]];
-  v14 = [v10 startDate];
-  v15 = [v10 endDate];
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
 
-  v16 = [v12 categorySampleWithType:v13 value:0 startDate:v14 endDate:v15 metadata:v11];
+  v16 = [v12 categorySampleWithType:v13 value:0 startDate:startDate endDate:endDate metadata:v11];
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v18 = [WeakRetained sourceManager];
-  v19 = [v18 localDeviceSourceWithError:a5];
+  sourceManager = [WeakRetained sourceManager];
+  v19 = [sourceManager localDeviceSourceWithError:error];
 
   v20 = objc_loadWeakRetained(&self->_profile);
-  v22 = [v20 deviceManager];
-  v21 = [v22 currentDeviceEntityWithError:a5];
+  deviceManager = [v20 deviceManager];
+  v21 = [deviceManager currentDeviceEntityWithError:error];
 
-  LOBYTE(v22) = 0;
+  LOBYTE(deviceManager) = 0;
   if (v19 && v21)
   {
     v36 = v11;
-    v37 = v8;
-    v22 = objc_loadWeakRetained(&self->_profile);
-    v23 = [v22 dataProvenanceManager];
-    v24 = [v23 localDataProvenanceForSourceEntity:v19 version:0 deviceEntity:v21];
+    v37 = versionCopy;
+    deviceManager = objc_loadWeakRetained(&self->_profile);
+    dataProvenanceManager = [deviceManager dataProvenanceManager];
+    v24 = [dataProvenanceManager localDataProvenanceForSourceEntity:v19 version:0 deviceEntity:v21];
 
     v25 = objc_loadWeakRetained(&self->_profile);
-    v26 = [v25 dataManager];
+    dataManager = [v25 dataManager];
     v42 = v16;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v42 count:1];
-    LODWORD(v22) = [v26 insertDataObjects:v27 withProvenance:v24 creationDate:0 skipInsertionFilter:a5 error:CFAbsoluteTimeGetCurrent()];
+    LODWORD(deviceManager) = [dataManager insertDataObjects:v27 withProvenance:v24 creationDate:0 skipInsertionFilter:error error:CFAbsoluteTimeGetCurrent()];
 
-    if (v22)
+    if (deviceManager)
     {
       _HKInitializeLogging();
       v28 = *MEMORY[0x277CCC320];
@@ -292,25 +292,25 @@ LABEL_15:
         _os_log_impl(&dword_269C02000, v29, OS_LOG_TYPE_DEFAULT, "[%{public}@] Successfully wrote possible sleep apnea event sample with source %@", buf, 0x16u);
       }
 
-      v31 = [v16 UUID];
-      v32 = [v31 UUIDString];
+      uUID = [v16 UUID];
+      uUIDString = [uUID UUIDString];
       v33 = HKSHCreatePossibleSleepApneaDetectedNotificationRequest();
 
       [(HDSHBreathingDisturbanceAnalyzer *)self _sendPossibleSleepApneaNotificationWithRequest:v33];
     }
 
-    v8 = v37;
+    versionCopy = v37;
     v11 = v36;
   }
 
   v34 = *MEMORY[0x277D85DE8];
-  return v22;
+  return deviceManager;
 }
 
-- (void)_sendAnalyticsWithPayload:(id)a3
+- (void)_sendAnalyticsWithPayload:(id)payload
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  payloadCopy = payload;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC320];
   if (os_log_type_enabled(*MEMORY[0x277CCC320], OS_LOG_TYPE_DEFAULT))
@@ -323,7 +323,7 @@ LABEL_15:
   }
 
   analyticsEventSubmissionManager = self->_analyticsEventSubmissionManager;
-  v9 = [[HDSHBreathingDisturbanceAnalysisAnalyticsEvent alloc] initWithDefaultAnalyticsPayload:v4];
+  v9 = [[HDSHBreathingDisturbanceAnalysisAnalyticsEvent alloc] initWithDefaultAnalyticsPayload:payloadCopy];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -376,16 +376,16 @@ LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendPossibleSleepApneaNotificationWithRequest:(id)a3
+- (void)_sendPossibleSleepApneaNotificationWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __83__HDSHBreathingDisturbanceAnalyzer__sendPossibleSleepApneaNotificationWithRequest___block_invoke;
   v6[3] = &unk_279C830B8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = requestCopy;
+  v5 = requestCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -441,42 +441,42 @@ void __83__HDSHBreathingDisturbanceAnalyzer__sendPossibleSleepApneaNotificationW
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)constructAnalysisDateIntervalFromDate:(id)a3 withCalendar:(id)a4
++ (id)constructAnalysisDateIntervalFromDate:(id)date withCalendar:(id)calendar
 {
-  v5 = a4;
+  calendarCopy = calendar;
   v6 = MEMORY[0x277CBEAB8];
-  v7 = a3;
+  dateCopy = date;
   v8 = objc_alloc_init(v6);
-  v9 = [v7 hk_sleepDayStartWithCalendar:v5];
-  v10 = [v9 hk_isBeforeDate:v7];
+  v9 = [dateCopy hk_sleepDayStartWithCalendar:calendarCopy];
+  v10 = [v9 hk_isBeforeDate:dateCopy];
 
   if (v10)
   {
     [v8 setDay:1];
-    v11 = [v5 dateByAddingComponents:v8 toDate:v9 options:0];
+    v11 = [calendarCopy dateByAddingComponents:v8 toDate:v9 options:0];
 
     v9 = v11;
   }
 
   [v8 setDay:*MEMORY[0x277D62648]];
-  v12 = [v5 dateByAddingComponents:v8 toDate:v9 options:0];
+  v12 = [calendarCopy dateByAddingComponents:v8 toDate:v9 options:0];
   v13 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v9 endDate:v12];
 
   return v13;
 }
 
-+ (id)endDateFromMostRecentlyAnalyzedDateIntervalWithDate:(id)a3 numberOfAnalysisAttempts:(int64_t)a4 calendar:(id)a5
++ (id)endDateFromMostRecentlyAnalyzedDateIntervalWithDate:(id)date numberOfAnalysisAttempts:(int64_t)attempts calendar:(id)calendar
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if (a4)
+  dateCopy = date;
+  v8 = dateCopy;
+  if (attempts)
   {
     v9 = MEMORY[0x277CBEAB8];
-    v10 = a5;
+    calendarCopy = calendar;
     v11 = objc_alloc_init(v9);
-    [v11 setDay:*MEMORY[0x277D62648] * a4];
-    v12 = [v10 dateByAddingComponents:v11 toDate:v8 options:0];
+    [v11 setDay:*MEMORY[0x277D62648] * attempts];
+    v12 = [calendarCopy dateByAddingComponents:v11 toDate:v8 options:0];
 
     _HKInitializeLogging();
     v13 = *MEMORY[0x277CCC320];
@@ -488,7 +488,7 @@ void __83__HDSHBreathingDisturbanceAnalyzer__sendPossibleSleepApneaNotificationW
       v20 = 2112;
       v21 = v8;
       v22 = 2048;
-      v23 = a4;
+      attemptsCopy = attempts;
       v24 = 2112;
       v25 = v12;
       v15 = v19;
@@ -498,7 +498,7 @@ void __83__HDSHBreathingDisturbanceAnalyzer__sendPossibleSleepApneaNotificationW
 
   else
   {
-    v12 = v7;
+    v12 = dateCopy;
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -506,10 +506,10 @@ void __83__HDSHBreathingDisturbanceAnalyzer__sendPossibleSleepApneaNotificationW
   return v12;
 }
 
-+ (BOOL)isAnalysisNeededWithAnchorDate:(id)a3 referenceDate:(id)a4 calendar:(id)a5
++ (BOOL)isAnalysisNeededWithAnchorDate:(id)date referenceDate:(id)referenceDate calendar:(id)calendar
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = [a5 components:16 fromDate:a3 toDate:a4 options:0];
+  v5 = [calendar components:16 fromDate:date toDate:referenceDate options:0];
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC320];
   if (os_log_type_enabled(*MEMORY[0x277CCC320], OS_LOG_TYPE_DEFAULT))
@@ -531,12 +531,12 @@ void __83__HDSHBreathingDisturbanceAnalyzer__sendPossibleSleepApneaNotificationW
   return v11;
 }
 
-+ (int64_t)numberOfExpectedAnalysisAttemptsStartingFromAnchorDate:(id)a3 referenceDate:(id)a4 calendar:(id)a5
++ (int64_t)numberOfExpectedAnalysisAttemptsStartingFromAnchorDate:(id)date referenceDate:(id)referenceDate calendar:(id)calendar
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [a5 components:16 fromDate:v7 toDate:v8 options:0];
+  dateCopy = date;
+  referenceDateCopy = referenceDate;
+  v9 = [calendar components:16 fromDate:dateCopy toDate:referenceDateCopy options:0];
   v10 = [v9 day];
   v11 = v10 / *MEMORY[0x277D62648];
   _HKInitializeLogging();
@@ -547,9 +547,9 @@ void __83__HDSHBreathingDisturbanceAnalyzer__sendPossibleSleepApneaNotificationW
     v17 = 138544130;
     v18 = objc_opt_class();
     v19 = 2112;
-    v20 = v7;
+    v20 = dateCopy;
     v21 = 2112;
-    v22 = v8;
+    v22 = referenceDateCopy;
     v23 = 2048;
     v24 = v11;
     v14 = v18;
@@ -560,44 +560,44 @@ void __83__HDSHBreathingDisturbanceAnalyzer__sendPossibleSleepApneaNotificationW
   return v11;
 }
 
-+ (id)samplesFilteredBySleepDay:(id)a3
++ (id)samplesFilteredBySleepDay:(id)day
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  dayCopy = day;
+  if ([dayCopy count])
   {
-    v4 = [v3 firstObject];
+    firstObject = [dayCopy firstObject];
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v6 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-    if ([v3 count])
+    hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    if ([dayCopy count])
     {
       v7 = 0;
       do
       {
-        v8 = [v3 objectAtIndexedSubscript:v7];
-        if ([objc_opt_class() _areSamplesInSameSleepDayWithFirstSample:v4 secondSample:v8 calendar:v6])
+        v8 = [dayCopy objectAtIndexedSubscript:v7];
+        if ([objc_opt_class() _areSamplesInSameSleepDayWithFirstSample:firstObject secondSample:v8 calendar:hk_gregorianCalendar])
         {
-          v9 = [objc_opt_class() _sampleWithHighestDurationWithFirstSample:v4 secondSample:v8];
+          v9 = [objc_opt_class() _sampleWithHighestDurationWithFirstSample:firstObject secondSample:v8];
         }
 
         else
         {
-          [v5 addObject:v4];
+          [v5 addObject:firstObject];
           v9 = v8;
         }
 
         v10 = v9;
 
         ++v7;
-        v4 = v10;
+        firstObject = v10;
       }
 
-      while (v7 < [v3 count]);
+      while (v7 < [dayCopy count]);
     }
 
     else
     {
-      v10 = v4;
+      v10 = firstObject;
     }
 
     [v5 addObject:v10];
@@ -637,48 +637,48 @@ void __83__HDSHBreathingDisturbanceAnalyzer__sendPossibleSleepApneaNotificationW
   return v11;
 }
 
-+ (BOOL)_areSamplesInSameSleepDayWithFirstSample:(id)a3 secondSample:(id)a4 calendar:(id)a5
++ (BOOL)_areSamplesInSameSleepDayWithFirstSample:(id)sample secondSample:(id)secondSample calendar:(id)calendar
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [a3 endDate];
-  v10 = [v9 hk_morningIndexWithCalendar:v7];
+  calendarCopy = calendar;
+  secondSampleCopy = secondSample;
+  endDate = [sample endDate];
+  v10 = [endDate hk_morningIndexWithCalendar:calendarCopy];
 
-  v11 = [v8 endDate];
+  endDate2 = [secondSampleCopy endDate];
 
-  v12 = [v11 hk_morningIndexWithCalendar:v7];
+  v12 = [endDate2 hk_morningIndexWithCalendar:calendarCopy];
   return v10 == v12;
 }
 
-+ (id)_sampleWithHighestDurationWithFirstSample:(id)a3 secondSample:(id)a4
++ (id)_sampleWithHighestDurationWithFirstSample:(id)sample secondSample:(id)secondSample
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 endDate];
-  v8 = [v5 startDate];
-  [v7 timeIntervalSinceDate:v8];
+  sampleCopy = sample;
+  secondSampleCopy = secondSample;
+  endDate = [sampleCopy endDate];
+  startDate = [sampleCopy startDate];
+  [endDate timeIntervalSinceDate:startDate];
   v10 = v9;
 
-  v11 = [v6 endDate];
-  v12 = [v6 startDate];
-  [v11 timeIntervalSinceDate:v12];
+  endDate2 = [secondSampleCopy endDate];
+  startDate2 = [secondSampleCopy startDate];
+  [endDate2 timeIntervalSinceDate:startDate2];
   v14 = v13;
 
   if (v10 == v14)
   {
-    v15 = [v5 quantity];
-    [v15 _value];
+    quantity = [sampleCopy quantity];
+    [quantity _value];
     v17 = v16;
-    v18 = [v6 quantity];
-    [v18 _value];
+    quantity2 = [secondSampleCopy quantity];
+    [quantity2 _value];
     if (v17 <= v19)
     {
-      v20 = v5;
+      v20 = sampleCopy;
     }
 
     else
     {
-      v20 = v6;
+      v20 = secondSampleCopy;
     }
 
     v21 = v20;
@@ -688,12 +688,12 @@ void __83__HDSHBreathingDisturbanceAnalyzer__sendPossibleSleepApneaNotificationW
   {
     if (v10 <= v14)
     {
-      v22 = v6;
+      v22 = secondSampleCopy;
     }
 
     else
     {
-      v22 = v5;
+      v22 = sampleCopy;
     }
 
     v21 = v22;

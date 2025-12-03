@@ -1,19 +1,19 @@
 @interface UIPDFPlacementController
-- (CGRect)boundsForObjectAtIndex:(unint64_t)a3;
-- (UIPDFPlacementController)initWithAnnotations:(id)a3 viewSize:(CGSize)a4;
-- (double)yForObjectAtIndex:(unint64_t)a3;
-- (id)viewAtIndex:(unint64_t)a3;
+- (CGRect)boundsForObjectAtIndex:(unint64_t)index;
+- (UIPDFPlacementController)initWithAnnotations:(id)annotations viewSize:(CGSize)size;
+- (double)yForObjectAtIndex:(unint64_t)index;
+- (id)viewAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)layoutViews:(double)a3;
-- (void)shift:(double)a3;
+- (void)layoutViews:(double)views;
+- (void)shift:(double)shift;
 @end
 
 @implementation UIPDFPlacementController
 
-- (UIPDFPlacementController)initWithAnnotations:(id)a3 viewSize:(CGSize)a4
+- (UIPDFPlacementController)initWithAnnotations:(id)annotations viewSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v21 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = UIPDFPlacementController;
@@ -28,7 +28,7 @@
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = [a3 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    v9 = [annotations countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -39,7 +39,7 @@
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(annotations);
           }
 
           v13 = *(*(&v15 + 1) + 8 * i);
@@ -50,7 +50,7 @@
           }
         }
 
-        v10 = [a3 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v10 = [annotations countByEnumeratingWithState:&v15 objects:v20 count:16];
       }
 
       while (v10);
@@ -69,9 +69,9 @@
   [(UIPDFPlacementController *)&v3 dealloc];
 }
 
-- (CGRect)boundsForObjectAtIndex:(unint64_t)a3
+- (CGRect)boundsForObjectAtIndex:(unint64_t)index
 {
-  v4 = [objc_msgSend(-[NSMutableArray objectAtIndex:](self->_popups objectAtIndex:{a3), "parent"), "selection"}];
+  v4 = [objc_msgSend(-[NSMutableArray objectAtIndex:](self->_popups objectAtIndex:{index), "parent"), "selection"}];
   if ([v4 numberOfRectangles])
   {
     v16 = 0u;
@@ -88,8 +88,8 @@
       *(&v17 + 1) = v7;
     }
 
-    v8 = [(UIPDFPlacementController *)self pageView];
-    [(UIPDFPageView *)v8 convertRectFromPDFPageSpace:v16, v17];
+    pageView = [(UIPDFPlacementController *)self pageView];
+    [(UIPDFPageView *)pageView convertRectFromPDFPageSpace:v16, v17];
   }
 
   else
@@ -110,21 +110,21 @@
   return result;
 }
 
-- (double)yForObjectAtIndex:(unint64_t)a3
+- (double)yForObjectAtIndex:(unint64_t)index
 {
-  [(UIPDFPlacementController *)self boundsForObjectAtIndex:a3];
+  [(UIPDFPlacementController *)self boundsForObjectAtIndex:index];
 
   return CGRectGetMinY(*&v3);
 }
 
-- (id)viewAtIndex:(unint64_t)a3
+- (id)viewAtIndex:(unint64_t)index
 {
-  v3 = [(NSMutableArray *)self->_popups objectAtIndex:a3];
+  v3 = [(NSMutableArray *)self->_popups objectAtIndex:index];
 
   return [v3 annotationView];
 }
 
-- (void)shift:(double)a3
+- (void)shift:(double)shift
 {
   v4 = [(NSMutableArray *)self->_popups count];
   if (v4)
@@ -139,13 +139,13 @@
   }
 }
 
-- (void)layoutViews:(double)a3
+- (void)layoutViews:(double)views
 {
   v5 = [(NSMutableArray *)self->_popups count];
   if (v5)
   {
     v6 = v5;
-    v61 = a3;
+    viewsCopy = views;
     [[(UIPDFPageView *)[(UIPDFPlacementController *)self pageView] page] cropBox];
     [(UIPDFPageView *)self->pageView convertRectFromPDFPageSpace:?];
     x = v69.origin.x;
@@ -274,7 +274,7 @@
       }
     }
 
-    [(UIPDFPlacementController *)self shift:v61, v24];
+    [(UIPDFPlacementController *)self shift:viewsCopy, v24];
   }
 }
 

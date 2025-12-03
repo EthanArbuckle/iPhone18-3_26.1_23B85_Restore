@@ -1,36 +1,36 @@
 @interface CDASchemaCDADebugElectionDecisionMade
-- (BOOL)isEqual:(id)a3;
-- (CDASchemaCDADebugElectionDecisionMade)initWithDictionary:(id)a3;
-- (CDASchemaCDADebugElectionDecisionMade)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CDASchemaCDADebugElectionDecisionMade)initWithDictionary:(id)dictionary;
+- (CDASchemaCDADebugElectionDecisionMade)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAdvertisementData:(id)a3;
-- (void)setHasDeviceGroup:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAdvertisementData:(id)data;
+- (void)setHasDeviceGroup:(BOOL)group;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CDASchemaCDADebugElectionDecisionMade
 
-- (CDASchemaCDADebugElectionDecisionMade)initWithDictionary:(id)a3
+- (CDASchemaCDADebugElectionDecisionMade)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = CDASchemaCDADebugElectionDecisionMade;
   v5 = [(CDASchemaCDADebugElectionDecisionMade *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isCrossDeviceArbitrationAllowed"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isCrossDeviceArbitrationAllowed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDADebugElectionDecisionMade setIsCrossDeviceArbitrationAllowed:](v5, "setIsCrossDeviceArbitrationAllowed:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"advertisementData"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"advertisementData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,7 +76,7 @@
       v6 = v18;
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"deviceGroup"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"deviceGroup"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,30 +89,30 @@
   return v5;
 }
 
-- (CDASchemaCDADebugElectionDecisionMade)initWithJSON:(id)a3
+- (CDASchemaCDADebugElectionDecisionMade)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CDASchemaCDADebugElectionDecisionMade *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CDASchemaCDADebugElectionDecisionMade *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CDASchemaCDADebugElectionDecisionMade *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -126,10 +126,10 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_advertisementDatas count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -149,16 +149,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -168,14 +168,14 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"advertisementData"];
+    [dictionary setObject:array forKeyedSubscript:@"advertisementData"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CDASchemaCDADebugElectionDecisionMade deviceGroup](self, "deviceGroup")}];
-    [v3 setObject:v13 forKeyedSubscript:@"deviceGroup"];
+    [dictionary setObject:v13 forKeyedSubscript:@"deviceGroup"];
 
     has = self->_has;
   }
@@ -183,12 +183,12 @@
   if (has)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[CDASchemaCDADebugElectionDecisionMade isCrossDeviceArbitrationAllowed](self, "isCrossDeviceArbitrationAllowed")}];
-    [v3 setObject:v14 forKeyedSubscript:@"isCrossDeviceArbitrationAllowed"];
+    [dictionary setObject:v14 forKeyedSubscript:@"isCrossDeviceArbitrationAllowed"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v16];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v16];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -217,15 +217,15 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[28] & 1))
+  if ((*&self->_has & 1) != (equalCopy[28] & 1))
   {
     goto LABEL_15;
   }
@@ -233,16 +233,16 @@
   if (*&self->_has)
   {
     isCrossDeviceArbitrationAllowed = self->_isCrossDeviceArbitrationAllowed;
-    if (isCrossDeviceArbitrationAllowed != [v4 isCrossDeviceArbitrationAllowed])
+    if (isCrossDeviceArbitrationAllowed != [equalCopy isCrossDeviceArbitrationAllowed])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(CDASchemaCDADebugElectionDecisionMade *)self advertisementDatas];
-  v7 = [v4 advertisementDatas];
-  v8 = v7;
-  if ((v6 != 0) == (v7 == 0))
+  advertisementDatas = [(CDASchemaCDADebugElectionDecisionMade *)self advertisementDatas];
+  advertisementDatas2 = [equalCopy advertisementDatas];
+  v8 = advertisementDatas2;
+  if ((advertisementDatas != 0) == (advertisementDatas2 == 0))
   {
 
 LABEL_15:
@@ -250,13 +250,13 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v9 = [(CDASchemaCDADebugElectionDecisionMade *)self advertisementDatas];
-  if (v9)
+  advertisementDatas3 = [(CDASchemaCDADebugElectionDecisionMade *)self advertisementDatas];
+  if (advertisementDatas3)
   {
-    v10 = v9;
-    v11 = [(CDASchemaCDADebugElectionDecisionMade *)self advertisementDatas];
-    v12 = [v4 advertisementDatas];
-    v13 = [v11 isEqual:v12];
+    v10 = advertisementDatas3;
+    advertisementDatas4 = [(CDASchemaCDADebugElectionDecisionMade *)self advertisementDatas];
+    advertisementDatas5 = [equalCopy advertisementDatas];
+    v13 = [advertisementDatas4 isEqual:advertisementDatas5];
 
     if (!v13)
     {
@@ -269,7 +269,7 @@ LABEL_15:
   }
 
   v14 = (*&self->_has >> 1) & 1;
-  if (v14 != ((v4[28] >> 1) & 1))
+  if (v14 != ((equalCopy[28] >> 1) & 1))
   {
     goto LABEL_15;
   }
@@ -277,7 +277,7 @@ LABEL_15:
   if (v14)
   {
     deviceGroup = self->_deviceGroup;
-    if (deviceGroup != [v4 deviceGroup])
+    if (deviceGroup != [equalCopy deviceGroup])
     {
       goto LABEL_15;
     }
@@ -289,10 +289,10 @@ LABEL_16:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
@@ -335,9 +335,9 @@ LABEL_16:
   }
 }
 
-- (void)setHasDeviceGroup:(BOOL)a3
+- (void)setHasDeviceGroup:(BOOL)group
 {
-  if (a3)
+  if (group)
   {
     v3 = 2;
   }
@@ -350,32 +350,32 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addAdvertisementData:(id)a3
+- (void)addAdvertisementData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   advertisementDatas = self->_advertisementDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!advertisementDatas)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_advertisementDatas;
-    self->_advertisementDatas = v6;
+    self->_advertisementDatas = array;
 
-    v4 = v8;
+    dataCopy = v8;
     advertisementDatas = self->_advertisementDatas;
   }
 
-  [(NSArray *)advertisementDatas addObject:v4];
+  [(NSArray *)advertisementDatas addObject:dataCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = CDASchemaCDADebugElectionDecisionMade;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(CDASchemaCDADebugElectionDecisionMade *)self advertisementDatas:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(CDASchemaCDADebugElectionDecisionMade *)self setAdvertisementDatas:v7];
 

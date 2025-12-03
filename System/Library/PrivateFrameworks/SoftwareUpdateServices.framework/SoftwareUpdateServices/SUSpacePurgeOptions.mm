@@ -1,8 +1,8 @@
 @interface SUSpacePurgeOptions
 - (SUSpacePurgeOptions)init;
-- (SUSpacePurgeOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SUSpacePurgeOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUSpacePurgeOptions
@@ -28,38 +28,38 @@
   return v3;
 }
 
-- (SUSpacePurgeOptions)initWithCoder:(id)a3
+- (SUSpacePurgeOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SUSpacePurgeOptions;
   v5 = [(SUSpacePurgeOptions *)&v7 init];
   if (v5)
   {
-    -[SUSpacePurgeOptions setNeededBytes:](v5, "setNeededBytes:", [v4 decodeInt64ForKey:@"neededBytes"]);
-    -[SUSpacePurgeOptions setEnableCacheDelete:](v5, "setEnableCacheDelete:", [v4 decodeBoolForKey:@"enableCachDelete"]);
-    -[SUSpacePurgeOptions setEnableAppOffload:](v5, "setEnableAppOffload:", [v4 decodeBoolForKey:@"enableAppOffload"]);
-    -[SUSpacePurgeOptions setCacheDeleteUrgency:](v5, "setCacheDeleteUrgency:", [v4 decodeIntForKey:@"cacheDeleteUrgency"]);
-    -[SUSpacePurgeOptions setAppOffloadUrgency:](v5, "setAppOffloadUrgency:", [v4 decodeIntegerForKey:@"appOffloadUrgency"]);
-    -[SUSpacePurgeOptions setEnableMobileAssetSuspend:](v5, "setEnableMobileAssetSuspend:", [v4 decodeBoolForKey:@"enableMobileAssetSuspend"]);
+    -[SUSpacePurgeOptions setNeededBytes:](v5, "setNeededBytes:", [coderCopy decodeInt64ForKey:@"neededBytes"]);
+    -[SUSpacePurgeOptions setEnableCacheDelete:](v5, "setEnableCacheDelete:", [coderCopy decodeBoolForKey:@"enableCachDelete"]);
+    -[SUSpacePurgeOptions setEnableAppOffload:](v5, "setEnableAppOffload:", [coderCopy decodeBoolForKey:@"enableAppOffload"]);
+    -[SUSpacePurgeOptions setCacheDeleteUrgency:](v5, "setCacheDeleteUrgency:", [coderCopy decodeIntForKey:@"cacheDeleteUrgency"]);
+    -[SUSpacePurgeOptions setAppOffloadUrgency:](v5, "setAppOffloadUrgency:", [coderCopy decodeIntegerForKey:@"appOffloadUrgency"]);
+    -[SUSpacePurgeOptions setEnableMobileAssetSuspend:](v5, "setEnableMobileAssetSuspend:", [coderCopy decodeBoolForKey:@"enableMobileAssetSuspend"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   neededBytes = self->_neededBytes;
-  v5 = a3;
-  [v5 encodeInt64:neededBytes forKey:@"neededBytes"];
-  [v5 encodeBool:self->_enableCacheDelete forKey:@"enableCachDelete"];
-  [v5 encodeBool:self->_enableAppOffload forKey:@"enableAppOffload"];
-  [v5 encodeInt:self->_cacheDeleteUrgency forKey:@"cacheDeleteUrgency"];
-  [v5 encodeInteger:self->_appOffloadUrgency forKey:@"appOffloadUrgency"];
-  [v5 encodeBool:self->_enableMobileAssetSuspend forKey:@"enableMobileAssetSuspend"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:neededBytes forKey:@"neededBytes"];
+  [coderCopy encodeBool:self->_enableCacheDelete forKey:@"enableCachDelete"];
+  [coderCopy encodeBool:self->_enableAppOffload forKey:@"enableAppOffload"];
+  [coderCopy encodeInt:self->_cacheDeleteUrgency forKey:@"cacheDeleteUrgency"];
+  [coderCopy encodeInteger:self->_appOffloadUrgency forKey:@"appOffloadUrgency"];
+  [coderCopy encodeBool:self->_enableMobileAssetSuspend forKey:@"enableMobileAssetSuspend"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setCompletionQueue:self->_completionQueue];

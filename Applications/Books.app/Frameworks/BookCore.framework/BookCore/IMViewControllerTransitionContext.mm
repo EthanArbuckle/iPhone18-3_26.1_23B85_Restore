@@ -1,24 +1,24 @@
 @interface IMViewControllerTransitionContext
 - (CGAffineTransform)targetTransform;
-- (CGRect)finalFrameForViewController:(id)a3;
-- (CGRect)initialFrameForViewController:(id)a3;
+- (CGRect)finalFrameForViewController:(id)controller;
+- (CGRect)initialFrameForViewController:(id)controller;
 - (IMViewControllerTransitionContext)init;
 - (id)_transitionCoordinator;
 - (void)__runAlongsideAnimations;
-- (void)_disableInteractionForViews:(id)a3;
+- (void)_disableInteractionForViews:(id)views;
 - (void)_enableInteractionForDisabledViews;
-- (void)_interactivityDidChange:(BOOL)a3;
+- (void)_interactivityDidChange:(BOOL)change;
 - (void)_runAlongsideCompletions;
-- (void)_setAnimator:(id)a3;
-- (void)_setInteractor:(id)a3;
-- (void)_setTransitionIsCompleting:(BOOL)a3;
-- (void)_updateInteractiveTransitionWithoutTrackingPercentComplete:(double)a3;
+- (void)_setAnimator:(id)animator;
+- (void)_setInteractor:(id)interactor;
+- (void)_setTransitionIsCompleting:(BOOL)completing;
+- (void)_updateInteractiveTransitionWithoutTrackingPercentComplete:(double)complete;
 - (void)cancelInteractiveTransition;
-- (void)completeTransition:(BOOL)a3;
+- (void)completeTransition:(BOOL)transition;
 - (void)dealloc;
 - (void)finishInteractiveTransition;
-- (void)trackAnimation:(id)a3 withLayer:(id)a4;
-- (void)updateInteractiveTransition:(double)a3;
+- (void)trackAnimation:(id)animation withLayer:(id)layer;
+- (void)updateInteractiveTransition:(double)transition;
 @end
 
 @implementation IMViewControllerTransitionContext
@@ -52,44 +52,44 @@
   [(IMViewControllerTransitionContext *)&v3 dealloc];
 }
 
-- (void)_setAnimator:(id)a3
+- (void)_setAnimator:(id)animator
 {
-  v4 = a3;
+  animatorCopy = animator;
   animator = self->_animator;
-  if (animator != v4)
+  if (animator != animatorCopy)
   {
-    v6 = v4;
+    v6 = animatorCopy;
     if (animator)
     {
       objc_setAssociatedObject(animator, &unk_342298, 0, &dword_0 + 1);
-      v4 = v6;
+      animatorCopy = v6;
     }
 
-    self->_animator = v4;
-    if (v4)
+    self->_animator = animatorCopy;
+    if (animatorCopy)
     {
-      objc_setAssociatedObject(v4, &unk_342298, self, &dword_0 + 1);
+      objc_setAssociatedObject(animatorCopy, &unk_342298, self, &dword_0 + 1);
     }
   }
 
   _objc_release_x2();
 }
 
-- (void)_setInteractor:(id)a3
+- (void)_setInteractor:(id)interactor
 {
-  v4 = a3;
+  interactorCopy = interactor;
   interactor = self->_interactor;
-  if (interactor != v4)
+  if (interactor != interactorCopy)
   {
-    object = v4;
+    object = interactorCopy;
     if (interactor)
     {
       objc_setAssociatedObject(interactor, &unk_342298, 0, &dword_0 + 1);
-      v4 = object;
+      interactorCopy = object;
     }
 
-    self->_interactor = v4;
-    if (v4)
+    self->_interactor = interactorCopy;
+    if (interactorCopy)
     {
       *&self->_transitionContextFlags = *&self->_transitionContextFlags & 0xFE | objc_opt_respondsToSelector() & 1;
       if (objc_opt_respondsToSelector())
@@ -128,42 +128,42 @@
   return v3;
 }
 
-- (void)_updateInteractiveTransitionWithoutTrackingPercentComplete:(double)a3
+- (void)_updateInteractiveTransitionWithoutTrackingPercentComplete:(double)complete
 {
   if ([(IMViewControllerTransitionContext *)self initiallyInteractive])
   {
-    v5 = [(IMViewControllerTransitionContext *)self _interactiveUpdateHandler];
+    _interactiveUpdateHandler = [(IMViewControllerTransitionContext *)self _interactiveUpdateHandler];
 
-    if (v5)
+    if (_interactiveUpdateHandler)
     {
       *&self->_transitionContextFlags &= ~8u;
       v7 = *(self->__interactiveUpdateHandler + 2);
-      v6.n128_f64[0] = a3;
+      v6.n128_f64[0] = complete;
 
       v7(v6);
     }
   }
 }
 
-- (void)updateInteractiveTransition:(double)a3
+- (void)updateInteractiveTransition:(double)transition
 {
   if ([(IMViewControllerTransitionContext *)self _state]== &dword_0 + 1)
   {
     if ([(IMViewControllerTransitionContext *)self isCurrentlyInteractive])
     {
-      v5 = [(IMViewControllerTransitionContext *)self _interactiveUpdateHandler];
-      if (v5)
+      _interactiveUpdateHandler = [(IMViewControllerTransitionContext *)self _interactiveUpdateHandler];
+      if (_interactiveUpdateHandler)
       {
         previousPercentComplete = self->_previousPercentComplete;
 
-        if (previousPercentComplete != a3)
+        if (previousPercentComplete != transition)
         {
           *&self->_transitionContextFlags &= ~8u;
-          self->_previousPercentComplete = a3;
+          self->_previousPercentComplete = transition;
           interactiveUpdateHandler = self->__interactiveUpdateHandler;
           [(IMViewControllerTransitionContext *)self _percentOffset];
           v8 = interactiveUpdateHandler[2];
-          v9.n128_f64[0] = v9.n128_f64[0] + a3;
+          v9.n128_f64[0] = v9.n128_f64[0] + transition;
 
           v8(interactiveUpdateHandler, 0, 0, self, v9);
         }
@@ -195,9 +195,9 @@
 
     if ([(IMViewControllerTransitionContext *)self isCurrentlyInteractive])
     {
-      v5 = [(IMViewControllerTransitionContext *)self _interactiveUpdateHandler];
+      _interactiveUpdateHandler = [(IMViewControllerTransitionContext *)self _interactiveUpdateHandler];
 
-      if (v5)
+      if (_interactiveUpdateHandler)
       {
         (*(self->__interactiveUpdateHandler + 2))(self->_previousPercentComplete);
       }
@@ -240,9 +240,9 @@
 
     if ([(IMViewControllerTransitionContext *)self isCurrentlyInteractive])
     {
-      v8 = [(IMViewControllerTransitionContext *)self _interactiveUpdateHandler];
+      _interactiveUpdateHandler = [(IMViewControllerTransitionContext *)self _interactiveUpdateHandler];
 
-      if (v8)
+      if (_interactiveUpdateHandler)
       {
         (*(self->__interactiveUpdateHandler + 2))(self->_previousPercentComplete);
       }
@@ -258,19 +258,19 @@
   }
 }
 
-- (void)completeTransition:(BOOL)a3
+- (void)completeTransition:(BOOL)transition
 {
-  v3 = a3;
+  transitionCopy = transition;
   willCompleteHandler = self->__willCompleteHandler;
   if (willCompleteHandler)
   {
-    willCompleteHandler[2](willCompleteHandler, self, a3);
+    willCompleteHandler[2](willCompleteHandler, self, transition);
   }
 
   completionHandler = self->__completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, self, v3);
+    completionHandler[2](completionHandler, self, transitionCopy);
   }
 
   [(IMViewControllerTransitionContext *)self _runAlongsideCompletions];
@@ -285,7 +285,7 @@
   return self;
 }
 
-- (CGRect)initialFrameForViewController:(id)a3
+- (CGRect)initialFrameForViewController:(id)controller
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -298,7 +298,7 @@
   return result;
 }
 
-- (CGRect)finalFrameForViewController:(id)a3
+- (CGRect)finalFrameForViewController:(id)controller
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -311,9 +311,9 @@
   return result;
 }
 
-- (void)_setTransitionIsCompleting:(BOOL)a3
+- (void)_setTransitionIsCompleting:(BOOL)completing
 {
-  if (a3)
+  if (completing)
   {
     v3 = 8;
   }
@@ -331,24 +331,24 @@
   auxContext = self->__auxContext;
   if (auxContext)
   {
-    v4 = [self->__auxContext _alongsideCompletions];
+    _alongsideCompletions = [self->__auxContext _alongsideCompletions];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_65C54;
     v5[3] = &unk_2C7D40;
     v5[4] = self;
-    [auxContext _applyBlocks:v4 releaseBlocks:v5];
+    [auxContext _applyBlocks:_alongsideCompletions releaseBlocks:v5];
   }
 }
 
-- (void)_interactivityDidChange:(BOOL)a3
+- (void)_interactivityDidChange:(BOOL)change
 {
-  [(IMViewControllerTransitionContext *)self _setIsCurrentlyInteractive:a3];
+  [(IMViewControllerTransitionContext *)self _setIsCurrentlyInteractive:change];
   auxContext = self->__auxContext;
   if (auxContext)
   {
-    v5 = [auxContext _interactiveChangeHandlers];
-    if (v5)
+    _interactiveChangeHandlers = [auxContext _interactiveChangeHandlers];
+    if (_interactiveChangeHandlers)
     {
       v6 = self->__auxContext;
       v7[0] = _NSConcreteStackBlock;
@@ -356,7 +356,7 @@
       v7[2] = sub_65D04;
       v7[3] = &unk_2C7D40;
       v7[4] = self;
-      [v6 _applyBlocks:v5 releaseBlocks:v7];
+      [v6 _applyBlocks:_interactiveChangeHandlers releaseBlocks:v7];
     }
   }
 }
@@ -365,14 +365,14 @@
 {
   if (self->__auxContext)
   {
-    v3 = 0;
+    _alongsideAnimations = 0;
     v4 = -2;
     do
     {
-      v5 = v3;
-      v3 = [self->__auxContext _alongsideAnimations];
+      v5 = _alongsideAnimations;
+      _alongsideAnimations = [self->__auxContext _alongsideAnimations];
 
-      if (!v3)
+      if (!_alongsideAnimations)
       {
         break;
       }
@@ -383,7 +383,7 @@
       v8[2] = sub_65DFC;
       v8[3] = &unk_2C7D40;
       v8[4] = self;
-      [auxContext _applyBlocks:v3 releaseBlocks:v8];
+      [auxContext _applyBlocks:_alongsideAnimations releaseBlocks:v8];
     }
 
     while (!__CFADD__(v4++, 1));
@@ -391,11 +391,11 @@
   }
 }
 
-- (void)_disableInteractionForViews:(id)a3
+- (void)_disableInteractionForViews:(id)views
 {
-  v5 = a3;
+  viewsCopy = views;
   [(IMViewControllerTransitionContext *)self _enableInteractionForDisabledViews];
-  objc_storeStrong(&self->_disabledViews, a3);
+  objc_storeStrong(&self->_disabledViews, views);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -465,12 +465,12 @@
   self->_disabledViews = 0;
 }
 
-- (void)trackAnimation:(id)a3 withLayer:(id)a4
+- (void)trackAnimation:(id)animation withLayer:(id)layer
 {
-  v6 = a4;
-  v8 = [a3 copy];
-  v7 = [(IMViewControllerTransitionContext *)self trackedAnimations];
-  [v7 setObject:v6 forKey:v8];
+  layerCopy = layer;
+  v8 = [animation copy];
+  trackedAnimations = [(IMViewControllerTransitionContext *)self trackedAnimations];
+  [trackedAnimations setObject:layerCopy forKey:v8];
 }
 
 @end

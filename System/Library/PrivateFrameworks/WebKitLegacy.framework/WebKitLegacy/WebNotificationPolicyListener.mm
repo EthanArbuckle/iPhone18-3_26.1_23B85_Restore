@@ -1,20 +1,20 @@
 @interface WebNotificationPolicyListener
-- (WebNotificationPolicyListener)initWithPermissionHandler:(void *)a3;
+- (WebNotificationPolicyListener)initWithPermissionHandler:(void *)handler;
 - (void)allow;
 - (void)deny;
 @end
 
 @implementation WebNotificationPolicyListener
 
-- (WebNotificationPolicyListener)initWithPermissionHandler:(void *)a3
+- (WebNotificationPolicyListener)initWithPermissionHandler:(void *)handler
 {
   v8.receiver = self;
   v8.super_class = WebNotificationPolicyListener;
   result = [(WebNotificationPolicyListener *)&v8 init];
   if (result)
   {
-    v5 = *a3;
-    *a3 = 0;
+    v5 = *handler;
+    *handler = 0;
     ptr = result->_permissionHandler.m_function.m_callableWrapper.__ptr_;
     result->_permissionHandler.m_function.m_callableWrapper.__ptr_ = v5;
     if (ptr)

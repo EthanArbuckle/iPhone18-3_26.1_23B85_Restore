@@ -1,15 +1,15 @@
 @interface NESMFilterSessionState
-+ (id)stateWithType:(int64_t)a3;
++ (id)stateWithType:(int64_t)type;
 - (BOOL)handleSleep;
-- (NESMFilterSessionState)initWithType:(int64_t)a3 andTimeout:(int64_t)a4;
-- (void)enterWithSession:(id)a3;
-- (void)handlePlugin:(id)a3 statusDidChangeToIdleWithError:(int64_t)a4;
-- (void)handlePlugin:(id)a3 statusDidChangeToStoppingWithError:(int64_t)a4;
-- (void)handlePluginDisposeComplete:(id)a3;
-- (void)handlePluginStatusDidChangeToRunning:(id)a3;
-- (void)handlePluginStatusDidChangeToStarting:(id)a3;
-- (void)handlePluginStatusDidChangeToUpdating:(id)a3;
-- (void)handleStartMessage:(id)a3;
+- (NESMFilterSessionState)initWithType:(int64_t)type andTimeout:(int64_t)timeout;
+- (void)enterWithSession:(id)session;
+- (void)handlePlugin:(id)plugin statusDidChangeToIdleWithError:(int64_t)error;
+- (void)handlePlugin:(id)plugin statusDidChangeToStoppingWithError:(int64_t)error;
+- (void)handlePluginDisposeComplete:(id)complete;
+- (void)handlePluginStatusDidChangeToRunning:(id)running;
+- (void)handlePluginStatusDidChangeToStarting:(id)starting;
+- (void)handlePluginStatusDidChangeToUpdating:(id)updating;
+- (void)handleStartMessage:(id)message;
 - (void)handleStop;
 - (void)handleTimeout;
 - (void)handleUpdateConfiguration;
@@ -133,9 +133,9 @@
   return 0;
 }
 
-- (void)handlePluginDisposeComplete:(id)a3
+- (void)handlePluginDisposeComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -156,14 +156,14 @@
     v12 = 2112;
     v13 = v9;
     v14 = 2112;
-    v15 = v4;
+    v15 = completeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ in state %@: plugin %@ disposed", &v10, 0x20u);
   }
 }
 
-- (void)handlePlugin:(id)a3 statusDidChangeToStoppingWithError:(int64_t)a4
+- (void)handlePlugin:(id)plugin statusDidChangeToStoppingWithError:(int64_t)error
 {
-  v6 = a3;
+  pluginCopy = plugin;
   v7 = ne_log_obj();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -184,13 +184,13 @@
     v17 = 2112;
     v18 = v11;
     v19 = 2112;
-    v20 = v6;
+    v20 = pluginCopy;
     v21 = 2048;
-    v22 = a4;
+    errorCopy = error;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@ in state %@: plugin %@ status changed to stopping with error %ld", &v15, 0x2Au);
   }
 
-  if (a4 == 1)
+  if (error == 1)
   {
     if (self)
     {
@@ -218,9 +218,9 @@
   sub_100082FD8(v14, 4);
 }
 
-- (void)handlePluginStatusDidChangeToUpdating:(id)a3
+- (void)handlePluginStatusDidChangeToUpdating:(id)updating
 {
-  v4 = a3;
+  updatingCopy = updating;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -241,7 +241,7 @@
     v14 = 2112;
     v15 = v9;
     v16 = 2112;
-    v17 = v4;
+    v17 = updatingCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ in state %@: plugin %@ status changed to updating", &v12, 0x20u);
   }
 
@@ -258,9 +258,9 @@
   sub_100082FD8(v11, 5);
 }
 
-- (void)handlePluginStatusDidChangeToRunning:(id)a3
+- (void)handlePluginStatusDidChangeToRunning:(id)running
 {
-  v4 = a3;
+  runningCopy = running;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -281,14 +281,14 @@
     v12 = 2112;
     v13 = v9;
     v14 = 2112;
-    v15 = v4;
+    v15 = runningCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ in state %@: plugin %@ status changed to running", &v10, 0x20u);
   }
 }
 
-- (void)handlePluginStatusDidChangeToStarting:(id)a3
+- (void)handlePluginStatusDidChangeToStarting:(id)starting
 {
-  v4 = a3;
+  startingCopy = starting;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -309,14 +309,14 @@
     v12 = 2112;
     v13 = v9;
     v14 = 2112;
-    v15 = v4;
+    v15 = startingCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ in state %@: plugin %@ status changed to starting", &v10, 0x20u);
   }
 }
 
-- (void)handlePlugin:(id)a3 statusDidChangeToIdleWithError:(int64_t)a4
+- (void)handlePlugin:(id)plugin statusDidChangeToIdleWithError:(int64_t)error
 {
-  v6 = a3;
+  pluginCopy = plugin;
   v7 = ne_log_obj();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -337,13 +337,13 @@
     v18 = 2112;
     v19 = v11;
     v20 = 2112;
-    v21 = v6;
+    v21 = pluginCopy;
     v22 = 2048;
-    v23 = a4;
+    errorCopy = error;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@ in state %@: plugin %@ status changed to idle with error: %ld", &v16, 0x2Au);
   }
 
-  if (a4 == 2)
+  if (error == 2)
   {
     if (self)
     {
@@ -360,7 +360,7 @@
 
   else
   {
-    if (a4 != 1)
+    if (error != 1)
     {
       goto LABEL_14;
     }
@@ -430,7 +430,7 @@ LABEL_14:
   sub_100082FD8(v9, 4);
 }
 
-- (void)handleStartMessage:(id)a3
+- (void)handleStartMessage:(id)message
 {
   v4 = ne_log_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -485,12 +485,12 @@ LABEL_14:
   }
 }
 
-- (void)enterWithSession:(id)a3
+- (void)enterWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   if (self)
   {
-    objc_setProperty_atomic(self, v4, v5, 16);
+    objc_setProperty_atomic(self, v4, sessionCopy, 16);
   }
 
   v6 = ne_log_obj();
@@ -499,7 +499,7 @@ LABEL_14:
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     *buf = 138412546;
-    v13 = v5;
+    v13 = sessionCopy;
     v14 = 2112;
     v15 = v8;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%@: Entering state %@", buf, 0x16u);
@@ -508,17 +508,17 @@ LABEL_14:
   if (self && self->_timeout >= 1 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v9 = dispatch_time(0, 1000000000 * self->_timeout);
-    v10 = [v5 queue];
+    queue = [sessionCopy queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100067ED0;
     block[3] = &unk_1000EB1C0;
     block[4] = self;
-    dispatch_after(v9, v10, block);
+    dispatch_after(v9, queue, block);
   }
 }
 
-- (NESMFilterSessionState)initWithType:(int64_t)a3 andTimeout:(int64_t)a4
+- (NESMFilterSessionState)initWithType:(int64_t)type andTimeout:(int64_t)timeout
 {
   v10.receiver = self;
   v10.super_class = NESMFilterSessionState;
@@ -527,24 +527,24 @@ LABEL_14:
   if (v6)
   {
     session = v6->_session;
-    v6->_type = a3;
+    v6->_type = type;
     v6->_session = 0;
-    v6->_timeout = a4;
+    v6->_timeout = timeout;
   }
 
   return v7;
 }
 
-+ (id)stateWithType:(int64_t)a3
++ (id)stateWithType:(int64_t)type
 {
-  if ((a3 - 1) > 6)
+  if ((type - 1) > 6)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = objc_alloc_init(*off_1000EA540[a3 - 1]);
+    v4 = objc_alloc_init(*off_1000EA540[type - 1]);
   }
 
   return v4;

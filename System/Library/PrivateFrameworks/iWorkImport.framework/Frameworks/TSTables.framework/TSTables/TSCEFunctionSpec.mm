@@ -1,104 +1,104 @@
 @interface TSCEFunctionSpec
-+ (BOOL)functionIndexUsesThunks:(unsigned __int16)a3;
-+ (BOOL)hasAnyDateArgumentsToFunction:(unsigned __int16)a3;
-+ (BOOL)isModeEnabled:(unsigned __int16)a3 functionIndex:(unsigned __int16)a4;
-+ (TSCEFunctionSpec)specWithFunctionName:(id)a3 minArgs:(unint64_t)a4 maxArgs:(unint64_t)a5 fanoutOptions:(unsigned int)a6 mayHaveBeenImplicitIntersection:(BOOL)a7 shipVersion:(int)a8 arguments:(const void *)a9 functionIndex:(unsigned __int16)a10;
-+ (TSCEFunctionSpec)specWithFunctionName:(id)a3 minArgs:(unint64_t)a4 maxArgs:(unint64_t)a5 functionOperator:(int64_t)a6 fanoutOptions:(unsigned int)a7 shipVersion:(int)a8 arguments:(const void *)a9 functionIndex:(unsigned __int16)a10;
-+ (TSCEFunctionSpec)specWithFunctionName:(id)a3 minArgs:(unint64_t)a4 maxArgs:(unint64_t)a5 mayHaveBeenImplicitIntersection:(BOOL)a6 shipVersion:(int)a7 arguments:(const void *)a8 functionIndex:(unsigned __int16)a9;
-+ (TSCEFunctionSpec)specWithFunctionName:(id)a3 minArgs:(unint64_t)a4 maxArgs:(unint64_t)a5 repeatingGroupSize:(signed __int16)a6 fanoutOptions:(unsigned int)a7 mayHaveBeenImplicitIntersection:(BOOL)a8 shipVersion:(int)a9 arguments:(const void *)a10 functionIndex:(unsigned __int16)a11;
-+ (TSCEFunctionSpec)specWithFunctionName:(id)a3 minArgs:(unint64_t)a4 maxArgs:(unint64_t)a5 repeatingGroupSize:(signed __int16)a6 fanoutOptions:(unsigned int)a7 shipVersion:(int)a8 arguments:(const void *)a9 functionIndex:(unsigned __int16)a10;
-+ (TSCEFunctionSpec)specWithFunctionName:(id)a3 minArgs:(unint64_t)a4 maxArgs:(unint64_t)a5 repeatingGroupSize:(signed __int16)a6 nonRepeatingArgsAtEnd:(unsigned __int16)a7 fanoutOptions:(unsigned int)a8 mayHaveBeenImplicitIntersection:(BOOL)a9 shipVersion:(int)a10 arguments:(const void *)a11 functionIndex:(unsigned __int16)a12;
-+ (TSCEFunctionSpec)specWithFunctionName:(id)a3 minArgs:(unint64_t)a4 maxArgs:(unint64_t)a5 repeatingGroupSize:(signed __int16)a6 shipVersion:(int)a7 arguments:(const void *)a8 functionIndex:(unsigned __int16)a9;
-+ (TSCEFunctionSpec)specWithFunctionName:(id)a3 minArgs:(unint64_t)a4 maxArgs:(unint64_t)a5 shipVersion:(int)a6 arguments:(const void *)a7 functionIndex:(unsigned __int16)a8;
-+ (id)englishFunctionNameFromFunctionIndex:(unsigned __int16)a3;
-+ (id)functionSpecForFunctionIndex:(unsigned __int16)a3;
-+ (id)functionSpecForFunctionName:(id)a3;
-+ (id)functionSpecForOperator:(int64_t)a3 arguments:(int)a4;
-+ (id)unsupportedFunctionNameForLocale:(id)a3;
++ (BOOL)functionIndexUsesThunks:(unsigned __int16)thunks;
++ (BOOL)hasAnyDateArgumentsToFunction:(unsigned __int16)function;
++ (BOOL)isModeEnabled:(unsigned __int16)enabled functionIndex:(unsigned __int16)index;
++ (TSCEFunctionSpec)specWithFunctionName:(id)name minArgs:(unint64_t)args maxArgs:(unint64_t)maxArgs fanoutOptions:(unsigned int)options mayHaveBeenImplicitIntersection:(BOOL)intersection shipVersion:(int)version arguments:(const void *)arguments functionIndex:(unsigned __int16)self0;
++ (TSCEFunctionSpec)specWithFunctionName:(id)name minArgs:(unint64_t)args maxArgs:(unint64_t)maxArgs functionOperator:(int64_t)operator fanoutOptions:(unsigned int)options shipVersion:(int)version arguments:(const void *)arguments functionIndex:(unsigned __int16)self0;
++ (TSCEFunctionSpec)specWithFunctionName:(id)name minArgs:(unint64_t)args maxArgs:(unint64_t)maxArgs mayHaveBeenImplicitIntersection:(BOOL)intersection shipVersion:(int)version arguments:(const void *)arguments functionIndex:(unsigned __int16)index;
++ (TSCEFunctionSpec)specWithFunctionName:(id)name minArgs:(unint64_t)args maxArgs:(unint64_t)maxArgs repeatingGroupSize:(signed __int16)size fanoutOptions:(unsigned int)options mayHaveBeenImplicitIntersection:(BOOL)intersection shipVersion:(int)version arguments:(const void *)self0 functionIndex:(unsigned __int16)self1;
++ (TSCEFunctionSpec)specWithFunctionName:(id)name minArgs:(unint64_t)args maxArgs:(unint64_t)maxArgs repeatingGroupSize:(signed __int16)size fanoutOptions:(unsigned int)options shipVersion:(int)version arguments:(const void *)arguments functionIndex:(unsigned __int16)self0;
++ (TSCEFunctionSpec)specWithFunctionName:(id)name minArgs:(unint64_t)args maxArgs:(unint64_t)maxArgs repeatingGroupSize:(signed __int16)size nonRepeatingArgsAtEnd:(unsigned __int16)end fanoutOptions:(unsigned int)options mayHaveBeenImplicitIntersection:(BOOL)intersection shipVersion:(int)self0 arguments:(const void *)self1 functionIndex:(unsigned __int16)self2;
++ (TSCEFunctionSpec)specWithFunctionName:(id)name minArgs:(unint64_t)args maxArgs:(unint64_t)maxArgs repeatingGroupSize:(signed __int16)size shipVersion:(int)version arguments:(const void *)arguments functionIndex:(unsigned __int16)index;
++ (TSCEFunctionSpec)specWithFunctionName:(id)name minArgs:(unint64_t)args maxArgs:(unint64_t)maxArgs shipVersion:(int)version arguments:(const void *)arguments functionIndex:(unsigned __int16)index;
++ (id)englishFunctionNameFromFunctionIndex:(unsigned __int16)index;
++ (id)functionSpecForFunctionIndex:(unsigned __int16)index;
++ (id)functionSpecForFunctionName:(id)name;
++ (id)functionSpecForOperator:(int64_t)operator arguments:(int)arguments;
++ (id)unsupportedFunctionNameForLocale:(id)locale;
 + (void)loadSpecDictionary;
-- (BOOL)acceptsFunctorAtIndex:(unint64_t)a3 numArgs:(unint64_t)a4;
-- (TSCEFunctionSpec)initWithFunctionName:(id)a3 minArgs:(unint64_t)a4 maxArgs:(unint64_t)a5 repeatingGroupSize:(signed __int16)a6 nonRepeatingArgsAtEnd:(unsigned __int16)a7 functionOperator:(int64_t)a8 fanoutOptions:(unsigned int)a9 mayHaveBeenImplicitIntersection:(BOOL)a10 shipVersion:(int)a11 arguments:(const void *)a12 functionIndex:(unsigned __int16)a13;
-- (char)preferredTypeForArgumentIndex:(unint64_t)a3;
+- (BOOL)acceptsFunctorAtIndex:(unint64_t)index numArgs:(unint64_t)args;
+- (TSCEFunctionSpec)initWithFunctionName:(id)name minArgs:(unint64_t)args maxArgs:(unint64_t)maxArgs repeatingGroupSize:(signed __int16)size nonRepeatingArgsAtEnd:(unsigned __int16)end functionOperator:(int64_t)operator fanoutOptions:(unsigned int)options mayHaveBeenImplicitIntersection:(BOOL)self0 shipVersion:(int)self1 arguments:(const void *)self2 functionIndex:(unsigned __int16)self3;
+- (char)preferredTypeForArgumentIndex:(unint64_t)index;
 - (id).cxx_construct;
-- (id)argumentSpecForIndex:(unint64_t)a3;
-- (id)argumentSpecForIndex:(unint64_t)a3 numArgs:(unint64_t)a4;
-- (id)displayStringForLocale:(id)a3;
-- (id)localizedFunctionNameForLocale:(id)a3;
-- (id)localizedToolTipStringForLocale:(id)a3;
-- (id)nativeSyntaxStringForArgument:(int)a3;
-- (int)accessorModeForArgumentIndex:(unint64_t)a3;
-- (int64_t)modeNumberForLocalizedString:(id)a3 argumentSpecIndex:(unint64_t)a4 attributeMax:(int64_t)a5 locale:(id)a6;
+- (id)argumentSpecForIndex:(unint64_t)index;
+- (id)argumentSpecForIndex:(unint64_t)index numArgs:(unint64_t)args;
+- (id)displayStringForLocale:(id)locale;
+- (id)localizedFunctionNameForLocale:(id)locale;
+- (id)localizedToolTipStringForLocale:(id)locale;
+- (id)nativeSyntaxStringForArgument:(int)argument;
+- (int)accessorModeForArgumentIndex:(unint64_t)index;
+- (int64_t)modeNumberForLocalizedString:(id)string argumentSpecIndex:(unint64_t)index attributeMax:(int64_t)max locale:(id)locale;
 - (void)loadRepeatingArguments;
 @end
 
 @implementation TSCEFunctionSpec
 
-+ (TSCEFunctionSpec)specWithFunctionName:(id)a3 minArgs:(unint64_t)a4 maxArgs:(unint64_t)a5 functionOperator:(int64_t)a6 fanoutOptions:(unsigned int)a7 shipVersion:(int)a8 arguments:(const void *)a9 functionIndex:(unsigned __int16)a10
++ (TSCEFunctionSpec)specWithFunctionName:(id)name minArgs:(unint64_t)args maxArgs:(unint64_t)maxArgs functionOperator:(int64_t)operator fanoutOptions:(unsigned int)options shipVersion:(int)version arguments:(const void *)arguments functionIndex:(unsigned __int16)self0
 {
-  v15 = a3;
+  nameCopy = name;
   v16 = [TSCEFunctionSpec alloc];
-  v21 = a8;
+  versionCopy = version;
   BYTE4(v20) = 0;
-  LODWORD(v20) = a7;
-  HaveBeenImplicitIntersection_shipVersion_arguments_functionIndex = objc_msgSend_initWithFunctionName_minArgs_maxArgs_repeatingGroupSize_nonRepeatingArgsAtEnd_functionOperator_fanoutOptions_mayHaveBeenImplicitIntersection_shipVersion_arguments_functionIndex_(v16, v17, v15, a4, a5, 0, 0, a6, v20, v21, a9, a10);
+  LODWORD(v20) = options;
+  HaveBeenImplicitIntersection_shipVersion_arguments_functionIndex = objc_msgSend_initWithFunctionName_minArgs_maxArgs_repeatingGroupSize_nonRepeatingArgsAtEnd_functionOperator_fanoutOptions_mayHaveBeenImplicitIntersection_shipVersion_arguments_functionIndex_(v16, v17, nameCopy, args, maxArgs, 0, 0, operator, v20, versionCopy, arguments, index);
 
   return HaveBeenImplicitIntersection_shipVersion_arguments_functionIndex;
 }
 
-+ (TSCEFunctionSpec)specWithFunctionName:(id)a3 minArgs:(unint64_t)a4 maxArgs:(unint64_t)a5 repeatingGroupSize:(signed __int16)a6 shipVersion:(int)a7 arguments:(const void *)a8 functionIndex:(unsigned __int16)a9
++ (TSCEFunctionSpec)specWithFunctionName:(id)name minArgs:(unint64_t)args maxArgs:(unint64_t)maxArgs repeatingGroupSize:(signed __int16)size shipVersion:(int)version arguments:(const void *)arguments functionIndex:(unsigned __int16)index
 {
   v11 = 0;
-  v9 = objc_msgSend_specWithFunctionName_minArgs_maxArgs_repeatingGroupSize_nonRepeatingArgsAtEnd_fanoutOptions_mayHaveBeenImplicitIntersection_shipVersion_arguments_functionIndex_(a1, a2, a3, a4, a5, a6, 0, 0, v11, a8, a9);
+  v9 = objc_msgSend_specWithFunctionName_minArgs_maxArgs_repeatingGroupSize_nonRepeatingArgsAtEnd_fanoutOptions_mayHaveBeenImplicitIntersection_shipVersion_arguments_functionIndex_(self, a2, name, args, maxArgs, size, 0, 0, v11, arguments, index);
 
   return v9;
 }
 
-+ (TSCEFunctionSpec)specWithFunctionName:(id)a3 minArgs:(unint64_t)a4 maxArgs:(unint64_t)a5 shipVersion:(int)a6 arguments:(const void *)a7 functionIndex:(unsigned __int16)a8
++ (TSCEFunctionSpec)specWithFunctionName:(id)name minArgs:(unint64_t)args maxArgs:(unint64_t)maxArgs shipVersion:(int)version arguments:(const void *)arguments functionIndex:(unsigned __int16)index
 {
   v10 = 0;
-  v8 = objc_msgSend_specWithFunctionName_minArgs_maxArgs_repeatingGroupSize_nonRepeatingArgsAtEnd_fanoutOptions_mayHaveBeenImplicitIntersection_shipVersion_arguments_functionIndex_(a1, a2, a3, a4, a5, 0, 0, 0, v10, a7, a8);
+  v8 = objc_msgSend_specWithFunctionName_minArgs_maxArgs_repeatingGroupSize_nonRepeatingArgsAtEnd_fanoutOptions_mayHaveBeenImplicitIntersection_shipVersion_arguments_functionIndex_(self, a2, name, args, maxArgs, 0, 0, 0, v10, arguments, index);
 
   return v8;
 }
 
-+ (TSCEFunctionSpec)specWithFunctionName:(id)a3 minArgs:(unint64_t)a4 maxArgs:(unint64_t)a5 mayHaveBeenImplicitIntersection:(BOOL)a6 shipVersion:(int)a7 arguments:(const void *)a8 functionIndex:(unsigned __int16)a9
++ (TSCEFunctionSpec)specWithFunctionName:(id)name minArgs:(unint64_t)args maxArgs:(unint64_t)maxArgs mayHaveBeenImplicitIntersection:(BOOL)intersection shipVersion:(int)version arguments:(const void *)arguments functionIndex:(unsigned __int16)index
 {
-  v9 = objc_msgSend_specWithFunctionName_minArgs_maxArgs_repeatingGroupSize_nonRepeatingArgsAtEnd_fanoutOptions_mayHaveBeenImplicitIntersection_shipVersion_arguments_functionIndex_(a1, a2, a3, a4, a5, 0, 0, 0, a6, a8, a9);
+  v9 = objc_msgSend_specWithFunctionName_minArgs_maxArgs_repeatingGroupSize_nonRepeatingArgsAtEnd_fanoutOptions_mayHaveBeenImplicitIntersection_shipVersion_arguments_functionIndex_(self, a2, name, args, maxArgs, 0, 0, 0, intersection, arguments, index);
 
   return v9;
 }
 
-+ (TSCEFunctionSpec)specWithFunctionName:(id)a3 minArgs:(unint64_t)a4 maxArgs:(unint64_t)a5 fanoutOptions:(unsigned int)a6 mayHaveBeenImplicitIntersection:(BOOL)a7 shipVersion:(int)a8 arguments:(const void *)a9 functionIndex:(unsigned __int16)a10
++ (TSCEFunctionSpec)specWithFunctionName:(id)name minArgs:(unint64_t)args maxArgs:(unint64_t)maxArgs fanoutOptions:(unsigned int)options mayHaveBeenImplicitIntersection:(BOOL)intersection shipVersion:(int)version arguments:(const void *)arguments functionIndex:(unsigned __int16)self0
 {
-  v10 = objc_msgSend_specWithFunctionName_minArgs_maxArgs_repeatingGroupSize_nonRepeatingArgsAtEnd_fanoutOptions_mayHaveBeenImplicitIntersection_shipVersion_arguments_functionIndex_(a1, a2, a3, a4, a5, 0, 0, *&a6, a7, a9, a10);
+  v10 = objc_msgSend_specWithFunctionName_minArgs_maxArgs_repeatingGroupSize_nonRepeatingArgsAtEnd_fanoutOptions_mayHaveBeenImplicitIntersection_shipVersion_arguments_functionIndex_(self, a2, name, args, maxArgs, 0, 0, *&options, intersection, arguments, index);
 
   return v10;
 }
 
-+ (TSCEFunctionSpec)specWithFunctionName:(id)a3 minArgs:(unint64_t)a4 maxArgs:(unint64_t)a5 repeatingGroupSize:(signed __int16)a6 fanoutOptions:(unsigned int)a7 shipVersion:(int)a8 arguments:(const void *)a9 functionIndex:(unsigned __int16)a10
++ (TSCEFunctionSpec)specWithFunctionName:(id)name minArgs:(unint64_t)args maxArgs:(unint64_t)maxArgs repeatingGroupSize:(signed __int16)size fanoutOptions:(unsigned int)options shipVersion:(int)version arguments:(const void *)arguments functionIndex:(unsigned __int16)self0
 {
   v12 = 0;
-  v10 = objc_msgSend_specWithFunctionName_minArgs_maxArgs_repeatingGroupSize_nonRepeatingArgsAtEnd_fanoutOptions_mayHaveBeenImplicitIntersection_shipVersion_arguments_functionIndex_(a1, a2, a3, a4, a5, a6, 0, *&a7, v12, a9, a10);
+  v10 = objc_msgSend_specWithFunctionName_minArgs_maxArgs_repeatingGroupSize_nonRepeatingArgsAtEnd_fanoutOptions_mayHaveBeenImplicitIntersection_shipVersion_arguments_functionIndex_(self, a2, name, args, maxArgs, size, 0, *&options, v12, arguments, index);
 
   return v10;
 }
 
-+ (TSCEFunctionSpec)specWithFunctionName:(id)a3 minArgs:(unint64_t)a4 maxArgs:(unint64_t)a5 repeatingGroupSize:(signed __int16)a6 fanoutOptions:(unsigned int)a7 mayHaveBeenImplicitIntersection:(BOOL)a8 shipVersion:(int)a9 arguments:(const void *)a10 functionIndex:(unsigned __int16)a11
++ (TSCEFunctionSpec)specWithFunctionName:(id)name minArgs:(unint64_t)args maxArgs:(unint64_t)maxArgs repeatingGroupSize:(signed __int16)size fanoutOptions:(unsigned int)options mayHaveBeenImplicitIntersection:(BOOL)intersection shipVersion:(int)version arguments:(const void *)self0 functionIndex:(unsigned __int16)self1
 {
-  v11 = objc_msgSend_specWithFunctionName_minArgs_maxArgs_repeatingGroupSize_nonRepeatingArgsAtEnd_fanoutOptions_mayHaveBeenImplicitIntersection_shipVersion_arguments_functionIndex_(a1, a2, a3, a4, a5, a6, 0, *&a7, a8, a10, a11);
+  v11 = objc_msgSend_specWithFunctionName_minArgs_maxArgs_repeatingGroupSize_nonRepeatingArgsAtEnd_fanoutOptions_mayHaveBeenImplicitIntersection_shipVersion_arguments_functionIndex_(self, a2, name, args, maxArgs, size, 0, *&options, intersection, arguments, index);
 
   return v11;
 }
 
-+ (TSCEFunctionSpec)specWithFunctionName:(id)a3 minArgs:(unint64_t)a4 maxArgs:(unint64_t)a5 repeatingGroupSize:(signed __int16)a6 nonRepeatingArgsAtEnd:(unsigned __int16)a7 fanoutOptions:(unsigned int)a8 mayHaveBeenImplicitIntersection:(BOOL)a9 shipVersion:(int)a10 arguments:(const void *)a11 functionIndex:(unsigned __int16)a12
++ (TSCEFunctionSpec)specWithFunctionName:(id)name minArgs:(unint64_t)args maxArgs:(unint64_t)maxArgs repeatingGroupSize:(signed __int16)size nonRepeatingArgsAtEnd:(unsigned __int16)end fanoutOptions:(unsigned int)options mayHaveBeenImplicitIntersection:(BOOL)intersection shipVersion:(int)self0 arguments:(const void *)self1 functionIndex:(unsigned __int16)self2
 {
-  v13 = a7;
-  v14 = a6;
-  v17 = a3;
+  endCopy = end;
+  sizeCopy = size;
+  nameCopy = name;
   v18 = [TSCEFunctionSpec alloc];
-  BYTE4(v22) = a9;
-  LODWORD(v22) = a8;
-  HaveBeenImplicitIntersection_shipVersion_arguments_functionIndex = objc_msgSend_initWithFunctionName_minArgs_maxArgs_repeatingGroupSize_nonRepeatingArgsAtEnd_functionOperator_fanoutOptions_mayHaveBeenImplicitIntersection_shipVersion_arguments_functionIndex_(v18, v19, v17, a4, a5, v14, v13, 0, v22, a10, a11, a12);
+  BYTE4(v22) = intersection;
+  LODWORD(v22) = options;
+  HaveBeenImplicitIntersection_shipVersion_arguments_functionIndex = objc_msgSend_initWithFunctionName_minArgs_maxArgs_repeatingGroupSize_nonRepeatingArgsAtEnd_functionOperator_fanoutOptions_mayHaveBeenImplicitIntersection_shipVersion_arguments_functionIndex_(v18, v19, nameCopy, args, maxArgs, sizeCopy, endCopy, 0, v22, version, arguments, index);
 
   return HaveBeenImplicitIntersection_shipVersion_arguments_functionIndex;
 }
@@ -111,20 +111,20 @@
   }
 }
 
-+ (id)functionSpecForFunctionIndex:(unsigned __int16)a3
++ (id)functionSpecForFunctionIndex:(unsigned __int16)index
 {
-  if (a3)
+  if (index)
   {
-    v6 = a3;
-    objc_msgSend_loadSpecDictionary(a1, a2, a3, v3, v4);
-    if (v6 >= ((*(qword_27CFB5630 + 8) - *qword_27CFB5630) >> 3))
+    indexCopy = index;
+    objc_msgSend_loadSpecDictionary(self, a2, index, v3, v4);
+    if (indexCopy >= ((*(qword_27CFB5630 + 8) - *qword_27CFB5630) >> 3))
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = *(*qword_27CFB5630 + 8 * v6);
+      v7 = *(*qword_27CFB5630 + 8 * indexCopy);
     }
   }
 
@@ -136,32 +136,32 @@
   return v7;
 }
 
-+ (id)englishFunctionNameFromFunctionIndex:(unsigned __int16)a3
++ (id)englishFunctionNameFromFunctionIndex:(unsigned __int16)index
 {
-  v5 = objc_msgSend_functionSpecForFunctionIndex_(TSCEFunctionSpec, a2, a3, v3, v4);
+  v5 = objc_msgSend_functionSpecForFunctionIndex_(TSCEFunctionSpec, a2, index, v3, v4);
   v10 = objc_msgSend_functionName(v5, v6, v7, v8, v9);
 
   return v10;
 }
 
-+ (id)functionSpecForFunctionName:(id)a3
++ (id)functionSpecForFunctionName:(id)name
 {
-  v8 = a3;
-  if (v8)
+  nameCopy = name;
+  if (nameCopy)
   {
-    objc_msgSend_loadSpecDictionary(a1, v4, v5, v6, v7);
-    v16 = objc_msgSend_objectForKeyedSubscript_(qword_27CFB5610, v9, v8, v10, v11);
+    objc_msgSend_loadSpecDictionary(self, v4, v5, v6, v7);
+    v16 = objc_msgSend_objectForKeyedSubscript_(qword_27CFB5610, v9, nameCopy, v10, v11);
     if (!v16)
     {
       v17 = objc_msgSend_currentLocale(MEMORY[0x277D81228], v12, v13, v14, v15);
-      v21 = objc_msgSend_functionNameForLocalizedString_(v17, v18, v8, v19, v20);
+      v21 = objc_msgSend_functionNameForLocalizedString_(v17, v18, nameCopy, v19, v20);
       v16 = objc_msgSend_objectForKeyedSubscript_(qword_27CFB5610, v22, v21, v23, v24);
       if (v16)
       {
         v28 = MEMORY[0x277D81150];
         v29 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v25, "+[TSCEFunctionSpec functionSpecForFunctionName:]", v26, v27);
         v33 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v30, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEFunctionSpec.mm", v31, v32);
-        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v28, v34, v29, v33, 307, 0, "functionSpecForFunctionName: expects US function names, but %@ (US is %@) was passed in.", v8, v21);
+        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v28, v34, v29, v33, 307, 0, "functionSpecForFunctionName: expects US function names, but %@ (US is %@) was passed in.", nameCopy, v21);
 
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v35, v36, v37, v38);
       }
@@ -176,23 +176,23 @@
   return v16;
 }
 
-+ (id)functionSpecForOperator:(int64_t)a3 arguments:(int)a4
++ (id)functionSpecForOperator:(int64_t)operator arguments:(int)arguments
 {
-  if (!a3)
+  if (!operator)
   {
     goto LABEL_5;
   }
 
-  objc_msgSend_loadSpecDictionary(a1, a2, a3, *&a4, v4);
-  if (a4 == 2)
+  objc_msgSend_loadSpecDictionary(self, a2, operator, *&arguments, v4);
+  if (arguments == 2)
   {
     v17 = qword_27CFB5620;
-    v11 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v7, a3, v8, v9);
+    v11 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v7, operator, v8, v9);
     v15 = objc_msgSend_objectForKeyedSubscript_(v17, v18, v11, v19, v20);
     goto LABEL_7;
   }
 
-  if (a4 != 1)
+  if (arguments != 1)
   {
 LABEL_5:
     v16 = 0;
@@ -200,7 +200,7 @@ LABEL_5:
   }
 
   v10 = qword_27CFB5618;
-  v11 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v7, a3, v8, v9);
+  v11 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v7, operator, v8, v9);
   v15 = objc_msgSend_objectForKeyedSubscript_(v10, v12, v11, v13, v14);
 LABEL_7:
   v16 = v15;
@@ -210,13 +210,13 @@ LABEL_8:
   return v16;
 }
 
-+ (BOOL)isModeEnabled:(unsigned __int16)a3 functionIndex:(unsigned __int16)a4
++ (BOOL)isModeEnabled:(unsigned __int16)enabled functionIndex:(unsigned __int16)index
 {
-  v4 = (a3 - 11) != 65534 && (a3 - 11) != 0xFFFF;
-  v5 = a4 != 300 || v4;
-  if (a4 == 298)
+  v4 = (enabled - 11) != 65534 && (enabled - 11) != 0xFFFF;
+  v5 = index != 300 || v4;
+  if (index == 298)
   {
-    return ((a3 - 13) & 0xFFFA) != 0;
+    return ((enabled - 13) & 0xFFFA) != 0;
   }
 
   else
@@ -225,30 +225,30 @@ LABEL_8:
   }
 }
 
-- (TSCEFunctionSpec)initWithFunctionName:(id)a3 minArgs:(unint64_t)a4 maxArgs:(unint64_t)a5 repeatingGroupSize:(signed __int16)a6 nonRepeatingArgsAtEnd:(unsigned __int16)a7 functionOperator:(int64_t)a8 fanoutOptions:(unsigned int)a9 mayHaveBeenImplicitIntersection:(BOOL)a10 shipVersion:(int)a11 arguments:(const void *)a12 functionIndex:(unsigned __int16)a13
+- (TSCEFunctionSpec)initWithFunctionName:(id)name minArgs:(unint64_t)args maxArgs:(unint64_t)maxArgs repeatingGroupSize:(signed __int16)size nonRepeatingArgsAtEnd:(unsigned __int16)end functionOperator:(int64_t)operator fanoutOptions:(unsigned int)options mayHaveBeenImplicitIntersection:(BOOL)self0 shipVersion:(int)self1 arguments:(const void *)self2 functionIndex:(unsigned __int16)self3
 {
-  v20 = a3;
+  nameCopy = name;
   v47.receiver = self;
   v47.super_class = TSCEFunctionSpec;
   v21 = [(TSCEFunctionSpec *)&v47 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_functionName, a3);
-    v22->_minArguments = a4;
-    v22->_maxArguments = a5;
-    v22->_repeatingGroupSize = a6;
-    v22->_nonRepeatingArgsAtEnd = a7;
-    v22->_functionOperator = a8;
+    objc_storeStrong(&v21->_functionName, name);
+    v22->_minArguments = args;
+    v22->_maxArguments = maxArgs;
+    v22->_repeatingGroupSize = size;
+    v22->_nonRepeatingArgsAtEnd = end;
+    v22->_functionOperator = operator;
     p_arguments = &v22->_arguments;
-    if (&v22->_arguments != a12)
+    if (&v22->_arguments != arguments)
     {
-      sub_22116CF34(&v22->_arguments, *a12, *(a12 + 1), (*(a12 + 1) - *a12) >> 3);
+      sub_22116CF34(&v22->_arguments, *arguments, *(arguments + 1), (*(arguments + 1) - *arguments) >> 3);
     }
 
-    v22->_shipVersion = a11;
-    v22->_fanoutOptions = a9;
-    v22->_mayHaveBeenImplicitIntersection = a10;
+    v22->_shipVersion = version;
+    v22->_fanoutOptions = options;
+    v22->_mayHaveBeenImplicitIntersection = intersection;
     v28 = *p_arguments;
     var0 = v22->_arguments.var0;
     if (*p_arguments != var0)
@@ -268,7 +268,7 @@ LABEL_8:
       while (v28 != var0);
     }
 
-    v22->_functionIndex = a13;
+    v22->_functionIndex = index;
     objc_msgSend_loadRepeatingArguments(v22, v23, v24, v25, v26);
     objc_msgSend_markAsPermanent(v22, v42, v43, v44, v45);
   }
@@ -276,12 +276,12 @@ LABEL_8:
   return v22;
 }
 
-+ (BOOL)functionIndexUsesThunks:(unsigned __int16)a3
++ (BOOL)functionIndexUsesThunks:(unsigned __int16)thunks
 {
   result = 0;
-  if (a3 <= 312)
+  if (thunks <= 312)
   {
-    if (a3 != 19 && a3 != 62)
+    if (thunks != 19 && thunks != 62)
     {
       return result;
     }
@@ -289,7 +289,7 @@ LABEL_8:
     return 1;
   }
 
-  if (a3 == 336 || a3 == 313)
+  if (thunks == 336 || thunks == 313)
   {
     return 1;
   }
@@ -297,17 +297,17 @@ LABEL_8:
   return result;
 }
 
-- (id)localizedFunctionNameForLocale:(id)a3
+- (id)localizedFunctionNameForLocale:(id)locale
 {
-  v5 = objc_msgSend_localizedNameForFunction_(a3, a2, self->_functionName, v3, v4);
+  v5 = objc_msgSend_localizedNameForFunction_(locale, a2, self->_functionName, v3, v4);
 
   return v5;
 }
 
-+ (id)unsupportedFunctionNameForLocale:(id)a3
++ (id)unsupportedFunctionNameForLocale:(id)locale
 {
-  v6 = a3;
-  if (!v6)
+  localeCopy = locale;
+  if (!localeCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v3, "+[TSCEFunctionSpec unsupportedFunctionNameForLocale:]", v4, v5);
@@ -317,21 +317,21 @@ LABEL_8:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15, v16, v17);
   }
 
-  v18 = objc_msgSend_localizedStringForKey_value_table_(v6, v3, @"Unsupported", &stru_2834BADA0, @"TSCalculationEngine");
+  v18 = objc_msgSend_localizedStringForKey_value_table_(localeCopy, v3, @"Unsupported", &stru_2834BADA0, @"TSCalculationEngine");
 
   return v18;
 }
 
-- (id)localizedToolTipStringForLocale:(id)a3
+- (id)localizedToolTipStringForLocale:(id)locale
 {
-  v5 = objc_msgSend_localizedToolTipForFunction_(a3, a2, self->_functionName, v3, v4);
+  v5 = objc_msgSend_localizedToolTipForFunction_(locale, a2, self->_functionName, v3, v4);
 
   return v5;
 }
 
-- (id)displayStringForLocale:(id)a3
+- (id)displayStringForLocale:(id)locale
 {
-  v9 = objc_msgSend_localizedFunctionNameForLocale_(self, a2, a3, v3, v4);
+  v9 = objc_msgSend_localizedFunctionNameForLocale_(self, a2, locale, v3, v4);
   if (!v9)
   {
     v9 = self->_functionName;
@@ -471,7 +471,7 @@ LABEL_8:
   }
 }
 
-- (id)argumentSpecForIndex:(unint64_t)a3
+- (id)argumentSpecForIndex:(unint64_t)index
 {
   begin = self->_arguments.__begin_;
   v6 = self->_arguments.var0 - begin;
@@ -482,8 +482,8 @@ LABEL_8:
     goto LABEL_14;
   }
 
-  v9 = a3 - v7;
-  if (a3 >= v7)
+  v9 = index - v7;
+  if (index >= v7)
   {
     repeatingGroupSize = self->_repeatingGroupSize;
     if (repeatingGroupSize < 1)
@@ -525,12 +525,12 @@ LABEL_17:
     sub_2211E631C();
   }
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     goto LABEL_17;
   }
 
-  v10 = &begin[a3];
+  v10 = &begin[index];
 LABEL_13:
   v8 = *v10;
 LABEL_14:
@@ -538,15 +538,15 @@ LABEL_14:
   return v8;
 }
 
-- (id)argumentSpecForIndex:(unint64_t)a3 numArgs:(unint64_t)a4
+- (id)argumentSpecForIndex:(unint64_t)index numArgs:(unint64_t)args
 {
-  v5 = a4 - self->_nonRepeatingArgsAtEnd;
-  if (v5 <= a3)
+  v5 = args - self->_nonRepeatingArgsAtEnd;
+  if (v5 <= index)
   {
     p_arguments = &self->_arguments;
     begin = self->_arguments.__begin_;
     v9 = self->_arguments.var0 - begin;
-    v10 = v5 + ~a3;
+    v10 = v5 + ~index;
     v11 = v10 + (v9 >> 3);
     if (__CFADD__(v10, v9 >> 3))
     {
@@ -556,7 +556,7 @@ LABEL_14:
     else
     {
       v12 = MEMORY[0x277D81150];
-      v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEFunctionSpec argumentSpecForIndex:numArgs:]", a4, v4);
+      v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEFunctionSpec argumentSpecForIndex:numArgs:]", args, v4);
       v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEFunctionSpec.mm", v15, v16);
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v18, v13, v17, 602, 0, "Expected to be within _arguments bounds");
 
@@ -575,18 +575,18 @@ LABEL_14:
 
   else
   {
-    v6 = objc_msgSend_argumentSpecForIndex_(self, a2, a3, a4, v4);
+    v6 = objc_msgSend_argumentSpecForIndex_(self, a2, index, args, v4);
   }
 
   return v6;
 }
 
-- (BOOL)acceptsFunctorAtIndex:(unint64_t)a3 numArgs:(unint64_t)a4
+- (BOOL)acceptsFunctorAtIndex:(unint64_t)index numArgs:(unint64_t)args
 {
   functionIndex = self->_functionIndex;
   if ((functionIndex - 364) < 7)
   {
-    return a3 + 1 == a4;
+    return index + 1 == args;
   }
 
   if (functionIndex == 363)
@@ -596,15 +596,15 @@ LABEL_14:
 
   if (functionIndex == 372)
   {
-    return a3 + 1 == a4;
+    return index + 1 == args;
   }
 
-  return objc_msgSend_functionIndexUsesThunks_(TSCEFunctionSpec, a2, functionIndex, a4, v4);
+  return objc_msgSend_functionIndexUsesThunks_(TSCEFunctionSpec, a2, functionIndex, args, v4);
 }
 
-- (int)accessorModeForArgumentIndex:(unint64_t)a3
+- (int)accessorModeForArgumentIndex:(unint64_t)index
 {
-  v5 = objc_msgSend_argumentSpecForIndex_(self, a2, a3, v3, v4);
+  v5 = objc_msgSend_argumentSpecForIndex_(self, a2, index, v3, v4);
   if (!v5)
   {
     return 1;
@@ -613,9 +613,9 @@ LABEL_14:
   return objc_msgSend_accessorMode(v5, v6, v7, v8, v9);
 }
 
-- (char)preferredTypeForArgumentIndex:(unint64_t)a3
+- (char)preferredTypeForArgumentIndex:(unint64_t)index
 {
-  v5 = objc_msgSend_argumentSpecForIndex_(self, a2, a3, v3, v4);
+  v5 = objc_msgSend_argumentSpecForIndex_(self, a2, index, v3, v4);
   if (v5)
   {
 
@@ -625,9 +625,9 @@ LABEL_14:
   return v5;
 }
 
-- (id)nativeSyntaxStringForArgument:(int)a3
+- (id)nativeSyntaxStringForArgument:(int)argument
 {
-  v5 = objc_msgSend_argumentSpecForIndex_(self, a2, a3, v3, v4);
+  v5 = objc_msgSend_argumentSpecForIndex_(self, a2, argument, v3, v4);
   if (v5)
   {
     v5 = objc_msgSend_nativeSyntaxString(v5, v6, v7, v8, v9);
@@ -636,21 +636,21 @@ LABEL_14:
   return v5;
 }
 
-- (int64_t)modeNumberForLocalizedString:(id)a3 argumentSpecIndex:(unint64_t)a4 attributeMax:(int64_t)a5 locale:(id)a6
+- (int64_t)modeNumberForLocalizedString:(id)string argumentSpecIndex:(unint64_t)index attributeMax:(int64_t)max locale:(id)locale
 {
-  v10 = a3;
-  v11 = a6;
-  v18 = objc_msgSend_argumentSpecForIndex_(self, v12, a4, v13, v14);
+  stringCopy = string;
+  localeCopy = locale;
+  v18 = objc_msgSend_argumentSpecForIndex_(self, v12, index, v13, v14);
   v19 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v18 && (a5 & 0x8000000000000000) == 0)
+  if (v18 && (max & 0x8000000000000000) == 0)
   {
     v19 = 0;
     v20 = 0;
     while (1)
     {
-      v21 = objc_msgSend_indexForModeNumber_locale_(v18, v15, v11, v16, v17, v20);
-      v24 = objc_msgSend_localizedModeNameForModeIndex_locale_(v18, v22, v21, v11, v23);
-      v28 = objc_msgSend_caseInsensitiveCompare_(v10, v25, v24, v26, v27);
+      v21 = objc_msgSend_indexForModeNumber_locale_(v18, v15, localeCopy, v16, v17, v20);
+      v24 = objc_msgSend_localizedModeNameForModeIndex_locale_(v18, v22, v21, localeCopy, v23);
+      v28 = objc_msgSend_caseInsensitiveCompare_(stringCopy, v25, v24, v26, v27);
 
       if (!v28)
       {
@@ -658,7 +658,7 @@ LABEL_14:
       }
 
       v19 = ++v20;
-      if (v20 > a5)
+      if (v20 > max)
       {
         v19 = 0x7FFFFFFFFFFFFFFFLL;
         break;
@@ -680,32 +680,32 @@ LABEL_14:
   return self;
 }
 
-+ (BOOL)hasAnyDateArgumentsToFunction:(unsigned __int16)a3
++ (BOOL)hasAnyDateArgumentsToFunction:(unsigned __int16)function
 {
   result = 1;
-  if (a3 <= 165)
+  if (function <= 165)
   {
-    if (a3 > 0x3Cu || ((1 << a3) & 0x1000A33C0000000CLL) == 0)
+    if (function > 0x3Cu || ((1 << function) & 0x1000A33C0000000CLL) == 0)
     {
-      if ((a3 - 90) > 0x2A)
+      if ((function - 90) > 0x2A)
       {
         return 0;
       }
 
-      v4 = 1 << (a3 - 90);
+      v4 = 1 << (function - 90);
       v5 = 0x40000380011;
       goto LABEL_10;
     }
   }
 
-  else if ((a3 - 166) > 0x30 || ((1 << (a3 + 90)) & 0x101663E000003) == 0)
+  else if ((function - 166) > 0x30 || ((1 << (function + 90)) & 0x101663E000003) == 0)
   {
-    if ((a3 - 260) > 0x34)
+    if ((function - 260) > 0x34)
     {
       return 0;
     }
 
-    v4 = 1 << (a3 - 4);
+    v4 = 1 << (function - 4);
     v5 = 0x18028000000003;
 LABEL_10:
     if ((v4 & v5) != 0)

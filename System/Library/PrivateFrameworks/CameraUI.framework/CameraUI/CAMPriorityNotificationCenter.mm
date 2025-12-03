@@ -2,16 +2,16 @@
 + (id)defaultCenter;
 - (CAMPriorityNotificationCenter)init;
 - (id)_allSubscriptions;
-- (id)_entriesByName:(id)a3 forPriority:(unint64_t)a4 creatingEmptyIfNeeded:(BOOL)a5;
-- (id)_observersForPriority:(unint64_t)a3;
-- (void)_mutexQueue_addObserver:(id)a3 priority:(unint64_t)a4 selector:(SEL)a5 name:(id)a6 object:(id)a7;
-- (void)_mutexQueue_removeObserver:(id)a3;
-- (void)_notificationReceiver:(id)a3;
-- (void)_postNotification:(id)a3 forEntries:(id)a4;
-- (void)_removeObserver:(id)a3 fromObserversByName:(id)a4;
-- (void)addObserver:(id)a3 priority:(unint64_t)a4 selector:(SEL)a5 name:(id)a6 object:(id)a7;
+- (id)_entriesByName:(id)name forPriority:(unint64_t)priority creatingEmptyIfNeeded:(BOOL)needed;
+- (id)_observersForPriority:(unint64_t)priority;
+- (void)_mutexQueue_addObserver:(id)observer priority:(unint64_t)priority selector:(SEL)selector name:(id)name object:(id)object;
+- (void)_mutexQueue_removeObserver:(id)observer;
+- (void)_notificationReceiver:(id)receiver;
+- (void)_postNotification:(id)notification forEntries:(id)entries;
+- (void)_removeObserver:(id)observer fromObserversByName:(id)name;
+- (void)addObserver:(id)observer priority:(unint64_t)priority selector:(SEL)selector name:(id)name object:(id)object;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation CAMPriorityNotificationCenter
@@ -42,9 +42,9 @@ uint64_t __46__CAMPriorityNotificationCenter_defaultCenter__block_invoke()
   v2 = [(CAMPriorityNotificationCenter *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     notificationCenter = v2->__notificationCenter;
-    v2->__notificationCenter = v3;
+    v2->__notificationCenter = defaultCenter;
 
     v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
     observersByNameHighPriority = v2->__observersByNameHighPriority;
@@ -71,15 +71,15 @@ uint64_t __46__CAMPriorityNotificationCenter_defaultCenter__block_invoke()
   [(CAMPriorityNotificationCenter *)&v3 dealloc];
 }
 
-- (void)_postNotification:(id)a3 forEntries:(id)a4
+- (void)_postNotification:(id)notification forEntries:(id)entries
 {
   v56 = *MEMORY[0x1E69E9840];
-  v39 = a3;
+  notificationCopy = notification;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = a4;
+  obj = entries;
   v5 = [obj countByEnumeratingWithState:&v41 objects:v55 count:16];
   if (v5)
   {
@@ -96,12 +96,12 @@ uint64_t __46__CAMPriorityNotificationCenter_defaultCenter__block_invoke()
         }
 
         v9 = *(*(&v41 + 1) + 8 * i);
-        v10 = [v9 observer];
-        objc_initWeak(&location, v10);
+        observer = [v9 observer];
+        objc_initWeak(&location, observer);
 
-        v11 = [v9 selector];
-        v12 = [v9 object];
-        if (!v12 || ([v39 object], v13 = objc_claimAutoreleasedReturnValue(), v14 = v12 == v13, v13, v14))
+        selector = [v9 selector];
+        object = [v9 object];
+        if (!object || ([notificationCopy object], v13 = objc_claimAutoreleasedReturnValue(), v14 = object == v13, v13, v14))
         {
           v21 = objc_loadWeakRetained(&location);
           v22 = objc_opt_respondsToSelector();
@@ -109,7 +109,7 @@ uint64_t __46__CAMPriorityNotificationCenter_defaultCenter__block_invoke()
           if (v22)
           {
             v23 = objc_loadWeakRetained(&location);
-            v24 = [v23 methodForSelector:v11];
+            v24 = [v23 methodForSelector:selector];
 
             v15 = os_log_create("com.apple.camera", "PriorityNotificationCenter");
             v25 = os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG);
@@ -117,35 +117,35 @@ uint64_t __46__CAMPriorityNotificationCenter_defaultCenter__block_invoke()
             {
               if (v25)
               {
-                v37 = [v39 name];
+                name = [notificationCopy name];
                 v29 = objc_loadWeakRetained(&location);
                 v30 = objc_opt_class();
                 v36 = v30;
                 v31 = objc_loadWeakRetained(&location);
                 *buf = v35;
-                v46 = v37;
+                v46 = name;
                 v47 = 2114;
                 v48 = v30;
                 v49 = 2048;
                 v50 = v31;
                 v51 = 2048;
-                v52 = v12;
+                v52 = object;
                 _os_log_debug_impl(&dword_1A3640000, v15, OS_LOG_TYPE_DEBUG, "Forwarding notification %{public}@ to <%{public}@: %p>/%p", buf, 0x2Au);
               }
 
               v15 = objc_loadWeakRetained(&location);
-              v24(v15, v11, v39);
+              v24(v15, selector, notificationCopy);
             }
 
             else if (v25)
             {
               v32 = objc_loadWeakRetained(&location);
               v33 = objc_opt_class();
-              v34 = [v39 name];
+              name2 = [notificationCopy name];
               *buf = 138543618;
               v46 = v33;
               v47 = 2114;
-              v48 = v34;
+              v48 = name2;
               _os_log_debug_impl(&dword_1A3640000, v15, OS_LOG_TYPE_DEBUG, "Observer %{public}@ has an invalid selector for receiving notifications for %{public}@!", buf, 0x16u);
             }
           }
@@ -157,11 +157,11 @@ uint64_t __46__CAMPriorityNotificationCenter_defaultCenter__block_invoke()
             {
               v26 = objc_loadWeakRetained(&location);
               v27 = objc_opt_class();
-              v28 = [v39 name];
+              name3 = [notificationCopy name];
               *buf = 138543618;
               v46 = v27;
               v47 = 2114;
-              v48 = v28;
+              v48 = name3;
               _os_log_debug_impl(&dword_1A3640000, v15, OS_LOG_TYPE_DEBUG, "Observer %{public}@ does not have a compatible selector for receiving notifications for %{public}@!", buf, 0x16u);
             }
           }
@@ -172,21 +172,21 @@ uint64_t __46__CAMPriorityNotificationCenter_defaultCenter__block_invoke()
           v15 = os_log_create("com.apple.camera", "PriorityNotificationCenter");
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
-            v16 = [v39 name];
+            name4 = [notificationCopy name];
             v17 = objc_loadWeakRetained(&location);
             v18 = objc_opt_class();
             v19 = objc_loadWeakRetained(&location);
-            v20 = [v39 object];
+            object2 = [notificationCopy object];
             *buf = 138544386;
-            v46 = v16;
+            v46 = name4;
             v47 = 2114;
             v48 = v18;
             v49 = 2048;
             v50 = v19;
             v51 = 2048;
-            v52 = v12;
+            v52 = object;
             v53 = 2048;
-            v54 = v20;
+            v54 = object2;
             _os_log_debug_impl(&dword_1A3640000, v15, OS_LOG_TYPE_DEBUG, "Not forwarding notification %{public}@ to <%{public}@: %p>/%p because notification object %p did not match", buf, 0x34u);
           }
         }
@@ -201,15 +201,15 @@ uint64_t __46__CAMPriorityNotificationCenter_defaultCenter__block_invoke()
   }
 }
 
-- (void)_notificationReceiver:(id)a3
+- (void)_notificationReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 name];
+  name = [receiverCopy name];
   v7 = os_log_create("com.apple.camera", "PriorityNotificationCenter");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(CAMPriorityNotificationCenter *)v4 _notificationReceiver:v7];
+    [(CAMPriorityNotificationCenter *)receiverCopy _notificationReceiver:v7];
   }
 
   v26 = 0;
@@ -224,17 +224,17 @@ uint64_t __46__CAMPriorityNotificationCenter_defaultCenter__block_invoke()
   v23 = __Block_byref_object_copy__8;
   v24 = __Block_byref_object_dispose__8;
   v25 = 0;
-  v8 = [(CAMPriorityNotificationCenter *)self _mutexQueue];
+  _mutexQueue = [(CAMPriorityNotificationCenter *)self _mutexQueue];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __55__CAMPriorityNotificationCenter__notificationReceiver___block_invoke;
   v15 = &unk_1E76FA660;
   v18 = &v26;
-  v16 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = name;
   v17 = v9;
   v19 = &v20;
-  dispatch_sync(v8, &v12);
+  dispatch_sync(_mutexQueue, &v12);
 
   if ([v27[5] count])
   {
@@ -244,7 +244,7 @@ uint64_t __46__CAMPriorityNotificationCenter_defaultCenter__block_invoke()
       [CAMPriorityNotificationCenter _notificationReceiver:v10];
     }
 
-    [(CAMPriorityNotificationCenter *)self _postNotification:v4 forEntries:v27[5]];
+    [(CAMPriorityNotificationCenter *)self _postNotification:receiverCopy forEntries:v27[5]];
   }
 
   if ([v21[5] count])
@@ -255,7 +255,7 @@ uint64_t __46__CAMPriorityNotificationCenter_defaultCenter__block_invoke()
       [CAMPriorityNotificationCenter _notificationReceiver:v11];
     }
 
-    [(CAMPriorityNotificationCenter *)self _postNotification:v4 forEntries:v21[5]];
+    [(CAMPriorityNotificationCenter *)self _postNotification:receiverCopy forEntries:v21[5]];
   }
 
   _Block_object_dispose(&v20, 8);
@@ -279,74 +279,74 @@ void __55__CAMPriorityNotificationCenter__notificationReceiver___block_invoke(ui
   *(v7 + 40) = v6;
 }
 
-- (id)_observersForPriority:(unint64_t)a3
+- (id)_observersForPriority:(unint64_t)priority
 {
-  v5 = [(CAMPriorityNotificationCenter *)self _mutexQueue];
-  dispatch_assert_queue_V2(v5);
+  _mutexQueue = [(CAMPriorityNotificationCenter *)self _mutexQueue];
+  dispatch_assert_queue_V2(_mutexQueue);
 
-  if (a3 == 1)
+  if (priority == 1)
   {
-    v6 = [(CAMPriorityNotificationCenter *)self _observersByNameNormalPriority];
+    _observersByNameNormalPriority = [(CAMPriorityNotificationCenter *)self _observersByNameNormalPriority];
   }
 
-  else if (!a3)
+  else if (!priority)
   {
-    v6 = [(CAMPriorityNotificationCenter *)self _observersByNameHighPriority];
+    _observersByNameNormalPriority = [(CAMPriorityNotificationCenter *)self _observersByNameHighPriority];
   }
 
-  return v6;
+  return _observersByNameNormalPriority;
 }
 
-- (id)_entriesByName:(id)a3 forPriority:(unint64_t)a4 creatingEmptyIfNeeded:(BOOL)a5
+- (id)_entriesByName:(id)name forPriority:(unint64_t)priority creatingEmptyIfNeeded:(BOOL)needed
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(CAMPriorityNotificationCenter *)self _mutexQueue];
-  dispatch_assert_queue_V2(v9);
+  neededCopy = needed;
+  nameCopy = name;
+  _mutexQueue = [(CAMPriorityNotificationCenter *)self _mutexQueue];
+  dispatch_assert_queue_V2(_mutexQueue);
 
-  v10 = [(CAMPriorityNotificationCenter *)self _observersForPriority:a4];
-  v11 = [v10 objectForKey:v8];
-  if (!v11 && v5)
+  v10 = [(CAMPriorityNotificationCenter *)self _observersForPriority:priority];
+  v11 = [v10 objectForKey:nameCopy];
+  if (!v11 && neededCopy)
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [v10 setValue:v11 forKey:v8];
+    [v10 setValue:v11 forKey:nameCopy];
   }
 
   return v11;
 }
 
-- (void)addObserver:(id)a3 priority:(unint64_t)a4 selector:(SEL)a5 name:(id)a6 object:(id)a7
+- (void)addObserver:(id)observer priority:(unint64_t)priority selector:(SEL)selector name:(id)name object:(id)object
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(CAMPriorityNotificationCenter *)self _mutexQueue];
+  observerCopy = observer;
+  nameCopy = name;
+  objectCopy = object;
+  _mutexQueue = [(CAMPriorityNotificationCenter *)self _mutexQueue];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __75__CAMPriorityNotificationCenter_addObserver_priority_selector_name_object___block_invoke;
   v19[3] = &unk_1E76FA688;
   v19[4] = self;
-  v20 = v12;
-  v23 = a4;
-  v24 = a5;
-  v21 = v13;
-  v22 = v14;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
-  dispatch_sync(v15, v19);
+  v20 = observerCopy;
+  priorityCopy = priority;
+  selectorCopy = selector;
+  v21 = nameCopy;
+  v22 = objectCopy;
+  v16 = objectCopy;
+  v17 = nameCopy;
+  v18 = observerCopy;
+  dispatch_sync(_mutexQueue, v19);
 }
 
-- (void)_mutexQueue_addObserver:(id)a3 priority:(unint64_t)a4 selector:(SEL)a5 name:(id)a6 object:(id)a7
+- (void)_mutexQueue_addObserver:(id)observer priority:(unint64_t)priority selector:(SEL)selector name:(id)name object:(id)object
 {
-  v12 = a6;
-  v13 = a7;
-  v14 = a3;
-  v15 = [(CAMPriorityNotificationCenter *)self _mutexQueue];
-  dispatch_assert_queue_V2(v15);
+  nameCopy = name;
+  objectCopy = object;
+  observerCopy = observer;
+  _mutexQueue = [(CAMPriorityNotificationCenter *)self _mutexQueue];
+  dispatch_assert_queue_V2(_mutexQueue);
 
-  v16 = [(CAMPriorityNotificationCenter *)self _observersByNameHighPriority];
-  v17 = [v16 objectForKey:v12];
+  _observersByNameHighPriority = [(CAMPriorityNotificationCenter *)self _observersByNameHighPriority];
+  v17 = [_observersByNameHighPriority objectForKey:nameCopy];
   if (v17)
   {
     v18 = 0;
@@ -354,13 +354,13 @@ void __55__CAMPriorityNotificationCenter__notificationReceiver___block_invoke(ui
 
   else
   {
-    v19 = [(CAMPriorityNotificationCenter *)self _observersByNameNormalPriority];
-    v20 = [v19 objectForKey:v12];
+    _observersByNameNormalPriority = [(CAMPriorityNotificationCenter *)self _observersByNameNormalPriority];
+    v20 = [_observersByNameNormalPriority objectForKey:nameCopy];
     v18 = v20 == 0;
   }
 
-  v21 = [(CAMPriorityNotificationCenter *)self _entriesByName:v12 forPriority:a4 creatingEmptyIfNeeded:1];
-  v22 = [[CAMPriorityNotificationCenterEntry alloc] initWithObserver:v14 selector:a5 object:v13];
+  v21 = [(CAMPriorityNotificationCenter *)self _entriesByName:nameCopy forPriority:priority creatingEmptyIfNeeded:1];
+  v22 = [[CAMPriorityNotificationCenterEntry alloc] initWithObserver:observerCopy selector:selector object:objectCopy];
 
   [v21 addObject:v22];
   if (v18)
@@ -368,24 +368,24 @@ void __55__CAMPriorityNotificationCenter__notificationReceiver___block_invoke(ui
     v23 = os_log_create("com.apple.camera", "PriorityNotificationCenter");
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
-      [CAMPriorityNotificationCenter _mutexQueue_addObserver:v12 priority:v23 selector:? name:? object:?];
+      [CAMPriorityNotificationCenter _mutexQueue_addObserver:nameCopy priority:v23 selector:? name:? object:?];
     }
 
-    v24 = [(CAMPriorityNotificationCenter *)self _notificationCenter];
-    [v24 addObserver:self selector:sel__notificationReceiver_ name:v12 object:0];
+    _notificationCenter = [(CAMPriorityNotificationCenter *)self _notificationCenter];
+    [_notificationCenter addObserver:self selector:sel__notificationReceiver_ name:nameCopy object:0];
   }
 }
 
-- (void)_removeObserver:(id)a3 fromObserversByName:(id)a4
+- (void)_removeObserver:(id)observer fromObserversByName:(id)name
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAMPriorityNotificationCenter *)self _mutexQueue];
-  dispatch_assert_queue_V2(v8);
+  observerCopy = observer;
+  nameCopy = name;
+  _mutexQueue = [(CAMPriorityNotificationCenter *)self _mutexQueue];
+  dispatch_assert_queue_V2(_mutexQueue);
 
-  v23 = v7;
-  [v7 allKeys];
+  v23 = nameCopy;
+  [nameCopy allKeys];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -426,9 +426,9 @@ void __55__CAMPriorityNotificationCenter__notificationReceiver___block_invoke(ui
                 objc_enumerationMutation(v13);
               }
 
-              v19 = [*(*(&v24 + 1) + 8 * j) observer];
+              observer = [*(*(&v24 + 1) + 8 * j) observer];
 
-              if (v19 == v6)
+              if (observer == observerCopy)
               {
                 [v12 addIndex:v16];
               }
@@ -458,55 +458,55 @@ void __55__CAMPriorityNotificationCenter__notificationReceiver___block_invoke(ui
 
 - (id)_allSubscriptions
 {
-  v3 = [(CAMPriorityNotificationCenter *)self _mutexQueue];
-  dispatch_assert_queue_V2(v3);
+  _mutexQueue = [(CAMPriorityNotificationCenter *)self _mutexQueue];
+  dispatch_assert_queue_V2(_mutexQueue);
 
-  v4 = [(CAMPriorityNotificationCenter *)self _observersByNameHighPriority];
-  v5 = [v4 allKeys];
+  _observersByNameHighPriority = [(CAMPriorityNotificationCenter *)self _observersByNameHighPriority];
+  allKeys = [_observersByNameHighPriority allKeys];
 
-  v6 = [(CAMPriorityNotificationCenter *)self _observersByNameNormalPriority];
-  v7 = [v6 allKeys];
+  _observersByNameNormalPriority = [(CAMPriorityNotificationCenter *)self _observersByNameNormalPriority];
+  allKeys2 = [_observersByNameNormalPriority allKeys];
 
-  v8 = [MEMORY[0x1E695DFA8] setWithArray:v5];
-  v9 = [MEMORY[0x1E695DFA8] setWithArray:v7];
+  v8 = [MEMORY[0x1E695DFA8] setWithArray:allKeys];
+  v9 = [MEMORY[0x1E695DFA8] setWithArray:allKeys2];
   v10 = v8;
   [v10 unionSet:v9];
 
   return v10;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CAMPriorityNotificationCenter *)self _mutexQueue];
+  observerCopy = observer;
+  _mutexQueue = [(CAMPriorityNotificationCenter *)self _mutexQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__CAMPriorityNotificationCenter_removeObserver___block_invoke;
   v7[3] = &unk_1E76F7960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(_mutexQueue, v7);
 }
 
-- (void)_mutexQueue_removeObserver:(id)a3
+- (void)_mutexQueue_removeObserver:(id)observer
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CAMPriorityNotificationCenter *)self _mutexQueue];
-  dispatch_assert_queue_V2(v5);
+  observerCopy = observer;
+  _mutexQueue = [(CAMPriorityNotificationCenter *)self _mutexQueue];
+  dispatch_assert_queue_V2(_mutexQueue);
 
-  v6 = [(CAMPriorityNotificationCenter *)self _allSubscriptions];
-  v7 = [(CAMPriorityNotificationCenter *)self _observersByNameHighPriority];
-  [(CAMPriorityNotificationCenter *)self _removeObserver:v4 fromObserversByName:v7];
+  _allSubscriptions = [(CAMPriorityNotificationCenter *)self _allSubscriptions];
+  _observersByNameHighPriority = [(CAMPriorityNotificationCenter *)self _observersByNameHighPriority];
+  [(CAMPriorityNotificationCenter *)self _removeObserver:observerCopy fromObserversByName:_observersByNameHighPriority];
 
-  v8 = [(CAMPriorityNotificationCenter *)self _observersByNameNormalPriority];
-  v18 = v4;
-  [(CAMPriorityNotificationCenter *)self _removeObserver:v4 fromObserversByName:v8];
+  _observersByNameNormalPriority = [(CAMPriorityNotificationCenter *)self _observersByNameNormalPriority];
+  v18 = observerCopy;
+  [(CAMPriorityNotificationCenter *)self _removeObserver:observerCopy fromObserversByName:_observersByNameNormalPriority];
 
-  v17 = [(CAMPriorityNotificationCenter *)self _allSubscriptions];
-  [v6 minusSet:?];
-  v9 = v6;
+  _allSubscriptions2 = [(CAMPriorityNotificationCenter *)self _allSubscriptions];
+  [_allSubscriptions minusSet:?];
+  v9 = _allSubscriptions;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -535,8 +535,8 @@ void __55__CAMPriorityNotificationCenter__notificationReceiver___block_invoke(ui
           _os_log_debug_impl(&dword_1A3640000, v15, OS_LOG_TYPE_DEBUG, "Unsubscribing from notification %{public}@", buf, 0xCu);
         }
 
-        v16 = [(CAMPriorityNotificationCenter *)self _notificationCenter];
-        [v16 removeObserver:self name:v14 object:0];
+        _notificationCenter = [(CAMPriorityNotificationCenter *)self _notificationCenter];
+        [_notificationCenter removeObserver:self name:v14 object:0];
 
         ++v13;
       }

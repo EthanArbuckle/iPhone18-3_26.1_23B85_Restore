@@ -1,5 +1,5 @@
 @interface IFTSchemaIFTStatementOutcome
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IFTSchemaIFTActionConfirmation)actionConfirmation;
 - (IFTSchemaIFTActionFailure)failure;
 - (IFTSchemaIFTActionRequirement)actionRequirement;
@@ -9,12 +9,12 @@
 - (IFTSchemaIFTParameterDisambiguation)parameterDisambiguation;
 - (IFTSchemaIFTParameterNeedsValue)parameterNeedsValue;
 - (IFTSchemaIFTParameterNotAllowed)parameterNotAllowed;
-- (IFTSchemaIFTStatementOutcome)initWithDictionary:(id)a3;
-- (IFTSchemaIFTStatementOutcome)initWithJSON:(id)a3;
+- (IFTSchemaIFTStatementOutcome)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTStatementOutcome)initWithJSON:(id)n;
 - (IFTSchemaIFTToolDisambiguation)toolDisambiguation;
 - (IFTSchemaIFTValueDisambiguation)valueDisambiguation;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
@@ -29,31 +29,31 @@
 - (void)deleteSuccess;
 - (void)deleteToolDisambiguation;
 - (void)deleteValueDisambiguation;
-- (void)setActionConfirmation:(id)a3;
-- (void)setActionRequirement:(id)a3;
-- (void)setFailure:(id)a3;
-- (void)setParameterCandidatesNotFounds:(id)a3;
-- (void)setParameterConfirmation:(id)a3;
-- (void)setParameterDisambiguation:(id)a3;
-- (void)setParameterNeedsValue:(id)a3;
-- (void)setParameterNotAllowed:(id)a3;
-- (void)setSuccess:(id)a3;
-- (void)setToolDisambiguation:(id)a3;
-- (void)setValueDisambiguation:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setActionConfirmation:(id)confirmation;
+- (void)setActionRequirement:(id)requirement;
+- (void)setFailure:(id)failure;
+- (void)setParameterCandidatesNotFounds:(id)founds;
+- (void)setParameterConfirmation:(id)confirmation;
+- (void)setParameterDisambiguation:(id)disambiguation;
+- (void)setParameterNeedsValue:(id)value;
+- (void)setParameterNotAllowed:(id)allowed;
+- (void)setSuccess:(id)success;
+- (void)setToolDisambiguation:(id)disambiguation;
+- (void)setValueDisambiguation:(id)disambiguation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTStatementOutcome
 
-- (IFTSchemaIFTStatementOutcome)initWithDictionary:(id)a3
+- (IFTSchemaIFTStatementOutcome)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v35.receiver = self;
   v35.super_class = IFTSchemaIFTStatementOutcome;
   v5 = [(IFTSchemaIFTStatementOutcome *)&v35 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"success"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"success"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,7 +61,7 @@
       [(IFTSchemaIFTStatementOutcome *)v5 setSuccess:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"actionConfirmation"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"actionConfirmation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,7 +69,7 @@
       [(IFTSchemaIFTStatementOutcome *)v5 setActionConfirmation:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"parameterNeedsValue"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"parameterNeedsValue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,7 +77,7 @@
       [(IFTSchemaIFTStatementOutcome *)v5 setParameterNeedsValue:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"parameterConfirmation"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"parameterConfirmation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,7 +86,7 @@
     }
 
     v32 = v12;
-    v14 = [v4 objectForKeyedSubscript:@"parameterDisambiguation"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"parameterDisambiguation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -94,7 +94,7 @@
       [(IFTSchemaIFTStatementOutcome *)v5 setParameterDisambiguation:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:{@"parameterNotAllowed", v14}];
+    v16 = [dictionaryCopy objectForKeyedSubscript:{@"parameterNotAllowed", v14}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -102,7 +102,7 @@
       [(IFTSchemaIFTStatementOutcome *)v5 setParameterNotAllowed:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"parameterCandidatesNotFounds"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"parameterCandidatesNotFounds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -112,7 +112,7 @@
 
     v33 = v10;
     v34 = v6;
-    v20 = [v4 objectForKeyedSubscript:@"actionRequirement"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"actionRequirement"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -121,7 +121,7 @@
     }
 
     v22 = v8;
-    v23 = [v4 objectForKeyedSubscript:@"toolDisambiguation"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"toolDisambiguation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -129,7 +129,7 @@
       [(IFTSchemaIFTStatementOutcome *)v5 setToolDisambiguation:v24];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"failure"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"failure"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -137,7 +137,7 @@
       [(IFTSchemaIFTStatementOutcome *)v5 setFailure:v26];
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"valueDisambiguation"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"valueDisambiguation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -151,30 +151,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTStatementOutcome)initWithJSON:(id)a3
+- (IFTSchemaIFTStatementOutcome)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTStatementOutcome *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTStatementOutcome *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTStatementOutcome *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -187,186 +187,186 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_actionConfirmation)
   {
-    v4 = [(IFTSchemaIFTStatementOutcome *)self actionConfirmation];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    actionConfirmation = [(IFTSchemaIFTStatementOutcome *)self actionConfirmation];
+    dictionaryRepresentation = [actionConfirmation dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"actionConfirmation"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"actionConfirmation"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"actionConfirmation"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"actionConfirmation"];
     }
   }
 
   if (self->_actionRequirement)
   {
-    v7 = [(IFTSchemaIFTStatementOutcome *)self actionRequirement];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    actionRequirement = [(IFTSchemaIFTStatementOutcome *)self actionRequirement];
+    dictionaryRepresentation2 = [actionRequirement dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"actionRequirement"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"actionRequirement"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"actionRequirement"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"actionRequirement"];
     }
   }
 
   if (self->_failure)
   {
-    v10 = [(IFTSchemaIFTStatementOutcome *)self failure];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    failure = [(IFTSchemaIFTStatementOutcome *)self failure];
+    dictionaryRepresentation3 = [failure dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"failure"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"failure"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"failure"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"failure"];
     }
   }
 
   if (self->_parameterCandidatesNotFounds)
   {
-    v13 = [(IFTSchemaIFTStatementOutcome *)self parameterCandidatesNotFounds];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    parameterCandidatesNotFounds = [(IFTSchemaIFTStatementOutcome *)self parameterCandidatesNotFounds];
+    dictionaryRepresentation4 = [parameterCandidatesNotFounds dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"parameterCandidatesNotFounds"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"parameterCandidatesNotFounds"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"parameterCandidatesNotFounds"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"parameterCandidatesNotFounds"];
     }
   }
 
   if (self->_parameterConfirmation)
   {
-    v16 = [(IFTSchemaIFTStatementOutcome *)self parameterConfirmation];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    parameterConfirmation = [(IFTSchemaIFTStatementOutcome *)self parameterConfirmation];
+    dictionaryRepresentation5 = [parameterConfirmation dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"parameterConfirmation"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"parameterConfirmation"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"parameterConfirmation"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"parameterConfirmation"];
     }
   }
 
   if (self->_parameterDisambiguation)
   {
-    v19 = [(IFTSchemaIFTStatementOutcome *)self parameterDisambiguation];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    parameterDisambiguation = [(IFTSchemaIFTStatementOutcome *)self parameterDisambiguation];
+    dictionaryRepresentation6 = [parameterDisambiguation dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"parameterDisambiguation"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"parameterDisambiguation"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"parameterDisambiguation"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"parameterDisambiguation"];
     }
   }
 
   if (self->_parameterNeedsValue)
   {
-    v22 = [(IFTSchemaIFTStatementOutcome *)self parameterNeedsValue];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    parameterNeedsValue = [(IFTSchemaIFTStatementOutcome *)self parameterNeedsValue];
+    dictionaryRepresentation7 = [parameterNeedsValue dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"parameterNeedsValue"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"parameterNeedsValue"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"parameterNeedsValue"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"parameterNeedsValue"];
     }
   }
 
   if (self->_parameterNotAllowed)
   {
-    v25 = [(IFTSchemaIFTStatementOutcome *)self parameterNotAllowed];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    parameterNotAllowed = [(IFTSchemaIFTStatementOutcome *)self parameterNotAllowed];
+    dictionaryRepresentation8 = [parameterNotAllowed dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"parameterNotAllowed"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"parameterNotAllowed"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"parameterNotAllowed"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"parameterNotAllowed"];
     }
   }
 
   if (self->_success)
   {
-    v28 = [(IFTSchemaIFTStatementOutcome *)self success];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    success = [(IFTSchemaIFTStatementOutcome *)self success];
+    dictionaryRepresentation9 = [success dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"success"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"success"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"success"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"success"];
     }
   }
 
   if (self->_toolDisambiguation)
   {
-    v31 = [(IFTSchemaIFTStatementOutcome *)self toolDisambiguation];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    toolDisambiguation = [(IFTSchemaIFTStatementOutcome *)self toolDisambiguation];
+    dictionaryRepresentation10 = [toolDisambiguation dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"toolDisambiguation"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"toolDisambiguation"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"toolDisambiguation"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"toolDisambiguation"];
     }
   }
 
   if (self->_valueDisambiguation)
   {
-    v34 = [(IFTSchemaIFTStatementOutcome *)self valueDisambiguation];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    valueDisambiguation = [(IFTSchemaIFTStatementOutcome *)self valueDisambiguation];
+    dictionaryRepresentation11 = [valueDisambiguation dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"valueDisambiguation"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"valueDisambiguation"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"valueDisambiguation"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"valueDisambiguation"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -384,34 +384,34 @@
   return v9 ^ v12 ^ [(IFTSchemaIFTValueDisambiguation *)self->_valueDisambiguation hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_58;
   }
 
   whichOneof_Statementoutcome = self->_whichOneof_Statementoutcome;
-  if (whichOneof_Statementoutcome != [v4 whichOneof_Statementoutcome])
+  if (whichOneof_Statementoutcome != [equalCopy whichOneof_Statementoutcome])
   {
     goto LABEL_58;
   }
 
-  v6 = [(IFTSchemaIFTStatementOutcome *)self success];
-  v7 = [v4 success];
-  if ((v6 != 0) == (v7 == 0))
+  success = [(IFTSchemaIFTStatementOutcome *)self success];
+  success2 = [equalCopy success];
+  if ((success != 0) == (success2 == 0))
   {
     goto LABEL_57;
   }
 
-  v8 = [(IFTSchemaIFTStatementOutcome *)self success];
-  if (v8)
+  success3 = [(IFTSchemaIFTStatementOutcome *)self success];
+  if (success3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTStatementOutcome *)self success];
-    v11 = [v4 success];
-    v12 = [v10 isEqual:v11];
+    v9 = success3;
+    success4 = [(IFTSchemaIFTStatementOutcome *)self success];
+    success5 = [equalCopy success];
+    v12 = [success4 isEqual:success5];
 
     if (!v12)
     {
@@ -423,20 +423,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTStatementOutcome *)self actionConfirmation];
-  v7 = [v4 actionConfirmation];
-  if ((v6 != 0) == (v7 == 0))
+  success = [(IFTSchemaIFTStatementOutcome *)self actionConfirmation];
+  success2 = [equalCopy actionConfirmation];
+  if ((success != 0) == (success2 == 0))
   {
     goto LABEL_57;
   }
 
-  v13 = [(IFTSchemaIFTStatementOutcome *)self actionConfirmation];
-  if (v13)
+  actionConfirmation = [(IFTSchemaIFTStatementOutcome *)self actionConfirmation];
+  if (actionConfirmation)
   {
-    v14 = v13;
-    v15 = [(IFTSchemaIFTStatementOutcome *)self actionConfirmation];
-    v16 = [v4 actionConfirmation];
-    v17 = [v15 isEqual:v16];
+    v14 = actionConfirmation;
+    actionConfirmation2 = [(IFTSchemaIFTStatementOutcome *)self actionConfirmation];
+    actionConfirmation3 = [equalCopy actionConfirmation];
+    v17 = [actionConfirmation2 isEqual:actionConfirmation3];
 
     if (!v17)
     {
@@ -448,20 +448,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTStatementOutcome *)self parameterNeedsValue];
-  v7 = [v4 parameterNeedsValue];
-  if ((v6 != 0) == (v7 == 0))
+  success = [(IFTSchemaIFTStatementOutcome *)self parameterNeedsValue];
+  success2 = [equalCopy parameterNeedsValue];
+  if ((success != 0) == (success2 == 0))
   {
     goto LABEL_57;
   }
 
-  v18 = [(IFTSchemaIFTStatementOutcome *)self parameterNeedsValue];
-  if (v18)
+  parameterNeedsValue = [(IFTSchemaIFTStatementOutcome *)self parameterNeedsValue];
+  if (parameterNeedsValue)
   {
-    v19 = v18;
-    v20 = [(IFTSchemaIFTStatementOutcome *)self parameterNeedsValue];
-    v21 = [v4 parameterNeedsValue];
-    v22 = [v20 isEqual:v21];
+    v19 = parameterNeedsValue;
+    parameterNeedsValue2 = [(IFTSchemaIFTStatementOutcome *)self parameterNeedsValue];
+    parameterNeedsValue3 = [equalCopy parameterNeedsValue];
+    v22 = [parameterNeedsValue2 isEqual:parameterNeedsValue3];
 
     if (!v22)
     {
@@ -473,20 +473,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTStatementOutcome *)self parameterConfirmation];
-  v7 = [v4 parameterConfirmation];
-  if ((v6 != 0) == (v7 == 0))
+  success = [(IFTSchemaIFTStatementOutcome *)self parameterConfirmation];
+  success2 = [equalCopy parameterConfirmation];
+  if ((success != 0) == (success2 == 0))
   {
     goto LABEL_57;
   }
 
-  v23 = [(IFTSchemaIFTStatementOutcome *)self parameterConfirmation];
-  if (v23)
+  parameterConfirmation = [(IFTSchemaIFTStatementOutcome *)self parameterConfirmation];
+  if (parameterConfirmation)
   {
-    v24 = v23;
-    v25 = [(IFTSchemaIFTStatementOutcome *)self parameterConfirmation];
-    v26 = [v4 parameterConfirmation];
-    v27 = [v25 isEqual:v26];
+    v24 = parameterConfirmation;
+    parameterConfirmation2 = [(IFTSchemaIFTStatementOutcome *)self parameterConfirmation];
+    parameterConfirmation3 = [equalCopy parameterConfirmation];
+    v27 = [parameterConfirmation2 isEqual:parameterConfirmation3];
 
     if (!v27)
     {
@@ -498,20 +498,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTStatementOutcome *)self parameterDisambiguation];
-  v7 = [v4 parameterDisambiguation];
-  if ((v6 != 0) == (v7 == 0))
+  success = [(IFTSchemaIFTStatementOutcome *)self parameterDisambiguation];
+  success2 = [equalCopy parameterDisambiguation];
+  if ((success != 0) == (success2 == 0))
   {
     goto LABEL_57;
   }
 
-  v28 = [(IFTSchemaIFTStatementOutcome *)self parameterDisambiguation];
-  if (v28)
+  parameterDisambiguation = [(IFTSchemaIFTStatementOutcome *)self parameterDisambiguation];
+  if (parameterDisambiguation)
   {
-    v29 = v28;
-    v30 = [(IFTSchemaIFTStatementOutcome *)self parameterDisambiguation];
-    v31 = [v4 parameterDisambiguation];
-    v32 = [v30 isEqual:v31];
+    v29 = parameterDisambiguation;
+    parameterDisambiguation2 = [(IFTSchemaIFTStatementOutcome *)self parameterDisambiguation];
+    parameterDisambiguation3 = [equalCopy parameterDisambiguation];
+    v32 = [parameterDisambiguation2 isEqual:parameterDisambiguation3];
 
     if (!v32)
     {
@@ -523,20 +523,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTStatementOutcome *)self parameterNotAllowed];
-  v7 = [v4 parameterNotAllowed];
-  if ((v6 != 0) == (v7 == 0))
+  success = [(IFTSchemaIFTStatementOutcome *)self parameterNotAllowed];
+  success2 = [equalCopy parameterNotAllowed];
+  if ((success != 0) == (success2 == 0))
   {
     goto LABEL_57;
   }
 
-  v33 = [(IFTSchemaIFTStatementOutcome *)self parameterNotAllowed];
-  if (v33)
+  parameterNotAllowed = [(IFTSchemaIFTStatementOutcome *)self parameterNotAllowed];
+  if (parameterNotAllowed)
   {
-    v34 = v33;
-    v35 = [(IFTSchemaIFTStatementOutcome *)self parameterNotAllowed];
-    v36 = [v4 parameterNotAllowed];
-    v37 = [v35 isEqual:v36];
+    v34 = parameterNotAllowed;
+    parameterNotAllowed2 = [(IFTSchemaIFTStatementOutcome *)self parameterNotAllowed];
+    parameterNotAllowed3 = [equalCopy parameterNotAllowed];
+    v37 = [parameterNotAllowed2 isEqual:parameterNotAllowed3];
 
     if (!v37)
     {
@@ -548,20 +548,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTStatementOutcome *)self parameterCandidatesNotFounds];
-  v7 = [v4 parameterCandidatesNotFounds];
-  if ((v6 != 0) == (v7 == 0))
+  success = [(IFTSchemaIFTStatementOutcome *)self parameterCandidatesNotFounds];
+  success2 = [equalCopy parameterCandidatesNotFounds];
+  if ((success != 0) == (success2 == 0))
   {
     goto LABEL_57;
   }
 
-  v38 = [(IFTSchemaIFTStatementOutcome *)self parameterCandidatesNotFounds];
-  if (v38)
+  parameterCandidatesNotFounds = [(IFTSchemaIFTStatementOutcome *)self parameterCandidatesNotFounds];
+  if (parameterCandidatesNotFounds)
   {
-    v39 = v38;
-    v40 = [(IFTSchemaIFTStatementOutcome *)self parameterCandidatesNotFounds];
-    v41 = [v4 parameterCandidatesNotFounds];
-    v42 = [v40 isEqual:v41];
+    v39 = parameterCandidatesNotFounds;
+    parameterCandidatesNotFounds2 = [(IFTSchemaIFTStatementOutcome *)self parameterCandidatesNotFounds];
+    parameterCandidatesNotFounds3 = [equalCopy parameterCandidatesNotFounds];
+    v42 = [parameterCandidatesNotFounds2 isEqual:parameterCandidatesNotFounds3];
 
     if (!v42)
     {
@@ -573,20 +573,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTStatementOutcome *)self actionRequirement];
-  v7 = [v4 actionRequirement];
-  if ((v6 != 0) == (v7 == 0))
+  success = [(IFTSchemaIFTStatementOutcome *)self actionRequirement];
+  success2 = [equalCopy actionRequirement];
+  if ((success != 0) == (success2 == 0))
   {
     goto LABEL_57;
   }
 
-  v43 = [(IFTSchemaIFTStatementOutcome *)self actionRequirement];
-  if (v43)
+  actionRequirement = [(IFTSchemaIFTStatementOutcome *)self actionRequirement];
+  if (actionRequirement)
   {
-    v44 = v43;
-    v45 = [(IFTSchemaIFTStatementOutcome *)self actionRequirement];
-    v46 = [v4 actionRequirement];
-    v47 = [v45 isEqual:v46];
+    v44 = actionRequirement;
+    actionRequirement2 = [(IFTSchemaIFTStatementOutcome *)self actionRequirement];
+    actionRequirement3 = [equalCopy actionRequirement];
+    v47 = [actionRequirement2 isEqual:actionRequirement3];
 
     if (!v47)
     {
@@ -598,20 +598,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTStatementOutcome *)self toolDisambiguation];
-  v7 = [v4 toolDisambiguation];
-  if ((v6 != 0) == (v7 == 0))
+  success = [(IFTSchemaIFTStatementOutcome *)self toolDisambiguation];
+  success2 = [equalCopy toolDisambiguation];
+  if ((success != 0) == (success2 == 0))
   {
     goto LABEL_57;
   }
 
-  v48 = [(IFTSchemaIFTStatementOutcome *)self toolDisambiguation];
-  if (v48)
+  toolDisambiguation = [(IFTSchemaIFTStatementOutcome *)self toolDisambiguation];
+  if (toolDisambiguation)
   {
-    v49 = v48;
-    v50 = [(IFTSchemaIFTStatementOutcome *)self toolDisambiguation];
-    v51 = [v4 toolDisambiguation];
-    v52 = [v50 isEqual:v51];
+    v49 = toolDisambiguation;
+    toolDisambiguation2 = [(IFTSchemaIFTStatementOutcome *)self toolDisambiguation];
+    toolDisambiguation3 = [equalCopy toolDisambiguation];
+    v52 = [toolDisambiguation2 isEqual:toolDisambiguation3];
 
     if (!v52)
     {
@@ -623,20 +623,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTStatementOutcome *)self failure];
-  v7 = [v4 failure];
-  if ((v6 != 0) == (v7 == 0))
+  success = [(IFTSchemaIFTStatementOutcome *)self failure];
+  success2 = [equalCopy failure];
+  if ((success != 0) == (success2 == 0))
   {
     goto LABEL_57;
   }
 
-  v53 = [(IFTSchemaIFTStatementOutcome *)self failure];
-  if (v53)
+  failure = [(IFTSchemaIFTStatementOutcome *)self failure];
+  if (failure)
   {
-    v54 = v53;
-    v55 = [(IFTSchemaIFTStatementOutcome *)self failure];
-    v56 = [v4 failure];
-    v57 = [v55 isEqual:v56];
+    v54 = failure;
+    failure2 = [(IFTSchemaIFTStatementOutcome *)self failure];
+    failure3 = [equalCopy failure];
+    v57 = [failure2 isEqual:failure3];
 
     if (!v57)
     {
@@ -648,12 +648,12 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTStatementOutcome *)self valueDisambiguation];
-  v7 = [v4 valueDisambiguation];
-  if ((v6 != 0) != (v7 == 0))
+  success = [(IFTSchemaIFTStatementOutcome *)self valueDisambiguation];
+  success2 = [equalCopy valueDisambiguation];
+  if ((success != 0) != (success2 == 0))
   {
-    v58 = [(IFTSchemaIFTStatementOutcome *)self valueDisambiguation];
-    if (!v58)
+    valueDisambiguation = [(IFTSchemaIFTStatementOutcome *)self valueDisambiguation];
+    if (!valueDisambiguation)
     {
 
 LABEL_61:
@@ -661,10 +661,10 @@ LABEL_61:
       goto LABEL_59;
     }
 
-    v59 = v58;
-    v60 = [(IFTSchemaIFTStatementOutcome *)self valueDisambiguation];
-    v61 = [v4 valueDisambiguation];
-    v62 = [v60 isEqual:v61];
+    v59 = valueDisambiguation;
+    valueDisambiguation2 = [(IFTSchemaIFTStatementOutcome *)self valueDisambiguation];
+    valueDisambiguation3 = [equalCopy valueDisambiguation];
+    v62 = [valueDisambiguation2 isEqual:valueDisambiguation3];
 
     if (v62)
     {
@@ -684,98 +684,98 @@ LABEL_59:
   return v63;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v27 = a3;
-  v4 = [(IFTSchemaIFTStatementOutcome *)self success];
+  toCopy = to;
+  success = [(IFTSchemaIFTStatementOutcome *)self success];
 
-  if (v4)
+  if (success)
   {
-    v5 = [(IFTSchemaIFTStatementOutcome *)self success];
+    success2 = [(IFTSchemaIFTStatementOutcome *)self success];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(IFTSchemaIFTStatementOutcome *)self actionConfirmation];
+  actionConfirmation = [(IFTSchemaIFTStatementOutcome *)self actionConfirmation];
 
-  if (v6)
+  if (actionConfirmation)
   {
-    v7 = [(IFTSchemaIFTStatementOutcome *)self actionConfirmation];
+    actionConfirmation2 = [(IFTSchemaIFTStatementOutcome *)self actionConfirmation];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(IFTSchemaIFTStatementOutcome *)self parameterNeedsValue];
+  parameterNeedsValue = [(IFTSchemaIFTStatementOutcome *)self parameterNeedsValue];
 
-  if (v8)
+  if (parameterNeedsValue)
   {
-    v9 = [(IFTSchemaIFTStatementOutcome *)self parameterNeedsValue];
+    parameterNeedsValue2 = [(IFTSchemaIFTStatementOutcome *)self parameterNeedsValue];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(IFTSchemaIFTStatementOutcome *)self parameterConfirmation];
+  parameterConfirmation = [(IFTSchemaIFTStatementOutcome *)self parameterConfirmation];
 
-  if (v10)
+  if (parameterConfirmation)
   {
-    v11 = [(IFTSchemaIFTStatementOutcome *)self parameterConfirmation];
+    parameterConfirmation2 = [(IFTSchemaIFTStatementOutcome *)self parameterConfirmation];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(IFTSchemaIFTStatementOutcome *)self parameterDisambiguation];
+  parameterDisambiguation = [(IFTSchemaIFTStatementOutcome *)self parameterDisambiguation];
 
-  if (v12)
+  if (parameterDisambiguation)
   {
-    v13 = [(IFTSchemaIFTStatementOutcome *)self parameterDisambiguation];
+    parameterDisambiguation2 = [(IFTSchemaIFTStatementOutcome *)self parameterDisambiguation];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(IFTSchemaIFTStatementOutcome *)self parameterNotAllowed];
+  parameterNotAllowed = [(IFTSchemaIFTStatementOutcome *)self parameterNotAllowed];
 
-  if (v14)
+  if (parameterNotAllowed)
   {
-    v15 = [(IFTSchemaIFTStatementOutcome *)self parameterNotAllowed];
+    parameterNotAllowed2 = [(IFTSchemaIFTStatementOutcome *)self parameterNotAllowed];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(IFTSchemaIFTStatementOutcome *)self parameterCandidatesNotFounds];
+  parameterCandidatesNotFounds = [(IFTSchemaIFTStatementOutcome *)self parameterCandidatesNotFounds];
 
-  if (v16)
+  if (parameterCandidatesNotFounds)
   {
-    v17 = [(IFTSchemaIFTStatementOutcome *)self parameterCandidatesNotFounds];
+    parameterCandidatesNotFounds2 = [(IFTSchemaIFTStatementOutcome *)self parameterCandidatesNotFounds];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(IFTSchemaIFTStatementOutcome *)self actionRequirement];
+  actionRequirement = [(IFTSchemaIFTStatementOutcome *)self actionRequirement];
 
-  if (v18)
+  if (actionRequirement)
   {
-    v19 = [(IFTSchemaIFTStatementOutcome *)self actionRequirement];
+    actionRequirement2 = [(IFTSchemaIFTStatementOutcome *)self actionRequirement];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(IFTSchemaIFTStatementOutcome *)self toolDisambiguation];
+  toolDisambiguation = [(IFTSchemaIFTStatementOutcome *)self toolDisambiguation];
 
-  if (v20)
+  if (toolDisambiguation)
   {
-    v21 = [(IFTSchemaIFTStatementOutcome *)self toolDisambiguation];
+    toolDisambiguation2 = [(IFTSchemaIFTStatementOutcome *)self toolDisambiguation];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(IFTSchemaIFTStatementOutcome *)self failure];
+  failure = [(IFTSchemaIFTStatementOutcome *)self failure];
 
-  if (v22)
+  if (failure)
   {
-    v23 = [(IFTSchemaIFTStatementOutcome *)self failure];
+    failure2 = [(IFTSchemaIFTStatementOutcome *)self failure];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(IFTSchemaIFTStatementOutcome *)self valueDisambiguation];
+  valueDisambiguation = [(IFTSchemaIFTStatementOutcome *)self valueDisambiguation];
 
-  v25 = v27;
-  if (v24)
+  v25 = toCopy;
+  if (valueDisambiguation)
   {
-    v26 = [(IFTSchemaIFTStatementOutcome *)self valueDisambiguation];
+    valueDisambiguation2 = [(IFTSchemaIFTStatementOutcome *)self valueDisambiguation];
     PBDataWriterWriteSubmessage();
 
-    v25 = v27;
+    v25 = toCopy;
   }
 }
 
@@ -804,9 +804,9 @@ LABEL_59:
   return v3;
 }
 
-- (void)setValueDisambiguation:(id)a3
+- (void)setValueDisambiguation:(id)disambiguation
 {
-  v4 = a3;
+  disambiguationCopy = disambiguation;
   success = self->_success;
   self->_success = 0;
 
@@ -838,14 +838,14 @@ LABEL_59:
   self->_failure = 0;
 
   v15 = 11;
-  if (!v4)
+  if (!disambiguationCopy)
   {
     v15 = 0;
   }
 
   self->_whichOneof_Statementoutcome = v15;
   valueDisambiguation = self->_valueDisambiguation;
-  self->_valueDisambiguation = v4;
+  self->_valueDisambiguation = disambiguationCopy;
 }
 
 - (void)deleteFailure
@@ -873,9 +873,9 @@ LABEL_59:
   return v3;
 }
 
-- (void)setFailure:(id)a3
+- (void)setFailure:(id)failure
 {
-  v4 = a3;
+  failureCopy = failure;
   success = self->_success;
   self->_success = 0;
 
@@ -907,14 +907,14 @@ LABEL_59:
   self->_valueDisambiguation = 0;
 
   v15 = 10;
-  if (!v4)
+  if (!failureCopy)
   {
     v15 = 0;
   }
 
   self->_whichOneof_Statementoutcome = v15;
   failure = self->_failure;
-  self->_failure = v4;
+  self->_failure = failureCopy;
 }
 
 - (void)deleteToolDisambiguation
@@ -942,9 +942,9 @@ LABEL_59:
   return v3;
 }
 
-- (void)setToolDisambiguation:(id)a3
+- (void)setToolDisambiguation:(id)disambiguation
 {
-  v4 = a3;
+  disambiguationCopy = disambiguation;
   success = self->_success;
   self->_success = 0;
 
@@ -976,14 +976,14 @@ LABEL_59:
   self->_valueDisambiguation = 0;
 
   v15 = 9;
-  if (!v4)
+  if (!disambiguationCopy)
   {
     v15 = 0;
   }
 
   self->_whichOneof_Statementoutcome = v15;
   toolDisambiguation = self->_toolDisambiguation;
-  self->_toolDisambiguation = v4;
+  self->_toolDisambiguation = disambiguationCopy;
 }
 
 - (void)deleteActionRequirement
@@ -1011,9 +1011,9 @@ LABEL_59:
   return v3;
 }
 
-- (void)setActionRequirement:(id)a3
+- (void)setActionRequirement:(id)requirement
 {
-  v4 = a3;
+  requirementCopy = requirement;
   success = self->_success;
   self->_success = 0;
 
@@ -1044,9 +1044,9 @@ LABEL_59:
   valueDisambiguation = self->_valueDisambiguation;
   self->_valueDisambiguation = 0;
 
-  self->_whichOneof_Statementoutcome = 8 * (v4 != 0);
+  self->_whichOneof_Statementoutcome = 8 * (requirementCopy != 0);
   actionRequirement = self->_actionRequirement;
-  self->_actionRequirement = v4;
+  self->_actionRequirement = requirementCopy;
 }
 
 - (void)deleteParameterCandidatesNotFounds
@@ -1074,9 +1074,9 @@ LABEL_59:
   return v3;
 }
 
-- (void)setParameterCandidatesNotFounds:(id)a3
+- (void)setParameterCandidatesNotFounds:(id)founds
 {
-  v4 = a3;
+  foundsCopy = founds;
   success = self->_success;
   self->_success = 0;
 
@@ -1108,14 +1108,14 @@ LABEL_59:
   self->_valueDisambiguation = 0;
 
   v15 = 7;
-  if (!v4)
+  if (!foundsCopy)
   {
     v15 = 0;
   }
 
   self->_whichOneof_Statementoutcome = v15;
   parameterCandidatesNotFounds = self->_parameterCandidatesNotFounds;
-  self->_parameterCandidatesNotFounds = v4;
+  self->_parameterCandidatesNotFounds = foundsCopy;
 }
 
 - (void)deleteParameterNotAllowed
@@ -1143,9 +1143,9 @@ LABEL_59:
   return v3;
 }
 
-- (void)setParameterNotAllowed:(id)a3
+- (void)setParameterNotAllowed:(id)allowed
 {
-  v4 = a3;
+  allowedCopy = allowed;
   success = self->_success;
   self->_success = 0;
 
@@ -1177,14 +1177,14 @@ LABEL_59:
   self->_valueDisambiguation = 0;
 
   v15 = 6;
-  if (!v4)
+  if (!allowedCopy)
   {
     v15 = 0;
   }
 
   self->_whichOneof_Statementoutcome = v15;
   parameterNotAllowed = self->_parameterNotAllowed;
-  self->_parameterNotAllowed = v4;
+  self->_parameterNotAllowed = allowedCopy;
 }
 
 - (void)deleteParameterDisambiguation
@@ -1212,9 +1212,9 @@ LABEL_59:
   return v3;
 }
 
-- (void)setParameterDisambiguation:(id)a3
+- (void)setParameterDisambiguation:(id)disambiguation
 {
-  v4 = a3;
+  disambiguationCopy = disambiguation;
   success = self->_success;
   self->_success = 0;
 
@@ -1246,14 +1246,14 @@ LABEL_59:
   self->_valueDisambiguation = 0;
 
   v15 = 5;
-  if (!v4)
+  if (!disambiguationCopy)
   {
     v15 = 0;
   }
 
   self->_whichOneof_Statementoutcome = v15;
   parameterDisambiguation = self->_parameterDisambiguation;
-  self->_parameterDisambiguation = v4;
+  self->_parameterDisambiguation = disambiguationCopy;
 }
 
 - (void)deleteParameterConfirmation
@@ -1281,9 +1281,9 @@ LABEL_59:
   return v3;
 }
 
-- (void)setParameterConfirmation:(id)a3
+- (void)setParameterConfirmation:(id)confirmation
 {
-  v4 = a3;
+  confirmationCopy = confirmation;
   success = self->_success;
   self->_success = 0;
 
@@ -1314,9 +1314,9 @@ LABEL_59:
   valueDisambiguation = self->_valueDisambiguation;
   self->_valueDisambiguation = 0;
 
-  self->_whichOneof_Statementoutcome = 4 * (v4 != 0);
+  self->_whichOneof_Statementoutcome = 4 * (confirmationCopy != 0);
   parameterConfirmation = self->_parameterConfirmation;
-  self->_parameterConfirmation = v4;
+  self->_parameterConfirmation = confirmationCopy;
 }
 
 - (void)deleteParameterNeedsValue
@@ -1344,9 +1344,9 @@ LABEL_59:
   return v3;
 }
 
-- (void)setParameterNeedsValue:(id)a3
+- (void)setParameterNeedsValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   success = self->_success;
   self->_success = 0;
 
@@ -1378,14 +1378,14 @@ LABEL_59:
   self->_valueDisambiguation = 0;
 
   v15 = 3;
-  if (!v4)
+  if (!valueCopy)
   {
     v15 = 0;
   }
 
   self->_whichOneof_Statementoutcome = v15;
   parameterNeedsValue = self->_parameterNeedsValue;
-  self->_parameterNeedsValue = v4;
+  self->_parameterNeedsValue = valueCopy;
 }
 
 - (void)deleteActionConfirmation
@@ -1413,9 +1413,9 @@ LABEL_59:
   return v3;
 }
 
-- (void)setActionConfirmation:(id)a3
+- (void)setActionConfirmation:(id)confirmation
 {
-  v4 = a3;
+  confirmationCopy = confirmation;
   success = self->_success;
   self->_success = 0;
 
@@ -1446,9 +1446,9 @@ LABEL_59:
   valueDisambiguation = self->_valueDisambiguation;
   self->_valueDisambiguation = 0;
 
-  self->_whichOneof_Statementoutcome = 2 * (v4 != 0);
+  self->_whichOneof_Statementoutcome = 2 * (confirmationCopy != 0);
   actionConfirmation = self->_actionConfirmation;
-  self->_actionConfirmation = v4;
+  self->_actionConfirmation = confirmationCopy;
 }
 
 - (void)deleteSuccess
@@ -1476,9 +1476,9 @@ LABEL_59:
   return v3;
 }
 
-- (void)setSuccess:(id)a3
+- (void)setSuccess:(id)success
 {
-  v4 = a3;
+  successCopy = success;
   actionConfirmation = self->_actionConfirmation;
   self->_actionConfirmation = 0;
 
@@ -1509,112 +1509,112 @@ LABEL_59:
   valueDisambiguation = self->_valueDisambiguation;
   self->_valueDisambiguation = 0;
 
-  self->_whichOneof_Statementoutcome = v4 != 0;
+  self->_whichOneof_Statementoutcome = successCopy != 0;
   success = self->_success;
-  self->_success = v4;
+  self->_success = successCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v40.receiver = self;
   v40.super_class = IFTSchemaIFTStatementOutcome;
-  v5 = [(SISchemaInstrumentationMessage *)&v40 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTStatementOutcome *)self success];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v40 applySensitiveConditionsPolicy:policyCopy];
+  success = [(IFTSchemaIFTStatementOutcome *)self success];
+  v7 = [success applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTStatementOutcome *)self deleteSuccess];
   }
 
-  v9 = [(IFTSchemaIFTStatementOutcome *)self actionConfirmation];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  actionConfirmation = [(IFTSchemaIFTStatementOutcome *)self actionConfirmation];
+  v10 = [actionConfirmation applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTStatementOutcome *)self deleteActionConfirmation];
   }
 
-  v12 = [(IFTSchemaIFTStatementOutcome *)self parameterNeedsValue];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  parameterNeedsValue = [(IFTSchemaIFTStatementOutcome *)self parameterNeedsValue];
+  v13 = [parameterNeedsValue applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(IFTSchemaIFTStatementOutcome *)self deleteParameterNeedsValue];
   }
 
-  v15 = [(IFTSchemaIFTStatementOutcome *)self parameterConfirmation];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  parameterConfirmation = [(IFTSchemaIFTStatementOutcome *)self parameterConfirmation];
+  v16 = [parameterConfirmation applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(IFTSchemaIFTStatementOutcome *)self deleteParameterConfirmation];
   }
 
-  v18 = [(IFTSchemaIFTStatementOutcome *)self parameterDisambiguation];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  parameterDisambiguation = [(IFTSchemaIFTStatementOutcome *)self parameterDisambiguation];
+  v19 = [parameterDisambiguation applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(IFTSchemaIFTStatementOutcome *)self deleteParameterDisambiguation];
   }
 
-  v21 = [(IFTSchemaIFTStatementOutcome *)self parameterNotAllowed];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  parameterNotAllowed = [(IFTSchemaIFTStatementOutcome *)self parameterNotAllowed];
+  v22 = [parameterNotAllowed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(IFTSchemaIFTStatementOutcome *)self deleteParameterNotAllowed];
   }
 
-  v24 = [(IFTSchemaIFTStatementOutcome *)self parameterCandidatesNotFounds];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  parameterCandidatesNotFounds = [(IFTSchemaIFTStatementOutcome *)self parameterCandidatesNotFounds];
+  v25 = [parameterCandidatesNotFounds applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(IFTSchemaIFTStatementOutcome *)self deleteParameterCandidatesNotFounds];
   }
 
-  v27 = [(IFTSchemaIFTStatementOutcome *)self actionRequirement];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  actionRequirement = [(IFTSchemaIFTStatementOutcome *)self actionRequirement];
+  v28 = [actionRequirement applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(IFTSchemaIFTStatementOutcome *)self deleteActionRequirement];
   }
 
-  v30 = [(IFTSchemaIFTStatementOutcome *)self toolDisambiguation];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  toolDisambiguation = [(IFTSchemaIFTStatementOutcome *)self toolDisambiguation];
+  v31 = [toolDisambiguation applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(IFTSchemaIFTStatementOutcome *)self deleteToolDisambiguation];
   }
 
-  v33 = [(IFTSchemaIFTStatementOutcome *)self failure];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  failure = [(IFTSchemaIFTStatementOutcome *)self failure];
+  v34 = [failure applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(IFTSchemaIFTStatementOutcome *)self deleteFailure];
   }
 
-  v36 = [(IFTSchemaIFTStatementOutcome *)self valueDisambiguation];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  valueDisambiguation = [(IFTSchemaIFTStatementOutcome *)self valueDisambiguation];
+  v37 = [valueDisambiguation applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(IFTSchemaIFTStatementOutcome *)self deleteValueDisambiguation];
   }

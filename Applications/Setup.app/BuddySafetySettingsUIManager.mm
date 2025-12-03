@@ -1,26 +1,26 @@
 @interface BuddySafetySettingsUIManager
-- (void)shouldPresentSafetySettingsWithHasCompletedInitialRun:(BOOL)a3 delegate:(id)a4 completion:(id)a5;
+- (void)shouldPresentSafetySettingsWithHasCompletedInitialRun:(BOOL)run delegate:(id)delegate completion:(id)completion;
 @end
 
 @implementation BuddySafetySettingsUIManager
 
-- (void)shouldPresentSafetySettingsWithHasCompletedInitialRun:(BOOL)a3 delegate:(id)a4 completion:(id)a5
+- (void)shouldPresentSafetySettingsWithHasCompletedInitialRun:(BOOL)run delegate:(id)delegate completion:(id)completion
 {
-  v40 = self;
+  selfCopy = self;
   v39 = a2;
-  v38 = a3;
+  runCopy = run;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, delegate);
   v36 = 0;
-  objc_storeStrong(&v36, a5);
+  objc_storeStrong(&v36, completion);
   v6 = &_dispatch_main_q;
   dispatch_assert_queue_V2(v6);
 
-  if ([(BuddySafetySettingsPresentationManager *)v40 runtimeDependencyExists])
+  if ([(BuddySafetySettingsPresentationManager *)selfCopy runtimeDependencyExists])
   {
     if (sub_1001BE664())
     {
-      v28 = [(BuddySafetySettingsPresentationManager *)v40 contextWithHasCompletedInitialRun:v38];
+      v28 = [(BuddySafetySettingsPresentationManager *)selfCopy contextWithHasCompletedInitialRun:runCopy];
       v27 = [objc_alloc(sub_1001BE664()) initWithSafetySettingsContext:v28];
       v26 = _BYLoggingFacility();
       v25 = OS_LOG_TYPE_DEFAULT;

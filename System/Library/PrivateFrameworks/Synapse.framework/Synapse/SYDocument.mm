@@ -1,24 +1,24 @@
 @interface SYDocument
-+ (id)documentFromData:(id)a3;
-- (BOOL)setDocumentAttributes:(id)a3 withError:(id *)a4;
-- (SYDocument)initWithCoder:(id)a3;
-- (SYDocument)initWithFileURL:(id)a3 error:(id *)a4;
-- (SYDocument)initWithURLWrapper:(id)a3;
-- (id)documentAttributesWithError:(id *)a3;
++ (id)documentFromData:(id)data;
+- (BOOL)setDocumentAttributes:(id)attributes withError:(id *)error;
+- (SYDocument)initWithCoder:(id)coder;
+- (SYDocument)initWithFileURL:(id)l error:(id *)error;
+- (SYDocument)initWithURLWrapper:(id)wrapper;
+- (id)documentAttributesWithError:(id *)error;
 @end
 
 @implementation SYDocument
 
-- (SYDocument)initWithFileURL:(id)a3 error:(id *)a4
+- (SYDocument)initWithFileURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v13 = 0;
-  v7 = [MEMORY[0x277CC6438] wrapperWithURL:v6 readonly:1 error:&v13];
+  v7 = [MEMORY[0x277CC6438] wrapperWithURL:lCopy readonly:1 error:&v13];
   v8 = v13;
   if (v7)
   {
     self = [(SYDocument *)self initWithURLWrapper:v7];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -26,56 +26,56 @@
     v10 = os_log_create("com.apple.synapse", "DocumentWorkflows");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(SYDocument *)v6 initWithFileURL:v8 error:v10];
+      [(SYDocument *)lCopy initWithFileURL:v8 error:v10];
     }
 
-    v9 = 0;
-    if (a4 && v8)
+    selfCopy = 0;
+    if (error && v8)
     {
       v11 = v8;
-      v9 = 0;
-      *a4 = v8;
+      selfCopy = 0;
+      *error = v8;
     }
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (SYDocument)initWithURLWrapper:(id)a3
+- (SYDocument)initWithURLWrapper:(id)wrapper
 {
-  v5 = a3;
+  wrapperCopy = wrapper;
   v9.receiver = self;
   v9.super_class = SYDocument;
   v6 = [(SYDocument *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_urlWrapper, a3);
+    objc_storeStrong(&v6->_urlWrapper, wrapper);
   }
 
   return v7;
 }
 
-- (id)documentAttributesWithError:(id *)a3
+- (id)documentAttributesWithError:(id *)error
 {
-  v4 = [(SYDocument *)self fileURL];
-  v5 = [SYDocumentAttributes documentAttributesForFileAtURL:v4 error:a3];
+  fileURL = [(SYDocument *)self fileURL];
+  v5 = [SYDocumentAttributes documentAttributesForFileAtURL:fileURL error:error];
 
   return v5;
 }
 
-- (BOOL)setDocumentAttributes:(id)a3 withError:(id *)a4
+- (BOOL)setDocumentAttributes:(id)attributes withError:(id *)error
 {
-  v6 = a3;
-  v7 = [(SYDocument *)self fileURL];
-  if (v6)
+  attributesCopy = attributes;
+  fileURL = [(SYDocument *)self fileURL];
+  if (attributesCopy)
   {
-    v8 = [v6 saveToFileURL:v7 error:a4];
+    v8 = [attributesCopy saveToFileURL:fileURL error:error];
   }
 
   else
   {
-    v8 = [SYDocumentAttributes removeDocumentAttributesForFileAtURL:v7 error:a4];
+    v8 = [SYDocumentAttributes removeDocumentAttributesForFileAtURL:fileURL error:error];
   }
 
   v9 = v8;
@@ -83,33 +83,33 @@
   return v9;
 }
 
-- (SYDocument)initWithCoder:(id)a3
+- (SYDocument)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SYDocumentFileURLWrapperKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SYDocumentFileURLWrapperKey"];
 
   if (v5)
   {
     self = [(SYDocument *)self initWithURLWrapper:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-+ (id)documentFromData:(id)a3
++ (id)documentFromData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v3 = MEMORY[0x277CCAAC8];
-    v4 = a3;
+    dataCopy = data;
     v9 = 0;
-    v5 = [v3 unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v9];
+    v5 = [v3 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v9];
 
     v6 = v9;
     if (!v5)

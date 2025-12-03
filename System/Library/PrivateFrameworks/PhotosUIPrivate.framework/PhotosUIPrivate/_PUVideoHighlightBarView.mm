@@ -1,10 +1,10 @@
 @interface _PUVideoHighlightBarView
 - (UIEdgeInsets)expandedOutsets;
-- (_PUVideoHighlightBarView)initWithFrame:(CGRect)a3;
+- (_PUVideoHighlightBarView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4;
-- (void)setExpandedOutsets:(UIEdgeInsets)a3;
-- (void)setHighlightColor:(id)a3;
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated;
+- (void)setExpandedOutsets:(UIEdgeInsets)outsets;
+- (void)setHighlightColor:(id)color;
 @end
 
 @implementation _PUVideoHighlightBarView
@@ -32,10 +32,10 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(_PUVideoHighlightBarView *)self expanded];
+  expanded = [(_PUVideoHighlightBarView *)self expanded];
   [(_PUVideoHighlightBarView *)self expandedOutsets];
   v12 = 1.0;
-  if (v11)
+  if (expanded)
   {
     PXEdgeInsetsInvert();
     PXEdgeInsetsInsetRect();
@@ -46,25 +46,25 @@
     v12 = 1.5;
   }
 
-  v17 = [(UIView *)self->_barView layer];
-  [v17 setCornerRadius:v12];
+  layer = [(UIView *)self->_barView layer];
+  [layer setCornerRadius:v12];
 
   [(UIView *)self->_barView setFrame:v4, v6, v8, v10];
 }
 
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated
 {
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
     v10[9] = v4;
     v10[10] = v5;
-    v6 = a4;
-    v7 = a3;
-    self->_expanded = a3;
+    animatedCopy = animated;
+    expandedCopy = expanded;
+    self->_expanded = expanded;
     [(_PUVideoHighlightBarView *)self setNeedsLayout];
-    if (v6)
+    if (animatedCopy)
     {
-      if (v7)
+      if (expandedCopy)
       {
         v10[0] = MEMORY[0x1E69E9820];
         v10[1] = 3221225472;
@@ -87,12 +87,12 @@
   }
 }
 
-- (void)setExpandedOutsets:(UIEdgeInsets)a3
+- (void)setExpandedOutsets:(UIEdgeInsets)outsets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = outsets.right;
+  bottom = outsets.bottom;
+  left = outsets.left;
+  top = outsets.top;
   p_expandedOutsets = &self->_expandedOutsets;
   if ((PXEdgeInsetsEqualToEdgeInsets() & 1) == 0)
   {
@@ -105,31 +105,31 @@
   }
 }
 
-- (void)setHighlightColor:(id)a3
+- (void)setHighlightColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_highlightColor != v5)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (self->_highlightColor != colorCopy)
   {
-    v7 = v5;
-    v5 = [v5 isEqual:?];
+    v7 = colorCopy;
+    colorCopy = [colorCopy isEqual:?];
     v6 = v7;
-    if ((v5 & 1) == 0)
+    if ((colorCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_highlightColor, a3);
-      v5 = [(UIView *)self->_barView setBackgroundColor:v7];
+      objc_storeStrong(&self->_highlightColor, color);
+      colorCopy = [(UIView *)self->_barView setBackgroundColor:v7];
       v6 = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](colorCopy, v6);
 }
 
-- (_PUVideoHighlightBarView)initWithFrame:(CGRect)a3
+- (_PUVideoHighlightBarView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = _PUVideoHighlightBarView;
-  v3 = [(_PUVideoHighlightBarView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_PUVideoHighlightBarView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -138,8 +138,8 @@
     barView = v3->_barView;
     v3->_barView = v5;
 
-    v7 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [(UIView *)v3->_barView setBackgroundColor:v7];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [(UIView *)v3->_barView setBackgroundColor:systemBlueColor];
 
     [(_PUVideoHighlightBarView *)v3 setClipsToBounds:0];
     [(_PUVideoHighlightBarView *)v3 setUserInteractionEnabled:0];

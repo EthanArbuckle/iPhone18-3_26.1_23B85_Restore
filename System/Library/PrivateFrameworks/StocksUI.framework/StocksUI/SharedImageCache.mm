@@ -1,12 +1,12 @@
 @interface SharedImageCache
-- (id)fetchImageForKey:(id)a3;
-- (void)cache:(id)a3 forKey:(id)a4;
-- (void)cache:(id)a3 forKey:(id)a4 immediately:(BOOL)a5;
+- (id)fetchImageForKey:(id)key;
+- (void)cache:(id)cache forKey:(id)key;
+- (void)cache:(id)cache forKey:(id)key immediately:(BOOL)immediately;
 @end
 
 @implementation SharedImageCache
 
-- (id)fetchImageForKey:(id)a3
+- (id)fetchImageForKey:(id)key
 {
   sub_22089136C();
 
@@ -15,18 +15,18 @@
   return v3;
 }
 
-- (void)cache:(id)a3 forKey:(id)a4 immediately:(BOOL)a5
+- (void)cache:(id)cache forKey:(id)key immediately:(BOOL)immediately
 {
   sub_22089136C();
-  v6 = a3;
+  cacheCopy = cache;
 
   sub_22088B57C();
 }
 
-- (void)cache:(id)a3 forKey:(id)a4
+- (void)cache:(id)cache forKey:(id)key
 {
   sub_22089136C();
-  v5 = a3;
+  cacheCopy = cache;
 
   sub_22088B57C();
 }

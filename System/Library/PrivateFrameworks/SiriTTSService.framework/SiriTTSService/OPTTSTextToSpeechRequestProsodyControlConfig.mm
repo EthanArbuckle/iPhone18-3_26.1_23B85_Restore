@@ -1,6 +1,6 @@
 @interface OPTTSTextToSpeechRequestProsodyControlConfig
-- (OPTTSTextToSpeechRequestProsodyControlConfig)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRequestProsodyControlConfig *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::schema_fb::TextToSpeechRequestProsodyControlConfig>)addObjectToBuffer:(void *)a3;
+- (OPTTSTextToSpeechRequestProsodyControlConfig)initWithFlatbuffData:(id)data root:(const TextToSpeechRequestProsodyControlConfig *)root verify:(BOOL)verify;
+- (Offset<siri::speech::schema_fb::TextToSpeechRequestProsodyControlConfig>)addObjectToBuffer:(void *)buffer;
 - (float)global_energy;
 - (float)global_pitch;
 - (float)global_rate;
@@ -43,7 +43,7 @@ apple::aiml::flatbuffers2::DetachedBuffer *__60__OPTTSTextToSpeechRequestProsody
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechRequestProsodyControlConfig>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechRequestProsodyControlConfig>)addObjectToBuffer:(void *)buffer
 {
   [(OPTTSTextToSpeechRequestProsodyControlConfig *)self global_rate];
   v6 = v5;
@@ -61,20 +61,20 @@ apple::aiml::flatbuffers2::DetachedBuffer *__60__OPTTSTextToSpeechRequestProsody
   v18 = v17;
   [(OPTTSTextToSpeechRequestProsodyControlConfig *)self global_sent_tilt];
   v20 = v19;
-  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v21 = *(a3 + 10);
-  v22 = *(a3 + 8) - *(a3 + 12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(a3, 4, v6);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(a3, 6, v8);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(a3, 8, v10);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(a3, 10, v12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(a3, 12, v14);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(a3, 14, v16);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(a3, 16, v18);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(a3, 18, v20);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v21 = *(buffer + 10);
+  v22 = *(buffer + 8) - *(buffer + 12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(buffer, 4, v6);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(buffer, 6, v8);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(buffer, 8, v10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(buffer, 10, v12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(buffer, 12, v14);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(buffer, 14, v16);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(buffer, 16, v18);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(buffer, 18, v20);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v22 + v21);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v22 + v21);
 }
 
 - (float)global_sent_tilt
@@ -213,10 +213,10 @@ apple::aiml::flatbuffers2::DetachedBuffer *__60__OPTTSTextToSpeechRequestProsody
   return result;
 }
 
-- (OPTTSTextToSpeechRequestProsodyControlConfig)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRequestProsodyControlConfig *)a4 verify:(BOOL)a5
+- (OPTTSTextToSpeechRequestProsodyControlConfig)initWithFlatbuffData:(id)data root:(const TextToSpeechRequestProsodyControlConfig *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = OPTTSTextToSpeechRequestProsodyControlConfig;
   v10 = [(OPTTSTextToSpeechRequestProsodyControlConfig *)&v25 init];
@@ -225,35 +225,35 @@ apple::aiml::flatbuffers2::DetachedBuffer *__60__OPTTSTextToSpeechRequestProsody
     goto LABEL_14;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_14;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_15;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_1B1C41700;
   v23 = 0;

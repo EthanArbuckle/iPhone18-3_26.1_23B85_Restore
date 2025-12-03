@@ -1,22 +1,22 @@
 @interface UISwipeActionVisualStyle_iOS
-- (double)buttonCornerRadiusForStyle:(unint64_t)a3 view:(id)a4;
-- (double)interButtonPaddingForStyle:(unint64_t)a3;
-- (double)interitemButtonCornerRadiusForStyle:(unint64_t)a3;
-- (double)paddingToSwipeViewForStyle:(unint64_t)a3;
+- (double)buttonCornerRadiusForStyle:(unint64_t)style view:(id)view;
+- (double)interButtonPaddingForStyle:(unint64_t)style;
+- (double)interitemButtonCornerRadiusForStyle:(unint64_t)style;
+- (double)paddingToSwipeViewForStyle:(unint64_t)style;
 @end
 
 @implementation UISwipeActionVisualStyle_iOS
 
-- (double)buttonCornerRadiusForStyle:(unint64_t)a3 view:(id)a4
+- (double)buttonCornerRadiusForStyle:(unint64_t)style view:(id)view
 {
-  v4 = [a4 traitCollection];
-  v5 = [v4 userInterfaceIdiom];
-  if (v5 == 6)
+  traitCollection = [view traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+  if (userInterfaceIdiom == 6)
   {
     v6 = 16.0;
   }
 
-  else if (v5 == 3)
+  else if (userInterfaceIdiom == 3)
   {
     v6 = 10.0;
   }
@@ -34,10 +34,10 @@
   return v6;
 }
 
-- (double)interitemButtonCornerRadiusForStyle:(unint64_t)a3
+- (double)interitemButtonCornerRadiusForStyle:(unint64_t)style
 {
   result = 0.0;
-  if (a3 == 2)
+  if (style == 2)
   {
     return 2.0;
   }
@@ -45,10 +45,10 @@
   return result;
 }
 
-- (double)paddingToSwipeViewForStyle:(unint64_t)a3
+- (double)paddingToSwipeViewForStyle:(unint64_t)style
 {
   result = 0.0;
-  if (a3 == 2)
+  if (style == 2)
   {
     return 8.0;
   }
@@ -56,10 +56,10 @@
   return result;
 }
 
-- (double)interButtonPaddingForStyle:(unint64_t)a3
+- (double)interButtonPaddingForStyle:(unint64_t)style
 {
   result = 0.0;
-  if (a3 == 2)
+  if (style == 2)
   {
     return 2.0;
   }

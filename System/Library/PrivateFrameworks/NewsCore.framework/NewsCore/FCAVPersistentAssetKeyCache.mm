@@ -1,43 +1,43 @@
 @interface FCAVPersistentAssetKeyCache
 - (NSData)keyServerCertificate;
-- (id)assetKeyForURI:(id)a3;
+- (id)assetKeyForURI:(id)i;
 - (uint64_t)_prepareForUse;
 - (void)clearKeyServerCertificate;
-- (void)importAVAssetKey:(id)a3;
-- (void)initWithCacheDirectory:(void *)a1;
+- (void)importAVAssetKey:(id)key;
+- (void)initWithCacheDirectory:(void *)directory;
 - (void)removeAllAssetKeys;
-- (void)saveAssetKeyData:(id)a3 creationDate:(id)a4 expirationDate:(id)a5 forURI:(id)a6;
-- (void)saveKeyServerCertificate:(id)a3;
+- (void)saveAssetKeyData:(id)data creationDate:(id)date expirationDate:(id)expirationDate forURI:(id)i;
+- (void)saveKeyServerCertificate:(id)certificate;
 @end
 
 @implementation FCAVPersistentAssetKeyCache
 
-- (void)initWithCacheDirectory:(void *)a1
+- (void)initWithCacheDirectory:(void *)directory
 {
   v3 = a2;
-  if (a1)
+  if (directory)
   {
-    v9.receiver = a1;
+    v9.receiver = directory;
     v9.super_class = FCAVPersistentAssetKeyCache;
-    a1 = objc_msgSendSuper2(&v9, sel_init);
-    if (a1)
+    directory = objc_msgSendSuper2(&v9, sel_init);
+    if (directory)
     {
       v4 = objc_alloc_init(MEMORY[0x1E69B6920]);
-      v5 = a1[2];
-      a1[2] = v4;
+      v5 = directory[2];
+      directory[2] = v4;
 
       v6 = [v3 copy];
-      v7 = a1[1];
-      a1[1] = v6;
+      v7 = directory[1];
+      directory[1] = v6;
     }
   }
 
-  return a1;
+  return directory;
 }
 
-- (id)assetKeyForURI:(id)a3
+- (id)assetKeyForURI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   [(FCAVPersistentAssetKeyCache *)self _prepareForUse];
   if (self)
   {
@@ -50,9 +50,9 @@
   }
 
   v6 = keyStore;
-  v7 = [v4 absoluteString];
+  absoluteString = [iCopy absoluteString];
 
-  v8 = [(FCKeyValueStore *)v6 objectForKey:v7];
+  v8 = [(FCKeyValueStore *)v6 objectForKey:absoluteString];
 
   return v8;
 }
@@ -73,24 +73,24 @@
   return result;
 }
 
-- (void)saveAssetKeyData:(id)a3 creationDate:(id)a4 expirationDate:(id)a5 forURI:(id)a6
+- (void)saveAssetKeyData:(id)data creationDate:(id)date expirationDate:(id)expirationDate forURI:(id)i
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  iCopy = i;
+  expirationDateCopy = expirationDate;
+  dateCopy = date;
+  dataCopy = data;
   [(FCAVPersistentAssetKeyCache *)self _prepareForUse];
   v20 = objc_alloc_init(MEMORY[0x1E69B6CD8]);
-  v14 = [v10 absoluteString];
-  [v20 setIdentifier:v14];
+  absoluteString = [iCopy absoluteString];
+  [v20 setIdentifier:absoluteString];
 
-  [v20 setKeyData:v13];
-  v15 = [v12 pbDate];
+  [v20 setKeyData:dataCopy];
+  pbDate = [dateCopy pbDate];
 
-  [v20 setCreatedAt:v15];
-  v16 = [v11 pbDate];
+  [v20 setCreatedAt:pbDate];
+  pbDate2 = [expirationDateCopy pbDate];
 
-  [v20 setExpiresAt:v16];
+  [v20 setExpiresAt:pbDate2];
   if (self)
   {
     keyStore = self->_keyStore;
@@ -102,9 +102,9 @@
   }
 
   v18 = keyStore;
-  v19 = [v10 absoluteString];
+  absoluteString2 = [iCopy absoluteString];
 
-  [(FCKeyValueStore *)v18 setObject:v20 forKey:v19];
+  [(FCKeyValueStore *)v18 setObject:v20 forKey:absoluteString2];
 }
 
 - (void)removeAllAssetKeys
@@ -140,10 +140,10 @@
   return [v3 dataWithContentsOfURL:certificateFileURL];
 }
 
-- (void)saveKeyServerCertificate:(id)a3
+- (void)saveKeyServerCertificate:(id)certificate
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  certificateCopy = certificate;
   [(FCAVPersistentAssetKeyCache *)self _prepareForUse];
   if (self)
   {
@@ -157,7 +157,7 @@
 
   v11 = 0;
   v6 = certificateFileURL;
-  v7 = [v4 writeToURL:v6 options:0 error:&v11];
+  v7 = [certificateCopy writeToURL:v6 options:0 error:&v11];
 
   v8 = v11;
   if ((v7 & 1) == 0)
@@ -177,7 +177,7 @@
 - (void)clearKeyServerCertificate
 {
   [(FCAVPersistentAssetKeyCache *)self _prepareForUse];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   if (self)
   {
     certificateFileURL = self->_certificateFileURL;
@@ -188,13 +188,13 @@
     certificateFileURL = 0;
   }
 
-  v5 = v3;
-  [v3 removeItemAtURL:certificateFileURL error:0];
+  v5 = defaultManager;
+  [defaultManager removeItemAtURL:certificateFileURL error:0];
 }
 
-- (void)importAVAssetKey:(id)a3
+- (void)importAVAssetKey:(id)key
 {
-  v14 = a3;
+  keyCopy = key;
   [(FCAVPersistentAssetKeyCache *)self _prepareForUse];
   if (self)
   {
@@ -207,10 +207,10 @@
   }
 
   v5 = keyStore;
-  v6 = [v14 identifier];
-  v7 = [(FCKeyValueStore *)v5 objectForKey:v6];
+  identifier = [keyCopy identifier];
+  v7 = [(FCKeyValueStore *)v5 objectForKey:identifier];
 
-  if (!v7 || ([v7 expirationDate], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "expirationDate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "fc_isEarlierThan:", v9), v9, v8, v10))
+  if (!v7 || ([v7 expirationDate], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(keyCopy, "expirationDate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "fc_isEarlierThan:", v9), v9, v8, v10))
   {
     if (self)
     {
@@ -223,8 +223,8 @@
     }
 
     v12 = v11;
-    v13 = [v14 identifier];
-    [(FCKeyValueStore *)v12 setObject:v14 forKey:v13];
+    identifier2 = [keyCopy identifier];
+    [(FCKeyValueStore *)v12 setObject:keyCopy forKey:identifier2];
   }
 }
 

@@ -1,17 +1,17 @@
 @interface GTDisplayServiceXPCDispatcher
-- (GTDisplayServiceXPCDispatcher)initWithService:(id)a3 properties:(id)a4;
-- (void)broadcastDisconnect:(id)a3 replyConnection:(id)a4;
-- (void)show_completionHandler_:(id)a3 replyConnection:(id)a4;
-- (void)update_completionHandler_:(id)a3 replyConnection:(id)a4;
+- (GTDisplayServiceXPCDispatcher)initWithService:(id)service properties:(id)properties;
+- (void)broadcastDisconnect:(id)disconnect replyConnection:(id)connection;
+- (void)show_completionHandler_:(id)handler_ replyConnection:(id)connection;
+- (void)update_completionHandler_:(id)handler_ replyConnection:(id)connection;
 @end
 
 @implementation GTDisplayServiceXPCDispatcher
 
-- (GTDisplayServiceXPCDispatcher)initWithService:(id)a3 properties:(id)a4
+- (GTDisplayServiceXPCDispatcher)initWithService:(id)service properties:(id)properties
 {
-  v7 = a3;
-  v8 = [a4 protocolMethods];
-  v9 = [v8 mutableCopy];
+  serviceCopy = service;
+  protocolMethods = [properties protocolMethods];
+  v9 = [protocolMethods mutableCopy];
 
   [v9 addObject:@"broadcastDisconnect"];
   v13.receiver = self;
@@ -20,17 +20,17 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_service, a3);
+    objc_storeStrong(&v10->_service, service);
   }
 
   return v11;
 }
 
-- (void)show_completionHandler_:(id)a3 replyConnection:(id)a4
+- (void)show_completionHandler_:(id)handler_ replyConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  nsdata = xpc_dictionary_get_nsdata(v6, "data");
+  handler_Copy = handler_;
+  connectionCopy = connection;
+  nsdata = xpc_dictionary_get_nsdata(handler_Copy, "data");
   v23 = 0;
   v9 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:nsdata error:&v23];
   v10 = v23;
@@ -38,8 +38,8 @@
   {
     if (GTCoreLogUseOsLog())
     {
-      v11 = gt_tagged_log(0x10u);
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      localizedDescription = gt_tagged_log(0x10u);
+      if (os_log_type_enabled(localizedDescription, OS_LOG_TYPE_ERROR))
       {
         [GTDisplayServiceXPCDispatcher show_completionHandler_:v10 replyConnection:?];
       }
@@ -49,21 +49,21 @@
     {
       v12 = *MEMORY[0x277D85DF8];
       v13 = MEMORY[0x277CCACA8];
-      v11 = [v10 localizedDescription];
-      v14 = [v13 stringWithFormat:@"Failed to unarchive display show request %@", v11];
+      localizedDescription = [v10 localizedDescription];
+      v14 = [v13 stringWithFormat:@"Failed to unarchive display show request %@", localizedDescription];
       fprintf(v12, "%s\n", [v14 UTF8String]);
     }
   }
 
-  v15 = gt_xpc_dictionary_create_reply(v6);
+  v15 = gt_xpc_dictionary_create_reply(handler_Copy);
   service = self->_service;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __73__GTDisplayServiceXPCDispatcher_show_completionHandler__replyConnection___block_invoke;
   v20[3] = &unk_279661988;
   v21 = v15;
-  v22 = v7;
-  v17 = v7;
+  v22 = connectionCopy;
+  v17 = connectionCopy;
   v18 = v15;
   v19 = [(GTDisplayService *)service show:v9 completionHandler:v20];
 }
@@ -99,11 +99,11 @@ void __73__GTDisplayServiceXPCDispatcher_show_completionHandler__replyConnection
   [*(a1 + 40) sendMessage:*(a1 + 32)];
 }
 
-- (void)update_completionHandler_:(id)a3 replyConnection:(id)a4
+- (void)update_completionHandler_:(id)handler_ replyConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  nsdata = xpc_dictionary_get_nsdata(v6, "data");
+  handler_Copy = handler_;
+  connectionCopy = connection;
+  nsdata = xpc_dictionary_get_nsdata(handler_Copy, "data");
   v25 = 0;
   v9 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:nsdata error:&v25];
   v10 = v25;
@@ -111,8 +111,8 @@ void __73__GTDisplayServiceXPCDispatcher_show_completionHandler__replyConnection
   {
     if (GTCoreLogUseOsLog())
     {
-      v13 = gt_tagged_log(0x10u);
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      localizedDescription = gt_tagged_log(0x10u);
+      if (os_log_type_enabled(localizedDescription, OS_LOG_TYPE_ERROR))
       {
         [GTDisplayServiceXPCDispatcher update_completionHandler_:v10 replyConnection:?];
       }
@@ -122,8 +122,8 @@ void __73__GTDisplayServiceXPCDispatcher_show_completionHandler__replyConnection
     {
       v14 = *MEMORY[0x277D85DF8];
       v15 = MEMORY[0x277CCACA8];
-      v13 = [v10 localizedDescription];
-      v16 = [v15 stringWithFormat:@"Failed to unarchive display update request %@", v13];
+      localizedDescription = [v10 localizedDescription];
+      v16 = [v15 stringWithFormat:@"Failed to unarchive display update request %@", localizedDescription];
       fprintf(v14, "%s\n", [v16 UTF8String]);
     }
 
@@ -134,24 +134,24 @@ void __73__GTDisplayServiceXPCDispatcher_show_completionHandler__replyConnection
   if (objc_opt_isKindOfClass())
   {
     v11 = v9;
-    v12 = xpc_dictionary_get_array(v6, "_pathHistory");
+    v12 = xpc_dictionary_get_array(handler_Copy, "_pathHistory");
     [v11 setPath:v12];
 
-    v13 = [v7 connection];
-    [v11 setConnection:v13];
+    localizedDescription = [connectionCopy connection];
+    [v11 setConnection:localizedDescription];
 
 LABEL_8:
   }
 
-  v17 = gt_xpc_dictionary_create_reply(v6);
+  v17 = gt_xpc_dictionary_create_reply(handler_Copy);
   service = self->_service;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __75__GTDisplayServiceXPCDispatcher_update_completionHandler__replyConnection___block_invoke;
   v22[3] = &unk_279661988;
   v23 = v17;
-  v24 = v7;
-  v19 = v7;
+  v24 = connectionCopy;
+  v19 = connectionCopy;
   v20 = v17;
   v21 = [(GTDisplayService *)service update:v9 completionHandler:v22];
 }
@@ -187,11 +187,11 @@ void __75__GTDisplayServiceXPCDispatcher_update_completionHandler__replyConnecti
   [*(a1 + 40) sendMessage:*(a1 + 32)];
 }
 
-- (void)broadcastDisconnect:(id)a3 replyConnection:(id)a4
+- (void)broadcastDisconnect:(id)disconnect replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = xpc_dictionary_get_array(a3, "_pathHistory");
-  [(GTDisplayService *)self->_service broadcastDisconnect:v6 path:v7];
+  connectionCopy = connection;
+  v7 = xpc_dictionary_get_array(disconnect, "_pathHistory");
+  [(GTDisplayService *)self->_service broadcastDisconnect:connectionCopy path:v7];
 }
 
 - (void)show_completionHandler_:(void *)a1 replyConnection:.cold.1(void *a1)

@@ -1,39 +1,39 @@
 @interface _NIServerTestWiFiOnlySession
-- (_NIServerTestWiFiOnlySession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5;
+- (_NIServerTestWiFiOnlySession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error;
 - (id).cxx_construct;
-- (id)_addPeers:(id)a3;
+- (id)_addPeers:(id)peers;
 - (id)_disableWiFiAndReturnError;
-- (id)_removePeers:(id)a3;
-- (id)addObject:(id)a3;
+- (id)_removePeers:(id)peers;
+- (id)addObject:(id)object;
 - (id)configure;
 - (id)disableAllServices;
-- (id)pauseWithSource:(int64_t)a3;
-- (id)removeObject:(id)a3;
+- (id)pauseWithSource:(int64_t)source;
+- (id)removeObject:(id)object;
 - (id)run;
 - (void)_handleFailedToAddPeer;
 - (void)_handleFailedToRemovePeer;
-- (void)_stopWiFiRanging:(id)a3;
-- (void)_triggerWiFiRanging:(id)a3;
-- (void)bluetoothAdvertisingAddressChanged:(unint64_t)a3;
-- (void)deviceDiscovered:(id)a3;
-- (void)deviceLost:(id)a3;
+- (void)_stopWiFiRanging:(id)ranging;
+- (void)_triggerWiFiRanging:(id)ranging;
+- (void)bluetoothAdvertisingAddressChanged:(unint64_t)changed;
+- (void)deviceDiscovered:(id)discovered;
+- (void)deviceLost:(id)lost;
 - (void)invalidate;
-- (void)peerInactivityPeriodExceeded:(id)a3;
-- (void)updatesEngine:(id)a3 didUpdateNearbyObjects:(id)a4;
-- (void)wifiRangingRangeError:(const int *)a3;
-- (void)wifiRangingReadiness:(const int *)a3;
+- (void)peerInactivityPeriodExceeded:(id)exceeded;
+- (void)updatesEngine:(id)engine didUpdateNearbyObjects:(id)objects;
+- (void)wifiRangingRangeError:(const int *)error;
+- (void)wifiRangingReadiness:(const int *)readiness;
 @end
 
 @implementation _NIServerTestWiFiOnlySession
 
-- (_NIServerTestWiFiOnlySession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5
+- (_NIServerTestWiFiOnlySession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  managerCopy = manager;
+  configurationCopy = configuration;
   v11 = objc_opt_class();
   if (v11 == objc_opt_class())
   {
-    if (a5)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -44,7 +44,7 @@
     v26 = +[NSAssertionHandler currentHandler];
     [v26 handleFailureInMethod:a2 object:self file:@"_NIServerTestWiFiOnlySession.mm" lineNumber:43 description:@"_NIWiFiRangingTestConfiguration given invalid configuration."];
 
-    if (a5)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -56,24 +56,24 @@
 LABEL_3:
   v31.receiver = self;
   v31.super_class = _NIServerTestWiFiOnlySession;
-  v12 = [(NIServerBaseSession *)&v31 initWithResourcesManager:v9 configuration:v10 error:a5];
+  v12 = [(NIServerBaseSession *)&v31 initWithResourcesManager:managerCopy configuration:configurationCopy error:error];
   if (v12)
   {
-    v13 = [v9 clientConnectionQueue];
+    clientConnectionQueue = [managerCopy clientConnectionQueue];
     v14 = *(v12 + 9);
-    *(v12 + 9) = v13;
+    *(v12 + 9) = clientConnectionQueue;
 
-    v15 = [v10 copy];
+    v15 = [configurationCopy copy];
     v16 = *(v12 + 14);
     *(v12 + 14) = v15;
 
     v17 = [NINearbyUpdatesEngine alloc];
     v18 = *(v12 + 14);
     v19 = *(v12 + 9);
-    v20 = [v9 analytics];
-    if (v9)
+    analytics = [managerCopy analytics];
+    if (managerCopy)
     {
-      [v9 protobufLogger];
+      [managerCopy protobufLogger];
     }
 
     else
@@ -82,7 +82,7 @@ LABEL_3:
       v30 = 0;
     }
 
-    v21 = [(NINearbyUpdatesEngine *)v17 initWithConfiguration:v18 queue:v19 delegate:v12 dataSource:v12 analyticsManager:v20 protobufLogger:&v29 error:a5];
+    v21 = [(NINearbyUpdatesEngine *)v17 initWithConfiguration:v18 queue:v19 delegate:v12 dataSource:v12 analyticsManager:analytics protobufLogger:&v29 error:error];
     v22 = *(v12 + 6);
     *(v12 + 6) = v21;
 
@@ -91,9 +91,9 @@ LABEL_3:
       sub_10000AD84(v30);
     }
 
-    if (v9)
+    if (managerCopy)
     {
-      [v9 protobufLogger];
+      [managerCopy protobufLogger];
       v23 = v28;
     }
 
@@ -119,12 +119,12 @@ LABEL_3:
 {
   if (self->_wifiRangingSession.__ptr_)
   {
-    v2 = [(_NIServerTestWiFiOnlySession *)self _disableWiFiAndReturnError];
+    _disableWiFiAndReturnError = [(_NIServerTestWiFiOnlySession *)self _disableWiFiAndReturnError];
     v3 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       v4 = 138412290;
-      v5 = v2;
+      v5 = _disableWiFiAndReturnError;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#ses-wifi-test,Invalidate. Error: %@", &v4, 0xCu);
     }
   }
@@ -151,39 +151,39 @@ LABEL_3:
     sub_1004C386C();
   }
 
-  v4 = [(_NIWiFiRangingTestConfiguration *)configuration peerDiscoveryToken];
+  peerDiscoveryToken = [(_NIWiFiRangingTestConfiguration *)configuration peerDiscoveryToken];
 
-  if (v4)
+  if (peerDiscoveryToken)
   {
-    v5 = [(_NIWiFiRangingTestConfiguration *)self->_configuration parameters];
+    parameters = [(_NIWiFiRangingTestConfiguration *)self->_configuration parameters];
 
-    if (v5)
+    if (parameters)
     {
       v22.receiver = self;
       v22.super_class = _NIServerTestWiFiOnlySession;
-      v6 = [(NIServerBaseSession *)&v22 resourcesManager];
-      v7 = self;
-      v8 = [v6 btResource];
-      [v8 startAdvertising];
+      resourcesManager = [(NIServerBaseSession *)&v22 resourcesManager];
+      selfCopy = self;
+      btResource = [resourcesManager btResource];
+      [btResource startAdvertising];
 
-      v9 = [v6 btResource];
-      [v9 startScanning];
+      btResource2 = [resourcesManager btResource];
+      [btResource2 startScanning];
 
-      [v6 btResource];
-      v10 = [objc_claimAutoreleasedReturnValue() nonConnectableAdvertisingAddress];
+      [resourcesManager btResource];
+      nonConnectableAdvertisingAddress = [objc_claimAutoreleasedReturnValue() nonConnectableAdvertisingAddress];
       if (v11)
       {
-        v27 = v10;
+        v27 = nonConnectableAdvertisingAddress;
         v12 = [[NSData alloc] initWithBytes:&v27 length:6];
         v13 = sub_100014B54();
         sub_10002DBAC(v13, v12);
       }
 
-      v14 = [v6 serverSessionIdentifier];
-      v15 = [v14 UUIDString];
+      serverSessionIdentifier = [resourcesManager serverSessionIdentifier];
+      uUIDString = [serverSessionIdentifier UUIDString];
 
-      v16 = v15;
-      sub_100004A08(&__p, [v15 UTF8String]);
+      v16 = uUIDString;
+      sub_100004A08(&__p, [uUIDString UTF8String]);
       operator new();
     }
 
@@ -211,12 +211,12 @@ LABEL_3:
   self->_shouldDeliverUpdates = 1;
   v10.receiver = self;
   v10.super_class = _NIServerTestWiFiOnlySession;
-  v3 = [(NIServerBaseSession *)&v10 resourcesManager];
-  v4 = [v3 lifecycleSupervisor];
-  [v4 runWithConfigurationCalled];
+  resourcesManager = [(NIServerBaseSession *)&v10 resourcesManager];
+  lifecycleSupervisor = [resourcesManager lifecycleSupervisor];
+  [lifecycleSupervisor runWithConfigurationCalled];
 
-  v5 = [(_NIWiFiRangingTestConfiguration *)self->_configuration peerDiscoveryToken];
-  v11 = v5;
+  peerDiscoveryToken = [(_NIWiFiRangingTestConfiguration *)self->_configuration peerDiscoveryToken];
+  v11 = peerDiscoveryToken;
   v6 = [NSArray arrayWithObjects:&v11 count:1];
 
   v7 = [(_NIServerTestWiFiOnlySession *)self _addPeers:v6];
@@ -232,47 +232,47 @@ LABEL_3:
 
   else
   {
-    v8 = [v3 lifecycleSupervisor];
-    [v8 startedDiscoveringPeersWithTokens:v6];
+    lifecycleSupervisor2 = [resourcesManager lifecycleSupervisor];
+    [lifecycleSupervisor2 startedDiscoveringPeersWithTokens:v6];
   }
 
   return v7;
 }
 
-- (id)pauseWithSource:(int64_t)a3
+- (id)pauseWithSource:(int64_t)source
 {
   self->_shouldDeliverUpdates = 0;
-  v4 = [(_NIServerTestWiFiOnlySession *)self disableAllServices];
+  disableAllServices = [(_NIServerTestWiFiOnlySession *)self disableAllServices];
   v8.receiver = self;
   v8.super_class = _NIServerTestWiFiOnlySession;
-  v5 = [(NIServerBaseSession *)&v8 resourcesManager];
-  v6 = [v5 lifecycleSupervisor];
-  [v6 pauseCalled];
+  resourcesManager = [(NIServerBaseSession *)&v8 resourcesManager];
+  lifecycleSupervisor = [resourcesManager lifecycleSupervisor];
+  [lifecycleSupervisor pauseCalled];
 
-  return v4;
+  return disableAllServices;
 }
 
-- (void)bluetoothAdvertisingAddressChanged:(unint64_t)a3
+- (void)bluetoothAdvertisingAddressChanged:(unint64_t)changed
 {
-  v5 = a3;
-  v3 = [[NSData alloc] initWithBytes:&v5 length:6];
+  changedCopy = changed;
+  v3 = [[NSData alloc] initWithBytes:&changedCopy length:6];
   v4 = sub_100014B54();
   sub_10002DBAC(v4, v3);
 }
 
-- (void)deviceDiscovered:(id)a3
+- (void)deviceDiscovered:(id)discovered
 {
-  v4 = a3;
-  v5 = [NINearbyObject objectFromBluetoothDevice:v4];
+  discoveredCopy = discovered;
+  v5 = [NINearbyObject objectFromBluetoothDevice:discoveredCopy];
   if (v5)
   {
     if (self->_pbLogger.__ptr_)
     {
       v6 = sub_100005288();
       ptr = self->_pbLogger.__ptr_;
-      v8 = [v4 u64Identifier];
+      u64Identifier = [discoveredCopy u64Identifier];
       sub_1002D63A8(v5, __p);
-      sub_1002E1DCC(ptr, v8, __p, v6);
+      sub_1002E1DCC(ptr, u64Identifier, __p, v6);
       if (__p[0])
       {
         __p[1] = __p[0];
@@ -280,7 +280,7 @@ LABEL_3:
       }
     }
 
-    [(_NIServerTestWiFiOnlySession *)self _triggerWiFiRanging:v4];
+    [(_NIServerTestWiFiOnlySession *)self _triggerWiFiRanging:discoveredCopy];
   }
 
   else
@@ -293,24 +293,24 @@ LABEL_3:
   }
 }
 
-- (void)deviceLost:(id)a3
+- (void)deviceLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if (v4)
+    if (lostCopy)
     {
-      v6 = [v4 u64Identifier];
+      u64Identifier = [lostCopy u64Identifier];
     }
 
     else
     {
-      v6 = 0;
+      u64Identifier = 0;
     }
 
     v9 = 134217984;
-    v10 = v6;
+    v10 = u64Identifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-wifi-test,device 0x%llx lost. stopping wifi ranging", &v9, 0xCu);
   }
 
@@ -331,45 +331,45 @@ LABEL_3:
   }
 }
 
-- (id)addObject:(id)a3
+- (id)addObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = objectCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "#ses-wifi-test,addObject noop: %@", &v6, 0xCu);
   }
 
   return 0;
 }
 
-- (id)removeObject:(id)a3
+- (id)removeObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = objectCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "#ses-wifi-test,remove noop: %@", &v6, 0xCu);
   }
 
   return 0;
 }
 
-- (void)_triggerWiFiRanging:(id)a3
+- (void)_triggerWiFiRanging:(id)ranging
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  rangingCopy = ranging;
+  v5 = rangingCopy;
+  if (rangingCopy)
   {
-    v6 = [v4 u64Identifier];
+    u64Identifier = [rangingCopy u64Identifier];
     v7 = qword_1009F9820;
     if (self->_wifiRangingSession.__ptr_)
     {
-      v8 = v6;
+      v8 = u64Identifier;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
       {
         configuration = self->_configuration;
@@ -380,8 +380,8 @@ LABEL_3:
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#ses-wifi-test,_triggerWiFiRanging. Identifier: 0x%llx, WiFi ranging config: %@", buf, 0x16u);
       }
 
-      v10 = [(_NIWiFiRangingTestConfiguration *)self->_configuration parameters];
-      v11 = [v10 objectForKeyedSubscript:@"RangingRole"];
+      parameters = [(_NIWiFiRangingTestConfiguration *)self->_configuration parameters];
+      v11 = [parameters objectForKeyedSubscript:@"RangingRole"];
 
       if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
@@ -422,13 +422,13 @@ LABEL_15:
 
     v26.receiver = self;
     v26.super_class = _NIServerTestWiFiOnlySession;
-    v22 = [(NIServerBaseSession *)&v26 resourcesManager];
-    v23 = [v22 remote];
+    resourcesManager = [(NIServerBaseSession *)&v26 resourcesManager];
+    remote = [resourcesManager remote];
     v31 = NSLocalizedDescriptionKey;
     v32 = @"Failed to start WiFi service. session is nil";
     v24 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     v25 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:v24];
-    [v23 uwbSessionDidFailWithError:v25];
+    [remote uwbSessionDidFailWithError:v25];
   }
 
   else
@@ -441,17 +441,17 @@ LABEL_15:
   }
 }
 
-- (void)_stopWiFiRanging:(id)a3
+- (void)_stopWiFiRanging:(id)ranging
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  rangingCopy = ranging;
+  v5 = rangingCopy;
+  if (rangingCopy)
   {
-    v6 = [v4 u64Identifier];
+    u64Identifier = [rangingCopy u64Identifier];
     v7 = qword_1009F9820;
     if (self->_wifiRangingSession.__ptr_)
     {
-      v8 = v6;
+      v8 = u64Identifier;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
       {
         configuration = self->_configuration;
@@ -474,13 +474,13 @@ LABEL_15:
 
       v22.receiver = self;
       v22.super_class = _NIServerTestWiFiOnlySession;
-      v18 = [(NIServerBaseSession *)&v22 resourcesManager];
-      v19 = [v18 remote];
+      resourcesManager = [(NIServerBaseSession *)&v22 resourcesManager];
+      remote = [resourcesManager remote];
       v27 = NSLocalizedDescriptionKey;
       v28 = @"Failed to stop WiFi service. session is nil";
       v20 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
       v21 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:v20];
-      [v19 uwbSessionDidFailWithError:v21];
+      [remote uwbSessionDidFailWithError:v21];
     }
   }
 
@@ -494,17 +494,17 @@ LABEL_15:
   }
 }
 
-- (id)_addPeers:(id)a3
+- (id)_addPeers:(id)peers
 {
-  v4 = a3;
+  peersCopy = peers;
   v19.receiver = self;
   v19.super_class = _NIServerTestWiFiOnlySession;
-  v5 = [(NIServerBaseSession *)&v19 resourcesManager];
+  resourcesManager = [(NIServerBaseSession *)&v19 resourcesManager];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = peersCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v7)
   {
@@ -519,9 +519,9 @@ LABEL_3:
       }
 
       v10 = *(*(&v15 + 1) + 8 * v9);
-      v11 = [v5 btResource];
-      v12 = [v10 rawToken];
-      v13 = [v11 addPeerDiscoveryToken:v12];
+      btResource = [resourcesManager btResource];
+      rawToken = [v10 rawToken];
+      v13 = [btResource addPeerDiscoveryToken:rawToken];
 
       if (v13)
       {
@@ -550,17 +550,17 @@ LABEL_9:
   return v13;
 }
 
-- (id)_removePeers:(id)a3
+- (id)_removePeers:(id)peers
 {
   v21.receiver = self;
   v21.super_class = _NIServerTestWiFiOnlySession;
-  v16 = a3;
-  v3 = [(NIServerBaseSession *)&v21 resourcesManager];
+  peersCopy = peers;
+  resourcesManager = [(NIServerBaseSession *)&v21 resourcesManager];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = v16;
+  v4 = peersCopy;
   v5 = 0;
   v6 = [v4 countByEnumeratingWithState:&v17 objects:v24 count:16];
   if (v6)
@@ -577,9 +577,9 @@ LABEL_9:
         }
 
         v9 = *(*(&v17 + 1) + 8 * v8);
-        v10 = [v3 btResource];
-        v11 = [v9 rawToken];
-        v12 = [v10 removePeerDiscoveryToken:v11];
+        btResource = [resourcesManager btResource];
+        rawToken = [v9 rawToken];
+        v12 = [btResource removePeerDiscoveryToken:rawToken];
 
         if (v12)
         {
@@ -614,9 +614,9 @@ LABEL_9:
   dispatch_assert_queue_V2(self->_clientQueue);
   v5.receiver = self;
   v5.super_class = _NIServerTestWiFiOnlySession;
-  v3 = [(NIServerBaseSession *)&v5 resourcesManager];
-  v4 = [v3 lifecycleSupervisor];
-  [v4 failedToAddPeer];
+  resourcesManager = [(NIServerBaseSession *)&v5 resourcesManager];
+  lifecycleSupervisor = [resourcesManager lifecycleSupervisor];
+  [lifecycleSupervisor failedToAddPeer];
 
   [(_NIServerTestWiFiOnlySession *)self invalidate];
 }
@@ -626,9 +626,9 @@ LABEL_9:
   dispatch_assert_queue_V2(self->_clientQueue);
   v5.receiver = self;
   v5.super_class = _NIServerTestWiFiOnlySession;
-  v3 = [(NIServerBaseSession *)&v5 resourcesManager];
-  v4 = [v3 lifecycleSupervisor];
-  [v4 failedToRemovePeer];
+  resourcesManager = [(NIServerBaseSession *)&v5 resourcesManager];
+  lifecycleSupervisor = [resourcesManager lifecycleSupervisor];
+  [lifecycleSupervisor failedToRemovePeer];
 
   [(_NIServerTestWiFiOnlySession *)self invalidate];
 }
@@ -646,9 +646,9 @@ LABEL_9:
   return 0;
 }
 
-- (void)wifiRangingRangeError:(const int *)a3
+- (void)wifiRangingRangeError:(const int *)error
 {
-  sub_100040B10(*a3, __p);
+  sub_100040B10(*error, __p);
   if (v14 >= 0)
   {
     v4 = __p;
@@ -687,12 +687,12 @@ LABEL_9:
   }
 }
 
-- (void)wifiRangingReadiness:(const int *)a3
+- (void)wifiRangingReadiness:(const int *)readiness
 {
   v4 = qword_1009F9820;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100040B4C(*a3, __p);
+    sub_100040B4C(*readiness, __p);
     if (v7 >= 0)
     {
       v5 = __p;
@@ -713,17 +713,17 @@ LABEL_9:
   }
 }
 
-- (void)peerInactivityPeriodExceeded:(id)a3
+- (void)peerInactivityPeriodExceeded:(id)exceeded
 {
-  v4 = a3;
+  exceededCopy = exceeded;
   dispatch_assert_queue_V2(self->_clientQueue);
   v11.receiver = self;
   v11.super_class = _NIServerTestWiFiOnlySession;
-  v5 = [(NIServerBaseSession *)&v11 resourcesManager];
-  v6 = [v5 btResource];
-  v7 = [v6 deviceCache];
-  v8 = [v4 rawToken];
-  v9 = [v7 uncacheDeviceByTokenData:v8];
+  resourcesManager = [(NIServerBaseSession *)&v11 resourcesManager];
+  btResource = [resourcesManager btResource];
+  deviceCache = [btResource deviceCache];
+  rawToken = [exceededCopy rawToken];
+  v9 = [deviceCache uncacheDeviceByTokenData:rawToken];
 
   if ((v9 & 1) == 0 && os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
   {
@@ -740,9 +740,9 @@ LABEL_9:
   }
 }
 
-- (void)updatesEngine:(id)a3 didUpdateNearbyObjects:(id)a4
+- (void)updatesEngine:(id)engine didUpdateNearbyObjects:(id)objects
 {
-  v5 = a4;
+  objectsCopy = objects;
   v6 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
@@ -756,8 +756,8 @@ LABEL_9:
   v9[2] = sub_10036786C;
   v9[3] = &unk_10098A2E8;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = objectsCopy;
+  v8 = objectsCopy;
   dispatch_async(clientQueue, v9);
 }
 

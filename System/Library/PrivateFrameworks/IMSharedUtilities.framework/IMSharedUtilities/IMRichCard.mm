@@ -1,29 +1,29 @@
 @interface IMRichCard
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IMRichCard)init;
-- (IMRichCard)initWithLayout:(id)a3 media:(id)a4 title:(id)a5 cardDescription:(id)a6 chipList:(id)a7;
-- (id)copyWithZone:(void *)a3;
+- (IMRichCard)initWithLayout:(id)layout media:(id)media title:(id)title cardDescription:(id)description chipList:(id)list;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)setUrlToTransferMap:(id)a3;
-- (void)updateUrlToTransferMap:(id)a3;
+- (void)setUrlToTransferMap:(id)map;
+- (void)updateUrlToTransferMap:(id)map;
 @end
 
 @implementation IMRichCard
 
-- (void)setUrlToTransferMap:(id)a3
+- (void)setUrlToTransferMap:(id)map
 {
   v4 = *(self + OBJC_IVAR___IMRichCard_urlToTransferMap);
-  *(self + OBJC_IVAR___IMRichCard_urlToTransferMap) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___IMRichCard_urlToTransferMap) = map;
+  mapCopy = map;
 }
 
-- (IMRichCard)initWithLayout:(id)a3 media:(id)a4 title:(id)a5 cardDescription:(id)a6 chipList:(id)a7
+- (IMRichCard)initWithLayout:(id)layout media:(id)media title:(id)title cardDescription:(id)description chipList:(id)list
 {
-  if (!a5)
+  if (!title)
   {
     v12 = 0;
     v14 = 0;
-    if (a6)
+    if (description)
     {
       goto LABEL_3;
     }
@@ -36,7 +36,7 @@ LABEL_5:
 
   v12 = sub_1A88C82E8();
   v14 = v13;
-  if (!a6)
+  if (!description)
   {
     goto LABEL_5;
   }
@@ -45,33 +45,33 @@ LABEL_3:
   v15 = sub_1A88C82E8();
 LABEL_6:
   *(self + OBJC_IVAR___IMRichCard_urlToTransferMap) = 0;
-  *(self + OBJC_IVAR___IMRichCard_layout) = a3;
-  *(self + OBJC_IVAR___IMRichCard_media) = a4;
+  *(self + OBJC_IVAR___IMRichCard_layout) = layout;
+  *(self + OBJC_IVAR___IMRichCard_media) = media;
   v17 = (self + OBJC_IVAR___IMRichCard_title);
   *v17 = v12;
   v17[1] = v14;
   v18 = (self + OBJC_IVAR___IMRichCard_cardDescription);
   *v18 = v15;
   v18[1] = v16;
-  *(self + OBJC_IVAR___IMRichCard_chipList) = a7;
+  *(self + OBJC_IVAR___IMRichCard_chipList) = list;
   v23.receiver = self;
   v23.super_class = IMRichCard;
-  v19 = a3;
-  v20 = a4;
-  v21 = a7;
+  layoutCopy = layout;
+  mediaCopy = media;
+  listCopy = list;
   return [(IMRichCard *)&v23 init];
 }
 
-- (void)updateUrlToTransferMap:(id)a3
+- (void)updateUrlToTransferMap:(id)map
 {
-  v4 = a3;
-  v5 = self;
-  IMRichCard.update(urlToTransferMap:)(v4);
+  mapCopy = map;
+  selfCopy = self;
+  IMRichCard.update(urlToTransferMap:)(mapCopy);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_1A87ABAD4(v6);
 
   sub_1A870C278(v6, v6[3]);
@@ -80,11 +80,11 @@ LABEL_6:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1A88C8CB8();
     swift_unknownObjectRelease();
@@ -93,7 +93,7 @@ LABEL_6:
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = IMRichCard.isEqual(_:)(v8);
@@ -104,7 +104,7 @@ LABEL_6:
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = IMRichCard.hash.getter();
 
   return v3;

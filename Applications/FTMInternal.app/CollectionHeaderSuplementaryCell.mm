@@ -1,10 +1,10 @@
 @interface CollectionHeaderSuplementaryCell
-- (_TtC11FTMInternal32CollectionHeaderSuplementaryCell)initWithCoder:(id)a3;
+- (_TtC11FTMInternal32CollectionHeaderSuplementaryCell)initWithCoder:(id)coder;
 @end
 
 @implementation CollectionHeaderSuplementaryCell
 
-- (_TtC11FTMInternal32CollectionHeaderSuplementaryCell)initWithCoder:(id)a3
+- (_TtC11FTMInternal32CollectionHeaderSuplementaryCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11FTMInternal32CollectionHeaderSuplementaryCell____lazy_storage___headerLabel) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11FTMInternal32CollectionHeaderSuplementaryCell____lazy_storage___subHeaderLabel) = 0;

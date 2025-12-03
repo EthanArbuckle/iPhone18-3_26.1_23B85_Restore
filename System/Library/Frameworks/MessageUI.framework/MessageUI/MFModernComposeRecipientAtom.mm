@@ -1,44 +1,44 @@
 @interface MFModernComposeRecipientAtom
 - (MFComposeRecipientAtomDelegate)delegate;
-- (MFModernComposeRecipientAtom)initWithFrame:(CGRect)a3 recipient:(id)a4 presentationOptions:(unint64_t)a5;
+- (MFModernComposeRecipientAtom)initWithFrame:(CGRect)frame recipient:(id)recipient presentationOptions:(unint64_t)options;
 - (id)keyCommands;
 - (void)handleTouchAndHold;
-- (void)moveLeft:(id)a3;
-- (void)moveRight:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)moveLeft:(id)left;
+- (void)moveRight:(id)right;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation MFModernComposeRecipientAtom
 
-- (MFModernComposeRecipientAtom)initWithFrame:(CGRect)a3 recipient:(id)a4 presentationOptions:(unint64_t)a5
+- (MFModernComposeRecipientAtom)initWithFrame:(CGRect)frame recipient:(id)recipient presentationOptions:(unint64_t)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  recipientCopy = recipient;
   v17.receiver = self;
   v17.super_class = MFModernComposeRecipientAtom;
-  v13 = [(MFModernAtomView *)&v17 initWithFrame:a5 presentationOptions:0 separatorStyle:0 wrappingSupported:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(MFModernAtomView *)&v17 initWithFrame:options presentationOptions:0 separatorStyle:0 wrappingSupported:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    objc_storeStrong(&v13->_recipient, a4);
-    v15 = [v12 displayString];
-    [(MFModernAtomView *)v14 setTitle:v15];
+    objc_storeStrong(&height->_recipient, recipient);
+    displayString = [recipientCopy displayString];
+    [(MFModernAtomView *)v14 setTitle:displayString];
   }
 
   return v14;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   *(self + 560) &= ~2u;
   *(self + 560) &= ~1u;
-  if ([(MFModernAtomView *)self isSelected:a3])
+  if ([(MFModernAtomView *)self isSelected:began])
   {
     *(self + 560) |= 1u;
   }
@@ -50,12 +50,12 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v9 = a4;
-  v6 = [a3 anyObject];
-  [v6 locationInView:self];
-  v7 = [(MFModernComposeRecipientAtom *)self hitTest:v9 withEvent:?];
+  eventCopy = event;
+  anyObject = [moved anyObject];
+  [anyObject locationInView:self];
+  v7 = [(MFModernComposeRecipientAtom *)self hitTest:eventCopy withEvent:?];
 
   if (!v7)
   {
@@ -68,7 +68,7 @@
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   *(self + 560) |= 2u;
   if ((*(self + 560) & 1) == 0)
@@ -78,10 +78,10 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v7 = a3;
-  v6 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   if ((*(self + 560) & 1) != 0 && (*(self + 560) & 2) == 0)
   {
     [(MFModernComposeRecipientAtom *)self handleTouchAndHold];
@@ -110,8 +110,8 @@
 
     v13.receiver = self;
     v13.super_class = MFModernComposeRecipientAtom;
-    v9 = [(MFModernComposeRecipientAtom *)&v13 keyCommands];
-    [v8 addObjectsFromArray:v9];
+    keyCommands = [(MFModernComposeRecipientAtom *)&v13 keyCommands];
+    [v8 addObjectsFromArray:keyCommands];
 
     v10 = [v8 copy];
     v11 = keyCommands_keyCommands_1;
@@ -123,13 +123,13 @@
   return v3;
 }
 
-- (void)moveLeft:(id)a3
+- (void)moveLeft:(id)left
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained composeRecipientAtomSelectPrevious:self];
 }
 
-- (void)moveRight:(id)a3
+- (void)moveRight:(id)right
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained composeRecipientAtomSelectNext:self];

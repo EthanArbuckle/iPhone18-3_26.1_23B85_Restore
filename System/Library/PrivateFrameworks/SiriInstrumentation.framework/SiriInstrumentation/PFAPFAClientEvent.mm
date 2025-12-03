@@ -1,17 +1,17 @@
 @interface PFAPFAClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (PFAIngestionExtensionStreamStatistics)ingestionExtensionStreamStatistics;
-- (PFAPFAClientEvent)initWithDictionary:(id)a3;
-- (PFAPFAClientEvent)initWithJSON:(id)a3;
+- (PFAPFAClientEvent)initWithDictionary:(id)dictionary;
+- (PFAPFAClientEvent)initWithJSON:(id)n;
 - (PFAPreprocessorExecutionContext)preprocessorExecutionContext;
 - (PFAPreprocessorOrchestratorResultsStatsReported)orchestratorResultsStatsReported;
 - (PFAPreprocessorSessionEndStatsReported)preprocessorSessionEndStatsReported;
 - (PFAPreprocessorSessionStartStatsReported)preprocessorSessionStartStatsReported;
 - (PFARepackagingExecution)repackagingExecution;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)qualifiedMessageName;
 - (id)suppressMessageUnderConditions;
@@ -22,26 +22,26 @@
 - (void)deletePreprocessorSessionEndStatsReported;
 - (void)deletePreprocessorSessionStartStatsReported;
 - (void)deleteRepackagingExecution;
-- (void)setIngestionExtensionStreamStatistics:(id)a3;
-- (void)setOrchestratorResultsStatsReported:(id)a3;
-- (void)setPreprocessorExecutionContext:(id)a3;
-- (void)setPreprocessorSessionEndStatsReported:(id)a3;
-- (void)setPreprocessorSessionStartStatsReported:(id)a3;
-- (void)setRepackagingExecution:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setIngestionExtensionStreamStatistics:(id)statistics;
+- (void)setOrchestratorResultsStatsReported:(id)reported;
+- (void)setPreprocessorExecutionContext:(id)context;
+- (void)setPreprocessorSessionEndStatsReported:(id)reported;
+- (void)setPreprocessorSessionStartStatsReported:(id)reported;
+- (void)setRepackagingExecution:(id)execution;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PFAPFAClientEvent
 
-- (PFAPFAClientEvent)initWithDictionary:(id)a3
+- (PFAPFAClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = PFAPFAClientEvent;
   v5 = [(PFAPFAClientEvent *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,7 +49,7 @@
       [(PFAPFAClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"repackagingExecution"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"repackagingExecution"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,7 +57,7 @@
       [(PFAPFAClientEvent *)v5 setRepackagingExecution:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"preprocessorExecutionContext"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"preprocessorExecutionContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
       [(PFAPFAClientEvent *)v5 setPreprocessorExecutionContext:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"preprocessorSessionStartStatsReported"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"preprocessorSessionStartStatsReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,7 +73,7 @@
       [(PFAPFAClientEvent *)v5 setPreprocessorSessionStartStatsReported:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"preprocessorSessionEndStatsReported"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"preprocessorSessionEndStatsReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,7 +81,7 @@
       [(PFAPFAClientEvent *)v5 setPreprocessorSessionEndStatsReported:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"orchestratorResultsStatsReported"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"orchestratorResultsStatsReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,7 +89,7 @@
       [(PFAPFAClientEvent *)v5 setOrchestratorResultsStatsReported:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"ingestionExtensionStreamStatistics"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"ingestionExtensionStreamStatistics"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -103,30 +103,30 @@
   return v5;
 }
 
-- (PFAPFAClientEvent)initWithJSON:(id)a3
+- (PFAPFAClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PFAPFAClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PFAPFAClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PFAPFAClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -139,122 +139,122 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_eventMetadata)
   {
-    v4 = [(PFAPFAClientEvent *)self eventMetadata];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    eventMetadata = [(PFAPFAClientEvent *)self eventMetadata];
+    dictionaryRepresentation = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"eventMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_ingestionExtensionStreamStatistics)
   {
-    v7 = [(PFAPFAClientEvent *)self ingestionExtensionStreamStatistics];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    ingestionExtensionStreamStatistics = [(PFAPFAClientEvent *)self ingestionExtensionStreamStatistics];
+    dictionaryRepresentation2 = [ingestionExtensionStreamStatistics dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"ingestionExtensionStreamStatistics"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"ingestionExtensionStreamStatistics"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"ingestionExtensionStreamStatistics"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"ingestionExtensionStreamStatistics"];
     }
   }
 
   if (self->_orchestratorResultsStatsReported)
   {
-    v10 = [(PFAPFAClientEvent *)self orchestratorResultsStatsReported];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    orchestratorResultsStatsReported = [(PFAPFAClientEvent *)self orchestratorResultsStatsReported];
+    dictionaryRepresentation3 = [orchestratorResultsStatsReported dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"orchestratorResultsStatsReported"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"orchestratorResultsStatsReported"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"orchestratorResultsStatsReported"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"orchestratorResultsStatsReported"];
     }
   }
 
   if (self->_preprocessorExecutionContext)
   {
-    v13 = [(PFAPFAClientEvent *)self preprocessorExecutionContext];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    preprocessorExecutionContext = [(PFAPFAClientEvent *)self preprocessorExecutionContext];
+    dictionaryRepresentation4 = [preprocessorExecutionContext dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"preprocessorExecutionContext"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"preprocessorExecutionContext"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"preprocessorExecutionContext"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"preprocessorExecutionContext"];
     }
   }
 
   if (self->_preprocessorSessionEndStatsReported)
   {
-    v16 = [(PFAPFAClientEvent *)self preprocessorSessionEndStatsReported];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    preprocessorSessionEndStatsReported = [(PFAPFAClientEvent *)self preprocessorSessionEndStatsReported];
+    dictionaryRepresentation5 = [preprocessorSessionEndStatsReported dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"preprocessorSessionEndStatsReported"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"preprocessorSessionEndStatsReported"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"preprocessorSessionEndStatsReported"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"preprocessorSessionEndStatsReported"];
     }
   }
 
   if (self->_preprocessorSessionStartStatsReported)
   {
-    v19 = [(PFAPFAClientEvent *)self preprocessorSessionStartStatsReported];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    preprocessorSessionStartStatsReported = [(PFAPFAClientEvent *)self preprocessorSessionStartStatsReported];
+    dictionaryRepresentation6 = [preprocessorSessionStartStatsReported dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"preprocessorSessionStartStatsReported"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"preprocessorSessionStartStatsReported"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"preprocessorSessionStartStatsReported"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"preprocessorSessionStartStatsReported"];
     }
   }
 
   if (self->_repackagingExecution)
   {
-    v22 = [(PFAPFAClientEvent *)self repackagingExecution];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    repackagingExecution = [(PFAPFAClientEvent *)self repackagingExecution];
+    dictionaryRepresentation7 = [repackagingExecution dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"repackagingExecution"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"repackagingExecution"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"repackagingExecution"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"repackagingExecution"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -268,34 +268,34 @@
   return v6 ^ v8 ^ [(PFAIngestionExtensionStreamStatistics *)self->_ingestionExtensionStreamStatistics hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_38;
   }
 
-  v6 = [(PFAPFAClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PFAPFAClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_37;
   }
 
-  v8 = [(PFAPFAClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(PFAPFAClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(PFAPFAClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(PFAPFAClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -307,20 +307,20 @@
   {
   }
 
-  v6 = [(PFAPFAClientEvent *)self repackagingExecution];
-  v7 = [v4 repackagingExecution];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PFAPFAClientEvent *)self repackagingExecution];
+  eventMetadata2 = [equalCopy repackagingExecution];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_37;
   }
 
-  v13 = [(PFAPFAClientEvent *)self repackagingExecution];
-  if (v13)
+  repackagingExecution = [(PFAPFAClientEvent *)self repackagingExecution];
+  if (repackagingExecution)
   {
-    v14 = v13;
-    v15 = [(PFAPFAClientEvent *)self repackagingExecution];
-    v16 = [v4 repackagingExecution];
-    v17 = [v15 isEqual:v16];
+    v14 = repackagingExecution;
+    repackagingExecution2 = [(PFAPFAClientEvent *)self repackagingExecution];
+    repackagingExecution3 = [equalCopy repackagingExecution];
+    v17 = [repackagingExecution2 isEqual:repackagingExecution3];
 
     if (!v17)
     {
@@ -332,20 +332,20 @@
   {
   }
 
-  v6 = [(PFAPFAClientEvent *)self preprocessorExecutionContext];
-  v7 = [v4 preprocessorExecutionContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PFAPFAClientEvent *)self preprocessorExecutionContext];
+  eventMetadata2 = [equalCopy preprocessorExecutionContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_37;
   }
 
-  v18 = [(PFAPFAClientEvent *)self preprocessorExecutionContext];
-  if (v18)
+  preprocessorExecutionContext = [(PFAPFAClientEvent *)self preprocessorExecutionContext];
+  if (preprocessorExecutionContext)
   {
-    v19 = v18;
-    v20 = [(PFAPFAClientEvent *)self preprocessorExecutionContext];
-    v21 = [v4 preprocessorExecutionContext];
-    v22 = [v20 isEqual:v21];
+    v19 = preprocessorExecutionContext;
+    preprocessorExecutionContext2 = [(PFAPFAClientEvent *)self preprocessorExecutionContext];
+    preprocessorExecutionContext3 = [equalCopy preprocessorExecutionContext];
+    v22 = [preprocessorExecutionContext2 isEqual:preprocessorExecutionContext3];
 
     if (!v22)
     {
@@ -357,20 +357,20 @@
   {
   }
 
-  v6 = [(PFAPFAClientEvent *)self preprocessorSessionStartStatsReported];
-  v7 = [v4 preprocessorSessionStartStatsReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PFAPFAClientEvent *)self preprocessorSessionStartStatsReported];
+  eventMetadata2 = [equalCopy preprocessorSessionStartStatsReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_37;
   }
 
-  v23 = [(PFAPFAClientEvent *)self preprocessorSessionStartStatsReported];
-  if (v23)
+  preprocessorSessionStartStatsReported = [(PFAPFAClientEvent *)self preprocessorSessionStartStatsReported];
+  if (preprocessorSessionStartStatsReported)
   {
-    v24 = v23;
-    v25 = [(PFAPFAClientEvent *)self preprocessorSessionStartStatsReported];
-    v26 = [v4 preprocessorSessionStartStatsReported];
-    v27 = [v25 isEqual:v26];
+    v24 = preprocessorSessionStartStatsReported;
+    preprocessorSessionStartStatsReported2 = [(PFAPFAClientEvent *)self preprocessorSessionStartStatsReported];
+    preprocessorSessionStartStatsReported3 = [equalCopy preprocessorSessionStartStatsReported];
+    v27 = [preprocessorSessionStartStatsReported2 isEqual:preprocessorSessionStartStatsReported3];
 
     if (!v27)
     {
@@ -382,20 +382,20 @@
   {
   }
 
-  v6 = [(PFAPFAClientEvent *)self preprocessorSessionEndStatsReported];
-  v7 = [v4 preprocessorSessionEndStatsReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PFAPFAClientEvent *)self preprocessorSessionEndStatsReported];
+  eventMetadata2 = [equalCopy preprocessorSessionEndStatsReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_37;
   }
 
-  v28 = [(PFAPFAClientEvent *)self preprocessorSessionEndStatsReported];
-  if (v28)
+  preprocessorSessionEndStatsReported = [(PFAPFAClientEvent *)self preprocessorSessionEndStatsReported];
+  if (preprocessorSessionEndStatsReported)
   {
-    v29 = v28;
-    v30 = [(PFAPFAClientEvent *)self preprocessorSessionEndStatsReported];
-    v31 = [v4 preprocessorSessionEndStatsReported];
-    v32 = [v30 isEqual:v31];
+    v29 = preprocessorSessionEndStatsReported;
+    preprocessorSessionEndStatsReported2 = [(PFAPFAClientEvent *)self preprocessorSessionEndStatsReported];
+    preprocessorSessionEndStatsReported3 = [equalCopy preprocessorSessionEndStatsReported];
+    v32 = [preprocessorSessionEndStatsReported2 isEqual:preprocessorSessionEndStatsReported3];
 
     if (!v32)
     {
@@ -407,20 +407,20 @@
   {
   }
 
-  v6 = [(PFAPFAClientEvent *)self orchestratorResultsStatsReported];
-  v7 = [v4 orchestratorResultsStatsReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PFAPFAClientEvent *)self orchestratorResultsStatsReported];
+  eventMetadata2 = [equalCopy orchestratorResultsStatsReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_37;
   }
 
-  v33 = [(PFAPFAClientEvent *)self orchestratorResultsStatsReported];
-  if (v33)
+  orchestratorResultsStatsReported = [(PFAPFAClientEvent *)self orchestratorResultsStatsReported];
+  if (orchestratorResultsStatsReported)
   {
-    v34 = v33;
-    v35 = [(PFAPFAClientEvent *)self orchestratorResultsStatsReported];
-    v36 = [v4 orchestratorResultsStatsReported];
-    v37 = [v35 isEqual:v36];
+    v34 = orchestratorResultsStatsReported;
+    orchestratorResultsStatsReported2 = [(PFAPFAClientEvent *)self orchestratorResultsStatsReported];
+    orchestratorResultsStatsReported3 = [equalCopy orchestratorResultsStatsReported];
+    v37 = [orchestratorResultsStatsReported2 isEqual:orchestratorResultsStatsReported3];
 
     if (!v37)
     {
@@ -432,12 +432,12 @@
   {
   }
 
-  v6 = [(PFAPFAClientEvent *)self ingestionExtensionStreamStatistics];
-  v7 = [v4 ingestionExtensionStreamStatistics];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(PFAPFAClientEvent *)self ingestionExtensionStreamStatistics];
+  eventMetadata2 = [equalCopy ingestionExtensionStreamStatistics];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v38 = [(PFAPFAClientEvent *)self ingestionExtensionStreamStatistics];
-    if (!v38)
+    ingestionExtensionStreamStatistics = [(PFAPFAClientEvent *)self ingestionExtensionStreamStatistics];
+    if (!ingestionExtensionStreamStatistics)
     {
 
 LABEL_41:
@@ -445,10 +445,10 @@ LABEL_41:
       goto LABEL_39;
     }
 
-    v39 = v38;
-    v40 = [(PFAPFAClientEvent *)self ingestionExtensionStreamStatistics];
-    v41 = [v4 ingestionExtensionStreamStatistics];
-    v42 = [v40 isEqual:v41];
+    v39 = ingestionExtensionStreamStatistics;
+    ingestionExtensionStreamStatistics2 = [(PFAPFAClientEvent *)self ingestionExtensionStreamStatistics];
+    ingestionExtensionStreamStatistics3 = [equalCopy ingestionExtensionStreamStatistics];
+    v42 = [ingestionExtensionStreamStatistics2 isEqual:ingestionExtensionStreamStatistics3];
 
     if (v42)
     {
@@ -468,66 +468,66 @@ LABEL_39:
   return v43;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v19 = a3;
-  v4 = [(PFAPFAClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(PFAPFAClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(PFAPFAClientEvent *)self eventMetadata];
+    eventMetadata2 = [(PFAPFAClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PFAPFAClientEvent *)self repackagingExecution];
+  repackagingExecution = [(PFAPFAClientEvent *)self repackagingExecution];
 
-  if (v6)
+  if (repackagingExecution)
   {
-    v7 = [(PFAPFAClientEvent *)self repackagingExecution];
+    repackagingExecution2 = [(PFAPFAClientEvent *)self repackagingExecution];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(PFAPFAClientEvent *)self preprocessorExecutionContext];
+  preprocessorExecutionContext = [(PFAPFAClientEvent *)self preprocessorExecutionContext];
 
-  if (v8)
+  if (preprocessorExecutionContext)
   {
-    v9 = [(PFAPFAClientEvent *)self preprocessorExecutionContext];
+    preprocessorExecutionContext2 = [(PFAPFAClientEvent *)self preprocessorExecutionContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(PFAPFAClientEvent *)self preprocessorSessionStartStatsReported];
+  preprocessorSessionStartStatsReported = [(PFAPFAClientEvent *)self preprocessorSessionStartStatsReported];
 
-  if (v10)
+  if (preprocessorSessionStartStatsReported)
   {
-    v11 = [(PFAPFAClientEvent *)self preprocessorSessionStartStatsReported];
+    preprocessorSessionStartStatsReported2 = [(PFAPFAClientEvent *)self preprocessorSessionStartStatsReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(PFAPFAClientEvent *)self preprocessorSessionEndStatsReported];
+  preprocessorSessionEndStatsReported = [(PFAPFAClientEvent *)self preprocessorSessionEndStatsReported];
 
-  if (v12)
+  if (preprocessorSessionEndStatsReported)
   {
-    v13 = [(PFAPFAClientEvent *)self preprocessorSessionEndStatsReported];
+    preprocessorSessionEndStatsReported2 = [(PFAPFAClientEvent *)self preprocessorSessionEndStatsReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(PFAPFAClientEvent *)self orchestratorResultsStatsReported];
+  orchestratorResultsStatsReported = [(PFAPFAClientEvent *)self orchestratorResultsStatsReported];
 
-  if (v14)
+  if (orchestratorResultsStatsReported)
   {
-    v15 = [(PFAPFAClientEvent *)self orchestratorResultsStatsReported];
+    orchestratorResultsStatsReported2 = [(PFAPFAClientEvent *)self orchestratorResultsStatsReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(PFAPFAClientEvent *)self ingestionExtensionStreamStatistics];
+  ingestionExtensionStreamStatistics = [(PFAPFAClientEvent *)self ingestionExtensionStreamStatistics];
 
-  v17 = v19;
-  if (v16)
+  v17 = toCopy;
+  if (ingestionExtensionStreamStatistics)
   {
-    v18 = [(PFAPFAClientEvent *)self ingestionExtensionStreamStatistics];
+    ingestionExtensionStreamStatistics2 = [(PFAPFAClientEvent *)self ingestionExtensionStreamStatistics];
     PBDataWriterWriteSubmessage();
 
-    v17 = v19;
+    v17 = toCopy;
   }
 }
 
@@ -556,9 +556,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setIngestionExtensionStreamStatistics:(id)a3
+- (void)setIngestionExtensionStreamStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   repackagingExecution = self->_repackagingExecution;
   self->_repackagingExecution = 0;
 
@@ -575,14 +575,14 @@ LABEL_39:
   self->_orchestratorResultsStatsReported = 0;
 
   v10 = 106;
-  if (!v4)
+  if (!statisticsCopy)
   {
     v10 = 0;
   }
 
   self->_whichEvent_Type = v10;
   ingestionExtensionStreamStatistics = self->_ingestionExtensionStreamStatistics;
-  self->_ingestionExtensionStreamStatistics = v4;
+  self->_ingestionExtensionStreamStatistics = statisticsCopy;
 }
 
 - (void)deleteOrchestratorResultsStatsReported
@@ -610,9 +610,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setOrchestratorResultsStatsReported:(id)a3
+- (void)setOrchestratorResultsStatsReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   repackagingExecution = self->_repackagingExecution;
   self->_repackagingExecution = 0;
 
@@ -629,14 +629,14 @@ LABEL_39:
   self->_ingestionExtensionStreamStatistics = 0;
 
   v10 = 105;
-  if (!v4)
+  if (!reportedCopy)
   {
     v10 = 0;
   }
 
   self->_whichEvent_Type = v10;
   orchestratorResultsStatsReported = self->_orchestratorResultsStatsReported;
-  self->_orchestratorResultsStatsReported = v4;
+  self->_orchestratorResultsStatsReported = reportedCopy;
 }
 
 - (void)deletePreprocessorSessionEndStatsReported
@@ -664,9 +664,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setPreprocessorSessionEndStatsReported:(id)a3
+- (void)setPreprocessorSessionEndStatsReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   repackagingExecution = self->_repackagingExecution;
   self->_repackagingExecution = 0;
 
@@ -683,14 +683,14 @@ LABEL_39:
   self->_ingestionExtensionStreamStatistics = 0;
 
   v10 = 104;
-  if (!v4)
+  if (!reportedCopy)
   {
     v10 = 0;
   }
 
   self->_whichEvent_Type = v10;
   preprocessorSessionEndStatsReported = self->_preprocessorSessionEndStatsReported;
-  self->_preprocessorSessionEndStatsReported = v4;
+  self->_preprocessorSessionEndStatsReported = reportedCopy;
 }
 
 - (void)deletePreprocessorSessionStartStatsReported
@@ -718,9 +718,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setPreprocessorSessionStartStatsReported:(id)a3
+- (void)setPreprocessorSessionStartStatsReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   repackagingExecution = self->_repackagingExecution;
   self->_repackagingExecution = 0;
 
@@ -737,14 +737,14 @@ LABEL_39:
   self->_ingestionExtensionStreamStatistics = 0;
 
   v10 = 103;
-  if (!v4)
+  if (!reportedCopy)
   {
     v10 = 0;
   }
 
   self->_whichEvent_Type = v10;
   preprocessorSessionStartStatsReported = self->_preprocessorSessionStartStatsReported;
-  self->_preprocessorSessionStartStatsReported = v4;
+  self->_preprocessorSessionStartStatsReported = reportedCopy;
 }
 
 - (void)deletePreprocessorExecutionContext
@@ -772,9 +772,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setPreprocessorExecutionContext:(id)a3
+- (void)setPreprocessorExecutionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   repackagingExecution = self->_repackagingExecution;
   self->_repackagingExecution = 0;
 
@@ -791,14 +791,14 @@ LABEL_39:
   self->_ingestionExtensionStreamStatistics = 0;
 
   v10 = 102;
-  if (!v4)
+  if (!contextCopy)
   {
     v10 = 0;
   }
 
   self->_whichEvent_Type = v10;
   preprocessorExecutionContext = self->_preprocessorExecutionContext;
-  self->_preprocessorExecutionContext = v4;
+  self->_preprocessorExecutionContext = contextCopy;
 }
 
 - (void)deleteRepackagingExecution
@@ -826,9 +826,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setRepackagingExecution:(id)a3
+- (void)setRepackagingExecution:(id)execution
 {
-  v4 = a3;
+  executionCopy = execution;
   preprocessorExecutionContext = self->_preprocessorExecutionContext;
   self->_preprocessorExecutionContext = 0;
 
@@ -845,95 +845,95 @@ LABEL_39:
   self->_ingestionExtensionStreamStatistics = 0;
 
   v10 = 101;
-  if (!v4)
+  if (!executionCopy)
   {
     v10 = 0;
   }
 
   self->_whichEvent_Type = v10;
   repackagingExecution = self->_repackagingExecution;
-  self->_repackagingExecution = v4;
+  self->_repackagingExecution = executionCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(PFAPFAClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 5)
+  whichEvent_Type = [(PFAPFAClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 5)
   {
     return @"com.apple.aiml.lighthouse.pfa.PFAClientEvent";
   }
 
   else
   {
-    return off_1E78E0250[v2 - 101];
+    return off_1E78E0250[whichEvent_Type - 101];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v28.receiver = self;
   v28.super_class = PFAPFAClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v28 applySensitiveConditionsPolicy:v4];
-  v6 = [(PFAPFAClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v28 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(PFAPFAClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PFAPFAClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(PFAPFAClientEvent *)self repackagingExecution];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  repackagingExecution = [(PFAPFAClientEvent *)self repackagingExecution];
+  v10 = [repackagingExecution applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PFAPFAClientEvent *)self deleteRepackagingExecution];
   }
 
-  v12 = [(PFAPFAClientEvent *)self preprocessorExecutionContext];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  preprocessorExecutionContext = [(PFAPFAClientEvent *)self preprocessorExecutionContext];
+  v13 = [preprocessorExecutionContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PFAPFAClientEvent *)self deletePreprocessorExecutionContext];
   }
 
-  v15 = [(PFAPFAClientEvent *)self preprocessorSessionStartStatsReported];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  preprocessorSessionStartStatsReported = [(PFAPFAClientEvent *)self preprocessorSessionStartStatsReported];
+  v16 = [preprocessorSessionStartStatsReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(PFAPFAClientEvent *)self deletePreprocessorSessionStartStatsReported];
   }
 
-  v18 = [(PFAPFAClientEvent *)self preprocessorSessionEndStatsReported];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  preprocessorSessionEndStatsReported = [(PFAPFAClientEvent *)self preprocessorSessionEndStatsReported];
+  v19 = [preprocessorSessionEndStatsReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(PFAPFAClientEvent *)self deletePreprocessorSessionEndStatsReported];
   }
 
-  v21 = [(PFAPFAClientEvent *)self orchestratorResultsStatsReported];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  orchestratorResultsStatsReported = [(PFAPFAClientEvent *)self orchestratorResultsStatsReported];
+  v22 = [orchestratorResultsStatsReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(PFAPFAClientEvent *)self deleteOrchestratorResultsStatsReported];
   }
 
-  v24 = [(PFAPFAClientEvent *)self ingestionExtensionStreamStatistics];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  ingestionExtensionStreamStatistics = [(PFAPFAClientEvent *)self ingestionExtensionStreamStatistics];
+  v25 = [ingestionExtensionStreamStatistics applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(PFAPFAClientEvent *)self deleteIngestionExtensionStreamStatistics];
   }
@@ -951,30 +951,30 @@ LABEL_39:
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(PFAPFAClientEvent *)self whichEvent_Type];
-  if (v3 - 101 > 5)
+  whichEvent_Type = [(PFAPFAClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 5)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78EA978[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78EA978[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 5)
+  if (tag - 101 > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78EA9A8[a3 - 101];
+    return off_1E78EA9A8[tag - 101];
   }
 }
 

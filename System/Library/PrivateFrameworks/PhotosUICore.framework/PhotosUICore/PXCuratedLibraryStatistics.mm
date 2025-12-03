@@ -1,16 +1,16 @@
 @interface PXCuratedLibraryStatistics
 - (NSString)summaryDescription;
-- (int64_t)numberOfAssetsWithPlaybackStyle:(int64_t)a3 displayProminence:(int64_t)a4 autoPlaybackEligibility:(int64_t)a5;
+- (int64_t)numberOfAssetsWithPlaybackStyle:(int64_t)style displayProminence:(int64_t)prominence autoPlaybackEligibility:(int64_t)eligibility;
 @end
 
 @implementation PXCuratedLibraryStatistics
 
-- (int64_t)numberOfAssetsWithPlaybackStyle:(int64_t)a3 displayProminence:(int64_t)a4 autoPlaybackEligibility:(int64_t)a5
+- (int64_t)numberOfAssetsWithPlaybackStyle:(int64_t)style displayProminence:(int64_t)prominence autoPlaybackEligibility:(int64_t)eligibility
 {
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  [v7 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryStatistics.m" lineNumber:184 description:{@"Method %s is a responsibility of subclass %@", "-[PXCuratedLibraryStatistics numberOfAssetsWithPlaybackStyle:displayProminence:autoPlaybackEligibility:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryStatistics.m" lineNumber:184 description:{@"Method %s is a responsibility of subclass %@", "-[PXCuratedLibraryStatistics numberOfAssetsWithPlaybackStyle:displayProminence:autoPlaybackEligibility:]", v9}];
 
   abort();
 }
@@ -42,7 +42,7 @@
   v18 = v5;
   v19 = v7;
   v16 = v8;
-  v17 = self;
+  selfCopy = self;
   v9 = v7;
   v10 = v5;
   __48__PXCuratedLibraryStatistics_summaryDescription__block_invoke_3(v13, 1uLL);

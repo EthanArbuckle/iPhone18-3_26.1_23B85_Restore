@@ -1,5 +1,5 @@
 @interface OTTriggerEscrowUpdateOperation
-- (OTTriggerEscrowUpdateOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5;
+- (OTTriggerEscrowUpdateOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState;
 - (void)groupStart;
 @end
 
@@ -15,26 +15,26 @@
   }
 
   v41[0] = kSecurityRTCFieldAccountIsW;
-  v4 = [(OTTriggerEscrowUpdateOperation *)self deps];
-  v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 accountIsW]);
+  deps = [(OTTriggerEscrowUpdateOperation *)self deps];
+  v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [deps accountIsW]);
   v42[0] = v5;
   v41[1] = kSecurityRTCFieldAccountIsG;
-  v6 = [(OTTriggerEscrowUpdateOperation *)self deps];
-  v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 accountIsG]);
+  deps2 = [(OTTriggerEscrowUpdateOperation *)self deps];
+  v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [deps2 accountIsG]);
   v42[1] = v7;
   v32 = [NSDictionary dictionaryWithObjects:v42 forKeys:v41 count:2];
 
   v8 = [AAFAnalyticsEventSecurity alloc];
-  v9 = [(OTTriggerEscrowUpdateOperation *)self deps];
-  v10 = [v9 activeAccount];
-  v11 = [v10 altDSID];
-  v12 = [(OTTriggerEscrowUpdateOperation *)self deps];
-  v13 = [v12 flowID];
-  v14 = [(OTTriggerEscrowUpdateOperation *)self deps];
-  v15 = [v14 deviceSessionID];
-  v16 = [(OTTriggerEscrowUpdateOperation *)self deps];
-  LOBYTE(v31) = [v16 permittedToSendMetrics];
-  v17 = [v8 initWithKeychainCircleMetrics:v32 altDSID:v11 flowID:v13 deviceSessionID:v15 eventName:kSecurityRTCEventNameOTTriggerEscrowUpdateOperation testsAreEnabled:0 canSendMetrics:v31 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
+  deps3 = [(OTTriggerEscrowUpdateOperation *)self deps];
+  activeAccount = [deps3 activeAccount];
+  altDSID = [activeAccount altDSID];
+  deps4 = [(OTTriggerEscrowUpdateOperation *)self deps];
+  flowID = [deps4 flowID];
+  deps5 = [(OTTriggerEscrowUpdateOperation *)self deps];
+  deviceSessionID = [deps5 deviceSessionID];
+  deps6 = [(OTTriggerEscrowUpdateOperation *)self deps];
+  LOBYTE(v31) = [deps6 permittedToSendMetrics];
+  v17 = [v8 initWithKeychainCircleMetrics:v32 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:kSecurityRTCEventNameOTTriggerEscrowUpdateOperation testsAreEnabled:0 canSendMetrics:v31 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
 
   objc_initWeak(&location, self);
   v35[0] = _NSConcreteStackBlock;
@@ -47,12 +47,12 @@
   v19 = [NSBlockOperation blockOperationWithBlock:v35];
   [(OTTriggerEscrowUpdateOperation *)self setFinishedOp:v19];
 
-  v20 = [(OTTriggerEscrowUpdateOperation *)self finishedOp];
-  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:v20];
+  finishedOp = [(OTTriggerEscrowUpdateOperation *)self finishedOp];
+  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:finishedOp];
 
-  v21 = [(OTTriggerEscrowUpdateOperation *)self deps];
+  deps7 = [(OTTriggerEscrowUpdateOperation *)self deps];
   v34 = 0;
-  v22 = [objc_msgSend(v21 "escrowRequestClass")];
+  v22 = [objc_msgSend(deps7 "escrowRequestClass")];
   v23 = v34;
 
   if (!v22 || v23)
@@ -65,8 +65,8 @@
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Unable to acquire a EscrowRequest object: %@", buf, 0xCu);
     }
 
-    v28 = [(OTTriggerEscrowUpdateOperation *)self finishedOp];
-    [(CKKSGroupOperation *)self runBeforeGroupFinished:v28];
+    finishedOp2 = [(OTTriggerEscrowUpdateOperation *)self finishedOp];
+    [(CKKSGroupOperation *)self runBeforeGroupFinished:finishedOp2];
 
     [(CKKSResultOperation *)self setError:v23];
   }
@@ -101,32 +101,32 @@
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Requested silent escrow update", buf, 2u);
       }
 
-      v29 = [(OTTriggerEscrowUpdateOperation *)self intendedState];
-      [(OTTriggerEscrowUpdateOperation *)self setNextState:v29];
+      intendedState = [(OTTriggerEscrowUpdateOperation *)self intendedState];
+      [(OTTriggerEscrowUpdateOperation *)self setNextState:intendedState];
     }
 
-    v30 = [(OTTriggerEscrowUpdateOperation *)self finishedOp];
-    [(CKKSGroupOperation *)self runBeforeGroupFinished:v30];
+    finishedOp3 = [(OTTriggerEscrowUpdateOperation *)self finishedOp];
+    [(CKKSGroupOperation *)self runBeforeGroupFinished:finishedOp3];
   }
 
   objc_destroyWeak(&v37);
   objc_destroyWeak(&location);
 }
 
-- (OTTriggerEscrowUpdateOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5
+- (OTTriggerEscrowUpdateOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  errorStateCopy = errorState;
   v15.receiver = self;
   v15.super_class = OTTriggerEscrowUpdateOperation;
   v12 = [(CKKSGroupOperation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_deps, a3);
-    objc_storeStrong(&v13->_intendedState, a4);
-    objc_storeStrong(&v13->_nextState, a5);
+    objc_storeStrong(&v12->_deps, dependencies);
+    objc_storeStrong(&v13->_intendedState, state);
+    objc_storeStrong(&v13->_nextState, errorState);
   }
 
   return v13;

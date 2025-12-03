@@ -1,24 +1,24 @@
 @interface SBSystemApertureSceneElementPlaceholderWrapperView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SBSystemApertureSceneElementPlaceholderWrapperView)initWithContentView:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SBSystemApertureSceneElementPlaceholderWrapperView)initWithContentView:(id)view;
 - (SBSystemApertureSceneElementPlaceholderWrapperViewDelegate)delegate;
 - (void)layoutSubviews;
-- (void)setContentView:(id)a3;
+- (void)setContentView:(id)view;
 @end
 
 @implementation SBSystemApertureSceneElementPlaceholderWrapperView
 
-- (SBSystemApertureSceneElementPlaceholderWrapperView)initWithContentView:(id)a3
+- (SBSystemApertureSceneElementPlaceholderWrapperView)initWithContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = SBSystemApertureSceneElementPlaceholderWrapperView;
   v6 = [(SBSystemApertureSceneElementPlaceholderWrapperView *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentView, a3);
+    objc_storeStrong(&v6->_contentView, view);
     if (v7->_contentView)
     {
       [(SBSystemApertureSceneElementPlaceholderWrapperView *)v7 addSubview:?];
@@ -28,15 +28,15 @@
   return v7;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     if (self->_contentView)
     {
       [(SBSystemApertureSceneElementPlaceholderWrapperView *)self addSubview:?];
@@ -48,7 +48,7 @@
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained placeholderWrapperViewDidChangeContentView:self];
 
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
@@ -61,13 +61,13 @@
   [(SBSystemApertureSceneElementPlaceholderWrapperView *)self bounds];
   [(UIView *)contentView setFrame:?];
   [(SBSystemApertureSceneElementPlaceholderWrapperView *)self setUserInteractionEnabled:0];
-  v4 = [(SBSystemApertureSceneElementPlaceholderWrapperView *)self layer];
-  [v4 setAllowsHitTesting:0];
+  layer = [(SBSystemApertureSceneElementPlaceholderWrapperView *)self layer];
+  [layer setAllowsHitTesting:0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIView *)self->_contentView sizeThatFits:a3.width, a3.height];
+  [(UIView *)self->_contentView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

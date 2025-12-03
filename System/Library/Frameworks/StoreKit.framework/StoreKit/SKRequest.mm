@@ -2,12 +2,12 @@
 - (SKPaymentQueueClient)paymentQueueClient;
 - (SKRequest)init;
 - (id)delegate;
-- (id)errorFromCFObject:(id)a3;
+- (id)errorFromCFObject:(id)object;
 - (void)_beginBackgroundTask;
 - (void)_endBackgroundTask;
 - (void)_start;
 - (void)cancel;
-- (void)setPaymentQueueClient:(id)a3;
+- (void)setPaymentQueueClient:(id)client;
 - (void)start;
 @end
 
@@ -70,33 +70,33 @@
   return v2;
 }
 
-- (void)setPaymentQueueClient:(id)a3
+- (void)setPaymentQueueClient:(id)client
 {
   requestInternal = self->_requestInternal;
-  if (requestInternal[2] != a3)
+  if (requestInternal[2] != client)
   {
     v7 = requestInternal;
-    v5 = [a3 copy];
+    v5 = [client copy];
     v6 = requestInternal[2];
     requestInternal[2] = v5;
   }
 }
 
-- (id)errorFromCFObject:(id)a3
+- (id)errorFromCFObject:(id)object
 {
-  v3 = a3;
-  if (v3)
+  objectCopy = object;
+  if (objectCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"SKErrorDomain" code:0 userInfo:0];
 
-      v3 = v4;
+      objectCopy = v4;
     }
   }
 
-  return v3;
+  return objectCopy;
 }
 
 - (void)_start
@@ -104,13 +104,13 @@
   requestInternal = self->_requestInternal;
   requestInternal[4] = 3;
   v4 = requestInternal;
-  v5 = [(SKRequest *)self delegate];
+  delegate = [(SKRequest *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SKRequest *)self delegate];
-    [v7 requestDidFinish:self];
+    delegate2 = [(SKRequest *)self delegate];
+    [delegate2 requestDidFinish:self];
   }
 
   [(SKRequest *)self _endBackgroundTask];
@@ -122,7 +122,7 @@
   {
     v3 = MEMORY[0x1E69DC668];
     v4 = self->_requestInternal;
-    v5 = [v3 sharedApplication];
+    sharedApplication = [v3 sharedApplication];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8[0] = MEMORY[0x1E69E9820];
@@ -130,7 +130,7 @@
     v8[2] = __33__SKRequest__beginBackgroundTask__block_invoke;
     v8[3] = &unk_1E7B27980;
     v8[4] = self;
-    v4[1] = [v5 beginBackgroundTaskWithName:v7 expirationHandler:v8];
+    v4[1] = [sharedApplication beginBackgroundTaskWithName:v7 expirationHandler:v8];
   }
 }
 
@@ -149,8 +149,8 @@ uint64_t __33__SKRequest__beginBackgroundTask__block_invoke(uint64_t a1)
   if (v3 != *MEMORY[0x1E69DDBE8])
   {
     requestInternal[1] = *MEMORY[0x1E69DDBE8];
-    v4 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v4 endBackgroundTask:v3];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] endBackgroundTask:v3];
   }
 }
 

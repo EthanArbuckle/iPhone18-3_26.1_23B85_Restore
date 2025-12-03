@@ -1,25 +1,25 @@
 @interface DTXChannel
 - ($2AC1CA6B41BA5ED35C064565198F84D5)_callbackSnapshot;
-- (DTXChannel)initWithConnection:(id)a3 channelIdentifier:(unsigned int)a4 label:(id)a5;
+- (DTXChannel)initWithConnection:(id)connection channelIdentifier:(unsigned int)identifier label:(id)label;
 - (NSString)description;
-- (void)_scheduleBlock:(id)a3;
-- (void)_scheduleMessage:(id)a3 tracker:(id)a4 withHandler:(id)a5;
-- (void)_setDispatchTarget:(id)a3 queue:(id)a4;
-- (void)_setDispatchValidator:(id)a3;
+- (void)_scheduleBlock:(id)block;
+- (void)_scheduleMessage:(id)message tracker:(id)tracker withHandler:(id)handler;
+- (void)_setDispatchTarget:(id)target queue:(id)queue;
+- (void)_setDispatchValidator:(id)validator;
 - (void)cancel;
-- (void)registerDisconnectHandler:(id)a3;
-- (void)sendControlSync:(id)a3 replyHandler:(id)a4;
-- (void)sendMessageSync:(id)a3 replyHandler:(id)a4;
-- (void)setMessageHandler:(id)a3;
+- (void)registerDisconnectHandler:(id)handler;
+- (void)sendControlSync:(id)sync replyHandler:(id)handler;
+- (void)sendMessageSync:(id)sync replyHandler:(id)handler;
+- (void)setMessageHandler:(id)handler;
 @end
 
 @implementation DTXChannel
 
-- (DTXChannel)initWithConnection:(id)a3 channelIdentifier:(unsigned int)a4 label:(id)a5
+- (DTXChannel)initWithConnection:(id)connection channelIdentifier:(unsigned int)identifier label:(id)label
 {
-  v9 = a3;
-  v10 = a5;
-  if (!v9)
+  connectionCopy = connection;
+  labelCopy = label;
+  if (!connectionCopy)
   {
     sub_247F5A178();
   }
@@ -30,16 +30,16 @@
   v12 = v11;
   if (v11)
   {
-    v11->_channelCode = a4;
-    objc_storeStrong(&v11->_label, a5);
+    v11->_channelCode = identifier;
+    objc_storeStrong(&v11->_label, label);
     if (v12->_channelCode)
     {
-      objc_storeStrong(&v12->_strongConnection, a3);
+      objc_storeStrong(&v12->_strongConnection, connection);
     }
 
-    v12->_connection = v9;
+    v12->_connection = connectionCopy;
     v15 = MEMORY[0x277CCACA8];
-    v16 = objc_msgSend_atomicConnectionNumber(v9, v13, v14);
+    v16 = objc_msgSend_atomicConnectionNumber(connectionCopy, v13, v14);
     LODWORD(v18) = v12->_channelCode;
     v19 = v18 < 0;
     if (v18 >= 0)
@@ -100,28 +100,28 @@
   return objc_msgSend_stringWithFormat_(v3, v9, @"<%s %p : x%d.c%d%s> %@", Name, self, v8, v10, v12, self->_label);
 }
 
-- (void)_scheduleBlock:(id)a3
+- (void)_scheduleBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    dispatch_async(self->_serialQueue, a3);
+    dispatch_async(self->_serialQueue, block);
   }
 }
 
-- (void)_scheduleMessage:(id)a3 tracker:(id)a4 withHandler:(id)a5
+- (void)_scheduleMessage:(id)message tracker:(id)tracker withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v12 = a5;
-  if (!v8)
+  messageCopy = message;
+  trackerCopy = tracker;
+  handlerCopy = handler;
+  if (!messageCopy)
   {
-    v8 = kDTXInterruptionMessage;
+    messageCopy = kDTXInterruptionMessage;
   }
 
-  v13 = objc_msgSend_errorStatus(v8, v10, v11);
-  if (v12 || v13 != 2)
+  v13 = objc_msgSend_errorStatus(messageCopy, v10, v11);
+  if (handlerCopy || v13 != 2)
   {
-    if (objc_msgSend_isDispatch(v8, v14, v15))
+    if (objc_msgSend_isDispatch(messageCopy, v14, v15))
     {
       v17 = self->_connection;
       v24[0] = MEMORY[0x277D85DD0];
@@ -129,9 +129,9 @@
       v24[2] = sub_247F4BF9C;
       v24[3] = &unk_278EEEDB8;
       v24[4] = self;
-      v25 = v8;
+      v25 = messageCopy;
       v26 = v17;
-      v27 = v9;
+      v27 = trackerCopy;
       v18 = v17;
       v19 = MEMORY[0x24C1C0D80](v24);
 
@@ -148,9 +148,9 @@
       v20[2] = sub_247F4C2FC;
       v20[3] = &unk_278EEEDE0;
       v20[4] = self;
-      v23 = v12;
-      v21 = v8;
-      v22 = v9;
+      v23 = handlerCopy;
+      v21 = messageCopy;
+      v22 = trackerCopy;
       v19 = MEMORY[0x24C1C0D80](v20);
 
       if (!v19)
@@ -196,9 +196,9 @@ LABEL_12:
   return result;
 }
 
-- (void)setMessageHandler:(id)a3
+- (void)setMessageHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -209,7 +209,7 @@ LABEL_12:
   v7[1] = 3221225472;
   v7[2] = sub_247F4C77C;
   v7[3] = &unk_278EEEE30;
-  v5 = v4;
+  v5 = handlerCopy;
   v7[4] = self;
   v8 = v5;
   v9 = &v10;
@@ -220,10 +220,10 @@ LABEL_12:
   _Block_object_dispose(&v10, 8);
 }
 
-- (void)_setDispatchTarget:(id)a3 queue:(id)a4
+- (void)_setDispatchTarget:(id)target queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  targetCopy = target;
+  queueCopy = queue;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -235,10 +235,10 @@ LABEL_12:
   v11[2] = sub_247F4C9B4;
   v11[3] = &unk_278EEEE58;
   v11[4] = self;
-  v8 = v6;
+  v8 = targetCopy;
   v12 = v8;
   v14 = &v15;
-  v9 = v7;
+  v9 = queueCopy;
   v13 = v9;
   sub_247F4C570(self, v11);
   v10 = v16[5];
@@ -247,23 +247,23 @@ LABEL_12:
   _Block_object_dispose(&v15, 8);
 }
 
-- (void)_setDispatchValidator:(id)a3
+- (void)_setDispatchValidator:(id)validator
 {
-  v4 = a3;
+  validatorCopy = validator;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_247F4CAE4;
   v6[3] = &unk_278EEEE80;
-  v7 = v4;
-  v5 = v4;
+  v7 = validatorCopy;
+  v5 = validatorCopy;
   sub_247F4C570(self, v6);
 }
 
-- (void)registerDisconnectHandler:(id)a3
+- (void)registerDisconnectHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     connection = self->_connection;
     v7 = qword_2814DB5F8;
@@ -271,7 +271,7 @@ LABEL_12:
     v9[1] = 3221225472;
     v9[2] = sub_247F4CBE0;
     v9[3] = &unk_278EEEEA8;
-    v10 = v4;
+    v10 = handlerCopy;
     objc_msgSend_sendMessage_fromChannel_sendMode_syncWithReply_replyHandler_(connection, v8, v7, self, 2, 0, v9);
   }
 }
@@ -283,28 +283,28 @@ LABEL_12:
   objc_msgSend_setIsCanceled_(self, v3, 1);
 }
 
-- (void)sendControlSync:(id)a3 replyHandler:(id)a4
+- (void)sendControlSync:(id)sync replyHandler:(id)handler
 {
-  v9 = a3;
-  v8 = a4;
-  if (!v8)
+  syncCopy = sync;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     sub_247F4CCE8(self, a2);
   }
 
-  objc_msgSend_sendMessage_fromChannel_sendMode_syncWithReply_replyHandler_(self->_connection, v7, v9, self, 2, 1, v8);
+  objc_msgSend_sendMessage_fromChannel_sendMode_syncWithReply_replyHandler_(self->_connection, v7, syncCopy, self, 2, 1, handlerCopy);
 }
 
-- (void)sendMessageSync:(id)a3 replyHandler:(id)a4
+- (void)sendMessageSync:(id)sync replyHandler:(id)handler
 {
-  v8 = a3;
-  v7 = a4;
-  if (!v7)
+  syncCopy = sync;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     sub_247F4CCE8(self, a2);
   }
 
-  sub_247F4CE00(v8, self->_connection, self, 1, v7);
+  sub_247F4CE00(syncCopy, self->_connection, self, 1, handlerCopy);
 }
 
 @end

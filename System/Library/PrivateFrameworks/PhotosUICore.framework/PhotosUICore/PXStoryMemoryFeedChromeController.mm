@@ -1,21 +1,21 @@
 @interface PXStoryMemoryFeedChromeController
 - (PXStoryMemoryFeedChromeController)init;
-- (PXStoryMemoryFeedChromeController)initWithViewController:(id)a3 dataSourceManager:(id)a4;
-- (void)_handleFavoritesToggleButton:(id)a3;
+- (PXStoryMemoryFeedChromeController)initWithViewController:(id)controller dataSourceManager:(id)manager;
+- (void)_handleFavoritesToggleButton:(id)button;
 - (void)_updateChrome;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setIsActive:(BOOL)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setIsActive:(BOOL)active;
 @end
 
 @implementation PXStoryMemoryFeedChromeController
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (DataSourceManagerObservationContext_133082 == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (DataSourceManagerObservationContext_133082 == context)
   {
-    if ((v6 & 0xC) == 0)
+    if ((changeCopy & 0xC) == 0)
     {
       goto LABEL_6;
     }
@@ -23,29 +23,29 @@
     goto LABEL_5;
   }
 
-  if (PXLibraryFilterStateObservationContext_133083 == a5)
+  if (PXLibraryFilterStateObservationContext_133083 == context)
   {
-    if ((v6 & 1) == 0)
+    if ((changeCopy & 1) == 0)
     {
       goto LABEL_6;
     }
 
 LABEL_5:
-    v11 = v9;
+    v11 = observableCopy;
     [(PXStoryMemoryFeedChromeController *)self _invalidateChrome];
-    v9 = v11;
+    observableCopy = v11;
     goto LABEL_6;
   }
 
-  if (PXSharedLibraryStatusProviderObservationContext_133084 != a5)
+  if (PXSharedLibraryStatusProviderObservationContext_133084 != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedChromeController.m" lineNumber:149 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedChromeController.m" lineNumber:149 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 3) != 0)
+  if ((changeCopy & 3) != 0)
   {
     goto LABEL_5;
   }
@@ -57,20 +57,20 @@ LABEL_6:
 {
   if ([(PXStoryMemoryFeedChromeController *)self isActive])
   {
-    v3 = [(PXStoryMemoryFeedChromeController *)self navigationItem];
-    v4 = [(PXStoryMemoryFeedChromeController *)self sharedLibraryStatusProvider];
-    if ([v4 hasSharedLibraryOrPreview])
+    navigationItem = [(PXStoryMemoryFeedChromeController *)self navigationItem];
+    sharedLibraryStatusProvider = [(PXStoryMemoryFeedChromeController *)self sharedLibraryStatusProvider];
+    if ([sharedLibraryStatusProvider hasSharedLibraryOrPreview])
     {
-      v5 = [(PXStoryMemoryFeedChromeController *)self dataSourceManager];
-      v6 = [v5 wantsFavoritesOnly];
+      dataSourceManager = [(PXStoryMemoryFeedChromeController *)self dataSourceManager];
+      wantsFavoritesOnly = [dataSourceManager wantsFavoritesOnly];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __50__PXStoryMemoryFeedChromeController__updateChrome__block_invoke;
       aBlock[3] = &unk_1E774B308;
-      v7 = v5;
+      v7 = dataSourceManager;
       aBlock[4] = v7;
       v8 = _Block_copy(aBlock);
-      if (v6)
+      if (wantsFavoritesOnly)
       {
         v9 = @"PXMemoriesFeedFavoritesTitle";
       }
@@ -81,36 +81,36 @@ LABEL_6:
       }
 
       v10 = PXLocalizedStringFromTable(v9, @"PhotosUICore");
-      [v3 setTitle:v10];
+      [navigationItem setTitle:v10];
 
-      v11 = [(PXStoryMemoryFeedChromeController *)self libraryFilterState];
-      v12 = [v4 hasPreview];
+      libraryFilterState = [(PXStoryMemoryFeedChromeController *)self libraryFilterState];
+      hasPreview = [sharedLibraryStatusProvider hasPreview];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __50__PXStoryMemoryFeedChromeController__updateChrome__block_invoke_3;
       v21[3] = &unk_1E773BDE0;
-      v22 = v6;
+      v22 = wantsFavoritesOnly;
       v21[4] = v7;
       v21[5] = v8;
       v13 = v8;
       v14 = v7;
-      PXSharedLibraryCreateSwitchLibraryButtonItem(v11, v12, v21);
+      PXSharedLibraryCreateSwitchLibraryButtonItem(libraryFilterState, hasPreview, v21);
     }
 
     v15 = PXLocalizedStringFromTable(@"PXMemoriesFeedTitle", @"PhotosUICore");
-    [v3 setTitle:v15];
+    [navigationItem setTitle:v15];
 
-    v16 = [(PXStoryMemoryFeedChromeController *)self dataSourceManager];
-    if ([v16 hasAnyFavorites] && (!objc_msgSend(v16, "wantsFavoritesOnly") ? (v17 = @"PXMemoriesFeedButtonFavoritesTitle") : (v17 = @"PXMemoriesFeedSeeAllButtonTitle"), PXLocalizedStringFromTable(v17, @"PhotosUICore"), (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+    dataSourceManager2 = [(PXStoryMemoryFeedChromeController *)self dataSourceManager];
+    if ([dataSourceManager2 hasAnyFavorites] && (!objc_msgSend(dataSourceManager2, "wantsFavoritesOnly") ? (v17 = @"PXMemoriesFeedButtonFavoritesTitle") : (v17 = @"PXMemoriesFeedSeeAllButtonTitle"), PXLocalizedStringFromTable(v17, @"PhotosUICore"), (v18 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v19 = v18;
       v20 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v18 style:0 target:self action:sel__handleFavoritesToggleButton_];
-      [v3 setRightBarButtonItem:v20];
+      [navigationItem setRightBarButtonItem:v20];
     }
 
     else
     {
-      [v3 setRightBarButtonItem:0];
+      [navigationItem setRightBarButtonItem:0];
     }
   }
 }
@@ -164,19 +164,19 @@ void __50__PXStoryMemoryFeedChromeController__updateChrome__block_invoke_4(uint6
   [v3 addItemWithTitle:v6 systemImageName:@"heart" state:v7 options:0 handler:v8];
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
-  if (self->_isActive != a3)
+  if (self->_isActive != active)
   {
-    self->_isActive = a3;
+    self->_isActive = active;
     [(PXStoryMemoryFeedChromeController *)self _invalidateChrome];
   }
 }
 
-- (void)_handleFavoritesToggleButton:(id)a3
+- (void)_handleFavoritesToggleButton:(id)button
 {
-  v3 = [(PXStoryMemoryFeedChromeController *)self dataSourceManager];
-  [v3 performChanges:&__block_literal_global_133123];
+  dataSourceManager = [(PXStoryMemoryFeedChromeController *)self dataSourceManager];
+  [dataSourceManager performChanges:&__block_literal_global_133123];
 }
 
 void __66__PXStoryMemoryFeedChromeController__handleFavoritesToggleButton___block_invoke(uint64_t a1, void *a2)
@@ -185,28 +185,28 @@ void __66__PXStoryMemoryFeedChromeController__handleFavoritesToggleButton___bloc
   [v2 setWantsFavoritesOnly:{objc_msgSend(v2, "wantsFavoritesOnly") ^ 1}];
 }
 
-- (PXStoryMemoryFeedChromeController)initWithViewController:(id)a3 dataSourceManager:(id)a4
+- (PXStoryMemoryFeedChromeController)initWithViewController:(id)controller dataSourceManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = PXStoryMemoryFeedChromeController;
   v8 = [(PXStoryMemoryFeedChromeController *)&v17 init];
   if (v8)
   {
-    v9 = [v6 navigationItem];
+    navigationItem = [controllerCopy navigationItem];
     navigationItem = v8->_navigationItem;
-    v8->_navigationItem = v9;
+    v8->_navigationItem = navigationItem;
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v8->_dataSourceManager, a4);
+      objc_storeStrong(&v8->_dataSourceManager, manager);
       [(PXSectionedDataSourceManager *)v8->_dataSourceManager registerChangeObserver:v8 context:DataSourceManagerObservationContext_133082];
     }
 
-    v11 = [(PXStoryMemoryFeedDataSourceManager *)v8->_dataSourceManager photoLibrary];
-    v12 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v11];
+    photoLibrary = [(PXStoryMemoryFeedDataSourceManager *)v8->_dataSourceManager photoLibrary];
+    v12 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:photoLibrary];
     sharedLibraryStatusProvider = v8->_sharedLibraryStatusProvider;
     v8->_sharedLibraryStatusProvider = v12;
 
@@ -224,8 +224,8 @@ void __66__PXStoryMemoryFeedChromeController__handleFavoritesToggleButton___bloc
 
 - (PXStoryMemoryFeedChromeController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedChromeController.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXStoryMemoryFeedChromeController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedChromeController.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXStoryMemoryFeedChromeController init]"}];
 
   abort();
 }

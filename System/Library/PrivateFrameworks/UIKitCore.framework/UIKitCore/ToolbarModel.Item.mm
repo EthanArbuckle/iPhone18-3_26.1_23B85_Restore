@@ -1,26 +1,26 @@
 @interface ToolbarModel.Item
-- (BOOL)_item:(id)a3 removeAllSymbolEffectsWithOptions:(id)a4 animated:(BOOL)a5;
-- (BOOL)_itemDidUpdateMenu:(id)a3 fromMenu:(id)a4;
+- (BOOL)_item:(id)_item removeAllSymbolEffectsWithOptions:(id)options animated:(BOOL)animated;
+- (BOOL)_itemDidUpdateMenu:(id)menu fromMenu:(id)fromMenu;
 - (_TtCC5UIKit12ToolbarModel4Item)init;
-- (id)_contextMenuInteractionForItem:(id)a3;
-- (void)_item:(id)a3 applyContentTransition:(id)a4 options:(id)a5;
-- (void)_itemCustomViewDidChange:(id)a3 fromView:(id)a4;
-- (void)_itemDidChangeEnabledState:(void *)a3;
-- (void)_itemDidChangeHiddenState:(id)a3;
-- (void)_itemDidChangePlatterizationPreference:(id)a3;
-- (void)_itemDidChangeSelectionState:(id)a3;
+- (id)_contextMenuInteractionForItem:(id)item;
+- (void)_item:(id)_item applyContentTransition:(id)transition options:(id)options;
+- (void)_itemCustomViewDidChange:(id)change fromView:(id)view;
+- (void)_itemDidChangeEnabledState:(void *)state;
+- (void)_itemDidChangeHiddenState:(id)state;
+- (void)_itemDidChangePlatterizationPreference:(id)preference;
+- (void)_itemDidChangeSelectionState:(id)state;
 @end
 
 @implementation ToolbarModel.Item
 
-- (BOOL)_itemDidUpdateMenu:(id)a3 fromMenu:(id)a4
+- (BOOL)_itemDidUpdateMenu:(id)menu fromMenu:(id)fromMenu
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 view];
-  if (v7)
+  menuCopy = menu;
+  fromMenuCopy = fromMenu;
+  view = [menuCopy view];
+  if (view)
   {
-    v8 = v7;
+    v8 = view;
     objc_opt_self();
     v9 = swift_dynamicCastObjCClass();
     if (v9)
@@ -31,27 +31,27 @@
 
     else
     {
-      v10 = v5;
-      v5 = v6;
-      v6 = v8;
+      v10 = menuCopy;
+      menuCopy = fromMenuCopy;
+      fromMenuCopy = v8;
     }
   }
 
   return 0;
 }
 
-- (void)_itemDidChangeEnabledState:(void *)a3
+- (void)_itemDidChangeEnabledState:(void *)state
 {
-  v4 = a3;
-  v5 = a1;
+  stateCopy = state;
+  selfCopy = self;
   sub_188BD4774();
 }
 
-- (void)_itemDidChangePlatterizationPreference:(id)a3
+- (void)_itemDidChangePlatterizationPreference:(id)preference
 {
-  v4 = a3;
-  v5 = self;
-  sub_1890A9288(v4, &selRef__requiresOwnSection, &unk_18A663B40, &OBJC_IVAR____TtCC5UIKit12ToolbarModel4Item__requiresOwnSection);
+  preferenceCopy = preference;
+  selfCopy = self;
+  sub_1890A9288(preferenceCopy, &selRef__requiresOwnSection, &unk_18A663B40, &OBJC_IVAR____TtCC5UIKit12ToolbarModel4Item__requiresOwnSection);
 }
 
 - (_TtCC5UIKit12ToolbarModel4Item)init
@@ -61,73 +61,73 @@
   return result;
 }
 
-- (void)_itemCustomViewDidChange:(id)a3 fromView:(id)a4
+- (void)_itemCustomViewDidChange:(id)change fromView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  changeCopy = change;
+  viewCopy = view;
+  selfCopy = self;
   sub_188BD4774();
 }
 
-- (void)_itemDidChangeSelectionState:(id)a3
+- (void)_itemDidChangeSelectionState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_1890A8DA0(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_1890A8DA0(stateCopy);
 }
 
-- (void)_itemDidChangeHiddenState:(id)a3
+- (void)_itemDidChangeHiddenState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_1890A9288(v4, &selRef_isHidden, &unk_18A663BB8, &OBJC_IVAR____TtCC5UIKit12ToolbarModel4Item__isHidden);
+  stateCopy = state;
+  selfCopy = self;
+  sub_1890A9288(stateCopy, &selRef_isHidden, &unk_18A663BB8, &OBJC_IVAR____TtCC5UIKit12ToolbarModel4Item__isHidden);
 }
 
-- (id)_contextMenuInteractionForItem:(id)a3
+- (id)_contextMenuInteractionForItem:(id)item
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtCC5UIKit12ToolbarModel4Item_barButtonItem);
-  v4 = self;
-  v5 = [v3 view];
-  if (v5)
+  selfCopy = self;
+  view = [v3 view];
+  if (view)
   {
-    v6 = v5;
+    v6 = view;
     objc_opt_self();
-    v7 = swift_dynamicCastObjCClass();
-    if (v7)
+    contextMenuInteraction = swift_dynamicCastObjCClass();
+    if (contextMenuInteraction)
     {
       v8 = v6;
-      v7 = [v7 contextMenuInteraction];
+      contextMenuInteraction = [contextMenuInteraction contextMenuInteraction];
     }
 
     else
     {
-      v8 = v4;
-      v4 = v6;
+      v8 = selfCopy;
+      selfCopy = v6;
     }
   }
 
   else
   {
-    v7 = 0;
+    contextMenuInteraction = 0;
   }
 
-  return v7;
+  return contextMenuInteraction;
 }
 
-- (BOOL)_item:(id)a3 removeAllSymbolEffectsWithOptions:(id)a4 animated:(BOOL)a5
+- (BOOL)_item:(id)_item removeAllSymbolEffectsWithOptions:(id)options animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 view];
-  if (v9)
+  animatedCopy = animated;
+  _itemCopy = _item;
+  optionsCopy = options;
+  view = [_itemCopy view];
+  if (view)
   {
-    v10 = v9;
+    v10 = view;
     objc_opt_self();
     v11 = swift_dynamicCastObjCClass();
     if (v11)
     {
-      [v11 removeAllSymbolEffectsWithOptions:v8 animated:v5];
+      [v11 removeAllSymbolEffectsWithOptions:optionsCopy animated:animatedCopy];
       v12 = 0;
       v13 = v10;
     }
@@ -135,9 +135,9 @@
     else
     {
       v12 = 1;
-      v13 = v7;
-      v7 = v8;
-      v8 = v10;
+      v13 = _itemCopy;
+      _itemCopy = optionsCopy;
+      optionsCopy = v10;
     }
   }
 
@@ -149,29 +149,29 @@
   return v12;
 }
 
-- (void)_item:(id)a3 applyContentTransition:(id)a4 options:(id)a5
+- (void)_item:(id)_item applyContentTransition:(id)transition options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  v13 = a5;
-  v9 = [v7 view];
-  if (v9)
+  _itemCopy = _item;
+  transitionCopy = transition;
+  optionsCopy = options;
+  view = [_itemCopy view];
+  if (view)
   {
-    v10 = v9;
+    v10 = view;
     objc_opt_self();
     v11 = swift_dynamicCastObjCClass();
     if (v11)
     {
-      [v11 applyContentTransition:v8 options:v13];
+      [v11 applyContentTransition:transitionCopy options:optionsCopy];
       v12 = v10;
     }
 
     else
     {
-      v12 = v7;
-      v7 = v8;
-      v8 = v13;
-      v13 = v10;
+      v12 = _itemCopy;
+      _itemCopy = transitionCopy;
+      transitionCopy = optionsCopy;
+      optionsCopy = v10;
     }
   }
 }

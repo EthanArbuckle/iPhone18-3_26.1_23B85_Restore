@@ -6,17 +6,17 @@
 
 - (id)notificationSuppressionContextManager
 {
-  if ([a1 conformsToProtocol:&unk_1F1B45CE0])
+  if ([self conformsToProtocol:&unk_1F1B45CE0])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

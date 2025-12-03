@@ -1,19 +1,19 @@
 @interface HAENotificationCenter
 + (BOOL)connectedWiredDeviceIsHeadphone;
-+ (BOOL)connectedWiredDeviceIsHeadphoneWithUUID:(id)a3;
++ (BOOL)connectedWiredDeviceIsHeadphoneWithUUID:(id)d;
 + (void)startNotificationCenterServer;
-- (HAENotificationCenter)initWithBundleIdentifier:(id)a3;
+- (HAENotificationCenter)initWithBundleIdentifier:(id)identifier;
 - (HAENotificationCenterUserDelegate)delegate;
-- (id)addHAENotificationEvent:(id)a3 error:(id *)a4;
-- (void)addHAENotificationEvent:(id)a3 completion:(id)a4;
-- (void)setDelegate:(id)a3;
+- (id)addHAENotificationEvent:(id)event error:(id *)error;
+- (void)addHAENotificationEvent:(id)event completion:(id)completion;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation HAENotificationCenter
 
-- (HAENotificationCenter)initWithBundleIdentifier:(id)a3
+- (HAENotificationCenter)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = HAENotificationCenter;
   v6 = [(HAENotificationCenter *)&v14 init];
@@ -21,7 +21,7 @@
   {
     if (+[HAENDefaults HAENSupportedForCurrentDeviceClass])
     {
-      objc_storeStrong(&v6->bundleID, a3);
+      objc_storeStrong(&v6->bundleID, identifier);
       v7 = +[HAENDefaults sharedInstance];
       [v7 getLiveMonitoringThreshold];
       v6->liveThresholdInDBA = v8;
@@ -37,7 +37,7 @@
 
       else
       {
-        v11 = [[HAENotificationCenterClient alloc] initWithBundleID:v5];
+        v11 = [[HAENotificationCenterClient alloc] initWithBundleID:identifierCopy];
       }
 
       centerDelegate = v6->centerDelegate;
@@ -54,34 +54,34 @@
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = HAENotificationsLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = delegateCopy;
     _os_log_impl(&dword_25081E000, v5, OS_LOG_TYPE_DEFAULT, "setDelegate %@", &v7, 0xCu);
   }
 
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addHAENotificationEvent:(id)a3 completion:(id)a4
+- (void)addHAENotificationEvent:(id)event completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   v8 = +[HAENDefaults sharedInstance];
-  v9 = [v8 isHAENFeatureEnabled];
+  isHAENFeatureEnabled = [v8 isHAENFeatureEnabled];
 
-  if (v9)
+  if (isHAENFeatureEnabled)
   {
-    [(HAENotificationCenterDelegate *)self->centerDelegate addHAENotificationEvent:v6];
-    if ([v6 eventType] == 2003133803)
+    [(HAENotificationCenterDelegate *)self->centerDelegate addHAENotificationEvent:eventCopy];
+    if ([eventCopy eventType] == 2003133803)
     {
       v10 = HAENotificationsLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -94,12 +94,12 @@
 
       v12 = +[HAENHealthKitStore sharedInstance];
       v13 = objc_loadWeakRetained(&self->_delegate);
-      v14 = [v12 saveNotificationEventToHealthKit:v6 withDelegate:v13];
+      v14 = [v12 saveNotificationEventToHealthKit:eventCopy withDelegate:v13];
 
       goto LABEL_16;
     }
 
-    if ([v6 eventType] == 1818850917)
+    if ([eventCopy eventType] == 1818850917)
     {
       v19 = HAENotificationsLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -109,10 +109,10 @@
       }
 
       v12 = +[HAENHealthKitStore sharedInstance];
-      v14 = [v12 saveNotificationEventToHealthKit:v6];
+      v14 = [v12 saveNotificationEventToHealthKit:eventCopy];
 LABEL_16:
 
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_11;
       }
@@ -138,10 +138,10 @@ LABEL_16:
   }
 
   v14 = NSErrorWithHAENErrorCode(v16, v17);
-  if (v7)
+  if (completionCopy)
   {
 LABEL_10:
-    v7[2](v7, v14);
+    completionCopy[2](completionCopy, v14);
   }
 
 LABEL_11:
@@ -149,14 +149,14 @@ LABEL_11:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)addHAENotificationEvent:(id)a3 error:(id *)a4
+- (id)addHAENotificationEvent:(id)event error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  eventCopy = event;
   v7 = +[HAENDefaults sharedInstance];
-  v8 = [v7 isHAENFeatureEnabled];
+  isHAENFeatureEnabled = [v7 isHAENFeatureEnabled];
 
-  if ((v8 & 1) == 0)
+  if ((isHAENFeatureEnabled & 1) == 0)
   {
     v12 = HAENotificationsLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -165,7 +165,7 @@ LABEL_11:
       _os_log_impl(&dword_25081E000, v12, OS_LOG_TYPE_DEFAULT, "error sending HAEN event: HAEN is disabled", &v17, 2u);
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -175,10 +175,10 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  [(HAENotificationCenterDelegate *)self->centerDelegate addHAENotificationEvent:v6];
-  if ([v6 eventType] != 2003133803)
+  [(HAENotificationCenterDelegate *)self->centerDelegate addHAENotificationEvent:eventCopy];
+  if ([eventCopy eventType] != 2003133803)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -187,14 +187,14 @@ LABEL_11:
     v14 = @"event type not supported";
 LABEL_15:
     NSErrorWithHAENErrorCode(v13, v14);
-    *a4 = v10 = 0;
+    *error = v10 = 0;
     goto LABEL_17;
   }
 
-  v9 = [HAENHealthKitStore createHKCategorySampleForEvent:v6];
+  v9 = [HAENHealthKitStore createHKCategorySampleForEvent:eventCopy];
   if (!v9)
   {
-    if (a4)
+    if (error)
     {
       v13 = *"skh!";
       v14 = @"failed to create hk sample";
@@ -244,33 +244,33 @@ LABEL_17:
 + (BOOL)connectedWiredDeviceIsHeadphone
 {
   v2 = +[HAENUnknownDeviceManager sharedInstance];
-  v3 = [v2 getDeviceName];
-  v4 = [HAENotificationCenter connectedWiredDeviceIsHeadphoneWithUUID:v3];
+  getDeviceName = [v2 getDeviceName];
+  v4 = [HAENotificationCenter connectedWiredDeviceIsHeadphoneWithUUID:getDeviceName];
 
   return v4;
 }
 
-+ (BOOL)connectedWiredDeviceIsHeadphoneWithUUID:(id)a3
++ (BOOL)connectedWiredDeviceIsHeadphoneWithUUID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   v4 = +[HAENUnknownDeviceManager sharedInstance];
   if ([v4 unknownWiredHeadsetConnectedThroughB204])
   {
-    v5 = [v4 isUSBCPort];
+    isUSBCPort = [v4 isUSBCPort];
     v6 = +[HAENDefaults sharedInstance];
     v7 = v6;
-    if (v5)
+    if (isUSBCPort)
     {
-      v8 = [v6 isCurrentAudioAccessoryHeadphoneWithKey:v3];
+      isCurrentAudioAccessoryHeadphone = [v6 isCurrentAudioAccessoryHeadphoneWithKey:dCopy];
     }
 
     else
     {
-      v8 = [v6 isCurrentAudioAccessoryHeadphone];
+      isCurrentAudioAccessoryHeadphone = [v6 isCurrentAudioAccessoryHeadphone];
     }
 
-    v9 = v8;
+    v9 = isCurrentAudioAccessoryHeadphone;
   }
 
   else
@@ -283,7 +283,7 @@ LABEL_17:
   {
     v11 = [MEMORY[0x277CCABB0] numberWithBool:v9];
     v14 = 138412546;
-    v15 = v3;
+    v15 = dCopy;
     v16 = 2112;
     v17 = v11;
     _os_log_impl(&dword_25081E000, v10, OS_LOG_TYPE_DEFAULT, "wired device [%@] is headphone: %@", &v14, 0x16u);

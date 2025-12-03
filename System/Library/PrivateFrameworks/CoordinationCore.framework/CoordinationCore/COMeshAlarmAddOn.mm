@@ -1,95 +1,95 @@
 @interface COMeshAlarmAddOn
-- (BOOL)_isAlarm:(id)a3 targetingAccessory:(id)a4;
-- (BOOL)_isAlarm:(id)a3 targetingAccessoryIdentifiers:(id)a4;
+- (BOOL)_isAlarm:(id)alarm targetingAccessory:(id)accessory;
+- (BOOL)_isAlarm:(id)alarm targetingAccessoryIdentifiers:(id)identifiers;
 - (BOOL)performsLocalActions;
 - (COMTActionDirector)actionDirector;
 - (COMeshAlarmAddOn)init;
-- (COMeshAlarmAddOn)initWithAlarmManager:(id)a3;
-- (COMeshAlarmAddOn)initWithAlarmManager:(id)a3 homekitAdapter:(id)a4 hubAdapter:(id)a5;
+- (COMeshAlarmAddOn)initWithAlarmManager:(id)manager;
+- (COMeshAlarmAddOn)initWithAlarmManager:(id)manager homekitAdapter:(id)adapter hubAdapter:(id)hubAdapter;
 - (COMeshAlarmAddOnDelegate)delegate;
-- (id)_alarmsForAccessory:(id)a3 allowLocalStorage:(BOOL)a4 usingLeader:(BOOL)a5 member:(id)a6 client:(id)a7;
-- (id)_commandsForReconciling:(id)a3 toTruth:(id)a4 forNode:(id)a5;
-- (id)_currentAccessoryForConnection:(id)a3;
-- (id)_filteredAlarmsList:(id)a3 forAccessory:(id)a4;
-- (id)_sendRequest:(id)a3 client:(id)a4;
-- (id)addAlarm:(id)a3 member:(id)a4 client:(id)a5;
-- (id)alarmsForAccessory:(id)a3;
-- (id)dismissAlarmWithIdentifier:(id)a3 client:(id)a4;
-- (id)removeAlarm:(id)a3 member:(id)a4 client:(id)a5;
-- (id)secondaryClusterMemberForAccessory:(id)a3;
-- (id)secondaryClusterMemberIfRequiredForAccessory:(id)a3;
-- (id)snoozeAlarmWithIdentifier:(id)a3 client:(id)a4;
-- (id)updateAlarm:(id)a3 member:(id)a4 client:(id)a5;
+- (id)_alarmsForAccessory:(id)accessory allowLocalStorage:(BOOL)storage usingLeader:(BOOL)leader member:(id)member client:(id)client;
+- (id)_commandsForReconciling:(id)reconciling toTruth:(id)truth forNode:(id)node;
+- (id)_currentAccessoryForConnection:(id)connection;
+- (id)_filteredAlarmsList:(id)list forAccessory:(id)accessory;
+- (id)_sendRequest:(id)request client:(id)client;
+- (id)addAlarm:(id)alarm member:(id)member client:(id)client;
+- (id)alarmsForAccessory:(id)accessory;
+- (id)dismissAlarmWithIdentifier:(id)identifier client:(id)client;
+- (id)removeAlarm:(id)alarm member:(id)member client:(id)client;
+- (id)secondaryClusterMemberForAccessory:(id)accessory;
+- (id)secondaryClusterMemberIfRequiredForAccessory:(id)accessory;
+- (id)snoozeAlarmWithIdentifier:(id)identifier client:(id)client;
+- (id)updateAlarm:(id)alarm member:(id)member client:(id)client;
 - (void)_abandonMerge;
-- (void)_accessorySettingValueUpdated:(id)a3;
-- (void)_addAlarmDeleteEvent:(id)a3;
-- (void)_addCompletionsToFuture:(id)a3 withXPCCallback:(id)a4 transactionDescription:(const char *)a5;
-- (void)_alarmManagerAlarmFired:(id)a3;
-- (void)_alarmManagerAlarmsAdded:(id)a3;
-- (void)_alarmManagerAlarmsChanged:(id)a3;
-- (void)_alarmManagerAlarmsRemoved:(id)a3;
-- (void)_alarmManagerAlarmsUpdated:(id)a3;
-- (void)_alarmManagerFiringAlarmChanged:(id)a3;
-- (void)_alarmManagerFiringAlarmDismissed:(id)a3;
-- (void)_alarmManagerStateReset:(id)a3;
-- (void)_broadcastMerge:(id)a3 withTruth:(id)a4;
-- (void)_continueMerge:(id)a3 withResponse:(id)a4 fromNode:(id)a5;
-- (void)_finishMerge:(id)a3;
-- (void)_primeMerge:(id)a3 withNodes:(id)a4;
+- (void)_accessorySettingValueUpdated:(id)updated;
+- (void)_addAlarmDeleteEvent:(id)event;
+- (void)_addCompletionsToFuture:(id)future withXPCCallback:(id)callback transactionDescription:(const char *)description;
+- (void)_alarmManagerAlarmFired:(id)fired;
+- (void)_alarmManagerAlarmsAdded:(id)added;
+- (void)_alarmManagerAlarmsChanged:(id)changed;
+- (void)_alarmManagerAlarmsRemoved:(id)removed;
+- (void)_alarmManagerAlarmsUpdated:(id)updated;
+- (void)_alarmManagerFiringAlarmChanged:(id)changed;
+- (void)_alarmManagerFiringAlarmDismissed:(id)dismissed;
+- (void)_alarmManagerStateReset:(id)reset;
+- (void)_broadcastMerge:(id)merge withTruth:(id)truth;
+- (void)_continueMerge:(id)merge withResponse:(id)response fromNode:(id)node;
+- (void)_finishMerge:(id)merge;
+- (void)_primeMerge:(id)merge withNodes:(id)nodes;
 - (void)_processQueuedCommands;
 - (void)_reaperFired;
-- (void)_reloadIndexWithCompletion:(id)a3;
+- (void)_reloadIndexWithCompletion:(id)completion;
 - (void)_replicateToMobileTimerFromHomeKit;
-- (void)_sendNotification:(id)a3;
+- (void)_sendNotification:(id)notification;
 - (void)_startMerge;
-- (void)_withLock:(id)a3;
-- (void)addAlarm:(id)a3 asAccessory:(id)a4 fromClient:(id)a5 withCallback:(id)a6;
-- (void)alarmsAsAccessory:(id)a3 fromClient:(id)a4 withCallback:(id)a5;
-- (void)alarmsForAccessories:(id)a3 fromClient:(id)a4 callback:(id)a5;
-- (void)canDispatchAsAccessory:(id)a3 asInstance:(id)a4 reply:(id)a5;
+- (void)_withLock:(id)lock;
+- (void)addAlarm:(id)alarm asAccessory:(id)accessory fromClient:(id)client withCallback:(id)callback;
+- (void)alarmsAsAccessory:(id)accessory fromClient:(id)client withCallback:(id)callback;
+- (void)alarmsForAccessories:(id)accessories fromClient:(id)client callback:(id)callback;
+- (void)canDispatchAsAccessory:(id)accessory asInstance:(id)instance reply:(id)reply;
 - (void)dealloc;
-- (void)didAddToMeshController:(id)a3;
-- (void)didChangeNodesForMeshController:(id)a3;
-- (void)didStopMeshController:(id)a3;
-- (void)director:(id)a3 membersChanged:(id)a4;
-- (void)director:(id)a3 performAction:(id)a4 from:(id)a5 callback:(id)a6;
-- (void)dismissAlarmWithIdentifier:(id)a3 fromClient:(id)a4 withCallback:(id)a5;
-- (void)establishSecondaryClusterForAccessory:(id)a3;
-- (void)handleAlarmCreateRequest:(id)a3 callback:(id)a4;
-- (void)handleAlarmDeleteRequest:(id)a3 callback:(id)a4;
-- (void)handleAlarmDismissRequest:(id)a3 callback:(id)a4;
-- (void)handleAlarmFiredNotification:(id)a3;
-- (void)handleAlarmFiringAlarmDismissedNotification:(id)a3;
-- (void)handleAlarmManagerStateResetNotification:(id)a3;
-- (void)handleAlarmReadRequest:(id)a3 callback:(id)a4;
-- (void)handleAlarmSnoozeNotification:(id)a3;
-- (void)handleAlarmSnoozeRequest:(id)a3 callback:(id)a4;
-- (void)handleAlarmUpdateRequest:(id)a3 callback:(id)a4;
-- (void)handleAlarmsAddedNotification:(id)a3;
-- (void)handleAlarmsRemovedNotification:(id)a3;
-- (void)handleAlarmsUpdatedNotification:(id)a3;
-- (void)interestTracker:(id)a3 setInterests:(id)a4 forMember:(id)a5 callback:(id)a6;
-- (void)interestTrackerTriggerReset:(id)a3;
-- (void)mediaSystemCompanionTransitionedFrom:(id)a3 to:(id)a4;
-- (void)meshController:(id)a3 didTransitionToState:(unint64_t)a4;
-- (void)reapNonRepeatingAlarmsOlderThanDate:(id)a3 accessory:(id)a4 home:(id)a5;
-- (void)removeAlarm:(id)a3 asAccessory:(id)a4 fromClient:(id)a5 withCallback:(id)a6;
-- (void)setDelegate:(id)a3;
-- (void)setInterests:(id)a3 asAccessory:(id)a4 withCallback:(id)a5;
-- (void)snoozeAlarmWithIdentifier:(id)a3 fromClient:(id)a4 withCallback:(id)a5;
-- (void)updateAlarm:(id)a3 asAccessory:(id)a4 fromClient:(id)a5 withCallback:(id)a6;
-- (void)willRemoveFromMeshController:(id)a3;
-- (void)willStartMeshController:(id)a3;
+- (void)didAddToMeshController:(id)controller;
+- (void)didChangeNodesForMeshController:(id)controller;
+- (void)didStopMeshController:(id)controller;
+- (void)director:(id)director membersChanged:(id)changed;
+- (void)director:(id)director performAction:(id)action from:(id)from callback:(id)callback;
+- (void)dismissAlarmWithIdentifier:(id)identifier fromClient:(id)client withCallback:(id)callback;
+- (void)establishSecondaryClusterForAccessory:(id)accessory;
+- (void)handleAlarmCreateRequest:(id)request callback:(id)callback;
+- (void)handleAlarmDeleteRequest:(id)request callback:(id)callback;
+- (void)handleAlarmDismissRequest:(id)request callback:(id)callback;
+- (void)handleAlarmFiredNotification:(id)notification;
+- (void)handleAlarmFiringAlarmDismissedNotification:(id)notification;
+- (void)handleAlarmManagerStateResetNotification:(id)notification;
+- (void)handleAlarmReadRequest:(id)request callback:(id)callback;
+- (void)handleAlarmSnoozeNotification:(id)notification;
+- (void)handleAlarmSnoozeRequest:(id)request callback:(id)callback;
+- (void)handleAlarmUpdateRequest:(id)request callback:(id)callback;
+- (void)handleAlarmsAddedNotification:(id)notification;
+- (void)handleAlarmsRemovedNotification:(id)notification;
+- (void)handleAlarmsUpdatedNotification:(id)notification;
+- (void)interestTracker:(id)tracker setInterests:(id)interests forMember:(id)member callback:(id)callback;
+- (void)interestTrackerTriggerReset:(id)reset;
+- (void)mediaSystemCompanionTransitionedFrom:(id)from to:(id)to;
+- (void)meshController:(id)controller didTransitionToState:(unint64_t)state;
+- (void)reapNonRepeatingAlarmsOlderThanDate:(id)date accessory:(id)accessory home:(id)home;
+- (void)removeAlarm:(id)alarm asAccessory:(id)accessory fromClient:(id)client withCallback:(id)callback;
+- (void)setDelegate:(id)delegate;
+- (void)setInterests:(id)interests asAccessory:(id)accessory withCallback:(id)callback;
+- (void)snoozeAlarmWithIdentifier:(id)identifier fromClient:(id)client withCallback:(id)callback;
+- (void)updateAlarm:(id)alarm asAccessory:(id)accessory fromClient:(id)client withCallback:(id)callback;
+- (void)willRemoveFromMeshController:(id)controller;
+- (void)willStartMeshController:(id)controller;
 @end
 
 @implementation COMeshAlarmAddOn
 
-- (COMeshAlarmAddOn)initWithAlarmManager:(id)a3 homekitAdapter:(id)a4 hubAdapter:(id)a5
+- (COMeshAlarmAddOn)initWithAlarmManager:(id)manager homekitAdapter:(id)adapter hubAdapter:(id)hubAdapter
 {
   v52 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  adapterCopy = adapter;
+  hubAdapterCopy = hubAdapter;
   v49.receiver = self;
   v49.super_class = COMeshAlarmAddOn;
   v12 = [(COMeshAddOn *)&v49 init];
@@ -102,15 +102,15 @@
     v13->_observedAlarmManager = v14;
 
     [(MTAlarmManager *)v13->_observedAlarmManager checkIn];
-    objc_storeStrong(&v13->_homekit, a4);
-    objc_storeStrong(&v13->_homehub, a5);
+    objc_storeStrong(&v13->_homekit, adapter);
+    objc_storeStrong(&v13->_homehub, hubAdapter);
     objc_initWeak(&location, v13);
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __67__COMeshAlarmAddOn_initWithAlarmManager_homekitAdapter_hubAdapter___block_invoke;
     v46[3] = &unk_278E18590;
     objc_copyWeak(&v47, &location);
-    v16 = [v10 registerMediaSystemUpdateHandler:v46];
+    v16 = [adapterCopy registerMediaSystemUpdateHandler:v46];
     mediaSystemUpdateRegistration = v13->_mediaSystemUpdateRegistration;
     v13->_mediaSystemUpdateRegistration = v16;
 
@@ -130,7 +130,7 @@
     queuedCommands = v13->_queuedCommands;
     v13->_queuedCommands = v24;
 
-    objc_storeStrong(&v13->_alarmManager, a3);
+    objc_storeStrong(&v13->_alarmManager, manager);
     recorder = v13->_recorder;
     v13->_recorder = &__block_literal_global_10;
 
@@ -154,14 +154,14 @@
       _os_log_impl(&dword_244378000, v33, OS_LOG_TYPE_DEFAULT, "%p mesh add-on created", buf, 0xCu);
     }
 
-    v34 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v34 addObserver:v13 selector:sel__accessorySettingValueUpdated_ name:*MEMORY[0x277CCEDB0] object:0];
-    [v34 addObserver:v13 selector:sel__alarmManagerAlarmsAdded_ name:*MEMORY[0x277D29590] object:v13->_observedAlarmManager];
-    [v34 addObserver:v13 selector:sel__alarmManagerAlarmsRemoved_ name:*MEMORY[0x277D295A8] object:v13->_observedAlarmManager];
-    [v34 addObserver:v13 selector:sel__alarmManagerAlarmsUpdated_ name:*MEMORY[0x277D295B0] object:v13->_observedAlarmManager];
-    [v34 addObserver:v13 selector:sel__alarmManagerFiringAlarmDismissed_ name:*MEMORY[0x277D295C0] object:v13->_observedAlarmManager];
-    v35 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v35 doubleForKey:@"ReapCadence"];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__accessorySettingValueUpdated_ name:*MEMORY[0x277CCEDB0] object:0];
+    [defaultCenter addObserver:v13 selector:sel__alarmManagerAlarmsAdded_ name:*MEMORY[0x277D29590] object:v13->_observedAlarmManager];
+    [defaultCenter addObserver:v13 selector:sel__alarmManagerAlarmsRemoved_ name:*MEMORY[0x277D295A8] object:v13->_observedAlarmManager];
+    [defaultCenter addObserver:v13 selector:sel__alarmManagerAlarmsUpdated_ name:*MEMORY[0x277D295B0] object:v13->_observedAlarmManager];
+    [defaultCenter addObserver:v13 selector:sel__alarmManagerFiringAlarmDismissed_ name:*MEMORY[0x277D295C0] object:v13->_observedAlarmManager];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults doubleForKey:@"ReapCadence"];
     if (v36 <= 0.0)
     {
       v37 = 6.048e14;
@@ -219,12 +219,12 @@ void __67__COMeshAlarmAddOn_initWithAlarmManager_homekitAdapter_hubAdapter___blo
   }
 }
 
-- (COMeshAlarmAddOn)initWithAlarmManager:(id)a3
+- (COMeshAlarmAddOn)initWithAlarmManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = +[COHomeKitAdapter sharedInstance];
   v6 = +[COHomeHubAdapter sharedInstance];
-  v7 = [(COMeshAlarmAddOn *)self initWithAlarmManager:v4 homekitAdapter:v5 hubAdapter:v6];
+  v7 = [(COMeshAlarmAddOn *)self initWithAlarmManager:managerCopy homekitAdapter:v5 hubAdapter:v6];
 
   return v7;
 }
@@ -239,21 +239,21 @@ void __67__COMeshAlarmAddOn_initWithAlarmManager_homekitAdapter_hubAdapter___blo
 
 - (void)dealloc
 {
-  v3 = [(COMeshAlarmAddOn *)self homekit];
-  v4 = [(COMeshAlarmAddOn *)self mediaSystemUpdateRegistration];
-  [v3 unregisterMediaSystemUpdateHandler:v4];
+  homekit = [(COMeshAlarmAddOn *)self homekit];
+  mediaSystemUpdateRegistration = [(COMeshAlarmAddOn *)self mediaSystemUpdateRegistration];
+  [homekit unregisterMediaSystemUpdateHandler:mediaSystemUpdateRegistration];
 
   v5.receiver = self;
   v5.super_class = COMeshAlarmAddOn;
   [(COMeshAlarmAddOn *)&v5 dealloc];
 }
 
-- (void)didAddToMeshController:(id)a3
+- (void)didAddToMeshController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v56.receiver = self;
   v56.super_class = COMeshAlarmAddOn;
-  [(COMeshAddOn *)&v56 didAddToMeshController:v4];
+  [(COMeshAddOn *)&v56 didAddToMeshController:controllerCopy];
   objc_initWeak(&location, self);
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
@@ -273,7 +273,7 @@ void __67__COMeshAlarmAddOn_initWithAlarmManager_homekitAdapter_hubAdapter___blo
   v49[3] = &unk_278E15FA8;
   objc_copyWeak(&v50, &location);
   v7 = (v5)[2](v5, v49);
-  [v4 registerHandler:v7 forRequestClass:objc_opt_class()];
+  [controllerCopy registerHandler:v7 forRequestClass:objc_opt_class()];
 
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
@@ -281,7 +281,7 @@ void __67__COMeshAlarmAddOn_initWithAlarmManager_homekitAdapter_hubAdapter___blo
   v47[3] = &unk_278E15FA8;
   objc_copyWeak(&v48, &location);
   v8 = (v5)[2](v5, v47);
-  [v4 registerHandler:v8 forRequestClass:objc_opt_class()];
+  [controllerCopy registerHandler:v8 forRequestClass:objc_opt_class()];
 
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
@@ -289,7 +289,7 @@ void __67__COMeshAlarmAddOn_initWithAlarmManager_homekitAdapter_hubAdapter___blo
   v45[3] = &unk_278E15FA8;
   objc_copyWeak(&v46, &location);
   v9 = (v5)[2](v5, v45);
-  [v4 registerHandler:v9 forRequestClass:objc_opt_class()];
+  [controllerCopy registerHandler:v9 forRequestClass:objc_opt_class()];
 
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
@@ -297,7 +297,7 @@ void __67__COMeshAlarmAddOn_initWithAlarmManager_homekitAdapter_hubAdapter___blo
   v43[3] = &unk_278E15FA8;
   objc_copyWeak(&v44, &location);
   v10 = (v5)[2](v5, v43);
-  [v4 registerHandler:v10 forRequestClass:objc_opt_class()];
+  [controllerCopy registerHandler:v10 forRequestClass:objc_opt_class()];
 
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
@@ -305,7 +305,7 @@ void __67__COMeshAlarmAddOn_initWithAlarmManager_homekitAdapter_hubAdapter___blo
   v41[3] = &unk_278E15FA8;
   objc_copyWeak(&v42, &location);
   v11 = (v5)[2](v5, v41);
-  [v4 registerHandler:v11 forRequestClass:objc_opt_class()];
+  [controllerCopy registerHandler:v11 forRequestClass:objc_opt_class()];
 
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
@@ -313,7 +313,7 @@ void __67__COMeshAlarmAddOn_initWithAlarmManager_homekitAdapter_hubAdapter___blo
   v39[3] = &unk_278E15FA8;
   objc_copyWeak(&v40, &location);
   v12 = (v5)[2](v5, v39);
-  [v4 registerHandler:v12 forRequestClass:objc_opt_class()];
+  [controllerCopy registerHandler:v12 forRequestClass:objc_opt_class()];
 
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
@@ -321,7 +321,7 @@ void __67__COMeshAlarmAddOn_initWithAlarmManager_homekitAdapter_hubAdapter___blo
   v37[3] = &unk_278E15FF8;
   objc_copyWeak(&v38, &location);
   v13 = (v6)[2](v6, v37);
-  [v4 registerHandler:v13 forNotificationClass:objc_opt_class()];
+  [controllerCopy registerHandler:v13 forNotificationClass:objc_opt_class()];
 
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
@@ -329,7 +329,7 @@ void __67__COMeshAlarmAddOn_initWithAlarmManager_homekitAdapter_hubAdapter___blo
   v35[3] = &unk_278E15FF8;
   objc_copyWeak(&v36, &location);
   v14 = (v6)[2](v6, v35);
-  [v4 registerHandler:v14 forNotificationClass:objc_opt_class()];
+  [controllerCopy registerHandler:v14 forNotificationClass:objc_opt_class()];
 
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
@@ -337,21 +337,21 @@ void __67__COMeshAlarmAddOn_initWithAlarmManager_homekitAdapter_hubAdapter___blo
   v33[3] = &unk_278E15FF8;
   objc_copyWeak(&v34, &location);
   v15 = (v6)[2](v6, v33);
-  [v4 registerHandler:v15 forNotificationClass:objc_opt_class()];
+  [controllerCopy registerHandler:v15 forNotificationClass:objc_opt_class()];
 
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __43__COMeshAlarmAddOn_didAddToMeshController___block_invoke_16;
   v31[3] = &unk_278E15FF8;
   objc_copyWeak(&v32, &location);
-  [v4 registerHandler:v31 forNotificationClass:objc_opt_class()];
+  [controllerCopy registerHandler:v31 forNotificationClass:objc_opt_class()];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __43__COMeshAlarmAddOn_didAddToMeshController___block_invoke_17;
   v29[3] = &unk_278E15FF8;
   objc_copyWeak(&v30, &location);
   v16 = (v6)[2](v6, v29);
-  [v4 registerHandler:v16 forNotificationClass:objc_opt_class()];
+  [controllerCopy registerHandler:v16 forNotificationClass:objc_opt_class()];
 
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
@@ -359,7 +359,7 @@ void __67__COMeshAlarmAddOn_initWithAlarmManager_homekitAdapter_hubAdapter___blo
   v27[3] = &unk_278E15FF8;
   objc_copyWeak(&v28, &location);
   v17 = (v6)[2](v6, v27);
-  [v4 registerHandler:v17 forNotificationClass:objc_opt_class()];
+  [controllerCopy registerHandler:v17 forNotificationClass:objc_opt_class()];
 
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -367,7 +367,7 @@ void __67__COMeshAlarmAddOn_initWithAlarmManager_homekitAdapter_hubAdapter___blo
   v25[3] = &unk_278E15FF8;
   objc_copyWeak(&v26, &location);
   v18 = (v6)[2](v6, v25);
-  [v4 registerHandler:v18 forNotificationClass:objc_opt_class()];
+  [controllerCopy registerHandler:v18 forNotificationClass:objc_opt_class()];
 
   v20 = MEMORY[0x277D85DD0];
   v21 = 3221225472;
@@ -375,7 +375,7 @@ void __67__COMeshAlarmAddOn_initWithAlarmManager_homekitAdapter_hubAdapter___blo
   v23 = &unk_278E15FF8;
   objc_copyWeak(&v24, &location);
   v19 = (v6)[2](v6, &v20);
-  [v4 registerHandler:v19 forNotificationClass:{objc_opt_class(), v20, v21, v22, v23}];
+  [controllerCopy registerHandler:v19 forNotificationClass:{objc_opt_class(), v20, v21, v22, v23}];
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&v26);
@@ -655,10 +655,10 @@ void __43__COMeshAlarmAddOn_didAddToMeshController___block_invoke_20(uint64_t a1
   }
 }
 
-- (void)willRemoveFromMeshController:(id)a3
+- (void)willRemoveFromMeshController:(id)controller
 {
   v12[7] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v12[0] = objc_opt_class();
   v12[1] = objc_opt_class();
   v12[2] = objc_opt_class();
@@ -669,7 +669,7 @@ void __43__COMeshAlarmAddOn_didAddToMeshController___block_invoke_20(uint64_t a1
   v12[6] = objc_opt_class();
   do
   {
-    [v4 deregisterHandlerForNotificationClass:v12[v5++]];
+    [controllerCopy deregisterHandlerForNotificationClass:v12[v5++]];
   }
 
   while (v5 != 7);
@@ -682,12 +682,12 @@ void __43__COMeshAlarmAddOn_didAddToMeshController___block_invoke_20(uint64_t a1
   v11[5] = objc_opt_class();
   do
   {
-    [v4 deregisterHandlerForRequestClass:v11[v6++]];
+    [controllerCopy deregisterHandlerForRequestClass:v11[v6++]];
   }
 
   while (v6 != 6);
-  v7 = [(COMeshAlarmAddOn *)self actionDirector];
-  [v7 removeHandler:self];
+  actionDirector = [(COMeshAlarmAddOn *)self actionDirector];
+  [actionDirector removeHandler:self];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -697,75 +697,75 @@ void __43__COMeshAlarmAddOn_didAddToMeshController___block_invoke_20(uint64_t a1
   [(COMeshAlarmAddOn *)self _withLock:v10];
   v9.receiver = self;
   v9.super_class = COMeshAlarmAddOn;
-  [(COMeshAddOn *)&v9 willRemoveFromMeshController:v4];
+  [(COMeshAddOn *)&v9 willRemoveFromMeshController:controllerCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)willStartMeshController:(id)a3
+- (void)willStartMeshController:(id)controller
 {
-  v4 = a3;
-  v5 = [(COMeshAlarmAddOn *)self observedAlarmManager];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel__alarmManagerAlarmFired_ name:*MEMORY[0x277D29588] object:v5];
-  [v6 addObserver:self selector:sel__alarmManagerStateReset_ name:*MEMORY[0x277D295D8] object:v5];
-  [v6 addObserver:self selector:sel__alarmManagerAlarmsChanged_ name:*MEMORY[0x277D29598] object:v5];
-  [v6 addObserver:self selector:sel__alarmManagerFiringAlarmChanged_ name:*MEMORY[0x277D295B8] object:v5];
+  controllerCopy = controller;
+  observedAlarmManager = [(COMeshAlarmAddOn *)self observedAlarmManager];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__alarmManagerAlarmFired_ name:*MEMORY[0x277D29588] object:observedAlarmManager];
+  [defaultCenter addObserver:self selector:sel__alarmManagerStateReset_ name:*MEMORY[0x277D295D8] object:observedAlarmManager];
+  [defaultCenter addObserver:self selector:sel__alarmManagerAlarmsChanged_ name:*MEMORY[0x277D29598] object:observedAlarmManager];
+  [defaultCenter addObserver:self selector:sel__alarmManagerFiringAlarmChanged_ name:*MEMORY[0x277D295B8] object:observedAlarmManager];
   [(COMeshAlarmAddOn *)self _reloadIndexWithCompletion:0];
   v7.receiver = self;
   v7.super_class = COMeshAlarmAddOn;
-  [(COMeshAddOn *)&v7 willStartMeshController:v4];
+  [(COMeshAddOn *)&v7 willStartMeshController:controllerCopy];
 }
 
-- (void)didStopMeshController:(id)a3
+- (void)didStopMeshController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = COMeshAlarmAddOn;
-  [(COMeshAddOn *)&v6 didStopMeshController:a3];
-  v4 = [(COMeshAlarmAddOn *)self observedAlarmManager];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x277D295B8] object:v4];
-  [v5 removeObserver:self name:*MEMORY[0x277D29598] object:v4];
-  [v5 removeObserver:self name:*MEMORY[0x277D295D8] object:v4];
-  [v5 removeObserver:self name:*MEMORY[0x277D29588] object:v4];
+  [(COMeshAddOn *)&v6 didStopMeshController:controller];
+  observedAlarmManager = [(COMeshAlarmAddOn *)self observedAlarmManager];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D295B8] object:observedAlarmManager];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D29598] object:observedAlarmManager];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D295D8] object:observedAlarmManager];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D29588] object:observedAlarmManager];
 }
 
-- (void)meshController:(id)a3 didTransitionToState:(unint64_t)a4
+- (void)meshController:(id)controller didTransitionToState:(unint64_t)state
 {
-  v6 = a3;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = COMeshAlarmAddOn;
-  [(COMeshAddOn *)&v16 meshController:v6 didTransitionToState:a4];
-  v7 = [v6 nodes];
-  if (a4 == 3)
+  [(COMeshAddOn *)&v16 meshController:controllerCopy didTransitionToState:state];
+  nodes = [controllerCopy nodes];
+  if (state == 3)
   {
-    v8 = [(COMeshAlarmAddOn *)self ourInterests];
+    ourInterests = [(COMeshAlarmAddOn *)self ourInterests];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __56__COMeshAlarmAddOn_meshController_didTransitionToState___block_invoke;
     v14[3] = &unk_278E16BC0;
-    v15 = v7;
-    [v8 enumerateKeysAndObjectsUsingBlock:v14];
+    v15 = nodes;
+    [ourInterests enumerateKeysAndObjectsUsingBlock:v14];
   }
 
-  v9 = [(COMeshAlarmAddOn *)self delegate];
+  delegate = [(COMeshAlarmAddOn *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 didChangeCompositionForAlarmAddOn:self];
+    [delegate didChangeCompositionForAlarmAddOn:self];
   }
 
-  if (a4 == 3)
+  if (state == 3)
   {
-    v10 = [v6 me];
-    v11 = [v6 leader];
-    if ([v10 isEqual:v11])
+    v10 = [controllerCopy me];
+    leader = [controllerCopy leader];
+    if ([v10 isEqual:leader])
     {
-      v12 = [(COMeshAlarmAddOn *)self homekit];
-      if ([v12 hasOptedToHH2])
+      homekit = [(COMeshAlarmAddOn *)self homekit];
+      if ([homekit hasOptedToHH2])
       {
-        v13 = [MEMORY[0x277CFD0B8] isDistributedTimersEnabled];
+        isDistributedTimersEnabled = [MEMORY[0x277CFD0B8] isDistributedTimersEnabled];
 
-        if (v13)
+        if (isDistributedTimersEnabled)
         {
           goto LABEL_15;
         }
@@ -783,7 +783,7 @@ void __43__COMeshAlarmAddOn_didAddToMeshController___block_invoke_20(uint64_t a1
     }
   }
 
-  else if (a4 == 2)
+  else if (state == 2)
   {
     [(COMeshAlarmAddOn *)self _abandonMerge];
   }
@@ -799,25 +799,25 @@ void __56__COMeshAlarmAddOn_meshController_didTransitionToState___block_invoke(u
   [v5 setPrimaryAvailable:v6 != 0];
 }
 
-- (void)didChangeNodesForMeshController:(id)a3
+- (void)didChangeNodesForMeshController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v24.receiver = self;
   v24.super_class = COMeshAlarmAddOn;
-  [(COMeshAddOn *)&v24 didChangeNodesForMeshController:v4];
-  v5 = [v4 nodes];
-  v6 = [(COMeshAddOn *)self meshController];
-  v7 = [v6 state] == 3;
+  [(COMeshAddOn *)&v24 didChangeNodesForMeshController:controllerCopy];
+  nodes = [controllerCopy nodes];
+  meshController = [(COMeshAddOn *)self meshController];
+  v7 = [meshController state] == 3;
 
-  v8 = [(COMeshAlarmAddOn *)self ourInterests];
+  ourInterests = [(COMeshAlarmAddOn *)self ourInterests];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __52__COMeshAlarmAddOn_didChangeNodesForMeshController___block_invoke;
   v21 = &unk_278E16BE8;
-  v9 = v5;
+  v9 = nodes;
   v22 = v9;
   v23 = v7;
-  [v8 enumerateKeysAndObjectsUsingBlock:&v18];
+  [ourInterests enumerateKeysAndObjectsUsingBlock:&v18];
 
   v10 = [(COMeshAlarmAddOn *)self delegate:v18];
   if (objc_opt_respondsToSelector())
@@ -825,27 +825,27 @@ void __56__COMeshAlarmAddOn_meshController_didTransitionToState___block_invoke(u
     [v10 didChangeCompositionForAlarmAddOn:self];
   }
 
-  v11 = [(COMeshAlarmAddOn *)self mergingNodes];
-  v12 = [MEMORY[0x277CBEB58] setWithArray:v11];
+  mergingNodes = [(COMeshAlarmAddOn *)self mergingNodes];
+  v12 = [MEMORY[0x277CBEB58] setWithArray:mergingNodes];
   v13 = [MEMORY[0x277CBEB98] setWithArray:v9];
   [v12 minusSet:v13];
   if ([v12 count])
   {
-    v14 = [v11 mutableCopy];
-    v15 = [v12 allObjects];
-    [v14 removeObjectsInArray:v15];
+    v14 = [mergingNodes mutableCopy];
+    allObjects = [v12 allObjects];
+    [v14 removeObjectsInArray:allObjects];
 
     [(COMeshAlarmAddOn *)self setMergingNodes:v14];
     if (![v14 count])
     {
-      v16 = [(COMeshAlarmAddOn *)self mergeRequest];
+      mergeRequest = [(COMeshAlarmAddOn *)self mergeRequest];
       v17 = COCoreLogForCategory(2);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
         [COMeshAlarmAddOn didChangeNodesForMeshController:];
       }
 
-      [(COMeshAlarmAddOn *)self _finishMerge:v16];
+      [(COMeshAlarmAddOn *)self _finishMerge:mergeRequest];
     }
   }
 }
@@ -892,16 +892,16 @@ uint64_t __28__COMeshAlarmAddOn_delegate__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](WeakRetained, v4);
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __32__COMeshAlarmAddOn_setDelegate___block_invoke;
   v6[3] = &unk_278E156B0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = delegateCopy;
+  selfCopy = self;
+  v5 = delegateCopy;
   [(COMeshAlarmAddOn *)self _withLock:v6];
 }
 
@@ -942,42 +942,42 @@ void __32__COMeshAlarmAddOn_setDelegate___block_invoke(uint64_t a1)
 
 - (BOOL)performsLocalActions
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = [v2 processName];
-  v4 = [v3 isEqualToString:@"xctest"];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
+  v4 = [processName isEqualToString:@"xctest"];
 
   return v4;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_sendRequest:(id)a3 client:(id)a4
+- (id)_sendRequest:(id)request client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COMeshAddOn *)self meshController];
+  requestCopy = request;
+  clientCopy = client;
+  meshController = [(COMeshAddOn *)self meshController];
   v9 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v10 = [(COMeshAddOn *)self meshControllerQueue];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __40__COMeshAlarmAddOn__sendRequest_client___block_invoke;
   v18[3] = &unk_278E15C88;
-  v19 = v7;
-  v20 = v6;
-  v21 = v8;
+  v19 = clientCopy;
+  v20 = requestCopy;
+  v21 = meshController;
   v11 = v9;
   v22 = v11;
-  v12 = v8;
-  v13 = v6;
-  v14 = v7;
-  dispatch_async(v10, v18);
+  v12 = meshController;
+  v13 = requestCopy;
+  v14 = clientCopy;
+  dispatch_async(meshControllerQueue, v18);
 
   v15 = v22;
   v16 = v11;
@@ -1088,10 +1088,10 @@ void __40__COMeshAlarmAddOn__sendRequest_client___block_invoke_2(uint64_t a1, vo
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addCompletionsToFuture:(id)a3 withXPCCallback:(id)a4 transactionDescription:(const char *)a5
+- (void)_addCompletionsToFuture:(id)future withXPCCallback:(id)callback transactionDescription:(const char *)description
 {
-  v6 = a3;
-  v7 = a4;
+  futureCopy = future;
+  callbackCopy = callback;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;
@@ -1102,10 +1102,10 @@ void __40__COMeshAlarmAddOn__sendRequest_client___block_invoke_2(uint64_t a1, vo
   v15[1] = 3221225472;
   v15[2] = __83__COMeshAlarmAddOn__addCompletionsToFuture_withXPCCallback_transactionDescription___block_invoke;
   v15[3] = &unk_278E16C38;
-  v8 = v7;
+  v8 = callbackCopy;
   v16 = v8;
   v17 = v18;
-  v9 = [v6 addFailureBlock:v15];
+  v9 = [futureCopy addFailureBlock:v15];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__COMeshAlarmAddOn__addCompletionsToFuture_withXPCCallback_transactionDescription___block_invoke_2;
@@ -1113,7 +1113,7 @@ void __40__COMeshAlarmAddOn__sendRequest_client___block_invoke_2(uint64_t a1, vo
   v10 = v8;
   v13 = v10;
   v14 = v18;
-  v11 = [v6 addSuccessBlock:v12];
+  v11 = [futureCopy addSuccessBlock:v12];
 
   _Block_object_dispose(v18, 8);
 }
@@ -1134,26 +1134,26 @@ void __83__COMeshAlarmAddOn__addCompletionsToFuture_withXPCCallback_transactionD
   *(v2 + 40) = 0;
 }
 
-- (void)_sendNotification:(id)a3
+- (void)_sendNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v5);
+  notificationCopy = notification;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKey:*MEMORY[0x277D295A0]];
+  userInfo = [notificationCopy userInfo];
+  v7 = [userInfo objectForKey:*MEMORY[0x277D295A0]];
 
-  v8 = [(COMeshAlarmAddOn *)self interests];
+  interests = [(COMeshAlarmAddOn *)self interests];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __38__COMeshAlarmAddOn__sendNotification___block_invoke;
   v11[3] = &unk_278E185D8;
   v12 = v7;
-  v13 = self;
-  v14 = v4;
-  v9 = v4;
+  selfCopy = self;
+  v14 = notificationCopy;
+  v9 = notificationCopy;
   v10 = v7;
-  [v8 enumerateKeysAndObjectsUsingBlock:v11];
+  [interests enumerateKeysAndObjectsUsingBlock:v11];
 }
 
 void __38__COMeshAlarmAddOn__sendNotification___block_invoke(id *a1, void *a2, void *a3)
@@ -1182,28 +1182,28 @@ void __38__COMeshAlarmAddOn__sendNotification___block_invoke(id *a1, void *a2, v
   }
 }
 
-- (void)_alarmManagerAlarmsAdded:(id)a3
+- (void)_alarmManagerAlarmsAdded:(id)added
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x277D295A0]];
+  addedCopy = added;
+  userInfo = [addedCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D295A0]];
 
-  v7 = [(COMeshAddOn *)self meshControllerQueue];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__COMeshAlarmAddOn__alarmManagerAlarmsAdded___block_invoke;
   block[3] = &unk_278E15728;
   v8 = v6;
   v12 = v8;
-  v13 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = addedCopy;
   v14 = v9;
-  dispatch_async(v7, block);
+  dispatch_async(meshControllerQueue, block);
 
-  v10 = [(COMeshAlarmAddOn *)self delegate];
+  delegate = [(COMeshAlarmAddOn *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v10 alarmAddOn:self didAddAlarms:v8];
+    [delegate alarmAddOn:self didAddAlarms:v8];
   }
 }
 
@@ -1252,28 +1252,28 @@ uint64_t __45__COMeshAlarmAddOn__alarmManagerAlarmsAdded___block_invoke(uint64_t
   return result;
 }
 
-- (void)_alarmManagerAlarmsRemoved:(id)a3
+- (void)_alarmManagerAlarmsRemoved:(id)removed
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x277D295A0]];
+  removedCopy = removed;
+  userInfo = [removedCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D295A0]];
 
-  v7 = [(COMeshAddOn *)self meshControllerQueue];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__COMeshAlarmAddOn__alarmManagerAlarmsRemoved___block_invoke;
   block[3] = &unk_278E15728;
   v8 = v6;
   v12 = v8;
-  v13 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = removedCopy;
   v14 = v9;
-  dispatch_async(v7, block);
+  dispatch_async(meshControllerQueue, block);
 
-  v10 = [(COMeshAlarmAddOn *)self delegate];
+  delegate = [(COMeshAlarmAddOn *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v10 alarmAddOn:self didRemoveAlarms:v8];
+    [delegate alarmAddOn:self didRemoveAlarms:v8];
   }
 }
 
@@ -1320,28 +1320,28 @@ uint64_t __47__COMeshAlarmAddOn__alarmManagerAlarmsRemoved___block_invoke(uint64
   return result;
 }
 
-- (void)_alarmManagerAlarmsUpdated:(id)a3
+- (void)_alarmManagerAlarmsUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x277D295A0]];
+  updatedCopy = updated;
+  userInfo = [updatedCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D295A0]];
 
-  v7 = [(COMeshAddOn *)self meshControllerQueue];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__COMeshAlarmAddOn__alarmManagerAlarmsUpdated___block_invoke;
   block[3] = &unk_278E15728;
   v8 = v6;
   v12 = v8;
-  v13 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = updatedCopy;
   v14 = v9;
-  dispatch_async(v7, block);
+  dispatch_async(meshControllerQueue, block);
 
-  v10 = [(COMeshAlarmAddOn *)self delegate];
+  delegate = [(COMeshAlarmAddOn *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v10 alarmAddOn:self didUpdateAlarms:v8];
+    [delegate alarmAddOn:self didUpdateAlarms:v8];
   }
 }
 
@@ -1390,45 +1390,45 @@ uint64_t __47__COMeshAlarmAddOn__alarmManagerAlarmsUpdated___block_invoke(uint64
   return result;
 }
 
-- (void)_alarmManagerFiringAlarmDismissed:(id)a3
+- (void)_alarmManagerFiringAlarmDismissed:(id)dismissed
 {
-  v4 = [a3 userInfo];
-  v6 = [v4 objectForKey:*MEMORY[0x277D295A0]];
+  userInfo = [dismissed userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D295A0]];
 
-  v5 = [(COMeshAlarmAddOn *)self delegate];
+  delegate = [(COMeshAlarmAddOn *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 alarmAddOn:self didDismissAlarms:v6];
+    [delegate alarmAddOn:self didDismissAlarms:v6];
   }
 }
 
 - (void)_startMerge
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(COMeshAddOn *)self meshController];
-  v4 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v4);
-  v5 = [[COAlarmReadRequest alloc] initForMerge];
-  [(COMeshAlarmAddOn *)self setMergeRequest:v5];
+  meshController = [(COMeshAddOn *)self meshController];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
+  initForMerge = [[COAlarmReadRequest alloc] initForMerge];
+  [(COMeshAlarmAddOn *)self setMergeRequest:initForMerge];
   v6 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v18 = v3;
+    v18 = meshController;
     v19 = 2048;
-    v20 = v5;
+    v20 = initForMerge;
     _os_log_impl(&dword_244378000, v6, OS_LOG_TYPE_DEFAULT, "%p starting merge for %p...", buf, 0x16u);
   }
 
   if ([(COMeshAlarmAddOn *)self performsLocalActions])
   {
-    v7 = [(COMeshAlarmAddOn *)self alarmManager];
-    v8 = [v7 alarms];
+    alarmManager = [(COMeshAlarmAddOn *)self alarmManager];
+    alarms = [alarmManager alarms];
   }
 
   else
   {
-    v8 = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEBF8]];
+    alarms = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEBF8]];
   }
 
   objc_initWeak(buf, self);
@@ -1436,12 +1436,12 @@ uint64_t __47__COMeshAlarmAddOn__alarmManagerAlarmsUpdated___block_invoke(uint64
   v13[1] = 3221225472;
   v13[2] = __31__COMeshAlarmAddOn__startMerge__block_invoke;
   v13[3] = &unk_278E16F00;
-  v9 = v4;
+  v9 = meshControllerQueue;
   v14 = v9;
   objc_copyWeak(&v16, buf);
-  v10 = v5;
+  v10 = initForMerge;
   v15 = v10;
-  v11 = [v8 addCompletionBlock:v13];
+  v11 = [alarms addCompletionBlock:v13];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -1483,28 +1483,28 @@ void __31__COMeshAlarmAddOn__startMerge__block_invoke_2(uint64_t a1)
   [WeakRetained _broadcastMerge:*(a1 + 32) withTruth:v3];
 }
 
-- (void)_broadcastMerge:(id)a3 withTruth:(id)a4
+- (void)_broadcastMerge:(id)merge withTruth:(id)truth
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COMeshAddOn *)self meshController];
-  v9 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v9);
+  mergeCopy = merge;
+  truthCopy = truth;
+  meshController = [(COMeshAddOn *)self meshController];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
-  v10 = [(COMeshAlarmAddOn *)self mergeRequest];
+  mergeRequest = [(COMeshAlarmAddOn *)self mergeRequest];
 
-  if (v10 == v6)
+  if (mergeRequest == mergeCopy)
   {
-    v11 = eTagForAlarms(v7);
-    [v6 setETag:v11];
+    v11 = eTagForAlarms(truthCopy);
+    [mergeCopy setETag:v11];
     v12 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
-      v30 = v8;
+      v30 = meshController;
       v31 = 2048;
-      v32 = v6;
+      v32 = mergeCopy;
       v33 = 2114;
       v34 = v11;
       _os_log_impl(&dword_244378000, v12, OS_LOG_TYPE_DEFAULT, "%p broadcasting merge %p with eTag %{public}@", buf, 0x20u);
@@ -1516,14 +1516,14 @@ void __31__COMeshAlarmAddOn__startMerge__block_invoke_2(uint64_t a1)
     v14 = objc_alloc_init(MEMORY[0x277CBEAC0]);
     [(COMeshAlarmAddOn *)self setMergeResponses:v14];
 
-    [(COMeshAlarmAddOn *)self setMergeAlarms:v7];
+    [(COMeshAlarmAddOn *)self setMergeAlarms:truthCopy];
     objc_initWeak(buf, self);
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __46__COMeshAlarmAddOn__broadcastMerge_withTruth___block_invoke;
     v26[3] = &unk_278E16F28;
     objc_copyWeak(&v28, buf);
-    v15 = v6;
+    v15 = mergeCopy;
     v27 = v15;
     v16 = MEMORY[0x245D5FF10](v26);
     v20 = MEMORY[0x277D85DD0];
@@ -1534,7 +1534,7 @@ void __31__COMeshAlarmAddOn__startMerge__block_invoke_2(uint64_t a1)
     v17 = v15;
     v24 = v17;
     v18 = MEMORY[0x245D5FF10](&v20);
-    [v8 broadcastRequest:v17 includingSelf:0 recipientsCallback:v16 completionHandler:{v18, v20, v21, v22, v23}];
+    [meshController broadcastRequest:v17 includingSelf:0 recipientsCallback:v16 completionHandler:{v18, v20, v21, v22, v23}];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(&v28);
@@ -1547,9 +1547,9 @@ void __31__COMeshAlarmAddOn__startMerge__block_invoke_2(uint64_t a1)
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v30 = v8;
+      v30 = meshController;
       v31 = 2048;
-      v32 = v6;
+      v32 = mergeCopy;
       _os_log_impl(&dword_244378000, v11, OS_LOG_TYPE_DEFAULT, "%p ignoring broadcast for merge %p", buf, 0x16u);
     }
   }
@@ -1603,21 +1603,21 @@ void __46__COMeshAlarmAddOn__broadcastMerge_withTruth___block_invoke_2(uint64_t 
   }
 }
 
-- (void)_primeMerge:(id)a3 withNodes:(id)a4
+- (void)_primeMerge:(id)merge withNodes:(id)nodes
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COMeshAddOn *)self meshController];
-  v9 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v9);
+  mergeCopy = merge;
+  nodesCopy = nodes;
+  meshController = [(COMeshAddOn *)self meshController];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
-  v10 = [(COMeshAlarmAddOn *)self mergeRequest];
+  mergeRequest = [(COMeshAlarmAddOn *)self mergeRequest];
 
-  if (v10 == v6)
+  if (mergeRequest == mergeCopy)
   {
-    [(COMeshAlarmAddOn *)self setMergingNodes:v7];
-    v12 = [v7 count];
+    [(COMeshAlarmAddOn *)self setMergingNodes:nodesCopy];
+    v12 = [nodesCopy count];
     v13 = COCoreLogForCategory(2);
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
     if (v12)
@@ -1625,9 +1625,9 @@ void __46__COMeshAlarmAddOn__broadcastMerge_withTruth___block_invoke_2(uint64_t 
       if (v14)
       {
         v16 = 134218496;
-        v17 = v8;
+        v17 = meshController;
         v18 = 2048;
-        v19 = v6;
+        v19 = mergeCopy;
         v20 = 2048;
         v21 = v12;
         _os_log_impl(&dword_244378000, v13, OS_LOG_TYPE_DEFAULT, "%p merge %p with %ld others.", &v16, 0x20u);
@@ -1639,13 +1639,13 @@ void __46__COMeshAlarmAddOn__broadcastMerge_withTruth___block_invoke_2(uint64_t 
       if (v14)
       {
         v16 = 134218240;
-        v17 = v8;
+        v17 = meshController;
         v18 = 2048;
-        v19 = v6;
+        v19 = mergeCopy;
         _os_log_impl(&dword_244378000, v13, OS_LOG_TYPE_DEFAULT, "%p is solo, so %p is finished.", &v16, 0x16u);
       }
 
-      [(COMeshAlarmAddOn *)self _finishMerge:v6];
+      [(COMeshAlarmAddOn *)self _finishMerge:mergeCopy];
     }
   }
 
@@ -1655,9 +1655,9 @@ void __46__COMeshAlarmAddOn__broadcastMerge_withTruth___block_invoke_2(uint64_t 
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 134218240;
-      v17 = v8;
+      v17 = meshController;
       v18 = 2048;
-      v19 = v6;
+      v19 = mergeCopy;
       _os_log_impl(&dword_244378000, v11, OS_LOG_TYPE_DEFAULT, "%p ignoring prime of merge %p", &v16, 0x16u);
     }
   }
@@ -1665,46 +1665,46 @@ void __46__COMeshAlarmAddOn__broadcastMerge_withTruth___block_invoke_2(uint64_t 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_continueMerge:(id)a3 withResponse:(id)a4 fromNode:(id)a5
+- (void)_continueMerge:(id)merge withResponse:(id)response fromNode:(id)node
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COMeshAddOn *)self meshController];
-  v12 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v12);
+  mergeCopy = merge;
+  responseCopy = response;
+  nodeCopy = node;
+  meshController = [(COMeshAddOn *)self meshController];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
-  v13 = [(COMeshAlarmAddOn *)self mergeRequest];
+  mergeRequest = [(COMeshAlarmAddOn *)self mergeRequest];
 
-  if (v13 == v8)
+  if (mergeRequest == mergeCopy)
   {
-    v15 = [(COMeshAlarmAddOn *)self mergingNodes];
-    v14 = [v15 mutableCopy];
+    mergingNodes = [(COMeshAlarmAddOn *)self mergingNodes];
+    v14 = [mergingNodes mutableCopy];
 
-    [v14 removeObject:v10];
+    [v14 removeObject:nodeCopy];
     [(COMeshAlarmAddOn *)self setMergingNodes:v14];
-    if ([v9 skipInMerge])
+    if ([responseCopy skipInMerge])
     {
       v16 = COCoreLogForCategory(2);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
         v23 = 134218496;
-        v24 = v11;
+        v24 = meshController;
         v25 = 2048;
-        v26 = v10;
+        v26 = nodeCopy;
         v27 = 2048;
-        v28 = v8;
+        v28 = mergeCopy;
         _os_log_debug_impl(&dword_244378000, v16, OS_LOG_TYPE_DEBUG, "%p skipping node %p in merge %p", &v23, 0x20u);
       }
     }
 
     else
     {
-      v17 = [(COMeshAlarmAddOn *)self mergeResponses];
-      v18 = [v17 mutableCopy];
+      mergeResponses = [(COMeshAlarmAddOn *)self mergeResponses];
+      v18 = [mergeResponses mutableCopy];
 
-      [v18 setObject:v9 forKey:v10];
+      [v18 setObject:responseCopy forKey:nodeCopy];
       [(COMeshAlarmAddOn *)self setMergeResponses:v18];
     }
 
@@ -1716,9 +1716,9 @@ void __46__COMeshAlarmAddOn__broadcastMerge_withTruth___block_invoke_2(uint64_t 
       if (v21)
       {
         v23 = 134218496;
-        v24 = v11;
+        v24 = meshController;
         v25 = 2048;
-        v26 = v8;
+        v26 = mergeCopy;
         v27 = 2048;
         v28 = v19;
         _os_log_debug_impl(&dword_244378000, v20, OS_LOG_TYPE_DEBUG, "%p merge %p still waiting on %ld others.", &v23, 0x20u);
@@ -1732,7 +1732,7 @@ void __46__COMeshAlarmAddOn__broadcastMerge_withTruth___block_invoke_2(uint64_t 
         [COMeshAlarmAddOn _continueMerge:withResponse:fromNode:];
       }
 
-      [(COMeshAlarmAddOn *)self _finishMerge:v8];
+      [(COMeshAlarmAddOn *)self _finishMerge:mergeCopy];
     }
   }
 
@@ -1742,9 +1742,9 @@ void __46__COMeshAlarmAddOn__broadcastMerge_withTruth___block_invoke_2(uint64_t 
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v23 = 134218240;
-      v24 = v11;
+      v24 = meshController;
       v25 = 2048;
-      v26 = v8;
+      v26 = mergeCopy;
       _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%p ignoring continuation of merge %p", &v23, 0x16u);
     }
   }
@@ -1755,18 +1755,18 @@ void __46__COMeshAlarmAddOn__broadcastMerge_withTruth___block_invoke_2(uint64_t 
 - (void)_abandonMerge
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(COMeshAddOn *)self meshController];
-  v4 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v4);
+  meshController = [(COMeshAddOn *)self meshController];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
-  v5 = [(COMeshAlarmAddOn *)self mergeRequest];
+  mergeRequest = [(COMeshAlarmAddOn *)self mergeRequest];
   v6 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218240;
-    v11 = v3;
+    v11 = meshController;
     v12 = 2048;
-    v13 = v5;
+    v13 = mergeRequest;
     _os_log_impl(&dword_244378000, v6, OS_LOG_TYPE_DEFAULT, "%p abandoning merge %p", &v10, 0x16u);
   }
 
@@ -1781,21 +1781,21 @@ void __46__COMeshAlarmAddOn__broadcastMerge_withTruth___block_invoke_2(uint64_t 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_commandsForReconciling:(id)a3 toTruth:(id)a4 forNode:(id)a5
+- (id)_commandsForReconciling:(id)reconciling toTruth:(id)truth forNode:(id)node
 {
-  v47 = self;
+  selfCopy = self;
   v68 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEA60] array];
-  v55 = v8;
-  v11 = [v8 mutableCopy];
+  reconcilingCopy = reconciling;
+  truthCopy = truth;
+  nodeCopy = node;
+  array = [MEMORY[0x277CBEA60] array];
+  v55 = truthCopy;
+  v11 = [truthCopy mutableCopy];
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v12 = v7;
+  v12 = reconcilingCopy;
   v13 = [(COAlarmsRemovedNotification *)v12 countByEnumeratingWithState:&v56 objects:v67 count:16];
   v54 = v11;
   if (!v13)
@@ -1809,8 +1809,8 @@ LABEL_30:
   }
 
   v14 = v13;
-  v49 = v10;
-  v50 = v9;
+  v49 = array;
+  v50 = nodeCopy;
   v15 = 0;
   v52 = 0;
   obj = v12;
@@ -1826,8 +1826,8 @@ LABEL_30:
       }
 
       v18 = *(*(&v56 + 1) + 8 * i);
-      v19 = [v18 alarmID];
-      v20 = [v55 objectForKey:v19];
+      alarmID = [v18 alarmID];
+      v20 = [v55 objectForKey:alarmID];
       v21 = v20;
       if (v20)
       {
@@ -1877,8 +1877,8 @@ LABEL_30:
         v15 = [MEMORY[0x277CBEA60] arrayWithObject:v18];
       }
 
-      v27 = [v18 alarmID];
-      [v11 removeObjectForKey:v27];
+      alarmID2 = [v18 alarmID];
+      [v11 removeObjectForKey:alarmID2];
     }
 
     v12 = obj;
@@ -1889,8 +1889,8 @@ LABEL_30:
 
   if (!v52)
   {
-    v10 = v49;
-    v9 = v50;
+    array = v49;
+    nodeCopy = v50;
     if (!v15)
     {
       goto LABEL_31;
@@ -1901,23 +1901,23 @@ LABEL_30:
 
   v28 = [(COAlarmNotification *)[COAlarmsUpdatedNotification alloc] initWithAlarms:v52];
   v29 = COCoreLogForCategory(2);
-  v9 = v50;
+  nodeCopy = v50;
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
   {
-    v43 = [(COMeshAddOn *)v47 meshController];
-    v44 = [(COAlarmNotification *)v28 alarms];
+    meshController = [(COMeshAddOn *)selfCopy meshController];
+    alarms = [(COAlarmNotification *)v28 alarms];
     *buf = 134218498;
-    v61 = v43;
+    v61 = meshController;
     v62 = 2112;
     v63 = v50;
     v64 = 2112;
-    v65 = v44;
+    v65 = alarms;
     _os_log_debug_impl(&dword_244378000, v29, OS_LOG_TYPE_DEBUG, "%p %@ updating %@", buf, 0x20u);
 
     v11 = v54;
   }
 
-  v10 = [v49 arrayByAddingObject:v28];
+  array = [v49 arrayByAddingObject:v28];
 
   v12 = obj;
   if (v15)
@@ -1927,22 +1927,22 @@ LABEL_27:
     v31 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
     {
-      v45 = [(COMeshAddOn *)v47 meshController];
-      v46 = [(COAlarmNotification *)v30 alarms];
+      meshController2 = [(COMeshAddOn *)selfCopy meshController];
+      alarms2 = [(COAlarmNotification *)v30 alarms];
       *buf = 134218498;
-      v61 = v45;
+      v61 = meshController2;
       v62 = 2112;
-      v63 = v9;
+      v63 = nodeCopy;
       v64 = 2112;
-      v65 = v46;
+      v65 = alarms2;
       _os_log_debug_impl(&dword_244378000, v31, OS_LOG_TYPE_DEBUG, "%p %@ removing %@", buf, 0x20u);
 
       v11 = v54;
     }
 
-    v32 = [v10 arrayByAddingObject:v30];
+    v32 = [array arrayByAddingObject:v30];
 
-    v10 = v32;
+    array = v32;
     goto LABEL_30;
   }
 
@@ -1950,71 +1950,71 @@ LABEL_31:
   if ([v11 count])
   {
     v33 = [COAlarmsAddedNotification alloc];
-    v34 = [v11 allValues];
-    v35 = [(COAlarmNotification *)v33 initWithAlarms:v34];
+    allValues = [v11 allValues];
+    v35 = [(COAlarmNotification *)v33 initWithAlarms:allValues];
 
     v36 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
     {
-      v41 = [v48 meshController];
-      v42 = [(COAlarmNotification *)v35 alarms];
+      meshController3 = [v48 meshController];
+      alarms3 = [(COAlarmNotification *)v35 alarms];
       *buf = 134218498;
-      v61 = v41;
+      v61 = meshController3;
       v62 = 2112;
-      v63 = v9;
+      v63 = nodeCopy;
       v64 = 2112;
-      v65 = v42;
+      v65 = alarms3;
       _os_log_debug_impl(&dword_244378000, v36, OS_LOG_TYPE_DEBUG, "%p %@ requires %@", buf, 0x20u);
 
       v11 = v54;
     }
 
-    v37 = [v10 arrayByAddingObject:v35];
+    v37 = [array arrayByAddingObject:v35];
 
-    v10 = v37;
+    array = v37;
   }
 
-  v38 = v10;
+  v38 = array;
 
   v39 = *MEMORY[0x277D85DE8];
-  return v10;
+  return array;
 }
 
-- (void)_finishMerge:(id)a3
+- (void)_finishMerge:(id)merge
 {
   v150 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v81 = [(COMeshAddOn *)self meshController];
-  v5 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v5);
+  mergeCopy = merge;
+  meshController = [(COMeshAddOn *)self meshController];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
-  v6 = [(COMeshAlarmAddOn *)self mergeRequest];
+  mergeRequest = [(COMeshAlarmAddOn *)self mergeRequest];
 
-  if (v6 != v4)
+  if (mergeRequest != mergeCopy)
   {
     v7 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v147 = v81;
+      v147 = meshController;
       v148 = 2048;
-      v149 = v4;
+      v149 = mergeCopy;
       _os_log_impl(&dword_244378000, v7, OS_LOG_TYPE_DEFAULT, "%p ignoring conclusion of merge %p", buf, 0x16u);
     }
 
     goto LABEL_87;
   }
 
-  v80 = v4;
-  v8 = [(COMeshAlarmAddOn *)self mergeAlarms];
-  v95 = self;
-  v9 = [(COMeshAlarmAddOn *)self mergeResponses];
+  v80 = mergeCopy;
+  mergeAlarms = [(COMeshAlarmAddOn *)self mergeAlarms];
+  selfCopy = self;
+  mergeResponses = [(COMeshAlarmAddOn *)self mergeResponses];
   v96 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v133 = 0u;
   v134 = 0u;
   v135 = 0u;
   v136 = 0u;
-  v10 = v8;
+  v10 = mergeAlarms;
   v11 = [v10 countByEnumeratingWithState:&v133 objects:v145 count:16];
   if (v11)
   {
@@ -2030,8 +2030,8 @@ LABEL_31:
         }
 
         v15 = *(*(&v133 + 1) + 8 * i);
-        v16 = [v15 alarmID];
-        [v96 setObject:v15 forKey:v16];
+        alarmID = [v15 alarmID];
+        [v96 setObject:v15 forKey:alarmID];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v133 objects:v145 count:16];
@@ -2045,8 +2045,8 @@ LABEL_31:
   v130 = 0u;
   v131 = 0u;
   v132 = 0u;
-  v17 = [(COMeshAlarmAddOn *)self deletes];
-  v18 = [v17 countByEnumeratingWithState:&v129 objects:v144 count:16];
+  deletes = [(COMeshAlarmAddOn *)self deletes];
+  v18 = [deletes countByEnumeratingWithState:&v129 objects:v144 count:16];
   if (v18)
   {
     v19 = v18;
@@ -2057,15 +2057,15 @@ LABEL_31:
       {
         if (*v130 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(deletes);
         }
 
         v22 = *(*(&v129 + 1) + 8 * j);
-        v23 = [v22 identifier];
-        [v98 setObject:v22 forKey:v23];
+        identifier = [v22 identifier];
+        [v98 setObject:v22 forKey:identifier];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v129 objects:v144 count:16];
+      v19 = [deletes countByEnumeratingWithState:&v129 objects:v144 count:16];
     }
 
     while (v19);
@@ -2077,7 +2077,7 @@ LABEL_31:
   v128 = 0u;
   v125 = 0u;
   v126 = 0u;
-  obj = v9;
+  obj = mergeResponses;
   v24 = 0x277CBE000uLL;
   v87 = [obj countByEnumeratingWithState:&v125 objects:v143 count:16];
   if (v87)
@@ -2100,8 +2100,8 @@ LABEL_31:
         v123 = 0u;
         v124 = 0u;
         v93 = v26;
-        v27 = [v26 alarms];
-        v28 = [v27 countByEnumeratingWithState:&v121 objects:v142 count:16];
+        alarms = [v26 alarms];
+        v28 = [alarms countByEnumeratingWithState:&v121 objects:v142 count:16];
         if (v28)
         {
           v29 = v28;
@@ -2112,12 +2112,12 @@ LABEL_31:
             {
               if (*v122 != v30)
               {
-                objc_enumerationMutation(v27);
+                objc_enumerationMutation(alarms);
               }
 
               v32 = *(*(&v121 + 1) + 8 * k);
-              v33 = [v32 alarmID];
-              v34 = [v96 objectForKey:v33];
+              alarmID2 = [v32 alarmID];
+              v34 = [v96 objectForKey:alarmID2];
               v35 = v34;
               if (!v34)
               {
@@ -2133,11 +2133,11 @@ LABEL_31:
               if (v32 == v38)
               {
 LABEL_30:
-                [v96 setObject:v32 forKey:v33];
+                [v96 setObject:v32 forKey:alarmID2];
               }
             }
 
-            v29 = [v27 countByEnumeratingWithState:&v121 objects:v142 count:16];
+            v29 = [alarms countByEnumeratingWithState:&v121 objects:v142 count:16];
           }
 
           while (v29);
@@ -2147,8 +2147,8 @@ LABEL_30:
         v120 = 0u;
         v117 = 0u;
         v118 = 0u;
-        v39 = [v93 deletes];
-        v40 = [v39 countByEnumeratingWithState:&v117 objects:v140 count:16];
+        deletes2 = [v93 deletes];
+        v40 = [deletes2 countByEnumeratingWithState:&v117 objects:v140 count:16];
         if (v40)
         {
           v41 = v40;
@@ -2159,19 +2159,19 @@ LABEL_30:
             {
               if (*v118 != v42)
               {
-                objc_enumerationMutation(v39);
+                objc_enumerationMutation(deletes2);
               }
 
               v44 = *(*(&v117 + 1) + 8 * m);
-              v45 = [v44 identifier];
-              v46 = [v98 objectForKey:v45];
+              identifier2 = [v44 identifier];
+              v46 = [v98 objectForKey:identifier2];
               if (!v46 || ([v44 date], v47 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v46, "date"), v48 = objc_claimAutoreleasedReturnValue(), v49 = objc_msgSend(v47, "compare:", v48), v48, v47, v49 == -1))
               {
-                [v98 setObject:v44 forKey:v45];
+                [v98 setObject:v44 forKey:identifier2];
               }
             }
 
-            v41 = [v39 countByEnumeratingWithState:&v117 objects:v140 count:16];
+            v41 = [deletes2 countByEnumeratingWithState:&v117 objects:v140 count:16];
           }
 
           while (v41);
@@ -2207,13 +2207,13 @@ LABEL_30:
     [COMeshAlarmAddOn _finishMerge:];
   }
 
-  v97 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v111 = 0u;
   v112 = 0u;
   v113 = 0u;
   v114 = 0u;
   v84 = v51;
-  v53 = [(COMeshAlarmAddOn *)v95 _commandsForReconciling:v82 toTruth:v51 forNode:0];
+  v53 = [(COMeshAlarmAddOn *)selfCopy _commandsForReconciling:v82 toTruth:v51 forNode:0];
   v54 = [v53 countByEnumeratingWithState:&v111 objects:v139 count:16];
   if (v54)
   {
@@ -2266,10 +2266,10 @@ LABEL_30:
 
         v59[2] = v60;
         v59[3] = &unk_278E156B0;
-        v59[4] = v95;
+        v59[4] = selfCopy;
         v59[5] = v58;
         v61 = MEMORY[0x245D5FF10]();
-        [v97 addObject:v61];
+        [array addObject:v61];
       }
 
       v55 = [v53 countByEnumeratingWithState:&v111 objects:v139 count:16];
@@ -2304,12 +2304,12 @@ LABEL_30:
         v94 = v63;
         if ([v65 notModified])
         {
-          v66 = v82;
+          alarms2 = v82;
           v67 = COCoreLogForCategory(2);
           if (os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
           {
             *buf = 134218242;
-            v147 = v81;
+            v147 = meshController;
             v148 = 2112;
             v149 = v64;
             _os_log_debug_impl(&dword_244378000, v67, OS_LOG_TYPE_DEBUG, "%p response is not-modified for %@", buf, 0x16u);
@@ -2318,15 +2318,15 @@ LABEL_30:
 
         else
         {
-          v66 = [v65 alarms];
+          alarms2 = [v65 alarms];
         }
 
         v102 = 0u;
         v103 = 0u;
         v100 = 0u;
         v101 = 0u;
-        obja = v66;
-        v68 = [(COMeshAlarmAddOn *)v95 _commandsForReconciling:v66 toTruth:v84 forNode:v64];
+        obja = alarms2;
+        v68 = [(COMeshAlarmAddOn *)selfCopy _commandsForReconciling:alarms2 toTruth:v84 forNode:v64];
         v69 = [v68 countByEnumeratingWithState:&v100 objects:v137 count:16];
         if (v69)
         {
@@ -2349,11 +2349,11 @@ LABEL_30:
                 v99[1] = 3221225472;
                 v99[2] = __33__COMeshAlarmAddOn__finishMerge___block_invoke_139;
                 v99[3] = &unk_278E15728;
-                v99[4] = v95;
+                v99[4] = selfCopy;
                 v99[5] = v73;
                 v99[6] = v64;
                 v74 = MEMORY[0x245D5FF10](v99);
-                [v97 addObject:v74];
+                [array addObject:v74];
               }
             }
 
@@ -2374,30 +2374,30 @@ LABEL_30:
     while (v86);
   }
 
-  [(COMeshAlarmAddOn *)v95 setMergeRequest:0];
-  [(COMeshAlarmAddOn *)v95 setMergeAlarms:0];
+  [(COMeshAlarmAddOn *)selfCopy setMergeRequest:0];
+  [(COMeshAlarmAddOn *)selfCopy setMergeAlarms:0];
   v75 = objc_alloc_init(MEMORY[0x277CBEAC0]);
-  [(COMeshAlarmAddOn *)v95 setMergeResponses:v75];
+  [(COMeshAlarmAddOn *)selfCopy setMergeResponses:v75];
 
   v76 = objc_alloc_init(*(v62 + 2656));
-  [(COMeshAlarmAddOn *)v95 setMergingNodes:v76];
+  [(COMeshAlarmAddOn *)selfCopy setMergingNodes:v76];
 
-  v77 = [(COMeshAlarmAddOn *)v95 queuedCommands];
-  [v97 addObjectsFromArray:v77];
+  queuedCommands = [(COMeshAlarmAddOn *)selfCopy queuedCommands];
+  [array addObjectsFromArray:queuedCommands];
 
-  [(COMeshAlarmAddOn *)v95 setQueuedCommands:v97];
+  [(COMeshAlarmAddOn *)selfCopy setQueuedCommands:array];
   v78 = COCoreLogForCategory(2);
-  v4 = v80;
+  mergeCopy = v80;
   if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v147 = v81;
+    v147 = meshController;
     v148 = 2048;
     v149 = v80;
     _os_log_impl(&dword_244378000, v78, OS_LOG_TYPE_DEFAULT, "%p concluded merge %p", buf, 0x16u);
   }
 
-  [(COMeshAlarmAddOn *)v95 _processQueuedCommands];
+  [(COMeshAlarmAddOn *)selfCopy _processQueuedCommands];
   v7 = v82;
 LABEL_87:
 
@@ -2420,20 +2420,20 @@ void __33__COMeshAlarmAddOn__finishMerge___block_invoke_139(uint64_t a1)
   [v2 sendCommand:*(a1 + 40) toPeer:*(a1 + 48)];
 }
 
-- (void)_reloadIndexWithCompletion:(id)a3
+- (void)_reloadIndexWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(COMeshAlarmAddOn *)self observedAlarmManager];
-  v6 = [v5 alarms];
+  completionCopy = completion;
+  observedAlarmManager = [(COMeshAlarmAddOn *)self observedAlarmManager];
+  alarms = [observedAlarmManager alarms];
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __47__COMeshAlarmAddOn__reloadIndexWithCompletion___block_invoke;
   v14[3] = &unk_278E15C10;
   objc_copyWeak(&v16, &location);
-  v7 = v4;
+  v7 = completionCopy;
   v15 = v7;
-  v8 = [v6 addFailureBlock:v14];
+  v8 = [alarms addFailureBlock:v14];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __47__COMeshAlarmAddOn__reloadIndexWithCompletion___block_invoke_2;
@@ -2441,7 +2441,7 @@ void __33__COMeshAlarmAddOn__finishMerge___block_invoke_139(uint64_t a1)
   objc_copyWeak(&v13, &location);
   v9 = v7;
   v12 = v9;
-  v10 = [v6 addSuccessBlock:v11];
+  v10 = [alarms addSuccessBlock:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&v16);
@@ -2585,13 +2585,13 @@ uint64_t __47__COMeshAlarmAddOn__reloadIndexWithCompletion___block_invoke_3(uint
 - (void)_processQueuedCommands
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(COMeshAlarmAddOn *)self queuedCommands];
+  queuedCommands = [(COMeshAlarmAddOn *)self queuedCommands];
   [(COMeshAlarmAddOn *)self setQueuedCommands:MEMORY[0x277CBEBF8]];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = v3;
+  v4 = queuedCommands;
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -2621,15 +2621,15 @@ uint64_t __47__COMeshAlarmAddOn__reloadIndexWithCompletion___block_invoke_3(uint
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addAlarmDeleteEvent:(id)a3
+- (void)_addAlarmDeleteEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(COMeshAlarmAddOn *)self deletes];
-  v6 = [v5 arrayByAddingObject:v4];
+  eventCopy = event;
+  deletes = [(COMeshAlarmAddOn *)self deletes];
+  v6 = [deletes arrayByAddingObject:eventCopy];
 
-  v7 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v8 = [MEMORY[0x277CBEAA8] now];
-  v9 = [v7 dateByAddingUnit:16 value:-7 toDate:v8 options:1];
+  v9 = [currentCalendar dateByAddingUnit:16 value:-7 toDate:v8 options:1];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -2658,31 +2658,31 @@ BOOL __41__COMeshAlarmAddOn__addAlarmDeleteEvent___block_invoke(uint64_t a1, voi
   return v4;
 }
 
-- (void)_alarmManagerAlarmFired:(id)a3
+- (void)_alarmManagerAlarmFired:(id)fired
 {
   v86 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277D295A0]];
+  userInfo = [fired userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277D295A0]];
 
-  v6 = [(COMeshAlarmAddOn *)self homekit];
-  v7 = [v6 currentAccessory];
-  if (([v6 hasOptedToHH2] & 1) != 0 || !v7)
+  homekit = [(COMeshAlarmAddOn *)self homekit];
+  currentAccessory = [homekit currentAccessory];
+  if (([homekit hasOptedToHH2] & 1) != 0 || !currentAccessory)
   {
     goto LABEL_45;
   }
 
-  v8 = [v6 homeForAccessory:v7];
-  v58 = v6;
+  v8 = [homekit homeForAccessory:currentAccessory];
+  v58 = homekit;
   v59 = v5;
-  v64 = v7;
+  v64 = currentAccessory;
   if (!v8)
   {
     v9 = 0;
     goto LABEL_18;
   }
 
-  v9 = [v6 mediaSystemForAccessory:v7 inHome:v8];
-  if (!v9 || ([v6 accessoriesInMediaSystem:v9 inHome:v8], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+  v9 = [homekit mediaSystemForAccessory:currentAccessory inHome:v8];
+  if (!v9 || ([homekit accessoriesInMediaSystem:v9 inHome:v8], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_18:
     v11 = COCoreLogForCategory(2);
@@ -2695,35 +2695,35 @@ LABEL_18:
   }
 
   v11 = v10;
-  v12 = [v10 firstObject];
+  firstObject = [v10 firstObject];
   v61 = v8;
   v60 = v9;
-  if ([v12 isEqual:v7])
+  if ([firstObject isEqual:currentAccessory])
   {
     v13 = [v11 objectAtIndex:1];
 
-    v12 = v13;
+    firstObject = v13;
   }
 
-  v57 = v12;
-  v14 = [v12 device];
-  v15 = [v14 idsIdentifier];
-  v16 = [v15 UUIDString];
+  v57 = firstObject;
+  device = [firstObject device];
+  idsIdentifier = [device idsIdentifier];
+  uUIDString = [idsIdentifier UUIDString];
 
   [(COMeshAddOn *)self meshController];
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
   v62 = v79 = 0u;
-  v17 = [v62 nodes];
-  v18 = [v17 countByEnumeratingWithState:&v76 objects:v85 count:16];
+  nodes = [v62 nodes];
+  v18 = [nodes countByEnumeratingWithState:&v76 objects:v85 count:16];
   if (!v18)
   {
 LABEL_56:
 
     v5 = v59;
     v9 = v60;
-    v7 = v64;
+    currentAccessory = v64;
     v8 = v61;
 LABEL_20:
 
@@ -2733,7 +2733,7 @@ LABEL_20:
       [COMeshAlarmAddOn _alarmManagerAlarmFired:];
     }
 
-    v26 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v72 = 0u;
     v73 = 0u;
     v74 = 0u;
@@ -2755,17 +2755,17 @@ LABEL_20:
           }
 
           v32 = *(*(&v72 + 1) + 8 * i);
-          if (([v32 isEnabled] & 1) == 0 && -[COMeshAlarmAddOn _isAlarm:targetingAccessory:](self, "_isAlarm:targetingAccessory:", v32, v7))
+          if (([v32 isEnabled] & 1) == 0 && -[COMeshAlarmAddOn _isAlarm:targetingAccessory:](self, "_isAlarm:targetingAccessory:", v32, currentAccessory))
           {
-            v33 = v26;
+            v33 = array;
             v34 = COCoreLogForCategory(2);
             if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
             {
-              v41 = [v32 alarmID];
+              alarmID = [v32 alarmID];
               *buf = 134218242;
-              v81 = self;
+              selfCopy3 = self;
               v82 = 2112;
-              v83 = v41;
+              v83 = alarmID;
               _os_log_debug_impl(&dword_244378000, v34, OS_LOG_TYPE_DEBUG, "%p %@ is not enabled, so will update.", buf, 0x16u);
             }
 
@@ -2775,7 +2775,7 @@ LABEL_20:
             [v35 setEnabled:0];
             v36 = objc_alloc_init(MEMORY[0x277D2C900]);
             v37 = [(COAlarmRequest *)[COAlarmUpdateRequest alloc] initWithAlarm:v35];
-            v38 = [(COMeshAddOn *)self meshControllerQueue];
+            meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
             block[0] = MEMORY[0x277D85DD0];
             block[1] = 3221225472;
             block[2] = __44__COMeshAlarmAddOn__alarmManagerAlarmFired___block_invoke;
@@ -2783,17 +2783,17 @@ LABEL_20:
             block[4] = self;
             v68 = v37;
             v70 = v32;
-            v71 = self;
+            selfCopy2 = self;
             v69 = v36;
             v39 = v36;
             v40 = v37;
-            dispatch_async(v38, block);
+            dispatch_async(meshControllerQueue, block);
 
-            v26 = v33;
+            array = v33;
             [v33 addObject:v39];
 
             v27 = v63;
-            v7 = v64;
+            currentAccessory = v64;
           }
         }
 
@@ -2803,28 +2803,28 @@ LABEL_20:
       while (v29);
     }
 
-    if ([v26 count])
+    if ([array count])
     {
       v42 = MEMORY[0x277D2C938];
-      v43 = [(COMeshAddOn *)self meshControllerQueue];
-      v44 = [v42 schedulerWithDispatchQueue:v43];
+      meshControllerQueue2 = [(COMeshAddOn *)self meshControllerQueue];
+      v44 = [v42 schedulerWithDispatchQueue:meshControllerQueue2];
 
-      v45 = [MEMORY[0x277D2C900] combineAllFutures:v26 ignoringErrors:1 scheduler:v44];
+      futureWithNoResult = [MEMORY[0x277D2C900] combineAllFutures:array ignoringErrors:1 scheduler:v44];
 
-      v6 = v58;
+      homekit = v58;
       v5 = v59;
     }
 
     else
     {
       v46 = COCoreLogForCategory(2);
-      v6 = v58;
+      homekit = v58;
       if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
       {
         [COMeshAlarmAddOn _alarmManagerAlarmFired:];
       }
 
-      v45 = [MEMORY[0x277D2C900] futureWithNoResult];
+      futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
       v5 = v59;
     }
 
@@ -2834,7 +2834,7 @@ LABEL_20:
     v65[3] = &unk_278E186A0;
     v65[4] = self;
     v66 = v27;
-    v47 = [v45 addCompletionBlock:v65];
+    v47 = [futureWithNoResult addCompletionBlock:v65];
 
 LABEL_53:
     goto LABEL_54;
@@ -2848,12 +2848,12 @@ LABEL_10:
   {
     if (*v77 != v20)
     {
-      objc_enumerationMutation(v17);
+      objc_enumerationMutation(nodes);
     }
 
     v22 = *(*(&v76 + 1) + 8 * v21);
-    v23 = [v22 IDSIdentifier];
-    v24 = [v16 isEqual:v23];
+    iDSIdentifier = [v22 IDSIdentifier];
+    v24 = [uUIDString isEqual:iDSIdentifier];
 
     if (v24)
     {
@@ -2862,7 +2862,7 @@ LABEL_10:
 
     if (v19 == ++v21)
     {
-      v19 = [v17 countByEnumeratingWithState:&v76 objects:v85 count:16];
+      v19 = [nodes countByEnumeratingWithState:&v76 objects:v85 count:16];
       if (v19)
       {
         goto LABEL_10;
@@ -2873,11 +2873,11 @@ LABEL_10:
   }
 
   v48 = [v62 me];
-  v49 = [v22 remote];
-  if ([v49 compare:v48] != -1)
+  remote = [v22 remote];
+  if ([remote compare:v48] != -1)
   {
-    v50 = [v49 software];
-    v51 = [v50 hasPrefix:@"14."];
+    software = [remote software];
+    v51 = [software hasPrefix:@"14."];
 
     if (!v51)
     {
@@ -2887,32 +2887,32 @@ LABEL_10:
   }
 
   v52 = COCoreLogForCategory(2);
-  v6 = v58;
+  homekit = v58;
   v5 = v59;
   if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
   {
     [COMeshAlarmAddOn _alarmManagerAlarmFired:];
   }
 
-  v7 = v64;
+  currentAccessory = v64;
 LABEL_45:
   v53 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v81 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_244378000, v53, OS_LOG_TYPE_DEFAULT, "%p posting fired notification.", buf, 0xCu);
   }
 
-  v26 = [(COMeshAlarmAddOn *)self delegate];
+  array = [(COMeshAlarmAddOn *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v26 alarmAddOn:self didFireAlarms:v5];
+    [array alarmAddOn:self didFireAlarms:v5];
   }
 
   if ([(COMeshAlarmAddOn *)self performsLocalActions])
   {
-    v45 = [(COMeshAddOn *)self meshController];
+    futureWithNoResult = [(COMeshAddOn *)self meshController];
     v54 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
     {
@@ -2920,7 +2920,7 @@ LABEL_45:
     }
 
     v55 = [(COAlarmNotification *)[COAlarmFiredNotification alloc] initWithAlarms:v5];
-    [v45 sendNotification:v55];
+    [futureWithNoResult sendNotification:v55];
 
     goto LABEL_53;
   }
@@ -2999,9 +2999,9 @@ void __44__COMeshAlarmAddOn__alarmManagerAlarmFired___block_invoke_152(uint64_t 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_alarmManagerStateReset:(id)a3
+- (void)_alarmManagerStateReset:(id)reset
 {
-  v4 = a3;
+  resetCopy = reset;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -3053,47 +3053,47 @@ void __44__COMeshAlarmAddOn__alarmManagerStateReset___block_invoke(uint64_t a1, 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_alarmManagerAlarmsChanged:(id)a3
+- (void)_alarmManagerAlarmsChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v6 = [v4 objectForKey:*MEMORY[0x277D295A0]];
+  userInfo = [changed userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D295A0]];
 
-  v5 = [(COMeshAlarmAddOn *)self delegate];
+  delegate = [(COMeshAlarmAddOn *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 alarmAddOn:self didChangeAlarms:v6];
+    [delegate alarmAddOn:self didChangeAlarms:v6];
   }
 }
 
-- (void)_alarmManagerFiringAlarmChanged:(id)a3
+- (void)_alarmManagerFiringAlarmChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v6 = [v4 objectForKey:*MEMORY[0x277D295A0]];
+  userInfo = [changed userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D295A0]];
 
-  v5 = [(COMeshAlarmAddOn *)self delegate];
+  delegate = [(COMeshAlarmAddOn *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 alarmAddOn:self didChangeFiringAlarms:v6];
+    [delegate alarmAddOn:self didChangeFiringAlarms:v6];
   }
 }
 
-- (void)_accessorySettingValueUpdated:(id)a3
+- (void)_accessorySettingValueUpdated:(id)updated
 {
-  v9 = [a3 object];
+  object = [updated object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v9 keyPath];
-    v5 = [v4 isEqualToString:@"root.mobileTimer.alarms"];
+    keyPath = [object keyPath];
+    v5 = [keyPath isEqualToString:@"root.mobileTimer.alarms"];
 
     if (v5)
     {
-      v6 = [(COMeshAlarmAddOn *)self homekit];
-      v7 = [v6 currentAccessory];
-      if (v7)
+      homekit = [(COMeshAlarmAddOn *)self homekit];
+      currentAccessory = [homekit currentAccessory];
+      if (currentAccessory)
       {
-        v8 = [v6 homeForAccessory:v7];
-        if (v8 && [v6 isAlarmsCollectionSetting:v9 forAccessory:v7 inHome:v8])
+        delegate = [homekit homeForAccessory:currentAccessory];
+        if (delegate && [homekit isAlarmsCollectionSetting:object forAccessory:currentAccessory inHome:delegate])
         {
           [(COMeshAlarmAddOn *)self _replicateToMobileTimerFromHomeKit];
         }
@@ -3101,33 +3101,33 @@ void __44__COMeshAlarmAddOn__alarmManagerStateReset___block_invoke(uint64_t a1, 
 
       else
       {
-        v8 = [(COMeshAlarmAddOn *)self delegate];
+        delegate = [(COMeshAlarmAddOn *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          [v8 didResetAlarmAddOn:self];
+          [delegate didResetAlarmAddOn:self];
         }
       }
     }
   }
 }
 
-- (id)_currentAccessoryForConnection:(id)a3
+- (id)_currentAccessoryForConnection:(id)connection
 {
-  v4 = [a3 co_PeerInstance];
-  if (v4)
+  co_PeerInstance = [connection co_PeerInstance];
+  if (co_PeerInstance)
   {
-    v5 = [(COMeshAlarmAddOn *)self homehub];
-    v6 = [(COMeshAlarmAddOn *)self homekit];
-    v7 = [v5 accessoryForPeerInstance:v4 usingHomeKitAdapter:v6];
+    homehub = [(COMeshAlarmAddOn *)self homehub];
+    homekit = [(COMeshAlarmAddOn *)self homekit];
+    currentAccessory = [homehub accessoryForPeerInstance:co_PeerInstance usingHomeKitAdapter:homekit];
   }
 
   else
   {
-    v5 = [(COMeshAlarmAddOn *)self homekit];
-    v7 = [v5 currentAccessory];
+    homehub = [(COMeshAlarmAddOn *)self homekit];
+    currentAccessory = [homehub currentAccessory];
   }
 
-  return v7;
+  return currentAccessory;
 }
 
 - (void)_replicateToMobileTimerFromHomeKit
@@ -3135,45 +3135,45 @@ void __44__COMeshAlarmAddOn__alarmManagerStateReset___block_invoke(uint64_t a1, 
   v25 = *MEMORY[0x277D85DE8];
   if ([(COMeshAlarmAddOn *)self performsLocalActions])
   {
-    v3 = [(COMeshAlarmAddOn *)self homekit];
-    v4 = [v3 hasOptedToHH2];
+    homekit = [(COMeshAlarmAddOn *)self homekit];
+    hasOptedToHH2 = [homekit hasOptedToHH2];
 
-    if ((v4 & 1) == 0)
+    if ((hasOptedToHH2 & 1) == 0)
     {
-      v5 = [(COMeshAddOn *)self meshController];
+      meshController = [(COMeshAddOn *)self meshController];
       v6 = COCoreLogForCategory(2);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v24 = v5;
+        v24 = meshController;
         _os_log_impl(&dword_244378000, v6, OS_LOG_TYPE_DEFAULT, "%p starting replication of alarms...", buf, 0xCu);
       }
 
-      v7 = [(COMeshAlarmAddOn *)self homekit];
-      v8 = [v7 currentAccessory];
-      if (v8)
+      homekit2 = [(COMeshAlarmAddOn *)self homekit];
+      currentAccessory = [homekit2 currentAccessory];
+      if (currentAccessory)
       {
-        v9 = [v7 homeForAccessory:v8];
+        v9 = [homekit2 homeForAccessory:currentAccessory];
         if (v9)
         {
-          v10 = [v7 alarmsForAccessory:v8 inHome:v9];
+          v10 = [homekit2 alarmsForAccessory:currentAccessory inHome:v9];
           if (v10)
           {
-            v11 = [(COMeshAlarmAddOn *)self alarmManager];
-            v12 = [v11 alarms];
+            alarmManager = [(COMeshAlarmAddOn *)self alarmManager];
+            alarms = [alarmManager alarms];
             v16[0] = MEMORY[0x277D85DD0];
             v16[1] = 3221225472;
             v16[2] = __54__COMeshAlarmAddOn__replicateToMobileTimerFromHomeKit__block_invoke;
             v16[3] = &unk_278E186C8;
             v16[4] = self;
-            v17 = v8;
+            v17 = currentAccessory;
             v18 = v10;
-            v19 = v5;
-            v20 = v11;
-            v21 = v7;
+            v19 = meshController;
+            v20 = alarmManager;
+            v21 = homekit2;
             v22 = v9;
-            v13 = v11;
-            v14 = [v12 addSuccessBlock:v16];
+            v13 = alarmManager;
+            v14 = [alarms addSuccessBlock:v16];
           }
         }
       }
@@ -3449,10 +3449,10 @@ LABEL_42:
   v61 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_filteredAlarmsList:(id)a3 forAccessory:(id)a4
+- (id)_filteredAlarmsList:(id)list forAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  accessoryCopy = accessory;
   v8 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -3463,21 +3463,21 @@ LABEL_42:
   v15 = 3221225472;
   v16 = __53__COMeshAlarmAddOn__filteredAlarmsList_forAccessory___block_invoke;
   v17 = &unk_278E17E70;
-  v9 = v7;
+  v9 = accessoryCopy;
   v18 = v9;
-  v19 = self;
-  v10 = [v6 indexesOfObjectsPassingTest:&v14];
+  selfCopy = self;
+  v10 = [listCopy indexesOfObjectsPassingTest:&v14];
   if ([v10 count])
   {
-    v11 = [v6 mutableCopy];
+    v11 = [listCopy mutableCopy];
     [v11 removeObjectsAtIndexes:v10];
 
-    v6 = v11;
+    listCopy = v11;
   }
 
-  v12 = v6;
+  v12 = listCopy;
 
-  return v6;
+  return listCopy;
 }
 
 uint64_t __53__COMeshAlarmAddOn__filteredAlarmsList_forAccessory___block_invoke(uint64_t a1, void *a2)
@@ -3497,32 +3497,32 @@ uint64_t __53__COMeshAlarmAddOn__filteredAlarmsList_forAccessory___block_invoke(
   return v2 ^ 1u;
 }
 
-- (id)_alarmsForAccessory:(id)a3 allowLocalStorage:(BOOL)a4 usingLeader:(BOOL)a5 member:(id)a6 client:(id)a7
+- (id)_alarmsForAccessory:(id)accessory allowLocalStorage:(BOOL)storage usingLeader:(BOOL)leader member:(id)member client:(id)client
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(COMeshAddOn *)self meshController];
+  accessoryCopy = accessory;
+  memberCopy = member;
+  clientCopy = client;
+  meshController = [(COMeshAddOn *)self meshController];
   v16 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v17 = [(COMeshAddOn *)self meshControllerQueue];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__COMeshAlarmAddOn__alarmsForAccessory_allowLocalStorage_usingLeader_member_client___block_invoke;
   block[3] = &unk_278E18790;
-  v27 = v13;
-  v28 = v15;
-  v29 = v12;
-  v30 = v14;
-  v31 = self;
+  v27 = memberCopy;
+  v28 = meshController;
+  v29 = accessoryCopy;
+  v30 = clientCopy;
+  selfCopy = self;
   v18 = v16;
   v32 = v18;
-  v33 = a4;
-  v34 = a5;
-  v19 = v14;
-  v20 = v12;
-  v21 = v15;
-  v22 = v13;
-  dispatch_async(v17, block);
+  storageCopy = storage;
+  leaderCopy = leader;
+  v19 = clientCopy;
+  v20 = accessoryCopy;
+  v21 = meshController;
+  v22 = memberCopy;
+  dispatch_async(meshControllerQueue, block);
 
   v23 = v32;
   v24 = v18;
@@ -4149,37 +4149,37 @@ void __84__COMeshAlarmAddOn__alarmsForAccessory_allowLocalStorage_usingLeader_me
   [*(a1 + 48) finishWithResult:*(a1 + 40)];
 }
 
-- (BOOL)_isAlarm:(id)a3 targetingAccessoryIdentifiers:(id)a4
+- (BOOL)_isAlarm:(id)alarm targetingAccessoryIdentifiers:(id)identifiers
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 siriContext];
-  v8 = [v7 objectForKey:*MEMORY[0x277CFCEC8]];
+  alarmCopy = alarm;
+  identifiersCopy = identifiers;
+  siriContext = [alarmCopy siriContext];
+  v8 = [siriContext objectForKey:*MEMORY[0x277CFCEC8]];
   v9 = v8;
   v10 = v8 == 0;
-  if (v6 && v8)
+  if (identifiersCopy && v8)
   {
     v11 = [MEMORY[0x277CCACE0] componentsWithString:v8];
-    v12 = [v11 scheme];
-    if ([v12 isEqualToString:@"siri-hk-target"])
+    scheme = [v11 scheme];
+    if ([scheme isEqualToString:@"siri-hk-target"])
     {
-      v13 = [v11 path];
-      v14 = [v13 isEqualToString:@"accessory"];
+      path = [v11 path];
+      v14 = [path isEqualToString:@"accessory"];
 
       if (v14)
       {
         v15 = COCoreLogForCategory(2);
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
         {
-          v28 = [v5 alarmID];
-          v29 = [v11 query];
+          alarmID = [alarmCopy alarmID];
+          query = [v11 query];
           *buf = 138412802;
-          v40 = v28;
+          v40 = alarmID;
           v41 = 2112;
-          v42 = v29;
+          v42 = query;
           v43 = 2112;
-          v44 = v6;
+          v44 = identifiersCopy;
           _os_log_debug_impl(&dword_244378000, v15, OS_LOG_TYPE_DEBUG, "checking if alarm (%@) target (%@) contains %@", buf, 0x20u);
         }
 
@@ -4187,15 +4187,15 @@ void __84__COMeshAlarmAddOn__alarmsForAccessory_allowLocalStorage_usingLeader_me
         v37 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v16 = [v11 queryItems];
-        v17 = [v16 countByEnumeratingWithState:&v34 objects:v38 count:16];
+        queryItems = [v11 queryItems];
+        v17 = [queryItems countByEnumeratingWithState:&v34 objects:v38 count:16];
         if (v17)
         {
           v18 = v17;
           v30 = v11;
           v31 = v9;
-          v32 = v7;
-          v33 = v5;
+          v32 = siriContext;
+          v33 = alarmCopy;
           v19 = *v35;
           while (2)
           {
@@ -4203,20 +4203,20 @@ void __84__COMeshAlarmAddOn__alarmsForAccessory_allowLocalStorage_usingLeader_me
             {
               if (*v35 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(queryItems);
               }
 
               v21 = *(*(&v34 + 1) + 8 * i);
-              v22 = [v21 name];
-              v23 = [@"identifier" isEqualToString:v22];
+              name = [v21 name];
+              v23 = [@"identifier" isEqualToString:name];
 
               if (v23)
               {
-                v24 = [v21 value];
-                if (v24)
+                value = [v21 value];
+                if (value)
                 {
-                  v25 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v24];
-                  if (v25 && ([v6 containsObject:v25] & 1) != 0)
+                  v25 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:value];
+                  if (v25 && ([identifiersCopy containsObject:v25] & 1) != 0)
                   {
 
                     v10 = 1;
@@ -4226,7 +4226,7 @@ void __84__COMeshAlarmAddOn__alarmsForAccessory_allowLocalStorage_usingLeader_me
               }
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v34 objects:v38 count:16];
+            v18 = [queryItems countByEnumeratingWithState:&v34 objects:v38 count:16];
             if (v18)
             {
               continue;
@@ -4237,8 +4237,8 @@ void __84__COMeshAlarmAddOn__alarmsForAccessory_allowLocalStorage_usingLeader_me
 
           v10 = 0;
 LABEL_30:
-          v7 = v32;
-          v5 = v33;
+          siriContext = v32;
+          alarmCopy = v33;
           v11 = v30;
           v9 = v31;
           goto LABEL_27;
@@ -4256,8 +4256,8 @@ LABEL_27:
     {
     }
 
-    v16 = COCoreLogForCategory(2);
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+    queryItems = COCoreLogForCategory(2);
+    if (os_log_type_enabled(queryItems, OS_LOG_TYPE_DEBUG))
     {
       [COMeshTimerAddOn _isTimer:targetingAccessoryIdentifiers:];
     }
@@ -4268,7 +4268,7 @@ LABEL_27:
   v11 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [COMeshAlarmAddOn _isAlarm:v5 targetingAccessoryIdentifiers:?];
+    [COMeshAlarmAddOn _isAlarm:alarmCopy targetingAccessoryIdentifiers:?];
   }
 
 LABEL_28:
@@ -4277,12 +4277,12 @@ LABEL_28:
   return v10;
 }
 
-- (id)alarmsForAccessory:(id)a3
+- (id)alarmsForAccessory:(id)accessory
 {
-  v4 = a3;
-  if (v4)
+  accessoryCopy = accessory;
+  if (accessoryCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x277CFD0C8]) initWithHomeKitAccessory:v4];
+    v5 = [objc_alloc(MEMORY[0x277CFD0C8]) initWithHomeKitAccessory:accessoryCopy];
     if (v5)
     {
       v6 = [(COMeshAlarmAddOn *)self secondaryClusterMemberIfRequiredForAccessory:v5];
@@ -4302,30 +4302,30 @@ LABEL_6:
   return v7;
 }
 
-- (id)addAlarm:(id)a3 member:(id)a4 client:(id)a5
+- (id)addAlarm:(id)alarm member:(id)member client:(id)client
 {
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COAlarmRequest *)[COAlarmCreateRequest alloc] initWithAlarm:v8];
-  v12 = [(COMeshAddOn *)self meshController];
-  if (-[COMeshAlarmAddOn performsLocalActions](self, "performsLocalActions") && ([v12 leader], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
+  alarmCopy = alarm;
+  memberCopy = member;
+  clientCopy = client;
+  v11 = [(COAlarmRequest *)[COAlarmCreateRequest alloc] initWithAlarm:alarmCopy];
+  meshController = [(COMeshAddOn *)self meshController];
+  if (-[COMeshAlarmAddOn performsLocalActions](self, "performsLocalActions") && ([meshController leader], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
   {
     v30 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [(COMeshAddOn *)self meshController];
-      v32 = [v8 alarmID];
+      meshController2 = [(COMeshAddOn *)self meshController];
+      alarmID = [alarmCopy alarmID];
       *buf = 134218242;
-      v52 = v31;
+      v52 = meshController2;
       v53 = 2112;
-      v54 = v32;
+      v54 = alarmID;
       _os_log_impl(&dword_244378000, v30, OS_LOG_TYPE_DEFAULT, "%p directly add an alarm %@", buf, 0x16u);
     }
 
     v33 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v34 = [(COMeshAddOn *)self meshControllerQueue];
+    meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
     block[0] = MEMORY[0x277D85DD0];
     v26 = &off_244448000;
     block[1] = 3221225472;
@@ -4335,8 +4335,8 @@ LABEL_6:
     v48 = v11;
     v23 = v33;
     v49 = v23;
-    v50 = v12;
-    dispatch_async(v34, block);
+    v50 = meshController;
+    dispatch_async(meshControllerQueue, block);
 
     v27 = 1;
   }
@@ -4345,44 +4345,44 @@ LABEL_6:
   {
     v14 = COCoreLogForCategory(2);
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-    if (v9)
+    if (memberCopy)
     {
       v38 = v11;
       if (v15)
       {
-        v16 = [v8 alarmID];
+        alarmID2 = [alarmCopy alarmID];
         *buf = 134218242;
-        v52 = v12;
+        v52 = meshController;
         v53 = 2112;
-        v54 = v16;
+        v54 = alarmID2;
         _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%p using secondary cluster to add %@", buf, 0x16u);
       }
 
       v17 = objc_alloc_init(MEMORY[0x277D2C900]);
-      v18 = [[COMTAlarmCreateAction alloc] initWithAlarm:v8];
-      v19 = [v10 clientLifetimeActivity];
-      v20 = [CONetworkActivityFactory activityWithLabel:3 parentActivity:v19];
+      v18 = [[COMTAlarmCreateAction alloc] initWithAlarm:alarmCopy];
+      clientLifetimeActivity = [clientCopy clientLifetimeActivity];
+      v20 = [CONetworkActivityFactory activityWithLabel:3 parentActivity:clientLifetimeActivity];
 
       if (v20)
       {
         nw_activity_activate();
       }
 
-      v21 = [(COMeshAlarmAddOn *)self actionDirector];
-      v22 = [MEMORY[0x277CBEB98] setWithObject:v9];
+      actionDirector = [(COMeshAlarmAddOn *)self actionDirector];
+      v22 = [MEMORY[0x277CBEB98] setWithObject:memberCopy];
       v41[0] = MEMORY[0x277D85DD0];
       v41[1] = 3221225472;
       v41[2] = __43__COMeshAlarmAddOn_addAlarm_member_client___block_invoke_192;
       v41[3] = &unk_278E15778;
       v42 = v20;
       v43 = v18;
-      v44 = v10;
+      v44 = clientCopy;
       v23 = v17;
       v45 = v23;
-      v46 = v12;
+      v46 = meshController;
       v24 = v18;
       v25 = v20;
-      [v21 requestAction:v24 members:v22 activity:v25 withCompletion:v41];
+      [actionDirector requestAction:v24 members:v22 activity:v25 withCompletion:v41];
 
       v26 = &off_244448000;
       v27 = 0;
@@ -4393,28 +4393,28 @@ LABEL_6:
     {
       if (v15)
       {
-        v28 = [(COMeshAddOn *)self meshController];
-        v29 = [v8 alarmID];
+        meshController3 = [(COMeshAddOn *)self meshController];
+        alarmID3 = [alarmCopy alarmID];
         *buf = 134218242;
-        v52 = v28;
+        v52 = meshController3;
         v53 = 2112;
-        v54 = v29;
+        v54 = alarmID3;
         _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%p requesting leader to add an alarm %@", buf, 0x16u);
       }
 
-      v23 = [(COMeshAlarmAddOn *)self _sendRequest:v11 client:v10];
+      v23 = [(COMeshAlarmAddOn *)self _sendRequest:v11 client:clientCopy];
       v27 = 0;
       v26 = &off_244448000;
     }
   }
 
-  v35 = [(COMeshAlarmAddOn *)self recorder];
+  recorder = [(COMeshAlarmAddOn *)self recorder];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = *(v26 + 186);
   v39[2] = __43__COMeshAlarmAddOn_addAlarm_member_client___block_invoke_193;
   v39[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
   v40 = v27;
-  (v35)[2](v35, 0x2857B5848, v39);
+  (recorder)[2](recorder, 0x2857B5848, v39);
 
   v36 = *MEMORY[0x277D85DE8];
 
@@ -4508,30 +4508,30 @@ void __43__COMeshAlarmAddOn_addAlarm_member_client___block_invoke_192(uint64_t a
   }
 }
 
-- (id)updateAlarm:(id)a3 member:(id)a4 client:(id)a5
+- (id)updateAlarm:(id)alarm member:(id)member client:(id)client
 {
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COAlarmRequest *)[COAlarmUpdateRequest alloc] initWithAlarm:v8];
-  v12 = [(COMeshAddOn *)self meshController];
-  if (-[COMeshAlarmAddOn performsLocalActions](self, "performsLocalActions") && ([v12 leader], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
+  alarmCopy = alarm;
+  memberCopy = member;
+  clientCopy = client;
+  v11 = [(COAlarmRequest *)[COAlarmUpdateRequest alloc] initWithAlarm:alarmCopy];
+  meshController = [(COMeshAddOn *)self meshController];
+  if (-[COMeshAlarmAddOn performsLocalActions](self, "performsLocalActions") && ([meshController leader], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
   {
     v30 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [(COMeshAddOn *)self meshController];
-      v32 = [v8 alarmID];
+      meshController2 = [(COMeshAddOn *)self meshController];
+      alarmID = [alarmCopy alarmID];
       *buf = 134218242;
-      v52 = v31;
+      v52 = meshController2;
       v53 = 2112;
-      v54 = v32;
+      v54 = alarmID;
       _os_log_impl(&dword_244378000, v30, OS_LOG_TYPE_DEFAULT, "%p directly update an alarm %@", buf, 0x16u);
     }
 
     v33 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v34 = [(COMeshAddOn *)self meshControllerQueue];
+    meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
     block[0] = MEMORY[0x277D85DD0];
     v26 = &off_244448000;
     block[1] = 3221225472;
@@ -4541,8 +4541,8 @@ void __43__COMeshAlarmAddOn_addAlarm_member_client___block_invoke_192(uint64_t a
     v48 = v11;
     v23 = v33;
     v49 = v23;
-    v50 = v12;
-    dispatch_async(v34, block);
+    v50 = meshController;
+    dispatch_async(meshControllerQueue, block);
 
     v27 = 1;
   }
@@ -4551,44 +4551,44 @@ void __43__COMeshAlarmAddOn_addAlarm_member_client___block_invoke_192(uint64_t a
   {
     v14 = COCoreLogForCategory(2);
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-    if (v9)
+    if (memberCopy)
     {
       v38 = v11;
       if (v15)
       {
-        v16 = [v8 alarmID];
+        alarmID2 = [alarmCopy alarmID];
         *buf = 134218242;
-        v52 = v12;
+        v52 = meshController;
         v53 = 2112;
-        v54 = v16;
+        v54 = alarmID2;
         _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%p using secondary cluster to update %@", buf, 0x16u);
       }
 
       v17 = objc_alloc_init(MEMORY[0x277D2C900]);
-      v18 = [[COMTAlarmUpdateAction alloc] initWithAlarm:v8];
-      v19 = [v10 clientLifetimeActivity];
-      v20 = [CONetworkActivityFactory activityWithLabel:3 parentActivity:v19];
+      v18 = [[COMTAlarmUpdateAction alloc] initWithAlarm:alarmCopy];
+      clientLifetimeActivity = [clientCopy clientLifetimeActivity];
+      v20 = [CONetworkActivityFactory activityWithLabel:3 parentActivity:clientLifetimeActivity];
 
       if (v20)
       {
         nw_activity_activate();
       }
 
-      v21 = [(COMeshAlarmAddOn *)self actionDirector];
-      v22 = [MEMORY[0x277CBEB98] setWithObject:v9];
+      actionDirector = [(COMeshAlarmAddOn *)self actionDirector];
+      v22 = [MEMORY[0x277CBEB98] setWithObject:memberCopy];
       v41[0] = MEMORY[0x277D85DD0];
       v41[1] = 3221225472;
       v41[2] = __46__COMeshAlarmAddOn_updateAlarm_member_client___block_invoke_195;
       v41[3] = &unk_278E15778;
       v42 = v20;
       v43 = v18;
-      v44 = v10;
+      v44 = clientCopy;
       v23 = v17;
       v45 = v23;
-      v46 = v12;
+      v46 = meshController;
       v24 = v18;
       v25 = v20;
-      [v21 requestAction:v24 members:v22 activity:v25 withCompletion:v41];
+      [actionDirector requestAction:v24 members:v22 activity:v25 withCompletion:v41];
 
       v26 = &off_244448000;
       v27 = 0;
@@ -4599,28 +4599,28 @@ void __43__COMeshAlarmAddOn_addAlarm_member_client___block_invoke_192(uint64_t a
     {
       if (v15)
       {
-        v28 = [(COMeshAddOn *)self meshController];
-        v29 = [v8 alarmID];
+        meshController3 = [(COMeshAddOn *)self meshController];
+        alarmID3 = [alarmCopy alarmID];
         *buf = 134218242;
-        v52 = v28;
+        v52 = meshController3;
         v53 = 2112;
-        v54 = v29;
+        v54 = alarmID3;
         _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%p requesting leader to update an alarm %@", buf, 0x16u);
       }
 
-      v23 = [(COMeshAlarmAddOn *)self _sendRequest:v11 client:v10];
+      v23 = [(COMeshAlarmAddOn *)self _sendRequest:v11 client:clientCopy];
       v27 = 0;
       v26 = &off_244448000;
     }
   }
 
-  v35 = [(COMeshAlarmAddOn *)self recorder];
+  recorder = [(COMeshAlarmAddOn *)self recorder];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = *(v26 + 186);
   v39[2] = __46__COMeshAlarmAddOn_updateAlarm_member_client___block_invoke_196;
   v39[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
   v40 = v27;
-  (v35)[2](v35, 0x2857B5848, v39);
+  (recorder)[2](recorder, 0x2857B5848, v39);
 
   v36 = *MEMORY[0x277D85DE8];
 
@@ -4714,30 +4714,30 @@ void __46__COMeshAlarmAddOn_updateAlarm_member_client___block_invoke_195(uint64_
   }
 }
 
-- (id)removeAlarm:(id)a3 member:(id)a4 client:(id)a5
+- (id)removeAlarm:(id)alarm member:(id)member client:(id)client
 {
   v58 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COAlarmRequest *)[COAlarmDeleteRequest alloc] initWithAlarm:v8];
-  v12 = [(COMeshAddOn *)self meshController];
-  if (-[COMeshAlarmAddOn performsLocalActions](self, "performsLocalActions") && ([v12 leader], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
+  alarmCopy = alarm;
+  memberCopy = member;
+  clientCopy = client;
+  v11 = [(COAlarmRequest *)[COAlarmDeleteRequest alloc] initWithAlarm:alarmCopy];
+  meshController = [(COMeshAddOn *)self meshController];
+  if (-[COMeshAlarmAddOn performsLocalActions](self, "performsLocalActions") && ([meshController leader], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
   {
     v33 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [(COMeshAddOn *)self meshController];
-      v35 = [v8 alarmID];
+      meshController2 = [(COMeshAddOn *)self meshController];
+      alarmID = [alarmCopy alarmID];
       *buf = 134218242;
-      v55 = v34;
+      v55 = meshController2;
       v56 = 2112;
-      v57 = v35;
+      v57 = alarmID;
       _os_log_impl(&dword_244378000, v33, OS_LOG_TYPE_DEFAULT, "%p directly remove an alarm %@", buf, 0x16u);
     }
 
     v36 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v37 = [(COMeshAddOn *)self meshControllerQueue];
+    meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
     block[0] = MEMORY[0x277D85DD0];
     v29 = &off_244448000;
     block[1] = 3221225472;
@@ -4747,8 +4747,8 @@ void __46__COMeshAlarmAddOn_updateAlarm_member_client___block_invoke_195(uint64_
     v51 = v11;
     v26 = v36;
     v52 = v26;
-    v53 = v12;
-    dispatch_async(v37, block);
+    v53 = meshController;
+    dispatch_async(meshControllerQueue, block);
 
     v30 = 1;
   }
@@ -4757,48 +4757,48 @@ void __46__COMeshAlarmAddOn_updateAlarm_member_client___block_invoke_195(uint64_
   {
     v14 = COCoreLogForCategory(2);
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-    if (v9)
+    if (memberCopy)
     {
       v41 = v11;
       if (v15)
       {
-        v16 = [v8 alarmID];
+        alarmID2 = [alarmCopy alarmID];
         *buf = 134218242;
-        v55 = v12;
+        v55 = meshController;
         v56 = 2112;
-        v57 = v16;
+        v57 = alarmID2;
         _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%p using secondary cluster to remove %@", buf, 0x16u);
       }
 
       v17 = objc_alloc_init(MEMORY[0x277D2C900]);
       v18 = objc_opt_class();
       v19 = NSStringFromClass(v18);
-      v20 = [v8 alarmID];
-      v21 = [COMTDeleteAction actionWithTargetType:v19 targetIdentifier:v20];
+      alarmID3 = [alarmCopy alarmID];
+      v21 = [COMTDeleteAction actionWithTargetType:v19 targetIdentifier:alarmID3];
 
-      v22 = [v10 clientLifetimeActivity];
-      v23 = [CONetworkActivityFactory activityWithLabel:3 parentActivity:v22];
+      clientLifetimeActivity = [clientCopy clientLifetimeActivity];
+      v23 = [CONetworkActivityFactory activityWithLabel:3 parentActivity:clientLifetimeActivity];
 
       if (v23)
       {
         nw_activity_activate();
       }
 
-      v24 = [(COMeshAlarmAddOn *)self actionDirector];
-      v25 = [MEMORY[0x277CBEB98] setWithObject:v9];
+      actionDirector = [(COMeshAlarmAddOn *)self actionDirector];
+      v25 = [MEMORY[0x277CBEB98] setWithObject:memberCopy];
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
       v44[2] = __46__COMeshAlarmAddOn_removeAlarm_member_client___block_invoke_198;
       v44[3] = &unk_278E15778;
       v45 = v23;
       v46 = v21;
-      v47 = v10;
+      v47 = clientCopy;
       v26 = v17;
       v48 = v26;
-      v49 = v12;
+      v49 = meshController;
       v27 = v21;
       v28 = v23;
-      [v24 requestAction:v27 members:v25 activity:v28 withCompletion:v44];
+      [actionDirector requestAction:v27 members:v25 activity:v28 withCompletion:v44];
 
       v29 = &off_244448000;
       v30 = 0;
@@ -4809,28 +4809,28 @@ void __46__COMeshAlarmAddOn_updateAlarm_member_client___block_invoke_195(uint64_
     {
       if (v15)
       {
-        v31 = [(COMeshAddOn *)self meshController];
-        v32 = [v8 alarmID];
+        meshController3 = [(COMeshAddOn *)self meshController];
+        alarmID4 = [alarmCopy alarmID];
         *buf = 134218242;
-        v55 = v31;
+        v55 = meshController3;
         v56 = 2112;
-        v57 = v32;
+        v57 = alarmID4;
         _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%p requesting leader to remove an alarm %@", buf, 0x16u);
       }
 
-      v26 = [(COMeshAlarmAddOn *)self _sendRequest:v11 client:v10];
+      v26 = [(COMeshAlarmAddOn *)self _sendRequest:v11 client:clientCopy];
       v30 = 0;
       v29 = &off_244448000;
     }
   }
 
-  v38 = [(COMeshAlarmAddOn *)self recorder];
+  recorder = [(COMeshAlarmAddOn *)self recorder];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = *(v29 + 186);
   v42[2] = __46__COMeshAlarmAddOn_removeAlarm_member_client___block_invoke_199;
   v42[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
   v43 = v30;
-  (v38)[2](v38, 0x2857B5848, v42);
+  (recorder)[2](recorder, 0x2857B5848, v42);
 
   v39 = *MEMORY[0x277D85DE8];
 
@@ -4924,28 +4924,28 @@ void __46__COMeshAlarmAddOn_removeAlarm_member_client___block_invoke_198(uint64_
   }
 }
 
-- (id)snoozeAlarmWithIdentifier:(id)a3 client:(id)a4
+- (id)snoozeAlarmWithIdentifier:(id)identifier client:(id)client
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [[COAlarmSnoozeRequest alloc] initWithAlarmIdentifier:v6];
-  v9 = [(COMeshAddOn *)self meshController];
-  if (-[COMeshAlarmAddOn performsLocalActions](self, "performsLocalActions") && ([v9 leader], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
+  identifierCopy = identifier;
+  clientCopy = client;
+  v8 = [[COAlarmSnoozeRequest alloc] initWithAlarmIdentifier:identifierCopy];
+  meshController = [(COMeshAddOn *)self meshController];
+  if (-[COMeshAlarmAddOn performsLocalActions](self, "performsLocalActions") && ([meshController leader], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
   {
     v18 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(COMeshAddOn *)self meshController];
+      meshController2 = [(COMeshAddOn *)self meshController];
       *buf = 134218242;
-      v29 = v19;
+      v29 = meshController2;
       v30 = 2112;
-      v31 = v6;
+      v31 = identifierCopy;
       _os_log_impl(&dword_244378000, v18, OS_LOG_TYPE_DEFAULT, "%p directly snooze an alarm %@", buf, 0x16u);
     }
 
     v20 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v21 = [(COMeshAddOn *)self meshControllerQueue];
+    meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __53__COMeshAlarmAddOn_snoozeAlarmWithIdentifier_client___block_invoke;
@@ -4954,8 +4954,8 @@ void __46__COMeshAlarmAddOn_removeAlarm_member_client___block_invoke_198(uint64_
     v25 = v8;
     v13 = v20;
     v26 = v13;
-    v27 = v9;
-    dispatch_async(v21, block);
+    v27 = meshController;
+    dispatch_async(meshControllerQueue, block);
 
     v14 = 1;
   }
@@ -4965,25 +4965,25 @@ void __46__COMeshAlarmAddOn_removeAlarm_member_client___block_invoke_198(uint64_
     v11 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(COMeshAddOn *)self meshController];
+      meshController3 = [(COMeshAddOn *)self meshController];
       *buf = 134218242;
-      v29 = v12;
+      v29 = meshController3;
       v30 = 2112;
-      v31 = v6;
+      v31 = identifierCopy;
       _os_log_impl(&dword_244378000, v11, OS_LOG_TYPE_DEFAULT, "%p requesting leader to snooze an alarm %@", buf, 0x16u);
     }
 
-    v13 = [(COMeshAlarmAddOn *)self _sendRequest:v8 client:v7];
+    v13 = [(COMeshAlarmAddOn *)self _sendRequest:v8 client:clientCopy];
     v14 = 0;
   }
 
-  v15 = [(COMeshAlarmAddOn *)self recorder];
+  recorder = [(COMeshAlarmAddOn *)self recorder];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __53__COMeshAlarmAddOn_snoozeAlarmWithIdentifier_client___block_invoke_200;
   v22[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
   v23 = v14;
-  (v15)[2](v15, 0x2857B5848, v22);
+  (recorder)[2](recorder, 0x2857B5848, v22);
 
   v16 = *MEMORY[0x277D85DE8];
 
@@ -5025,28 +5025,28 @@ void __53__COMeshAlarmAddOn_snoozeAlarmWithIdentifier_client___block_invoke_2(ui
   }
 }
 
-- (id)dismissAlarmWithIdentifier:(id)a3 client:(id)a4
+- (id)dismissAlarmWithIdentifier:(id)identifier client:(id)client
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [[COAlarmDismissRequest alloc] initWithAlarmIdentifier:v6];
-  v9 = [(COMeshAddOn *)self meshController];
-  if (-[COMeshAlarmAddOn performsLocalActions](self, "performsLocalActions") && ([v9 leader], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
+  identifierCopy = identifier;
+  clientCopy = client;
+  v8 = [[COAlarmDismissRequest alloc] initWithAlarmIdentifier:identifierCopy];
+  meshController = [(COMeshAddOn *)self meshController];
+  if (-[COMeshAlarmAddOn performsLocalActions](self, "performsLocalActions") && ([meshController leader], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
   {
     v23 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(COMeshAddOn *)self meshController];
+      meshController2 = [(COMeshAddOn *)self meshController];
       *buf = 134218242;
-      v36 = v24;
+      v36 = meshController2;
       v37 = 2112;
-      v38 = v6;
+      v38 = identifierCopy;
       _os_log_impl(&dword_244378000, v23, OS_LOG_TYPE_DEFAULT, "%p directly dismiss an alarm %@", buf, 0x16u);
     }
 
     v25 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v26 = [(COMeshAddOn *)self meshControllerQueue];
+    meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __54__COMeshAlarmAddOn_dismissAlarmWithIdentifier_client___block_invoke;
@@ -5056,48 +5056,48 @@ void __53__COMeshAlarmAddOn_snoozeAlarmWithIdentifier_client___block_invoke_2(ui
     v32 = v8;
     v18 = v25;
     v33 = v18;
-    v34 = v9;
-    dispatch_async(v26, block);
+    v34 = meshController;
+    dispatch_async(meshControllerQueue, block);
 
     v19 = 1;
   }
 
   else
   {
-    v11 = [(COMeshAlarmAddOn *)self alarmManager];
-    v12 = [v11 dismissAlarmWithIdentifier:v6];
+    alarmManager = [(COMeshAlarmAddOn *)self alarmManager];
+    v12 = [alarmManager dismissAlarmWithIdentifier:identifierCopy];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __54__COMeshAlarmAddOn_dismissAlarmWithIdentifier_client___block_invoke_201;
     v29[3] = &unk_278E17010;
     v29[4] = self;
     v13 = &v30;
-    v14 = v6;
+    v14 = identifierCopy;
     v30 = v14;
     v15 = [v12 addCompletionBlock:v29];
 
     v16 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(COMeshAddOn *)self meshController];
+      meshController3 = [(COMeshAddOn *)self meshController];
       *buf = 134218242;
-      v36 = v17;
+      v36 = meshController3;
       v37 = 2112;
       v38 = v14;
       _os_log_impl(&dword_244378000, v16, OS_LOG_TYPE_DEFAULT, "%p requesting leader to dismiss an alarm %@", buf, 0x16u);
     }
 
-    v18 = [(COMeshAlarmAddOn *)self _sendRequest:v8 client:v7];
+    v18 = [(COMeshAlarmAddOn *)self _sendRequest:v8 client:clientCopy];
     v19 = 0;
   }
 
-  v20 = [(COMeshAlarmAddOn *)self recorder];
+  recorder = [(COMeshAlarmAddOn *)self recorder];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __54__COMeshAlarmAddOn_dismissAlarmWithIdentifier_client___block_invoke_203;
   v27[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
   v28 = v19;
-  (v20)[2](v20, 0x2857B5848, v27);
+  (recorder)[2](recorder, 0x2857B5848, v27);
 
   v21 = *MEMORY[0x277D85DE8];
 
@@ -5167,106 +5167,106 @@ void __54__COMeshAlarmAddOn_dismissAlarmWithIdentifier_client___block_invoke_201
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isAlarm:(id)a3 targetingAccessory:(id)a4
+- (BOOL)_isAlarm:(id)alarm targetingAccessory:(id)accessory
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  if (v6)
+  accessoryCopy = accessory;
+  alarmCopy = alarm;
+  if (accessoryCopy)
   {
-    v8 = [(COMeshAlarmAddOn *)self homekit];
-    v9 = [v8 homeForAccessory:v6];
+    homekit = [(COMeshAlarmAddOn *)self homekit];
+    v9 = [homekit homeForAccessory:accessoryCopy];
     if (v9)
     {
-      v10 = [v8 identifiersForAccessoriesAssociatedWithAccessory:v6 inHome:v9];
+      v10 = [homekit identifiersForAccessoriesAssociatedWithAccessory:accessoryCopy inHome:v9];
     }
 
     else
     {
-      v12 = [v6 uniqueIdentifier];
-      v15[0] = v12;
+      uniqueIdentifier = [accessoryCopy uniqueIdentifier];
+      v15[0] = uniqueIdentifier;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
     }
 
-    v11 = [(COMeshAlarmAddOn *)self _isAlarm:v7 targetingAccessoryIdentifiers:v10];
+    v11 = [(COMeshAlarmAddOn *)self _isAlarm:alarmCopy targetingAccessoryIdentifiers:v10];
   }
 
   else
   {
-    v11 = [(COMeshAlarmAddOn *)self _isAlarm:v7 targetingAccessoryIdentifiers:0];
-    v8 = v7;
+    v11 = [(COMeshAlarmAddOn *)self _isAlarm:alarmCopy targetingAccessoryIdentifiers:0];
+    homekit = alarmCopy;
   }
 
   v13 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (void)handleAlarmReadRequest:(id)a3 callback:(id)a4
+- (void)handleAlarmReadRequest:(id)request callback:(id)callback
 {
   v62 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v8);
+  requestCopy = request;
+  callbackCopy = callback;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
-  v9 = [v6 accessoryUniqueIdentifier];
+  accessoryUniqueIdentifier = [requestCopy accessoryUniqueIdentifier];
   v10 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(COMeshAddOn *)self meshController];
+    meshController = [(COMeshAddOn *)self meshController];
     *buf = 134218242;
-    v57 = v11;
+    v57 = meshController;
     v58 = 2112;
-    *v59 = v9;
+    *v59 = accessoryUniqueIdentifier;
     _os_log_impl(&dword_244378000, v10, OS_LOG_TYPE_DEFAULT, "%p retrieving alarms for %@...", buf, 0x16u);
   }
 
-  v12 = [v6 requiresFilter];
-  v13 = [(COMeshAlarmAddOn *)self homekit];
+  requiresFilter = [requestCopy requiresFilter];
+  homekit = [(COMeshAlarmAddOn *)self homekit];
   v14 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v38 = [(COMeshAddOn *)self meshController];
-    v39 = [v6 isForMerge];
-    [v6 eTag];
-    v40 = v41 = v7;
+    meshController2 = [(COMeshAddOn *)self meshController];
+    isForMerge = [requestCopy isForMerge];
+    [requestCopy eTag];
+    v40 = v41 = callbackCopy;
     *buf = 134218754;
-    v57 = v38;
+    v57 = meshController2;
     v58 = 1024;
-    *v59 = v12;
+    *v59 = requiresFilter;
     *&v59[4] = 1024;
-    *&v59[6] = v39;
+    *&v59[6] = isForMerge;
     v60 = 2112;
     v61 = v40;
     _os_log_debug_impl(&dword_244378000, v14, OS_LOG_TYPE_DEBUG, "%p request info: filter: %d, merge: %d, eTag: %@", buf, 0x22u);
 
-    v7 = v41;
+    callbackCopy = v41;
   }
 
   v15 = 0;
   v16 = 0;
-  if (!v12 || !v9)
+  if (!requiresFilter || !accessoryUniqueIdentifier)
   {
     goto LABEL_19;
   }
 
-  v17 = [v13 accessoryWithUniqueIdentifier:v9];
+  v17 = [homekit accessoryWithUniqueIdentifier:accessoryUniqueIdentifier];
   if (v17)
   {
     v16 = v17;
-    if ([v13 hasOptedToHH2])
+    if ([homekit hasOptedToHH2])
     {
       v15 = 0;
     }
 
     else
     {
-      v19 = [v13 homeForAccessory:v16];
+      v19 = [homekit homeForAccessory:v16];
       v15 = MEMORY[0x277CBEBF8];
       if (v19)
       {
-        v20 = [v13 alarmsForAccessory:v16 inHome:v19];
-        v21 = v7;
+        v20 = [homekit alarmsForAccessory:v16 inHome:v19];
+        v21 = callbackCopy;
         v22 = v20;
         if (v20)
         {
@@ -5280,7 +5280,7 @@ void __54__COMeshAlarmAddOn_dismissAlarmWithIdentifier_client___block_invoke_201
 
         v15 = v23;
 
-        v7 = v21;
+        callbackCopy = v21;
       }
     }
 
@@ -5288,44 +5288,44 @@ LABEL_19:
     if ([(COMeshAlarmAddOn *)self performsLocalActions])
     {
       [(COMeshAlarmAddOn *)self alarmManager];
-      v25 = v24 = v7;
-      v26 = [v25 alarms];
+      v25 = v24 = callbackCopy;
+      alarms = [v25 alarms];
 
-      v7 = v24;
+      callbackCopy = v24;
     }
 
     else
     {
-      v26 = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEBF8]];
+      alarms = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEBF8]];
     }
 
-    if ([v13 hasOptedToHH2])
+    if ([homekit hasOptedToHH2])
     {
       v54[0] = MEMORY[0x277D85DD0];
       v54[1] = 3221225472;
       v54[2] = __52__COMeshAlarmAddOn_handleAlarmReadRequest_callback___block_invoke;
       v54[3] = &unk_278E17038;
-      v27 = v13;
-      v28 = v9;
-      v29 = v7;
-      v30 = v7;
+      v27 = homekit;
+      v28 = accessoryUniqueIdentifier;
+      v29 = callbackCopy;
+      v30 = callbackCopy;
       v55 = v30;
-      v31 = [v26 addFailureBlock:v54];
+      v31 = [alarms addFailureBlock:v54];
       v48[0] = MEMORY[0x277D85DD0];
       v48[1] = 3221225472;
       v48[2] = __52__COMeshAlarmAddOn_handleAlarmReadRequest_callback___block_invoke_205;
       v48[3] = &unk_278E17060;
-      v53 = v12;
+      v53 = requiresFilter;
       v49 = v16;
-      v50 = self;
-      v51 = v6;
+      selfCopy = self;
+      v51 = requestCopy;
       v32 = v30;
-      v7 = v29;
-      v9 = v28;
-      v13 = v27;
+      callbackCopy = v29;
+      accessoryUniqueIdentifier = v28;
+      homekit = v27;
       v33 = &v55;
       v52 = v32;
-      v34 = [v26 addSuccessBlock:v48];
+      v34 = [alarms addSuccessBlock:v48];
 
       v35 = v49;
     }
@@ -5340,10 +5340,10 @@ LABEL_19:
       v43[0] = v15;
       v43[1] = self;
       v44 = v16;
-      v47 = v12;
-      v45 = v6;
-      v46 = v7;
-      v36 = [v26 addCompletionBlock:v42];
+      v47 = requiresFilter;
+      v45 = requestCopy;
+      v46 = callbackCopy;
+      v36 = [alarms addCompletionBlock:v42];
 
       v35 = v44;
     }
@@ -5359,7 +5359,7 @@ LABEL_19:
 
   v16 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:2 userInfo:0];
   v15 = [[COMeshResponse alloc] initWithError:v16];
-  (*(v7 + 2))(v7, v15, 0);
+  (*(callbackCopy + 2))(callbackCopy, v15, 0);
 LABEL_26:
 
   v37 = *MEMORY[0x277D85DE8];
@@ -5691,37 +5691,37 @@ uint64_t __52__COMeshAlarmAddOn_handleAlarmReadRequest_callback___block_invoke_2
   return v2 ^ 1u;
 }
 
-- (void)handleAlarmCreateRequest:(id)a3 callback:(id)a4
+- (void)handleAlarmCreateRequest:(id)request callback:(id)callback
 {
   v65 = *MEMORY[0x277D85DE8];
-  v39 = a3;
-  v38 = a4;
+  requestCopy = request;
+  callbackCopy = callback;
   val = self;
-  v40 = [(COMeshAddOn *)self meshController];
-  v6 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v6);
+  meshController = [(COMeshAddOn *)self meshController];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
-  v44 = [v39 alarm];
+  alarm = [requestCopy alarm];
   v7 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(COMeshAddOn *)self meshController];
-    v9 = [v44 alarmID];
+    meshController2 = [(COMeshAddOn *)self meshController];
+    alarmID = [alarm alarmID];
     *buf = 134218242;
-    v62 = v8;
+    v62 = meshController2;
     v63 = 2112;
-    v64 = v9;
+    v64 = alarmID;
     _os_log_impl(&dword_244378000, v7, OS_LOG_TYPE_DEFAULT, "%p adding alarm %@...", buf, 0x16u);
   }
 
-  v45 = [(COMeshAlarmAddOn *)val homekit];
-  v10 = [v44 siriContext];
-  v41 = [v10 objectForKey:*MEMORY[0x277CFCEC8]];
+  homekit = [(COMeshAlarmAddOn *)val homekit];
+  siriContext = [alarm siriContext];
+  v41 = [siriContext objectForKey:*MEMORY[0x277CFCEC8]];
 
   v11 = [v41 length];
   if (v11)
   {
-    v36 = [v45 allAccessoriesForSiriContextTargetReference:v41];
+    v36 = [homekit allAccessoriesForSiriContextTargetReference:v41];
   }
 
   else
@@ -5730,19 +5730,19 @@ uint64_t __52__COMeshAlarmAddOn_handleAlarmReadRequest_callback___block_invoke_2
   }
 
   v43 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v37 = [(COMeshAlarmAddOn *)val performsLocalActions];
-  if (!v11 || [v45 hasOptedToHH2])
+  performsLocalActions = [(COMeshAlarmAddOn *)val performsLocalActions];
+  if (!v11 || [homekit hasOptedToHH2])
   {
-    if (v37)
+    if (performsLocalActions)
     {
-      v12 = [(COMeshAlarmAddOn *)val alarmManager];
-      [v12 addAlarm:v44];
+      alarmManager = [(COMeshAlarmAddOn *)val alarmManager];
+      [alarmManager addAlarm:alarm];
     }
 
     else
     {
-      v12 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3328 userInfo:0];
-      [MEMORY[0x277D2C900] futureWithError:v12];
+      alarmManager = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3328 userInfo:0];
+      [MEMORY[0x277D2C900] futureWithError:alarmManager];
     }
     v13 = ;
     [v43 addObject:{v13, v36}];
@@ -5750,27 +5750,27 @@ LABEL_12:
 
     if ([v43 count] == 1)
     {
-      v14 = [v43 firstObject];
+      firstObject = [v43 firstObject];
     }
 
     else
     {
       v15 = MEMORY[0x277D2C938];
-      v16 = [v40 dispatchQueue];
-      v17 = [v15 schedulerWithDispatchQueue:v16];
+      dispatchQueue = [meshController dispatchQueue];
+      v17 = [v15 schedulerWithDispatchQueue:dispatchQueue];
 
-      v14 = [MEMORY[0x277D2C900] combineAllFutures:v43 ignoringErrors:1 scheduler:v17];
+      firstObject = [MEMORY[0x277D2C900] combineAllFutures:v43 ignoringErrors:1 scheduler:v17];
     }
 
     v53[0] = MEMORY[0x277D85DD0];
     v53[1] = 3221225472;
     v53[2] = __54__COMeshAlarmAddOn_handleAlarmCreateRequest_callback___block_invoke;
     v53[3] = &unk_278E17088;
-    v18 = v44;
+    v18 = alarm;
     v54 = v18;
-    v19 = v38;
+    v19 = callbackCopy;
     v55 = v19;
-    v20 = [v14 addFailureBlock:v53];
+    v20 = [firstObject addFailureBlock:v53];
     objc_initWeak(buf, val);
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
@@ -5778,11 +5778,11 @@ LABEL_12:
     v46[3] = &unk_278E187E0;
     v47 = v18;
     v50 = v19;
-    v48 = v40;
+    v48 = meshController;
     objc_copyWeak(&v51, buf);
-    v52 = v37;
+    v52 = performsLocalActions;
     v49 = val;
-    v21 = [v14 addSuccessBlock:v46];
+    v21 = [firstObject addSuccessBlock:v46];
     objc_destroyWeak(&v51);
 
     objc_destroyWeak(buf);
@@ -5797,7 +5797,7 @@ LABEL_12:
     v56 = 0u;
     v57 = 0u;
     v13 = v36;
-    v12 = 0;
+    alarmManager = 0;
     v24 = [v13 countByEnumeratingWithState:&v56 objects:v60 count:16];
     if (v24)
     {
@@ -5813,26 +5813,26 @@ LABEL_12:
           }
 
           v28 = *(*(&v56 + 1) + 8 * i);
-          v29 = [v28 category];
-          v30 = [v29 categoryType];
-          v31 = [v26 isEqualToString:v30];
+          category = [v28 category];
+          categoryType = [category categoryType];
+          v31 = [v26 isEqualToString:categoryType];
 
           if (v31)
           {
-            v32 = [v45 homeForAccessory:v28];
+            v32 = [homekit homeForAccessory:v28];
             if (v32)
             {
-              v33 = [v45 addAlarm:v44 toAccessory:v28 inHome:v32];
+              v33 = [homekit addAlarm:alarm toAccessory:v28 inHome:v32];
               [v43 addObject:v33];
             }
           }
 
-          else if (!v12)
+          else if (!alarmManager)
           {
-            v34 = [(COMeshAlarmAddOn *)val alarmManager];
-            v12 = [v34 addAlarm:v44];
+            alarmManager2 = [(COMeshAlarmAddOn *)val alarmManager];
+            alarmManager = [alarmManager2 addAlarm:alarm];
 
-            [v43 addObject:v12];
+            [v43 addObject:alarmManager];
           }
         }
 
@@ -5851,9 +5851,9 @@ LABEL_12:
     [COMeshAlarmAddOn handleAlarmCreateRequest:callback:];
   }
 
-  v14 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:2 userInfo:0];
-  v22 = [[COMeshResponse alloc] initWithError:v14];
-  (*(v38 + 2))(v38, v22, 0);
+  firstObject = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:2 userInfo:0];
+  v22 = [[COMeshResponse alloc] initWithError:firstObject];
+  (*(callbackCopy + 2))(callbackCopy, v22, 0);
 LABEL_16:
 
   v23 = *MEMORY[0x277D85DE8];
@@ -5917,37 +5917,37 @@ void __54__COMeshAlarmAddOn_handleAlarmCreateRequest_callback___block_invoke_208
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAlarmUpdateRequest:(id)a3 callback:(id)a4
+- (void)handleAlarmUpdateRequest:(id)request callback:(id)callback
 {
   v65 = *MEMORY[0x277D85DE8];
-  v39 = a3;
-  v38 = a4;
+  requestCopy = request;
+  callbackCopy = callback;
   val = self;
-  v40 = [(COMeshAddOn *)self meshController];
-  v6 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v6);
+  meshController = [(COMeshAddOn *)self meshController];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
-  v44 = [v39 alarm];
+  alarm = [requestCopy alarm];
   v7 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(COMeshAddOn *)self meshController];
-    v9 = [v44 alarmID];
+    meshController2 = [(COMeshAddOn *)self meshController];
+    alarmID = [alarm alarmID];
     *buf = 134218242;
-    v62 = v8;
+    v62 = meshController2;
     v63 = 2112;
-    v64 = v9;
+    v64 = alarmID;
     _os_log_impl(&dword_244378000, v7, OS_LOG_TYPE_DEFAULT, "%p updating alarm %@...", buf, 0x16u);
   }
 
-  v45 = [(COMeshAlarmAddOn *)val homekit];
-  v10 = [v44 siriContext];
-  v41 = [v10 objectForKey:*MEMORY[0x277CFCEC8]];
+  homekit = [(COMeshAlarmAddOn *)val homekit];
+  siriContext = [alarm siriContext];
+  v41 = [siriContext objectForKey:*MEMORY[0x277CFCEC8]];
 
   v11 = [v41 length];
   if (v11)
   {
-    v36 = [v45 allAccessoriesForSiriContextTargetReference:v41];
+    v36 = [homekit allAccessoriesForSiriContextTargetReference:v41];
   }
 
   else
@@ -5956,19 +5956,19 @@ void __54__COMeshAlarmAddOn_handleAlarmCreateRequest_callback___block_invoke_208
   }
 
   v43 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v37 = [(COMeshAlarmAddOn *)val performsLocalActions];
-  if (!v11 || [v45 hasOptedToHH2])
+  performsLocalActions = [(COMeshAlarmAddOn *)val performsLocalActions];
+  if (!v11 || [homekit hasOptedToHH2])
   {
-    if (v37)
+    if (performsLocalActions)
     {
-      v12 = [(COMeshAlarmAddOn *)val alarmManager];
-      [v12 updateAlarm:v44];
+      alarmManager = [(COMeshAlarmAddOn *)val alarmManager];
+      [alarmManager updateAlarm:alarm];
     }
 
     else
     {
-      v12 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3328 userInfo:0];
-      [MEMORY[0x277D2C900] futureWithError:v12];
+      alarmManager = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3328 userInfo:0];
+      [MEMORY[0x277D2C900] futureWithError:alarmManager];
     }
     v13 = ;
     [v43 addObject:{v13, v36}];
@@ -5976,27 +5976,27 @@ LABEL_12:
 
     if ([v43 count] == 1)
     {
-      v14 = [v43 firstObject];
+      firstObject = [v43 firstObject];
     }
 
     else
     {
       v15 = MEMORY[0x277D2C938];
-      v16 = [v40 dispatchQueue];
-      v17 = [v15 schedulerWithDispatchQueue:v16];
+      dispatchQueue = [meshController dispatchQueue];
+      v17 = [v15 schedulerWithDispatchQueue:dispatchQueue];
 
-      v14 = [MEMORY[0x277D2C900] combineAllFutures:v43 ignoringErrors:1 scheduler:v17];
+      firstObject = [MEMORY[0x277D2C900] combineAllFutures:v43 ignoringErrors:1 scheduler:v17];
     }
 
     v53[0] = MEMORY[0x277D85DD0];
     v53[1] = 3221225472;
     v53[2] = __54__COMeshAlarmAddOn_handleAlarmUpdateRequest_callback___block_invoke;
     v53[3] = &unk_278E17088;
-    v18 = v44;
+    v18 = alarm;
     v54 = v18;
-    v19 = v38;
+    v19 = callbackCopy;
     v55 = v19;
-    v20 = [v14 addFailureBlock:v53];
+    v20 = [firstObject addFailureBlock:v53];
     objc_initWeak(buf, val);
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
@@ -6004,11 +6004,11 @@ LABEL_12:
     v46[3] = &unk_278E187E0;
     v47 = v18;
     v50 = v19;
-    v48 = v40;
+    v48 = meshController;
     objc_copyWeak(&v51, buf);
-    v52 = v37;
+    v52 = performsLocalActions;
     v49 = val;
-    v21 = [v14 addSuccessBlock:v46];
+    v21 = [firstObject addSuccessBlock:v46];
     objc_destroyWeak(&v51);
 
     objc_destroyWeak(buf);
@@ -6023,7 +6023,7 @@ LABEL_12:
     v56 = 0u;
     v57 = 0u;
     v13 = v36;
-    v12 = 0;
+    alarmManager = 0;
     v24 = [v13 countByEnumeratingWithState:&v56 objects:v60 count:16];
     if (v24)
     {
@@ -6039,26 +6039,26 @@ LABEL_12:
           }
 
           v28 = *(*(&v56 + 1) + 8 * i);
-          v29 = [v28 category];
-          v30 = [v29 categoryType];
-          v31 = [v26 isEqualToString:v30];
+          category = [v28 category];
+          categoryType = [category categoryType];
+          v31 = [v26 isEqualToString:categoryType];
 
           if (v31)
           {
-            v32 = [v45 homeForAccessory:v28];
+            v32 = [homekit homeForAccessory:v28];
             if (v32)
             {
-              v33 = [v45 updateAlarm:v44 onAccessory:v28 inHome:v32];
+              v33 = [homekit updateAlarm:alarm onAccessory:v28 inHome:v32];
               [v43 addObject:v33];
             }
           }
 
-          else if (!v12)
+          else if (!alarmManager)
           {
-            v34 = [(COMeshAlarmAddOn *)val alarmManager];
-            v12 = [v34 updateAlarm:v44];
+            alarmManager2 = [(COMeshAlarmAddOn *)val alarmManager];
+            alarmManager = [alarmManager2 updateAlarm:alarm];
 
-            [v43 addObject:v12];
+            [v43 addObject:alarmManager];
           }
         }
 
@@ -6077,9 +6077,9 @@ LABEL_12:
     [COMeshAlarmAddOn handleAlarmUpdateRequest:callback:];
   }
 
-  v14 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:2 userInfo:0];
-  v22 = [[COMeshResponse alloc] initWithError:v14];
-  (*(v38 + 2))(v38, v22, 0);
+  firstObject = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:2 userInfo:0];
+  v22 = [[COMeshResponse alloc] initWithError:firstObject];
+  (*(callbackCopy + 2))(callbackCopy, v22, 0);
 LABEL_16:
 
   v23 = *MEMORY[0x277D85DE8];
@@ -6143,36 +6143,36 @@ void __54__COMeshAlarmAddOn_handleAlarmUpdateRequest_callback___block_invoke_210
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAlarmDeleteRequest:(id)a3 callback:(id)a4
+- (void)handleAlarmDeleteRequest:(id)request callback:(id)callback
 {
   v63 = *MEMORY[0x277D85DE8];
-  v40 = a3;
-  v38 = a4;
+  requestCopy = request;
+  callbackCopy = callback;
   val = self;
-  v39 = [(COMeshAddOn *)self meshController];
-  v6 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v6);
+  meshController = [(COMeshAddOn *)self meshController];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
-  v43 = [v40 alarm];
+  alarm = [requestCopy alarm];
   v7 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(COMeshAddOn *)self meshController];
-    v9 = [v43 alarmID];
+    meshController2 = [(COMeshAddOn *)self meshController];
+    alarmID = [alarm alarmID];
     *buf = 134218242;
-    v60 = v8;
+    v60 = meshController2;
     v61 = 2112;
-    v62 = v9;
+    v62 = alarmID;
     _os_log_impl(&dword_244378000, v7, OS_LOG_TYPE_DEFAULT, "%p deleting alarm %@...", buf, 0x16u);
   }
 
-  v10 = [(COMeshAlarmAddOn *)self homekit];
-  v11 = [v43 siriContext];
-  v41 = [v11 objectForKey:*MEMORY[0x277CFCEC8]];
+  homekit = [(COMeshAlarmAddOn *)self homekit];
+  siriContext = [alarm siriContext];
+  v41 = [siriContext objectForKey:*MEMORY[0x277CFCEC8]];
 
   if ([v41 length])
   {
-    v12 = [v10 accessoriesForSiriContextTargetReference:v41];
+    v12 = [homekit accessoriesForSiriContextTargetReference:v41];
   }
 
   else
@@ -6181,8 +6181,8 @@ void __54__COMeshAlarmAddOn_handleAlarmUpdateRequest_callback___block_invoke_210
   }
 
   v44 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v13 = [(COMeshAlarmAddOn *)self alarmManager];
-  v14 = [v13 removeAlarm:v43];
+  alarmManager = [(COMeshAlarmAddOn *)self alarmManager];
+  v14 = [alarmManager removeAlarm:alarm];
   [v44 addObject:v14];
 
   v56 = 0u;
@@ -6205,18 +6205,18 @@ void __54__COMeshAlarmAddOn_handleAlarmUpdateRequest_callback___block_invoke_210
         }
 
         v20 = *(*(&v54 + 1) + 8 * i);
-        if (([v10 hasOptedToHH2] & 1) == 0)
+        if (([homekit hasOptedToHH2] & 1) == 0)
         {
-          v21 = [v20 category];
-          v22 = [v21 categoryType];
-          v23 = [v18 isEqualToString:v22];
+          category = [v20 category];
+          categoryType = [category categoryType];
+          v23 = [v18 isEqualToString:categoryType];
 
           if (v23)
           {
-            v24 = [v10 homeForAccessory:v20];
+            v24 = [homekit homeForAccessory:v20];
             if (v24)
             {
-              v25 = [v10 removeAlarm:v43 fromAccessory:v20 inHome:v24];
+              v25 = [homekit removeAlarm:alarm fromAccessory:v20 inHome:v24];
               [v44 addObject:v25];
             }
           }
@@ -6231,27 +6231,27 @@ void __54__COMeshAlarmAddOn_handleAlarmUpdateRequest_callback___block_invoke_210
 
   if ([v44 count] == 1)
   {
-    v26 = [v44 firstObject];
+    firstObject = [v44 firstObject];
   }
 
   else
   {
     v27 = MEMORY[0x277D2C938];
-    v28 = [v39 dispatchQueue];
-    v29 = [v27 schedulerWithDispatchQueue:v28];
+    dispatchQueue = [meshController dispatchQueue];
+    v29 = [v27 schedulerWithDispatchQueue:dispatchQueue];
 
-    v26 = [MEMORY[0x277D2C900] combineAllFutures:v44 ignoringErrors:1 scheduler:v29];
+    firstObject = [MEMORY[0x277D2C900] combineAllFutures:v44 ignoringErrors:1 scheduler:v29];
   }
 
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
   v51[2] = __54__COMeshAlarmAddOn_handleAlarmDeleteRequest_callback___block_invoke;
   v51[3] = &unk_278E17088;
-  v30 = v43;
+  v30 = alarm;
   v52 = v30;
-  v31 = v38;
+  v31 = callbackCopy;
   v53 = v31;
-  v32 = [v26 addFailureBlock:v51];
+  v32 = [firstObject addFailureBlock:v51];
   objc_initWeak(buf, val);
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
@@ -6262,10 +6262,10 @@ void __54__COMeshAlarmAddOn_handleAlarmUpdateRequest_callback___block_invoke_210
   v47 = val;
   v34 = v31;
   v49 = v34;
-  v35 = v39;
+  v35 = meshController;
   v48 = v35;
   objc_copyWeak(&v50, buf);
-  v36 = [v26 addSuccessBlock:v45];
+  v36 = [firstObject addSuccessBlock:v45];
   objc_destroyWeak(&v50);
 
   objc_destroyWeak(buf);
@@ -6337,39 +6337,39 @@ void __54__COMeshAlarmAddOn_handleAlarmDeleteRequest_callback___block_invoke_211
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAlarmSnoozeRequest:(id)a3 callback:(id)a4
+- (void)handleAlarmSnoozeRequest:(id)request callback:(id)callback
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(COMeshAddOn *)self meshController];
-  v9 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v9);
+  callbackCopy = callback;
+  requestCopy = request;
+  meshController = [(COMeshAddOn *)self meshController];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
-  v10 = [v7 identifier];
+  identifier = [requestCopy identifier];
 
   v11 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v24 = v8;
+    v24 = meshController;
     v25 = 2112;
-    v26 = v10;
+    v26 = identifier;
     _os_log_impl(&dword_244378000, v11, OS_LOG_TYPE_DEFAULT, "%p snoozing alarm %@...", buf, 0x16u);
   }
 
-  v12 = [(COMeshAlarmAddOn *)self alarmManager];
-  v13 = [v12 snoozeAlarmWithIdentifier:v10];
+  alarmManager = [(COMeshAlarmAddOn *)self alarmManager];
+  v13 = [alarmManager snoozeAlarmWithIdentifier:identifier];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __54__COMeshAlarmAddOn_handleAlarmSnoozeRequest_callback___block_invoke;
   v19[3] = &unk_278E18830;
-  v21 = v8;
-  v22 = v6;
-  v20 = v10;
-  v14 = v8;
-  v15 = v6;
-  v16 = v10;
+  v21 = meshController;
+  v22 = callbackCopy;
+  v20 = identifier;
+  v14 = meshController;
+  v15 = callbackCopy;
+  v16 = identifier;
   v17 = [v13 addCompletionBlock:v19];
 
   v18 = *MEMORY[0x277D85DE8];
@@ -6413,23 +6413,23 @@ void __54__COMeshAlarmAddOn_handleAlarmSnoozeRequest_callback___block_invoke(uin
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAlarmDismissRequest:(id)a3 callback:(id)a4
+- (void)handleAlarmDismissRequest:(id)request callback:(id)callback
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COMeshAddOn *)self meshController];
-  v9 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v9);
+  requestCopy = request;
+  callbackCopy = callback;
+  meshController = [(COMeshAddOn *)self meshController];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
-  v10 = [v6 identifier];
+  identifier = [requestCopy identifier];
   v11 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    *&buf[4] = v8;
+    *&buf[4] = meshController;
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = identifier;
     _os_log_impl(&dword_244378000, v11, OS_LOG_TYPE_DEFAULT, "%p dismissing alarm %@...", buf, 0x16u);
   }
 
@@ -6443,9 +6443,9 @@ void __54__COMeshAlarmAddOn_handleAlarmSnoozeRequest_callback___block_invoke(uin
   v50 = __Block_byref_object_copy__24;
   v51 = __Block_byref_object_dispose__24;
   v52 = 0;
-  v12 = [(COMeshAlarmAddOn *)self alarmManager];
-  v13 = [v12 dismissAlarmWithIdentifier:v10];
-  v14 = [v12 alarms];
+  alarmManager = [(COMeshAlarmAddOn *)self alarmManager];
+  v13 = [alarmManager dismissAlarmWithIdentifier:identifier];
+  alarms = [alarmManager alarms];
   objc_initWeak(&location, self);
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
@@ -6453,18 +6453,18 @@ void __54__COMeshAlarmAddOn_handleAlarmSnoozeRequest_callback___block_invoke(uin
   v40[3] = &unk_278E18858;
   v43 = v47;
   v44 = buf;
-  v15 = v8;
+  v15 = meshController;
   v41 = v15;
   objc_copyWeak(&v45, &location);
-  v42 = self;
+  selfCopy = self;
   v16 = MEMORY[0x245D5FF10](v40);
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __55__COMeshAlarmAddOn_handleAlarmDismissRequest_callback___block_invoke_213;
   v37[3] = &unk_278E17088;
-  v17 = v10;
+  v17 = identifier;
   v38 = v17;
-  v18 = v7;
+  v18 = callbackCopy;
   v39 = v18;
   v19 = [v13 addFailureBlock:v37];
   v32[0] = MEMORY[0x277D85DD0];
@@ -6488,7 +6488,7 @@ void __54__COMeshAlarmAddOn_handleAlarmSnoozeRequest_callback___block_invoke(uin
   v31 = buf;
   v25 = v22;
   v30 = v25;
-  v26 = [v14 addSuccessBlock:v28];
+  v26 = [alarms addSuccessBlock:v28];
 
   objc_destroyWeak(&v45);
   objc_destroyWeak(&location);
@@ -6601,36 +6601,36 @@ void __55__COMeshAlarmAddOn_handleAlarmDismissRequest_callback___block_invoke_2(
   }
 }
 
-- (void)handleAlarmsAddedNotification:(id)a3
+- (void)handleAlarmsAddedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v5);
-  v6 = [v4 alarms];
+  notificationCopy = notification;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
+  alarms = [notificationCopy alarms];
 
-  if ([v6 count])
+  if ([alarms count])
   {
     if ([(COMeshAlarmAddOn *)self performsLocalActions])
     {
       v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v8 = [MEMORY[0x277D2C938] schedulerWithDispatchQueue:v5];
-      v9 = [(COMeshAlarmAddOn *)self alarmManager];
+      v8 = [MEMORY[0x277D2C938] schedulerWithDispatchQueue:meshControllerQueue];
+      alarmManager = [(COMeshAlarmAddOn *)self alarmManager];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __50__COMeshAlarmAddOn_handleAlarmsAddedNotification___block_invoke;
       v16[3] = &unk_278E188A8;
       v16[4] = self;
       v17 = v7;
-      v18 = v9;
-      v10 = v9;
+      v18 = alarmManager;
+      v10 = alarmManager;
       v11 = v7;
-      [v6 enumerateObjectsUsingBlock:v16];
-      v12 = [MEMORY[0x277D2C900] combineAllFutures:v11 ignoringErrors:1 scheduler:v8];
+      [alarms enumerateObjectsUsingBlock:v16];
+      futureWithNoResult = [MEMORY[0x277D2C900] combineAllFutures:v11 ignoringErrors:1 scheduler:v8];
     }
 
     else
     {
-      v12 = [MEMORY[0x277D2C900] futureWithNoResult];
+      futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     }
 
     v14[0] = MEMORY[0x277D85DD0];
@@ -6638,14 +6638,14 @@ void __55__COMeshAlarmAddOn_handleAlarmDismissRequest_callback___block_invoke_2(
     v14[2] = __50__COMeshAlarmAddOn_handleAlarmsAddedNotification___block_invoke_217;
     v14[3] = &unk_278E171C8;
     v14[4] = self;
-    v15 = v6;
-    v13 = [v12 addSuccessBlock:v14];
+    v15 = alarms;
+    v13 = [futureWithNoResult addSuccessBlock:v14];
   }
 
   else
   {
-    v12 = COCoreLogForCategory(2);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    futureWithNoResult = COCoreLogForCategory(2);
+    if (os_log_type_enabled(futureWithNoResult, OS_LOG_TYPE_DEBUG))
     {
       [COMeshAlarmAddOn handleAlarmsAddedNotification:];
     }
@@ -6696,21 +6696,21 @@ void __50__COMeshAlarmAddOn_handleAlarmsAddedNotification___block_invoke_217(uin
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAlarmsRemovedNotification:(id)a3
+- (void)handleAlarmsRemovedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v5);
-  v6 = [v4 alarms];
+  notificationCopy = notification;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
+  alarms = [notificationCopy alarms];
 
-  if ([v6 count])
+  if ([alarms count])
   {
     if ([(COMeshAlarmAddOn *)self performsLocalActions])
     {
       v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v8 = [MEMORY[0x277D2C938] schedulerWithDispatchQueue:v5];
+      v8 = [MEMORY[0x277D2C938] schedulerWithDispatchQueue:meshControllerQueue];
       v9 = [MEMORY[0x277CBEAA8] now];
-      v10 = [(COMeshAlarmAddOn *)self alarmManager];
+      alarmManager = [(COMeshAlarmAddOn *)self alarmManager];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __52__COMeshAlarmAddOn_handleAlarmsRemovedNotification___block_invoke;
@@ -6718,17 +6718,17 @@ void __50__COMeshAlarmAddOn_handleAlarmsAddedNotification___block_invoke_217(uin
       v18[4] = self;
       v19 = v9;
       v20 = v7;
-      v21 = v10;
-      v11 = v10;
+      v21 = alarmManager;
+      v11 = alarmManager;
       v12 = v7;
       v13 = v9;
-      [v6 enumerateObjectsUsingBlock:v18];
-      v14 = [MEMORY[0x277D2C900] combineAllFutures:v12 ignoringErrors:1 scheduler:v8];
+      [alarms enumerateObjectsUsingBlock:v18];
+      futureWithNoResult = [MEMORY[0x277D2C900] combineAllFutures:v12 ignoringErrors:1 scheduler:v8];
     }
 
     else
     {
-      v14 = [MEMORY[0x277D2C900] futureWithNoResult];
+      futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     }
 
     v16[0] = MEMORY[0x277D85DD0];
@@ -6736,14 +6736,14 @@ void __50__COMeshAlarmAddOn_handleAlarmsAddedNotification___block_invoke_217(uin
     v16[2] = __52__COMeshAlarmAddOn_handleAlarmsRemovedNotification___block_invoke_218;
     v16[3] = &unk_278E171C8;
     v16[4] = self;
-    v17 = v6;
-    v15 = [v14 addSuccessBlock:v16];
+    v17 = alarms;
+    v15 = [futureWithNoResult addSuccessBlock:v16];
   }
 
   else
   {
-    v14 = COCoreLogForCategory(2);
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+    futureWithNoResult = COCoreLogForCategory(2);
+    if (os_log_type_enabled(futureWithNoResult, OS_LOG_TYPE_DEBUG))
     {
       [COMeshAlarmAddOn handleAlarmsRemovedNotification:];
     }
@@ -6798,28 +6798,28 @@ void __52__COMeshAlarmAddOn_handleAlarmsRemovedNotification___block_invoke_218(u
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAlarmsUpdatedNotification:(id)a3
+- (void)handleAlarmsUpdatedNotification:(id)notification
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v5);
-  v6 = [v4 alarms];
+  notificationCopy = notification;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
+  alarms = [notificationCopy alarms];
 
   if ([(COMeshAlarmAddOn *)self performsLocalActions])
   {
-    v7 = [(COMeshAlarmAddOn *)self alarmManager];
-    v8 = [v7 alarms];
+    alarmManager = [(COMeshAlarmAddOn *)self alarmManager];
+    alarms2 = [alarmManager alarms];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __52__COMeshAlarmAddOn_handleAlarmsUpdatedNotification___block_invoke;
     v13[3] = &unk_278E16CB0;
-    v14 = v5;
-    v15 = v6;
-    v16 = self;
-    v17 = v7;
-    v9 = v7;
-    v10 = [v8 addCompletionBlock:v13];
+    v14 = meshControllerQueue;
+    v15 = alarms;
+    selfCopy = self;
+    v17 = alarmManager;
+    delegate = alarmManager;
+    v10 = [alarms2 addCompletionBlock:v13];
   }
 
   else
@@ -6828,14 +6828,14 @@ void __52__COMeshAlarmAddOn_handleAlarmsRemovedNotification___block_invoke_218(u
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v19 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_244378000, v11, OS_LOG_TYPE_DEFAULT, "%p not performing local updates.", buf, 0xCu);
     }
 
-    v9 = [(COMeshAlarmAddOn *)self delegate];
+    delegate = [(COMeshAlarmAddOn *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v9 alarmAddOn:self didUpdateAlarms:v6];
+      [delegate alarmAddOn:self didUpdateAlarms:alarms];
     }
   }
 
@@ -6977,49 +6977,49 @@ void __52__COMeshAlarmAddOn_handleAlarmsUpdatedNotification___block_invoke_222(u
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAlarmFiredNotification:(id)a3
+- (void)handleAlarmFiredNotification:(id)notification
 {
-  v6 = a3;
+  notificationCopy = notification;
   if (![(COMeshAlarmAddOn *)self performsLocalActions])
   {
-    v4 = [(COMeshAlarmAddOn *)self delegate];
+    delegate = [(COMeshAlarmAddOn *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v6 alarms];
-      [v4 alarmAddOn:self didUpdateAlarms:v5];
+      alarms = [notificationCopy alarms];
+      [delegate alarmAddOn:self didUpdateAlarms:alarms];
     }
   }
 }
 
-- (void)handleAlarmFiringAlarmDismissedNotification:(id)a3
+- (void)handleAlarmFiringAlarmDismissedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v5);
-  v6 = [v4 alarms];
+  notificationCopy = notification;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
+  alarms = [notificationCopy alarms];
 
-  if ([v6 count])
+  if ([alarms count])
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v8 = [MEMORY[0x277D2C938] schedulerWithDispatchQueue:v5];
-    v9 = [(COMeshAlarmAddOn *)self alarmManager];
+    v8 = [MEMORY[0x277D2C938] schedulerWithDispatchQueue:meshControllerQueue];
+    alarmManager = [(COMeshAlarmAddOn *)self alarmManager];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __64__COMeshAlarmAddOn_handleAlarmFiringAlarmDismissedNotification___block_invoke;
     v16[3] = &unk_278E188A8;
     v16[4] = self;
     v17 = v7;
-    v18 = v9;
-    v10 = v9;
+    v18 = alarmManager;
+    v10 = alarmManager;
     v11 = v7;
-    [v6 enumerateObjectsUsingBlock:v16];
+    [alarms enumerateObjectsUsingBlock:v16];
     v12 = [MEMORY[0x277D2C900] combineAllFutures:v11 ignoringErrors:1 scheduler:v8];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __64__COMeshAlarmAddOn_handleAlarmFiringAlarmDismissedNotification___block_invoke_223;
     v14[3] = &unk_278E171C8;
     v14[4] = self;
-    v15 = v6;
+    v15 = alarms;
     v13 = [v12 addSuccessBlock:v14];
   }
 
@@ -7078,33 +7078,33 @@ void __64__COMeshAlarmAddOn_handleAlarmFiringAlarmDismissedNotification___block_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAlarmSnoozeNotification:(id)a3
+- (void)handleAlarmSnoozeNotification:(id)notification
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(COMeshAddOn *)self meshController];
-  v6 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v6);
-  v7 = [v4 identifier];
+  notificationCopy = notification;
+  meshController = [(COMeshAddOn *)self meshController];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
+  identifier = [notificationCopy identifier];
   if ([(COMeshAlarmAddOn *)self performsLocalActions])
   {
     v8 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v21 = v5;
+      v21 = meshController;
       v22 = 2112;
-      v23 = v7;
+      v23 = identifier;
       _os_log_impl(&dword_244378000, v8, OS_LOG_TYPE_DEFAULT, "%p locally snoozing alarm %@...", buf, 0x16u);
     }
 
-    v9 = [(COMeshAlarmAddOn *)self alarmManager];
-    v10 = [v9 snoozeAlarmWithIdentifier:v7];
+    alarmManager = [(COMeshAlarmAddOn *)self alarmManager];
+    v10 = [alarmManager snoozeAlarmWithIdentifier:identifier];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __50__COMeshAlarmAddOn_handleAlarmSnoozeNotification___block_invoke;
     v18[3] = &unk_278E18940;
-    v19 = v7;
+    v19 = identifier;
     v11 = [v10 addCompletionBlock:v18];
   }
 
@@ -7117,9 +7117,9 @@ void __64__COMeshAlarmAddOn_handleAlarmFiringAlarmDismissedNotification___block_
     v14[2] = __50__COMeshAlarmAddOn_handleAlarmSnoozeNotification___block_invoke_224;
     v14[3] = &unk_278E18990;
     objc_copyWeak(&v17, buf);
-    v15 = v7;
-    v16 = self;
-    [v5 sendRequest:v12 withCompletionHandler:v14];
+    v15 = identifier;
+    selfCopy = self;
+    [meshController sendRequest:v12 withCompletionHandler:v14];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(buf);
@@ -7200,7 +7200,7 @@ void __50__COMeshAlarmAddOn_handleAlarmSnoozeNotification___block_invoke_2(uint6
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAlarmManagerStateResetNotification:(id)a3
+- (void)handleAlarmManagerStateResetNotification:(id)notification
 {
   v4 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -7208,19 +7208,19 @@ void __50__COMeshAlarmAddOn_handleAlarmSnoozeNotification___block_invoke_2(uint6
     [COMeshAlarmAddOn handleAlarmManagerStateResetNotification:?];
   }
 
-  v5 = [(COMeshAlarmAddOn *)self delegate];
+  delegate = [(COMeshAlarmAddOn *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 didResetAlarmAddOn:self];
+    [delegate didResetAlarmAddOn:self];
   }
 }
 
-- (void)alarmsAsAccessory:(id)a3 fromClient:(id)a4 withCallback:(id)a5
+- (void)alarmsAsAccessory:(id)accessory fromClient:(id)client withCallback:(id)callback
 {
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accessoryCopy = accessory;
+  clientCopy = client;
+  callbackCopy = callback;
   v11 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -7233,32 +7233,32 @@ void __50__COMeshAlarmAddOn_handleAlarmSnoozeNotification___block_invoke_2(uint6
   v42 = __Block_byref_object_copy__24;
   v43 = __Block_byref_object_dispose__24;
   v44 = 0;
-  if (v8)
+  if (accessoryCopy)
   {
-    v12 = 0;
+    performsLocalActions = 0;
   }
 
   else
   {
-    v12 = [(COMeshAlarmAddOn *)self performsLocalActions];
-    v13 = [v9 connection];
-    v14 = [(COMeshAlarmAddOn *)self _currentAccessoryForConnection:v13];
+    performsLocalActions = [(COMeshAlarmAddOn *)self performsLocalActions];
+    connection = [clientCopy connection];
+    v14 = [(COMeshAlarmAddOn *)self _currentAccessoryForConnection:connection];
 
     if (v14)
     {
-      v8 = [objc_alloc(MEMORY[0x277CFD0C8]) initWithHomeKitAccessory:v14];
+      accessoryCopy = [objc_alloc(MEMORY[0x277CFD0C8]) initWithHomeKitAccessory:v14];
     }
 
     else
     {
-      v8 = 0;
+      accessoryCopy = 0;
     }
   }
 
-  v15 = [v8 categoryType];
-  if (v8)
+  categoryType = [accessoryCopy categoryType];
+  if (accessoryCopy)
   {
-    v16 = [(COMeshAlarmAddOn *)self secondaryClusterMemberIfRequiredForAccessory:v8];
+    v16 = [(COMeshAlarmAddOn *)self secondaryClusterMemberIfRequiredForAccessory:accessoryCopy];
   }
 
   else
@@ -7266,11 +7266,11 @@ void __50__COMeshAlarmAddOn_handleAlarmSnoozeNotification___block_invoke_2(uint6
     v16 = 0;
   }
 
-  v17 = [(COMeshAlarmAddOn *)self homekit];
-  v18 = [v17 hasOptedToHH2];
-  if (v15)
+  homekit = [(COMeshAlarmAddOn *)self homekit];
+  hasOptedToHH2 = [homekit hasOptedToHH2];
+  if (categoryType)
   {
-    v19 = v18;
+    v19 = hasOptedToHH2;
   }
 
   else
@@ -7289,7 +7289,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v20 = [*MEMORY[0x277CCE8B0] isEqualToString:v15];
+  v20 = [*MEMORY[0x277CCE8B0] isEqualToString:categoryType];
 
   if (!v20)
   {
@@ -7303,21 +7303,21 @@ LABEL_21:
   v23 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [(COMeshAddOn *)self meshController];
+    meshController = [(COMeshAddOn *)self meshController];
     *buf = 134217984;
-    v46 = v24;
+    v46 = meshController;
     _os_log_impl(&dword_244378000, v23, OS_LOG_TYPE_DEFAULT, "%p locally reading alarms", buf, 0xCu);
   }
 
   v25 = 0;
 LABEL_22:
 
-  v27 = [(COMeshAlarmAddOn *)self _alarmsForAccessory:v8 allowLocalStorage:v12 usingLeader:v25 member:v16 client:v9];
+  v27 = [(COMeshAlarmAddOn *)self _alarmsForAccessory:accessoryCopy allowLocalStorage:performsLocalActions usingLeader:v25 member:v16 client:clientCopy];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __62__COMeshAlarmAddOn_alarmsAsAccessory_fromClient_withCallback___block_invoke;
   v36[3] = &unk_278E16C38;
-  v28 = v10;
+  v28 = callbackCopy;
   v37 = v28;
   v38 = &v39;
   v29 = [v27 addFailureBlock:v36];
@@ -7357,19 +7357,19 @@ void __62__COMeshAlarmAddOn_alarmsAsAccessory_fromClient_withCallback___block_in
   *(v5 + 40) = 0;
 }
 
-- (void)alarmsForAccessories:(id)a3 fromClient:(id)a4 callback:(id)a5
+- (void)alarmsForAccessories:(id)accessories fromClient:(id)client callback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COMeshAddOn *)self meshController];
+  accessoriesCopy = accessories;
+  clientCopy = client;
+  callbackCopy = callback;
+  meshController = [(COMeshAddOn *)self meshController];
   v12 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     [COMeshAlarmAddOn alarmsForAccessories:fromClient:callback:];
   }
 
-  if ([v8 count])
+  if ([accessoriesCopy count])
   {
     v41[0] = 0;
     v41[1] = v41;
@@ -7389,14 +7389,14 @@ void __62__COMeshAlarmAddOn_alarmsAsAccessory_fromClient_withCallback___block_in
     v37[3] = __Block_byref_object_copy__24;
     v37[4] = __Block_byref_object_dispose__24;
     v38 = MEMORY[0x277CBEBF8];
-    v13 = [(COMeshAlarmAddOn *)self homekit];
-    v14 = [v13 hasOptedToHH2];
+    homekit = [(COMeshAlarmAddOn *)self homekit];
+    hasOptedToHH2 = [homekit hasOptedToHH2];
 
-    if (v14)
+    if (hasOptedToHH2)
     {
-      v15 = [(COMeshAddOn *)self meshController];
-      v16 = [v15 nodeManager];
-      v17 = [v16 activeNodesWithSelfNode:1];
+      meshController2 = [(COMeshAddOn *)self meshController];
+      nodeManager = [meshController2 nodeManager];
+      v17 = [nodeManager activeNodesWithSelfNode:1];
 
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
@@ -7404,11 +7404,11 @@ void __62__COMeshAlarmAddOn_alarmsAsAccessory_fromClient_withCallback___block_in
       v30[3] = &unk_278E189E0;
       v18 = v17;
       v31 = v18;
-      v32 = self;
+      selfCopy = self;
       v34 = v39;
       v35 = v37;
-      v33 = v11;
-      [v8 enumerateObjectsUsingBlock:v30];
+      v33 = meshController;
+      [accessoriesCopy enumerateObjectsUsingBlock:v30];
     }
 
     else
@@ -7419,7 +7419,7 @@ void __62__COMeshAlarmAddOn_alarmsAsAccessory_fromClient_withCallback___block_in
       v36[3] = &unk_278E189B8;
       v36[4] = v41;
       v36[5] = v39;
-      [v8 enumerateObjectsUsingBlock:v36];
+      [accessoriesCopy enumerateObjectsUsingBlock:v36];
     }
 
     v28[0] = 0;
@@ -7428,7 +7428,7 @@ void __62__COMeshAlarmAddOn_alarmsAsAccessory_fromClient_withCallback___block_in
     v28[3] = __Block_byref_object_copy__24;
     v28[4] = __Block_byref_object_dispose__24;
     v29 = os_transaction_create();
-    v19 = [(COMeshAddOn *)self meshControllerQueue];
+    meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __61__COMeshAlarmAddOn_alarmsForAccessories_fromClient_callback___block_invoke_229;
@@ -7436,12 +7436,12 @@ void __62__COMeshAlarmAddOn_alarmsAsAccessory_fromClient_withCallback___block_in
     v24 = v41;
     block[4] = self;
     v25 = v39;
-    v21 = v11;
-    v22 = v9;
+    v21 = meshController;
+    v22 = clientCopy;
     v26 = v37;
-    v23 = v10;
+    v23 = callbackCopy;
     v27 = v28;
-    dispatch_async(v19, block);
+    dispatch_async(meshControllerQueue, block);
 
     _Block_object_dispose(v28, 8);
     _Block_object_dispose(v37, 8);
@@ -7452,7 +7452,7 @@ void __62__COMeshAlarmAddOn_alarmsAsAccessory_fromClient_withCallback___block_in
 
   else
   {
-    (*(v10 + 2))(v10, MEMORY[0x277CBEC10], 0);
+    (*(callbackCopy + 2))(callbackCopy, MEMORY[0x277CBEC10], 0);
   }
 }
 
@@ -7887,36 +7887,36 @@ void __61__COMeshAlarmAddOn_alarmsForAccessories_fromClient_callback___block_inv
   *(v2 + 40) = 0;
 }
 
-- (void)addAlarm:(id)a3 asAccessory:(id)a4 fromClient:(id)a5 withCallback:(id)a6
+- (void)addAlarm:(id)alarm asAccessory:(id)accessory fromClient:(id)client withCallback:(id)callback
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v29 = a5;
-  v12 = a6;
-  if (v11)
+  alarmCopy = alarm;
+  accessoryCopy = accessory;
+  clientCopy = client;
+  callbackCopy = callback;
+  if (accessoryCopy)
   {
-    v13 = [v11 categoryType];
+    categoryType = [accessoryCopy categoryType];
   }
 
   else
   {
-    v13 = 0;
+    categoryType = 0;
   }
 
   v14 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    [COMeshAlarmAddOn addAlarm:v10 asAccessory:v14 fromClient:? withCallback:?];
+    [COMeshAlarmAddOn addAlarm:alarmCopy asAccessory:v14 fromClient:? withCallback:?];
   }
 
-  v15 = [v10 siriContext];
-  v28 = [v15 objectForKey:*MEMORY[0x277CFCEC8]];
-  v16 = [(COMeshAlarmAddOn *)self homekit];
-  v17 = [v16 hasOptedToHH2];
-  if (v13)
+  siriContext = [alarmCopy siriContext];
+  v28 = [siriContext objectForKey:*MEMORY[0x277CFCEC8]];
+  homekit = [(COMeshAlarmAddOn *)self homekit];
+  hasOptedToHH2 = [homekit hasOptedToHH2];
+  if (categoryType)
   {
-    v18 = v17;
+    v18 = hasOptedToHH2;
   }
 
   else
@@ -7924,11 +7924,11 @@ void __61__COMeshAlarmAddOn_alarmsForAccessories_fromClient_callback___block_inv
     v18 = 1;
   }
 
-  if ((v18 & 1) != 0 || ![*MEMORY[0x277CCE8B0] isEqualToString:v13])
+  if ((v18 & 1) != 0 || ![*MEMORY[0x277CCE8B0] isEqualToString:categoryType])
   {
-    if (v11)
+    if (accessoryCopy)
     {
-      v24 = [(COMeshAlarmAddOn *)self secondaryClusterMemberIfRequiredForAccessory:v11];
+      v24 = [(COMeshAlarmAddOn *)self secondaryClusterMemberIfRequiredForAccessory:accessoryCopy];
     }
 
     else
@@ -7936,17 +7936,17 @@ void __61__COMeshAlarmAddOn_alarmsForAccessories_fromClient_callback___block_inv
       v24 = 0;
     }
 
-    v25 = [(COMeshAlarmAddOn *)self addAlarm:v10 member:v24 client:v29];
-    [(COMeshAlarmAddOn *)self _addCompletionsToFuture:v25 withXPCCallback:v12 transactionDescription:"com.apple.CoordinationCore.alarms.create"];
+    v25 = [(COMeshAlarmAddOn *)self addAlarm:alarmCopy member:v24 client:clientCopy];
+    [(COMeshAlarmAddOn *)self _addCompletionsToFuture:v25 withXPCCallback:callbackCopy transactionDescription:"com.apple.CoordinationCore.alarms.create"];
 
-    if (v11)
+    if (accessoryCopy)
     {
     }
   }
 
   else
   {
-    v27 = [(COAlarmRequest *)[COAlarmCreateRequest alloc] initWithAlarm:v10];
+    v27 = [(COAlarmRequest *)[COAlarmCreateRequest alloc] initWithAlarm:alarmCopy];
     v34[0] = 0;
     v34[1] = v34;
     v34[2] = 0x3032000000;
@@ -7956,26 +7956,26 @@ void __61__COMeshAlarmAddOn_alarmsForAccessories_fromClient_callback___block_inv
     v19 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(COMeshAddOn *)self meshController];
-      v21 = [v10 alarmID];
+      meshController = [(COMeshAddOn *)self meshController];
+      alarmID = [alarmCopy alarmID];
       *buf = 134218242;
-      v37 = v20;
+      v37 = meshController;
       v38 = 2112;
-      v39 = v21;
+      v39 = alarmID;
       _os_log_impl(&dword_244378000, v19, OS_LOG_TYPE_DEFAULT, "%p locally adding %@", buf, 0x16u);
     }
 
-    v22 = [(COMeshAddOn *)self meshControllerQueue];
+    meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __65__COMeshAlarmAddOn_addAlarm_asAccessory_fromClient_withCallback___block_invoke;
     block[3] = &unk_278E18B48;
     block[4] = self;
     v31 = v27;
-    v32 = v12;
+    v32 = callbackCopy;
     v33 = v34;
     v23 = v27;
-    dispatch_async(v22, block);
+    dispatch_async(meshControllerQueue, block);
 
     _Block_object_dispose(v34, 8);
   }
@@ -8017,50 +8017,50 @@ void __65__COMeshAlarmAddOn_addAlarm_asAccessory_fromClient_withCallback___block
   *(v6 + 40) = 0;
 }
 
-- (void)updateAlarm:(id)a3 asAccessory:(id)a4 fromClient:(id)a5 withCallback:(id)a6
+- (void)updateAlarm:(id)alarm asAccessory:(id)accessory fromClient:(id)client withCallback:(id)callback
 {
   v48 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v37 = a5;
-  v12 = a6;
-  if (v11)
+  alarmCopy = alarm;
+  accessoryCopy = accessory;
+  clientCopy = client;
+  callbackCopy = callback;
+  if (accessoryCopy)
   {
-    v13 = [v11 uniqueIdentifier];
-    v14 = [v11 categoryType];
+    uniqueIdentifier = [accessoryCopy uniqueIdentifier];
+    categoryType = [accessoryCopy categoryType];
   }
 
   else
   {
-    v14 = 0;
-    v13 = 0;
+    categoryType = 0;
+    uniqueIdentifier = 0;
   }
 
   v15 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    [COMeshAlarmAddOn updateAlarm:v10 asAccessory:v15 fromClient:? withCallback:?];
+    [COMeshAlarmAddOn updateAlarm:alarmCopy asAccessory:v15 fromClient:? withCallback:?];
   }
 
-  v16 = [(COMeshAlarmAddOn *)self homekit];
-  if (!v14)
+  homekit = [(COMeshAlarmAddOn *)self homekit];
+  if (!categoryType)
   {
-    if (v13)
+    if (uniqueIdentifier)
     {
-      v14 = 0;
+      categoryType = 0;
       goto LABEL_22;
     }
 
-    v17 = [v37 connection];
-    v35 = [v17 co_PeerInstance];
+    connection = [clientCopy connection];
+    co_PeerInstance = [connection co_PeerInstance];
 
-    if (v35 && (-[COMeshAlarmAddOn homehub](self, "homehub"), v18 = objc_claimAutoreleasedReturnValue(), [v18 accessoryIdentifierForPeerInstance:v35 usingHomeKitAdapter:v16], v13 = objc_claimAutoreleasedReturnValue(), v18, v13))
+    if (co_PeerInstance && (-[COMeshAlarmAddOn homehub](self, "homehub"), v18 = objc_claimAutoreleasedReturnValue(), [v18 accessoryIdentifierForPeerInstance:co_PeerInstance usingHomeKitAdapter:homekit], uniqueIdentifier = objc_claimAutoreleasedReturnValue(), v18, uniqueIdentifier))
     {
-      v19 = [v16 accessoryWithUniqueIdentifier:v13];
-      if (!v19)
+      currentAccessory = [homekit accessoryWithUniqueIdentifier:uniqueIdentifier];
+      if (!currentAccessory)
       {
 LABEL_12:
-        v14 = 0;
+        categoryType = 0;
 LABEL_21:
 
         goto LABEL_22;
@@ -8069,41 +8069,41 @@ LABEL_21:
 
     else
     {
-      v19 = [v16 currentAccessory];
-      v13 = 0;
-      if (!v19)
+      currentAccessory = [homekit currentAccessory];
+      uniqueIdentifier = 0;
+      if (!currentAccessory)
       {
         goto LABEL_12;
       }
     }
 
-    v20 = [v10 siriContext];
-    v21 = [v20 objectForKey:*MEMORY[0x277CFCEC8]];
+    siriContext = [alarmCopy siriContext];
+    v21 = [siriContext objectForKey:*MEMORY[0x277CFCEC8]];
 
     if (!v21 || (COAlarmSiriContextTargetReferenceForAccessory(), v22 = objc_claimAutoreleasedReturnValue(), v23 = [v21 compare:v22 options:1] == 0, v22, v23))
     {
-      v24 = [v19 category];
-      v14 = [v24 categoryType];
+      category = [currentAccessory category];
+      categoryType = [category categoryType];
     }
 
     else
     {
-      v14 = 0;
+      categoryType = 0;
     }
 
-    if (!v11)
+    if (!accessoryCopy)
     {
-      v11 = [objc_alloc(MEMORY[0x277CFD0C8]) initWithHomeKitAccessory:v19];
+      accessoryCopy = [objc_alloc(MEMORY[0x277CFD0C8]) initWithHomeKitAccessory:currentAccessory];
     }
 
     goto LABEL_21;
   }
 
 LABEL_22:
-  v25 = [v16 hasOptedToHH2];
-  if (v14)
+  hasOptedToHH2 = [homekit hasOptedToHH2];
+  if (categoryType)
   {
-    v26 = v25;
+    v26 = hasOptedToHH2;
   }
 
   else
@@ -8111,11 +8111,11 @@ LABEL_22:
     v26 = 1;
   }
 
-  if ((v26 & 1) != 0 || ![*MEMORY[0x277CCE8B0] isEqualToString:v14])
+  if ((v26 & 1) != 0 || ![*MEMORY[0x277CCE8B0] isEqualToString:categoryType])
   {
-    if (v11)
+    if (accessoryCopy)
     {
-      v32 = [(COMeshAlarmAddOn *)self secondaryClusterMemberIfRequiredForAccessory:v11];
+      v32 = [(COMeshAlarmAddOn *)self secondaryClusterMemberIfRequiredForAccessory:accessoryCopy];
     }
 
     else
@@ -8123,17 +8123,17 @@ LABEL_22:
       v32 = 0;
     }
 
-    v33 = [(COMeshAlarmAddOn *)self updateAlarm:v10 member:v32 client:v37];
-    [(COMeshAlarmAddOn *)self _addCompletionsToFuture:v33 withXPCCallback:v12 transactionDescription:"com.apple.CoordinationCore.alarms.update"];
+    v33 = [(COMeshAlarmAddOn *)self updateAlarm:alarmCopy member:v32 client:clientCopy];
+    [(COMeshAlarmAddOn *)self _addCompletionsToFuture:v33 withXPCCallback:callbackCopy transactionDescription:"com.apple.CoordinationCore.alarms.update"];
 
-    if (v11)
+    if (accessoryCopy)
     {
     }
   }
 
   else
   {
-    v36 = [(COAlarmRequest *)[COAlarmUpdateRequest alloc] initWithAlarm:v10];
+    v36 = [(COAlarmRequest *)[COAlarmUpdateRequest alloc] initWithAlarm:alarmCopy];
     v42[0] = 0;
     v42[1] = v42;
     v42[2] = 0x3032000000;
@@ -8143,26 +8143,26 @@ LABEL_22:
     v27 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [(COMeshAddOn *)self meshController];
-      v29 = [v10 alarmID];
+      meshController = [(COMeshAddOn *)self meshController];
+      alarmID = [alarmCopy alarmID];
       *buf = 134218242;
-      v45 = v28;
+      v45 = meshController;
       v46 = 2112;
-      v47 = v29;
+      v47 = alarmID;
       _os_log_impl(&dword_244378000, v27, OS_LOG_TYPE_DEFAULT, "%p locally updating %@", buf, 0x16u);
     }
 
-    v30 = [(COMeshAddOn *)self meshControllerQueue];
+    meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __68__COMeshAlarmAddOn_updateAlarm_asAccessory_fromClient_withCallback___block_invoke;
     block[3] = &unk_278E18B48;
     block[4] = self;
     v39 = v36;
-    v40 = v12;
+    v40 = callbackCopy;
     v41 = v42;
     v31 = v36;
-    dispatch_async(v30, block);
+    dispatch_async(meshControllerQueue, block);
 
     _Block_object_dispose(v42, 8);
   }
@@ -8204,50 +8204,50 @@ void __68__COMeshAlarmAddOn_updateAlarm_asAccessory_fromClient_withCallback___bl
   *(v6 + 40) = 0;
 }
 
-- (void)removeAlarm:(id)a3 asAccessory:(id)a4 fromClient:(id)a5 withCallback:(id)a6
+- (void)removeAlarm:(id)alarm asAccessory:(id)accessory fromClient:(id)client withCallback:(id)callback
 {
   v48 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v37 = a5;
-  v12 = a6;
-  if (v11)
+  alarmCopy = alarm;
+  accessoryCopy = accessory;
+  clientCopy = client;
+  callbackCopy = callback;
+  if (accessoryCopy)
   {
-    v13 = [v11 uniqueIdentifier];
-    v14 = [v11 categoryType];
+    uniqueIdentifier = [accessoryCopy uniqueIdentifier];
+    categoryType = [accessoryCopy categoryType];
   }
 
   else
   {
-    v14 = 0;
-    v13 = 0;
+    categoryType = 0;
+    uniqueIdentifier = 0;
   }
 
   v15 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    [COMeshAlarmAddOn removeAlarm:v10 asAccessory:v15 fromClient:? withCallback:?];
+    [COMeshAlarmAddOn removeAlarm:alarmCopy asAccessory:v15 fromClient:? withCallback:?];
   }
 
-  v16 = [(COMeshAlarmAddOn *)self homekit];
-  if (!v14)
+  homekit = [(COMeshAlarmAddOn *)self homekit];
+  if (!categoryType)
   {
-    if (v13)
+    if (uniqueIdentifier)
     {
-      v14 = 0;
+      categoryType = 0;
       goto LABEL_22;
     }
 
-    v17 = [v37 connection];
-    v35 = [v17 co_PeerInstance];
+    connection = [clientCopy connection];
+    co_PeerInstance = [connection co_PeerInstance];
 
-    if (v35 && (-[COMeshAlarmAddOn homehub](self, "homehub"), v18 = objc_claimAutoreleasedReturnValue(), [v18 accessoryIdentifierForPeerInstance:v35 usingHomeKitAdapter:v16], v13 = objc_claimAutoreleasedReturnValue(), v18, v13))
+    if (co_PeerInstance && (-[COMeshAlarmAddOn homehub](self, "homehub"), v18 = objc_claimAutoreleasedReturnValue(), [v18 accessoryIdentifierForPeerInstance:co_PeerInstance usingHomeKitAdapter:homekit], uniqueIdentifier = objc_claimAutoreleasedReturnValue(), v18, uniqueIdentifier))
     {
-      v19 = [v16 accessoryWithUniqueIdentifier:v13];
-      if (!v19)
+      currentAccessory = [homekit accessoryWithUniqueIdentifier:uniqueIdentifier];
+      if (!currentAccessory)
       {
 LABEL_12:
-        v14 = 0;
+        categoryType = 0;
 LABEL_21:
 
         goto LABEL_22;
@@ -8256,41 +8256,41 @@ LABEL_21:
 
     else
     {
-      v19 = [v16 currentAccessory];
-      v13 = 0;
-      if (!v19)
+      currentAccessory = [homekit currentAccessory];
+      uniqueIdentifier = 0;
+      if (!currentAccessory)
       {
         goto LABEL_12;
       }
     }
 
-    v20 = [v10 siriContext];
-    v21 = [v20 objectForKey:*MEMORY[0x277CFCEC8]];
+    siriContext = [alarmCopy siriContext];
+    v21 = [siriContext objectForKey:*MEMORY[0x277CFCEC8]];
 
     if (!v21 || (COAlarmSiriContextTargetReferenceForAccessory(), v22 = objc_claimAutoreleasedReturnValue(), v23 = [v21 compare:v22 options:1] == 0, v22, v23))
     {
-      v24 = [v19 category];
-      v14 = [v24 categoryType];
+      category = [currentAccessory category];
+      categoryType = [category categoryType];
     }
 
     else
     {
-      v14 = 0;
+      categoryType = 0;
     }
 
-    if (!v11)
+    if (!accessoryCopy)
     {
-      v11 = [objc_alloc(MEMORY[0x277CFD0C8]) initWithHomeKitAccessory:v19];
+      accessoryCopy = [objc_alloc(MEMORY[0x277CFD0C8]) initWithHomeKitAccessory:currentAccessory];
     }
 
     goto LABEL_21;
   }
 
 LABEL_22:
-  v25 = [v16 hasOptedToHH2];
-  if (v14)
+  hasOptedToHH2 = [homekit hasOptedToHH2];
+  if (categoryType)
   {
-    v26 = v25;
+    v26 = hasOptedToHH2;
   }
 
   else
@@ -8298,11 +8298,11 @@ LABEL_22:
     v26 = 1;
   }
 
-  if ((v26 & 1) != 0 || ![*MEMORY[0x277CCE8B0] isEqualToString:v14])
+  if ((v26 & 1) != 0 || ![*MEMORY[0x277CCE8B0] isEqualToString:categoryType])
   {
-    if (v11)
+    if (accessoryCopy)
     {
-      v32 = [(COMeshAlarmAddOn *)self secondaryClusterMemberIfRequiredForAccessory:v11];
+      v32 = [(COMeshAlarmAddOn *)self secondaryClusterMemberIfRequiredForAccessory:accessoryCopy];
     }
 
     else
@@ -8310,17 +8310,17 @@ LABEL_22:
       v32 = 0;
     }
 
-    v33 = [(COMeshAlarmAddOn *)self removeAlarm:v10 member:v32 client:v37];
-    [(COMeshAlarmAddOn *)self _addCompletionsToFuture:v33 withXPCCallback:v12 transactionDescription:"com.apple.CoordinationCore.alarms.delete"];
+    v33 = [(COMeshAlarmAddOn *)self removeAlarm:alarmCopy member:v32 client:clientCopy];
+    [(COMeshAlarmAddOn *)self _addCompletionsToFuture:v33 withXPCCallback:callbackCopy transactionDescription:"com.apple.CoordinationCore.alarms.delete"];
 
-    if (v11)
+    if (accessoryCopy)
     {
     }
   }
 
   else
   {
-    v36 = [(COAlarmRequest *)[COAlarmDeleteRequest alloc] initWithAlarm:v10];
+    v36 = [(COAlarmRequest *)[COAlarmDeleteRequest alloc] initWithAlarm:alarmCopy];
     v42[0] = 0;
     v42[1] = v42;
     v42[2] = 0x3032000000;
@@ -8330,26 +8330,26 @@ LABEL_22:
     v27 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [(COMeshAddOn *)self meshController];
-      v29 = [v10 alarmID];
+      meshController = [(COMeshAddOn *)self meshController];
+      alarmID = [alarmCopy alarmID];
       *buf = 134218242;
-      v45 = v28;
+      v45 = meshController;
       v46 = 2112;
-      v47 = v29;
+      v47 = alarmID;
       _os_log_impl(&dword_244378000, v27, OS_LOG_TYPE_DEFAULT, "%p locally removing %@", buf, 0x16u);
     }
 
-    v30 = [(COMeshAddOn *)self meshControllerQueue];
+    meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __68__COMeshAlarmAddOn_removeAlarm_asAccessory_fromClient_withCallback___block_invoke;
     block[3] = &unk_278E18B48;
     block[4] = self;
     v39 = v36;
-    v40 = v12;
+    v40 = callbackCopy;
     v41 = v42;
     v31 = v36;
-    dispatch_async(v30, block);
+    dispatch_async(meshControllerQueue, block);
 
     _Block_object_dispose(v42, 8);
   }
@@ -8391,12 +8391,12 @@ void __68__COMeshAlarmAddOn_removeAlarm_asAccessory_fromClient_withCallback___bl
   *(v6 + 40) = 0;
 }
 
-- (void)snoozeAlarmWithIdentifier:(id)a3 fromClient:(id)a4 withCallback:(id)a5
+- (void)snoozeAlarmWithIdentifier:(id)identifier fromClient:(id)client withCallback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COMeshAddOn *)self meshController];
+  identifierCopy = identifier;
+  clientCopy = client;
+  callbackCopy = callback;
+  meshController = [(COMeshAddOn *)self meshController];
   v12 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -8409,21 +8409,21 @@ void __68__COMeshAlarmAddOn_removeAlarm_asAccessory_fromClient_withCallback___bl
   v38[3] = __Block_byref_object_copy__24;
   v38[4] = __Block_byref_object_dispose__24;
   v39 = os_transaction_create();
-  v13 = [(COMeshAlarmAddOn *)self snoozeAlarmWithIdentifier:v8 client:v9];
+  v13 = [(COMeshAlarmAddOn *)self snoozeAlarmWithIdentifier:identifierCopy client:clientCopy];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __70__COMeshAlarmAddOn_snoozeAlarmWithIdentifier_fromClient_withCallback___block_invoke;
   v33[3] = &unk_278E18B70;
-  v14 = v11;
+  v14 = meshController;
   v34 = v14;
-  v15 = v8;
+  v15 = identifierCopy;
   v35 = v15;
-  v16 = v10;
+  v16 = callbackCopy;
   v36 = v16;
   v37 = v38;
   v17 = [v13 addFailureBlock:v33];
-  v18 = [(COMeshAlarmAddOn *)self alarmManager];
-  v19 = [(COMeshAlarmAddOn *)self homekit];
+  alarmManager = [(COMeshAlarmAddOn *)self alarmManager];
+  homekit = [(COMeshAlarmAddOn *)self homekit];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __70__COMeshAlarmAddOn_snoozeAlarmWithIdentifier_fromClient_withCallback___block_invoke_239;
@@ -8434,9 +8434,9 @@ void __68__COMeshAlarmAddOn_removeAlarm_asAccessory_fromClient_withCallback___bl
   v28 = v21;
   v22 = v16;
   v31 = v22;
-  v23 = v19;
+  v23 = homekit;
   v29 = v23;
-  v24 = v18;
+  v24 = alarmManager;
   v30 = v24;
   v32 = v38;
   v25 = [v13 addSuccessBlock:v26];
@@ -8647,12 +8647,12 @@ void __70__COMeshAlarmAddOn_snoozeAlarmWithIdentifier_fromClient_withCallback___
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dismissAlarmWithIdentifier:(id)a3 fromClient:(id)a4 withCallback:(id)a5
+- (void)dismissAlarmWithIdentifier:(id)identifier fromClient:(id)client withCallback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COMeshAddOn *)self meshController];
+  identifierCopy = identifier;
+  clientCopy = client;
+  callbackCopy = callback;
+  meshController = [(COMeshAddOn *)self meshController];
   v12 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -8665,17 +8665,17 @@ void __70__COMeshAlarmAddOn_snoozeAlarmWithIdentifier_fromClient_withCallback___
   v33[3] = __Block_byref_object_copy__24;
   v33[4] = __Block_byref_object_dispose__24;
   v34 = os_transaction_create();
-  v13 = [(COMeshAlarmAddOn *)self dismissAlarmWithIdentifier:v8 client:v9];
+  v13 = [(COMeshAlarmAddOn *)self dismissAlarmWithIdentifier:identifierCopy client:clientCopy];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __71__COMeshAlarmAddOn_dismissAlarmWithIdentifier_fromClient_withCallback___block_invoke;
   v27[3] = &unk_278E18C88;
-  v14 = v11;
+  v14 = meshController;
   v28 = v14;
-  v15 = v8;
+  v15 = identifierCopy;
   v29 = v15;
-  v30 = self;
-  v16 = v10;
+  selfCopy = self;
+  v16 = callbackCopy;
   v31 = v16;
   v32 = v33;
   v17 = [v13 addFailureBlock:v27];
@@ -8846,24 +8846,24 @@ void __71__COMeshAlarmAddOn_dismissAlarmWithIdentifier_fromClient_withCallback__
   *(v3 + 40) = 0;
 }
 
-- (void)canDispatchAsAccessory:(id)a3 asInstance:(id)a4 reply:(id)a5
+- (void)canDispatchAsAccessory:(id)accessory asInstance:(id)instance reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COMeshAddOn *)self meshControllerQueue];
+  accessoryCopy = accessory;
+  instanceCopy = instance;
+  replyCopy = reply;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __60__COMeshAlarmAddOn_canDispatchAsAccessory_asInstance_reply___block_invoke;
   v15[3] = &unk_278E15D00;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = accessoryCopy;
+  selfCopy = self;
+  v18 = instanceCopy;
+  v19 = replyCopy;
+  v12 = replyCopy;
+  v13 = instanceCopy;
+  v14 = accessoryCopy;
+  dispatch_async(meshControllerQueue, v15);
 }
 
 void __60__COMeshAlarmAddOn_canDispatchAsAccessory_asInstance_reply___block_invoke(uint64_t a1)
@@ -9089,44 +9089,44 @@ LABEL_43:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mediaSystemCompanionTransitionedFrom:(id)a3 to:(id)a4
+- (void)mediaSystemCompanionTransitionedFrom:(id)from to:(id)to
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COMeshAlarmAddOn *)self homekit];
-  if ([v8 hasOptedToHH2])
+  fromCopy = from;
+  toCopy = to;
+  homekit = [(COMeshAlarmAddOn *)self homekit];
+  if ([homekit hasOptedToHH2])
   {
-    v9 = [v6 isEqual:v7];
-    if (v7 != v6 && (v9 & 1) == 0)
+    v9 = [fromCopy isEqual:toCopy];
+    if (toCopy != fromCopy && (v9 & 1) == 0)
     {
-      v10 = [v8 currentAccessory];
-      v11 = v10;
-      if (!v10)
+      currentAccessory = [homekit currentAccessory];
+      v11 = currentAccessory;
+      if (!currentAccessory)
       {
 LABEL_17:
 
         goto LABEL_18;
       }
 
-      v12 = [v10 uniqueIdentifier];
-      v13 = v12;
-      if (v7)
+      uniqueIdentifier = [currentAccessory uniqueIdentifier];
+      v13 = uniqueIdentifier;
+      if (toCopy)
       {
-        v14 = [v12 co_compare:v7];
-        v15 = COCoreLogForCategory(2);
-        v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
+        v14 = [uniqueIdentifier co_compare:toCopy];
+        alarmManager = COCoreLogForCategory(2);
+        v16 = os_log_type_enabled(alarmManager, OS_LOG_TYPE_DEFAULT);
         if (v14 == 1)
         {
           if (v16)
           {
             *buf = 134218498;
-            v33 = self;
+            selfCopy4 = self;
             v34 = 2112;
             v35 = v13;
             v36 = 2112;
-            v37 = v7;
-            _os_log_impl(&dword_244378000, v15, OS_LOG_TYPE_DEFAULT, "%p system pair alarms deferred by %@ to %@", buf, 0x20u);
+            v37 = toCopy;
+            _os_log_impl(&dword_244378000, alarmManager, OS_LOG_TYPE_DEFAULT, "%p system pair alarms deferred by %@ to %@", buf, 0x20u);
           }
 
           goto LABEL_16;
@@ -9135,24 +9135,24 @@ LABEL_17:
         if (v16)
         {
           *buf = 134218498;
-          v33 = self;
+          selfCopy4 = self;
           v34 = 2112;
           v35 = v13;
           v36 = 2112;
-          v37 = v7;
-          _os_log_impl(&dword_244378000, v15, OS_LOG_TYPE_DEFAULT, "%p system pair alarms being coalesced for %@ and %@", buf, 0x20u);
+          v37 = toCopy;
+          _os_log_impl(&dword_244378000, alarmManager, OS_LOG_TYPE_DEFAULT, "%p system pair alarms being coalesced for %@ and %@", buf, 0x20u);
         }
 
-        v15 = [(COMeshAlarmAddOn *)self alarmManager];
-        v18 = [v15 alarms];
+        alarmManager = [(COMeshAlarmAddOn *)self alarmManager];
+        alarms = [alarmManager alarms];
         v28[0] = MEMORY[0x277D85DD0];
         v28[1] = 3221225472;
         v28[2] = __60__COMeshAlarmAddOn_mediaSystemCompanionTransitionedFrom_to___block_invoke;
         v28[3] = &unk_278E17268;
         v29 = v13;
-        v30 = v7;
-        v31 = self;
-        v21 = [v18 addSuccessBlock:v28];
+        v30 = toCopy;
+        selfCopy3 = self;
+        v21 = [alarms addSuccessBlock:v28];
 
         v20 = v29;
       }
@@ -9163,25 +9163,25 @@ LABEL_17:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218498;
-          v33 = self;
+          selfCopy4 = self;
           v34 = 2112;
           v35 = v13;
           v36 = 2112;
-          v37 = v6;
+          v37 = fromCopy;
           _os_log_impl(&dword_244378000, v17, OS_LOG_TYPE_DEFAULT, "%p system pair alarms splitting %@ from %@", buf, 0x20u);
         }
 
-        v15 = [(COMeshAlarmAddOn *)self alarmManager];
-        v18 = [v15 alarms];
+        alarmManager = [(COMeshAlarmAddOn *)self alarmManager];
+        alarms = [alarmManager alarms];
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
         v23[2] = __60__COMeshAlarmAddOn_mediaSystemCompanionTransitionedFrom_to___block_invoke_248;
         v23[3] = &unk_278E16E60;
         v24 = v13;
-        v25 = v6;
-        v26 = self;
+        v25 = fromCopy;
+        selfCopy5 = self;
         v27 = v11;
-        v19 = [v18 addSuccessBlock:v23];
+        v19 = [alarms addSuccessBlock:v23];
 
         v20 = v24;
       }
@@ -9362,20 +9362,20 @@ LABEL_6:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)establishSecondaryClusterForAccessory:(id)a3
+- (void)establishSecondaryClusterForAccessory:(id)accessory
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   if ([MEMORY[0x277CFD0B8] isHomeKitUsingAlarmsAndTimersIDSService])
   {
-    v5 = COCoreLogForCategory(2);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    homekit = COCoreLogForCategory(2);
+    if (os_log_type_enabled(homekit, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
       v13 = @"com.apple.private.alloy.alarms-timers";
-      _os_log_impl(&dword_244378000, v5, OS_LOG_TYPE_DEFAULT, "%p HomeKit is making use of IDS Service %@ for alarms", buf, 0x16u);
+      _os_log_impl(&dword_244378000, homekit, OS_LOG_TYPE_DEFAULT, "%p HomeKit is making use of IDS Service %@ for alarms", buf, 0x16u);
     }
 
     goto LABEL_8;
@@ -9383,8 +9383,8 @@ LABEL_6:
 
   if ([MEMORY[0x277CFD0B8] isGlobalMessagingEnabled])
   {
-    v5 = [(COMeshAlarmAddOn *)self homekit];
-    if (([v5 hasOptedToHH2]& 1) == 0)
+    homekit = [(COMeshAlarmAddOn *)self homekit];
+    if (([homekit hasOptedToHH2]& 1) == 0)
     {
 LABEL_8:
 
@@ -9400,7 +9400,7 @@ LABEL_8:
       v8[2] = __58__COMeshAlarmAddOn_establishSecondaryClusterForAccessory___block_invoke;
       v8[3] = &unk_278E156B0;
       v8[4] = self;
-      v9 = v4;
+      v9 = accessoryCopy;
       [(COMeshAlarmAddOn *)self _withLock:v8];
     }
   }
@@ -9452,11 +9452,11 @@ void __58__COMeshAlarmAddOn_establishSecondaryClusterForAccessory___block_invoke
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)secondaryClusterMemberForAccessory:(id)a3
+- (id)secondaryClusterMemberForAccessory:(id)accessory
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = [a3 IDSIdentifier];
-  if ([v4 length] && objc_msgSend(MEMORY[0x277CFD0B8], "isGlobalMessagingEnabled"))
+  iDSIdentifier = [accessory IDSIdentifier];
+  if ([iDSIdentifier length] && objc_msgSend(MEMORY[0x277CFD0B8], "isGlobalMessagingEnabled"))
   {
     v20 = 0u;
     v21 = 0u;
@@ -9478,14 +9478,14 @@ void __58__COMeshAlarmAddOn_establishSecondaryClusterForAccessory___block_invoke
           }
 
           v9 = *(*(&v18 + 1) + 8 * i);
-          v10 = [v9 member];
-          v11 = [v10 deviceMetadata];
-          v12 = [v11 objectForKey:@"IDS"];
-          v13 = [v12 isEqual:v4];
+          member = [v9 member];
+          deviceMetadata = [member deviceMetadata];
+          v12 = [deviceMetadata objectForKey:@"IDS"];
+          v13 = [v12 isEqual:iDSIdentifier];
 
           if (v13)
           {
-            v14 = [v9 member];
+            member2 = [v9 member];
             goto LABEL_14;
           }
         }
@@ -9500,39 +9500,39 @@ void __58__COMeshAlarmAddOn_establishSecondaryClusterForAccessory___block_invoke
       }
     }
 
-    v14 = 0;
+    member2 = 0;
 LABEL_14:
   }
 
   else
   {
-    v14 = 0;
+    member2 = 0;
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return member2;
 }
 
-- (id)secondaryClusterMemberIfRequiredForAccessory:(id)a3
+- (id)secondaryClusterMemberIfRequiredForAccessory:(id)accessory
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   if (![MEMORY[0x277CFD0B8] isGlobalMessagingEnabled])
   {
     goto LABEL_14;
   }
 
-  v5 = [(COMeshAlarmAddOn *)self homekit];
-  v6 = [v5 hasOptedToHH2];
+  homekit = [(COMeshAlarmAddOn *)self homekit];
+  hasOptedToHH2 = [homekit hasOptedToHH2];
 
-  if (!v6)
+  if (!hasOptedToHH2)
   {
     goto LABEL_14;
   }
 
-  v7 = [v4 categoryType];
-  if (([v7 isEqualToString:*MEMORY[0x277CCE8B0]] & 1) == 0)
+  categoryType = [accessoryCopy categoryType];
+  if (([categoryType isEqualToString:*MEMORY[0x277CCE8B0]] & 1) == 0)
   {
 
 LABEL_14:
@@ -9540,15 +9540,15 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v8 = [v4 IDSIdentifier];
+  iDSIdentifier = [accessoryCopy IDSIdentifier];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [(COMeshAddOn *)self meshController];
-  v10 = [v9 nodes];
+  meshController = [(COMeshAddOn *)self meshController];
+  nodes = [meshController nodes];
 
-  v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v11 = [nodes countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
     v12 = v11;
@@ -9559,11 +9559,11 @@ LABEL_14:
       {
         if (*v21 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(nodes);
         }
 
-        v15 = [*(*(&v20 + 1) + 8 * i) IDSIdentifier];
-        v16 = [v15 isEqual:v8];
+        iDSIdentifier2 = [*(*(&v20 + 1) + 8 * i) IDSIdentifier];
+        v16 = [iDSIdentifier2 isEqual:iDSIdentifier];
 
         if (v16)
         {
@@ -9573,7 +9573,7 @@ LABEL_14:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v12 = [nodes countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v12)
       {
         continue;
@@ -9583,7 +9583,7 @@ LABEL_14:
     }
   }
 
-  v17 = [(COMeshAlarmAddOn *)self secondaryClusterMemberForAccessory:v4];
+  v17 = [(COMeshAlarmAddOn *)self secondaryClusterMemberForAccessory:accessoryCopy];
 LABEL_19:
 
 LABEL_15:
@@ -9592,24 +9592,24 @@ LABEL_15:
   return v17;
 }
 
-- (void)setInterests:(id)a3 asAccessory:(id)a4 withCallback:(id)a5
+- (void)setInterests:(id)interests asAccessory:(id)accessory withCallback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COMeshAddOn *)self meshControllerQueue];
+  interestsCopy = interests;
+  accessoryCopy = accessory;
+  callbackCopy = callback;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __58__COMeshAlarmAddOn_setInterests_asAccessory_withCallback___block_invoke;
   v15[3] = &unk_278E172E0;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
-  dispatch_async(v11, v15);
+  v16 = accessoryCopy;
+  selfCopy = self;
+  v18 = interestsCopy;
+  v19 = callbackCopy;
+  v12 = interestsCopy;
+  v13 = callbackCopy;
+  v14 = accessoryCopy;
+  dispatch_async(meshControllerQueue, v15);
 }
 
 void __58__COMeshAlarmAddOn_setInterests_asAccessory_withCallback___block_invoke(uint64_t a1)
@@ -9690,32 +9690,32 @@ void __58__COMeshAlarmAddOn_setInterests_asAccessory_withCallback___block_invoke
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)interestTracker:(id)a3 setInterests:(id)a4 forMember:(id)a5 callback:(id)a6
+- (void)interestTracker:(id)tracker setInterests:(id)interests forMember:(id)member callback:(id)callback
 {
   v46 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v14);
+  trackerCopy = tracker;
+  interestsCopy = interests;
+  memberCopy = member;
+  callbackCopy = callback;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
-  v17 = [v11 allObjects];
-  v18 = [COMTUpdateInterestAction actionWithTargetType:v16 targetIdentifiers:v17];
+  allObjects = [interestsCopy allObjects];
+  v18 = [COMTUpdateInterestAction actionWithTargetType:v16 targetIdentifiers:allObjects];
 
   v19 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218754;
-    v39 = self;
+    selfCopy = self;
     v40 = 2048;
-    v41 = v10;
+    v41 = trackerCopy;
     v42 = 2114;
     v43 = v18;
     v44 = 2114;
-    v45 = v11;
+    v45 = interestsCopy;
     _os_log_impl(&dword_244378000, v19, OS_LOG_TYPE_DEFAULT, "%p setting interests for tracker %p via %{public}@ to %{public}@", buf, 0x2Au);
   }
 
@@ -9725,25 +9725,25 @@ void __58__COMeshAlarmAddOn_setInterests_asAccessory_withCallback___block_invoke
   v33[2] = __68__COMeshAlarmAddOn_interestTracker_setInterests_forMember_callback___block_invoke;
   v33[3] = &unk_278E17308;
   objc_copyWeak(&v37, buf);
-  v20 = v10;
+  v20 = trackerCopy;
   v34 = v20;
   v21 = v18;
   v35 = v21;
-  v22 = v13;
+  v22 = callbackCopy;
   v36 = v22;
   v23 = MEMORY[0x245D5FF10](v33);
-  v24 = [(COMeshAddOn *)self meshControllerQueue];
-  v25 = [(COMeshAlarmAddOn *)self actionDirector];
-  v26 = [MEMORY[0x277CBEB98] setWithObject:v12];
+  meshControllerQueue2 = [(COMeshAddOn *)self meshControllerQueue];
+  actionDirector = [(COMeshAlarmAddOn *)self actionDirector];
+  v26 = [MEMORY[0x277CBEB98] setWithObject:memberCopy];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __68__COMeshAlarmAddOn_interestTracker_setInterests_forMember_callback___block_invoke_263;
   v30[3] = &unk_278E17330;
-  v27 = v24;
+  v27 = meshControllerQueue2;
   v31 = v27;
   v28 = v23;
   v32 = v28;
-  [v25 requestAction:v21 members:v26 activity:0 withCompletion:v30];
+  [actionDirector requestAction:v21 members:v26 activity:0 withCompletion:v30];
 
   objc_destroyWeak(&v37);
   objc_destroyWeak(buf);
@@ -9817,11 +9817,11 @@ void __68__COMeshAlarmAddOn_interestTracker_setInterests_forMember_callback___bl
   dispatch_async(v5, v8);
 }
 
-- (void)interestTrackerTriggerReset:(id)a3
+- (void)interestTrackerTriggerReset:(id)reset
 {
-  v4 = a3;
-  v5 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v5);
+  resetCopy = reset;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
   v6 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -9829,31 +9829,31 @@ void __68__COMeshAlarmAddOn_interestTracker_setInterests_forMember_callback___bl
     [COMeshAlarmAddOn handleAlarmManagerStateResetNotification:?];
   }
 
-  v7 = [(COMeshAlarmAddOn *)self delegate];
+  delegate = [(COMeshAlarmAddOn *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v4 accessory];
-    v9 = [v8 uniqueIdentifier];
+    accessory = [resetCopy accessory];
+    uniqueIdentifier = [accessory uniqueIdentifier];
 
-    [v7 alarmAddOn:self resetAccesory:v9];
+    [delegate alarmAddOn:self resetAccesory:uniqueIdentifier];
   }
 }
 
 - (void)_reaperFired
 {
-  v3 = [(COMeshAlarmAddOn *)self homekit];
-  v4 = [v3 currentAccessory];
-  if (v4)
+  homekit = [(COMeshAlarmAddOn *)self homekit];
+  currentAccessory = [homekit currentAccessory];
+  if (currentAccessory)
   {
-    v5 = [v3 homeForAccessory:v4];
+    v5 = [homekit homeForAccessory:currentAccessory];
     if (v5)
     {
       v6 = v5;
-      v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      [v7 doubleForKey:@"ReapExpirationInterval"];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      [standardUserDefaults doubleForKey:@"ReapExpirationInterval"];
       v9 = v8;
-      v10 = [(COMeshAddOn *)self meshControllerQueue];
-      if (v10)
+      meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+      if (meshControllerQueue)
       {
         v12[1] = 3221225472;
         v11 = 5184000.0;
@@ -9867,9 +9867,9 @@ void __68__COMeshAlarmAddOn_interestTracker_setInterests_forMember_callback___bl
 
         v12[4] = self;
         v15 = v11;
-        v13 = v4;
+        v13 = currentAccessory;
         v14 = v6;
-        dispatch_async(v10, v12);
+        dispatch_async(meshControllerQueue, v12);
       }
     }
   }
@@ -9882,12 +9882,12 @@ void __32__COMeshAlarmAddOn__reaperFired__block_invoke(uint64_t a1)
   [v2 reapNonRepeatingAlarmsOlderThanDate:v3 accessory:*(a1 + 40) home:*(a1 + 48)];
 }
 
-- (void)reapNonRepeatingAlarmsOlderThanDate:(id)a3 accessory:(id)a4 home:(id)a5
+- (void)reapNonRepeatingAlarmsOlderThanDate:(id)date accessory:(id)accessory home:(id)home
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  accessoryCopy = accessory;
+  homeCopy = home;
   if ([(COMeshAlarmAddOn *)self performsLocalActions])
   {
     v11 = arc4random();
@@ -9899,24 +9899,24 @@ void __32__COMeshAlarmAddOn__reaperFired__block_invoke(uint64_t a1)
       _os_log_impl(&dword_244378000, v12, OS_LOG_TYPE_DEFAULT, "(%u) Alarm reap started.", buf, 8u);
     }
 
-    v13 = [(COMeshAlarmAddOn *)self homekit];
+    homekit = [(COMeshAlarmAddOn *)self homekit];
     v14 = &off_244448000;
-    if ([v13 hasOptedToHH2])
+    if ([homekit hasOptedToHH2])
     {
       goto LABEL_8;
     }
 
     v15 = *MEMORY[0x277CCE8B0];
-    v16 = [v9 category];
-    v17 = [v16 categoryType];
-    LOBYTE(v15) = [v15 isEqual:v17];
+    category = [accessoryCopy category];
+    categoryType = [category categoryType];
+    LOBYTE(v15) = [v15 isEqual:categoryType];
 
     if ((v15 & 1) == 0)
     {
 LABEL_8:
       v19 = objc_alloc_init(MEMORY[0x277D2C900]);
-      v20 = [(COMeshAlarmAddOn *)self alarmManager];
-      v21 = [v20 alarms];
+      alarmManager = [(COMeshAlarmAddOn *)self alarmManager];
+      alarms = [alarmManager alarms];
 
       v40[0] = MEMORY[0x277D85DD0];
       v40[1] = 3221225472;
@@ -9924,34 +9924,34 @@ LABEL_8:
       v40[3] = &unk_278E18AA8;
       v22 = v19;
       v41 = v22;
-      v42 = self;
-      v43 = v9;
-      v23 = [v21 addCompletionBlock:v40];
+      selfCopy = self;
+      v43 = accessoryCopy;
+      v23 = [alarms addCompletionBlock:v40];
 
       v18 = v41;
     }
 
     else
     {
-      v18 = [v13 mediaSystemForAccessory:v9 inHome:v10];
+      v18 = [homekit mediaSystemForAccessory:accessoryCopy inHome:homeCopy];
       if (v18)
       {
-        [v13 settingsForKeyPath:@"root.mobileTimer.alarms" onMediaObject:v18];
+        [homekit settingsForKeyPath:@"root.mobileTimer.alarms" onMediaObject:v18];
       }
 
       else
       {
-        [v13 settingsForKeyPath:@"root.mobileTimer.alarms" onAccessory:v9];
+        [homekit settingsForKeyPath:@"root.mobileTimer.alarms" onAccessory:accessoryCopy];
       }
       v26 = ;
-      v21 = [v26 firstObject];
+      alarms = [v26 firstObject];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v27 = COAlarmSiriContextTargetReferenceForAccessory();
         v31 = MEMORY[0x277D2C900];
-        [v21 co_rawAlarms];
+        [alarms co_rawAlarms];
         v28 = v32 = v11;
         v37[0] = MEMORY[0x277D85DD0];
         v37[1] = 3221225472;
@@ -9979,8 +9979,8 @@ LABEL_8:
     v33[2] = __71__COMeshAlarmAddOn_reapNonRepeatingAlarmsOlderThanDate_accessory_home___block_invoke_3;
     v33[3] = &unk_278E18D98;
     v36 = v11;
-    v34 = v8;
-    v35 = self;
+    v34 = dateCopy;
+    selfCopy2 = self;
     v24 = [v22 addSuccessBlock:v33];
   }
 
@@ -10147,24 +10147,24 @@ void __71__COMeshAlarmAddOn_reapNonRepeatingAlarmsOlderThanDate_accessory_home__
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)director:(id)a3 membersChanged:(id)a4
+- (void)director:(id)director membersChanged:(id)changed
 {
   v60 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(COMeshAlarmAddOn *)self members];
-  v7 = [v6 mutableCopy];
+  changedCopy = changed;
+  members = [(COMeshAlarmAddOn *)self members];
+  v7 = [members mutableCopy];
 
-  [v7 minusSet:v5];
-  [(COMeshAlarmAddOn *)self setMembers:v5];
-  v8 = [(COMeshAlarmAddOn *)self interests];
-  v9 = [v8 allKeys];
-  v10 = [v9 mutableCopy];
+  [v7 minusSet:changedCopy];
+  [(COMeshAlarmAddOn *)self setMembers:changedCopy];
+  interests = [(COMeshAlarmAddOn *)self interests];
+  allKeys = [interests allKeys];
+  v10 = [allKeys mutableCopy];
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v11 = v5;
+  v11 = changedCopy;
   v12 = [v11 countByEnumeratingWithState:&v49 objects:v59 count:16];
   if (v12)
   {
@@ -10180,8 +10180,8 @@ void __71__COMeshAlarmAddOn_reapNonRepeatingAlarmsOlderThanDate_accessory_home__
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v49 + 1) + 8 * v15) member];
-        [v10 removeObject:v16];
+        member = [*(*(&v49 + 1) + 8 * v15) member];
+        [v10 removeObject:member];
 
         ++v15;
       }
@@ -10195,8 +10195,8 @@ void __71__COMeshAlarmAddOn_reapNonRepeatingAlarmsOlderThanDate_accessory_home__
 
   if ([v10 count])
   {
-    v17 = [(COMeshAlarmAddOn *)self interests];
-    v18 = [v17 mutableCopy];
+    interests2 = [(COMeshAlarmAddOn *)self interests];
+    v18 = [interests2 mutableCopy];
 
     [v18 removeObjectsForKeys:v10];
     [(COMeshAlarmAddOn *)self setInterests:v18];
@@ -10204,7 +10204,7 @@ void __71__COMeshAlarmAddOn_reapNonRepeatingAlarmsOlderThanDate_accessory_home__
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v56 = self;
+      selfCopy = self;
       v57 = 2112;
       v58 = v10;
       _os_log_impl(&dword_244378000, v19, OS_LOG_TYPE_DEFAULT, "%p removing interests for %@", buf, 0x16u);
@@ -10231,11 +10231,11 @@ void __71__COMeshAlarmAddOn_reapNonRepeatingAlarmsOlderThanDate_accessory_home__
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v45 + 1) + 8 * v24) member];
-        v26 = [v25 IDSIdentifier];
+        member2 = [*(*(&v45 + 1) + 8 * v24) member];
+        iDSIdentifier = [member2 IDSIdentifier];
 
-        v27 = [(COMeshAlarmAddOn *)self ourInterests];
-        v28 = [v27 objectForKey:v26];
+        ourInterests = [(COMeshAlarmAddOn *)self ourInterests];
+        v28 = [ourInterests objectForKey:iDSIdentifier];
 
         if (v28)
         {
@@ -10274,14 +10274,14 @@ void __71__COMeshAlarmAddOn_reapNonRepeatingAlarmsOlderThanDate_accessory_home__
           objc_enumerationMutation(v29);
         }
 
-        v34 = [*(*(&v41 + 1) + 8 * v33) member];
-        v35 = [v34 IDSIdentifier];
-        v36 = [(COMeshAlarmAddOn *)self ourInterests];
-        v37 = [v36 objectForKey:v35];
+        member3 = [*(*(&v41 + 1) + 8 * v33) member];
+        iDSIdentifier2 = [member3 IDSIdentifier];
+        ourInterests2 = [(COMeshAlarmAddOn *)self ourInterests];
+        v37 = [ourInterests2 objectForKey:iDSIdentifier2];
 
         if (v37)
         {
-          [v37 setSecondary:v34];
+          [v37 setSecondary:member3];
         }
 
         ++v33;
@@ -10294,49 +10294,49 @@ void __71__COMeshAlarmAddOn_reapNonRepeatingAlarmsOlderThanDate_accessory_home__
     while (v31);
   }
 
-  v38 = [(COMeshAlarmAddOn *)self delegate];
+  delegate = [(COMeshAlarmAddOn *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v38 didChangeCompositionForAlarmAddOn:self];
+    [delegate didChangeCompositionForAlarmAddOn:self];
   }
 
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)director:(id)a3 performAction:(id)a4 from:(id)a5 callback:(id)a6
+- (void)director:(id)director performAction:(id)action from:(id)from callback:(id)callback
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 actionIdentifier];
+  directorCopy = director;
+  actionCopy = action;
+  fromCopy = from;
+  callbackCopy = callback;
+  actionIdentifier = [actionCopy actionIdentifier];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = v11;
-      v19 = [(COAlarmUpdateRequest *)v17 memento];
-      v20 = [v19 uniqueIdentifier];
+      targetIdentifier = actionCopy;
+      memento = [(COAlarmUpdateRequest *)targetIdentifier memento];
+      uniqueIdentifier = [memento uniqueIdentifier];
 
-      if (!v20)
+      if (!uniqueIdentifier)
       {
-        v21 = [(COMeshAlarmAddOn *)self homekit];
-        v22 = [v21 currentAccessory];
-        v20 = [v22 uniqueIdentifier];
+        homekit = [(COMeshAlarmAddOn *)self homekit];
+        currentAccessory = [homekit currentAccessory];
+        uniqueIdentifier = [currentAccessory uniqueIdentifier];
       }
 
-      v23 = [[COAlarmReadRequest alloc] initWithAccessoryUniqueIdentifier:v20];
+      alarms = [[COAlarmReadRequest alloc] initWithAccessoryUniqueIdentifier:uniqueIdentifier];
       objc_initWeak(&location, self);
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = __57__COMeshAlarmAddOn_director_performAction_from_callback___block_invoke_2;
       v35[3] = &unk_278E17380;
-      v37 = v13;
+      v37 = callbackCopy;
       objc_copyWeak(&v38, &location);
-      v36 = v14;
-      [(COMeshAlarmAddOn *)self handleAlarmReadRequest:v23 callback:v35];
+      v36 = actionIdentifier;
+      [(COMeshAlarmAddOn *)self handleAlarmReadRequest:alarms callback:v35];
 
       objc_destroyWeak(&v38);
       objc_destroyWeak(&location);
@@ -10348,16 +10348,16 @@ void __71__COMeshAlarmAddOn_reapNonRepeatingAlarmsOlderThanDate_accessory_home__
       if (objc_opt_isKindOfClass())
       {
         v24 = [COAlarmUpdateRequest alloc];
-        v25 = [v11 alarm];
-        v17 = [(COAlarmRequest *)v24 initWithAlarm:v25];
+        alarm = [actionCopy alarm];
+        targetIdentifier = [(COAlarmRequest *)v24 initWithAlarm:alarm];
 
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
         v32[2] = __57__COMeshAlarmAddOn_director_performAction_from_callback___block_invoke_3;
         v32[3] = &unk_278E17358;
-        v33 = v14;
-        v34 = v13;
-        [(COMeshAlarmAddOn *)self handleAlarmUpdateRequest:v17 callback:v32];
+        v33 = actionIdentifier;
+        v34 = callbackCopy;
+        [(COMeshAlarmAddOn *)self handleAlarmUpdateRequest:targetIdentifier callback:v32];
 
         v18 = v33;
         goto LABEL_3;
@@ -10366,16 +10366,16 @@ void __71__COMeshAlarmAddOn_reapNonRepeatingAlarmsOlderThanDate_accessory_home__
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = [v11 targetIdentifier];
-        v20 = [objc_alloc(MEMORY[0x277D296D0]) initWithIdentifier:v17];
-        v23 = [(COAlarmRequest *)[COAlarmDeleteRequest alloc] initWithAlarm:v20];
+        targetIdentifier = [actionCopy targetIdentifier];
+        uniqueIdentifier = [objc_alloc(MEMORY[0x277D296D0]) initWithIdentifier:targetIdentifier];
+        alarms = [(COAlarmRequest *)[COAlarmDeleteRequest alloc] initWithAlarm:uniqueIdentifier];
         v29[0] = MEMORY[0x277D85DD0];
         v29[1] = 3221225472;
         v29[2] = __57__COMeshAlarmAddOn_director_performAction_from_callback___block_invoke_4;
         v29[3] = &unk_278E17358;
-        v30 = v14;
-        v31 = v13;
-        [(COMeshAlarmAddOn *)self handleAlarmDeleteRequest:v23 callback:v29];
+        v30 = actionIdentifier;
+        v31 = callbackCopy;
+        [(COMeshAlarmAddOn *)self handleAlarmDeleteRequest:alarms callback:v29];
       }
 
       else
@@ -10383,23 +10383,23 @@ void __71__COMeshAlarmAddOn_reapNonRepeatingAlarmsOlderThanDate_accessory_home__
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v26 = [(COMeshAlarmAddOn *)self interests];
-          v17 = [v26 mutableCopy];
+          interests = [(COMeshAlarmAddOn *)self interests];
+          targetIdentifier = [interests mutableCopy];
 
-          v20 = [v11 targetIdentifiers];
-          if ([v20 count])
+          uniqueIdentifier = [actionCopy targetIdentifiers];
+          if ([uniqueIdentifier count])
           {
-            [(COAlarmUpdateRequest *)v17 setObject:v20 forKey:v12];
+            [(COAlarmUpdateRequest *)targetIdentifier setObject:uniqueIdentifier forKey:fromCopy];
           }
 
           else
           {
-            [(COAlarmUpdateRequest *)v17 removeObjectForKey:v12];
+            [(COAlarmUpdateRequest *)targetIdentifier removeObjectForKey:fromCopy];
           }
 
-          [(COMeshAlarmAddOn *)self setInterests:v17];
-          v27 = [[COMTResult alloc] initWithActionIdentifier:v14];
-          (*(v13 + 2))(v13, v27, 0);
+          [(COMeshAlarmAddOn *)self setInterests:targetIdentifier];
+          v27 = [[COMTResult alloc] initWithActionIdentifier:actionIdentifier];
+          (*(callbackCopy + 2))(callbackCopy, v27, 0);
 
           goto LABEL_13;
         }
@@ -10410,26 +10410,26 @@ void __71__COMeshAlarmAddOn_reapNonRepeatingAlarmsOlderThanDate_accessory_home__
           goto LABEL_15;
         }
 
-        v17 = [(COMeshAlarmAddOn *)self delegate];
-        v20 = [v11 reason];
-        v23 = [v11 alarms];
-        if ([v20 isEqual:*MEMORY[0x277D29590]] && (objc_opt_respondsToSelector() & 1) != 0)
+        targetIdentifier = [(COMeshAlarmAddOn *)self delegate];
+        uniqueIdentifier = [actionCopy reason];
+        alarms = [actionCopy alarms];
+        if ([uniqueIdentifier isEqual:*MEMORY[0x277D29590]] && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [(COAlarmUpdateRequest *)v17 alarmAddOn:self didAddAlarms:v23];
+          [(COAlarmUpdateRequest *)targetIdentifier alarmAddOn:self didAddAlarms:alarms];
         }
 
-        else if ([v20 isEqual:*MEMORY[0x277D295A8]] && (objc_opt_respondsToSelector() & 1) != 0)
+        else if ([uniqueIdentifier isEqual:*MEMORY[0x277D295A8]] && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [(COAlarmUpdateRequest *)v17 alarmAddOn:self didRemoveAlarms:v23];
+          [(COAlarmUpdateRequest *)targetIdentifier alarmAddOn:self didRemoveAlarms:alarms];
         }
 
-        else if ([v20 isEqual:*MEMORY[0x277D295B0]] && (objc_opt_respondsToSelector() & 1) != 0)
+        else if ([uniqueIdentifier isEqual:*MEMORY[0x277D295B0]] && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [(COAlarmUpdateRequest *)v17 alarmAddOn:self didUpdateAlarms:v23];
+          [(COAlarmUpdateRequest *)targetIdentifier alarmAddOn:self didUpdateAlarms:alarms];
         }
 
-        v28 = [[COMTResult alloc] initWithActionIdentifier:v14];
-        (*(v13 + 2))(v13, v28, 0);
+        v28 = [[COMTResult alloc] initWithActionIdentifier:actionIdentifier];
+        (*(callbackCopy + 2))(callbackCopy, v28, 0);
       }
     }
 
@@ -10438,16 +10438,16 @@ LABEL_13:
   }
 
   v15 = [COAlarmCreateRequest alloc];
-  v16 = [v11 alarm];
-  v17 = [(COAlarmRequest *)v15 initWithAlarm:v16];
+  alarm2 = [actionCopy alarm];
+  targetIdentifier = [(COAlarmRequest *)v15 initWithAlarm:alarm2];
 
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __57__COMeshAlarmAddOn_director_performAction_from_callback___block_invoke;
   v40[3] = &unk_278E17358;
-  v41 = v14;
-  v42 = v13;
-  [(COMeshAlarmAddOn *)self handleAlarmCreateRequest:v17 callback:v40];
+  v41 = actionIdentifier;
+  v42 = callbackCopy;
+  [(COMeshAlarmAddOn *)self handleAlarmCreateRequest:targetIdentifier callback:v40];
 
   v18 = v41;
 LABEL_3:

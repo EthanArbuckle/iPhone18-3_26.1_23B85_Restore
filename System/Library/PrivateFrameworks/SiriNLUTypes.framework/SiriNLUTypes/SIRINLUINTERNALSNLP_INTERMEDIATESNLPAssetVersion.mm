@@ -1,27 +1,27 @@
 @interface SIRINLUINTERNALSNLP_INTERMEDIATESNLPAssetVersion
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasOsRelease:(BOOL)a3;
-- (void)setHasPatchNumber:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasOsRelease:(BOOL)release;
+- (void)setHasPatchNumber:(BOOL)number;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALSNLP_INTERMEDIATESNLPAssetVersion
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if ((v5 & 2) != 0)
   {
-    self->_osRelease = *(v4 + 5);
+    self->_osRelease = *(fromCopy + 5);
     *&self->_has |= 2u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -34,26 +34,26 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 1) == 0)
+  else if ((*(fromCopy + 28) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_ncvNumber = *(v4 + 4);
+  self->_ncvNumber = *(fromCopy + 4);
   *&self->_has |= 1u;
-  if ((*(v4 + 28) & 4) != 0)
+  if ((*(fromCopy + 28) & 4) != 0)
   {
 LABEL_4:
-    self->_patchNumber = *(v4 + 6);
+    self->_patchNumber = *(fromCopy + 6);
     *&self->_has |= 4u;
   }
 
 LABEL_5:
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(SIRINLUINTERNALSNLP_INTERMEDIATESNLPAssetVersion *)self setBoltTaskId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 
@@ -97,24 +97,24 @@ LABEL_4:
   return v7 ^ v6 ^ v8 ^ [(NSString *)self->_boltTaskId hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_osRelease != *(v4 + 5))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_osRelease != *(equalCopy + 5))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
 LABEL_19:
     v7 = 0;
@@ -123,32 +123,32 @@ LABEL_19:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_ncvNumber != *(v4 + 4))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_ncvNumber != *(equalCopy + 4))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0 || self->_patchNumber != *(v4 + 6))
+    if ((*(equalCopy + 28) & 4) == 0 || self->_patchNumber != *(equalCopy + 6))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 28) & 4) != 0)
+  else if ((*(equalCopy + 28) & 4) != 0)
   {
     goto LABEL_19;
   }
 
   boltTaskId = self->_boltTaskId;
-  if (boltTaskId | *(v4 + 1))
+  if (boltTaskId | *(equalCopy + 1))
   {
     v7 = [(NSString *)boltTaskId isEqual:?];
   }
@@ -163,9 +163,9 @@ LABEL_20:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) == 0)
@@ -203,21 +203,21 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_boltTaskId copyWithZone:a3];
+  v8 = [(NSString *)self->_boltTaskId copyWithZone:zone];
   v9 = v6[1];
   v6[1] = v8;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[5] = self->_osRelease;
-    *(v4 + 28) |= 2u;
+    toCopy[5] = self->_osRelease;
+    *(toCopy + 28) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -236,34 +236,34 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[4] = self->_ncvNumber;
-  *(v4 + 28) |= 1u;
+  toCopy[4] = self->_ncvNumber;
+  *(toCopy + 28) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    v4[6] = self->_patchNumber;
-    *(v4 + 28) |= 4u;
+    toCopy[6] = self->_patchNumber;
+    *(toCopy + 28) |= 4u;
   }
 
 LABEL_5:
   if (self->_boltTaskId)
   {
-    v6 = v4;
-    [v4 setBoltTaskId:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setBoltTaskId:?];
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if ((has & 2) != 0)
   {
     osRelease = self->_osRelease;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -284,31 +284,31 @@ LABEL_3:
 
   ncvNumber = self->_ncvNumber;
   PBDataWriterWriteUint32Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     patchNumber = self->_patchNumber;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
   if (self->_boltTaskId)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_osRelease];
-    [v3 setObject:v8 forKey:@"os_release"];
+    [dictionary setObject:v8 forKey:@"os_release"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -329,23 +329,23 @@ LABEL_3:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_ncvNumber];
-  [v3 setObject:v9 forKey:@"ncv_number"];
+  [dictionary setObject:v9 forKey:@"ncv_number"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_patchNumber];
-    [v3 setObject:v5 forKey:@"patch_number"];
+    [dictionary setObject:v5 forKey:@"patch_number"];
   }
 
 LABEL_5:
   boltTaskId = self->_boltTaskId;
   if (boltTaskId)
   {
-    [v3 setObject:boltTaskId forKey:@"bolt_task_id"];
+    [dictionary setObject:boltTaskId forKey:@"bolt_task_id"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -354,15 +354,15 @@ LABEL_5:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALSNLP_INTERMEDIATESNLPAssetVersion;
   v4 = [(SIRINLUINTERNALSNLP_INTERMEDIATESNLPAssetVersion *)&v8 description];
-  v5 = [(SIRINLUINTERNALSNLP_INTERMEDIATESNLPAssetVersion *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALSNLP_INTERMEDIATESNLPAssetVersion *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasPatchNumber:(BOOL)a3
+- (void)setHasPatchNumber:(BOOL)number
 {
-  if (a3)
+  if (number)
   {
     v3 = 4;
   }
@@ -375,9 +375,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasOsRelease:(BOOL)a3
+- (void)setHasOsRelease:(BOOL)release
 {
-  if (a3)
+  if (release)
   {
     v3 = 2;
   }

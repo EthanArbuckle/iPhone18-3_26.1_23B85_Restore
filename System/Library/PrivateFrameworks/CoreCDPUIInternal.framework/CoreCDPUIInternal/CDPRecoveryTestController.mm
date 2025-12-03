@@ -1,23 +1,23 @@
 @interface CDPRecoveryTestController
-- (CDPRecoveryTestController)initWithDevices:(id)a3 andNavigationController:(id)a4;
+- (CDPRecoveryTestController)initWithDevices:(id)devices andNavigationController:(id)controller;
 - (id)dummyRecoveryInfo;
 - (void)setUp;
 @end
 
 @implementation CDPRecoveryTestController
 
-- (CDPRecoveryTestController)initWithDevices:(id)a3 andNavigationController:(id)a4
+- (CDPRecoveryTestController)initWithDevices:(id)devices andNavigationController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  devicesCopy = devices;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = CDPRecoveryTestController;
   v9 = [(CDPRecoveryTestController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mockDevices, a3);
-    objc_storeStrong(&v10->_navController, a4);
+    objc_storeStrong(&v9->_mockDevices, devices);
+    objc_storeStrong(&v10->_navController, controller);
   }
 
   return v10;
@@ -26,14 +26,14 @@
 - (void)setUp
 {
   [(NSArray *)self->_mockDevices enumerateObjectsUsingBlock:&__block_literal_global];
-  v10 = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
-  [v10 setIdmsRecovery:1];
+  contextForPrimaryAccount = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
+  [contextForPrimaryAccount setIdmsRecovery:1];
   v3 = objc_alloc_init(MEMORY[0x277CFD530]);
-  [v3 setContext:v10];
+  [v3 setContext:contextForPrimaryAccount];
   v4 = [objc_alloc(MEMORY[0x277CFDAD8]) initWithPresentingViewController:self->_navController];
   v5 = [objc_alloc(MEMORY[0x277CFD550]) initWithUIProvider:v4];
   v6 = objc_alloc(MEMORY[0x277CFDA90]);
-  v7 = [objc_alloc(MEMORY[0x277CFDAA8]) initWithContext:v10 uiProvider:v5 delegate:0];
+  v7 = [objc_alloc(MEMORY[0x277CFDAA8]) initWithContext:contextForPrimaryAccount uiProvider:v5 delegate:0];
   v8 = [v6 initWithContext:v3 uiProvider:v5 secureBackupController:v7 circleProxy:0 octagonProxy:0];
   recoveryController = self->_recoveryController;
   self->_recoveryController = v8;

@@ -1,5 +1,5 @@
 @interface MPModelLibraryFavoriteEntityRequestAction
-- (MPModelLibraryFavoriteEntityRequestAction)initWithChangeAction:(int64_t)a3;
+- (MPModelLibraryFavoriteEntityRequestAction)initWithChangeAction:(int64_t)action;
 - (id)description;
 @end
 
@@ -14,14 +14,14 @@
   return v5;
 }
 
-- (MPModelLibraryFavoriteEntityRequestAction)initWithChangeAction:(int64_t)a3
+- (MPModelLibraryFavoriteEntityRequestAction)initWithChangeAction:(int64_t)action
 {
   v5.receiver = self;
   v5.super_class = MPModelLibraryFavoriteEntityRequestAction;
   result = [(MPModelLibraryFavoriteEntityRequestAction *)&v5 init];
   if (result)
   {
-    result->_changeRequestAction = a3;
+    result->_changeRequestAction = action;
   }
 
   return result;

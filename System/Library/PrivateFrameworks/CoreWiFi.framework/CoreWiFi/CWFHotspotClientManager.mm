@@ -1,13 +1,13 @@
 @interface CWFHotspotClientManager
 + (id)sharedInstance;
 - (CWFHotspotClientManager)init;
-- (void)clientAssociated:(id)a3 thisDeviceMACAddress:(id)a4;
-- (void)clientAssociatedToHostPersonalHotspot:(id)a3;
-- (void)clientDisassociated:(id)a3;
+- (void)clientAssociated:(id)associated thisDeviceMACAddress:(id)address;
+- (void)clientAssociatedToHostPersonalHotspot:(id)hotspot;
+- (void)clientDisassociated:(id)disassociated;
 - (void)dealloc;
-- (void)didDiscoverDevice:(id)a3;
-- (void)didFetchWifiInfoForDevice:(id)a3;
-- (void)didLoseDevice:(id)a3;
+- (void)didDiscoverDevice:(id)device;
+- (void)didFetchWifiInfoForDevice:(id)device;
+- (void)didLoseDevice:(id)device;
 - (void)hotspotDisabled;
 @end
 
@@ -98,9 +98,9 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clientAssociatedToHostPersonalHotspot:(id)a3
+- (void)clientAssociatedToHostPersonalHotspot:(id)hotspot
 {
-  v4 = a3;
+  hotspotCopy = hotspot;
   objc_initWeak(&location, self);
   hotspotQueue = self->_hotspotQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -108,20 +108,20 @@
   block[2] = sub_1E0C55618;
   block[3] = &unk_1E86E7058;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = hotspotCopy;
+  v6 = hotspotCopy;
   dispatch_async(hotspotQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)clientAssociated:(id)a3 thisDeviceMACAddress:(id)a4
+- (void)clientAssociated:(id)associated thisDeviceMACAddress:(id)address
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  associatedCopy = associated;
+  addressCopy = address;
+  if (associatedCopy)
   {
     objc_initWeak(location, self);
     hotspotQueue = self->_hotspotQueue;
@@ -130,8 +130,8 @@
     block[2] = sub_1E0C5587C;
     block[3] = &unk_1E86E70A8;
     objc_copyWeak(&v16, location);
-    v14 = v6;
-    v15 = v7;
+    v14 = associatedCopy;
+    v15 = addressCopy;
     dispatch_async(hotspotQueue, block);
 
     objc_destroyWeak(&v16);
@@ -169,11 +169,11 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clientDisassociated:(id)a3
+- (void)clientDisassociated:(id)disassociated
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  disassociatedCopy = disassociated;
+  if (disassociatedCopy)
   {
     objc_initWeak(location, self);
     hotspotQueue = self->_hotspotQueue;
@@ -182,7 +182,7 @@
     block[2] = sub_1E0C55D54;
     block[3] = &unk_1E86E7058;
     objc_copyWeak(&v12, location);
-    v11 = v4;
+    v11 = disassociatedCopy;
     dispatch_async(hotspotQueue, block);
 
     objc_destroyWeak(&v12);
@@ -234,7 +234,7 @@
   objc_destroyWeak(&location);
 }
 
-- (void)didDiscoverDevice:(id)a3
+- (void)didDiscoverDevice:(id)device
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = CWFGetPHOSLog();
@@ -257,7 +257,7 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didLoseDevice:(id)a3
+- (void)didLoseDevice:(id)device
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = CWFGetPHOSLog();
@@ -280,10 +280,10 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didFetchWifiInfoForDevice:(id)a3
+- (void)didFetchWifiInfoForDevice:(id)device
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deviceCopy = device;
   v5 = CWFGetPHOSLog();
   if (v5)
   {
@@ -316,8 +316,8 @@
   block[2] = sub_1E0C5653C;
   block[3] = &unk_1E86E7058;
   objc_copyWeak(&v13, location);
-  v12 = v4;
-  v9 = v4;
+  v12 = deviceCopy;
+  v9 = deviceCopy;
   dispatch_async(hotspotQueue, block);
 
   objc_destroyWeak(&v13);

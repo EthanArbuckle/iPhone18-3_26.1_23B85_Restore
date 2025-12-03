@@ -1,39 +1,39 @@
 @interface UGCHairlineView
-- (UGCHairlineView)initWithFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (UGCHairlineView)initWithFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UGCHairlineView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v20.receiver = self;
   v20.super_class = UGCHairlineView;
-  v4 = a3;
-  [(UGCHairlineView *)&v20 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(UGCHairlineView *)&v20 traitCollectionDidChange:changeCopy];
   v5 = [(UGCHairlineView *)self traitCollection:v20.receiver];
   [v5 displayScale];
   v7 = v6;
-  [v4 displayScale];
+  [changeCopy displayScale];
   v9 = v8;
 
   if (v7 != v9)
   {
-    v10 = self;
-    v11 = [(UGCHairlineView *)v10 window];
-    v12 = [v11 screen];
-    if (v12)
+    selfCopy = self;
+    window = [(UGCHairlineView *)selfCopy window];
+    screen = [window screen];
+    if (screen)
     {
-      v13 = [(UGCHairlineView *)v10 window];
-      v14 = [v13 screen];
-      [v14 nativeScale];
+      window2 = [(UGCHairlineView *)selfCopy window];
+      screen2 = [window2 screen];
+      [screen2 nativeScale];
       v16 = v15;
     }
 
     else
     {
-      v13 = +[UIScreen mainScreen];
-      [v13 nativeScale];
+      window2 = +[UIScreen mainScreen];
+      [window2 nativeScale];
       v16 = v17;
     }
 
@@ -47,36 +47,36 @@
       v18 = 1.0 / v16;
     }
 
-    v19 = [(UGCHairlineView *)v10 constraint];
-    [v19 setConstant:v18];
+    constraint = [(UGCHairlineView *)selfCopy constraint];
+    [constraint setConstant:v18];
   }
 }
 
-- (UGCHairlineView)initWithFrame:(CGRect)a3
+- (UGCHairlineView)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = UGCHairlineView;
-  v3 = [(UGCHairlineView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UGCHairlineView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(UGCHairlineView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [(UGCHairlineView *)v4 heightAnchor];
+    heightAnchor = [(UGCHairlineView *)v4 heightAnchor];
     v6 = v4;
-    v7 = [(UGCHairlineView *)v6 window];
-    v8 = [v7 screen];
-    if (v8)
+    window = [(UGCHairlineView *)v6 window];
+    screen = [window screen];
+    if (screen)
     {
-      v9 = [(UGCHairlineView *)v6 window];
-      v10 = [v9 screen];
-      [v10 nativeScale];
+      window2 = [(UGCHairlineView *)v6 window];
+      screen2 = [window2 screen];
+      [screen2 nativeScale];
       v12 = v11;
     }
 
     else
     {
-      v9 = +[UIScreen mainScreen];
-      [v9 nativeScale];
+      window2 = +[UIScreen mainScreen];
+      [window2 nativeScale];
       v12 = v13;
     }
 
@@ -90,11 +90,11 @@
       v14 = 1.0 / v12;
     }
 
-    v15 = [v5 constraintEqualToConstant:v14];
+    v15 = [heightAnchor constraintEqualToConstant:v14];
     [(UGCHairlineView *)v6 setConstraint:v15];
 
-    v16 = [(UGCHairlineView *)v6 constraint];
-    [v16 setActive:1];
+    constraint = [(UGCHairlineView *)v6 constraint];
+    [constraint setActive:1];
 
     v17 = +[MapsTheme ugcHairlineColor];
     [(UGCHairlineView *)v6 setBackgroundColor:v17];

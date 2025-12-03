@@ -1,44 +1,44 @@
 @interface HMCHIPVendor
-+ (id)UUIDFromIdentifier:(id)a3;
++ (id)UUIDFromIdentifier:(id)identifier;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMCHIPVendor)initWithCoder:(id)a3;
-- (HMCHIPVendor)initWithIdentifier:(id)a3 name:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMCHIPVendor)initWithCoder:(id)coder;
+- (HMCHIPVendor)initWithIdentifier:(id)identifier name:(id)name;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMCHIPVendor
 
 - (NSArray)attributeDescriptions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v5 = [(HMCHIPVendor *)self identifier];
-  v6 = [v4 initWithName:@"Identifier" value:v5];
-  [v3 addObject:v6];
+  identifier = [(HMCHIPVendor *)self identifier];
+  v6 = [v4 initWithName:@"Identifier" value:identifier];
+  [array addObject:v6];
 
   v7 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v8 = [(HMCHIPVendor *)self name];
-  v9 = [v7 initWithName:@"Name" value:v8];
-  [v3 addObject:v9];
+  name = [(HMCHIPVendor *)self name];
+  v9 = [v7 initWithName:@"Name" value:name];
+  [array addObject:v9];
 
   v10 = objc_alloc(MEMORY[0x1E69A29C8]);
   [(HMCHIPVendor *)self isAppleVendor];
   v11 = HMFBooleanToString();
   v12 = [v10 initWithName:@"Is Apple Vendor" value:v11];
-  [v3 addObject:v12];
+  [array addObject:v12];
 
   v13 = objc_alloc(MEMORY[0x1E69A29C8]);
   [(HMCHIPVendor *)self isSystemCommissionerVendor];
   v14 = HMFBooleanToString();
   v15 = [v13 initWithName:@"Is System Commissioner" value:v14];
-  [v3 addObject:v15];
+  [array addObject:v15];
 
-  v16 = [v3 copy];
+  v16 = [array copy];
 
   return v16;
 }
@@ -50,12 +50,12 @@
   return [v2 shortDescription];
 }
 
-- (HMCHIPVendor)initWithCoder:(id)a3
+- (HMCHIPVendor)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMCV.ck.identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMCV.ck.name"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMCV.ck.identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMCV.ck.name"];
   v7 = v6;
   if (v5)
   {
@@ -70,7 +70,7 @@
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -90,35 +90,35 @@
 
   else
   {
-    v12 = [(HMCHIPVendor *)self initWithIdentifier:v5 name:v6];
-    -[HMCHIPVendor setAppleVendor:](v12, "setAppleVendor:", [v4 decodeBoolForKey:@"HMCV.ck.isAppleVendor"]);
-    -[HMCHIPVendor setSystemCommissionerVendor:](v12, "setSystemCommissionerVendor:", [v4 decodeBoolForKey:@"HMCV.ck.isSystemCommissionerVendor"]);
-    v13 = v12;
+    selfCopy = [(HMCHIPVendor *)self initWithIdentifier:v5 name:v6];
+    -[HMCHIPVendor setAppleVendor:](selfCopy, "setAppleVendor:", [coderCopy decodeBoolForKey:@"HMCV.ck.isAppleVendor"]);
+    -[HMCHIPVendor setSystemCommissionerVendor:](selfCopy, "setSystemCommissionerVendor:", [coderCopy decodeBoolForKey:@"HMCV.ck.isSystemCommissionerVendor"]);
+    v13 = selfCopy;
   }
 
   v14 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(HMCHIPVendor *)self identifier];
-  [v6 encodeObject:v4 forKey:@"HMCV.ck.identifier"];
+  coderCopy = coder;
+  identifier = [(HMCHIPVendor *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"HMCV.ck.identifier"];
 
-  v5 = [(HMCHIPVendor *)self name];
-  [v6 encodeObject:v5 forKey:@"HMCV.ck.name"];
+  name = [(HMCHIPVendor *)self name];
+  [coderCopy encodeObject:name forKey:@"HMCV.ck.name"];
 
-  [v6 encodeBool:-[HMCHIPVendor isAppleVendor](self forKey:{"isAppleVendor"), @"HMCV.ck.isAppleVendor"}];
-  [v6 encodeBool:-[HMCHIPVendor isSystemCommissionerVendor](self forKey:{"isSystemCommissionerVendor"), @"HMCV.ck.isSystemCommissionerVendor"}];
+  [coderCopy encodeBool:-[HMCHIPVendor isAppleVendor](self forKey:{"isAppleVendor"), @"HMCV.ck.isAppleVendor"}];
+  [coderCopy encodeBool:-[HMCHIPVendor isSystemCommissionerVendor](self forKey:{"isSystemCommissionerVendor"), @"HMCV.ck.isSystemCommissionerVendor"}];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [HMMutableCHIPVendor allocWithZone:a3];
-  v5 = [(HMCHIPVendor *)self identifier];
-  v6 = [(HMCHIPVendor *)self name];
-  v7 = [(HMCHIPVendor *)v4 initWithIdentifier:v5 name:v6];
+  v4 = [HMMutableCHIPVendor allocWithZone:zone];
+  identifier = [(HMCHIPVendor *)self identifier];
+  name = [(HMCHIPVendor *)self name];
+  v7 = [(HMCHIPVendor *)v4 initWithIdentifier:identifier name:name];
 
   [(HMCHIPVendor *)v7 setAppleVendor:[(HMCHIPVendor *)self isAppleVendor]];
   [(HMCHIPVendor *)v7 setSystemCommissionerVendor:[(HMCHIPVendor *)self isSystemCommissionerVendor]];
@@ -132,14 +132,14 @@
   return NSStringFromClass(v2);
 }
 
-+ (id)UUIDFromIdentifier:(id)a3
++ (id)UUIDFromIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E696AFB0];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [[v3 alloc] initWithUUIDString:@"9E8B0B4A-EB40-4566-A9B4-65FFCE246CC9"];
-  v6 = [v4 integerValue];
+  integerValue = [identifierCopy integerValue];
 
-  v10 = v6;
+  v10 = integerValue;
   v7 = [MEMORY[0x1E695DEF0] dataWithBytes:&v10 length:8];
   v8 = [MEMORY[0x1E696AFB0] hmf_UUIDWithNamespace:v5 data:v7];
 
@@ -148,19 +148,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMCHIPVendor *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HMCHIPVendor *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -171,16 +171,16 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMCHIPVendor *)self identifier];
-    v8 = [v6 identifier];
-    if ([v7 isEqualToNumber:v8])
+    identifier = [(HMCHIPVendor *)self identifier];
+    identifier2 = [v6 identifier];
+    if ([identifier isEqualToNumber:identifier2])
     {
-      v9 = [(HMCHIPVendor *)self name];
-      v10 = [v6 name];
-      if ([v9 isEqualToString:v10] && (v11 = -[HMCHIPVendor isAppleVendor](self, "isAppleVendor"), v11 == objc_msgSend(v6, "isAppleVendor")))
+      name = [(HMCHIPVendor *)self name];
+      name2 = [v6 name];
+      if ([name isEqualToString:name2] && (v11 = -[HMCHIPVendor isAppleVendor](self, "isAppleVendor"), v11 == objc_msgSend(v6, "isAppleVendor")))
       {
-        v13 = [(HMCHIPVendor *)self isSystemCommissionerVendor];
-        v12 = v13 ^ [v6 isSystemCommissionerVendor] ^ 1;
+        isSystemCommissionerVendor = [(HMCHIPVendor *)self isSystemCommissionerVendor];
+        v12 = isSystemCommissionerVendor ^ [v6 isSystemCommissionerVendor] ^ 1;
       }
 
       else
@@ -203,18 +203,18 @@
   return v12;
 }
 
-- (HMCHIPVendor)initWithIdentifier:(id)a3 name:(id)a4
+- (HMCHIPVendor)initWithIdentifier:(id)identifier name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  nameCopy = name;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = nameCopy;
+  if (!nameCopy)
   {
 LABEL_7:
     v17 = _HMFPreconditionFailure();
@@ -227,7 +227,7 @@ LABEL_7:
   v9 = [(HMCHIPVendor *)&v19 init];
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [identifierCopy copy];
     identifier = v9->_identifier;
     v9->_identifier = v10;
 
@@ -235,7 +235,7 @@ LABEL_7:
     name = v9->_name;
     v9->_name = v12;
 
-    v14 = [HMCHIPVendor UUIDFromIdentifier:v6];
+    v14 = [HMCHIPVendor UUIDFromIdentifier:identifierCopy];
     UUID = v9->_UUID;
     v9->_UUID = v14;
   }

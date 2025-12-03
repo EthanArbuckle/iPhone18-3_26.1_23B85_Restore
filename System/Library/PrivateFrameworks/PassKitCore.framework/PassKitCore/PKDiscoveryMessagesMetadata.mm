@@ -1,21 +1,21 @@
 @interface PKDiscoveryMessagesMetadata
-- (PKDiscoveryMessagesMetadata)initWithCoder:(id)a3;
-- (PKDiscoveryMessagesMetadata)initWithDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKDiscoveryMessagesMetadata)initWithCoder:(id)coder;
+- (PKDiscoveryMessagesMetadata)initWithDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKDiscoveryMessagesMetadata
 
-- (PKDiscoveryMessagesMetadata)initWithDictionary:(id)a3
+- (PKDiscoveryMessagesMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PKDiscoveryMessagesMetadata;
   v5 = [(PKDiscoveryMessagesMetadata *)&v9 init];
   if (v5)
   {
-    v5->_version = [v4 PKIntegerForKey:@"version"];
-    v6 = [v4 PKURLForKey:@"messagesBundleURL"];
+    v5->_version = [dictionaryCopy PKIntegerForKey:@"version"];
+    v6 = [dictionaryCopy PKURLForKey:@"messagesBundleURL"];
     messagesBundleURL = v5->_messagesBundleURL;
     v5->_messagesBundleURL = v6;
   }
@@ -23,16 +23,16 @@
   return v5;
 }
 
-- (PKDiscoveryMessagesMetadata)initWithCoder:(id)a3
+- (PKDiscoveryMessagesMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKDiscoveryMessagesMetadata;
   v5 = [(PKDiscoveryMessagesMetadata *)&v9 init];
   if (v5)
   {
-    v5->_version = [v4 decodeIntegerForKey:@"version"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"messagesBundleURL"];
+    v5->_version = [coderCopy decodeIntegerForKey:@"version"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"messagesBundleURL"];
     messagesBundleURL = v5->_messagesBundleURL;
     v5->_messagesBundleURL = v6;
   }
@@ -40,12 +40,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   version = self->_version;
-  v5 = a3;
-  [v5 encodeInteger:version forKey:@"version"];
-  [v5 encodeObject:self->_messagesBundleURL forKey:@"messagesBundleURL"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:version forKey:@"version"];
+  [coderCopy encodeObject:self->_messagesBundleURL forKey:@"messagesBundleURL"];
 }
 
 @end

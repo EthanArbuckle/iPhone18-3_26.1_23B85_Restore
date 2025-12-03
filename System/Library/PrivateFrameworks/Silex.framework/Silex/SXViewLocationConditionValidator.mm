@@ -1,23 +1,23 @@
 @interface SXViewLocationConditionValidator
-- (BOOL)validateCondition:(id)a3 context:(id)a4;
+- (BOOL)validateCondition:(id)condition context:(id)context;
 @end
 
 @implementation SXViewLocationConditionValidator
 
-- (BOOL)validateCondition:(id)a3 context:(id)a4
+- (BOOL)validateCondition:(id)condition context:(id)context
 {
-  v5 = a3;
-  v6 = [a4 viewingLocation];
-  v7 = [v5 viewLocation];
-  if (v7)
+  conditionCopy = condition;
+  viewingLocation = [context viewingLocation];
+  viewLocation = [conditionCopy viewLocation];
+  if (viewLocation)
   {
     v8 = @"article";
-    if (v6 == 3)
+    if (viewingLocation == 3)
     {
       v8 = @"issue_table_of_contents";
     }
 
-    if (v6 == 2)
+    if (viewingLocation == 2)
     {
       v9 = @"issue";
     }
@@ -27,8 +27,8 @@
       v9 = v8;
     }
 
-    v10 = [v5 viewLocation];
-    v11 = [(__CFString *)v9 caseInsensitiveCompare:v10]== 0;
+    viewLocation2 = [conditionCopy viewLocation];
+    v11 = [(__CFString *)v9 caseInsensitiveCompare:viewLocation2]== 0;
   }
 
   else

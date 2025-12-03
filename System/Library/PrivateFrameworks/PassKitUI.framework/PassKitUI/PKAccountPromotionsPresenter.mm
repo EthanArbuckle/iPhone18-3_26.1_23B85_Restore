@@ -1,36 +1,36 @@
 @interface PKAccountPromotionsPresenter
-- (PKAccountPromotionsPresenter)initWithRemoteImagePreparer:(id)a3 delegate:(id)a4;
-- (void)configureCell:(id)a3 withPromotion:(id)a4;
-- (void)dispatchActionForLink:(id)a3 linkedApplication:(id)a4 promotion:(id)a5;
+- (PKAccountPromotionsPresenter)initWithRemoteImagePreparer:(id)preparer delegate:(id)delegate;
+- (void)configureCell:(id)cell withPromotion:(id)promotion;
+- (void)dispatchActionForLink:(id)link linkedApplication:(id)application promotion:(id)promotion;
 @end
 
 @implementation PKAccountPromotionsPresenter
 
-- (PKAccountPromotionsPresenter)initWithRemoteImagePreparer:(id)a3 delegate:(id)a4
+- (PKAccountPromotionsPresenter)initWithRemoteImagePreparer:(id)preparer delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  preparerCopy = preparer;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = PKAccountPromotionsPresenter;
   v9 = [(PKAccountPromotionsPresenter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_remoteImagePreparer, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_remoteImagePreparer, preparer);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;
 }
 
-- (void)configureCell:(id)a3 withPromotion:(id)a4
+- (void)configureCell:(id)cell withPromotion:(id)promotion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v20 = v7;
-  if (v6 && v7)
+  cellCopy = cell;
+  promotionCopy = promotion;
+  v8 = promotionCopy;
+  v20 = promotionCopy;
+  if (cellCopy && promotionCopy)
   {
     v9 = NSSelectorFromString(&cfstr_Configurewithp.isa);
     v10 = [objc_opt_class() instanceMethodSignatureForSelector:v9];
@@ -47,7 +47,7 @@
     [v11 setArgument:&v20 atIndex:2];
     [v11 setArgument:&self->_remoteImagePreparer atIndex:3];
     [v11 setArgument:&v18 atIndex:4];
-    [v11 invokeWithTarget:v6];
+    [v11 invokeWithTarget:cellCopy];
     v14 = 0;
     [v11 getReturnValue:&v14];
     if ((v14 & 1) == 0)
@@ -55,14 +55,14 @@
       v12 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v20 programIdentifier];
+        programIdentifier = [v20 programIdentifier];
         *buf = 138412290;
-        v22 = v13;
+        v22 = programIdentifier;
         _os_log_impl(&dword_1BD026000, v12, OS_LOG_TYPE_DEFAULT, "Encountered error configuring account promotion view. Suppressing the view for identifier: %@", buf, 0xCu);
       }
     }
 
-    [v6 setNeedsUpdateConfiguration];
+    [cellCopy setNeedsUpdateConfiguration];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -79,19 +79,19 @@ void __60__PKAccountPromotionsPresenter_configureCell_withPromotion___block_invo
   [WeakRetained dispatchActionForLink:v6 linkedApplication:v5 promotion:*(a1 + 32)];
 }
 
-- (void)dispatchActionForLink:(id)a3 linkedApplication:(id)a4 promotion:(id)a5
+- (void)dispatchActionForLink:(id)link linkedApplication:(id)application promotion:(id)promotion
 {
   v72[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  linkCopy = link;
+  applicationCopy = application;
+  promotionCopy = promotion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v8 name];
-    v13 = [v8 url];
+    name = [linkCopy name];
+    v13 = [linkCopy url];
     v14 = *MEMORY[0x1E69B9E18];
-    v15 = v12;
+    v15 = name;
     v16 = v15;
     if (v15 == v14)
     {
@@ -109,11 +109,11 @@ void __60__PKAccountPromotionsPresenter_configureCell_withPromotion___block_invo
       v17 = [v15 isEqualToString:v14];
     }
 
-    if (v9 && v17)
+    if (applicationCopy && v17)
     {
-      v18 = [v9 isInstalled];
+      isInstalled = [applicationCopy isInstalled];
       v19 = MEMORY[0x1E69BAB88];
-      if (!v18)
+      if (!isInstalled)
       {
         v19 = MEMORY[0x1E69BA898];
       }
@@ -128,7 +128,7 @@ void __60__PKAccountPromotionsPresenter_configureCell_withPromotion___block_invo
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v72 forKeys:v71 count:2];
       [WeakRetained reportEventIfNecessary:v23];
 
-      [WeakRetained openLinkedApplication:v9];
+      [WeakRetained openLinkedApplication:applicationCopy];
       goto LABEL_79;
     }
 
@@ -229,11 +229,11 @@ LABEL_79:
       }
     }
 
-    v28 = [v10 layout];
-    v29 = [v28 templateIdentifier];
+    layout = [promotionCopy layout];
+    templateIdentifier = [layout templateIdentifier];
 
     v30 = *MEMORY[0x1E69B9E58];
-    v31 = v29;
+    v31 = templateIdentifier;
     v32 = v31;
     if (v31 == v30)
     {

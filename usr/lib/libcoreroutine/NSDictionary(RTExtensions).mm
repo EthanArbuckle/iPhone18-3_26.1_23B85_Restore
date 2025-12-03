@@ -7,7 +7,7 @@
 - (id)objectForKey:()RTExtensions defaultObject:
 {
   v6 = a4;
-  v7 = [a1 objectForKey:a3];
+  v7 = [self objectForKey:a3];
   v8 = v7;
   if (v7)
   {

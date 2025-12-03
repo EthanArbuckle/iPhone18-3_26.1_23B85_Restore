@@ -49,12 +49,12 @@
 - (id)_bb_RTFDData
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v2 = [a1 length];
+  v2 = [self length];
   v10 = @"DocumentType";
   v11[0] = @"NSRTFD";
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v9 = 0;
-  v4 = [a1 dataFromRange:0 documentAttributes:v2 error:{v3, &v9}];
+  v4 = [self dataFromRange:0 documentAttributes:v2 error:{v3, &v9}];
   v5 = v9;
   if (v5)
   {

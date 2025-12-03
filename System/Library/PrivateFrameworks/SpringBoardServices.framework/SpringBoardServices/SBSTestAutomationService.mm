@@ -7,324 +7,324 @@
 - (NSDictionary)widgetControllerStateDump;
 - (NSMutableArray)systemApertureModelStateDump;
 - (NSMutableDictionary)animationFrameRecording;
-- (id)acquireAssertionForReachabilityEnabled:(BOOL)a3;
-- (id)acquireHUDHiddenAssertionForIdentifier:(id)a3;
+- (id)acquireAssertionForReachabilityEnabled:(BOOL)enabled;
+- (id)acquireHUDHiddenAssertionForIdentifier:(id)identifier;
 - (id)availableRecordableFlipBookElementIdentifiers;
-- (void)addWidgetStackWithIdentifiers:(id)a3 toPage:(int)a4 withSizing:(int)a5;
-- (void)addWidgetWithIdentifier:(id)a3 toPage:(int)a4 withSizing:(int)a5;
+- (void)addWidgetStackWithIdentifiers:(id)identifiers toPage:(int)page withSizing:(int)sizing;
+- (void)addWidgetWithIdentifier:(id)identifier toPage:(int)page withSizing:(int)sizing;
 - (void)addWidgetsToEachPage;
 - (void)clearAllUserNotifications;
-- (void)countScenesForBundleIdentifier:(id)a3 withCompletion:(id)a4;
+- (void)countScenesForBundleIdentifier:(id)identifier withCompletion:(id)completion;
 - (void)enterLostMode;
 - (void)exitLostMode;
-- (void)initiateSecureFlipBookRecordingsForElement:(id)a3 withCompletion:(id)a4;
-- (void)loadStashedSwitcherModelFromPath:(id)a3;
-- (void)resetToHomeScreenAnimated:(BOOL)a3;
-- (void)setAccessoryType:(int64_t)a3 attached:(BOOL)a4;
-- (void)setAlertsEnabled:(BOOL)a3;
-- (void)setAmbientPresentationState:(int64_t)a3;
-- (void)setApplicationBundleIdentifier:(id)a3 blockedForScreenTime:(BOOL)a4;
-- (void)setChamoisPrefersDockHidden:(BOOL)a3;
-- (void)setChamoisPrefersStripHidden:(BOOL)a3;
-- (void)setChamoisWindowingUIEnabled:(BOOL)a3;
-- (void)setHiddenFeaturesEnabled:(BOOL)a3;
-- (void)setIdleTimerEnabled:(BOOL)a3;
-- (void)setMallocStackLoggingEnabled:(BOOL)a3;
-- (void)setOrientationLockEnabled:(BOOL)a3;
-- (void)setReachabilityActive:(BOOL)a3;
-- (void)setSpringBoardAnimationFrameRecordingEnabledForUpdateTypes:(unint64_t)a3;
-- (void)setSystemApertureUnderAutomationTesting:(BOOL)a3;
-- (void)setTestRunnerRecoveryApplicationBundleIdentifier:(id)a3;
+- (void)initiateSecureFlipBookRecordingsForElement:(id)element withCompletion:(id)completion;
+- (void)loadStashedSwitcherModelFromPath:(id)path;
+- (void)resetToHomeScreenAnimated:(BOOL)animated;
+- (void)setAccessoryType:(int64_t)type attached:(BOOL)attached;
+- (void)setAlertsEnabled:(BOOL)enabled;
+- (void)setAmbientPresentationState:(int64_t)state;
+- (void)setApplicationBundleIdentifier:(id)identifier blockedForScreenTime:(BOOL)time;
+- (void)setChamoisPrefersDockHidden:(BOOL)hidden;
+- (void)setChamoisPrefersStripHidden:(BOOL)hidden;
+- (void)setChamoisWindowingUIEnabled:(BOOL)enabled;
+- (void)setHiddenFeaturesEnabled:(BOOL)enabled;
+- (void)setIdleTimerEnabled:(BOOL)enabled;
+- (void)setMallocStackLoggingEnabled:(BOOL)enabled;
+- (void)setOrientationLockEnabled:(BOOL)enabled;
+- (void)setReachabilityActive:(BOOL)active;
+- (void)setSpringBoardAnimationFrameRecordingEnabledForUpdateTypes:(unint64_t)types;
+- (void)setSystemApertureUnderAutomationTesting:(BOOL)testing;
+- (void)setTestRunnerRecoveryApplicationBundleIdentifier:(id)identifier;
 - (void)setUserPresenceDetectedSinceWake;
-- (void)stashSwitcherModelToPath:(id)a3;
+- (void)stashSwitcherModelToPath:(id)path;
 - (void)suspendAllDisplays;
 @end
 
 @implementation SBSTestAutomationService
 
-- (void)setTestRunnerRecoveryApplicationBundleIdentifier:(id)a3
+- (void)setTestRunnerRecoveryApplicationBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBSAbstractSystemService *)self client];
-  [v5 setTestRunnerRecoveryApplicationBundleIdentifier:v4];
+  identifierCopy = identifier;
+  client = [(SBSAbstractSystemService *)self client];
+  [client setTestRunnerRecoveryApplicationBundleIdentifier:identifierCopy];
 }
 
 - (void)suspendAllDisplays
 {
-  v2 = [(SBSAbstractSystemService *)self client];
-  [v2 suspendAllDisplays];
+  client = [(SBSAbstractSystemService *)self client];
+  [client suspendAllDisplays];
 }
 
 - (void)clearAllUserNotifications
 {
-  v2 = [(SBSAbstractSystemService *)self client];
-  [v2 clearAllUserNotifications];
+  client = [(SBSAbstractSystemService *)self client];
+  [client clearAllUserNotifications];
 }
 
 - (void)setUserPresenceDetectedSinceWake
 {
-  v2 = [(SBSAbstractSystemService *)self client];
-  [v2 setUserPresenceDetectedSinceWake];
+  client = [(SBSAbstractSystemService *)self client];
+  [client setUserPresenceDetectedSinceWake];
 }
 
-- (void)setAlertsEnabled:(BOOL)a3
+- (void)setAlertsEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(SBSAbstractSystemService *)self client];
-  [v4 setAlertsEnabled:v3];
+  enabledCopy = enabled;
+  client = [(SBSAbstractSystemService *)self client];
+  [client setAlertsEnabled:enabledCopy];
 }
 
-- (void)setHiddenFeaturesEnabled:(BOOL)a3
+- (void)setHiddenFeaturesEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(SBSAbstractSystemService *)self client];
-  [v4 setHiddenFeaturesEnabled:v3];
+  enabledCopy = enabled;
+  client = [(SBSAbstractSystemService *)self client];
+  [client setHiddenFeaturesEnabled:enabledCopy];
 }
 
-- (void)setIdleTimerEnabled:(BOOL)a3
+- (void)setIdleTimerEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(SBSAbstractSystemService *)self client];
-  [v4 setIdleTimerEnabled:v3];
+  enabledCopy = enabled;
+  client = [(SBSAbstractSystemService *)self client];
+  [client setIdleTimerEnabled:enabledCopy];
 }
 
-- (void)setOrientationLockEnabled:(BOOL)a3
+- (void)setOrientationLockEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(SBSAbstractSystemService *)self client];
-  [v4 setOrientationLockEnabled:v3];
+  enabledCopy = enabled;
+  client = [(SBSAbstractSystemService *)self client];
+  [client setOrientationLockEnabled:enabledCopy];
 }
 
-- (void)setMallocStackLoggingEnabled:(BOOL)a3
+- (void)setMallocStackLoggingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(SBSAbstractSystemService *)self client];
-  [v4 setMallocStackLoggingEnabled:v3];
+  enabledCopy = enabled;
+  client = [(SBSAbstractSystemService *)self client];
+  [client setMallocStackLoggingEnabled:enabledCopy];
 }
 
-- (void)setReachabilityActive:(BOOL)a3
+- (void)setReachabilityActive:(BOOL)active
 {
-  v3 = a3;
-  v4 = [(SBSAbstractSystemService *)self client];
-  [v4 setReachabilityActive:v3];
+  activeCopy = active;
+  client = [(SBSAbstractSystemService *)self client];
+  [client setReachabilityActive:activeCopy];
 }
 
-- (void)setAmbientPresentationState:(int64_t)a3
+- (void)setAmbientPresentationState:(int64_t)state
 {
-  v4 = [(SBSAbstractSystemService *)self client];
-  [v4 setAmbientPresentationState:a3];
+  client = [(SBSAbstractSystemService *)self client];
+  [client setAmbientPresentationState:state];
 }
 
-- (id)acquireAssertionForReachabilityEnabled:(BOOL)a3
+- (id)acquireAssertionForReachabilityEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(SBSAbstractSystemService *)self client];
-  v5 = [v4 acquireAssertionForReachabilityEnabled:v3];
+  enabledCopy = enabled;
+  client = [(SBSAbstractSystemService *)self client];
+  v5 = [client acquireAssertionForReachabilityEnabled:enabledCopy];
 
   return v5;
 }
 
-- (void)resetToHomeScreenAnimated:(BOOL)a3
+- (void)resetToHomeScreenAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(SBSAbstractSystemService *)self client];
-  [v4 resetToHomeScreenAnimated:v3];
+  animatedCopy = animated;
+  client = [(SBSAbstractSystemService *)self client];
+  [client resetToHomeScreenAnimated:animatedCopy];
 }
 
-- (void)setAccessoryType:(int64_t)a3 attached:(BOOL)a4
+- (void)setAccessoryType:(int64_t)type attached:(BOOL)attached
 {
-  v4 = a4;
-  v6 = [(SBSAbstractSystemService *)self client];
-  [v6 setAccessoryType:a3 attached:v4];
+  attachedCopy = attached;
+  client = [(SBSAbstractSystemService *)self client];
+  [client setAccessoryType:type attached:attachedCopy];
 }
 
-- (id)acquireHUDHiddenAssertionForIdentifier:(id)a3
+- (id)acquireHUDHiddenAssertionForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBSAbstractSystemService *)self client];
-  v6 = [v5 acquireHUDHiddenAssertionForIdentifier:v4];
+  identifierCopy = identifier;
+  client = [(SBSAbstractSystemService *)self client];
+  v6 = [client acquireHUDHiddenAssertionForIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (void)setApplicationBundleIdentifier:(id)a3 blockedForScreenTime:(BOOL)a4
+- (void)setApplicationBundleIdentifier:(id)identifier blockedForScreenTime:(BOOL)time
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SBSAbstractSystemService *)self client];
-  [v7 setApplicationBundleIdentifier:v6 blockedForScreenTime:v4];
+  timeCopy = time;
+  identifierCopy = identifier;
+  client = [(SBSAbstractSystemService *)self client];
+  [client setApplicationBundleIdentifier:identifierCopy blockedForScreenTime:timeCopy];
 }
 
-- (void)countScenesForBundleIdentifier:(id)a3 withCompletion:(id)a4
+- (void)countScenesForBundleIdentifier:(id)identifier withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBSAbstractSystemService *)self client];
-  [v8 countScenesForBundleIdentifier:v7 withCompletion:v6];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  client = [(SBSAbstractSystemService *)self client];
+  [client countScenesForBundleIdentifier:identifierCopy withCompletion:completionCopy];
 }
 
-- (void)stashSwitcherModelToPath:(id)a3
+- (void)stashSwitcherModelToPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SBSAbstractSystemService *)self client];
-  [v5 stashSwitcherModelToPath:v4];
+  pathCopy = path;
+  client = [(SBSAbstractSystemService *)self client];
+  [client stashSwitcherModelToPath:pathCopy];
 }
 
-- (void)loadStashedSwitcherModelFromPath:(id)a3
+- (void)loadStashedSwitcherModelFromPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SBSAbstractSystemService *)self client];
-  [v5 loadStashedSwitcherModelFromPath:v4];
+  pathCopy = path;
+  client = [(SBSAbstractSystemService *)self client];
+  [client loadStashedSwitcherModelFromPath:pathCopy];
 }
 
 - (void)addWidgetsToEachPage
 {
-  v2 = [(SBSAbstractSystemService *)self client];
-  [v2 addWidgetsToEachPage];
+  client = [(SBSAbstractSystemService *)self client];
+  [client addWidgetsToEachPage];
 }
 
-- (void)addWidgetWithIdentifier:(id)a3 toPage:(int)a4 withSizing:(int)a5
+- (void)addWidgetWithIdentifier:(id)identifier toPage:(int)page withSizing:(int)sizing
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v8 = a3;
-  v9 = [(SBSAbstractSystemService *)self client];
-  [v9 addWidgetWithIdentifier:v8 toPage:v6 withSizing:v5];
+  v5 = *&sizing;
+  v6 = *&page;
+  identifierCopy = identifier;
+  client = [(SBSAbstractSystemService *)self client];
+  [client addWidgetWithIdentifier:identifierCopy toPage:v6 withSizing:v5];
 }
 
-- (void)addWidgetStackWithIdentifiers:(id)a3 toPage:(int)a4 withSizing:(int)a5
+- (void)addWidgetStackWithIdentifiers:(id)identifiers toPage:(int)page withSizing:(int)sizing
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v8 = a3;
-  v9 = [(SBSAbstractSystemService *)self client];
-  [v9 addWidgetStackWithIdentifiers:v8 toPage:v6 withSizing:v5];
+  v5 = *&sizing;
+  v6 = *&page;
+  identifiersCopy = identifiers;
+  client = [(SBSAbstractSystemService *)self client];
+  [client addWidgetStackWithIdentifiers:identifiersCopy toPage:v6 withSizing:v5];
 }
 
 - (void)enterLostMode
 {
-  v2 = [(SBSAbstractSystemService *)self client];
-  [v2 enterLostMode];
+  client = [(SBSAbstractSystemService *)self client];
+  [client enterLostMode];
 }
 
 - (void)exitLostMode
 {
-  v2 = [(SBSAbstractSystemService *)self client];
-  [v2 exitLostMode];
+  client = [(SBSAbstractSystemService *)self client];
+  [client exitLostMode];
 }
 
 - (BOOL)isChamoisWindowingUIEnabled
 {
-  v2 = [(SBSAbstractSystemService *)self client];
-  v3 = [v2 isChamoisWindowingUIEnabled];
+  client = [(SBSAbstractSystemService *)self client];
+  isChamoisWindowingUIEnabled = [client isChamoisWindowingUIEnabled];
 
-  return v3;
+  return isChamoisWindowingUIEnabled;
 }
 
-- (void)setChamoisWindowingUIEnabled:(BOOL)a3
+- (void)setChamoisWindowingUIEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(SBSAbstractSystemService *)self client];
-  [v4 setChamoisWindowingUIEnabled:v3];
+  enabledCopy = enabled;
+  client = [(SBSAbstractSystemService *)self client];
+  [client setChamoisWindowingUIEnabled:enabledCopy];
 }
 
 - (BOOL)chamoisPrefersDockHidden
 {
-  v2 = [(SBSAbstractSystemService *)self client];
-  v3 = [v2 chamoisPrefersDockHidden];
+  client = [(SBSAbstractSystemService *)self client];
+  chamoisPrefersDockHidden = [client chamoisPrefersDockHidden];
 
-  return v3;
+  return chamoisPrefersDockHidden;
 }
 
-- (void)setChamoisPrefersDockHidden:(BOOL)a3
+- (void)setChamoisPrefersDockHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(SBSAbstractSystemService *)self client];
-  [v4 setChamoisPrefersDockHidden:v3];
+  hiddenCopy = hidden;
+  client = [(SBSAbstractSystemService *)self client];
+  [client setChamoisPrefersDockHidden:hiddenCopy];
 }
 
 - (BOOL)chamoisPrefersStripHidden
 {
-  v2 = [(SBSAbstractSystemService *)self client];
-  v3 = [v2 chamoisPrefersStripHidden];
+  client = [(SBSAbstractSystemService *)self client];
+  chamoisPrefersStripHidden = [client chamoisPrefersStripHidden];
 
-  return v3;
+  return chamoisPrefersStripHidden;
 }
 
-- (void)setChamoisPrefersStripHidden:(BOOL)a3
+- (void)setChamoisPrefersStripHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(SBSAbstractSystemService *)self client];
-  [v4 setChamoisPrefersStripHidden:v3];
+  hiddenCopy = hidden;
+  client = [(SBSAbstractSystemService *)self client];
+  [client setChamoisPrefersStripHidden:hiddenCopy];
 }
 
-- (void)setSystemApertureUnderAutomationTesting:(BOOL)a3
+- (void)setSystemApertureUnderAutomationTesting:(BOOL)testing
 {
-  v3 = a3;
-  v4 = [(SBSAbstractSystemService *)self client];
-  [v4 setSystemApertureUnderAutomationTesting:v3];
+  testingCopy = testing;
+  client = [(SBSAbstractSystemService *)self client];
+  [client setSystemApertureUnderAutomationTesting:testingCopy];
 }
 
 - (BOOL)deviceSupportsSystemAperture
 {
-  v2 = [(SBSAbstractSystemService *)self client];
-  v3 = [v2 deviceSupportsSystemAperture];
+  client = [(SBSAbstractSystemService *)self client];
+  deviceSupportsSystemAperture = [client deviceSupportsSystemAperture];
 
-  return v3;
+  return deviceSupportsSystemAperture;
 }
 
 - (NSMutableArray)systemApertureModelStateDump
 {
-  v2 = [(SBSAbstractSystemService *)self client];
-  v3 = [v2 systemApertureModelStateDump];
+  client = [(SBSAbstractSystemService *)self client];
+  systemApertureModelStateDump = [client systemApertureModelStateDump];
 
-  return v3;
+  return systemApertureModelStateDump;
 }
 
 - (NSArray)systemApertureStateDump
 {
-  v2 = [(SBSAbstractSystemService *)self client];
-  v3 = [v2 systemApertureStateDump];
+  client = [(SBSAbstractSystemService *)self client];
+  systemApertureStateDump = [client systemApertureStateDump];
 
-  return v3;
+  return systemApertureStateDump;
 }
 
 - (NSDictionary)widgetControllerStateDump
 {
-  v2 = [(SBSAbstractSystemService *)self client];
-  v3 = [v2 widgetControllerStateDump];
+  client = [(SBSAbstractSystemService *)self client];
+  widgetControllerStateDump = [client widgetControllerStateDump];
 
-  return v3;
+  return widgetControllerStateDump;
 }
 
-- (void)setSpringBoardAnimationFrameRecordingEnabledForUpdateTypes:(unint64_t)a3
+- (void)setSpringBoardAnimationFrameRecordingEnabledForUpdateTypes:(unint64_t)types
 {
-  v4 = [(SBSAbstractSystemService *)self client];
-  [v4 setSpringBoardAnimationFrameRecordingEnabledForUpdateTypes:a3];
+  client = [(SBSAbstractSystemService *)self client];
+  [client setSpringBoardAnimationFrameRecordingEnabledForUpdateTypes:types];
 }
 
 - (NSMutableDictionary)animationFrameRecording
 {
-  v2 = [(SBSAbstractSystemService *)self client];
-  v3 = [v2 animationFrameRecordings];
+  client = [(SBSAbstractSystemService *)self client];
+  animationFrameRecordings = [client animationFrameRecordings];
 
-  return v3;
+  return animationFrameRecordings;
 }
 
-- (void)initiateSecureFlipBookRecordingsForElement:(id)a3 withCompletion:(id)a4
+- (void)initiateSecureFlipBookRecordingsForElement:(id)element withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBSAbstractSystemService *)self client];
-  [v8 initiateSecureFlipBookRecordingsForElement:v7 withCompletion:v6];
+  completionCopy = completion;
+  elementCopy = element;
+  client = [(SBSAbstractSystemService *)self client];
+  [client initiateSecureFlipBookRecordingsForElement:elementCopy withCompletion:completionCopy];
 }
 
 - (id)availableRecordableFlipBookElementIdentifiers
 {
-  v2 = [(SBSAbstractSystemService *)self client];
-  v3 = [v2 availableRecordableFlipBookElementIdentifiers];
+  client = [(SBSAbstractSystemService *)self client];
+  availableRecordableFlipBookElementIdentifiers = [client availableRecordableFlipBookElementIdentifiers];
 
-  return v3;
+  return availableRecordableFlipBookElementIdentifiers;
 }
 
 @end

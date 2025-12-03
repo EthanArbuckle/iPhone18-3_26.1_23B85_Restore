@@ -1,13 +1,13 @@
 @interface VOActivityKeyedArchiveHelper
 - (VOActivityKeyedArchiveHelper)init;
-- (VOActivityKeyedArchiveHelper)initWithCoder:(id)a3;
+- (VOActivityKeyedArchiveHelper)initWithCoder:(id)coder;
 @end
 
 @implementation VOActivityKeyedArchiveHelper
 
-- (VOActivityKeyedArchiveHelper)initWithCoder:(id)a3
+- (VOActivityKeyedArchiveHelper)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_18B2AB604();
 
   return v4;

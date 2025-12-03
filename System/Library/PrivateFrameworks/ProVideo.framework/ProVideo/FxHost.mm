@@ -1,34 +1,34 @@
 @interface FxHost
-+ (id)_createPathArrayFromURLArray:(id)a3;
++ (id)_createPathArrayFromURLArray:(id)array;
 + (id)fxPlugsFolderURLs;
 + (id)host;
 + (id)plugInsFolderURLs;
-- (BOOL)allowBuiltInEffectsForPlugInTypeUUID:(id)a3;
+- (BOOL)allowBuiltInEffectsForPlugInTypeUUID:(id)d;
 - (FxHost)init;
 - (id)_createDefaultSearchableURLsDict;
 - (id)_createDefaultSupportBuiltInsDict;
-- (id)_findGroupInList:(id)a3 withIdenticalDescriptor:(id)a4;
+- (id)_findGroupInList:(id)list withIdenticalDescriptor:(id)descriptor;
 - (void)dealloc;
 - (void)invalidateFxPlugDescriptorArray;
-- (void)setAllowBuiltInEffects:(BOOL)a3 forPlugInTypeUUID:(id)a4;
-- (void)setSupportedPlugInTypeUUIDs:(id)a3;
+- (void)setAllowBuiltInEffects:(BOOL)effects forPlugInTypeUUID:(id)d;
+- (void)setSupportedPlugInTypeUUIDs:(id)ds;
 @end
 
 @implementation FxHost
 
-+ (id)_createPathArrayFromURLArray:(id)a3
++ (id)_createPathArrayFromURLArray:(id)array
 {
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a3, "count")}];
-  v5 = [a3 objectEnumerator];
-  for (i = v5; ; v5 = i)
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(array, "count")}];
+  objectEnumerator = [array objectEnumerator];
+  for (i = objectEnumerator; ; objectEnumerator = i)
   {
-    v7 = [v5 nextObject];
-    if (!v7)
+    nextObject = [objectEnumerator nextObject];
+    if (!nextObject)
     {
       break;
     }
 
-    [v4 addObject:{objc_msgSend(v7, "path")}];
+    [v4 addObject:{objc_msgSend(nextObject, "path")}];
   }
 
   return v4;
@@ -37,51 +37,51 @@
 - (id)_createDefaultSearchableURLsDict
 {
   var2 = self->_priv->var2;
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [var2 objectEnumerator];
-  v5 = [v4 nextObject];
-  if (v5)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  objectEnumerator = [var2 objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v6 = v5;
+    nextObject2 = nextObject;
     do
     {
-      if ([v6 isEqual:@"ACF57DAE-E1BB-11D8-BF80-000A95DF1816"])
+      if ([nextObject2 isEqual:@"ACF57DAE-E1BB-11D8-BF80-000A95DF1816"])
       {
-        v7 = [objc_opt_class() fxPlugsFolderURLs];
-        if (v7)
+        fxPlugsFolderURLs = [objc_opt_class() fxPlugsFolderURLs];
+        if (fxPlugsFolderURLs)
         {
-          [v3 setObject:v7 forKey:v6];
+          [dictionary setObject:fxPlugsFolderURLs forKey:nextObject2];
         }
       }
 
-      v6 = [v4 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
     }
 
-    while (v6);
+    while (nextObject2);
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)_createDefaultSupportBuiltInsDict
 {
   var2 = self->_priv->var2;
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [var2 objectEnumerator];
-  v5 = [v4 nextObject];
-  if (v5)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  objectEnumerator = [var2 objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v6 = v5;
+    nextObject2 = nextObject;
     do
     {
-      [v3 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", 1), v6}];
-      v6 = [v4 nextObject];
+      [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", 1), nextObject2}];
+      nextObject2 = [objectEnumerator nextObject];
     }
 
-    while (v6);
+    while (nextObject2);
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (FxHost)init
@@ -100,9 +100,9 @@
       v2->_priv->var2 = v4;
       [v4 addObject:@"ACF57DAE-E1BB-11D8-BF80-000A95DF1816"];
       v2->_priv->var1 = v2->_priv->var2;
-      v5 = [(FxHost *)v2 _createDefaultSearchableURLsDict];
-      v2->_priv->var4 = v5;
-      v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v5];
+      _createDefaultSearchableURLsDict = [(FxHost *)v2 _createDefaultSearchableURLsDict];
+      v2->_priv->var4 = _createDefaultSearchableURLsDict;
+      v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:_createDefaultSearchableURLsDict];
       priv = v2->_priv;
       priv->var3 = v6;
       priv->var6 = 0;
@@ -194,18 +194,18 @@
 {
   v2 = +[FxHost plugInsFolderURLs];
   v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v2, "count")}];
-  v4 = [v2 objectEnumerator];
-  v5 = [v4 nextObject];
-  if (v5)
+  objectEnumerator = [v2 objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v6 = v5;
+    nextObject2 = nextObject;
     do
     {
-      [v3 addObject:{objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:relativeToURL:", @"FxPlug/", v6)}];
-      v6 = [v4 nextObject];
+      [v3 addObject:{objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:relativeToURL:", @"FxPlug/", nextObject2)}];
+      nextObject2 = [objectEnumerator nextObject];
     }
 
-    while (v6);
+    while (nextObject2);
   }
 
   return v3;
@@ -221,47 +221,47 @@
   }
 }
 
-- (void)setSupportedPlugInTypeUUIDs:(id)a3
+- (void)setSupportedPlugInTypeUUIDs:(id)ds
 {
-  if (([a3 isEqualToArray:self->_priv->var1] & 1) == 0)
+  if (([ds isEqualToArray:self->_priv->var1] & 1) == 0)
   {
     var1 = self->_priv->var1;
-    self->_priv->var1 = a3;
+    self->_priv->var1 = ds;
     if (var1)
     {
     }
   }
 }
 
-- (BOOL)allowBuiltInEffectsForPlugInTypeUUID:(id)a3
+- (BOOL)allowBuiltInEffectsForPlugInTypeUUID:(id)d
 {
-  v3 = [self->_priv->var5 objectForKey:a3];
+  v3 = [self->_priv->var5 objectForKey:d];
 
   return [v3 BOOLValue];
 }
 
-- (void)setAllowBuiltInEffects:(BOOL)a3 forPlugInTypeUUID:(id)a4
+- (void)setAllowBuiltInEffects:(BOOL)effects forPlugInTypeUUID:(id)d
 {
-  v5 = a3;
-  v7 = [self->_priv->var5 objectForKey:a4];
-  if (!v7 || [v7 BOOLValue] != v5)
+  effectsCopy = effects;
+  v7 = [self->_priv->var5 objectForKey:d];
+  if (!v7 || [v7 BOOLValue] != effectsCopy)
   {
-    [self->_priv->var5 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", v5), a4}];
+    [self->_priv->var5 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", effectsCopy), d}];
 
     [(FxHost *)self invalidateFxPlugDescriptorArray];
   }
 }
 
-- (id)_findGroupInList:(id)a3 withIdenticalDescriptor:(id)a4
+- (id)_findGroupInList:(id)list withIdenticalDescriptor:(id)descriptor
 {
-  v5 = [a3 objectEnumerator];
+  objectEnumerator = [list objectEnumerator];
   do
   {
-    v6 = [v5 nextObject];
-    v7 = v6;
+    nextObject = [objectEnumerator nextObject];
+    v7 = nextObject;
   }
 
-  while (v6 && ![objc_msgSend(v6 "descriptor")]);
+  while (nextObject && ![objc_msgSend(nextObject "descriptor")]);
   return v7;
 }
 

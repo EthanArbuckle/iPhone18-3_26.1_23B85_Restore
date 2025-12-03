@@ -1,10 +1,10 @@
 @interface PEPServiceConfiguration
 + (id)sharedInstance;
-- (BOOL)registerNetworkDefaultsForAppID:(id)a3;
-- (BOOL)registerNetworkDefaultsForAppIDs:(id)a3 forceUpdate:(BOOL)a4;
+- (BOOL)registerNetworkDefaultsForAppID:(id)d;
+- (BOOL)registerNetworkDefaultsForAppIDs:(id)ds forceUpdate:(BOOL)update;
 - (PEPServiceConfiguration)init;
 - (void)_postNotification;
-- (void)_updateDefaults:(id)a3;
+- (void)_updateDefaults:(id)defaults;
 - (void)dealloc;
 @end
 
@@ -44,13 +44,13 @@
 
 - (void)_postNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = [MEMORY[0x1E696AD80] notificationWithName:@"PEPServiceConfigurationRegistrationComplete" object:self];
 
-  [v3 postNotification:v4];
+  [defaultCenter postNotification:v4];
 }
 
-- (void)_updateDefaults:(id)a3
+- (void)_updateDefaults:(id)defaults
 {
   v37 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E696AAC8]);
@@ -79,13 +79,13 @@
   }
 
   v19 = v4;
-  v20 = self;
+  selfCopy = self;
   value = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:self->_cachedFileLastModifyDate];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v25 = [a3 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  v25 = [defaults countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v25)
   {
     v23 = *v32;
@@ -99,7 +99,7 @@
       {
         if (*v32 != v23)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(defaults);
         }
 
         v26 = v10;
@@ -113,8 +113,8 @@
           v30 = 0u;
           v27 = 0u;
           v28 = 0u;
-          v13 = [v12 allKeys];
-          v14 = [v13 countByEnumeratingWithState:&v27 objects:v35 count:16];
+          allKeys = [v12 allKeys];
+          v14 = [allKeys countByEnumeratingWithState:&v27 objects:v35 count:16];
           if (v14)
           {
             v15 = v14;
@@ -125,7 +125,7 @@
               {
                 if (*v28 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 if (([CFPreferencesCopyValue(*(*(&v27 + 1) + 8 * i) v11] & 1) == 0)
@@ -137,7 +137,7 @@
                 }
               }
 
-              v15 = [v13 countByEnumeratingWithState:&v27 objects:v35 count:16];
+              v15 = [allKeys countByEnumeratingWithState:&v27 objects:v35 count:16];
               v6 = v22;
               if (v15)
               {
@@ -154,37 +154,37 @@ LABEL_21:
       }
 
       while (v26 + 1 != v25);
-      v25 = [a3 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v25 = [defaults countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
     while (v25);
   }
 
   v4 = v19;
-  self = v20;
+  self = selfCopy;
 LABEL_24:
   -[PEPServiceConfiguration performSelector:onThread:withObject:waitUntilDone:](self, "performSelector:onThread:withObject:waitUntilDone:", sel__postNotification, [MEMORY[0x1E696AF00] mainThread], 0, 0);
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)registerNetworkDefaultsForAppID:(id)a3
+- (BOOL)registerNetworkDefaultsForAppID:(id)d
 {
-  v4 = [MEMORY[0x1E695DEC8] arrayWithObject:a3];
+  v4 = [MEMORY[0x1E695DEC8] arrayWithObject:d];
 
   return [(PEPServiceConfiguration *)self registerNetworkDefaultsForAppIDs:v4 forceUpdate:0];
 }
 
-- (BOOL)registerNetworkDefaultsForAppIDs:(id)a3 forceUpdate:(BOOL)a4
+- (BOOL)registerNetworkDefaultsForAppIDs:(id)ds forceUpdate:(BOOL)update
 {
-  v4 = a4;
+  updateCopy = update;
   v33 = *MEMORY[0x1E69E9840];
   v7 = [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
   [objc_msgSend(v7 objectForKey:{*MEMORY[0x1E696A350]), "timeIntervalSinceReferenceDate"}];
   self->_cachedFileLastModifyDate = v8;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v10 = v9 - self->_cachedFileLastModifyDate;
-  if (v4)
+  if (updateCopy)
   {
     v11 = 86400.0;
   }
@@ -201,7 +201,7 @@ LABEL_24:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v12 = [a3 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    v12 = [ds countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v12)
     {
       v13 = v12;
@@ -214,7 +214,7 @@ LABEL_24:
         {
           if (*v29 != v14)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(ds);
           }
 
           v18 = CFPreferencesCopyValue(@"AppTimeInterval", *(*(&v28 + 1) + 8 * i), v15, v16);
@@ -237,7 +237,7 @@ LABEL_17:
           }
         }
 
-        v13 = [a3 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v13 = [ds countByEnumeratingWithState:&v28 objects:v32 count:16];
         if (v13)
         {
           continue;
@@ -253,7 +253,7 @@ LABEL_17:
   if (self->_shouldDownloadNetworkConfigFile)
   {
 LABEL_18:
-    v25 = [objc_alloc(MEMORY[0x1E696AF00]) initWithTarget:self selector:sel__updateDefaults_ object:a3];
+    v25 = [objc_alloc(MEMORY[0x1E696AF00]) initWithTarget:self selector:sel__updateDefaults_ object:ds];
     [v25 start];
 
     v24 = v23 | self->_shouldDownloadNetworkConfigFile;

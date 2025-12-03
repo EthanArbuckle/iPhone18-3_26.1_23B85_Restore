@@ -1,7 +1,7 @@
 @interface ProvisioningPasscodeUpgradeFlowSection
 - (_TtC9PassKitUI38ProvisioningPasscodeUpgradeFlowSection)init;
 - (void)dealloc;
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4;
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state;
 @end
 
 @implementation ProvisioningPasscodeUpgradeFlowSection
@@ -9,9 +9,9 @@
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   sub_1BD25C6C8();
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = ObjectType;
   [(ProvisioningPasscodeUpgradeFlowSection *)&v5 dealloc];
 }
@@ -23,11 +23,11 @@
   return result;
 }
 
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_1BD25DB54(*&a4 & 0x101);
+  selfCopy = self;
+  sub_1BD25DB54(*&state & 0x101);
   swift_unknownObjectRelease();
 }
 

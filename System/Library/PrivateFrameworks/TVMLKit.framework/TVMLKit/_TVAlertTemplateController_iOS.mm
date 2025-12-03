@@ -1,49 +1,49 @@
 @interface _TVAlertTemplateController_iOS
-- (void)_dismissAlertControllerAnimated:(BOOL)a3;
+- (void)_dismissAlertControllerAnimated:(BOOL)animated;
 - (void)_presentAlertController;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)updateWithTemplateElement:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)updateWithTemplateElement:(id)element;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation _TVAlertTemplateController_iOS
 
-- (void)updateWithTemplateElement:(id)a3
+- (void)updateWithTemplateElement:(id)element
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  elementCopy = element;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v43 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v41 = v4;
-  v6 = [v4 children];
-  v7 = [v6 countByEnumeratingWithState:&v48 objects:v53 count:16];
+  v41 = elementCopy;
+  children = [elementCopy children];
+  v7 = [children countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v49;
     v10 = &OBJC_IVAR___TVTimeRange__endDate;
-    v42 = v6;
+    v42 = children;
     do
     {
       for (i = 0; i != v8; ++i)
       {
         if (*v49 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(children);
         }
 
         v12 = *(*(&v48 + 1) + 8 * i);
         if ([v12 tv_elementType] == 16)
         {
-          v13 = [v12 tv_imageProxy];
+          tv_imageProxy = [v12 tv_imageProxy];
           v14 = v10[107];
           v15 = *(&self->super.super.super.isa + v14);
-          *(&self->super.super.super.isa + v14) = v13;
+          *(&self->super.super.super.isa + v14) = tv_imageProxy;
 
           [v12 width];
           v17 = v16;
@@ -56,34 +56,34 @@
 
         if ([v12 tv_elementType] == 55)
         {
-          v20 = [v12 elementName];
-          v21 = [v20 isEqualToString:@"title"];
+          elementName = [v12 elementName];
+          v21 = [elementName isEqualToString:@"title"];
 
           if (v21)
           {
-            v22 = [v12 text];
-            v23 = [v22 string];
+            text = [v12 text];
+            string = [text string];
             title = self->_title;
-            self->_title = v23;
+            self->_title = string;
 
             continue;
           }
 
-          v25 = [v12 elementName];
-          v26 = [v25 isEqualToString:@"description"];
+          elementName2 = [v12 elementName];
+          v26 = [elementName2 isEqualToString:@"description"];
 
-          v27 = [v12 text];
-          v28 = [v27 string];
-          v29 = v28;
+          text2 = [v12 text];
+          string2 = [text2 string];
+          v29 = string2;
           if (v26)
           {
             message = self->_message;
-            self->_message = v28;
+            self->_message = string2;
           }
 
           else
           {
-            [v43 addObject:v28];
+            [v43 addObject:string2];
           }
 
           goto LABEL_28;
@@ -101,8 +101,8 @@
           v47 = 0u;
           v44 = 0u;
           v45 = 0u;
-          v31 = [v12 children];
-          v32 = [v31 countByEnumeratingWithState:&v44 objects:v52 count:16];
+          children2 = [v12 children];
+          v32 = [children2 countByEnumeratingWithState:&v44 objects:v52 count:16];
           if (v32)
           {
             v33 = v32;
@@ -113,7 +113,7 @@
               {
                 if (*v45 != v34)
                 {
-                  objc_enumerationMutation(v31);
+                  objc_enumerationMutation(children2);
                 }
 
                 v36 = *(*(&v44 + 1) + 8 * j);
@@ -123,20 +123,20 @@
                 }
               }
 
-              v33 = [v31 countByEnumeratingWithState:&v44 objects:v52 count:16];
+              v33 = [children2 countByEnumeratingWithState:&v44 objects:v52 count:16];
             }
 
             while (v33);
           }
 
-          v6 = v42;
+          children = v42;
 LABEL_28:
           v10 = &OBJC_IVAR___TVTimeRange__endDate;
           continue;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v48 objects:v53 count:16];
+      v8 = [children countByEnumeratingWithState:&v48 objects:v53 count:16];
     }
 
     while (v8);
@@ -156,41 +156,41 @@ LABEL_28:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = _TVAlertTemplateController_iOS;
-  [(_TVAlertTemplateController_iOS *)&v4 viewDidAppear:a3];
+  [(_TVAlertTemplateController_iOS *)&v4 viewDidAppear:appear];
   [(_TVAlertTemplateController_iOS *)self _presentAlertController];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = _TVAlertTemplateController_iOS;
   [(_TVAlertTemplateController_iOS *)&v5 viewWillDisappear:?];
-  [(_TVAlertTemplateController_iOS *)self _dismissAlertControllerAnimated:v3];
+  [(_TVAlertTemplateController_iOS *)self _dismissAlertControllerAnimated:disappearCopy];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 setOpaque:0];
+    [controllerCopy setOpaque:0];
   }
 }
 
-- (void)_dismissAlertControllerAnimated:(BOOL)a3
+- (void)_dismissAlertControllerAnimated:(BOOL)animated
 {
   alertController = self->_alertController;
   if (alertController)
   {
-    v5 = a3;
-    v6 = [(UIAlertController *)alertController presentingViewController];
-    [v6 dismissViewControllerAnimated:v5 completion:0];
+    animatedCopy = animated;
+    presentingViewController = [(UIAlertController *)alertController presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:animatedCopy completion:0];
 
     v7 = self->_alertController;
     self->_alertController = 0;
@@ -248,8 +248,8 @@ LABEL_28:
         v36 = 0u;
         v28 = v9;
         v29 = v11;
-        v12 = [v11 children];
-        v13 = [v12 countByEnumeratingWithState:&v33 objects:v41 count:16];
+        children = [v11 children];
+        v13 = [children countByEnumeratingWithState:&v33 objects:v41 count:16];
         if (v13)
         {
           v14 = *v34;
@@ -259,15 +259,15 @@ LABEL_28:
             {
               if (*v34 != v14)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(children);
               }
 
               v16 = *(*(&v33 + 1) + 8 * i);
               if ([v16 elementType] == 55)
               {
                 v17 = v16;
-                v18 = [v17 text];
-                v19 = [v18 string];
+                text = [v17 text];
+                string = [text string];
 
                 objc_initWeak(&location, self->_alertController);
                 v20 = MEMORY[0x277D750F8];
@@ -277,7 +277,7 @@ LABEL_28:
                 v30[3] = &unk_279D6EED8;
                 objc_copyWeak(&v31, &location);
                 v30[4] = v29;
-                v21 = [v20 actionWithTitle:v19 style:0 handler:v30];
+                v21 = [v20 actionWithTitle:string style:0 handler:v30];
                 [(UIAlertController *)self->_alertController addAction:v21];
 
                 objc_destroyWeak(&v31);
@@ -285,7 +285,7 @@ LABEL_28:
               }
             }
 
-            v13 = [v12 countByEnumeratingWithState:&v33 objects:v41 count:16];
+            v13 = [children countByEnumeratingWithState:&v33 objects:v41 count:16];
           }
 
           while (v13);

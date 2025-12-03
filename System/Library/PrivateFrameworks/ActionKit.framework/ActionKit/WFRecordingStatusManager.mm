@@ -2,7 +2,7 @@
 + (id)sharedManager;
 - (void)acquireAssertion;
 - (void)invalidateAssertion;
-- (void)setRecording:(BOOL)a3;
+- (void)setRecording:(BOOL)recording;
 @end
 
 @implementation WFRecordingStatusManager
@@ -66,13 +66,13 @@ uint64_t __44__WFRecordingStatusManager_acquireAssertion__block_invoke(uint64_t 
   return result;
 }
 
-- (void)setRecording:(BOOL)a3
+- (void)setRecording:(BOOL)recording
 {
-  v3 = a3;
-  v5 = [(WFRecordingStatusManager *)self isRecording];
-  if (!v5 || v3)
+  recordingCopy = recording;
+  isRecording = [(WFRecordingStatusManager *)self isRecording];
+  if (!isRecording || recordingCopy)
   {
-    if (!v5 && v3)
+    if (!isRecording && recordingCopy)
     {
 
       [(WFRecordingStatusManager *)self acquireAssertion];

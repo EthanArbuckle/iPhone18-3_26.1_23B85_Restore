@@ -1,19 +1,19 @@
 @interface TITypologyTimer
-- (void)addInputEventWithTimestamp:(double)a3;
+- (void)addInputEventWithTimestamp:(double)timestamp;
 @end
 
 @implementation TITypologyTimer
 
-- (void)addInputEventWithTimestamp:(double)a3
+- (void)addInputEventWithTimestamp:(double)timestamp
 {
   if (![(TITypologyTimer *)self foundFirstInput])
   {
-    [(TITypologyTimer *)self setMostRecentTimestamp:a3];
+    [(TITypologyTimer *)self setMostRecentTimestamp:timestamp];
     [(TITypologyTimer *)self setFoundFirstInput:1];
   }
 
   [(TITypologyTimer *)self mostRecentTimestamp];
-  v6 = a3 - v5;
+  v6 = timestamp - v5;
   [(TITypologyTimer *)self maxTimeIntervalBetweenInputs];
   if (v7 > 0.0)
   {
@@ -27,7 +27,7 @@
   [(TITypologyTimer *)self elapsedTime];
   [(TITypologyTimer *)self setElapsedTime:v6 + v9];
 
-  [(TITypologyTimer *)self setMostRecentTimestamp:a3];
+  [(TITypologyTimer *)self setMostRecentTimestamp:timestamp];
 }
 
 @end

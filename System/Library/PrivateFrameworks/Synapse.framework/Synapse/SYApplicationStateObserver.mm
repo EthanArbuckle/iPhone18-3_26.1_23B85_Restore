@@ -1,9 +1,9 @@
 @interface SYApplicationStateObserver
-- (SYApplicationStateObserver)initWithBecomeActiveHandler:(id)a3 resignActiveHandler:(id)a4;
-- (void)_handleAppBecomeActive:(id)a3;
-- (void)_handleAppResignActive:(id)a3;
+- (SYApplicationStateObserver)initWithBecomeActiveHandler:(id)handler resignActiveHandler:(id)activeHandler;
+- (void)_handleAppBecomeActive:(id)active;
+- (void)_handleAppResignActive:(id)active;
 - (void)_updateAppStateOnMainThread;
-- (void)_updateAppStateWithCompletion:(id)a3;
+- (void)_updateAppStateWithCompletion:(id)completion;
 - (void)registerForAppStateNotifications;
 @end
 
@@ -37,8 +37,8 @@
 
     v5 = v4;
     _Block_object_dispose(&v8, 8);
-    v6 = [v4 sharedApplication];
-    v3 = [v6 applicationState] == 0;
+    sharedApplication = [v4 sharedApplication];
+    v3 = [sharedApplication applicationState] == 0;
   }
 
   atomic_store(v3, &self->_appStateIsActive);
@@ -46,17 +46,17 @@
 
 - (void)registerForAppStateNotifications
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getUIApplicationDidBecomeActiveNotification(void)"];
-  [v0 handleFailureInFunction:v1 file:@"SYApplicationStateObserver.m" lineNumber:22 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"SYApplicationStateObserver.m" lineNumber:22 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
 
-- (SYApplicationStateObserver)initWithBecomeActiveHandler:(id)a3 resignActiveHandler:(id)a4
+- (SYApplicationStateObserver)initWithBecomeActiveHandler:(id)handler resignActiveHandler:(id)activeHandler
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  activeHandlerCopy = activeHandler;
   v15.receiver = self;
   v15.super_class = SYApplicationStateObserver;
   v8 = [(SYApplicationStateObserver *)&v15 init];
@@ -64,11 +64,11 @@
   if (v8)
   {
     atomic_store(0, &v8->_appStateIsActive);
-    v10 = [v6 copy];
+    v10 = [handlerCopy copy];
     becomeActiveHandler = v9->_becomeActiveHandler;
     v9->_becomeActiveHandler = v10;
 
-    v12 = [v7 copy];
+    v12 = [activeHandlerCopy copy];
     resignActiveHandler = v9->_resignActiveHandler;
     v9->_resignActiveHandler = v12;
 
@@ -79,9 +79,9 @@
   return v9;
 }
 
-- (void)_handleAppBecomeActive:(id)a3
+- (void)_handleAppBecomeActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   becomeActiveHandler = self->_becomeActiveHandler;
   if (becomeActiveHandler)
   {
@@ -91,15 +91,15 @@
     v8[2] = __53__SYApplicationStateObserver__handleAppBecomeActive___block_invoke;
     v8[3] = &unk_27856B788;
     v10 = v6;
-    v9 = v4;
+    v9 = activeCopy;
     v7 = v6;
     [(SYApplicationStateObserver *)self _updateAppStateWithCompletion:v8];
   }
 }
 
-- (void)_handleAppResignActive:(id)a3
+- (void)_handleAppResignActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   resignActiveHandler = self->_resignActiveHandler;
   if (resignActiveHandler)
   {
@@ -109,21 +109,21 @@
     v8[2] = __53__SYApplicationStateObserver__handleAppResignActive___block_invoke;
     v8[3] = &unk_27856B788;
     v10 = v6;
-    v9 = v4;
+    v9 = activeCopy;
     v7 = v6;
     [(SYApplicationStateObserver *)self _updateAppStateWithCompletion:v8];
   }
 }
 
-- (void)_updateAppStateWithCompletion:(id)a3
+- (void)_updateAppStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
     [(SYApplicationStateObserver *)self _updateAppStateOnMainThread];
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -134,7 +134,7 @@
     v5[2] = __60__SYApplicationStateObserver__updateAppStateWithCompletion___block_invoke;
     v5[3] = &unk_27856B978;
     v5[4] = self;
-    v6 = v4;
+    v6 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], v5);
   }
 }

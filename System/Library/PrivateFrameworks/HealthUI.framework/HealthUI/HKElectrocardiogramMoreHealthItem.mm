@@ -1,21 +1,21 @@
 @interface HKElectrocardiogramMoreHealthItem
-- (HKElectrocardiogramMoreHealthItem)initWithView:(id)a3 identifier:(id)a4;
+- (HKElectrocardiogramMoreHealthItem)initWithView:(id)view identifier:(id)identifier;
 @end
 
 @implementation HKElectrocardiogramMoreHealthItem
 
-- (HKElectrocardiogramMoreHealthItem)initWithView:(id)a3 identifier:(id)a4
+- (HKElectrocardiogramMoreHealthItem)initWithView:(id)view identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = HKElectrocardiogramMoreHealthItem;
   v9 = [(HKElectrocardiogramMoreHealthItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_view, a3);
-    objc_storeStrong(&v10->_identifier, a4);
+    objc_storeStrong(&v9->_view, view);
+    objc_storeStrong(&v10->_identifier, identifier);
   }
 
   return v10;

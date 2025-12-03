@@ -1,28 +1,28 @@
 @interface HFMultiSizeImageIconDescriptor
-- (BOOL)isEqual:(id)a3;
-- (HFMultiSizeImageIconDescriptor)initWithImageIdentifiersKeyedBySize:(id)a3;
-- (HFMultiSizeImageIconDescriptor)initWithImageIdentifiersKeyedBySize:(id)a3 defaultImageIdentifier:(id)a4;
-- (id)imageIdentifierForSize:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HFMultiSizeImageIconDescriptor)initWithImageIdentifiersKeyedBySize:(id)size;
+- (HFMultiSizeImageIconDescriptor)initWithImageIdentifiersKeyedBySize:(id)size defaultImageIdentifier:(id)identifier;
+- (id)imageIdentifierForSize:(id)size;
 - (unint64_t)hash;
 @end
 
 @implementation HFMultiSizeImageIconDescriptor
 
-- (HFMultiSizeImageIconDescriptor)initWithImageIdentifiersKeyedBySize:(id)a3
+- (HFMultiSizeImageIconDescriptor)initWithImageIdentifiersKeyedBySize:(id)size
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"HFImageIconIdentifierSizeRegular"];
-  v6 = [(HFMultiSizeImageIconDescriptor *)self initWithImageIdentifiersKeyedBySize:v4 defaultImageIdentifier:v5];
+  sizeCopy = size;
+  v5 = [sizeCopy objectForKeyedSubscript:@"HFImageIconIdentifierSizeRegular"];
+  v6 = [(HFMultiSizeImageIconDescriptor *)self initWithImageIdentifiersKeyedBySize:sizeCopy defaultImageIdentifier:v5];
 
   return v6;
 }
 
-- (HFMultiSizeImageIconDescriptor)initWithImageIdentifiersKeyedBySize:(id)a3 defaultImageIdentifier:(id)a4
+- (HFMultiSizeImageIconDescriptor)initWithImageIdentifiersKeyedBySize:(id)size defaultImageIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v8)
+  sizeCopy = size;
+  identifierCopy = identifier;
+  v9 = identifierCopy;
+  if (!identifierCopy)
   {
     NSLog(&cfstr_NoDefaultImage.isa);
     v9 = @"HFImageIconIdentifierSizeRegular";
@@ -34,31 +34,31 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_imageIdentifiersKeyedBySize, a3);
+    objc_storeStrong(&v10->_imageIdentifiersKeyedBySize, size);
   }
 
   return v11;
 }
 
-- (id)imageIdentifierForSize:(id)a3
+- (id)imageIdentifierForSize:(id)size
 {
-  v4 = a3;
-  v5 = [(HFMultiSizeImageIconDescriptor *)self imageIdentifiersKeyedBySize];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  sizeCopy = size;
+  imageIdentifiersKeyedBySize = [(HFMultiSizeImageIconDescriptor *)self imageIdentifiersKeyedBySize];
+  v6 = [imageIdentifiersKeyedBySize objectForKeyedSubscript:sizeCopy];
 
   if (!v6)
   {
-    v7 = [(HFMultiSizeImageIconDescriptor *)self imageIdentifiersKeyedBySize];
-    v6 = [v7 objectForKeyedSubscript:@"HFImageIconIdentifierSizeRegular"];
+    imageIdentifiersKeyedBySize2 = [(HFMultiSizeImageIconDescriptor *)self imageIdentifiersKeyedBySize];
+    v6 = [imageIdentifiersKeyedBySize2 objectForKeyedSubscript:@"HFImageIconIdentifierSizeRegular"];
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -68,19 +68,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HFMultiSizeImageIconDescriptor *)v5 imageIdentifiersKeyedBySize];
-      v7 = [(HFMultiSizeImageIconDescriptor *)self imageIdentifiersKeyedBySize];
-      if (v6 == v7)
+      v5 = equalCopy;
+      imageIdentifiersKeyedBySize = [(HFMultiSizeImageIconDescriptor *)v5 imageIdentifiersKeyedBySize];
+      imageIdentifiersKeyedBySize2 = [(HFMultiSizeImageIconDescriptor *)self imageIdentifiersKeyedBySize];
+      if (imageIdentifiersKeyedBySize == imageIdentifiersKeyedBySize2)
       {
         v10 = 1;
       }
 
       else
       {
-        v8 = [(HFMultiSizeImageIconDescriptor *)v5 imageIdentifiersKeyedBySize];
-        v9 = [(HFMultiSizeImageIconDescriptor *)self imageIdentifiersKeyedBySize];
-        v10 = [v8 isEqualToDictionary:v9];
+        imageIdentifiersKeyedBySize3 = [(HFMultiSizeImageIconDescriptor *)v5 imageIdentifiersKeyedBySize];
+        imageIdentifiersKeyedBySize4 = [(HFMultiSizeImageIconDescriptor *)self imageIdentifiersKeyedBySize];
+        v10 = [imageIdentifiersKeyedBySize3 isEqualToDictionary:imageIdentifiersKeyedBySize4];
       }
     }
 
@@ -95,8 +95,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HFMultiSizeImageIconDescriptor *)self imageIdentifiersKeyedBySize];
-  v3 = [v2 hash];
+  imageIdentifiersKeyedBySize = [(HFMultiSizeImageIconDescriptor *)self imageIdentifiersKeyedBySize];
+  v3 = [imageIdentifiersKeyedBySize hash];
 
   return v3;
 }

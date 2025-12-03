@@ -1,7 +1,7 @@
 @interface NDURLResolutionListenerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NDURLResolutionListenerDelegate)init;
-- (NDURLResolutionListenerDelegate)initWithURLResolutionService:(id)a3;
+- (NDURLResolutionListenerDelegate)initWithURLResolutionService:(id)service;
 @end
 
 @implementation NDURLResolutionListenerDelegate
@@ -29,10 +29,10 @@
   objc_exception_throw(v4);
 }
 
-- (NDURLResolutionListenerDelegate)initWithURLResolutionService:(id)a3
+- (NDURLResolutionListenerDelegate)initWithURLResolutionService:(id)service
 {
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  serviceCopy = service;
+  if (!serviceCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10005333C();
   }
@@ -43,16 +43,16 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_URLResolutionService, a3);
+    objc_storeStrong(&v6->_URLResolutionService, service);
   }
 
   return v7;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.private.news-url-resolution"];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.private.news-url-resolution"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v6 BOOLValue])
   {
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___NDURLResolutionService];
@@ -62,11 +62,11 @@
     v9 = [NSSet setWithObject:objc_opt_class()];
     [v7 setClasses:v9 forSelector:"resolveWebURL:withCompletion:" argumentIndex:0 ofReply:0];
 
-    [v5 setExportedInterface:v7];
-    v10 = [(NDURLResolutionListenerDelegate *)self URLResolutionService];
-    [v5 setExportedObject:v10];
+    [connectionCopy setExportedInterface:v7];
+    uRLResolutionService = [(NDURLResolutionListenerDelegate *)self URLResolutionService];
+    [connectionCopy setExportedObject:uRLResolutionService];
 
-    [v5 resume];
+    [connectionCopy resume];
     v11 = 1;
   }
 

@@ -1,62 +1,62 @@
 @interface PGMusicCurationOptions
 - (NSArray)recentlyUsedBundledSongIDs;
 - (NSArray)recentlyUsedSongAdamIDs;
-- (PGMusicCurationOptions)initWithOptionsDictionary:(id)a3;
+- (PGMusicCurationOptions)initWithOptionsDictionary:(id)dictionary;
 - (id)_init;
-- (id)copyWithAssetCollectionLocalIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithAssetCollectionLocalIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initForMemoryEnrichment;
-- (id)initForUpNextMemoryRequestWithOptionsDictionary:(id)a3;
+- (id)initForUpNextMemoryRequestWithOptionsDictionary:(id)dictionary;
 @end
 
 @implementation PGMusicCurationOptions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [[PGMusicCurationOptions alloc] _init];
-  v4[6] = self->_suggestedMood;
+  _init = [[PGMusicCurationOptions alloc] _init];
+  _init[6] = self->_suggestedMood;
   v5 = [(NSDictionary *)self->_topicKeywordsAndWeights copy];
-  v6 = v4[5];
-  v4[5] = v5;
+  v6 = _init[5];
+  _init[5] = v5;
 
   v7 = [(NSString *)self->_rootMemoryLocalIdentifier copy];
-  v8 = v4[4];
-  v4[4] = v7;
+  v8 = _init[4];
+  _init[4] = v7;
 
-  *(v4 + 11) = self->_shouldRefreshSongMetadata;
+  *(_init + 11) = self->_shouldRefreshSongMetadata;
   v9 = [(NSString *)self->_assetCollectionLocalIdentifier copy];
-  v10 = v4[8];
-  v4[8] = v9;
+  v10 = _init[8];
+  _init[8] = v9;
 
   v11 = [(NSString *)self->_backingCollectionLocalIdentifier copy];
-  v12 = v4[9];
-  v4[9] = v11;
+  v12 = _init[9];
+  _init[9] = v11;
 
   v13 = [(PGMusicCurationSpecificationOptions *)self->_musicCurationSpecificationOptions copy];
-  v14 = v4[7];
-  v4[7] = v13;
+  v14 = _init[7];
+  _init[7] = v13;
 
-  *(v4 + 13) = self->_shouldCurateUpNextMemories;
+  *(_init + 13) = self->_shouldCurateUpNextMemories;
   v15 = [(NSArray *)self->_recentlyUsedSongAdamIDs copy];
-  v16 = v4[2];
-  v4[2] = v15;
+  v16 = _init[2];
+  _init[2] = v15;
 
   v17 = [(NSArray *)self->_recentlyUsedBundledSongIDs copy];
-  v18 = v4[3];
-  v4[3] = v17;
+  v18 = _init[3];
+  _init[3] = v17;
 
-  *(v4 + 12) = self->_shouldForceShareableInBestSuggestions;
-  *(v4 + 9) = self->_includeChillMixInMusicForYou;
-  *(v4 + 10) = self->_includeGetUpMixInMusicForYou;
-  *(v4 + 8) = self->_useOnlyMusicForTopicInTopPickSuggestions;
-  return v4;
+  *(_init + 12) = self->_shouldForceShareableInBestSuggestions;
+  *(_init + 9) = self->_includeChillMixInMusicForYou;
+  *(_init + 10) = self->_includeGetUpMixInMusicForYou;
+  *(_init + 8) = self->_useOnlyMusicForTopicInTopPickSuggestions;
+  return _init;
 }
 
-- (id)copyWithAssetCollectionLocalIdentifier:(id)a3
+- (id)copyWithAssetCollectionLocalIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(PGMusicCurationOptions *)self copy];
-  v6 = [v4 copy];
+  v6 = [identifierCopy copy];
 
   v7 = v5[8];
   v5[8] = v6;
@@ -90,15 +90,15 @@
   }
 }
 
-- (id)initForUpNextMemoryRequestWithOptionsDictionary:(id)a3
+- (id)initForUpNextMemoryRequestWithOptionsDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(PGMusicCurationOptions *)self initWithOptionsDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [(PGMusicCurationOptions *)self initWithOptionsDictionary:dictionaryCopy];
   v6 = v5;
   if (v5)
   {
     *&v5->_shouldForceShareableInBestSuggestions = 257;
-    v7 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B120]];
+    v7 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B120]];
     rootMemoryLocalIdentifier = v6->_rootMemoryLocalIdentifier;
     v6->_rootMemoryLocalIdentifier = v7;
   }
@@ -117,27 +117,27 @@
   return result;
 }
 
-- (PGMusicCurationOptions)initWithOptionsDictionary:(id)a3
+- (PGMusicCurationOptions)initWithOptionsDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v49.receiver = self;
   v49.super_class = PGMusicCurationOptions;
   v5 = [(PGMusicCurationOptions *)&v49 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3AFE8]];
+    v6 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3AFE8]];
     recentlyUsedSongAdamIDs = v5->_recentlyUsedSongAdamIDs;
     v5->_recentlyUsedSongAdamIDs = v6;
 
-    v8 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3AFE0]];
+    v8 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3AFE0]];
     recentlyUsedBundledSongIDs = v5->_recentlyUsedBundledSongIDs;
     v5->_recentlyUsedBundledSongIDs = v8;
 
     v10 = *MEMORY[0x277D3B178];
-    v11 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B178]];
+    v11 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B178]];
     if (v11)
     {
-      v12 = [v4 objectForKeyedSubscript:v10];
+      v12 = [dictionaryCopy objectForKeyedSubscript:v10];
       v5->_useOnlyMusicForTopicInTopPickSuggestions = [v12 BOOLValue];
     }
 
@@ -147,10 +147,10 @@
     }
 
     v13 = *MEMORY[0x277D3B168];
-    v14 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B168]];
+    v14 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B168]];
     if (v14)
     {
-      v15 = [v4 objectForKeyedSubscript:v13];
+      v15 = [dictionaryCopy objectForKeyedSubscript:v13];
       v5->_includeChillMixInMusicForYou = [v15 BOOLValue];
     }
 
@@ -160,10 +160,10 @@
     }
 
     v16 = *MEMORY[0x277D3B170];
-    v17 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B170]];
+    v17 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B170]];
     if (v17)
     {
-      v18 = [v4 objectForKeyedSubscript:v16];
+      v18 = [dictionaryCopy objectForKeyedSubscript:v16];
       v5->_includeGetUpMixInMusicForYou = [v18 BOOLValue];
     }
 
@@ -173,10 +173,10 @@
     }
 
     v19 = *MEMORY[0x277D3AEF0];
-    v20 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3AEF0]];
+    v20 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3AEF0]];
     if (v20)
     {
-      v21 = [v4 objectForKeyedSubscript:v19];
+      v21 = [dictionaryCopy objectForKeyedSubscript:v19];
       v22 = [v21 BOOLValue] ^ 1;
     }
 
@@ -187,10 +187,10 @@
 
     v5->_shouldForceShareableInBestSuggestions = v22;
     v23 = *MEMORY[0x277D3AF00];
-    v24 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3AF00]];
+    v24 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3AF00]];
     if (v24)
     {
-      v25 = [v4 objectForKeyedSubscript:v23];
+      v25 = [dictionaryCopy objectForKeyedSubscript:v23];
       v5->_shouldUseSpecificationOptionsForCuration = [v25 BOOLValue];
     }
 
@@ -199,7 +199,7 @@
       v5->_shouldUseSpecificationOptionsForCuration = 0;
     }
 
-    v26 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B0F0]];
+    v26 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B0F0]];
     v27 = v26;
     v28 = MEMORY[0x277CBEC10];
     if (v26)
@@ -214,9 +214,9 @@
 
     objc_storeStrong(&v5->_topicKeywordsAndWeights, v29);
 
-    v30 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3AEF8]];
+    v30 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3AEF8]];
     v5->_suggestedMood = _moodFromMoodAsNumber(v30);
-    v31 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3AEC0]];
+    v31 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3AEC0]];
     v32 = v31;
     if (v31)
     {
@@ -234,19 +234,19 @@
     musicCurationSpecificationOptions = v5->_musicCurationSpecificationOptions;
     v5->_musicCurationSpecificationOptions = v35;
 
-    v37 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3AE08]];
+    v37 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3AE08]];
     assetCollectionLocalIdentifier = v5->_assetCollectionLocalIdentifier;
     v5->_assetCollectionLocalIdentifier = v37;
 
-    v39 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3AE10]];
+    v39 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3AE10]];
     backingCollectionLocalIdentifier = v5->_backingCollectionLocalIdentifier;
     v5->_backingCollectionLocalIdentifier = v39;
 
     v41 = *MEMORY[0x277D3B148];
-    v42 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B148]];
+    v42 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B148]];
     if (v42)
     {
-      v43 = [v4 objectForKeyedSubscript:v41];
+      v43 = [dictionaryCopy objectForKeyedSubscript:v41];
       v5->_useMemoryCreationMusicCuratorConfiguration = [v43 BOOLValue];
     }
 
@@ -256,10 +256,10 @@
     }
 
     v44 = *MEMORY[0x277D3AE78];
-    v45 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3AE78]];
+    v45 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3AE78]];
     if (v45)
     {
-      v46 = [v4 objectForKeyedSubscript:v44];
+      v46 = [dictionaryCopy objectForKeyedSubscript:v44];
     }
 
     else

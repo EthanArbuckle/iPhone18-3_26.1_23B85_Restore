@@ -1,6 +1,6 @@
 @interface OITSUMutableCustomFormatData
 + (id)customFormatData;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation OITSUMutableCustomFormatData
@@ -12,7 +12,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[OITSUCustomFormatData allocWithZone:?]];
   [(OITSUCustomFormatData *)self p_copySelfTo:v4];

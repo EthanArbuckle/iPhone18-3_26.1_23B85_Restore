@@ -1,20 +1,20 @@
 @interface MFPhonePen
-+ (id)penWithStyle:(int)a3 width:(int)a4 colour:(id)a5 styleArray:(double *)a6 LPToDPTransform:(CGAffineTransform *)a7;
-- (MFPhonePen)initWithStyle:(int)a3 width:(int)a4 colour:(id)a5 styleArray:(double *)a6;
-- (void)applyDashedLinesToPath:(id)a3;
-- (void)applyLineCapStyleToPath:(id)a3;
-- (void)applyLineJoinStyleToPath:(id)a3 in_path:(id)a4;
-- (void)strokePath:(id)a3 in_path:(id)a4;
++ (id)penWithStyle:(int)style width:(int)width colour:(id)colour styleArray:(double *)array LPToDPTransform:(CGAffineTransform *)transform;
+- (MFPhonePen)initWithStyle:(int)style width:(int)width colour:(id)colour styleArray:(double *)array;
+- (void)applyDashedLinesToPath:(id)path;
+- (void)applyLineCapStyleToPath:(id)path;
+- (void)applyLineJoinStyleToPath:(id)path in_path:(id)in_path;
+- (void)strokePath:(id)path in_path:(id)in_path;
 @end
 
 @implementation MFPhonePen
 
-+ (id)penWithStyle:(int)a3 width:(int)a4 colour:(id)a5 styleArray:(double *)a6 LPToDPTransform:(CGAffineTransform *)a7
++ (id)penWithStyle:(int)style width:(int)width colour:(id)colour styleArray:(double *)array LPToDPTransform:(CGAffineTransform *)transform
 {
-  v9 = *&a4;
-  v10 = *&a3;
-  v12 = a5;
-  v13 = [a1 alloc];
+  v9 = *&width;
+  v10 = *&style;
+  colourCopy = colour;
+  v13 = [self alloc];
   v14 = v13;
   if (v10 > 4 || v9)
   {
@@ -23,10 +23,10 @@
 
   else
   {
-    v15 = *&a7->c;
-    *&v19.a = *&a7->a;
+    v15 = *&transform->c;
+    *&v19.a = *&transform->a;
     *&v19.c = v15;
-    *&v19.tx = *&a7->tx;
+    *&v19.tx = *&transform->tx;
     memset(&v20, 0, sizeof(v20));
     CGAffineTransformInvert(&v20, &v19);
     v16 = v20.a + v20.c;
@@ -34,22 +34,22 @@
     v9 = 1;
   }
 
-  v17 = [v14 initWithStyle:v10 width:v9 colour:v12 styleArray:a6];
+  v17 = [v14 initWithStyle:v10 width:v9 colour:colourCopy styleArray:array];
 
   return v17;
 }
 
-- (MFPhonePen)initWithStyle:(int)a3 width:(int)a4 colour:(id)a5 styleArray:(double *)a6
+- (MFPhonePen)initWithStyle:(int)style width:(int)width colour:(id)colour styleArray:(double *)array
 {
   v7.receiver = self;
   v7.super_class = MFPhonePen;
-  return [(MFPen *)&v7 initWithStyle:*&a3 width:*&a4 colour:a5 styleArray:a6];
+  return [(MFPen *)&v7 initWithStyle:*&style width:*&width colour:colour styleArray:array];
 }
 
-- (void)applyDashedLinesToPath:(id)a3
+- (void)applyDashedLinesToPath:(id)path
 {
   v12[6] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v5 = ([(MFPen *)self getStyle]& 0xF) - 1;
   if (v5 < 4)
   {
@@ -75,14 +75,14 @@
     }
 
     while (v10 != v6);
-    [v4 setLineDash:v12 count:0.0 phase:?];
+    [pathCopy setLineDash:v12 count:0.0 phase:?];
   }
 }
 
-- (void)applyLineJoinStyleToPath:(id)a3 in_path:(id)a4
+- (void)applyLineJoinStyleToPath:(id)path in_path:(id)in_path
 {
-  v12 = a3;
-  v6 = a4;
+  pathCopy = path;
+  in_pathCopy = in_path;
   v7 = [(MFPen *)self getStyle]& 0xF000;
   v8 = 1;
   if (v7 == 4096)
@@ -100,23 +100,23 @@
     v9 = v8;
   }
 
-  [v6 setLineJoinStyle:v9];
+  [in_pathCopy setLineJoinStyle:v9];
   if (v7 == 0x2000)
   {
-    [v12 getMiterLimit];
+    [pathCopy getMiterLimit];
     v11 = v10;
     if (v10 < 0.0)
     {
-      [v6 setMiterLimit:10.0];
+      [in_pathCopy setMiterLimit:10.0];
     }
 
-    [v6 setMiterLimit:v11];
+    [in_pathCopy setMiterLimit:v11];
   }
 }
 
-- (void)applyLineCapStyleToPath:(id)a3
+- (void)applyLineCapStyleToPath:(id)path
 {
-  v7 = a3;
+  pathCopy = path;
   v4 = [(MFPen *)self getStyle]& 0xF00;
   v5 = 1;
   if (v4 == 256)
@@ -134,21 +134,21 @@
     v6 = v5;
   }
 
-  [v7 setLineCapStyle:v6];
+  [pathCopy setLineCapStyle:v6];
 }
 
-- (void)strokePath:(id)a3 in_path:(id)a4
+- (void)strokePath:(id)path in_path:(id)in_path
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [MFPhoneDeviceDriver getROP:v14];
+  pathCopy = path;
+  in_pathCopy = in_path;
+  v7 = [MFPhoneDeviceDriver getROP:pathCopy];
   v8 = v7;
   if (self->super.m_penStyle != 5 && v7 != 3)
   {
     m_penWidth = self->super.m_penWidth;
     if (m_penWidth)
     {
-      [v6 setLineWidth:m_penWidth];
+      [in_pathCopy setLineWidth:m_penWidth];
       if (v8 == 1)
       {
         v11 = +[OITSUColor whiteColor];
@@ -170,25 +170,25 @@
         [v11 set];
       }
 
-      [(MFPhonePen *)self applyDashedLinesToPath:v6];
+      [(MFPhonePen *)self applyDashedLinesToPath:in_pathCopy];
       m_penStyle = self->super.m_penStyle;
       if ((m_penStyle & 0xF0000) == 0x10000 || self->super.m_penWidth >= 2)
       {
-        [(MFPhonePen *)self applyLineCapStyleToPath:v6];
-        [(MFPhonePen *)self applyLineJoinStyleToPath:v14 in_path:v6];
+        [(MFPhonePen *)self applyLineCapStyleToPath:in_pathCopy];
+        [(MFPhonePen *)self applyLineJoinStyleToPath:pathCopy in_path:in_pathCopy];
         m_penStyle = self->super.m_penStyle;
       }
 
       if ((~m_penStyle & 0x12000) == 0)
       {
-        [v14 getMiterLimit];
+        [pathCopy getMiterLimit];
         if (v13 > 0.0 && v13 != 4.0)
         {
-          [v6 setMiterLimit:?];
+          [in_pathCopy setMiterLimit:?];
         }
       }
 
-      [v6 stroke];
+      [in_pathCopy stroke];
     }
   }
 }

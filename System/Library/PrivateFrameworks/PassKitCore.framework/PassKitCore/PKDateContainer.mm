@@ -1,18 +1,18 @@
 @interface PKDateContainer
-- (BOOL)isEqual:(id)a3;
-- (PKDateContainer)initWithCoder:(id)a3;
-- (PKDateContainer)initWithDate:(id)a3 timeZone:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKDateContainer)initWithCoder:(id)coder;
+- (PKDateContainer)initWithDate:(id)date timeZone:(id)zone;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKDateContainer
 
-- (PKDateContainer)initWithDate:(id)a3 timeZone:(id)a4
+- (PKDateContainer)initWithDate:(id)date timeZone:(id)zone
 {
-  v7 = a3;
-  result = a4;
-  if (v7)
+  dateCopy = date;
+  result = zone;
+  if (dateCopy)
   {
     v9 = result;
     if (self)
@@ -23,8 +23,8 @@
       self = v10;
       if (v10)
       {
-        objc_storeStrong(&v10->_date, a3);
-        objc_storeStrong(&self->_timeZone, a4);
+        objc_storeStrong(&v10->_date, date);
+        objc_storeStrong(&self->_timeZone, zone);
       }
     }
 
@@ -39,10 +39,10 @@
   return result;
 }
 
-- (PKDateContainer)initWithCoder:(id)a3
+- (PKDateContainer)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
   if (v5)
   {
     v13.receiver = self;
@@ -52,46 +52,46 @@
     if (v6)
     {
       objc_storeStrong(&v6->_date, v5);
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
       timeZone = v7->_timeZone;
       v7->_timeZone = v8;
     }
 
     self = v7;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
     v11 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKDateContainer" code:0 userInfo:0];
-    [v4 failWithError:v11];
+    [coderCopy failWithError:v11];
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   date = self->_date;
-  v5 = a3;
-  [v5 encodeObject:date forKey:@"date"];
-  [v5 encodeObject:self->_timeZone forKey:@"timeZone"];
+  coderCopy = coder;
+  [coderCopy encodeObject:date forKey:@"date"];
+  [coderCopy encodeObject:self->_timeZone forKey:@"timeZone"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(self) = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -144,7 +144,7 @@ LABEL_17:
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [PKDateContainer allocWithZone:?];
   if (v5)
@@ -159,14 +159,14 @@ LABEL_17:
     v6 = 0;
   }
 
-  v7 = [(NSDate *)self->_date copyWithZone:a3];
+  v7 = [(NSDate *)self->_date copyWithZone:zone];
   date = v6->_date;
   v6->_date = v7;
 
   timeZone = self->_timeZone;
   if (timeZone)
   {
-    timeZone = [(NSTimeZone *)timeZone copyWithZone:a3];
+    timeZone = [(NSTimeZone *)timeZone copyWithZone:zone];
   }
 
   v10 = v6->_timeZone;

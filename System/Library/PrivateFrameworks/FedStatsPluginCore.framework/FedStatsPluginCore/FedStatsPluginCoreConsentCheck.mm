@@ -1,22 +1,22 @@
 @interface FedStatsPluginCoreConsentCheck
-+ (BOOL)checkConsentConfigurationItem:(id)a3;
-+ (BOOL)isConsentedForUseCase:(id)a3;
++ (BOOL)checkConsentConfigurationItem:(id)item;
++ (BOOL)isConsentedForUseCase:(id)case;
 + (id)sharedInstance;
-- (FedStatsPluginCoreConsentCheck)initWithConsentConfiguration:(id)a3;
+- (FedStatsPluginCoreConsentCheck)initWithConsentConfiguration:(id)configuration;
 @end
 
 @implementation FedStatsPluginCoreConsentCheck
 
-- (FedStatsPluginCoreConsentCheck)initWithConsentConfiguration:(id)a3
+- (FedStatsPluginCoreConsentCheck)initWithConsentConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = FedStatsPluginCoreConsentCheck;
   v6 = [(FedStatsPluginCoreConsentCheck *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_consentConfiguration, a3);
+    objc_storeStrong(&v6->_consentConfiguration, configuration);
   }
 
   return v7;
@@ -214,10 +214,10 @@ LABEL_36:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)checkConsentConfigurationItem:(id)a3
++ (BOOL)checkConsentConfigurationItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"needsDnU"];
+  itemCopy = item;
+  v4 = [itemCopy objectForKey:@"needsDnU"];
   v5 = v4;
   if (v4 && ![v4 BOOLValue])
   {
@@ -229,7 +229,7 @@ LABEL_36:
 
 LABEL_11:
 
-    v10 = [v3 objectForKey:@"needsLocation"];
+    v10 = [itemCopy objectForKey:@"needsLocation"];
     v7 = v10;
     if (v10 && [v10 BOOLValue]&& !+[FedStatsPluginCoreConsentCheckHelper checkLocation])
     {
@@ -243,7 +243,7 @@ LABEL_11:
       goto LABEL_45;
     }
 
-    v11 = [v3 objectForKey:@"needsIHA"];
+    v11 = [itemCopy objectForKey:@"needsIHA"];
     v12 = v11;
     if (v11 && [v11 BOOLValue]&& !+[FedStatsPluginCoreConsentCheckHelper checkIHA])
     {
@@ -257,7 +257,7 @@ LABEL_11:
       goto LABEL_44;
     }
 
-    v13 = [v3 objectForKey:@"needsIDV"];
+    v13 = [itemCopy objectForKey:@"needsIDV"];
     v14 = v13;
     if (v13 && [v13 BOOLValue]&& !+[FedStatsPluginCoreConsentCheckHelper checkIDV])
     {
@@ -271,7 +271,7 @@ LABEL_11:
       goto LABEL_43;
     }
 
-    v15 = [v3 objectForKey:@"needsCNAI"];
+    v15 = [itemCopy objectForKey:@"needsCNAI"];
     v16 = v15;
     if (v15 && [v15 BOOLValue]&& !+[FedStatsPluginCoreConsentCheckHelper checkChinaAIEligibility])
     {
@@ -284,7 +284,7 @@ LABEL_11:
 
     else
     {
-      v17 = [v3 objectForKey:@"needsCommSafety"];
+      v17 = [itemCopy objectForKey:@"needsCommSafety"];
       v18 = v17;
       if (!v17 || ![v17 BOOLValue]|| +[FedStatsPluginCoreConsentCheckHelper checkCommSafety])
       {
@@ -333,9 +333,9 @@ LABEL_46:
   return v9;
 }
 
-+ (BOOL)isConsentedForUseCase:(id)a3
++ (BOOL)isConsentedForUseCase:(id)case
 {
-  v3 = a3;
+  caseCopy = case;
   v4 = +[FedStatsPluginLog logger];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -352,8 +352,8 @@ LABEL_46:
       +[FedStatsPluginCoreConsentCheck isConsentedForUseCase:];
     }
 
-    v8 = [v5 consentConfiguration];
-    v7 = [v8 objectForKey:v3];
+    consentConfiguration = [v5 consentConfiguration];
+    v7 = [consentConfiguration objectForKey:caseCopy];
 
     if (!v7)
     {

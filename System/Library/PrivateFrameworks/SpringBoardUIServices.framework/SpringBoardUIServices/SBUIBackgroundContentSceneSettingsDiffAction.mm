@@ -1,16 +1,16 @@
 @interface SBUIBackgroundContentSceneSettingsDiffAction
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 @end
 
 @implementation SBUIBackgroundContentSceneSettingsDiffAction
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
+  sceneCopy = scene;
+  diffCopy = diff;
+  sSceneCopy = sScene;
   v13 = objc_opt_class();
-  v19 = v10;
+  v19 = sceneCopy;
   if (v13)
   {
     if (objc_opt_isKindOfClass())
@@ -31,13 +31,13 @@
 
   v15 = v14;
 
-  v16 = [v15 delegate];
-  v17 = [v12 settings];
+  delegate = [v15 delegate];
+  settings = [sSceneCopy settings];
 
-  v18 = [v11 containsProperty:sel_isContentObscured];
+  v18 = [diffCopy containsProperty:sel_isContentObscured];
   if (v18 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v16 backgroundContentScene:v15 contentObscuredDidChange:{objc_msgSend(v17, "isContentObscured")}];
+    [delegate backgroundContentScene:v15 contentObscuredDidChange:{objc_msgSend(settings, "isContentObscured")}];
   }
 }
 

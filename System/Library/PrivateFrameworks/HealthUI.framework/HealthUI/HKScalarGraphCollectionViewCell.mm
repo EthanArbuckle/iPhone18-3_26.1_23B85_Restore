@@ -1,26 +1,26 @@
 @interface HKScalarGraphCollectionViewCell
 - (HKLollipopController)lollipopController;
-- (HKScalarGraphCollectionViewCell)initWithFrame:(CGRect)a3;
+- (HKScalarGraphCollectionViewCell)initWithFrame:(CGRect)frame;
 - (HKScalarGraphViewController)graphViewController;
 - (UIView)header;
-- (void)graphView:(id)a3 didUpdateSelectedPoint:(id)a4;
-- (void)graphViewDidEndSelection:(id)a3;
+- (void)graphView:(id)view didUpdateSelectedPoint:(id)point;
+- (void)graphViewDidEndSelection:(id)selection;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation HKScalarGraphCollectionViewCell
 
-- (HKScalarGraphCollectionViewCell)initWithFrame:(CGRect)a3
+- (HKScalarGraphCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = HKScalarGraphCollectionViewCell;
-  v3 = [(HKScalarGraphCollectionViewCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HKScalarGraphCollectionViewCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(HKScalarGraphCollectionViewCell *)v3 contentView];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    contentView = [(HKScalarGraphCollectionViewCell *)v3 contentView];
+    [contentView setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
   return v4;
@@ -44,44 +44,44 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(HKScalarGraphCollectionViewCell *)self graphViewController];
-  v12 = [v11 view];
-  [v12 setFrame:{v4, v6, v8, v10}];
+  graphViewController = [(HKScalarGraphCollectionViewCell *)self graphViewController];
+  view = [graphViewController view];
+  [view setFrame:{v4, v6, v8, v10}];
 }
 
-- (void)graphView:(id)a3 didUpdateSelectedPoint:(id)a4
+- (void)graphView:(id)view didUpdateSelectedPoint:(id)point
 {
-  v17 = a4;
+  pointCopy = point;
   if ([HKLollipopController pointSelectionContextsHaveUserInfo:?])
   {
-    v5 = [(HKScalarGraphCollectionViewCell *)self lollipopController];
-    v6 = [v5 isVisible];
+    lollipopController = [(HKScalarGraphCollectionViewCell *)self lollipopController];
+    isVisible = [lollipopController isVisible];
 
-    if (v6)
+    if (isVisible)
     {
-      v7 = [(HKScalarGraphCollectionViewCell *)self lollipopController];
-      [v7 updateWithPointContexts:v17];
+      lollipopController2 = [(HKScalarGraphCollectionViewCell *)self lollipopController];
+      [lollipopController2 updateWithPointContexts:pointCopy];
     }
 
     else
     {
-      v8 = [(HKScalarGraphCollectionViewCell *)self header];
-      [v8 frame];
+      header = [(HKScalarGraphCollectionViewCell *)self header];
+      [header frame];
       v10 = v9;
       v12 = v11;
       v14 = v13;
       v16 = v15;
 
-      v7 = [(HKScalarGraphCollectionViewCell *)self lollipopController];
-      [v7 setVisibleWithRect:v17 pointContexts:1 animated:{v10, v12, v14, v16}];
+      lollipopController2 = [(HKScalarGraphCollectionViewCell *)self lollipopController];
+      [lollipopController2 setVisibleWithRect:pointCopy pointContexts:1 animated:{v10, v12, v14, v16}];
     }
   }
 }
 
-- (void)graphViewDidEndSelection:(id)a3
+- (void)graphViewDidEndSelection:(id)selection
 {
-  v3 = [(HKScalarGraphCollectionViewCell *)self lollipopController];
-  [v3 setInvisibleAnimated:1];
+  lollipopController = [(HKScalarGraphCollectionViewCell *)self lollipopController];
+  [lollipopController setInvisibleAnimated:1];
 }
 
 - (HKScalarGraphViewController)graphViewController

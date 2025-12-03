@@ -1,14 +1,14 @@
 @interface SoftLinker
-+ (void)fetchMediaAPIMetadataForItemID:(id)a3 versionID:(id)a4 distributorID:(id)a5 completion:(id)a6;
-+ (void)notifyOfGameCenterEnabledAppInstall:(id)a3 withCompletionHandler:(id)a4;
++ (void)fetchMediaAPIMetadataForItemID:(id)d versionID:(id)iD distributorID:(id)distributorID completion:(id)completion;
++ (void)notifyOfGameCenterEnabledAppInstall:(id)install withCompletionHandler:(id)handler;
 @end
 
 @implementation SoftLinker
 
-+ (void)notifyOfGameCenterEnabledAppInstall:(id)a3 withCompletionHandler:(id)a4
++ (void)notifyOfGameCenterEnabledAppInstall:(id)install withCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  installCopy = install;
+  handlerCopy = handler;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2050000000;
@@ -27,23 +27,23 @@
 
   v8 = v7;
   _Block_object_dispose(&v10, 8);
-  [v7 gameCenterEnabledGameInstalled:v5 withCompletionHandler:v6];
+  [v7 gameCenterEnabledGameInstalled:installCopy withCompletionHandler:handlerCopy];
 }
 
-+ (void)fetchMediaAPIMetadataForItemID:(id)a3 versionID:(id)a4 distributorID:(id)a5 completion:(id)a6
++ (void)fetchMediaAPIMetadataForItemID:(id)d versionID:(id)iD distributorID:(id)distributorID completion:(id)completion
 {
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001EB2EC;
   v13[3] = &unk_100756CE0;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v9 = v17;
-  v10 = v16;
-  v11 = v15;
-  v12 = v14;
+  dCopy = d;
+  iDCopy = iD;
+  distributorIDCopy = distributorID;
+  completionCopy = completion;
+  v9 = completionCopy;
+  v10 = distributorIDCopy;
+  v11 = iDCopy;
+  v12 = dCopy;
   dispatch_async(&_dispatch_main_q, v13);
 }
 

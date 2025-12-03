@@ -1,8 +1,8 @@
 @interface PHASEGlobalMetaParameterAsset
 - (PHASEGlobalMetaParameterAsset)init;
-- (PHASEGlobalMetaParameterAsset)initWithUID:(id)a3 assetRegistry:(id)a4 weakStringPoolReference:(void *)a5;
-- (PHASEGlobalMetaParameterAsset)initWithUID:(id)a3 metaParameterWeakReference:(const void *)a4 assetRegistry:(id)a5 weakStringPoolReference:(void *)a6;
-- (PHASEGlobalMetaParameterAsset)initWithUID:(id)a3 ownedMetaParameter:()unique_ptr<Phase:(std:(id)a5 :(void *)a6 default_delete<Phase::MetaParameter>>)a4 :MetaParameter assetRegistry:weakStringPoolReference:;
+- (PHASEGlobalMetaParameterAsset)initWithUID:(id)d assetRegistry:(id)registry weakStringPoolReference:(void *)reference;
+- (PHASEGlobalMetaParameterAsset)initWithUID:(id)d metaParameterWeakReference:(const void *)reference assetRegistry:(id)registry weakStringPoolReference:(void *)poolReference;
+- (PHASEGlobalMetaParameterAsset)initWithUID:(id)d ownedMetaParameter:()unique_ptr<Phase:(std:(id)phase :(void *)a6 default_delete<Phase::MetaParameter>>)a4 :MetaParameter assetRegistry:weakStringPoolReference:;
 - (id).cxx_construct;
 @end
 
@@ -15,16 +15,16 @@
   return 0;
 }
 
-- (PHASEGlobalMetaParameterAsset)initWithUID:(id)a3 assetRegistry:(id)a4 weakStringPoolReference:(void *)a5
+- (PHASEGlobalMetaParameterAsset)initWithUID:(id)d assetRegistry:(id)registry weakStringPoolReference:(void *)reference
 {
-  [(PHASEGlobalMetaParameterAsset *)self doesNotRecognizeSelector:a2, a4, a5];
+  [(PHASEGlobalMetaParameterAsset *)self doesNotRecognizeSelector:a2, registry, reference];
 
   return 0;
 }
 
-- (PHASEGlobalMetaParameterAsset)initWithUID:(id)a3 ownedMetaParameter:()unique_ptr<Phase:(std:(id)a5 :(void *)a6 default_delete<Phase::MetaParameter>>)a4 :MetaParameter assetRegistry:weakStringPoolReference:
+- (PHASEGlobalMetaParameterAsset)initWithUID:(id)d ownedMetaParameter:()unique_ptr<Phase:(std:(id)phase :(void *)a6 default_delete<Phase::MetaParameter>>)a4 :MetaParameter assetRegistry:weakStringPoolReference:
 {
-  v7 = [(PHASEGlobalMetaParameterAsset *)self initWithUID:a3 metaParameterWeakReference:*a4.__ptr_ assetRegistry:a5 weakStringPoolReference:a6];
+  v7 = [(PHASEGlobalMetaParameterAsset *)self initWithUID:d metaParameterWeakReference:*a4.__ptr_ assetRegistry:phase weakStringPoolReference:a6];
   v8 = v7;
   if (v7)
   {
@@ -43,15 +43,15 @@
   return v8;
 }
 
-- (PHASEGlobalMetaParameterAsset)initWithUID:(id)a3 metaParameterWeakReference:(const void *)a4 assetRegistry:(id)a5 weakStringPoolReference:(void *)a6
+- (PHASEGlobalMetaParameterAsset)initWithUID:(id)d metaParameterWeakReference:(const void *)reference assetRegistry:(id)registry weakStringPoolReference:(void *)poolReference
 {
   v11.receiver = self;
   v11.super_class = PHASEGlobalMetaParameterAsset;
-  v7 = [(PHASEAsset *)&v11 initWithUID:a3 assetRegistry:a5 weakStringPoolReference:a6];
+  v7 = [(PHASEAsset *)&v11 initWithUID:d assetRegistry:registry weakStringPoolReference:poolReference];
   v8 = v7;
   if (v7)
   {
-    v7->_metaParamReference = a4;
+    v7->_metaParamReference = reference;
     v9 = v7;
   }
 

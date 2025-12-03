@@ -1,40 +1,40 @@
 @interface ASTIdentityAlias
-+ (id)identityAliasWithChipId:(id)a3 uniqueChipId:(id)a4;
-+ (id)identityAliasWithMainLogicBoardSerialNumber:(id)a3;
-+ (id)identityAliasWithSerialNumber:(id)a3;
++ (id)identityAliasWithChipId:(id)id uniqueChipId:(id)chipId;
++ (id)identityAliasWithMainLogicBoardSerialNumber:(id)number;
++ (id)identityAliasWithSerialNumber:(id)number;
 - (ASTIdentityAlias)init;
-- (ASTIdentityAlias)initWithChipId:(id)a3 uniqueChipId:(id)a4;
-- (ASTIdentityAlias)initWithCoder:(id)a3;
-- (ASTIdentityAlias)initWithMainLogicBoardSerialNumber:(id)a3;
-- (ASTIdentityAlias)initWithSerialNumber:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASTIdentityAlias)initWithChipId:(id)id uniqueChipId:(id)chipId;
+- (ASTIdentityAlias)initWithCoder:(id)coder;
+- (ASTIdentityAlias)initWithMainLogicBoardSerialNumber:(id)number;
+- (ASTIdentityAlias)initWithSerialNumber:(id)number;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASTIdentityAlias
 
-+ (id)identityAliasWithSerialNumber:(id)a3
++ (id)identityAliasWithSerialNumber:(id)number
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSerialNumber:v4];
+  numberCopy = number;
+  v5 = [[self alloc] initWithSerialNumber:numberCopy];
 
   return v5;
 }
 
-- (ASTIdentityAlias)initWithSerialNumber:(id)a3
+- (ASTIdentityAlias)initWithSerialNumber:(id)number
 {
   v12[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  numberCopy = number;
   v5 = [(ASTIdentityAlias *)self init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (numberCopy)
     {
       v11[0] = @"type";
       v11[1] = @"serialNumber";
       v12[0] = @"FGSN";
-      v12[1] = v4;
+      v12[1] = numberCopy;
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
       v8 = [v7 mutableCopy];
 
@@ -52,29 +52,29 @@
   return v6;
 }
 
-+ (id)identityAliasWithMainLogicBoardSerialNumber:(id)a3
++ (id)identityAliasWithMainLogicBoardSerialNumber:(id)number
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithMainLogicBoardSerialNumber:v4];
+  numberCopy = number;
+  v5 = [[self alloc] initWithMainLogicBoardSerialNumber:numberCopy];
 
   return v5;
 }
 
-- (ASTIdentityAlias)initWithMainLogicBoardSerialNumber:(id)a3
+- (ASTIdentityAlias)initWithMainLogicBoardSerialNumber:(id)number
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  numberCopy = number;
   v5 = [(ASTIdentityAlias *)self init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (numberCopy)
     {
       v7 = objc_alloc(MEMORY[0x277CBEB38]);
       v12[0] = @"type";
       v12[1] = @"serialNumber";
       v13[0] = @"MLBSN";
-      v13[1] = v4;
+      v13[1] = numberCopy;
       v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
       v9 = [v7 initWithDictionary:v8];
 
@@ -124,9 +124,9 @@
   return v2;
 }
 
-- (ASTIdentityAlias)initWithCoder:(id)a3
+- (ASTIdentityAlias)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = ASTIdentityAlias;
   v5 = [(ASTIdentityAlias *)&v15 init];
@@ -138,7 +138,7 @@
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v6 setWithObjects:{v7, v8, v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"dictionary"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"dictionary"];
     dictionary = v5->_dictionary;
     v5->_dictionary = v12;
   }
@@ -146,51 +146,51 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASTIdentityAlias *)self dictionary];
-  [v4 encodeObject:v5 forKey:@"dictionary"];
+  coderCopy = coder;
+  dictionary = [(ASTIdentityAlias *)self dictionary];
+  [coderCopy encodeObject:dictionary forKey:@"dictionary"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSDictionary *)self->_dictionary copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSDictionary *)self->_dictionary copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
   return v5;
 }
 
-+ (id)identityAliasWithChipId:(id)a3 uniqueChipId:(id)a4
++ (id)identityAliasWithChipId:(id)id uniqueChipId:(id)chipId
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithChipId:v7 uniqueChipId:v6];
+  chipIdCopy = chipId;
+  idCopy = id;
+  v8 = [[self alloc] initWithChipId:idCopy uniqueChipId:chipIdCopy];
 
   return v8;
 }
 
-- (ASTIdentityAlias)initWithChipId:(id)a3 uniqueChipId:(id)a4
+- (ASTIdentityAlias)initWithChipId:(id)id uniqueChipId:(id)chipId
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  chipIdCopy = chipId;
   v8 = [(ASTIdentityAlias *)self init];
   v9 = v8;
   if (v8)
   {
-    if (v6 && v7)
+    if (idCopy && chipIdCopy)
     {
       v10 = objc_alloc(MEMORY[0x277CBEB38]);
       v18[0] = @"ECID";
       v17[0] = @"type";
       v17[1] = @"chipId";
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"0x%08llX", objc_msgSend(v6, "unsignedLongLongValue")];
+      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"0x%08llX", objc_msgSend(idCopy, "unsignedLongLongValue")];
       v18[1] = v11;
       v17[2] = @"ECID";
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"0x%016llX", objc_msgSend(v7, "unsignedLongLongValue")];
+      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"0x%016llX", objc_msgSend(chipIdCopy, "unsignedLongLongValue")];
       v18[2] = v12;
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:3];
       v14 = [v10 initWithDictionary:v13];

@@ -1,31 +1,31 @@
 @interface PRDMetadata
 - (_TtC13CoreIDVShared11PRDMetadata)init;
-- (_TtC13CoreIDVShared11PRDMetadata)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC13CoreIDVShared11PRDMetadata)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRDMetadata
 
-- (_TtC13CoreIDVShared11PRDMetadata)initWithCoder:(id)a3
+- (_TtC13CoreIDVShared11PRDMetadata)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_225B6123C(v3);
+  coderCopy = coder;
+  v4 = sub_225B6123C(coderCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC13CoreIDVShared11PRDMetadata_stage2);
-  v5 = a3;
-  v6 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v7 = sub_225CCE444();
   LODWORD(v8) = v4;
-  [v5 encodeFloat:v7 forKey:v8];
+  [coderCopy encodeFloat:v7 forKey:v8];
 
   v9 = sub_225CCFC44();
   v10 = sub_225CCE444();
-  [v5 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:v9 forKey:v10];
 }
 
 - (_TtC13CoreIDVShared11PRDMetadata)init

@@ -1,19 +1,19 @@
 @interface PDControllerType1
-- (id)registerFormatterBusPowerWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterPDControllerType1StateWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)stateStringForGPIOFromFile:(id)a3;
-- (id)stringForTitle:(id)a3 valueString:(id)a4;
-- (int)expanderRegisterRead16:(unsigned __int16 *)a3 atOffset:(unsigned __int8)a4;
-- (int)getCCRole:(int *)a3;
-- (int)getPDMode:(int *)a3;
-- (int)getPinOutRevision:(unsigned int *)a3;
-- (int)i2cRead:(void *)a3 ofLength:(unint64_t)a4 atAddress:(unsigned int)a5 andOutReadLength:(unint64_t *)a6;
-- (int)i2cWrite:(void *)a3 ofLength:(unint64_t)a4 atAddress:(unsigned int)a5;
-- (int)i2cWrite:(void *)a3 ofLength:(unint64_t)a4 atAddress:(unsigned int)a5 andRead:(void *)a6 ofLength:(unint64_t)a7 andOutReadLength:(unint64_t *)a8;
-- (int)isPDControllerType1:(BOOL *)a3;
-- (int)isPDControllerType3HPM:(BOOL *)a3;
-- (int)isVCONNOn:(BOOL *)a3;
-- (int)memWrite:(unsigned int)a3 atAddress:(unsigned int)a4;
+- (id)registerFormatterBusPowerWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterPDControllerType1StateWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)stateStringForGPIOFromFile:(id)file;
+- (id)stringForTitle:(id)title valueString:(id)string;
+- (int)expanderRegisterRead16:(unsigned __int16 *)read16 atOffset:(unsigned __int8)offset;
+- (int)getCCRole:(int *)role;
+- (int)getPDMode:(int *)mode;
+- (int)getPinOutRevision:(unsigned int *)revision;
+- (int)i2cRead:(void *)read ofLength:(unint64_t)length atAddress:(unsigned int)address andOutReadLength:(unint64_t *)readLength;
+- (int)i2cWrite:(void *)write ofLength:(unint64_t)length atAddress:(unsigned int)address;
+- (int)i2cWrite:(void *)write ofLength:(unint64_t)length atAddress:(unsigned int)address andRead:(void *)read ofLength:(unint64_t)ofLength andOutReadLength:(unint64_t *)readLength;
+- (int)isPDControllerType1:(BOOL *)type1;
+- (int)isPDControllerType3HPM:(BOOL *)m;
+- (int)isVCONNOn:(BOOL *)on;
+- (int)memWrite:(unsigned int)write atAddress:(unsigned int)address;
 - (int)printAll;
 - (int)printCCRole;
 - (int)printCCState;
@@ -31,13 +31,13 @@
 - (int)printVBUSState;
 - (int)printVCONNState;
 - (int)printVDETState;
-- (int)readDirection:(BOOL *)a3 forGPIO:(unsigned int)a4;
-- (int)readLevel:(BOOL *)a3 forGPIO:(unsigned int)a4;
-- (int)receiveVDM:(void *)a3 length:(unint64_t)a4 outSop:(int *)a5 outSequence:(char *)a6 outLength:(unint64_t *)a7;
-- (int)receiveVDMAttention:(void *)a3 length:(unint64_t)a4 outSop:(int *)a5 outSequence:(char *)a6 outLength:(unint64_t *)a7;
+- (int)readDirection:(BOOL *)direction forGPIO:(unsigned int)o;
+- (int)readLevel:(BOOL *)level forGPIO:(unsigned int)o;
+- (int)receiveVDM:(void *)m length:(unint64_t)length outSop:(int *)sop outSequence:(char *)sequence outLength:(unint64_t *)outLength;
+- (int)receiveVDMAttention:(void *)attention length:(unint64_t)length outSop:(int *)sop outSequence:(char *)sequence outLength:(unint64_t *)outLength;
 - (void)dealloc;
-- (void)printGPIOWithPort:(id)a3 pin:(id)a4 title:(id)a5 andState:(id)a6;
-- (void)printStateWithTitle:(id)a3 andDescription:(id)a4;
+- (void)printGPIOWithPort:(id)port pin:(id)pin title:(id)title andState:(id)state;
+- (void)printStateWithTitle:(id)title andDescription:(id)description;
 @end
 
 @implementation PDControllerType1
@@ -49,9 +49,9 @@
   [(PDControllerType1 *)&v2 dealloc];
 }
 
-- (int)isPDControllerType1:(BOOL *)a3
+- (int)isPDControllerType1:(BOOL *)type1
 {
-  *a3 = 0;
+  *type1 = 0;
   v7 = 0;
   result = [(PDController *)self registerRead32:&v7 + 4 atAddress:0];
   if (!result)
@@ -62,7 +62,7 @@
       result = 0;
       if (HIDWORD(v7) == 2599 && v7 == 24)
       {
-        *a3 = 1;
+        *type1 = 1;
       }
     }
   }
@@ -70,9 +70,9 @@
   return result;
 }
 
-- (int)isPDControllerType3HPM:(BOOL *)a3
+- (int)isPDControllerType3HPM:(BOOL *)m
 {
-  *a3 = 0;
+  *m = 0;
   v7 = 0;
   result = [(PDController *)self registerRead32:&v7 + 4 atAddress:0];
   if (!result)
@@ -83,7 +83,7 @@
       result = 0;
       if (HIDWORD(v7) == 2599 && v7 == 25)
       {
-        *a3 = 1;
+        *m = 1;
       }
     }
   }
@@ -91,9 +91,9 @@
   return result;
 }
 
-- (int)getPinOutRevision:(unsigned int *)a3
+- (int)getPinOutRevision:(unsigned int *)revision
 {
-  *a3 = 3;
+  *revision = 3;
   v9 = 0;
   result = [(PDControllerType1 *)self isPDControllerType1:&v9];
   if (!result)
@@ -118,7 +118,7 @@
             v7 = 1;
           }
 
-          *a3 = v7;
+          *revision = v7;
         }
 
         else
@@ -138,7 +138,7 @@
   return result;
 }
 
-- (int)getCCRole:(int *)a3
+- (int)getCCRole:(int *)role
 {
   v7 = 0;
   result = [(PDControllerType1 *)self readLevel:&v7 + 1 forGPIO:53];
@@ -157,14 +157,14 @@
         v6 = 2;
       }
 
-      *a3 = v6;
+      *role = v6;
     }
   }
 
   return result;
 }
 
-- (int)isVCONNOn:(BOOL *)a3
+- (int)isVCONNOn:(BOOL *)on
 {
   v8 = 0;
   v7 = 0;
@@ -179,7 +179,7 @@
       {
         v6 = v8 == 1 && (v8 & 0x100) == 0 && v7 != 1;
         result = 0;
-        *a3 = v6;
+        *on = v6;
       }
     }
   }
@@ -187,7 +187,7 @@
   return result;
 }
 
-- (int)getPDMode:(int *)a3
+- (int)getPDMode:(int *)mode
 {
   v8 = 0;
   result = [(PDControllerType1 *)self readLevel:&v8 + 1 forExpanderGPIO:21];
@@ -216,32 +216,32 @@
         v7 = 0;
       }
 
-      *a3 = v7;
+      *mode = v7;
     }
   }
 
   return result;
 }
 
-- (int)receiveVDM:(void *)a3 length:(unint64_t)a4 outSop:(int *)a5 outSequence:(char *)a6 outLength:(unint64_t *)a7
+- (int)receiveVDM:(void *)m length:(unint64_t)length outSop:(int *)sop outSequence:(char *)sequence outLength:(unint64_t *)outLength
 {
-  v13 = [(PDController *)self userClient];
-  LODWORD(a7) = [v13 receiveVDMForDevice:-[PDController address](self buffer:"address") length:a3 flags:a4 outSOP:0 outSequence:a5 outLength:{a6, a7}];
+  userClient = [(PDController *)self userClient];
+  LODWORD(outLength) = [userClient receiveVDMForDevice:-[PDController address](self buffer:"address") length:m flags:length outSOP:0 outSequence:sop outLength:{sequence, outLength}];
 
-  return a7;
+  return outLength;
 }
 
-- (int)receiveVDMAttention:(void *)a3 length:(unint64_t)a4 outSop:(int *)a5 outSequence:(char *)a6 outLength:(unint64_t *)a7
+- (int)receiveVDMAttention:(void *)attention length:(unint64_t)length outSop:(int *)sop outSequence:(char *)sequence outLength:(unint64_t *)outLength
 {
-  v13 = [(PDController *)self userClient];
-  LODWORD(a7) = [v13 receiveVDMAttentionForDevice:-[PDController address](self buffer:"address") length:a3 flags:a4 outSOP:0 outSequence:a5 outLength:{a6, a7}];
+  userClient = [(PDController *)self userClient];
+  LODWORD(outLength) = [userClient receiveVDMAttentionForDevice:-[PDController address](self buffer:"address") length:attention flags:length outSOP:0 outSequence:sop outLength:{sequence, outLength}];
 
-  return a7;
+  return outLength;
 }
 
-- (int)memWrite:(unsigned int)a3 atAddress:(unsigned int)a4
+- (int)memWrite:(unsigned int)write atAddress:(unsigned int)address
 {
-  if ((a4 & 3) != 0)
+  if ((address & 3) != 0)
   {
     printf("Error: Memory address not a multiple of 4");
     return -536870201;
@@ -249,8 +249,8 @@
 
   else
   {
-    v6[0] = a4;
-    v6[1] = a3;
+    v6[0] = address;
+    v6[1] = write;
     result = [(PDControllerType1 *)self registerWrite:v6 ofLength:8 atAddress:9];
     if (!result)
     {
@@ -261,9 +261,9 @@
   return result;
 }
 
-- (int)i2cRead:(void *)a3 ofLength:(unint64_t)a4 atAddress:(unsigned int)a5 andOutReadLength:(unint64_t *)a6
+- (int)i2cRead:(void *)read ofLength:(unint64_t)length atAddress:(unsigned int)address andOutReadLength:(unint64_t *)readLength
 {
-  v9 = [(PDController *)self registerWrite32:a5 | (a4 << 16) atAddress:18];
+  v9 = [(PDController *)self registerWrite32:address | (length << 16) atAddress:18];
   if (!v9)
   {
     v10 = [(PDControllerType1 *)self executeIECSCommand:1296642627];
@@ -313,24 +313,24 @@
     }
 
 LABEL_16:
-    if (a6)
+    if (readLength)
     {
-      *a6 = v14;
+      *readLength = v14;
     }
 
-    return [(PDController *)self registerRead:a3 ofLength:v14 atAddress:9];
+    return [(PDController *)self registerRead:read ofLength:v14 atAddress:9];
   }
 
   return v9;
 }
 
-- (int)i2cWrite:(void *)a3 ofLength:(unint64_t)a4 atAddress:(unsigned int)a5
+- (int)i2cWrite:(void *)write ofLength:(unint64_t)length atAddress:(unsigned int)address
 {
-  v6 = a4;
-  result = [(PDControllerType1 *)self registerWrite:a3 ofLength:a4 atAddress:9];
+  lengthCopy = length;
+  result = [(PDControllerType1 *)self registerWrite:write ofLength:length atAddress:9];
   if (!result)
   {
-    result = [(PDController *)self registerWrite32:a5 | (v6 << 8) atAddress:18];
+    result = [(PDController *)self registerWrite32:address | (lengthCopy << 8) atAddress:18];
     if (!result)
     {
       result = [(PDControllerType1 *)self executeIECSCommand:1296642627];
@@ -371,20 +371,20 @@ LABEL_16:
   return result;
 }
 
-- (int)i2cWrite:(void *)a3 ofLength:(unint64_t)a4 atAddress:(unsigned int)a5 andRead:(void *)a6 ofLength:(unint64_t)a7 andOutReadLength:(unint64_t *)a8
+- (int)i2cWrite:(void *)write ofLength:(unint64_t)length atAddress:(unsigned int)address andRead:(void *)read ofLength:(unint64_t)ofLength andOutReadLength:(unint64_t *)readLength
 {
-  v9 = a7;
-  v12 = a4;
-  v14 = [(PDControllerType1 *)self registerWrite:a3 ofLength:a4 atAddress:9];
+  ofLengthCopy = ofLength;
+  lengthCopy = length;
+  v14 = [(PDControllerType1 *)self registerWrite:write ofLength:length atAddress:9];
   if (!v14)
   {
-    v15 = a5 & 0x7F | 0x80;
-    if (a5 <= 0xFF)
+    addressCopy = address & 0x7F | 0x80;
+    if (address <= 0xFF)
     {
-      v15 = a5;
+      addressCopy = address;
     }
 
-    v14 = [(PDController *)self registerWrite32:v15 | (v12 << 8) | (v9 << 16) atAddress:18];
+    v14 = [(PDController *)self registerWrite32:addressCopy | (lengthCopy << 8) | (ofLengthCopy << 16) atAddress:18];
     if (!v14)
     {
       v16 = [(PDControllerType1 *)self executeIECSCommand:1296642627];
@@ -434,19 +434,19 @@ LABEL_16:
       }
 
 LABEL_19:
-      if (a8)
+      if (readLength)
       {
-        *a8 = v20;
+        *readLength = v20;
       }
 
-      return [(PDController *)self registerRead:a6 ofLength:v20 atAddress:9];
+      return [(PDController *)self registerRead:read ofLength:v20 atAddress:9];
     }
   }
 
   return v14;
 }
 
-- (int)readDirection:(BOOL *)a3 forGPIO:(unsigned int)a4
+- (int)readDirection:(BOOL *)direction forGPIO:(unsigned int)o
 {
   v9 = 0;
   result = [(PDControllerType1 *)self registerWrite:&v9 ofLength:8 atAddress:9];
@@ -459,12 +459,12 @@ LABEL_19:
       if (!result)
       {
         v8 = &v10;
-        if (a4 >= 0x20)
+        if (o >= 0x20)
         {
           v8 = (&v10 + 4);
         }
 
-        *a3 = (*v8 >> (a4 & 0x1F)) & 1;
+        *direction = (*v8 >> (o & 0x1F)) & 1;
       }
     }
   }
@@ -472,7 +472,7 @@ LABEL_19:
   return result;
 }
 
-- (int)readLevel:(BOOL *)a3 forGPIO:(unsigned int)a4
+- (int)readLevel:(BOOL *)level forGPIO:(unsigned int)o
 {
   v9[0] = 0;
   result = [(PDControllerType1 *)self registerWrite:v9 ofLength:8 atAddress:9];
@@ -485,12 +485,12 @@ LABEL_19:
       if (!result)
       {
         v8 = &v10;
-        if (a4 >= 0x20)
+        if (o >= 0x20)
         {
           v8 = (&v10 + 4);
         }
 
-        *a3 = (*v8 >> (a4 & 0x1F)) & 1;
+        *level = (*v8 >> (o & 0x1F)) & 1;
       }
     }
   }
@@ -498,11 +498,11 @@ LABEL_19:
   return result;
 }
 
-- (id)stateStringForGPIOFromFile:(id)a3
+- (id)stateStringForGPIOFromFile:(id)file
 {
-  v3 = a3;
-  v4 = [v3 characterAtIndex:0];
-  v5 = [v3 characterAtIndex:1];
+  fileCopy = file;
+  v4 = [fileCopy characterAtIndex:0];
+  v5 = [fileCopy characterAtIndex:1];
 
   v6 = v4 != 49;
   if (v4 == 49 && v5 == 49)
@@ -543,11 +543,11 @@ LABEL_19:
   }
 }
 
-- (int)expanderRegisterRead16:(unsigned __int16 *)a3 atOffset:(unsigned __int8)a4
+- (int)expanderRegisterRead16:(unsigned __int16 *)read16 atOffset:(unsigned __int8)offset
 {
-  v7 = a4;
+  offsetCopy = offset;
   v6 = 0;
-  result = [(PDControllerType1 *)self i2cWrite:&v7 ofLength:1 atAddress:32 andRead:a3 ofLength:2 andOutReadLength:&v6];
+  result = [(PDControllerType1 *)self i2cWrite:&offsetCopy ofLength:1 atAddress:32 andRead:read16 ofLength:2 andOutReadLength:&v6];
   if (v6 != 2 && result == 0)
   {
     return -536870169;
@@ -556,48 +556,48 @@ LABEL_19:
   return result;
 }
 
-- (id)registerFormatterBusPowerWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterBusPowerWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  if (a4 == 1)
+  if (length == 1)
   {
-    if (*a3 - 1 <= 0xFD)
+    if (*buffer - 1 <= 0xFD)
     {
-      [NSString stringWithFormat:@"0x%02X", *a3];
+      [NSString stringWithFormat:@"0x%02X", *buffer];
       goto LABEL_10;
     }
   }
 
   else
   {
-    if (a4 != 2)
+    if (length != 2)
     {
-      v7 = a4;
+      lengthCopy = length;
       v4 = @"ERROR: length %lld != 2 or 1";
       goto LABEL_9;
     }
 
-    if (*a3 - 1 <= 0xFFFD)
+    if (*buffer - 1 <= 0xFFFD)
     {
-      [NSString stringWithFormat:@"0x%04X", *a3];
+      [NSString stringWithFormat:@"0x%04X", *buffer];
       goto LABEL_10;
     }
   }
 
   v4 = @"No";
 LABEL_9:
-  [NSString stringWithFormat:v4, v7];
+  [NSString stringWithFormat:v4, lengthCopy];
   v5 = LABEL_10:;
 
   return v5;
 }
 
-- (id)registerFormatterPDControllerType1StateWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterPDControllerType1StateWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
   v13 = 0;
   [(PDControllerType1 *)self isPDControllerType1:&v13];
-  if (a4 == 4)
+  if (length == 4)
   {
-    v6 = *a3;
+    v6 = *buffer;
     v14[0] = &off_10001F0A0;
     v14[1] = &off_10001F0B8;
     v15[0] = @"Disabled";
@@ -651,29 +651,29 @@ LABEL_9:
 
   else
   {
-    v11 = [NSString stringWithFormat:@"ERROR: length %lld != 4", a4];
+    v11 = [NSString stringWithFormat:@"ERROR: length %lld != 4", length];
   }
 
   return v11;
 }
 
-- (id)stringForTitle:(id)a3 valueString:(id)a4
+- (id)stringForTitle:(id)title valueString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%-22s %@", [a3 UTF8String], v7);
+  titleCopy = title;
+  stringCopy = string;
+  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%-22s %@", [title UTF8String], stringCopy);
 
   return v8;
 }
 
-- (void)printStateWithTitle:(id)a3 andDescription:(id)a4
+- (void)printStateWithTitle:(id)title andDescription:(id)description
 {
-  v14 = a3;
-  v6 = a4;
+  titleCopy = title;
+  descriptionCopy = description;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = descriptionCopy;
     if ([v7 count])
     {
       v8 = 0;
@@ -688,7 +688,7 @@ LABEL_9:
 
         else
         {
-          printf("%-27s %s\n", [v14 UTF8String], objc_msgSend(v9, "UTF8String"));
+          printf("%-27s %s\n", [titleCopy UTF8String], objc_msgSend(v9, "UTF8String"));
         }
 
         ++v8;
@@ -700,12 +700,12 @@ LABEL_9:
 
   else
   {
-    v10 = v14;
-    v11 = v6;
-    v12 = [v14 UTF8String];
-    v13 = [v11 UTF8String];
+    v10 = titleCopy;
+    v11 = descriptionCopy;
+    uTF8String = [titleCopy UTF8String];
+    uTF8String2 = [v11 UTF8String];
 
-    printf("%-27s %s\n", v12, v13);
+    printf("%-27s %s\n", uTF8String, uTF8String2);
   }
 }
 
@@ -1521,23 +1521,23 @@ LABEL_7:
   return v8;
 }
 
-- (void)printGPIOWithPort:(id)a3 pin:(id)a4 title:(id)a5 andState:(id)a6
+- (void)printGPIOWithPort:(id)port pin:(id)pin title:(id)title andState:(id)state
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a4;
-  v12 = [a3 UTF8String];
-  v13 = [v11 UTF8String];
+  portCopy = port;
+  stateCopy = state;
+  pinCopy = pin;
+  uTF8String = [port UTF8String];
+  uTF8String2 = [pinCopy UTF8String];
 
-  v14 = [v10 UTF8String];
-  printf("%s\t%s\t%s\n", v12, v13, v14);
+  uTF8String3 = [stateCopy UTF8String];
+  printf("%s\t%s\t%s\n", uTF8String, uTF8String2, uTF8String3);
 }
 
 - (int)printGPIOState
 {
-  v3 = [(PDControllerType1 *)self gpioMap];
-  v4 = [v3 allKeys];
-  v5 = [v4 sortedArrayUsingSelector:"compare:"];
+  gpioMap = [(PDControllerType1 *)self gpioMap];
+  allKeys = [gpioMap allKeys];
+  v5 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   puts("GPIOs");
   v20 = 0u;
@@ -1559,14 +1559,14 @@ LABEL_7:
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 unsignedCharValue];
-        v11 = [NSString stringWithFormat:@"%d", v10 >> 5];
-        v12 = [NSString stringWithFormat:@"%d", v10 & 0x1F];
-        v13 = [(PDControllerType1 *)self gpioMap];
-        v14 = [v13 objectForKeyedSubscript:v9];
+        unsignedCharValue = [v9 unsignedCharValue];
+        v11 = [NSString stringWithFormat:@"%d", unsignedCharValue >> 5];
+        0x1F = [NSString stringWithFormat:@"%d", unsignedCharValue & 0x1F];
+        gpioMap2 = [(PDControllerType1 *)self gpioMap];
+        v14 = [gpioMap2 objectForKeyedSubscript:v9];
 
-        v15 = [(PDControllerType1 *)self stateStringForGPIO:v10];
-        [(PDControllerType1 *)self printGPIOWithPort:v11 pin:v12 title:v14 andState:v15];
+        v15 = [(PDControllerType1 *)self stateStringForGPIO:unsignedCharValue];
+        [(PDControllerType1 *)self printGPIOWithPort:v11 pin:0x1F title:v14 andState:v15];
       }
 
       v7 = [&off_100020D68 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -1580,9 +1580,9 @@ LABEL_7:
 
 - (int)printExpanderGPIOState
 {
-  v3 = [(PDControllerType1 *)self expanderGpioMap];
-  v4 = [v3 allKeys];
-  v5 = [v4 sortedArrayUsingSelector:"compare:"];
+  expanderGpioMap = [(PDControllerType1 *)self expanderGpioMap];
+  allKeys = [expanderGpioMap allKeys];
+  v5 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   puts("Expander GPIOs");
   v20 = 0u;
@@ -1604,13 +1604,13 @@ LABEL_7:
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 unsignedCharValue];
-        v11 = [NSString stringWithFormat:@"%d", (v10 >> 4) & 1];
-        v12 = [NSString stringWithFormat:@"%d", v10 & 0xF];
-        v13 = [(PDControllerType1 *)self expanderGpioMap];
-        v14 = [v13 objectForKeyedSubscript:v9];
+        unsignedCharValue = [v9 unsignedCharValue];
+        v11 = [NSString stringWithFormat:@"%d", (unsignedCharValue >> 4) & 1];
+        v12 = [NSString stringWithFormat:@"%d", unsignedCharValue & 0xF];
+        expanderGpioMap2 = [(PDControllerType1 *)self expanderGpioMap];
+        v14 = [expanderGpioMap2 objectForKeyedSubscript:v9];
 
-        v15 = [(PDControllerType1 *)self stateStringForExpanderGPIO:v10];
+        v15 = [(PDControllerType1 *)self stateStringForExpanderGPIO:unsignedCharValue];
         [(PDControllerType1 *)self printGPIOWithPort:v11 pin:v12 title:v14 andState:v15];
       }
 
@@ -1849,26 +1849,26 @@ LABEL_12:
 - (int)printAll
 {
   v7 = 0;
-  v3 = [(PDControllerType1 *)self isPDControllerType1:&v7];
+  printGPIOState = [(PDControllerType1 *)self isPDControllerType1:&v7];
   v6 = 0;
-  if (!v3)
+  if (!printGPIOState)
   {
-    v3 = [(PDControllerType1 *)self isPDControllerType3HPM:&v6];
+    printGPIOState = [(PDControllerType1 *)self isPDControllerType3HPM:&v6];
   }
 
   [(PDControllerType1 *)self printInfo];
-  if (v7 == 1 && v3 == 0)
+  if (v7 == 1 && printGPIOState == 0)
   {
     putchar(10);
-    v3 = [(PDControllerType1 *)self printGPIOState];
-    if (!v3)
+    printGPIOState = [(PDControllerType1 *)self printGPIOState];
+    if (!printGPIOState)
     {
       putchar(10);
       return [(PDControllerType1 *)self printExpanderGPIOState];
     }
   }
 
-  return v3;
+  return printGPIOState;
 }
 
 @end

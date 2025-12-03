@@ -1,17 +1,17 @@
 @interface _TVShadowViewElementID
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TVShadowViewElementID)init;
-- (_TVShadowViewElementID)initWithViewElement:(id)a3;
+- (_TVShadowViewElementID)initWithViewElement:(id)element;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation _TVShadowViewElementID
 
-- (_TVShadowViewElementID)initWithViewElement:(id)a3
+- (_TVShadowViewElementID)initWithViewElement:(id)element
 {
-  v6 = a3;
-  if (!v6)
+  elementCopy = element;
+  if (!elementCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The view element must not be nil."];
   }
@@ -22,14 +22,14 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_viewElement, a3);
-    v9 = [v6 attributes];
-    v10 = [v9 objectForKeyedSubscript:@"itemID"];
+    objc_storeStrong(&v7->_viewElement, element);
+    attributes = [elementCopy attributes];
+    v10 = [attributes objectForKeyedSubscript:@"itemID"];
     v11 = v10;
     if (!v10)
     {
-      v3 = [v6 attributes];
-      v11 = [v3 objectForKeyedSubscript:@"searchResultIdentifier"];
+      attributes2 = [elementCopy attributes];
+      v11 = [attributes2 objectForKeyedSubscript:@"searchResultIdentifier"];
     }
 
     v12 = [v11 copy];
@@ -53,44 +53,44 @@
 
 - (unint64_t)hash
 {
-  v3 = [(_TVShadowViewElementID *)self itemID];
-  if (v3)
+  itemID = [(_TVShadowViewElementID *)self itemID];
+  if (itemID)
   {
-    v4 = [(_TVShadowViewElementID *)self itemID];
-    v5 = [v4 hash];
+    itemID2 = [(_TVShadowViewElementID *)self itemID];
+    viewElement = [itemID2 hash];
   }
 
   else
   {
-    v5 = [(_TVShadowViewElementID *)self viewElement];
-    v4 = v5;
+    viewElement = [(_TVShadowViewElementID *)self viewElement];
+    itemID2 = viewElement;
   }
 
-  v6 = v5;
+  v6 = viewElement;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 viewElement];
-    v7 = [(_TVShadowViewElementID *)self viewElement];
+    v5 = equalCopy;
+    viewElement = [v5 viewElement];
+    viewElement2 = [(_TVShadowViewElementID *)self viewElement];
 
-    if (v6 == v7)
+    if (viewElement == viewElement2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [v5 itemID];
-      v9 = [(_TVShadowViewElementID *)self itemID];
-      v10 = [v8 isEqualToString:v9];
+      itemID = [v5 itemID];
+      itemID2 = [(_TVShadowViewElementID *)self itemID];
+      v10 = [itemID isEqualToString:itemID2];
     }
   }
 

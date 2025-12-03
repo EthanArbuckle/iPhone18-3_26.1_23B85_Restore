@@ -1,55 +1,55 @@
 @interface ICShareNotifier
-+ (BOOL)shouldPreventNotificationsForRecordID:(id)a3;
-+ (BOOL)shouldShowNotificationForNote:(id)a3;
-+ (id)notificationTitleForEditors:(id)a3;
-+ (id)participantsWithReplicaIDs:(id)a3 inNote:(id)a4;
-+ (id)replicaIDsThatEditedTimestamp:(id)a3 sinceTimestamp:(id)a4;
-+ (void)clearNotificationForRecordID:(id)a3;
-+ (void)setShouldPreventNotifications:(BOOL)a3 forRecordID:(id)a4;
-+ (void)showNotificationForNote:(id)a3 editors:(id)a4;
-+ (void)showNotificationIfNecessaryForCloudObject:(id)a3 accountID:(id)a4;
-+ (void)showNotificationWithTitle:(id)a3 message:(id)a4 userInfo:(id)a5;
++ (BOOL)shouldPreventNotificationsForRecordID:(id)d;
++ (BOOL)shouldShowNotificationForNote:(id)note;
++ (id)notificationTitleForEditors:(id)editors;
++ (id)participantsWithReplicaIDs:(id)ds inNote:(id)note;
++ (id)replicaIDsThatEditedTimestamp:(id)timestamp sinceTimestamp:(id)sinceTimestamp;
++ (void)clearNotificationForRecordID:(id)d;
++ (void)setShouldPreventNotifications:(BOOL)notifications forRecordID:(id)d;
++ (void)showNotificationForNote:(id)note editors:(id)editors;
++ (void)showNotificationIfNecessaryForCloudObject:(id)object accountID:(id)d;
++ (void)showNotificationWithTitle:(id)title message:(id)message userInfo:(id)info;
 @end
 
 @implementation ICShareNotifier
 
-+ (void)clearNotificationForRecordID:(id)a3
++ (void)clearNotificationForRecordID:(id)d
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (d)
   {
-    v3 = [a3 recordName];
+    recordName = [d recordName];
     v4 = os_log_create("com.apple.notes", "Notifications");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       +[ICShareNotifier clearNotificationForRecordID:];
     }
 
-    v5 = [MEMORY[0x277CE2028] currentNotificationCenter];
-    v7[0] = v3;
+    currentNotificationCenter = [MEMORY[0x277CE2028] currentNotificationCenter];
+    v7[0] = recordName;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
-    [v5 removeDeliveredNotificationsWithIdentifiers:v6];
+    [currentNotificationCenter removeDeliveredNotificationsWithIdentifiers:v6];
   }
 }
 
-+ (void)showNotificationIfNecessaryForCloudObject:(id)a3 accountID:(id)a4
++ (void)showNotificationIfNecessaryForCloudObject:(id)object accountID:(id)d
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = objectCopy;
     v7 = os_log_create("com.apple.notes", "Notifications");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [v6 ic_loggingDescription];
+      ic_loggingDescription = [v6 ic_loggingDescription];
       v37[0] = @"lastNotifiedTimestamp";
-      v18 = [v6 lastNotifiedTimestamp];
-      v36 = v18;
-      if (v18)
+      lastNotifiedTimestamp = [v6 lastNotifiedTimestamp];
+      v36 = lastNotifiedTimestamp;
+      if (lastNotifiedTimestamp)
       {
-        v19 = v18;
+        v19 = lastNotifiedTimestamp;
       }
 
       else
@@ -59,10 +59,10 @@
 
       v38[0] = v19;
       v37[1] = @"lastNotifiedDate";
-      v20 = [v6 lastNotifiedDate];
-      if (v20)
+      lastNotifiedDate = [v6 lastNotifiedDate];
+      if (lastNotifiedDate)
       {
-        v21 = v20;
+        v21 = lastNotifiedDate;
       }
 
       else
@@ -72,11 +72,11 @@
 
       v38[1] = v21;
       v37[2] = @"lastViewedTimestamp";
-      v22 = [v6 lastViewedTimestamp];
-      v23 = v22;
-      if (v22)
+      lastViewedTimestamp = [v6 lastViewedTimestamp];
+      v23 = lastViewedTimestamp;
+      if (lastViewedTimestamp)
       {
-        v24 = v22;
+        v24 = lastViewedTimestamp;
       }
 
       else
@@ -86,11 +86,11 @@
 
       v38[2] = v24;
       v37[3] = @"lastViewedModificationDate";
-      v25 = [v6 lastViewedModificationDate];
-      v26 = v25;
-      if (v25)
+      lastViewedModificationDate = [v6 lastViewedModificationDate];
+      v26 = lastViewedModificationDate;
+      if (lastViewedModificationDate)
       {
-        v27 = v25;
+        v27 = lastViewedModificationDate;
       }
 
       else
@@ -100,11 +100,11 @@
 
       v38[3] = v27;
       v37[4] = @"modificationDate";
-      v28 = [v6 modificationDate];
-      v29 = v28;
-      if (v28)
+      modificationDate = [v6 modificationDate];
+      v29 = modificationDate;
+      if (modificationDate)
       {
-        v30 = v28;
+        v30 = modificationDate;
       }
 
       else
@@ -114,11 +114,11 @@
 
       v38[4] = v30;
       v37[5] = @"timestamp";
-      v31 = [v6 timestamp];
-      v32 = v31;
-      if (v31)
+      timestamp = [v6 timestamp];
+      v32 = timestamp;
+      if (timestamp)
       {
-        v33 = v31;
+        v33 = timestamp;
       }
 
       else
@@ -129,17 +129,17 @@
       v38[5] = v33;
       v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:6];
       *buf = 138412546;
-      v40 = v17;
+      v40 = ic_loggingDescription;
       v41 = 2112;
       v42 = v34;
       _os_log_debug_impl(&dword_214D51000, v7, OS_LOG_TYPE_DEBUG, "Showing notification if necesary for (%@): %@", buf, 0x16u);
     }
 
-    if ([a1 shouldShowNotificationForNote:v6])
+    if ([self shouldShowNotificationForNote:v6])
     {
-      v8 = [v6 timestamp];
-      v9 = [v6 lastNotifiedTimestamp];
-      v10 = [a1 replicaIDsThatEditedTimestamp:v8 sinceTimestamp:v9];
+      timestamp2 = [v6 timestamp];
+      lastNotifiedTimestamp2 = [v6 lastNotifiedTimestamp];
+      v10 = [self replicaIDsThatEditedTimestamp:timestamp2 sinceTimestamp:lastNotifiedTimestamp2];
 
       v11 = os_log_create("com.apple.notes", "Notifications");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -147,22 +147,22 @@
         [ICShareNotifier showNotificationIfNecessaryForCloudObject:v10 accountID:?];
       }
 
-      v12 = [a1 participantsWithReplicaIDs:v10 inNote:v6];
+      v12 = [self participantsWithReplicaIDs:v10 inNote:v6];
       v13 = os_log_create("com.apple.notes", "Notifications");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         [ICShareNotifier showNotificationIfNecessaryForCloudObject:v12 accountID:?];
       }
 
-      [a1 showNotificationForNote:v6 editors:v12];
-      v14 = [v6 timestamp];
-      [v6 setLastNotifiedTimestamp:v14];
+      [self showNotificationForNote:v6 editors:v12];
+      timestamp3 = [v6 timestamp];
+      [v6 setLastNotifiedTimestamp:timestamp3];
 
-      v15 = [MEMORY[0x277CBEAA8] date];
-      [v6 setLastNotifiedDate:v15];
+      date = [MEMORY[0x277CBEAA8] date];
+      [v6 setLastNotifiedDate:date];
 
-      v16 = [v6 managedObjectContext];
-      [v16 ic_saveWithLogDescription:@"setting notification metadata"];
+      managedObjectContext = [v6 managedObjectContext];
+      [managedObjectContext ic_saveWithLogDescription:@"setting notification metadata"];
     }
 
     else
@@ -178,61 +178,61 @@
   }
 }
 
-+ (BOOL)shouldShowNotificationForNote:(id)a3
++ (BOOL)shouldShowNotificationForNote:(id)note
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  noteCopy = note;
   if (shouldShowNotificationForNote__onceToken != -1)
   {
     +[ICShareNotifier shouldShowNotificationForNote:];
   }
 
-  if (([a1 shareNotifierEnabled] & 1) == 0)
+  if (([self shareNotifierEnabled] & 1) == 0)
   {
     v7 = os_log_create("com.apple.notes", "Notifications");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [ICShareNotifier shouldShowNotificationForNote:v4];
+      [ICShareNotifier shouldShowNotificationForNote:noteCopy];
     }
 
     goto LABEL_12;
   }
 
-  if (([v4 isSharedViaICloud] & 1) == 0)
+  if (([noteCopy isSharedViaICloud] & 1) == 0)
   {
     v7 = os_log_create("com.apple.notes", "Notifications");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [ICShareNotifier shouldShowNotificationForNote:v4];
+      [ICShareNotifier shouldShowNotificationForNote:noteCopy];
     }
 
     goto LABEL_12;
   }
 
-  v5 = [v4 recordID];
-  v6 = [a1 shouldPreventNotificationsForRecordID:v5];
+  recordID = [noteCopy recordID];
+  v6 = [self shouldPreventNotificationsForRecordID:recordID];
 
   if (v6)
   {
     v7 = os_log_create("com.apple.notes", "Notifications");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [ICShareNotifier shouldShowNotificationForNote:v4];
+      [ICShareNotifier shouldShowNotificationForNote:noteCopy];
     }
 
     goto LABEL_12;
   }
 
-  v11 = [v4 lastNotifiedTimestamp];
-  if (v11)
+  lastNotifiedTimestamp = [noteCopy lastNotifiedTimestamp];
+  if (lastNotifiedTimestamp)
   {
   }
 
   else
   {
-    v12 = [v4 lastViewedTimestamp];
+    lastViewedTimestamp = [noteCopy lastViewedTimestamp];
 
-    if (!v12)
+    if (!lastViewedTimestamp)
     {
       v7 = os_log_create("com.apple.notes", "Notifications");
       if (!os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -240,17 +240,17 @@
         goto LABEL_12;
       }
 
-      v25 = [v4 shortLoggingDescription];
+      shortLoggingDescription = [noteCopy shortLoggingDescription];
       *buf = 138412290;
-      v60 = v25;
+      v60 = shortLoggingDescription;
       v31 = "Not showing notification for %@: never notified and never viewed";
       goto LABEL_59;
     }
   }
 
-  v13 = [v4 modificationDate];
+  modificationDate = [noteCopy modificationDate];
   v14 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-259200.0];
-  v15 = [v13 compare:v14];
+  v15 = [modificationDate compare:v14];
 
   if (v15 == -1)
   {
@@ -260,26 +260,26 @@
       goto LABEL_12;
     }
 
-    v25 = [v4 shortLoggingDescription];
+    shortLoggingDescription = [noteCopy shortLoggingDescription];
     *buf = 138412290;
-    v60 = v25;
+    v60 = shortLoggingDescription;
     v31 = "Not showing notification for %@: last modification date was too long ago";
 LABEL_59:
     _os_log_impl(&dword_214D51000, v7, OS_LOG_TYPE_INFO, v31, buf, 0xCu);
     goto LABEL_60;
   }
 
-  v16 = [v4 lastNotifiedDate];
-  if (v16)
+  lastNotifiedDate = [noteCopy lastNotifiedDate];
+  if (lastNotifiedDate)
   {
-    v17 = v16;
-    v18 = [v4 lastNotifiedDate];
-    [v18 timeIntervalSinceNow];
+    v17 = lastNotifiedDate;
+    lastNotifiedDate2 = [noteCopy lastNotifiedDate];
+    [lastNotifiedDate2 timeIntervalSinceNow];
     v20 = v19;
 
     v21 = v20 >= 0.0 ? v20 : -v20;
-    v22 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v22 doubleForKey:@"MinSecondsBetweenSharedNoteNotifications"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults doubleForKey:@"MinSecondsBetweenSharedNoteNotifications"];
     v24 = v23;
 
     if (v21 < v24)
@@ -287,12 +287,12 @@ LABEL_59:
       v7 = os_log_create("com.apple.notes", "Notifications");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v25 = [v4 shortLoggingDescription];
-        v26 = [v4 lastNotifiedDate];
+        shortLoggingDescription = [noteCopy shortLoggingDescription];
+        lastNotifiedDate3 = [noteCopy lastNotifiedDate];
         *buf = 138412546;
-        v60 = v25;
+        v60 = shortLoggingDescription;
         v61 = 2112;
-        v62 = v26;
+        v62 = lastNotifiedDate3;
         _os_log_impl(&dword_214D51000, v7, OS_LOG_TYPE_INFO, "Not showing notification for %@: notified at %@", buf, 0x16u);
 
 LABEL_60:
@@ -300,17 +300,17 @@ LABEL_60:
 
 LABEL_12:
       v8 = 0;
-      v9 = v7;
+      userRecordName = v7;
       goto LABEL_13;
     }
   }
 
-  v27 = [v4 lastNotifiedTimestamp];
-  if (v27)
+  lastNotifiedTimestamp2 = [noteCopy lastNotifiedTimestamp];
+  if (lastNotifiedTimestamp2)
   {
-    v28 = [v4 lastNotifiedTimestamp];
-    v29 = [v4 timestamp];
-    v30 = [v28 compareTo:v29] & 1;
+    lastNotifiedTimestamp3 = [noteCopy lastNotifiedTimestamp];
+    timestamp = [noteCopy timestamp];
+    v30 = [lastNotifiedTimestamp3 compareTo:timestamp] & 1;
   }
 
   else
@@ -318,12 +318,12 @@ LABEL_12:
     v30 = 1;
   }
 
-  v32 = [v4 lastViewedTimestamp];
-  if (v32)
+  lastViewedTimestamp2 = [noteCopy lastViewedTimestamp];
+  if (lastViewedTimestamp2)
   {
-    v33 = [v4 lastViewedTimestamp];
-    v34 = [v4 timestamp];
-    v35 = [v33 compareTo:v34] & 1;
+    lastViewedTimestamp3 = [noteCopy lastViewedTimestamp];
+    timestamp2 = [noteCopy timestamp];
+    v35 = [lastViewedTimestamp3 compareTo:timestamp2] & 1;
   }
 
   else
@@ -334,8 +334,8 @@ LABEL_12:
   v36 = os_log_create("com.apple.notes", "Notifications");
   if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
   {
-    v37 = [v4 shortLoggingDescription];
-    v38 = v37;
+    shortLoggingDescription2 = [noteCopy shortLoggingDescription];
+    v38 = shortLoggingDescription2;
     v39 = @"N";
     if (v30)
     {
@@ -348,7 +348,7 @@ LABEL_12:
     }
 
     *buf = 138412802;
-    v60 = v37;
+    v60 = shortLoggingDescription2;
     v62 = v40;
     v61 = 2112;
     if (v35)
@@ -369,28 +369,28 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    v25 = [v4 shortLoggingDescription];
+    shortLoggingDescription = [noteCopy shortLoggingDescription];
     *buf = 138412290;
-    v60 = v25;
+    v60 = shortLoggingDescription;
     v31 = "Not showing notification for %@: no new edits since last view or notification";
     goto LABEL_59;
   }
 
-  v41 = [v4 account];
-  v9 = [v41 userRecordName];
+  account = [noteCopy account];
+  userRecordName = [account userRecordName];
 
   v42 = os_log_create("com.apple.notes", "Notifications");
   v43 = v42;
-  if (v9)
+  if (userRecordName)
   {
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
     {
       +[ICShareNotifier shouldShowNotificationForNote:];
     }
 
-    v44 = [v4 timestamp];
-    v45 = [v4 lastNotifiedTimestamp];
-    v7 = [a1 replicaIDsThatEditedTimestamp:v44 sinceTimestamp:v45];
+    timestamp3 = [noteCopy timestamp];
+    lastNotifiedTimestamp4 = [noteCopy lastNotifiedTimestamp];
+    v7 = [self replicaIDsThatEditedTimestamp:timestamp3 sinceTimestamp:lastNotifiedTimestamp4];
 
     v46 = os_log_create("com.apple.notes", "Notifications");
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
@@ -398,9 +398,9 @@ LABEL_12:
       [ICShareNotifier shouldShowNotificationForNote:v7];
     }
 
-    v47 = [v4 timestamp];
-    v48 = [v4 lastViewedTimestamp];
-    v49 = [a1 replicaIDsThatEditedTimestamp:v47 sinceTimestamp:v48];
+    timestamp4 = [noteCopy timestamp];
+    lastViewedTimestamp4 = [noteCopy lastViewedTimestamp];
+    v49 = [self replicaIDsThatEditedTimestamp:timestamp4 sinceTimestamp:lastViewedTimestamp4];
 
     v50 = os_log_create("com.apple.notes", "Notifications");
     if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
@@ -415,9 +415,9 @@ LABEL_12:
     v56[1] = 3221225472;
     v56[2] = __49__ICShareNotifier_shouldShowNotificationForNote___block_invoke_46;
     v56[3] = &unk_278195FB0;
-    v53 = v4;
+    v53 = noteCopy;
     v57 = v53;
-    v58 = v9;
+    v58 = userRecordName;
     v8 = [v52 ic_containsObjectPassingTest:v56];
     if ((v8 & 1) == 0)
     {
@@ -441,7 +441,7 @@ LABEL_12:
     v49 = v42;
     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
     {
-      [ICShareNotifier shouldShowNotificationForNote:v4];
+      [ICShareNotifier shouldShowNotificationForNote:noteCopy];
     }
 
     v8 = 0;
@@ -471,17 +471,17 @@ uint64_t __49__ICShareNotifier_shouldShowNotificationForNote___block_invoke_46(u
   return v2 ^ 1;
 }
 
-+ (id)replicaIDsThatEditedTimestamp:(id)a3 sinceTimestamp:(id)a4
++ (id)replicaIDsThatEditedTimestamp:(id)timestamp sinceTimestamp:(id)sinceTimestamp
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  timestampCopy = timestamp;
+  sinceTimestampCopy = sinceTimestamp;
   v7 = [MEMORY[0x277CBEB58] set];
-  v8 = [v5 timestamps];
-  v9 = [v8 count];
+  timestamps = [timestampCopy timestamps];
+  v9 = [timestamps count];
 
-  v10 = [v6 timestamps];
-  v11 = [v10 count];
+  timestamps2 = [sinceTimestampCopy timestamps];
+  v11 = [timestamps2 count];
 
   if (v9 >= v11)
   {
@@ -497,7 +497,7 @@ uint64_t __49__ICShareNotifier_shouldShowNotificationForNote___block_invoke_46(u
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = [v5 sortedUUIDs];
+  obj = [timestampCopy sortedUUIDs];
   v13 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v13)
   {
@@ -518,8 +518,8 @@ uint64_t __49__ICShareNotifier_shouldShowNotificationForNote___block_invoke_46(u
           v18 = *(*(&v23 + 1) + 8 * i);
           do
           {
-            v19 = [v5 clockForUUID:v18 atIndex:v17];
-            if (v19 > [v6 clockForUUID:v18 atIndex:v17])
+            v19 = [timestampCopy clockForUUID:v18 atIndex:v17];
+            if (v19 > [sinceTimestampCopy clockForUUID:v18 atIndex:v17])
             {
               [v7 addObject:v18];
             }
@@ -537,34 +537,34 @@ uint64_t __49__ICShareNotifier_shouldShowNotificationForNote___block_invoke_46(u
     while (v14);
   }
 
-  v20 = [v7 allObjects];
+  allObjects = [v7 allObjects];
 
-  return v20;
+  return allObjects;
 }
 
-+ (id)participantsWithReplicaIDs:(id)a3 inNote:(id)a4
++ (id)participantsWithReplicaIDs:(id)ds inNote:(id)note
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  noteCopy = note;
   v7 = os_log_create("com.apple.notes", "Notifications");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [ICShareNotifier participantsWithReplicaIDs:v5 inNote:v6];
+    [ICShareNotifier participantsWithReplicaIDs:dsCopy inNote:noteCopy];
   }
 
-  obj = v5;
+  obj = dsCopy;
 
   v33 = [MEMORY[0x277CBEB58] set];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v9 = [v6 serverShare];
-  v10 = [v9 participants];
+  serverShare = [noteCopy serverShare];
+  participants = [serverShare participants];
 
-  v11 = [v10 countByEnumeratingWithState:&v40 objects:v49 count:16];
+  v11 = [participants countByEnumeratingWithState:&v40 objects:v49 count:16];
   if (v11)
   {
     v12 = v11;
@@ -575,21 +575,21 @@ uint64_t __49__ICShareNotifier_shouldShowNotificationForNote___block_invoke_46(u
       {
         if (*v41 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(participants);
         }
 
         v15 = *(*(&v40 + 1) + 8 * i);
-        v16 = [v15 userIdentity];
-        v17 = [v16 userRecordID];
-        v18 = [v17 recordName];
+        userIdentity = [v15 userIdentity];
+        userRecordID = [userIdentity userRecordID];
+        recordName = [userRecordID recordName];
 
-        if (v18)
+        if (recordName)
         {
-          [v8 setObject:v15 forKeyedSubscript:v18];
+          [dictionary setObject:v15 forKeyedSubscript:recordName];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v40 objects:v49 count:16];
+      v12 = [participants countByEnumeratingWithState:&v40 objects:v49 count:16];
     }
 
     while (v12);
@@ -617,7 +617,7 @@ uint64_t __49__ICShareNotifier_shouldShowNotificationForNote___block_invoke_46(u
         }
 
         v24 = *(*(&v36 + 1) + 8 * j);
-        v25 = [v6 userIDForReplicaID:{v24, v32}];
+        v25 = [noteCopy userIDForReplicaID:{v24, v32}];
         v26 = os_log_create("com.apple.notes", "Notifications");
         v27 = os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG);
         if (v25)
@@ -631,7 +631,7 @@ uint64_t __49__ICShareNotifier_shouldShowNotificationForNote___block_invoke_46(u
             _os_log_debug_impl(&dword_214D51000, v26, OS_LOG_TYPE_DEBUG, "Found user ID %@ for replica ID %@", buf, 0x16u);
           }
 
-          v26 = [v8 objectForKeyedSubscript:v25];
+          v26 = [dictionary objectForKeyedSubscript:v25];
           v28 = os_log_create("com.apple.notes", "Notifications");
           v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG);
           if (v26)
@@ -671,53 +671,53 @@ uint64_t __49__ICShareNotifier_shouldShowNotificationForNote___block_invoke_46(u
     while (v21);
   }
 
-  v30 = [v33 allObjects];
+  allObjects = [v33 allObjects];
 
-  return v30;
+  return allObjects;
 }
 
-+ (void)showNotificationForNote:(id)a3 editors:(id)a4
++ (void)showNotificationForNote:(id)note editors:(id)editors
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  noteCopy = note;
+  editorsCopy = editors;
   v8 = os_log_create("com.apple.notes", "Notifications");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v7 count];
-    v10 = [v6 shortLoggingDescription];
+    v9 = [editorsCopy count];
+    shortLoggingDescription = [noteCopy shortLoggingDescription];
     *buf = 67109378;
     v20 = v9;
     v21 = 2112;
-    v22 = v10;
+    v22 = shortLoggingDescription;
     _os_log_impl(&dword_214D51000, v8, OS_LOG_TYPE_INFO, "Showing notification for %d editors for %@", buf, 0x12u);
   }
 
-  v11 = [a1 notificationTitleForEditors:v7];
-  v12 = [v6 title];
-  v13 = v12;
-  if (v11 && v12)
+  v11 = [self notificationTitleForEditors:editorsCopy];
+  title = [noteCopy title];
+  v13 = title;
+  if (v11 && title)
   {
     v14 = os_log_create("com.apple.notes", "Notifications");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      [ICShareNotifier showNotificationForNote:v6 editors:v14];
+      [ICShareNotifier showNotificationForNote:noteCopy editors:v14];
     }
 
-    v15 = [v6 identifier];
-    v18 = v15;
+    identifier = [noteCopy identifier];
+    v18 = identifier;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
 
-    [a1 showNotificationWithTitle:v11 message:v13 userInfo:v16];
+    [self showNotificationWithTitle:v11 message:v13 userInfo:v16];
   }
 }
 
-+ (void)showNotificationWithTitle:(id)a3 message:(id)a4 userInfo:(id)a5
++ (void)showNotificationWithTitle:(id)title message:(id)message userInfo:(id)info
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 objectForKeyedSubscript:@"Note"];
+  infoCopy = info;
+  messageCopy = message;
+  titleCopy = title;
+  v10 = [infoCopy objectForKeyedSubscript:@"Note"];
   v11 = os_log_create("com.apple.notes", "Notifications");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -725,23 +725,23 @@ uint64_t __49__ICShareNotifier_shouldShowNotificationForNote___block_invoke_46(u
   }
 
   v12 = objc_alloc_init(MEMORY[0x277CE1F60]);
-  [v12 setTitle:v9];
+  [v12 setTitle:titleCopy];
 
-  [v12 setBody:v8];
-  [v12 setUserInfo:v7];
+  [v12 setBody:messageCopy];
+  [v12 setUserInfo:infoCopy];
 
-  v13 = [MEMORY[0x277CE1FE0] defaultSound];
-  [v12 setSound:v13];
+  defaultSound = [MEMORY[0x277CE1FE0] defaultSound];
+  [v12 setSound:defaultSound];
 
   v14 = [MEMORY[0x277CE1FC0] requestWithIdentifier:v10 content:v12 trigger:0];
-  v15 = [MEMORY[0x277CE2028] currentNotificationCenter];
+  currentNotificationCenter = [MEMORY[0x277CE2028] currentNotificationCenter];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __62__ICShareNotifier_showNotificationWithTitle_message_userInfo___block_invoke;
   v17[3] = &unk_278195FD8;
   v18 = v10;
   v16 = v10;
-  [v15 addNotificationRequest:v14 withCompletionHandler:v17];
+  [currentNotificationCenter addNotificationRequest:v14 withCompletionHandler:v17];
 }
 
 void __62__ICShareNotifier_showNotificationWithTitle_message_userInfo___block_invoke(uint64_t a1, void *a2)
@@ -763,19 +763,19 @@ void __62__ICShareNotifier_showNotificationWithTitle_message_userInfo___block_in
   }
 }
 
-+ (id)notificationTitleForEditors:(id)a3
++ (id)notificationTitleForEditors:(id)editors
 {
   v3 = MEMORY[0x277CBC6A0];
-  v4 = a3;
-  v5 = [v3 ic_displayableNames:v4 maximumNamesCount:2];
+  editorsCopy = editors;
+  v5 = [v3 ic_displayableNames:editorsCopy maximumNamesCount:2];
   v6 = [v5 count];
-  v7 = [v4 count];
+  v7 = [editorsCopy count];
 
   if (v7 == 1 && v6 == 1)
   {
     v8 = __ICLocalizedFrameworkString_impl(@"%@ Edited", @"%@ Edited", 0, 1);
-    v9 = [v5 firstObject];
-    [MEMORY[0x277CCACA8] localizedStringWithFormat:v8, v9, v13];
+    firstObject = [v5 firstObject];
+    [MEMORY[0x277CCACA8] localizedStringWithFormat:v8, firstObject, v13];
     v10 = LABEL_4:;
 LABEL_8:
 
@@ -785,9 +785,9 @@ LABEL_8:
   if (v7 == 2 && v6 == 2)
   {
     v8 = __ICLocalizedFrameworkString_impl(@"%@ & %@ Edited", @"%@ & %@ Edited", 0, 1);
-    v9 = [v5 objectAtIndexedSubscript:0];
+    firstObject = [v5 objectAtIndexedSubscript:0];
     v11 = [v5 objectAtIndexedSubscript:1];
-    v10 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v8, v9, v11];
+    v10 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v8, firstObject, v11];
 
     goto LABEL_8;
   }
@@ -795,8 +795,8 @@ LABEL_8:
   if (v7 >= 2 && v6)
   {
     v8 = __ICLocalizedFrameworkString_impl(@"%2$@ & %1$d More Edited", @"%2$@ & %1$d More Edited", 0, 1);
-    v9 = [v5 objectAtIndexedSubscript:0];
-    [MEMORY[0x277CCACA8] localizedStringWithFormat:v8, (v7 - 1), v9];
+    firstObject = [v5 objectAtIndexedSubscript:0];
+    [MEMORY[0x277CCACA8] localizedStringWithFormat:v8, (v7 - 1), firstObject];
     goto LABEL_4;
   }
 
@@ -806,33 +806,33 @@ LABEL_9:
   return v10;
 }
 
-+ (BOOL)shouldPreventNotificationsForRecordID:(id)a3
++ (BOOL)shouldPreventNotificationsForRecordID:(id)d
 {
-  v4 = [a3 recordName];
-  v5 = [a1 defaultsKeyForPreventingNotificationsForIdentifier:v4];
+  recordName = [d recordName];
+  v5 = [self defaultsKeyForPreventingNotificationsForIdentifier:recordName];
 
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v7 = [v6 BOOLForKey:v5];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v7 = [standardUserDefaults BOOLForKey:v5];
 
   return v7;
 }
 
-+ (void)setShouldPreventNotifications:(BOOL)a3 forRecordID:(id)a4
++ (void)setShouldPreventNotifications:(BOOL)notifications forRecordID:(id)d
 {
-  v4 = a3;
-  v6 = [a4 recordName];
-  v9 = [a1 defaultsKeyForPreventingNotificationsForIdentifier:v6];
+  notificationsCopy = notifications;
+  recordName = [d recordName];
+  v9 = [self defaultsKeyForPreventingNotificationsForIdentifier:recordName];
 
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v8 = v7;
-  if (v4)
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v8 = standardUserDefaults;
+  if (notificationsCopy)
   {
-    [v7 setBool:1 forKey:v9];
+    [standardUserDefaults setBool:1 forKey:v9];
   }
 
   else
   {
-    [v7 removeObjectForKey:v9];
+    [standardUserDefaults removeObjectForKey:v9];
   }
 }
 

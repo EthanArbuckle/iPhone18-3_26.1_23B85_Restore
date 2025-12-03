@@ -1,8 +1,8 @@
 @interface PLArchiveJob
-+ (SEL)recoverSelectorForStage:(int64_t)a3;
-+ (SEL)runSelectorForStage:(int64_t)a3;
++ (SEL)recoverSelectorForStage:(int64_t)stage;
++ (SEL)runSelectorForStage:(int64_t)stage;
 + (id)storageQueue;
-- (PLArchiveJob)initWithManager:(id)a3 andArchiveEntry:(id)a4;
+- (PLArchiveJob)initWithManager:(id)manager andArchiveEntry:(id)entry;
 - (int64_t)stage;
 - (unint64_t)numAttempts;
 - (void)recover;
@@ -10,8 +10,8 @@
 - (void)recoverCopy;
 - (void)recoverTrim;
 - (void)run;
-- (void)setNumAttempts:(unint64_t)a3;
-- (void)setStage:(int64_t)a3;
+- (void)setNumAttempts:(unint64_t)attempts;
+- (void)setStage:(int64_t)stage;
 - (void)stageCompress;
 - (void)stageCopy;
 - (void)stageRemove;
@@ -22,18 +22,18 @@
 
 @implementation PLArchiveJob
 
-- (PLArchiveJob)initWithManager:(id)a3 andArchiveEntry:(id)a4
+- (PLArchiveJob)initWithManager:(id)manager andArchiveEntry:(id)entry
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  entryCopy = entry;
   v12.receiver = self;
   v12.super_class = PLArchiveJob;
   v9 = [(PLArchiveJob *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_manager, a3);
-    objc_storeStrong(&v10->_archiveEntry, a4);
+    objc_storeStrong(&v9->_manager, manager);
+    objc_storeStrong(&v10->_archiveEntry, entry);
     [(PLArchiveJob *)v10 recover];
   }
 
@@ -48,7 +48,7 @@
   return v3;
 }
 
-- (void)setStage:(int64_t)a3
+- (void)setStage:(int64_t)stage
 {
   if (+[PLDefaults debugEnabled])
   {
@@ -65,11 +65,11 @@
 
     if (setStage__classDebugEnabled == 1)
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLArchiveJob::setStage: stage=%i", a3, block, v13, v14, v15, v16];
+      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLArchiveJob::setStage: stage=%i", stage, block, v13, v14, v15, v16];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLArchiveJob.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLArchiveJob setStage:]"];
-      [PLCoreStorage logMessage:v6 fromFile:v8 fromFunction:v9 fromLineNumber:45];
+      [PLCoreStorage logMessage:v6 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:45];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -79,8 +79,8 @@
     }
   }
 
-  v11 = [(PLArchiveJob *)self archiveEntry];
-  [v11 setStage:a3];
+  archiveEntry = [(PLArchiveJob *)self archiveEntry];
+  [archiveEntry setStage:stage];
 }
 
 BOOL __25__PLArchiveJob_setStage___block_invoke(uint64_t a1)
@@ -92,13 +92,13 @@ BOOL __25__PLArchiveJob_setStage___block_invoke(uint64_t a1)
 
 - (int64_t)stage
 {
-  v2 = [(PLArchiveJob *)self archiveEntry];
-  v3 = [v2 stage];
+  archiveEntry = [(PLArchiveJob *)self archiveEntry];
+  stage = [archiveEntry stage];
 
-  return v3;
+  return stage;
 }
 
-- (void)setNumAttempts:(unint64_t)a3
+- (void)setNumAttempts:(unint64_t)attempts
 {
   if (+[PLDefaults debugEnabled])
   {
@@ -115,11 +115,11 @@ BOOL __25__PLArchiveJob_setStage___block_invoke(uint64_t a1)
 
     if (setNumAttempts__classDebugEnabled == 1)
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLArchiveJob::setNumAttempts: numAttempts=%i", a3, block, v15, v16, v17, v18];
+      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLArchiveJob::setNumAttempts: numAttempts=%i", attempts, block, v15, v16, v17, v18];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLArchiveJob.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLArchiveJob setNumAttempts:]"];
-      [PLCoreStorage logMessage:v6 fromFile:v8 fromFunction:v9 fromLineNumber:53];
+      [PLCoreStorage logMessage:v6 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:53];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -129,14 +129,14 @@ BOOL __25__PLArchiveJob_setStage___block_invoke(uint64_t a1)
     }
   }
 
-  v11 = [(PLArchiveJob *)self archiveEntry];
-  [v11 setNumAttempts:a3];
+  archiveEntry = [(PLArchiveJob *)self archiveEntry];
+  [archiveEntry setNumAttempts:attempts];
 
-  if (a3 >= 0xA)
+  if (attempts >= 0xA)
   {
-    v12 = [(PLArchiveJob *)self manager];
-    v13 = [(PLArchiveJob *)self archiveEntry];
-    [v12 handleFailure:1 forArchiveEntry:v13];
+    manager = [(PLArchiveJob *)self manager];
+    archiveEntry2 = [(PLArchiveJob *)self archiveEntry];
+    [manager handleFailure:1 forArchiveEntry:archiveEntry2];
   }
 }
 
@@ -149,10 +149,10 @@ BOOL __31__PLArchiveJob_setNumAttempts___block_invoke(uint64_t a1)
 
 - (unint64_t)numAttempts
 {
-  v2 = [(PLArchiveJob *)self archiveEntry];
-  v3 = [v2 numAttempts];
+  archiveEntry = [(PLArchiveJob *)self archiveEntry];
+  numAttempts = [archiveEntry numAttempts];
 
-  return v3;
+  return numAttempts;
 }
 
 - (void)run
@@ -173,14 +173,14 @@ BOOL __31__PLArchiveJob_setNumAttempts___block_invoke(uint64_t a1)
     if (run_classDebugEnabled == 1)
     {
       v4 = MEMORY[0x1E696AEC0];
-      v5 = [(PLArchiveJob *)self archiveEntry];
-      v6 = [v5 name];
-      v7 = [v4 stringWithFormat:@"PLArchiveJob::run: archive=%@", v6, block, v23, v24, v25, v26];
+      archiveEntry = [(PLArchiveJob *)self archiveEntry];
+      name = [archiveEntry name];
+      v7 = [v4 stringWithFormat:@"PLArchiveJob::run: archive=%@", name, block, v23, v24, v25, v26];
 
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLArchiveJob.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLArchiveJob run]"];
-      [PLCoreStorage logMessage:v7 fromFile:v9 fromFunction:v10 fromLineNumber:67];
+      [PLCoreStorage logMessage:v7 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:67];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -198,8 +198,8 @@ BOOL __31__PLArchiveJob_setNumAttempts___block_invoke(uint64_t a1)
   v12 = +[PLUtilities containerPath];
   v13 = [v12 stringByAppendingString:@"/Library/BatteryLife/CurrentPowerlog.PLSQL"];
   v14 = [PLFileStats fileSizeAtPath:v13];
-  v15 = [(PLArchiveJob *)self archiveEntry];
-  [v15 setMainDBSizeAtStart:v14];
+  archiveEntry2 = [(PLArchiveJob *)self archiveEntry];
+  [archiveEntry2 setMainDBSizeAtStart:v14];
 
   [(PLArchiveJob *)self setNumAttempts:[(PLArchiveJob *)self numAttempts]+ 1];
   [(PLArchiveJob *)self startWatchdog];
@@ -207,10 +207,10 @@ BOOL __31__PLArchiveJob_setNumAttempts___block_invoke(uint64_t a1)
   {
     do
     {
-      v16 = [(PLArchiveJob *)self manager];
-      v17 = [v16 isInterrupted];
+      manager = [(PLArchiveJob *)self manager];
+      isInterrupted = [manager isInterrupted];
 
-      if (v17)
+      if (isInterrupted)
       {
         break;
       }
@@ -230,10 +230,10 @@ BOOL __31__PLArchiveJob_setNumAttempts___block_invoke(uint64_t a1)
   }
 
   [(PLArchiveJob *)self stopWatchdog];
-  v20 = [(PLArchiveJob *)self manager];
-  v21 = [v20 isInterrupted];
+  manager2 = [(PLArchiveJob *)self manager];
+  isInterrupted2 = [manager2 isInterrupted];
 
-  if (v21)
+  if (isInterrupted2)
   {
     [(PLArchiveJob *)self setNumAttempts:[(PLArchiveJob *)self numAttempts]- 1];
   }
@@ -246,7 +246,7 @@ BOOL __19__PLArchiveJob_run__block_invoke(uint64_t a1)
   return result;
 }
 
-+ (SEL)runSelectorForStage:(int64_t)a3
++ (SEL)runSelectorForStage:(int64_t)stage
 {
   if (runSelectorForStage__once != -1)
   {
@@ -254,7 +254,7 @@ BOOL __19__PLArchiveJob_run__block_invoke(uint64_t a1)
   }
 
   v4 = runSelectorForStage___stageToFunction;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:stage];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   if (v6)
@@ -298,35 +298,35 @@ void __36__PLArchiveJob_runSelectorForStage___block_invoke()
 - (void)stageCopy
 {
   v3 = +[PowerlogCore sharedCore];
-  v4 = [v3 storage];
-  v5 = [v4 connection];
-  v6 = [(PLArchiveJob *)self archiveEntry];
-  v7 = [v6 path];
-  [v5 copyDatabaseToPath:v7];
+  storage = [v3 storage];
+  connection = [storage connection];
+  archiveEntry = [(PLArchiveJob *)self archiveEntry];
+  path = [archiveEntry path];
+  [connection copyDatabaseToPath:path];
 
   v8 = [PLSQLiteConnection alloc];
-  v11 = [(PLArchiveJob *)self archiveEntry];
-  v9 = [v11 path];
-  v10 = [(PLSQLiteConnection *)v8 initWithFilePath:v9];
+  archiveEntry2 = [(PLArchiveJob *)self archiveEntry];
+  path2 = [archiveEntry2 path];
+  v10 = [(PLSQLiteConnection *)v8 initWithFilePath:path2];
   [(PLSQLiteConnection *)v10 closeConnection];
 }
 
 - (void)stageTrim
 {
-  v3 = [(PLArchiveJob *)self archiveEntry];
-  v4 = [v3 startDate];
-  v13 = [PLCoreStorage allOperatorTablesToTrimConditionsForTrimDate:v4];
+  archiveEntry = [(PLArchiveJob *)self archiveEntry];
+  startDate = [archiveEntry startDate];
+  v13 = [PLCoreStorage allOperatorTablesToTrimConditionsForTrimDate:startDate];
 
   v5 = [PLSQLiteConnection alloc];
-  v6 = [(PLArchiveJob *)self archiveEntry];
-  v7 = [v6 path];
-  v8 = [(PLSQLiteConnection *)v5 initWithFilePath:v7];
+  archiveEntry2 = [(PLArchiveJob *)self archiveEntry];
+  path = [archiveEntry2 path];
+  v8 = [(PLSQLiteConnection *)v5 initWithFilePath:path];
 
-  v9 = [(PLArchiveJob *)self archiveEntry];
-  v10 = [v9 startDate];
-  v11 = [(PLArchiveJob *)self archiveEntry];
-  v12 = [v11 endDate];
-  [(PLSQLiteConnection *)v8 trimAllTablesFromDate:v10 toDate:v12 withTableFilters:v13];
+  archiveEntry3 = [(PLArchiveJob *)self archiveEntry];
+  startDate2 = [archiveEntry3 startDate];
+  archiveEntry4 = [(PLArchiveJob *)self archiveEntry];
+  endDate = [archiveEntry4 endDate];
+  [(PLSQLiteConnection *)v8 trimAllTablesFromDate:startDate2 toDate:endDate withTableFilters:v13];
 
   [(PLSQLiteConnection *)v8 vacuum];
   [(PLSQLiteConnection *)v8 closeConnection];
@@ -334,11 +334,11 @@ void __36__PLArchiveJob_runSelectorForStage___block_invoke()
 
 - (void)stageCompress
 {
-  v3 = [(PLArchiveJob *)self archiveEntry];
-  v4 = [v3 path];
-  v5 = [(PLArchiveJob *)self archiveEntry];
-  v6 = [v5 compressedPath];
-  v7 = [PLUtilities compressWithSource:v4 withDestination:v6 withLevel:4];
+  archiveEntry = [(PLArchiveJob *)self archiveEntry];
+  path = [archiveEntry path];
+  archiveEntry2 = [(PLArchiveJob *)self archiveEntry];
+  compressedPath = [archiveEntry2 compressedPath];
+  v7 = [PLUtilities compressWithSource:path withDestination:compressedPath withLevel:4];
 
   if (v7)
   {
@@ -348,15 +348,15 @@ void __36__PLArchiveJob_runSelectorForStage___block_invoke()
     if (!v9)
     {
       v10 = getpwnam("mobile");
-      v11 = [(PLArchiveJob *)self archiveEntry];
-      v12 = [v11 compressedPath];
-      chown([v12 fileSystemRepresentation], v10->pw_uid, v10->pw_gid);
+      archiveEntry3 = [(PLArchiveJob *)self archiveEntry];
+      compressedPath2 = [archiveEntry3 compressedPath];
+      chown([compressedPath2 fileSystemRepresentation], v10->pw_uid, v10->pw_gid);
     }
 
-    v15 = [MEMORY[0x1E696AC08] defaultManager];
-    v13 = [(PLArchiveJob *)self archiveEntry];
-    v14 = [v13 path];
-    [v15 removeItemAtPath:v14 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    archiveEntry4 = [(PLArchiveJob *)self archiveEntry];
+    path2 = [archiveEntry4 path];
+    [defaultManager removeItemAtPath:path2 error:0];
   }
 }
 
@@ -407,12 +407,12 @@ void __27__PLArchiveJob_stageRemove__block_invoke(uint64_t a1)
       if (recover_classDebugEnabled == 1)
       {
         v6 = MEMORY[0x1E696AEC0];
-        v7 = [(PLArchiveJob *)self stage];
-        v8 = [v6 stringWithFormat:@"PLArchiveManager::recover for stage=%i", v7, block, v14, v15, v16, v17];
+        stage = [(PLArchiveJob *)self stage];
+        v8 = [v6 stringWithFormat:@"PLArchiveManager::recover for stage=%i", stage, block, v14, v15, v16, v17];
         v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLArchiveJob.m"];
-        v10 = [v9 lastPathComponent];
+        lastPathComponent = [v9 lastPathComponent];
         v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLArchiveJob recover]"];
-        [PLCoreStorage logMessage:v8 fromFile:v10 fromFunction:v11 fromLineNumber:177];
+        [PLCoreStorage logMessage:v8 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:177];
 
         v12 = PLLogCommon();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -433,7 +433,7 @@ BOOL __23__PLArchiveJob_recover__block_invoke(uint64_t a1)
   return result;
 }
 
-+ (SEL)recoverSelectorForStage:(int64_t)a3
++ (SEL)recoverSelectorForStage:(int64_t)stage
 {
   if (recoverSelectorForStage__once != -1)
   {
@@ -441,7 +441,7 @@ BOOL __23__PLArchiveJob_recover__block_invoke(uint64_t a1)
   }
 
   v4 = recoverSelectorForStage___stageToFunction;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:stage];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   if (v6)
@@ -478,57 +478,57 @@ void __40__PLArchiveJob_recoverSelectorForStage___block_invoke()
 
 - (void)recoverCopy
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(PLArchiveJob *)self archiveEntry];
-  v5 = [v4 path];
-  [v3 removeItemAtPath:v5 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  archiveEntry = [(PLArchiveJob *)self archiveEntry];
+  path = [archiveEntry path];
+  [defaultManager removeItemAtPath:path error:0];
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [(PLArchiveJob *)self archiveEntry];
-  v8 = [v7 path];
-  v9 = [v8 stringByAppendingString:@"-shm"];
-  [v6 removeItemAtPath:v9 error:0];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  archiveEntry2 = [(PLArchiveJob *)self archiveEntry];
+  path2 = [archiveEntry2 path];
+  v9 = [path2 stringByAppendingString:@"-shm"];
+  [defaultManager2 removeItemAtPath:v9 error:0];
 
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = [(PLArchiveJob *)self archiveEntry];
-  v12 = [v11 path];
-  v13 = [v12 stringByAppendingString:@"-wal"];
-  [v10 removeItemAtPath:v13 error:0];
+  defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+  archiveEntry3 = [(PLArchiveJob *)self archiveEntry];
+  path3 = [archiveEntry3 path];
+  v13 = [path3 stringByAppendingString:@"-wal"];
+  [defaultManager3 removeItemAtPath:v13 error:0];
 
-  v17 = [MEMORY[0x1E696AC08] defaultManager];
-  v14 = [(PLArchiveJob *)self archiveEntry];
-  v15 = [v14 path];
-  v16 = [v15 stringByAppendingString:@"-journal"];
-  [v17 removeItemAtPath:v16 error:0];
+  defaultManager4 = [MEMORY[0x1E696AC08] defaultManager];
+  archiveEntry4 = [(PLArchiveJob *)self archiveEntry];
+  path4 = [archiveEntry4 path];
+  v16 = [path4 stringByAppendingString:@"-journal"];
+  [defaultManager4 removeItemAtPath:v16 error:0];
 }
 
 - (void)recoverTrim
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(PLArchiveJob *)self archiveEntry];
-  v5 = [v4 path];
-  v6 = [v5 stringByAppendingString:@"-shm"];
-  [v3 removeItemAtPath:v6 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  archiveEntry = [(PLArchiveJob *)self archiveEntry];
+  path = [archiveEntry path];
+  v6 = [path stringByAppendingString:@"-shm"];
+  [defaultManager removeItemAtPath:v6 error:0];
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [(PLArchiveJob *)self archiveEntry];
-  v9 = [v8 path];
-  v10 = [v9 stringByAppendingString:@"-wal"];
-  [v7 removeItemAtPath:v10 error:0];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  archiveEntry2 = [(PLArchiveJob *)self archiveEntry];
+  path2 = [archiveEntry2 path];
+  v10 = [path2 stringByAppendingString:@"-wal"];
+  [defaultManager2 removeItemAtPath:v10 error:0];
 
-  v14 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = [(PLArchiveJob *)self archiveEntry];
-  v12 = [v11 path];
-  v13 = [v12 stringByAppendingString:@"-journal"];
-  [v14 removeItemAtPath:v13 error:0];
+  defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+  archiveEntry3 = [(PLArchiveJob *)self archiveEntry];
+  path3 = [archiveEntry3 path];
+  v13 = [path3 stringByAppendingString:@"-journal"];
+  [defaultManager3 removeItemAtPath:v13 error:0];
 }
 
 - (void)recoverCompress
 {
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [(PLArchiveJob *)self archiveEntry];
-  v4 = [v3 compressedPath];
-  [v5 removeItemAtPath:v4 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  archiveEntry = [(PLArchiveJob *)self archiveEntry];
+  compressedPath = [archiveEntry compressedPath];
+  [defaultManager removeItemAtPath:compressedPath error:0];
 }
 
 - (void)startWatchdog
@@ -554,11 +554,11 @@ void __29__PLArchiveJob_startWatchdog__block_invoke(uint64_t a1)
 
 - (void)stopWatchdog
 {
-  v3 = [(PLArchiveJob *)self watchdog];
-  [v3 setTimerActive:0];
+  watchdog = [(PLArchiveJob *)self watchdog];
+  [watchdog setTimerActive:0];
 
-  v4 = [(PLArchiveJob *)self watchdog];
-  [v4 invalidate];
+  watchdog2 = [(PLArchiveJob *)self watchdog];
+  [watchdog2 invalidate];
 
   [(PLArchiveJob *)self setWatchdog:0];
 }

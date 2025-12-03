@@ -1,32 +1,32 @@
 @interface PKWrapperViewController
-- (PKWrapperViewController)initWithWrappedViewController:(id)a3 type:(int64_t)a4;
+- (PKWrapperViewController)initWithWrappedViewController:(id)controller type:(int64_t)type;
 - (int64_t)preferredUserInterfaceStyle;
 - (void)_updatePreferredContentSize;
 - (void)loadView;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKWrapperViewController
 
-- (PKWrapperViewController)initWithWrappedViewController:(id)a3 type:(int64_t)a4
+- (PKWrapperViewController)initWithWrappedViewController:(id)controller type:(int64_t)type
 {
-  v7 = a3;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = PKWrapperViewController;
   v8 = [(PKWrapperViewController *)&v13 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a4;
-    v10 = [(PKWrapperViewController *)v8 preferredUserInterfaceStyle];
-    objc_storeStrong(&v9->_wrappedViewController, a3);
+    v8->_type = type;
+    preferredUserInterfaceStyle = [(PKWrapperViewController *)v8 preferredUserInterfaceStyle];
+    objc_storeStrong(&v9->_wrappedViewController, controller);
     if (v9->_wrappedViewController)
     {
       [(PKWrapperViewController *)v9 addChildViewController:?];
       [(UIViewController *)v9->_wrappedViewController didMoveToParentViewController:v9];
       [(PKWrapperViewController *)v9 setNeedsStatusBarAppearanceUpdate];
-      if (v10 != [(PKWrapperViewController *)v9 preferredUserInterfaceStyle])
+      if (preferredUserInterfaceStyle != [(PKWrapperViewController *)v9 preferredUserInterfaceStyle])
       {
         [(PKWrapperViewController *)v9 setNeedsUserInterfaceAppearanceUpdate];
       }
@@ -34,8 +34,8 @@
       [(PKWrapperViewController *)v9 setNeedsUpdateOfHomeIndicatorAutoHidden];
       [(PKWrapperViewController *)v9 setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
       [(PKWrapperViewController *)v9 setNeedsWhitePointAdaptivityStyleUpdate];
-      v11 = [(UIViewController *)v9->_wrappedViewController navigationItem];
-      [(PKWrapperViewController *)v9 _setExistingNavigationItem:v11];
+      navigationItem = [(UIViewController *)v9->_wrappedViewController navigationItem];
+      [(PKWrapperViewController *)v9 _setExistingNavigationItem:navigationItem];
 
       [(PKWrapperViewController *)v9 _updatePreferredContentSize];
     }
@@ -49,20 +49,20 @@
   v7.receiver = self;
   v7.super_class = PKWrapperViewController;
   [(PKWrapperViewController *)&v7 loadView];
-  v3 = [(PKWrapperViewController *)self view];
-  [v3 setAutoresizingMask:0];
-  v4 = [(UIViewController *)self->_wrappedViewController view];
-  v5 = v4;
+  view = [(PKWrapperViewController *)self view];
+  [view setAutoresizingMask:0];
+  view2 = [(UIViewController *)self->_wrappedViewController view];
+  v5 = view2;
   if (!self->_type)
   {
-    [v4 setAutoresizingMask:0];
-    v6 = [v5 backgroundColor];
-    [v3 setBackgroundColor:v6];
+    [view2 setAutoresizingMask:0];
+    backgroundColor = [v5 backgroundColor];
+    [view setBackgroundColor:backgroundColor];
 
-    [v3 setOpaque:{objc_msgSend(v5, "isOpaque")}];
+    [view setOpaque:{objc_msgSend(v5, "isOpaque")}];
   }
 
-  [v3 addSubview:v5];
+  [view addSubview:v5];
 }
 
 - (void)viewWillLayoutSubviews
@@ -72,10 +72,10 @@
   [(PKWrapperViewController *)&v5 viewWillLayoutSubviews];
   if (!self->_type)
   {
-    v3 = [(UIViewController *)self->_wrappedViewController view];
-    v4 = [(PKWrapperViewController *)self view];
-    [v4 bounds];
-    [v3 setFrame:?];
+    view = [(UIViewController *)self->_wrappedViewController view];
+    view2 = [(PKWrapperViewController *)self view];
+    [view2 bounds];
+    [view setFrame:?];
   }
 }
 
@@ -86,15 +86,15 @@
   [(PKWrapperViewController *)self setPreferredContentSize:?];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v6.receiver = self;
   v6.super_class = PKWrapperViewController;
-  v4 = a3;
-  [(PKWrapperViewController *)&v6 preferredContentSizeDidChangeForChildContentContainer:v4];
+  containerCopy = container;
+  [(PKWrapperViewController *)&v6 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
   wrappedViewController = self->_wrappedViewController;
 
-  if (wrappedViewController == v4)
+  if (wrappedViewController == containerCopy)
   {
     [(PKWrapperViewController *)self _updatePreferredContentSize:v6.receiver];
   }

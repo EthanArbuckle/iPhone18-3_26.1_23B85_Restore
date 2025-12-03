@@ -1,20 +1,20 @@
 @interface _SASTestingInputMutation
-- (_SASTestingInputMutation)initWithBaseModel:(id)a3;
+- (_SASTestingInputMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
 @implementation _SASTestingInputMutation
 
-- (_SASTestingInputMutation)initWithBaseModel:(id)a3
+- (_SASTestingInputMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SASTestingInputMutation;
   v6 = [(_SASTestingInputMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;
@@ -46,27 +46,27 @@
       if ((*&self->_mutationFlags & 4) != 0)
       {
 LABEL_8:
-        v7 = self->_text;
+        text = self->_text;
 LABEL_11:
-        v8 = v7;
+        v8 = text;
         if ((*&self->_mutationFlags & 8) != 0)
         {
-          v9 = self->_recordedSpeechURL;
+          recordedSpeechURL = self->_recordedSpeechURL;
         }
 
         else
         {
-          v9 = [(SASTestingInput *)self->_baseModel recordedSpeechURL];
+          recordedSpeechURL = [(SASTestingInput *)self->_baseModel recordedSpeechURL];
         }
 
-        v10 = v9;
-        v5 = [[SASTestingInput alloc] initWithType:type text:v8 recordedSpeechURL:v9];
+        v10 = recordedSpeechURL;
+        v5 = [[SASTestingInput alloc] initWithType:type text:v8 recordedSpeechURL:recordedSpeechURL];
 
         goto LABEL_15;
       }
     }
 
-    v7 = [(SASTestingInput *)self->_baseModel text];
+    text = [(SASTestingInput *)self->_baseModel text];
     goto LABEL_11;
   }
 

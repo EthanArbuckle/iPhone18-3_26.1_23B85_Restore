@@ -1,35 +1,35 @@
 @interface IPASerializationManager
-+ (char)adjustmentTypeForFormat:(id)a3 formatVersion:(id)a4;
-+ (char)debug_adjustmentTypeFromEnvelopeDictionary:(id)a3;
-+ (id)_serializerForFormat:(id)a3 formatVersion:(id)a4 error:(id *)a5;
-+ (id)debug_deserializeEnvelopeDictionary:(id)a3 error:(id *)a4;
-+ (id)debug_serializeEnvelope:(id)a3 error:(id *)a4;
-+ (id)deserialize:(id)a3 originator:(id)a4 format:(id)a5 formatVersion:(id)a6 error:(id *)a7;
-+ (id)formatForAdjustmentStack:(id)a3;
-+ (id)serialize:(id)a3 error:(id *)a4;
-+ (id)serialize:(id)a3 format:(id)a4 formatVersion:(id)a5 error:(id *)a6;
-+ (id)serializeWithCurrentDefaultFormat:(id)a3 format:(id *)a4 formatVersion:(id *)a5 error:(id *)a6;
++ (char)adjustmentTypeForFormat:(id)format formatVersion:(id)version;
++ (char)debug_adjustmentTypeFromEnvelopeDictionary:(id)dictionary;
++ (id)_serializerForFormat:(id)format formatVersion:(id)version error:(id *)error;
++ (id)debug_deserializeEnvelopeDictionary:(id)dictionary error:(id *)error;
++ (id)debug_serializeEnvelope:(id)envelope error:(id *)error;
++ (id)deserialize:(id)deserialize originator:(id)originator format:(id)format formatVersion:(id)version error:(id *)error;
++ (id)formatForAdjustmentStack:(id)stack;
++ (id)serialize:(id)serialize error:(id *)error;
++ (id)serialize:(id)serialize format:(id)format formatVersion:(id)version error:(id *)error;
++ (id)serializeWithCurrentDefaultFormat:(id)format format:(id *)a4 formatVersion:(id *)version error:(id *)error;
 + (void)initialize;
 @end
 
 @implementation IPASerializationManager
 
-+ (id)debug_deserializeEnvelopeDictionary:(id)a3 error:(id *)a4
++ (id)debug_deserializeEnvelopeDictionary:(id)dictionary error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D3B558]];
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277D3B560]];
-  v8 = [v5 objectForKeyedSubscript:*MEMORY[0x277D3B550]];
-  v15 = [v5 objectForKeyedSubscript:*MEMORY[0x277D3B548]];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B558]];
+  v7 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B560]];
+  v8 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B550]];
+  v15 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B548]];
   if (v15)
   {
-    v16 = [IPASerializationManager deserialize:v15 originator:v8 format:v6 formatVersion:v7 error:a4];
+    v16 = [IPASerializationManager deserialize:v15 originator:v8 format:v6 formatVersion:v7 error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     IPAAdjustmentError(1001, @"failed to get data out of archive", v9, v10, v11, v12, v13, v14, v18);
-    *a4 = v16 = 0;
+    *error = v16 = 0;
   }
 
   else
@@ -40,32 +40,32 @@
   return v16;
 }
 
-+ (char)debug_adjustmentTypeFromEnvelopeDictionary:(id)a3
++ (char)debug_adjustmentTypeFromEnvelopeDictionary:(id)dictionary
 {
   v4 = *MEMORY[0x277D3B558];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:v4];
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277D3B560]];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:v4];
+  v7 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B560]];
 
-  LOBYTE(a1) = [a1 adjustmentTypeForFormat:v6 formatVersion:v7];
-  return a1;
+  LOBYTE(self) = [self adjustmentTypeForFormat:v6 formatVersion:v7];
+  return self;
 }
 
-+ (id)debug_serializeEnvelope:(id)a3 error:(id *)a4
++ (id)debug_serializeEnvelope:(id)envelope error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 serialize:v6 error:a4];
+  envelopeCopy = envelope;
+  v7 = [self serialize:envelopeCopy error:error];
   if (v7)
   {
     v8 = objc_opt_new();
-    v9 = [v6 format];
-    [v8 setObject:v9 forKeyedSubscript:*MEMORY[0x277D3B558]];
+    format = [envelopeCopy format];
+    [v8 setObject:format forKeyedSubscript:*MEMORY[0x277D3B558]];
 
-    v10 = [v6 formatVersion];
-    [v8 setObject:v10 forKeyedSubscript:*MEMORY[0x277D3B560]];
+    formatVersion = [envelopeCopy formatVersion];
+    [v8 setObject:formatVersion forKeyedSubscript:*MEMORY[0x277D3B560]];
 
-    v11 = [v6 originator];
-    [v8 setObject:v11 forKeyedSubscript:*MEMORY[0x277D3B550]];
+    originator = [envelopeCopy originator];
+    [v8 setObject:originator forKeyedSubscript:*MEMORY[0x277D3B550]];
 
     [v8 setObject:v7 forKeyedSubscript:*MEMORY[0x277D3B548]];
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v8];
@@ -79,20 +79,20 @@
   return v12;
 }
 
-+ (id)deserialize:(id)a3 originator:(id)a4 format:(id)a5 formatVersion:(id)a6 error:(id *)a7
++ (id)deserialize:(id)deserialize originator:(id)originator format:(id)format formatVersion:(id)version error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!v14)
+  deserializeCopy = deserialize;
+  originatorCopy = originator;
+  formatCopy = format;
+  versionCopy = version;
+  if (!formatCopy)
   {
     _PFAssertFailHandler();
     goto LABEL_24;
   }
 
-  v16 = v15;
-  if (!v15)
+  v16 = versionCopy;
+  if (!versionCopy)
   {
 LABEL_24:
     v29 = _PFAssertFailHandler();
@@ -100,20 +100,20 @@ LABEL_24:
   }
 
   v37 = 0;
-  v17 = [a1 _serializerForFormat:v14 formatVersion:v15 error:&v37];
+  v17 = [self _serializerForFormat:formatCopy formatVersion:versionCopy error:&v37];
   v18 = v37;
   if (v17)
   {
-    if (v12)
+    if (deserializeCopy)
     {
-      v35 = a7;
-      v19 = [MEMORY[0x277CBEB38] dictionary];
-      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"NSData %p with %lu bytes", v12, objc_msgSend(v12, "length")];
-      [v19 setObject:v20 forKeyedSubscript:@"data"];
+      errorCopy = error;
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"NSData %p with %lu bytes", deserializeCopy, objc_msgSend(deserializeCopy, "length")];
+      [dictionary setObject:v20 forKeyedSubscript:@"data"];
 
-      if (v13)
+      if (originatorCopy)
       {
-        v21 = v13;
+        v21 = originatorCopy;
       }
 
       else
@@ -121,19 +121,19 @@ LABEL_24:
         v21 = @"nil";
       }
 
-      [v19 setObject:v21 forKeyedSubscript:@"originator"];
-      [v19 setObject:v14 forKeyedSubscript:@"format"];
-      [v19 setObject:v16 forKeyedSubscript:@"formatVersion"];
-      [v19 setObject:objc_opt_class() forKeyedSubscript:@"serializer"];
+      [dictionary setObject:v21 forKeyedSubscript:@"originator"];
+      [dictionary setObject:formatCopy forKeyedSubscript:@"format"];
+      [dictionary setObject:v16 forKeyedSubscript:@"formatVersion"];
+      [dictionary setObject:objc_opt_class() forKeyedSubscript:@"serializer"];
       v36 = v18;
-      v22 = [v17 adjustmentStackFromData:v12 error:&v36];
+      v22 = [v17 adjustmentStackFromData:deserializeCopy error:&v36];
       v23 = v36;
 
       if (v22)
       {
         v24 = objc_opt_new();
-        [v24 setOriginator:v13];
-        [v24 setFormat:v14];
+        [v24 setOriginator:originatorCopy];
+        [v24 setFormat:formatCopy];
         [v24 setFormatVersion:v16];
         [v24 setAdjustmentStack:v22];
       }
@@ -150,22 +150,22 @@ LABEL_24:
           v25 = @"nil";
         }
 
-        [v19 setObject:v25 forKeyedSubscript:@"deserializeError"];
-        v26 = [MEMORY[0x277CCA9B8] errorWithDomain:@"IPAAdjustmentErrorDomain" code:1001 userInfo:v19];
+        [dictionary setObject:v25 forKeyedSubscript:@"deserializeError"];
+        v26 = [MEMORY[0x277CCA9B8] errorWithDomain:@"IPAAdjustmentErrorDomain" code:1001 userInfo:dictionary];
 
         v24 = 0;
         v23 = v26;
       }
 
       v18 = v23;
-      a7 = v35;
+      error = errorCopy;
     }
 
     else
     {
       v24 = objc_opt_new();
-      [v24 setOriginator:v13];
-      [v24 setFormat:v14];
+      [v24 setOriginator:originatorCopy];
+      [v24 setFormat:formatCopy];
       [v24 setFormatVersion:v16];
       [v24 setAdjustmentStack:0];
     }
@@ -176,27 +176,27 @@ LABEL_24:
     v24 = 0;
   }
 
-  if (a7 && v18)
+  if (error && v18)
   {
     v27 = v18;
-    *a7 = v18;
+    *error = v18;
   }
 
   return v24;
 }
 
-+ (id)serialize:(id)a3 format:(id)a4 formatVersion:(id)a5 error:(id *)a6
++ (id)serialize:(id)serialize format:(id)format formatVersion:(id)version error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  serializeCopy = serialize;
+  formatCopy = format;
+  versionCopy = version;
   v23 = 0;
-  v13 = [a1 _serializerForFormat:v11 formatVersion:v12 error:&v23];
+  v13 = [self _serializerForFormat:formatCopy formatVersion:versionCopy error:&v23];
   v14 = v23;
   if (!v13)
   {
-    v16 = 0;
-    if (!a6)
+    data = 0;
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -204,10 +204,10 @@ LABEL_24:
     goto LABEL_13;
   }
 
-  if (!v10)
+  if (!serializeCopy)
   {
-    v16 = [MEMORY[0x277CBEA90] data];
-    if (!a6)
+    data = [MEMORY[0x277CBEA90] data];
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -215,15 +215,15 @@ LABEL_24:
     goto LABEL_13;
   }
 
-  v15 = [MEMORY[0x277CBEB38] dictionary];
-  [v15 setObject:v11 forKeyedSubscript:@"format"];
-  [v15 setObject:v12 forKeyedSubscript:@"formatVersion"];
-  [v15 setObject:v10 forKeyedSubscript:@"stack"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:formatCopy forKeyedSubscript:@"format"];
+  [dictionary setObject:versionCopy forKeyedSubscript:@"formatVersion"];
+  [dictionary setObject:serializeCopy forKeyedSubscript:@"stack"];
   v22 = v14;
-  v16 = [v13 dataFromAdjustmentStack:v10 error:&v22];
+  data = [v13 dataFromAdjustmentStack:serializeCopy error:&v22];
   v17 = v22;
 
-  if (!v16)
+  if (!data)
   {
     if (v17)
     {
@@ -235,44 +235,44 @@ LABEL_24:
       v18 = @"nil";
     }
 
-    [v15 setObject:v18 forKeyedSubscript:@"serializeError"];
-    v19 = [MEMORY[0x277CCA9B8] errorWithDomain:@"IPAAdjustmentErrorDomain" code:1003 userInfo:v15];
+    [dictionary setObject:v18 forKeyedSubscript:@"serializeError"];
+    v19 = [MEMORY[0x277CCA9B8] errorWithDomain:@"IPAAdjustmentErrorDomain" code:1003 userInfo:dictionary];
 
     v17 = v19;
   }
 
   v14 = v17;
-  if (a6)
+  if (error)
   {
 LABEL_13:
     if (v14)
     {
       v20 = v14;
-      *a6 = v14;
+      *error = v14;
     }
   }
 
 LABEL_15:
 
-  return v16;
+  return data;
 }
 
-+ (id)serialize:(id)a3 error:(id *)a4
++ (id)serialize:(id)serialize error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 adjustmentStack];
-  v8 = [v6 format];
-  v9 = [v6 formatVersion];
+  serializeCopy = serialize;
+  adjustmentStack = [serializeCopy adjustmentStack];
+  format = [serializeCopy format];
+  formatVersion = [serializeCopy formatVersion];
 
-  v10 = [a1 serialize:v7 format:v8 formatVersion:v9 error:a4];
+  v10 = [self serialize:adjustmentStack format:format formatVersion:formatVersion error:error];
 
   return v10;
 }
 
-+ (id)serializeWithCurrentDefaultFormat:(id)a3 format:(id *)a4 formatVersion:(id *)a5 error:(id *)a6
++ (id)serializeWithCurrentDefaultFormat:(id)format format:(id *)a4 formatVersion:(id *)version error:(id *)error
 {
-  v9 = a3;
-  if (!v9)
+  formatCopy = format;
+  if (!formatCopy)
   {
     v21 = 0;
     v20 = 0;
@@ -282,8 +282,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v10 = [IPASerializationManager formatForAdjustmentStack:v9];
-  v11 = [v9 minimumVersionForFormat:v10];
+  v10 = [IPASerializationManager formatForAdjustmentStack:formatCopy];
+  v11 = [formatCopy minimumVersionForFormat:v10];
   v18 = v11;
   if (v10)
   {
@@ -303,7 +303,7 @@ LABEL_11:
   }
 
   v28 = 0;
-  v21 = [IPASerializationManager serialize:v9 format:v10 formatVersion:v11 error:&v28];
+  v21 = [IPASerializationManager serialize:formatCopy format:v10 formatVersion:v11 error:&v28];
   v22 = v28;
   v20 = v22;
   if (!v21)
@@ -319,16 +319,16 @@ LABEL_12:
     *a4 = v10;
   }
 
-  if (a5)
+  if (version)
   {
     v24 = v18;
-    *a5 = v18;
+    *version = v18;
   }
 
-  if (a6)
+  if (error)
   {
     v25 = v20;
-    *a6 = v20;
+    *error = v20;
   }
 
   v26 = v21;
@@ -336,9 +336,9 @@ LABEL_12:
   return v21;
 }
 
-+ (id)formatForAdjustmentStack:(id)a3
++ (id)formatForAdjustmentStack:(id)stack
 {
-  v3 = a3;
+  stackCopy = stack;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -354,15 +354,15 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  v6 = [v3 adjustments];
-  if ([v6 count] != 1)
+  adjustments = [stackCopy adjustments];
+  if ([adjustments count] != 1)
   {
     goto LABEL_9;
   }
 
-  v7 = [v6 objectAtIndexedSubscript:0];
-  v8 = [v7 identifier];
-  v9 = [v8 isEqualToString:@"SloMo"];
+  v7 = [adjustments objectAtIndexedSubscript:0];
+  identifier = [v7 identifier];
+  v9 = [identifier isEqualToString:@"SloMo"];
 
   if ((v9 & 1) == 0)
   {
@@ -382,14 +382,14 @@ LABEL_11:
   return v4;
 }
 
-+ (char)adjustmentTypeForFormat:(id)a3 formatVersion:(id)a4
++ (char)adjustmentTypeForFormat:(id)format formatVersion:(id)version
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6 | v7)
+  formatCopy = format;
+  versionCopy = version;
+  if (formatCopy | versionCopy)
   {
-    if ([v6 isEqualToString:@"com.apple.photo"] && (objc_msgSend(v7, "lowercaseString"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", @"0.1.ios"), v9, v10))
+    if ([formatCopy isEqualToString:@"com.apple.photo"] && (objc_msgSend(versionCopy, "lowercaseString"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", @"0.1.ios"), v9, v10))
     {
       v11 = IPAAdjustmentGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -408,7 +408,7 @@ LABEL_11:
     else
     {
       v15 = 0;
-      v12 = [a1 _serializerForFormat:v6 formatVersion:v7 error:&v15];
+      v12 = [self _serializerForFormat:formatCopy formatVersion:versionCopy error:&v15];
       v11 = v15;
       if (v12)
       {
@@ -456,15 +456,15 @@ LABEL_11:
   return v8;
 }
 
-+ (id)_serializerForFormat:(id)a3 formatVersion:(id)a4 error:(id *)a5
++ (id)_serializerForFormat:(id)format formatVersion:(id)version error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v16 = v9;
-  if (v8 && v9)
+  formatCopy = format;
+  versionCopy = version;
+  v16 = versionCopy;
+  if (formatCopy && versionCopy)
   {
-    v17 = [a1 serializerMap];
-    v18 = [v17 objectForKeyedSubscript:v8];
+    serializerMap = [self serializerMap];
+    v18 = [serializerMap objectForKeyedSubscript:formatCopy];
 
     v25 = [v18 objectForKeyedSubscript:v16];
     if (v25)
@@ -474,10 +474,10 @@ LABEL_11:
 
     else
     {
-      v26 = IPAAdjustmentError(1007, @"no mapping to format:%@ formatVersion:%@", v19, v20, v21, v22, v23, v24, v8);
+      v26 = IPAAdjustmentError(1007, @"no mapping to format:%@ formatVersion:%@", v19, v20, v21, v22, v23, v24, formatCopy);
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -485,13 +485,13 @@ LABEL_11:
 
   else
   {
-    if (v8)
+    if (formatCopy)
     {
       v27 = @"formatVersion is nil";
       v28 = 1005;
     }
 
-    else if (v9)
+    else if (versionCopy)
     {
       v27 = @"format is nil";
       v28 = 1004;
@@ -505,7 +505,7 @@ LABEL_11:
 
     v26 = IPAAdjustmentError(v28, v27, v10, v11, v12, v13, v14, v15, v31);
     v25 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -514,7 +514,7 @@ LABEL_11:
   if (v26)
   {
     v29 = v26;
-    *a5 = v26;
+    *error = v26;
   }
 
 LABEL_16:

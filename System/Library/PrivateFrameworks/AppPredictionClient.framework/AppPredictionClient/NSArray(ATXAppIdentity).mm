@@ -10,10 +10,10 @@
   v7 = 3221225472;
   v8 = __50__NSArray_ATXAppIdentity__bundleIDsFromIdentities__block_invoke;
   v9 = &unk_1E80C07F8;
-  v10 = a1;
+  selfCopy = self;
   v11 = a2;
-  v2 = a1;
-  v3 = [v2 _pas_mappedArrayWithTransform:&v6];
+  selfCopy2 = self;
+  v3 = [selfCopy2 _pas_mappedArrayWithTransform:&v6];
   v4 = [v3 copy];
 
   return v4;

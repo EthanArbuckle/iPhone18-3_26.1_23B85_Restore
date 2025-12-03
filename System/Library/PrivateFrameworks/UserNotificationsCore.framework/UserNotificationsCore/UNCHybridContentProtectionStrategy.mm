@@ -1,21 +1,21 @@
 @interface UNCHybridContentProtectionStrategy
-- (BOOL)dataIsAvailableAtPath:(id)a3;
+- (BOOL)dataIsAvailableAtPath:(id)path;
 - (BOOL)isProtectedDataAvailable;
-- (BOOL)removeItemAtPath:(id)a3 error:(id *)a4;
-- (BOOL)writeData:(id)a3 atPath:(id)a4 error:(id *)a5;
+- (BOOL)removeItemAtPath:(id)path error:(id *)error;
+- (BOOL)writeData:(id)data atPath:(id)path error:(id *)error;
 - (id)_strategyForProtectionState;
-- (id)dataAtPath:(id)a3;
-- (void)importDataWithImportHandler:(id)a3;
-- (void)migrateDataAtPath:(id)a3 toPath:(id)a4;
+- (id)dataAtPath:(id)path;
+- (void)importDataWithImportHandler:(id)handler;
+- (void)migrateDataAtPath:(id)path toPath:(id)toPath;
 @end
 
 @implementation UNCHybridContentProtectionStrategy
 
 - (id)_strategyForProtectionState
 {
-  v3 = [(UNCHybridContentProtectionStrategy *)self isProtectedDataAvailable];
+  isProtectedDataAvailable = [(UNCHybridContentProtectionStrategy *)self isProtectedDataAvailable];
   v4 = 40;
-  if (v3)
+  if (isProtectedDataAvailable)
   {
     v4 = 32;
   }
@@ -28,9 +28,9 @@
 - (BOOL)isProtectedDataAvailable
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained isProtectedDataAvailable];
+  isProtectedDataAvailable = [WeakRetained isProtectedDataAvailable];
 
-  if (v4)
+  if (isProtectedDataAvailable)
   {
     return 1;
   }
@@ -39,9 +39,9 @@
   if (minimumProtection == *MEMORY[0x1E696A388])
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    v8 = [v7 deviceUnlockedSinceBoot];
+    deviceUnlockedSinceBoot = [v7 deviceUnlockedSinceBoot];
 
-    if (v8)
+    if (deviceUnlockedSinceBoot)
     {
       return 1;
     }
@@ -52,58 +52,58 @@
   return minimumProtection == *MEMORY[0x1E695DAF8];
 }
 
-- (BOOL)dataIsAvailableAtPath:(id)a3
+- (BOOL)dataIsAvailableAtPath:(id)path
 {
-  v4 = a3;
-  v5 = [(UNCHybridContentProtectionStrategy *)self _strategyForProtectionState];
-  v6 = [v5 dataIsAvailableAtPath:v4];
+  pathCopy = path;
+  _strategyForProtectionState = [(UNCHybridContentProtectionStrategy *)self _strategyForProtectionState];
+  v6 = [_strategyForProtectionState dataIsAvailableAtPath:pathCopy];
 
   return v6;
 }
 
-- (id)dataAtPath:(id)a3
+- (id)dataAtPath:(id)path
 {
-  v4 = a3;
-  v5 = [(UNCHybridContentProtectionStrategy *)self _strategyForProtectionState];
-  v6 = [v5 dataAtPath:v4];
+  pathCopy = path;
+  _strategyForProtectionState = [(UNCHybridContentProtectionStrategy *)self _strategyForProtectionState];
+  v6 = [_strategyForProtectionState dataAtPath:pathCopy];
 
   return v6;
 }
 
-- (BOOL)writeData:(id)a3 atPath:(id)a4 error:(id *)a5
+- (BOOL)writeData:(id)data atPath:(id)path error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(UNCHybridContentProtectionStrategy *)self _strategyForProtectionState];
-  v11 = v10;
-  v12 = self->_needsMerge || v10 == self->_protectedContentUnavailableStrategy;
+  pathCopy = path;
+  dataCopy = data;
+  _strategyForProtectionState = [(UNCHybridContentProtectionStrategy *)self _strategyForProtectionState];
+  v11 = _strategyForProtectionState;
+  v12 = self->_needsMerge || _strategyForProtectionState == self->_protectedContentUnavailableStrategy;
   self->_needsMerge = v12;
-  v13 = [(UNCFileHandleContentProtectionStrategy *)v10 writeData:v9 atPath:v8 error:a5];
+  v13 = [(UNCFileHandleContentProtectionStrategy *)_strategyForProtectionState writeData:dataCopy atPath:pathCopy error:error];
 
   return v13;
 }
 
-- (BOOL)removeItemAtPath:(id)a3 error:(id *)a4
+- (BOOL)removeItemAtPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  v7 = [(UNCHybridContentProtectionStrategy *)self _strategyForProtectionState];
-  LOBYTE(a4) = [v7 removeItemAtPath:v6 error:a4];
+  pathCopy = path;
+  _strategyForProtectionState = [(UNCHybridContentProtectionStrategy *)self _strategyForProtectionState];
+  LOBYTE(error) = [_strategyForProtectionState removeItemAtPath:pathCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (void)migrateDataAtPath:(id)a3 toPath:(id)a4
+- (void)migrateDataAtPath:(id)path toPath:(id)toPath
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UNCHybridContentProtectionStrategy *)self _strategyForProtectionState];
-  [v8 migrateDataAtPath:v7 toPath:v6];
+  toPathCopy = toPath;
+  pathCopy = path;
+  _strategyForProtectionState = [(UNCHybridContentProtectionStrategy *)self _strategyForProtectionState];
+  [_strategyForProtectionState migrateDataAtPath:pathCopy toPath:toPathCopy];
 }
 
-- (void)importDataWithImportHandler:(id)a3
+- (void)importDataWithImportHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   if ([(UNCHybridContentProtectionStrategy *)self isProtectedDataAvailable]&& self->_needsMerge)
   {
     v33 = 0u;
@@ -115,7 +115,7 @@
     if (v23)
     {
       v21 = *v32;
-      v22 = self;
+      selfCopy = self;
       do
       {
         for (i = 0; i != v23; ++i)
@@ -150,7 +150,7 @@
                   objc_enumerationMutation(v9);
                 }
 
-                v8 = v4[2](v4, *(*(&v27 + 1) + 8 * v13), v14);
+                v8 = handlerCopy[2](handlerCopy, *(*(&v27 + 1) + 8 * v13), v14);
 
                 ++v13;
                 v14 = v8;
@@ -164,10 +164,10 @@
           }
 
           v26 = 0;
-          self = v22;
-          [(UNCHybridContentProtectionStrategy *)v22 writeData:v8 atPath:v6 error:&v26];
+          self = selfCopy;
+          [(UNCHybridContentProtectionStrategy *)selfCopy writeData:v8 atPath:v6 error:&v26];
           v15 = v26;
-          protectedContentUnavailableStrategy = v22->_protectedContentUnavailableStrategy;
+          protectedContentUnavailableStrategy = selfCopy->_protectedContentUnavailableStrategy;
           v25 = v15;
           [(UNCFileHandleContentProtectionStrategy *)protectedContentUnavailableStrategy removeAllDataAtPath:v6 error:&v25];
           v17 = v25;

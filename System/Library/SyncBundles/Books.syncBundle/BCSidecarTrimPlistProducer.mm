@@ -1,5 +1,5 @@
 @interface BCSidecarTrimPlistProducer
-- (BCSidecarTrimPlistProducer)initWithPath:(id)a3 removePaths:(id)a4;
+- (BCSidecarTrimPlistProducer)initWithPath:(id)path removePaths:(id)paths;
 - (BOOL)shouldRetry;
 - (id)produceData;
 - (void)dealloc;
@@ -7,12 +7,12 @@
 
 @implementation BCSidecarTrimPlistProducer
 
-- (BCSidecarTrimPlistProducer)initWithPath:(id)a3 removePaths:(id)a4
+- (BCSidecarTrimPlistProducer)initWithPath:(id)path removePaths:(id)paths
 {
-  v5 = [(BCPlistProducer *)self initWithPath:a3];
+  v5 = [(BCPlistProducer *)self initWithPath:path];
   if (v5)
   {
-    v5->_removePaths = a4;
+    v5->_removePaths = paths;
   }
 
   return v5;

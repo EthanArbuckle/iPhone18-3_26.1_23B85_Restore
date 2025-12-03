@@ -1,26 +1,26 @@
 @interface CARAnalytics
 + (BOOL)shouldRecordAnalyticsEvents;
 + (id)sharedInstance;
-+ (int64_t)calendarUnitsOfType:(unint64_t)a3 fromDate:(id)a4 toDate:(id)a5;
++ (int64_t)calendarUnitsOfType:(unint64_t)type fromDate:(id)date toDate:(id)toDate;
 - (CARAnalytics)init;
-- (id)_CARCoreAnalyticsEventNameForEvent:(unint64_t)a3;
-- (void)DNDEndedWithTrigger:(int)a3 vehicleHints:(unint64_t)a4 context:(id)a5;
-- (void)DNDStartedWithTrigger:(int)a3 vehicleHints:(unint64_t)a4;
-- (void)_prepareConnectionTTRDraftWithConnectionSession:(id)a3 withAdditionalDescription:(id)a4 completionHandler:(id)a5;
-- (void)_sendAnalyticsErrorWithDouble:(double)a3 endDate:(double)a4 errorCategory:(id)a5;
-- (void)_sendAnalyticsErrorWithNSDate:(id)a3 endDate:(id)a4 errorCategory:(id)a5;
+- (id)_CARCoreAnalyticsEventNameForEvent:(unint64_t)event;
+- (void)DNDEndedWithTrigger:(int)trigger vehicleHints:(unint64_t)hints context:(id)context;
+- (void)DNDStartedWithTrigger:(int)trigger vehicleHints:(unint64_t)hints;
+- (void)_prepareConnectionTTRDraftWithConnectionSession:(id)session withAdditionalDescription:(id)description completionHandler:(id)handler;
+- (void)_sendAnalyticsErrorWithDouble:(double)double endDate:(double)date errorCategory:(id)category;
+- (void)_sendAnalyticsErrorWithNSDate:(id)date endDate:(id)endDate errorCategory:(id)category;
 - (void)_wiredReconnectEnded;
 - (void)_wirelessReconnectEnded;
-- (void)navigationOwnershipEndedWithMaximumConcurrentCount:(unint64_t)a3;
-- (void)reconnectEndedOnTransport:(unint64_t)a3;
-- (void)sendEvent:(unint64_t)a3 withDictionary:(id)a4;
-- (void)sendPreviousSessionData:(id)a3;
-- (void)userCreatedWirelessPairingWithSource:(id)a3 payload:(id)a4;
-- (void)userIndicatedNotDrivingWithReason:(id)a3;
+- (void)navigationOwnershipEndedWithMaximumConcurrentCount:(unint64_t)count;
+- (void)reconnectEndedOnTransport:(unint64_t)transport;
+- (void)sendEvent:(unint64_t)event withDictionary:(id)dictionary;
+- (void)sendPreviousSessionData:(id)data;
+- (void)userCreatedWirelessPairingWithSource:(id)source payload:(id)payload;
+- (void)userIndicatedNotDrivingWithReason:(id)reason;
 - (void)wiredSessionEnded;
 - (void)wirelessReconnectCancelled;
 - (void)wirelessReconnectStarted;
-- (void)wirelessSessionEndedWithPayload:(id)a3;
+- (void)wirelessSessionEndedWithPayload:(id)payload;
 @end
 
 @implementation CARAnalytics
@@ -31,7 +31,7 @@
   block[1] = 3221225472;
   block[2] = sub_10006FC88;
   block[3] = &unk_1000DD698;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100108030 != -1)
   {
     dispatch_once(&qword_100108030, block);
@@ -55,7 +55,7 @@
   return result;
 }
 
-- (void)DNDStartedWithTrigger:(int)a3 vehicleHints:(unint64_t)a4
+- (void)DNDStartedWithTrigger:(int)trigger vehicleHints:(unint64_t)hints
 {
   if ([(CARAnalytics *)self isCurrentlyDriving])
   {
@@ -72,17 +72,17 @@
   +[NSDate timeIntervalSinceReferenceDate];
   self->_driveStartTimeInterval = v8;
   self->_isCurrentlyDriving = 1;
-  if (a4)
+  if (hints)
   {
     v9 = +[NSMutableArray array];
     v10 = v9;
-    if (a4)
+    if (hints)
     {
       [v9 addObject:@"Motion"];
-      if ((a4 & 2) == 0)
+      if ((hints & 2) == 0)
       {
 LABEL_7:
-        if ((a4 & 4) == 0)
+        if ((hints & 4) == 0)
         {
           goto LABEL_8;
         }
@@ -91,16 +91,16 @@ LABEL_7:
       }
     }
 
-    else if ((a4 & 2) == 0)
+    else if ((hints & 2) == 0)
     {
       goto LABEL_7;
     }
 
     [v10 addObject:@"GPS"];
-    if ((a4 & 4) == 0)
+    if ((hints & 4) == 0)
     {
 LABEL_8:
-      if ((a4 & 8) == 0)
+      if ((hints & 8) == 0)
       {
         goto LABEL_9;
       }
@@ -110,10 +110,10 @@ LABEL_8:
 
 LABEL_16:
     [v10 addObject:@"Baseband"];
-    if ((a4 & 8) == 0)
+    if ((hints & 8) == 0)
     {
 LABEL_9:
-      if ((a4 & 0x10) == 0)
+      if ((hints & 0x10) == 0)
       {
 LABEL_11:
         if ([v10 count])
@@ -136,7 +136,7 @@ LABEL_10:
 
 LABEL_17:
     [v10 addObject:@"Wi-Fi"];
-    if ((a4 & 0x10) == 0)
+    if ((hints & 0x10) == 0)
     {
       goto LABEL_11;
     }
@@ -147,14 +147,14 @@ LABEL_17:
   v7 = @"None";
 LABEL_21:
   v14[0] = @"Trigger";
-  if ((a3 - 1) > 5)
+  if ((trigger - 1) > 5)
   {
     v11 = @"Unknown";
   }
 
   else
   {
-    v11 = *(&off_1000E0088 + (a3 - 1));
+    v11 = *(&off_1000E0088 + (trigger - 1));
   }
 
   v14[1] = @"Hints";
@@ -166,12 +166,12 @@ LABEL_21:
 LABEL_25:
 }
 
-- (void)DNDEndedWithTrigger:(int)a3 vehicleHints:(unint64_t)a4 context:(id)a5
+- (void)DNDEndedWithTrigger:(int)trigger vehicleHints:(unint64_t)hints context:(id)context
 {
-  v8 = a5;
+  contextCopy = context;
   if ([(CARAnalytics *)self isCurrentlyDriving])
   {
-    if (!a4)
+    if (!hints)
     {
       v11 = @"None";
 LABEL_22:
@@ -189,14 +189,14 @@ LABEL_22:
       [(CARAnalytics *)self setDriveStartTimeInterval:0.0];
       v18 = +[NSMutableDictionary dictionary];
       v19 = v18;
-      if ((a3 - 1) > 5)
+      if ((trigger - 1) > 5)
       {
         v20 = @"Unknown";
       }
 
       else
       {
-        v20 = *(&off_1000E0088 + (a3 - 1));
+        v20 = *(&off_1000E0088 + (trigger - 1));
       }
 
       [v18 setObject:v20 forKeyedSubscript:@"Trigger"];
@@ -204,9 +204,9 @@ LABEL_22:
       [v19 setObject:v21 forKeyedSubscript:@"Duration"];
 
       [v19 setObject:v11 forKeyedSubscript:@"Hints"];
-      if (v8)
+      if (contextCopy)
       {
-        [v19 setObject:v8 forKeyedSubscript:@"Context"];
+        [v19 setObject:contextCopy forKeyedSubscript:@"Context"];
       }
 
       [(CARAnalytics *)self sendEvent:1 withDictionary:v19];
@@ -216,13 +216,13 @@ LABEL_22:
 
     v9 = +[NSMutableArray array];
     v10 = v9;
-    if (a4)
+    if (hints)
     {
       [v9 addObject:@"Motion"];
-      if ((a4 & 2) == 0)
+      if ((hints & 2) == 0)
       {
 LABEL_5:
-        if ((a4 & 4) == 0)
+        if ((hints & 4) == 0)
         {
           goto LABEL_6;
         }
@@ -231,16 +231,16 @@ LABEL_5:
       }
     }
 
-    else if ((a4 & 2) == 0)
+    else if ((hints & 2) == 0)
     {
       goto LABEL_5;
     }
 
     [v10 addObject:@"GPS"];
-    if ((a4 & 4) == 0)
+    if ((hints & 4) == 0)
     {
 LABEL_6:
-      if ((a4 & 8) == 0)
+      if ((hints & 8) == 0)
       {
         goto LABEL_7;
       }
@@ -250,10 +250,10 @@ LABEL_6:
 
 LABEL_17:
     [v10 addObject:@"Baseband"];
-    if ((a4 & 8) == 0)
+    if ((hints & 8) == 0)
     {
 LABEL_7:
-      if ((a4 & 0x10) == 0)
+      if ((hints & 0x10) == 0)
       {
 LABEL_9:
         if ([v10 count])
@@ -276,7 +276,7 @@ LABEL_8:
 
 LABEL_18:
     [v10 addObject:@"Wi-Fi"];
-    if ((a4 & 0x10) == 0)
+    if ((hints & 0x10) == 0)
     {
       goto LABEL_9;
     }
@@ -296,9 +296,9 @@ LABEL_30:
 
 - (void)wirelessReconnectStarted
 {
-  v3 = [(CARAnalytics *)self wirelessReconnectStartDate];
+  wirelessReconnectStartDate = [(CARAnalytics *)self wirelessReconnectStartDate];
 
-  if (v3)
+  if (wirelessReconnectStartDate)
   {
     v4 = CarGeneralLogging();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -337,9 +337,9 @@ LABEL_30:
 
 - (void)_wirelessReconnectEnded
 {
-  v3 = [(CARAnalytics *)self wirelessReconnectEndDate];
+  wirelessReconnectEndDate = [(CARAnalytics *)self wirelessReconnectEndDate];
 
-  if (v3)
+  if (wirelessReconnectEndDate)
   {
     v4 = CarGeneralLogging();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -354,8 +354,8 @@ LABEL_30:
     v4 = +[NSDate date];
     [(CARAnalytics *)self setWirelessReconnectEndDate:v4];
     v5 = +[NSDate date];
-    v6 = [(CARAnalytics *)self wirelessReconnectStartDate];
-    [v5 timeIntervalSinceDate:v6];
+    wirelessReconnectStartDate = [(CARAnalytics *)self wirelessReconnectStartDate];
+    [v5 timeIntervalSinceDate:wirelessReconnectStartDate];
     v8 = v7;
 
     v9 = CarGeneralLogging();
@@ -393,9 +393,9 @@ LABEL_30:
   [(CARAnalytics *)self setAirplayScreenDisplayingTimes:0];
 }
 
-- (void)reconnectEndedOnTransport:(unint64_t)a3
+- (void)reconnectEndedOnTransport:(unint64_t)transport
 {
-  if (a3 == 3)
+  if (transport == 3)
   {
     [(CARAnalytics *)self _wirelessReconnectEnded];
   }
@@ -406,12 +406,12 @@ LABEL_30:
   }
 }
 
-- (void)wirelessSessionEndedWithPayload:(id)a3
+- (void)wirelessSessionEndedWithPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(CARAnalytics *)self wirelessReconnectStartDate];
+  payloadCopy = payload;
+  wirelessReconnectStartDate = [(CARAnalytics *)self wirelessReconnectStartDate];
 
-  if (!v5)
+  if (!wirelessReconnectStartDate)
   {
     v8 = CarGeneralLogging();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -426,9 +426,9 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v6 = [(CARAnalytics *)self wirelessReconnectEndDate];
+  wirelessReconnectEndDate = [(CARAnalytics *)self wirelessReconnectEndDate];
 
-  if (!v6)
+  if (!wirelessReconnectEndDate)
   {
     v8 = CarGeneralLogging();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -441,25 +441,25 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v7 = [(CARAnalytics *)self airplayScreenDisplayingTimes];
-  v8 = [v7 copy];
+  airplayScreenDisplayingTimes = [(CARAnalytics *)self airplayScreenDisplayingTimes];
+  v8 = [airplayScreenDisplayingTimes copy];
 
-  v9 = [(CARAnalytics *)self wirelessReconnectEndDate];
-  v10 = [(CARAnalytics *)self wirelessReconnectStartDate];
-  [v9 timeIntervalSinceDate:v10];
+  wirelessReconnectEndDate2 = [(CARAnalytics *)self wirelessReconnectEndDate];
+  wirelessReconnectStartDate2 = [(CARAnalytics *)self wirelessReconnectStartDate];
+  [wirelessReconnectEndDate2 timeIntervalSinceDate:wirelessReconnectStartDate2];
   v12 = v11;
 
   [(CARAnalytics *)self wirelessReconnectCancelled];
-  v13 = [NSMutableDictionary dictionaryWithDictionary:v4];
+  v13 = [NSMutableDictionary dictionaryWithDictionary:payloadCopy];
   v14 = [NSNumber numberWithDouble:v12];
   [v13 setObject:v14 forKeyedSubscript:@"reconnectionTime"];
 
-  v15 = [(CARAnalytics *)self wifiChannel];
+  wifiChannel = [(CARAnalytics *)self wifiChannel];
 
-  if (v15)
+  if (wifiChannel)
   {
-    v16 = [(CARAnalytics *)self wifiChannel];
-    [v13 setObject:v16 forKeyedSubscript:@"wifiChannel"];
+    wifiChannel2 = [(CARAnalytics *)self wifiChannel];
+    [v13 setObject:wifiChannel2 forKeyedSubscript:@"wifiChannel"];
   }
 
   if (self->_connectionTimeServiceAgent)
@@ -496,14 +496,14 @@ LABEL_13:
   objc_destroyWeak(&location);
 }
 
-- (void)_sendAnalyticsErrorWithNSDate:(id)a3 endDate:(id)a4 errorCategory:(id)a5
+- (void)_sendAnalyticsErrorWithNSDate:(id)date endDate:(id)endDate errorCategory:(id)category
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  categoryCopy = category;
   v10 = CarGeneralLogging();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_ERROR);
-  if (v7 && v8)
+  if (dateCopy && endDateCopy)
   {
     if (v11)
     {
@@ -511,7 +511,7 @@ LABEL_13:
     }
   }
 
-  else if (v7)
+  else if (dateCopy)
   {
     if (v11)
     {
@@ -525,14 +525,14 @@ LABEL_13:
   }
 }
 
-- (void)_sendAnalyticsErrorWithDouble:(double)a3 endDate:(double)a4 errorCategory:(id)a5
+- (void)_sendAnalyticsErrorWithDouble:(double)double endDate:(double)date errorCategory:(id)category
 {
-  v7 = a5;
+  categoryCopy = category;
   v8 = CarGeneralLogging();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
-  if (a3 == 0.0 || a4 == 0.0)
+  if (double == 0.0 || date == 0.0)
   {
-    if (a3 == 0.0)
+    if (double == 0.0)
     {
       if (v9)
       {
@@ -552,10 +552,10 @@ LABEL_13:
   }
 }
 
-- (void)sendPreviousSessionData:(id)a3
+- (void)sendPreviousSessionData:(id)data
 {
-  v4 = a3;
-  if ([v4 count] >= 2)
+  dataCopy = data;
+  if ([dataCopy count] >= 2)
   {
     objc_initWeak(&location, self);
     connectionTimeServiceAgent = self->_connectionTimeServiceAgent;
@@ -570,11 +570,11 @@ LABEL_13:
   }
 }
 
-- (void)userCreatedWirelessPairingWithSource:(id)a3 payload:(id)a4
+- (void)userCreatedWirelessPairingWithSource:(id)source payload:(id)payload
 {
-  v6 = a3;
-  v14 = [NSMutableDictionary dictionaryWithDictionary:a4];
-  [v14 setObject:v6 forKeyedSubscript:@"source"];
+  sourceCopy = source;
+  v14 = [NSMutableDictionary dictionaryWithDictionary:payload];
+  [v14 setObject:sourceCopy forKeyedSubscript:@"source"];
 
   if (self->_connectionTimeServiceAgent)
   {
@@ -588,15 +588,15 @@ LABEL_13:
 
   if ([(CARAnalytics *)self carKeyPairingResult])
   {
-    v11 = [(CARAnalytics *)self carKeyPairingResult];
-    if (v11 > 4)
+    carKeyPairingResult = [(CARAnalytics *)self carKeyPairingResult];
+    if (carKeyPairingResult > 4)
     {
       v12 = @"unknown";
     }
 
     else
     {
-      v12 = *(&off_1000E0128 + v11);
+      v12 = *(&off_1000E0128 + carKeyPairingResult);
     }
   }
 
@@ -612,31 +612,31 @@ LABEL_13:
   [(CARAnalytics *)self sendEvent:6 withDictionary:v14];
 }
 
-- (void)userIndicatedNotDrivingWithReason:(id)a3
+- (void)userIndicatedNotDrivingWithReason:(id)reason
 {
   v6 = @"Reason";
-  v7 = a3;
-  v4 = a3;
-  v5 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
+  reasonCopy = reason;
+  reasonCopy2 = reason;
+  v5 = [NSDictionary dictionaryWithObjects:&reasonCopy forKeys:&v6 count:1];
 
   [(CARAnalytics *)self sendEvent:4 withDictionary:v5];
 }
 
-- (void)navigationOwnershipEndedWithMaximumConcurrentCount:(unint64_t)a3
+- (void)navigationOwnershipEndedWithMaximumConcurrentCount:(unint64_t)count
 {
   v6 = @"ownerCount";
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:count];
   v7 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
   [(CARAnalytics *)self sendEvent:5 withDictionary:v5];
 }
 
-- (void)sendEvent:(unint64_t)a3 withDictionary:(id)a4
+- (void)sendEvent:(unint64_t)event withDictionary:(id)dictionary
 {
-  v6 = a4;
+  dictionaryCopy = dictionary;
   if ([objc_opt_class() shouldRecordAnalyticsEvents])
   {
-    v7 = [(CARAnalytics *)self _CARCoreAnalyticsEventNameForEvent:a3];
+    v7 = [(CARAnalytics *)self _CARCoreAnalyticsEventNameForEvent:event];
     v8 = CarDNDWDLogging();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -647,14 +647,14 @@ LABEL_13:
   }
 }
 
-- (id)_CARCoreAnalyticsEventNameForEvent:(unint64_t)a3
+- (id)_CARCoreAnalyticsEventNameForEvent:(unint64_t)event
 {
-  if (a3 >= 0xA)
+  if (event >= 0xA)
   {
     v5 = CarGeneralLogging();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      sub_100089C20(a3);
+      sub_100089C20(event);
     }
 
     v4 = 0;
@@ -662,46 +662,46 @@ LABEL_13:
 
   else
   {
-    v4 = [NSString stringWithFormat:@"com.apple.carexperience.%@", *(&off_1000E0150 + a3)];
+    v4 = [NSString stringWithFormat:@"com.apple.carexperience.%@", *(&off_1000E0150 + event)];
   }
 
   return v4;
 }
 
-+ (int64_t)calendarUnitsOfType:(unint64_t)a3 fromDate:(id)a4 toDate:(id)a5
++ (int64_t)calendarUnitsOfType:(unint64_t)type fromDate:(id)date toDate:(id)toDate
 {
-  v7 = a5;
-  v8 = a4;
+  toDateCopy = toDate;
+  dateCopy = date;
   v9 = +[NSCalendar currentCalendar];
   v19 = 0;
-  [v9 rangeOfUnit:a3 startDate:&v19 interval:0 forDate:v8];
+  [v9 rangeOfUnit:type startDate:&v19 interval:0 forDate:dateCopy];
 
   v10 = v19;
   v18 = 0;
-  [v9 rangeOfUnit:a3 startDate:&v18 interval:0 forDate:v7];
+  [v9 rangeOfUnit:type startDate:&v18 interval:0 forDate:toDateCopy];
 
   v11 = v18;
-  v12 = [v9 components:a3 fromDate:v10 toDate:v11 options:0];
+  v12 = [v9 components:type fromDate:v10 toDate:v11 options:0];
   v13 = v12;
-  switch(a3)
+  switch(type)
   {
     case 0x10uLL:
-      v14 = [v12 day];
+      minute = [v12 day];
       goto LABEL_7;
     case 0x40uLL:
-      v14 = [v12 minute];
+      minute = [v12 minute];
       goto LABEL_7;
     case 0x80uLL:
-      v14 = [v12 second];
+      minute = [v12 second];
 LABEL_7:
-      v15 = v14;
+      v15 = minute;
       goto LABEL_11;
   }
 
   v16 = CarGeneralLogging();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
-    sub_100089CB0(a3);
+    sub_100089CB0(type);
   }
 
   v15 = 0x7FFFFFFFFFFFFFFFLL;
@@ -726,19 +726,19 @@ LABEL_11:
   return v2 ^ 1;
 }
 
-- (void)_prepareConnectionTTRDraftWithConnectionSession:(id)a3 withAdditionalDescription:(id)a4 completionHandler:(id)a5
+- (void)_prepareConnectionTTRDraftWithConnectionSession:(id)session withAdditionalDescription:(id)description completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  descriptionCopy = description;
+  sessionCopy = session;
   v10 = +[CRDiagnosticsService sharedInstance];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100075134;
   v12[3] = &unk_1000DD960;
-  v13 = v7;
-  v11 = v7;
-  [v10 collectDiagnosticsWithSession:v9 displayReason:@"CarPlay connection took longer than expected. Gathering diagnostics" additionalDescription:v8 attachmentURLs:0 completionHandler:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [v10 collectDiagnosticsWithSession:sessionCopy displayReason:@"CarPlay connection took longer than expected. Gathering diagnostics" additionalDescription:descriptionCopy attachmentURLs:0 completionHandler:v12];
 }
 
 @end

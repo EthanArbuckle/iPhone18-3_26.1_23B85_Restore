@@ -1,21 +1,21 @@
 @interface ALCLStepCountEntry
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRecordId:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRecordId:(BOOL)id;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ALCLStepCountEntry
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasRecordId:(BOOL)a3
+- (void)setHasRecordId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4;
   }
@@ -78,7 +78,7 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if ((*&self->_has & 2) != 0)
   {
@@ -104,38 +104,38 @@
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 3) = *&self->_timestamp;
-    *(a3 + 52) |= 2u;
+    *(to + 3) = *&self->_timestamp;
+    *(to + 52) |= 2u;
   }
 
-  *(a3 + 8) = self->_count;
-  *(a3 + 1) = *&self->_distance;
-  *(a3 + 9) = self->_floorsAscended;
-  *(a3 + 10) = self->_floorsDescended;
+  *(to + 8) = self->_count;
+  *(to + 1) = *&self->_distance;
+  *(to + 9) = self->_floorsAscended;
+  *(to + 10) = self->_floorsDescended;
   has = self->_has;
   if (has)
   {
-    *(a3 + 2) = *&self->_pace;
-    *(a3 + 52) |= 1u;
+    *(to + 2) = *&self->_pace;
+    *(to + 52) |= 1u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(a3 + 11) = self->_recordId;
-    *(a3 + 52) |= 4u;
+    *(to + 11) = self->_recordId;
+    *(to + 52) |= 4u;
   }
 
-  *(a3 + 48) = self->_regularEntry;
+  *(to + 48) = self->_regularEntry;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if ((*&self->_has & 2) != 0)
   {
     *(result + 3) = *&self->_timestamp;
@@ -164,58 +164,58 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 52) & 2) == 0 || self->_timestamp != *(a3 + 3))
+      if ((*(equal + 52) & 2) == 0 || self->_timestamp != *(equal + 3))
       {
         goto LABEL_22;
       }
     }
 
-    else if ((*(a3 + 52) & 2) != 0)
+    else if ((*(equal + 52) & 2) != 0)
     {
 LABEL_22:
       LOBYTE(v5) = 0;
       return v5;
     }
 
-    if (self->_count != *(a3 + 8) || self->_distance != *(a3 + 1) || self->_floorsAscended != *(a3 + 9) || self->_floorsDescended != *(a3 + 10))
+    if (self->_count != *(equal + 8) || self->_distance != *(equal + 1) || self->_floorsAscended != *(equal + 9) || self->_floorsDescended != *(equal + 10))
     {
       goto LABEL_22;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 52) & 1) == 0 || self->_pace != *(a3 + 2))
+      if ((*(equal + 52) & 1) == 0 || self->_pace != *(equal + 2))
       {
         goto LABEL_22;
       }
     }
 
-    else if (*(a3 + 52))
+    else if (*(equal + 52))
     {
       goto LABEL_22;
     }
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 52) & 4) == 0 || self->_recordId != *(a3 + 11))
+      if ((*(equal + 52) & 4) == 0 || self->_recordId != *(equal + 11))
       {
         goto LABEL_22;
       }
     }
 
-    else if ((*(a3 + 52) & 4) != 0)
+    else if ((*(equal + 52) & 4) != 0)
     {
       goto LABEL_22;
     }
 
-    LOBYTE(v5) = self->_regularEntry == *(a3 + 48);
+    LOBYTE(v5) = self->_regularEntry == *(equal + 48);
   }
 
   return v5;
@@ -335,33 +335,33 @@ LABEL_26:
   return (2654435761 * self->_count) ^ v5 ^ (2654435761 * self->_floorsAscended) ^ (2654435761 * self->_floorsDescended) ^ v20 ^ v22 ^ (2654435761 * self->_regularEntry) ^ v19;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 52) & 2) != 0)
+  if ((*(from + 52) & 2) != 0)
   {
-    self->_timestamp = *(a3 + 3);
+    self->_timestamp = *(from + 3);
     *&self->_has |= 2u;
   }
 
-  self->_count = *(a3 + 8);
-  self->_distance = *(a3 + 1);
-  self->_floorsAscended = *(a3 + 9);
-  self->_floorsDescended = *(a3 + 10);
-  v3 = *(a3 + 52);
+  self->_count = *(from + 8);
+  self->_distance = *(from + 1);
+  self->_floorsAscended = *(from + 9);
+  self->_floorsDescended = *(from + 10);
+  v3 = *(from + 52);
   if (v3)
   {
-    self->_pace = *(a3 + 2);
+    self->_pace = *(from + 2);
     *&self->_has |= 1u;
-    v3 = *(a3 + 52);
+    v3 = *(from + 52);
   }
 
   if ((v3 & 4) != 0)
   {
-    self->_recordId = *(a3 + 11);
+    self->_recordId = *(from + 11);
     *&self->_has |= 4u;
   }
 
-  self->_regularEntry = *(a3 + 48);
+  self->_regularEntry = *(from + 48);
 }
 
 @end

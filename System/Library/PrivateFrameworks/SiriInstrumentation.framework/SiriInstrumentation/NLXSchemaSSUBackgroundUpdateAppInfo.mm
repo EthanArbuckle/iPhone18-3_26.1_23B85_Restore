@@ -1,28 +1,28 @@
 @interface NLXSchemaSSUBackgroundUpdateAppInfo
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaSSUBackgroundUpdateAppInfo)initWithDictionary:(id)a3;
-- (NLXSchemaSSUBackgroundUpdateAppInfo)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaSSUBackgroundUpdateAppInfo)initWithDictionary:(id)dictionary;
+- (NLXSchemaSSUBackgroundUpdateAppInfo)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addCategoryInfos:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCategoryInfos:(id)infos;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaSSUBackgroundUpdateAppInfo
 
-- (NLXSchemaSSUBackgroundUpdateAppInfo)initWithDictionary:(id)a3
+- (NLXSchemaSSUBackgroundUpdateAppInfo)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = NLXSchemaSSUBackgroundUpdateAppInfo;
   v5 = [(NLXSchemaSSUBackgroundUpdateAppInfo *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"appBundleIdSaltedHash"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"appBundleIdSaltedHash"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,14 +30,14 @@
       [(NLXSchemaSSUBackgroundUpdateAppInfo *)v5 setAppBundleIdSaltedHash:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"numCacheFilesRemoved"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"numCacheFilesRemoved"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaSSUBackgroundUpdateAppInfo setNumCacheFilesRemoved:](v5, "setNumCacheFilesRemoved:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"categoryInfos"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"categoryInfos"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,30 +85,30 @@
   return v5;
 }
 
-- (NLXSchemaSSUBackgroundUpdateAppInfo)initWithJSON:(id)a3
+- (NLXSchemaSSUBackgroundUpdateAppInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaSSUBackgroundUpdateAppInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaSSUBackgroundUpdateAppInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaSSUBackgroundUpdateAppInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -122,17 +122,17 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_appBundleIdSaltedHash)
   {
-    v4 = [(NLXSchemaSSUBackgroundUpdateAppInfo *)self appBundleIdSaltedHash];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"appBundleIdSaltedHash"];
+    appBundleIdSaltedHash = [(NLXSchemaSSUBackgroundUpdateAppInfo *)self appBundleIdSaltedHash];
+    v5 = [appBundleIdSaltedHash copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"appBundleIdSaltedHash"];
   }
 
   if ([(NSArray *)self->_categoryInfos count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -152,16 +152,16 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v12)
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v6 addObject:v12];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v13 = [MEMORY[0x1E695DFB0] null];
-            [v6 addObject:v13];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -171,18 +171,18 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"categoryInfos"];
+    [dictionary setObject:array forKeyedSubscript:@"categoryInfos"];
   }
 
   if (*&self->_has)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NLXSchemaSSUBackgroundUpdateAppInfo numCacheFilesRemoved](self, "numCacheFilesRemoved")}];
-    [v3 setObject:v14 forKeyedSubscript:@"numCacheFilesRemoved"];
+    [dictionary setObject:v14 forKeyedSubscript:@"numCacheFilesRemoved"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v16];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v16];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -201,28 +201,28 @@
   return v4 ^ v3 ^ [(NSArray *)self->_categoryInfos hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(NLXSchemaSSUBackgroundUpdateAppInfo *)self appBundleIdSaltedHash];
-  v6 = [v4 appBundleIdSaltedHash];
-  if ((v5 != 0) == (v6 == 0))
+  appBundleIdSaltedHash = [(NLXSchemaSSUBackgroundUpdateAppInfo *)self appBundleIdSaltedHash];
+  appBundleIdSaltedHash2 = [equalCopy appBundleIdSaltedHash];
+  if ((appBundleIdSaltedHash != 0) == (appBundleIdSaltedHash2 == 0))
   {
     goto LABEL_14;
   }
 
-  v7 = [(NLXSchemaSSUBackgroundUpdateAppInfo *)self appBundleIdSaltedHash];
-  if (v7)
+  appBundleIdSaltedHash3 = [(NLXSchemaSSUBackgroundUpdateAppInfo *)self appBundleIdSaltedHash];
+  if (appBundleIdSaltedHash3)
   {
-    v8 = v7;
-    v9 = [(NLXSchemaSSUBackgroundUpdateAppInfo *)self appBundleIdSaltedHash];
-    v10 = [v4 appBundleIdSaltedHash];
-    v11 = [v9 isEqual:v10];
+    v8 = appBundleIdSaltedHash3;
+    appBundleIdSaltedHash4 = [(NLXSchemaSSUBackgroundUpdateAppInfo *)self appBundleIdSaltedHash];
+    appBundleIdSaltedHash5 = [equalCopy appBundleIdSaltedHash];
+    v11 = [appBundleIdSaltedHash4 isEqual:appBundleIdSaltedHash5];
 
     if (!v11)
     {
@@ -234,7 +234,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -242,18 +242,18 @@
   if (*&self->_has)
   {
     numCacheFilesRemoved = self->_numCacheFilesRemoved;
-    if (numCacheFilesRemoved != [v4 numCacheFilesRemoved])
+    if (numCacheFilesRemoved != [equalCopy numCacheFilesRemoved])
     {
       goto LABEL_15;
     }
   }
 
-  v5 = [(NLXSchemaSSUBackgroundUpdateAppInfo *)self categoryInfos];
-  v6 = [v4 categoryInfos];
-  if ((v5 != 0) != (v6 == 0))
+  appBundleIdSaltedHash = [(NLXSchemaSSUBackgroundUpdateAppInfo *)self categoryInfos];
+  appBundleIdSaltedHash2 = [equalCopy categoryInfos];
+  if ((appBundleIdSaltedHash != 0) != (appBundleIdSaltedHash2 == 0))
   {
-    v13 = [(NLXSchemaSSUBackgroundUpdateAppInfo *)self categoryInfos];
-    if (!v13)
+    categoryInfos = [(NLXSchemaSSUBackgroundUpdateAppInfo *)self categoryInfos];
+    if (!categoryInfos)
     {
 
 LABEL_18:
@@ -261,10 +261,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(NLXSchemaSSUBackgroundUpdateAppInfo *)self categoryInfos];
-    v16 = [v4 categoryInfos];
-    v17 = [v15 isEqual:v16];
+    v14 = categoryInfos;
+    categoryInfos2 = [(NLXSchemaSSUBackgroundUpdateAppInfo *)self categoryInfos];
+    categoryInfos3 = [equalCopy categoryInfos];
+    v17 = [categoryInfos2 isEqual:categoryInfos3];
 
     if (v17)
     {
@@ -284,13 +284,13 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NLXSchemaSSUBackgroundUpdateAppInfo *)self appBundleIdSaltedHash];
+  toCopy = to;
+  appBundleIdSaltedHash = [(NLXSchemaSSUBackgroundUpdateAppInfo *)self appBundleIdSaltedHash];
 
-  if (v5)
+  if (appBundleIdSaltedHash)
   {
     PBDataWriterWriteStringField();
   }
@@ -332,32 +332,32 @@ LABEL_16:
   }
 }
 
-- (void)addCategoryInfos:(id)a3
+- (void)addCategoryInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   categoryInfos = self->_categoryInfos;
-  v8 = v4;
+  v8 = infosCopy;
   if (!categoryInfos)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_categoryInfos;
-    self->_categoryInfos = v6;
+    self->_categoryInfos = array;
 
-    v4 = v8;
+    infosCopy = v8;
     categoryInfos = self->_categoryInfos;
   }
 
-  [(NSArray *)categoryInfos addObject:v4];
+  [(NSArray *)categoryInfos addObject:infosCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = NLXSchemaSSUBackgroundUpdateAppInfo;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(NLXSchemaSSUBackgroundUpdateAppInfo *)self categoryInfos:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(NLXSchemaSSUBackgroundUpdateAppInfo *)self setCategoryInfos:v7];
 

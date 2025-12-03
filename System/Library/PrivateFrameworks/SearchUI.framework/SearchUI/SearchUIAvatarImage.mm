@@ -1,24 +1,24 @@
 @interface SearchUIAvatarImage
 + (id)avatarImageRenderer;
-- (SearchUIAvatarImage)initWithContactImage:(id)a3;
-- (SearchUIAvatarImage)initWithMonogramImage:(id)a3;
+- (SearchUIAvatarImage)initWithContactImage:(id)image;
+- (SearchUIAvatarImage)initWithMonogramImage:(id)image;
 - (int)defaultCornerRoundingStyle;
-- (void)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4 completionHandler:(id)a5;
+- (void)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler;
 - (void)setDefaultSizeIfNecessary;
 @end
 
 @implementation SearchUIAvatarImage
 
-- (SearchUIAvatarImage)initWithMonogramImage:(id)a3
+- (SearchUIAvatarImage)initWithMonogramImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v8.receiver = self;
   v8.super_class = SearchUIAvatarImage;
-  v5 = [(SearchUIImage *)&v8 initWithSFImage:v4];
+  v5 = [(SearchUIImage *)&v8 initWithSFImage:imageCopy];
   if (v5)
   {
-    v6 = [v4 monogramLetters];
-    [(SearchUIAvatarImage *)v5 setLetters:v6];
+    monogramLetters = [imageCopy monogramLetters];
+    [(SearchUIAvatarImage *)v5 setLetters:monogramLetters];
 
     [(SearchUIImage *)v5 setSupportsFastPathShadow:1];
     [(SearchUIAvatarImage *)v5 setDefaultSizeIfNecessary];
@@ -27,32 +27,32 @@
   return v5;
 }
 
-- (SearchUIAvatarImage)initWithContactImage:(id)a3
+- (SearchUIAvatarImage)initWithContactImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v14.receiver = self;
   v14.super_class = SearchUIAvatarImage;
-  v5 = [(SearchUIImage *)&v14 initWithSFImage:v4];
+  v5 = [(SearchUIImage *)&v14 initWithSFImage:imageCopy];
   if (v5)
   {
-    v6 = [v4 contactIdentifiers];
-    [(SearchUIAvatarImage *)v5 setContactIdentifiers:v6];
+    contactIdentifiers = [imageCopy contactIdentifiers];
+    [(SearchUIAvatarImage *)v5 setContactIdentifiers:contactIdentifiers];
 
-    v7 = [v4 contactIdentifiers];
-    -[SearchUIImage setSupportsFastPathShadow:](v5, "setSupportsFastPathShadow:", [v7 count] == 1);
+    contactIdentifiers2 = [imageCopy contactIdentifiers];
+    -[SearchUIImage setSupportsFastPathShadow:](v5, "setSupportsFastPathShadow:", [contactIdentifiers2 count] == 1);
 
     [(SearchUIAvatarImage *)v5 setDefaultSizeIfNecessary];
-    v8 = [v4 appIconBadgeBundleIdentifier];
-    if (v8)
+    appIconBadgeBundleIdentifier = [imageCopy appIconBadgeBundleIdentifier];
+    if (appIconBadgeBundleIdentifier)
     {
-      v9 = v8;
-      v10 = [v4 badgingImage];
+      v9 = appIconBadgeBundleIdentifier;
+      badgingImage = [imageCopy badgingImage];
 
-      if (!v10)
+      if (!badgingImage)
       {
         v11 = objc_opt_new();
-        v12 = [v4 appIconBadgeBundleIdentifier];
-        [v11 setBundleIdentifier:v12];
+        appIconBadgeBundleIdentifier2 = [imageCopy appIconBadgeBundleIdentifier];
+        [v11 setBundleIdentifier:appIconBadgeBundleIdentifier2];
 
         [(SearchUIAvatarImage *)v5 setBadgingImage:v11];
       }
@@ -64,8 +64,8 @@
 
 - (int)defaultCornerRoundingStyle
 {
-  v2 = [(SearchUIAvatarImage *)self contactIdentifiers];
-  if ([v2 count] > 1)
+  contactIdentifiers = [(SearchUIAvatarImage *)self contactIdentifiers];
+  if ([contactIdentifiers count] > 1)
   {
     v3 = 1;
   }
@@ -113,16 +113,16 @@ void __42__SearchUIAvatarImage_avatarImageRenderer__block_invoke()
   }
 }
 
-- (void)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4 completionHandler:(id)a5
+- (void)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = [MEMORY[0x1E69D91A8] isLTR] ^ 1;
   [(SearchUIImage *)self size];
   v11 = v10;
   v13 = v12;
-  v14 = [(SearchUIAvatarImage *)self letters];
-  v15 = [(SearchUIAvatarImage *)self contactIdentifiers];
-  v16 = [(SearchUIAvatarImage *)self requiresImageDataToLoad];
+  letters = [(SearchUIAvatarImage *)self letters];
+  contactIdentifiers = [(SearchUIAvatarImage *)self contactIdentifiers];
+  requiresImageDataToLoad = [(SearchUIAvatarImage *)self requiresImageDataToLoad];
   objc_initWeak(&location, self);
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -130,17 +130,17 @@ void __42__SearchUIAvatarImage_avatarImageRenderer__block_invoke()
   v20[3] = &unk_1E85B3D40;
   v24[1] = v11;
   v24[2] = v13;
-  v24[3] = *&a3;
+  v24[3] = *&scale;
   v25 = v9;
-  v26 = a4;
-  v17 = v14;
+  styleCopy = style;
+  v17 = letters;
   v21 = v17;
   objc_copyWeak(v24, &location);
-  v18 = v8;
+  v18 = handlerCopy;
   v23 = v18;
-  v19 = v15;
+  v19 = contactIdentifiers;
   v22 = v19;
-  v27 = v16;
+  v27 = requiresImageDataToLoad;
   [SearchUIUtilities dispatchAsyncIfNecessary:v20];
 
   objc_destroyWeak(v24);

@@ -1,25 +1,25 @@
 @interface NEIKEv2SecurityContextCBCPlusHMAC
-+ (uint64_t)fixedOverheadForEncryptionProtocol:(void *)a3 integrityProtocol:;
-+ (uint64_t)overheadForPlaintextLength:(void *)a3 encryptionProtocol:(void *)a4 integrityProtocol:;
-+ (uint64_t)paddingLengthForPlaintextLength:(void *)a3 encryptionProtocol:;
-- (BOOL)checkIncomingHMACForPayloadData:(void *)a3 authenticatedHeaders:;
-- (id)constructEncryptedPacketFromConstructor:(id)a3 plaintextLength:(unsigned int)a4 authenticatedHeaders:(id)a5;
-- (id)decryptPayloadData:(id)a3 authenticatedHeaders:(id)a4;
++ (uint64_t)fixedOverheadForEncryptionProtocol:(void *)protocol integrityProtocol:;
++ (uint64_t)overheadForPlaintextLength:(void *)length encryptionProtocol:(void *)protocol integrityProtocol:;
++ (uint64_t)paddingLengthForPlaintextLength:(void *)length encryptionProtocol:;
+- (BOOL)checkIncomingHMACForPayloadData:(void *)data authenticatedHeaders:;
+- (id)constructEncryptedPacketFromConstructor:(id)constructor plaintextLength:(unsigned int)length authenticatedHeaders:(id)headers;
+- (id)decryptPayloadData:(id)data authenticatedHeaders:(id)headers;
 - (uint64_t)fixedOverheadLength;
-- (unsigned)maximumPayloadSizeWithinLimit:(unsigned int)a3;
-- (unsigned)overheadForPlaintextLength:(unsigned int)a3;
+- (unsigned)maximumPayloadSizeWithinLimit:(unsigned int)limit;
+- (unsigned)overheadForPlaintextLength:(unsigned int)length;
 - (void)dealloc;
 @end
 
 @implementation NEIKEv2SecurityContextCBCPlusHMAC
 
-- (id)decryptPayloadData:(id)a3 authenticatedHeaders:(id)a4
+- (id)decryptPayloadData:(id)data authenticatedHeaders:(id)headers
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  dataCopy = data;
+  headersCopy = headers;
+  v8 = headersCopy;
+  if (!dataCopy)
   {
     v16 = ne_log_obj();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -35,7 +35,7 @@ LABEL_29:
     goto LABEL_11;
   }
 
-  if (!v7)
+  if (!headersCopy)
   {
     v16 = ne_log_obj();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -51,18 +51,18 @@ LABEL_29:
 
   if (self)
   {
-    v9 = [(NEIKEv2EncryptionProtocol *)self->_encryptionProtocol ivLength];
+    ivLength = [(NEIKEv2EncryptionProtocol *)self->_encryptionProtocol ivLength];
     integrityProtocol = self->_integrityProtocol;
   }
 
   else
   {
-    v9 = [(NEIKEv2EncryptionProtocol *)0 ivLength];
+    ivLength = [(NEIKEv2EncryptionProtocol *)0 ivLength];
     integrityProtocol = 0;
   }
 
-  v11 = [(NEIKEv2IntegrityProtocol *)integrityProtocol macLength];
-  v12 = [v6 length];
+  macLength = [(NEIKEv2IntegrityProtocol *)integrityProtocol macLength];
+  v12 = [dataCopy length];
   v13 = v12;
   if (self)
   {
@@ -82,7 +82,7 @@ LABEL_29:
       goto LABEL_24;
     }
 
-    if ([(NEIKEv2SecurityContextCBCPlusHMAC *)self checkIncomingHMACForPayloadData:v6 authenticatedHeaders:v8])
+    if ([(NEIKEv2SecurityContextCBCPlusHMAC *)self checkIncomingHMACForPayloadData:dataCopy authenticatedHeaders:v8])
     {
       encryptionProtocol = self->_encryptionProtocol;
       goto LABEL_9;
@@ -102,7 +102,7 @@ LABEL_40:
     goto LABEL_24;
   }
 
-  v32 = [(NEIKEv2SecurityContextCBCPlusHMAC *)0 checkIncomingHMACForPayloadData:v6 authenticatedHeaders:v8];
+  v32 = [(NEIKEv2SecurityContextCBCPlusHMAC *)0 checkIncomingHMACForPayloadData:dataCopy authenticatedHeaders:v8];
   encryptionProtocol = 0;
   if (!v32)
   {
@@ -110,7 +110,7 @@ LABEL_40:
   }
 
 LABEL_9:
-  v15 = v13 - (v11 + v9);
+  v15 = v13 - (macLength + ivLength);
   if (v15 % [(NEIKEv2EncryptionProtocol *)encryptionProtocol blockLength])
   {
     v16 = ne_log_obj();
@@ -142,7 +142,7 @@ LABEL_24:
   }
 
   v16 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:v15];
-  v18 = [v6 bytes];
+  bytes = [dataCopy bytes];
   if (self)
   {
     incomingEncryptionContext = self->_incomingEncryptionContext;
@@ -153,7 +153,7 @@ LABEL_24:
     incomingEncryptionContext = 0;
   }
 
-  v20 = CCCryptorReset(incomingEncryptionContext, v18);
+  v20 = CCCryptorReset(incomingEncryptionContext, bytes);
   if (v20)
   {
     v33 = v20;
@@ -166,7 +166,7 @@ LABEL_24:
     }
   }
 
-  v21 = &v18[v9];
+  v21 = &bytes[ivLength];
   dataOutMoved = 0;
   if (self)
   {
@@ -200,18 +200,18 @@ LABEL_20:
   return v17;
 }
 
-- (BOOL)checkIncomingHMACForPayloadData:(void *)a3 authenticatedHeaders:
+- (BOOL)checkIncomingHMACForPayloadData:(void *)data authenticatedHeaders:
 {
   v15 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  dataCopy = data;
+  if (self)
   {
-    v7 = [(NEIKEv2IntegrityProtocol *)*(a1 + 792) macLength];
-    v8 = [v5 length] - v7;
+    macLength = [(NEIKEv2IntegrityProtocol *)*(self + 792) macLength];
+    v8 = [v5 length] - macLength;
     memset(macOut, 0, sizeof(macOut));
-    memcpy(&v13, (a1 + 396), sizeof(v13));
-    CCHmacUpdate(&v13, [v6 bytes], objc_msgSend(v6, "length"));
+    memcpy(&v13, (self + 396), sizeof(v13));
+    CCHmacUpdate(&v13, [dataCopy bytes], objc_msgSend(dataCopy, "length"));
     CCHmacUpdate(&v13, [v5 bytes], v8);
     CCHmacFinal(&v13, macOut);
     memset_s(&v13, 0x180uLL, 0, 0x180uLL);
@@ -230,13 +230,13 @@ LABEL_20:
   return v10;
 }
 
-- (id)constructEncryptedPacketFromConstructor:(id)a3 plaintextLength:(unsigned int)a4 authenticatedHeaders:(id)a5
+- (id)constructEncryptedPacketFromConstructor:(id)constructor plaintextLength:(unsigned int)length authenticatedHeaders:(id)headers
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (!v8)
+  constructorCopy = constructor;
+  headersCopy = headers;
+  v10 = headersCopy;
+  if (!constructorCopy)
   {
     v27 = ne_log_obj();
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
@@ -255,7 +255,7 @@ LABEL_34:
     goto LABEL_25;
   }
 
-  if (!v9)
+  if (!headersCopy)
   {
     v27 = ne_log_obj();
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
@@ -269,10 +269,10 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  v11 = [v9 length];
+  v11 = [headersCopy length];
   if (self)
   {
-    v12 = [NEIKEv2SecurityContextCBCPlusHMAC paddingLengthForPlaintextLength:a4 encryptionProtocol:self->_encryptionProtocol];
+    v12 = [NEIKEv2SecurityContextCBCPlusHMAC paddingLengthForPlaintextLength:length encryptionProtocol:self->_encryptionProtocol];
   }
 
   else
@@ -281,7 +281,7 @@ LABEL_34:
   }
 
   v33 = v12;
-  v13 = a4 + v12 + 1;
+  v13 = length + v12 + 1;
   v14 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:-[NEIKEv2SecurityContextCBCPlusHMAC fixedOverheadLength](self) + v11 + v13];
   [v14 appendData:v10];
   if (self)
@@ -294,9 +294,9 @@ LABEL_34:
     encryptionProtocol = 0;
   }
 
-  v16 = [(NEIKEv2EncryptionProtocol *)encryptionProtocol ivLength];
-  [NEIKEv2Crypto appendRandomBytesToData:v14 withSize:v16];
-  if ([(NEIKEv2PacketConstructor *)v8 appendPayloadsToPacket:v14 withLength:a4])
+  ivLength = [(NEIKEv2EncryptionProtocol *)encryptionProtocol ivLength];
+  [NEIKEv2Crypto appendRandomBytesToData:v14 withSize:ivLength];
+  if ([(NEIKEv2PacketConstructor *)constructorCopy appendPayloadsToPacket:v14 withLength:length])
   {
     if (v12)
     {
@@ -315,7 +315,7 @@ LABEL_34:
       outgoingEncryptionContext = 0;
     }
 
-    v19 = &v17[v16];
+    v19 = &v17[ivLength];
     v20 = CCCryptorReset(outgoingEncryptionContext, v17);
     if (v20)
     {
@@ -394,27 +394,27 @@ LABEL_21:
   return result;
 }
 
-+ (uint64_t)fixedOverheadForEncryptionProtocol:(void *)a3 integrityProtocol:
++ (uint64_t)fixedOverheadForEncryptionProtocol:(void *)protocol integrityProtocol:
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v5 = a2;
   objc_opt_self();
-  v6 = [(NEIKEv2EncryptionProtocol *)v5 ivLength];
+  ivLength = [(NEIKEv2EncryptionProtocol *)v5 ivLength];
 
-  LODWORD(v5) = [(NEIKEv2IntegrityProtocol *)v4 macLength];
-  return (v5 + v6);
+  LODWORD(v5) = [(NEIKEv2IntegrityProtocol *)protocolCopy macLength];
+  return (v5 + ivLength);
 }
 
-+ (uint64_t)paddingLengthForPlaintextLength:(void *)a3 encryptionProtocol:
++ (uint64_t)paddingLengthForPlaintextLength:(void *)length encryptionProtocol:
 {
-  v4 = a3;
+  lengthCopy = length;
   objc_opt_self();
-  v5 = [(NEIKEv2EncryptionProtocol *)v4 blockLength];
+  blockLength = [(NEIKEv2EncryptionProtocol *)lengthCopy blockLength];
 
-  v6 = (a2 + 1) % v5;
+  v6 = (a2 + 1) % blockLength;
   if (v6)
   {
-    return (v5 - v6);
+    return (blockLength - v6);
   }
 
   else
@@ -423,11 +423,11 @@ LABEL_21:
   }
 }
 
-- (unsigned)maximumPayloadSizeWithinLimit:(unsigned int)a3
+- (unsigned)maximumPayloadSizeWithinLimit:(unsigned int)limit
 {
-  v5 = [(NEIKEv2SecurityContextCBCPlusHMAC *)self fixedOverheadLength];
-  v6 = a3 >= v5;
-  v7 = a3 - v5;
+  fixedOverheadLength = [(NEIKEv2SecurityContextCBCPlusHMAC *)self fixedOverheadLength];
+  v6 = limit >= fixedOverheadLength;
+  v7 = limit - fixedOverheadLength;
   if (v7 == 0 || !v6)
   {
     return 0;
@@ -443,10 +443,10 @@ LABEL_21:
     encryptionProtocol = 0;
   }
 
-  v9 = [(NEIKEv2EncryptionProtocol *)encryptionProtocol blockLength];
-  if (v7 - 1 >= v7 % v9)
+  blockLength = [(NEIKEv2EncryptionProtocol *)encryptionProtocol blockLength];
+  if (v7 - 1 >= v7 % blockLength)
   {
-    return v7 - 1 - v7 % v9;
+    return v7 - 1 - v7 % blockLength;
   }
 
   else
@@ -455,7 +455,7 @@ LABEL_21:
   }
 }
 
-- (unsigned)overheadForPlaintextLength:(unsigned int)a3
+- (unsigned)overheadForPlaintextLength:(unsigned int)length
 {
   if (self)
   {
@@ -469,19 +469,19 @@ LABEL_21:
     integrityProtocol = 0;
   }
 
-  v7 = [NEIKEv2SecurityContextCBCPlusHMAC overheadForPlaintextLength:a3 encryptionProtocol:v5 integrityProtocol:integrityProtocol];
+  v7 = [NEIKEv2SecurityContextCBCPlusHMAC overheadForPlaintextLength:length encryptionProtocol:v5 integrityProtocol:integrityProtocol];
 
   return v7;
 }
 
-+ (uint64_t)overheadForPlaintextLength:(void *)a3 encryptionProtocol:(void *)a4 integrityProtocol:
++ (uint64_t)overheadForPlaintextLength:(void *)length encryptionProtocol:(void *)protocol integrityProtocol:
 {
-  v6 = a4;
-  v7 = a3;
+  protocolCopy = protocol;
+  lengthCopy = length;
   objc_opt_self();
-  v8 = [NEIKEv2SecurityContextCBCPlusHMAC fixedOverheadForEncryptionProtocol:v7 integrityProtocol:v6];
+  v8 = [NEIKEv2SecurityContextCBCPlusHMAC fixedOverheadForEncryptionProtocol:lengthCopy integrityProtocol:protocolCopy];
 
-  v9 = [NEIKEv2SecurityContextCBCPlusHMAC paddingLengthForPlaintextLength:a2 encryptionProtocol:v7];
+  v9 = [NEIKEv2SecurityContextCBCPlusHMAC paddingLengthForPlaintextLength:a2 encryptionProtocol:lengthCopy];
   return (v8 + v9 + 1);
 }
 

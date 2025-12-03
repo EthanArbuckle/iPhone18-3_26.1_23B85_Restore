@@ -1,45 +1,45 @@
 @interface SMConversation
-- (BOOL)hasEqualPrimaryHandlesAsConversation:(id)a3;
-- (BOOL)hasEqualPrimaryHandlesAsSet:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SMConversation)initWithCoder:(id)a3;
-- (SMConversation)initWithDictionary:(id)a3;
-- (SMConversation)initWithReceiverHandles:(id)a3 identifier:(id)a4 displayName:(id)a5;
+- (BOOL)hasEqualPrimaryHandlesAsConversation:(id)conversation;
+- (BOOL)hasEqualPrimaryHandlesAsSet:(id)set;
+- (BOOL)isEqual:(id)equal;
+- (SMConversation)initWithCoder:(id)coder;
+- (SMConversation)initWithDictionary:(id)dictionary;
+- (SMConversation)initWithReceiverHandles:(id)handles identifier:(id)identifier displayName:(id)name;
 - (id)description;
 - (id)descriptionDictionary;
 - (id)outputToDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMConversation
 
-- (SMConversation)initWithReceiverHandles:(id)a3 identifier:(id)a4 displayName:(id)a5
+- (SMConversation)initWithReceiverHandles:(id)handles identifier:(id)identifier displayName:(id)name
 {
   v31 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  handlesCopy = handles;
+  identifierCopy = identifier;
+  nameCopy = name;
   v29.receiver = self;
   v29.super_class = SMConversation;
   v12 = [(SMConversation *)&v29 init];
   if (v12)
   {
-    if (!v9 || ![v9 count])
+    if (!handlesCopy || ![handlesCopy count])
     {
       v22 = 0;
       goto LABEL_14;
     }
 
-    objc_storeStrong(&v12->_receiverHandles, a3);
-    objc_storeStrong(&v12->_identifier, a4);
-    objc_storeStrong(&v12->_displayName, a5);
-    v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v9, "count")}];
+    objc_storeStrong(&v12->_receiverHandles, handles);
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v12->_displayName, name);
+    v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(handlesCopy, "count")}];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v14 = v9;
+    v14 = handlesCopy;
     v15 = [v14 countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v15)
     {
@@ -55,8 +55,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v25 + 1) + 8 * v18) primaryHandle];
-          [v13 addObject:v19];
+          primaryHandle = [*(*(&v25 + 1) + 8 * v18) primaryHandle];
+          [v13 addObject:primaryHandle];
 
           ++v18;
         }
@@ -82,32 +82,32 @@ LABEL_14:
   return v22;
 }
 
-- (BOOL)hasEqualPrimaryHandlesAsConversation:(id)a3
+- (BOOL)hasEqualPrimaryHandlesAsConversation:(id)conversation
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = [a3 receiverPrimaryHandles];
-  v6 = [v4 setWithArray:v5];
+  receiverPrimaryHandles = [conversation receiverPrimaryHandles];
+  v6 = [v4 setWithArray:receiverPrimaryHandles];
 
   LOBYTE(self) = [(SMConversation *)self hasEqualPrimaryHandlesAsSet:v6];
   return self;
 }
 
-- (BOOL)hasEqualPrimaryHandlesAsSet:(id)a3
+- (BOOL)hasEqualPrimaryHandlesAsSet:(id)set
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
-  v6 = [(SMConversation *)self receiverPrimaryHandles];
-  v7 = [v4 setWithArray:v6];
+  setCopy = set;
+  receiverPrimaryHandles = [(SMConversation *)self receiverPrimaryHandles];
+  v7 = [v4 setWithArray:receiverPrimaryHandles];
 
-  LOBYTE(v6) = [v7 isEqualToSet:v5];
-  return v6;
+  LOBYTE(receiverPrimaryHandles) = [v7 isEqualToSet:setCopy];
+  return receiverPrimaryHandles;
 }
 
-- (SMConversation)initWithDictionary:(id)a3
+- (SMConversation)initWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 valueForKey:@"__kSMReceiverHandlesKey"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy valueForKey:@"__kSMReceiverHandlesKey"];
   v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
   v22 = 0u;
   v23 = 0u;
@@ -147,8 +147,8 @@ LABEL_14:
     while (v9);
   }
 
-  v15 = [v4 valueForKey:@"__kSMConversationIDKey"];
-  v16 = [v4 valueForKey:@"__kSMChatDisplayNameKey"];
+  v15 = [dictionaryCopy valueForKey:@"__kSMConversationIDKey"];
+  v16 = [dictionaryCopy valueForKey:@"__kSMChatDisplayNameKey"];
   v17 = [SMConversation alloc];
   v18 = [v6 copy];
   v19 = [(SMConversation *)v17 initWithReceiverHandles:v18 identifier:v15 displayName:v16];
@@ -162,15 +162,15 @@ LABEL_14:
   v26 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
   v4 = objc_alloc(MEMORY[0x277CBEB18]);
-  v5 = [(SMConversation *)self receiverHandles];
-  v6 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+  receiverHandles = [(SMConversation *)self receiverHandles];
+  v6 = [v4 initWithCapacity:{objc_msgSend(receiverHandles, "count")}];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [(SMConversation *)self receiverHandles];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  receiverHandles2 = [(SMConversation *)self receiverHandles];
+  v8 = [receiverHandles2 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -181,14 +181,14 @@ LABEL_14:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(receiverHandles2);
         }
 
-        v12 = [*(*(&v21 + 1) + 8 * i) outputToDictionary];
-        [v6 addObject:v12];
+        outputToDictionary = [*(*(&v21 + 1) + 8 * i) outputToDictionary];
+        [v6 addObject:outputToDictionary];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v9 = [receiverHandles2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v9);
@@ -197,20 +197,20 @@ LABEL_14:
   v13 = [v6 copy];
   [v3 setObject:v13 forKey:@"__kSMReceiverHandlesKey"];
 
-  v14 = [(SMConversation *)self identifier];
+  identifier = [(SMConversation *)self identifier];
 
-  if (v14)
+  if (identifier)
   {
-    v15 = [(SMConversation *)self identifier];
-    [v3 setObject:v15 forKey:@"__kSMConversationIDKey"];
+    identifier2 = [(SMConversation *)self identifier];
+    [v3 setObject:identifier2 forKey:@"__kSMConversationIDKey"];
   }
 
-  v16 = [(SMConversation *)self displayName];
+  displayName = [(SMConversation *)self displayName];
 
-  if (v16)
+  if (displayName)
   {
-    v17 = [(SMConversation *)self displayName];
-    [v3 setObject:v17 forKey:@"__kSMChatDisplayNameKey"];
+    displayName2 = [(SMConversation *)self displayName];
+    [v3 setObject:displayName2 forKey:@"__kSMChatDisplayNameKey"];
   }
 
   v18 = [v3 copy];
@@ -223,23 +223,23 @@ LABEL_14:
 - (id)descriptionDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(SMConversation *)self receiverHandles];
-  [v3 setObject:v4 forKey:@"__kSMReceiverHandlesKey"];
+  receiverHandles = [(SMConversation *)self receiverHandles];
+  [v3 setObject:receiverHandles forKey:@"__kSMReceiverHandlesKey"];
 
-  v5 = [(SMConversation *)self identifier];
+  identifier = [(SMConversation *)self identifier];
 
-  if (v5)
+  if (identifier)
   {
-    v6 = [(SMConversation *)self identifier];
-    [v3 setObject:v6 forKey:@"__kSMConversationIDKey"];
+    identifier2 = [(SMConversation *)self identifier];
+    [v3 setObject:identifier2 forKey:@"__kSMConversationIDKey"];
   }
 
-  v7 = [(SMConversation *)self displayName];
+  displayName = [(SMConversation *)self displayName];
 
-  if (v7)
+  if (displayName)
   {
-    v8 = [(SMConversation *)self displayName];
-    [v3 setObject:v8 forKey:@"__kSMChatDisplayNameKey"];
+    displayName2 = [(SMConversation *)self displayName];
+    [v3 setObject:displayName2 forKey:@"__kSMChatDisplayNameKey"];
   }
 
   return v3;
@@ -248,28 +248,28 @@ LABEL_14:
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SMConversation *)self descriptionDictionary];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  descriptionDictionary = [(SMConversation *)self descriptionDictionary];
+  v4 = [v2 stringWithFormat:@"%@", descriptionDictionary];
 
   return v4;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(SMConversation *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(SMConversation *)self receiverHandles];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SMConversation *)self displayName];
-  v8 = [v7 hash];
+  identifier = [(SMConversation *)self identifier];
+  v4 = [identifier hash];
+  receiverHandles = [(SMConversation *)self receiverHandles];
+  v6 = [receiverHandles hash] ^ v4;
+  displayName = [(SMConversation *)self displayName];
+  v8 = [displayName hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -279,46 +279,46 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(SMConversation *)self identifier];
-      v9 = [(SMConversation *)v7 identifier];
-      if (v8 != v9)
+      v7 = equalCopy;
+      identifier = [(SMConversation *)self identifier];
+      identifier2 = [(SMConversation *)v7 identifier];
+      if (identifier != identifier2)
       {
-        v3 = [(SMConversation *)self identifier];
-        v4 = [(SMConversation *)v7 identifier];
-        if (![v3 isEqual:v4])
+        identifier3 = [(SMConversation *)self identifier];
+        identifier4 = [(SMConversation *)v7 identifier];
+        if (![identifier3 isEqual:identifier4])
         {
           v10 = 0;
           goto LABEL_19;
         }
       }
 
-      v11 = [(SMConversation *)self receiverHandles];
-      v12 = [(SMConversation *)v7 receiverHandles];
-      v13 = v12;
-      if (v11 == v12)
+      receiverHandles = [(SMConversation *)self receiverHandles];
+      receiverHandles2 = [(SMConversation *)v7 receiverHandles];
+      v13 = receiverHandles2;
+      if (receiverHandles == receiverHandles2)
       {
-        v28 = v12;
+        v28 = receiverHandles2;
       }
 
       else
       {
-        v14 = [(SMConversation *)self receiverHandles];
-        v27 = [(SMConversation *)v7 receiverHandles];
-        if (![v14 isEqual:?])
+        receiverHandles3 = [(SMConversation *)self receiverHandles];
+        receiverHandles4 = [(SMConversation *)v7 receiverHandles];
+        if (![receiverHandles3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_17;
         }
 
-        v26 = v14;
+        v26 = receiverHandles3;
         v28 = v13;
       }
 
-      v15 = [(SMConversation *)self displayName];
-      v16 = [(SMConversation *)v7 displayName];
-      v17 = v16;
-      if (v15 == v16)
+      displayName = [(SMConversation *)self displayName];
+      displayName2 = [(SMConversation *)v7 displayName];
+      v17 = displayName2;
+      if (displayName == displayName2)
       {
 
         v10 = 1;
@@ -327,29 +327,29 @@ LABEL_14:
       else
       {
         [(SMConversation *)self displayName];
-        v18 = v25 = v3;
+        v18 = v25 = identifier3;
         [(SMConversation *)v7 displayName];
-        v24 = v11;
-        v19 = v4;
-        v20 = v9;
-        v22 = v21 = v8;
+        v24 = receiverHandles;
+        v19 = identifier4;
+        v20 = identifier2;
+        v22 = v21 = identifier;
         v10 = [v18 isEqual:v22];
 
-        v8 = v21;
-        v9 = v20;
-        v4 = v19;
-        v11 = v24;
+        identifier = v21;
+        identifier2 = v20;
+        identifier4 = v19;
+        receiverHandles = v24;
 
-        v3 = v25;
+        identifier3 = v25;
       }
 
       v13 = v28;
-      v14 = v26;
-      if (v11 == v28)
+      receiverHandles3 = v26;
+      if (receiverHandles == v28)
       {
 LABEL_18:
 
-        if (v8 == v9)
+        if (identifier == identifier2)
         {
 LABEL_20:
 
@@ -374,24 +374,24 @@ LABEL_21:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   receiverHandles = self->_receiverHandles;
-  v5 = a3;
-  [v5 encodeObject:receiverHandles forKey:@"__kSMReceiverHandlesKey"];
-  [v5 encodeObject:self->_identifier forKey:@"__kSMConversationIDKey"];
-  [v5 encodeObject:self->_displayName forKey:@"__kSMChatDisplayNameKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:receiverHandles forKey:@"__kSMReceiverHandlesKey"];
+  [coderCopy encodeObject:self->_identifier forKey:@"__kSMConversationIDKey"];
+  [coderCopy encodeObject:self->_displayName forKey:@"__kSMChatDisplayNameKey"];
 }
 
-- (SMConversation)initWithCoder:(id)a3
+- (SMConversation)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"__kSMReceiverHandlesKey"];
-  v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMConversationIDKey"];
-  v10 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMChatDisplayNameKey"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"__kSMReceiverHandlesKey"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMConversationIDKey"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMChatDisplayNameKey"];
 
   v11 = [(SMConversation *)self initWithReceiverHandles:v8 identifier:v9 displayName:v10];
   return v11;

@@ -1,17 +1,17 @@
 @interface _NCExpandedPlatterViewControllerAnimator
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation _NCExpandedPlatterViewControllerAnimator
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v3 = a3;
+  transitionCopy = transition;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __62___NCExpandedPlatterViewControllerAnimator_animateTransition___block_invoke;
   aBlock[3] = &unk_27836F6A8;
-  v4 = v3;
+  v4 = transitionCopy;
   v14 = v4;
   v5 = _Block_copy(aBlock);
   v8 = MEMORY[0x277D85DD0];

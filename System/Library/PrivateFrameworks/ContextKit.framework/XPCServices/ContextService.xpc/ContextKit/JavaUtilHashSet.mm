@@ -1,31 +1,31 @@
 @interface JavaUtilHashSet
 + (void)initialize;
-- (BOOL)addWithId:(id)a3;
-- (BOOL)containsWithId:(id)a3;
+- (BOOL)addWithId:(id)id;
+- (BOOL)containsWithId:(id)id;
 - (BOOL)isEmpty;
-- (BOOL)removeWithId:(id)a3;
-- (JavaUtilHashSet)initWithJavaUtilHashMap:(id)a3;
+- (BOOL)removeWithId:(id)id;
+- (JavaUtilHashSet)initWithJavaUtilHashMap:(id)map;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)iterator;
 - (int)size;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)clear;
 - (void)dealloc;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaUtilHashSet
 
-- (JavaUtilHashSet)initWithJavaUtilHashMap:(id)a3
+- (JavaUtilHashSet)initWithJavaUtilHashMap:(id)map
 {
   JavaUtilAbstractSet_init(self, a2);
-  JreStrongAssign(&self->backingMap_, a3);
+  JreStrongAssign(&self->backingMap_, map);
   return self;
 }
 
-- (BOOL)addWithId:(id)a3
+- (BOOL)addWithId:(id)id
 {
   backingMap = self->backingMap_;
   if (!backingMap)
@@ -33,7 +33,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilHashMap *)backingMap putWithId:a3 withId:qword_100554938]== 0;
+  return [(JavaUtilHashMap *)backingMap putWithId:id withId:qword_100554938]== 0;
 }
 
 - (void)clear
@@ -51,9 +51,9 @@
 {
   v7.receiver = self;
   v7.super_class = JavaUtilHashSet;
-  v3 = [(JavaUtilHashSet *)&v7 clone];
+  clone = [(JavaUtilHashSet *)&v7 clone];
   objc_opt_class();
-  if (!v3)
+  if (!clone)
   {
     goto LABEL_8;
   }
@@ -70,19 +70,19 @@ LABEL_8:
     JreThrowNullPointerException();
   }
 
-  v5 = [(JavaUtilHashMap *)backingMap clone];
+  clone2 = [(JavaUtilHashMap *)backingMap clone];
   objc_opt_class();
-  if (v5 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (clone2 && (objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_7:
     JreThrowClassCastException();
   }
 
-  JreStrongAssign(v3 + 1, v5);
-  return v3;
+  JreStrongAssign(clone + 1, clone2);
+  return clone;
 }
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   backingMap = self->backingMap_;
   if (!backingMap)
@@ -90,7 +90,7 @@ LABEL_7:
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilHashMap *)backingMap containsKeyWithId:a3];
+  return [(JavaUtilHashMap *)backingMap containsKeyWithId:id];
 }
 
 - (BOOL)isEmpty
@@ -115,7 +115,7 @@ LABEL_7:
   return [v3 iterator];
 }
 
-- (BOOL)removeWithId:(id)a3
+- (BOOL)removeWithId:(id)id
 {
   backingMap = self->backingMap_;
   if (!backingMap)
@@ -123,7 +123,7 @@ LABEL_7:
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilHashMap *)backingMap removeWithId:a3]!= 0;
+  return [(JavaUtilHashMap *)backingMap removeWithId:id]!= 0;
 }
 
 - (int)size
@@ -137,17 +137,17 @@ LABEL_7:
   return [(JavaUtilHashMap *)backingMap size];
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
-  if (!a3 || ([a3 defaultWriteObject], (backingMap = self->backingMap_) == 0) || (table = backingMap->table_) == 0)
+  if (!stream || ([stream defaultWriteObject], (backingMap = self->backingMap_) == 0) || (table = backingMap->table_) == 0)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 writeIntWithInt:table->super.size_];
+  [stream writeIntWithInt:table->super.size_];
   LODWORD(v7) = 0.75;
-  [a3 writeFloatWithFloat:v7];
-  [a3 writeIntWithInt:{-[JavaUtilHashSet size](self, "size")}];
+  [stream writeFloatWithFloat:v7];
+  [stream writeIntWithInt:{-[JavaUtilHashSet size](self, "size")}];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -167,7 +167,7 @@ LABEL_7:
           objc_enumerationMutation(self);
         }
 
-        [a3 writeObjectWithId:*(*(&v12 + 1) + 8 * v11++)];
+        [stream writeObjectWithId:*(*(&v12 + 1) + 8 * v11++)];
       }
 
       while (v9 != v11);
@@ -178,31 +178,31 @@ LABEL_7:
   }
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     goto LABEL_7;
   }
 
-  [a3 defaultReadObject];
-  v5 = [a3 readInt];
-  [a3 readFloat];
-  JreStrongAssign(&self->backingMap_, [(JavaUtilHashSet *)self createBackingMapWithInt:v5 withFloat:?]);
-  v6 = [a3 readInt];
-  if ((v6 - 1) >= 0)
+  [stream defaultReadObject];
+  readInt = [stream readInt];
+  [stream readFloat];
+  JreStrongAssign(&self->backingMap_, [(JavaUtilHashSet *)self createBackingMapWithInt:readInt withFloat:?]);
+  readInt2 = [stream readInt];
+  if ((readInt2 - 1) >= 0)
   {
-    v7 = v6;
+    v7 = readInt2;
     while (1)
     {
-      v8 = [a3 readObject];
+      readObject = [stream readObject];
       backingMap = self->backingMap_;
       if (!backingMap)
       {
         break;
       }
 
-      [(JavaUtilHashMap *)backingMap putWithId:v8 withId:self];
+      [(JavaUtilHashMap *)backingMap putWithId:readObject withId:self];
       if (--v7 <= 0)
       {
         return;
@@ -221,28 +221,28 @@ LABEL_7:
   [(JavaUtilHashSet *)&v3 dealloc];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v9 = a3->var3[4];
-  if (!v9)
+  keySet = state->var3[4];
+  if (!keySet)
   {
-    v9 = [(JavaUtilHashMap *)self->backingMap_ keySet];
-    a3->var3[4] = v9;
+    keySet = [(JavaUtilHashMap *)self->backingMap_ keySet];
+    state->var3[4] = keySet;
   }
 
-  return [v9 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  return [keySet countByEnumeratingWithState:state objects:objects count:count];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(JavaUtilHashSet *)self clone];
+  clone = [(JavaUtilHashSet *)self clone];
 
-  return v3;
+  return clone;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&qword_100554938, [NSObject alloc]);
     atomic_store(1u, &JavaUtilHashSet__initialized);

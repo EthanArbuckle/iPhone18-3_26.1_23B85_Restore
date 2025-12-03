@@ -1,26 +1,26 @@
 @interface OABGroup
-+ (id)readGroup:(id)a3 state:(id)a4;
++ (id)readGroup:(id)group state:(id)state;
 @end
 
 @implementation OABGroup
 
-+ (id)readGroup:(id)a3 state:(id)a4
++ (id)readGroup:(id)group state:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 eshGroup];
-  if (!v7)
+  groupCopy = group;
+  stateCopy = state;
+  eshGroup = [groupCopy eshGroup];
+  if (!eshGroup)
   {
     v11 = 0;
     goto LABEL_11;
   }
 
-  if (![objc_msgSend(v6 "client")] || !EshContentProperties::isXmlEquivalentSet(v7 + 12))
+  if (![objc_msgSend(stateCopy "client")] || !EshContentProperties::isXmlEquivalentSet(eshGroup + 12))
   {
     goto LABEL_10;
   }
 
-  v8 = [OABDrawable readDrawableFromZipPackageData:EshContentProperties::getXmlEquivalent(v7 + 12) foundInObject:v5 state:v6];
+  v8 = [OABDrawable readDrawableFromZipPackageData:EshContentProperties::getXmlEquivalent(eshGroup + 12) foundInObject:groupCopy state:stateCopy];
   v9 = objc_opt_class();
   v10 = TSUDynamicCast(v9, v8);
   v11 = v10;
@@ -29,25 +29,25 @@
 
 LABEL_10:
     v11 = objc_alloc_init(OADGroup);
-    [OABContent readFromContainer:v5 toDrawable:v11 state:v6];
-    var2 = v7[11].var2;
+    [OABContent readFromContainer:groupCopy toDrawable:v11 state:stateCopy];
+    var2 = eshGroup[11].var2;
     [(OADGroup *)v11 setLogicalBounds:var2[7], var2[8], (var2[9] - var2[7]), (var2[10] - var2[8])];
-    [v6 pushGroup:v11];
-    v15 = [OABDrawable readDrawablesFromContainer:v5 state:v6];
+    [stateCopy pushGroup:v11];
+    v15 = [OABDrawable readDrawablesFromContainer:groupCopy state:stateCopy];
     [(OADGroup *)v11 addChildren:v15];
 
-    v16 = [v6 popGroup];
-    [objc_msgSend(v6 "client")];
+    popGroup = [stateCopy popGroup];
+    [objc_msgSend(stateCopy "client")];
     goto LABEL_11;
   }
 
   if (![(OADGroup *)v10 childCount])
   {
-    [v6 pushGroup:v11];
-    v12 = [OABDrawable readDrawablesFromContainer:v5 state:v6];
+    [stateCopy pushGroup:v11];
+    v12 = [OABDrawable readDrawablesFromContainer:groupCopy state:stateCopy];
     [(OADGroup *)v11 addChildren:v12];
 
-    v13 = [v6 popGroup];
+    popGroup2 = [stateCopy popGroup];
   }
 
 LABEL_11:

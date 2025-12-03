@@ -2,36 +2,36 @@
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)mapControlsConfiguration;
 - (BOOL)goButtonShouldBeVisible;
 - (BOOL)recenterButtonPressed;
-- (BOOL)updateRouteAnnotationsConfiguration:(id)a3;
+- (BOOL)updateRouteAnnotationsConfiguration:(id)configuration;
 - (ChromeViewController)chromeViewController;
 - (RouteAnnotationsConfiguration)routeAnnotationsConfiguration;
 - (_TtC4Maps23CarRoutePlanningContext)init;
-- (_TtC4Maps23CarRoutePlanningContext)initWithRoutePlanningSession:(id)a3;
+- (_TtC4Maps23CarRoutePlanningContext)initWithRoutePlanningSession:(id)session;
 - (id)automaticSharingContacts;
 - (id)desiredCards;
 - (uint64_t)zoomOutButtonPressed;
-- (void)advisoryListCardDidSelectAdvisoryItem:(id)a3;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)carCardViewCloseButtonTapped:(id)a3;
-- (void)configureCard:(id)a3 forKey:(id)a4;
-- (void)displayAdvisoriesFor:(int64_t)a3;
-- (void)enterStackInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)mapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5;
-- (void)mapsSession:(void *)a1 didChangeState:;
+- (void)advisoryListCardDidSelectAdvisoryItem:(id)item;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)carCardViewCloseButtonTapped:(id)tapped;
+- (void)configureCard:(id)card forKey:(id)key;
+- (void)displayAdvisoriesFor:(int64_t)for;
+- (void)enterStackInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)mapView:(id)view willStartRespondingToGesture:(int64_t)gesture animated:(BOOL)animated;
+- (void)mapsSession:(void *)session didChangeState:;
 - (void)offerVehicleDisambiguationIfNeeded;
-- (void)personalizedItemManager:(id)a3 didChangeItems:(id)a4 itemGroups:(id)a5;
-- (void)poiShapeLoader:(id)a3 didLoadStartPOIShape:(id)a4 endPOIShapes:(id)a5;
+- (void)personalizedItemManager:(id)manager didChangeItems:(id)items itemGroups:(id)groups;
+- (void)poiShapeLoader:(id)loader didLoadStartPOIShape:(id)shape endPOIShapes:(id)shapes;
 - (void)resetUserInteractionState;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)routePlanningSession:(id)a3 didUpdateAutomaticSharingContacts:(id)a4;
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5;
-- (void)setAdvisoriesCard:(id)a3;
-- (void)setAdvisoryItemCard:(id)a3;
-- (void)setRoutePlanningSession:(id)a3;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)routePlanningSession:(id)session didUpdateAutomaticSharingContacts:(id)contacts;
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type;
+- (void)setAdvisoriesCard:(id)card;
+- (void)setAdvisoryItemCard:(id)card;
+- (void)setRoutePlanningSession:(id)session;
 - (void)startNavigation;
-- (void)startNavigationFor:(int64_t)a3;
-- (void)updateSelectedRouteIndex:(int64_t)a3;
+- (void)startNavigationFor:(int64_t)for;
+- (void)updateSelectedRouteIndex:(int64_t)index;
 - (void)userDidInteractWithMap;
 @end
 
@@ -39,15 +39,15 @@
 
 - (uint64_t)zoomOutButtonPressed
 {
-  v1 = a1;
+  selfCopy = self;
   sub_100284F1C();
 
   return 0;
 }
 
-- (void)mapsSession:(void *)a1 didChangeState:
+- (void)mapsSession:(void *)session didChangeState:
 {
-  v1 = a1;
+  sessionCopy = session;
   sub_10028E718();
 }
 
@@ -58,60 +58,60 @@
   return Strong;
 }
 
-- (void)setRoutePlanningSession:(id)a3
+- (void)setRoutePlanningSession:(id)session
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps23CarRoutePlanningContext_routePlanningSession);
-  *(self + OBJC_IVAR____TtC4Maps23CarRoutePlanningContext_routePlanningSession) = a3;
-  v5 = a3;
-  v6 = self;
+  *(self + OBJC_IVAR____TtC4Maps23CarRoutePlanningContext_routePlanningSession) = session;
+  sessionCopy = session;
+  selfCopy = self;
   sub_100284064(v4);
 }
 
-- (void)setAdvisoriesCard:(id)a3
+- (void)setAdvisoriesCard:(id)card
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps23CarRoutePlanningContext_advisoriesCard);
-  *(self + OBJC_IVAR____TtC4Maps23CarRoutePlanningContext_advisoriesCard) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps23CarRoutePlanningContext_advisoriesCard) = card;
+  cardCopy = card;
 }
 
-- (void)setAdvisoryItemCard:(id)a3
+- (void)setAdvisoryItemCard:(id)card
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps23CarRoutePlanningContext_advisoryItemCard);
-  *(self + OBJC_IVAR____TtC4Maps23CarRoutePlanningContext_advisoryItemCard) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps23CarRoutePlanningContext_advisoryItemCard) = card;
+  cardCopy = card;
 }
 
-- (_TtC4Maps23CarRoutePlanningContext)initWithRoutePlanningSession:(id)a3
+- (_TtC4Maps23CarRoutePlanningContext)initWithRoutePlanningSession:(id)session
 {
-  v3 = a3;
-  v4 = sub_10028E980(v3);
+  sessionCopy = session;
+  v4 = sub_10028E980(sessionCopy);
 
   return v4;
 }
 
-- (void)enterStackInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)enterStackInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1002845C0(v6, v7);
+  controllerCopy = controller;
+  animationCopy = animation;
+  selfCopy = self;
+  sub_1002845C0(controllerCopy, animationCopy);
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10028EAD0(v7);
+  controllerCopy = controller;
+  animationCopy = animation;
+  selfCopy = self;
+  sub_10028EAD0(animationCopy);
 }
 
 - (void)offerVehicleDisambiguationIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002849B0();
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v6 = swift_allocObject();
   *(v6 + 16) = self;
@@ -122,18 +122,18 @@
   v10[2] = sub_100039C64;
   v10[3] = &unk_10160E6A8;
   v7 = _Block_copy(v10);
-  v8 = self;
-  v9 = a4;
+  selfCopy = self;
+  animationCopy = animation;
 
-  [v9 addPreparation:v7];
+  [animationCopy addPreparation:v7];
 
   _Block_release(v7);
 }
 
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v7 = swift_allocObject();
-  *(v7 + 16) = a3;
+  *(v7 + 16) = controller;
   *(v7 + 24) = self;
   v14[4] = sub_10028F0E4;
   v14[5] = v7;
@@ -142,26 +142,26 @@
   v14[2] = sub_100039C64;
   v14[3] = &unk_10160E658;
   v8 = _Block_copy(v14);
-  v9 = a3;
-  v10 = self;
-  v11 = v9;
-  v12 = v10;
-  v13 = a4;
+  controllerCopy = controller;
+  selfCopy = self;
+  v11 = controllerCopy;
+  v12 = selfCopy;
+  animationCopy = animation;
 
-  [v13 addPreparation:v8];
+  [animationCopy addPreparation:v8];
 
   _Block_release(v8);
 }
 
 - (void)userDidInteractWithMap
 {
-  v2 = self;
+  selfCopy = self;
   sub_100284F1C();
 }
 
 - (void)resetUserInteractionState
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002850BC();
 }
 
@@ -186,25 +186,25 @@
 
 - (BOOL)recenterButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002850BC();
   sub_1002857A8(1);
 
   return 1;
 }
 
-- (BOOL)updateRouteAnnotationsConfiguration:(id)a3
+- (BOOL)updateRouteAnnotationsConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  sub_100285308(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_100285308(configurationCopy);
 
   return 1;
 }
 
 - (RouteAnnotationsConfiguration)routeAnnotationsConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100285688();
 
   return v3;
@@ -225,9 +225,9 @@
   return v2.super.isa;
 }
 
-- (void)configureCard:(id)a3 forKey:(id)a4
+- (void)configureCard:(id)card forKey:(id)key
 {
-  if (a4)
+  if (key)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
@@ -240,54 +240,54 @@
   }
 
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_100285D24(a3, v6, v8);
+  selfCopy = self;
+  sub_100285D24(card, v6, v8);
   swift_unknownObjectRelease();
 }
 
-- (void)carCardViewCloseButtonTapped:(id)a3
+- (void)carCardViewCloseButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   sub_10028EBCC();
 }
 
-- (void)updateSelectedRouteIndex:(int64_t)a3
+- (void)updateSelectedRouteIndex:(int64_t)index
 {
-  v4 = self;
-  sub_100286838(a3);
+  selfCopy = self;
+  sub_100286838(index);
 }
 
 - (void)startNavigation
 {
-  v2 = self;
+  selfCopy = self;
   sub_100286B2C();
 }
 
-- (void)startNavigationFor:(int64_t)a3
+- (void)startNavigationFor:(int64_t)for
 {
-  v4 = self;
-  sub_100287100(a3);
+  selfCopy = self;
+  sub_100287100(for);
 }
 
 - (BOOL)goButtonShouldBeVisible
 {
   if (*(self + OBJC_IVAR____TtC4Maps23CarRoutePlanningContext_navigationAidedDrivingEnabled))
   {
-    LOBYTE(v2) = 0;
+    LOBYTE(sharedLocationManager) = 0;
   }
 
   else
   {
     v4 = objc_opt_self();
-    v5 = self;
-    v2 = [v4 sharedLocationManager];
-    if (v2)
+    selfCopy = self;
+    sharedLocationManager = [v4 sharedLocationManager];
+    if (sharedLocationManager)
     {
-      v6 = v2;
-      v7 = [v2 isAuthorizedForPreciseLocation];
+      v6 = sharedLocationManager;
+      isAuthorizedForPreciseLocation = [sharedLocationManager isAuthorizedForPreciseLocation];
 
-      LOBYTE(v2) = v7;
+      LOBYTE(sharedLocationManager) = isAuthorizedForPreciseLocation;
     }
 
     else
@@ -296,28 +296,28 @@
     }
   }
 
-  return v2;
+  return sharedLocationManager;
 }
 
-- (void)displayAdvisoriesFor:(int64_t)a3
+- (void)displayAdvisoriesFor:(int64_t)for
 {
-  v4 = self;
-  sub_1002877D0(a3);
+  selfCopy = self;
+  sub_1002877D0(for);
 }
 
 - (id)automaticSharingContacts
 {
   v2 = *(self + OBJC_IVAR____TtC4Maps23CarRoutePlanningContext_routePlanningSession);
-  v3 = self;
-  v4 = [v2 configuration];
-  v5 = [v4 automaticSharingContacts];
+  selfCopy = self;
+  configuration = [v2 configuration];
+  automaticSharingContacts = [configuration automaticSharingContacts];
 
-  if (v5)
+  if (automaticSharingContacts)
   {
     sub_100014C84(0, &unk_101911D50);
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
-    v3 = v5;
+    selfCopy = automaticSharingContacts;
   }
 
   sub_100014C84(0, &unk_101911D50);
@@ -326,48 +326,48 @@
   return v6.super.isa;
 }
 
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  sessionCopy = session;
+  resultCopy = result;
+  selfCopy = self;
   sub_10028ED1C();
 }
 
-- (void)routePlanningSession:(id)a3 didUpdateAutomaticSharingContacts:(id)a4
+- (void)routePlanningSession:(id)session didUpdateAutomaticSharingContacts:(id)contacts
 {
-  v4 = self;
+  selfCopy = self;
   sub_1002888B4();
 }
 
-- (void)mapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5
+- (void)mapView:(id)view willStartRespondingToGesture:(int64_t)gesture animated:(BOOL)animated
 {
-  v5 = self;
+  selfCopy = self;
   sub_100284F1C();
 }
 
-- (void)personalizedItemManager:(id)a3 didChangeItems:(id)a4 itemGroups:(id)a5
+- (void)personalizedItemManager:(id)manager didChangeItems:(id)items itemGroups:(id)groups
 {
-  if (a4)
+  if (items)
   {
     sub_100014C84(0, &qword_1019167D0);
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  if (a5)
+  if (groups)
   {
     sub_100014C84(0, &unk_101916D70);
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v8 = a3;
-  v9 = self;
+  managerCopy = manager;
+  selfCopy = self;
   sub_10028EDD8();
 }
 
-- (void)poiShapeLoader:(id)a3 didLoadStartPOIShape:(id)a4 endPOIShapes:(id)a5
+- (void)poiShapeLoader:(id)loader didLoadStartPOIShape:(id)shape endPOIShapes:(id)shapes
 {
-  v5 = self;
+  selfCopy = self;
   sub_10028E718();
 }
 
@@ -378,11 +378,11 @@
   return result;
 }
 
-- (void)advisoryListCardDidSelectAdvisoryItem:(id)a3
+- (void)advisoryListCardDidSelectAdvisoryItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_10028A318(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_10028A318(itemCopy);
 }
 
 @end

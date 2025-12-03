@@ -1,25 +1,25 @@
 @interface BuddyCloudConfigLoginViewController
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (BuddyCloudConfigController)configController;
 - (BuddyCloudConfigLoginViewController)init;
 - (UITableViewCell)passwordCell;
 - (UITableViewCell)usernameCell;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_sanitizedUsername:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_sanitizedUsername:(id)username;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_retryLogin;
 - (void)_setupForCloudConfigurationState;
-- (void)_textChanged:(id)a3;
+- (void)_textChanged:(id)changed;
 - (void)clearInput;
-- (void)setLastError:(id)a3;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setLastError:(id)error;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation BuddyCloudConfigLoginViewController
@@ -29,8 +29,8 @@
   location = self;
   v20[1] = a2;
   v2 = +[MDMCloudConfiguration sharedConfiguration];
-  v3 = [v2 details];
-  v20[0] = [v3 objectForKeyedSubscript:kMCCCOrganizationNameKey];
+  details = [v2 details];
+  v20[0] = [details objectForKeyedSubscript:kMCCCOrganizationNameKey];
 
   v4 = +[NSBundle mainBundle];
   v5 = [(NSBundle *)v4 localizedStringForKey:@"CLOUD_CONFIG_LOGIN_PROMPT_%@" value:&stru_10032F900 table:@"Localizable"];
@@ -56,8 +56,8 @@
     *(location + 6) = v13;
 
     [*(location + 6) setEnabled:0];
-    v15 = [location navigationItem];
-    [v15 setRightBarButtonItem:*(location + 6)];
+    navigationItem = [location navigationItem];
+    [navigationItem setRightBarButtonItem:*(location + 6)];
   }
 
   v16 = location;
@@ -69,178 +69,178 @@
 
 - (void)viewDidLoad
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v8.receiver = self;
   v8.super_class = BuddyCloudConfigLoginViewController;
   [(BuddyCloudConfigLoginViewController *)&v8 viewDidLoad];
   v2 = +[BuddyAppleIDSignInController newAppleAccountTableView];
-  [(BuddyCloudConfigLoginViewController *)v10 setTableView:v2];
+  [(BuddyCloudConfigLoginViewController *)selfCopy setTableView:v2];
 
-  v3 = v10;
-  v4 = [(BuddyCloudConfigLoginViewController *)v10 tableView];
-  [v4 setDelegate:v3];
+  v3 = selfCopy;
+  tableView = [(BuddyCloudConfigLoginViewController *)selfCopy tableView];
+  [tableView setDelegate:v3];
 
-  v5 = v10;
-  v6 = [(BuddyCloudConfigLoginViewController *)v10 tableView];
-  [v6 setDataSource:v5];
+  v5 = selfCopy;
+  tableView2 = [(BuddyCloudConfigLoginViewController *)selfCopy tableView];
+  [tableView2 setDataSource:v5];
 
-  v7 = [(BuddyCloudConfigLoginViewController *)v10 tableView];
-  [v7 setScrollEnabled:1];
+  tableView3 = [(BuddyCloudConfigLoginViewController *)selfCopy tableView];
+  [tableView3 setScrollEnabled:1];
 
-  [(BuddyCloudConfigLoginViewController *)v10 setShouldAdjustScrollViewInsetForKeyboard:1];
+  [(BuddyCloudConfigLoginViewController *)selfCopy setShouldAdjustScrollViewInsetForKeyboard:1];
 }
 
 - (void)clearInput
 {
-  v2 = [(UITableViewCell *)self->_usernameCell editableTextField];
-  [v2 setText:0];
+  editableTextField = [(UITableViewCell *)self->_usernameCell editableTextField];
+  [editableTextField setText:0];
 
-  v3 = [(UITableViewCell *)self->_passwordCell editableTextField];
-  [v3 setText:0];
+  editableTextField2 = [(UITableViewCell *)self->_passwordCell editableTextField];
+  [editableTextField2 setText:0];
 
   [(BuddyCloudConfigLoginViewController *)self _textChanged:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  appearCopy = appear;
   v3.receiver = self;
   v3.super_class = BuddyCloudConfigLoginViewController;
-  [(BuddyCloudConfigLoginViewController *)&v3 viewWillAppear:a3];
-  [(BuddyCloudConfigLoginViewController *)v6 _setupForCloudConfigurationState];
+  [(BuddyCloudConfigLoginViewController *)&v3 viewWillAppear:appear];
+  [(BuddyCloudConfigLoginViewController *)selfCopy _setupForCloudConfigurationState];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  disappearCopy = disappear;
   v4.receiver = self;
   v4.super_class = BuddyCloudConfigLoginViewController;
-  [(BuddyCloudConfigLoginViewController *)&v4 viewWillDisappear:a3];
+  [(BuddyCloudConfigLoginViewController *)&v4 viewWillDisappear:disappear];
   v3 = +[NSNotificationCenter defaultCenter];
-  [(NSNotificationCenter *)v3 removeObserver:v7];
+  [(NSNotificationCenter *)v3 removeObserver:selfCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  appearCopy = appear;
   v4.receiver = self;
   v4.super_class = BuddyCloudConfigLoginViewController;
-  [(BuddyCloudConfigLoginViewController *)&v4 viewDidAppear:a3];
-  v3 = [(BuddyCloudConfigLoginViewController *)v7 configController];
-  [(BuddyCloudConfigController *)v3 removeControllersToRemove];
+  [(BuddyCloudConfigLoginViewController *)&v4 viewDidAppear:appear];
+  configController = [(BuddyCloudConfigLoginViewController *)selfCopy configController];
+  [(BuddyCloudConfigController *)configController removeControllersToRemove];
 }
 
-- (void)setLastError:(id)a3
+- (void)setLastError:(id)error
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_lastError, location[0]);
-  [(BuddyCloudConfigLoginViewController *)v4 _setupForCloudConfigurationState];
+  objc_storeStrong(location, error);
+  objc_storeStrong(&selfCopy->_lastError, location[0]);
+  [(BuddyCloudConfigLoginViewController *)selfCopy _setupForCloudConfigurationState];
   objc_storeStrong(location, 0);
 }
 
 - (void)_setupForCloudConfigurationState
 {
-  v23 = self;
+  selfCopy = self;
   v22[1] = a2;
-  v2 = [(BuddyCloudConfigLoginViewController *)self configController];
-  v3 = [(BuddyCloudConfigController *)v2 cloudConfigState];
+  configController = [(BuddyCloudConfigLoginViewController *)self configController];
+  cloudConfigState = [(BuddyCloudConfigController *)configController cloudConfigState];
 
-  if (v3 >= 6)
+  if (cloudConfigState >= 6)
   {
-    if (v3 == 6)
+    if (cloudConfigState == 6)
     {
       [BFFViewControllerSpinnerManager stopAnimatingSpinnerFor:@"Login"];
-      v4 = [(BuddyCloudConfigLoginViewController *)v23 lastError];
-      v5 = [(NSError *)v4 userInfo];
-      v22[0] = [(NSDictionary *)v5 objectForKeyedSubscript:kMCErrorLoginPromptKey];
+      lastError = [(BuddyCloudConfigLoginViewController *)selfCopy lastError];
+      userInfo = [(NSError *)lastError userInfo];
+      v22[0] = [(NSDictionary *)userInfo objectForKeyedSubscript:kMCErrorLoginPromptKey];
 
       if ([v22[0] length])
       {
-        v6 = [(BuddyCloudConfigLoginViewController *)v23 headerView];
-        [v6 setDetailText:v22[0]];
+        headerView = [(BuddyCloudConfigLoginViewController *)selfCopy headerView];
+        [headerView setDetailText:v22[0]];
       }
 
       else
       {
-        v7 = [(BuddyCloudConfigLoginViewController *)v23 managedConfiguration];
-        v8 = [(MCProfileConnection *)v7 cloudConfigurationDetails];
-        location = [v8 objectForKeyedSubscript:kMCCCOrganizationNameKey];
+        managedConfiguration = [(BuddyCloudConfigLoginViewController *)selfCopy managedConfiguration];
+        cloudConfigurationDetails = [(MCProfileConnection *)managedConfiguration cloudConfigurationDetails];
+        location = [cloudConfigurationDetails objectForKeyedSubscript:kMCCCOrganizationNameKey];
 
-        v9 = [(BuddyCloudConfigLoginViewController *)v23 headerView];
+        headerView2 = [(BuddyCloudConfigLoginViewController *)selfCopy headerView];
         v10 = +[NSBundle mainBundle];
         v11 = [(NSBundle *)v10 localizedStringForKey:@"CLOUD_CONFIG_LOGIN_PROMPT_%@" value:&stru_10032F900 table:@"Localizable"];
-        v12 = [NSString localizedStringWithFormat:v11, location];
-        [v9 setDetailText:v12];
+        location = [NSString localizedStringWithFormat:v11, location];
+        [headerView2 setDetailText:location];
 
         objc_storeStrong(&location, 0);
       }
 
       v13 = +[NSNotificationCenter defaultCenter];
-      [(NSNotificationCenter *)v13 removeObserver:v23 name:UITextFieldTextDidChangeNotification object:0];
+      [(NSNotificationCenter *)v13 removeObserver:selfCopy name:UITextFieldTextDidChangeNotification object:0];
 
       v14 = +[NSNotificationCenter defaultCenter];
-      [(NSNotificationCenter *)v14 addObserver:v23 selector:"_textChanged:" name:UITextFieldTextDidChangeNotification object:0];
+      [(NSNotificationCenter *)v14 addObserver:selfCopy selector:"_textChanged:" name:UITextFieldTextDidChangeNotification object:0];
 
-      v15 = [(BuddyCloudConfigLoginViewController *)v23 usernameCell];
-      v16 = [(UITableViewCell *)v15 editableTextField];
-      v17 = [v16 text];
-      v18 = [v17 length];
+      usernameCell = [(BuddyCloudConfigLoginViewController *)selfCopy usernameCell];
+      editableTextField = [(UITableViewCell *)usernameCell editableTextField];
+      text = [editableTextField text];
+      v18 = [text length];
 
       if (v18)
       {
-        v19 = [(BuddyCloudConfigLoginViewController *)v23 passwordCell];
+        passwordCell = [(BuddyCloudConfigLoginViewController *)selfCopy passwordCell];
       }
 
       else
       {
-        v19 = [(BuddyCloudConfigLoginViewController *)v23 usernameCell];
+        passwordCell = [(BuddyCloudConfigLoginViewController *)selfCopy usernameCell];
       }
 
-      v20 = [(UITableViewCell *)v19 editableTextField];
-      [v20 becomeFirstResponder];
+      editableTextField2 = [(UITableViewCell *)passwordCell editableTextField];
+      [editableTextField2 becomeFirstResponder];
 
       objc_storeStrong(v22, 0);
     }
 
-    else if (v3 == 7)
+    else if (cloudConfigState == 7)
     {
-      [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:v23 identifier:@"Login"];
+      [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:selfCopy identifier:@"Login"];
     }
   }
 }
 
-- (void)_textChanged:(id)a3
+- (void)_textChanged:(id)changed
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyCloudConfigLoginViewController *)v14 passwordCell];
-  v4 = [(UITableViewCell *)v3 editableTextField];
-  v5 = [v4 text];
+  objc_storeStrong(location, changed);
+  passwordCell = [(BuddyCloudConfigLoginViewController *)selfCopy passwordCell];
+  editableTextField = [(UITableViewCell *)passwordCell editableTextField];
+  text = [editableTextField text];
   v11 = 0;
   v9 = 0;
   v7 = 0;
   v6 = 0;
-  if ([v5 length])
+  if ([text length])
   {
-    v12 = [(BuddyCloudConfigLoginViewController *)v14 usernameCell];
+    usernameCell = [(BuddyCloudConfigLoginViewController *)selfCopy usernameCell];
     v11 = 1;
-    v10 = [(UITableViewCell *)v12 editableTextField];
+    editableTextField2 = [(UITableViewCell *)usernameCell editableTextField];
     v9 = 1;
-    v8 = [v10 text];
+    text2 = [editableTextField2 text];
     v7 = 1;
-    v6 = [v8 length] != 0;
+    v6 = [text2 length] != 0;
   }
 
   if (v7)
@@ -257,23 +257,23 @@
 
   if (v6)
   {
-    [(UIBarButtonItem *)v14->_nextButton setEnabled:1];
+    [(UIBarButtonItem *)selfCopy->_nextButton setEnabled:1];
   }
 
   else
   {
-    [(UIBarButtonItem *)v14->_nextButton setEnabled:0];
+    [(UIBarButtonItem *)selfCopy->_nextButton setEnabled:0];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (id)_sanitizedUsername:(id)a3
+- (id)_sanitizedUsername:(id)username
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v10 = 0;
   if (location[0])
   {
@@ -303,16 +303,16 @@
 
 - (void)_retryLogin
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v2 = [(BuddyCloudConfigLoginViewController *)self configController];
-  [(BuddyCloudConfigController *)v2 setCloudConfigState:7];
+  configController = [(BuddyCloudConfigLoginViewController *)self configController];
+  [(BuddyCloudConfigController *)configController setCloudConfigState:7];
 
-  [(BuddyCloudConfigLoginViewController *)v14 _setupForCloudConfigurationState];
-  v3 = [(BuddyCloudConfigLoginViewController *)v14 view];
-  [v3 setUserInteractionEnabled:0];
+  [(BuddyCloudConfigLoginViewController *)selfCopy _setupForCloudConfigurationState];
+  view = [(BuddyCloudConfigLoginViewController *)selfCopy view];
+  [view setUserInteractionEnabled:0];
 
-  [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:v14 identifier:@"Login"];
+  [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:selfCopy identifier:@"Login"];
   v12 = 2.0;
   v11 = dispatch_time(0, (2.0 * 1000000000.0));
   v4 = &_dispatch_main_q;
@@ -321,7 +321,7 @@
   v7 = 0;
   v8 = sub_100224230;
   v9 = &unk_10032B0D0;
-  v10 = v14;
+  v10 = selfCopy;
   dispatch_after(v11, v4, &block);
 
   objc_storeStrong(&v10, 0);
@@ -359,64 +359,64 @@
   return v6;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, path);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
   return UITableViewAutomaticDimension;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   objc_storeStrong(location, 0);
   return 1;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   objc_storeStrong(location, 0);
   return 2;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, path);
   v13 = [v14 row];
   v12 = 0;
   if (v13)
   {
     if (v13 == 1)
     {
-      v7 = [(BuddyCloudConfigLoginViewController *)v16 passwordCell];
+      passwordCell = [(BuddyCloudConfigLoginViewController *)selfCopy passwordCell];
       v8 = v12;
-      v12 = v7;
+      v12 = passwordCell;
     }
   }
 
   else
   {
-    v5 = [(BuddyCloudConfigLoginViewController *)v16 usernameCell];
+    usernameCell = [(BuddyCloudConfigLoginViewController *)selfCopy usernameCell];
     v6 = v12;
-    v12 = v5;
+    v12 = usernameCell;
   }
 
   v9 = +[UIColor secondarySystemBackgroundColor];
@@ -429,58 +429,58 @@
   return v10;
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyCloudConfigLoginViewController *)v4 setActiveTextField:location[0]];
+  objc_storeStrong(location, editing);
+  [(BuddyCloudConfigLoginViewController *)selfCopy setActiveTextField:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyCloudConfigLoginViewController *)v4 setActiveTextField:0];
+  objc_storeStrong(location, editing);
+  [(BuddyCloudConfigLoginViewController *)selfCopy setActiveTextField:0];
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, return);
   v13 = 0;
   v3 = location[0];
-  v4 = [(BuddyCloudConfigLoginViewController *)v15 usernameCell];
-  v5 = [(UITableViewCell *)v4 editableTextField];
+  usernameCell = [(BuddyCloudConfigLoginViewController *)selfCopy usernameCell];
+  editableTextField = [(UITableViewCell *)usernameCell editableTextField];
 
-  if (v3 == v5)
+  if (v3 == editableTextField)
   {
-    v6 = [(UITableViewCell *)v15->_passwordCell editableTextField];
-    [v6 becomeFirstResponder];
+    editableTextField2 = [(UITableViewCell *)selfCopy->_passwordCell editableTextField];
+    [editableTextField2 becomeFirstResponder];
   }
 
   else
   {
     v7 = location[0];
-    v8 = [(BuddyCloudConfigLoginViewController *)v15 passwordCell];
-    v9 = [(UITableViewCell *)v8 editableTextField];
+    passwordCell = [(BuddyCloudConfigLoginViewController *)selfCopy passwordCell];
+    editableTextField3 = [(UITableViewCell *)passwordCell editableTextField];
 
-    if (v7 == v9)
+    if (v7 == editableTextField3)
     {
-      v10 = [location[0] text];
-      v11 = [v10 length];
+      text = [location[0] text];
+      v11 = [text length];
 
       if (v11)
       {
         v13 = 1;
-        [(BuddyCloudConfigLoginViewController *)v15 _retryLogin];
+        [(BuddyCloudConfigLoginViewController *)selfCopy _retryLogin];
       }
     }
   }

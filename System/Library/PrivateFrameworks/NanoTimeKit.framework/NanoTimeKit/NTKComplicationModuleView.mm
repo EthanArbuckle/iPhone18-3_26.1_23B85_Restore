@@ -1,23 +1,23 @@
 @interface NTKComplicationModuleView
 + (id)_extraLargeAlarmImageProvider;
 + (id)_modularSmallAlarmImageProvider;
-+ (id)largeModuleViewForComplicationType:(unint64_t)a3;
-+ (id)smallModuleViewForComplicationType:(unint64_t)a3;
++ (id)largeModuleViewForComplicationType:(unint64_t)type;
++ (id)smallModuleViewForComplicationType:(unint64_t)type;
 - (CDComplicationDisplayObserver)displayObserver;
-- (id)_attributeEnDashesWithinString:(id)a3 typographicTracking:(double)a4 baseFont:(id)a5;
-- (id)_attributedStringWithText:(id)a3 typographicTracking:(double)a4 baseFont:(id)a5;
+- (id)_attributeEnDashesWithinString:(id)string typographicTracking:(double)tracking baseFont:(id)font;
+- (id)_attributedStringWithText:(id)text typographicTracking:(double)tracking baseFont:(id)font;
 - (id)_newImageViewSubview;
 - (id)_newLabelSubview;
-- (id)_newLabelSubviewWithFont:(id)a3;
-- (void)_setTypographicTracking:(double)a3 andFont:(id)a4 onAttributedString:(id *)a5 inRange:(_NSRange)a6;
-- (void)setIsXL:(BOOL)a3;
+- (id)_newLabelSubviewWithFont:(id)font;
+- (void)_setTypographicTracking:(double)tracking andFont:(id)font onAttributedString:(id *)string inRange:(_NSRange)range;
+- (void)setIsXL:(BOOL)l;
 @end
 
 @implementation NTKComplicationModuleView
 
-+ (id)smallModuleViewForComplicationType:(unint64_t)a3
++ (id)smallModuleViewForComplicationType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0;
   }
@@ -32,9 +32,9 @@
   return v4;
 }
 
-+ (id)largeModuleViewForComplicationType:(unint64_t)a3
++ (id)largeModuleViewForComplicationType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0;
   }
@@ -49,16 +49,16 @@
   return v4;
 }
 
-- (void)setIsXL:(BOOL)a3
+- (void)setIsXL:(BOOL)l
 {
   isXL = self->_isXL;
-  self->_isXL = a3;
-  if (isXL != a3)
+  self->_isXL = l;
+  if (isXL != l)
   {
-    if (a3)
+    if (l)
     {
-      v6 = [(NTKModuleView *)self device];
-      [NTKModuleView cornerRadiusForComplicationFamily:7 forDevice:v6];
+      device = [(NTKModuleView *)self device];
+      [NTKModuleView cornerRadiusForComplicationFamily:7 forDevice:device];
       [(NTKModuleView *)self setHighlightCornerRadius:?];
     }
 
@@ -69,45 +69,45 @@
 - (id)_newLabelSubview
 {
   v3 = objc_alloc_init(off_27877BEF8);
-  v4 = [(NTKModuleView *)self contentView];
-  [v4 addSubview:v3];
+  contentView = [(NTKModuleView *)self contentView];
+  [contentView addSubview:v3];
 
   return v3;
 }
 
-- (id)_newLabelSubviewWithFont:(id)a3
+- (id)_newLabelSubviewWithFont:(id)font
 {
-  v4 = a3;
-  v5 = [(NTKComplicationModuleView *)self _newLabelSubview];
-  [v5 setFont:v4];
+  fontCopy = font;
+  _newLabelSubview = [(NTKComplicationModuleView *)self _newLabelSubview];
+  [_newLabelSubview setFont:fontCopy];
 
-  return v5;
+  return _newLabelSubview;
 }
 
 - (id)_newImageViewSubview
 {
   v3 = objc_alloc_init(off_27877BEF0);
-  v4 = [(NTKModuleView *)self contentView];
-  [v4 addSubview:v3];
+  contentView = [(NTKModuleView *)self contentView];
+  [contentView addSubview:v3];
 
   return v3;
 }
 
-- (id)_attributeEnDashesWithinString:(id)a3 typographicTracking:(double)a4 baseFont:(id)a5
+- (id)_attributeEnDashesWithinString:(id)string typographicTracking:(double)tracking baseFont:(id)font
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v8];
-  v11 = [v9 CLKFontWithAlternativePunctuation];
-  if ([v8 length])
+  stringCopy = string;
+  fontCopy = font;
+  v10 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:stringCopy];
+  cLKFontWithAlternativePunctuation = [fontCopy CLKFontWithAlternativePunctuation];
+  if ([stringCopy length])
   {
     v12 = 0;
     do
     {
-      if ([v8 characterAtIndex:v12] == 8211)
+      if ([stringCopy characterAtIndex:v12] == 8211)
       {
         v15 = v10;
-        [(NTKComplicationModuleView *)self _setTypographicTracking:v11 andFont:&v15 onAttributedString:v12 inRange:1, a4];
+        [(NTKComplicationModuleView *)self _setTypographicTracking:cLKFontWithAlternativePunctuation andFont:&v15 onAttributedString:v12 inRange:1, tracking];
         v13 = v15;
 
         v10 = v13;
@@ -116,46 +116,46 @@
       ++v12;
     }
 
-    while (v12 < [v8 length]);
+    while (v12 < [stringCopy length]);
   }
 
   return v10;
 }
 
-- (id)_attributedStringWithText:(id)a3 typographicTracking:(double)a4 baseFont:(id)a5
+- (id)_attributedStringWithText:(id)text typographicTracking:(double)tracking baseFont:(id)font
 {
-  v8 = a3;
-  v9 = [a5 CLKFontWithAlternativePunctuation];
-  v10 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v8];
-  v11 = [v8 length];
+  textCopy = text;
+  cLKFontWithAlternativePunctuation = [font CLKFontWithAlternativePunctuation];
+  v10 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:textCopy];
+  v11 = [textCopy length];
 
   v15 = v10;
-  [(NTKComplicationModuleView *)self _setTypographicTracking:v9 andFont:&v15 onAttributedString:0 inRange:v11, a4];
+  [(NTKComplicationModuleView *)self _setTypographicTracking:cLKFontWithAlternativePunctuation andFont:&v15 onAttributedString:0 inRange:v11, tracking];
   v12 = v15;
   v13 = v15;
 
   return v12;
 }
 
-- (void)_setTypographicTracking:(double)a3 andFont:(id)a4 onAttributedString:(id *)a5 inRange:(_NSRange)a6
+- (void)_setTypographicTracking:(double)tracking andFont:(id)font onAttributedString:(id *)string inRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
-  v12 = a4;
+  length = range.length;
+  location = range.location;
+  fontCopy = font;
   CLKKernValueForDesignSpecTrackingValue();
-  v9 = *a5;
+  v9 = *string;
   v10 = *MEMORY[0x277D740D0];
   v11 = [MEMORY[0x277CCABB0] numberWithDouble:?];
   [v9 addAttribute:v10 value:v11 range:{location, length}];
 
-  [*a5 addAttribute:*MEMORY[0x277D740A8] value:v12 range:{location, length}];
+  [*string addAttribute:*MEMORY[0x277D740A8] value:fontCopy range:{location, length}];
 }
 
 + (id)_modularSmallAlarmImageProvider
 {
-  v2 = [MEMORY[0x277CBBB68] sharedRenderingContext];
-  v3 = [v2 device];
-  __60__NTKComplicationModuleView__modularSmallAlarmImageProvider__block_invoke(v3, v3);
+  mEMORY[0x277CBBB68] = [MEMORY[0x277CBBB68] sharedRenderingContext];
+  device = [mEMORY[0x277CBBB68] device];
+  __60__NTKComplicationModuleView__modularSmallAlarmImageProvider__block_invoke(device, device);
 
   v4 = _modularSmallAlarmImageProvider_glyphImageProvider;
 
@@ -208,9 +208,9 @@ void __60__NTKComplicationModuleView__modularSmallAlarmImageProvider__block_invo
 
 + (id)_extraLargeAlarmImageProvider
 {
-  v2 = [MEMORY[0x277CBBB68] sharedRenderingContext];
-  v3 = [v2 device];
-  __58__NTKComplicationModuleView__extraLargeAlarmImageProvider__block_invoke(v3, v3);
+  mEMORY[0x277CBBB68] = [MEMORY[0x277CBBB68] sharedRenderingContext];
+  device = [mEMORY[0x277CBBB68] device];
+  __58__NTKComplicationModuleView__extraLargeAlarmImageProvider__block_invoke(device, device);
 
   v4 = _extraLargeAlarmImageProvider_glyphImageProvider;
 

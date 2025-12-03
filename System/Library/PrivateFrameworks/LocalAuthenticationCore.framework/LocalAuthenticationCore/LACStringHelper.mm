@@ -1,37 +1,37 @@
 @interface LACStringHelper
-+ (id)truncateString:(id)a3 maxLength:(int64_t)a4;
++ (id)truncateString:(id)string maxLength:(int64_t)length;
 @end
 
 @implementation LACStringHelper
 
-+ (id)truncateString:(id)a3 maxLength:(int64_t)a4
++ (id)truncateString:(id)string maxLength:(int64_t)length
 {
-  v5 = a3;
-  if (v5)
+  stringCopy = string;
+  if (stringCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 length];
-      if (v6 >= a4)
+      v6 = [stringCopy length];
+      if (v6 >= length)
       {
-        v7 = a4;
+        lengthCopy = length;
       }
 
       else
       {
-        v7 = v6;
+        lengthCopy = v6;
       }
 
-      v8 = [v5 rangeOfComposedCharacterSequencesForRange:{0, v7}];
-      v10 = [v5 substringWithRange:{v8, v9}];
+      v8 = [stringCopy rangeOfComposedCharacterSequencesForRange:{0, lengthCopy}];
+      v10 = [stringCopy substringWithRange:{v8, v9}];
       goto LABEL_11;
     }
 
     v11 = LACLogDefault();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [LACStringHelper truncateString:v5 maxLength:v11];
+      [LACStringHelper truncateString:stringCopy maxLength:v11];
     }
   }
 

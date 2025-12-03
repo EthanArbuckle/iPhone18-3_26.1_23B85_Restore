@@ -1,26 +1,26 @@
 @interface StepByStepUIViewController_Join_Config
-- (BOOL)shouldChangeTextField:(id)a3 atIndexPath:(id)a4 forTextIndex:(unint64_t)a5 toString:(id)a6;
+- (BOOL)shouldChangeTextField:(id)field atIndexPath:(id)path forTextIndex:(unint64_t)index toString:(id)string;
 - (BOOL)shouldEnableNextButton;
-- (StepByStepUIViewController_Join_Config)initWithNibName:(id)a3 bundle:(id)a4;
+- (StepByStepUIViewController_Join_Config)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 - (void)prepareParams;
-- (void)primaryActionSelected:(BOOL)a3;
+- (void)primaryActionSelected:(BOOL)selected;
 - (void)selectedDeviceUpdated;
 - (void)setupDevices;
 - (void)setupEditableBaseStationName;
 - (void)setupHeaderAndFooter;
 - (void)setupTable;
-- (void)syncTopoUIForTarget:(id)a3 andSource:(id)a4 andNetwork:(id)a5 connectionType:(id)a6;
+- (void)syncTopoUIForTarget:(id)target andSource:(id)source andNetwork:(id)network connectionType:(id)type;
 - (void)validateAndUpdateNextButton;
 @end
 
 @implementation StepByStepUIViewController_Join_Config
 
-- (StepByStepUIViewController_Join_Config)initWithNibName:(id)a3 bundle:(id)a4
+- (StepByStepUIViewController_Join_Config)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = StepByStepUIViewController_Join_Config;
-  v4 = [(StepByStepUIViewController_DevicePicker *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(StepByStepUIViewController_DevicePicker *)&v8 initWithNibName:name bundle:bundle];
   v6 = v4;
   if (v4)
   {
@@ -44,15 +44,15 @@
   }
 }
 
-- (BOOL)shouldChangeTextField:(id)a3 atIndexPath:(id)a4 forTextIndex:(unint64_t)a5 toString:(id)a6
+- (BOOL)shouldChangeTextField:(id)field atIndexPath:(id)path forTextIndex:(unint64_t)index toString:(id)string
 {
   v16 = 0;
-  v9 = objc_msgSend_tableManager(self, a2, a3, a4, a5);
-  objc_msgSend_tagOfCellAtIndexPath_tag_(v9, v10, a4, &v16);
+  v9 = objc_msgSend_tableManager(self, a2, field, path, index);
+  objc_msgSend_tagOfCellAtIndexPath_tag_(v9, v10, path, &v16);
   if (v16 == 1937329773)
   {
     v13 = objc_msgSend_outResultsDict(self, v11, v12);
-    objc_msgSend_setValue_forKey_(v13, v14, a6, @"kSBSKey_BaseName");
+    objc_msgSend_setValue_forKey_(v13, v14, string, @"kSBSKey_BaseName");
   }
 
   return 1;
@@ -152,9 +152,9 @@
   objc_msgSend_setupTable(self, v41, v42);
 }
 
-- (void)primaryActionSelected:(BOOL)a3
+- (void)primaryActionSelected:(BOOL)selected
 {
-  objc_msgSend_setupTable(self, a2, a3);
+  objc_msgSend_setupTable(self, a2, selected);
 
   objc_msgSend_validateAndUpdateNextButton(self, v4, v5);
 }
@@ -439,18 +439,18 @@ LABEL_19:
   }
 }
 
-- (void)syncTopoUIForTarget:(id)a3 andSource:(id)a4 andNetwork:(id)a5 connectionType:(id)a6
+- (void)syncTopoUIForTarget:(id)target andSource:(id)source andNetwork:(id)network connectionType:(id)type
 {
-  if (a4)
+  if (source)
   {
     v9 = MEMORY[0x277CCABB0];
-    v10 = objc_msgSend_scanInfoAppleProductID_(WiFiUtils, a2, a4);
+    v10 = objc_msgSend_scanInfoAppleProductID_(WiFiUtils, a2, source);
     v12 = objc_msgSend_numberWithInteger_(v9, v11, v10);
     if (v12)
     {
       v14 = v12;
       v15 = MEMORY[0x277CCABB0];
-      v16 = sub_23EB6A1FC(a3);
+      v16 = sub_23EB6A1FC(target);
       v18 = objc_msgSend_numberWithInteger_(v15, v17, v16);
       LODWORD(v15) = objc_msgSend_integerValue(v14, v19, v20);
       v78 = v18;
@@ -460,12 +460,12 @@ LABEL_19:
 
     else
     {
-      v25 = objc_msgSend_objectForKey_(a4, v13, @"txt");
+      v25 = objc_msgSend_objectForKey_(source, v13, @"txt");
       v14 = objc_msgSend_objectForKey_(v25, v26, @"syAP");
       v27 = MEMORY[0x277CCABB0];
-      v35 = sub_23EB6A294(a4, v28, v29, v30, v31, v32, v33, v34);
+      v35 = sub_23EB6A294(source, v28, v29, v30, v31, v32, v33, v34);
       v78 = objc_msgSend_numberWithInteger_(v27, v36, v35);
-      v24 = objc_msgSend_objectForKey_(a4, v37, @"name");
+      v24 = objc_msgSend_objectForKey_(source, v37, @"name");
     }
 
     v77 = v24;
@@ -487,7 +487,7 @@ LABEL_19:
   v56 = objc_msgSend_topoView(self, v54, v55);
   v58 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v57, self->productID);
   v60 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v59, self->deviceKind);
-  v62 = objc_msgSend_modifyTopoUIInLayer_withLayout_andOwningView_targetProductID_targetDeviceKind_targetName_targetWiFiName_sourceProductID_sourceDeviceKind_sourceName_sourceWiFiName_connectionType_(v44, v61, v50, v53, v56, v58, v60, v38, &stru_285145FE8, v14, v78, v77, &stru_285145FE8, a6);
+  v62 = objc_msgSend_modifyTopoUIInLayer_withLayout_andOwningView_targetProductID_targetDeviceKind_targetName_targetWiFiName_sourceProductID_sourceDeviceKind_sourceName_sourceWiFiName_connectionType_(v44, v61, v50, v53, v56, v58, v60, v38, &stru_285145FE8, v14, v78, v77, &stru_285145FE8, type);
   objc_msgSend_setTopoLayout_(self, v63, v62);
   v64 = MEMORY[0x277CCACA8];
   v65 = sub_23EB6CEE0(self->productID, self->deviceKind, 0);

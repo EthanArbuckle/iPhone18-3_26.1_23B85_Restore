@@ -1,12 +1,12 @@
 @interface CPLBatchExtractionStrategy
-+ (id)minglingStrategyWithStorage:(id)a3 coveringScopeIdentifier:(id)a4 maximumBatchSize:(unint64_t)a5;
-+ (id)overQuotaStrategyWithStorage:(id)a3 coveringScopeIdentifier:(id)a4;
-+ (id)usualStrategyWithStorage:(id)a3 coveringScopeIdentifier:(id)a4;
++ (id)minglingStrategyWithStorage:(id)storage coveringScopeIdentifier:(id)identifier maximumBatchSize:(unint64_t)size;
++ (id)overQuotaStrategyWithStorage:(id)storage coveringScopeIdentifier:(id)identifier;
++ (id)usualStrategyWithStorage:(id)storage coveringScopeIdentifier:(id)identifier;
 + (unint64_t)maximumAlbumsPerBatch;
-+ (void)setMaximumRecordCountPerBatch:(unint64_t)a3;
++ (void)setMaximumRecordCountPerBatch:(unint64_t)batch;
 - (BOOL)_hasChanges;
-- (BOOL)extractBatch:(id *)a3 maximumResourceSize:(unint64_t)a4 error:(id *)a5;
-- (CPLBatchExtractionStrategy)initWithName:(id)a3 storage:(id)a4 scopeIdentifier:(id)a5 steps:(id)a6;
+- (BOOL)extractBatch:(id *)batch maximumResourceSize:(unint64_t)size error:(id *)error;
+- (CPLBatchExtractionStrategy)initWithName:(id)name storage:(id)storage scopeIdentifier:(id)identifier steps:(id)steps;
 - (CPLBatchExtractionStrategyStorage)storage;
 - (NSString)currentStepDescription;
 - (NSString)stepsDescription;
@@ -14,7 +14,7 @@
 - (id)description;
 - (void)_computeNextStep;
 - (void)reset;
-- (void)resetConditionallyFromNewIncomingChange:(id)a3;
+- (void)resetConditionallyFromNewIncomingChange:(id)change;
 @end
 
 @implementation CPLBatchExtractionStrategy
@@ -30,9 +30,9 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(CPLBatchExtractionStrategy *)self name];
-  v6 = [(CPLBatchExtractionStrategy *)self stepsDescription];
-  v7 = [v3 initWithFormat:@"<%@ %@ %@>", v4, v5, v6];
+  name = [(CPLBatchExtractionStrategy *)self name];
+  stepsDescription = [(CPLBatchExtractionStrategy *)self stepsDescription];
+  v7 = [v3 initWithFormat:@"<%@ %@ %@>", v4, name, stepsDescription];
 
   return v7;
 }
@@ -60,8 +60,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) shortDescription];
-        [v3 addObject:v9];
+        shortDescription = [*(*(&v13 + 1) + 8 * i) shortDescription];
+        [v3 addObject:shortDescription];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -81,8 +81,8 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(CPLBatchExtractionStrategy *)self name];
-  v6 = [v3 initWithFormat:@"<%@ %@>", v4, v5];
+  name = [(CPLBatchExtractionStrategy *)self name];
+  v6 = [v3 initWithFormat:@"<%@ %@>", v4, name];
 
   return v6;
 }
@@ -92,29 +92,29 @@
   currentStep = self->_currentStep;
   if (currentStep)
   {
-    v5 = [(CPLBatchExtractionStep *)currentStep shortDescription];
+    shortDescription = [(CPLBatchExtractionStep *)currentStep shortDescription];
   }
 
   else
   {
     if (self->_finished)
     {
-      v5 = @"end";
+      shortDescription = @"end";
     }
 
     else
     {
-      v5 = @"start";
+      shortDescription = @"start";
     }
   }
 
-  return v5;
+  return shortDescription;
 }
 
-- (void)resetConditionallyFromNewIncomingChange:(id)a3
+- (void)resetConditionallyFromNewIncomingChange:(id)change
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   if (self->_finished)
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -123,7 +123,7 @@
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
         v15 = 138412290;
-        v16 = v4;
+        v16 = changeCopy;
         _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEBUG, "Resetting finished strategy because of %@", &v15, 0xCu);
       }
     }
@@ -136,38 +136,38 @@
     p_currentStep = &self->_currentStep;
     if (self->_currentStep)
     {
-      v7 = [(NSArray *)self->_steps objectEnumerator];
-      v8 = 0;
+      objectEnumerator = [(NSArray *)self->_steps objectEnumerator];
+      nextObject = 0;
       while (1)
       {
-        v9 = v8;
-        v8 = [v7 nextObject];
+        v9 = nextObject;
+        nextObject = [objectEnumerator nextObject];
 
-        if (!v8 || v8 == *p_currentStep)
+        if (!nextObject || nextObject == *p_currentStep)
         {
           break;
         }
 
-        if ([v8 shouldResetFromThisStepWithIncomingChange:v4])
+        if ([nextObject shouldResetFromThisStepWithIncomingChange:changeCopy])
         {
           [*p_currentStep reset];
-          objc_storeStrong(&self->_currentStep, v8);
+          objc_storeStrong(&self->_currentStep, nextObject);
           [*p_currentStep reset];
           if ((_CPLSilentLogging & 1) == 0)
           {
             v10 = __CPLStrategyOSLogDomain();
             if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
             {
-              v11 = [*p_currentStep shortDescription];
+              shortDescription = [*p_currentStep shortDescription];
               v15 = 138412546;
-              v16 = v11;
+              v16 = shortDescription;
               v17 = 2112;
-              v18 = v4;
+              v18 = changeCopy;
               _os_log_impl(&dword_1DC05A000, v10, OS_LOG_TYPE_DEBUG, "Resetting strategy to %@ because of %@", &v15, 0x16u);
             }
           }
 
-          objc_storeStrong(&self->_stepEnumerator, v7);
+          objc_storeStrong(&self->_stepEnumerator, objectEnumerator);
           goto LABEL_22;
         }
       }
@@ -177,16 +177,16 @@
         v12 = __CPLStrategyOSLogDomain();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
         {
-          v13 = [*p_currentStep shortDescription];
+          shortDescription2 = [*p_currentStep shortDescription];
           v15 = 138412546;
-          v16 = v13;
+          v16 = shortDescription2;
           v17 = 2112;
-          v18 = v4;
+          v18 = changeCopy;
           _os_log_impl(&dword_1DC05A000, v12, OS_LOG_TYPE_DEBUG, "Resetting %@ conditionnally because of %@", &v15, 0x16u);
         }
       }
 
-      [*p_currentStep resetConditionallyFromNewIncomingChange:v4];
+      [*p_currentStep resetConditionallyFromNewIncomingChange:changeCopy];
 LABEL_22:
     }
   }
@@ -216,10 +216,10 @@ LABEL_22:
   *&self->_loggedForThisStep = 0;
 }
 
-- (BOOL)extractBatch:(id *)a3 maximumResourceSize:(unint64_t)a4 error:(id *)a5
+- (BOOL)extractBatch:(id *)batch maximumResourceSize:(unint64_t)size error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!size)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -231,9 +231,9 @@ LABEL_22:
       }
     }
 
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v33 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLBatchExtractionStrategy.m"];
-    [v32 handleFailureInMethod:a2 object:self file:v33 lineNumber:286 description:@"can't extract batches with no size"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v33 lineNumber:286 description:@"can't extract batches with no size"];
 
     abort();
   }
@@ -247,14 +247,14 @@ LABEL_22:
   if (self->_currentStep)
   {
 LABEL_5:
-    v35 = a3;
-    *a3 = 0;
+    batchCopy = batch;
+    *batch = 0;
     WeakRetained = objc_loadWeakRetained(&self->_storage);
     [WeakRetained beginExtractingBatch];
 
     v11 = objc_alloc_init(CPLExtractedBatch);
-    v12 = [(CPLExtractedBatch *)v11 batch];
-    v13 = v12;
+    batch = [(CPLExtractedBatch *)v11 batch];
+    v13 = batch;
     if (self->_maximumRecordCountPerBatch)
     {
       maximumRecordCountPerBatch = self->_maximumRecordCountPerBatch;
@@ -267,11 +267,11 @@ LABEL_5:
 
     if (self->_currentStep)
     {
-      v15 = [v12 count];
+      v15 = [batch count];
       v16 = objc_loadWeakRetained(&self->_storage);
       v17 = [(CPLExtractedBatch *)v11 effectiveResourceSizeToUploadUsingStorage:v16];
 
-      if (v15 < maximumRecordCountPerBatch && v17 < a4)
+      if (v15 < maximumRecordCountPerBatch && v17 < size)
       {
         *&v18 = 138543362;
         v34 = v18;
@@ -282,14 +282,14 @@ LABEL_5:
             v19 = __CPLStrategyOSLogDomain();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
             {
-              v20 = [(CPLBatchExtractionStep *)self->_currentStep shortDescription];
+              shortDescription = [(CPLBatchExtractionStep *)self->_currentStep shortDescription];
               *buf = 138412290;
-              v37 = v20;
+              v37 = shortDescription;
               _os_log_impl(&dword_1DC05A000, v19, OS_LOG_TYPE_DEBUG, "Will extract changes to batch with %@", buf, 0xCu);
             }
           }
 
-          if (![(CPLBatchExtractionStep *)self->_currentStep extractToBatch:v11 maximumCount:maximumRecordCountPerBatch - v15 maximumResourceSize:a4 - v17 error:a5, v34])
+          if (![(CPLBatchExtractionStep *)self->_currentStep extractToBatch:v11 maximumCount:maximumRecordCountPerBatch - v15 maximumResourceSize:size - v17 error:error, v34])
           {
             break;
           }
@@ -302,9 +302,9 @@ LABEL_5:
               v21 = __CPLStrategyOSLogDomain();
               if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
               {
-                v22 = [(CPLBatchExtractionStep *)self->_currentStep shortDescription];
+                shortDescription2 = [(CPLBatchExtractionStep *)self->_currentStep shortDescription];
                 *buf = v34;
-                v37 = v22;
+                v37 = shortDescription2;
                 _os_log_impl(&dword_1DC05A000, v21, OS_LOG_TYPE_DEFAULT, "Extracting batches with %{public}@", buf, 0xCu);
               }
             }
@@ -340,7 +340,7 @@ LABEL_5:
           v24 = objc_loadWeakRetained(&self->_storage);
           v17 = [(CPLExtractedBatch *)v11 effectiveResourceSizeToUploadUsingStorage:v24];
 
-          if (v15 >= maximumRecordCountPerBatch || v17 >= a4)
+          if (v15 >= maximumRecordCountPerBatch || v17 >= size)
           {
             goto LABEL_32;
           }
@@ -358,7 +358,7 @@ LABEL_33:
     if ([v13 count])
     {
       v25 = v11;
-      *v35 = v11;
+      *batchCopy = v11;
     }
 
     v6 = 1;
@@ -406,17 +406,17 @@ LABEL_37:
 
   if (!self->_stepEnumerator)
   {
-    v4 = [(NSArray *)self->_steps objectEnumerator];
+    objectEnumerator = [(NSArray *)self->_steps objectEnumerator];
     stepEnumerator = self->_stepEnumerator;
-    self->_stepEnumerator = v4;
+    self->_stepEnumerator = objectEnumerator;
   }
 
   self->_loggedForThisStep = 0;
   if ([(CPLBatchExtractionStrategy *)self _hasChanges])
   {
-    v6 = [(NSEnumerator *)self->_stepEnumerator nextObject];
+    nextObject = [(NSEnumerator *)self->_stepEnumerator nextObject];
     v7 = self->_currentStep;
-    self->_currentStep = v6;
+    self->_currentStep = nextObject;
 
     v8 = self->_currentStep;
     if (v8)
@@ -435,38 +435,38 @@ LABEL_37:
 
 - (BOOL)_hasChanges
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_storage);
-  LOBYTE(v2) = [WeakRetained hasChangesInScopeWithIdentifier:v2->_scopeIdentifier];
+  LOBYTE(selfCopy) = [WeakRetained hasChangesInScopeWithIdentifier:selfCopy->_scopeIdentifier];
 
-  return v2;
+  return selfCopy;
 }
 
-- (CPLBatchExtractionStrategy)initWithName:(id)a3 storage:(id)a4 scopeIdentifier:(id)a5 steps:(id)a6
+- (CPLBatchExtractionStrategy)initWithName:(id)name storage:(id)storage scopeIdentifier:(id)identifier steps:(id)steps
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  storageCopy = storage;
+  identifierCopy = identifier;
+  stepsCopy = steps;
   v24.receiver = self;
   v24.super_class = CPLBatchExtractionStrategy;
   v14 = [(CPLBatchExtractionStrategy *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [nameCopy copy];
     strategyName = v14->_strategyName;
     v14->_strategyName = v15;
 
-    objc_storeWeak(&v14->_storage, v11);
-    v17 = [v12 copy];
+    objc_storeWeak(&v14->_storage, storageCopy);
+    v17 = [identifierCopy copy];
     scopeIdentifier = v14->_scopeIdentifier;
     v14->_scopeIdentifier = v17;
 
-    v19 = [v13 copy];
+    v19 = [stepsCopy copy];
     steps = v14->_steps;
     v14->_steps = v19;
 
-    v21 = [v10 copy];
+    v21 = [nameCopy copy];
     name = v14->_name;
     v14->_name = v21;
   }
@@ -474,15 +474,15 @@ LABEL_37:
   return v14;
 }
 
-+ (id)minglingStrategyWithStorage:(id)a3 coveringScopeIdentifier:(id)a4 maximumBatchSize:(unint64_t)a5
++ (id)minglingStrategyWithStorage:(id)storage coveringScopeIdentifier:(id)identifier maximumBatchSize:(unint64_t)size
 {
   v108[24] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v104 = [a1 alloc];
+  storageCopy = storage;
+  identifierCopy = identifier;
+  v104 = [self alloc];
   v9 = objc_opt_class();
-  v10 = v7;
-  v11 = v8;
+  v10 = storageCopy;
+  v11 = identifierCopy;
   v106 = [[CPLNewChainedRecordExtractionStep alloc] initWithStorage:v10 class:v9 classDescription:@"Person" scopeIdentifier:v11 maximumCount:-1];
 
   v108[0] = v106;
@@ -623,7 +623,7 @@ LABEL_37:
   v84 = [MEMORY[0x1E695DEC8] arrayWithObjects:v108 count:24];
   v85 = [v104 initWithName:@"mingling" storage:v81 scopeIdentifier:v82 steps:v84];
 
-  if (a5)
+  if (size)
   {
     [v85 setMaximumRecordCountPerBatch:?];
   }
@@ -633,15 +633,15 @@ LABEL_37:
   return v85;
 }
 
-+ (id)overQuotaStrategyWithStorage:(id)a3 coveringScopeIdentifier:(id)a4
++ (id)overQuotaStrategyWithStorage:(id)storage coveringScopeIdentifier:(id)identifier
 {
   v128[30] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v125 = [a1 alloc];
+  storageCopy = storage;
+  identifierCopy = identifier;
+  v125 = [self alloc];
   v8 = objc_opt_class();
-  v9 = v6;
-  v10 = v7;
+  v9 = storageCopy;
+  v10 = identifierCopy;
   v127 = [[CPLNewChainedRecordExtractionStep alloc] initWithStorage:v9 class:v8 classDescription:@"Person" scopeIdentifier:v10 maximumCount:-1];
 
   v128[0] = v127;
@@ -820,11 +820,11 @@ LABEL_37:
   return v99;
 }
 
-+ (id)usualStrategyWithStorage:(id)a3 coveringScopeIdentifier:(id)a4
++ (id)usualStrategyWithStorage:(id)storage coveringScopeIdentifier:(id)identifier
 {
   v129[29] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  storageCopy = storage;
+  identifierCopy = identifier;
   if (usualStrategyWithStorage_coveringScopeIdentifier__onceToken != -1)
   {
     dispatch_once(&usualStrategyWithStorage_coveringScopeIdentifier__onceToken, &__block_literal_global_4031);
@@ -832,23 +832,23 @@ LABEL_37:
 
   if (usualStrategyWithStorage_coveringScopeIdentifier__forceOverQuotaStrategy == 1)
   {
-    v8 = [a1 overQuotaStrategyWithStorage:v6 coveringScopeIdentifier:v7];
+    v8 = [self overQuotaStrategyWithStorage:storageCopy coveringScopeIdentifier:identifierCopy];
   }
 
   else
   {
-    v123 = [a1 alloc];
+    v123 = [self alloc];
     v9 = objc_opt_class();
-    v10 = v6;
-    v127 = v7;
-    v11 = v7;
+    v10 = storageCopy;
+    v127 = identifierCopy;
+    v11 = identifierCopy;
     v126 = [[CPLNewChainedRecordExtractionStep alloc] initWithStorage:v10 class:v9 classDescription:@"Person" scopeIdentifier:v11 maximumCount:-1];
 
     v129[0] = v126;
     v125 = [[CPLNewAssetExtractionStep alloc] initWithStorage:v10 scopeIdentifier:v11 maximumCount:-1];
     v129[1] = v125;
     v12 = objc_opt_class();
-    v128 = v6;
+    v128 = storageCopy;
     v13 = v10;
     v14 = v11;
     v124 = [[CPLByClassExtractionStep alloc] initWithStorage:v13 scopeIdentifier:v14 description:@"New(Master)" class:v12 maximumCount:-1 query:CPLStepNew];
@@ -1014,8 +1014,8 @@ LABEL_37:
     v99 = [MEMORY[0x1E695DEC8] arrayWithObjects:v129 count:29];
     v8 = [v123 initWithName:@"usual" storage:v96 scopeIdentifier:v97 steps:v99];
 
-    v7 = v127;
-    v6 = v128;
+    identifierCopy = v127;
+    storageCopy = v128;
   }
 
   v100 = *MEMORY[0x1E69E9840];
@@ -1052,15 +1052,15 @@ void __79__CPLBatchExtractionStrategy_usualStrategyWithStorage_coveringScopeIden
   }
 }
 
-+ (void)setMaximumRecordCountPerBatch:(unint64_t)a3
++ (void)setMaximumRecordCountPerBatch:(unint64_t)batch
 {
-  v9 = 100;
-  if (a3)
+  batchCopy = 100;
+  if (batch)
   {
-    v9 = a3;
+    batchCopy = batch;
   }
 
-  if (v9 <= 1)
+  if (batchCopy <= 1)
   {
     v16 = v6;
     v17 = v5;
@@ -1078,14 +1078,14 @@ void __79__CPLBatchExtractionStrategy_usualStrategyWithStorage_coveringScopeIden
       }
     }
 
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLBatchExtractionStrategy.m"];
-    [v13 handleFailureInMethod:a2 object:a1 file:v14 lineNumber:61 description:@"Maximum record count is too low"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v14 lineNumber:61 description:@"Maximum record count is too low"];
 
     abort();
   }
 
-  _CPLMaximumBatchSize = v9;
+  _CPLMaximumBatchSize = batchCopy;
 }
 
 @end

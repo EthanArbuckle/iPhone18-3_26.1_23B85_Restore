@@ -1,81 +1,81 @@
 @interface PDSCDRegistration
-+ (id)insertIntoManagedObjectContext:(id)a3;
-+ (id)registrationFromEntry:(id)a3 insertIntoManagedObjectContext:(id)a4;
-+ (id)uniquenessPredicateForEntry:(id)a3;
-- (id)entryWithUserCache:(id)a3;
++ (id)insertIntoManagedObjectContext:(id)context;
++ (id)registrationFromEntry:(id)entry insertIntoManagedObjectContext:(id)context;
++ (id)uniquenessPredicateForEntry:(id)entry;
+- (id)entryWithUserCache:(id)cache;
 @end
 
 @implementation PDSCDRegistration
 
-+ (id)insertIntoManagedObjectContext:(id)a3
++ (id)insertIntoManagedObjectContext:(id)context
 {
   v4 = MEMORY[0x277CBE408];
-  v5 = a3;
-  v6 = [v4 entityForName:@"PDSCDRegistration" inManagedObjectContext:v5];
-  v7 = [[a1 alloc] initWithEntity:v6 insertIntoManagedObjectContext:v5];
+  contextCopy = context;
+  v6 = [v4 entityForName:@"PDSCDRegistration" inManagedObjectContext:contextCopy];
+  v7 = [[self alloc] initWithEntity:v6 insertIntoManagedObjectContext:contextCopy];
 
   return v7;
 }
 
-+ (id)registrationFromEntry:(id)a3 insertIntoManagedObjectContext:(id)a4
++ (id)registrationFromEntry:(id)entry insertIntoManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = [PDSCDRegistration insertIntoManagedObjectContext:a4];
-  [v6 setEntryState:{objc_msgSend(v5, "state")}];
-  v7 = [v5 registration];
-  [v6 setEnvironment:{objc_msgSend(v7, "pushEnvironment")}];
+  entryCopy = entry;
+  v6 = [PDSCDRegistration insertIntoManagedObjectContext:context];
+  [v6 setEntryState:{objc_msgSend(entryCopy, "state")}];
+  registration = [entryCopy registration];
+  [v6 setEnvironment:{objc_msgSend(registration, "pushEnvironment")}];
 
-  v8 = [v5 registration];
-  v9 = [v8 topicString];
-  [v6 setTopic:v9];
+  registration2 = [entryCopy registration];
+  topicString = [registration2 topicString];
+  [v6 setTopic:topicString];
 
-  v10 = [v5 registration];
-  v11 = [v10 qualifierString];
-  [v6 setQualifier:v11];
+  registration3 = [entryCopy registration];
+  qualifierString = [registration3 qualifierString];
+  [v6 setQualifier:qualifierString];
 
-  v12 = [v5 clientID];
+  clientID = [entryCopy clientID];
 
-  [v6 setClientID:v12];
+  [v6 setClientID:clientID];
 
   return v6;
 }
 
-+ (id)uniquenessPredicateForEntry:(id)a3
++ (id)uniquenessPredicateForEntry:(id)entry
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
-  v5 = [v4 registration];
-  v6 = [v5 qualifierString];
-  v7 = [v4 registration];
-  v8 = [v7 topicString];
-  v9 = [v4 registration];
+  entryCopy = entry;
+  registration = [entryCopy registration];
+  qualifierString = [registration qualifierString];
+  registration2 = [entryCopy registration];
+  topicString = [registration2 topicString];
+  registration3 = [entryCopy registration];
 
-  v10 = [v3 predicateWithFormat:@"qualifier == %@ && topic == %@ && environment == %d", v6, v8, objc_msgSend(v9, "pushEnvironment")];
+  v10 = [v3 predicateWithFormat:@"qualifier == %@ && topic == %@ && environment == %d", qualifierString, topicString, objc_msgSend(registration3, "pushEnvironment")];
 
   return v10;
 }
 
-- (id)entryWithUserCache:(id)a3
+- (id)entryWithUserCache:(id)cache
 {
-  v4 = a3;
-  v5 = [(PDSCDRegistration *)self user];
-  v6 = [v5 userID];
-  v7 = [v4 objectForKeyedSubscript:v6];
+  cacheCopy = cache;
+  user = [(PDSCDRegistration *)self user];
+  userID = [user userID];
+  v8User = [cacheCopy objectForKeyedSubscript:userID];
 
-  if (!v7)
+  if (!v8User)
   {
-    v8 = [(PDSCDRegistration *)self user];
-    v7 = [v8 user];
+    user2 = [(PDSCDRegistration *)self user];
+    v8User = [user2 user];
 
-    if (!v7)
+    if (!v8User)
     {
 LABEL_8:
       v10 = 0;
       goto LABEL_9;
     }
 
-    v9 = [v7 userID];
-    [v4 setObject:v7 forKeyedSubscript:v9];
+    userID2 = [v8User userID];
+    [cacheCopy setObject:v8User forKeyedSubscript:userID2];
   }
 
   if ([(PDSCDRegistration *)self environment]!= 1 && [(PDSCDRegistration *)self environment]|| ([(PDSCDRegistration *)self entryState]& 0x80000000) != 0 || [(PDSCDRegistration *)self entryState]> 3)
@@ -84,16 +84,16 @@ LABEL_8:
   }
 
   v12 = objc_alloc(MEMORY[0x277D37AC0]);
-  v13 = [(PDSCDRegistration *)self topic];
-  v14 = [(PDSCDRegistration *)self qualifier];
-  v15 = [v12 initWithTopic:v13 qualifier:v14 pushEnvironment:{-[PDSCDRegistration environment](self, "environment")}];
+  topic = [(PDSCDRegistration *)self topic];
+  qualifier = [(PDSCDRegistration *)self qualifier];
+  v15 = [v12 initWithTopic:topic qualifier:qualifier pushEnvironment:{-[PDSCDRegistration environment](self, "environment")}];
 
   v16 = objc_alloc(MEMORY[0x277D37AB0]);
-  v17 = [(PDSCDRegistration *)self clientID];
-  v10 = [v16 initWithUser:v7 registration:v15 clientID:v17];
+  clientID = [(PDSCDRegistration *)self clientID];
+  v10 = [v16 initWithUser:v8User registration:v15 clientID:clientID];
 
-  LODWORD(v17) = [v10 state];
-  if (v17 != [(PDSCDRegistration *)self entryState])
+  LODWORD(clientID) = [v10 state];
+  if (clientID != [(PDSCDRegistration *)self entryState])
   {
     v18 = [v10 entryWithUpdatedState:{-[PDSCDRegistration entryState](self, "entryState")}];
 

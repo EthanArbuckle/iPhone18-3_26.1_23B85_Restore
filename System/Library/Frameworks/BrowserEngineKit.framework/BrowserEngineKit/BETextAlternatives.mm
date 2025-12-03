@@ -1,30 +1,30 @@
 @interface BETextAlternatives
-- (id)_initWithNSTextAlternatives:(id)a3;
-- (void)noteSelectedAlternativeString:(id)a3;
+- (id)_initWithNSTextAlternatives:(id)alternatives;
+- (void)noteSelectedAlternativeString:(id)string;
 @end
 
 @implementation BETextAlternatives
 
-- (id)_initWithNSTextAlternatives:(id)a3
+- (id)_initWithNSTextAlternatives:(id)alternatives
 {
-  v5 = a3;
+  alternativesCopy = alternatives;
   v9.receiver = self;
   v9.super_class = BETextAlternatives;
   v6 = [(BETextAlternatives *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backingTextAlternatives, a3);
+    objc_storeStrong(&v6->_backingTextAlternatives, alternatives);
   }
 
   return v7;
 }
 
-- (void)noteSelectedAlternativeString:(id)a3
+- (void)noteSelectedAlternativeString:(id)string
 {
-  v4 = a3;
-  v5 = [(BETextAlternatives *)self backingTextAlternatives];
-  [v5 noteSelectedAlternativeString:v4];
+  stringCopy = string;
+  backingTextAlternatives = [(BETextAlternatives *)self backingTextAlternatives];
+  [backingTextAlternatives noteSelectedAlternativeString:stringCopy];
 }
 
 @end

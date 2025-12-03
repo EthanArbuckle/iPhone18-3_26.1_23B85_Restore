@@ -1,58 +1,58 @@
 @interface FMDAudioAccessoryInfo
-- (FMDAudioAccessoryInfo)initWithCoder:(id)a3;
-- (FMDAudioAccessoryInfo)initWithSystemSerialNumber:(id)a3 leftSerialNumber:(id)a4 rightSerialNumber:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (FMDAudioAccessoryInfo)initWithCoder:(id)coder;
+- (FMDAudioAccessoryInfo)initWithSystemSerialNumber:(id)number leftSerialNumber:(id)serialNumber rightSerialNumber:(id)rightSerialNumber;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMDAudioAccessoryInfo
 
-- (FMDAudioAccessoryInfo)initWithSystemSerialNumber:(id)a3 leftSerialNumber:(id)a4 rightSerialNumber:(id)a5
+- (FMDAudioAccessoryInfo)initWithSystemSerialNumber:(id)number leftSerialNumber:(id)serialNumber rightSerialNumber:(id)rightSerialNumber
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  numberCopy = number;
+  serialNumberCopy = serialNumber;
+  rightSerialNumberCopy = rightSerialNumber;
   v14.receiver = self;
   v14.super_class = FMDAudioAccessoryInfo;
   v11 = [(FMDAudioAccessoryInfo *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(FMDAudioAccessoryInfo *)v11 setSystemSerialNumber:v8];
-    [(FMDAudioAccessoryInfo *)v12 setLeftSerialNumber:v9];
-    [(FMDAudioAccessoryInfo *)v12 setRightSerialNumber:v10];
+    [(FMDAudioAccessoryInfo *)v11 setSystemSerialNumber:numberCopy];
+    [(FMDAudioAccessoryInfo *)v12 setLeftSerialNumber:serialNumberCopy];
+    [(FMDAudioAccessoryInfo *)v12 setRightSerialNumber:rightSerialNumberCopy];
   }
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FMDAudioAccessoryInfo *)self systemSerialNumber];
-  [v4 encodeObject:v5 forKey:@"systemSerialNumber"];
+  coderCopy = coder;
+  systemSerialNumber = [(FMDAudioAccessoryInfo *)self systemSerialNumber];
+  [coderCopy encodeObject:systemSerialNumber forKey:@"systemSerialNumber"];
 
-  v6 = [(FMDAudioAccessoryInfo *)self leftSerialNumber];
-  [v4 encodeObject:v6 forKey:@"leftSerialNumber"];
+  leftSerialNumber = [(FMDAudioAccessoryInfo *)self leftSerialNumber];
+  [coderCopy encodeObject:leftSerialNumber forKey:@"leftSerialNumber"];
 
-  v7 = [(FMDAudioAccessoryInfo *)self rightSerialNumber];
-  [v4 encodeObject:v7 forKey:@"rightSerialNumber"];
+  rightSerialNumber = [(FMDAudioAccessoryInfo *)self rightSerialNumber];
+  [coderCopy encodeObject:rightSerialNumber forKey:@"rightSerialNumber"];
 }
 
-- (FMDAudioAccessoryInfo)initWithCoder:(id)a3
+- (FMDAudioAccessoryInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = FMDAudioAccessoryInfo;
   v5 = [(FMDAudioAccessoryInfo *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemSerialNumber"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemSerialNumber"];
     [(FMDAudioAccessoryInfo *)v5 setSystemSerialNumber:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"leftSerialNumber"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"leftSerialNumber"];
     [(FMDAudioAccessoryInfo *)v5 setLeftSerialNumber:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rightSerialNumber"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rightSerialNumber"];
     [(FMDAudioAccessoryInfo *)v5 setRightSerialNumber:v8];
   }
 

@@ -1,22 +1,22 @@
 @interface BDSReadingGoalsService
-- (void)changeBooksFinishedGoalTo:(int64_t)a3 completionHandler:(id)a4;
-- (void)changeDailyGoalTo:(double)a3 completionHandler:(id)a4;
-- (void)clearDataWithCompletionHandler:(id)a3;
-- (void)clearLocalCachedDataWithCompletionHandler:(id)a3;
-- (void)stateInfoWithCompletionHandler:(id)a3;
+- (void)changeBooksFinishedGoalTo:(int64_t)to completionHandler:(id)handler;
+- (void)changeDailyGoalTo:(double)to completionHandler:(id)handler;
+- (void)clearDataWithCompletionHandler:(id)handler;
+- (void)clearLocalCachedDataWithCompletionHandler:(id)handler;
+- (void)stateInfoWithCompletionHandler:(id)handler;
 @end
 
 @implementation BDSReadingGoalsService
 
-- (void)changeBooksFinishedGoalTo:(int64_t)a3 completionHandler:(id)a4
+- (void)changeBooksFinishedGoalTo:(int64_t)to completionHandler:(id)handler
 {
   v7 = sub_100084528(&unk_100270A00, &qword_1001F3120);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = to;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1001C6348();
@@ -31,19 +31,19 @@
   v15[3] = 0;
   v15[4] = &unk_1001F1910;
   v15[5] = v14;
-  v16 = self;
+  selfCopy = self;
   sub_100118770(0, 0, v10, &unk_1001F1918, v15);
 }
 
-- (void)changeDailyGoalTo:(double)a3 completionHandler:(id)a4
+- (void)changeDailyGoalTo:(double)to completionHandler:(id)handler
 {
   v7 = sub_100084528(&unk_100270A00, &qword_1001F3120);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  *(v12 + 16) = a3;
+  *(v12 + 16) = to;
   *(v12 + 24) = v11;
   *(v12 + 32) = self;
   v13 = sub_1001C6348();
@@ -58,17 +58,17 @@
   v15[3] = 0;
   v15[4] = &unk_1001F18F0;
   v15[5] = v14;
-  v16 = self;
+  selfCopy = self;
   sub_100118770(0, 0, v10, &unk_1001F18F8, v15);
 }
 
-- (void)clearDataWithCompletionHandler:(id)a3
+- (void)clearDataWithCompletionHandler:(id)handler
 {
   v5 = sub_100084528(&unk_100270A00, &qword_1001F3120);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -84,17 +84,17 @@
   v13[3] = 0;
   v13[4] = &unk_1001F18D0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_100118770(0, 0, v8, &unk_1001F18D8, v13);
 }
 
-- (void)clearLocalCachedDataWithCompletionHandler:(id)a3
+- (void)clearLocalCachedDataWithCompletionHandler:(id)handler
 {
   v5 = sub_100084528(&unk_100270A00, &qword_1001F3120);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -110,17 +110,17 @@
   v13[3] = 0;
   v13[4] = &unk_1001F18B0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_100118770(0, 0, v8, &unk_1001F18B8, v13);
 }
 
-- (void)stateInfoWithCompletionHandler:(id)a3
+- (void)stateInfoWithCompletionHandler:(id)handler
 {
   v5 = sub_100084528(&unk_100270A00, &qword_1001F3120);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -136,7 +136,7 @@
   v13[3] = 0;
   v13[4] = &unk_1001F0DB0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_100118770(0, 0, v8, &unk_1001F33E0, v13);
 }
 

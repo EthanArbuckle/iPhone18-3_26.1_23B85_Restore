@@ -1,6 +1,6 @@
 @interface _UIButtonBarLayoutMetrics
 - (NSString)description;
-- (id)_copyWithModifications:(id)a3;
+- (id)_copyWithModifications:(id)modifications;
 - (id)_upcastIfReadOnly;
 @end
 
@@ -10,38 +10,38 @@
 {
   if (!self->_locked)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"_UIButtonBarLayout.m" lineNumber:48 description:@"Attempt to upcast a locked metrics object"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIButtonBarLayout.m" lineNumber:48 description:@"Attempt to upcast a locked metrics object"];
   }
 
   return self;
 }
 
-- (id)_copyWithModifications:(id)a3
+- (id)_copyWithModifications:(id)modifications
 {
-  v4 = a3;
-  if (v4 || !self->_locked)
+  modificationsCopy = modifications;
+  if (modificationsCopy || !self->_locked)
   {
-    v5 = objc_alloc_init(_UIButtonBarLayoutMetrics);
-    [(_UIButtonBarLayoutMetrics *)v5 setVerticalSizeGuide:self->_verticalSizeGuide];
-    [(_UIButtonBarLayoutMetrics *)v5 setMinimumSpaceGuide:self->_minimumSpaceGuide];
-    [(_UIButtonBarLayoutMetrics *)v5 setFlexibleSpaceGuide:self->_flexibleSpaceGuide];
-    [(_UIButtonBarLayoutMetrics *)v5 setGroupSizeGuide:self->_groupSizeGuide];
-    [(_UIButtonBarLayoutMetrics *)v5 setAllowsViewWrappers:self->_allowsViewWrappers];
-    if (v4)
+    selfCopy = objc_alloc_init(_UIButtonBarLayoutMetrics);
+    [(_UIButtonBarLayoutMetrics *)selfCopy setVerticalSizeGuide:self->_verticalSizeGuide];
+    [(_UIButtonBarLayoutMetrics *)selfCopy setMinimumSpaceGuide:self->_minimumSpaceGuide];
+    [(_UIButtonBarLayoutMetrics *)selfCopy setFlexibleSpaceGuide:self->_flexibleSpaceGuide];
+    [(_UIButtonBarLayoutMetrics *)selfCopy setGroupSizeGuide:self->_groupSizeGuide];
+    [(_UIButtonBarLayoutMetrics *)selfCopy setAllowsViewWrappers:self->_allowsViewWrappers];
+    if (modificationsCopy)
     {
-      v4[2](v4, v5);
+      modificationsCopy[2](modificationsCopy, selfCopy);
     }
 
-    v5->_locked = 1;
+    selfCopy->_locked = 1;
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSString)description

@@ -1,84 +1,84 @@
 @interface VCConnectionManager
-- (BOOL)hasSameReportingConfig:(id)a3 oldPrimaryConnection:(id)a4;
-- (BOOL)isBetterConnection:(id)a3 asPrimary:(BOOL)a4;
+- (BOOL)hasSameReportingConfig:(id)config oldPrimaryConnection:(id)connection;
+- (BOOL)isBetterConnection:(id)connection asPrimary:(BOOL)primary;
 - (BOOL)isBetterPrimaryConnectionAvailable;
-- (BOOL)isConnectedOnIPv6ForActiveConnectionWithQuality:(int)a3;
-- (BOOL)isConnectedOnRelayForActiveConnectionWithQuality:(int)a3;
+- (BOOL)isConnectedOnIPv6ForActiveConnectionWithQuality:(int)quality;
+- (BOOL)isConnectedOnRelayForActiveConnectionWithQuality:(int)quality;
 - (BOOL)isDuplicationAllowed;
-- (BOOL)isDuplicationAllowedForParticipantID:(id)a3 bucketsToSum:(int)a4 threshold:(double)a5;
+- (BOOL)isDuplicationAllowedForParticipantID:(id)d bucketsToSum:(int)sum threshold:(double)threshold;
 - (BOOL)isLocalCellularInterfaceUsed;
-- (BOOL)isOptimalConnection:(id)a3 asPrimary:(BOOL)a4 interfaceMask:(int)a5;
+- (BOOL)isOptimalConnection:(id)connection asPrimary:(BOOL)primary interfaceMask:(int)mask;
 - (VCConnectionManager)init;
 - (VCConnectionProtocol)connectionForDuplication;
 - (id)getActiveConnectionRegistryAndUpdateDuplicationPossibility;
 - (int)connectionCount;
-- (int)getCellularMTUForActiveConnectionWithQuality:(int)a3;
-- (int)getCellularTechForActiveConnectionWithQuality:(int)a3 forLocalInterface:(BOOL)a4;
-- (int)getConnectionSelectionVersionFromFrameworkVersion:(id)a3;
-- (int)getConnectionTypeForActiveConnectionWithQuality:(int)a3 forLocalInterface:(BOOL)a4;
-- (int)processConnectionHealthFromControlInfo:(void *)a3;
-- (int)processRemoteWRMSuggestion:(int)a3 isRemoteDuplicating:(BOOL)a4;
-- (int)setConnectionHealthOnControlInfo:(void *)a3;
-- (int)setWRMUpdateCallback:(void *)a3 requestNotificationCallback:(void *)a4 withContext:(void *)a5 completionHandler:(id)a6;
-- (void)addDistinctConnectionInterfaceToSet:(id)a3 withInterfaceType:(int)a4;
-- (void)addMediaHealthStatsHistoryEntryForParticipantID:(id)a3;
-- (void)aggregateStallTimeDuration:(id *)a3 idsParticipantID:(id)a4;
-- (void)applyLinkFlags:(unsigned __int16)a3 isCellular:(BOOL)a4;
+- (int)getCellularMTUForActiveConnectionWithQuality:(int)quality;
+- (int)getCellularTechForActiveConnectionWithQuality:(int)quality forLocalInterface:(BOOL)interface;
+- (int)getConnectionSelectionVersionFromFrameworkVersion:(id)version;
+- (int)getConnectionTypeForActiveConnectionWithQuality:(int)quality forLocalInterface:(BOOL)interface;
+- (int)processConnectionHealthFromControlInfo:(void *)info;
+- (int)processRemoteWRMSuggestion:(int)suggestion isRemoteDuplicating:(BOOL)duplicating;
+- (int)setConnectionHealthOnControlInfo:(void *)info;
+- (int)setWRMUpdateCallback:(void *)callback requestNotificationCallback:(void *)notificationCallback withContext:(void *)context completionHandler:(id)handler;
+- (void)addDistinctConnectionInterfaceToSet:(id)set withInterfaceType:(int)type;
+- (void)addMediaHealthStatsHistoryEntryForParticipantID:(id)d;
+- (void)aggregateStallTimeDuration:(id *)duration idsParticipantID:(id)d;
+- (void)applyLinkFlags:(unsigned __int16)flags isCellular:(BOOL)cellular;
 - (void)applyLinkRecommendation;
-- (void)applyRemoteLinkFlags:(unsigned __int16)a3 isCellular:(BOOL)a4;
+- (void)applyRemoteLinkFlags:(unsigned __int16)flags isCellular:(BOOL)cellular;
 - (void)checkAndUpdatePrimaryConnection;
 - (void)checkForCachedWRMNotification;
-- (void)checkMediaQualityDegradedForParticipantID:(id)a3;
-- (void)checkpointPrimaryConnection:(id)a3;
-- (void)configureNWConnectionMonitor:(id)a3;
-- (void)connectionHealthDidUpdate:(int)a3 isLocalConnection:(BOOL)a4;
-- (void)copyPersistenPacketCounts:(unsigned int *)a3 isOutgoing:(BOOL)a4 size:(int)a5;
+- (void)checkMediaQualityDegradedForParticipantID:(id)d;
+- (void)checkpointPrimaryConnection:(id)connection;
+- (void)configureNWConnectionMonitor:(id)monitor;
+- (void)connectionHealthDidUpdate:(int)update isLocalConnection:(BOOL)connection;
+- (void)copyPersistenPacketCounts:(unsigned int *)counts isOutgoing:(BOOL)outgoing size:(int)size;
 - (void)createNewConnectionStatsCollectorCallback;
 - (void)createOverlaySource;
 - (void)dealloc;
 - (void)destroyNWMonitorCellularInternal;
 - (void)destroyNWMonitorInternal;
 - (void)destroyNWMonitors;
-- (void)didChangeWifiAssistAvailable:(BOOL)a3 reason:(unsigned __int8)a4;
-- (void)didUpdateMotionActivity:(id)a3;
-- (void)disableRemotePreferredInterfaceInference:(BOOL)a3;
-- (void)duplicationStateUpdateWithEvent:(id)a3;
-- (void)getSentBytes:(int64_t *)a3 receivedBytes:(int64_t *)a4;
-- (void)handleReportingSymptom:(unsigned int)a3;
-- (void)periodicTask:(void *)a3;
-- (void)primaryConnectionChanged:(id)a3 oldPrimaryConnection:(id)a4;
-- (void)promoteSecondaryConnectionToPrimary:(id)a3;
+- (void)didChangeWifiAssistAvailable:(BOOL)available reason:(unsigned __int8)reason;
+- (void)didUpdateMotionActivity:(id)activity;
+- (void)disableRemotePreferredInterfaceInference:(BOOL)inference;
+- (void)duplicationStateUpdateWithEvent:(id)event;
+- (void)getSentBytes:(int64_t *)bytes receivedBytes:(int64_t *)receivedBytes;
+- (void)handleReportingSymptom:(unsigned int)symptom;
+- (void)periodicTask:(void *)task;
+- (void)primaryConnectionChanged:(id)changed oldPrimaryConnection:(id)connection;
+- (void)promoteSecondaryConnectionToPrimary:(id)primary;
 - (void)registerStatisticsHandlers;
 - (void)releaseAndRemoveConnectionStatsCollectorCallback;
-- (void)removeMediaHealthStatsHistoryEntryForParticipantID:(id)a3;
+- (void)removeMediaHealthStatsHistoryEntryForParticipantID:(id)d;
 - (void)renewNWMonitor;
 - (void)renewNWMonitorCellular;
-- (void)reportConnection:(id)a3 isInitialConnection:(BOOL)a4;
-- (void)reportConnectionUpdateWithRespCode:(unsigned __int16)a3;
-- (void)reportConnectionUpdateWithResponseCode:(unsigned __int16)a3 delay:(double)a4;
+- (void)reportConnection:(id)connection isInitialConnection:(BOOL)initialConnection;
+- (void)reportConnectionUpdateWithRespCode:(unsigned __int16)code;
+- (void)reportConnectionUpdateWithResponseCode:(unsigned __int16)code delay:(double)delay;
 - (void)reportLinkSuggestion;
-- (void)reportNoPacketUpdateUsingCurrentTime:(double)a3 lastReceivedPacketTime:(double)a4;
+- (void)reportNoPacketUpdateUsingCurrentTime:(double)time lastReceivedPacketTime:(double)packetTime;
 - (void)resetConnectionStatTimers;
 - (void)resetMediaHealthStats;
-- (void)setConnectionPause:(BOOL)a3 isLocalConnection:(BOOL)a4;
-- (void)setConnectionSelectionVersionWithLocalFrameworkVersion:(id)a3 remoteFrameworkVersion:(id)a4;
-- (void)setDefaultLinkProbingCapabilityVersionForDeviceRole:(int)a3;
-- (void)setDuplicationCallback:(void *)a3 withContext:(void *)a4;
-- (void)setDuplicationDownlinkCellBitrateCap:(unsigned int)a3 currentBitrate:(unsigned int)a4;
-- (void)setIsOneToOneModeEnabled:(BOOL)a3;
-- (void)setIsOneToOneScreenEnabled:(BOOL)a3;
-- (void)setIsRemoteMediaQualityDegraded:(BOOL)a3;
+- (void)setConnectionPause:(BOOL)pause isLocalConnection:(BOOL)connection;
+- (void)setConnectionSelectionVersionWithLocalFrameworkVersion:(id)version remoteFrameworkVersion:(id)frameworkVersion;
+- (void)setDefaultLinkProbingCapabilityVersionForDeviceRole:(int)role;
+- (void)setDuplicationCallback:(void *)callback withContext:(void *)context;
+- (void)setDuplicationDownlinkCellBitrateCap:(unsigned int)cap currentBitrate:(unsigned int)bitrate;
+- (void)setIsOneToOneModeEnabled:(BOOL)enabled;
+- (void)setIsOneToOneScreenEnabled:(BOOL)enabled;
+- (void)setIsRemoteMediaQualityDegraded:(BOOL)degraded;
 - (void)setNWMonitorCellularHandlers;
 - (void)setNWMonitorStatisticsHandler;
-- (void)setP2pEncryptionExperimentEnabled:(BOOL)a3;
-- (void)setPreferRelayOverP2P:(BOOL)a3 reason:(unsigned __int8)a4;
-- (void)setPreferRelayOverP2PEnabled:(BOOL)a3;
-- (void)setRemoteLinkProbingCapabilityVersion:(unsigned __int8)a3;
-- (void)setRemotePreWarmStateEnabled:(BOOL)a3;
-- (void)setReportingAgent:(opaqueRTCReporting *)a3;
-- (void)setStartConnectionHealthMonitoring:(BOOL)a3;
-- (void)setStatisticsCollector:(id)a3;
-- (void)setUseMediaDrivenDuplication:(BOOL)a3;
+- (void)setP2pEncryptionExperimentEnabled:(BOOL)enabled;
+- (void)setPreferRelayOverP2P:(BOOL)p reason:(unsigned __int8)reason;
+- (void)setPreferRelayOverP2PEnabled:(BOOL)enabled;
+- (void)setRemoteLinkProbingCapabilityVersion:(unsigned __int8)version;
+- (void)setRemotePreWarmStateEnabled:(BOOL)enabled;
+- (void)setReportingAgent:(opaqueRTCReporting *)agent;
+- (void)setStartConnectionHealthMonitoring:(BOOL)monitoring;
+- (void)setStatisticsCollector:(id)collector;
+- (void)setUseMediaDrivenDuplication:(BOOL)duplication;
 - (void)setupConnectionHealthMonitor;
 - (void)setupConnectionHealthMonitorMultiway;
 - (void)setupNetworkConditionMonitor;
@@ -86,22 +86,22 @@
 - (void)startBrokenNetworkDetection;
 - (void)stop;
 - (void)unregisterStatisticsHandlers;
-- (void)updateConnectionHealthWithVCStatisticsMessage:(tagVCStatisticsMessage *)a3;
-- (void)updateConnectionSelectionPolicyWithPreferE2E:(BOOL)a3;
-- (void)updateConnectionStatsWithIndicatorNoPacket:(id *)a3;
-- (void)updateConnectionStatsWithIndicatorNone:(id *)a3;
-- (void)updateConnectionStatsWithIndicatorOnlyPrimaryNoPacket:(id *)a3;
-- (void)updateConnectionStatsWithIndicatorPrimaryImproved:(id *)a3;
-- (void)updateDuplicationStateWithEventType:(unsigned __int8)a3;
-- (void)updateLinkPreferSuggestion:(id)a3;
-- (void)updateMediaDegradedHistoryWithCurrentAudioErasure:(double)a3 idsParticipantID:(id)a4;
-- (void)updateMediaDegradedHistoryWithCurrentVideoStallDuration:(double)a3 idsParticipantID:(id)a4;
-- (void)updateMediaDegradedHistoryWithValue:(double)a3 idsParticipantID:(id)a4;
-- (void)updateMediaHealthStats:(id *)a3 idsParticipantID:(id)a4;
+- (void)updateConnectionHealthWithVCStatisticsMessage:(tagVCStatisticsMessage *)message;
+- (void)updateConnectionSelectionPolicyWithPreferE2E:(BOOL)e;
+- (void)updateConnectionStatsWithIndicatorNoPacket:(id *)packet;
+- (void)updateConnectionStatsWithIndicatorNone:(id *)none;
+- (void)updateConnectionStatsWithIndicatorOnlyPrimaryNoPacket:(id *)packet;
+- (void)updateConnectionStatsWithIndicatorPrimaryImproved:(id *)improved;
+- (void)updateDuplicationStateWithEventType:(unsigned __int8)type;
+- (void)updateLinkPreferSuggestion:(id)suggestion;
+- (void)updateMediaDegradedHistoryWithCurrentAudioErasure:(double)erasure idsParticipantID:(id)d;
+- (void)updateMediaDegradedHistoryWithCurrentVideoStallDuration:(double)duration idsParticipantID:(id)d;
+- (void)updateMediaDegradedHistoryWithValue:(double)value idsParticipantID:(id)d;
+- (void)updateMediaHealthStats:(id *)stats idsParticipantID:(id)d;
 - (void)updateScreenShareRelaySetting;
 - (void)updateWRMDuplicationForHandover;
-- (void)updateWithRemoteMediaHealthDuplication:(BOOL)a3;
-- (void)useConnectionAsPrimary:(id)a3;
+- (void)updateWithRemoteMediaHealthDuplication:(BOOL)duplication;
+- (void)useConnectionAsPrimary:(id)primary;
 @end
 
 @implementation VCConnectionManager
@@ -274,7 +274,7 @@ LABEL_11:
         v22 = 2112;
         v23 = v3;
         v24 = 2048;
-        v25 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -330,7 +330,7 @@ LABEL_11:
   [(VCConnectionManager *)&v15 dealloc];
 }
 
-- (void)setStatisticsCollector:(id)a3
+- (void)setStatisticsCollector:(id)collector
 {
   block[6] = *MEMORY[0x1E69E9840];
   callbackQueue = self->_callbackQueue;
@@ -339,7 +339,7 @@ LABEL_11:
   block[2] = __46__VCConnectionManager_setStatisticsCollector___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = collector;
   dispatch_async(callbackQueue, block);
 }
 
@@ -683,11 +683,11 @@ uint64_t __49__VCConnectionManager_registerStatisticsHandlers__block_invoke_2(ui
   }
 }
 
-- (void)setPreferRelayOverP2PEnabled:(BOOL)a3
+- (void)setPreferRelayOverP2PEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v21 = *MEMORY[0x1E69E9840];
-  self->_preferRelayOverP2PEnabled |= a3;
+  self->_preferRelayOverP2PEnabled |= enabled;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v5 = VRTraceErrorLogLevelToCSTR();
@@ -705,7 +705,7 @@ uint64_t __49__VCConnectionManager_registerStatisticsHandlers__block_invoke_2(ui
       v15 = 1024;
       v16 = preferRelayOverP2PEnabled;
       v17 = 1024;
-      v18 = v3;
+      v18 = enabledCopy;
       v19 = 1024;
       v20 = dropLinkRecommendation;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d HandoverReport: _preferRelayOverP2PEnabled=%d preferRelayOverP2PEnabled=%d _dropLinkRecommendation=%d", &v9, 0x2Eu);
@@ -718,30 +718,30 @@ uint64_t __49__VCConnectionManager_registerStatisticsHandlers__block_invoke_2(ui
   }
 }
 
-- (void)setPreferRelayOverP2P:(BOOL)a3 reason:(unsigned __int8)a4
+- (void)setPreferRelayOverP2P:(BOOL)p reason:(unsigned __int8)reason
 {
-  v4 = a4;
+  reasonCopy = reason;
   v26 = *MEMORY[0x1E69E9840];
   preferRelayOverP2PReason = self->_preferRelayOverP2PReason;
-  v7 = preferRelayOverP2PReason | a4;
-  v8 = preferRelayOverP2PReason & ~a4;
-  if (a3)
+  v7 = preferRelayOverP2PReason | reason;
+  v8 = preferRelayOverP2PReason & ~reason;
+  if (p)
   {
     v8 = v7;
   }
 
   self->_preferRelayOverP2PReason = v8;
-  if (a4 == 4)
+  if (reason == 4)
   {
     if ((v8 & 3) == 0)
     {
-      self->_preferRelayOverP2PEnabled = a3;
+      self->_preferRelayOverP2PEnabled = p;
     }
   }
 
   else
   {
-    self->_preferRelayOverP2PEnabled |= a3;
+    self->_preferRelayOverP2PEnabled |= p;
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -769,17 +769,17 @@ uint64_t __49__VCConnectionManager_registerStatisticsHandlers__block_invoke_2(ui
     }
   }
 
-  if (v4 != 2 || !self->_dropLinkRecommendation)
+  if (reasonCopy != 2 || !self->_dropLinkRecommendation)
   {
     [(VCConnectionManager *)self checkAndUpdatePrimaryConnection];
   }
 }
 
-- (void)setIsOneToOneModeEnabled:(BOOL)a3
+- (void)setIsOneToOneModeEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v12 = *MEMORY[0x1E69E9840];
-  self->_isOneToOneModeEnabled = a3;
+  self->_isOneToOneModeEnabled = enabled;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v5 = VRTraceErrorLogLevelToCSTR();
@@ -791,7 +791,7 @@ uint64_t __49__VCConnectionManager_registerStatisticsHandlers__block_invoke_2(ui
       *&v8[4] = v5;
       *&v8[12] = 2080;
       *&v8[14] = "[VCConnectionManager setIsOneToOneModeEnabled:]";
-      if (v3)
+      if (enabledCopy)
       {
         v7 = "enabled";
       }
@@ -808,11 +808,11 @@ uint64_t __49__VCConnectionManager_registerStatisticsHandlers__block_invoke_2(ui
   [(VCConnectionManager *)self checkAndUpdatePrimaryConnection];
 }
 
-- (void)setIsOneToOneScreenEnabled:(BOOL)a3
+- (void)setIsOneToOneScreenEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v16 = *MEMORY[0x1E69E9840];
-  self->_isOneToOneScreenEnabled = a3;
+  self->_isOneToOneScreenEnabled = enabled;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v5 = VRTraceErrorLogLevelToCSTR();
@@ -824,7 +824,7 @@ uint64_t __49__VCConnectionManager_registerStatisticsHandlers__block_invoke_2(ui
       v8 = 136315906;
       v11 = "[VCConnectionManager setIsOneToOneScreenEnabled:]";
       v10 = 2080;
-      if (v3)
+      if (enabledCopy)
       {
         v7 = "enabled";
       }
@@ -839,20 +839,20 @@ uint64_t __49__VCConnectionManager_registerStatisticsHandlers__block_invoke_2(ui
 
   if (self->_shouldForceRelayLinksWhenScreenEnabled)
   {
-    [(VCConnectionSelector *)self->_connectionSelector setCanUseP2PLinks:v3 ^ 1];
-    self->_canUseP2PLinks = !v3;
-    [(VCConnectionManager *)self setPreferRelayOverP2P:v3 reason:4];
+    [(VCConnectionSelector *)self->_connectionSelector setCanUseP2PLinks:enabledCopy ^ 1];
+    self->_canUseP2PLinks = !enabledCopy;
+    [(VCConnectionManager *)self setPreferRelayOverP2P:enabledCopy reason:4];
     pthread_rwlock_wrlock(&self->_stateRWlock);
     VCConnectionManager_UpdateConnectionForDuplication(self);
     pthread_rwlock_unlock(&self->_stateRWlock);
   }
 }
 
-- (void)setStartConnectionHealthMonitoring:(BOOL)a3
+- (void)setStartConnectionHealthMonitoring:(BOOL)monitoring
 {
-  v3 = a3;
+  monitoringCopy = monitoring;
   v15 = *MEMORY[0x1E69E9840];
-  self->_startConnectionHealthMonitoring = a3;
+  self->_startConnectionHealthMonitoring = monitoring;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v5 = VRTraceErrorLogLevelToCSTR();
@@ -866,7 +866,7 @@ uint64_t __49__VCConnectionManager_registerStatisticsHandlers__block_invoke_2(ui
       v11 = 1024;
       v12 = 492;
       v13 = 1024;
-      v14 = v3;
+      v14 = monitoringCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d HandoverReport: startConnectionHealthMonitoring=%d", &v7, 0x22u);
     }
   }
@@ -915,9 +915,9 @@ uint64_t __49__VCConnectionManager_registerStatisticsHandlers__block_invoke_2(ui
   return v2;
 }
 
-- (void)setUseMediaDrivenDuplication:(BOOL)a3
+- (void)setUseMediaDrivenDuplication:(BOOL)duplication
 {
-  self->_useMediaDrivenDuplication = a3;
+  self->_useMediaDrivenDuplication = duplication;
   if ([(VCConnectionManager *)self useMediaDrivenDuplication])
   {
     [+[GKSConnectivitySettings getStorebagValueForStorebagKey:userDefaultKey:defaultValue:isDoubleType:](GKSConnectivitySettings getStorebagValueForStorebagKey:@"gk-p2p-media-degraded-threshold" userDefaultKey:@"mediaDegradedThreshold" defaultValue:&unk_1F5799D50 isDoubleType:{1), "doubleValue"}];
@@ -927,11 +927,11 @@ uint64_t __49__VCConnectionManager_registerStatisticsHandlers__block_invoke_2(ui
   [(VCConnectionManager *)self setupConnectionHealthMonitorMultiway];
 }
 
-- (void)setP2pEncryptionExperimentEnabled:(BOOL)a3
+- (void)setP2pEncryptionExperimentEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v15 = *MEMORY[0x1E69E9840];
-  self->_p2pEncryptionExperimentEnabled = a3;
+  self->_p2pEncryptionExperimentEnabled = enabled;
   pthread_rwlock_wrlock(&self->_stateRWlock);
   v11 = 0u;
   v12 = 0u;
@@ -952,7 +952,7 @@ uint64_t __49__VCConnectionManager_registerStatisticsHandlers__block_invoke_2(ui
           objc_enumerationMutation(connectionArray);
         }
 
-        [*(*(&v11 + 1) + 8 * i) setP2pEncryptionExperimentEnabled:v3];
+        [*(*(&v11 + 1) + 8 * i) setP2pEncryptionExperimentEnabled:enabledCopy];
       }
 
       v7 = [(NSMutableArray *)connectionArray countByEnumeratingWithState:&v11 objects:v10 count:16];
@@ -1011,10 +1011,10 @@ uint64_t __49__VCConnectionManager_registerStatisticsHandlers__block_invoke_2(ui
   }
 }
 
-- (void)periodicTask:(void *)a3
+- (void)periodicTask:(void *)task
 {
   v61 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (task)
   {
     if (self->_nwMonitor && !self->_ignoreNWConnectionMonitorNotification)
     {
@@ -1035,29 +1035,29 @@ uint64_t __49__VCConnectionManager_registerStatisticsHandlers__block_invoke_2(ui
       qualityScoreLossTxAverage = self->_lastWiFiNWStatistics.var0.wifi.qualityScoreLossTxAverage;
       qualityScoreChannelAverage = self->_lastWiFiNWStatistics.var0.wifi.qualityScoreChannelAverage;
       *&v3 = offChannelTimeRatio;
-      [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v3), @"NWOffChannel"}];
-      [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", btCoex), @"NWBtCoex"}];
-      [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", frequencyBand), @"NWFreqBand"}];
-      [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", maxRadioCoex), @"NWRadioCoexMax"}];
+      [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v3), @"NWOffChannel"}];
+      [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", btCoex), @"NWBtCoex"}];
+      [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", frequencyBand), @"NWFreqBand"}];
+      [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", maxRadioCoex), @"NWRadioCoexMax"}];
       v28 = accumulatedOffChannelTime;
-      [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", accumulatedOffChannelTime), @"NWOffChannelTime"}];
+      [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", accumulatedOffChannelTime), @"NWOffChannelTime"}];
       v29 = maxSingleOutagePeriod;
-      [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedShort:", maxSingleOutagePeriod), @"NWOutagePeriodMax"}];
-      [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", qualityScoreDelayRx), @"NWQualityDelayRx"}];
-      [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", qualityScoreDelayTx), @"NWQualityDelayTx"}];
-      [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", qualityScoreLossRx), @"NWQualityLossRx"}];
-      [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", qualityScoreLossTx), @"NWQualityLossTx"}];
-      [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:"), @"NWQualityChannel"}];
+      [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedShort:", maxSingleOutagePeriod), @"NWOutagePeriodMax"}];
+      [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", qualityScoreDelayRx), @"NWQualityDelayRx"}];
+      [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", qualityScoreDelayTx), @"NWQualityDelayTx"}];
+      [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", qualityScoreLossRx), @"NWQualityLossRx"}];
+      [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", qualityScoreLossTx), @"NWQualityLossTx"}];
+      [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:"), @"NWQualityChannel"}];
       *&v19 = qualityScoreDelayRxAverage;
-      [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v19), @"NWQualityDelayRxAvg"}];
+      [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v19), @"NWQualityDelayRxAvg"}];
       *&v20 = qualityScoreDelayTxAverage;
-      [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v20), @"NWQualityDelayTxAvg"}];
+      [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v20), @"NWQualityDelayTxAvg"}];
       *&v21 = qualityScoreLossRxAverage;
-      [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v21), @"NWQualityLossRxAvg"}];
+      [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v21), @"NWQualityLossRxAvg"}];
       *&v22 = qualityScoreLossTxAverage;
-      [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v22), @"NWQualityLossTxAvg"}];
+      [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v22), @"NWQualityLossTxAvg"}];
       *&v23 = qualityScoreChannelAverage;
-      [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v23), @"NWQualityChannelAvg"}];
+      [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v23), @"NWQualityChannelAvg"}];
       if (VRTraceGetErrorLogLevelForModule() >= 6)
       {
         v24 = VRTraceErrorLogLevelToCSTR();
@@ -1109,22 +1109,22 @@ uint64_t __49__VCConnectionManager_registerStatisticsHandlers__block_invoke_2(ui
     v33 = *&buf[16] - self->_lastReceivedReportingStats.totalUplinkIngressPackets;
     v35 = *buf - self->_lastReceivedReportingStats.totalDownlinkIngressMediaPackets;
     v34 = *&buf[8] - self->_lastReceivedReportingStats.totalDownlinkEgressMediaPackets;
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", *&buf[24] - self->_lastReceivedReportingStats.totalUplinkEgressPackets), @"VTPUplinkEgressPkts"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", v33), @"VTPUplinkIngressPkts"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", v35), @"VTPDownlinkIngressMediaPkts"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", v34), @"VTPDownlinkEgressMediaPkts"}];
-    [(VCConnectionManager *)self reportPathMTU:a3];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", *&buf[24] - self->_lastReceivedReportingStats.totalUplinkEgressPackets), @"VTPUplinkEgressPkts"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", v33), @"VTPUplinkIngressPkts"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", v35), @"VTPDownlinkIngressMediaPkts"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", v34), @"VTPDownlinkEgressMediaPkts"}];
+    [(VCConnectionManager *)self reportPathMTU:task];
     v27 = *buf;
     *&self->_lastReceivedReportingStats.totalUplinkIngressPackets = *&buf[16];
     *&self->_lastReceivedReportingStats.totalDownlinkIngressMediaPackets = v27;
   }
 }
 
-- (void)setReportingAgent:(opaqueRTCReporting *)a3
+- (void)setReportingAgent:(opaqueRTCReporting *)agent
 {
-  if (a3)
+  if (agent)
   {
-    CFRetain(a3);
+    CFRetain(agent);
   }
 
   pthread_rwlock_wrlock(&self->_stateRWlock);
@@ -1139,10 +1139,10 @@ uint64_t __49__VCConnectionManager_registerStatisticsHandlers__block_invoke_2(ui
     reportingAgent = 0;
   }
 
-  self->_reportingAgent = a3;
-  if (a3)
+  self->_reportingAgent = agent;
+  if (agent)
   {
-    CFRetain(a3);
+    CFRetain(agent);
   }
 
   if (reportingAgent)
@@ -1150,9 +1150,9 @@ uint64_t __49__VCConnectionManager_registerStatisticsHandlers__block_invoke_2(ui
     CFRelease(reportingAgent);
   }
 
-  if (a3)
+  if (agent)
   {
-    CFRelease(a3);
+    CFRelease(agent);
   }
 
   [(VCConnectionManager *)self registerPeriodicTask];
@@ -1160,11 +1160,11 @@ uint64_t __49__VCConnectionManager_registerStatisticsHandlers__block_invoke_2(ui
   pthread_rwlock_unlock(&self->_stateRWlock);
 }
 
-- (void)setConnectionSelectionVersionWithLocalFrameworkVersion:(id)a3 remoteFrameworkVersion:(id)a4
+- (void)setConnectionSelectionVersionWithLocalFrameworkVersion:(id)version remoteFrameworkVersion:(id)frameworkVersion
 {
   v25 = *MEMORY[0x1E69E9840];
   v7 = [(VCConnectionManager *)self getConnectionSelectionVersionFromFrameworkVersion:?];
-  v8 = [(VCConnectionManager *)self getConnectionSelectionVersionFromFrameworkVersion:a4];
+  v8 = [(VCConnectionManager *)self getConnectionSelectionVersionFromFrameworkVersion:frameworkVersion];
   if (v7 >= v8)
   {
     v9 = v8;
@@ -1192,16 +1192,16 @@ uint64_t __49__VCConnectionManager_registerStatisticsHandlers__block_invoke_2(ui
       v19 = 1024;
       v20 = connectionSelectionVersion;
       v21 = 2112;
-      v22 = a3;
+      versionCopy = version;
       v23 = 2112;
-      v24 = a4;
+      frameworkVersionCopy = frameworkVersion;
       _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d HandoverReport: setting connection selection version=%d localFrameworkVersion=%@ remoteFrameworkVersion=%@", &v13, 0x36u);
     }
   }
 
   [(VCConnectionManager *)self updateScreenShareRelaySetting];
   [(VCConnectionManager *)self updateConnectionSelectionPolicyWithPreferE2E:self->_isOneToOneModeEnabled];
-  [(VCDuplicationHandler *)self->_duplicationHandler setIsRemotePreAzul:[(VCConnectionManager *)self getConnectionSelectionVersionFromFrameworkVersion:a4]< 3];
+  [(VCDuplicationHandler *)self->_duplicationHandler setIsRemotePreAzul:[(VCConnectionManager *)self getConnectionSelectionVersionFromFrameworkVersion:frameworkVersion]< 3];
   [(VCConnectionManager *)self checkAndUpdatePrimaryConnection];
 }
 
@@ -1290,7 +1290,7 @@ LABEL_3:
   }
 }
 
-- (void)setDuplicationCallback:(void *)a3 withContext:(void *)a4
+- (void)setDuplicationCallback:(void *)callback withContext:(void *)context
 {
   v5[7] = *MEMORY[0x1E69E9840];
   callbackQueue = self->_callbackQueue;
@@ -1299,8 +1299,8 @@ LABEL_3:
   v5[2] = __58__VCConnectionManager_setDuplicationCallback_withContext___block_invoke;
   v5[3] = &unk_1E85F4090;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = callback;
+  v5[6] = context;
   dispatch_async(callbackQueue, v5);
 }
 
@@ -1311,21 +1311,21 @@ void *__58__VCConnectionManager_setDuplicationCallback_withContext___block_invok
   return result;
 }
 
-- (void)setConnectionPause:(BOOL)a3 isLocalConnection:(BOOL)a4
+- (void)setConnectionPause:(BOOL)pause isLocalConnection:(BOOL)connection
 {
-  v4 = a4;
-  v5 = a3;
+  connectionCopy = connection;
+  pauseCopy = pause;
   v23 = *MEMORY[0x1E69E9840];
   v7 = micro();
   pthread_rwlock_wrlock(&self->_stateRWlock);
   v8 = 576;
-  if (v4)
+  if (connectionCopy)
   {
     v8 = 528;
   }
 
   v9 = self + v8;
-  if (!v5 && v9[40] == 1)
+  if (!pauseCopy && v9[40] == 1)
   {
     v10 = 0.0;
     if (self->_startConnectionHealthMonitoring)
@@ -1339,7 +1339,7 @@ void *__58__VCConnectionManager_setDuplicationCallback_withContext___block_invok
     self->_remoteConnectionStats.lastReceivedPacketOnPrimaryTime = v10;
   }
 
-  v9[40] = v5;
+  v9[40] = pauseCopy;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v11 = VRTraceErrorLogLevelToCSTR();
@@ -1353,9 +1353,9 @@ void *__58__VCConnectionManager_setDuplicationCallback_withContext___block_invok
       v17 = 1024;
       v18 = 759;
       v19 = 1024;
-      v20 = v4;
+      v20 = connectionCopy;
       v21 = 1024;
-      v22 = v5;
+      v22 = pauseCopy;
       _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d local? %d, audio paused? %d", &v13, 0x28u);
     }
   }
@@ -1363,19 +1363,19 @@ void *__58__VCConnectionManager_setDuplicationCallback_withContext___block_invok
   pthread_rwlock_unlock(&self->_stateRWlock);
 }
 
-- (void)copyPersistenPacketCounts:(unsigned int *)a3 isOutgoing:(BOOL)a4 size:(int)a5
+- (void)copyPersistenPacketCounts:(unsigned int *)counts isOutgoing:(BOOL)outgoing size:(int)size
 {
-  if (a5 == 256)
+  if (size == 256)
   {
-    v5 = a4;
+    outgoingCopy = outgoing;
     pthread_rwlock_wrlock(&self->_stateRWlock);
     v8 = 1888;
-    if (v5)
+    if (outgoingCopy)
     {
       v8 = 864;
     }
 
-    memcpy(a3, self + v8, 0x400uLL);
+    memcpy(counts, self + v8, 0x400uLL);
 
     pthread_rwlock_unlock(&self->_stateRWlock);
   }
@@ -1386,7 +1386,7 @@ void *__58__VCConnectionManager_setDuplicationCallback_withContext___block_invok
   }
 }
 
-- (int)setWRMUpdateCallback:(void *)a3 requestNotificationCallback:(void *)a4 withContext:(void *)a5 completionHandler:(id)a6
+- (int)setWRMUpdateCallback:(void *)callback requestNotificationCallback:(void *)notificationCallback withContext:(void *)context completionHandler:(id)handler
 {
   v8[9] = *MEMORY[0x1E69E9840];
   callbackQueue = self->_callbackQueue;
@@ -1394,11 +1394,11 @@ void *__58__VCConnectionManager_setDuplicationCallback_withContext___block_invok
   v8[1] = 3221225472;
   v8[2] = __102__VCConnectionManager_setWRMUpdateCallback_requestNotificationCallback_withContext_completionHandler___block_invoke;
   v8[3] = &unk_1E85F6BD0;
-  v8[6] = a3;
-  v8[7] = a4;
-  v8[8] = a5;
+  v8[6] = callback;
+  v8[7] = notificationCallback;
+  v8[8] = context;
   v8[4] = self;
-  v8[5] = a6;
+  v8[5] = handler;
   dispatch_async(callbackQueue, v8);
   return 0;
 }
@@ -1417,12 +1417,12 @@ uint64_t __102__VCConnectionManager_setWRMUpdateCallback_requestNotificationCall
   return result;
 }
 
-- (void)setRemotePreWarmStateEnabled:(BOOL)a3
+- (void)setRemotePreWarmStateEnabled:(BOOL)enabled
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_remotePreWarmStateEnabled != a3)
+  if (self->_remotePreWarmStateEnabled != enabled)
   {
-    self->_remotePreWarmStateEnabled = a3;
+    self->_remotePreWarmStateEnabled = enabled;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v4 = VRTraceErrorLogLevelToCSTR();
@@ -1460,10 +1460,10 @@ uint64_t __102__VCConnectionManager_setWRMUpdateCallback_requestNotificationCall
   }
 }
 
-- (void)setIsRemoteMediaQualityDegraded:(BOOL)a3
+- (void)setIsRemoteMediaQualityDegraded:(BOOL)degraded
 {
   v15 = *MEMORY[0x1E69E9840];
-  self->_isRemoteMediaQualityDegraded = a3;
+  self->_isRemoteMediaQualityDegraded = degraded;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v4 = VRTraceErrorLogLevelToCSTR();
@@ -1501,9 +1501,9 @@ uint64_t __102__VCConnectionManager_setWRMUpdateCallback_requestNotificationCall
     isOneToOneModeEnabled = self->_isOneToOneModeEnabled;
     if (!v3 && isOneToOneModeEnabled)
     {
-      v8 = [(VCWRMHandler *)self->_wrmHandler isRemoteDuplicating];
-      self->_isDuplicationAllowed = v8;
-      if (v8)
+      isRemoteDuplicating = [(VCWRMHandler *)self->_wrmHandler isRemoteDuplicating];
+      self->_isDuplicationAllowed = isRemoteDuplicating;
+      if (isRemoteDuplicating)
       {
         return 1;
       }
@@ -1526,10 +1526,10 @@ uint64_t __102__VCConnectionManager_setWRMUpdateCallback_requestNotificationCall
   return 1;
 }
 
-- (void)setDuplicationDownlinkCellBitrateCap:(unsigned int)a3 currentBitrate:(unsigned int)a4
+- (void)setDuplicationDownlinkCellBitrateCap:(unsigned int)cap currentBitrate:(unsigned int)bitrate
 {
-  self->_downlinkTargetCellBitrateCap = a3;
-  self->_downlinkTargetBitrate = a4;
+  self->_downlinkTargetCellBitrateCap = cap;
+  self->_downlinkTargetBitrate = bitrate;
   [(VCConnectionManager *)self checkForCachedWRMNotification];
 }
 
@@ -1543,7 +1543,7 @@ uint64_t __102__VCConnectionManager_setWRMUpdateCallback_requestNotificationCall
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
       isWRMNotificationPending = self->_isWRMNotificationPending;
-      v6 = [(VCConnectionManager *)self isDuplicationAllowed];
+      isDuplicationAllowed = [(VCConnectionManager *)self isDuplicationAllowed];
       isUserMoving = self->_isUserMoving;
       v17 = 136316418;
       v18 = v3;
@@ -1554,7 +1554,7 @@ uint64_t __102__VCConnectionManager_setWRMUpdateCallback_requestNotificationCall
       v23 = 1024;
       v24 = isWRMNotificationPending;
       v25 = 1024;
-      v26 = v6;
+      v26 = isDuplicationAllowed;
       v27 = 1024;
       v28 = isUserMoving;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Checking for cached WRM notification _isWRMNotificationPending=%d isDuplicationAllowed=%d _isUserMoving=%d", &v17, 0x2Eu);
@@ -1605,9 +1605,9 @@ uint64_t __102__VCConnectionManager_setWRMUpdateCallback_requestNotificationCall
   }
 }
 
-- (int)processRemoteWRMSuggestion:(int)a3 isRemoteDuplicating:(BOOL)a4
+- (int)processRemoteWRMSuggestion:(int)suggestion isRemoteDuplicating:(BOOL)duplicating
 {
-  v4 = a4;
+  duplicatingCopy = duplicating;
   v7 = [VCWRMHandler processRemoteWRMSuggestion:"processRemoteWRMSuggestion:isRemoteDuplicating:" isRemoteDuplicating:?];
   if (!v7)
   {
@@ -1617,16 +1617,16 @@ uint64_t __102__VCConnectionManager_setWRMUpdateCallback_requestNotificationCall
   if (v7 == 3)
   {
     pthread_rwlock_wrlock(&self->_stateRWlock);
-    v8 = [(VCWRMHandler *)self->_wrmHandler remoteWRMLinkTypeSuggestion];
+    remoteWRMLinkTypeSuggestion = [(VCWRMHandler *)self->_wrmHandler remoteWRMLinkTypeSuggestion];
     v9 = 0x10000;
-    if (!v4)
+    if (!duplicatingCopy)
     {
       v9 = 0;
     }
 
-    v10 = v9 | ((a3 != 0) << 40);
+    v10 = v9 | ((suggestion != 0) << 40);
     v11 = 6;
-    if (v8 == 1)
+    if (remoteWRMLinkTypeSuggestion == 1)
     {
       v11 = 7;
     }
@@ -1650,14 +1650,14 @@ uint64_t __102__VCConnectionManager_setWRMUpdateCallback_requestNotificationCall
   return NumberOfConnectionsInternal;
 }
 
-- (void)getSentBytes:(int64_t *)a3 receivedBytes:(int64_t *)a4
+- (void)getSentBytes:(int64_t *)bytes receivedBytes:(int64_t *)receivedBytes
 {
-  if (a3 && a4)
+  if (bytes && receivedBytes)
   {
-    if ((self->_initialSentBytes & 0x8000000000000000) == 0 && !VTP_GetSendRecvStats(a3, a4))
+    if ((self->_initialSentBytes & 0x8000000000000000) == 0 && !VTP_GetSendRecvStats(bytes, receivedBytes))
     {
-      *a3 -= self->_initialSentBytes;
-      *a4 -= self->_initialReceivedBytes;
+      *bytes -= self->_initialSentBytes;
+      *receivedBytes -= self->_initialReceivedBytes;
     }
   }
 
@@ -1671,42 +1671,42 @@ uint64_t __102__VCConnectionManager_setWRMUpdateCallback_requestNotificationCall
   }
 }
 
-- (int)getConnectionTypeForActiveConnectionWithQuality:(int)a3 forLocalInterface:(BOOL)a4
+- (int)getConnectionTypeForActiveConnectionWithQuality:(int)quality forLocalInterface:(BOOL)interface
 {
-  v4 = a4;
-  v5 = VCConnectionManager_CopyConnectionForQuality(self, a3);
+  interfaceCopy = interface;
+  v5 = VCConnectionManager_CopyConnectionForQuality(self, quality);
   if (!v5)
   {
     return -1;
   }
 
   v6 = v5;
-  if (v4)
+  if (interfaceCopy)
   {
-    v7 = [v5 localConnectionType];
+    localConnectionType = [v5 localConnectionType];
   }
 
   else
   {
-    v7 = [v5 remoteConnectionType];
+    localConnectionType = [v5 remoteConnectionType];
   }
 
-  v8 = v7;
+  v8 = localConnectionType;
   CFRelease(v6);
   return v8;
 }
 
-- (int)getCellularTechForActiveConnectionWithQuality:(int)a3 forLocalInterface:(BOOL)a4
+- (int)getCellularTechForActiveConnectionWithQuality:(int)quality forLocalInterface:(BOOL)interface
 {
-  v4 = a4;
-  v5 = VCConnectionManager_CopyConnectionForQuality(self, a3);
+  interfaceCopy = interface;
+  v5 = VCConnectionManager_CopyConnectionForQuality(self, quality);
   if (!v5)
   {
     return 0;
   }
 
   v6 = v5;
-  if (v4)
+  if (interfaceCopy)
   {
     v7 = VCConnection_LocalCellTech(v5);
   }
@@ -1721,21 +1721,21 @@ uint64_t __102__VCConnectionManager_setWRMUpdateCallback_requestNotificationCall
   return v8;
 }
 
-- (int)getCellularMTUForActiveConnectionWithQuality:(int)a3
+- (int)getCellularMTUForActiveConnectionWithQuality:(int)quality
 {
-  v3 = VCConnectionManager_CopyConnectionForQuality(self, a3);
-  v4 = [v3 connectionMTU];
+  v3 = VCConnectionManager_CopyConnectionForQuality(self, quality);
+  connectionMTU = [v3 connectionMTU];
   if (v3)
   {
     CFRelease(v3);
   }
 
-  return v4;
+  return connectionMTU;
 }
 
-- (BOOL)isConnectedOnIPv6ForActiveConnectionWithQuality:(int)a3
+- (BOOL)isConnectedOnIPv6ForActiveConnectionWithQuality:(int)quality
 {
-  v3 = VCConnectionManager_CopyConnectionForQuality(self, a3);
+  v3 = VCConnectionManager_CopyConnectionForQuality(self, quality);
   IsIPv6 = VCConnection_IsIPv6(v3);
   if (v3)
   {
@@ -1745,9 +1745,9 @@ uint64_t __102__VCConnectionManager_setWRMUpdateCallback_requestNotificationCall
   return IsIPv6;
 }
 
-- (BOOL)isConnectedOnRelayForActiveConnectionWithQuality:(int)a3
+- (BOOL)isConnectedOnRelayForActiveConnectionWithQuality:(int)quality
 {
-  v3 = VCConnectionManager_CopyConnectionForQuality(self, a3);
+  v3 = VCConnectionManager_CopyConnectionForQuality(self, quality);
   IsRelay = VCConnection_IsRelay(v3);
   if (v3)
   {
@@ -1757,7 +1757,7 @@ uint64_t __102__VCConnectionManager_setWRMUpdateCallback_requestNotificationCall
   return IsRelay;
 }
 
-- (void)addMediaHealthStatsHistoryEntryForParticipantID:(id)a3
+- (void)addMediaHealthStatsHistoryEntryForParticipantID:(id)d
 {
   if ([(NSMutableDictionary *)self->_mediaDegradedHistories objectForKeyedSubscript:?])
   {
@@ -1773,24 +1773,24 @@ uint64_t __102__VCConnectionManager_setWRMUpdateCallback_requestNotificationCall
 
   else
   {
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_mediaDegradedHistories, "setObject:forKeyedSubscript:", [MEMORY[0x1E695DF70] arrayWithArray:&unk_1F579D068], a3);
-    [(NSMutableDictionary *)self->_mediaDegradedHistoryIndices setObject:&unk_1F5799D08 forKeyedSubscript:a3];
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_mediaDegradedHistories, "setObject:forKeyedSubscript:", [MEMORY[0x1E695DF70] arrayWithArray:&unk_1F579D068], d);
+    [(NSMutableDictionary *)self->_mediaDegradedHistoryIndices setObject:&unk_1F5799D08 forKeyedSubscript:d];
     aggregateStallTimeDuration = self->_aggregateStallTimeDuration;
 
-    [(NSMutableDictionary *)aggregateStallTimeDuration setObject:&unk_1F579E430 forKeyedSubscript:a3];
+    [(NSMutableDictionary *)aggregateStallTimeDuration setObject:&unk_1F579E430 forKeyedSubscript:d];
   }
 }
 
-- (void)removeMediaHealthStatsHistoryEntryForParticipantID:(id)a3
+- (void)removeMediaHealthStatsHistoryEntryForParticipantID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
   if ([(NSMutableDictionary *)self->_mediaDegradedHistories objectForKeyedSubscript:?])
   {
-    [(NSMutableDictionary *)self->_mediaDegradedHistories removeObjectForKey:a3];
-    [(NSMutableDictionary *)self->_mediaDegradedHistoryIndices removeObjectForKey:a3];
+    [(NSMutableDictionary *)self->_mediaDegradedHistories removeObjectForKey:d];
+    [(NSMutableDictionary *)self->_mediaDegradedHistoryIndices removeObjectForKey:d];
     aggregateStallTimeDuration = self->_aggregateStallTimeDuration;
 
-    [(NSMutableDictionary *)aggregateStallTimeDuration removeObjectForKey:a3];
+    [(NSMutableDictionary *)aggregateStallTimeDuration removeObjectForKey:d];
   }
 
   else if (VRTraceGetErrorLogLevelForModule() >= 8)
@@ -1809,7 +1809,7 @@ uint64_t __102__VCConnectionManager_setWRMUpdateCallback_requestNotificationCall
         v13 = 1024;
         v14 = 1499;
         v15 = 2112;
-        v16 = a3;
+        dCopy = d;
         _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d idsParticipantID %@ is not yet added to mediaDegradedHistories!", &v9, 0x26u);
       }
     }
@@ -1821,10 +1821,10 @@ uint64_t __102__VCConnectionManager_setWRMUpdateCallback_requestNotificationCall
   }
 }
 
-- (void)duplicationStateUpdateWithEvent:(id)a3
+- (void)duplicationStateUpdateWithEvent:(id)event
 {
-  v3 = *&a3.var8;
-  v4 = *&a3.var0;
+  v3 = *&event.var8;
+  v4 = *&event.var0;
   v11 = *MEMORY[0x1E69E9840];
   pthread_rwlock_wrlock(&self->_stateRWlock);
   updated = VCDuplicationHandler_HandleDuplicationStateUpdateEvent(self->_duplicationHandler, v4, v3);
@@ -1833,7 +1833,7 @@ uint64_t __102__VCConnectionManager_setWRMUpdateCallback_requestNotificationCall
     VCConnectionManager_SetDuplicationEnabledInternal(self, [(VCConnectionManager *)self isDuplicationEnabled]);
     if ((updated & 0x100) != 0)
     {
-      v7 = [(VCConnectionManager *)self isDuplicationEnabled];
+      isDuplicationEnabled = [(VCConnectionManager *)self isDuplicationEnabled];
       delegateQueue = self->_delegateQueue;
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
@@ -1841,7 +1841,7 @@ uint64_t __102__VCConnectionManager_setWRMUpdateCallback_requestNotificationCall
       v9[3] = &unk_1E85F4180;
       v9[4] = self;
       v9[5] = updated;
-      v10 = v7;
+      v10 = isDuplicationEnabled;
       dispatch_async(delegateQueue, v9);
     }
   }
@@ -1860,9 +1860,9 @@ uint64_t __55__VCConnectionManager_duplicationStateUpdateWithEvent___block_invok
   return [v2 didUpdatePreferredInterfaceForDuplication:v3 notifyPeer:v4 enableDuplication:v5 isMediaUnrecoverableSignal:1];
 }
 
-- (void)aggregateStallTimeDuration:(id *)a3 idsParticipantID:(id)a4
+- (void)aggregateStallTimeDuration:(id *)duration idsParticipantID:(id)d
 {
-  if (a3->var3 <= 0.0)
+  if (duration->var3 <= 0.0)
   {
     aggregateStallTimeDuration = self->_aggregateStallTimeDuration;
     v6 = &unk_1F579E430;
@@ -1874,10 +1874,10 @@ uint64_t __55__VCConnectionManager_duplicationStateUpdateWithEvent___block_invok
     aggregateStallTimeDuration = self->_aggregateStallTimeDuration;
   }
 
-  [(NSMutableDictionary *)aggregateStallTimeDuration setObject:v6 forKeyedSubscript:a4];
+  [(NSMutableDictionary *)aggregateStallTimeDuration setObject:v6 forKeyedSubscript:d];
 }
 
-- (void)checkMediaQualityDegradedForParticipantID:(id)a3
+- (void)checkMediaQualityDegradedForParticipantID:(id)d
 {
   v24 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1886,7 +1886,7 @@ uint64_t __55__VCConnectionManager_duplicationStateUpdateWithEvent___block_invok
     v6 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      [-[NSMutableDictionary objectForKeyedSubscript:](self->_aggregateStallTimeDuration objectForKeyedSubscript:{a3), "doubleValue"}];
+      [-[NSMutableDictionary objectForKeyedSubscript:](self->_aggregateStallTimeDuration objectForKeyedSubscript:{d), "doubleValue"}];
       mediaDegradedThreshold = self->_mediaDegradedThreshold;
       *buf = 136316162;
       v15 = v5;
@@ -1902,7 +1902,7 @@ uint64_t __55__VCConnectionManager_duplicationStateUpdateWithEvent___block_invok
     }
   }
 
-  [-[NSMutableDictionary objectForKeyedSubscript:](self->_aggregateStallTimeDuration objectForKeyedSubscript:{a3), "doubleValue"}];
+  [-[NSMutableDictionary objectForKeyedSubscript:](self->_aggregateStallTimeDuration objectForKeyedSubscript:{d), "doubleValue"}];
   if (v9 <= self->_mediaDegradedThreshold)
   {
     if (self->_isDuplicationAllowedForMediaDegraded)
@@ -1950,10 +1950,10 @@ uint64_t __65__VCConnectionManager_checkMediaQualityDegradedForParticipantID___b
   return [v1 didMediaQualityDegrade:0];
 }
 
-- (void)updateMediaHealthStats:(id *)a3 idsParticipantID:(id)a4
+- (void)updateMediaHealthStats:(id *)stats idsParticipantID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  if ([(NSMutableDictionary *)self->_mediaDegradedHistories objectForKeyedSubscript:a4])
+  if ([(NSMutableDictionary *)self->_mediaDegradedHistories objectForKeyedSubscript:d])
   {
     if ([(VCConnectionManager *)self useMediaDrivenDuplication])
     {
@@ -1963,22 +1963,22 @@ uint64_t __65__VCConnectionManager_checkMediaQualityDegradedForParticipantID___b
         self->_resetMediaHealthStats = 0;
       }
 
-      var1 = a3->var1;
+      var1 = stats->var1;
       self->_isVideoExpected = var1;
       if (var1)
       {
-        [(VCConnectionManager *)self updateMediaDegradedHistoryWithCurrentVideoStallDuration:a4 idsParticipantID:a3->var2];
-        [(VCConnectionManager *)self aggregateStallTimeDuration:a3 idsParticipantID:a4];
+        [(VCConnectionManager *)self updateMediaDegradedHistoryWithCurrentVideoStallDuration:d idsParticipantID:stats->var2];
+        [(VCConnectionManager *)self aggregateStallTimeDuration:stats idsParticipantID:d];
       }
 
       if (self->_isOneToOneModeEnabled)
       {
         lastTransitionToFECTime = self->_lastTransitionToFECTime;
-        if (lastTransitionToFECTime == 0.0 || a3->var0 - lastTransitionToFECTime <= self->_mediaDegradedThreshold || ([-[NSMutableDictionary objectForKeyedSubscript:](self->_aggregateStallTimeDuration objectForKeyedSubscript:{a4), "doubleValue"}], v9 <= self->_mediaDegradedThreshold))
+        if (lastTransitionToFECTime == 0.0 || stats->var0 - lastTransitionToFECTime <= self->_mediaDegradedThreshold || ([-[NSMutableDictionary objectForKeyedSubscript:](self->_aggregateStallTimeDuration objectForKeyedSubscript:{d), "doubleValue"}], v9 <= self->_mediaDegradedThreshold))
         {
-          if (a3->var1)
+          if (stats->var1)
           {
-            if (a3->var3 != 0.0)
+            if (stats->var3 != 0.0)
             {
               return;
             }
@@ -1989,25 +1989,25 @@ uint64_t __65__VCConnectionManager_checkMediaQualityDegradedForParticipantID___b
             return;
           }
 
-          v10 = self;
+          selfCopy2 = self;
           v11 = 15;
         }
 
         else
         {
-          v10 = self;
+          selfCopy2 = self;
           v11 = 14;
         }
 
-        [(VCConnectionManager *)v10 duplicationStateUpdateWithEvent:v11, 0];
+        [(VCConnectionManager *)selfCopy2 duplicationStateUpdateWithEvent:v11, 0];
       }
     }
 
     else if (self->_isOneToOneModeEnabled)
     {
-      [(VCConnectionManager *)self aggregateStallTimeDuration:a3 idsParticipantID:a4];
+      [(VCConnectionManager *)self aggregateStallTimeDuration:stats idsParticipantID:d];
 
-      [(VCConnectionManager *)self checkMediaQualityDegradedForParticipantID:a4];
+      [(VCConnectionManager *)self checkMediaQualityDegradedForParticipantID:d];
     }
 
     else if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -2037,30 +2037,30 @@ uint64_t __65__VCConnectionManager_checkMediaQualityDegradedForParticipantID___b
   }
 }
 
-- (void)updateMediaDegradedHistoryWithValue:(double)a3 idsParticipantID:(id)a4
+- (void)updateMediaDegradedHistoryWithValue:(double)value idsParticipantID:(id)d
 {
-  if (a3 >= 0.0)
+  if (value >= 0.0)
   {
     v8 = ([-[NSMutableDictionary objectForKeyedSubscript:](self->_mediaDegradedHistoryIndices "objectForKeyedSubscript:"intValue"")] + 1) % 5;
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_mediaDegradedHistoryIndices, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInt:v8], a4);
-    v9 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-    v10 = [(NSMutableDictionary *)self->_mediaDegradedHistories objectForKeyedSubscript:a4];
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_mediaDegradedHistoryIndices, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInt:v8], d);
+    v9 = [MEMORY[0x1E696AD98] numberWithDouble:value];
+    v10 = [(NSMutableDictionary *)self->_mediaDegradedHistories objectForKeyedSubscript:d];
 
     [v10 setObject:v9 atIndexedSubscript:v8];
   }
 }
 
-- (BOOL)isDuplicationAllowedForParticipantID:(id)a3 bucketsToSum:(int)a4 threshold:(double)a5
+- (BOOL)isDuplicationAllowedForParticipantID:(id)d bucketsToSum:(int)sum threshold:(double)threshold
 {
   v27 = *MEMORY[0x1E69E9840];
-  if ((a4 - 6) > 0xFFFFFFFA)
+  if ((sum - 6) > 0xFFFFFFFA)
   {
-    v9 = a4;
+    sumCopy = sum;
   }
 
   else
   {
-    v9 = 5;
+    sumCopy = 5;
     if (VRTraceGetErrorLogLevelForModule() >= 5)
     {
       v10 = VRTraceErrorLogLevelToCSTR();
@@ -2074,7 +2074,7 @@ uint64_t __65__VCConnectionManager_checkMediaQualityDegradedForParticipantID___b
         v21 = 1024;
         v22 = 1610;
         v23 = 1024;
-        v24 = a4;
+        sumCopy2 = sum;
         v25 = 1024;
         v26 = 5;
         _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Invalid bucketsToSum %d, defaulting to %d", &v17, 0x28u);
@@ -2082,31 +2082,31 @@ uint64_t __65__VCConnectionManager_checkMediaQualityDegradedForParticipantID___b
     }
   }
 
-  v12 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_mediaDegradedHistoryIndices objectForKeyedSubscript:{a3), "intValue"}] % 5;
-  v13 = v9 + 1;
+  v12 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_mediaDegradedHistoryIndices objectForKeyedSubscript:{d), "intValue"}] % 5;
+  v13 = sumCopy + 1;
   v14 = 0.0;
   do
   {
-    [objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_mediaDegradedHistories objectForKeyedSubscript:{a3), "objectAtIndexedSubscript:", v12), "doubleValue"}];
+    [objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_mediaDegradedHistories objectForKeyedSubscript:{d), "objectAtIndexedSubscript:", v12), "doubleValue"}];
     v14 = v14 + v15;
     v12 = (v12 + 4) % 5u;
     --v13;
   }
 
   while (v13 > 1);
-  return v14 / v9 * 100.0 > a5;
+  return v14 / sumCopy * 100.0 > threshold;
 }
 
-- (void)updateMediaDegradedHistoryWithCurrentVideoStallDuration:(double)a3 idsParticipantID:(id)a4
+- (void)updateMediaDegradedHistoryWithCurrentVideoStallDuration:(double)duration idsParticipantID:(id)d
 {
   v24 = *MEMORY[0x1E69E9840];
-  [(VCConnectionManager *)self updateMediaDegradedHistoryWithValue:a4 idsParticipantID:a3];
+  [(VCConnectionManager *)self updateMediaDegradedHistoryWithValue:d idsParticipantID:duration];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(NSMutableDictionary *)self->_mediaDegradedHistories allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v19 count:16];
+  allKeys = [(NSMutableDictionary *)self->_mediaDegradedHistories allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v20 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2118,7 +2118,7 @@ uint64_t __65__VCConnectionManager_checkMediaQualityDegradedForParticipantID___b
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
@@ -2128,7 +2128,7 @@ uint64_t __65__VCConnectionManager_checkMediaQualityDegradedForParticipantID___b
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v19 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v20 objects:v19 count:16];
     }
 
     while (v7);
@@ -2167,18 +2167,18 @@ uint64_t __65__VCConnectionManager_checkMediaQualityDegradedForParticipantID___b
   [(VCConnectionManager *)self checkForCachedWRMNotification:*v15];
 }
 
-- (void)updateMediaDegradedHistoryWithCurrentAudioErasure:(double)a3 idsParticipantID:(id)a4
+- (void)updateMediaDegradedHistoryWithCurrentAudioErasure:(double)erasure idsParticipantID:(id)d
 {
   v25 = *MEMORY[0x1E69E9840];
   if ([(NSMutableDictionary *)self->_mediaDegradedHistories objectForKeyedSubscript:?])
   {
-    [(VCConnectionManager *)self updateMediaDegradedHistoryWithValue:a4 idsParticipantID:a3];
+    [(VCConnectionManager *)self updateMediaDegradedHistoryWithValue:d idsParticipantID:erasure];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [(NSMutableDictionary *)self->_mediaDegradedHistories allKeys];
-    v8 = [v7 countByEnumeratingWithState:&v21 objects:v20 count:16];
+    allKeys = [(NSMutableDictionary *)self->_mediaDegradedHistories allKeys];
+    v8 = [allKeys countByEnumeratingWithState:&v21 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -2190,13 +2190,13 @@ uint64_t __65__VCConnectionManager_checkMediaQualityDegradedForParticipantID___b
         {
           if (*v22 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allKeys);
           }
 
           v11 &= [(VCConnectionManager *)self isDuplicationAllowedForParticipantID:*(*(&v21 + 1) + 8 * i) bucketsToSum:4 threshold:50.0];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v21 objects:v20 count:16];
+        v9 = [allKeys countByEnumeratingWithState:&v21 objects:v20 count:16];
       }
 
       while (v9);
@@ -2245,9 +2245,9 @@ uint64_t __65__VCConnectionManager_checkMediaQualityDegradedForParticipantID___b
   }
 }
 
-- (void)updateWithRemoteMediaHealthDuplication:(BOOL)a3
+- (void)updateWithRemoteMediaHealthDuplication:(BOOL)duplication
 {
-  if (a3)
+  if (duplication)
   {
     v3 = 65552;
   }
@@ -2267,8 +2267,8 @@ uint64_t __65__VCConnectionManager_checkMediaQualityDegradedForParticipantID___b
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(NSMutableDictionary *)self->_mediaDegradedHistories allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v13 count:16];
+  allKeys = [(NSMutableDictionary *)self->_mediaDegradedHistories allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v14 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2279,7 +2279,7 @@ uint64_t __65__VCConnectionManager_checkMediaQualityDegradedForParticipantID___b
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
@@ -2300,19 +2300,19 @@ uint64_t __65__VCConnectionManager_checkMediaQualityDegradedForParticipantID___b
         [(NSMutableDictionary *)self->_aggregateStallTimeDuration setObject:&unk_1F579E430 forKeyedSubscript:v8];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v13 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v14 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)addDistinctConnectionInterfaceToSet:(id)a3 withInterfaceType:(int)a4
+- (void)addDistinctConnectionInterfaceToSet:(id)set withInterfaceType:(int)type
 {
   v4 = &unk_1F5799D68;
-  if (a4 != 87 && a4 != 69)
+  if (type != 87 && type != 69)
   {
-    if (a4 != 67)
+    if (type != 67)
     {
       return;
     }
@@ -2320,7 +2320,7 @@ uint64_t __65__VCConnectionManager_checkMediaQualityDegradedForParticipantID___b
     v4 = &unk_1F5799D80;
   }
 
-  [a3 addObject:v4];
+  [set addObject:v4];
 }
 
 - (id)getActiveConnectionRegistryAndUpdateDuplicationPossibility
@@ -2400,7 +2400,7 @@ LABEL_10:
     self->_multipleInterfacesAvailable = 1;
   }
 
-  v16 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -2419,7 +2419,7 @@ LABEL_10:
           objc_enumerationMutation(v3);
         }
 
-        [v16 appendFormat:@"%@:%@, ", *(*(&v26 + 1) + 8 * j), objc_msgSend(v3, "objectForKeyedSubscript:", *(*(&v26 + 1) + 8 * j))];
+        [string appendFormat:@"%@:%@, ", *(*(&v26 + 1) + 8 * j), objc_msgSend(v3, "objectForKeyedSubscript:", *(*(&v26 + 1) + 8 * j))];
       }
 
       v18 = [v3 countByEnumeratingWithState:&v26 objects:v25 count:16];
@@ -2428,26 +2428,26 @@ LABEL_10:
     while (v18);
   }
 
-  if ([v16 length])
+  if ([string length])
   {
-    [v16 deleteCharactersInRange:{objc_msgSend(v16, "length") - 1, 1}];
+    [string deleteCharactersInRange:{objc_msgSend(string, "length") - 1, 1}];
   }
 
-  return v16;
+  return string;
 }
 
-- (void)configureNWConnectionMonitor:(id)a3
+- (void)configureNWConnectionMonitor:(id)monitor
 {
   if (self->_isNWConnectionMonitorEnabled)
   {
-    if (VCConnection_IsLocalOnWiFi(a3))
+    if (VCConnection_IsLocalOnWiFi(monitor))
     {
       self->_ignoreNWConnectionMonitorNotification = 0;
-      v5 = [a3 localInterfaceName];
-      if (v5)
+      localInterfaceName = [monitor localInterfaceName];
+      if (localInterfaceName)
       {
-        v6 = v5;
-        if (![(NSString *)self->_nwMonitorWiFiInterfaceName isEqualToString:v5])
+        v6 = localInterfaceName;
+        if (![(NSString *)self->_nwMonitorWiFiInterfaceName isEqualToString:localInterfaceName])
         {
 
           self->_nwMonitorWiFiInterfaceName = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:v6];
@@ -2457,14 +2457,14 @@ LABEL_10:
       }
     }
 
-    else if (VCConnection_IsLocalOnCellular(a3) && self->_isNWConnectionMonitorCellularEnabled)
+    else if (VCConnection_IsLocalOnCellular(monitor) && self->_isNWConnectionMonitorCellularEnabled)
     {
       self->_ignoreNWConnectionMonitorNotification = 0;
-      v7 = [a3 localInterfaceName];
-      if (v7)
+      localInterfaceName2 = [monitor localInterfaceName];
+      if (localInterfaceName2)
       {
-        v8 = v7;
-        if (![(NSString *)self->_nwMonitorCellularInterfaceName isEqualToString:v7])
+        v8 = localInterfaceName2;
+        if (![(NSString *)self->_nwMonitorCellularInterfaceName isEqualToString:localInterfaceName2])
         {
 
           self->_nwMonitorCellularInterfaceName = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:v8];
@@ -2552,7 +2552,7 @@ uint64_t __VCConnectionManager_DidUpdateNetworkCondition_block_invoke(uint64_t a
   return result;
 }
 
-- (void)didUpdateMotionActivity:(id)a3
+- (void)didUpdateMotionActivity:(id)activity
 {
   v14[2] = *MEMORY[0x1E69E9840];
   pthread_rwlock_rdlock(&self->_stateRWlock);
@@ -2574,7 +2574,7 @@ uint64_t __VCConnectionManager_DidUpdateNetworkCondition_block_invoke(uint64_t a
   if (enableMotionBasedDuplication)
   {
     IntValueForKey = VCDefaults_GetIntValueForKey(@"forceUserMoving", 0);
-    v11 = [(VCCoreMotionManager *)v7 getMotionActivityValueForMotionActivity:a3]!= 2 && IntValueForKey == 0;
+    v11 = [(VCCoreMotionManager *)v7 getMotionActivityValueForMotionActivity:activity]!= 2 && IntValueForKey == 0;
     v12 = !v11;
     if (isUserMoving != v12)
     {
@@ -2591,8 +2591,8 @@ uint64_t __VCConnectionManager_DidUpdateNetworkCondition_block_invoke(uint64_t a
 
   v13[0] = @"CMActivityValue";
   v13[1] = @"CMActivityConfidence";
-  v14[0] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{-[VCCoreMotionManager getMotionActivityValueForMotionActivity:](v7, "getMotionActivityValueForMotionActivity:", a3)}];
-  v14[1] = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a3, "confidence")}];
+  v14[0] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{-[VCCoreMotionManager getMotionActivityValueForMotionActivity:](v7, "getMotionActivityValueForMotionActivity:", activity)}];
+  v14[1] = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(activity, "confidence")}];
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
   reportingGenericEvent();
 
@@ -2602,16 +2602,16 @@ uint64_t __VCConnectionManager_DidUpdateNetworkCondition_block_invoke(uint64_t a
   }
 }
 
-- (void)checkpointPrimaryConnection:(id)a3
+- (void)checkpointPrimaryConnection:(id)connection
 {
   v50 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (connection)
   {
-    IsLocalOnCellular = VCConnection_IsLocalOnCellular(a3);
-    IsRemoteOnCellular = VCConnection_IsRemoteOnCellular(a3);
-    IsLocalOnWiFi = VCConnection_IsLocalOnWiFi(a3);
-    IsRemoteOnWiFi = VCConnection_IsRemoteOnWiFi(a3);
-    IsRelay = VCConnection_IsRelay(a3);
+    IsLocalOnCellular = VCConnection_IsLocalOnCellular(connection);
+    IsRemoteOnCellular = VCConnection_IsRemoteOnCellular(connection);
+    IsLocalOnWiFi = VCConnection_IsLocalOnWiFi(connection);
+    IsRemoteOnWiFi = VCConnection_IsRemoteOnWiFi(connection);
+    IsRelay = VCConnection_IsRelay(connection);
     MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ VCConnectionManager-primaryConnectionChanged");
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
@@ -2619,7 +2619,7 @@ uint64_t __VCConnectionManager_DidUpdateNetworkCondition_block_invoke(uint64_t a
       v11 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v12 = VCConnection_Priority(a3);
+        v12 = VCConnection_Priority(connection);
         v13 = "secondary";
         if (v12 == 2)
         {
@@ -2655,8 +2655,8 @@ uint64_t __VCConnectionManager_DidUpdateNetworkCondition_block_invoke(uint64_t a
 
         v21 = v14;
         v22 = v15;
-        v16 = [a3 uplinkBitrateCap];
-        v17 = [a3 downlinkBitrateCap];
+        uplinkBitrateCap = [connection uplinkBitrateCap];
+        downlinkBitrateCap = [connection downlinkBitrateCap];
         callID = self->_callID;
         if (IsRelay)
         {
@@ -2668,7 +2668,7 @@ uint64_t __VCConnectionManager_DidUpdateNetworkCondition_block_invoke(uint64_t a
           v19 = "P2P";
         }
 
-        if (VCConnection_IsIPv6(a3))
+        if (VCConnection_IsIPv6(connection))
         {
           v20 = "IPV6";
         }
@@ -2691,9 +2691,9 @@ uint64_t __VCConnectionManager_DidUpdateNetworkCondition_block_invoke(uint64_t a
         v34 = 2080;
         v35 = v21;
         v36 = 1024;
-        v37 = v16;
+        v37 = uplinkBitrateCap;
         v38 = 1024;
-        v39 = v17;
+        v39 = downlinkBitrateCap;
         v40 = 1024;
         v41 = callID;
         v42 = 2080;
@@ -2701,18 +2701,18 @@ uint64_t __VCConnectionManager_DidUpdateNetworkCondition_block_invoke(uint64_t a
         v44 = 2080;
         v45 = v20;
         v46 = 1024;
-        v47 = [a3 isVirtualRelayLink];
+        isVirtualRelayLink = [connection isVirtualRelayLink];
         v48 = 2112;
-        v49 = [a3 connectionUUID];
+        connectionUUID = [connection connectionUUID];
         _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCConnectionManager-primaryConnectionChanged type=%s, localInterface=%s, remoteInterface=%s, uplinkBitrateCap=%u, downlinkBitrateCap=%u, callID=%u, connectionType=%s, addressType=%s, isVirtualRelay=%d, linkUUID=%@", buf, 0x70u);
       }
     }
 
     if (self->_overlaySource)
     {
-      if (VCConnection_Priority(a3) == 2)
+      if (VCConnection_Priority(connection) == 2)
       {
-        VCConnectionManager_SetOverlayLinkDetails(self, a3, 0, 0);
+        VCConnectionManager_SetOverlayLinkDetails(self, connection, 0, 0);
       }
     }
   }
@@ -2723,15 +2723,15 @@ uint64_t __VCConnectionManager_DidUpdateNetworkCondition_block_invoke(uint64_t a
   }
 }
 
-- (BOOL)hasSameReportingConfig:(id)a3 oldPrimaryConnection:(id)a4
+- (BOOL)hasSameReportingConfig:(id)config oldPrimaryConnection:(id)connection
 {
   v47 = *MEMORY[0x1E69E9840];
-  v7 = VCConnectionManager_ConnectionInterfaceType(a3, 1);
-  v8 = VCConnectionManager_ConnectionInterfaceType(a3, 0);
-  v9 = VCConnectionManager_ConnectionInterfaceType(a4, 1);
-  v10 = VCConnectionManager_ConnectionInterfaceType(a4, 0);
-  IsRelay = VCConnection_IsRelay(a3);
-  v12 = VCConnection_IsRelay(a4);
+  v7 = VCConnectionManager_ConnectionInterfaceType(config, 1);
+  v8 = VCConnectionManager_ConnectionInterfaceType(config, 0);
+  v9 = VCConnectionManager_ConnectionInterfaceType(connection, 1);
+  v10 = VCConnectionManager_ConnectionInterfaceType(connection, 0);
+  IsRelay = VCConnection_IsRelay(config);
+  v12 = VCConnection_IsRelay(connection);
   if (v7)
   {
     v13 = v9 == 0;
@@ -2853,15 +2853,15 @@ LABEL_19:
   return v20;
 }
 
-- (void)primaryConnectionChanged:(id)a3 oldPrimaryConnection:(id)a4
+- (void)primaryConnectionChanged:(id)changed oldPrimaryConnection:(id)connection
 {
   v21 = *MEMORY[0x1E69E9840];
-  IsLocalOnCellular = VCConnection_IsLocalOnCellular(a3);
+  IsLocalOnCellular = VCConnection_IsLocalOnCellular(changed);
   VCConnectionManager_UseCellPrimaryInterface(self, IsLocalOnCellular);
   [(VCConnectionManager *)self updateWRMDuplicationForHandover];
-  v8 = VCConnection_IsLocalOnCellular(a3);
+  v8 = VCConnection_IsLocalOnCellular(changed);
   _VCConnectionManager_ChecklocalRATTypeOverrideDefaultValue(self, v8);
-  if (![(VCConnectionManager *)self hasSameReportingConfig:a3 oldPrimaryConnection:a4])
+  if (![(VCConnectionManager *)self hasSameReportingConfig:changed oldPrimaryConnection:connection])
   {
     *&self->_mediaCellularTxBytes = 0u;
     *&self->_mediaWifiTxBytes = 0u;
@@ -2870,8 +2870,8 @@ LABEL_19:
     *&self->_mediaExcessiveCellularTxBytes = 0u;
   }
 
-  [(VCConnectionManager *)self configureNWConnectionMonitor:a3];
-  if (VCConnection_IsLocalOnCellular(a3) && ![(VCDuplicationHandler *)self->_duplicationHandler allowDuplication])
+  [(VCConnectionManager *)self configureNWConnectionMonitor:changed];
+  if (VCConnection_IsLocalOnCellular(changed) && ![(VCDuplicationHandler *)self->_duplicationHandler allowDuplication])
   {
     [(VCDuplicationHandler *)self->_duplicationHandler setAllowDuplication:1];
   }
@@ -2886,8 +2886,8 @@ LABEL_19:
     v14[2] = __69__VCConnectionManager_primaryConnectionChanged_oldPrimaryConnection___block_invoke;
     v14[3] = &unk_1E85F3B00;
     v14[4] = self;
-    v14[5] = a3;
-    v14[6] = a4;
+    v14[5] = changed;
+    v14[6] = connection;
     v14[7] = v9;
     dispatch_async(delegateQueue, v14);
   }
@@ -3072,10 +3072,10 @@ uint64_t __40__VCConnectionManager_destroyNWMonitors__block_invoke(uint64_t a1)
   }
 }
 
-- (void)disableRemotePreferredInterfaceInference:(BOOL)a3
+- (void)disableRemotePreferredInterfaceInference:(BOOL)inference
 {
   v11 = *MEMORY[0x1E69E9840];
-  self->_disableRemoteInterfaceInference = a3;
+  self->_disableRemoteInterfaceInference = inference;
   if (self->_duplicateImportantPktsEnabled && (self->_connectionSelectionVersion - 2) <= 4)
   {
     self->_disableRemoteInterfaceInference = 1;
@@ -3097,29 +3097,29 @@ uint64_t __40__VCConnectionManager_destroyNWMonitors__block_invoke(uint64_t a1)
   }
 }
 
-- (int)getConnectionSelectionVersionFromFrameworkVersion:(id)a3
+- (int)getConnectionSelectionVersionFromFrameworkVersion:(id)version
 {
-  if ([a3 compare:@"1476"] == -1)
+  if ([version compare:@"1476"] == -1)
   {
     return 1;
   }
 
-  if ([a3 compare:@"1651"] == -1)
+  if ([version compare:@"1651"] == -1)
   {
     return 2;
   }
 
-  if ([a3 compare:@"1885"] == -1)
+  if ([version compare:@"1885"] == -1)
   {
     return 3;
   }
 
-  if ([a3 compare:@"2005"] == -1)
+  if ([version compare:@"2005"] == -1)
   {
     return 4;
   }
 
-  if ([a3 compare:@"2045"] == -1)
+  if ([version compare:@"2045"] == -1)
   {
     return 5;
   }
@@ -3127,40 +3127,40 @@ uint64_t __40__VCConnectionManager_destroyNWMonitors__block_invoke(uint64_t a1)
   return 6;
 }
 
-- (void)promoteSecondaryConnectionToPrimary:(id)a3
+- (void)promoteSecondaryConnectionToPrimary:(id)primary
 {
-  VCConnection_SetPriority(a3, 2);
-  [(VCConnectionManager *)self useConnectionAsPrimary:a3];
+  VCConnection_SetPriority(primary, 2);
+  [(VCConnectionManager *)self useConnectionAsPrimary:primary];
 
   [(VCConnectionManager *)self setSecondaryConnection:0];
 }
 
-- (BOOL)isBetterConnection:(id)a3 asPrimary:(BOOL)a4
+- (BOOL)isBetterConnection:(id)connection asPrimary:(BOOL)primary
 {
-  v4 = a4;
-  if (a4)
+  primaryCopy = primary;
+  if (primary)
   {
-    v7 = [(VCConnectionManager *)self getPrimaryConnectionToBeCompared];
+    getPrimaryConnectionToBeCompared = [(VCConnectionManager *)self getPrimaryConnectionToBeCompared];
   }
 
   else
   {
-    v7 = [(VCConnectionManager *)self getSecondaryConnectionToBeCompared];
+    getPrimaryConnectionToBeCompared = [(VCConnectionManager *)self getSecondaryConnectionToBeCompared];
   }
 
-  v8 = v7;
-  return (VCConnection_Equal(a3, v7) & 1) == 0 && [a3 compare:v8 isPrimary:v4 selectionPolicy:{-[VCConnectionManager getConnectionSelectionPolicy](self, "getConnectionSelectionPolicy")}] == 1;
+  v8 = getPrimaryConnectionToBeCompared;
+  return (VCConnection_Equal(connection, getPrimaryConnectionToBeCompared) & 1) == 0 && [connection compare:v8 isPrimary:primaryCopy selectionPolicy:{-[VCConnectionManager getConnectionSelectionPolicy](self, "getConnectionSelectionPolicy")}] == 1;
 }
 
-- (BOOL)isOptimalConnection:(id)a3 asPrimary:(BOOL)a4 interfaceMask:(int)a5
+- (BOOL)isOptimalConnection:(id)connection asPrimary:(BOOL)primary interfaceMask:(int)mask
 {
-  v5 = a5;
+  maskCopy = mask;
   v31 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (primary)
   {
-    IsLocalOnWiFi = VCConnection_IsLocalOnWiFi(a3);
-    v8 = ((v5 & 4) == 0) ^ VCConnection_IsRemoteOnWiFi(a3);
-    if ((IsLocalOnWiFi ^ v5))
+    IsLocalOnWiFi = VCConnection_IsLocalOnWiFi(connection);
+    v8 = ((maskCopy & 4) == 0) ^ VCConnection_IsRemoteOnWiFi(connection);
+    if ((IsLocalOnWiFi ^ maskCopy))
     {
       v9 = 0;
     }
@@ -3176,9 +3176,9 @@ uint64_t __40__VCConnectionManager_destroyNWMonitors__block_invoke(uint64_t a1)
       v11 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        if (a3)
+        if (connection)
         {
-          v12 = [objc_msgSend(a3 "description")];
+          v12 = [objc_msgSend(connection "description")];
         }
 
         else
@@ -3211,9 +3211,9 @@ LABEL_24:
 
   else
   {
-    IsLocalOnCellular = VCConnection_IsLocalOnCellular(a3);
-    v14 = ((v5 & 8) == 0) ^ VCConnection_IsRemoteOnCellular(a3);
-    if (((v5 & 2) == 0) == IsLocalOnCellular)
+    IsLocalOnCellular = VCConnection_IsLocalOnCellular(connection);
+    v14 = ((maskCopy & 8) == 0) ^ VCConnection_IsRemoteOnCellular(connection);
+    if (((maskCopy & 2) == 0) == IsLocalOnCellular)
     {
       v9 = 0;
     }
@@ -3229,9 +3229,9 @@ LABEL_24:
       v11 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        if (a3)
+        if (connection)
         {
-          v16 = [objc_msgSend(a3 "description")];
+          v16 = [objc_msgSend(connection "description")];
         }
 
         else
@@ -3378,15 +3378,15 @@ LABEL_23:
   return v5 & 1;
 }
 
-- (void)reportConnection:(id)a3 isInitialConnection:(BOOL)a4
+- (void)reportConnection:(id)connection isInitialConnection:(BOOL)initialConnection
 {
-  [a3 type];
+  [connection type];
   reportingConnectionType();
 
   [(VCConnectionManager *)self reportLinkSuggestion];
 }
 
-- (void)reportConnectionUpdateWithRespCode:(unsigned __int16)a3
+- (void)reportConnectionUpdateWithRespCode:(unsigned __int16)code
 {
   v5[2] = *MEMORY[0x1E69E9840];
   v4[1] = @"DuplicationMultiLinkAvailable";
@@ -3397,17 +3397,17 @@ LABEL_23:
   reportingGenericEvent();
 }
 
-- (void)reportConnectionUpdateWithResponseCode:(unsigned __int16)a3 delay:(double)a4
+- (void)reportConnectionUpdateWithResponseCode:(unsigned __int16)code delay:(double)delay
 {
   v10 = *MEMORY[0x1E69E9840];
-  v6 = dispatch_time(0, (a4 * 1000000000.0));
+  v6 = dispatch_time(0, (delay * 1000000000.0));
   reportingQueue = self->_reportingQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__VCConnectionManager_reportConnectionUpdateWithResponseCode_delay___block_invoke;
   block[3] = &unk_1E85F41F8;
   block[4] = self;
-  v9 = a3;
+  codeCopy = code;
   dispatch_after(v6, reportingQueue, block);
 }
 
@@ -3420,10 +3420,10 @@ uint64_t __68__VCConnectionManager_reportConnectionUpdateWithResponseCode_delay_
   return pthread_rwlock_unlock(v2);
 }
 
-- (void)setDefaultLinkProbingCapabilityVersionForDeviceRole:(int)a3
+- (void)setDefaultLinkProbingCapabilityVersionForDeviceRole:(int)role
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a3 || (v4 = arc4random() / 4294967300.0, [+[GKSConnectivitySettings getStorebagValueForStorebagKey:userDefaultKey:defaultValue:isDoubleType:](GKSConnectivitySettings getStorebagValueForStorebagKey:@"vc-link-probing-feature-threshold" userDefaultKey:@"linkProbingFeatureThreshold" defaultValue:&unk_1F579E490 isDoubleType:{1), "doubleValue"}], v4 > v5))
+  if (role || (v4 = arc4random() / 4294967300.0, [+[GKSConnectivitySettings getStorebagValueForStorebagKey:userDefaultKey:defaultValue:isDoubleType:](GKSConnectivitySettings getStorebagValueForStorebagKey:@"vc-link-probing-feature-threshold" userDefaultKey:@"linkProbingFeatureThreshold" defaultValue:&unk_1F579E490 isDoubleType:{1), "doubleValue"}], v4 > v5))
   {
     v6 = 0;
   }
@@ -3455,10 +3455,10 @@ uint64_t __68__VCConnectionManager_reportConnectionUpdateWithResponseCode_delay_
   }
 }
 
-- (void)setRemoteLinkProbingCapabilityVersion:(unsigned __int8)a3
+- (void)setRemoteLinkProbingCapabilityVersion:(unsigned __int8)version
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  self->_remoteLinkProbingCapabilityVersion = a3;
+  self->_remoteLinkProbingCapabilityVersion = version;
   v16[0] = @"lnkPrbVers";
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:self->_linkProbingCapabilityVersion];
   v16[1] = @"remLnkPrbVers";
@@ -3486,22 +3486,22 @@ uint64_t __68__VCConnectionManager_reportConnectionUpdateWithResponseCode_delay_
   }
 }
 
-- (int)setConnectionHealthOnControlInfo:(void *)a3
+- (int)setConnectionHealthOnControlInfo:(void *)info
 {
   v6 = *MEMORY[0x1E69E9840];
   if (self->_startConnectionHealthMonitoring && self->_supportDuplication)
   {
-    v5 = [(VCConnectionHealthMonitor *)self->_connectionHealthMonitor generateStatsBlob];
-    if (v5)
+    generateStatsBlob = [(VCConnectionHealthMonitor *)self->_connectionHealthMonitor generateStatsBlob];
+    if (generateStatsBlob)
     {
-      VCMediaControlInfoSetInfo(a3, 2, &v5, 4);
+      VCMediaControlInfoSetInfo(info, 2, &generateStatsBlob, 4);
     }
   }
 
   return 0;
 }
 
-- (int)processConnectionHealthFromControlInfo:(void *)a3
+- (int)processConnectionHealthFromControlInfo:(void *)info
 {
   v7 = *MEMORY[0x1E69E9840];
   if (!self->_startConnectionHealthMonitoring || !self->_supportDuplication)
@@ -3509,38 +3509,38 @@ uint64_t __68__VCConnectionManager_reportConnectionUpdateWithResponseCode_delay_
     return 0;
   }
 
-  result = VCMediaControlInfoHasInfo(a3, 2);
+  result = VCMediaControlInfoHasInfo(info, 2);
   if (result)
   {
-    [(VCConnectionManager *)a3 processConnectionHealthFromControlInfo:&v6];
+    [(VCConnectionManager *)info processConnectionHealthFromControlInfo:&v6];
     return v6;
   }
 
   return result;
 }
 
-- (void)useConnectionAsPrimary:(id)a3
+- (void)useConnectionAsPrimary:(id)primary
 {
   VCConnectionManager_SetPrimaryConnection(self);
 
-  [(VCConnectionManager *)self setLastPrimaryConnectionInUse:a3];
+  [(VCConnectionManager *)self setLastPrimaryConnectionInUse:primary];
 }
 
-- (void)updateDuplicationStateWithEventType:(unsigned __int8)a3
+- (void)updateDuplicationStateWithEventType:(unsigned __int8)type
 {
-  if (VCDuplicationHandler_HandleDuplicationStateUpdateEvent(self->_duplicationHandler, a3, 0))
+  if (VCDuplicationHandler_HandleDuplicationStateUpdateEvent(self->_duplicationHandler, type, 0))
   {
-    v4 = [(VCConnectionManager *)self isDuplicationEnabled];
+    isDuplicationEnabled = [(VCConnectionManager *)self isDuplicationEnabled];
 
-    VCConnectionManager_SetDuplicationEnabledInternal(self, v4);
+    VCConnectionManager_SetDuplicationEnabledInternal(self, isDuplicationEnabled);
   }
 }
 
-- (void)reportNoPacketUpdateUsingCurrentTime:(double)a3 lastReceivedPacketTime:(double)a4
+- (void)reportNoPacketUpdateUsingCurrentTime:(double)time lastReceivedPacketTime:(double)packetTime
 {
-  if (self->_isOneToOneModeEnabled && (a4 != 0.0 || self->_startConnectionHealthMonitoring))
+  if (self->_isOneToOneModeEnabled && (packetTime != 0.0 || self->_startConnectionHealthMonitoring))
   {
-    v5 = a3 - a4;
+    v5 = time - packetTime;
     v6 = v5 > 1.0;
     if (v5 <= 1.0)
     {
@@ -3560,30 +3560,30 @@ LABEL_8:
   }
 }
 
-- (void)connectionHealthDidUpdate:(int)a3 isLocalConnection:(BOOL)a4
+- (void)connectionHealthDidUpdate:(int)update isLocalConnection:(BOOL)connection
 {
   v4 = 576;
-  if (a4)
+  if (connection)
   {
     v4 = 528;
   }
 
-  if (a3 > 1)
+  if (update > 1)
   {
-    if (a3 == 2)
+    if (update == 2)
     {
       [(VCConnectionManager *)self updateConnectionStatsWithIndicatorOnlyPrimaryNoPacket:self + v4];
     }
 
-    else if (a3 == 3)
+    else if (update == 3)
     {
       [(VCConnectionManager *)self updateConnectionStatsWithIndicatorPrimaryImproved:self + v4];
     }
   }
 
-  else if (a3)
+  else if (update)
   {
-    if (a3 == 1)
+    if (update == 1)
     {
       [(VCConnectionManager *)self updateConnectionStatsWithIndicatorNoPacket:self + v4];
     }
@@ -3595,12 +3595,12 @@ LABEL_8:
   }
 }
 
-- (void)updateConnectionStatsWithIndicatorNoPacket:(id *)a3
+- (void)updateConnectionStatsWithIndicatorNoPacket:(id *)packet
 {
   v34 = *MEMORY[0x1E69E9840];
   if (!self->_localConnectionStats.isConnectionPaused && !self->_remoteConnectionStats.isConnectionPaused)
   {
-    var6 = a3->var6;
+    var6 = packet->var6;
     v6 = micro();
     noRemoteDuplicationThresholdFast = 4.0;
     if ([(VCWifiAssistManager *)self->_vcWifiAssist isAvailable]&& self->_fastMediaDuplicationEnabled)
@@ -3608,7 +3608,7 @@ LABEL_8:
       noRemoteDuplicationThresholdFast = self->_noRemoteDuplicationThresholdFast;
     }
 
-    if (a3->var0 == 0.0 && !self->_startConnectionHealthMonitoring)
+    if (packet->var0 == 0.0 && !self->_startConnectionHealthMonitoring)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
@@ -3631,7 +3631,7 @@ LABEL_8:
 
     else
     {
-      a3->var4 = v6 - a3->var0;
+      packet->var4 = v6 - packet->var0;
       if (!var6)
       {
         [(VCConnectionManager *)self reportNoPacketUpdateUsingCurrentTime:v6 lastReceivedPacketTime:?];
@@ -3643,7 +3643,7 @@ LABEL_8:
         v9 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
         {
-          var4 = a3->var4;
+          var4 = packet->var4;
           v11 = self->_noRemoteDuplicationThresholdFast;
           *v26 = 136316418;
           *&v26[4] = v8;
@@ -3661,14 +3661,14 @@ LABEL_8:
         }
       }
 
-      v12 = a3->var4;
+      v12 = packet->var4;
       if (var6)
       {
         self->_remoteNoRemotePacketInterval = v12;
-        if (a3->var0 != 0.0 && v6 - a3->var2 > 1.0)
+        if (packet->var0 != 0.0 && v6 - packet->var2 > 1.0)
         {
           VTP_NotifyRemoteNoRemotePacket(self->_callID, v12);
-          a3->var2 = v6;
+          packet->var2 = v6;
         }
       }
 
@@ -3678,7 +3678,7 @@ LABEL_8:
       }
 
       pthread_rwlock_wrlock(&self->_stateRWlock);
-      if (VCDuplicationHandler_DuplicationReason(self->_duplicationHandler) || a3->var4 <= noRemoteDuplicationThresholdFast || a3->var0 == 0.0)
+      if (VCDuplicationHandler_DuplicationReason(self->_duplicationHandler) || packet->var4 <= noRemoteDuplicationThresholdFast || packet->var0 == 0.0)
       {
         pthread_rwlock_unlock(&self->_stateRWlock);
       }
@@ -3692,7 +3692,7 @@ LABEL_8:
           if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
           {
             v15 = "remote-no-remote";
-            v16 = a3->var4;
+            v16 = packet->var4;
             *v26 = 136316162;
             if (!var6)
             {
@@ -3745,7 +3745,7 @@ LABEL_8:
         }
       }
 
-      if ([(VCConnectionManager *)self shouldDropCurrentPrimaryConnectionWithConnectionStats:a3, *v26, *&v26[16]])
+      if ([(VCConnectionManager *)self shouldDropCurrentPrimaryConnectionWithConnectionStats:packet, *v26, *&v26[16]])
       {
         if (VRTraceGetErrorLogLevelForModule() >= 7)
         {
@@ -3753,7 +3753,7 @@ LABEL_8:
           v21 = *MEMORY[0x1E6986650];
           if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
           {
-            v22 = a3->var4;
+            v22 = packet->var4;
             *v26 = 136315906;
             *&v26[4] = v20;
             *&v26[12] = 2080;
@@ -3777,11 +3777,11 @@ LABEL_8:
   }
 }
 
-- (void)updateConnectionStatsWithIndicatorOnlyPrimaryNoPacket:(id *)a3
+- (void)updateConnectionStatsWithIndicatorOnlyPrimaryNoPacket:(id *)packet
 {
   v31 = *MEMORY[0x1E69E9840];
   v5 = micro();
-  var6 = a3->var6;
+  var6 = packet->var6;
   startConnectionHealthMonitoring = self->_startConnectionHealthMonitoring;
   if (startConnectionHealthMonitoring)
   {
@@ -3793,7 +3793,7 @@ LABEL_8:
     v8 = 0.0;
   }
 
-  a3->var0 = v8;
+  packet->var0 = v8;
   if (v8 != 0.0 || startConnectionHealthMonitoring)
   {
     if (!var6)
@@ -3802,7 +3802,7 @@ LABEL_8:
       [(VCConnectionManager *)self reportNoPacketUpdateUsingCurrentTime:v5 lastReceivedPacketTime:?];
     }
 
-    var1 = a3->var1;
+    var1 = packet->var1;
     if (var1 == 0.0 && !self->_startConnectionHealthMonitoring)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -3828,9 +3828,9 @@ LABEL_8:
     else
     {
       v13 = v5 - var1;
-      if (v13 > a3->var3)
+      if (v13 > packet->var3)
       {
-        a3->var3 = v13;
+        packet->var3 = v13;
         if (VRTraceGetErrorLogLevelForModule() >= 7)
         {
           v14 = VRTraceErrorLogLevelToCSTR();
@@ -3898,7 +3898,7 @@ uint64_t __77__VCConnectionManager_updateConnectionStatsWithIndicatorOnlyPrimary
   return reportingLog();
 }
 
-- (void)updateConnectionStatsWithIndicatorNone:(id *)a3
+- (void)updateConnectionStatsWithIndicatorNone:(id *)none
 {
   v5 = micro();
   v6 = 0.0;
@@ -3907,24 +3907,24 @@ uint64_t __77__VCConnectionManager_updateConnectionStatsWithIndicatorOnlyPrimary
     v6 = v5;
   }
 
-  a3->var0 = v6;
-  a3->var1 = v6;
+  none->var0 = v6;
+  none->var1 = v6;
 
   [VCConnectionManager reportNoPacketUpdateUsingCurrentTime:"reportNoPacketUpdateUsingCurrentTime:lastReceivedPacketTime:" lastReceivedPacketTime:?];
 }
 
-- (void)updateConnectionStatsWithIndicatorPrimaryImproved:(id *)a3
+- (void)updateConnectionStatsWithIndicatorPrimaryImproved:(id *)improved
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = micro();
-  var6 = a3->var6;
+  var6 = improved->var6;
   if (!self->_startConnectionHealthMonitoring)
   {
     v5 = 0.0;
   }
 
-  a3->var0 = v5;
-  a3->var1 = v5;
+  improved->var0 = v5;
+  improved->var1 = v5;
   if (var6)
   {
     v7 = 2;
@@ -3984,19 +3984,19 @@ uint64_t __77__VCConnectionManager_updateConnectionStatsWithIndicatorOnlyPrimary
   }
 }
 
-- (void)updateConnectionHealthWithVCStatisticsMessage:(tagVCStatisticsMessage *)a3
+- (void)updateConnectionHealthWithVCStatisticsMessage:(tagVCStatisticsMessage *)message
 {
   v11[5] = *MEMORY[0x1E69E9840];
   connectionHealthMonitor = self->_connectionHealthMonitor;
   if (connectionHealthMonitor && self->_startConnectionHealthMonitoring)
   {
-    if (a3->type == 5)
+    if (message->type == 5)
     {
-      if (a3->var0.baseband.expectedQueuingDelay != 0.0)
+      if (message->var0.baseband.expectedQueuingDelay != 0.0)
       {
         v7 = VCConnectionManager_CopyPrimaryConnection(self);
         v8 = self->_connectionHealthMonitor;
-        linkID = a3->var0.serverStats.linkID;
+        linkID = message->var0.serverStats.linkID;
         v10 = VCConnection_ConnectionID(v7) == linkID;
         VCConnectionHealthMonitor_ReceiveServerStats(v8, v10);
         if (v7)
@@ -4007,15 +4007,15 @@ uint64_t __77__VCConnectionManager_updateConnectionStatsWithIndicatorOnlyPrimary
       }
     }
 
-    else if (a3->type == 2)
+    else if (message->type == 2)
     {
-      VCConnectionHealthMonitor_ReceivePacket(connectionHealthMonitor, a3->var0.feedback.connectionStats.isReceivedOnPrimary, a3->var0.feedback.connectionStats.sequenceNumber, a3->var0.feedback.connectionStats.isDuplicatePacket);
-      if (a3->var0.feedback.connectionStats.connectionStatsBuffer)
+      VCConnectionHealthMonitor_ReceivePacket(connectionHealthMonitor, message->var0.feedback.connectionStats.isReceivedOnPrimary, message->var0.feedback.connectionStats.sequenceNumber, message->var0.feedback.connectionStats.isDuplicatePacket);
+      if (message->var0.feedback.connectionStats.connectionStatsBuffer)
       {
         [(VCConnectionHealthMonitor *)self->_connectionHealthMonitor processPeerStatsBlob:?];
       }
 
-      self->_lastReceivedFeedbackTime = a3->arrivalTime;
+      self->_lastReceivedFeedbackTime = message->arrivalTime;
       if (self->_networkConditionMonitor)
       {
         callbackQueue = self->_callbackQueue;
@@ -4039,22 +4039,22 @@ uint64_t __77__VCConnectionManager_updateConnectionStatsWithIndicatorOnlyPrimary
   }
 }
 
-- (void)updateLinkPreferSuggestion:(id)a3
+- (void)updateLinkPreferSuggestion:(id)suggestion
 {
   v29 = *MEMORY[0x1E69E9840];
-  if ([a3 objectForKeyedSubscript:@"lipp"])
+  if ([suggestion objectForKeyedSubscript:@"lipp"])
   {
-    self->_linkIPPreference = [objc_msgSend(a3 objectForKeyedSubscript:{@"lipp", "intValue"}];
+    self->_linkIPPreference = [objc_msgSend(suggestion objectForKeyedSubscript:{@"lipp", "intValue"}];
   }
 
   v5 = *MEMORY[0x1E69A4E00];
-  if ([a3 objectForKeyedSubscript:*MEMORY[0x1E69A4E00]])
+  if ([suggestion objectForKeyedSubscript:*MEMORY[0x1E69A4E00]])
   {
     v6 = *MEMORY[0x1E69A4DF8];
-    if ([a3 objectForKeyedSubscript:*MEMORY[0x1E69A4DF8]])
+    if ([suggestion objectForKeyedSubscript:*MEMORY[0x1E69A4DF8]])
     {
-      self->_linkPreferSuggestion = [objc_msgSend(a3 objectForKeyedSubscript:{v5), "intValue"}];
-      self->_linkConfidenceScore = [objc_msgSend(a3 objectForKeyedSubscript:{v6), "intValue"}];
+      self->_linkPreferSuggestion = [objc_msgSend(suggestion objectForKeyedSubscript:{v5), "intValue"}];
+      self->_linkConfidenceScore = [objc_msgSend(suggestion objectForKeyedSubscript:{v6), "intValue"}];
       self->_reportLinkPreferSuggestion = 1;
       if (self->_useIDSLinkSuggestionFeatureFlag)
       {
@@ -4141,7 +4141,7 @@ uint64_t __77__VCConnectionManager_updateConnectionStatsWithIndicatorOnlyPrimary
         v13 = 1024;
         v14 = IsRelay;
         v15 = 1024;
-        v16 = [(VCConnectionManager *)self preferRelayOverP2PEnabled];
+        preferRelayOverP2PEnabled = [(VCConnectionManager *)self preferRelayOverP2PEnabled];
         _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d HandoverReport: Check if primary connection needs to be updated - isCurrentPrimaryUsingRelay=%d isPreferRelayOverP2PEnabled=%d", &v7, 0x28u);
       }
     }
@@ -4200,10 +4200,10 @@ uint64_t __77__VCConnectionManager_updateConnectionStatsWithIndicatorOnlyPrimary
   }
 }
 
-- (void)applyLinkFlags:(unsigned __int16)a3 isCellular:(BOOL)a4
+- (void)applyLinkFlags:(unsigned __int16)flags isCellular:(BOOL)cellular
 {
-  v4 = a4;
-  v5 = a3;
+  cellularCopy = cellular;
+  flagsCopy = flags;
   v31 = *MEMORY[0x1E69E9840];
   pthread_rwlock_rdlock(&self->_stateRWlock);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -4218,14 +4218,14 @@ uint64_t __77__VCConnectionManager_updateConnectionStatsWithIndicatorOnlyPrimary
       v23 = 2080;
       v24 = "[VCConnectionManager applyLinkFlags:isCellular:]";
       v25 = 1024;
-      if (v4)
+      if (cellularCopy)
       {
         v9 = @"Cellular";
       }
 
       v26 = 3134;
       v27 = 1024;
-      v28 = v5;
+      v28 = flagsCopy;
       v29 = 2112;
       v30 = v9;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Applying link flags='%08x' for %@", buf, 0x2Cu);
@@ -4252,9 +4252,9 @@ uint64_t __77__VCConnectionManager_updateConnectionStatsWithIndicatorOnlyPrimary
         }
 
         v15 = *(*(&v17 + 1) + 8 * i);
-        if (VCConnection_IsLocalOnCellular(v15) == v4)
+        if (VCConnection_IsLocalOnCellular(v15) == cellularCopy)
         {
-          [v15 setLinkFlags:v5];
+          [v15 setLinkFlags:flagsCopy];
           [(VCConnectionManager *)self updateAllBitrateCapsForConnectionInternal:v15];
         }
       }
@@ -4268,10 +4268,10 @@ uint64_t __77__VCConnectionManager_updateConnectionStatsWithIndicatorOnlyPrimary
   pthread_rwlock_unlock(&self->_stateRWlock);
 }
 
-- (void)applyRemoteLinkFlags:(unsigned __int16)a3 isCellular:(BOOL)a4
+- (void)applyRemoteLinkFlags:(unsigned __int16)flags isCellular:(BOOL)cellular
 {
-  v4 = a4;
-  v5 = a3;
+  cellularCopy = cellular;
+  flagsCopy = flags;
   v31 = *MEMORY[0x1E69E9840];
   pthread_rwlock_rdlock(&self->_stateRWlock);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -4286,14 +4286,14 @@ uint64_t __77__VCConnectionManager_updateConnectionStatsWithIndicatorOnlyPrimary
       v23 = 2080;
       v24 = "[VCConnectionManager applyRemoteLinkFlags:isCellular:]";
       v25 = 1024;
-      if (v4)
+      if (cellularCopy)
       {
         v9 = @"Cellular";
       }
 
       v26 = 3146;
       v27 = 1024;
-      v28 = v5;
+      v28 = flagsCopy;
       v29 = 2112;
       v30 = v9;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Applying remote link flags='%08x' for %@", buf, 0x2Cu);
@@ -4320,9 +4320,9 @@ uint64_t __77__VCConnectionManager_updateConnectionStatsWithIndicatorOnlyPrimary
         }
 
         v15 = *(*(&v17 + 1) + 8 * i);
-        if (VCConnection_IsLocalOnCellular(v15) == v4 || VCConnection_IsRemoteOnCellular(v15) == v4)
+        if (VCConnection_IsLocalOnCellular(v15) == cellularCopy || VCConnection_IsRemoteOnCellular(v15) == cellularCopy)
         {
-          [v15 setRemoteLinkFlags:v5];
+          [v15 setRemoteLinkFlags:flagsCopy];
           [(VCConnectionManager *)self updateAllBitrateCapsForConnectionInternal:v15];
         }
       }
@@ -4336,14 +4336,14 @@ uint64_t __77__VCConnectionManager_updateConnectionStatsWithIndicatorOnlyPrimary
   pthread_rwlock_unlock(&self->_stateRWlock);
 }
 
-- (void)updateConnectionSelectionPolicyWithPreferE2E:(BOOL)a3
+- (void)updateConnectionSelectionPolicyWithPreferE2E:(BOOL)e
 {
   v28 = *MEMORY[0x1E69E9840];
   pthread_rwlock_wrlock(&self->_stateRWlock);
   self->_connectionSelectionPolicy.preferRelayOverP2P = self->_preferRelayOverP2PEnabled;
   *&self->_connectionSelectionPolicy.preferIPv6OverIPv4 = 0;
   self->_connectionSelectionPolicy.e2eCriteriaEnabled = 0;
-  self->_connectionSelectionPolicy.preferE2E = a3;
+  self->_connectionSelectionPolicy.preferE2E = e;
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     v5 = VRTraceErrorLogLevelToCSTR();
@@ -4378,10 +4378,10 @@ uint64_t __77__VCConnectionManager_updateConnectionStatsWithIndicatorOnlyPrimary
   pthread_rwlock_unlock(&self->_stateRWlock);
 }
 
-- (void)didChangeWifiAssistAvailable:(BOOL)a3 reason:(unsigned __int8)a4
+- (void)didChangeWifiAssistAvailable:(BOOL)available reason:(unsigned __int8)reason
 {
-  v4 = a4;
-  v5 = a3;
+  reasonCopy = reason;
+  availableCopy = available;
   v20 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -4394,7 +4394,7 @@ uint64_t __77__VCConnectionManager_updateConnectionStatsWithIndicatorOnlyPrimary
       v13 = v6;
       v14 = 2080;
       v15 = "[VCConnectionManager didChangeWifiAssistAvailable:reason:]";
-      if (v5)
+      if (availableCopy)
       {
         v8 = "YES";
       }
@@ -4408,12 +4408,12 @@ uint64_t __77__VCConnectionManager_updateConnectionStatsWithIndicatorOnlyPrimary
   }
 
   v9 = MEMORY[0x1E695DF90];
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{v4, @"WAStateChangeReason"}];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{reasonCopy, @"WAStateChangeReason"}];
   [v9 dictionaryWithDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v11, &v10, 1)}];
   reportingGenericEvent();
 }
 
-- (void)handleReportingSymptom:(unsigned int)a3
+- (void)handleReportingSymptom:(unsigned int)symptom
 {
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
   CFDictionarySetValue(Mutable, @"SymptomReporterOptionalKeyParticipantID", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_idsParticipantID]);

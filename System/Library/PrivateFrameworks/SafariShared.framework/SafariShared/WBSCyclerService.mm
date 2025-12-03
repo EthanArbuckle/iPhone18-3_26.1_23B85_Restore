@@ -1,21 +1,21 @@
 @interface WBSCyclerService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (WBSCyclerService)init;
-- (id)_descriptionForErrorCode:(int64_t)a3;
-- (id)_errorWithCode:(int64_t)a3;
-- (id)_startCyclingFromBeginning:(BOOL)a3;
-- (void)_finishedWithResult:(int64_t)a3 error:(id)a4;
-- (void)_postFinishNotificationWithError:(id)a3;
-- (void)_setMaximumIterationCount:(unint64_t)a3 reply:(id)a4;
-- (void)_setSeed:(unint64_t)a3 reply:(id)a4;
-- (void)_setTestSuiteName:(id)a3 reply:(id)a4;
-- (void)fetchLogsWithReply:(id)a3;
-- (void)fetchStatusWithReply:(id)a3;
-- (void)sendRequestToTestSuite:(id)a3 reply:(id)a4;
-- (void)setTestTargetEndpoint:(id)a3 reply:(id)a4;
-- (void)setValue:(id)a3 forConfigurationKey:(id)a4 reply:(id)a5;
-- (void)startCyclingFromBeginning:(BOOL)a3 reply:(id)a4;
-- (void)stopCyclingWithReply:(id)a3;
+- (id)_descriptionForErrorCode:(int64_t)code;
+- (id)_errorWithCode:(int64_t)code;
+- (id)_startCyclingFromBeginning:(BOOL)beginning;
+- (void)_finishedWithResult:(int64_t)result error:(id)error;
+- (void)_postFinishNotificationWithError:(id)error;
+- (void)_setMaximumIterationCount:(unint64_t)count reply:(id)reply;
+- (void)_setSeed:(unint64_t)seed reply:(id)reply;
+- (void)_setTestSuiteName:(id)name reply:(id)reply;
+- (void)fetchLogsWithReply:(id)reply;
+- (void)fetchStatusWithReply:(id)reply;
+- (void)sendRequestToTestSuite:(id)suite reply:(id)reply;
+- (void)setTestTargetEndpoint:(id)endpoint reply:(id)reply;
+- (void)setValue:(id)value forConfigurationKey:(id)key reply:(id)reply;
+- (void)startCyclingFromBeginning:(BOOL)beginning reply:(id)reply;
+- (void)stopCyclingWithReply:(id)reply;
 @end
 
 @implementation WBSCyclerService
@@ -40,11 +40,11 @@
   return v2;
 }
 
-- (void)setTestTargetEndpoint:(id)a3 reply:(id)a4
+- (void)setTestTargetEndpoint:(id)endpoint reply:(id)reply
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  replyCopy = reply;
   if ([(WBSCyclerTestRunner *)self->_testRunner isRunning])
   {
     v8 = WBS_LOG_CHANNEL_PREFIXCycler();
@@ -54,7 +54,7 @@
     }
 
     v9 = [(WBSCyclerService *)self _errorWithCode:0];
-    v7[2](v7, v9);
+    replyCopy[2](replyCopy, v9);
   }
 
   else
@@ -64,11 +64,11 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v18 = v6;
+      v18 = endpointCopy;
       _os_log_impl(&dword_1BB6F3000, v10, OS_LOG_TYPE_INFO, "Received endpoint %{public}@ for test target", buf, 0xCu);
     }
 
-    v11 = [[WBSCyclerTestTargetProxyController alloc] initWithEndpoint:v6];
+    v11 = [[WBSCyclerTestTargetProxyController alloc] initWithEndpoint:endpointCopy];
     testTargetProxyController = self->_testTargetProxyController;
     p_testTargetProxyController = &self->_testTargetProxyController;
     *p_testTargetProxyController = v11;
@@ -79,7 +79,7 @@
     v14[3] = &unk_1E7FB86B8;
     objc_copyWeak(&v15, &location);
     [*p_testTargetProxyController setDisconnectionHandler:v14];
-    v7[2](v7, 0);
+    replyCopy[2](replyCopy, 0);
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
@@ -119,11 +119,11 @@ void __48__WBSCyclerService_setTestTargetEndpoint_reply___block_invoke_2(uint64_
   }
 }
 
-- (void)setValue:(id)a3 forConfigurationKey:(id)a4 reply:(id)a5
+- (void)setValue:(id)value forConfigurationKey:(id)key reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  keyCopy = key;
+  replyCopy = reply;
   if ([(WBSCyclerTestRunner *)self->_testRunner isRunning])
   {
     v11 = WBS_LOG_CHANNEL_PREFIXCycler();
@@ -132,58 +132,58 @@ void __48__WBSCyclerService_setTestTargetEndpoint_reply___block_invoke_2(uint64_
       [WBSCyclerService setValue:forConfigurationKey:reply:];
     }
 
-    v12 = self;
+    selfCopy2 = self;
     v13 = 0;
   }
 
   else
   {
-    if ([v9 isEqualToString:@"test-suite"])
+    if ([keyCopy isEqualToString:@"test-suite"])
     {
-      [(WBSCyclerService *)self _setTestSuiteName:v8 reply:v10];
+      [(WBSCyclerService *)self _setTestSuiteName:valueCopy reply:replyCopy];
       goto LABEL_12;
     }
 
-    if ([v9 isEqualToString:@"seed"])
+    if ([keyCopy isEqualToString:@"seed"])
     {
-      -[WBSCyclerService _setSeed:reply:](self, "_setSeed:reply:", [v8 integerValue], v10);
+      -[WBSCyclerService _setSeed:reply:](self, "_setSeed:reply:", [valueCopy integerValue], replyCopy);
       goto LABEL_12;
     }
 
-    if ([v9 isEqualToString:@"maximum-iterations"])
+    if ([keyCopy isEqualToString:@"maximum-iterations"])
     {
-      -[WBSCyclerService _setMaximumIterationCount:reply:](self, "_setMaximumIterationCount:reply:", [v8 integerValue], v10);
+      -[WBSCyclerService _setMaximumIterationCount:reply:](self, "_setMaximumIterationCount:reply:", [valueCopy integerValue], replyCopy);
       goto LABEL_12;
     }
 
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [(objc_class *)self->_testSuiteClass setValue:v8 forConfigurationKey:v9])
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [(objc_class *)self->_testSuiteClass setValue:valueCopy forConfigurationKey:keyCopy])
     {
-      v10[2](v10, 0);
+      replyCopy[2](replyCopy, 0);
       goto LABEL_12;
     }
 
-    v12 = self;
+    selfCopy2 = self;
     v13 = 7;
   }
 
-  v14 = [(WBSCyclerService *)v12 _errorWithCode:v13];
-  (v10)[2](v10, v14);
+  v14 = [(WBSCyclerService *)selfCopy2 _errorWithCode:v13];
+  (replyCopy)[2](replyCopy, v14);
 
 LABEL_12:
 }
 
-- (void)startCyclingFromBeginning:(BOOL)a3 reply:(id)a4
+- (void)startCyclingFromBeginning:(BOOL)beginning reply:(id)reply
 {
-  v5 = a3;
-  v7 = a4;
-  v8 = [(WBSCyclerService *)self _startCyclingFromBeginning:v5];
-  (*(a4 + 2))(v7, v8);
+  beginningCopy = beginning;
+  replyCopy = reply;
+  v8 = [(WBSCyclerService *)self _startCyclingFromBeginning:beginningCopy];
+  (*(reply + 2))(replyCopy, v8);
 }
 
-- (void)stopCyclingWithReply:(id)a3
+- (void)stopCyclingWithReply:(id)reply
 {
   testRunner = self->_testRunner;
-  v5 = a3;
+  replyCopy = reply;
   if ([(WBSCyclerTestRunner *)testRunner isRunning])
   {
     [(WBSCyclerTestRunner *)self->_testRunner requestStop];
@@ -194,7 +194,7 @@ LABEL_12:
       _os_log_impl(&dword_1BB6F3000, v6, OS_LOG_TYPE_INFO, "Submitted request to stop cycling", v9, 2u);
     }
 
-    v5[2](v5, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -206,17 +206,17 @@ LABEL_12:
     }
 
     v8 = [(WBSCyclerService *)self _errorWithCode:1];
-    v5[2](v5, v8);
+    replyCopy[2](replyCopy, v8);
 
-    v5 = v8;
+    replyCopy = v8;
   }
 }
 
-- (void)sendRequestToTestSuite:(id)a3 reply:(id)a4
+- (void)sendRequestToTestSuite:(id)suite reply:(id)reply
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  suiteCopy = suite;
+  replyCopy = reply;
   if (![(WBSCyclerTestRunner *)self->_testRunner isRunning])
   {
     v12 = WBS_LOG_CHANNEL_PREFIXCycler();
@@ -225,40 +225,40 @@ LABEL_12:
       [WBSCyclerService sendRequestToTestSuite:reply:];
     }
 
-    v11 = [(WBSCyclerService *)self _errorWithCode:1];
-    v7[2](v7, v11);
+    testSuite = [(WBSCyclerService *)self _errorWithCode:1];
+    replyCopy[2](replyCopy, testSuite);
     goto LABEL_7;
   }
 
-  [(WBSCyclerTestRunner *)self->_testRunner handleRequest:v6 completionHandler:v7];
+  [(WBSCyclerTestRunner *)self->_testRunner handleRequest:suiteCopy completionHandler:replyCopy];
   v8 = WBS_LOG_CHANNEL_PREFIXCycler();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     testRunner = self->_testRunner;
     v10 = v8;
-    v11 = [(WBSCyclerTestRunner *)testRunner testSuite];
+    testSuite = [(WBSCyclerTestRunner *)testRunner testSuite];
     v13 = 138543618;
-    v14 = v6;
+    v14 = suiteCopy;
     v15 = 2114;
-    v16 = v11;
+    v16 = testSuite;
     _os_log_impl(&dword_1BB6F3000, v10, OS_LOG_TYPE_INFO, "Submitted request %{public}@ to test suite %{public}@", &v13, 0x16u);
 
 LABEL_7:
   }
 }
 
-- (void)fetchStatusWithReply:(id)a3
+- (void)fetchStatusWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(WBSCyclerTestSuite *)self->_testSuite iterationCounter];
-    v6 = [v5 iterationCount];
+    iterationCounter = [(WBSCyclerTestSuite *)self->_testSuite iterationCounter];
+    iterationCount = [iterationCounter iterationCount];
   }
 
   else
   {
-    v6 = 0;
+    iterationCount = 0;
   }
 
   if (self->_lastTestStart)
@@ -286,14 +286,14 @@ LABEL_7:
 
   v13 = [WBSCyclerStatus alloc];
   v14 = NSStringFromClass(self->_testSuiteClass);
-  v15 = [(WBSCyclerStatus *)v13 initWithActiveTestSuiteName:v14 seed:+[WBSCyclerRandomnessUtilities isConnectedToTestTarget:"seed"]isRunning:self->_testTargetProxyController != 0 iterationCount:[(WBSCyclerTestRunner *)self->_testRunner isRunning] executionTime:v6, v12];
+  v15 = [(WBSCyclerStatus *)v13 initWithActiveTestSuiteName:v14 seed:+[WBSCyclerRandomnessUtilities isConnectedToTestTarget:"seed"]isRunning:self->_testTargetProxyController != 0 iterationCount:[(WBSCyclerTestRunner *)self->_testRunner isRunning] executionTime:iterationCount, v12];
 
-  v4[2](v4, v15, 0);
+  replyCopy[2](replyCopy, v15, 0);
 }
 
-- (void)fetchLogsWithReply:(id)a3
+- (void)fetchLogsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -324,7 +324,7 @@ LABEL_7:
       [(WBSCyclerService *)v10 fetchLogsWithReply:v9];
     }
 
-    v4[2](v4, 0, v9);
+    replyCopy[2](replyCopy, 0, v9);
   }
 
   else
@@ -333,10 +333,10 @@ LABEL_7:
     v20 = 0;
     v12 = [v7 entriesEnumeratorWithOptions:0 position:0 predicate:v11 error:&v20];
     v9 = v20;
-    v13 = [v12 allObjects];
+    allObjects = [v12 allObjects];
     v14 = objc_opt_new();
-    v15 = [MEMORY[0x1E695DFE8] localTimeZone];
-    [v14 setTimeZone:v15];
+    localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+    [v14 setTimeZone:localTimeZone];
 
     [v14 setDateFormat:@"yyyy-MM-dd hh:mm:ss.SSSZ"];
     v18[0] = MEMORY[0x1E69E9820];
@@ -345,8 +345,8 @@ LABEL_7:
     v18[3] = &unk_1E7FC52B8;
     v19 = v14;
     v16 = v14;
-    v17 = [v13 safari_mapObjectsUsingBlock:v18];
-    (v4)[2](v4, v17, 0);
+    v17 = [allObjects safari_mapObjectsUsingBlock:v18];
+    (replyCopy)[2](replyCopy, v17, 0);
   }
 }
 
@@ -364,22 +364,22 @@ id __39__WBSCyclerService_fetchLogsWithReply___block_invoke(uint64_t a1, void *a
   return v8;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v5 = MEMORY[0x1E696B0D0];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = [v5 interfaceWithProtocol:&unk_1F3AAB090];
-  [v6 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
 
-  [v6 setExportedObject:self];
-  [v6 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (id)_startCyclingFromBeginning:(BOOL)a3
+- (id)_startCyclingFromBeginning:(BOOL)beginning
 {
-  v3 = a3;
+  beginningCopy = beginning;
   v36 = *MEMORY[0x1E69E9840];
   if ([(WBSCyclerTestRunner *)self->_testRunner isRunning])
   {
@@ -389,10 +389,10 @@ id __39__WBSCyclerService_fetchLogsWithReply___block_invoke(uint64_t a1, void *a
       [WBSCyclerService _startCyclingFromBeginning:];
     }
 
-    v6 = self;
+    selfCopy3 = self;
     v7 = 0;
 LABEL_18:
-    v21 = [(WBSCyclerService *)v6 _errorWithCode:v7];
+    v21 = [(WBSCyclerService *)selfCopy3 _errorWithCode:v7];
     goto LABEL_19;
   }
 
@@ -404,7 +404,7 @@ LABEL_18:
       [WBSCyclerService _startCyclingFromBeginning:];
     }
 
-    v6 = self;
+    selfCopy3 = self;
     v7 = 2;
     goto LABEL_18;
   }
@@ -418,12 +418,12 @@ LABEL_18:
       [WBSCyclerService _startCyclingFromBeginning:];
     }
 
-    v6 = self;
+    selfCopy3 = self;
     v7 = 4;
     goto LABEL_18;
   }
 
-  if (v3)
+  if (beginningCopy)
   {
     v9 = objc_alloc_init(testSuiteClass);
     testSuite = self->_testSuite;
@@ -473,8 +473,8 @@ LABEL_18:
 
   v25 = [WBSCyclerTestRunner alloc];
   v26 = self->_testSuite;
-  v27 = [(WBSCyclerTestTargetProxyController *)self->_testTargetProxyController testTargetProxy];
-  v28 = [(WBSCyclerTestRunner *)v25 initWithTestSuite:v26 target:v27];
+  testTargetProxy = [(WBSCyclerTestTargetProxyController *)self->_testTargetProxyController testTargetProxy];
+  v28 = [(WBSCyclerTestRunner *)v25 initWithTestSuite:v26 target:testTargetProxy];
   testRunner = self->_testRunner;
   self->_testRunner = v28;
 
@@ -491,12 +491,12 @@ LABEL_19:
   return v21;
 }
 
-- (void)_setTestSuiteName:(id)a3 reply:(id)a4
+- (void)_setTestSuiteName:(id)name reply:(id)reply
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = NSClassFromString(v6);
+  nameCopy = name;
+  replyCopy = reply;
+  v8 = NSClassFromString(nameCopy);
   if (!v8)
   {
     v12 = WBS_LOG_CHANNEL_PREFIXCycler();
@@ -505,7 +505,7 @@ LABEL_19:
       [WBSCyclerService _setTestSuiteName:reply:];
     }
 
-    v13 = self;
+    selfCopy2 = self;
     v14 = 5;
     goto LABEL_12;
   }
@@ -519,11 +519,11 @@ LABEL_19:
       [WBSCyclerService _setTestSuiteName:reply:];
     }
 
-    v13 = self;
+    selfCopy2 = self;
     v14 = 6;
 LABEL_12:
-    v16 = [(WBSCyclerService *)v13 _errorWithCode:v14];
-    v7[2](v7, v16);
+    v16 = [(WBSCyclerService *)selfCopy2 _errorWithCode:v14];
+    replyCopy[2](replyCopy, v16);
 
     goto LABEL_13;
   }
@@ -538,52 +538,52 @@ LABEL_12:
     _os_log_impl(&dword_1BB6F3000, v10, OS_LOG_TYPE_INFO, "Set test suite to %{public}@", &v17, 0xCu);
   }
 
-  v7[2](v7, 0);
+  replyCopy[2](replyCopy, 0);
 LABEL_13:
 }
 
-- (void)_setSeed:(unint64_t)a3 reply:(id)a4
+- (void)_setSeed:(unint64_t)seed reply:(id)reply
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  replyCopy = reply;
   v6 = WBS_LOG_CHANNEL_PREFIXCycler();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = 134217984;
-    v8 = a3;
+    seedCopy = seed;
     _os_log_impl(&dword_1BB6F3000, v6, OS_LOG_TYPE_INFO, "Seed set to %lu", &v7, 0xCu);
   }
 
-  [WBSCyclerRandomnessUtilities setSeed:a3];
-  v5[2](v5, 0);
+  [WBSCyclerRandomnessUtilities setSeed:seed];
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)_setMaximumIterationCount:(unint64_t)a3 reply:(id)a4
+- (void)_setMaximumIterationCount:(unint64_t)count reply:(id)reply
 {
   v10 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   v7 = WBS_LOG_CHANNEL_PREFIXCycler();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = 134217984;
-    v9 = a3;
+    countCopy = count;
     _os_log_impl(&dword_1BB6F3000, v7, OS_LOG_TYPE_INFO, "Set maximum iterations to %lu", &v8, 0xCu);
   }
 
-  self->_maximumIterationCount = a3;
-  v6[2](v6, 0);
+  self->_maximumIterationCount = count;
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)_finishedWithResult:(int64_t)a3 error:(id)a4
+- (void)_finishedWithResult:(int64_t)result error:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  errorCopy = error;
   v8 = [MEMORY[0x1E695DF00] now];
   lastTestEnd = self->_lastTestEnd;
   self->_lastTestEnd = v8;
 
-  objc_storeStrong(&self->_lastError, a4);
-  switch(a3)
+  objc_storeStrong(&self->_lastError, error);
+  switch(result)
   {
     case 2:
       v13 = WBS_LOG_CHANNEL_PREFIXCycler();
@@ -597,7 +597,7 @@ LABEL_13:
       v12 = WBS_LOG_CHANNEL_PREFIXCycler();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        [(WBSCyclerService *)self _finishedWithResult:v7 error:v12];
+        [(WBSCyclerService *)self _finishedWithResult:errorCopy error:v12];
       }
 
       break;
@@ -614,25 +614,25 @@ LABEL_13:
       break;
   }
 
-  [(WBSCyclerService *)self _postFinishNotificationWithError:v7];
+  [(WBSCyclerService *)self _postFinishNotificationWithError:errorCopy];
 }
 
-- (void)_postFinishNotificationWithError:(id)a3
+- (void)_postFinishNotificationWithError:(id)error
 {
   v11[3] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (error)
   {
     v10[0] = @"errorDomain";
-    v4 = a3;
-    v5 = [v4 domain];
-    v11[0] = v5;
+    errorCopy = error;
+    domain = [errorCopy domain];
+    v11[0] = domain;
     v10[1] = @"errorCode";
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "code")}];
+    v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
     v11[1] = v6;
     v10[2] = @"errorLocalizedDescription";
-    v7 = [v4 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
 
-    v11[2] = v7;
+    v11[2] = localizedDescription;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:3];
   }
 
@@ -641,11 +641,11 @@ LABEL_13:
     v8 = 0;
   }
 
-  v9 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v9 postNotificationName:@"com.apple.SafariShared.Cycler.DidFinishRunningTest" object:self->_identifier userInfo:v8];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.SafariShared.Cycler.DidFinishRunningTest" object:self->_identifier userInfo:v8];
 }
 
-- (id)_errorWithCode:(int64_t)a3
+- (id)_errorWithCode:(int64_t)code
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696ABC0];
@@ -653,21 +653,21 @@ LABEL_13:
   v5 = [(WBSCyclerService *)self _descriptionForErrorCode:?];
   v10[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  v7 = [v4 errorWithDomain:@"WBSCyclerServiceErrorDomain" code:a3 userInfo:v6];
+  v7 = [v4 errorWithDomain:@"WBSCyclerServiceErrorDomain" code:code userInfo:v6];
 
   return v7;
 }
 
-- (id)_descriptionForErrorCode:(int64_t)a3
+- (id)_descriptionForErrorCode:(int64_t)code
 {
-  if ((a3 - 1) > 6)
+  if ((code - 1) > 6)
   {
     return @"A test is already running";
   }
 
   else
   {
-    return off_1E7FC5318[a3 - 1];
+    return off_1E7FC5318[code - 1];
   }
 }
 

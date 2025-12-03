@@ -1,6 +1,6 @@
 @interface CKMaterialPlatterViewVibrantOuterStrokeLayer
 - (_TtC7ChatKit44CKMaterialPlatterViewVibrantOuterStrokeLayer)init;
-- (_TtC7ChatKit44CKMaterialPlatterViewVibrantOuterStrokeLayer)initWithCoder:(id)a3;
+- (_TtC7ChatKit44CKMaterialPlatterViewVibrantOuterStrokeLayer)initWithCoder:(id)coder;
 @end
 
 @implementation CKMaterialPlatterViewVibrantOuterStrokeLayer
@@ -16,7 +16,7 @@
   return v2;
 }
 
-- (_TtC7ChatKit44CKMaterialPlatterViewVibrantOuterStrokeLayer)initWithCoder:(id)a3
+- (_TtC7ChatKit44CKMaterialPlatterViewVibrantOuterStrokeLayer)initWithCoder:(id)coder
 {
   result = sub_190D58510();
   __break(1u);

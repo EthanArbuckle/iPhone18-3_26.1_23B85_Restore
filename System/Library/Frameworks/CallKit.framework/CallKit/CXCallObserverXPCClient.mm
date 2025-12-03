@@ -7,45 +7,45 @@
 - (NSDictionary)callUUIDToCallMap;
 - (NSXPCConnection)connection;
 - (id)_init;
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3 isSynchronous:(BOOL)a4;
-- (void)_addOrUpdateCall:(id)a3;
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler isSynchronous:(BOOL)synchronous;
+- (void)_addOrUpdateCall:(id)call;
 - (void)_invalidate;
 - (void)_markAllCallsAsEnded;
-- (void)_removeCall:(id)a3;
+- (void)_removeCall:(id)call;
 - (void)_requestCalls;
-- (void)addDelegate:(id)a3;
-- (void)addOrUpdateCall:(id)a3;
+- (void)addDelegate:(id)delegate;
+- (void)addOrUpdateCall:(id)call;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeCall:(id)a3;
-- (void)removeDelegate:(id)a3;
-- (void)requestTransaction:(id)a3 completion:(id)a4;
+- (void)removeCall:(id)call;
+- (void)removeDelegate:(id)delegate;
+- (void)requestTransaction:(id)transaction completion:(id)completion;
 @end
 
 @implementation CXCallObserverXPCClient
 
 - (CXCallObserverXPCClient)init
 {
-  v3 = [objc_opt_class() sharedXPCClient];
+  sharedXPCClient = [objc_opt_class() sharedXPCClient];
 
-  return v3;
+  return sharedXPCClient;
 }
 
 + (id)sharedXPCClient
 {
-  v3 = [a1 sharedXPCClientSemaphore];
-  dispatch_semaphore_wait(v3, 0xFFFFFFFFFFFFFFFFLL);
+  sharedXPCClientSemaphore = [self sharedXPCClientSemaphore];
+  dispatch_semaphore_wait(sharedXPCClientSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 
   if (!sharedXPCClient_0)
   {
-    v4 = [[a1 alloc] _init];
+    _init = [[self alloc] _init];
     v5 = sharedXPCClient_0;
-    sharedXPCClient_0 = v4;
+    sharedXPCClient_0 = _init;
   }
 
   ++sharedXPCClientRetainCount_0;
-  v6 = [a1 sharedXPCClientSemaphore];
-  dispatch_semaphore_signal(v6);
+  sharedXPCClientSemaphore2 = [self sharedXPCClientSemaphore];
+  dispatch_semaphore_signal(sharedXPCClientSemaphore2);
 
   v7 = sharedXPCClient_0;
 
@@ -131,13 +131,13 @@ void __32__CXCallObserverXPCClient__init__block_invoke(uint64_t a1)
 
 - (void)_requestCalls
 {
-  v3 = [(CXCallObserverXPCClient *)self concurrentQueue];
-  dispatch_assert_queue_barrier(v3);
+  concurrentQueue = [(CXCallObserverXPCClient *)self concurrentQueue];
+  dispatch_assert_queue_barrier(concurrentQueue);
 
-  v4 = [(CXCallObserverXPCClient *)self clientsShouldConnect];
+  clientsShouldConnect = [(CXCallObserverXPCClient *)self clientsShouldConnect];
   v5 = CXDefaultLog();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (clientsShouldConnect)
   {
     if (v6)
     {
@@ -200,19 +200,19 @@ void __32__CXCallObserverXPCClient__init__block_invoke(uint64_t a1)
 
 - (NSDictionary)callUUIDToCallMap
 {
-  v3 = [(CXCallObserverXPCClient *)self concurrentQueue];
-  dispatch_assert_queue_V2(v3);
+  concurrentQueue = [(CXCallObserverXPCClient *)self concurrentQueue];
+  dispatch_assert_queue_V2(concurrentQueue);
 
-  v4 = [(CXCallObserverXPCClient *)self mutableCallUUIDToCallMap];
-  v5 = [v4 copy];
+  mutableCallUUIDToCallMap = [(CXCallObserverXPCClient *)self mutableCallUUIDToCallMap];
+  v5 = [mutableCallUUIDToCallMap copy];
 
   return v5;
 }
 
 - (void)invalidate
 {
-  v2 = [(CXCallObserverXPCClient *)self concurrentQueue];
-  dispatch_assert_queue_barrier(v2);
+  concurrentQueue = [(CXCallObserverXPCClient *)self concurrentQueue];
+  dispatch_assert_queue_barrier(concurrentQueue);
 
   v3 = objc_opt_class();
 
@@ -221,8 +221,8 @@ void __32__CXCallObserverXPCClient__init__block_invoke(uint64_t a1)
 
 + (void)releaseSharedXPCClient
 {
-  v3 = [a1 sharedXPCClientSemaphore];
-  dispatch_semaphore_wait(v3, 0xFFFFFFFFFFFFFFFFLL);
+  sharedXPCClientSemaphore = [self sharedXPCClientSemaphore];
+  dispatch_semaphore_wait(sharedXPCClientSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 
   if (!--sharedXPCClientRetainCount_0)
   {
@@ -231,14 +231,14 @@ void __32__CXCallObserverXPCClient__init__block_invoke(uint64_t a1)
     sharedXPCClient_0 = 0;
   }
 
-  v5 = [a1 sharedXPCClientSemaphore];
-  dispatch_semaphore_signal(v5);
+  sharedXPCClientSemaphore2 = [self sharedXPCClientSemaphore];
+  dispatch_semaphore_signal(sharedXPCClientSemaphore2);
 }
 
 - (void)_invalidate
 {
-  v3 = [(CXCallObserverXPCClient *)self concurrentQueue];
-  dispatch_assert_queue_barrier(v3);
+  concurrentQueue = [(CXCallObserverXPCClient *)self concurrentQueue];
+  dispatch_assert_queue_barrier(concurrentQueue);
 
   connection = self->_connection;
 
@@ -283,38 +283,38 @@ uint64_t __32__CXCallObserverXPCClient__init__block_invoke_3(uint64_t result)
   return result;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CXCallObserverXPCClient *)self concurrentQueue];
-  dispatch_assert_queue_barrier(v5);
+  delegateCopy = delegate;
+  concurrentQueue = [(CXCallObserverXPCClient *)self concurrentQueue];
+  dispatch_assert_queue_barrier(concurrentQueue);
 
-  v6 = [(CXCallObserverXPCClient *)self delegates];
-  [v6 addObject:v4];
+  delegates = [(CXCallObserverXPCClient *)self delegates];
+  [delegates addObject:delegateCopy];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CXCallObserverXPCClient *)self concurrentQueue];
-  dispatch_assert_queue_barrier(v5);
+  delegateCopy = delegate;
+  concurrentQueue = [(CXCallObserverXPCClient *)self concurrentQueue];
+  dispatch_assert_queue_barrier(concurrentQueue);
 
-  v6 = [(CXCallObserverXPCClient *)self delegates];
-  [v6 removeObject:v4];
+  delegates = [(CXCallObserverXPCClient *)self delegates];
+  [delegates removeObject:delegateCopy];
 }
 
-- (void)requestTransaction:(id)a3 completion:(id)a4
+- (void)requestTransaction:(id)transaction completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CXCallObserverXPCClient *)self concurrentQueue];
-  dispatch_assert_queue_barrier(v8);
+  completionCopy = completion;
+  transactionCopy = transaction;
+  concurrentQueue = [(CXCallObserverXPCClient *)self concurrentQueue];
+  dispatch_assert_queue_barrier(concurrentQueue);
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __57__CXCallObserverXPCClient_requestTransaction_completion___block_invoke;
   v14[3] = &unk_1E7C07230;
-  v9 = v6;
+  v9 = completionCopy;
   v15 = v9;
   v10 = [(CXCallObserverXPCClient *)self _remoteObjectProxyWithErrorHandler:v14 isSynchronous:0];
   v12[0] = MEMORY[0x1E69E9820];
@@ -323,7 +323,7 @@ uint64_t __32__CXCallObserverXPCClient__init__block_invoke_3(uint64_t result)
   v12[3] = &unk_1E7C07230;
   v13 = v9;
   v11 = v9;
-  [v10 requestTransaction:v7 reply:v12];
+  [v10 requestTransaction:transactionCopy reply:v12];
 }
 
 void __57__CXCallObserverXPCClient_requestTransaction_completion___block_invoke(uint64_t a1, void *a2)
@@ -357,15 +357,15 @@ void __57__CXCallObserverXPCClient_requestTransaction_completion___block_invoke_
 - (void)_markAllCallsAsEnded
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(CXCallObserverXPCClient *)self concurrentQueue];
-  dispatch_assert_queue_barrier(v3);
+  concurrentQueue = [(CXCallObserverXPCClient *)self concurrentQueue];
+  dispatch_assert_queue_barrier(concurrentQueue);
 
   v4 = CXDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(CXCallObserverXPCClient *)self callUUIDToCallMap];
+    callUUIDToCallMap = [(CXCallObserverXPCClient *)self callUUIDToCallMap];
     *buf = 138412290;
-    v20 = v5;
+    v20 = callUUIDToCallMap;
     _os_log_impl(&dword_1B47F3000, v4, OS_LOG_TYPE_DEFAULT, "self.callUUIDToCallMap: %@", buf, 0xCu);
   }
 
@@ -373,10 +373,10 @@ void __57__CXCallObserverXPCClient_requestTransaction_completion___block_invoke_
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(CXCallObserverXPCClient *)self callUUIDToCallMap];
-  v7 = [v6 allValues];
+  callUUIDToCallMap2 = [(CXCallObserverXPCClient *)self callUUIDToCallMap];
+  allValues = [callUUIDToCallMap2 allValues];
 
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -387,7 +387,7 @@ void __57__CXCallObserverXPCClient_requestTransaction_completion___block_invoke_
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
@@ -395,7 +395,7 @@ void __57__CXCallObserverXPCClient_requestTransaction_completion___block_invoke_
         [(CXCallObserverXPCClient *)self _removeCall:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -404,37 +404,37 @@ void __57__CXCallObserverXPCClient_requestTransaction_completion___block_invoke_
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addOrUpdateCall:(id)a3
+- (void)_addOrUpdateCall:(id)call
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CXCallObserverXPCClient *)self concurrentQueue];
-  dispatch_assert_queue_barrier(v5);
+  callCopy = call;
+  concurrentQueue = [(CXCallObserverXPCClient *)self concurrentQueue];
+  dispatch_assert_queue_barrier(concurrentQueue);
 
-  v6 = [(CXCallObserverXPCClient *)self callUUIDToCallMap];
-  v7 = [v4 UUID];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  callUUIDToCallMap = [(CXCallObserverXPCClient *)self callUUIDToCallMap];
+  uUID = [callCopy UUID];
+  v8 = [callUUIDToCallMap objectForKeyedSubscript:uUID];
 
-  if (([v8 isEqualToCall:v4] & 1) == 0)
+  if (([v8 isEqualToCall:callCopy] & 1) == 0)
   {
     v9 = CXDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v24 = v4;
+      v24 = callCopy;
       _os_log_impl(&dword_1B47F3000, v9, OS_LOG_TYPE_DEFAULT, "call: %@", buf, 0xCu);
     }
 
-    v10 = [(CXCallObserverXPCClient *)self mutableCallUUIDToCallMap];
-    v11 = [v4 UUID];
-    [v10 setObject:v4 forKeyedSubscript:v11];
+    mutableCallUUIDToCallMap = [(CXCallObserverXPCClient *)self mutableCallUUIDToCallMap];
+    uUID2 = [callCopy UUID];
+    [mutableCallUUIDToCallMap setObject:callCopy forKeyedSubscript:uUID2];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v12 = [(CXCallObserverXPCClient *)self delegates];
-    v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    delegates = [(CXCallObserverXPCClient *)self delegates];
+    v13 = [delegates countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v13)
     {
       v14 = v13;
@@ -446,14 +446,14 @@ void __57__CXCallObserverXPCClient_requestTransaction_completion___block_invoke_
         {
           if (*v19 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(delegates);
           }
 
-          [*(*(&v18 + 1) + 8 * v16++) dataSource:self callChanged:v4];
+          [*(*(&v18 + 1) + 8 * v16++) dataSource:self callChanged:callCopy];
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v14 = [delegates countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v14);
@@ -463,16 +463,16 @@ void __57__CXCallObserverXPCClient_requestTransaction_completion___block_invoke_
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_removeCall:(id)a3
+- (void)_removeCall:(id)call
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CXCallObserverXPCClient *)self concurrentQueue];
-  dispatch_assert_queue_barrier(v5);
+  callCopy = call;
+  concurrentQueue = [(CXCallObserverXPCClient *)self concurrentQueue];
+  dispatch_assert_queue_barrier(concurrentQueue);
 
-  v6 = [(CXCallObserverXPCClient *)self callUUIDToCallMap];
-  v7 = [v4 UUID];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  callUUIDToCallMap = [(CXCallObserverXPCClient *)self callUUIDToCallMap];
+  uUID = [callCopy UUID];
+  v8 = [callUUIDToCallMap objectForKeyedSubscript:uUID];
 
   if (v8)
   {
@@ -480,20 +480,20 @@ void __57__CXCallObserverXPCClient_requestTransaction_completion___block_invoke_
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v24 = v4;
+      v24 = callCopy;
       _os_log_impl(&dword_1B47F3000, v9, OS_LOG_TYPE_DEFAULT, "call: %@", buf, 0xCu);
     }
 
-    v10 = [(CXCallObserverXPCClient *)self mutableCallUUIDToCallMap];
-    v11 = [v4 UUID];
-    [v10 removeObjectForKey:v11];
+    mutableCallUUIDToCallMap = [(CXCallObserverXPCClient *)self mutableCallUUIDToCallMap];
+    uUID2 = [callCopy UUID];
+    [mutableCallUUIDToCallMap removeObjectForKey:uUID2];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v12 = [(CXCallObserverXPCClient *)self delegates];
-    v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    delegates = [(CXCallObserverXPCClient *)self delegates];
+    v13 = [delegates countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v13)
     {
       v14 = v13;
@@ -505,14 +505,14 @@ void __57__CXCallObserverXPCClient_requestTransaction_completion___block_invoke_
         {
           if (*v19 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(delegates);
           }
 
-          [*(*(&v18 + 1) + 8 * v16++) dataSource:self callChanged:v4];
+          [*(*(&v18 + 1) + 8 * v16++) dataSource:self callChanged:callCopy];
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v14 = [delegates countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v14);
@@ -579,8 +579,8 @@ void __40__CXCallObserverXPCClient__requestCalls__block_invoke_10(uint64_t a1, v
 
 - (NSXPCConnection)connection
 {
-  v3 = [(CXCallObserverXPCClient *)self concurrentQueue];
-  dispatch_assert_queue_barrier(v3);
+  concurrentQueue = [(CXCallObserverXPCClient *)self concurrentQueue];
+  dispatch_assert_queue_barrier(concurrentQueue);
 
   connection = self->_connection;
   if (!connection)
@@ -590,11 +590,11 @@ void __40__CXCallObserverXPCClient__requestCalls__block_invoke_10(uint64_t a1, v
     self->_connection = v5;
 
     [(NSXPCConnection *)self->_connection setExportedObject:self];
-    v7 = [MEMORY[0x1E696B0D0] cx_callControllerVendorInterface];
-    [(NSXPCConnection *)self->_connection setExportedInterface:v7];
+    cx_callControllerVendorInterface = [MEMORY[0x1E696B0D0] cx_callControllerVendorInterface];
+    [(NSXPCConnection *)self->_connection setExportedInterface:cx_callControllerVendorInterface];
 
-    v8 = [MEMORY[0x1E696B0D0] cx_callControllerHostInterface];
-    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:v8];
+    cx_callControllerHostInterface = [MEMORY[0x1E696B0D0] cx_callControllerHostInterface];
+    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:cx_callControllerHostInterface];
 
     objc_initWeak(&location, self);
     v12[0] = MEMORY[0x1E69E9820];
@@ -690,62 +690,62 @@ uint64_t __37__CXCallObserverXPCClient_connection__block_invoke_15(uint64_t a1)
   return [v2 _markAllCallsAsEnded];
 }
 
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3 isSynchronous:(BOOL)a4
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler isSynchronous:(BOOL)synchronous
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CXCallObserverXPCClient *)self connection];
-  v8 = v7;
-  if (v6)
+  synchronousCopy = synchronous;
+  handlerCopy = handler;
+  connection = [(CXCallObserverXPCClient *)self connection];
+  v8 = connection;
+  if (handlerCopy)
   {
-    if (v4)
+    if (synchronousCopy)
     {
-      [v7 synchronousRemoteObjectProxyWithErrorHandler:v6];
+      [connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
     }
 
     else
     {
-      [v7 remoteObjectProxyWithErrorHandler:v6];
+      [connection remoteObjectProxyWithErrorHandler:handlerCopy];
     }
-    v9 = ;
+    remoteObjectProxy = ;
   }
 
   else
   {
-    v9 = [v7 remoteObjectProxy];
+    remoteObjectProxy = [connection remoteObjectProxy];
   }
 
-  v10 = v9;
+  v10 = remoteObjectProxy;
 
   return v10;
 }
 
-- (void)addOrUpdateCall:(id)a3
+- (void)addOrUpdateCall:(id)call
 {
-  v4 = a3;
-  v5 = [(CXCallObserverXPCClient *)self concurrentQueue];
+  callCopy = call;
+  concurrentQueue = [(CXCallObserverXPCClient *)self concurrentQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__CXCallObserverXPCClient_addOrUpdateCall___block_invoke;
   v7[3] = &unk_1E7C06BE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = callCopy;
+  v6 = callCopy;
+  dispatch_barrier_async(concurrentQueue, v7);
 }
 
-- (void)removeCall:(id)a3
+- (void)removeCall:(id)call
 {
-  v4 = a3;
-  v5 = [(CXCallObserverXPCClient *)self concurrentQueue];
+  callCopy = call;
+  concurrentQueue = [(CXCallObserverXPCClient *)self concurrentQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__CXCallObserverXPCClient_removeCall___block_invoke;
   v7[3] = &unk_1E7C06BE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = callCopy;
+  v6 = callCopy;
+  dispatch_barrier_async(concurrentQueue, v7);
 }
 
 void __40__CXCallObserverXPCClient__requestCalls__block_invoke_cold_1(uint64_t a1, NSObject *a2)

@@ -1,7 +1,7 @@
 @interface ENUILoggingInfoHeaderView
-- (ENUILoggingInfoHeaderView)initWithSpecifier:(id)a3;
-- (double)preferredHeightForWidth:(double)a3 inTableView:(id)a4;
-- (void)setTableView:(id)a3;
+- (ENUILoggingInfoHeaderView)initWithSpecifier:(id)specifier;
+- (double)preferredHeightForWidth:(double)width inTableView:(id)view;
+- (void)setTableView:(id)view;
 - (void)setupSubviewsAndContstraints;
 - (void)setupText;
 - (void)updateConstraints;
@@ -9,9 +9,9 @@
 
 @implementation ENUILoggingInfoHeaderView
 
-- (ENUILoggingInfoHeaderView)initWithSpecifier:(id)a3
+- (ENUILoggingInfoHeaderView)initWithSpecifier:(id)specifier
 {
-  v3 = [(ENUILoggingInfoHeaderView *)self initWithFrame:a3, CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
+  v3 = [(ENUILoggingInfoHeaderView *)self initWithFrame:specifier, CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v4 = v3;
   if (v3)
   {
@@ -28,8 +28,8 @@
   v3 = ENUILocalizedString();
   v4 = [v3 length];
   v5 = [[NSMutableAttributedString alloc] initWithString:v3];
-  v6 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -52,8 +52,8 @@
   v16 = [(ENUILoggingInfoHeaderView *)self _accessibilityHigherContrastTintColorForColor:v18];
   [v5 addAttribute:NSForegroundColorAttributeName value:v16 range:{0, objc_msgSend(v5, "length")}];
 
-  v17 = [(ENUILoggingInfoHeaderView *)self textView];
-  [v17 setAttributedText:v5];
+  textView = [(ENUILoggingInfoHeaderView *)self textView];
+  [textView setAttributedText:v5];
 }
 
 - (void)setupSubviewsAndContstraints
@@ -61,120 +61,120 @@
   v3 = objc_alloc_init(UITextView);
   [(ENUILoggingInfoHeaderView *)self setTextView:v3];
 
-  v4 = [(ENUILoggingInfoHeaderView *)self textView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textView = [(ENUILoggingInfoHeaderView *)self textView];
+  [textView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v5 = +[UIColor clearColor];
-  v6 = [(ENUILoggingInfoHeaderView *)self textView];
-  [v6 setBackgroundColor:v5];
+  textView2 = [(ENUILoggingInfoHeaderView *)self textView];
+  [textView2 setBackgroundColor:v5];
 
-  v7 = [(ENUILoggingInfoHeaderView *)self textView];
-  [v7 setShowsVerticalScrollIndicator:0];
+  textView3 = [(ENUILoggingInfoHeaderView *)self textView];
+  [textView3 setShowsVerticalScrollIndicator:0];
 
-  v8 = [(ENUILoggingInfoHeaderView *)self textView];
-  [v8 setEditable:0];
+  textView4 = [(ENUILoggingInfoHeaderView *)self textView];
+  [textView4 setEditable:0];
 
-  v9 = [(ENUILoggingInfoHeaderView *)self textView];
-  [v9 setSelectable:1];
+  textView5 = [(ENUILoggingInfoHeaderView *)self textView];
+  [textView5 setSelectable:1];
 
-  v10 = [(ENUILoggingInfoHeaderView *)self textView];
-  [v10 setScrollEnabled:0];
+  textView6 = [(ENUILoggingInfoHeaderView *)self textView];
+  [textView6 setScrollEnabled:0];
 
-  v11 = [(ENUILoggingInfoHeaderView *)self textView];
-  v12 = [v11 textContainer];
-  [v12 setLineFragmentPadding:0.0];
+  textView7 = [(ENUILoggingInfoHeaderView *)self textView];
+  textContainer = [textView7 textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
-  v13 = [(ENUILoggingInfoHeaderView *)self textView];
-  [v13 _setInteractiveTextSelectionDisabled:1];
+  textView8 = [(ENUILoggingInfoHeaderView *)self textView];
+  [textView8 _setInteractiveTextSelectionDisabled:1];
 
-  v14 = [(ENUILoggingInfoHeaderView *)self contentView];
-  v15 = [(ENUILoggingInfoHeaderView *)self textView];
-  [v14 addSubview:v15];
+  contentView = [(ENUILoggingInfoHeaderView *)self contentView];
+  textView9 = [(ENUILoggingInfoHeaderView *)self textView];
+  [contentView addSubview:textView9];
 
   v42 = +[NSMutableArray array];
-  v16 = [(ENUILoggingInfoHeaderView *)self textView];
-  v17 = [v16 leadingAnchor];
-  v18 = [(ENUILoggingInfoHeaderView *)self contentView];
-  v19 = [v18 safeAreaLayoutGuide];
-  v20 = [v19 leadingAnchor];
-  v21 = [(ENUILoggingInfoHeaderView *)self tableView];
-  [v21 _marginWidth];
-  v22 = [v17 constraintEqualToAnchor:v20 constant:?];
+  textView10 = [(ENUILoggingInfoHeaderView *)self textView];
+  leadingAnchor = [textView10 leadingAnchor];
+  contentView2 = [(ENUILoggingInfoHeaderView *)self contentView];
+  safeAreaLayoutGuide = [contentView2 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  tableView = [(ENUILoggingInfoHeaderView *)self tableView];
+  [tableView _marginWidth];
+  v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
   [(ENUILoggingInfoHeaderView *)self setTextViewLeadingConstraint:v22];
 
-  v23 = [(ENUILoggingInfoHeaderView *)self textViewLeadingConstraint];
-  [v42 addObject:v23];
+  textViewLeadingConstraint = [(ENUILoggingInfoHeaderView *)self textViewLeadingConstraint];
+  [v42 addObject:textViewLeadingConstraint];
 
-  v24 = [(ENUILoggingInfoHeaderView *)self contentView];
-  v25 = [v24 safeAreaLayoutGuide];
-  v26 = [v25 trailingAnchor];
-  v27 = [(ENUILoggingInfoHeaderView *)self textView];
-  v28 = [v27 trailingAnchor];
-  v29 = [(ENUILoggingInfoHeaderView *)self tableView];
-  [v29 _marginWidth];
-  v30 = [v26 constraintEqualToAnchor:v28 constant:?];
+  contentView3 = [(ENUILoggingInfoHeaderView *)self contentView];
+  safeAreaLayoutGuide2 = [contentView3 safeAreaLayoutGuide];
+  trailingAnchor = [safeAreaLayoutGuide2 trailingAnchor];
+  textView11 = [(ENUILoggingInfoHeaderView *)self textView];
+  trailingAnchor2 = [textView11 trailingAnchor];
+  tableView2 = [(ENUILoggingInfoHeaderView *)self tableView];
+  [tableView2 _marginWidth];
+  v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:?];
   [(ENUILoggingInfoHeaderView *)self setTextViewTrailingConstraint:v30];
 
-  v31 = [(ENUILoggingInfoHeaderView *)self textViewTrailingConstraint];
-  [v42 addObject:v31];
+  textViewTrailingConstraint = [(ENUILoggingInfoHeaderView *)self textViewTrailingConstraint];
+  [v42 addObject:textViewTrailingConstraint];
 
-  v32 = [(ENUILoggingInfoHeaderView *)self textView];
-  v33 = [v32 topAnchor];
-  v34 = [(ENUILoggingInfoHeaderView *)self contentView];
-  v35 = [v34 topAnchor];
-  v36 = [v33 constraintEqualToAnchor:v35];
+  textView12 = [(ENUILoggingInfoHeaderView *)self textView];
+  topAnchor = [textView12 topAnchor];
+  contentView4 = [(ENUILoggingInfoHeaderView *)self contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v36 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v42 addObject:v36];
 
-  v37 = [(ENUILoggingInfoHeaderView *)self textView];
-  v38 = [v37 bottomAnchor];
-  v39 = [(ENUILoggingInfoHeaderView *)self contentView];
-  v40 = [v39 bottomAnchor];
-  v41 = [v38 constraintEqualToAnchor:v40];
+  textView13 = [(ENUILoggingInfoHeaderView *)self textView];
+  bottomAnchor = [textView13 bottomAnchor];
+  contentView5 = [(ENUILoggingInfoHeaderView *)self contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
+  v41 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v42 addObject:v41];
 
   [NSLayoutConstraint activateConstraints:v42];
 }
 
-- (void)setTableView:(id)a3
+- (void)setTableView:(id)view
 {
   v4.receiver = self;
   v4.super_class = ENUILoggingInfoHeaderView;
-  [(ENUILoggingInfoHeaderView *)&v4 setTableView:a3];
+  [(ENUILoggingInfoHeaderView *)&v4 setTableView:view];
   [(ENUILoggingInfoHeaderView *)self setNeedsUpdateConstraints];
 }
 
 - (void)updateConstraints
 {
-  v3 = [(ENUILoggingInfoHeaderView *)self textViewTrailingConstraint];
-  [v3 constant];
+  textViewTrailingConstraint = [(ENUILoggingInfoHeaderView *)self textViewTrailingConstraint];
+  [textViewTrailingConstraint constant];
   v5 = v4;
-  v6 = [(ENUILoggingInfoHeaderView *)self tableView];
-  [v6 _marginWidth];
+  tableView = [(ENUILoggingInfoHeaderView *)self tableView];
+  [tableView _marginWidth];
   v8 = v7;
 
   if (v5 != v8)
   {
-    v9 = [(ENUILoggingInfoHeaderView *)self tableView];
-    [v9 _marginWidth];
+    tableView2 = [(ENUILoggingInfoHeaderView *)self tableView];
+    [tableView2 _marginWidth];
     v11 = v10;
-    v12 = [(ENUILoggingInfoHeaderView *)self textViewTrailingConstraint];
-    [v12 setConstant:v11];
+    textViewTrailingConstraint2 = [(ENUILoggingInfoHeaderView *)self textViewTrailingConstraint];
+    [textViewTrailingConstraint2 setConstant:v11];
   }
 
-  v13 = [(ENUILoggingInfoHeaderView *)self textViewLeadingConstraint];
-  [v13 constant];
+  textViewLeadingConstraint = [(ENUILoggingInfoHeaderView *)self textViewLeadingConstraint];
+  [textViewLeadingConstraint constant];
   v15 = v14;
-  v16 = [(ENUILoggingInfoHeaderView *)self tableView];
-  [v16 _marginWidth];
+  tableView3 = [(ENUILoggingInfoHeaderView *)self tableView];
+  [tableView3 _marginWidth];
   v18 = v17;
 
   if (v15 != v18)
   {
-    v19 = [(ENUILoggingInfoHeaderView *)self tableView];
-    [v19 _marginWidth];
+    tableView4 = [(ENUILoggingInfoHeaderView *)self tableView];
+    [tableView4 _marginWidth];
     v21 = v20;
-    v22 = [(ENUILoggingInfoHeaderView *)self textViewLeadingConstraint];
-    [v22 setConstant:v21];
+    textViewLeadingConstraint2 = [(ENUILoggingInfoHeaderView *)self textViewLeadingConstraint];
+    [textViewLeadingConstraint2 setConstant:v21];
   }
 
   v23.receiver = self;
@@ -182,12 +182,12 @@
   [(ENUILoggingInfoHeaderView *)&v23 updateConstraints];
 }
 
-- (double)preferredHeightForWidth:(double)a3 inTableView:(id)a4
+- (double)preferredHeightForWidth:(double)width inTableView:(id)view
 {
-  [(ENUILoggingInfoHeaderView *)self setTableView:a4];
+  [(ENUILoggingInfoHeaderView *)self setTableView:view];
   LODWORD(v6) = 1148846080;
   LODWORD(v7) = 1112014848;
-  [(ENUILoggingInfoHeaderView *)self systemLayoutSizeFittingSize:a3 withHorizontalFittingPriority:UILayoutFittingCompressedSize.height verticalFittingPriority:v6, v7];
+  [(ENUILoggingInfoHeaderView *)self systemLayoutSizeFittingSize:width withHorizontalFittingPriority:UILayoutFittingCompressedSize.height verticalFittingPriority:v6, v7];
   return v8;
 }
 

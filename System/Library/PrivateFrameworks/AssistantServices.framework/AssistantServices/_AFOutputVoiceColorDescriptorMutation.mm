@@ -1,5 +1,5 @@
 @interface _AFOutputVoiceColorDescriptorMutation
-- (_AFOutputVoiceColorDescriptorMutation)initWithBaseModel:(id)a3;
+- (_AFOutputVoiceColorDescriptorMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -20,26 +20,26 @@
   {
     if ((*&self->_mutationFlags & 2) != 0)
     {
-      v8 = self->_hexColor;
+      hexColor = self->_hexColor;
     }
 
     else
     {
-      v8 = [(AFOutputVoiceColorDescriptor *)baseModel hexColor];
+      hexColor = [(AFOutputVoiceColorDescriptor *)baseModel hexColor];
     }
 
-    v9 = v8;
+    v9 = hexColor;
     if ((*&self->_mutationFlags & 4) != 0)
     {
-      v10 = self->_colorName;
+      colorName = self->_colorName;
     }
 
     else
     {
-      v10 = [(AFOutputVoiceColorDescriptor *)self->_baseModel colorName];
+      colorName = [(AFOutputVoiceColorDescriptor *)self->_baseModel colorName];
     }
 
-    v11 = v10;
+    v11 = colorName;
     if ((*&self->_mutationFlags & 8) != 0)
     {
       alpha = self->_alpha;
@@ -56,20 +56,20 @@
       if ((*&self->_mutationFlags & 0x10) != 0)
       {
 LABEL_14:
-        v14 = self->_localizedOutputVoiceColor;
+        localizedOutputVoiceColor = self->_localizedOutputVoiceColor;
 LABEL_17:
-        v15 = v14;
+        v15 = localizedOutputVoiceColor;
         if ((*&self->_mutationFlags & 0x20) != 0)
         {
-          v16 = self->_localizedOutputVoice;
+          localizedOutputVoice = self->_localizedOutputVoice;
         }
 
         else
         {
-          v16 = [(AFOutputVoiceColorDescriptor *)self->_baseModel localizedOutputVoice];
+          localizedOutputVoice = [(AFOutputVoiceColorDescriptor *)self->_baseModel localizedOutputVoice];
         }
 
-        v17 = v16;
+        v17 = localizedOutputVoice;
         v18 = [AFOutputVoiceColorDescriptor alloc];
         *&v19 = alpha;
         v7 = [(AFOutputVoiceColorDescriptor *)v18 initWithHexColor:v9 colorName:v11 alpha:v15 localizedOutputVoiceColor:v17 localizedOutputVoice:v19];
@@ -78,7 +78,7 @@ LABEL_17:
       }
     }
 
-    v14 = [(AFOutputVoiceColorDescriptor *)self->_baseModel localizedOutputVoiceColor];
+    localizedOutputVoiceColor = [(AFOutputVoiceColorDescriptor *)self->_baseModel localizedOutputVoiceColor];
     goto LABEL_17;
   }
 
@@ -90,16 +90,16 @@ LABEL_21:
   return v7;
 }
 
-- (_AFOutputVoiceColorDescriptorMutation)initWithBaseModel:(id)a3
+- (_AFOutputVoiceColorDescriptorMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _AFOutputVoiceColorDescriptorMutation;
   v6 = [(_AFOutputVoiceColorDescriptorMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

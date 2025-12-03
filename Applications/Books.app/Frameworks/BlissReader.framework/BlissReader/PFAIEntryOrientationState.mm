@@ -1,15 +1,15 @@
 @interface PFAIEntryOrientationState
-- (PFAIEntryOrientationState)initWithStackEntry:(id)a3 parentEntryOrientationState:(id)a4;
+- (PFAIEntryOrientationState)initWithStackEntry:(id)entry parentEntryOrientationState:(id)state;
 - (void)loadPropertiesIfNecessary;
 @end
 
 @implementation PFAIEntryOrientationState
 
-- (PFAIEntryOrientationState)initWithStackEntry:(id)a3 parentEntryOrientationState:(id)a4
+- (PFAIEntryOrientationState)initWithStackEntry:(id)entry parentEntryOrientationState:(id)state
 {
   v5.receiver = self;
   v5.super_class = PFAIEntryOrientationState;
-  return [(PFXHtmlEntryMediaState *)&v5 initWithHtmlStackEntry:a3 parentEntryMediaState:a4];
+  return [(PFXHtmlEntryMediaState *)&v5 initWithHtmlStackEntry:entry parentEntryMediaState:state];
 }
 
 - (void)loadPropertiesIfNecessary
@@ -19,20 +19,20 @@
     v10 = v2;
     v11 = v3;
     mHtmlStackEntry = self->super.mHtmlStackEntry;
-    v6 = [(PFXHtmlStackEntry *)mHtmlStackEntry currentEntryOrientationState];
-    v7 = [(PFXHtmlStackEntry *)mHtmlStackEntry flowState];
+    currentEntryOrientationState = [(PFXHtmlStackEntry *)mHtmlStackEntry currentEntryOrientationState];
+    flowState = [(PFXHtmlStackEntry *)mHtmlStackEntry flowState];
     v9.receiver = self;
     v9.super_class = PFAIEntryOrientationState;
     [(PFXHtmlEntryMediaState *)&v9 loadPropertiesIfNecessary];
-    v8 = [(PFXHtmlStackEntry *)mHtmlStackEntry applePubReaderState];
-    if (v6 == v7)
+    applePubReaderState = [(PFXHtmlStackEntry *)mHtmlStackEntry applePubReaderState];
+    if (currentEntryOrientationState == flowState)
     {
-      [v8 setFlowAsCurrent];
+      [applePubReaderState setFlowAsCurrent];
     }
 
     else
     {
-      [v8 setPaginatedAsCurrent];
+      [applePubReaderState setPaginatedAsCurrent];
     }
   }
 }

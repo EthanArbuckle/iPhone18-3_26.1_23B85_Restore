@@ -2,17 +2,17 @@
 - (BOOL)isEnabled;
 - (NSArray)assets;
 - (SKUIImageViewElement)thumbnailImage;
-- (SKUIVideoViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SKUIVideoViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SKUIVideoViewElement
 
-- (SKUIVideoViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIVideoViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIVideoViewElement initWithDOMElement:parent:elementFactory:];
@@ -20,10 +20,10 @@
 
   v39.receiver = self;
   v39.super_class = SKUIVideoViewElement;
-  v11 = [(SKUIViewElement *)&v39 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v39 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v36 = [v8 getAttribute:@"playback"];
+    v36 = [elementCopy getAttribute:@"playback"];
     if ([v36 isEqualToString:@"inline"])
     {
       v11->_playbackStyle = 1;
@@ -34,7 +34,7 @@
     {
       v12 = objc_opt_class();
       [v12 registerClass:objc_opt_class() forElementName:@"video" elementType:{49, 0}];
-      v13 = [[SKUIImageViewElement alloc] initWithDOMElement:v8 parent:v11 elementFactory:v10];
+      v13 = [[SKUIImageViewElement alloc] initWithDOMElement:elementCopy parent:v11 elementFactory:factoryCopy];
       thumbnailImage = v11->_thumbnailImage;
       v11->_thumbnailImage = v13;
 
@@ -50,7 +50,7 @@
       [v17 registerClass:objc_opt_class() forElementName:@"video" elementType:152];
     }
 
-    v18 = [v8 getAttribute:{@"disabled", v34}];
+    v18 = [elementCopy getAttribute:{@"disabled", v34}];
     if ([v18 length])
     {
       v19 = [v18 BOOLValue] ^ 1;
@@ -62,15 +62,15 @@
     }
 
     v11->_enabled = v19;
-    v20 = [v8 getAttribute:@"data-content-id"];
+    v20 = [elementCopy getAttribute:@"data-content-id"];
     if ([v20 length])
     {
       v11->_itemIdentifier = [v20 longLongValue];
     }
 
-    v21 = [v8 getAttribute:@"data-metrics"];
+    v21 = [elementCopy getAttribute:@"data-metrics"];
     objc_opt_class();
-    v38 = v9;
+    v38 = parentCopy;
     if (objc_opt_isKindOfClass())
     {
       v22 = v21;
@@ -92,7 +92,7 @@
 
     v26 = 0;
 LABEL_22:
-    v37 = v10;
+    v37 = factoryCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -130,8 +130,8 @@ LABEL_27:
 
         v11->_kind = v31;
 
-        v10 = v37;
-        v9 = v38;
+        factoryCopy = v37;
+        parentCopy = v38;
         goto LABEL_35;
       }
     }
@@ -152,12 +152,12 @@ LABEL_35:
 
 - (NSArray)assets
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __30__SKUIVideoViewElement_assets__block_invoke;
   v6[3] = &unk_2781F9640;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(SKUIViewElement *)self enumerateChildrenUsingBlock:v6];
 
@@ -189,19 +189,19 @@ void __30__SKUIVideoViewElement_assets__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = SKUIVideoViewElement;
-  v5 = [(SKUIViewElement *)&v8 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v8 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    self->_enabled = v4->_enabled;
-    self->_itemIdentifier = [(SKUIVideoViewElement *)v4 itemIdentifier];
-    self->_playbackStyle = [(SKUIVideoViewElement *)v4 playbackStyle];
-    objc_storeStrong(&self->_thumbnailImage, v4->_thumbnailImage);
+    self->_enabled = elementCopy->_enabled;
+    self->_itemIdentifier = [(SKUIVideoViewElement *)elementCopy itemIdentifier];
+    self->_playbackStyle = [(SKUIVideoViewElement *)elementCopy playbackStyle];
+    objc_storeStrong(&self->_thumbnailImage, elementCopy->_thumbnailImage);
   }
 
   return v6;

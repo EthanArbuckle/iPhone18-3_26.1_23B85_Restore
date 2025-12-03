@@ -1,7 +1,7 @@
 @interface MPVoicemailUsageService
 + (MPVoicemailUsageService)shared;
 - (MPVoicemailUsageService)init;
-- (void)checkUsageAndPresentIfNeededWithHost:(id)a3;
+- (void)checkUsageAndPresentIfNeededWithHost:(id)host;
 @end
 
 @implementation MPVoicemailUsageService
@@ -18,11 +18,11 @@
   return v3;
 }
 
-- (void)checkUsageAndPresentIfNeededWithHost:(id)a3
+- (void)checkUsageAndPresentIfNeededWithHost:(id)host
 {
-  v4 = a3;
-  v5 = self;
-  VoicemailUsageService.checkUsageAndPresentIfNeeded(host:)(v4);
+  hostCopy = host;
+  selfCopy = self;
+  VoicemailUsageService.checkUsageAndPresentIfNeeded(host:)(hostCopy);
 }
 
 - (MPVoicemailUsageService)init

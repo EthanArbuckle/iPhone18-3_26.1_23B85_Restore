@@ -1,12 +1,12 @@
 @interface _UICoreUIEffect
-+ (id)coreUIEffectForBlurStyle:(int64_t)a3;
++ (id)coreUIEffectForBlurStyle:(int64_t)style;
 @end
 
 @implementation _UICoreUIEffect
 
-+ (id)coreUIEffectForBlurStyle:(int64_t)a3
++ (id)coreUIEffectForBlurStyle:(int64_t)style
 {
-  v3 = [a1 _coreUIImplementationForStyle:a3];
+  v3 = [self _coreUIImplementationForStyle:style];
   if (v3)
   {
     v4 = [(UIBlurEffect *)[_UICoreUIEffect alloc] _initWithImplementation:v3];

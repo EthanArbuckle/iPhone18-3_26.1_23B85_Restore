@@ -3,19 +3,19 @@
 + (id)_condensedPaletteColors;
 + (id)_incomingCallRainbowTextStyle;
 + (id)_standardPaletteColors;
-+ (id)addOrRemoveRainbowStyleIfNeededInStyles:(id)a3 withPreferredMaterialType:(unint64_t)a4 role:(id)a5;
-+ (id)defaultPaletteForContext:(unint64_t)a3 preferredMaterialType:(unint64_t)a4 role:(id)a5;
++ (id)addOrRemoveRainbowStyleIfNeededInStyles:(id)styles withPreferredMaterialType:(unint64_t)type role:(id)role;
++ (id)defaultPaletteForContext:(unint64_t)context preferredMaterialType:(unint64_t)type role:(id)role;
 - (BOOL)displayingGlassStyles;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PREditorContentStylePalette)initWithBSXPCCoder:(id)a3;
-- (PREditorContentStylePalette)initWithCoder:(id)a3;
-- (PREditorContentStylePalette)initWithContentStyles:(id)a3 context:(unint64_t)a4 role:(id)a5 localizedName:(id)a6 defaultPalette:(BOOL)a7;
-- (id)withPreferredMaterialType:(unint64_t)a3;
+- (PREditorContentStylePalette)initWithBSXPCCoder:(id)coder;
+- (PREditorContentStylePalette)initWithCoder:(id)coder;
+- (PREditorContentStylePalette)initWithContentStyles:(id)styles context:(unint64_t)context role:(id)role localizedName:(id)name defaultPalette:(BOOL)palette;
+- (id)withPreferredMaterialType:(unint64_t)type;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PREditorContentStylePalette
@@ -92,10 +92,10 @@
   v11[2] = v5;
   v6 = [MEMORY[0x1E69DC888] colorNamed:@"desaturatedBrown" inBundle:v2 compatibleWithTraitCollection:0];
   v11[3] = v6;
-  v7 = [MEMORY[0x1E69DC888] whiteColor];
-  v11[4] = v7;
-  v8 = [MEMORY[0x1E69DC888] blackColor];
-  v11[5] = v8;
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v11[4] = whiteColor;
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v11[5] = blackColor;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:6];
 
   return v9;
@@ -124,50 +124,50 @@
   return v10;
 }
 
-+ (id)defaultPaletteForContext:(unint64_t)a3 preferredMaterialType:(unint64_t)a4 role:(id)a5
++ (id)defaultPaletteForContext:(unint64_t)context preferredMaterialType:(unint64_t)type role:(id)role
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v9 userInterfaceIdiom] == 1)
+  roleCopy = role;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
-    [a1 _condensedPaletteColors];
+    [self _condensedPaletteColors];
   }
 
   else
   {
-    [a1 _standardPaletteColors];
+    [self _standardPaletteColors];
   }
   v10 = ;
 
-  if (a3 == 2)
+  if (context == 2)
   {
-    v11 = [[PRPosterContentVibrantMaterialStyle alloc] initWithPreferredMaterialType:a4];
+    v11 = [[PRPosterContentVibrantMaterialStyle alloc] initWithPreferredMaterialType:type];
     v22[0] = v11;
-    v12 = [[PRPosterContentVibrantMonochromeStyle alloc] initWithBackgroundType:1 preferredMaterialType:a4];
+    v12 = [[PRPosterContentVibrantMonochromeStyle alloc] initWithBackgroundType:1 preferredMaterialType:type];
     v22[1] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
 
-    v14 = [objc_opt_class() addOrRemoveRainbowStyleIfNeededInStyles:v13 withPreferredMaterialType:a4 role:v8];
+    v14 = [objc_opt_class() addOrRemoveRainbowStyleIfNeededInStyles:v13 withPreferredMaterialType:type role:roleCopy];
 
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __83__PREditorContentStylePalette_defaultPaletteForContext_preferredMaterialType_role___block_invoke;
     v21[3] = &__block_descriptor_40_e17__16__0__UIColor_8l;
-    v21[4] = a4;
+    v21[4] = type;
     v15 = [v10 bs_map:v21];
     v16 = [v14 arrayByAddingObjectsFromArray:v15];
   }
 
   else
   {
-    v17 = [a1 _additionalColorsForExtendedPalette];
-    v18 = [v10 arrayByAddingObjectsFromArray:v17];
+    _additionalColorsForExtendedPalette = [self _additionalColorsForExtendedPalette];
+    v18 = [v10 arrayByAddingObjectsFromArray:_additionalColorsForExtendedPalette];
 
     v16 = [v18 bs_map:&__block_literal_global_32];
   }
 
-  v19 = [[a1 alloc] initWithContentStyles:v16 context:a3 role:v8 localizedName:0 defaultPalette:1];
+  v19 = [[self alloc] initWithContentStyles:v16 context:context role:roleCopy localizedName:0 defaultPalette:1];
 
   return v19;
 }
@@ -198,30 +198,30 @@ PRPosterContentDiscreteColorsStyle *__83__PREditorContentStylePalette_defaultPal
   return v5;
 }
 
-- (PREditorContentStylePalette)initWithContentStyles:(id)a3 context:(unint64_t)a4 role:(id)a5 localizedName:(id)a6 defaultPalette:(BOOL)a7
+- (PREditorContentStylePalette)initWithContentStyles:(id)styles context:(unint64_t)context role:(id)role localizedName:(id)name defaultPalette:(BOOL)palette
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  stylesCopy = styles;
+  roleCopy = role;
+  nameCopy = name;
   v20.receiver = self;
   v20.super_class = PREditorContentStylePalette;
   v16 = [(PREditorContentStylePalette *)&v20 init];
   if (v16)
   {
-    v17 = [v15 copy];
+    v17 = [nameCopy copy];
     localizedName = v16->_localizedName;
     v16->_localizedName = v17;
 
-    objc_storeStrong(&v16->_styles, a3);
-    v16->_context = a4;
-    objc_storeStrong(&v16->_role, a5);
-    v16->_defaultPalette = a7;
+    objc_storeStrong(&v16->_styles, styles);
+    v16->_context = context;
+    objc_storeStrong(&v16->_role, role);
+    v16->_defaultPalette = palette;
   }
 
   return v16;
 }
 
-- (id)withPreferredMaterialType:(unint64_t)a3
+- (id)withPreferredMaterialType:(unint64_t)type
 {
   v30 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DEC8]);
@@ -252,7 +252,7 @@ PRPosterContentDiscreteColorsStyle *__83__PREditorContentStylePalette_defaultPal
         if ([v8 conformsToProtocol:&unk_1F1C8ED30])
         {
           v12 = v8;
-          v13 = [v12 copyWithPreferredMaterial:a3];
+          v13 = [v12 copyWithPreferredMaterial:type];
           v14 = [v4 arrayByAddingObject:v13];
 
           v4 = v14;
@@ -272,28 +272,28 @@ PRPosterContentDiscreteColorsStyle *__83__PREditorContentStylePalette_defaultPal
   if (self->_defaultPalette)
   {
     v15 = objc_opt_class();
-    v16 = [(PREditorContentStylePalette *)self role];
-    v17 = [v15 addOrRemoveRainbowStyleIfNeededInStyles:v4 withPreferredMaterialType:a3 role:v16];
+    role = [(PREditorContentStylePalette *)self role];
+    v17 = [v15 addOrRemoveRainbowStyleIfNeededInStyles:v4 withPreferredMaterialType:type role:role];
 
     v4 = v17;
   }
 
   v18 = [PREditorContentStylePalette alloc];
-  v19 = [(PREditorContentStylePalette *)self context];
-  v20 = [(PREditorContentStylePalette *)self role];
-  v21 = [(PREditorContentStylePalette *)self localizedName];
-  v22 = [(PREditorContentStylePalette *)v18 initWithContentStyles:v4 context:v19 role:v20 localizedName:v21 defaultPalette:[(PREditorContentStylePalette *)self isDefaultPalette]];
+  context = [(PREditorContentStylePalette *)self context];
+  role2 = [(PREditorContentStylePalette *)self role];
+  localizedName = [(PREditorContentStylePalette *)self localizedName];
+  v22 = [(PREditorContentStylePalette *)v18 initWithContentStyles:v4 context:context role:role2 localizedName:localizedName defaultPalette:[(PREditorContentStylePalette *)self isDefaultPalette]];
 
   return v22;
 }
 
-+ (id)addOrRemoveRainbowStyleIfNeededInStyles:(id)a3 withPreferredMaterialType:(unint64_t)a4 role:(id)a5
++ (id)addOrRemoveRainbowStyleIfNeededInStyles:(id)styles withPreferredMaterialType:(unint64_t)type role:(id)role
 {
-  v7 = a3;
-  v8 = a5;
+  stylesCopy = styles;
+  roleCopy = role;
   if (_os_feature_enabled_impl())
   {
-    v9 = [v8 isEqualToString:@"PRPosterRoleIncomingCall"];
+    v9 = [roleCopy isEqualToString:@"PRPosterRoleIncomingCall"];
   }
 
   else
@@ -303,7 +303,7 @@ PRPosterContentDiscreteColorsStyle *__83__PREditorContentStylePalette_defaultPal
 
   if (_os_feature_enabled_impl())
   {
-    v10 = [v8 isEqualToString:@"PRPosterRoleLockScreen"];
+    v10 = [roleCopy isEqualToString:@"PRPosterRoleLockScreen"];
   }
 
   else
@@ -311,10 +311,10 @@ PRPosterContentDiscreteColorsStyle *__83__PREditorContentStylePalette_defaultPal
     v10 = 0;
   }
 
-  v11 = [objc_opt_class() _incomingCallRainbowTextStyle];
+  _incomingCallRainbowTextStyle = [objc_opt_class() _incomingCallRainbowTextStyle];
   if (v9)
   {
-    if (a4 != 2)
+    if (type != 2)
     {
       goto LABEL_15;
     }
@@ -322,7 +322,7 @@ PRPosterContentDiscreteColorsStyle *__83__PREditorContentStylePalette_defaultPal
 
   else
   {
-    if (a4 == 2)
+    if (type == 2)
     {
       v12 = v10;
     }
@@ -338,36 +338,36 @@ PRPosterContentDiscreteColorsStyle *__83__PREditorContentStylePalette_defaultPal
     }
   }
 
-  if ([v7 containsObject:v11])
+  if ([stylesCopy containsObject:_incomingCallRainbowTextStyle])
   {
 LABEL_15:
-    if ([v7 containsObject:v11])
+    if ([stylesCopy containsObject:_incomingCallRainbowTextStyle])
     {
-      v13 = [v7 mutableCopy];
-      [v13 removeObject:v11];
+      v13 = [stylesCopy mutableCopy];
+      [v13 removeObject:_incomingCallRainbowTextStyle];
       v14 = [v13 copy];
 
       goto LABEL_21;
     }
 
-    v15 = v7;
+    v15 = stylesCopy;
     goto LABEL_20;
   }
 
-  v16 = [v7 indexOfObjectPassingTest:&__block_literal_global_171];
+  v16 = [stylesCopy indexOfObjectPassingTest:&__block_literal_global_171];
   if (v16 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [v7 arrayByAddingObject:v11];
+    v15 = [stylesCopy arrayByAddingObject:_incomingCallRainbowTextStyle];
 LABEL_20:
     v14 = v15;
     goto LABEL_21;
   }
 
   v18 = v16 + 1;
-  v19 = [v7 subarrayWithRange:{0, v16 + 1}];
-  v20 = [v19 arrayByAddingObject:v11];
+  v19 = [stylesCopy subarrayWithRange:{0, v16 + 1}];
+  v20 = [v19 arrayByAddingObject:_incomingCallRainbowTextStyle];
 
-  v21 = [v7 subarrayWithRange:{v18, objc_msgSend(v7, "count") - v18}];
+  v21 = [stylesCopy subarrayWithRange:{v18, objc_msgSend(stylesCopy, "count") - v18}];
   v14 = [v20 arrayByAddingObjectsFromArray:v21];
 
 LABEL_21:
@@ -396,8 +396,8 @@ uint64_t __102__PREditorContentStylePalette_addOrRemoveRainbowStyleIfNeededInSty
     return 0;
   }
 
-  v3 = [(PREditorContentStylePalette *)self role];
-  v4 = [v3 isEqual:@"PRPosterRoleLockScreen"];
+  role = [(PREditorContentStylePalette *)self role];
+  v4 = [role isEqual:@"PRPosterRoleLockScreen"];
 
   if (!v4)
   {
@@ -426,10 +426,10 @@ uint64_t __52__PREditorContentStylePalette_displayingGlassStyles__block_invoke(u
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -441,15 +441,15 @@ uint64_t __52__PREditorContentStylePalette_displayingGlassStyles__block_invoke(u
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(PREditorContentStylePalette *)self localizedName];
-      v9 = [(PREditorContentStylePalette *)v7 localizedName];
+      v7 = equalCopy;
+      localizedName = [(PREditorContentStylePalette *)self localizedName];
+      localizedName2 = [(PREditorContentStylePalette *)v7 localizedName];
       v10 = BSEqualStrings();
 
       if (v10)
       {
-        v11 = [(PREditorContentStylePalette *)self styles];
-        v12 = [(PREditorContentStylePalette *)v7 styles];
+        styles = [(PREditorContentStylePalette *)self styles];
+        styles2 = [(PREditorContentStylePalette *)v7 styles];
         v13 = BSEqualObjects();
       }
 
@@ -470,10 +470,10 @@ uint64_t __52__PREditorContentStylePalette_displayingGlassStyles__block_invoke(u
 
 - (unint64_t)hash
 {
-  v3 = [(PREditorContentStylePalette *)self styles];
-  v4 = [v3 hash];
-  v5 = [(PREditorContentStylePalette *)self localizedName];
-  v6 = [v5 hash];
+  styles = [(PREditorContentStylePalette *)self styles];
+  v4 = [styles hash];
+  localizedName = [(PREditorContentStylePalette *)self localizedName];
+  v6 = [localizedName hash];
 
   return v6 ^ v4;
 }
@@ -485,7 +485,7 @@ uint64_t __52__PREditorContentStylePalette_displayingGlassStyles__block_invoke(u
   v8 = 3221225472;
   v9 = __42__PREditorContentStylePalette_description__block_invoke;
   v10 = &unk_1E7843070;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -494,10 +494,10 @@ uint64_t __52__PREditorContentStylePalette_displayingGlassStyles__block_invoke(u
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   [(PREditorContentStylePalette *)self styles];
   v14 = 0u;
   v15 = 0u;
@@ -538,33 +538,33 @@ uint64_t __52__PREditorContentStylePalette_displayingGlassStyles__block_invoke(u
     }
   }
 
-  v10 = [(PREditorContentStylePalette *)self styles];
-  [v4 encodeObject:v10 forKey:@"styles"];
+  styles = [(PREditorContentStylePalette *)self styles];
+  [coderCopy encodeObject:styles forKey:@"styles"];
 
   role = self->_role;
   if (role)
   {
-    [v4 encodeObject:role forKey:@"role"];
+    [coderCopy encodeObject:role forKey:@"role"];
   }
 
-  v12 = [(PREditorContentStylePalette *)self localizedName];
-  [v4 encodeObject:v12 forKey:@"localizedName"];
+  localizedName = [(PREditorContentStylePalette *)self localizedName];
+  [coderCopy encodeObject:localizedName forKey:@"localizedName"];
 
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PREditorContentStylePalette context](self, "context")}];
-  [v4 encodeObject:v13 forKey:@"context"];
+  [coderCopy encodeObject:v13 forKey:@"context"];
 LABEL_13:
 }
 
-- (PREditorContentStylePalette)initWithCoder:(id)a3
+- (PREditorContentStylePalette)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"context"];
-  v6 = [v5 unsignedIntegerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"context"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"role"];
-  if (v6)
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"role"];
+  if (unsignedIntegerValue)
   {
-    v8 = [objc_opt_class() defaultPaletteForContext:v6 role:v7];
+    selfCopy = [objc_opt_class() defaultPaletteForContext:unsignedIntegerValue role:v7];
   }
 
   else
@@ -572,22 +572,22 @@ LABEL_13:
     v9 = MEMORY[0x1E695DFD8];
     v10 = PRPosterContentStyleClasses();
     v11 = [v9 setWithArray:v10];
-    v12 = [v4 decodeArrayOfObjectsOfClasses:v11 forKey:@"styles"];
+    v12 = [coderCopy decodeArrayOfObjectsOfClasses:v11 forKey:@"styles"];
 
     v13 = objc_opt_self();
-    v14 = [v4 decodeObjectOfClass:v13 forKey:@"localizedName"];
+    v14 = [coderCopy decodeObjectOfClass:v13 forKey:@"localizedName"];
 
     self = [(PREditorContentStylePalette *)self initWithContentStyles:v12 context:0 role:v7 localizedName:v14 defaultPalette:0];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   [(PREditorContentStylePalette *)self styles];
   v27 = 0u;
   v28 = 0u;
@@ -625,7 +625,7 @@ LABEL_13:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
-  [v4 encodeObject:v10 forKey:@"styleCount"];
+  [coderCopy encodeObject:v10 forKey:@"styleCount"];
 
   v25 = 0u;
   v26 = 0u;
@@ -650,7 +650,7 @@ LABEL_13:
 
         v17 = *(*(&v23 + 1) + 8 * j);
         v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"style%ld", v14];
-        [v4 encodeObject:v17 forKey:v18];
+        [coderCopy encodeObject:v17 forKey:v18];
         ++v14;
       }
 
@@ -663,45 +663,45 @@ LABEL_13:
   role = self->_role;
   if (role)
   {
-    [v4 encodeObject:role forKey:@"role"];
+    [coderCopy encodeObject:role forKey:@"role"];
   }
 
-  v20 = [(PREditorContentStylePalette *)self localizedName];
-  [v4 encodeObject:v20 forKey:@"localizedName"];
+  localizedName = [(PREditorContentStylePalette *)self localizedName];
+  [coderCopy encodeObject:localizedName forKey:@"localizedName"];
 
   v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PREditorContentStylePalette context](self, "context")}];
-  [v4 encodeObject:v21 forKey:@"context"];
+  [coderCopy encodeObject:v21 forKey:@"context"];
   v5 = v22;
 LABEL_20:
 }
 
-- (PREditorContentStylePalette)initWithBSXPCCoder:(id)a3
+- (PREditorContentStylePalette)initWithBSXPCCoder:(id)coder
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"context"];
-  v6 = [v5 unsignedIntegerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"context"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
   v7 = 0x1E696A000uLL;
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"role"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"role"];
   v9 = v8;
-  if (v6)
+  if (unsignedIntegerValue)
   {
-    v10 = [objc_opt_class() defaultPaletteForContext:v6 role:v8];
+    selfCopy2 = [objc_opt_class() defaultPaletteForContext:unsignedIntegerValue role:v8];
   }
 
   else
   {
     v27 = v8;
-    v28 = self;
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"styleCount"];
-    v12 = [v11 integerValue];
+    selfCopy = self;
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"styleCount"];
+    integerValue = [v11 integerValue];
 
-    v29 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v30 = PRPosterContentStyleClasses();
-    if (v12)
+    if (integerValue)
     {
-      for (i = 0; i != v12; ++i)
+      for (i = 0; i != integerValue; ++i)
       {
         v14 = v7;
         v15 = [*(v7 + 3776) stringWithFormat:@"style%ld", i];
@@ -724,11 +724,11 @@ LABEL_20:
                 objc_enumerationMutation(v16);
               }
 
-              v21 = [v4 decodeObjectOfClass:*(*(&v31 + 1) + 8 * j) forKey:v15];
+              v21 = [coderCopy decodeObjectOfClass:*(*(&v31 + 1) + 8 * j) forKey:v15];
               if (v21)
               {
                 v22 = v21;
-                [v29 addObject:v21];
+                [array addObject:v21];
 
                 goto LABEL_15;
               }
@@ -751,41 +751,41 @@ LABEL_15:
     }
 
     v23 = objc_opt_self();
-    v24 = [v4 decodeObjectOfClass:v23 forKey:@"localizedName"];
+    v24 = [coderCopy decodeObjectOfClass:v23 forKey:@"localizedName"];
 
-    v25 = [v29 copy];
+    v25 = [array copy];
     v9 = v27;
-    self = [(PREditorContentStylePalette *)v28 initWithContentStyles:v25 context:0 role:v27 localizedName:v24 defaultPalette:0];
+    self = [(PREditorContentStylePalette *)selfCopy initWithContentStyles:v25 context:0 role:v27 localizedName:v24 defaultPalette:0];
 
-    v10 = self;
+    selfCopy2 = self;
   }
 
-  return v10;
+  return selfCopy2;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
-  v5 = [(PREditorContentStylePalette *)self context];
-  if (v5 > 2)
+  formatterCopy = formatter;
+  context = [(PREditorContentStylePalette *)self context];
+  if (context > 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = off_1E7844D10[v5];
+    v6 = off_1E7844D10[context];
   }
 
-  [v4 appendString:v6 withName:@"context"];
-  v7 = [(PREditorContentStylePalette *)self role];
-  [v4 appendString:v7 withName:@"role"];
+  [formatterCopy appendString:v6 withName:@"context"];
+  role = [(PREditorContentStylePalette *)self role];
+  [formatterCopy appendString:role withName:@"role"];
 
-  v8 = [(PREditorContentStylePalette *)self styles];
-  v9 = [v4 appendObject:v8 withName:@"styles"];
+  styles = [(PREditorContentStylePalette *)self styles];
+  v9 = [formatterCopy appendObject:styles withName:@"styles"];
 
-  v10 = [(PREditorContentStylePalette *)self localizedName];
-  [v4 appendString:v10 withName:@"localizedName" skipIfEmpty:1];
+  localizedName = [(PREditorContentStylePalette *)self localizedName];
+  [formatterCopy appendString:localizedName withName:@"localizedName" skipIfEmpty:1];
 }
 
 @end

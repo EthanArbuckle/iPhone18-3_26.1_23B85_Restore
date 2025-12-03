@@ -1,6 +1,6 @@
 @interface _GEOOfflinePeerHelper
 - (id)description;
-- (void)geoXPCConnectionIsReadyToSend:(id)a3;
+- (void)geoXPCConnectionIsReadyToSend:(id)send;
 @end
 
 @implementation _GEOOfflinePeerHelper
@@ -8,24 +8,24 @@
 - (id)description
 {
   WeakRetained = objc_loadWeakRetained(&self->_peer);
-  v4 = [WeakRetained peerID];
+  peerID = [WeakRetained peerID];
   v5 = objc_loadWeakRetained(&self->_peer);
-  v6 = [v5 bundleIdentifier];
-  v7 = [NSString stringWithFormat:@"<Helper %p: peerId: %@ - %@>", self, v4, v6];
+  bundleIdentifier = [v5 bundleIdentifier];
+  v7 = [NSString stringWithFormat:@"<Helper %p: peerId: %@ - %@>", self, peerID, bundleIdentifier];
 
   return v7;
 }
 
-- (void)geoXPCConnectionIsReadyToSend:(id)a3
+- (void)geoXPCConnectionIsReadyToSend:(id)send
 {
-  v4 = a3;
+  sendCopy = send;
   WeakRetained = objc_loadWeakRetained(&self->_peer);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    v7 = [WeakRetained connection];
+    connection = [WeakRetained connection];
 
-    if (v7 == v4)
+    if (connection == sendCopy)
     {
       v30 = 0;
       v31 = &v30;
@@ -67,9 +67,9 @@ LABEL_25:
             v12 = GEOGetOfflineServiceLog();
             if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
             {
-              v16 = [v10 currentState];
+              currentState = [v10 currentState];
               *buf = 67109378;
-              *v35 = v16;
+              *v35 = currentState;
               *&v35[4] = 2114;
               *&v35[6] = self;
               _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Notifying peer of suggestion change to %d - %{public}@", buf, 0x12u);
@@ -120,7 +120,7 @@ LABEL_25:
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
           {
             v17 = *(v31 + 24);
-            v18 = [v10 currentState];
+            currentState2 = [v10 currentState];
             v19 = "NO";
             *buf = 136446722;
             if (v17)
@@ -130,22 +130,22 @@ LABEL_25:
 
             *v35 = v19;
             *&v35[8] = 1026;
-            *&v35[10] = v18;
+            *&v35[10] = currentState2;
             *&v35[14] = 2114;
             *&v35[16] = self;
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Notifying peer of subscription state change to: %{public}s - state: %{public}d - %{public}@", buf, 0x1Cu);
           }
         }
 
-        v20 = [v6 connection];
-        [v10 send:v20];
+        connection2 = [v6 connection];
+        [v10 send:connection2];
       }
 
 LABEL_23:
       if (*(v23 + 24) == 1)
       {
-        v21 = [v6 connection];
-        [v21 initiateBarrierIfNecessary:0 delegate:self];
+        connection3 = [v6 connection];
+        [connection3 initiateBarrierIfNecessary:0 delegate:self];
       }
 
       goto LABEL_25;

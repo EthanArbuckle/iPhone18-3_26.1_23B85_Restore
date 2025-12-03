@@ -1,11 +1,11 @@
 @interface BSPluginManager
 + (id)mainManager;
-+ (id)managerForBundle:(uint64_t)a1;
++ (id)managerForBundle:(uint64_t)bundle;
 - (id)description;
-- (id)initWithBundle:(void *)a1;
-- (id)pluginBundleForIdentifier:(id)a3;
-- (id)pluginBundleForName:(id)a3 type:(id)a4;
-- (id)pluginBundlesForType:(id)a3;
+- (id)initWithBundle:(void *)bundle;
+- (id)pluginBundleForIdentifier:(id)identifier;
+- (id)pluginBundleForName:(id)name type:(id)type;
+- (id)pluginBundlesForType:(id)type;
 @end
 
 @implementation BSPluginManager
@@ -13,12 +13,12 @@
 + (id)mainManager
 {
   v2 = +[BSPluginManagerCoordinator sharedInstance];
-  v3 = [v2 mainPluginManager];
+  mainPluginManager = [v2 mainPluginManager];
 
-  return v3;
+  return mainPluginManager;
 }
 
-+ (id)managerForBundle:(uint64_t)a1
++ (id)managerForBundle:(uint64_t)bundle
 {
   v2 = a2;
   v3 = objc_alloc(objc_opt_self());
@@ -27,12 +27,12 @@
   return v4;
 }
 
-- (id)initWithBundle:(void *)a1
+- (id)initWithBundle:(void *)bundle
 {
   v75 = *MEMORY[0x1E69E9840];
   v4 = a2;
   v44 = v4;
-  if (!a1)
+  if (!bundle)
   {
     goto LABEL_7;
   }
@@ -52,7 +52,7 @@
       v65 = 2114;
       v66 = v35;
       v67 = 2048;
-      v68 = a1;
+      bundleCopy2 = bundle;
       v69 = 2114;
       v70 = @"BSPluginManager.m";
       v71 = 1024;
@@ -81,7 +81,7 @@
       v65 = 2114;
       v66 = v40;
       v67 = 2048;
-      v68 = a1;
+      bundleCopy2 = bundle;
       v69 = 2114;
       v70 = @"BSPluginManager.m";
       v71 = 1024;
@@ -97,17 +97,17 @@
     JUMPOUT(0x18FF4D78CLL);
   }
 
-  v58.receiver = a1;
+  v58.receiver = bundle;
   v58.super_class = BSPluginManager;
   v5 = objc_msgSendSuper2(&v58, sel_init);
   if (v5)
   {
     v49 = v5;
     objc_storeStrong(v5 + 1, a2);
-    v47 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v42 = _BSSearchPathForDirectoryInDomain(NSLibraryDirectory, 8uLL);
-    v6 = [v49[1] infoDictionary];
-    v43 = [v6 bs_safeStringForKey:@"BSPluginDirectoryName"];
+    infoDictionary = [v49[1] infoDictionary];
+    v43 = [infoDictionary bs_safeStringForKey:@"BSPluginDirectoryName"];
 
     if (v43)
     {
@@ -118,9 +118,9 @@
 
     else
     {
-      v9 = [v45 executablePath];
-      v10 = [v9 lastPathComponent];
-      v7 = [v42 stringByAppendingPathComponent:v10];
+      executablePath = [v45 executablePath];
+      lastPathComponent = [executablePath lastPathComponent];
+      v7 = [v42 stringByAppendingPathComponent:lastPathComponent];
 
       v11 = [v7 stringByAppendingPathComponent:@"Plugins"];
       v61[0] = v11;
@@ -149,7 +149,7 @@
 
           v16 = *(*(&v54 + 1) + 8 * i);
           buf[0] = 0;
-          if ([v47 fileExistsAtPath:v16 isDirectory:buf] && buf[0] == 1)
+          if ([defaultManager fileExistsAtPath:v16 isDirectory:buf] && buf[0] == 1)
           {
             v17 = [v16 copy];
             v18 = v49[2];
@@ -174,12 +174,12 @@ LABEL_20:
     if (v49[2])
     {
       v19 = [BSPluginSpecification specificationsFromHostBundle:?];
-      v48 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v52 = 0u;
       v53 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v20 = [v47 contentsOfDirectoryAtPath:v49[2] error:0];
+      v20 = [defaultManager contentsOfDirectoryAtPath:v49[2] error:0];
       v21 = [v20 countByEnumeratingWithState:&v50 objects:v59 count:16];
       if (v21)
       {
@@ -199,7 +199,7 @@ LABEL_20:
             v27 = [BSPluginBundle bundleWithPath:v26 availableSpecifications:v19];
             if ([v27 isValid])
             {
-              [v48 addObject:v27];
+              [array addObject:v27];
             }
 
             else
@@ -222,7 +222,7 @@ LABEL_20:
         while (v21);
       }
 
-      v29 = [v48 copy];
+      v29 = [array copy];
       v30 = v49[3];
       v49[3] = v29;
     }
@@ -248,19 +248,19 @@ LABEL_7:
   return v49;
 }
 
-- (id)pluginBundleForName:(id)a3 type:(id)a4
+- (id)pluginBundleForName:(id)name type:(id)type
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [v6 stringByDeletingPathExtension];
+  nameCopy = name;
+  typeCopy = type;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  stringByDeletingPathExtension = [nameCopy stringByDeletingPathExtension];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = v8->_pluginBundles;
+  v10 = selfCopy->_pluginBundles;
   v11 = [(NSArray *)v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
@@ -275,10 +275,10 @@ LABEL_7:
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v14 name];
-        if (([v15 isEqualToString:v6] & 1) != 0 || objc_msgSend(v15, "isEqualToString:", v9))
+        name = [v14 name];
+        if (([name isEqualToString:nameCopy] & 1) != 0 || objc_msgSend(name, "isEqualToString:", stringByDeletingPathExtension))
         {
-          if (v7 && ([v14 type], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v7, "isEqualToString:", v17), v17, !v18))
+          if (typeCopy && ([v14 type], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(typeCopy, "isEqualToString:", v17), v17, !v18))
           {
             v16 = 0;
           }
@@ -310,22 +310,22 @@ LABEL_7:
 
 LABEL_17:
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   return v16;
 }
 
-- (id)pluginBundleForIdentifier:(id)a3
+- (id)pluginBundleForIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v5->_pluginBundles;
+  v6 = selfCopy->_pluginBundles;
   v7 = [(NSArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -340,8 +340,8 @@ LABEL_17:
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        if ([v11 isEqualToString:v4])
+        identifier = [v10 identifier];
+        if ([identifier isEqualToString:identifierCopy])
         {
           v7 = v10;
 
@@ -361,23 +361,23 @@ LABEL_17:
 
 LABEL_11:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (id)pluginBundlesForType:(id)a3
+- (id)pluginBundlesForType:(id)type
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = self;
-  objc_sync_enter(v6);
+  typeCopy = type;
+  array = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v6->_pluginBundles;
+  v7 = selfCopy->_pluginBundles;
   v8 = [(NSArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -392,12 +392,12 @@ LABEL_11:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 type];
-        v13 = [v12 isEqualToString:v4];
+        type = [v11 type];
+        v13 = [type isEqualToString:typeCopy];
 
         if (v13)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -407,9 +407,9 @@ LABEL_11:
     while (v8);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return array;
 }
 
 - (id)description
@@ -418,8 +418,8 @@ LABEL_11:
   if (self)
   {
     v3 = [BSDescriptionBuilder builderWithObject:self];
-    v4 = [p_isa[1] bundleIdentifier];
-    v5 = [v3 appendObject:v4 withName:0];
+    bundleIdentifier = [p_isa[1] bundleIdentifier];
+    v5 = [v3 appendObject:bundleIdentifier withName:0];
 
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;

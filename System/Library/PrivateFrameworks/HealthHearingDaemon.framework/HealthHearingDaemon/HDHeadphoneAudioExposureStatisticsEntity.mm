@@ -1,14 +1,14 @@
 @interface HDHeadphoneAudioExposureStatisticsEntity
-+ (BOOL)_enumerateBucketsForProfile:(id)a3 predicate:(id)a4 error:(id *)a5 enumerationHandler:(id)a6;
-+ (BOOL)_replaceExistingWithBuckets:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (BOOL)insertBuckets:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)_bucketFromAllPropertiesRow:(HDSQLiteRow *)a3 profile:(id)a4 error:(id *)a5;
-+ (id)_loadBucketsFromProfile:(id)a3 error:(id *)a4;
-+ (id)_pruneWithNowDate:(id)a3 limit:(unint64_t)a4 profile:(id)a5 error:(id *)a6;
++ (BOOL)_enumerateBucketsForProfile:(id)profile predicate:(id)predicate error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)_replaceExistingWithBuckets:(id)buckets profile:(id)profile error:(id *)error;
++ (BOOL)insertBuckets:(id)buckets transaction:(id)transaction error:(id *)error;
++ (id)_bucketFromAllPropertiesRow:(HDSQLiteRow *)row profile:(id)profile error:(id *)error;
++ (id)_loadBucketsFromProfile:(id)profile error:(id *)error;
++ (id)_pruneWithNowDate:(id)date limit:(unint64_t)limit profile:(id)profile error:(id *)error;
 + (id)_sortOrderingTerms;
 + (id)indices;
-+ (id)insertBucket:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (id)_bucketWithProfile:(id)a3 error:(id *)a4;
++ (id)insertBucket:(id)bucket transaction:(id)transaction error:(id *)error;
+- (id)_bucketWithProfile:(id)profile error:(id *)error;
 @end
 
 @implementation HDHeadphoneAudioExposureStatisticsEntity
@@ -35,37 +35,37 @@
   return v10;
 }
 
-+ (id)insertBucket:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)insertBucket:(id)bucket transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  bucketCopy = bucket;
+  transactionCopy = transaction;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__1;
   v27 = __Block_byref_object_dispose__1;
   v28 = 0;
-  v10 = [v9 databaseForEntityClass:a1];
+  v10 = [transactionCopy databaseForEntityClass:self];
   v11 = _AllProperties();
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __75__HDHeadphoneAudioExposureStatisticsEntity_insertBucket_transaction_error___block_invoke;
   v20[3] = &unk_2796C6598;
-  v12 = v8;
+  v12 = bucketCopy;
   v21 = v12;
   v22 = &v23;
-  v13 = [a1 insertOrReplaceEntity:0 database:v10 properties:v11 error:a5 bindingHandler:v20];
+  v13 = [self insertOrReplaceEntity:0 database:v10 properties:v11 error:error bindingHandler:v20];
 
   v14 = v24[5];
   v15 = v14;
   v16 = v13;
   if (v14)
   {
-    if (a5)
+    if (error)
     {
       v17 = v14;
       v16 = 0;
-      *a5 = v15;
+      *error = v15;
     }
 
     else
@@ -99,16 +99,16 @@ void __75__HDHeadphoneAudioExposureStatisticsEntity_insertBucket_transaction_err
   MEMORY[0x2530817B0](a2, @"archived_statistics", v10);
 }
 
-+ (BOOL)insertBuckets:(id)a3 transaction:(id)a4 error:(id *)a5
++ (BOOL)insertBuckets:(id)buckets transaction:(id)transaction error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  bucketsCopy = buckets;
+  transactionCopy = transaction;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v8;
+  v10 = bucketsCopy;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -123,7 +123,7 @@ void __75__HDHeadphoneAudioExposureStatisticsEntity_insertBucket_transaction_err
           objc_enumerationMutation(v10);
         }
 
-        v15 = [a1 insertBucket:*(*(&v19 + 1) + 8 * i) transaction:v9 error:{a5, v19}];
+        v15 = [self insertBucket:*(*(&v19 + 1) + 8 * i) transaction:transactionCopy error:{error, v19}];
 
         if (!v15)
         {
@@ -149,29 +149,29 @@ LABEL_11:
   return v16;
 }
 
-+ (id)_pruneWithNowDate:(id)a3 limit:(unint64_t)a4 profile:(id)a5 error:(id *)a6
++ (id)_pruneWithNowDate:(id)date limit:(unint64_t)limit profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  dateCopy = date;
+  profileCopy = profile;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  v12 = [v11 database];
+  database = [profileCopy database];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __82__HDHeadphoneAudioExposureStatisticsEntity__pruneWithNowDate_limit_profile_error___block_invoke;
   v17[3] = &unk_2796C65E8;
-  v13 = v10;
+  v13 = dateCopy;
   v18 = v13;
-  v21 = a1;
-  v14 = v11;
-  v22 = a4;
+  selfCopy = self;
+  v14 = profileCopy;
+  limitCopy = limit;
   v19 = v14;
   v20 = &v23;
-  LODWORD(a6) = [a1 performWriteTransactionWithHealthDatabase:v12 error:a6 block:v17];
+  LODWORD(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v17];
 
-  if (a6)
+  if (error)
   {
     v15 = [MEMORY[0x277CCABB0] numberWithInteger:v24[3]];
   }
@@ -266,10 +266,10 @@ uint64_t __82__HDHeadphoneAudioExposureStatisticsEntity__pruneWithNowDate_limit_
   return v9;
 }
 
-+ (id)_loadBucketsFromProfile:(id)a3 error:(id *)a4
++ (id)_loadBucketsFromProfile:(id)profile error:(id *)error
 {
   v6 = MEMORY[0x277CBEB18];
-  v7 = a3;
+  profileCopy = profile;
   v8 = objc_alloc_init(v6);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -277,10 +277,10 @@ uint64_t __82__HDHeadphoneAudioExposureStatisticsEntity__pruneWithNowDate_limit_
   v12[3] = &unk_2796C6480;
   v9 = v8;
   v13 = v9;
-  LODWORD(a1) = [a1 _enumerateBucketsForProfile:v7 predicate:0 error:a4 enumerationHandler:v12];
+  LODWORD(self) = [self _enumerateBucketsForProfile:profileCopy predicate:0 error:error enumerationHandler:v12];
 
   v10 = 0;
-  if (a1)
+  if (self)
   {
     v10 = [v9 copy];
   }
@@ -288,20 +288,20 @@ uint64_t __82__HDHeadphoneAudioExposureStatisticsEntity__pruneWithNowDate_limit_
   return v10;
 }
 
-+ (BOOL)_replaceExistingWithBuckets:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)_replaceExistingWithBuckets:(id)buckets profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 database];
+  bucketsCopy = buckets;
+  database = [profile database];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __86__HDHeadphoneAudioExposureStatisticsEntity__replaceExistingWithBuckets_profile_error___block_invoke;
   v12[3] = &unk_2796C6610;
-  v13 = v8;
-  v14 = a1;
-  v10 = v8;
-  LOBYTE(a5) = [a1 performWriteTransactionWithHealthDatabase:v9 error:a5 block:v12];
+  v13 = bucketsCopy;
+  selfCopy = self;
+  v10 = bucketsCopy;
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v12];
 
-  return a5;
+  return error;
 }
 
 uint64_t __86__HDHeadphoneAudioExposureStatisticsEntity__replaceExistingWithBuckets_profile_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -321,9 +321,9 @@ uint64_t __86__HDHeadphoneAudioExposureStatisticsEntity__replaceExistingWithBuck
   return v7;
 }
 
-- (id)_bucketWithProfile:(id)a3 error:(id *)a4
+- (id)_bucketWithProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
+  profileCopy = profile;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -331,18 +331,18 @@ uint64_t __86__HDHeadphoneAudioExposureStatisticsEntity__replaceExistingWithBuck
   v20 = __Block_byref_object_dispose__1;
   v21 = 0;
   v7 = objc_opt_class();
-  v8 = [v6 database];
+  database = [profileCopy database];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __69__HDHeadphoneAudioExposureStatisticsEntity__bucketWithProfile_error___block_invoke;
   v13[3] = &unk_2796C6660;
   v13[4] = self;
   v15 = &v16;
-  v9 = v6;
+  v9 = profileCopy;
   v14 = v9;
-  LODWORD(a4) = [v7 performReadTransactionWithHealthDatabase:v8 error:a4 block:v13];
+  LODWORD(error) = [v7 performReadTransactionWithHealthDatabase:database error:error block:v13];
 
-  if (a4)
+  if (error)
   {
     v10 = v17[5];
   }
@@ -428,9 +428,9 @@ void __69__HDHeadphoneAudioExposureStatisticsEntity__bucketWithProfile_error___b
 + (id)_sortOrderingTerms
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"end_date" entityClass:a1 ascending:1];
+  v3 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"end_date" entityClass:self ascending:1];
   v8[0] = v3;
-  v4 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"start_date" entityClass:a1 ascending:1];
+  v4 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"start_date" entityClass:self ascending:1];
   v8[1] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
 
@@ -439,32 +439,32 @@ void __69__HDHeadphoneAudioExposureStatisticsEntity__bucketWithProfile_error___b
   return v5;
 }
 
-+ (id)_bucketFromAllPropertiesRow:(HDSQLiteRow *)a3 profile:(id)a4 error:(id *)a5
++ (id)_bucketFromAllPropertiesRow:(HDSQLiteRow *)row profile:(id)profile error:(id *)error
 {
-  v8 = a4;
+  profileCopy = profile;
   v9 = HDSQLiteColumnWithNameAsDate();
   v10 = HDSQLiteColumnWithNameAsDate();
   v11 = HDSQLiteColumnWithNameAsData();
-  v12 = [HDHeadphoneAudioExposureStatisticsBucket bucketForArchivedRepresentation:v11 profile:v8 error:a5];
+  v12 = [HDHeadphoneAudioExposureStatisticsBucket bucketForArchivedRepresentation:v11 profile:profileCopy error:error];
 
   if (v12)
   {
-    v13 = [v12 dateInterval];
-    v14 = [v13 startDate];
-    v15 = [v14 isEqualToDate:v9];
+    dateInterval = [v12 dateInterval];
+    startDate = [dateInterval startDate];
+    v15 = [startDate isEqualToDate:v9];
 
     if ((v15 & 1) == 0)
     {
-      [HDHeadphoneAudioExposureStatisticsEntity _bucketFromAllPropertiesRow:a2 profile:a1 error:?];
+      [HDHeadphoneAudioExposureStatisticsEntity _bucketFromAllPropertiesRow:a2 profile:self error:?];
     }
 
-    v16 = [v12 dateInterval];
-    v17 = [v16 endDate];
-    v18 = [v17 isEqualToDate:v10];
+    dateInterval2 = [v12 dateInterval];
+    endDate = [dateInterval2 endDate];
+    v18 = [endDate isEqualToDate:v10];
 
     if ((v18 & 1) == 0)
     {
-      [HDHeadphoneAudioExposureStatisticsEntity _bucketFromAllPropertiesRow:a2 profile:a1 error:?];
+      [HDHeadphoneAudioExposureStatisticsEntity _bucketFromAllPropertiesRow:a2 profile:self error:?];
     }
 
     v19 = v12;
@@ -473,26 +473,26 @@ void __69__HDHeadphoneAudioExposureStatisticsEntity__bucketWithProfile_error___b
   return v12;
 }
 
-+ (BOOL)_enumerateBucketsForProfile:(id)a3 predicate:(id)a4 error:(id *)a5 enumerationHandler:(id)a6
++ (BOOL)_enumerateBucketsForProfile:(id)profile predicate:(id)predicate error:(id *)error enumerationHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v10 database];
+  profileCopy = profile;
+  predicateCopy = predicate;
+  handlerCopy = handler;
+  database = [profileCopy database];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __107__HDHeadphoneAudioExposureStatisticsEntity__enumerateBucketsForProfile_predicate_error_enumerationHandler___block_invoke;
   v18[3] = &unk_2796C66B0;
-  v19 = v11;
-  v20 = v10;
-  v21 = v12;
-  v22 = a1;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
-  LOBYTE(a5) = [a1 performReadTransactionWithHealthDatabase:v13 error:a5 block:v18];
+  v19 = predicateCopy;
+  v20 = profileCopy;
+  v21 = handlerCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v15 = profileCopy;
+  v16 = predicateCopy;
+  LOBYTE(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v18];
 
-  return a5;
+  return error;
 }
 
 uint64_t __107__HDHeadphoneAudioExposureStatisticsEntity__enumerateBucketsForProfile_predicate_error_enumerationHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)

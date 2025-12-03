@@ -1,21 +1,21 @@
 @interface CSAudioChunk
-- (CSAudioChunk)initWithCoder:(id)a3;
-- (CSAudioChunk)initWithData:(id)a3 numChannels:(unint64_t)a4 numSamples:(unint64_t)a5 sampleByteDepth:(unint64_t)a6 startSampleCount:(unint64_t)a7 hostTime:(unint64_t)a8 arrivalHostTimeToAudioRecorder:(unint64_t)a9 wasBuffered:(BOOL)a10 remoteVAD:(id)a11 isFloat:(BOOL)a12;
-- (CSAudioChunk)initWithData:(id)a3 numChannels:(unint64_t)a4 numSamples:(unint64_t)a5 sampleByteDepth:(unint64_t)a6 startSampleCount:(unint64_t)a7 hostTime:(unint64_t)a8 remoteVAD:(id)a9 isFloat:(BOOL)a10;
-- (CSAudioChunk)initWithXPCObject:(id)a3;
+- (CSAudioChunk)initWithCoder:(id)coder;
+- (CSAudioChunk)initWithData:(id)data numChannels:(unint64_t)channels numSamples:(unint64_t)samples sampleByteDepth:(unint64_t)depth startSampleCount:(unint64_t)count hostTime:(unint64_t)time arrivalHostTimeToAudioRecorder:(unint64_t)recorder wasBuffered:(BOOL)self0 remoteVAD:(id)self1 isFloat:(BOOL)self2;
+- (CSAudioChunk)initWithData:(id)data numChannels:(unint64_t)channels numSamples:(unint64_t)samples sampleByteDepth:(unint64_t)depth startSampleCount:(unint64_t)count hostTime:(unint64_t)time remoteVAD:(id)d isFloat:(BOOL)self0;
+- (CSAudioChunk)initWithXPCObject:(id)object;
 - (OS_xpc_object)xpcObject;
-- (id)chunkForChannel:(unint64_t)a3;
-- (id)dataForChannel:(unint64_t)a3;
-- (id)dataWithRemoteVADWithScaleFactor:(float)a3 numAudioSamplesPerRemoteVAD:(unint64_t)a4;
-- (id)digitalZeroChunkWithDurationInSec:(double)a3 startSampleCount:(unint64_t)a4 hostTime:(unint64_t)a5;
+- (id)chunkForChannel:(unint64_t)channel;
+- (id)dataForChannel:(unint64_t)channel;
+- (id)dataWithRemoteVADWithScaleFactor:(float)factor numAudioSamplesPerRemoteVAD:(unint64_t)d;
+- (id)digitalZeroChunkWithDurationInSec:(double)sec startSampleCount:(unint64_t)count hostTime:(unint64_t)time;
 - (id)gainCompensatedChunk;
-- (id)remoteVADSubChunkFrom:(unint64_t)a3 numSamples:(unint64_t)a4 numAudioSamplesPerRemoteVAD:(unint64_t)a5;
-- (id)subChunkFrom:(unint64_t)a3 numSamples:(unint64_t)a4;
-- (id)subChunkFrom:(unint64_t)a3 numSamples:(unint64_t)a4 forChannel:(unint64_t)a5;
-- (unint64_t)copySubAudioChunkFrom:(unint64_t)a3 numSamples:(unint64_t)a4 to:(void *)a5 dstBufferSize:(unint64_t)a6;
-- (void)encodeWithCoder:(id)a3;
-- (void)skipSamplesAtStartSuchThatNumSamplesReceivedSoFar:(unint64_t)a3 reachesACountOf:(unint64_t)a4 completionHandler:(id)a5;
-- (void)splitAudioChunkSuchThatNumSamplesReceivedSoFar:(unint64_t)a3 reachesACountOf:(unint64_t)a4 completionHandler:(id)a5;
+- (id)remoteVADSubChunkFrom:(unint64_t)from numSamples:(unint64_t)samples numAudioSamplesPerRemoteVAD:(unint64_t)d;
+- (id)subChunkFrom:(unint64_t)from numSamples:(unint64_t)samples;
+- (id)subChunkFrom:(unint64_t)from numSamples:(unint64_t)samples forChannel:(unint64_t)channel;
+- (unint64_t)copySubAudioChunkFrom:(unint64_t)from numSamples:(unint64_t)samples to:(void *)to dstBufferSize:(unint64_t)size;
+- (void)encodeWithCoder:(id)coder;
+- (void)skipSamplesAtStartSuchThatNumSamplesReceivedSoFar:(unint64_t)far reachesACountOf:(unint64_t)of completionHandler:(id)handler;
+- (void)splitAudioChunkSuchThatNumSamplesReceivedSoFar:(unint64_t)far reachesACountOf:(unint64_t)of completionHandler:(id)handler;
 @end
 
 @implementation CSAudioChunk
@@ -61,10 +61,10 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v21 = [[v4 alloc] initWithUnsignedInteger:self->_numChannels];
   v20 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:self->_numSamples];
   v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:self->_sampleByteDepth];
@@ -72,86 +72,86 @@
   v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLongLong:self->_hostTime];
   v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLongLong:self->_arrivalHostTimeToAudioRecorder];
   v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"numChannels"];
-  [v5 encodeObject:v21 forKey:v10];
+  [coderCopy encodeObject:v21 forKey:v10];
 
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"numSamples"];
-  [v5 encodeObject:v20 forKey:v11];
+  [coderCopy encodeObject:v20 forKey:v11];
 
   v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"sampleByteDepth"];
-  [v5 encodeObject:v6 forKey:v12];
+  [coderCopy encodeObject:v6 forKey:v12];
 
   v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"startSampleCount"];
-  [v5 encodeObject:v7 forKey:v13];
+  [coderCopy encodeObject:v7 forKey:v13];
 
   v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"hostTime"];
-  [v5 encodeObject:v8 forKey:v14];
+  [coderCopy encodeObject:v8 forKey:v14];
 
   v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"arrivalHostTimeToAudioRecorder"];
-  [v5 encodeObject:v9 forKey:v15];
+  [coderCopy encodeObject:v9 forKey:v15];
 
   data = self->_data;
   v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"data"];
-  [v5 encodeObject:data forKey:v17];
+  [coderCopy encodeObject:data forKey:v17];
 
   v18 = [MEMORY[0x1E696AD98] numberWithBool:self->_isFloat];
   v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"isFloat"];
-  [v5 encodeObject:v18 forKey:v19];
+  [coderCopy encodeObject:v18 forKey:v19];
 }
 
-- (CSAudioChunk)initWithCoder:(id)a3
+- (CSAudioChunk)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = objc_opt_class();
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"data"];
-  v37 = [v3 decodeObjectOfClass:v4 forKey:v5];
+  v37 = [coderCopy decodeObjectOfClass:v4 forKey:v5];
 
   v6 = objc_opt_class();
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"numChannels"];
-  v8 = [v3 decodeObjectOfClass:v6 forKey:v7];
-  v36 = [v8 unsignedIntegerValue];
+  v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
   v9 = objc_opt_class();
   v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"numSamples"];
-  v11 = [v3 decodeObjectOfClass:v9 forKey:v10];
-  v12 = [v11 unsignedIntegerValue];
+  v11 = [coderCopy decodeObjectOfClass:v9 forKey:v10];
+  unsignedIntegerValue2 = [v11 unsignedIntegerValue];
 
   v13 = objc_opt_class();
   v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"sampleByteDepth"];
-  v15 = [v3 decodeObjectOfClass:v13 forKey:v14];
-  v16 = [v15 unsignedIntegerValue];
+  v15 = [coderCopy decodeObjectOfClass:v13 forKey:v14];
+  unsignedIntegerValue3 = [v15 unsignedIntegerValue];
 
   v17 = objc_opt_class();
   v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"startSampleCount"];
-  v19 = [v3 decodeObjectOfClass:v17 forKey:v18];
-  v20 = [v19 unsignedLongLongValue];
+  v19 = [coderCopy decodeObjectOfClass:v17 forKey:v18];
+  unsignedLongLongValue = [v19 unsignedLongLongValue];
 
   v21 = objc_opt_class();
   v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"hostTime"];
-  v23 = [v3 decodeObjectOfClass:v21 forKey:v22];
-  v24 = [v23 unsignedLongLongValue];
+  v23 = [coderCopy decodeObjectOfClass:v21 forKey:v22];
+  unsignedLongLongValue2 = [v23 unsignedLongLongValue];
 
   v25 = objc_opt_class();
   v26 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"arrivalHostTimeToAudioRecorder"];
-  v27 = [v3 decodeObjectOfClass:v25 forKey:v26];
-  v28 = [v27 unsignedLongLongValue];
+  v27 = [coderCopy decodeObjectOfClass:v25 forKey:v26];
+  unsignedLongLongValue3 = [v27 unsignedLongLongValue];
 
   v29 = objc_opt_class();
   v30 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"isFloat"];
-  v31 = [v3 decodeObjectOfClass:v29 forKey:v30];
+  v31 = [coderCopy decodeObjectOfClass:v29 forKey:v30];
 
-  LOBYTE(v3) = [v31 BOOLValue];
-  LOBYTE(v35) = v3;
+  LOBYTE(coderCopy) = [v31 BOOLValue];
+  LOBYTE(v35) = coderCopy;
   LOBYTE(v34) = 0;
-  v32 = [(CSAudioChunk *)self initWithData:v37 numChannels:v36 numSamples:v12 sampleByteDepth:v16 startSampleCount:v20 hostTime:v24 arrivalHostTimeToAudioRecorder:v28 wasBuffered:v34 remoteVAD:0 isFloat:v35];
+  v32 = [(CSAudioChunk *)self initWithData:v37 numChannels:unsignedIntegerValue numSamples:unsignedIntegerValue2 sampleByteDepth:unsignedIntegerValue3 startSampleCount:unsignedLongLongValue hostTime:unsignedLongLongValue2 arrivalHostTimeToAudioRecorder:unsignedLongLongValue3 wasBuffered:v34 remoteVAD:0 isFloat:v35];
 
   return v32;
 }
 
-- (void)splitAudioChunkSuchThatNumSamplesReceivedSoFar:(unint64_t)a3 reachesACountOf:(unint64_t)a4 completionHandler:(id)a5
+- (void)splitAudioChunkSuchThatNumSamplesReceivedSoFar:(unint64_t)far reachesACountOf:(unint64_t)of completionHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if ((a4 - a3) <= 0)
+  handlerCopy = handler;
+  if ((of - far) <= 0)
   {
     v11 = CSLogCategorySpkrId;
     if (os_log_type_enabled(CSLogCategorySpkrId, OS_LOG_TYPE_DEFAULT))
@@ -159,79 +159,79 @@
       v15 = 136315650;
       v16 = "[CSAudioChunk splitAudioChunkSuchThatNumSamplesReceivedSoFar:reachesACountOf:completionHandler:]";
       v17 = 2048;
-      v18 = a3;
+      farCopy = far;
       v19 = 2048;
-      v20 = a4;
+      ofCopy = of;
       _os_log_impl(&dword_1DDA4B000, v11, OS_LOG_TYPE_DEFAULT, "%s Processing ended at: numSamplesProcessed=%lu, totalSampleCountToReach=%lu", &v15, 0x20u);
     }
 
-    v8[2](v8, self, 0, 1);
+    handlerCopy[2](handlerCopy, self, 0, 1);
   }
 
   else
   {
-    v9 = [(CSAudioChunk *)self numSamples];
-    if (v9 >= a4 - a3)
+    numSamples = [(CSAudioChunk *)self numSamples];
+    if (numSamples >= of - far)
     {
-      v10 = a4 - a3;
+      v10 = of - far;
     }
 
     else
     {
-      v10 = v9;
+      v10 = numSamples;
     }
 
     if (v10 == [(CSAudioChunk *)self numSamples])
     {
-      v8[2](v8, self, 0, 0);
+      handlerCopy[2](handlerCopy, self, 0, 0);
     }
 
     else
     {
       v12 = [(CSAudioChunk *)self subChunkFrom:0 numSamples:v10];
       v13 = [(CSAudioChunk *)self subChunkFrom:v10 numSamples:[(CSAudioChunk *)self numSamples]- v10];
-      (v8)[2](v8, v12, v13, 0);
+      (handlerCopy)[2](handlerCopy, v12, v13, 0);
     }
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)skipSamplesAtStartSuchThatNumSamplesReceivedSoFar:(unint64_t)a3 reachesACountOf:(unint64_t)a4 completionHandler:(id)a5
+- (void)skipSamplesAtStartSuchThatNumSamplesReceivedSoFar:(unint64_t)far reachesACountOf:(unint64_t)of completionHandler:(id)handler
 {
-  v6 = a4 - a3;
-  if (a4 <= a3)
+  v6 = of - far;
+  if (of <= far)
   {
-    v9 = *(a5 + 2);
-    v10 = a5;
+    v9 = *(handler + 2);
+    handlerCopy = handler;
     v9();
   }
 
   else
   {
-    v7 = a5;
-    v8 = [(CSAudioChunk *)self numSamples];
-    if (v6 >= v8)
+    handlerCopy2 = handler;
+    numSamples = [(CSAudioChunk *)self numSamples];
+    if (v6 >= numSamples)
     {
-      v6 = v8;
+      v6 = numSamples;
     }
 
-    v10 = [(CSAudioChunk *)self subChunkFrom:v6 numSamples:[(CSAudioChunk *)self numSamples]- v6];
-    v7[2](v7);
+    handlerCopy = [(CSAudioChunk *)self subChunkFrom:v6 numSamples:[(CSAudioChunk *)self numSamples]- v6];
+    handlerCopy2[2](handlerCopy2);
   }
 }
 
-- (id)digitalZeroChunkWithDurationInSec:(double)a3 startSampleCount:(unint64_t)a4 hostTime:(unint64_t)a5
+- (id)digitalZeroChunkWithDurationInSec:(double)sec startSampleCount:(unint64_t)count hostTime:(unint64_t)time
 {
   +[CSConfig inputRecordingSampleRate];
-  v10 = (v9 * a3 * self->_sampleByteDepth * self->_numChannels);
+  v10 = (v9 * sec * self->_sampleByteDepth * self->_numChannels);
   v11 = [MEMORY[0x1E695DF88] dataWithLength:v10];
   bzero([v11 bytes], v10);
   v12 = [CSAudioChunk alloc];
   numChannels = self->_numChannels;
   +[CSConfig inputRecordingSampleRate];
   LOBYTE(v17) = self->_isFloat;
-  v15 = [(CSAudioChunk *)v12 initWithData:v11 numChannels:numChannels numSamples:(v14 * a3) sampleByteDepth:self->_sampleByteDepth startSampleCount:a4 hostTime:a5 remoteVAD:0 isFloat:v17];
+  v15 = [(CSAudioChunk *)v12 initWithData:v11 numChannels:numChannels numSamples:(v14 * sec) sampleByteDepth:self->_sampleByteDepth startSampleCount:count hostTime:time remoteVAD:0 isFloat:v17];
 
   return v15;
 }
@@ -257,19 +257,19 @@
   return v5;
 }
 
-- (id)remoteVADSubChunkFrom:(unint64_t)a3 numSamples:(unint64_t)a4 numAudioSamplesPerRemoteVAD:(unint64_t)a5
+- (id)remoteVADSubChunkFrom:(unint64_t)from numSamples:(unint64_t)samples numAudioSamplesPerRemoteVAD:(unint64_t)d
 {
   if (self->_remoteVAD)
   {
-    v9 = a4 / a5;
-    v10 = [MEMORY[0x1E695DF88] dataWithLength:a4 / a5];
-    v11 = [v10 bytes];
-    v12 = [(NSData *)self->_remoteVAD bytes];
-    if (a5 <= a4)
+    v9 = samples / d;
+    v10 = [MEMORY[0x1E695DF88] dataWithLength:samples / d];
+    bytes = [v10 bytes];
+    bytes2 = [(NSData *)self->_remoteVAD bytes];
+    if (d <= samples)
     {
-      v13 = v12;
+      v13 = bytes2;
       v14 = 0;
-      v15 = a3 / a5;
+      v15 = from / d;
       do
       {
         if (v15 + v14 >= [(NSData *)self->_remoteVAD length])
@@ -282,7 +282,7 @@
           v16 = v13[v15 + v14];
         }
 
-        *(v11 + v14++) = v16;
+        *(bytes + v14++) = v16;
       }
 
       while (v14 < v9);
@@ -297,26 +297,26 @@
   return v10;
 }
 
-- (unint64_t)copySubAudioChunkFrom:(unint64_t)a3 numSamples:(unint64_t)a4 to:(void *)a5 dstBufferSize:(unint64_t)a6
+- (unint64_t)copySubAudioChunkFrom:(unint64_t)from numSamples:(unint64_t)samples to:(void *)to dstBufferSize:(unint64_t)size
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = self->_sampleByteDepth * a4 * self->_numChannels;
-  if (v6 <= a6)
+  v6 = self->_sampleByteDepth * samples * self->_numChannels;
+  if (v6 <= size)
   {
-    v9 = a4;
-    v13 = [(NSData *)self->_data bytes];
+    samplesCopy = samples;
+    bytes = [(NSData *)self->_data bytes];
     if (self->_numChannels)
     {
-      v14 = v13;
+      v14 = bytes;
       v15 = 0;
       sampleByteDepth = self->_sampleByteDepth;
-      v17 = sampleByteDepth * a3;
+      v17 = sampleByteDepth * from;
       do
       {
-        memcpy(a5, &v14[v17], sampleByteDepth * v9);
+        memcpy(to, &v14[v17], sampleByteDepth * samplesCopy);
         sampleByteDepth = self->_sampleByteDepth;
         v14 += sampleByteDepth * self->_numSamples;
-        a5 = a5 + sampleByteDepth * v9;
+        to = to + sampleByteDepth * samplesCopy;
         ++v15;
       }
 
@@ -326,59 +326,59 @@
 
   else
   {
-    v7 = a6;
+    sizeCopy = size;
     v8 = CSLogCategoryAudio;
     if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_ERROR))
     {
       v20 = 136315650;
       v21 = "[CSAudioChunk copySubAudioChunkFrom:numSamples:to:dstBufferSize:]";
       v22 = 1024;
-      v23 = v7;
+      v23 = sizeCopy;
       v24 = 1024;
       v25 = v6;
       _os_log_error_impl(&dword_1DDA4B000, v8, OS_LOG_TYPE_ERROR, "%s Unable to write subChunk into dstBufferSize(%d) : required buffer size (%d)", &v20, 0x18u);
     }
 
-    v9 = 0;
+    samplesCopy = 0;
   }
 
   v18 = *MEMORY[0x1E69E9840];
-  return v9;
+  return samplesCopy;
 }
 
-- (id)subChunkFrom:(unint64_t)a3 numSamples:(unint64_t)a4
+- (id)subChunkFrom:(unint64_t)from numSamples:(unint64_t)samples
 {
   v38 = *MEMORY[0x1E69E9840];
   numSamples = self->_numSamples;
-  if (!a3 && numSamples == a4)
+  if (!from && numSamples == samples)
   {
-    v8 = self;
+    selfCopy = self;
 LABEL_4:
-    v9 = v8;
+    v9 = selfCopy;
     goto LABEL_15;
   }
 
-  if (a4 + a3 <= numSamples)
+  if (samples + from <= numSamples)
   {
     numChannels = self->_numChannels;
     if (numChannels == 1)
     {
-      v8 = [(CSAudioChunk *)self subChunkFrom:a3 numSamples:a4 forChannel:0];
+      selfCopy = [(CSAudioChunk *)self subChunkFrom:from numSamples:samples forChannel:0];
       goto LABEL_4;
     }
 
-    v12 = self->_sampleByteDepth * a4;
-    v13 = [MEMORY[0x1E695DF88] dataWithCapacity:v12 * numChannels];
+    v12 = self->_sampleByteDepth * samples;
+    numChannels = [MEMORY[0x1E695DF88] dataWithCapacity:v12 * numChannels];
     if (self->_numChannels)
     {
       v14 = 0;
       sampleByteDepth = self->_sampleByteDepth;
-      v16 = sampleByteDepth * a3;
+      v16 = sampleByteDepth * from;
       v17 = self->_numSamples * sampleByteDepth;
       do
       {
         v18 = [(NSData *)self->_data subdataWithRange:v16, v12];
-        [v13 appendData:v18];
+        [numChannels appendData:v18];
 
         ++v14;
         v16 += v17;
@@ -390,15 +390,15 @@ LABEL_4:
     startSampleCount = self->_startSampleCount;
     hostTime = self->_hostTime;
     +[CSConfig inputRecordingSampleRate];
-    v21 = [CSFTimeUtils hostTimeFromSampleCount:startSampleCount + a3 anchorHostTime:hostTime anchorSampleCount:startSampleCount sampleRate:?];
+    v21 = [CSFTimeUtils hostTimeFromSampleCount:startSampleCount + from anchorHostTime:hostTime anchorSampleCount:startSampleCount sampleRate:?];
     arrivalHostTimeToAudioRecorder = self->_arrivalHostTimeToAudioRecorder;
     v23 = self->_startSampleCount;
     +[CSConfig inputRecordingSampleRate];
-    v24 = [CSFTimeUtils hostTimeFromSampleCount:startSampleCount + a3 anchorHostTime:arrivalHostTimeToAudioRecorder anchorSampleCount:v23 sampleRate:?];
+    v24 = [CSFTimeUtils hostTimeFromSampleCount:startSampleCount + from anchorHostTime:arrivalHostTimeToAudioRecorder anchorSampleCount:v23 sampleRate:?];
     v25 = [CSAudioChunk alloc];
     LOBYTE(v29) = self->_isFloat;
     LOBYTE(v28) = self->_wasBuffered;
-    v9 = [(CSAudioChunk *)v25 initWithData:v13 numChannels:self->_numChannels numSamples:a4 sampleByteDepth:self->_sampleByteDepth startSampleCount:startSampleCount + a3 hostTime:v21 arrivalHostTimeToAudioRecorder:v24 wasBuffered:v28 remoteVAD:0 isFloat:v29];
+    v9 = [(CSAudioChunk *)v25 initWithData:numChannels numChannels:self->_numChannels numSamples:samples sampleByteDepth:self->_sampleByteDepth startSampleCount:startSampleCount + from hostTime:v21 arrivalHostTimeToAudioRecorder:v24 wasBuffered:v28 remoteVAD:0 isFloat:v29];
   }
 
   else
@@ -409,9 +409,9 @@ LABEL_4:
       *buf = 136315906;
       v31 = "[CSAudioChunk subChunkFrom:numSamples:]";
       v32 = 2050;
-      v33 = a3;
+      fromCopy = from;
       v34 = 2050;
-      v35 = a4;
+      samplesCopy = samples;
       v36 = 2050;
       v37 = numSamples;
       _os_log_error_impl(&dword_1DDA4B000, v10, OS_LOG_TYPE_ERROR, "%s Cannot generate subChunk if it reuqest more than it has : %{public}tu %{public}tu %{public}tu", buf, 0x2Au);
@@ -426,17 +426,17 @@ LABEL_15:
   return v9;
 }
 
-- (id)subChunkFrom:(unint64_t)a3 numSamples:(unint64_t)a4 forChannel:(unint64_t)a5
+- (id)subChunkFrom:(unint64_t)from numSamples:(unint64_t)samples forChannel:(unint64_t)channel
 {
   v41 = *MEMORY[0x1E69E9840];
-  if (!a3 && !a5 && self->_numSamples == a4 && self->_numChannels == 1)
+  if (!from && !channel && self->_numSamples == samples && self->_numChannels == 1)
   {
-    v16 = self;
+    selfCopy = self;
     goto LABEL_13;
   }
 
   numChannels = self->_numChannels;
-  if (numChannels <= a5)
+  if (numChannels <= channel)
   {
     v15 = CSLogCategoryAudio;
     if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_ERROR))
@@ -444,9 +444,9 @@ LABEL_15:
       *buf = 136315650;
       v34 = "[CSAudioChunk subChunkFrom:numSamples:forChannel:]";
       v35 = 2050;
-      v36 = a5;
+      fromCopy = channel;
       v37 = 2050;
-      v38 = numChannels;
+      samplesCopy = numChannels;
       v12 = "%s Cannot generate subChunk since channel(%{public}tu) is larger than number of channels(%{public}tu)";
       v13 = v15;
       v14 = 32;
@@ -454,12 +454,12 @@ LABEL_15:
     }
 
 LABEL_7:
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
   numSamples = self->_numSamples;
-  if (a4 + a3 > numSamples)
+  if (samples + from > numSamples)
   {
     v11 = CSLogCategoryAudio;
     if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_ERROR))
@@ -467,9 +467,9 @@ LABEL_7:
       *buf = 136315906;
       v34 = "[CSAudioChunk subChunkFrom:numSamples:forChannel:]";
       v35 = 2050;
-      v36 = a3;
+      fromCopy = from;
       v37 = 2050;
-      v38 = a4;
+      samplesCopy = samples;
       v39 = 2050;
       v40 = numSamples;
       v12 = "%s Cannot generate subChunk if it reuqest more than it has : %{public}tu %{public}tu %{public}tu";
@@ -484,52 +484,52 @@ LABEL_17:
   }
 
   sampleByteDepth = self->_sampleByteDepth;
-  v18 = sampleByteDepth * a4;
-  v19 = sampleByteDepth * (a3 + numSamples * a5);
-  v20 = [MEMORY[0x1E695DF88] dataWithCapacity:sampleByteDepth * a4];
+  v18 = sampleByteDepth * samples;
+  v19 = sampleByteDepth * (from + numSamples * channel);
+  samples = [MEMORY[0x1E695DF88] dataWithCapacity:sampleByteDepth * samples];
   v21 = [(NSData *)self->_data subdataWithRange:v19, v18];
-  [v20 appendData:v21];
+  [samples appendData:v21];
 
   startSampleCount = self->_startSampleCount;
   hostTime = self->_hostTime;
   +[CSConfig inputRecordingSampleRate];
-  v24 = [CSFTimeUtils hostTimeFromSampleCount:startSampleCount + a3 anchorHostTime:hostTime anchorSampleCount:startSampleCount sampleRate:?];
+  v24 = [CSFTimeUtils hostTimeFromSampleCount:startSampleCount + from anchorHostTime:hostTime anchorSampleCount:startSampleCount sampleRate:?];
   arrivalHostTimeToAudioRecorder = self->_arrivalHostTimeToAudioRecorder;
   v26 = self->_startSampleCount;
   +[CSConfig inputRecordingSampleRate];
-  v27 = [CSFTimeUtils hostTimeFromSampleCount:startSampleCount + a3 anchorHostTime:arrivalHostTimeToAudioRecorder anchorSampleCount:v26 sampleRate:?];
+  v27 = [CSFTimeUtils hostTimeFromSampleCount:startSampleCount + from anchorHostTime:arrivalHostTimeToAudioRecorder anchorSampleCount:v26 sampleRate:?];
   v28 = [CSAudioChunk alloc];
   LOBYTE(v32) = self->_isFloat;
   LOBYTE(v31) = self->_wasBuffered;
-  v16 = [(CSAudioChunk *)v28 initWithData:v20 numChannels:1 numSamples:a4 sampleByteDepth:self->_sampleByteDepth startSampleCount:startSampleCount + a3 hostTime:v24 arrivalHostTimeToAudioRecorder:v27 wasBuffered:v31 remoteVAD:0 isFloat:v32];
+  selfCopy = [(CSAudioChunk *)v28 initWithData:samples numChannels:1 numSamples:samples sampleByteDepth:self->_sampleByteDepth startSampleCount:startSampleCount + from hostTime:v24 arrivalHostTimeToAudioRecorder:v27 wasBuffered:v31 remoteVAD:0 isFloat:v32];
 
 LABEL_13:
   v29 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return selfCopy;
 }
 
-- (id)dataWithRemoteVADWithScaleFactor:(float)a3 numAudioSamplesPerRemoteVAD:(unint64_t)a4
+- (id)dataWithRemoteVADWithScaleFactor:(float)factor numAudioSamplesPerRemoteVAD:(unint64_t)d
 {
   v7 = [MEMORY[0x1E695DF88] dataWithLength:(self->_numSamples + self->_numSamples * self->_numChannels) * self->_sampleByteDepth];
   memcpy([v7 bytes], -[NSData bytes](self->_data, "bytes"), self->_numSamples * self->_sampleByteDepth * self->_numChannels);
-  v8 = [(NSData *)self->_remoteVAD bytes];
-  v9 = [v7 bytes];
+  bytes = [(NSData *)self->_remoteVAD bytes];
+  bytes2 = [v7 bytes];
   if (self->_numSamples)
   {
-    v10 = v9;
+    v10 = bytes2;
     v11 = 0;
     do
     {
-      if (v11 / a4 >= [(NSData *)self->_remoteVAD length])
+      if (v11 / d >= [(NSData *)self->_remoteVAD length])
       {
         LOWORD(v13) = 0;
       }
 
       else
       {
-        LOBYTE(v12) = v8[v11 / a4];
-        v13 = (v12 * a3);
+        LOBYTE(v12) = bytes[v11 / d];
+        v13 = (v12 * factor);
       }
 
       numSamples = self->_numSamples;
@@ -542,9 +542,9 @@ LABEL_13:
   return v7;
 }
 
-- (id)dataForChannel:(unint64_t)a3
+- (id)dataForChannel:(unint64_t)channel
 {
-  if (a3 || self->_numChannels != 1)
+  if (channel || self->_numChannels != 1)
   {
     numSamples = self->_numSamples;
     sampleByteDepth = self->_sampleByteDepth;
@@ -553,8 +553,8 @@ LABEL_13:
     v8[2] = 0x3032000000;
     v8[3] = __Block_byref_object_copy__5792;
     v8[4] = __Block_byref_object_dispose__5793;
-    v9 = self;
-    v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:-[NSData bytes](v9->_data length:"bytes") + numSamples * sampleByteDepth * a3 deallocator:?];
+    selfCopy = self;
+    v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:-[NSData bytes](selfCopy->_data length:"bytes") + numSamples * sampleByteDepth * channel deallocator:?];
     _Block_object_dispose(v8, 8);
   }
 
@@ -573,11 +573,11 @@ void __31__CSAudioChunk_dataForChannel___block_invoke(uint64_t a1)
   *(v1 + 40) = 0;
 }
 
-- (id)chunkForChannel:(unint64_t)a3
+- (id)chunkForChannel:(unint64_t)channel
 {
   v27 = *MEMORY[0x1E69E9840];
   numChannels = self->_numChannels;
-  if (numChannels <= a3)
+  if (numChannels <= channel)
   {
     v16 = CSLogCategoryAudio;
     if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_ERROR))
@@ -585,7 +585,7 @@ void __31__CSAudioChunk_dataForChannel___block_invoke(uint64_t a1)
       *buf = 136315650;
       v22 = "[CSAudioChunk chunkForChannel:]";
       v23 = 1024;
-      v24 = a3;
+      channelCopy = channel;
       v25 = 1024;
       v26 = numChannels;
       _os_log_error_impl(&dword_1DDA4B000, v16, OS_LOG_TYPE_ERROR, "%s channelId %d out of bound %d", buf, 0x18u);
@@ -597,7 +597,7 @@ void __31__CSAudioChunk_dataForChannel___block_invoke(uint64_t a1)
   else
   {
     v6 = [CSAudioChunk alloc];
-    v7 = [(CSAudioChunk *)self dataForChannel:a3];
+    v7 = [(CSAudioChunk *)self dataForChannel:channel];
     numSamples = self->_numSamples;
     sampleByteDepth = self->_sampleByteDepth;
     startSampleCount = self->_startSampleCount;
@@ -615,24 +615,24 @@ void __31__CSAudioChunk_dataForChannel___block_invoke(uint64_t a1)
   return v15;
 }
 
-- (CSAudioChunk)initWithXPCObject:(id)a3
+- (CSAudioChunk)initWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v19.receiver = self;
   v19.super_class = CSAudioChunk;
   v5 = [(CSAudioChunk *)&v19 init];
   if (v5)
   {
-    v5->_numChannels = xpc_dictionary_get_uint64(v4, "numChannels");
-    v5->_numSamples = xpc_dictionary_get_uint64(v4, "numSamples");
-    v5->_sampleByteDepth = xpc_dictionary_get_uint64(v4, "sampleByteDepth");
-    v5->_startSampleCount = xpc_dictionary_get_uint64(v4, "startSampleCount");
-    v5->_hostTime = xpc_dictionary_get_uint64(v4, "hostTime");
-    v5->_arrivalHostTimeToAudioRecorder = xpc_dictionary_get_uint64(v4, "arrivalHostTimeToAudioRecorder");
-    v5->_wasBuffered = xpc_dictionary_get_BOOL(v4, "wasBufferedAudio");
-    v5->_isFloat = xpc_dictionary_get_BOOL(v4, "isFloat");
+    v5->_numChannels = xpc_dictionary_get_uint64(objectCopy, "numChannels");
+    v5->_numSamples = xpc_dictionary_get_uint64(objectCopy, "numSamples");
+    v5->_sampleByteDepth = xpc_dictionary_get_uint64(objectCopy, "sampleByteDepth");
+    v5->_startSampleCount = xpc_dictionary_get_uint64(objectCopy, "startSampleCount");
+    v5->_hostTime = xpc_dictionary_get_uint64(objectCopy, "hostTime");
+    v5->_arrivalHostTimeToAudioRecorder = xpc_dictionary_get_uint64(objectCopy, "arrivalHostTimeToAudioRecorder");
+    v5->_wasBuffered = xpc_dictionary_get_BOOL(objectCopy, "wasBufferedAudio");
+    v5->_isFloat = xpc_dictionary_get_BOOL(objectCopy, "isFloat");
     length = 0;
-    data = xpc_dictionary_get_data(v4, "data", &length);
+    data = xpc_dictionary_get_data(objectCopy, "data", &length);
     if (data && length)
     {
       v7 = data;
@@ -643,7 +643,7 @@ void __31__CSAudioChunk_dataForChannel___block_invoke(uint64_t a1)
     }
 
     v17 = 0;
-    v11 = xpc_dictionary_get_data(v4, "remoteVAD", &v17);
+    v11 = xpc_dictionary_get_data(objectCopy, "remoteVAD", &v17);
     if (v11 && v17)
     {
       v12 = v11;
@@ -657,39 +657,39 @@ void __31__CSAudioChunk_dataForChannel___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (CSAudioChunk)initWithData:(id)a3 numChannels:(unint64_t)a4 numSamples:(unint64_t)a5 sampleByteDepth:(unint64_t)a6 startSampleCount:(unint64_t)a7 hostTime:(unint64_t)a8 remoteVAD:(id)a9 isFloat:(BOOL)a10
+- (CSAudioChunk)initWithData:(id)data numChannels:(unint64_t)channels numSamples:(unint64_t)samples sampleByteDepth:(unint64_t)depth startSampleCount:(unint64_t)count hostTime:(unint64_t)time remoteVAD:(id)d isFloat:(BOOL)self0
 {
-  LOBYTE(v12) = a10;
+  LOBYTE(v12) = float;
   LOBYTE(v11) = 0;
-  return [(CSAudioChunk *)self initWithData:a3 numChannels:a4 numSamples:a5 sampleByteDepth:a6 startSampleCount:a7 hostTime:a8 arrivalHostTimeToAudioRecorder:0 wasBuffered:v11 remoteVAD:a9 isFloat:v12];
+  return [(CSAudioChunk *)self initWithData:data numChannels:channels numSamples:samples sampleByteDepth:depth startSampleCount:count hostTime:time arrivalHostTimeToAudioRecorder:0 wasBuffered:v11 remoteVAD:d isFloat:v12];
 }
 
-- (CSAudioChunk)initWithData:(id)a3 numChannels:(unint64_t)a4 numSamples:(unint64_t)a5 sampleByteDepth:(unint64_t)a6 startSampleCount:(unint64_t)a7 hostTime:(unint64_t)a8 arrivalHostTimeToAudioRecorder:(unint64_t)a9 wasBuffered:(BOOL)a10 remoteVAD:(id)a11 isFloat:(BOOL)a12
+- (CSAudioChunk)initWithData:(id)data numChannels:(unint64_t)channels numSamples:(unint64_t)samples sampleByteDepth:(unint64_t)depth startSampleCount:(unint64_t)count hostTime:(unint64_t)time arrivalHostTimeToAudioRecorder:(unint64_t)recorder wasBuffered:(BOOL)self0 remoteVAD:(id)self1 isFloat:(BOOL)self2
 {
-  v18 = a3;
-  v19 = a11;
+  dataCopy = data;
+  dCopy = d;
   v25.receiver = self;
   v25.super_class = CSAudioChunk;
   v20 = [(CSAudioChunk *)&v25 init];
   v21 = v20;
   if (v20)
   {
-    v22 = a9;
-    objc_storeStrong(&v20->_data, a3);
-    v21->_numChannels = a4;
-    v21->_numSamples = a5;
-    v21->_sampleByteDepth = a6;
-    v21->_startSampleCount = a7;
-    v21->_hostTime = a8;
-    objc_storeStrong(&v21->_remoteVAD, a11);
-    v21->_wasBuffered = a10;
-    v21->_isFloat = a12;
-    if (!a9)
+    recorderCopy = recorder;
+    objc_storeStrong(&v20->_data, data);
+    v21->_numChannels = channels;
+    v21->_numSamples = samples;
+    v21->_sampleByteDepth = depth;
+    v21->_startSampleCount = count;
+    v21->_hostTime = time;
+    objc_storeStrong(&v21->_remoteVAD, d);
+    v21->_wasBuffered = buffered;
+    v21->_isFloat = float;
+    if (!recorder)
     {
-      v22 = mach_absolute_time();
+      recorderCopy = mach_absolute_time();
     }
 
-    v21->_arrivalHostTimeToAudioRecorder = v22;
+    v21->_arrivalHostTimeToAudioRecorder = recorderCopy;
   }
 
   return v21;

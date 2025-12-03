@@ -1,20 +1,20 @@
 @interface CNContactsDataclassOwner
 + (OS_os_log)log;
 + (id)dataclasses;
-- (BOOL)areSourcesEmptyForAccount:(id)a3;
+- (BOOL)areSourcesEmptyForAccount:(id)account;
 - (BOOL)isLocalSourceEmpty;
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6;
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass;
 - (CNContactsDataclassOwner)init;
-- (CNContactsDataclassOwner)initWithImplementation:(id)a3 accountProvider:(id)a4;
-- (id)actionsForDeletingAccount:(id)a3 forDataclass:(id)a4;
-- (id)actionsForDeletingAppleAccount:(id)a3;
-- (id)actionsForDeletingGenericAccount:(id)a3;
-- (id)actionsForDisablingDataclassOnAccount:(id)a3 forDataclass:(id)a4;
-- (id)actionsForDisablingDataclassOnAppleAccount:(id)a3;
-- (id)actionsForDisablingDataclassOnGenericAccount:(id)a3;
-- (id)actionsForEnablingDataclassOnAccount:(id)a3 forDataclass:(id)a4;
-- (id)actionsForEnablingDataclassOnAppleAccount:(id)a3;
-- (id)actionsForEnablingDataclassOnGenericAccount:(id)a3;
+- (CNContactsDataclassOwner)initWithImplementation:(id)implementation accountProvider:(id)provider;
+- (id)actionsForDeletingAccount:(id)account forDataclass:(id)dataclass;
+- (id)actionsForDeletingAppleAccount:(id)account;
+- (id)actionsForDeletingGenericAccount:(id)account;
+- (id)actionsForDisablingDataclassOnAccount:(id)account forDataclass:(id)dataclass;
+- (id)actionsForDisablingDataclassOnAppleAccount:(id)account;
+- (id)actionsForDisablingDataclassOnGenericAccount:(id)account;
+- (id)actionsForEnablingDataclassOnAccount:(id)account forDataclass:(id)dataclass;
+- (id)actionsForEnablingDataclassOnAppleAccount:(id)account;
+- (id)actionsForEnablingDataclassOnGenericAccount:(id)account;
 @end
 
 @implementation CNContactsDataclassOwner
@@ -50,38 +50,38 @@
   return v7;
 }
 
-- (CNContactsDataclassOwner)initWithImplementation:(id)a3 accountProvider:(id)a4
+- (CNContactsDataclassOwner)initWithImplementation:(id)implementation accountProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  implementationCopy = implementation;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = CNContactsDataclassOwner;
   v9 = [(CNContactsDataclassOwner *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_implementation, a3);
-    objc_storeStrong(&v10->_accountProvider, a4);
+    objc_storeStrong(&v9->_implementation, implementation);
+    objc_storeStrong(&v10->_accountProvider, provider);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (id)actionsForEnablingDataclassOnAccount:(id)a3 forDataclass:(id)a4
+- (id)actionsForEnablingDataclassOnAccount:(id)account forDataclass:(id)dataclass
 {
-  v5 = a3;
-  if ([CNACAccountTypeAnalyzer isAccountAppleAccount:v5])
+  accountCopy = account;
+  if ([CNACAccountTypeAnalyzer isAccountAppleAccount:accountCopy])
   {
-    v6 = [(CNContactsDataclassOwner *)self actionsForEnablingDataclassOnAppleAccount:v5];
+    v6 = [(CNContactsDataclassOwner *)self actionsForEnablingDataclassOnAppleAccount:accountCopy];
 LABEL_5:
     v7 = v6;
     goto LABEL_7;
   }
 
-  if ([CNACAccountTypeAnalyzer isAccountGenericContactsSyncingAccount:v5])
+  if ([CNACAccountTypeAnalyzer isAccountGenericContactsSyncingAccount:accountCopy])
   {
-    v6 = [(CNContactsDataclassOwner *)self actionsForEnablingDataclassOnGenericAccount:v5];
+    v6 = [(CNContactsDataclassOwner *)self actionsForEnablingDataclassOnGenericAccount:accountCopy];
     goto LABEL_5;
   }
 
@@ -91,13 +91,13 @@ LABEL_7:
   return v7;
 }
 
-- (id)actionsForEnablingDataclassOnAppleAccount:(id)a3
+- (id)actionsForEnablingDataclassOnAppleAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(CNContactsDataclassOwner *)self isLocalSourceEmpty];
+  accountCopy = account;
+  isLocalSourceEmpty = [(CNContactsDataclassOwner *)self isLocalSourceEmpty];
   v6 = [objc_opt_class() log];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
-  if (v5)
+  if (isLocalSourceEmpty)
   {
     if (v7)
     {
@@ -125,13 +125,13 @@ LABEL_7:
   return v9;
 }
 
-- (id)actionsForEnablingDataclassOnGenericAccount:(id)a3
+- (id)actionsForEnablingDataclassOnGenericAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(CNContactsDataclassOwner *)self isLocalSourceEmpty];
+  accountCopy = account;
+  isLocalSourceEmpty = [(CNContactsDataclassOwner *)self isLocalSourceEmpty];
   v6 = [objc_opt_class() log];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
-  if (v5)
+  if (isLocalSourceEmpty)
   {
     if (v7)
     {
@@ -162,20 +162,20 @@ LABEL_7:
   return v9;
 }
 
-- (id)actionsForDeletingAccount:(id)a3 forDataclass:(id)a4
+- (id)actionsForDeletingAccount:(id)account forDataclass:(id)dataclass
 {
-  v5 = a3;
-  if ([CNACAccountTypeAnalyzer isAccountAppleAccount:v5])
+  accountCopy = account;
+  if ([CNACAccountTypeAnalyzer isAccountAppleAccount:accountCopy])
   {
-    v6 = [(CNContactsDataclassOwner *)self actionsForDeletingAppleAccount:v5];
+    v6 = [(CNContactsDataclassOwner *)self actionsForDeletingAppleAccount:accountCopy];
 LABEL_5:
     v7 = v6;
     goto LABEL_7;
   }
 
-  if ([CNACAccountTypeAnalyzer isAccountGenericContactsSyncingAccount:v5])
+  if ([CNACAccountTypeAnalyzer isAccountGenericContactsSyncingAccount:accountCopy])
   {
-    v6 = [(CNContactsDataclassOwner *)self actionsForDeletingGenericAccount:v5];
+    v6 = [(CNContactsDataclassOwner *)self actionsForDeletingGenericAccount:accountCopy];
     goto LABEL_5;
   }
 
@@ -185,9 +185,9 @@ LABEL_7:
   return v7;
 }
 
-- (id)actionsForDeletingAppleAccount:(id)a3
+- (id)actionsForDeletingAppleAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   if (+[CNACAccountTypeAnalyzer isiCloudSignoutRestrictionEnabled])
   {
     v5 = [objc_opt_class() log];
@@ -204,7 +204,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  v8 = [(CNContactsDataclassOwner *)self areSourcesEmptyForAccount:v4];
+  v8 = [(CNContactsDataclassOwner *)self areSourcesEmptyForAccount:accountCopy];
   v9 = [objc_opt_class() log];
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
   if (v8)
@@ -237,9 +237,9 @@ LABEL_13:
   return v11;
 }
 
-- (id)actionsForDeletingGenericAccount:(id)a3
+- (id)actionsForDeletingGenericAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = [objc_opt_class() log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -255,20 +255,20 @@ LABEL_13:
   return v7;
 }
 
-- (id)actionsForDisablingDataclassOnAccount:(id)a3 forDataclass:(id)a4
+- (id)actionsForDisablingDataclassOnAccount:(id)account forDataclass:(id)dataclass
 {
-  v5 = a3;
-  if ([CNACAccountTypeAnalyzer isAccountAppleAccount:v5])
+  accountCopy = account;
+  if ([CNACAccountTypeAnalyzer isAccountAppleAccount:accountCopy])
   {
-    v6 = [(CNContactsDataclassOwner *)self actionsForDisablingDataclassOnAppleAccount:v5];
+    v6 = [(CNContactsDataclassOwner *)self actionsForDisablingDataclassOnAppleAccount:accountCopy];
 LABEL_5:
     v7 = v6;
     goto LABEL_7;
   }
 
-  if ([CNACAccountTypeAnalyzer isAccountPopularContactsSyncingAccount:v5])
+  if ([CNACAccountTypeAnalyzer isAccountPopularContactsSyncingAccount:accountCopy])
   {
-    v6 = [(CNContactsDataclassOwner *)self actionsForDisablingDataclassOnGenericAccount:v5];
+    v6 = [(CNContactsDataclassOwner *)self actionsForDisablingDataclassOnGenericAccount:accountCopy];
     goto LABEL_5;
   }
 
@@ -278,9 +278,9 @@ LABEL_7:
   return v7;
 }
 
-- (id)actionsForDisablingDataclassOnAppleAccount:(id)a3
+- (id)actionsForDisablingDataclassOnAppleAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   if (+[CNACAccountTypeAnalyzer isiCloudSignoutRestrictionEnabled])
   {
     v5 = +[CNDataclassActionDefinition cancelDueToRestrictions];
@@ -291,7 +291,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v7 = [(CNContactsDataclassOwner *)self areSourcesEmptyForAccount:v4];
+  v7 = [(CNContactsDataclassOwner *)self areSourcesEmptyForAccount:accountCopy];
   v8 = +[CNDataclassActionDefinition deleteSyncData];
   v5 = v8;
   if (v7)
@@ -312,7 +312,7 @@ LABEL_7:
   return v9;
 }
 
-- (id)actionsForDisablingDataclassOnGenericAccount:(id)a3
+- (id)actionsForDisablingDataclassOnGenericAccount:(id)account
 {
   v3 = +[CNDataclassActionDefinition deleteSyncData];
   v7[0] = v3;
@@ -323,54 +323,54 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  actionCopy = action;
+  accountCopy = account;
+  childrenCopy = children;
   v12 = objc_alloc_init(CNDataclassActionParameters);
-  [(CNDataclassActionParameters *)v12 setAction:v9];
-  [(CNDataclassActionParameters *)v12 setAccount:v10];
-  [(CNDataclassActionParameters *)v12 setChildAccounts:v11];
+  [(CNDataclassActionParameters *)v12 setAction:actionCopy];
+  [(CNDataclassActionParameters *)v12 setAccount:accountCopy];
+  [(CNDataclassActionParameters *)v12 setChildAccounts:childrenCopy];
 
-  v13 = [(CNContactsDataclassOwner *)self accountProvider];
-  [(CNDataclassActionParameters *)v12 setAccountProvider:v13];
+  accountProvider = [(CNContactsDataclassOwner *)self accountProvider];
+  [(CNDataclassActionParameters *)v12 setAccountProvider:accountProvider];
 
-  v14 = [(CNContactsDataclassOwner *)self implementation];
-  [(CNDataclassActionParameters *)v12 setImplementation:v14];
+  implementation = [(CNContactsDataclassOwner *)self implementation];
+  [(CNDataclassActionParameters *)v12 setImplementation:implementation];
 
   v15 = [CNDataclassActionHandler actionHandlerSuitableForParameters:v12];
   v16 = [objc_opt_class() log];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     v19 = 134218754;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    v22 = v9;
+    v22 = actionCopy;
     v23 = 2112;
-    v24 = v10;
+    v24 = accountCopy;
     v25 = 2112;
     v26 = v15;
     _os_log_debug_impl(&dword_0, v16, OS_LOG_TYPE_DEBUG, "%p - CNContactsDataclassOwner will performAction (%@) forAccount (%@) with handler (%@).", &v19, 0x2Au);
   }
 
-  v17 = [v15 perform];
-  return v17;
+  perform = [v15 perform];
+  return perform;
 }
 
 - (BOOL)isLocalSourceEmpty
 {
-  v2 = [(CNContactsDataclassOwner *)self implementation];
-  v3 = [v2 isLocalContainerEmpty];
+  implementation = [(CNContactsDataclassOwner *)self implementation];
+  isLocalContainerEmpty = [implementation isLocalContainerEmpty];
 
-  return v3;
+  return isLocalContainerEmpty;
 }
 
-- (BOOL)areSourcesEmptyForAccount:(id)a3
+- (BOOL)areSourcesEmptyForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(CNContactsDataclassOwner *)self implementation];
-  v6 = [v5 areContainersEmptyForParentAccount:v4];
+  accountCopy = account;
+  implementation = [(CNContactsDataclassOwner *)self implementation];
+  v6 = [implementation areContainersEmptyForParentAccount:accountCopy];
 
   return v6;
 }

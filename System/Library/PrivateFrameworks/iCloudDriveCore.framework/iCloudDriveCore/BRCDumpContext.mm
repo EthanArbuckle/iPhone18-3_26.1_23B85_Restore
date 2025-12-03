@@ -1,35 +1,35 @@
 @interface BRCDumpContext
-+ (id)highlightedString:(id)a3 type:(int64_t)a4 context:(id)a5;
-+ (id)nowDateFromContext:(id)a3;
-+ (id)stringFromCount:(int64_t)a3 showActualCount:(BOOL)a4 suffix:(id)a5 isByteCount:(BOOL)a6 context:(id)a7;
-+ (id)stringFromDueStamp:(int64_t)a3 allowsPast:(BOOL)a4 context:(id)a5;
-+ (id)stringFromError:(id)a3 context:(id)a4;
-+ (id)stringFromErrorString:(id)a3 context:(id)a4;
-+ (id)stringFromInterval:(double)a3 context:(id)a4;
-+ (id)stringFromItemAsString:(id)a3 context:(id)a4;
-+ (id)stringFromItemID:(id)a3 context:(id)a4;
-+ (id)stringFromOperationUUID:(unsigned __int8)a3[16] context:(id)a4;
-+ (id)stringFromThrottleState:(int)a3 context:(id)a4;
-+ (int64_t)nowFromContext:(id)a3;
++ (id)highlightedString:(id)string type:(int64_t)type context:(id)context;
++ (id)nowDateFromContext:(id)context;
++ (id)stringFromCount:(int64_t)count showActualCount:(BOOL)actualCount suffix:(id)suffix isByteCount:(BOOL)byteCount context:(id)context;
++ (id)stringFromDueStamp:(int64_t)stamp allowsPast:(BOOL)past context:(id)context;
++ (id)stringFromError:(id)error context:(id)context;
++ (id)stringFromErrorString:(id)string context:(id)context;
++ (id)stringFromInterval:(double)interval context:(id)context;
++ (id)stringFromItemAsString:(id)string context:(id)context;
++ (id)stringFromItemID:(id)d context:(id)context;
++ (id)stringFromOperationUUID:(unsigned __int8)d[16] context:(id)context;
++ (id)stringFromThrottleState:(int)state context:(id)context;
++ (int64_t)nowFromContext:(id)context;
 - (BOOL)isCancelled;
-- (BOOL)shouldKeepDumpingWithItemCount:(unsigned int)a3 includeAllItems:(BOOL)a4;
-- (BRCDumpContext)initWithDumper:(id)a3;
-- (BRCDumpContext)initWithFile:(__sFILE *)a3 db:(id)a4;
-- (id)highlightedString:(id)a3 type:(int64_t)a4;
+- (BOOL)shouldKeepDumpingWithItemCount:(unsigned int)count includeAllItems:(BOOL)items;
+- (BRCDumpContext)initWithDumper:(id)dumper;
+- (BRCDumpContext)initWithFile:(__sFILE *)file db:(id)db;
+- (id)highlightedString:(id)string type:(int64_t)type;
 - (void)popIndentation;
-- (void)writeLineWithFormat:(id)a3;
+- (void)writeLineWithFormat:(id)format;
 @end
 
 @implementation BRCDumpContext
 
-+ (id)stringFromThrottleState:(int)a3 context:(id)a4
++ (id)stringFromThrottleState:(int)state context:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:BRCPrettyPrintEnum()];
   v7 = v6;
-  if (v5 && a3)
+  if (contextCopy && state)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
       v8 = 7;
     }
@@ -39,7 +39,7 @@
       v8 = 3;
     }
 
-    v9 = [v5 highlightedString:v6 type:v8];
+    v9 = [contextCopy highlightedString:v6 type:v8];
   }
 
   else
@@ -52,64 +52,64 @@
   return v10;
 }
 
-+ (id)stringFromItemAsString:(id)a3 context:(id)a4
++ (id)stringFromItemAsString:(id)string context:(id)context
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  stringCopy = string;
+  v6 = stringCopy;
+  if (context)
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = a4;
+    contextCopy = context;
     v9 = [v7 stringWithFormat:@"<%@>", v6];
 
-    v10 = [v8 highlightedString:v9 type:5];
+    v10 = [contextCopy highlightedString:v9 type:5];
   }
 
   else
   {
-    v9 = v5;
+    v9 = stringCopy;
     v10 = v9;
   }
 
   return v10;
 }
 
-+ (id)nowDateFromContext:(id)a3
++ (id)nowDateFromContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v3 = *(a3 + 3);
+    date = *(context + 3);
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  return v3;
+  return date;
 }
 
-+ (int64_t)nowFromContext:(id)a3
++ (int64_t)nowFromContext:(id)context
 {
-  v3 = [a1 nowDateFromContext:a3];
+  v3 = [self nowDateFromContext:context];
   [v3 timeIntervalSince1970];
   v4 = brc_interval_to_nsec();
 
   return v4;
 }
 
-+ (id)highlightedString:(id)a3 type:(int64_t)a4 context:(id)a5
++ (id)highlightedString:(id)string type:(int64_t)type context:(id)context
 {
-  v7 = a3;
-  v8 = v7;
-  if (a5)
+  stringCopy = string;
+  v8 = stringCopy;
+  if (context)
   {
-    v9 = [a5 highlightedString:v7 type:a4];
+    v9 = [context highlightedString:stringCopy type:type];
   }
 
   else
   {
-    v9 = v7;
+    v9 = stringCopy;
   }
 
   v10 = v9;
@@ -117,15 +117,15 @@
   return v10;
 }
 
-+ (id)stringFromItemID:(id)a3 context:(id)a4
++ (id)stringFromItemID:(id)d context:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 debugItemIDStringWithVerbose:{objc_msgSend(v5, "verbose")}];
+  contextCopy = context;
+  dCopy = d;
+  v7 = [dCopy debugItemIDStringWithVerbose:{objc_msgSend(contextCopy, "verbose")}];
 
-  if (v5)
+  if (contextCopy)
   {
-    v8 = [BRCDumpContext stringFromItemAsString:v7 context:v5];
+    v8 = [BRCDumpContext stringFromItemAsString:v7 context:contextCopy];
   }
 
   else
@@ -138,17 +138,17 @@
   return v9;
 }
 
-+ (id)stringFromOperationUUID:(unsigned __int8)a3[16] context:(id)a4
++ (id)stringFromOperationUUID:(unsigned __int8)d[16] context:(id)context
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  contextCopy = context;
   memset(out, 0, 37);
-  uuid_unparse(a3, out);
-  if (v5)
+  uuid_unparse(d, out);
+  if (contextCopy)
   {
     out[8] = 0;
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%s)", out];
-    v7 = [BRCDumpContext highlightedString:v6 type:5 context:v5];
+    v7 = [BRCDumpContext highlightedString:v6 type:5 context:contextCopy];
   }
 
   else
@@ -161,18 +161,18 @@
   return v7;
 }
 
-+ (id)stringFromErrorString:(id)a3 context:(id)a4
++ (id)stringFromErrorString:(id)string context:(id)context
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  stringCopy = string;
+  v6 = stringCopy;
+  if (context)
   {
-    v7 = [a4 highlightedString:v5 type:3];
+    v7 = [context highlightedString:stringCopy type:3];
   }
 
   else
   {
-    v7 = v5;
+    v7 = stringCopy;
   }
 
   v8 = v7;
@@ -180,13 +180,13 @@
   return v8;
 }
 
-+ (id)stringFromError:(id)a3 context:(id)a4
++ (id)stringFromError:(id)error context:(id)context
 {
-  v5 = a4;
-  v6 = [a3 description];
-  if (v5)
+  contextCopy = context;
+  v6 = [error description];
+  if (contextCopy)
   {
-    v7 = [v5 highlightedString:v6 type:3];
+    v7 = [contextCopy highlightedString:v6 type:3];
 
     v6 = v7;
   }
@@ -194,18 +194,18 @@
   return v6;
 }
 
-+ (id)stringFromDueStamp:(int64_t)a3 allowsPast:(BOOL)a4 context:(id)a5
++ (id)stringFromDueStamp:(int64_t)stamp allowsPast:(BOOL)past context:(id)context
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [BRCDumpContext nowFromContext:v7];
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  pastCopy = past;
+  contextCopy = context;
+  v8 = [BRCDumpContext nowFromContext:contextCopy];
+  if (stamp != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v8 < a3)
+    if (v8 < stamp)
     {
       brc_interval_from_nsec();
-      v9 = [BRCDumpContext stringFromInterval:v7 context:?];
-      if (!v7)
+      v9 = [BRCDumpContext stringFromInterval:contextCopy context:?];
+      if (!contextCopy)
       {
         goto LABEL_10;
       }
@@ -213,19 +213,19 @@
       goto LABEL_12;
     }
 
-    if (v5)
+    if (pastCopy)
     {
-      if (!a3)
+      if (!stamp)
       {
         goto LABEL_2;
       }
 
       v10 = MEMORY[0x277CCACA8];
       brc_interval_from_nsec();
-      v11 = [BRCDumpContext stringFromInterval:v7 context:?];
+      v11 = [BRCDumpContext stringFromInterval:contextCopy context:?];
       v9 = [v10 stringWithFormat:@"%@ ago", v11];
 
-      if (v7)
+      if (contextCopy)
       {
         goto LABEL_12;
       }
@@ -234,7 +234,7 @@
     else
     {
       v9 = @"ready";
-      if (v7)
+      if (contextCopy)
       {
         goto LABEL_12;
       }
@@ -247,22 +247,22 @@ LABEL_10:
 
 LABEL_2:
   v9 = @"never";
-  if (!v7)
+  if (!contextCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_12:
-  v12 = [v7 highlightedString:v9 type:6];
+  v12 = [contextCopy highlightedString:v9 type:6];
 LABEL_13:
   v13 = v12;
 
   return v13;
 }
 
-+ (id)stringFromInterval:(double)a3 context:(id)a4
++ (id)stringFromInterval:(double)interval context:(id)context
 {
-  v4 = fabs(a3);
+  v4 = fabs(interval);
   v5 = v4;
   if (v4 < 0xE10)
   {
@@ -333,25 +333,25 @@ LABEL_13:
   return [MEMORY[0x277CCACA8] stringWithFormat:@"%llu.%llu%@", v6, (v7 + 5) / 0xA, v8];
 }
 
-+ (id)stringFromCount:(int64_t)a3 showActualCount:(BOOL)a4 suffix:(id)a5 isByteCount:(BOOL)a6 context:(id)a7
++ (id)stringFromCount:(int64_t)count showActualCount:(BOOL)actualCount suffix:(id)suffix isByteCount:(BOOL)byteCount context:(id)context
 {
-  v8 = a6;
-  v9 = a4;
-  v11 = a5;
-  v12 = a7;
-  if (a3 >= 0)
+  byteCountCopy = byteCount;
+  actualCountCopy = actualCount;
+  suffixCopy = suffix;
+  contextCopy = context;
+  if (count >= 0)
   {
-    v13 = a3;
+    countCopy = count;
   }
 
   else
   {
-    v13 = -a3;
+    countCopy = -count;
   }
 
-  if (v13 <= 0x3E7)
+  if (countCopy <= 0x3E7)
   {
-    if (a3 >= 0)
+    if (count >= 0)
     {
       v14 = @"%lld %@";
     }
@@ -362,23 +362,23 @@ LABEL_13:
     }
 
     v15 = &stru_2837504F0;
-    if (v8)
+    if (byteCountCopy)
     {
       v15 = @"bytes";
     }
 
-    v16 = [MEMORY[0x277CCAB68] stringWithFormat:v14, v13, v15];
+    v16 = [MEMORY[0x277CCAB68] stringWithFormat:v14, countCopy, v15];
     goto LABEL_34;
   }
 
-  if (v13 > 0xF423F)
+  if (countCopy > 0xF423F)
   {
-    if (v13 > 0x3B9AC9FF)
+    if (countCopy > 0x3B9AC9FF)
     {
       v17 = MEMORY[0x277CCAB68];
-      if (v13 > 0x2540BE3FFLL)
+      if (countCopy > 0x2540BE3FFLL)
       {
-        if (a3 >= 0)
+        if (count >= 0)
         {
           v18 = @"%lld %@";
         }
@@ -388,13 +388,13 @@ LABEL_13:
           v18 = @"-%lld %@";
         }
 
-        v19 = v13 / 0x3B9ACA00;
+        v19 = countCopy / 0x3B9ACA00;
         v20 = @"billions";
         v21 = @"GB";
         goto LABEL_16;
       }
 
-      if (a3 >= 0)
+      if (count >= 0)
       {
         v22 = @"%.2f %@";
       }
@@ -404,7 +404,7 @@ LABEL_13:
         v22 = @"-%.2f %@";
       }
 
-      v23 = v13 * 0.000000001;
+      v23 = countCopy * 0.000000001;
       v24 = @"billion";
       v25 = @"GB";
     }
@@ -412,7 +412,7 @@ LABEL_13:
     else
     {
       v17 = MEMORY[0x277CCAB68];
-      if (a3 >= 0)
+      if (count >= 0)
       {
         v22 = @"%.1f %@";
       }
@@ -422,12 +422,12 @@ LABEL_13:
         v22 = @"-%.1f %@";
       }
 
-      v23 = (v13 * 0.000001);
+      v23 = (countCopy * 0.000001);
       v24 = @"million";
       v25 = @"MB";
     }
 
-    if (v8)
+    if (byteCountCopy)
     {
       v24 = v25;
     }
@@ -437,7 +437,7 @@ LABEL_13:
   }
 
   v17 = MEMORY[0x277CCAB68];
-  if (a3 >= 0)
+  if (count >= 0)
   {
     v18 = @"%lld %@";
   }
@@ -447,11 +447,11 @@ LABEL_13:
     v18 = @"-%lld %@";
   }
 
-  v19 = v13 / 0x3E8uLL;
+  v19 = countCopy / 0x3E8uLL;
   v20 = @"thousand";
   v21 = @"KB";
 LABEL_16:
-  if (v8)
+  if (byteCountCopy)
   {
     v20 = v21;
   }
@@ -459,20 +459,20 @@ LABEL_16:
   [v17 stringWithFormat:v18, v19, v20];
   v26 = LABEL_32:;
   v16 = v26;
-  if (v9)
+  if (actualCountCopy)
   {
-    [v26 appendFormat:@" (%lld)", a3];
+    [v26 appendFormat:@" (%lld)", count];
   }
 
 LABEL_34:
-  if (v11)
+  if (suffixCopy)
   {
-    [v16 appendString:v11];
+    [v16 appendString:suffixCopy];
   }
 
-  if (v12)
+  if (contextCopy)
   {
-    v27 = [v12 highlightedString:v16 type:2];
+    v27 = [contextCopy highlightedString:v16 type:2];
   }
 
   else
@@ -485,25 +485,25 @@ LABEL_34:
   return v28;
 }
 
-- (BRCDumpContext)initWithFile:(__sFILE *)a3 db:(id)a4
+- (BRCDumpContext)initWithFile:(__sFILE *)file db:(id)db
 {
-  v7 = a4;
+  dbCopy = db;
   v16.receiver = self;
   v16.super_class = BRCDumpContext;
   v8 = [(BRCDumpContext *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    v8->_fp = a3;
-    objc_storeStrong(&v8->_db, a4);
+    v8->_fp = file;
+    objc_storeStrong(&v8->_db, db);
     indentationBaseString = v9->_indentationBaseString;
     v9->_indentationBaseString = @"    ";
 
-    v11 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     nowDate = v9->_nowDate;
-    v9->_nowDate = v11;
+    v9->_nowDate = date;
 
-    v13 = [objc_alloc(MEMORY[0x277CFAE08]) initWithFile:a3 forceColor:0];
+    v13 = [objc_alloc(MEMORY[0x277CFAE08]) initWithFile:file forceColor:0];
     dumper = v9->_dumper;
     v9->_dumper = v13;
 
@@ -513,9 +513,9 @@ LABEL_34:
   return v9;
 }
 
-- (BRCDumpContext)initWithDumper:(id)a3
+- (BRCDumpContext)initWithDumper:(id)dumper
 {
-  v5 = a3;
+  dumperCopy = dumper;
   v12.receiver = self;
   v12.super_class = BRCDumpContext;
   v6 = [(BRCDumpContext *)&v12 init];
@@ -525,10 +525,10 @@ LABEL_34:
     indentationBaseString = v6->_indentationBaseString;
     v6->_indentationBaseString = @"    ";
 
-    objc_storeStrong(&v7->_dumper, a3);
-    v9 = [MEMORY[0x277CBEAA8] date];
+    objc_storeStrong(&v7->_dumper, dumper);
+    date = [MEMORY[0x277CBEAA8] date];
     nowDate = v7->_nowDate;
-    v7->_nowDate = v9;
+    v7->_nowDate = date;
 
     v7->_newLineAfterWrite = 1;
   }
@@ -547,14 +547,14 @@ LABEL_34:
   return taskTracker;
 }
 
-- (void)writeLineWithFormat:(id)a3
+- (void)writeLineWithFormat:(id)format
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  formatCopy = format;
   v19 = 0;
-  v5 = [(NSString *)self->_indentationBaseString UTF8String];
+  uTF8String = [(NSString *)self->_indentationBaseString UTF8String];
   v19 = &v22;
-  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v4 arguments:&v22];
+  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:formatCopy arguments:&v22];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
@@ -581,7 +581,7 @@ LABEL_34:
           v13 = 0;
           do
           {
-            fputs(v5, self->_fp);
+            fputs(uTF8String, self->_fp);
             ++v13;
           }
 
@@ -607,9 +607,9 @@ LABEL_34:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldKeepDumpingWithItemCount:(unsigned int)a3 includeAllItems:(BOOL)a4
+- (BOOL)shouldKeepDumpingWithItemCount:(unsigned int)count includeAllItems:(BOOL)items
 {
-  if (a3 >= 0x3E9 && !a4)
+  if (count >= 0x3E9 && !items)
   {
     v5 = @"\n- too many items, stopping -\n";
 LABEL_7:
@@ -626,12 +626,12 @@ LABEL_7:
   return 1;
 }
 
-- (id)highlightedString:(id)a3 type:(int64_t)a4
+- (id)highlightedString:(id)string type:(int64_t)type
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAB68] string];
-  v8 = a4 - 1;
-  if ((a4 - 1) > 6)
+  stringCopy = string;
+  string = [MEMORY[0x277CCAB68] string];
+  v8 = type - 1;
+  if ((type - 1) > 6)
   {
     v9 = 0;
     v10 = 9;
@@ -644,19 +644,19 @@ LABEL_7:
   }
 
   v11 = [(BRCDumper *)self->_dumper startStringForFgColor:v10 bgColor:9 attr:v9];
-  v12 = [(BRCDumper *)self->_dumper stringForReset];
+  stringForReset = [(BRCDumper *)self->_dumper stringForReset];
   if (v11)
   {
-    [v7 appendString:v11];
+    [string appendString:v11];
   }
 
-  [v7 appendString:v6];
-  if (v12)
+  [string appendString:stringCopy];
+  if (stringForReset)
   {
-    [v7 appendString:v12];
+    [string appendString:stringForReset];
   }
 
-  return v7;
+  return string;
 }
 
 - (void)popIndentation
@@ -671,7 +671,7 @@ LABEL_7:
     _os_log_fault_impl(&dword_223E7A000, v5, OS_LOG_TYPE_FAULT, "[CRIT] Assertion failed: _indentation > 0%@", &v7, 0xCu);
   }
 
-  *a2 = *a1;
+  *a2 = *self;
   v6 = *MEMORY[0x277D85DE8];
 }
 

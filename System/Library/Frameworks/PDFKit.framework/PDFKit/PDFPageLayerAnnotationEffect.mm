@@ -2,7 +2,7 @@
 - (CGRect)pageFrame;
 - (id)UUID;
 - (id)annotation;
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 - (void)update;
 @end
 
@@ -34,10 +34,10 @@
   if (WeakRetained)
   {
     v8 = WeakRetained;
-    v4 = [WeakRetained geometryInterface];
+    geometryInterface = [WeakRetained geometryInterface];
     v5.n128_u64[0] = 0;
     v6.n128_u64[0] = 0;
-    [v4 convertRectToRootView:v8 fromPageLayer:{PDFRectMake(v5, v6, 1.0, 1.0)}];
+    [geometryInterface convertRectToRootView:v8 fromPageLayer:{PDFRectMake(v5, v6, 1.0, 1.0)}];
     [(PDFPageLayerAnnotationEffect *)self setContentsScale:v7];
     [(PDFPageLayerAnnotationEffect *)self setNeedsDisplay];
 
@@ -55,12 +55,12 @@
 - (id)UUID
 {
   WeakRetained = objc_loadWeakRetained(&self->super._private->annotation);
-  v3 = [WeakRetained pdfAnnotationUUID];
+  pdfAnnotationUUID = [WeakRetained pdfAnnotationUUID];
 
-  return v3;
+  return pdfAnnotationUUID;
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   WeakRetained = objc_loadWeakRetained(&self->super._private->annotation);
   v5 = objc_loadWeakRetained(&self->super._private->pageLayer);
@@ -76,26 +76,26 @@
 
   if (!v6)
   {
-    CGContextSaveGState(a3);
+    CGContextSaveGState(context);
     [WeakRetained bounds];
     v8 = v7;
     v10 = v9;
     [WeakRetained extendedBoundsForAction:0];
     v12 = v11;
     v14 = v13;
-    v15 = [v5 page];
-    [v15 boundsForBox:{objc_msgSend(v5, "displayBox")}];
+    page = [v5 page];
+    [page boundsForBox:{objc_msgSend(v5, "displayBox")}];
     v17 = v16;
     v19 = v18;
 
-    CGContextTranslateCTM(a3, v8 - v12 + v17 - v8, v10 - v14 + v19 - v10);
+    CGContextTranslateCTM(context, v8 - v12 + v17 - v8, v10 - v14 + v19 - v10);
     v20 = +[PDFPage isNativeRotationDrawingEnabledForThisThread];
     [PDFPage setNativeRotationDrawingEnabledForThisThread:1];
     CGContextSetProperty();
-    [WeakRetained drawWithBox:objc_msgSend(v5 inContext:{"displayBox"), a3}];
+    [WeakRetained drawWithBox:objc_msgSend(v5 inContext:{"displayBox"), context}];
     [PDFPage setNativeRotationDrawingEnabledForThisThread:v20];
     [PDFAnnotation setAnnotationPageLayerEffectIsFlipped:0];
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
   }
 }
 

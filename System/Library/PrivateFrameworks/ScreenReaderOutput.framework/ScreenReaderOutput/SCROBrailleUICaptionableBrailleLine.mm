@@ -3,10 +3,10 @@
 - (NSString)caption;
 - (NSString)mathML;
 - (SCROBrailleUICaptionableBrailleLine)init;
-- (SCROBrailleUICaptionableBrailleLine)initWithBraille:(id)a3 selection:(_NSRange)a4;
+- (SCROBrailleUICaptionableBrailleLine)initWithBraille:(id)braille selection:(_NSRange)selection;
 - (_NSRange)selection;
-- (void)setManualCaption:(id)a3;
-- (void)setMathML:(id)a3;
+- (void)setManualCaption:(id)caption;
+- (void)setMathML:(id)l;
 @end
 
 @implementation SCROBrailleUICaptionableBrailleLine
@@ -30,9 +30,9 @@
   return v4;
 }
 
-- (void)setMathML:(id)a3
+- (void)setMathML:(id)l
 {
-  if (a3)
+  if (l)
   {
     v4 = sub_264982784();
     v6 = v5;
@@ -51,10 +51,10 @@
   v7[1] = v6;
 }
 
-- (SCROBrailleUICaptionableBrailleLine)initWithBraille:(id)a3 selection:(_NSRange)a4
+- (SCROBrailleUICaptionableBrailleLine)initWithBraille:(id)braille selection:(_NSRange)selection
 {
-  length = a4.length;
-  location = a4.location;
+  length = selection.length;
+  location = selection.location;
   v7 = sub_264982784();
   v8 = (self + OBJC_IVAR___SCROBrailleUICaptionableBrailleLine_translatedCaption);
   *v8 = 0;
@@ -98,7 +98,7 @@
 
 - (NSString)caption
 {
-  v2 = self;
+  selfCopy = self;
   SCROBrailleUICaptionableBrailleLine.caption.getter();
 
   v3 = sub_264982774();
@@ -106,7 +106,7 @@
   return v3;
 }
 
-- (void)setManualCaption:(id)a3
+- (void)setManualCaption:(id)caption
 {
   v4 = sub_264982784();
   v5 = (self + OBJC_IVAR___SCROBrailleUICaptionableBrailleLine_manualCaption);

@@ -1,5 +1,5 @@
 @interface ProcessTerminator
-- (void)assertionTargetProcessDidExit:(id)a3;
+- (void)assertionTargetProcessDidExit:(id)exit;
 - (void)dealloc;
 @end
 
@@ -19,7 +19,7 @@
   [(ProcessTerminator *)&v4 dealloc];
 }
 
-- (void)assertionTargetProcessDidExit:(id)a3
+- (void)assertionTargetProcessDidExit:(id)exit
 {
   if ([(NSConditionLock *)self->_condition tryLockWhenCondition:0])
   {

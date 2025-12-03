@@ -12,8 +12,8 @@
   }
 
   v2 = usesWhitespace_nonWhitespaceLanguages;
-  v3 = [a1 languageCode];
-  LODWORD(v2) = [v2 containsObject:v3];
+  languageCode = [self languageCode];
+  LODWORD(v2) = [v2 containsObject:languageCode];
 
   return v2 ^ 1;
 }

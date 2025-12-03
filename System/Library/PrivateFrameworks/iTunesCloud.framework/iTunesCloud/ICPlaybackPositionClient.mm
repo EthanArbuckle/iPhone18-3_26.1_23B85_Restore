@@ -3,16 +3,16 @@
 - (ICPlaybackPositionClient)init;
 - (NSXPCConnection)connection;
 - (void)deletePlaybackPositionEntities;
-- (void)deletePlaybackPositionEntitiesFromLibraryWithIdentifier:(id)a3;
-- (void)deletePlaybackPositionEntity:(id)a3;
-- (void)getLocalPlaybackPositionForEntityIdentifiers:(id)a3 completionBlock:(id)a4;
-- (void)getLocalPlaybackPositionForEntityIdentifiers:(id)a3 forDomain:(id)a4 fromLibraryWithIdentifier:(id)a5 completionBlock:(id)a6;
-- (void)persistPlaybackPositionEntity:(id)a3 isCheckpoint:(BOOL)a4 completionBlock:(id)a5;
-- (void)pullPlaybackPositionEntity:(id)a3 completionBlock:(id)a4;
-- (void)pushPlaybackPositionEntity:(id)a3 completionBlock:(id)a4;
+- (void)deletePlaybackPositionEntitiesFromLibraryWithIdentifier:(id)identifier;
+- (void)deletePlaybackPositionEntity:(id)entity;
+- (void)getLocalPlaybackPositionForEntityIdentifiers:(id)identifiers completionBlock:(id)block;
+- (void)getLocalPlaybackPositionForEntityIdentifiers:(id)identifiers forDomain:(id)domain fromLibraryWithIdentifier:(id)identifier completionBlock:(id)block;
+- (void)persistPlaybackPositionEntity:(id)entity isCheckpoint:(BOOL)checkpoint completionBlock:(id)block;
+- (void)pullPlaybackPositionEntity:(id)entity completionBlock:(id)block;
+- (void)pushPlaybackPositionEntity:(id)entity completionBlock:(id)block;
 - (void)synchronizePlaybackPositions;
-- (void)synchronizePlaybackPositionsForLibraryWithIdentifier:(id)a3 forDomain:(id)a4 isCheckpoint:(BOOL)a5;
-- (void)updateForeignDatabaseWithValuesFromPlaybackPositionEntity:(id)a3;
+- (void)synchronizePlaybackPositionsForLibraryWithIdentifier:(id)identifier forDomain:(id)domain isCheckpoint:(BOOL)checkpoint;
+- (void)updateForeignDatabaseWithValuesFromPlaybackPositionEntity:(id)entity;
 @end
 
 @implementation ICPlaybackPositionClient
@@ -57,9 +57,9 @@ uint64_t __41__ICPlaybackPositionClient_sharedService__block_invoke()
 
 - (void)synchronizePlaybackPositions
 {
-  v4 = [getML3MusicLibraryClass_22257() autoupdatingSharedLibrary];
-  v3 = [v4 libraryUID];
-  [(ICPlaybackPositionClient *)self synchronizePlaybackPositionsForLibraryWithIdentifier:v3 forDomain:@"com.apple.upp" isCheckpoint:0];
+  autoupdatingSharedLibrary = [getML3MusicLibraryClass_22257() autoupdatingSharedLibrary];
+  libraryUID = [autoupdatingSharedLibrary libraryUID];
+  [(ICPlaybackPositionClient *)self synchronizePlaybackPositionsForLibraryWithIdentifier:libraryUID forDomain:@"com.apple.upp" isCheckpoint:0];
 }
 
 - (NSXPCConnection)connection
@@ -204,25 +204,25 @@ void __38__ICPlaybackPositionClient_connection__block_invoke_80(uint64_t a1)
   WeakRetained[2] = 0;
 }
 
-- (void)pushPlaybackPositionEntity:(id)a3 completionBlock:(id)a4
+- (void)pushPlaybackPositionEntity:(id)entity completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICPlaybackPositionClient *)self connection];
+  blockCopy = block;
+  entityCopy = entity;
+  connection = [(ICPlaybackPositionClient *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __71__ICPlaybackPositionClient_pushPlaybackPositionEntity_completionBlock___block_invoke;
   v14[3] = &unk_1E7BF77C0;
-  v9 = v6;
+  v9 = blockCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [connection remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __71__ICPlaybackPositionClient_pushPlaybackPositionEntity_completionBlock___block_invoke_10;
   v12[3] = &unk_1E7BF65F0;
   v13 = v9;
   v11 = v9;
-  [v10 pushPlaybackPositionEntity:v7 completionBlock:v12];
+  [v10 pushPlaybackPositionEntity:entityCopy completionBlock:v12];
 }
 
 void __71__ICPlaybackPositionClient_pushPlaybackPositionEntity_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -282,25 +282,25 @@ void __71__ICPlaybackPositionClient_pushPlaybackPositionEntity_completionBlock__
   }
 }
 
-- (void)pullPlaybackPositionEntity:(id)a3 completionBlock:(id)a4
+- (void)pullPlaybackPositionEntity:(id)entity completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICPlaybackPositionClient *)self connection];
+  blockCopy = block;
+  entityCopy = entity;
+  connection = [(ICPlaybackPositionClient *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __71__ICPlaybackPositionClient_pullPlaybackPositionEntity_completionBlock___block_invoke;
   v14[3] = &unk_1E7BF77C0;
-  v9 = v6;
+  v9 = blockCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [connection remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __71__ICPlaybackPositionClient_pullPlaybackPositionEntity_completionBlock___block_invoke_8;
   v12[3] = &unk_1E7BF65F0;
   v13 = v9;
   v11 = v9;
-  [v10 pullPlaybackPositionEntity:v7 completionBlock:v12];
+  [v10 pullPlaybackPositionEntity:entityCopy completionBlock:v12];
 }
 
 void __71__ICPlaybackPositionClient_pullPlaybackPositionEntity_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -360,26 +360,26 @@ void __71__ICPlaybackPositionClient_pullPlaybackPositionEntity_completionBlock__
   }
 }
 
-- (void)updateForeignDatabaseWithValuesFromPlaybackPositionEntity:(id)a3
+- (void)updateForeignDatabaseWithValuesFromPlaybackPositionEntity:(id)entity
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ICPlaybackPositionClient *)self connection];
+  entityCopy = entity;
+  connection = [(ICPlaybackPositionClient *)self connection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __86__ICPlaybackPositionClient_updateForeignDatabaseWithValuesFromPlaybackPositionEntity___block_invoke;
   v8[3] = &unk_1E7BF9308;
   v8[4] = self;
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v8];
-  [v6 updateForeignDatabaseWithValuesFromPlaybackPositionEntity:v4];
+  v6 = [connection remoteObjectProxyWithErrorHandler:v8];
+  [v6 updateForeignDatabaseWithValuesFromPlaybackPositionEntity:entityCopy];
 
   v7 = os_log_create("com.apple.amp.iTunesCloud", "PlaybackPosition");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v4;
+    v12 = entityCopy;
     _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@ updateForeignDatabaseWithValuesFromPlaybackPositionEntity:] Completed for entity %{public}@", buf, 0x16u);
   }
 }
@@ -400,33 +400,33 @@ void __86__ICPlaybackPositionClient_updateForeignDatabaseWithValuesFromPlaybackP
   }
 }
 
-- (void)getLocalPlaybackPositionForEntityIdentifiers:(id)a3 forDomain:(id)a4 fromLibraryWithIdentifier:(id)a5 completionBlock:(id)a6
+- (void)getLocalPlaybackPositionForEntityIdentifiers:(id)identifiers forDomain:(id)domain fromLibraryWithIdentifier:(id)identifier completionBlock:(id)block
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [(ICPlaybackPositionClient *)self connection];
+  domainCopy = domain;
+  identifierCopy = identifier;
+  blockCopy = block;
+  identifiersCopy = identifiers;
+  connection = [(ICPlaybackPositionClient *)self connection];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __125__ICPlaybackPositionClient_getLocalPlaybackPositionForEntityIdentifiers_forDomain_fromLibraryWithIdentifier_completionBlock___block_invoke;
   v24[3] = &unk_1E7BFA490;
   v24[4] = self;
-  v15 = v12;
+  v15 = blockCopy;
   v25 = v15;
-  v16 = [v14 remoteObjectProxyWithErrorHandler:v24];
+  v16 = [connection remoteObjectProxyWithErrorHandler:v24];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __125__ICPlaybackPositionClient_getLocalPlaybackPositionForEntityIdentifiers_forDomain_fromLibraryWithIdentifier_completionBlock___block_invoke_6;
   v20[3] = &unk_1E7BF65C8;
   v20[4] = self;
-  v21 = v10;
-  v22 = v11;
+  v21 = domainCopy;
+  v22 = identifierCopy;
   v23 = v15;
   v17 = v15;
-  v18 = v11;
-  v19 = v10;
-  [v16 getLocalPlaybackPositionForEntityIdentifiers:v13 forDomain:v19 fromLibraryWithIdentifier:v18 completionBlock:v20];
+  v18 = identifierCopy;
+  v19 = domainCopy;
+  [v16 getLocalPlaybackPositionForEntityIdentifiers:identifiersCopy forDomain:v19 fromLibraryWithIdentifier:v18 completionBlock:v20];
 }
 
 void __125__ICPlaybackPositionClient_getLocalPlaybackPositionForEntityIdentifiers_forDomain_fromLibraryWithIdentifier_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -509,27 +509,27 @@ void __125__ICPlaybackPositionClient_getLocalPlaybackPositionForEntityIdentifier
   }
 }
 
-- (void)persistPlaybackPositionEntity:(id)a3 isCheckpoint:(BOOL)a4 completionBlock:(id)a5
+- (void)persistPlaybackPositionEntity:(id)entity isCheckpoint:(BOOL)checkpoint completionBlock:(id)block
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(ICPlaybackPositionClient *)self connection];
+  checkpointCopy = checkpoint;
+  blockCopy = block;
+  entityCopy = entity;
+  connection = [(ICPlaybackPositionClient *)self connection];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __87__ICPlaybackPositionClient_persistPlaybackPositionEntity_isCheckpoint_completionBlock___block_invoke;
   v16[3] = &unk_1E7BFA490;
   v16[4] = self;
-  v11 = v8;
+  v11 = blockCopy;
   v17 = v11;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:v16];
+  v12 = [connection remoteObjectProxyWithErrorHandler:v16];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __87__ICPlaybackPositionClient_persistPlaybackPositionEntity_isCheckpoint_completionBlock___block_invoke_4;
   v14[3] = &unk_1E7BF8450;
   v15 = v11;
   v13 = v11;
-  [v12 persistPlaybackPositionEntity:v9 isCheckpoint:v5 completionBlock:v14];
+  [v12 persistPlaybackPositionEntity:entityCopy isCheckpoint:checkpointCopy completionBlock:v14];
 }
 
 void __87__ICPlaybackPositionClient_persistPlaybackPositionEntity_isCheckpoint_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -587,26 +587,26 @@ void __87__ICPlaybackPositionClient_persistPlaybackPositionEntity_isCheckpoint_c
   }
 }
 
-- (void)deletePlaybackPositionEntity:(id)a3
+- (void)deletePlaybackPositionEntity:(id)entity
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ICPlaybackPositionClient *)self connection];
+  entityCopy = entity;
+  connection = [(ICPlaybackPositionClient *)self connection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__ICPlaybackPositionClient_deletePlaybackPositionEntity___block_invoke;
   v8[3] = &unk_1E7BF9308;
   v8[4] = self;
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v8];
-  [v6 deletePlaybackPositionEntity:v4];
+  v6 = [connection remoteObjectProxyWithErrorHandler:v8];
+  [v6 deletePlaybackPositionEntity:entityCopy];
 
   v7 = os_log_create("com.apple.amp.iTunesCloud", "PlaybackPosition");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v4;
+    v12 = entityCopy;
     _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@ deletePlaybackPositionEntity:] Completed for entity %{public}@", buf, 0x16u);
   }
 }
@@ -627,26 +627,26 @@ void __57__ICPlaybackPositionClient_deletePlaybackPositionEntity___block_invoke(
   }
 }
 
-- (void)deletePlaybackPositionEntitiesFromLibraryWithIdentifier:(id)a3
+- (void)deletePlaybackPositionEntitiesFromLibraryWithIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ICPlaybackPositionClient *)self connection];
+  identifierCopy = identifier;
+  connection = [(ICPlaybackPositionClient *)self connection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __84__ICPlaybackPositionClient_deletePlaybackPositionEntitiesFromLibraryWithIdentifier___block_invoke;
   v8[3] = &unk_1E7BF9308;
   v8[4] = self;
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v8];
-  [v6 deletePlaybackPositionEntitiesFromLibraryWithIdentifier:v4];
+  v6 = [connection remoteObjectProxyWithErrorHandler:v8];
+  [v6 deletePlaybackPositionEntitiesFromLibraryWithIdentifier:identifierCopy];
 
   v7 = os_log_create("com.apple.amp.iTunesCloud", "PlaybackPosition");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v4;
+    v12 = identifierCopy;
     _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@ deletePlaybackPositionEntitiesFromLibraryWithIdentifier:] Completed for library with identifier %{public}@", buf, 0x16u);
   }
 }
@@ -667,30 +667,30 @@ void __84__ICPlaybackPositionClient_deletePlaybackPositionEntitiesFromLibraryWit
   }
 }
 
-- (void)synchronizePlaybackPositionsForLibraryWithIdentifier:(id)a3 forDomain:(id)a4 isCheckpoint:(BOOL)a5
+- (void)synchronizePlaybackPositionsForLibraryWithIdentifier:(id)identifier forDomain:(id)domain isCheckpoint:(BOOL)checkpoint
 {
-  v5 = a5;
+  checkpointCopy = checkpoint;
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ICPlaybackPositionClient *)self connection];
+  identifierCopy = identifier;
+  domainCopy = domain;
+  connection = [(ICPlaybackPositionClient *)self connection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __104__ICPlaybackPositionClient_synchronizePlaybackPositionsForLibraryWithIdentifier_forDomain_isCheckpoint___block_invoke;
   v13[3] = &unk_1E7BF9308;
   v13[4] = self;
-  v11 = [v10 remoteObjectProxyWithErrorHandler:v13];
-  [v11 synchronizePlaybackPositionsForLibraryWithIdentifier:v8 forDomain:v9 isCheckpoint:v5];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v13];
+  [v11 synchronizePlaybackPositionsForLibraryWithIdentifier:identifierCopy forDomain:domainCopy isCheckpoint:checkpointCopy];
 
   v12 = os_log_create("com.apple.amp.iTunesCloud", "PlaybackPosition");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
-    v17 = v8;
+    v17 = identifierCopy;
     v18 = 1024;
-    v19 = v5;
+    v19 = checkpointCopy;
     _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@ synchronizePlaybackPositionsForLibraryWithIdentifier:] Completed sync for library with identifier %{public}@. checkpoint=%{BOOL}u", buf, 0x1Cu);
   }
 }
@@ -711,20 +711,20 @@ void __104__ICPlaybackPositionClient_synchronizePlaybackPositionsForLibraryWithI
   }
 }
 
-- (void)getLocalPlaybackPositionForEntityIdentifiers:(id)a3 completionBlock:(id)a4
+- (void)getLocalPlaybackPositionForEntityIdentifiers:(id)identifiers completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [getML3MusicLibraryClass_22257() autoupdatingSharedLibrary];
-  v8 = [v9 libraryUID];
-  [(ICPlaybackPositionClient *)self getLocalPlaybackPositionForEntityIdentifiers:v7 forDomain:@"com.apple.upp" fromLibraryWithIdentifier:v8 completionBlock:v6];
+  blockCopy = block;
+  identifiersCopy = identifiers;
+  autoupdatingSharedLibrary = [getML3MusicLibraryClass_22257() autoupdatingSharedLibrary];
+  libraryUID = [autoupdatingSharedLibrary libraryUID];
+  [(ICPlaybackPositionClient *)self getLocalPlaybackPositionForEntityIdentifiers:identifiersCopy forDomain:@"com.apple.upp" fromLibraryWithIdentifier:libraryUID completionBlock:blockCopy];
 }
 
 - (void)deletePlaybackPositionEntities
 {
-  v4 = [getML3MusicLibraryClass_22257() autoupdatingSharedLibrary];
-  v3 = [v4 libraryUID];
-  [(ICPlaybackPositionClient *)self deletePlaybackPositionEntitiesFromLibraryWithIdentifier:v3];
+  autoupdatingSharedLibrary = [getML3MusicLibraryClass_22257() autoupdatingSharedLibrary];
+  libraryUID = [autoupdatingSharedLibrary libraryUID];
+  [(ICPlaybackPositionClient *)self deletePlaybackPositionEntitiesFromLibraryWithIdentifier:libraryUID];
 }
 
 @end

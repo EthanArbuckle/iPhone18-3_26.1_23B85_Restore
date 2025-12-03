@@ -1,15 +1,15 @@
 @interface ComAppleProactiveLuceneScoreInterceptTermQuery
-- (ComAppleProactiveLuceneScoreInterceptTermQuery)initWithOrgApacheLuceneIndexTerm:(id)a3 withComAppleProactiveLuceneScoreInterceptTarget:(id)a4;
+- (ComAppleProactiveLuceneScoreInterceptTermQuery)initWithOrgApacheLuceneIndexTerm:(id)term withComAppleProactiveLuceneScoreInterceptTarget:(id)target;
 - (void)__javaClone;
 - (void)dealloc;
 @end
 
 @implementation ComAppleProactiveLuceneScoreInterceptTermQuery
 
-- (ComAppleProactiveLuceneScoreInterceptTermQuery)initWithOrgApacheLuceneIndexTerm:(id)a3 withComAppleProactiveLuceneScoreInterceptTarget:(id)a4
+- (ComAppleProactiveLuceneScoreInterceptTermQuery)initWithOrgApacheLuceneIndexTerm:(id)term withComAppleProactiveLuceneScoreInterceptTarget:(id)target
 {
-  OrgApacheLuceneSearchTermQuery_initWithOrgApacheLuceneIndexTerm_(self, a3);
-  JreStrongAssign((&self->super.perReaderTermState_ + 4), a4);
+  OrgApacheLuceneSearchTermQuery_initWithOrgApacheLuceneIndexTerm_(self, term);
+  JreStrongAssign((&self->super.perReaderTermState_ + 4), target);
   return self;
 }
 

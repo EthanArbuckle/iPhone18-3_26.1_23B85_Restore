@@ -1,55 +1,55 @@
 @interface HUDefaultStatusBarVisiblityHandler
 - (BOOL)isStatusBarHidden;
-- (id)_statusBarAnimationParametersForAnimationSettings:(id)a3;
-- (void)setStatusBarHidden:(BOOL)a3 withAnimationSettings:(id)a4;
+- (id)_statusBarAnimationParametersForAnimationSettings:(id)settings;
+- (void)setStatusBarHidden:(BOOL)hidden withAnimationSettings:(id)settings;
 @end
 
 @implementation HUDefaultStatusBarVisiblityHandler
 
 - (BOOL)isStatusBarHidden
 {
-  v2 = [*MEMORY[0x277D76620] statusBar];
-  v3 = [v2 isHidden];
+  statusBar = [*MEMORY[0x277D76620] statusBar];
+  isHidden = [statusBar isHidden];
 
-  return v3;
+  return isHidden;
 }
 
-- (void)setStatusBarHidden:(BOOL)a3 withAnimationSettings:(id)a4
+- (void)setStatusBarHidden:(BOOL)hidden withAnimationSettings:(id)settings
 {
-  v4 = a3;
-  v9 = a4;
-  v6 = [*MEMORY[0x277D76620] statusBar];
-  v7 = v6;
-  if (v9)
+  hiddenCopy = hidden;
+  settingsCopy = settings;
+  statusBar = [*MEMORY[0x277D76620] statusBar];
+  v7 = statusBar;
+  if (settingsCopy)
   {
-    v8 = [(HUDefaultStatusBarVisiblityHandler *)self _statusBarAnimationParametersForAnimationSettings:v9];
-    [v7 setHidden:v4 animationParameters:v8];
+    v8 = [(HUDefaultStatusBarVisiblityHandler *)self _statusBarAnimationParametersForAnimationSettings:settingsCopy];
+    [v7 setHidden:hiddenCopy animationParameters:v8];
   }
 
   else
   {
-    [v6 setHidden:v4];
+    [statusBar setHidden:hiddenCopy];
   }
 }
 
-- (id)_statusBarAnimationParametersForAnimationSettings:(id)a3
+- (id)_statusBarAnimationParametersForAnimationSettings:(id)settings
 {
-  if (a3)
+  if (settings)
   {
     v3 = MEMORY[0x277D75A88];
-    v4 = a3;
-    v5 = [[v3 alloc] initWithDefaultParameters];
-    [v4 duration];
-    [v5 setDuration:?];
-    [v5 setAnimationFactory:v4];
+    settingsCopy = settings;
+    initWithDefaultParameters = [[v3 alloc] initWithDefaultParameters];
+    [settingsCopy duration];
+    [initWithDefaultParameters setDuration:?];
+    [initWithDefaultParameters setAnimationFactory:settingsCopy];
   }
 
   else
   {
-    v5 = 0;
+    initWithDefaultParameters = 0;
   }
 
-  return v5;
+  return initWithDefaultParameters;
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface HDDatabaseTransaction
-- (BOOL)performWithContext:(id)a3 error:(id *)a4 block:(id)a5 inaccessibilityHandler:(id)a6;
+- (BOOL)performWithContext:(id)context error:(id *)error block:(id)block inaccessibilityHandler:(id)handler;
 - (HDDatabase)database;
-- (HDDatabaseTransaction)initWithDatabase:(id)a3 provider:(id)a4 rootContext:(id)a5;
-- (id)databaseForEntity:(id)a3;
-- (id)databaseForEntityClass:(Class)a3;
-- (id)databaseForEntityProtectionClass:(int64_t)a3;
+- (HDDatabaseTransaction)initWithDatabase:(id)database provider:(id)provider rootContext:(id)context;
+- (id)databaseForEntity:(id)entity;
+- (id)databaseForEntityClass:(Class)class;
+- (id)databaseForEntityProtectionClass:(int64_t)class;
 - (uint64_t)_resolveCacheScope:(uint64_t)result;
 - (void)dealloc;
-- (void)onCommit:(id)a3 orRollback:(id)a4;
+- (void)onCommit:(id)commit orRollback:(id)rollback;
 - (void)requestTransactionInterruption;
 - (void)requireRollback;
-- (void)transactionDidEndWithError:(id)a3;
+- (void)transactionDidEndWithError:(id)error;
 @end
 
 @implementation HDDatabaseTransaction
@@ -19,8 +19,8 @@
 {
   if (self->_isActive)
   {
-    v4 = [MEMORY[0x277CCA890] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"HDDatabaseTransaction.m" lineNumber:45 description:@"HDDatabaseTransaction dealloc'd while active."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabaseTransaction.m" lineNumber:45 description:@"HDDatabaseTransaction dealloc'd while active."];
   }
 
   v5.receiver = self;
@@ -35,15 +35,15 @@
   return WeakRetained;
 }
 
-- (HDDatabaseTransaction)initWithDatabase:(id)a3 provider:(id)a4 rootContext:(id)a5
+- (HDDatabaseTransaction)initWithDatabase:(id)database provider:(id)provider rootContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  databaseCopy = database;
+  providerCopy = provider;
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"HDDatabaseTransaction.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"rootContext != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabaseTransaction.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"rootContext != nil"}];
   }
 
   v18.receiver = self;
@@ -52,9 +52,9 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_database, v9);
-    objc_storeWeak(&v13->_databaseProvider, v10);
-    v14 = [v11 copy];
+    objc_storeWeak(&v12->_database, databaseCopy);
+    objc_storeWeak(&v13->_databaseProvider, providerCopy);
+    v14 = [contextCopy copy];
     rootContext = v13->_rootContext;
     v13->_rootContext = v14;
   }
@@ -62,16 +62,16 @@
   return v13;
 }
 
-- (id)databaseForEntityProtectionClass:(int64_t)a3
+- (id)databaseForEntityProtectionClass:(int64_t)class
 {
-  if (a3 == 1)
+  if (class == 1)
   {
     v4 = 56;
   }
 
   else
   {
-    if (a3 != 2)
+    if (class != 2)
     {
       goto LABEL_6;
     }
@@ -85,18 +85,18 @@ LABEL_6:
   return a2;
 }
 
-- (id)databaseForEntity:(id)a3
+- (id)databaseForEntity:(id)entity
 {
-  v4 = [objc_opt_class() protectionClass];
+  protectionClass = [objc_opt_class() protectionClass];
 
-  return [(HDDatabaseTransaction *)self databaseForEntityProtectionClass:v4];
+  return [(HDDatabaseTransaction *)self databaseForEntityProtectionClass:protectionClass];
 }
 
-- (id)databaseForEntityClass:(Class)a3
+- (id)databaseForEntityClass:(Class)class
 {
-  v4 = [(objc_class *)a3 protectionClass];
+  protectionClass = [(objc_class *)class protectionClass];
 
-  return [(HDDatabaseTransaction *)self databaseForEntityProtectionClass:v4];
+  return [(HDDatabaseTransaction *)self databaseForEntityProtectionClass:protectionClass];
 }
 
 - (uint64_t)_resolveCacheScope:(uint64_t)result
@@ -116,37 +116,37 @@ LABEL_6:
     else
     {
       WeakRetained = objc_loadWeakRetained((result + 8));
-      v3 = [WeakRetained configuration];
-      v4 = [v3 behavior];
-      v5 = [v4 features];
-      v6 = [v5 databaseStateCacheTransactionScoped];
+      configuration = [WeakRetained configuration];
+      behavior = [configuration behavior];
+      features = [behavior features];
+      databaseStateCacheTransactionScoped = [features databaseStateCacheTransactionScoped];
 
-      return v6;
+      return databaseStateCacheTransactionScoped;
     }
   }
 
   return result;
 }
 
-- (BOOL)performWithContext:(id)a3 error:(id *)a4 block:(id)a5 inaccessibilityHandler:(id)a6
+- (BOOL)performWithContext:(id)context error:(id *)error block:(id)block inaccessibilityHandler:(id)handler
 {
   v189 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v157 = a5;
-  v158 = a6;
-  v12 = [v11 requiresProtectedData];
-  v156 = v11;
-  v155 = [v11 requiresWrite];
+  contextCopy = context;
+  blockCopy = block;
+  handlerCopy = handler;
+  requiresProtectedData = [contextCopy requiresProtectedData];
+  v156 = contextCopy;
+  requiresWrite = [contextCopy requiresWrite];
   if (self->_performingMigration)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:107 description:@"Cannot peform a database transaction inside a database migration transaction"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:107 description:@"Cannot peform a database transaction inside a database migration transaction"];
 LABEL_7:
     v14 = 0;
     goto LABEL_120;
   }
 
-  log = a4;
-  if (self->_isOutermostTransactionUnprotected & v12)
+  log = error;
+  if (self->_isOutermostTransactionUnprotected & requiresProtectedData)
   {
     _HKInitializeLogging();
     v13 = *MEMORY[0x277CCC2A0];
@@ -156,7 +156,7 @@ LABEL_7:
       _os_log_fault_impl(&dword_228986000, v13, OS_LOG_TYPE_FAULT, "Cannot promote an unprotected transaction to a protected transaction", buf, 2u);
     }
 
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:107 description:@"Cannot promote an unprotected transaction to a protected transaction"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:107 description:@"Cannot promote an unprotected transaction to a protected transaction"];
     goto LABEL_7;
   }
 
@@ -170,25 +170,25 @@ LABEL_7:
   else
   {
     self->_isActive = 1;
-    self->_isOutermostTransactionUnprotected = v12 ^ 1;
+    self->_isOutermostTransactionUnprotected = requiresProtectedData ^ 1;
     Current = CFAbsoluteTimeGetCurrent();
     WeakRetained = objc_loadWeakRetained(&self->_database);
-    v18 = [WeakRetained configuration];
-    v19 = [v18 behavior];
-    v20 = [v19 features];
-    v21 = [v20 databaseSemaphoreLogging];
+    configuration = [WeakRetained configuration];
+    behavior = [configuration behavior];
+    features = [behavior features];
+    databaseSemaphoreLogging = [features databaseSemaphoreLogging];
 
-    if (v21)
+    if (databaseSemaphoreLogging)
     {
       v22 = *MEMORY[0x277CCC2A0];
       v23 = _HKLogSignpostIDGenerate();
       v24 = objc_loadWeakRetained(&self->_database);
-      v25 = [v24 configuration];
-      v26 = [v25 behavior];
-      v27 = [v26 features];
-      v28 = [v27 databaseSemaphoreLogging];
+      configuration2 = [v24 configuration];
+      behavior2 = [configuration2 behavior];
+      features2 = [behavior2 features];
+      databaseSemaphoreLogging2 = [features2 databaseSemaphoreLogging];
 
-      if (v28)
+      if (databaseSemaphoreLogging2)
       {
         _HKInitializeLogging();
         v29 = *MEMORY[0x277CCC2A0];
@@ -198,12 +198,12 @@ LABEL_7:
           v31 = v30;
           if (v23 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v30))
           {
-            v32 = [MEMORY[0x277CCACC8] currentThread];
+            currentThread = [MEMORY[0x277CCACC8] currentThread];
             [MEMORY[0x277CCACC8] threadPriority];
             v34 = v33;
-            v35 = [v156 highPriority];
-            v36 = [v156 requiresWrite];
-            if (v35)
+            highPriority = [v156 highPriority];
+            requiresWrite2 = [v156 requiresWrite];
+            if (highPriority)
             {
               v37 = "high";
             }
@@ -213,7 +213,7 @@ LABEL_7:
               v37 = "default";
             }
 
-            if (v36)
+            if (requiresWrite2)
             {
               v38 = "W";
             }
@@ -224,7 +224,7 @@ LABEL_7:
             }
 
             *buf = 138413314;
-            v172 = v32;
+            v172 = currentThread;
             v173 = 2048;
             v174 = v34;
             v175 = 2080;
@@ -253,9 +253,9 @@ LABEL_7:
   aBlock[1] = 3221225472;
   aBlock[2] = __79__HDDatabaseTransaction_performWithContext_error_block_inaccessibilityHandler___block_invoke;
   aBlock[3] = &unk_278618968;
-  v170 = v158;
-  v158 = _Block_copy(aBlock);
-  if (!v12 || self->_protectedDatabase)
+  v170 = handlerCopy;
+  handlerCopy = _Block_copy(aBlock);
+  if (!requiresProtectedData || self->_protectedDatabase)
   {
     v148 = 0;
     goto LABEL_29;
@@ -263,8 +263,8 @@ LABEL_7:
 
   if (self->_unprotectedDatabase)
   {
-    v122 = [MEMORY[0x277CCA890] currentHandler];
-    [v122 handleFailureInMethod:a2 object:self file:@"HDDatabaseTransaction.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %@", @"_unprotectedDatabase == nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabaseTransaction.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %@", @"_unprotectedDatabase == nil"}];
   }
 
   v68 = objc_loadWeakRetained(&self->_databaseProvider);
@@ -279,12 +279,12 @@ LABEL_7:
   v74 = v73;
   if (v72)
   {
-    v102 = [v73 configuration];
-    v103 = [v102 behavior];
-    v104 = [v103 features];
-    v105 = [v104 databaseSemaphoreLogging];
+    configuration3 = [v73 configuration];
+    behavior3 = [configuration3 behavior];
+    features3 = [behavior3 features];
+    databaseSemaphoreLogging3 = [features3 databaseSemaphoreLogging];
 
-    if (v105)
+    if (databaseSemaphoreLogging3)
     {
       _HKInitializeLogging();
       v106 = *MEMORY[0x277CCC2A0];
@@ -294,24 +294,24 @@ LABEL_7:
         v108 = v107;
         if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v107))
         {
-          v109 = [v70 localizedDescription];
+          localizedDescription = [v70 localizedDescription];
           *buf = 138412290;
-          v172 = v109;
+          v172 = localizedDescription;
           _os_signpost_emit_with_name_impl(&dword_228986000, v108, OS_SIGNPOST_EVENT, spid, "hddatabase-semaphore", "unable to checkout ProtectedDatabase: %@", buf, 0xCu);
         }
       }
     }
 
-    v14 = (v158[2].super.isa)(v158, v70, log);
+    v14 = (handlerCopy[2].super.isa)(handlerCopy, v70, log);
     goto LABEL_101;
   }
 
-  v75 = [v73 configuration];
-  v76 = [v75 behavior];
-  v77 = [v76 features];
-  v78 = [v77 databaseSemaphoreLogging];
+  configuration4 = [v73 configuration];
+  behavior4 = [configuration4 behavior];
+  features4 = [behavior4 features];
+  databaseSemaphoreLogging4 = [features4 databaseSemaphoreLogging];
 
-  if (v78)
+  if (databaseSemaphoreLogging4)
   {
     _HKInitializeLogging();
     v79 = *MEMORY[0x277CCC2A0];
@@ -344,12 +344,12 @@ LABEL_7:
     self->_protectedDatabase = 0;
 
     v112 = objc_loadWeakRetained(&self->_database);
-    v113 = [v112 configuration];
-    v114 = [v113 behavior];
-    v115 = [v114 features];
-    v116 = [v115 databaseSemaphoreLogging];
+    configuration5 = [v112 configuration];
+    behavior5 = [configuration5 behavior];
+    features5 = [behavior5 features];
+    databaseSemaphoreLogging5 = [features5 databaseSemaphoreLogging];
 
-    if (v116)
+    if (databaseSemaphoreLogging5)
     {
       _HKInitializeLogging();
       v117 = *MEMORY[0x277CCC2A0];
@@ -359,15 +359,15 @@ LABEL_7:
         v119 = v118;
         if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v118))
         {
-          v120 = [v84 localizedDescription];
+          localizedDescription2 = [v84 localizedDescription];
           *buf = 138412290;
-          v172 = v120;
+          v172 = localizedDescription2;
           _os_signpost_emit_with_name_impl(&dword_228986000, v119, OS_SIGNPOST_EVENT, spid, "hddatabase-semaphore", "unable to checkout ProtectedResources: %@", buf, 0xCu);
         }
       }
     }
 
-    v14 = (v158[2].super.isa)(v158, v84, log);
+    v14 = (handlerCopy[2].super.isa)(handlerCopy, v84, log);
     v70 = v84;
 LABEL_101:
 
@@ -379,12 +379,12 @@ LABEL_105:
   }
 
   v86 = objc_loadWeakRetained(&self->_database);
-  v87 = [v86 configuration];
-  v88 = [v87 behavior];
-  v89 = [v88 features];
-  v90 = [v89 databaseSemaphoreLogging];
+  configuration6 = [v86 configuration];
+  behavior6 = [configuration6 behavior];
+  features6 = [behavior6 features];
+  databaseSemaphoreLogging6 = [features6 databaseSemaphoreLogging];
 
-  if (v90)
+  if (databaseSemaphoreLogging6)
   {
     _HKInitializeLogging();
     v91 = *MEMORY[0x277CCC2A0];
@@ -420,12 +420,12 @@ LABEL_29:
     v45 = v44;
     if (v40)
     {
-      v94 = [v44 configuration];
-      v95 = [v94 behavior];
-      v96 = [v95 features];
-      v97 = [v96 databaseSemaphoreLogging];
+      configuration7 = [v44 configuration];
+      behavior7 = [configuration7 behavior];
+      features7 = [behavior7 features];
+      databaseSemaphoreLogging7 = [features7 databaseSemaphoreLogging];
 
-      if (v97)
+      if (databaseSemaphoreLogging7)
       {
         _HKInitializeLogging();
         v98 = *MEMORY[0x277CCC2A0];
@@ -435,15 +435,15 @@ LABEL_29:
           v100 = v99;
           if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v99))
           {
-            v101 = [v42 localizedDescription];
+            localizedDescription3 = [v42 localizedDescription];
             *buf = 138412290;
-            v172 = v101;
+            v172 = localizedDescription3;
             _os_signpost_emit_with_name_impl(&dword_228986000, v100, OS_SIGNPOST_EVENT, spid, "hddatabase-semaphore", "unable to checkout UnprotectedDatabase: %@", buf, 0xCu);
           }
         }
       }
 
-      v14 = (v158[2].super.isa)(v158, v42, log);
+      v14 = (handlerCopy[2].super.isa)(handlerCopy, v42, log);
 
       v57 = 0.0;
 LABEL_103:
@@ -455,12 +455,12 @@ LABEL_103:
       goto LABEL_104;
     }
 
-    v46 = [v44 configuration];
-    v47 = [v46 behavior];
-    v48 = [v47 features];
-    v49 = [v48 databaseSemaphoreLogging];
+    configuration8 = [v44 configuration];
+    behavior8 = [configuration8 behavior];
+    features8 = [behavior8 features];
+    databaseSemaphoreLogging8 = [features8 databaseSemaphoreLogging];
 
-    if (v49)
+    if (databaseSemaphoreLogging8)
     {
       _HKInitializeLogging();
       v50 = *MEMORY[0x277CCC2A0];
@@ -487,11 +487,11 @@ LABEL_103:
 
   else
   {
-    v54 = [(HDDatabaseTransactionContext *)self->_rootContext statistics];
-    v53 = v54 != 0;
+    statistics = [(HDDatabaseTransactionContext *)self->_rootContext statistics];
+    v53 = statistics != 0;
   }
 
-  if (v12)
+  if (requiresProtectedData)
   {
     v55 = 2;
   }
@@ -522,18 +522,18 @@ LABEL_103:
   v159[2] = __79__HDDatabaseTransaction_performWithContext_error_block_inaccessibilityHandler___block_invoke_322;
   v159[3] = &unk_27862EDB0;
   v161 = v55;
-  v162 = v155;
+  v162 = requiresWrite;
   v159[4] = self;
   v164 = !v59;
   v163 = spid;
-  v160 = v157;
-  v14 = [v56 performTransactionWithType:v155 error:&v165 usingBlock:v159];
+  v160 = blockCopy;
+  v14 = [v56 performTransactionWithType:requiresWrite error:&v165 usingBlock:v159];
   v60 = v165;
   if (v53)
   {
     v61 = [[HDDatabaseTransactionStatistics alloc] _initWithStartTime:v58 endTime:CFAbsoluteTimeGetCurrent()];
-    v62 = [(HDDatabaseTransactionContext *)self->_rootContext statistics];
-    [v62 _addTransactionStatistics:v61];
+    statistics2 = [(HDDatabaseTransactionContext *)self->_rootContext statistics];
+    [statistics2 _addTransactionStatistics:v61];
   }
 
   if (v60)
@@ -619,11 +619,11 @@ LABEL_112:
       v131 = HKDiagnosticStringFromDuration();
       v152 = HKDiagnosticStringFromDuration();
       v132 = HKDiagnosticStringFromDuration();
-      v149 = [v127 requiresWrite];
-      v133 = [v127 requiresProtectedData];
-      v134 = [v127 highPriority];
-      v135 = [v127 cacheScope];
-      v136 = [v127 journalType];
+      requiresWrite3 = [v127 requiresWrite];
+      requiresProtectedData2 = [v127 requiresProtectedData];
+      highPriority2 = [v127 highPriority];
+      cacheScope = [v127 cacheScope];
+      journalType = [v127 journalType];
       label = dispatch_queue_get_label(0);
       *buf = 138545666;
       v172 = v129;
@@ -634,15 +634,15 @@ LABEL_112:
       v177 = 2114;
       v178 = v132;
       v179 = 1024;
-      *v180 = v149;
+      *v180 = requiresWrite3;
       *&v180[4] = 1024;
-      *&v180[6] = v133;
+      *&v180[6] = requiresProtectedData2;
       v181 = 1024;
-      v182 = v134;
+      v182 = highPriority2;
       v183 = 2048;
-      v184 = v135;
+      v184 = cacheScope;
       v185 = 2048;
-      v186 = v136;
+      v186 = journalType;
       v187 = 2082;
       v188 = label;
       _os_log_impl(&dword_228986000, loga, OS_LOG_TYPE_DEFAULT, "Long database transaction %{public}@ duration: duration=%{public}@, wait=%{public}@, work=%{public}@, write=%{BOOL}d, protected=%{BOOL}d, priority=%{BOOL}d, cache=%ld, journal=%ld, queue=%{public}s", buf, 0x5Au);
@@ -651,12 +651,12 @@ LABEL_112:
 
   *&self->_isActive = 0;
   v138 = objc_loadWeakRetained(&self->_database);
-  v139 = [v138 configuration];
-  v140 = [v139 behavior];
-  v141 = [v140 features];
-  v142 = [v141 databaseSemaphoreLogging];
+  configuration9 = [v138 configuration];
+  behavior9 = [configuration9 behavior];
+  features9 = [behavior9 features];
+  databaseSemaphoreLogging9 = [features9 databaseSemaphoreLogging];
 
-  if (v142)
+  if (databaseSemaphoreLogging9)
   {
     _HKInitializeLogging();
     v143 = *MEMORY[0x277CCC2A0];
@@ -813,17 +813,17 @@ LABEL_16:
   return v11;
 }
 
-- (void)onCommit:(id)a3 orRollback:(id)a4
+- (void)onCommit:(id)commit orRollback:(id)rollback
 {
-  v19 = a3;
-  v7 = a4;
+  commitCopy = commit;
+  rollbackCopy = rollback;
   if (!self->_isActive)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"HDDatabaseTransaction.m" lineNumber:330 description:@"Must be in a transaction"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabaseTransaction.m" lineNumber:330 description:@"Must be in a transaction"];
   }
 
-  if (v19)
+  if (commitCopy)
   {
     onCommitBlocks = self->_onCommitBlocks;
     if (!onCommitBlocks)
@@ -835,12 +835,12 @@ LABEL_16:
       onCommitBlocks = self->_onCommitBlocks;
     }
 
-    v11 = [v19 copy];
+    v11 = [commitCopy copy];
     v12 = _Block_copy(v11);
     [(NSMutableArray *)onCommitBlocks addObject:v12];
   }
 
-  if (v7)
+  if (rollbackCopy)
   {
     onRollbackBlocks = self->_onRollbackBlocks;
     if (!onRollbackBlocks)
@@ -852,23 +852,23 @@ LABEL_16:
       onRollbackBlocks = self->_onRollbackBlocks;
     }
 
-    v16 = [v7 copy];
+    v16 = [rollbackCopy copy];
     v17 = _Block_copy(v16);
     [(NSMutableArray *)onRollbackBlocks addObject:v17];
   }
 }
 
-- (void)transactionDidEndWithError:(id)a3
+- (void)transactionDidEndWithError:(id)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  errorCopy = error;
   if (self->_isActive)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HDDatabaseTransaction.m" lineNumber:349 description:{@"Invalid parameter not satisfying: %@", @"!_isActive"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabaseTransaction.m" lineNumber:349 description:{@"Invalid parameter not satisfying: %@", @"!_isActive"}];
   }
 
-  if (v5)
+  if (errorCopy)
   {
     v19 = 0uLL;
     v20 = 0uLL;

@@ -1,5 +1,5 @@
 @interface _UICollectionViewPrefetchingContext
-- (id)initWithPrefetchItems:(double)a3 prefetchRect:(double)a4;
+- (id)initWithPrefetchItems:(double)items prefetchRect:(double)rect;
 - (id)peekNextItem;
 - (id)popNextItem;
 - (id)remainingIndexPaths;
@@ -9,25 +9,25 @@
 
 - (id)peekNextItem
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[2] firstObject];
+    self = [self[2] firstObject];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)initWithPrefetchItems:(double)a3 prefetchRect:(double)a4
+- (id)initWithPrefetchItems:(double)items prefetchRect:(double)rect
 {
   v36 = *MEMORY[0x1E69E9840];
   v11 = a2;
-  if (a1)
+  if (self)
   {
-    v34.receiver = a1;
+    v34.receiver = self;
     v34.super_class = _UICollectionViewPrefetchingContext;
-    a1 = objc_msgSendSuper2(&v34, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v34, sel_init);
+    if (self)
     {
       v12 = MEMORY[0x1E695E0F0];
       if (v11)
@@ -38,12 +38,12 @@
       v13 = v12;
 
       v14 = [v13 mutableCopy];
-      v15 = a1[2];
-      a1[2] = v14;
+      v15 = self[2];
+      self[2] = v14;
 
       v16 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v13, "count")}];
-      v17 = a1[3];
-      a1[3] = v16;
+      v17 = self[3];
+      self[3] = v16;
 
       v32 = 0u;
       v33 = 0u;
@@ -77,15 +77,15 @@
             }
 
             v24 = v23;
-            v25 = [v24 indexPath];
-            v26 = v25;
-            if (!v24 || (v24[288] & 1) == 0 || [v25 length] <= 1)
+            indexPath = [v24 indexPath];
+            v26 = indexPath;
+            if (!v24 || (v24[288] & 1) == 0 || [indexPath length] <= 1)
             {
-              v27 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v27 handleFailureInMethod:sel_initWithPrefetchItems_prefetchRect_ object:a1 file:@"_UICollectionViewPrefetchingContext.m" lineNumber:32 description:{@"UICollectionView internal bug: Attempting to create prefetching context using invalid attributes. Attributes: %@", v24}];
+              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler handleFailureInMethod:sel_initWithPrefetchItems_prefetchRect_ object:self file:@"_UICollectionViewPrefetchingContext.m" lineNumber:32 description:{@"UICollectionView internal bug: Attempting to create prefetching context using invalid attributes. Attributes: %@", v24}];
             }
 
-            [a1[3] setObject:v22 forKeyedSubscript:v26];
+            [self[3] setObject:v22 forKeyedSubscript:v26];
 
             ++v21;
           }
@@ -98,37 +98,37 @@
         while (v28);
       }
 
-      *(a1 + 4) = a3;
-      *(a1 + 5) = a4;
-      *(a1 + 6) = a5;
-      *(a1 + 7) = a6;
+      *(self + 4) = items;
+      *(self + 5) = rect;
+      *(self + 6) = a5;
+      *(self + 7) = a6;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (id)popNextItem
 {
-  if (a1 && [*(a1 + 16) count])
+  if (self && [*(self + 16) count])
   {
-    v2 = *(a1 + 8);
-    *(a1 + 8) = 0;
+    v2 = *(self + 8);
+    *(self + 8) = 0;
 
-    v3 = [*(a1 + 16) firstObject];
-    v4 = v3;
-    if (v3)
+    firstObject = [*(self + 16) firstObject];
+    v4 = firstObject;
+    if (firstObject)
     {
-      v3 = v3[2];
+      firstObject = firstObject[2];
     }
 
-    v5 = [v3 indexPath];
-    if (v5)
+    indexPath = [firstObject indexPath];
+    if (indexPath)
     {
-      [*(a1 + 24) removeObjectForKey:v5];
+      [*(self + 24) removeObjectForKey:indexPath];
     }
 
-    [*(a1 + 16) removeObjectAtIndex:0];
+    [*(self + 16) removeObjectAtIndex:0];
   }
 
   else
@@ -142,13 +142,13 @@
 - (id)remainingIndexPaths
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    v2 = [a1[2] count];
+    selfCopy = self;
+    v2 = [self[2] count];
     if (v2)
     {
-      v3 = v1[1];
+      v3 = selfCopy[1];
       if (!v3)
       {
         v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v2];
@@ -156,7 +156,7 @@
         v16 = 0u;
         v17 = 0u;
         v18 = 0u;
-        v5 = v1[2];
+        v5 = selfCopy[2];
         v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v6)
         {
@@ -179,8 +179,8 @@
               }
 
               v11 = v10;
-              v12 = [v11 indexPath];
-              [v4 addObject:v12];
+              indexPath = [v11 indexPath];
+              [v4 addObject:indexPath];
 
               ++v9;
             }
@@ -192,22 +192,22 @@
           while (v7);
         }
 
-        v13 = v1[1];
-        v1[1] = v4;
+        v13 = selfCopy[1];
+        selfCopy[1] = v4;
 
-        v3 = v1[1];
+        v3 = selfCopy[1];
       }
 
-      a1 = v3;
+      self = v3;
     }
 
     else
     {
-      a1 = MEMORY[0x1E695E0F0];
+      self = MEMORY[0x1E695E0F0];
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

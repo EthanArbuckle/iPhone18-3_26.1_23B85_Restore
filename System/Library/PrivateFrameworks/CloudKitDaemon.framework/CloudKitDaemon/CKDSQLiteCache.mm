@@ -1,18 +1,18 @@
 @interface CKDSQLiteCache
 + (id)sharedCache;
 - (CKDLogicalDeviceContext)deviceContext;
-- (CKDSQLiteCache)initWithCacheDir:(id)a3;
-- (CKDSQLiteCache)initWithDeviceContext:(id)a3;
-- (id)initOrExitWithPath:(id)a3 isSharedCache:(BOOL)a4;
+- (CKDSQLiteCache)initWithCacheDir:(id)dir;
+- (CKDSQLiteCache)initWithDeviceContext:(id)context;
+- (id)initOrExitWithPath:(id)path isSharedCache:(BOOL)cache;
 @end
 
 @implementation CKDSQLiteCache
 
-- (id)initOrExitWithPath:(id)a3 isSharedCache:(BOOL)a4
+- (id)initOrExitWithPath:(id)path isSharedCache:(BOOL)cache
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v8 = objc_msgSend_initWithCacheDir_(self, v7, v6);
+  pathCopy = path;
+  v8 = objc_msgSend_initWithCacheDir_(self, v7, pathCopy);
   v40 = 0;
   LOBYTE(self) = objc_msgSend_openWithError_(v8, v9, &v40);
   v10 = v40;
@@ -26,7 +26,7 @@
   {
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v18 = objc_msgSend_CKSanitizedPath(v6, v16, v17);
+    v18 = objc_msgSend_CKSanitizedPath(pathCopy, v16, v17);
     v19 = MEMORY[0x277CBC880];
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -48,7 +48,7 @@
 
     objc_msgSend_remove(v8, v22, v23);
     v24 = objc_alloc(objc_opt_class());
-    v26 = objc_msgSend_initWithCacheDir_(v24, v25, v6);
+    v26 = objc_msgSend_initWithCacheDir_(v24, v25, pathCopy);
 
     v39 = v12;
     v28 = objc_msgSend_openWithError_(v26, v27, &v39);
@@ -110,7 +110,7 @@
   v37[1] = 3221225472;
   v37[2] = sub_225162EA4;
   v37[3] = &unk_278546E18;
-  v38 = a4;
+  cacheCopy = cache;
   objc_msgSend_setInvalidationHandler_(v8, v11, v37);
 
   v29 = *MEMORY[0x277D85DE8];
@@ -120,7 +120,7 @@
 + (id)sharedCache
 {
   pthread_mutex_lock(&stru_280D54E50);
-  isSharedCache = objc_msgSend_objectForKey_(qword_280D586D8, v3, a1);
+  isSharedCache = objc_msgSend_objectForKey_(qword_280D586D8, v3, self);
   if (!isSharedCache)
   {
     if (!qword_280D586D8)
@@ -130,8 +130,8 @@
       qword_280D586D8 = v7;
     }
 
-    v9 = objc_msgSend_cacheDirectory(a1, v4, v5);
-    v12 = objc_msgSend_dbFileName(a1, v10, v11);
+    v9 = objc_msgSend_cacheDirectory(self, v4, v5);
+    v12 = objc_msgSend_dbFileName(self, v10, v11);
     v14 = objc_msgSend_stringByAppendingPathComponent_(v9, v13, v12);
 
     v17 = objc_msgSend_currentProcess(CKDDaemonProcess, v15, v16);
@@ -144,9 +144,9 @@
       v14 = v21;
     }
 
-    v22 = [a1 alloc];
+    v22 = [self alloc];
     isSharedCache = objc_msgSend_initOrExitWithPath_isSharedCache_(v22, v23, v14, 1);
-    objc_msgSend_setObject_forKey_(qword_280D586D8, v24, isSharedCache, a1);
+    objc_msgSend_setObject_forKey_(qword_280D586D8, v24, isSharedCache, self);
   }
 
   pthread_mutex_unlock(&stru_280D54E50);
@@ -154,9 +154,9 @@
   return isSharedCache;
 }
 
-- (CKDSQLiteCache)initWithDeviceContext:(id)a3
+- (CKDSQLiteCache)initWithDeviceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_opt_class();
   v8 = objc_msgSend_dbFileName(v5, v6, v7);
   v11 = objc_msgSend_currentProcess(CKDDaemonProcess, v9, v10);
@@ -169,24 +169,24 @@
     v8 = v17;
   }
 
-  v18 = objc_msgSend_cacheDirectory(v4, v15, v16);
+  v18 = objc_msgSend_cacheDirectory(contextCopy, v15, v16);
   v20 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(v18, v19, v8, 0);
 
   v23 = objc_msgSend_path(v20, v21, v22);
   isSharedCache = objc_msgSend_initOrExitWithPath_isSharedCache_(self, v24, v23, 0);
 
-  objc_msgSend_setDeviceContext_(isSharedCache, v26, v4);
+  objc_msgSend_setDeviceContext_(isSharedCache, v26, contextCopy);
   return isSharedCache;
 }
 
-- (CKDSQLiteCache)initWithCacheDir:(id)a3
+- (CKDSQLiteCache)initWithCacheDir:(id)dir
 {
-  v4 = a3;
+  dirCopy = dir;
   v5 = objc_opt_class();
   v8 = objc_msgSend_cacheDatabaseSchema(v5, v6, v7);
   v11.receiver = self;
   v11.super_class = CKDSQLiteCache;
-  v9 = [(CKSQLite *)&v11 initWithPath:v4 schema:v8];
+  v9 = [(CKSQLite *)&v11 initWithPath:dirCopy schema:v8];
 
   return v9;
 }

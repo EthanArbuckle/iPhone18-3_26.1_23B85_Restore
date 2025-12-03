@@ -1,11 +1,11 @@
 @interface FMDSharedConfigurationManager
 + (FMDSharedConfigurationManager)sharedInstance;
-- (unint64_t)theftAndLossCoverageWithSerialNumber:(id)a3 timeout:(double)a4;
-- (unint64_t)theftAndLossCoverageWithUDID:(id)a3 timeout:(double)a4;
-- (void)clearTheftAndLossCFUWithCompletion:(id)a3;
-- (void)downloadSharedConfigurationWithLocale:(id)a3 reply:(id)a4;
-- (void)getTheftAndLossCoverageWithSerialNumber:(id)a3 timeout:(double)a4 completion:(id)a5;
-- (void)postTheftAndLossCFU:(id)a3 completion:(id)a4;
+- (unint64_t)theftAndLossCoverageWithSerialNumber:(id)number timeout:(double)timeout;
+- (unint64_t)theftAndLossCoverageWithUDID:(id)d timeout:(double)timeout;
+- (void)clearTheftAndLossCFUWithCompletion:(id)completion;
+- (void)downloadSharedConfigurationWithLocale:(id)locale reply:(id)reply;
+- (void)getTheftAndLossCoverageWithSerialNumber:(id)number timeout:(double)timeout completion:(id)completion;
+- (void)postTheftAndLossCFU:(id)u completion:(id)completion;
 @end
 
 @implementation FMDSharedConfigurationManager
@@ -22,10 +22,10 @@
   return v3;
 }
 
-- (void)downloadSharedConfigurationWithLocale:(id)a3 reply:(id)a4
+- (void)downloadSharedConfigurationWithLocale:(id)locale reply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  localeCopy = locale;
   v7 = +[FMNSXPCConnectionConfiguration sharedConfigurationConfiguration];
   v8 = +[FMNSXPCConnectionCache sharedCache];
   v9 = [v8 resumeConnectionWithConfiguration:v7];
@@ -34,10 +34,10 @@
   v17[1] = 3221225472;
   v17[2] = sub_100155B00;
   v17[3] = &unk_1002CEE20;
-  v10 = v5;
+  v10 = replyCopy;
   v18 = v10;
   [v9 addFailureBlock:v17];
-  v11 = [v9 remoteObjectProxy];
+  remoteObjectProxy = [v9 remoteObjectProxy];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100155B78;
@@ -46,13 +46,13 @@
   v16 = v10;
   v12 = v9;
   v13 = v10;
-  [v11 downloadSharedConfigurationWithLocale:v6 reply:v14];
+  [remoteObjectProxy downloadSharedConfigurationWithLocale:localeCopy reply:v14];
 }
 
-- (void)getTheftAndLossCoverageWithSerialNumber:(id)a3 timeout:(double)a4 completion:(id)a5
+- (void)getTheftAndLossCoverageWithSerialNumber:(id)number timeout:(double)timeout completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  numberCopy = number;
+  completionCopy = completion;
   v41[0] = 0;
   v41[1] = v41;
   v41[2] = 0x2020000000;
@@ -69,7 +69,7 @@
   v35[3] = &unk_1002CEE70;
   v37 = v39;
   v38 = v41;
-  v9 = v8;
+  v9 = completionCopy;
   v36 = v9;
   v10 = objc_retainBlock(v35);
   v11 = +[FMNSXPCConnectionConfiguration sharedConfigurationConfiguration];
@@ -83,7 +83,7 @@
   v14 = v10;
   v34 = v14;
   [v13 addFailureBlock:v33];
-  v15 = [v13 remoteObjectProxy];
+  remoteObjectProxy = [v13 remoteObjectProxy];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_1001560B8;
@@ -92,12 +92,12 @@
   v30 = v16;
   v17 = v14;
   v32 = v17;
-  v18 = v7;
+  v18 = numberCopy;
   v31 = v18;
-  [v15 getTheftAndLossCoverageWithSerialNumber:v18 reply:v29];
+  [remoteObjectProxy getTheftAndLossCoverageWithSerialNumber:v18 reply:v29];
   v19 = dispatch_get_global_queue(0, 0);
   v20 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v19);
-  v21 = dispatch_time(0, (a4 * 1000000000.0));
+  v21 = dispatch_time(0, (timeout * 1000000000.0));
   dispatch_source_set_timer(v20, v21, 0xFFFFFFFFFFFFFFFFLL, 0x989680uLL);
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
@@ -116,9 +116,9 @@
   _Block_object_dispose(v41, 8);
 }
 
-- (unint64_t)theftAndLossCoverageWithSerialNumber:(id)a3 timeout:(double)a4
+- (unint64_t)theftAndLossCoverageWithSerialNumber:(id)number timeout:(double)timeout
 {
-  v5 = a3;
+  numberCopy = number;
   v42 = 0;
   v43 = &v42;
   v44 = 0x2020000000;
@@ -129,7 +129,7 @@
   v39 = sub_10000AA14;
   v40 = sub_100002AD4;
   v41 = 0;
-  v6 = dispatch_time(0, (a4 * 1000000000.0));
+  v6 = dispatch_time(0, (timeout * 1000000000.0));
   v34[0] = 0;
   v34[1] = v34;
   v34[2] = 0x3032000000;
@@ -158,7 +158,7 @@
   v13 = v9;
   v29 = v13;
   [v12 addFailureBlock:v28];
-  v14 = [v12 remoteObjectProxy];
+  remoteObjectProxy = [v12 remoteObjectProxy];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1001567D8;
@@ -169,7 +169,7 @@
   v24 = v15;
   v16 = v13;
   v25 = v16;
-  [v14 getTheftAndLossCoverageWithSerialNumber:v5 reply:v23];
+  [remoteObjectProxy getTheftAndLossCoverageWithSerialNumber:numberCopy reply:v23];
   if (dispatch_group_wait(v7, v6))
   {
     v17 = sub_100002880();
@@ -200,7 +200,7 @@
       *buf = 138543874;
       v47 = v20;
       v48 = 2112;
-      v49 = v5;
+      v49 = numberCopy;
       v50 = 2112;
       v51 = v21;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "T&L device coverage %{public}@ for serialNumber: %@, error: %@", buf, 0x20u);
@@ -216,9 +216,9 @@
   return v18;
 }
 
-- (unint64_t)theftAndLossCoverageWithUDID:(id)a3 timeout:(double)a4
+- (unint64_t)theftAndLossCoverageWithUDID:(id)d timeout:(double)timeout
 {
-  v5 = a3;
+  dCopy = d;
   v42 = 0;
   v43 = &v42;
   v44 = 0x2020000000;
@@ -229,7 +229,7 @@
   v39 = sub_10000AA14;
   v40 = sub_100002AD4;
   v41 = 0;
-  v6 = dispatch_time(0, (a4 * 1000000000.0));
+  v6 = dispatch_time(0, (timeout * 1000000000.0));
   v34[0] = 0;
   v34[1] = v34;
   v34[2] = 0x3032000000;
@@ -258,7 +258,7 @@
   v13 = v9;
   v29 = v13;
   [v12 addFailureBlock:v28];
-  v14 = [v12 remoteObjectProxy];
+  remoteObjectProxy = [v12 remoteObjectProxy];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100156D88;
@@ -269,7 +269,7 @@
   v24 = v15;
   v16 = v13;
   v25 = v16;
-  [v14 getTheftAndLossCoverageWithUDID:v5 reply:v23];
+  [remoteObjectProxy getTheftAndLossCoverageWithUDID:dCopy reply:v23];
   if (dispatch_group_wait(v7, v6))
   {
     v17 = sub_100002880();
@@ -300,7 +300,7 @@
       *buf = 138412802;
       v47 = v20;
       v48 = 2112;
-      v49 = v5;
+      v49 = dCopy;
       v50 = 2112;
       v51 = v21;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "T&L device coverage %@ for UDID: %@, error: %@", buf, 0x20u);
@@ -316,10 +316,10 @@
   return v18;
 }
 
-- (void)postTheftAndLossCFU:(id)a3 completion:(id)a4
+- (void)postTheftAndLossCFU:(id)u completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  uCopy = u;
+  completionCopy = completion;
   v35[0] = 0;
   v35[1] = v35;
   v35[2] = 0x2020000000;
@@ -336,7 +336,7 @@
   v29[3] = &unk_1002CEF38;
   v31 = v33;
   v32 = v35;
-  v7 = v6;
+  v7 = completionCopy;
   v30 = v7;
   v8 = objc_retainBlock(v29);
   v9 = +[FMNSXPCConnectionConfiguration sharedConfigurationConfiguration];
@@ -350,7 +350,7 @@
   v12 = v8;
   v28 = v12;
   [v11 addFailureBlock:v27];
-  v13 = [v11 remoteObjectProxy];
+  remoteObjectProxy = [v11 remoteObjectProxy];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_1001572E4;
@@ -359,7 +359,7 @@
   v25 = v14;
   v15 = v12;
   v26 = v15;
-  [v13 postTheftAndLossCFUWithEntry:v5 reply:v24];
+  [remoteObjectProxy postTheftAndLossCFUWithEntry:uCopy reply:v24];
   v16 = dispatch_get_global_queue(0, 0);
   v17 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v16);
   v18 = dispatch_time(0, (2.0 * 1000000000.0));
@@ -379,9 +379,9 @@
   _Block_object_dispose(v35, 8);
 }
 
-- (void)clearTheftAndLossCFUWithCompletion:(id)a3
+- (void)clearTheftAndLossCFUWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v32[0] = 0;
   v32[1] = v32;
   v32[2] = 0x2020000000;
@@ -398,7 +398,7 @@
   v26[3] = &unk_1002CEF88;
   v28 = v30;
   v29 = v32;
-  v4 = v3;
+  v4 = completionCopy;
   v27 = v4;
   v5 = objc_retainBlock(v26);
   v6 = +[FMNSXPCConnectionConfiguration sharedConfigurationConfiguration];
@@ -412,7 +412,7 @@
   v9 = v5;
   v25 = v9;
   [v8 addFailureBlock:v24];
-  v10 = [v8 remoteObjectProxy];
+  remoteObjectProxy = [v8 remoteObjectProxy];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100157930;
@@ -421,7 +421,7 @@
   v22 = v11;
   v12 = v9;
   v23 = v12;
-  [v10 clearTheftAndLossCFU:v21];
+  [remoteObjectProxy clearTheftAndLossCFU:v21];
   v13 = dispatch_get_global_queue(0, 0);
   v14 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v13);
   v15 = dispatch_time(0, (2.0 * 1000000000.0));

@@ -1,16 +1,16 @@
 @interface HKHistogramBarSeries
-- (HKHistogramBarSeries)initWithFillStyle:(id)a3 numberOfColumns:(unint64_t)a4 cornerRadii:(CGSize)a5;
+- (HKHistogramBarSeries)initWithFillStyle:(id)style numberOfColumns:(unint64_t)columns cornerRadii:(CGSize)radii;
 - (unint64_t)numberOfColumns;
-- (void)setNumberOfColumns:(unint64_t)a3;
+- (void)setNumberOfColumns:(unint64_t)columns;
 @end
 
 @implementation HKHistogramBarSeries
 
-- (HKHistogramBarSeries)initWithFillStyle:(id)a3 numberOfColumns:(unint64_t)a4 cornerRadii:(CGSize)a5
+- (HKHistogramBarSeries)initWithFillStyle:(id)style numberOfColumns:(unint64_t)columns cornerRadii:(CGSize)radii
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
+  height = radii.height;
+  width = radii.width;
+  styleCopy = style;
   v19.receiver = self;
   v19.super_class = HKHistogramBarSeries;
   v10 = [(HKBarSeries *)&v19 init];
@@ -21,20 +21,20 @@
     v10->_seriesMutableStateLock = v11;
 
     [(NSLock *)v10->_seriesMutableStateLock setName:@"HKHistogramBarSeriesLock"];
-    v13 = [MEMORY[0x1E69DC888] whiteColor];
-    v14 = [HKStrokeStyle strokeStyleWithColor:v13 lineWidth:3.0];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v14 = [HKStrokeStyle strokeStyleWithColor:whiteColor lineWidth:3.0];
     v15 = objc_alloc_init(HKStrokeStyle);
-    v16 = [MEMORY[0x1E69DC888] whiteColor];
-    v17 = [v16 colorWithAlphaComponent:0.95];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    v17 = [whiteColor2 colorWithAlphaComponent:0.95];
     [(HKStrokeStyle *)v15 setStrokeColor:v17];
 
     [(HKStrokeStyle *)v15 setLineWidth:3.0];
     [(HKStrokeStyle *)v15 setBlendMode:22];
     [(HKBarSeries *)v10 setUnselectedStrokeStyle:v15];
     [(HKBarSeries *)v10 setTiledStrokeStyle:v14];
-    [(HKBarSeries *)v10 setUnselectedFillStyle:v9];
+    [(HKBarSeries *)v10 setUnselectedFillStyle:styleCopy];
     [(HKBarSeries *)v10 setCornerRadii:width, height];
-    v10->_numberOfColumnsStorage = a4;
+    v10->_numberOfColumnsStorage = columns;
   }
 
   return v10;
@@ -42,24 +42,24 @@
 
 - (unint64_t)numberOfColumns
 {
-  v3 = [(HKHistogramBarSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKHistogramBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   numberOfColumnsStorage = self->_numberOfColumnsStorage;
-  v5 = [(HKHistogramBarSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKHistogramBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return numberOfColumnsStorage;
 }
 
-- (void)setNumberOfColumns:(unint64_t)a3
+- (void)setNumberOfColumns:(unint64_t)columns
 {
-  v5 = [(HKHistogramBarSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  seriesMutableStateLock = [(HKHistogramBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  self->_numberOfColumnsStorage = a3;
-  v6 = [(HKHistogramBarSeries *)self seriesMutableStateLock];
-  [v6 unlock];
+  self->_numberOfColumnsStorage = columns;
+  seriesMutableStateLock2 = [(HKHistogramBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface PKDashboardStackedImageCollectionViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDashboardStackedImageCollectionViewCell)initWithFrame:(CGRect)a3;
-- (double)_contentHeightWithWidth:(double)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDashboardStackedImageCollectionViewCell)initWithFrame:(CGRect)frame;
+- (double)_contentHeightWithWidth:(double)width;
 - (void)layoutSubviews;
-- (void)setIcon:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTertiaryText:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setIcon:(id)icon;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTertiaryText:(id)text;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PKDashboardStackedImageCollectionViewCell
 
-- (PKDashboardStackedImageCollectionViewCell)initWithFrame:(CGRect)a3
+- (PKDashboardStackedImageCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v33.receiver = self;
   v33.super_class = PKDashboardStackedImageCollectionViewCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v33 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v33 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKDashboardStackedImageCollectionViewCell *)v3 contentView];
+    contentView = [(PKDashboardStackedImageCollectionViewCell *)v3 contentView];
     v6 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v7 = *MEMORY[0x1E695F058];
     v8 = *(MEMORY[0x1E695F058] + 8);
@@ -32,12 +32,12 @@
     [(UIImageView *)v4->_iconImageView _setContinuousCornerRadius:8.0];
     [(UIImageView *)v4->_iconImageView setClipsToBounds:1];
     [(UIImageView *)v4->_iconImageView setContentMode:1];
-    v13 = [(UIImageView *)v4->_iconImageView layer];
-    v14 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [v13 setBorderColor:{objc_msgSend(v14, "CGColor")}];
+    layer = [(UIImageView *)v4->_iconImageView layer];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [layer setBorderColor:{objc_msgSend(tertiaryLabelColor, "CGColor")}];
 
-    [v13 setBorderWidth:PKUIPixelLength()];
-    [v5 addSubview:v4->_iconImageView];
+    [layer setBorderWidth:PKUIPixelLength()];
+    [contentView addSubview:v4->_iconImageView];
     v15 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v7, v8, v9, v10}];
     titleLabel = v4->_titleLabel;
     v4->_titleLabel = v15;
@@ -48,7 +48,7 @@
 
     [(UILabel *)v4->_titleLabel setNumberOfLines:2];
     [(UILabel *)v4->_titleLabel setTextAlignment:1];
-    [v5 addSubview:v4->_titleLabel];
+    [contentView addSubview:v4->_titleLabel];
     v19 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v7, v8, v9, v10}];
     subtitleLabel = v4->_subtitleLabel;
     v4->_subtitleLabel = v19;
@@ -59,12 +59,12 @@
     [(UILabel *)v21 setFont:v23];
 
     v24 = v4->_subtitleLabel;
-    v25 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v24 setTextColor:v25];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v24 setTextColor:secondaryLabelColor];
 
     [(UILabel *)v4->_subtitleLabel setNumberOfLines:2];
     [(UILabel *)v4->_subtitleLabel setTextAlignment:1];
-    [v5 addSubview:v4->_subtitleLabel];
+    [contentView addSubview:v4->_subtitleLabel];
     v26 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v7, v8, v9, v10}];
     tertiaryLabel = v4->_tertiaryLabel;
     v4->_tertiaryLabel = v26;
@@ -74,21 +74,21 @@
     [(UILabel *)v28 setFont:v29];
 
     v30 = v4->_tertiaryLabel;
-    v31 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v30 setTextColor:v31];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v30 setTextColor:secondaryLabelColor2];
 
     [(UILabel *)v4->_tertiaryLabel setNumberOfLines:2];
     [(UILabel *)v4->_tertiaryLabel setTextAlignment:1];
-    [v5 addSubview:v4->_tertiaryLabel];
+    [contentView addSubview:v4->_tertiaryLabel];
   }
 
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(PKDashboardStackedImageCollectionViewCell *)self _contentHeightWithWidth:a3.width + -32.0, a3.height];
+  width = fits.width;
+  [(PKDashboardStackedImageCollectionViewCell *)self _contentHeightWithWidth:fits.width + -32.0, fits.height];
   v5 = fmax(v4 + 32.0, 200.0);
   v6 = width;
   result.height = v5;
@@ -96,23 +96,23 @@
   return result;
 }
 
-- (double)_contentHeightWithWidth:(double)a3
+- (double)_contentHeightWithWidth:(double)width
 {
-  [(UILabel *)self->_titleLabel pkui_sizeThatFits:1 forceWordWrap:a3, 1.79769313e308];
+  [(UILabel *)self->_titleLabel pkui_sizeThatFits:1 forceWordWrap:width, 1.79769313e308];
   v6 = v5 + 86.0;
-  v7 = [(UILabel *)self->_subtitleLabel text];
+  text = [(UILabel *)self->_subtitleLabel text];
 
-  if (v7)
+  if (text)
   {
-    [(UILabel *)self->_subtitleLabel pkui_sizeThatFits:1 forceWordWrap:a3, 1.79769313e308];
+    [(UILabel *)self->_subtitleLabel pkui_sizeThatFits:1 forceWordWrap:width, 1.79769313e308];
     v6 = v6 + v8 + 3.0;
   }
 
-  v9 = [(UILabel *)self->_tertiaryLabel text];
+  text2 = [(UILabel *)self->_tertiaryLabel text];
 
-  if (v9)
+  if (text2)
   {
-    [(UILabel *)self->_tertiaryLabel pkui_sizeThatFits:1 forceWordWrap:a3, 1.79769313e308];
+    [(UILabel *)self->_tertiaryLabel pkui_sizeThatFits:1 forceWordWrap:width, 1.79769313e308];
     return v6 + v10 + 3.0;
   }
 
@@ -124,8 +124,8 @@
   v40.receiver = self;
   v40.super_class = PKDashboardStackedImageCollectionViewCell;
   [(PKDashboardCollectionViewCell *)&v40 layoutSubviews];
-  v3 = [(PKDashboardStackedImageCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKDashboardStackedImageCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -180,9 +180,9 @@
   titleLabel = self->_titleLabel;
   PKSizeAlignedInRect();
   [(UILabel *)titleLabel setFrame:?];
-  v22 = [(UILabel *)self->_subtitleLabel text];
+  text = [(UILabel *)self->_subtitleLabel text];
 
-  if (v22)
+  if (text)
   {
     CGRectDivide(remainder, &v38, &remainder, 3.0, CGRectMinYEdge);
     [(UILabel *)self->_subtitleLabel pkui_sizeThatFits:1 forceWordWrap:remainder.size.width, remainder.size.height];
@@ -202,9 +202,9 @@
   }
 
   [(UILabel *)v29 setFrame:v25, v26, v27, v28];
-  v30 = [(UILabel *)self->_tertiaryLabel text];
+  text2 = [(UILabel *)self->_tertiaryLabel text];
 
-  if (v30)
+  if (text2)
   {
     CGRectDivide(remainder, &v38, &remainder, 3.0, CGRectMinYEdge);
     [(UILabel *)self->_tertiaryLabel pkui_sizeThatFits:1 forceWordWrap:remainder.size.width, remainder.size.height];
@@ -226,22 +226,22 @@
   [(UILabel *)v37 setFrame:v33, v34, v35, v36];
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v5 = a3;
+  iconCopy = icon;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_icon, a3);
+    objc_storeStrong(&self->_icon, icon);
     [(UIImageView *)self->_iconImageView setImage:self->_icon];
     [(PKDashboardStackedImageCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = self->_title;
-  v6 = v4;
+  v6 = titleCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -271,11 +271,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
+  subtitleCopy = subtitle;
   v5 = self->_subtitle;
-  v6 = v4;
+  v6 = subtitleCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -305,11 +305,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setTertiaryText:(id)a3
+- (void)setTertiaryText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = self->_tertiaryText;
-  v6 = v4;
+  v6 = textCopy;
   v10 = v6;
   if (v5 == v6)
   {

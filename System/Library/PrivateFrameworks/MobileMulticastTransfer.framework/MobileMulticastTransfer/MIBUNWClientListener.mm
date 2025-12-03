@@ -1,20 +1,20 @@
 @interface MIBUNWClientListener
-- (MIBUNWClientListener)initWithConfiguration:(id)a3 delegate:(id)a4;
+- (MIBUNWClientListener)initWithConfiguration:(id)configuration delegate:(id)delegate;
 - (id)description;
-- (void)_handleNewListenerState:(int)a3 error:(id)a4;
-- (void)_handleNewNetworkConnection:(id)a3;
+- (void)_handleNewListenerState:(int)state error:(id)error;
+- (void)_handleNewNetworkConnection:(id)connection;
 - (void)_start;
-- (void)_stopWithReason:(id)a3;
+- (void)_stopWithReason:(id)reason;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation MIBUNWClientListener
 
-- (MIBUNWClientListener)initWithConfiguration:(id)a3 delegate:(id)a4
+- (MIBUNWClientListener)initWithConfiguration:(id)configuration delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
   v36.receiver = self;
   v36.super_class = MIBUNWClientListener;
   v8 = [(MIBUNWClientListener *)&v36 init];
@@ -30,18 +30,18 @@ LABEL_24:
   v11 = *(v8 + 2);
   *(v8 + 2) = v10;
 
-  objc_storeStrong(v8 + 1, a4);
-  v12 = [v6 objectForKey:@"ProtocolType"];
-  v13 = [v12 unsignedIntegerValue];
+  objc_storeStrong(v8 + 1, delegate);
+  v12 = [configurationCopy objectForKey:@"ProtocolType"];
+  unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-  if (v13 == 2)
+  if (unsignedIntegerValue == 2)
   {
     secure_tcp = nw_parameters_create_secure_tcp(*MEMORY[0x277CD9238], *MEMORY[0x277CD9230]);
   }
 
   else
   {
-    if (v13 != 1)
+    if (unsignedIntegerValue != 1)
     {
       if (MIBUOnceToken != -1)
       {
@@ -54,7 +54,7 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      [(MIBUNWClientListener *)v8 initWithConfiguration:v13 delegate:v28];
+      [(MIBUNWClientListener *)v8 initWithConfiguration:unsignedIntegerValue delegate:v28];
       v27 = 0;
       goto LABEL_26;
     }
@@ -63,8 +63,8 @@ LABEL_24:
   }
 
   v15 = secure_tcp;
-  v16 = [v6 objectForKey:@"HostAddress"];
-  v17 = [v6 objectForKey:@"HostPort"];
+  v16 = [configurationCopy objectForKey:@"HostAddress"];
+  v17 = [configurationCopy objectForKey:@"HostPort"];
   v18 = v17;
   if (v16 && v17)
   {
@@ -239,7 +239,7 @@ void __55__MIBUNWClientListener_initWithConfiguration_delegate___block_invoke_17
   if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_259B04000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Starting client listener.", &v5, 0xCu);
   }
 
@@ -263,10 +263,10 @@ void __30__MIBUNWClientListener__start__block_invoke()
   }
 }
 
-- (void)_stopWithReason:(id)a3
+- (void)_stopWithReason:(id)reason
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   dispatch_assert_queue_V2(self->_queue);
   if (MIBUOnceToken != -1)
   {
@@ -277,9 +277,9 @@ void __30__MIBUNWClientListener__start__block_invoke()
   if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
-    v11 = v4;
+    v11 = reasonCopy;
     _os_log_impl(&dword_259B04000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Stopping client listener due to: %{public}@", &v8, 0x16u);
   }
 
@@ -309,10 +309,10 @@ void __40__MIBUNWClientListener__stopWithReason___block_invoke()
   }
 }
 
-- (void)_handleNewListenerState:(int)a3 error:(id)a4
+- (void)_handleNewListenerState:(int)state error:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
   if (MIBUOnceToken != -1)
   {
@@ -323,21 +323,21 @@ void __40__MIBUNWClientListener__stopWithReason___block_invoke()
   if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = NSStringFromNWListenerState(a3);
+    v9 = NSStringFromNWListenerState(state);
     v15 = 138543874;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
     v18 = v9;
     v19 = 2114;
-    v20 = v6;
+    v20 = errorCopy;
     _os_log_impl(&dword_259B04000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Handle new listener state: %{public}@, error: %{public}@", &v15, 0x20u);
   }
 
-  if (a3 <= 2)
+  if (state <= 2)
   {
-    if (a3 != 1)
+    if (state != 1)
     {
-      if (a3 == 2)
+      if (state == 2)
       {
         delegate = self->_delegate;
         if (delegate)
@@ -352,22 +352,22 @@ void __40__MIBUNWClientListener__stopWithReason___block_invoke()
     goto LABEL_13;
   }
 
-  if (a3 == 3)
+  if (state == 3)
   {
 LABEL_13:
     v12 = self->_delegate;
     if (v12)
     {
-      [(MIBUNWClientListenerDelegate *)v12 clientListenerDidStop:self withError:v6];
+      [(MIBUNWClientListenerDelegate *)v12 clientListenerDidStop:self withError:errorCopy];
     }
 
-    v13 = [v6 localizedDescription];
-    [(MIBUNWClientListener *)self _stopWithReason:v13];
+    localizedDescription = [errorCopy localizedDescription];
+    [(MIBUNWClientListener *)self _stopWithReason:localizedDescription];
 
     goto LABEL_16;
   }
 
-  if (a3 == 4)
+  if (state == 4)
   {
     listener = self->_listener;
     self->_listener = 0;
@@ -394,10 +394,10 @@ void __54__MIBUNWClientListener__handleNewListenerState_error___block_invoke()
   }
 }
 
-- (void)_handleNewNetworkConnection:(id)a3
+- (void)_handleNewNetworkConnection:(id)connection
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_queue);
   if (MIBUOnceToken != -1)
   {
@@ -408,13 +408,13 @@ void __54__MIBUNWClientListener__handleNewListenerState_error___block_invoke()
   if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v4;
+    v12 = connectionCopy;
     _os_log_impl(&dword_259B04000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Handle new network connection: %{public}@", &v9, 0x16u);
   }
 
-  v6 = [[MIBUNWClientDevice alloc] initWithNWConnection:v4];
+  v6 = [[MIBUNWClientDevice alloc] initWithNWConnection:connectionCopy];
   delegate = self->_delegate;
   if (delegate)
   {

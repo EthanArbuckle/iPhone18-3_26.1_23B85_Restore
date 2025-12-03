@@ -1,10 +1,10 @@
 @interface AlarmProvider
-- (void)handleAlarmChangeWithNotification:(id)a3;
+- (void)handleAlarmChangeWithNotification:(id)notification;
 @end
 
 @implementation AlarmProvider
 
-- (void)handleAlarmChangeWithNotification:(id)a3
+- (void)handleAlarmChangeWithNotification:(id)notification
 {
   v3 = sub_269D97050();
   v4 = *(v3 - 8);

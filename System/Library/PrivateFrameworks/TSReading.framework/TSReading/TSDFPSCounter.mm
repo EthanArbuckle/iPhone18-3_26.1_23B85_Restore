@@ -1,11 +1,11 @@
 @interface TSDFPSCounter
 - (TSDFPSCounter)init;
-- (id)p_fpsSummaryStringIncludingGraph:(BOOL)a3;
-- (id)p_getFPSInfo:(BOOL)a3;
+- (id)p_fpsSummaryStringIncludingGraph:(BOOL)graph;
+- (id)p_getFPSInfo:(BOOL)info;
 - (void)addFrame;
-- (void)addFrameAtDrawTime:(double)a3 duration:(double)a4;
+- (void)addFrameAtDrawTime:(double)time duration:(double)duration;
 - (void)dealloc;
-- (void)writeFPSInfoToLog:(id)a3 identifier:(id)a4 type:(id)a5 direction:(id)a6 duration:(double)a7 graphing:(BOOL)a8 slide:(int64_t)a9;
+- (void)writeFPSInfoToLog:(id)log identifier:(id)identifier type:(id)type direction:(id)direction duration:(double)duration graphing:(BOOL)graphing slide:(int64_t)slide;
 @end
 
 @implementation TSDFPSCounter
@@ -37,18 +37,18 @@
   [TSDFPSCounter addFrameAtDrawTime:"addFrameAtDrawTime:duration:" duration:?];
 }
 
-- (void)addFrameAtDrawTime:(double)a3 duration:(double)a4
+- (void)addFrameAtDrawTime:(double)time duration:(double)duration
 {
   v6[2] = *MEMORY[0x277D85DE8];
   dateArray = self->_dateArray;
-  v6[0] = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v6[1] = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v6[0] = [MEMORY[0x277CCABB0] numberWithDouble:time];
+  v6[1] = [MEMORY[0x277CCABB0] numberWithDouble:duration];
   -[NSMutableArray addObject:](dateArray, "addObject:", [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:2]);
 }
 
-- (id)p_fpsSummaryStringIncludingGraph:(BOOL)a3
+- (id)p_fpsSummaryStringIncludingGraph:(BOOL)graph
 {
-  v3 = a3;
+  graphCopy = graph;
   v56 = *MEMORY[0x277D85DE8];
   if ([(NSMutableArray *)self->_dateArray count]< 2)
   {
@@ -56,7 +56,7 @@
   }
 
   v45 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:&stru_287D36338];
-  if (v3)
+  if (graphCopy)
   {
     [v45 appendString:@"\n===== FPS LOGGING BEGIN =====\n"];
   }
@@ -71,7 +71,7 @@
   if (v7)
   {
     v8 = v7;
-    v49 = v3;
+    v49 = graphCopy;
     v9 = 1.79769313e308;
     v10 = *v52;
     v11 = 0.0;
@@ -213,7 +213,7 @@ LABEL_34:
       {
         v40 = v9 * 1000.0;
         v41 = v50 * 1000.0;
-        v3 = v49;
+        graphCopy = v49;
         v42 = v47;
         v43 = v48;
         goto LABEL_46;
@@ -234,7 +234,7 @@ LABEL_46:
     [v45 appendFormat:@"\nDuration(min/avg/max): %0.0f/%0.0f/%0.0fms (%d frames)", *&v40, v11 / -[NSMutableArray count](self->_dateArray, "count") * 1000.0, *&v41, -[NSMutableArray count](self->_dateArray, "count") - 1];
   }
 
-  if (v3)
+  if (graphCopy)
   {
     [v45 appendString:@"\n============================="];
   }
@@ -242,11 +242,11 @@ LABEL_46:
   return v45;
 }
 
-- (void)writeFPSInfoToLog:(id)a3 identifier:(id)a4 type:(id)a5 direction:(id)a6 duration:(double)a7 graphing:(BOOL)a8 slide:(int64_t)a9
+- (void)writeFPSInfoToLog:(id)log identifier:(id)identifier type:(id)type direction:(id)direction duration:(double)duration graphing:(BOOL)graphing slide:(int64_t)slide
 {
-  v10 = a8;
+  graphingCopy = graphing;
   v40 = *MEMORY[0x277D85DE8];
-  v16 = [(TSDFPSCounter *)self p_getFPSInfo:a8];
+  v16 = [(TSDFPSCounter *)self p_getFPSInfo:graphing];
   if (!v16)
   {
     return;
@@ -260,15 +260,15 @@ LABEL_46:
   [objc_msgSend(v17 objectForKeyedSubscript:{@"max", "floatValue"}];
   v23 = v22;
   v24 = [v17 objectForKeyedSubscript:@"array"];
-  v25 = [MEMORY[0x277CCAB68] string];
-  [v25 appendString:@"\nKNAnimTest"];
-  [v25 appendString:@"**"];
-  if (!a3)
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendString:@"\nKNAnimTest"];
+  [string appendString:@"**"];
+  if (!log)
   {
-    if (!a4)
+    if (!identifier)
     {
-      [v25 appendString:@"UnknownAnimation"];
-      if (!a5)
+      [string appendString:@"UnknownAnimation"];
+      if (!type)
       {
         goto LABEL_10;
       }
@@ -276,42 +276,42 @@ LABEL_46:
       goto LABEL_9;
     }
 
-    [v25 appendString:a4];
+    [string appendString:identifier];
     goto LABEL_7;
   }
 
-  [v25 appendString:a3];
-  if (a4)
+  [string appendString:log];
+  if (identifier)
   {
 LABEL_7:
-    [v25 appendString:@"**"];
-    [v25 appendFormat:@"Identifier:::%@", a4];
+    [string appendString:@"**"];
+    [string appendFormat:@"Identifier:::%@", identifier];
   }
 
-  if (a5)
+  if (type)
   {
 LABEL_9:
-    [v25 appendString:@"**"];
-    [v25 appendFormat:@"Type:::%@", a5];
+    [string appendString:@"**"];
+    [string appendFormat:@"Type:::%@", type];
   }
 
 LABEL_10:
   v26 = v19;
   v27 = v21;
   v28 = v23;
-  if (a6)
+  if (direction)
   {
-    [v25 appendString:@"**"];
-    [v25 appendFormat:@"Direction:::%@", a6];
+    [string appendString:@"**"];
+    [string appendFormat:@"Direction:::%@", direction];
   }
 
-  [v25 appendString:@"**"];
-  [v25 appendFormat:@"Duration:::%.2f", *&a7];
-  [v25 appendString:@"**"];
-  [v25 appendFormat:@"Slide:::%ld", a9];
-  [v25 appendString:@"**"];
-  [v25 appendFormat:@"FPS:::%.2f %.2f %.2f", *&v26, *&v27, *&v28];
-  if (v10)
+  [string appendString:@"**"];
+  [string appendFormat:@"Duration:::%.2f", *&duration];
+  [string appendString:@"**"];
+  [string appendFormat:@"Slide:::%ld", slide];
+  [string appendString:@"**"];
+  [string appendFormat:@"FPS:::%.2f %.2f %.2f", *&v26, *&v27, *&v28];
+  if (graphingCopy)
   {
     v37 = 0u;
     v38 = 0u;
@@ -331,7 +331,7 @@ LABEL_10:
             objc_enumerationMutation(v24);
           }
 
-          [v25 appendFormat:@" %d", objc_msgSend(*(*(&v35 + 1) + 8 * v31++), "intValue")];
+          [string appendFormat:@" %d", objc_msgSend(*(*(&v35 + 1) + 8 * v31++), "intValue")];
         }
 
         while (v29 != v31);
@@ -342,14 +342,14 @@ LABEL_10:
     }
   }
 
-  [v25 appendString:@"\n"];
-  v32 = [-[NSArray objectAtIndex:](NSSearchPathForDirectoriesInDomains(NSDocumentDirectory 1uLL];
-  v33 = [MEMORY[0x277CCA9F8] fileHandleForWritingAtPath:v32];
+  [string appendString:@"\n"];
+  1uLL = [-[NSArray objectAtIndex:](NSSearchPathForDirectoriesInDomains(NSDocumentDirectory 1uLL];
+  v33 = [MEMORY[0x277CCA9F8] fileHandleForWritingAtPath:1uLL];
   v34 = v33;
   if (v33)
   {
     [v33 seekToEndOfFile];
-    [v34 writeData:{objc_msgSend(v25, "dataUsingEncoding:", 4)}];
+    [v34 writeData:{objc_msgSend(string, "dataUsingEncoding:", 4)}];
     [v34 closeFile];
   }
 
@@ -359,9 +359,9 @@ LABEL_10:
   }
 }
 
-- (id)p_getFPSInfo:(BOOL)a3
+- (id)p_getFPSInfo:(BOOL)info
 {
-  v3 = a3;
+  infoCopy = info;
   v36 = *MEMORY[0x277D85DE8];
   if ([(NSMutableArray *)self->_dateArray count]< 2)
   {
@@ -369,12 +369,12 @@ LABEL_10:
   }
 
   v6 = [-[NSMutableArray firstObject](self->_dateArray "firstObject")];
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v30 = self;
+  selfCopy = self;
   dateArray = self->_dateArray;
   v9 = [(NSMutableArray *)dateArray countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v9)
@@ -416,9 +416,9 @@ LABEL_10:
             }
 
             v12 = v12 + v23;
-            if (v3)
+            if (infoCopy)
             {
-              [v7 addObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:")}];
+              [array addObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:")}];
             }
 
             v14 = v18;
@@ -439,15 +439,15 @@ LABEL_10:
     v15 = 0.0;
   }
 
-  v24 = [(NSMutableArray *)v30->_dateArray count];
+  v24 = [(NSMutableArray *)selfCopy->_dateArray count];
   v25 = MEMORY[0x277CBEB38];
   v26 = [MEMORY[0x277CCABB0] numberWithDouble:v12 / v24];
   v27 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
   v28 = [v25 dictionaryWithObjectsAndKeys:{v26, @"avg", v27, @"min", objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", v15), @"max", 0}];
   v5 = v28;
-  if (v3)
+  if (infoCopy)
   {
-    [v28 setObject:v7 forKeyedSubscript:@"array"];
+    [v28 setObject:array forKeyedSubscript:@"array"];
   }
 
   return v5;

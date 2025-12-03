@@ -1,16 +1,16 @@
 @interface UISDisplayContext
-+ (id)clb_contextForDisplayStyle:(int64_t)a3;
++ (id)clb_contextForDisplayStyle:(int64_t)style;
 @end
 
 @implementation UISDisplayContext
 
-+ (id)clb_contextForDisplayStyle:(int64_t)a3
++ (id)clb_contextForDisplayStyle:(int64_t)style
 {
   BSDispatchQueueAssertMain();
   v4 = +[UISMutableDisplayContext defaultContext];
   v5 = +[FBDisplayManager sharedInstance];
-  v6 = [v5 mainConfiguration];
-  [v4 setDisplayConfiguration:v6];
+  mainConfiguration = [v5 mainConfiguration];
+  [v4 setDisplayConfiguration:mainConfiguration];
 
   v7 = +[UISApplicationSupportDisplayEdgeInfo clb_thisDeviceDisplayEdgeInfo];
   [v4 setDisplayEdgeInfo:v7];
@@ -19,11 +19,11 @@
   [v4 setExclusionArea:v8];
 
   [v4 setArtworkSubtype:sub_100022538()];
-  if (a3 == 1)
+  if (style == 1)
   {
-    v9 = [v4 displayConfiguration];
-    v10 = [v9 clb_displayConfigurationForNonClarityUIApp];
-    [v4 setDisplayConfiguration:v10];
+    displayConfiguration = [v4 displayConfiguration];
+    clb_displayConfigurationForNonClarityUIApp = [displayConfiguration clb_displayConfigurationForNonClarityUIApp];
+    [v4 setDisplayConfiguration:clb_displayConfigurationForNonClarityUIApp];
 
     v11 = sub_100006370();
     v12 = [UISApplicationSupportDisplayEdgeInfo clb_displayEdgeInfoForScreenType:v11];

@@ -1,15 +1,15 @@
 @interface CRLiOSShapeLibraryCanvasPopoverController
 - (_TtC8Freeform41CRLiOSShapeLibraryCanvasPopoverController)init;
-- (_TtC8Freeform41CRLiOSShapeLibraryCanvasPopoverController)initWithInteractiveCanvasController:(id)a3;
-- (id)boardViewControllerTraitCollectionForContentLibraryViewController:(id)a3;
-- (id)contentLibraryViewControllerDefaultSearchTerm:(id)a3;
-- (id)editingCoordinatorForContentLibraryViewController:(id)a3;
-- (id)interactiveCanvasControllerForContentLibraryViewController:(id)a3;
+- (_TtC8Freeform41CRLiOSShapeLibraryCanvasPopoverController)initWithInteractiveCanvasController:(id)controller;
+- (id)boardViewControllerTraitCollectionForContentLibraryViewController:(id)controller;
+- (id)contentLibraryViewControllerDefaultSearchTerm:(id)term;
+- (id)editingCoordinatorForContentLibraryViewController:(id)controller;
+- (id)interactiveCanvasControllerForContentLibraryViewController:(id)controller;
 @end
 
 @implementation CRLiOSShapeLibraryCanvasPopoverController
 
-- (_TtC8Freeform41CRLiOSShapeLibraryCanvasPopoverController)initWithInteractiveCanvasController:(id)a3
+- (_TtC8Freeform41CRLiOSShapeLibraryCanvasPopoverController)initWithInteractiveCanvasController:(id)controller
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
@@ -19,34 +19,34 @@
   return [(CRLiOSShapeLibraryCanvasPopoverController *)&v5 init];
 }
 
-- (id)interactiveCanvasControllerForContentLibraryViewController:(id)a3
+- (id)interactiveCanvasControllerForContentLibraryViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   v6 = sub_100C01210();
 
   return v6;
 }
 
-- (id)editingCoordinatorForContentLibraryViewController:(id)a3
+- (id)editingCoordinatorForContentLibraryViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   v6 = sub_100C015BC();
 
   return v6;
 }
 
-- (id)boardViewControllerTraitCollectionForContentLibraryViewController:(id)a3
+- (id)boardViewControllerTraitCollectionForContentLibraryViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   v6 = sub_100C01990();
 
   return v6;
 }
 
-- (id)contentLibraryViewControllerDefaultSearchTerm:(id)a3
+- (id)contentLibraryViewControllerDefaultSearchTerm:(id)term
 {
   v3 = String._bridgeToObjectiveC()();
 

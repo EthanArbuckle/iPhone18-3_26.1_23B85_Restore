@@ -7,90 +7,90 @@
 
 - (id)accessibilityValue
 {
-  v3 = [(VOTImageExplorerElement *)self feature];
-  v4 = +[AXMVisionFeature localizedStringForLocation:isSubjectImplicit:](AXMVisionFeature, "localizedStringForLocation:isSubjectImplicit:", [v3 locationUsingThirds:0 withFlippedYAxis:{-[VOTImageExplorerElement flippedYAxis](self, "flippedYAxis")}], 1);
+  feature = [(VOTImageExplorerElement *)self feature];
+  v4 = +[AXMVisionFeature localizedStringForLocation:isSubjectImplicit:](AXMVisionFeature, "localizedStringForLocation:isSubjectImplicit:", [feature locationUsingThirds:0 withFlippedYAxis:{-[VOTImageExplorerElement flippedYAxis](self, "flippedYAxis")}], 1);
 
   return v4;
 }
 
 - (id)axObjectLabel
 {
-  v3 = [(VOTImageExplorerElement *)self feature];
-  v4 = [v3 classificationLabel];
-  v5 = [v4 isEqualToString:@"people"];
+  feature = [(VOTImageExplorerElement *)self feature];
+  classificationLabel = [feature classificationLabel];
+  v5 = [classificationLabel isEqualToString:@"people"];
 
   if (v5)
   {
     v6 = sub_10000CCD4(@"VoiceOverImageExplorer.person.no.face.detected");
-    v7 = [NSString stringWithFormat:v6, [(VOTImageExplorerObjectClassificationElement *)self objectIndex]];
+    classificationLocalizedValue = [NSString stringWithFormat:v6, [(VOTImageExplorerObjectClassificationElement *)self objectIndex]];
   }
 
   else
   {
-    v8 = [(VOTImageExplorerObjectClassificationElement *)self matchingScenes];
-    v9 = [v8 count];
+    matchingScenes = [(VOTImageExplorerObjectClassificationElement *)self matchingScenes];
+    v9 = [matchingScenes count];
 
     if (v9)
     {
-      v10 = [(VOTImageExplorerObjectClassificationElement *)self matchingScenes];
-      v11 = [v10 count];
+      matchingScenes2 = [(VOTImageExplorerObjectClassificationElement *)self matchingScenes];
+      v11 = [matchingScenes2 count];
 
       if (v11 == 1)
       {
-        v12 = [(VOTImageExplorerObjectClassificationElement *)self matchingScenes];
-        v13 = [v12 allObjects];
-        v14 = [v13 objectAtIndex:0];
+        matchingScenes3 = [(VOTImageExplorerObjectClassificationElement *)self matchingScenes];
+        allObjects = [matchingScenes3 allObjects];
+        sceneClassId3 = [allObjects objectAtIndex:0];
 
-        v15 = [v14 sceneClassId];
-        v16 = [v15 intValue];
+        sceneClassId = [sceneClassId3 sceneClassId];
+        intValue = [sceneClassId intValue];
 
-        v17 = [(VOTImageExplorerElement *)self feature];
-        v18 = [v17 sceneClassId];
-        v19 = [v18 intValue];
+        feature2 = [(VOTImageExplorerElement *)self feature];
+        sceneClassId2 = [feature2 sceneClassId];
+        intValue2 = [sceneClassId2 intValue];
 
-        if ([AXMPhotoVisionSupport axmIsSceneClassId:v16 childOfSceneClassId:v19])
+        if ([AXMPhotoVisionSupport axmIsSceneClassId:intValue childOfSceneClassId:intValue2])
         {
-          v20 = [(VOTImageExplorerObjectClassificationElement *)self matchingScenes];
-          v21 = [v20 allObjects];
-          v22 = [v21 objectAtIndex:0];
-          v7 = [v22 classificationLocalizedValue];
+          matchingScenes4 = [(VOTImageExplorerObjectClassificationElement *)self matchingScenes];
+          allObjects2 = [matchingScenes4 allObjects];
+          v22 = [allObjects2 objectAtIndex:0];
+          classificationLocalizedValue = [v22 classificationLocalizedValue];
         }
 
         else
         {
-          v20 = [(VOTImageExplorerElement *)self feature];
-          v7 = [v20 classificationLocalizedValue];
+          matchingScenes4 = [(VOTImageExplorerElement *)self feature];
+          classificationLocalizedValue = [matchingScenes4 classificationLocalizedValue];
         }
       }
 
       else
       {
-        v23 = [(VOTImageExplorerElement *)self feature];
-        v14 = [v23 sceneClassId];
+        feature3 = [(VOTImageExplorerElement *)self feature];
+        sceneClassId3 = [feature3 sceneClassId];
 
         v24 = +[NSMutableArray array];
-        v25 = [(VOTImageExplorerObjectClassificationElement *)self matchingScenes];
+        matchingScenes5 = [(VOTImageExplorerObjectClassificationElement *)self matchingScenes];
         v28[0] = _NSConcreteStackBlock;
         v28[1] = 3221225472;
         v28[2] = sub_10000CA10;
         v28[3] = &unk_100028BD8;
         v29 = v24;
-        v20 = v24;
-        [v25 enumerateObjectsUsingBlock:v28];
+        matchingScenes4 = v24;
+        [matchingScenes5 enumerateObjectsUsingBlock:v28];
 
-        v26 = +[AXMPhotoVisionSupport findLeastCommonAncestorForSceneClassIds:withKnownAncestorSceneClassId:](AXMPhotoVisionSupport, "findLeastCommonAncestorForSceneClassIds:withKnownAncestorSceneClassId:", v20, [v14 intValue]);
-        v7 = [v26 localizedName];
+        v26 = +[AXMPhotoVisionSupport findLeastCommonAncestorForSceneClassIds:withKnownAncestorSceneClassId:](AXMPhotoVisionSupport, "findLeastCommonAncestorForSceneClassIds:withKnownAncestorSceneClassId:", matchingScenes4, [sceneClassId3 intValue]);
+        classificationLocalizedValue = [v26 localizedName];
       }
     }
 
     else
     {
-      v14 = [(VOTImageExplorerElement *)self feature];
-      v7 = [v14 classificationLocalizedValue];
+      sceneClassId3 = [(VOTImageExplorerElement *)self feature];
+      classificationLocalizedValue = [sceneClassId3 classificationLocalizedValue];
     }
   }
 
-  return v7;
+  return classificationLocalizedValue;
 }
 
 @end

@@ -1,32 +1,32 @@
 @interface WFFocusModeContentItem
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 + (id)stringConversionBehavior;
-- (BOOL)getListSubtitle:(id)a3;
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4;
+- (BOOL)getListSubtitle:(id)subtitle;
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size;
 - (id)focusMode;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
 @end
 
 @implementation WFFocusModeContentItem
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Focuses", @"Focuses");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Focus", @"Focus");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -53,7 +53,7 @@
 + (id)stringConversionBehavior
 {
   v2 = MEMORY[0x277CFC310];
-  v3 = [a1 propertyForName:@"Name"];
+  v3 = [self propertyForName:@"Name"];
   v4 = [v2 accessingProperty:v3];
 
   return v4;
@@ -73,55 +73,55 @@
   return v5;
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  if (a3)
+  if (subtitle)
   {
-    v4 = a3;
+    subtitleCopy = subtitle;
     v5 = WFLocalizedString(@"Focus");
-    (*(a3 + 2))(v4, v5);
+    (*(subtitle + 2))(subtitleCopy, v5);
   }
 
   return 1;
 }
 
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size
 {
-  if (a3)
+  if (thumbnail)
   {
-    v6 = a3;
-    v7 = [(WFFocusModeContentItem *)self focusMode];
-    v8 = [v7 symbolImage];
-    (*(a3 + 2))(v6, v8, 0);
+    thumbnailCopy = thumbnail;
+    focusMode = [(WFFocusModeContentItem *)self focusMode];
+    symbolImage = [focusMode symbolImage];
+    (*(thumbnail + 2))(thumbnailCopy, symbolImage, 0);
   }
 
   return 1;
 }
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     v8 = MEMORY[0x277CFC488];
-    v9 = [(WFFocusModeContentItem *)self focusMode];
-    v10 = [v9 displayName];
+    focusMode = [(WFFocusModeContentItem *)self focusMode];
+    displayName = [focusMode displayName];
   }
 
   else
   {
-    if (objc_opt_class() != a3)
+    if (objc_opt_class() != class)
     {
       v7 = 0;
       goto LABEL_7;
     }
 
     v8 = MEMORY[0x277CFC488];
-    v9 = [(WFFocusModeContentItem *)self focusMode];
-    v10 = [v9 symbolImage];
+    focusMode = [(WFFocusModeContentItem *)self focusMode];
+    displayName = [focusMode symbolImage];
   }
 
-  v11 = v10;
-  v7 = [v8 object:v10];
+  v11 = displayName;
+  v7 = [v8 object:displayName];
 
 LABEL_7:
 

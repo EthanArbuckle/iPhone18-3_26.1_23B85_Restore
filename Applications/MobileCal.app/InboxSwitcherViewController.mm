@@ -1,26 +1,26 @@
 @interface InboxSwitcherViewController
 - (CGSize)preferredContentSize;
-- (InboxSwitcherViewController)initWithModel:(id)a3 destination:(unint64_t)a4;
+- (InboxSwitcherViewController)initWithModel:(id)model destination:(unint64_t)destination;
 - (InboxSwitcherViewControllerDelegate)switcherDelegate;
-- (id)_showViewControllerAtIndex:(int64_t)a3;
-- (id)_viewControllerForIndex:(int64_t)a3;
+- (id)_showViewControllerAtIndex:(int64_t)index;
+- (id)_viewControllerForIndex:(int64_t)index;
 - (void)_setDoneButtonState;
 - (void)attemptDisplayReviewPrompt;
-- (void)inboxNewSectionViewController:(id)a3 inspectEvent:(id)a4;
-- (void)inboxNewSectionViewController:(id)a3 shouldCloseAnimated:(BOOL)a4;
-- (void)inboxNewSectionViewController:(id)a3 viewCommentsForEvent:(id)a4;
-- (void)inboxNewSectionViewController:(id)a3 viewProposedTimeForAttendee:(id)a4 onEvent:(id)a5;
-- (void)inboxRepliedSectionViewController:(id)a3 inspectEvent:(id)a4;
+- (void)inboxNewSectionViewController:(id)controller inspectEvent:(id)event;
+- (void)inboxNewSectionViewController:(id)controller shouldCloseAnimated:(BOOL)animated;
+- (void)inboxNewSectionViewController:(id)controller viewCommentsForEvent:(id)event;
+- (void)inboxNewSectionViewController:(id)controller viewProposedTimeForAttendee:(id)attendee onEvent:(id)event;
+- (void)inboxRepliedSectionViewController:(id)controller inspectEvent:(id)event;
 - (void)inboxWillDismiss;
 - (void)loadView;
-- (void)segmentedControlValueChanged:(id)a3;
-- (void)setDestination:(unint64_t)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)segmentedControlValueChanged:(id)changed;
+- (void)setDestination:(unint64_t)destination;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation InboxSwitcherViewController
@@ -43,22 +43,22 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Setting the following left bar button item our delegate returned: [%@]", &v9, 0xCu);
     }
 
-    v8 = [(InboxSwitcherViewController *)self navigationItem];
-    [v8 setLeftBarButtonItem:v6];
+    navigationItem = [(InboxSwitcherViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v6];
   }
 }
 
-- (InboxSwitcherViewController)initWithModel:(id)a3 destination:(unint64_t)a4
+- (InboxSwitcherViewController)initWithModel:(id)model destination:(unint64_t)destination
 {
-  v7 = a3;
+  modelCopy = model;
   v22.receiver = self;
   v22.super_class = InboxSwitcherViewController;
   v8 = [(InboxSwitcherViewController *)&v22 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_model, a3);
-    v9->_destination = a4;
+    objc_storeStrong(&v8->_model, model);
+    v9->_destination = destination;
     v10 = [UISegmentedControl alloc];
     v11 = [NSBundle bundleForClass:objc_opt_class()];
     v12 = [v11 localizedStringForKey:@"New" value:&stru_1002133B8 table:0];
@@ -78,8 +78,8 @@
     if (v9->_destination != 2)
     {
       v18 = v9->_segmentedControl;
-      v19 = [(InboxSwitcherViewController *)v9 navigationItem];
-      [v19 setTitleView:v18];
+      navigationItem = [(InboxSwitcherViewController *)v9 navigationItem];
+      [navigationItem setTitleView:v18];
     }
 
     v20 = +[NSNotificationCenter defaultCenter];
@@ -89,22 +89,22 @@
   return v9;
 }
 
-- (void)setDestination:(unint64_t)a3
+- (void)setDestination:(unint64_t)destination
 {
-  self->_destination = a3;
+  self->_destination = destination;
   [(InboxNewSectionViewController *)self->_newSectionViewController setDestination:?];
-  [(InboxRepliedSectionViewController *)self->_repliedSectionViewController setDestination:a3];
+  [(InboxRepliedSectionViewController *)self->_repliedSectionViewController setDestination:destination];
   if (self->_destination == 2)
   {
-    v5 = [(InboxSwitcherViewController *)self navigationItem];
-    [v5 setTitleView:0];
+    navigationItem = [(InboxSwitcherViewController *)self navigationItem];
+    [navigationItem setTitleView:0];
 
-    v6 = [(InboxSwitcherViewController *)self navigationItem];
-    [v6 setTitle:0];
+    navigationItem2 = [(InboxSwitcherViewController *)self navigationItem];
+    [navigationItem2 setTitle:0];
 
     v7 = +[UIColor secondarySystemBackgroundColor];
-    v8 = [(InboxRepliedSectionViewController *)self->_repliedSectionViewController tableView];
-    [v8 setPreferredBackgroundColor:v7];
+    tableView = [(InboxRepliedSectionViewController *)self->_repliedSectionViewController tableView];
+    [tableView setPreferredBackgroundColor:v7];
 
     +[UIColor secondarySystemBackgroundColor];
   }
@@ -112,18 +112,18 @@
   else
   {
     segmentedControl = self->_segmentedControl;
-    v10 = [(InboxSwitcherViewController *)self navigationItem];
-    [v10 setTitleView:segmentedControl];
+    navigationItem3 = [(InboxSwitcherViewController *)self navigationItem];
+    [navigationItem3 setTitleView:segmentedControl];
 
     v11 = +[UIColor systemBackgroundColor];
-    v12 = [(InboxRepliedSectionViewController *)self->_repliedSectionViewController tableView];
-    [v12 setPreferredBackgroundColor:v11];
+    tableView2 = [(InboxRepliedSectionViewController *)self->_repliedSectionViewController tableView];
+    [tableView2 setPreferredBackgroundColor:v11];
 
     +[UIColor systemBackgroundColor];
   }
   v13 = ;
-  v14 = [(InboxRepliedSectionViewController *)self->_repliedSectionViewController tableView];
-  [v14 setBackgroundColor:v13];
+  tableView3 = [(InboxRepliedSectionViewController *)self->_repliedSectionViewController tableView];
+  [tableView3 setBackgroundColor:v13];
 
   [(InboxSwitcherViewController *)self _setDoneButtonState];
 }
@@ -144,56 +144,56 @@
   [(InboxSwitcherViewController *)self _setDoneButtonState];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = InboxSwitcherViewController;
-  v7 = a4;
-  [(InboxSwitcherViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(InboxSwitcherViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000C94A0;
   v8[3] = &unk_10020F240;
   v8[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v8];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = InboxSwitcherViewController;
   [(InboxSwitcherViewController *)&v6 viewWillAppear:?];
-  v5 = [(InboxSwitcherViewController *)self navigationController];
-  [v5 setToolbarHidden:1 animated:1];
+  navigationController = [(InboxSwitcherViewController *)self navigationController];
+  [navigationController setToolbarHidden:1 animated:1];
 
-  [(UIViewController *)self->_currentViewController beginAppearanceTransition:1 animated:v3];
+  [(UIViewController *)self->_currentViewController beginAppearanceTransition:1 animated:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = InboxSwitcherViewController;
-  [(InboxSwitcherViewController *)&v4 viewDidAppear:a3];
+  [(InboxSwitcherViewController *)&v4 viewDidAppear:appear];
   [(UIViewController *)self->_currentViewController endAppearanceTransition];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = InboxSwitcherViewController;
   [(InboxSwitcherViewController *)&v5 viewWillDisappear:?];
-  [(UIViewController *)self->_currentViewController beginAppearanceTransition:0 animated:v3];
+  [(UIViewController *)self->_currentViewController beginAppearanceTransition:0 animated:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = InboxSwitcherViewController;
-  [(InboxSwitcherViewController *)&v4 viewDidDisappear:a3];
+  [(InboxSwitcherViewController *)&v4 viewDidDisappear:disappear];
   [(UIViewController *)self->_currentViewController endAppearanceTransition];
 }
 
@@ -205,52 +205,52 @@
   return result;
 }
 
-- (void)inboxNewSectionViewController:(id)a3 shouldCloseAnimated:(BOOL)a4
+- (void)inboxNewSectionViewController:(id)controller shouldCloseAnimated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_switcherDelegate);
 
   if (WeakRetained)
   {
     v7 = objc_loadWeakRetained(&self->_switcherDelegate);
-    [v7 inboxSwitcherViewController:self shouldCloseAnimated:v4];
+    [v7 inboxSwitcherViewController:self shouldCloseAnimated:animatedCopy];
   }
 }
 
-- (void)inboxNewSectionViewController:(id)a3 inspectEvent:(id)a4
+- (void)inboxNewSectionViewController:(id)controller inspectEvent:(id)event
 {
-  v7 = a4;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_switcherDelegate);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_switcherDelegate);
-    [v6 inboxSwitcherViewController:self inspectEvent:v7];
+    [v6 inboxSwitcherViewController:self inspectEvent:eventCopy];
   }
 }
 
-- (void)inboxNewSectionViewController:(id)a3 viewCommentsForEvent:(id)a4
+- (void)inboxNewSectionViewController:(id)controller viewCommentsForEvent:(id)event
 {
-  v7 = a4;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_switcherDelegate);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_switcherDelegate);
-    [v6 inboxSwitcherViewController:self viewCommentsForEvent:v7];
+    [v6 inboxSwitcherViewController:self viewCommentsForEvent:eventCopy];
   }
 }
 
-- (void)inboxNewSectionViewController:(id)a3 viewProposedTimeForAttendee:(id)a4 onEvent:(id)a5
+- (void)inboxNewSectionViewController:(id)controller viewProposedTimeForAttendee:(id)attendee onEvent:(id)event
 {
-  v10 = a4;
-  v7 = a5;
+  attendeeCopy = attendee;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_switcherDelegate);
 
   if (WeakRetained)
   {
     v9 = objc_loadWeakRetained(&self->_switcherDelegate);
-    [v9 inboxSwitcherViewController:self viewProposedTimeForAttendee:v10 onEvent:v7];
+    [v9 inboxSwitcherViewController:self viewProposedTimeForAttendee:attendeeCopy onEvent:eventCopy];
   }
 }
 
@@ -266,15 +266,15 @@
   }
 }
 
-- (void)inboxRepliedSectionViewController:(id)a3 inspectEvent:(id)a4
+- (void)inboxRepliedSectionViewController:(id)controller inspectEvent:(id)event
 {
-  v7 = a4;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_switcherDelegate);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_switcherDelegate);
-    [v6 inboxSwitcherViewController:self inspectEvent:v7];
+    [v6 inboxSwitcherViewController:self inspectEvent:eventCopy];
   }
 }
 
@@ -286,21 +286,21 @@
   [(InboxRepliedSectionViewController *)repliedSectionViewController inboxWillDismiss];
 }
 
-- (void)segmentedControlValueChanged:(id)a3
+- (void)segmentedControlValueChanged:(id)changed
 {
-  v4 = [a3 selectedSegmentIndex];
-  v5 = [(InboxSwitcherViewController *)self _showViewControllerAtIndex:v4];
+  selectedSegmentIndex = [changed selectedSegmentIndex];
+  v5 = [(InboxSwitcherViewController *)self _showViewControllerAtIndex:selectedSegmentIndex];
   v8 = @"section";
-  v6 = [NSNumber numberWithInteger:v4];
+  v6 = [NSNumber numberWithInteger:selectedSegmentIndex];
   v9 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
 
   CalAnalyticsSendEvent();
 }
 
-- (id)_viewControllerForIndex:(int64_t)a3
+- (id)_viewControllerForIndex:(int64_t)index
 {
-  if (a3 == 1)
+  if (index == 1)
   {
     v5 = 48;
     if (!self->_repliedSectionViewController)
@@ -319,7 +319,7 @@
 
       v13 = self->_repliedSectionViewController;
       v19 = 138412290;
-      v20 = v13;
+      indexCopy = v13;
       v10 = "Generated the 'replied' section view controller: [%@]";
 LABEL_9:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, v10, &v19, 0xCu);
@@ -327,8 +327,8 @@ LABEL_10:
       if (self->_destination == 2)
       {
         v14 = +[UIColor secondarySystemBackgroundColor];
-        v15 = [*(&self->super.super.super.isa + v5) tableView];
-        [v15 setPreferredBackgroundColor:v14];
+        tableView = [*(&self->super.super.super.isa + v5) tableView];
+        [tableView setPreferredBackgroundColor:v14];
       }
     }
 
@@ -337,7 +337,7 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  if (!a3)
+  if (!index)
   {
     v5 = 40;
     if (!self->_newSectionViewController)
@@ -356,7 +356,7 @@ LABEL_12:
 
       v9 = self->_newSectionViewController;
       v19 = 138412290;
-      v20 = v9;
+      indexCopy = v9;
       v10 = "Generated the 'new' section view controller: [%@]";
       goto LABEL_9;
     }
@@ -368,7 +368,7 @@ LABEL_12:
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_ERROR))
   {
     v19 = 134217984;
-    v20 = a3;
+    indexCopy = index;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Could not find view controller for index: [%ld]", &v19, 0xCu);
   }
 
@@ -378,9 +378,9 @@ LABEL_16:
   return v16;
 }
 
-- (id)_showViewControllerAtIndex:(int64_t)a3
+- (id)_showViewControllerAtIndex:(int64_t)index
 {
-  v4 = [(InboxSwitcherViewController *)self _viewControllerForIndex:a3];
+  v4 = [(InboxSwitcherViewController *)self _viewControllerForIndex:index];
   if (self->_currentViewController != v4)
   {
     v5 = kCalUILogInboxHandle;
@@ -395,8 +395,8 @@ LABEL_16:
     if (currentViewController)
     {
       [(UIViewController *)currentViewController beginAppearanceTransition:0 animated:0];
-      v7 = [(UIViewController *)self->_currentViewController view];
-      [v7 removeFromSuperview];
+      view = [(UIViewController *)self->_currentViewController view];
+      [view removeFromSuperview];
 
       [(UIViewController *)self->_currentViewController endAppearanceTransition];
       [(UIViewController *)self->_currentViewController removeFromParentViewController];
@@ -405,20 +405,20 @@ LABEL_16:
     [(InboxSwitcherViewController *)self addChildViewController:v4];
     [(UIViewController *)v4 didMoveToParentViewController:self];
     objc_storeStrong(&self->_currentViewController, v4);
-    v8 = [(InboxSwitcherViewController *)self view];
-    v9 = [(UIViewController *)v4 view];
-    [v8 bounds];
-    [v9 setFrame:?];
-    [v9 setAutoresizingMask:18];
+    view2 = [(InboxSwitcherViewController *)self view];
+    view3 = [(UIViewController *)v4 view];
+    [view2 bounds];
+    [view3 setFrame:?];
+    [view3 setAutoresizingMask:18];
     [(UIViewController *)v4 beginAppearanceTransition:1 animated:0];
-    [v8 addSubview:v9];
+    [view2 addSubview:view3];
     [(UIViewController *)v4 endAppearanceTransition];
     if (self->_destination == 2)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = v8;
+        v10 = view2;
       }
 
       else
@@ -427,7 +427,7 @@ LABEL_16:
       }
 
       v11 = v10;
-      v12 = v11;
+      title = v11;
       v13 = 1.0;
       if (v11)
       {
@@ -438,14 +438,14 @@ LABEL_16:
         }
       }
 
-      v15 = [(InboxSwitcherViewController *)self navigationItem];
-      [v15 _setManualScrollEdgeAppearanceProgress:v13];
+      navigationItem = [(InboxSwitcherViewController *)self navigationItem];
+      [navigationItem _setManualScrollEdgeAppearanceProgress:v13];
     }
 
     else
     {
-      v12 = [(UIViewController *)v4 title];
-      [(InboxSwitcherViewController *)self setTitle:v12];
+      title = [(UIViewController *)v4 title];
+      [(InboxSwitcherViewController *)self setTitle:title];
     }
   }
 

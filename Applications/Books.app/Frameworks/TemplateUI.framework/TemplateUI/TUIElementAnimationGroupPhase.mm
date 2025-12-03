@@ -1,7 +1,7 @@
 @interface TUIElementAnimationGroupPhase
 + (id)attributesToIgnoreWhenResolving;
-+ (void)addObject:(id)a3 toContainingBuilder:(id)a4 context:(id)a5;
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)addObject:(id)object toContainingBuilder:(id)builder context:(id)context;
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementAnimationGroupPhase
@@ -18,40 +18,40 @@
   return v3;
 }
 
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a5;
-  v9 = a3;
-  [v9 setRunList:{objc_msgSend(v8, "animationReferenceForAttribute:node:", 182, var0)}];
-  [v8 floatForAttribute:66 withDefault:var0 node:NAN];
-  [v9 setDelay:?];
-  [v8 floatForAttribute:69 withDefault:var0 node:NAN];
-  [v9 setDuration:?];
-  [v9 setOptions:{objc_msgSend(v8, "animationCalculationModeAndCurveForNode:", var0)}];
-  v10 = [v8 stringForAttribute:138 node:var0];
+  var0 = node.var0;
+  attributesCopy = attributes;
+  objectCopy = object;
+  [objectCopy setRunList:{objc_msgSend(attributesCopy, "animationReferenceForAttribute:node:", 182, var0)}];
+  [attributesCopy floatForAttribute:66 withDefault:var0 node:NAN];
+  [objectCopy setDelay:?];
+  [attributesCopy floatForAttribute:69 withDefault:var0 node:NAN];
+  [objectCopy setDuration:?];
+  [objectCopy setOptions:{objc_msgSend(attributesCopy, "animationCalculationModeAndCurveForNode:", var0)}];
+  v10 = [attributesCopy stringForAttribute:138 node:var0];
 
-  [v9 setName:v10];
+  [objectCopy setName:v10];
 }
 
-+ (void)addObject:(id)a3 toContainingBuilder:(id)a4 context:(id)a5
++ (void)addObject:(id)object toContainingBuilder:(id)builder context:(id)context
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 instantiateAnimationReference:{objc_msgSend(v12, "runList")}];
+  objectCopy = object;
+  builderCopy = builder;
+  contextCopy = context;
+  v9 = [contextCopy instantiateAnimationReference:{objc_msgSend(objectCopy, "runList")}];
 
   if ([v9 count])
   {
     v10 = objc_alloc_init(TUIAnimationGroupPhase);
-    [v12 delay];
+    [objectCopy delay];
     [(TUIAnimationGroupPhase *)v10 setDelay:?];
-    [v12 duration];
+    [objectCopy duration];
     [(TUIAnimationGroupPhase *)v10 setDuration:?];
-    -[TUIAnimationGroupPhase setOptions:](v10, "setOptions:", -[TUIAnimationGroupPhase options](v10, "options") | [v12 options]);
+    -[TUIAnimationGroupPhase setOptions:](v10, "setOptions:", -[TUIAnimationGroupPhase options](v10, "options") | [objectCopy options]);
     [(TUIAnimationGroupPhase *)v10 setAnimations:v9];
-    v11 = [v12 name];
-    [v7 addAnimationGroupPhase:v10 withName:v11];
+    name = [objectCopy name];
+    [builderCopy addAnimationGroupPhase:v10 withName:name];
   }
 }
 

@@ -1,12 +1,12 @@
 @interface HDHealthRecordsProfileExtension
-- (BOOL)_isHealthRecordsSupportedLocale:(id)a3;
-- (BOOL)deviceConfigurationSupportsHealthRecords:(BOOL *)a3 error:(id *)a4;
-- (BOOL)deviceConfigurationSupportsHealthRecords:(BOOL *)a3 givenLocale:(id)a4 error:(id *)a5;
-- (BOOL)isSupportedFHIRResourceType:(id)a3 FHIRVersionString:(id)a4;
-- (BOOL)isSupportedFHIRVersionString:(id)a3;
-- (HDHealthRecordsProfileExtension)initWithProfile:(id)a3;
+- (BOOL)_isHealthRecordsSupportedLocale:(id)locale;
+- (BOOL)deviceConfigurationSupportsHealthRecords:(BOOL *)records error:(id *)error;
+- (BOOL)deviceConfigurationSupportsHealthRecords:(BOOL *)records givenLocale:(id)locale error:(id *)error;
+- (BOOL)isSupportedFHIRResourceType:(id)type FHIRVersionString:(id)string;
+- (BOOL)isSupportedFHIRVersionString:(id)string;
+- (HDHealthRecordsProfileExtension)initWithProfile:(id)profile;
 - (HDProfile)profile;
-- (id)_retrieveSupportedFHIRConfigurationWithError:(id *)a3;
+- (id)_retrieveSupportedFHIRConfigurationWithError:(id *)error;
 - (id)_supportedFHIRConfiguration;
 - (id)createClinicalAnalyticsManager;
 - (id)createClinicalSharingClient;
@@ -21,28 +21,28 @@
 - (id)createProviderServiceManager;
 - (id)createSignedClinicalDataManager;
 - (id)createSignedClinicalDataRegistry;
-- (int64_t)hasGatewayBackedAccountsWithError:(id *)a3;
-- (int64_t)hasGatewayBackedAccountsWithTransaction:(id)a3 error:(id *)a4;
-- (int64_t)hasIssuerBackedAccountsWithError:(id *)a3;
-- (int64_t)hasIssuerBackedAccountsWithTransaction:(id)a3 error:(id *)a4;
+- (int64_t)hasGatewayBackedAccountsWithError:(id *)error;
+- (int64_t)hasGatewayBackedAccountsWithTransaction:(id)transaction error:(id *)error;
+- (int64_t)hasIssuerBackedAccountsWithError:(id *)error;
+- (int64_t)hasIssuerBackedAccountsWithTransaction:(id)transaction error:(id *)error;
 - (void)_deleteSignedClinicalDataRecords;
-- (void)_handleDismissInstructionWithClient:(id)a3;
+- (void)_handleDismissInstructionWithClient:(id)client;
 - (void)_ivarLock_determineHealthRecordsSupportedStatusIfNeeded;
 - (void)_ivarLock_registerAsAccountStateObserverIfNeeded;
 - (void)_ivarLock_unregisterAsAccountStateObserverIfAppropriate;
 - (void)_ivarLock_updateHealthRecordsSupportedStatus;
-- (void)_notifyAccountEventObserversOfEvent:(unint64_t)a3;
+- (void)_notifyAccountEventObserversOfEvent:(unint64_t)event;
 - (void)_notifyHealthRecordsSupportedChangeObservers;
-- (void)accountManager:(id)a3 account:(id)a4 didChangeState:(int64_t)a5;
-- (void)addAccountEventObserver:(id)a3;
-- (void)didUpdateSourcesForAccountWithIdentifier:(id)a3;
-- (void)notificationSyncClient:(id)a3 didReceiveInstructionWithAction:(int64_t)a4;
+- (void)accountManager:(id)manager account:(id)account didChangeState:(int64_t)state;
+- (void)addAccountEventObserver:(id)observer;
+- (void)didUpdateSourcesForAccountWithIdentifier:(id)identifier;
+- (void)notificationSyncClient:(id)client didReceiveInstructionWithAction:(int64_t)action;
 - (void)prepareForObliteration;
-- (void)registerHealthRecordsSupportedChangeObserver:(id)a3;
-- (void)removeAccountEventObserver:(id)a3;
-- (void)unitTesting_replaceHealthRecordsPluginAndSetCompleteScheduledExtractionHandler:(id)a3;
+- (void)registerHealthRecordsSupportedChangeObserver:(id)observer;
+- (void)removeAccountEventObserver:(id)observer;
+- (void)unitTesting_replaceHealthRecordsPluginAndSetCompleteScheduledExtractionHandler:(id)handler;
 - (void)unitTesting_triggerLocaleDidChangeNotification;
-- (void)unregisterHealthRecordsSupportedChangeObserver:(id)a3;
+- (void)unregisterHealthRecordsSupportedChangeObserver:(id)observer;
 @end
 
 @implementation HDHealthRecordsProfileExtension
@@ -73,52 +73,52 @@
   }
 }
 
-- (HDHealthRecordsProfileExtension)initWithProfile:(id)a3
+- (HDHealthRecordsProfileExtension)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v50.receiver = self;
   v50.super_class = HDHealthRecordsProfileExtension;
   v5 = [(HDHealthRecordsProfileExtension *)&v50 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
-    v7 = [v4 healthDaemon];
-    objc_storeWeak(&v6->_healthDeamon, v7);
+    objc_storeWeak(&v5->_profile, profileCopy);
+    healthDaemon = [profileCopy healthDaemon];
+    objc_storeWeak(&v6->_healthDeamon, healthDaemon);
 
     v6->_ivarLock._os_unfair_lock_opaque = 0;
     WeakRetained = objc_loadWeakRetained(&v6->_profile);
-    v9 = [WeakRetained profileType];
+    profileType = [WeakRetained profileType];
 
-    if (v9 != &dword_0 + 2)
+    if (profileType != &dword_0 + 2)
     {
-      v10 = [(HDHealthRecordsProfileExtension *)v6 createHealthRecordsClinicalAccountManager];
+      createHealthRecordsClinicalAccountManager = [(HDHealthRecordsProfileExtension *)v6 createHealthRecordsClinicalAccountManager];
       accountManager = v6->_accountManager;
-      v6->_accountManager = v10;
+      v6->_accountManager = createHealthRecordsClinicalAccountManager;
 
-      v12 = [(HDHealthRecordsProfileExtension *)v6 createHealthRecordsAPIReminderRegistry];
+      createHealthRecordsAPIReminderRegistry = [(HDHealthRecordsProfileExtension *)v6 createHealthRecordsAPIReminderRegistry];
       APIReminderRegistry = v6->_APIReminderRegistry;
-      v6->_APIReminderRegistry = v12;
+      v6->_APIReminderRegistry = createHealthRecordsAPIReminderRegistry;
 
       v14 = [[HDClinicalIngestionManager alloc] initWithProfileExtension:v6];
       ingestionManager = v6->_ingestionManager;
       v6->_ingestionManager = v14;
 
-      v16 = [(HDHealthRecordsProfileExtension *)v6 createProviderServiceManager];
+      createProviderServiceManager = [(HDHealthRecordsProfileExtension *)v6 createProviderServiceManager];
       providerServiceManager = v6->_providerServiceManager;
-      v6->_providerServiceManager = v16;
+      v6->_providerServiceManager = createProviderServiceManager;
 
-      v18 = [(HDHealthRecordsProfileExtension *)v6 createSignedClinicalDataManager];
+      createSignedClinicalDataManager = [(HDHealthRecordsProfileExtension *)v6 createSignedClinicalDataManager];
       signedClinicalDataManager = v6->_signedClinicalDataManager;
-      v6->_signedClinicalDataManager = v18;
+      v6->_signedClinicalDataManager = createSignedClinicalDataManager;
 
-      v20 = [(HDHealthRecordsProfileExtension *)v6 createClinicalSharingManager];
+      createClinicalSharingManager = [(HDHealthRecordsProfileExtension *)v6 createClinicalSharingManager];
       clinicalSharingManager = v6->_clinicalSharingManager;
-      v6->_clinicalSharingManager = v20;
+      v6->_clinicalSharingManager = createClinicalSharingManager;
 
-      v22 = [(HDHealthRecordsProfileExtension *)v6 createDownloadableAttachmentManager];
+      createDownloadableAttachmentManager = [(HDHealthRecordsProfileExtension *)v6 createDownloadableAttachmentManager];
       downloadableAttachmentManager = v6->_downloadableAttachmentManager;
-      v6->_downloadableAttachmentManager = v22;
+      v6->_downloadableAttachmentManager = createDownloadableAttachmentManager;
 
       v24 = [HKObserverSet alloc];
       v25 = [v24 initWithName:@"health-records-profile-extension-account-event" loggingCategory:HKLogHealthRecords];
@@ -132,21 +132,21 @@
     }
 
     v30 = objc_loadWeakRetained(&v6->_profile);
-    v31 = [v30 profileType];
+    profileType2 = [v30 profileType];
 
-    if (v31 == &dword_0 + 1)
+    if (profileType2 == &dword_0 + 1)
     {
-      v32 = [(HDHealthRecordsProfileExtension *)v6 createClinicalAnalyticsManager];
+      createClinicalAnalyticsManager = [(HDHealthRecordsProfileExtension *)v6 createClinicalAnalyticsManager];
       analyticsManager = v6->_analyticsManager;
-      v6->_analyticsManager = v32;
+      v6->_analyticsManager = createClinicalAnalyticsManager;
 
       v34 = [[HDClinicalDailyAnalyticsManager alloc] initWithProfileExtension:v6];
       dailyAnalyticsManager = v6->_dailyAnalyticsManager;
       v6->_dailyAnalyticsManager = v34;
 
-      v36 = [(HDHealthRecordsProfileExtension *)v6 createOptInStudy];
+      createOptInStudy = [(HDHealthRecordsProfileExtension *)v6 createOptInStudy];
       optInStudy = v6->_optInStudy;
-      v6->_optInStudy = v36;
+      v6->_optInStudy = createOptInStudy;
 
       v38 = [[HDClinicalOptInDataCollectionManager alloc] initWithProfileExtension:v6];
       optInDataCollectionManager = v6->_optInDataCollectionManager;
@@ -175,12 +175,12 @@
   return v6;
 }
 
-- (int64_t)hasGatewayBackedAccountsWithError:(id *)a3
+- (int64_t)hasGatewayBackedAccountsWithError:(id *)error
 {
   accountManager = self->_accountManager;
   if (accountManager)
   {
-    return [(HDClinicalAccountManager *)accountManager highPriorityTransactionHasGatewayBackedAccountsWithError:a3];
+    return [(HDClinicalAccountManager *)accountManager highPriorityTransactionHasGatewayBackedAccountsWithError:error];
   }
 
   else
@@ -189,12 +189,12 @@
   }
 }
 
-- (int64_t)hasIssuerBackedAccountsWithError:(id *)a3
+- (int64_t)hasIssuerBackedAccountsWithError:(id *)error
 {
   accountManager = self->_accountManager;
   if (accountManager)
   {
-    return [(HDClinicalAccountManager *)accountManager highPriorityTransactionHasIssuerBackedAccountsWithError:a3];
+    return [(HDClinicalAccountManager *)accountManager highPriorityTransactionHasIssuerBackedAccountsWithError:error];
   }
 
   else
@@ -203,12 +203,12 @@
   }
 }
 
-- (int64_t)hasGatewayBackedAccountsWithTransaction:(id)a3 error:(id *)a4
+- (int64_t)hasGatewayBackedAccountsWithTransaction:(id)transaction error:(id *)error
 {
   accountManager = self->_accountManager;
   if (accountManager)
   {
-    return [(HDClinicalAccountManager *)accountManager hasGatewayBackedAccountsWithTransaction:a3 error:a4];
+    return [(HDClinicalAccountManager *)accountManager hasGatewayBackedAccountsWithTransaction:transaction error:error];
   }
 
   else
@@ -217,12 +217,12 @@
   }
 }
 
-- (int64_t)hasIssuerBackedAccountsWithTransaction:(id)a3 error:(id *)a4
+- (int64_t)hasIssuerBackedAccountsWithTransaction:(id)transaction error:(id *)error
 {
   accountManager = self->_accountManager;
   if (accountManager)
   {
-    return [(HDClinicalAccountManager *)accountManager hasIssuerBackedAccountsWithTransaction:a3 error:a4];
+    return [(HDClinicalAccountManager *)accountManager hasIssuerBackedAccountsWithTransaction:transaction error:error];
   }
 
   else
@@ -231,23 +231,23 @@
   }
 }
 
-- (BOOL)deviceConfigurationSupportsHealthRecords:(BOOL *)a3 error:(id *)a4
+- (BOOL)deviceConfigurationSupportsHealthRecords:(BOOL *)records error:(id *)error
 {
   v7 = +[NSLocale autoupdatingCurrentLocale];
-  LOBYTE(a4) = [(HDHealthRecordsProfileExtension *)self deviceConfigurationSupportsHealthRecords:a3 givenLocale:v7 error:a4];
+  LOBYTE(error) = [(HDHealthRecordsProfileExtension *)self deviceConfigurationSupportsHealthRecords:records givenLocale:v7 error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)deviceConfigurationSupportsHealthRecords:(BOOL *)a3 givenLocale:(id)a4 error:(id *)a5
+- (BOOL)deviceConfigurationSupportsHealthRecords:(BOOL *)records givenLocale:(id)locale error:(id *)error
 {
-  v9 = a4;
-  if (!a3)
+  localeCopy = locale;
+  if (!records)
   {
     sub_A25EC(a2, self);
   }
 
-  if ([(HDHealthRecordsProfileExtension *)self _isHealthRecordsSupportedLocale:v9])
+  if ([(HDHealthRecordsProfileExtension *)self _isHealthRecordsSupportedLocale:localeCopy])
   {
     v10 = 1;
     v11 = 1;
@@ -255,23 +255,23 @@
 
   else
   {
-    v12 = [(HDHealthRecordsProfileExtension *)self hasGatewayBackedAccountsWithError:a5];
+    v12 = [(HDHealthRecordsProfileExtension *)self hasGatewayBackedAccountsWithError:error];
     v11 = v12 != 0;
     v10 = v12 == 1;
   }
 
-  *a3 = v10;
+  *records = v10;
 
   return v11;
 }
 
-- (BOOL)_isHealthRecordsSupportedLocale:(id)a3
+- (BOOL)_isHealthRecordsSupportedLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [(HDHealthRecordsProfileExtension *)self profile];
-  v6 = [v5 daemon];
-  v7 = [v6 ontologyConfigurationProvider];
-  v8 = [v7 isCountrySupported:v4];
+  localeCopy = locale;
+  profile = [(HDHealthRecordsProfileExtension *)self profile];
+  daemon = [profile daemon];
+  ontologyConfigurationProvider = [daemon ontologyConfigurationProvider];
+  v8 = [ontologyConfigurationProvider isCountrySupported:localeCopy];
 
   return v8;
 }
@@ -337,21 +337,21 @@
   }
 }
 
-- (BOOL)isSupportedFHIRVersionString:(id)a3
+- (BOOL)isSupportedFHIRVersionString:(id)string
 {
-  v4 = a3;
-  v5 = [(HDHealthRecordsProfileExtension *)self _supportedFHIRConfiguration];
-  v6 = [v5 isSupportedFHIRVersionString:v4];
+  stringCopy = string;
+  _supportedFHIRConfiguration = [(HDHealthRecordsProfileExtension *)self _supportedFHIRConfiguration];
+  v6 = [_supportedFHIRConfiguration isSupportedFHIRVersionString:stringCopy];
 
   return v6;
 }
 
-- (BOOL)isSupportedFHIRResourceType:(id)a3 FHIRVersionString:(id)a4
+- (BOOL)isSupportedFHIRResourceType:(id)type FHIRVersionString:(id)string
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HDHealthRecordsProfileExtension *)self _supportedFHIRConfiguration];
-  v9 = [v8 isSupportedFHIRResourceType:v7 FHIRVersionString:v6];
+  stringCopy = string;
+  typeCopy = type;
+  _supportedFHIRConfiguration = [(HDHealthRecordsProfileExtension *)self _supportedFHIRConfiguration];
+  v9 = [_supportedFHIRConfiguration isSupportedFHIRResourceType:typeCopy FHIRVersionString:stringCopy];
 
   return v9;
 }
@@ -390,31 +390,31 @@
   return v8;
 }
 
-- (id)_retrieveSupportedFHIRConfigurationWithError:(id *)a3
+- (id)_retrieveSupportedFHIRConfigurationWithError:(id *)error
 {
-  v4 = [(HDHealthRecordsProfileExtension *)self createHealthRecordsXPCServiceClient];
-  v5 = [v4 supportedFHIRConfigurationWithError:a3];
+  createHealthRecordsXPCServiceClient = [(HDHealthRecordsProfileExtension *)self createHealthRecordsXPCServiceClient];
+  v5 = [createHealthRecordsXPCServiceClient supportedFHIRConfigurationWithError:error];
 
   return v5;
 }
 
-- (void)didUpdateSourcesForAccountWithIdentifier:(id)a3
+- (void)didUpdateSourcesForAccountWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = dispatch_get_global_queue(17, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_49BE8;
   v7[3] = &unk_106B68;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)registerHealthRecordsSupportedChangeObserver:(id)a3
+- (void)registerHealthRecordsSupportedChangeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_ivarLock);
   if (!self->_chrSupportedObservers)
   {
@@ -428,25 +428,25 @@
 
   [(HDHealthRecordsProfileExtension *)self _ivarLock_determineHealthRecordsSupportedStatusIfNeeded];
   [(HDHealthRecordsProfileExtension *)self _ivarLock_registerAsAccountStateObserverIfNeeded];
-  [(HKObserverSet *)self->_chrSupportedObservers registerObserver:v4];
+  [(HKObserverSet *)self->_chrSupportedObservers registerObserver:observerCopy];
 
   os_unfair_lock_unlock(&self->_ivarLock);
 }
 
-- (void)unregisterHealthRecordsSupportedChangeObserver:(id)a3
+- (void)unregisterHealthRecordsSupportedChangeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_ivarLock);
-  [(HKObserverSet *)self->_chrSupportedObservers unregisterObserver:v4];
+  [(HKObserverSet *)self->_chrSupportedObservers unregisterObserver:observerCopy];
 
   [(HDHealthRecordsProfileExtension *)self _ivarLock_unregisterAsAccountStateObserverIfAppropriate];
 
   os_unfair_lock_unlock(&self->_ivarLock);
 }
 
-- (void)addAccountEventObserver:(id)a3
+- (void)addAccountEventObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_ivarLock);
   if (!self->_accountEventObservers)
   {
@@ -459,16 +459,16 @@
   }
 
   [(HDHealthRecordsProfileExtension *)self _ivarLock_registerAsAccountStateObserverIfNeeded];
-  [(HKObserverSet *)self->_accountEventObservers registerObserver:v4];
+  [(HKObserverSet *)self->_accountEventObservers registerObserver:observerCopy];
 
   os_unfair_lock_unlock(&self->_ivarLock);
 }
 
-- (void)removeAccountEventObserver:(id)a3
+- (void)removeAccountEventObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_ivarLock);
-  [(HKObserverSet *)self->_accountEventObservers unregisterObserver:v4];
+  [(HKObserverSet *)self->_accountEventObservers unregisterObserver:observerCopy];
 
   [(HDHealthRecordsProfileExtension *)self _ivarLock_unregisterAsAccountStateObserverIfAppropriate];
 
@@ -547,9 +547,9 @@
 {
   v3 = [HDSignedClinicalDataRegistry alloc];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained daemon];
-  v6 = [v5 healthDirectoryURL];
-  v7 = [(HDSignedClinicalDataRegistry *)v3 initWithHealthDirectoryURL:v6];
+  daemon = [WeakRetained daemon];
+  healthDirectoryURL = [daemon healthDirectoryURL];
+  v7 = [(HDSignedClinicalDataRegistry *)v3 initWithHealthDirectoryURL:healthDirectoryURL];
 
   return v7;
 }
@@ -593,15 +593,15 @@
   [(HDHealthRecordsProfileExtension *)self _localeDidChange:v3];
 }
 
-- (void)accountManager:(id)a3 account:(id)a4 didChangeState:(int64_t)a5
+- (void)accountManager:(id)manager account:(id)account didChangeState:(int64_t)state
 {
   v5 = 100;
-  if (a5 == 1)
+  if (state == 1)
   {
     v5 = 0;
   }
 
-  if (a5 == 3)
+  if (state == 3)
   {
     v6 = 1;
   }
@@ -613,13 +613,13 @@
 
   if (v6 != 100)
   {
-    [(HDHealthRecordsProfileExtension *)self _notifyHealthRecordsSupportedChangeObservers:a3];
+    [(HDHealthRecordsProfileExtension *)self _notifyHealthRecordsSupportedChangeObservers:manager];
 
     [(HDHealthRecordsProfileExtension *)self _notifyAccountEventObserversOfEvent:v6];
   }
 }
 
-- (void)_notifyAccountEventObserversOfEvent:(unint64_t)a3
+- (void)_notifyAccountEventObserversOfEvent:(unint64_t)event
 {
   accountEventObservers = self->_accountEventObservers;
   v4[0] = _NSConcreteStackBlock;
@@ -627,13 +627,13 @@
   v4[2] = sub_4A474;
   v4[3] = &unk_107798;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = event;
   [(HKObserverSet *)accountEventObservers notifyObservers:v4];
 }
 
-- (void)notificationSyncClient:(id)a3 didReceiveInstructionWithAction:(int64_t)a4
+- (void)notificationSyncClient:(id)client didReceiveInstructionWithAction:(int64_t)action
 {
-  v6 = a3;
+  clientCopy = client;
   _HKInitializeLogging();
   v7 = HKLogNotifications;
   if (os_log_type_enabled(HKLogNotifications, OS_LOG_TYPE_DEFAULT))
@@ -649,9 +649,9 @@
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received instruction with action: %@", &v14, 0x16u);
   }
 
-  if (a4 == 1)
+  if (action == 1)
   {
-    [(HDHealthRecordsProfileExtension *)self _handleDismissInstructionWithClient:v6];
+    [(HDHealthRecordsProfileExtension *)self _handleDismissInstructionWithClient:clientCopy];
   }
 
   else
@@ -671,20 +671,20 @@
   }
 }
 
-- (void)_handleDismissInstructionWithClient:(id)a3
+- (void)_handleDismissInstructionWithClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   _HKInitializeLogging();
   v5 = HKLogNotifications;
   if (os_log_type_enabled(HKLogNotifications, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Handling dismiss instruction", buf, 0xCu);
   }
 
   v23 = 0;
-  v6 = [v4 pendingNotificationDismissInstructionsWithError:&v23];
+  v6 = [clientCopy pendingNotificationDismissInstructionsWithError:&v23];
   v7 = v23;
   _HKInitializeLogging();
   v8 = HKLogNotifications;
@@ -695,37 +695,37 @@
       v9 = v8;
       v10 = objc_opt_class();
       v11 = v10;
-      v12 = [v6 messageIdentifiers];
+      messageIdentifiers = [v6 messageIdentifiers];
       *buf = 138543618;
-      v25 = v10;
+      selfCopy = v10;
       v26 = 2114;
-      v27 = v12;
+      v27 = messageIdentifiers;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received notification dismiss instructions with identifiers: %{public}@", buf, 0x16u);
     }
 
-    v13 = [v6 categoryIdentifiers];
-    v14 = [v13 allObjects];
+    categoryIdentifiers = [v6 categoryIdentifiers];
+    allObjects = [categoryIdentifiers allObjects];
 
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v16 = [WeakRetained notificationManager];
-    [v16 removeDeliveredNotificationsWithIdentifiers:v14];
+    notificationManager = [WeakRetained notificationManager];
+    [notificationManager removeDeliveredNotificationsWithIdentifiers:allObjects];
 
     v22 = v7;
-    LODWORD(v16) = [v4 markPendingNotificationInstructionsAsProcessed:v6 error:&v22];
+    LODWORD(notificationManager) = [clientCopy markPendingNotificationInstructionsAsProcessed:v6 error:&v22];
     v17 = v22;
 
     _HKInitializeLogging();
     v18 = HKLogNotifications;
-    if (v16)
+    if (notificationManager)
     {
       if (os_log_type_enabled(HKLogNotifications, OS_LOG_TYPE_DEFAULT))
       {
         v19 = v18;
         v20 = objc_opt_class();
         *buf = 138543618;
-        v25 = v20;
+        selfCopy = v20;
         v26 = 2114;
-        v27 = v14;
+        v27 = allObjects;
         v21 = v20;
         _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] Dismissed notifications: %{public}@", buf, 0x16u);
       }
@@ -755,7 +755,7 @@
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138543362;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Preparing for obliteration", &v4, 0xCu);
   }
 
@@ -766,11 +766,11 @@
 {
   v11 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained dataManager];
+  dataManager = [WeakRetained dataManager];
   v5 = objc_opt_class();
   v6 = +[HDSQLitePredicate truePredicate];
   v10 = 0;
-  v7 = [v4 deleteDataObjectsOfClass:v5 predicate:v6 limit:0 deletedSampleCount:&v11 notifyObservers:0 generateDeletedObjects:0 recursiveDeleteAuthorizationBlock:0 error:&v10];
+  v7 = [dataManager deleteDataObjectsOfClass:v5 predicate:v6 limit:0 deletedSampleCount:&v11 notifyObservers:0 generateDeletedObjects:0 recursiveDeleteAuthorizationBlock:0 error:&v10];
   v8 = v10;
 
   if (v7)
@@ -782,7 +782,7 @@
       if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v13 = self;
+        selfCopy = self;
         v14 = 2048;
         v15 = v11;
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Deleted %lu signed clinical data records (and associated Wallet cards if any)", buf, 0x16u);
@@ -800,11 +800,11 @@
   }
 }
 
-- (void)unitTesting_replaceHealthRecordsPluginAndSetCompleteScheduledExtractionHandler:(id)a3
+- (void)unitTesting_replaceHealthRecordsPluginAndSetCompleteScheduledExtractionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [[HDClinicalIngestionManager alloc] _initWithProfileExtension:self];
-  [(HDClinicalIngestionManager *)v5 setUnitTesting_didCompleteScheduledExtraction:v4];
+  [(HDClinicalIngestionManager *)v5 setUnitTesting_didCompleteScheduledExtraction:handlerCopy];
 
   [(HDClinicalIngestionManager *)v5 _registerForProfileDidBecomeReady];
   ingestionManager = self->_ingestionManager;

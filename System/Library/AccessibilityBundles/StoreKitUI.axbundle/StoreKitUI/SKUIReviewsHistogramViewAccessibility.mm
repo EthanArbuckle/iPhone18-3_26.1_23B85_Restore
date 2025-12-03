@@ -1,43 +1,43 @@
 @interface SKUIReviewsHistogramViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (SKUIReviewsHistogramViewAccessibility)initWithClientContext:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (SKUIReviewsHistogramViewAccessibility)initWithClientContext:(id)context;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setHistogramValues:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUserRating:(double)a3;
+- (void)setHistogramValues:(id)values;
+- (void)setTitle:(id)title;
+- (void)setUserRating:(double)rating;
 @end
 
 @implementation SKUIReviewsHistogramViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIReviewsHistogramView" hasInstanceMethod:@"initWithClientContext:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"SKUIReviewsHistogramView" hasInstanceMethod:@"setHistogramValues:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SKUIReviewsHistogramView" hasInstanceMethod:@"setUserRating:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"SKUIReviewsHistogramView" hasInstanceVariable:@"_histogramImageView" withType:"UIImageView"];
-  [v3 validateClass:@"SKUIReviewsHistogramView" hasInstanceVariable:@"_userRatingStarsView" withType:"UIImageView"];
-  [v3 validateClass:@"SKUIReviewsHistogramView" hasInstanceVariable:@"_histogramValues" withType:"NSArray"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIReviewsHistogramView" hasInstanceMethod:@"initWithClientContext:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"SKUIReviewsHistogramView" hasInstanceMethod:@"setHistogramValues:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SKUIReviewsHistogramView" hasInstanceMethod:@"setUserRating:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"SKUIReviewsHistogramView" hasInstanceVariable:@"_histogramImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"SKUIReviewsHistogramView" hasInstanceVariable:@"_userRatingStarsView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"SKUIReviewsHistogramView" hasInstanceVariable:@"_histogramValues" withType:"NSArray"];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v5.receiver = self;
   v5.super_class = SKUIReviewsHistogramViewAccessibility;
-  [(SKUIReviewsHistogramViewAccessibility *)&v5 setTitle:a3];
+  [(SKUIReviewsHistogramViewAccessibility *)&v5 setTitle:title];
   v4 = [(SKUIReviewsHistogramViewAccessibility *)self safeValueForKey:@"_titleLabel"];
   [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F80]];
 }
 
-- (void)setUserRating:(double)a3
+- (void)setUserRating:(double)rating
 {
   v8.receiver = self;
   v8.super_class = SKUIReviewsHistogramViewAccessibility;
-  [(SKUIReviewsHistogramViewAccessibility *)&v8 setUserRating:a3];
+  [(SKUIReviewsHistogramViewAccessibility *)&v8 setUserRating:rating];
   v4 = [(SKUIReviewsHistogramViewAccessibility *)self safeValueForKey:@"_userRatingStarsView"];
   v5 = [v4 safeValueForKey:@"image"];
-  v6 = [v5 accessibilityLabel];
-  [v4 setAccessibilityValue:v6];
+  accessibilityLabel = [v5 accessibilityLabel];
+  [v4 setAccessibilityValue:accessibilityLabel];
 
   v7 = accessibilitySKLocalizedString(@"starRating.label");
   [v4 setAccessibilityLabel:v7];
@@ -57,12 +57,12 @@
   [v5 setIsAccessibilityElement:1];
 }
 
-- (void)setHistogramValues:(id)a3
+- (void)setHistogramValues:(id)values
 {
   v23 = *MEMORY[0x29EDCA608];
   v21.receiver = self;
   v21.super_class = SKUIReviewsHistogramViewAccessibility;
-  [(SKUIReviewsHistogramViewAccessibility *)&v21 setHistogramValues:a3];
+  [(SKUIReviewsHistogramViewAccessibility *)&v21 setHistogramValues:values];
   v16 = [(SKUIReviewsHistogramViewAccessibility *)self safeValueForKey:@"_histogramImageView"];
   v4 = [(SKUIReviewsHistogramViewAccessibility *)self safeValueForKey:@"_histogramValues"];
   v17 = 0u;
@@ -115,11 +115,11 @@
   v14 = *MEMORY[0x29EDCA608];
 }
 
-- (SKUIReviewsHistogramViewAccessibility)initWithClientContext:(id)a3
+- (SKUIReviewsHistogramViewAccessibility)initWithClientContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = SKUIReviewsHistogramViewAccessibility;
-  v3 = [(SKUIReviewsHistogramViewAccessibility *)&v5 initWithClientContext:a3];
+  v3 = [(SKUIReviewsHistogramViewAccessibility *)&v5 initWithClientContext:context];
   [(SKUIReviewsHistogramViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;

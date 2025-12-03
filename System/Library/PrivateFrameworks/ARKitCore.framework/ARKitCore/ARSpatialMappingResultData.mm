@@ -1,12 +1,12 @@
 @interface ARSpatialMappingResultData
 + (id)emptyResultData;
-- (ARSpatialMappingResultData)initWithMeshChunks:(id)a3;
-- (ARSpatialMappingResultData)initWithMeshList:(CV3DReconMeshList *)a3 sceneReconstruction:(unint64_t)a4 timestamp:(double)a5;
-- (id)anchorsForCameraWithTransform:(double)a3 referenceOriginTransform:(double)a4 existingAnchors:(double)a5 anchorsToRemove:(double)a6;
-- (id)anchorsFromMeshChunksForCameraWithTransform:(double)a3 referenceOriginTransform:(double)a4 existingAnchors:(double)a5 anchorsToRemove:(double)a6;
-- (id)anchorsFromMeshListForCameraWithTransform:(double)a3 referenceOriginTransform:(double)a4 existingAnchors:(double)a5 anchorsToRemove:(float32x4_t)a6;
+- (ARSpatialMappingResultData)initWithMeshChunks:(id)chunks;
+- (ARSpatialMappingResultData)initWithMeshList:(CV3DReconMeshList *)list sceneReconstruction:(unint64_t)reconstruction timestamp:(double)timestamp;
+- (id)anchorsForCameraWithTransform:(double)transform referenceOriginTransform:(double)originTransform existingAnchors:(double)anchors anchorsToRemove:(double)remove;
+- (id)anchorsFromMeshChunksForCameraWithTransform:(double)transform referenceOriginTransform:(double)originTransform existingAnchors:(double)anchors anchorsToRemove:(double)remove;
+- (id)anchorsFromMeshListForCameraWithTransform:(double)transform referenceOriginTransform:(double)originTransform existingAnchors:(double)anchors anchorsToRemove:(float32x4_t)remove;
 - (void)dealloc;
-- (void)updateSemanticsFromSamplingData:(__CFData *)a3;
+- (void)updateSemanticsFromSamplingData:(__CFData *)data;
 @end
 
 @implementation ARSpatialMappingResultData
@@ -19,22 +19,22 @@
   return v2;
 }
 
-- (ARSpatialMappingResultData)initWithMeshChunks:(id)a3
+- (ARSpatialMappingResultData)initWithMeshChunks:(id)chunks
 {
-  v5 = a3;
+  chunksCopy = chunks;
   v9.receiver = self;
   v9.super_class = ARSpatialMappingResultData;
   v6 = [(ARSpatialMappingResultData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_meshChunks, a3);
+    objc_storeStrong(&v6->_meshChunks, chunks);
   }
 
   return v7;
 }
 
-- (ARSpatialMappingResultData)initWithMeshList:(CV3DReconMeshList *)a3 sceneReconstruction:(unint64_t)a4 timestamp:(double)a5
+- (ARSpatialMappingResultData)initWithMeshList:(CV3DReconMeshList *)list sceneReconstruction:(unint64_t)reconstruction timestamp:(double)timestamp
 {
   v13.receiver = self;
   v13.super_class = ARSpatialMappingResultData;
@@ -42,9 +42,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_meshList = a3;
-    v8->_sceneReconstruction = a4;
-    v8->_timestamp = a5;
+    v8->_meshList = list;
+    v8->_sceneReconstruction = reconstruction;
+    v8->_timestamp = timestamp;
     v10 = MTLCreateSystemDefaultDevice();
     mtlDevice = v9->_mtlDevice;
     v9->_mtlDevice = v10;
@@ -55,16 +55,16 @@
   return v9;
 }
 
-- (void)updateSemanticsFromSamplingData:(__CFData *)a3
+- (void)updateSemanticsFromSamplingData:(__CFData *)data
 {
   v23 = *MEMORY[0x1E69E9840];
-  BytePtr = CFDataGetBytePtr(a3);
+  BytePtr = CFDataGetBytePtr(data);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(ARSpatialMappingResultData *)self meshChunks];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  meshChunks = [(ARSpatialMappingResultData *)self meshChunks];
+  v6 = [meshChunks countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = 0;
@@ -75,15 +75,15 @@
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(meshChunks);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 faceCount];
-        std::vector<unsigned char>::vector[abi:ne200100](&v16, v11);
-        if (v11)
+        faceCount = [v10 faceCount];
+        std::vector<unsigned char>::vector[abi:ne200100](&v16, faceCount);
+        if (faceCount)
         {
-          for (j = 0; j != v11; ++j)
+          for (j = 0; j != faceCount; ++j)
           {
             *(v16 + j) = ARMeshClassificationFromSemantic(BytePtr[v7 + j]);
           }
@@ -109,18 +109,18 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [meshChunks countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)anchorsForCameraWithTransform:(double)a3 referenceOriginTransform:(double)a4 existingAnchors:(double)a5 anchorsToRemove:(double)a6
+- (id)anchorsForCameraWithTransform:(double)transform referenceOriginTransform:(double)originTransform existingAnchors:(double)anchors anchorsToRemove:(double)remove
 {
   v14 = a11;
   v15 = a12;
-  if ([a1 isEmpty])
+  if ([self isEmpty])
   {
     v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"class == %@", objc_opt_class()];
     v17 = [v14 filteredArrayUsingPredicate:v16];
@@ -131,14 +131,14 @@
 
   else
   {
-    if (a1[3])
+    if (self[3])
     {
-      [a1 anchorsFromMeshListForCameraWithTransform:v14 referenceOriginTransform:v15 existingAnchors:a2 anchorsToRemove:{a3, a4, a5, a6, a7, a8, a9}];
+      [self anchorsFromMeshListForCameraWithTransform:v14 referenceOriginTransform:v15 existingAnchors:a2 anchorsToRemove:{transform, originTransform, anchors, remove, a7, a8, a9}];
     }
 
     else
     {
-      [a1 anchorsFromMeshChunksForCameraWithTransform:v14 referenceOriginTransform:v15 existingAnchors:a2 anchorsToRemove:{a3, a4, a5, a6, a7, a8, a9}];
+      [self anchorsFromMeshChunksForCameraWithTransform:v14 referenceOriginTransform:v15 existingAnchors:a2 anchorsToRemove:{transform, originTransform, anchors, remove, a7, a8, a9}];
     }
     v18 = ;
   }
@@ -146,7 +146,7 @@
   return v18;
 }
 
-- (id)anchorsFromMeshChunksForCameraWithTransform:(double)a3 referenceOriginTransform:(double)a4 existingAnchors:(double)a5 anchorsToRemove:(double)a6
+- (id)anchorsFromMeshChunksForCameraWithTransform:(double)transform referenceOriginTransform:(double)originTransform existingAnchors:(double)anchors anchorsToRemove:(double)remove
 {
   v41 = *MEMORY[0x1E69E9840];
   v14 = a11;
@@ -161,8 +161,8 @@
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v19 = [a1 meshChunks];
-  v20 = [v19 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  meshChunks = [self meshChunks];
+  v20 = [meshChunks countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v20)
   {
     v21 = *v37;
@@ -172,14 +172,14 @@
       {
         if (*v37 != v21)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(meshChunks);
         }
 
         v23 = *(*(&v36 + 1) + 8 * i);
-        v24 = [v23 identifier];
-        v25 = [v17 objectForKeyedSubscript:v24];
+        identifier = [v23 identifier];
+        v25 = [v17 objectForKeyedSubscript:identifier];
 
-        v26 = [v23 anchorForReferenceOriginTransform:{a6, a7, a8, a9}];
+        v26 = [v23 anchorForReferenceOriginTransform:{remove, a7, a8, a9}];
         v27 = v26;
         if (v25)
         {
@@ -202,7 +202,7 @@
         }
       }
 
-      v20 = [v19 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      v20 = [meshChunks countByEnumeratingWithState:&v36 objects:v40 count:16];
     }
 
     while (v20);
@@ -211,7 +211,7 @@
   return v18;
 }
 
-- (id)anchorsFromMeshListForCameraWithTransform:(double)a3 referenceOriginTransform:(double)a4 existingAnchors:(double)a5 anchorsToRemove:(float32x4_t)a6
+- (id)anchorsFromMeshListForCameraWithTransform:(double)transform referenceOriginTransform:(double)originTransform existingAnchors:(double)anchors anchorsToRemove:(float32x4_t)remove
 {
   v65 = *MEMORY[0x1E69E9840];
   v50 = a11;
@@ -248,7 +248,7 @@
             *buf = 138544130;
             v58 = v22;
             v59 = 2048;
-            v60 = a1;
+            selfCopy4 = self;
             v61 = 2048;
             v62 = i;
             v63 = 2112;
@@ -265,7 +265,7 @@
           *buf = 138544130;
           v58 = v32;
           v59 = 2048;
-          v60 = a1;
+          selfCopy4 = self;
           v61 = 2048;
           v62 = i;
           v63 = 2112;
@@ -289,7 +289,7 @@
           v35 = [MEMORY[0x1E696AFB0] ar_UUIDWithCFUUIDRef:v24];
           CFRelease(v24);
           v36 = [v51 objectForKeyedSubscript:v35];
-          v37 = ARMeshAnchorFromMesh(*(a1 + 48), v34, v35, v36, *(a1 + 32), *(a1 + 9), a6, a7, a8, a9, *(a1 + 40));
+          v37 = ARMeshAnchorFromMesh(*(self + 48), v34, v35, v36, *(self + 32), *(self + 9), remove, a7, a8, a9, *(self + 40));
           v38 = v37;
           if (!v36 || v37)
           {
@@ -326,7 +326,7 @@
             *buf = 138544130;
             v58 = v29;
             v59 = 2048;
-            v60 = a1;
+            selfCopy4 = self;
             v61 = 2048;
             v62 = i;
             v63 = 2112;
@@ -343,7 +343,7 @@
           *buf = 138544130;
           v58 = v40;
           v59 = 2048;
-          v60 = a1;
+          selfCopy4 = self;
           v61 = 2048;
           v62 = i;
           v63 = 2112;

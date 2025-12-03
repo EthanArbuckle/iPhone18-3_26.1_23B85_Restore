@@ -1,5 +1,5 @@
 @interface NSCachedFetchRequestThunk
-- (id)initForConnection:(id)a3;
+- (id)initForConnection:(id)connection;
 - (void)dealloc;
 @end
 
@@ -54,14 +54,14 @@ LABEL_8:
   [(NSCachedFetchRequestThunk *)&v8 dealloc];
 }
 
-- (id)initForConnection:(id)a3
+- (id)initForConnection:(id)connection
 {
   v6.receiver = self;
   v6.super_class = NSCachedFetchRequestThunk;
   v4 = [(NSCachedFetchRequestThunk *)&v6 init];
   if (v4)
   {
-    v4->_connection = [[_PFWeakReference alloc] initWithObject:a3];
+    v4->_connection = [[_PFWeakReference alloc] initWithObject:connection];
   }
 
   return v4;

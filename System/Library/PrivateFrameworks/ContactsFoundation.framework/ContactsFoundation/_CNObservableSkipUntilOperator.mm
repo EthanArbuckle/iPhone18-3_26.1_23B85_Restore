@@ -1,8 +1,8 @@
 @interface _CNObservableSkipUntilOperator
 - (BOOL)shouldMirrorEvents;
 - (NSString)description;
-- (_CNObservableSkipUntilOperator)initWithInput:(id)a3 signal:(id)a4;
-- (id)subscribe:(id)a3;
+- (_CNObservableSkipUntilOperator)initWithInput:(id)input signal:(id)signal;
+- (id)subscribe:(id)subscribe;
 - (void)cancel;
 - (void)inputDidTerminate;
 - (void)signalDidGenerateEvent;
@@ -10,18 +10,18 @@
 
 @implementation _CNObservableSkipUntilOperator
 
-- (_CNObservableSkipUntilOperator)initWithInput:(id)a3 signal:(id)a4
+- (_CNObservableSkipUntilOperator)initWithInput:(id)input signal:(id)signal
 {
-  v7 = a3;
-  v8 = a4;
+  inputCopy = input;
+  signalCopy = signal;
   v13.receiver = self;
   v13.super_class = _CNObservableSkipUntilOperator;
   v9 = [(_CNObservableSkipUntilOperator *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_input, a3);
-    objc_storeStrong(&v10->_signal, a4);
+    objc_storeStrong(&v9->_input, input);
+    objc_storeStrong(&v10->_signal, signal);
     v10->_active = 0;
     v11 = v10;
   }
@@ -32,29 +32,29 @@
 - (NSString)description
 {
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
-  v4 = [(_CNObservableSkipUntilOperator *)self input];
-  v5 = [v3 appendName:@"input" object:v4];
+  input = [(_CNObservableSkipUntilOperator *)self input];
+  v5 = [v3 appendName:@"input" object:input];
 
-  v6 = [(_CNObservableSkipUntilOperator *)self signal];
-  v7 = [v3 appendName:@"signal" object:v6];
+  signal = [(_CNObservableSkipUntilOperator *)self signal];
+  v7 = [v3 appendName:@"signal" object:signal];
 
   v8 = [v3 appendName:@"active" BOOLValue:{-[_CNObservableSkipUntilOperator isActive](self, "isActive")}];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-- (id)subscribe:(id)a3
+- (id)subscribe:(id)subscribe
 {
-  v4 = a3;
+  subscribeCopy = subscribe;
   v5 = [[_CNObservableSkipUntilSignalObserver alloc] initWithDelegate:self];
-  v6 = [(_CNObservableSkipUntilOperator *)self signal];
-  v7 = [v6 subscribe:v5];
+  signal = [(_CNObservableSkipUntilOperator *)self signal];
+  v7 = [signal subscribe:v5];
   [(_CNObservableSkipUntilOperator *)self setSignalToken:v7];
 
-  v8 = [[_CNObservableSkipUntilInputObserver alloc] initWithObserver:v4 delegate:self];
-  v9 = [(_CNObservableSkipUntilOperator *)self input];
-  v10 = [v9 subscribe:v8];
+  v8 = [[_CNObservableSkipUntilInputObserver alloc] initWithObserver:subscribeCopy delegate:self];
+  input = [(_CNObservableSkipUntilOperator *)self input];
+  v10 = [input subscribe:v8];
   [(_CNObservableSkipUntilOperator *)self setInputToken:v10];
 
   v13[0] = MEMORY[0x1E69E9820];
@@ -69,27 +69,27 @@
 
 - (void)cancel
 {
-  v3 = [(_CNObservableSkipUntilOperator *)self inputToken];
-  [v3 cancel];
+  inputToken = [(_CNObservableSkipUntilOperator *)self inputToken];
+  [inputToken cancel];
 
-  v4 = [(_CNObservableSkipUntilOperator *)self signalToken];
-  [v4 cancel];
+  signalToken = [(_CNObservableSkipUntilOperator *)self signalToken];
+  [signalToken cancel];
 }
 
 - (BOOL)shouldMirrorEvents
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(_CNObservableSkipUntilOperator *)v2 isActive];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isActive = [(_CNObservableSkipUntilOperator *)selfCopy isActive];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return isActive;
 }
 
 - (void)inputDidTerminate
 {
-  v2 = [(_CNObservableSkipUntilOperator *)self signalToken];
-  [v2 cancel];
+  signalToken = [(_CNObservableSkipUntilOperator *)self signalToken];
+  [signalToken cancel];
 }
 
 - (void)signalDidGenerateEvent

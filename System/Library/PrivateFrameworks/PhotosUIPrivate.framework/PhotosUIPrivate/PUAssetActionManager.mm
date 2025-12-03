@@ -1,14 +1,14 @@
 @interface PUAssetActionManager
 + (OS_os_log)actionManagerLog;
 + (id)_unlockDeviceHandlerWithActionType;
-+ (void)setUnlockDeviceHandlerWithActionType:(id)a3;
-- (BOOL)canPerformAction:(unint64_t)a3 onAllAssetReferences:(id)a4;
-- (BOOL)canPerformAction:(unint64_t)a3 onAllAssetsByAssetCollection:(id)a4;
-- (BOOL)shouldEnableActionType:(unint64_t)a3 onAllAssetsByAssetCollection:(id)a4;
++ (void)setUnlockDeviceHandlerWithActionType:(id)type;
+- (BOOL)canPerformAction:(unint64_t)action onAllAssetReferences:(id)references;
+- (BOOL)canPerformAction:(unint64_t)action onAllAssetsByAssetCollection:(id)collection;
+- (BOOL)shouldEnableActionType:(unint64_t)type onAllAssetsByAssetCollection:(id)collection;
 - (PUAssetActionManagerDelegate)delegate;
-- (id)_assetsByAssetCollectionForAssetReferences:(id)a3;
-- (id)actionPerformerForSettingFavoriteTo:(BOOL)a3 onAssetReferences:(id)a4;
-- (id)actionPerformerForSimpleActionType:(unint64_t)a3 onAssetReferences:(id)a4;
+- (id)_assetsByAssetCollectionForAssetReferences:(id)references;
+- (id)actionPerformerForSettingFavoriteTo:(BOOL)to onAssetReferences:(id)references;
+- (id)actionPerformerForSimpleActionType:(unint64_t)type onAssetReferences:(id)references;
 @end
 
 @implementation PUAssetActionManager
@@ -36,32 +36,32 @@ uint64_t __40__PUAssetActionManager_actionManagerLog__block_invoke()
 
 + (id)_unlockDeviceHandlerWithActionType
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = _Block_copy(_sharedUnlockDeviceHandlerWithActionType);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v4 = _Block_copy(v3);
 
   return v4;
 }
 
-+ (void)setUnlockDeviceHandlerWithActionType:(id)a3
++ (void)setUnlockDeviceHandlerWithActionType:(id)type
 {
-  v9 = a3;
-  if (!v9)
+  typeCopy = type;
+  if (!typeCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"PUAssetActionManager.m" lineNumber:224 description:{@"Invalid parameter not satisfying: %@", @"unlockDeviceHandlerWithActionType != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetActionManager.m" lineNumber:224 description:{@"Invalid parameter not satisfying: %@", @"unlockDeviceHandlerWithActionType != nil"}];
   }
 
-  v5 = a1;
-  objc_sync_enter(v5);
-  v6 = [v9 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [typeCopy copy];
   v7 = _sharedUnlockDeviceHandlerWithActionType;
   _sharedUnlockDeviceHandlerWithActionType = v6;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (PUAssetActionManagerDelegate)delegate
@@ -71,10 +71,10 @@ uint64_t __40__PUAssetActionManager_actionManagerLog__block_invoke()
   return WeakRetained;
 }
 
-- (BOOL)shouldEnableActionType:(unint64_t)a3 onAllAssetsByAssetCollection:(id)a4
+- (BOOL)shouldEnableActionType:(unint64_t)type onAllAssetsByAssetCollection:(id)collection
 {
-  v6 = a4;
-  if ([v6 count])
+  collectionCopy = collection;
+  if ([collectionCopy count])
   {
     v10 = 0;
     v11 = &v10;
@@ -86,15 +86,15 @@ uint64_t __40__PUAssetActionManager_actionManagerLog__block_invoke()
     v9[3] = &unk_1E7B75240;
     v9[4] = self;
     v9[5] = &v10;
-    v9[6] = a3;
-    [v6 enumerateKeysAndObjectsUsingBlock:v9];
+    v9[6] = type;
+    [collectionCopy enumerateKeysAndObjectsUsingBlock:v9];
     v7 = *(v11 + 24);
     _Block_object_dispose(&v10, 8);
   }
 
   else
   {
-    v7 = [(PUAssetActionManager *)self shouldEnableActionType:a3 onAsset:0 inAssetCollection:0];
+    v7 = [(PUAssetActionManager *)self shouldEnableActionType:type onAsset:0 inAssetCollection:0];
   }
 
   return v7 & 1;
@@ -145,18 +145,18 @@ LABEL_3:
   *a4 = *(*(*(a1 + 40) + 8) + 24) ^ 1;
 }
 
-- (BOOL)canPerformAction:(unint64_t)a3 onAllAssetReferences:(id)a4
+- (BOOL)canPerformAction:(unint64_t)action onAllAssetReferences:(id)references
 {
-  v6 = [(PUAssetActionManager *)self _assetsByAssetCollectionForAssetReferences:a4];
-  LOBYTE(a3) = [(PUAssetActionManager *)self canPerformAction:a3 onAllAssetsByAssetCollection:v6];
+  v6 = [(PUAssetActionManager *)self _assetsByAssetCollectionForAssetReferences:references];
+  LOBYTE(action) = [(PUAssetActionManager *)self canPerformAction:action onAllAssetsByAssetCollection:v6];
 
-  return a3;
+  return action;
 }
 
-- (BOOL)canPerformAction:(unint64_t)a3 onAllAssetsByAssetCollection:(id)a4
+- (BOOL)canPerformAction:(unint64_t)action onAllAssetsByAssetCollection:(id)collection
 {
-  v6 = a4;
-  if ([v6 count])
+  collectionCopy = collection;
+  if ([collectionCopy count])
   {
     v10 = 0;
     v11 = &v10;
@@ -168,15 +168,15 @@ LABEL_3:
     v9[3] = &unk_1E7B75240;
     v9[4] = self;
     v9[5] = &v10;
-    v9[6] = a3;
-    [v6 enumerateKeysAndObjectsUsingBlock:v9];
+    v9[6] = action;
+    [collectionCopy enumerateKeysAndObjectsUsingBlock:v9];
     v7 = *(v11 + 24);
     _Block_object_dispose(&v10, 8);
   }
 
   else
   {
-    v7 = [(PUAssetActionManager *)self canPerformActionType:a3 onAsset:0 inAssetCollection:0];
+    v7 = [(PUAssetActionManager *)self canPerformActionType:action onAsset:0 inAssetCollection:0];
   }
 
   return v7 & 1;
@@ -227,57 +227,57 @@ LABEL_3:
   *a4 = *(*(*(a1 + 40) + 8) + 24) ^ 1;
 }
 
-- (id)actionPerformerForSettingFavoriteTo:(BOOL)a3 onAssetReferences:(id)a4
+- (id)actionPerformerForSettingFavoriteTo:(BOOL)to onAssetReferences:(id)references
 {
-  v4 = a3;
-  v6 = [(PUAssetActionManager *)self _assetsByAssetCollectionForAssetReferences:a4];
-  v7 = [(PUAssetActionManager *)self actionPerformerForSettingFavoriteTo:v4 onAssetsByAssetCollection:v6];
+  toCopy = to;
+  v6 = [(PUAssetActionManager *)self _assetsByAssetCollectionForAssetReferences:references];
+  v7 = [(PUAssetActionManager *)self actionPerformerForSettingFavoriteTo:toCopy onAssetsByAssetCollection:v6];
 
   return v7;
 }
 
-- (id)actionPerformerForSimpleActionType:(unint64_t)a3 onAssetReferences:(id)a4
+- (id)actionPerformerForSimpleActionType:(unint64_t)type onAssetReferences:(id)references
 {
-  v6 = [(PUAssetActionManager *)self _assetsByAssetCollectionForAssetReferences:a4];
-  v7 = [(PUAssetActionManager *)self actionPerformerForSimpleActionType:a3 onAssetsByAssetCollection:v6];
+  v6 = [(PUAssetActionManager *)self _assetsByAssetCollectionForAssetReferences:references];
+  v7 = [(PUAssetActionManager *)self actionPerformerForSimpleActionType:type onAssetsByAssetCollection:v6];
 
   return v7;
 }
 
-- (id)_assetsByAssetCollectionForAssetReferences:(id)a3
+- (id)_assetsByAssetCollectionForAssetReferences:(id)references
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count] == 1)
+  referencesCopy = references;
+  if ([referencesCopy count] == 1)
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 assetCollection];
-    v6 = [v4 asset];
-    v7 = v6;
-    v8 = MEMORY[0x1E695E0F8];
-    if (v5 && v6)
+    firstObject = [referencesCopy firstObject];
+    assetCollection = [firstObject assetCollection];
+    asset = [firstObject asset];
+    v7 = asset;
+    dictionary = MEMORY[0x1E695E0F8];
+    if (assetCollection && asset)
     {
-      v29 = v6;
-      v30 = v5;
+      v29 = asset;
+      v30 = assetCollection;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
       v31[0] = v9;
-      v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
+      dictionary = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
     }
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v4 = v3;
-    v10 = [v4 countByEnumeratingWithState:&v22 objects:v28 count:16];
+    firstObject = referencesCopy;
+    v10 = [firstObject countByEnumeratingWithState:&v22 objects:v28 count:16];
     if (v10)
     {
       v11 = v10;
-      v21 = v3;
+      v21 = referencesCopy;
       v12 = *v23;
       do
       {
@@ -285,15 +285,15 @@ LABEL_3:
         {
           if (*v23 != v12)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(firstObject);
           }
 
           v14 = *(*(&v22 + 1) + 8 * i);
-          v15 = [v14 assetCollection];
-          v16 = [v14 asset];
-          if (v16)
+          assetCollection2 = [v14 assetCollection];
+          asset2 = [v14 asset];
+          if (asset2)
           {
-            v17 = v15 == 0;
+            v17 = assetCollection2 == 0;
           }
 
           else
@@ -314,30 +314,30 @@ LABEL_3:
 
           else
           {
-            v19 = [v8 objectForKeyedSubscript:v15];
+            v19 = [dictionary objectForKeyedSubscript:assetCollection2];
             if (v19)
             {
               v18 = v19;
-              [v19 addObject:v16];
+              [v19 addObject:asset2];
             }
 
             else
             {
-              v18 = [MEMORY[0x1E695DF70] arrayWithObject:v16];
-              [v8 setObject:v18 forKeyedSubscript:v15];
+              v18 = [MEMORY[0x1E695DF70] arrayWithObject:asset2];
+              [dictionary setObject:v18 forKeyedSubscript:assetCollection2];
             }
           }
         }
 
-        v11 = [v4 countByEnumeratingWithState:&v22 objects:v28 count:16];
+        v11 = [firstObject countByEnumeratingWithState:&v22 objects:v28 count:16];
       }
 
       while (v11);
-      v3 = v21;
+      referencesCopy = v21;
     }
   }
 
-  return v8;
+  return dictionary;
 }
 
 @end

@@ -47,9 +47,9 @@
   v12[2] = *MEMORY[0x1E69E9840];
   v6 = a4;
   v7 = a3;
-  v8 = [a1 _sf_openInNewTabActionWithTabOrder:1 handler:v7 identifierSuffix:v6];
+  v8 = [self _sf_openInNewTabActionWithTabOrder:1 handler:v7 identifierSuffix:v6];
   v12[0] = v8;
-  v9 = [a1 _sf_openInNewTabActionWithTabOrder:2 handler:v7 identifierSuffix:v6];
+  v9 = [self _sf_openInNewTabActionWithTabOrder:2 handler:v7 identifierSuffix:v6];
 
   v12[1] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
@@ -109,8 +109,8 @@
 
   [v7 setAttributes:2];
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [v6 _webProcessIdentifier];
-  v10 = [v8 stringWithFormat:@"PID %d", v9, v12, v13, v14, v15];
+  _webProcessIdentifier = [v6 _webProcessIdentifier];
+  v10 = [v8 stringWithFormat:@"PID %d", _webProcessIdentifier, v12, v13, v14, v15];
   [v7 setSubtitle:v10];
 
   [v7 setAccessibilityIdentifier:@"KillWebProcess"];

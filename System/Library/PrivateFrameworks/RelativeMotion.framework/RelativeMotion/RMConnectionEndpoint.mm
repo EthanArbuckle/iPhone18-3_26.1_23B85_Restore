@@ -1,48 +1,48 @@
 @interface RMConnectionEndpoint
 - (BOOL)isValid;
-- (BOOL)startServingStreamToEndpoint:(void *)a3 error:;
+- (BOOL)startServingStreamToEndpoint:(void *)endpoint error:;
 - (id)connection;
 - (id)connectionDelegate;
 - (id)dataDelegate;
-- (id)initWithConnection:(void *)a3 queue:;
+- (id)initWithConnection:(void *)connection queue:;
 - (id)setConnectionDelegate:(id *)result;
 - (id)setDataDelegate:(id *)result;
 - (uint64_t)messagingConnection;
 - (uint64_t)priorityBoostReplyMessage;
 - (uint64_t)queue;
-- (uint64_t)startServingStreamWithHandler:(uint64_t)a1;
+- (uint64_t)startServingStreamWithHandler:(uint64_t)handler;
 - (uint64_t)streamingClientListener;
 - (void)handleInterruption;
-- (void)handleStreamXpcError:(void *)a3 withErrorHandler:;
-- (void)handleStreamXpcReply:(void *)a3 withErrorHandler:;
-- (void)handleXpcMessage:(void *)a3 replyBlock:;
+- (void)handleStreamXpcError:(void *)error withErrorHandler:;
+- (void)handleStreamXpcReply:(void *)reply withErrorHandler:;
+- (void)handleXpcMessage:(void *)message replyBlock:;
 - (void)invalidate;
 - (void)pause;
-- (void)requestStreamWithMessage:(void *)a3 data:(void *)a4 errorHandler:;
-- (void)sendMessage:(void *)a3 withData:;
-- (void)sendMessage:(void *)a3 withData:(void *)a4 reply:;
-- (void)setMessagingConnection:(uint64_t)a1;
-- (void)setPriorityBoostReplyMessage:(uint64_t)a1;
-- (void)setQueue:(uint64_t)a1;
-- (void)setStreamingClientListener:(uint64_t)a1;
-- (void)setStreamingServerConnection:(uint64_t)a1;
+- (void)requestStreamWithMessage:(void *)message data:(void *)data errorHandler:;
+- (void)sendMessage:(void *)message withData:;
+- (void)sendMessage:(void *)message withData:(void *)data reply:;
+- (void)setMessagingConnection:(uint64_t)connection;
+- (void)setPriorityBoostReplyMessage:(uint64_t)message;
+- (void)setQueue:(uint64_t)queue;
+- (void)setStreamingClientListener:(uint64_t)listener;
+- (void)setStreamingServerConnection:(uint64_t)connection;
 - (void)start;
-- (void)startReceivingStreamOnConnection:(void *)a3 errorHandler:;
+- (void)startReceivingStreamOnConnection:(void *)connection errorHandler:;
 - (void)stopReceivingStream;
 - (void)stopServingStream;
-- (void)wrapReplyToXpcMessage:(void *)a3 withName:(void *)a4 data:;
+- (void)wrapReplyToXpcMessage:(void *)message withName:(void *)name data:;
 @end
 
 @implementation RMConnectionEndpoint
 
-- (void)handleXpcMessage:(void *)a3 replyBlock:
+- (void)handleXpcMessage:(void *)message replyBlock:
 {
   v32 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  messageCopy = message;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
+    WeakRetained = objc_loadWeakRetained((self + 24));
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:{xpc_dictionary_get_string(v5, "kRMConnectionMessageNameKey")}];
     v9 = xpc_dictionary_get_value(v5, "kRMConnectionMessageDataKey");
     v10 = v9;
@@ -86,9 +86,9 @@
 
     if (!v12)
     {
-      if (v6)
+      if (messageCopy)
       {
-        v6[2](v6, v8, bytes_ptr);
+        messageCopy[2](messageCopy, v8, bytes_ptr);
 LABEL_24:
 
         goto LABEL_25;
@@ -110,8 +110,8 @@ LABEL_24:
         }
 
         reply = xpc_dictionary_create_reply(v5);
-        v21 = *(a1 + 64);
-        *(a1 + 64) = reply;
+        v21 = *(self + 64);
+        *(self + 64) = reply;
         goto LABEL_23;
       }
 
@@ -121,9 +121,9 @@ LABEL_24:
         v26[1] = 3221225472;
         v26[2] = __52__RMConnectionEndpoint_handleXpcMessage_replyBlock___block_invoke;
         v26[3] = &unk_279AF5388;
-        v26[4] = a1;
+        v26[4] = self;
         v27 = v5;
-        [WeakRetained endpoint:a1 didReceiveMessage:v8 withData:bytes_ptr replyBlock:v26];
+        [WeakRetained endpoint:self didReceiveMessage:v8 withData:bytes_ptr replyBlock:v26];
         v21 = v27;
 LABEL_23:
 
@@ -153,13 +153,13 @@ LABEL_14:
 
     if ([WeakRetained conformsToProtocol:&unk_287439AD0])
     {
-      [WeakRetained endpoint:a1 didReceiveStreamingRequest:v8 withData:bytes_ptr];
+      [WeakRetained endpoint:self didReceiveStreamingRequest:v8 withData:bytes_ptr];
       v29 = 0;
-      [(RMConnectionEndpoint *)a1 startServingStreamToEndpoint:v13 error:&v29];
+      [(RMConnectionEndpoint *)self startServingStreamToEndpoint:v13 error:&v29];
       v24 = v29;
       if (v24)
       {
-        [(RMConnectionEndpoint *)v24 handleXpcMessage:a1 replyBlock:v5];
+        [(RMConnectionEndpoint *)v24 handleXpcMessage:self replyBlock:v5];
         goto LABEL_24;
       }
 
@@ -173,7 +173,7 @@ LABEL_33:
           _os_log_impl(&dword_261A9A000, v25, OS_LOG_TYPE_INFO, "Streaming session started, sending acknowledgement", buf, 2u);
         }
 
-        [(RMConnectionEndpoint *)a1 wrapReplyToXpcMessage:v5 withName:@"kRMConnectionMessageSuccess" data:0];
+        [(RMConnectionEndpoint *)self wrapReplyToXpcMessage:v5 withName:@"kRMConnectionMessageSuccess" data:0];
         goto LABEL_24;
       }
     }
@@ -250,14 +250,14 @@ void __49__RMConnectionEndpoint_initWithConnection_queue___block_invoke(uint64_t
   }
 }
 
-- (void)sendMessage:(void *)a3 withData:
+- (void)sendMessage:(void *)message withData:
 {
   v10 = a2;
-  v5 = a3;
-  if (a1)
+  messageCopy = message;
+  if (self)
   {
-    v7 = *(a1 + 56);
-    v6 = (a1 + 56);
+    v7 = *(self + 56);
+    v6 = (self + 56);
     if (!v7)
     {
       v8 = [RMConnectionEndpoint sendMessage:v10 withData:?];
@@ -265,31 +265,31 @@ void __49__RMConnectionEndpoint_initWithConnection_queue___block_invoke(uint64_t
       return;
     }
 
-    [(RMConnectionEndpoint *)v10 sendMessage:v5 withData:v6];
+    [(RMConnectionEndpoint *)v10 sendMessage:messageCopy withData:v6];
   }
 }
 
-- (void)sendMessage:(void *)a3 withData:(void *)a4 reply:
+- (void)sendMessage:(void *)message withData:(void *)data reply:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (!a1)
+  messageCopy = message;
+  dataCopy = data;
+  if (!self)
   {
     goto LABEL_4;
   }
 
-  if (*(a1 + 56))
+  if (*(self + 56))
   {
-    v10 = CreateXpcMessage(v7, v8);
-    v11 = *(a1 + 56);
-    v12 = *(a1 + 8);
+    v10 = CreateXpcMessage(v7, messageCopy);
+    v11 = *(self + 56);
+    v12 = *(self + 8);
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __51__RMConnectionEndpoint_sendMessage_withData_reply___block_invoke;
     handler[3] = &unk_279AF53D8;
-    handler[4] = a1;
-    v18 = v9;
+    handler[4] = self;
+    v18 = dataCopy;
     v17 = v7;
     v13 = v11;
     xpc_connection_send_message_with_reply(v13, v10, v12, handler);
@@ -413,30 +413,30 @@ void __54__RMConnectionEndpoint_startServingStreamWithHandler___block_invoke(uin
 
 - (void)stopServingStream
 {
-  xpc_connection_set_event_handler(*a1, &__block_literal_global_2);
-  xpc_connection_cancel(*a1);
-  v4 = *a1;
-  *a1 = 0;
+  xpc_connection_set_event_handler(*self, &__block_literal_global_2);
+  xpc_connection_cancel(*self);
+  v4 = *self;
+  *self = 0;
 
   WeakRetained = objc_loadWeakRetained((a2 + 24));
   [WeakRetained endpointShouldStopStreamingData:a2];
 }
 
-- (void)startReceivingStreamOnConnection:(void *)a3 errorHandler:
+- (void)startReceivingStreamOnConnection:(void *)connection errorHandler:
 {
   v5 = a2;
-  v6 = a3;
-  if (!a1)
+  connectionCopy = connection;
+  if (!self)
   {
     goto LABEL_4;
   }
 
-  WeakRetained = objc_loadWeakRetained(a1 + 3);
+  WeakRetained = objc_loadWeakRetained(self + 3);
   v8 = [WeakRetained conformsToProtocol:&unk_287439350];
 
   if (v8)
   {
-    [(RMConnectionEndpoint *)a1 startReceivingStreamOnConnection:v5 errorHandler:&v11, v6];
+    [(RMConnectionEndpoint *)self startReceivingStreamOnConnection:v5 errorHandler:&v11, connectionCopy];
 LABEL_4:
 
     return;
@@ -492,48 +492,48 @@ void __70__RMConnectionEndpoint_startReceivingStreamOnConnection_errorHandler___
   }
 }
 
-- (void)requestStreamWithMessage:(void *)a3 data:(void *)a4 errorHandler:
+- (void)requestStreamWithMessage:(void *)message data:(void *)data errorHandler:
 {
   v34 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (!a1)
+  messageCopy = message;
+  dataCopy = data;
+  if (!self)
   {
     goto LABEL_7;
   }
 
-  if (*(a1 + 48))
+  if (*(self + 48))
   {
     [RMConnectionEndpoint requestStreamWithMessage:data:errorHandler:];
     goto LABEL_9;
   }
 
-  v12 = *(a1 + 8);
+  v12 = *(self + 8);
   v13 = xpc_connection_create(0, v12);
-  v14 = *(a1 + 48);
-  *(a1 + 48) = v13;
+  v14 = *(self + 48);
+  *(self + 48) = v13;
 
-  v15 = *(a1 + 48);
+  v15 = *(self + 48);
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __67__RMConnectionEndpoint_requestStreamWithMessage_data_errorHandler___block_invoke;
   handler[3] = &unk_279AF5448;
-  handler[4] = a1;
-  v16 = v11;
+  handler[4] = self;
+  v16 = dataCopy;
   v29 = v16;
   xpc_connection_set_event_handler(v15, handler);
-  v4 = CreateXpcMessage(v9, v10);
-  xpc_connection_activate(*(a1 + 48));
-  v5 = xpc_endpoint_create(*(a1 + 48));
+  v4 = CreateXpcMessage(v9, messageCopy);
+  xpc_connection_activate(*(self + 48));
+  v5 = xpc_endpoint_create(*(self + 48));
   xpc_dictionary_set_value(v4, "kRMConnectionRequestSteamingKey", v5);
-  v17 = *(a1 + 56);
-  v18 = *(a1 + 8);
+  v17 = *(self + 56);
+  v18 = *(self + 8);
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __67__RMConnectionEndpoint_requestStreamWithMessage_data_errorHandler___block_invoke_97;
   v26[3] = &unk_279AF5448;
-  v26[4] = a1;
+  v26[4] = self;
   v27 = v16;
   v19 = v17;
   xpc_connection_send_message_with_reply(v19, v4, v18, v26);
@@ -547,8 +547,8 @@ LABEL_9:
   v20 = logObject_IPC_Default;
   if (os_log_type_enabled(logObject_IPC_Default, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = *(a1 + 48);
-    v21 = *(a1 + 56);
+    v22 = *(self + 48);
+    v21 = *(self + 56);
     *buf = 134283777;
     v31 = v21;
     v32 = 2049;
@@ -624,24 +624,24 @@ void __67__RMConnectionEndpoint_requestStreamWithMessage_data_errorHandler___blo
   }
 }
 
-- (void)wrapReplyToXpcMessage:(void *)a3 withName:(void *)a4 data:
+- (void)wrapReplyToXpcMessage:(void *)message withName:(void *)name data:
 {
-  v12 = a4;
-  if (a1)
+  nameCopy = name;
+  if (self)
   {
-    v7 = a3;
+    messageCopy = message;
     reply = xpc_dictionary_create_reply(a2);
-    v9 = [v7 UTF8String];
+    uTF8String = [messageCopy UTF8String];
 
-    xpc_dictionary_set_string(reply, "kRMConnectionMessageNameKey", v9);
-    if (v12)
+    xpc_dictionary_set_string(reply, "kRMConnectionMessageNameKey", uTF8String);
+    if (nameCopy)
     {
-      v10 = v12;
-      v11 = xpc_data_create([v12 bytes], objc_msgSend(v12, "length"));
+      v10 = nameCopy;
+      v11 = xpc_data_create([nameCopy bytes], objc_msgSend(nameCopy, "length"));
       xpc_dictionary_set_value(reply, "kRMConnectionMessageDataKey", v11);
     }
 
-    xpc_connection_send_message(*(a1 + 56), reply);
+    xpc_connection_send_message(*(self + 56), reply);
   }
 }
 
@@ -655,12 +655,12 @@ void __67__RMConnectionEndpoint_requestStreamWithMessage_data_errorHandler___blo
   return result;
 }
 
-- (BOOL)startServingStreamToEndpoint:(void *)a3 error:
+- (BOOL)startServingStreamToEndpoint:(void *)endpoint error:
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = a2;
   v6 = v5;
-  if (!a1)
+  if (!self)
   {
     v8 = 0;
     goto LABEL_18;
@@ -668,15 +668,15 @@ void __67__RMConnectionEndpoint_requestStreamWithMessage_data_errorHandler___blo
 
   if (MEMORY[0x266717E30](v5) == MEMORY[0x277D86478])
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 3);
+    WeakRetained = objc_loadWeakRetained(self + 3);
     v10 = xpc_connection_create_from_endpoint(v6);
     if (v10)
     {
-      objc_storeStrong(a1 + 4, v10);
-      if (([(RMConnectionEndpoint *)a1 startServingStreamWithHandler:?]& 1) == 0)
+      objc_storeStrong(self + 4, v10);
+      if (([(RMConnectionEndpoint *)self startServingStreamWithHandler:?]& 1) == 0)
       {
-        v8 = a3 == 0;
-        if (a3)
+        v8 = endpoint == 0;
+        if (endpoint)
         {
           if (onceToken_IPC_Default != -1)
           {
@@ -691,7 +691,7 @@ void __67__RMConnectionEndpoint_requestStreamWithMessage_data_errorHandler___blo
             OUTLINED_FUNCTION_12(&dword_261A9A000, v15, v16, "Failed to start the streaming with handler %@", &v22);
           }
 
-          *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:@"RMConnectionStreaming" code:-2 userInfo:0];
+          *endpoint = [MEMORY[0x277CCA9B8] errorWithDomain:@"RMConnectionStreaming" code:-2 userInfo:0];
         }
 
         if (onceToken_IPC_Default != -1)
@@ -702,15 +702,15 @@ void __67__RMConnectionEndpoint_requestStreamWithMessage_data_errorHandler___blo
         v17 = logObject_IPC_Default;
         if (os_log_type_enabled(logObject_IPC_Default, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = a1[4];
-          v19 = OUTLINED_FUNCTION_6_0(a1[7]);
+          v18 = self[4];
+          v19 = OUTLINED_FUNCTION_6_0(self[7]);
           v20 = v17;
           _os_log_impl(&dword_261A9A000, v20, OS_LOG_TYPE_DEFAULT, "Cancelling the streaming server connection %{private}p.%{private}p", &v22, 0x16u);
         }
 
         xpc_connection_cancel(v10);
-        v21 = a1[4];
-        a1[4] = 0;
+        v21 = self[4];
+        self[4] = 0;
 
         goto LABEL_17;
       }
@@ -731,10 +731,10 @@ void __67__RMConnectionEndpoint_requestStreamWithMessage_data_errorHandler___blo
         OUTLINED_FUNCTION_12(&dword_261A9A000, v11, v12, "Failed to create connection from endpoint %@", &v22);
       }
 
-      if (a3)
+      if (endpoint)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:@"RMConnectionStreaming" code:-1 userInfo:0];
-        *a3 = v8 = 0;
+        *endpoint = v8 = 0;
 LABEL_17:
 
         goto LABEL_18;
@@ -775,32 +775,32 @@ LABEL_18:
   return WeakRetained;
 }
 
-- (void)setStreamingServerConnection:(uint64_t)a1
+- (void)setStreamingServerConnection:(uint64_t)connection
 {
-  if (a1)
+  if (connection)
   {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((connection + 32), a2);
   }
 }
 
-- (uint64_t)startServingStreamWithHandler:(uint64_t)a1
+- (uint64_t)startServingStreamWithHandler:(uint64_t)handler
 {
   keys[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (handler)
   {
-    v3 = *(a1 + 32);
+    v3 = *(handler + 32);
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __54__RMConnectionEndpoint_startServingStreamWithHandler___block_invoke;
     handler[3] = &unk_279AF53B0;
-    handler[4] = a1;
+    handler[4] = handler;
     v4 = a2;
     xpc_connection_set_event_handler(v3, handler);
-    v5 = *(a1 + 8);
-    v6 = *(a1 + 32);
+    v5 = *(handler + 8);
+    v6 = *(handler + 32);
     xpc_connection_set_target_queue(v6, v5);
 
-    xpc_connection_resume(*(a1 + 32));
+    xpc_connection_resume(*(handler + 32));
     v7 = xpc_string_create("kRMConnectionMessageDataStream");
     keys[0] = "kRMConnectionMessageNameKey";
     v8 = v7;
@@ -810,10 +810,10 @@ LABEL_18:
     v21 = 3221225472;
     v22 = __54__RMConnectionEndpoint_startServingStreamWithHandler___block_invoke_80;
     v23 = &unk_279AF5400;
-    v24 = a1;
+    handlerCopy = handler;
     v10 = v9;
     v25 = v10;
-    v11 = [v4 endpoint:a1 shouldStartStreamingDataToReceiver:v20];
+    v11 = [v4 endpoint:handler shouldStartStreamingDataToReceiver:v20];
 
     if (onceToken_IPC_Default != -1)
     {
@@ -823,8 +823,8 @@ LABEL_18:
     v12 = logObject_IPC_Default;
     if (os_log_type_enabled(logObject_IPC_Default, OS_LOG_TYPE_DEBUG))
     {
-      v13 = *(a1 + 56);
-      v14 = *(a1 + 32);
+      v13 = *(handler + 56);
+      v14 = *(handler + 32);
       v15 = "NO";
       if (v11)
       {
@@ -852,72 +852,72 @@ LABEL_18:
   return v11;
 }
 
-- (void)setPriorityBoostReplyMessage:(uint64_t)a1
+- (void)setPriorityBoostReplyMessage:(uint64_t)message
 {
-  if (a1)
+  if (message)
   {
-    objc_storeStrong((a1 + 64), a2);
+    objc_storeStrong((message + 64), a2);
   }
 }
 
-- (id)initWithConnection:(void *)a3 queue:
+- (id)initWithConnection:(void *)connection queue:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  connectionCopy = connection;
+  if (self)
   {
-    v15.receiver = a1;
+    v15.receiver = self;
     v15.super_class = RMConnectionEndpoint;
     v8 = objc_msgSendSuper2(&v15, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 7, a2);
-      objc_storeStrong(a1 + 1, a3);
+      objc_storeStrong(self + 1, connection);
       OUTLINED_FUNCTION_5_0();
       v11 = 3221225472;
       v12 = __49__RMConnectionEndpoint_initWithConnection_queue___block_invoke;
       v13 = &unk_279AF53B0;
-      a1 = a1;
-      v14 = a1;
+      self = self;
+      selfCopy = self;
       xpc_connection_set_event_handler(v6, handler);
-      xpc_connection_set_target_queue(v6, v7);
+      xpc_connection_set_target_queue(v6, connectionCopy);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)setMessagingConnection:(uint64_t)a1
+- (void)setMessagingConnection:(uint64_t)connection
 {
-  if (a1)
+  if (connection)
   {
-    objc_storeStrong((a1 + 56), a2);
+    objc_storeStrong((connection + 56), a2);
   }
 }
 
-- (void)setQueue:(uint64_t)a1
+- (void)setQueue:(uint64_t)queue
 {
-  if (a1)
+  if (queue)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((queue + 8), a2);
   }
 }
 
 - (void)handleInterruption
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
-    [WeakRetained endpointWasInterrupted:a1];
+    WeakRetained = objc_loadWeakRetained((self + 16));
+    [WeakRetained endpointWasInterrupted:self];
   }
 }
 
 - (void)invalidate
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_11(a1);
+    OUTLINED_FUNCTION_11(self);
     v2 = *(v1 + 64);
     *(v1 + 64) = 0;
 
@@ -945,9 +945,9 @@ LABEL_18:
 
 - (void)start
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_11(a1);
+    OUTLINED_FUNCTION_11(self);
     v2 = *(v1 + 56);
 
     xpc_connection_resume(v2);
@@ -966,9 +966,9 @@ LABEL_18:
 
 - (void)pause
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_11(a1);
+    OUTLINED_FUNCTION_11(self);
     v2 = *(v1 + 56);
 
     xpc_connection_suspend(v2);
@@ -1006,12 +1006,12 @@ void __54__RMConnectionEndpoint_startServingStreamWithHandler___block_invoke_80(
   }
 }
 
-- (void)handleStreamXpcError:(void *)a3 withErrorHandler:
+- (void)handleStreamXpcError:(void *)error withErrorHandler:
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (!a1)
+  errorCopy = error;
+  if (!self)
   {
     goto LABEL_22;
   }
@@ -1034,14 +1034,14 @@ LABEL_19:
 
 LABEL_20:
     v9 = -3;
-    if (!v6)
+    if (!errorCopy)
     {
       goto LABEL_22;
     }
 
 LABEL_21:
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"RMConnectionStreaming" code:v9 userInfo:{0, *v14}];
-    v6[2](v6, v12);
+    errorCopy[2](errorCopy, v12);
 
     goto LABEL_22;
   }
@@ -1080,7 +1080,7 @@ LABEL_21:
     }
 
     v9 = -4;
-    if (v6)
+    if (errorCopy)
     {
       goto LABEL_21;
     }
@@ -1093,9 +1093,9 @@ LABEL_22:
 
 - (void)stopReceivingStream
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_11(a1);
+    OUTLINED_FUNCTION_11(self);
     if (*(v1 + 40))
     {
       xpc_connection_suspend(*(v1 + 40));
@@ -1125,19 +1125,19 @@ LABEL_22:
   return result;
 }
 
-- (void)setStreamingClientListener:(uint64_t)a1
+- (void)setStreamingClientListener:(uint64_t)listener
 {
-  if (a1)
+  if (listener)
   {
-    objc_storeStrong((a1 + 48), a2);
+    objc_storeStrong((listener + 48), a2);
   }
 }
 
-- (void)handleStreamXpcReply:(void *)a3 withErrorHandler:
+- (void)handleStreamXpcReply:(void *)reply withErrorHandler:
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (a1)
+  replyCopy = reply;
+  if (self)
   {
     v6 = MEMORY[0x277CCACA8];
     v7 = a2;
@@ -1183,9 +1183,9 @@ LABEL_22:
             OUTLINED_FUNCTION_12(&dword_261A9A000, v19, v20, "Error while receiving a stream : %@", buf);
           }
 
-          if (v5)
+          if (replyCopy)
           {
-            v5[2](v5, v16);
+            replyCopy[2](replyCopy, v16);
           }
         }
 
@@ -1222,7 +1222,7 @@ LABEL_22:
         }
       }
 
-      [(RMConnectionEndpoint *)a1 stopReceivingStream];
+      [(RMConnectionEndpoint *)self stopReceivingStream];
     }
 
     else if ([v8 isEqualToString:@"kRMConnectionMessageSuccess"])
@@ -1268,13 +1268,13 @@ LABEL_22:
 
 - (id)connection
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[7];
+    self = self[7];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)setConnectionDelegate:(id *)result

@@ -5,15 +5,15 @@
 + (void)load;
 - (PLSecureServiceAgent)init;
 - (void)initOperatorDependancies;
-- (void)logEventPointConnectionState:(id)a3 withEvent:(int64_t)a4;
-- (void)logEventPointPeriodicReport:(id)a3;
+- (void)logEventPointConnectionState:(id)state withEvent:(int64_t)event;
+- (void)logEventPointPeriodicReport:(id)report;
 @end
 
 @implementation PLSecureServiceAgent
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLSecureServiceAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -44,21 +44,21 @@
   v20[0] = v14;
   v19[1] = *MEMORY[0x277D3F540];
   v15[0] = @"keyId";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v16[0] = v3;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v16[0] = commonTypeDict_IntegerFormat;
   v15[1] = @"UUID";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat];
-  v16[1] = v5;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v16[1] = commonTypeDict_StringFormat;
   v15[2] = @"EventType";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v16[2] = v7;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v16[2] = commonTypeDict_IntegerFormat2;
   v15[3] = @"Confidence";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v16[3] = v9;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v16[3] = commonTypeDict_IntegerFormat3;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:4];
   v20[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
@@ -78,13 +78,13 @@
   v16[0] = v2;
   v15[1] = *MEMORY[0x277D3F540];
   v11[0] = @"ActiveConnections";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v11[1] = @"ConnectionCount";
-  v12[0] = v4;
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v12[1] = v6;
+  v12[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v12[1] = commonTypeDict_IntegerFormat2;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v16[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
@@ -140,9 +140,9 @@
       previousHash = [MEMORY[0x277CCACA8] stringWithFormat:@"PLSecureServiceAgent: failed to init"];
       v8 = MEMORY[0x277D3F178];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLSecureServiceAgent.m"];
-      v10 = [v9 lastPathComponent];
+      lastPathComponent = [v9 lastPathComponent];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLSecureServiceAgent init]"];
-      [v8 logMessage:previousHash fromFile:v10 fromFunction:v11 fromLineNumber:130];
+      [v8 logMessage:previousHash fromFile:lastPathComponent fromFunction:v11 fromLineNumber:130];
 
       v12 = PLLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -155,15 +155,15 @@
 
 LABEL_13:
     self = v4;
-    v6 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
-  v6 = 0;
+  selfCopy = 0;
 LABEL_14:
 
   v13 = *MEMORY[0x277D85DE8];
-  return v6;
+  return selfCopy;
 }
 
 uint64_t __28__PLSecureServiceAgent_init__block_invoke(uint64_t a1)
@@ -179,13 +179,13 @@ uint64_t __28__PLSecureServiceAgent_init__block_invoke(uint64_t a1)
   v4 = v3;
   v5 = objc_alloc(MEMORY[0x277D3F250]);
   v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v4];
-  v7 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __48__PLSecureServiceAgent_initOperatorDependancies__block_invoke;
   v25[3] = &unk_278259C40;
   v25[4] = self;
-  v8 = [v5 initWithFireDate:v6 withInterval:1 withTolerance:0 repeats:v7 withUserInfo:v25 withQueue:v4 withBlock:0.0];
+  v8 = [v5 initWithFireDate:v6 withInterval:1 withTolerance:0 repeats:workQueue withUserInfo:v25 withQueue:v4 withBlock:0.0];
   entriesPerHourTimer = self->_entriesPerHourTimer;
   self->_entriesPerHourTimer = v8;
 
@@ -532,18 +532,18 @@ uint64_t __48__PLSecureServiceAgent_initOperatorDependancies__block_invoke_2_131
   return result;
 }
 
-- (void)logEventPointConnectionState:(id)a3 withEvent:(int64_t)a4
+- (void)logEventPointConnectionState:(id)state withEvent:(int64_t)event
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  stateCopy = state;
+  v7 = stateCopy;
+  if (stateCopy)
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [v6 objectForKeyedSubscript:@"UUID"];
+    v9 = [stateCopy objectForKeyedSubscript:@"UUID"];
     v10 = [v8 stringWithFormat:@"%lu", objc_msgSend(v9, "hash")];
 
-    if ((a4 - 1) <= 1 && [(NSString *)self->_previousHash isEqualToString:v10]&& self->_previousEvent == a4)
+    if ((event - 1) <= 1 && [(NSString *)self->_previousHash isEqualToString:v10]&& self->_previousEvent == event)
     {
       if (![MEMORY[0x277D3F180] debugEnabled])
       {
@@ -569,9 +569,9 @@ uint64_t __48__PLSecureServiceAgent_initOperatorDependancies__block_invoke_2_131
       v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLSecureServiceAgent:: Too many connect/disconnects, avoiding duplicates=%@", v7];
       v13 = MEMORY[0x277D3F178];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLSecureServiceAgent.m"];
-      v15 = [v14 lastPathComponent];
+      lastPathComponent = [v14 lastPathComponent];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLSecureServiceAgent logEventPointConnectionState:withEvent:]"];
-      [v13 logMessage:v12 fromFile:v15 fromFunction:v16 fromLineNumber:180];
+      [v13 logMessage:v12 fromFile:lastPathComponent fromFunction:v16 fromLineNumber:180];
 
       v17 = PLLogCommon();
       if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -589,13 +589,13 @@ LABEL_32:
       goto LABEL_23;
     }
 
-    v18 = a4;
-    if (a4 != 1)
+    eventCopy = event;
+    if (event != 1)
     {
-      if (a4 != 2)
+      if (event != 2)
       {
-        v19 = a4 == 3;
-        if ((a4 - 1) >= 3)
+        v19 = event == 3;
+        if ((event - 1) >= 3)
         {
           [(PLSecureServiceAgent *)self numEntries];
           goto LABEL_26;
@@ -629,9 +629,9 @@ LABEL_17:
           v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLSecureServiceAgent:: Too many connect/disconnects=%@", v7];
           v21 = MEMORY[0x277D3F178];
           v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLSecureServiceAgent.m"];
-          v23 = [v22 lastPathComponent];
+          lastPathComponent2 = [v22 lastPathComponent];
           v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLSecureServiceAgent logEventPointConnectionState:withEvent:]"];
-          [v21 logMessage:v12 fromFile:v23 fromFunction:v24 fromLineNumber:212];
+          [v21 logMessage:v12 fromFile:lastPathComponent2 fromFunction:v24 fromLineNumber:212];
 
           v17 = PLLogCommon();
           if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -648,7 +648,7 @@ LABEL_26:
         v25 = [(PLOperator *)PLSecureServiceAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"ConnectionState"];
         v26 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v25];
         [v26 setObject:v10 forKeyedSubscript:@"keyId"];
-        v27 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+        v27 = [MEMORY[0x277CCABB0] numberWithInteger:event];
         [v26 setObject:v27 forKeyedSubscript:@"EventType"];
 
         v28 = [v7 objectForKeyedSubscript:@"PeerUUID"];
@@ -665,7 +665,7 @@ LABEL_26:
         }
 
         [(PLOperator *)self logEntry:v26];
-        self->_previousEvent = a4;
+        self->_previousEvent = event;
         objc_storeStrong(&self->_previousHash, v10);
 
         goto LABEL_29;
@@ -678,10 +678,10 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v18 = -1;
+      eventCopy = -1;
     }
 
-    [(PLSecureServiceAgent *)self setNumBTConn:[(PLSecureServiceAgent *)self numBTConn]+ v18];
+    [(PLSecureServiceAgent *)self setNumBTConn:[(PLSecureServiceAgent *)self numBTConn]+ eventCopy];
     goto LABEL_16;
   }
 
@@ -704,21 +704,21 @@ uint64_t __63__PLSecureServiceAgent_logEventPointConnectionState_withEvent___blo
   return result;
 }
 
-- (void)logEventPointPeriodicReport:(id)a3
+- (void)logEventPointPeriodicReport:(id)report
 {
-  v4 = a3;
-  if (v4)
+  reportCopy = report;
+  if (reportCopy)
   {
-    v13 = v4;
+    v13 = reportCopy;
     [(PLSecureServiceAgent *)self setPeriodicReportCount:[(PLSecureServiceAgent *)self periodicReportCount]+ 1];
     v5 = [v13 objectForKeyedSubscript:@"NumberOfActiveKeys"];
-    v6 = [v5 integerValue];
-    if (v6 == [(PLSecureServiceAgent *)self prevActiveKeys])
+    integerValue = [v5 integerValue];
+    if (integerValue == [(PLSecureServiceAgent *)self prevActiveKeys])
     {
-      v7 = [(PLSecureServiceAgent *)self periodicReportCount];
+      periodicReportCount = [(PLSecureServiceAgent *)self periodicReportCount];
 
-      v4 = v13;
-      if (v7 >= 4)
+      reportCopy = v13;
+      if (periodicReportCount >= 4)
       {
         goto LABEL_7;
       }
@@ -740,7 +740,7 @@ uint64_t __63__PLSecureServiceAgent_logEventPointConnectionState_withEvent___blo
     [v10 setObject:v12 forKeyedSubscript:@"ConnectionCount"];
 
     [(PLOperator *)self logEntry:v10];
-    v4 = v13;
+    reportCopy = v13;
   }
 
 LABEL_7:

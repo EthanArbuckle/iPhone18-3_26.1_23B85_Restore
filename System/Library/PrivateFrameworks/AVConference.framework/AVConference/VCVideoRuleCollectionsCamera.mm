@@ -1,9 +1,9 @@
 @interface VCVideoRuleCollectionsCamera
-- (BOOL)getBestFrameWidth:(int *)a3 frameHeight:(int *)a4 frameRate:(float *)a5;
+- (BOOL)getBestFrameWidth:(int *)width frameHeight:(int *)height frameRate:(float *)rate;
 - (BOOL)isHiDefCapable;
 - (BOOL)setupH264CellularRules;
-- (id)bestVideoRuleForEncodingType:(unsigned __int8)a3 aspectRatio:(double)a4;
-- (id)bestVideoRuleForEncodingType:(unsigned __int8)a3 aspectRatio:(double)a4 payload:(int)a5;
+- (id)bestVideoRuleForEncodingType:(unsigned __int8)type aspectRatio:(double)ratio;
+- (id)bestVideoRuleForEncodingType:(unsigned __int8)type aspectRatio:(double)ratio payload:(int)payload;
 - (void)setupH264CellularRules;
 @end
 
@@ -178,14 +178,14 @@ LABEL_13:
   return v25;
 }
 
-- (id)bestVideoRuleForEncodingType:(unsigned __int8)a3 aspectRatio:(double)a4 payload:(int)a5
+- (id)bestVideoRuleForEncodingType:(unsigned __int8)type aspectRatio:(double)ratio payload:(int)payload
 {
   v36 = *MEMORY[0x1E69E9840];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = [-[VCVideoRuleCollections getVideoRulesForTransport:payload:encodingType:](self getVideoRulesForTransport:1 payload:*&a5 encodingType:{a3), "reverseObjectEnumerator"}];
+  v7 = [-[VCVideoRuleCollections getVideoRulesForTransport:payload:encodingType:](self getVideoRulesForTransport:1 payload:*&payload encodingType:{type), "reverseObjectEnumerator"}];
   v8 = [v7 countByEnumeratingWithState:&v32 objects:v31 count:16];
   if (v8)
   {
@@ -201,7 +201,7 @@ LABEL_3:
       }
 
       v12 = *(*(&v32 + 1) + 8 * v11);
-      if (a4 == -1.0 || vabdd_f64([*(*(&v32 + 1) + 8 * v11) iWidth] / objc_msgSend(v12, "iHeight"), a4) < 0.00000011920929)
+      if (ratio == -1.0 || vabdd_f64([*(*(&v32 + 1) + 8 * v11) iWidth] / objc_msgSend(v12, "iHeight"), ratio) < 0.00000011920929)
       {
         break;
       }
@@ -239,11 +239,11 @@ LABEL_3:
           v23 = 1024;
           v24 = 122;
           v25 = 2080;
-          v26 = COERCE_DOUBLE([objc_msgSend(v12 "description")]);
+          ratioCopy3 = COERCE_DOUBLE([objc_msgSend(v12 "description")]);
           v27 = 2048;
-          v28 = a4;
+          ratioCopy2 = ratio;
           v29 = 1024;
-          v30 = a5;
+          payloadCopy2 = payload;
           _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Best video settings %s for aspect ratio=%g payload=%d", &v19, 0x36u);
         }
       }
@@ -257,11 +257,11 @@ LABEL_3:
         v23 = 1024;
         v24 = 122;
         v25 = 2080;
-        v26 = COERCE_DOUBLE([objc_msgSend(v12 "description")]);
+        ratioCopy3 = COERCE_DOUBLE([objc_msgSend(v12 "description")]);
         v27 = 2048;
-        v28 = a4;
+        ratioCopy2 = ratio;
         v29 = 1024;
-        v30 = a5;
+        payloadCopy2 = payload;
         _os_log_debug_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEBUG, " [%s] %s:%d Best video settings %s for aspect ratio=%g payload=%d", &v19, 0x36u);
       }
     }
@@ -283,9 +283,9 @@ LABEL_16:
         v23 = 1024;
         v24 = 120;
         v25 = 2048;
-        v26 = a4;
+        ratioCopy3 = ratio;
         v27 = 1024;
-        LODWORD(v28) = a5;
+        LODWORD(ratioCopy2) = payload;
         _os_log_impl(&dword_1DB56E000, v17, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d not able to find for aspect ratio=%g payload=%d", &v19, 0x2Cu);
       }
     }
@@ -296,15 +296,15 @@ LABEL_16:
   return v12;
 }
 
-- (id)bestVideoRuleForEncodingType:(unsigned __int8)a3 aspectRatio:(double)a4
+- (id)bestVideoRuleForEncodingType:(unsigned __int8)type aspectRatio:(double)ratio
 {
-  v5 = a3;
-  v7 = [(VCVideoRuleCollectionsCamera *)self bestVideoRuleForEncodingType:a3 aspectRatio:123 payload:?];
-  v8 = [(VCVideoRuleCollectionsCamera *)self bestVideoRuleForEncodingType:v5 aspectRatio:100 payload:a4];
-  if (a4 != -1.0 && v7 == 0 && v8 == 0)
+  typeCopy = type;
+  v7 = [(VCVideoRuleCollectionsCamera *)self bestVideoRuleForEncodingType:type aspectRatio:123 payload:?];
+  v8 = [(VCVideoRuleCollectionsCamera *)self bestVideoRuleForEncodingType:typeCopy aspectRatio:100 payload:ratio];
+  if (ratio != -1.0 && v7 == 0 && v8 == 0)
   {
-    v7 = [(VCVideoRuleCollectionsCamera *)self bestVideoRuleForEncodingType:v5 aspectRatio:123 payload:?];
-    v8 = [(VCVideoRuleCollectionsCamera *)self bestVideoRuleForEncodingType:v5 aspectRatio:100 payload:-1.0];
+    v7 = [(VCVideoRuleCollectionsCamera *)self bestVideoRuleForEncodingType:typeCopy aspectRatio:123 payload:?];
+    v8 = [(VCVideoRuleCollectionsCamera *)self bestVideoRuleForEncodingType:typeCopy aspectRatio:100 payload:-1.0];
   }
 
   v11 = v8;
@@ -313,10 +313,10 @@ LABEL_16:
     return v7;
   }
 
-  v12 = [v8 iWidth];
-  v13 = [v11 iHeight] * v12;
-  v14 = [v7 iWidth];
-  if (v13 < ([v7 iHeight] * v14))
+  iWidth = [v8 iWidth];
+  v13 = [v11 iHeight] * iWidth;
+  iWidth2 = [v7 iWidth];
+  if (v13 < ([v7 iHeight] * iWidth2))
   {
     return v7;
   }
@@ -347,12 +347,12 @@ LABEL_16:
   return v2 & 1;
 }
 
-- (BOOL)getBestFrameWidth:(int *)a3 frameHeight:(int *)a4 frameRate:(float *)a5
+- (BOOL)getBestFrameWidth:(int *)width frameHeight:(int *)height frameRate:(float *)rate
 {
   *&v38[7] = *MEMORY[0x1E69E9840];
-  if (*a4)
+  if (*height)
   {
-    v9 = *a3 / *a4;
+    v9 = *width / *height;
   }
 
   else
@@ -370,8 +370,8 @@ LABEL_16:
     {
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = *a3;
-        v15 = *a4;
+        v14 = *width;
+        v15 = *height;
         v27 = 136316418;
         v28 = v11;
         v29 = 2080;
@@ -390,8 +390,8 @@ LABEL_16:
 
     else if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v25 = *a3;
-      v26 = *a4;
+      v25 = *width;
+      v26 = *height;
       v27 = 136316418;
       v28 = v11;
       v29 = 2080;
@@ -412,17 +412,17 @@ LABEL_16:
   v17 = v16;
   if (v16)
   {
-    if (a3)
+    if (width)
     {
-      *a3 = [v16 iWidth];
+      *width = [v16 iWidth];
     }
 
-    *a4 = [v17 iHeight];
-    if (a5)
+    *height = [v17 iHeight];
+    if (rate)
     {
       [v17 fRate];
-      *a5 = v18;
-      if (a3)
+      *rate = v18;
+      if (width)
       {
         if (VRTraceGetErrorLogLevelForModule() >= 7)
         {
@@ -430,9 +430,9 @@ LABEL_16:
           v20 = *MEMORY[0x1E6986650];
           if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
           {
-            v21 = *a3;
-            v22 = *a4;
-            v23 = *a5;
+            v21 = *width;
+            v22 = *height;
+            v23 = *rate;
             v27 = 136316674;
             v28 = v19;
             v29 = 2080;

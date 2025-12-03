@@ -1,8 +1,8 @@
 @interface BEContentCleanupJSOptions
 + (id)expandedContentOptions;
-+ (id)fixedLayoutOptionsWithLanguage:(id)a3;
++ (id)fixedLayoutOptionsWithLanguage:(id)language;
 - (BEContentCleanupJSOptions)init;
-- (BEContentCleanupJSOptions)initWithMode:(unint64_t)a3 useNewTextStyling:(BOOL)a4 fontFamily:(id)a5 language:(id)a6 respectImageSizeClass:(id)a7 respectImageSizeClassIsPrefix:(BOOL)a8 hasBuiltInFonts:(BOOL)a9 justification:(unint64_t)a10 fontWeight:(unint64_t)a11 overrideLineHeight:(BOOL)a12 overrideLetterSpacing:(BOOL)a13 overrideWordSpacing:(BOOL)a14 readingMode:(unint64_t)a15;
+- (BEContentCleanupJSOptions)initWithMode:(unint64_t)mode useNewTextStyling:(BOOL)styling fontFamily:(id)family language:(id)language respectImageSizeClass:(id)class respectImageSizeClassIsPrefix:(BOOL)prefix hasBuiltInFonts:(BOOL)fonts justification:(unint64_t)self0 fontWeight:(unint64_t)self1 overrideLineHeight:(BOOL)self2 overrideLetterSpacing:(BOOL)self3 overrideWordSpacing:(BOOL)self4 readingMode:(unint64_t)self5;
 - (NSString)jsonRepresentation;
 - (id)_dictionaryRepresentation;
 - (id)description;
@@ -18,51 +18,51 @@
   return [BEContentCleanupJSOptions initWithMode:"initWithMode:useNewTextStyling:fontFamily:language:respectImageSizeClass:respectImageSizeClassIsPrefix:hasBuiltInFonts:justification:fontWeight:overrideLineHeight:overrideLetterSpacing:overrideWordSpacing:readingMode:" useNewTextStyling:0 fontFamily:0 language:&stru_33E120 respectImageSizeClass:&stru_33E120 respectImageSizeClassIsPrefix:&stru_33E120 hasBuiltInFonts:0 justification:v3 fontWeight:0 overrideLineHeight:0 overrideLetterSpacing:v4 overrideWordSpacing:0 readingMode:?];
 }
 
-- (BEContentCleanupJSOptions)initWithMode:(unint64_t)a3 useNewTextStyling:(BOOL)a4 fontFamily:(id)a5 language:(id)a6 respectImageSizeClass:(id)a7 respectImageSizeClassIsPrefix:(BOOL)a8 hasBuiltInFonts:(BOOL)a9 justification:(unint64_t)a10 fontWeight:(unint64_t)a11 overrideLineHeight:(BOOL)a12 overrideLetterSpacing:(BOOL)a13 overrideWordSpacing:(BOOL)a14 readingMode:(unint64_t)a15
+- (BEContentCleanupJSOptions)initWithMode:(unint64_t)mode useNewTextStyling:(BOOL)styling fontFamily:(id)family language:(id)language respectImageSizeClass:(id)class respectImageSizeClassIsPrefix:(BOOL)prefix hasBuiltInFonts:(BOOL)fonts justification:(unint64_t)self0 fontWeight:(unint64_t)self1 overrideLineHeight:(BOOL)self2 overrideLetterSpacing:(BOOL)self3 overrideWordSpacing:(BOOL)self4 readingMode:(unint64_t)self5
 {
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
+  familyCopy = family;
+  languageCopy = language;
+  classCopy = class;
   v33.receiver = self;
   v33.super_class = BEContentCleanupJSOptions;
   v24 = [(BEContentCleanupJSOptions *)&v33 init];
   v25 = v24;
   if (v24)
   {
-    v24->_mode = a3;
-    v24->_useNewTextStyling = a4;
-    v26 = [v21 copy];
+    v24->_mode = mode;
+    v24->_useNewTextStyling = styling;
+    v26 = [familyCopy copy];
     fontFamily = v25->_fontFamily;
     v25->_fontFamily = v26;
 
-    v28 = [v22 copy];
+    v28 = [languageCopy copy];
     language = v25->_language;
     v25->_language = v28;
 
-    v30 = [v23 copy];
+    v30 = [classCopy copy];
     respectImageSizeClass = v25->_respectImageSizeClass;
     v25->_respectImageSizeClass = v30;
 
-    v25->_respectImageSizeClassIsPrefix = a8;
-    v25->_hasBuiltInFonts = a9;
-    v25->_justification = a10;
-    v25->_fontWeight = a11;
-    v25->_overrideLineHeight = a12;
-    v25->_overrideLetterSpacing = a13;
-    v25->_overrideWordSpacing = a14;
-    v25->_readingMode = a15;
+    v25->_respectImageSizeClassIsPrefix = prefix;
+    v25->_hasBuiltInFonts = fonts;
+    v25->_justification = justification;
+    v25->_fontWeight = weight;
+    v25->_overrideLineHeight = height;
+    v25->_overrideLetterSpacing = spacing;
+    v25->_overrideWordSpacing = wordSpacing;
+    v25->_readingMode = readingMode;
   }
 
   return v25;
 }
 
-+ (id)fixedLayoutOptionsWithLanguage:(id)a3
++ (id)fixedLayoutOptionsWithLanguage:(id)language
 {
-  v3 = a3;
+  languageCopy = language;
   BYTE2(v7) = 0;
   LOWORD(v7) = 0;
   LOBYTE(v6) = 0;
-  v4 = [BEContentCleanupJSOptions initWithMode:"initWithMode:useNewTextStyling:fontFamily:language:respectImageSizeClass:respectImageSizeClassIsPrefix:hasBuiltInFonts:justification:fontWeight:overrideLineHeight:overrideLetterSpacing:overrideWordSpacing:readingMode:" useNewTextStyling:3 fontFamily:0 language:0 respectImageSizeClass:v3 respectImageSizeClassIsPrefix:0 hasBuiltInFonts:0 justification:v6 fontWeight:0 overrideLineHeight:0 overrideLetterSpacing:v7 overrideWordSpacing:0 readingMode:?];
+  v4 = [BEContentCleanupJSOptions initWithMode:"initWithMode:useNewTextStyling:fontFamily:language:respectImageSizeClass:respectImageSizeClassIsPrefix:hasBuiltInFonts:justification:fontWeight:overrideLineHeight:overrideLetterSpacing:overrideWordSpacing:readingMode:" useNewTextStyling:3 fontFamily:0 language:0 respectImageSizeClass:languageCopy respectImageSizeClassIsPrefix:0 hasBuiltInFonts:0 justification:v6 fontWeight:0 overrideLineHeight:0 overrideLetterSpacing:v7 overrideWordSpacing:0 readingMode:?];
 
   return v4;
 }
@@ -100,8 +100,8 @@ LABEL_5:
 
   if ([(BEContentCleanupJSOptions *)self overrideFontFamily])
   {
-    v10 = [(NSString *)self->_fontFamily be_sanitizedFontFamilyName];
-    v6 = [NSString stringWithFormat:@"iBooks_%@", v10];
+    be_sanitizedFontFamilyName = [(NSString *)self->_fontFamily be_sanitizedFontFamilyName];
+    v6 = [NSString stringWithFormat:@"iBooks_%@", be_sanitizedFontFamilyName];
 
     [v3 setObject:v6 forKeyedSubscript:@"fontFamily"];
     v9 = &__kCFBooleanTrue;
@@ -192,9 +192,9 @@ LABEL_23:
 
 - (NSString)jsonRepresentation
 {
-  v2 = [(BEContentCleanupJSOptions *)self _dictionaryRepresentation];
+  _dictionaryRepresentation = [(BEContentCleanupJSOptions *)self _dictionaryRepresentation];
   v6 = 0;
-  v3 = [NSJSONSerialization dataWithJSONObject:v2 options:0 error:&v6];
+  v3 = [NSJSONSerialization dataWithJSONObject:_dictionaryRepresentation options:0 error:&v6];
 
   if ([v3 length])
   {
@@ -213,15 +213,15 @@ LABEL_23:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(BEContentCleanupJSOptions *)self mode];
-  if (v5 - 1 > 2)
+  mode = [(BEContentCleanupJSOptions *)self mode];
+  if (mode - 1 > 2)
   {
     v6 = @"unknown";
   }
 
   else
   {
-    v6 = off_3289D0[v5 - 1];
+    v6 = off_3289D0[mode - 1];
   }
 
   v30 = v6;
@@ -237,43 +237,43 @@ LABEL_23:
   }
 
   v28 = v8;
-  v33 = [(BEContentCleanupJSOptions *)self fontFamily];
-  v32 = [v33 length];
+  fontFamily = [(BEContentCleanupJSOptions *)self fontFamily];
+  v32 = [fontFamily length];
   if (v32)
   {
-    v9 = [(BEContentCleanupJSOptions *)self fontFamily];
+    fontFamily2 = [(BEContentCleanupJSOptions *)self fontFamily];
   }
 
   else
   {
-    v9 = @"original";
+    fontFamily2 = @"original";
   }
 
-  v29 = [(BEContentCleanupJSOptions *)self language];
-  v27 = [v29 length];
+  language = [(BEContentCleanupJSOptions *)self language];
+  v27 = [language length];
   if (v27)
   {
-    v10 = [(BEContentCleanupJSOptions *)self language];
+    language2 = [(BEContentCleanupJSOptions *)self language];
   }
 
   else
   {
-    v10 = @"{unset}";
+    language2 = @"{unset}";
   }
 
-  v11 = [(BEContentCleanupJSOptions *)self respectImageSizeClass];
-  v12 = [v11 length];
+  respectImageSizeClass = [(BEContentCleanupJSOptions *)self respectImageSizeClass];
+  v12 = [respectImageSizeClass length];
   v34 = v4;
-  v31 = v9;
-  v26 = v10;
+  v31 = fontFamily2;
+  v26 = language2;
   if (v12)
   {
-    v25 = [(BEContentCleanupJSOptions *)self respectImageSizeClass];
+    respectImageSizeClass2 = [(BEContentCleanupJSOptions *)self respectImageSizeClass];
   }
 
   else
   {
-    v25 = @"{unset}";
+    respectImageSizeClass2 = @"{unset}";
   }
 
   v13 = @"NO";
@@ -282,27 +282,27 @@ LABEL_23:
     v7 = @"YES";
   }
 
-  v14 = [(BEContentCleanupJSOptions *)self justification];
+  justification = [(BEContentCleanupJSOptions *)self justification];
   v15 = @"full-justify";
-  if (v14 != 1)
+  if (justification != 1)
   {
     v15 = @"unset";
   }
 
-  if (v14 == 2)
+  if (justification == 2)
   {
     v15 = @"no-justify";
   }
 
   v16 = v15;
-  v17 = [(BEContentCleanupJSOptions *)self fontWeight];
+  fontWeight = [(BEContentCleanupJSOptions *)self fontWeight];
   v18 = @"light";
-  if (v17 != 1)
+  if (fontWeight != 1)
   {
     v18 = @"unset";
   }
 
-  if (v17 == 2)
+  if (fontWeight == 2)
   {
     v18 = @"heavy";
   }
@@ -334,7 +334,7 @@ LABEL_23:
   }
 
   v22 = [NSNumber numberWithUnsignedInteger:[(BEContentCleanupJSOptions *)self readingMode]];
-  v23 = [NSString stringWithFormat:@"<%@ %p mode=%@ useNewTextStyling=%@ fontFamily=%@ language=%@respectImageSizeClass=%@ respectImageSizeClassIsPrefix=%@ justification=%@ fontWeight=%@ overrideLineHeight=%@ overrideLetterSpacing=%@ overrideWordSpacing=%@ readingMode=%@>", v34, self, v30, v28, v31, v26, v25, v7, v16, v19, v20, v21, v13, v22];
+  v23 = [NSString stringWithFormat:@"<%@ %p mode=%@ useNewTextStyling=%@ fontFamily=%@ language=%@respectImageSizeClass=%@ respectImageSizeClassIsPrefix=%@ justification=%@ fontWeight=%@ overrideLineHeight=%@ overrideLetterSpacing=%@ overrideWordSpacing=%@ readingMode=%@>", v34, self, v30, v28, v31, v26, respectImageSizeClass2, v7, v16, v19, v20, v21, v13, v22];
 
   if (v12)
   {

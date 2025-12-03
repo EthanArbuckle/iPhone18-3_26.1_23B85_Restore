@@ -1,12 +1,12 @@
 @interface CFNetworkDiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation CFNetworkDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(v20) = 0;
@@ -15,7 +15,7 @@
 
   v4 = [[OSLogPreferencesSubsystem alloc] initWithName:@"com.apple.CFNetwork"];
   v5 = [[OSLogPreferencesCategory alloc] initWithName:@"HAR" subsystem:v4];
-  v6 = [v3 objectForKeyedSubscript:@"pathDenialList"];
+  v6 = [parametersCopy objectForKeyedSubscript:@"pathDenialList"];
   if (v6)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -38,7 +38,7 @@
   }
 
   CFPreferencesSetValue(@"har-path-denial-list", v9, @"com.apple.CFNetwork", v7, v8);
-  v10 = [v3 objectForKeyedSubscript:@"bodySizeLimit"];
+  v10 = [parametersCopy objectForKeyedSubscript:@"bodySizeLimit"];
   if (v10)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -57,7 +57,7 @@
   }
 
   CFPreferencesSetValue(@"har-body-size-limit", v11, @"com.apple.CFNetwork", v7, v8);
-  v12 = [v3 objectForKeyedSubscript:@"hostDenialList"];
+  v12 = [parametersCopy objectForKeyedSubscript:@"hostDenialList"];
   if (v12)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -76,8 +76,8 @@
   }
 
   CFPreferencesSetValue(@"har-host-denial-list", v13, @"com.apple.CFNetwork", v7, v8);
-  v14 = [v3 objectForKeyedSubscript:@"captureType"];
-  v15 = [v3 objectForKeyedSubscript:@"harCaptureTime"];
+  v14 = [parametersCopy objectForKeyedSubscript:@"captureType"];
+  v15 = [parametersCopy objectForKeyedSubscript:@"harCaptureTime"];
   [v15 doubleValue];
   v17 = v16;
 

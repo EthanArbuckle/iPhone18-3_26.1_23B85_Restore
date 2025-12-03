@@ -1,40 +1,40 @@
 @interface ATXAppDirectoryEvent
-+ (id)_objectForKey:(id)a3 classType:(Class)a4 fromMetadata:(id)a5;
-+ (id)appDirectoryEventWithEventType:(unint64_t)a3 metadata:(id)a4;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXAppDirectoryEvent)initWithAbsoluteDate:(double)a3 eventType:(unint64_t)a4 categoryID:(id)a5 categoryIndex:(id)a6 bundleId:(id)a7 bundleIndex:(id)a8 searchQueryLength:(id)a9 searchTab:(id)a10 blendingCacheUUID:(id)a11 shownSuggestionIds:(id)a12 engagedSuggestionIds:(id)a13 metadata:(id)a14;
-- (ATXAppDirectoryEvent)initWithCoder:(id)a3;
-- (ATXAppDirectoryEvent)initWithDate:(id)a3 eventType:(unint64_t)a4 categoryID:(id)a5 categoryIndex:(id)a6 bundleId:(id)a7 bundleIndex:(id)a8 searchQueryLength:(id)a9 searchTab:(id)a10 blendingCacheUUID:(id)a11 shownSuggestionIds:(id)a12 engagedSuggestionIds:(id)a13 metadata:(id)a14;
-- (ATXAppDirectoryEvent)initWithProto:(id)a3;
-- (ATXAppDirectoryEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXAppDirectoryEvent:(id)a3;
++ (id)_objectForKey:(id)key classType:(Class)type fromMetadata:(id)metadata;
++ (id)appDirectoryEventWithEventType:(unint64_t)type metadata:(id)metadata;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXAppDirectoryEvent)initWithAbsoluteDate:(double)date eventType:(unint64_t)type categoryID:(id)d categoryIndex:(id)index bundleId:(id)id bundleIndex:(id)bundleIndex searchQueryLength:(id)length searchTab:(id)self0 blendingCacheUUID:(id)self1 shownSuggestionIds:(id)self2 engagedSuggestionIds:(id)self3 metadata:(id)self4;
+- (ATXAppDirectoryEvent)initWithCoder:(id)coder;
+- (ATXAppDirectoryEvent)initWithDate:(id)date eventType:(unint64_t)type categoryID:(id)d categoryIndex:(id)index bundleId:(id)id bundleIndex:(id)bundleIndex searchQueryLength:(id)length searchTab:(id)self0 blendingCacheUUID:(id)self1 shownSuggestionIds:(id)self2 engagedSuggestionIds:(id)self3 metadata:(id)self4;
+- (ATXAppDirectoryEvent)initWithProto:(id)proto;
+- (ATXAppDirectoryEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXAppDirectoryEvent:(id)event;
 - (NSDate)date;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
-- (id)sessionProcessingOptionsForSessionType:(int64_t)a3;
+- (id)sessionProcessingOptionsForSessionType:(int64_t)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateUIFeedbackSession:(id)a3 uiCacheConsumerSubType:(unsigned __int8)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateUIFeedbackSession:(id)session uiCacheConsumerSubType:(unsigned __int8)type;
 @end
 
 @implementation ATXAppDirectoryEvent
 
-+ (id)appDirectoryEventWithEventType:(unint64_t)a3 metadata:(id)a4
++ (id)appDirectoryEventWithEventType:(unint64_t)type metadata:(id)metadata
 {
-  v6 = a4;
-  v7 = [a1 _objectForKey:@"kATXAppDirectoryLoggingDate" classType:objc_opt_class() fromMetadata:v6];
+  metadataCopy = metadata;
+  v7 = [self _objectForKey:@"kATXAppDirectoryLoggingDate" classType:objc_opt_class() fromMetadata:metadataCopy];
   if (v7)
   {
-    v8 = [a1 _objectForKey:@"kATXAppDirectoryLoggingCategoryID" classType:objc_opt_class() fromMetadata:v6];
-    v9 = [a1 _objectForKey:@"kATXAppDirectoryLoggingCategoryIndex" classType:objc_opt_class() fromMetadata:v6];
-    v10 = [a1 _objectForKey:@"kATXAppDirectoryLoggingBundleID" classType:objc_opt_class() fromMetadata:v6];
-    v11 = [a1 _objectForKey:@"kATXAppDirectoryLoggingBundleIndex" classType:objc_opt_class() fromMetadata:v6];
-    v12 = [a1 _objectForKey:@"kATXAppDirectoryLoggingSearchQueryLength" classType:objc_opt_class() fromMetadata:v6];
-    v13 = [a1 _objectForKey:@"kATXAppDirectoryLoggingSearchTab" classType:objc_opt_class() fromMetadata:v6];
-    v14 = [[ATXAppDirectoryEvent alloc] initWithDate:v7 eventType:a3 categoryID:v8 categoryIndex:v9 bundleId:v10 bundleIndex:v11 searchQueryLength:v12 searchTab:v13 blendingCacheUUID:0 shownSuggestionIds:0 engagedSuggestionIds:0 metadata:0];
+    v8 = [self _objectForKey:@"kATXAppDirectoryLoggingCategoryID" classType:objc_opt_class() fromMetadata:metadataCopy];
+    v9 = [self _objectForKey:@"kATXAppDirectoryLoggingCategoryIndex" classType:objc_opt_class() fromMetadata:metadataCopy];
+    v10 = [self _objectForKey:@"kATXAppDirectoryLoggingBundleID" classType:objc_opt_class() fromMetadata:metadataCopy];
+    v11 = [self _objectForKey:@"kATXAppDirectoryLoggingBundleIndex" classType:objc_opt_class() fromMetadata:metadataCopy];
+    v12 = [self _objectForKey:@"kATXAppDirectoryLoggingSearchQueryLength" classType:objc_opt_class() fromMetadata:metadataCopy];
+    v13 = [self _objectForKey:@"kATXAppDirectoryLoggingSearchTab" classType:objc_opt_class() fromMetadata:metadataCopy];
+    v14 = [[ATXAppDirectoryEvent alloc] initWithDate:v7 eventType:type categoryID:v8 categoryIndex:v9 bundleId:v10 bundleIndex:v11 searchQueryLength:v12 searchTab:v13 blendingCacheUUID:0 shownSuggestionIds:0 engagedSuggestionIds:0 metadata:0];
   }
 
   else
@@ -45,56 +45,56 @@
   return v14;
 }
 
-- (ATXAppDirectoryEvent)initWithDate:(id)a3 eventType:(unint64_t)a4 categoryID:(id)a5 categoryIndex:(id)a6 bundleId:(id)a7 bundleIndex:(id)a8 searchQueryLength:(id)a9 searchTab:(id)a10 blendingCacheUUID:(id)a11 shownSuggestionIds:(id)a12 engagedSuggestionIds:(id)a13 metadata:(id)a14
+- (ATXAppDirectoryEvent)initWithDate:(id)date eventType:(unint64_t)type categoryID:(id)d categoryIndex:(id)index bundleId:(id)id bundleIndex:(id)bundleIndex searchQueryLength:(id)length searchTab:(id)self0 blendingCacheUUID:(id)self1 shownSuggestionIds:(id)self2 engagedSuggestionIds:(id)self3 metadata:(id)self4
 {
-  v18 = a14;
-  v19 = a13;
-  v20 = a12;
-  v21 = a11;
-  v22 = a10;
-  v23 = a9;
-  v24 = a8;
-  v25 = a7;
-  v26 = a6;
-  v27 = a5;
-  [a3 timeIntervalSince1970];
-  v32 = [(ATXAppDirectoryEvent *)self initWithAbsoluteDate:a4 eventType:v27 categoryID:v26 categoryIndex:v25 bundleId:v24 bundleIndex:v23 searchQueryLength:v22 searchTab:v21 blendingCacheUUID:v20 shownSuggestionIds:v19 engagedSuggestionIds:v18 metadata:?];
+  metadataCopy = metadata;
+  suggestionIdsCopy = suggestionIds;
+  idsCopy = ids;
+  iDCopy = iD;
+  tabCopy = tab;
+  lengthCopy = length;
+  bundleIndexCopy = bundleIndex;
+  idCopy = id;
+  indexCopy = index;
+  dCopy = d;
+  [date timeIntervalSince1970];
+  v32 = [(ATXAppDirectoryEvent *)self initWithAbsoluteDate:type eventType:dCopy categoryID:indexCopy categoryIndex:idCopy bundleId:bundleIndexCopy bundleIndex:lengthCopy searchQueryLength:tabCopy searchTab:iDCopy blendingCacheUUID:idsCopy shownSuggestionIds:suggestionIdsCopy engagedSuggestionIds:metadataCopy metadata:?];
 
   return v32;
 }
 
-- (ATXAppDirectoryEvent)initWithAbsoluteDate:(double)a3 eventType:(unint64_t)a4 categoryID:(id)a5 categoryIndex:(id)a6 bundleId:(id)a7 bundleIndex:(id)a8 searchQueryLength:(id)a9 searchTab:(id)a10 blendingCacheUUID:(id)a11 shownSuggestionIds:(id)a12 engagedSuggestionIds:(id)a13 metadata:(id)a14
+- (ATXAppDirectoryEvent)initWithAbsoluteDate:(double)date eventType:(unint64_t)type categoryID:(id)d categoryIndex:(id)index bundleId:(id)id bundleIndex:(id)bundleIndex searchQueryLength:(id)length searchTab:(id)self0 blendingCacheUUID:(id)self1 shownSuggestionIds:(id)self2 engagedSuggestionIds:(id)self3 metadata:(id)self4
 {
-  v36 = a5;
-  obj = a6;
-  v35 = a6;
-  v29 = a7;
-  v34 = a7;
-  v33 = a8;
-  v32 = a9;
-  v31 = a10;
-  v20 = a11;
-  v21 = a12;
-  v22 = a13;
-  v23 = a14;
+  dCopy = d;
+  obj = index;
+  indexCopy = index;
+  idCopy = id;
+  idCopy2 = id;
+  bundleIndexCopy = bundleIndex;
+  lengthCopy = length;
+  tabCopy = tab;
+  iDCopy = iD;
+  idsCopy = ids;
+  suggestionIdsCopy = suggestionIds;
+  metadataCopy = metadata;
   v37.receiver = self;
   v37.super_class = ATXAppDirectoryEvent;
   v24 = [(ATXAppDirectoryEvent *)&v37 init];
   v25 = v24;
   if (v24)
   {
-    v24->_absoluteDate = a3;
-    v24->_eventType = a4;
-    objc_storeStrong(&v24->_categoryID, a5);
+    v24->_absoluteDate = date;
+    v24->_eventType = type;
+    objc_storeStrong(&v24->_categoryID, d);
     objc_storeStrong(&v25->_categoryIndex, obj);
-    objc_storeStrong(&v25->_bundleId, v29);
-    objc_storeStrong(&v25->_bundleIndex, a8);
-    objc_storeStrong(&v25->_searchQueryLength, a9);
-    objc_storeStrong(&v25->_searchTab, a10);
-    objc_storeStrong(&v25->_blendingCacheUUID, a11);
-    objc_storeStrong(&v25->_shownSuggestionIds, a12);
-    objc_storeStrong(&v25->_engagedSuggestionIds, a13);
-    objc_storeStrong(&v25->_metadata, a14);
+    objc_storeStrong(&v25->_bundleId, idCopy);
+    objc_storeStrong(&v25->_bundleIndex, bundleIndex);
+    objc_storeStrong(&v25->_searchQueryLength, length);
+    objc_storeStrong(&v25->_searchTab, tab);
+    objc_storeStrong(&v25->_blendingCacheUUID, iD);
+    objc_storeStrong(&v25->_shownSuggestionIds, ids);
+    objc_storeStrong(&v25->_engagedSuggestionIds, suggestionIds);
+    objc_storeStrong(&v25->_metadata, metadata);
   }
 
   return v25;
@@ -107,9 +107,9 @@
   return v2;
 }
 
-+ (id)_objectForKey:(id)a3 classType:(Class)a4 fromMetadata:(id)a5
++ (id)_objectForKey:(id)key classType:(Class)type fromMetadata:(id)metadata
 {
-  v5 = [a5 objectForKey:a3];
+  v5 = [metadata objectForKey:key];
   if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v6 = v5;
@@ -123,7 +123,7 @@
   return v6;
 }
 
-- (id)sessionProcessingOptionsForSessionType:(int64_t)a3
+- (id)sessionProcessingOptionsForSessionType:(int64_t)type
 {
   v3 = self->_eventType - 1;
   if (v3 > 8)
@@ -137,20 +137,20 @@
   }
 }
 
-- (void)updateUIFeedbackSession:(id)a3 uiCacheConsumerSubType:(unsigned __int8)a4
+- (void)updateUIFeedbackSession:(id)session uiCacheConsumerSubType:(unsigned __int8)type
 {
-  v13 = a3;
-  v5 = [v13 sessionMetadata];
+  sessionCopy = session;
+  sessionMetadata = [sessionCopy sessionMetadata];
 
-  if (v5)
+  if (sessionMetadata)
   {
-    v6 = [v13 sessionMetadata];
+    sessionMetadata2 = [sessionCopy sessionMetadata];
   }
 
   else
   {
-    v6 = objc_opt_new();
-    [v13 updateSessionMetadataIfUnset:v6];
+    sessionMetadata2 = objc_opt_new();
+    [sessionCopy updateSessionMetadataIfUnset:sessionMetadata2];
   }
 
   eventType = self->_eventType;
@@ -161,10 +161,10 @@
       goto LABEL_17;
     }
 
-    [v13 updateEngagedUUIDs:self->_engagedSuggestionIds rejectedUUIDs:0 shownUUIDs:self->_shownSuggestionIds];
-    [v6 setEngagedBundleId:self->_bundleId];
-    v9 = [(ATXAppDirectoryEventMetadata *)self->_metadata bundleIdInTopAppsVisible];
-    [v6 setEngagedBundleIdInTopAppsVisible:v9];
+    [sessionCopy updateEngagedUUIDs:self->_engagedSuggestionIds rejectedUUIDs:0 shownUUIDs:self->_shownSuggestionIds];
+    [sessionMetadata2 setEngagedBundleId:self->_bundleId];
+    bundleIdInTopAppsVisible = [(ATXAppDirectoryEventMetadata *)self->_metadata bundleIdInTopAppsVisible];
+    [sessionMetadata2 setEngagedBundleIdInTopAppsVisible:bundleIdInTopAppsVisible];
 
     goto LABEL_11;
   }
@@ -174,33 +174,33 @@
     metadata = self->_metadata;
     if (metadata)
     {
-      v11 = [(ATXAppDirectoryEventMetadata *)metadata userLaunchedAppBeforeLeaving];
-      v12 = [v11 BOOLValue];
+      userLaunchedAppBeforeLeaving = [(ATXAppDirectoryEventMetadata *)metadata userLaunchedAppBeforeLeaving];
+      bOOLValue = [userLaunchedAppBeforeLeaving BOOLValue];
 
-      if ((v12 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
-        [v13 updateEngagedUUIDs:0 rejectedUUIDs:0 shownUUIDs:self->_shownSuggestionIds];
+        [sessionCopy updateEngagedUUIDs:0 rejectedUUIDs:0 shownUUIDs:self->_shownSuggestionIds];
 LABEL_11:
-        [v13 updateConsumerSubTypeIfUnset:35];
-        [v13 updateBlendingUICacheUpdateUUIDIfUnset:self->_blendingCacheUUID];
+        [sessionCopy updateConsumerSubTypeIfUnset:35];
+        [sessionCopy updateBlendingUICacheUpdateUUIDIfUnset:self->_blendingCacheUUID];
       }
     }
   }
 
   else if (eventType == 7)
   {
-    [v6 setDidSearchDuringSession:1];
+    [sessionMetadata2 setDidSearchDuringSession:1];
   }
 
 LABEL_17:
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
-    v5 = a3;
-    v6 = [[a1 alloc] initWithProtoData:v5];
+    dataCopy = data;
+    v6 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -218,8 +218,8 @@ LABEL_17:
   v4 = [(NSArray *)self->_engagedSuggestionIds _pas_mappedArrayWithTransform:&__block_literal_global_33_1];
   v22[0] = @"date";
   v5 = MEMORY[0x1E696AD98];
-  v6 = [(ATXAppDirectoryEvent *)self date];
-  [v6 timeIntervalSinceReferenceDate];
+  date = [(ATXAppDirectoryEvent *)self date];
+  [date timeIntervalSinceReferenceDate];
   v7 = [v5 numberWithDouble:?];
   v23[0] = v7;
   v22[1] = @"eventType";
@@ -238,11 +238,11 @@ LABEL_17:
   v22[7] = @"searchTab";
   v26 = vbslq_s8(vceqzq_s64(*&self->_searchQueryLength), v9, *&self->_searchQueryLength);
   v22[8] = @"blendingCacheUUID";
-  v12 = [(NSUUID *)self->_blendingCacheUUID UUIDString];
-  v13 = v12;
-  if (v12)
+  uUIDString = [(NSUUID *)self->_blendingCacheUUID UUIDString];
+  v13 = uUIDString;
+  if (uUIDString)
   {
-    v14 = v12;
+    v14 = uUIDString;
   }
 
   else
@@ -276,11 +276,11 @@ LABEL_17:
 
   v29 = v16;
   v22[11] = @"metadata";
-  v17 = [(ATXAppDirectoryEventMetadata *)self->_metadata jsonDict];
-  v18 = v17;
-  if (v17)
+  jsonDict = [(ATXAppDirectoryEventMetadata *)self->_metadata jsonDict];
+  v18 = jsonDict;
+  if (jsonDict)
   {
-    v19 = v17;
+    v19 = jsonDict;
   }
 
   else
@@ -297,38 +297,38 @@ LABEL_17:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(ATXAppDirectoryEvent *)self jsonDict];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonDict = [(ATXAppDirectoryEvent *)self jsonDict];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:0];
 
   return v4;
 }
 
-- (ATXAppDirectoryEvent)initWithProtoData:(id)a3
+- (ATXAppDirectoryEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBAppDirectoryEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBAppDirectoryEvent alloc] initWithData:dataCopy];
 
     self = [(ATXAppDirectoryEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXAppDirectoryEvent)initWithProto:(id)a3
+- (ATXAppDirectoryEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_10:
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_33;
   }
 
@@ -344,10 +344,10 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v5 = v4;
+  v5 = protoCopy;
   if ([(ATXPBAppDirectoryEvent *)v5 hasDate]&& (v6 = [(ATXPBAppDirectoryEvent *)v5 date], [(ATXPBAppDirectoryEvent *)v5 hasEventType]))
   {
-    v25 = [(ATXPBAppDirectoryEvent *)v5 eventType];
+    eventType = [(ATXPBAppDirectoryEvent *)v5 eventType];
     if ([(ATXPBAppDirectoryEvent *)v5 hasCategoryID])
     {
       v26 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:-[ATXPBAppDirectoryEvent categoryID](v5)];
@@ -370,12 +370,12 @@ LABEL_10:
 
     if ([(ATXPBAppDirectoryEvent *)v5 hasBundleId])
     {
-      v23 = [(ATXPBAppDirectoryEvent *)v5 bundleId];
+      bundleId = [(ATXPBAppDirectoryEvent *)v5 bundleId];
     }
 
     else
     {
-      v23 = 0;
+      bundleId = 0;
     }
 
     if ([(ATXPBAppDirectoryEvent *)v5 hasBundleIndex])
@@ -411,8 +411,8 @@ LABEL_10:
     if ([(ATXPBAppDirectoryEvent *)v5 hasBlendingCacheId])
     {
       v10 = objc_alloc(MEMORY[0x1E696AFB0]);
-      v11 = [(ATXPBAppDirectoryEvent *)v5 blendingCacheId];
-      v12 = [v10 initWithUUIDString:v11];
+      blendingCacheId = [(ATXPBAppDirectoryEvent *)v5 blendingCacheId];
+      v12 = [v10 initWithUUIDString:blendingCacheId];
     }
 
     else
@@ -420,27 +420,27 @@ LABEL_10:
       v12 = 0;
     }
 
-    v13 = [(ATXPBAppDirectoryEvent *)v5 shownSuggestionIds];
-    v20 = [v13 _pas_mappedArrayWithTransform:&__block_literal_global_79];
+    shownSuggestionIds = [(ATXPBAppDirectoryEvent *)v5 shownSuggestionIds];
+    v20 = [shownSuggestionIds _pas_mappedArrayWithTransform:&__block_literal_global_79];
 
-    v14 = [(ATXPBAppDirectoryEvent *)v5 engagedSuggestionIds];
-    v19 = [v14 _pas_mappedArrayWithTransform:&__block_literal_global_81_0];
+    engagedSuggestionIds = [(ATXPBAppDirectoryEvent *)v5 engagedSuggestionIds];
+    v19 = [engagedSuggestionIds _pas_mappedArrayWithTransform:&__block_literal_global_81_0];
 
     v15 = [ATXAppDirectoryEventMetadata alloc];
-    v16 = [(ATXPBAppDirectoryEvent *)v5 metadata];
-    v17 = [(ATXAppDirectoryEventMetadata *)v15 initWithProto:v16];
+    metadata = [(ATXPBAppDirectoryEvent *)v5 metadata];
+    v17 = [(ATXAppDirectoryEventMetadata *)v15 initWithProto:metadata];
 
-    self = [(ATXAppDirectoryEvent *)self initWithAbsoluteDate:v25 eventType:v26 categoryID:v24 categoryIndex:v23 bundleId:v22 bundleIndex:v21 searchQueryLength:v6 searchTab:v9 blendingCacheUUID:v12 shownSuggestionIds:v20 engagedSuggestionIds:v19 metadata:v17];
-    v8 = self;
+    self = [(ATXAppDirectoryEvent *)self initWithAbsoluteDate:eventType eventType:v26 categoryID:v24 categoryIndex:bundleId bundleId:v22 bundleIndex:v21 searchQueryLength:v6 searchTab:v9 blendingCacheUUID:v12 shownSuggestionIds:v20 engagedSuggestionIds:v19 metadata:v17];
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
 LABEL_33:
-  return v8;
+  return selfCopy;
 }
 
 id __38__ATXAppDirectoryEvent_initWithProto___block_invoke(uint64_t a1, void *a2)
@@ -506,8 +506,8 @@ id __38__ATXAppDirectoryEvent_initWithProto___block_invoke_2(uint64_t a1, void *
   blendingCacheUUID = self->_blendingCacheUUID;
   if (blendingCacheUUID)
   {
-    v11 = [(NSUUID *)blendingCacheUUID UUIDString];
-    [(ATXPBAppDirectoryEvent *)v3 setBlendingCacheId:v11];
+    uUIDString = [(NSUUID *)blendingCacheUUID UUIDString];
+    [(ATXPBAppDirectoryEvent *)v3 setBlendingCacheId:uUIDString];
   }
 
   if (self->_shownSuggestionIds)
@@ -532,8 +532,8 @@ id __38__ATXAppDirectoryEvent_initWithProto___block_invoke_2(uint64_t a1, void *
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v32 + 1) + 8 * i) UUIDString];
-          [v12 addObject:v18];
+          uUIDString2 = [*(*(&v32 + 1) + 8 * i) UUIDString];
+          [v12 addObject:uUIDString2];
         }
 
         v15 = [(NSArray *)v13 countByEnumeratingWithState:&v32 objects:v37 count:16];
@@ -567,8 +567,8 @@ id __38__ATXAppDirectoryEvent_initWithProto___block_invoke_2(uint64_t a1, void *
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v28 + 1) + 8 * j) UUIDString];
-          [v19 addObject:v25];
+          uUIDString3 = [*(*(&v28 + 1) + 8 * j) UUIDString];
+          [v19 addObject:uUIDString3];
         }
 
         v22 = [(NSArray *)v20 countByEnumeratingWithState:&v28 objects:v36 count:16];
@@ -580,31 +580,31 @@ id __38__ATXAppDirectoryEvent_initWithProto___block_invoke_2(uint64_t a1, void *
     [(ATXPBAppDirectoryEvent *)v3 setEngagedSuggestionIds:v19];
   }
 
-  v26 = [(ATXAppDirectoryEventMetadata *)self->_metadata proto];
-  [(ATXPBAppDirectoryEvent *)v3 setMetadata:v26];
+  proto = [(ATXAppDirectoryEventMetadata *)self->_metadata proto];
+  [(ATXPBAppDirectoryEvent *)v3 setMetadata:proto];
 
   return v3;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXAppDirectoryEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXAppDirectoryEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXAppDirectoryEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXAppDirectoryEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXAppDirectoryEvent)initWithCoder:(id)a3
+- (ATXAppDirectoryEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXAppDirectoryEvent *)self initWithProtoData:v5];
   return v6;
@@ -625,34 +625,34 @@ id __38__ATXAppDirectoryEvent_initWithProto___block_invoke_2(uint64_t a1, void *
   return [(ATXAppDirectoryEventMetadata *)self->_metadata hash]- v12 + 32 * v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXAppDirectoryEvent *)self isEqualToATXAppDirectoryEvent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXAppDirectoryEvent *)self isEqualToATXAppDirectoryEvent:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXAppDirectoryEvent:(id)a3
+- (BOOL)isEqualToATXAppDirectoryEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = self->_absoluteDate - *(v4 + 1);
+  eventCopy = event;
+  v5 = eventCopy;
+  v6 = self->_absoluteDate - *(eventCopy + 1);
   if (v6 < 0.0)
   {
     v6 = -v6;
   }
 
-  if (v6 > 2.22044605e-16 || self->_eventType != v4[2])
+  if (v6 > 2.22044605e-16 || self->_eventType != eventCopy[2])
   {
     goto LABEL_39;
   }

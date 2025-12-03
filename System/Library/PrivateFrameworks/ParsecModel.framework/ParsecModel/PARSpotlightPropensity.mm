@@ -1,13 +1,13 @@
 @interface PARSpotlightPropensity
-- (PARSpotlightPropensity)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (PARSpotlightPropensity)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation PARSpotlightPropensity
 
-- (PARSpotlightPropensity)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (PARSpotlightPropensity)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  entityCopy = entity;
+  contextCopy = context;
   return PARSpotlightPropensity.init(entity:insertInto:)();
 }
 

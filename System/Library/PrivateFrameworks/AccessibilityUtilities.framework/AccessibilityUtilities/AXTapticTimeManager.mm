@@ -3,33 +3,33 @@
 - (AXTapticTimeManager)init;
 - (BOOL)_preStartCheck;
 - (BOOL)_startPowerAssertion;
-- (id)_atomToLegacyVibePattern:(id)a3;
-- (id)_convertSoundToStringName:(unsigned int)a3;
+- (id)_atomToLegacyVibePattern:(id)pattern;
+- (id)_convertSoundToStringName:(unsigned int)name;
 - (id)_dateComponentsForClockTime;
-- (int64_t)_numberOfTapHoursForClockTimeWithEncoding:(int64_t)a3;
+- (int64_t)_numberOfTapHoursForClockTimeWithEncoding:(int64_t)encoding;
 - (int64_t)_numberOfTapMinutesForClockTime;
-- (int64_t)_numberOfTapsForHourNumber:(int64_t)a3 withEncoding:(int64_t)a4;
+- (int64_t)_numberOfTapsForHourNumber:(int64_t)number withEncoding:(int64_t)encoding;
 - (void)_cleanupHapticsDict;
 - (void)_clearQueue;
 - (void)_dequeueSound;
-- (void)_enqueueHours:(unint64_t)a3 encoding:(int64_t)a4;
-- (void)_enqueueMinutes:(unint64_t)a3 encoding:(int64_t)a4;
+- (void)_enqueueHours:(unint64_t)hours encoding:(int64_t)encoding;
+- (void)_enqueueMinutes:(unint64_t)minutes encoding:(int64_t)encoding;
 - (void)_handleTestingQueueCallback;
-- (void)_informObserversDidOutputSSID:(int64_t)a3;
+- (void)_informObserversDidOutputSSID:(int64_t)d;
 - (void)_informObserversDidStart;
 - (void)_informObserversDidStop;
-- (void)_informObserversWillOutputSSID:(int64_t)a3 hapticsDescriptions:(id)a4;
-- (void)_outputWithEnqueueBlock:(id)a3;
+- (void)_informObserversWillOutputSSID:(int64_t)d hapticsDescriptions:(id)descriptions;
+- (void)_outputWithEnqueueBlock:(id)block;
 - (void)_stopPowerAssertion;
-- (void)_updateHapticPatternsIfNecessary:(BOOL)a3;
+- (void)_updateHapticPatternsIfNecessary:(BOOL)necessary;
 - (void)_updateIs24HourTime;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)outputHours:(int64_t)a3;
-- (void)outputHoursAndMinutes:(int64_t)a3;
-- (void)outputMinutes:(int64_t)a3;
-- (void)removeObserver:(id)a3;
-- (void)setLocaleOverride:(id)a3;
+- (void)outputHours:(int64_t)hours;
+- (void)outputHoursAndMinutes:(int64_t)minutes;
+- (void)outputMinutes:(int64_t)minutes;
+- (void)removeObserver:(id)observer;
+- (void)setLocaleOverride:(id)override;
 - (void)stopCurrentOutput;
 @end
 
@@ -65,9 +65,9 @@ uint64_t __37__AXTapticTimeManager_sharedInstance__block_invoke()
   if (v2)
   {
     [(AXTapticTimeManager *)v2 setAssertionID:0];
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v3->_observers;
-    v3->_observers = v4;
+    v3->_observers = weakObjectsHashTable;
 
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     enqueuedSounds = v3->_enqueuedSounds;
@@ -87,8 +87,8 @@ uint64_t __37__AXTapticTimeManager_sharedInstance__block_invoke()
 
     [(AXTapticTimeManager *)v3 _updateHapticPatternsIfNecessary:0];
     [(AXTapticTimeManager *)v3 _updateIs24HourTime];
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v3 selector:sel__localeDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__localeDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
 
     v15 = _os_activity_create(&dword_18B15E000, "Taptic Time", MEMORY[0x1E69E9C08], OS_ACTIVITY_FLAG_DETACHED);
     activity = v3->_activity;
@@ -98,14 +98,14 @@ uint64_t __37__AXTapticTimeManager_sharedInstance__block_invoke()
   return v3;
 }
 
-- (void)_updateHapticPatternsIfNecessary:(BOOL)a3
+- (void)_updateHapticPatternsIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v100[4] = *MEMORY[0x1E69E9840];
   cachedSpeed = self->_cachedSpeed;
   if (!cachedSpeed || (-[NSNumber floatValue](cachedSpeed, "floatValue"), v6 = v5, +[AXSettings sharedInstance](AXSettings, "sharedInstance"), v7 = objc_claimAutoreleasedReturnValue(), [v7 voiceOverTapticTimeSpeed], v9 = vabdd_f64(v6, v8), v7, v9 >= 2.22044605e-16))
   {
-    if (v3)
+    if (necessaryCopy)
     {
       [(AXTapticTimeManager *)self _cleanupHapticsDict];
     }
@@ -315,17 +315,17 @@ uint64_t __37__AXTapticTimeManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers addObject:?];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
@@ -429,17 +429,17 @@ uint64_t __37__AXTapticTimeManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)_informObserversWillOutputSSID:(int64_t)a3 hapticsDescriptions:(id)a4
+- (void)_informObserversWillOutputSSID:(int64_t)d hapticsDescriptions:(id)descriptions
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  descriptionsCopy = descriptions;
   v7 = AXLogTapticTime();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 134218242;
-    v20 = a3;
+    dCopy = d;
     v21 = 2112;
-    v22 = v6;
+    v22 = descriptionsCopy;
     _os_log_impl(&dword_18B15E000, v7, OS_LOG_TYPE_INFO, "will output ssid: %zd, hapticsDescriptions: %@", buf, 0x16u);
   }
 
@@ -466,7 +466,7 @@ uint64_t __37__AXTapticTimeManager_sharedInstance__block_invoke()
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 tapticTimeManager:self willOutputSSID:a3 hapticsDescriptions:{v6, v14}];
+          [v13 tapticTimeManager:self willOutputSSID:d hapticsDescriptions:{descriptionsCopy, v14}];
         }
 
         ++v12;
@@ -480,14 +480,14 @@ uint64_t __37__AXTapticTimeManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)_informObserversDidOutputSSID:(int64_t)a3
+- (void)_informObserversDidOutputSSID:(int64_t)d
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = AXLogTapticTime();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v18 = a3;
+    dCopy = d;
     _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_INFO, "did output ssid: %zd", buf, 0xCu);
   }
 
@@ -514,7 +514,7 @@ uint64_t __37__AXTapticTimeManager_sharedInstance__block_invoke()
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 tapticTimeManager:self didOutputSSID:{a3, v12}];
+          [v11 tapticTimeManager:self didOutputSSID:{d, v12}];
         }
 
         ++v10;
@@ -554,24 +554,24 @@ uint64_t __37__AXTapticTimeManager_sharedInstance__block_invoke()
 - (void)dealloc
 {
   [(AXTapticTimeManager *)self _cleanupHapticsDict];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AXTapticTimeManager;
   [(AXTapticTimeManager *)&v4 dealloc];
 }
 
-- (id)_atomToLegacyVibePattern:(id)a3
+- (id)_atomToLegacyVibePattern:(id)pattern
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  patternCopy = pattern;
+  array = [MEMORY[0x1E695DF70] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v3;
+  obj = patternCopy;
   v5 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v5)
   {
@@ -595,9 +595,9 @@ uint64_t __37__AXTapticTimeManager_sharedInstance__block_invoke()
 
         if (v14 > 0.0)
         {
-          [v4 addObject:MEMORY[0x1E695E110]];
+          [array addObject:MEMORY[0x1E695E110]];
           v15 = [MEMORY[0x1E696AD98] numberWithDouble:(v14 - v8) * 1000.0];
-          [v4 addObject:v15];
+          [array addObject:v15];
         }
 
         v16 = [v11 objectForKey:@"Duration"];
@@ -607,16 +607,16 @@ uint64_t __37__AXTapticTimeManager_sharedInstance__block_invoke()
         v19 = [v11 objectForKey:@"Type"];
         LODWORD(v16) = [v19 isEqualToString:@"Tap"];
 
-        [v4 addObject:v9];
+        [array addObject:v9];
         if (v16)
         {
-          [v4 addObject:&unk_1EFE96B80];
+          [array addObject:&unk_1EFE96B80];
         }
 
         else
         {
           v20 = [MEMORY[0x1E696AD98] numberWithDouble:v18 * 1000.0];
-          [v4 addObject:v20];
+          [array addObject:v20];
         }
 
         v8 = v14;
@@ -628,12 +628,12 @@ uint64_t __37__AXTapticTimeManager_sharedInstance__block_invoke()
     while (v6);
   }
 
-  return v4;
+  return array;
 }
 
-- (void)setLocaleOverride:(id)a3
+- (void)setLocaleOverride:(id)override
 {
-  objc_storeStrong(&self->_localeOverride, a3);
+  objc_storeStrong(&self->_localeOverride, override);
 
   [(AXTapticTimeManager *)self _localeDidChange:0];
 }
@@ -641,42 +641,42 @@ uint64_t __37__AXTapticTimeManager_sharedInstance__block_invoke()
 - (void)_updateIs24HourTime
 {
   v3 = MEMORY[0x1E696AB78];
-  v4 = [(AXTapticTimeManager *)self localeOverride];
-  if (v4)
+  localeOverride = [(AXTapticTimeManager *)self localeOverride];
+  if (localeOverride)
   {
-    v7 = [v3 dateFormatFromTemplate:@"jj:mm" options:0 locale:v4];
+    v7 = [v3 dateFormatFromTemplate:@"jj:mm" options:0 locale:localeOverride];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DF58] currentLocale];
-    v7 = [v3 dateFormatFromTemplate:@"jj:mm" options:0 locale:v5];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    v7 = [v3 dateFormatFromTemplate:@"jj:mm" options:0 locale:currentLocale];
   }
 
   v6 = [v7 rangeOfString:@"H"] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v7, "rangeOfString:", @"k") != 0x7FFFFFFFFFFFFFFFLL;
   self->_is24Hour = v6;
 }
 
-- (int64_t)_numberOfTapsForHourNumber:(int64_t)a3 withEncoding:(int64_t)a4
+- (int64_t)_numberOfTapsForHourNumber:(int64_t)number withEncoding:(int64_t)encoding
 {
-  v6 = [(AXTapticTimeManager *)self _is24HourTime];
+  _is24HourTime = [(AXTapticTimeManager *)self _is24HourTime];
   v7 = 12;
-  v8 = a3 % 12;
+  numberCopy = number % 12;
   v9 = 24;
-  if (a4 == 3)
+  if (encoding == 3)
   {
     v9 = 0;
   }
 
-  if (v6)
+  if (_is24HourTime)
   {
-    v8 = a3;
+    numberCopy = number;
     v7 = v9;
   }
 
-  if (v8)
+  if (numberCopy)
   {
-    return v8;
+    return numberCopy;
   }
 
   else
@@ -687,36 +687,36 @@ uint64_t __37__AXTapticTimeManager_sharedInstance__block_invoke()
 
 - (id)_dateComponentsForClockTime
 {
-  v3 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = [(AXTapticTimeManager *)self dateOverride];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
+  dateOverride = [(AXTapticTimeManager *)self dateOverride];
 
-  if (v5)
+  if (dateOverride)
   {
-    v6 = [(AXTapticTimeManager *)self dateOverride];
+    dateOverride2 = [(AXTapticTimeManager *)self dateOverride];
 
-    v4 = v6;
+    date = dateOverride2;
   }
 
-  v7 = [v3 components:96 fromDate:v4];
+  v7 = [currentCalendar components:96 fromDate:date];
 
   return v7;
 }
 
-- (int64_t)_numberOfTapHoursForClockTimeWithEncoding:(int64_t)a3
+- (int64_t)_numberOfTapHoursForClockTimeWithEncoding:(int64_t)encoding
 {
-  v5 = [(AXTapticTimeManager *)self _dateComponentsForClockTime];
-  v6 = -[AXTapticTimeManager _numberOfTapsForHourNumber:withEncoding:](self, "_numberOfTapsForHourNumber:withEncoding:", [v5 hour], a3);
+  _dateComponentsForClockTime = [(AXTapticTimeManager *)self _dateComponentsForClockTime];
+  v6 = -[AXTapticTimeManager _numberOfTapsForHourNumber:withEncoding:](self, "_numberOfTapsForHourNumber:withEncoding:", [_dateComponentsForClockTime hour], encoding);
 
   return v6;
 }
 
 - (int64_t)_numberOfTapMinutesForClockTime
 {
-  v2 = [(AXTapticTimeManager *)self _dateComponentsForClockTime];
-  v3 = [v2 minute];
+  _dateComponentsForClockTime = [(AXTapticTimeManager *)self _dateComponentsForClockTime];
+  minute = [_dateComponentsForClockTime minute];
 
-  return v3;
+  return minute;
 }
 
 - (void)_clearQueue
@@ -785,18 +785,18 @@ void __43__AXTapticTimeManager__startPowerAssertion__block_invoke()
   }
 }
 
-- (void)_outputWithEnqueueBlock:(id)a3
+- (void)_outputWithEnqueueBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __47__AXTapticTimeManager__outputWithEnqueueBlock___block_invoke;
     v6[3] = &unk_1E71EA228;
     v6[4] = self;
-    v7 = v4;
+    v7 = blockCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v6);
   }
 }
@@ -818,14 +818,14 @@ uint64_t __47__AXTapticTimeManager__outputWithEnqueueBlock___block_invoke(uint64
   return result;
 }
 
-- (void)outputHoursAndMinutes:(int64_t)a3
+- (void)outputHoursAndMinutes:(int64_t)minutes
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __45__AXTapticTimeManager_outputHoursAndMinutes___block_invoke;
   v3[3] = &unk_1E71EAF98;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = minutes;
   [(AXTapticTimeManager *)self _outputWithEnqueueBlock:v3];
 }
 
@@ -839,14 +839,14 @@ uint64_t __45__AXTapticTimeManager_outputHoursAndMinutes___block_invoke(uint64_t
   return [v2 _enqueueMinutes:v3 encoding:v4];
 }
 
-- (void)outputHours:(int64_t)a3
+- (void)outputHours:(int64_t)hours
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __35__AXTapticTimeManager_outputHours___block_invoke;
   v3[3] = &unk_1E71EAF98;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = hours;
   [(AXTapticTimeManager *)self _outputWithEnqueueBlock:v3];
 }
 
@@ -859,14 +859,14 @@ uint64_t __35__AXTapticTimeManager_outputHours___block_invoke(uint64_t a1)
   return [v2 _enqueueHours:v3 encoding:v4];
 }
 
-- (void)outputMinutes:(int64_t)a3
+- (void)outputMinutes:(int64_t)minutes
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __37__AXTapticTimeManager_outputMinutes___block_invoke;
   v3[3] = &unk_1E71EAF98;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = minutes;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
@@ -910,7 +910,7 @@ uint64_t __40__AXTapticTimeManager_stopCurrentOutput__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_enqueueMinutes:(unint64_t)a3 encoding:(int64_t)a4
+- (void)_enqueueMinutes:(unint64_t)minutes encoding:(int64_t)encoding
 {
   [(NSNumber *)self->_cachedSpeed floatValue];
   v8 = v7;
@@ -925,18 +925,18 @@ uint64_t __40__AXTapticTimeManager_stopCurrentOutput__block_invoke(uint64_t a1)
     v10 = 0.0;
   }
 
-  if (a4 != 1)
+  if (encoding != 1)
   {
-    if (a4 != 3)
+    if (encoding != 3)
     {
-      if (a4 != 2 || a3 < 0xF)
+      if (encoding != 2 || minutes < 0xF)
       {
         return;
       }
 
-      v11 = a3;
+      minutesCopy = minutes;
       enqueuedSounds = self->_enqueuedSounds;
-      v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_ssIDHapticFast[v11 / 0xF + 23]];
+      v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_ssIDHapticFast[minutesCopy / 0xF + 23]];
       [(NSMutableArray *)enqueuedSounds addObject:v13];
 
       enqueuedSoundDelays = self->_enqueuedSoundDelays;
@@ -946,8 +946,8 @@ uint64_t __40__AXTapticTimeManager_stopCurrentOutput__block_invoke(uint64_t a1)
     }
 
     v17 = 0.9 / v9;
-    v18 = a3 / 0xA;
-    v19 = a3 % 0xA;
+    v18 = minutes / 0xA;
+    v19 = minutes % 0xA;
     v20 = self->_enqueuedSounds;
     v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_ssIDHapticMorse[v18]];
     [(NSMutableArray *)v20 addObject:v21];
@@ -965,11 +965,11 @@ uint64_t __40__AXTapticTimeManager_stopCurrentOutput__block_invoke(uint64_t a1)
     goto LABEL_17;
   }
 
-  v27 = a3 % 0xA;
-  if (a3 >= 0xA)
+  v27 = minutes % 0xA;
+  if (minutes >= 0xA)
   {
     v28 = self->_enqueuedSounds;
-    v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_ssIDHapticFast[a3 / 0xA + 23]];
+    v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_ssIDHapticFast[minutes / 0xA + 23]];
     [(NSMutableArray *)v28 addObject:v29];
 
     v30 = self->_enqueuedSoundDelays;
@@ -986,7 +986,7 @@ uint64_t __40__AXTapticTimeManager_stopCurrentOutput__block_invoke(uint64_t a1)
 
     enqueuedSoundDelays = self->_enqueuedSoundDelays;
     v15 = MEMORY[0x1E696AD98];
-    if (a3 < 0xA)
+    if (minutes < 0xA)
     {
       v16 = v10 + v17;
 LABEL_15:
@@ -1005,24 +1005,24 @@ LABEL_17:
   }
 }
 
-- (void)_enqueueHours:(unint64_t)a3 encoding:(int64_t)a4
+- (void)_enqueueHours:(unint64_t)hours encoding:(int64_t)encoding
 {
   [(NSNumber *)self->_cachedSpeed floatValue];
   v8 = v7;
   v9 = 0.8 / v7;
   v10 = [(NSMutableArray *)self->_enqueuedSounds count];
-  if (a4 != 1)
+  if (encoding != 1)
   {
-    if (a4 != 3)
+    if (encoding != 3)
     {
-      if (a4 != 2)
+      if (encoding != 2)
       {
         return;
       }
 
-      v11 = a3 / 5;
-      v12 = a3 % 5;
-      if (a3 > 4)
+      v11 = hours / 5;
+      v12 = hours % 5;
+      if (hours > 4)
       {
         enqueuedSounds = self->_enqueuedSounds;
         v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_ssIDHapticFast[v11 + 23]];
@@ -1066,8 +1066,8 @@ LABEL_17:
       v13 = 0.0;
     }
 
-    v14 = a3 / 0xA;
-    v15 = a3 % 0xA;
+    v14 = hours / 0xA;
+    v15 = hours % 0xA;
     v16 = self->_enqueuedSounds;
     v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_ssIDHapticMorse[v14]];
     [(NSMutableArray *)v16 addObject:v17];
@@ -1094,9 +1094,9 @@ LABEL_19:
     return;
   }
 
-  v23 = a3 / 0xA;
-  v24 = a3 % 0xA;
-  if (a3 >= 0xA)
+  v23 = hours / 0xA;
+  v24 = hours % 0xA;
+  if (hours >= 0xA)
   {
     v25 = self->_enqueuedSounds;
     v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_ssIDHapticFast[v23 + 23]];
@@ -1114,19 +1114,19 @@ LABEL_19:
   }
 }
 
-- (id)_convertSoundToStringName:(unsigned int)a3
+- (id)_convertSoundToStringName:(unsigned int)name
 {
   ssIDHapticSlow = self->_ssIDHapticSlow;
   v4 = -24;
   do
   {
-    if (*ssIDHapticSlow == a3)
+    if (*ssIDHapticSlow == name)
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"slow_%d", v4 + 25];
       goto LABEL_13;
     }
 
-    if (*(ssIDHapticSlow - 24) == a3)
+    if (*(ssIDHapticSlow - 24) == name)
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"fast_%d", v4 + 25];
       goto LABEL_13;
@@ -1137,7 +1137,7 @@ LABEL_19:
 
   while (!__CFADD__(v4++, 1));
   v6 = 0;
-  while (self->_ssIDHapticMorse[v6] != a3)
+  while (self->_ssIDHapticMorse[v6] != name)
   {
     if (++v6 == 10)
     {
@@ -1155,11 +1155,11 @@ LABEL_14:
 
 - (void)_handleTestingQueueCallback
 {
-  v3 = [(AXTapticTimeManager *)self testingQueueCallback];
+  testingQueueCallback = [(AXTapticTimeManager *)self testingQueueCallback];
 
-  if (v3)
+  if (testingQueueCallback)
   {
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v4 = [(NSMutableArray *)self->_enqueuedSounds count];
     if (v4 >= 1)
     {
@@ -1176,12 +1176,12 @@ LABEL_14:
         [(AXTapticSoundTestingContainer *)v11 setSound:v12];
 
         [(AXTapticSoundTestingContainer *)v11 setDelay:v10];
-        [v14 addObject:v11];
+        [array addObject:v11];
       }
     }
 
-    v13 = [(AXTapticTimeManager *)self testingQueueCallback];
-    (v13)[2](v13, v14);
+    testingQueueCallback2 = [(AXTapticTimeManager *)self testingQueueCallback];
+    (testingQueueCallback2)[2](testingQueueCallback2, array);
   }
 }
 
@@ -1189,9 +1189,9 @@ LABEL_14:
 {
   if ([(NSMutableArray *)self->_enqueuedSounds count])
   {
-    v3 = [(NSMutableArray *)self->_enqueuedSounds firstObject];
-    v4 = [v3 integerValue];
-    self->_currentSsid = v4;
+    firstObject = [(NSMutableArray *)self->_enqueuedSounds firstObject];
+    integerValue = [firstObject integerValue];
+    self->_currentSsid = integerValue;
     [(NSMutableArray *)self->_enqueuedSounds removeObjectAtIndex:0];
     v5 = [(NSMutableArray *)self->_enqueuedSoundDelays objectAtIndex:0];
     [v5 doubleValue];
@@ -1203,7 +1203,7 @@ LABEL_14:
     aBlock[2] = __36__AXTapticTimeManager__dequeueSound__block_invoke;
     aBlock[3] = &unk_1E71EAF98;
     aBlock[4] = self;
-    aBlock[5] = v4;
+    aBlock[5] = integerValue;
     v8 = _Block_copy(aBlock);
     v9 = dispatch_time(0, (v7 * 1000000000.0));
     block[0] = MEMORY[0x1E69E9820];
@@ -1211,7 +1211,7 @@ LABEL_14:
     block[2] = __36__AXTapticTimeManager__dequeueSound__block_invoke_2;
     block[3] = &unk_1E71EC6C0;
     v12 = v8;
-    v13 = v4;
+    v13 = integerValue;
     block[4] = self;
     v10 = v8;
     dispatch_after(v9, MEMORY[0x1E69E96A0], block);

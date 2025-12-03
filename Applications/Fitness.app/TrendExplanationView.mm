@@ -1,11 +1,11 @@
 @interface TrendExplanationView
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (_TtC10FitnessApp20TrendExplanationView)initWithCoder:(id)a3;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (_TtC10FitnessApp20TrendExplanationView)initWithCoder:(id)coder;
 @end
 
 @implementation TrendExplanationView
 
-- (_TtC10FitnessApp20TrendExplanationView)initWithCoder:(id)a3
+- (_TtC10FitnessApp20TrendExplanationView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC10FitnessApp20TrendExplanationView_textView;
   type metadata accessor for TrendsFooterTextView();
@@ -17,7 +17,7 @@
   return 0;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v7 = type metadata accessor for URL();
   v8 = *(v7 - 8);
@@ -25,7 +25,7 @@
   v10 = &v12 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
   (*(v8 + 8))(v10, v7);
-  return a6 == 0;
+  return interaction == 0;
 }
 
 @end

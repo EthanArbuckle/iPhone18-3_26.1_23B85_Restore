@@ -1,16 +1,16 @@
 @interface MNTraceNetworkEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation MNTraceNetworkEvent
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (self->_cellEnabled == v5[8] && self->_wifiEnabled == v5[9] && self->_nlcEnabled == v5[10])
     {

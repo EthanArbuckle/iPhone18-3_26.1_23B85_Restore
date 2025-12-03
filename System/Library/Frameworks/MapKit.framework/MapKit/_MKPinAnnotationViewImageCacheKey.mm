@@ -1,14 +1,14 @@
 @interface _MKPinAnnotationViewImageCacheKey
-- (BOOL)isEqual:(id)a3;
-- (_MKPinAnnotationViewImageCacheKey)initWithMapType:(unint64_t)a3 pinColor:(id)a4 traits:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (_MKPinAnnotationViewImageCacheKey)initWithMapType:(unint64_t)type pinColor:(id)color traits:(id)traits;
 @end
 
 @implementation _MKPinAnnotationViewImageCacheKey
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -18,7 +18,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self->_idiom == v5->_idiom && self->_userInterfaceStyle == v5->_userInterfaceStyle && self->_mapType == v5->_mapType)
       {
@@ -40,20 +40,20 @@
   return v7;
 }
 
-- (_MKPinAnnotationViewImageCacheKey)initWithMapType:(unint64_t)a3 pinColor:(id)a4 traits:(id)a5
+- (_MKPinAnnotationViewImageCacheKey)initWithMapType:(unint64_t)type pinColor:(id)color traits:(id)traits
 {
-  v9 = a4;
-  v10 = a5;
+  colorCopy = color;
+  traitsCopy = traits;
   v15.receiver = self;
   v15.super_class = _MKPinAnnotationViewImageCacheKey;
   v11 = [(_MKPinAnnotationViewImageCacheKey *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    v11->_mapType = a3;
-    objc_storeStrong(&v11->_pinColor, a4);
-    v12->_idiom = [v10 userInterfaceIdiom];
-    v12->_userInterfaceStyle = [v10 userInterfaceStyle];
+    v11->_mapType = type;
+    objc_storeStrong(&v11->_pinColor, color);
+    v12->_idiom = [traitsCopy userInterfaceIdiom];
+    v12->_userInterfaceStyle = [traitsCopy userInterfaceStyle];
     v13 = v12;
   }
 

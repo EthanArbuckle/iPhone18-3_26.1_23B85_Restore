@@ -1,7 +1,7 @@
 @interface ASTTestAutomation
 + (id)sharedInstance;
-+ (void)postServerRequest:(id)a3;
-+ (void)postServerResponse:(id)a3;
++ (void)postServerRequest:(id)request;
++ (void)postServerResponse:(id)response;
 - (ASTTestAutomation)init;
 @end
 
@@ -54,50 +54,50 @@ uint64_t __35__ASTTestAutomation_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)postServerResponse:(id)a3
++ (void)postServerResponse:(id)response
 {
   v10[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   if (+[ASTLinking isAXRuntimeFrameworkAvailable])
   {
     v5 = +[ASTTestAutomation sharedInstance];
-    v6 = [v5 testAutomationEnabled];
+    testAutomationEnabled = [v5 testAutomationEnabled];
 
-    if (v6)
+    if (testAutomationEnabled)
     {
       v9[0] = @"event";
       v9[1] = @"type";
       v10[0] = @"ASTTestAutomationEvent";
       v10[1] = @"ServerResponse";
       v9[2] = @"info";
-      v10[2] = v4;
+      v10[2] = responseCopy;
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:3];
-      [a1 conditionallyPostAccessibilityNotification:4002 argument:v7];
+      [self conditionallyPostAccessibilityNotification:4002 argument:v7];
     }
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)postServerRequest:(id)a3
++ (void)postServerRequest:(id)request
 {
   v10[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   if (+[ASTLinking isAXRuntimeFrameworkAvailable])
   {
     v5 = +[ASTTestAutomation sharedInstance];
-    v6 = [v5 testAutomationEnabled];
+    testAutomationEnabled = [v5 testAutomationEnabled];
 
-    if (v6)
+    if (testAutomationEnabled)
     {
       v9[0] = @"event";
       v9[1] = @"type";
       v10[0] = @"ASTTestAutomationEvent";
       v10[1] = @"ServerRequest";
       v9[2] = @"info";
-      v10[2] = v4;
+      v10[2] = requestCopy;
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:3];
-      [a1 conditionallyPostAccessibilityNotification:4002 argument:v7];
+      [self conditionallyPostAccessibilityNotification:4002 argument:v7];
     }
   }
 

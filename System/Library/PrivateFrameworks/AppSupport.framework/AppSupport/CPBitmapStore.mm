@@ -1,32 +1,32 @@
 @interface CPBitmapStore
-- (CGImage)_copyAndStoreImageForKey:(id)a3 inGroup:(id)a4 withSize:(CGSize)a5 format:(unsigned __int8)a6 scale:(double)a7 fillMem:(id)a8 alternateCompletion:(id)a9;
-- (CGImage)copyImageForKey:(id)a3 inGroup:(id)a4;
-- (CPBitmapStore)initWithPath:(id)a3 version:(int)a4;
+- (CGImage)_copyAndStoreImageForKey:(id)key inGroup:(id)group withSize:(CGSize)size format:(unsigned __int8)format scale:(double)scale fillMem:(id)mem alternateCompletion:(id)completion;
+- (CGImage)copyImageForKey:(id)key inGroup:(id)group;
+- (CPBitmapStore)initWithPath:(id)path version:(int)version;
 - (id)_versionPath;
-- (id)cacheNumberForKey:(id)a3;
-- (id)imageNameForKey:(id)a3 inGroup:(id)a4;
+- (id)cacheNumberForKey:(id)key;
+- (id)imageNameForKey:(id)key inGroup:(id)group;
 - (id)imagePath;
 - (int)version;
 - (unint64_t)imageCount;
 - (void)dealloc;
-- (void)openAndMmap:(id)a3 withInfo:(_img *)a4;
+- (void)openAndMmap:(id)mmap withInfo:(_img *)info;
 - (void)purge;
-- (void)removeImagesInGroups:(id)a3 completion:(id)a4;
-- (void)storeGrayscaleImageDataForKey:(id)a3 inGroup:(id)a4 withSize:(CGSize)a5 opaque:(BOOL)a6 scale:(double)a7 data:(id)a8;
+- (void)removeImagesInGroups:(id)groups completion:(id)completion;
+- (void)storeGrayscaleImageDataForKey:(id)key inGroup:(id)group withSize:(CGSize)size opaque:(BOOL)opaque scale:(double)scale data:(id)data;
 @end
 
 @implementation CPBitmapStore
 
-- (CPBitmapStore)initWithPath:(id)a3 version:(int)a4
+- (CPBitmapStore)initWithPath:(id)path version:(int)version
 {
   v14.receiver = self;
   v14.super_class = CPBitmapStore;
   v6 = [(CPBitmapStore *)&v14 init];
   if (v6)
   {
-    v7 = a3;
-    v6->_path = v7;
-    if (access([(NSString *)v7 fileSystemRepresentation], 4))
+    pathCopy = path;
+    v6->_path = pathCopy;
+    if (access([(NSString *)pathCopy fileSystemRepresentation], 4))
     {
       mkpath_np([-[CPBitmapStore imagePath](v6 "imagePath")], 0x1EDu);
     }
@@ -43,7 +43,7 @@
     v6->_serialQueueRemoveImagesDefault = v11;
     v12 = dispatch_get_global_queue(21, 0);
     dispatch_set_target_queue(v11, v12);
-    v6->_version = a4;
+    v6->_version = version;
   }
 
   return v6;
@@ -58,12 +58,12 @@
   [(CPBitmapStore *)&v3 dealloc];
 }
 
-- (id)imageNameForKey:(id)a3 inGroup:(id)a4
+- (id)imageNameForKey:(id)key inGroup:(id)group
 {
   result = malloc_type_malloc(0x32uLL, 0x100004077774924uLL);
   if (result)
   {
-    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:result length:snprintf(result encoding:0x32uLL freeWhenDone:{"%lu%lu", objc_msgSend(a4, "hash"), objc_msgSend(a3, "hash")), 1, 1}];
+    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:result length:snprintf(result encoding:0x32uLL freeWhenDone:{"%lu%lu", objc_msgSend(group, "hash"), objc_msgSend(key, "hash")), 1, 1}];
 
     return v7;
   }
@@ -71,17 +71,17 @@
   return result;
 }
 
-- (id)cacheNumberForKey:(id)a3
+- (id)cacheNumberForKey:(id)key
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = [a3 hash];
+  v4 = [key hash];
 
   return [v3 numberWithUnsignedLong:v4];
 }
 
-- (void)openAndMmap:(id)a3 withInfo:(_img *)a4
+- (void)openAndMmap:(id)mmap withInfo:(_img *)info
 {
-  v5 = open([a3 fileSystemRepresentation], 256);
+  v5 = open([mmap fileSystemRepresentation], 256);
   if ((v5 & 0x80000000) == 0)
   {
     v6 = v5;
@@ -100,28 +100,28 @@
       {
         if (st_size >= 0x30 && *v9 == 1129333331 && v9[1] == 1)
         {
-          a4->var1 = v9[2];
+          info->var1 = v9[2];
           v11 = *(v9 + 3);
           *&v12 = v11;
           *(&v12 + 1) = HIDWORD(v11);
-          *&a4->var2 = v12;
-          a4->var4 = v9[5];
+          *&info->var2 = v12;
+          info->var4 = v9[5];
           v13 = *(v9 + 24);
-          a4->var5 = v13;
-          a4->var6[0] = *(v9 + 25);
-          a4->var6[1] = *(v9 + 26);
-          a4->var6[2] = *(v9 + 27);
-          a4->var6[3] = *(v9 + 28);
+          info->var5 = v13;
+          info->var6[0] = *(v9 + 25);
+          info->var6[1] = *(v9 + 26);
+          info->var6[2] = *(v9 + 27);
+          info->var6[3] = *(v9 + 28);
           if (v13 <= 5)
           {
             v14 = qword_195EA88F0[v13];
           }
 
           AlignedBytesPerRow = CGBitmapGetAlignedBytesPerRow();
-          if (a4->var4 == AlignedBytesPerRow)
+          if (info->var4 == AlignedBytesPerRow)
           {
-            v17 = (*MEMORY[0x1E69E9AC8] + a4->var3 * AlignedBytesPerRow + 47) & -*MEMORY[0x1E69E9AC8];
-            if (a4->var1 == v17 && v17 == st_size)
+            v17 = (*MEMORY[0x1E69E9AC8] + info->var3 * AlignedBytesPerRow + 47) & -*MEMORY[0x1E69E9AC8];
+            if (info->var1 == v17 && v17 == st_size)
             {
               return v9 + 12;
             }
@@ -136,7 +136,7 @@
   return 0;
 }
 
-- (CGImage)copyImageForKey:(id)a3 inGroup:(id)a4
+- (CGImage)copyImageForKey:(id)key inGroup:(id)group
 {
   v7 = [(CPBitmapStore *)self cacheNumberForKey:?];
   v8 = [(NSCache *)self->_cache objectForKey:v7];
@@ -151,13 +151,13 @@
     v14 = 0u;
     v15 = 0u;
     *v13 = 0u;
-    if (![(CPBitmapStore *)self findImageWithKey:a3 inGroup:a4 andInfo:v13])
+    if (![(CPBitmapStore *)self findImageWithKey:key inGroup:group andInfo:v13])
     {
       return 0;
     }
 
-    v10 = [(CPBitmapStore *)self imagePath];
-    image_with_memory = -[CPBitmapStore openAndMmap:withInfo:](self, "openAndMmap:withInfo:", [v10 stringByAppendingPathComponent:v13[0]], v13);
+    imagePath = [(CPBitmapStore *)self imagePath];
+    image_with_memory = -[CPBitmapStore openAndMmap:withInfo:](self, "openAndMmap:withInfo:", [imagePath stringByAppendingPathComponent:v13[0]], v13);
     if (image_with_memory)
     {
       if ([(CPBitmapStore *)self lockOnRead])
@@ -165,8 +165,8 @@
         mlock(image_with_memory - 48, v13[1]);
       }
 
-      v12 = [(CPBitmapStore *)self memContentOffset];
-      v13[1] -= v12;
+      memContentOffset = [(CPBitmapStore *)self memContentOffset];
+      v13[1] -= memContentOffset;
       image_with_memory = create_image_with_memory(image_with_memory, v13, [(CPBitmapStore *)self memContentOffset]);
       if (image_with_memory)
       {
@@ -178,22 +178,22 @@
   }
 }
 
-- (CGImage)_copyAndStoreImageForKey:(id)a3 inGroup:(id)a4 withSize:(CGSize)a5 format:(unsigned __int8)a6 scale:(double)a7 fillMem:(id)a8 alternateCompletion:(id)a9
+- (CGImage)_copyAndStoreImageForKey:(id)key inGroup:(id)group withSize:(CGSize)size format:(unsigned __int8)format scale:(double)scale fillMem:(id)mem alternateCompletion:(id)completion
 {
-  if (a7 == 0.0)
+  if (scale == 0.0)
   {
     return 0;
   }
 
   v36 = 0u;
   *v34 = 0u;
-  v14 = vcvtpd_u64_f64(a5.height * a7);
-  *&v35 = vcvtpd_u64_f64(a5.width * a7);
+  v14 = vcvtpd_u64_f64(size.height * scale);
+  *&v35 = vcvtpd_u64_f64(size.width * scale);
   *(&v35 + 1) = v14;
-  BYTE8(v36) = a6;
-  if (a6 <= 5u)
+  BYTE8(v36) = format;
+  if (format <= 5u)
   {
-    v15 = qword_195EA88F0[a6];
+    v15 = qword_195EA88F0[format];
   }
 
   AlignedBytesPerRow = CGBitmapGetAlignedBytesPerRow();
@@ -202,8 +202,8 @@
   v19 = (v17 + v18 + *MEMORY[0x1E69E9AC8] - 1) & -*MEMORY[0x1E69E9AC8];
   v34[1] = v19;
   *(&v36 + 9) = 0;
-  v20 = [(CPBitmapStore *)self imagePath];
-  v21 = strdup([objc_msgSend(v20 stringByAppendingPathComponent:{@"tmp.XXXXXXXX", "fileSystemRepresentation"}]);
+  imagePath = [(CPBitmapStore *)self imagePath];
+  v21 = strdup([objc_msgSend(imagePath stringByAppendingPathComponent:{@"tmp.XXXXXXXX", "fileSystemRepresentation"}]);
   if (!v21)
   {
     return 0;
@@ -239,34 +239,34 @@ LABEL_16:
     return 0;
   }
 
-  (*(a8 + 2))(a8, v25, v34);
-  v34[0] = [(CPBitmapStore *)self imageNameForKey:a3 inGroup:a4];
+  (*(mem + 2))(mem, v25, v34);
+  v34[0] = [(CPBitmapStore *)self imageNameForKey:key inGroup:group];
   munmap(v25, v34[1]);
-  v26 = [v20 stringByAppendingPathComponent:v34[0]];
-  v27 = [v26 fileSystemRepresentation];
-  rename(v22, v27, v28);
+  v26 = [imagePath stringByAppendingPathComponent:v34[0]];
+  fileSystemRepresentation = [v26 fileSystemRepresentation];
+  rename(v22, fileSystemRepresentation, v28);
   v30 = v29;
   free(v22);
-  if (v30 < 0 || ![(CPBitmapStore *)self saveImageWithKey:a3 inGroup:a4 andInfo:v34])
+  if (v30 < 0 || ![(CPBitmapStore *)self saveImageWithKey:key inGroup:group andInfo:v34])
   {
     return 0;
   }
 
-  if (a9)
+  if (completion)
   {
-    (*(a9 + 2))(a9);
+    (*(completion + 2))(completion);
     return 0;
   }
 
   image_with_memory = [(CPBitmapStore *)self openAndMmap:v26 withInfo:v34];
   if (image_with_memory)
   {
-    v33 = [(CPBitmapStore *)self memContentOffset];
-    v34[1] -= v33;
+    memContentOffset = [(CPBitmapStore *)self memContentOffset];
+    v34[1] -= memContentOffset;
     image_with_memory = create_image_with_memory(image_with_memory, v34, [(CPBitmapStore *)self memContentOffset]);
     if (image_with_memory)
     {
-      [(NSCache *)self->_cache setObject:image_with_memory forKey:[(CPBitmapStore *)self cacheNumberForKey:a3]];
+      [(NSCache *)self->_cache setObject:image_with_memory forKey:[(CPBitmapStore *)self cacheNumberForKey:key]];
     }
   }
 
@@ -393,17 +393,17 @@ void *__73__CPBitmapStore_storeImageDataForKey_inGroup_withSize_opaque_scale_dat
   return memcpy(v7, v8, v9);
 }
 
-- (void)storeGrayscaleImageDataForKey:(id)a3 inGroup:(id)a4 withSize:(CGSize)a5 opaque:(BOOL)a6 scale:(double)a7 data:(id)a8
+- (void)storeGrayscaleImageDataForKey:(id)key inGroup:(id)group withSize:(CGSize)size opaque:(BOOL)opaque scale:(double)scale data:(id)data
 {
-  if (a8)
+  if (data)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __82__CPBitmapStore_storeGrayscaleImageDataForKey_inGroup_withSize_opaque_scale_data___block_invoke;
     v9[3] = &unk_1E74510D0;
     v9[4] = self;
-    v9[5] = a8;
-    if (a6)
+    v9[5] = data;
+    if (opaque)
     {
       v8 = 4;
     }
@@ -413,7 +413,7 @@ void *__73__CPBitmapStore_storeImageDataForKey_inGroup_withSize_opaque_scale_dat
       v8 = 3;
     }
 
-    [(CPBitmapStore *)self _copyAndStoreImageForKey:a3 inGroup:a4 withSize:v8 format:v9 scale:&__block_literal_global_18 fillMem:a5.width alternateCompletion:a5.height, a7];
+    [(CPBitmapStore *)self _copyAndStoreImageForKey:key inGroup:group withSize:v8 format:v9 scale:&__block_literal_global_18 fillMem:size.width alternateCompletion:size.height, scale];
   }
 }
 
@@ -534,21 +534,21 @@ uint64_t __85__CPBitmapStore_storeImageDataForKey_inGroup_withSize_format_format
   return [v12 getBytes:a2 + v6 length:v13];
 }
 
-- (void)removeImagesInGroups:(id)a3 completion:(id)a4
+- (void)removeImagesInGroups:(id)groups completion:(id)completion
 {
-  if ([a3 count])
+  if ([groups count])
   {
-    v7 = [(CPBitmapStore *)self imagePath];
+    imagePath = [(CPBitmapStore *)self imagePath];
     v8 = [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
-    v9 = [a4 copy];
+    v9 = [completion copy];
     serialQueueRemoveImagesBackground = self->_serialQueueRemoveImagesBackground;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __49__CPBitmapStore_removeImagesInGroups_completion___block_invoke;
     block[3] = &unk_1E7451148;
-    block[4] = a3;
+    block[4] = groups;
     block[5] = v8;
-    block[6] = v7;
+    block[6] = imagePath;
     block[7] = self;
     block[8] = v9;
     dispatch_async(serialQueueRemoveImagesBackground, block);
@@ -690,10 +690,10 @@ char *__49__CPBitmapStore_removeImagesInGroups_completion___block_invoke_2(uint6
 
 - (void)purge
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   path = self->_path;
 
-  [v3 removeItemAtPath:path error:0];
+  [defaultManager removeItemAtPath:path error:0];
 }
 
 - (id)_versionPath

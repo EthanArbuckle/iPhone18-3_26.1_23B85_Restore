@@ -1,19 +1,19 @@
 @interface ATXFaceSuggestionAppLaunchUniqueDaysSignal
-- (ATXFaceSuggestionAppLaunchUniqueDaysSignal)initWithAppLaunchDictionary:(id)a3;
-- (double)valueForDescriptor:(id)a3;
+- (ATXFaceSuggestionAppLaunchUniqueDaysSignal)initWithAppLaunchDictionary:(id)dictionary;
+- (double)valueForDescriptor:(id)descriptor;
 @end
 
 @implementation ATXFaceSuggestionAppLaunchUniqueDaysSignal
 
-- (ATXFaceSuggestionAppLaunchUniqueDaysSignal)initWithAppLaunchDictionary:(id)a3
+- (ATXFaceSuggestionAppLaunchUniqueDaysSignal)initWithAppLaunchDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ATXFaceSuggestionAppLaunchUniqueDaysSignal;
   v5 = [(ATXFaceSuggestionAppLaunchUniqueDaysSignal *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     appLaunchDictionary = v5->_appLaunchDictionary;
     v5->_appLaunchDictionary = v6;
   }
@@ -21,25 +21,25 @@
   return v5;
 }
 
-- (double)valueForDescriptor:(id)a3
+- (double)valueForDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [v4 containerBundleIdentifier];
+  descriptorCopy = descriptor;
+  containerBundleIdentifier = [descriptorCopy containerBundleIdentifier];
 
-  if (v5)
+  if (containerBundleIdentifier)
   {
     appLaunchDictionary = self->_appLaunchDictionary;
-    v7 = [v4 containerBundleIdentifier];
-    v8 = [(NSDictionary *)appLaunchDictionary objectForKeyedSubscript:v7];
-    v9 = [v8 uniqueDaysLaunched];
+    containerBundleIdentifier2 = [descriptorCopy containerBundleIdentifier];
+    v8 = [(NSDictionary *)appLaunchDictionary objectForKeyedSubscript:containerBundleIdentifier2];
+    uniqueDaysLaunched = [v8 uniqueDaysLaunched];
   }
 
   else
   {
-    v9 = 0.0;
+    uniqueDaysLaunched = 0.0;
   }
 
-  return v9;
+  return uniqueDaysLaunched;
 }
 
 @end

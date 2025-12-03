@@ -1,11 +1,11 @@
 @interface GDPageRankView
-- (GDPageRankView)initWithAccessAssertion:(id)a3 database:(id)a4;
-- (id)pageRanksWithError:(id *)a3;
+- (GDPageRankView)initWithAccessAssertion:(id)assertion database:(id)database;
+- (id)pageRanksWithError:(id *)error;
 @end
 
 @implementation GDPageRankView
 
-- (id)pageRanksWithError:(id *)a3
+- (id)pageRanksWithError:(id *)error
 {
   [GDAnalytics sendEventForProductionLazyWithEventName:@"ViewEngine.Serving.Query" eventPayloadBuilder:&unk_1F20A1A38];
   v5 = objc_opt_new();
@@ -28,10 +28,10 @@
   v11[3] = &unk_1E79621E8;
   v11[4] = &v14;
   [(_PASSqliteDatabase *)db prepAndRunQuery:@"SELECT MD_ID onPrep:CAST(page_rank AS REAL) AS rank FROM page_rank" onRow:&unk_1F20A1A58 onError:v12, v11];
-  if (a3 && (v8 = v15[5]) != 0)
+  if (error && (v8 = v15[5]) != 0)
   {
     v9 = 0;
-    *a3 = v8;
+    *error = v8;
   }
 
   else
@@ -44,18 +44,18 @@
   return v9;
 }
 
-- (GDPageRankView)initWithAccessAssertion:(id)a3 database:(id)a4
+- (GDPageRankView)initWithAccessAssertion:(id)assertion database:(id)database
 {
-  v7 = a3;
-  v8 = a4;
+  assertionCopy = assertion;
+  databaseCopy = database;
   v12.receiver = self;
   v12.super_class = GDPageRankView;
   v9 = [(GDPageRankView *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accessAssertion, a3);
-    objc_storeStrong(&v10->_db, a4);
+    objc_storeStrong(&v9->_accessAssertion, assertion);
+    objc_storeStrong(&v10->_db, database);
   }
 
   return v10;

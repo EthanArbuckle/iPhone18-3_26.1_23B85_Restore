@@ -1,32 +1,32 @@
 @interface UIShadowProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (UIBezierPath)_path;
 - (UIBezierPath)path;
-- (UIShadowProperties)initWithCoder:(id)a3;
+- (UIShadowProperties)initWithCoder:(id)coder;
 - (double)_opacity;
 - (double)_radius;
 - (id)_color;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)_backgroundConfigurationShadowType;
-- (void)_applyPropertiesFromDefaultProperties:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setColor:(id)a3;
-- (void)setOffset:(CGSize)a3;
-- (void)setOpacity:(double)a3;
-- (void)setPath:(id)a3;
-- (void)setRadius:(double)a3;
-- (void)set_backgroundConfigurationShadowType:(int64_t)a3;
-- (void)set_color:(id)a3;
-- (void)set_offset:(CGSize)a3;
-- (void)set_opacity:(double)a3;
-- (void)set_path:(id)a3;
-- (void)set_radius:(double)a3;
+- (void)_applyPropertiesFromDefaultProperties:(id)properties;
+- (void)encodeWithCoder:(id)coder;
+- (void)setColor:(id)color;
+- (void)setOffset:(CGSize)offset;
+- (void)setOpacity:(double)opacity;
+- (void)setPath:(id)path;
+- (void)setRadius:(double)radius;
+- (void)set_backgroundConfigurationShadowType:(int64_t)type;
+- (void)set_color:(id)set_color;
+- (void)set_offset:(CGSize)set_offset;
+- (void)set_opacity:(double)set_opacity;
+- (void)set_path:(id)set_path;
+- (void)set_radius:(double)set_radius;
 @end
 
 @implementation UIShadowProperties
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v3 = (self + OBJC_IVAR___UIShadowProperties__backingProperties);
   swift_beginAccess();
@@ -72,39 +72,39 @@
 {
   v2 = OBJC_IVAR___UIShadowProperties__backingProperties;
   swift_beginAccess();
-  return *(a1 + v2);
+  return *(self + v2);
 }
 
 - (double)_opacity
 {
-  v1 = a1 + OBJC_IVAR___UIShadowProperties__backingProperties;
+  v1 = self + OBJC_IVAR___UIShadowProperties__backingProperties;
   swift_beginAccess();
   return *(v1 + 8);
 }
 
 - (double)_radius
 {
-  v1 = a1 + OBJC_IVAR___UIShadowProperties__backingProperties;
+  v1 = self + OBJC_IVAR___UIShadowProperties__backingProperties;
   swift_beginAccess();
   return *(v1 + 16);
 }
 
 - (UIBezierPath)path
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188D0DCD4();
 
   return v3;
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
   v5 = self + OBJC_IVAR___UIShadowProperties__backingProperties;
   swift_beginAccess();
   v6 = *v5;
-  *v5 = a3;
-  v7 = a3;
-  v8 = self;
+  *v5 = color;
+  colorCopy = color;
+  selfCopy = self;
 
   v9 = *(v5 + 6);
   if ((v9 & 1) == 0)
@@ -115,20 +115,20 @@
   swift_endAccess();
 }
 
-- (void)set_color:(id)a3
+- (void)set_color:(id)set_color
 {
   v5 = OBJC_IVAR___UIShadowProperties__backingProperties;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = set_color;
+  set_colorCopy = set_color;
 }
 
-- (void)setOpacity:(double)a3
+- (void)setOpacity:(double)opacity
 {
   v4 = (self + OBJC_IVAR___UIShadowProperties__backingProperties);
   swift_beginAccess();
-  v4[1] = a3;
+  v4[1] = opacity;
   v5 = *(v4 + 6);
   if ((v5 & 2) == 0)
   {
@@ -136,18 +136,18 @@
   }
 }
 
-- (void)set_opacity:(double)a3
+- (void)set_opacity:(double)set_opacity
 {
   v4 = (self + OBJC_IVAR___UIShadowProperties__backingProperties);
   swift_beginAccess();
-  v4[1] = a3;
+  v4[1] = set_opacity;
 }
 
-- (void)setRadius:(double)a3
+- (void)setRadius:(double)radius
 {
   v4 = (self + OBJC_IVAR___UIShadowProperties__backingProperties);
   swift_beginAccess();
-  v4[2] = a3;
+  v4[2] = radius;
   v5 = *(v4 + 6);
   if ((v5 & 4) == 0)
   {
@@ -155,17 +155,17 @@
   }
 }
 
-- (void)set_radius:(double)a3
+- (void)set_radius:(double)set_radius
 {
   v4 = (self + OBJC_IVAR___UIShadowProperties__backingProperties);
   swift_beginAccess();
-  v4[2] = a3;
+  v4[2] = set_radius;
 }
 
-- (void)setOffset:(CGSize)a3
+- (void)setOffset:(CGSize)offset
 {
-  height = a3.height;
-  width = a3.width;
+  height = offset.height;
+  width = offset.width;
   v5 = (self + OBJC_IVAR___UIShadowProperties__backingProperties);
   swift_beginAccess();
   v5[3] = width;
@@ -177,21 +177,21 @@
   }
 }
 
-- (void)set_offset:(CGSize)a3
+- (void)set_offset:(CGSize)set_offset
 {
-  height = a3.height;
-  width = a3.width;
+  height = set_offset.height;
+  width = set_offset.width;
   v5 = (self + OBJC_IVAR___UIShadowProperties__backingProperties);
   swift_beginAccess();
   v5[3] = width;
   v5[4] = height;
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  v5 = a3;
-  v6 = self;
-  sub_1891FAB04(a3);
+  pathCopy = path;
+  selfCopy = self;
+  sub_1891FAB04(path);
 }
 
 - (UIBezierPath)_path
@@ -201,25 +201,25 @@
   return v2[5];
 }
 
-- (void)set_path:(id)a3
+- (void)set_path:(id)set_path
 {
   v4 = self + OBJC_IVAR___UIShadowProperties__backingProperties;
   swift_beginAccess();
   v5 = *(v4 + 5);
-  *(v4 + 5) = a3;
-  v6 = a3;
+  *(v4 + 5) = set_path;
+  set_pathCopy = set_path;
 }
 
-- (void)set_backgroundConfigurationShadowType:(int64_t)a3
+- (void)set_backgroundConfigurationShadowType:(int64_t)type
 {
   v4 = self + OBJC_IVAR___UIShadowProperties__backingProperties;
   swift_beginAccess();
-  *(v4 + 7) = a3;
+  *(v4 + 7) = type;
 }
 
-- (void)_applyPropertiesFromDefaultProperties:(id)a3
+- (void)_applyPropertiesFromDefaultProperties:(id)properties
 {
-  v5 = a3 + OBJC_IVAR___UIShadowProperties__backingProperties;
+  v5 = properties + OBJC_IVAR___UIShadowProperties__backingProperties;
   swift_beginAccess();
   v6 = v5[1];
   v18[0] = *v5;
@@ -236,8 +236,8 @@
   v16 = v10;
   v17 = v11;
   swift_beginAccess();
-  v12 = a3;
-  v13 = self;
+  propertiesCopy = properties;
+  selfCopy = self;
   sub_188BFAE70(v18, v19);
   sub_1891F9B30(&v14);
   swift_endAccess();
@@ -249,11 +249,11 @@
   sub_188D0D8D0(v19);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18A4A7DE8();
     swift_unknownObjectRelease();
@@ -262,7 +262,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = UIShadowProperties.isEqual(_:)(v8);
@@ -273,7 +273,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   UIShadowProperties.description.getter();
 
   v3 = sub_18A4A7258();
@@ -281,19 +281,19 @@
   return v3;
 }
 
-- (UIShadowProperties)initWithCoder:(id)a3
+- (UIShadowProperties)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_1891FB6B4(v3);
+  coderCopy = coder;
+  v4 = sub_1891FB6B4(coderCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1891FB1FC(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1891FB1FC(coderCopy);
 }
 
 @end

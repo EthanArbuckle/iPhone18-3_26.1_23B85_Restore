@@ -2,58 +2,58 @@
 - (AVTAvatarRecord)avatarRecord;
 - (AVTPresenterDelegate)presenterDelegate;
 - (AVTStickerDisclosureValidationDelegate)disclosureValidationDelegate;
-- (AVTStickerSheetController)initWithStickerSheetModel:(id)a3 taskScheduler:(id)a4 allowsPeel:(BOOL)a5;
+- (AVTStickerSheetController)initWithStickerSheetModel:(id)model taskScheduler:(id)scheduler allowsPeel:(BOOL)peel;
 - (AVTStickerSheetControllerDelegate)delegate;
 - (BOOL)areAllStickersRendered;
-- (CGPoint)maxedContentOffset:(CGPoint)a3;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (CGSize)minimumContentSizeForSize:(CGSize)a3;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (CGPoint)maxedContentOffset:(CGPoint)offset;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (CGSize)minimumContentSizeForSize:(CGSize)size;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (UIEdgeInsets)sectionInsets;
 - (UIView)view;
 - (double)numberOfItemsPerRow;
 - (double)topPadding;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)dragPreviewContainerForLiftingStickerInStickerCell:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)dragPreviewContainerForLiftingStickerInStickerCell:(id)cell;
 - (id)firstStickerView;
 - (id)placeholderProvider;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)clearStickerRendererIfNeeded;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)discardStickerItems;
 - (void)loadView;
-- (void)notifyingContainerViewWillChangeSize:(CGSize)a3;
-- (void)reloadCollectionViewItemForStickerItem:(id)a3;
-- (void)scheduleSheetPlaceholderTask:(id)a3;
-- (void)scheduleSheetStickerTask:(id)a3 withIndexPath:(id)a4;
-- (void)scrollToContentOffset:(CGPoint)a3 animated:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setSectionInsets:(UIEdgeInsets)a3;
+- (void)notifyingContainerViewWillChangeSize:(CGSize)size;
+- (void)reloadCollectionViewItemForStickerItem:(id)item;
+- (void)scheduleSheetPlaceholderTask:(id)task;
+- (void)scheduleSheetStickerTask:(id)task withIndexPath:(id)path;
+- (void)scrollToContentOffset:(CGPoint)offset animated:(BOOL)animated;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setSectionInsets:(UIEdgeInsets)insets;
 - (void)sheetDidDisappear;
 - (void)sheetWillAppear;
-- (void)startAllSchedulerTasksExcludingVisibleIndexPaths:(id)a3;
-- (void)stickerCellDidPeelSticker:(id)a3;
-- (void)stickerCellDidTapSticker:(id)a3;
-- (void)updateItem:(id)a3 withStickerResource:(id)a4 reloadCell:(BOOL)a5;
+- (void)startAllSchedulerTasksExcludingVisibleIndexPaths:(id)paths;
+- (void)stickerCellDidPeelSticker:(id)sticker;
+- (void)stickerCellDidTapSticker:(id)sticker;
+- (void)updateItem:(id)item withStickerResource:(id)resource reloadCell:(BOOL)cell;
 @end
 
 @implementation AVTStickerSheetController
 
-- (AVTStickerSheetController)initWithStickerSheetModel:(id)a3 taskScheduler:(id)a4 allowsPeel:(BOOL)a5
+- (AVTStickerSheetController)initWithStickerSheetModel:(id)model taskScheduler:(id)scheduler allowsPeel:(BOOL)peel
 {
-  v9 = a3;
-  v10 = a4;
+  modelCopy = model;
+  schedulerCopy = scheduler;
   v16.receiver = self;
   v16.super_class = AVTStickerSheetController;
   v11 = [(AVTStickerSheetController *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_allowsPeel = a5;
-    objc_storeStrong(&v11->_model, a3);
-    objc_storeStrong(&v12->_taskScheduler, a4);
+    v11->_allowsPeel = peel;
+    objc_storeStrong(&v11->_model, model);
+    objc_storeStrong(&v12->_taskScheduler, scheduler);
     v13 = AVTUIShowPrereleaseStickerPack_once();
     if (v13)
     {
@@ -71,12 +71,12 @@
 
 - (void)dealloc
 {
-  v3 = [(AVTStickerSheetController *)self model];
-  v4 = [v3 stickerRenderer];
-  [v4 stopUsingResources];
+  model = [(AVTStickerSheetController *)self model];
+  stickerRenderer = [model stickerRenderer];
+  [stickerRenderer stopUsingResources];
 
-  v5 = [(AVTStickerSheetController *)self collectionView];
-  [v5 removeFromSuperview];
+  collectionView = [(AVTStickerSheetController *)self collectionView];
+  [collectionView removeFromSuperview];
 
   v6.receiver = self;
   v6.super_class = AVTStickerSheetController;
@@ -97,9 +97,9 @@
 
 - (double)topPadding
 {
-  v3 = [(AVTStickerSheetController *)self model];
-  v4 = [v3 environment];
-  if ([v4 deviceIsPad])
+  model = [(AVTStickerSheetController *)self model];
+  environment = [model environment];
+  if ([environment deviceIsPad])
   {
 
     return 8.0;
@@ -107,19 +107,19 @@
 
   else
   {
-    v6 = [(AVTStickerSheetController *)self model];
-    v7 = [v6 environment];
-    v8 = [v7 deviceIsMac];
+    model2 = [(AVTStickerSheetController *)self model];
+    environment2 = [model2 environment];
+    deviceIsMac = [environment2 deviceIsMac];
 
     result = 8.0;
-    if ((v8 & 1) == 0)
+    if ((deviceIsMac & 1) == 0)
     {
-      v9 = [(AVTStickerSheetController *)self model];
-      v10 = [v9 environment];
-      v11 = [v10 deviceIsVision];
+      model3 = [(AVTStickerSheetController *)self model];
+      environment3 = [model3 environment];
+      deviceIsVision = [environment3 deviceIsVision];
 
       result = 12.0;
-      if (v11)
+      if (deviceIsVision)
       {
         return 16.0;
       }
@@ -129,10 +129,10 @@
   return result;
 }
 
-- (CGSize)minimumContentSizeForSize:(CGSize)a3
+- (CGSize)minimumContentSizeForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(AVTStickerSheetController *)self sectionInsets];
   v7 = v6;
   [(AVTStickerSheetController *)self sectionInsets];
@@ -143,18 +143,18 @@
   return result;
 }
 
-- (CGPoint)maxedContentOffset:(CGPoint)a3
+- (CGPoint)maxedContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AVTStickerSheetController *)self collectionView];
-  [v6 contentSize];
+  y = offset.y;
+  x = offset.x;
+  collectionView = [(AVTStickerSheetController *)self collectionView];
+  [collectionView contentSize];
   v8 = v7;
-  v9 = [(AVTStickerSheetController *)self collectionView];
-  [v9 bounds];
+  collectionView2 = [(AVTStickerSheetController *)self collectionView];
+  [collectionView2 bounds];
   v11 = v8 - v10;
-  v12 = [(AVTStickerSheetController *)self collectionView];
-  [v12 adjustedContentInset];
+  collectionView3 = [(AVTStickerSheetController *)self collectionView];
+  [collectionView3 adjustedContentInset];
   v14 = v11 + v13;
 
   if (y <= v14)
@@ -176,19 +176,19 @@
 - (void)loadView
 {
   v17 = objc_alloc_init(AVTMinimumContentSizeCollectionViewLayout);
-  v3 = [(AVTStickerSheetController *)self model];
-  v4 = [v3 environment];
-  v5 = [v4 deviceIsMac];
+  model = [(AVTStickerSheetController *)self model];
+  environment = [model environment];
+  deviceIsMac = [environment deviceIsMac];
 
   v6 = 10.0;
-  if ((v5 & 1) == 0)
+  if ((deviceIsMac & 1) == 0)
   {
-    v7 = [(AVTStickerSheetController *)self model];
-    v8 = [v7 environment];
-    v9 = [v8 deviceIsVision];
+    model2 = [(AVTStickerSheetController *)self model];
+    environment2 = [model2 environment];
+    deviceIsVision = [environment2 deviceIsVision];
 
     v6 = 16.0;
-    if (v9)
+    if (deviceIsVision)
     {
       v6 = 10.0;
     }
@@ -200,8 +200,8 @@
   [(UICollectionViewFlowLayout *)v17 setSectionInset:self->_sectionInsets.top, self->_sectionInsets.left, self->_sectionInsets.bottom, self->_sectionInsets.right];
   v10 = [AVTStickerSheetCollectionView alloc];
   v11 = [(AVTStickerSheetCollectionView *)v10 initWithFrame:v17 collectionViewLayout:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  v12 = [MEMORY[0x1E69DC888] clearColor];
-  [(AVTStickerSheetCollectionView *)v11 setBackgroundColor:v12];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(AVTStickerSheetCollectionView *)v11 setBackgroundColor:clearColor];
 
   [(AVTStickerSheetCollectionView *)v11 setDataSource:self];
   [(AVTStickerSheetCollectionView *)v11 setDelegate:self];
@@ -221,53 +221,53 @@
   [(AVTStickerSheetController *)self setView:v16];
 }
 
-- (void)setSectionInsets:(UIEdgeInsets)a3
+- (void)setSectionInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_sectionInsets.top), vceqq_f64(v4, *&self->_sectionInsets.bottom)))) & 1) == 0)
   {
-    self->_sectionInsets = a3;
-    v6 = [(AVTStickerSheetController *)self collectionView];
-    v5 = [v6 collectionViewLayout];
-    [v5 invalidateLayout];
+    self->_sectionInsets = insets;
+    collectionView = [(AVTStickerSheetController *)self collectionView];
+    collectionViewLayout = [collectionView collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
   }
 }
 
 - (AVTAvatarRecord)avatarRecord
 {
-  v2 = [(AVTStickerSheetController *)self model];
-  v3 = [v2 avatarRecord];
+  model = [(AVTStickerSheetController *)self model];
+  avatarRecord = [model avatarRecord];
 
-  return v3;
+  return avatarRecord;
 }
 
 - (void)sheetDidDisappear
 {
   v22 = *MEMORY[0x1E69E9840];
   [(AVTStickerSheetController *)self setIsPageVisible:0];
-  v3 = [(AVTStickerSheetController *)self model];
-  v4 = [v3 avatarRecord];
-  v5 = [v4 identifier];
+  model = [(AVTStickerSheetController *)self model];
+  avatarRecord = [model avatarRecord];
+  identifier = [avatarRecord identifier];
 
-  v6 = [(AVTStickerSheetController *)self taskScheduler];
-  [v6 cancelStickerSheetTasksForAvatarRecordIdentifier:v5];
+  taskScheduler = [(AVTStickerSheetController *)self taskScheduler];
+  [taskScheduler cancelStickerSheetTasksForAvatarRecordIdentifier:identifier];
 
   [(AVTStickerSheetController *)self discardStickerItems];
-  v7 = [(AVTStickerSheetController *)self collectionView];
+  collectionView = [(AVTStickerSheetController *)self collectionView];
 
-  if (v7)
+  if (collectionView)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [(AVTStickerSheetController *)self collectionView];
-    v9 = [v8 visibleCells];
+    collectionView2 = [(AVTStickerSheetController *)self collectionView];
+    visibleCells = [collectionView2 visibleCells];
 
-    v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v10 = [visibleCells countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
       v11 = v10;
@@ -279,26 +279,26 @@
         {
           if (*v18 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(visibleCells);
           }
 
           [*(*(&v17 + 1) + 8 * v13++) purgeImageContents];
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v11 = [visibleCells countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v11);
     }
 
-    v14 = [(AVTStickerSheetController *)self collectionView];
-    [v14 _purgeReuseQueues];
+    collectionView3 = [(AVTStickerSheetController *)self collectionView];
+    [collectionView3 _purgeReuseQueues];
   }
 
-  v15 = [(AVTStickerSheetController *)self model];
-  v16 = [v15 stickerRenderer];
-  [v16 stopUsingResources];
+  model2 = [(AVTStickerSheetController *)self model];
+  stickerRenderer = [model2 stickerRenderer];
+  [stickerRenderer stopUsingResources];
 }
 
 - (void)sheetWillAppear
@@ -311,24 +311,24 @@
     }
 
     [(AVTStickerSheetController *)self setIsPageVisible:1];
-    v3 = [(AVTStickerSheetController *)self collectionView];
-    v4 = [v3 indexPathsForVisibleItems];
+    collectionView = [(AVTStickerSheetController *)self collectionView];
+    indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
-    if ([v4 count])
+    if ([indexPathsForVisibleItems count])
     {
-      v5 = [(AVTStickerSheetController *)self taskScheduler];
-      [v5 setVisibleIndexPaths:v4];
+      taskScheduler = [(AVTStickerSheetController *)self taskScheduler];
+      [taskScheduler setVisibleIndexPaths:indexPathsForVisibleItems];
 
       v6 = MEMORY[0x1E69DD250];
       v8 = MEMORY[0x1E69E9820];
       v9 = 3221225472;
       v10 = __44__AVTStickerSheetController_sheetWillAppear__block_invoke;
       v11 = &unk_1E7F3AD60;
-      v12 = self;
-      v7 = v4;
+      selfCopy = self;
+      v7 = indexPathsForVisibleItems;
       v13 = v7;
       [v6 performWithoutAnimation:&v8];
-      [(AVTStickerSheetController *)self startAllSchedulerTasksExcludingVisibleIndexPaths:v7, v8, v9, v10, v11, v12];
+      [(AVTStickerSheetController *)self startAllSchedulerTasksExcludingVisibleIndexPaths:v7, v8, v9, v10, v11, selfCopy];
     }
   }
 }
@@ -339,20 +339,20 @@ void __44__AVTStickerSheetController_sheetWillAppear__block_invoke(uint64_t a1)
   [v2 reloadItemsAtIndexPaths:*(a1 + 40)];
 }
 
-- (void)startAllSchedulerTasksExcludingVisibleIndexPaths:(id)a3
+- (void)startAllSchedulerTasksExcludingVisibleIndexPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   if (![(AVTStickerSheetController *)self areAllStickersRendered])
   {
-    v5 = [(AVTStickerSheetController *)self model];
-    v6 = [v5 stickerItems];
+    model = [(AVTStickerSheetController *)self model];
+    stickerItems = [model stickerItems];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __78__AVTStickerSheetController_startAllSchedulerTasksExcludingVisibleIndexPaths___block_invoke;
     v7[3] = &unk_1E7F3AE70;
-    v8 = v4;
-    v9 = self;
-    [v6 enumerateObjectsUsingBlock:v7];
+    v8 = pathsCopy;
+    selfCopy = self;
+    [stickerItems enumerateObjectsUsingBlock:v7];
   }
 }
 
@@ -389,46 +389,46 @@ void __78__AVTStickerSheetController_startAllSchedulerTasksExcludingVisibleIndex
   [WeakRetained updateItem:v4 withStickerResource:v3 reloadCell:1];
 }
 
-- (void)scheduleSheetPlaceholderTask:(id)a3
+- (void)scheduleSheetPlaceholderTask:(id)task
 {
-  if (a3)
+  if (task)
   {
-    v4 = a3;
-    v5 = [(AVTStickerSheetController *)self model];
-    v6 = [v5 avatarRecord];
-    v7 = [v6 identifier];
-    v9 = [AVTStickerTask stickerTaskForSchedulerTask:v4 avatarRecordIdentifier:v7 indexPath:0 stickerType:1];
+    taskCopy = task;
+    model = [(AVTStickerSheetController *)self model];
+    avatarRecord = [model avatarRecord];
+    identifier = [avatarRecord identifier];
+    v9 = [AVTStickerTask stickerTaskForSchedulerTask:taskCopy avatarRecordIdentifier:identifier indexPath:0 stickerType:1];
 
-    v8 = [(AVTStickerSheetController *)self taskScheduler];
-    [v8 scheduleStickerTask:v9];
+    taskScheduler = [(AVTStickerSheetController *)self taskScheduler];
+    [taskScheduler scheduleStickerTask:v9];
   }
 }
 
-- (void)scheduleSheetStickerTask:(id)a3 withIndexPath:(id)a4
+- (void)scheduleSheetStickerTask:(id)task withIndexPath:(id)path
 {
-  if (a3)
+  if (task)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(AVTStickerSheetController *)self model];
-    v9 = [v8 avatarRecord];
-    v10 = [v9 identifier];
-    v12 = [AVTStickerTask stickerTaskForSchedulerTask:v7 avatarRecordIdentifier:v10 indexPath:v6 stickerType:2];
+    pathCopy = path;
+    taskCopy = task;
+    model = [(AVTStickerSheetController *)self model];
+    avatarRecord = [model avatarRecord];
+    identifier = [avatarRecord identifier];
+    v12 = [AVTStickerTask stickerTaskForSchedulerTask:taskCopy avatarRecordIdentifier:identifier indexPath:pathCopy stickerType:2];
 
-    v11 = [(AVTStickerSheetController *)self taskScheduler];
-    [v11 scheduleStickerTask:v12];
+    taskScheduler = [(AVTStickerSheetController *)self taskScheduler];
+    [taskScheduler scheduleStickerTask:v12];
   }
 }
 
 - (id)firstStickerView
 {
-  v3 = [(AVTStickerSheetController *)self collectionView];
+  collectionView = [(AVTStickerSheetController *)self collectionView];
 
-  if (v3)
+  if (collectionView)
   {
-    v4 = [(AVTStickerSheetController *)self collectionView];
+    collectionView2 = [(AVTStickerSheetController *)self collectionView];
     v5 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:0];
-    v6 = [v4 cellForItemAtIndexPath:v5];
+    v6 = [collectionView2 cellForItemAtIndexPath:v5];
   }
 
   else
@@ -446,10 +446,10 @@ void __78__AVTStickerSheetController_startAllSchedulerTasksExcludingVisibleIndex
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(AVTStickerSheetController *)self model];
-  v3 = [v2 stickerItems];
+  model = [(AVTStickerSheetController *)self model];
+  stickerItems = [model stickerItems];
 
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [stickerItems countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -461,14 +461,14 @@ void __78__AVTStickerSheetController_startAllSchedulerTasksExcludingVisibleIndex
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(stickerItems);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) discardContent];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [stickerItems countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -487,10 +487,10 @@ void __78__AVTStickerSheetController_startAllSchedulerTasksExcludingVisibleIndex
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(AVTStickerSheetController *)self model];
-  v5 = [v4 stickerItems];
+  model = [(AVTStickerSheetController *)self model];
+  stickerItems = [model stickerItems];
 
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [stickerItems countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -501,7 +501,7 @@ void __78__AVTStickerSheetController_startAllSchedulerTasksExcludingVisibleIndex
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(stickerItems);
         }
 
         if (![*(*(&v11 + 1) + 8 * i) hasBeenRendered])
@@ -511,7 +511,7 @@ void __78__AVTStickerSheetController_startAllSchedulerTasksExcludingVisibleIndex
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [stickerItems countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v7)
       {
         continue;
@@ -532,16 +532,16 @@ LABEL_13:
 {
   if ([(AVTStickerSheetController *)self areAllStickersRendered])
   {
-    v4 = [(AVTStickerSheetController *)self delegate];
-    v3 = [(AVTStickerSheetController *)self avatarRecord];
-    [v4 stickerSheetController:self didFinishRenderingStickersForRecord:v3];
+    delegate = [(AVTStickerSheetController *)self delegate];
+    avatarRecord = [(AVTStickerSheetController *)self avatarRecord];
+    [delegate stickerSheetController:self didFinishRenderingStickersForRecord:avatarRecord];
   }
 }
 
 - (double)numberOfItemsPerRow
 {
-  v2 = [(AVTStickerSheetController *)self view];
-  [v2 bounds];
+  view = [(AVTStickerSheetController *)self view];
+  [view bounds];
   v4 = v3;
 
   result = 3.0;
@@ -553,61 +553,61 @@ LABEL_13:
   return result;
 }
 
-- (void)updateItem:(id)a3 withStickerResource:(id)a4 reloadCell:(BOOL)a5
+- (void)updateItem:(id)item withStickerResource:(id)resource reloadCell:(BOOL)cell
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 image];
-  v11 = [v8 hasBeenRendered];
-  if (v10)
+  cellCopy = cell;
+  itemCopy = item;
+  resourceCopy = resource;
+  image = [resourceCopy image];
+  hasBeenRendered = [itemCopy hasBeenRendered];
+  if (image)
   {
     v12 = 1;
   }
 
   else
   {
-    v12 = v11;
+    v12 = hasBeenRendered;
   }
 
-  [v8 setHasBeenRendered:v12];
+  [itemCopy setHasBeenRendered:v12];
 
   [(AVTStickerSheetController *)self clearStickerRendererIfNeeded];
-  [v9 clippingRect];
-  [v8 setClippingRect:?];
+  [resourceCopy clippingRect];
+  [itemCopy setClippingRect:?];
   if ([(AVTStickerSheetController *)self isPageVisible])
   {
-    v13 = [(AVTStickerSheetController *)self collectionView];
+    collectionView = [(AVTStickerSheetController *)self collectionView];
 
-    if (v13)
+    if (collectionView)
     {
-      v14 = [v8 cachedMSSticker];
-      if (v14)
+      cachedMSSticker = [itemCopy cachedMSSticker];
+      if (cachedMSSticker)
       {
       }
 
       else
       {
-        v15 = [v9 URL];
+        v15 = [resourceCopy URL];
 
         if (v15)
         {
-          v16 = [(AVTStickerSheetController *)self delegate];
+          delegate = [(AVTStickerSheetController *)self delegate];
           v17 = objc_opt_respondsToSelector();
 
-          if ((v17 & 1) == 0 || (-[AVTStickerSheetController delegate](self, "delegate"), v18 = objc_claimAutoreleasedReturnValue(), [v9 URL], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "localizedName"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "identifier"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "stickerSheetController:requestsStickerForFileURL:localizedDescription:forItemWithIdentifier:", self, v19, v20, v21), v22 = objc_claimAutoreleasedReturnValue(), v21, v20, v19, v18, !v22))
+          if ((v17 & 1) == 0 || (-[AVTStickerSheetController delegate](self, "delegate"), v18 = objc_claimAutoreleasedReturnValue(), [resourceCopy URL], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(itemCopy, "localizedName"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(itemCopy, "identifier"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "stickerSheetController:requestsStickerForFileURL:localizedDescription:forItemWithIdentifier:", self, v19, v20, v21), v22 = objc_claimAutoreleasedReturnValue(), v21, v20, v19, v18, !v22))
           {
             v23 = objc_alloc(MEMORY[0x1E6973F40]);
-            v24 = [v9 URL];
-            v25 = [v8 localizedName];
+            v24 = [resourceCopy URL];
+            localizedName = [itemCopy localizedName];
             v26 = 0;
-            v22 = [v23 initWithContentsOfFileURL:v24 localizedDescription:v25 error:&v26];
+            v22 = [v23 initWithContentsOfFileURL:v24 localizedDescription:localizedName error:&v26];
           }
 
-          [v8 setCachedMSSticker:v22];
-          if (v5)
+          [itemCopy setCachedMSSticker:v22];
+          if (cellCopy)
           {
-            [(AVTStickerSheetController *)self reloadCollectionViewItemForStickerItem:v8];
+            [(AVTStickerSheetController *)self reloadCollectionViewItemForStickerItem:itemCopy];
           }
         }
       }
@@ -615,23 +615,23 @@ LABEL_13:
   }
 }
 
-- (void)reloadCollectionViewItemForStickerItem:(id)a3
+- (void)reloadCollectionViewItemForStickerItem:(id)item
 {
-  v4 = a3;
-  v5 = [(AVTStickerSheetController *)self collectionView];
+  itemCopy = item;
+  collectionView = [(AVTStickerSheetController *)self collectionView];
 
-  if (v5)
+  if (collectionView)
   {
-    v6 = [(AVTStickerSheetController *)self model];
-    v7 = [v6 stickerItems];
-    v8 = [v7 indexOfObject:v4];
+    model = [(AVTStickerSheetController *)self model];
+    stickerItems = [model stickerItems];
+    v8 = [stickerItems indexOfObject:itemCopy];
 
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = [MEMORY[0x1E696AC88] indexPathForItem:v8 inSection:0];
-      v10 = [(AVTStickerSheetController *)self collectionView];
-      v11 = [v10 indexPathsForVisibleItems];
-      v12 = [v11 containsObject:v9];
+      collectionView2 = [(AVTStickerSheetController *)self collectionView];
+      indexPathsForVisibleItems = [collectionView2 indexPathsForVisibleItems];
+      v12 = [indexPathsForVisibleItems containsObject:v9];
 
       if (v12)
       {
@@ -727,75 +727,75 @@ void __48__AVTStickerSheetController_placeholderProvider__block_invoke_2(uint64_
   (*(v6 + 16))(v6, v7);
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(AVTStickerSheetController *)self model:a3];
-  v5 = [v4 stickerItems];
-  v6 = [v5 count];
+  v4 = [(AVTStickerSheetController *)self model:view];
+  stickerItems = [v4 stickerItems];
+  v6 = [stickerItems count];
 
   return v6;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = +[AVTStickerCollectionViewCell cellIdentifier];
-  v9 = [v6 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v7];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  [v9 setDisplaySessionUUID:v10];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [v9 setDisplaySessionUUID:uUID];
   [v9 setAllowsPeel:{-[AVTStickerSheetController allowsPeel](self, "allowsPeel")}];
   [v9 setDelegate:self];
-  v11 = [(AVTStickerSheetController *)self disclosureValidationDelegate];
-  [v9 setDisclosureValidationDelegate:v11];
+  disclosureValidationDelegate = [(AVTStickerSheetController *)self disclosureValidationDelegate];
+  [v9 setDisclosureValidationDelegate:disclosureValidationDelegate];
 
   [v9 setShowPrereleaseSticker:{-[AVTStickerSheetController showPrereleaseSticker](self, "showPrereleaseSticker")}];
-  v12 = [(AVTStickerSheetController *)self model];
-  v13 = [v12 stickerItems];
-  v14 = [v13 objectAtIndex:{objc_msgSend(v7, "row")}];
+  model = [(AVTStickerSheetController *)self model];
+  stickerItems = [model stickerItems];
+  v14 = [stickerItems objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
   [v14 clippingRect];
   [v9 setClippingRect:?];
-  v15 = [v14 cachedMSSticker];
+  cachedMSSticker = [v14 cachedMSSticker];
 
-  if (v15)
+  if (cachedMSSticker)
   {
-    v16 = [v14 cachedMSSticker];
-    [v9 updateWithImage:0 sticker:v16 animated:0];
+    cachedMSSticker2 = [v14 cachedMSSticker];
+    [v9 updateWithImage:0 sticker:cachedMSSticker2 animated:0];
   }
 
   else
   {
     objc_initWeak(&location, self);
     objc_initWeak(&from, v14);
-    v17 = [(AVTStickerSheetController *)self placeholderImage];
+    placeholderImage = [(AVTStickerSheetController *)self placeholderImage];
 
-    if (v17)
+    if (placeholderImage)
     {
-      v18 = [(AVTStickerSheetController *)self placeholderImage];
-      v19 = [v14 cachedMSSticker];
-      [v9 updateWithImage:v18 sticker:v19 animated:0];
+      placeholderImage2 = [(AVTStickerSheetController *)self placeholderImage];
+      cachedMSSticker3 = [v14 cachedMSSticker];
+      [v9 updateWithImage:placeholderImage2 sticker:cachedMSSticker3 animated:0];
     }
 
     else
     {
-      v20 = [(AVTStickerSheetController *)self placeholderProvider];
+      placeholderProvider = [(AVTStickerSheetController *)self placeholderProvider];
       v36[0] = MEMORY[0x1E69E9820];
       v36[1] = 3221225472;
       v36[2] = __67__AVTStickerSheetController_collectionView_cellForItemAtIndexPath___block_invoke;
       v36[3] = &unk_1E7F3AEE8;
       objc_copyWeak(&v39, &from);
       v37 = v9;
-      v38 = v10;
-      v21 = (v20)[2](v20, v36, 0);
+      v38 = uUID;
+      v21 = (placeholderProvider)[2](placeholderProvider, v36, 0);
 
       [(AVTStickerSheetController *)self scheduleSheetPlaceholderTask:v21];
       objc_destroyWeak(&v39);
     }
 
     v22 = objc_opt_new();
-    v23 = [v14 resourceProvider];
+    resourceProvider = [v14 resourceProvider];
     v27 = MEMORY[0x1E69E9820];
     v28 = 3221225472;
     v29 = __67__AVTStickerSheetController_collectionView_cellForItemAtIndexPath___block_invoke_2;
@@ -803,12 +803,12 @@ void __48__AVTStickerSheetController_placeholderProvider__block_invoke_2(uint64_
     objc_copyWeak(&v34, &location);
     objc_copyWeak(&v35, &from);
     v31 = v9;
-    v32 = v10;
+    v32 = uUID;
     v24 = v22;
     v33 = v24;
-    v25 = (v23)[2](v23, &v27, 1);
+    v25 = (resourceProvider)[2](resourceProvider, &v27, 1);
 
-    [(AVTStickerSheetController *)self scheduleSheetStickerTask:v25 withIndexPath:v7, v27, v28, v29, v30];
+    [(AVTStickerSheetController *)self scheduleSheetStickerTask:v25 withIndexPath:pathCopy, v27, v28, v29, v30];
     objc_destroyWeak(&v35);
     objc_destroyWeak(&v34);
 
@@ -866,32 +866,32 @@ void __67__AVTStickerSheetController_collectionView_cellForItemAtIndexPath___blo
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v6 = [(AVTStickerSheetController *)self collectionView:a3];
-  v8 = [v6 indexPathsForVisibleItems];
+  v6 = [(AVTStickerSheetController *)self collectionView:view];
+  indexPathsForVisibleItems = [v6 indexPathsForVisibleItems];
 
-  v7 = [(AVTStickerSheetController *)self taskScheduler];
-  [v7 setVisibleIndexPaths:v8];
+  taskScheduler = [(AVTStickerSheetController *)self taskScheduler];
+  [taskScheduler setVisibleIndexPaths:indexPathsForVisibleItems];
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v7 = a4;
-  v8 = a3;
+  layoutCopy = layout;
+  viewCopy = view;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", v7}];
+    [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", layoutCopy}];
   }
 
-  [v7 minimumInteritemSpacing];
+  [layoutCopy minimumInteritemSpacing];
   v10 = v9;
   [(AVTStickerSheetController *)self sectionInsets];
   v12 = v11;
   [(AVTStickerSheetController *)self topPadding];
   v14 = v12 + v13;
-  [v8 safeAreaInsets];
+  [viewCopy safeAreaInsets];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -907,26 +907,26 @@ void __67__AVTStickerSheetController_collectionView_cellForItemAtIndexPath___blo
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  layoutCopy = layout;
+  pathCopy = path;
+  viewCopy = view;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", v8}];
+    [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", layoutCopy}];
   }
 
-  v11 = v8;
+  v11 = layoutCopy;
   [(AVTStickerSheetController *)self numberOfItemsPerRow];
   v13 = v12;
-  v14 = [v9 section];
+  section = [pathCopy section];
 
-  [(AVTStickerSheetController *)self collectionView:v10 layout:v11 insetForSectionAtIndex:v14];
+  [(AVTStickerSheetController *)self collectionView:viewCopy layout:v11 insetForSectionAtIndex:section];
   v16 = v15;
   v18 = v17;
-  [v10 bounds];
+  [viewCopy bounds];
   v20 = v19;
 
   v21 = v20 - v16 - v18;
@@ -951,99 +951,99 @@ void __67__AVTStickerSheetController_collectionView_cellForItemAtIndexPath___blo
   return result;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v6 = a3;
-  v4 = [(AVTStickerSheetController *)self delegate];
+  scrollCopy = scroll;
+  delegate = [(AVTStickerSheetController *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(AVTStickerSheetController *)self delegate];
-    [v6 contentOffset];
-    [v5 stickerSheetController:self didScrollToContentOffset:?];
+    delegate2 = [(AVTStickerSheetController *)self delegate];
+    [scrollCopy contentOffset];
+    [delegate2 stickerSheetController:self didScrollToContentOffset:?];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  v9 = a3;
-  v7 = [(AVTStickerSheetController *)self delegate];
+  draggingCopy = dragging;
+  delegate = [(AVTStickerSheetController *)self delegate];
 
-  if (v7)
+  if (delegate)
   {
-    v8 = [(AVTStickerSheetController *)self delegate];
-    [v8 stickerSheetController:self scrollView:v9 willEndDraggingWithTargetContentOffset:a5];
+    delegate2 = [(AVTStickerSheetController *)self delegate];
+    [delegate2 stickerSheetController:self scrollView:draggingCopy willEndDraggingWithTargetContentOffset:offset];
   }
 }
 
-- (void)scrollToContentOffset:(CGPoint)a3 animated:(BOOL)a4
+- (void)scrollToContentOffset:(CGPoint)offset animated:(BOOL)animated
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = [(AVTStickerSheetController *)self collectionView];
+  animatedCopy = animated;
+  y = offset.y;
+  x = offset.x;
+  collectionView = [(AVTStickerSheetController *)self collectionView];
 
-  if (v8)
+  if (collectionView)
   {
-    v9 = [(AVTStickerSheetController *)self collectionView];
-    [v9 layoutIfNeeded];
+    collectionView2 = [(AVTStickerSheetController *)self collectionView];
+    [collectionView2 layoutIfNeeded];
 
-    v10 = [(AVTStickerSheetController *)self collectionView];
+    collectionView3 = [(AVTStickerSheetController *)self collectionView];
     [(AVTStickerSheetController *)self maxedContentOffset:x, y];
-    [v10 setContentOffset:v4 animated:?];
+    [collectionView3 setContentOffset:animatedCopy animated:?];
   }
 }
 
-- (void)stickerCellDidTapSticker:(id)a3
+- (void)stickerCellDidTapSticker:(id)sticker
 {
-  v4 = a3;
-  v5 = [(AVTStickerSheetController *)self collectionView];
-  v10 = [v5 indexPathForCell:v4];
+  stickerCopy = sticker;
+  collectionView = [(AVTStickerSheetController *)self collectionView];
+  v10 = [collectionView indexPathForCell:stickerCopy];
 
-  v6 = [(AVTStickerSheetController *)self model];
-  v7 = [v6 stickerItems];
-  v8 = [v7 objectAtIndex:{objc_msgSend(v10, "row")}];
+  model = [(AVTStickerSheetController *)self model];
+  stickerItems = [model stickerItems];
+  v8 = [stickerItems objectAtIndex:{objc_msgSend(v10, "row")}];
 
-  v9 = [(AVTStickerSheetController *)self delegate];
-  [v9 stickerSheetController:self didInteractWithStickerItem:v8 atIndex:objc_msgSend(v10 byPeeling:{"item"), 0}];
+  delegate = [(AVTStickerSheetController *)self delegate];
+  [delegate stickerSheetController:self didInteractWithStickerItem:v8 atIndex:objc_msgSend(v10 byPeeling:{"item"), 0}];
 }
 
-- (void)stickerCellDidPeelSticker:(id)a3
+- (void)stickerCellDidPeelSticker:(id)sticker
 {
-  v4 = a3;
-  v5 = [(AVTStickerSheetController *)self collectionView];
-  v10 = [v5 indexPathForCell:v4];
+  stickerCopy = sticker;
+  collectionView = [(AVTStickerSheetController *)self collectionView];
+  v10 = [collectionView indexPathForCell:stickerCopy];
 
-  v6 = [(AVTStickerSheetController *)self model];
-  v7 = [v6 stickerItems];
-  v8 = [v7 objectAtIndex:{objc_msgSend(v10, "row")}];
+  model = [(AVTStickerSheetController *)self model];
+  stickerItems = [model stickerItems];
+  v8 = [stickerItems objectAtIndex:{objc_msgSend(v10, "row")}];
 
-  v9 = [(AVTStickerSheetController *)self delegate];
-  [v9 stickerSheetController:self didInteractWithStickerItem:v8 atIndex:objc_msgSend(v10 byPeeling:{"item"), 1}];
+  delegate = [(AVTStickerSheetController *)self delegate];
+  [delegate stickerSheetController:self didInteractWithStickerItem:v8 atIndex:objc_msgSend(v10 byPeeling:{"item"), 1}];
 }
 
-- (id)dragPreviewContainerForLiftingStickerInStickerCell:(id)a3
+- (id)dragPreviewContainerForLiftingStickerInStickerCell:(id)cell
 {
-  v3 = [(AVTStickerSheetController *)self view];
-  v4 = [v3 window];
+  view = [(AVTStickerSheetController *)self view];
+  window = [view window];
 
-  return v4;
+  return window;
 }
 
-- (void)notifyingContainerViewWillChangeSize:(CGSize)a3
+- (void)notifyingContainerViewWillChangeSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(AVTStickerSheetController *)self collectionView];
+  height = size.height;
+  width = size.width;
+  collectionView = [(AVTStickerSheetController *)self collectionView];
 
-  if (v6)
+  if (collectionView)
   {
-    v7 = [(AVTStickerSheetController *)self collectionView];
-    v8 = [v7 collectionViewLayout];
+    collectionView2 = [(AVTStickerSheetController *)self collectionView];
+    collectionViewLayout = [collectionView2 collectionViewLayout];
 
     [(AVTStickerSheetController *)self minimumContentSizeForSize:width, height];
-    [v8 setMinimumContentSize:?];
-    [v8 invalidateLayout];
+    [collectionViewLayout setMinimumContentSize:?];
+    [collectionViewLayout invalidateLayout];
   }
 }
 

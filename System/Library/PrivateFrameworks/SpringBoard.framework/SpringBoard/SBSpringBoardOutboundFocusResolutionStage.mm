@@ -1,26 +1,26 @@
 @interface SBSpringBoardOutboundFocusResolutionStage
 - (SBKeyboardFocusResolutionStageSceneProviding)sceneProvider;
-- (void)resolveKeyboardFocusPolicy:(id)a3 context:(id)a4 stop:(BOOL *)a5;
+- (void)resolveKeyboardFocusPolicy:(id)policy context:(id)context stop:(BOOL *)stop;
 @end
 
 @implementation SBSpringBoardOutboundFocusResolutionStage
 
-- (void)resolveKeyboardFocusPolicy:(id)a3 context:(id)a4 stop:(BOOL *)a5
+- (void)resolveKeyboardFocusPolicy:(id)policy context:(id)context stop:(BOOL *)stop
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 auditHistory];
-  [v9 addItemWithFormat:@"-- SBSpringBoardOutboundFocusResolutionStage --"];
+  policyCopy = policy;
+  contextCopy = context;
+  auditHistory = [policyCopy auditHistory];
+  [auditHistory addItemWithFormat:@"-- SBSpringBoardOutboundFocusResolutionStage --"];
 
-  LODWORD(v9) = [v8 isScreenDim];
-  if (v9 && ![v7 advicePolicy])
+  LODWORD(auditHistory) = [contextCopy isScreenDim];
+  if (auditHistory && ![policyCopy advicePolicy])
   {
     WeakRetained = objc_loadWeakRetained(&self->_sceneProvider);
-    v11 = [WeakRetained springBoardSceneFocusTarget];
+    springBoardSceneFocusTarget = [WeakRetained springBoardSceneFocusTarget];
 
-    [v7 setKeyboardFocusTarget:v11];
-    v12 = [v7 auditHistory];
-    [v12 addItemWithFormat:@"rejecting policy: screen is dim -- deferring to SB"];
+    [policyCopy setKeyboardFocusTarget:springBoardSceneFocusTarget];
+    auditHistory2 = [policyCopy auditHistory];
+    [auditHistory2 addItemWithFormat:@"rejecting policy: screen is dim -- deferring to SB"];
 
     v13 = SBLogKeyboardFocus();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -29,7 +29,7 @@
       _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "policy: outbound rule not allowed -- deferring to SB", v14, 2u);
     }
 
-    [v7 setShouldSuppressRemoteDeferring:1];
+    [policyCopy setShouldSuppressRemoteDeferring:1];
   }
 }
 

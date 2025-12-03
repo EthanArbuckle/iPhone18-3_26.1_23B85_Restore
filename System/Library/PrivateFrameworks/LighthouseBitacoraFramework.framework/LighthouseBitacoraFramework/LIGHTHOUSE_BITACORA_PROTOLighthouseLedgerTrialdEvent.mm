@@ -1,17 +1,17 @@
 @interface LIGHTHOUSE_BITACORA_PROTOLighthouseLedgerTrialdEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)eventTypeAsString:(int)a3;
-- (int)StringAsEventType:(id)a3;
+- (id)eventTypeAsString:(int)string;
+- (int)StringAsEventType:(id)type;
 - (int)eventType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEventSucceeded:(BOOL)a3;
-- (void)setHasEventType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEventSucceeded:(BOOL)succeeded;
+- (void)setHasEventType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LIGHTHOUSE_BITACORA_PROTOLighthouseLedgerTrialdEvent
@@ -29,9 +29,9 @@
   }
 }
 
-- (void)setHasEventType:(BOOL)a3
+- (void)setHasEventType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -44,40 +44,40 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)eventTypeAsString:(int)a3
+- (id)eventTypeAsString:(int)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
-    v6 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", v3, v4, a3);
+    v6 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", v3, v4, string);
   }
 
   else
   {
-    v6 = off_279813C60[a3];
+    v6 = off_279813C60[string];
   }
 
   return v6;
 }
 
-- (int)StringAsEventType:(id)a3
+- (int)StringAsEventType:(id)type
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"Unknown", v5, v6))
+  typeCopy = type;
+  if (objc_msgSend_isEqualToString_(typeCopy, v4, @"Unknown", v5, v6))
   {
     v10 = 0;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"allocation", v8, v9))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v7, @"allocation", v8, v9))
   {
     v10 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v11, @"activation", v12, v13))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v11, @"activation", v12, v13))
   {
     v10 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v14, @"deactivation", v15, v16))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v14, @"deactivation", v15, v16))
   {
     v10 = 3;
   }
@@ -90,9 +90,9 @@
   return v10;
 }
 
-- (void)setHasEventSucceeded:(BOOL)a3
+- (void)setHasEventSucceeded:(BOOL)succeeded
 {
-  if (a3)
+  if (succeeded)
   {
     v3 = 4;
   }
@@ -184,20 +184,20 @@ LABEL_9:
   return v10;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_trialIdentifiers)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_contextID)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -205,7 +205,7 @@ LABEL_9:
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -226,41 +226,41 @@ LABEL_7:
 
   eventType = self->_eventType;
   PBDataWriterWriteInt32Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_8:
     eventSucceeded = self->_eventSucceeded;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_9:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   trialIdentifiers = self->_trialIdentifiers;
-  v11 = v4;
+  v11 = toCopy;
   if (trialIdentifiers)
   {
-    objc_msgSend_setTrialIdentifiers_(v4, v5, trialIdentifiers, v6, v7);
-    v4 = v11;
+    objc_msgSend_setTrialIdentifiers_(toCopy, v5, trialIdentifiers, v6, v7);
+    toCopy = v11;
   }
 
   contextID = self->_contextID;
   if (contextID)
   {
     objc_msgSend_setContextID_(v11, v5, contextID, v6, v7);
-    v4 = v11;
+    toCopy = v11;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_timestamp;
-    *(v4 + 44) |= 1u;
+    *(toCopy + 1) = *&self->_timestamp;
+    *(toCopy + 44) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -279,28 +279,28 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 6) = self->_eventType;
-  *(v4 + 44) |= 2u;
+  *(toCopy + 6) = self->_eventType;
+  *(toCopy + 44) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_8:
-    *(v4 + 40) = self->_eventSucceeded;
-    *(v4 + 44) |= 4u;
+    *(toCopy + 40) = self->_eventSucceeded;
+    *(toCopy + 44) |= 4u;
   }
 
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v9 = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8);
+  v9 = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8);
   v14 = objc_msgSend_init(v9, v10, v11, v12, v13);
-  v18 = objc_msgSend_copyWithZone_(self->_trialIdentifiers, v15, a3, v16, v17);
+  v18 = objc_msgSend_copyWithZone_(self->_trialIdentifiers, v15, zone, v16, v17);
   v19 = *(v14 + 32);
   *(v14 + 32) = v18;
 
-  v23 = objc_msgSend_copyWithZone_(self->_contextID, v20, a3, v21, v22);
+  v23 = objc_msgSend_copyWithZone_(self->_contextID, v20, zone, v21, v22);
   v24 = *(v14 + 16);
   *(v14 + 16) = v23;
 
@@ -342,17 +342,17 @@ LABEL_4:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5, v7, v8))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5, v7, v8))
   {
     goto LABEL_18;
   }
 
   trialIdentifiers = self->_trialIdentifiers;
-  v13 = v4[4];
+  v13 = equalCopy[4];
   if (trialIdentifiers | v13)
   {
     if (!objc_msgSend_isEqual_(trialIdentifiers, v9, v13, v10, v11))
@@ -362,7 +362,7 @@ LABEL_4:
   }
 
   contextID = self->_contextID;
-  v15 = v4[2];
+  v15 = equalCopy[2];
   if (contextID | v15)
   {
     if (!objc_msgSend_isEqual_(contextID, v9, v15, v10, v11))
@@ -373,34 +373,34 @@ LABEL_4:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_18;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_eventType != *(v4 + 6))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_eventType != *(equalCopy + 6))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_18;
   }
 
-  v16 = (*(v4 + 44) & 4) == 0;
+  v16 = (*(equalCopy + 44) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0)
+    if ((*(equalCopy + 44) & 4) == 0)
     {
 LABEL_18:
       v16 = 0;
@@ -409,13 +409,13 @@ LABEL_18:
 
     if (self->_eventSucceeded)
     {
-      if ((v4[5] & 1) == 0)
+      if ((equalCopy[5] & 1) == 0)
       {
         goto LABEL_18;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_18;
     }
@@ -489,12 +489,12 @@ LABEL_11:
   return v11 ^ v6 ^ v14 ^ v18 ^ v19;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   trialIdentifiers = self->_trialIdentifiers;
-  v8 = *(v4 + 4);
-  v11 = v4;
+  v8 = *(fromCopy + 4);
+  v11 = fromCopy;
   if (trialIdentifiers)
   {
     if (!v8)
@@ -502,7 +502,7 @@ LABEL_11:
       goto LABEL_7;
     }
 
-    objc_msgSend_mergeFrom_(trialIdentifiers, v4, v8, v5, v6);
+    objc_msgSend_mergeFrom_(trialIdentifiers, fromCopy, v8, v5, v6);
   }
 
   else
@@ -512,24 +512,24 @@ LABEL_11:
       goto LABEL_7;
     }
 
-    objc_msgSend_setTrialIdentifiers_(self, v4, v8, v5, v6);
+    objc_msgSend_setTrialIdentifiers_(self, fromCopy, v8, v5, v6);
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_7:
-  v9 = *(v4 + 2);
+  v9 = *(fromCopy + 2);
   if (v9)
   {
-    objc_msgSend_setContextID_(self, v4, v9, v5, v6);
-    v4 = v11;
+    objc_msgSend_setContextID_(self, fromCopy, v9, v5, v6);
+    fromCopy = v11;
   }
 
-  v10 = *(v4 + 44);
+  v10 = *(fromCopy + 44);
   if (v10)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v10 = *(v4 + 44);
+    v10 = *(fromCopy + 44);
     if ((v10 & 2) == 0)
     {
 LABEL_11:
@@ -542,17 +542,17 @@ LABEL_11:
     }
   }
 
-  else if ((*(v4 + 44) & 2) == 0)
+  else if ((*(fromCopy + 44) & 2) == 0)
   {
     goto LABEL_11;
   }
 
-  self->_eventType = *(v4 + 6);
+  self->_eventType = *(fromCopy + 6);
   *&self->_has |= 2u;
-  if ((*(v4 + 44) & 4) != 0)
+  if ((*(fromCopy + 44) & 4) != 0)
   {
 LABEL_12:
-    self->_eventSucceeded = *(v4 + 40);
+    self->_eventSucceeded = *(fromCopy + 40);
     *&self->_has |= 4u;
   }
 

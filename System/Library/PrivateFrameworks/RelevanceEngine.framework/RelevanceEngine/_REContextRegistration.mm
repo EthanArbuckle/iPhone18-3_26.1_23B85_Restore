@@ -1,6 +1,6 @@
 @interface _REContextRegistration
-- (_REContextRegistration)initWithQuery:(id)a3;
-- (void)_evaluateQueryWithRegistration:(BOOL)a3;
+- (_REContextRegistration)initWithQuery:(id)query;
+- (void)_evaluateQueryWithRegistration:(BOOL)registration;
 - (void)dealloc;
 - (void)deregisterWithContext;
 - (void)registerWithContext;
@@ -8,16 +8,16 @@
 
 @implementation _REContextRegistration
 
-- (_REContextRegistration)initWithQuery:(id)a3
+- (_REContextRegistration)initWithQuery:(id)query
 {
-  v5 = a3;
+  queryCopy = query;
   v10.receiver = self;
   v10.super_class = _REContextRegistration;
   v6 = [(_REContextRegistration *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_query, a3);
+    objc_storeStrong(&v6->_query, query);
     registrations = v7->_registrations;
     v7->_registrations = MEMORY[0x277CBEBF8];
 
@@ -143,18 +143,18 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_evaluateQueryWithRegistration:(BOOL)a3
+- (void)_evaluateQueryWithRegistration:(BOOL)registration
 {
   if (self->_callback)
   {
-    v3 = a3;
+    registrationCopy = registration;
     if (self->_context)
     {
       v5 = [(REDuetContextQuery *)self->_query valueFromUserContext:?];
       query = self->_query;
       v7 = v5;
       (*(self->_callback + 2))();
-      if (v3)
+      if (registrationCopy)
       {
         [(_REContextRegistration *)self deregisterWithContext];
         [(_REContextRegistration *)self registerWithContext];

@@ -1,17 +1,17 @@
 @interface ATXNotificationNextAppLaunchRecorder
 - (ATXAppInFocusStream)appInFocusStream;
 - (ATXNotificationNextAppLaunchRecorder)init;
-- (ATXNotificationNextAppLaunchRecorder)initWithDefaults:(id)a3 dataStore:(id)a4;
+- (ATXNotificationNextAppLaunchRecorder)initWithDefaults:(id)defaults dataStore:(id)store;
 - (NSString)appLaunchTimestampKey;
 - (NSString)defaultsKeyPrefix;
 - (OS_dispatch_queue)queue;
 - (id)installedAppsProvider;
 - (void)resetDefaults;
-- (void)setAppInFocusStream:(id)a3;
-- (void)setAppLaunchTimestampKey:(id)a3;
-- (void)setDefaultsKeyPrefix:(id)a3;
-- (void)setInstalledAppsProvider:(id)a3;
-- (void)setQueue:(id)a3;
+- (void)setAppInFocusStream:(id)stream;
+- (void)setAppLaunchTimestampKey:(id)key;
+- (void)setDefaultsKeyPrefix:(id)prefix;
+- (void)setInstalledAppsProvider:(id)provider;
+- (void)setQueue:(id)queue;
 - (void)updateNotificationsWithNextAppLaunch;
 @end
 
@@ -24,13 +24,13 @@
   return *(self + v3);
 }
 
-- (void)setAppInFocusStream:(id)a3
+- (void)setAppInFocusStream:(id)stream
 {
   v5 = OBJC_IVAR___ATXNotificationNextAppLaunchRecorder_appInFocusStream;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = stream;
+  streamCopy = stream;
 }
 
 - (NSString)defaultsKeyPrefix
@@ -45,7 +45,7 @@
   return v5;
 }
 
-- (void)setDefaultsKeyPrefix:(id)a3
+- (void)setDefaultsKeyPrefix:(id)prefix
 {
   v4 = sub_226836408();
   v6 = v5;
@@ -73,9 +73,9 @@
   return v5;
 }
 
-- (void)setInstalledAppsProvider:(id)a3
+- (void)setInstalledAppsProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = (self + OBJC_IVAR___ATXNotificationNextAppLaunchRecorder_installedAppsProvider);
@@ -87,22 +87,22 @@
 
 - (OS_dispatch_queue)queue
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2267A2788();
 
   return v3;
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
   v4 = *(self + OBJC_IVAR___ATXNotificationNextAppLaunchRecorder____lazy_storage___queue);
-  *(self + OBJC_IVAR___ATXNotificationNextAppLaunchRecorder____lazy_storage___queue) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___ATXNotificationNextAppLaunchRecorder____lazy_storage___queue) = queue;
+  queueCopy = queue;
 }
 
 - (NSString)appLaunchTimestampKey
 {
-  v2 = self;
+  selfCopy = self;
   sub_2267A2ABC();
 
   v3 = sub_2268363F8();
@@ -110,7 +110,7 @@
   return v3;
 }
 
-- (void)setAppLaunchTimestampKey:(id)a3
+- (void)setAppLaunchTimestampKey:(id)key
 {
   v4 = sub_226836408();
   v5 = (self + OBJC_IVAR___ATXNotificationNextAppLaunchRecorder____lazy_storage___appLaunchTimestampKey);
@@ -119,27 +119,27 @@
   v5[1] = v7;
 }
 
-- (ATXNotificationNextAppLaunchRecorder)initWithDefaults:(id)a3 dataStore:(id)a4
+- (ATXNotificationNextAppLaunchRecorder)initWithDefaults:(id)defaults dataStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_2267A596C(v5, v6);
+  defaultsCopy = defaults;
+  storeCopy = store;
+  v7 = sub_2267A596C(defaultsCopy, storeCopy);
 
   return v7;
 }
 
 - (void)updateNotificationsWithNextAppLaunch
 {
-  v2 = self;
+  selfCopy = self;
   ATXNotificationNextAppLaunchRecorder.updateNotificationsWithNextAppLaunch()();
 }
 
 - (void)resetDefaults
 {
-  v4 = self;
-  v2 = [(ATXNotificationNextAppLaunchRecorder *)v4 defaults];
-  v3 = [(ATXNotificationNextAppLaunchRecorder *)v4 appLaunchTimestampKey];
-  [(NSUserDefaults *)v2 removeObjectForKey:v3];
+  selfCopy = self;
+  defaults = [(ATXNotificationNextAppLaunchRecorder *)selfCopy defaults];
+  appLaunchTimestampKey = [(ATXNotificationNextAppLaunchRecorder *)selfCopy appLaunchTimestampKey];
+  [(NSUserDefaults *)defaults removeObjectForKey:appLaunchTimestampKey];
 }
 
 - (ATXNotificationNextAppLaunchRecorder)init

@@ -1,19 +1,19 @@
 @interface WFScanPerformanceEvent
-- (id)_scanReasonToString:(unint64_t)a3;
+- (id)_scanReasonToString:(unint64_t)string;
 @end
 
 @implementation WFScanPerformanceEvent
 
-- (id)_scanReasonToString:(unint64_t)a3
+- (id)_scanReasonToString:(unint64_t)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_279EBDC20[a3];
+    return off_279EBDC20[string];
   }
 }
 

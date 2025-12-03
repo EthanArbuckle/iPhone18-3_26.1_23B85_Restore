@@ -1,22 +1,22 @@
 @interface MRGroupSessionHandoffDevice
-- (BOOL)isEqual:(id)a3;
-- (MRGroupSessionHandoffDevice)initWithDiscoveredSession:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MRGroupSessionHandoffDevice)initWithDiscoveredSession:(id)session;
 - (unint64_t)hash;
 @end
 
 @implementation MRGroupSessionHandoffDevice
 
-- (MRGroupSessionHandoffDevice)initWithDiscoveredSession:(id)a3
+- (MRGroupSessionHandoffDevice)initWithDiscoveredSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = MRGroupSessionHandoffDevice;
   v5 = [(MRGroupSessionHandoffDevice *)&v9 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [sessionCopy identifier];
     identifier = v5->_identifier;
-    v5->_identifier = v6;
+    v5->_identifier = identifier;
   }
 
   return v5;
@@ -24,16 +24,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MRGroupSessionHandoffDevice *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(MRGroupSessionHandoffDevice *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -43,21 +43,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MRGroupSessionHandoffDevice *)self identifier];
-      v7 = [(MRGroupSessionHandoffDevice *)v5 identifier];
-      if (v6 == v7 || [v6 isEqual:v7])
+      v5 = equalCopy;
+      identifier = [(MRGroupSessionHandoffDevice *)self identifier];
+      identifier2 = [(MRGroupSessionHandoffDevice *)v5 identifier];
+      if (identifier == identifier2 || [identifier isEqual:identifier2])
       {
-        v8 = [(MRGroupSessionHandoffDevice *)self bluetoothAddress];
-        v9 = [(MRGroupSessionHandoffDevice *)v5 bluetoothAddress];
-        if (v8 == v9)
+        bluetoothAddress = [(MRGroupSessionHandoffDevice *)self bluetoothAddress];
+        bluetoothAddress2 = [(MRGroupSessionHandoffDevice *)v5 bluetoothAddress];
+        if (bluetoothAddress == bluetoothAddress2)
         {
           v10 = 1;
         }
 
         else
         {
-          v10 = [v8 isEqual:v9];
+          v10 = [bluetoothAddress isEqual:bluetoothAddress2];
         }
       }
 

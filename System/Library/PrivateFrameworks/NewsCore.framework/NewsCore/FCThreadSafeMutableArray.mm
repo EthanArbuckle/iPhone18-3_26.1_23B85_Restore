@@ -2,16 +2,16 @@
 - (FCThreadSafeMutableArray)init;
 - (NSArray)readOnlyArray;
 - (id)firstObject;
-- (id)firstObjectPassingTest:(id)a3;
+- (id)firstObjectPassingTest:(id)test;
 - (id)lastObject;
 - (unint64_t)count;
-- (void)addObject:(id)a3;
-- (void)addObjectsFromArray:(id)a3;
-- (void)enumerateObjectsUsingBlock:(id)a3;
-- (void)readWriteWithAccessor:(id)a3;
+- (void)addObject:(id)object;
+- (void)addObjectsFromArray:(id)array;
+- (void)enumerateObjectsUsingBlock:(id)block;
+- (void)readWriteWithAccessor:(id)accessor;
 - (void)removeAllObjects;
 - (void)removeFirstObject;
-- (void)safelyAddObject:(id)a3;
+- (void)safelyAddObject:(id)object;
 @end
 
 @implementation FCThreadSafeMutableArray
@@ -67,45 +67,45 @@ uint64_t __41__FCThreadSafeMutableArray_readOnlyArray__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__FCThreadSafeMutableArray_addObject___block_invoke;
   v7[3] = &unk_1E7C36C58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 
-- (void)addObjectsFromArray:(id)a3
+- (void)addObjectsFromArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__FCThreadSafeMutableArray_addObjectsFromArray___block_invoke;
   v7[3] = &unk_1E7C36C58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = arrayCopy;
+  v6 = arrayCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 
-- (void)safelyAddObject:(id)a3
+- (void)safelyAddObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__FCThreadSafeMutableArray_safelyAddObject___block_invoke;
   v7[3] = &unk_1E7C36C58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 
@@ -131,31 +131,31 @@ uint64_t __41__FCThreadSafeMutableArray_readOnlyArray__block_invoke(uint64_t a1)
   [(NFUnfairLock *)lock performWithLockSync:v3];
 }
 
-- (void)enumerateObjectsUsingBlock:(id)a3
+- (void)enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__FCThreadSafeMutableArray_enumerateObjectsUsingBlock___block_invoke;
   v7[3] = &unk_1E7C37BC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 
-- (void)readWriteWithAccessor:(id)a3
+- (void)readWriteWithAccessor:(id)accessor
 {
-  v4 = a3;
+  accessorCopy = accessor;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__FCThreadSafeMutableArray_readWriteWithAccessor___block_invoke;
   v7[3] = &unk_1E7C37778;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accessorCopy;
+  v6 = accessorCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 
@@ -260,9 +260,9 @@ uint64_t __38__FCThreadSafeMutableArray_lastObject__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)firstObjectPassingTest:(id)a3
+- (id)firstObjectPassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -276,7 +276,7 @@ uint64_t __38__FCThreadSafeMutableArray_lastObject__block_invoke(uint64_t a1)
   v9[3] = &unk_1E7C41A98;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = testCopy;
   v10 = v6;
   [(NFUnfairLock *)lock performWithLockSync:v9];
   v7 = v13[5];

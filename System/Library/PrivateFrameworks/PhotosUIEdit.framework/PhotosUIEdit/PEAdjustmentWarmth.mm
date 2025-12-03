@@ -1,11 +1,11 @@
 @interface PEAdjustmentWarmth
-- (PEAdjustmentWarmth)initWithModifier:(id)a3;
-- (void)applyToCompositionController:(id)a3 valuesCalculator:(id)a4 asset:(id)a5 livePortraitBehaviorDelegate:(id)a6 completionHandler:(id)a7;
+- (PEAdjustmentWarmth)initWithModifier:(id)modifier;
+- (void)applyToCompositionController:(id)controller valuesCalculator:(id)calculator asset:(id)asset livePortraitBehaviorDelegate:(id)delegate completionHandler:(id)handler;
 @end
 
 @implementation PEAdjustmentWarmth
 
-- (void)applyToCompositionController:(id)a3 valuesCalculator:(id)a4 asset:(id)a5 livePortraitBehaviorDelegate:(id)a6 completionHandler:(id)a7
+- (void)applyToCompositionController:(id)controller valuesCalculator:(id)calculator asset:(id)asset livePortraitBehaviorDelegate:(id)delegate completionHandler:(id)handler
 {
   v8 = *MEMORY[0x277D3ABE8];
   v10[0] = MEMORY[0x277D85DD0];
@@ -13,9 +13,9 @@
   v10[2] = __121__PEAdjustmentWarmth_applyToCompositionController_valuesCalculator_asset_livePortraitBehaviorDelegate_completionHandler___block_invoke;
   v10[3] = &unk_279A30C00;
   v10[4] = self;
-  v9 = a7;
-  [a3 modifyAdjustmentWithKey:v8 modificationBlock:v10];
-  v9[2](v9, 1, 0);
+  handlerCopy = handler;
+  [controller modifyAdjustmentWithKey:v8 modificationBlock:v10];
+  handlerCopy[2](handlerCopy, 1, 0);
 }
 
 void __121__PEAdjustmentWarmth_applyToCompositionController_valuesCalculator_asset_livePortraitBehaviorDelegate_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -30,15 +30,15 @@ void __121__PEAdjustmentWarmth_applyToCompositionController_valuesCalculator_ass
   [v5 setWarmTemp:{fmax(fmin(v4, 0.5), -0.5)}];
 }
 
-- (PEAdjustmentWarmth)initWithModifier:(id)a3
+- (PEAdjustmentWarmth)initWithModifier:(id)modifier
 {
-  v4 = a3;
+  modifierCopy = modifier;
   v9.receiver = self;
   v9.super_class = PEAdjustmentWarmth;
   v5 = [(PEAdjustmentWarmth *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(modifierCopy);
     modifier = v5->_modifier;
     v5->_modifier = v6;
   }

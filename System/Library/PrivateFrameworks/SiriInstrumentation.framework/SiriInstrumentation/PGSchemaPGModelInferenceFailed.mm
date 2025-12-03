@@ -1,25 +1,25 @@
 @interface PGSchemaPGModelInferenceFailed
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PGSchemaPGModelInferenceFailed)initWithDictionary:(id)a3;
-- (PGSchemaPGModelInferenceFailed)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PGSchemaPGModelInferenceFailed)initWithDictionary:(id)dictionary;
+- (PGSchemaPGModelInferenceFailed)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PGSchemaPGModelInferenceFailed
 
-- (PGSchemaPGModelInferenceFailed)initWithDictionary:(id)a3
+- (PGSchemaPGModelInferenceFailed)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PGSchemaPGModelInferenceFailed;
   v5 = [(PGSchemaPGModelInferenceFailed *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"criticalError"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"criticalError"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(PGSchemaPGModelInferenceFailed *)v5 setCriticalError:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"modelIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"modelIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (PGSchemaPGModelInferenceFailed)initWithJSON:(id)a3
+- (PGSchemaPGModelInferenceFailed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PGSchemaPGModelInferenceFailed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PGSchemaPGModelInferenceFailed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PGSchemaPGModelInferenceFailed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,57 +77,57 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_criticalError)
   {
-    v4 = [(PGSchemaPGModelInferenceFailed *)self criticalError];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    criticalError = [(PGSchemaPGModelInferenceFailed *)self criticalError];
+    dictionaryRepresentation = [criticalError dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"criticalError"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"criticalError"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"criticalError"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"criticalError"];
     }
   }
 
   if (self->_modelIdentifier)
   {
-    v7 = [(PGSchemaPGModelInferenceFailed *)self modelIdentifier];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"modelIdentifier"];
+    modelIdentifier = [(PGSchemaPGModelInferenceFailed *)self modelIdentifier];
+    v8 = [modelIdentifier copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"modelIdentifier"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(PGSchemaPGModelInferenceFailed *)self criticalError];
-  v6 = [v4 criticalError];
-  if ((v5 != 0) == (v6 == 0))
+  criticalError = [(PGSchemaPGModelInferenceFailed *)self criticalError];
+  criticalError2 = [equalCopy criticalError];
+  if ((criticalError != 0) == (criticalError2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(PGSchemaPGModelInferenceFailed *)self criticalError];
-  if (v7)
+  criticalError3 = [(PGSchemaPGModelInferenceFailed *)self criticalError];
+  if (criticalError3)
   {
-    v8 = v7;
-    v9 = [(PGSchemaPGModelInferenceFailed *)self criticalError];
-    v10 = [v4 criticalError];
-    v11 = [v9 isEqual:v10];
+    v8 = criticalError3;
+    criticalError4 = [(PGSchemaPGModelInferenceFailed *)self criticalError];
+    criticalError5 = [equalCopy criticalError];
+    v11 = [criticalError4 isEqual:criticalError5];
 
     if (!v11)
     {
@@ -139,12 +139,12 @@
   {
   }
 
-  v5 = [(PGSchemaPGModelInferenceFailed *)self modelIdentifier];
-  v6 = [v4 modelIdentifier];
-  if ((v5 != 0) != (v6 == 0))
+  criticalError = [(PGSchemaPGModelInferenceFailed *)self modelIdentifier];
+  criticalError2 = [equalCopy modelIdentifier];
+  if ((criticalError != 0) != (criticalError2 == 0))
   {
-    v12 = [(PGSchemaPGModelInferenceFailed *)self modelIdentifier];
-    if (!v12)
+    modelIdentifier = [(PGSchemaPGModelInferenceFailed *)self modelIdentifier];
+    if (!modelIdentifier)
     {
 
 LABEL_15:
@@ -152,10 +152,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(PGSchemaPGModelInferenceFailed *)self modelIdentifier];
-    v15 = [v4 modelIdentifier];
-    v16 = [v14 isEqual:v15];
+    v13 = modelIdentifier;
+    modelIdentifier2 = [(PGSchemaPGModelInferenceFailed *)self modelIdentifier];
+    modelIdentifier3 = [equalCopy modelIdentifier];
+    v16 = [modelIdentifier2 isEqual:modelIdentifier3];
 
     if (v16)
     {
@@ -175,36 +175,36 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(PGSchemaPGModelInferenceFailed *)self criticalError];
+  toCopy = to;
+  criticalError = [(PGSchemaPGModelInferenceFailed *)self criticalError];
 
-  if (v4)
+  if (criticalError)
   {
-    v5 = [(PGSchemaPGModelInferenceFailed *)self criticalError];
+    criticalError2 = [(PGSchemaPGModelInferenceFailed *)self criticalError];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PGSchemaPGModelInferenceFailed *)self modelIdentifier];
+  modelIdentifier = [(PGSchemaPGModelInferenceFailed *)self modelIdentifier];
 
-  if (v6)
+  if (modelIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = PGSchemaPGModelInferenceFailed;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(PGSchemaPGModelInferenceFailed *)self criticalError:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(PGSchemaPGModelInferenceFailed *)self deleteCriticalError];
   }

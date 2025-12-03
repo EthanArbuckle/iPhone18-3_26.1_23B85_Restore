@@ -1,18 +1,18 @@
 @interface _NSObserverList
-+ (void)_copyObserversOfObject:(int)a3 creatingIfAbsent:;
-+ (void)destroyObserverListForObject:(uint64_t)a1;
-- (NSObservation)addBlockSink:(uint64_t)a3 toObservableObject:(uint64_t)a4 forTag:;
-- (NSObservation)addObserver:(void *)a3 toObservableObject:;
++ (void)_copyObserversOfObject:(int)object creatingIfAbsent:;
++ (void)destroyObserverListForObject:(uint64_t)object;
+- (NSObservation)addBlockSink:(uint64_t)sink toObservableObject:(uint64_t)object forTag:;
+- (NSObservation)addObserver:(void *)observer toObservableObject:;
 - (_NSObserverList)init;
 - (id)description;
-- (void)_receiveBox:(id)a3;
+- (void)_receiveBox:(id)box;
 - (void)dealloc;
 - (void)finishObserving;
 @end
 
 @implementation _NSObserverList
 
-+ (void)_copyObserversOfObject:(int)a3 creatingIfAbsent:
++ (void)_copyObserversOfObject:(int)object creatingIfAbsent:
 {
   v5 = objc_opt_self();
   if (qword_1ED440290 != -1)
@@ -38,17 +38,17 @@
 
   else
   {
-    v9 = [a2 _observerStorage];
+    _observerStorage = [a2 _observerStorage];
     os_unfair_lock_lock_with_options();
-    if (v9)
+    if (_observerStorage)
     {
-      v10 = *v9;
-      if (!*v9 && a3)
+      v10 = *_observerStorage;
+      if (!*_observerStorage && object)
       {
         v11 = objc_alloc_init(v5);
-        *v9 = v11;
+        *_observerStorage = v11;
         v11[1] = a2;
-        v10 = *v9;
+        v10 = *_observerStorage;
       }
 
       v12 = v10;
@@ -59,7 +59,7 @@
     else
     {
       v13 = objc_getAssociatedObject(a2, "_NSObserverListInternalKey");
-      if (!v13 && a3)
+      if (!v13 && object)
       {
         v13 = objc_alloc_init(v5);
         v13[1] = a2;
@@ -72,7 +72,7 @@
   }
 }
 
-+ (void)destroyObserverListForObject:(uint64_t)a1
++ (void)destroyObserverListForObject:(uint64_t)object
 {
   v13 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_self();
@@ -99,14 +99,14 @@
 
   else
   {
-    v6 = [a2 _observerStorage];
-    if (!v6)
+    _observerStorage = [a2 _observerStorage];
+    if (!_observerStorage)
     {
       NSLog(@"Using +destroyObserverListForObject: on an object without inline observer storage is invalid");
       abort();
     }
 
-    v7 = *v6;
+    v7 = *_observerStorage;
     if (v7)
     {
     }
@@ -127,12 +127,12 @@
   return result;
 }
 
-- (NSObservation)addBlockSink:(uint64_t)a3 toObservableObject:(uint64_t)a4 forTag:
+- (NSObservation)addBlockSink:(uint64_t)sink toObservableObject:(uint64_t)object forTag:
 {
   if (result)
   {
     v4 = result;
-    v5 = [[NSObservation alloc] initWithObservable:a3 blockSink:a2 tag:a4];
+    v5 = [[NSObservation alloc] initWithObservable:sink blockSink:a2 tag:object];
     addObserver(v4, v5);
 
     return v5;
@@ -141,7 +141,7 @@
   return result;
 }
 
-- (NSObservation)addObserver:(void *)a3 toObservableObject:
+- (NSObservation)addObserver:(void *)observer toObservableObject:
 {
   if (!result)
   {
@@ -153,20 +153,20 @@
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
-    v9 = [NSString stringWithFormat:@"Attempt to add non-NSObserver object %@ as an observer of %@", a2, a3];
+    observer = [NSString stringWithFormat:@"Attempt to add non-NSObserver object %@ as an observer of %@", a2, observer];
     goto LABEL_10;
   }
 
-  if (([a3 conformsToProtocol:&unk_1EEF6F120] & 1) == 0)
+  if (([observer conformsToProtocol:&unk_1EEF6F120] & 1) == 0)
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
-    v9 = [NSString stringWithFormat:@"Attempt to add %@ as an observer of non-NSObservable object %@", a2, a3];
+    observer = [NSString stringWithFormat:@"Attempt to add %@ as an observer of non-NSObservable object %@", a2, observer];
 LABEL_10:
-    objc_exception_throw([v7 exceptionWithName:v8 reason:v9 userInfo:0]);
+    objc_exception_throw([v7 exceptionWithName:v8 reason:observer userInfo:0]);
   }
 
-  v6 = [[NSObservation alloc] initWithObservable:a3 observer:a2];
+  v6 = [[NSObservation alloc] initWithObservable:observer observer:a2];
   addObserver(v5, a2);
 
   return v6;
@@ -180,7 +180,7 @@ LABEL_10:
   v8[1] = 3221225472;
   v9 = __34___NSObserverList_finishObserving__block_invoke;
   v10 = &unk_1E69F30D8;
-  v11 = self;
+  selfCopy = self;
   v12[0] = 0;
   StackObservedValueClassAndBoxSize = getStackObservedValueClassAndBoxSize(v12);
   MEMORY[0x1EEE9AC00](StackObservedValueClassAndBoxSize);
@@ -191,17 +191,17 @@ LABEL_10:
   v9(v8, v6);
 }
 
-- (void)_receiveBox:(id)a3
+- (void)_receiveBox:(id)box
 {
   v5[6] = *MEMORY[0x1E69E9840];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __31___NSObserverList__receiveBox___block_invoke;
   v5[3] = &unk_1E69FA170;
-  v5[4] = a3;
+  v5[4] = box;
   v5[5] = self;
   withUnlockedObservers(self, v5);
-  if (*(a3 + 6) == 3)
+  if (*(box + 6) == 3)
   {
     clearAllObservers(self);
   }

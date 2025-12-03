@@ -1,20 +1,20 @@
 @interface CNContactGeminiIconProvider
-- (BOOL)_checkAvailableGeminiChannelsUpdatedForGeminiResult:(id)a3;
-- (id)_simLabelImageWithLocalizedBadgeLabel:(id)a3;
-- (void)setGeminiResult:(id)a3;
+- (BOOL)_checkAvailableGeminiChannelsUpdatedForGeminiResult:(id)result;
+- (id)_simLabelImageWithLocalizedBadgeLabel:(id)label;
+- (void)setGeminiResult:(id)result;
 - (void)updateGeminiIcons;
 @end
 
 @implementation CNContactGeminiIconProvider
 
-- (id)_simLabelImageWithLocalizedBadgeLabel:(id)a3
+- (id)_simLabelImageWithLocalizedBadgeLabel:(id)label
 {
   v3 = MEMORY[0x1E69DB878];
   v4 = *MEMORY[0x1E69DDCF8];
-  v5 = a3;
+  labelCopy = label;
   v6 = [v3 preferredFontForTextStyle:v4];
-  v7 = [MEMORY[0x1E69DCA40] defaultMetrics];
-  [v7 scaledValueForValue:2.20000005];
+  defaultMetrics = [MEMORY[0x1E69DCA40] defaultMetrics];
+  [defaultMetrics scaledValueForValue:2.20000005];
   v9 = v8;
 
   v10 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -27,35 +27,35 @@
   v17 = [v15 boldSystemFontOfSize:v16 / 1.375];
   [v14 setFont:v17];
 
-  [v14 setText:v5];
-  v18 = [MEMORY[0x1E69DC888] labelColor];
-  [v14 setTextColor:v18];
+  [v14 setText:labelCopy];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [v14 setTextColor:labelColor];
 
   [v14 setTextAlignment:1];
-  v19 = [MEMORY[0x1E69DC888] clearColor];
-  [v14 setBackgroundColor:v19];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v14 setBackgroundColor:clearColor];
 
-  v20 = [MEMORY[0x1E69DC888] labelColor];
-  v21 = [v20 CGColor];
-  v22 = [v14 layer];
-  [v22 setBorderColor:v21];
+  labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+  cGColor = [labelColor2 CGColor];
+  layer = [v14 layer];
+  [layer setBorderColor:cGColor];
 
-  v23 = [MEMORY[0x1E69DCA40] defaultMetrics];
-  [v23 scaledValueForValue:1.20000005];
+  defaultMetrics2 = [MEMORY[0x1E69DCA40] defaultMetrics];
+  [defaultMetrics2 scaledValueForValue:1.20000005];
   v25 = v24;
-  v26 = [v14 layer];
-  [v26 setBorderWidth:v25];
+  layer2 = [v14 layer];
+  [layer2 setBorderWidth:v25];
 
-  v27 = [v14 layer];
-  [v27 setMasksToBounds:1];
+  layer3 = [v14 layer];
+  [layer3 setMasksToBounds:1];
 
-  v28 = [v14 layer];
-  [v28 setCornerRadius:v9];
+  layer4 = [v14 layer];
+  [layer4 setCornerRadius:v9];
 
   [v6 capHeight];
   v30 = v29;
-  v31 = [MEMORY[0x1E69DCA40] defaultMetrics];
-  [v31 scaledValueForValue:6.0];
+  defaultMetrics3 = [MEMORY[0x1E69DCA40] defaultMetrics];
+  [defaultMetrics3 scaledValueForValue:6.0];
   v33 = v32;
 
   [v14 intrinsicContentSize];
@@ -71,8 +71,8 @@
   v43.width = v37;
   v43.height = v38;
   UIGraphicsBeginImageContextWithOptions(v43, 0, 0.0);
-  v39 = [v14 layer];
-  [v39 renderInContext:UIGraphicsGetCurrentContext()];
+  layer5 = [v14 layer];
+  [layer5 renderInContext:UIGraphicsGetCurrentContext()];
 
   v40 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -80,20 +80,20 @@
   return v40;
 }
 
-- (BOOL)_checkAvailableGeminiChannelsUpdatedForGeminiResult:(id)a3
+- (BOOL)_checkAvailableGeminiChannelsUpdatedForGeminiResult:(id)result
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = [(CNContactGeminiIconProvider *)self geminiResult];
-  v8 = [v7 availableChannels];
+  geminiResult = [(CNContactGeminiIconProvider *)self geminiResult];
+  availableChannels = [geminiResult availableChannels];
 
-  v9 = [v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  v9 = [availableChannels countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v9)
   {
     v10 = v9;
@@ -105,17 +105,17 @@
       {
         if (*v29 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(availableChannels);
         }
 
-        v13 = [*(*(&v28 + 1) + 8 * v12) localizedBadgeLabel];
-        [v5 addObject:v13];
+        localizedBadgeLabel = [*(*(&v28 + 1) + 8 * v12) localizedBadgeLabel];
+        [v5 addObject:localizedBadgeLabel];
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v10 = [availableChannels countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v10);
@@ -125,8 +125,8 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = [v4 availableChannels];
-  v15 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  availableChannels2 = [resultCopy availableChannels];
+  v15 = [availableChannels2 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v15)
   {
     v16 = v15;
@@ -138,17 +138,17 @@
       {
         if (*v25 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(availableChannels2);
         }
 
-        v19 = [*(*(&v24 + 1) + 8 * v18) localizedBadgeLabel];
-        [v6 addObject:v19];
+        localizedBadgeLabel2 = [*(*(&v24 + 1) + 8 * v18) localizedBadgeLabel];
+        [v6 addObject:localizedBadgeLabel2];
 
         ++v18;
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v16 = [availableChannels2 countByEnumeratingWithState:&v24 objects:v32 count:16];
     }
 
     while (v16);
@@ -164,15 +164,15 @@
 - (void)updateGeminiIcons
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactGeminiIconProvider *)self geminiResult];
-  v4 = [v3 availableChannels];
+  geminiResult = [(CNContactGeminiIconProvider *)self geminiResult];
+  availableChannels = [geminiResult availableChannels];
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = availableChannels;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -188,11 +188,11 @@
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 localizedBadgeLabel];
-        v13 = [(CNContactGeminiIconProvider *)self _simLabelImageWithLocalizedBadgeLabel:v12];
+        localizedBadgeLabel = [v11 localizedBadgeLabel];
+        v13 = [(CNContactGeminiIconProvider *)self _simLabelImageWithLocalizedBadgeLabel:localizedBadgeLabel];
 
-        v14 = [v11 channelIdentifier];
-        [v5 setObject:v13 forKey:v14];
+        channelIdentifier = [v11 channelIdentifier];
+        [v5 setObject:v13 forKey:channelIdentifier];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -206,12 +206,12 @@
   self->_geminiIconDictionary = v15;
 }
 
-- (void)setGeminiResult:(id)a3
+- (void)setGeminiResult:(id)result
 {
-  v4 = a3;
-  v5 = [(CNContactGeminiIconProvider *)self _checkAvailableGeminiChannelsUpdatedForGeminiResult:v4];
+  resultCopy = result;
+  v5 = [(CNContactGeminiIconProvider *)self _checkAvailableGeminiChannelsUpdatedForGeminiResult:resultCopy];
   geminiResult = self->_geminiResult;
-  self->_geminiResult = v4;
+  self->_geminiResult = resultCopy;
 
   if (v5)
   {

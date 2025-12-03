@@ -14,14 +14,14 @@
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(CIImage *)self->inputImage imageByClampingToExtent];
+    imageByClampingToExtent = [(CIImage *)self->inputImage imageByClampingToExtent];
     if (qword_8C998 != -1)
     {
       sub_49238();
     }
 
     v13 = qword_8C990;
-    v36 = v12;
+    v36 = imageByClampingToExtent;
     v14 = [NSArray arrayWithObjects:&v36 count:1];
     v15 = kCIKernelOutputFormat;
     v34 = kCIKernelOutputFormat;
@@ -50,7 +50,7 @@
 
     v25 = qword_8C9B0;
     v30[0] = v24;
-    v30[1] = v12;
+    v30[1] = imageByClampingToExtent;
     v26 = [NSArray arrayWithObjects:v30 count:2];
     v28 = v15;
     v29 = [NSNumber numberWithInt:v16];

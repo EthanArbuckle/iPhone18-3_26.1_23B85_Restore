@@ -1,110 +1,110 @@
 @interface IRSystemStateMO
-+ (IRSystemStateMO)systemStateMOWithSystemStateDO:(id)a3 historyEventMO:(id)a4 inManagedObjectContext:(id)a5;
-+ (IRSystemStateMO)systemStateMOWithSystemStateDO:(id)a3 replayEventMO:(id)a4 inManagedObjectContext:(id)a5;
-+ (void)setPropertiesOfSystemStateMO:(id)a3 withSystemState:(id)a4;
++ (IRSystemStateMO)systemStateMOWithSystemStateDO:(id)o historyEventMO:(id)mO inManagedObjectContext:(id)context;
++ (IRSystemStateMO)systemStateMOWithSystemStateDO:(id)o replayEventMO:(id)mO inManagedObjectContext:(id)context;
++ (void)setPropertiesOfSystemStateMO:(id)o withSystemState:(id)state;
 - (id)convert;
 @end
 
 @implementation IRSystemStateMO
 
-+ (IRSystemStateMO)systemStateMOWithSystemStateDO:(id)a3 historyEventMO:(id)a4 inManagedObjectContext:(id)a5
++ (IRSystemStateMO)systemStateMOWithSystemStateDO:(id)o historyEventMO:(id)mO inManagedObjectContext:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[IRSystemStateMO alloc] initWithContext:v7];
+  contextCopy = context;
+  mOCopy = mO;
+  oCopy = o;
+  v10 = [[IRSystemStateMO alloc] initWithContext:contextCopy];
 
-  [(IRSystemStateMO *)v10 setHistoryEvent:v8];
-  [IRSystemStateMO setPropertiesOfSystemStateMO:v10 withSystemState:v9];
+  [(IRSystemStateMO *)v10 setHistoryEvent:mOCopy];
+  [IRSystemStateMO setPropertiesOfSystemStateMO:v10 withSystemState:oCopy];
 
   return v10;
 }
 
-+ (IRSystemStateMO)systemStateMOWithSystemStateDO:(id)a3 replayEventMO:(id)a4 inManagedObjectContext:(id)a5
++ (IRSystemStateMO)systemStateMOWithSystemStateDO:(id)o replayEventMO:(id)mO inManagedObjectContext:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[IRSystemStateMO alloc] initWithContext:v7];
+  contextCopy = context;
+  mOCopy = mO;
+  oCopy = o;
+  v10 = [[IRSystemStateMO alloc] initWithContext:contextCopy];
 
-  [(IRSystemStateMO *)v10 setReplayEvent:v8];
-  [IRSystemStateMO setPropertiesOfSystemStateMO:v10 withSystemState:v9];
+  [(IRSystemStateMO *)v10 setReplayEvent:mOCopy];
+  [IRSystemStateMO setPropertiesOfSystemStateMO:v10 withSystemState:oCopy];
 
   return v10;
 }
 
-+ (void)setPropertiesOfSystemStateMO:(id)a3 withSystemState:(id)a4
++ (void)setPropertiesOfSystemStateMO:(id)o withSystemState:(id)state
 {
-  v5 = a4;
-  v16 = a3;
-  v6 = [v5 appInFocusBundleID];
-  [v16 setAppInFocusBundleID:v6];
+  stateCopy = state;
+  oCopy = o;
+  appInFocusBundleID = [stateCopy appInFocusBundleID];
+  [oCopy setAppInFocusBundleID:appInFocusBundleID];
 
-  [v16 setAppInFocusWindowValid:{objc_msgSend(v5, "appInFocusWindowValid")}];
-  v7 = [v5 deviceWiFiSSID];
-  [v16 setDeviceWiFiSSID:v7];
+  [oCopy setAppInFocusWindowValid:{objc_msgSend(stateCopy, "appInFocusWindowValid")}];
+  deviceWiFiSSID = [stateCopy deviceWiFiSSID];
+  [oCopy setDeviceWiFiSSID:deviceWiFiSSID];
 
-  [v16 setLocationSemanticUserSpecificPlaceType:{objc_msgSend(v5, "locationSemanticUserSpecificPlaceType")}];
-  v8 = [v5 iCloudId];
-  [v16 setICloudId:v8];
+  [oCopy setLocationSemanticUserSpecificPlaceType:{objc_msgSend(stateCopy, "locationSemanticUserSpecificPlaceType")}];
+  iCloudId = [stateCopy iCloudId];
+  [oCopy setICloudId:iCloudId];
 
-  v9 = [v5 locationSemanticLoiIdentifier];
-  [v16 setLocationSemanticLoiIdentifier:v9];
+  locationSemanticLoiIdentifier = [stateCopy locationSemanticLoiIdentifier];
+  [oCopy setLocationSemanticLoiIdentifier:locationSemanticLoiIdentifier];
 
-  v10 = [v5 avInitialRouteSharingPolicy];
-  [v16 setAvInitialRouteSharingPolicy:v10];
+  avInitialRouteSharingPolicy = [stateCopy avInitialRouteSharingPolicy];
+  [oCopy setAvInitialRouteSharingPolicy:avInitialRouteSharingPolicy];
 
-  v11 = [v5 mediaRouteGroupLeaderOutputDeviceID];
-  [v16 setMediaRouteGroupLeaderOutputDeviceID:v11];
+  mediaRouteGroupLeaderOutputDeviceID = [stateCopy mediaRouteGroupLeaderOutputDeviceID];
+  [oCopy setMediaRouteGroupLeaderOutputDeviceID:mediaRouteGroupLeaderOutputDeviceID];
 
-  [v16 setTimeZoneSeconds:{objc_msgSend(v5, "timeZoneSeconds")}];
-  v12 = [v5 outputDeviceName];
-  [v16 setOutputDeviceName:v12];
+  [oCopy setTimeZoneSeconds:{objc_msgSend(stateCopy, "timeZoneSeconds")}];
+  outputDeviceName = [stateCopy outputDeviceName];
+  [oCopy setOutputDeviceName:outputDeviceName];
 
-  [v16 setOutputDeviceType:{objc_msgSend(v5, "outputDeviceType")}];
-  [v16 setOutputDeviceSubType:{objc_msgSend(v5, "outputDeviceSubType")}];
-  v13 = [v5 predictedOutputDeviceName];
-  [v16 setPredictedOutputDeviceName:v13];
+  [oCopy setOutputDeviceType:{objc_msgSend(stateCopy, "outputDeviceType")}];
+  [oCopy setOutputDeviceSubType:{objc_msgSend(stateCopy, "outputDeviceSubType")}];
+  predictedOutputDeviceName = [stateCopy predictedOutputDeviceName];
+  [oCopy setPredictedOutputDeviceName:predictedOutputDeviceName];
 
-  [v16 setPredictedOutputDeviceType:{objc_msgSend(v5, "predictedOutputDeviceType")}];
-  [v16 setPredictedOutputDeviceSubType:{objc_msgSend(v5, "predictedOutputDeviceSubType")}];
-  [v16 setAppInFocusWindowScreenUnlockEvent:{objc_msgSend(v5, "appInFocusWindowScreenUnlockEvent")}];
-  [v16 setPdrFenceActive:{objc_msgSend(v5, "pdrFenceActive")}];
-  v14 = [v5 latestPickerChoiceDate];
-  [v16 setLatestPickerChoiceDate:v14];
+  [oCopy setPredictedOutputDeviceType:{objc_msgSend(stateCopy, "predictedOutputDeviceType")}];
+  [oCopy setPredictedOutputDeviceSubType:{objc_msgSend(stateCopy, "predictedOutputDeviceSubType")}];
+  [oCopy setAppInFocusWindowScreenUnlockEvent:{objc_msgSend(stateCopy, "appInFocusWindowScreenUnlockEvent")}];
+  [oCopy setPdrFenceActive:{objc_msgSend(stateCopy, "pdrFenceActive")}];
+  latestPickerChoiceDate = [stateCopy latestPickerChoiceDate];
+  [oCopy setLatestPickerChoiceDate:latestPickerChoiceDate];
 
-  [v16 setIsContinuityDisplay:{objc_msgSend(v5, "isContinuityDisplay")}];
-  v15 = [v5 displayOn];
+  [oCopy setIsContinuityDisplay:{objc_msgSend(stateCopy, "isContinuityDisplay")}];
+  displayOn = [stateCopy displayOn];
 
-  [v16 setDisplayOn:v15];
+  [oCopy setDisplayOn:displayOn];
 }
 
 - (id)convert
 {
-  v25 = [(IRSystemStateMO *)self appInFocusBundleID];
-  v24 = [(IRSystemStateMO *)self appInFocusWindowValid];
-  v23 = [(IRSystemStateMO *)self deviceWiFiSSID];
-  v22 = [(IRSystemStateMO *)self locationSemanticUserSpecificPlaceType];
-  v21 = [(IRSystemStateMO *)self locationSemanticLoiIdentifier];
-  v20 = [(IRSystemStateMO *)self iCloudId];
-  v19 = [(IRSystemStateMO *)self avInitialRouteSharingPolicy];
-  v18 = [(IRSystemStateMO *)self mediaRouteGroupLeaderOutputDeviceID];
-  v17 = [(IRSystemStateMO *)self timeZoneSeconds];
-  v3 = [(IRSystemStateMO *)self outputDeviceName];
-  v16 = [(IRSystemStateMO *)self outputDeviceType];
-  v4 = [(IRSystemStateMO *)self outputDeviceSubType];
-  v5 = [(IRSystemStateMO *)self predictedOutputDeviceName];
-  v6 = [(IRSystemStateMO *)self predictedOutputDeviceType];
-  v7 = [(IRSystemStateMO *)self predictedOutputDeviceSubType];
-  v8 = [(IRSystemStateMO *)self appInFocusWindowScreenUnlockEvent];
-  v9 = [(IRSystemStateMO *)self pdrFenceActive];
-  v10 = [(IRSystemStateMO *)self latestPickerChoiceDate];
-  v11 = [(IRSystemStateMO *)self isContinuityDisplay];
+  appInFocusBundleID = [(IRSystemStateMO *)self appInFocusBundleID];
+  appInFocusWindowValid = [(IRSystemStateMO *)self appInFocusWindowValid];
+  deviceWiFiSSID = [(IRSystemStateMO *)self deviceWiFiSSID];
+  locationSemanticUserSpecificPlaceType = [(IRSystemStateMO *)self locationSemanticUserSpecificPlaceType];
+  locationSemanticLoiIdentifier = [(IRSystemStateMO *)self locationSemanticLoiIdentifier];
+  iCloudId = [(IRSystemStateMO *)self iCloudId];
+  avInitialRouteSharingPolicy = [(IRSystemStateMO *)self avInitialRouteSharingPolicy];
+  mediaRouteGroupLeaderOutputDeviceID = [(IRSystemStateMO *)self mediaRouteGroupLeaderOutputDeviceID];
+  timeZoneSeconds = [(IRSystemStateMO *)self timeZoneSeconds];
+  outputDeviceName = [(IRSystemStateMO *)self outputDeviceName];
+  outputDeviceType = [(IRSystemStateMO *)self outputDeviceType];
+  outputDeviceSubType = [(IRSystemStateMO *)self outputDeviceSubType];
+  predictedOutputDeviceName = [(IRSystemStateMO *)self predictedOutputDeviceName];
+  predictedOutputDeviceType = [(IRSystemStateMO *)self predictedOutputDeviceType];
+  predictedOutputDeviceSubType = [(IRSystemStateMO *)self predictedOutputDeviceSubType];
+  appInFocusWindowScreenUnlockEvent = [(IRSystemStateMO *)self appInFocusWindowScreenUnlockEvent];
+  pdrFenceActive = [(IRSystemStateMO *)self pdrFenceActive];
+  latestPickerChoiceDate = [(IRSystemStateMO *)self latestPickerChoiceDate];
+  isContinuityDisplay = [(IRSystemStateMO *)self isContinuityDisplay];
   BYTE1(v15) = [(IRSystemStateMO *)self displayOn];
-  LOBYTE(v15) = v11;
-  BYTE1(v14) = v9;
-  LOBYTE(v14) = v8;
-  v12 = [IRSystemStateDO systemStateDOWithAppInFocusBundleID:"systemStateDOWithAppInFocusBundleID:appInFocusWindowValid:deviceWiFiSSID:locationSemanticUserSpecificPlaceType:locationSemanticLoiIdentifier:iCloudId:avInitialRouteSharingPolicy:mediaRouteGroupLeaderOutputDeviceID:timeZoneSeconds:outputDeviceName:outputDeviceType:outputDeviceSubType:predictedOutputDeviceName:predictedOutputDeviceType:predictedOutputDeviceSubType:appInFocusWindowScreenUnlockEvent:pdrFenceActive:latestPickerChoiceDate:isContinuityDisplay:displayOn:" appInFocusWindowValid:v25 deviceWiFiSSID:v24 locationSemanticUserSpecificPlaceType:v23 locationSemanticLoiIdentifier:v22 iCloudId:v21 avInitialRouteSharingPolicy:v20 mediaRouteGroupLeaderOutputDeviceID:v19 timeZoneSeconds:v18 outputDeviceName:v17 outputDeviceType:v3 outputDeviceSubType:v16 predictedOutputDeviceName:v4 predictedOutputDeviceType:v5 predictedOutputDeviceSubType:v6 appInFocusWindowScreenUnlockEvent:v7 pdrFenceActive:v14 latestPickerChoiceDate:v10 isContinuityDisplay:v15 displayOn:?];
+  LOBYTE(v15) = isContinuityDisplay;
+  BYTE1(v14) = pdrFenceActive;
+  LOBYTE(v14) = appInFocusWindowScreenUnlockEvent;
+  v12 = [IRSystemStateDO systemStateDOWithAppInFocusBundleID:"systemStateDOWithAppInFocusBundleID:appInFocusWindowValid:deviceWiFiSSID:locationSemanticUserSpecificPlaceType:locationSemanticLoiIdentifier:iCloudId:avInitialRouteSharingPolicy:mediaRouteGroupLeaderOutputDeviceID:timeZoneSeconds:outputDeviceName:outputDeviceType:outputDeviceSubType:predictedOutputDeviceName:predictedOutputDeviceType:predictedOutputDeviceSubType:appInFocusWindowScreenUnlockEvent:pdrFenceActive:latestPickerChoiceDate:isContinuityDisplay:displayOn:" appInFocusWindowValid:appInFocusBundleID deviceWiFiSSID:appInFocusWindowValid locationSemanticUserSpecificPlaceType:deviceWiFiSSID locationSemanticLoiIdentifier:locationSemanticUserSpecificPlaceType iCloudId:locationSemanticLoiIdentifier avInitialRouteSharingPolicy:iCloudId mediaRouteGroupLeaderOutputDeviceID:avInitialRouteSharingPolicy timeZoneSeconds:mediaRouteGroupLeaderOutputDeviceID outputDeviceName:timeZoneSeconds outputDeviceType:outputDeviceName outputDeviceSubType:outputDeviceType predictedOutputDeviceName:outputDeviceSubType predictedOutputDeviceType:predictedOutputDeviceName predictedOutputDeviceSubType:predictedOutputDeviceType appInFocusWindowScreenUnlockEvent:predictedOutputDeviceSubType pdrFenceActive:v14 latestPickerChoiceDate:latestPickerChoiceDate isContinuityDisplay:v15 displayOn:?];
 
   return v12;
 }

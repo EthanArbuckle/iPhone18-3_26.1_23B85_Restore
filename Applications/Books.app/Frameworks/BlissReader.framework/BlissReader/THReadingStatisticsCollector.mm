@@ -1,10 +1,10 @@
 @interface THReadingStatisticsCollector
 - (THReadingStatisticsCollector)init;
-- (_NSRange)_rangeForBodyRep:(id)a3 visibleUnscaledRect:(CGRect)a4;
-- (void)_scanReadingStatisticsWithNode:(id)a3 root:(id)a4 ordinal:(unint64_t *)a5 level:(int64_t)a6 childIndex:(int64_t)a7;
-- (void)bodyReps:(id)a3 visibleRectIs:(CGRect)a4;
+- (_NSRange)_rangeForBodyRep:(id)rep visibleUnscaledRect:(CGRect)rect;
+- (void)_scanReadingStatisticsWithNode:(id)node root:(id)root ordinal:(unint64_t *)ordinal level:(int64_t)level childIndex:(int64_t)index;
+- (void)bodyReps:(id)reps visibleRectIs:(CGRect)is;
 - (void)dealloc;
-- (void)readingStatisticsScanOperation:(id)a3 addTextNodeCharacterCounts:(id)a4;
+- (void)readingStatisticsScanOperation:(id)operation addTextNodeCharacterCounts:(id)counts;
 @end
 
 @implementation THReadingStatisticsCollector
@@ -35,19 +35,19 @@
   [(THReadingStatisticsCollector *)&v3 dealloc];
 }
 
-- (void)bodyReps:(id)a3 visibleRectIs:(CGRect)a4
+- (void)bodyReps:(id)reps visibleRectIs:(CGRect)is
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  [objc_msgSend(objc_msgSend(a3 "firstObject")];
+  height = is.size.height;
+  width = is.size.width;
+  y = is.origin.y;
+  x = is.origin.x;
+  [objc_msgSend(objc_msgSend(reps "firstObject")];
   v10 = +[BCMutableCFISet cfiSet];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v11 = [a3 countByEnumeratingWithState:&v30 objects:v36 count:16];
+  v11 = [reps countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v11)
   {
     v13 = v11;
@@ -60,14 +60,14 @@
       {
         if (*v31 != v14)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(reps);
         }
 
         v16 = *(*(&v30 + 1) + 8 * i);
         v17 = [(THReadingStatisticsCollector *)self _rangeForBodyRep:v16 visibleUnscaledRect:x, y, width, height, v28];
         v19 = v18;
-        v20 = [v16 storageContentNode];
-        v21 = [v20 cfiForRange:v17 storageUID:v19 includeFilename:objc_msgSend(v20 pedantic:{"nodeUniqueIDForInfo:", objc_msgSend(v16, "storage")), 0, 1}];
+        storageContentNode = [v16 storageContentNode];
+        v21 = [storageContentNode cfiForRange:v17 storageUID:v19 includeFilename:objc_msgSend(storageContentNode pedantic:{"nodeUniqueIDForInfo:", objc_msgSend(v16, "storage")), 0, 1}];
         if (v21)
         {
           v22 = v21;
@@ -86,7 +86,7 @@
         }
       }
 
-      v13 = [a3 countByEnumeratingWithState:&v30 objects:v36 count:16];
+      v13 = [reps countByEnumeratingWithState:&v30 objects:v36 count:16];
     }
 
     while (v13);
@@ -124,25 +124,25 @@
   }
 }
 
-- (void)readingStatisticsScanOperation:(id)a3 addTextNodeCharacterCounts:(id)a4
+- (void)readingStatisticsScanOperation:(id)operation addTextNodeCharacterCounts:(id)counts
 {
-  v7 = [(THReadingStatisticsCollector *)self delegate];
-  v8 = [a3 ordinal];
+  delegate = [(THReadingStatisticsCollector *)self delegate];
+  ordinal = [operation ordinal];
 
-  [(THReadingStatisticsCollectorDelegate *)v7 readingStatisticsCollector:self addTextNodeCharacterCounts:a4 ordinal:v8 completion:0];
+  [(THReadingStatisticsCollectorDelegate *)delegate readingStatisticsCollector:self addTextNodeCharacterCounts:counts ordinal:ordinal completion:0];
 }
 
-- (_NSRange)_rangeForBodyRep:(id)a3 visibleUnscaledRect:(CGRect)a4
+- (_NSRange)_rangeForBodyRep:(id)rep visibleUnscaledRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = [objc_msgSend(a3 "storage")];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = [objc_msgSend(rep "storage")];
   if (v9)
   {
-    [a3 convertNaturalPointFromUnscaledCanvas:{x, y}];
-    [a3 pinToNaturalBounds:1 andLastLineFragment:?];
+    [rep convertNaturalPointFromUnscaledCanvas:{x, y}];
+    [rep pinToNaturalBounds:1 andLastLineFragment:?];
     v11 = v10;
     v13 = v12;
     v24.origin.x = x;
@@ -154,12 +154,12 @@
     v25.origin.y = y;
     v25.size.width = width;
     v25.size.height = height;
-    [a3 convertNaturalPointFromUnscaledCanvas:{MaxX, CGRectGetMaxY(v25)}];
-    [a3 pinToNaturalBounds:1 andLastLineFragment:?];
+    [rep convertNaturalPointFromUnscaledCanvas:{MaxX, CGRectGetMaxY(v25)}];
+    [rep pinToNaturalBounds:1 andLastLineFragment:?];
     v16 = v15;
     v18 = v17;
-    v19 = [a3 charIndexFromPoint:1 allowPastBreak:0 isAtEndOfLine:{v11, v13}];
-    v9 = [a3 charIndexFromPoint:1 allowPastBreak:0 isAtEndOfLine:{v16, v18}];
+    v19 = [rep charIndexFromPoint:1 allowPastBreak:0 isAtEndOfLine:{v11, v13}];
+    v9 = [rep charIndexFromPoint:1 allowPastBreak:0 isAtEndOfLine:{v16, v18}];
     v20 = v9;
     v21 = v19 > v9;
     if (v19 < v9)
@@ -185,11 +185,11 @@
   return result;
 }
 
-- (void)_scanReadingStatisticsWithNode:(id)a3 root:(id)a4 ordinal:(unint64_t *)a5 level:(int64_t)a6 childIndex:(int64_t)a7
+- (void)_scanReadingStatisticsWithNode:(id)node root:(id)root ordinal:(unint64_t *)ordinal level:(int64_t)level childIndex:(int64_t)index
 {
-  if (a3)
+  if (node)
   {
-    if (a5)
+    if (ordinal)
     {
       goto LABEL_3;
     }
@@ -198,7 +198,7 @@
   else
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-    if (a5)
+    if (ordinal)
     {
       goto LABEL_3;
     }
@@ -212,11 +212,11 @@ LABEL_3:
   v14 = TSUDynamicCast();
   if (v13)
   {
-    if (a6 == 2 && !a7 && [(THReadingStatisticsCollectorDelegate *)[(THReadingStatisticsCollector *)self delegate] readingStatisticsCollector:self needTextNodeCharacterCountsForOrdinal:*a5])
+    if (level == 2 && !index && [(THReadingStatisticsCollectorDelegate *)[(THReadingStatisticsCollector *)self delegate] readingStatisticsCollector:self needTextNodeCharacterCountsForOrdinal:*ordinal])
     {
-      v15 = [objc_msgSend(a3 "parent")];
+      v15 = [objc_msgSend(node "parent")];
       objc_opt_class();
-      [a3 parent];
+      [node parent];
       v16 = TSUDynamicCast();
       if (v16)
       {
@@ -224,24 +224,24 @@ LABEL_3:
       }
 
       v17 = [NSString stringWithFormat:@"#chapterguid(%@)", v15];
-      v18 = [NSString stringWithFormat:@"epubcfi(/6/%ld!/2/1:0)", 2 * *a5 + 2];
+      v18 = [NSString stringWithFormat:@"epubcfi(/6/%ld!/2/1:0)", 2 * *ordinal + 2];
       v25[0] = v17;
       v24[0] = kBCReadingStatisticsHrefKey;
       v24[1] = kBCReadingStatisticsNameKey;
-      v19 = [a3 title];
+      title = [node title];
       v24[2] = kBCReadingStatisticsStartCFIKey;
-      v25[1] = v19;
+      v25[1] = title;
       v25[2] = v18;
       v26 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:3];
-      [(THReadingStatisticsCollectorDelegate *)[(THReadingStatisticsCollector *)self delegate] readingStatisticsCollector:self addTOCEntries:[NSArray arrayWithObjects:1 count:?], *a5, 0];
+      [(THReadingStatisticsCollectorDelegate *)[(THReadingStatisticsCollector *)self delegate] readingStatisticsCollector:self addTOCEntries:[NSArray arrayWithObjects:1 count:?], *ordinal, 0];
     }
 
-    if ([(THReadingStatisticsCollectorDelegate *)[(THReadingStatisticsCollector *)self delegate] readingStatisticsCollector:self needTextNodeCharacterCountsForOrdinal:*a5])
+    if ([(THReadingStatisticsCollectorDelegate *)[(THReadingStatisticsCollector *)self delegate] readingStatisticsCollector:self needTextNodeCharacterCountsForOrdinal:*ordinal])
     {
-      -[NSOperationQueue addOperation:](-[THReadingStatisticsCollector chapterDataQueue](self, "chapterDataQueue"), "addOperation:", -[THReadingStatisticsScanOperation initWithDelegate:ordinal:applePubURL:documentEntryURI:]([THReadingStatisticsScanOperation alloc], "initWithDelegate:ordinal:applePubURL:documentEntryURI:", self, *a5, [a4 zipPackage], objc_msgSend(v13, "applePubRelativePath")));
+      -[NSOperationQueue addOperation:](-[THReadingStatisticsCollector chapterDataQueue](self, "chapterDataQueue"), "addOperation:", -[THReadingStatisticsScanOperation initWithDelegate:ordinal:applePubURL:documentEntryURI:]([THReadingStatisticsScanOperation alloc], "initWithDelegate:ordinal:applePubURL:documentEntryURI:", self, *ordinal, [root zipPackage], objc_msgSend(v13, "applePubRelativePath")));
     }
 
-    ++*a5;
+    ++*ordinal;
   }
 
   else
@@ -255,7 +255,7 @@ LABEL_3:
         v22 = v21;
         for (i = 0; i != v22; ++i)
         {
-          -[THReadingStatisticsCollector _scanReadingStatisticsWithNode:root:ordinal:level:childIndex:](self, "_scanReadingStatisticsWithNode:root:ordinal:level:childIndex:", [v20 nodeAtIndex:i], a4, a5, a6 + 1, i);
+          -[THReadingStatisticsCollector _scanReadingStatisticsWithNode:root:ordinal:level:childIndex:](self, "_scanReadingStatisticsWithNode:root:ordinal:level:childIndex:", [v20 nodeAtIndex:i], root, ordinal, level + 1, i);
         }
       }
     }

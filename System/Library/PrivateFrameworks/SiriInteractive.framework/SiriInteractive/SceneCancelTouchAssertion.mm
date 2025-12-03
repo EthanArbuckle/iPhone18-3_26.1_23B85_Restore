@@ -6,7 +6,7 @@
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_26750C6BC();
 }
 

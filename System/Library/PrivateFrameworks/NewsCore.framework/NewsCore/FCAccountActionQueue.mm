@@ -1,9 +1,9 @@
 @interface FCAccountActionQueue
-- (BOOL)enqueueActionWithType:(int64_t)a3;
-- (BOOL)popActionTypesUpToCount:(unint64_t)a3 setLocalDataHintIfNeeded:(BOOL)a4;
+- (BOOL)enqueueActionWithType:(int64_t)type;
+- (BOOL)popActionTypesUpToCount:(unint64_t)count setLocalDataHintIfNeeded:(BOOL)needed;
 - (BOOL)readLocalDataHint;
 - (FCAccountActionQueue)init;
-- (FCAccountActionQueue)initWithFileURL:(id)a3;
+- (FCAccountActionQueue)initWithFileURL:(id)l;
 - (id)peekAtActionTypes;
 @end
 
@@ -11,11 +11,11 @@
 
 - (id)peekAtActionTypes
 {
-  v2 = [(FCAccountActionQueue *)self persistentDictionary];
-  v3 = [v2 read];
-  v4 = [v3 fc_actionTypes];
+  persistentDictionary = [(FCAccountActionQueue *)self persistentDictionary];
+  read = [persistentDictionary read];
+  fc_actionTypes = [read fc_actionTypes];
 
-  return v4;
+  return fc_actionTypes;
 }
 
 - (FCAccountActionQueue)init
@@ -44,9 +44,9 @@
   objc_exception_throw(v6);
 }
 
-- (FCAccountActionQueue)initWithFileURL:(id)a3
+- (FCAccountActionQueue)initWithFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = FCAccountActionQueue;
   v5 = [(FCAccountActionQueue *)&v13 init];
@@ -56,7 +56,7 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [[FCPersistentDictionary alloc] initWithFileURL:v4 allowedClasses:v9];
+    v10 = [[FCPersistentDictionary alloc] initWithFileURL:lCopy allowedClasses:v9];
     persistentDictionary = v5->_persistentDictionary;
     v5->_persistentDictionary = v10;
   }
@@ -66,31 +66,31 @@
 
 - (BOOL)readLocalDataHint
 {
-  v2 = [(FCAccountActionQueue *)self persistentDictionary];
-  v3 = [v2 read];
-  v4 = [v3 fc_localDataHint];
+  persistentDictionary = [(FCAccountActionQueue *)self persistentDictionary];
+  read = [persistentDictionary read];
+  fc_localDataHint = [read fc_localDataHint];
 
-  return v4;
+  return fc_localDataHint;
 }
 
-- (BOOL)enqueueActionWithType:(int64_t)a3
+- (BOOL)enqueueActionWithType:(int64_t)type
 {
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 1;
-  v4 = [(FCAccountActionQueue *)self persistentDictionary];
+  persistentDictionary = [(FCAccountActionQueue *)self persistentDictionary];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__FCAccountActionQueue_enqueueActionWithType___block_invoke;
   v6[3] = &unk_1E7C3A430;
   v6[4] = &v7;
-  v6[5] = a3;
-  LOBYTE(a3) = [v4 writeWithAccessor:v6];
+  v6[5] = type;
+  LOBYTE(type) = [persistentDictionary writeWithAccessor:v6];
 
-  LOBYTE(a3) = v8[3] & a3;
+  LOBYTE(type) = v8[3] & type;
   _Block_object_dispose(&v7, 8);
-  return a3 & 1;
+  return type & 1;
 }
 
 uint64_t __46__FCAccountActionQueue_enqueueActionWithType___block_invoke(uint64_t a1, void *a2)
@@ -100,16 +100,16 @@ uint64_t __46__FCAccountActionQueue_enqueueActionWithType___block_invoke(uint64_
   return result;
 }
 
-- (BOOL)popActionTypesUpToCount:(unint64_t)a3 setLocalDataHintIfNeeded:(BOOL)a4
+- (BOOL)popActionTypesUpToCount:(unint64_t)count setLocalDataHintIfNeeded:(BOOL)needed
 {
-  v6 = [(FCAccountActionQueue *)self persistentDictionary];
+  persistentDictionary = [(FCAccountActionQueue *)self persistentDictionary];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __73__FCAccountActionQueue_popActionTypesUpToCount_setLocalDataHintIfNeeded___block_invoke;
   v9[3] = &__block_descriptor_41_e29_v16__0__NSMutableDictionary_8l;
-  v9[4] = a3;
-  v10 = a4;
-  v7 = [v6 writeWithAccessor:v9];
+  v9[4] = count;
+  neededCopy = needed;
+  v7 = [persistentDictionary writeWithAccessor:v9];
 
   return v7;
 }

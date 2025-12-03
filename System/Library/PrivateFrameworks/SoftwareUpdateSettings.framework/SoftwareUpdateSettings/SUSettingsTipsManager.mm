@@ -1,8 +1,8 @@
 @interface SUSettingsTipsManager
 + (id)sharedManager;
 - (SUSettingsTipsManager)init;
-- (void)configureManualComingSoonTipWithTitle:(id)a3 andContent:(id)a4 learnMoreLink:(id)a5 imageSystemName:(id)a6;
-- (void)setup:(BOOL)a3;
+- (void)configureManualComingSoonTipWithTitle:(id)title andContent:(id)content learnMoreLink:(id)link imageSystemName:(id)name;
+- (void)setup:(BOOL)setup;
 @end
 
 @implementation SUSettingsTipsManager
@@ -44,25 +44,25 @@ double __38__SUSettingsTipsManager_sharedManager__block_invoke()
   return v3;
 }
 
-- (void)setup:(BOOL)a3
+- (void)setup:(BOOL)setup
 {
   v3 = +[SUSettingsSwiftTipsManager sharedManager];
-  [(SUSettingsSwiftTipsManager *)v3 setupForManualControl:a3];
+  [(SUSettingsSwiftTipsManager *)v3 setupForManualControl:setup];
   MEMORY[0x277D82BD8](v3);
 }
 
-- (void)configureManualComingSoonTipWithTitle:(id)a3 andContent:(id)a4 learnMoreLink:(id)a5 imageSystemName:(id)a6
+- (void)configureManualComingSoonTipWithTitle:(id)title andContent:(id)content learnMoreLink:(id)link imageSystemName:(id)name
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, title);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, content);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
+  objc_storeStrong(&v11, link);
   v10 = 0;
-  objc_storeStrong(&v10, a6);
+  objc_storeStrong(&v10, name);
   v9 = +[SUSettingsSwiftTipsManager sharedManager];
   [(SUSettingsSwiftTipsManager *)v9 configureManualComingSoonTipWithTitle:location[0] andContent:v12 learnMoreLink:v11 imageSystemName:v10];
   MEMORY[0x277D82BD8](v9);

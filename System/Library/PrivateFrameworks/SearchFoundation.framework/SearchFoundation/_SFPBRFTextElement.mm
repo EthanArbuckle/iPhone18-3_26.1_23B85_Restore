@@ -1,27 +1,27 @@
 @interface _SFPBRFTextElement
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFTextElement)initWithDictionary:(id)a3;
-- (_SFPBRFTextElement)initWithFacade:(id)a3;
-- (_SFPBRFTextElement)initWithJSON:(id)a3;
+- (_SFPBRFTextElement)initWithDictionary:(id)dictionary;
+- (_SFPBRFTextElement)initWithFacade:(id)facade;
+- (_SFPBRFTextElement)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addFormatted_text:(id)a3;
-- (void)setFormatted_text:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addFormatted_text:(id)formatted_text;
+- (void)setFormatted_text:(id)formatted_text;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFTextElement
 
-- (_SFPBRFTextElement)initWithFacade:(id)a3
+- (_SFPBRFTextElement)initWithFacade:(id)facade
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFTextElement *)self init];
   if (v5)
   {
-    v6 = [v4 formatted_text];
-    if (v6)
+    formatted_text = [facadeCopy formatted_text];
+    if (formatted_text)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -35,8 +35,8 @@
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = [v4 formatted_text];
-    v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    formatted_text2 = [facadeCopy formatted_text];
+    v9 = [formatted_text2 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v9)
     {
       v10 = v9;
@@ -47,7 +47,7 @@
         {
           if (*v24 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(formatted_text2);
           }
 
           v13 = [[_SFPBRFFormattedText alloc] initWithFacade:*(*(&v23 + 1) + 8 * i)];
@@ -57,28 +57,28 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v10 = [formatted_text2 countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v10);
     }
 
     [(_SFPBRFTextElement *)v5 setFormatted_texts:v7];
-    v14 = [v4 line_limit];
+    line_limit = [facadeCopy line_limit];
 
-    if (v14)
+    if (line_limit)
     {
-      v15 = [v4 line_limit];
-      -[_SFPBRFTextElement setLine_limit:](v5, "setLine_limit:", [v15 intValue]);
+      line_limit2 = [facadeCopy line_limit];
+      -[_SFPBRFTextElement setLine_limit:](v5, "setLine_limit:", [line_limit2 intValue]);
     }
 
-    v16 = [v4 show_more_on_tap];
+    show_more_on_tap = [facadeCopy show_more_on_tap];
 
-    if (v16)
+    if (show_more_on_tap)
     {
       v17 = [_SFPBRFShowMoreOnTap alloc];
-      v18 = [v4 show_more_on_tap];
-      v19 = [(_SFPBRFShowMoreOnTap *)v17 initWithFacade:v18];
+      show_more_on_tap2 = [facadeCopy show_more_on_tap];
+      v19 = [(_SFPBRFShowMoreOnTap *)v17 initWithFacade:show_more_on_tap2];
       [(_SFPBRFTextElement *)v5 setShow_more_on_tap:v19];
     }
 
@@ -89,16 +89,16 @@
   return v5;
 }
 
-- (_SFPBRFTextElement)initWithDictionary:(id)a3
+- (_SFPBRFTextElement)initWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = _SFPBRFTextElement;
   v5 = [(_SFPBRFTextElement *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"formattedText"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"formattedText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -142,14 +142,14 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"lineLimit", v21}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"lineLimit", v21}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBRFTextElement setLine_limit:](v5, "setLine_limit:", [v15 intValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"showMoreOnTap"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"showMoreOnTap"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -164,30 +164,30 @@
   return v5;
 }
 
-- (_SFPBRFTextElement)initWithJSON:(id)a3
+- (_SFPBRFTextElement)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFTextElement *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFTextElement *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFTextElement *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -201,10 +201,10 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_formatted_texts count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -224,16 +224,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -243,34 +243,34 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"formattedText"];
+    [dictionary setObject:array forKeyedSubscript:@"formattedText"];
   }
 
   if (self->_line_limit)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithInt:{-[_SFPBRFTextElement line_limit](self, "line_limit")}];
-    [v3 setObject:v12 forKeyedSubscript:@"lineLimit"];
+    [dictionary setObject:v12 forKeyedSubscript:@"lineLimit"];
   }
 
   if (self->_show_more_on_tap)
   {
-    v13 = [(_SFPBRFTextElement *)self show_more_on_tap];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    show_more_on_tap = [(_SFPBRFTextElement *)self show_more_on_tap];
+    dictionaryRepresentation2 = [show_more_on_tap dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"showMoreOnTap"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"showMoreOnTap"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"showMoreOnTap"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"showMoreOnTap"];
     }
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -280,28 +280,28 @@
   return v4 ^ v3 ^ [(_SFPBRFShowMoreOnTap *)self->_show_more_on_tap hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = [(_SFPBRFTextElement *)self formatted_texts];
-  v6 = [v4 formatted_texts];
-  if ((v5 != 0) == (v6 == 0))
+  formatted_texts = [(_SFPBRFTextElement *)self formatted_texts];
+  formatted_texts2 = [equalCopy formatted_texts];
+  if ((formatted_texts != 0) == (formatted_texts2 == 0))
   {
     goto LABEL_12;
   }
 
-  v7 = [(_SFPBRFTextElement *)self formatted_texts];
-  if (v7)
+  formatted_texts3 = [(_SFPBRFTextElement *)self formatted_texts];
+  if (formatted_texts3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRFTextElement *)self formatted_texts];
-    v10 = [v4 formatted_texts];
-    v11 = [v9 isEqual:v10];
+    v8 = formatted_texts3;
+    formatted_texts4 = [(_SFPBRFTextElement *)self formatted_texts];
+    formatted_texts5 = [equalCopy formatted_texts];
+    v11 = [formatted_texts4 isEqual:formatted_texts5];
 
     if (!v11)
     {
@@ -314,22 +314,22 @@
   }
 
   line_limit = self->_line_limit;
-  if (line_limit != [v4 line_limit])
+  if (line_limit != [equalCopy line_limit])
   {
     goto LABEL_13;
   }
 
-  v5 = [(_SFPBRFTextElement *)self show_more_on_tap];
-  v6 = [v4 show_more_on_tap];
-  if ((v5 != 0) == (v6 == 0))
+  formatted_texts = [(_SFPBRFTextElement *)self show_more_on_tap];
+  formatted_texts2 = [equalCopy show_more_on_tap];
+  if ((formatted_texts != 0) == (formatted_texts2 == 0))
   {
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v13 = [(_SFPBRFTextElement *)self show_more_on_tap];
-  if (!v13)
+  show_more_on_tap = [(_SFPBRFTextElement *)self show_more_on_tap];
+  if (!show_more_on_tap)
   {
 
 LABEL_16:
@@ -337,10 +337,10 @@ LABEL_16:
     goto LABEL_14;
   }
 
-  v14 = v13;
-  v15 = [(_SFPBRFTextElement *)self show_more_on_tap];
-  v16 = [v4 show_more_on_tap];
-  v17 = [v15 isEqual:v16];
+  v14 = show_more_on_tap;
+  show_more_on_tap2 = [(_SFPBRFTextElement *)self show_more_on_tap];
+  show_more_on_tap3 = [equalCopy show_more_on_tap];
+  v17 = [show_more_on_tap2 isEqual:show_more_on_tap3];
 
   if (v17)
   {
@@ -354,16 +354,16 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBRFTextElement *)self formatted_texts];
+  toCopy = to;
+  formatted_texts = [(_SFPBRFTextElement *)self formatted_texts];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [formatted_texts countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -375,7 +375,7 @@ LABEL_14:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(formatted_texts);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
@@ -384,7 +384,7 @@ LABEL_14:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [formatted_texts countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -395,8 +395,8 @@ LABEL_14:
     PBDataWriterWriteInt32Field();
   }
 
-  v11 = [(_SFPBRFTextElement *)self show_more_on_tap];
-  if (v11)
+  show_more_on_tap = [(_SFPBRFTextElement *)self show_more_on_tap];
+  if (show_more_on_tap)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -404,27 +404,27 @@ LABEL_14:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addFormatted_text:(id)a3
+- (void)addFormatted_text:(id)formatted_text
 {
-  v4 = a3;
+  formatted_textCopy = formatted_text;
   formatted_texts = self->_formatted_texts;
-  v8 = v4;
+  v8 = formatted_textCopy;
   if (!formatted_texts)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_formatted_texts;
-    self->_formatted_texts = v6;
+    self->_formatted_texts = array;
 
-    v4 = v8;
+    formatted_textCopy = v8;
     formatted_texts = self->_formatted_texts;
   }
 
-  [(NSArray *)formatted_texts addObject:v4];
+  [(NSArray *)formatted_texts addObject:formatted_textCopy];
 }
 
-- (void)setFormatted_text:(id)a3
+- (void)setFormatted_text:(id)formatted_text
 {
-  v4 = [a3 copy];
+  v4 = [formatted_text copy];
   formatted_texts = self->_formatted_texts;
   self->_formatted_texts = v4;
 

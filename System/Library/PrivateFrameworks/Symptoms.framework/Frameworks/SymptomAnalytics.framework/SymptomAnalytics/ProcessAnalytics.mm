@@ -1,8 +1,8 @@
 @interface ProcessAnalytics
 - (ProcessAnalytics)init;
-- (id)processesFromDate:(id)a3 untilDate:(id)a4;
-- (id)processesWithName:(id)a3 nameKind:(id)a4;
-- (id)processesWithNameInSet:(id)a3 nameKind:(id)a4;
+- (id)processesFromDate:(id)date untilDate:(id)untilDate;
+- (id)processesWithName:(id)name nameKind:(id)kind;
+- (id)processesWithNameInSet:(id)set nameKind:(id)kind;
 @end
 
 @implementation ProcessAnalytics
@@ -18,19 +18,19 @@
   return v5;
 }
 
-- (id)processesWithName:(id)a3 nameKind:(id)a4
+- (id)processesWithName:(id)name nameKind:(id)kind
 {
-  v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", a4, a3];
-  v6 = [(ObjectAnalytics *)self fetchEntitiesFreeForm:v5 sortDesc:0];
+  name = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", kind, name];
+  v6 = [(ObjectAnalytics *)self fetchEntitiesFreeForm:name sortDesc:0];
 
   return v6;
 }
 
-- (id)processesWithNameInSet:(id)a3 nameKind:(id)a4
+- (id)processesWithNameInSet:(id)set nameKind:(id)kind
 {
-  if (a3)
+  if (set)
   {
-    v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", a4, a3];
+    v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", kind, set];
   }
 
   else
@@ -43,10 +43,10 @@
   return v6;
 }
 
-- (id)processesFromDate:(id)a3 untilDate:(id)a4
+- (id)processesFromDate:(id)date untilDate:(id)untilDate
 {
-  v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K >= %@ AND %K < %@", @"firstTimeStamp", a3, @"timeStamp", a4];
-  v6 = [(ObjectAnalytics *)self fetchEntitiesFreeForm:v5 sortDesc:0];
+  untilDate = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K >= %@ AND %K < %@", @"firstTimeStamp", date, @"timeStamp", untilDate];
+  v6 = [(ObjectAnalytics *)self fetchEntitiesFreeForm:untilDate sortDesc:0];
 
   return v6;
 }

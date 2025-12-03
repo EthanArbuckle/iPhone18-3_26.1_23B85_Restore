@@ -1,15 +1,15 @@
 @interface ICQCloudStorageDataController
 + (id)_requestQueue;
 - (BOOL)iCloudDetailsPageShown;
-- (ICQCloudStorageDataController)initWithAccount:(id)a3;
+- (ICQCloudStorageDataController)initWithAccount:(id)account;
 - (ICQiCloudDetailsPageInfo)cachediCloudDetailsPage;
 - (id)cachedStorageSummary;
-- (void)fetchAppsSyncingToiCloudDriveWithCompletion:(id)a3;
-- (void)fetchBackupinfoWithCompletion:(id)a3;
-- (void)fetchStorageAppsWithCompletion:(id)a3;
-- (void)fetchStorageByApp:(id)a3 completion:(id)a4;
-- (void)fetchStorageSummaryWithCompletion:(id)a3;
-- (void)sendTipState:(int64_t)a3 forTip:(id)a4 completion:(id)a5;
+- (void)fetchAppsSyncingToiCloudDriveWithCompletion:(id)completion;
+- (void)fetchBackupinfoWithCompletion:(id)completion;
+- (void)fetchStorageAppsWithCompletion:(id)completion;
+- (void)fetchStorageByApp:(id)app completion:(id)completion;
+- (void)fetchStorageSummaryWithCompletion:(id)completion;
+- (void)sendTipState:(int64_t)state forTip:(id)tip completion:(id)completion;
 @end
 
 @implementation ICQCloudStorageDataController
@@ -35,37 +35,37 @@ void __46__ICQCloudStorageDataController__requestQueue__block_invoke()
   _requestQueue_requestQueue_0 = v1;
 }
 
-- (ICQCloudStorageDataController)initWithAccount:(id)a3
+- (ICQCloudStorageDataController)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = ICQCloudStorageDataController;
   v6 = [(ICQCloudStorageDataController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
     v7->_shouldIgnoreCache = 0;
   }
 
   return v7;
 }
 
-- (void)fetchStorageSummaryWithCompletion:(id)a3
+- (void)fetchStorageSummaryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ACAccount *)self->_account aa_altDSID];
-  if (v5)
+  completionCopy = completion;
+  aa_altDSID = [(ACAccount *)self->_account aa_altDSID];
+  if (aa_altDSID)
   {
-    v6 = [objc_opt_class() _requestQueue];
+    _requestQueue = [objc_opt_class() _requestQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __67__ICQCloudStorageDataController_fetchStorageSummaryWithCompletion___block_invoke;
     block[3] = &unk_27A6526D0;
     block[4] = self;
-    v11 = v4;
-    v10 = v5;
-    dispatch_async(v6, block);
+    v11 = completionCopy;
+    v10 = aa_altDSID;
+    dispatch_async(_requestQueue, block);
   }
 
   else
@@ -77,7 +77,7 @@ void __46__ICQCloudStorageDataController__requestQueue__block_invoke()
     }
 
     v8 = ICQCreateError(12);
-    (*(v4 + 2))(v4, 0, v8);
+    (*(completionCopy + 2))(completionCopy, 0, v8);
   }
 }
 
@@ -242,8 +242,8 @@ void __67__ICQCloudStorageDataController_fetchStorageSummaryWithCompletion___blo
 - (id)cachedStorageSummary
 {
   v3 = +[ICQCloudStorageSummaryCache sharedInstance];
-  v4 = [(ACAccount *)self->_account aa_altDSID];
-  v5 = [v3 storageSummaryForAltDSID:v4];
+  aa_altDSID = [(ACAccount *)self->_account aa_altDSID];
+  v5 = [v3 storageSummaryForAltDSID:aa_altDSID];
 
   return v5;
 }
@@ -251,35 +251,35 @@ void __67__ICQCloudStorageDataController_fetchStorageSummaryWithCompletion___blo
 - (ICQiCloudDetailsPageInfo)cachediCloudDetailsPage
 {
   v3 = +[ICQCloudStorageSummaryCache sharedInstance];
-  v4 = [v3 hasDisplayedDetailsPage];
+  hasDisplayedDetailsPage = [v3 hasDisplayedDetailsPage];
 
-  if (v4)
+  if (hasDisplayedDetailsPage)
   {
-    v5 = 0;
+    iCloudDetailsPageInfo = 0;
   }
 
   else
   {
-    v6 = [(ICQCloudStorageDataController *)self cachedStorageSummary];
-    v5 = [v6 iCloudDetailsPageInfo];
+    cachedStorageSummary = [(ICQCloudStorageDataController *)self cachedStorageSummary];
+    iCloudDetailsPageInfo = [cachedStorageSummary iCloudDetailsPageInfo];
   }
 
-  return v5;
+  return iCloudDetailsPageInfo;
 }
 
 - (BOOL)iCloudDetailsPageShown
 {
   v2 = +[ICQCloudStorageSummaryCache sharedInstance];
-  v3 = [v2 hasDisplayedDetailsPage];
+  hasDisplayedDetailsPage = [v2 hasDisplayedDetailsPage];
 
-  return v3;
+  return hasDisplayedDetailsPage;
 }
 
-- (void)fetchStorageAppsWithCompletion:(id)a3
+- (void)fetchStorageAppsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ACAccount *)self->_account aa_altDSID];
-  if (v5)
+  completionCopy = completion;
+  aa_altDSID = [(ACAccount *)self->_account aa_altDSID];
+  if (aa_altDSID)
   {
     v6 = _ICQSignpostLogSystem();
     v7 = objc_opt_new();
@@ -307,7 +307,7 @@ void __67__ICQCloudStorageDataController_fetchStorageSummaryWithCompletion___blo
     v22[3] = &unk_27A651998;
     v24 = v8;
     v25 = v10;
-    v15 = v4;
+    v15 = completionCopy;
     v23 = v15;
     v16 = [v14 daemonWithErrorHandler:v22];
     v18[0] = MEMORY[0x277D85DD0];
@@ -317,7 +317,7 @@ void __67__ICQCloudStorageDataController_fetchStorageSummaryWithCompletion___blo
     v20 = v8;
     v21 = v10;
     v19 = v15;
-    [v16 fetchStorageAppsForAltDSID:v5 completion:v18];
+    [v16 fetchStorageAppsForAltDSID:aa_altDSID completion:v18];
   }
 
   else
@@ -329,7 +329,7 @@ void __67__ICQCloudStorageDataController_fetchStorageSummaryWithCompletion___blo
     }
 
     v14 = ICQCreateError(12);
-    (*(v4 + 2))(v4, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 }
 
@@ -400,27 +400,27 @@ void __64__ICQCloudStorageDataController_fetchStorageAppsWithCompletion___block_
   (*(*(a1 + 4) + 16))();
 }
 
-- (void)fetchStorageByApp:(id)a3 completion:(id)a4
+- (void)fetchStorageByApp:(id)app completion:(id)completion
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACAccount *)self->_account aa_altDSID];
+  appCopy = app;
+  completionCopy = completion;
+  aa_altDSID = [(ACAccount *)self->_account aa_altDSID];
   v9 = _ICQGetLogSystem();
   v10 = v9;
-  if (v8)
+  if (aa_altDSID)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v37 = [(ICQCloudStorageDataController *)self shouldIgnoreCache];
+      shouldIgnoreCache = [(ICQCloudStorageDataController *)self shouldIgnoreCache];
       _os_log_impl(&dword_275572000, v10, OS_LOG_TYPE_DEFAULT, "Should ignore cache: %d", buf, 8u);
     }
 
     if (![(ICQCloudStorageDataController *)self shouldIgnoreCache])
     {
       v11 = +[ICQAppCloudStorageCache sharedInstance];
-      v12 = [v11 cloudStorageByApp:v6 forAltDSID:v8];
+      v12 = [v11 cloudStorageByApp:appCopy forAltDSID:aa_altDSID];
 
       v13 = _ICQGetLogSystem();
       v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
@@ -432,7 +432,7 @@ void __64__ICQCloudStorageDataController_fetchStorageAppsWithCompletion___block_
           _os_log_impl(&dword_275572000, v13, OS_LOG_TYPE_DEFAULT, "Returning cached app cloud storage result.", buf, 2u);
         }
 
-        v7[2](v7, v12, 0);
+        completionCopy[2](completionCopy, v12, 0);
         goto LABEL_21;
       }
 
@@ -469,7 +469,7 @@ void __64__ICQCloudStorageDataController_fetchStorageAppsWithCompletion___block_
     v32[3] = &unk_27A651998;
     v34 = v17;
     v35 = v19;
-    v23 = v7;
+    v23 = completionCopy;
     v33 = v23;
     v24 = [v12 daemonWithErrorHandler:v32];
     v26[0] = MEMORY[0x277D85DD0];
@@ -478,8 +478,8 @@ void __64__ICQCloudStorageDataController_fetchStorageAppsWithCompletion___block_
     v26[3] = &unk_27A652C60;
     v30 = v17;
     v31 = v19;
-    v27 = v6;
-    v28 = v8;
+    v27 = appCopy;
+    v28 = aa_altDSID;
     v29 = v23;
     [v24 fetchStorageByApp:v27 forAltDSID:v28 completion:v26];
   }
@@ -492,7 +492,7 @@ void __64__ICQCloudStorageDataController_fetchStorageAppsWithCompletion___block_
     }
 
     v12 = ICQCreateError(12);
-    (v7)[2](v7, 0, v12);
+    (completionCopy)[2](completionCopy, 0, v12);
   }
 
 LABEL_21:
@@ -578,14 +578,14 @@ void __62__ICQCloudStorageDataController_fetchStorageByApp_completion___block_in
   }
 }
 
-- (void)fetchBackupinfoWithCompletion:(id)a3
+- (void)fetchBackupinfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ACAccount *)self->_account aa_altDSID];
+  completionCopy = completion;
+  aa_altDSID = [(ACAccount *)self->_account aa_altDSID];
 
   v6 = _ICQGetLogSystem();
   v7 = v6;
-  if (v5)
+  if (aa_altDSID)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -617,12 +617,12 @@ void __62__ICQCloudStorageDataController_fetchStorageByApp_completion___block_in
     v24[1] = 3221225472;
     v24[2] = __63__ICQCloudStorageDataController_fetchBackupinfoWithCompletion___block_invoke;
     v24[3] = &unk_27A651998;
-    v17 = v4;
+    v17 = completionCopy;
     v25 = v17;
     v26 = v10;
     v27 = v12;
     v18 = [v16 daemonWithErrorHandler:v24];
-    v19 = [(ACAccount *)self->_account aa_altDSID];
+    aa_altDSID2 = [(ACAccount *)self->_account aa_altDSID];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __63__ICQCloudStorageDataController_fetchBackupinfoWithCompletion___block_invoke_40;
@@ -630,7 +630,7 @@ void __62__ICQCloudStorageDataController_fetchStorageByApp_completion___block_in
     v22 = v10;
     v23 = v12;
     v21 = v17;
-    [v18 fetchBackupInfoForAltDSID:v19 completion:v20];
+    [v18 fetchBackupInfoForAltDSID:aa_altDSID2 completion:v20];
   }
 
   else
@@ -641,7 +641,7 @@ void __62__ICQCloudStorageDataController_fetchStorageByApp_completion___block_in
     }
 
     v16 = ICQCreateError(12);
-    (*(v4 + 2))(v4, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, v16);
   }
 }
 
@@ -714,15 +714,15 @@ void __63__ICQCloudStorageDataController_fetchBackupinfoWithCompletion___block_i
   (*(*(a1 + 4) + 16))();
 }
 
-- (void)sendTipState:(int64_t)a3 forTip:(id)a4 completion:(id)a5
+- (void)sendTipState:(int64_t)state forTip:(id)tip completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ACAccount *)self->_account aa_altDSID];
+  tipCopy = tip;
+  completionCopy = completion;
+  aa_altDSID = [(ACAccount *)self->_account aa_altDSID];
 
   v11 = _ICQGetLogSystem();
   v12 = v11;
-  if (v10)
+  if (aa_altDSID)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -756,7 +756,7 @@ void __63__ICQCloudStorageDataController_fetchBackupinfoWithCompletion___block_i
     v33[3] = &unk_27A651998;
     v35 = v15;
     v36 = v17;
-    v22 = v9;
+    v22 = completionCopy;
     v34 = v22;
     v23 = [v21 daemonWithErrorHandler:v33];
     v26 = MEMORY[0x277D85DD0];
@@ -767,15 +767,15 @@ void __63__ICQCloudStorageDataController_fetchBackupinfoWithCompletion___block_i
     v32 = v17;
     v30 = v22;
     v24 = _Block_copy(&v26);
-    if (a3 == 1)
+    if (state == 1)
     {
       v25 = [(ACAccount *)self->_account aa_altDSID:v26];
-      [v23 sendTipDismissedNetworkRequestForAltDSID:v25 tip:v8 completion:v24];
+      [v23 sendTipDismissedNetworkRequestForAltDSID:v25 tip:tipCopy completion:v24];
     }
 
     else
     {
-      if (a3)
+      if (state)
       {
 LABEL_17:
 
@@ -783,7 +783,7 @@ LABEL_17:
       }
 
       v25 = [(ACAccount *)self->_account aa_altDSID:v26];
-      [v23 sendTipDisplayedNetworkRequestForAltDSID:v25 tip:v8 completion:v24];
+      [v23 sendTipDisplayedNetworkRequestForAltDSID:v25 tip:tipCopy completion:v24];
     }
 
     goto LABEL_17;
@@ -795,7 +795,7 @@ LABEL_17:
   }
 
   v21 = ICQCreateError(12);
-  (*(v9 + 2))(v9, v21);
+  (*(completionCopy + 2))(completionCopy, v21);
 LABEL_18:
 }
 
@@ -858,21 +858,21 @@ void __64__ICQCloudStorageDataController_sendTipState_forTip_completion___block_
   (*(*(a1 + 4) + 16))();
 }
 
-- (void)fetchAppsSyncingToiCloudDriveWithCompletion:(id)a3
+- (void)fetchAppsSyncingToiCloudDriveWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ACAccount *)self->_account aa_altDSID];
-  if (v5)
+  completionCopy = completion;
+  aa_altDSID = [(ACAccount *)self->_account aa_altDSID];
+  if (aa_altDSID)
   {
-    v6 = [objc_opt_class() _requestQueue];
+    _requestQueue = [objc_opt_class() _requestQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __77__ICQCloudStorageDataController_fetchAppsSyncingToiCloudDriveWithCompletion___block_invoke;
     block[3] = &unk_27A652458;
     block[4] = self;
-    v10 = v5;
-    v11 = v4;
-    dispatch_async(v6, block);
+    v10 = aa_altDSID;
+    v11 = completionCopy;
+    dispatch_async(_requestQueue, block);
   }
 
   else
@@ -884,7 +884,7 @@ void __64__ICQCloudStorageDataController_sendTipState_forTip_completion___block_
     }
 
     v8 = ICQCreateError(12);
-    (*(v4 + 2))(v4, 0, v8);
+    (*(completionCopy + 2))(completionCopy, 0, v8);
   }
 }
 

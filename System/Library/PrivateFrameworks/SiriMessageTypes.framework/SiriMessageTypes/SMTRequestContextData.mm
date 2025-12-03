@@ -1,23 +1,23 @@
 @interface SMTRequestContextData
-- (SMTRequestContextData)initWithBuilder:(id)a3;
-- (id)_sanitizeVoiceTriggerEventInfo:(id)a3;
+- (SMTRequestContextData)initWithBuilder:(id)builder;
+- (id)_sanitizeVoiceTriggerEventInfo:(id)info;
 @end
 
 @implementation SMTRequestContextData
 
-- (id)_sanitizeVoiceTriggerEventInfo:(id)a3
+- (id)_sanitizeVoiceTriggerEventInfo:(id)info
 {
-  v3 = a3;
-  if (v3)
+  infoCopy = info;
+  if (infoCopy)
   {
-    v4 = v3;
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    v4 = infoCopy;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __56__SMTRequestContextData__sanitizeVoiceTriggerEventInfo___block_invoke;
     v9[3] = &unk_2784D5BF0;
-    v10 = v5;
-    v6 = v5;
+    v10 = dictionary;
+    v6 = dictionary;
     [v4 enumerateKeysAndObjectsUsingBlock:v9];
     v7 = [v6 copy];
   }
@@ -50,29 +50,29 @@ void __56__SMTRequestContextData__sanitizeVoiceTriggerEventInfo___block_invoke(u
   }
 }
 
-- (SMTRequestContextData)initWithBuilder:(id)a3
+- (SMTRequestContextData)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v36.receiver = self;
   v36.super_class = SMTRequestContextData;
   v5 = [(SMTRequestContextData *)&v36 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = objc_alloc_init(SMTRequestContextDataMutating);
-    v4[2](v4, v7);
-    v8 = [(SMTRequestContextDataMutating *)v7 audioSource];
-    v9 = [v8 copy];
+    builderCopy[2](builderCopy, v7);
+    audioSource = [(SMTRequestContextDataMutating *)v7 audioSource];
+    v9 = [audioSource copy];
     audioSource = v6->_audioSource;
     v6->_audioSource = v9;
 
-    v11 = [(SMTRequestContextDataMutating *)v7 audioDestination];
-    v12 = [v11 copy];
+    audioDestination = [(SMTRequestContextDataMutating *)v7 audioDestination];
+    v12 = [audioDestination copy];
     audioDestination = v6->_audioDestination;
     v6->_audioDestination = v12;
 
-    v14 = [(SMTRequestContextDataMutating *)v7 responseMode];
-    v15 = [v14 copy];
+    responseMode = [(SMTRequestContextDataMutating *)v7 responseMode];
+    v15 = [responseMode copy];
     responseMode = v6->_responseMode;
     v6->_responseMode = v15;
 
@@ -80,23 +80,23 @@ void __56__SMTRequestContextData__sanitizeVoiceTriggerEventInfo___block_invoke(u
     v6->_isVoiceTriggerEnabled = [(SMTRequestContextDataMutating *)v7 isVoiceTriggerEnabled];
     v6->_isTextToSpeechEnabled = [(SMTRequestContextDataMutating *)v7 isTextToSpeechEnabled];
     v6->_isTriggerlessFollowup = [(SMTRequestContextDataMutating *)v7 isTriggerlessFollowup];
-    v17 = [(SMTRequestContextDataMutating *)v7 bargeInModes];
-    v18 = [v17 copy];
+    bargeInModes = [(SMTRequestContextDataMutating *)v7 bargeInModes];
+    v18 = [bargeInModes copy];
     bargeInModes = v6->_bargeInModes;
     v6->_bargeInModes = v18;
 
-    v20 = [(SMTRequestContextDataMutating *)v7 approximatePreviousTTSInterval];
-    v21 = [v20 copy];
+    approximatePreviousTTSInterval = [(SMTRequestContextDataMutating *)v7 approximatePreviousTTSInterval];
+    v21 = [approximatePreviousTTSInterval copy];
     approximatePreviousTTSInterval = v6->_approximatePreviousTTSInterval;
     v6->_approximatePreviousTTSInterval = v21;
 
-    v23 = [(SMTRequestContextDataMutating *)v7 deviceRestrictions];
-    v24 = [v23 copy];
+    deviceRestrictions = [(SMTRequestContextDataMutating *)v7 deviceRestrictions];
+    v24 = [deviceRestrictions copy];
     deviceRestrictions = v6->_deviceRestrictions;
     v6->_deviceRestrictions = v24;
 
-    v26 = [(SMTRequestContextDataMutating *)v7 voiceTriggerEventInfo];
-    v27 = [(SMTRequestContextData *)v6 _sanitizeVoiceTriggerEventInfo:v26];
+    voiceTriggerEventInfo = [(SMTRequestContextDataMutating *)v7 voiceTriggerEventInfo];
+    v27 = [(SMTRequestContextData *)v6 _sanitizeVoiceTriggerEventInfo:voiceTriggerEventInfo];
     voiceTriggerEventInfo = v6->_voiceTriggerEventInfo;
     v6->_voiceTriggerEventInfo = v27;
 
@@ -106,15 +106,15 @@ void __56__SMTRequestContextData__sanitizeVoiceTriggerEventInfo___block_invoke(u
     v6->_isLiveActivitiesSupported = [(SMTRequestContextDataMutating *)v7 isLiveActivitiesSupported];
     v6->_isDeviceShowingLockScreen = [(SMTRequestContextDataMutating *)v7 isDeviceShowingLockScreen];
     v6->_isDeviceLocked = [(SMTRequestContextDataMutating *)v7 isDeviceLocked];
-    v29 = [(SMTRequestContextDataMutating *)v7 userProfileMetadata];
-    v30 = [v29 copy];
+    userProfileMetadata = [(SMTRequestContextDataMutating *)v7 userProfileMetadata];
+    v30 = [userProfileMetadata copy];
     userProfileMetadata = v6->_userProfileMetadata;
     v6->_userProfileMetadata = v30;
 
     v6->_activationTime = [(SMTRequestContextDataMutating *)v7 activationTime];
     v6->_suggestionRequestType = [(SMTRequestContextDataMutating *)v7 suggestionRequestType];
-    v32 = [(SMTRequestContextDataMutating *)v7 location];
-    v33 = [v32 copy];
+    location = [(SMTRequestContextDataMutating *)v7 location];
+    v33 = [location copy];
     location = v6->_location;
     v6->_location = v33;
   }

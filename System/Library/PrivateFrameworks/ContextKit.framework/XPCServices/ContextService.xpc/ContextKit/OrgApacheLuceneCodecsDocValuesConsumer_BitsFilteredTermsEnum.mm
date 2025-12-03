@@ -1,19 +1,19 @@
 @interface OrgApacheLuceneCodecsDocValuesConsumer_BitsFilteredTermsEnum
-- (OrgApacheLuceneCodecsDocValuesConsumer_BitsFilteredTermsEnum)initWithOrgApacheLuceneIndexTermsEnum:(id)a3 withOrgApacheLuceneUtilLongBitSet:(id)a4;
-- (id)acceptWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (OrgApacheLuceneCodecsDocValuesConsumer_BitsFilteredTermsEnum)initWithOrgApacheLuceneIndexTermsEnum:(id)enum withOrgApacheLuceneUtilLongBitSet:(id)set;
+- (id)acceptWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneCodecsDocValuesConsumer_BitsFilteredTermsEnum
 
-- (OrgApacheLuceneCodecsDocValuesConsumer_BitsFilteredTermsEnum)initWithOrgApacheLuceneIndexTermsEnum:(id)a3 withOrgApacheLuceneUtilLongBitSet:(id)a4
+- (OrgApacheLuceneCodecsDocValuesConsumer_BitsFilteredTermsEnum)initWithOrgApacheLuceneIndexTermsEnum:(id)enum withOrgApacheLuceneUtilLongBitSet:(id)set
 {
-  OrgApacheLuceneIndexFilteredTermsEnum_initWithOrgApacheLuceneIndexTermsEnum_withBoolean_(self, a3, 0);
-  JreStrongAssign((&self->super.doSeek_ + 1), a4);
+  OrgApacheLuceneIndexFilteredTermsEnum_initWithOrgApacheLuceneIndexTermsEnum_withBoolean_(self, enum, 0);
+  JreStrongAssign((&self->super.doSeek_ + 1), set);
   return self;
 }
 
-- (id)acceptWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (id)acceptWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   v3 = *(&self->super.doSeek_ + 1);
   if (!v3)
@@ -21,7 +21,7 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [v3 getWithLong:{-[OrgApacheLuceneIndexFilteredTermsEnum ord](self, "ord", a3)}];
+  v4 = [v3 getWithLong:{-[OrgApacheLuceneIndexFilteredTermsEnum ord](self, "ord", ref)}];
   if ((atomic_load_explicit(OrgApacheLuceneIndexFilteredTermsEnum_AcceptStatusEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1000169CC();

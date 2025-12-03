@@ -1,14 +1,14 @@
 @interface AMSDKeychainService
-+ (BOOL)isConnectionEntitled:(id)a3;
-- (void)getPublicKeyHeaderWithAccount:(id)a3 options:(id)a4 signatureResult:(id)a5 completion:(id)a6;
-- (void)testKeychainWithCompletion:(id)a3;
++ (BOOL)isConnectionEntitled:(id)entitled;
+- (void)getPublicKeyHeaderWithAccount:(id)account options:(id)options signatureResult:(id)result completion:(id)completion;
+- (void)testKeychainWithCompletion:(id)completion;
 @end
 
 @implementation AMSDKeychainService
 
-+ (BOOL)isConnectionEntitled:(id)a3
++ (BOOL)isConnectionEntitled:(id)entitled
 {
-  v3 = [a3 valueForEntitlement:@"com.apple.private.applemediaservices"];
+  v3 = [entitled valueForEntitlement:@"com.apple.private.applemediaservices"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -20,20 +20,20 @@
     v4 = 0;
   }
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
-- (void)getPublicKeyHeaderWithAccount:(id)a3 options:(id)a4 signatureResult:(id)a5 completion:(id)a6
+- (void)getPublicKeyHeaderWithAccount:(id)account options:(id)options signatureResult:(id)result completion:(id)completion
 {
-  v8 = a3;
-  v9 = a6;
-  v10 = a4;
-  if (([AMSCertificateManager shouldUseAccountSpecificCertificatesForAccount:v8]& 1) != 0)
+  accountCopy = account;
+  completionCopy = completion;
+  optionsCopy = options;
+  if (([AMSCertificateManager shouldUseAccountSpecificCertificatesForAccount:accountCopy]& 1) != 0)
   {
-    v11 = [v10 purpose];
+    purpose = [optionsCopy purpose];
 
-    v12 = [AMSCertificateManager publicKeyForAccount:v8 forSignaturePurpose:v11];
+    v12 = [AMSCertificateManager publicKeyForAccount:accountCopy forSignaturePurpose:purpose];
     v13 = 0;
     if (!v12)
     {
@@ -47,7 +47,7 @@
   }
 
   v23 = 0;
-  v14 = [AMSKeychain copyPublicKeyForAccount:v8 options:v10 error:&v23];
+  v14 = [AMSKeychain copyPublicKeyForAccount:accountCopy options:optionsCopy error:&v23];
 
   v15 = v23;
   v13 = v15;
@@ -93,18 +93,18 @@ LABEL_13:
   }
 
 LABEL_15:
-  if (v9)
+  if (completionCopy)
   {
-    v21 = [v17 ams_sanitizedForSecureCoding];
-    v9[2](v9, v20, v21);
+    ams_sanitizedForSecureCoding = [v17 ams_sanitizedForSecureCoding];
+    completionCopy[2](completionCopy, v20, ams_sanitizedForSecureCoding);
   }
 }
 
-- (void)testKeychainWithCompletion:(id)a3
+- (void)testKeychainWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, &off_1002C6708, 0);
+    (*(completion + 2))(completion, &off_1002C6708, 0);
   }
 }
 

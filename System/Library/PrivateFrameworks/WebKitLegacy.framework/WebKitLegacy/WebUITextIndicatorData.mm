@@ -2,8 +2,8 @@
 - (CGRect)contentImageWithoutSelectionRectInRootViewCoordinates;
 - (CGRect)selectionRectInRootViewCoordinates;
 - (CGRect)textBoundingRectInRootViewCoordinates;
-- (WebUITextIndicatorData)initWithImage:(CGImage *)a3 scale:(double)a4;
-- (WebUITextIndicatorData)initWithImage:(CGImage *)a3 textIndicatorData:(const void *)a4 scale:(double)a5;
+- (WebUITextIndicatorData)initWithImage:(CGImage *)image scale:(double)scale;
+- (WebUITextIndicatorData)initWithImage:(CGImage *)image textIndicatorData:(const void *)data scale:(double)scale;
 - (void)dealloc;
 @end
 
@@ -55,7 +55,7 @@
   return result;
 }
 
-- (WebUITextIndicatorData)initWithImage:(CGImage *)a3 textIndicatorData:(const void *)a4 scale:(double)a5
+- (WebUITextIndicatorData)initWithImage:(CGImage *)image textIndicatorData:(const void *)data scale:(double)scale
 {
   v50.receiver = self;
   v50.super_class = WebUITextIndicatorData;
@@ -66,7 +66,7 @@
   }
 
   v9 = MEMORY[0x1E69E2238];
-  v8->_dataInteractionImage = [objc_alloc((*MEMORY[0x1E69E2238])()) initWithCGImage:a3 scale:5 orientation:a5];
+  v8->_dataInteractionImage = [objc_alloc((*MEMORY[0x1E69E2238])()) initWithCGImage:image scale:5 orientation:scale];
   WebCore::FloatRect::operator CGRect();
   v8->_selectionRectInRootViewCoordinates.origin.x = v10;
   v8->_selectionRectInRootViewCoordinates.origin.y = v11;
@@ -77,12 +77,12 @@
   v8->_textBoundingRectInRootViewCoordinates.origin.y = v15;
   v8->_textBoundingRectInRootViewCoordinates.size.width = v16;
   v8->_textBoundingRectInRootViewCoordinates.size.height = v17;
-  NSArrayElement = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:*(a4 + 15)];
+  NSArrayElement = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:*(data + 15)];
   v20 = NSArrayElement;
-  v21 = *(a4 + 15);
+  v21 = *(data + 15);
   if (v21)
   {
-    v22 = *(a4 + 6);
+    v22 = *(data + 6);
     v23 = 16 * v21;
     do
     {
@@ -100,8 +100,8 @@
   }
 
   v8->_textRectsInBoundingRectCoordinates = v20;
-  v8->_contentImageScaleFactor = *(a4 + 16);
-  if (*(a4 + 9) && (v24 = objc_alloc((*v9)()), v25 = *(a4 + 9), v26 = WebCore::DestinationColorSpace::SRGB(v24), (*(*v25 + 304))(&v49, v25, v26), v8->_contentImageWithHighlight = [(WebCore::DestinationColorSpace *)v24 initWithCGImage:*WebCore::NativeImage::platformImage(v49) scale:5 orientation:a5], NSArrayElement = v49, v49 = 0, NSArrayElement))
+  v8->_contentImageScaleFactor = *(data + 16);
+  if (*(data + 9) && (v24 = objc_alloc((*v9)()), v25 = *(data + 9), v26 = WebCore::DestinationColorSpace::SRGB(v24), (*(*v25 + 304))(&v49, v25, v26), v8->_contentImageWithHighlight = [(WebCore::DestinationColorSpace *)v24 initWithCGImage:*WebCore::NativeImage::platformImage(v49) scale:5 orientation:scale], NSArrayElement = v49, v49 = 0, NSArrayElement))
   {
     while (1)
     {
@@ -125,7 +125,7 @@
     }
 
     NSArrayElement = WTF::ThreadSafeWeakPtrControlBlock::strongDeref<WebCore::RenderingResource,(WTF::DestructionThread)0>(NSArrayElement[1], v27);
-    if (!*(a4 + 11))
+    if (!*(data + 11))
     {
       goto LABEL_21;
     }
@@ -134,17 +134,17 @@
   else
   {
 LABEL_13:
-    if (!*(a4 + 11))
+    if (!*(data + 11))
     {
       goto LABEL_21;
     }
   }
 
   v30 = objc_alloc((*v9)());
-  v31 = *(a4 + 11);
+  v31 = *(data + 11);
   v32 = WebCore::DestinationColorSpace::SRGB(v30);
   (*(*v31 + 304))(&v49, v31, v32);
-  v8->_contentImage = [(WebCore::DestinationColorSpace *)v30 initWithCGImage:*WebCore::NativeImage::platformImage(v49) scale:0 orientation:a5];
+  v8->_contentImage = [(WebCore::DestinationColorSpace *)v30 initWithCGImage:*WebCore::NativeImage::platformImage(v49) scale:0 orientation:scale];
   NSArrayElement = v49;
   v49 = 0;
   if (NSArrayElement)
@@ -171,7 +171,7 @@ LABEL_13:
     }
 
     NSArrayElement = WTF::ThreadSafeWeakPtrControlBlock::strongDeref<WebCore::RenderingResource,(WTF::DestructionThread)0>(NSArrayElement[1], v33);
-    v36 = *(a4 + 10);
+    v36 = *(data + 10);
     if (!v36)
     {
       goto LABEL_31;
@@ -181,7 +181,7 @@ LABEL_13:
   }
 
 LABEL_21:
-  v36 = *(a4 + 10);
+  v36 = *(data + 10);
   if (v36)
   {
 LABEL_24:
@@ -190,7 +190,7 @@ LABEL_24:
     if (v49)
     {
       v39 = objc_alloc((*v9)(v38));
-      v8->_contentImageWithoutSelection = [v39 initWithCGImage:*WebCore::NativeImage::platformImage(v49) scale:0 orientation:a5];
+      v8->_contentImageWithoutSelection = [v39 initWithCGImage:*WebCore::NativeImage::platformImage(v49) scale:0 orientation:scale];
       WebCore::FloatRect::operator CGRect();
       v8->_contentImageWithoutSelectionRectInRootViewCoordinates.origin.x = v41;
       v8->_contentImageWithoutSelectionRectInRootViewCoordinates.origin.y = v42;
@@ -223,7 +223,7 @@ LABEL_24:
   }
 
 LABEL_31:
-  if ((*(a4 + 53) & 0x800) != 0)
+  if ((*(data + 53) & 0x800) != 0)
   {
     WebCore::cocoaColor();
     v8->_estimatedBackgroundColor = v49;
@@ -232,7 +232,7 @@ LABEL_31:
   return v8;
 }
 
-- (WebUITextIndicatorData)initWithImage:(CGImage *)a3 scale:(double)a4
+- (WebUITextIndicatorData)initWithImage:(CGImage *)image scale:(double)scale
 {
   v9.receiver = self;
   v9.super_class = WebUITextIndicatorData;
@@ -240,7 +240,7 @@ LABEL_31:
   if (result)
   {
     v7 = result;
-    v8 = [objc_alloc((*MEMORY[0x1E69E2238])()) initWithCGImage:a3 scale:5 orientation:a4];
+    v8 = [objc_alloc((*MEMORY[0x1E69E2238])()) initWithCGImage:image scale:5 orientation:scale];
     result = v7;
     v7->_dataInteractionImage = v8;
   }

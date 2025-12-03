@@ -1,19 +1,19 @@
 @interface ACUIAccountViewProvidersManager
 + (ACUIAccountViewProvidersManager)sharedInstance;
 - (ACUIAccountViewProvidersManager)init;
-- (BOOL)setDelegate:(id)a3 forSignInController:(id)a4 forAccountWithType:(id)a5;
-- (Class)controllerClassForCreatingAccountWithType:(id)a3;
-- (Class)controllerClassForCreatingRemoteAccountWithType:(id)a3;
-- (Class)viewControllerClassForCreatingAccountWithType:(id)a3;
-- (Class)viewControllerClassForViewingAccount:(id)a3;
-- (Class)viewControllerClassForViewingAccount:(id)a3 specifier:(id)a4 presentingVC:(id)a5;
-- (id)_accountViewProviderPluginForAccountTypeID:(id)a3;
-- (id)_cachedPluginForName:(id)a3;
-- (id)_loadAccountViewProviderPluginWithName:(id)a3;
-- (id)_remoteAccountViewProviderPluginForAccountTypeID:(id)a3;
-- (id)configurationInfoForCreatingAccountWithType:(id)a3;
-- (id)configurationInfoForViewingAccount:(id)a3;
-- (id)localizedStringForDataclass:(id)a3 withSuffix:(id)a4 forAccount:(id)a5;
+- (BOOL)setDelegate:(id)delegate forSignInController:(id)controller forAccountWithType:(id)type;
+- (Class)controllerClassForCreatingAccountWithType:(id)type;
+- (Class)controllerClassForCreatingRemoteAccountWithType:(id)type;
+- (Class)viewControllerClassForCreatingAccountWithType:(id)type;
+- (Class)viewControllerClassForViewingAccount:(id)account;
+- (Class)viewControllerClassForViewingAccount:(id)account specifier:(id)specifier presentingVC:(id)c;
+- (id)_accountViewProviderPluginForAccountTypeID:(id)d;
+- (id)_cachedPluginForName:(id)name;
+- (id)_loadAccountViewProviderPluginWithName:(id)name;
+- (id)_remoteAccountViewProviderPluginForAccountTypeID:(id)d;
+- (id)configurationInfoForCreatingAccountWithType:(id)type;
+- (id)configurationInfoForViewingAccount:(id)account;
+- (id)localizedStringForDataclass:(id)dataclass withSuffix:(id)suffix forAccount:(id)account;
 @end
 
 @implementation ACUIAccountViewProvidersManager
@@ -97,13 +97,13 @@
   return v9;
 }
 
-- (Class)viewControllerClassForCreatingAccountWithType:(id)a3
+- (Class)viewControllerClassForCreatingAccountWithType:(id)type
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(ACUIAccountViewProvidersManager *)v7 _accountViewProviderPluginForAccountTypeID:location[0]];
+  objc_storeStrong(location, type);
+  v5 = [(ACUIAccountViewProvidersManager *)selfCopy _accountViewProviderPluginForAccountTypeID:location[0]];
   v4 = [v5 viewControllerClassForCreatingAccountWithType:location[0]];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
@@ -111,18 +111,18 @@
   return v4;
 }
 
-- (Class)viewControllerClassForViewingAccount:(id)a3
+- (Class)viewControllerClassForViewingAccount:(id)account
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = v10;
-  v6 = [location[0] accountType];
-  v5 = [v6 identifier];
+  objc_storeStrong(location, account);
+  v4 = selfCopy;
+  accountType = [location[0] accountType];
+  identifier = [accountType identifier];
   v8 = [(ACUIAccountViewProvidersManager *)v4 _accountViewProviderPluginForAccountTypeID:?];
-  MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](identifier);
+  MEMORY[0x277D82BD8](accountType);
   v7 = [v8 viewControllerClassForViewingAccount:location[0]];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
@@ -130,22 +130,22 @@
   return v7;
 }
 
-- (Class)viewControllerClassForViewingAccount:(id)a3 specifier:(id)a4 presentingVC:(id)a5
+- (Class)viewControllerClassForViewingAccount:(id)account specifier:(id)specifier presentingVC:(id)c
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, specifier);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
-  v9 = v16;
-  v11 = [location[0] accountType];
-  v10 = [v11 identifier];
+  objc_storeStrong(&v13, c);
+  v9 = selfCopy;
+  accountType = [location[0] accountType];
+  identifier = [accountType identifier];
   v12 = [(ACUIAccountViewProvidersManager *)v9 _accountViewProviderPluginForAccountTypeID:?];
-  MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
+  MEMORY[0x277D82BD8](identifier);
+  MEMORY[0x277D82BD8](accountType);
   if (objc_opt_respondsToSelector())
   {
     v17 = [v12 viewControllerClassForViewingAccount:location[0] specifier:v14 presentingVC:v13];
@@ -165,13 +165,13 @@
   return v5;
 }
 
-- (Class)controllerClassForCreatingAccountWithType:(id)a3
+- (Class)controllerClassForCreatingAccountWithType:(id)type
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(ACUIAccountViewProvidersManager *)v8 _accountViewProviderPluginForAccountTypeID:location[0]];
+  objc_storeStrong(location, type);
+  v6 = [(ACUIAccountViewProvidersManager *)selfCopy _accountViewProviderPluginForAccountTypeID:location[0]];
   v5 = 0;
   if (objc_opt_respondsToSelector())
   {
@@ -185,13 +185,13 @@
   return v4;
 }
 
-- (Class)controllerClassForCreatingRemoteAccountWithType:(id)a3
+- (Class)controllerClassForCreatingRemoteAccountWithType:(id)type
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(ACUIAccountViewProvidersManager *)v8 _remoteAccountViewProviderPluginForAccountTypeID:location[0]];
+  objc_storeStrong(location, type);
+  v6 = [(ACUIAccountViewProvidersManager *)selfCopy _remoteAccountViewProviderPluginForAccountTypeID:location[0]];
   v5 = 0;
   if (objc_opt_respondsToSelector())
   {
@@ -205,13 +205,13 @@
   return v4;
 }
 
-- (id)configurationInfoForCreatingAccountWithType:(id)a3
+- (id)configurationInfoForCreatingAccountWithType:(id)type
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(ACUIAccountViewProvidersManager *)v7 _accountViewProviderPluginForAccountTypeID:location[0]];
+  objc_storeStrong(location, type);
+  v5 = [(ACUIAccountViewProvidersManager *)selfCopy _accountViewProviderPluginForAccountTypeID:location[0]];
   v4 = [v5 configurationInfoForCreatingAccountWithType:location[0]];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
@@ -219,18 +219,18 @@
   return v4;
 }
 
-- (id)configurationInfoForViewingAccount:(id)a3
+- (id)configurationInfoForViewingAccount:(id)account
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = v10;
-  v6 = [location[0] accountType];
-  v5 = [v6 identifier];
+  objc_storeStrong(location, account);
+  v4 = selfCopy;
+  accountType = [location[0] accountType];
+  identifier = [accountType identifier];
   v8 = [(ACUIAccountViewProvidersManager *)v4 _accountViewProviderPluginForAccountTypeID:?];
-  MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](identifier);
+  MEMORY[0x277D82BD8](accountType);
   v7 = [v8 configurationInfoForViewingAccount:location[0]];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
@@ -238,23 +238,23 @@
   return v7;
 }
 
-- (id)localizedStringForDataclass:(id)a3 withSuffix:(id)a4 forAccount:(id)a5
+- (id)localizedStringForDataclass:(id)dataclass withSuffix:(id)suffix forAccount:(id)account
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dataclass);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, suffix);
   v16 = 0;
-  objc_storeStrong(&v16, a5);
+  objc_storeStrong(&v16, account);
   v15 = 0;
-  v11 = v19;
-  v13 = [v16 accountType];
-  v12 = [v13 identifier];
+  v11 = selfCopy;
+  accountType = [v16 accountType];
+  identifier = [accountType identifier];
   v14 = [(ACUIAccountViewProvidersManager *)v11 _accountViewProviderPluginForAccountTypeID:?];
-  MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
+  MEMORY[0x277D82BD8](identifier);
+  MEMORY[0x277D82BD8](accountType);
   if (objc_opt_respondsToSelector())
   {
     v5 = [v14 localizedStringForDataclass:location[0] withSuffix:v17 forAccount:v16];
@@ -273,17 +273,17 @@
   return v8;
 }
 
-- (id)_accountViewProviderPluginForAccountTypeID:(id)a3
+- (id)_accountViewProviderPluginForAccountTypeID:(id)d
 {
   v11 = *MEMORY[0x277D85DE8];
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(NSDictionary *)v8->_accountTypeToPluginNameMap objectForKey:location[0]];
+  objc_storeStrong(location, d);
+  v6 = [(NSDictionary *)selfCopy->_accountTypeToPluginNameMap objectForKey:location[0]];
   if (v6)
   {
-    v9 = [(ACUIAccountViewProvidersManager *)v8 _cachedPluginForName:v6];
+    v9 = [(ACUIAccountViewProvidersManager *)selfCopy _cachedPluginForName:v6];
   }
 
   else
@@ -307,14 +307,14 @@
   return v3;
 }
 
-- (id)_remoteAccountViewProviderPluginForAccountTypeID:(id)a3
+- (id)_remoteAccountViewProviderPluginForAccountTypeID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(NSDictionary *)v12->_remoteAccountTypeToPluginNameMapOverride objectForKey:location[0]];
+  objc_storeStrong(location, d);
+  v6 = [(NSDictionary *)selfCopy->_remoteAccountTypeToPluginNameMapOverride objectForKey:location[0]];
   v8 = 0;
   if (v6)
   {
@@ -323,7 +323,7 @@
 
   else
   {
-    v9 = [(NSDictionary *)v12->_accountTypeToPluginNameMap objectForKey:location[0]];
+    v9 = [(NSDictionary *)selfCopy->_accountTypeToPluginNameMap objectForKey:location[0]];
     v8 = 1;
     v3 = MEMORY[0x277D82BE0](v9);
   }
@@ -337,7 +337,7 @@
   MEMORY[0x277D82BD8](v6);
   if (v10)
   {
-    v13 = [(ACUIAccountViewProvidersManager *)v12 _cachedPluginForName:v10];
+    v13 = [(ACUIAccountViewProvidersManager *)selfCopy _cachedPluginForName:v10];
   }
 
   else
@@ -361,20 +361,20 @@
   return v4;
 }
 
-- (id)_cachedPluginForName:(id)a3
+- (id)_cachedPluginForName:(id)name
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(NSMutableDictionary *)v7->_pluginCache objectForKey:location[0]];
+  objc_storeStrong(location, name);
+  v5 = [(NSMutableDictionary *)selfCopy->_pluginCache objectForKey:location[0]];
   if (!v5)
   {
-    v5 = [(ACUIAccountViewProvidersManager *)v7 _loadAccountViewProviderPluginWithName:location[0]];
+    v5 = [(ACUIAccountViewProvidersManager *)selfCopy _loadAccountViewProviderPluginWithName:location[0]];
     MEMORY[0x277D82BD8](0);
     if (v5)
     {
-      [(NSMutableDictionary *)v7->_pluginCache setObject:v5 forKey:location[0]];
+      [(NSMutableDictionary *)selfCopy->_pluginCache setObject:v5 forKey:location[0]];
     }
   }
 
@@ -385,32 +385,32 @@
   return v4;
 }
 
-- (id)_loadAccountViewProviderPluginWithName:(id)a3
+- (id)_loadAccountViewProviderPluginWithName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v15 = [ACUIPluginLoader pluginBundleWithName:location[0]];
   if (v15)
   {
     v11 = 0;
-    v10 = [v15 principalClass];
-    if ([(objc_class *)v10 conformsToProtocol:&unk_285035A00]== 1)
+    principalClass = [v15 principalClass];
+    if ([(objc_class *)principalClass conformsToProtocol:&unk_285035A00]== 1)
     {
-      v3 = objc_alloc_init(v10);
+      v3 = objc_alloc_init(principalClass);
       v4 = v11;
       v11 = v3;
       MEMORY[0x277D82BD8](v4);
     }
 
-    else if ([(objc_class *)v10 conformsToProtocol:&unk_2850359A0]== 1)
+    else if ([(objc_class *)principalClass conformsToProtocol:&unk_2850359A0]== 1)
     {
-      v9 = objc_alloc_init(v10);
-      v5 = [v9 accountViewsProvider];
+      v9 = objc_alloc_init(principalClass);
+      accountViewsProvider = [v9 accountViewsProvider];
       v6 = v11;
-      v11 = v5;
+      v11 = accountViewsProvider;
       MEMORY[0x277D82BD8](v6);
       objc_storeStrong(&v9, 0);
     }
@@ -443,17 +443,17 @@
   return v7;
 }
 
-- (BOOL)setDelegate:(id)a3 forSignInController:(id)a4 forAccountWithType:(id)a5
+- (BOOL)setDelegate:(id)delegate forSignInController:(id)controller forAccountWithType:(id)type
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, delegate);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, controller);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
-  v9 = [(ACUIAccountViewProvidersManager *)v13 _accountViewProviderPluginForAccountTypeID:v10];
+  objc_storeStrong(&v10, type);
+  v9 = [(ACUIAccountViewProvidersManager *)selfCopy _accountViewProviderPluginForAccountTypeID:v10];
   v8 = [v9 setDelegate:location[0] forSignInController:v11];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);

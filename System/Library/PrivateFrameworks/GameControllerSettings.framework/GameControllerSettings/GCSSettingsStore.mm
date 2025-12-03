@@ -1,16 +1,16 @@
 @interface GCSSettingsStore
-- (BOOL)savedDataMeetsRequiredVersion:(id)a3;
-- (GCSSettingsStore)initWithUserDefaults:(id)a3;
-- (id)profileForPersistentControllerIdentifier:(id)a3 appBundleIdentifier:(id)a4;
+- (BOOL)savedDataMeetsRequiredVersion:(id)version;
+- (GCSSettingsStore)initWithUserDefaults:(id)defaults;
+- (id)profileForPersistentControllerIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation GCSSettingsStore
 
-- (GCSSettingsStore)initWithUserDefaults:(id)a3
+- (GCSSettingsStore)initWithUserDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v20.receiver = self;
   v20.super_class = GCSSettingsStore;
   v6 = [(GCSSettingsStore *)&v20 init];
@@ -20,7 +20,7 @@
     settingsVersion = v6->_settingsVersion;
     v6->_settingsVersion = @"0.0.0";
 
-    objc_storeStrong(&v7->_defaults, a3);
+    objc_storeStrong(&v7->_defaults, defaults);
     [(GCUserDefaults *)v7->_defaults addObserver:v7 forKeyPath:@"settingsVersion" options:5 context:0];
     v9 = [[GCSGamesCollection alloc] initWithSettingsStore:v7 userDefaults:v7->_defaults];
     games = v7->_games;
@@ -46,10 +46,10 @@
   return v7;
 }
 
-- (id)profileForPersistentControllerIdentifier:(id)a3 appBundleIdentifier:(id)a4
+- (id)profileForPersistentControllerIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier
 {
-  v6 = a3;
-  v7 = [(GCSGames *)self->_games gameWithBundleIdentifier:a4];
+  identifierCopy = identifier;
+  v7 = [(GCSGames *)self->_games gameWithBundleIdentifier:bundleIdentifier];
   if (!v7)
   {
     games = self->_games;
@@ -57,7 +57,7 @@
     v7 = [(GCSGames *)games gameWithBundleIdentifier:v9];
   }
 
-  v10 = [v7 profileUUIDForPersistentControllerIdentifier:v6];
+  v10 = [v7 profileUUIDForPersistentControllerIdentifier:identifierCopy];
   if (v10)
   {
     v11 = [(GCSProfiles *)self->_profiles profileForIdentifier:v10];
@@ -71,24 +71,24 @@
   return v11;
 }
 
-- (BOOL)savedDataMeetsRequiredVersion:(id)a3
+- (BOOL)savedDataMeetsRequiredVersion:(id)version
 {
-  v4 = [a3 shortenedVersionNumberString];
-  v5 = [(NSString *)self->_settingsVersion shortenedVersionNumberString];
-  v6 = [v4 compare:v5 options:64] != 1;
+  shortenedVersionNumberString = [version shortenedVersionNumberString];
+  shortenedVersionNumberString2 = [(NSString *)self->_settingsVersion shortenedVersionNumberString];
+  v6 = [shortenedVersionNumberString compare:shortenedVersionNumberString2 options:64] != 1;
 
   return v6;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"settingsVersion"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"settingsVersion"])
   {
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -108,9 +108,9 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
 LABEL_7:
-        v15 = [(GCSSettingsStore *)self settingsVersion];
+        settingsVersion = [(GCSSettingsStore *)self settingsVersion];
         *buf = 138412290;
-        v19 = v15;
+        v19 = settingsVersion;
         _os_log_impl(&dword_24E4FA000, v14, OS_LOG_TYPE_INFO, "GCSSettingsStore.settingsVersion = %@", buf, 0xCu);
       }
     }
@@ -120,8 +120,8 @@ LABEL_7:
 
   v17.receiver = self;
   v17.super_class = GCSSettingsStore;
-  [(GCSSettingsStore *)&v17 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
-  v13 = v12;
+  [(GCSSettingsStore *)&v17 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
+  v13 = changeCopy;
 LABEL_9:
 
   v16 = *MEMORY[0x277D85DE8];

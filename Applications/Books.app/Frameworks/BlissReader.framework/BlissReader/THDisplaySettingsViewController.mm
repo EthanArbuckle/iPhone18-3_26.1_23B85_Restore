@@ -1,61 +1,61 @@
 @interface THDisplaySettingsViewController
 - (BOOL)_shouldShowAutoNightMode;
-- (THDisplaySettingsViewController)initWithDelegate:(id)a3;
-- (THDisplaySettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (THDisplaySettingsViewController)initWithDelegate:(id)delegate;
+- (THDisplaySettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (double)appearanceRowHeight;
-- (double)p_bestPopoverHeightForSections:(id)a3;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_grayThemeButtonImageSelected:(BOOL)a3;
-- (id)_nightThemeButtonImageSelected:(BOOL)a3;
-- (id)_sepiaThemeButtonImageSelected:(BOOL)a3;
-- (id)_themeButtonImageWithColor:(id)a3 selected:(BOOL)a4;
-- (id)_whiteThemeButtonImageSelected:(BOOL)a3;
+- (double)p_bestPopoverHeightForSections:(id)sections;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_grayThemeButtonImageSelected:(BOOL)selected;
+- (id)_nightThemeButtonImageSelected:(BOOL)selected;
+- (id)_sepiaThemeButtonImageSelected:(BOOL)selected;
+- (id)_themeButtonImageWithColor:(id)color selected:(BOOL)selected;
+- (id)_whiteThemeButtonImageSelected:(BOOL)selected;
 - (id)autoNightModeSwitch;
 - (id)p_buildSupportedSections;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (id)themeContainer;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)p_currentFlowSizeScale;
-- (unint64_t)p_displaySectionForSection:(int64_t)a3;
-- (void)_changeAppearanceStyle:(int64_t)a3;
+- (unint64_t)p_displaySectionForSection:(int64_t)section;
+- (void)_changeAppearanceStyle:(int64_t)style;
 - (void)_restoreAutoNightModeSwitch;
 - (void)_turnAutoNightModeSwitchOff;
 - (void)contentSizeCategoryDidChange;
-- (void)coordinator:(id)a3 observer:(id)a4 didChangeLayout:(unint64_t)a5;
+- (void)coordinator:(id)coordinator observer:(id)observer didChangeLayout:(unint64_t)layout;
 - (void)dealloc;
-- (void)decreaseFontSize:(id)a3;
-- (void)decreaseFontSize:(id)a3 notifyingCoordinator:(BOOL)a4;
+- (void)decreaseFontSize:(id)size;
+- (void)decreaseFontSize:(id)size notifyingCoordinator:(BOOL)coordinator;
 - (void)didReceiveMemoryWarning;
-- (void)handleAutoNightModeSwitch:(id)a3;
-- (void)increaseFontSize:(id)a3;
-- (void)increaseFontSize:(id)a3 notifyingCoordinator:(BOOL)a4;
-- (void)onScrollSwitch:(id)a3;
-- (void)p_resizePopoverViewAnimated:(BOOL)a3;
-- (void)p_setCurrentFlowSizeScale:(unint64_t)a3;
+- (void)handleAutoNightModeSwitch:(id)switch;
+- (void)increaseFontSize:(id)size;
+- (void)increaseFontSize:(id)size notifyingCoordinator:(BOOL)coordinator;
+- (void)onScrollSwitch:(id)switch;
+- (void)p_resizePopoverViewAnimated:(BOOL)animated;
+- (void)p_setCurrentFlowSizeScale:(unint64_t)scale;
 - (void)p_setPopoverScrolling;
-- (void)p_validateButtonsAnimated:(BOOL)a3;
+- (void)p_validateButtonsAnimated:(BOOL)animated;
 - (void)releaseViews;
-- (void)setAppearanceStyle:(int64_t)a3;
-- (void)setAutoNightModeSwitch:(BOOL)a3;
-- (void)setTheme:(id)a3;
-- (void)setThemeGray:(id)a3;
-- (void)setThemeNight:(id)a3;
-- (void)setThemeNormal:(id)a3;
-- (void)setThemeSepia:(id)a3;
+- (void)setAppearanceStyle:(int64_t)style;
+- (void)setAutoNightModeSwitch:(BOOL)switch;
+- (void)setTheme:(id)theme;
+- (void)setThemeGray:(id)gray;
+- (void)setThemeNight:(id)night;
+- (void)setThemeNormal:(id)normal;
+- (void)setThemeSepia:(id)sepia;
 - (void)stylizeForTheme;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)updateThemeButtons;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation THDisplaySettingsViewController
 
-- (THDisplaySettingsViewController)initWithDelegate:(id)a3
+- (THDisplaySettingsViewController)initWithDelegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = THDisplaySettingsViewController;
@@ -63,18 +63,18 @@
   v5 = v4;
   if (v4)
   {
-    [(THDisplaySettingsViewController *)v4 setDelegate:a3];
+    [(THDisplaySettingsViewController *)v4 setDelegate:delegate];
     sub_29CC1C(v5);
   }
 
   return v5;
 }
 
-- (THDisplaySettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (THDisplaySettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = THDisplaySettingsViewController;
-  v4 = [(THDisplaySettingsViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(THDisplaySettingsViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -128,14 +128,14 @@
   return [v2 flowSizeScale];
 }
 
-- (void)p_setCurrentFlowSizeScale:(unint64_t)a3
+- (void)p_setCurrentFlowSizeScale:(unint64_t)scale
 {
   v4 = +[THApplicationSettings sharedSettings];
 
-  [v4 setFlowSizeScale:a3];
+  [v4 setFlowSizeScale:scale];
 }
 
-- (void)onScrollSwitch:(id)a3
+- (void)onScrollSwitch:(id)switch
 {
   if ([-[THDisplaySettingsViewController scrollSwitch](self scrollSwitch])
   {
@@ -150,16 +150,16 @@
   }
 }
 
-- (void)p_validateButtonsAnimated:(BOOL)a3
+- (void)p_validateButtonsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = [+[THApplicationSettings sharedSettings](THApplicationSettings "sharedSettings")];
   [-[THDisplaySettingsViewController sizeSmallerButton](self "sizeSmallerButton")];
   [-[THDisplaySettingsViewController sizeLargerButton](self "sizeLargerButton")];
   [-[THDisplaySettingsViewController scrollSwitch](self "scrollSwitch")];
   [-[THDisplaySettingsViewController scrollSwitch](self "scrollSwitch")];
 
-  [(THDisplaySettingsViewController *)self p_resizePopoverViewAnimated:v3];
+  [(THDisplaySettingsViewController *)self p_resizePopoverViewAnimated:animatedCopy];
 }
 
 - (void)viewDidLoad
@@ -177,22 +177,22 @@
   [(THDisplaySettingsViewController *)self setPreferredContentSize:296.0, v4];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = THDisplaySettingsViewController;
-  [(THDisplaySettingsViewController *)&v4 viewDidAppear:a3];
+  [(THDisplaySettingsViewController *)&v4 viewDidAppear:appear];
   [(THDisplaySettingsViewController *)self p_setPopoverScrolling];
 }
 
 - (void)p_setPopoverScrolling
 {
-  v3 = [(THDisplaySettingsViewController *)self tableView];
-  [v3 frame];
+  tableView = [(THDisplaySettingsViewController *)self tableView];
+  [tableView frame];
   Height = CGRectGetHeight(v7);
   [(THDisplaySettingsViewController *)self preferredContentSize];
 
-  [v3 setScrollEnabled:Height > v5];
+  [tableView setScrollEnabled:Height > v5];
 }
 
 - (void)contentSizeCategoryDidChange
@@ -238,11 +238,11 @@
   return v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = THDisplaySettingsViewController;
-  [(THDisplaySettingsViewController *)&v4 viewWillAppear:a3];
+  [(THDisplaySettingsViewController *)&v4 viewWillAppear:appear];
   [(THDisplaySettingsViewController *)self p_validateButtonsAnimated:0];
   [(THDisplaySettingsViewController *)self stylizeForTheme];
 }
@@ -255,19 +255,19 @@
   [(THDisplaySettingsViewController *)self releaseViews];
 }
 
-- (void)increaseFontSize:(id)a3
+- (void)increaseFontSize:(id)size
 {
   [(THDisplaySettingsViewController *)self p_setCurrentFlowSizeScale:[(THDisplaySettingsViewController *)self p_currentFlowSizeScale]+ 1];
 
-  [(THDisplaySettingsViewController *)self increaseFontSize:a3 notifyingCoordinator:1];
+  [(THDisplaySettingsViewController *)self increaseFontSize:size notifyingCoordinator:1];
 }
 
-- (void)increaseFontSize:(id)a3 notifyingCoordinator:(BOOL)a4
+- (void)increaseFontSize:(id)size notifyingCoordinator:(BOOL)coordinator
 {
-  v4 = a4;
+  coordinatorCopy = coordinator;
   [(THDisplaySettingsViewController *)self p_validateButtonsAnimated:0];
   [-[THDisplaySettingsViewController delegate](self "delegate")];
-  if (v4)
+  if (coordinatorCopy)
   {
     v6 = +[BCThemeCoordinator shared];
 
@@ -275,19 +275,19 @@
   }
 }
 
-- (void)decreaseFontSize:(id)a3
+- (void)decreaseFontSize:(id)size
 {
   [(THDisplaySettingsViewController *)self p_setCurrentFlowSizeScale:[(THDisplaySettingsViewController *)self p_currentFlowSizeScale]- 1];
 
-  [(THDisplaySettingsViewController *)self decreaseFontSize:a3 notifyingCoordinator:1];
+  [(THDisplaySettingsViewController *)self decreaseFontSize:size notifyingCoordinator:1];
 }
 
-- (void)decreaseFontSize:(id)a3 notifyingCoordinator:(BOOL)a4
+- (void)decreaseFontSize:(id)size notifyingCoordinator:(BOOL)coordinator
 {
-  v4 = a4;
+  coordinatorCopy = coordinator;
   [(THDisplaySettingsViewController *)self p_validateButtonsAnimated:0];
   [-[THDisplaySettingsViewController delegate](self "delegate")];
-  if (v4)
+  if (coordinatorCopy)
   {
     v6 = +[BCThemeCoordinator shared];
 
@@ -295,13 +295,13 @@
   }
 }
 
-- (void)setAutoNightModeSwitch:(BOOL)a3
+- (void)setAutoNightModeSwitch:(BOOL)switch
 {
-  v3 = a3;
+  switchCopy = switch;
   [(UISwitch *)self->_autoNightModeSwitch setEnabled:?];
   v4 = +[NSUserDefaults standardUserDefaults];
 
-  [(NSUserDefaults *)v4 setBool:!v3 forKey:@"THAppearanceDisableAutoNightModeSwitchKey"];
+  [(NSUserDefaults *)v4 setBool:!switchCopy forKey:@"THAppearanceDisableAutoNightModeSwitchKey"];
 }
 
 - (BOOL)_shouldShowAutoNightMode
@@ -313,8 +313,8 @@
 
 - (void)_turnAutoNightModeSwitchOff
 {
-  v3 = [(UISwitch *)self->_autoNightModeSwitch isOn];
-  if (v3)
+  isOn = [(UISwitch *)self->_autoNightModeSwitch isOn];
+  if (isOn)
   {
     [(UISwitch *)self->_autoNightModeSwitch setOn:0 animated:1];
     [(UISwitch *)self->_autoNightModeSwitch sendActionsForControlEvents:4096];
@@ -322,7 +322,7 @@
 
   v4 = +[NSUserDefaults standardUserDefaults];
 
-  [(NSUserDefaults *)v4 setBool:v3 forKey:@"THAppearanceAutoNightModeSwitchWasOnKey"];
+  [(NSUserDefaults *)v4 setBool:isOn forKey:@"THAppearanceAutoNightModeSwitchWasOnKey"];
 }
 
 - (void)_restoreAutoNightModeSwitch
@@ -405,23 +405,23 @@
   return result;
 }
 
-- (void)setAppearanceStyle:(int64_t)a3
+- (void)setAppearanceStyle:(int64_t)style
 {
-  if (self->_appearanceStyle != a3)
+  if (self->_appearanceStyle != style)
   {
-    self->_appearanceStyle = a3;
+    self->_appearanceStyle = style;
     [(THDisplaySettingsViewController *)self updateThemeButtons];
   }
 }
 
-- (void)_changeAppearanceStyle:(int64_t)a3
+- (void)_changeAppearanceStyle:(int64_t)style
 {
   [(THDisplaySettingsViewController *)self setAppearanceStyle:?];
   [+[BCThemeCoordinator shared](BCThemeCoordinator "shared")];
-  v5 = [(THDisplaySettingsViewController *)self delegate];
-  v6 = [(THDisplaySettingsViewController *)self appearanceStyle];
+  delegate = [(THDisplaySettingsViewController *)self delegate];
+  appearanceStyle = [(THDisplaySettingsViewController *)self appearanceStyle];
 
-  [v5 displaySettingsController:self didChangeStyle:v6];
+  [delegate displaySettingsController:self didChangeStyle:appearanceStyle];
 }
 
 - (void)stylizeForTheme
@@ -429,7 +429,7 @@
   v4.receiver = self;
   v4.super_class = THDisplaySettingsViewController;
   [(THDisplaySettingsViewController *)&v4 stylizeForTheme];
-  v3 = [(THDisplaySettingsViewController *)self themePage];
+  themePage = [(THDisplaySettingsViewController *)self themePage];
   [-[THDisplaySettingsViewController popoverPresentationController](self "popoverPresentationController")];
   [(UIButton *)self->_themeWhiteButton setImage:[(THDisplaySettingsViewController *)self _whiteThemeButtonImageSelected:0] forState:0];
   [(UIButton *)self->_themeWhiteButton setImage:[(THDisplaySettingsViewController *)self _whiteThemeButtonImageSelected:1] forState:4];
@@ -444,18 +444,18 @@
   [-[THDisplaySettingsViewController tableView](self "tableView")];
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  if ([(THDisplaySettingsViewController *)self theme]!= a3)
+  if ([(THDisplaySettingsViewController *)self theme]!= theme)
   {
     v5.receiver = self;
     v5.super_class = THDisplaySettingsViewController;
-    [(THDisplaySettingsViewController *)&v5 setTheme:a3];
+    [(THDisplaySettingsViewController *)&v5 setTheme:theme];
     [(THDisplaySettingsViewController *)self stylizeForTheme];
   }
 }
 
-- (void)setThemeNormal:(id)a3
+- (void)setThemeNormal:(id)normal
 {
   [-[THDisplaySettingsViewController delegate](self delegate];
   if ([(THDisplaySettingsViewController *)self appearanceStyle]== &dword_0 + 3)
@@ -467,7 +467,7 @@
   [(THDisplaySettingsViewController *)self _changeAppearanceStyle:0];
 }
 
-- (void)setThemeGray:(id)a3
+- (void)setThemeGray:(id)gray
 {
   [-[THDisplaySettingsViewController delegate](self delegate];
   if ([(THDisplaySettingsViewController *)self appearanceStyle]== &dword_0 + 3)
@@ -479,7 +479,7 @@
   [(THDisplaySettingsViewController *)self _changeAppearanceStyle:2];
 }
 
-- (void)setThemeSepia:(id)a3
+- (void)setThemeSepia:(id)sepia
 {
   [-[THDisplaySettingsViewController delegate](self delegate];
   if ([(THDisplaySettingsViewController *)self appearanceStyle]== &dword_0 + 3)
@@ -491,7 +491,7 @@
   [(THDisplaySettingsViewController *)self _changeAppearanceStyle:1];
 }
 
-- (void)setThemeNight:(id)a3
+- (void)setThemeNight:(id)night
 {
   [-[THDisplaySettingsViewController delegate](self delegate];
   if ([(THDisplaySettingsViewController *)self appearanceStyle]!= &dword_0 + 3)
@@ -505,56 +505,56 @@
 
 - (void)updateThemeButtons
 {
-  v3 = [(THDisplaySettingsViewController *)self appearanceStyle];
-  [(UIButton *)self->_themeWhiteButton setSelected:v3 == 0];
-  [(UIButton *)self->_themeSepiaButton setSelected:v3 == 1];
-  [(UIButton *)self->_themeGrayButton setSelected:v3 == 2];
+  appearanceStyle = [(THDisplaySettingsViewController *)self appearanceStyle];
+  [(UIButton *)self->_themeWhiteButton setSelected:appearanceStyle == 0];
+  [(UIButton *)self->_themeSepiaButton setSelected:appearanceStyle == 1];
+  [(UIButton *)self->_themeGrayButton setSelected:appearanceStyle == 2];
   themeNightButton = self->_themeNightButton;
 
-  [(UIButton *)themeNightButton setSelected:v3 == 3];
+  [(UIButton *)themeNightButton setSelected:appearanceStyle == 3];
 }
 
-- (id)_whiteThemeButtonImageSelected:(BOOL)a3
+- (id)_whiteThemeButtonImageSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v5 = [UIColor colorWithWhite:1.0 alpha:1.0];
 
-  return [(THDisplaySettingsViewController *)self _themeButtonImageWithColor:v5 selected:v3];
+  return [(THDisplaySettingsViewController *)self _themeButtonImageWithColor:v5 selected:selectedCopy];
 }
 
-- (id)_sepiaThemeButtonImageSelected:(BOOL)a3
+- (id)_sepiaThemeButtonImageSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v5 = [UIColor colorWithRed:0.831372549 green:0.776470588 blue:0.623529412 alpha:1.0];
 
-  return [(THDisplaySettingsViewController *)self _themeButtonImageWithColor:v5 selected:v3];
+  return [(THDisplaySettingsViewController *)self _themeButtonImageWithColor:v5 selected:selectedCopy];
 }
 
-- (id)_grayThemeButtonImageSelected:(BOOL)a3
+- (id)_grayThemeButtonImageSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v5 = [UIColor colorWithRed:0.352941176 green:0.352941176 blue:0.360784314 alpha:1.0];
 
-  return [(THDisplaySettingsViewController *)self _themeButtonImageWithColor:v5 selected:v3];
+  return [(THDisplaySettingsViewController *)self _themeButtonImageWithColor:v5 selected:selectedCopy];
 }
 
-- (id)_nightThemeButtonImageSelected:(BOOL)a3
+- (id)_nightThemeButtonImageSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v5 = [UIColor colorWithWhite:0.2 alpha:1.0];
 
-  return [(THDisplaySettingsViewController *)self _themeButtonImageWithColor:v5 selected:v3];
+  return [(THDisplaySettingsViewController *)self _themeButtonImageWithColor:v5 selected:selectedCopy];
 }
 
-- (id)_themeButtonImageWithColor:(id)a3 selected:(BOOL)a4
+- (id)_themeButtonImageWithColor:(id)color selected:(BOOL)selected
 {
-  v4 = a4;
+  selectedCopy = selected;
   [+[UIScreen mainScreen](UIScreen scale];
   v8 = v7;
   v19.width = 46.0;
   v19.height = 46.0;
   UIGraphicsBeginImageContextWithOptions(v19, 0, 0.0);
-  if (v4)
+  if (selectedCopy)
   {
     v9 = [UIBezierPath bezierPathWithOvalInRect:0.0, 0.0, 46.0, 46.0];
     [objc_msgSend(-[THDisplaySettingsViewController theme](self "theme")];
@@ -577,7 +577,7 @@
   }
 
   v16 = [UIBezierPath bezierPathWithOvalInRect:v11, v12, v10, v10];
-  [a3 setFill];
+  [color setFill];
   [(UIBezierPath *)v16 fill];
   ImageFromCurrentImageContext = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -601,24 +601,24 @@
   return self->_autoNightModeSwitch;
 }
 
-- (void)handleAutoNightModeSwitch:(id)a3
+- (void)handleAutoNightModeSwitch:(id)switch
 {
-  [+[NSUserDefaults setBool:a3]forKey:"setBool:forKey:", [(UISwitch *)self->_autoNightModeSwitch isOn], @"THAppearanceAutoNightModeSwitchWasOnKey"];
-  v4 = [(THDisplaySettingsViewController *)self delegate];
-  v5 = [(UISwitch *)self->_autoNightModeSwitch isOn];
+  [+[NSUserDefaults setBool:switch]forKey:"setBool:forKey:", [(UISwitch *)self->_autoNightModeSwitch isOn], @"THAppearanceAutoNightModeSwitchWasOnKey"];
+  delegate = [(THDisplaySettingsViewController *)self delegate];
+  isOn = [(UISwitch *)self->_autoNightModeSwitch isOn];
 
-  [v4 displaySettingsController:self didChangeAutoNightMode:v5];
+  [delegate displaySettingsController:self didChangeAutoNightMode:isOn];
 }
 
-- (void)coordinator:(id)a3 observer:(id)a4 didChangeLayout:(unint64_t)a5
+- (void)coordinator:(id)coordinator observer:(id)observer didChangeLayout:(unint64_t)layout
 {
-  v5 = (a5 & 0xFFFFFFFFFFFFFFFELL) == 2;
-  v6 = [(THDisplaySettingsViewController *)self scrollSwitch:a3];
+  v5 = (layout & 0xFFFFFFFFFFFFFFFELL) == 2;
+  v6 = [(THDisplaySettingsViewController *)self scrollSwitch:coordinator];
 
   [v6 setOn:v5];
 }
 
-- (double)p_bestPopoverHeightForSections:(id)a3
+- (double)p_bestPopoverHeightForSections:(id)sections
 {
   v5 = [(NSArray *)[(THDisplaySettingsViewController *)self supportedSections] count];
   if (v5 < 1)
@@ -641,13 +641,13 @@
     while (v6 != v7);
   }
 
-  if ([a3 containsObject:&off_49D078])
+  if ([sections containsObject:&off_49D078])
   {
     [(THDisplaySettingsViewController *)self appearanceRowHeight];
     v8 = v8 + v10;
   }
 
-  if ([a3 containsObject:&off_49D090])
+  if ([sections containsObject:&off_49D090])
   {
     v8 = v8 + 60.0;
     if ([(THDisplaySettingsViewController *)self _shouldShowAutoNightMode])
@@ -657,13 +657,13 @@
     }
   }
 
-  if ([a3 containsObject:&off_49D0A8])
+  if ([sections containsObject:&off_49D0A8])
   {
     [(THDisplaySettingsViewController *)self scrollingRowHeight];
     v8 = v8 + v12;
   }
 
-  if ([a3 containsObject:&off_49D0C0])
+  if ([sections containsObject:&off_49D0C0])
   {
     [(THDisplaySettingsViewController *)self appearanceRowHeight];
     return v8 + v13;
@@ -672,16 +672,16 @@
   return v8;
 }
 
-- (void)p_resizePopoverViewAnimated:(BOOL)a3
+- (void)p_resizePopoverViewAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(THDisplaySettingsViewController *)self p_buildSupportedSections];
+  animatedCopy = animated;
+  p_buildSupportedSections = [(THDisplaySettingsViewController *)self p_buildSupportedSections];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v19 = sub_5FE90;
   v20 = &unk_45AE58;
-  v21 = self;
-  v22 = v5;
+  selfCopy = self;
+  v22 = p_buildSupportedSections;
   if ([(THDisplaySettingsViewController *)self p_presentingFullscreen])
   {
     v19(v18);
@@ -692,12 +692,12 @@
     [-[THDisplaySettingsViewController view](self "view")];
     v7 = v6;
     v9 = v8;
-    [(THDisplaySettingsViewController *)self p_bestPopoverHeightForSections:v5];
+    [(THDisplaySettingsViewController *)self p_bestPopoverHeightForSections:p_buildSupportedSections];
     v11 = v10;
     [(THDisplaySettingsViewController *)self appearanceRowHeight];
     if (v11 == v12)
     {
-      v3 = 0;
+      animatedCopy = 0;
     }
 
     [-[THDisplaySettingsViewController view](self "view")];
@@ -712,7 +712,7 @@
       v17[6] = v9;
       v17[7] = 0x4072800000000000;
       *&v17[8] = v11;
-      if (v3)
+      if (animatedCopy)
       {
         v16[0] = _NSConcreteStackBlock;
         v16[1] = 3221225472;
@@ -736,21 +736,21 @@
   }
 }
 
-- (unint64_t)p_displaySectionForSection:(int64_t)a3
+- (unint64_t)p_displaySectionForSection:(int64_t)section
 {
-  if ([(NSArray *)[(THDisplaySettingsViewController *)self supportedSections] count]<= a3)
+  if ([(NSArray *)[(THDisplaySettingsViewController *)self supportedSections] count]<= section)
   {
     return 0;
   }
 
-  v5 = [(NSArray *)[(THDisplaySettingsViewController *)self supportedSections] objectAtIndexedSubscript:a3];
+  v5 = [(NSArray *)[(THDisplaySettingsViewController *)self supportedSections] objectAtIndexedSubscript:section];
 
   return [v5 unsignedIntegerValue];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if ([(THDisplaySettingsViewController *)self p_displaySectionForSection:a4]!= &dword_0 + 1)
+  if ([(THDisplaySettingsViewController *)self p_displaySectionForSection:section]!= &dword_0 + 1)
   {
     return 1;
   }
@@ -763,12 +763,12 @@
   return 1;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = [[UITableViewCell alloc] initWithStyle:1 reuseIdentifier:0];
   [v6 setSelectionStyle:0];
-  v7 = [v6 contentView];
-  v8 = -[THDisplaySettingsViewController p_displaySectionForSection:](self, "p_displaySectionForSection:", [a4 section]);
+  contentView = [v6 contentView];
+  v8 = -[THDisplaySettingsViewController p_displaySectionForSection:](self, "p_displaySectionForSection:", [path section]);
   if (v8 <= 1)
   {
     if (v8)
@@ -778,9 +778,9 @@
         return v6;
       }
 
-      if ([a4 row])
+      if ([path row])
       {
-        if ([a4 row] == &dword_0 + 1)
+        if ([path row] == &dword_0 + 1)
         {
           [objc_msgSend(v6 "textLabel")];
           [v6 setAccessoryView:{-[THDisplaySettingsViewController autoNightModeSwitch](self, "autoNightModeSwitch")}];
@@ -789,24 +789,24 @@
         return v6;
       }
 
-      v15 = [(THDisplaySettingsViewController *)self themeContainer];
-      [v7 addSubview:v15];
-      v17[0] = [objc_msgSend(v15 "centerXAnchor")];
-      v17[1] = [objc_msgSend(v15 "centerYAnchor")];
+      themeContainer = [(THDisplaySettingsViewController *)self themeContainer];
+      [contentView addSubview:themeContainer];
+      v17[0] = [objc_msgSend(themeContainer "centerXAnchor")];
+      v17[1] = [objc_msgSend(themeContainer "centerYAnchor")];
       v13 = [NSArray arrayWithObjects:v17 count:2];
 LABEL_13:
       [NSLayoutConstraint activateConstraints:v13];
       return v6;
     }
 
-    v11 = [(THDisplaySettingsViewController *)self brightnessSlider];
-    if (!v11)
+    brightnessSlider = [(THDisplaySettingsViewController *)self brightnessSlider];
+    if (!brightnessSlider)
     {
       return v6;
     }
 
-    v12 = v11;
-    [v7 addSubview:v11];
+    v12 = brightnessSlider;
+    [contentView addSubview:brightnessSlider];
     v18[0] = [objc_msgSend(v12 "leadingAnchor")];
     v18[1] = [objc_msgSend(v12 "trailingAnchor")];
     v18[2] = [objc_msgSend(v12 "topAnchor")];
@@ -825,12 +825,12 @@ LABEL_12:
 
   if (v8 == 3)
   {
-    v9 = [(THDisplaySettingsViewController *)self fontSizeButtons];
-    [v7 addSubview:v9];
-    v16[0] = [objc_msgSend(v9 "leadingAnchor")];
-    v16[1] = [objc_msgSend(v9 "trailingAnchor")];
-    v16[2] = [objc_msgSend(v9 "topAnchor")];
-    v16[3] = [objc_msgSend(v9 "bottomAnchor")];
+    fontSizeButtons = [(THDisplaySettingsViewController *)self fontSizeButtons];
+    [contentView addSubview:fontSizeButtons];
+    v16[0] = [objc_msgSend(fontSizeButtons "leadingAnchor")];
+    v16[1] = [objc_msgSend(fontSizeButtons "trailingAnchor")];
+    v16[2] = [objc_msgSend(fontSizeButtons "topAnchor")];
+    v16[3] = [objc_msgSend(fontSizeButtons "bottomAnchor")];
     v10 = v16;
     goto LABEL_12;
   }
@@ -838,25 +838,25 @@ LABEL_12:
   return v6;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(THDisplaySettingsViewController *)self supportedSections];
+  supportedSections = [(THDisplaySettingsViewController *)self supportedSections];
 
-  return [(NSArray *)v3 count];
+  return [(NSArray *)supportedSections count];
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   [(THDisplaySettingsViewController *)self appearanceRowHeight];
   v7 = v6;
-  v8 = -[THDisplaySettingsViewController p_displaySectionForSection:](self, "p_displaySectionForSection:", [a4 section]);
+  v8 = -[THDisplaySettingsViewController p_displaySectionForSection:](self, "p_displaySectionForSection:", [path section]);
   if (v8 != 2)
   {
     if (v8 == 1)
     {
-      if ([a4 row])
+      if ([path row])
       {
-        if ([a4 row] == &dword_0 + 1)
+        if ([path row] == &dword_0 + 1)
         {
           goto LABEL_5;
         }
@@ -877,10 +877,10 @@ LABEL_5:
   return result;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   result = 5.0;
-  if (!a4)
+  if (!section)
   {
     return 0.0;
   }
@@ -888,19 +888,19 @@ LABEL_5:
   return result;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   [-[THDisplaySettingsViewController theme](self theme];
   [[UIFont preferredFontForTextStyle:?], "_scaledValueForValue:", 18.0];
   v6 = [UIFont systemFontOfSize:"systemFontOfSize:weight:" weight:?];
-  v7 = [a4 textLabel];
+  textLabel = [cell textLabel];
 
-  [v7 setFont:v6];
+  [textLabel setFont:v6];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v4 = [(THDisplaySettingsViewController *)self tableViewHeaderView:a3];
+  v4 = [(THDisplaySettingsViewController *)self tableViewHeaderView:view];
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
   return v4;
 }

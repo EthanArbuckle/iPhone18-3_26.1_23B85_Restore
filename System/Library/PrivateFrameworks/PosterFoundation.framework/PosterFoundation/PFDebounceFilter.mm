@@ -1,11 +1,11 @@
 @interface PFDebounceFilter
 - (BOOL)allowEvent;
-- (PFDebounceFilter)initWithDebounceAfterEvents:(unint64_t)a3 withinTimeInterval:(double)a4;
+- (PFDebounceFilter)initWithDebounceAfterEvents:(unint64_t)events withinTimeInterval:(double)interval;
 @end
 
 @implementation PFDebounceFilter
 
-- (PFDebounceFilter)initWithDebounceAfterEvents:(unint64_t)a3 withinTimeInterval:(double)a4
+- (PFDebounceFilter)initWithDebounceAfterEvents:(unint64_t)events withinTimeInterval:(double)interval
 {
   v11.receiver = self;
   v11.super_class = PFDebounceFilter;
@@ -13,8 +13,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_debounceAfterEvents = a3;
-    v6->_interval = a4;
+    v6->_debounceAfterEvents = events;
+    v6->_interval = interval;
     v8 = objc_opt_new();
     eventTimestamps = v7->_eventTimestamps;
     v7->_eventTimestamps = v8;

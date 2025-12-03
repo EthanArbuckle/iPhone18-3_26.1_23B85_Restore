@@ -1,52 +1,52 @@
 @interface DTPosixSpawnProcessControlService
-+ (int)posixSpawnWithPath:(id)a3 environment:(id)a4 arguments:(id)a5 options:(id)a6 fileDescriptorHandler:(id)a7;
-+ (void)registerCapabilities:(id)a3;
-- (id)launchSuspendedProcessWithDevicePath:(id)a3 bundleIdentifier:(id)a4 environment:(id)a5 arguments:(id)a6 options:(id)a7;
-- (int)cleanupPid:(int)a3;
++ (int)posixSpawnWithPath:(id)path environment:(id)environment arguments:(id)arguments options:(id)options fileDescriptorHandler:(id)handler;
++ (void)registerCapabilities:(id)capabilities;
+- (id)launchSuspendedProcessWithDevicePath:(id)path bundleIdentifier:(id)identifier environment:(id)environment arguments:(id)arguments options:(id)options;
+- (int)cleanupPid:(int)pid;
 @end
 
 @implementation DTPosixSpawnProcessControlService
 
-+ (void)registerCapabilities:(id)a3
++ (void)registerCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   if (+[DTInstrumentServer isAppleInternal])
   {
-    [v4 publishCapability:@"com.apple.instruments.server.services.processcontrol.posixspawn" withVersion:2 forClass:a1];
-    [v4 publishCapability:@"com.apple.dt.services.capabilities.posix_spawn" withVersion:2 forClass:a1];
-    [v4 publishCapability:DTDefaultProcessControlServiceIdentifier withVersion:2 forClass:a1];
+    [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.processcontrol.posixspawn" withVersion:2 forClass:self];
+    [capabilitiesCopy publishCapability:@"com.apple.dt.services.capabilities.posix_spawn" withVersion:2 forClass:self];
+    [capabilitiesCopy publishCapability:DTDefaultProcessControlServiceIdentifier withVersion:2 forClass:self];
   }
 }
 
-+ (int)posixSpawnWithPath:(id)a3 environment:(id)a4 arguments:(id)a5 options:(id)a6 fileDescriptorHandler:(id)a7
++ (int)posixSpawnWithPath:(id)path environment:(id)environment arguments:(id)arguments options:(id)options fileDescriptorHandler:(id)handler
 {
   *&v127[4] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v104 = a5;
-  v13 = a6;
-  v103 = a7;
-  if ([(__CFString *)v11 length])
+  pathCopy = path;
+  environmentCopy = environment;
+  argumentsCopy = arguments;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if ([(__CFString *)pathCopy length])
   {
-    v14 = [MEMORY[0x277CCAC38] processInfo];
-    v15 = [v14 environment];
-    v16 = [v15 mutableCopy];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    environment = [processInfo environment];
+    v16 = [environment mutableCopy];
 
-    [v16 addEntriesFromDictionary:v12];
+    [v16 addEntriesFromDictionary:environmentCopy];
     v102 = v16;
 
     v115 = 0;
-    v17 = [MEMORY[0x277CCAA00] defaultManager];
-    v18 = [v17 fileExistsAtPath:v11 isDirectory:&v115];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v18 = [defaultManager fileExistsAtPath:pathCopy isDirectory:&v115];
     v19 = v115;
 
     if ((v18 & v19) == 0)
     {
-      v105 = v11;
+      v105 = pathCopy;
       goto LABEL_25;
     }
 
-    v20 = CFURLCreateWithFileSystemPath(0, v11, kCFURLPOSIXPathStyle, 1u);
+    v20 = CFURLCreateWithFileSystemPath(0, pathCopy, kCFURLPOSIXPathStyle, 1u);
     v21 = CFBundleCreate(*MEMORY[0x277CBECE8], v20);
     v22 = v21;
     if (v21)
@@ -96,14 +96,14 @@ LABEL_17:
           {
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
-              v40 = v11;
-              v41 = [(__CFString *)v11 UTF8String];
+              v40 = pathCopy;
+              uTF8String = [(__CFString *)pathCopy UTF8String];
               LODWORD(buf) = 136315138;
-              *(&buf + 4) = v41;
+              *(&buf + 4) = uTF8String;
               _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to find actual binary to posix_spawn for path: %s", &buf, 0xCu);
             }
 
-            [MEMORY[0x277CBEAD8] raise:@"DTPosixSpawnFailureException" format:{@"Unable to find actual binary to posix_spawn for path: %@\n", v11}];
+            [MEMORY[0x277CBEAD8] raise:@"DTPosixSpawnFailureException" format:{@"Unable to find actual binary to posix_spawn for path: %@\n", pathCopy}];
 
             v29 = 0;
             goto LABEL_117;
@@ -116,7 +116,7 @@ LABEL_25:
           posix_spawnattr_getflags(&v114, &v113);
           posix_spawnattr_setpgroup(&v114, 0);
           v113 |= 0x4002u;
-          v30 = [v13 objectForKeyedSubscript:@"StartSuspendedKey"];
+          v30 = [optionsCopy objectForKeyedSubscript:@"StartSuspendedKey"];
           v31 = v30;
           if (v30 && ![v30 BOOLValue])
           {
@@ -149,13 +149,13 @@ LABEL_25:
             goto LABEL_116;
           }
 
-          v36 = [v13 objectForKeyedSubscript:@"architectureType"];
+          v36 = [optionsCopy objectForKeyedSubscript:@"architectureType"];
           v101 = v36;
           if (v36)
           {
-            v37 = [v36 BOOLValue];
+            bOOLValue = [v36 BOOLValue];
             v38 = v127;
-            if (v37)
+            if (bOOLValue)
             {
               v39 = 16777228;
             }
@@ -200,8 +200,8 @@ LABEL_25:
           posix_spawn_file_actions_init(&v112);
           *v124 = -1;
           *v125 = -1;
-          v46 = !DTProcessShouldCaptureOutputWithOptions(v13);
-          if (!v103)
+          v46 = !DTProcessShouldCaptureOutputWithOptions(optionsCopy);
+          if (!handlerCopy)
           {
             LOBYTE(v46) = 1;
           }
@@ -236,11 +236,11 @@ LABEL_25:
             posix_spawn_file_actions_addclose(&v112, v124[0]);
           }
 
-          v100 = [v13 objectForKeyedSubscript:@"XRDeviceFileChooserWorkingDirectory"];
+          v100 = [optionsCopy objectForKeyedSubscript:@"XRDeviceFileChooserWorkingDirectory"];
           if (v100 && [v100 length])
           {
-            v47 = [MEMORY[0x277CCAA00] defaultManager];
-            if ([v47 fileExistsAtPath:v100 isDirectory:&v115])
+            defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+            if ([defaultManager2 fileExistsAtPath:v100 isDirectory:&v115])
             {
               v48 = v115;
 
@@ -256,7 +256,7 @@ LABEL_25:
             }
           }
 
-          [v104 count];
+          [argumentsCopy count];
           v97[1] = v97;
           MEMORY[0x28223BE20]();
           v54 = (v97 - ((v53 + 47) & 0xFFFFFFFFFFFFFFF0));
@@ -280,7 +280,7 @@ LABEL_25:
           v58 = *(*(&buf + 1) + 24);
           *(*(&buf + 1) + 24) = v58 + 1;
           v54[v58] = v57;
-          v99 = [v13 objectForKeyedSubscript:@"DisableTALAutomaticTermination"];
+          v99 = [optionsCopy objectForKeyedSubscript:@"DisableTALAutomaticTermination"];
           if (v99 && (objc_opt_respondsToSelector() & 1) != 0 && [v99 longValue])
           {
             v59 = strdup("-NSDisableAutomaticTermination");
@@ -297,7 +297,7 @@ LABEL_25:
           v111 = 0u;
           v108 = 0u;
           v109 = 0u;
-          v63 = v104;
+          v63 = argumentsCopy;
           v64 = [v63 countByEnumeratingWithState:&v108 objects:v120 count:16];
           if (v64)
           {
@@ -353,8 +353,8 @@ LABEL_25:
           v76 = *(*(&buf + 1) + 24);
           *(*(&buf + 1) + 24) = v76 + 1;
           v74[v76] = 0;
-          v77 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-          v78 = [v77 BOOLForKey:@"DTPosixSpawnProcessControlServiceLog"];
+          standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+          v78 = [standardUserDefaults BOOLForKey:@"DTPosixSpawnProcessControlServiceLog"];
 
           if (v78)
           {
@@ -400,9 +400,9 @@ LABEL_25:
           v106 = 0;
           v85 = v105;
           v86 = posix_spawn(&v106, [(__CFString *)v105 UTF8String], &v112, &v114, v54, v74);
-          if (v106 && DTProcessShouldCaptureOutputWithOptions(v13))
+          if (v106 && DTProcessShouldCaptureOutputWithOptions(optionsCopy))
           {
-            (*(v103 + 2))(v103, v106, v124[1], v125[0]);
+            (*(handlerCopy + 2))(handlerCopy, v106, v124[1], v125[0]);
           }
 
           v87 = *v54;
@@ -486,10 +486,10 @@ LABEL_114:
 LABEL_115:
 LABEL_116:
 
-          v11 = v105;
+          pathCopy = v105;
 LABEL_117:
 
-          v12 = v102;
+          environmentCopy = v102;
           goto LABEL_118;
         }
 
@@ -526,23 +526,23 @@ LABEL_118:
   return v29;
 }
 
-- (id)launchSuspendedProcessWithDevicePath:(id)a3 bundleIdentifier:(id)a4 environment:(id)a5 arguments:(id)a6 options:(id)a7
+- (id)launchSuspendedProcessWithDevicePath:(id)path bundleIdentifier:(id)identifier environment:(id)environment arguments:(id)arguments options:(id)options
 {
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_247FC096C;
   v10[3] = &unk_278EF3240;
   v10[4] = self;
-  v7 = [DTPosixSpawnProcessControlService posixSpawnWithPath:a3 environment:a5 arguments:a6 options:a7 fileDescriptorHandler:v10];
+  v7 = [DTPosixSpawnProcessControlService posixSpawnWithPath:path environment:environment arguments:arguments options:options fileDescriptorHandler:v10];
   v8 = [MEMORY[0x277CCABB0] numberWithInt:v7];
 
   return v8;
 }
 
-- (int)cleanupPid:(int)a3
+- (int)cleanupPid:(int)pid
 {
   v4 = 0;
-  if (waitpid(a3, &v4, 1) == a3)
+  if (waitpid(pid, &v4, 1) == pid)
   {
     return v4;
   }

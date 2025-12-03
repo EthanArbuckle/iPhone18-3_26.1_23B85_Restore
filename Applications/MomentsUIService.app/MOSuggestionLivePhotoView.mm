@@ -1,13 +1,13 @@
 @interface MOSuggestionLivePhotoView
-- (_TtC16MomentsUIService25MOSuggestionLivePhotoView)initWithCoder:(id)a3;
-- (_TtC16MomentsUIService25MOSuggestionLivePhotoView)initWithFrame:(CGRect)a3;
-- (void)livePhotoView:(id)a3 didEndPlaybackWithStyle:(int64_t)a4;
-- (void)livePhotoView:(id)a3 willBeginPlaybackWithStyle:(int64_t)a4;
+- (_TtC16MomentsUIService25MOSuggestionLivePhotoView)initWithCoder:(id)coder;
+- (_TtC16MomentsUIService25MOSuggestionLivePhotoView)initWithFrame:(CGRect)frame;
+- (void)livePhotoView:(id)view didEndPlaybackWithStyle:(int64_t)style;
+- (void)livePhotoView:(id)view willBeginPlaybackWithStyle:(int64_t)style;
 @end
 
 @implementation MOSuggestionLivePhotoView
 
-- (_TtC16MomentsUIService25MOSuggestionLivePhotoView)initWithCoder:(id)a3
+- (_TtC16MomentsUIService25MOSuggestionLivePhotoView)initWithCoder:(id)coder
 {
   *&self->livePhotoView[OBJC_IVAR____TtC16MomentsUIService25MOSuggestionLivePhotoView_delegate] = 0;
   swift_unknownObjectWeakInit();
@@ -16,24 +16,24 @@
   return result;
 }
 
-- (_TtC16MomentsUIService25MOSuggestionLivePhotoView)initWithFrame:(CGRect)a3
+- (_TtC16MomentsUIService25MOSuggestionLivePhotoView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)livePhotoView:(id)a3 willBeginPlaybackWithStyle:(int64_t)a4
+- (void)livePhotoView:(id)view willBeginPlaybackWithStyle:(int64_t)style
 {
-  v5 = a3;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   specialized MOSuggestionLivePhotoView.livePhotoView(_:willBeginPlaybackWith:)();
 }
 
-- (void)livePhotoView:(id)a3 didEndPlaybackWithStyle:(int64_t)a4
+- (void)livePhotoView:(id)view didEndPlaybackWithStyle:(int64_t)style
 {
-  v5 = a3;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   specialized MOSuggestionLivePhotoView.livePhotoView(_:didEndPlaybackWith:)();
 }
 

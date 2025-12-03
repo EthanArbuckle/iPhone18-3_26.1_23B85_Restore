@@ -1,9 +1,9 @@
 @interface DOCTagCheckmarkView
 + (id)checkmarkImage;
-- (DOCTagCheckmarkView)initWithFrame:(CGRect)a3;
+- (DOCTagCheckmarkView)initWithFrame:(CGRect)frame;
 - (void)_updateTintColor;
-- (void)setChecked:(BOOL)a3;
-- (void)setItemTag:(id)a3;
+- (void)setChecked:(BOOL)checked;
+- (void)setItemTag:(id)tag;
 - (void)updateForChangedTraitsAffectingFonts;
 @end
 
@@ -31,50 +31,50 @@ void __37__DOCTagCheckmarkView_checkmarkImage__block_invoke()
   checkmarkImage_checkmarkImage = v1;
 }
 
-- (DOCTagCheckmarkView)initWithFrame:(CGRect)a3
+- (DOCTagCheckmarkView)initWithFrame:(CGRect)frame
 {
   v33.receiver = self;
   v33.super_class = DOCTagCheckmarkView;
-  v3 = [(DOCTagCheckmarkView *)&v33 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DOCTagCheckmarkView *)&v33 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(DOCTagCheckmarkView *)v3 setContentMode:1];
     v5 = objc_alloc(MEMORY[0x277D755E8]);
-    v6 = [objc_opt_class() checkmarkImage];
-    v7 = [v5 initWithImage:v6];
+    checkmarkImage = [objc_opt_class() checkmarkImage];
+    v7 = [v5 initWithImage:checkmarkImage];
     imageView = v4->_imageView;
     v4->_imageView = v7;
 
     v9 = v4->_imageView;
-    v10 = [MEMORY[0x277CE15C8] effect];
-    v11 = [MEMORY[0x277CE15D8] options];
-    [(UIImageView *)v9 addSymbolEffect:v10 options:v11 animated:0];
+    effect = [MEMORY[0x277CE15C8] effect];
+    options = [MEMORY[0x277CE15D8] options];
+    [(UIImageView *)v9 addSymbolEffect:effect options:options animated:0];
 
     [(DOCTagCheckmarkView *)v4 _updateTintColor];
     [(DOCTagCheckmarkView *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [(DOCTagCheckmarkView *)v4 image];
-    [v12 size];
+    image = [(DOCTagCheckmarkView *)v4 image];
+    [image size];
     v14 = v13;
 
     v15 = 1.0;
     if (v14 > 0.0)
     {
-      v16 = [(DOCTagCheckmarkView *)v4 image];
-      [v16 size];
+      image2 = [(DOCTagCheckmarkView *)v4 image];
+      [image2 size];
       v18 = v17;
-      v19 = [(DOCTagCheckmarkView *)v4 image];
-      [v19 size];
+      image3 = [(DOCTagCheckmarkView *)v4 image];
+      [image3 size];
       v15 = v18 / v20;
     }
 
-    v21 = [(DOCTagCheckmarkView *)v4 widthAnchor];
-    v22 = [(DOCTagCheckmarkView *)v4 heightAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22 multiplier:v15];
+    widthAnchor = [(DOCTagCheckmarkView *)v4 widthAnchor];
+    heightAnchor = [(DOCTagCheckmarkView *)v4 heightAnchor];
+    v23 = [widthAnchor constraintEqualToAnchor:heightAnchor multiplier:v15];
     [v23 setActive:1];
 
-    v24 = [(DOCTagCheckmarkView *)v4 heightAnchor];
-    v25 = [v24 constraintEqualToConstant:0.0];
+    heightAnchor2 = [(DOCTagCheckmarkView *)v4 heightAnchor];
+    v25 = [heightAnchor2 constraintEqualToConstant:0.0];
     heightConstraint = v4->_heightConstraint;
     v4->_heightConstraint = v25;
 
@@ -87,8 +87,8 @@ void __37__DOCTagCheckmarkView_checkmarkImage__block_invoke()
     v29 = DOCConstraintsToResizeWithSuperview();
     [v28 activateConstraints:v29];
 
-    v30 = [MEMORY[0x277D75C80] doc_traitsAffectingFonts];
-    v31 = [(DOCTagCheckmarkView *)v4 registerForTraitChanges:v30 withAction:sel_updateForChangedTraitsAffectingFonts];
+    doc_traitsAffectingFonts = [MEMORY[0x277D75C80] doc_traitsAffectingFonts];
+    v31 = [(DOCTagCheckmarkView *)v4 registerForTraitChanges:doc_traitsAffectingFonts withAction:sel_updateForChangedTraitsAffectingFonts];
   }
 
   return v4;
@@ -96,20 +96,20 @@ void __37__DOCTagCheckmarkView_checkmarkImage__block_invoke()
 
 - (void)updateForChangedTraitsAffectingFonts
 {
-  v3 = [(DOCTagCheckmarkView *)self image];
-  [v3 alignmentRectInsets];
+  image = [(DOCTagCheckmarkView *)self image];
+  [image alignmentRectInsets];
   v5 = v4;
-  v6 = [(DOCTagCheckmarkView *)self image];
-  [v6 alignmentRectInsets];
+  image2 = [(DOCTagCheckmarkView *)self image];
+  [image2 alignmentRectInsets];
   v8 = v5 + v7;
 
-  v9 = [(DOCTagCheckmarkView *)self image];
-  [v9 size];
+  image3 = [(DOCTagCheckmarkView *)self image];
+  [image3 size];
   v11 = v10 - v8;
 
-  v12 = [MEMORY[0x277D75520] defaultMetrics];
-  v13 = [(DOCTagCheckmarkView *)self traitCollection];
-  [v12 scaledValueForValue:v13 compatibleWithTraitCollection:v11];
+  defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+  traitCollection = [(DOCTagCheckmarkView *)self traitCollection];
+  [defaultMetrics scaledValueForValue:traitCollection compatibleWithTraitCollection:v11];
   v15 = v14;
 
   heightConstraint = self->_heightConstraint;
@@ -117,12 +117,12 @@ void __37__DOCTagCheckmarkView_checkmarkImage__block_invoke()
   [(NSLayoutConstraint *)heightConstraint setConstant:v15];
 }
 
-- (void)setItemTag:(id)a3
+- (void)setItemTag:(id)tag
 {
-  v5 = a3;
+  tagCopy = tag;
   if (([(DOCTag *)self->_itemTag isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_itemTag, a3);
+    objc_storeStrong(&self->_itemTag, tag);
     [(DOCTagCheckmarkView *)self _updateTintColor];
   }
 }
@@ -134,12 +134,12 @@ void __37__DOCTagCheckmarkView_checkmarkImage__block_invoke()
   [(UIImageView *)self->_imageView setTintColor:v3];
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
   checked = self->_checked;
-  if (checked != a3)
+  if (checked != checked)
   {
-    if ((a3 & ~checked) != 0)
+    if ((checked & ~checked) != 0)
     {
       v6 = 0x277CE15D0;
     }
@@ -149,12 +149,12 @@ void __37__DOCTagCheckmarkView_checkmarkImage__block_invoke()
       v6 = 0x277CE15C8;
     }
 
-    v9 = [*v6 effect];
+    effect = [*v6 effect];
     imageView = self->_imageView;
-    v8 = [MEMORY[0x277CE15D8] options];
-    [(UIImageView *)imageView addSymbolEffect:v9 options:v8 animated:_UISolariumEnabled()];
+    options = [MEMORY[0x277CE15D8] options];
+    [(UIImageView *)imageView addSymbolEffect:effect options:options animated:_UISolariumEnabled()];
 
-    self->_checked = a3;
+    self->_checked = checked;
   }
 }
 

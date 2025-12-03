@@ -1,39 +1,39 @@
 @interface HDDataManager
-- (BOOL)_synchronousObserverLock_hasSynchronousObserverForSampleType:(uint64_t)a1;
-- (BOOL)containsDataObject:(id)a3;
-- (BOOL)deleteDataObjectsOfClass:(Class)a3 predicate:(id)a4 limit:(unint64_t)a5 deletedSampleCount:(unint64_t *)a6 notifyObservers:(BOOL)a7 generateDeletedObjects:(BOOL)a8 userRequested:(BOOL)a9 recursiveDeleteAuthorizationBlock:(id)a10 error:(id *)a11;
-- (BOOL)deleteObjectsWithUUIDCollection:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (BOOL)deleteSamplesWithSourceEntities:(id)a3 error:(id *)a4;
-- (BOOL)deleteSamplesWithTypes:(id)a3 sourceBundleIdentifier:(id)a4 userRequested:(BOOL)a5 recursiveDeleteAuthorizationBlock:(id)a6 error:(id *)a7;
-- (BOOL)deleteSamplesWithUUIDs:(id)a3 userRequested:(BOOL)a4 recursiveDeleteAuthorizationBlock:(id)a5 error:(id *)a6;
-- (BOOL)insertDataObjects:(id)a3 error:(id *)a4;
-- (BOOL)insertDataObjects:(id)a3 sourceEntity:(id)a4 deviceEntity:(id)a5 sourceVersion:(id)a6 creationDate:(double)a7 error:(id *)a8;
-- (BOOL)insertDataObjects:(id)a3 sourceEntity:(id)a4 deviceEntity:(id)a5 sourceVersion:(id)a6 creationDate:(double)a7 timeZone:(id)a8 OSVersion:(id *)a9 error:(id *)a10;
-- (HDDataManager)initWithProfile:(id)a3;
+- (BOOL)_synchronousObserverLock_hasSynchronousObserverForSampleType:(uint64_t)type;
+- (BOOL)containsDataObject:(id)object;
+- (BOOL)deleteDataObjectsOfClass:(Class)class predicate:(id)predicate limit:(unint64_t)limit deletedSampleCount:(unint64_t *)count notifyObservers:(BOOL)observers generateDeletedObjects:(BOOL)objects userRequested:(BOOL)requested recursiveDeleteAuthorizationBlock:(id)self0 error:(id *)self1;
+- (BOOL)deleteObjectsWithUUIDCollection:(id)collection configuration:(id)configuration error:(id *)error;
+- (BOOL)deleteSamplesWithSourceEntities:(id)entities error:(id *)error;
+- (BOOL)deleteSamplesWithTypes:(id)types sourceBundleIdentifier:(id)identifier userRequested:(BOOL)requested recursiveDeleteAuthorizationBlock:(id)block error:(id *)error;
+- (BOOL)deleteSamplesWithUUIDs:(id)ds userRequested:(BOOL)requested recursiveDeleteAuthorizationBlock:(id)block error:(id *)error;
+- (BOOL)insertDataObjects:(id)objects error:(id *)error;
+- (BOOL)insertDataObjects:(id)objects sourceEntity:(id)entity deviceEntity:(id)deviceEntity sourceVersion:(id)version creationDate:(double)date error:(id *)error;
+- (BOOL)insertDataObjects:(id)objects sourceEntity:(id)entity deviceEntity:(id)deviceEntity sourceVersion:(id)version creationDate:(double)date timeZone:(id)zone OSVersion:(id *)sVersion error:(id *)self0;
+- (HDDataManager)initWithProfile:(id)profile;
 - (id)_observersForAllTypes;
-- (id)_queue_observersAllTypesCreateIfNil:(uint64_t)a1;
-- (id)_queue_observersForDataType:(int)a3 createIfNil:;
-- (id)_queue_observersForKey:(int)a3 createIfNil:;
-- (id)_synchronousObserverLock_synchronousObserverSetForSampleType:(uint64_t)a1;
+- (id)_queue_observersAllTypesCreateIfNil:(uint64_t)nil;
+- (id)_queue_observersForDataType:(int)type createIfNil:;
+- (id)_queue_observersForKey:(int)key createIfNil:;
+- (id)_synchronousObserverLock_synchronousObserverSetForSampleType:(uint64_t)type;
 - (id)diagnosticDescription;
-- (int64_t)hasSampleWithBundleIdentifier:(id)a3 error:(id *)a4;
-- (uint64_t)_deleteObjectsWithTypes:(void *)a3 sourceEntities:(void *)a4 recursiveDeleteAuthorizationBlock:(char)a5 userRequested:(void *)a6 error:;
-- (uint64_t)_insertDataObjects:(void *)a3 insertionContext:(void *)a4 lastInsertedIDOut:(void *)a5 error:;
-- (uint64_t)_updateSourceAndLastAnchorForObjects:(void *)a3 insertionContext:(void *)a4 lastInsertedID:(char)a5 isDatabaseAccessible:(int)a6 shouldUpdateSourceOrder:(void *)a7 error:;
+- (int64_t)hasSampleWithBundleIdentifier:(id)identifier error:(id *)error;
+- (uint64_t)_deleteObjectsWithTypes:(void *)types sourceEntities:(void *)entities recursiveDeleteAuthorizationBlock:(char)block userRequested:(void *)requested error:;
+- (uint64_t)_insertDataObjects:(void *)objects insertionContext:(void *)context lastInsertedIDOut:(void *)out error:;
+- (uint64_t)_updateSourceAndLastAnchorForObjects:(void *)objects insertionContext:(void *)context lastInsertedID:(char)d isDatabaseAccessible:(int)accessible shouldUpdateSourceOrder:(void *)order error:;
 - (void)_callObserversIfPossible;
-- (void)_notifySynchronousObserversIfPossibleInTransaction:(uint64_t)a1;
-- (void)_observersForDataType:(void *)a1;
-- (void)_shouldNotifyForDeletedSamplesOfTypes:(void *)a3 intervals:(char)a4 userRequested:(void *)a5 anchor:;
-- (void)addObserver:(id)a3 forDataType:(id)a4;
-- (void)addObserverForAllTypes:(id)a3;
-- (void)addSynchronousObserver:(id)a3 forSampleType:(id)a4;
+- (void)_notifySynchronousObserversIfPossibleInTransaction:(uint64_t)transaction;
+- (void)_observersForDataType:(void *)type;
+- (void)_shouldNotifyForDeletedSamplesOfTypes:(void *)types intervals:(char)intervals userRequested:(void *)requested anchor:;
+- (void)addObserver:(id)observer forDataType:(id)type;
+- (void)addObserverForAllTypes:(id)types;
+- (void)addSynchronousObserver:(id)observer forSampleType:(id)type;
 - (void)closeObserverTransaction;
 - (void)openObserverTransaction;
-- (void)removeObserver:(id)a3 forDataType:(id)a4;
-- (void)removeObserverForAllTypes:(id)a3;
-- (void)removeSynchronousObserver:(id)a3 forSampleType:(id)a4;
-- (void)setBackgroundObserverFrequency:(id)a3 forDataType:(id)a4 frequency:(int64_t)a5 appSDKVersionToken:(unint64_t)a6 completion:(id)a7;
-- (void)shouldNotifyForDataObjects:(id)a3 provenance:(id)a4 database:(id)a5 anchor:(id)a6;
+- (void)removeObserver:(id)observer forDataType:(id)type;
+- (void)removeObserverForAllTypes:(id)types;
+- (void)removeSynchronousObserver:(id)observer forSampleType:(id)type;
+- (void)setBackgroundObserverFrequency:(id)frequency forDataType:(id)type frequency:(int64_t)a5 appSDKVersionToken:(unint64_t)token completion:(id)completion;
+- (void)shouldNotifyForDataObjects:(id)objects provenance:(id)provenance database:(id)database anchor:(id)anchor;
 - (void)synchronouslyCloseObserverTransactionAndNotify;
 @end
 
@@ -41,9 +41,9 @@
 
 - (void)_callObserversIfPossible
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_not_V2(*(a1 + 8));
+    dispatch_assert_queue_not_V2(*(self + 8));
     v20 = 0;
     v21 = &v20;
     v22 = 0x3032000000;
@@ -60,12 +60,12 @@
     v11 = &v10;
     v12 = 0x2020000000;
     v13 = 0;
-    v2 = *(a1 + 8);
+    v2 = *(self + 8);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __41__HDDataManager__callObserversIfPossible__block_invoke;
     block[3] = &unk_2786255D0;
-    block[4] = a1;
+    block[4] = self;
     block[5] = &v10;
     block[6] = &v14;
     block[7] = &v20;
@@ -75,14 +75,14 @@
       v3 = v21[5];
       v4 = v15[5];
       v5 = v3;
-      v6 = *(a1 + 16);
+      v6 = *(self + 16);
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __73__HDDataManager__notifyObserversWithAddedObjectsBySampleType_lastAnchor___block_invoke;
       v26[3] = &unk_278613830;
       v7 = v4;
       v27 = v7;
-      v28 = a1;
+      selfCopy = self;
       v8 = v5;
       v29 = v8;
       dispatch_async(v6, v26);
@@ -115,7 +115,7 @@ void __41__HDDataManager__callObserversIfPossible__block_invoke(void *a1)
 
 - (id)_observersForAllTypes
 {
-  if (a1)
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -123,12 +123,12 @@ void __41__HDDataManager__callObserversIfPossible__block_invoke(void *a1)
     v8 = __Block_byref_object_copy__129;
     v9 = __Block_byref_object_dispose__129;
     v10 = 0;
-    v1 = *(a1 + 8);
+    v1 = *(self + 8);
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __38__HDDataManager__observersForAllTypes__block_invoke;
     v4[3] = &unk_278613990;
-    v4[4] = a1;
+    v4[4] = self;
     v4[5] = &v5;
     dispatch_sync(v1, v4);
     v2 = v6[5];
@@ -194,9 +194,9 @@ void __41__HDDataManager_closeObserverTransaction__block_invoke(uint64_t a1)
   *(v1 + 56) = v2 - 1;
 }
 
-- (HDDataManager)initWithProfile:(id)a3
+- (HDDataManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v18.receiver = self;
   v18.super_class = HDDataManager;
   v5 = [(HDDataManager *)&v18 init];
@@ -210,20 +210,20 @@ void __41__HDDataManager_closeObserverTransaction__block_invoke(uint64_t a1)
     notificationQueue = v5->_notificationQueue;
     v5->_notificationQueue = v8;
 
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
     observersByDataType = v5->_observersByDataType;
     v5->_observersByDataType = v10;
 
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     pendingObjectsBySampleType = v5->_pendingObjectsBySampleType;
-    v5->_pendingObjectsBySampleType = v12;
+    v5->_pendingObjectsBySampleType = dictionary;
 
     v5->_synchronousObserverLock._os_unfair_lock_opaque = 0;
-    v14 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v14 addObject:v5];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v5];
 
-    v15 = [[HDQuantitySeriesManager alloc] initWithProfile:v4];
+    v15 = [[HDQuantitySeriesManager alloc] initWithProfile:profileCopy];
     quantitySeriesManager = v5->_quantitySeriesManager;
     v5->_quantitySeriesManager = v15;
 
@@ -234,73 +234,73 @@ void __41__HDDataManager_closeObserverTransaction__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (BOOL)insertDataObjects:(id)a3 sourceEntity:(id)a4 deviceEntity:(id)a5 sourceVersion:(id)a6 creationDate:(double)a7 error:(id *)a8
+- (BOOL)insertDataObjects:(id)objects sourceEntity:(id)entity deviceEntity:(id)deviceEntity sourceVersion:(id)version creationDate:(double)date error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  if (!v16)
+  objectsCopy = objects;
+  entityCopy = entity;
+  deviceEntityCopy = deviceEntity;
+  versionCopy = version;
+  if (!entityCopy)
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"HDDataManager.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"sourceEntity != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDataManager.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"sourceEntity != nil"}];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v20 = [WeakRetained dataProvenanceManager];
-  v21 = [v20 localDataProvenanceForSourceEntity:v16 version:v18 deviceEntity:v17];
+  dataProvenanceManager = [WeakRetained dataProvenanceManager];
+  v21 = [dataProvenanceManager localDataProvenanceForSourceEntity:entityCopy version:versionCopy deviceEntity:deviceEntityCopy];
 
   if (!v21)
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"HDDataManager.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"provenance != nil"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDDataManager.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"provenance != nil"}];
   }
 
-  v22 = [(HDDataManager *)self insertDataObjects:v15 withProvenance:v21 creationDate:a8 error:a7];
+  v22 = [(HDDataManager *)self insertDataObjects:objectsCopy withProvenance:v21 creationDate:error error:date];
 
   return v22;
 }
 
-- (BOOL)insertDataObjects:(id)a3 sourceEntity:(id)a4 deviceEntity:(id)a5 sourceVersion:(id)a6 creationDate:(double)a7 timeZone:(id)a8 OSVersion:(id *)a9 error:(id *)a10
+- (BOOL)insertDataObjects:(id)objects sourceEntity:(id)entity deviceEntity:(id)deviceEntity sourceVersion:(id)version creationDate:(double)date timeZone:(id)zone OSVersion:(id *)sVersion error:(id *)self0
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a8;
-  if (!v19)
+  objectsCopy = objects;
+  entityCopy = entity;
+  deviceEntityCopy = deviceEntity;
+  versionCopy = version;
+  zoneCopy = zone;
+  if (!entityCopy)
   {
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"HDDataManager.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"sourceEntity != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDataManager.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"sourceEntity != nil"}];
   }
 
   v30 = a2;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v24 = [WeakRetained dataProvenanceManager];
-  v31 = *&a9->var0;
-  var2 = a9->var2;
-  v25 = [v24 localDataProvenanceForSourceEntity:v19 version:v21 deviceEntity:v20 timezone:v22 OSVersion:&v31];
+  dataProvenanceManager = [WeakRetained dataProvenanceManager];
+  v31 = *&sVersion->var0;
+  var2 = sVersion->var2;
+  v25 = [dataProvenanceManager localDataProvenanceForSourceEntity:entityCopy version:versionCopy deviceEntity:deviceEntityCopy timezone:zoneCopy OSVersion:&v31];
 
   if (!v25)
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:v30 object:self file:@"HDDataManager.m" lineNumber:138 description:{@"Invalid parameter not satisfying: %@", @"provenance != nil"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:v30 object:self file:@"HDDataManager.m" lineNumber:138 description:{@"Invalid parameter not satisfying: %@", @"provenance != nil"}];
   }
 
-  v26 = [(HDDataManager *)self insertDataObjects:v18 withProvenance:v25 creationDate:a10 error:a7];
+  v26 = [(HDDataManager *)self insertDataObjects:objectsCopy withProvenance:v25 creationDate:error error:date];
 
   return v26;
 }
 
-- (BOOL)insertDataObjects:(id)a3 error:(id *)a4
+- (BOOL)insertDataObjects:(id)objects error:(id *)error
 {
-  v6 = a3;
+  objectsCopy = objects;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained dataProvenanceManager];
-  v9 = [v8 defaultLocalDataProvenance];
-  LOBYTE(a4) = [(HDDataManager *)self insertDataObjects:v6 withProvenance:v9 creationDate:0 skipInsertionFilter:1 updateSourceOrder:0 resolveAssociations:a4 error:CFAbsoluteTimeGetCurrent()];
+  dataProvenanceManager = [WeakRetained dataProvenanceManager];
+  defaultLocalDataProvenance = [dataProvenanceManager defaultLocalDataProvenance];
+  LOBYTE(error) = [(HDDataManager *)self insertDataObjects:objectsCopy withProvenance:defaultLocalDataProvenance creationDate:0 skipInsertionFilter:1 updateSourceOrder:0 resolveAssociations:error error:CFAbsoluteTimeGetCurrent()];
 
-  return a4;
+  return error;
 }
 
 uint64_t __146__HDDataManager_insertDataObjects_withProvenance_creationDate_skipInsertionFilter_updateSourceOrder_resolveAssociations_transactionContext_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -427,11 +427,11 @@ uint64_t __146__HDDataManager_insertDataObjects_withProvenance_creationDate_skip
   return v12;
 }
 
-- (uint64_t)_insertDataObjects:(void *)a3 insertionContext:(void *)a4 lastInsertedIDOut:(void *)a5 error:
+- (uint64_t)_insertDataObjects:(void *)objects insertionContext:(void *)context lastInsertedIDOut:(void *)out error:
 {
   v9 = a2;
-  v10 = a3;
-  dispatch_assert_queue_not_V2(*(a1 + 8));
+  objectsCopy = objects;
+  dispatch_assert_queue_not_V2(*(self + 8));
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -448,7 +448,7 @@ uint64_t __146__HDDataManager_insertDataObjects_withProvenance_creationDate_skip
   v21 = __Block_byref_object_copy__129;
   v22 = __Block_byref_object_dispose__129;
   v23 = 0;
-  WeakRetained = objc_loadWeakRetained((a1 + 120));
+  WeakRetained = objc_loadWeakRetained((self + 120));
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __77__HDDataManager__insertDataObjects_insertionContext_lastInsertedIDOut_error___block_invoke;
@@ -456,12 +456,12 @@ uint64_t __146__HDDataManager_insertDataObjects_withProvenance_creationDate_skip
   v17[4] = &v24;
   v17[5] = &v30;
   v17[6] = &v18;
-  [HDDataEntity insertDataObjects:v9 insertionContext:v10 profile:WeakRetained completionHandler:v17];
+  [HDDataEntity insertDataObjects:v9 insertionContext:objectsCopy profile:WeakRetained completionHandler:v17];
 
   v12 = *(v31 + 24);
   if (v12)
   {
-    *a4 = v25[5];
+    *context = v25[5];
   }
 
   else
@@ -470,10 +470,10 @@ uint64_t __146__HDDataManager_insertDataObjects_withProvenance_creationDate_skip
     v14 = v13;
     if (v13)
     {
-      if (a5)
+      if (out)
       {
         v15 = v13;
-        *a5 = v14;
+        *out = v14;
       }
 
       else
@@ -491,27 +491,27 @@ uint64_t __146__HDDataManager_insertDataObjects_withProvenance_creationDate_skip
   return v12;
 }
 
-- (uint64_t)_updateSourceAndLastAnchorForObjects:(void *)a3 insertionContext:(void *)a4 lastInsertedID:(char)a5 isDatabaseAccessible:(int)a6 shouldUpdateSourceOrder:(void *)a7 error:
+- (uint64_t)_updateSourceAndLastAnchorForObjects:(void *)objects insertionContext:(void *)context lastInsertedID:(char)d isDatabaseAccessible:(int)accessible shouldUpdateSourceOrder:(void *)order error:
 {
   v66 = *MEMORY[0x277D85DE8];
   v45 = a2;
-  v11 = a3;
-  v46 = a4;
-  v42 = v11;
-  v12 = [v11 provenance];
-  WeakRetained = objc_loadWeakRetained((a1 + 120));
-  v14 = [WeakRetained sourceManager];
-  v15 = [v12 sourceID];
-  v16 = [v14 clientSourceForPersistentID:v15 error:a7];
+  objectsCopy = objects;
+  contextCopy = context;
+  v42 = objectsCopy;
+  provenance = [objectsCopy provenance];
+  WeakRetained = objc_loadWeakRetained((self + 120));
+  sourceManager = [WeakRetained sourceManager];
+  sourceID = [provenance sourceID];
+  v16 = [sourceManager clientSourceForPersistentID:sourceID error:order];
 
   if (v16)
   {
     v17 = objc_alloc(MEMORY[0x277CCDA18]);
-    v18 = [v12 sourceVersion];
-    v19 = [v12 productType];
-    if (v12)
+    sourceVersion = [provenance sourceVersion];
+    productType = [provenance productType];
+    if (provenance)
     {
-      [v12 operatingSystemVersion];
+      [provenance operatingSystemVersion];
     }
 
     else
@@ -519,7 +519,7 @@ uint64_t __146__HDDataManager_insertDataObjects_withProvenance_creationDate_skip
       memset(buf, 0, sizeof(buf));
     }
 
-    v44 = [v17 initWithSource:v16 version:v18 productType:v19 operatingSystemVersion:buf];
+    v44 = [v17 initWithSource:v16 version:sourceVersion productType:productType operatingSystemVersion:buf];
   }
 
   else
@@ -527,13 +527,13 @@ uint64_t __146__HDDataManager_insertDataObjects_withProvenance_creationDate_skip
     v44 = 0;
   }
 
-  v20 = [v12 deviceID];
-  if (v20)
+  deviceID = [provenance deviceID];
+  if (deviceID)
   {
-    v21 = objc_loadWeakRetained((a1 + 120));
-    v22 = [v21 deviceManager];
+    v21 = objc_loadWeakRetained((self + 120));
+    deviceManager = [v21 deviceManager];
     v59 = 0;
-    v47 = [v22 deviceForPersistentID:v20 error:&v59];
+    v47 = [deviceManager deviceForPersistentID:deviceID error:&v59];
     v23 = v59;
 
     if (!v47)
@@ -545,7 +545,7 @@ uint64_t __146__HDDataManager_insertDataObjects_withProvenance_creationDate_skip
         if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          *&buf[4] = v20;
+          *&buf[4] = deviceID;
           *&buf[12] = 2114;
           *&buf[14] = v23;
           _os_log_error_impl(&dword_228986000, v24, OS_LOG_TYPE_ERROR, "Failed to look up device %{public}@: %{public}@", buf, 0x16u);
@@ -559,14 +559,14 @@ uint64_t __146__HDDataManager_insertDataObjects_withProvenance_creationDate_skip
     v47 = 0;
   }
 
-  v25 = [v12 contributorReference];
-  v26 = objc_loadWeakRetained((a1 + 120));
-  v27 = [v26 contributorManager];
+  contributorReference = [provenance contributorReference];
+  v26 = objc_loadWeakRetained((self + 120));
+  contributorManager = [v26 contributorManager];
   v58 = 0;
-  v28 = [v27 contributorForReference:v25 error:&v58];
+  v28 = [contributorManager contributorForReference:contributorReference error:&v58];
   v29 = v58;
 
-  if (v28 || (a5 & 1) != 0 || !v29 || ([v29 hk_isDatabaseAccessibilityError] & 1) != 0)
+  if (v28 || (d & 1) != 0 || !v29 || ([v29 hk_isDatabaseAccessibilityError] & 1) != 0)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -574,7 +574,7 @@ uint64_t __146__HDDataManager_insertDataObjects_withProvenance_creationDate_skip
     v63 = __Block_byref_object_copy__129;
     v64 = __Block_byref_object_dispose__129;
     v65 = 0;
-    v30 = *(a1 + 8);
+    v30 = *(self + 8);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __137__HDDataManager__updateSourceAndLastAnchorForObjects_insertionContext_lastInsertedID_isDatabaseAccessible_shouldUpdateSourceOrder_error___block_invoke;
@@ -583,18 +583,18 @@ uint64_t __146__HDDataManager_insertDataObjects_withProvenance_creationDate_skip
     v51 = v44;
     v52 = v47;
     v53 = v28;
-    v54 = a1;
-    v55 = v12;
+    selfCopy = self;
+    v55 = provenance;
     v57 = buf;
-    v56 = v46;
+    v56 = contextCopy;
     dispatch_sync(v30, block);
-    if (v16 && a6)
+    if (v16 && accessible)
     {
-      v31 = objc_loadWeakRetained((a1 + 120));
-      v32 = [v31 sourceOrderManager];
+      v31 = objc_loadWeakRetained((self + 120));
+      sourceOrderManager = [v31 sourceOrderManager];
       v33 = *(*&buf[8] + 40);
       v48 = 0;
-      v34 = [v32 addOrderedSource:v16 objectTypes:v33 error:&v48];
+      v34 = [sourceOrderManager addOrderedSource:v16 objectTypes:v33 error:&v48];
       v35 = v48;
 
       if ((v34 & 1) == 0)
@@ -614,11 +614,11 @@ uint64_t __146__HDDataManager_insertDataObjects_withProvenance_creationDate_skip
     v37 = 1;
   }
 
-  else if (a7)
+  else if (order)
   {
     v40 = v29;
     v37 = 0;
-    *a7 = v29;
+    *order = v29;
   }
 
   else
@@ -631,13 +631,13 @@ uint64_t __146__HDDataManager_insertDataObjects_withProvenance_creationDate_skip
   return v37;
 }
 
-- (void)_notifySynchronousObserversIfPossibleInTransaction:(uint64_t)a1
+- (void)_notifySynchronousObserversIfPossibleInTransaction:(uint64_t)transaction
 {
   v41 = *MEMORY[0x277D85DE8];
   v14 = a2;
-  if (a1)
+  if (transaction)
   {
-    dispatch_assert_queue_not_V2(*(a1 + 8));
+    dispatch_assert_queue_not_V2(*(transaction + 8));
     v36 = 0;
     v37 = &v36;
     v38 = 0x2020000000;
@@ -654,12 +654,12 @@ uint64_t __146__HDDataManager_insertDataObjects_withProvenance_creationDate_skip
     v27 = __Block_byref_object_copy__129;
     v28 = __Block_byref_object_dispose__129;
     v29 = 0;
-    v3 = *(a1 + 8);
+    v3 = *(transaction + 8);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __68__HDDataManager__notifySynchronousObserversIfPossibleInTransaction___block_invoke;
     block[3] = &unk_2786255D0;
-    block[4] = a1;
+    block[4] = transaction;
     block[5] = &v36;
     block[6] = &v30;
     block[7] = &v24;
@@ -690,7 +690,7 @@ uint64_t __146__HDDataManager_insertDataObjects_withProvenance_creationDate_skip
             if (objc_opt_isKindOfClass())
             {
               v10 = v25[5];
-              v11 = *(a1 + 112);
+              v11 = *(transaction + 112);
               if (v10)
               {
                 [v11 samplesAdded:v9 type:v8 anchor:v10 transaction:v14];
@@ -702,11 +702,11 @@ uint64_t __146__HDDataManager_insertDataObjects_withProvenance_creationDate_skip
               }
             }
 
-            os_unfair_lock_lock((a1 + 32));
-            if ([(HDDataManager *)a1 _synchronousObserverLock_hasSynchronousObserverForSampleType:v8])
+            os_unfair_lock_lock((transaction + 32));
+            if ([(HDDataManager *)transaction _synchronousObserverLock_hasSynchronousObserverForSampleType:v8])
             {
-              v12 = [(HDDataManager *)a1 _synchronousObserverLock_synchronousObserverSetForSampleType:v8];
-              os_unfair_lock_unlock((a1 + 32));
+              v12 = [(HDDataManager *)transaction _synchronousObserverLock_synchronousObserverSetForSampleType:v8];
+              os_unfair_lock_unlock((transaction + 32));
               if (v12)
               {
                 v15[0] = MEMORY[0x277D85DD0];
@@ -722,7 +722,7 @@ uint64_t __146__HDDataManager_insertDataObjects_withProvenance_creationDate_skip
 
             else
             {
-              os_unfair_lock_unlock((a1 + 32));
+              os_unfair_lock_unlock((transaction + 32));
             }
           }
 
@@ -909,19 +909,19 @@ void __54__HDDataManager__addTransactionInsertionCommitBlocks___block_invoke_323
   objc_storeStrong(v3, v2);
 }
 
-- (void)shouldNotifyForDataObjects:(id)a3 provenance:(id)a4 database:(id)a5 anchor:(id)a6
+- (void)shouldNotifyForDataObjects:(id)objects provenance:(id)provenance database:(id)database anchor:(id)anchor
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11)
+  objectsCopy = objects;
+  provenanceCopy = provenance;
+  databaseCopy = database;
+  anchorCopy = anchor;
+  if (provenanceCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v15 = [WeakRetained sourceManager];
-    v16 = [v11 sourceID];
+    sourceManager = [WeakRetained sourceManager];
+    sourceID = [provenanceCopy sourceID];
     v30 = 0;
-    v17 = [v15 clientSourceForPersistentID:v16 error:&v30];
+    v17 = [sourceManager clientSourceForPersistentID:sourceID error:&v30];
     v18 = v30;
   }
 
@@ -936,17 +936,17 @@ void __54__HDDataManager__addTransactionInsertionCommitBlocks___block_invoke_323
   v24[2] = __71__HDDataManager_shouldNotifyForDataObjects_provenance_database_anchor___block_invoke;
   v24[3] = &unk_278625448;
   v24[4] = self;
-  v25 = v13;
+  v25 = anchorCopy;
   v26 = v17;
   v27 = v18;
-  v28 = v11;
-  v29 = v10;
-  v19 = v10;
-  v20 = v11;
+  v28 = provenanceCopy;
+  v29 = objectsCopy;
+  v19 = objectsCopy;
+  v20 = provenanceCopy;
   v21 = v18;
   v22 = v17;
-  v23 = v13;
-  [v12 onCommit:v24 orRollback:0];
+  v23 = anchorCopy;
+  [databaseCopy onCommit:v24 orRollback:0];
 }
 
 void __71__HDDataManager_shouldNotifyForDataObjects_provenance_database_anchor___block_invoke(uint64_t a1)
@@ -1207,27 +1207,27 @@ void __97__HDDataManager_shouldNotifyForDeletedSamplesOfTypes_intervals_userRequ
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_shouldNotifyForDeletedSamplesOfTypes:(void *)a3 intervals:(char)a4 userRequested:(void *)a5 anchor:
+- (void)_shouldNotifyForDeletedSamplesOfTypes:(void *)types intervals:(char)intervals userRequested:(void *)requested anchor:
 {
   v26 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = a5;
-  if (a1)
+  typesCopy = types;
+  requestedCopy = requested;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 120));
-    v13 = [WeakRetained database];
+    WeakRetained = objc_loadWeakRetained((self + 120));
+    database = [WeakRetained database];
     v23 = 0;
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __86__HDDataManager__shouldNotifyForDeletedSamplesOfTypes_intervals_userRequested_anchor___block_invoke;
     v18[3] = &unk_278621B40;
-    v18[4] = a1;
+    v18[4] = self;
     v19 = v9;
-    v20 = v10;
-    v22 = a4;
-    v21 = v11;
-    v14 = [(HDHealthEntity *)HDDataEntity performWriteTransactionWithHealthDatabase:v13 error:&v23 block:v18];
+    v20 = typesCopy;
+    intervalsCopy = intervals;
+    v21 = requestedCopy;
+    v14 = [(HDHealthEntity *)HDDataEntity performWriteTransactionWithHealthDatabase:database error:&v23 block:v18];
     v15 = v23;
 
     if (!v14)
@@ -1563,11 +1563,11 @@ void __73__HDDataManager__notifyObserversWithAddedObjectsBySampleType_lastAnchor
   v64 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_observersForDataType:(void *)a1
+- (void)_observersForDataType:(void *)type
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (type)
   {
     v10 = 0;
     v11 = &v10;
@@ -1575,54 +1575,54 @@ void __73__HDDataManager__notifyObserversWithAddedObjectsBySampleType_lastAnchor
     v13 = __Block_byref_object_copy__129;
     v14 = __Block_byref_object_dispose__129;
     v15 = 0;
-    v5 = a1[1];
+    v5 = type[1];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __39__HDDataManager__observersForDataType___block_invoke;
     block[3] = &unk_27861F190;
     v9 = &v10;
-    block[4] = a1;
+    block[4] = type;
     v8 = v3;
     dispatch_sync(v5, block);
-    a1 = v11[5];
+    type = v11[5];
 
     _Block_object_dispose(&v10, 8);
   }
 
-  return a1;
+  return type;
 }
 
-- (BOOL)deleteObjectsWithUUIDCollection:(id)a3 configuration:(id)a4 error:(id *)a5
+- (BOOL)deleteObjectsWithUUIDCollection:(id)collection configuration:(id)configuration error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 entityClass];
-  if (!v10)
+  collectionCopy = collection;
+  configurationCopy = configuration;
+  entityClass = [configurationCopy entityClass];
+  if (!entityClass)
   {
-    v10 = objc_opt_class();
+    entityClass = objc_opt_class();
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v12 = [WeakRetained database];
+  database = [WeakRetained database];
   v13 = +[HDDatabaseTransactionContext contextForWritingProtectedData];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __69__HDDataManager_deleteObjectsWithUUIDCollection_configuration_error___block_invoke;
   v22[3] = &unk_2786254C0;
-  v23 = v9;
-  v24 = self;
-  v26 = v10;
-  v25 = v8;
+  v23 = configurationCopy;
+  selfCopy = self;
+  v26 = entityClass;
+  v25 = collectionCopy;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __69__HDDataManager_deleteObjectsWithUUIDCollection_configuration_error___block_invoke_5;
   v18[3] = &unk_2786219B0;
   v19 = v23;
   v20 = v25;
-  v21 = self;
+  selfCopy2 = self;
   v14 = v25;
   v15 = v23;
-  v16 = [v12 performTransactionWithContext:v13 error:a5 block:v22 inaccessibilityHandler:v18];
+  v16 = [database performTransactionWithContext:v13 error:error block:v22 inaccessibilityHandler:v18];
 
   return v16;
 }
@@ -1880,14 +1880,14 @@ void __115__HDDataManager_deleteDataObjects_restrictedSourceEntities_failIfNotFo
   }
 }
 
-- (BOOL)deleteDataObjectsOfClass:(Class)a3 predicate:(id)a4 limit:(unint64_t)a5 deletedSampleCount:(unint64_t *)a6 notifyObservers:(BOOL)a7 generateDeletedObjects:(BOOL)a8 userRequested:(BOOL)a9 recursiveDeleteAuthorizationBlock:(id)a10 error:(id *)a11
+- (BOOL)deleteDataObjectsOfClass:(Class)class predicate:(id)predicate limit:(unint64_t)limit deletedSampleCount:(unint64_t *)count notifyObservers:(BOOL)observers generateDeletedObjects:(BOOL)objects userRequested:(BOOL)requested recursiveDeleteAuthorizationBlock:(id)self0 error:(id *)self1
 {
-  v15 = a4;
-  v16 = a10;
-  if (!v15)
+  predicateCopy = predicate;
+  blockCopy = block;
+  if (!predicateCopy)
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"HDDataManager.m" lineNumber:844 description:{@"Invalid parameter not satisfying: %@", @"predicate != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDataManager.m" lineNumber:844 description:{@"Invalid parameter not satisfying: %@", @"predicate != nil"}];
   }
 
   v47[0] = 0;
@@ -1909,30 +1909,30 @@ void __115__HDDataManager_deleteDataObjects_restrictedSourceEntities_failIfNotFo
   v43[4] = __Block_byref_object_dispose__129;
   v44 = 0;
   v17 = MEMORY[0x277D10B20];
-  v18 = HDDataEntityPredicateForType([(objc_class *)a3 preferredEntityType]);
-  v19 = [v17 compoundPredicateWithPredicate:v15 otherPredicate:v18];
+  v18 = HDDataEntityPredicateForType([(objc_class *)class preferredEntityType]);
+  v19 = [v17 compoundPredicateWithPredicate:predicateCopy otherPredicate:v18];
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v21 = [WeakRetained database];
+  database = [WeakRetained database];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __170__HDDataManager_deleteDataObjectsOfClass_predicate_limit_deletedSampleCount_notifyObservers_generateDeletedObjects_userRequested_recursiveDeleteAuthorizationBlock_error___block_invoke;
   v30[3] = &unk_278625558;
-  v37 = a3;
+  classCopy = class;
   v22 = v19;
-  v38 = a5;
-  v40 = a8;
+  limitCopy = limit;
+  objectsCopy = objects;
   v31 = v22;
-  v32 = self;
-  v23 = v16;
+  selfCopy = self;
+  v23 = blockCopy;
   v33 = v23;
   v34 = v47;
-  v39 = a6;
+  countCopy = count;
   v35 = v45;
   v36 = v43;
-  v41 = a7;
-  v42 = a9;
-  v24 = [(objc_class *)a3 performWriteTransactionWithHealthDatabase:v21 error:a11 block:v30];
+  observersCopy = observers;
+  requestedCopy = requested;
+  v24 = [(objc_class *)class performWriteTransactionWithHealthDatabase:database error:error block:v30];
 
   _Block_object_dispose(v43, 8);
   _Block_object_dispose(v45, 8);
@@ -2041,25 +2041,25 @@ void __170__HDDataManager_deleteDataObjectsOfClass_predicate_limit_deletedSample
   *(v24 + 40) = v16;
 }
 
-- (BOOL)deleteSamplesWithTypes:(id)a3 sourceBundleIdentifier:(id)a4 userRequested:(BOOL)a5 recursiveDeleteAuthorizationBlock:(id)a6 error:(id *)a7
+- (BOOL)deleteSamplesWithTypes:(id)types sourceBundleIdentifier:(id)identifier userRequested:(BOOL)requested recursiveDeleteAuthorizationBlock:(id)block error:(id *)error
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a4;
-  if (![v13 count])
+  typesCopy = types;
+  blockCopy = block;
+  identifierCopy = identifier;
+  if (![typesCopy count])
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"HDDataManager.m" lineNumber:900 description:{@"Invalid parameter not satisfying: %@", @"[sampleTypes count] > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDataManager.m" lineNumber:900 description:{@"Invalid parameter not satisfying: %@", @"[sampleTypes count] > 0"}];
   }
 
-  v16 = [MEMORY[0x277CBEB98] setWithArray:v13];
+  v16 = [MEMORY[0x277CBEB98] setWithArray:typesCopy];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v18 = [WeakRetained sourceManager];
-  v19 = [v18 allSourcesForBundleIdentifier:v15 error:a7];
+  sourceManager = [WeakRetained sourceManager];
+  v19 = [sourceManager allSourcesForBundleIdentifier:identifierCopy error:error];
 
   if (v19)
   {
-    v20 = [(HDDataManager *)self _deleteObjectsWithTypes:v16 sourceEntities:v19 recursiveDeleteAuthorizationBlock:v14 userRequested:a5 error:a7];
+    v20 = [(HDDataManager *)self _deleteObjectsWithTypes:v16 sourceEntities:v19 recursiveDeleteAuthorizationBlock:blockCopy userRequested:requested error:error];
   }
 
   else
@@ -2070,13 +2070,13 @@ void __170__HDDataManager_deleteDataObjectsOfClass_predicate_limit_deletedSample
   return v20;
 }
 
-- (uint64_t)_deleteObjectsWithTypes:(void *)a3 sourceEntities:(void *)a4 recursiveDeleteAuthorizationBlock:(char)a5 userRequested:(void *)a6 error:
+- (uint64_t)_deleteObjectsWithTypes:(void *)types sourceEntities:(void *)entities recursiveDeleteAuthorizationBlock:(char)block userRequested:(void *)requested error:
 {
   v44 = *MEMORY[0x277D85DE8];
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  if (a1)
+  typesCopy = types;
+  entitiesCopy = entities;
+  if (self)
   {
     v36 = 0;
     v37 = &v36;
@@ -2096,32 +2096,32 @@ void __170__HDDataManager_deleteDataObjectsOfClass_predicate_limit_deletedSample
       *buf = 134218242;
       v41 = v15;
       v42 = 2112;
-      v43 = v12;
+      v43 = typesCopy;
       _os_log_impl(&dword_228986000, v14, OS_LOG_TYPE_DEFAULT, "Deleting %lu object types for sources: %@", buf, 0x16u);
     }
 
-    v16 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:a1 activityName:@"DeleteObjectsForSources"];
-    WeakRetained = objc_loadWeakRetained((a1 + 120));
+    v16 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:self activityName:@"DeleteObjectsForSources"];
+    WeakRetained = objc_loadWeakRetained((self + 120));
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __110__HDDataManager__deleteObjectsWithTypes_sourceEntities_recursiveDeleteAuthorizationBlock_userRequested_error___block_invoke;
     v25[3] = &unk_2786255A8;
     v27 = &v36;
     v28 = &v30;
-    v25[4] = a1;
-    v29 = a5;
+    v25[4] = self;
+    blockCopy = block;
     v18 = v16;
     v26 = v18;
-    [HDSampleEntity deleteSamplesWithTypes:v11 sourceEntities:v12 profile:WeakRetained recursiveDeleteAuthorizationBlock:v13 completionHandler:v25];
+    [HDSampleEntity deleteSamplesWithTypes:v11 sourceEntities:typesCopy profile:WeakRetained recursiveDeleteAuthorizationBlock:entitiesCopy completionHandler:v25];
 
     v19 = v31[5];
     v20 = v19;
     if (v19)
     {
-      if (a6)
+      if (requested)
       {
         v21 = v19;
-        *a6 = v20;
+        *requested = v20;
       }
 
       else
@@ -2145,38 +2145,38 @@ void __170__HDDataManager_deleteDataObjectsOfClass_predicate_limit_deletedSample
   return v22 & 1;
 }
 
-- (BOOL)deleteSamplesWithSourceEntities:(id)a3 error:(id *)a4
+- (BOOL)deleteSamplesWithSourceEntities:(id)entities error:(id *)error
 {
-  v6 = a3;
-  if ([v6 count])
+  entitiesCopy = entities;
+  if ([entitiesCopy count])
   {
-    v7 = [(HDDataManager *)self _deleteObjectsWithTypes:v6 sourceEntities:0 recursiveDeleteAuthorizationBlock:0 userRequested:a4 error:?];
+    v7 = [(HDDataManager *)self _deleteObjectsWithTypes:entitiesCopy sourceEntities:0 recursiveDeleteAuthorizationBlock:0 userRequested:error error:?];
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"Must provide at least one source entity for deletion."];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Must provide at least one source entity for deletion."];
     v7 = 0;
   }
 
   return v7;
 }
 
-- (BOOL)deleteSamplesWithUUIDs:(id)a3 userRequested:(BOOL)a4 recursiveDeleteAuthorizationBlock:(id)a5 error:(id *)a6
+- (BOOL)deleteSamplesWithUUIDs:(id)ds userRequested:(BOOL)requested recursiveDeleteAuthorizationBlock:(id)block error:(id *)error
 {
-  v11 = a5;
-  v12 = a3;
-  if (![v12 count])
+  blockCopy = block;
+  dsCopy = ds;
+  if (![dsCopy count])
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"HDDataManager.m" lineNumber:949 description:{@"Invalid parameter not satisfying: %@", @"[uuids count] > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDataManager.m" lineNumber:949 description:{@"Invalid parameter not satisfying: %@", @"[uuids count] > 0"}];
   }
 
   v13 = objc_opt_class();
-  v14 = HDDataEntityPredicateForDataUUIDs(v12);
+  v14 = HDDataEntityPredicateForDataUUIDs(dsCopy);
 
-  LOBYTE(v18) = a4;
-  v15 = [(HDDataManager *)self deleteDataObjectsOfClass:v13 predicate:v14 limit:0 deletedSampleCount:0 notifyObservers:1 generateDeletedObjects:1 userRequested:v18 recursiveDeleteAuthorizationBlock:v11 error:a6];
+  LOBYTE(v18) = requested;
+  v15 = [(HDDataManager *)self deleteDataObjectsOfClass:v13 predicate:v14 limit:0 deletedSampleCount:0 notifyObservers:1 generateDeletedObjects:1 userRequested:v18 recursiveDeleteAuthorizationBlock:blockCopy error:error];
 
   return v15;
 }
@@ -2223,23 +2223,23 @@ void __110__HDDataManager__deleteObjectsWithTypes_sourceEntities_recursiveDelete
   [*(a1 + 40) invalidate];
 }
 
-- (BOOL)containsDataObject:(id)a3
+- (BOOL)containsDataObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained database];
+  database = [WeakRetained database];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __36__HDDataManager_containsDataObject___block_invoke;
   v9[3] = &unk_278614110;
-  v7 = v4;
+  v7 = objectCopy;
   v10 = v7;
   v11 = &v12;
-  [(HDHealthEntity *)HDDataEntity performReadTransactionWithHealthDatabase:v6 error:0 block:v9];
+  [(HDHealthEntity *)HDDataEntity performReadTransactionWithHealthDatabase:database error:0 block:v9];
 
   LOBYTE(WeakRetained) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
@@ -2258,18 +2258,18 @@ uint64_t __36__HDDataManager_containsDataObject___block_invoke(uint64_t a1, void
   return 1;
 }
 
-- (int64_t)hasSampleWithBundleIdentifier:(id)a3 error:(id *)a4
+- (int64_t)hasSampleWithBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained sourceManager];
-  v9 = [v8 allSourcesForBundleIdentifier:v6 error:a4];
+  sourceManager = [WeakRetained sourceManager];
+  v9 = [sourceManager allSourcesForBundleIdentifier:identifierCopy error:error];
 
   if (v9)
   {
     v10 = [v9 hk_map:&__block_literal_global_407];
     v11 = objc_loadWeakRetained(&self->_profile);
-    v12 = [HDDataProvenanceEntity sourceIDsWithProvenanceFromSourceIDs:v10 profile:v11 error:a4];
+    v12 = [HDDataProvenanceEntity sourceIDsWithProvenanceFromSourceIDs:v10 profile:v11 error:error];
 
     if (v12)
     {
@@ -2306,17 +2306,17 @@ uint64_t __53__HDDataManager_hasSampleWithBundleIdentifier_error___block_invoke(
   return [v2 numberWithLongLong:v3];
 }
 
-- (void)addObserverForAllTypes:(id)a3
+- (void)addObserverForAllTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__HDDataManager_addObserverForAllTypes___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = typesCopy;
+  v6 = typesCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -2326,12 +2326,12 @@ void __40__HDDataManager_addObserverForAllTypes___block_invoke(uint64_t a1)
   [v2 addObject:*(a1 + 40)];
 }
 
-- (id)_queue_observersAllTypesCreateIfNil:(uint64_t)a1
+- (id)_queue_observersAllTypesCreateIfNil:(uint64_t)nil
 {
-  if (a1)
+  if (nil)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-    v5 = [(HDDataManager *)a1 _queue_observersForKey:v4 createIfNil:a2];
+    v5 = [(HDDataManager *)nil _queue_observersForKey:v4 createIfNil:a2];
   }
 
   else
@@ -2342,17 +2342,17 @@ void __40__HDDataManager_addObserverForAllTypes___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)removeObserverForAllTypes:(id)a3
+- (void)removeObserverForAllTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__HDDataManager_removeObserverForAllTypes___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = typesCopy;
+  v6 = typesCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -2362,20 +2362,20 @@ void __43__HDDataManager_removeObserverForAllTypes___block_invoke(uint64_t a1)
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)addObserver:(id)a3 forDataType:(id)a4
+- (void)addObserver:(id)observer forDataType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  typeCopy = type;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__HDDataManager_addObserver_forDataType___block_invoke;
   block[3] = &unk_278613830;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = typeCopy;
+  v13 = observerCopy;
+  v9 = observerCopy;
+  v10 = typeCopy;
   dispatch_sync(queue, block);
 }
 
@@ -2385,18 +2385,18 @@ void __41__HDDataManager_addObserver_forDataType___block_invoke(uint64_t a1)
   [v2 addObject:*(a1 + 48)];
 }
 
-- (id)_queue_observersForDataType:(int)a3 createIfNil:
+- (id)_queue_observersForDataType:(int)type createIfNil:
 {
-  if (a1)
+  if (self)
   {
-    v5 = *(a1 + 8);
+    v5 = *(self + 8);
     v6 = a2;
     dispatch_assert_queue_V2(v5);
     v7 = MEMORY[0x277CCABB0];
-    v8 = [v6 code];
+    code = [v6 code];
 
-    v9 = [v7 numberWithInteger:v8];
-    v10 = [(HDDataManager *)a1 _queue_observersForKey:v9 createIfNil:a3];
+    v9 = [v7 numberWithInteger:code];
+    v10 = [(HDDataManager *)self _queue_observersForKey:v9 createIfNil:type];
   }
 
   else
@@ -2407,20 +2407,20 @@ void __41__HDDataManager_addObserver_forDataType___block_invoke(uint64_t a1)
   return v10;
 }
 
-- (void)removeObserver:(id)a3 forDataType:(id)a4
+- (void)removeObserver:(id)observer forDataType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  typeCopy = type;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__HDDataManager_removeObserver_forDataType___block_invoke;
   block[3] = &unk_278613830;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = typeCopy;
+  v13 = observerCopy;
+  v9 = observerCopy;
+  v10 = typeCopy;
   dispatch_sync(queue, block);
 }
 
@@ -2430,36 +2430,36 @@ void __44__HDDataManager_removeObserver_forDataType___block_invoke(uint64_t a1)
   [v2 removeObject:*(a1 + 48)];
 }
 
-- (id)_queue_observersForKey:(int)a3 createIfNil:
+- (id)_queue_observersForKey:(int)key createIfNil:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    v6 = [*(a1 + 24) objectForKey:v5];
-    if (v6)
+    dispatch_assert_queue_V2(*(self + 8));
+    weakObjectsHashTable = [*(self + 24) objectForKey:v5];
+    if (weakObjectsHashTable)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = a3 == 0;
+      v7 = key == 0;
     }
 
     if (!v7)
     {
-      v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-      [*(a1 + 24) setObject:v6 forKey:v5];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      [*(self + 24) setObject:weakObjectsHashTable forKey:v5];
     }
   }
 
   else
   {
-    v6 = 0;
+    weakObjectsHashTable = 0;
   }
 
-  return v6;
+  return weakObjectsHashTable;
 }
 
 void __39__HDDataManager__observersForDataType___block_invoke(uint64_t a1)
@@ -2471,26 +2471,26 @@ void __39__HDDataManager__observersForDataType___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)_synchronousObserverLock_synchronousObserverSetForSampleType:(uint64_t)a1
+- (id)_synchronousObserverLock_synchronousObserverSetForSampleType:(uint64_t)type
 {
   v3 = a2;
-  if (a1)
+  if (type)
   {
-    os_unfair_lock_assert_owner((a1 + 32));
+    os_unfair_lock_assert_owner((type + 32));
     if (!v3)
     {
-      v11 = [MEMORY[0x277CCA890] currentHandler];
-      [v11 handleFailureInMethod:sel__synchronousObserverLock_synchronousObserverSetForSampleType_ object:a1 file:@"HDDataManager.m" lineNumber:1133 description:{@"Invalid parameter not satisfying: %@", @"sampleType"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel__synchronousObserverLock_synchronousObserverSetForSampleType_ object:type file:@"HDDataManager.m" lineNumber:1133 description:{@"Invalid parameter not satisfying: %@", @"sampleType"}];
     }
 
-    v4 = *(a1 + 40);
+    v4 = *(type + 40);
     if (!v4)
     {
       v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v6 = *(a1 + 40);
-      *(a1 + 40) = v5;
+      v6 = *(type + 40);
+      *(type + 40) = v5;
 
-      v4 = *(a1 + 40);
+      v4 = *(type + 40);
     }
 
     v7 = [v4 objectForKeyedSubscript:v3];
@@ -2501,7 +2501,7 @@ void __39__HDDataManager__observersForDataType___block_invoke(uint64_t a1)
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"data-observers-synchronous-%@", v3];
       v7 = [v8 initWithName:v9 loggingCategory:*MEMORY[0x277CCC2A0]];
 
-      [*(a1 + 40) setObject:v7 forKeyedSubscript:v3];
+      [*(type + 40) setObject:v7 forKeyedSubscript:v3];
     }
   }
 
@@ -2513,63 +2513,63 @@ void __39__HDDataManager__observersForDataType___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (BOOL)_synchronousObserverLock_hasSynchronousObserverForSampleType:(uint64_t)a1
+- (BOOL)_synchronousObserverLock_hasSynchronousObserverForSampleType:(uint64_t)type
 {
   v3 = a2;
-  os_unfair_lock_assert_owner((a1 + 32));
+  os_unfair_lock_assert_owner((type + 32));
   if (!v3)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:sel__synchronousObserverLock_hasSynchronousObserverForSampleType_ object:a1 file:@"HDDataManager.m" lineNumber:1152 description:{@"Invalid parameter not satisfying: %@", @"sampleType"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__synchronousObserverLock_hasSynchronousObserverForSampleType_ object:type file:@"HDDataManager.m" lineNumber:1152 description:{@"Invalid parameter not satisfying: %@", @"sampleType"}];
   }
 
-  v4 = [*(a1 + 40) objectForKeyedSubscript:v3];
+  v4 = [*(type + 40) objectForKeyedSubscript:v3];
   v5 = [v4 count];
 
   return v5 != 0;
 }
 
-- (void)addSynchronousObserver:(id)a3 forSampleType:(id)a4
+- (void)addSynchronousObserver:(id)observer forSampleType:(id)type
 {
-  v11 = a3;
-  v7 = a4;
-  if (!v7)
+  observerCopy = observer;
+  typeCopy = type;
+  if (!typeCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"HDDataManager.m" lineNumber:1159 description:{@"Invalid parameter not satisfying: %@", @"sampleType"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDataManager.m" lineNumber:1159 description:{@"Invalid parameter not satisfying: %@", @"sampleType"}];
   }
 
-  if (!v11)
+  if (!observerCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"HDDataManager.m" lineNumber:1160 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDDataManager.m" lineNumber:1160 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
   }
 
   os_unfair_lock_lock(&self->_synchronousObserverLock);
-  v8 = [(HDDataManager *)self _synchronousObserverLock_synchronousObserverSetForSampleType:v7];
-  [v8 registerObserver:v11];
+  v8 = [(HDDataManager *)self _synchronousObserverLock_synchronousObserverSetForSampleType:typeCopy];
+  [v8 registerObserver:observerCopy];
   os_unfair_lock_unlock(&self->_synchronousObserverLock);
 }
 
-- (void)removeSynchronousObserver:(id)a3 forSampleType:(id)a4
+- (void)removeSynchronousObserver:(id)observer forSampleType:(id)type
 {
-  v11 = a3;
-  v7 = a4;
-  if (!v7)
+  observerCopy = observer;
+  typeCopy = type;
+  if (!typeCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"HDDataManager.m" lineNumber:1170 description:{@"Invalid parameter not satisfying: %@", @"sampleType"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDataManager.m" lineNumber:1170 description:{@"Invalid parameter not satisfying: %@", @"sampleType"}];
   }
 
-  if (!v11)
+  if (!observerCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"HDDataManager.m" lineNumber:1171 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDDataManager.m" lineNumber:1171 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
   }
 
   os_unfair_lock_lock(&self->_synchronousObserverLock);
-  v8 = [(HDDataManager *)self _synchronousObserverLock_synchronousObserverSetForSampleType:v7];
-  [v8 unregisterObserver:v11];
+  v8 = [(HDDataManager *)self _synchronousObserverLock_synchronousObserverSetForSampleType:typeCopy];
+  [v8 unregisterObserver:observerCopy];
   os_unfair_lock_unlock(&self->_synchronousObserverLock);
 }
 
@@ -2661,59 +2661,59 @@ void __85__HDDataManager__notifySynchronousObserversForDeletedObjectTypes_anchor
   dispatch_sync(notificationQueue, &__block_literal_global_430_0);
 }
 
-- (void)setBackgroundObserverFrequency:(id)a3 forDataType:(id)a4 frequency:(int64_t)a5 appSDKVersionToken:(unint64_t)a6 completion:(id)a7
+- (void)setBackgroundObserverFrequency:(id)frequency forDataType:(id)type frequency:(int64_t)a5 appSDKVersionToken:(unint64_t)token completion:(id)completion
 {
   v50[3] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [v12 process];
-  v16 = [v15 applicationIdentifier];
+  frequencyCopy = frequency;
+  typeCopy = type;
+  completionCopy = completion;
+  process = [frequencyCopy process];
+  applicationIdentifier = [process applicationIdentifier];
 
-  if (v13)
+  if (typeCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v18 = [WeakRetained daemon];
-    v19 = [v18 behavior];
-    v20 = [v13 clampedBackgroundObservationFrequency:a5 isAppleWatch:{objc_msgSend(v19, "isAppleWatch")}];
+    daemon = [WeakRetained daemon];
+    behavior = [daemon behavior];
+    v20 = [typeCopy clampedBackgroundObservationFrequency:a5 isAppleWatch:{objc_msgSend(behavior, "isAppleWatch")}];
 
     if (v20 <= 1)
     {
       if (!v20)
       {
 LABEL_20:
-        v32 = self;
-        v33 = [v13 code];
+        selfCopy = self;
+        code = [typeCopy code];
         v34 = kHDEventNameBGDelivery;
         v41[0] = @"action";
         v41[1] = @"code";
         v42[0] = @"removeSubscription";
-        v35 = [MEMORY[0x277CCABB0] numberWithInteger:v33];
+        v35 = [MEMORY[0x277CCABB0] numberWithInteger:code];
         v42[1] = v35;
         v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:v41 count:2];
-        HDPowerLogForClient(v34, v12, v36);
+        HDPowerLogForClient(v34, frequencyCopy, v36);
 
         _HKInitializeLogging();
         v37 = *MEMORY[0x277CCC288];
         if (os_log_type_enabled(*MEMORY[0x277CCC288], OS_LOG_TYPE_INFO))
         {
           *buf = 134218242;
-          v44 = v33;
+          v44 = code;
           v45 = 2112;
-          v46 = v16;
+          v46 = applicationIdentifier;
           _os_log_impl(&dword_228986000, v37, OS_LOG_TYPE_INFO, "Disabling background delivery of %lu for '%@'", buf, 0x16u);
         }
 
-        v23 = objc_loadWeakRetained(&v32->_profile);
-        v24 = [v23 appSubscriptionManager];
-        [v24 removeSubscriptionForBundleID:v16 dataCode:v33];
+        v23 = objc_loadWeakRetained(&selfCopy->_profile);
+        appSubscriptionManager = [v23 appSubscriptionManager];
+        [appSubscriptionManager removeSubscriptionForBundleID:applicationIdentifier dataCode:code];
         goto LABEL_23;
       }
 
       if (v20 == 1)
       {
-        v40 = self;
-        v21 = [v13 code];
+        selfCopy5 = self;
+        code2 = [typeCopy code];
         goto LABEL_15;
       }
     }
@@ -2723,21 +2723,21 @@ LABEL_20:
       switch(v20)
       {
         case 4:
-          v40 = self;
+          selfCopy5 = self;
           v20 = 604800;
-          v21 = [v13 code];
+          code2 = [typeCopy code];
           goto LABEL_15;
         case 3:
-          v40 = self;
+          selfCopy5 = self;
           v20 = 86400;
-          v21 = [v13 code];
+          code2 = [typeCopy code];
           goto LABEL_15;
         case 2:
-          v40 = self;
+          selfCopy5 = self;
           v20 = 3600;
-          v21 = [v13 code];
+          code2 = [typeCopy code];
 LABEL_15:
-          v25 = v21;
+          v25 = code2;
           v26 = kHDEventNameBGDelivery;
           v50[0] = @"subscribe";
           v49[0] = @"action";
@@ -2748,7 +2748,7 @@ LABEL_15:
           v28 = [MEMORY[0x277CCABB0] numberWithInteger:v25];
           v50[2] = v28;
           v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v49 count:3];
-          HDPowerLogForClient(v26, v12, v29);
+          HDPowerLogForClient(v26, frequencyCopy, v29);
 
           _HKInitializeLogging();
           v30 = *MEMORY[0x277CCC288];
@@ -2757,15 +2757,15 @@ LABEL_15:
             *buf = 134218498;
             v44 = v25;
             v45 = 2112;
-            v46 = v16;
+            v46 = applicationIdentifier;
             v47 = 2048;
             v48 = v20;
             _os_log_impl(&dword_228986000, v30, OS_LOG_TYPE_INFO, "Requesting to set background delivery frequency of %lu for '%@' to %llu seconds", buf, 0x20u);
           }
 
-          v23 = objc_loadWeakRetained(&v40->_profile);
-          v24 = [v23 appSubscriptionManager];
-          [v24 subscribeForBundleID:v16 dataCode:objc_msgSend(v13 frequencyInSeconds:"code") appSDKVersionToken:{v20, v39}];
+          v23 = objc_loadWeakRetained(&selfCopy5->_profile);
+          appSubscriptionManager = [v23 appSubscriptionManager];
+          [appSubscriptionManager subscribeForBundleID:applicationIdentifier dataCode:objc_msgSend(typeCopy frequencyInSeconds:"code") appSDKVersionToken:{v20, v39}];
           goto LABEL_23;
       }
     }
@@ -2787,18 +2787,18 @@ LABEL_15:
   if (os_log_type_enabled(*MEMORY[0x277CCC288], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v44 = v16;
+    v44 = applicationIdentifier;
     _os_log_impl(&dword_228986000, v22, OS_LOG_TYPE_INFO, "Disabling all background delivery for '%@'", buf, 0xCu);
   }
 
   v23 = objc_loadWeakRetained(&self->_profile);
-  v24 = [v23 appSubscriptionManager];
-  [v24 removeBundleID:v16];
+  appSubscriptionManager = [v23 appSubscriptionManager];
+  [appSubscriptionManager removeBundleID:applicationIdentifier];
 LABEL_23:
 
-  if (v14)
+  if (completionCopy)
   {
-    v14[2](v14);
+    completionCopy[2](completionCopy);
   }
 
   v38 = *MEMORY[0x277D85DE8];
@@ -2849,15 +2849,15 @@ LABEL_23:
 
         v13 = *(*(&v29 + 1) + 8 * i);
         v14 = [v9 objectForKeyedSubscript:v13];
-        v15 = [v13 identifier];
-        [v5 appendFormat:@"\n\t%@ %ld (%lu):", v15, objc_msgSend(v13, "code"), objc_msgSend(v14, "count")];
+        identifier = [v13 identifier];
+        [v5 appendFormat:@"\n\t%@ %ld (%lu):", identifier, objc_msgSend(v13, "code"), objc_msgSend(v14, "count")];
 
         v27 = 0u;
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v16 = [v14 allObservers];
-        v17 = [v16 countByEnumeratingWithState:&v25 objects:v35 count:16];
+        allObservers = [v14 allObservers];
+        v17 = [allObservers countByEnumeratingWithState:&v25 objects:v35 count:16];
         if (v17)
         {
           v18 = v17;
@@ -2868,13 +2868,13 @@ LABEL_23:
             {
               if (*v26 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(allObservers);
               }
 
               [v5 appendFormat:@"\n\t\t%@", *(*(&v25 + 1) + 8 * j)];
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v25 objects:v35 count:16];
+            v18 = [allObservers countByEnumeratingWithState:&v25 objects:v35 count:16];
           }
 
           while (v18);

@@ -1,25 +1,25 @@
 @interface SHManagedSessionCustomCatalogMatcher
-- (SHManagedSessionCustomCatalogMatcher)initWithCustomCatalog:(id)a3;
+- (SHManagedSessionCustomCatalogMatcher)initWithCustomCatalog:(id)catalog;
 - (SHMatcherDelegate)delegate;
-- (void)matcher:(id)a3 didProduceResponse:(id)a4;
-- (void)startRecognitionForRequest:(id)a3;
+- (void)matcher:(id)matcher didProduceResponse:(id)response;
+- (void)startRecognitionForRequest:(id)request;
 - (void)stopRecognition;
-- (void)stopRecognitionForRequestID:(id)a3;
+- (void)stopRecognitionForRequestID:(id)d;
 @end
 
 @implementation SHManagedSessionCustomCatalogMatcher
 
-- (SHManagedSessionCustomCatalogMatcher)initWithCustomCatalog:(id)a3
+- (SHManagedSessionCustomCatalogMatcher)initWithCustomCatalog:(id)catalog
 {
-  v4 = a3;
+  catalogCopy = catalog;
   v9.receiver = self;
   v9.super_class = SHManagedSessionCustomCatalogMatcher;
   v5 = [(SHManagedSessionCustomCatalogMatcher *)&v9 init];
   if (v5)
   {
-    v6 = [v4 _createMatcher];
+    _createMatcher = [catalogCopy _createMatcher];
     customCatalogMatcher = v5->_customCatalogMatcher;
-    v5->_customCatalogMatcher = v6;
+    v5->_customCatalogMatcher = _createMatcher;
 
     [(SHMatcher *)v5->_customCatalogMatcher setDelegate:v5];
   }
@@ -27,49 +27,49 @@
   return v5;
 }
 
-- (void)startRecognitionForRequest:(id)a3
+- (void)startRecognitionForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 requestID];
+  requestCopy = request;
+  requestID = [requestCopy requestID];
   currentRequestID = self->_currentRequestID;
-  self->_currentRequestID = v5;
+  self->_currentRequestID = requestID;
 
-  v7 = [(SHManagedSessionCustomCatalogMatcher *)self customCatalogMatcher];
-  [v7 startRecognitionForRequest:v4];
+  customCatalogMatcher = [(SHManagedSessionCustomCatalogMatcher *)self customCatalogMatcher];
+  [customCatalogMatcher startRecognitionForRequest:requestCopy];
 }
 
 - (void)stopRecognition
 {
-  v2 = [(SHManagedSessionCustomCatalogMatcher *)self customCatalogMatcher];
-  [v2 stopRecognition];
+  customCatalogMatcher = [(SHManagedSessionCustomCatalogMatcher *)self customCatalogMatcher];
+  [customCatalogMatcher stopRecognition];
 }
 
-- (void)stopRecognitionForRequestID:(id)a3
+- (void)stopRecognitionForRequestID:(id)d
 {
-  v4 = a3;
-  v5 = [(SHManagedSessionCustomCatalogMatcher *)self customCatalogMatcher];
-  [v5 stopRecognitionForRequestID:v4];
+  dCopy = d;
+  customCatalogMatcher = [(SHManagedSessionCustomCatalogMatcher *)self customCatalogMatcher];
+  [customCatalogMatcher stopRecognitionForRequestID:dCopy];
 }
 
-- (void)matcher:(id)a3 didProduceResponse:(id)a4
+- (void)matcher:(id)matcher didProduceResponse:(id)response
 {
-  v6 = a4;
-  v7 = a3;
+  responseCopy = response;
+  matcherCopy = matcher;
   v8 = [SHMatcherResponse alloc];
-  [v6 recordingIntermission];
+  [responseCopy recordingIntermission];
   v10 = v9;
-  [v6 recordingSignatureOffset];
+  [responseCopy recordingSignatureOffset];
   v12 = v11;
-  [v6 retrySeconds];
+  [responseCopy retrySeconds];
   v14 = v13;
-  v15 = [v6 match];
-  v16 = [v6 signature];
-  v17 = [(SHManagedSessionCustomCatalogMatcher *)self currentRequestID];
-  v18 = [v6 error];
+  match = [responseCopy match];
+  signature = [responseCopy signature];
+  currentRequestID = [(SHManagedSessionCustomCatalogMatcher *)self currentRequestID];
+  error = [responseCopy error];
 
-  v20 = [(SHMatcherResponse *)v8 initWithRecordingIntermission:v15 recordingSignatureOffset:v16 retrySeconds:v17 match:v18 signature:v10 runningAssociatedRequestID:v12 error:v14];
-  v19 = [(SHManagedSessionCustomCatalogMatcher *)self delegate];
-  [v19 matcher:v7 didProduceResponse:v20];
+  v20 = [(SHMatcherResponse *)v8 initWithRecordingIntermission:match recordingSignatureOffset:signature retrySeconds:currentRequestID match:error signature:v10 runningAssociatedRequestID:v12 error:v14];
+  delegate = [(SHManagedSessionCustomCatalogMatcher *)self delegate];
+  [delegate matcher:matcherCopy didProduceResponse:v20];
 }
 
 - (SHMatcherDelegate)delegate

@@ -1,22 +1,22 @@
 @interface FIUICrossFadeZoomTransitionAnimator
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 - (void)completeTransitionImmediately;
 @end
 
 @implementation FIUICrossFadeZoomTransitionAnimator
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:*MEMORY[0x1E69DE768]];
-  v6 = [v4 viewControllerForKey:*MEMORY[0x1E69DE778]];
+  transitionCopy = transition;
+  v5 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE768]];
+  v6 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE778]];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __57__FIUICrossFadeZoomTransitionAnimator_animateTransition___block_invoke;
   aBlock[3] = &unk_1E878C008;
   v7 = v5;
   v206 = v7;
-  v207 = self;
+  selfCopy = self;
   v8 = v6;
   v208 = v8;
   v9 = _Block_copy(aBlock);
@@ -26,7 +26,7 @@
   v201[3] = &unk_1E878C008;
   v10 = v7;
   v202 = v10;
-  v203 = self;
+  selfCopy2 = self;
   v11 = v8;
   v204 = v11;
   v158 = _Block_copy(v201);
@@ -36,41 +36,41 @@
   v197[3] = &unk_1E878C008;
   v12 = v10;
   v198 = v12;
-  v199 = self;
+  selfCopy3 = self;
   v13 = v11;
   v200 = v13;
   v159 = _Block_copy(v197);
   LODWORD(v11) = self->_zoomingUp;
-  v14 = [v4 containerView];
+  containerView = [transitionCopy containerView];
   v156 = v12;
   v157 = v9;
   if (v11 == 1)
   {
-    v15 = [v12 view];
-    [v14 addSubview:v15];
+    view = [v12 view];
+    [containerView addSubview:view];
 
-    v16 = [v4 containerView];
-    v17 = [v13 view];
-    [v16 addSubview:v17];
+    containerView2 = [transitionCopy containerView];
+    view2 = [v13 view];
+    [containerView2 addSubview:view2];
 
-    v18 = [v12 view];
-    [v18 setUserInteractionEnabled:0];
+    view3 = [v12 view];
+    [view3 setUserInteractionEnabled:0];
 
-    v19 = [v13 view];
-    [v19 setUserInteractionEnabled:0];
+    view4 = [v13 view];
+    [view4 setUserInteractionEnabled:0];
 
-    v20 = [v12 view];
-    [v20 frame];
+    view5 = [v12 view];
+    [view5 frame];
     v22 = v21;
     v24 = v23;
     v26 = v25;
     v28 = v27;
-    v29 = [v13 view];
-    [v29 setFrame:{v22, v24, v26, v28}];
+    view6 = [v13 view];
+    [view6 setFrame:{v22, v24, v26, v28}];
 
     (*(v9 + 2))(v9);
-    v30 = [(UIView *)self->_smallView superview];
-    v31 = [(UIView *)self->_largeView superview];
+    superview = [(UIView *)self->_smallView superview];
+    superview2 = [(UIView *)self->_largeView superview];
     [(UIView *)self->_smallView frame];
     v33 = v32;
     v35 = v34;
@@ -81,17 +81,17 @@
     v43 = v42;
     v45 = v44;
     v47 = v46;
-    v48 = [v4 containerView];
-    v155 = v30;
-    [v48 convertRect:v30 fromView:{v33, v35, v37, v39}];
+    containerView3 = [transitionCopy containerView];
+    v155 = superview;
+    [containerView3 convertRect:superview fromView:{v33, v35, v37, v39}];
     v150 = v50;
     v152 = v49;
     v146 = v52;
     v148 = v51;
 
-    v53 = [v4 containerView];
-    v154 = v31;
-    [v53 convertRect:v31 fromView:{v41, v43, v45, v47}];
+    containerView4 = [transitionCopy containerView];
+    v154 = superview2;
+    [containerView4 convertRect:superview2 fromView:{v41, v43, v45, v47}];
     v142 = v55;
     v144 = v54;
     v138 = v57;
@@ -101,16 +101,16 @@
     v59 = [objc_alloc(MEMORY[0x1E69DCF70]) initWithFrame:{v41, v43, v45, v47}];
     [v58 captureSnapshotOfView:self->_smallView withSnapshotType:1];
     [v59 captureSnapshotOfView:self->_largeView withSnapshotType:0];
-    v60 = [v4 containerView];
-    [v60 addSubview:v58];
+    containerView5 = [transitionCopy containerView];
+    [containerView5 addSubview:v58];
 
-    v61 = [v4 containerView];
-    [v61 addSubview:v59];
+    containerView6 = [transitionCopy containerView];
+    [containerView6 addSubview:v59];
 
     [(UIView *)self->_smallView setHidden:1];
     [(UIView *)self->_largeView setHidden:1];
-    v62 = [v13 view];
-    [v62 setAlpha:0.0];
+    view7 = [v13 view];
+    [view7 setAlpha:0.0];
 
     [v58 setFrame:{v152, v150, v148, v146}];
     [v59 setFrame:{v152, v150, v148, v146}];
@@ -134,7 +134,7 @@
     v191 = v68;
     v69 = v59;
     v192 = v69;
-    v70 = v4;
+    v70 = transitionCopy;
     v193 = v70;
     v194 = v159;
     v71 = _Block_copy(v186);
@@ -165,31 +165,31 @@
 
   else
   {
-    v78 = [v13 view];
-    [v14 addSubview:v78];
+    view8 = [v13 view];
+    [containerView addSubview:view8];
 
-    v79 = [v4 containerView];
-    v80 = [v12 view];
-    [v79 addSubview:v80];
+    containerView7 = [transitionCopy containerView];
+    view9 = [v12 view];
+    [containerView7 addSubview:view9];
 
-    v81 = [v12 view];
-    [v81 setUserInteractionEnabled:0];
+    view10 = [v12 view];
+    [view10 setUserInteractionEnabled:0];
 
-    v82 = [v13 view];
-    [v82 setUserInteractionEnabled:0];
+    view11 = [v13 view];
+    [view11 setUserInteractionEnabled:0];
 
-    v83 = [v12 view];
-    [v83 frame];
+    view12 = [v12 view];
+    [view12 frame];
     v85 = v84;
     v87 = v86;
     v89 = v88;
     v91 = v90;
-    v92 = [v13 view];
-    [v92 setFrame:{v85, v87, v89, v91}];
+    view13 = [v13 view];
+    [view13 setFrame:{v85, v87, v89, v91}];
 
     (*(v9 + 2))(v9);
-    v93 = [(UIView *)self->_smallView superview];
-    v94 = [(UIView *)self->_largeView superview];
+    superview3 = [(UIView *)self->_smallView superview];
+    superview4 = [(UIView *)self->_largeView superview];
     [(UIView *)self->_smallView frame];
     v96 = v95;
     v98 = v97;
@@ -200,17 +200,17 @@
     v106 = v105;
     v108 = v107;
     v110 = v109;
-    v111 = [v4 containerView];
-    v154 = v94;
-    [v111 convertRect:v94 fromView:{v104, v106, v108, v110}];
+    containerView8 = [transitionCopy containerView];
+    v154 = superview4;
+    [containerView8 convertRect:superview4 fromView:{v104, v106, v108, v110}];
     v151 = v113;
     v153 = v112;
     v147 = v115;
     v149 = v114;
 
-    v116 = [v4 containerView];
-    v155 = v93;
-    [v116 convertRect:v93 fromView:{v96, v98, v100, v102}];
+    containerView9 = [transitionCopy containerView];
+    v155 = superview3;
+    [containerView9 convertRect:superview3 fromView:{v96, v98, v100, v102}];
     v143 = v118;
     v145 = v117;
     v139 = v120;
@@ -220,11 +220,11 @@
     v122 = [objc_alloc(MEMORY[0x1E69DCF70]) initWithFrame:{v104, v106, v108, v110}];
     [v121 captureSnapshotOfView:self->_smallView withSnapshotType:0];
     [v122 captureSnapshotOfView:self->_largeView withSnapshotType:1];
-    v123 = [v4 containerView];
-    [v123 addSubview:v121];
+    containerView10 = [transitionCopy containerView];
+    [containerView10 addSubview:v121];
 
-    v124 = [v4 containerView];
-    [v124 addSubview:v122];
+    containerView11 = [transitionCopy containerView];
+    [containerView11 addSubview:v122];
 
     [(UIView *)self->_smallView setHidden:1];
     [(UIView *)self->_largeView setHidden:1];
@@ -250,7 +250,7 @@
     v173 = v130;
     v131 = v122;
     v174 = v131;
-    v132 = v4;
+    v132 = transitionCopy;
     v175 = v132;
     v176 = v159;
     v133 = _Block_copy(v168);

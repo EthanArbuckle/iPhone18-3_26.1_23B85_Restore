@@ -1,11 +1,11 @@
 @interface SDShareSheetAirDropTransferUpdate
 - (SDShareSheetAirDropTransferUpdate)init;
-- (SDShareSheetAirDropTransferUpdate)initWithSessionID:(id)a3 realName:(id)a4;
+- (SDShareSheetAirDropTransferUpdate)initWithSessionID:(id)d realName:(id)name;
 @end
 
 @implementation SDShareSheetAirDropTransferUpdate
 
-- (SDShareSheetAirDropTransferUpdate)initWithSessionID:(id)a3 realName:(id)a4
+- (SDShareSheetAirDropTransferUpdate)initWithSessionID:(id)d realName:(id)name
 {
   ObjectType = swift_getObjectType();
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();

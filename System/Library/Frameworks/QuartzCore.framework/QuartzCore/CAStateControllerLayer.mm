@@ -1,6 +1,6 @@
 @interface CAStateControllerLayer
-- (CAStateControllerLayer)initWithLayer:(id)a3;
-- (void)addTransition:(id)a3;
+- (CAStateControllerLayer)initWithLayer:(id)layer;
+- (void)addTransition:(id)transition;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -55,7 +55,7 @@
   self->_layer = 0;
 }
 
-- (void)addTransition:(id)a3
+- (void)addTransition:(id)transition
 {
   transitions = self->_transitions;
   if (!transitions)
@@ -64,10 +64,10 @@
     self->_transitions = transitions;
   }
 
-  [(NSMutableArray *)transitions addObject:a3];
+  [(NSMutableArray *)transitions addObject:transition];
 }
 
-- (CAStateControllerLayer)initWithLayer:(id)a3
+- (CAStateControllerLayer)initWithLayer:(id)layer
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -75,7 +75,7 @@
   v4 = [(CAStateControllerLayer *)&v6 init];
   if (v4)
   {
-    v4->_layer = a3;
+    v4->_layer = layer;
   }
 
   return v4;

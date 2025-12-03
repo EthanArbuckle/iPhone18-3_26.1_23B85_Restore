@@ -1,35 +1,35 @@
 @interface SBDashBoardApplicationLauncher
-- (BOOL)_backgroundLaunchWithBundleIdentifier:(id)a3 isCaptureApplicationLaunch:(BOOL)a4;
-- (BOOL)_canHandleTransitionRequest:(id)a3 outActivatingSceneEntity:(id *)a4;
-- (BOOL)_canPresentApplicationSceneEntity:(id)a3 fromSource:(id)a4 toDestination:(id)a5;
-- (BOOL)_isCoverSheetHostingEntity:(id)a3;
-- (BOOL)_isCoverSheetHostingHostableEntity:(id)a3;
-- (BOOL)_presentApplicationSceneEntity:(id)a3 source:(int64_t)a4 fromRequest:(id)a5 withResult:(id)a6;
-- (BOOL)handleEvent:(id)a3;
-- (BOOL)handleTransitionRequest:(id)a3;
-- (BOOL)launchCaptureApplication:(id)a3;
+- (BOOL)_backgroundLaunchWithBundleIdentifier:(id)identifier isCaptureApplicationLaunch:(BOOL)launch;
+- (BOOL)_canHandleTransitionRequest:(id)request outActivatingSceneEntity:(id *)entity;
+- (BOOL)_canPresentApplicationSceneEntity:(id)entity fromSource:(id)source toDestination:(id)destination;
+- (BOOL)_isCoverSheetHostingEntity:(id)entity;
+- (BOOL)_isCoverSheetHostingHostableEntity:(id)entity;
+- (BOOL)_presentApplicationSceneEntity:(id)entity source:(int64_t)source fromRequest:(id)request withResult:(id)result;
+- (BOOL)handleEvent:(id)event;
+- (BOOL)handleTransitionRequest:(id)request;
+- (BOOL)launchCaptureApplication:(id)application;
 - (NSString)coverSheetIdentifier;
 - (SBDashBoardApplicationLauncher)init;
 - (SBSecureAppManager)secureAppManager;
-- (id)_captureExtensionBundleIdentifierForContainingApplication:(id)a3;
-- (id)captureApplicationForSceneEntity:(id)a3;
+- (id)_captureExtensionBundleIdentifierForContainingApplication:(id)application;
+- (id)captureApplicationForSceneEntity:(id)entity;
 - (id)currentActivePrewarmReasons;
-- (id)prewarmConfigurationForIdentifier:(id)a3;
+- (id)prewarmConfigurationForIdentifier:(id)identifier;
 - (int64_t)participantState;
-- (void)_activateAppSceneBelowDashBoard:(id)a3 hostableEntity:(id)a4 secureAppType:(unint64_t)a5 withActions:(id)a6 interactive:(BOOL)a7 completion:(id)a8;
-- (void)_activateCameraEntity:(id)a3 animated:(BOOL)a4 asOverlay:(BOOL)a5 viaSwitcherModal:(BOOL)a6 request:(id)a7 actions:(id)a8 completion:(id)a9;
-- (void)_attemptToUnlockToApplication:(id)a3 actions:(id)a4 completion:(id)a5;
-- (void)_attemptToUnlockToCameraCompletion:(id)a3;
-- (void)_coolCameraIfNecessaryForBundleIdentifier:(id)a3 prewarmReason:(id)a4;
-- (void)_prewarmCameraForBundleIdentifier:(id)a3 prewarmReason:(id)a4;
-- (void)_prewarmWithConfiguration:(id)a3 prewarmReason:(id)a4;
-- (void)_reallyActivateAppSceneWithEntity:(id)a3 interactive:(BOOL)a4 withCompletion:(id)a5;
-- (void)_stopTrackingPrewarmReason:(id)a3;
+- (void)_activateAppSceneBelowDashBoard:(id)board hostableEntity:(id)entity secureAppType:(unint64_t)type withActions:(id)actions interactive:(BOOL)interactive completion:(id)completion;
+- (void)_activateCameraEntity:(id)entity animated:(BOOL)animated asOverlay:(BOOL)overlay viaSwitcherModal:(BOOL)modal request:(id)request actions:(id)actions completion:(id)completion;
+- (void)_attemptToUnlockToApplication:(id)application actions:(id)actions completion:(id)completion;
+- (void)_attemptToUnlockToCameraCompletion:(id)completion;
+- (void)_coolCameraIfNecessaryForBundleIdentifier:(id)identifier prewarmReason:(id)reason;
+- (void)_prewarmCameraForBundleIdentifier:(id)identifier prewarmReason:(id)reason;
+- (void)_prewarmWithConfiguration:(id)configuration prewarmReason:(id)reason;
+- (void)_reallyActivateAppSceneWithEntity:(id)entity interactive:(BOOL)interactive withCompletion:(id)completion;
+- (void)_stopTrackingPrewarmReason:(id)reason;
 - (void)dealloc;
 - (void)launchQuickNote;
-- (void)notePrewarmRequestEndedForIdentifier:(id)a3 prewarmReason:(id)a4;
-- (void)prewarmCameraForIdentifier:(id)a3 prewarmReason:(id)a4;
-- (void)setCoverSheetViewController:(id)a3;
+- (void)notePrewarmRequestEndedForIdentifier:(id)identifier prewarmReason:(id)reason;
+- (void)prewarmCameraForIdentifier:(id)identifier prewarmReason:(id)reason;
+- (void)setCoverSheetViewController:(id)controller;
 @end
 
 @implementation SBDashBoardApplicationLauncher
@@ -73,24 +73,24 @@
   [(SBDashBoardApplicationLauncher *)&v3 dealloc];
 }
 
-- (void)setCoverSheetViewController:(id)a3
+- (void)setCoverSheetViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_coverSheetViewController != v5)
+  controllerCopy = controller;
+  if (self->_coverSheetViewController != controllerCopy)
   {
-    v6 = v5;
-    [(CSCoverSheetViewController *)v5 registerExternalEventHandler:self];
+    v6 = controllerCopy;
+    [(CSCoverSheetViewController *)controllerCopy registerExternalEventHandler:self];
     [(CSCoverSheetViewController *)self->_coverSheetViewController unregisterExternalEventHandler:self];
-    objc_storeStrong(&self->_coverSheetViewController, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_coverSheetViewController, controller);
+    controllerCopy = v6;
   }
 }
 
-- (BOOL)handleTransitionRequest:(id)a3
+- (BOOL)handleTransitionRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v21 = 0;
-  v5 = [(SBDashBoardApplicationLauncher *)self _canHandleTransitionRequest:v4 outActivatingSceneEntity:&v21];
+  v5 = [(SBDashBoardApplicationLauncher *)self _canHandleTransitionRequest:requestCopy outActivatingSceneEntity:&v21];
   v6 = v21;
   v7 = v6;
   if (v5)
@@ -101,15 +101,15 @@
     v19[3] = &unk_2783A98C8;
     v8 = v6;
     v20 = v8;
-    [v4 modifyApplicationContext:v19];
-    [v4 finalize];
+    [requestCopy modifyApplicationContext:v19];
+    [requestCopy finalize];
     v9 = v8;
-    v10 = [v9 application];
-    if ([SBSecureAppPolicy shouldAlwaysShowSecureSceneForApp:v10])
+    application = [v9 application];
+    if ([SBSecureAppPolicy shouldAlwaysShowSecureSceneForApp:application])
     {
-      v11 = [[SBDeviceApplicationSceneEntity alloc] initWithApplicationForMainSecureDisplay:v10];
-      v12 = [v9 copyActivationSettings];
-      [(SBWorkspaceEntity *)v11 applyActivationSettings:v12];
+      v11 = [[SBDeviceApplicationSceneEntity alloc] initWithApplicationForMainSecureDisplay:application];
+      copyActivationSettings = [v9 copyActivationSettings];
+      [(SBWorkspaceEntity *)v11 applyActivationSettings:copyActivationSettings];
     }
 
     else
@@ -120,16 +120,16 @@
     v14 = SBLogDashBoard();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      [(SBDashBoardApplicationLauncher *)v11 handleTransitionRequest:v4, v14];
+      [(SBDashBoardApplicationLauncher *)v11 handleTransitionRequest:requestCopy, v14];
     }
 
-    v15 = [v4 source];
+    source = [requestCopy source];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __58__SBDashBoardApplicationLauncher_handleTransitionRequest___block_invoke_7;
     v17[3] = &unk_2783B1688;
-    v18 = v4;
-    v13 = [(SBDashBoardApplicationLauncher *)self _presentApplicationSceneEntity:v11 source:v15 fromRequest:v18 withResult:v17];
+    v18 = requestCopy;
+    v13 = [(SBDashBoardApplicationLauncher *)self _presentApplicationSceneEntity:v11 source:source fromRequest:v18 withResult:v17];
   }
 
   else
@@ -172,13 +172,13 @@ void __58__SBDashBoardApplicationLauncher_handleTransitionRequest___block_invoke
 {
   v3 = [MEMORY[0x277CBEBC0] URLWithString:@"mobilenotes-quicknote://quicknote?launchedByPencil=1"];
   v4 = SBWorkspaceApplicationForURLWithError(v3, 0, 0);
-  v5 = [v4 info];
-  v6 = [v5 applicationIdentity];
+  info = [v4 info];
+  applicationIdentity = [info applicationIdentity];
 
-  v7 = [(CSCoverSheetViewController *)self->_coverSheetViewController activeBehavior];
-  LODWORD(v5) = [v7 areRestrictedCapabilities:0x2000];
+  activeBehavior = [(CSCoverSheetViewController *)self->_coverSheetViewController activeBehavior];
+  LODWORD(info) = [activeBehavior areRestrictedCapabilities:0x2000];
 
-  if (v5)
+  if (info)
   {
     v8 = SBLogDashBoard();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -193,8 +193,8 @@ LABEL_7:
 
   else
   {
-    v11 = [SBApp privacyPreflightController];
-    v12 = [v11 requiresPreflightForApplication:v6];
+    privacyPreflightController = [SBApp privacyPreflightController];
+    v12 = [privacyPreflightController requiresPreflightForApplication:applicationIdentity];
 
     if (!v12)
     {
@@ -215,22 +215,22 @@ LABEL_7:
 LABEL_10:
 }
 
-- (BOOL)launchCaptureApplication:(id)a3
+- (BOOL)launchCaptureApplication:(id)application
 {
-  v3 = a3;
+  applicationCopy = application;
   v4 = +[SBCaptureApplicationCenter sharedInstance];
-  v5 = [v4 launchCaptureApplication:v3 launchType:0 source:32];
+  v5 = [v4 launchCaptureApplication:applicationCopy launchType:0 source:32];
 
   return v5;
 }
 
-- (void)prewarmCameraForIdentifier:(id)a3 prewarmReason:(id)a4
+- (void)prewarmCameraForIdentifier:(id)identifier prewarmReason:(id)reason
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBDashBoardApplicationLauncher *)self prewarmConfigurationForIdentifier:v6];
-  [(SBDashBoardApplicationLauncher *)self _prewarmWithConfiguration:v8 prewarmReason:v7];
+  identifierCopy = identifier;
+  reasonCopy = reason;
+  v8 = [(SBDashBoardApplicationLauncher *)self prewarmConfigurationForIdentifier:identifierCopy];
+  [(SBDashBoardApplicationLauncher *)self _prewarmWithConfiguration:v8 prewarmReason:reasonCopy];
   if (!self->_currentPrewarmIdentifiersToReasons)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -238,8 +238,8 @@ LABEL_10:
     self->_currentPrewarmIdentifiersToReasons = v9;
   }
 
-  v11 = [v6 applicationBundleIdentifier];
-  v12 = [(NSMutableDictionary *)self->_currentPrewarmIdentifiersToReasons objectForKeyedSubscript:v11];
+  applicationBundleIdentifier = [identifierCopy applicationBundleIdentifier];
+  v12 = [(NSMutableDictionary *)self->_currentPrewarmIdentifiersToReasons objectForKeyedSubscript:applicationBundleIdentifier];
 
   if (v12)
   {
@@ -247,30 +247,30 @@ LABEL_10:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v21 = v11;
+      v21 = applicationBundleIdentifier;
       v22 = 2112;
-      v23 = v7;
+      v23 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_INFO, "Identifier: %@ had existing reason: %@", buf, 0x16u);
     }
   }
 
-  [(NSMutableDictionary *)self->_currentPrewarmIdentifiersToReasons setObject:v7 forKeyedSubscript:v11];
-  v14 = [(NSMutableDictionary *)self->_prewarmIdentifiersToCancelTimers objectForKeyedSubscript:v11];
+  [(NSMutableDictionary *)self->_currentPrewarmIdentifiersToReasons setObject:reasonCopy forKeyedSubscript:applicationBundleIdentifier];
+  v14 = [(NSMutableDictionary *)self->_prewarmIdentifiersToCancelTimers objectForKeyedSubscript:applicationBundleIdentifier];
   [v14 invalidate];
 
   v15 = MEMORY[0x277CBEBB8];
   v18 = @"PrewarmIdentifier";
-  v19 = v11;
+  v19 = applicationBundleIdentifier;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
   v17 = [v15 scheduledTimerWithTimeInterval:self target:sel__stopTrackingPrewarmReason_ selector:v16 userInfo:0 repeats:3.0];
 
-  [(NSMutableDictionary *)self->_prewarmIdentifiersToCancelTimers setObject:v17 forKeyedSubscript:v11];
+  [(NSMutableDictionary *)self->_prewarmIdentifiersToCancelTimers setObject:v17 forKeyedSubscript:applicationBundleIdentifier];
 }
 
-- (void)_stopTrackingPrewarmReason:(id)a3
+- (void)_stopTrackingPrewarmReason:(id)reason
 {
-  v4 = [a3 userInfo];
-  v6 = [v4 objectForKey:@"PrewarmIdentifier"];
+  userInfo = [reason userInfo];
+  v6 = [userInfo objectForKey:@"PrewarmIdentifier"];
 
   v5 = [(NSMutableDictionary *)self->_prewarmIdentifiersToCancelTimers objectForKeyedSubscript:v6];
   [v5 invalidate];
@@ -279,40 +279,40 @@ LABEL_10:
   [(NSMutableDictionary *)self->_currentPrewarmIdentifiersToReasons setObject:0 forKeyedSubscript:v6];
 }
 
-- (id)prewarmConfigurationForIdentifier:(id)a3
+- (id)prewarmConfigurationForIdentifier:(id)identifier
 {
   captureLaunchPolicy = self->_captureLaunchPolicy;
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[SBCaptureApplicationCenter sharedInstance];
-  v6 = [(SBDashBoardCaptureLaunchPolicy *)captureLaunchPolicy prewarmingConfigurationForIdentifier:v4 captureApplicationProvider:v5];
+  v6 = [(SBDashBoardCaptureLaunchPolicy *)captureLaunchPolicy prewarmingConfigurationForIdentifier:identifierCopy captureApplicationProvider:v5];
 
   return v6;
 }
 
-- (void)notePrewarmRequestEndedForIdentifier:(id)a3 prewarmReason:(id)a4
+- (void)notePrewarmRequestEndedForIdentifier:(id)identifier prewarmReason:(id)reason
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBDashBoardApplicationLauncher *)self prewarmConfigurationForIdentifier:v6];
-  v9 = [v8 prewarmingBundleIdentifier];
-  if (v9)
+  identifierCopy = identifier;
+  reasonCopy = reason;
+  v8 = [(SBDashBoardApplicationLauncher *)self prewarmConfigurationForIdentifier:identifierCopy];
+  prewarmingBundleIdentifier = [v8 prewarmingBundleIdentifier];
+  if (prewarmingBundleIdentifier)
   {
-    v10 = [v6 applicationBundleIdentifier];
-    [(NSMutableDictionary *)self->_currentPrewarmIdentifiersToReasons setObject:0 forKeyedSubscript:v10];
-    v11 = [(NSMutableDictionary *)self->_prewarmIdentifiersToCancelTimers objectForKeyedSubscript:v10];
+    applicationBundleIdentifier = [identifierCopy applicationBundleIdentifier];
+    [(NSMutableDictionary *)self->_currentPrewarmIdentifiersToReasons setObject:0 forKeyedSubscript:applicationBundleIdentifier];
+    v11 = [(NSMutableDictionary *)self->_prewarmIdentifiersToCancelTimers objectForKeyedSubscript:applicationBundleIdentifier];
     [v11 invalidate];
 
-    [(NSMutableDictionary *)self->_prewarmIdentifiersToCancelTimers setObject:0 forKeyedSubscript:v10];
+    [(NSMutableDictionary *)self->_prewarmIdentifiersToCancelTimers setObject:0 forKeyedSubscript:applicationBundleIdentifier];
     v12 = SBLogDashBoard();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v9;
+      v14 = prewarmingBundleIdentifier;
       _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "Cooling camera for bundle identifier: %@", &v13, 0xCu);
     }
 
-    [(SBDashBoardApplicationLauncher *)self _coolCameraIfNecessaryForBundleIdentifier:v9 prewarmReason:v7];
+    [(SBDashBoardApplicationLauncher *)self _coolCameraIfNecessaryForBundleIdentifier:prewarmingBundleIdentifier prewarmReason:reasonCopy];
   }
 
   *&self->_cameraIsPrewarming = 0;
@@ -326,8 +326,8 @@ LABEL_10:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NSMutableDictionary *)self->_currentPrewarmIdentifiersToReasons allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [(NSMutableDictionary *)self->_currentPrewarmIdentifiersToReasons allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -338,14 +338,14 @@ LABEL_10:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = [(NSMutableDictionary *)self->_currentPrewarmIdentifiersToReasons objectForKeyedSubscript:*(*(&v12 + 1) + 8 * i)];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -356,56 +356,56 @@ LABEL_10:
   return v10;
 }
 
-- (void)_prewarmWithConfiguration:(id)a3 prewarmReason:(id)a4
+- (void)_prewarmWithConfiguration:(id)configuration prewarmReason:(id)reason
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 prewarmCameraHardware];
-  v9 = [v6 prewarmForCaptureLaunch];
-  v10 = [v6 backgroundLaunch];
-  v11 = [v6 applicationBundleIdentifier];
+  configurationCopy = configuration;
+  reasonCopy = reason;
+  prewarmCameraHardware = [configurationCopy prewarmCameraHardware];
+  prewarmForCaptureLaunch = [configurationCopy prewarmForCaptureLaunch];
+  backgroundLaunch = [configurationCopy backgroundLaunch];
+  applicationBundleIdentifier = [configurationCopy applicationBundleIdentifier];
   v12 = SBLogDashBoard();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 67109890;
-    *v18 = v8;
+    *v18 = prewarmCameraHardware;
     *&v18[4] = 1024;
-    *&v18[6] = v10;
+    *&v18[6] = backgroundLaunch;
     v19 = 1024;
-    v20 = v9;
+    v20 = prewarmForCaptureLaunch;
     v21 = 2112;
-    v22 = v11;
+    v22 = applicationBundleIdentifier;
     _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "Prewarming camera hardware: %{BOOL}u, prewarming background launch target: %{BOOL}u, prewarming for capture launch: %{BOOL}u, application bundle identifier: %@", &v17, 0x1Eu);
   }
 
-  v13 = [v6 prewarmingBundleIdentifier];
-  if (v13)
+  prewarmingBundleIdentifier = [configurationCopy prewarmingBundleIdentifier];
+  if (prewarmingBundleIdentifier)
   {
-    if (v8)
+    if (prewarmCameraHardware)
     {
       v14 = SBLogDashBoard();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138412290;
-        *v18 = v13;
+        *v18 = prewarmingBundleIdentifier;
         _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "Prewarming camera for bundle identifier: %@", &v17, 0xCu);
       }
 
-      [(SBDashBoardApplicationLauncher *)self _prewarmCameraForBundleIdentifier:v13 prewarmReason:v7];
+      [(SBDashBoardApplicationLauncher *)self _prewarmCameraForBundleIdentifier:prewarmingBundleIdentifier prewarmReason:reasonCopy];
     }
 
-    if (v10)
+    if (backgroundLaunch)
     {
       v15 = SBLogDashBoard();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138412290;
-        *v18 = v13;
+        *v18 = prewarmingBundleIdentifier;
         _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "Background camera launch initiated for bundle identifier: %@", &v17, 0xCu);
       }
 
-      [(SBDashBoardApplicationLauncher *)self _backgroundLaunchWithBundleIdentifier:v13 isCaptureApplicationLaunch:v9];
+      [(SBDashBoardApplicationLauncher *)self _backgroundLaunchWithBundleIdentifier:prewarmingBundleIdentifier isCaptureApplicationLaunch:prewarmForCaptureLaunch];
       *&self->_cameraIsPrewarming = 1;
     }
   }
@@ -415,29 +415,29 @@ LABEL_10:
     v16 = SBLogDashBoard();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [SBDashBoardApplicationLauncher _prewarmWithConfiguration:v11 prewarmReason:v16];
+      [SBDashBoardApplicationLauncher _prewarmWithConfiguration:applicationBundleIdentifier prewarmReason:v16];
     }
   }
 }
 
-- (id)_captureExtensionBundleIdentifierForContainingApplication:(id)a3
+- (id)_captureExtensionBundleIdentifierForContainingApplication:(id)application
 {
-  v3 = a3;
+  applicationCopy = application;
   v4 = +[SBCaptureApplicationCenter sharedInstance];
-  v5 = [v4 captureApplicationForBundleIdentifier:v3];
+  v5 = [v4 captureApplicationForBundleIdentifier:applicationCopy];
 
   if (v5)
   {
-    v6 = [v5 extension];
-    v7 = [v6 bundleIdentifier];
+    extension = [v5 extension];
+    bundleIdentifier = [extension bundleIdentifier];
   }
 
   else
   {
-    v7 = 0;
+    bundleIdentifier = 0;
   }
 
-  return v7;
+  return bundleIdentifier;
 }
 
 - (NSString)coverSheetIdentifier
@@ -447,29 +447,29 @@ LABEL_10:
   return NSStringFromClass(v2);
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 type] == 25)
+  eventCopy = event;
+  if ([eventCopy type] == 25)
   {
     [(SBInProcessSecureAppAction *)self->_secureAppAction invalidate];
     secureAppAction = self->_secureAppAction;
     self->_secureAppAction = 0;
 
-    v6 = [v4 isConsumable];
+    isConsumable = [eventCopy isConsumable];
   }
 
   else
   {
-    v6 = 0;
+    isConsumable = 0;
   }
 
-  return v6;
+  return isConsumable;
 }
 
-- (id)captureApplicationForSceneEntity:(id)a3
+- (id)captureApplicationForSceneEntity:(id)entity
 {
-  v3 = a3;
+  entityCopy = entity;
   if (+[SBCaptureHardwareButton deviceSupportsCaptureButton])
   {
     v4 = +[SBCaptureHardwareButton isCaptureFeatureEnabled];
@@ -482,52 +482,52 @@ LABEL_10:
 
   if ((LCSFeatureEnabled() & 1) != 0 || (v5 = 0, v4))
   {
-    v6 = [v3 application];
+    application = [entityCopy application];
     v7 = +[SBCaptureApplicationCenter sharedInstance];
-    v8 = [v6 bundleIdentifier];
-    v5 = [v7 captureApplicationForBundleIdentifier:v8];
+    bundleIdentifier = [application bundleIdentifier];
+    v5 = [v7 captureApplicationForBundleIdentifier:bundleIdentifier];
   }
 
   return v5;
 }
 
-- (BOOL)_canHandleTransitionRequest:(id)a3 outActivatingSceneEntity:(id *)a4
+- (BOOL)_canHandleTransitionRequest:(id)request outActivatingSceneEntity:(id *)entity
 {
-  v5 = a3;
-  v6 = [v5 displayIdentity];
-  v7 = [v6 isMainDisplay];
+  requestCopy = request;
+  displayIdentity = [requestCopy displayIdentity];
+  isMainDisplay = [displayIdentity isMainDisplay];
 
-  if (v7 && ((v8 = [v5 source], v8 <= 0x3D) && ((1 << v8) & 0x20008001004C2134) != 0 || v8 == 70 || v8 == 67))
+  if (isMainDisplay && ((v8 = [requestCopy source], v8 <= 0x3D) && ((1 << v8) & 0x20008001004C2134) != 0 || v8 == 70 || v8 == 67))
   {
-    v9 = [v5 applicationContext];
-    if (([v9 isBackground] & 1) != 0 || (objc_msgSend(v9, "entities"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), v10, v11 > 1))
+    applicationContext = [requestCopy applicationContext];
+    if (([applicationContext isBackground] & 1) != 0 || (objc_msgSend(applicationContext, "entities"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), v10, v11 > 1))
     {
       v12 = 0;
     }
 
     else
     {
-      v13 = [v9 resolvedActivatingWorkspaceEntity];
-      v14 = [v13 applicationSceneEntity];
+      resolvedActivatingWorkspaceEntity = [applicationContext resolvedActivatingWorkspaceEntity];
+      applicationSceneEntity = [resolvedActivatingWorkspaceEntity applicationSceneEntity];
 
-      if ([v14 BOOLForActivationSetting:37])
+      if ([applicationSceneEntity BOOLForActivationSetting:37])
       {
         v12 = 0;
       }
 
       else
       {
-        v15 = [v14 application];
-        CanActivateWhilePasscodeLocked = SBWorkspaceApplicationCanActivateWhilePasscodeLocked(v15);
+        application = [applicationSceneEntity application];
+        CanActivateWhilePasscodeLocked = SBWorkspaceApplicationCanActivateWhilePasscodeLocked(application);
 
-        v17 = [v14 BOOLForActivationSetting:36];
+        v17 = [applicationSceneEntity BOOLForActivationSetting:36];
         v12 = 0;
-        if (v14 && ((CanActivateWhilePasscodeLocked | v17) & 1) != 0)
+        if (applicationSceneEntity && ((CanActivateWhilePasscodeLocked | v17) & 1) != 0)
         {
-          if (a4)
+          if (entity)
           {
-            v18 = v14;
-            *a4 = v14;
+            v18 = applicationSceneEntity;
+            *entity = applicationSceneEntity;
           }
 
           v12 = 1;
@@ -544,39 +544,39 @@ LABEL_10:
   return v12;
 }
 
-- (BOOL)_canPresentApplicationSceneEntity:(id)a3 fromSource:(id)a4 toDestination:(id)a5
+- (BOOL)_canPresentApplicationSceneEntity:(id)entity fromSource:(id)source toDestination:(id)destination
 {
-  if (!a5)
+  if (!destination)
   {
     return 1;
   }
 
-  v5 = [a5 placement];
-  if ([v5 isEqual:SBDashBoardCapturePlacementCameraPage] & 1) != 0 || (objc_msgSend(v5, "isEqual:", SBDashBoardCapturePlacementCameraOverlay) & 1) != 0 || (objc_msgSend(v5, "isEqual:", SBDashBoardCapturePlacementCaptureButtonCameraPage))
+  placement = [destination placement];
+  if ([placement isEqual:SBDashBoardCapturePlacementCameraPage] & 1) != 0 || (objc_msgSend(placement, "isEqual:", SBDashBoardCapturePlacementCameraOverlay) & 1) != 0 || (objc_msgSend(placement, "isEqual:", SBDashBoardCapturePlacementCaptureButtonCameraPage))
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v5 isEqual:SBDashBoardCapturePlacementSecureApp];
+    v6 = [placement isEqual:SBDashBoardCapturePlacementSecureApp];
   }
 
   return v6;
 }
 
-- (BOOL)_isCoverSheetHostingEntity:(id)a3
+- (BOOL)_isCoverSheetHostingEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   if ([(CSCoverSheetViewController *)self->_coverSheetViewController isHostingAnApp])
   {
-    v5 = [(CSCoverSheetViewController *)self->_coverSheetViewController hostedAppSceneHandles];
+    hostedAppSceneHandles = [(CSCoverSheetViewController *)self->_coverSheetViewController hostedAppSceneHandles];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __61__SBDashBoardApplicationLauncher__isCoverSheetHostingEntity___block_invoke;
     v8[3] = &unk_2783A9FA0;
-    v9 = v4;
-    v6 = [v5 bs_containsObjectPassingTest:v8];
+    v9 = entityCopy;
+    v6 = [hostedAppSceneHandles bs_containsObjectPassingTest:v8];
   }
 
   else
@@ -597,16 +597,16 @@ uint64_t __61__SBDashBoardApplicationLauncher__isCoverSheetHostingEntity___block
   return v5;
 }
 
-- (BOOL)_isCoverSheetHostingHostableEntity:(id)a3
+- (BOOL)_isCoverSheetHostingHostableEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [(CSCoverSheetViewController *)self->_coverSheetViewController visibleHostedEntity];
-  v6 = v5;
-  if (v5)
+  entityCopy = entity;
+  visibleHostedEntity = [(CSCoverSheetViewController *)self->_coverSheetViewController visibleHostedEntity];
+  v6 = visibleHostedEntity;
+  if (visibleHostedEntity)
   {
-    v7 = [v5 displayItemRepresentation];
-    v8 = [v4 displayItemRepresentation];
-    v9 = [(SBDisplayItem *)v7 isEqualToItem:v8];
+    displayItemRepresentation = [visibleHostedEntity displayItemRepresentation];
+    displayItemRepresentation2 = [entityCopy displayItemRepresentation];
+    v9 = [(SBDisplayItem *)displayItemRepresentation isEqualToItem:displayItemRepresentation2];
   }
 
   else
@@ -617,44 +617,44 @@ uint64_t __61__SBDashBoardApplicationLauncher__isCoverSheetHostingEntity___block
   return v9;
 }
 
-- (BOOL)_presentApplicationSceneEntity:(id)a3 source:(int64_t)a4 fromRequest:(id)a5 withResult:(id)a6
+- (BOOL)_presentApplicationSceneEntity:(id)entity source:(int64_t)source fromRequest:(id)request withResult:(id)result
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 actions];
-  v14 = [v13 copy];
+  entityCopy = entity;
+  requestCopy = request;
+  resultCopy = result;
+  actions = [entityCopy actions];
+  v14 = [actions copy];
 
-  [v10 removeActions:v14];
-  v32 = SBDashBoardCaptureLaunchSourceFromWorkspaceTransitionSource(a4);
-  v15 = [(SBDashBoardCaptureLaunchPolicy *)self->_captureLaunchPolicy resolveCameraDestinationLaunchOf:v10 fromSource:v32];
-  v31 = [(SBDashBoardApplicationLauncher *)self _canPresentApplicationSceneEntity:v10 fromSource:v32 toDestination:v15];
+  [entityCopy removeActions:v14];
+  v32 = SBDashBoardCaptureLaunchSourceFromWorkspaceTransitionSource(source);
+  v15 = [(SBDashBoardCaptureLaunchPolicy *)self->_captureLaunchPolicy resolveCameraDestinationLaunchOf:entityCopy fromSource:v32];
+  v31 = [(SBDashBoardApplicationLauncher *)self _canPresentApplicationSceneEntity:entityCopy fromSource:v32 toDestination:v15];
   eventQueue = self->_eventQueue;
   v16 = MEMORY[0x277CF0C30];
   v17 = MEMORY[0x277CCACA8];
-  v18 = [v10 sceneHandle];
-  v19 = [v18 sceneIdentifier];
-  v20 = [v17 stringWithFormat:@"CaptureLaunch-%@", v19];
+  sceneHandle = [entityCopy sceneHandle];
+  sceneIdentifier = [sceneHandle sceneIdentifier];
+  v20 = [v17 stringWithFormat:@"CaptureLaunch-%@", sceneIdentifier];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __95__SBDashBoardApplicationLauncher__presentApplicationSceneEntity_source_fromRequest_withResult___block_invoke;
   v33[3] = &unk_2783B16F8;
   v33[4] = self;
   v34 = v15;
-  v35 = v10;
-  v36 = v11;
+  v35 = entityCopy;
+  v36 = requestCopy;
   v37 = v14;
-  v38 = v12;
+  v38 = resultCopy;
   v30 = v14;
-  v21 = v11;
-  v22 = v10;
+  v21 = requestCopy;
+  v22 = entityCopy;
   v23 = v15;
-  v24 = v12;
+  v24 = resultCopy;
   v25 = [v16 eventWithName:v20 handler:v33];
   [(BSEventQueue *)eventQueue executeOrInsertEvent:v25 atPosition:1];
 
-  v26 = [v21 applicationContext];
-  LODWORD(v20) = [v26 retainsSiri];
+  applicationContext = [v21 applicationContext];
+  LODWORD(v20) = [applicationContext retainsSiri];
 
   if (v20)
   {
@@ -835,32 +835,32 @@ BOOL __95__SBDashBoardApplicationLauncher__presentApplicationSceneEntity_source_
   return (isKindOfClass & 1) == 0;
 }
 
-- (void)_reallyActivateAppSceneWithEntity:(id)a3 interactive:(BOOL)a4 withCompletion:(id)a5
+- (void)_reallyActivateAppSceneWithEntity:(id)entity interactive:(BOOL)interactive withCompletion:(id)completion
 {
-  v11 = a3;
-  v7 = a5;
-  v8 = secureAppTypeForSBApplicationSceneEntity(v11);
+  entityCopy = entity;
+  completionCopy = completion;
+  v8 = secureAppTypeForSBApplicationSceneEntity(entityCopy);
   if (v8 == 4 && (-[CSCoverSheetViewController activeBehavior](self->_coverSheetViewController, "activeBehavior"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 areRestrictedCapabilities:4], v9, v10))
   {
-    [(SBDashBoardApplicationLauncher *)self _attemptToUnlockToCameraCompletion:v7];
+    [(SBDashBoardApplicationLauncher *)self _attemptToUnlockToCameraCompletion:completionCopy];
   }
 
   else
   {
-    [(SBDashBoardApplicationLauncher *)self _activateAppSceneBelowDashBoard:v11 hostableEntity:0 secureAppType:v8 withActions:0 interactive:0 completion:v7];
+    [(SBDashBoardApplicationLauncher *)self _activateAppSceneBelowDashBoard:entityCopy hostableEntity:0 secureAppType:v8 withActions:0 interactive:0 completion:completionCopy];
   }
 }
 
-- (void)_activateAppSceneBelowDashBoard:(id)a3 hostableEntity:(id)a4 secureAppType:(unint64_t)a5 withActions:(id)a6 interactive:(BOOL)a7 completion:(id)a8
+- (void)_activateAppSceneBelowDashBoard:(id)board hostableEntity:(id)entity secureAppType:(unint64_t)type withActions:(id)actions interactive:(BOOL)interactive completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
+  boardCopy = board;
+  entityCopy = entity;
+  completionCopy = completion;
   v17 = +[SBCoverSheetPresentationManager sharedInstance];
-  if (v14)
+  if (boardCopy)
   {
     v18 = +[SBSecureAppManager sharedInstance];
-    v19 = [v18 hasSecureAppOfType:a5];
+    v19 = [v18 hasSecureAppOfType:type];
 
     if ((v19 & 1) == 0)
     {
@@ -873,11 +873,11 @@ BOOL __95__SBDashBoardApplicationLauncher__presentApplicationSceneEntity_source_
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_secureAppManager);
-      v23 = [WeakRetained secureAppAction];
+      secureAppAction = [WeakRetained secureAppAction];
 
-      if (v23)
+      if (secureAppAction)
       {
-        [v23 invalidate];
+        [secureAppAction invalidate];
       }
 
       v36[0] = MEMORY[0x277D85DD0];
@@ -888,34 +888,34 @@ BOOL __95__SBDashBoardApplicationLauncher__presentApplicationSceneEntity_source_
       v36[5] = a2;
       v24 = MEMORY[0x223D6F7F0](v36);
       v25 = [SBInProcessSecureAppAction alloc];
-      if (v15)
+      if (entityCopy)
       {
-        v26 = [(SBInProcessSecureAppAction *)v25 initWithType:a5 hostableEntity:v15 handler:v24, v24, v23];
+        v26 = [(SBInProcessSecureAppAction *)v25 initWithType:type hostableEntity:entityCopy handler:v24, v24, secureAppAction];
       }
 
       else
       {
-        v26 = [(SBInProcessSecureAppAction *)v25 initWithType:a5 applicationSceneEntity:v14 handler:v24, v24, v23];
+        v26 = [(SBInProcessSecureAppAction *)v25 initWithType:type applicationSceneEntity:boardCopy handler:v24, v24, secureAppAction];
       }
 
       v27 = self->_secureAppAction;
       self->_secureAppAction = v26;
 
-      v28 = [v17 secureAppViewController];
+      secureAppViewController = [v17 secureAppViewController];
 
       v29 = +[SBActionHandler sharedInstance];
       v30 = [MEMORY[0x277CBEB98] setWithObject:self->_secureAppAction];
-      v31 = [MEMORY[0x277CF0B98] tokenForCurrentProcess];
-      [v29 handleActions:v30 origin:v31 withResult:0];
+      tokenForCurrentProcess = [MEMORY[0x277CF0B98] tokenForCurrentProcess];
+      [v29 handleActions:v30 origin:tokenForCurrentProcess withResult:0];
 
-      if (!a7 && v28)
+      if (!interactive && secureAppViewController)
       {
         [v17 updateBecauseSecureAppChanged];
       }
     }
   }
 
-  if (!a7)
+  if (!interactive)
   {
     [v17 setCoverSheetPresented:0 animated:1 withCompletion:0];
   }
@@ -924,9 +924,9 @@ BOOL __95__SBDashBoardApplicationLauncher__presentApplicationSceneEntity_source_
   v33 = [MEMORY[0x277D02B80] actionWithType:4];
   [(CSCoverSheetViewController *)coverSheetViewController handleAction:v33 fromSender:self];
 
-  if (v16)
+  if (completionCopy)
   {
-    (*(v16 + 2))(v16, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -954,14 +954,14 @@ void __130__SBDashBoardApplicationLauncher__activateAppSceneBelowDashBoard_hosta
 LABEL_5:
 }
 
-- (void)_activateCameraEntity:(id)a3 animated:(BOOL)a4 asOverlay:(BOOL)a5 viaSwitcherModal:(BOOL)a6 request:(id)a7 actions:(id)a8 completion:(id)a9
+- (void)_activateCameraEntity:(id)entity animated:(BOOL)animated asOverlay:(BOOL)overlay viaSwitcherModal:(BOOL)modal request:(id)request actions:(id)actions completion:(id)completion
 {
-  v12 = a5;
-  v13 = a4;
-  v15 = a3;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  overlayCopy = overlay;
+  animatedCopy = animated;
+  entityCopy = entity;
+  requestCopy = request;
+  actionsCopy = actions;
+  completionCopy = completion;
   v19 = +[SBCoverSheetPresentationManager sharedInstance];
   v55[0] = MEMORY[0x277D85DD0];
   v55[1] = 3221225472;
@@ -973,30 +973,30 @@ LABEL_5:
   v46[1] = 3221225472;
   v46[2] = __119__SBDashBoardApplicationLauncher__activateCameraEntity_animated_asOverlay_viaSwitcherModal_request_actions_completion___block_invoke_2;
   v46[3] = &unk_2783B1810;
-  v21 = v18;
+  v21 = completionCopy;
   v51 = v21;
   v46[4] = self;
-  v22 = v15;
+  v22 = entityCopy;
   v47 = v22;
-  v53 = a6;
-  v23 = v16;
+  modalCopy = modal;
+  v23 = requestCopy;
   v48 = v23;
   v24 = v19;
   v49 = v24;
-  v54 = v12;
+  v54 = overlayCopy;
   v25 = v20;
   v52 = v25;
-  v26 = v17;
+  v26 = actionsCopy;
   v50 = v26;
   v27 = MEMORY[0x223D6F7F0](v46);
   if ([v24 isCoverSheetHostingAnApp])
   {
-    v40 = v13;
+    v40 = animatedCopy;
     v41 = v22;
     v28 = +[SBApplicationController sharedInstance];
-    v29 = [v28 cameraApplication];
+    cameraApplication = [v28 cameraApplication];
 
-    if (([v24 isInSecureApp] & 1) != 0 || (objc_msgSend(v24, "coverSheetHostedAppSceneHandle"), v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "application"), v39 = v25, v31 = v26, v32 = v21, v33 = v23, v34 = v29, v35 = objc_claimAutoreleasedReturnValue(), v36 = objc_msgSend(v35, "isEqual:", v34), v35, v29 = v34, v23 = v33, v21 = v32, v26 = v31, v25 = v39, v30, v36))
+    if (([v24 isInSecureApp] & 1) != 0 || (objc_msgSend(v24, "coverSheetHostedAppSceneHandle"), v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "application"), v39 = v25, v31 = v26, v32 = v21, v33 = v23, v34 = cameraApplication, v35 = objc_claimAutoreleasedReturnValue(), v36 = objc_msgSend(v35, "isEqual:", v34), v35, cameraApplication = v34, v23 = v33, v21 = v32, v26 = v31, v25 = v39, v30, v36))
     {
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
@@ -1031,15 +1031,15 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  if (!v12 || (_os_feature_enabled_impl() & 1) == 0)
+  if (!overlayCopy || (_os_feature_enabled_impl() & 1) == 0)
   {
     if ([v24 isAnyGestureActivelyRecognized])
     {
-      [v24 setCoverSheetPresented:1 animated:v13 withCompletion:0];
+      [v24 setCoverSheetPresented:1 animated:animatedCopy withCompletion:0];
     }
   }
 
-  v27[2](v27, v13);
+  v27[2](v27, animatedCopy);
 LABEL_12:
 }
 
@@ -1347,23 +1347,23 @@ void __119__SBDashBoardApplicationLauncher__activateCameraEntity_animated_asOver
   [WeakRetained[6] activateOverlayWithViewController:*(a1 + 32) animated:*(a1 + 56) completion:*(a1 + 40)];
 }
 
-- (void)_attemptToUnlockToCameraCompletion:(id)a3
+- (void)_attemptToUnlockToCameraCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[SBApplicationController sharedInstance];
-  v6 = [v5 cameraApplication];
+  cameraApplication = [v5 cameraApplication];
 
-  [(SBDashBoardApplicationLauncher *)self _attemptToUnlockToApplication:v6 actions:0 completion:v4];
+  [(SBDashBoardApplicationLauncher *)self _attemptToUnlockToApplication:cameraApplication actions:0 completion:completionCopy];
 }
 
-- (void)_attemptToUnlockToApplication:(id)a3 actions:(id)a4 completion:(id)a5
+- (void)_attemptToUnlockToApplication:(id)application actions:(id)actions completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  applicationCopy = application;
+  actionsCopy = actions;
+  completionCopy = completion;
+  if (actionsCopy)
   {
-    v10 = v8;
+    v10 = actionsCopy;
   }
 
   else
@@ -1376,12 +1376,12 @@ void __119__SBDashBoardApplicationLauncher__activateCameraEntity_animated_asOver
   v18[1] = 3221225472;
   v18[2] = __83__SBDashBoardApplicationLauncher__attemptToUnlockToApplication_actions_completion___block_invoke;
   v18[3] = &unk_2783AE5A0;
-  v19 = v7;
+  v19 = applicationCopy;
   v20 = v10;
-  v21 = v9;
-  v12 = v9;
+  v21 = completionCopy;
+  v12 = completionCopy;
   v13 = v11;
-  v14 = v7;
+  v14 = applicationCopy;
   v15 = MEMORY[0x223D6F7F0](v18);
   v16 = objc_alloc_init(SBLockScreenUnlockRequest);
   [(SBLockScreenUnlockRequest *)v16 setName:@"Unlock For App Launch From DashBoard"];
@@ -1453,19 +1453,19 @@ void __83__SBDashBoardApplicationLauncher__attemptToUnlockToApplication_actions_
   }
 }
 
-- (void)_prewarmCameraForBundleIdentifier:(id)a3 prewarmReason:(id)a4
+- (void)_prewarmCameraForBundleIdentifier:(id)identifier prewarmReason:(id)reason
 {
   v17[3] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCABB0];
-  v6 = a4;
-  v7 = a3;
+  reasonCopy = reason;
+  identifierCopy = identifier;
   v8 = [v5 numberWithLongLong:mach_absolute_time()];
   v9 = [MEMORY[0x277CCABB0] numberWithLongLong:mach_continuous_time()];
   v10 = v9;
   v11 = *MEMORY[0x277CE58D8];
-  if (v6)
+  if (reasonCopy)
   {
-    v11 = v6;
+    v11 = reasonCopy;
   }
 
   v12 = *MEMORY[0x277CE5910];
@@ -1482,20 +1482,20 @@ void __83__SBDashBoardApplicationLauncher__attemptToUnlockToApplication_actions_
   AVCapturePrewarmWithOptions();
 }
 
-- (void)_coolCameraIfNecessaryForBundleIdentifier:(id)a3 prewarmReason:(id)a4
+- (void)_coolCameraIfNecessaryForBundleIdentifier:(id)identifier prewarmReason:(id)reason
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  reasonCopy = reason;
   if (self->_cameraIsPrewarming && !self->_cameraPrewarmSucceeded)
   {
-    v8 = [MEMORY[0x277D65DD0] sharedInstance];
-    [v8 emitEvent:45];
+    mEMORY[0x277D65DD0] = [MEMORY[0x277D65DD0] sharedInstance];
+    [mEMORY[0x277D65DD0] emitEvent:45];
 
     v9 = *MEMORY[0x277CE58D8];
-    if (v7)
+    if (reasonCopy)
     {
-      v9 = v7;
+      v9 = reasonCopy;
     }
 
     v13 = *MEMORY[0x277CE5908];
@@ -1504,17 +1504,17 @@ void __83__SBDashBoardApplicationLauncher__attemptToUnlockToApplication_actions_
     v11 = v9;
     v12 = [v10 dictionaryWithObjects:v14 forKeys:&v13 count:1];
 
-    MEMORY[0x223D6A9B0](v6, v12);
+    MEMORY[0x223D6A9B0](identifierCopy, v12);
   }
 }
 
-- (BOOL)_backgroundLaunchWithBundleIdentifier:(id)a3 isCaptureApplicationLaunch:(BOOL)a4
+- (BOOL)_backgroundLaunchWithBundleIdentifier:(id)identifier isCaptureApplicationLaunch:(BOOL)launch
 {
-  v5 = a3;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v6 = +[SBApplicationController sharedInstance];
-    v7 = [v6 applicationWithBundleIdentifier:v5];
+    v7 = [v6 applicationWithBundleIdentifier:identifierCopy];
 
     v8 = +[SBWorkspace mainWorkspace];
     v12[0] = MEMORY[0x277D85DD0];
@@ -1522,8 +1522,8 @@ void __83__SBDashBoardApplicationLauncher__attemptToUnlockToApplication_actions_
     v12[2] = __99__SBDashBoardApplicationLauncher__backgroundLaunchWithBundleIdentifier_isCaptureApplicationLaunch___block_invoke;
     v12[3] = &unk_2783B1860;
     v13 = v7;
-    v15 = a4;
-    v14 = v5;
+    launchCopy = launch;
+    v14 = identifierCopy;
     v9 = v7;
     v10 = [v8 requestTransitionWithBuilder:v12];
   }

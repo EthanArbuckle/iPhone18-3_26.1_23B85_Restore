@@ -1,34 +1,34 @@
 @interface HKDataMetadataWorkoutRouteSection
 - (CGSize)tableViewSize;
-- (HKDataMetadataWorkoutRouteSection)initWithLocationReadings:(id)a3 tableViewSize:(CGSize)a4;
-- (id)_cachedRouteImageForUserInterfaceStyle:(int64_t)a3 snapshotSize:(CGSize)a4;
+- (HKDataMetadataWorkoutRouteSection)initWithLocationReadings:(id)readings tableViewSize:(CGSize)size;
+- (id)_cachedRouteImageForUserInterfaceStyle:(int64_t)style snapshotSize:(CGSize)size;
 - (id)sectionTitle;
-- (void)_generateRouteImageForTraitCollection:(id)a3;
+- (void)_generateRouteImageForTraitCollection:(id)collection;
 - (void)generateRouteImage;
-- (void)selectCellForIndex:(unint64_t)a3 navigationController:(id)a4 animated:(BOOL)a5;
-- (void)setTableViewSize:(CGSize)a3;
-- (void)workoutRouteCell:(id)a3 didUpdateTraitCollection:(id)a4;
+- (void)selectCellForIndex:(unint64_t)index navigationController:(id)controller animated:(BOOL)animated;
+- (void)setTableViewSize:(CGSize)size;
+- (void)workoutRouteCell:(id)cell didUpdateTraitCollection:(id)collection;
 @end
 
 @implementation HKDataMetadataWorkoutRouteSection
 
-- (HKDataMetadataWorkoutRouteSection)initWithLocationReadings:(id)a3 tableViewSize:(CGSize)a4
+- (HKDataMetadataWorkoutRouteSection)initWithLocationReadings:(id)readings tableViewSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  readingsCopy = readings;
   v16.receiver = self;
   v16.super_class = HKDataMetadataWorkoutRouteSection;
   v9 = [(HKDataMetadataWorkoutRouteSection *)&v16 init];
   if (v9)
   {
-    if (!v8 || ![v8 count])
+    if (!readingsCopy || ![readingsCopy count])
     {
       v14 = 0;
       goto LABEL_7;
     }
 
-    objc_storeStrong(&v9->_locationReadings, a3);
+    objc_storeStrong(&v9->_locationReadings, readings);
     v9->_tableViewSize.width = width;
     v9->_tableViewSize.height = height;
     v10 = objc_alloc_init(MEMORY[0x1E695DEE0]);
@@ -50,12 +50,12 @@ LABEL_7:
   return v14;
 }
 
-- (void)setTableViewSize:(CGSize)a3
+- (void)setTableViewSize:(CGSize)size
 {
   width = self->_tableViewSize.width;
   height = self->_tableViewSize.height;
-  self->_tableViewSize = a3;
-  if (a3.width != width || a3.height != height)
+  self->_tableViewSize = size;
+  if (size.width != width || size.height != height)
   {
     [(HKDataMetadataWorkoutRouteSection *)self generateRouteImage];
   }
@@ -63,14 +63,14 @@ LABEL_7:
 
 - (void)generateRouteImage
 {
-  v3 = [(HKDataMetadataWorkoutRouteCell *)self->_cell traitCollection];
-  [(HKDataMetadataWorkoutRouteSection *)self _generateRouteImageForTraitCollection:v3];
+  traitCollection = [(HKDataMetadataWorkoutRouteCell *)self->_cell traitCollection];
+  [(HKDataMetadataWorkoutRouteSection *)self _generateRouteImageForTraitCollection:traitCollection];
 }
 
-- (void)_generateRouteImageForTraitCollection:(id)a3
+- (void)_generateRouteImageForTraitCollection:(id)collection
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionCopy = collection;
   width = self->_tableViewSize.width;
   if (width == 0.0)
   {
@@ -86,8 +86,8 @@ LABEL_7:
   else
   {
     v7 = HKUIRoundToScreenScale(width * 0.66);
-    v8 = [v4 userInterfaceStyle];
-    v9 = [(HKDataMetadataWorkoutRouteSection *)self _cachedRouteImageForUserInterfaceStyle:v8 snapshotSize:width, v7];
+    userInterfaceStyle = [collectionCopy userInterfaceStyle];
+    v9 = [(HKDataMetadataWorkoutRouteSection *)self _cachedRouteImageForUserInterfaceStyle:userInterfaceStyle snapshotSize:width, v7];
     if (v9)
     {
       _HKInitializeLogging();
@@ -95,7 +95,7 @@ LABEL_7:
       if (os_log_type_enabled(*MEMORY[0x1E696B9A8], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v17 = v8;
+        v17 = userInterfaceStyle;
         _os_log_impl(&dword_1C3942000, v10, OS_LOG_TYPE_DEFAULT, "[route] using cached workout route image for interface style: %ld", buf, 0xCu);
       }
 
@@ -115,9 +115,9 @@ LABEL_7:
       v14[1] = 3221225472;
       v14[2] = __75__HKDataMetadataWorkoutRouteSection__generateRouteImageForTraitCollection___block_invoke;
       v14[3] = &unk_1E81B6AF8;
-      v15[1] = v8;
+      v15[1] = userInterfaceStyle;
       objc_copyWeak(v15, buf);
-      [(HKRouteMapGenerator *)v13 snapshotWithSize:v4 lineWidth:v14 traitCollection:width offsets:v7 completion:5.0, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
+      [(HKRouteMapGenerator *)v13 snapshotWithSize:collectionCopy lineWidth:v14 traitCollection:width offsets:v7 completion:5.0, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
       objc_destroyWeak(v15);
       objc_destroyWeak(buf);
     }
@@ -160,12 +160,12 @@ void __75__HKDataMetadataWorkoutRouteSection__generateRouteImageForTraitCollecti
   }
 }
 
-- (id)_cachedRouteImageForUserInterfaceStyle:(int64_t)a3 snapshotSize:(CGSize)a4
+- (id)_cachedRouteImageForUserInterfaceStyle:(int64_t)style snapshotSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   routeImageCache = self->_routeImageCache;
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:style];
   v8 = [(NSCache *)routeImageCache objectForKey:v7];
 
   if (v8 && ((v18.origin.x = 0.0, v18.origin.y = 0.0, v18.size.width = width, v18.size.height = height, v19 = CGRectIntegral(v18), v9 = v19.size.width, v10 = v19.size.height, [v8 size], v12 = v11, objc_msgSend(v8, "size"), v20.size.height = v13, v20.origin.x = 0.0, v20.origin.y = 0.0, v20.size.width = v12, v21 = CGRectIntegral(v20), v9 == v21.size.width) ? (v14 = v10 == v21.size.height) : (v14 = 0), v14))
@@ -181,15 +181,15 @@ void __75__HKDataMetadataWorkoutRouteSection__generateRouteImageForTraitCollecti
   return v15;
 }
 
-- (void)workoutRouteCell:(id)a3 didUpdateTraitCollection:(id)a4
+- (void)workoutRouteCell:(id)cell didUpdateTraitCollection:(id)collection
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [(HKDataMetadataWorkoutRouteSection *)self cell];
+  collectionCopy = collection;
+  cellCopy = cell;
+  cell = [(HKDataMetadataWorkoutRouteSection *)self cell];
 
-  if (v7 == v6)
+  if (cell == cellCopy)
   {
-    [(HKDataMetadataWorkoutRouteSection *)self _generateRouteImageForTraitCollection:v8];
+    [(HKDataMetadataWorkoutRouteSection *)self _generateRouteImageForTraitCollection:collectionCopy];
   }
 }
 
@@ -201,16 +201,16 @@ void __75__HKDataMetadataWorkoutRouteSection__generateRouteImageForTraitCollecti
   return v3;
 }
 
-- (void)selectCellForIndex:(unint64_t)a3 navigationController:(id)a4 animated:(BOOL)a5
+- (void)selectCellForIndex:(unint64_t)index navigationController:(id)controller animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = a4;
+  animatedCopy = animated;
+  controllerCopy = controller;
   v8 = [HKWorkoutRouteViewController alloc];
   locationReadings = self->_locationReadings;
-  v10 = [(HKDataMetadataWorkoutRouteSection *)self sectionTitle];
-  v11 = [(HKWorkoutRouteViewController *)v8 initWithLocationReadings:locationReadings title:v10 sharingEnabled:0 shareText:0 excludedActivityTypes:0];
+  sectionTitle = [(HKDataMetadataWorkoutRouteSection *)self sectionTitle];
+  v11 = [(HKWorkoutRouteViewController *)v8 initWithLocationReadings:locationReadings title:sectionTitle sharingEnabled:0 shareText:0 excludedActivityTypes:0];
 
-  [v7 pushViewController:v11 animated:v5];
+  [controllerCopy pushViewController:v11 animated:animatedCopy];
 }
 
 - (CGSize)tableViewSize

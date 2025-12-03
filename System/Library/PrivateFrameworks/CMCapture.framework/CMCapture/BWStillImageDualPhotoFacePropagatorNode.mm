@@ -1,19 +1,19 @@
 @interface BWStillImageDualPhotoFacePropagatorNode
-- (BWStillImageDualPhotoFacePropagatorNode)initWithBaseZoomFactors:(id)a3;
+- (BWStillImageDualPhotoFacePropagatorNode)initWithBaseZoomFactors:(id)factors;
 - (uint64_t)_emitBuffersAndErrorsToOutputs;
 - (void)_clearCaptureRequestState;
 - (void)_processWiderAndNarrowerFOVInput;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
+- (void)handleNodeError:(id)error forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWStillImageDualPhotoFacePropagatorNode
 
-- (BWStillImageDualPhotoFacePropagatorNode)initWithBaseZoomFactors:(id)a3
+- (BWStillImageDualPhotoFacePropagatorNode)initWithBaseZoomFactors:(id)factors
 {
   v15.receiver = self;
   v15.super_class = BWStillImageDualPhotoFacePropagatorNode;
@@ -22,7 +22,7 @@
   if (v4)
   {
     v4->_currentSettingsID = -1;
-    v6 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:a3];
+    v6 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:factors];
     v7 = 0;
     v5->_baseZoomFactors = v6;
     v8 = 1;
@@ -68,23 +68,23 @@
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
-  v5 = -[NSArray objectAtIndexedSubscript:](-[BWNode outputs](self, "outputs"), "objectAtIndexedSubscript:", [a4 index]);
+  v5 = -[NSArray objectAtIndexedSubscript:](-[BWNode outputs](self, "outputs"), "objectAtIndexedSubscript:", [input index]);
 
-  [v5 setFormat:a3];
+  [v5 setFormat:format];
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  if ([(BWNode *)self allInputsHaveReachedState:1, a4, a5])
+  if ([(BWNode *)self allInputsHaveReachedState:1, format, input])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(BWNode *)self outputs];
-    v7 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v11 count:16];
+    outputs = [(BWNode *)self outputs];
+    v7 = [(NSArray *)outputs countByEnumeratingWithState:&v12 objects:v11 count:16];
     if (v7)
     {
       v8 = v7;
@@ -96,14 +96,14 @@
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(outputs);
           }
 
           [*(*(&v12 + 1) + 8 * v10++) makeConfiguredFormatLive];
         }
 
         while (v8 != v10);
-        v8 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v11 count:16];
+        v8 = [(NSArray *)outputs countByEnumeratingWithState:&v12 objects:v11 count:16];
       }
 
       while (v8);
@@ -111,7 +111,7 @@
   }
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   if ([(BWNode *)self allInputsHaveReachedState:0])
   {
@@ -119,8 +119,8 @@
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [(BWNode *)self outputs];
-    v5 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v9 count:16];
+    outputs = [(BWNode *)self outputs];
+    v5 = [(NSArray *)outputs countByEnumeratingWithState:&v10 objects:v9 count:16];
     if (v5)
     {
       v6 = v5;
@@ -132,14 +132,14 @@
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(outputs);
           }
 
           [*(*(&v10 + 1) + 8 * v8++) markEndOfLiveOutput];
         }
 
         while (v6 != v8);
-        v6 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v9 count:16];
+        v6 = [(NSArray *)outputs countByEnumeratingWithState:&v10 objects:v9 count:16];
       }
 
       while (v6);
@@ -147,9 +147,9 @@
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v7 = CMGetAttachment(a3, @"StillSettings", 0);
+  v7 = CMGetAttachment(buffer, @"StillSettings", 0);
   if ([v7 settingsID] != self->_currentSettingsID)
   {
     [(BWStillImageDualPhotoFacePropagatorNode *)self _clearCaptureRequestState];
@@ -165,7 +165,7 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = [CMGetAttachment(a3 @"BWStillImageCaptureSettings"];
+  v8 = [CMGetAttachment(buffer @"BWStillImageCaptureSettings"];
   v9 = [v8 countByEnumeratingWithState:&v23 objects:v22 count:16];
   if (!v9)
   {
@@ -198,7 +198,7 @@ LABEL_12:
     return;
   }
 
-  if (self->_widerFOVInput == a4)
+  if (self->_widerFOVInput == input)
   {
     v14 = 144;
     if (self->_widerFOVBuffer)
@@ -214,7 +214,7 @@ LABEL_12:
       CFRelease(self->_widerFOVBuffer);
     }
 
-    if (!a3)
+    if (!buffer)
     {
 LABEL_20:
       v20 = 0;
@@ -224,11 +224,11 @@ LABEL_23:
     }
 
 LABEL_22:
-    v20 = CFRetain(a3);
+    v20 = CFRetain(buffer);
     goto LABEL_23;
   }
 
-  if (self->_narrowerFOVInput == a4)
+  if (self->_narrowerFOVInput == input)
   {
     v14 = 152;
     if (self->_narrowerFOVBuffer)
@@ -244,7 +244,7 @@ LABEL_22:
       CFRelease(self->_narrowerFOVBuffer);
     }
 
-    if (!a3)
+    if (!buffer)
     {
       goto LABEL_20;
     }
@@ -258,49 +258,49 @@ LABEL_24:
 
 - (void)_clearCaptureRequestState
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 144);
+    v2 = *(self + 144);
     if (v2)
     {
       CFRelease(v2);
-      *(a1 + 144) = 0;
+      *(self + 144) = 0;
     }
 
-    v3 = *(a1 + 152);
+    v3 = *(self + 152);
     if (v3)
     {
       CFRelease(v3);
-      *(a1 + 152) = 0;
+      *(self + 152) = 0;
     }
 
-    *(a1 + 160) = 0;
-    *(a1 + 168) = 0;
+    *(self + 160) = 0;
+    *(self + 168) = 0;
   }
 }
 
 - (void)_processWiderAndNarrowerFOVInput
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v2 = a1[18];
+  v2 = self[18];
   if (!v2)
   {
-    if (!a1[20])
+    if (!self[20])
     {
       return;
     }
 
-    if (a1[19])
+    if (self[19])
     {
       goto LABEL_9;
     }
 
 LABEL_7:
-    if (!a1[21])
+    if (!self[21])
     {
       return;
     }
@@ -308,31 +308,31 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v3 = a1[19];
+  v3 = self[19];
   if (!v3)
   {
     goto LABEL_7;
   }
 
-  BWProcessWiderAndNarrowerFOVBuffersForFacePropagation(v2, v3, a1[17]);
+  BWProcessWiderAndNarrowerFOVBuffersForFacePropagation(v2, v3, self[17]);
 LABEL_9:
-  [(BWStillImageDualPhotoFacePropagatorNode *)a1 _emitBuffersAndErrorsToOutputs];
+  [(BWStillImageDualPhotoFacePropagatorNode *)self _emitBuffersAndErrorsToOutputs];
 
-  [(BWStillImageDualPhotoFacePropagatorNode *)a1 _clearCaptureRequestState];
+  [(BWStillImageDualPhotoFacePropagatorNode *)self _clearCaptureRequestState];
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
-  v8 = [a3 stillImageSettings];
-  if ([v8 settingsID] != self->_currentSettingsID)
+  stillImageSettings = [error stillImageSettings];
+  if ([stillImageSettings settingsID] != self->_currentSettingsID)
   {
     [(BWStillImageDualPhotoFacePropagatorNode *)self _clearCaptureRequestState];
-    self->_currentSettingsID = [v8 settingsID];
+    self->_currentSettingsID = [stillImageSettings settingsID];
   }
 
-  if ([objc_msgSend(objc_msgSend(v8 "requestedSettings")])
+  if ([objc_msgSend(objc_msgSend(stillImageSettings "requestedSettings")])
   {
-    if (self->_widerFOVInput == a4)
+    if (self->_widerFOVInput == input)
     {
       v9 = 160;
       if (self->_widerFOVError)
@@ -369,7 +369,7 @@ LABEL_23:
 
     else
     {
-      if (self->_narrowerFOVInput != a4)
+      if (self->_narrowerFOVInput != input)
       {
         goto LABEL_25;
       }
@@ -406,7 +406,7 @@ LABEL_23:
       }
     }
 
-    *(&self->super.super.isa + v9) = a3;
+    *(&self->super.super.isa + v9) = error;
     goto LABEL_25;
   }
 

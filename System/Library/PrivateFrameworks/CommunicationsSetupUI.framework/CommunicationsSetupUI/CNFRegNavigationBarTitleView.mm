@@ -1,24 +1,24 @@
 @interface CNFRegNavigationBarTitleView
-- (BOOL)_useSilverLookForBarStyle:(int64_t)a3;
-- (CGSize)_currentTextShadowOffsetForBarStyle:(int64_t)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CNFRegNavigationBarTitleView)initWithFrame:(CGRect)a3;
-- (CNFRegNavigationBarTitleView)initWithNavigationItem:(id)a3;
-- (id)_currentTextColorForBarStyle:(int64_t)a3;
-- (id)_currentTextShadowColorForBarStyle:(int64_t)a3;
+- (BOOL)_useSilverLookForBarStyle:(int64_t)style;
+- (CGSize)_currentTextShadowOffsetForBarStyle:(int64_t)style;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CNFRegNavigationBarTitleView)initWithFrame:(CGRect)frame;
+- (CNFRegNavigationBarTitleView)initWithNavigationItem:(id)item;
+- (id)_currentTextColorForBarStyle:(int64_t)style;
+- (id)_currentTextShadowColorForBarStyle:(int64_t)style;
 - (id)_defaultFont;
-- (id)_titleTextColorForBarStyle:(int64_t)a3;
+- (id)_titleTextColorForBarStyle:(int64_t)style;
 - (void)_updateTitleLabel;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation CNFRegNavigationBarTitleView
 
-- (CNFRegNavigationBarTitleView)initWithNavigationItem:(id)a3
+- (CNFRegNavigationBarTitleView)initWithNavigationItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = *MEMORY[0x277CBF3A0];
   v6 = *(MEMORY[0x277CBF3A0] + 8);
   v7 = *(MEMORY[0x277CBF3A0] + 16);
@@ -27,13 +27,13 @@
   v10 = v9;
   if (v9)
   {
-    [(CNFRegNavigationBarTitleView *)v9 setItem:v4];
+    [(CNFRegNavigationBarTitleView *)v9 setItem:itemCopy];
     v11 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v5, v6, v7, v8}];
     titleLabel = v10->_titleLabel;
     v10->_titleLabel = v11;
 
-    v13 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v10->_titleLabel setBackgroundColor:v13];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v10->_titleLabel setBackgroundColor:clearColor];
 
     [(UILabel *)v10->_titleLabel setOpaque:0];
     [(CNFRegNavigationBarTitleView *)v10 _updateTitleLabel];
@@ -43,19 +43,19 @@
   return v10;
 }
 
-- (CNFRegNavigationBarTitleView)initWithFrame:(CGRect)a3
+- (CNFRegNavigationBarTitleView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = CNFRegNavigationBarTitleView;
-  v3 = [(CNFRegNavigationBarTitleView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNFRegNavigationBarTitleView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(CNFRegNavigationBarTitleView *)v3 setOpaque:0];
     [(CNFRegNavigationBarTitleView *)v4 setUserInteractionEnabled:0];
     v5 = +[CNFRegAppearanceController globalAppearanceController];
-    v6 = [v5 navigationBarActivityIndicatorStyle];
-    v7 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:v6];
+    navigationBarActivityIndicatorStyle = [v5 navigationBarActivityIndicatorStyle];
+    v7 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:navigationBarActivityIndicatorStyle];
     activityIndicator = v4->_activityIndicator;
     v4->_activityIndicator = v7;
 
@@ -74,9 +74,9 @@
   [(CNFRegNavigationBarTitleView *)&v3 dealloc];
 }
 
-- (id)_titleTextColorForBarStyle:(int64_t)a3
+- (id)_titleTextColorForBarStyle:(int64_t)style
 {
-  if ((a3 - 3) > 0xFFFFFFFFFFFFFFFDLL)
+  if ((style - 3) > 0xFFFFFFFFFFFFFFFDLL)
   {
     [MEMORY[0x277D75348] whiteColor];
   }
@@ -92,26 +92,26 @@
 
 - (id)_defaultFont
 {
-  v2 = [(CNFRegNavigationBarTitleView *)self item];
-  v3 = [v2 navigationBar];
-  v4 = [v3 _defaultTitleFont];
+  item = [(CNFRegNavigationBarTitleView *)self item];
+  navigationBar = [item navigationBar];
+  _defaultTitleFont = [navigationBar _defaultTitleFont];
 
-  return v4;
+  return _defaultTitleFont;
 }
 
-- (BOOL)_useSilverLookForBarStyle:(int64_t)a3
+- (BOOL)_useSilverLookForBarStyle:(int64_t)style
 {
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v7 = [(CNFRegNavigationBarTitleView *)self item];
-  v8 = [v7 navigationBar];
-  v9 = [v8 barTintColor];
+  item = [(CNFRegNavigationBarTitleView *)self item];
+  navigationBar = [item navigationBar];
+  barTintColor = [navigationBar barTintColor];
 
-  return v6 == 1 && v9 == 0 && a3 == 0;
+  return userInterfaceIdiom == 1 && barTintColor == 0 && style == 0;
 }
 
-- (id)_currentTextColorForBarStyle:(int64_t)a3
+- (id)_currentTextColorForBarStyle:(int64_t)style
 {
   v5 = [(CNFRegNavigationBarTitleView *)self _useSilverLookForBarStyle:?];
   if (v5 && !_currentTextColorForBarStyle____silverLookTextColor)
@@ -128,15 +128,15 @@
 
   else
   {
-    v8 = [(CNFRegNavigationBarTitleView *)self _titleTextColorForBarStyle:a3];
+    v8 = [(CNFRegNavigationBarTitleView *)self _titleTextColorForBarStyle:style];
   }
 
   return v8;
 }
 
-- (id)_currentTextShadowColorForBarStyle:(int64_t)a3
+- (id)_currentTextShadowColorForBarStyle:(int64_t)style
 {
-  v4 = [(CNFRegNavigationBarTitleView *)self _useSilverLookForBarStyle:a3];
+  v4 = [(CNFRegNavigationBarTitleView *)self _useSilverLookForBarStyle:style];
   if (v4 && !_currentTextShadowColorForBarStyle____silverLookShadowColor)
   {
     v5 = [objc_alloc(MEMORY[0x277D75348]) initWithWhite:1.0 alpha:0.5];
@@ -146,21 +146,21 @@
 
   if (v4)
   {
-    v7 = _currentTextShadowColorForBarStyle____silverLookShadowColor;
+    buttonItemShadowColor = _currentTextShadowColorForBarStyle____silverLookShadowColor;
   }
 
   else
   {
-    v8 = [(UINavigationItem *)self->_item navigationBar];
-    v7 = [v8 buttonItemShadowColor];
+    navigationBar = [(UINavigationItem *)self->_item navigationBar];
+    buttonItemShadowColor = [navigationBar buttonItemShadowColor];
   }
 
-  return v7;
+  return buttonItemShadowColor;
 }
 
-- (CGSize)_currentTextShadowOffsetForBarStyle:(int64_t)a3
+- (CGSize)_currentTextShadowOffsetForBarStyle:(int64_t)style
 {
-  v3 = [(CNFRegNavigationBarTitleView *)self _useSilverLookForBarStyle:a3];
+  v3 = [(CNFRegNavigationBarTitleView *)self _useSilverLookForBarStyle:style];
   v4 = 1.0;
   if (!v3)
   {
@@ -173,12 +173,12 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(CNFRegNavigationBarTitleView *)self frame];
   if (v9 != width || v8 != height)
   {
@@ -192,31 +192,31 @@
 
 - (void)_updateTitleLabel
 {
-  v3 = [(CNFRegNavigationBarTitleView *)self item];
-  v4 = [v3 navigationBar];
-  v5 = [v4 barStyle];
+  item = [(CNFRegNavigationBarTitleView *)self item];
+  navigationBar = [item navigationBar];
+  barStyle = [navigationBar barStyle];
 
-  v12 = [(CNFRegNavigationBarTitleView *)self _defaultFont];
+  _defaultFont = [(CNFRegNavigationBarTitleView *)self _defaultFont];
   [(UILabel *)self->_titleLabel setBaselineAdjustment:1];
-  v6 = [(CNFRegNavigationBarTitleView *)self item];
-  v7 = [v6 title];
-  [(UILabel *)self->_titleLabel setText:v7];
+  item2 = [(CNFRegNavigationBarTitleView *)self item];
+  title = [item2 title];
+  [(UILabel *)self->_titleLabel setText:title];
 
-  [(UILabel *)self->_titleLabel setFont:v12];
-  v8 = [(CNFRegNavigationBarTitleView *)self _currentTextColorForBarStyle:v5];
+  [(UILabel *)self->_titleLabel setFont:_defaultFont];
+  v8 = [(CNFRegNavigationBarTitleView *)self _currentTextColorForBarStyle:barStyle];
   [(UILabel *)self->_titleLabel setTextColor:v8];
 
-  [(CNFRegNavigationBarTitleView *)self _currentTextShadowOffsetForBarStyle:v5];
+  [(CNFRegNavigationBarTitleView *)self _currentTextShadowOffsetForBarStyle:barStyle];
   [(UILabel *)self->_titleLabel setShadowOffset:?];
-  v9 = [(CNFRegNavigationBarTitleView *)self _currentTextShadowColorForBarStyle:v5];
+  v9 = [(CNFRegNavigationBarTitleView *)self _currentTextShadowColorForBarStyle:barStyle];
   [(UILabel *)self->_titleLabel setShadowColor:v9];
 
   [(UILabel *)self->_titleLabel setAdjustsFontSizeToFitWidth:1];
   [(UILabel *)self->_titleLabel setNumberOfLines:1];
-  [v12 pointSize];
+  [_defaultFont pointSize];
   if (v10 != 0.0)
   {
-    [v12 pointSize];
+    [_defaultFont pointSize];
     [(UILabel *)self->_titleLabel setMinimumScaleFactor:12.0 / v11];
   }
 }
@@ -254,31 +254,31 @@
   [(UILabel *)titleLabel setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  [(CNFRegNavigationBarTitleView *)self _updateTitleLabel:a3.width];
-  v4 = [(UILabel *)self->_titleLabel text];
-  v5 = [(UILabel *)self->_titleLabel font];
-  v6 = [MEMORY[0x277D74248] defaultParagraphStyle];
-  v7 = [v6 mutableCopy];
+  [(CNFRegNavigationBarTitleView *)self _updateTitleLabel:fits.width];
+  text = [(UILabel *)self->_titleLabel text];
+  font = [(UILabel *)self->_titleLabel font];
+  defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+  v7 = [defaultParagraphStyle mutableCopy];
 
   [v7 setLineBreakMode:4];
   v8 = *MEMORY[0x277D74118];
   v26[0] = *MEMORY[0x277D740A8];
   v26[1] = v8;
-  v27[0] = v5;
+  v27[0] = font;
   v27[1] = v7;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
   v10 = objc_alloc_init(MEMORY[0x277D74260]);
   [(UILabel *)self->_titleLabel minimumScaleFactor];
   [v10 setMinimumScaleFactor:?];
-  if ([v4 length])
+  if ([text length])
   {
-    v11 = [(CNFRegNavigationBarTitleView *)self item];
-    v12 = [v11 navigationBar];
-    [v12 bounds];
-    [v4 boundingRectWithSize:0 options:v9 attributes:v10 context:{v13, v14}];
+    item = [(CNFRegNavigationBarTitleView *)self item];
+    navigationBar = [item navigationBar];
+    [navigationBar bounds];
+    [text boundingRectWithSize:0 options:v9 attributes:v10 context:{v13, v14}];
     v16 = v15;
     v18 = v17;
   }

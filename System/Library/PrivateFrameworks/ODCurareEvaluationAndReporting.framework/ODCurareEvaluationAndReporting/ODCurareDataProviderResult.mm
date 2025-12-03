@@ -1,39 +1,39 @@
 @interface ODCurareDataProviderResult
-- (ODCurareDataProviderResult)initWithBatchProviders:(id)a3 dateArray:(id)a4;
-- (ODCurareDataProviderResult)initWithDataArray:(id)a3 dateArray:(id)a4;
+- (ODCurareDataProviderResult)initWithBatchProviders:(id)providers dateArray:(id)array;
+- (ODCurareDataProviderResult)initWithDataArray:(id)array dateArray:(id)dateArray;
 @end
 
 @implementation ODCurareDataProviderResult
 
-- (ODCurareDataProviderResult)initWithDataArray:(id)a3 dateArray:(id)a4
+- (ODCurareDataProviderResult)initWithDataArray:(id)array dateArray:(id)dateArray
 {
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  dateArrayCopy = dateArray;
   v11.receiver = self;
   v11.super_class = ODCurareDataProviderResult;
   v8 = [(ODCurareDataProviderResult *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(ODCurareDataProviderResult *)v8 setDataArray:v6];
-    [(ODCurareDataProviderResult *)v9 setDateArray:v7];
+    [(ODCurareDataProviderResult *)v8 setDataArray:arrayCopy];
+    [(ODCurareDataProviderResult *)v9 setDateArray:dateArrayCopy];
   }
 
   return v9;
 }
 
-- (ODCurareDataProviderResult)initWithBatchProviders:(id)a3 dateArray:(id)a4
+- (ODCurareDataProviderResult)initWithBatchProviders:(id)providers dateArray:(id)array
 {
-  v6 = a3;
-  v7 = a4;
+  providersCopy = providers;
+  arrayCopy = array;
   v11.receiver = self;
   v11.super_class = ODCurareDataProviderResult;
   v8 = [(ODCurareDataProviderResult *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(ODCurareDataProviderResult *)v8 setBatchProviders:v6];
-    [(ODCurareDataProviderResult *)v9 setDateArray:v7];
+    [(ODCurareDataProviderResult *)v8 setBatchProviders:providersCopy];
+    [(ODCurareDataProviderResult *)v9 setDateArray:arrayCopy];
   }
 
   return v9;

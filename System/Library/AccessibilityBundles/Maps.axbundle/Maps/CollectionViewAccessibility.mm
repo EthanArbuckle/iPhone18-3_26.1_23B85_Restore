@@ -1,6 +1,6 @@
 @interface CollectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axNonHiddenViewForKey:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axNonHiddenViewForKey:(id)key;
 - (id)accessibilityElements;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -8,16 +8,16 @@
 
 @implementation CollectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CollectionView" hasInstanceMethod:@"editing" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CollectionView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"CollectionView" hasInstanceVariable:@"_subtitleLabel" withType:"UILabel"];
-  [v3 validateClass:@"CollectionView" hasInstanceVariable:@"_newCollectionLabel" withType:"MapsThemeLabel"];
-  [v3 validateClass:@"CollectionView" hasInstanceVariable:@"_imageView" withType:"CollectionImageView"];
-  [v3 validateClass:@"CollectionImageView" hasInstanceVariable:@"_editButton" withType:"UIButton"];
-  [v3 validateClass:@"CollectionView" hasInstanceVariable:@"_titleTextField" withType:"UITextField"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CollectionView" hasInstanceMethod:@"editing" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CollectionView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"CollectionView" hasInstanceVariable:@"_subtitleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"CollectionView" hasInstanceVariable:@"_newCollectionLabel" withType:"MapsThemeLabel"];
+  [validationsCopy validateClass:@"CollectionView" hasInstanceVariable:@"_imageView" withType:"CollectionImageView"];
+  [validationsCopy validateClass:@"CollectionImageView" hasInstanceVariable:@"_editButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"CollectionView" hasInstanceVariable:@"_titleTextField" withType:"UITextField"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -31,9 +31,9 @@
   [v4 setAccessibilityLabel:v5];
 }
 
-- (id)_axNonHiddenViewForKey:(id)a3
+- (id)_axNonHiddenViewForKey:(id)key
 {
-  v3 = [(CollectionViewAccessibility *)self safeUIViewForKey:a3];
+  v3 = [(CollectionViewAccessibility *)self safeUIViewForKey:key];
   if ([v3 isHidden])
   {
     v4 = 0;
@@ -51,10 +51,10 @@
 {
   v3 = MEMORY[0x29EDB8D80];
   v4 = [(CollectionViewAccessibility *)self _axNonHiddenViewForKey:@"_titleLabel"];
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
   v6 = [(CollectionViewAccessibility *)self _axNonHiddenViewForKey:@"_subtitleLabel"];
   v7 = [(CollectionViewAccessibility *)self _axNonHiddenViewForKey:@"_newCollectionLabel"];
-  v8 = [v3 axArrayByIgnoringNilElementsWithCount:{3, v5, v6, v7}];
+  v8 = [v3 axArrayByIgnoringNilElementsWithCount:{3, accessibilityLabel, v6, v7}];
   v9 = MEMORY[0x29C2DCCF0]();
 
   return v9;

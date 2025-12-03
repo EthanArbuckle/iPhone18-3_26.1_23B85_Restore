@@ -1,7 +1,7 @@
 @interface CKFireworksEffectView
 - (CGPoint)focusPoint;
 - (CGRect)messageRect;
-- (CKFireworksEffectView)initWithFrame:(CGRect)a3;
+- (CKFireworksEffectView)initWithFrame:(CGRect)frame;
 - (void)startAnimation;
 @end
 
@@ -18,12 +18,12 @@
   [(GameScene *)scene runChoregraphy];
 }
 
-- (CKFireworksEffectView)initWithFrame:(CGRect)a3
+- (CKFireworksEffectView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v17.receiver = self;
   v17.super_class = CKFireworksEffectView;
   v7 = [(CKFireworksEffectView *)&v17 initWithFrame:?];

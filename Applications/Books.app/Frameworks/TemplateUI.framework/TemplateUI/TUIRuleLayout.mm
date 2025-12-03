@@ -1,5 +1,5 @@
 @interface TUIRuleLayout
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4;
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context;
 - (void)computeLayout;
 @end
 
@@ -7,21 +7,21 @@
 
 - (void)computeLayout
 {
-  v3 = [(TUILayout *)self layoutAncestor];
-  if (v3)
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  if (layoutAncestor)
   {
     while (1)
     {
-      v16 = v3;
+      v16 = layoutAncestor;
       if (objc_opt_respondsToSelector())
       {
         break;
       }
 
-      v4 = [v16 layoutAncestor];
+      layoutAncestor2 = [v16 layoutAncestor];
 
-      v3 = v4;
-      if (!v4)
+      layoutAncestor = layoutAncestor2;
+      if (!layoutAncestor2)
       {
         goto LABEL_4;
       }
@@ -35,14 +35,14 @@ LABEL_4:
   }
 
   v5 = [(TUILayout *)self box];
-  v6 = [v5 axis];
+  axis = [v5 axis];
 
-  if (v6 || (v6 = [v16 ruleLayoutAxis]) != 0)
+  if (axis || (axis = [v16 ruleLayoutAxis]) != 0)
   {
-    if (v6 == &dword_0 + 2)
+    if (axis == &dword_0 + 2)
     {
-      v10 = [(TUILayout *)self controller];
-      [v10 contentsScale];
+      controller = [(TUILayout *)self controller];
+      [controller contentsScale];
       v8 = 1.0 / v14;
       [(TUILayout *)self computeHeight];
       v7 = v15;
@@ -52,15 +52,15 @@ LABEL_4:
     {
       v7 = 0.0;
       v8 = 0.0;
-      if (v6 != &dword_0 + 1)
+      if (axis != &dword_0 + 1)
       {
         goto LABEL_13;
       }
 
       [(TUILayout *)self computeWidth];
       v8 = v9;
-      v10 = [(TUILayout *)self controller];
-      [v10 contentsScale];
+      controller = [(TUILayout *)self controller];
+      [controller contentsScale];
       v7 = 1.0 / v11;
     }
   }
@@ -77,20 +77,20 @@ LABEL_13:
   [(TUILayout *)self setComputedNaturalSize:v8, v7];
 }
 
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
   v6 = [_TUIRuleLayerConfig alloc];
   v7 = [(TUILayout *)self box];
-  v8 = [v7 color];
-  v9 = [(_TUIRuleLayerConfig *)v6 initWithColor:v8];
+  color = [v7 color];
+  v9 = [(_TUIRuleLayerConfig *)v6 initWithColor:color];
 
   v10 = [[TUIRenderModelLayer alloc] initWithSubmodels:0 config:v9 erasableInsets:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
   v11 = [(TUILayout *)self box];
-  v12 = [v11 identifier];
-  [(TUIRenderModelLayer *)v10 setIdentifier:v12];
+  identifier = [v11 identifier];
+  [(TUIRenderModelLayer *)v10 setIdentifier:identifier];
 
-  [(TUILayout *)self renderModelSizeWithContext:v5];
+  [(TUILayout *)self renderModelSizeWithContext:contextCopy];
   v14 = v13;
   v16 = v15;
 

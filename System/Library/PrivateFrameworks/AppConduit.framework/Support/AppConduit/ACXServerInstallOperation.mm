@@ -1,32 +1,32 @@
 @interface ACXServerInstallOperation
-- (id)_makeTempDirectoryWithError:(id *)a3;
+- (id)_makeTempDirectoryWithError:(id *)error;
 - (id)_onQueue_sendCancelMessage;
-- (void)_commonInit:(BOOL)a3;
+- (void)_commonInit:(BOOL)init;
 - (void)_onQueue_armWatchdog;
-- (void)_onQueue_callCompletion:(id)a3;
-- (void)_onQueue_callProgressBlockWithPhase:(unint64_t)a3 percent:(double)a4;
+- (void)_onQueue_callCompletion:(id)completion;
+- (void)_onQueue_callProgressBlockWithPhase:(unint64_t)phase percent:(double)percent;
 - (void)_onQueue_disarmWatchdog;
 - (void)_onQueue_doTransferAndInstall;
 - (void)_onQueue_prepForTransferAndInstall;
 - (void)_onQueue_startInstall;
-- (void)beginWithCompletionBlock:(id)a3;
+- (void)beginWithCompletionBlock:(id)block;
 - (void)cancel;
 - (void)dealloc;
-- (void)receivedDictionaryOrData:(id)a3;
-- (void)socketDidCloseWithError:(id)a3;
+- (void)receivedDictionaryOrData:(id)data;
+- (void)socketDidCloseWithError:(id)error;
 @end
 
 @implementation ACXServerInstallOperation
 
-- (void)_commonInit:(BOOL)a3
+- (void)_commonInit:(BOOL)init
 {
-  v3 = a3;
+  initCopy = init;
   if (qword_1000A4818 != -1)
   {
     sub_10005A0B4();
   }
 
-  if (v3)
+  if (initCopy)
   {
     +[ACXIDSSocketManager sharedV1SocketManager];
   }
@@ -45,13 +45,13 @@
 - (void)dealloc
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(ACXServerInstallOperation *)self tempDir];
-  [v3 removeItemAtURL:v4 error:0];
+  tempDir = [(ACXServerInstallOperation *)self tempDir];
+  [v3 removeItemAtURL:tempDir error:0];
 
   if ([(ACXServerInstallOperation *)self acquiredSocket])
   {
-    v5 = [(ACXServerInstallOperation *)self socketManager];
-    [v5 endUsingSocket];
+    socketManager = [(ACXServerInstallOperation *)self socketManager];
+    [socketManager endUsingSocket];
 
     [(ACXServerInstallOperation *)self setAcquiredSocket:0];
   }
@@ -61,9 +61,9 @@
   [(ACXServerInstallOperation *)&v6 dealloc];
 }
 
-- (void)beginWithCompletionBlock:(id)a3
+- (void)beginWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(ACXServerInstallOperation *)self isUserInitiated])
   {
     v5 = 21;
@@ -79,57 +79,57 @@
   v8 = dispatch_queue_create_with_target_V2("com.apple.AppConduit.InstallOperationQ", v6, v7);
   [(ACXServerInstallOperation *)self setQueue:v8];
 
-  v9 = [(ACXServerInstallOperation *)self watchAppBundleID];
-  v10 = [NSString stringWithFormat:@"com.apple.appconduitd.install_active.%@", v9];
+  watchAppBundleID = [(ACXServerInstallOperation *)self watchAppBundleID];
+  v10 = [NSString stringWithFormat:@"com.apple.appconduitd.install_active.%@", watchAppBundleID];
 
   [v10 UTF8String];
   v11 = os_transaction_create();
   [(ACXServerInstallOperation *)self setTransaction:v11];
 
-  v12 = [(ACXServerInstallOperation *)self watchAppBundleID];
-  v13 = [NSString stringWithFormat:@"com.apple.appconduitd.install.%@", v12];
+  watchAppBundleID2 = [(ACXServerInstallOperation *)self watchAppBundleID];
+  v13 = [NSString stringWithFormat:@"com.apple.appconduitd.install.%@", watchAppBundleID2];
 
-  v14 = [(ACXServerInstallOperation *)self watchAppBundleID];
-  v15 = [NSString stringWithFormat:@"Installation of a watch app with bundle ID %@ is in progress.", v14];
+  watchAppBundleID3 = [(ACXServerInstallOperation *)self watchAppBundleID];
+  v15 = [NSString stringWithFormat:@"Installation of a watch app with bundle ID %@ is in progress.", watchAppBundleID3];
 
   v16 = [[ACXPowerAssertion alloc] initWithName:v13 description:v15 timeoutSeconds:0];
   [(ACXServerInstallOperation *)self setPowerAssertion:v16];
 
-  [(ACXServerInstallOperation *)self setCompletion:v4];
-  v17 = [(ACXServerInstallOperation *)self appSettingsDict];
+  [(ACXServerInstallOperation *)self setCompletion:blockCopy];
+  appSettingsDict = [(ACXServerInstallOperation *)self appSettingsDict];
 
-  if (!v17)
+  if (!appSettingsDict)
   {
     v18 = +[NSDictionary dictionary];
     [(ACXServerInstallOperation *)self setAppSettingsDict:v18];
   }
 
-  v19 = [(ACXServerInstallOperation *)self provisioningProfiles];
+  provisioningProfiles = [(ACXServerInstallOperation *)self provisioningProfiles];
 
-  if (!v19)
+  if (!provisioningProfiles)
   {
     v20 = +[NSDictionary dictionary];
     [(ACXServerInstallOperation *)self setProvisioningProfiles:v20];
   }
 
-  v21 = [(ACXServerInstallOperation *)self queue];
+  queue = [(ACXServerInstallOperation *)self queue];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100037F58;
   v22[3] = &unk_10008CD40;
   v22[4] = self;
-  sub_100005828(v21, v22);
+  sub_100005828(queue, v22);
 }
 
 - (void)cancel
 {
-  v3 = [(ACXServerInstallOperation *)self queue];
+  queue = [(ACXServerInstallOperation *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100037FE8;
   block[3] = &unk_10008CD40;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 - (void)_onQueue_armWatchdog
@@ -140,80 +140,80 @@
     sub_10005A0C8();
   }
 
-  v3 = [(ACXServerInstallOperation *)self queue];
-  v4 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v3);
+  queue = [(ACXServerInstallOperation *)self queue];
+  v4 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
   [(ACXServerInstallOperation *)self setOperationWatchdog:v4];
 
-  v5 = [(ACXServerInstallOperation *)self operationWatchdog];
+  operationWatchdog = [(ACXServerInstallOperation *)self operationWatchdog];
   v6 = dispatch_time(0, 900000000000);
-  dispatch_source_set_timer(v5, v6, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
+  dispatch_source_set_timer(operationWatchdog, v6, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
 
-  v7 = [(ACXServerInstallOperation *)self operationWatchdog];
+  operationWatchdog2 = [(ACXServerInstallOperation *)self operationWatchdog];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_100038130;
   handler[3] = &unk_10008CD40;
   handler[4] = self;
-  dispatch_source_set_event_handler(v7, handler);
+  dispatch_source_set_event_handler(operationWatchdog2, handler);
 
-  v8 = [(ACXServerInstallOperation *)self operationWatchdog];
-  dispatch_resume(v8);
+  operationWatchdog3 = [(ACXServerInstallOperation *)self operationWatchdog];
+  dispatch_resume(operationWatchdog3);
 }
 
 - (void)_onQueue_disarmWatchdog
 {
-  v3 = [(ACXServerInstallOperation *)self operationWatchdog];
+  operationWatchdog = [(ACXServerInstallOperation *)self operationWatchdog];
 
-  if (v3)
+  if (operationWatchdog)
   {
-    v4 = [(ACXServerInstallOperation *)self operationWatchdog];
-    dispatch_source_cancel(v4);
+    operationWatchdog2 = [(ACXServerInstallOperation *)self operationWatchdog];
+    dispatch_source_cancel(operationWatchdog2);
 
     [(ACXServerInstallOperation *)self setOperationWatchdog:0];
   }
 }
 
-- (void)_onQueue_callProgressBlockWithPhase:(unint64_t)a3 percent:(double)a4
+- (void)_onQueue_callProgressBlockWithPhase:(unint64_t)phase percent:(double)percent
 {
-  if ([(ACXServerInstallOperation *)self lastPhase]> a3)
+  if ([(ACXServerInstallOperation *)self lastPhase]> phase)
   {
     sub_10005A120();
   }
 
-  if ([(ACXServerInstallOperation *)self lastPhase]== a3)
+  if ([(ACXServerInstallOperation *)self lastPhase]== phase)
   {
     [(ACXServerInstallOperation *)self lastPercentComplete];
-    if (v7 > a4)
+    if (v7 > percent)
     {
       sub_10005A0F4();
     }
   }
 
-  [(ACXServerInstallOperation *)self setLastPhase:a3];
-  [(ACXServerInstallOperation *)self setLastPercentComplete:a4];
-  v8 = [(ACXServerInstallOperation *)self progressBlock];
+  [(ACXServerInstallOperation *)self setLastPhase:phase];
+  [(ACXServerInstallOperation *)self setLastPercentComplete:percent];
+  progressBlock = [(ACXServerInstallOperation *)self progressBlock];
 
-  if (v8)
+  if (progressBlock)
   {
-    if (a4 > 1.0)
+    if (percent > 1.0)
     {
-      a4 = 1.0;
+      percent = 1.0;
     }
 
-    v9 = [(ACXServerInstallOperation *)self progressBlock];
-    v9[2](v9, a3, a4);
+    progressBlock2 = [(ACXServerInstallOperation *)self progressBlock];
+    progressBlock2[2](progressBlock2, phase, percent);
   }
 }
 
-- (void)_onQueue_callCompletion:(id)a3
+- (void)_onQueue_callCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ACXServerInstallOperation *)self completion];
+  completionCopy = completion;
+  completion = [(ACXServerInstallOperation *)self completion];
 
-  if (v5)
+  if (completion)
   {
-    v6 = [(ACXServerInstallOperation *)self completion];
-    (v6)[2](v6, v4);
+    completion2 = [(ACXServerInstallOperation *)self completion];
+    (completion2)[2](completion2, completionCopy);
 
     [(ACXServerInstallOperation *)self setCompletion:0];
     [(ACXServerInstallOperation *)self setProgressBlock:0];
@@ -223,34 +223,34 @@
     [(ACXServerInstallOperation *)self setNextMessageType:0];
     if ([(ACXServerInstallOperation *)self acquiredSocket])
     {
-      if (v4)
+      if (completionCopy)
       {
         if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
         {
-          v11 = v4;
+          v11 = completionCopy;
           MOLogWrite();
         }
 
-        v7 = [(ACXServerInstallOperation *)self socketManager];
-        [v7 resetSocket];
+        socketManager = [(ACXServerInstallOperation *)self socketManager];
+        [socketManager resetSocket];
       }
 
       else
       {
-        v8 = [(ACXServerInstallOperation *)self socketManager];
+        socketManager2 = [(ACXServerInstallOperation *)self socketManager];
         v12 = 0;
-        v9 = [v8 writeDictionary:&off_100097B20 error:&v12];
-        v7 = v12;
+        v9 = [socketManager2 writeDictionary:&off_100097B20 error:&v12];
+        socketManager = v12;
 
         if ((v9 & 1) == 0 && (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3))
         {
-          v11 = v7;
+          v11 = socketManager;
           MOLogWrite();
         }
       }
 
-      v10 = [(ACXServerInstallOperation *)self socketManager];
-      [v10 endUsingSocket];
+      socketManager3 = [(ACXServerInstallOperation *)self socketManager];
+      [socketManager3 endUsingSocket];
 
       [(ACXServerInstallOperation *)self setAcquiredSocket:0];
     }
@@ -266,16 +266,16 @@
   }
 }
 
-- (id)_makeTempDirectoryWithError:(id *)a3
+- (id)_makeTempDirectoryWithError:(id *)error
 {
-  v5 = sub_100006434(a3);
+  v5 = sub_100006434(error);
   if (v5)
   {
-    v6 = [(ACXServerInstallOperation *)self watchAppBundleID];
-    v7 = [NSString stringWithFormat:@"%@_XXXXXX", v6];
+    watchAppBundleID = [(ACXServerInstallOperation *)self watchAppBundleID];
+    v7 = [NSString stringWithFormat:@"%@_XXXXXX", watchAppBundleID];
     v8 = [v5 URLByAppendingPathComponent:v7 isDirectory:0];
 
-    v9 = sub_10000696C(v8, a3);
+    v9 = sub_10000696C(v8, error);
   }
 
   else
@@ -288,9 +288,9 @@
 
 - (id)_onQueue_sendCancelMessage
 {
-  v3 = [(ACXServerInstallOperation *)self socketManager];
+  socketManager = [(ACXServerInstallOperation *)self socketManager];
   v10 = 0;
-  v4 = [v3 writeDictionary:&off_100097B48 error:&v10];
+  v4 = [socketManager writeDictionary:&off_100097B48 error:&v10];
   v5 = v10;
 
   if (v4)
@@ -322,16 +322,16 @@
   v4 = v45;
   [(ACXServerInstallOperation *)self setTempDir:v3];
 
-  v5 = [(ACXServerInstallOperation *)self tempDir];
+  tempDir = [(ACXServerInstallOperation *)self tempDir];
 
-  if (!v5)
+  if (!tempDir)
   {
     [(ACXServerInstallOperation *)self _onQueue_callCompletion:v4];
     goto LABEL_23;
   }
 
-  v6 = [(ACXServerInstallOperation *)self installType];
-  if (v6 - 1 < 2)
+  installType = [(ACXServerInstallOperation *)self installType];
+  if (installType - 1 < 2)
   {
     v7 = 0;
     v8 = 0;
@@ -339,18 +339,18 @@
     goto LABEL_4;
   }
 
-  if (v6)
+  if (installType)
   {
-    v28 = [(ACXServerInstallOperation *)self installType];
-    v30 = sub_1000061DC("[ACXServerInstallOperation _onQueue_prepForTransferAndInstall]", 346, @"ACXErrorDomain", 39, 0, 0, @"Received unknown ACXInstallType %lu", v29, v28);
+    installType2 = [(ACXServerInstallOperation *)self installType];
+    v30 = sub_1000061DC("[ACXServerInstallOperation _onQueue_prepForTransferAndInstall]", 346, @"ACXErrorDomain", 39, 0, 0, @"Received unknown ACXInstallType %lu", v29, installType2);
 
     [(ACXServerInstallOperation *)self _onQueue_callCompletion:v30];
     v4 = v30;
     goto LABEL_23;
   }
 
-  v13 = [(ACXServerInstallOperation *)self tempDir];
-  v14 = [v13 URLByAppendingPathComponent:@"Transfer"];
+  tempDir2 = [(ACXServerInstallOperation *)self tempDir];
+  v14 = [tempDir2 URLByAppendingPathComponent:@"Transfer"];
   [(ACXServerInstallOperation *)self setAppURL:v14];
 
   v47 = kMIWatchKitSnapshotOptionCreatePlaceholder;
@@ -358,15 +358,15 @@
   v48 = v15;
   v7 = [NSDictionary dictionaryWithObjects:&v48 forKeys:&v47 count:1];
 
-  v16 = [(ACXServerInstallOperation *)self companionAppBundleID];
-  v17 = [(ACXServerInstallOperation *)self appURL];
+  companionAppBundleID = [(ACXServerInstallOperation *)self companionAppBundleID];
+  appURL = [(ACXServerInstallOperation *)self appURL];
   v8 = MobileInstallationWatchKitInstallerSnapshotWKApp();
 
   if (!v8)
   {
     v31 = v46;
-    v32 = [(ACXServerInstallOperation *)self companionAppBundleID];
-    v34 = sub_1000061DC("[ACXServerInstallOperation _onQueue_prepForTransferAndInstall]", 314, @"ACXErrorDomain", 7, v31, 0, @"Snapshot failed for companion bundle ID %@", v33, v32);
+    companionAppBundleID2 = [(ACXServerInstallOperation *)self companionAppBundleID];
+    v34 = sub_1000061DC("[ACXServerInstallOperation _onQueue_prepForTransferAndInstall]", 314, @"ACXErrorDomain", 7, v31, 0, @"Snapshot failed for companion bundle ID %@", v33, companionAppBundleID2);
 
     [(ACXServerInstallOperation *)self _onQueue_callCompletion:v34];
     v4 = v34;
@@ -379,8 +379,8 @@
   if (![(ACXServerInstallOperation *)self appSize])
   {
     v35 = v46;
-    v36 = [(ACXServerInstallOperation *)self companionAppBundleID];
-    sub_1000061DC("[ACXServerInstallOperation _onQueue_prepForTransferAndInstall]", 321, @"ACXErrorDomain", 7, v35, 0, @"Snapshot for companion bundle ID %@ failed to return disk usage", v37, v36);
+    companionAppBundleID3 = [(ACXServerInstallOperation *)self companionAppBundleID];
+    sub_1000061DC("[ACXServerInstallOperation _onQueue_prepForTransferAndInstall]", 321, @"ACXErrorDomain", 7, v35, 0, @"Snapshot for companion bundle ID %@ failed to return disk usage", v37, companionAppBundleID3);
     v39 = LABEL_22:;
 
     [(ACXServerInstallOperation *)self _onQueue_callCompletion:v39];
@@ -392,21 +392,21 @@
   if (!v19)
   {
     v35 = v46;
-    v36 = [(ACXServerInstallOperation *)self companionAppBundleID];
-    sub_1000061DC("[ACXServerInstallOperation _onQueue_prepForTransferAndInstall]", 328, @"ACXErrorDomain", 7, v35, 0, @"Snapshot for companion bundle ID %@ failed to return watch app bundle ID", v38, v36);
+    companionAppBundleID3 = [(ACXServerInstallOperation *)self companionAppBundleID];
+    sub_1000061DC("[ACXServerInstallOperation _onQueue_prepForTransferAndInstall]", 328, @"ACXErrorDomain", 7, v35, 0, @"Snapshot for companion bundle ID %@ failed to return watch app bundle ID", v38, companionAppBundleID3);
     goto LABEL_22;
   }
 
   v9 = v19;
-  v20 = [(ACXServerInstallOperation *)self watchAppBundleID];
-  v21 = [v20 isEqualToString:v9];
+  watchAppBundleID = [(ACXServerInstallOperation *)self watchAppBundleID];
+  v21 = [watchAppBundleID isEqualToString:v9];
 
   if ((v21 & 1) == 0)
   {
-    v10 = v46;
-    v22 = [(ACXServerInstallOperation *)self companionAppBundleID];
-    v43 = [(ACXServerInstallOperation *)self watchAppBundleID];
-    v12 = sub_1000061DC("[ACXServerInstallOperation _onQueue_prepForTransferAndInstall]", 333, @"ACXErrorDomain", 7, v10, 0, @"Snapshot for companion bundle ID %@ returned watch bundle ID %@ instead of %@", v23, v22);
+    watchAppBundleID3 = v46;
+    companionAppBundleID4 = [(ACXServerInstallOperation *)self companionAppBundleID];
+    watchAppBundleID2 = [(ACXServerInstallOperation *)self watchAppBundleID];
+    v12 = sub_1000061DC("[ACXServerInstallOperation _onQueue_prepForTransferAndInstall]", 333, @"ACXErrorDomain", 7, watchAppBundleID3, 0, @"Snapshot for companion bundle ID %@ returned watch bundle ID %@ instead of %@", v23, companionAppBundleID4);
 
     goto LABEL_6;
   }
@@ -414,8 +414,8 @@
 LABEL_4:
   if ([(ACXServerInstallOperation *)self cancelled])
   {
-    v10 = [(ACXServerInstallOperation *)self watchAppBundleID];
-    v12 = sub_1000061DC("[ACXServerInstallOperation _onQueue_prepForTransferAndInstall]", 353, @"ACXErrorDomain", 6, 0, 0, @"Operation cancelled for %@.", v11, v10);
+    watchAppBundleID3 = [(ACXServerInstallOperation *)self watchAppBundleID];
+    v12 = sub_1000061DC("[ACXServerInstallOperation _onQueue_prepForTransferAndInstall]", 353, @"ACXErrorDomain", 6, 0, 0, @"Operation cancelled for %@.", v11, watchAppBundleID3);
 
 LABEL_6:
     [(ACXServerInstallOperation *)self _onQueue_callCompletion:v12];
@@ -425,24 +425,24 @@ LABEL_6:
   }
 
   [(ACXServerInstallOperation *)self _onQueue_callProgressBlockWithPhase:0 percent:50.0];
-  v24 = [(ACXServerInstallOperation *)self appSize];
+  appSize = [(ACXServerInstallOperation *)self appSize];
   if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
   {
-    v25 = [(ACXServerInstallOperation *)self watchAppBundleID];
+    watchAppBundleID4 = [(ACXServerInstallOperation *)self watchAppBundleID];
     v41 = sub_100006DA8([(ACXServerInstallOperation *)self installPlaceholder]);
     v42 = sub_100006DA8([(ACXServerInstallOperation *)self isUserInitiated]);
-    v40 = v25;
+    v40 = watchAppBundleID4;
     MOLogWrite();
   }
 
   v26 = [(ACXServerInstallOperation *)self socketManager:v40];
-  v27 = [(ACXServerInstallOperation *)self queue];
+  queue = [(ACXServerInstallOperation *)self queue];
   v44[0] = _NSConcreteStackBlock;
   v44[1] = 3221225472;
   v44[2] = sub_100038D7C;
   v44[3] = &unk_10008DBE0;
   v44[4] = self;
-  [v26 beginUsingSocketAsDelegate:self onQueue:v27 tryWiFi:v24 > 5242880 completion:v44];
+  [v26 beginUsingSocketAsDelegate:self onQueue:queue tryWiFi:appSize > 5242880 completion:v44];
 
 LABEL_23:
 }
@@ -451,8 +451,8 @@ LABEL_23:
 {
   if ([(ACXServerInstallOperation *)self cancelled])
   {
-    v20 = [(ACXServerInstallOperation *)self watchAppBundleID];
-    v4 = sub_1000061DC("[ACXServerInstallOperation _onQueue_doTransferAndInstall]", 387, @"ACXErrorDomain", 6, 0, 0, @"Operation cancelled for %@.", v3, v20);
+    watchAppBundleID = [(ACXServerInstallOperation *)self watchAppBundleID];
+    v4 = sub_1000061DC("[ACXServerInstallOperation _onQueue_doTransferAndInstall]", 387, @"ACXErrorDomain", 6, 0, 0, @"Operation cancelled for %@.", v3, watchAppBundleID);
     [(ACXServerInstallOperation *)self _onQueue_callCompletion:v4];
   }
 
@@ -460,7 +460,7 @@ LABEL_23:
   {
     if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
     {
-      v18 = [(ACXServerInstallOperation *)self watchAppBundleID];
+      watchAppBundleID2 = [(ACXServerInstallOperation *)self watchAppBundleID];
       MOLogWrite();
     }
 
@@ -470,8 +470,8 @@ LABEL_23:
     v5 = [NSNumber numberWithLongLong:[(ACXServerInstallOperation *)self appSize]];
     v23[1] = v5;
     v22[2] = @"WI";
-    v6 = [(ACXServerInstallOperation *)self watchAppBundleID];
-    v23[2] = v6;
+    watchAppBundleID3 = [(ACXServerInstallOperation *)self watchAppBundleID];
+    v23[2] = watchAppBundleID3;
     v22[3] = @"P";
     v7 = [NSNumber numberWithBool:[(ACXServerInstallOperation *)self installPlaceholder]];
     v23[3] = v7;
@@ -481,17 +481,17 @@ LABEL_23:
     v9 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:5];
     v10 = [v9 mutableCopy];
 
-    v11 = [(ACXServerInstallOperation *)self requiredDeviceCapabilities];
+    requiredDeviceCapabilities = [(ACXServerInstallOperation *)self requiredDeviceCapabilities];
 
-    if (v11)
+    if (requiredDeviceCapabilities)
     {
-      v12 = [(ACXServerInstallOperation *)self requiredDeviceCapabilities];
-      [v10 setObject:v12 forKeyedSubscript:@"RC"];
+      requiredDeviceCapabilities2 = [(ACXServerInstallOperation *)self requiredDeviceCapabilities];
+      [v10 setObject:requiredDeviceCapabilities2 forKeyedSubscript:@"RC"];
     }
 
-    v13 = [(ACXServerInstallOperation *)self socketManager];
+    socketManager = [(ACXServerInstallOperation *)self socketManager];
     v21 = 0;
-    v14 = [v13 writeDictionary:v10 error:&v21];
+    v14 = [socketManager writeDictionary:v10 error:&v21];
     v15 = v21;
 
     if (v14)
@@ -519,23 +519,23 @@ LABEL_23:
   [(ACXServerInstallOperation *)self setNextMessageType:5];
   if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
   {
-    v11 = [(ACXServerInstallOperation *)self watchAppBundleID];
+    watchAppBundleID = [(ACXServerInstallOperation *)self watchAppBundleID];
     MOLogWrite();
   }
 
   v15[0] = &off_100097818;
   v14[0] = @"T";
   v14[1] = @"SE";
-  v3 = [(ACXServerInstallOperation *)self appSettingsDict];
-  v15[1] = v3;
+  appSettingsDict = [(ACXServerInstallOperation *)self appSettingsDict];
+  v15[1] = appSettingsDict;
   v14[2] = @"PD";
-  v4 = [(ACXServerInstallOperation *)self provisioningProfiles];
-  v15[2] = v4;
+  provisioningProfiles = [(ACXServerInstallOperation *)self provisioningProfiles];
+  v15[2] = provisioningProfiles;
   v5 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:3];
 
-  v6 = [(ACXServerInstallOperation *)self socketManager];
+  socketManager = [(ACXServerInstallOperation *)self socketManager];
   v13 = 0;
-  v7 = [v6 writeDictionary:v5 error:&v13];
+  v7 = [socketManager writeDictionary:v5 error:&v13];
   v8 = v13;
 
   if (v7)
@@ -552,11 +552,11 @@ LABEL_23:
   }
 }
 
-- (void)receivedDictionaryOrData:(id)a3
+- (void)receivedDictionaryOrData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v5 = v4;
+  v5 = dataCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -572,7 +572,7 @@ LABEL_23:
     v10 = @"Got non-dictionary message from receiver.";
     v11 = 451;
 LABEL_16:
-    v16 = sub_1000061DC("[ACXServerInstallOperation receivedDictionaryOrData:]", v11, @"ACXErrorDomain", 15, 0, 0, v10, v7, v78);
+    v16 = sub_1000061DC("[ACXServerInstallOperation receivedDictionaryOrData:]", v11, @"ACXErrorDomain", 15, 0, 0, v10, v7, watchAppBundleID);
     v15 = 0;
     goto LABEL_81;
   }
@@ -580,12 +580,12 @@ LABEL_16:
   [(ACXServerInstallOperation *)self _onQueue_disarmWatchdog];
   if (qword_1000A4878 && *(qword_1000A4878 + 44) >= 7)
   {
-    v78 = [(ACXServerInstallOperation *)self watchAppBundleID];
-    v82 = v5;
+    watchAppBundleID = [(ACXServerInstallOperation *)self watchAppBundleID];
+    nextMessageType = v5;
     MOLogWrite();
   }
 
-  v8 = [v5 objectForKeyedSubscript:{@"T", v78, v82}];
+  v8 = [v5 objectForKeyedSubscript:{@"T", watchAppBundleID, nextMessageType}];
   objc_opt_class();
   v9 = v8;
   if (objc_opt_isKindOfClass())
@@ -605,7 +605,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v12 = [v6 unsignedCharValue];
+  unsignedCharValue = [v6 unsignedCharValue];
   v13 = [v5 objectForKeyedSubscript:@"ER"];
   objc_opt_class();
   v14 = v13;
@@ -619,16 +619,16 @@ LABEL_16:
     v15 = 0;
   }
 
-  if (v12 > 5)
+  if (unsignedCharValue > 5)
   {
-    if (v12 != 6)
+    if (unsignedCharValue != 6)
     {
-      if (v12 != 8)
+      if (unsignedCharValue != 8)
       {
-        if (v12 == 9)
+        if (unsignedCharValue == 9)
         {
-          v21 = [(ACXServerInstallOperation *)self streamingZipSender];
-          [v21 cancelSending];
+          streamingZipSender = [(ACXServerInstallOperation *)self streamingZipSender];
+          [streamingZipSender cancelSending];
 
           if (![v15 integerValue])
           {
@@ -638,14 +638,14 @@ LABEL_16:
             goto LABEL_78;
           }
 
-          v17 = [v15 integerValue];
-          v78 = [v15 integerValue];
+          integerValue = [v15 integerValue];
+          watchAppBundleID = [v15 integerValue];
           v19 = @"Got error %ld in reset from remote side";
           v20 = 692;
 LABEL_41:
-          v36 = v17;
+          v36 = integerValue;
 LABEL_78:
-          sub_1000061DC("[ACXServerInstallOperation receivedDictionaryOrData:]", v20, @"ACXErrorDomain", v36, 0, 0, v19, v18, v78);
+          sub_1000061DC("[ACXServerInstallOperation receivedDictionaryOrData:]", v20, @"ACXErrorDomain", v36, 0, 0, v19, v18, watchAppBundleID);
           goto LABEL_79;
         }
 
@@ -654,8 +654,8 @@ LABEL_78:
 
       if ([(ACXServerInstallOperation *)self nextMessageType]!= 8)
       {
-        v78 = 8;
-        v82 = [(ACXServerInstallOperation *)self nextMessageType];
+        watchAppBundleID = 8;
+        nextMessageType = [(ACXServerInstallOperation *)self nextMessageType];
         v19 = @"Got unexpected message type %hhu when I was expecting %hhu";
         v20 = 670;
         goto LABEL_77;
@@ -663,7 +663,7 @@ LABEL_78:
 
       if ([v15 integerValue] == 6)
       {
-        v40 = sub_100001B04("[ACXServerInstallOperation receivedDictionaryOrData:]", 677, @"ACXErrorDomain", 6, @"Operation canceled.", v37, v38, v39, v78);
+        v40 = sub_100001B04("[ACXServerInstallOperation receivedDictionaryOrData:]", 677, @"ACXErrorDomain", 6, @"Operation canceled.", v37, v38, v39, watchAppBundleID);
       }
 
       else
@@ -677,14 +677,14 @@ LABEL_70:
             goto LABEL_81;
           }
 
-          v65 = [(ACXServerInstallOperation *)self watchAppBundleID];
-          v78 = v65;
+          watchAppBundleID2 = [(ACXServerInstallOperation *)self watchAppBundleID];
+          watchAppBundleID = watchAppBundleID2;
           goto LABEL_98;
         }
 
-        v62 = [v15 integerValue];
-        v63 = [v15 integerValue];
-        v40 = sub_1000061DC("[ACXServerInstallOperation receivedDictionaryOrData:]", 679, @"ACXErrorDomain", v62, 0, 0, @"Got error %ld in cancel confirmed from remote side", v64, v63);
+        integerValue2 = [v15 integerValue];
+        integerValue3 = [v15 integerValue];
+        v40 = sub_1000061DC("[ACXServerInstallOperation receivedDictionaryOrData:]", 679, @"ACXErrorDomain", integerValue2, 0, 0, @"Got error %ld in cancel confirmed from remote side", v64, integerValue3);
       }
 
       v16 = v40;
@@ -693,8 +693,8 @@ LABEL_70:
 
     if ([(ACXServerInstallOperation *)self nextMessageType]!= 5)
     {
-      v78 = 5;
-      v82 = [(ACXServerInstallOperation *)self nextMessageType];
+      watchAppBundleID = 5;
+      nextMessageType = [(ACXServerInstallOperation *)self nextMessageType];
       v19 = @"Got unexpected message type %hhu when I was expecting %hhu";
       v20 = 637;
       goto LABEL_77;
@@ -717,8 +717,8 @@ LABEL_70:
       v30 = v90;
       if (v29)
       {
-        v31 = [v15 integerValue];
-        v16 = sub_1000061DC("[ACXServerInstallOperation receivedDictionaryOrData:]", 647, @"ACXErrorDomain", v31, v29, 0, @"Got error in install done from remote side", v32, v78);
+        integerValue4 = [v15 integerValue];
+        v16 = sub_1000061DC("[ACXServerInstallOperation receivedDictionaryOrData:]", 647, @"ACXErrorDomain", integerValue4, v29, 0, @"Got error in install done from remote side", v32, watchAppBundleID);
 
         if (v16)
         {
@@ -730,8 +730,8 @@ LABEL_95:
             goto LABEL_81;
           }
 
-          v65 = [(ACXServerInstallOperation *)self watchAppBundleID];
-          v78 = v65;
+          watchAppBundleID2 = [(ACXServerInstallOperation *)self watchAppBundleID];
+          watchAppBundleID = watchAppBundleID2;
 LABEL_98:
           MOLogWrite();
 
@@ -743,13 +743,13 @@ LABEL_98:
       {
         if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
         {
-          v78 = v30;
+          watchAppBundleID = v30;
           MOLogWrite();
         }
       }
     }
 
-    v71 = [v5 objectForKeyedSubscript:{@"ME", v78}];
+    v71 = [v5 objectForKeyedSubscript:{@"ME", watchAppBundleID}];
     v89 = v28;
     objc_opt_class();
     v87 = sub_100020BDC(v71);
@@ -762,28 +762,28 @@ LABEL_98:
     objc_opt_class();
     v74 = sub_100020BDC(v73);
 
-    v75 = [v15 integerValue];
-    v76 = [v15 integerValue];
+    integerValue5 = [v15 integerValue];
+    integerValue6 = [v15 integerValue];
     v83 = COERCE_DOUBLE([v86 unsignedIntValue]);
     v84 = *&v74;
-    v81 = v76;
-    v82 = v87;
+    v81 = integerValue6;
+    nextMessageType = v87;
     v28 = v89;
-    v16 = sub_1000061DC("[ACXServerInstallOperation receivedDictionaryOrData:]", 658, @"ACXErrorDomain", v75, 0, 0, @"Got error %ld in install done from remote side (MI error %@  Extended 0x%x ; Desc %@)", v77, v81);;
+    v16 = sub_1000061DC("[ACXServerInstallOperation receivedDictionaryOrData:]", 658, @"ACXErrorDomain", integerValue5, 0, 0, @"Got error %ld in install done from remote side (MI error %@  Extended 0x%x ; Desc %@)", v77, v81);;
 
     goto LABEL_94;
   }
 
-  if (v12 != 2)
+  if (unsignedCharValue != 2)
   {
-    if (v12 != 3)
+    if (unsignedCharValue != 3)
     {
-      if (v12 == 5)
+      if (unsignedCharValue == 5)
       {
         if ([v15 integerValue])
         {
-          v17 = [v15 integerValue];
-          v78 = [v15 integerValue];
+          integerValue = [v15 integerValue];
+          watchAppBundleID = [v15 integerValue];
           v19 = @"Got error %ld in install progress from remote side";
           v20 = 613;
           goto LABEL_41;
@@ -797,10 +797,10 @@ LABEL_98:
 
           if (qword_1000A4878 && *(qword_1000A4878 + 44) >= 7)
           {
-            v42 = [(ACXServerInstallOperation *)self watchAppBundleID];
+            watchAppBundleID3 = [(ACXServerInstallOperation *)self watchAppBundleID];
             [v16 doubleValue];
-            v82 = v43;
-            v78 = v42;
+            nextMessageType = v43;
+            watchAppBundleID = watchAppBundleID3;
             MOLogWrite();
           }
 
@@ -810,8 +810,8 @@ LABEL_98:
           goto LABEL_82;
         }
 
-        v78 = 5;
-        v82 = [(ACXServerInstallOperation *)self nextMessageType];
+        watchAppBundleID = 5;
+        nextMessageType = [(ACXServerInstallOperation *)self nextMessageType];
         v19 = @"Got unexpected message type %hhu when I was expecting %hhu";
         v20 = 618;
 LABEL_77:
@@ -820,21 +820,21 @@ LABEL_77:
       }
 
 LABEL_38:
-      v78 = [v15 unsignedCharValue];
+      watchAppBundleID = [v15 unsignedCharValue];
       v19 = @"Got unhandled message type %hhu";
       v20 = 701;
       goto LABEL_77;
     }
 
     v33 = mach_absolute_time();
-    v34 = [(ACXServerInstallOperation *)self transferStartTime];
+    transferStartTime = [(ACXServerInstallOperation *)self transferStartTime];
     if ([v15 integerValue])
     {
-      v35 = [(ACXServerInstallOperation *)self streamingZipSender];
-      [v35 cancelSending];
+      streamingZipSender2 = [(ACXServerInstallOperation *)self streamingZipSender];
+      [streamingZipSender2 cancelSending];
 
-      v17 = [v15 integerValue];
-      v78 = [v15 integerValue];
+      integerValue = [v15 integerValue];
+      watchAppBundleID = [v15 integerValue];
       v19 = @"Got error %ld in transfer done from remote side";
       v20 = 567;
       goto LABEL_41;
@@ -842,25 +842,25 @@ LABEL_38:
 
     if ([(ACXServerInstallOperation *)self nextMessageType]!= 3)
     {
-      v78 = 3;
-      v82 = [(ACXServerInstallOperation *)self nextMessageType];
+      watchAppBundleID = 3;
+      nextMessageType = [(ACXServerInstallOperation *)self nextMessageType];
       v19 = @"Got unexpected message type %hhu when I was expecting %hhu";
       v20 = 572;
       goto LABEL_77;
     }
 
     LODWORD(v44) = HIDWORD(qword_1000A4820);
-    v45 = ((v33 - v34) * qword_1000A4820) / v44 / 1000000000.0;
-    v46 = [(ACXServerInstallOperation *)self streamingZipSender];
-    v47 = [v46 bytesOutput];
+    v45 = ((v33 - transferStartTime) * qword_1000A4820) / v44 / 1000000000.0;
+    streamingZipSender3 = [(ACXServerInstallOperation *)self streamingZipSender];
+    bytesOutput = [streamingZipSender3 bytesOutput];
 
-    v48 = [(ACXServerInstallOperation *)self streamingZipSender];
-    v88 = [v48 totalBytes];
+    streamingZipSender4 = [(ACXServerInstallOperation *)self streamingZipSender];
+    totalBytes = [streamingZipSender4 totalBytes];
 
-    v49 = [(ACXServerInstallOperation *)self streamingZipSender];
-    v50 = [v49 totalBytes];
-    v51 = [(ACXServerInstallOperation *)self streamingZipSender];
-    v52 = [v51 bytesOutput];
+    streamingZipSender5 = [(ACXServerInstallOperation *)self streamingZipSender];
+    totalBytes2 = [streamingZipSender5 totalBytes];
+    streamingZipSender6 = [(ACXServerInstallOperation *)self streamingZipSender];
+    bytesOutput2 = [streamingZipSender6 bytesOutput];
 
     v53 = qword_1000A4878;
     if (qword_1000A4878 && *(qword_1000A4878 + 44) < 5)
@@ -868,15 +868,15 @@ LABEL_38:
       goto LABEL_57;
     }
 
-    v54 = vcvtd_n_f64_s64(v47, 0xAuLL) / v45;
-    v55 = v50 / v52;
-    v56 = [(ACXServerInstallOperation *)self watchAppBundleID];
-    v57 = [(ACXServerInstallOperation *)self streamingZipSender];
+    v54 = vcvtd_n_f64_s64(bytesOutput, 0xAuLL) / v45;
+    v55 = totalBytes2 / bytesOutput2;
+    watchAppBundleID4 = [(ACXServerInstallOperation *)self watchAppBundleID];
+    streamingZipSender7 = [(ACXServerInstallOperation *)self streamingZipSender];
     v84 = v54;
     v85 = v55;
     v83 = v45;
-    v78 = v56;
-    v82 = [v57 bytesOutput];
+    watchAppBundleID = watchAppBundleID4;
+    nextMessageType = [streamingZipSender7 bytesOutput];
     MOLogWrite();
 
     v53 = qword_1000A4878;
@@ -885,16 +885,16 @@ LABEL_38:
 LABEL_57:
       if (*(v53 + 44) >= 7)
       {
-        v58 = [(ACXServerInstallOperation *)self watchAppBundleID];
-        v59 = [(ACXServerInstallOperation *)self streamingZipSender];
-        v83 = vcvtd_n_f64_s64(v88, 0xAuLL) / v45;
-        v78 = v58;
-        v82 = [v59 totalBytes];
+        watchAppBundleID5 = [(ACXServerInstallOperation *)self watchAppBundleID];
+        streamingZipSender8 = [(ACXServerInstallOperation *)self streamingZipSender];
+        v83 = vcvtd_n_f64_s64(totalBytes, 0xAuLL) / v45;
+        watchAppBundleID = watchAppBundleID5;
+        nextMessageType = [streamingZipSender8 totalBytes];
         MOLogWrite();
       }
     }
 
-    if (![(ACXServerInstallOperation *)self cancelled:v78])
+    if (![(ACXServerInstallOperation *)self cancelled:watchAppBundleID])
     {
       [(ACXServerInstallOperation *)self setGotTransferDone:1];
       if ([(ACXServerInstallOperation *)self gotStreamingZipComplete])
@@ -911,8 +911,8 @@ LABEL_57:
     }
 
 LABEL_64:
-    v60 = [(ACXServerInstallOperation *)self _onQueue_sendCancelMessage];
-    if (!v60)
+    _onQueue_sendCancelMessage = [(ACXServerInstallOperation *)self _onQueue_sendCancelMessage];
+    if (!_onQueue_sendCancelMessage)
     {
       goto LABEL_83;
     }
@@ -920,17 +920,17 @@ LABEL_64:
     goto LABEL_80;
   }
 
-  v22 = [v15 integerValue];
-  if (v22)
+  integerValue7 = [v15 integerValue];
+  if (integerValue7)
   {
-    v23 = v22;
-    if (v22 != 29)
+    v23 = integerValue7;
+    if (integerValue7 != 29)
     {
-      v79 = [v15 integerValue];
-      sub_1000061DC("[ACXServerInstallOperation receivedDictionaryOrData:]", 479, @"ACXErrorDomain", v23, 0, 0, @"Got error %ld in hello response from remote side", v61, v79);
-      v60 = LABEL_79:;
+      integerValue8 = [v15 integerValue];
+      sub_1000061DC("[ACXServerInstallOperation receivedDictionaryOrData:]", 479, @"ACXErrorDomain", v23, 0, 0, @"Got error %ld in hello response from remote side", v61, integerValue8);
+      _onQueue_sendCancelMessage = LABEL_79:;
 LABEL_80:
-      v16 = v60;
+      v16 = _onQueue_sendCancelMessage;
       goto LABEL_81;
     }
 
@@ -941,7 +941,7 @@ LABEL_80:
     v16 = sub_1000061DC("[ACXServerInstallOperation receivedDictionaryOrData:]", 477, @"ACXErrorDomain", 29, 0, 0, @"Got capabilities mismatch error in hello response from remote side mismatched capabilities: %@", v26, v25);;
 
 LABEL_81:
-    [(ACXServerInstallOperation *)self _onQueue_callCompletion:v16, v78, v82, *&v83, *&v84];
+    [(ACXServerInstallOperation *)self _onQueue_callCompletion:v16, watchAppBundleID, nextMessageType, *&v83, *&v84];
 LABEL_82:
 
     goto LABEL_83;
@@ -949,8 +949,8 @@ LABEL_82:
 
   if ([(ACXServerInstallOperation *)self nextMessageType]!= 2)
   {
-    v78 = 2;
-    v82 = [(ACXServerInstallOperation *)self nextMessageType];
+    watchAppBundleID = 2;
+    nextMessageType = [(ACXServerInstallOperation *)self nextMessageType];
     v19 = @"Got unexpected message type %hhu when I was expecting %hhu";
     v20 = 485;
     goto LABEL_77;
@@ -964,15 +964,15 @@ LABEL_82:
   [(ACXServerInstallOperation *)self _onQueue_callProgressBlockWithPhase:0 percent:100.0];
   [(ACXServerInstallOperation *)self setNextMessageType:3];
   objc_initWeak(location, self);
-  v66 = [(ACXServerInstallOperation *)self appURL];
-  v67 = [(ACXServerInstallOperation *)self queue];
+  appURL = [(ACXServerInstallOperation *)self appURL];
+  queue = [(ACXServerInstallOperation *)self queue];
   v95[0] = _NSConcreteStackBlock;
   v95[1] = 3221225472;
   v95[2] = sub_10003A238;
   v95[3] = &unk_10008DC08;
   objc_copyWeak(&v96, location);
   v95[4] = self;
-  v68 = [ACXStreamingZipSocketSender senderForURL:v66 queue:v67 writingUsingBlock:v95];
+  v68 = [ACXStreamingZipSocketSender senderForURL:appURL queue:queue writingUsingBlock:v95];
   [(ACXServerInstallOperation *)self setStreamingZipSender:v68];
 
   v93[0] = _NSConcreteStackBlock;
@@ -980,23 +980,23 @@ LABEL_82:
   v93[2] = sub_10003A36C;
   v93[3] = &unk_10008DC30;
   objc_copyWeak(&v94, location);
-  v69 = [(ACXServerInstallOperation *)self streamingZipSender];
-  [v69 setProgressBlock:v93];
+  streamingZipSender9 = [(ACXServerInstallOperation *)self streamingZipSender];
+  [streamingZipSender9 setProgressBlock:v93];
 
   if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
   {
-    v80 = [(ACXServerInstallOperation *)self watchAppBundleID];
+    watchAppBundleID6 = [(ACXServerInstallOperation *)self watchAppBundleID];
     MOLogWrite();
   }
 
   [(ACXServerInstallOperation *)self setTransferStartTime:mach_absolute_time()];
-  v70 = [(ACXServerInstallOperation *)self streamingZipSender];
+  streamingZipSender10 = [(ACXServerInstallOperation *)self streamingZipSender];
   v91[0] = _NSConcreteStackBlock;
   v91[1] = 3221225472;
   v91[2] = sub_10003A3C4;
   v91[3] = &unk_10008DC58;
   objc_copyWeak(&v92, location);
-  [v70 beginSendingWithCompletionBlock:v91];
+  [streamingZipSender10 beginSendingWithCompletionBlock:v91];
 
   objc_destroyWeak(&v92);
   objc_destroyWeak(&v94);
@@ -1005,14 +1005,14 @@ LABEL_82:
 LABEL_83:
 }
 
-- (void)socketDidCloseWithError:(id)a3
+- (void)socketDidCloseWithError:(id)error
 {
-  v5 = a3;
-  v4 = [(ACXServerInstallOperation *)self completion];
+  errorCopy = error;
+  completion = [(ACXServerInstallOperation *)self completion];
 
-  if (v4)
+  if (completion)
   {
-    [(ACXServerInstallOperation *)self _onQueue_callCompletion:v5];
+    [(ACXServerInstallOperation *)self _onQueue_callCompletion:errorCopy];
   }
 }
 

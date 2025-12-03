@@ -16,8 +16,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [a1 phoneNumbers];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  phoneNumbers = [self phoneNumbers];
+  v7 = [phoneNumbers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -28,17 +28,17 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(phoneNumbers);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if (![v4 length] || objc_msgSend(a1, "tu_labeledValue:matchesPersonHandleLabel:", v11, v4))
+        if (![v4 length] || objc_msgSend(self, "tu_labeledValue:matchesPersonHandleLabel:", v11, v4))
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [phoneNumbers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -59,8 +59,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [a1 emailAddresses];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  emailAddresses = [self emailAddresses];
+  v7 = [emailAddresses countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -71,17 +71,17 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(emailAddresses);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if (![v4 length] || objc_msgSend(a1, "tu_labeledValue:matchesPersonHandleLabel:", v11, v4))
+        if (![v4 length] || objc_msgSend(self, "tu_labeledValue:matchesPersonHandleLabel:", v11, v4))
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [emailAddresses countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -105,15 +105,15 @@
 
   else
   {
-    v8 = [v5 label];
-    if ([v8 length] && !objc_msgSend(v8, "caseInsensitiveCompare:", v6))
+    label = [v5 label];
+    if ([label length] && !objc_msgSend(label, "caseInsensitiveCompare:", v6))
     {
       v10 = 1;
     }
 
     else
     {
-      v9 = [MEMORY[0x277CBDB20] localizedStringForLabel:v8];
+      v9 = [MEMORY[0x277CBDB20] localizedStringForLabel:label];
       v10 = [v9 length] && !objc_msgSend(v9, "caseInsensitiveCompare:", v6);
     }
   }
@@ -136,8 +136,8 @@
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v11 = [a1 phoneNumbers];
-    v12 = [v11 countByEnumeratingWithState:&v36 objects:v41 count:16];
+    phoneNumbers = [self phoneNumbers];
+    v12 = [phoneNumbers countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v12)
     {
       v30 = v7;
@@ -149,14 +149,14 @@
         {
           if (*v37 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(phoneNumbers);
           }
 
           v15 = *(*(&v36 + 1) + 8 * i);
           v16 = objc_alloc(MEMORY[0x277D6EEE8]);
-          v17 = [v15 value];
-          v18 = [v17 stringValue];
-          v19 = [v16 initWithType:2 value:v18];
+          value = [v15 value];
+          stringValue = [value stringValue];
+          v19 = [v16 initWithType:2 value:stringValue];
 
           if (TUHandlesAreCanonicallyEqual())
           {
@@ -165,7 +165,7 @@
           }
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v36 objects:v41 count:16];
+        v12 = [phoneNumbers countByEnumeratingWithState:&v36 objects:v41 count:16];
         if (v12)
         {
           continue;
@@ -190,8 +190,8 @@ LABEL_23:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v11 = [a1 emailAddresses];
-    v12 = [v11 countByEnumeratingWithState:&v32 objects:v40 count:16];
+    phoneNumbers = [self emailAddresses];
+    v12 = [phoneNumbers countByEnumeratingWithState:&v32 objects:v40 count:16];
     if (v12)
     {
       v31 = v10;
@@ -202,13 +202,13 @@ LABEL_23:
         {
           if (*v33 != v20)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(phoneNumbers);
           }
 
           v22 = *(*(&v32 + 1) + 8 * j);
           v23 = objc_alloc(MEMORY[0x277D6EEE8]);
-          v24 = [v22 value];
-          v19 = [v23 initWithType:3 value:v24];
+          value2 = [v22 value];
+          v19 = [v23 initWithType:3 value:value2];
 
           if (TUHandlesAreCanonicallyEqual())
           {
@@ -219,7 +219,7 @@ LABEL_22:
           }
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        v12 = [phoneNumbers countByEnumeratingWithState:&v32 objects:v40 count:16];
         if (v12)
         {
           continue;
@@ -237,8 +237,8 @@ LABEL_24:
   v12 = 0;
 LABEL_26:
   v25 = objc_alloc(*(v8 + 3736));
-  v26 = [v10 value];
-  v27 = [v25 initWithValue:v26 type:objc_msgSend(v10 label:{"type"), v12}];
+  value3 = [v10 value];
+  v27 = [v25 initWithValue:value3 type:objc_msgSend(v10 label:{"type"), v12}];
 
   v28 = *MEMORY[0x277D85DE8];
 

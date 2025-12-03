@@ -6,10 +6,10 @@
 
 - (PSDisplay)psDisplay
 {
-  v2 = [(UIScene *)self _FBSScene];
-  v3 = [v2 psDisplay];
+  _FBSScene = [(UIScene *)self _FBSScene];
+  psDisplay = [_FBSScene psDisplay];
 
-  return v3;
+  return psDisplay;
 }
 
 @end

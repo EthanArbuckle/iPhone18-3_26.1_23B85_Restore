@@ -1,25 +1,25 @@
 @interface FMSongRendition
-+ (id)coalesceMixParamsA:(id)a3 withMixParamsB:(id)a4;
-- (FMSongRendition)initWithSong:(id)a3 andOptions:(id)a4;
-- (double)_maxPeakAndLoudness:(double *)a3 missingPeakValueCount:(int *)a4 missingLoudnessCount:(int *)a5;
++ (id)coalesceMixParamsA:(id)a withMixParamsB:(id)b;
+- (FMSongRendition)initWithSong:(id)song andOptions:(id)options;
+- (double)_maxPeakAndLoudness:(double *)loudness missingPeakValueCount:(int *)count missingLoudnessCount:(int *)loudnessCount;
 - (id)description;
-- (id)timedMetadataItemsWithIdentifier:(id)a3;
+- (id)timedMetadataItemsWithIdentifier:(id)identifier;
 @end
 
 @implementation FMSongRendition
 
-- (FMSongRendition)initWithSong:(id)a3 andOptions:(id)a4
+- (FMSongRendition)initWithSong:(id)song andOptions:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  songCopy = song;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = FMSongRendition;
   v9 = [(FMSongRendition *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_song, a3);
-    objc_storeStrong(&v10->_options, a4);
+    objc_storeStrong(&v9->_song, song);
+    objc_storeStrong(&v10->_options, options);
   }
 
   return v10;
@@ -42,18 +42,18 @@
   return v39;
 }
 
-+ (id)coalesceMixParamsA:(id)a3 withMixParamsB:(id)a4
++ (id)coalesceMixParamsA:(id)a withMixParamsB:(id)b
 {
   v221 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v11 = v6;
-  if (!v6)
+  aCopy = a;
+  bCopy = b;
+  v11 = bCopy;
+  if (!bCopy)
   {
     goto LABEL_4;
   }
 
-  v12 = objc_msgSend_volumeKeyFrames(v6, v7, v8, v9, v10);
+  v12 = objc_msgSend_volumeKeyFrames(bCopy, v7, v8, v9, v10);
   if (objc_msgSend_count(v12, v13, v14, v15, v16) == 1)
   {
     v21 = objc_msgSend_volumeKeyFrames(v11, v17, v18, v19, v20);
@@ -64,7 +64,7 @@
     if (v32 == 1.0)
     {
 LABEL_4:
-      v37 = v5;
+      v37 = aCopy;
 LABEL_10:
       v59 = v37;
       goto LABEL_11;
@@ -75,17 +75,17 @@ LABEL_10:
   {
   }
 
-  if (!v5)
+  if (!aCopy)
   {
 LABEL_9:
     v37 = v11;
     goto LABEL_10;
   }
 
-  v38 = objc_msgSend_volumeKeyFrames(v5, v33, v34, v35, v36);
+  v38 = objc_msgSend_volumeKeyFrames(aCopy, v33, v34, v35, v36);
   if (objc_msgSend_count(v38, v39, v40, v41, v42) == 1)
   {
-    v47 = objc_msgSend_volumeKeyFrames(v5, v43, v44, v45, v46);
+    v47 = objc_msgSend_volumeKeyFrames(aCopy, v43, v44, v45, v46);
     v52 = objc_msgSend_lastObject(v47, v48, v49, v50, v51);
     objc_msgSend_value(v52, v53, v54, v55, v56);
     v58 = v57;
@@ -105,7 +105,7 @@ LABEL_9:
   v214 = 0u;
   v215 = 0u;
   v216 = 0u;
-  v66 = objc_msgSend_volumeKeyFrames(v5, v62, v63, v64, v65);
+  v66 = objc_msgSend_volumeKeyFrames(aCopy, v62, v63, v64, v65);
   v68 = objc_msgSend_countByEnumeratingWithState_objects_count_(v66, v67, &v213, v220, 16);
   if (v68)
   {
@@ -235,7 +235,7 @@ LABEL_9:
 
         v176 = *(*(&v201 + 1) + 8 * m);
         v177 = objc_msgSend_sampleTime(v176, v169, v170, v171, v172);
-        objc_msgSend_volumeValueAtTime_(v5, v178, v177, v179, v180);
+        objc_msgSend_volumeValueAtTime_(aCopy, v178, v177, v179, v180);
         v182 = v181;
         v187 = objc_msgSend_sampleTime(v176, v183, v184, v185, v186);
         objc_msgSend_volumeValueAtTime_(v11, v188, v187, v189, v190);
@@ -272,16 +272,16 @@ LABEL_11:
   return v59;
 }
 
-- (id)timedMetadataItemsWithIdentifier:(id)a3
+- (id)timedMetadataItemsWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9 = objc_msgSend_song(self, v5, v6, v7, v8);
-  v12 = objc_msgSend_timedMetadataItemsWithIdentifier_forRendition_(v9, v10, v4, self, v11);
+  v12 = objc_msgSend_timedMetadataItemsWithIdentifier_forRendition_(v9, v10, identifierCopy, self, v11);
 
   return v12;
 }
 
-- (double)_maxPeakAndLoudness:(double *)a3 missingPeakValueCount:(int *)a4 missingLoudnessCount:(int *)a5
+- (double)_maxPeakAndLoudness:(double *)loudness missingPeakValueCount:(int *)count missingLoudnessCount:(int *)loudnessCount
 {
   v33 = 0;
   v34 = &v33;
@@ -303,7 +303,7 @@ LABEL_11:
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v8 = objc_msgSend_timedMetadataItemsWithIdentifier_(self, a2, @"FMTimedMetadataIdentifierSegment", a4, a5);
+  v8 = objc_msgSend_timedMetadataItemsWithIdentifier_(self, a2, @"FMTimedMetadataIdentifierSegment", count, loudnessCount);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = sub_24B7EA5D4;
@@ -314,7 +314,7 @@ LABEL_11:
   v16[7] = &v25;
   v16[8] = &v17;
   objc_msgSend_enumerateObjectsUsingBlock_(v8, v9, v16, v10, v11);
-  if (a3)
+  if (loudness)
   {
     v12 = v26[3];
     if (v12 <= 0.0)
@@ -328,17 +328,17 @@ LABEL_11:
     }
 
     v30[3] = v13;
-    *a3 = v13;
+    *loudness = v13;
   }
 
-  if (a4)
+  if (count)
   {
-    *a4 = *(v22 + 6);
+    *count = *(v22 + 6);
   }
 
-  if (a5)
+  if (loudnessCount)
   {
-    *a5 = *(v18 + 6);
+    *loudnessCount = *(v18 + 6);
   }
 
   v14 = v34[3];

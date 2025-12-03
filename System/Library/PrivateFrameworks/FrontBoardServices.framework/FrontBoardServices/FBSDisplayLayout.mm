@@ -1,10 +1,10 @@
 @interface FBSDisplayLayout
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)referenceBounds;
-- (id)_initWithElements:(id)a3;
-- (id)addElement:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_initWithElements:(id)elements;
+- (id)addElement:(id)element;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (int64_t)displayType;
@@ -178,11 +178,11 @@ uint64_t __33__FBSDisplayLayout__sortElements__block_invoke(uint64_t a1, void *a
 - (id)succinctDescriptionBuilder
 {
   v3 = [off_1E76BC9B0 builderWithObject:self];
-  v4 = [(FBSDisplayConfiguration *)self->_displayConfiguration identity];
-  v5 = v4;
-  if (v4)
+  identity = [(FBSDisplayConfiguration *)self->_displayConfiguration identity];
+  v5 = identity;
+  if (identity)
   {
-    v6 = v4;
+    v6 = identity;
   }
 
   else
@@ -209,17 +209,17 @@ uint64_t __33__FBSDisplayLayout__sortElements__block_invoke(uint64_t a1, void *a
   }
 }
 
-- (id)_initWithElements:(id)a3
+- (id)_initWithElements:(id)elements
 {
-  v4 = a3;
+  elementsCopy = elements;
   v9.receiver = self;
   v9.super_class = FBSDisplayLayout;
   v5 = [(FBSDisplayLayout *)&v9 init];
   if (v5)
   {
-    if (v4)
+    if (elementsCopy)
     {
-      v6 = [MEMORY[0x1E695DF70] arrayWithArray:v4];
+      v6 = [MEMORY[0x1E695DF70] arrayWithArray:elementsCopy];
     }
 
     else
@@ -237,16 +237,16 @@ uint64_t __33__FBSDisplayLayout__sortElements__block_invoke(uint64_t a1, void *a
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = [off_1E76BC9C0 builderWithObject:self ofExpectedClass:objc_opt_class()];
   backlightLevel = self->_backlightLevel;
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __28__FBSDisplayLayout_isEqual___block_invoke;
   v30[3] = &unk_1E76BD908;
-  v7 = v4;
+  v7 = equalCopy;
   v31 = v7;
   v8 = [v5 appendInteger:backlightLevel counterpart:v30];
   backlightState = self->_backlightState;
@@ -286,9 +286,9 @@ uint64_t __33__FBSDisplayLayout__sortElements__block_invoke(uint64_t a1, void *a
   return displayConfiguration;
 }
 
-- (id)addElement:(id)a3
+- (id)addElement:(id)element
 {
-  v4 = [a3 copy];
+  v4 = [element copy];
   if (v4)
   {
     [(NSMutableArray *)self->_elements addObject:v4];
@@ -300,32 +300,32 @@ uint64_t __33__FBSDisplayLayout__sortElements__block_invoke(uint64_t a1, void *a
 
 - (id)succinctDescription
 {
-  v2 = [(FBSDisplayLayout *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSDisplayLayout *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSDisplayLayout *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSDisplayLayout *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBSDisplayLayout *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBSDisplayLayout *)self succinctDescriptionBuilder];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __58__FBSDisplayLayout_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_1E76BCD60;
   v10[4] = self;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v11 = v6;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v10];
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v7 = v11;
   v8 = v6;

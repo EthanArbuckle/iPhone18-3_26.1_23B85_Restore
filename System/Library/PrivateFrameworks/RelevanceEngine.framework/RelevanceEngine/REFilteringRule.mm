@@ -1,8 +1,8 @@
 @interface REFilteringRule
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (REConditionEvaluator)conditionEvaluator;
-- (REFilteringRule)initWithCondition:(id)a3 type:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (REFilteringRule)initWithCondition:(id)condition type:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -16,10 +16,10 @@
   return [(RECondition *)self->_condition hash]^ v3;
 }
 
-- (REFilteringRule)initWithCondition:(id)a3 type:(unint64_t)a4
+- (REFilteringRule)initWithCondition:(id)condition type:(unint64_t)type
 {
-  v13 = a3;
-  if (!v13)
+  conditionCopy = condition;
+  if (!conditionCopy)
   {
     RERaiseInternalException(*MEMORY[0x277CBE660], @"Condition must be non-nil", v7, v8, v9, v10, v11, v12, v22.receiver);
   }
@@ -29,22 +29,22 @@
   v14 = [(RERule *)&v22 init];
   if (v14)
   {
-    if ([v13 _validForRanking])
+    if ([conditionCopy _validForRanking])
     {
       RERaiseInternalException(*MEMORY[0x277CBE660], @"REComparisonCondition cannot be used for a filtering rule", v15, v16, v17, v18, v19, v20, v22.receiver);
     }
 
-    objc_storeStrong(&v14->_condition, a3);
-    v14->_type = a4;
+    objc_storeStrong(&v14->_condition, condition);
+    v14->_type = type;
   }
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -56,9 +56,9 @@
     {
       v12.receiver = self;
       v12.super_class = REFilteringRule;
-      if ([(RERule *)&v12 isEqual:v4])
+      if ([(RERule *)&v12 isEqual:equalCopy])
       {
-        v5 = v4;
+        v5 = equalCopy;
         condition = v5->_condition;
         v7 = self->_condition;
         v8 = v7;
@@ -92,9 +92,9 @@ LABEL_12:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithCondition:type:", self->_condition, self->_type}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithCondition:type:", self->_condition, self->_type}];
   [(RERule *)self priority];
   [v4 setPriority:?];
   return v4;

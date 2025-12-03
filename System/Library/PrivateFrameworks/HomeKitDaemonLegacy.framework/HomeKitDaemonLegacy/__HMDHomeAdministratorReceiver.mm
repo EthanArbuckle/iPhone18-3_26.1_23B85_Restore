@@ -3,13 +3,13 @@
 - (HMDHomeAdministratorHandler)handler;
 - (HMFMessageReceiver)receiver;
 - (NSUUID)messageTargetUUID;
-- (__HMDHomeAdministratorReceiver)initWithReceiver:(id)a3 handler:(id)a4;
+- (__HMDHomeAdministratorReceiver)initWithReceiver:(id)receiver handler:(id)handler;
 - (id)logIdentifier;
 - (id)shortDescription;
-- (void)__handleRemoteMessage:(id)a3;
-- (void)__handleXPCMessage:(id)a3;
+- (void)__handleRemoteMessage:(id)message;
+- (void)__handleXPCMessage:(id)message;
 - (void)dealloc;
-- (void)registerForMessage:(id)a3 policies:(id)a4;
+- (void)registerForMessage:(id)message policies:(id)policies;
 @end
 
 @implementation __HMDHomeAdministratorReceiver
@@ -28,9 +28,9 @@
   return WeakRetained;
 }
 
-- (void)__handleRemoteMessage:(id)a3
+- (void)__handleRemoteMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -44,60 +44,60 @@
 
 - (id)logIdentifier
 {
-  v2 = [(__HMDHomeAdministratorReceiver *)self receiver];
-  v3 = [v2 messageTargetUUID];
-  v4 = [v3 UUIDString];
+  receiver = [(__HMDHomeAdministratorReceiver *)self receiver];
+  messageTargetUUID = [receiver messageTargetUUID];
+  uUIDString = [messageTargetUUID UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
 - (NSUUID)messageTargetUUID
 {
   WeakRetained = objc_loadWeakRetained(&self->_receiver);
-  v3 = [WeakRetained messageTargetUUID];
+  messageTargetUUID = [WeakRetained messageTargetUUID];
 
-  return v3;
+  return messageTargetUUID;
 }
 
-- (void)__handleXPCMessage:(id)a3
+- (void)__handleXPCMessage:(id)message
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(__HMDHomeAdministratorReceiver *)self receiver];
+  messageCopy = message;
+  receiver = [(__HMDHomeAdministratorReceiver *)self receiver];
 
-  if (v5)
+  if (receiver)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = HMFGetLogIdentifier();
-      v10 = [v4 shortDescription];
+      shortDescription = [messageCopy shortDescription];
       v13 = 138543618;
       v14 = v9;
       v15 = 2112;
-      v16 = v10;
+      v16 = shortDescription;
       _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Locally dispatching message: %@", &v13, 0x16u);
     }
 
     objc_autoreleasePoolPop(v6);
-    v11 = [(__HMDHomeAdministratorReceiver *)v7 handler];
-    [v11 dispatchMessage:v4];
+    handler = [(__HMDHomeAdministratorReceiver *)selfCopy handler];
+    [handler dispatchMessage:messageCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForMessage:(id)a3 policies:(id)a4
+- (void)registerForMessage:(id)message policies:(id)policies
 {
-  if (a3 && a4)
+  if (message && policies)
   {
-    v6 = a3;
-    v9 = [a4 hmf_objectsPassingTest:&__block_literal_global_127_169706];
-    v7 = [(__HMDHomeAdministratorReceiver *)self handler];
-    v8 = [v7 dispatcher];
-    [v8 registerForMessage:v6 receiver:self policies:v9 selector:sel___handleXPCMessage_];
+    messageCopy = message;
+    v9 = [policies hmf_objectsPassingTest:&__block_literal_global_127_169706];
+    handler = [(__HMDHomeAdministratorReceiver *)self handler];
+    dispatcher = [handler dispatcher];
+    [dispatcher registerForMessage:messageCopy receiver:self policies:v9 selector:sel___handleXPCMessage_];
   }
 }
 
@@ -117,26 +117,26 @@
   v4 = objc_loadWeakRetained(&self->_receiver);
   [WeakRetained deregisterReceiver:v4];
 
-  v5 = [WeakRetained dispatcher];
-  [v5 deregisterReceiver:self];
+  dispatcher = [WeakRetained dispatcher];
+  [dispatcher deregisterReceiver:self];
 
   v6.receiver = self;
   v6.super_class = __HMDHomeAdministratorReceiver;
   [(__HMDHomeAdministratorReceiver *)&v6 dealloc];
 }
 
-- (__HMDHomeAdministratorReceiver)initWithReceiver:(id)a3 handler:(id)a4
+- (__HMDHomeAdministratorReceiver)initWithReceiver:(id)receiver handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  receiverCopy = receiver;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = __HMDHomeAdministratorReceiver;
   v8 = [(__HMDHomeAdministratorReceiver *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_receiver, v6);
-    objc_storeWeak(&v9->_handler, v7);
+    objc_storeWeak(&v8->_receiver, receiverCopy);
+    objc_storeWeak(&v9->_handler, handlerCopy);
   }
 
   return v9;

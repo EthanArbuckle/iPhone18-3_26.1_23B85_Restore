@@ -1,10 +1,10 @@
 @interface TSCH3DChartBoundsLayout
 - (ResizingSize)resizingSize;
 - (TSCH3DChartBoundsLayout)init;
-- (TSCH3DChartBoundsLayout)initWithScene:(id)a3 containingViewport:(void *)a4 originalContainingViewport:(void *)a5 layoutSettings:(id *)a6;
+- (TSCH3DChartBoundsLayout)initWithScene:(id)scene containingViewport:(void *)viewport originalContainingViewport:(void *)containingViewport layoutSettings:(id *)settings;
 - (box<glm::detail::tvec2<float>>)bodyLayoutInPage;
 - (box<glm::detail::tvec2<float>>)layoutInPage;
-- (const)p_projectedBoundsWithLabelsMode:(int)a3;
+- (const)p_projectedBoundsWithLabelsMode:(int)mode;
 - (id).cxx_construct;
 - (id)cacheableGetBoundsPipeline;
 - (id)debugBounds;
@@ -12,14 +12,14 @@
 - (void)invalidateBounds;
 - (void)p_updateLabelWrapBoundsPass;
 - (void)resetSceneDelegate;
-- (void)setContainingViewport:(tvec2<int>)a3;
+- (void)setContainingViewport:(tvec2<int>)viewport;
 @end
 
 @implementation TSCH3DChartBoundsLayout
 
-- (TSCH3DChartBoundsLayout)initWithScene:(id)a3 containingViewport:(void *)a4 originalContainingViewport:(void *)a5 layoutSettings:(id *)a6
+- (TSCH3DChartBoundsLayout)initWithScene:(id)scene containingViewport:(void *)viewport originalContainingViewport:(void *)containingViewport layoutSettings:(id *)settings
 {
-  v11 = a3;
+  sceneCopy = scene;
   v56.receiver = self;
   v56.super_class = TSCH3DChartBoundsLayout;
   v12 = [(TSCH3DChartBoundsLayout *)&v56 init];
@@ -27,17 +27,17 @@
   if (v12)
   {
     v12->_mode = 0;
-    objc_storeStrong(&v12->_scene, a3);
-    v18 = objc_msgSend_clone(v11, v14, v15, v16, v17);
+    objc_storeStrong(&v12->_scene, scene);
+    v18 = objc_msgSend_clone(sceneCopy, v14, v15, v16, v17);
     bounds = v13->_bounds;
     v13->_bounds = v18;
 
-    v24 = objc_msgSend_camera(v11, v20, v21, v22, v23);
+    v24 = objc_msgSend_camera(sceneCopy, v20, v21, v22, v23);
     v29 = objc_msgSend_copy(v24, v25, v26, v27, v28);
     objc_msgSend_setCamera_(v13->_bounds, v30, v31, v32, v33, v29);
 
-    v34 = *&a6->var0;
-    v13->_layoutSettings.max3DLimitingSeries = a6->var9;
+    v34 = *&settings->var0;
+    v13->_layoutSettings.max3DLimitingSeries = settings->var9;
     *&v13->_layoutSettings.forceOmitLegend = v34;
     v35 = v13->_bounds;
     v54[0] = MEMORY[0x277D85DD0];
@@ -48,9 +48,9 @@
     v55 = v36;
     v41 = objc_msgSend_returnRemoved_removeObjectsPassingTest_(v35, v37, v38, v39, v40, 0, v54);
     objc_msgSend_resetSceneDelegate(v36, v42, v43, v44, v45);
-    v53 = *a4;
+    v53 = *viewport;
     objc_msgSend_setContainingViewport_(v36, v46, v53, v47, v48, &v53);
-    v53 = *a5;
+    v53 = *containingViewport;
     objc_msgSend_setOriginalContainingViewport_(v36, v49, v53, v50, v51, &v53);
   }
 
@@ -116,10 +116,10 @@
   return v14;
 }
 
-- (void)setContainingViewport:(tvec2<int>)a3
+- (void)setContainingViewport:(tvec2<int>)viewport
 {
   v11 = objc_msgSend_camera(self->_bounds, a2, v3, v4, v5);
-  objc_msgSend_setContainingViewportSize_(v11, v7, v8, v9, v10, a3);
+  objc_msgSend_setContainingViewportSize_(v11, v7, v8, v9, v10, viewport);
 }
 
 - (void)p_updateLabelWrapBoundsPass
@@ -219,9 +219,9 @@
   return result;
 }
 
-- (const)p_projectedBoundsWithLabelsMode:(int)a3
+- (const)p_projectedBoundsWithLabelsMode:(int)mode
 {
-  v6 = *&a3;
+  v6 = *&mode;
   if (!self->_getBounds)
   {
     goto LABEL_5;

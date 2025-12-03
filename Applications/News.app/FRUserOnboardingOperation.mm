@@ -4,7 +4,7 @@
 - (id)_presubscribe;
 - (id)_refreshAppConfig;
 - (id)_refreshOnboardingVersion;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -12,30 +12,30 @@
 
 - (BOOL)validateOperation
 {
-  v3 = [(FRUserOnboardingOperation *)self cloudContext];
+  cloudContext = [(FRUserOnboardingOperation *)self cloudContext];
 
-  if (!v3 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (!cloudContext && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006DDA8();
   }
 
-  v4 = [(FRUserOnboardingOperation *)self analyticsController];
+  analyticsController = [(FRUserOnboardingOperation *)self analyticsController];
 
-  if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (!analyticsController && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006DE60();
   }
 
-  v5 = [(FRUserOnboardingOperation *)self presubscribeService];
+  presubscribeService = [(FRUserOnboardingOperation *)self presubscribeService];
 
-  if (!v5 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (!presubscribeService && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006DF18();
   }
 
-  if (v3)
+  if (cloudContext)
   {
-    v6 = v4 == 0;
+    v6 = analyticsController == 0;
   }
 
   else
@@ -43,7 +43,7 @@
     v6 = 1;
   }
 
-  return !v6 && v5 != 0;
+  return !v6 && presubscribeService != 0;
 }
 
 - (void)performOperation
@@ -91,16 +91,16 @@
   v12 = [v10 errorOn:v11 error:v14];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(FRUserOnboardingOperation *)self userOnboardingCompletionHandler];
+  errorCopy = error;
+  userOnboardingCompletionHandler = [(FRUserOnboardingOperation *)self userOnboardingCompletionHandler];
 
-  if (v4)
+  if (userOnboardingCompletionHandler)
   {
-    v5 = [(FRUserOnboardingOperation *)self userOnboardingCompletionHandler];
-    v6 = [(FRUserOnboardingOperation *)self onboardingVersion];
-    (v5)[2](v5, [v6 integerValue], v7);
+    userOnboardingCompletionHandler2 = [(FRUserOnboardingOperation *)self userOnboardingCompletionHandler];
+    onboardingVersion = [(FRUserOnboardingOperation *)self onboardingVersion];
+    (userOnboardingCompletionHandler2)[2](userOnboardingCompletionHandler2, [onboardingVersion integerValue], errorCopy);
   }
 }
 
@@ -142,12 +142,12 @@
 
 - (id)_presubscribe
 {
-  v3 = [(FRUserOnboardingOperation *)self cloudContext];
-  v4 = [v3 userInfo];
-  v5 = [v4 onboardingVersionNumber];
-  v6 = [v5 integerValue];
+  cloudContext = [(FRUserOnboardingOperation *)self cloudContext];
+  userInfo = [cloudContext userInfo];
+  onboardingVersionNumber = [userInfo onboardingVersionNumber];
+  integerValue = [onboardingVersionNumber integerValue];
 
-  if (v6)
+  if (integerValue)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;

@@ -17,24 +17,24 @@
 
 + (id)hostFilePathForSegmentedURLCoderVersion0
 {
-  v2 = [a1 _bundle];
-  v3 = [v2 pathForResource:@"h" ofType:@"data"];
+  _bundle = [self _bundle];
+  v3 = [_bundle pathForResource:@"h" ofType:@"data"];
 
   return v3;
 }
 
 + (id)segmentedPathAndQueryFilePathForSegmentedURLCoderVersion0
 {
-  v2 = [a1 _bundle];
-  v3 = [v2 pathForResource:@"spq" ofType:@"data"];
+  _bundle = [self _bundle];
+  v3 = [_bundle pathForResource:@"spq" ofType:@"data"];
 
   return v3;
 }
 
 + (id)combinedPathAndQueryFilePathForSegmentedURLCoderVersion0
 {
-  v2 = [a1 _bundle];
-  v3 = [v2 pathForResource:@"cpq" ofType:@"data"];
+  _bundle = [self _bundle];
+  v3 = [_bundle pathForResource:@"cpq" ofType:@"data"];
 
   return v3;
 }

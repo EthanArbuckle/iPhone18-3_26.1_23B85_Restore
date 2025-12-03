@@ -1,13 +1,13 @@
 @interface _INPBGetSettingIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBGetSettingIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBGetSettingIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)addSettingResponseData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setErrorDetail:(id)a3;
-- (void)setSettingResponseDatas:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSettingResponseData:(id)data;
+- (void)encodeWithCoder:(id)coder;
+- (void)setErrorDetail:(id)detail;
+- (void)setSettingResponseDatas:(id)datas;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBGetSettingIntentResponse
@@ -15,17 +15,17 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_errorDetail)
   {
-    v4 = [(_INPBGetSettingIntentResponse *)self errorDetail];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"errorDetail"];
+    errorDetail = [(_INPBGetSettingIntentResponse *)self errorDetail];
+    v5 = [errorDetail copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"errorDetail"];
   }
 
   if ([(NSArray *)self->_settingResponseDatas count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -45,8 +45,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -55,36 +55,36 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"settingResponseData"];
+    [dictionary setObject:array forKeyedSubscript:@"settingResponseData"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBGetSettingIntentResponse *)self errorDetail];
-  v6 = [v4 errorDetail];
-  if ((v5 != 0) == (v6 == 0))
+  errorDetail = [(_INPBGetSettingIntentResponse *)self errorDetail];
+  errorDetail2 = [equalCopy errorDetail];
+  if ((errorDetail != 0) == (errorDetail2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBGetSettingIntentResponse *)self errorDetail];
-  if (v7)
+  errorDetail3 = [(_INPBGetSettingIntentResponse *)self errorDetail];
+  if (errorDetail3)
   {
-    v8 = v7;
-    v9 = [(_INPBGetSettingIntentResponse *)self errorDetail];
-    v10 = [v4 errorDetail];
-    v11 = [v9 isEqual:v10];
+    v8 = errorDetail3;
+    errorDetail4 = [(_INPBGetSettingIntentResponse *)self errorDetail];
+    errorDetail5 = [equalCopy errorDetail];
+    v11 = [errorDetail4 isEqual:errorDetail5];
 
     if (!v11)
     {
@@ -96,12 +96,12 @@
   {
   }
 
-  v5 = [(_INPBGetSettingIntentResponse *)self settingResponseDatas];
-  v6 = [v4 settingResponseDatas];
-  if ((v5 != 0) != (v6 == 0))
+  errorDetail = [(_INPBGetSettingIntentResponse *)self settingResponseDatas];
+  errorDetail2 = [equalCopy settingResponseDatas];
+  if ((errorDetail != 0) != (errorDetail2 == 0))
   {
-    v12 = [(_INPBGetSettingIntentResponse *)self settingResponseDatas];
-    if (!v12)
+    settingResponseDatas = [(_INPBGetSettingIntentResponse *)self settingResponseDatas];
+    if (!settingResponseDatas)
     {
 
 LABEL_15:
@@ -109,10 +109,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBGetSettingIntentResponse *)self settingResponseDatas];
-    v15 = [v4 settingResponseDatas];
-    v16 = [v14 isEqual:v15];
+    v13 = settingResponseDatas;
+    settingResponseDatas2 = [(_INPBGetSettingIntentResponse *)self settingResponseDatas];
+    settingResponseDatas3 = [equalCopy settingResponseDatas];
+    v16 = [settingResponseDatas2 isEqual:settingResponseDatas3];
 
     if (v16)
     {
@@ -132,49 +132,49 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBGetSettingIntentResponse allocWithZone:](_INPBGetSettingIntentResponse init];
-  v6 = [(NSString *)self->_errorDetail copyWithZone:a3];
+  v6 = [(NSString *)self->_errorDetail copyWithZone:zone];
   [(_INPBGetSettingIntentResponse *)v5 setErrorDetail:v6];
 
-  v7 = [(NSArray *)self->_settingResponseDatas copyWithZone:a3];
+  v7 = [(NSArray *)self->_settingResponseDatas copyWithZone:zone];
   [(_INPBGetSettingIntentResponse *)v5 setSettingResponseDatas:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBGetSettingIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBGetSettingIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBGetSettingIntentResponse)initWithCoder:(id)a3
+- (_INPBGetSettingIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBGetSettingIntentResponse *)self initWithData:v6];
+    self = [(_INPBGetSettingIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBGetSettingIntentResponse *)self errorDetail];
+  toCopy = to;
+  errorDetail = [(_INPBGetSettingIntentResponse *)self errorDetail];
 
-  if (v5)
+  if (errorDetail)
   {
     errorDetail = self->_errorDetail;
     PBDataWriterWriteStringField();
@@ -215,36 +215,36 @@ LABEL_13:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addSettingResponseData:(id)a3
+- (void)addSettingResponseData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   settingResponseDatas = self->_settingResponseDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!settingResponseDatas)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_settingResponseDatas;
-    self->_settingResponseDatas = v6;
+    self->_settingResponseDatas = array;
 
-    v4 = v8;
+    dataCopy = v8;
     settingResponseDatas = self->_settingResponseDatas;
   }
 
-  [(NSArray *)settingResponseDatas addObject:v4];
+  [(NSArray *)settingResponseDatas addObject:dataCopy];
 }
 
-- (void)setSettingResponseDatas:(id)a3
+- (void)setSettingResponseDatas:(id)datas
 {
-  v4 = [a3 mutableCopy];
+  v4 = [datas mutableCopy];
   settingResponseDatas = self->_settingResponseDatas;
   self->_settingResponseDatas = v4;
 
   MEMORY[0x1EEE66BB8](v4, settingResponseDatas);
 }
 
-- (void)setErrorDetail:(id)a3
+- (void)setErrorDetail:(id)detail
 {
-  v4 = [a3 copy];
+  v4 = [detail copy];
   errorDetail = self->_errorDetail;
   self->_errorDetail = v4;
 

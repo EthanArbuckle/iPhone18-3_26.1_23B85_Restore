@@ -1,10 +1,10 @@
 @interface TodayCardOverlayReusePool
-- (void)clearStackFor:(id)a3;
+- (void)clearStackFor:(id)for;
 @end
 
 @implementation TodayCardOverlayReusePool
 
-- (void)clearStackFor:(id)a3
+- (void)clearStackFor:(id)for
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);

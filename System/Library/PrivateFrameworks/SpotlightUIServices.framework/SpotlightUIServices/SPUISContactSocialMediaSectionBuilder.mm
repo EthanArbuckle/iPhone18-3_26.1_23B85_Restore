@@ -6,10 +6,10 @@
 
 - (id)buildBridgedResult
 {
-  v2 = [(SPUISContactEntitySectionBuilder *)self contactResultBuilder];
-  v3 = [v2 buildSocialMediaResultForEntity];
+  contactResultBuilder = [(SPUISContactEntitySectionBuilder *)self contactResultBuilder];
+  buildSocialMediaResultForEntity = [contactResultBuilder buildSocialMediaResultForEntity];
 
-  return v3;
+  return buildSocialMediaResultForEntity;
 }
 
 @end

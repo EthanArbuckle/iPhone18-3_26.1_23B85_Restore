@@ -1,23 +1,23 @@
 @interface INGetOnScreenContentForwardingActionResponse
-- (INGetOnScreenContentForwardingActionResponse)initWithCoder:(id)a3;
-- (INGetOnScreenContentForwardingActionResponse)initWithNode:(id)a3 error:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (INGetOnScreenContentForwardingActionResponse)initWithCoder:(id)coder;
+- (INGetOnScreenContentForwardingActionResponse)initWithNode:(id)node error:(id)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INGetOnScreenContentForwardingActionResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = INGetOnScreenContentForwardingActionResponse;
-  v4 = a3;
-  [(INIntentForwardingActionResponse *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_node forKey:{@"node", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(INIntentForwardingActionResponse *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_node forKey:{@"node", v5.receiver, v5.super_class}];
 }
 
-- (INGetOnScreenContentForwardingActionResponse)initWithCoder:(id)a3
+- (INGetOnScreenContentForwardingActionResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2050000000;
@@ -36,7 +36,7 @@
 
   v6 = v5;
   _Block_object_dispose(&v20, 8);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:@"node"];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:@"node"];
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = objc_opt_class();
@@ -45,22 +45,22 @@
   v13 = objc_opt_class();
   v14 = objc_opt_class();
   v15 = [v8 setWithObjects:{v9, v10, v11, v12, v13, v14, objc_opt_class(), 0}];
-  v16 = [v4 decodeObjectOfClasses:v15 forKey:@"error"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"error"];
   v17 = [(INGetOnScreenContentForwardingActionResponse *)self initWithNode:v7 error:v16];
 
   return v17;
 }
 
-- (INGetOnScreenContentForwardingActionResponse)initWithNode:(id)a3 error:(id)a4
+- (INGetOnScreenContentForwardingActionResponse)initWithNode:(id)node error:(id)error
 {
-  v7 = a3;
+  nodeCopy = node;
   v11.receiver = self;
   v11.super_class = INGetOnScreenContentForwardingActionResponse;
-  v8 = [(INIntentForwardingActionResponse *)&v11 initWithError:a4];
+  v8 = [(INIntentForwardingActionResponse *)&v11 initWithError:error];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_node, a3);
+    objc_storeStrong(&v8->_node, node);
   }
 
   return v9;

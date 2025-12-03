@@ -1,25 +1,25 @@
 @interface BKSeriesCheck
-+ (BOOL)shouldRecheckAdamID:(id)a3 withIntervalInDays:(double)a4 inManagedObjectContext:(id)a5;
-+ (id)adamIDsNeedingToBeCheckedFromAdamIDs:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)insertSeriesCheckWithAdamId:(id)a3 intoManagedObjectContext:(id)a4;
-+ (void)recordAdamIDsAsChecked:(id)a3 inManagedObjectContext:(id)a4;
++ (BOOL)shouldRecheckAdamID:(id)d withIntervalInDays:(double)days inManagedObjectContext:(id)context;
++ (id)adamIDsNeedingToBeCheckedFromAdamIDs:(id)ds inManagedObjectContext:(id)context;
++ (id)insertSeriesCheckWithAdamId:(id)id intoManagedObjectContext:(id)context;
++ (void)recordAdamIDsAsChecked:(id)checked inManagedObjectContext:(id)context;
 @end
 
 @implementation BKSeriesCheck
 
-+ (id)insertSeriesCheckWithAdamId:(id)a3 intoManagedObjectContext:(id)a4
++ (id)insertSeriesCheckWithAdamId:(id)id intoManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = [NSEntityDescription insertNewObjectForEntityForName:@"BKSeriesCheck" inManagedObjectContext:a4];
-  [v6 setAdamId:v5];
+  idCopy = id;
+  v6 = [NSEntityDescription insertNewObjectForEntityForName:@"BKSeriesCheck" inManagedObjectContext:context];
+  [v6 setAdamId:idCopy];
 
   return v6;
 }
 
-+ (id)adamIDsNeedingToBeCheckedFromAdamIDs:(id)a3 inManagedObjectContext:(id)a4
++ (id)adamIDsNeedingToBeCheckedFromAdamIDs:(id)ds inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  contextCopy = context;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -27,11 +27,11 @@
   }
 
   v7 = +[NSMutableArray array];
-  if ([v5 count])
+  if ([dsCopy count])
   {
     v8 = [NSFetchRequest fetchRequestWithEntityName:@"BKSeriesCheck"];
     [v8 setFetchBatchSize:100];
-    v9 = [BKSeriesCheck predicateForSeriesCheckWithAdamIDsInList:v5];
+    v9 = [BKSeriesCheck predicateForSeriesCheckWithAdamIDsInList:dsCopy];
     [v8 setPredicate:v9];
 
     [v8 setResultType:2];
@@ -41,13 +41,13 @@
     [v8 setPropertiesToFetch:v10];
 
     v29 = 0;
-    v11 = [v6 executeFetchRequest:v8 error:&v29];
+    v11 = [contextCopy executeFetchRequest:v8 error:&v29];
     v12 = v29;
     v13 = v12;
     if (v11)
     {
       v23 = v12;
-      v24 = v6;
+      v24 = contextCopy;
       v14 = [v11 valueForKey:@"adamId"];
       v15 = [NSSet setWithArray:v14];
 
@@ -55,7 +55,7 @@
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v16 = v5;
+      v16 = dsCopy;
       v17 = [v16 countByEnumeratingWithState:&v25 objects:v31 count:16];
       if (v17)
       {
@@ -84,40 +84,40 @@
       }
 
       v13 = v23;
-      v6 = v24;
+      contextCopy = v24;
     }
   }
 
   return v7;
 }
 
-+ (void)recordAdamIDsAsChecked:(id)a3 inManagedObjectContext:(id)a4
++ (void)recordAdamIDsAsChecked:(id)checked inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  checkedCopy = checked;
+  contextCopy = context;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v42 = v5;
+    v42 = checkedCopy;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "BKSeriesCheck: recordAdamIDsAsChecked: %@", buf, 0xCu);
   }
 
-  if ([v5 count])
+  if ([checkedCopy count])
   {
-    v7 = [objc_opt_class() fetchRequest];
-    [v7 setFetchBatchSize:100];
-    v8 = [objc_opt_class() predicateForSeriesCheckWithAdamIDsInList:v5];
-    [v7 setPredicate:v8];
+    fetchRequest = [objc_opt_class() fetchRequest];
+    [fetchRequest setFetchBatchSize:100];
+    v8 = [objc_opt_class() predicateForSeriesCheckWithAdamIDsInList:checkedCopy];
+    [fetchRequest setPredicate:v8];
 
     v38 = 0;
-    v9 = [v6 executeFetchRequest:v7 error:&v38];
+    v9 = [contextCopy executeFetchRequest:fetchRequest error:&v38];
     v10 = v38;
     v11 = v10;
     if (v9)
     {
       v27 = v10;
-      v29 = v7;
-      v12 = [NSMutableSet setWithArray:v5];
+      v29 = fetchRequest;
+      v12 = [NSMutableSet setWithArray:checkedCopy];
       v13 = +[NSDate date];
       v34 = 0u;
       v35 = 0u;
@@ -144,8 +144,8 @@
             if (([v19 isDeleted] & 1) == 0)
             {
               [v19 setDateChecked:v13];
-              v20 = [v19 adamId];
-              [v12 removeObject:v20];
+              adamId = [v19 adamId];
+              [v12 removeObject:adamId];
             }
 
             v18 = v18 + 1;
@@ -178,7 +178,7 @@
               objc_enumerationMutation(v21);
             }
 
-            v26 = [BKSeriesCheck insertSeriesCheckWithAdamId:*(*(&v30 + 1) + 8 * v25) intoManagedObjectContext:v6];
+            v26 = [BKSeriesCheck insertSeriesCheckWithAdamId:*(*(&v30 + 1) + 8 * v25) intoManagedObjectContext:contextCopy];
             [v26 setDateChecked:v13];
 
             v25 = v25 + 1;
@@ -192,37 +192,37 @@
       }
 
       v9 = v28;
-      v7 = v29;
+      fetchRequest = v29;
       v11 = v27;
     }
   }
 }
 
-+ (BOOL)shouldRecheckAdamID:(id)a3 withIntervalInDays:(double)a4 inManagedObjectContext:(id)a5
++ (BOOL)shouldRecheckAdamID:(id)d withIntervalInDays:(double)days inManagedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a5;
-  if (v7)
+  dCopy = d;
+  contextCopy = context;
+  if (dCopy)
   {
     v9 = +[NSDate date];
     v10 = v9;
-    v11 = a4 * -86400.0;
-    if (a4 < 0.0)
+    daysCopy = days * -86400.0;
+    if (days < 0.0)
     {
-      v11 = a4;
+      daysCopy = days;
     }
 
-    v12 = [v9 dateByAddingTimeInterval:v11];
+    v12 = [v9 dateByAddingTimeInterval:daysCopy];
 
-    v13 = [objc_opt_class() fetchRequest];
+    fetchRequest = [objc_opt_class() fetchRequest];
     v14 = objc_opt_class();
-    v34 = v7;
+    v34 = dCopy;
     v15 = [NSArray arrayWithObjects:&v34 count:1];
     v16 = [v14 predicateForSeriesCheckWithAdamIDsInList:v15];
-    [v13 setPredicate:v16];
+    [fetchRequest setPredicate:v16];
 
     v32 = 0;
-    v17 = [v8 executeFetchRequest:v13 error:&v32];
+    v17 = [contextCopy executeFetchRequest:fetchRequest error:&v32];
     v18 = v32;
     if (v17)
     {
@@ -237,7 +237,7 @@
         if (v20)
         {
           v26 = v18;
-          v27 = v8;
+          v27 = contextCopy;
           v21 = *v29;
           while (2)
           {
@@ -248,8 +248,8 @@
                 objc_enumerationMutation(v19);
               }
 
-              v23 = [*(*(&v28 + 1) + 8 * i) dateChecked];
-              v24 = [v23 compare:v12];
+              dateChecked = [*(*(&v28 + 1) + 8 * i) dateChecked];
+              v24 = [dateChecked compare:v12];
 
               if (v24 == -1)
               {
@@ -269,7 +269,7 @@
 
 LABEL_18:
           v18 = v26;
-          v8 = v27;
+          contextCopy = v27;
         }
       }
 

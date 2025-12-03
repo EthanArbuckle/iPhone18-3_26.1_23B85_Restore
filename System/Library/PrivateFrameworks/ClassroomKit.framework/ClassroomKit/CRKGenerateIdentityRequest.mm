@@ -1,30 +1,30 @@
 @interface CRKGenerateIdentityRequest
-- (CRKGenerateIdentityRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CRKGenerateIdentityRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKGenerateIdentityRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CRKGenerateIdentityRequest;
-  v4 = a3;
-  [(CATTaskRequest *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskRequest *)&v6 encodeWithCoder:coderCopy];
   v5 = [(CRKGenerateIdentityRequest *)self commonName:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"commonName"];
+  [coderCopy encodeObject:v5 forKey:@"commonName"];
 }
 
-- (CRKGenerateIdentityRequest)initWithCoder:(id)a3
+- (CRKGenerateIdentityRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CRKGenerateIdentityRequest;
-  v5 = [(CATTaskRequest *)&v10 initWithCoder:v4];
+  v5 = [(CATTaskRequest *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"commonName"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"commonName"];
     commonName = v5->_commonName;
     v5->_commonName = v7;
   }

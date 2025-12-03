@@ -1,20 +1,20 @@
 @interface SHSonify
-+ (id)audioRepresentationOfSignature:(id)a3;
++ (id)audioRepresentationOfSignature:(id)signature;
 @end
 
 @implementation SHSonify
 
-+ (id)audioRepresentationOfSignature:(id)a3
++ (id)audioRepresentationOfSignature:(id)signature
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CB83A8];
-  v4 = a3;
+  signatureCopy = signature;
   v5 = [[v3 alloc] initWithCommonFormat:3 sampleRate:1 channels:1 interleaved:48000.0];
-  v6 = [v4 spectralPeaksData];
+  spectralPeaksData = [signatureCopy spectralPeaksData];
 
   [v5 sampleRate];
   v14 = 0;
-  v8 = [SigSonify sonifySignature:v6 withSampleRate:v7 error:&v14];
+  v8 = [SigSonify sonifySignature:spectralPeaksData withSampleRate:v7 error:&v14];
   v9 = v14;
 
   if ([v8 length])

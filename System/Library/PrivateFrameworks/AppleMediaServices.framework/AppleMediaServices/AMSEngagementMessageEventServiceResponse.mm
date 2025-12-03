@@ -1,25 +1,25 @@
 @interface AMSEngagementMessageEventServiceResponse
-- (AMSEngagementMessageEventServiceResponse)initWithJSObject:(id)a3;
+- (AMSEngagementMessageEventServiceResponse)initWithJSObject:(id)object;
 - (NSDictionary)placements;
-- (id)_placementRequestsWithDictionary:(id)a3;
-- (id)_placementsMapWithPayload:(id)a3;
+- (id)_placementRequestsWithDictionary:(id)dictionary;
+- (id)_placementsMapWithPayload:(id)payload;
 - (id)exportObject;
-- (void)_preprocessMessageRequest:(id)a3 placement:(id)a4;
+- (void)_preprocessMessageRequest:(id)request placement:(id)placement;
 @end
 
 @implementation AMSEngagementMessageEventServiceResponse
 
-- (AMSEngagementMessageEventServiceResponse)initWithJSObject:(id)a3
+- (AMSEngagementMessageEventServiceResponse)initWithJSObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v24.receiver = self;
   v24.super_class = AMSEngagementMessageEventServiceResponse;
   v6 = [(AMSEngagementMessageEventServiceResponse *)&v24 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dictionaryRepresentation, a3);
-    v8 = [v5 objectForKeyedSubscript:@"serviceType"];
+    objc_storeStrong(&v6->_dictionaryRepresentation, object);
+    v8 = [objectCopy objectForKeyedSubscript:@"serviceType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,7 +31,7 @@
       v9 = 0;
     }
 
-    v10 = [v5 objectForKeyedSubscript:@"dialogRequest"];
+    v10 = [objectCopy objectForKeyedSubscript:@"dialogRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       v11 = 0;
     }
 
-    v12 = [v5 objectForKeyedSubscript:@"engagementRequest"];
+    v12 = [objectCopy objectForKeyedSubscript:@"engagementRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -55,7 +55,7 @@
       v13 = 0;
     }
 
-    v14 = [v5 objectForKeyedSubscript:@"placements"];
+    v14 = [objectCopy objectForKeyedSubscript:@"placements"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,48 +105,48 @@ LABEL_23:
 
 - (id)exportObject
 {
-  v2 = self;
+  selfCopy = self;
   v35[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF90];
   v34 = @"serviceType";
-  v4 = [(AMSEngagementMessageEventServiceResponse *)self serviceType];
-  v35[0] = v4;
+  serviceType = [(AMSEngagementMessageEventServiceResponse *)self serviceType];
+  v35[0] = serviceType;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:&v34 count:1];
   v6 = [v3 dictionaryWithDictionary:v5];
 
-  v7 = [(AMSEngagementMessageEventServiceResponse *)v2 engagementRequest];
+  engagementRequest = [(AMSEngagementMessageEventServiceResponse *)selfCopy engagementRequest];
 
-  if (v7)
+  if (engagementRequest)
   {
-    v8 = [(AMSEngagementMessageEventServiceResponse *)v2 engagementRequest];
-    v9 = [v8 exportObject];
-    [v6 setObject:v9 forKeyedSubscript:@"engagementRequest"];
+    engagementRequest2 = [(AMSEngagementMessageEventServiceResponse *)selfCopy engagementRequest];
+    exportObject = [engagementRequest2 exportObject];
+    [v6 setObject:exportObject forKeyedSubscript:@"engagementRequest"];
   }
 
-  v10 = [(AMSEngagementMessageEventServiceResponse *)v2 fullScreenMessageRequest];
+  fullScreenMessageRequest = [(AMSEngagementMessageEventServiceResponse *)selfCopy fullScreenMessageRequest];
 
-  if (v10)
+  if (fullScreenMessageRequest)
   {
-    v11 = [(AMSEngagementMessageEventServiceResponse *)v2 fullScreenMessageRequest];
-    v12 = [v11 exportObject];
-    [v6 setObject:v12 forKeyedSubscript:@"dialogRequest"];
+    fullScreenMessageRequest2 = [(AMSEngagementMessageEventServiceResponse *)selfCopy fullScreenMessageRequest];
+    exportObject2 = [fullScreenMessageRequest2 exportObject];
+    [v6 setObject:exportObject2 forKeyedSubscript:@"dialogRequest"];
   }
 
-  v13 = [(AMSEngagementMessageEventServiceResponse *)v2 placementsMap];
+  placementsMap = [(AMSEngagementMessageEventServiceResponse *)selfCopy placementsMap];
 
-  if (v13)
+  if (placementsMap)
   {
     v27 = v6;
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v15 = [(AMSEngagementMessageEventServiceResponse *)v2 placementsMap];
-    v16 = [v15 allKeys];
+    placementsMap2 = [(AMSEngagementMessageEventServiceResponse *)selfCopy placementsMap];
+    allKeys = [placementsMap2 allKeys];
 
-    obj = v16;
-    v17 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    obj = allKeys;
+    v17 = [allKeys countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v17)
     {
       v18 = v17;
@@ -161,13 +161,13 @@ LABEL_23:
           }
 
           v21 = *(*(&v29 + 1) + 8 * i);
-          [(AMSEngagementMessageEventServiceResponse *)v2 placementsMap];
-          v23 = v22 = v2;
+          [(AMSEngagementMessageEventServiceResponse *)selfCopy placementsMap];
+          v23 = v22 = selfCopy;
           v24 = [v23 objectForKeyedSubscript:v21];
           v25 = [v24 ams_mapWithTransform:&__block_literal_global_49];
-          [v14 setObject:v25 forKeyedSubscript:v21];
+          [dictionary setObject:v25 forKeyedSubscript:v21];
 
-          v2 = v22;
+          selfCopy = v22;
         }
 
         v18 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -177,25 +177,25 @@ LABEL_23:
     }
 
     v6 = v27;
-    [v27 setObject:v14 forKeyedSubscript:@"placements"];
+    [v27 setObject:dictionary forKeyedSubscript:@"placements"];
   }
 
   return v6;
 }
 
-- (id)_placementsMapWithPayload:(id)a3
+- (id)_placementsMapWithPayload:(id)payload
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  payloadCopy = payload;
+  if (payloadCopy)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v22 = v4;
-    v6 = v4;
+    v22 = payloadCopy;
+    v6 = payloadCopy;
     v7 = [v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v7)
     {
@@ -227,7 +227,7 @@ LABEL_23:
             v25[2] = self;
             v25[3] = v11;
             v16 = [v14 ams_mapWithTransformIgnoresNil:v24];
-            [v5 setObject:v16 forKeyedSubscript:v11];
+            [dictionary setObject:v16 forKeyedSubscript:v11];
 
             v17 = v15;
           }
@@ -251,7 +251,7 @@ LABEL_23:
               [(AMSEngagementMessageEventServiceResponse *)self _preprocessMessageRequest:v18 placement:v11];
               v30 = v18;
               v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
-              [v5 setObject:v19 forKeyedSubscript:v11];
+              [dictionary setObject:v19 forKeyedSubscript:v11];
             }
           }
         }
@@ -262,9 +262,9 @@ LABEL_23:
       while (v8);
     }
 
-    if ([v5 count])
+    if ([dictionary count])
     {
-      v20 = [v5 copy];
+      v20 = [dictionary copy];
     }
 
     else
@@ -272,7 +272,7 @@ LABEL_23:
       v20 = 0;
     }
 
-    v4 = v22;
+    payloadCopy = v22;
   }
 
   else
@@ -293,18 +293,18 @@ AMSEngagementMessageRequest *__70__AMSEngagementMessageEventServiceResponse__pla
   return v4;
 }
 
-- (id)_placementRequestsWithDictionary:(id)a3
+- (id)_placementRequestsWithDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = v3;
+    v5 = dictionaryCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -321,10 +321,10 @@ AMSEngagementMessageRequest *__70__AMSEngagementMessageEventServiceResponse__pla
 
           v10 = *(*(&v15 + 1) + 8 * i);
           v11 = [v5 objectForKeyedSubscript:{v10, v15}];
-          v12 = [v11 makeDialogRequest];
-          if (v12 && [v11 presentationAction] && objc_msgSend(v11, "presentationAction") != 2)
+          makeDialogRequest = [v11 makeDialogRequest];
+          if (makeDialogRequest && [v11 presentationAction] && objc_msgSend(v11, "presentationAction") != 2)
           {
-            [v4 setObject:v12 forKeyedSubscript:v10];
+            [dictionary setObject:makeDialogRequest forKeyedSubscript:v10];
           }
         }
 
@@ -334,7 +334,7 @@ AMSEngagementMessageRequest *__70__AMSEngagementMessageEventServiceResponse__pla
       while (v7);
     }
 
-    v13 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v4];
+    v13 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
   }
 
   else
@@ -345,12 +345,12 @@ AMSEngagementMessageRequest *__70__AMSEngagementMessageEventServiceResponse__pla
   return v13;
 }
 
-- (void)_preprocessMessageRequest:(id)a3 placement:(id)a4
+- (void)_preprocessMessageRequest:(id)request placement:(id)placement
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (-[NSString isEqualToString:](self->_serviceType, "isEqualToString:", @"appStore") && [v6 style] == 6 && objc_msgSend(v7, "isEqualToString:", @"appLevelAlert"))
+  requestCopy = request;
+  placementCopy = placement;
+  if (-[NSString isEqualToString:](self->_serviceType, "isEqualToString:", @"appStore") && [requestCopy style] == 6 && objc_msgSend(placementCopy, "isEqualToString:", @"appLevelAlert"))
   {
     v8 = +[AMSLogConfig sharedEngagementConfig];
     if (!v8)
@@ -358,8 +358,8 @@ AMSEngagementMessageRequest *__70__AMSEngagementMessageEventServiceResponse__pla
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v10 = objc_opt_class();
       v11 = AMSLogKey();
@@ -369,31 +369,31 @@ AMSEngagementMessageRequest *__70__AMSEngagementMessageEventServiceResponse__pla
       v15 = 2114;
       v16 = v11;
       v17 = 2114;
-      v18 = v7;
+      v18 = placementCopy;
       v19 = 2114;
       v20 = serviceType;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Replacing Dashboard message style with Alert message style for placement %{public}@ serviceType %{public}@, ", &v13, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Replacing Dashboard message style with Alert message style for placement %{public}@ serviceType %{public}@, ", &v13, 0x2Au);
     }
 
-    [v6 setStyle:1];
+    [requestCopy setStyle:1];
   }
 }
 
 - (NSDictionary)placements
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSEngagementMessageEventServiceResponse *)self placementsMap];
-  v4 = [v3 count];
+  placementsMap = [(AMSEngagementMessageEventServiceResponse *)self placementsMap];
+  v4 = [placementsMap count];
 
   if (v4)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = [(AMSEngagementMessageEventServiceResponse *)self placementsMap];
-    v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    placementsMap2 = [(AMSEngagementMessageEventServiceResponse *)self placementsMap];
+    v7 = [placementsMap2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
       v8 = v7;
@@ -404,25 +404,25 @@ AMSEngagementMessageRequest *__70__AMSEngagementMessageEventServiceResponse__pla
         {
           if (*v18 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(placementsMap2);
           }
 
           v11 = *(*(&v17 + 1) + 8 * i);
-          v12 = [(AMSEngagementMessageEventServiceResponse *)self placementsMap];
-          v13 = [v12 objectForKeyedSubscript:v11];
-          v14 = [v13 firstObject];
-          [v5 setObject:v14 forKeyedSubscript:v11];
+          placementsMap3 = [(AMSEngagementMessageEventServiceResponse *)self placementsMap];
+          v13 = [placementsMap3 objectForKeyedSubscript:v11];
+          firstObject = [v13 firstObject];
+          [dictionary setObject:firstObject forKeyedSubscript:v11];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v8 = [placementsMap2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v8);
     }
 
-    if ([v5 count])
+    if ([dictionary count])
     {
-      v15 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v5];
+      v15 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
     }
 
     else

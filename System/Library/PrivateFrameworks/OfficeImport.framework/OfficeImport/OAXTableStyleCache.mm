@@ -1,7 +1,7 @@
 @interface OAXTableStyleCache
 - (OAXTableStyleCache)init;
-- (_xmlNode)styleNodeForId:(id)a3;
-- (void)setStyleNode:(_xmlNode *)a3 forId:(id)a4;
+- (_xmlNode)styleNodeForId:(id)id;
+- (void)setStyleNode:(_xmlNode *)node forId:(id)id;
 @end
 
 @implementation OAXTableStyleCache
@@ -21,49 +21,49 @@
   return v2;
 }
 
-- (void)setStyleNode:(_xmlNode *)a3 forId:(id)a4
+- (void)setStyleNode:(_xmlNode *)node forId:(id)id
 {
-  v8 = a4;
+  idCopy = id;
   mCache = self->mCache;
-  v7 = [MEMORY[0x277CCAE60] valueWithPointer:a3];
-  [(NSMutableDictionary *)mCache setObject:v7 forKey:v8];
+  v7 = [MEMORY[0x277CCAE60] valueWithPointer:node];
+  [(NSMutableDictionary *)mCache setObject:v7 forKey:idCopy];
 }
 
-- (_xmlNode)styleNodeForId:(id)a3
+- (_xmlNode)styleNodeForId:(id)id
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->mCache objectForKey:v4];
-  v6 = [v5 pointerValue];
+  idCopy = id;
+  v5 = [(NSMutableDictionary *)self->mCache objectForKey:idCopy];
+  pointerValue = [v5 pointerValue];
 
-  if (!v6)
+  if (!pointerValue)
   {
     v7 = +[TCBundleResourceManager instance];
-    v8 = [v4 length];
+    v8 = [idCopy length];
     if (v8 < 2)
     {
-      v6 = 0;
+      pointerValue = 0;
     }
 
     else
     {
-      v9 = [v4 substringWithRange:{1, v8 - 2}];
+      v9 = [idCopy substringWithRange:{1, v8 - 2}];
 
       v10 = [v7 xmlDocumentForResource:v9 ofType:@"xml" inPackage:@"DefaultTableStyles"];
       if (v10)
       {
-        v6 = OCXGetRootElement(v10);
+        pointerValue = OCXGetRootElement(v10);
       }
 
       else
       {
-        v6 = 0;
+        pointerValue = 0;
       }
 
-      v4 = v9;
+      idCopy = v9;
     }
   }
 
-  return v6;
+  return pointerValue;
 }
 
 @end

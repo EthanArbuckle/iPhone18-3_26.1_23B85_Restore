@@ -1,6 +1,6 @@
 @interface _SYCountedSemaphore
-- (BOOL)_waitSemaphoreWithTimeout:(double)a3;
-- (_SYCountedSemaphore)initWithCount:(int64_t)a3;
+- (BOOL)_waitSemaphoreWithTimeout:(double)timeout;
+- (_SYCountedSemaphore)initWithCount:(int64_t)count;
 - (void)_ensureSemaphore;
 - (void)_signalSemaphore;
 - (void)invalidate;
@@ -9,16 +9,16 @@
 
 @implementation _SYCountedSemaphore
 
-- (_SYCountedSemaphore)initWithCount:(int64_t)a3
+- (_SYCountedSemaphore)initWithCount:(int64_t)count
 {
-  v3 = a3;
+  countCopy = count;
   v8.receiver = self;
   v8.super_class = _SYCountedSemaphore;
   v4 = [(_SYCountedSemaphore *)&v8 init];
   v5 = v4;
   if (v4)
   {
-    atomic_store(v3, &v4->_count);
+    atomic_store(countCopy, &v4->_count);
     v6 = v4;
   }
 
@@ -28,7 +28,7 @@
 - (void)invalidate
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = a1;
+  selfCopy = self;
   OUTLINED_FUNCTION_3_0();
   OUTLINED_FUNCTION_1_3();
   OUTLINED_FUNCTION_2_1(&dword_1DF835000, v3, v4, "Error destroying Mach semaphore: %d (%{public}s)", v5, v6, v7, v8, v10);
@@ -39,7 +39,7 @@
 - (void)_ensureSemaphore
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = a1;
+  selfCopy = self;
   OUTLINED_FUNCTION_3_0();
   OUTLINED_FUNCTION_1_3();
   OUTLINED_FUNCTION_2_1(&dword_1DF835000, v3, v4, "Failed to create semaphore! %d (%{public}s)", v5, v6, v7, v8, v10);
@@ -55,7 +55,7 @@
   }
 }
 
-- (BOOL)_waitSemaphoreWithTimeout:(double)a3
+- (BOOL)_waitSemaphoreWithTimeout:(double)timeout
 {
   atomic_load(&self->_signals);
   v3 = atomic_load(&self->_invalidated);
@@ -66,7 +66,7 @@ LABEL_2:
     return v4;
   }
 
-  v7 = (a3 * 1000000000.0);
+  v7 = (timeout * 1000000000.0);
   while (1)
   {
     v8 = atomic_load(&self->_signals);
@@ -84,9 +84,9 @@ LABEL_2:
     }
 
     [(_SYCountedSemaphore *)self _ensureSemaphore];
-    if (a3 >= 0.0)
+    if (timeout >= 0.0)
     {
-      if (a3 != 0.0)
+      if (timeout != 0.0)
       {
         if (v7 == -1)
         {

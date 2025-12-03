@@ -31,16 +31,16 @@
 - (BOOL)holdBeforeDisplaying
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 isActivated];
+  isActivated = [v3 isActivated];
 
-  v5 = v4 | ![(COSOptinViewController *)self requiresActivationCheck];
+  v5 = isActivated | ![(COSOptinViewController *)self requiresActivationCheck];
   if ((v5 & 1) == 0)
   {
     if (PBLogPerformanceMetrics())
     {
       v6 = +[PBBridgeResponsePerformanceMonitor shareMonitor];
-      v7 = [(COSOptinViewController *)self holdActivityIdentifier];
-      [v6 beginMacroActivity:v7 beginTime:CFAbsoluteTimeGetCurrent()];
+      holdActivityIdentifier = [(COSOptinViewController *)self holdActivityIdentifier];
+      [v6 beginMacroActivity:holdActivityIdentifier beginTime:CFAbsoluteTimeGetCurrent()];
     }
 
     v8 = +[NSNotificationCenter defaultCenter];
@@ -63,14 +63,14 @@
 - (void)didEstablishHold
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 isActivated];
+  isActivated = [v2 isActivated];
 
-  if ((v3 & 1) == 0)
+  if ((isActivated & 1) == 0)
   {
     v6 = +[UIApplication sharedApplication];
-    v4 = [v6 setupController];
-    v5 = [v4 activationManager];
-    [v5 setAwaitingActivation:1];
+    setupController = [v6 setupController];
+    activationManager = [setupController activationManager];
+    [activationManager setAwaitingActivation:1];
   }
 }
 
@@ -81,31 +81,31 @@
 
   if (PBLogPerformanceMetrics())
   {
-    v4 = [(COSOptinViewController *)self holdActivityIdentifier];
+    holdActivityIdentifier = [(COSOptinViewController *)self holdActivityIdentifier];
     v5 = +[PBBridgeResponsePerformanceMonitor shareMonitor];
-    [v5 endMacroActivity:v4 beginTime:CFAbsoluteTimeGetCurrent()];
+    [v5 endMacroActivity:holdActivityIdentifier beginTime:CFAbsoluteTimeGetCurrent()];
     v7 = v6;
 
-    [PBBridgeCAReporter pushTimingForTypeNamed:v4 withValue:v7];
+    [PBBridgeCAReporter pushTimingForTypeNamed:holdActivityIdentifier withValue:v7];
   }
 
-  v8 = [(COSOptinViewController *)self delegate];
-  [v8 buddyControllerReleaseHold:self];
+  delegate = [(COSOptinViewController *)self delegate];
+  [delegate buddyControllerReleaseHold:self];
 }
 
 - (id)imageResource
 {
   if ([(COSOptinViewController *)self wantsDefaultImageResource])
   {
-    v3 = [(COSOptinViewController *)self defaultImageResource];
+    defaultImageResource = [(COSOptinViewController *)self defaultImageResource];
   }
 
   else
   {
-    v3 = 0;
+    defaultImageResource = 0;
   }
 
-  return v3;
+  return defaultImageResource;
 }
 
 - (id)defaultImageResource

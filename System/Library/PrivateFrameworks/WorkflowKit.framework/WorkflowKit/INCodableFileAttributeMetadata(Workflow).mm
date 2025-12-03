@@ -9,12 +9,12 @@
 - (id)wf_updatedParameterDefinition:()Workflow forCodableAttribute:localizer:
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &off_1F4B118E8;
   v2 = objc_msgSendSuper2(&v8, sel_wf_updatedParameterDefinition_forCodableAttribute_localizer_);
   v9 = @"FilePickerSupportedTypes";
-  v3 = [a1 UTIs];
-  v10[0] = v3;
+  uTIs = [self UTIs];
+  v10[0] = uTIs;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v5 = [v2 definitionByAddingEntriesInDictionary:v4];
 
@@ -47,29 +47,29 @@
   }
 
   v8 = v7;
-  v9 = [v8 _bookmarkData];
+  _bookmarkData = [v8 _bookmarkData];
 
-  if (v9)
+  if (_bookmarkData)
   {
     v10 = [WFFileValue alloc];
-    v11 = [v8 _bookmarkData];
-    v12 = [v8 filename];
-    v13 = [v8 filename];
-    v14 = [(WFFileValue *)v10 initWithBookmarkData:v11 filename:v12 displayName:v13];
+    _bookmarkData2 = [v8 _bookmarkData];
+    filename = [v8 filename];
+    filename2 = [v8 filename];
+    v14 = [(WFFileValue *)v10 initWithBookmarkData:_bookmarkData2 filename:filename displayName:filename2];
   }
 
   else
   {
-    v15 = [v8 fileURL];
+    fileURL = [v8 fileURL];
 
-    if (!v15)
+    if (!fileURL)
     {
       goto LABEL_12;
     }
 
     v16 = [WFFileValue alloc];
-    v11 = [v8 fileURL];
-    v14 = [(WFFileValue *)v16 initWithURL:v11];
+    _bookmarkData2 = [v8 fileURL];
+    v14 = [(WFFileValue *)v16 initWithURL:_bookmarkData2];
   }
 
   if (v14)
@@ -93,11 +93,11 @@ LABEL_13:
   v13 = a6;
   v14 = a5;
   v15 = a3;
-  v16 = [a1 UTIs];
-  v17 = [v13 wf_multipleValues];
-  v18 = [v13 supportsDynamicEnumeration];
+  uTIs = [self UTIs];
+  wf_multipleValues = [v13 wf_multipleValues];
+  supportsDynamicEnumeration = [v13 supportsDynamicEnumeration];
 
-  v19 = [v11 wf_processParameterValue:v15 parameterState:v14 coerceToSupportedUTIs:v16 array:v17 dynamicOptions:v18 completionHandler:v12];
+  v19 = [v11 wf_processParameterValue:v15 parameterState:v14 coerceToSupportedUTIs:uTIs array:wf_multipleValues dynamicOptions:supportsDynamicEnumeration completionHandler:v12];
   return v19;
 }
 

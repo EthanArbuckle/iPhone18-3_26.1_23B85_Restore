@@ -1,15 +1,15 @@
 @interface SKUICardLayout
-+ (BOOL)allowsViewElement:(id)a3;
-+ (SKUICardLayout)layoutWithCardViewElement:(id)a3 context:(id)a4;
-- (CGSize)sizeForViewElement:(id)a3 width:(double)a4;
-- (double)bottomInsetForLastViewElement:(id)a3 width:(double)a4;
-- (double)topInsetForViewElement:(id)a3 previousViewElement:(id)a4 width:(double)a5;
++ (BOOL)allowsViewElement:(id)element;
++ (SKUICardLayout)layoutWithCardViewElement:(id)element context:(id)context;
+- (CGSize)sizeForViewElement:(id)element width:(double)width;
+- (double)bottomInsetForLastViewElement:(id)element width:(double)width;
+- (double)topInsetForViewElement:(id)element previousViewElement:(id)viewElement width:(double)width;
 - (int64_t)layoutStyle;
 @end
 
 @implementation SKUICardLayout
 
-+ (BOOL)allowsViewElement:(id)a3
++ (BOOL)allowsViewElement:(id)element
 {
   if (os_variant_has_internal_content())
   {
@@ -26,10 +26,10 @@
   return 1;
 }
 
-+ (SKUICardLayout)layoutWithCardViewElement:(id)a3 context:(id)a4
++ (SKUICardLayout)layoutWithCardViewElement:(id)element context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -46,9 +46,9 @@
   v27 = &v26;
   v28 = 0x2050000000;
   v29 = 0;
-  v15 = [v5 style];
-  v16 = [v15 cardType];
-  v17 = [v16 isEqualToString:@"programmed"];
+  style = [elementCopy style];
+  cardType = [style cardType];
+  v17 = [cardType isEqualToString:@"programmed"];
 
   if (v17)
   {
@@ -65,7 +65,7 @@ LABEL_9:
     v25[2] = __52__SKUICardLayout_layoutWithCardViewElement_context___block_invoke;
     v25[3] = &unk_2781F8568;
     v25[4] = &v26;
-    [v5 enumerateChildrenUsingBlock:v25];
+    [elementCopy enumerateChildrenUsingBlock:v25];
     if (v27[3])
     {
       goto LABEL_11;
@@ -82,15 +82,15 @@ LABEL_9:
 LABEL_10:
   v27[3] = objc_opt_class();
 LABEL_11:
-  v19 = [v5 firstChildForElementType:7];
+  v19 = [elementCopy firstChildForElementType:7];
 
   v20 = objc_alloc_init(v27[3]);
   v21 = v20[1];
-  v20[1] = v5;
-  v22 = v5;
+  v20[1] = elementCopy;
+  v22 = elementCopy;
 
   v23 = v20[2];
-  v20[2] = v6;
+  v20[2] = contextCopy;
 
   *(v20 + 24) = v19 != 0;
   _Block_object_dispose(&v26, 8);
@@ -110,7 +110,7 @@ uint64_t __52__SKUICardLayout_layoutWithCardViewElement_context___block_invoke(u
   return result;
 }
 
-- (double)bottomInsetForLastViewElement:(id)a3 width:(double)a4
+- (double)bottomInsetForLastViewElement:(id)element width:(double)width
 {
   if (os_variant_has_internal_content())
   {
@@ -150,9 +150,9 @@ uint64_t __52__SKUICardLayout_layoutWithCardViewElement_context___block_invoke(u
   return 0;
 }
 
-- (CGSize)sizeForViewElement:(id)a3 width:(double)a4
+- (CGSize)sizeForViewElement:(id)element width:(double)width
 {
-  v6 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -165,22 +165,22 @@ uint64_t __52__SKUICardLayout_layoutWithCardViewElement_context___block_invoke(u
     }
   }
 
-  v15 = [v6 elementType];
-  if (v15 <= 65)
+  elementType = [elementCopy elementType];
+  if (elementType <= 65)
   {
-    if (v15 == 7)
+    if (elementType == 7)
     {
-      v23 = [v6 firstChildForElementType:49];
-      [(SKUIViewElementLayoutContext *)self->_layoutContext sizeForViewElement:v23 width:a4];
+      v23 = [elementCopy firstChildForElementType:49];
+      [(SKUIViewElementLayoutContext *)self->_layoutContext sizeForViewElement:v23 width:width];
       v21 = v24;
       v22 = v25;
 
       goto LABEL_21;
     }
 
-    if (v15 == 50 && [(SKUICardViewElement *)self->_cardViewElement isAdCard])
+    if (elementType == 50 && [(SKUICardViewElement *)self->_cardViewElement isAdCard])
     {
-      v16 = [MEMORY[0x277D75418] currentDevice];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
 
@@ -190,10 +190,10 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v17 = [MEMORY[0x277D75418] currentDevice];
-      v18 = [v17 userInterfaceIdiom];
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-      if (!v18)
+      if (!userInterfaceIdiom)
       {
         goto LABEL_20;
       }
@@ -202,21 +202,21 @@ LABEL_20:
     goto LABEL_15;
   }
 
-  if (v15 == 108)
+  if (elementType == 108)
   {
     v21 = *MEMORY[0x277CBF3A8];
     v22 = *(MEMORY[0x277CBF3A8] + 8);
     goto LABEL_21;
   }
 
-  if (v15 != 66)
+  if (elementType != 66)
   {
 LABEL_15:
-    [(SKUIViewElementLayoutContext *)self->_layoutContext sizeForViewElement:v6 width:a4];
+    [(SKUIViewElementLayoutContext *)self->_layoutContext sizeForViewElement:elementCopy width:width];
     goto LABEL_16;
   }
 
-  [SKUIHorizontalLockupView sizeThatFitsWidth:v6 viewElement:self->_layoutContext context:a4];
+  [SKUIHorizontalLockupView sizeThatFitsWidth:elementCopy viewElement:self->_layoutContext context:width];
 LABEL_16:
   v21 = v19;
   v22 = v20;
@@ -229,13 +229,13 @@ LABEL_21:
   return result;
 }
 
-- (double)topInsetForViewElement:(id)a3 previousViewElement:(id)a4 width:(double)a5
+- (double)topInsetForViewElement:(id)element previousViewElement:(id)viewElement width:(double)width
 {
-  v7 = a3;
-  v8 = a4;
+  elementCopy = element;
+  viewElementCopy = viewElement;
   if (!os_variant_has_internal_content() || !_os_feature_enabled_impl() || !(v9 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT)))
   {
-    if (v8)
+    if (viewElementCopy)
     {
       goto LABEL_5;
     }
@@ -255,16 +255,16 @@ LABEL_10:
   }
 
   [(SKUICardLayout *)v9 topInsetForViewElement:v10 previousViewElement:v11 width:v12, v13, v14, v15, v16];
-  if (!v8)
+  if (!viewElementCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_5:
   v17 = 12.0;
-  if ([v7 elementType] != 131)
+  if ([elementCopy elementType] != 131)
   {
-    if ([v8 elementType] == 131)
+    if ([viewElementCopy elementType] == 131)
     {
       v17 = 12.0;
     }

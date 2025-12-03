@@ -1,64 +1,64 @@
 @interface HAPPairingIdentity
-- (BOOL)isStrictlyEqual:(id)a3;
-- (HAPPairingIdentity)initWithCoder:(id)a3;
-- (HAPPairingIdentity)initWithIdentifier:(id)a3 controllerKeyIdentifier:(id)a4 publicKey:(id)a5 privateKey:(id)a6 permissions:(unint64_t)a7;
-- (HAPPairingIdentity)initWithIdentifier:(id)a3 publicKey:(id)a4 privateKey:(id)a5 permissions:(unint64_t)a6;
+- (BOOL)isStrictlyEqual:(id)equal;
+- (HAPPairingIdentity)initWithCoder:(id)coder;
+- (HAPPairingIdentity)initWithIdentifier:(id)identifier controllerKeyIdentifier:(id)keyIdentifier publicKey:(id)key privateKey:(id)privateKey permissions:(unint64_t)permissions;
+- (HAPPairingIdentity)initWithIdentifier:(id)identifier publicKey:(id)key privateKey:(id)privateKey permissions:(unint64_t)permissions;
 - (id)attributeDescriptions;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HAPPairingIdentity
 
-- (HAPPairingIdentity)initWithIdentifier:(id)a3 publicKey:(id)a4 privateKey:(id)a5 permissions:(unint64_t)a6
+- (HAPPairingIdentity)initWithIdentifier:(id)identifier publicKey:(id)key privateKey:(id)privateKey permissions:(unint64_t)permissions
 {
-  result = [(HAPPairingIdentity *)self initWithIdentifier:a3 controllerKeyIdentifier:0 publicKey:a4 privateKey:a5 permissions:a6];
+  result = [(HAPPairingIdentity *)self initWithIdentifier:identifier controllerKeyIdentifier:0 publicKey:key privateKey:privateKey permissions:permissions];
   if (result)
   {
-    result->_permissions = a6;
+    result->_permissions = permissions;
   }
 
   return result;
 }
 
-- (HAPPairingIdentity)initWithIdentifier:(id)a3 controllerKeyIdentifier:(id)a4 publicKey:(id)a5 privateKey:(id)a6 permissions:(unint64_t)a7
+- (HAPPairingIdentity)initWithIdentifier:(id)identifier controllerKeyIdentifier:(id)keyIdentifier publicKey:(id)key privateKey:(id)privateKey permissions:(unint64_t)permissions
 {
-  v13 = a4;
+  keyIdentifierCopy = keyIdentifier;
   v17.receiver = self;
   v17.super_class = HAPPairingIdentity;
-  v14 = [(HAPPairingIdentity *)&v17 initWithIdentifier:a3 publicKey:a5 privateKey:a6];
+  v14 = [(HAPPairingIdentity *)&v17 initWithIdentifier:identifier publicKey:key privateKey:privateKey];
   v15 = v14;
   if (v14)
   {
-    v14->_permissions = a7;
-    objc_storeStrong(&v14->_controllerKeyIdentifier, a4);
+    v14->_permissions = permissions;
+    objc_storeStrong(&v14->_controllerKeyIdentifier, keyIdentifier);
   }
 
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPPairingIdentity allocWithZone:a3];
-  v5 = [(HAPPairingIdentity *)self identifier];
-  v6 = [(HAPPairingIdentity *)self controllerKeyIdentifier];
-  v7 = [(HAPPairingIdentity *)self publicKey];
-  v8 = [(HAPPairingIdentity *)self privateKey];
-  v9 = [(HAPPairingIdentity *)v4 initWithIdentifier:v5 controllerKeyIdentifier:v6 publicKey:v7 privateKey:v8 permissions:[(HAPPairingIdentity *)self permissions]];
+  v4 = [HAPPairingIdentity allocWithZone:zone];
+  identifier = [(HAPPairingIdentity *)self identifier];
+  controllerKeyIdentifier = [(HAPPairingIdentity *)self controllerKeyIdentifier];
+  publicKey = [(HAPPairingIdentity *)self publicKey];
+  privateKey = [(HAPPairingIdentity *)self privateKey];
+  v9 = [(HAPPairingIdentity *)v4 initWithIdentifier:identifier controllerKeyIdentifier:controllerKeyIdentifier publicKey:publicKey privateKey:privateKey permissions:[(HAPPairingIdentity *)self permissions]];
 
   return v9;
 }
 
-- (HAPPairingIdentity)initWithCoder:(id)a3
+- (HAPPairingIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HAPPairingIdentity;
-  v5 = [(HAPPairingIdentity *)&v9 initWithCoder:v4];
+  v5 = [(HAPPairingIdentity *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_permissions = [v4 decodeIntegerForKey:@"HAP.permissions"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HAP.ctrlId"];
+    v5->_permissions = [coderCopy decodeIntegerForKey:@"HAP.permissions"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HAP.ctrlId"];
     controllerKeyIdentifier = v5->_controllerKeyIdentifier;
     v5->_controllerKeyIdentifier = v6;
   }
@@ -66,21 +66,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HAPPairingIdentity;
-  v4 = a3;
-  [(HAPPairingIdentity *)&v6 encodeWithCoder:v4];
-  [v4 encodeInteger:-[HAPPairingIdentity permissions](self forKey:{"permissions", v6.receiver, v6.super_class), @"HAP.permissions"}];
-  v5 = [(HAPPairingIdentity *)self controllerKeyIdentifier];
-  [v4 encodeObject:v5 forKey:@"HAP.ctrlId"];
+  coderCopy = coder;
+  [(HAPPairingIdentity *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[HAPPairingIdentity permissions](self forKey:{"permissions", v6.receiver, v6.super_class), @"HAP.permissions"}];
+  controllerKeyIdentifier = [(HAPPairingIdentity *)self controllerKeyIdentifier];
+  [coderCopy encodeObject:controllerKeyIdentifier forKey:@"HAP.ctrlId"];
 }
 
-- (BOOL)isStrictlyEqual:(id)a3
+- (BOOL)isStrictlyEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -90,7 +90,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -99,10 +99,10 @@
     }
 
     v6 = v5;
-    if (v6 && (v12.receiver = self, v12.super_class = HAPPairingIdentity, [(HAPPairingIdentity *)&v12 isEqual:v4]) && (v7 = [(HAPPairingIdentity *)self permissions], v7 == [(HAPPairingIdentity *)self permissions]))
+    if (v6 && (v12.receiver = self, v12.super_class = HAPPairingIdentity, [(HAPPairingIdentity *)&v12 isEqual:equalCopy]) && (v7 = [(HAPPairingIdentity *)self permissions], v7 == [(HAPPairingIdentity *)self permissions]))
     {
-      v8 = [(HAPPairingIdentity *)self controllerKeyIdentifier];
-      v9 = [(HAPPairingIdentity *)v6 controllerKeyIdentifier];
+      controllerKeyIdentifier = [(HAPPairingIdentity *)self controllerKeyIdentifier];
+      controllerKeyIdentifier2 = [(HAPPairingIdentity *)v6 controllerKeyIdentifier];
       v10 = HMFEqualObjects();
     }
 
@@ -119,12 +119,12 @@
 {
   v9.receiver = self;
   v9.super_class = HAPPairingIdentity;
-  v3 = [(HAPPairingIdentity *)&v9 attributeDescriptions];
-  v4 = [v3 mutableCopy];
+  attributeDescriptions = [(HAPPairingIdentity *)&v9 attributeDescriptions];
+  v4 = [attributeDescriptions mutableCopy];
 
   v5 = [HMFAttributeDescription alloc];
-  v6 = [(HAPPairingIdentity *)self controllerKeyIdentifier];
-  v7 = [v5 initWithName:@"controllerKeyIdentifier" value:v6];
+  controllerKeyIdentifier = [(HAPPairingIdentity *)self controllerKeyIdentifier];
+  v7 = [v5 initWithName:@"controllerKeyIdentifier" value:controllerKeyIdentifier];
   [v4 addObject:v7];
 
   return v4;

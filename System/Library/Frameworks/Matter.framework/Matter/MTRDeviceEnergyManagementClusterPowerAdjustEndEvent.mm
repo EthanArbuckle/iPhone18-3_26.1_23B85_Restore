@@ -1,6 +1,6 @@
 @interface MTRDeviceEnergyManagementClusterPowerAdjustEndEvent
 - (MTRDeviceEnergyManagementClusterPowerAdjustEndEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDeviceEnergyManagementClusterPowerAdjustEndEvent);
-  v5 = [(MTRDeviceEnergyManagementClusterPowerAdjustEndEvent *)self cause];
-  [(MTRDeviceEnergyManagementClusterPowerAdjustEndEvent *)v4 setCause:v5];
+  cause = [(MTRDeviceEnergyManagementClusterPowerAdjustEndEvent *)self cause];
+  [(MTRDeviceEnergyManagementClusterPowerAdjustEndEvent *)v4 setCause:cause];
 
-  v6 = [(MTRDeviceEnergyManagementClusterPowerAdjustEndEvent *)self duration];
-  [(MTRDeviceEnergyManagementClusterPowerAdjustEndEvent *)v4 setDuration:v6];
+  duration = [(MTRDeviceEnergyManagementClusterPowerAdjustEndEvent *)self duration];
+  [(MTRDeviceEnergyManagementClusterPowerAdjustEndEvent *)v4 setDuration:duration];
 
-  v7 = [(MTRDeviceEnergyManagementClusterPowerAdjustEndEvent *)self energyUse];
-  [(MTRDeviceEnergyManagementClusterPowerAdjustEndEvent *)v4 setEnergyUse:v7];
+  energyUse = [(MTRDeviceEnergyManagementClusterPowerAdjustEndEvent *)self energyUse];
+  [(MTRDeviceEnergyManagementClusterPowerAdjustEndEvent *)v4 setEnergyUse:energyUse];
 
   return v4;
 }

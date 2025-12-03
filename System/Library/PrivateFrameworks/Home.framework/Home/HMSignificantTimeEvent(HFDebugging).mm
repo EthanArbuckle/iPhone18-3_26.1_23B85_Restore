@@ -6,14 +6,14 @@
 
 - (id)hf_stateDumpBuilderWithContext:()HFDebugging
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &off_28258CAF0;
   v2 = objc_msgSendSuper2(&v6, sel_hf_stateDumpBuilderWithContext_);
-  v3 = [a1 significantEvent];
-  [v2 setObject:v3 forKeyedSubscript:@"significantEvent"];
+  significantEvent = [self significantEvent];
+  [v2 setObject:significantEvent forKeyedSubscript:@"significantEvent"];
 
-  v4 = [a1 offset];
-  [v2 setObject:v4 forKeyedSubscript:@"offset"];
+  offset = [self offset];
+  [v2 setObject:offset forKeyedSubscript:@"offset"];
 
   return v2;
 }

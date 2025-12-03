@@ -1,15 +1,15 @@
 @interface PKDashboardPaymentSetupProductPresenter
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
 - (PKDashboardPaymentSetupProductPresenter)init;
 - (PKDashboardPaymentSetupProductPresenterDelegate)delegate;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (id)searchHistoryStringForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)searchHistoryStringForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (void)_preflightingFinished;
-- (void)_updateCell:(id)a3 withPaymentSetupProductItem:(id)a4 atIndexPath:(id)a5;
-- (void)paymentSetupDidFinish:(id)a3;
-- (void)performActionForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
+- (void)_updateCell:(id)cell withPaymentSetupProductItem:(id)item atIndexPath:(id)path;
+- (void)paymentSetupDidFinish:(id)finish;
+- (void)performActionForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
 @end
 
 @implementation PKDashboardPaymentSetupProductPresenter
@@ -30,24 +30,24 @@
   return v2;
 }
 
-- (void)performActionForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7
+- (void)performActionForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
+  controllerCopy = controller;
+  presentCopy = present;
   if (!self->_preflightingSetupVC)
   {
-    v17 = [v13 cellForItemAtIndexPath:v14];
+    v17 = [viewCopy cellForItemAtIndexPath:pathCopy];
     [v17 setShowSpinner:1];
     v28 = v17;
     objc_storeWeak(&self->_cellWithSpinner, v17);
-    v18 = [v12 productIdentifier];
-    objc_storeStrong(&self->_productIdentifier, v18);
-    v27 = [MEMORY[0x1E69B8EF8] sharedService];
-    v19 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:v27];
-    v20 = [MEMORY[0x1E695DFD8] setWithObject:v18];
+    productIdentifier = [itemCopy productIdentifier];
+    objc_storeStrong(&self->_productIdentifier, productIdentifier);
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    v19 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:mEMORY[0x1E69B8EF8]];
+    v20 = [MEMORY[0x1E695DFD8] setWithObject:productIdentifier];
     [v19 setAllowedProductIdentifiers:v20];
 
     [v19 setAllowProductsInUnsupportedRegion:1];
@@ -62,13 +62,13 @@
     v32[1] = 3221225472;
     v32[2] = __125__PKDashboardPaymentSetupProductPresenter_performActionForItem_inCollectionView_atIndexPath_navigationController_canPresent___block_invoke_2;
     v32[3] = &unk_1E8027710;
-    v36 = v16;
+    v36 = presentCopy;
     v22 = v21;
     v37 = v22;
     v23 = v19;
     v33 = v23;
-    v34 = self;
-    v35 = v15;
+    selfCopy = self;
+    v35 = controllerCopy;
     v24 = _Block_copy(v32);
     self->_preflightingSetupVC = 1;
     v29[0] = MEMORY[0x1E69E9820];
@@ -185,24 +185,24 @@ void __125__PKDashboardPaymentSetupProductPresenter_performActionForItem_inColle
   return v2;
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(PKDashboardPaymentSetupProductPresenter *)self _identifierForItem:v8];
-  v12 = [v10 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v9];
+  itemCopy = item;
+  pathCopy = path;
+  viewCopy = view;
+  v11 = [(PKDashboardPaymentSetupProductPresenter *)self _identifierForItem:itemCopy];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
-  [(PKDashboardPaymentSetupProductPresenter *)self _updateCell:v12 withPaymentSetupProductItem:v8 atIndexPath:v9];
+  [(PKDashboardPaymentSetupProductPresenter *)self _updateCell:v12 withPaymentSetupProductItem:itemCopy atIndexPath:pathCopy];
 
   return v12;
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  [(PKDashboardPaymentSetupProductPresenter *)self _updateCell:self->_sampleSearchResultCell withPaymentSetupProductItem:a3 atIndexPath:a6];
+  [(PKDashboardPaymentSetupProductPresenter *)self _updateCell:self->_sampleSearchResultCell withPaymentSetupProductItem:item atIndexPath:path];
   +[PKDashboardCollectionViewCell defaultHorizontalInset];
-  v9 = a5 + v8 * -2.0;
+  v9 = width + v8 * -2.0;
   [(PKDashboardSearchResultCell *)self->_sampleSearchResultCell sizeThatFits:v9, 1.79769313e308];
   v11 = v10;
   [(PKDashboardSearchResultCell *)self->_sampleSearchResultCell prepareForReuse];
@@ -213,17 +213,17 @@ void __125__PKDashboardPaymentSetupProductPresenter_performActionForItem_inColle
   return result;
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  if (a3)
+  if (trait)
   {
-    if (a4)
+    if (toTrait)
     {
-      v7 = a4;
-      v8 = [a3 preferredContentSizeCategory];
-      v9 = [v7 preferredContentSizeCategory];
+      toTraitCopy = toTrait;
+      preferredContentSizeCategory = [trait preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [toTraitCopy preferredContentSizeCategory];
 
-      v10 = UIContentSizeCategoryCompareToCategory(v8, v9);
+      v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
       if (v10)
       {
         v11 = [PKDashboardSearchResultCell alloc];
@@ -235,27 +235,27 @@ void __125__PKDashboardPaymentSetupProductPresenter_performActionForItem_inColle
   }
 }
 
-- (id)searchHistoryStringForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)searchHistoryStringForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v5 = [a4 cellForItemAtIndexPath:a5];
-  v6 = [v5 title];
+  v5 = [view cellForItemAtIndexPath:path];
+  title = [v5 title];
 
-  return v6;
+  return title;
 }
 
-- (void)paymentSetupDidFinish:(id)a3
+- (void)paymentSetupDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   [(PKDashboardPaymentSetupProductPresenter *)self _preflightingFinished];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  [finishCopy dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)_preflightingFinished
 {
   self->_preflightingSetupVC = 0;
   WeakRetained = objc_loadWeakRetained(&self->_cellWithSpinner);
-  v4 = [WeakRetained identifier];
-  v5 = [v4 isEqualToString:self->_productIdentifier];
+  identifier = [WeakRetained identifier];
+  v5 = [identifier isEqualToString:self->_productIdentifier];
 
   if (v5)
   {
@@ -264,29 +264,29 @@ void __125__PKDashboardPaymentSetupProductPresenter_performActionForItem_inColle
   }
 }
 
-- (void)_updateCell:(id)a3 withPaymentSetupProductItem:(id)a4 atIndexPath:(id)a5
+- (void)_updateCell:(id)cell withPaymentSetupProductItem:(id)item atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 productIdentifier];
-  [v8 setIdentifier:v11];
+  cellCopy = cell;
+  itemCopy = item;
+  pathCopy = path;
+  productIdentifier = [itemCopy productIdentifier];
+  [cellCopy setIdentifier:productIdentifier];
 
-  v12 = [v9 displayName];
-  [v8 setTitle:v12];
+  displayName = [itemCopy displayName];
+  [cellCopy setTitle:displayName];
 
-  v13 = [v9 contentDescription];
-  [v8 setSubtitle:v13];
+  contentDescription = [itemCopy contentDescription];
+  [cellCopy setSubtitle:contentDescription];
 
-  [v8 setStyle:2];
-  v14 = [v9 thumbnailData];
-  if (v14)
+  [cellCopy setStyle:2];
+  thumbnailData = [itemCopy thumbnailData];
+  if (thumbnailData)
   {
     v15 = objc_alloc(MEMORY[0x1E69DCAB8]);
-    v16 = [v9 thumbnailData];
-    v17 = [v15 initWithData:v16];
+    thumbnailData2 = [itemCopy thumbnailData];
+    v17 = [v15 initWithData:thumbnailData2];
 
-    [v8 setThumbnail:v17];
+    [cellCopy setThumbnail:v17];
   }
 
   objc_initWeak(&location, self);
@@ -295,9 +295,9 @@ void __125__PKDashboardPaymentSetupProductPresenter_performActionForItem_inColle
   v19[2] = __95__PKDashboardPaymentSetupProductPresenter__updateCell_withPaymentSetupProductItem_atIndexPath___block_invoke;
   v19[3] = &unk_1E80110E0;
   objc_copyWeak(&v21, &location);
-  v18 = v10;
+  v18 = pathCopy;
   v20 = v18;
-  [v8 setAction:v19 withButtonType:2];
+  [cellCopy setAction:v19 withButtonType:2];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);

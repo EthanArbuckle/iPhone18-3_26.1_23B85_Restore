@@ -1,48 +1,48 @@
 @interface WKSPInterfaceList
 - (WKInterfaceController)controller;
-- (id)rowControllerAtIndex:(int64_t)a3;
+- (id)rowControllerAtIndex:(int64_t)index;
 - (int64_t)numberOfRows;
-- (void)_setupWithDescription:(id)a3 forController:(id)a4;
-- (void)setNumberOfRows:(int64_t)a3 withRowType:(id)a4;
-- (void)setRowTypes:(id)a3;
+- (void)_setupWithDescription:(id)description forController:(id)controller;
+- (void)setNumberOfRows:(int64_t)rows withRowType:(id)type;
+- (void)setRowTypes:(id)types;
 @end
 
 @implementation WKSPInterfaceList
 
-- (void)_setupWithDescription:(id)a3 forController:(id)a4
+- (void)_setupWithDescription:(id)description forController:(id)controller
 {
-  v6 = a4;
-  [(WKSPInterfaceList *)self setRowDescriptions:a3];
-  [(WKSPInterfaceList *)self setController:v6];
+  controllerCopy = controller;
+  [(WKSPInterfaceList *)self setRowDescriptions:description];
+  [(WKSPInterfaceList *)self setController:controllerCopy];
 }
 
-- (void)setNumberOfRows:(int64_t)a3 withRowType:(id)a4
+- (void)setNumberOfRows:(int64_t)rows withRowType:(id)type
 {
-  v8 = a4;
-  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:a3];
-  if (a3 >= 1)
+  typeCopy = type;
+  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:rows];
+  if (rows >= 1)
   {
     v7 = 0;
     do
     {
-      [v6 setObject:v8 atIndexedSubscript:v7++];
+      [v6 setObject:typeCopy atIndexedSubscript:v7++];
     }
 
-    while (a3 != v7);
+    while (rows != v7);
   }
 
   [(WKSPInterfaceList *)self setRowTypes:v6];
 }
 
-- (void)setRowTypes:(id)a3
+- (void)setRowTypes:(id)types
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 count];
+  typesCopy = types;
+  v5 = [typesCopy count];
   v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:v5];
-  v20 = [MEMORY[0x277CBEB18] array];
-  v23 = v4;
-  [(WKSPInterfaceObject *)self _sendValueChanged:v4];
+  array = [MEMORY[0x277CBEB18] array];
+  v23 = typesCopy;
+  [(WKSPInterfaceObject *)self _sendValueChanged:typesCopy];
   v22 = v5;
   if (v5 >= 1)
   {
@@ -50,22 +50,22 @@
     do
     {
       v7 = [v23 objectAtIndexedSubscript:v6];
-      v8 = [(WKSPInterfaceList *)self rowDescriptions];
-      v9 = [v8 objectForKeyedSubscript:v7];
+      rowDescriptions = [(WKSPInterfaceList *)self rowDescriptions];
+      v9 = [rowDescriptions objectForKeyedSubscript:v7];
       v10 = [v9 objectForKeyedSubscript:@"controllerClass"];
 
       v11 = objc_alloc_init(NSClassFromString(v10));
       if (v11)
       {
         v25 = v10;
-        v24 = [(WKSPInterfaceList *)self rowDescriptions];
-        v12 = [v24 objectForKeyedSubscript:v7];
+        rowDescriptions2 = [(WKSPInterfaceList *)self rowDescriptions];
+        v12 = [rowDescriptions2 objectForKeyedSubscript:v7];
         v13 = [v12 objectForKeyedSubscript:@"rows"];
-        v14 = [(WKSPInterfaceObject *)self viewControllerID];
-        v15 = [(WKSPInterfaceList *)self rowDescriptions];
-        v16 = [v15 objectForKeyedSubscript:@"index"];
-        v17 = +[SPRemoteInterface controller:setupProperties:viewControllerID:tableIndex:rowIndex:classForType:](SPRemoteInterface, "controller:setupProperties:viewControllerID:tableIndex:rowIndex:classForType:", v11, v13, v14, [v16 integerValue], v6, 0);
-        [v20 addObjectsFromArray:v17];
+        viewControllerID = [(WKSPInterfaceObject *)self viewControllerID];
+        rowDescriptions3 = [(WKSPInterfaceList *)self rowDescriptions];
+        v16 = [rowDescriptions3 objectForKeyedSubscript:@"index"];
+        v17 = +[SPRemoteInterface controller:setupProperties:viewControllerID:tableIndex:rowIndex:classForType:](SPRemoteInterface, "controller:setupProperties:viewControllerID:tableIndex:rowIndex:classForType:", v11, v13, viewControllerID, [v16 integerValue], v6, 0);
+        [array addObjectsFromArray:v17];
 
         v10 = v25;
         [v21 setObject:v11 atIndexedSubscript:v6];
@@ -96,38 +96,38 @@
   }
 
   [(WKSPInterfaceList *)self setRowControllers:v21];
-  [(WKSPInterfaceList *)self setRowControllerProperties:v20];
+  [(WKSPInterfaceList *)self setRowControllerProperties:array];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
 - (int64_t)numberOfRows
 {
-  v2 = [(WKSPInterfaceList *)self rowControllers];
-  v3 = [v2 count];
+  rowControllers = [(WKSPInterfaceList *)self rowControllers];
+  v3 = [rowControllers count];
 
   return v3;
 }
 
-- (id)rowControllerAtIndex:(int64_t)a3
+- (id)rowControllerAtIndex:(int64_t)index
 {
-  if (a3 < 0)
+  if (index < 0)
   {
     v7 = 0;
   }
 
   else
   {
-    v5 = [(WKSPInterfaceList *)self rowControllers];
-    if ([v5 count] <= a3)
+    rowControllers = [(WKSPInterfaceList *)self rowControllers];
+    if ([rowControllers count] <= index)
     {
       v7 = 0;
     }
 
     else
     {
-      v6 = [(WKSPInterfaceList *)self rowControllers];
-      v7 = [v6 objectAtIndexedSubscript:a3];
+      rowControllers2 = [(WKSPInterfaceList *)self rowControllers];
+      v7 = [rowControllers2 objectAtIndexedSubscript:index];
     }
   }
 

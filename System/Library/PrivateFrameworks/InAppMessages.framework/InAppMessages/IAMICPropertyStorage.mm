@@ -11,9 +11,9 @@
   v2 = [(IAMICPropertyStorage *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D7FAE0] sharedManager];
+    mEMORY[0x277D7FAE0] = [MEMORY[0x277D7FAE0] sharedManager];
     iTunesCloudIAMManager = v2->_iTunesCloudIAMManager;
-    v2->_iTunesCloudIAMManager = v3;
+    v2->_iTunesCloudIAMManager = mEMORY[0x277D7FAE0];
   }
 
   return v2;

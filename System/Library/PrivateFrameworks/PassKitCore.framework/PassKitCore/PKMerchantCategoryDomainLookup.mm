@@ -1,23 +1,23 @@
 @interface PKMerchantCategoryDomainLookup
-+ (void)merchantCategoryForDomain:(id)a3 completion:(id)a4;
++ (void)merchantCategoryForDomain:(id)domain completion:(id)completion;
 @end
 
 @implementation PKMerchantCategoryDomainLookup
 
-+ (void)merchantCategoryForDomain:(id)a3 completion:(id)a4
++ (void)merchantCategoryForDomain:(id)domain completion:(id)completion
 {
-  v8 = a3;
-  v5 = a4;
+  domainCopy = domain;
+  completionCopy = completion;
   v6 = objc_alloc_init(getMCCSecretAgentControllerClass[0]());
   v7 = v6;
   if (v6)
   {
-    [v6 getPKCategoryForDomain:v8 completion:v5];
+    [v6 getPKCategoryForDomain:domainCopy completion:completionCopy];
   }
 
-  else if (v5)
+  else if (completionCopy)
   {
-    (*(v5 + 2))(v5, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 

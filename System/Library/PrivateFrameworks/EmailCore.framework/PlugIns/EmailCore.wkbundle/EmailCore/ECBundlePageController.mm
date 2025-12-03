@@ -1,25 +1,25 @@
 @interface ECBundlePageController
-- (ECBundlePageController)initWithPlugIn:(id)a3 contextController:(id)a4;
+- (ECBundlePageController)initWithPlugIn:(id)in contextController:(id)controller;
 - (ECWebContentObserver)webContentObserverProxy;
 - (WKWebProcessPlugIn)plugIn;
-- (id)webProcessPlugInBrowserContextController:(id)a3 frame:(id)a4 willSendRequestForResource:(unint64_t)a5 request:(id)a6 redirectResponse:(id)a7;
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFinishDocumentLoadForFrame:(id)a4;
+- (id)webProcessPlugInBrowserContextController:(id)controller frame:(id)frame willSendRequestForResource:(unint64_t)resource request:(id)request redirectResponse:(id)response;
+- (void)webProcessPlugInBrowserContextController:(id)controller didFinishDocumentLoadForFrame:(id)frame;
 @end
 
 @implementation ECBundlePageController
 
-- (ECBundlePageController)initWithPlugIn:(id)a3 contextController:(id)a4
+- (ECBundlePageController)initWithPlugIn:(id)in contextController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  inCopy = in;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = ECBundlePageController;
   v8 = [(ECBundlePageController *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_plugIn, v6);
-    objc_storeStrong(&v9->_controller, a4);
+    objc_storeWeak(&v8->_plugIn, inCopy);
+    objc_storeStrong(&v9->_controller, controller);
     v10 = objc_alloc_init(NSMutableArray);
     remoteContentURLs = v9->_remoteContentURLs;
     v9->_remoteContentURLs = v10;
@@ -35,10 +35,10 @@
   webContentObserverProxy = self->_webContentObserverProxy;
   if (!webContentObserverProxy)
   {
-    v4 = [(ECBundlePageController *)self controller];
-    v5 = [v4 _remoteObjectRegistry];
+    controller = [(ECBundlePageController *)self controller];
+    _remoteObjectRegistry = [controller _remoteObjectRegistry];
     v6 = [_WKRemoteObjectInterface remoteObjectInterfaceWithProtocol:&OBJC_PROTOCOL___ECWebContentObserver];
-    v7 = [v5 remoteObjectProxyWithInterface:v6];
+    v7 = [_remoteObjectRegistry remoteObjectProxyWithInterface:v6];
     v8 = self->_webContentObserverProxy;
     self->_webContentObserverProxy = v7;
 
@@ -48,31 +48,31 @@
   return webContentObserverProxy;
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFinishDocumentLoadForFrame:(id)a4
+- (void)webProcessPlugInBrowserContextController:(id)controller didFinishDocumentLoadForFrame:(id)frame
 {
-  v13 = a4;
-  v6 = [a3 mainFrame];
+  frameCopy = frame;
+  mainFrame = [controller mainFrame];
 
-  v7 = v13;
-  if (v6 == v13)
+  v7 = frameCopy;
+  if (mainFrame == frameCopy)
   {
     v8 = self->_remoteContentURLs;
     v9 = objc_alloc_init(NSMutableArray);
     remoteContentURLs = self->_remoteContentURLs;
     self->_remoteContentURLs = v9;
 
-    v11 = [(ECBundlePageController *)self webContentObserverProxy];
-    v12 = [v13 URL];
-    [v11 baseURL:v12 didRequestRemoteContentURLs:v8];
+    webContentObserverProxy = [(ECBundlePageController *)self webContentObserverProxy];
+    v12 = [frameCopy URL];
+    [webContentObserverProxy baseURL:v12 didRequestRemoteContentURLs:v8];
 
-    v7 = v13;
+    v7 = frameCopy;
   }
 }
 
-- (id)webProcessPlugInBrowserContextController:(id)a3 frame:(id)a4 willSendRequestForResource:(unint64_t)a5 request:(id)a6 redirectResponse:(id)a7
+- (id)webProcessPlugInBrowserContextController:(id)controller frame:(id)frame willSendRequestForResource:(unint64_t)resource request:(id)request redirectResponse:(id)response
 {
-  v8 = a6;
-  v9 = [v8 URL];
+  requestCopy = request;
+  v9 = [requestCopy URL];
   if (([v9 ef_hasScheme:@"https"] & 1) != 0 || objc_msgSend(v9, "ef_hasScheme:", @"http"))
   {
     [(NSMutableArray *)self->_remoteContentURLs addObject:v9];
@@ -81,7 +81,7 @@
 
   else
   {
-    v10 = v8;
+    v10 = requestCopy;
   }
 
   return v10;

@@ -2,7 +2,7 @@
 - (BOOL)hasDataToShow;
 - (NSArray)photoList;
 - (UGCPhotoAlbumCategory)albumCategory;
-- (UGCUserUploadedPhotoDataProvider)initWithLookupResult:(id)a3 delegate:(id)a4;
+- (UGCUserUploadedPhotoDataProvider)initWithLookupResult:(id)result delegate:(id)delegate;
 - (unint64_t)totalNumberOfPhotos;
 - (void)_setupPhotos;
 - (void)fetchNextBatchRequestIfNeeded;
@@ -12,8 +12,8 @@
 
 - (unint64_t)totalNumberOfPhotos
 {
-  v2 = [(UGCUserUploadedPhotoDataProvider *)self photoList];
-  v3 = [v2 count];
+  photoList = [(UGCUserUploadedPhotoDataProvider *)self photoList];
+  v3 = [photoList count];
 
   return v3;
 }
@@ -56,9 +56,9 @@
 
 - (void)_setupPhotos
 {
-  v3 = [(UGCSubmissionLookupResult *)self->_lookupResult previousSubmission];
-  v4 = [v3 images];
-  v9 = sub_100021DB0(v4, &stru_1016576C0);
+  previousSubmission = [(UGCSubmissionLookupResult *)self->_lookupResult previousSubmission];
+  images = [previousSubmission images];
+  v9 = sub_100021DB0(images, &stru_1016576C0);
 
   if ([v9 count])
   {
@@ -80,13 +80,13 @@
 {
   if (!self->_hasNotifiedDelegate)
   {
-    v3 = [(UGCPhotoViewerDataProvider *)self delegate];
+    delegate = [(UGCPhotoViewerDataProvider *)self delegate];
 
-    if (v3)
+    if (delegate)
     {
-      v4 = [(UGCPhotoViewerDataProvider *)self delegate];
-      v5 = [(UGCUserUploadedPhotoDataProvider *)self photoList];
-      [v4 photoViewerDataProvider:self didUpdateWithPhotos:v5];
+      delegate2 = [(UGCPhotoViewerDataProvider *)self delegate];
+      photoList = [(UGCUserUploadedPhotoDataProvider *)self photoList];
+      [delegate2 photoViewerDataProvider:self didUpdateWithPhotos:photoList];
 
       self->_hasNotifiedDelegate = 1;
     }
@@ -95,24 +95,24 @@
 
 - (BOOL)hasDataToShow
 {
-  v2 = [(UGCUserUploadedPhotoDataProvider *)self photoList];
-  v3 = [v2 count] != 0;
+  photoList = [(UGCUserUploadedPhotoDataProvider *)self photoList];
+  v3 = [photoList count] != 0;
 
   return v3;
 }
 
-- (UGCUserUploadedPhotoDataProvider)initWithLookupResult:(id)a3 delegate:(id)a4
+- (UGCUserUploadedPhotoDataProvider)initWithLookupResult:(id)result delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = UGCUserUploadedPhotoDataProvider;
   v9 = [(UGCUserUploadedPhotoDataProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_lookupResult, a3);
-    [(UGCPhotoViewerDataProvider *)v10 setDelegate:v8];
+    objc_storeStrong(&v9->_lookupResult, result);
+    [(UGCPhotoViewerDataProvider *)v10 setDelegate:delegateCopy];
     [(UGCUserUploadedPhotoDataProvider *)v10 _setupPhotos];
   }
 

@@ -1,8 +1,8 @@
 @interface AppStoreVideoPlayerViewController
 - (_TtC20ProductPageExtension33AppStoreVideoPlayerViewController)init;
-- (_TtC20ProductPageExtension33AppStoreVideoPlayerViewController)initWithCoder:(id)a3;
-- (_TtC20ProductPageExtension33AppStoreVideoPlayerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC20ProductPageExtension33AppStoreVideoPlayerViewController)initWithPlayerLayerView:(id)a3;
+- (_TtC20ProductPageExtension33AppStoreVideoPlayerViewController)initWithCoder:(id)coder;
+- (_TtC20ProductPageExtension33AppStoreVideoPlayerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC20ProductPageExtension33AppStoreVideoPlayerViewController)initWithPlayerLayerView:(id)view;
 @end
 
 @implementation AppStoreVideoPlayerViewController
@@ -14,27 +14,27 @@
   v2 = [(AppStoreVideoPlayerViewController *)&v7 initWithNibName:0 bundle:0];
   v3 = objc_opt_self();
   v4 = v2;
-  v5 = [v3 behaviorWithFirstGenerationEmbeddedPlayer];
-  [(AppStoreVideoPlayerViewController *)v4 addBehavior:v5];
+  behaviorWithFirstGenerationEmbeddedPlayer = [v3 behaviorWithFirstGenerationEmbeddedPlayer];
+  [(AppStoreVideoPlayerViewController *)v4 addBehavior:behaviorWithFirstGenerationEmbeddedPlayer];
 
   return v4;
 }
 
-- (_TtC20ProductPageExtension33AppStoreVideoPlayerViewController)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension33AppStoreVideoPlayerViewController)initWithCoder:(id)coder
 {
   result = sub_10077156C();
   __break(1u);
   return result;
 }
 
-- (_TtC20ProductPageExtension33AppStoreVideoPlayerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20ProductPageExtension33AppStoreVideoPlayerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC20ProductPageExtension33AppStoreVideoPlayerViewController)initWithPlayerLayerView:(id)a3
+- (_TtC20ProductPageExtension33AppStoreVideoPlayerViewController)initWithPlayerLayerView:(id)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

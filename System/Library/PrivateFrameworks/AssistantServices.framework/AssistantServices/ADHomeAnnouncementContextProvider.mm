@@ -1,35 +1,35 @@
 @interface ADHomeAnnouncementContextProvider
-- (ADHomeAnnouncementContextProvider)initWithDonationService:(id)a3 instanceContext:(id)a4;
-- (void)getRedactedContextForContextSnapshot:(id)a3 metadata:(id)a4 privacyPolicy:(int64_t)a5 completion:(id)a6;
-- (void)handleHomeAnnouncementSnapshotUpdate:(id)a3;
+- (ADHomeAnnouncementContextProvider)initWithDonationService:(id)service instanceContext:(id)context;
+- (void)getRedactedContextForContextSnapshot:(id)snapshot metadata:(id)metadata privacyPolicy:(int64_t)policy completion:(id)completion;
+- (void)handleHomeAnnouncementSnapshotUpdate:(id)update;
 @end
 
 @implementation ADHomeAnnouncementContextProvider
 
-- (void)getRedactedContextForContextSnapshot:(id)a3 metadata:(id)a4 privacyPolicy:(int64_t)a5 completion:(id)a6
+- (void)getRedactedContextForContextSnapshot:(id)snapshot metadata:(id)metadata privacyPolicy:(int64_t)policy completion:(id)completion
 {
-  v6 = *(a6 + 2);
-  if (a5 == 10)
+  v6 = *(completion + 2);
+  if (policy == 10)
   {
-    v6(a6, a3, a4);
+    v6(completion, snapshot, metadata);
   }
 
   else
   {
-    (v6)(a6, 0, 0, a4);
+    (v6)(completion, 0, 0, metadata);
   }
 }
 
-- (void)handleHomeAnnouncementSnapshotUpdate:(id)a3
+- (void)handleHomeAnnouncementSnapshotUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     v12 = 136315394;
     v13 = "[ADHomeAnnouncementContextProvider handleHomeAnnouncementSnapshotUpdate:]";
     v14 = 2112;
-    v15 = v4;
+    v15 = updateCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s #hal snapshot = %@", &v12, 0x16u);
   }
 
@@ -40,23 +40,23 @@
   v10 = [v7 initWithType:v8 deliveryDate:v6 expirationDate:v9 redactedKeyPaths:0 historyConfiguration:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_donationService);
-  [WeakRetained donateContext:v4 withMetadata:v10 pushToRemote:0];
+  [WeakRetained donateContext:updateCopy withMetadata:v10 pushToRemote:0];
 }
 
-- (ADHomeAnnouncementContextProvider)initWithDonationService:(id)a3 instanceContext:(id)a4
+- (ADHomeAnnouncementContextProvider)initWithDonationService:(id)service instanceContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  contextCopy = context;
   v20.receiver = self;
   v20.super_class = ADHomeAnnouncementContextProvider;
   v8 = [(ADHomeAnnouncementContextProvider *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_donationService, v6);
-    if (v7)
+    objc_storeWeak(&v8->_donationService, serviceCopy);
+    if (contextCopy)
     {
-      v10 = v7;
+      v10 = contextCopy;
     }
 
     else

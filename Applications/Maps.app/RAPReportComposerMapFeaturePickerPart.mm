@@ -1,15 +1,15 @@
 @interface RAPReportComposerMapFeaturePickerPart
-- (RAPReportComposerMapFeaturePickerPart)initWithFeatureKind:(int64_t)a3 camera:(id)a4 report:(id)a5 delegate:(id)a6 markerViewAttributes:(id)a7;
-- (RAPReportComposerMapFeaturePickerPart)initWithFeatureKind:(int64_t)a3 centerCoordinate:(CLLocationCoordinate2D)a4 report:(id)a5 delegate:(id)a6 markerViewAttributes:(id)a7;
-- (RAPReportComposerMapFeaturePickerPart)initWithMapPickerSection:(id)a3;
+- (RAPReportComposerMapFeaturePickerPart)initWithFeatureKind:(int64_t)kind camera:(id)camera report:(id)report delegate:(id)delegate markerViewAttributes:(id)attributes;
+- (RAPReportComposerMapFeaturePickerPart)initWithFeatureKind:(int64_t)kind centerCoordinate:(CLLocationCoordinate2D)coordinate report:(id)report delegate:(id)delegate markerViewAttributes:(id)attributes;
+- (RAPReportComposerMapFeaturePickerPart)initWithMapPickerSection:(id)section;
 @end
 
 @implementation RAPReportComposerMapFeaturePickerPart
 
-- (RAPReportComposerMapFeaturePickerPart)initWithMapPickerSection:(id)a3
+- (RAPReportComposerMapFeaturePickerPart)initWithMapPickerSection:(id)section
 {
-  v5 = a3;
-  v10 = v5;
+  sectionCopy = section;
+  v10 = sectionCopy;
   v6 = [NSArray arrayWithObjects:&v10 count:1];
   v9.receiver = self;
   v9.super_class = RAPReportComposerMapFeaturePickerPart;
@@ -17,33 +17,33 @@
 
   if (v7)
   {
-    objc_storeStrong(&v7->_mapCoordinatePickerSection, a3);
+    objc_storeStrong(&v7->_mapCoordinatePickerSection, section);
     [(RAPTablePartSection *)v7->_mapCoordinatePickerSection setHeaderTitle:@"Test"];
   }
 
   return v7;
 }
 
-- (RAPReportComposerMapFeaturePickerPart)initWithFeatureKind:(int64_t)a3 centerCoordinate:(CLLocationCoordinate2D)a4 report:(id)a5 delegate:(id)a6 markerViewAttributes:(id)a7
+- (RAPReportComposerMapFeaturePickerPart)initWithFeatureKind:(int64_t)kind centerCoordinate:(CLLocationCoordinate2D)coordinate report:(id)report delegate:(id)delegate markerViewAttributes:(id)attributes
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = [[RAPReportComposerMapPickerSection alloc] initWithFeatureKind:a3 centerCoordinate:v15 report:v14 delegate:v13 markerViewAttributes:latitude, longitude];
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  attributesCopy = attributes;
+  delegateCopy = delegate;
+  reportCopy = report;
+  longitude = [[RAPReportComposerMapPickerSection alloc] initWithFeatureKind:kind centerCoordinate:reportCopy report:delegateCopy delegate:attributesCopy markerViewAttributes:latitude, longitude];
 
-  v17 = [(RAPReportComposerMapFeaturePickerPart *)self initWithMapPickerSection:v16];
+  v17 = [(RAPReportComposerMapFeaturePickerPart *)self initWithMapPickerSection:longitude];
   return v17;
 }
 
-- (RAPReportComposerMapFeaturePickerPart)initWithFeatureKind:(int64_t)a3 camera:(id)a4 report:(id)a5 delegate:(id)a6 markerViewAttributes:(id)a7
+- (RAPReportComposerMapFeaturePickerPart)initWithFeatureKind:(int64_t)kind camera:(id)camera report:(id)report delegate:(id)delegate markerViewAttributes:(id)attributes
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = [[RAPReportComposerMapPickerSection alloc] initWithFeatureKind:a3 camera:v15 report:v14 delegate:v13 markerViewAttributes:v12];
+  attributesCopy = attributes;
+  delegateCopy = delegate;
+  reportCopy = report;
+  cameraCopy = camera;
+  v16 = [[RAPReportComposerMapPickerSection alloc] initWithFeatureKind:kind camera:cameraCopy report:reportCopy delegate:delegateCopy markerViewAttributes:attributesCopy];
 
   v17 = [(RAPReportComposerMapFeaturePickerPart *)self initWithMapPickerSection:v16];
   return v17;

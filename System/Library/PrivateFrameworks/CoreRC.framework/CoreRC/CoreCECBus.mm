@@ -1,30 +1,30 @@
 @interface CoreCECBus
-- (BOOL)setOSDName:(id)a3 error:(id *)a4;
-- (BOOL)setTvLanguageCode:(id)a3 error:(id *)a4;
+- (BOOL)setOSDName:(id)name error:(id *)error;
+- (BOOL)setTvLanguageCode:(id)code error:(id *)error;
 - (CECOSDName)osdNameASCII;
-- (CoreCECBus)initWithBus:(id)a3;
-- (CoreCECBus)initWithCoder:(id)a3;
-- (CoreCECBus)initWithLinkState:(BOOL)a3 physicalAddress:(unsigned __int16)a4;
+- (CoreCECBus)initWithBus:(id)bus;
+- (CoreCECBus)initWithCoder:(id)coder;
+- (CoreCECBus)initWithLinkState:(BOOL)state physicalAddress:(unsigned __int16)address;
 - (CoreCECDevice)activeSource;
 - (CoreCECPhysicalDevice)rootPhysicalDevice;
 - (NSDictionary)analyticsContext;
 - (NSString)osdName;
 - (NSString)tvLanguageCode;
-- (id)addDeviceWithAttributes:(id)a3 error:(id *)a4;
+- (id)addDeviceWithAttributes:(id)attributes error:(id *)error;
 - (id)delegate;
 - (id)description;
-- (id)deviceOnBusWithLogicalAddress:(unsigned __int8)a3;
+- (id)deviceOnBusWithLogicalAddress:(unsigned __int8)address;
 - (void)dealloc;
-- (void)didChangeActiveSourceFrom:(id)a3 to:(id)a4;
-- (void)didChangeLinkState:(BOOL)a3 physicalAddress:(unsigned __int16)a4;
-- (void)didReceiveRXMessage:(id)a3;
-- (void)didSendTXMessage:(id)a3 error:(id)a4;
-- (void)didUpdateProperties:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)didChangeActiveSourceFrom:(id)from to:(id)to;
+- (void)didChangeLinkState:(BOOL)state physicalAddress:(unsigned __int16)address;
+- (void)didReceiveRXMessage:(id)message;
+- (void)didSendTXMessage:(id)message error:(id)error;
+- (void)didUpdateProperties:(id)properties;
+- (void)encodeWithCoder:(id)coder;
 - (void)notifyDelegateLinkStateUpdated;
-- (void)removeDeviceWithType:(unint64_t)a3;
-- (void)setDelegate:(id)a3;
-- (void)setLinkState:(BOOL)a3 physicalAddress:(unsigned __int16)a4;
+- (void)removeDeviceWithType:(unint64_t)type;
+- (void)setDelegate:(id)delegate;
+- (void)setLinkState:(BOOL)state physicalAddress:(unsigned __int16)address;
 @end
 
 @implementation CoreCECBus
@@ -32,13 +32,13 @@
 - (NSDictionary)analyticsContext
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(CoreRCBus *)self devices];
-  v5 = [(NSSet *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  devices = [(CoreRCBus *)self devices];
+  v5 = [(NSSet *)devices countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -50,47 +50,47 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devices);
         }
 
-        -[NSDictionary setObject:forKeyedSubscript:](v3, "setObject:forKeyedSubscript:", [*(*(&v11 + 1) + 8 * v8) analyticsDescription], objc_msgSend(*(*(&v11 + 1) + 8 * v8), "analyticsKey"));
+        -[NSDictionary setObject:forKeyedSubscript:](dictionary, "setObject:forKeyedSubscript:", [*(*(&v11 + 1) + 8 * v8) analyticsDescription], objc_msgSend(*(*(&v11 + 1) + 8 * v8), "analyticsKey"));
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [(NSSet *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [(NSSet *)devices countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v3;
+  return dictionary;
 }
 
-- (CoreCECBus)initWithBus:(id)a3
+- (CoreCECBus)initWithBus:(id)bus
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v11.receiver = self;
     v11.super_class = CoreCECBus;
-    v5 = [(CoreRCBus *)&v11 initWithBus:a3];
+    v5 = [(CoreRCBus *)&v11 initWithBus:bus];
     if (v5)
     {
-      v5->_hasLink = [a3 hasLink];
-      *&v5->_osdNameASCII.length = [a3 osdNameASCII];
+      v5->_hasLink = [bus hasLink];
+      *&v5->_osdNameASCII.length = [bus osdNameASCII];
       *&v5->_osdNameASCII.characters[7] = v6;
       v5->_osdNameASCII.characters[13] = v7;
       *&v5->_osdNameASCII.characters[11] = v8;
-      v5->_physicalAddress = [a3 physicalAddress];
-      v5->_edidAttributes = [objc_msgSend(a3 "edidAttributes")];
-      v5->_streamPath = [a3 streamPath];
-      v5->_lastStreamPath = [a3 lastStreamPath];
-      v9 = [a3 tvLanguageCodeASCII];
-      *v5->_tvLanguageCodeASCII.characters = v9;
-      v5->_tvLanguageCodeASCII.characters[2] = BYTE2(v9);
-      v5->_systemAudioModeStatus = [a3 systemAudioModeStatus];
+      v5->_physicalAddress = [bus physicalAddress];
+      v5->_edidAttributes = [objc_msgSend(bus "edidAttributes")];
+      v5->_streamPath = [bus streamPath];
+      v5->_lastStreamPath = [bus lastStreamPath];
+      tvLanguageCodeASCII = [bus tvLanguageCodeASCII];
+      *v5->_tvLanguageCodeASCII.characters = tvLanguageCodeASCII;
+      v5->_tvLanguageCodeASCII.characters[2] = BYTE2(tvLanguageCodeASCII);
+      v5->_systemAudioModeStatus = [bus systemAudioModeStatus];
     }
   }
 
@@ -103,15 +103,15 @@
   return v5;
 }
 
-- (CoreCECBus)initWithLinkState:(BOOL)a3 physicalAddress:(unsigned __int16)a4
+- (CoreCECBus)initWithLinkState:(BOOL)state physicalAddress:(unsigned __int16)address
 {
   v7.receiver = self;
   v7.super_class = CoreCECBus;
   result = [(CoreRCBus *)&v7 init];
   if (result)
   {
-    result->_hasLink = a3;
-    result->_physicalAddress = a4;
+    result->_hasLink = state;
+    result->_physicalAddress = address;
     result->_streamPath = -1;
     result->_lastStreamPath = -1;
     *&result->_osdNameASCII.characters[6] = 0;
@@ -124,7 +124,7 @@
   return result;
 }
 
-- (CoreCECBus)initWithCoder:(id)a3
+- (CoreCECBus)initWithCoder:(id)coder
 {
   v14.receiver = self;
   v14.super_class = CoreCECBus;
@@ -132,18 +132,18 @@
   if (v4)
   {
     v13 = 0;
-    v4[48] = [a3 decodeBoolForKey:@"hasLink"];
-    *(v4 + 25) = [a3 decodeIntegerForKey:@"physicalAddress"];
-    v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"edidAttributes"];
+    v4[48] = [coder decodeBoolForKey:@"hasLink"];
+    *(v4 + 25) = [coder decodeIntegerForKey:@"physicalAddress"];
+    v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"edidAttributes"];
     *(v4 + 8) = v5;
     if (v5)
     {
       v6 = v5;
     }
 
-    *(v4 + 26) = [a3 decodeIntegerForKey:@"streamPath"];
-    *(v4 + 27) = [a3 decodeIntegerForKey:@"lastStreamPath"];
-    v7 = [a3 decodeBytesForKey:@"osdNameASCII" returnedLength:&v13];
+    *(v4 + 26) = [coder decodeIntegerForKey:@"streamPath"];
+    *(v4 + 27) = [coder decodeIntegerForKey:@"lastStreamPath"];
+    v7 = [coder decodeBytesForKey:@"osdNameASCII" returnedLength:&v13];
     v8 = v4 + 80;
     if (v7 && v13 == 15)
     {
@@ -158,7 +158,7 @@
       *v8 = 0;
     }
 
-    v10 = [a3 decodeBytesForKey:@"tvLanguageCodeASCII" returnedLength:&v13];
+    v10 = [coder decodeBytesForKey:@"tvLanguageCodeASCII" returnedLength:&v13];
     if (v10 && v13 == 3)
     {
       v11 = *v10;
@@ -172,25 +172,25 @@
     }
 
     *(v4 + 28) = v11;
-    *(v4 + 9) = [a3 decodeIntegerForKey:@"systemAudioModeStatus"];
+    *(v4 + 9) = [coder decodeIntegerForKey:@"systemAudioModeStatus"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CoreCECBus;
   [(CoreRCBus *)&v5 encodeWithCoder:?];
-  [a3 encodeBool:self->_hasLink forKey:@"hasLink"];
-  [a3 encodeInteger:self->_physicalAddress forKey:@"physicalAddress"];
-  [a3 encodeObject:self->_edidAttributes forKey:@"edidAttributes"];
-  [a3 encodeInteger:self->_streamPath forKey:@"streamPath"];
-  [a3 encodeInteger:self->_lastStreamPath forKey:@"lastStreamPath"];
-  [a3 encodeBytes:&self->_osdNameASCII length:15 forKey:@"osdNameASCII"];
-  [a3 encodeBytes:&self->_tvLanguageCodeASCII length:3 forKey:@"tvLanguageCodeASCII"];
-  [a3 encodeInteger:self->_systemAudioModeStatus forKey:@"systemAudioModeStatus"];
+  [coder encodeBool:self->_hasLink forKey:@"hasLink"];
+  [coder encodeInteger:self->_physicalAddress forKey:@"physicalAddress"];
+  [coder encodeObject:self->_edidAttributes forKey:@"edidAttributes"];
+  [coder encodeInteger:self->_streamPath forKey:@"streamPath"];
+  [coder encodeInteger:self->_lastStreamPath forKey:@"lastStreamPath"];
+  [coder encodeBytes:&self->_osdNameASCII length:15 forKey:@"osdNameASCII"];
+  [coder encodeBytes:&self->_tvLanguageCodeASCII length:3 forKey:@"tvLanguageCodeASCII"];
+  [coder encodeInteger:self->_systemAudioModeStatus forKey:@"systemAudioModeStatus"];
 }
 
 - (id)description
@@ -199,9 +199,9 @@
   v9.receiver = self;
   v9.super_class = CoreCECBus;
   v3 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:{-[CoreRCBus description](&v9, sel_description)}];
-  v4 = [(CoreCECBus *)self hasLink];
+  hasLink = [(CoreCECBus *)self hasLink];
   v5 = "N";
-  if (v4)
+  if (hasLink)
   {
     v5 = "Y";
   }
@@ -254,11 +254,11 @@
   return [(CoreRCBus *)&v3 delegate];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v3.receiver = self;
   v3.super_class = CoreCECBus;
-  [(CoreRCBus *)&v3 setDelegate:a3];
+  [(CoreRCBus *)&v3 setDelegate:delegate];
 }
 
 - (CoreCECDevice)activeSource
@@ -275,31 +275,31 @@
 - (NSString)osdName
 {
   v11 = *MEMORY[0x277D85DE8];
-  v7 = [(CoreCECBus *)self osdNameASCII];
+  osdNameASCII = [(CoreCECBus *)self osdNameASCII];
   v8 = v2;
   v10 = v3;
   v9 = v4;
-  result = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:&v7 + 1 length:v7 encoding:1];
+  result = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:&osdNameASCII + 1 length:osdNameASCII encoding:1];
   v6 = *MEMORY[0x277D85DE8];
   return result;
 }
 
 - (NSString)tvLanguageCode
 {
-  v2 = [(CoreCECBus *)self tvLanguageCodeASCII];
-  v4 = v2;
-  v5 = BYTE2(v2);
+  tvLanguageCodeASCII = [(CoreCECBus *)self tvLanguageCodeASCII];
+  v4 = tvLanguageCodeASCII;
+  v5 = BYTE2(tvLanguageCodeASCII);
   return [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:&v4 length:3 encoding:1];
 }
 
-- (id)addDeviceWithAttributes:(id)a3 error:(id *)a4
+- (id)addDeviceWithAttributes:(id)attributes error:(id *)error
 {
-  v4 = [[CoreCECDevice alloc] initWithBus:self local:1 logicalAddress:15 physicalAddress:[(CoreCECBus *)self physicalAddress] attributes:a3];
+  v4 = [[CoreCECDevice alloc] initWithBus:self local:1 logicalAddress:15 physicalAddress:[(CoreCECBus *)self physicalAddress] attributes:attributes];
 
   return v4;
 }
 
-- (void)removeDeviceWithType:(unint64_t)a3
+- (void)removeDeviceWithType:(unint64_t)type
 {
   v19 = *MEMORY[0x277D85DE8];
   if (gLogCategory_CoreRCBus <= 40 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
@@ -311,8 +311,8 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(CoreRCBus *)self devices];
-  v6 = [(NSSet *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  devices = [(CoreRCBus *)self devices];
+  v6 = [(NSSet *)devices countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -324,11 +324,11 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(devices);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
-        if ([v10 deviceType] == a3)
+        if ([v10 deviceType] == type)
         {
           v13.receiver = self;
           v13.super_class = CoreCECBus;
@@ -343,7 +343,7 @@
       }
 
       while (v7 != v9);
-      v11 = [(NSSet *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v11 = [(NSSet *)devices countByEnumeratingWithState:&v14 objects:v18 count:16];
       v7 = v11;
     }
 
@@ -355,19 +355,19 @@
 
 - (CoreCECPhysicalDevice)rootPhysicalDevice
 {
-  v2 = [(CoreRCBus *)self devices];
+  devices = [(CoreRCBus *)self devices];
 
-  return [CoreCECPhysicalDevice physicalDeviceTreeWithLogicalDevices:v2];
+  return [CoreCECPhysicalDevice physicalDeviceTreeWithLogicalDevices:devices];
 }
 
-- (void)setLinkState:(BOOL)a3 physicalAddress:(unsigned __int16)a4
+- (void)setLinkState:(BOOL)state physicalAddress:(unsigned __int16)address
 {
-  self->_hasLink = a3;
-  self->_physicalAddress = a4;
+  self->_hasLink = state;
+  self->_physicalAddress = address;
   [CoreCECBus didChangeLinkState:"didChangeLinkState:physicalAddress:" physicalAddress:?];
 }
 
-- (BOOL)setOSDName:(id)a3 error:(id *)a4
+- (BOOL)setOSDName:(id)name error:(id *)error
 {
   v14 = *MEMORY[0x277D85DE8];
   *&v13[7] = 0;
@@ -377,12 +377,12 @@
     [CoreCECBus setOSDName:error:];
   }
 
-  v7 = [a3 dataUsingEncoding:1 allowLossyConversion:0];
+  v7 = [name dataUsingEncoding:1 allowLossyConversion:0];
   if (!v7)
   {
     v11 = -6705;
 LABEL_15:
-    [(CoreCECBus *)a4 setOSDName:v11 error:&v12];
+    [(CoreCECBus *)error setOSDName:v11 error:&v12];
     result = v12;
     goto LABEL_10;
   }
@@ -408,19 +408,19 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)setTvLanguageCode:(id)a3 error:(id *)a4
+- (BOOL)setTvLanguageCode:(id)code error:(id *)error
 {
   if (gLogCategory_CoreRCBus <= 10 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
     [CoreCECBus setTvLanguageCode:error:];
   }
 
-  v7 = [objc_msgSend(a3 "lowercaseString")];
+  v7 = [objc_msgSend(code "lowercaseString")];
   if (!v7)
   {
     v10 = -6705;
 LABEL_15:
-    [(CoreCECBus *)a4 setOSDName:v10 error:&v13];
+    [(CoreCECBus *)error setOSDName:v10 error:&v13];
     return v13;
   }
 
@@ -443,16 +443,16 @@ LABEL_15:
   return 1;
 }
 
-- (id)deviceOnBusWithLogicalAddress:(unsigned __int8)a3
+- (id)deviceOnBusWithLogicalAddress:(unsigned __int8)address
 {
-  v3 = a3;
+  addressCopy = address;
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CoreRCBus *)self devices];
-  v5 = [(NSSet *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  devices = [(CoreRCBus *)self devices];
+  v5 = [(NSSet *)devices countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -463,18 +463,18 @@ LABEL_3:
     {
       if (*v13 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(devices);
       }
 
       v9 = *(*(&v12 + 1) + 8 * v8);
-      if ([v9 logicalAddress] == v3 && (!objc_msgSend(v9, "isLocalDevice") || !objc_msgSend(v9, "isUnregistered")))
+      if ([v9 logicalAddress] == addressCopy && (!objc_msgSend(v9, "isLocalDevice") || !objc_msgSend(v9, "isUnregistered")))
       {
         break;
       }
 
       if (v6 == ++v8)
       {
-        v6 = [(NSSet *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [(NSSet *)devices countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -495,9 +495,9 @@ LABEL_11:
   return v9;
 }
 
-- (void)didChangeActiveSourceFrom:(id)a3 to:(id)a4
+- (void)didChangeActiveSourceFrom:(id)from to:(id)to
 {
-  v7 = [(CoreCECBus *)self delegate];
+  delegate = [(CoreCECBus *)self delegate];
   if (gLogCategory_CoreRCBus <= 10 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
     objc_opt_class();
@@ -507,11 +507,11 @@ LABEL_11:
   if (objc_opt_respondsToSelector())
   {
 
-    [v7 cecBus:self activeSourceHasChangedTo:a4 fromDevice:a3];
+    [delegate cecBus:self activeSourceHasChangedTo:to fromDevice:from];
   }
 }
 
-- (void)didChangeLinkState:(BOOL)a3 physicalAddress:(unsigned __int16)a4
+- (void)didChangeLinkState:(BOOL)state physicalAddress:(unsigned __int16)address
 {
   if (gLogCategory_CoreRCBus <= 40 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
@@ -521,9 +521,9 @@ LABEL_11:
   [(CoreCECBus *)self didUpdateProperties:&unk_28593C108];
 }
 
-- (void)didReceiveRXMessage:(id)a3
+- (void)didReceiveRXMessage:(id)message
 {
-  v5 = [(CoreCECBus *)self delegate];
+  delegate = [(CoreCECBus *)self delegate];
   if (gLogCategory_CoreRCBus <= 10 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
     [CoreCECBus didReceiveRXMessage:];
@@ -532,13 +532,13 @@ LABEL_11:
   if (objc_opt_respondsToSelector())
   {
 
-    [v5 cecBus:self rxMessageReceived:a3];
+    [delegate cecBus:self rxMessageReceived:message];
   }
 }
 
-- (void)didSendTXMessage:(id)a3 error:(id)a4
+- (void)didSendTXMessage:(id)message error:(id)error
 {
-  v7 = [(CoreCECBus *)self delegate];
+  delegate = [(CoreCECBus *)self delegate];
   if (gLogCategory_CoreRCBus <= 10 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
     [CoreCECBus didSendTXMessage:error:];
@@ -547,13 +547,13 @@ LABEL_11:
   if (objc_opt_respondsToSelector())
   {
 
-    [v7 cecBus:self txMessageSent:a3 error:a4];
+    [delegate cecBus:self txMessageSent:message error:error];
   }
 }
 
-- (void)didUpdateProperties:(id)a3
+- (void)didUpdateProperties:(id)properties
 {
-  if ([a3 containsObject:@"hasLink"])
+  if ([properties containsObject:@"hasLink"])
   {
     if (!self->_hasLink)
     {
@@ -562,7 +562,7 @@ LABEL_11:
 
     v5.receiver = self;
     v5.super_class = CoreCECBus;
-    [(CoreRCBus *)&v5 didUpdateProperties:a3];
+    [(CoreRCBus *)&v5 didUpdateProperties:properties];
     if (self->_hasLink)
     {
       [(CoreCECBus *)self notifyDelegateLinkStateUpdated];
@@ -573,13 +573,13 @@ LABEL_11:
   {
     v5.receiver = self;
     v5.super_class = CoreCECBus;
-    [(CoreRCBus *)&v5 didUpdateProperties:a3];
+    [(CoreRCBus *)&v5 didUpdateProperties:properties];
   }
 }
 
 - (void)notifyDelegateLinkStateUpdated
 {
-  v3 = [(CoreCECBus *)self delegate];
+  delegate = [(CoreCECBus *)self delegate];
   if (gLogCategory_CoreRCBus <= 10 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
     [CoreCECBus notifyDelegateLinkStateUpdated];
@@ -587,9 +587,9 @@ LABEL_11:
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(CoreCECBus *)self hasLink];
+    hasLink = [(CoreCECBus *)self hasLink];
 
-    [v3 cecBus:self linkStateHasBeenUpdated:v4];
+    [delegate cecBus:self linkStateHasBeenUpdated:hasLink];
   }
 }
 

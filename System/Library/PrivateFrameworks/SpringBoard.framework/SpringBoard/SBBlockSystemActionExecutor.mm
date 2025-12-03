@@ -1,45 +1,45 @@
 @interface SBBlockSystemActionExecutor
 - (BOOL)_requiresAuthenticationAtLeastOnceSinceBootBeforeExecution;
-- (SBBlockSystemActionExecutor)initWithSystemAction:(id)a3;
+- (SBBlockSystemActionExecutor)initWithSystemAction:(id)action;
 - (SBSystemActionActionBlockProviding)systemAction;
-- (id)_beginInteractiveExecutionWithContext:(id)a3 executionHandler:(id)a4 error:(id *)a5;
-- (id)_previewWithCoordinator:(id)a3;
+- (id)_beginInteractiveExecutionWithContext:(id)context executionHandler:(id)handler error:(id *)error;
+- (id)_previewWithCoordinator:(id)coordinator;
 - (void)_cancelPreviewing;
 @end
 
 @implementation SBBlockSystemActionExecutor
 
-- (SBBlockSystemActionExecutor)initWithSystemAction:(id)a3
+- (SBBlockSystemActionExecutor)initWithSystemAction:(id)action
 {
   v4.receiver = self;
   v4.super_class = SBBlockSystemActionExecutor;
-  return [(SBAbstractSystemActionExecutor *)&v4 initWithSystemAction:a3];
+  return [(SBAbstractSystemActionExecutor *)&v4 initWithSystemAction:action];
 }
 
 - (SBSystemActionActionBlockProviding)systemAction
 {
   v4.receiver = self;
   v4.super_class = SBBlockSystemActionExecutor;
-  v2 = [(SBAbstractSystemActionExecutor *)&v4 systemAction];
+  systemAction = [(SBAbstractSystemActionExecutor *)&v4 systemAction];
 
-  return v2;
+  return systemAction;
 }
 
 - (BOOL)_requiresAuthenticationAtLeastOnceSinceBootBeforeExecution
 {
-  v2 = [(SBBlockSystemActionExecutor *)self systemAction];
-  v3 = [v2 configuredAction];
-  v4 = [v3 identifier];
+  systemAction = [(SBBlockSystemActionExecutor *)self systemAction];
+  configuredAction = [systemAction configuredAction];
+  identifier = [configuredAction identifier];
 
-  LOBYTE(v2) = [v4 hasSuffix:*MEMORY[0x277D66958]];
-  return v2;
+  LOBYTE(systemAction) = [identifier hasSuffix:*MEMORY[0x277D66958]];
+  return systemAction;
 }
 
-- (id)_previewWithCoordinator:(id)a3
+- (id)_previewWithCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(SBBlockSystemActionExecutor *)self systemAction];
-  v6 = [v4 showPreviewForAction:v5 withContext:0];
+  coordinatorCopy = coordinator;
+  systemAction = [(SBBlockSystemActionExecutor *)self systemAction];
+  v6 = [coordinatorCopy showPreviewForAction:systemAction withContext:0];
 
   previewAssertion = self->_previewAssertion;
   self->_previewAssertion = v6;
@@ -54,12 +54,12 @@
   self->_previewAssertion = 0;
 }
 
-- (id)_beginInteractiveExecutionWithContext:(id)a3 executionHandler:(id)a4 error:(id *)a5
+- (id)_beginInteractiveExecutionWithContext:(id)context executionHandler:(id)handler error:(id *)error
 {
-  v7 = a3;
+  contextCopy = context;
   previewAssertion = self->_previewAssertion;
-  v9 = a4;
-  v10 = [(SBSystemActionPreviewInvalidatable *)previewAssertion acquireAssertionForInvalidatingAfterDefaultTimeoutForActionPerformed];
+  handlerCopy = handler;
+  acquireAssertionForInvalidatingAfterDefaultTimeoutForActionPerformed = [(SBSystemActionPreviewInvalidatable *)previewAssertion acquireAssertionForInvalidatingAfterDefaultTimeoutForActionPerformed];
   v11 = self->_previewAssertion;
   self->_previewAssertion = 0;
 
@@ -69,12 +69,12 @@
   v15[2] = __92__SBBlockSystemActionExecutor__beginInteractiveExecutionWithContext_executionHandler_error___block_invoke;
   v15[3] = &unk_2783B27A0;
   v15[4] = self;
-  v16 = v7;
-  v12 = v7;
+  v16 = contextCopy;
+  v12 = contextCopy;
   v13 = MEMORY[0x223D6F7F0](v15);
-  v9[2](v9, v13);
+  handlerCopy[2](handlerCopy, v13);
 
-  return v10;
+  return acquireAssertionForInvalidatingAfterDefaultTimeoutForActionPerformed;
 }
 
 void __92__SBBlockSystemActionExecutor__beginInteractiveExecutionWithContext_executionHandler_error___block_invoke(uint64_t a1, int a2)

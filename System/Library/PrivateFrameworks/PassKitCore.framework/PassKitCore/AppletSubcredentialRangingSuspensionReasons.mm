@@ -1,41 +1,41 @@
 @interface AppletSubcredentialRangingSuspensionReasons
-+ (BOOL)deleteRangingSuspensionReasonsForCredential:(id)a3 inDatabase:(id)a4;
-+ (id)_predicateForAppletSubcredentialPID:(int64_t)a3;
-+ (id)_predicateForPaymentApplicationPID:(int64_t)a3;
-+ (id)insertOrUpdateSubcredentialRangingSuspensionReasonForCredential:(id)a3 withReasons:(unint64_t)a4 inDatabase:(id)a5;
-+ (unint64_t)suspensionReasonsForCredential:(id)a3 inDatabase:(id)a4;
-+ (unint64_t)suspensionReasonsForCredentialIdentifier:(id)a3 paymentApplicationIdentifier:(id)a4 secureElementIdentifier:(id)a5 inDatabase:(id)a6;
-+ (void)addJoinClausesForProperty:(id)a3 toJoins:(id)a4;
-- (AppletSubcredentialRangingSuspensionReasons)initWithSubcredential:(id)a3 withRangingSuspensionReasons:(unint64_t)a4 inDatabase:(id)a5;
++ (BOOL)deleteRangingSuspensionReasonsForCredential:(id)credential inDatabase:(id)database;
++ (id)_predicateForAppletSubcredentialPID:(int64_t)d;
++ (id)_predicateForPaymentApplicationPID:(int64_t)d;
++ (id)insertOrUpdateSubcredentialRangingSuspensionReasonForCredential:(id)credential withReasons:(unint64_t)reasons inDatabase:(id)database;
++ (unint64_t)suspensionReasonsForCredential:(id)credential inDatabase:(id)database;
++ (unint64_t)suspensionReasonsForCredentialIdentifier:(id)identifier paymentApplicationIdentifier:(id)applicationIdentifier secureElementIdentifier:(id)elementIdentifier inDatabase:(id)database;
++ (void)addJoinClausesForProperty:(id)property toJoins:(id)joins;
+- (AppletSubcredentialRangingSuspensionReasons)initWithSubcredential:(id)subcredential withRangingSuspensionReasons:(unint64_t)reasons inDatabase:(id)database;
 @end
 
 @implementation AppletSubcredentialRangingSuspensionReasons
 
-+ (id)insertOrUpdateSubcredentialRangingSuspensionReasonForCredential:(id)a3 withReasons:(unint64_t)a4 inDatabase:(id)a5
++ (id)insertOrUpdateSubcredentialRangingSuspensionReasonForCredential:(id)credential withReasons:(unint64_t)reasons inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 _predicateForAppletSubcredentialPID:{objc_msgSend(v8, "persistentID")}];
-  v11 = [a1 anyInDatabase:v9 predicate:v10];
+  credentialCopy = credential;
+  databaseCopy = database;
+  v10 = [self _predicateForAppletSubcredentialPID:{objc_msgSend(credentialCopy, "persistentID")}];
+  v11 = [self anyInDatabase:databaseCopy predicate:v10];
 
   if (v11)
   {
-    v12 = [NSNumber numberWithUnsignedInteger:a4];
+    v12 = [NSNumber numberWithUnsignedInteger:reasons];
     [v11 setValue:v12 forProperty:@"ranging_suspension_reasons"];
   }
 
   else
   {
-    v11 = [[a1 alloc] initWithSubcredential:v8 withRangingSuspensionReasons:a4 inDatabase:v9];
+    v11 = [[self alloc] initWithSubcredential:credentialCopy withRangingSuspensionReasons:reasons inDatabase:databaseCopy];
   }
 
   return v11;
 }
 
-- (AppletSubcredentialRangingSuspensionReasons)initWithSubcredential:(id)a3 withRangingSuspensionReasons:(unint64_t)a4 inDatabase:(id)a5
+- (AppletSubcredentialRangingSuspensionReasons)initWithSubcredential:(id)subcredential withRangingSuspensionReasons:(unint64_t)reasons inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a5;
+  subcredentialCopy = subcredential;
+  databaseCopy = database;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -46,13 +46,13 @@
   v15[1] = 3221225472;
   v15[2] = sub_1000A0084;
   v15[3] = &unk_100841B00;
-  v10 = v8;
+  v10 = subcredentialCopy;
   v19 = &v21;
-  v20 = a4;
+  reasonsCopy = reasons;
   v16 = v10;
-  v11 = self;
-  v17 = v11;
-  v12 = v9;
+  selfCopy = self;
+  v17 = selfCopy;
+  v12 = databaseCopy;
   v18 = v12;
   sub_1005D4424(v12, v15);
   v13 = v22[5];
@@ -61,22 +61,22 @@
   return v13;
 }
 
-+ (unint64_t)suspensionReasonsForCredential:(id)a3 inDatabase:(id)a4
++ (unint64_t)suspensionReasonsForCredential:(id)credential inDatabase:(id)database
 {
-  v6 = a3;
-  v7 = a4;
+  credentialCopy = credential;
+  databaseCopy = database;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v8 = [a1 _predicateForAppletSubcredentialPID:{objc_msgSend(v6, "persistentID")}];
+  v8 = [self _predicateForAppletSubcredentialPID:{objc_msgSend(credentialCopy, "persistentID")}];
   v22[0] = v8;
-  v9 = [a1 _predicateForPaymentApplicationPID:{objc_msgSend(v6, "paymentApplicationPID")}];
+  v9 = [self _predicateForPaymentApplicationPID:{objc_msgSend(credentialCopy, "paymentApplicationPID")}];
   v22[1] = v9;
   v10 = [NSArray arrayWithObjects:v22 count:2];
   v11 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v10];
 
-  v12 = [a1 queryWithDatabase:v7 predicate:v11];
+  v12 = [self queryWithDatabase:databaseCopy predicate:v11];
   v21 = @"ranging_suspension_reasons";
   v13 = [NSArray arrayWithObjects:&v21 count:1];
   v16[0] = _NSConcreteStackBlock;
@@ -92,26 +92,26 @@
   return v14;
 }
 
-+ (unint64_t)suspensionReasonsForCredentialIdentifier:(id)a3 paymentApplicationIdentifier:(id)a4 secureElementIdentifier:(id)a5 inDatabase:(id)a6
++ (unint64_t)suspensionReasonsForCredentialIdentifier:(id)identifier paymentApplicationIdentifier:(id)applicationIdentifier secureElementIdentifier:(id)elementIdentifier inDatabase:(id)database
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  elementIdentifierCopy = elementIdentifier;
+  databaseCopy = database;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v14 = [a1 _predicateForAppletSubcredentialIdentifier:v10];
+  v14 = [self _predicateForAppletSubcredentialIdentifier:identifierCopy];
   v29[0] = v14;
-  v15 = [a1 _predicateForPaymentApplicationIdentifier:v11];
+  v15 = [self _predicateForPaymentApplicationIdentifier:applicationIdentifierCopy];
   v29[1] = v15;
-  v16 = [a1 _predicateForPaymentApplicationSecureElementIdentifier:v12];
+  v16 = [self _predicateForPaymentApplicationSecureElementIdentifier:elementIdentifierCopy];
   v29[2] = v16;
   v17 = [NSArray arrayWithObjects:v29 count:3];
   v18 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v17];
 
-  v19 = [a1 queryWithDatabase:v13 predicate:v18];
+  v19 = [self queryWithDatabase:databaseCopy predicate:v18];
   v28 = @"ranging_suspension_reasons";
   v20 = [NSArray arrayWithObjects:&v28 count:1];
   v23[0] = _NSConcreteStackBlock;
@@ -127,53 +127,53 @@
   return v21;
 }
 
-+ (BOOL)deleteRangingSuspensionReasonsForCredential:(id)a3 inDatabase:(id)a4
++ (BOOL)deleteRangingSuspensionReasonsForCredential:(id)credential inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _predicateForAppletSubcredentialPID:{objc_msgSend(v7, "persistentID")}];
+  databaseCopy = database;
+  credentialCopy = credential;
+  v8 = [self _predicateForAppletSubcredentialPID:{objc_msgSend(credentialCopy, "persistentID")}];
   v15[0] = v8;
-  v9 = [v7 paymentApplicationPID];
+  paymentApplicationPID = [credentialCopy paymentApplicationPID];
 
-  v10 = [a1 _predicateForPaymentApplicationPID:v9];
+  v10 = [self _predicateForPaymentApplicationPID:paymentApplicationPID];
   v15[1] = v10;
   v11 = [NSArray arrayWithObjects:v15 count:2];
   v12 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v11];
 
-  v13 = [a1 queryWithDatabase:v6 predicate:v12];
+  v13 = [self queryWithDatabase:databaseCopy predicate:v12];
 
-  LOBYTE(a1) = [v13 deleteAllEntities];
-  return a1;
+  LOBYTE(self) = [v13 deleteAllEntities];
+  return self;
 }
 
-+ (id)_predicateForAppletSubcredentialPID:(int64_t)a3
++ (id)_predicateForAppletSubcredentialPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"applet_subcredential_pid" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)_predicateForPaymentApplicationPID:(int64_t)a3
++ (id)_predicateForPaymentApplicationPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"payment_application_pid" equalToValue:v3];
 
   return v4;
 }
 
-+ (void)addJoinClausesForProperty:(id)a3 toJoins:(id)a4
++ (void)addJoinClausesForProperty:(id)property toJoins:(id)joins
 {
-  v6 = a3;
-  v5 = a4;
-  if ([v6 isEqualToString:@"whitney.b"])
+  propertyCopy = property;
+  joinsCopy = joins;
+  if ([propertyCopy isEqualToString:@"whitney.b"])
   {
-    [v5 addObject:@"JOIN whitney ON whitney.pid = applet_subcredential_pid"];
+    [joinsCopy addObject:@"JOIN whitney ON whitney.pid = applet_subcredential_pid"];
   }
 
-  if (([v6 isEqualToString:@"payment_application.aid"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"payment_application.seid"))
+  if (([propertyCopy isEqualToString:@"payment_application.aid"] & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToString:", @"payment_application.seid"))
   {
-    [v5 addObject:@"JOIN payment_application ON payment_application.pid = payment_application_pid"];
+    [joinsCopy addObject:@"JOIN payment_application ON payment_application.pid = payment_application_pid"];
   }
 }
 

@@ -1,33 +1,33 @@
 @interface OrgApacheLuceneUtilAutomatonSortedIntSet_FrozenIntSet
-- (BOOL)isEqual:(id)a3;
-- (OrgApacheLuceneUtilAutomatonSortedIntSet_FrozenIntSet)initWithInt:(int)a3 withInt:(int)a4;
-- (OrgApacheLuceneUtilAutomatonSortedIntSet_FrozenIntSet)initWithIntArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
+- (BOOL)isEqual:(id)equal;
+- (OrgApacheLuceneUtilAutomatonSortedIntSet_FrozenIntSet)initWithInt:(int)int withInt:(int)withInt;
+- (OrgApacheLuceneUtilAutomatonSortedIntSet_FrozenIntSet)initWithIntArray:(id)array withInt:(int)int withInt:(int)withInt;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilAutomatonSortedIntSet_FrozenIntSet
 
-- (OrgApacheLuceneUtilAutomatonSortedIntSet_FrozenIntSet)initWithIntArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (OrgApacheLuceneUtilAutomatonSortedIntSet_FrozenIntSet)initWithIntArray:(id)array withInt:(int)int withInt:(int)withInt
 {
-  JreStrongAssign(&self->values_, a3);
-  self->hashCode_ = a4;
-  self->state_ = a5;
+  JreStrongAssign(&self->values_, array);
+  self->hashCode_ = int;
+  self->state_ = withInt;
   return self;
 }
 
-- (OrgApacheLuceneUtilAutomatonSortedIntSet_FrozenIntSet)initWithInt:(int)a3 withInt:(int)a4
+- (OrgApacheLuceneUtilAutomatonSortedIntSet_FrozenIntSet)initWithInt:(int)int withInt:(int)withInt
 {
-  v8 = a3;
-  JreStrongAssignAndConsume(&self->values_, [IOSIntArray newArrayWithInts:&v8 count:1]);
-  self->hashCode_ = a3 + 683;
-  self->state_ = a4;
+  intCopy = int;
+  JreStrongAssignAndConsume(&self->values_, [IOSIntArray newArrayWithInts:&intCopy count:1]);
+  self->hashCode_ = int + 683;
+  self->state_ = withInt;
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -38,12 +38,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (self->hashCode_ != *(a3 + 4))
+      if (self->hashCode_ != *(equal + 4))
       {
         return 0;
       }
 
-      v5 = *(a3 + 1);
+      v5 = *(equal + 1);
       if (v5)
       {
         v6 = *(v5 + 8);
@@ -55,7 +55,7 @@
             v8 = 0;
             do
             {
-              v9 = *(a3 + 1);
+              v9 = *(equal + 1);
               v10 = *(v9 + 8);
               if (v8 >= v10)
               {
@@ -110,12 +110,12 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  if (self->hashCode_ != *(a3 + 8))
+  if (self->hashCode_ != *(equal + 8))
   {
     return 0;
   }
 
-  v15 = *(a3 + 1);
+  v15 = *(equal + 1);
   if (!v15)
   {
     goto LABEL_35;
@@ -141,7 +141,7 @@ LABEL_34:
   v18 = 0;
   do
   {
-    v19 = *(a3 + 1);
+    v19 = *(equal + 1);
     v20 = *(v19 + 8);
     if (v18 >= v20)
     {

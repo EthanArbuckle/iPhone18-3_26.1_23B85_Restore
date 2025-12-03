@@ -1,15 +1,15 @@
 @interface NewFactorTypeTableViewCell
-- (_TtC24MenstrualCyclesAppPlugin26NewFactorTypeTableViewCell)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin26NewFactorTypeTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC24MenstrualCyclesAppPlugin26NewFactorTypeTableViewCell)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin26NewFactorTypeTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation NewFactorTypeTableViewCell
 
-- (_TtC24MenstrualCyclesAppPlugin26NewFactorTypeTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC24MenstrualCyclesAppPlugin26NewFactorTypeTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
+    identifier = _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
     v6 = v5;
   }
 
@@ -18,10 +18,10 @@
     v6 = 0;
   }
 
-  return sub_29E02FCFC(a3, a4, v6);
+  return sub_29E02FCFC(style, identifier, v6);
 }
 
-- (_TtC24MenstrualCyclesAppPlugin26NewFactorTypeTableViewCell)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin26NewFactorTypeTableViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC24MenstrualCyclesAppPlugin26NewFactorTypeTableViewCell_titleLabel;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x29EDC7B38]) init];

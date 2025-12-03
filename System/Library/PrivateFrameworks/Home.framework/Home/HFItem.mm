@@ -1,37 +1,37 @@
 @interface HFItem
-- (BOOL)resultsContainRequiredProperties:(id)a3;
+- (BOOL)resultsContainRequiredProperties:(id)properties;
 - (HFItemManager)_debug_owningItemManager;
 - (NAFuture)cancellableInFlightUpdateFuture;
-- (id)_finalOutcomeForSubclassOutcome:(id)a3 previousResults:(id)a4 updateOptions:(id)a5;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_finalOutcomeForSubclassOutcome:(id)outcome previousResults:(id)results updateOptions:(id)options;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)debugDescription;
 - (id)description;
-- (id)updateWithOptions:(id)a3;
-- (unint64_t)_effectiveLoadingStateForSuggestedLoadingState:(unint64_t)a3;
-- (void)copyLatestResultsFromItem:(id)a3;
+- (id)updateWithOptions:(id)options;
+- (unint64_t)_effectiveLoadingStateForSuggestedLoadingState:(unint64_t)state;
+- (void)copyLatestResultsFromItem:(id)item;
 @end
 
 @implementation HFItem
 
-- (id)updateWithOptions:(id)a3
+- (id)updateWithOptions:(id)options
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:HFItemUpdateOptionLogger];
-  v7 = [(HFItem *)self cancellableInFlightUpdateFuture];
-  if (v7)
+  optionsCopy = options;
+  v6 = [optionsCopy objectForKeyedSubscript:HFItemUpdateOptionLogger];
+  cancellableInFlightUpdateFuture = [(HFItem *)self cancellableInFlightUpdateFuture];
+  if (cancellableInFlightUpdateFuture)
   {
-    v8 = [(HFItem *)self cancellableInFlightUpdateFuture];
-    v9 = [v8 isFinished];
+    cancellableInFlightUpdateFuture2 = [(HFItem *)self cancellableInFlightUpdateFuture];
+    isFinished = [cancellableInFlightUpdateFuture2 isFinished];
 
-    if ((v9 & 1) == 0)
+    if ((isFinished & 1) == 0)
     {
-      v10 = [v5 objectForKeyedSubscript:HFItemUpdateOptionAllowInFlightResults];
-      v11 = [v10 BOOLValue];
+      v10 = [optionsCopy objectForKeyedSubscript:HFItemUpdateOptionAllowInFlightResults];
+      bOOLValue = [v10 BOOLValue];
 
-      if (v11)
+      if (bOOLValue)
       {
-        v12 = [(HFItem *)self cancellableInFlightUpdateFuture];
+        cancellableInFlightUpdateFuture3 = [(HFItem *)self cancellableInFlightUpdateFuture];
         goto LABEL_16;
       }
 
@@ -39,8 +39,8 @@
       {
         state.opaque[0] = 0;
         state.opaque[1] = 0;
-        v13 = [v6 loggerActivity];
-        os_activity_scope_enter(v13, &state);
+        loggerActivity = [v6 loggerActivity];
+        os_activity_scope_enter(loggerActivity, &state);
 
         v14 = HFLogForCategory(0x2CuLL);
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -66,8 +66,8 @@
         }
       }
 
-      v16 = [(HFItem *)self cancellableInFlightUpdateFuture];
-      [v16 cancel];
+      cancellableInFlightUpdateFuture4 = [(HFItem *)self cancellableInFlightUpdateFuture];
+      [cancellableInFlightUpdateFuture4 cancel];
 
       [(HFItem *)self setCancellableInFlightUpdateFuture:0];
     }
@@ -86,10 +86,10 @@
     _os_signpost_emit_with_name_impl(&dword_20D9BF000, v20, OS_SIGNPOST_INTERVAL_BEGIN, v18, "HFItemUpdate", "%@", &state, 0xCu);
   }
 
-  v22 = [(HFItem *)self latestResults];
-  v23 = [v22 copy];
+  latestResults = [(HFItem *)self latestResults];
+  v23 = [latestResults copy];
 
-  v24 = [(HFItem *)self _subclass_updateWithOptions:v5];
+  v24 = [(HFItem *)self _subclass_updateWithOptions:optionsCopy];
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __28__HFItem_updateWithOptions___block_invoke;
@@ -98,27 +98,27 @@
   v43[4] = self;
   v25 = v23;
   v44 = v25;
-  v45 = v5;
+  v45 = optionsCopy;
   v47 = v18;
-  v12 = [v24 flatMap:v43];
+  cancellableInFlightUpdateFuture3 = [v24 flatMap:v43];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __28__HFItem_updateWithOptions___block_invoke_37;
   v42[3] = &unk_277DF6718;
   v42[4] = self;
   v42[5] = v18;
-  v26 = [v12 addFailureBlock:v42];
+  v26 = [cancellableInFlightUpdateFuture3 addFailureBlock:v42];
   if (v6)
   {
     objc_initWeak(&state, v6);
-    v27 = [MEMORY[0x277D2C938] mainThreadScheduler];
+    mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __28__HFItem_updateWithOptions___block_invoke_40;
     v40[3] = &unk_277DF3A68;
     objc_copyWeak(&v41, &state);
     v40[4] = self;
-    v28 = [v27 afterDelay:v40 performBlock:10.0];
+    v28 = [mainThreadScheduler afterDelay:v40 performBlock:10.0];
 
     v35 = MEMORY[0x277D85DD0];
     v36 = 3221225472;
@@ -126,7 +126,7 @@
     v38 = &unk_277DF91B8;
     v29 = v28;
     v39 = v29;
-    v30 = [v12 addCompletionBlock:&v35];
+    v30 = [cancellableInFlightUpdateFuture3 addCompletionBlock:&v35];
 
     objc_destroyWeak(&v41);
     objc_destroyWeak(&state);
@@ -137,7 +137,7 @@
 LABEL_16:
   v31 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return cancellableInFlightUpdateFuture3;
 }
 
 id __28__HFItem_updateWithOptions___block_invoke(uint64_t a1, void *a2)
@@ -238,23 +238,23 @@ void __28__HFItem_updateWithOptions___block_invoke_40(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyLatestResultsFromItem:(id)a3
+- (void)copyLatestResultsFromItem:(id)item
 {
-  v5 = a3;
-  v6 = [(HFItem *)self latestResults];
+  itemCopy = item;
+  latestResults = [(HFItem *)self latestResults];
 
-  if (v6)
+  if (latestResults)
   {
     NSLog(&cfstr_AlreadyHasResu.isa, self);
   }
 
-  if (([v5 isMemberOfClass:objc_opt_class()] & 1) == 0)
+  if (([itemCopy isMemberOfClass:objc_opt_class()] & 1) == 0)
   {
-    NSLog(&cfstr_MismatchedItem.isa, self, v5);
+    NSLog(&cfstr_MismatchedItem.isa, self, itemCopy);
   }
 
-  v7 = [v5 latestResults];
-  v8 = [v7 mutableCopy];
+  latestResults2 = [itemCopy latestResults];
+  v8 = [latestResults2 mutableCopy];
 
   v9 = [v8 objectForKeyedSubscript:@"childItems"];
   if ([v9 count])
@@ -265,7 +265,7 @@ void __28__HFItem_updateWithOptions___block_invoke_40(uint64_t a1)
     v11[3] = &unk_277DF91E0;
     v13 = a2;
     v11[4] = self;
-    v12 = v5;
+    v12 = itemCopy;
     v10 = [v9 na_map:v11];
     [v8 setObject:v10 forKeyedSubscript:@"childItems"];
   }
@@ -291,23 +291,23 @@ id __36__HFItem_copyLatestResultsFromItem___block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (unint64_t)_effectiveLoadingStateForSuggestedLoadingState:(unint64_t)a3
+- (unint64_t)_effectiveLoadingStateForSuggestedLoadingState:(unint64_t)state
 {
-  v4 = [(HFItem *)self latestResults];
-  v5 = [v4 objectForKeyedSubscript:@"isInStateTransition"];
+  latestResults = [(HFItem *)self latestResults];
+  v5 = [latestResults objectForKeyedSubscript:@"isInStateTransition"];
 
   if ([v5 BOOLValue])
   {
-    a3 |= 2uLL;
+    state |= 2uLL;
   }
 
-  return a3;
+  return state;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HFItem.m" lineNumber:159 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFItem _subclass_updateWithOptions:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFItem.m" lineNumber:159 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFItem _subclass_updateWithOptions:]", objc_opt_class()}];
 
   v6 = MEMORY[0x277D2C900];
   v7 = [MEMORY[0x277CCA9B8] hf_errorWithCode:36];
@@ -316,15 +316,15 @@ id __36__HFItem_copyLatestResultsFromItem___block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-- (BOOL)resultsContainRequiredProperties:(id)a3
+- (BOOL)resultsContainRequiredProperties:(id)properties
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  propertiesCopy = properties;
+  v5 = [propertiesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -335,12 +335,12 @@ id __36__HFItem_copyLatestResultsFromItem___block_invoke(uint64_t a1, void *a2)
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(propertiesCopy);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [(HFItem *)self latestResults];
-        v11 = [v10 objectForKey:v9];
+        latestResults = [(HFItem *)self latestResults];
+        v11 = [latestResults objectForKey:v9];
 
         if (!v11)
         {
@@ -349,7 +349,7 @@ id __36__HFItem_copyLatestResultsFromItem___block_invoke(uint64_t a1, void *a2)
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [propertiesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -371,25 +371,25 @@ LABEL_11:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HFItem *)self latestResults];
-  v7 = [v3 stringWithFormat:@"<%@: %p, %@>", v5, self, v6];
+  latestResults = [(HFItem *)self latestResults];
+  v7 = [v3 stringWithFormat:@"<%@: %p, %@>", v5, self, latestResults];
 
   return v7;
 }
 
 - (id)description
 {
-  v3 = [(HFItem *)self latestResults];
-  v4 = [v3 objectForKeyedSubscript:@"state"];
-  v5 = [v4 integerValue];
+  latestResults = [(HFItem *)self latestResults];
+  v4 = [latestResults objectForKeyedSubscript:@"state"];
+  integerValue = [v4 integerValue];
 
   v6 = @"NotSet";
-  if (v5 == 1)
+  if (integerValue == 1)
   {
     v6 = @"Normal";
   }
 
-  if (v5 == 2)
+  if (integerValue == 2)
   {
     v7 = @"Abnormal";
   }
@@ -402,8 +402,8 @@ LABEL_11:
   v8 = MEMORY[0x277CCACA8];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v11 = [(HFItem *)self latestResults];
-  v12 = [v11 objectForKeyedSubscript:@"title"];
+  latestResults2 = [(HFItem *)self latestResults];
+  v12 = [latestResults2 objectForKeyedSubscript:@"title"];
   v13 = v12;
   if (v12)
   {
@@ -412,24 +412,24 @@ LABEL_11:
 
   else
   {
-    v15 = [(HFItem *)self latestResults];
-    v16 = [v15 objectForKeyedSubscript:@"description"];
+    latestResults3 = [(HFItem *)self latestResults];
+    v16 = [latestResults3 objectForKeyedSubscript:@"description"];
     v14 = [v8 stringWithFormat:@"<%@: %p> %@ state:%@", v10, self, v16, v7];
   }
 
   return v14;
 }
 
-- (id)_finalOutcomeForSubclassOutcome:(id)a3 previousResults:(id)a4 updateOptions:(id)a5
+- (id)_finalOutcomeForSubclassOutcome:(id)outcome previousResults:(id)results updateOptions:(id)options
 {
-  v6 = a3;
-  v7 = [v6 mutableCopy];
+  outcomeCopy = outcome;
+  v7 = [outcomeCopy mutableCopy];
   if ([(HFItem *)self conformsToProtocol:&unk_28252A8F8])
   {
-    v8 = [(HFItem *)self homeKitObject];
-    if (v8)
+    homeKitObject = [(HFItem *)self homeKitObject];
+    if (homeKitObject)
     {
-      v9 = [v6 objectForKeyedSubscript:@"dependentHomeKitObjects"];
+      v9 = [outcomeCopy objectForKeyedSubscript:@"dependentHomeKitObjects"];
       v10 = [v9 mutableCopy];
 
       if (!v10)
@@ -437,7 +437,7 @@ LABEL_11:
         v10 = [MEMORY[0x277CBEB58] set];
       }
 
-      [v10 addObject:v8];
+      [v10 addObject:homeKitObject];
       [v7 setObject:v10 forKeyedSubscript:@"dependentHomeKitObjects"];
     }
   }

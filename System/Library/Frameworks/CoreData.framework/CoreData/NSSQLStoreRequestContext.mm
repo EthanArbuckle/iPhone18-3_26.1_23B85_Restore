@@ -1,12 +1,12 @@
 @interface NSSQLStoreRequestContext
-- (BOOL)executeRequestCore:(id *)a3;
-- (BOOL)executeRequestUsingConnection:(id)a3;
-- (NSSQLStoreRequestContext)initWithRequest:(id)a3 context:(id)a4 sqlCore:(id)a5;
+- (BOOL)executeRequestCore:(id *)core;
+- (BOOL)executeRequestUsingConnection:(id)connection;
+- (NSSQLStoreRequestContext)initWithRequest:(id)request context:(id)context sqlCore:(id)core;
 - (uint64_t)createNestedObjectFaultContextForObjectWithID:(uint64_t)result;
 - (uint64_t)debugLogLevel;
 - (void)dealloc;
-- (void)setConnection:(uint64_t)a1;
-- (void)setQueryGenerationToken:(id *)a1;
+- (void)setConnection:(uint64_t)connection;
+- (void)setQueryGenerationToken:(id *)token;
 @end
 
 @implementation NSSQLStoreRequestContext
@@ -49,7 +49,7 @@
   }
 }
 
-- (NSSQLStoreRequestContext)initWithRequest:(id)a3 context:(id)a4 sqlCore:(id)a5
+- (NSSQLStoreRequestContext)initWithRequest:(id)request context:(id)context sqlCore:(id)core
 {
   v12.receiver = self;
   v12.super_class = NSSQLStoreRequestContext;
@@ -57,15 +57,15 @@
   v9 = v8;
   if (v8)
   {
-    v8->_sqlCore = a5;
-    v8->_persistentStoreRequest = a3;
-    v9->_context = a4;
+    v8->_sqlCore = core;
+    v8->_persistentStoreRequest = request;
+    v9->_context = context;
     v9->_useColoredLogging = +[NSSQLCore coloredLoggingDefault];
     v9->_useConcurrentFetching = +[NSSQLCore useConcurrentFetching];
-    if (a5)
+    if (core)
     {
-      v9->_hasHistoryTracking = (*(a5 + 50) & 0x400) != 0;
-      v10 = (*(a5 + 201) >> 6) & 1;
+      v9->_hasHistoryTracking = (*(core + 50) & 0x400) != 0;
+      v10 = (*(core + 201) >> 6) & 1;
     }
 
     else
@@ -81,19 +81,19 @@
   return v9;
 }
 
-- (void)setQueryGenerationToken:(id *)a1
+- (void)setQueryGenerationToken:(id *)token
 {
-  if (a1 && ([a1 isWritingRequest] & 1) == 0 && objc_msgSend(a1[1], "supportsGenerationalQuerying"))
+  if (token && ([token isWritingRequest] & 1) == 0 && objc_msgSend(token[1], "supportsGenerationalQuerying"))
   {
     if ([a2 _isEnabled])
     {
-      a1[8] = [(_NSQueryGenerationToken *)a2 _generationalComponentForStore:?];
+      token[8] = [(_NSQueryGenerationToken *)a2 _generationalComponentForStore:?];
     }
 
     else
     {
 
-      a1[8] = 0;
+      token[8] = 0;
     }
   }
 }
@@ -113,18 +113,18 @@
   return result;
 }
 
-- (BOOL)executeRequestCore:(id *)a3
+- (BOOL)executeRequestCore:(id *)core
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (BOOL)executeRequestUsingConnection:(id)a3
+- (BOOL)executeRequestUsingConnection:(id)connection
 {
   v28[1] = *MEMORY[0x1E69E9840];
   newValue = 0;
-  v5 = [(NSSQLStoreRequestContext *)self isWritingRequest];
+  isWritingRequest = [(NSSQLStoreRequestContext *)self isWritingRequest];
   if (self)
   {
     queryGeneration = self->_queryGeneration;
@@ -135,12 +135,12 @@
     queryGeneration = 0;
   }
 
-  [(NSSQLStoreRequestContext *)self setConnection:a3];
-  [(NSSQLiteConnection *)a3 connect];
+  [(NSSQLStoreRequestContext *)self setConnection:connection];
+  [(NSSQLiteConnection *)connection connect];
   v19 = 0u;
   if (self && (context = self->_context) != 0 && (*(&context->_flags + 3) & 0x20) != 0)
   {
-    [(NSSQLiteConnection *)a3 currentStats];
+    [(NSSQLiteConnection *)connection currentStats];
     v19 = v24;
     v8 = v25;
   }
@@ -152,7 +152,7 @@
 
   if (queryGeneration)
   {
-    v9 = v5;
+    v9 = isWritingRequest;
   }
 
   else
@@ -162,8 +162,8 @@
 
   if ((v9 & 1) == 0)
   {
-    [(NSSQLiteConnection *)a3 beginReadTransaction];
-    v10 = [(NSSQLiteConnection *)a3 adoptQueryGenerationWithIdentifier:?];
+    [(NSSQLiteConnection *)connection beginReadTransaction];
+    v10 = [(NSSQLiteConnection *)connection adoptQueryGenerationWithIdentifier:?];
     if (v10)
     {
       v27 = @"NSSQLiteErrorDomain";
@@ -186,7 +186,7 @@
 
   else
   {
-    [(NSSQLiteConnection *)a3 commitTransaction];
+    [(NSSQLiteConnection *)connection commitTransaction];
     if (!self)
     {
       goto LABEL_23;
@@ -198,7 +198,7 @@
   {
     v24 = 0u;
     v25 = 0u;
-    [(NSSQLiteConnection *)a3 currentStats];
+    [(NSSQLiteConnection *)connection currentStats];
     v14 = self->_context;
     v21 = vsubq_s64(v24, v20);
     v22 = v25 - v8;
@@ -217,11 +217,11 @@ LABEL_23:
   return v12;
 }
 
-- (void)setConnection:(uint64_t)a1
+- (void)setConnection:(uint64_t)connection
 {
-  if (a1)
+  if (connection)
   {
-    v4 = *(a1 + 24);
+    v4 = *(connection + 24);
     if (v4 != a2)
     {
       if (a2)
@@ -234,7 +234,7 @@ LABEL_23:
 
       v5 = a2;
 
-      *(a1 + 24) = a2;
+      *(connection + 24) = a2;
     }
   }
 }

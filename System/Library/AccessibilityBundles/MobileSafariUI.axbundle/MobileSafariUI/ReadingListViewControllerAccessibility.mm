@@ -1,5 +1,5 @@
 @interface ReadingListViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axUnhideSearchBar;
 - (void)viewDidLoad;
@@ -7,12 +7,12 @@
 
 @implementation ReadingListViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ReadingListViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"ReadingListViewController" hasInstanceVariable:@"_searchBar" withType:"UISearchBar"];
-  [v3 validateClass:@"ReadingListViewController" hasInstanceVariable:@"_tableView" withType:"UITableView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ReadingListViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"ReadingListViewController" hasInstanceVariable:@"_searchBar" withType:"UISearchBar"];
+  [validationsCopy validateClass:@"ReadingListViewController" hasInstanceVariable:@"_tableView" withType:"UITableView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

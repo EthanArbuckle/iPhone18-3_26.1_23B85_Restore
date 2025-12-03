@@ -1,31 +1,31 @@
 @interface THWWebView
 - (THPageAffordanceHosting)canvasPageAffordanceHost;
-- (THWWebView)initWithfilteredOutURLSchemes:(id)a3 requestScope:(id)a4;
+- (THWWebView)initWithfilteredOutURLSchemes:(id)schemes requestScope:(id)scope;
 - (THWWebViewDelegate)webViewDelegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)stringByEvaluatingJavaScriptFromString:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)stringByEvaluatingJavaScriptFromString:(id)string;
 - (void)_attemptURLLoad;
-- (void)_createConfigurationWithfilteredOutURLSchemes:(id)a3 requestScope:(id)a4 completion:(id)a5;
-- (void)_createContentBlockingRulesWithfilteredOutURLSchemes:(id)a3 toRuleListStore:(id)a4 completion:(id)a5;
-- (void)_createWebViewWithContentBlockers:(id)a3 requestScope:(id)a4 completion:(id)a5;
+- (void)_createConfigurationWithfilteredOutURLSchemes:(id)schemes requestScope:(id)scope completion:(id)completion;
+- (void)_createContentBlockingRulesWithfilteredOutURLSchemes:(id)schemes toRuleListStore:(id)store completion:(id)completion;
+- (void)_createWebViewWithContentBlockers:(id)blockers requestScope:(id)scope completion:(id)completion;
 - (void)hide;
-- (void)loadRequest:(id)a3;
-- (void)loadURL:(id)a3;
-- (void)setFrame:(CGRect)a3 naturalSize:(CGSize)a4 completion:(id)a5;
-- (void)setRequest:(id)a3;
-- (void)setShouldEnableScrolling:(BOOL)a3;
-- (void)setWebView:(id)a3;
-- (void)showAnimated:(BOOL)a3 duration:(double)a4 completion:(id)a5;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (void)loadRequest:(id)request;
+- (void)loadURL:(id)l;
+- (void)setFrame:(CGRect)frame naturalSize:(CGSize)size completion:(id)completion;
+- (void)setRequest:(id)request;
+- (void)setShouldEnableScrolling:(BOOL)scrolling;
+- (void)setWebView:(id)view;
+- (void)showAnimated:(BOOL)animated duration:(double)duration completion:(id)completion;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation THWWebView
 
-- (THWWebView)initWithfilteredOutURLSchemes:(id)a3 requestScope:(id)a4
+- (THWWebView)initWithfilteredOutURLSchemes:(id)schemes requestScope:(id)scope
 {
-  v6 = a4;
+  scopeCopy = scope;
   v14.receiver = self;
   v14.super_class = THWWebView;
   v7 = [(THWWebView *)&v14 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -33,7 +33,7 @@
   if (v7)
   {
     v7->_shouldEnableScrolling = 1;
-    objc_storeStrong(&v7->_requestScope, a4);
+    objc_storeStrong(&v7->_requestScope, scope);
     v9 = [(NSSet *)v8->_filteredOutURLSchemes copy];
     requestScope = v8->_requestScope;
     v12[0] = _NSConcreteStackBlock;
@@ -47,26 +47,26 @@
   return v8;
 }
 
-- (void)loadURL:(id)a3
+- (void)loadURL:(id)l
 {
-  v4 = [NSURLRequest requestWithURL:a3];
+  v4 = [NSURLRequest requestWithURL:l];
   [(THWWebView *)self loadRequest:v4];
 }
 
-- (void)loadRequest:(id)a3
+- (void)loadRequest:(id)request
 {
-  v4 = [a3 mutableCopy];
+  v4 = [request mutableCopy];
   [v4 setAttribution:1];
   [(THWWebView *)self setRequest:v4];
 }
 
-- (void)setFrame:(CGRect)a3 naturalSize:(CGSize)a4 completion:(id)a5
+- (void)setFrame:(CGRect)frame naturalSize:(CGSize)size completion:(id)completion
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  completionCopy = completion;
   v25.origin.x = x;
   v25.origin.y = y;
   v25.size.width = width;
@@ -83,19 +83,19 @@
   v14 = 1.0;
   if (CGRectEqualToRect(v26, v29))
   {
-    v15 = a4.width;
-    v16 = a4.height;
+    v15 = size.width;
+    v16 = size.height;
   }
 
   else
   {
-    v15 = a4.width;
-    v16 = a4.height;
-    if (a4.width != CGSizeZero.width || a4.height != CGSizeZero.height)
+    v15 = size.width;
+    v16 = size.height;
+    if (size.width != CGSizeZero.width || size.height != CGSizeZero.height)
     {
-      v18 = THScaleNeededToFitSizeInSize(a4.width, a4.height, v11, v12);
-      v15 = a4.width;
-      v16 = a4.height;
+      v18 = THScaleNeededToFitSizeInSize(size.width, size.height, v11, v12);
+      v15 = size.width;
+      v16 = size.height;
       v14 = v18;
     }
   }
@@ -114,7 +114,7 @@
   CGAffineTransformMakeScale(&v24, v14, v14);
   v23 = v24;
   [(THWWebView *)self setTransform:&v23];
-  v20 = objc_retainBlock(v10);
+  v20 = objc_retainBlock(completionCopy);
 
   if (v20)
   {
@@ -125,30 +125,30 @@
 - (void)hide
 {
   [(THWWebView *)self setAlpha:0.0];
-  v3 = [(THWWebView *)self webView];
-  [v3 setAlpha:0.0];
+  webView = [(THWWebView *)self webView];
+  [webView setAlpha:0.0];
 }
 
-- (void)showAnimated:(BOOL)a3 duration:(double)a4 completion:(id)a5
+- (void)showAnimated:(BOOL)animated duration:(double)duration completion:(id)completion
 {
-  v7 = a5;
-  v8 = [(THWWebView *)self layer];
-  [v8 setShouldRasterize:1];
+  completionCopy = completion;
+  layer = [(THWWebView *)self layer];
+  [layer setShouldRasterize:1];
 
   TSUScreenScale();
   v10 = v9;
-  v11 = [(THWWebView *)self layer];
-  [v11 setRasterizationScale:v10];
+  layer2 = [(THWWebView *)self layer];
+  [layer2 setRasterizationScale:v10];
 
-  v12 = [(THWWebView *)self webView];
-  v13 = [v12 layer];
-  [v13 setShouldRasterize:1];
+  webView = [(THWWebView *)self webView];
+  layer3 = [webView layer];
+  [layer3 setShouldRasterize:1];
 
   TSUScreenScale();
   v15 = v14;
-  v16 = [(THWWebView *)self webView];
-  v17 = [v16 layer];
-  [v17 setRasterizationScale:v15];
+  webView2 = [(THWWebView *)self webView];
+  layer4 = [webView2 layer];
+  [layer4 setRasterizationScale:v15];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
@@ -160,19 +160,19 @@
   v19[2] = sub_63C28;
   v19[3] = &unk_45BE60;
   v19[4] = self;
-  v20 = v7;
-  v18 = v7;
-  [UIView animateWithDuration:v21 animations:v19 completion:a4];
+  v20 = completionCopy;
+  v18 = completionCopy;
+  [UIView animateWithDuration:v21 animations:v19 completion:duration];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v18.receiver = self;
   v18.super_class = THWWebView;
-  v8 = [(THWWebView *)&v18 hitTest:v7 withEvent:x, y];
+  v8 = [(THWWebView *)&v18 hitTest:eventCopy withEvent:x, y];
   WeakRetained = objc_loadWeakRetained(&self->_webViewDelegate);
   if (WeakRetained)
   {
@@ -183,7 +183,7 @@
     if (v12)
     {
       v13 = objc_loadWeakRetained(&self->_webViewDelegate);
-      v14 = [v13 webView:self shouldAcceptHitAtPoint:v8 onView:v7 withEvent:{x, y}];
+      v14 = [v13 webView:self shouldAcceptHitAtPoint:v8 onView:eventCopy withEvent:{x, y}];
 
       if (v14)
       {
@@ -204,48 +204,48 @@
   return v8;
 }
 
-- (id)stringByEvaluatingJavaScriptFromString:(id)a3
+- (id)stringByEvaluatingJavaScriptFromString:(id)string
 {
-  v4 = a3;
-  v5 = [(THWWebView *)self webView];
-  [v5 evaluateJavaScript:v4 completionHandler:&stru_45BEA0];
+  stringCopy = string;
+  webView = [(THWWebView *)self webView];
+  [webView evaluateJavaScript:stringCopy completionHandler:&stru_45BEA0];
 
   return @"0";
 }
 
-- (void)setShouldEnableScrolling:(BOOL)a3
+- (void)setShouldEnableScrolling:(BOOL)scrolling
 {
-  v3 = a3;
-  self->_shouldEnableScrolling = a3;
-  v5 = [(THWWebView *)self webView];
-  v4 = [v5 scrollView];
-  [v4 setScrollEnabled:v3];
+  scrollingCopy = scrolling;
+  self->_shouldEnableScrolling = scrolling;
+  webView = [(THWWebView *)self webView];
+  scrollView = [webView scrollView];
+  [scrollView setScrollEnabled:scrollingCopy];
 }
 
-- (void)setRequest:(id)a3
+- (void)setRequest:(id)request
 {
-  objc_storeStrong(&self->_request, a3);
+  objc_storeStrong(&self->_request, request);
 
   [(THWWebView *)self _attemptURLLoad];
 }
 
-- (void)setWebView:(id)a3
+- (void)setWebView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   webView = self->_webView;
   if (webView)
   {
-    v6 = [(WKWebView *)webView superview];
+    superview = [(WKWebView *)webView superview];
 
-    if (v6)
+    if (superview)
     {
       [(WKWebView *)self->_webView removeFromSuperview];
     }
   }
 
   v7 = self->_webView;
-  self->_webView = v4;
-  v8 = v4;
+  self->_webView = viewCopy;
+  v8 = viewCopy;
 
   [(WKWebView *)self->_webView setNavigationDelegate:self];
   [(WKWebView *)self->_webView setUIDelegate:self];
@@ -258,29 +258,29 @@
   [(THWWebView *)self _attemptURLLoad];
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  actionCopy = action;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_webViewDelegate);
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [v7 navigationType];
-    if (v11 >= 5)
+    navigationType = [actionCopy navigationType];
+    if (navigationType >= 5)
     {
       v12 = 5;
     }
 
     else
     {
-      v12 = v11;
+      v12 = navigationType;
     }
 
     v13 = objc_loadWeakRetained(&self->_webViewDelegate);
-    v14 = [v7 request];
-    v15 = [v14 URL];
+    request = [actionCopy request];
+    v15 = [request URL];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_64180;
@@ -288,16 +288,16 @@
     v17[4] = self;
     v16 = [v13 webView:self shouldStartLoadWithURL:v15 navigationType:v12 deferredResponseHandler:v17];
 
-    v8[2](v8, v16);
+    handlerCopy[2](handlerCopy, v16);
   }
 
   else
   {
-    v8[2](v8, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
   WeakRetained = objc_loadWeakRetained(&self->_webViewDelegate);
   v6 = objc_opt_respondsToSelector();
@@ -309,60 +309,60 @@
   }
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
-  v9 = a5;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_webViewDelegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_webViewDelegate);
-    [v8 webView:self didFailLoadWithError:v9];
+    [v8 webView:self didFailLoadWithError:errorCopy];
   }
 }
 
 - (void)_attemptURLLoad
 {
-  v3 = [(THWWebView *)self webView];
-  if (v3)
+  webView = [(THWWebView *)self webView];
+  if (webView)
   {
-    v4 = v3;
-    v5 = [(THWWebView *)self request];
+    v4 = webView;
+    request = [(THWWebView *)self request];
 
-    if (v5)
+    if (request)
     {
-      v8 = [(THWWebView *)self webView];
-      v6 = [(THWWebView *)self request];
-      v7 = [v8 loadRequest:v6];
+      webView2 = [(THWWebView *)self webView];
+      request2 = [(THWWebView *)self request];
+      v7 = [webView2 loadRequest:request2];
     }
   }
 }
 
-- (void)_createWebViewWithContentBlockers:(id)a3 requestScope:(id)a4 completion:(id)a5
+- (void)_createWebViewWithContentBlockers:(id)blockers requestScope:(id)scope completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_64430;
   v8[3] = &unk_45BEC8;
-  v9 = self;
-  v10 = a5;
-  v7 = v10;
-  [(THWWebView *)v9 _createConfigurationWithfilteredOutURLSchemes:a3 requestScope:a4 completion:v8];
+  selfCopy = self;
+  completionCopy = completion;
+  v7 = completionCopy;
+  [(THWWebView *)selfCopy _createConfigurationWithfilteredOutURLSchemes:blockers requestScope:scope completion:v8];
 }
 
-- (void)_createContentBlockingRulesWithfilteredOutURLSchemes:(id)a3 toRuleListStore:(id)a4 completion:(id)a5
+- (void)_createContentBlockingRulesWithfilteredOutURLSchemes:(id)schemes toRuleListStore:(id)store completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v9 count]);
+  storeCopy = store;
+  completionCopy = completion;
+  schemesCopy = schemes;
+  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [schemesCopy count]);
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_647E0;
   v10 = v23[3] = &unk_45BEF0;
   v24 = v10;
-  [v9 enumerateObjectsUsingBlock:v23];
+  [schemesCopy enumerateObjectsUsingBlock:v23];
 
   if ([v10 count])
   {
@@ -386,30 +386,30 @@
     }
 
     v19 = [[NSString alloc] initWithData:v11 encoding:4];
-    if (!v7)
+    if (!storeCopy)
     {
-      v7 = +[WKContentRuleListStore defaultStore];
+      storeCopy = +[WKContentRuleListStore defaultStore];
     }
 
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_648E0;
     v20[3] = &unk_45BF18;
-    v21 = v8;
-    [v7 compileContentRuleListForIdentifier:@"filteredOutURLSchemes" encodedContentRuleList:v19 completionHandler:v20];
+    v21 = completionCopy;
+    [storeCopy compileContentRuleListForIdentifier:@"filteredOutURLSchemes" encodedContentRuleList:v19 completionHandler:v20];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)_createConfigurationWithfilteredOutURLSchemes:(id)a3 requestScope:(id)a4 completion:(id)a5
+- (void)_createConfigurationWithfilteredOutURLSchemes:(id)schemes requestScope:(id)scope completion:(id)completion
 {
-  v40 = a3;
-  v7 = a4;
-  v35 = a5;
+  schemesCopy = schemes;
+  scopeCopy = scope;
+  completionCopy = completion;
   v8 = objc_opt_new();
   [v8 setMediaTypesRequiringUserActionForPlayback:0];
   [v8 setAllowsInlineMediaPlayback:1];
@@ -424,14 +424,14 @@
   [v10 _setLogsPageMessagesToSystemConsoleEnabled:0];
   [v10 _setLargeImageAsyncDecodingEnabled:0];
   [v8 setPreferences:v10];
-  v39 = v7;
-  v11 = [[PFDUrlSchemeHandler alloc] initWithRequestScope:v7];
+  v39 = scopeCopy;
+  v11 = [[PFDUrlSchemeHandler alloc] initWithRequestScope:scopeCopy];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v12 = [(PFDUrlSchemeHandler *)v11 supportedSchemes];
-  v13 = [v12 countByEnumeratingWithState:&v45 objects:v49 count:16];
+  supportedSchemes = [(PFDUrlSchemeHandler *)v11 supportedSchemes];
+  v13 = [supportedSchemes countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v13)
   {
     v14 = v13;
@@ -442,19 +442,19 @@
       {
         if (*v46 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(supportedSchemes);
         }
 
-        [v8 setURLSchemeHandler:v11 forURLScheme:{*(*(&v45 + 1) + 8 * i), v35}];
+        [v8 setURLSchemeHandler:v11 forURLScheme:{*(*(&v45 + 1) + 8 * i), completionCopy}];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v45 objects:v49 count:16];
+      v14 = [supportedSchemes countByEnumeratingWithState:&v45 objects:v49 count:16];
     }
 
     while (v14);
   }
 
-  v17 = [v8 userContentController];
+  userContentController = [v8 userContentController];
   v18 = THBundle();
   v19 = [v18 pathForResource:@"AppleWidgetController" ofType:@"js"];
 
@@ -483,12 +483,12 @@
       v28 = [[NSString alloc] initWithData:v23 encoding:4];
       v29 = [v27 initWithSource:v28 injectionTime:0 forMainFrameOnly:1];
 
-      [v17 addUserScript:v29];
+      [userContentController addUserScript:v29];
     }
   }
 
   v30 = [[_WKUserStyleSheet alloc] initWithSource:@"@media (inverted-colors) {   img:not(picture>img) forMainFrameOnly:{picture { filter: invert(0); }   video { filter: invert(0) !important; }}", 0}];
-  [v17 _addUserStyleSheet:v30];
+  [userContentController _addUserStyleSheet:v30];
   v31 = +[WKContentRuleListStore defaultStore];
   v41[0] = _NSConcreteStackBlock;
   v41[1] = 3221225472;
@@ -496,11 +496,11 @@
   v41[3] = &unk_45BF40;
   v43 = v8;
   v44 = v36;
-  v42 = v17;
+  v42 = userContentController;
   v32 = v8;
   v33 = v36;
-  v34 = v17;
-  [(THWWebView *)self _createContentBlockingRulesWithfilteredOutURLSchemes:v40 toRuleListStore:v31 completion:v41];
+  v34 = userContentController;
+  [(THWWebView *)self _createContentBlockingRulesWithfilteredOutURLSchemes:schemesCopy toRuleListStore:v31 completion:v41];
 }
 
 - (THPageAffordanceHosting)canvasPageAffordanceHost

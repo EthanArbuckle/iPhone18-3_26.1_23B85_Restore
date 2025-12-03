@@ -1,41 +1,41 @@
 @interface CRLCanvasKnobTracker
 - (CGAffineTransform)transformInRootForStandardKnobs;
-- (CGPoint)convertKnobPositionFromUnscaledCanvas:(CGPoint)a3;
-- (CGPoint)convertKnobPositionToUnscaledCanvas:(CGPoint)a3;
+- (CGPoint)convertKnobPositionFromUnscaledCanvas:(CGPoint)canvas;
+- (CGPoint)convertKnobPositionToUnscaledCanvas:(CGPoint)canvas;
 - (CGPoint)currentPosition;
 - (CGPoint)knobOffset;
 - (CGRect)currentBoundsForStandardKnobs;
 - (CRLCanvasKnobTracker)init;
-- (CRLCanvasKnobTracker)initWithRep:(id)a3 knob:(id)a4;
+- (CRLCanvasKnobTracker)initWithRep:(id)rep knob:(id)knob;
 - (id)repsToHide;
 - (unint64_t)enabledKnobMask;
-- (void)changeDynamicLayoutsForReps:(id)a3;
-- (void)commitChangesForReps:(id)a3;
+- (void)changeDynamicLayoutsForReps:(id)reps;
+- (void)commitChangesForReps:(id)reps;
 - (void)dealloc;
 - (void)endMovingKnob;
 - (void)i_resetCurrentPositionToKnobPositionIfAppropriate;
-- (void)moveKnobToCanvasPosition:(CGPoint)a3;
-- (void)setRep:(id)a3;
+- (void)moveKnobToCanvasPosition:(CGPoint)position;
+- (void)setRep:(id)rep;
 @end
 
 @implementation CRLCanvasKnobTracker
 
-- (CRLCanvasKnobTracker)initWithRep:(id)a3 knob:(id)a4
+- (CRLCanvasKnobTracker)initWithRep:(id)rep knob:(id)knob
 {
-  v6 = a3;
-  v7 = a4;
+  repCopy = rep;
+  knobCopy = knob;
   v16.receiver = self;
   v16.super_class = CRLCanvasKnobTracker;
   v8 = [(CRLCanvasKnobTracker *)&v16 init];
   if (v8)
   {
-    if (v6)
+    if (repCopy)
     {
-      if (v7)
+      if (knobCopy)
       {
 LABEL_23:
-        [(CRLCanvasKnobTracker *)v8 setKnob:v7];
-        [(CRLCanvasKnobTracker *)v8 setRep:v6];
+        [(CRLCanvasKnobTracker *)v8 setKnob:knobCopy];
+        [(CRLCanvasKnobTracker *)v8 setRep:repCopy];
         v8->_inputType = 1;
         goto LABEL_24;
       }
@@ -69,7 +69,7 @@ LABEL_23:
       v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCanvasKnobTracker.m"];
       [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:43 isFatal:0 description:"invalid nil value for '%{public}s'", "rep"];
 
-      if (v7)
+      if (knobCopy)
       {
         goto LABEL_23;
       }
@@ -118,9 +118,9 @@ LABEL_24:
 
 - (void)dealloc
 {
-  v3 = [(CRLCanvasRep *)self->_rep currentKnobTracker];
+  currentKnobTracker = [(CRLCanvasRep *)self->_rep currentKnobTracker];
 
-  if (v3 == self)
+  if (currentKnobTracker == self)
   {
     [(CRLCanvasRep *)self->_rep setCurrentKnobTracker:0];
   }
@@ -130,30 +130,30 @@ LABEL_24:
   [(CRLCanvasKnobTracker *)&v4 dealloc];
 }
 
-- (void)setRep:(id)a3
+- (void)setRep:(id)rep
 {
-  v5 = a3;
+  repCopy = rep;
   rep = self->_rep;
-  if (rep != v5)
+  if (rep != repCopy)
   {
-    v8 = v5;
-    v7 = [(CRLCanvasRep *)rep currentKnobTracker];
+    v8 = repCopy;
+    currentKnobTracker = [(CRLCanvasRep *)rep currentKnobTracker];
 
-    if (v7 == self)
+    if (currentKnobTracker == self)
     {
       [(CRLCanvasRep *)self->_rep setCurrentKnobTracker:0];
     }
 
-    objc_storeStrong(&self->_rep, a3);
+    objc_storeStrong(&self->_rep, rep);
     [(CRLCanvasRep *)self->_rep setCurrentKnobTracker:self];
-    v5 = v8;
+    repCopy = v8;
   }
 }
 
-- (void)moveKnobToCanvasPosition:(CGPoint)a3
+- (void)moveKnobToCanvasPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v6 = [(CRLCanvasKnobTracker *)self rep];
   if (v6)
   {
@@ -164,10 +164,10 @@ LABEL_24:
   }
 }
 
-- (CGPoint)convertKnobPositionToUnscaledCanvas:(CGPoint)a3
+- (CGPoint)convertKnobPositionToUnscaledCanvas:(CGPoint)canvas
 {
-  y = a3.y;
-  x = a3.x;
+  y = canvas.y;
+  x = canvas.x;
   v5 = [(CRLCanvasKnobTracker *)self rep];
   [v5 convertNaturalPointToUnscaledCanvas:{x, y}];
   v7 = v6;
@@ -180,10 +180,10 @@ LABEL_24:
   return result;
 }
 
-- (CGPoint)convertKnobPositionFromUnscaledCanvas:(CGPoint)a3
+- (CGPoint)convertKnobPositionFromUnscaledCanvas:(CGPoint)canvas
 {
-  y = a3.y;
-  x = a3.x;
+  y = canvas.y;
+  x = canvas.x;
   v5 = [(CRLCanvasKnobTracker *)self rep];
   [v5 convertNaturalPointFromUnscaledCanvas:{x, y}];
   v7 = v6;
@@ -198,9 +198,9 @@ LABEL_24:
 
 - (void)endMovingKnob
 {
-  v3 = [(CRLCanvasRep *)self->_rep currentKnobTracker];
+  currentKnobTracker = [(CRLCanvasRep *)self->_rep currentKnobTracker];
 
-  if (v3 == self)
+  if (currentKnobTracker == self)
   {
     rep = self->_rep;
 
@@ -220,12 +220,12 @@ LABEL_24:
 
 - (CGAffineTransform)transformInRootForStandardKnobs
 {
-  v4 = [(CRLCanvasRep *)self->_rep layout];
-  if (v4)
+  layout = [(CRLCanvasRep *)self->_rep layout];
+  if (layout)
   {
-    v6 = v4;
-    [v4 transformInRoot];
-    v4 = v6;
+    v6 = layout;
+    [layout transformInRoot];
+    layout = v6;
   }
 
   else
@@ -245,8 +245,8 @@ LABEL_24:
     return -1;
   }
 
-  v3 = [(CRLCanvasKnobTracker *)self knob];
-  v4 = sub_100345928([v3 tag]);
+  knob = [(CRLCanvasKnobTracker *)self knob];
+  v4 = sub_100345928([knob tag]);
 
   return v4;
 }
@@ -256,14 +256,14 @@ LABEL_24:
   if (![(CRLCanvasKnobTracker *)self didDrag]&& [(CRLCanvasKnobTracker *)self dragEnding])
   {
     v4 = [(CRLCanvasKnobTracker *)self rep];
-    v3 = [(CRLCanvasKnobTracker *)self knob];
-    [v3 position];
+    knob = [(CRLCanvasKnobTracker *)self knob];
+    [knob position];
     [v4 convertNaturalPointToUnscaledCanvas:?];
     [(CRLCanvasKnobTracker *)self setCurrentPosition:?];
   }
 }
 
-- (void)changeDynamicLayoutsForReps:(id)a3
+- (void)changeDynamicLayoutsForReps:(id)reps
 {
   [(CRLCanvasKnobTracker *)self i_resetCurrentPositionToKnobPositionIfAppropriate];
   didBegin = self->_didBegin;
@@ -284,8 +284,8 @@ LABEL_7:
     goto LABEL_12;
   }
 
-  v5 = [(CRLCanvasKnobTracker *)self knob];
-  [v5 position];
+  knob = [(CRLCanvasKnobTracker *)self knob];
+  [knob position];
   v7 = v6;
   v9 = v8;
   v10 = [(CRLCanvasKnobTracker *)self rep];
@@ -293,9 +293,9 @@ LABEL_7:
   [v10 convertNaturalPointFromUnscaledCanvas:?];
   if (sub_10011ECC8(v7, v9, v11, v12))
   {
-    v13 = [(CRLCanvasKnobTracker *)self i_shouldForceDrag];
+    i_shouldForceDrag = [(CRLCanvasKnobTracker *)self i_shouldForceDrag];
 
-    if (!v13)
+    if (!i_shouldForceDrag)
     {
       goto LABEL_7;
     }
@@ -321,7 +321,7 @@ LABEL_12:
   [(CRLCanvasKnobTracker *)self moveKnobToCanvasPosition:?];
 }
 
-- (void)commitChangesForReps:(id)a3
+- (void)commitChangesForReps:(id)reps
 {
   if (self->_didBegin)
   {
@@ -333,12 +333,12 @@ LABEL_12:
 {
   v3 = objc_opt_new();
   v4 = [(CRLCanvasKnobTracker *)self rep];
-  v5 = [v4 parentRep];
+  parentRep = [v4 parentRep];
 
-  v6 = [v5 layout];
+  layout = [parentRep layout];
   v7 = [(CRLCanvasKnobTracker *)self rep];
-  v8 = [v7 layout];
-  v9 = [v6 childLayoutIsCurrentlyHiddenWhileManipulating:v8];
+  layout2 = [v7 layout];
+  v9 = [layout childLayoutIsCurrentlyHiddenWhileManipulating:layout2];
 
   if (v9)
   {

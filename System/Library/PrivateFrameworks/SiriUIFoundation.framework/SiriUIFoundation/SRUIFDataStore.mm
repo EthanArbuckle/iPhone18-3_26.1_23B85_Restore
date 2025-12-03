@@ -1,23 +1,23 @@
 @interface SRUIFDataStore
 - (SRUIFDataStore)init;
-- (SRUIFDataStore)initWithEntries:(id)a3;
-- (SRUIFDataStore)initWithPropertyListRepresentation:(id)a3;
-- (id)imageDataForKey:(id)a3;
+- (SRUIFDataStore)initWithEntries:(id)entries;
+- (SRUIFDataStore)initWithPropertyListRepresentation:(id)representation;
+- (id)imageDataForKey:(id)key;
 - (id)propertyListRepresentation;
-- (void)setImageData:(id)a3 forKey:(id)a4;
+- (void)setImageData:(id)data forKey:(id)key;
 @end
 
 @implementation SRUIFDataStore
 
-- (SRUIFDataStore)initWithEntries:(id)a3
+- (SRUIFDataStore)initWithEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   v9.receiver = self;
   v9.super_class = SRUIFDataStore;
   v5 = [(SRUIFDataStore *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [entriesCopy mutableCopy];
     entries = v5->_entries;
     v5->_entries = v6;
   }
@@ -27,51 +27,51 @@
 
 - (SRUIFDataStore)init
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(SRUIFDataStore *)self initWithEntries:v3];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = [(SRUIFDataStore *)self initWithEntries:dictionary];
 
   return v4;
 }
 
-- (void)setImageData:(id)a3 forKey:(id)a4
+- (void)setImageData:(id)data forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_SRUIFDataStoreEntry alloc] initWithType:1 value:v7];
+  keyCopy = key;
+  dataCopy = data;
+  v8 = [[_SRUIFDataStoreEntry alloc] initWithType:1 value:dataCopy];
 
-  [(NSMutableDictionary *)self->_entries setObject:v8 forKey:v6];
+  [(NSMutableDictionary *)self->_entries setObject:v8 forKey:keyCopy];
 }
 
-- (id)imageDataForKey:(id)a3
+- (id)imageDataForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_entries objectForKey:v4];
+  keyCopy = key;
+  v5 = [(NSMutableDictionary *)self->_entries objectForKey:keyCopy];
   v6 = v5;
   if (v5)
   {
     if ([v5 type] == 1)
     {
-      v7 = [v6 value];
+      value = [v6 value];
       goto LABEL_7;
     }
 
     v8 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
     {
-      [(SRUIFDataStore *)v4 imageDataForKey:v8, v6];
+      [(SRUIFDataStore *)keyCopy imageDataForKey:v8, v6];
     }
   }
 
-  v7 = 0;
+  value = 0;
 LABEL_7:
 
-  return v7;
+  return value;
 }
 
 - (id)propertyListRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [v3 setObject:&unk_287A18BE8 forKey:@"Version"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:&unk_287A18BE8 forKey:@"Version"];
   v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSMutableDictionary count](self->_entries, "count")}];
   entries = self->_entries;
   v8[0] = MEMORY[0x277D85DD0];
@@ -81,9 +81,9 @@ LABEL_7:
   v9 = v4;
   v6 = v4;
   [(NSMutableDictionary *)entries enumerateKeysAndObjectsUsingBlock:v8];
-  [v3 setObject:v6 forKey:@"Entries"];
+  [dictionary setObject:v6 forKey:@"Entries"];
 
-  return v3;
+  return dictionary;
 }
 
 void __44__SRUIFDataStore_propertyListRepresentation__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -94,9 +94,9 @@ void __44__SRUIFDataStore_propertyListRepresentation__block_invoke(uint64_t a1, 
   [v4 setObject:v6 forKey:v5];
 }
 
-- (SRUIFDataStore)initWithPropertyListRepresentation:(id)a3
+- (SRUIFDataStore)initWithPropertyListRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = objc_alloc_init(SRUIFDictionarySchema);
   v6 = [SRUIFCoercion typeAssertionWithClass:objc_opt_class()];
   [(SRUIFDictionarySchema *)v5 setObjectCoercion:v6 forKey:@"Version"];
@@ -105,23 +105,23 @@ void __44__SRUIFDataStore_propertyListRepresentation__block_invoke(uint64_t a1, 
   [(SRUIFDictionarySchema *)v5 setObjectCoercion:v7 forKey:@"Entries"];
 
   v16 = 0;
-  v8 = [(SRUIFDictionarySchema *)v5 coerceObject:v4 error:&v16];
+  v8 = [(SRUIFDictionarySchema *)v5 coerceObject:representationCopy error:&v16];
   v9 = v16;
   if (!v8)
   {
     v14 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
     {
-      [(SRUIFDataStore *)v4 initWithPropertyListRepresentation:v9, v14];
+      [(SRUIFDataStore *)representationCopy initWithPropertyListRepresentation:v9, v14];
     }
 
     goto LABEL_8;
   }
 
   v10 = [v8 objectForKey:@"Version"];
-  v11 = [v10 integerValue];
+  integerValue = [v10 integerValue];
 
-  if (v11 != 1)
+  if (integerValue != 1)
   {
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
     {
@@ -129,17 +129,17 @@ void __44__SRUIFDataStore_propertyListRepresentation__block_invoke(uint64_t a1, 
     }
 
 LABEL_8:
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
   v12 = [v8 objectForKey:@"Entries"];
   self = [(SRUIFDataStore *)self initWithEntries:v12];
 
-  v13 = self;
+  selfCopy = self;
 LABEL_9:
 
-  return v13;
+  return selfCopy;
 }
 
 id __53__SRUIFDataStore_initWithPropertyListRepresentation___block_invoke(uint64_t a1, void *a2, void *a3)

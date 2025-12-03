@@ -1,83 +1,83 @@
 @interface PrivacyProxyNetworkStatus
-- (PrivacyProxyNetworkStatus)initWithCoder:(id)a3;
-- (PrivacyProxyNetworkStatus)initWithData:(id)a3;
-- (PrivacyProxyNetworkStatus)initWithStatus:(unint64_t)a3 type:(int)a4 name:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithIndent:(int)a3 options:(unint64_t)a4;
+- (PrivacyProxyNetworkStatus)initWithCoder:(id)coder;
+- (PrivacyProxyNetworkStatus)initWithData:(id)data;
+- (PrivacyProxyNetworkStatus)initWithStatus:(unint64_t)status type:(int)type name:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithIndent:(int)indent options:(unint64_t)options;
 - (id)networkStatusString;
 - (id)networkTypeString;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PrivacyProxyNetworkStatus
 
 - (id)networkStatusString
 {
-  v2 = [(PrivacyProxyNetworkStatus *)self networkStatus];
-  if (v2 > 2)
+  networkStatus = [(PrivacyProxyNetworkStatus *)self networkStatus];
+  if (networkStatus > 2)
   {
     return @"Invalid";
   }
 
   else
   {
-    return off_1E7A30658[v2];
+    return off_1E7A30658[networkStatus];
   }
 }
 
 - (id)networkTypeString
 {
-  v2 = [(PrivacyProxyNetworkStatus *)self networkType];
-  if (v2 > 4)
+  networkType = [(PrivacyProxyNetworkStatus *)self networkType];
+  if (networkType > 4)
   {
     return @"Invalid";
   }
 
   else
   {
-    return off_1E7A30670[v2];
+    return off_1E7A30670[networkType];
   }
 }
 
-- (id)descriptionWithIndent:(int)a3 options:(unint64_t)a4
+- (id)descriptionWithIndent:(int)indent options:(unint64_t)options
 {
   v7 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:0];
-  v8 = [(PrivacyProxyNetworkStatus *)self networkStatusString];
-  [(NSMutableString *)v7 appendPrettyObject:v8 withName:@"Network Status" andIndent:a3 options:a4];
+  networkStatusString = [(PrivacyProxyNetworkStatus *)self networkStatusString];
+  [(NSMutableString *)v7 appendPrettyObject:networkStatusString withName:@"Network Status" andIndent:indent options:options];
 
-  v9 = [(PrivacyProxyNetworkStatus *)self networkTypeString];
-  [(NSMutableString *)v7 appendPrettyObject:v9 withName:@"Network Type" andIndent:a3 options:a4];
+  networkTypeString = [(PrivacyProxyNetworkStatus *)self networkTypeString];
+  [(NSMutableString *)v7 appendPrettyObject:networkTypeString withName:@"Network Type" andIndent:indent options:options];
 
-  v10 = [(PrivacyProxyNetworkStatus *)self networkName];
-  [(NSMutableString *)v7 appendPrettyObject:v10 withName:@"Network Name" andIndent:a3 options:a4];
+  networkName = [(PrivacyProxyNetworkStatus *)self networkName];
+  [(NSMutableString *)v7 appendPrettyObject:networkName withName:@"Network Name" andIndent:indent options:options];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PrivacyProxyNetworkStatus allocWithZone:?]];
   [(PrivacyProxyNetworkStatus *)v4 setNetworkStatus:[(PrivacyProxyNetworkStatus *)self networkStatus]];
   [(PrivacyProxyNetworkStatus *)v4 setNetworkType:[(PrivacyProxyNetworkStatus *)self networkType]];
-  v5 = [(PrivacyProxyNetworkStatus *)self networkName];
-  [(PrivacyProxyNetworkStatus *)v4 setNetworkName:v5];
+  networkName = [(PrivacyProxyNetworkStatus *)self networkName];
+  [(PrivacyProxyNetworkStatus *)v4 setNetworkName:networkName];
 
   return v4;
 }
 
-- (PrivacyProxyNetworkStatus)initWithStatus:(unint64_t)a3 type:(int)a4 name:(id)a5
+- (PrivacyProxyNetworkStatus)initWithStatus:(unint64_t)status type:(int)type name:(id)name
 {
-  v9 = a5;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = PrivacyProxyNetworkStatus;
   v10 = [(PrivacyProxyNetworkStatus *)&v16 init];
   v11 = v10;
   if (v10)
   {
-    v10->_networkStatus = a3;
-    v10->_networkType = a4;
-    objc_storeStrong(&v10->_networkName, a5);
+    v10->_networkStatus = status;
+    v10->_networkType = type;
+    objc_storeStrong(&v10->_networkName, name);
     v12 = v11;
   }
 
@@ -94,17 +94,17 @@
   return v11;
 }
 
-- (PrivacyProxyNetworkStatus)initWithCoder:(id)a3
+- (PrivacyProxyNetworkStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PrivacyProxyNetworkStatus;
   v5 = [(PrivacyProxyNetworkStatus *)&v12 init];
   if (v5)
   {
-    v5->_networkStatus = [v4 decodeIntForKey:@"PrivacyProxyNetworkStatus"];
-    v5->_networkType = [v4 decodeIntForKey:@"PrivacyProxyNetworkType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyNetworkName"];
+    v5->_networkStatus = [coderCopy decodeIntForKey:@"PrivacyProxyNetworkStatus"];
+    v5->_networkType = [coderCopy decodeIntForKey:@"PrivacyProxyNetworkType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyNetworkName"];
     networkName = v5->_networkName;
     v5->_networkName = v6;
 
@@ -124,31 +124,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:-[PrivacyProxyNetworkStatus networkStatus](self forKey:{"networkStatus"), @"PrivacyProxyNetworkStatus"}];
-  [v4 encodeInt:-[PrivacyProxyNetworkStatus networkType](self forKey:{"networkType"), @"PrivacyProxyNetworkType"}];
-  v5 = [(PrivacyProxyNetworkStatus *)self networkName];
-  [v4 encodeObject:v5 forKey:@"PrivacyProxyNetworkName"];
+  coderCopy = coder;
+  [coderCopy encodeInt:-[PrivacyProxyNetworkStatus networkStatus](self forKey:{"networkStatus"), @"PrivacyProxyNetworkStatus"}];
+  [coderCopy encodeInt:-[PrivacyProxyNetworkStatus networkType](self forKey:{"networkType"), @"PrivacyProxyNetworkType"}];
+  networkName = [(PrivacyProxyNetworkStatus *)self networkName];
+  [coderCopy encodeObject:networkName forKey:@"PrivacyProxyNetworkName"];
 }
 
 - (id)serialize
 {
   v3 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   [(PrivacyProxyNetworkStatus *)self encodeWithCoder:v3];
-  v4 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  return v4;
+  return encodedData;
 }
 
-- (PrivacyProxyNetworkStatus)initWithData:(id)a3
+- (PrivacyProxyNetworkStatus)initWithData:(id)data
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696ACD0];
-  v5 = a3;
+  dataCopy = data;
   v16 = 0;
-  v6 = [[v4 alloc] initForReadingFromData:v5 error:&v16];
+  v6 = [[v4 alloc] initForReadingFromData:dataCopy error:&v16];
 
   v7 = v16;
   v8 = v7;
@@ -173,7 +173,7 @@
     }
 
     self = v12;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -186,11 +186,11 @@
       _os_log_error_impl(&dword_1AE7E2000, v10, OS_LOG_TYPE_ERROR, "Failed to create a decoder for the network status %@", buf, 0xCu);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 @end

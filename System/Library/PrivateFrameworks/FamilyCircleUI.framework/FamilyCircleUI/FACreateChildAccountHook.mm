@@ -1,44 +1,44 @@
 @interface FACreateChildAccountHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_handleCreateAccountBasedOnKey:(id)a3 completion:(id)a4;
-- (void)createChildControllerDidPresentInitialViewController:(id)a3;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_handleCreateAccountBasedOnKey:(id)key completion:(id)completion;
+- (void)createChildControllerDidPresentInitialViewController:(id)controller;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation FACreateChildAccountHook
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = a3;
-  v4 = [v3 name];
-  if ([v4 isEqualToString:@"family:createChildAccount"])
+  elementCopy = element;
+  name = [elementCopy name];
+  if ([name isEqualToString:@"family:createChildAccount"])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 name];
-    v5 = [v6 isEqualToString:@"family:createTeenAccount"];
+    name2 = [elementCopy name];
+    v5 = [name2 isEqualToString:@"family:createTeenAccount"];
   }
 
   return v5;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = a3;
-  v4 = [v3 clientInfo];
+  modelCopy = model;
+  clientInfo = [modelCopy clientInfo];
   v5 = *MEMORY[0x277D46250];
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277D46250]];
+  v6 = [clientInfo objectForKeyedSubscript:*MEMORY[0x277D46250]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v3 clientInfo];
-    v8 = [v7 objectForKeyedSubscript:v5];
+    clientInfo2 = [modelCopy clientInfo];
+    v8 = [clientInfo2 objectForKeyedSubscript:v5];
   }
 
   else
@@ -59,25 +59,25 @@
   return v9;
 }
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
-  v8 = a6;
-  v9 = [a3 name];
-  [(FACreateChildAccountHook *)self _handleCreateAccountBasedOnKey:v9 completion:v8];
+  completionCopy = completion;
+  name = [element name];
+  [(FACreateChildAccountHook *)self _handleCreateAccountBasedOnKey:name completion:completionCopy];
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [v12 clientInfo];
+  modelCopy = model;
+  completionCopy = completion;
+  clientInfo = [modelCopy clientInfo];
   v8 = *MEMORY[0x277D46250];
-  v9 = [v7 objectForKeyedSubscript:*MEMORY[0x277D46250]];
+  v9 = [clientInfo objectForKeyedSubscript:*MEMORY[0x277D46250]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v12 clientInfo];
-    v11 = [v10 objectForKeyedSubscript:v8];
+    clientInfo2 = [modelCopy clientInfo];
+    v11 = [clientInfo2 objectForKeyedSubscript:v8];
   }
 
   else
@@ -85,13 +85,13 @@
     v11 = 0;
   }
 
-  [(FACreateChildAccountHook *)self _handleCreateAccountBasedOnKey:v11 completion:v6];
+  [(FACreateChildAccountHook *)self _handleCreateAccountBasedOnKey:v11 completion:completionCopy];
 }
 
-- (void)_handleCreateAccountBasedOnKey:(id)a3 completion:(id)a4
+- (void)_handleCreateAccountBasedOnKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   v8 = _FALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -99,11 +99,11 @@
     _os_log_impl(&dword_21BB35000, v8, OS_LOG_TYPE_DEFAULT, "handling child account creation (via rui hook)", buf, 2u);
   }
 
-  v9 = [MEMORY[0x277CB8F48] defaultStore];
-  v10 = [v9 aa_primaryAppleAccount];
-  if (v10)
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  if (aa_primaryAppleAccount)
   {
-    v11 = [[FACreateChildController alloc] initWithAppleAccount:v10];
+    v11 = [[FACreateChildController alloc] initWithAppleAccount:aa_primaryAppleAccount];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v13 = [WeakRetained presentationContextForHook:self];
     [(FACreateChildController *)v11 setPresentingViewController:v13];
@@ -114,9 +114,9 @@
     v18 = 3221225472;
     v19 = __70__FACreateChildAccountHook__handleCreateAccountBasedOnKey_completion___block_invoke;
     v20 = &unk_2782F3D08;
-    v14 = v6;
+    v14 = keyCopy;
     v21 = v14;
-    v22 = v7;
+    v22 = completionCopy;
     v15 = _Block_copy(&v17);
     if ([v14 isEqualToString:{@"family:createChildAccount", v17, v18, v19, v20}])
     {
@@ -137,10 +137,10 @@
     goto LABEL_12;
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v11 = [MEMORY[0x277CCA9B8] fa_familyErrorWithCode:-1004];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
 LABEL_12:
   }
 }
@@ -177,10 +177,10 @@ void __70__FACreateChildAccountHook__handleCreateAccountBasedOnKey_completion___
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createChildControllerDidPresentInitialViewController:(id)a3
+- (void)createChildControllerDidPresentInitialViewController:(id)controller
 {
-  v3 = [(FACreateChildAccountHook *)self objectModel];
-  [v3 stopActivityIndicator];
+  objectModel = [(FACreateChildAccountHook *)self objectModel];
+  [objectModel stopActivityIndicator];
 }
 
 - (RUIServerHookDelegate)delegate

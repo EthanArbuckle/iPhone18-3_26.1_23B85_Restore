@@ -1,29 +1,29 @@
 @interface TSTGroupingColumnList
-- (BOOL)hasPrefix:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isFunctionallyEquivalent:(id)a3;
-- (BOOL)isGroupingColumnUidsEqual:(id)a3;
-- (BOOL)p_isEqual:(id)a3;
+- (BOOL)hasPrefix:(id)prefix;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isFunctionallyEquivalent:(id)equivalent;
+- (BOOL)isGroupingColumnUidsEqual:(id)equal;
+- (BOOL)p_isEqual:(id)equal;
 - (TSKUIDStructVectorTemplate<TSKUIDStruct>)groupingColumnUidList;
 - (TSTGroupingColumnList)init;
-- (TSTGroupingColumnList)initWithArchive:(const void *)a3;
-- (TSTGroupingColumnList)initWithGroupingColumns:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)groupingColumnForColumnUID:(TSKUIDStruct)a3;
-- (id)ruleAtGroupLevel:(unsigned __int8)a3;
-- (id)ruleAtIndex:(unint64_t)a3;
-- (void)addRule:(id)a3 atGroupLevel:(unsigned __int8)a4;
-- (void)addRule:(id)a3 atIndex:(unint64_t)a4;
-- (void)appendRules:(id)a3;
-- (void)changeGroupingTypeForGroupLevel:(unsigned __int8)a3 toType:(int64_t)a4;
-- (void)changeGroupingTypeForRuleIndex:(unint64_t)a3 toType:(int64_t)a4;
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4;
-- (void)moveRuleFromGroupLevel:(unsigned __int8)a3 toLevel:(unsigned __int8)a4;
-- (void)moveRuleFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
-- (void)removeRuleAtGroupLevel:(unsigned __int8)a3;
-- (void)removeRuleAtIndex:(unint64_t)a3;
-- (void)replaceRuleAtGroupLevel:(unsigned __int8)a3 withRule:(id)a4;
-- (void)replaceRuleAtIndex:(unint64_t)a3 withRule:(id)a4;
+- (TSTGroupingColumnList)initWithArchive:(const void *)archive;
+- (TSTGroupingColumnList)initWithGroupingColumns:(id)columns;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)groupingColumnForColumnUID:(TSKUIDStruct)d;
+- (id)ruleAtGroupLevel:(unsigned __int8)level;
+- (id)ruleAtIndex:(unint64_t)index;
+- (void)addRule:(id)rule atGroupLevel:(unsigned __int8)level;
+- (void)addRule:(id)rule atIndex:(unint64_t)index;
+- (void)appendRules:(id)rules;
+- (void)changeGroupingTypeForGroupLevel:(unsigned __int8)level toType:(int64_t)type;
+- (void)changeGroupingTypeForRuleIndex:(unint64_t)index toType:(int64_t)type;
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver;
+- (void)moveRuleFromGroupLevel:(unsigned __int8)level toLevel:(unsigned __int8)toLevel;
+- (void)moveRuleFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)removeRuleAtGroupLevel:(unsigned __int8)level;
+- (void)removeRuleAtIndex:(unint64_t)index;
+- (void)replaceRuleAtGroupLevel:(unsigned __int8)level withRule:(id)rule;
+- (void)replaceRuleAtIndex:(unint64_t)index withRule:(id)rule;
 @end
 
 @implementation TSTGroupingColumnList
@@ -43,21 +43,21 @@
   return v2;
 }
 
-- (TSTGroupingColumnList)initWithGroupingColumns:(id)a3
+- (TSTGroupingColumnList)initWithGroupingColumns:(id)columns
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  columnsCopy = columns;
   v9 = objc_msgSend_init(self, v5, v6, v7, v8);
   if (v9)
   {
     v10 = objc_alloc(MEMORY[0x277CBEB18]);
-    v15 = objc_msgSend_count(v4, v11, v12, v13, v14);
+    v15 = objc_msgSend_count(columnsCopy, v11, v12, v13, v14);
     v19 = objc_msgSend_initWithCapacity_(v10, v16, v15, v17, v18);
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v20 = v4;
+    v20 = columnsCopy;
     v26 = objc_msgSend_countByEnumeratingWithState_objects_count_(v20, v21, &v35, v39, 16);
     if (v26)
     {
@@ -92,37 +92,37 @@
   return v9;
 }
 
-- (id)ruleAtIndex:(unint64_t)a3
+- (id)ruleAtIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
   }
 
   else
   {
-    if (objc_msgSend_count(self->_groupingColumns, a2, a3, v3, v4) <= a3)
+    if (objc_msgSend_count(self->_groupingColumns, a2, index, v3, v4) <= index)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = objc_msgSend_objectAtIndexedSubscript_(self->_groupingColumns, v10, a3, v11, v12);
+      v6 = objc_msgSend_objectAtIndexedSubscript_(self->_groupingColumns, v10, index, v11, v12);
     }
   }
 
   return v6;
 }
 
-- (id)ruleAtGroupLevel:(unsigned __int8)a3
+- (id)ruleAtGroupLevel:(unsigned __int8)level
 {
-  if (a3)
+  if (level)
   {
-    v7 = a3;
-    if (objc_msgSend_count(self->_groupingColumns, a2, a3, v3, v4) >= a3)
+    levelCopy = level;
+    if (objc_msgSend_count(self->_groupingColumns, a2, level, v3, v4) >= level)
     {
-      v11 = objc_msgSend_objectAtIndexedSubscript_(self->_groupingColumns, v8, (v7 - 1), v9, v10);
+      v11 = objc_msgSend_objectAtIndexedSubscript_(self->_groupingColumns, v8, (levelCopy - 1), v9, v10);
     }
 
     else
@@ -139,10 +139,10 @@
   return v11;
 }
 
-- (id)groupingColumnForColumnUID:(TSKUIDStruct)a3
+- (id)groupingColumnForColumnUID:(TSKUIDStruct)d
 {
-  upper = a3._upper;
-  lower = a3._lower;
+  upper = d._upper;
+  lower = d._lower;
   v24 = *MEMORY[0x277D85DE8];
   v19 = 0u;
   v20 = 0u;
@@ -190,7 +190,7 @@ LABEL_12:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v9 = objc_msgSend_mutableCopy(self->_groupingColumns, v5, v6, v7, v8);
@@ -200,11 +200,11 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)p_isEqual:(id)a3
+- (BOOL)p_isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9 = objc_msgSend_count(self, v5, v6, v7, v8);
-  if (v9 == objc_msgSend_count(v4, v10, v11, v12, v13))
+  if (v9 == objc_msgSend_count(equalCopy, v10, v11, v12, v13))
   {
     v21 = objc_msgSend_count(self, v14, v15, v16, v17);
     if (v21)
@@ -214,7 +214,7 @@ LABEL_12:
       do
       {
         v24 = objc_msgSend_ruleAtGroupLevel_(self, v18, v23, v19, v20);
-        v28 = objc_msgSend_objectAtIndex_(v4, v25, v22 - 1, v26, v27);
+        v28 = objc_msgSend_objectAtIndex_(equalCopy, v25, v22 - 1, v26, v27);
         isEqual = objc_msgSend_isEqual_(v24, v29, v28, v30, v31);
 
         v22 = ++v23;
@@ -246,9 +246,9 @@ LABEL_12:
   return isEqual;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -276,11 +276,11 @@ LABEL_7:
   return isEqual;
 }
 
-- (BOOL)isGroupingColumnUidsEqual:(id)a3
+- (BOOL)isGroupingColumnUidsEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9 = objc_msgSend_count(self, v5, v6, v7, v8);
-  if (v9 != objc_msgSend_count(v4, v10, v11, v12, v13))
+  if (v9 != objc_msgSend_count(equalCopy, v10, v11, v12, v13))
   {
 LABEL_9:
     v39 = 0;
@@ -294,7 +294,7 @@ LABEL_9:
     while (1)
     {
       v23 = objc_msgSend_ruleAtGroupLevel_(self, v18, v22, v19, v20);
-      v27 = objc_msgSend_ruleAtGroupLevel_(v4, v24, v22, v25, v26);
+      v27 = objc_msgSend_ruleAtGroupLevel_(equalCopy, v24, v22, v25, v26);
       v32 = objc_msgSend_groupingColumnUid(v23, v28, v29, v30, v31);
       v34 = v33;
       if (v32 != objc_msgSend_groupingColumnUid(v27, v33, v35, v36, v37) || v34 != v38)
@@ -318,11 +318,11 @@ LABEL_10:
   return v39;
 }
 
-- (BOOL)isFunctionallyEquivalent:(id)a3
+- (BOOL)isFunctionallyEquivalent:(id)equivalent
 {
-  v4 = a3;
+  equivalentCopy = equivalent;
   v9 = objc_msgSend_count(self, v5, v6, v7, v8);
-  if (v9 != objc_msgSend_count(v4, v10, v11, v12, v13))
+  if (v9 != objc_msgSend_count(equivalentCopy, v10, v11, v12, v13))
   {
 LABEL_10:
     v48 = 0;
@@ -336,7 +336,7 @@ LABEL_10:
     while (1)
     {
       v23 = objc_msgSend_ruleAtGroupLevel_(self, v18, v22, v19, v20);
-      v27 = objc_msgSend_ruleAtGroupLevel_(v4, v24, v22, v25, v26);
+      v27 = objc_msgSend_ruleAtGroupLevel_(equivalentCopy, v24, v22, v25, v26);
       v32 = objc_msgSend_groupingType(v23, v28, v29, v30, v31);
       if (v32 != objc_msgSend_groupingType(v27, v33, v34, v35, v36))
       {
@@ -366,10 +366,10 @@ LABEL_11:
   return v48;
 }
 
-- (BOOL)hasPrefix:(id)a3
+- (BOOL)hasPrefix:(id)prefix
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend_groupingColumns(a3, a2, a3, v3, v4);
+  v6 = objc_msgSend_groupingColumns(prefix, a2, prefix, v3, v4);
   v11 = objc_msgSend_count(self, v7, v8, v9, v10);
   if (v11 >= objc_msgSend_count(v6, v12, v13, v14, v15))
   {
@@ -427,56 +427,56 @@ LABEL_13:
   return v16;
 }
 
-- (void)addRule:(id)a3 atIndex:(unint64_t)a4
+- (void)addRule:(id)rule atIndex:(unint64_t)index
 {
-  v18 = a3;
-  if (objc_msgSend_count(self->_groupingColumns, v6, v7, v8, v9) < a4)
+  ruleCopy = rule;
+  if (objc_msgSend_count(self->_groupingColumns, v6, v7, v8, v9) < index)
   {
-    a4 = objc_msgSend_count(self->_groupingColumns, v10, v11, v12, v13);
+    index = objc_msgSend_count(self->_groupingColumns, v10, v11, v12, v13);
   }
 
   v14 = objc_msgSend_mutableCopy(self->_groupingColumns, v10, v11, v12, v13);
-  objc_msgSend_insertObject_atIndex_(v14, v15, v18, a4, v16);
+  objc_msgSend_insertObject_atIndex_(v14, v15, ruleCopy, index, v16);
   groupingColumns = self->_groupingColumns;
   self->_groupingColumns = v14;
 }
 
-- (void)removeRuleAtIndex:(unint64_t)a3
+- (void)removeRuleAtIndex:(unint64_t)index
 {
-  if (objc_msgSend_count(self->_groupingColumns, a2, a3, v3, v4) > a3)
+  if (objc_msgSend_count(self->_groupingColumns, a2, index, v3, v4) > index)
   {
     v11 = objc_msgSend_mutableCopy(self->_groupingColumns, v7, v8, v9, v10);
-    objc_msgSend_removeObjectAtIndex_(v11, v12, a3, v13, v14);
+    objc_msgSend_removeObjectAtIndex_(v11, v12, index, v13, v14);
     groupingColumns = self->_groupingColumns;
     self->_groupingColumns = v11;
   }
 }
 
-- (void)moveRuleFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (void)moveRuleFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  v5 = a4;
-  v7 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  toIndexCopy = toIndex;
+  indexCopy = 0x7FFFFFFFFFFFFFFFLL;
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = a3;
-    if (objc_msgSend_count(self->_groupingColumns, a2, a3, a4, v4) < a3)
+    indexCopy = index;
+    if (objc_msgSend_count(self->_groupingColumns, a2, index, toIndex, v4) < index)
     {
-      v7 = objc_msgSend_count(self->_groupingColumns, a2, v8, a4, v4);
+      indexCopy = objc_msgSend_count(self->_groupingColumns, a2, v8, toIndex, v4);
     }
   }
 
-  v9 = objc_msgSend_ruleAtIndex_(self, a2, v7, a4, v4);
-  if (v7 != v5 && v9)
+  v9 = objc_msgSend_ruleAtIndex_(self, a2, indexCopy, toIndex, v4);
+  if (indexCopy != toIndexCopy && v9)
   {
     v27 = v9;
     v14 = objc_msgSend_mutableCopy(self->_groupingColumns, v10, v11, v12, v13);
-    objc_msgSend_removeObjectAtIndex_(v14, v15, v7, v16, v17);
-    if (objc_msgSend_count(v14, v18, v19, v20, v21) < v5)
+    objc_msgSend_removeObjectAtIndex_(v14, v15, indexCopy, v16, v17);
+    if (objc_msgSend_count(v14, v18, v19, v20, v21) < toIndexCopy)
     {
-      v5 = objc_msgSend_count(v14, v22, v23, v24, v25);
+      toIndexCopy = objc_msgSend_count(v14, v22, v23, v24, v25);
     }
 
-    objc_msgSend_insertObject_atIndex_(v14, v22, v27, v5, v25);
+    objc_msgSend_insertObject_atIndex_(v14, v22, v27, toIndexCopy, v25);
     groupingColumns = self->_groupingColumns;
     self->_groupingColumns = v14;
 
@@ -484,26 +484,26 @@ LABEL_13:
   }
 }
 
-- (void)appendRules:(id)a3
+- (void)appendRules:(id)rules
 {
-  v18 = a3;
+  rulesCopy = rules;
   v8 = objc_msgSend_mutableCopy(self->_groupingColumns, v4, v5, v6, v7);
-  v13 = objc_msgSend_groupingColumns(v18, v9, v10, v11, v12);
+  v13 = objc_msgSend_groupingColumns(rulesCopy, v9, v10, v11, v12);
   objc_msgSend_addObjectsFromArray_(v8, v14, v13, v15, v16);
 
   groupingColumns = self->_groupingColumns;
   self->_groupingColumns = v8;
 }
 
-- (void)changeGroupingTypeForRuleIndex:(unint64_t)a3 toType:(int64_t)a4
+- (void)changeGroupingTypeForRuleIndex:(unint64_t)index toType:(int64_t)type
 {
-  v8 = objc_msgSend_ruleAtIndex_(self, a2, a3, a4, v4);
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  v8 = objc_msgSend_ruleAtIndex_(self, a2, index, type, v4);
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
     if (v8)
     {
       v30 = v8;
-      v13 = objc_msgSend_groupingType(v8, v9, v10, v11, v12) == a4;
+      v13 = objc_msgSend_groupingType(v8, v9, v10, v11, v12) == type;
       v8 = v30;
       if (!v13)
       {
@@ -511,8 +511,8 @@ LABEL_13:
         v19 = objc_msgSend_groupingColumnUid(v30, v15, v16, v17, v18);
         v21 = v20;
         v25 = objc_msgSend_columnUid(v30, v20, v22, v23, v24);
-        v27 = objc_msgSend_initWithGroupingColumnUid_columnUid_groupingType_(v14, v26, v19, v21, v25, v26, a4);
-        objc_msgSend_replaceRuleAtIndex_withRule_(self, v28, a3, v27, v29);
+        v27 = objc_msgSend_initWithGroupingColumnUid_columnUid_groupingType_(v14, v26, v19, v21, v25, v26, type);
+        objc_msgSend_replaceRuleAtIndex_withRule_(self, v28, index, v27, v29);
 
         v8 = v30;
       }
@@ -520,20 +520,20 @@ LABEL_13:
   }
 }
 
-- (void)replaceRuleAtIndex:(unint64_t)a3 withRule:(id)a4
+- (void)replaceRuleAtIndex:(unint64_t)index withRule:(id)rule
 {
-  v14 = a4;
+  ruleCopy = rule;
   v10 = objc_msgSend_mutableCopy(self->_groupingColumns, v6, v7, v8, v9);
-  objc_msgSend_replaceObjectAtIndex_withObject_(v10, v11, a3, v14, v12);
+  objc_msgSend_replaceObjectAtIndex_withObject_(v10, v11, index, ruleCopy, v12);
   groupingColumns = self->_groupingColumns;
   self->_groupingColumns = v10;
 }
 
-- (void)addRule:(id)a3 atGroupLevel:(unsigned __int8)a4
+- (void)addRule:(id)rule atGroupLevel:(unsigned __int8)level
 {
-  v4 = a4;
-  v20 = a3;
-  if (!v4)
+  levelCopy = level;
+  ruleCopy = rule;
+  if (!levelCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSTGroupingColumnList addRule:atGroupLevel:]", v7, v8);
@@ -543,13 +543,13 @@ LABEL_13:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17, v18, v19);
   }
 
-  objc_msgSend_addRule_atIndex_(self, v6, v20, v4 - 1, v8);
+  objc_msgSend_addRule_atIndex_(self, v6, ruleCopy, levelCopy - 1, v8);
 }
 
-- (void)removeRuleAtGroupLevel:(unsigned __int8)a3
+- (void)removeRuleAtGroupLevel:(unsigned __int8)level
 {
-  v5 = a3;
-  if (!a3)
+  levelCopy = level;
+  if (!level)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTGroupingColumnList removeRuleAtGroupLevel:]", v3, v4);
@@ -559,16 +559,16 @@ LABEL_13:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15, v16, v17);
   }
 
-  MEMORY[0x2821F9670](self, sel_removeRuleAtIndex_, v5 - 1, v3, v4);
+  MEMORY[0x2821F9670](self, sel_removeRuleAtIndex_, levelCopy - 1, v3, v4);
 }
 
-- (void)moveRuleFromGroupLevel:(unsigned __int8)a3 toLevel:(unsigned __int8)a4
+- (void)moveRuleFromGroupLevel:(unsigned __int8)level toLevel:(unsigned __int8)toLevel
 {
-  v5 = a4;
-  v6 = a3;
-  if (a3)
+  toLevelCopy = toLevel;
+  levelCopy = level;
+  if (level)
   {
-    if (a4)
+    if (toLevel)
     {
       goto LABEL_6;
     }
@@ -577,49 +577,49 @@ LABEL_13:
   else
   {
     v8 = MEMORY[0x277D81150];
-    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTGroupingColumnList moveRuleFromGroupLevel:toLevel:]", a4, v4);
+    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTGroupingColumnList moveRuleFromGroupLevel:toLevel:]", toLevel, v4);
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTGroupingColumnList.mm", v11, v12);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v14, v9, v13, 267, 0, "Can't call this on root level");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v15, v16, v17, v18);
-    if (v5)
+    if (toLevelCopy)
     {
       goto LABEL_6;
     }
   }
 
   v19 = MEMORY[0x277D81150];
-  v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTGroupingColumnList moveRuleFromGroupLevel:toLevel:]", a4, v4);
+  v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTGroupingColumnList moveRuleFromGroupLevel:toLevel:]", toLevel, v4);
   v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v21, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTGroupingColumnList.mm", v22, v23);
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v19, v25, v20, v24, 268, 0, "Can't call this on root level");
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27, v28, v29);
 LABEL_6:
 
-  MEMORY[0x2821F9670](self, sel_moveRuleFromIndex_toIndex_, v6 - 1, v5 - 1, v4);
+  MEMORY[0x2821F9670](self, sel_moveRuleFromIndex_toIndex_, levelCopy - 1, toLevelCopy - 1, v4);
 }
 
-- (void)changeGroupingTypeForGroupLevel:(unsigned __int8)a3 toType:(int64_t)a4
+- (void)changeGroupingTypeForGroupLevel:(unsigned __int8)level toType:(int64_t)type
 {
-  v6 = a3;
-  if (!a3)
+  levelCopy = level;
+  if (!level)
   {
     v8 = MEMORY[0x277D81150];
-    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTGroupingColumnList changeGroupingTypeForGroupLevel:toType:]", a4, v4);
+    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTGroupingColumnList changeGroupingTypeForGroupLevel:toType:]", type, v4);
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTGroupingColumnList.mm", v11, v12);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v14, v9, v13, 273, 0, "Can't call this on root level");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v15, v16, v17, v18);
   }
 
-  MEMORY[0x2821F9670](self, sel_changeGroupingTypeForRuleIndex_toType_, v6 - 1, a4, v4);
+  MEMORY[0x2821F9670](self, sel_changeGroupingTypeForRuleIndex_toType_, levelCopy - 1, type, v4);
 }
 
-- (void)replaceRuleAtGroupLevel:(unsigned __int8)a3 withRule:(id)a4
+- (void)replaceRuleAtGroupLevel:(unsigned __int8)level withRule:(id)rule
 {
-  v4 = a3;
-  v20 = a4;
-  if (!v4)
+  levelCopy = level;
+  ruleCopy = rule;
+  if (!levelCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSTGroupingColumnList replaceRuleAtGroupLevel:withRule:]", v7, v8);
@@ -629,7 +629,7 @@ LABEL_6:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17, v18, v19);
   }
 
-  objc_msgSend_replaceRuleAtIndex_withRule_(self, v6, v4 - 1, v20, v8);
+  objc_msgSend_replaceRuleAtIndex_withRule_(self, v6, levelCopy - 1, ruleCopy, v8);
 }
 
 - (TSKUIDStructVectorTemplate<TSKUIDStruct>)groupingColumnUidList
@@ -664,7 +664,7 @@ LABEL_6:
   return result;
 }
 
-- (TSTGroupingColumnList)initWithArchive:(const void *)a3
+- (TSTGroupingColumnList)initWithArchive:(const void *)archive
 {
   v18.receiver = self;
   v18.super_class = TSTGroupingColumnList;
@@ -672,14 +672,14 @@ LABEL_6:
   if (v4)
   {
     v5 = objc_opt_new();
-    v6 = *(a3 + 6);
+    v6 = *(archive + 6);
     if (v6 >= 1)
     {
       v7 = 8;
       do
       {
         v8 = [TSTGroupingColumn alloc];
-        v15 = objc_msgSend_initWithArchive_(v8, v9, *(*(a3 + 4) + v7), v10, v11);
+        v15 = objc_msgSend_initWithArchive_(v8, v9, *(*(archive + 4) + v7), v10, v11);
         if (v15)
         {
           objc_msgSend_addObject_(v5, v12, v15, v13, v14);
@@ -699,10 +699,10 @@ LABEL_6:
   return v4;
 }
 
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  archiverCopy = archiver;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -723,36 +723,36 @@ LABEL_6:
         }
 
         v14 = *(*(&v23 + 1) + 8 * v13);
-        v15 = *(a3 + 4);
+        v15 = *(archive + 4);
         if (!v15)
         {
           goto LABEL_11;
         }
 
-        v16 = *(a3 + 6);
+        v16 = *(archive + 6);
         v17 = *v15;
         if (v16 < *v15)
         {
-          *(a3 + 6) = v16 + 1;
-          objc_msgSend_encodeToArchive_archiver_(v14, v9, *&v15[2 * v16 + 2], v6, v10, v23);
+          *(archive + 6) = v16 + 1;
+          objc_msgSend_encodeToArchive_archiver_(v14, v9, *&v15[2 * v16 + 2], archiverCopy, v10, v23);
           goto LABEL_13;
         }
 
-        if (v17 == *(a3 + 7))
+        if (v17 == *(archive + 7))
         {
 LABEL_11:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 16));
-          v15 = *(a3 + 4);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 16));
+          v15 = *(archive + 4);
           v17 = *v15;
         }
 
         *v15 = v17 + 1;
-        v18 = google::protobuf::Arena::CreateMaybeMessage<TST::GroupColumnArchive>(*(a3 + 2));
-        v19 = *(a3 + 6);
-        v20 = *(a3 + 4) + 8 * v19;
-        *(a3 + 6) = v19 + 1;
+        v18 = google::protobuf::Arena::CreateMaybeMessage<TST::GroupColumnArchive>(*(archive + 2));
+        v19 = *(archive + 6);
+        v20 = *(archive + 4) + 8 * v19;
+        *(archive + 6) = v19 + 1;
         *(v20 + 8) = v18;
-        objc_msgSend_encodeToArchive_archiver_(v14, v21, v18, v6, v22, v23);
+        objc_msgSend_encodeToArchive_archiver_(v14, v21, v18, archiverCopy, v22, v23);
 LABEL_13:
         ++v13;
       }

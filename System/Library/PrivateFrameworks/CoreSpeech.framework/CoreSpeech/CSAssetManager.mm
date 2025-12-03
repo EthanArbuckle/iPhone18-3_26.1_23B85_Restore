@@ -1,32 +1,32 @@
 @interface CSAssetManager
 + (id)sharedManager;
-- (BOOL)_canFetchRemoteAsset:(unint64_t)a3;
-- (CSAssetManager)initWithDownloadOption:(id)a3;
-- (id)allInstalledAssetsOfType:(unint64_t)a3 language:(id)a4;
-- (id)assetForCurrentLanguageOfType:(unint64_t)a3;
-- (id)assetOfType:(unint64_t)a3 language:(id)a4;
-- (id)installedAssetForCurrentLanguageOfType:(unint64_t)a3;
-- (id)installedAssetOfType:(unint64_t)a3 language:(id)a4;
-- (id)installedCompactAssetOfType:(unint64_t)a3 language:(id)a4;
-- (void)CSAdBlockerMetaUpdateMonitor:(id)a3 didReceiveNewAdBlockerAssetMetaData:(BOOL)a4;
-- (void)CSAssetController:(id)a3 didDownloadNewAssetForType:(unint64_t)a4;
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4;
-- (void)CSSpeakerRecognitionAssetMetaUpdateMonitor:(id)a3 didReceiveNewSpeakerRecognitionAssetMetaData:(BOOL)a4;
-- (void)CSSpeechEndpointAssetMetaUpdateMonitor:(id)a3 didReceiveNewSpeechEndpointAssetMetaData:(BOOL)a4;
-- (void)CSVoiceTriggerAssetMetaUpdateMonitor:(id)a3 didReceiveNewVoiceTriggerAssetMetaData:(BOOL)a4;
+- (BOOL)_canFetchRemoteAsset:(unint64_t)asset;
+- (CSAssetManager)initWithDownloadOption:(id)option;
+- (id)allInstalledAssetsOfType:(unint64_t)type language:(id)language;
+- (id)assetForCurrentLanguageOfType:(unint64_t)type;
+- (id)assetOfType:(unint64_t)type language:(id)language;
+- (id)installedAssetForCurrentLanguageOfType:(unint64_t)type;
+- (id)installedAssetOfType:(unint64_t)type language:(id)language;
+- (id)installedCompactAssetOfType:(unint64_t)type language:(id)language;
+- (void)CSAdBlockerMetaUpdateMonitor:(id)monitor didReceiveNewAdBlockerAssetMetaData:(BOOL)data;
+- (void)CSAssetController:(id)controller didDownloadNewAssetForType:(unint64_t)type;
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed;
+- (void)CSSpeakerRecognitionAssetMetaUpdateMonitor:(id)monitor didReceiveNewSpeakerRecognitionAssetMetaData:(BOOL)data;
+- (void)CSSpeechEndpointAssetMetaUpdateMonitor:(id)monitor didReceiveNewSpeechEndpointAssetMetaData:(BOOL)data;
+- (void)CSVoiceTriggerAssetMetaUpdateMonitor:(id)monitor didReceiveNewVoiceTriggerAssetMetaData:(BOOL)data;
 - (void)_createPeriodicalDownloadTimer;
 - (void)_fetchRemoteMetaData;
 - (void)_startPeriodicalDownload;
 - (void)_stopPeriodicalDownload;
-- (void)addObserver:(id)a3 forAssetType:(unint64_t)a4;
-- (void)assetForCurrentLanguageOfType:(unint64_t)a3 completion:(id)a4;
-- (void)assetOfType:(unint64_t)a3 language:(id)a4 compatibilityVersion:(unint64_t)a5 completion:(id)a6;
-- (void)assetOfType:(unint64_t)a3 language:(id)a4 completion:(id)a5;
-- (void)assetOfType:(unint64_t)a3 providerType:(unint64_t)a4 language:(id)a5 completion:(id)a6;
-- (void)installedAssetForCurrentLanguageOfType:(unint64_t)a3 completion:(id)a4;
-- (void)installedAssetOfType:(unint64_t)a3 language:(id)a4 completion:(id)a5;
-- (void)removeObserver:(id)a3 forAssetType:(unint64_t)a4;
-- (void)setAssetDownloadingOption:(id)a3;
+- (void)addObserver:(id)observer forAssetType:(unint64_t)type;
+- (void)assetForCurrentLanguageOfType:(unint64_t)type completion:(id)completion;
+- (void)assetOfType:(unint64_t)type language:(id)language compatibilityVersion:(unint64_t)version completion:(id)completion;
+- (void)assetOfType:(unint64_t)type language:(id)language completion:(id)completion;
+- (void)assetOfType:(unint64_t)type providerType:(unint64_t)providerType language:(id)language completion:(id)completion;
+- (void)installedAssetForCurrentLanguageOfType:(unint64_t)type completion:(id)completion;
+- (void)installedAssetOfType:(unint64_t)type language:(id)language completion:(id)completion;
+- (void)removeObserver:(id)observer forAssetType:(unint64_t)type;
+- (void)setAssetDownloadingOption:(id)option;
 @end
 
 @implementation CSAssetManager
@@ -116,7 +116,7 @@
   objc_destroyWeak(buf);
 }
 
-- (void)CSAssetController:(id)a3 didDownloadNewAssetForType:(unint64_t)a4
+- (void)CSAssetController:(id)controller didDownloadNewAssetForType:(unint64_t)type
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -124,13 +124,13 @@
   v5[2] = sub_100105E88;
   v5[3] = &unk_100253C98;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = type;
   dispatch_async(queue, v5);
 }
 
-- (void)CSSpeechEndpointAssetMetaUpdateMonitor:(id)a3 didReceiveNewSpeechEndpointAssetMetaData:(BOOL)a4
+- (void)CSSpeechEndpointAssetMetaUpdateMonitor:(id)monitor didReceiveNewSpeechEndpointAssetMetaData:(BOOL)data
 {
-  if (a4)
+  if (data)
   {
     v5 = dispatch_get_global_queue(-32768, 0);
     block[0] = _NSConcreteStackBlock;
@@ -142,9 +142,9 @@
   }
 }
 
-- (void)CSSpeakerRecognitionAssetMetaUpdateMonitor:(id)a3 didReceiveNewSpeakerRecognitionAssetMetaData:(BOOL)a4
+- (void)CSSpeakerRecognitionAssetMetaUpdateMonitor:(id)monitor didReceiveNewSpeakerRecognitionAssetMetaData:(BOOL)data
 {
-  if (a4)
+  if (data)
   {
     v5 = dispatch_get_global_queue(-32768, 0);
     block[0] = _NSConcreteStackBlock;
@@ -156,9 +156,9 @@
   }
 }
 
-- (void)CSAdBlockerMetaUpdateMonitor:(id)a3 didReceiveNewAdBlockerAssetMetaData:(BOOL)a4
+- (void)CSAdBlockerMetaUpdateMonitor:(id)monitor didReceiveNewAdBlockerAssetMetaData:(BOOL)data
 {
-  if (a4)
+  if (data)
   {
     v5 = dispatch_get_global_queue(-32768, 0);
     block[0] = _NSConcreteStackBlock;
@@ -170,9 +170,9 @@
   }
 }
 
-- (void)CSVoiceTriggerAssetMetaUpdateMonitor:(id)a3 didReceiveNewVoiceTriggerAssetMetaData:(BOOL)a4
+- (void)CSVoiceTriggerAssetMetaUpdateMonitor:(id)monitor didReceiveNewVoiceTriggerAssetMetaData:(BOOL)data
 {
-  if (a4)
+  if (data)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -184,40 +184,40 @@
   }
 }
 
-- (void)removeObserver:(id)a3 forAssetType:(unint64_t)a4
+- (void)removeObserver:(id)observer forAssetType:(unint64_t)type
 {
-  v6 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001063DC;
   block[3] = &unk_1002533C8;
-  v10 = v6;
-  v11 = a4;
+  v10 = observerCopy;
+  typeCopy = type;
   block[4] = self;
-  v8 = v6;
+  v8 = observerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)addObserver:(id)a3 forAssetType:(unint64_t)a4
+- (void)addObserver:(id)observer forAssetType:(unint64_t)type
 {
-  v6 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100106558;
   block[3] = &unk_1002533C8;
-  v10 = v6;
-  v11 = a4;
+  v10 = observerCopy;
+  typeCopy = type;
   block[4] = self;
-  v8 = v6;
+  v8 = observerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed
 {
-  v6 = a4;
-  objc_storeStrong(&self->_currentLanguageCode, a4);
+  changedCopy = changed;
+  objc_storeStrong(&self->_currentLanguageCode, changed);
   v7 = CSLogCategoryAsset;
   if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_DEFAULT))
   {
@@ -230,14 +230,14 @@
   }
 }
 
-- (BOOL)_canFetchRemoteAsset:(unint64_t)a3
+- (BOOL)_canFetchRemoteAsset:(unint64_t)asset
 {
-  v3 = a3;
-  if (a3 <= 2)
+  assetCopy = asset;
+  if (asset <= 2)
   {
-    if (a3)
+    if (asset)
     {
-      if (a3 == 1)
+      if (asset == 1)
       {
         downloadingOption = self->_downloadingOption;
 
@@ -246,7 +246,7 @@
 
       else
       {
-        if (a3 != 2)
+        if (asset != 2)
         {
 LABEL_21:
           v9 = CSLogCategoryAsset;
@@ -255,7 +255,7 @@ LABEL_21:
             v13 = 136315394;
             v14 = "[CSAssetManager _canFetchRemoteAsset:]";
             v15 = 1026;
-            v16 = v3;
+            v16 = assetCopy;
             _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s Undefined assetType : %{public}u", &v13, 0x12u);
           }
 
@@ -278,9 +278,9 @@ LABEL_21:
 
   else
   {
-    if (a3 <= 4)
+    if (asset <= 4)
     {
-      if (a3 == 3)
+      if (asset == 3)
       {
         v10 = self->_downloadingOption;
 
@@ -295,9 +295,9 @@ LABEL_21:
       }
     }
 
-    if (a3 != 5)
+    if (asset != 5)
     {
-      if (a3 == 7)
+      if (asset == 7)
       {
         v7 = self->_downloadingOption;
 
@@ -369,145 +369,145 @@ LABEL_21:
   }
 }
 
-- (void)assetOfType:(unint64_t)a3 providerType:(unint64_t)a4 language:(id)a5 completion:(id)a6
+- (void)assetOfType:(unint64_t)type providerType:(unint64_t)providerType language:(id)language completion:(id)completion
 {
-  if (a4 == 1)
+  if (providerType == 1)
   {
-    v8 = a6;
-    v9 = a5;
-    v11 = +[CSTrialAssetManager sharedInstance];
-    [v11 getInstalledAssetofType:a3 forLocale:v9 completion:v8];
+    completionCopy = completion;
+    completionCopy2 = language;
+    languageCopy2 = +[CSTrialAssetManager sharedInstance];
+    [languageCopy2 getInstalledAssetofType:type forLocale:completionCopy2 completion:completionCopy];
   }
 
   else
   {
-    v9 = a6;
-    v11 = a5;
-    [CSAssetManager assetOfType:"assetOfType:language:completion:" language:a3 completion:?];
+    completionCopy2 = completion;
+    languageCopy2 = language;
+    [CSAssetManager assetOfType:"assetOfType:language:completion:" language:type completion:?];
   }
 }
 
-- (void)installedAssetOfType:(unint64_t)a3 language:(id)a4 completion:(id)a5
+- (void)installedAssetOfType:(unint64_t)type language:(id)language completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  languageCopy = language;
   v9 = +[CSAssetControllerFactory defaultController];
-  [v9 installedAssetOfType:a3 language:v8 completion:v7];
+  [v9 installedAssetOfType:type language:languageCopy completion:completionCopy];
 }
 
-- (id)installedAssetOfType:(unint64_t)a3 language:(id)a4
+- (id)installedAssetOfType:(unint64_t)type language:(id)language
 {
-  v5 = a4;
+  languageCopy = language;
   v6 = +[CSAssetControllerFactory defaultController];
-  v7 = [v6 installedAssetOfType:a3 language:v5];
+  v7 = [v6 installedAssetOfType:type language:languageCopy];
 
   return v7;
 }
 
-- (void)assetOfType:(unint64_t)a3 language:(id)a4 compatibilityVersion:(unint64_t)a5 completion:(id)a6
+- (void)assetOfType:(unint64_t)type language:(id)language compatibilityVersion:(unint64_t)version completion:(id)completion
 {
-  v12 = a4;
-  v10 = a6;
-  if ([(CSAssetManager *)self _canFetchRemoteAsset:a3])
+  languageCopy = language;
+  completionCopy = completion;
+  if ([(CSAssetManager *)self _canFetchRemoteAsset:type])
   {
     v11 = +[CSAssetControllerFactory defaultController];
-    [v11 assetOfType:a3 language:v12 compatibilityVersion:a5 completion:v10];
+    [v11 assetOfType:type language:languageCopy compatibilityVersion:version completion:completionCopy];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)assetOfType:(unint64_t)a3 language:(id)a4 completion:(id)a5
+- (void)assetOfType:(unint64_t)type language:(id)language completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  LODWORD(self) = [(CSAssetManager *)self _canFetchRemoteAsset:a3];
+  completionCopy = completion;
+  languageCopy = language;
+  LODWORD(self) = [(CSAssetManager *)self _canFetchRemoteAsset:type];
   v10 = +[CSAssetControllerFactory defaultController];
   v11 = v10;
   if (self)
   {
-    [v10 assetOfType:a3 language:v9 completion:v8];
+    [v10 assetOfType:type language:languageCopy completion:completionCopy];
   }
 
   else
   {
-    [v10 installedAssetOfType:a3 language:v9 completion:v8];
+    [v10 installedAssetOfType:type language:languageCopy completion:completionCopy];
   }
 }
 
-- (id)assetOfType:(unint64_t)a3 language:(id)a4
+- (id)assetOfType:(unint64_t)type language:(id)language
 {
-  v6 = a4;
-  v7 = [(CSAssetManager *)self _canFetchRemoteAsset:a3];
+  languageCopy = language;
+  v7 = [(CSAssetManager *)self _canFetchRemoteAsset:type];
   v8 = +[CSAssetControllerFactory defaultController];
   v9 = v8;
   if (v7)
   {
-    [v8 assetOfType:a3 language:v6];
+    [v8 assetOfType:type language:languageCopy];
   }
 
   else
   {
-    [v8 installedAssetOfType:a3 language:v6];
+    [v8 installedAssetOfType:type language:languageCopy];
   }
   v10 = ;
 
   return v10;
 }
 
-- (void)installedAssetForCurrentLanguageOfType:(unint64_t)a3 completion:(id)a4
+- (void)installedAssetForCurrentLanguageOfType:(unint64_t)type completion:(id)completion
 {
   currentLanguageCode = self->_currentLanguageCode;
-  v7 = a4;
+  completionCopy = completion;
   v8 = [CSUtils getSiriLanguageWithFallback:currentLanguageCode];
   v9 = self->_currentLanguageCode;
   self->_currentLanguageCode = v8;
 
   v10 = +[CSAssetControllerFactory defaultController];
-  [v10 installedAssetOfType:a3 language:self->_currentLanguageCode completion:v7];
+  [v10 installedAssetOfType:type language:self->_currentLanguageCode completion:completionCopy];
 }
 
-- (id)installedAssetForCurrentLanguageOfType:(unint64_t)a3
+- (id)installedAssetForCurrentLanguageOfType:(unint64_t)type
 {
   v5 = [CSUtils getSiriLanguageWithFallback:self->_currentLanguageCode];
   currentLanguageCode = self->_currentLanguageCode;
   self->_currentLanguageCode = v5;
 
   v7 = +[CSAssetControllerFactory defaultController];
-  v8 = [v7 installedAssetOfType:a3 language:self->_currentLanguageCode];
+  v8 = [v7 installedAssetOfType:type language:self->_currentLanguageCode];
 
   return v8;
 }
 
-- (void)assetForCurrentLanguageOfType:(unint64_t)a3 completion:(id)a4
+- (void)assetForCurrentLanguageOfType:(unint64_t)type completion:(id)completion
 {
   currentLanguageCode = self->_currentLanguageCode;
-  v7 = a4;
+  completionCopy = completion;
   v8 = [CSUtils getSiriLanguageWithFallback:currentLanguageCode];
   v9 = self->_currentLanguageCode;
   self->_currentLanguageCode = v8;
 
-  v10 = [(CSAssetManager *)self _canFetchRemoteAsset:a3];
+  v10 = [(CSAssetManager *)self _canFetchRemoteAsset:type];
   v11 = +[CSAssetControllerFactory defaultController];
   v12 = self->_currentLanguageCode;
   v13 = v11;
   if (v10)
   {
-    [v11 assetOfType:a3 language:v12 completion:v7];
+    [v11 assetOfType:type language:v12 completion:completionCopy];
   }
 
   else
   {
-    [v11 installedAssetOfType:a3 language:v12 completion:v7];
+    [v11 installedAssetOfType:type language:v12 completion:completionCopy];
   }
 }
 
-- (id)installedCompactAssetOfType:(unint64_t)a3 language:(id)a4
+- (id)installedCompactAssetOfType:(unint64_t)type language:(id)language
 {
-  [(CSAssetManager *)self allInstalledAssetsOfType:a3 language:a4];
+  [(CSAssetManager *)self allInstalledAssetsOfType:type language:language];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -548,63 +548,63 @@ LABEL_11:
   return v5;
 }
 
-- (id)allInstalledAssetsOfType:(unint64_t)a3 language:(id)a4
+- (id)allInstalledAssetsOfType:(unint64_t)type language:(id)language
 {
-  v5 = a4;
+  languageCopy = language;
   v6 = +[CSAssetControllerFactory defaultController];
-  v7 = [v6 allInstalledAssetsOfType:a3 language:v5];
+  v7 = [v6 allInstalledAssetsOfType:type language:languageCopy];
 
   return v7;
 }
 
-- (id)assetForCurrentLanguageOfType:(unint64_t)a3
+- (id)assetForCurrentLanguageOfType:(unint64_t)type
 {
   v5 = [CSUtils getSiriLanguageWithFallback:self->_currentLanguageCode];
   currentLanguageCode = self->_currentLanguageCode;
   self->_currentLanguageCode = v5;
 
-  v7 = [(CSAssetManager *)self _canFetchRemoteAsset:a3];
+  v7 = [(CSAssetManager *)self _canFetchRemoteAsset:type];
   v8 = +[CSAssetControllerFactory defaultController];
   v9 = v8;
   v10 = self->_currentLanguageCode;
   if (v7)
   {
-    [v8 assetOfType:a3 language:v10];
+    [v8 assetOfType:type language:v10];
   }
 
   else
   {
-    [v8 installedAssetOfType:a3 language:v10];
+    [v8 installedAssetOfType:type language:v10];
   }
   v11 = ;
 
   return v11;
 }
 
-- (void)setAssetDownloadingOption:(id)a3
+- (void)setAssetDownloadingOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001074AC;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = optionCopy;
+  selfCopy = self;
+  v6 = optionCopy;
   dispatch_async(queue, v7);
 }
 
-- (CSAssetManager)initWithDownloadOption:(id)a3
+- (CSAssetManager)initWithDownloadOption:(id)option
 {
-  v5 = a3;
+  optionCopy = option;
   v39.receiver = self;
   v39.super_class = CSAssetManager;
   v6 = [(CSAssetManager *)&v39 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_downloadingOption, a3);
+    objc_storeStrong(&v6->_downloadingOption, option);
     v8 = dispatch_queue_create("Serial CSAssetManager queue", 0);
     queue = v7->_queue;
     v7->_queue = v8;

@@ -1,14 +1,14 @@
 @interface NTKCoreRoutineManager
-+ (id)_filteredWaypointForVehicleEvents:(id)a3 withQuery:(id)a4;
++ (id)_filteredWaypointForVehicleEvents:(id)events withQuery:(id)query;
 - (NSArray)waypoints;
 - (NTKCoreRoutineManager)init;
 - (void)_monitorParkedCarEvents;
 - (void)_startMonitoringVehicleEvents;
 - (void)_stopMonitoringVehicleEvents;
-- (void)_updateParkedCarWaypointWith:(id)a3 withError:(id)a4;
+- (void)_updateParkedCarWaypointWith:(id)with withError:(id)error;
 - (void)dealloc;
-- (void)setQueryCenterLocation:(id)a3 radius:(double)a4 poiFilter:(id)a5 completion:(id)a6;
-- (void)startUpdatingDelegate:(id)a3;
+- (void)setQueryCenterLocation:(id)location radius:(double)radius poiFilter:(id)filter completion:(id)completion;
+- (void)startUpdatingDelegate:(id)delegate;
 - (void)stopUpdating;
 @end
 
@@ -50,9 +50,9 @@
   [(NTKCoreRoutineManager *)&v5 dealloc];
 }
 
-- (void)startUpdatingDelegate:(id)a3
+- (void)startUpdatingDelegate:(id)delegate
 {
-  objc_storeStrong(&self->_delegate, a3);
+  objc_storeStrong(&self->_delegate, delegate);
 
   MEMORY[0x2821F9670](v3);
 }
@@ -64,11 +64,11 @@
   self->_delegate = 0;
 }
 
-- (void)_updateParkedCarWaypointWith:(id)a3 withError:(id)a4
+- (void)_updateParkedCarWaypointWith:(id)with withError:(id)error
 {
-  v7 = a3;
-  v9 = a4;
-  if (v9)
+  withCopy = with;
+  errorCopy = error;
+  if (errorCopy)
   {
     v11 = NTKFoghornFaceBundleLogObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -81,7 +81,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!v7 || !objc_msgSend_count(v7, v8, v10))
+  if (!withCopy || !objc_msgSend_count(withCopy, v8, v10))
   {
     v11 = NTKFoghornFaceBundleLogObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -92,7 +92,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  objc_storeStrong(&self->_vehicleEvents, a3);
+  objc_storeStrong(&self->_vehicleEvents, with);
   filteredWaypoints = self->_filteredWaypoints;
   self->_filteredWaypoints = 0;
 
@@ -145,18 +145,18 @@ LABEL_11:
   }
 }
 
-+ (id)_filteredWaypointForVehicleEvents:(id)a3 withQuery:(id)a4
++ (id)_filteredWaypointForVehicleEvents:(id)events withQuery:(id)query
 {
   v62 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  eventsCopy = events;
+  queryCopy = query;
   v7 = objc_opt_new();
-  v10 = objc_msgSend_poiFilter(v6, v8, v9);
+  v10 = objc_msgSend_poiFilter(queryCopy, v8, v9);
   v13 = objc_msgSend_includesCategory_(v10, v11, v12, 32);
 
   if (v13)
   {
-    objc_msgSend_radius(v6, v14, v15);
+    objc_msgSend_radius(queryCopy, v14, v15);
     if (v17 <= 0.0)
     {
       v19 = *MEMORY[0x277CE4278];
@@ -165,7 +165,7 @@ LABEL_11:
 
     else
     {
-      objc_msgSend_centerCoordinate(v6, v16, v17);
+      objc_msgSend_centerCoordinate(queryCopy, v16, v17);
       v19 = v18;
       v21 = v20;
     }
@@ -174,7 +174,7 @@ LABEL_11:
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v22 = v5;
+    v22 = eventsCopy;
     v25 = objc_msgSend_countByEnumeratingWithState_objects_count_(v22, v23, v24, &v57, v61, 16);
     if (v25)
     {
@@ -204,7 +204,7 @@ LABEL_11:
 
             v44 = CLLocationCoordinate2DMake(v36, v43);
             v45 = ntk_CLLocationCoordinate2DDistanceToCoordinate(v19, v21, v44.latitude, v44.longitude);
-            objc_msgSend_radius(v6, v46, v45);
+            objc_msgSend_radius(queryCopy, v46, v45);
             if (v45 > v48)
             {
               continue;
@@ -275,17 +275,17 @@ LABEL_9:
   return v3;
 }
 
-- (void)setQueryCenterLocation:(id)a3 radius:(double)a4 poiFilter:(id)a5 completion:(id)a6
+- (void)setQueryCenterLocation:(id)location radius:(double)radius poiFilter:(id)filter completion:(id)completion
 {
-  v29 = a6;
-  v10 = a3;
-  v13 = objc_msgSend_copyIncludingCategories_(a5, v11, v12, 32);
+  completionCopy = completion;
+  locationCopy = location;
+  v13 = objc_msgSend_copyIncludingCategories_(filter, v11, v12, 32);
   v14 = self->_currentQuery;
-  objc_msgSend_coordinate(v10, v15, v16);
+  objc_msgSend_coordinate(locationCopy, v15, v16);
   v18 = v17;
   v20 = v19;
 
-  v22 = objc_msgSend_queryWithCenterCoordinate_radius_poiFilter_(NTKLeghornWaypointQuery, v21, v18, v13, v20, a4);
+  v22 = objc_msgSend_queryWithCenterCoordinate_radius_poiFilter_(NTKLeghornWaypointQuery, v21, v18, v13, v20, radius);
   if ((objc_msgSend_matchesQuery_(v14, v23, v24, v22) & 1) == 0)
   {
     objc_storeStrong(&self->_currentQuery, v22);
@@ -293,10 +293,10 @@ LABEL_9:
     self->_filteredWaypoints = 0;
   }
 
-  if (v29)
+  if (completionCopy)
   {
     v28 = objc_msgSend_waypoints(self, v25, v26);
-    v29[2](v29, self->_filteredWaypoints != 0);
+    completionCopy[2](completionCopy, self->_filteredWaypoints != 0);
   }
 }
 

@@ -1,18 +1,18 @@
 @interface _CPSessionEndFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPSessionEndFeedback)init;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPSessionEndFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (timestamp = self->_timestamp, timestamp == objc_msgSend(v4, "timestamp")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (timestamp = self->_timestamp, timestamp == objc_msgSend(equalCopy, "timestamp")))
   {
     reason = self->_reason;
-    v7 = reason == [v4 reason];
+    v7 = reason == [equalCopy reason];
   }
 
   else
@@ -23,9 +23,9 @@
   return v7;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if ([(_CPSessionEndFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;

@@ -1,35 +1,35 @@
 @interface AAUIBadgeView
 - (AAUIBadgeModelConfiguration)configuration;
 - (AAUIBadgeViewDelegate)badgeDelegate;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isPaused;
 - (NSNumber)overrideEarnedShader;
-- (double)_attenuatedSpinRate:(double)a3;
-- (double)_attenuatedVelocity:(double)a3;
+- (double)_attenuatedSpinRate:(double)rate;
+- (double)_attenuatedVelocity:(double)velocity;
 - (double)playFlipInAnimation;
 - (double)playFlipOutAnimation;
 - (double)timeSinceLastUpdate;
-- (float)_normalizeAngle:(float)a3;
+- (float)_normalizeAngle:(float)angle;
 - (id)_defaultTweaks;
 - (id)_unearnedShaderDefaultTweaks;
-- (id)_valueForTweak:(id)a3;
-- (id)initUsingEarnedShader:(BOOL)a3;
+- (id)_valueForTweak:(id)tweak;
+- (id)initUsingEarnedShader:(BOOL)shader;
 - (id)snapshot;
-- (id)updateBadgeModelForDrawable:(id)a3;
-- (void)_applyImpulse:(double)a3;
+- (id)updateBadgeModelForDrawable:(id)drawable;
+- (void)_applyImpulse:(double)impulse;
 - (void)_generateBackTextureImage;
-- (void)_longPressInternalOnly:(id)a3;
-- (void)_panned:(id)a3;
+- (void)_longPressInternalOnly:(id)only;
+- (void)_panned:(id)_panned;
 - (void)_setBackTextureNeedsRegeneration;
 - (void)_spin360Degrees;
-- (void)_tapped:(id)a3;
+- (void)_tapped:(id)_tapped;
 - (void)cleanupAfterSnapshot;
 - (void)resizeBadgeForCurrentViewSize;
-- (void)setBadgeBacksideAttributedString:(id)a3;
-- (void)setBadgeBacksideIcon:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setFixedBadgeAngle:(double)a3;
-- (void)setPaused:(BOOL)a3;
+- (void)setBadgeBacksideAttributedString:(id)string;
+- (void)setBadgeBacksideIcon:(id)icon;
+- (void)setConfiguration:(id)configuration;
+- (void)setFixedBadgeAngle:(double)angle;
+- (void)setPaused:(BOOL)paused;
 @end
 
 @implementation AAUIBadgeView
@@ -39,8 +39,8 @@
   overrideEarnedShader = self->_overrideEarnedShader;
   if (!overrideEarnedShader)
   {
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v5 = [v4 objectForKey:@"UseEarnedShader"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v5 = [standardUserDefaults objectForKey:@"UseEarnedShader"];
     v6 = self->_overrideEarnedShader;
     self->_overrideEarnedShader = v5;
 
@@ -82,7 +82,7 @@
   return v10;
 }
 
-- (id)initUsingEarnedShader:(BOOL)a3
+- (id)initUsingEarnedShader:(BOOL)shader
 {
   v33 = *MEMORY[0x277D85DE8];
   v30.receiver = self;
@@ -99,20 +99,20 @@
   }
 
   v8->_magnetsEngaged = 1;
-  v10 = [(AAUIBadgeView *)v8 overrideEarnedShader];
+  overrideEarnedShader = [(AAUIBadgeView *)v8 overrideEarnedShader];
 
-  if (v10)
+  if (overrideEarnedShader)
   {
-    v11 = [(AAUIBadgeView *)v9 overrideEarnedShader];
+    overrideEarnedShader2 = [(AAUIBadgeView *)v9 overrideEarnedShader];
     p_useEarnedShader = &v9->_useEarnedShader;
-    v9->_useEarnedShader = [v11 BOOLValue];
+    v9->_useEarnedShader = [overrideEarnedShader2 BOOLValue];
 
     v13 = ACHLogDefault();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(AAUIBadgeView *)v9 overrideEarnedShader];
+      overrideEarnedShader3 = [(AAUIBadgeView *)v9 overrideEarnedShader];
       *buf = 138543362;
-      v32 = v14;
+      v32 = overrideEarnedShader3;
       _os_log_impl(&dword_23E4A3000, v13, OS_LOG_TYPE_DEFAULT, "Overriding earned shader value: %{public}@", buf, 0xCu);
     }
 
@@ -122,22 +122,22 @@
     }
 
 LABEL_8:
-    v15 = [(AAUIBadgeView *)v9 _unearnedShaderDefaultTweaks];
+    _unearnedShaderDefaultTweaks = [(AAUIBadgeView *)v9 _unearnedShaderDefaultTweaks];
     goto LABEL_9;
   }
 
   p_useEarnedShader = &v9->_useEarnedShader;
-  v9->_useEarnedShader = a3;
-  if (!a3)
+  v9->_useEarnedShader = shader;
+  if (!shader)
   {
     goto LABEL_8;
   }
 
 LABEL_6:
-  v15 = [(AAUIBadgeView *)v9 _defaultTweaks];
+  _unearnedShaderDefaultTweaks = [(AAUIBadgeView *)v9 _defaultTweaks];
 LABEL_9:
   tweakableUniforms = v9->_tweakableUniforms;
-  v9->_tweakableUniforms = v15;
+  v9->_tweakableUniforms = _unearnedShaderDefaultTweaks;
 
   v17 = objc_alloc_init(AAUIBadge);
   badge = v9->_badge;
@@ -156,11 +156,11 @@ LABEL_9:
   if (v9->_drawable)
   {
     [(AAUIBadgeView *)v9 setAutoresizingMask:18];
-    v21 = [(AAUIBadgeViewDrawable *)v9->_drawable view];
-    [v21 setFrame:{v4, v5, v6, v7}];
+    view = [(AAUIBadgeViewDrawable *)v9->_drawable view];
+    [view setFrame:{v4, v5, v6, v7}];
 
-    v22 = [(AAUIBadgeViewDrawable *)v9->_drawable view];
-    [(AAUIBadgeView *)v9 addSubview:v22];
+    view2 = [(AAUIBadgeViewDrawable *)v9->_drawable view];
+    [(AAUIBadgeView *)v9 addSubview:view2];
   }
 
   v23 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:v9 action:sel__panned_];
@@ -219,17 +219,17 @@ LABEL_9:
   return v10;
 }
 
-- (id)_valueForTweak:(id)a3
+- (id)_valueForTweak:(id)tweak
 {
-  v3 = [(NSDictionary *)self->_tweakableUniforms objectForKey:a3];
+  v3 = [(NSDictionary *)self->_tweakableUniforms objectForKey:tweak];
   v4 = [v3 objectForKey:@"value"];
 
   return v4;
 }
 
-- (float)_normalizeAngle:(float)a3
+- (float)_normalizeAngle:(float)angle
 {
-  result = fmodf(a3, 6.2832);
+  result = fmodf(angle, 6.2832);
   v4 = result;
   if (result <= 3.14159265)
   {
@@ -248,14 +248,14 @@ LABEL_9:
   return result;
 }
 
-- (id)updateBadgeModelForDrawable:(id)a3
+- (id)updateBadgeModelForDrawable:(id)drawable
 {
-  v4 = a3;
+  drawableCopy = drawable;
   if (self->_useEarnedShader)
   {
-    v5 = [(AAUIBadgeView *)self backTextureImage];
+    backTextureImage = [(AAUIBadgeView *)self backTextureImage];
 
-    if (!v5)
+    if (!backTextureImage)
     {
       [(AAUIBadgeView *)self _generateBackTextureImage];
     }
@@ -270,9 +270,9 @@ LABEL_9:
     [(ARUIAnimatableObject *)self->_badge update:v7];
   }
 
-  v10 = [(AAUIBadgeView *)self magnetsEngaged];
+  magnetsEngaged = [(AAUIBadgeView *)self magnetsEngaged];
   [(AAUIBadge *)self->_badge rotationY];
-  if (v10)
+  if (magnetsEngaged)
   {
     *&v11 = v11;
     [(AAUIBadgeView *)self _normalizeAngle:v11];
@@ -370,25 +370,25 @@ LABEL_9:
   return v2;
 }
 
-- (void)setBadgeBacksideAttributedString:(id)a3
+- (void)setBadgeBacksideAttributedString:(id)string
 {
-  v5 = a3;
-  if (([v5 isEqualToAttributedString:self->_backsideAttributedString] & 1) == 0)
+  stringCopy = string;
+  if (([stringCopy isEqualToAttributedString:self->_backsideAttributedString] & 1) == 0)
   {
-    objc_storeStrong(&self->_backsideAttributedString, a3);
+    objc_storeStrong(&self->_backsideAttributedString, string);
     [(AAUIBadgeView *)self _setBackTextureNeedsRegeneration];
   }
 }
 
-- (void)setBadgeBacksideIcon:(id)a3
+- (void)setBadgeBacksideIcon:(id)icon
 {
-  v5 = a3;
-  if (self->_backAppleLogo != v5)
+  iconCopy = icon;
+  if (self->_backAppleLogo != iconCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_backAppleLogo, a3);
+    v6 = iconCopy;
+    objc_storeStrong(&self->_backAppleLogo, icon);
     [(AAUIBadgeView *)self _setBackTextureNeedsRegeneration];
-    v5 = v6;
+    iconCopy = v6;
   }
 }
 
@@ -403,17 +403,17 @@ LABEL_9:
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
-  v5 = [(AAUIBadgeView *)self configuration];
-  v6 = [v5 badgeShape];
+  configuration = [(AAUIBadgeView *)self configuration];
+  badgeShape = [configuration badgeShape];
 
   *&v7 = 0.0;
-  if (v6 <= 3)
+  if (badgeShape <= 3)
   {
-    if (v6 <= 1)
+    if (badgeShape <= 1)
     {
-      if (v6)
+      if (badgeShape)
       {
-        if (v6 == 1)
+        if (badgeShape == 1)
         {
           v3 = 268.8;
           v8 = 134.4;
@@ -429,7 +429,7 @@ LABEL_14:
       goto LABEL_8;
     }
 
-    if (v6 != 2)
+    if (badgeShape != 2)
     {
       v3 = 256.0;
       v8 = 128.0;
@@ -441,9 +441,9 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (v6 <= 5)
+  if (badgeShape <= 5)
   {
-    if (v6 != 4)
+    if (badgeShape != 4)
     {
 LABEL_8:
       *&v7 = 1.20754717;
@@ -459,7 +459,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (v6 == 6)
+  if (badgeShape == 6)
   {
     v3 = 207.8;
     v8 = 86.95;
@@ -468,7 +468,7 @@ LABEL_15:
     goto LABEL_22;
   }
 
-  if (v6 == 7)
+  if (badgeShape == 7)
   {
     v3 = 240.6;
     v8 = 120.3;
@@ -478,7 +478,7 @@ LABEL_15:
 LABEL_17:
   v8 = v4 * 0.5;
   v55 = *&v7;
-  if (v6 <= 3 && v6 > 1)
+  if (badgeShape <= 3 && badgeShape > 1)
   {
     v8 = v8 + -26.0;
   }
@@ -499,8 +499,8 @@ LABEL_22:
     v10 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:&stru_2850CB9E8];
   }
 
-  v11 = [MEMORY[0x277D759A0] mainScreen];
-  [v11 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v13 = 2.0 / v12;
 
   v14 = v3 + v13 * -2.0;
@@ -549,17 +549,17 @@ LABEL_22:
   }
 
   v26 = 0.0;
-  if (v6 <= 2)
+  if (badgeShape <= 2)
   {
-    if (v6)
+    if (badgeShape)
     {
-      if (v6 == 1)
+      if (badgeShape == 1)
       {
         v29 = 0;
         v30 = 21.0;
       }
 
-      else if (v6 == 2)
+      else if (badgeShape == 2)
       {
         v29 = 0;
         v30 = 154.0;
@@ -578,7 +578,7 @@ LABEL_22:
     goto LABEL_49;
   }
 
-  if ((v6 - 3) < 3)
+  if ((badgeShape - 3) < 3)
   {
 LABEL_49:
     v29 = 0;
@@ -587,13 +587,13 @@ LABEL_49:
   }
 
   v27 = 32.0;
-  if (v6 != 6)
+  if (badgeShape != 6)
   {
     v27 = 0.0;
   }
 
-  v28 = v6 == 7;
-  v29 = v6 != 7 && v6 == 6;
+  v28 = badgeShape == 7;
+  v29 = badgeShape != 7 && badgeShape == 6;
   if (v28)
   {
     v30 = 20.0;
@@ -721,53 +721,53 @@ LABEL_50:
 
   UIGraphicsEndImageContext();
   v51 = self->_backTextureImage;
-  v52 = [(AAUIBadgeView *)self drawable];
-  [v52 setBackTextureImage:v51];
+  drawable = [(AAUIBadgeView *)self drawable];
+  [drawable setBackTextureImage:v51];
 }
 
 - (id)snapshot
 {
-  v2 = [(AAUIBadgeView *)self drawable];
-  v3 = [v2 snapshot];
+  drawable = [(AAUIBadgeView *)self drawable];
+  snapshot = [drawable snapshot];
 
-  return v3;
+  return snapshot;
 }
 
 - (void)resizeBadgeForCurrentViewSize
 {
-  v2 = [(AAUIBadgeView *)self drawable];
-  [v2 resizeBadgeForCurrentViewSize];
+  drawable = [(AAUIBadgeView *)self drawable];
+  [drawable resizeBadgeForCurrentViewSize];
 }
 
 - (void)cleanupAfterSnapshot
 {
-  v2 = [(AAUIBadgeView *)self drawable];
-  [v2 cleanupAfterSnapshot];
+  drawable = [(AAUIBadgeView *)self drawable];
+  [drawable cleanupAfterSnapshot];
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(AAUIBadgeView *)self drawable];
-  [v5 setConfiguration:v4];
+  configurationCopy = configuration;
+  drawable = [(AAUIBadgeView *)self drawable];
+  [drawable setConfiguration:configurationCopy];
 }
 
 - (AAUIBadgeModelConfiguration)configuration
 {
-  v2 = [(AAUIBadgeView *)self drawable];
-  v3 = [v2 configuration];
+  drawable = [(AAUIBadgeView *)self drawable];
+  configuration = [drawable configuration];
 
-  return v3;
+  return configuration;
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
-  v5 = [(AAUIBadgeView *)self isPaused];
-  v6 = [(AAUIBadgeView *)self drawable];
-  [v6 setPaused:v3];
+  pausedCopy = paused;
+  isPaused = [(AAUIBadgeView *)self isPaused];
+  drawable = [(AAUIBadgeView *)self drawable];
+  [drawable setPaused:pausedCopy];
 
-  if (v5 && !v3)
+  if (isPaused && !pausedCopy)
   {
     [(AAUIBadgeView *)self _invalidateLastUpdateTime];
 
@@ -777,19 +777,19 @@ LABEL_50:
 
 - (BOOL)isPaused
 {
-  v2 = [(AAUIBadgeView *)self drawable];
-  v3 = [v2 isPaused];
+  drawable = [(AAUIBadgeView *)self drawable];
+  isPaused = [drawable isPaused];
 
-  return v3;
+  return isPaused;
 }
 
-- (void)setFixedBadgeAngle:(double)a3
+- (void)setFixedBadgeAngle:(double)angle
 {
   [(AAUIBadgeView *)self setPaused:0];
   [(AAUIBadgeView *)self setMagnetsEngaged:1];
   self->_spinRate = 0.0;
   [(AAUIBadge *)self->_badge removeAllAnimationsForBadgePropertyType:2];
-  [(AAUIBadge *)self->_badge setRotationY:a3];
+  [(AAUIBadge *)self->_badge setRotationY:angle];
 
   [(AAUIBadgeView *)self setNeedsDisplay];
 }
@@ -799,35 +799,35 @@ LABEL_50:
   [(AAUIBadgeView *)self setMagnetsEngaged:0];
   [(AAUIBadge *)self->_badge removeAllAnimationsForBadgePropertyType:2];
   [(AAUIBadge *)self->_badge setRotationY:0.0];
-  v3 = [MEMORY[0x277CD9FA0] animation];
+  animation = [MEMORY[0x277CD9FA0] animation];
   v4 = [(AAUIBadgeView *)self _valueForTweak:@"springMass"];
   [v4 floatValue];
-  [v3 setMass:v5];
+  [animation setMass:v5];
 
   v6 = [(AAUIBadgeView *)self _valueForTweak:@"springStiffness"];
   [v6 floatValue];
-  [v3 setStiffness:v7];
+  [animation setStiffness:v7];
 
   v8 = [(AAUIBadgeView *)self _valueForTweak:@"springDamping"];
   [v8 floatValue];
-  [v3 setDamping:v9];
+  [animation setDamping:v9];
 
-  [v3 durationForEpsilon:0.001];
-  [v3 setDuration:?];
+  [animation durationForEpsilon:0.001];
+  [animation setDuration:?];
   [(AAUIBadge *)self->_badge rotationY];
   v11 = v10;
   [(AAUIBadge *)self->_badge rotationY];
   v13 = v12;
   objc_initWeak(&location, self);
   v14 = MEMORY[0x277CE8E78];
-  [v3 duration];
+  [animation duration];
   v16 = v15;
   *&v11 = v11 - fmod(v13 + 2.22044605e-16, 6.28318531) + 6.28318531;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __36__AAUIBadgeView_playFlipInAnimation__block_invoke;
   v25[3] = &unk_278C438D8;
-  v17 = v3;
+  v17 = animation;
   v26 = v17;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -881,18 +881,18 @@ void __36__AAUIBadgeView_playFlipInAnimation__block_invoke_2(uint64_t a1)
     v7 = 0.14;
   }
 
-  v8 = [MEMORY[0x277CD9FA0] animation];
+  animation = [MEMORY[0x277CD9FA0] animation];
   v9 = [(AAUIBadgeView *)self _valueForTweak:@"springMass"];
   [v9 floatValue];
-  [v8 setMass:v7 * v10];
+  [animation setMass:v7 * v10];
 
   v11 = [(AAUIBadgeView *)self _valueForTweak:@"springStiffness"];
   [v11 floatValue];
-  [v8 setStiffness:v12];
+  [animation setStiffness:v12];
 
   v13 = [(AAUIBadgeView *)self _valueForTweak:@"springDamping"];
   [v13 floatValue];
-  [v8 setDamping:v14 * 1.14];
+  [animation setDamping:v14 * 1.14];
 
   v15 = -spinRate;
   if (spinRate >= 0.0)
@@ -900,18 +900,18 @@ void __36__AAUIBadgeView_playFlipInAnimation__block_invoke_2(uint64_t a1)
     v15 = spinRate;
   }
 
-  [v8 setInitialVelocity:v15 / 3.14159265];
-  [v8 durationForEpsilon:0.035];
-  [v8 setDuration:?];
+  [animation setInitialVelocity:v15 / 3.14159265];
+  [animation durationForEpsilon:0.035];
+  [animation setDuration:?];
   objc_initWeak(&location, self);
   v16 = MEMORY[0x277CE8E78];
-  [v8 duration];
+  [animation duration];
   v18 = v17;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __37__AAUIBadgeView_playFlipOutAnimation__block_invoke;
   v28[3] = &unk_278C438D8;
-  v20 = v8;
+  v20 = animation;
   v29 = v20;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -937,12 +937,12 @@ void __37__AAUIBadgeView_playFlipOutAnimation__block_invoke_2(uint64_t a1)
   [WeakRetained setMagnetsEngaged:1];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  if ([(AAUIBadgeView *)self verticalPanningDisabled]&& self->_spinRecognizer == v4)
+  beginCopy = begin;
+  if ([(AAUIBadgeView *)self verticalPanningDisabled]&& self->_spinRecognizer == beginCopy)
   {
-    [(UIPanGestureRecognizer *)v4 velocityInView:self];
+    [(UIPanGestureRecognizer *)beginCopy velocityInView:self];
     v5 = fabs(v7) > fabs(v8);
   }
 
@@ -954,7 +954,7 @@ void __37__AAUIBadgeView_playFlipOutAnimation__block_invoke_2(uint64_t a1)
   return v5;
 }
 
-- (double)_attenuatedSpinRate:(double)a3
+- (double)_attenuatedSpinRate:(double)rate
 {
   [(AAUIBadge *)self->_badge maxRotationY];
   if (v5 > 0.0)
@@ -993,52 +993,52 @@ void __37__AAUIBadgeView_playFlipOutAnimation__block_invoke_2(uint64_t a1)
       v11 = -v11;
     }
 
-    return v10 / v11 * a3;
+    return v10 / v11 * rate;
   }
 
-  return a3;
+  return rate;
 }
 
-- (double)_attenuatedVelocity:(double)a3
+- (double)_attenuatedVelocity:(double)velocity
 {
   [(AAUIBadge *)self->_badge maxRotationY];
-  v5 = -1.0;
-  if (a3 >= -1.0)
+  velocityCopy = -1.0;
+  if (velocity >= -1.0)
   {
-    v5 = a3;
+    velocityCopy = velocity;
   }
 
-  if (a3 > 1.0)
+  if (velocity > 1.0)
   {
-    v5 = 1.0;
+    velocityCopy = 1.0;
   }
 
   if (v4 <= 0.0)
   {
-    return a3;
+    return velocity;
   }
 
   else
   {
-    return v5;
+    return velocityCopy;
   }
 }
 
-- (void)_panned:(id)a3
+- (void)_panned:(id)_panned
 {
-  v19 = a3;
-  v4 = [v19 view];
-  [v4 bounds];
+  _pannedCopy = _panned;
+  view = [_pannedCopy view];
+  [view bounds];
   v6 = v5;
   [(AAUIBadgeView *)self _attenuatedSpinRate:3.30693964];
   v8 = v7;
-  v9 = [v19 state];
-  switch(v9)
+  state = [_pannedCopy state];
+  switch(state)
   {
     case 3:
       [(AAUIBadgeView *)self setMagnetsEngaged:1];
-      v13 = [v19 view];
-      [v19 velocityInView:v13];
+      view2 = [_pannedCopy view];
+      [_pannedCopy velocityInView:view2];
       [(AAUIBadgeView *)self _attenuatedVelocity:v14 / v6];
       v16 = v15;
 
@@ -1062,9 +1062,9 @@ void __37__AAUIBadgeView_playFlipOutAnimation__block_invoke_2(uint64_t a1)
     case 2:
       [(AAUIBadge *)self->_badge rotationY];
       v11 = v10;
-      [v19 translationInView:v4];
+      [_pannedCopy translationInView:view];
       [(AAUIBadge *)self->_badge setRotationY:v11 + v8 * v12 / v6];
-      [v19 setTranslation:v4 inView:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+      [_pannedCopy setTranslation:view inView:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
       break;
     case 1:
       [(AAUIBadgeView *)self setMagnetsEngaged:0];
@@ -1075,13 +1075,13 @@ void __37__AAUIBadgeView_playFlipOutAnimation__block_invoke_2(uint64_t a1)
 
   self->_spinRate = v8;
   [(AAUIBadgeView *)self setPaused:0];
-  v18 = [(AAUIBadgeView *)self badgeDelegate];
-  [v18 badgeViewDidSpin:self];
+  badgeDelegate = [(AAUIBadgeView *)self badgeDelegate];
+  [badgeDelegate badgeViewDidSpin:self];
 }
 
-- (void)_longPressInternalOnly:(id)a3
+- (void)_longPressInternalOnly:(id)only
 {
-  if ([a3 state] == 1)
+  if ([only state] == 1)
   {
 
     [(AAUIBadgeView *)self _spin360Degrees];
@@ -1120,9 +1120,9 @@ void __32__AAUIBadgeView__spin360Degrees__block_invoke_2(uint64_t a1)
   [WeakRetained setMagnetsEngaged:1];
 }
 
-- (void)_tapped:(id)a3
+- (void)_tapped:(id)_tapped
 {
-  [a3 locationInView:self];
+  [_tapped locationInView:self];
   v5 = v4;
   [(AAUIBadgeView *)self frame];
   v7 = v5 + v6 * -0.5;
@@ -1132,11 +1132,11 @@ void __32__AAUIBadgeView__spin360Degrees__block_invoke_2(uint64_t a1)
   [(AAUIBadgeView *)self _applyImpulse:v9];
 }
 
-- (void)_applyImpulse:(double)a3
+- (void)_applyImpulse:(double)impulse
 {
   [(AAUIBadgeView *)self setPaused:0];
   [(AAUIBadgeView *)self setMagnetsEngaged:1];
-  self->_spinRate = self->_spinRate + a3;
+  self->_spinRate = self->_spinRate + impulse;
 }
 
 - (AAUIBadgeViewDelegate)badgeDelegate

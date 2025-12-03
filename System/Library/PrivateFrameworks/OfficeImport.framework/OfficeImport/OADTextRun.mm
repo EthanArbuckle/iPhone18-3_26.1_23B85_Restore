@@ -1,5 +1,5 @@
 @interface OADTextRun
-- (BOOL)isSimilarToTextRun:(id)a3;
+- (BOOL)isSimilarToTextRun:(id)run;
 - (OADTextRun)init;
 - (id)description;
 @end
@@ -21,9 +21,9 @@
   return v2;
 }
 
-- (BOOL)isSimilarToTextRun:(id)a3
+- (BOOL)isSimilarToTextRun:(id)run
 {
-  v3 = a3;
+  runCopy = run;
   v4 = objc_opt_class();
   LOBYTE(v4) = v4 == objc_opt_class();
 

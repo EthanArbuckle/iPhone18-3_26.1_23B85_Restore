@@ -1,13 +1,13 @@
 @interface MAAIRBMobileAssetOperationMetadata
 - (MAAIRBMobileAssetOperationMetadata)init;
-- (MAAIRBMobileAssetOperationMetadata)initWithCode:(int64_t)a3 name:(id)a4;
+- (MAAIRBMobileAssetOperationMetadata)initWithCode:(int64_t)code name:(id)name;
 @end
 
 @implementation MAAIRBMobileAssetOperationMetadata
 
-- (MAAIRBMobileAssetOperationMetadata)initWithCode:(int64_t)a3 name:(id)a4
+- (MAAIRBMobileAssetOperationMetadata)initWithCode:(int64_t)code name:(id)name
 {
-  if (a4)
+  if (name)
   {
     sub_303948();
   }

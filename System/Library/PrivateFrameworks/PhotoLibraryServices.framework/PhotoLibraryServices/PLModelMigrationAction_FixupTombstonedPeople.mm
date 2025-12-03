@@ -1,20 +1,20 @@
 @interface PLModelMigrationAction_FixupTombstonedPeople
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_FixupTombstonedPeople
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = [(PLModelMigrationActionCore *)self cancellableDiscreteProgressWithTotalUnitCount:1 pendingParentUnitCount:0];
   v8 = MEMORY[0x1E695D560];
   v9 = +[PLPerson entityName];
   v10 = [v8 batchUpdateRequestWithEntityName:v9];
 
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"verifiedType", 4294967294];
-  [v10 setPredicate:v11];
+  4294967294 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"verifiedType", 4294967294];
+  [v10 setPredicate:4294967294];
 
   v25[0] = @"contactMatchingDictionary";
   v12 = [MEMORY[0x1E696ABC8] expressionForConstantValue:0];
@@ -27,7 +27,7 @@
 
   [v10 setResultType:2];
   v22 = 0;
-  v15 = [v6 executeRequest:v10 error:&v22];
+  v15 = [contextCopy executeRequest:v10 error:&v22];
 
   v16 = v22;
   if (v15)
@@ -37,9 +37,9 @@
     v18 = PLMigrationGetLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v15 result];
+      result = [v15 result];
       *buf = 138412290;
-      v24 = v19;
+      v24 = result;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "Removed contactMatchingDictionary and personUri from %@ persons with PLPersonVerifiedTypeTombstone", buf, 0xCu);
 
       v17 = 1;
@@ -60,10 +60,10 @@
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];
-  if (a4)
+  if (error)
   {
     v20 = v16;
-    *a4 = v16;
+    *error = v16;
   }
 
   return v17;

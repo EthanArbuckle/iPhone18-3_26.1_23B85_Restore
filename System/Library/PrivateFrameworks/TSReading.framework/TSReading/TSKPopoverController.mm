@@ -1,16 +1,16 @@
 @interface TSKPopoverController
 + (BOOL)anyPopoversVisible;
-- (BOOL)popoverControllerShouldDismissPopover:(id)a3;
-- (TSKPopoverController)initWithContentViewController:(id)a3;
+- (BOOL)popoverControllerShouldDismissPopover:(id)popover;
+- (TSKPopoverController)initWithContentViewController:(id)controller;
 - (void)dealloc;
-- (void)moviePlaybackWillBegin:(id)a3;
-- (void)p_dismissPopoverAnimated:(BOOL)a3;
+- (void)moviePlaybackWillBegin:(id)begin;
+- (void)p_dismissPopoverAnimated:(BOOL)animated;
 - (void)p_sendPopoverHidDelegateMessage;
-- (void)p_willShowPopoverNotification:(id)a3;
-- (void)popoverControllerDidDismissPopover:(id)a3;
-- (void)presentPopoverFromRect:(CGRect)a3 inView:(id)a4 permittedArrowDirections:(unint64_t)a5 animated:(BOOL)a6;
-- (void)presentPopoverFromRect:(CGRect)a3 inView:(id)a4 permittedArrowDirections:(unint64_t)a5 animated:(BOOL)a6 constrainToView:(BOOL)a7 withPadding:(double)a8;
-- (void)setDismissOnMoviePlayback:(BOOL)a3;
+- (void)p_willShowPopoverNotification:(id)notification;
+- (void)popoverControllerDidDismissPopover:(id)popover;
+- (void)presentPopoverFromRect:(CGRect)rect inView:(id)view permittedArrowDirections:(unint64_t)directions animated:(BOOL)animated;
+- (void)presentPopoverFromRect:(CGRect)rect inView:(id)view permittedArrowDirections:(unint64_t)directions animated:(BOOL)animated constrainToView:(BOOL)toView withPadding:(double)padding;
+- (void)setDismissOnMoviePlayback:(BOOL)playback;
 @end
 
 @implementation TSKPopoverController
@@ -26,17 +26,17 @@
   return result;
 }
 
-- (TSKPopoverController)initWithContentViewController:(id)a3
+- (TSKPopoverController)initWithContentViewController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = TSKPopoverController;
-  v3 = [(TSKPopoverController *)&v7 initWithContentViewController:a3];
+  v3 = [(TSKPopoverController *)&v7 initWithContentViewController:controller];
   if (v3)
   {
     [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
     [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel_p_applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_p_applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
     [(TSKPopoverController *)v3 setDismissOnMoviePlayback:1];
     [(TSKPopoverController *)v3 setDismissAnimatedOnOrientationChange:1];
     v6.receiver = v3;
@@ -72,18 +72,18 @@
   [(TSKPopoverController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(TSKPopoverController *)self delegate];
+    delegate = [(TSKPopoverController *)self delegate];
 
-    [v3 popoverControllerDidDismissPopover:self];
+    [delegate popoverControllerDidDismissPopover:self];
   }
 }
 
-- (void)p_dismissPopoverAnimated:(BOOL)a3
+- (void)p_dismissPopoverAnimated:(BOOL)animated
 {
   if (!self->mIsDismissing)
   {
-    v3 = a3;
-    v5 = self;
+    animatedCopy = animated;
+    selfCopy = self;
     self->mIsDismissing = 1;
     v6 = gVisiblePopovers;
     if (!gVisiblePopovers || (v8.length = CFArrayGetCount(gVisiblePopovers), v8.location = 0, CFArrayGetFirstIndexOfValue(v6, v8, self) == -1))
@@ -106,7 +106,7 @@ LABEL_8:
     {
       v7.receiver = self;
       v7.super_class = TSKPopoverController;
-      [(TSKPopoverController *)&v7 dismissPopoverAnimated:v3];
+      [(TSKPopoverController *)&v7 dismissPopoverAnimated:animatedCopy];
       [(TSKPopoverController *)self p_sendPopoverHidDelegateMessage];
     }
 
@@ -114,18 +114,18 @@ LABEL_8:
   }
 }
 
-- (void)p_willShowPopoverNotification:(id)a3
+- (void)p_willShowPopoverNotification:(id)notification
 {
-  if ([a3 object] != self)
+  if ([notification object] != self)
   {
 
     [(TSKPopoverController *)self p_dismissPopoverAnimated:1];
   }
 }
 
-- (void)setDismissOnMoviePlayback:(BOOL)a3
+- (void)setDismissOnMoviePlayback:(BOOL)playback
 {
-  self->mDismissOnMoviePlayback = a3;
+  self->mDismissOnMoviePlayback = playback;
   v3 = gVisiblePopovers;
   if (gVisiblePopovers)
   {
@@ -134,33 +134,33 @@ LABEL_8:
     if (CFArrayGetFirstIndexOfValue(v3, v8, self) != -1)
     {
       mDismissOnMoviePlayback = self->mDismissOnMoviePlayback;
-      v6 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       if (mDismissOnMoviePlayback)
       {
 
-        [v6 addObserver:self selector:sel_moviePlaybackWillBegin_ name:@"TSKMoviePlaybackRegistryObjectWillBeginMoviePlaybackNotification" object:0];
+        [defaultCenter addObserver:self selector:sel_moviePlaybackWillBegin_ name:@"TSKMoviePlaybackRegistryObjectWillBeginMoviePlaybackNotification" object:0];
       }
 
       else
       {
 
-        [v6 removeObserver:self name:@"TSKMoviePlaybackRegistryObjectWillBeginMoviePlaybackNotification" object:0];
+        [defaultCenter removeObserver:self name:@"TSKMoviePlaybackRegistryObjectWillBeginMoviePlaybackNotification" object:0];
       }
     }
   }
 }
 
-- (void)presentPopoverFromRect:(CGRect)a3 inView:(id)a4 permittedArrowDirections:(unint64_t)a5 animated:(BOOL)a6 constrainToView:(BOOL)a7 withPadding:(double)a8
+- (void)presentPopoverFromRect:(CGRect)rect inView:(id)view permittedArrowDirections:(unint64_t)directions animated:(BOOL)animated constrainToView:(BOOL)toView withPadding:(double)padding
 {
-  v8 = a6;
-  height = a3.size.height;
-  x = a3.origin.x;
-  if (a7)
+  animatedCopy = animated;
+  height = rect.size.height;
+  x = rect.origin.x;
+  if (toView)
   {
-    width = a3.size.width;
-    v15 = a3.size.height;
-    y = a3.origin.y;
-    [a4 bounds];
+    width = rect.size.width;
+    v15 = rect.size.height;
+    y = rect.origin.y;
+    [view bounds];
     v18 = v17;
     v20 = v19;
     v21 = x;
@@ -186,16 +186,16 @@ LABEL_8:
     v29 = v41.origin.y;
     v30 = v41.size.width;
     v31 = v41.size.height;
-    if (CGRectGetMinX(v41) <= v34 + a8 && (v42.origin.x = v28, v42.origin.y = v29, v42.size.width = v30, v42.size.height = v31, v23 - CGRectGetMaxX(v42) <= v34 + a8) && (v43.origin.x = v28, v43.origin.y = v29, v43.size.width = v30, v43.size.height = v31, CGRectGetMinY(v43) <= v33 + a8))
+    if (CGRectGetMinX(v41) <= v34 + padding && (v42.origin.x = v28, v42.origin.y = v29, v42.size.width = v30, v42.size.height = v31, v23 - CGRectGetMaxX(v42) <= v34 + padding) && (v43.origin.x = v28, v43.origin.y = v29, v43.size.width = v30, v43.size.height = v31, CGRectGetMinY(v43) <= v33 + padding))
     {
       v44.origin.x = v28;
       v44.origin.y = v29;
       v44.size.width = v30;
       v44.size.height = v31;
-      v32 = v25 - CGRectGetMaxY(v44) <= v33 + a8;
-      a3.size.width = v36;
+      v32 = v25 - CGRectGetMaxY(v44) <= v33 + padding;
+      rect.size.width = v36;
       x = v37;
-      a3.origin.y = v35;
+      rect.origin.y = v35;
       if (v32)
       {
         v45.origin.x = v28;
@@ -207,27 +207,27 @@ LABEL_8:
         v46.origin.y = v29;
         v46.size.width = v30;
         v46.size.height = v31;
-        a3.origin.y = CGRectGetMidY(v46);
-        a3.size.width = 1.0;
+        rect.origin.y = CGRectGetMidY(v46);
+        rect.size.width = 1.0;
         height = 1.0;
       }
     }
 
     else
     {
-      a3.size.width = v36;
+      rect.size.width = v36;
       x = v37;
-      a3.origin.y = v35;
+      rect.origin.y = v35;
     }
   }
 
-  [(TSKPopoverController *)self presentPopoverFromRect:a4 inView:a5 permittedArrowDirections:v8 animated:x, a3.origin.y, a3.size.width, height, a8];
+  [(TSKPopoverController *)self presentPopoverFromRect:view inView:directions permittedArrowDirections:animatedCopy animated:x, rect.origin.y, rect.size.width, height, padding];
 }
 
-- (void)presentPopoverFromRect:(CGRect)a3 inView:(id)a4 permittedArrowDirections:(unint64_t)a5 animated:(BOOL)a6
+- (void)presentPopoverFromRect:(CGRect)rect inView:(id)view permittedArrowDirections:(unint64_t)directions animated:(BOOL)animated
 {
-  v6 = a6;
-  v19 = CGRectIntegral(a3);
+  animatedCopy = animated;
+  v19 = CGRectIntegral(rect);
   x = v19.origin.x;
   y = v19.origin.y;
   width = v19.size.width;
@@ -269,7 +269,7 @@ LABEL_7:
   [MEMORY[0x277CD9FF0] setCompletionBlock:v17];
   v16.receiver = self;
   v16.super_class = TSKPopoverController;
-  [(TSKPopoverController *)&v16 presentPopoverFromRect:a4 inView:a5 permittedArrowDirections:v6 animated:x, y, width, height];
+  [(TSKPopoverController *)&v16 presentPopoverFromRect:view inView:directions permittedArrowDirections:animatedCopy animated:x, y, width, height];
   [MEMORY[0x277CD9FF0] commit];
 }
 
@@ -281,7 +281,7 @@ uint64_t __88__TSKPopoverController_presentPopoverFromRect_inView_permittedArrow
   return [v2 postNotificationName:@"TSKPopoverControllerDidShowPopoverNotification" object:v3];
 }
 
-- (void)moviePlaybackWillBegin:(id)a3
+- (void)moviePlaybackWillBegin:(id)begin
 {
   Main = CFRunLoopGetMain();
   v5 = *MEMORY[0x277CBF048];
@@ -294,9 +294,9 @@ uint64_t __88__TSKPopoverController_presentPopoverFromRect_inView_permittedArrow
   CFRunLoopWakeUp(Main);
 }
 
-- (BOOL)popoverControllerShouldDismissPopover:(id)a3
+- (BOOL)popoverControllerShouldDismissPopover:(id)popover
 {
-  if ((objc_opt_respondsToSelector() & 1) == 0 || (v5 = [(UIPopoverControllerDelegate *)self->mSavedDelegate popoverControllerShouldDismissPopover:a3]) != 0)
+  if ((objc_opt_respondsToSelector() & 1) == 0 || (v5 = [(UIPopoverControllerDelegate *)self->mSavedDelegate popoverControllerShouldDismissPopover:popover]) != 0)
   {
     [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
     LOBYTE(v5) = 1;
@@ -305,7 +305,7 @@ uint64_t __88__TSKPopoverController_presentPopoverFromRect_inView_permittedArrow
   return v5;
 }
 
-- (void)popoverControllerDidDismissPopover:(id)a3
+- (void)popoverControllerDidDismissPopover:(id)popover
 {
   v5 = gVisiblePopovers;
   if (gVisiblePopovers)
@@ -331,7 +331,7 @@ uint64_t __88__TSKPopoverController_presentPopoverFromRect_inView_permittedArrow
   {
     mSavedDelegate = self->mSavedDelegate;
 
-    [(UIPopoverControllerDelegate *)mSavedDelegate popoverControllerDidDismissPopover:a3];
+    [(UIPopoverControllerDelegate *)mSavedDelegate popoverControllerDidDismissPopover:popover];
   }
 }
 

@@ -5,10 +5,10 @@
 - (VOTUIMapsExplorationLocationView)currentLocationView;
 - (VOTUIMapsExplorationRotaryView)currentRotaryView;
 - (VOTUIMapsExplorationView)init;
-- (void)highlightExplorationSegmentWithIndex:(int64_t)a3;
-- (void)updateUIWithCenter:(CGPoint)a3;
-- (void)updateUIWithCenter:(CGPoint)a3 andExplorationSegments:(id)a4;
-- (void)updateUIWithCurrentLocation:(CGPoint)a3;
+- (void)highlightExplorationSegmentWithIndex:(int64_t)index;
+- (void)updateUIWithCenter:(CGPoint)center;
+- (void)updateUIWithCenter:(CGPoint)center andExplorationSegments:(id)segments;
+- (void)updateUIWithCurrentLocation:(CGPoint)location;
 @end
 
 @implementation VOTUIMapsExplorationView
@@ -26,8 +26,8 @@
     v4 = CGPointZero;
     v2->_currentLocation = CGPointZero;
     v2->_lastLocation = v4;
-    v5 = [(VOTUIMapsExplorationView *)v2 currentRotaryView];
-    v6 = [(VOTUIMapsExplorationView *)v3 currentLocationView];
+    currentRotaryView = [(VOTUIMapsExplorationView *)v2 currentRotaryView];
+    currentLocationView = [(VOTUIMapsExplorationView *)v3 currentLocationView];
   }
 
   return v3;
@@ -46,8 +46,8 @@
     v6 = v4;
 
     [(VOTUIMapsExplorationView *)self addSubview:v6];
-    v7 = [(VOTUIMapsExplorationView *)self currentLocationView];
-    [v7 setAlpha:0.0];
+    currentLocationView = [(VOTUIMapsExplorationView *)self currentLocationView];
+    [currentLocationView setAlpha:0.0];
 
     currentLocationView = self->_currentLocationView;
   }
@@ -74,36 +74,36 @@
   return currentRotaryView;
 }
 
-- (void)updateUIWithCenter:(CGPoint)a3
+- (void)updateUIWithCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   [(VOTUIMapsExplorationView *)self setCurrentCenter:?];
-  v6 = [(VOTUIMapsExplorationView *)self currentRotaryView];
-  [v6 setCenter:{x, y}];
+  currentRotaryView = [(VOTUIMapsExplorationView *)self currentRotaryView];
+  [currentRotaryView setCenter:{x, y}];
 }
 
-- (void)updateUIWithCenter:(CGPoint)a3 andExplorationSegments:(id)a4
+- (void)updateUIWithCenter:(CGPoint)center andExplorationSegments:(id)segments
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = center.y;
+  x = center.x;
+  segmentsCopy = segments;
   [(VOTUIMapsExplorationView *)self setLastIndex:-1];
   [(VOTUIMapsExplorationView *)self setCurrentIndex:-1];
   [(VOTUIMapsExplorationView *)self setCurrentCenter:x, y];
-  v8 = [(VOTUIMapsExplorationView *)self currentRotaryView];
-  [v8 setCenter:{x, y}];
+  currentRotaryView = [(VOTUIMapsExplorationView *)self currentRotaryView];
+  [currentRotaryView setCenter:{x, y}];
 
-  v9 = [(VOTUIMapsExplorationView *)self currentRotaryView];
-  [v9 addSubviewsFromExplorationSegments:v7];
+  currentRotaryView2 = [(VOTUIMapsExplorationView *)self currentRotaryView];
+  [currentRotaryView2 addSubviewsFromExplorationSegments:segmentsCopy];
 }
 
-- (void)updateUIWithCurrentLocation:(CGPoint)a3
+- (void)updateUIWithCurrentLocation:(CGPoint)location
 {
-  [(VOTUIMapsExplorationView *)self setCurrentLocation:a3.x, a3.y];
-  v4 = [(VOTUIMapsExplorationView *)self currentLocationView];
+  [(VOTUIMapsExplorationView *)self setCurrentLocation:location.x, location.y];
+  currentLocationView = [(VOTUIMapsExplorationView *)self currentLocationView];
 
-  if (v4)
+  if (currentLocationView)
   {
     [(VOTUIMapsExplorationView *)self currentLocation];
     v6 = v5;
@@ -113,8 +113,8 @@
     v10 = v9;
     [(VOTUIMapsExplorationView *)self lastLocation];
     v12 = v10 - v11;
-    v13 = [(VOTUIMapsExplorationView *)self currentLocationView];
-    [v13 frame];
+    currentLocationView2 = [(VOTUIMapsExplorationView *)self currentLocationView];
+    [currentLocationView2 frame];
     v15 = v14;
     v17 = v16;
     v19 = v8 + v18;
@@ -143,11 +143,11 @@
   }
 }
 
-- (void)highlightExplorationSegmentWithIndex:(int64_t)a3
+- (void)highlightExplorationSegmentWithIndex:(int64_t)index
 {
-  [(VOTUIMapsExplorationView *)self setCurrentIndex:a3];
-  v4 = [(VOTUIMapsExplorationView *)self currentRotaryView];
-  [v4 handleHighlightChangeWithLastIndex:-[VOTUIMapsExplorationView lastIndex](self andNewIndex:{"lastIndex"), -[VOTUIMapsExplorationView currentIndex](self, "currentIndex")}];
+  [(VOTUIMapsExplorationView *)self setCurrentIndex:index];
+  currentRotaryView = [(VOTUIMapsExplorationView *)self currentRotaryView];
+  [currentRotaryView handleHighlightChangeWithLastIndex:-[VOTUIMapsExplorationView lastIndex](self andNewIndex:{"lastIndex"), -[VOTUIMapsExplorationView currentIndex](self, "currentIndex")}];
 }
 
 - (CGPoint)currentCenter

@@ -1,14 +1,14 @@
 @interface SHMediaLibraryTask
 - (SHMediaLibrarySyncDelegate)delegate;
 - (SHMediaLibraryTask)init;
-- (void)_initWithRemoteLibrary:(id)a3;
-- (void)_library:(id)a3 didChangeWithSnapshot:(id)a4;
-- (void)_library:(id)a3 didProduceError:(id)a4 failedItemIdentifiers:(id)a5;
-- (void)_libraryDidCompleteSync:(id)a3;
-- (void)_libraryInfoWithCompletionHandler:(id)a3;
-- (void)_libraryWillBeginSync:(id)a3;
-- (void)_queryLibraryWithParameters:(id)a3 completionHandler:(id)a4;
-- (void)_synchronizeSnapshot:(id)a3 startCondition:(id)a4;
+- (void)_initWithRemoteLibrary:(id)library;
+- (void)_library:(id)_library didChangeWithSnapshot:(id)snapshot;
+- (void)_library:(id)_library didProduceError:(id)error failedItemIdentifiers:(id)identifiers;
+- (void)_libraryDidCompleteSync:(id)sync;
+- (void)_libraryInfoWithCompletionHandler:(id)handler;
+- (void)_libraryWillBeginSync:(id)sync;
+- (void)_queryLibraryWithParameters:(id)parameters completionHandler:(id)handler;
+- (void)_synchronizeSnapshot:(id)snapshot startCondition:(id)condition;
 @end
 
 @implementation SHMediaLibraryTask
@@ -29,155 +29,155 @@
   return v2;
 }
 
-- (void)_initWithRemoteLibrary:(id)a3
+- (void)_initWithRemoteLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAD78] UUID];
+  libraryCopy = library;
+  uUID = [MEMORY[0x277CCAD78] UUID];
   identifier = self->_identifier;
-  self->_identifier = v5;
+  self->_identifier = uUID;
 
   remoteLibrary = self->_remoteLibrary;
-  self->_remoteLibrary = v4;
-  v8 = v4;
+  self->_remoteLibrary = libraryCopy;
+  v8 = libraryCopy;
 
   [(SHRemoteMediaLibrary *)self->_remoteLibrary setDelegate:self];
 }
 
-- (void)_synchronizeSnapshot:(id)a3 startCondition:(id)a4
+- (void)_synchronizeSnapshot:(id)snapshot startCondition:(id)condition
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SHMediaLibraryTask *)self remoteLibrary];
-  [v8 _synchronizeSnapshot:v7 startCondition:v6];
+  conditionCopy = condition;
+  snapshotCopy = snapshot;
+  remoteLibrary = [(SHMediaLibraryTask *)self remoteLibrary];
+  [remoteLibrary _synchronizeSnapshot:snapshotCopy startCondition:conditionCopy];
 }
 
-- (void)_libraryInfoWithCompletionHandler:(id)a3
+- (void)_libraryInfoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SHMediaLibraryTask *)self remoteLibrary];
-  [v5 _libraryInfoWithCompletionHandler:v4];
+  handlerCopy = handler;
+  remoteLibrary = [(SHMediaLibraryTask *)self remoteLibrary];
+  [remoteLibrary _libraryInfoWithCompletionHandler:handlerCopy];
 }
 
-- (void)_queryLibraryWithParameters:(id)a3 completionHandler:(id)a4
+- (void)_queryLibraryWithParameters:(id)parameters completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SHMediaLibraryTask *)self remoteLibrary];
-  [v8 _queryLibraryWithParameters:v7 completionHandler:v6];
+  handlerCopy = handler;
+  parametersCopy = parameters;
+  remoteLibrary = [(SHMediaLibraryTask *)self remoteLibrary];
+  [remoteLibrary _queryLibraryWithParameters:parametersCopy completionHandler:handlerCopy];
 }
 
-- (void)_libraryWillBeginSync:(id)a3
+- (void)_libraryWillBeginSync:(id)sync
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = sh_log_object();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(SHMediaLibraryTask *)self identifier];
-    v6 = [v5 UUIDString];
+    identifier = [(SHMediaLibraryTask *)self identifier];
+    uUIDString = [identifier UUIDString];
     v11 = 138412290;
-    v12 = v6;
+    v12 = uUIDString;
     _os_log_impl(&dword_230F52000, v4, OS_LOG_TYPE_DEFAULT, "Library sync task <ID:%@> will begin", &v11, 0xCu);
   }
 
-  v7 = [(SHMediaLibraryTask *)self delegate];
+  delegate = [(SHMediaLibraryTask *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SHMediaLibraryTask *)self delegate];
-    [v9 _libraryWillBeginSync:self];
+    delegate2 = [(SHMediaLibraryTask *)self delegate];
+    [delegate2 _libraryWillBeginSync:self];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_library:(id)a3 didChangeWithSnapshot:(id)a4
+- (void)_library:(id)_library didChangeWithSnapshot:(id)snapshot
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  snapshotCopy = snapshot;
   v6 = sh_log_object();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(SHMediaLibraryTask *)self identifier];
-    v8 = [v7 UUIDString];
+    identifier = [(SHMediaLibraryTask *)self identifier];
+    uUIDString = [identifier UUIDString];
     v13 = 138412546;
-    v14 = v8;
+    v14 = uUIDString;
     v15 = 2112;
-    v16 = v5;
+    v16 = snapshotCopy;
     _os_log_impl(&dword_230F52000, v6, OS_LOG_TYPE_DEFAULT, "Library sync task <ID:%@> produced changes %@", &v13, 0x16u);
   }
 
-  v9 = [(SHMediaLibraryTask *)self delegate];
+  delegate = [(SHMediaLibraryTask *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(SHMediaLibraryTask *)self delegate];
-    [v11 _library:self didChangeWithSnapshot:v5];
+    delegate2 = [(SHMediaLibraryTask *)self delegate];
+    [delegate2 _library:self didChangeWithSnapshot:snapshotCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_library:(id)a3 didProduceError:(id)a4 failedItemIdentifiers:(id)a5
+- (void)_library:(id)_library didProduceError:(id)error failedItemIdentifiers:(id)identifiers
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  errorCopy = error;
+  identifiersCopy = identifiers;
   v9 = sh_log_object();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    v10 = [(SHMediaLibraryTask *)self identifier];
-    v11 = [v10 UUIDString];
+    identifier = [(SHMediaLibraryTask *)self identifier];
+    uUIDString = [identifier UUIDString];
     v16 = 138412546;
-    v17 = v11;
+    v17 = uUIDString;
     v18 = 2112;
-    v19 = v7;
+    v19 = errorCopy;
     _os_log_impl(&dword_230F52000, v9, OS_LOG_TYPE_ERROR, "Library sync task <ID:%@> produced error %@", &v16, 0x16u);
   }
 
-  [(SHMediaLibraryTask *)self setSyncError:v7];
-  v12 = [(SHMediaLibraryTask *)self delegate];
+  [(SHMediaLibraryTask *)self setSyncError:errorCopy];
+  delegate = [(SHMediaLibraryTask *)self delegate];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(SHMediaLibraryTask *)self delegate];
-    [v14 _library:self didProduceError:v7 failedItemIdentifiers:v8];
+    delegate2 = [(SHMediaLibraryTask *)self delegate];
+    [delegate2 _library:self didProduceError:errorCopy failedItemIdentifiers:identifiersCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_libraryDidCompleteSync:(id)a3
+- (void)_libraryDidCompleteSync:(id)sync
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = sh_log_object();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(SHMediaLibraryTask *)self identifier];
-    v6 = [v5 UUIDString];
+    identifier = [(SHMediaLibraryTask *)self identifier];
+    uUIDString = [identifier UUIDString];
     v14 = 138412290;
-    v15 = v6;
+    v15 = uUIDString;
     _os_log_impl(&dword_230F52000, v4, OS_LOG_TYPE_DEFAULT, "Library sync task <ID:%@> execution complete", &v14, 0xCu);
   }
 
-  v7 = [(SHMediaLibraryTask *)self delegate];
+  delegate = [(SHMediaLibraryTask *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SHMediaLibraryTask *)self delegate];
-    [v9 _libraryDidCompleteSync:self];
+    delegate2 = [(SHMediaLibraryTask *)self delegate];
+    [delegate2 _libraryDidCompleteSync:self];
   }
 
-  v10 = [(SHMediaLibraryTask *)self syncCompletionBlock];
+  syncCompletionBlock = [(SHMediaLibraryTask *)self syncCompletionBlock];
 
-  if (v10)
+  if (syncCompletionBlock)
   {
-    v11 = [(SHMediaLibraryTask *)self syncCompletionBlock];
-    v12 = [(SHMediaLibraryTask *)self syncError];
-    (v11)[2](v11, v12);
+    syncCompletionBlock2 = [(SHMediaLibraryTask *)self syncCompletionBlock];
+    syncError = [(SHMediaLibraryTask *)self syncError];
+    (syncCompletionBlock2)[2](syncCompletionBlock2, syncError);
 
     [(SHMediaLibraryTask *)self setSyncCompletionBlock:0];
   }

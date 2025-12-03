@@ -1,56 +1,56 @@
 @interface VFXRenderOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setCommandBuffer:(id)a3;
-- (void)setRasterizationRateMap:(id)a3;
-- (void)setRayMap:(id)a3;
-- (void)setViewpoints:(id)a3;
+- (void)setCommandBuffer:(id)buffer;
+- (void)setRasterizationRateMap:(id)map;
+- (void)setRayMap:(id)map;
+- (void)setViewpoints:(id)viewpoints;
 @end
 
 @implementation VFXRenderOptions
 
-- (void)setRasterizationRateMap:(id)a3
+- (void)setRasterizationRateMap:(id)map
 {
   rasterizationRateMap = self->_rasterizationRateMap;
-  if (rasterizationRateMap != a3)
+  if (rasterizationRateMap != map)
   {
 
-    self->_rasterizationRateMap = a3;
+    self->_rasterizationRateMap = map;
   }
 }
 
-- (void)setRayMap:(id)a3
+- (void)setRayMap:(id)map
 {
   rayMap = self->_rayMap;
-  if (rayMap != a3)
+  if (rayMap != map)
   {
 
-    self->_rayMap = a3;
+    self->_rayMap = map;
   }
 }
 
-- (void)setViewpoints:(id)a3
+- (void)setViewpoints:(id)viewpoints
 {
   viewpoints = self->_viewpoints;
-  if (viewpoints != a3)
+  if (viewpoints != viewpoints)
   {
 
-    self->_viewpoints = objc_msgSend_copy(a3, v6, v7, v8);
+    self->_viewpoints = objc_msgSend_copy(viewpoints, v6, v7, v8);
   }
 }
 
-- (void)setCommandBuffer:(id)a3
+- (void)setCommandBuffer:(id)buffer
 {
   commandBuffer = self->_commandBuffer;
-  if (commandBuffer != a3)
+  if (commandBuffer != buffer)
   {
 
-    self->_commandBuffer = a3;
+    self->_commandBuffer = buffer;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -59,7 +59,7 @@
   }
 
   v8 = objc_msgSend_viewpoints(self, v5, v6, v7);
-  v13 = objc_msgSend_viewpoints(a3, v9, v10, v11);
+  v13 = objc_msgSend_viewpoints(equal, v9, v10, v11);
 
   return objc_msgSend_isEqual_(v8, v12, v13, v14);
 }

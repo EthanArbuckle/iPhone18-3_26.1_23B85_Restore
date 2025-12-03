@@ -1,5 +1,5 @@
 @interface CRLPreviewImages.LookupKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_TtCC8Freeform16CRLPreviewImages9LookupKey)init;
 - (int64_t)hash;
@@ -7,11 +7,11 @@
 
 @implementation CRLPreviewImages.LookupKey
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -20,7 +20,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1006CA3AC(v8);
@@ -31,7 +31,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1006CA630();
 
   return v3;
@@ -39,7 +39,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006D7A2C();
 
   v3 = String._bridgeToObjectiveC()();

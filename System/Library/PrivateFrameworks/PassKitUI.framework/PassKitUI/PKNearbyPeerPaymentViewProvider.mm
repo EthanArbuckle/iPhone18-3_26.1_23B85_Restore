@@ -1,17 +1,17 @@
 @interface PKNearbyPeerPaymentViewProvider
 - (PKNearbyPeerPaymentViewProvider)init;
-- (id)amountEntryViewWithInitialAmount:(id)a3 initialMemo:(id)a4 dismissAction:(id)a5;
+- (id)amountEntryViewWithInitialAmount:(id)amount initialMemo:(id)memo dismissAction:(id)action;
 @end
 
 @implementation PKNearbyPeerPaymentViewProvider
 
-- (id)amountEntryViewWithInitialAmount:(id)a3 initialMemo:(id)a4 dismissAction:(id)a5
+- (id)amountEntryViewWithInitialAmount:(id)amount initialMemo:(id)memo dismissAction:(id)action
 {
-  v8 = _Block_copy(a5);
-  if (a4)
+  v8 = _Block_copy(action);
+  if (memo)
   {
     v9 = sub_1BE052434();
-    a4 = v10;
+    memo = v10;
   }
 
   else
@@ -21,9 +21,9 @@
 
   v11 = swift_allocObject();
   *(v11 + 16) = v8;
-  v12 = a3;
-  v13 = self;
-  sub_1BD6DD1AC(a3, v9, a4, sub_1BD6DD7D8, v11);
+  amountCopy = amount;
+  selfCopy = self;
+  sub_1BD6DD1AC(amount, v9, memo, sub_1BD6DD7D8, v11);
   v15 = v14;
 
   return v15;

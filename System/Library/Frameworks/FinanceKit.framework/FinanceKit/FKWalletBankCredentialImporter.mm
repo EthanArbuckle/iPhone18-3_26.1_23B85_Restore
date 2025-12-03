@@ -1,6 +1,6 @@
 @interface FKWalletBankCredentialImporter
 - (FKWalletBankCredentialImporter)init;
-- (void)insertCredentialFromACHPaymentInformation:(id)a3 bankName:(id)a4 completion:(id)a5;
+- (void)insertCredentialFromACHPaymentInformation:(id)information bankName:(id)name completion:(id)completion;
 @end
 
 @implementation FKWalletBankCredentialImporter
@@ -20,19 +20,19 @@
   return v2;
 }
 
-- (void)insertCredentialFromACHPaymentInformation:(id)a3 bankName:(id)a4 completion:(id)a5
+- (void)insertCredentialFromACHPaymentInformation:(id)information bankName:(id)name completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __96__FKWalletBankCredentialImporter_insertCredentialFromACHPaymentInformation_bankName_completion___block_invoke;
   aBlock[3] = &unk_1E7CAA070;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  nameCopy = name;
+  informationCopy = information;
   v12 = _Block_copy(aBlock);
-  [(_FKWalletBankCredentialImporter *)self->_wrappedImporter insertCredentialFrom:v11 bankName:v10 completionHandler:v12];
+  [(_FKWalletBankCredentialImporter *)self->_wrappedImporter insertCredentialFrom:informationCopy bankName:nameCopy completionHandler:v12];
 }
 
 uint64_t __96__FKWalletBankCredentialImporter_insertCredentialFromACHPaymentInformation_bankName_completion___block_invoke(uint64_t a1)

@@ -11,9 +11,9 @@
   v11 = a6;
   v12 = a5;
   v13 = a4;
-  v14 = [v10 UUID];
-  v15 = [v14 UUIDString];
-  v16 = [a1 initWithIdentifier:v15 suggestion:v13 query:v12 score:v11 fbr:a2];
+  uUID = [v10 UUID];
+  uUIDString = [uUID UUIDString];
+  v16 = [self initWithIdentifier:uUIDString suggestion:v13 query:v12 score:v11 fbr:a2];
 
   return v16;
 }
@@ -21,7 +21,7 @@
 - (void)initWithIdentifier:()PARInitializers suggestion:query:score:fbr:
 {
   v12 = a7;
-  v13 = [a1 initWithIdentifier:a4 suggestion:a5 query:a6 score:1 type:a2];
+  v13 = [self initWithIdentifier:a4 suggestion:a5 query:a6 score:1 type:a2];
   v14 = v13;
   if (v13)
   {

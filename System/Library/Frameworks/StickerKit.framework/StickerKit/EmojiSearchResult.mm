@@ -1,7 +1,7 @@
 @interface EmojiSearchResult
 - (NSString)emoji;
 - (_TtC10StickerKitP33_0209F597C25C7378B6F590430344EB1F17EmojiSearchResult)init;
-- (void)setEmoji:(id)a3;
+- (void)setEmoji:(id)emoji;
 @end
 
 @implementation EmojiSearchResult
@@ -14,7 +14,7 @@
   return v2;
 }
 
-- (void)setEmoji:(id)a3
+- (void)setEmoji:(id)emoji
 {
   v4 = sub_19A7AB014();
   v5 = (self + OBJC_IVAR____TtC10StickerKitP33_0209F597C25C7378B6F590430344EB1F17EmojiSearchResult_emoji);

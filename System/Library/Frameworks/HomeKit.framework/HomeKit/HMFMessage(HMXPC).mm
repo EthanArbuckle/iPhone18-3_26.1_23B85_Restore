@@ -7,8 +7,8 @@
 
 - (uint64_t)hm_isXPCTimeoutDisabled
 {
-  v1 = [a1 headers];
-  v2 = [v1 hmf_BOOLForKey:@"HMXPCMessageHeaderKeyIsXPCTimeoutDisabled"];
+  headers = [self headers];
+  v2 = [headers hmf_BOOLForKey:@"HMXPCMessageHeaderKeyIsXPCTimeoutDisabled"];
 
   return v2;
 }

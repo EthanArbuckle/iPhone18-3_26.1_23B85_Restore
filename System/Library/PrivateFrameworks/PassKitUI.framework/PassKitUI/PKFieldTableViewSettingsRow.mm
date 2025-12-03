@@ -1,8 +1,8 @@
 @interface PKFieldTableViewSettingsRow
 + (id)cellReuseIdentifier;
-- (PKFieldTableViewSettingsRow)initWithIdentifier:(id)a3 field:(id)a4 editing:(BOOL)a5 onValueChange:(id)a6;
+- (PKFieldTableViewSettingsRow)initWithIdentifier:(id)identifier field:(id)field editing:(BOOL)editing onValueChange:(id)change;
 - (UIPopoverPresentationControllerSourceItem)sourceItem;
-- (id)tableViewCellForTableView:(id)a3 atIndexPath:(id)a4;
+- (id)tableViewCellForTableView:(id)view atIndexPath:(id)path;
 @end
 
 @implementation PKFieldTableViewSettingsRow
@@ -14,26 +14,26 @@
   return NSStringFromClass(v2);
 }
 
-- (PKFieldTableViewSettingsRow)initWithIdentifier:(id)a3 field:(id)a4 editing:(BOOL)a5 onValueChange:(id)a6
+- (PKFieldTableViewSettingsRow)initWithIdentifier:(id)identifier field:(id)field editing:(BOOL)editing onValueChange:(id)change
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identifierCopy = identifier;
+  fieldCopy = field;
+  changeCopy = change;
   v20.receiver = self;
   v20.super_class = PKFieldTableViewSettingsRow;
   v13 = [(PKFieldTableViewSettingsRow *)&v20 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [identifierCopy copy];
     identifier = v13->_identifier;
     v13->_identifier = v14;
 
-    objc_storeStrong(&v13->_field, a4);
-    v13->_editing = a5;
+    objc_storeStrong(&v13->_field, field);
+    v13->_editing = editing;
     v13->_redact = 0;
-    if (v12)
+    if (changeCopy)
     {
-      v16 = v12;
+      v16 = changeCopy;
     }
 
     else
@@ -49,15 +49,15 @@
   return v13;
 }
 
-- (id)tableViewCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view atIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [objc_opt_class() cellReuseIdentifier];
-  v7 = [v5 dequeueReusableCellWithIdentifier:v6];
+  viewCopy = view;
+  cellReuseIdentifier = [objc_opt_class() cellReuseIdentifier];
+  v7 = [viewCopy dequeueReusableCellWithIdentifier:cellReuseIdentifier];
 
   if (!v7)
   {
-    v7 = [[_TtC9PassKitUI27PKPaymentFieldTableViewCell alloc] initWithStyle:0 reuseIdentifier:v6];
+    v7 = [[_TtC9PassKitUI27PKPaymentFieldTableViewCell alloc] initWithStyle:0 reuseIdentifier:cellReuseIdentifier];
   }
 
   [(PKPaymentSetupField *)self->_field setReadonly:!self->_editing];

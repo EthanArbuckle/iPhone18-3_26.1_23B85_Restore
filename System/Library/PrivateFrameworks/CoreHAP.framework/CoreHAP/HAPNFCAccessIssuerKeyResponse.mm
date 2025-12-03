@@ -1,12 +1,12 @@
 @interface HAPNFCAccessIssuerKeyResponse
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPNFCAccessIssuerKeyResponse)init;
-- (HAPNFCAccessIssuerKeyResponse)initWithIdentifier:(id)a3 statusCode:(id)a4;
+- (HAPNFCAccessIssuerKeyResponse)initWithIdentifier:(id)identifier statusCode:(id)code;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPNFCAccessIssuerKeyResponse
@@ -14,17 +14,17 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPNFCAccessIssuerKeyResponse *)self identifier];
-  v5 = [(HAPNFCAccessIssuerKeyResponse *)self statusCode];
-  v6 = [v3 stringWithFormat:@"<HAPNFCAccessIssuerKeyResponse identifier=%@, statusCode=%@>", v4, v5];
+  identifier = [(HAPNFCAccessIssuerKeyResponse *)self identifier];
+  statusCode = [(HAPNFCAccessIssuerKeyResponse *)self statusCode];
+  v6 = [v3 stringWithFormat:@"<HAPNFCAccessIssuerKeyResponse identifier=%@, statusCode=%@>", identifier, statusCode];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -34,14 +34,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HAPNFCAccessIssuerKeyResponse *)self identifier];
-      v8 = [(HAPNFCAccessIssuerKeyResponse *)v6 identifier];
-      if (v7 != v8)
+      v6 = equalCopy;
+      identifier = [(HAPNFCAccessIssuerKeyResponse *)self identifier];
+      identifier2 = [(HAPNFCAccessIssuerKeyResponse *)v6 identifier];
+      if (identifier != identifier2)
       {
-        v9 = [(HAPNFCAccessIssuerKeyResponse *)self identifier];
-        v3 = [(HAPNFCAccessIssuerKeyResponse *)v6 identifier];
-        if (![v9 isEqual:v3])
+        identifier3 = [(HAPNFCAccessIssuerKeyResponse *)self identifier];
+        identifier4 = [(HAPNFCAccessIssuerKeyResponse *)v6 identifier];
+        if (![identifier3 isEqual:identifier4])
         {
           v10 = 0;
 LABEL_13:
@@ -50,25 +50,25 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = identifier3;
       }
 
-      v11 = [(HAPNFCAccessIssuerKeyResponse *)self statusCode];
-      v12 = [(HAPNFCAccessIssuerKeyResponse *)v6 statusCode];
-      if (v11 == v12)
+      statusCode = [(HAPNFCAccessIssuerKeyResponse *)self statusCode];
+      statusCode2 = [(HAPNFCAccessIssuerKeyResponse *)v6 statusCode];
+      if (statusCode == statusCode2)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(HAPNFCAccessIssuerKeyResponse *)self statusCode];
-        v14 = [(HAPNFCAccessIssuerKeyResponse *)v6 statusCode];
-        v10 = [v13 isEqual:v14];
+        statusCode3 = [(HAPNFCAccessIssuerKeyResponse *)self statusCode];
+        statusCode4 = [(HAPNFCAccessIssuerKeyResponse *)v6 statusCode];
+        v10 = [statusCode3 isEqual:statusCode4];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      identifier3 = v16;
+      if (identifier == identifier2)
       {
         goto LABEL_14;
       }
@@ -84,17 +84,17 @@ LABEL_15:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPNFCAccessIssuerKeyResponse allocWithZone:a3];
-  v5 = [(HAPNFCAccessIssuerKeyResponse *)self identifier];
-  v6 = [(HAPNFCAccessIssuerKeyResponse *)self statusCode];
-  v7 = [(HAPNFCAccessIssuerKeyResponse *)v4 initWithIdentifier:v5 statusCode:v6];
+  v4 = [HAPNFCAccessIssuerKeyResponse allocWithZone:zone];
+  identifier = [(HAPNFCAccessIssuerKeyResponse *)self identifier];
+  statusCode = [(HAPNFCAccessIssuerKeyResponse *)self statusCode];
+  v7 = [(HAPNFCAccessIssuerKeyResponse *)v4 initWithIdentifier:identifier statusCode:statusCode];
 
   return v7;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
   v41 = 0u;
@@ -119,18 +119,18 @@ LABEL_15:
   v24 = 0u;
   v22 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPNFCAccessIssuerKeyResponse *)self identifier];
+  identifier = [(HAPNFCAccessIssuerKeyResponse *)self identifier];
 
-  if (!v5)
+  if (!identifier)
   {
 LABEL_10:
-    v13 = [(HAPNFCAccessIssuerKeyResponse *)self statusCode];
+    statusCode = [(HAPNFCAccessIssuerKeyResponse *)self statusCode];
 
-    if (v13)
+    if (statusCode)
     {
-      v14 = [(HAPNFCAccessIssuerKeyResponse *)self statusCode];
+      statusCode2 = [(HAPNFCAccessIssuerKeyResponse *)self statusCode];
       v20 = 0;
-      v7 = [v14 serializeWithError:&v20];
+      v7 = [statusCode2 serializeWithError:&v20];
       v8 = v20;
 
       if (v8)
@@ -145,11 +145,11 @@ LABEL_10:
       if (v17)
       {
 LABEL_16:
-        if (a3)
+        if (error)
         {
           HMErrorFromOSStatus(v17);
           v8 = 0;
-          *a3 = v16 = 0;
+          *error = v16 = 0;
           goto LABEL_21;
         }
 
@@ -163,26 +163,26 @@ LABEL_16:
     goto LABEL_21;
   }
 
-  v6 = [(HAPNFCAccessIssuerKeyResponse *)self identifier];
+  identifier2 = [(HAPNFCAccessIssuerKeyResponse *)self identifier];
   v21 = 0;
-  v7 = [v6 serializeWithError:&v21];
+  v7 = [identifier2 serializeWithError:&v21];
   v8 = v21;
 
   if (!v8)
   {
-    v9 = [v7 bytes];
-    v10 = v9 + [v7 length];
+    bytes = [v7 bytes];
+    v10 = bytes + [v7 length];
     while (1)
     {
-      v11 = (v10 - v9) >= 255 ? 255 : v10 - v9;
+      v11 = (v10 - bytes) >= 255 ? 255 : v10 - bytes;
       v12 = TLV8BufferAppend();
       if (v12)
       {
         break;
       }
 
-      v9 += v11;
-      if (v9 >= v10)
+      bytes += v11;
+      if (bytes >= v10)
       {
 
         goto LABEL_10;
@@ -196,11 +196,11 @@ LABEL_16:
 
 LABEL_12:
 
-  if (a3)
+  if (error)
   {
     v15 = v8;
     v16 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_21;
   }
 
@@ -214,28 +214,28 @@ LABEL_21:
   return v16;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v9 = 0;
     v10 = 0;
 LABEL_16:
-    [(HAPNFCAccessIssuerKeyResponse *)self setIdentifier:v10, v23];
+    [(HAPNFCAccessIssuerKeyResponse *)self setIdentifier:v10, errorCopy];
     [(HAPNFCAccessIssuerKeyResponse *)self setStatusCode:v9];
     v11 = 0;
     v19 = 1;
     goto LABEL_23;
   }
 
-  v23 = a4;
+  errorCopy = error;
   v9 = 0;
   v10 = 0;
   v11 = 0;
-  v12 = v7 + v8;
+  v12 = bytes + v8;
   while (1)
   {
     v29 = 0;
@@ -245,10 +245,10 @@ LABEL_16:
     Next = TLV8GetNext();
     if (Next)
     {
-      if (v23)
+      if (errorCopy)
       {
         HMErrorFromOSStatus(Next);
-        *v23 = v19 = 0;
+        *errorCopy = v19 = 0;
         goto LABEL_23;
       }
 
@@ -279,7 +279,7 @@ LABEL_11:
     if (v29 == 1)
     {
       v26 = v11;
-      v14 = HAPTLVParseContiguousTlvs(1, v7, v12, v27, &v26);
+      v14 = HAPTLVParseContiguousTlvs(1, bytes, v12, v27, &v26);
       v15 = v26;
 
       if (!v15)
@@ -296,7 +296,7 @@ LABEL_11:
     }
 
 LABEL_12:
-    v7 = v27[0];
+    bytes = v27[0];
     if (v27[0] >= v12)
     {
       if (!v11)
@@ -317,11 +317,11 @@ LABEL_12:
   }
 
 LABEL_20:
-  if (v23)
+  if (errorCopy)
   {
     v21 = v11;
     v19 = 0;
-    *v23 = v11;
+    *errorCopy = v11;
     goto LABEL_23;
   }
 
@@ -332,18 +332,18 @@ LABEL_23:
   return v19;
 }
 
-- (HAPNFCAccessIssuerKeyResponse)initWithIdentifier:(id)a3 statusCode:(id)a4
+- (HAPNFCAccessIssuerKeyResponse)initWithIdentifier:(id)identifier statusCode:(id)code
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  codeCopy = code;
   v12.receiver = self;
   v12.super_class = HAPNFCAccessIssuerKeyResponse;
   v9 = [(HAPNFCAccessIssuerKeyResponse *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_statusCode, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_statusCode, code);
   }
 
   return v10;
@@ -356,24 +356,24 @@ LABEL_23:
   return [(HAPNFCAccessIssuerKeyResponse *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPNFCAccessIssuerKeyResponse);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPNFCAccessIssuerKeyResponse *)v6 parseFromData:v5 error:&v11];
+    [(HAPNFCAccessIssuerKeyResponse *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

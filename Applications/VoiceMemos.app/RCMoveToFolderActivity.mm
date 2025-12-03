@@ -2,7 +2,7 @@
 - (RCFolderSelectionContainerViewController)folderSelectionContainerViewController;
 - (id)_systemImageName;
 - (id)activityTitle;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation RCMoveToFolderActivity
@@ -18,28 +18,28 @@
 - (id)_systemImageName
 {
   v2 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v3 = [v2 moveToFolderActivitySystemImageName];
+  moveToFolderActivitySystemImageName = [v2 moveToFolderActivitySystemImageName];
 
-  return v3;
+  return moveToFolderActivitySystemImageName;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v11.receiver = self;
   v11.super_class = RCMoveToFolderActivity;
-  [(RCUIActivity *)&v11 prepareWithActivityItems:a3];
+  [(RCUIActivity *)&v11 prepareWithActivityItems:items];
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 delegate];
+  delegate = [v4 delegate];
 
-  v6 = [v5 defaultSceneDelegate];
-  v7 = [v6 mainViewController];
+  defaultSceneDelegate = [delegate defaultSceneDelegate];
+  mainViewController = [defaultSceneDelegate mainViewController];
 
-  v8 = [(RCUIActivity *)self recordingUUIDs];
-  v9 = [v7 moveToFolderContainerViewControllerWithUUIDs:v8];
+  recordingUUIDs = [(RCUIActivity *)self recordingUUIDs];
+  v9 = [mainViewController moveToFolderContainerViewControllerWithUUIDs:recordingUUIDs];
 
   [(RCMoveToFolderActivity *)self setFolderSelectionContainerViewController:v9];
-  v10 = [v9 collectionViewController];
-  [v10 setPresentingDelegate:self];
+  collectionViewController = [v9 collectionViewController];
+  [collectionViewController setPresentingDelegate:self];
 }
 
 - (RCFolderSelectionContainerViewController)folderSelectionContainerViewController

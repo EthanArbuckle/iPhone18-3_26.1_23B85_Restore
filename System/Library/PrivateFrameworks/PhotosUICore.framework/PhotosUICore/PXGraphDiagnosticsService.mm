@@ -1,26 +1,26 @@
 @interface PXGraphDiagnosticsService
-+ (id)viewControllerForDetailsOfAsset:(id)a3;
++ (id)viewControllerForDetailsOfAsset:(id)asset;
 - (BOOL)canProvideContextualViewController;
 - (id)contextualViewController;
-- (id)saliencyStringForAsset:(id)a3;
+- (id)saliencyStringForAsset:(id)asset;
 - (id)title;
 @end
 
 @implementation PXGraphDiagnosticsService
 
-+ (id)viewControllerForDetailsOfAsset:(id)a3
++ (id)viewControllerForDetailsOfAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 px_curationDebugString];
+  assetCopy = asset;
+  px_curationDebugString = [assetCopy px_curationDebugString];
   v5 = [MEMORY[0x1E69DC650] alertControllerWithTitle:@"Asset Details" message:0 preferredStyle:1];
-  [v5 _setAttributedMessage:v4];
+  [v5 _setAttributedMessage:px_curationDebugString];
   v6 = MEMORY[0x1E69DC648];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __61__PXGraphDiagnosticsService_viewControllerForDetailsOfAsset___block_invoke;
   v19[3] = &unk_1E7749600;
-  v20 = v4;
-  v7 = v4;
+  v20 = px_curationDebugString;
+  v7 = px_curationDebugString;
   v8 = [v6 actionWithTitle:@"Copy Text" style:0 handler:v19];
   [v5 addAction:v8];
 
@@ -29,8 +29,8 @@
   v15 = 3221225472;
   v16 = __61__PXGraphDiagnosticsService_viewControllerForDetailsOfAsset___block_invoke_2;
   v17 = &unk_1E7749600;
-  v18 = v3;
-  v10 = v3;
+  v18 = assetCopy;
+  v10 = assetCopy;
   v11 = [v9 actionWithTitle:@"Copy UUID" style:0 handler:&v14];
   [v5 addAction:{v11, v14, v15, v16, v17}];
 
@@ -62,19 +62,19 @@ void __61__PXGraphDiagnosticsService_viewControllerForDetailsOfAsset___block_inv
 
 - (id)contextualViewController
 {
-  v2 = self;
+  selfCopy = self;
   v36 = *MEMORY[0x1E69E9840];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v3 = [(PXDiagnosticsService *)self itemProviders];
-  v4 = [v3 countByEnumeratingWithState:&v29 objects:v35 count:16];
+  itemProviders = [(PXDiagnosticsService *)self itemProviders];
+  v4 = [itemProviders countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v4)
   {
     v5 = v4;
-    v26 = v2;
-    obj = v3;
+    v26 = selfCopy;
+    obj = itemProviders;
     v28 = 0;
     v6 = 0;
     v7 = 0;
@@ -135,7 +135,7 @@ void __61__PXGraphDiagnosticsService_viewControllerForDetailsOfAsset___block_inv
     if (v9)
     {
       v18 = v9;
-      v2 = v26;
+      selfCopy = v26;
       v19 = [objc_opt_class() viewControllerForDetailsOfAsset:v9];
       v20 = v6;
       v21 = v28;
@@ -148,7 +148,7 @@ void __61__PXGraphDiagnosticsService_viewControllerForDetailsOfAsset___block_inv
     }
 
     v20 = v6;
-    v2 = v26;
+    selfCopy = v26;
     v21 = v28;
   }
 
@@ -161,7 +161,7 @@ void __61__PXGraphDiagnosticsService_viewControllerForDetailsOfAsset___block_inv
     v21 = 0;
   }
 
-  v22 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (v8)
   {
     v19 = [[PXDebugMemoriesViewController alloc] initWithMemory:v8 memoryInfo:0];
@@ -190,9 +190,9 @@ LABEL_29:
   v23 = PLUIGetLog();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [(PXDiagnosticsService *)v2 itemProviders];
+    itemProviders2 = [(PXDiagnosticsService *)selfCopy itemProviders];
     *buf = 138412290;
-    v34 = v24;
+    v34 = itemProviders2;
     _os_log_impl(&dword_1A3C1C000, v23, OS_LOG_TYPE_DEFAULT, "Memories & Storytelling Diagnosis Error: No item providers can be used (%@)", buf, 0xCu);
   }
 
@@ -201,35 +201,35 @@ LABEL_32:
   return v19;
 }
 
-- (id)saliencyStringForAsset:(id)a3
+- (id)saliencyStringForAsset:(id)asset
 {
   v45[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  [v3 preferredCropRect];
+  assetCopy = asset;
+  [assetCopy preferredCropRect];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [v3 pixelWidth];
-  v13 = [v3 pixelHeight];
-  v14 = v5 * v12;
-  v15 = v7 * v13;
-  v16 = round(v9 * v12);
-  v17 = round(v11 * v13);
+  pixelWidth = [assetCopy pixelWidth];
+  pixelHeight = [assetCopy pixelHeight];
+  v14 = v5 * pixelWidth;
+  v15 = v7 * pixelHeight;
+  v16 = round(v9 * pixelWidth);
+  v17 = round(v11 * pixelHeight);
   v18 = round(v14);
   v19 = round(v15);
-  [v3 acceptableCropRect];
+  [assetCopy acceptableCropRect];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
-  v28 = [v3 pixelWidth];
-  v29 = [v3 pixelHeight];
+  pixelWidth2 = [assetCopy pixelWidth];
+  pixelHeight2 = [assetCopy pixelHeight];
 
-  v30 = v21 * v28;
-  v31 = v23 * v29;
-  v32 = round(v25 * v28);
-  v33 = round(v27 * v29);
+  v30 = v21 * pixelWidth2;
+  v31 = v23 * pixelHeight2;
+  v32 = round(v25 * pixelWidth2);
+  v33 = round(v27 * pixelHeight2);
   v34 = round(v30);
   v35 = round(v31);
   v36 = MEMORY[0x1E696AEC0];
@@ -260,9 +260,9 @@ LABEL_32:
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = +[PXDiagnosticsSettings sharedInstance];
-  v4 = [v3 enableGraphService];
+  enableGraphService = [v3 enableGraphService];
 
-  if (!v4)
+  if (!enableGraphService)
   {
     return 0;
   }
@@ -322,8 +322,8 @@ LABEL_16:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(PXDiagnosticsService *)self itemProviders];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  itemProviders = [(PXDiagnosticsService *)self itemProviders];
+  v3 = [itemProviders countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -335,7 +335,7 @@ LABEL_16:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(itemProviders);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -358,7 +358,7 @@ LABEL_16:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [itemProviders countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;

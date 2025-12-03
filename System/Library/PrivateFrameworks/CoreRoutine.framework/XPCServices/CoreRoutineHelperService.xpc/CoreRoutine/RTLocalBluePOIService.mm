@@ -1,42 +1,42 @@
 @interface RTLocalBluePOIService
-+ (id)adaptMacAddress:(id)a3;
-+ (id)meanOf:(id)a3;
-+ (id)normalizedRSSI:(id)a3;
-- (id)calibrateConfidence:(id)a3 targetMUID:(unint64_t)a4 bluePOITile:(id)a5;
-- (id)categoryFilteredLocalBluePOIResultWithPOIConfidences:(id)a3 aoiConfidences:(id)a4 distanceToNearestAOILowerBound:(id)a5 referenceLocation:(id)a6 queryTime:(id)a7 bluePOITile:(id)a8;
-- (id)getCompiledModelForAccessPoints:(id)a3 fromBluePOITile:(id)a4;
-- (id)processTile:(id)a3 fileManager:(id)a4 error:(id *)a5;
-- (void)compileCoreMLModelAtURL:(id)a3 handler:(id)a4;
-- (void)downloadBluePOIMetadataWithHandler:(id)a3;
-- (void)downloadBluePOIMetadataWithTileLoader:(id)a3 handler:(id)a4;
-- (void)downloadBluePOITilesForDownloadKeys:(id)a3 handler:(id)a4;
-- (void)downloadBluePOITilesForDownloadKeys:(id)a3 tileLoader:(id)a4 handler:(id)a5;
-- (void)fetchBluePOIMetadataWithHandler:(id)a3;
-- (void)fetchBluePOITilesForDownloadKeys:(id)a3 handler:(id)a4;
-- (void)loadPreinstalledTileAtPath:(id)a3 handler:(id)a4;
++ (id)adaptMacAddress:(id)address;
++ (id)meanOf:(id)of;
++ (id)normalizedRSSI:(id)i;
+- (id)calibrateConfidence:(id)confidence targetMUID:(unint64_t)d bluePOITile:(id)tile;
+- (id)categoryFilteredLocalBluePOIResultWithPOIConfidences:(id)confidences aoiConfidences:(id)aoiConfidences distanceToNearestAOILowerBound:(id)bound referenceLocation:(id)location queryTime:(id)time bluePOITile:(id)tile;
+- (id)getCompiledModelForAccessPoints:(id)points fromBluePOITile:(id)tile;
+- (id)processTile:(id)tile fileManager:(id)manager error:(id *)error;
+- (void)compileCoreMLModelAtURL:(id)l handler:(id)handler;
+- (void)downloadBluePOIMetadataWithHandler:(id)handler;
+- (void)downloadBluePOIMetadataWithTileLoader:(id)loader handler:(id)handler;
+- (void)downloadBluePOITilesForDownloadKeys:(id)keys handler:(id)handler;
+- (void)downloadBluePOITilesForDownloadKeys:(id)keys tileLoader:(id)loader handler:(id)handler;
+- (void)fetchBluePOIMetadataWithHandler:(id)handler;
+- (void)fetchBluePOITilesForDownloadKeys:(id)keys handler:(id)handler;
+- (void)loadPreinstalledTileAtPath:(id)path handler:(id)handler;
 @end
 
 @implementation RTLocalBluePOIService
 
-+ (id)meanOf:(id)a3
++ (id)meanOf:(id)of
 {
-  v3 = a3;
-  if ([v3 count])
+  ofCopy = of;
+  if ([ofCopy count])
   {
-    if ([v3 count])
+    if ([ofCopy count])
     {
       v4 = 0;
       v5 = 0.0;
       do
       {
-        v6 = [v3 objectAtIndexedSubscript:v4];
+        v6 = [ofCopy objectAtIndexedSubscript:v4];
         [v6 doubleValue];
         v5 = v5 + v7;
 
         ++v4;
       }
 
-      while ([v3 count] > v4);
+      while ([ofCopy count] > v4);
     }
 
     else
@@ -44,7 +44,7 @@
       v5 = 0.0;
     }
 
-    v8 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v5 / [v3 count]);
+    v8 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v5 / [ofCopy count]);
   }
 
   else
@@ -55,11 +55,11 @@
   return v8;
 }
 
-+ (id)adaptMacAddress:(id)a3
++ (id)adaptMacAddress:(id)address
 {
-  v3 = a3;
-  v4 = [v3 componentsSeparatedByString:@":"];
-  v5 = [[NSMutableString alloc] initWithCapacity:{objc_msgSend(v3, "length")}];
+  addressCopy = address;
+  v4 = [addressCopy componentsSeparatedByString:@":"];
+  v5 = [[NSMutableString alloc] initWithCapacity:{objc_msgSend(addressCopy, "length")}];
   if ([v4 count])
   {
     v6 = 0;
@@ -87,30 +87,30 @@
   return v5;
 }
 
-+ (id)normalizedRSSI:(id)a3
++ (id)normalizedRSSI:(id)i
 {
-  [a3 doubleValue];
+  [i doubleValue];
   v4 = (v3 + 100.0) / 65.0;
 
   return [NSNumber numberWithDouble:v4];
 }
 
-- (id)getCompiledModelForAccessPoints:(id)a3 fromBluePOITile:(id)a4
+- (id)getCompiledModelForAccessPoints:(id)points fromBluePOITile:(id)tile
 {
-  v5 = a3;
-  v6 = a4;
+  pointsCopy = points;
+  tileCopy = tile;
   v7 = objc_opt_new();
   v8 = [NSMutableDictionary alloc];
-  v9 = [v6 models];
-  v50 = [v8 initWithCapacity:{objc_msgSend(v9, "count")}];
+  models = [tileCopy models];
+  v50 = [v8 initWithCapacity:{objc_msgSend(models, "count")}];
 
   v68 = 0u;
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v51 = v6;
-  v10 = [v6 models];
-  v11 = [v10 countByEnumeratingWithState:&v66 objects:v77 count:16];
+  v51 = tileCopy;
+  models2 = [tileCopy models];
+  v11 = [models2 countByEnumeratingWithState:&v66 objects:v77 count:16];
   if (v11)
   {
     v12 = v11;
@@ -121,15 +121,15 @@
       {
         if (*v67 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(models2);
         }
 
         v15 = *(*(&v66 + 1) + 8 * i);
-        v16 = [v15 identifier];
-        [v50 setObject:v15 forKeyedSubscript:v16];
+        identifier = [v15 identifier];
+        [v50 setObject:v15 forKeyedSubscript:identifier];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v66 objects:v77 count:16];
+      v12 = [models2 countByEnumeratingWithState:&v66 objects:v77 count:16];
     }
 
     while (v12);
@@ -139,7 +139,7 @@
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = v5;
+  obj = pointsCopy;
   v52 = [obj countByEnumeratingWithState:&v62 objects:v76 count:16];
   if (v52)
   {
@@ -160,8 +160,8 @@
         v59 = 0u;
         v60 = 0u;
         v61 = 0u;
-        v19 = [v51 hashedApToModelMapping];
-        v20 = [v19 objectForKeyedSubscript:v18];
+        hashedApToModelMapping = [v51 hashedApToModelMapping];
+        v20 = [hashedApToModelMapping objectForKeyedSubscript:v18];
 
         v21 = [v20 countByEnumeratingWithState:&v58 objects:v75 count:16];
         if (v21)
@@ -233,11 +233,11 @@
         if (v32)
         {
           v36 = [v29 objectForKeyedSubscript:v32];
-          v37 = [v36 unsignedIntegerValue];
+          unsignedIntegerValue = [v36 unsignedIntegerValue];
           v38 = [v29 objectForKeyedSubscript:v35];
-          v39 = [v38 unsignedIntegerValue];
+          unsignedIntegerValue2 = [v38 unsignedIntegerValue];
 
-          if (v37 < v39)
+          if (unsignedIntegerValue < unsignedIntegerValue2)
           {
             v40 = v35;
 
@@ -297,10 +297,10 @@
   return v43;
 }
 
-- (id)calibrateConfidence:(id)a3 targetMUID:(unint64_t)a4 bluePOITile:(id)a5
+- (id)calibrateConfidence:(id)confidence targetMUID:(unint64_t)d bluePOITile:(id)tile
 {
-  v7 = a3;
-  v8 = a5;
+  confidenceCopy = confidence;
+  tileCopy = tile;
   v9 = kRTBluePOITileModelCalibrationLowThresholdBeforeCalibrationApplePay;
   v10 = kRTBluePOITileModelCalibrationHighThresholdBeforeCalibrationApplePay;
   v11 = kRTBluePOITileModelCalibrationLowThresholdAfterCalibrationApplePay;
@@ -310,13 +310,13 @@
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v13 = [v8 pointsOfInterest];
-  v14 = [v13 countByEnumeratingWithState:&v89 objects:v100 count:16];
+  pointsOfInterest = [tileCopy pointsOfInterest];
+  v14 = [pointsOfInterest countByEnumeratingWithState:&v89 objects:v100 count:16];
   if (v14)
   {
     v15 = v14;
     v80 = v11;
-    v82 = v7;
+    v82 = confidenceCopy;
     v16 = v10;
     v17 = *v90;
 LABEL_3:
@@ -325,18 +325,18 @@ LABEL_3:
     {
       if (*v90 != v17)
       {
-        objc_enumerationMutation(v13);
+        objc_enumerationMutation(pointsOfInterest);
       }
 
       v19 = *(*(&v89 + 1) + 8 * v18);
-      if ([v19 muid] == a4)
+      if ([v19 muid] == d)
       {
         break;
       }
 
       if (v15 == ++v18)
       {
-        v15 = [v13 countByEnumeratingWithState:&v89 objects:v100 count:16];
+        v15 = [pointsOfInterest countByEnumeratingWithState:&v89 objects:v100 count:16];
         if (v15)
         {
           goto LABEL_3;
@@ -367,16 +367,16 @@ LABEL_11:
     v84 = v21;
     v9 = v20;
 LABEL_13:
-    v7 = v82;
+    confidenceCopy = v82;
   }
 
-  v24 = [v8 modelCalibrationParameters];
-  v25 = [v24 objectForKeyedSubscript:v9];
+  modelCalibrationParameters = [tileCopy modelCalibrationParameters];
+  v25 = [modelCalibrationParameters objectForKeyedSubscript:v9];
 
   if (v25)
   {
-    v26 = [v8 modelCalibrationParameters];
-    v27 = [v26 objectForKeyedSubscript:v9];
+    modelCalibrationParameters2 = [tileCopy modelCalibrationParameters];
+    v27 = [modelCalibrationParameters2 objectForKeyedSubscript:v9];
     [v27 doubleValue];
     v29 = v28;
   }
@@ -386,13 +386,13 @@ LABEL_13:
     v29 = 0.6;
   }
 
-  v30 = [v8 modelCalibrationParameters];
-  v31 = [v30 objectForKeyedSubscript:v10];
+  modelCalibrationParameters3 = [tileCopy modelCalibrationParameters];
+  v31 = [modelCalibrationParameters3 objectForKeyedSubscript:v10];
 
   if (v31)
   {
-    v32 = [v8 modelCalibrationParameters];
-    v33 = [v32 objectForKeyedSubscript:v10];
+    modelCalibrationParameters4 = [tileCopy modelCalibrationParameters];
+    v33 = [modelCalibrationParameters4 objectForKeyedSubscript:v10];
     [v33 doubleValue];
     v35 = v34;
   }
@@ -402,13 +402,13 @@ LABEL_13:
     v35 = 0.8;
   }
 
-  v36 = [v8 modelCalibrationParameters];
-  v37 = [v36 objectForKeyedSubscript:v11];
+  modelCalibrationParameters5 = [tileCopy modelCalibrationParameters];
+  v37 = [modelCalibrationParameters5 objectForKeyedSubscript:v11];
 
   if (v37)
   {
-    v38 = [v8 modelCalibrationParameters];
-    v39 = [v38 objectForKeyedSubscript:v11];
+    modelCalibrationParameters6 = [tileCopy modelCalibrationParameters];
+    v39 = [modelCalibrationParameters6 objectForKeyedSubscript:v11];
     [v39 doubleValue];
     v41 = v40;
   }
@@ -418,13 +418,13 @@ LABEL_13:
     v41 = 0.9;
   }
 
-  v42 = [v8 modelCalibrationParameters];
-  v43 = [v42 objectForKeyedSubscript:v84];
+  modelCalibrationParameters7 = [tileCopy modelCalibrationParameters];
+  v43 = [modelCalibrationParameters7 objectForKeyedSubscript:v84];
 
   if (v43)
   {
-    v44 = [v8 modelCalibrationParameters];
-    v45 = [v44 objectForKeyedSubscript:v84];
+    modelCalibrationParameters8 = [tileCopy modelCalibrationParameters];
+    v45 = [modelCalibrationParameters8 objectForKeyedSubscript:v84];
     [v45 doubleValue];
     v47 = v46;
   }
@@ -434,13 +434,13 @@ LABEL_13:
     v47 = 0.95;
   }
 
-  v48 = [v8 modelCalibrationParameters];
-  v49 = [v48 objectForKeyedSubscript:v12];
+  modelCalibrationParameters9 = [tileCopy modelCalibrationParameters];
+  v49 = [modelCalibrationParameters9 objectForKeyedSubscript:v12];
 
   if (v49)
   {
-    v50 = [v8 modelCalibrationParameters];
-    v51 = [v50 objectForKeyedSubscript:v12];
+    modelCalibrationParameters10 = [tileCopy modelCalibrationParameters];
+    v51 = [modelCalibrationParameters10 objectForKeyedSubscript:v12];
     [v51 doubleValue];
     v53 = v52;
   }
@@ -465,19 +465,19 @@ LABEL_13:
     goto LABEL_34;
   }
 
-  v54 = [NSNumber numberWithUnsignedInteger:a4];
-  v55 = [v7 objectForKeyedSubscript:v54];
+  v54 = [NSNumber numberWithUnsignedInteger:d];
+  v55 = [confidenceCopy objectForKeyedSubscript:v54];
   [v55 doubleValue];
   v57 = v56;
 
   if (v57 < 0.525)
   {
 LABEL_34:
-    v58 = v7;
+    v58 = confidenceCopy;
     goto LABEL_63;
   }
 
-  v79 = v8;
+  v79 = tileCopy;
   if (v57 >= v29)
   {
     if (v57 >= v35)
@@ -501,7 +501,7 @@ LABEL_34:
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
-  v60 = v7;
+  v60 = confidenceCopy;
   v61 = [v60 countByEnumeratingWithState:&v85 objects:v99 count:16];
   if (v61)
   {
@@ -509,7 +509,7 @@ LABEL_34:
     v77 = v9;
     v78 = v10;
     v81 = v11;
-    v83 = v7;
+    v83 = confidenceCopy;
     v63 = *v86;
     v64 = 1.0;
     do
@@ -527,7 +527,7 @@ LABEL_34:
         v69 = v68;
 
         v70 = v59;
-        if ([v66 unsignedIntegerValue] != a4)
+        if ([v66 unsignedIntegerValue] != d)
         {
           if (v59 >= v57)
           {
@@ -545,9 +545,9 @@ LABEL_34:
           v71 = sub_1000011A0(&qword_1000B2970);
           if (os_log_type_enabled(v71, OS_LOG_TYPE_DEBUG))
           {
-            v73 = [v66 integerValue];
+            integerValue = [v66 integerValue];
             *buf = 134218496;
-            v94 = *&v73;
+            v94 = *&integerValue;
             v95 = 2048;
             v96 = v69;
             v97 = 2048;
@@ -568,12 +568,12 @@ LABEL_34:
     while (v62);
 
     v11 = v81;
-    v7 = v83;
+    confidenceCopy = v83;
     v9 = v77;
     v10 = v78;
     if (v64 <= 0.0)
     {
-      v8 = v79;
+      tileCopy = v79;
       goto LABEL_63;
     }
   }
@@ -584,7 +584,7 @@ LABEL_34:
     v64 = 1.0;
   }
 
-  v8 = v79;
+  tileCopy = v79;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     v74 = sub_1000011A0(&qword_1000B2970);
@@ -604,16 +604,16 @@ LABEL_63:
   return v58;
 }
 
-- (id)categoryFilteredLocalBluePOIResultWithPOIConfidences:(id)a3 aoiConfidences:(id)a4 distanceToNearestAOILowerBound:(id)a5 referenceLocation:(id)a6 queryTime:(id)a7 bluePOITile:(id)a8
+- (id)categoryFilteredLocalBluePOIResultWithPOIConfidences:(id)confidences aoiConfidences:(id)aoiConfidences distanceToNearestAOILowerBound:(id)bound referenceLocation:(id)location queryTime:(id)time bluePOITile:(id)tile
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = v19;
-  if (!v14)
+  confidencesCopy = confidences;
+  aoiConfidencesCopy = aoiConfidences;
+  boundCopy = bound;
+  locationCopy = location;
+  timeCopy = time;
+  tileCopy = tile;
+  v20 = tileCopy;
+  if (!confidencesCopy)
   {
     v21 = sub_1000011A0(&qword_1000B2958);
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -628,7 +628,7 @@ LABEL_43:
     goto LABEL_44;
   }
 
-  if (!v15)
+  if (!aoiConfidencesCopy)
   {
     v21 = sub_1000011A0(&qword_1000B2958);
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -641,7 +641,7 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  if (!v17)
+  if (!locationCopy)
   {
     v21 = sub_1000011A0(&qword_1000B2958);
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -654,7 +654,7 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  if (!v18)
+  if (!timeCopy)
   {
     v21 = sub_1000011A0(&qword_1000B2958);
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -667,7 +667,7 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  if (!v19)
+  if (!tileCopy)
   {
     v21 = sub_1000011A0(&qword_1000B2958);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -683,18 +683,18 @@ LABEL_44:
   }
 
   aSelector = a2;
-  v51 = v18;
-  v52 = v17;
-  v53 = v16;
-  v54 = v15;
+  v51 = timeCopy;
+  v52 = locationCopy;
+  v53 = boundCopy;
+  v54 = aoiConfidencesCopy;
   v21 = objc_opt_new();
   v22 = objc_opt_new();
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v23 = [v20 pointsOfInterest];
-  v24 = [v23 countByEnumeratingWithState:&v62 objects:v71 count:16];
+  pointsOfInterest = [v20 pointsOfInterest];
+  v24 = [pointsOfInterest countByEnumeratingWithState:&v62 objects:v71 count:16];
   if (v24)
   {
     v25 = v24;
@@ -705,7 +705,7 @@ LABEL_44:
       {
         if (*v63 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(pointsOfInterest);
         }
 
         v28 = *(*(&v62 + 1) + 8 * i);
@@ -719,7 +719,7 @@ LABEL_44:
         }
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v62 objects:v71 count:16];
+      v25 = [pointsOfInterest countByEnumeratingWithState:&v62 objects:v71 count:16];
     }
 
     while (v25);
@@ -732,7 +732,7 @@ LABEL_44:
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v31 = v14;
+  v31 = confidencesCopy;
   v57 = [v31 countByEnumeratingWithState:&v58 objects:v70 count:16];
   if (v57)
   {
@@ -805,10 +805,10 @@ LABEL_30:
     while (v57);
   }
 
-  v16 = v53;
-  v15 = v54;
-  v18 = v51;
-  v17 = v52;
+  boundCopy = v53;
+  aoiConfidencesCopy = v54;
+  timeCopy = v51;
+  locationCopy = v52;
   v47 = [[RTLocalBluePOIResult alloc] initWithPOIConfidences:v56 aoiConfidences:v54 distanceToNearestAOILowerBound:v53 referenceLocation:v52 queryTime:v51];
 
   v20 = v50;
@@ -817,12 +817,12 @@ LABEL_45:
   return v47;
 }
 
-- (void)compileCoreMLModelAtURL:(id)a3 handler:(id)a4
+- (void)compileCoreMLModelAtURL:(id)l handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v12 = 0;
-  v8 = [MLModel compileModelAtURL:v6 error:&v12];
+  v8 = [MLModel compileModelAtURL:lCopy error:&v12];
   v9 = v12;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
@@ -833,7 +833,7 @@ LABEL_45:
       *buf = 138413058;
       v14 = v11;
       v15 = 2112;
-      v16 = v6;
+      v16 = lCopy;
       v17 = 2112;
       v18 = v8;
       v19 = 2112;
@@ -842,32 +842,32 @@ LABEL_45:
     }
   }
 
-  v7[2](v7, v8, v9);
+  handlerCopy[2](handlerCopy, v8, v9);
 }
 
-- (void)fetchBluePOIMetadataWithHandler:(id)a3
+- (void)fetchBluePOIMetadataWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = objc_opt_new();
   v7 = objc_opt_new();
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100020E24;
   v11[3] = &unk_1000A8BE0;
-  v14 = v5;
+  v14 = handlerCopy;
   v15 = a2;
   v12 = [[RTBluePOITileParser alloc] initWithFileManager:v6 wkbParser:v7];
   v13 = v6;
   v8 = v6;
   v9 = v12;
-  v10 = v5;
+  v10 = handlerCopy;
   [(RTLocalBluePOIService *)self downloadBluePOIMetadataWithHandler:v11];
 }
 
-- (void)fetchBluePOITilesForDownloadKeys:(id)a3 handler:(id)a4
+- (void)fetchBluePOITilesForDownloadKeys:(id)keys handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  keysCopy = keys;
+  handlerCopy = handler;
   v9 = objc_opt_new();
   v10 = objc_opt_new();
   v11 = [[RTBluePOITileParser alloc] initWithFileManager:v9 wkbParser:v10];
@@ -886,22 +886,22 @@ LABEL_45:
   v24 = a2;
   v13 = v11;
   v18 = v13;
-  v19 = self;
+  selfCopy = self;
   v14 = v9;
   v20 = v14;
   v15 = v12;
   v21 = v15;
-  v16 = v8;
+  v16 = handlerCopy;
   v22 = v16;
-  [(RTLocalBluePOIService *)self downloadBluePOITilesForDownloadKeys:v7 handler:v17];
+  [(RTLocalBluePOIService *)self downloadBluePOITilesForDownloadKeys:keysCopy handler:v17];
 
   _Block_object_dispose(v25, 8);
 }
 
-- (void)loadPreinstalledTileAtPath:(id)a3 handler:(id)a4
+- (void)loadPreinstalledTileAtPath:(id)path handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  handlerCopy = handler;
   v9 = objc_opt_new();
   v10 = [RTBluePOITileParser alloc];
   v11 = objc_opt_new();
@@ -909,7 +909,7 @@ LABEL_45:
   v13 = [(RTBluePOITileParser *)v10 initWithFileManager:v11 wkbParser:v12];
 
   v22 = 0;
-  v14 = [(RTBluePOITileParser *)v13 loadProtobufTileAtPath:v7 cacheInfo:0 outError:&v22];
+  v14 = [(RTBluePOITileParser *)v13 loadProtobufTileAtPath:pathCopy cacheInfo:0 outError:&v22];
   v15 = v22;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
@@ -920,7 +920,7 @@ LABEL_45:
       *buf = 138413059;
       v24 = v17;
       v25 = 2112;
-      v26 = v7;
+      v26 = pathCopy;
       v27 = 2112;
       v28 = v15;
       v29 = 2117;
@@ -953,41 +953,41 @@ LABEL_45:
     }
   }
 
-  v8[2](v8, v18, v15);
+  handlerCopy[2](handlerCopy, v18, v15);
 }
 
-- (id)processTile:(id)a3 fileManager:(id)a4 error:(id *)a5
+- (id)processTile:(id)tile fileManager:(id)manager error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
-  v85 = v7;
+  tileCopy = tile;
+  managerCopy = manager;
+  v85 = managerCopy;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v8 = sub_1000011A0(&qword_1000B2970);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = NSStringFromSelector(a2);
-      v10 = [v6 models];
+      models = [tileCopy models];
       *buf = 138412546;
       v112 = v9;
       v113 = 2048;
-      v114 = [v10 count];
+      v114 = [models count];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%@, CoreML model count, %lu", buf, 0x16u);
 
-      v7 = v85;
+      managerCopy = v85;
     }
   }
 
   v84 = [NSFileManager pathInCacheDirectory:@"BluePOIModels"];
   v11 = [NSMutableSet alloc];
-  v12 = [v6 models];
-  v77 = [v11 initWithCapacity:{objc_msgSend(v12, "count")}];
+  models2 = [tileCopy models];
+  v77 = [v11 initWithCapacity:{objc_msgSend(models2, "count")}];
 
   v100 = 0u;
   v101 = 0u;
   v98 = 0u;
   v99 = 0u;
-  obj = [v6 models];
+  obj = [tileCopy models];
   v80 = [obj countByEnumeratingWithState:&v98 objects:v119 count:16];
   if (v80)
   {
@@ -1005,10 +1005,10 @@ LABEL_7:
       v14 = *(*(&v98 + 1) + 8 * v13);
       v15 = [NSURL alloc];
       v16 = [v14 url];
-      v17 = [v15 initFileURLWithPath:v16];
+      date = [v15 initFileURLWithPath:v16];
 
       v97 = 0;
-      v18 = [MLModel compileModelAtURL:v17 error:&v97];
+      downloadKey = [MLModel compileModelAtURL:date error:&v97];
       v19 = v97;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
       {
@@ -1019,30 +1019,30 @@ LABEL_7:
           *buf = 138413058;
           v112 = v21;
           v113 = 2112;
-          v114 = v17;
+          v114 = date;
           v115 = 2112;
-          v116 = *&v18;
+          v116 = *&downloadKey;
           v117 = 2112;
           v118 = v19;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%@, step 1: compile CoreML model, coremlModelURL, %@, tempCompiledModelURL, %@, error, %@", buf, 0x2Au);
         }
       }
 
-      if (v19 || ([v18 path], v22 = objc_claimAutoreleasedReturnValue(), v22, !v22))
+      if (v19 || ([downloadKey path], v22 = objc_claimAutoreleasedReturnValue(), v22, !v22))
       {
-        v83 = v6;
+        v83 = tileCopy;
         v65 = [NSError alloc];
         v109 = NSLocalizedDescriptionKey;
         v66 = [NSString stringWithFormat:@"failed to compile model"];
         v110 = v66;
         v67 = [NSDictionary dictionaryWithObjects:&v110 forKeys:&v109 count:1];
-        v68 = [v65 initWithDomain:@"RTBluePOIErrorDomain" code:109 userInfo:v67];
+        apToModelMapping = [v65 initWithDomain:@"RTBluePOIErrorDomain" code:109 userInfo:v67];
 
-        if (a5)
+        if (error)
         {
-          v69 = v68;
+          v69 = apToModelMapping;
           v70 = 0;
-          *a5 = v68;
+          *error = apToModelMapping;
         }
 
         else
@@ -1053,17 +1053,17 @@ LABEL_7:
         goto LABEL_63;
       }
 
-      v23 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v6 geoTileKey]);
+      v23 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [tileCopy geoTileKey]);
       v24 = [NSString stringWithFormat:@"%@-%lu.mlmodelc", v23, v86];
       v25 = [v84 stringByAppendingPathComponent:v24];
 
-      if (![v7 fileExistsAtPath:v25 isDirectory:0])
+      if (![managerCopy fileExistsAtPath:v25 isDirectory:0])
       {
         goto LABEL_23;
       }
 
       v96 = 0;
-      [v7 removeItemAtPath:v25 error:&v96];
+      [managerCopy removeItemAtPath:v25 error:&v96];
       v26 = v96;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
       {
@@ -1094,9 +1094,9 @@ LABEL_7:
       else
       {
 LABEL_23:
-        v33 = [v18 path];
+        path = [downloadKey path];
         v95 = 0;
-        [v7 moveItemAtPath:v33 toPath:v25 error:&v95];
+        [managerCopy moveItemAtPath:path toPath:v25 error:&v95];
         v34 = v95;
 
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
@@ -1105,18 +1105,18 @@ LABEL_23:
           if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
           {
             v36 = NSStringFromSelector(a2);
-            v37 = [v18 path];
+            path2 = [downloadKey path];
             *buf = 138413058;
             v112 = v36;
             v113 = 2112;
-            v114 = v37;
+            v114 = path2;
             v115 = 2112;
             v116 = *&v25;
             v117 = 2112;
             v118 = v34;
             _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "%@, step 2: save compiled model, before, %@, after, %@, error, %@", buf, 0x2Au);
 
-            v7 = v85;
+            managerCopy = v85;
           }
         }
 
@@ -1134,7 +1134,7 @@ LABEL_23:
         {
           v42 = [v14 url];
           v94 = 0;
-          [v7 removeItemAtPath:v42 error:&v94];
+          [managerCopy removeItemAtPath:v42 error:&v94];
           v34 = v94;
 
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
@@ -1157,9 +1157,9 @@ LABEL_23:
           if (!v34)
           {
             v49 = [RTBluePOIModel alloc];
-            v50 = [v14 identifier];
-            v51 = [v14 featureToHashedApMapping];
-            v52 = [v49 initWithIdentifier:v50 featureToHashedApMapping:v51 url:v25];
+            identifier = [v14 identifier];
+            featureToHashedApMapping = [v14 featureToHashedApMapping];
+            v52 = [v49 initWithIdentifier:identifier featureToHashedApMapping:featureToHashedApMapping url:v25];
 
             if (v52)
             {
@@ -1185,11 +1185,11 @@ LABEL_23:
         v32 = [v38 initWithDomain:@"RTBluePOIErrorDomain" code:100 userInfo:v46];
       }
 
-      if (a5)
+      if (error)
       {
         v47 = v32;
         v48 = 0;
-        *a5 = v32;
+        *error = v32;
       }
 
       else
@@ -1198,7 +1198,7 @@ LABEL_23:
       }
 
 LABEL_42:
-      v7 = v85;
+      managerCopy = v85;
 
       if (!v48)
       {
@@ -1219,7 +1219,7 @@ LABEL_42:
     }
   }
 
-  v83 = v6;
+  v83 = tileCopy;
 
   v92 = 0u;
   v93 = 0u;
@@ -1278,45 +1278,45 @@ LABEL_42:
 
   aSelectora = [RTBluePOITile alloc];
   obj = [v83 identifier];
-  v68 = [v83 apToModelMapping];
-  v17 = [v83 date];
-  v18 = [v83 downloadKey];
-  v87 = [v83 geoCacheInfo];
-  v81 = [v83 geoTileKey];
-  v71 = [v83 hashedApToModelMapping];
-  v72 = [v83 hashSalt];
-  v73 = [v83 modelCalibrationParameters];
-  v74 = [v83 modelURLs];
-  v75 = [v83 pointsOfInterest];
-  v70 = [aSelectora initWithIdentifier:obj apToModelMapping:v68 date:v17 downloadKey:v18 geoCacheInfo:v87 geoTileKey:v81 hashedApToModelMapping:v57 hashSalt:v71 modelCalibrationParameters:v72 models:v73 modelURLs:v53 pointsOfInterest:v74 singlePOIMuid:v75 size:{objc_msgSend(v83, "singlePOIMuid")}];
+  apToModelMapping = [v83 apToModelMapping];
+  date = [v83 date];
+  downloadKey = [v83 downloadKey];
+  geoCacheInfo = [v83 geoCacheInfo];
+  geoTileKey = [v83 geoTileKey];
+  hashedApToModelMapping = [v83 hashedApToModelMapping];
+  hashSalt = [v83 hashSalt];
+  modelCalibrationParameters = [v83 modelCalibrationParameters];
+  modelURLs = [v83 modelURLs];
+  pointsOfInterest = [v83 pointsOfInterest];
+  v70 = [aSelectora initWithIdentifier:obj apToModelMapping:apToModelMapping date:date downloadKey:downloadKey geoCacheInfo:geoCacheInfo geoTileKey:geoTileKey hashedApToModelMapping:v57 hashSalt:hashedApToModelMapping modelCalibrationParameters:hashSalt models:modelCalibrationParameters modelURLs:v53 pointsOfInterest:modelURLs singlePOIMuid:pointsOfInterest size:{objc_msgSend(v83, "singlePOIMuid")}];
 
 LABEL_63:
-  v6 = v83;
-  v7 = v85;
+  tileCopy = v83;
+  managerCopy = v85;
 LABEL_64:
 
   return v70;
 }
 
-- (void)downloadBluePOITilesForDownloadKeys:(id)a3 handler:(id)a4
+- (void)downloadBluePOITilesForDownloadKeys:(id)keys handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  keysCopy = keys;
   v8 = objc_alloc_init(GEOExternalTileLoader);
-  [(RTLocalBluePOIService *)self downloadBluePOITilesForDownloadKeys:v7 tileLoader:v8 handler:v6];
+  [(RTLocalBluePOIService *)self downloadBluePOITilesForDownloadKeys:keysCopy tileLoader:v8 handler:handlerCopy];
 }
 
-- (void)downloadBluePOITilesForDownloadKeys:(id)a3 tileLoader:(id)a4 handler:(id)a5
+- (void)downloadBluePOITilesForDownloadKeys:(id)keys tileLoader:(id)loader handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keysCopy = keys;
+  loaderCopy = loader;
+  handlerCopy = handler;
   v11 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v12 = v8;
+  v12 = keysCopy;
   v13 = [v12 countByEnumeratingWithState:&v28 objects:v37 count:16];
   if (v13)
   {
@@ -1373,24 +1373,24 @@ LABEL_64:
   v22[3] = &unk_1000A8B40;
   v21 = v18;
   v23 = v21;
-  [v9 fetchTiles:v11 result:v24 finished:v22];
+  [loaderCopy fetchTiles:v11 result:v24 finished:v22];
   dispatch_group_wait(v21, 0xFFFFFFFFFFFFFFFFLL);
-  v10[2](v10, v20, *(*(&v32 + 1) + 40));
+  handlerCopy[2](handlerCopy, v20, *(*(&v32 + 1) + 40));
 
   _Block_object_dispose(&v32, 8);
 }
 
-- (void)downloadBluePOIMetadataWithHandler:(id)a3
+- (void)downloadBluePOIMetadataWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(GEOExternalTileLoader);
-  [(RTLocalBluePOIService *)self downloadBluePOIMetadataWithTileLoader:v5 handler:v4];
+  [(RTLocalBluePOIService *)self downloadBluePOIMetadataWithTileLoader:v5 handler:handlerCopy];
 }
 
-- (void)downloadBluePOIMetadataWithTileLoader:(id)a3 handler:(id)a4
+- (void)downloadBluePOIMetadataWithTileLoader:(id)loader handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  loaderCopy = loader;
+  handlerCopy = handler;
   v8 = [[GEOExternalTileRequest alloc] initWithType:2 dataFormatVersion:1 coordinate:{0.0, 0.0}];
   if (v8)
   {
@@ -1417,9 +1417,9 @@ LABEL_64:
     v17 = &v20;
     v10 = v9;
     v16 = v10;
-    [v6 fetchTile:v8 result:v15];
+    [loaderCopy fetchTile:v8 result:v15];
     dispatch_group_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
-    v7[2](v7, v27[5], v21[5]);
+    handlerCopy[2](handlerCopy, v27[5], v21[5]);
 
     _Block_object_dispose(&v20, 8);
     _Block_object_dispose(&v26, 8);
@@ -1434,7 +1434,7 @@ LABEL_64:
     v13 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
     v14 = [v11 initWithDomain:RTErrorDomain code:7 userInfo:v13];
 
-    v7[2](v7, 0, v14);
+    handlerCopy[2](handlerCopy, 0, v14);
   }
 }
 

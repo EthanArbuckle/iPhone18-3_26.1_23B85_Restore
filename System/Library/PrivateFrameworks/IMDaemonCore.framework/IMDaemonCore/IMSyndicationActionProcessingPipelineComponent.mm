@@ -1,27 +1,27 @@
 @interface IMSyndicationActionProcessingPipelineComponent
-- (IMSyndicationActionProcessingPipelineComponent)initWithPipelineResources:(id)a3;
+- (IMSyndicationActionProcessingPipelineComponent)initWithPipelineResources:(id)resources;
 - (id)_account;
 - (id)_broadcaster;
 - (id)_chatRegistry;
 - (id)_messageStore;
-- (id)findSMSChatForInput:(id)a3;
-- (id)handleChatSyndicationAction:(id)a3 chat:(id)a4;
-- (id)handleMessageSyndicationAction:(id)a3 chat:(id)a4;
-- (id)runIndividuallyWithInput:(id)a3;
+- (id)findSMSChatForInput:(id)input;
+- (id)handleChatSyndicationAction:(id)action chat:(id)chat;
+- (id)handleMessageSyndicationAction:(id)action chat:(id)chat;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IMSyndicationActionProcessingPipelineComponent
 
-- (IMSyndicationActionProcessingPipelineComponent)initWithPipelineResources:(id)a3
+- (IMSyndicationActionProcessingPipelineComponent)initWithPipelineResources:(id)resources
 {
-  v5 = a3;
+  resourcesCopy = resources;
   v9.receiver = self;
   v9.super_class = IMSyndicationActionProcessingPipelineComponent;
   v6 = [(IMSyndicationActionProcessingPipelineComponent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pipelineResources, a3);
+    objc_storeStrong(&v6->_pipelineResources, resources);
   }
 
   return v7;
@@ -29,43 +29,43 @@
 
 - (id)_account
 {
-  v2 = [(IMSyndicationActionProcessingPipelineComponent *)self pipelineResources];
-  v3 = [v2 imdAccount];
+  pipelineResources = [(IMSyndicationActionProcessingPipelineComponent *)self pipelineResources];
+  imdAccount = [pipelineResources imdAccount];
 
-  return v3;
+  return imdAccount;
 }
 
 - (id)_messageStore
 {
-  v2 = [(IMSyndicationActionProcessingPipelineComponent *)self pipelineResources];
-  v3 = [v2 messageStore];
+  pipelineResources = [(IMSyndicationActionProcessingPipelineComponent *)self pipelineResources];
+  messageStore = [pipelineResources messageStore];
 
-  return v3;
+  return messageStore;
 }
 
 - (id)_chatRegistry
 {
-  v2 = [(IMSyndicationActionProcessingPipelineComponent *)self pipelineResources];
-  v3 = [v2 chatRegistry];
+  pipelineResources = [(IMSyndicationActionProcessingPipelineComponent *)self pipelineResources];
+  chatRegistry = [pipelineResources chatRegistry];
 
-  return v3;
+  return chatRegistry;
 }
 
 - (id)_broadcaster
 {
-  v2 = [(IMSyndicationActionProcessingPipelineComponent *)self pipelineResources];
-  v3 = [v2 broadcaster];
+  pipelineResources = [(IMSyndicationActionProcessingPipelineComponent *)self pipelineResources];
+  broadcaster = [pipelineResources broadcaster];
 
-  return v3;
+  return broadcaster;
 }
 
-- (id)handleMessageSyndicationAction:(id)a3 chat:(id)a4
+- (id)handleMessageSyndicationAction:(id)action chat:(id)chat
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IMSyndicationActionProcessingPipelineComponent *)self _messageStore];
-  v9 = [v8 updateSyndicatedMessageWithSyndicationMessageAction:v6];
+  actionCopy = action;
+  chatCopy = chat;
+  _messageStore = [(IMSyndicationActionProcessingPipelineComponent *)self _messageStore];
+  v9 = [_messageStore updateSyndicatedMessageWithSyndicationMessageAction:actionCopy];
 
   if (v9)
   {
@@ -74,19 +74,19 @@
       v10 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [v9 guid];
+        guid = [v9 guid];
         v20 = 138412546;
-        v21 = v11;
+        v21 = guid;
         v22 = 2112;
-        v23 = v6;
+        v23 = actionCopy;
         _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_INFO, "Updated message: %@ with SyndicationAction: %@", &v20, 0x16u);
       }
     }
 
-    v12 = [(IMSyndicationActionProcessingPipelineComponent *)self _broadcaster];
-    v13 = [v7 accountID];
-    v14 = [v7 chatIdentifier];
-    [v12 account:v13 chat:v14 style:objc_msgSend(v7 messageUpdated:{"style"), v9}];
+    _broadcaster = [(IMSyndicationActionProcessingPipelineComponent *)self _broadcaster];
+    accountID = [chatCopy accountID];
+    chatIdentifier = [chatCopy chatIdentifier];
+    [_broadcaster account:accountID chat:chatIdentifier style:objc_msgSend(chatCopy messageUpdated:{"style"), v9}];
 
     v15 = 0;
   }
@@ -96,7 +96,7 @@
     v16 = IMLogHandleForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      sub_22B7D24C0(v6, v16);
+      sub_22B7D24C0(actionCopy, v16);
     }
 
     v17 = objc_alloc(MEMORY[0x277CCA9B8]);
@@ -108,12 +108,12 @@
   return v15;
 }
 
-- (id)handleChatSyndicationAction:(id)a3 chat:(id)a4
+- (id)handleChatSyndicationAction:(id)action chat:(id)chat
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 updateDonationStateWithSyndicationAction:v5];
+  actionCopy = action;
+  chatCopy = chat;
+  v7 = [chatCopy updateDonationStateWithSyndicationAction:actionCopy];
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
@@ -128,7 +128,7 @@
       v12 = 138412546;
       v13 = v9;
       v14 = 2112;
-      v15 = v5;
+      v15 = actionCopy;
       _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Did update chat: %@. with SyndicationAction: %@", &v12, 0x16u);
     }
   }
@@ -137,10 +137,10 @@
   return 0;
 }
 
-- (id)findSMSChatForInput:(id)a3
+- (id)findSMSChatForInput:(id)input
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inputCopy = input;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -157,17 +157,17 @@
   v7 = +[IMDAccountController sharedInstance];
   v8 = [v7 activeAccountsForService:v25];
 
-  v9 = [v4 participantIdentifiers];
+  participantIdentifiers = [inputCopy participantIdentifiers];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = sub_22B567D24;
   v31[3] = &unk_278703AF0;
-  v26 = v4;
+  v26 = inputCopy;
   v32 = v26;
-  v10 = [v9 __imArrayByFilteringWithBlock:v31];
-  v11 = [v10 _IDsFromURIs];
+  v10 = [participantIdentifiers __imArrayByFilteringWithBlock:v31];
+  _IDsFromURIs = [v10 _IDsFromURIs];
 
-  v12 = [v11 count];
+  v12 = [_IDsFromURIs count];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -187,17 +187,17 @@
         }
 
         v17 = *(*(&v27 + 1) + 8 * i);
-        v18 = [(IMSyndicationActionProcessingPipelineComponent *)self _chatRegistry];
-        v19 = v18;
+        _chatRegistry = [(IMSyndicationActionProcessingPipelineComponent *)self _chatRegistry];
+        v19 = _chatRegistry;
         if (v12 <= 1)
         {
-          v21 = [v26 fromDisplayID];
-          v20 = [v19 existingChatForID:v21 account:v17];
+          fromDisplayID = [v26 fromDisplayID];
+          v20 = [v19 existingChatForID:fromDisplayID account:v17];
         }
 
         else
         {
-          v20 = [v18 existingChatForIDs:v11 account:v17 style:43];
+          v20 = [_chatRegistry existingChatForIDs:_IDsFromURIs account:v17 style:43];
         }
 
         if (v20)
@@ -235,15 +235,15 @@ LABEL_22:
   return v20;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 chat];
-  if (!v5)
+  inputCopy = input;
+  chat = [inputCopy chat];
+  if (!chat)
   {
-    v5 = [(IMSyndicationActionProcessingPipelineComponent *)self findSMSChatForInput:v4];
-    if (!v5)
+    chat = [(IMSyndicationActionProcessingPipelineComponent *)self findSMSChatForInput:inputCopy];
+    if (!chat)
     {
       v19 = objc_alloc(MEMORY[0x277CCA9B8]);
       v12 = [v19 initWithDomain:*MEMORY[0x277D18DF8] code:8 userInfo:0];
@@ -255,7 +255,7 @@ LABEL_22:
     }
   }
 
-  v6 = [v4 createSyndicationActionWithChat:v5];
+  v6 = [inputCopy createSyndicationActionWithChat:chat];
   v7 = v6;
   if (!v6)
   {
@@ -279,15 +279,15 @@ LABEL_12:
     goto LABEL_21;
   }
 
-  v8 = [v6 syndicatedItemType];
-  if (v8 == 2)
+  syndicatedItemType = [v6 syndicatedItemType];
+  if (syndicatedItemType == 2)
   {
-    v9 = [(IMSyndicationActionProcessingPipelineComponent *)self handleChatSyndicationAction:v7 chat:v5];
+    v9 = [(IMSyndicationActionProcessingPipelineComponent *)self handleChatSyndicationAction:v7 chat:chat];
   }
 
-  else if (v8 == 1)
+  else if (syndicatedItemType == 1)
   {
-    v9 = [(IMSyndicationActionProcessingPipelineComponent *)self handleMessageSyndicationAction:v7 chat:v5];
+    v9 = [(IMSyndicationActionProcessingPipelineComponent *)self handleMessageSyndicationAction:v7 chat:chat];
   }
 
   else
@@ -302,7 +302,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  [v4 setSyndicationAction:v7];
+  [inputCopy setSyndicationAction:v7];
 LABEL_16:
   if (IMOSLoggingEnabled())
   {
@@ -315,7 +315,7 @@ LABEL_16:
     }
   }
 
-  v15 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v4];
+  v15 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
 LABEL_21:
 
   v17 = *MEMORY[0x277D85DE8];

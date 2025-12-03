@@ -1,29 +1,29 @@
 @interface DADeviceObserverEnclosure
-- (DADeviceObserverEnclosure)initWithObserver:(id)a3 delegate:(id)a4;
+- (DADeviceObserverEnclosure)initWithObserver:(id)observer delegate:(id)delegate;
 - (DADeviceObserverEnclosureDelegate)delegate;
 - (void)begin;
 - (void)end;
-- (void)oneshotWithHandler:(id)a3;
+- (void)oneshotWithHandler:(id)handler;
 @end
 
 @implementation DADeviceObserverEnclosure
 
-- (DADeviceObserverEnclosure)initWithObserver:(id)a3 delegate:(id)a4
+- (DADeviceObserverEnclosure)initWithObserver:(id)observer delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  observerCopy = observer;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = DADeviceObserverEnclosure;
   v9 = [(DADeviceObserverEnclosure *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_observer, a3);
+    objc_storeStrong(&v9->_observer, observer);
     v11 = +[NSSet set];
     devices = v10->_devices;
     v10->_devices = v11;
 
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;
@@ -31,18 +31,18 @@
 
 - (void)begin
 {
-  v3 = [(DADeviceObserverEnclosure *)self identifier];
+  identifier = [(DADeviceObserverEnclosure *)self identifier];
 
-  if (!v3)
+  if (!identifier)
   {
     objc_initWeak(&location, self);
-    v4 = [(DADeviceObserverEnclosure *)self observer];
+    observer = [(DADeviceObserverEnclosure *)self observer];
     v6 = _NSConcreteStackBlock;
     v7 = 3221225472;
     v8 = sub_10000A4D0;
     v9 = &unk_100014960;
     objc_copyWeak(&v10, &location);
-    v5 = [v4 beginDiscoveringDevicesWithHandler:&v6];
+    v5 = [observer beginDiscoveringDevicesWithHandler:&v6];
     [(DADeviceObserverEnclosure *)self setIdentifier:v5, v6, v7, v8, v9];
 
     objc_destroyWeak(&v10);
@@ -52,31 +52,31 @@
 
 - (void)end
 {
-  v3 = [(DADeviceObserverEnclosure *)self identifier];
+  identifier = [(DADeviceObserverEnclosure *)self identifier];
 
-  if (v3)
+  if (identifier)
   {
-    v4 = [(DADeviceObserverEnclosure *)self observer];
-    v5 = [(DADeviceObserverEnclosure *)self identifier];
-    [v4 endDiscoveringDevicesWithIdentifier:v5];
+    observer = [(DADeviceObserverEnclosure *)self observer];
+    identifier2 = [(DADeviceObserverEnclosure *)self identifier];
+    [observer endDiscoveringDevicesWithIdentifier:identifier2];
 
     [(DADeviceObserverEnclosure *)self setIdentifier:0];
   }
 }
 
-- (void)oneshotWithHandler:(id)a3
+- (void)oneshotWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v5 = [(DADeviceObserverEnclosure *)self observer];
+  observer = [(DADeviceObserverEnclosure *)self observer];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000A75C;
   v7[3] = &unk_100014988;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = handlerCopy;
   v8 = v6;
-  [v5 discoverAllDevicesWithCompletionHandler:v7];
+  [observer discoverAllDevicesWithCompletionHandler:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);

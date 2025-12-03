@@ -1,14 +1,14 @@
 @interface ProxCardKitTestAppIconsViewController
-- (ProxCardKitTestAppIconsViewController)initWithContentView:(id)a3;
+- (ProxCardKitTestAppIconsViewController)initWithContentView:(id)view;
 @end
 
 @implementation ProxCardKitTestAppIconsViewController
 
-- (ProxCardKitTestAppIconsViewController)initWithContentView:(id)a3
+- (ProxCardKitTestAppIconsViewController)initWithContentView:(id)view
 {
   v33.receiver = self;
   v33.super_class = ProxCardKitTestAppIconsViewController;
-  v29 = a3;
+  viewCopy = view;
   v3 = [(ProxCardKitTestAppIconsViewController *)&v33 initWithContentView:?];
   v4 = v3;
   if (v3)

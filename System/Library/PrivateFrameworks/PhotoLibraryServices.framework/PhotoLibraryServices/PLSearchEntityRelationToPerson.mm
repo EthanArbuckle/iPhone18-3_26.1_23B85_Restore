@@ -1,5 +1,5 @@
 @interface PLSearchEntityRelationToPerson
-- (PLSearchEntityRelationToPerson)initWithPerson:(id)a3 relationType:(signed __int16)a4 relationTypeConfidence:(double)a5;
+- (PLSearchEntityRelationToPerson)initWithPerson:(id)person relationType:(signed __int16)type relationTypeConfidence:(double)confidence;
 - (id)description;
 - (id)dictionaryRepresentation;
 @end
@@ -9,10 +9,10 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PLSearchEntityRelationToPerson *)self personUUID];
-  v5 = [(PLSearchEntityRelationToPerson *)self relationType];
+  personUUID = [(PLSearchEntityRelationToPerson *)self personUUID];
+  relationType = [(PLSearchEntityRelationToPerson *)self relationType];
   [(PLSearchEntityRelationToPerson *)self relationTypeConfidence];
-  v7 = [v3 stringWithFormat:@"\npersonUUID: %@\nrelationType: %llu\nrelationTypeConfidence: %f", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"\npersonUUID: %@\nrelationType: %llu\nrelationTypeConfidence: %f", personUUID, relationType, v6];
 
   return v7;
 }
@@ -33,20 +33,20 @@
   return v5;
 }
 
-- (PLSearchEntityRelationToPerson)initWithPerson:(id)a3 relationType:(signed __int16)a4 relationTypeConfidence:(double)a5
+- (PLSearchEntityRelationToPerson)initWithPerson:(id)person relationType:(signed __int16)type relationTypeConfidence:(double)confidence
 {
-  v8 = a3;
+  personCopy = person;
   v13.receiver = self;
   v13.super_class = PLSearchEntityRelationToPerson;
   v9 = [(PLSearchEntityRelationToPerson *)&v13 init];
   if (v9)
   {
-    v10 = [v8 personUUID];
+    personUUID = [personCopy personUUID];
     personUUID = v9->_personUUID;
-    v9->_personUUID = v10;
+    v9->_personUUID = personUUID;
 
-    v9->_relationType = a4;
-    v9->_relationTypeConfidence = a5;
+    v9->_relationType = type;
+    v9->_relationTypeConfidence = confidence;
   }
 
   return v9;

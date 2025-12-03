@@ -1,12 +1,12 @@
 @interface SceneDelegate
 - (SceneDelegate)init;
-- (id)viewControllerForUseCase:(id)a3;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
+- (id)viewControllerForUseCase:(id)case;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
 @end
 
 @implementation SceneDelegate
@@ -18,11 +18,11 @@
   return [(SceneDelegate *)&v3 init];
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v23 = a5;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
   v10 = SESDefaultLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -35,7 +35,7 @@
   v30 = 0x3032000000;
   v31 = sub_100002780;
   v32 = sub_100002790;
-  v11 = v8;
+  v11 = sceneCopy;
   v33 = v11;
   v12 = *(v29 + 5);
   objc_opt_class();
@@ -44,17 +44,17 @@
     [*(v29 + 5) setSwipeDismissalStyle:1];
     [*(v29 + 5) setDismissalAnimationStyle:2];
     [*(v29 + 5) setAllowsMenuButtonDismissal:1];
-    v13 = [*(v29 + 5) configurationContext];
-    v14 = [v13 userInfo];
+    configurationContext = [*(v29 + 5) configurationContext];
+    userInfo = [configurationContext userInfo];
     v15 = SESUIServiceAppConfigurationKey;
-    v16 = [v14 objectForKeyedSubscript:SESUIServiceAppConfigurationKey];
+    v16 = [userInfo objectForKeyedSubscript:SESUIServiceAppConfigurationKey];
     if (v16)
     {
       v17 = [(SceneDelegate *)self viewControllerForUseCase:v16];
       if (v17)
       {
         objc_initWeak(location, self);
-        objc_initWeak(&from, v9);
+        objc_initWeak(&from, sessionCopy);
         v24[0] = _NSConcreteStackBlock;
         v24[1] = 3221225472;
         v24[2] = sub_100002798;
@@ -108,10 +108,10 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (id)viewControllerForUseCase:(id)a3
+- (id)viewControllerForUseCase:(id)case
 {
-  v3 = a3;
-  if ([v3 isEqualToString:SESStorageManagementUserInfo])
+  caseCopy = case;
+  if ([caseCopy isEqualToString:SESStorageManagementUserInfo])
   {
     v4 = &off_1000185C0;
 LABEL_5:
@@ -120,7 +120,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:SESGDPRSceneConfigurationUserInfo])
+  if ([caseCopy isEqualToString:SESGDPRSceneConfigurationUserInfo])
   {
     v4 = off_1000185B8;
     goto LABEL_5;
@@ -132,9 +132,9 @@ LABEL_7:
   return v6;
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v3 = a3;
+  disconnectCopy = disconnect;
   v4 = SESDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -142,7 +142,7 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "Angel - sceneDidDisconnect", v6, 2u);
   }
 
-  v5 = v3;
+  v5 = disconnectCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -150,7 +150,7 @@ LABEL_7:
   }
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
   v4 = SESDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -162,9 +162,9 @@ LABEL_7:
   [(SESUIServiceBaseViewController *)self->_viewController present];
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v3 = a3;
+  activeCopy = active;
   v4 = SESDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -172,7 +172,7 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "Angel - sceneWillResignActive:", v6, 2u);
   }
 
-  v5 = v3;
+  v5 = activeCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -180,7 +180,7 @@ LABEL_7:
   }
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
   v3 = SESDefaultLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -190,9 +190,9 @@ LABEL_7:
   }
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -203,7 +203,7 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Angel - sceneDidEnterBackground:", v7, 2u);
     }
 
-    v6 = v4;
+    v6 = backgroundCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

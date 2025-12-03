@@ -1,24 +1,24 @@
 @interface W5SummaryRecoveries
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRecoveries:(id)a3;
-- (W5SummaryRecoveries)initWithCoder:(id)a3;
-- (W5SummaryRecoveries)initWithSummaryRecoveries:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRecoveries:(id)recoveries;
+- (W5SummaryRecoveries)initWithCoder:(id)coder;
+- (W5SummaryRecoveries)initWithSummaryRecoveries:(id)recoveries;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation W5SummaryRecoveries
 
-- (W5SummaryRecoveries)initWithSummaryRecoveries:(id)a3
+- (W5SummaryRecoveries)initWithSummaryRecoveries:(id)recoveries
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recoveriesCopy = recoveries;
   v10.receiver = self;
   v10.super_class = W5SummaryRecoveries;
   v5 = [(W5SummaryRecoveries *)&v10 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = recoveriesCopy;
     p_super = &v5->_lastHrRecoveries->super;
     v5->_lastHrRecoveries = v6;
   }
@@ -90,13 +90,13 @@
   return v3;
 }
 
-- (BOOL)isEqualToRecoveries:(id)a3
+- (BOOL)isEqualToRecoveries:(id)recoveries
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recoveriesCopy = recoveries;
   v5 = [(NSArray *)self->_lastHrRecoveries count];
-  v6 = [v4 lastHrRecoveries];
-  v7 = [v6 count];
+  lastHrRecoveries = [recoveriesCopy lastHrRecoveries];
+  v7 = [lastHrRecoveries count];
 
   if (v5 == v7)
   {
@@ -104,13 +104,13 @@
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    obj = [v4 lastHrRecoveries];
+    obj = [recoveriesCopy lastHrRecoveries];
     v8 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v8)
     {
       v9 = v8;
       v10 = *v29;
-      v22 = v4;
+      v22 = recoveriesCopy;
       while (2)
       {
         for (i = 0; i != v9; ++i)
@@ -132,7 +132,7 @@
 
 LABEL_20:
             v19 = 0;
-            v4 = v22;
+            recoveriesCopy = v22;
             goto LABEL_21;
           }
 
@@ -164,7 +164,7 @@ LABEL_20:
 
         v9 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
         v19 = 1;
-        v4 = v22;
+        recoveriesCopy = v22;
         if (v9)
         {
           continue;
@@ -191,33 +191,33 @@ LABEL_21:
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(W5SummaryRecoveries *)self isEqualToRecoveries:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(W5SummaryRecoveries *)self isEqualToRecoveries:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[W5SummaryRecoveries allocWithZone:?]];
   [(W5SummaryRecoveries *)v4 setLastHrRecoveries:self->_lastHrRecoveries];
   return v4;
 }
 
-- (W5SummaryRecoveries)initWithCoder:(id)a3
+- (W5SummaryRecoveries)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = W5SummaryRecoveries;
   v5 = [(W5SummaryRecoveries *)&v16 init];
@@ -229,7 +229,7 @@ LABEL_21:
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v6 setWithObjects:{v7, v8, v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"_lastHrRecoveries"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"_lastHrRecoveries"];
     v13 = [v12 copy];
     lastHrRecoveries = v5->_lastHrRecoveries;
     v5->_lastHrRecoveries = v13;

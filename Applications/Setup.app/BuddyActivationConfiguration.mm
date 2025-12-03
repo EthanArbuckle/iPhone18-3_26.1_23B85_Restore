@@ -1,19 +1,19 @@
 @interface BuddyActivationConfiguration
 + (id)currentConfiguration;
-- (BOOL)_supportsCellularActivationForMethod:(unint64_t)a3;
+- (BOOL)_supportsCellularActivationForMethod:(unint64_t)method;
 - (BOOL)hasActivated;
 - (BOOL)isActivated;
 - (BOOL)supportsCellularActivation;
 - (BuddyActivationConfiguration)init;
-- (BuddyActivationConfiguration)initWithBuddyPreferencesExcludedFromBackup:(id)a3;
+- (BuddyActivationConfiguration)initWithBuddyPreferencesExcludedFromBackup:(id)backup;
 - (unint64_t)cellularActivationMethod;
 - (void)_activationStateChanged;
-- (void)addDelegate:(id)a3;
-- (void)connectionAvailability:(id)a3 availableConnections:(id)a4;
-- (void)connectionStateChanged:(id)a3 connection:(int)a4 dataConnectionStatusInfo:(id)a5;
-- (void)notifyDelegatesConfigurationChanged:(BOOL)a3;
-- (void)notifyDelegatesConfigurationChanged:(BOOL)a3 isActivated:(BOOL)a4;
-- (void)removeDelegate:(id)a3;
+- (void)addDelegate:(id)delegate;
+- (void)connectionAvailability:(id)availability availableConnections:(id)connections;
+- (void)connectionStateChanged:(id)changed connection:(int)connection dataConnectionStatusInfo:(id)info;
+- (void)notifyDelegatesConfigurationChanged:(BOOL)changed;
+- (void)notifyDelegatesConfigurationChanged:(BOOL)changed isActivated:(BOOL)activated;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation BuddyActivationConfiguration
@@ -45,139 +45,139 @@
   return v4;
 }
 
-- (BuddyActivationConfiguration)initWithBuddyPreferencesExcludedFromBackup:(id)a3
+- (BuddyActivationConfiguration)initWithBuddyPreferencesExcludedFromBackup:(id)backup
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v24;
-  v24 = 0;
+  objc_storeStrong(location, backup);
+  v3 = selfCopy;
+  selfCopy = 0;
   v22.receiver = v3;
   v22.super_class = BuddyActivationConfiguration;
   v4 = [(BuddyActivationConfiguration *)&v22 init];
-  v24 = v4;
-  objc_storeStrong(&v24, v4);
+  selfCopy = v4;
+  objc_storeStrong(&selfCopy, v4);
   if (v4)
   {
     v5 = objc_alloc_init(NSMutableSet);
-    [v24 setDelegates:v5];
+    [selfCopy setDelegates:v5];
 
     v6 = dispatch_queue_create("Activation Configuration Delegates Queue", 0);
-    [v24 setDelegateQueue:v6];
+    [selfCopy setDelegateQueue:v6];
 
     v7 = dispatch_queue_create("Telephony Queue", 0);
-    [v24 setTelephonyQueue:v7];
+    [selfCopy setTelephonyQueue:v7];
 
     v8 = [CoreTelephonyClient alloc];
-    v9 = [v24 telephonyQueue];
-    v10 = [v8 initWithQueue:v9];
-    [v24 setTelephonyClient:v10];
+    telephonyQueue = [selfCopy telephonyQueue];
+    v10 = [v8 initWithQueue:telephonyQueue];
+    [selfCopy setTelephonyClient:v10];
 
-    v11 = v24;
-    v12 = [v24 telephonyClient];
-    [v12 setDelegate:v11];
+    v11 = selfCopy;
+    telephonyClient = [selfCopy telephonyClient];
+    [telephonyClient setDelegate:v11];
 
-    [v24 setBuddyPreferencesExcludedFromBackup:location[0]];
-    [v24 setCellularActivationMethod:0];
-    [v24 setActivationMethodChanged:1];
+    [selfCopy setBuddyPreferencesExcludedFromBackup:location[0]];
+    [selfCopy setCellularActivationMethod:0];
+    [selfCopy setActivationMethodChanged:1];
     v13 = dispatch_queue_create("Activation State Queue", 0);
-    [v24 setActivationStateQueue:v13];
+    [selfCopy setActivationStateQueue:v13];
 
-    v14 = [v24 activationStateQueue];
+    activationStateQueue = [selfCopy activationStateQueue];
     v17 = _NSConcreteStackBlock;
     v18 = 3221225472;
     v19 = sub_100249C44;
     v20 = &unk_10032B0D0;
-    v21 = v24;
-    dispatch_async(v14, &v17);
+    v21 = selfCopy;
+    dispatch_async(activationStateQueue, &v17);
 
-    [v24 _registerForActivationStateNotification];
+    [selfCopy _registerForActivationStateNotification];
     objc_storeStrong(&v21, 0);
   }
 
-  v15 = v24;
+  v15 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v24, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v15;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyActivationConfiguration *)v12 delegateQueue];
+  objc_storeStrong(location, delegate);
+  delegateQueue = [(BuddyActivationConfiguration *)selfCopy delegateQueue];
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_100249D98;
   v8 = &unk_10032B838;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
-  dispatch_async(v3, &block);
+  dispatch_async(delegateQueue, &block);
 
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyActivationConfiguration *)v12 delegateQueue];
+  objc_storeStrong(location, delegate);
+  delegateQueue = [(BuddyActivationConfiguration *)selfCopy delegateQueue];
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_100249EFC;
   v8 = &unk_10032B838;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
-  dispatch_async(v3, &block);
+  dispatch_async(delegateQueue, &block);
 
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)notifyDelegatesConfigurationChanged:(BOOL)a3
+- (void)notifyDelegatesConfigurationChanged:(BOOL)changed
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
-  v3 = [(BuddyActivationConfiguration *)self delegateQueue];
+  changedCopy = changed;
+  delegateQueue = [(BuddyActivationConfiguration *)self delegateQueue];
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_10024A02C;
   v8 = &unk_10032B688;
-  v9 = v13;
-  v10 = v11;
-  dispatch_async(v3, &v4);
+  v9 = selfCopy;
+  v10 = changedCopy;
+  dispatch_async(delegateQueue, &v4);
 
   objc_storeStrong(&v9, 0);
 }
 
-- (void)notifyDelegatesConfigurationChanged:(BOOL)a3 isActivated:(BOOL)a4
+- (void)notifyDelegatesConfigurationChanged:(BOOL)changed isActivated:(BOOL)activated
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
-  v13 = a4;
-  v4 = [(BuddyActivationConfiguration *)self delegateQueue];
+  changedCopy = changed;
+  activatedCopy = activated;
+  delegateQueue = [(BuddyActivationConfiguration *)self delegateQueue];
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
   v8 = sub_10024A164;
   v9 = &unk_10032C7B8;
-  v10 = v16;
-  v11 = v14;
-  v12 = v13;
-  dispatch_async(v4, &v5);
+  v10 = selfCopy;
+  v11 = changedCopy;
+  v12 = activatedCopy;
+  dispatch_async(delegateQueue, &v5);
 
   objc_storeStrong(&v10, 0);
 }
@@ -205,9 +205,9 @@
 
       else if (location[0])
       {
-        v8 = [location[0] domain];
+        domain = [location[0] domain];
         v7 = 1;
-        v3 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v8, [location[0] code]);
+        v3 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [location[0] code]);
         v6 = v3;
         v5 = 1;
       }
@@ -244,35 +244,35 @@
 
 - (BOOL)hasActivated
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
   v10 = 0;
   v11 = &v10;
   v12 = 0x20000000;
   v13 = 32;
   v14 = 0;
-  v2 = [(BuddyActivationConfiguration *)self activationStateQueue];
+  activationStateQueue = [(BuddyActivationConfiguration *)self activationStateQueue];
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_10024A5F0;
   v8 = &unk_10032C290;
   v9[1] = &v10;
-  v9[0] = v16;
-  dispatch_sync(v2, &v4);
+  v9[0] = selfCopy;
+  dispatch_sync(activationStateQueue, &v4);
 
-  LOBYTE(v2) = *(v11 + 24);
+  LOBYTE(activationStateQueue) = *(v11 + 24);
   objc_storeStrong(v9, 0);
   _Block_object_dispose(&v10, 8);
-  return v2 & 1;
+  return activationStateQueue & 1;
 }
 
 - (BOOL)supportsCellularActivation
 {
-  v2 = [(BuddyActivationConfiguration *)self cellularActivationMethod];
-  if (v2)
+  cellularActivationMethod = [(BuddyActivationConfiguration *)self cellularActivationMethod];
+  if (cellularActivationMethod)
   {
-    if (v2 - 1 < 2)
+    if (cellularActivationMethod - 1 < 2)
     {
       v4 = 1;
     }
@@ -288,7 +288,7 @@
 
 - (unint64_t)cellularActivationMethod
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   if ([(BuddyActivationConfiguration *)self activationMethodChanged])
   {
@@ -305,9 +305,9 @@
     objc_storeStrong(location, 0);
     v31 = 0;
     v30 = 0;
-    v4 = [(BuddyActivationConfiguration *)v35 telephonyClient];
+    telephonyClient = [(BuddyActivationConfiguration *)selfCopy telephonyClient];
     obj = 0;
-    v5 = [(CoreTelephonyClient *)v4 getConnectionAvailability:0 connectionType:9 error:&obj];
+    v5 = [(CoreTelephonyClient *)telephonyClient getConnectionAvailability:0 connectionType:9 error:&obj];
     objc_storeStrong(&v30, obj);
     v29 = v5;
 
@@ -334,9 +334,9 @@
 
         else if (v30)
         {
-          v25 = [v30 domain];
+          domain = [v30 domain];
           v24 = 1;
-          v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v25, [v30 code]);
+          v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v30 code]);
           v23 = v6;
           v22 = 1;
         }
@@ -360,9 +360,9 @@
       objc_storeStrong(&oslog, 0);
     }
 
-    v7 = [(BuddyActivationConfiguration *)v35 telephonyClient];
+    telephonyClient2 = [(BuddyActivationConfiguration *)selfCopy telephonyClient];
     v20 = v30;
-    v8 = [(CoreTelephonyClient *)v7 usingBootstrapDataService:&v20];
+    v8 = [(CoreTelephonyClient *)telephonyClient2 usingBootstrapDataService:&v20];
     objc_storeStrong(&v30, v20);
     v21 = v8;
 
@@ -389,9 +389,9 @@
 
         else if (v30)
         {
-          v17 = [v30 domain];
+          domain2 = [v30 domain];
           v16 = 1;
-          v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v17, [v30 code]);
+          v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain2, [v30 code]);
           v15 = v9;
           v14 = 1;
         }
@@ -415,14 +415,14 @@
       objc_storeStrong(&v19, 0);
     }
 
-    v13 = v31 != v35->_cellularActivationMethod;
-    v35->_cellularActivationMethod = v31;
+    v13 = v31 != selfCopy->_cellularActivationMethod;
+    selfCopy->_cellularActivationMethod = v31;
     if (v13 || (byte_1003A7528 & 1) == 0)
     {
       v12 = _BYLoggingFacility();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(BuddyActivationConfiguration *)v35 _supportsCellularActivationForMethod:v31];
+        v10 = [(BuddyActivationConfiguration *)selfCopy _supportsCellularActivationForMethod:v31];
         sub_1001CE624(v36, v10 & 1, v31);
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Supports Cellular Activation: %d (method is %ld)", v36, 0x12u);
       }
@@ -431,20 +431,20 @@
       byte_1003A7528 = 1;
     }
 
-    [(BuddyActivationConfiguration *)v35 setActivationMethodChanged:0];
+    [(BuddyActivationConfiguration *)selfCopy setActivationMethodChanged:0];
     objc_storeStrong(&v21, 0);
     objc_storeStrong(&v29, 0);
     objc_storeStrong(&v30, 0);
   }
 
-  return v35->_cellularActivationMethod;
+  return selfCopy->_cellularActivationMethod;
 }
 
-- (BOOL)_supportsCellularActivationForMethod:(unint64_t)a3
+- (BOOL)_supportsCellularActivationForMethod:(unint64_t)method
 {
-  if (a3)
+  if (method)
   {
-    if (a3 - 1 < 2)
+    if (method - 1 < 2)
     {
       v4 = 1;
     }
@@ -460,7 +460,7 @@
 
 - (void)_activationStateChanged
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v2 = dispatch_get_global_queue(0, 0);
   block = _NSConcreteStackBlock;
@@ -468,37 +468,37 @@
   v5 = 0;
   v6 = sub_10024ACE0;
   v7 = &unk_10032B0D0;
-  v8[0] = v9;
+  v8[0] = selfCopy;
   dispatch_async(v2, &block);
 
   objc_storeStrong(v8, 0);
 }
 
-- (void)connectionStateChanged:(id)a3 connection:(int)a4 dataConnectionStatusInfo:(id)a5
+- (void)connectionStateChanged:(id)changed connection:(int)connection dataConnectionStatusInfo:(id)info
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = a4;
+  objc_storeStrong(location, changed);
+  connectionCopy = connection;
   v7 = 0;
-  objc_storeStrong(&v7, a5);
-  [(BuddyActivationConfiguration *)v10 setActivationMethodChanged:1];
-  [(BuddyActivationConfiguration *)v10 notifyDelegatesConfigurationChanged:0];
+  objc_storeStrong(&v7, info);
+  [(BuddyActivationConfiguration *)selfCopy setActivationMethodChanged:1];
+  [(BuddyActivationConfiguration *)selfCopy notifyDelegatesConfigurationChanged:0];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)connectionAvailability:(id)a3 availableConnections:(id)a4
+- (void)connectionAvailability:(id)availability availableConnections:(id)connections
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, availability);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(BuddyActivationConfiguration *)v7 setActivationMethodChanged:1];
-  [(BuddyActivationConfiguration *)v7 notifyDelegatesConfigurationChanged:0];
+  objc_storeStrong(&v5, connections);
+  [(BuddyActivationConfiguration *)selfCopy setActivationMethodChanged:1];
+  [(BuddyActivationConfiguration *)selfCopy notifyDelegatesConfigurationChanged:0];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }

@@ -1,23 +1,23 @@
 @interface AXSpringBoardServerHelper
-- (id)_wallpaperStyleAnimationFactoryWithDelay:(double)a3;
+- (id)_wallpaperStyleAnimationFactoryWithDelay:(double)delay;
 - (id)_windowsToHost;
-- (id)serverInstance:(id)a3 appNameForDisplayID:(id)a4;
-- (void)animateWallpaperStyleToNormalWithServerInstance:(id)a3;
-- (void)animateWallpaperStyleToOriginalWithServerInstance:(id)a3;
-- (void)beginRequiringWallpaperWithServerInstance:(id)a3;
-- (void)endRequiringWallpaperWithServerInstance:(id)a3;
-- (void)serverInstance:(id)a3 activateApp:(id)a4;
+- (id)serverInstance:(id)instance appNameForDisplayID:(id)d;
+- (void)animateWallpaperStyleToNormalWithServerInstance:(id)instance;
+- (void)animateWallpaperStyleToOriginalWithServerInstance:(id)instance;
+- (void)beginRequiringWallpaperWithServerInstance:(id)instance;
+- (void)endRequiringWallpaperWithServerInstance:(id)instance;
+- (void)serverInstance:(id)instance activateApp:(id)app;
 @end
 
 @implementation AXSpringBoardServerHelper
 
-- (id)serverInstance:(id)a3 appNameForDisplayID:(id)a4
+- (id)serverInstance:(id)instance appNameForDisplayID:(id)d
 {
-  v4 = a4;
+  dCopy = d;
   v5 = +[AXSpringBoardServerHelper _applicationController];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 applicationWithBundleIdentifier:v4];
+    v6 = [v5 applicationWithBundleIdentifier:dCopy];
     v7 = [v6 safeValueForKey:@"displayName"];
   }
 
@@ -29,19 +29,19 @@
   return v7;
 }
 
-- (void)serverInstance:(id)a3 activateApp:(id)a4
+- (void)serverInstance:(id)instance activateApp:(id)app
 {
-  v5 = a4;
-  v4 = v5;
+  appCopy = app;
+  v4 = appCopy;
   AXPerformSafeBlock();
 }
 
-- (void)beginRequiringWallpaperWithServerInstance:(id)a3
+- (void)beginRequiringWallpaperWithServerInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   v5 = +[AXSpringBoardServerHelper _wallpaperController];
-  v6 = [(AXSpringBoardServerHelper *)self _gaxWallpaperAssertion];
-  [v6 invalidate];
+  _gaxWallpaperAssertion = [(AXSpringBoardServerHelper *)self _gaxWallpaperAssertion];
+  [_gaxWallpaperAssertion invalidate];
 
   v16 = 0;
   v10 = 0;
@@ -65,22 +65,22 @@
   [(AXSpringBoardServerHelper *)self _gaxSetWallpaperAssertion:v9];
 }
 
-- (void)endRequiringWallpaperWithServerInstance:(id)a3
+- (void)endRequiringWallpaperWithServerInstance:(id)instance
 {
-  v4 = [(AXSpringBoardServerHelper *)self _gaxWallpaperAssertion];
-  [v4 invalidate];
+  _gaxWallpaperAssertion = [(AXSpringBoardServerHelper *)self _gaxWallpaperAssertion];
+  [_gaxWallpaperAssertion invalidate];
 
   [(AXSpringBoardServerHelper *)self _gaxSetWallpaperAssertion:0];
 }
 
-- (void)animateWallpaperStyleToNormalWithServerInstance:(id)a3
+- (void)animateWallpaperStyleToNormalWithServerInstance:(id)instance
 {
   v4 = +[AXSpringBoardServerHelper _wallpaperController];
   v3 = v4;
   AXPerformSafeBlock();
 }
 
-- (void)animateWallpaperStyleToOriginalWithServerInstance:(id)a3
+- (void)animateWallpaperStyleToOriginalWithServerInstance:(id)instance
 {
   v4 = +[AXSpringBoardServerHelper _wallpaperController];
   v3 = v4;
@@ -125,10 +125,10 @@
   v10 = [v9 safeValueForKey:@"_presentersByWindowScene"];
   v11 = __UIAccessibilityCastAsClass();
 
-  v12 = [v11 objectEnumerator];
+  objectEnumerator = [v11 objectEnumerator];
 
-  obj = v12;
-  v28 = [v12 countByEnumeratingWithState:&v34 objects:v40 count:16];
+  obj = objectEnumerator;
+  v28 = [objectEnumerator countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v28)
   {
     v27 = *v35;
@@ -199,7 +199,7 @@
   return v2;
 }
 
-- (id)_wallpaperStyleAnimationFactoryWithDelay:(double)a3
+- (id)_wallpaperStyleAnimationFactoryWithDelay:(double)delay
 {
   v5 = 0;
   v6 = &v5;

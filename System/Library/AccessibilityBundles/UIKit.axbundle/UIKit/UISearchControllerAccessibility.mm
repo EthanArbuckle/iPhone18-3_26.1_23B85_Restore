@@ -1,22 +1,22 @@
 @interface UISearchControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_searchBarSearchButtonClicked:(id)a3;
-- (void)_updateVisibilityOfSearchResultsForSearchBar:(id)a3;
-- (void)setActive:(BOOL)a3;
+- (void)_searchBarSearchButtonClicked:(id)clicked;
+- (void)_updateVisibilityOfSearchResultsForSearchBar:(id)bar;
+- (void)setActive:(BOOL)active;
 - (void)viewDidLoad;
 @end
 
 @implementation UISearchControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v9 = location;
   v8 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v5 = @"UISearchController";
   [location[0] validateClass:? hasInstanceVariable:? withType:?];
   v7 = "@";
@@ -37,13 +37,13 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
   v16.receiver = self;
   v16.super_class = UISearchControllerAccessibility;
   [(UISearchControllerAccessibility *)&v16 _accessibilityLoadAccessibilityInformation];
-  v15 = [(UISearchControllerAccessibility *)v18 safeValueForKey:@"_resultsControllerViewContainer"];
-  objc_initWeak(&location, v18);
+  v15 = [(UISearchControllerAccessibility *)selfCopy safeValueForKey:@"_resultsControllerViewContainer"];
+  objc_initWeak(&location, selfCopy);
   v6 = v15;
   v8 = MEMORY[0x29EDCA5F8];
   v9 = -1073741824;
@@ -57,7 +57,7 @@
   [v5 setAccessibilityLabel:?];
   *&v2 = MEMORY[0x29EDC9740](v4).n128_u64[0];
   [v15 accessibilitySetIdentification:{@"AXUISearchControllerDimmingView", v2}];
-  v7 = [(UISearchControllerAccessibility *)v18 _contentOrObservableScrollViewForEdge:1];
+  v7 = [(UISearchControllerAccessibility *)selfCopy _contentOrObservableScrollViewForEdge:1];
   v3 = accessibilityLocalizedString(@"search.results");
   [v7 setAccessibilityLabel:?];
   MEMORY[0x29EDC9740](v3);
@@ -150,47 +150,47 @@ uint64_t __77__UISearchControllerAccessibility__accessibilityLoadAccessibilityIn
   return v4 & 1;
 }
 
-- (void)_updateVisibilityOfSearchResultsForSearchBar:(id)a3
+- (void)_updateVisibilityOfSearchResultsForSearchBar:(id)bar
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, bar);
+  v3.receiver = selfCopy;
   v3.super_class = UISearchControllerAccessibility;
   [(UISearchControllerAccessibility *)&v3 _updateVisibilityOfSearchResultsForSearchBar:location[0]];
-  [(UISearchControllerAccessibility *)v5 _accessibilityLoadAccessibilityInformation];
+  [(UISearchControllerAccessibility *)selfCopy _accessibilityLoadAccessibilityInformation];
   objc_storeStrong(location, 0);
 }
 
 - (void)viewDidLoad
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UISearchControllerAccessibility;
   [(UISearchControllerAccessibility *)&v2 viewDidLoad];
-  [(UISearchControllerAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
+  [(UISearchControllerAccessibility *)selfCopy _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  activeCopy = active;
   v3.receiver = self;
   v3.super_class = UISearchControllerAccessibility;
-  [(UISearchControllerAccessibility *)&v3 setActive:a3];
-  [(UISearchControllerAccessibility *)v6 _accessibilityLoadAccessibilityInformation];
+  [(UISearchControllerAccessibility *)&v3 setActive:active];
+  [(UISearchControllerAccessibility *)selfCopy _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)_searchBarSearchButtonClicked:(id)a3
+- (void)_searchBarSearchButtonClicked:(id)clicked
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, clicked);
+  v3.receiver = selfCopy;
   v3.super_class = UISearchControllerAccessibility;
   [(UISearchControllerAccessibility *)&v3 _searchBarSearchButtonClicked:location[0]];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);

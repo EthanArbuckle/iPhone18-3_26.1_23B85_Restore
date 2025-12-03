@@ -1,6 +1,6 @@
 @interface CPWAssetLibrary
 - (NSString)wallpaperOverlayPath;
-- (void)setWallpaperOverlayPath:(id)a3;
+- (void)setWallpaperOverlayPath:(id)path;
 @end
 
 @implementation CPWAssetLibrary
@@ -24,9 +24,9 @@
   return v4;
 }
 
-- (void)setWallpaperOverlayPath:(id)a3
+- (void)setWallpaperOverlayPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -38,9 +38,9 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1000096A0(v4, v6);
-  v8 = (v7 + OBJC_IVAR____TtC16CarPlayWallpaper15CPWAssetLibrary_wallpaperOverlayPath);
+  v8 = (selfCopy + OBJC_IVAR____TtC16CarPlayWallpaper15CPWAssetLibrary_wallpaperOverlayPath);
   swift_beginAccess();
   v9 = v8[1];
   *v8 = v4;

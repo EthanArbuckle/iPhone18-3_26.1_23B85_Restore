@@ -1,18 +1,18 @@
 @interface PEAdjustmentAutoEnhance
-- (PEAdjustmentAutoEnhance)initWithEnabled:(BOOL)a3;
-- (void)applyToCompositionController:(id)a3 valuesCalculator:(id)a4 asset:(id)a5 livePortraitBehaviorDelegate:(id)a6 completionHandler:(id)a7;
+- (PEAdjustmentAutoEnhance)initWithEnabled:(BOOL)enabled;
+- (void)applyToCompositionController:(id)controller valuesCalculator:(id)calculator asset:(id)asset livePortraitBehaviorDelegate:(id)delegate completionHandler:(id)handler;
 @end
 
 @implementation PEAdjustmentAutoEnhance
 
-- (void)applyToCompositionController:(id)a3 valuesCalculator:(id)a4 asset:(id)a5 livePortraitBehaviorDelegate:(id)a6 completionHandler:(id)a7
+- (void)applyToCompositionController:(id)controller valuesCalculator:(id)calculator asset:(id)asset livePortraitBehaviorDelegate:(id)delegate completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a7;
+  controllerCopy = controller;
+  calculatorCopy = calculator;
+  handlerCopy = handler;
   v13 = MEMORY[0x277D3A938];
-  v14 = [v10 composition];
-  v15 = [v13 imagePropertiesRequestWithComposition:v14];
+  composition = [controllerCopy composition];
+  v15 = [v13 imagePropertiesRequestWithComposition:composition];
 
   [v15 setName:@"PEAdjustmentAutoEnhance"];
   v19[0] = MEMORY[0x277D85DD0];
@@ -20,12 +20,12 @@
   v19[2] = __126__PEAdjustmentAutoEnhance_applyToCompositionController_valuesCalculator_asset_livePortraitBehaviorDelegate_completionHandler___block_invoke;
   v19[3] = &unk_279A30B90;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v16 = v11;
-  v17 = v10;
-  v18 = v12;
+  v20 = controllerCopy;
+  v21 = calculatorCopy;
+  v22 = handlerCopy;
+  v16 = calculatorCopy;
+  v17 = controllerCopy;
+  v18 = handlerCopy;
   [v15 submit:v19];
 }
 
@@ -102,14 +102,14 @@ uint64_t __126__PEAdjustmentAutoEnhance_applyToCompositionController_valuesCalcu
   return v2();
 }
 
-- (PEAdjustmentAutoEnhance)initWithEnabled:(BOOL)a3
+- (PEAdjustmentAutoEnhance)initWithEnabled:(BOOL)enabled
 {
   v5.receiver = self;
   v5.super_class = PEAdjustmentAutoEnhance;
   result = [(PEAdjustmentAutoEnhance *)&v5 init];
   if (result)
   {
-    result->_enabled = a3;
+    result->_enabled = enabled;
   }
 
   return result;

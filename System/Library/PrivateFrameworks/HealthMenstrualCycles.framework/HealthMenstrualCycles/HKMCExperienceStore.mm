@@ -1,31 +1,31 @@
 @interface HKMCExperienceStore
 + (id)taskIdentifier;
-- (HKMCExperienceStore)initWithHealthStore:(id)a3;
-- (id)getCachedPregnancyModelWithError:(id *)a3;
-- (void)client_experienceModelDidUpdate:(id)a3;
-- (void)deleteAllPregnancySetupRecordsWithCompletion:(id)a3;
-- (void)deleteSetupRecord:(id)a3 completion:(id)a4;
-- (void)fetchExperienceModelWithCompletion:(id)a3;
-- (void)persistSetupRecord:(id)a3 completion:(id)a4;
-- (void)persistSetupRecord:(id)a3 mergeWith:(id)a4 completion:(id)a5;
-- (void)registerObserver:(id)a3 completionHandler:(id)a4;
-- (void)unregisterObserver:(id)a3;
+- (HKMCExperienceStore)initWithHealthStore:(id)store;
+- (id)getCachedPregnancyModelWithError:(id *)error;
+- (void)client_experienceModelDidUpdate:(id)update;
+- (void)deleteAllPregnancySetupRecordsWithCompletion:(id)completion;
+- (void)deleteSetupRecord:(id)record completion:(id)completion;
+- (void)fetchExperienceModelWithCompletion:(id)completion;
+- (void)persistSetupRecord:(id)record completion:(id)completion;
+- (void)persistSetupRecord:(id)record mergeWith:(id)with completion:(id)completion;
+- (void)registerObserver:(id)observer completionHandler:(id)handler;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation HKMCExperienceStore
 
-- (HKMCExperienceStore)initWithHealthStore:(id)a3
+- (HKMCExperienceStore)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v18.receiver = self;
   v18.super_class = HKMCExperienceStore;
   v5 = [(HKMCExperienceStore *)&v18 init];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277CCDAA0]);
-    v7 = [objc_opt_class() taskIdentifier];
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v6 initWithHealthStore:v4 taskIdentifier:v7 exportedObject:v5 taskUUID:v8];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v9 = [v6 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v9;
 
@@ -53,11 +53,11 @@
   return NSStringFromClass(v2);
 }
 
-- (void)registerObserver:(id)a3 completionHandler:(id)a4
+- (void)registerObserver:(id)observer completionHandler:(id)handler
 {
   proxyProvider = self->_proxyProvider;
-  v7 = a3;
-  v8 = [(HKTaskServerProxyProvider *)proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  observerCopy = observer;
+  v8 = [(HKTaskServerProxyProvider *)proxyProvider clientQueueActionHandlerWithCompletion:handler];
   observers = self->_observers;
   queue = self->_queue;
   v12[0] = MEMORY[0x277D85DD0];
@@ -67,7 +67,7 @@
   v12[4] = self;
   v13 = v8;
   v11 = v8;
-  [(HKObserverSet *)observers registerObserver:v7 queue:queue runIfFirstObserver:v12];
+  [(HKObserverSet *)observers registerObserver:observerCopy queue:queue runIfFirstObserver:v12];
 }
 
 void __58__HKMCExperienceStore_registerObserver_completionHandler___block_invoke(uint64_t a1)
@@ -113,7 +113,7 @@ void __58__HKMCExperienceStore_registerObserver_completionHandler___block_invoke
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -121,7 +121,7 @@ void __58__HKMCExperienceStore_registerObserver_completionHandler___block_invoke
   v4[2] = __42__HKMCExperienceStore_unregisterObserver___block_invoke;
   v4[3] = &unk_2796D4CE8;
   v4[4] = self;
-  [(HKObserverSet *)observers unregisterObserver:a3 runIfLastObserver:v4];
+  [(HKObserverSet *)observers unregisterObserver:observer runIfLastObserver:v4];
 }
 
 uint64_t __42__HKMCExperienceStore_unregisterObserver___block_invoke(uint64_t a1)
@@ -159,20 +159,20 @@ void __42__HKMCExperienceStore_unregisterObserver___block_invoke_2(uint64_t a1, 
   }
 }
 
-- (void)fetchExperienceModelWithCompletion:(id)a3
+- (void)fetchExperienceModelWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2518FC000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Will begin fetching experience model", buf, 0xCu);
   }
 
-  v6 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:v4];
+  v6 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v12[0] = MEMORY[0x277D85DD0];
@@ -204,28 +204,28 @@ void __58__HKMCExperienceStore_fetchExperienceModelWithCompletion___block_invoke
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)persistSetupRecord:(id)a3 completion:(id)a4
+- (void)persistSetupRecord:(id)record completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   _HKInitializeLogging();
   v8 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2518FC000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received a persist record request", buf, 0xCu);
   }
 
-  v9 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v7];
+  v9 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __53__HKMCExperienceStore_persistSetupRecord_completion___block_invoke;
   v16[3] = &unk_2796D4F40;
-  v17 = v6;
+  v17 = recordCopy;
   v18 = v9;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -234,7 +234,7 @@ void __58__HKMCExperienceStore_fetchExperienceModelWithCompletion___block_invoke
   v14[4] = self;
   v15 = v18;
   v11 = v18;
-  v12 = v6;
+  v12 = recordCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v16 errorHandler:v14];
 
   v13 = *MEMORY[0x277D85DE8];
@@ -253,30 +253,30 @@ void __53__HKMCExperienceStore_persistSetupRecord_completion___block_invoke_2(ui
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)persistSetupRecord:(id)a3 mergeWith:(id)a4 completion:(id)a5
+- (void)persistSetupRecord:(id)record mergeWith:(id)with completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordCopy = record;
+  withCopy = with;
+  completionCopy = completion;
   _HKInitializeLogging();
   v11 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2518FC000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received a persist record request", buf, 0xCu);
   }
 
-  v12 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v10];
+  v12 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __63__HKMCExperienceStore_persistSetupRecord_mergeWith_completion___block_invoke;
   v20[3] = &unk_2796D4F68;
-  v21 = v8;
-  v22 = v9;
+  v21 = recordCopy;
+  v22 = withCopy;
   v23 = v12;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -285,8 +285,8 @@ void __53__HKMCExperienceStore_persistSetupRecord_completion___block_invoke_2(ui
   v18[4] = self;
   v19 = v23;
   v14 = v23;
-  v15 = v9;
-  v16 = v8;
+  v15 = withCopy;
+  v16 = recordCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v20 errorHandler:v18];
 
   v17 = *MEMORY[0x277D85DE8];
@@ -305,28 +305,28 @@ void __63__HKMCExperienceStore_persistSetupRecord_mergeWith_completion___block_i
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)deleteSetupRecord:(id)a3 completion:(id)a4
+- (void)deleteSetupRecord:(id)record completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   _HKInitializeLogging();
   v8 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2518FC000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received a delete record request", buf, 0xCu);
   }
 
-  v9 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v7];
+  v9 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __52__HKMCExperienceStore_deleteSetupRecord_completion___block_invoke;
   v16[3] = &unk_2796D4F40;
-  v17 = v6;
+  v17 = recordCopy;
   v18 = v9;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -335,7 +335,7 @@ void __63__HKMCExperienceStore_persistSetupRecord_mergeWith_completion___block_i
   v14[4] = self;
   v15 = v18;
   v11 = v18;
-  v12 = v6;
+  v12 = recordCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v16 errorHandler:v14];
 
   v13 = *MEMORY[0x277D85DE8];
@@ -354,20 +354,20 @@ void __52__HKMCExperienceStore_deleteSetupRecord_completion___block_invoke_2(uin
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)deleteAllPregnancySetupRecordsWithCompletion:(id)a3
+- (void)deleteAllPregnancySetupRecordsWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2518FC000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Deleting all setup records", buf, 0xCu);
   }
 
-  v6 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v4];
+  v6 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v12[0] = MEMORY[0x277D85DD0];
@@ -399,7 +399,7 @@ void __68__HKMCExperienceStore_deleteAllPregnancySetupRecordsWithCompletion___bl
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)getCachedPregnancyModelWithError:(id *)a3
+- (id)getCachedPregnancyModelWithError:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -441,10 +441,10 @@ void __68__HKMCExperienceStore_deleteAllPregnancySetupRecordsWithCompletion___bl
   v8 = v7;
   if (v7)
   {
-    if (a3)
+    if (error)
     {
       v9 = v7;
-      *a3 = v8;
+      *error = v8;
     }
 
     else
@@ -500,10 +500,10 @@ void __56__HKMCExperienceStore_getCachedPregnancyModelWithError___block_invoke_3
   *(v4 + 40) = v3;
 }
 
-- (void)client_experienceModelDidUpdate:(id)a3
+- (void)client_experienceModelDidUpdate:(id)update
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
@@ -520,8 +520,8 @@ void __56__HKMCExperienceStore_getCachedPregnancyModelWithError___block_invoke_3
   v11[1] = 3221225472;
   v11[2] = __55__HKMCExperienceStore_client_experienceModelDidUpdate___block_invoke;
   v11[3] = &unk_2796D5008;
-  v12 = v4;
-  v9 = v4;
+  v12 = updateCopy;
+  v9 = updateCopy;
   [(HKObserverSet *)observers notifyObservers:v11];
 
   v10 = *MEMORY[0x277D85DE8];

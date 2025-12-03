@@ -1,33 +1,33 @@
 @interface SISchemaBluetoothCarPreferredAudioRouteChanged
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaBluetoothCarPreferredAudioRouteChanged)initWithDictionary:(id)a3;
-- (SISchemaBluetoothCarPreferredAudioRouteChanged)initWithJSON:(id)a3;
+- (SISchemaBluetoothCarPreferredAudioRouteChanged)initWithDictionary:(id)dictionary;
+- (SISchemaBluetoothCarPreferredAudioRouteChanged)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAfter:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAfter:(BOOL)after;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaBluetoothCarPreferredAudioRouteChanged
 
-- (SISchemaBluetoothCarPreferredAudioRouteChanged)initWithDictionary:(id)a3
+- (SISchemaBluetoothCarPreferredAudioRouteChanged)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = SISchemaBluetoothCarPreferredAudioRouteChanged;
   v5 = [(SISchemaBluetoothCarPreferredAudioRouteChanged *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"before"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"before"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaBluetoothCarPreferredAudioRouteChanged setBefore:](v5, "setBefore:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"after"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"after"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (SISchemaBluetoothCarPreferredAudioRouteChanged)initWithJSON:(id)a3
+- (SISchemaBluetoothCarPreferredAudioRouteChanged)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaBluetoothCarPreferredAudioRouteChanged *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaBluetoothCarPreferredAudioRouteChanged *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaBluetoothCarPreferredAudioRouteChanged *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,12 +76,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v5 = [(SISchemaBluetoothCarPreferredAudioRouteChanged *)self after];
-    if (v5 == 1)
+    after = [(SISchemaBluetoothCarPreferredAudioRouteChanged *)self after];
+    if (after == 1)
     {
       v6 = @"BLUETOOTHCARPREFERREDAUDIOROUTE_A2DP";
     }
@@ -91,7 +91,7 @@
       v6 = @"BLUETOOTHCARPREFERREDAUDIOROUTE_HFP";
     }
 
-    if (v5 == 2)
+    if (after == 2)
     {
       v7 = @"BLUETOOTHCARPREFERREDAUDIOROUTE_DEVICE_SPEAKER";
     }
@@ -101,14 +101,14 @@
       v7 = v6;
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"after"];
+    [dictionary setObject:v7 forKeyedSubscript:@"after"];
     has = self->_has;
   }
 
   if (has)
   {
-    v8 = [(SISchemaBluetoothCarPreferredAudioRouteChanged *)self before];
-    if (v8 == 1)
+    before = [(SISchemaBluetoothCarPreferredAudioRouteChanged *)self before];
+    if (before == 1)
     {
       v9 = @"BLUETOOTHCARPREFERREDAUDIOROUTE_A2DP";
     }
@@ -118,7 +118,7 @@
       v9 = @"BLUETOOTHCARPREFERREDAUDIOROUTE_HFP";
     }
 
-    if (v8 == 2)
+    if (before == 2)
     {
       v10 = @"BLUETOOTHCARPREFERREDAUDIOROUTE_DEVICE_SPEAKER";
     }
@@ -128,12 +128,12 @@
       v10 = v9;
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"before"];
+    [dictionary setObject:v10 forKeyedSubscript:@"before"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -162,16 +162,16 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   has = self->_has;
-  v6 = v4[16];
+  v6 = equalCopy[16];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_10;
@@ -180,7 +180,7 @@ LABEL_3:
   if (*&has)
   {
     before = self->_before;
-    if (before != [v4 before])
+    if (before != [equalCopy before])
     {
 LABEL_10:
       v10 = 0;
@@ -188,7 +188,7 @@ LABEL_10:
     }
 
     has = self->_has;
-    v6 = v4[16];
+    v6 = equalCopy[16];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -200,7 +200,7 @@ LABEL_10:
   if (v8)
   {
     after = self->_after;
-    if (after != [v4 after])
+    if (after != [equalCopy after])
     {
       goto LABEL_10;
     }
@@ -212,28 +212,28 @@ LABEL_11:
   return v10;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)setHasAfter:(BOOL)a3
+- (void)setHasAfter:(BOOL)after
 {
-  if (a3)
+  if (after)
   {
     v3 = 2;
   }

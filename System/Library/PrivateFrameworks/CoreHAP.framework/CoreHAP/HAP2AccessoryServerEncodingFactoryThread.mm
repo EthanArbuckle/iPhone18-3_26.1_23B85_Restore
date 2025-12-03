@@ -1,19 +1,19 @@
 @interface HAP2AccessoryServerEncodingFactoryThread
-- (id)createEncodingWithOperationQueue:(id)a3 accessoryServerMetadata:(id)a4 encodingFeatures:(unint64_t)a5;
+- (id)createEncodingWithOperationQueue:(id)queue accessoryServerMetadata:(id)metadata encodingFeatures:(unint64_t)features;
 @end
 
 @implementation HAP2AccessoryServerEncodingFactoryThread
 
-- (id)createEncodingWithOperationQueue:(id)a3 accessoryServerMetadata:(id)a4 encodingFeatures:(unint64_t)a5
+- (id)createEncodingWithOperationQueue:(id)queue accessoryServerMetadata:(id)metadata encodingFeatures:(unint64_t)features
 {
   v6 = MEMORY[0x277CCACA8];
-  v7 = a4;
-  v8 = [v7 name];
-  v9 = [v7 deviceID];
+  metadataCopy = metadata;
+  name = [metadataCopy name];
+  deviceID = [metadataCopy deviceID];
 
-  v10 = [v6 stringWithFormat:@"%@/%@", v8, v9];
+  v10 = [v6 stringWithFormat:@"%@/%@", name, deviceID];
 
-  v11 = [[HAP2AccessoryServerEncodingThread alloc] initWithEncodingFeatures:a5 accessoryDescription:v10];
+  v11 = [[HAP2AccessoryServerEncodingThread alloc] initWithEncodingFeatures:features accessoryDescription:v10];
 
   return v11;
 }

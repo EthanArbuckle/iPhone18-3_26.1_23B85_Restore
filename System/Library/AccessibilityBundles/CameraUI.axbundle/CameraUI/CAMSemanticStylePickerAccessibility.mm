@@ -1,28 +1,28 @@
 @interface CAMSemanticStylePickerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityScroll:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (id)_axAnnouncementValue;
 - (id)_axSemanticStyle;
 - (unint64_t)accessibilityTraits;
-- (void)_axChangeValueInDirection:(int64_t)a3;
+- (void)_axChangeValueInDirection:(int64_t)direction;
 @end
 
 @implementation CAMSemanticStylePickerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMViewfinderViewController"];
-  [v3 validateClass:@"CAMViewfinderViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_semanticStyleForPreview" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMSemanticStylePicker" hasInstanceMethod:@"numberOfStyles" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CAMSemanticStylePicker" hasInstanceMethod:@"selectedStyleIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CAMSemanticStyle" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMSemanticStylePicker" hasInstanceMethod:@"_setSelectedStyleIndex:shouldDelegate:shouldUpdateLayout:animated:" withFullSignature:{"v", "Q", "B", "B", "B", 0}];
-  [v3 validateClass:@"CAMSemanticStylePicker" hasInstanceMethod:@"pageControl" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMSemanticStyleSettingsView"];
-  [v3 validateClass:@"CAMSemanticStyleSettingsView" hasInstanceMethod:@"_semanticStyleDetailView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMSemanticStyleDetailView" hasInstanceMethod:@"semanticStyle" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMViewfinderViewController"];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_semanticStyleForPreview" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMSemanticStylePicker" hasInstanceMethod:@"numberOfStyles" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CAMSemanticStylePicker" hasInstanceMethod:@"selectedStyleIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CAMSemanticStyle" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMSemanticStylePicker" hasInstanceMethod:@"_setSelectedStyleIndex:shouldDelegate:shouldUpdateLayout:animated:" withFullSignature:{"v", "Q", "B", "B", "B", 0}];
+  [validationsCopy validateClass:@"CAMSemanticStylePicker" hasInstanceMethod:@"pageControl" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMSemanticStyleSettingsView"];
+  [validationsCopy validateClass:@"CAMSemanticStyleSettingsView" hasInstanceMethod:@"_semanticStyleDetailView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMSemanticStyleDetailView" hasInstanceMethod:@"semanticStyle" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -32,13 +32,13 @@
   return *MEMORY[0x29EDC7F60] | [(CAMSemanticStylePickerAccessibility *)&v3 accessibilityTraits];
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  v3 = a3 - 1;
-  if ((a3 - 1) <= 1)
+  v3 = scroll - 1;
+  if ((scroll - 1) <= 1)
   {
     [(CAMSemanticStylePickerAccessibility *)self _axChangeValueInDirection:?];
-    v5 = [(CAMSemanticStylePickerAccessibility *)self _axAnnouncementValue];
+    _axAnnouncementValue = [(CAMSemanticStylePickerAccessibility *)self _axAnnouncementValue];
     UIAccessibilitySpeak();
   }
 
@@ -47,16 +47,16 @@
 
 - (id)_axAnnouncementValue
 {
-  v3 = [(CAMSemanticStylePickerAccessibility *)self _axSemanticStyle];
-  v4 = [v3 safeStringForKey:@"displayName"];
+  _axSemanticStyle = [(CAMSemanticStylePickerAccessibility *)self _axSemanticStyle];
+  v4 = [_axSemanticStyle safeStringForKey:@"displayName"];
   v5 = [(CAMSemanticStylePickerAccessibility *)self safeValueForKey:@"pageControl"];
-  v8 = [v5 accessibilityValue];
+  accessibilityValue = [v5 accessibilityValue];
   v6 = __UIAXStringForVariables();
 
   return v6;
 }
 
-- (void)_axChangeValueInDirection:(int64_t)a3
+- (void)_axChangeValueInDirection:(int64_t)direction
 {
   [(CAMSemanticStylePickerAccessibility *)self safeUnsignedIntegerForKey:@"numberOfStyles"];
   [(CAMSemanticStylePickerAccessibility *)self safeUnsignedIntegerForKey:@"selectedStyleIndex"];
@@ -66,8 +66,8 @@
 - (id)_axSemanticStyle
 {
   v3 = [(CAMSemanticStylePickerAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_4 startWithSelf:1];
-  v4 = [v3 _accessibilityViewController];
-  v5 = [v4 safeValueForKey:@"_semanticStyleForPreview"];
+  _accessibilityViewController = [v3 _accessibilityViewController];
+  v5 = [_accessibilityViewController safeValueForKey:@"_semanticStyleForPreview"];
 
   if (!v5)
   {

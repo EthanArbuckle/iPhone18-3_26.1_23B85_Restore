@@ -1,25 +1,25 @@
 @interface _UIFocusMovementPressGestureRecognizer
 - (NSMutableOrderedSet)_trackedPresses;
-- (_UIFocusMovementPressGestureRecognizer)initWithCoder:(id)a3;
-- (_UIFocusMovementPressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)_startTrackingPresses:(id)a3;
-- (void)_stopTrackingPresses:(id)a3;
-- (void)_updateForPresses:(id)a3 action:(unint64_t)a4;
-- (void)_verifyTrackingPresses:(id)a3;
-- (void)repeatingGestureClockDidTick:(id)a3;
+- (_UIFocusMovementPressGestureRecognizer)initWithCoder:(id)coder;
+- (_UIFocusMovementPressGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)_startTrackingPresses:(id)presses;
+- (void)_stopTrackingPresses:(id)presses;
+- (void)_updateForPresses:(id)presses action:(unint64_t)action;
+- (void)_verifyTrackingPresses:(id)presses;
+- (void)repeatingGestureClockDidTick:(id)tick;
 - (void)reset;
-- (void)setAllowedTouchTypes:(id)a3;
-- (void)setFocusHeading:(unint64_t)a3 omitStateUpdate:(BOOL)a4;
-- (void)setShouldRepeat:(BOOL)a3;
+- (void)setAllowedTouchTypes:(id)types;
+- (void)setFocusHeading:(unint64_t)heading omitStateUpdate:(BOOL)update;
+- (void)setShouldRepeat:(BOOL)repeat;
 @end
 
 @implementation _UIFocusMovementPressGestureRecognizer
 
-- (_UIFocusMovementPressGestureRecognizer)initWithCoder:(id)a3
+- (_UIFocusMovementPressGestureRecognizer)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = _UIFocusMovementPressGestureRecognizer;
-  v3 = [(UIGestureRecognizer *)&v8 initWithCoder:a3];
+  v3 = [(UIGestureRecognizer *)&v8 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -35,11 +35,11 @@
   return v4;
 }
 
-- (_UIFocusMovementPressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UIFocusMovementPressGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v9.receiver = self;
   v9.super_class = _UIFocusMovementPressGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v9 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v9 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -70,26 +70,26 @@
   return trackedPresses;
 }
 
-- (void)setAllowedTouchTypes:(id)a3
+- (void)setAllowedTouchTypes:(id)types
 {
-  v5 = a3;
-  if ([v5 count])
+  typesCopy = types;
+  if ([typesCopy count])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UIFocusMovementPressGestureRecognizer.m" lineNumber:95 description:@"This gesture recognizer is not designed to work with touches."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMovementPressGestureRecognizer.m" lineNumber:95 description:@"This gesture recognizer is not designed to work with touches."];
   }
 
   v7.receiver = self;
   v7.super_class = _UIFocusMovementPressGestureRecognizer;
-  [(UIGestureRecognizer *)&v7 setAllowedTouchTypes:v5];
+  [(UIGestureRecognizer *)&v7 setAllowedTouchTypes:typesCopy];
 }
 
-- (void)setFocusHeading:(unint64_t)a3 omitStateUpdate:(BOOL)a4
+- (void)setFocusHeading:(unint64_t)heading omitStateUpdate:(BOOL)update
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (self->_focusHeading == a3)
+  if (self->_focusHeading == heading)
   {
-    if (a3)
+    if (heading)
     {
       return;
     }
@@ -98,20 +98,20 @@
     goto LABEL_11;
   }
 
-  self->_focusHeading = a3;
-  if (!a3)
+  self->_focusHeading = heading;
+  if (!heading)
   {
     v5 = [(UIGestureRecognizer *)self state:0];
     if ((v5 - 1) < 2)
     {
-      v11 = [(_UIFocusMovementPressGestureRecognizer *)self repeatingClock];
-      [v11 stopClock];
+      repeatingClock = [(_UIFocusMovementPressGestureRecognizer *)self repeatingClock];
+      [repeatingClock stopClock];
 
-      v9 = self;
+      selfCopy3 = self;
       v10 = 3;
 LABEL_13:
 
-      [(UIGestureRecognizer *)v9 setState:v10];
+      [(UIGestureRecognizer *)selfCopy3 setState:v10];
       return;
     }
 
@@ -121,24 +121,24 @@ LABEL_11:
       return;
     }
 
-    v9 = self;
+    selfCopy3 = self;
     v10 = 5;
     goto LABEL_13;
   }
 
   [(_UIFocusMovementPressGestureRecognizer *)self setRepeatCount:0];
-  v7 = [(_UIFocusMovementPressGestureRecognizer *)self repeatingClock];
-  [v7 startClock];
+  repeatingClock2 = [(_UIFocusMovementPressGestureRecognizer *)self repeatingClock];
+  [repeatingClock2 startClock];
 
-  v8 = [(UIGestureRecognizer *)self state];
-  if ((v8 - 3) >= 3)
+  state = [(UIGestureRecognizer *)self state];
+  if ((state - 3) >= 3)
   {
-    if (v8 > UIGestureRecognizerStateChanged || a4)
+    if (state > UIGestureRecognizerStateChanged || update)
     {
       return;
     }
 
-    v9 = self;
+    selfCopy3 = self;
     v10 = 2;
     goto LABEL_13;
   }
@@ -147,14 +147,14 @@ LABEL_11:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     v13 = MEMORY[0x1E696AEC0];
-    v14 = self;
+    selfCopy4 = self;
     v15 = v12;
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    v18 = [v13 stringWithFormat:@"<%@: %p>", v17, v14];
+    selfCopy4 = [v13 stringWithFormat:@"<%@: %p>", v17, selfCopy4];
 
     *buf = 138412290;
-    v20 = v18;
+    v20 = selfCopy4;
     _os_log_impl(&dword_188A29000, v15, OS_LOG_TYPE_ERROR, "%@ received a heading update while in an end state. This is considered an implementation error in the gesture recognizer.", buf, 0xCu);
   }
 }
@@ -164,25 +164,25 @@ LABEL_11:
   v5.receiver = self;
   v5.super_class = _UIFocusMovementPressGestureRecognizer;
   [(UIGestureRecognizer *)&v5 reset];
-  v3 = [(_UIFocusMovementPressGestureRecognizer *)self repeatingClock];
-  [v3 stopClock];
+  repeatingClock = [(_UIFocusMovementPressGestureRecognizer *)self repeatingClock];
+  [repeatingClock stopClock];
 
-  v4 = [(_UIFocusMovementPressGestureRecognizer *)self _trackedPresses];
-  [v4 removeAllObjects];
+  _trackedPresses = [(_UIFocusMovementPressGestureRecognizer *)self _trackedPresses];
+  [_trackedPresses removeAllObjects];
 
   [(_UIFocusMovementPressGestureRecognizer *)self setRepeatCount:0];
   self->_focusHeading = 0;
 }
 
-- (void)setShouldRepeat:(BOOL)a3
+- (void)setShouldRepeat:(BOOL)repeat
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->_shouldRepeat != a3)
+  if (self->_shouldRepeat != repeat)
   {
-    v3 = a3;
-    self->_shouldRepeat = a3;
+    repeatCopy = repeat;
+    self->_shouldRepeat = repeat;
     [(_UIFocusMovementPressGestureRecognizer *)self setRepeatCount:0];
-    if (v3)
+    if (repeatCopy)
     {
       v5 = objc_opt_new();
       [v5 setDelegate:self];
@@ -193,14 +193,14 @@ LABEL_11:
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
           v7 = MEMORY[0x1E696AEC0];
-          v8 = self;
+          selfCopy = self;
           v9 = v6;
           v10 = objc_opt_class();
           v11 = NSStringFromClass(v10);
-          v12 = [v7 stringWithFormat:@"<%@: %p>", v11, v8];
+          selfCopy = [v7 stringWithFormat:@"<%@: %p>", v11, selfCopy];
 
           *buf = 138412290;
-          v15 = v12;
+          v15 = selfCopy;
           _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEFAULT, "Changed %@ to repeat while a gesture is recongizing. Repeating will start working on next recognition.", buf, 0xCu);
         }
       }
@@ -208,15 +208,15 @@ LABEL_11:
 
     else
     {
-      v13 = [(_UIFocusMovementPressGestureRecognizer *)self repeatingClock];
-      [v13 stopClock];
+      repeatingClock = [(_UIFocusMovementPressGestureRecognizer *)self repeatingClock];
+      [repeatingClock stopClock];
 
       [(_UIFocusMovementPressGestureRecognizer *)self setRepeatingClock:0];
     }
   }
 }
 
-- (void)repeatingGestureClockDidTick:(id)a3
+- (void)repeatingGestureClockDidTick:(id)tick
 {
   v20 = *MEMORY[0x1E69E9840];
   if ([(_UIFocusMovementPressGestureRecognizer *)self _isRecognizing])
@@ -236,21 +236,21 @@ LABEL_11:
         if (self)
         {
           v12 = MEMORY[0x1E696AEC0];
-          v13 = self;
+          selfCopy = self;
           v14 = objc_opt_class();
           v15 = NSStringFromClass(v14);
-          v11 = [v12 stringWithFormat:@"<%@: %p>", v15, v13];
+          selfCopy = [v12 stringWithFormat:@"<%@: %p>", v15, selfCopy];
         }
 
         else
         {
-          v11 = @"(nil)";
+          selfCopy = @"(nil)";
         }
 
         *buf = 138412546;
-        v17 = v11;
+        v17 = selfCopy;
         v18 = 1024;
-        v19 = [(UIGestureRecognizer *)self state];
+        state = [(UIGestureRecognizer *)self state];
         _os_log_fault_impl(&dword_188A29000, v4, OS_LOG_TYPE_FAULT, "%@ received a repeating clock tick while not in a recognizing state. Current state: %d", buf, 0x12u);
       }
     }
@@ -263,47 +263,47 @@ LABEL_11:
         if (self)
         {
           v5 = MEMORY[0x1E696AEC0];
-          v6 = self;
+          selfCopy2 = self;
           v7 = objc_opt_class();
           v8 = NSStringFromClass(v7);
-          v9 = [v5 stringWithFormat:@"<%@: %p>", v8, v6];
+          selfCopy2 = [v5 stringWithFormat:@"<%@: %p>", v8, selfCopy2];
         }
 
         else
         {
-          v9 = @"(nil)";
+          selfCopy2 = @"(nil)";
         }
 
-        v10 = v9;
+        v10 = selfCopy2;
         *buf = 138412546;
-        v17 = v9;
+        v17 = selfCopy2;
         v18 = 1024;
-        v19 = [(UIGestureRecognizer *)self state];
+        state = [(UIGestureRecognizer *)self state];
         _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_ERROR, "%@ received a repeating clock tick while not in a recognizing state. Current state: %d", buf, 0x12u);
       }
     }
   }
 }
 
-- (void)_startTrackingPresses:(id)a3
+- (void)_startTrackingPresses:(id)presses
 {
-  v4 = a3;
-  v5 = [(_UIFocusMovementPressGestureRecognizer *)self _trackedPresses];
-  [v5 unionSet:v4];
+  pressesCopy = presses;
+  _trackedPresses = [(_UIFocusMovementPressGestureRecognizer *)self _trackedPresses];
+  [_trackedPresses unionSet:pressesCopy];
 }
 
-- (void)_stopTrackingPresses:(id)a3
+- (void)_stopTrackingPresses:(id)presses
 {
-  v4 = a3;
-  v5 = [(_UIFocusMovementPressGestureRecognizer *)self _trackedPresses];
-  [v5 minusSet:v4];
+  pressesCopy = presses;
+  _trackedPresses = [(_UIFocusMovementPressGestureRecognizer *)self _trackedPresses];
+  [_trackedPresses minusSet:pressesCopy];
 }
 
-- (void)_verifyTrackingPresses:(id)a3
+- (void)_verifyTrackingPresses:(id)presses
 {
-  v5 = [a3 mutableCopy];
-  v6 = [(_UIFocusMovementPressGestureRecognizer *)self _trackedPresses];
-  v7 = [v6 set];
+  v5 = [presses mutableCopy];
+  _trackedPresses = [(_UIFocusMovementPressGestureRecognizer *)self _trackedPresses];
+  v7 = [_trackedPresses set];
   [v5 minusSet:v7];
 
   if ([v5 count])
@@ -317,8 +317,8 @@ LABEL_11:
 
     if (dyld_program_sdk_at_least())
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"_UIFocusMovementPressGestureRecognizer.m" lineNumber:247 description:@"Found untracked presses that are not in the began phase."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMovementPressGestureRecognizer.m" lineNumber:247 description:@"Found untracked presses that are not in the began phase."];
     }
 
     else if (os_variant_has_internal_diagnostics())
@@ -343,33 +343,33 @@ LABEL_11:
   }
 }
 
-- (void)_updateForPresses:(id)a3 action:(unint64_t)a4
+- (void)_updateForPresses:(id)presses action:(unint64_t)action
 {
-  v6 = a3;
-  v11 = v6;
-  switch(a4)
+  pressesCopy = presses;
+  v11 = pressesCopy;
+  switch(action)
   {
     case 2uLL:
-      [(_UIFocusMovementPressGestureRecognizer *)self _verifyTrackingPresses:v6];
+      [(_UIFocusMovementPressGestureRecognizer *)self _verifyTrackingPresses:pressesCopy];
       break;
     case 1uLL:
-      [(_UIFocusMovementPressGestureRecognizer *)self _verifyTrackingPresses:v6];
+      [(_UIFocusMovementPressGestureRecognizer *)self _verifyTrackingPresses:pressesCopy];
       [(_UIFocusMovementPressGestureRecognizer *)self _stopTrackingPresses:v11];
       break;
     case 0uLL:
-      [(_UIFocusMovementPressGestureRecognizer *)self _startTrackingPresses:v6];
+      [(_UIFocusMovementPressGestureRecognizer *)self _startTrackingPresses:pressesCopy];
       break;
   }
 
-  v7 = [(_UIFocusMovementPressGestureRecognizer *)self _trackedPresses];
-  v8 = [v7 count];
+  _trackedPresses = [(_UIFocusMovementPressGestureRecognizer *)self _trackedPresses];
+  v8 = [_trackedPresses count];
 
   if (v8)
   {
-    v9 = [(_UIFocusMovementPressGestureRecognizer *)self _trackedPresses];
-    v10 = [(_UIFocusMovementPressGestureRecognizer *)self focusHeadingForPresses:v9];
+    _trackedPresses2 = [(_UIFocusMovementPressGestureRecognizer *)self _trackedPresses];
+    v10 = [(_UIFocusMovementPressGestureRecognizer *)self focusHeadingForPresses:_trackedPresses2];
 
-    [(_UIFocusMovementPressGestureRecognizer *)self setFocusHeading:v10 omitStateUpdate:a4 != 0];
+    [(_UIFocusMovementPressGestureRecognizer *)self setFocusHeading:v10 omitStateUpdate:action != 0];
   }
 
   else

@@ -1,24 +1,24 @@
 @interface PresentingViewController
-- (_TtC7MusicUIP33_472952789AFE0556D5F511BA5300504524PresentingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC7MusicUIP33_472952789AFE0556D5F511BA5300504524PresentingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation PresentingViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2168FC6F8(a3);
+  selfCopy = self;
+  sub_2168FC6F8(appear);
 }
 
-- (_TtC7MusicUIP33_472952789AFE0556D5F511BA5300504524PresentingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7MusicUIP33_472952789AFE0556D5F511BA5300504524PresentingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_21700E514();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_2168FC880();
 }
 

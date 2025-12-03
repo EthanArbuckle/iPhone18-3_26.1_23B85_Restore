@@ -3,18 +3,18 @@
 - (BOOL)_needsUpdate;
 - (BOOL)_playerIsPlaying;
 - (PHVideoScrubberFilmstripViewProvider)filmstripViewProvider;
-- (PHVideoScrubberView)initWithFrame:(CGRect)a3;
+- (PHVideoScrubberView)initWithFrame:(CGRect)frame;
 - (PHVideoScrubberViewInteractionDelegate)interactionDelegate;
-- (double)_lengthForDuration:(double)a3;
-- (double)videoScrubberController:(id)a3 lengthForDuration:(double)a4;
+- (double)_lengthForDuration:(double)duration;
+- (double)videoScrubberController:(id)controller lengthForDuration:(double)duration;
 - (id)_currentAVAsset;
 - (id)_currentVideoComposition;
 - (void)_handleInteractionBegan;
-- (void)_handleInteractionEndedAndTogglePlayState:(BOOL)a3;
-- (void)_handleTouchGesture:(id)a3;
+- (void)_handleInteractionEndedAndTogglePlayState:(BOOL)state;
+- (void)_handleTouchGesture:(id)gesture;
 - (void)_invalidateFilmStripView;
 - (void)_invalidateVideoScrubberController;
-- (void)_setVideoScrubberController:(id)a3;
+- (void)_setVideoScrubberController:(id)controller;
 - (void)_updateFilmStripViewIfNeeded;
 - (void)_updateIfNeeded;
 - (void)_updatePlayheadFrame;
@@ -23,17 +23,17 @@
 - (void)_updateVisibleRectOfFilmStripView;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDecelerating:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setEstimatedDuration:(double)a3;
-- (void)setInteractionDelegate:(id)a3;
-- (void)setPlaceholderThumbnail:(id)a3;
-- (void)setPlayer:(id)a3;
-- (void)videoScrubberControllerDidUpdate:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDecelerating:(id)decelerating;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setEstimatedDuration:(double)duration;
+- (void)setInteractionDelegate:(id)delegate;
+- (void)setPlaceholderThumbnail:(id)thumbnail;
+- (void)setPlayer:(id)player;
+- (void)videoScrubberControllerDidUpdate:(id)update;
 @end
 
 @implementation PHVideoScrubberView
@@ -52,39 +52,39 @@
   return WeakRetained;
 }
 
-- (void)videoScrubberControllerDidUpdate:(id)a3
+- (void)videoScrubberControllerDidUpdate:(id)update
 {
-  v4 = [(PHVideoScrubberView *)self scrollView];
-  if (([v4 isDragging] & 1) == 0 && (objc_msgSend(v4, "isTracking") & 1) == 0 && (objc_msgSend(v4, "isDecelerating") & 1) == 0)
+  scrollView = [(PHVideoScrubberView *)self scrollView];
+  if (([scrollView isDragging] & 1) == 0 && (objc_msgSend(scrollView, "isTracking") & 1) == 0 && (objc_msgSend(scrollView, "isDecelerating") & 1) == 0)
   {
     [(PHVideoScrubberView *)self _updateScrollViewContentOffset];
   }
 }
 
-- (double)_lengthForDuration:(double)a3
+- (double)_lengthForDuration:(double)duration
 {
-  if (a3 < 1.0)
+  if (duration < 1.0)
   {
-    a3 = 1.0;
+    duration = 1.0;
   }
 
-  if (a3 >= 2.0)
+  if (duration >= 2.0)
   {
-    v4 = a3;
-    v3 = log2f(v4);
+    durationCopy = duration;
+    v3 = log2f(durationCopy);
   }
 
   else
   {
-    v3 = a3 * 0.5;
+    v3 = duration * 0.5;
   }
 
   return v3 * 150.0;
 }
 
-- (double)videoScrubberController:(id)a3 lengthForDuration:(double)a4
+- (double)videoScrubberController:(id)controller lengthForDuration:(double)duration
 {
-  [(PHVideoScrubberView *)self estimatedDuration:a3];
+  [(PHVideoScrubberView *)self estimatedDuration:controller];
 
   [(PHVideoScrubberView *)self _lengthForDuration:?];
   return result;
@@ -92,17 +92,17 @@
 
 - (void)_updatePlayheadFrame
 {
-  v3 = [(PHVideoScrubberView *)self scrollView];
-  [v3 frame];
+  scrollView = [(PHVideoScrubberView *)self scrollView];
+  [scrollView frame];
   v5 = v4;
   v7 = v6;
 
-  v18 = [(PHVideoScrubberView *)self scrollView];
-  [v18 contentSize];
+  scrollView2 = [(PHVideoScrubberView *)self scrollView];
+  [scrollView2 contentSize];
   v9 = v8;
-  [v18 contentInset];
+  [scrollView2 contentInset];
   v11 = v10;
-  [v18 contentOffset];
+  [scrollView2 contentOffset];
   v13 = v11 + v12;
   v14 = v9 - v13;
   if (v13 <= v9)
@@ -121,27 +121,27 @@
   }
 
   v16 = v5 * 0.5 - v7 * 0.5 * 0.5 + v15;
-  v17 = [(PHVideoScrubberView *)self _playheadView];
-  [v17 setFrame:{v16, 0.0, v7 * 0.5, v7 + 2.0}];
+  _playheadView = [(PHVideoScrubberView *)self _playheadView];
+  [_playheadView setFrame:{v16, 0.0, v7 * 0.5, v7 + 2.0}];
 }
 
 - (void)_updateScrollViewContentOffset
 {
-  v9 = [(PHVideoScrubberView *)self scrollView];
-  v3 = [(PHVideoScrubberView *)self _videoScrubberController];
-  [v3 playheadProgress];
+  scrollView = [(PHVideoScrubberView *)self scrollView];
+  _videoScrubberController = [(PHVideoScrubberView *)self _videoScrubberController];
+  [_videoScrubberController playheadProgress];
   v5 = v4;
 
-  [v9 contentSize];
+  [scrollView contentSize];
   v7 = v5 * v6;
-  [v9 contentInset];
-  [v9 setContentOffset:{v7 - v8, 0.0}];
+  [scrollView contentInset];
+  [scrollView setContentOffset:{v7 - v8, 0.0}];
 }
 
 - (void)_updateVisibleRectOfFilmStripView
 {
-  v3 = [(PHVideoScrubberView *)self scrollView];
-  [v3 bounds];
+  scrollView = [(PHVideoScrubberView *)self scrollView];
+  [scrollView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -154,8 +154,8 @@
     v7 = v11;
   }
 
-  v12 = [(PHVideoScrubberView *)self _filmStripView];
-  [v12 setVisibleRect:{v5, v10, v7, v9}];
+  _filmStripView = [(PHVideoScrubberView *)self _filmStripView];
+  [_filmStripView setVisibleRect:{v5, v10, v7, v9}];
 }
 
 - (void)_updateIfNeeded
@@ -166,8 +166,8 @@
     [(PHVideoScrubberView *)self _updateFilmStripViewIfNeeded];
     if ([(PHVideoScrubberView *)self _needsUpdate])
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:a2 object:self file:@"PHVideoScrubberView.m" lineNumber:396 description:@"Video scrubber still dirty after update"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PHVideoScrubberView.m" lineNumber:396 description:@"Video scrubber still dirty after update"];
     }
   }
 }
@@ -190,26 +190,26 @@
   }
 
   [(PHVideoScrubberView *)self _setNeedsUpdateVideoScrubberController:0];
-  v14 = [(PHVideoScrubberView *)self player];
-  v3 = [(PHVideoScrubberView *)self _videoScrubberController];
-  if (v14)
+  player = [(PHVideoScrubberView *)self player];
+  _videoScrubberController = [(PHVideoScrubberView *)self _videoScrubberController];
+  if (player)
   {
-    v4 = [v3 target];
-    v5 = [v4 videoPlayer];
-    if (v5 != v14)
+    target = [_videoScrubberController target];
+    videoPlayer = [target videoPlayer];
+    if (videoPlayer != player)
     {
 
 LABEL_8:
       [(PHVideoScrubberView *)self estimatedDuration];
       v11 = v10;
-      v12 = [objc_alloc(MEMORY[0x1E69C3A50]) initWithVideoPlayer:v14];
+      v12 = [objc_alloc(MEMORY[0x1E69C3A50]) initWithVideoPlayer:player];
       v13 = [objc_alloc(MEMORY[0x1E69C3C68]) initWithTarget:v12 estimatedDuration:v11];
       [(PHVideoScrubberView *)self _setVideoScrubberController:v13];
 
       goto LABEL_9;
     }
 
-    [v3 estimatedDuration];
+    [_videoScrubberController estimatedDuration];
     v7 = v6;
     [(PHVideoScrubberView *)self estimatedDuration];
     v9 = v8;
@@ -233,12 +233,12 @@ LABEL_9:
   if ([(PHVideoScrubberView *)self _needsUpdateFilmStripView])
   {
     [(PHVideoScrubberView *)self _setNeedsUpdateFilmStripView:0];
-    v3 = [(PHVideoScrubberView *)self _filmStripView];
+    _filmStripView = [(PHVideoScrubberView *)self _filmStripView];
 
-    if (!v3)
+    if (!_filmStripView)
     {
-      v4 = [(PHVideoScrubberView *)self filmstripViewProvider];
-      v5 = [v4 createFilmstripViewForVideoScrubberView:self];
+      filmstripViewProvider = [(PHVideoScrubberView *)self filmstripViewProvider];
+      v5 = [filmstripViewProvider createFilmstripViewForVideoScrubberView:self];
       v6 = v5;
       if (v5)
       {
@@ -254,28 +254,28 @@ LABEL_9:
       v9 = v7;
 
       [(PHVideoScrubberView *)self _setFilmStripView:v9];
-      v10 = [(PHVideoScrubberView *)self scrollView];
-      [v10 addSubview:v9];
+      scrollView = [(PHVideoScrubberView *)self scrollView];
+      [scrollView addSubview:v9];
     }
 
-    v11 = [(PHVideoScrubberView *)self _filmStripView];
+    _filmStripView2 = [(PHVideoScrubberView *)self _filmStripView];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(PHVideoScrubberView *)self _filmStripView];
-      v14 = [(PHVideoScrubberView *)self _currentAVAsset];
-      v15 = [(PHVideoScrubberView *)self _currentVideoComposition];
-      [v13 setAsset:v14 videoComposition:v15];
+      _filmStripView3 = [(PHVideoScrubberView *)self _filmStripView];
+      _currentAVAsset = [(PHVideoScrubberView *)self _currentAVAsset];
+      _currentVideoComposition = [(PHVideoScrubberView *)self _currentVideoComposition];
+      [_filmStripView3 setAsset:_currentAVAsset videoComposition:_currentVideoComposition];
     }
 
-    v16 = [(PHVideoScrubberView *)self _filmStripView];
-    v17 = [(PHVideoScrubberView *)self _currentAVAsset];
-    [v16 setAsset:v17];
+    _filmStripView4 = [(PHVideoScrubberView *)self _filmStripView];
+    _currentAVAsset2 = [(PHVideoScrubberView *)self _currentAVAsset];
+    [_filmStripView4 setAsset:_currentAVAsset2];
 
-    v18 = [(PHVideoScrubberView *)self _filmStripView];
-    v19 = [(PHVideoScrubberView *)self placeholderThumbnail];
-    [v18 setPlaceholderImage:v19];
+    _filmStripView5 = [(PHVideoScrubberView *)self _filmStripView];
+    placeholderThumbnail = [(PHVideoScrubberView *)self placeholderThumbnail];
+    [_filmStripView5 setPlaceholderImage:placeholderThumbnail];
 
     [(PHVideoScrubberView *)self _updateVisibleRectOfFilmStripView];
   }
@@ -295,20 +295,20 @@ LABEL_9:
   [(PHVideoScrubberView *)self setNeedsLayout];
 }
 
-- (void)_handleInteractionEndedAndTogglePlayState:(BOOL)a3
+- (void)_handleInteractionEndedAndTogglePlayState:(BOOL)state
 {
   previousPlayState = self->_previousPlayState;
   if (previousPlayState)
   {
     v5 = previousPlayState == 2;
-    if (a3)
+    if (state)
     {
       v5 = previousPlayState != 2;
       if (previousPlayState != 1)
       {
 LABEL_4:
-        v6 = [(PHVideoScrubberView *)self player];
-        [v6 play];
+        player = [(PHVideoScrubberView *)self player];
+        [player play];
         goto LABEL_8;
       }
     }
@@ -325,8 +325,8 @@ LABEL_9:
       return;
     }
 
-    v6 = [(PHVideoScrubberView *)self player];
-    [v6 pause];
+    player = [(PHVideoScrubberView *)self player];
+    [player pause];
 LABEL_8:
 
     goto LABEL_9;
@@ -340,8 +340,8 @@ LABEL_8:
     if ([(PHVideoScrubberView *)self _playerIsPlaying])
     {
       self->_previousPlayState = 1;
-      v3 = [(PHVideoScrubberView *)self player];
-      [v3 pause];
+      player = [(PHVideoScrubberView *)self player];
+      [player pause];
     }
 
     else
@@ -351,31 +351,31 @@ LABEL_8:
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v5 = a3;
+  deceleratingCopy = decelerating;
   [(PHVideoScrubberView *)self _handleInteractionEndedAndTogglePlayState:0];
   if (self->_interactionDelegateRespondsTo.didEndDecelerating)
   {
     WeakRetained = objc_loadWeakRetained(&self->_interactionDelegate);
-    [WeakRetained videoScrubberView:self didEndDeceleratingInScrollView:v5];
+    [WeakRetained videoScrubberView:self didEndDeceleratingInScrollView:deceleratingCopy];
   }
 }
 
-- (void)scrollViewWillBeginDecelerating:(id)a3
+- (void)scrollViewWillBeginDecelerating:(id)decelerating
 {
   if (self->_interactionDelegateRespondsTo.willBeginDecelerating)
   {
-    v5 = a3;
+    deceleratingCopy = decelerating;
     WeakRetained = objc_loadWeakRetained(&self->_interactionDelegate);
-    [WeakRetained videoScrubberView:self willBeginDeceleratingInScrollView:v5];
+    [WeakRetained videoScrubberView:self willBeginDeceleratingInScrollView:deceleratingCopy];
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v7 = a3;
-  if (!a4)
+  draggingCopy = dragging;
+  if (!decelerate)
   {
     [(PHVideoScrubberView *)self _handleInteractionEndedAndTogglePlayState:0];
   }
@@ -383,30 +383,30 @@ LABEL_8:
   if (self->_interactionDelegateRespondsTo.didEndDragging)
   {
     WeakRetained = objc_loadWeakRetained(&self->_interactionDelegate);
-    [WeakRetained videoScrubberView:self didEndDraggingInScrollView:v7];
+    [WeakRetained videoScrubberView:self didEndDraggingInScrollView:draggingCopy];
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   if (self->_interactionDelegateRespondsTo.willBeginDragging)
   {
-    v5 = a3;
+    draggingCopy = dragging;
     WeakRetained = objc_loadWeakRetained(&self->_interactionDelegate);
-    [WeakRetained videoScrubberView:self willBeginDraggingInScrollView:v5];
+    [WeakRetained videoScrubberView:self willBeginDraggingInScrollView:draggingCopy];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v12 = a3;
+  scrollCopy = scroll;
   if ([(PHVideoScrubberView *)self _isUserInteractingWithScrollView])
   {
-    [v12 contentSize];
+    [scrollCopy contentSize];
     v5 = v4;
-    [v12 contentInset];
+    [scrollCopy contentInset];
     v7 = v6;
-    [v12 contentOffset];
+    [scrollCopy contentOffset];
     v9 = fmax(v7 + v8, 0.0);
     if (v5 < v9)
     {
@@ -414,18 +414,18 @@ LABEL_8:
     }
 
     v10 = v9 / v5;
-    v11 = [(PHVideoScrubberView *)self _videoScrubberController];
-    [v11 setPlayheadProgress:v10];
+    _videoScrubberController = [(PHVideoScrubberView *)self _videoScrubberController];
+    [_videoScrubberController setPlayheadProgress:v10];
   }
 
   [(PHVideoScrubberView *)self _updateVisibleRectOfFilmStripView];
   [(PHVideoScrubberView *)self _updatePlayheadFrame];
 }
 
-- (void)_handleTouchGesture:(id)a3
+- (void)_handleTouchGesture:(id)gesture
 {
-  v4 = [a3 state];
-  if (v4 == 3)
+  state = [gesture state];
+  if (state == 3)
   {
     if (!self->_interactionDelegateRespondsTo.didEndTouching)
     {
@@ -438,7 +438,7 @@ LABEL_8:
 
   else
   {
-    if (v4 != 1)
+    if (state != 1)
     {
       return;
     }
@@ -456,8 +456,8 @@ LABEL_8:
 
 - (BOOL)_playerIsPlaying
 {
-  v2 = [(PHVideoScrubberView *)self player];
-  [v2 rate];
+  player = [(PHVideoScrubberView *)self player];
+  [player rate];
   v4 = v3 > 0.0;
 
   return v4;
@@ -465,104 +465,104 @@ LABEL_8:
 
 - (BOOL)_isUserInteractingWithScrollView
 {
-  v2 = [(PHVideoScrubberView *)self scrollView];
-  if ([v2 isDragging] & 1) != 0 || (objc_msgSend(v2, "isTracking"))
+  scrollView = [(PHVideoScrubberView *)self scrollView];
+  if ([scrollView isDragging] & 1) != 0 || (objc_msgSend(scrollView, "isTracking"))
   {
-    v3 = 1;
+    isDecelerating = 1;
   }
 
   else
   {
-    v3 = [v2 isDecelerating];
+    isDecelerating = [scrollView isDecelerating];
   }
 
-  return v3;
+  return isDecelerating;
 }
 
 - (id)_currentVideoComposition
 {
-  v2 = [(PHVideoScrubberView *)self player];
-  v3 = [v2 currentItem];
+  player = [(PHVideoScrubberView *)self player];
+  currentItem = [player currentItem];
 
-  v4 = [v3 videoComposition];
+  videoComposition = [currentItem videoComposition];
 
-  return v4;
+  return videoComposition;
 }
 
 - (id)_currentAVAsset
 {
-  v2 = [(PHVideoScrubberView *)self player];
-  v3 = [v2 currentItem];
+  player = [(PHVideoScrubberView *)self player];
+  currentItem = [player currentItem];
 
-  v4 = [v3 asset];
+  asset = [currentItem asset];
 
-  return v4;
+  return asset;
 }
 
-- (void)setPlaceholderThumbnail:(id)a3
+- (void)setPlaceholderThumbnail:(id)thumbnail
 {
-  v5 = a3;
-  if (self->_placeholderThumbnail != v5)
+  thumbnailCopy = thumbnail;
+  if (self->_placeholderThumbnail != thumbnailCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_placeholderThumbnail, a3);
+    v6 = thumbnailCopy;
+    objc_storeStrong(&self->_placeholderThumbnail, thumbnail);
     [(PHVideoScrubberView *)self _invalidateFilmStripView];
-    v5 = v6;
+    thumbnailCopy = v6;
   }
 }
 
-- (void)_setVideoScrubberController:(id)a3
+- (void)_setVideoScrubberController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   videoScrubberController = self->__videoScrubberController;
-  if (videoScrubberController != v5)
+  if (videoScrubberController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [(PXVideoScrubberController *)videoScrubberController setDelegate:0];
-    objc_storeStrong(&self->__videoScrubberController, a3);
+    objc_storeStrong(&self->__videoScrubberController, controller);
     videoScrubberController = [(PXVideoScrubberController *)v7 setDelegate:self];
-    v5 = v7;
+    controllerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](videoScrubberController, v5);
+  MEMORY[0x1EEE66BB8](videoScrubberController, controllerCopy);
 }
 
-- (void)setEstimatedDuration:(double)a3
+- (void)setEstimatedDuration:(double)duration
 {
-  if (self->_estimatedDuration != a3)
+  if (self->_estimatedDuration != duration)
   {
-    self->_estimatedDuration = a3;
+    self->_estimatedDuration = duration;
     [(PHVideoScrubberView *)self _invalidateVideoScrubberController];
 
     [(PHVideoScrubberView *)self _invalidateFilmStripView];
   }
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   player = self->_player;
-  if (player != v5)
+  if (player != playerCopy)
   {
-    v7 = v5;
+    v7 = playerCopy;
     [(AVPlayer *)player removeObserver:self forKeyPath:@"status" context:avPlayerObservationContext];
     [(AVPlayer *)self->_player removeObserver:self forKeyPath:@"currentItem" context:avPlayerObservationContext];
     [(AVPlayer *)self->_player removeObserver:self forKeyPath:@"currentItem.videoComposition" context:avPlayerObservationContext];
-    objc_storeStrong(&self->_player, a3);
+    objc_storeStrong(&self->_player, player);
     [(AVPlayer *)self->_player addObserver:self forKeyPath:@"status" options:0 context:avPlayerObservationContext];
     [(AVPlayer *)self->_player addObserver:self forKeyPath:@"currentItem" options:0 context:avPlayerObservationContext];
     [(AVPlayer *)self->_player addObserver:self forKeyPath:@"currentItem.videoComposition" options:0 context:avPlayerObservationContext];
     [(PHVideoScrubberView *)self _invalidateVideoScrubberController];
     player = [(PHVideoScrubberView *)self _invalidateFilmStripView];
-    v5 = v7;
+    playerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](player, v5);
+  MEMORY[0x1EEE66BB8](player, playerCopy);
 }
 
-- (void)setInteractionDelegate:(id)a3
+- (void)setInteractionDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_interactionDelegate);
 
   if (WeakRetained != obj)
@@ -603,38 +603,38 @@ LABEL_8:
   y = v19.origin.y;
   v6 = v19.size.width;
   height = v19.size.height;
-  v8 = [(PHVideoScrubberView *)self scrollView];
-  [v8 setFrame:{x, y, v6, height}];
+  scrollView = [(PHVideoScrubberView *)self scrollView];
+  [scrollView setFrame:{x, y, v6, height}];
 
   v9 = width * 0.5;
-  v10 = [(PHVideoScrubberView *)self _videoScrubberController];
-  [v10 length];
+  _videoScrubberController = [(PHVideoScrubberView *)self _videoScrubberController];
+  [_videoScrubberController length];
   v12 = v11;
 
-  v13 = [(PHVideoScrubberView *)self scrollView];
-  [v13 setContentInset:{0.0, v9, 0.0, v9}];
+  scrollView2 = [(PHVideoScrubberView *)self scrollView];
+  [scrollView2 setContentInset:{0.0, v9, 0.0, v9}];
 
-  v14 = [(PHVideoScrubberView *)self _filmStripView];
+  _filmStripView = [(PHVideoScrubberView *)self _filmStripView];
 
-  if (v14)
+  if (_filmStripView)
   {
-    v15 = [(PHVideoScrubberView *)self _filmStripView];
-    [v15 setFrame:{0.0, 0.0, v12, height}];
+    _filmStripView2 = [(PHVideoScrubberView *)self _filmStripView];
+    [_filmStripView2 setFrame:{0.0, 0.0, v12, height}];
   }
 
-  v16 = [(PHVideoScrubberView *)self scrollView];
-  [v16 setContentSize:{v12, height}];
+  scrollView3 = [(PHVideoScrubberView *)self scrollView];
+  [scrollView3 setContentSize:{v12, height}];
 
   [(PHVideoScrubberView *)self _updateScrollViewContentOffset];
   [(PHVideoScrubberView *)self _updatePlayheadFrame];
 }
 
-- (PHVideoScrubberView)initWithFrame:(CGRect)a3
+- (PHVideoScrubberView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v15.receiver = self;
   v15.super_class = PHVideoScrubberView;
   v7 = [(PHVideoScrubberView *)&v15 initWithFrame:?];
@@ -675,12 +675,12 @@ LABEL_8:
   [(PHVideoScrubberView *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (avPlayerObservationContext == a6)
+  if (avPlayerObservationContext == context)
   {
 
-    [(PHVideoScrubberView *)self _invalidateFilmStripView:a3];
+    [(PHVideoScrubberView *)self _invalidateFilmStripView:path];
   }
 
   else
@@ -689,7 +689,7 @@ LABEL_8:
     v10 = v7;
     v8.receiver = self;
     v8.super_class = PHVideoScrubberView;
-    [(PHVideoScrubberView *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(PHVideoScrubberView *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

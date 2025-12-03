@@ -1,9 +1,9 @@
 @interface AssistantBridgeController
 - (AssistantBridgeController)init;
 - (BOOL)raiseToSpeakEnabledAndSupported;
-- (id)_applicationSuggestionsSpecifierWithBundleId:(id)a3 device:(id)a4;
-- (id)_localizeTriggerString:(id)a3;
-- (id)_localizedNameForRemoteApp:(id)a3;
+- (id)_applicationSuggestionsSpecifierWithBundleId:(id)id device:(id)device;
+- (id)_localizeTriggerString:(id)string;
+- (id)_localizedNameForRemoteApp:(id)app;
 - (id)digitalCrownEnabled;
 - (id)messageWithoutConfirmationEnabled;
 - (id)raiseToSpeakEnabled;
@@ -12,18 +12,18 @@
 - (id)voiceFeedbackMode;
 - (id)voiceTriggerEnabled;
 - (id)voiceVolume;
-- (void)_addHyperlinkStyleToText:(id)a3 inString:(id)a4 action:(SEL)a5 forGroup:(id)a6;
+- (void)_addHyperlinkStyleToText:(id)text inString:(id)string action:(SEL)action forGroup:(id)group;
 - (void)_showAboutActionSheet;
 - (void)_updateAskSiriFooter;
 - (void)dealloc;
 - (void)languageCodeDidChange;
 - (void)preferencesDidChange;
 - (void)restrictionsDidChange;
-- (void)setDigitalCrownEnabled:(id)a3;
-- (void)setMessageWithoutConfirmationEnabled:(id)a3;
-- (void)setRaiseToSpeakEnabled:(id)a3;
-- (void)setVoiceTriggerEnabled:(id)a3;
-- (void)setVoiceVolume:(id)a3;
+- (void)setDigitalCrownEnabled:(id)enabled;
+- (void)setMessageWithoutConfirmationEnabled:(id)enabled;
+- (void)setRaiseToSpeakEnabled:(id)enabled;
+- (void)setVoiceTriggerEnabled:(id)enabled;
+- (void)setVoiceVolume:(id)volume;
 @end
 
 @implementation AssistantBridgeController
@@ -40,23 +40,23 @@
     v2->_cachedAppSpecifiers = v3;
 
     v5 = +[NRPairedDeviceRegistry sharedInstance];
-    v6 = [v5 getActivePairedDevice];
+    getActivePairedDevice = [v5 getActivePairedDevice];
 
     v7 = [[NSUUID alloc] initWithUUIDString:@"BFF435BD-ACFF-4AD8-9CC4-4DEA6D51BB3A"];
-    v2->_siriSpeaksSupportedHardware = [v6 supportsCapability:v7];
+    v2->_siriSpeaksSupportedHardware = [getActivePairedDevice supportsCapability:v7];
 
     v8 = [[NSUUID alloc] initWithUUIDString:@"68E9D2AF-A820-45FC-8FB3-92A04428CBF8"];
-    v2->_raiseToSpeakSupportedHardware = [v6 supportsCapability:v8];
+    v2->_raiseToSpeakSupportedHardware = [getActivePairedDevice supportsCapability:v8];
 
     v9 = [[NSUUID alloc] initWithUUIDString:@"36BD47D1-7193-4236-867F-3555B4AC18B0"];
-    v2->_siriResponsesSupported = [v6 supportsCapability:v9];
+    v2->_siriResponsesSupported = [getActivePairedDevice supportsCapability:v9];
 
     v10 = +[AFPreferences sharedPreferences];
-    v11 = [v10 nanoLanguageCode];
+    nanoLanguageCode = [v10 nanoLanguageCode];
     v2->_siriSpeaksSupportedLanguage = AFGryphonAssetsExistForLanguage();
 
     v12 = [[NSUUID alloc] initWithUUIDString:@"3650D526-DBF6-4230-8502-4508D40210DB"];
-    v2->_siriAutoSendSupported = [v6 supportsCapability:v12];
+    v2->_siriAutoSendSupported = [getActivePairedDevice supportsCapability:v12];
 
     v13 = +[NSNotificationCenter defaultCenter];
     [v13 addObserver:v2 selector:"languageCodeDidChange" name:AFLanguageCodeDidChangeNotification object:0];
@@ -84,7 +84,7 @@
 - (void)preferencesDidChange
 {
   v3 = +[AFPreferences sharedPreferences];
-  v4 = [v3 nanoLanguageCode];
+  nanoLanguageCode = [v3 nanoLanguageCode];
   self->_siriSpeaksSupportedLanguage = AFGryphonAssetsExistForLanguage();
 
   [(AssistantBridgeController *)self reloadSpecifiers];
@@ -143,24 +143,24 @@
         WeakRetained = [v45 imageFlippedForRightToLeftLayoutDirection];
 
         v46 = [UIImage imageNamed:@"Volume-Max"];
-        v15 = [v46 imageFlippedForRightToLeftLayoutDirection];
+        imageFlippedForRightToLeftLayoutDirection = [v46 imageFlippedForRightToLeftLayoutDirection];
       }
 
       else
       {
-        v15 = 0;
+        imageFlippedForRightToLeftLayoutDirection = 0;
       }
 
       [v13 setProperty:WeakRetained forKey:PSSliderLeftImageKey];
-      [v13 setProperty:v15 forKey:PSSliderRightImageKey];
+      [v13 setProperty:imageFlippedForRightToLeftLayoutDirection forKey:PSSliderRightImageKey];
     }
 
     else
     {
       WeakRetained = [v5 specifierForID:@"VOICE_FEEDBACK_GROUP_ID"];
       [v5 removeObject:WeakRetained];
-      v15 = [v5 specifierForID:@"VOICE_FEEDBACK_ID"];
-      [v5 removeObject:v15];
+      imageFlippedForRightToLeftLayoutDirection = [v5 specifierForID:@"VOICE_FEEDBACK_ID"];
+      [v5 removeObject:imageFlippedForRightToLeftLayoutDirection];
       v16 = [v5 specifierForID:@"VOICE_VOLUME_GROUP_ID"];
       [v5 removeObject:v16];
       [v5 removeObject:v13];
@@ -208,7 +208,7 @@
     v47 = [v5 specifierForID:@"ASSISTANT_SUGGESTIONS_GROUP_ID"];
     v30 = objc_opt_new();
     v31 = +[NRPairedDeviceRegistry sharedInstance];
-    v32 = [v31 getActivePairedDevice];
+    getActivePairedDevice = [v31 getActivePairedDevice];
 
     v56 = 0u;
     v57 = 0u;
@@ -230,13 +230,13 @@
             objc_enumerationMutation(v33);
           }
 
-          v38 = [(AssistantBridgeController *)self _applicationSuggestionsSpecifierWithBundleId:*(*(&v54 + 1) + 8 * v37) device:v32];
+          v38 = [(AssistantBridgeController *)self _applicationSuggestionsSpecifierWithBundleId:*(*(&v54 + 1) + 8 * v37) device:getActivePairedDevice];
           v39 = v38;
           if (v38)
           {
-            v40 = [v38 name];
+            name = [v38 name];
 
-            if (v40)
+            if (name)
             {
               v41 = AFSiriLogContextConnection;
               if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
@@ -283,11 +283,11 @@
   return v4;
 }
 
-- (id)_applicationSuggestionsSpecifierWithBundleId:(id)a3 device:(id)a4
+- (id)_applicationSuggestionsSpecifierWithBundleId:(id)id device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_cachedAppSpecifiers objectForKeyedSubscript:v6];
+  idCopy = id;
+  deviceCopy = device;
+  v8 = [(NSMutableDictionary *)self->_cachedAppSpecifiers objectForKeyedSubscript:idCopy];
 
   v9 = os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG);
   if (v8)
@@ -297,7 +297,7 @@
       sub_8A8C();
     }
 
-    v10 = [(NSMutableDictionary *)self->_cachedAppSpecifiers objectForKeyedSubscript:v6];
+    v10 = [(NSMutableDictionary *)self->_cachedAppSpecifiers objectForKeyedSubscript:idCopy];
   }
 
   else
@@ -309,12 +309,12 @@
 
     v11 = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
     [v11 setProperty:&__kCFBooleanTrue forKey:PSEnabledKey];
-    [v11 setProperty:v6 forKey:PSIDKey];
+    [v11 setProperty:idCopy forKey:PSIDKey];
     [v11 setProperty:objc_opt_class() forKey:PSCellClassKey];
     [v11 setDetailControllerClass:objc_opt_class()];
-    [v11 setProperty:v6 forKey:PSLazyIconAppID];
+    [v11 setProperty:idCopy forKey:PSLazyIconAppID];
     [v11 setProperty:&__kCFBooleanTrue forKey:PSLazyIconLoading];
-    [(NSMutableDictionary *)self->_cachedAppSpecifiers setObject:v11 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_cachedAppSpecifiers setObject:v11 forKeyedSubscript:idCopy];
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
     {
       sub_8B8C();
@@ -326,11 +326,11 @@
     v16[1] = 3221225472;
     v16[2] = sub_200C;
     v16[3] = &unk_10470;
-    v17 = v6;
+    v17 = idCopy;
     objc_copyWeak(&v19, &location);
     v13 = v11;
     v18 = v13;
-    [v12 fetchApplicationOnPairedDevice:v7 withBundleID:v17 completion:v16];
+    [v12 fetchApplicationOnPairedDevice:deviceCopy withBundleID:v17 completion:v16];
 
     v14 = v18;
     v10 = v13;
@@ -342,13 +342,13 @@
   return v10;
 }
 
-- (id)_localizedNameForRemoteApp:(id)a3
+- (id)_localizedNameForRemoteApp:(id)app
 {
-  v3 = a3;
+  appCopy = app;
   v4 = _kCFBundleDisplayNameKey;
   v5 = [[NSSet alloc] initWithObjects:{_kCFBundleDisplayNameKey, 0}];
   v6 = +[NSLocale preferredLanguages];
-  v7 = [v3 localizedInfoPlistStringsForKeys:v5 fetchingFirstMatchingLocalizationInList:v6];
+  v7 = [appCopy localizedInfoPlistStringsForKeys:v5 fetchingFirstMatchingLocalizationInList:v6];
 
   if (v7)
   {
@@ -362,9 +362,9 @@
 
   if (![v8 length])
   {
-    v9 = [v3 applicationName];
+    applicationName = [appCopy applicationName];
 
-    v8 = v9;
+    v8 = applicationName;
   }
 
   return v8;
@@ -377,30 +377,30 @@
   return [NSNumber numberWithBool:v2];
 }
 
-- (void)setVoiceTriggerEnabled:(id)a3
+- (void)setVoiceTriggerEnabled:(id)enabled
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   if (-[AssistantBridgeController raiseToSpeakEnabledAndSupported](self, "raiseToSpeakEnabledAndSupported") || (-[AssistantBridgeController digitalCrownEnabled](self, "digitalCrownEnabled"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 BOOLValue], v5, (v6 & 1) != 0))
   {
     v7 = +[AFPreferences sharedPreferences];
-    [v7 setNanoPhraseSpotterEnabled:v4];
+    [v7 setNanoPhraseSpotterEnabled:bOOLValue];
   }
 
   else
   {
 
-    [(AssistantBridgeController *)self setAssistantEnabled:v4 withConfirmationAction:&stru_104B0];
+    [(AssistantBridgeController *)self setAssistantEnabled:bOOLValue withConfirmationAction:&stru_104B0];
   }
 }
 
-- (id)_localizeTriggerString:(id)a3
+- (id)_localizeTriggerString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = +[AFPreferences sharedPreferences];
-  v5 = [v4 nanoLanguageCode];
+  nanoLanguageCode = [v4 nanoLanguageCode];
 
   v6 = +[VTPreferences sharedPreferences];
-  v7 = [v6 localizedTriggerPhraseForLanguageCode:v5];
+  v7 = [v6 localizedTriggerPhraseForLanguageCode:nanoLanguageCode];
 
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -408,7 +408,7 @@
     *buf = 136315650;
     v15 = "[AssistantBridgeController _localizeTriggerString:]";
     v16 = 2112;
-    v17 = v5;
+    v17 = nanoLanguageCode;
     v18 = 2112;
     v19 = v7;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%s languageCode: %@, triggerPhrase: %@", buf, 0x20u);
@@ -416,7 +416,7 @@
 
   v9 = [v7 stringByReplacingOccurrencesOfString:@" " withString:@" "];
   v10 = [NSBundle bundleForClass:objc_opt_class()];
-  v11 = [v10 localizedStringForKey:v3 value:&stru_10AF0 table:@"AssistantBridgeSettings"];
+  v11 = [v10 localizedStringForKey:stringCopy value:&stru_10AF0 table:@"AssistantBridgeSettings"];
 
   v12 = [NSString stringWithFormat:v11, v9];
 
@@ -425,22 +425,22 @@
 
 - (id)triggerPhrase
 {
-  v2 = [(AssistantBridgeController *)self voiceTriggerEnabled];
-  v3 = [v2 BOOLValue];
+  voiceTriggerEnabled = [(AssistantBridgeController *)self voiceTriggerEnabled];
+  bOOLValue = [voiceTriggerEnabled BOOLValue];
 
-  if (v3)
+  if (bOOLValue)
   {
     v4 = +[AFPreferences sharedPreferences];
-    v5 = [v4 nanoVTPhraseType];
+    nanoVTPhraseType = [v4 nanoVTPhraseType];
 
-    if (v5 == &dword_0 + 1)
+    if (nanoVTPhraseType == &dword_0 + 1)
     {
       v6 = +[AssistantBridgeSettingsUtilities triggerPhraseChoiceHSJS];
     }
 
     else
     {
-      if (v5)
+      if (nanoVTPhraseType)
       {
         goto LABEL_8;
       }
@@ -468,7 +468,7 @@ LABEL_8:
   if (v2)
   {
     v3 = +[AFPreferences sharedPreferences];
-    v4 = [v3 nanoLanguageCode];
+    nanoLanguageCode = [v3 nanoLanguageCode];
     v5 = AFRaiseToSpeakSupportedForLanguage();
 
     LOBYTE(v2) = v5;
@@ -484,29 +484,29 @@ LABEL_8:
   return [NSNumber numberWithBool:v2];
 }
 
-- (void)setRaiseToSpeakEnabled:(id)a3
+- (void)setRaiseToSpeakEnabled:(id)enabled
 {
-  v4 = [a3 BOOLValue];
-  v5 = [(AssistantBridgeController *)self voiceTriggerEnabled];
-  if ([v5 BOOLValue])
+  bOOLValue = [enabled BOOLValue];
+  voiceTriggerEnabled = [(AssistantBridgeController *)self voiceTriggerEnabled];
+  if ([voiceTriggerEnabled BOOLValue])
   {
 
 LABEL_4:
     v8 = +[AFPreferences sharedPreferences];
-    [v8 setNanoRaiseToSpeakEnabled:v4];
+    [v8 setNanoRaiseToSpeakEnabled:bOOLValue];
 
     return;
   }
 
-  v6 = [(AssistantBridgeController *)self digitalCrownEnabled];
-  v7 = [v6 BOOLValue];
+  digitalCrownEnabled = [(AssistantBridgeController *)self digitalCrownEnabled];
+  bOOLValue2 = [digitalCrownEnabled BOOLValue];
 
-  if (v7)
+  if (bOOLValue2)
   {
     goto LABEL_4;
   }
 
-  [(AssistantBridgeController *)self setAssistantEnabled:v4 withConfirmationAction:&stru_104D0];
+  [(AssistantBridgeController *)self setAssistantEnabled:bOOLValue withConfirmationAction:&stru_104D0];
 }
 
 - (id)digitalCrownEnabled
@@ -516,28 +516,28 @@ LABEL_4:
   return [NSNumber numberWithBool:v2];
 }
 
-- (void)setDigitalCrownEnabled:(id)a3
+- (void)setDigitalCrownEnabled:(id)enabled
 {
-  v4 = [a3 BOOLValue];
-  v5 = [(AssistantBridgeController *)self voiceTriggerEnabled];
-  if ([v5 BOOLValue])
+  bOOLValue = [enabled BOOLValue];
+  voiceTriggerEnabled = [(AssistantBridgeController *)self voiceTriggerEnabled];
+  if ([voiceTriggerEnabled BOOLValue])
   {
 
 LABEL_4:
     v7 = +[AFPreferences sharedPreferences];
-    [v7 setNanoCrownActivationEnabled:v4];
+    [v7 setNanoCrownActivationEnabled:bOOLValue];
 
     return;
   }
 
-  v6 = [(AssistantBridgeController *)self raiseToSpeakEnabledAndSupported];
+  raiseToSpeakEnabledAndSupported = [(AssistantBridgeController *)self raiseToSpeakEnabledAndSupported];
 
-  if (v6)
+  if (raiseToSpeakEnabledAndSupported)
   {
     goto LABEL_4;
   }
 
-  [(AssistantBridgeController *)self setAssistantEnabled:v4 withConfirmationAction:&stru_104F0];
+  [(AssistantBridgeController *)self setAssistantEnabled:bOOLValue withConfirmationAction:&stru_104F0];
 }
 
 - (id)messageWithoutConfirmationEnabled
@@ -548,11 +548,11 @@ LABEL_4:
   return v3;
 }
 
-- (void)setMessageWithoutConfirmationEnabled:(id)a3
+- (void)setMessageWithoutConfirmationEnabled:(id)enabled
 {
-  v3 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v4 = +[AFPreferences sharedPreferences];
-  [v4 setNanoMessageWithoutConfirmationEnabled:v3];
+  [v4 setNanoMessageWithoutConfirmationEnabled:bOOLValue];
 }
 
 - (void)_updateAskSiriFooter
@@ -561,7 +561,7 @@ LABEL_4:
   v4 = +[AssistantBridgeSettingsUtilities raiseToSpeakEnabled];
   v5 = +[AssistantBridgeSettingsUtilities digitalCrownEnabled];
   v6 = +[AFPreferences sharedPreferences];
-  v7 = [v6 languageCode];
+  languageCode = [v6 languageCode];
   v8 = AFRaiseToSpeakSupportedForLanguage();
 
   v9 = &AFAssistantRestricted_ptr;
@@ -606,9 +606,9 @@ LABEL_4:
   if (+[AssistantBridgeSettingsUtilities isCompactVoiceTriggerAvailable])
   {
     v15 = +[AFPreferences sharedPreferences];
-    v16 = [v15 nanoVTPhraseType];
+    nanoVTPhraseType = [v15 nanoVTPhraseType];
 
-    v17 = v16 == &dword_0 + 1;
+    v17 = nanoVTPhraseType == &dword_0 + 1;
   }
 
   else
@@ -689,12 +689,12 @@ LABEL_31:
   [(AssistantBridgeController *)self _addHyperlinkStyleToText:v27 inString:v28 action:"_showAboutActionSheet" forGroup:v29];
 }
 
-- (void)_addHyperlinkStyleToText:(id)a3 inString:(id)a4 action:(SEL)a5 forGroup:(id)a6
+- (void)_addHyperlinkStyleToText:(id)text inString:(id)string action:(SEL)action forGroup:(id)group
 {
-  v20 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v11 propertyForKey:PSFooterCellClassGroupKey];
+  textCopy = text;
+  stringCopy = string;
+  groupCopy = group;
+  v12 = [groupCopy propertyForKey:PSFooterCellClassGroupKey];
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
   v15 = [v12 isEqualToString:v14];
@@ -706,10 +706,10 @@ LABEL_31:
     [NSException raise:NSInternalInconsistencyException format:@"Group must use %@ as footer cell class", v17];
   }
 
-  v18 = [v10 rangeOfString:v20];
+  v18 = [stringCopy rangeOfString:textCopy];
   if (v19)
   {
-    [v11 addFooterHyperlinkWithRange:v18 target:v19 action:{self, a5}];
+    [groupCopy addFooterHyperlinkWithRange:v18 target:v19 action:{self, action}];
   }
 }
 
@@ -723,7 +723,7 @@ LABEL_31:
 - (void)languageCodeDidChange
 {
   v3 = +[AFPreferences sharedPreferences];
-  v4 = [v3 nanoLanguageCode];
+  nanoLanguageCode = [v3 nanoLanguageCode];
   self->_siriSpeaksSupportedLanguage = AFGryphonAssetsExistForLanguage();
 
   [(AssistantBridgeController *)self reloadSpecifiers];
@@ -732,17 +732,17 @@ LABEL_31:
 - (id)voiceFeedbackMode
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 nanoUseDeviceSpeakerForTTS];
+  nanoUseDeviceSpeakerForTTS = [v2 nanoUseDeviceSpeakerForTTS];
 
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = v4;
   v6 = @"VOICE_FEEDBACK_HEADPHONES_ONLY";
-  if (v3 == &dword_0 + 1)
+  if (nanoUseDeviceSpeakerForTTS == &dword_0 + 1)
   {
     v6 = @"VOICE_FEEDBACK_CONTROL_WITH_SILENT_MODE";
   }
 
-  if (v3 == &dword_0 + 2)
+  if (nanoUseDeviceSpeakerForTTS == &dword_0 + 2)
   {
     v7 = @"VOICE_FEEDBACK_ALWAYS_ON";
   }
@@ -766,9 +766,9 @@ LABEL_31:
   return v3;
 }
 
-- (void)setVoiceVolume:(id)a3
+- (void)setVoiceVolume:(id)volume
 {
-  [a3 floatValue];
+  [volume floatValue];
   v4 = v3;
   v6 = +[AFPreferences sharedPreferences];
   LODWORD(v5) = v4;

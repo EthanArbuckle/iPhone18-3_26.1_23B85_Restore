@@ -1,67 +1,67 @@
 @interface HKAudiogramSample
-+ (HKAudiogramSample)audiogramSampleWithLeftEarAverageSensitivity:(id)a3 rightEarAverageSensitivity:(id)a4 startDate:(id)a5 endDate:(id)a6 device:(id)a7 metadata:(id)a8;
-+ (HKAudiogramSample)audiogramSampleWithSensitivityPoints:(id)a3 startDate:(id)a4 endDate:(id)a5 device:(id)a6 metadata:(id)a7;
-+ (double)_randomDecibelValueInRangeFromStart:(double)a3 end:(double)a4;
-+ (id)_decodeSensitivityData:(id)a3;
-+ (id)_encodeSensitivityPoints:(id)a3;
-+ (id)_sensitivityPointWithFrequency:(id)a3 leftEarSensitivity:(id)a4 rightEarSensitivity:(id)a5 error:(id *)a6;
-+ (id)randomAudiogramSampleWithLeftEarClassification:(unint64_t)a3 rightEarClassification:(unint64_t)a4 startDate:(id)a5 endDate:(id)a6 device:(id)a7 metadata:(id)a8;
-+ (id)randomSensitivityValueForClassification:(unint64_t)a3;
++ (HKAudiogramSample)audiogramSampleWithLeftEarAverageSensitivity:(id)sensitivity rightEarAverageSensitivity:(id)averageSensitivity startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata;
++ (HKAudiogramSample)audiogramSampleWithSensitivityPoints:(id)points startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata;
++ (double)_randomDecibelValueInRangeFromStart:(double)start end:(double)end;
++ (id)_decodeSensitivityData:(id)data;
++ (id)_encodeSensitivityPoints:(id)points;
++ (id)_sensitivityPointWithFrequency:(id)frequency leftEarSensitivity:(id)sensitivity rightEarSensitivity:(id)earSensitivity error:(id *)error;
++ (id)randomAudiogramSampleWithLeftEarClassification:(unint64_t)classification rightEarClassification:(unint64_t)earClassification startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata;
++ (id)randomSensitivityValueForClassification:(unint64_t)classification;
 - (BOOL)_firstPartyHearingTest;
 - (BOOL)_firstPartyIngestion;
-- (BOOL)containSensitivityPointsIsMasked:(BOOL)a3 forSide:(int64_t)a4;
+- (BOOL)containSensitivityPointsIsMasked:(BOOL)masked forSide:(int64_t)side;
 - (BOOL)hasDifferentClassificationWithModifiedClampingRange;
-- (BOOL)hasSomeClampingForAnyFrequency:(id)a3;
-- (BOOL)hasTooMuchClampingForAnyFrequency:(id)a3;
-- (BOOL)hasTooMuchClampingForAnyKeyFrequency:(id)a3;
+- (BOOL)hasSomeClampingForAnyFrequency:(id)frequency;
+- (BOOL)hasTooMuchClampingForAnyFrequency:(id)frequency;
+- (BOOL)hasTooMuchClampingForAnyKeyFrequency:(id)frequency;
 - (BOOL)isAmbiguous;
 - (BOOL)isAverageSensitivityUpperClampedForAnySide;
-- (BOOL)isAverageSensitivityUpperClampedForSide:(int64_t)a3;
+- (BOOL)isAverageSensitivityUpperClampedForSide:(int64_t)side;
 - (BOOL)isFirstPartyHearingTestResult;
-- (HKAudiogramSample)initWithCoder:(id)a3;
+- (HKAudiogramSample)initWithCoder:(id)coder;
 - (HKHearingLevelSummary)hearingLevelSummary;
 - (NSArray)sensitivityPoints;
-- (id)_keyFrequencyPointsFrom:(id)a3 forSide:(int64_t)a4;
+- (id)_keyFrequencyPointsFrom:(id)from forSide:(int64_t)side;
 - (id)_validateSensitivityPointsOrderedAscending;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
 - (id)averageLeftEarSensitivity;
 - (id)averageRightEarSensitivity;
-- (id)averageSensitivityForSide:(int64_t)a3;
-- (id)clampingLowerBoundPositionsPerFrequencyAtSide:(int64_t)a3;
+- (id)averageSensitivityForSide:(int64_t)side;
+- (id)clampingLowerBoundPositionsPerFrequencyAtSide:(int64_t)side;
 - (id)localizedIngestionSource;
 - (id)maximumSensitivity;
 - (id)minimumSensitivity;
-- (unint64_t)_rawHearingLevelClassificationFrom:(id)a3;
+- (unint64_t)_rawHearingLevelClassificationFrom:(id)from;
 - (unint64_t)diagnostic;
 - (unint64_t)leftEarDiagnostic;
 - (unint64_t)rightEarDiagnostic;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)hasDifferentClassificationWithModifiedClampingRange;
 @end
 
 @implementation HKAudiogramSample
 
-+ (HKAudiogramSample)audiogramSampleWithSensitivityPoints:(id)a3 startDate:(id)a4 endDate:(id)a5 device:(id)a6 metadata:(id)a7
++ (HKAudiogramSample)audiogramSampleWithSensitivityPoints:(id)points startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata
 {
-  v12 = a3;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
+  pointsCopy = points;
+  metadataCopy = metadata;
+  deviceCopy = device;
+  endDateCopy = endDate;
+  dateCopy = date;
   v17 = +[HKObjectType audiogramSampleType];
-  [v16 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v19 = v18;
 
-  [v15 timeIntervalSinceReferenceDate];
+  [endDateCopy timeIntervalSinceReferenceDate];
   v21 = v20;
 
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __92__HKAudiogramSample_audiogramSampleWithSensitivityPoints_startDate_endDate_device_metadata___block_invoke;
   v25[3] = &unk_1E7380FC8;
-  v26 = v12;
-  v22 = v12;
-  v23 = [a1 _newSampleWithType:v17 startDate:v14 endDate:v13 device:v25 metadata:v19 config:v21];
+  v26 = pointsCopy;
+  v22 = pointsCopy;
+  v23 = [self _newSampleWithType:v17 startDate:deviceCopy endDate:metadataCopy device:v25 metadata:v19 config:v21];
 
   return v23;
 }
@@ -74,33 +74,33 @@ void __92__HKAudiogramSample_audiogramSampleWithSensitivityPoints_startDate_endD
   [v3 _setPayload:v4];
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v9.receiver = self;
   v9.super_class = HKAudiogramSample;
-  v4 = [(HKSample *)&v9 _validateWithConfiguration:a3.var0, a3.var1];
+  v4 = [(HKSample *)&v9 _validateWithConfiguration:configuration.var0, configuration.var1];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    _validateSensitivityPointsOrderedAscending = v4;
   }
 
   else
   {
-    v6 = [(HKAudiogramSample *)self _validateSensitivityPointsOrderedAscending];
+    _validateSensitivityPointsOrderedAscending = [(HKAudiogramSample *)self _validateSensitivityPointsOrderedAscending];
   }
 
-  v7 = v6;
+  v7 = _validateSensitivityPointsOrderedAscending;
 
   return v7;
 }
 
 - (id)_validateSensitivityPointsOrderedAscending
 {
-  v4 = [(HKAudiogramSample *)self sensitivityPoints];
-  v5 = [v4 count];
+  sensitivityPoints = [(HKAudiogramSample *)self sensitivityPoints];
+  v5 = [sensitivityPoints count];
 
-  v6 = [(HKAudiogramSample *)self sensitivityPoints];
+  sensitivityPoints2 = [(HKAudiogramSample *)self sensitivityPoints];
   v7 = +[HKUnit hertzUnit];
   if (v5 >= 0x1F)
   {
@@ -122,14 +122,14 @@ LABEL_9:
   v8 = 1;
   while (v5 != v8)
   {
-    v9 = [v6 objectAtIndexedSubscript:v8 - 1];
-    v10 = [v9 frequency];
-    [v10 doubleValueForUnit:v7];
+    v9 = [sensitivityPoints2 objectAtIndexedSubscript:v8 - 1];
+    frequency = [v9 frequency];
+    [frequency doubleValueForUnit:v7];
     v12 = v11;
 
-    v13 = [v6 objectAtIndexedSubscript:v8];
-    v14 = [v13 frequency];
-    [v14 doubleValueForUnit:v7];
+    v13 = [sensitivityPoints2 objectAtIndexedSubscript:v8];
+    frequency2 = [v13 frequency];
+    [frequency2 doubleValueForUnit:v7];
     v16 = v15;
 
     ++v8;
@@ -148,10 +148,10 @@ LABEL_11:
   return v20;
 }
 
-+ (id)_encodeSensitivityPoints:(id)a3
++ (id)_encodeSensitivityPoints:(id)points
 {
   v7 = 0;
-  v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v7];
+  v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:points requiringSecureCoding:1 error:&v7];
   v4 = v7;
   if (!v3)
   {
@@ -166,15 +166,15 @@ LABEL_11:
   return v3;
 }
 
-+ (id)_decodeSensitivityData:(id)a3
++ (id)_decodeSensitivityData:(id)data
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_opt_class();
   v6 = objc_opt_class();
   v7 = [v3 setWithObjects:{v5, v6, objc_opt_class(), 0}];
   v12 = 0;
-  v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v7 fromData:v4 error:&v12];
+  v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v7 fromData:dataCopy error:&v12];
 
   v9 = v12;
   if (!v8)
@@ -194,8 +194,8 @@ LABEL_11:
 
 - (NSArray)sensitivityPoints
 {
-  v2 = [(HKAudiogramSample *)self encodedSensitivityPoints];
-  v3 = [HKAudiogramSample _decodeSensitivityData:v2];
+  encodedSensitivityPoints = [(HKAudiogramSample *)self encodedSensitivityPoints];
+  v3 = [HKAudiogramSample _decodeSensitivityData:encodedSensitivityPoints];
 
   return v3;
 }
@@ -215,109 +215,109 @@ LABEL_11:
   return hearingLevelSummary;
 }
 
-- (HKAudiogramSample)initWithCoder:(id)a3
+- (HKAudiogramSample)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = HKAudiogramSample;
-  v5 = [(HKSample *)&v8 initWithCoder:v4];
+  v5 = [(HKSample *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AudiogramDataKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AudiogramDataKey"];
     [(HKAudiogramSample *)v5 _setPayload:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HKAudiogramSample;
-  v4 = a3;
-  [(HKSample *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HKSample *)&v6 encodeWithCoder:coderCopy];
   v5 = [(HKAudiogramSample *)self encodedSensitivityPoints:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"AudiogramDataKey"];
+  [coderCopy encodeObject:v5 forKey:@"AudiogramDataKey"];
 }
 
 - (unint64_t)diagnostic
 {
-  v2 = [(HKAudiogramSample *)self hearingLevelSummary];
-  v3 = [v2 overallMetrics];
-  v4 = [v3 averageSensitivity];
-  v5 = HKHearingLevelClassificationForSensitivity(v4);
+  hearingLevelSummary = [(HKAudiogramSample *)self hearingLevelSummary];
+  overallMetrics = [hearingLevelSummary overallMetrics];
+  averageSensitivity = [overallMetrics averageSensitivity];
+  v5 = HKHearingLevelClassificationForSensitivity(averageSensitivity);
 
   return v5;
 }
 
 - (unint64_t)leftEarDiagnostic
 {
-  v2 = [(HKAudiogramSample *)self hearingLevelSummary];
-  v3 = [v2 leftEarMetrics];
-  v4 = [v3 averageSensitivity];
-  v5 = HKHearingLevelClassificationForSensitivity(v4);
+  hearingLevelSummary = [(HKAudiogramSample *)self hearingLevelSummary];
+  leftEarMetrics = [hearingLevelSummary leftEarMetrics];
+  averageSensitivity = [leftEarMetrics averageSensitivity];
+  v5 = HKHearingLevelClassificationForSensitivity(averageSensitivity);
 
   return v5;
 }
 
 - (unint64_t)rightEarDiagnostic
 {
-  v2 = [(HKAudiogramSample *)self hearingLevelSummary];
-  v3 = [v2 rightEarMetrics];
-  v4 = [v3 averageSensitivity];
-  v5 = HKHearingLevelClassificationForSensitivity(v4);
+  hearingLevelSummary = [(HKAudiogramSample *)self hearingLevelSummary];
+  rightEarMetrics = [hearingLevelSummary rightEarMetrics];
+  averageSensitivity = [rightEarMetrics averageSensitivity];
+  v5 = HKHearingLevelClassificationForSensitivity(averageSensitivity);
 
   return v5;
 }
 
 - (id)averageLeftEarSensitivity
 {
-  v2 = [(HKAudiogramSample *)self hearingLevelSummary];
-  v3 = [v2 leftEarMetrics];
-  v4 = [v3 averageSensitivity];
+  hearingLevelSummary = [(HKAudiogramSample *)self hearingLevelSummary];
+  leftEarMetrics = [hearingLevelSummary leftEarMetrics];
+  averageSensitivity = [leftEarMetrics averageSensitivity];
 
-  return v4;
+  return averageSensitivity;
 }
 
 - (id)averageRightEarSensitivity
 {
-  v2 = [(HKAudiogramSample *)self hearingLevelSummary];
-  v3 = [v2 rightEarMetrics];
-  v4 = [v3 averageSensitivity];
+  hearingLevelSummary = [(HKAudiogramSample *)self hearingLevelSummary];
+  rightEarMetrics = [hearingLevelSummary rightEarMetrics];
+  averageSensitivity = [rightEarMetrics averageSensitivity];
 
-  return v4;
+  return averageSensitivity;
 }
 
 - (id)minimumSensitivity
 {
-  v2 = [(HKAudiogramSample *)self hearingLevelSummary];
-  v3 = [v2 overallMetrics];
-  v4 = [v3 minimumSensitivity];
+  hearingLevelSummary = [(HKAudiogramSample *)self hearingLevelSummary];
+  overallMetrics = [hearingLevelSummary overallMetrics];
+  minimumSensitivity = [overallMetrics minimumSensitivity];
 
-  return v4;
+  return minimumSensitivity;
 }
 
 - (id)maximumSensitivity
 {
-  v2 = [(HKAudiogramSample *)self hearingLevelSummary];
-  v3 = [v2 overallMetrics];
-  v4 = [v3 maximumSensitivity];
+  hearingLevelSummary = [(HKAudiogramSample *)self hearingLevelSummary];
+  overallMetrics = [hearingLevelSummary overallMetrics];
+  maximumSensitivity = [overallMetrics maximumSensitivity];
 
-  return v4;
+  return maximumSensitivity;
 }
 
-- (BOOL)containSensitivityPointsIsMasked:(BOOL)a3 forSide:(int64_t)a4
+- (BOOL)containSensitivityPointsIsMasked:(BOOL)masked forSide:(int64_t)side
 {
-  v6 = [(HKAudiogramSample *)self sensitivityPoints];
+  sensitivityPoints = [(HKAudiogramSample *)self sensitivityPoints];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __62__HKAudiogramSample_containSensitivityPointsIsMasked_forSide___block_invoke;
   v8[3] = &__block_descriptor_41_e37_B16__0__HKAudiogramSensitivityPoint_8l;
-  v8[4] = a4;
-  v9 = a3;
-  LOBYTE(a4) = [v6 hk_containsObjectPassingTest:v8];
+  v8[4] = side;
+  maskedCopy = masked;
+  LOBYTE(side) = [sensitivityPoints hk_containsObjectPassingTest:v8];
 
-  return a4;
+  return side;
 }
 
 uint64_t __62__HKAudiogramSample_containSensitivityPointsIsMasked_forSide___block_invoke(uint64_t a1, void *a2)
@@ -342,31 +342,31 @@ BOOL __62__HKAudiogramSample_containSensitivityPointsIsMasked_forSide___block_in
   return v4;
 }
 
-- (id)averageSensitivityForSide:(int64_t)a3
+- (id)averageSensitivityForSide:(int64_t)side
 {
-  if (a3)
+  if (side)
   {
-    if (a3 != 1)
+    if (side != 1)
     {
       goto LABEL_6;
     }
 
-    v4 = [(HKAudiogramSample *)self hearingLevelSummary];
-    v5 = [v4 rightEarMetrics];
+    hearingLevelSummary = [(HKAudiogramSample *)self hearingLevelSummary];
+    rightEarMetrics = [hearingLevelSummary rightEarMetrics];
   }
 
   else
   {
-    v4 = [(HKAudiogramSample *)self hearingLevelSummary];
-    v5 = [v4 leftEarMetrics];
+    hearingLevelSummary = [(HKAudiogramSample *)self hearingLevelSummary];
+    rightEarMetrics = [hearingLevelSummary leftEarMetrics];
   }
 
-  v6 = v5;
-  v3 = [v5 averageSensitivity];
+  v6 = rightEarMetrics;
+  averageSensitivity = [rightEarMetrics averageSensitivity];
 
 LABEL_6:
 
-  return v3;
+  return averageSensitivity;
 }
 
 - (id)localizedIngestionSource
@@ -374,72 +374,72 @@ LABEL_6:
   if ([(HKAudiogramSample *)self _firstPartyHearingTest])
   {
     v3 = HKHealthKitFrameworkBundle();
-    v4 = v3;
+    sourceRevision = v3;
     v5 = @"AUDIOGRAM_APPLE_HEARING_TEST";
 LABEL_5:
-    v6 = [v3 localizedStringForKey:v5 value:&stru_1F05FF230 table:@"Localizable-Yodel"];
+    name = [v3 localizedStringForKey:v5 value:&stru_1F05FF230 table:@"Localizable-Yodel"];
     goto LABEL_7;
   }
 
   if ([(HKAudiogramSample *)self _firstPartyIngestion])
   {
     v3 = HKHealthKitFrameworkBundle();
-    v4 = v3;
+    sourceRevision = v3;
     v5 = @"AUDIOGRAM_MANUAL_INGESTION";
     goto LABEL_5;
   }
 
-  v4 = [(HKObject *)self sourceRevision];
-  v7 = [v4 source];
-  v6 = [v7 name];
+  sourceRevision = [(HKObject *)self sourceRevision];
+  source = [sourceRevision source];
+  name = [source name];
 
 LABEL_7:
 
-  return v6;
+  return name;
 }
 
 - (BOOL)_firstPartyHearingTest
 {
-  v2 = [(HKObject *)self metadata];
-  v3 = [v2 objectForKeyedSubscript:@"_HKPrivateMetadataKeyHearingTestTakenFromFirstParty"];
+  metadata = [(HKObject *)self metadata];
+  v3 = [metadata objectForKeyedSubscript:@"_HKPrivateMetadataKeyHearingTestTakenFromFirstParty"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)_firstPartyIngestion
 {
-  v3 = [(HKObject *)self metadata];
-  v4 = [v3 objectForKeyedSubscript:@"_HKPrivateMetadataKeyAudiogramManualIngestionFromFirstParty"];
+  metadata = [(HKObject *)self metadata];
+  v4 = [metadata objectForKeyedSubscript:@"_HKPrivateMetadataKeyAudiogramManualIngestionFromFirstParty"];
 
-  v5 = [v4 BOOLValue];
-  if (v4 && (v5 & 1) != 0)
+  bOOLValue = [v4 BOOLValue];
+  if (v4 && (bOOLValue & 1) != 0)
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(HKObject *)self sourceRevision];
-    v8 = [v7 source];
-    v9 = [v8 bundleIdentifier];
+    sourceRevision = [(HKObject *)self sourceRevision];
+    source = [sourceRevision source];
+    bundleIdentifier = [source bundleIdentifier];
 
-    if (v9)
+    if (bundleIdentifier)
     {
-      v10 = [(HKObject *)self sourceRevision];
-      v11 = [v10 source];
-      v12 = [v11 bundleIdentifier];
+      sourceRevision2 = [(HKObject *)self sourceRevision];
+      source2 = [sourceRevision2 source];
+      bundleIdentifier2 = [source2 bundleIdentifier];
 
-      v6 = ([v12 isEqualToString:@"com.apple.Health"] & 1) != 0 || objc_msgSend(v12, "isEqualToString:", @"com.apple.Preferences");
+      v6 = ([bundleIdentifier2 isEqualToString:@"com.apple.Health"] & 1) != 0 || objc_msgSend(bundleIdentifier2, "isEqualToString:", @"com.apple.Preferences");
     }
 
     else
@@ -477,9 +477,9 @@ id __35__HKAudiogramSample_ptaFrequencies__block_invoke(uint64_t a1, void *a2)
   return v6;
 }
 
-- (BOOL)hasSomeClampingForAnyFrequency:(id)a3
+- (BOOL)hasSomeClampingForAnyFrequency:(id)frequency
 {
-  v3 = [a3 hk_filter:&__block_literal_global_80];
+  v3 = [frequency hk_filter:&__block_literal_global_80];
   v4 = [v3 count] != 0;
 
   return v4;
@@ -489,11 +489,11 @@ id __35__HKAudiogramSample_ptaFrequencies__block_invoke(uint64_t a1, void *a2)
 {
   v3 = [(HKAudiogramSample *)self clampingLowerBoundPositionsPerFrequencyAtSide:0];
   v4 = [(HKAudiogramSample *)self clampingLowerBoundPositionsPerFrequencyAtSide:1];
-  v5 = [v3 allValues];
-  v6 = [v5 hk_filter:&__block_literal_global_82_0];
+  allValues = [v3 allValues];
+  v6 = [allValues hk_filter:&__block_literal_global_82_0];
 
-  v7 = [v4 allValues];
-  v8 = [v7 hk_filter:&__block_literal_global_84];
+  allValues2 = [v4 allValues];
+  v8 = [allValues2 hk_filter:&__block_literal_global_84];
 
   if (![v6 count] && !objc_msgSend(v8, "count") || !-[HKAudiogramSample hasSomeClampingForAnyFrequency:](self, "hasSomeClampingForAnyFrequency:", v6) && !-[HKAudiogramSample hasSomeClampingForAnyFrequency:](self, "hasSomeClampingForAnyFrequency:", v8))
   {
@@ -504,33 +504,33 @@ id __35__HKAudiogramSample_ptaFrequencies__block_invoke(uint64_t a1, void *a2)
   {
     if ([(HKAudiogramSample *)self hasTooMuchClampingForAnyKeyFrequency:v3]|| [(HKAudiogramSample *)self hasTooMuchClampingForAnyKeyFrequency:v4])
     {
-      v9 = [(HKAudiogramSample *)self hasDifferentClassificationWithModifiedClampingRange];
+      hasDifferentClassificationWithModifiedClampingRange = [(HKAudiogramSample *)self hasDifferentClassificationWithModifiedClampingRange];
       goto LABEL_12;
     }
 
 LABEL_11:
-    v9 = 0;
+    hasDifferentClassificationWithModifiedClampingRange = 0;
     goto LABEL_12;
   }
 
-  v9 = 1;
+  hasDifferentClassificationWithModifiedClampingRange = 1;
 LABEL_12:
 
-  return v9;
+  return hasDifferentClassificationWithModifiedClampingRange;
 }
 
-- (BOOL)hasTooMuchClampingForAnyFrequency:(id)a3
+- (BOOL)hasTooMuchClampingForAnyFrequency:(id)frequency
 {
-  v3 = [a3 hk_filter:&__block_literal_global_86];
+  v3 = [frequency hk_filter:&__block_literal_global_86];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-- (BOOL)hasTooMuchClampingForAnyKeyFrequency:(id)a3
+- (BOOL)hasTooMuchClampingForAnyKeyFrequency:(id)frequency
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  frequencyCopy = frequency;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -549,7 +549,7 @@ LABEL_12:
           objc_enumerationMutation(v4);
         }
 
-        v8 = [v3 objectForKey:*(*(&v12 + 1) + 8 * i)];
+        v8 = [frequencyCopy objectForKey:*(*(&v12 + 1) + 8 * i)];
         v9 = v8;
         if (v8 && [v8 intValue] > 1)
         {
@@ -578,8 +578,8 @@ LABEL_12:
 - (BOOL)hasDifferentClassificationWithModifiedClampingRange
 {
   v70 = *MEMORY[0x1E69E9840];
-  v2 = [(HKAudiogramSample *)self sensitivityPoints];
-  v3 = [v2 hk_filter:&__block_literal_global_88];
+  sensitivityPoints = [(HKAudiogramSample *)self sensitivityPoints];
+  v3 = [sensitivityPoints hk_filter:&__block_literal_global_88];
 
   v4 = 0x1E695D000uLL;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -631,17 +631,17 @@ LABEL_12:
               }
 
               v14 = *(*(&v60 + 1) + 8 * i);
-              v15 = [v14 sensitivity];
-              v16 = [v14 clampingRange];
+              sensitivity = [v14 sensitivity];
+              clampingRange = [v14 clampingRange];
 
-              if (v16)
+              if (clampingRange)
               {
-                v56 = v15;
+                v56 = sensitivity;
                 v17 = MEMORY[0x1E696AD98];
-                v18 = [v14 clampingRange];
-                v19 = [v18 upperBound];
+                clampingRange2 = [v14 clampingRange];
+                upperBound = [clampingRange2 upperBound];
                 v20 = +[HKUnit decibelHearingLevelUnit];
-                [v19 doubleValueForUnit:v20];
+                [upperBound doubleValueForUnit:v20];
                 v21 = [v17 numberWithDouble:?];
 
                 v22 = +[HKAudiogramSample clampingLowestBoundForValidityCheck];
@@ -649,14 +649,14 @@ LABEL_12:
                 v23 = [HKAudiogramSensitivityPointClampingRange clampingRangeWithLowerBound:v22 upperBound:v21 error:&v59];
                 v55 = v59;
 
-                v24 = [v14 sensitivity];
+                sensitivity2 = [v14 sensitivity];
                 v25 = +[HKUnit decibelHearingLevelUnit];
-                [v24 doubleValueForUnit:v25];
+                [sensitivity2 doubleValueForUnit:v25];
                 v27 = v26;
-                v28 = [v14 clampingRange];
-                v29 = [v28 lowerBound];
+                clampingRange3 = [v14 clampingRange];
+                lowerBound = [clampingRange3 lowerBound];
                 v30 = +[HKUnit decibelHearingLevelUnit];
-                [v29 doubleValueForUnit:v30];
+                [lowerBound doubleValueForUnit:v30];
                 if (v27 <= v31)
                 {
                   [v23 lowerBound];
@@ -666,7 +666,7 @@ LABEL_12:
                 {
                   [v14 sensitivity];
                 }
-                v15 = ;
+                sensitivity = ;
 
                 v12 = v55;
                 v11 = v52;
@@ -695,11 +695,11 @@ LABEL_24:
               }
 
               v32 = [HKAudiogramSensitivityTest alloc];
-              v33 = [v14 type];
-              v34 = [v14 masked];
-              v35 = [v14 side];
+              type = [v14 type];
+              masked = [v14 masked];
+              side = [v14 side];
               v58 = 0;
-              v36 = [(HKAudiogramSensitivityTest *)v32 initWithSensitivity:v15 type:v33 masked:v34 side:v35 clampingRange:v23 error:&v58];
+              v36 = [(HKAudiogramSensitivityTest *)v32 initWithSensitivity:sensitivity type:type masked:masked side:side clampingRange:v23 error:&v58];
               v12 = v58;
               [v11 addObject:v36];
             }
@@ -714,9 +714,9 @@ LABEL_24:
           }
         }
 
-        v37 = [v47 frequency];
+        frequency = [v47 frequency];
         v57 = v12;
-        v38 = [HKAudiogramSensitivityPoint sensitivityPointWithFrequency:v37 tests:v11 error:&v57];
+        v38 = [HKAudiogramSensitivityPoint sensitivityPointWithFrequency:frequency tests:v11 error:&v57];
         v39 = v57;
 
         v5 = v50;
@@ -773,11 +773,11 @@ uint64_t __72__HKAudiogramSample_hasDifferentClassificationWithModifiedClampingR
   return v5;
 }
 
-- (unint64_t)_rawHearingLevelClassificationFrom:(id)a3
+- (unint64_t)_rawHearingLevelClassificationFrom:(id)from
 {
-  v4 = a3;
-  v5 = [(HKAudiogramSample *)self _keyFrequencyPointsFrom:v4 forSide:0];
-  v6 = [(HKAudiogramSample *)self _keyFrequencyPointsFrom:v4 forSide:1];
+  fromCopy = from;
+  v5 = [(HKAudiogramSample *)self _keyFrequencyPointsFrom:fromCopy forSide:0];
+  v6 = [(HKAudiogramSample *)self _keyFrequencyPointsFrom:fromCopy forSide:1];
 
   v7 = HKPureToneAverageFromPureToneSensitivityPoints(v5);
   v8 = HKPureToneAverageFromPureToneSensitivityPoints(v6);
@@ -787,14 +787,14 @@ uint64_t __72__HKAudiogramSample_hasDifferentClassificationWithModifiedClampingR
   return v10;
 }
 
-- (id)_keyFrequencyPointsFrom:(id)a3 forSide:(int64_t)a4
+- (id)_keyFrequencyPointsFrom:(id)from forSide:(int64_t)side
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__HKAudiogramSample__keyFrequencyPointsFrom_forSide___block_invoke;
   v6[3] = &__block_descriptor_40_e37__16__0__HKAudiogramSensitivityPoint_8l;
-  v6[4] = a4;
-  v4 = [a3 hk_map:v6];
+  v6[4] = side;
+  v4 = [from hk_map:v6];
 
   return v4;
 }
@@ -813,7 +813,7 @@ id __53__HKAudiogramSample__keyFrequencyPointsFrom_forSide___block_invoke(uint64
   return v5;
 }
 
-- (id)clampingLowerBoundPositionsPerFrequencyAtSide:(int64_t)a3
+- (id)clampingLowerBoundPositionsPerFrequencyAtSide:(int64_t)side
 {
   v50 = *MEMORY[0x1E69E9840];
   v38 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -842,8 +842,8 @@ id __53__HKAudiogramSample__keyFrequencyPointsFrom_forSide___block_invoke(uint64
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v39 = [v6 tests];
-        v7 = [v39 countByEnumeratingWithState:&v40 objects:v48 count:16];
+        tests = [v6 tests];
+        v7 = [tests countByEnumeratingWithState:&v40 objects:v48 count:16];
         if (v7)
         {
           v8 = v7;
@@ -854,22 +854,22 @@ id __53__HKAudiogramSample__keyFrequencyPointsFrom_forSide___block_invoke(uint64
             {
               if (*v41 != v9)
               {
-                objc_enumerationMutation(v39);
+                objc_enumerationMutation(tests);
               }
 
               v11 = *(*(&v40 + 1) + 8 * i);
-              if ([v11 side] == a3)
+              if ([v11 side] == side)
               {
-                v12 = [v11 clampingRange];
-                v13 = [v12 lowerBound];
+                clampingRange = [v11 clampingRange];
+                lowerBound = [clampingRange lowerBound];
 
-                if (v13)
+                if (lowerBound)
                 {
-                  v14 = [v6 frequency];
-                  v15 = [v11 clampingRange];
-                  v16 = [v15 lowerBound];
+                  frequency = [v6 frequency];
+                  clampingRange2 = [v11 clampingRange];
+                  lowerBound2 = [clampingRange2 lowerBound];
                   v17 = +[HKUnit decibelHearingLevelUnit];
-                  [v16 doubleValueForUnit:v17];
+                  [lowerBound2 doubleValueForUnit:v17];
                   v19 = v18;
 
                   v20 = +[HKAudiogramSample clampingLowestBoundForValidityCheck];
@@ -877,7 +877,7 @@ id __53__HKAudiogramSample__keyFrequencyPointsFrom_forSide___block_invoke(uint64
                   v22 = v21;
 
                   v23 = +[HKAudiogramSample clampingMaximumLowerBoundForValidityCheckPerFrequency];
-                  v24 = [v23 objectForKey:v14];
+                  v24 = [v23 objectForKey:frequency];
                   v25 = +[HKUnit decibelHearingLevelUnit];
                   [v24 doubleValueForUnit:v25];
                   v27 = v26;
@@ -902,21 +902,21 @@ id __53__HKAudiogramSample__keyFrequencyPointsFrom_forSide___block_invoke(uint64
                     v29 = v28;
                   }
 
-                  v30 = [MEMORY[0x1E696AD98] numberWithInt:v29];
-                  v31 = [v6 frequency];
-                  [v38 setObject:v30 forKey:v31];
+                  frequency3 = [MEMORY[0x1E696AD98] numberWithInt:v29];
+                  frequency2 = [v6 frequency];
+                  [v38 setObject:frequency3 forKey:frequency2];
                 }
 
                 else
                 {
-                  v14 = [MEMORY[0x1E696AD98] numberWithInt:0];
-                  v30 = [v6 frequency];
-                  [v38 setObject:v14 forKey:v30];
+                  frequency = [MEMORY[0x1E696AD98] numberWithInt:0];
+                  frequency3 = [v6 frequency];
+                  [v38 setObject:frequency forKey:frequency3];
                 }
               }
             }
 
-            v8 = [v39 countByEnumeratingWithState:&v40 objects:v48 count:16];
+            v8 = [tests countByEnumeratingWithState:&v40 objects:v48 count:16];
           }
 
           while (v8);
@@ -937,7 +937,7 @@ id __53__HKAudiogramSample__keyFrequencyPointsFrom_forSide___block_invoke(uint64
   return v38;
 }
 
-- (BOOL)isAverageSensitivityUpperClampedForSide:(int64_t)a3
+- (BOOL)isAverageSensitivityUpperClampedForSide:(int64_t)side
 {
   v5 = [(HKAudiogramSample *)self averageSensitivityForSide:?];
 
@@ -950,20 +950,20 @@ id __53__HKAudiogramSample__keyFrequencyPointsFrom_forSide___block_invoke(uint64
   v7 = [&unk_1F0686B08 copy];
   v8 = [v6 initWithArray:v7];
 
-  v9 = [(HKAudiogramSample *)self sensitivityPoints];
+  sensitivityPoints = [(HKAudiogramSample *)self sensitivityPoints];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __61__HKAudiogramSample_isAverageSensitivityUpperClampedForSide___block_invoke;
   v16[3] = &unk_1E73810B0;
   v17 = v8;
   v10 = v8;
-  v11 = [v9 hk_filter:v16];
+  v11 = [sensitivityPoints hk_filter:v16];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __61__HKAudiogramSample_isAverageSensitivityUpperClampedForSide___block_invoke_2;
   v15[3] = &__block_descriptor_40_e37__16__0__HKAudiogramSensitivityPoint_8l;
-  v15[4] = a3;
+  v15[4] = side;
   v12 = [v11 hk_map:v15];
   v13 = [v12 count] != 0;
 
@@ -1037,13 +1037,13 @@ BOOL __61__HKAudiogramSample_isAverageSensitivityUpperClampedForSide___block_inv
   return [(HKAudiogramSample *)self isAverageSensitivityUpperClampedForSide:1];
 }
 
-+ (id)randomAudiogramSampleWithLeftEarClassification:(unint64_t)a3 rightEarClassification:(unint64_t)a4 startDate:(id)a5 endDate:(id)a6 device:(id)a7 metadata:(id)a8
++ (id)randomAudiogramSampleWithLeftEarClassification:(unint64_t)classification rightEarClassification:(unint64_t)earClassification startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata
 {
   v48 = *MEMORY[0x1E69E9840];
-  v33 = a5;
-  v32 = a6;
-  v31 = a7;
-  v30 = a8;
+  dateCopy = date;
+  endDateCopy = endDate;
+  deviceCopy = device;
+  metadataCopy = metadata;
   v35 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v39 = 0u;
   v40 = 0u;
@@ -1069,10 +1069,10 @@ BOOL __61__HKAudiogramSample_isAverageSensitivityUpperClampedForSide___block_inv
         [v16 doubleValue];
         v18 = [HKQuantity quantityWithUnit:v17 doubleValue:?];
 
-        v19 = [a1 randomSensitivityValueForClassification:a3];
-        v20 = [a1 randomSensitivityValueForClassification:a4];
+        v19 = [self randomSensitivityValueForClassification:classification];
+        v20 = [self randomSensitivityValueForClassification:earClassification];
         v38 = 0;
-        v21 = [a1 _sensitivityPointWithFrequency:v18 leftEarSensitivity:v19 rightEarSensitivity:v20 error:&v38];
+        v21 = [self _sensitivityPointWithFrequency:v18 leftEarSensitivity:v19 rightEarSensitivity:v20 error:&v38];
         v22 = v38;
         if (v21)
         {
@@ -1106,23 +1106,23 @@ BOOL __61__HKAudiogramSample_isAverageSensitivityUpperClampedForSide___block_inv
     while (v13);
   }
 
-  v26 = v30;
-  v27 = [HKAudiogramSample audiogramSampleWithSensitivityPoints:v35 startDate:v33 endDate:v32 device:v31 metadata:v30, v30];
+  v26 = metadataCopy;
+  metadataCopy = [HKAudiogramSample audiogramSampleWithSensitivityPoints:v35 startDate:dateCopy endDate:endDateCopy device:deviceCopy metadata:metadataCopy, metadataCopy];
 
   v28 = *MEMORY[0x1E69E9840];
 
-  return v27;
+  return metadataCopy;
 }
 
-+ (id)_sensitivityPointWithFrequency:(id)a3 leftEarSensitivity:(id)a4 rightEarSensitivity:(id)a5 error:(id *)a6
++ (id)_sensitivityPointWithFrequency:(id)frequency leftEarSensitivity:(id)sensitivity rightEarSensitivity:(id)earSensitivity error:(id *)error
 {
   v9 = MEMORY[0x1E695DF70];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  earSensitivityCopy = earSensitivity;
+  sensitivityCopy = sensitivity;
+  frequencyCopy = frequency;
   v13 = objc_alloc_init(v9);
   v21 = 0;
-  v14 = [[HKAudiogramSensitivityTest alloc] initWithSensitivity:v11 type:0 masked:0 side:0 clampingRange:0 error:&v21];
+  v14 = [[HKAudiogramSensitivityTest alloc] initWithSensitivity:sensitivityCopy type:0 masked:0 side:0 clampingRange:0 error:&v21];
 
   v15 = v21;
   if (v14)
@@ -1140,7 +1140,7 @@ BOOL __61__HKAudiogramSample_isAverageSensitivityUpperClampedForSide___block_inv
   }
 
   v20 = v15;
-  v16 = [[HKAudiogramSensitivityTest alloc] initWithSensitivity:v10 type:0 masked:0 side:1 clampingRange:0 error:&v20];
+  v16 = [[HKAudiogramSensitivityTest alloc] initWithSensitivity:earSensitivityCopy type:0 masked:0 side:1 clampingRange:0 error:&v20];
 
   v17 = v20;
   if (v16)
@@ -1157,44 +1157,44 @@ BOOL __61__HKAudiogramSample_isAverageSensitivityUpperClampedForSide___block_inv
     }
   }
 
-  v18 = [HKAudiogramSensitivityPoint sensitivityPointWithFrequency:v12 tests:v13 error:a6];
+  v18 = [HKAudiogramSensitivityPoint sensitivityPointWithFrequency:frequencyCopy tests:v13 error:error];
 
   return v18;
 }
 
-+ (id)randomSensitivityValueForClassification:(unint64_t)a3
++ (id)randomSensitivityValueForClassification:(unint64_t)classification
 {
-  v5 = HKMinimumDecibelQuantityForHearingLevelClassification(a3);
-  v6 = HKMaximumDecibelQuantityForHearingLevelClassification(a3);
+  v5 = HKMinimumDecibelQuantityForHearingLevelClassification(classification);
+  v6 = HKMaximumDecibelQuantityForHearingLevelClassification(classification);
   v7 = +[HKUnit decibelHearingLevelUnit];
   [v5 doubleValueForUnit:v7];
   v9 = fmax(v8, 0.0);
   [v6 doubleValueForUnit:v7];
-  [a1 _randomDecibelValueInRangeFromStart:v9 end:v10];
+  [self _randomDecibelValueInRangeFromStart:v9 end:v10];
   v11 = [HKQuantity quantityWithUnit:v7 doubleValue:?];
 
   return v11;
 }
 
-+ (double)_randomDecibelValueInRangeFromStart:(double)a3 end:(double)a4
++ (double)_randomDecibelValueInRangeFromStart:(double)start end:(double)end
 {
-  if (a3 >= a4)
+  if (start >= end)
   {
-    [HKAudiogramSample _randomDecibelValueInRangeFromStart:a2 end:a1];
+    [HKAudiogramSample _randomDecibelValueInRangeFromStart:a2 end:self];
   }
 
-  return arc4random_uniform((a4 - a3)) + a3;
+  return arc4random_uniform((end - start)) + start;
 }
 
-+ (HKAudiogramSample)audiogramSampleWithLeftEarAverageSensitivity:(id)a3 rightEarAverageSensitivity:(id)a4 startDate:(id)a5 endDate:(id)a6 device:(id)a7 metadata:(id)a8
++ (HKAudiogramSample)audiogramSampleWithLeftEarAverageSensitivity:(id)sensitivity rightEarAverageSensitivity:(id)averageSensitivity startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata
 {
   v48 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v35 = a5;
-  v34 = a6;
-  v33 = a7;
-  v32 = a8;
+  sensitivityCopy = sensitivity;
+  averageSensitivityCopy = averageSensitivity;
+  dateCopy = date;
+  endDateCopy = endDate;
+  deviceCopy = device;
+  metadataCopy = metadata;
   v37 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v39 = 0u;
   v40 = 0u;
@@ -1221,7 +1221,7 @@ BOOL __61__HKAudiogramSample_isAverageSensitivityUpperClampedForSide___block_inv
         v22 = [HKQuantity quantityWithUnit:v21 doubleValue:?];
 
         v38 = 0;
-        v23 = [a1 _sensitivityPointWithFrequency:v22 leftEarSensitivity:v14 rightEarSensitivity:v15 error:&v38];
+        v23 = [self _sensitivityPointWithFrequency:v22 leftEarSensitivity:sensitivityCopy rightEarSensitivity:averageSensitivityCopy error:&v38];
         v24 = v38;
         if (v23)
         {
@@ -1255,35 +1255,35 @@ BOOL __61__HKAudiogramSample_isAverageSensitivityUpperClampedForSide___block_inv
     while (v17);
   }
 
-  v28 = v32;
-  v29 = [HKAudiogramSample audiogramSampleWithSensitivityPoints:v37 startDate:v35 endDate:v34 device:v33 metadata:v32, v32];
+  v28 = metadataCopy;
+  metadataCopy = [HKAudiogramSample audiogramSampleWithSensitivityPoints:v37 startDate:dateCopy endDate:endDateCopy device:deviceCopy metadata:metadataCopy, metadataCopy];
 
   v30 = *MEMORY[0x1E69E9840];
 
-  return v29;
+  return metadataCopy;
 }
 
 - (BOOL)isFirstPartyHearingTestResult
 {
-  v3 = [(HKObject *)self metadata];
-  v4 = [v3 objectForKey:@"HKWasUserEntered"];
+  metadata = [(HKObject *)self metadata];
+  v4 = [metadata objectForKey:@"HKWasUserEntered"];
 
   if (v4)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  v6 = [(HKAudiogramSample *)self _firstPartyHearingTest];
+  _firstPartyHearingTest = [(HKAudiogramSample *)self _firstPartyHearingTest];
   v7 = 0;
-  if ((v5 & 1) == 0 && v6)
+  if ((bOOLValue & 1) == 0 && _firstPartyHearingTest)
   {
-    v8 = [(HKObject *)self device];
-    v7 = v8 != 0;
+    device = [(HKObject *)self device];
+    v7 = device != 0;
   }
 
   return v7;

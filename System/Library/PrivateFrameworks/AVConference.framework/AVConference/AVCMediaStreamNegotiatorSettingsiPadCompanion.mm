@@ -1,13 +1,13 @@
 @interface AVCMediaStreamNegotiatorSettingsiPadCompanion
-- (AVCMediaStreamNegotiatorSettingsiPadCompanion)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5;
+- (AVCMediaStreamNegotiatorSettingsiPadCompanion)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error;
 - (unint64_t)maxBandwidth;
 @end
 
 @implementation AVCMediaStreamNegotiatorSettingsiPadCompanion
 
-- (AVCMediaStreamNegotiatorSettingsiPadCompanion)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5
+- (AVCMediaStreamNegotiatorSettingsiPadCompanion)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error
 {
-  v6 = a4;
+  roleCopy = role;
   v24 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = AVCMediaStreamNegotiatorSettingsiPadCompanion;
@@ -34,7 +34,7 @@
       }
 
       v8->super._foveationIsSupported = v11;
-      if (v6 == 2 && [AVCMediaStreamNegotiatorSettings hdrModeWithNegotiatorInitOptions:a3]== 3)
+      if (roleCopy == 2 && [AVCMediaStreamNegotiatorSettings hdrModeWithNegotiatorInitOptions:options]== 3)
       {
         if (VRTraceGetErrorLogLevelForModule() >= 7)
         {
@@ -68,9 +68,9 @@
     v16 = @"no _screenRuleCollections is created";
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v16;
+    *error = v16;
   }
 
   return 0;

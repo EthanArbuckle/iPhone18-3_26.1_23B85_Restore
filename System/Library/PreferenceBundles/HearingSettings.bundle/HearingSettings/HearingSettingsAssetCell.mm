@@ -1,26 +1,26 @@
 @interface HearingSettingsAssetCell
-- (HearingSettingsAssetCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HearingSettingsAssetCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (void)configureConstraints;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)updateDownloadLabel;
-- (void)updateDownloadProgress:(id)a3;
+- (void)updateDownloadProgress:(id)progress;
 @end
 
 @implementation HearingSettingsAssetCell
 
-- (HearingSettingsAssetCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HearingSettingsAssetCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v26.receiver = self;
   v26.super_class = HearingSettingsAssetCell;
-  v4 = [(HearingSettingsAssetCell *)&v26 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HearingSettingsAssetCell *)&v26 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(HearingSettingsAssetCell *)v4 titleLabel];
-    [v6 setHidden:1];
+    titleLabel = [(HearingSettingsAssetCell *)v4 titleLabel];
+    [titleLabel setHidden:1];
 
     v7 = [UILabel alloc];
     y = CGRectZero.origin.y;
@@ -40,8 +40,8 @@
     [(UILabel *)v15 setBackgroundColor:v16];
 
     [(UILabel *)v5->_soundLabel setNumberOfLines:0];
-    v17 = [(HearingSettingsAssetCell *)v5 contentView];
-    [v17 addSubview:v5->_soundLabel];
+    contentView = [(HearingSettingsAssetCell *)v5 contentView];
+    [contentView addSubview:v5->_soundLabel];
 
     v18 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     downloadSize = v5->_downloadSize;
@@ -58,8 +58,8 @@
     [(UILabel *)v22 setBackgroundColor:v23];
 
     [(UILabel *)v5->_downloadSize setHidden:1];
-    v24 = [(HearingSettingsAssetCell *)v5 contentView];
-    [v24 addSubview:v5->_downloadSize];
+    contentView2 = [(HearingSettingsAssetCell *)v5 contentView];
+    [contentView2 addSubview:v5->_downloadSize];
 
     [(HearingSettingsAssetCell *)v5 configureConstraints];
   }
@@ -67,16 +67,16 @@
   return v5;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = HearingSettingsAssetCell;
-  v4 = a3;
-  [(HearingSettingsAssetCell *)&v7 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(HearingSettingsAssetCell *)&v7 refreshCellContentsWithSpecifier:specifierCopy];
   soundLabel = self->_soundLabel;
-  v6 = [v4 name];
+  name = [specifierCopy name];
 
-  [(UILabel *)soundLabel setText:v6];
+  [(UILabel *)soundLabel setText:name];
 }
 
 - (void)prepareForReuse
@@ -90,32 +90,32 @@
 
 - (void)configureConstraints
 {
-  v3 = [(HearingSettingsAssetCell *)self constraints];
-  [NSLayoutConstraint deactivateConstraints:v3];
+  constraints = [(HearingSettingsAssetCell *)self constraints];
+  [NSLayoutConstraint deactivateConstraints:constraints];
 
   v24 = +[NSMutableArray array];
   soundLabel = self->_soundLabel;
-  v5 = [(HearingSettingsAssetCell *)self contentView];
-  v6 = [NSLayoutConstraint constraintWithItem:soundLabel attribute:5 relatedBy:0 toItem:v5 attribute:5 multiplier:1.0 constant:15.0];
+  contentView = [(HearingSettingsAssetCell *)self contentView];
+  v6 = [NSLayoutConstraint constraintWithItem:soundLabel attribute:5 relatedBy:0 toItem:contentView attribute:5 multiplier:1.0 constant:15.0];
   [v24 addObject:v6];
 
   if (([(UILabel *)self->_downloadSize isHidden]& 1) != 0)
   {
     v7 = self->_soundLabel;
-    v8 = [(HearingSettingsAssetCell *)self contentView];
-    v9 = [NSLayoutConstraint constraintWithItem:v7 attribute:10 relatedBy:0 toItem:v8 attribute:10 multiplier:1.0 constant:0.0];
+    contentView2 = [(HearingSettingsAssetCell *)self contentView];
+    v9 = [NSLayoutConstraint constraintWithItem:v7 attribute:10 relatedBy:0 toItem:contentView2 attribute:10 multiplier:1.0 constant:0.0];
     [v24 addObject:v9];
 
     v10 = self->_soundLabel;
-    v11 = [(HearingSettingsAssetCell *)self contentView];
-    v12 = [NSLayoutConstraint constraintWithItem:v10 attribute:6 relatedBy:0 toItem:v11 attribute:6 multiplier:1.0 constant:0.0];
+    contentView3 = [(HearingSettingsAssetCell *)self contentView];
+    v12 = [NSLayoutConstraint constraintWithItem:v10 attribute:6 relatedBy:0 toItem:contentView3 attribute:6 multiplier:1.0 constant:0.0];
     [v24 addObject:v12];
   }
 
   else
   {
-    v13 = [(HearingSettingsAssetCell *)self contentView];
-    [v13 frame];
+    contentView4 = [(HearingSettingsAssetCell *)self contentView];
+    [contentView4 frame];
     v15 = v14;
     [(UILabel *)self->_soundLabel frame];
     v17 = v16;
@@ -123,15 +123,15 @@
     v19 = (v15 - (v17 + v18)) * 0.5;
 
     v20 = self->_soundLabel;
-    v21 = [(HearingSettingsAssetCell *)self contentView];
-    v22 = [NSLayoutConstraint constraintWithItem:v20 attribute:3 relatedBy:0 toItem:v21 attribute:3 multiplier:1.0 constant:v19];
+    contentView5 = [(HearingSettingsAssetCell *)self contentView];
+    v22 = [NSLayoutConstraint constraintWithItem:v20 attribute:3 relatedBy:0 toItem:contentView5 attribute:3 multiplier:1.0 constant:v19];
     [v24 addObject:v22];
 
     v23 = [NSLayoutConstraint constraintWithItem:self->_downloadSize attribute:5 relatedBy:0 toItem:self->_soundLabel attribute:5 multiplier:1.0 constant:0.0];
     [v24 addObject:v23];
 
-    v11 = [NSLayoutConstraint constraintWithItem:self->_downloadSize attribute:3 relatedBy:0 toItem:self->_soundLabel attribute:4 multiplier:1.0 constant:0.0];
-    [v24 addObject:v11];
+    contentView3 = [NSLayoutConstraint constraintWithItem:self->_downloadSize attribute:3 relatedBy:0 toItem:self->_soundLabel attribute:4 multiplier:1.0 constant:0.0];
+    [v24 addObject:contentView3];
   }
 
   [NSLayoutConstraint activateConstraints:v24];
@@ -141,18 +141,18 @@
 - (void)updateDownloadLabel
 {
   WeakRetained = objc_loadWeakRetained(&self->PSTableCell_opaque[OBJC_IVAR___PSTableCell__specifier]);
-  v4 = [WeakRetained userInfo];
+  userInfo = [WeakRetained userInfo];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 asset];
-    v6 = v5;
-    if (v5 && [v5 isInstalled])
+    asset = [userInfo asset];
+    v6 = asset;
+    if (asset && [asset isInstalled])
     {
       v7 = hearingLocString();
-      v8 = [v6 downloadSize];
-      [v8 floatValue];
+      downloadSize = [v6 downloadSize];
+      [downloadSize floatValue];
       v10 = v9;
       v16 = 0;
       v17 = &v16;
@@ -189,13 +189,13 @@
   }
 }
 
-- (void)updateDownloadProgress:(id)a3
+- (void)updateDownloadProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 floatValue];
+    [progressCopy floatValue];
     if (v5 == 1.0)
     {
       [(UILabel *)self->_downloadSize setHidden:1];
@@ -205,18 +205,18 @@
 
     else
     {
-      [v4 floatValue];
+      [progressCopy floatValue];
       if (v7 > 0.0)
       {
         v8 = HCLogComfortSounds();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [(HearingSettingsAssetCell *)self soundLabel];
-          v10 = [v9 text];
-          [v4 floatValue];
+          soundLabel = [(HearingSettingsAssetCell *)self soundLabel];
+          text = [soundLabel text];
+          [progressCopy floatValue];
           v11 = AXFormatFloatWithPercentage();
           *buf = 138412546;
-          v17 = v10;
+          v17 = text;
           v18 = 2112;
           v19 = v11;
           _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%@ Cell setting progress %@", buf, 0x16u);
@@ -224,7 +224,7 @@
 
         downloadSize = self->_downloadSize;
         v13 = hearingLocString();
-        [v4 floatValue];
+        [progressCopy floatValue];
         v14 = AXFormatFloatWithPercentage();
         v15 = [NSString stringWithFormat:v13, v14];
         [(UILabel *)downloadSize setText:v15];
@@ -241,7 +241,7 @@
     v6 = HCLogComfortSounds();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_2CF40(v4, v6);
+      sub_2CF40(progressCopy, v6);
     }
   }
 }
@@ -250,9 +250,9 @@
 {
   v8.receiver = self;
   v8.super_class = HearingSettingsAssetCell;
-  v3 = [(HearingSettingsAssetCell *)&v8 accessibilityValue];
-  v4 = [(HearingSettingsAssetCell *)self valueLabel];
-  v7 = [v4 accessibilityValue];
+  accessibilityValue = [(HearingSettingsAssetCell *)&v8 accessibilityValue];
+  valueLabel = [(HearingSettingsAssetCell *)self valueLabel];
+  accessibilityValue2 = [valueLabel accessibilityValue];
   v5 = __AXStringForVariables();
 
   return v5;
@@ -260,9 +260,9 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(HearingSettingsAssetCell *)self titleLabel];
-  v4 = [v3 accessibilityLabel];
-  v7 = [(UILabel *)self->_downloadSize accessibilityLabel];
+  titleLabel = [(HearingSettingsAssetCell *)self titleLabel];
+  accessibilityLabel = [titleLabel accessibilityLabel];
+  accessibilityLabel2 = [(UILabel *)self->_downloadSize accessibilityLabel];
   v5 = __AXStringForVariables();
 
   return v5;

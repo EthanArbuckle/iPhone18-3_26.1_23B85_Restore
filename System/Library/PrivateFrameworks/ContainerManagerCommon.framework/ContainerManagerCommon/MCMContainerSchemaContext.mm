@@ -1,7 +1,7 @@
 @interface MCMContainerSchemaContext
 - (MCMContainerPath)containerPath;
 - (MCMContainerPath)finalContainerPath;
-- (MCMContainerSchemaContext)initWithHomeDirectoryURL:(id)a3 containerPath:(id)a4 finalContainerPath:(id)a5 POSIXMode:(unsigned __int16)a6 POSIXOwner:(id)a7 containerClass:(unint64_t)a8 dataProtectionClass:(int)a9 libraryRepair:(id)a10 identifier:(id)a11;
+- (MCMContainerSchemaContext)initWithHomeDirectoryURL:(id)l containerPath:(id)path finalContainerPath:(id)containerPath POSIXMode:(unsigned __int16)mode POSIXOwner:(id)owner containerClass:(unint64_t)class dataProtectionClass:(int)protectionClass libraryRepair:(id)self0 identifier:(id)self1;
 - (MCMLibraryRepairForUser)libraryRepair;
 - (MCMPOSIXUser)posixOwner;
 - (NSString)identifier;
@@ -85,30 +85,30 @@
   return result;
 }
 
-- (MCMContainerSchemaContext)initWithHomeDirectoryURL:(id)a3 containerPath:(id)a4 finalContainerPath:(id)a5 POSIXMode:(unsigned __int16)a6 POSIXOwner:(id)a7 containerClass:(unint64_t)a8 dataProtectionClass:(int)a9 libraryRepair:(id)a10 identifier:(id)a11
+- (MCMContainerSchemaContext)initWithHomeDirectoryURL:(id)l containerPath:(id)path finalContainerPath:(id)containerPath POSIXMode:(unsigned __int16)mode POSIXOwner:(id)owner containerClass:(unint64_t)class dataProtectionClass:(int)protectionClass libraryRepair:(id)self0 identifier:(id)self1
 {
   v29 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v27 = a5;
-  v26 = a7;
-  v25 = a10;
-  v18 = a11;
+  lCopy = l;
+  pathCopy = path;
+  containerPathCopy = containerPath;
+  ownerCopy = owner;
+  repairCopy = repair;
+  identifierCopy = identifier;
   v28.receiver = self;
   v28.super_class = MCMContainerSchemaContext;
   v19 = [(MCMContainerSchemaContext *)&v28 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_homeDirectoryURL, a3);
-    objc_storeStrong(&v20->_containerPath, a4);
-    objc_storeStrong(&v20->_finalContainerPath, a5);
-    v20->_posixMode = a6;
-    objc_storeStrong(&v20->_posixOwner, a7);
-    v20->_containerClass = a8;
-    v20->_dataProtectionClass = a9;
-    objc_storeStrong(&v20->_libraryRepair, a10);
-    objc_storeStrong(&v20->_identifier, a11);
+    objc_storeStrong(&v19->_homeDirectoryURL, l);
+    objc_storeStrong(&v20->_containerPath, path);
+    objc_storeStrong(&v20->_finalContainerPath, containerPath);
+    v20->_posixMode = mode;
+    objc_storeStrong(&v20->_posixOwner, owner);
+    v20->_containerClass = class;
+    v20->_dataProtectionClass = protectionClass;
+    objc_storeStrong(&v20->_libraryRepair, repair);
+    objc_storeStrong(&v20->_identifier, identifier);
   }
 
   v21 = *MEMORY[0x1E69E9840];

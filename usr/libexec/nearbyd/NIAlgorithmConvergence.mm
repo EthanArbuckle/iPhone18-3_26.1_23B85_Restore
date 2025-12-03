@@ -1,31 +1,31 @@
 @interface NIAlgorithmConvergence
-- (BOOL)isEqual:(id)a3;
-- (NIAlgorithmConvergence)initWithCoder:(id)a3;
-- (NIAlgorithmConvergence)initWithStatus:(int64_t)a3 andReasons:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NIAlgorithmConvergence)initWithCoder:(id)coder;
+- (NIAlgorithmConvergence)initWithStatus:(int64_t)status andReasons:(id)reasons;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NIAlgorithmConvergence
 
-- (NIAlgorithmConvergence)initWithStatus:(int64_t)a3 andReasons:(id)a4
+- (NIAlgorithmConvergence)initWithStatus:(int64_t)status andReasons:(id)reasons
 {
-  v7 = a4;
+  reasonsCopy = reasons;
   v11.receiver = self;
   v11.super_class = NIAlgorithmConvergence;
   v8 = [(NIAlgorithmConvergence *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_status = a3;
-    objc_storeStrong(&v8->_reasons, a4);
+    v8->_status = status;
+    objc_storeStrong(&v8->_reasons, reasons);
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self->_reasons)
   {
@@ -42,22 +42,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:self->_status forKey:@"status"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_status forKey:@"status"];
   reasons = self->_reasons;
   if (reasons)
   {
-    [v5 encodeObject:reasons forKey:@"reasons"];
+    [coderCopy encodeObject:reasons forKey:@"reasons"];
   }
 }
 
-- (NIAlgorithmConvergence)initWithCoder:(id)a3
+- (NIAlgorithmConvergence)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"status"];
-  if (![v4 containsValueForKey:@"reasons"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"status"];
+  if (![coderCopy containsValueForKey:@"reasons"])
   {
     v8 = 0;
     goto LABEL_5;
@@ -67,7 +67,7 @@
   v11[1] = objc_opt_class();
   v6 = [NSArray arrayWithObjects:v11 count:2];
   v7 = [NSSet setWithArray:v6];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"reasons"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"reasons"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -83,17 +83,17 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 status];
+    v5 = equalCopy;
+    status = [v5 status];
     status = self->_status;
-    v8 = [v5 reasons];
-    if (v8)
+    reasons = [v5 reasons];
+    if (reasons)
     {
       v9 = 0;
     }
@@ -103,10 +103,10 @@ LABEL_6:
       v9 = self->_reasons == 0;
     }
 
-    v11 = [v5 reasons];
-    v12 = [v11 isEqualToArray:self->_reasons];
+    reasons2 = [v5 reasons];
+    v12 = [reasons2 isEqualToArray:self->_reasons];
 
-    v10 = (v6 == status) & (v9 | v12);
+    v10 = (status == status) & (v9 | v12);
   }
 
   else

@@ -3,18 +3,18 @@
 - (CXVoicemailProviderDelegate)delegate;
 - (CXVoicemailProviderHostProtocol)voicemailProviderHostDelegate;
 - (NSArray)pendingTransactions;
-- (id)pendingVoicemailActionsOfClass:(Class)a3 withVoicemailUUID:(id)a4;
-- (void)commitTransaction:(id)a3;
-- (void)handleActionTimeout:(id)a3;
+- (id)pendingVoicemailActionsOfClass:(Class)class withVoicemailUUID:(id)d;
+- (void)commitTransaction:(id)transaction;
+- (void)handleActionTimeout:(id)timeout;
 - (void)invalidate;
-- (void)performAction:(id)a3;
-- (void)reportNewVoicemailWithUpdate:(id)a3;
-- (void)reportNewVoicemailsWithUpdates:(id)a3;
-- (void)reportVoicemailRemovedWithUUID:(id)a3;
-- (void)reportVoicemailUpdated:(id)a3;
-- (void)reportVoicemailsRemovedWithUUIDs:(id)a3;
-- (void)reportVoicemailsUpdated:(id)a3;
-- (void)setDelegate:(id)a3 queue:(id)a4;
+- (void)performAction:(id)action;
+- (void)reportNewVoicemailWithUpdate:(id)update;
+- (void)reportNewVoicemailsWithUpdates:(id)updates;
+- (void)reportVoicemailRemovedWithUUID:(id)d;
+- (void)reportVoicemailUpdated:(id)updated;
+- (void)reportVoicemailsRemovedWithUUIDs:(id)ds;
+- (void)reportVoicemailsUpdated:(id)updated;
+- (void)setDelegate:(id)delegate queue:(id)queue;
 @end
 
 @implementation CXVoicemailProvider
@@ -38,12 +38,12 @@
 
 - (CXVoicemailProviderDelegate)delegate
 {
-  v2 = [(CXVoicemailProvider *)self abstractProvider];
-  v3 = [v2 delegate];
+  abstractProvider = [(CXVoicemailProvider *)self abstractProvider];
+  delegate = [abstractProvider delegate];
 
-  if ([v3 conformsToProtocol:&unk_1F2CB9AA0])
+  if ([delegate conformsToProtocol:&unk_1F2CB9AA0])
   {
-    v4 = v3;
+    v4 = delegate;
   }
 
   else
@@ -58,10 +58,10 @@
 
 - (CXVoicemailProviderHostProtocol)voicemailProviderHostDelegate
 {
-  v2 = [(CXVoicemailProvider *)self hostProtocolDelegate];
-  if ([v2 conformsToProtocol:&unk_1F2CB05D0])
+  hostProtocolDelegate = [(CXVoicemailProvider *)self hostProtocolDelegate];
+  if ([hostProtocolDelegate conformsToProtocol:&unk_1F2CB05D0])
   {
-    v3 = v2;
+    v3 = hostProtocolDelegate;
   }
 
   else
@@ -74,12 +74,12 @@
   return v3;
 }
 
-- (id)pendingVoicemailActionsOfClass:(Class)a3 withVoicemailUUID:(id)a4
+- (id)pendingVoicemailActionsOfClass:(Class)class withVoicemailUUID:(id)d
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  dCopy = d;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     v31 = 0u;
     v32 = 0u;
@@ -106,8 +106,8 @@
           v26 = 0u;
           v27 = 0u;
           v28 = 0u;
-          v10 = [v9 actions];
-          v11 = [v10 countByEnumeratingWithState:&v25 objects:v33 count:16];
+          actions = [v9 actions];
+          v11 = [actions countByEnumeratingWithState:&v25 objects:v33 count:16];
           if (v11)
           {
             v12 = v11;
@@ -118,23 +118,23 @@
               {
                 if (*v26 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(actions);
                 }
 
                 v15 = *(*(&v25 + 1) + 8 * i);
                 if (objc_opt_isKindOfClass())
                 {
-                  v16 = [v15 voicemailUUID];
-                  v17 = [v16 isEqual:v6];
+                  voicemailUUID = [v15 voicemailUUID];
+                  v17 = [voicemailUUID isEqual:dCopy];
 
                   if (v17)
                   {
-                    [v7 addObject:v15];
+                    [array addObject:v15];
                   }
                 }
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v25 objects:v33 count:16];
+              v12 = [actions countByEnumeratingWithState:&v25 objects:v33 count:16];
             }
 
             while (v12);
@@ -151,38 +151,38 @@
     }
   }
 
-  v18 = [v7 copy];
+  v18 = [array copy];
 
   v19 = *MEMORY[0x1E69E9840];
 
   return v18;
 }
 
-- (void)reportNewVoicemailWithUpdate:(id)a3
+- (void)reportNewVoicemailWithUpdate:(id)update
 {
   v9 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  updateCopy = update;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  updateCopy2 = update;
+  v6 = [v4 arrayWithObjects:&updateCopy count:1];
 
-  [(CXVoicemailProvider *)self reportNewVoicemailsWithUpdates:v6, v8, v9];
+  [(CXVoicemailProvider *)self reportNewVoicemailsWithUpdates:v6, updateCopy, v9];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportNewVoicemailsWithUpdates:(id)a3
+- (void)reportNewVoicemailsWithUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [(CXVoicemailProvider *)self abstractProvider];
-  v6 = [v5 queue];
+  updatesCopy = updates;
+  abstractProvider = [(CXVoicemailProvider *)self abstractProvider];
+  queue = [abstractProvider queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__CXVoicemailProvider_reportNewVoicemailsWithUpdates___block_invoke;
   v8[3] = &unk_1E7C06BE0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = updatesCopy;
+  v7 = updatesCopy;
+  dispatch_async(queue, v8);
 }
 
 void __54__CXVoicemailProvider_reportNewVoicemailsWithUpdates___block_invoke(uint64_t a1)
@@ -191,31 +191,31 @@ void __54__CXVoicemailProvider_reportNewVoicemailsWithUpdates___block_invoke(uin
   [v2 reportNewVoicemailsWithUpdates:*(a1 + 40)];
 }
 
-- (void)reportVoicemailUpdated:(id)a3
+- (void)reportVoicemailUpdated:(id)updated
 {
   v9 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  updatedCopy = updated;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  updatedCopy2 = updated;
+  v6 = [v4 arrayWithObjects:&updatedCopy count:1];
 
-  [(CXVoicemailProvider *)self reportVoicemailsUpdated:v6, v8, v9];
+  [(CXVoicemailProvider *)self reportVoicemailsUpdated:v6, updatedCopy, v9];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportVoicemailsUpdated:(id)a3
+- (void)reportVoicemailsUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(CXVoicemailProvider *)self abstractProvider];
-  v6 = [v5 queue];
+  updatedCopy = updated;
+  abstractProvider = [(CXVoicemailProvider *)self abstractProvider];
+  queue = [abstractProvider queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47__CXVoicemailProvider_reportVoicemailsUpdated___block_invoke;
   v8[3] = &unk_1E7C06BE0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = updatedCopy;
+  v7 = updatedCopy;
+  dispatch_async(queue, v8);
 }
 
 void __47__CXVoicemailProvider_reportVoicemailsUpdated___block_invoke(uint64_t a1)
@@ -224,31 +224,31 @@ void __47__CXVoicemailProvider_reportVoicemailsUpdated___block_invoke(uint64_t a
   [v2 reportVoicemailsUpdated:*(a1 + 40)];
 }
 
-- (void)reportVoicemailRemovedWithUUID:(id)a3
+- (void)reportVoicemailRemovedWithUUID:(id)d
 {
   v9 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dCopy = d;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  dCopy2 = d;
+  v6 = [v4 arrayWithObjects:&dCopy count:1];
 
-  [(CXVoicemailProvider *)self reportVoicemailsRemovedWithUUIDs:v6, v8, v9];
+  [(CXVoicemailProvider *)self reportVoicemailsRemovedWithUUIDs:v6, dCopy, v9];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportVoicemailsRemovedWithUUIDs:(id)a3
+- (void)reportVoicemailsRemovedWithUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(CXVoicemailProvider *)self abstractProvider];
-  v6 = [v5 queue];
+  dsCopy = ds;
+  abstractProvider = [(CXVoicemailProvider *)self abstractProvider];
+  queue = [abstractProvider queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__CXVoicemailProvider_reportVoicemailsRemovedWithUUIDs___block_invoke;
   v8[3] = &unk_1E7C06BE0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = dsCopy;
+  v7 = dsCopy;
+  dispatch_async(queue, v8);
 }
 
 void __56__CXVoicemailProvider_reportVoicemailsRemovedWithUUIDs___block_invoke(uint64_t a1)
@@ -257,22 +257,22 @@ void __56__CXVoicemailProvider_reportVoicemailsRemovedWithUUIDs___block_invoke(u
   [v2 reportVoicemailsRemovedWithUUIDs:*(a1 + 40)];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CXVoicemailProvider *)self abstractProvider];
-  v6 = [v5 delegateQueue];
-  dispatch_assert_queue_V2(v6);
+  actionCopy = action;
+  abstractProvider = [(CXVoicemailProvider *)self abstractProvider];
+  delegateQueue = [abstractProvider delegateQueue];
+  dispatch_assert_queue_V2(delegateQueue);
 
-  v7 = [(CXVoicemailProvider *)self delegate];
+  delegate = [(CXVoicemailProvider *)self delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v4;
+    v8 = actionCopy;
     if (objc_opt_respondsToSelector())
     {
-      [v7 provider:self performSetPlayedVoicemailAction:v8];
+      [delegate provider:self performSetPlayedVoicemailAction:v8];
       goto LABEL_20;
     }
 
@@ -294,10 +294,10 @@ LABEL_18:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v4;
+    v8 = actionCopy;
     if (objc_opt_respondsToSelector())
     {
-      [v7 provider:self performSetTrashedVoicemailAction:v8];
+      [delegate provider:self performSetTrashedVoicemailAction:v8];
       goto LABEL_20;
     }
 
@@ -318,10 +318,10 @@ LABEL_19:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v4;
+    v8 = actionCopy;
     if (objc_opt_respondsToSelector())
     {
-      [v7 provider:self performRemoveVoicemailAction:v8];
+      [delegate provider:self performRemoveVoicemailAction:v8];
       goto LABEL_20;
     }
 
@@ -340,7 +340,7 @@ LABEL_19:
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [(CXProvider *)v4 performAction:v8];
+    [(CXProvider *)actionCopy performAction:v8];
   }
 
 LABEL_20:
@@ -348,40 +348,40 @@ LABEL_20:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CXVoicemailProvider *)self abstractProvider];
-  [v8 setDelegate:v7 queue:v6];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  abstractProvider = [(CXVoicemailProvider *)self abstractProvider];
+  [abstractProvider setDelegate:delegateCopy queue:queueCopy];
 }
 
 - (NSArray)pendingTransactions
 {
-  v2 = [(CXVoicemailProvider *)self abstractProvider];
-  v3 = [v2 pendingTransactions];
+  abstractProvider = [(CXVoicemailProvider *)self abstractProvider];
+  pendingTransactions = [abstractProvider pendingTransactions];
 
-  return v3;
+  return pendingTransactions;
 }
 
 - (void)invalidate
 {
-  v2 = [(CXVoicemailProvider *)self abstractProvider];
-  [v2 invalidate];
+  abstractProvider = [(CXVoicemailProvider *)self abstractProvider];
+  [abstractProvider invalidate];
 }
 
-- (void)commitTransaction:(id)a3
+- (void)commitTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(CXVoicemailProvider *)self abstractProvider];
-  [v5 provider:self commitTransaction:v4];
+  transactionCopy = transaction;
+  abstractProvider = [(CXVoicemailProvider *)self abstractProvider];
+  [abstractProvider provider:self commitTransaction:transactionCopy];
 }
 
-- (void)handleActionTimeout:(id)a3
+- (void)handleActionTimeout:(id)timeout
 {
-  v4 = a3;
-  v5 = [(CXVoicemailProvider *)self abstractProvider];
-  [v5 provider:self handleTimeoutForAction:v4];
+  timeoutCopy = timeout;
+  abstractProvider = [(CXVoicemailProvider *)self abstractProvider];
+  [abstractProvider provider:self handleTimeoutForAction:timeoutCopy];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface MPModelLibraryPlaylistEditPlaylistDataSource
-- (MPModelLibraryPlaylistEditPlaylistDataSource)initWithLibrary:(id)a3 playlist:(id)a4 initialTrackList:(id)a5 playlistEntryProperties:(id)a6;
+- (MPModelLibraryPlaylistEditPlaylistDataSource)initWithLibrary:(id)library playlist:(id)playlist initialTrackList:(id)list playlistEntryProperties:(id)properties;
 - (id)_defaultPlaylistEntryPropertySet;
-- (void)loadEntriesWithCompletion:(id)a3;
+- (void)loadEntriesWithCompletion:(id)completion;
 @end
 
 @implementation MPModelLibraryPlaylistEditPlaylistDataSource
@@ -19,34 +19,34 @@
   return v4;
 }
 
-- (void)loadEntriesWithCompletion:(id)a3
+- (void)loadEntriesWithCompletion:(id)completion
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   if (self->_initialTrackList && !self->_hasPerformedInitialLoad)
   {
     self->_hasPerformedInitialLoad = 1;
-    v5 = [(MPSectionedCollection *)self->_initialTrackList allItems];
-    v4[2](v4, v5, 0);
+    allItems = [(MPSectionedCollection *)self->_initialTrackList allItems];
+    completionCopy[2](completionCopy, allItems, 0);
     [(MPModelLibraryPlaylistEditDataSource *)self reload];
   }
 
   else
   {
-    v5 = [MPModelSong kindWithVariants:3];
+    allItems = [MPModelSong kindWithVariants:3];
     v6 = +[MPPropertySet emptyPropertySet];
     v7 = objc_alloc_init(MPModelLibraryRequest);
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ loading track list", self];
     [(MPModelRequest *)v7 setLabel:v8];
 
-    v19[0] = v5;
+    v19[0] = allItems;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
     v10 = [MPModelPlaylistEntry kindWithKinds:v9];
     v11 = [MPModelPlaylist kindWithPlaylistEntryKind:v10 options:0];
     [(MPModelRequest *)v7 setSectionKind:v11];
 
     [(MPModelRequest *)v7 setSectionProperties:v6];
-    v18 = v5;
+    v18 = allItems;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
     v13 = [MPModelPlaylistEntry kindWithKinds:v12];
     [(MPModelRequest *)v7 setItemKind:v13];
@@ -62,7 +62,7 @@
     v15[2] = __74__MPModelLibraryPlaylistEditPlaylistDataSource_loadEntriesWithCompletion___block_invoke;
     v15[3] = &unk_1E767C080;
     v15[4] = self;
-    v16 = v4;
+    v16 = completionCopy;
     [(MPModelLibraryRequest *)v7 performWithResponseHandler:v15];
   }
 }
@@ -95,35 +95,35 @@ void __74__MPModelLibraryPlaylistEditPlaylistDataSource_loadEntriesWithCompletio
   }
 }
 
-- (MPModelLibraryPlaylistEditPlaylistDataSource)initWithLibrary:(id)a3 playlist:(id)a4 initialTrackList:(id)a5 playlistEntryProperties:(id)a6
+- (MPModelLibraryPlaylistEditPlaylistDataSource)initWithLibrary:(id)library playlist:(id)playlist initialTrackList:(id)list playlistEntryProperties:(id)properties
 {
-  v35 = a3;
-  v11 = a4;
-  v34 = a5;
-  v12 = a6;
-  v13 = [v11 identifiers];
-  v14 = [v13 library];
-  v15 = [v14 persistentID];
+  libraryCopy = library;
+  playlistCopy = playlist;
+  listCopy = list;
+  propertiesCopy = properties;
+  identifiers = [playlistCopy identifiers];
+  library = [identifiers library];
+  persistentID = [library persistentID];
 
-  if (v15)
+  if (persistentID)
   {
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [v13 library];
-    v18 = [v16 stringWithFormat:@"l.%lld", objc_msgSend(v17, "persistentID")];
+    library2 = [identifiers library];
+    v18 = [v16 stringWithFormat:@"l.%lld", objc_msgSend(library2, "persistentID")];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v19 = [v13 universalStore];
-  v20 = [v19 globalPlaylistID];
+  universalStore = [identifiers universalStore];
+  globalPlaylistID = [universalStore globalPlaylistID];
 
-  if (v20)
+  if (globalPlaylistID)
   {
     v21 = MEMORY[0x1E696AEC0];
-    v17 = [v13 universalStore];
-    v22 = [v17 globalPlaylistID];
-    v18 = [v21 stringWithFormat:@"g.%@", v22];
+    library2 = [identifiers universalStore];
+    globalPlaylistID2 = [library2 globalPlaylistID];
+    v18 = [v21 stringWithFormat:@"g.%@", globalPlaylistID2];
 
     goto LABEL_5;
   }
@@ -140,14 +140,14 @@ LABEL_6:
   v27 = v26;
   if (v26)
   {
-    objc_storeStrong(&v26->_library, a3);
-    v28 = [v11 copy];
+    objc_storeStrong(&v26->_library, library);
+    v28 = [playlistCopy copy];
     playlist = v27->_playlist;
     v27->_playlist = v28;
 
-    objc_storeStrong(&v27->_initialTrackList, a5);
-    v30 = [(MPModelLibraryPlaylistEditPlaylistDataSource *)v27 _defaultPlaylistEntryPropertySet];
-    v31 = [v30 propertySetByCombiningWithPropertySet:v12];
+    objc_storeStrong(&v27->_initialTrackList, list);
+    _defaultPlaylistEntryPropertySet = [(MPModelLibraryPlaylistEditPlaylistDataSource *)v27 _defaultPlaylistEntryPropertySet];
+    v31 = [_defaultPlaylistEntryPropertySet propertySetByCombiningWithPropertySet:propertiesCopy];
     playlistPropertySet = v27->_playlistPropertySet;
     v27->_playlistPropertySet = v31;
   }

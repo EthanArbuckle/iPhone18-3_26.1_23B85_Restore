@@ -1,39 +1,39 @@
 @interface APHideEducationViewController
 - (APEducationViewControllerDelegate)delegate;
-- (id)initForApplication:(id)a3;
-- (void)phase1ViewCancelButtonPressed:(id)a3;
-- (void)phase1ViewContinueButtonPressed:(id)a3;
+- (id)initForApplication:(id)application;
+- (void)phase1ViewCancelButtonPressed:(id)pressed;
+- (void)phase1ViewContinueButtonPressed:(id)pressed;
 @end
 
 @implementation APHideEducationViewController
 
-- (id)initForApplication:(id)a3
+- (id)initForApplication:(id)application
 {
-  v5 = a3;
+  applicationCopy = application;
   v65.receiver = self;
   v65.super_class = APHideEducationViewController;
   v6 = [(APHideEducationViewController *)&v65 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_app, a3);
+    objc_storeStrong(&v6->_app, application);
     v8 = [[APWrappingView alloc] initWithFrame:0.0, 0.0, 50.0, 50.0];
-    v64 = v5;
+    v64 = applicationCopy;
     containerView = v7->_containerView;
     v7->_containerView = v8;
 
     v10 = v7->_containerView;
-    v11 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(APWrappingView *)v10 setBackgroundColor:v11];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(APWrappingView *)v10 setBackgroundColor:systemBackgroundColor];
 
     [(APHideEducationViewController *)v7 setView:v7->_containerView];
     app = v7->_app;
     v13 = v7;
     v14 = [(APApplication *)app findApplicationRecordWithError:0];
-    v15 = [v14 localizedName];
+    localizedName = [v14 localizedName];
 
     v16 = MEMORY[0x1E696AEC0];
-    v17 = v15;
+    v17 = localizedName;
     v18 = APGetPreferredAuthenticationMechanismLocKey();
     v19 = [v16 stringWithFormat:@"HIDE_PROMPT_%@_FMT", v18];
     v20 = APUILocStr(v19);
@@ -57,7 +57,7 @@
     [v26 addBulletedListItemWithTitle:v28 description:v30 symbolName:@"app.dashed"];
 
     v31 = +[APFeatureSemioticsManager sharedManager];
-    v32 = [v31 systemImageNameForCurrentBestAuthenticationMechanism];
+    systemImageNameForCurrentBestAuthenticationMechanism = [v31 systemImageNameForCurrentBestAuthenticationMechanism];
 
     v33 = MEMORY[0x1E696AEC0];
     v34 = APGetPreferredAuthenticationMechanismLocKey();
@@ -69,50 +69,50 @@
     v39 = [v37 stringWithFormat:@"AUTH_REQUIRED_ITEM_BODY_%@", v38];
     v40 = APUILocStr(v39);
 
-    [v26 addBulletedListItemWithTitle:v36 description:v40 symbolName:v32];
+    [v26 addBulletedListItemWithTitle:v36 description:v40 symbolName:systemImageNameForCurrentBestAuthenticationMechanism];
     v41 = APUIFrameworkBundle();
     v42 = [v41 localizedStringForKey:@"NOTIFICATIONS_TURNED_OFF" value:&stru_1F2485CF8 table:@"Localizable"];
     v43 = APUIFrameworkBundle();
     v44 = [v43 localizedStringForKey:@"NOTIFICATIONS_TURNED_OFF_DETAIL" value:&stru_1F2485CF8 table:@"Localizable"];
     [v26 addBulletedListItemWithTitle:v42 description:v44 symbolName:@"bell.badge.slash"];
 
-    v45 = [MEMORY[0x1E69B7D00] boldButton];
+    boldButton = [MEMORY[0x1E69B7D00] boldButton];
     v46 = +[APFeatureSemioticsManager sharedManager];
     v47 = [v46 titleForEnablementAction:1 ofFeature:2];
 
-    [v45 setTitle:v47 forState:0];
-    v48 = [v26 buttonTray];
-    [v48 addButton:v45];
+    [boldButton setTitle:v47 forState:0];
+    buttonTray = [v26 buttonTray];
+    [buttonTray addButton:boldButton];
 
-    [v45 addTarget:v13 action:sel_phase1ViewContinueButtonPressed_ forControlEvents:0x2000];
-    v49 = [MEMORY[0x1E69B7D38] linkButton];
+    [boldButton addTarget:v13 action:sel_phase1ViewContinueButtonPressed_ forControlEvents:0x2000];
+    linkButton = [MEMORY[0x1E69B7D38] linkButton];
     v50 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v51 = [v50 localizedStringForKey:@"CANCEL" value:&stru_1F2485CF8 table:@"Localizable"];
-    [v49 setTitle:v51 forState:0];
+    [linkButton setTitle:v51 forState:0];
 
-    v52 = [v26 buttonTray];
-    [v52 addButton:v49];
+    buttonTray2 = [v26 buttonTray];
+    [buttonTray2 addButton:linkButton];
 
-    [v49 addTarget:v13 action:sel_phase1ViewCancelButtonPressed_ forControlEvents:0x2000];
+    [linkButton addTarget:v13 action:sel_phase1ViewCancelButtonPressed_ forControlEvents:0x2000];
     v53 = v13[126];
     v13[126] = v26;
 
     [v13 addChildViewController:v13[126]];
-    v54 = [v13[126] view];
-    v55 = [v13 view];
-    [v55 bounds];
-    [v54 setFrame:?];
+    view = [v13[126] view];
+    view2 = [v13 view];
+    [view2 bounds];
+    [view setFrame:?];
 
-    v56 = [v13 view];
-    v57 = [v13[126] view];
-    [v56 addSubview:v57];
+    view3 = [v13 view];
+    view4 = [v13[126] view];
+    [view3 addSubview:view4];
 
-    v5 = v64;
+    applicationCopy = v64;
     [v13[126] didMoveToParentViewController:v13];
-    v58 = [MEMORY[0x1E69DC938] currentDevice];
-    v59 = [v58 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (!v59)
+    if (!userInterfaceIdiom)
     {
       [v13 setModalPresentationStyle:5];
     }
@@ -121,7 +121,7 @@
   return v7;
 }
 
-- (void)phase1ViewCancelButtonPressed:(id)a3
+- (void)phase1ViewCancelButtonPressed:(id)pressed
 {
   v4 = APUIDefaultFrameworkLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -130,13 +130,13 @@
     _os_log_impl(&dword_1AEA18000, v4, OS_LOG_TYPE_DEFAULT, "Cancel pressed for hide edu VC", v6, 2u);
   }
 
-  v5 = [(APHideEducationViewController *)self delegate];
-  [v5 educationViewControllerRequestsDismissal:self withResult:0];
+  delegate = [(APHideEducationViewController *)self delegate];
+  [delegate educationViewControllerRequestsDismissal:self withResult:0];
 }
 
-- (void)phase1ViewContinueButtonPressed:(id)a3
+- (void)phase1ViewContinueButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   v5 = APUIDefaultFrameworkLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -147,7 +147,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
+    v6 = pressedCopy;
   }
 
   else
@@ -157,7 +157,7 @@
 
   v7 = v6;
   [v7 setEnabled:0];
-  v8 = [(APHideEducationViewController *)self delegate];
+  delegate = [(APHideEducationViewController *)self delegate];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__APHideEducationViewController_phase1ViewContinueButtonPressed___block_invoke;
@@ -165,7 +165,7 @@
   v10[4] = self;
   v11 = v7;
   v9 = v7;
-  [v8 educationViewController:self requestAuthenticationWithCompletion:v10];
+  [delegate educationViewController:self requestAuthenticationWithCompletion:v10];
 }
 
 void __65__APHideEducationViewController_phase1ViewContinueButtonPressed___block_invoke(uint64_t a1, int a2)

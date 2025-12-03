@@ -1,21 +1,21 @@
 @interface NSDateInterval
-- (id)unionWithDateInterval:(id)a3;
+- (id)unionWithDateInterval:(id)interval;
 @end
 
 @implementation NSDateInterval
 
-- (id)unionWithDateInterval:(id)a3
+- (id)unionWithDateInterval:(id)interval
 {
-  v4 = a3;
-  if ([(NSDateInterval *)self intersectsDateInterval:v4])
+  intervalCopy = interval;
+  if ([(NSDateInterval *)self intersectsDateInterval:intervalCopy])
   {
-    v5 = [(NSDateInterval *)self startDate];
-    v6 = [v4 startDate];
-    v7 = [v5 earlierDate:v6];
+    startDate = [(NSDateInterval *)self startDate];
+    startDate2 = [intervalCopy startDate];
+    v7 = [startDate earlierDate:startDate2];
 
-    v8 = [(NSDateInterval *)self endDate];
-    v9 = [v4 endDate];
-    v10 = [v8 laterDate:v9];
+    endDate = [(NSDateInterval *)self endDate];
+    endDate2 = [intervalCopy endDate];
+    v10 = [endDate laterDate:endDate2];
 
     if ([v7 isBeforeDate:v10])
     {

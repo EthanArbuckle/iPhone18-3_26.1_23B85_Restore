@@ -1,6 +1,6 @@
 @interface HMDUserActionPredictionModel
 + (id)hmbProperties;
-- (HMDUserActionPredictionModel)initWithUserActionPrediction:(id)a3;
+- (HMDUserActionPredictionModel)initWithUserActionPrediction:(id)prediction;
 - (id)userActionPrediction;
 @end
 
@@ -87,40 +87,40 @@ void __45__HMDUserActionPredictionModel_hmbProperties__block_invoke()
 - (id)userActionPrediction
 {
   v3 = objc_alloc(MEMORY[0x277CD1EE8]);
-  v4 = [(HMDUserActionPredictionModel *)self predictionTargetUUID];
-  v5 = [(HMDUserActionPredictionModel *)self targetServiceUUID];
-  v6 = [(HMDUserActionPredictionModel *)self targetGroupUUID];
-  v7 = [(HMDUserActionPredictionModel *)self groupType];
-  v8 = [v7 unsignedIntegerValue];
-  v9 = [(HMDUserActionPredictionModel *)self type];
-  v10 = [v9 unsignedIntegerValue];
-  v11 = [(HMDUserActionPredictionModel *)self predictionScore];
-  [v11 doubleValue];
-  v12 = [v3 initWithPredictionTargetUUID:v4 targetServiceUUID:v5 targetGroupUUID:v6 targetGroupType:v8 predictionType:v10 predictionScore:?];
+  predictionTargetUUID = [(HMDUserActionPredictionModel *)self predictionTargetUUID];
+  targetServiceUUID = [(HMDUserActionPredictionModel *)self targetServiceUUID];
+  targetGroupUUID = [(HMDUserActionPredictionModel *)self targetGroupUUID];
+  groupType = [(HMDUserActionPredictionModel *)self groupType];
+  unsignedIntegerValue = [groupType unsignedIntegerValue];
+  type = [(HMDUserActionPredictionModel *)self type];
+  unsignedIntegerValue2 = [type unsignedIntegerValue];
+  predictionScore = [(HMDUserActionPredictionModel *)self predictionScore];
+  [predictionScore doubleValue];
+  v12 = [v3 initWithPredictionTargetUUID:predictionTargetUUID targetServiceUUID:targetServiceUUID targetGroupUUID:targetGroupUUID targetGroupType:unsignedIntegerValue predictionType:unsignedIntegerValue2 predictionScore:?];
 
   return v12;
 }
 
-- (HMDUserActionPredictionModel)initWithUserActionPrediction:(id)a3
+- (HMDUserActionPredictionModel)initWithUserActionPrediction:(id)prediction
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 predictionTargetUUID];
-  v6 = [v4 targetServiceUUID];
+  predictionCopy = prediction;
+  predictionTargetUUID = [predictionCopy predictionTargetUUID];
+  targetServiceUUID = [predictionCopy targetServiceUUID];
   v7 = MEMORY[0x277CCAD78];
-  v8 = v5;
+  v8 = predictionTargetUUID;
   v9 = [[v7 alloc] initWithUUIDString:@"D73F97DF-5711-4EAA-9CA4-EB5C028A5EE8"];
   v10 = MEMORY[0x277CCAD78];
-  v11 = [v8 UUIDString];
+  uUIDString = [v8 UUIDString];
 
-  v12 = [v11 dataUsingEncoding:4];
+  v12 = [uUIDString dataUsingEncoding:4];
   v13 = [v10 hmf_UUIDWithNamespace:v9 data:v12];
 
-  if (v6)
+  if (targetServiceUUID)
   {
     v14 = MEMORY[0x277CCAD78];
-    v15 = [v6 UUIDString];
-    v16 = [v15 dataUsingEncoding:4];
+    uUIDString2 = [targetServiceUUID UUIDString];
+    v16 = [uUIDString2 dataUsingEncoding:4];
     v17 = [v14 hmf_UUIDWithNamespace:v13 data:v16];
 
     v13 = v17;
@@ -128,30 +128,30 @@ void __45__HMDUserActionPredictionModel_hmbProperties__block_invoke()
 
   v18 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"D73F97DF-5711-4EAA-9CA4-EB5C028A5EE8"];
   v19 = [(HMBModel *)self initWithModelID:v13 parentModelID:v18];
-  v20 = [v4 predictionTargetUUID];
-  [(HMDUserActionPredictionModel *)v19 setPredictionTargetUUID:v20];
+  predictionTargetUUID2 = [predictionCopy predictionTargetUUID];
+  [(HMDUserActionPredictionModel *)v19 setPredictionTargetUUID:predictionTargetUUID2];
 
-  v21 = [v4 targetServiceUUID];
-  [(HMDUserActionPredictionModel *)v19 setTargetServiceUUID:v21];
+  targetServiceUUID2 = [predictionCopy targetServiceUUID];
+  [(HMDUserActionPredictionModel *)v19 setTargetServiceUUID:targetServiceUUID2];
 
-  v22 = [v4 targetGroupUUID];
-  [(HMDUserActionPredictionModel *)v19 setTargetGroupUUID:v22];
+  targetGroupUUID = [predictionCopy targetGroupUUID];
+  [(HMDUserActionPredictionModel *)v19 setTargetGroupUUID:targetGroupUUID];
 
-  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "predictionType")}];
+  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(predictionCopy, "predictionType")}];
   [(HMDUserActionPredictionModel *)v19 setType:v23];
 
-  v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "targetGroupType")}];
+  v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(predictionCopy, "targetGroupType")}];
   [(HMDUserActionPredictionModel *)v19 setGroupType:v24];
 
   v25 = MEMORY[0x277CCABB0];
-  [v4 predictionScore];
+  [predictionCopy predictionScore];
   v26 = [v25 numberWithDouble:?];
   [(HMDUserActionPredictionModel *)v19 setPredictionScore:v26];
 
   [(HMDUserActionPredictionModel *)v19 setTargetServiceGroupUUID:0];
-  v27 = [(HMBModel *)v19 hmbModelID];
+  hmbModelID = [(HMBModel *)v19 hmbModelID];
 
-  if (v27)
+  if (hmbModelID)
   {
     v28 = v19;
   }
@@ -167,16 +167,16 @@ void __45__HMDUserActionPredictionModel_hmbProperties__block_invoke()
       v42 = 138543874;
       v43 = v32;
       v44 = 2112;
-      v45 = v4;
+      v45 = predictionCopy;
       v46 = 2112;
       v47 = v30;
       _os_log_impl(&dword_2531F8000, v31, OS_LOG_TYPE_ERROR, "%{public}@User Action Prediction: %@, resulted in nil hmbModelID for prediction model: %@", &v42, 0x20u);
     }
 
     objc_autoreleasePoolPop(v29);
-    v33 = [(HMBModel *)v30 hmbModelID];
+    hmbModelID2 = [(HMBModel *)v30 hmbModelID];
 
-    if (!v33)
+    if (!hmbModelID2)
     {
       v36 = objc_autoreleasePoolPush();
       v37 = v30;

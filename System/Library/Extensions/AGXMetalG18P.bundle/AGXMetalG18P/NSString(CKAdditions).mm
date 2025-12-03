@@ -6,7 +6,7 @@
 
 - (uint64_t)compareToVersion:()CKAdditions
 {
-  v4 = [a1 componentsSeparatedByString:@"."];
+  v4 = [self componentsSeparatedByString:@"."];
   v5 = [a3 componentsSeparatedByString:@"."];
   v6 = [v4 count];
   if (v6 <= [v5 count])

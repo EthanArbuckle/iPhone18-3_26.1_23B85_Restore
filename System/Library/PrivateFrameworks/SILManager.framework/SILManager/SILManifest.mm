@@ -1,19 +1,19 @@
 @interface SILManifest
 + (BOOL)usesSoftBoundary;
-+ (BOOL)validateFlipBookStates:(id)a3;
++ (BOOL)validateFlipBookStates:(id)states;
 + (_TtC10SILManager11SILManifest)manifest;
-+ (void)setUsesSoftBoundary:(BOOL)a3;
++ (void)setUsesSoftBoundary:(BOOL)boundary;
 - (NSArray)indicators;
 - (NSDictionary)cursorNameByAxCursorName;
 - (_TtC10SILManager11SILManifest)init;
-- (_TtC10SILManager11SILManifest)initWithIndicators:(id)a3 cursors:(id)a4;
-- (id)indicatorFromName:(id)a3 error:(id *)a4;
-- (id)indicatorFromType:(int64_t)a3 error:(id *)a4;
+- (_TtC10SILManager11SILManifest)initWithIndicators:(id)indicators cursors:(id)cursors;
+- (id)indicatorFromName:(id)name error:(id *)error;
+- (id)indicatorFromType:(int64_t)type error:(id *)error;
 - (int64_t)maxAssetBpr;
 - (int64_t)maxAssetExtent;
 - (int64_t)maxCursorExtent;
-- (unsigned)cursorTypeFromName:(id)a3;
-- (void)setMaxCursorExtent:(int64_t)a3;
+- (unsigned)cursorTypeFromName:(id)name;
+- (void)setMaxCursorExtent:(int64_t)extent;
 @end
 
 @implementation SILManifest
@@ -35,7 +35,7 @@
   return v2.super.isa;
 }
 
-- (_TtC10SILManager11SILManifest)initWithIndicators:(id)a3 cursors:(id)a4
+- (_TtC10SILManager11SILManifest)initWithIndicators:(id)indicators cursors:(id)cursors
 {
   type metadata accessor for SILIndicatorDesc();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -44,11 +44,11 @@
   return SILManifest.init(indicators:cursors:)(v4, v5);
 }
 
-- (unsigned)cursorTypeFromName:(id)a3
+- (unsigned)cursorTypeFromName:(id)name
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   LODWORD(v4) = SILManifest.cursorTypeFrom(name:)(v8);
@@ -56,19 +56,19 @@
   return v4;
 }
 
-- (id)indicatorFromType:(int64_t)a3 error:(id *)a4
+- (id)indicatorFromType:(int64_t)type error:(id *)error
 {
-  v5 = self;
-  v6 = SILManifest.indicatorFrom(type:)(a3);
+  selfCopy = self;
+  v6 = SILManifest.indicatorFrom(type:)(type);
 
   return v6;
 }
 
-- (id)indicatorFromName:(id)a3 error:(id *)a4
+- (id)indicatorFromName:(id)name error:(id *)error
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   v9 = SILManifest.indicatorFrom(name:)(v5, v7);
 
   return v9;
@@ -76,7 +76,7 @@
 
 - (int64_t)maxAssetBpr
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SILManifest.maxAssetBpr()();
 
   return v3;
@@ -84,28 +84,28 @@
 
 - (int64_t)maxCursorExtent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SILManifest.maxCursorExtent.getter();
 
   return v3;
 }
 
-- (void)setMaxCursorExtent:(int64_t)a3
+- (void)setMaxCursorExtent:(int64_t)extent
 {
   v3 = self + OBJC_IVAR____TtC10SILManager11SILManifest____lazy_storage___maxCursorExtent;
-  *v3 = a3;
+  *v3 = extent;
   v3[8] = 0;
 }
 
 - (int64_t)maxAssetExtent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SILManifest.maxAssetExtent()();
 
   return v3;
 }
 
-+ (BOOL)validateFlipBookStates:(id)a3
++ (BOOL)validateFlipBookStates:(id)states
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&_sSDySSSDySSSaySiGGGMd);
   v3 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
@@ -137,7 +137,7 @@
   return static SILManifest.usesSoftBoundary;
 }
 
-+ (void)setUsesSoftBoundary:(BOOL)a3
++ (void)setUsesSoftBoundary:(BOOL)boundary
 {
   if (one-time initialization token for usesSoftBoundary != -1)
   {
@@ -145,7 +145,7 @@
   }
 
   swift_beginAccess();
-  static SILManifest.usesSoftBoundary = a3;
+  static SILManifest.usesSoftBoundary = boundary;
 }
 
 - (_TtC10SILManager11SILManifest)init

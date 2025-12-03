@@ -1,11 +1,11 @@
 @interface GQUIglooOutputBundle
-- (BOOL)setData:(__CFData *)a3 mimeType:(__CFString *)a4 forNamedResource:(__CFString *)a5;
-- (BOOL)setDataForMainHtmlResource:(__CFData *)a3;
+- (BOOL)setData:(__CFData *)data mimeType:(__CFString *)type forNamedResource:(__CFString *)resource;
+- (BOOL)setDataForMainHtmlResource:(__CFData *)resource;
 - (GQUIglooOutputBundle)init;
 - (__CFDictionary)createOutputDictionary;
-- (__CFString)createUriForResource:(__CFString *)a3;
+- (__CFString)createUriForResource:(__CFString *)resource;
 - (void)dealloc;
-- (void)setUriPrefix:(__CFString *)a3;
+- (void)setUriPrefix:(__CFString *)prefix;
 @end
 
 @implementation GQUIglooOutputBundle
@@ -57,19 +57,19 @@
   [(GQUIglooOutputBundle *)&v7 dealloc];
 }
 
-- (void)setUriPrefix:(__CFString *)a3
+- (void)setUriPrefix:(__CFString *)prefix
 {
-  CFRetain(a3);
+  CFRetain(prefix);
   mUriPrefix = self->mUriPrefix;
   if (mUriPrefix)
   {
     CFRelease(mUriPrefix);
   }
 
-  self->mUriPrefix = a3;
+  self->mUriPrefix = prefix;
 }
 
-- (__CFString)createUriForResource:(__CFString *)a3
+- (__CFString)createUriForResource:(__CFString *)resource
 {
   if (qword_A4150 != -1)
   {
@@ -82,23 +82,23 @@
     mUriPrefix = self->mUriPrefix;
   }
 
-  v6 = [NSString stringWithFormat:@"%@%@-%@", mUriPrefix, self->mUuidStr, a3];
-  v7 = [(NSString *)v6 stringByAddingPercentEncodingWithAllowedCharacters:qword_A4148];
+  resource = [NSString stringWithFormat:@"%@%@-%@", mUriPrefix, self->mUuidStr, resource];
+  v7 = [(NSString *)resource stringByAddingPercentEncodingWithAllowedCharacters:qword_A4148];
 
   return v7;
 }
 
-- (BOOL)setDataForMainHtmlResource:(__CFData *)a3
+- (BOOL)setDataForMainHtmlResource:(__CFData *)resource
 {
-  self->mMainHtmlData = a3;
-  CFRetain(a3);
+  self->mMainHtmlData = resource;
+  CFRetain(resource);
   return 1;
 }
 
-- (BOOL)setData:(__CFData *)a3 mimeType:(__CFString *)a4 forNamedResource:(__CFString *)a5
+- (BOOL)setData:(__CFData *)data mimeType:(__CFString *)type forNamedResource:(__CFString *)resource
 {
-  v7 = CFStringCreateWithFormat(0, 0, @"%@-%@", a4, self->mUuidStr, a5);
-  CFDictionarySetValue(self->mAttachments, v7, a3);
+  v7 = CFStringCreateWithFormat(0, 0, @"%@-%@", type, self->mUuidStr, resource);
+  CFDictionarySetValue(self->mAttachments, v7, data);
   CFRelease(v7);
   return 1;
 }

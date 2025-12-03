@@ -1,60 +1,60 @@
 @interface SBUserAgent
-- (BOOL)_launchFromSource:(int)a3 withURL:(id)a4 bundleID:(id)a5 allowUnlock:(BOOL)a6 animate:(BOOL)a7;
-- (BOOL)_openApplication:(id)a3 withURL:(id)a4 fromSource:(int)a5 animated:(BOOL)a6 options:(id)a7;
-- (BOOL)applicationInstalledForDisplayID:(id)a3;
-- (BOOL)canLaunchFromSource:(int)a3 withURL:(id)a4 bundleID:(id)a5;
+- (BOOL)_launchFromSource:(int)source withURL:(id)l bundleID:(id)d allowUnlock:(BOOL)unlock animate:(BOOL)animate;
+- (BOOL)_openApplication:(id)application withURL:(id)l fromSource:(int)source animated:(BOOL)animated options:(id)options;
+- (BOOL)applicationInstalledForDisplayID:(id)d;
+- (BOOL)canLaunchFromSource:(int)source withURL:(id)l bundleID:(id)d;
 - (BOOL)deviceIsBlocked;
 - (BOOL)deviceIsLocked;
 - (BOOL)deviceIsPasscodeLocked;
 - (BOOL)deviceIsPasscodeLockedRemotely;
 - (BOOL)deviceIsTethered;
-- (BOOL)isApplicationForegroundObscured:(id)a3;
-- (BOOL)isApplicationRestrictedOrHidden:(id)a3;
-- (BOOL)isIdleTimerDisabledForReason:(id)a3;
+- (BOOL)isApplicationForegroundObscured:(id)obscured;
+- (BOOL)isApplicationRestrictedOrHidden:(id)hidden;
+- (BOOL)isIdleTimerDisabledForReason:(id)reason;
 - (BOOL)isInternalInstall;
-- (BOOL)isNamedRemoteAlertServiceActive:(id)a3 controllerClassName:(id)a4;
+- (BOOL)isNamedRemoteAlertServiceActive:(id)active controllerClassName:(id)name;
 - (BOOL)isScreenOn;
-- (BOOL)launchApplicationFromSource:(int)a3 withDisplayID:(id)a4 options:(id)a5;
-- (BOOL)launchApplicationFromSource:(int)a3 withURL:(id)a4 options:(id)a5;
-- (BOOL)launchFromSource:(int)a3 withURL:(id)a4 bundleID:(id)a5 allowUnlock:(BOOL)a6;
+- (BOOL)launchApplicationFromSource:(int)source withDisplayID:(id)d options:(id)options;
+- (BOOL)launchApplicationFromSource:(int)source withURL:(id)l options:(id)options;
+- (BOOL)launchFromSource:(int)source withURL:(id)l bundleID:(id)d allowUnlock:(BOOL)unlock;
 - (BOOL)lockScreenIsShowing;
-- (BOOL)openURL:(id)a3 allowUnlock:(BOOL)a4 animated:(BOOL)a5;
+- (BOOL)openURL:(id)l allowUnlock:(BOOL)unlock animated:(BOOL)animated;
 - (BOOL)springBoardIsActive;
 - (SBUserAgent)init;
 - (__CFRunLoop)wifiRunLoopRef;
-- (id)_safeValue:(id)a3 forKey:(id)a4 ofType:(Class)a5;
-- (id)acquireCaptureButtonSuppressionAssertionWithOptions:(unint64_t)a3 reason:(id)a4;
-- (id)folderNameForDisplayID:(id)a3;
+- (id)_safeValue:(id)value forKey:(id)key ofType:(Class)type;
+- (id)acquireCaptureButtonSuppressionAssertionWithOptions:(unint64_t)options reason:(id)reason;
+- (id)folderNameForDisplayID:(id)d;
 - (id)foregroundApplicationDisplayID;
-- (id)localizedDisplayNameForDisplayID:(id)a3;
+- (id)localizedDisplayNameForDisplayID:(id)d;
 - (id)topSuspendedEventsOnlyDisplayID;
-- (int)networkUsageTypeForAppWithDisplayID:(id)a3;
+- (int)networkUsageTypeForAppWithDisplayID:(id)d;
 - (int64_t)activeInterfaceOrientation;
 - (void)_cleanupFromBannerLaunch;
-- (void)activateModalBulletinAlert:(id)a3;
-- (void)activateRemoteAlertService:(id)a3 options:(id)a4;
+- (void)activateModalBulletinAlert:(id)alert;
+- (void)activateRemoteAlertService:(id)service options:(id)options;
 - (void)activeInterfaceOrientation;
-- (void)addActiveInterfaceOrientationObserver:(id)a3;
+- (void)addActiveInterfaceOrientationObserver:(id)observer;
 - (void)deviceIsBlocked;
 - (void)deviceIsLocked;
 - (void)deviceIsPasscodeLocked;
 - (void)deviceIsPasscodeLockedRemotely;
 - (void)deviceIsTethered;
-- (void)disableLockScreenBundleNamed:(id)a3 deactivationContext:(id)a4;
-- (void)enableLockScreenBundleNamed:(id)a3 activationContext:(id)a4;
+- (void)disableLockScreenBundleNamed:(id)named deactivationContext:(id)context;
+- (void)enableLockScreenBundleNamed:(id)named activationContext:(id)context;
 - (void)foregroundApplicationDisplayID;
 - (void)init;
 - (void)isInternalInstall;
 - (void)isScreenOn;
 - (void)lockAndDimDevice;
-- (void)lockAndDimDeviceDisconnectingCallIfNecessary:(BOOL)a3;
-- (void)lockAndDimDeviceDisconnectingCallIfNecessary:(BOOL)a3 andDimScreen:(BOOL)a4;
+- (void)lockAndDimDeviceDisconnectingCallIfNecessary:(BOOL)necessary;
+- (void)lockAndDimDeviceDisconnectingCallIfNecessary:(BOOL)necessary andDimScreen:(BOOL)screen;
 - (void)lockScreenIsShowing;
-- (void)removeActiveInterfaceOrientationObserver:(id)a3;
-- (void)setBadgeNumberOrString:(id)a3 forApplicationWithID:(id)a4;
-- (void)setIdleText:(id)a3;
-- (void)setIdleTimerDisabled:(BOOL)a3 forReason:(id)a4;
-- (void)setMinimumBacklightLevel:(float)a3 animated:(BOOL)a4;
+- (void)removeActiveInterfaceOrientationObserver:(id)observer;
+- (void)setBadgeNumberOrString:(id)string forApplicationWithID:(id)d;
+- (void)setIdleText:(id)text;
+- (void)setIdleTimerDisabled:(BOOL)disabled forReason:(id)reason;
+- (void)setMinimumBacklightLevel:(float)level animated:(BOOL)animated;
 - (void)springBoardIsActive;
 - (void)topSuspendedEventsOnlyDisplayID;
 - (void)undimScreen;
@@ -81,9 +81,9 @@
   }
 
   v2 = +[SBLockScreenManager sharedInstance];
-  v3 = [v2 isUILocked];
+  isUILocked = [v2 isUILocked];
 
-  return v3;
+  return isUILocked;
 }
 
 - (BOOL)deviceIsPasscodeLocked
@@ -93,10 +93,10 @@
     [SBUserAgent deviceIsPasscodeLocked];
   }
 
-  v2 = [SBApp authenticationController];
-  v3 = [v2 isAuthenticatedCached];
+  authenticationController = [SBApp authenticationController];
+  isAuthenticatedCached = [authenticationController isAuthenticatedCached];
 
-  return v3 ^ 1;
+  return isAuthenticatedCached ^ 1;
 }
 
 - (BOOL)deviceIsBlocked
@@ -106,10 +106,10 @@
     [SBUserAgent deviceIsBlocked];
   }
 
-  v2 = [SBApp lockOutController];
-  v3 = [v2 isBlocked];
+  lockOutController = [SBApp lockOutController];
+  isBlocked = [lockOutController isBlocked];
 
-  return v3;
+  return isBlocked;
 }
 
 - (BOOL)isScreenOn
@@ -147,7 +147,7 @@
 
 - (void)updateInterfaceOrientationIfNecessary
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBUserAgent updateInterfaceOrientationIfNecessary]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
@@ -172,20 +172,20 @@
   }
 
   v2 = +[SBMainSwitcherControllerCoordinator _shim_activeSwitcherController];
-  v3 = [v2 layoutStatePrimaryElement];
-  v4 = [v3 workspaceEntity];
-  v5 = [v4 applicationSceneEntity];
-  v6 = [v5 sceneHandle];
-  v7 = [v6 application];
-  v8 = [v7 bundleIdentifier];
+  layoutStatePrimaryElement = [v2 layoutStatePrimaryElement];
+  workspaceEntity = [layoutStatePrimaryElement workspaceEntity];
+  applicationSceneEntity = [workspaceEntity applicationSceneEntity];
+  sceneHandle = [applicationSceneEntity sceneHandle];
+  application = [sceneHandle application];
+  bundleIdentifier = [application bundleIdentifier];
 
-  return v8;
+  return bundleIdentifier;
 }
 
-- (BOOL)isApplicationForegroundObscured:(id)a3
+- (BOOL)isApplicationForegroundObscured:(id)obscured
 {
   v22 = *MEMORY[0x277D85DE8];
-  v16 = a3;
+  obscuredCopy = obscured;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBUserAgent isApplicationForegroundObscured:];
@@ -210,27 +210,27 @@
         }
 
         v7 = *(*(&v17 + 1) + 8 * i);
-        v8 = [v7 sceneIfExists];
-        if (v8)
+        sceneIfExists = [v7 sceneIfExists];
+        if (sceneIfExists)
         {
-          v9 = v8;
-          v10 = [v8 settings];
-          if (![v10 isOccluded])
+          v9 = sceneIfExists;
+          settings = [sceneIfExists settings];
+          if (![settings isOccluded])
           {
             goto LABEL_14;
           }
 
-          v11 = [v9 settings];
-          if (([v11 isForeground] & 1) == 0)
+          settings2 = [v9 settings];
+          if (([settings2 isForeground] & 1) == 0)
           {
 
 LABEL_14:
             continue;
           }
 
-          v12 = [v7 application];
-          v13 = [v12 bundleIdentifier];
-          v14 = [v13 isEqualToString:v16];
+          application = [v7 application];
+          bundleIdentifier = [application bundleIdentifier];
+          v14 = [bundleIdentifier isEqualToString:obscuredCopy];
 
           if (v14)
           {
@@ -251,17 +251,17 @@ LABEL_17:
   return v4;
 }
 
-- (BOOL)applicationInstalledForDisplayID:(id)a3
+- (BOOL)applicationInstalledForDisplayID:(id)d
 {
   v3 = MEMORY[0x277CCACC8];
-  v4 = a3;
+  dCopy = d;
   if (([v3 isMainThread] & 1) == 0)
   {
     [SBUserAgent applicationInstalledForDisplayID:];
   }
 
   v5 = +[SBApplicationController sharedInstanceIfExists];
-  v6 = [v5 applicationWithBundleIdentifier:v4];
+  v6 = [v5 applicationWithBundleIdentifier:dCopy];
 
   return v6 != 0;
 }
@@ -274,9 +274,9 @@ LABEL_17:
   }
 
   v2 = +[SBMainWorkspace sharedInstance];
-  v3 = [v2 isSpringBoardActive];
+  isSpringBoardActive = [v2 isSpringBoardActive];
 
-  return v3;
+  return isSpringBoardActive;
 }
 
 - (BOOL)deviceIsPasscodeLockedRemotely
@@ -286,17 +286,17 @@ LABEL_17:
     [SBUserAgent deviceIsPasscodeLockedRemotely];
   }
 
-  v3 = [(SBUserAgent *)self deviceIsPasscodeLocked];
-  if (v3)
+  deviceIsPasscodeLocked = [(SBUserAgent *)self deviceIsPasscodeLocked];
+  if (deviceIsPasscodeLocked)
   {
     v4 = +[SBDefaults localDefaults];
-    v5 = [v4 lockScreenDefaults];
-    v6 = [v5 limitFeaturesForRemoteLock];
+    lockScreenDefaults = [v4 lockScreenDefaults];
+    limitFeaturesForRemoteLock = [lockScreenDefaults limitFeaturesForRemoteLock];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(deviceIsPasscodeLocked) = limitFeaturesForRemoteLock;
   }
 
-  return v3;
+  return deviceIsPasscodeLocked;
 }
 
 - (BOOL)deviceIsTethered
@@ -309,25 +309,25 @@ LABEL_17:
   return BKSDisplayServicesDisplayIsTethered();
 }
 
-- (BOOL)openURL:(id)a3 allowUnlock:(BOOL)a4 animated:(BOOL)a5
+- (BOOL)openURL:(id)l allowUnlock:(BOOL)unlock animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = a3;
+  animatedCopy = animated;
+  lCopy = l;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBUserAgent openURL:allowUnlock:animated:];
   }
 
-  v8 = [(SBUserAgent *)self _openApplication:0 withURL:v7 fromSource:0 animated:v5 options:0];
+  v8 = [(SBUserAgent *)self _openApplication:0 withURL:lCopy fromSource:0 animated:animatedCopy options:0];
 
   return v8;
 }
 
-- (id)_safeValue:(id)a3 forKey:(id)a4 ofType:(Class)a5
+- (id)_safeValue:(id)value forKey:(id)key ofType:(Class)type
 {
-  if (a3)
+  if (value)
   {
-    v5 = [a3 objectForKey:a4];
+    v5 = [value objectForKey:key];
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -351,18 +351,18 @@ LABEL_17:
 
 - (void)_cleanupFromBannerLaunch
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBUserAgent _cleanupFromBannerLaunch]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
 
-- (BOOL)_openApplication:(id)a3 withURL:(id)a4 fromSource:(int)a5 animated:(BOOL)a6 options:(id)a7
+- (BOOL)_openApplication:(id)application withURL:(id)l fromSource:(int)source animated:(BOOL)animated options:(id)options
 {
-  v9 = *&a5;
+  v9 = *&source;
   v61 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  applicationCopy = application;
+  lCopy = l;
+  optionsCopy = options;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBUserAgent _openApplication:withURL:fromSource:animated:options:];
@@ -371,14 +371,14 @@ LABEL_17:
   if (v9 == 6)
   {
     v15 = ++_openApplication_withURL_fromSource_animated_options____carBannerOpenRequestCount;
-    v16 = [SBApp notificationDispatcher];
-    v17 = [v16 carOpenServiceEndpoint];
+    notificationDispatcher = [SBApp notificationDispatcher];
+    carOpenServiceEndpoint = [notificationDispatcher carOpenServiceEndpoint];
 
-    if (v17)
+    if (carOpenServiceEndpoint)
     {
       v18 = objc_alloc_init(MEMORY[0x277CC1F00]);
-      [v18 setTargetConnectionEndpoint:v17];
-      if (v13)
+      [v18 setTargetConnectionEndpoint:carOpenServiceEndpoint];
+      if (lCopy)
       {
         v19 = SBLogCommon();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -386,19 +386,19 @@ LABEL_17:
           *buf = 67109634;
           v56 = v15;
           v57 = 2112;
-          v58 = v17;
+          v58 = carOpenServiceEndpoint;
           v59 = 2112;
-          v60 = v13;
+          v60 = lCopy;
           _os_log_impl(&dword_21ED4E000, v19, OS_LOG_TYPE_DEFAULT, "sending CarBanner open url request (%u) to %@ : url=%@", buf, 0x1Cu);
         }
 
-        v20 = [MEMORY[0x277CC1E80] defaultWorkspace];
+        defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
         v53[0] = MEMORY[0x277D85DD0];
         v53[1] = 3221225472;
         v53[2] = __68__SBUserAgent__openApplication_withURL_fromSource_animated_options___block_invoke;
         v53[3] = &__block_descriptor_36_e34_v24__0__NSDictionary_8__NSError_16l;
         v54 = v15;
-        [v20 openURL:v13 configuration:v18 completionHandler:v53];
+        [defaultWorkspace openURL:lCopy configuration:v18 completionHandler:v53];
 LABEL_28:
 
         v32 = 1;
@@ -409,26 +409,26 @@ LABEL_41:
 
       v34 = SBLogCommon();
       v35 = os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT);
-      if (v12)
+      if (applicationCopy)
       {
         if (v35)
         {
           *buf = 67109634;
           v56 = v15;
           v57 = 2112;
-          v58 = v17;
+          v58 = carOpenServiceEndpoint;
           v59 = 2112;
-          v60 = v12;
+          v60 = applicationCopy;
           _os_log_impl(&dword_21ED4E000, v34, OS_LOG_TYPE_DEFAULT, "sending CarBanner open app request (%u) to %@ : app=%@", buf, 0x1Cu);
         }
 
-        v20 = [MEMORY[0x277CC1E80] defaultWorkspace];
+        defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
         v51[0] = MEMORY[0x277D85DD0];
         v51[1] = 3221225472;
         v51[2] = __68__SBUserAgent__openApplication_withURL_fromSource_animated_options___block_invoke_39;
         v51[3] = &__block_descriptor_36_e20_v20__0B8__NSError_12l;
         v52 = v15;
-        [v20 openApplicationWithBundleIdentifier:v12 configuration:v18 completionHandler:v51];
+        [defaultWorkspace openApplicationWithBundleIdentifier:applicationCopy configuration:v18 completionHandler:v51];
         goto LABEL_28;
       }
 
@@ -437,7 +437,7 @@ LABEL_41:
         *buf = 67109378;
         v56 = v15;
         v57 = 2112;
-        v58 = v17;
+        v58 = carOpenServiceEndpoint;
         _os_log_impl(&dword_21ED4E000, v34, OS_LOG_TYPE_DEFAULT, "cannot send invalid CarBanner open request (%u) to %@", buf, 0x12u);
       }
     }
@@ -457,15 +457,15 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  if (v13)
+  if (lCopy)
   {
-    v21 = SBWorkspaceApplicationForURLWithError(v13, 0, 0);
-    v17 = v21;
+    v21 = SBWorkspaceApplicationForURLWithError(lCopy, 0, 0);
+    carOpenServiceEndpoint = v21;
     if (v21)
     {
-      v22 = [v21 bundleIdentifier];
+      bundleIdentifier = [v21 bundleIdentifier];
 
-      v12 = v22;
+      applicationCopy = bundleIdentifier;
       goto LABEL_16;
     }
 
@@ -475,9 +475,9 @@ LABEL_32:
     block[1] = 3221225472;
     block[2] = __68__SBUserAgent__openApplication_withURL_fromSource_animated_options___block_invoke_42;
     block[3] = &unk_2783A92D8;
-    v49 = v13;
-    v12 = v12;
-    v50 = v12;
+    v49 = lCopy;
+    applicationCopy = applicationCopy;
+    v50 = applicationCopy;
     dispatch_async(v36, block);
 
     v32 = 0;
@@ -485,22 +485,22 @@ LABEL_32:
     goto LABEL_41;
   }
 
-  if (!v12)
+  if (!applicationCopy)
   {
-    v17 = 0;
+    carOpenServiceEndpoint = 0;
     goto LABEL_31;
   }
 
   v23 = +[SBApplicationController sharedInstance];
-  v17 = [v23 applicationWithBundleIdentifier:v12];
+  carOpenServiceEndpoint = [v23 applicationWithBundleIdentifier:applicationCopy];
 
-  if (!v17)
+  if (!carOpenServiceEndpoint)
   {
     goto LABEL_32;
   }
 
 LABEL_16:
-  if ([(SBUserAgent *)self canLaunchFromSource:v9 withURL:v13 bundleID:v12])
+  if ([(SBUserAgent *)self canLaunchFromSource:v9 withURL:lCopy bundleID:applicationCopy])
   {
     v24 = +[SBLockScreenManager sharedInstance];
     v41[0] = MEMORY[0x277D85DD0];
@@ -508,22 +508,22 @@ LABEL_16:
     v41[2] = __68__SBUserAgent__openApplication_withURL_fromSource_animated_options___block_invoke_2;
     v41[3] = &unk_2783B73E0;
     v41[4] = self;
-    v42 = v14;
+    v42 = optionsCopy;
     v18 = v24;
     v43 = v18;
     v46 = v9;
-    v44 = v13;
-    v47 = a6;
-    v17 = v17;
-    v45 = v17;
+    v44 = lCopy;
+    animatedCopy = animated;
+    carOpenServiceEndpoint = carOpenServiceEndpoint;
+    v45 = carOpenServiceEndpoint;
     v25 = MEMORY[0x223D6F7F0](v41);
     if (+[SBAssistantController isVisible]&& [(SBUserAgent *)self deviceIsPasscodeLocked])
     {
       v26 = v9 == 3;
       if (v9 == 3)
       {
-        v27 = [SBApp bannerManager];
-        v28 = [v27 acquireBannerSuppressionAssertionForReason:@"BannerOpenAppFromUserAgent"];
+        bannerManager = [SBApp bannerManager];
+        v28 = [bannerManager acquireBannerSuppressionAssertionForReason:@"BannerOpenAppFromUserAgent"];
         bannerSuppressionAssertion = self->_bannerSuppressionAssertion;
         self->_bannerSuppressionAssertion = v28;
 
@@ -544,8 +544,8 @@ LABEL_16:
       {
         if (v31)
         {
-          v33 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v33 addObserver:self selector:sel__cleanupFromBannerLaunch name:@"SBAssistantVisibilityDidChangeNotification" object:0];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter addObserver:self selector:sel__cleanupFromBannerLaunch name:@"SBAssistantVisibilityDidChangeNotification" object:0];
         }
 
         else
@@ -564,12 +564,12 @@ LABEL_16:
   }
 
 LABEL_31:
-  if (v13 | v12)
+  if (lCopy | applicationCopy)
   {
     goto LABEL_32;
   }
 
-  v12 = 0;
+  applicationCopy = 0;
   v32 = 0;
 LABEL_42:
 
@@ -854,12 +854,12 @@ void __68__SBUserAgent__openApplication_withURL_fromSource_animated_options___bl
   }
 }
 
-- (BOOL)canLaunchFromSource:(int)a3 withURL:(id)a4 bundleID:(id)a5
+- (BOOL)canLaunchFromSource:(int)source withURL:(id)l bundleID:(id)d
 {
-  v6 = a5;
+  dCopy = d;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    if (a4)
+    if (l)
     {
 LABEL_3:
       v7 = 1;
@@ -870,7 +870,7 @@ LABEL_3:
   else
   {
     [SBUserAgent canLaunchFromSource:withURL:bundleID:];
-    if (a4)
+    if (l)
     {
       goto LABEL_3;
     }
@@ -878,12 +878,12 @@ LABEL_3:
 
   v8 = +[SBApplicationController sharedInstance];
   v9 = +[SBApplicationPlaceholderController sharedInstance];
-  if (v6)
+  if (dCopy)
   {
-    v10 = [v8 applicationWithBundleIdentifier:v6];
+    v10 = [v8 applicationWithBundleIdentifier:dCopy];
     if (v10)
     {
-      v11 = [v9 placeholderForDisplayID:v6];
+      v11 = [v9 placeholderForDisplayID:dCopy];
       v7 = v11 == 0;
     }
 
@@ -902,100 +902,100 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)launchApplicationFromSource:(int)a3 withDisplayID:(id)a4 options:(id)a5
+- (BOOL)launchApplicationFromSource:(int)source withDisplayID:(id)d options:(id)options
 {
-  v6 = *&a3;
-  v8 = a4;
-  v9 = a5;
+  v6 = *&source;
+  dCopy = d;
+  optionsCopy = options;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBUserAgent launchApplicationFromSource:withDisplayID:options:];
   }
 
-  v10 = [(SBUserAgent *)self _openApplication:v8 withURL:0 fromSource:v6 animated:1 options:v9];
+  v10 = [(SBUserAgent *)self _openApplication:dCopy withURL:0 fromSource:v6 animated:1 options:optionsCopy];
 
   return v10;
 }
 
-- (BOOL)launchApplicationFromSource:(int)a3 withURL:(id)a4 options:(id)a5
+- (BOOL)launchApplicationFromSource:(int)source withURL:(id)l options:(id)options
 {
-  v6 = *&a3;
-  v8 = a4;
-  v9 = a5;
+  v6 = *&source;
+  lCopy = l;
+  optionsCopy = options;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBUserAgent launchApplicationFromSource:withURL:options:];
   }
 
-  v10 = [(SBUserAgent *)self _openApplication:0 withURL:v8 fromSource:v6 animated:1 options:v9];
+  v10 = [(SBUserAgent *)self _openApplication:0 withURL:lCopy fromSource:v6 animated:1 options:optionsCopy];
 
   return v10;
 }
 
-- (BOOL)launchFromSource:(int)a3 withURL:(id)a4 bundleID:(id)a5 allowUnlock:(BOOL)a6
+- (BOOL)launchFromSource:(int)source withURL:(id)l bundleID:(id)d allowUnlock:(BOOL)unlock
 {
-  v6 = a6;
-  v8 = *&a3;
-  v10 = a4;
-  v11 = a5;
+  unlockCopy = unlock;
+  v8 = *&source;
+  lCopy = l;
+  dCopy = d;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBUserAgent launchFromSource:withURL:bundleID:allowUnlock:];
   }
 
-  v12 = [(SBUserAgent *)self _launchFromSource:v8 withURL:v10 bundleID:v11 allowUnlock:v6 animate:1];
+  v12 = [(SBUserAgent *)self _launchFromSource:v8 withURL:lCopy bundleID:dCopy allowUnlock:unlockCopy animate:1];
 
   return v12;
 }
 
-- (BOOL)_launchFromSource:(int)a3 withURL:(id)a4 bundleID:(id)a5 allowUnlock:(BOOL)a6 animate:(BOOL)a7
+- (BOOL)_launchFromSource:(int)source withURL:(id)l bundleID:(id)d allowUnlock:(BOOL)unlock animate:(BOOL)animate
 {
-  v7 = a7;
-  v8 = a6;
-  v10 = *&a3;
-  v12 = a4;
-  v13 = a5;
+  animateCopy = animate;
+  unlockCopy = unlock;
+  v10 = *&source;
+  lCopy = l;
+  dCopy = d;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBUserAgent _launchFromSource:withURL:bundleID:allowUnlock:animate:];
-    if (v8)
+    if (unlockCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v14 = 0;
+    dictionary = 0;
     goto LABEL_6;
   }
 
-  if (!v8)
+  if (!unlockCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v14 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v15 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [v14 setObject:v15 forKey:*MEMORY[0x277D67AD0]];
+  [dictionary setObject:v15 forKey:*MEMORY[0x277D67AD0]];
 
 LABEL_6:
-  v16 = [(SBUserAgent *)self _openApplication:v13 withURL:v12 fromSource:v10 animated:v7 options:v14];
+  v16 = [(SBUserAgent *)self _openApplication:dCopy withURL:lCopy fromSource:v10 animated:animateCopy options:dictionary];
 
   return v16;
 }
 
-- (BOOL)isApplicationRestrictedOrHidden:(id)a3
+- (BOOL)isApplicationRestrictedOrHidden:(id)hidden
 {
-  v3 = a3;
-  if (v3)
+  hiddenCopy = hidden;
+  if (hiddenCopy)
   {
     v4 = +[SBIconController sharedIconRepository];
-    v5 = [v4 applicationIconForBundleIdentifier:v3];
+    v5 = [v4 applicationIconForBundleIdentifier:hiddenCopy];
     if ([v4 isIconVisible:v5])
     {
       v6 = +[SBApplicationController sharedInstance];
-      v7 = [v6 restrictionController];
-      v8 = [v7 isApplicationIdentifierRestricted:v3];
+      restrictionController = [v6 restrictionController];
+      v8 = [restrictionController isApplicationIdentifierRestricted:hiddenCopy];
     }
 
     else
@@ -1014,37 +1014,37 @@ LABEL_6:
 
 - (void)undimScreen
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBUserAgent undimScreen]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
 
 - (void)lockAndDimDevice
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBUserAgent lockAndDimDevice]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
 
-- (void)lockAndDimDeviceDisconnectingCallIfNecessary:(BOOL)a3
+- (void)lockAndDimDeviceDisconnectingCallIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBUserAgent lockAndDimDeviceDisconnectingCallIfNecessary:];
   }
 
-  [(SBUserAgent *)self lockAndDimDeviceDisconnectingCallIfNecessary:v3 andDimScreen:1];
+  [(SBUserAgent *)self lockAndDimDeviceDisconnectingCallIfNecessary:necessaryCopy andDimScreen:1];
 }
 
-- (void)lockAndDimDeviceDisconnectingCallIfNecessary:(BOOL)a3 andDimScreen:(BOOL)a4
+- (void)lockAndDimDeviceDisconnectingCallIfNecessary:(BOOL)necessary andDimScreen:(BOOL)screen
 {
-  v4 = a4;
+  screenCopy = screen;
   v10[1] = *MEMORY[0x277D85DE8];
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBUserAgent lockAndDimDeviceDisconnectingCallIfNecessary:andDimScreen:];
-    if (v4)
+    if (screenCopy)
     {
       goto LABEL_3;
     }
@@ -1060,27 +1060,27 @@ LABEL_7:
     return;
   }
 
-  if (!v4)
+  if (!screenCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_3:
-  v8 = [SBApp screenSleepCoordinator];
-  [v8 sleepAndLockUIFromSource:8 completion:0];
+  screenSleepCoordinator = [SBApp screenSleepCoordinator];
+  [screenSleepCoordinator sleepAndLockUIFromSource:8 completion:0];
 }
 
-- (void)setIdleTimerDisabled:(BOOL)a3 forReason:(id)a4
+- (void)setIdleTimerDisabled:(BOOL)disabled forReason:(id)reason
 {
-  v4 = a3;
-  v13 = a4;
+  disabledCopy = disabled;
+  reasonCopy = reason;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBUserAgent setIdleTimerDisabled:forReason:];
   }
 
   idleTimerDisableAssertions = self->_idleTimerDisableAssertions;
-  if (v4)
+  if (disabledCopy)
   {
     if (!idleTimerDisableAssertions)
     {
@@ -1090,9 +1090,9 @@ LABEL_3:
     }
 
     v9 = +[SBIdleTimerGlobalCoordinator sharedInstance];
-    v10 = [v9 acquireIdleTimerDisableAssertionForReason:v13];
+    v10 = [v9 acquireIdleTimerDisableAssertionForReason:reasonCopy];
 
-    [(NSMutableDictionary *)self->_idleTimerDisableAssertions setObject:v10 forKey:v13];
+    [(NSMutableDictionary *)self->_idleTimerDisableAssertions setObject:v10 forKey:reasonCopy];
 LABEL_7:
 
     goto LABEL_8;
@@ -1100,12 +1100,12 @@ LABEL_7:
 
   if (idleTimerDisableAssertions)
   {
-    v11 = [(NSMutableDictionary *)idleTimerDisableAssertions objectForKey:v13];
+    v11 = [(NSMutableDictionary *)idleTimerDisableAssertions objectForKey:reasonCopy];
     v10 = v11;
     if (v11)
     {
       [v11 invalidate];
-      [(NSMutableDictionary *)self->_idleTimerDisableAssertions removeObjectForKey:v13];
+      [(NSMutableDictionary *)self->_idleTimerDisableAssertions removeObjectForKey:reasonCopy];
       if (![(NSMutableDictionary *)self->_idleTimerDisableAssertions count])
       {
         v12 = self->_idleTimerDisableAssertions;
@@ -1119,40 +1119,40 @@ LABEL_7:
 LABEL_8:
 }
 
-- (BOOL)isIdleTimerDisabledForReason:(id)a3
+- (BOOL)isIdleTimerDisabledForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBUserAgent isIdleTimerDisabledForReason:];
   }
 
-  v5 = [(NSMutableDictionary *)self->_idleTimerDisableAssertions objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_idleTimerDisableAssertions objectForKey:reasonCopy];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (void)setBadgeNumberOrString:(id)a3 forApplicationWithID:(id)a4
+- (void)setBadgeNumberOrString:(id)string forApplicationWithID:(id)d
 {
   v5 = MEMORY[0x277CCACC8];
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  stringCopy = string;
   if (([v5 isMainThread] & 1) == 0)
   {
     [SBUserAgent setBadgeNumberOrString:forApplicationWithID:];
   }
 
   v8 = +[SBApplicationController sharedInstance];
-  v9 = [v8 applicationWithBundleIdentifier:v6];
+  v9 = [v8 applicationWithBundleIdentifier:dCopy];
 
-  [v9 setBadgeValue:v7];
+  [v9 setBadgeValue:stringCopy];
 }
 
-- (void)setIdleText:(id)a3
+- (void)setIdleText:(id)text
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  textCopy = text;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBUserAgent setIdleText:];
@@ -1162,10 +1162,10 @@ LABEL_8:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [SBApp windowSceneManager];
-  v5 = [v4 connectedWindowScenes];
+  windowSceneManager = [SBApp windowSceneManager];
+  connectedWindowScenes = [windowSceneManager connectedWindowScenes];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [connectedWindowScenes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1177,127 +1177,127 @@ LABEL_8:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(connectedWindowScenes);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v9) iconController];
-        v11 = [v10 iconManager];
-        [v11 setIdleModeText:v3];
+        iconController = [*(*(&v12 + 1) + 8 * v9) iconController];
+        iconManager = [iconController iconManager];
+        [iconManager setIdleModeText:textCopy];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [connectedWindowScenes countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)folderNameForDisplayID:(id)a3
+- (id)folderNameForDisplayID:(id)d
 {
   v3 = SBApp;
-  v4 = a3;
-  v5 = [v3 windowSceneManager];
-  v6 = [v5 embeddedDisplayWindowScene];
-  v7 = [v6 iconController];
+  dCopy = d;
+  windowSceneManager = [v3 windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
+  iconController = [embeddedDisplayWindowScene iconController];
 
-  v8 = [v7 folderNameForDisplayID:v4];
+  v8 = [iconController folderNameForDisplayID:dCopy];
 
   return v8;
 }
 
-- (int)networkUsageTypeForAppWithDisplayID:(id)a3
+- (int)networkUsageTypeForAppWithDisplayID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBUserAgent networkUsageTypeForAppWithDisplayID:];
   }
 
-  v4 = SBWorkspaceApplicationForIdentifier(v3);
-  v5 = [v4 dataUsage];
+  v4 = SBWorkspaceApplicationForIdentifier(dCopy);
+  dataUsage = [v4 dataUsage];
 
-  return v5;
+  return dataUsage;
 }
 
-- (void)activateModalBulletinAlert:(id)a3
+- (void)activateModalBulletinAlert:(id)alert
 {
   v3 = MEMORY[0x277CCACC8];
-  v4 = a3;
+  alertCopy = alert;
   if (([v3 isMainThread] & 1) == 0)
   {
     [SBUserAgent activateModalBulletinAlert:];
   }
 
-  [v4 setAllowInCar:0];
-  [MEMORY[0x277D67938] activateAlertItem:v4];
+  [alertCopy setAllowInCar:0];
+  [MEMORY[0x277D67938] activateAlertItem:alertCopy];
 }
 
-- (void)addActiveInterfaceOrientationObserver:(id)a3
+- (void)addActiveInterfaceOrientationObserver:(id)observer
 {
-  v3 = a3;
+  observerCopy = observer;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBUserAgent addActiveInterfaceOrientationObserver:];
   }
 
-  [SBApp addActiveOrientationObserver:v3];
+  [SBApp addActiveOrientationObserver:observerCopy];
 }
 
-- (void)removeActiveInterfaceOrientationObserver:(id)a3
+- (void)removeActiveInterfaceOrientationObserver:(id)observer
 {
-  v3 = a3;
+  observerCopy = observer;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBUserAgent removeActiveInterfaceOrientationObserver:];
   }
 
-  [SBApp removeActiveOrientationObserver:v3];
+  [SBApp removeActiveOrientationObserver:observerCopy];
 }
 
-- (void)setMinimumBacklightLevel:(float)a3 animated:(BOOL)a4
+- (void)setMinimumBacklightLevel:(float)level animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBUserAgent setMinimumBacklightLevel:animated:];
   }
 
-  v6.n128_f32[0] = a3;
+  v6.n128_f32[0] = level;
 
-  SBSetMinimumBrightnessLevel(v4, v6, v7);
+  SBSetMinimumBrightnessLevel(animatedCopy, v6, v7);
 }
 
-- (void)activateRemoteAlertService:(id)a3 options:(id)a4
+- (void)activateRemoteAlertService:(id)service options:(id)options
 {
-  v15 = a3;
-  v5 = a4;
+  serviceCopy = service;
+  optionsCopy = options;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBUserAgent activateRemoteAlertService:options:];
   }
 
-  v6 = [MEMORY[0x277D66BD8] definitionWithServiceName:v15 legacyAlertOptions:v5];
+  v6 = [MEMORY[0x277D66BD8] definitionWithServiceName:serviceCopy legacyAlertOptions:optionsCopy];
   if (v6)
   {
-    v7 = [SBApp remoteTransientOverlaySessionManager];
-    v8 = [v7 sessionWithDefinition:v6 options:0];
+    remoteTransientOverlaySessionManager = [SBApp remoteTransientOverlaySessionManager];
+    v8 = [remoteTransientOverlaySessionManager sessionWithDefinition:v6 options:0];
 
-    v9 = [MEMORY[0x277D66BD0] configurationContextWithLegacyAlertOptions:v5];
+    v9 = [MEMORY[0x277D66BD0] configurationContextWithLegacyAlertOptions:optionsCopy];
     [v8 prepareWithConfigurationContext:v9];
     v10 = objc_alloc_init(MEMORY[0x277D66BC0]);
-    [v10 setLegacyAlertOptions:v5];
-    v11 = [v10 reason];
+    [v10 setLegacyAlertOptions:optionsCopy];
+    reason = [v10 reason];
 
-    if (!v11)
+    if (!reason)
     {
-      v12 = [v5 bs_safeStringForKey:*MEMORY[0x277D671B0]];
+      v12 = [optionsCopy bs_safeStringForKey:*MEMORY[0x277D671B0]];
       [v10 setReason:v12];
     }
 
-    v13 = [v5 bs_safeNumberForKey:*MEMORY[0x277D67198]];
+    v13 = [optionsCopy bs_safeNumberForKey:*MEMORY[0x277D67198]];
     v14 = v13;
     if (v13)
     {
@@ -1308,93 +1308,93 @@ LABEL_8:
   }
 }
 
-- (BOOL)isNamedRemoteAlertServiceActive:(id)a3 controllerClassName:(id)a4
+- (BOOL)isNamedRemoteAlertServiceActive:(id)active controllerClassName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  activeCopy = active;
+  nameCopy = name;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBUserAgent isNamedRemoteAlertServiceActive:controllerClassName:];
   }
 
   v7 = 0;
-  if (v5 && v6)
+  if (activeCopy && nameCopy)
   {
-    v8 = [objc_alloc(MEMORY[0x277D66BD8]) initWithServiceName:v5 viewControllerClassName:v6];
-    v9 = [SBApp remoteTransientOverlaySessionManager];
-    v10 = [v9 existingSessionsWithDefinition:v8 options:0];
+    v8 = [objc_alloc(MEMORY[0x277D66BD8]) initWithServiceName:activeCopy viewControllerClassName:nameCopy];
+    remoteTransientOverlaySessionManager = [SBApp remoteTransientOverlaySessionManager];
+    v10 = [remoteTransientOverlaySessionManager existingSessionsWithDefinition:v8 options:0];
     v7 = [v10 count] != 0;
   }
 
   return v7;
 }
 
-- (id)localizedDisplayNameForDisplayID:(id)a3
+- (id)localizedDisplayNameForDisplayID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBUserAgent localizedDisplayNameForDisplayID:];
   }
 
   v4 = +[SBApplicationController sharedInstance];
-  v5 = [v4 applicationWithBundleIdentifier:v3];
-  v6 = [v5 displayName];
+  v5 = [v4 applicationWithBundleIdentifier:dCopy];
+  displayName = [v5 displayName];
 
-  if (!v6)
+  if (!displayName)
   {
     v7 = +[SBApplicationPlaceholderController sharedInstance];
-    v8 = [v7 placeholderForDisplayID:v3];
-    v6 = [v8 applicationDisplayName];
+    v8 = [v7 placeholderForDisplayID:dCopy];
+    displayName = [v8 applicationDisplayName];
   }
 
-  return v6;
+  return displayName;
 }
 
-- (void)enableLockScreenBundleNamed:(id)a3 activationContext:(id)a4
+- (void)enableLockScreenBundleNamed:(id)named activationContext:(id)context
 {
-  v11 = a3;
+  namedCopy = named;
   v5 = MEMORY[0x277CCACC8];
-  v6 = a4;
+  contextCopy = context;
   if (([v5 isMainThread] & 1) == 0)
   {
     [SBUserAgent enableLockScreenBundleNamed:activationContext:];
   }
 
-  v7 = [MEMORY[0x277D67958] contextWithName:v11];
-  [v7 setUserInfo:v6];
+  v7 = [MEMORY[0x277D67958] contextWithName:namedCopy];
+  [v7 setUserInfo:contextCopy];
 
   v8 = +[SBLockScreenManager sharedInstance];
-  v9 = [v8 lockScreenEnvironment];
-  v10 = [v9 pluginPresenter];
-  [v10 enableLockScreenPluginWithContext:v7];
+  lockScreenEnvironment = [v8 lockScreenEnvironment];
+  pluginPresenter = [lockScreenEnvironment pluginPresenter];
+  [pluginPresenter enableLockScreenPluginWithContext:v7];
 }
 
-- (void)disableLockScreenBundleNamed:(id)a3 deactivationContext:(id)a4
+- (void)disableLockScreenBundleNamed:(id)named deactivationContext:(id)context
 {
-  v11 = a3;
+  namedCopy = named;
   v5 = MEMORY[0x277CCACC8];
-  v6 = a4;
+  contextCopy = context;
   if (([v5 isMainThread] & 1) == 0)
   {
     [SBUserAgent disableLockScreenBundleNamed:deactivationContext:];
   }
 
-  v7 = [MEMORY[0x277D67958] contextWithName:v11];
-  [v7 setUserInfo:v6];
+  v7 = [MEMORY[0x277D67958] contextWithName:namedCopy];
+  [v7 setUserInfo:contextCopy];
 
   v8 = +[SBLockScreenManager sharedInstance];
-  v9 = [v8 lockScreenEnvironment];
-  v10 = [v9 pluginPresenter];
-  [v10 disableLockScreenPluginWithContext:v7];
+  lockScreenEnvironment = [v8 lockScreenEnvironment];
+  pluginPresenter = [lockScreenEnvironment pluginPresenter];
+  [pluginPresenter disableLockScreenPluginWithContext:v7];
 }
 
 - (__CFRunLoop)wifiRunLoopRef
 {
   v2 = +[SBWiFiManager sharedInstance];
-  v3 = [v2 wifiRunLoopRef];
+  wifiRunLoopRef = [v2 wifiRunLoopRef];
 
-  return v3;
+  return wifiRunLoopRef;
 }
 
 - (BOOL)isInternalInstall
@@ -1405,9 +1405,9 @@ LABEL_8:
   }
 
   v2 = +[SBPlatformController sharedInstance];
-  v3 = [v2 isInternalInstall];
+  isInternalInstall = [v2 isInternalInstall];
 
-  return v3;
+  return isInternalInstall;
 }
 
 - (id)topSuspendedEventsOnlyDisplayID
@@ -1420,33 +1420,33 @@ LABEL_8:
   return 0;
 }
 
-- (id)acquireCaptureButtonSuppressionAssertionWithOptions:(unint64_t)a3 reason:(id)a4
+- (id)acquireCaptureButtonSuppressionAssertionWithOptions:(unint64_t)options reason:(id)reason
 {
   v5 = SBApp;
-  v6 = a4;
-  v7 = [v5 captureButtonRestrictionCoordinator];
-  v8 = [v7 inhibitCaptureButtonActionAssertionWithReason:v6 options:a3];
+  reasonCopy = reason;
+  captureButtonRestrictionCoordinator = [v5 captureButtonRestrictionCoordinator];
+  v8 = [captureButtonRestrictionCoordinator inhibitCaptureButtonActionAssertionWithReason:reasonCopy options:options];
 
   return v8;
 }
 
 - (void)init
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBUserAgent init]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
 
 - (void)activeInterfaceOrientation
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBUserAgent activeInterfaceOrientation]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
 
 - (void)foregroundApplicationDisplayID
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBUserAgent foregroundApplicationDisplayID]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
@@ -1467,49 +1467,49 @@ LABEL_8:
 
 - (void)springBoardIsActive
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBUserAgent springBoardIsActive]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
 
 - (void)deviceIsLocked
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBUserAgent deviceIsLocked]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
 
 - (void)deviceIsPasscodeLocked
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBUserAgent deviceIsPasscodeLocked]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
 
 - (void)deviceIsPasscodeLockedRemotely
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBUserAgent deviceIsPasscodeLockedRemotely]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
 
 - (void)deviceIsBlocked
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBUserAgent deviceIsBlocked]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
 
 - (void)deviceIsTethered
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBUserAgent deviceIsTethered]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
 
 - (void)lockScreenIsShowing
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBUserAgent lockScreenIsShowing]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
@@ -1590,7 +1590,7 @@ void __68__SBUserAgent__openApplication_withURL_fromSource_animated_options___bl
 
 - (void)isScreenOn
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBUserAgent isScreenOn]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
@@ -1695,14 +1695,14 @@ void __68__SBUserAgent__openApplication_withURL_fromSource_animated_options___bl
 
 - (void)isInternalInstall
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBUserAgent isInternalInstall]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
 
 - (void)topSuspendedEventsOnlyDisplayID
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBUserAgent topSuspendedEventsOnlyDisplayID]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }

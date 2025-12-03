@@ -4,8 +4,8 @@
 - (id)_getRemoteServiceProxyObject;
 - (void)_createClientConnection;
 - (void)dealloc;
-- (void)didFinishSpeakerRecognition:(id)a3;
-- (void)didReceiveSpeakerRecognitionScoreCard:(id)a3;
+- (void)didFinishSpeakerRecognition:(id)recognition;
+- (void)didReceiveSpeakerRecognitionScoreCard:(id)card;
 - (void)invalidate;
 - (void)startXPCConnection;
 @end
@@ -19,10 +19,10 @@
   return WeakRetained;
 }
 
-- (void)didFinishSpeakerRecognition:(id)a3
+- (void)didFinishSpeakerRecognition:(id)recognition
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recognitionCopy = recognition;
   v5 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
   {
@@ -37,8 +37,8 @@
   v9[2] = __46__CSSSRXPCClient_didFinishSpeakerRecognition___block_invoke;
   v9[3] = &unk_2784C6FA8;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = recognitionCopy;
+  v7 = recognitionCopy;
   dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -56,10 +56,10 @@ void __46__CSSSRXPCClient_didFinishSpeakerRecognition___block_invoke(uint64_t a1
   }
 }
 
-- (void)didReceiveSpeakerRecognitionScoreCard:(id)a3
+- (void)didReceiveSpeakerRecognitionScoreCard:(id)card
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cardCopy = card;
   v5 = MEMORY[0x277D015D8];
   v6 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
@@ -69,7 +69,7 @@ void __46__CSSSRXPCClient_didFinishSpeakerRecognition___block_invoke(uint64_t a1
     _os_log_impl(&dword_222E4D000, v6, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
   }
 
-  if (v4)
+  if (cardCopy)
   {
     queue = self->_queue;
     v10[0] = MEMORY[0x277D85DD0];
@@ -77,7 +77,7 @@ void __46__CSSSRXPCClient_didFinishSpeakerRecognition___block_invoke(uint64_t a1
     v10[2] = __56__CSSSRXPCClient_didReceiveSpeakerRecognitionScoreCard___block_invoke;
     v10[3] = &unk_2784C6FA8;
     v10[4] = self;
-    v11 = v4;
+    v11 = cardCopy;
     dispatch_async(queue, v10);
   }
 
@@ -362,9 +362,9 @@ LABEL_5:
   xpcConnectionQueue = v2->_xpcConnectionQueue;
   v2->_xpcConnectionQueue = v5;
 
-  v7 = [(CSSSRXPCClient *)v2 _getRemoteServiceProxyObject];
+  _getRemoteServiceProxyObject = [(CSSSRXPCClient *)v2 _getRemoteServiceProxyObject];
   remoteObjectProxy = v2->_remoteObjectProxy;
-  v2->_remoteObjectProxy = v7;
+  v2->_remoteObjectProxy = _getRemoteServiceProxyObject;
 
   v9 = *MEMORY[0x277D015D8];
   v10 = *MEMORY[0x277D015D8];

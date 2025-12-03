@@ -1,30 +1,30 @@
 @interface HDMaintenanceWorkCoordinator
-- (BOOL)startNextOperationWithNameImmediately:(id)a3;
+- (BOOL)startNextOperationWithNameImmediately:(id)immediately;
 - (BOOL)suspended;
-- (HDMaintenanceWorkCoordinator)initWithAnalyticsCoordinator:(id)a3 contentProtectionManager:(id)a4;
+- (HDMaintenanceWorkCoordinator)initWithAnalyticsCoordinator:(id)coordinator contentProtectionManager:(id)manager;
 - (id)diagnosticDescription;
-- (id)takeMaintenanceSuspensionAssertionForOwner:(id)a3;
+- (id)takeMaintenanceSuspensionAssertionForOwner:(id)owner;
 - (unint64_t)pendingCount;
 - (void)_lock_cancelActiveTimeoutTimer;
 - (void)_lock_considerStartingNextPendingOperation;
-- (void)_lock_moveOperationFromPendingToActive:(uint64_t)a1;
-- (void)_lock_prepareToStartOperationImmediately:(const os_unfair_lock *)a1;
+- (void)_lock_moveOperationFromPendingToActive:(uint64_t)active;
+- (void)_lock_prepareToStartOperationImmediately:(const os_unfair_lock *)immediately;
 - (void)_lock_startTimeoutTimerForActiveOperations;
-- (void)assertionManager:(id)a3 assertionInvalidated:(id)a4;
+- (void)assertionManager:(id)manager assertionInvalidated:(id)invalidated;
 - (void)cancelAllOperations;
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4;
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state;
 - (void)dealloc;
-- (void)enqueueMaintenanceOperation:(id)a3;
-- (void)operationDidFinish:(id)a3;
-- (void)startOperationImmediately:(id)a3;
+- (void)enqueueMaintenanceOperation:(id)operation;
+- (void)operationDidFinish:(id)finish;
+- (void)startOperationImmediately:(id)immediately;
 @end
 
 @implementation HDMaintenanceWorkCoordinator
 
-- (HDMaintenanceWorkCoordinator)initWithAnalyticsCoordinator:(id)a3 contentProtectionManager:(id)a4
+- (HDMaintenanceWorkCoordinator)initWithAnalyticsCoordinator:(id)coordinator contentProtectionManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  managerCopy = manager;
   v23.receiver = self;
   v23.super_class = HDMaintenanceWorkCoordinator;
   v9 = [(HDMaintenanceWorkCoordinator *)&v23 init];
@@ -55,9 +55,9 @@
     v9->_assertionManager = v20;
 
     [(HDAssertionManager *)v9->_assertionManager addObserver:v9 forAssertionIdentifier:@"_HDMaintenanceWorkCoordinatorSuspensionAssertion;" queue:v9->_managementQueue];
-    objc_storeStrong(&v9->_analyticsCoordinator, a3);
-    objc_storeWeak(&v9->_contentProtectionManager, v8);
-    [v8 addContentProtectionObserver:v9 withQueue:v9->_managementQueue];
+    objc_storeStrong(&v9->_analyticsCoordinator, coordinator);
+    objc_storeWeak(&v9->_contentProtectionManager, managerCopy);
+    [managerCopy addContentProtectionObserver:v9 withQueue:v9->_managementQueue];
     v9->_lock._os_unfair_lock_opaque = 0;
   }
 
@@ -76,14 +76,14 @@
 
 - (void)_lock_cancelActiveTimeoutTimer
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 64);
+    v2 = *(self + 64);
     if (v2)
     {
       dispatch_source_cancel(v2);
-      v3 = *(a1 + 64);
-      *(a1 + 64) = 0;
+      v3 = *(self + 64);
+      *(self + 64) = 0;
     }
   }
 }
@@ -105,12 +105,12 @@
   return v4 + v3;
 }
 
-- (void)enqueueMaintenanceOperation:(id)a3
+- (void)enqueueMaintenanceOperation:(id)operation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  operationCopy = operation;
   os_unfair_lock_lock(&self->_lock);
-  [v4 setEnqueuedTime:CFAbsoluteTimeGetCurrent()];
+  [operationCopy setEnqueuedTime:CFAbsoluteTimeGetCurrent()];
   if (self->_suspended)
   {
     _HKInitializeLogging();
@@ -121,7 +121,7 @@
     }
 
     v16 = 138543362;
-    v17 = v4;
+    v17 = operationCopy;
     v6 = "%{public}@: Enqueued (suspended)";
   }
 
@@ -142,7 +142,7 @@
       v10 = [(NSMutableArray *)self->_pendingLockingOperations count];
       activeOperations = self->_activeOperations;
       v16 = 138544130;
-      v17 = v4;
+      v17 = operationCopy;
       v18 = 2050;
       v19 = v9;
       v20 = 2050;
@@ -161,7 +161,7 @@
     }
 
     v16 = 138543362;
-    v17 = v4;
+    v17 = operationCopy;
     v6 = "%{public}@: Enqueued for immediate start";
   }
 
@@ -171,15 +171,15 @@ LABEL_10:
   _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_DEFAULT, v6, &v16, v13);
 LABEL_11:
 
-  v14 = [v4 executionPoint];
-  if (v14 == 1)
+  executionPoint = [operationCopy executionPoint];
+  if (executionPoint == 1)
   {
-    [(NSMutableArray *)self->_pendingLockingOperations addObject:v4];
+    [(NSMutableArray *)self->_pendingLockingOperations addObject:operationCopy];
   }
 
-  else if (!v14)
+  else if (!executionPoint)
   {
-    [(NSMutableArray *)self->_pendingOperations addObject:v4];
+    [(NSMutableArray *)self->_pendingOperations addObject:operationCopy];
     [(HDMaintenanceWorkCoordinator *)self _lock_considerStartingNextPendingOperation];
   }
 
@@ -190,23 +190,23 @@ LABEL_11:
 
 - (void)_lock_considerStartingNextPendingOperation
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 8));
-    if (![*(a1 + 56) count] && (*(a1 + 32) & 1) == 0)
+    os_unfair_lock_assert_owner((self + 8));
+    if (![*(self + 56) count] && (*(self + 32) & 1) == 0)
     {
-      if ((WeakRetained = objc_loadWeakRetained((a1 + 88)), v3 = [WeakRetained observedState], WeakRetained, v3 == 3) && (objc_msgSend(*(a1 + 48), "firstObject"), (v4 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(*(a1 + 40), "firstObject"), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+      if ((WeakRetained = objc_loadWeakRetained((self + 88)), v3 = [WeakRetained observedState], WeakRetained, v3 == 3) && (objc_msgSend(*(self + 48), "firstObject"), (v4 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(*(self + 40), "firstObject"), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v5 = v4;
-        [(HDMaintenanceWorkCoordinator *)a1 _lock_moveOperationFromPendingToActive:v4];
-        [(HDMaintenanceWorkCoordinator *)a1 _lock_startTimeoutTimerForActiveOperations];
-        v6 = *(a1 + 24);
+        [(HDMaintenanceWorkCoordinator *)self _lock_moveOperationFromPendingToActive:v4];
+        [(HDMaintenanceWorkCoordinator *)self _lock_startTimeoutTimerForActiveOperations];
+        v6 = *(self + 24);
         v8[0] = MEMORY[0x277D85DD0];
         v8[1] = 3221225472;
         v8[2] = __74__HDMaintenanceWorkCoordinator__lock_considerStartingNextPendingOperation__block_invoke;
         v8[3] = &unk_278613920;
         v9 = v5;
-        v10 = a1;
+        selfCopy = self;
         v7 = v5;
         dispatch_async(v6, v8);
       }
@@ -214,22 +214,22 @@ LABEL_11:
   }
 }
 
-- (void)startOperationImmediately:(id)a3
+- (void)startOperationImmediately:(id)immediately
 {
-  v4 = a3;
+  immediatelyCopy = immediately;
   os_unfair_lock_lock(&self->_lock);
-  [(HDMaintenanceWorkCoordinator *)self _lock_prepareToStartOperationImmediately:v4];
+  [(HDMaintenanceWorkCoordinator *)self _lock_prepareToStartOperationImmediately:immediatelyCopy];
   os_unfair_lock_unlock(&self->_lock);
-  [v4 startWithCompletionDelegate:self fromImmediateRequest:1];
+  [immediatelyCopy startWithCompletionDelegate:self fromImmediateRequest:1];
 }
 
-- (void)_lock_prepareToStartOperationImmediately:(const os_unfair_lock *)a1
+- (void)_lock_prepareToStartOperationImmediately:(const os_unfair_lock *)immediately
 {
   v8 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (immediately)
   {
-    os_unfair_lock_assert_owner(a1 + 2);
+    os_unfair_lock_assert_owner(immediately + 2);
     _HKInitializeLogging();
     v4 = HKLogInfrastructure();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -239,24 +239,24 @@ LABEL_11:
       _os_log_impl(&dword_228986000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Running immediately", &v6, 0xCu);
     }
 
-    [(HDMaintenanceWorkCoordinator *)a1 _lock_moveOperationFromPendingToActive:v3];
-    [(HDMaintenanceWorkCoordinator *)a1 _lock_startTimeoutTimerForActiveOperations];
+    [(HDMaintenanceWorkCoordinator *)immediately _lock_moveOperationFromPendingToActive:v3];
+    [(HDMaintenanceWorkCoordinator *)immediately _lock_startTimeoutTimerForActiveOperations];
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)startNextOperationWithNameImmediately:(id)a3
+- (BOOL)startNextOperationWithNameImmediately:(id)immediately
 {
-  v4 = a3;
+  immediatelyCopy = immediately;
   os_unfair_lock_lock(&self->_lock);
   pendingOperations = self->_pendingOperations;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__HDMaintenanceWorkCoordinator_startNextOperationWithNameImmediately___block_invoke;
   v9[3] = &unk_278623AD8;
-  v10 = v4;
-  v6 = v4;
+  v10 = immediatelyCopy;
+  v6 = immediatelyCopy;
   v7 = [(NSMutableArray *)pendingOperations hk_firstObjectPassingTest:v9];
   if (v7)
   {
@@ -354,28 +354,28 @@ uint64_t __70__HDMaintenanceWorkCoordinator_startNextOperationWithNameImmediatel
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_lock_moveOperationFromPendingToActive:(uint64_t)a1
+- (void)_lock_moveOperationFromPendingToActive:(uint64_t)active
 {
   v6 = a2;
-  os_unfair_lock_assert_owner((a1 + 8));
-  [*(a1 + 56) addObject:v6];
-  v3 = [v6 executionPoint];
-  if (v3 == 1)
+  os_unfair_lock_assert_owner((active + 8));
+  [*(active + 56) addObject:v6];
+  executionPoint = [v6 executionPoint];
+  if (executionPoint == 1)
   {
-    v4 = *(a1 + 48);
+    v4 = *(active + 48);
     goto LABEL_5;
   }
 
-  if (!v3)
+  if (!executionPoint)
   {
-    v4 = *(a1 + 40);
+    v4 = *(active + 40);
 LABEL_5:
     [v4 removeObject:v6];
     goto LABEL_7;
   }
 
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:sel__lock_moveOperationFromPendingToActive_ object:a1 file:@"HDMaintenanceWorkCoordinator.m" lineNumber:301 description:@"Invalid HDMaintenanceOperation executionPoint"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:sel__lock_moveOperationFromPendingToActive_ object:active file:@"HDMaintenanceWorkCoordinator.m" lineNumber:301 description:@"Invalid HDMaintenanceOperation executionPoint"];
 
 LABEL_7:
 }
@@ -383,17 +383,17 @@ LABEL_7:
 - (void)_lock_startTimeoutTimerForActiveOperations
 {
   location[16] = *MEMORY[0x277D85DE8];
-  os_unfair_lock_assert_owner((a1 + 8));
-  if ([*(a1 + 56) count])
+  os_unfair_lock_assert_owner((self + 8));
+  if ([*(self + 56) count])
   {
-    if (!*(a1 + 64))
+    if (!*(self + 64))
     {
-      v2 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, *(a1 + 16));
-      v3 = *(a1 + 64);
-      *(a1 + 64) = v2;
+      v2 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, *(self + 16));
+      v3 = *(self + 64);
+      *(self + 64) = v2;
 
-      objc_initWeak(location, a1);
-      v4 = *(a1 + 64);
+      objc_initWeak(location, self);
+      v4 = *(self + 64);
       handler[0] = MEMORY[0x277D85DD0];
       handler[1] = 3221225472;
       handler[2] = __74__HDMaintenanceWorkCoordinator__lock_startTimeoutTimerForActiveOperations__block_invoke;
@@ -404,13 +404,13 @@ LABEL_7:
       objc_destroyWeak(location);
     }
 
-    os_unfair_lock_assert_owner((a1 + 8));
+    os_unfair_lock_assert_owner((self + 8));
     Current = CFAbsoluteTimeGetCurrent();
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v6 = *(a1 + 56);
+    v6 = *(self + 56);
     v7 = [v6 countByEnumeratingWithState:&v20 objects:location count:16];
     if (v7)
     {
@@ -445,10 +445,10 @@ LABEL_7:
     }
 
     v14 = v10 - Current;
-    v15 = *(a1 + 64);
+    v15 = *(self + 64);
     v16 = dispatch_time(0, (v14 * 1000000000.0));
     dispatch_source_set_timer(v15, v16, (v14 * 1000000000.0), (v14 * 0.25 * 1000000000.0));
-    dispatch_activate(*(a1 + 64));
+    dispatch_activate(*(self + 64));
     v17 = *MEMORY[0x277D85DE8];
   }
 
@@ -456,7 +456,7 @@ LABEL_7:
   {
     v13 = *MEMORY[0x277D85DE8];
 
-    [(HDMaintenanceWorkCoordinator *)a1 _lock_cancelActiveTimeoutTimer];
+    [(HDMaintenanceWorkCoordinator *)self _lock_cancelActiveTimeoutTimer];
   }
 }
 
@@ -555,12 +555,12 @@ void __74__HDMaintenanceWorkCoordinator__lock_startTimeoutTimerForActiveOperatio
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)takeMaintenanceSuspensionAssertionForOwner:(id)a3
+- (id)takeMaintenanceSuspensionAssertionForOwner:(id)owner
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  ownerCopy = owner;
   [(HDMaintenanceWorkCoordinator *)self willChangeValueForKey:@"suspended"];
-  v5 = [objc_alloc(MEMORY[0x277D10AB8]) initWithAssertionIdentifier:@"_HDMaintenanceWorkCoordinatorSuspensionAssertion;" ownerIdentifier:v4];
+  v5 = [objc_alloc(MEMORY[0x277D10AB8]) initWithAssertionIdentifier:@"_HDMaintenanceWorkCoordinatorSuspensionAssertion;" ownerIdentifier:ownerCopy];
 
   os_unfair_lock_lock(&self->_lock);
   self->_suspended = 1;
@@ -569,7 +569,7 @@ void __74__HDMaintenanceWorkCoordinator__lock_startTimeoutTimerForActiveOperatio
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
     v12 = v5;
     _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: HDMaintenanceWorkCoordinatorSuspensionAssertion taken. (%{public}@)", &v9, 0x16u);
@@ -583,13 +583,13 @@ void __74__HDMaintenanceWorkCoordinator__lock_startTimeoutTimerForActiveOperatio
   return v5;
 }
 
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state
 {
   os_unfair_lock_lock(&self->_lock);
   WeakRetained = objc_loadWeakRetained(&self->_contentProtectionManager);
-  v6 = [WeakRetained observedState];
+  observedState = [WeakRetained observedState];
 
-  if (v6 == 3)
+  if (observedState == 3)
   {
     [(HDMaintenanceWorkCoordinator *)self _lock_considerStartingNextPendingOperation];
   }
@@ -597,12 +597,12 @@ void __74__HDMaintenanceWorkCoordinator__lock_startTimeoutTimerForActiveOperatio
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)operationDidFinish:(id)a3
+- (void)operationDidFinish:(id)finish
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  finishCopy = finish;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_activeOperations removeObject:v4];
+  [(NSMutableSet *)self->_activeOperations removeObject:finishCopy];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = @"unknown";
@@ -617,24 +617,24 @@ void __74__HDMaintenanceWorkCoordinator__lock_startTimeoutTimerForActiveOperatio
   analyticsCoordinator = self->_analyticsCoordinator;
   if (analyticsCoordinator)
   {
-    v10 = [v4 name];
+    name = [finishCopy name];
     v36 = [(NSMutableArray *)self->_pendingOperations count];
     v35 = [(NSMutableSet *)self->_activeOperations count];
-    [v4 startedTime];
+    [finishCopy startedTime];
     v12 = v11;
-    [v4 enqueuedTime];
+    [finishCopy enqueuedTime];
     v14 = ((v12 - v13) * 1000.0);
-    v15 = [v4 wasCanceled];
-    v16 = [v4 didTimeOut];
-    [v4 elapsedTime];
+    wasCanceled = [finishCopy wasCanceled];
+    didTimeOut = [finishCopy didTimeOut];
+    [finishCopy elapsedTime];
     v18 = v7;
     v19 = (v17 * 1000.0);
     BYTE1(v34) = v8 & 1;
-    LOBYTE(v34) = [v4 isImmediateRequest];
+    LOBYTE(v34) = [finishCopy isImmediateRequest];
     v33 = v19;
     v7 = v18;
-    LOBYTE(v32) = v16;
-    [(HDAnalyticsSubmissionCoordinator *)analyticsCoordinator maintenanceCoordinator_reportCoreAnalyticsWithOperationName:v10 database:v18 pendingOperationsCount:v36 activeOperationsCount:v35 timeUntilStart:v14 canceled:v15 timedOut:v32 elapsedTime:v33 isImmediateRequest:v34 async:?];
+    LOBYTE(v32) = didTimeOut;
+    [(HDAnalyticsSubmissionCoordinator *)analyticsCoordinator maintenanceCoordinator_reportCoreAnalyticsWithOperationName:name database:v18 pendingOperationsCount:v36 activeOperationsCount:v35 timeUntilStart:v14 canceled:wasCanceled timedOut:v32 elapsedTime:v33 isImmediateRequest:v34 async:?];
   }
 
   else
@@ -645,21 +645,21 @@ void __74__HDMaintenanceWorkCoordinator__lock_startTimeoutTimerForActiveOperatio
     }
 
     _HKInitializeLogging();
-    v10 = HKLogInfrastructure();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    name = HKLogInfrastructure();
+    if (os_log_type_enabled(name, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v4 name];
+      name2 = [finishCopy name];
       v23 = [(NSMutableArray *)self->_pendingOperations count];
       v24 = [(NSMutableSet *)self->_activeOperations count];
-      [v4 startedTime];
+      [finishCopy startedTime];
       v26 = v25;
-      [v4 enqueuedTime];
+      [finishCopy enqueuedTime];
       v28 = (v26 - v27) * 1000.0;
-      v29 = [v4 wasCanceled];
-      v30 = [v4 didTimeOut];
-      [v4 elapsedTime];
+      wasCanceled2 = [finishCopy wasCanceled];
+      didTimeOut2 = [finishCopy didTimeOut];
+      [finishCopy elapsedTime];
       *buf = 138414594;
-      v38 = v22;
+      v38 = name2;
       v39 = 2112;
       v40 = v7;
       v41 = 2048;
@@ -669,36 +669,36 @@ void __74__HDMaintenanceWorkCoordinator__lock_startTimeoutTimerForActiveOperatio
       v45 = 2048;
       v46 = v28;
       v47 = 1024;
-      v48 = v29;
+      v48 = wasCanceled2;
       v49 = 1024;
-      v50 = v30;
+      v50 = didTimeOut2;
       v51 = 2048;
       v52 = v31 * 1000.0;
       v53 = 1024;
-      v54 = [v4 isImmediateRequest];
+      isImmediateRequest = [finishCopy isImmediateRequest];
       v55 = 1024;
       v56 = v8 & 1;
-      _os_log_error_impl(&dword_228986000, v10, OS_LOG_TYPE_ERROR, "Analytics coordinator unexpectedly nil\n                                                         Operation Name: %@\n                                                         Database Protection: %@\n                                                         Pending Operations Count: %lu\n                                                         Acitve Operations Count: %lu\n                                                         Time Until Start (sec): %.2f\n                                                         Was Canceled: %i\n                                                         Did Time Out: %i\n                                                         Elapsed Time: %.2f\n                                                         Is Immediate Request: %i\n                                                         Async: %i\n", buf, 0x56u);
+      _os_log_error_impl(&dword_228986000, name, OS_LOG_TYPE_ERROR, "Analytics coordinator unexpectedly nil\n                                                         Operation Name: %@\n                                                         Database Protection: %@\n                                                         Pending Operations Count: %lu\n                                                         Acitve Operations Count: %lu\n                                                         Time Until Start (sec): %.2f\n                                                         Was Canceled: %i\n                                                         Did Time Out: %i\n                                                         Elapsed Time: %.2f\n                                                         Is Immediate Request: %i\n                                                         Async: %i\n", buf, 0x56u);
     }
   }
 
 LABEL_7:
   [(HDMaintenanceWorkCoordinator *)self _lock_considerStartingNextPendingOperation];
-  v20 = [v4 daemonTransaction];
-  [v20 invalidate];
+  daemonTransaction = [finishCopy daemonTransaction];
+  [daemonTransaction invalidate];
 
   os_unfair_lock_unlock(&self->_lock);
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assertionManager:(id)a3 assertionInvalidated:(id)a4
+- (void)assertionManager:(id)manager assertionInvalidated:(id)invalidated
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  invalidatedCopy = invalidated;
+  managerCopy = manager;
   [(HDMaintenanceWorkCoordinator *)self willChangeValueForKey:@"suspended"];
   os_unfair_lock_lock(&self->_lock);
-  v8 = [v7 hasActiveAssertionForIdentifier:@"_HDMaintenanceWorkCoordinatorSuspensionAssertion;"];
+  v8 = [managerCopy hasActiveAssertionForIdentifier:@"_HDMaintenanceWorkCoordinatorSuspensionAssertion;"];
 
   self->_suspended = v8;
   _HKInitializeLogging();
@@ -717,9 +717,9 @@ LABEL_7:
       v11 = @"no longer";
     }
 
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
-    v16 = v6;
+    v16 = invalidatedCopy;
     v17 = 2114;
     v18 = v11;
     _os_log_impl(&dword_228986000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: HDMaintenanceWorkCoordinatorSuspensionAssertion released. (%{public}@). MWC %{public}@ suspended.", &v13, 0x20u);
@@ -756,8 +756,8 @@ LABEL_7:
   {
     v6 = [(HDAssertionManager *)self->_assertionManager activeAssertionsForIdentifier:@"_HDMaintenanceWorkCoordinatorSuspensionAssertion"];;
     v7 = [v6 hk_map:&__block_literal_global_131];
-    v8 = [v7 allObjects];
-    v9 = [v8 componentsJoinedByString:{@", "}];
+    allObjects = [v7 allObjects];
+    v9 = [allObjects componentsJoinedByString:{@", "}];
 
     [v5 appendFormat:@" SUSPENDED (%@)", v9];
   }

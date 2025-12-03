@@ -1,22 +1,22 @@
 @interface VMUAnalyzerSummaryField
 - (NSString)formattedValue;
-- (VMUAnalyzerSummaryField)initWithKey:(id)a3 numericalValue:(unint64_t)a4 objectValue:(id)a5 fieldType:(int)a6;
+- (VMUAnalyzerSummaryField)initWithKey:(id)key numericalValue:(unint64_t)value objectValue:(id)objectValue fieldType:(int)type;
 @end
 
 @implementation VMUAnalyzerSummaryField
 
-- (VMUAnalyzerSummaryField)initWithKey:(id)a3 numericalValue:(unint64_t)a4 objectValue:(id)a5 fieldType:(int)a6
+- (VMUAnalyzerSummaryField)initWithKey:(id)key numericalValue:(unint64_t)value objectValue:(id)objectValue fieldType:(int)type
 {
-  v11 = a3;
-  v12 = a5;
+  keyCopy = key;
+  objectValueCopy = objectValue;
   v13 = [(VMUAnalyzerSummaryField *)self init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_key, a3);
-    v14->_numericalValue = a4;
-    objc_storeStrong(&v14->_objectValue, a5);
-    v14->_fieldType = a6;
+    objc_storeStrong(&v13->_key, key);
+    v14->_numericalValue = value;
+    objc_storeStrong(&v14->_objectValue, objectValue);
+    v14->_fieldType = type;
   }
 
   return v14;

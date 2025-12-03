@@ -1,32 +1,32 @@
 @interface IDSEngramKeyStore
 + (id)_keychainIdentifier;
-- (IDSEngramKeyStore)initWithQueue:(id)a3;
+- (IDSEngramKeyStore)initWithQueue:(id)queue;
 - (id)accountIdentityElector;
-- (id)rollFullDeviceIdentityWithCluster:(id)a3 error:(id *)a4;
-- (void)accountIdentityClusterForRegistrationWithCompletion:(id)a3;
-- (void)addListener:(id)a3;
-- (void)existingAccountIdentityClusterWithCompletion:(id)a3;
-- (void)existingFullDeviceIdentityWithCompletion:(id)a3;
+- (id)rollFullDeviceIdentityWithCluster:(id)cluster error:(id *)error;
+- (void)accountIdentityClusterForRegistrationWithCompletion:(id)completion;
+- (void)addListener:(id)listener;
+- (void)existingAccountIdentityClusterWithCompletion:(id)completion;
+- (void)existingFullDeviceIdentityWithCompletion:(id)completion;
 - (void)notifyListenersEngramKeyStoreDidUpdateIdentities;
-- (void)removeListener:(id)a3;
-- (void)rollAccountIdentityWithCompletion:(id)a3;
+- (void)removeListener:(id)listener;
+- (void)rollAccountIdentityWithCompletion:(id)completion;
 @end
 
 @implementation IDSEngramKeyStore
 
-- (IDSEngramKeyStore)initWithQueue:(id)a3
+- (IDSEngramKeyStore)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = IDSEngramKeyStore;
   v6 = [(IDSEngramKeyStore *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     if (+[IMUserDefaults isEngramEnabled])
     {
-      v8 = [[IDSCloudKitContainer alloc] initWithIdentifier:@"iCloud.com.apple.Engram.Development" queue:v5];
+      v8 = [[IDSCloudKitContainer alloc] initWithIdentifier:@"iCloud.com.apple.Engram.Development" queue:queueCopy];
       ckContainer = v7->_ckContainer;
       v7->_ckContainer = v8;
     }
@@ -46,23 +46,23 @@
 - (id)accountIdentityElector
 {
   v3 = [IDSKeychainKeyElectionStore alloc];
-  v4 = [(IDSEngramKeyStore *)self keychainWrapper];
-  v5 = [(IDSKeychainKeyElectionStore *)v3 initWithKeychainWrapper:v4];
+  keychainWrapper = [(IDSEngramKeyStore *)self keychainWrapper];
+  v5 = [(IDSKeychainKeyElectionStore *)v3 initWithKeychainWrapper:keychainWrapper];
 
-  v6 = [(IDSEngramKeyStore *)self ckContainer];
-  v7 = [v6 keyElectionStore];
+  ckContainer = [(IDSEngramKeyStore *)self ckContainer];
+  keyElectionStore = [ckContainer keyElectionStore];
 
   v8 = objc_alloc_init(IDSGroupServerKeyElectionStore);
-  v9 = [[IDSAccountIdentityElector alloc] initWithKeychainElectionStore:v5 cloudKitElectionStore:v7 groupServerElectionStore:v8];
+  v9 = [[IDSAccountIdentityElector alloc] initWithKeychainElectionStore:v5 cloudKitElectionStore:keyElectionStore groupServerElectionStore:v8];
 
   return v9;
 }
 
-- (void)accountIdentityClusterForRegistrationWithCompletion:(id)a3
+- (void)accountIdentityClusterForRegistrationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IDSEngramKeyStore *)self queue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  queue = [(IDSEngramKeyStore *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = +[IMRGLog engram];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -72,19 +72,19 @@
   }
 
   v7 = [CUTPromiseSeal alloc];
-  v8 = [(IDSEngramKeyStore *)self queue];
-  v9 = [v7 initWithQueue:v8];
+  queue2 = [(IDSEngramKeyStore *)self queue];
+  v9 = [v7 initWithQueue:queue2];
   [(IDSEngramKeyStore *)self setSeal:v9];
 
   if ([(IDSEngramKeyStore *)self isEngramEnabled])
   {
-    v10 = [(IDSEngramKeyStore *)self accountIdentityElector];
+    accountIdentityElector = [(IDSEngramKeyStore *)self accountIdentityElector];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_10044598C;
     v19[3] = &unk_100BDC538;
     v19[4] = self;
-    [v10 getKeysForServiceTypeName:IDSMPServiceIdentityTypeNameA completion:v19];
+    [accountIdentityElector getKeysForServiceTypeName:IDSMPServiceIdentityTypeNameA completion:v19];
   }
 
   else
@@ -92,59 +92,59 @@
     v22 = NSLocalizedDescriptionKey;
     v23 = @"Engram is disabled on this device";
     v11 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-    v10 = [NSError errorWithDomain:@"IDSEngramKeyStoreErrorDomain" code:-2000 userInfo:v11];
+    accountIdentityElector = [NSError errorWithDomain:@"IDSEngramKeyStoreErrorDomain" code:-2000 userInfo:v11];
 
     v12 = +[IMRGLog engram];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v21 = v10;
+      v21 = accountIdentityElector;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Engram inactive -- not fetching {error: %{public}@}", buf, 0xCu);
     }
 
-    v13 = [(IDSEngramKeyStore *)self seal];
-    [v13 failWithError:v10];
+    seal = [(IDSEngramKeyStore *)self seal];
+    [seal failWithError:accountIdentityElector];
   }
 
-  v14 = [(IDSEngramKeyStore *)self seal];
-  v15 = [v14 promise];
+  seal2 = [(IDSEngramKeyStore *)self seal];
+  promise = [seal2 promise];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100445B34;
   v17[3] = &unk_100BD9940;
-  v18 = v4;
-  v16 = v4;
-  [v15 registerResultBlock:v17];
+  v18 = completionCopy;
+  v16 = completionCopy;
+  [promise registerResultBlock:v17];
 }
 
-- (void)existingAccountIdentityClusterWithCompletion:(id)a3
+- (void)existingAccountIdentityClusterWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IDSEngramKeyStore *)self queue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  queue = [(IDSEngramKeyStore *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(IDSEngramKeyStore *)self seal];
+  seal = [(IDSEngramKeyStore *)self seal];
 
-  if (!v6)
+  if (!seal)
   {
     v7 = [CUTPromiseSeal alloc];
-    v8 = [(IDSEngramKeyStore *)self queue];
-    v9 = [v7 initWithQueue:v8];
+    queue2 = [(IDSEngramKeyStore *)self queue];
+    v9 = [v7 initWithQueue:queue2];
     [(IDSEngramKeyStore *)self setSeal:v9];
 
     if ([(IDSEngramKeyStore *)self isEngramEnabled])
     {
-      v10 = [(IDSEngramKeyStore *)self seal];
-      v11 = [(IDSEngramKeyStore *)self accountIdentityElector];
+      seal2 = [(IDSEngramKeyStore *)self seal];
+      accountIdentityElector = [(IDSEngramKeyStore *)self accountIdentityElector];
       v12 = IDSMPServiceIdentityTypeNameA;
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_100445ECC;
       v21[3] = &unk_100BDC560;
       v21[4] = self;
-      v22 = v10;
-      v13 = v10;
-      [v11 getKeysForServiceTypeName:v12 completion:v21];
+      v22 = seal2;
+      seal3 = seal2;
+      [accountIdentityElector getKeysForServiceTypeName:v12 completion:v21];
     }
 
     else
@@ -152,46 +152,46 @@
       v25 = NSLocalizedDescriptionKey;
       v26 = @"Engram is disabled on this device. Update UserDefaults as described in IMUserDefaults";
       v14 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-      v11 = [NSError errorWithDomain:@"IDSEngramKeyStoreErrorDomain" code:-2000 userInfo:v14];
+      accountIdentityElector = [NSError errorWithDomain:@"IDSEngramKeyStoreErrorDomain" code:-2000 userInfo:v14];
 
       v15 = +[IMRGLog engram];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v24 = v11;
+        v24 = accountIdentityElector;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Tried to get account identity cluster with Engram disabled {error: %{public}@}", buf, 0xCu);
       }
 
-      v13 = [(IDSEngramKeyStore *)self seal];
-      [v13 failWithError:v11];
+      seal3 = [(IDSEngramKeyStore *)self seal];
+      [seal3 failWithError:accountIdentityElector];
     }
   }
 
-  v16 = [(IDSEngramKeyStore *)self seal];
-  v17 = [v16 promise];
+  seal4 = [(IDSEngramKeyStore *)self seal];
+  promise = [seal4 promise];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100446064;
   v19[3] = &unk_100BD9940;
-  v20 = v4;
-  v18 = v4;
-  [v17 registerResultBlock:v19];
+  v20 = completionCopy;
+  v18 = completionCopy;
+  [promise registerResultBlock:v19];
 }
 
-- (id)rollFullDeviceIdentityWithCluster:(id)a3 error:(id *)a4
+- (id)rollFullDeviceIdentityWithCluster:(id)cluster error:(id *)error
 {
-  v6 = a3;
-  v7 = [(IDSEngramKeyStore *)self queue];
-  dispatch_assert_queue_V2(v7);
+  clusterCopy = cluster;
+  queue = [(IDSEngramKeyStore *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = [v6 adminServiceIdentityWithType:1];
+  v8 = [clusterCopy adminServiceIdentityWithType:1];
 
-  v9 = [IDSMPFullDeviceIdentity deviceIdentityWithFullAdminServiceIdentity:v8 error:a4];
+  v9 = [IDSMPFullDeviceIdentity deviceIdentityWithFullAdminServiceIdentity:v8 error:error];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 dataRepresentationWithError:a4];
-    if (v11 && (-[IDSEngramKeyStore keychainWrapper](self, "keychainWrapper"), v12 = objc_claimAutoreleasedReturnValue(), [objc_opt_class() _keychainIdentifier], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "saveData:forIdentifier:allowSync:dataProtectionClass:error:", v11, v13, 0, 2, a4), v13, v12, v14))
+    v11 = [v9 dataRepresentationWithError:error];
+    if (v11 && (-[IDSEngramKeyStore keychainWrapper](self, "keychainWrapper"), v12 = objc_claimAutoreleasedReturnValue(), [objc_opt_class() _keychainIdentifier], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "saveData:forIdentifier:allowSync:dataProtectionClass:error:", v11, v13, 0, 2, error), v13, v12, v14))
     {
       v15 = v10;
     }
@@ -210,11 +210,11 @@
   return v15;
 }
 
-- (void)existingFullDeviceIdentityWithCompletion:(id)a3
+- (void)existingFullDeviceIdentityWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IDSEngramKeyStore *)self queue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  queue = [(IDSEngramKeyStore *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = +[IMRGLog engram];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -228,23 +228,23 @@
   v8[2] = sub_100446344;
   v8[3] = &unk_100BDC588;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [(IDSEngramKeyStore *)self existingAccountIdentityClusterWithCompletion:v8];
 }
 
-- (void)rollAccountIdentityWithCompletion:(id)a3
+- (void)rollAccountIdentityWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IDSEngramKeyStore *)self queue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  queue = [(IDSEngramKeyStore *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v8 = NSLocalizedDescriptionKey;
   v9 = @"Account key rolling not implemented";
   v6 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   v7 = [NSError errorWithDomain:@"IDSEngramKeyStoreErrorDomain" code:-2000 userInfo:v6];
 
-  v4[2](v4, 0, v7);
+  completionCopy[2](completionCopy, 0, v7);
 }
 
 + (id)_keychainIdentifier
@@ -255,18 +255,18 @@
   return v3;
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v4 = a3;
-  v5 = [(IDSEngramKeyStore *)self listeners];
-  [v5 addObject:v4];
+  listenerCopy = listener;
+  listeners = [(IDSEngramKeyStore *)self listeners];
+  [listeners addObject:listenerCopy];
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
-  v5 = [(IDSEngramKeyStore *)self listeners];
-  [v5 removeObject:v4];
+  listenerCopy = listener;
+  listeners = [(IDSEngramKeyStore *)self listeners];
+  [listeners removeObject:listenerCopy];
 }
 
 - (void)notifyListenersEngramKeyStoreDidUpdateIdentities
@@ -274,9 +274,9 @@
   v3 = +[IMRGLog engram];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(IDSEngramKeyStore *)self listeners];
+    listeners = [(IDSEngramKeyStore *)self listeners];
     *buf = 138412290;
-    v17 = v4;
+    v17 = listeners;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Notifying Engram key store that identities did update {listeners: %@}", buf, 0xCu);
   }
 
@@ -284,8 +284,8 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(IDSEngramKeyStore *)self listeners];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  listeners2 = [(IDSEngramKeyStore *)self listeners];
+  v6 = [listeners2 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -297,7 +297,7 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(listeners2);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
@@ -310,7 +310,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [listeners2 countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);

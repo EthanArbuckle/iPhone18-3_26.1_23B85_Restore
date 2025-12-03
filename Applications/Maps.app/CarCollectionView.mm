@@ -1,11 +1,11 @@
 @interface CarCollectionView
-- (id)accessoryViewAtEdge:(int64_t)a3;
-- (void)setAccessoryView:(id)a3 atEdge:(int64_t)a4;
+- (id)accessoryViewAtEdge:(int64_t)edge;
+- (void)setAccessoryView:(id)view atEdge:(int64_t)edge;
 @end
 
 @implementation CarCollectionView
 
-- (id)accessoryViewAtEdge:(int64_t)a3
+- (id)accessoryViewAtEdge:(int64_t)edge
 {
   v5.receiver = self;
   v5.super_class = CarCollectionView;
@@ -14,15 +14,15 @@
   return v3;
 }
 
-- (void)setAccessoryView:(id)a3 atEdge:(int64_t)a4
+- (void)setAccessoryView:(id)view atEdge:(int64_t)edge
 {
-  v5 = a3;
+  viewCopy = view;
   v7.receiver = self;
   v7.super_class = CarCollectionView;
-  [(CarCollectionView *)&v7 setAccessoryView:v5 atEdge:4];
+  [(CarCollectionView *)&v7 setAccessoryView:viewCopy atEdge:4];
   if (GEOConfigGetBOOL())
   {
-    v6 = [v5 _mapsCar_injectBlurView];
+    _mapsCar_injectBlurView = [viewCopy _mapsCar_injectBlurView];
   }
 }
 

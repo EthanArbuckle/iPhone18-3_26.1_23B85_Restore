@@ -1,31 +1,31 @@
 @interface MTSchemaMTAppInvocationMetadata
-- (BOOL)isEqual:(id)a3;
-- (MTSchemaMTAppInvocationMetadata)initWithDictionary:(id)a3;
-- (MTSchemaMTAppInvocationMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTSchemaMTAppInvocationMetadata)initWithDictionary:(id)dictionary;
+- (MTSchemaMTAppInvocationMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAudioChannel:(BOOL)a3;
-- (void)setHasConversationTabView:(BOOL)a3;
-- (void)setHasIsGenderAlternativeEnabled:(BOOL)a3;
-- (void)setHasIsPlayTranslationsEnabled:(BOOL)a3;
-- (void)setHasTabName:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAudioChannel:(BOOL)channel;
+- (void)setHasConversationTabView:(BOOL)view;
+- (void)setHasIsGenderAlternativeEnabled:(BOOL)enabled;
+- (void)setHasIsPlayTranslationsEnabled:(BOOL)enabled;
+- (void)setHasTabName:(BOOL)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTSchemaMTAppInvocationMetadata
 
-- (MTSchemaMTAppInvocationMetadata)initWithDictionary:(id)a3
+- (MTSchemaMTAppInvocationMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = MTSchemaMTAppInvocationMetadata;
   v5 = [(MTSchemaMTAppInvocationMetadata *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"displayMode"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"displayMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
     }
 
     v21 = v6;
-    v7 = [v4 objectForKeyedSubscript:@"localePair"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"localePair"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,21 +41,21 @@
       [(MTSchemaMTAppInvocationMetadata *)v5 setLocalePair:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:{@"isGenderAlternativeEnabled", v7}];
+    v9 = [dictionaryCopy objectForKeyedSubscript:{@"isGenderAlternativeEnabled", v7}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MTSchemaMTAppInvocationMetadata setIsGenderAlternativeEnabled:](v5, "setIsGenderAlternativeEnabled:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"tabName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"tabName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MTSchemaMTAppInvocationMetadata setTabName:](v5, "setTabName:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"tabSessionId"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"tabSessionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -63,7 +63,7 @@
       [(MTSchemaMTAppInvocationMetadata *)v5 setTabSessionId:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"autoTranslateSessionId"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"autoTranslateSessionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,21 +71,21 @@
       [(MTSchemaMTAppInvocationMetadata *)v5 setAutoTranslateSessionId:v14];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"isPlayTranslationsEnabled"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"isPlayTranslationsEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MTSchemaMTAppInvocationMetadata setIsPlayTranslationsEnabled:](v5, "setIsPlayTranslationsEnabled:", [v15 BOOLValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"conversationTabView"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"conversationTabView"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MTSchemaMTAppInvocationMetadata setConversationTabView:](v5, "setConversationTabView:", [v16 intValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"audioChannel"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"audioChannel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,30 +98,30 @@
   return v5;
 }
 
-- (MTSchemaMTAppInvocationMetadata)initWithJSON:(id)a3
+- (MTSchemaMTAppInvocationMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MTSchemaMTAppInvocationMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MTSchemaMTAppInvocationMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MTSchemaMTAppInvocationMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -134,7 +134,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 0x20) != 0)
   {
     v4 = [(MTSchemaMTAppInvocationMetadata *)self audioChannel]- 1;
@@ -148,36 +148,36 @@
       v5 = off_1E78D9B38[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"audioChannel"];
+    [dictionary setObject:v5 forKeyedSubscript:@"audioChannel"];
   }
 
   if (self->_autoTranslateSessionId)
   {
-    v6 = [(MTSchemaMTAppInvocationMetadata *)self autoTranslateSessionId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    autoTranslateSessionId = [(MTSchemaMTAppInvocationMetadata *)self autoTranslateSessionId];
+    dictionaryRepresentation = [autoTranslateSessionId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"autoTranslateSessionId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"autoTranslateSessionId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"autoTranslateSessionId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"autoTranslateSessionId"];
     }
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    v10 = [(MTSchemaMTAppInvocationMetadata *)self conversationTabView];
+    conversationTabView = [(MTSchemaMTAppInvocationMetadata *)self conversationTabView];
     v11 = @"MTAPPCONVERSATIONTABVIEW_UNKNOWN";
-    if (v10 == 1)
+    if (conversationTabView == 1)
     {
       v11 = @"MTAPPCONVERSATIONTABVIEW_FACE_TO_FACE";
     }
 
-    if (v10 == 2)
+    if (conversationTabView == 2)
     {
       v12 = @"MTAPPCONVERSATIONTABVIEW_SIDE_BY_SIDE";
     }
@@ -187,7 +187,7 @@
       v12 = v11;
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"conversationTabView"];
+    [dictionary setObject:v12 forKeyedSubscript:@"conversationTabView"];
     has = self->_has;
   }
 
@@ -204,14 +204,14 @@
       v14 = off_1E78D9B60[v13];
     }
 
-    [v3 setObject:v14 forKeyedSubscript:@"displayMode"];
+    [dictionary setObject:v14 forKeyedSubscript:@"displayMode"];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[MTSchemaMTAppInvocationMetadata isGenderAlternativeEnabled](self, "isGenderAlternativeEnabled")}];
-    [v3 setObject:v15 forKeyedSubscript:@"isGenderAlternativeEnabled"];
+    [dictionary setObject:v15 forKeyedSubscript:@"isGenderAlternativeEnabled"];
 
     has = self->_has;
   }
@@ -219,22 +219,22 @@
   if ((has & 8) != 0)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[MTSchemaMTAppInvocationMetadata isPlayTranslationsEnabled](self, "isPlayTranslationsEnabled")}];
-    [v3 setObject:v16 forKeyedSubscript:@"isPlayTranslationsEnabled"];
+    [dictionary setObject:v16 forKeyedSubscript:@"isPlayTranslationsEnabled"];
   }
 
   if (self->_localePair)
   {
-    v17 = [(MTSchemaMTAppInvocationMetadata *)self localePair];
-    v18 = [v17 dictionaryRepresentation];
-    if (v18)
+    localePair = [(MTSchemaMTAppInvocationMetadata *)self localePair];
+    dictionaryRepresentation2 = [localePair dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"localePair"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"localePair"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"localePair"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"localePair"];
     }
   }
 
@@ -251,28 +251,28 @@
       v21 = off_1E78D9B78[v20];
     }
 
-    [v3 setObject:v21 forKeyedSubscript:@"tabName"];
+    [dictionary setObject:v21 forKeyedSubscript:@"tabName"];
   }
 
   if (self->_tabSessionId)
   {
-    v22 = [(MTSchemaMTAppInvocationMetadata *)self tabSessionId];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    tabSessionId = [(MTSchemaMTAppInvocationMetadata *)self tabSessionId];
+    dictionaryRepresentation3 = [tabSessionId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"tabSessionId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"tabSessionId"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"tabSessionId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"tabSessionId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -350,15 +350,15 @@ LABEL_12:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  if ((*&self->_has & 1) != (v4[60] & 1))
+  if ((*&self->_has & 1) != (equalCopy[60] & 1))
   {
     goto LABEL_27;
   }
@@ -366,26 +366,26 @@ LABEL_12:
   if (*&self->_has)
   {
     displayMode = self->_displayMode;
-    if (displayMode != [v4 displayMode])
+    if (displayMode != [equalCopy displayMode])
     {
       goto LABEL_27;
     }
   }
 
-  v6 = [(MTSchemaMTAppInvocationMetadata *)self localePair];
-  v7 = [v4 localePair];
-  if ((v6 != 0) == (v7 == 0))
+  localePair = [(MTSchemaMTAppInvocationMetadata *)self localePair];
+  localePair2 = [equalCopy localePair];
+  if ((localePair != 0) == (localePair2 == 0))
   {
     goto LABEL_26;
   }
 
-  v8 = [(MTSchemaMTAppInvocationMetadata *)self localePair];
-  if (v8)
+  localePair3 = [(MTSchemaMTAppInvocationMetadata *)self localePair];
+  if (localePair3)
   {
-    v9 = v8;
-    v10 = [(MTSchemaMTAppInvocationMetadata *)self localePair];
-    v11 = [v4 localePair];
-    v12 = [v10 isEqual:v11];
+    v9 = localePair3;
+    localePair4 = [(MTSchemaMTAppInvocationMetadata *)self localePair];
+    localePair5 = [equalCopy localePair];
+    v12 = [localePair4 isEqual:localePair5];
 
     if (!v12)
     {
@@ -399,7 +399,7 @@ LABEL_12:
 
   has = self->_has;
   v14 = (*&has >> 1) & 1;
-  v15 = v4[60];
+  v15 = equalCopy[60];
   if (v14 != ((v15 >> 1) & 1))
   {
     goto LABEL_27;
@@ -408,13 +408,13 @@ LABEL_12:
   if (v14)
   {
     isGenderAlternativeEnabled = self->_isGenderAlternativeEnabled;
-    if (isGenderAlternativeEnabled != [v4 isGenderAlternativeEnabled])
+    if (isGenderAlternativeEnabled != [equalCopy isGenderAlternativeEnabled])
     {
       goto LABEL_27;
     }
 
     has = self->_has;
-    v15 = v4[60];
+    v15 = equalCopy[60];
   }
 
   v17 = (*&has >> 2) & 1;
@@ -426,26 +426,26 @@ LABEL_12:
   if (v17)
   {
     tabName = self->_tabName;
-    if (tabName != [v4 tabName])
+    if (tabName != [equalCopy tabName])
     {
       goto LABEL_27;
     }
   }
 
-  v6 = [(MTSchemaMTAppInvocationMetadata *)self tabSessionId];
-  v7 = [v4 tabSessionId];
-  if ((v6 != 0) == (v7 == 0))
+  localePair = [(MTSchemaMTAppInvocationMetadata *)self tabSessionId];
+  localePair2 = [equalCopy tabSessionId];
+  if ((localePair != 0) == (localePair2 == 0))
   {
     goto LABEL_26;
   }
 
-  v19 = [(MTSchemaMTAppInvocationMetadata *)self tabSessionId];
-  if (v19)
+  tabSessionId = [(MTSchemaMTAppInvocationMetadata *)self tabSessionId];
+  if (tabSessionId)
   {
-    v20 = v19;
-    v21 = [(MTSchemaMTAppInvocationMetadata *)self tabSessionId];
-    v22 = [v4 tabSessionId];
-    v23 = [v21 isEqual:v22];
+    v20 = tabSessionId;
+    tabSessionId2 = [(MTSchemaMTAppInvocationMetadata *)self tabSessionId];
+    tabSessionId3 = [equalCopy tabSessionId];
+    v23 = [tabSessionId2 isEqual:tabSessionId3];
 
     if (!v23)
     {
@@ -457,22 +457,22 @@ LABEL_12:
   {
   }
 
-  v6 = [(MTSchemaMTAppInvocationMetadata *)self autoTranslateSessionId];
-  v7 = [v4 autoTranslateSessionId];
-  if ((v6 != 0) == (v7 == 0))
+  localePair = [(MTSchemaMTAppInvocationMetadata *)self autoTranslateSessionId];
+  localePair2 = [equalCopy autoTranslateSessionId];
+  if ((localePair != 0) == (localePair2 == 0))
   {
 LABEL_26:
 
     goto LABEL_27;
   }
 
-  v24 = [(MTSchemaMTAppInvocationMetadata *)self autoTranslateSessionId];
-  if (v24)
+  autoTranslateSessionId = [(MTSchemaMTAppInvocationMetadata *)self autoTranslateSessionId];
+  if (autoTranslateSessionId)
   {
-    v25 = v24;
-    v26 = [(MTSchemaMTAppInvocationMetadata *)self autoTranslateSessionId];
-    v27 = [v4 autoTranslateSessionId];
-    v28 = [v26 isEqual:v27];
+    v25 = autoTranslateSessionId;
+    autoTranslateSessionId2 = [(MTSchemaMTAppInvocationMetadata *)self autoTranslateSessionId];
+    autoTranslateSessionId3 = [equalCopy autoTranslateSessionId];
+    v28 = [autoTranslateSessionId2 isEqual:autoTranslateSessionId3];
 
     if (!v28)
     {
@@ -486,19 +486,19 @@ LABEL_26:
 
   v31 = self->_has;
   v32 = (*&v31 >> 3) & 1;
-  v33 = v4[60];
+  v33 = equalCopy[60];
   if (v32 == ((v33 >> 3) & 1))
   {
     if (v32)
     {
       isPlayTranslationsEnabled = self->_isPlayTranslationsEnabled;
-      if (isPlayTranslationsEnabled != [v4 isPlayTranslationsEnabled])
+      if (isPlayTranslationsEnabled != [equalCopy isPlayTranslationsEnabled])
       {
         goto LABEL_27;
       }
 
       v31 = self->_has;
-      v33 = v4[60];
+      v33 = equalCopy[60];
     }
 
     v35 = (*&v31 >> 4) & 1;
@@ -507,19 +507,19 @@ LABEL_26:
       if (v35)
       {
         conversationTabView = self->_conversationTabView;
-        if (conversationTabView != [v4 conversationTabView])
+        if (conversationTabView != [equalCopy conversationTabView])
         {
           goto LABEL_27;
         }
 
         v31 = self->_has;
-        v33 = v4[60];
+        v33 = equalCopy[60];
       }
 
       v37 = (*&v31 >> 5) & 1;
       if (v37 == ((v33 >> 5) & 1))
       {
-        if (!v37 || (audioChannel = self->_audioChannel, audioChannel == [v4 audioChannel]))
+        if (!v37 || (audioChannel = self->_audioChannel, audioChannel == [equalCopy audioChannel]))
         {
           v29 = 1;
           goto LABEL_28;
@@ -535,19 +535,19 @@ LABEL_28:
   return v29;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(MTSchemaMTAppInvocationMetadata *)self localePair];
+  localePair = [(MTSchemaMTAppInvocationMetadata *)self localePair];
 
-  if (v4)
+  if (localePair)
   {
-    v5 = [(MTSchemaMTAppInvocationMetadata *)self localePair];
+    localePair2 = [(MTSchemaMTAppInvocationMetadata *)self localePair];
     PBDataWriterWriteSubmessage();
   }
 
@@ -563,19 +563,19 @@ LABEL_28:
     PBDataWriterWriteInt32Field();
   }
 
-  v7 = [(MTSchemaMTAppInvocationMetadata *)self tabSessionId];
+  tabSessionId = [(MTSchemaMTAppInvocationMetadata *)self tabSessionId];
 
-  if (v7)
+  if (tabSessionId)
   {
-    v8 = [(MTSchemaMTAppInvocationMetadata *)self tabSessionId];
+    tabSessionId2 = [(MTSchemaMTAppInvocationMetadata *)self tabSessionId];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(MTSchemaMTAppInvocationMetadata *)self autoTranslateSessionId];
+  autoTranslateSessionId = [(MTSchemaMTAppInvocationMetadata *)self autoTranslateSessionId];
 
-  if (v9)
+  if (autoTranslateSessionId)
   {
-    v10 = [(MTSchemaMTAppInvocationMetadata *)self autoTranslateSessionId];
+    autoTranslateSessionId2 = [(MTSchemaMTAppInvocationMetadata *)self autoTranslateSessionId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -611,9 +611,9 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)setHasAudioChannel:(BOOL)a3
+- (void)setHasAudioChannel:(BOOL)channel
 {
-  if (a3)
+  if (channel)
   {
     v3 = 32;
   }
@@ -626,9 +626,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasConversationTabView:(BOOL)a3
+- (void)setHasConversationTabView:(BOOL)view
 {
-  if (a3)
+  if (view)
   {
     v3 = 16;
   }
@@ -641,9 +641,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasIsPlayTranslationsEnabled:(BOOL)a3
+- (void)setHasIsPlayTranslationsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 8;
   }
@@ -656,9 +656,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasTabName:(BOOL)a3
+- (void)setHasTabName:(BOOL)name
 {
-  if (a3)
+  if (name)
   {
     v3 = 4;
   }
@@ -671,9 +671,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsGenderAlternativeEnabled:(BOOL)a3
+- (void)setHasIsGenderAlternativeEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }
@@ -686,35 +686,35 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = MTSchemaMTAppInvocationMetadata;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(MTSchemaMTAppInvocationMetadata *)self localePair];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  localePair = [(MTSchemaMTAppInvocationMetadata *)self localePair];
+  v7 = [localePair applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(MTSchemaMTAppInvocationMetadata *)self deleteLocalePair];
   }
 
-  v9 = [(MTSchemaMTAppInvocationMetadata *)self tabSessionId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  tabSessionId = [(MTSchemaMTAppInvocationMetadata *)self tabSessionId];
+  v10 = [tabSessionId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(MTSchemaMTAppInvocationMetadata *)self deleteTabSessionId];
   }
 
-  v12 = [(MTSchemaMTAppInvocationMetadata *)self autoTranslateSessionId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  autoTranslateSessionId = [(MTSchemaMTAppInvocationMetadata *)self autoTranslateSessionId];
+  v13 = [autoTranslateSessionId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(MTSchemaMTAppInvocationMetadata *)self deleteAutoTranslateSessionId];
   }

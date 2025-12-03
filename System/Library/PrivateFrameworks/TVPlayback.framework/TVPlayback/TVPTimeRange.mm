@@ -1,17 +1,17 @@
 @interface TVPTimeRange
-+ ($A0D62BC7BB322857EA05296DE7D5C3FF)forwardmostCMTimeRangeInCMTimeRanges:(SEL)a3;
-- (BOOL)containsTime:(double)a3;
-- (BOOL)isEqual:(id)a3;
-- (TVPTimeRange)initWithCMTimeRange:(id *)a3;
-- (TVPTimeRange)initWithStartTime:(double)a3 duration:(double)a4;
++ ($A0D62BC7BB322857EA05296DE7D5C3FF)forwardmostCMTimeRangeInCMTimeRanges:(SEL)ranges;
+- (BOOL)containsTime:(double)time;
+- (BOOL)isEqual:(id)equal;
+- (TVPTimeRange)initWithCMTimeRange:(id *)range;
+- (TVPTimeRange)initWithStartTime:(double)time duration:(double)duration;
 - (double)endTime;
 - (id)description;
-- (id)intersectTimeRange:(id)a3;
+- (id)intersectTimeRange:(id)range;
 @end
 
 @implementation TVPTimeRange
 
-+ ($A0D62BC7BB322857EA05296DE7D5C3FF)forwardmostCMTimeRangeInCMTimeRanges:(SEL)a3
++ ($A0D62BC7BB322857EA05296DE7D5C3FF)forwardmostCMTimeRangeInCMTimeRanges:(SEL)ranges
 {
   v31 = *MEMORY[0x277D85DE8];
   v5 = a4;
@@ -23,11 +23,11 @@
 
   if (v6 == 1)
   {
-    v7 = [v5 firstObject];
-    v8 = v7;
-    if (v7)
+    firstObject = [v5 firstObject];
+    v8 = firstObject;
+    if (firstObject)
     {
-      [v7 CMTimeRangeValue];
+      [firstObject CMTimeRangeValue];
     }
 
     else
@@ -115,17 +115,17 @@ LABEL_26:
   return result;
 }
 
-- (TVPTimeRange)initWithCMTimeRange:(id *)a3
+- (TVPTimeRange)initWithCMTimeRange:(id *)range
 {
   Seconds = 0.0;
-  if ((a3->var0.var2 & 1) != 0 && (a3->var1.var2 & 1) != 0 && !a3->var1.var3 && ((a3->var1.var2 & 0x1D) == 1 ? (v8 = (a3->var0.var2 & 0x1D) == 1) : (v8 = 0), v8))
+  if ((range->var0.var2 & 1) != 0 && (range->var1.var2 & 1) != 0 && !range->var1.var3 && ((range->var1.var2 & 0x1D) == 1 ? (v8 = (range->var0.var2 & 0x1D) == 1) : (v8 = 0), v8))
   {
     v6 = 0.0;
-    if ((a3->var1.var0 & 0x8000000000000000) == 0)
+    if ((range->var1.var0 & 0x8000000000000000) == 0)
     {
-      var0 = a3->var0;
+      var0 = range->var0;
       Seconds = CMTimeGetSeconds(&var0);
-      var0 = a3->var1;
+      var0 = range->var1;
       v6 = CMTimeGetSeconds(&var0);
     }
   }
@@ -138,15 +138,15 @@ LABEL_26:
   return [(TVPTimeRange *)self initWithStartTime:Seconds duration:v6];
 }
 
-- (TVPTimeRange)initWithStartTime:(double)a3 duration:(double)a4
+- (TVPTimeRange)initWithStartTime:(double)time duration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = TVPTimeRange;
   result = [(TVPTimeRange *)&v7 init];
   if (result)
   {
-    result->_startTime = a3;
-    result->_duration = a4;
+    result->_startTime = time;
+    result->_duration = duration;
   }
 
   return result;
@@ -160,23 +160,23 @@ LABEL_26:
   return v4 + v5;
 }
 
-- (BOOL)containsTime:(double)a3
+- (BOOL)containsTime:(double)time
 {
   [(TVPTimeRange *)self startTime];
-  if (v5 > a3)
+  if (v5 > time)
   {
     return 0;
   }
 
   [(TVPTimeRange *)self endTime];
-  return v7 > a3;
+  return v7 > time;
 }
 
-- (id)intersectTimeRange:(id)a3
+- (id)intersectTimeRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   v5 = [[TVPTimeRange alloc] initWithStartTime:0.0 duration:0.0];
-  if (v4)
+  if (rangeCopy)
   {
     memset(&v17, 0, sizeof(v17));
     [(TVPTimeRange *)self startTime];
@@ -185,9 +185,9 @@ LABEL_26:
     CMTimeMakeWithSeconds(&duration.start, v7, 1000000);
     CMTimeRangeMake(&v17, &start.start, &duration.start);
     memset(&start, 0, sizeof(start));
-    [v4 startTime];
+    [rangeCopy startTime];
     CMTimeMakeWithSeconds(&duration.start, v8, 1000000);
-    [v4 duration];
+    [rangeCopy duration];
     CMTimeMakeWithSeconds(&v14.start, v9, 1000000);
     CMTimeRangeMake(&start, &duration.start, &v14.start);
     v14 = v17;
@@ -214,13 +214,13 @@ LABEL_26:
   return [MEMORY[0x277CCACA8] stringWithFormat:@"Start time: %f End time: %f Duration: %f", v4, v7, v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [v5 startTime];
     v7 = v6;
     [(TVPTimeRange *)self startTime];

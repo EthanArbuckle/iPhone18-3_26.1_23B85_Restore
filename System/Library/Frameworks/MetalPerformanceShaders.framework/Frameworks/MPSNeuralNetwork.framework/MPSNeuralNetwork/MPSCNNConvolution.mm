@@ -1,55 +1,55 @@
 @interface MPSCNNConvolution
-- (BOOL)PrepareAndLoadData:(id)a3 dataType:(unsigned int)a4 weightsLayout:(unsigned int)a5 weights:(const void *)a6 biases:(const float *)a7 quantizationType:(int)a8 ranges:lookUpTable:convertFloat32Weights:;
-- (BOOL)initialize:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const void *)a5 dataType:(unsigned int)a6 weightsLayout:(unsigned int)a7 range:lookUpTable:qType:biasTerms:flags:fullyConnected:convolutionTranspose:preferredWeightsDataType:;
+- (BOOL)PrepareAndLoadData:(id)data dataType:(unsigned int)type weightsLayout:(unsigned int)layout weights:(const void *)weights biases:(const float *)biases quantizationType:(int)quantizationType ranges:lookUpTable:convertFloat32Weights:;
+- (BOOL)initialize:(id)initialize convolutionDescriptor:(id)descriptor kernelWeights:(const void *)weights dataType:(unsigned int)type weightsLayout:(unsigned int)layout range:lookUpTable:qType:biasTerms:flags:fullyConnected:convolutionTranspose:preferredWeightsDataType:;
 - (MPSCNNConvolution)initWithCoder:(NSCoder *)aDecoder device:(id)device;
-- (MPSCNNConvolution)initWithDevice:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const float *)a5 biasTerms:(const float *)a6 flags:(unint64_t)a7 fullyConnected:(BOOL)a8;
-- (MPSCNNConvolution)initWithDevice:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const float *)a5 biasTerms:(const float *)a6 flags:(unint64_t)a7 fullyConnected:(BOOL)a8 convolutionTranspose:(BOOL)a9;
-- (MPSCNNConvolution)initWithDevice:(id)a3 weights:(id)a4 fullyConnected:(BOOL)a5;
-- (MPSCNNConvolution)initWithDevice:(id)a3 weights:(id)a4 fullyConnected:(BOOL)a5 convolutionTranspose:(BOOL)a6;
 - (MPSCNNConvolution)initWithDevice:(id)device;
 - (MPSCNNConvolution)initWithDevice:(id)device convolutionDescriptor:(const MPSCNNConvolutionDescriptor *)convolutionDescriptor kernelWeights:(const float *)kernelWeights biasTerms:(const float *)biasTerms flags:(MPSCNNConvolutionFlags)flags;
+- (MPSCNNConvolution)initWithDevice:(id)device convolutionDescriptor:(id)descriptor kernelWeights:(const float *)weights biasTerms:(const float *)terms flags:(unint64_t)flags fullyConnected:(BOOL)connected;
+- (MPSCNNConvolution)initWithDevice:(id)device convolutionDescriptor:(id)descriptor kernelWeights:(const float *)weights biasTerms:(const float *)terms flags:(unint64_t)flags fullyConnected:(BOOL)connected convolutionTranspose:(BOOL)transpose;
 - (MPSCNNConvolution)initWithDevice:(id)device weights:(id)weights;
+- (MPSCNNConvolution)initWithDevice:(id)device weights:(id)weights fullyConnected:(BOOL)connected;
+- (MPSCNNConvolution)initWithDevice:(id)device weights:(id)weights fullyConnected:(BOOL)connected convolutionTranspose:(BOOL)transpose;
 - (MPSCNNConvolutionGradientState)resultStateForSourceImage:(MPSImage *)sourceImage sourceStates:(NSArray *)sourceStates destinationImage:(MPSImage *)destinationImage;
 - (MPSCNNConvolutionGradientState)temporaryResultStateForCommandBuffer:(id)commandBuffer sourceImage:(MPSImage *)sourceImage sourceStates:(NSArray *)sourceStates destinationImage:(MPSImage *)destinationImage;
 - (MPSCNNConvolutionGradientStateBatch)resultStateBatchForSourceImage:(MPSImageBatch *)sourceImage sourceStates:(NSArray *)sourceStates destinationImage:(MPSImageBatch *)destinationImage;
 - (MPSCNNConvolutionGradientStateBatch)temporaryResultStateBatchForCommandBuffer:(id)commandBuffer sourceImage:(MPSImageBatch *)sourceImage sourceStates:(NSArray *)sourceStates destinationImage:(MPSImageBatch *)destinationImage;
 - (MPSCNNConvolutionWeightsAndBiasesState)exportWeightsAndBiasesWithCommandBuffer:(id)commandBuffer resultStateCanBeTemporary:(BOOL)resultStateCanBeTemporary;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6 kernelOffset:(id *)a7;
-- (id)initializeWithDevice:(id)a3 weights:(id)a4 fullyConnected:(BOOL)a5 convolutionTranspose:(BOOL)a6;
-- (id)resourceListForSourceImages:(id)a3 destinationImages:(id)a4;
-- (void)copyToGradientState:(id)a3 sourceImage:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset kernelOffset:(id *)kernelOffset;
+- (id)initializeWithDevice:(id)device weights:(id)weights fullyConnected:(BOOL)connected convolutionTranspose:(BOOL)transpose;
+- (id)resourceListForSourceImages:(id)images destinationImages:(id)destinationImages;
+- (void)copyToGradientState:(id)state sourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage;
 - (void)dealloc;
-- (void)encodeToCommandBuffer:(id)a3 sourceImage:(id)a4 destinationImage:(id)a5 state:(id *)a6;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeToCommandBuffer:(id)buffer sourceImage:(id)image destinationImage:(id)destinationImage state:(id *)state;
+- (void)encodeWithCoder:(id)coder;
 - (void)reloadWeightsAndBiasesFromDataSource;
 - (void)reloadWeightsAndBiasesWithCommandBuffer:(id)commandBuffer state:(MPSCNNConvolutionWeightsAndBiasesState *)state;
 - (void)reloadWeightsAndBiasesWithDataSource:(id)dataSource;
-- (void)setFusedNeuronDescriptor:(id)a3;
+- (void)setFusedNeuronDescriptor:(id)descriptor;
 @end
 
 @implementation MPSCNNConvolution
 
-- (void)setFusedNeuronDescriptor:(id)a3
+- (void)setFusedNeuronDescriptor:(id)descriptor
 {
-  if (self->_fusedNeuronDescriptor != a3)
+  if (self->_fusedNeuronDescriptor != descriptor)
   {
-    if (!a3)
+    if (!descriptor)
     {
-      v5 = self;
+      selfCopy = self;
       v6 = MTLReportFailureTypeEnabled();
-      self = v5;
+      self = selfCopy;
       if (v6)
       {
         MTLReportFailure();
-        self = v5;
+        self = selfCopy;
       }
     }
 
-    v4 = self;
+    selfCopy2 = self;
 
-    v4->_fusedNeuronDescriptor = a3;
+    selfCopy2->_fusedNeuronDescriptor = descriptor;
   }
 }
 
@@ -65,16 +65,16 @@
   return 0;
 }
 
-- (BOOL)PrepareAndLoadData:(id)a3 dataType:(unsigned int)a4 weightsLayout:(unsigned int)a5 weights:(const void *)a6 biases:(const float *)a7 quantizationType:(int)a8 ranges:lookUpTable:convertFloat32Weights:
+- (BOOL)PrepareAndLoadData:(id)data dataType:(unsigned int)type weightsLayout:(unsigned int)layout weights:(const void *)weights biases:(const float *)biases quantizationType:(int)quantizationType ranges:lookUpTable:convertFloat32Weights:
 {
-  v9 = a7;
-  v137 = a8;
-  v12 = *(a3 + 1);
-  if (*(a3 + 112))
+  biasesCopy = biases;
+  quantizationTypeCopy = quantizationType;
+  v12 = *(data + 1);
+  if (*(data + 112))
   {
-    v128 = *(a3 + 2);
-    v13 = *(a3 + 4);
-    v14 = *(a3 + 9);
+    v128 = *(data + 2);
+    v13 = *(data + 4);
+    v14 = *(data + 9);
     v136 = v14;
     if (v14)
     {
@@ -84,14 +84,14 @@
 LABEL_8:
     v16 = 0;
     v18 = 0;
-    v20 = a7;
+    biasesCopy2 = biases;
     goto LABEL_16;
   }
 
-  v14 = *(a3 + 9);
-  v13 = *(a3 + 4);
-  v12 *= *(a3 + 3) / *(a3 + 8);
-  v128 = *(a3 + 2);
+  v14 = *(data + 9);
+  v13 = *(data + 4);
+  v12 *= *(data + 3) / *(data + 8);
+  v128 = *(data + 2);
   v136 = v14;
   if (!v14)
   {
@@ -99,22 +99,22 @@ LABEL_8:
   }
 
 LABEL_3:
-  v15 = objc_msgSend_bytes(v14, a2, a3, *&a4, *&a5, a6, a7, *&a8);
+  v15 = objc_msgSend_bytes(v14, a2, data, *&type, *&layout, weights, biases, *&quantizationType);
   v16 = v15;
   outputFeatureChannels = self->_outputFeatureChannels;
   v18 = v15 + 4 * outputFeatureChannels;
-  if (!v9)
+  if (!biasesCopy)
   {
-    v20 = (v15 + 4 * outputFeatureChannels);
+    biasesCopy2 = (v15 + 4 * outputFeatureChannels);
     goto LABEL_16;
   }
 
   v19 = malloc_type_malloc(4 * v13, 0x100004052888210uLL);
-  v20 = v19;
+  biasesCopy2 = v19;
   if (v13 >= 4)
   {
     v23 = v13 >> 2;
-    v24 = v9;
+    v24 = biasesCopy;
     v25 = v16;
     v26 = v19;
     do
@@ -158,7 +158,7 @@ LABEL_3:
       v31 = v21;
     }
 
-    else if ((v19 - v9) < 0x20)
+    else if ((v19 - biasesCopy) < 0x20)
     {
       v31 = v21;
     }
@@ -171,9 +171,9 @@ LABEL_3:
       v69 = v22 & 0xFFFFFFFFFFFFFFF8;
       do
       {
-        v70 = vmlaq_f32(*&v68[v67 + 16], *(v16 + v67 + 16), *&v9[v67 / 4 + 4]);
+        v70 = vmlaq_f32(*&v68[v67 + 16], *(v16 + v67 + 16), *&biasesCopy[v67 / 4 + 4]);
         v71 = (v19 + v67);
-        *v71 = vmlaq_f32(*&v68[v67], *(v16 + v67), *&v9[v67 / 4]);
+        *v71 = vmlaq_f32(*&v68[v67], *(v16 + v67), *&biasesCopy[v67 / 4]);
         v71[1] = v70;
         v67 += 32;
         v69 -= 8;
@@ -194,15 +194,15 @@ LABEL_3:
 
   do
   {
-    v19->f32[v31] = *(v18 + 4 * v31) + (v16->f32[v31] * v9[v31]);
+    v19->f32[v31] = *(v18 + 4 * v31) + (v16->f32[v31] * biasesCopy[v31]);
     ++v31;
   }
 
   while (v13 != v31);
 LABEL_16:
-  if (objc_msgSend_data(*(a3 + 15), a2, a3, *&a4, *&a5, a6, a7, *&a8))
+  if (objc_msgSend_data(*(data + 15), a2, data, *&type, *&layout, weights, biases, *&quantizationType))
   {
-    v39 = objc_msgSend_data(*(a3 + 15), v32, v33, v34, v35, v36, v37, v38);
+    v39 = objc_msgSend_data(*(data + 15), v32, v33, v34, v35, v36, v37, v38);
     v47 = objc_msgSend_bytes(v39, v40, v41, v42, v43, v44, v45, v46);
   }
 
@@ -211,16 +211,16 @@ LABEL_16:
     v47 = 0;
   }
 
-  v134 = v9;
+  v134 = biasesCopy;
   v48 = (*(&self->super.super.super.isa + *MEMORY[0x277CD7370]))[4];
-  if (a8 != -1)
+  if (quantizationType != -1)
   {
     v49 = *MEMORY[0x277CD7350];
     HIDWORD(v121) = 8;
     LOBYTE(v121) = self->_fullyConnected;
-    v50 = (*(*v48 + 56))(v48, (*(&self->super.super.super.isa + v49))[2], &self->_weights, &self->_bias, &self->_neuronABuffer, a6, v20, v47, v121, a5, self->_layout, self);
-    self->_qWts = (*(*v48 + 80))(v48, (*(&self->super.super.super.isa + v49))[2], &v137, self->_outputFeatureChannels, v138, v139, v16, v18);
-    self->_qType = v137;
+    v50 = (*(*v48 + 56))(v48, (*(&self->super.super.super.isa + v49))[2], &self->_weights, &self->_bias, &self->_neuronABuffer, weights, biasesCopy2, v47, v121, layout, self->_layout, self);
+    self->_qWts = (*(*v48 + 80))(v48, (*(&self->super.super.super.isa + v49))[2], &quantizationTypeCopy, self->_outputFeatureChannels, v138, v139, v16, v18);
+    self->_qType = quantizationTypeCopy;
     if (self->_qWts)
     {
       v51 = v50;
@@ -231,61 +231,61 @@ LABEL_16:
       v51 = 1;
     }
 
-    v9 = v134;
+    biasesCopy = v134;
     goto LABEL_124;
   }
 
   if (v140)
   {
-    v52 = 268435472;
+    typeCopy = 268435472;
   }
 
   else
   {
-    v52 = a4;
+    typeCopy = type;
   }
 
-  v53 = a6;
-  v127 = v52;
-  if (v52 == a4)
+  weightsCopy8 = weights;
+  v127 = typeCopy;
+  if (typeCopy == type)
   {
-    v126 = a6;
+    weightsCopy2 = weights;
     if (!v136)
     {
-      if (v52 == a4)
+      if (typeCopy == type)
       {
         goto LABEL_67;
       }
 
 LABEL_58:
-      v72 = v126;
+      v72 = weightsCopy2;
       MPSConvertFloatToHalf();
-      v73 = a5;
+      layoutCopy5 = layout;
       goto LABEL_122;
     }
   }
 
-  v126 = malloc_type_malloc(v13 * v128 * v12 * ((v52 >> 3) & 0xFDFFFFFF), 0xA923B2B7uLL);
+  weightsCopy2 = malloc_type_malloc(v13 * v128 * v12 * ((typeCopy >> 3) & 0xFDFFFFFF), 0xA923B2B7uLL);
   if (v136)
   {
     v54 = v12 * v128;
-    if (a4 == 268435472)
+    if (type == 268435472)
     {
       v122 = v48;
       if (v127 == 268435488)
       {
         if (!v13)
         {
-          v73 = a5;
-          v72 = v126;
+          layoutCopy5 = layout;
+          v72 = weightsCopy2;
           goto LABEL_122;
         }
 
         v123 = v47;
         v55 = 0;
-        v56 = a6;
+        weightsCopy3 = weights;
         v129 = v54 & 0xFFFFFFFFFFFFFFFCLL;
-        v57 = v126;
+        v57 = weightsCopy2;
         while (1)
         {
           MPSConvertHalfToFloat();
@@ -354,15 +354,15 @@ LABEL_58:
           while (v54 != v62);
 LABEL_36:
           ++v55;
-          v56 += 2 * v54;
+          weightsCopy3 += 2 * v54;
           v57 = (v57 + 4 * v54);
           if (v55 == v13)
           {
-            v53 = a6;
-            v73 = a5;
+            weightsCopy8 = weights;
+            layoutCopy5 = layout;
             v48 = v122;
             v47 = v123;
-            v72 = v126;
+            v72 = weightsCopy2;
             goto LABEL_122;
           }
         }
@@ -377,7 +377,7 @@ LABEL_36:
         v130 = v54 & 0xFFFFFFFFFFFFFFFCLL;
         v125 = v80 + 1;
         v83 = 2 * v54;
-        v84 = v126;
+        v84 = weightsCopy2;
         while (1)
         {
           MPSConvertHalfToFloat();
@@ -451,7 +451,7 @@ LABEL_36:
 LABEL_70:
           MPSConvertFloatToHalf();
           ++v82;
-          v53 = (v53 + v83);
+          weightsCopy8 = (weightsCopy8 + v83);
           v84 = (v84 + v83);
           if (v82 == v13)
           {
@@ -471,15 +471,15 @@ LABEL_70:
           {
             v101 = 0;
             v102 = 4 * v54;
-            v103 = a6;
-            v104 = v126;
+            weightsCopy5 = weights;
+            v104 = weightsCopy2;
             do
             {
               v105 = 0;
               v106 = v16->f32[v101];
               do
               {
-                v104[v105] = vmulq_n_f32(v103[v105], v106);
+                v104[v105] = vmulq_n_f32(weightsCopy5[v105], v106);
                 ++v105;
               }
 
@@ -489,7 +489,7 @@ LABEL_70:
                 v107 = v54 & 0xFFFFFFFFFFFFFFFCLL;
                 do
                 {
-                  v104->f32[v107] = v106 * v103->f32[v107];
+                  v104->f32[v107] = v106 * weightsCopy5->f32[v107];
                   ++v107;
                 }
 
@@ -498,7 +498,7 @@ LABEL_70:
 
               ++v101;
               v104 = (v104 + v102);
-              v103 = (v103 + v102);
+              weightsCopy5 = (weightsCopy5 + v102);
             }
 
             while (v101 != v13);
@@ -508,22 +508,22 @@ LABEL_70:
           {
             v74 = 0;
             v75 = 4 * v54;
-            v76 = a6;
-            v77 = v126;
+            weightsCopy6 = weights;
+            v77 = weightsCopy2;
             do
             {
               v78 = 0;
               v79 = v16->f32[v74];
               do
               {
-                v77[v78] = v79 * v76[v78];
+                v77[v78] = v79 * weightsCopy6[v78];
                 ++v78;
               }
 
               while (v54 != v78);
               ++v74;
               v77 = (v77 + v75);
-              v76 = (v76 + v75);
+              weightsCopy6 = (weightsCopy6 + v75);
             }
 
             while (v74 != v13);
@@ -548,7 +548,7 @@ LABEL_70:
         if ((v54 & 0xFFFFFFFFFFFFFFFCLL) == v54)
         {
           v109 = 0;
-          v110 = v126;
+          v110 = weightsCopy2;
           do
           {
             v111 = 0;
@@ -556,7 +556,7 @@ LABEL_70:
             v113 = vld1q_dup_f32(v112);
             do
             {
-              v81[v111] = vmulq_f32(v113, v53[v111]);
+              v81[v111] = vmulq_f32(v113, weightsCopy8[v111]);
               ++v111;
             }
 
@@ -564,7 +564,7 @@ LABEL_70:
             MPSConvertFloatToHalf();
             ++v109;
             v110 = (v110 + 2 * v54);
-            v53 = (v53 + v132);
+            weightsCopy8 = (weightsCopy8 + v132);
           }
 
           while (v109 != v13);
@@ -572,16 +572,16 @@ LABEL_70:
 
         else
         {
-          v114 = a6;
+          weightsCopy7 = weights;
           v115 = 0;
-          v116 = v126;
+          v116 = weightsCopy2;
           do
           {
             v117 = 0;
             v118 = v16->f32[v115];
             do
             {
-              v81[v117] = vmulq_n_f32(v114[v117], v118);
+              v81[v117] = vmulq_n_f32(weightsCopy7[v117], v118);
               ++v117;
             }
 
@@ -589,7 +589,7 @@ LABEL_70:
             v119 = v54 & 0xFFFFFFFFFFFFFFFCLL;
             do
             {
-              v81->f32[v119] = v118 * v114->f32[v119];
+              v81->f32[v119] = v118 * weightsCopy7->f32[v119];
               ++v119;
             }
 
@@ -597,22 +597,22 @@ LABEL_70:
             MPSConvertFloatToHalf();
             ++v115;
             v116 = (v116 + 2 * v54);
-            v114 = (v114 + v132);
+            weightsCopy7 = (weightsCopy7 + v132);
           }
 
           while (v115 != v13);
         }
 
 LABEL_118:
-        v9 = v134;
-        v53 = a6;
+        biasesCopy = v134;
+        weightsCopy8 = weights;
       }
 
       else
       {
         if (!v54)
         {
-          v72 = v126;
+          v72 = weightsCopy2;
           do
           {
             MPSConvertFloatToHalf();
@@ -625,15 +625,15 @@ LABEL_118:
 
         v122 = v48;
         v96 = 0;
-        v97 = a6;
-        v98 = v126;
+        weightsCopy9 = weights;
+        v98 = weightsCopy2;
         do
         {
           v99 = 0;
           v100 = v16->f32[v96];
           do
           {
-            v81->f32[v99] = v100 * v97[v99];
+            v81->f32[v99] = v100 * weightsCopy9[v99];
             ++v99;
           }
 
@@ -641,54 +641,54 @@ LABEL_118:
           MPSConvertFloatToHalf();
           ++v96;
           v98 = (v98 + 2 * v54);
-          v97 = (v97 + v132);
+          weightsCopy9 = (weightsCopy9 + v132);
         }
 
         while (v96 != v13);
-        v9 = v134;
+        biasesCopy = v134;
       }
     }
 
     v48 = v122;
 LABEL_120:
-    v72 = v126;
+    v72 = weightsCopy2;
 LABEL_121:
     free(v81);
-    v73 = a5;
+    layoutCopy5 = layout;
     v47 = v124;
     goto LABEL_122;
   }
 
-  if (v127 != a4)
+  if (v127 != type)
   {
     goto LABEL_58;
   }
 
 LABEL_67:
-  v73 = a5;
-  v72 = v126;
+  layoutCopy5 = layout;
+  v72 = weightsCopy2;
 LABEL_122:
   self->_weightsDataType = v127;
   HIDWORD(v121) = v127;
   LOBYTE(v121) = self->_fullyConnected;
-  v51 = (*(*v48 + 56))(v48, (*(&self->super.super.super.isa + *MEMORY[0x277CD7350]))[2], &self->_weights, &self->_bias, &self->_neuronABuffer, v72, v20, v47, v121, v73, self->_layout, self);
-  if (v72 != v53)
+  v51 = (*(*v48 + 56))(v48, (*(&self->super.super.super.isa + *MEMORY[0x277CD7350]))[2], &self->_weights, &self->_bias, &self->_neuronABuffer, v72, biasesCopy2, v47, v121, layoutCopy5, self->_layout, self);
+  if (v72 != weightsCopy8)
   {
     free(v72);
   }
 
 LABEL_124:
-  if (v9 && v136)
+  if (biasesCopy && v136)
   {
-    free(v20);
+    free(biasesCopy2);
   }
 
   return v51;
 }
 
-- (BOOL)initialize:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const void *)a5 dataType:(unsigned int)a6 weightsLayout:(unsigned int)a7 range:lookUpTable:qType:biasTerms:flags:fullyConnected:convolutionTranspose:preferredWeightsDataType:
+- (BOOL)initialize:(id)initialize convolutionDescriptor:(id)descriptor kernelWeights:(const void *)weights dataType:(unsigned int)type weightsLayout:(unsigned int)layout range:lookUpTable:qType:biasTerms:flags:fullyConnected:convolutionTranspose:preferredWeightsDataType:
 {
-  v9 = *(a4 + 1);
+  v9 = *(descriptor + 1);
   if (!v9)
   {
     if (!MTLReportFailureTypeEnabled())
@@ -699,7 +699,7 @@ LABEL_124:
     goto LABEL_22;
   }
 
-  v11 = *(a4 + 2);
+  v11 = *(descriptor + 2);
   if (!v11)
   {
     if (!MTLReportFailureTypeEnabled())
@@ -710,7 +710,7 @@ LABEL_124:
     goto LABEL_22;
   }
 
-  v12 = *(a4 + 3);
+  v12 = *(descriptor + 3);
   if (!v12)
   {
     if (!MTLReportFailureTypeEnabled())
@@ -721,7 +721,7 @@ LABEL_124:
     goto LABEL_22;
   }
 
-  v13 = *(a4 + 4);
+  v13 = *(descriptor + 4);
   if (!v13)
   {
     if (!MTLReportFailureTypeEnabled())
@@ -732,7 +732,7 @@ LABEL_124:
     goto LABEL_22;
   }
 
-  if (!*(a4 + 6))
+  if (!*(descriptor + 6))
   {
     if (!MTLReportFailureTypeEnabled())
     {
@@ -742,7 +742,7 @@ LABEL_124:
     goto LABEL_22;
   }
 
-  if (!*(a4 + 7))
+  if (!*(descriptor + 7))
   {
     if (!MTLReportFailureTypeEnabled())
     {
@@ -752,7 +752,7 @@ LABEL_124:
     goto LABEL_22;
   }
 
-  v14 = *(a4 + 8);
+  v14 = *(descriptor + 8);
   if (!v14)
   {
     if (!MTLReportFailureTypeEnabled())
@@ -763,10 +763,10 @@ LABEL_124:
     goto LABEL_22;
   }
 
-  v15 = *&a6;
+  v15 = *&type;
   if (v97 == 268435488)
   {
-    if (a6 != 268435488)
+    if (type != 268435488)
     {
       if (MTLReportFailureTypeEnabled())
       {
@@ -787,7 +787,7 @@ LABEL_124:
     goto LABEL_22;
   }
 
-  if (v92 != -1 && *(a4 + 5) != 1)
+  if (v92 != -1 && *(descriptor + 5) != 1)
   {
     if (!MTLReportFailureTypeEnabled())
     {
@@ -797,7 +797,7 @@ LABEL_124:
     goto LABEL_22;
   }
 
-  if (*(a4 + 112) == 1)
+  if (*(descriptor + 112) == 1)
   {
     if (v13 % v12)
     {
@@ -830,7 +830,7 @@ LABEL_124:
     }
 
     v16 = 1;
-    if (a6 != 268435472 && a6 != 268435488)
+    if (type != 268435472 && type != 268435488)
     {
       if (MTLReportFailureTypeEnabled())
       {
@@ -850,11 +850,11 @@ LABEL_23:
   }
 
   v88 = v16;
-  if (*(a4 + 10))
+  if (*(descriptor + 10))
   {
-    objc_msgSend_a(*(a4 + 15), a2, a3, a4, a5, *&a6, *&a7, v7);
-    objc_msgSend_a(*(a4 + 15), v18, v19, v20, v21, v22, v23, v24);
-    if (v32 != *(*(a4 + 10) + 332))
+    objc_msgSend_a(*(descriptor + 15), a2, initialize, descriptor, weights, *&type, *&layout, v7);
+    objc_msgSend_a(*(descriptor + 15), v18, v19, v20, v21, v22, v23, v24);
+    if (v32 != *(*(descriptor + 10) + 332))
     {
       if (!MTLReportFailureTypeEnabled())
       {
@@ -864,9 +864,9 @@ LABEL_23:
       goto LABEL_22;
     }
 
-    objc_msgSend_b(*(a4 + 15), v25, v26, v27, v28, v29, v30, v31);
-    objc_msgSend_b(*(a4 + 15), v33, v34, v35, v36, v37, v38, v39);
-    if (v47 != *(*(a4 + 10) + 336))
+    objc_msgSend_b(*(descriptor + 15), v25, v26, v27, v28, v29, v30, v31);
+    objc_msgSend_b(*(descriptor + 15), v33, v34, v35, v36, v37, v38, v39);
+    if (v47 != *(*(descriptor + 10) + 336))
     {
       if (!MTLReportFailureTypeEnabled())
       {
@@ -876,8 +876,8 @@ LABEL_23:
       goto LABEL_22;
     }
 
-    objc_msgSend_neuronType(*(a4 + 15), v40, v41, v42, v43, v44, v45, v46);
-    if (objc_msgSend_neuronType(*(a4 + 15), v48, v49, v50, v51, v52, v53, v54) != *(*(a4 + 10) + 328))
+    objc_msgSend_neuronType(*(descriptor + 15), v40, v41, v42, v43, v44, v45, v46);
+    if (objc_msgSend_neuronType(*(descriptor + 15), v48, v49, v50, v51, v52, v53, v54) != *(*(descriptor + 10) + 328))
     {
       if (!MTLReportFailureTypeEnabled())
       {
@@ -887,25 +887,25 @@ LABEL_23:
       goto LABEL_22;
     }
 
-    v9 = *(a4 + 1);
-    v11 = *(a4 + 2);
+    v9 = *(descriptor + 1);
+    v11 = *(descriptor + 2);
   }
 
   v55 = (*(&self->super.super.super.isa + *MEMORY[0x277CD7370]))[4];
   self->_dataSource = 0;
   self->super._kernelWidth = v9;
   self->super._kernelHeight = v11;
-  self->_inputFeatureChannels = *(a4 + 3);
-  v56 = *(a4 + 5);
-  self->_outputFeatureChannels = *(a4 + 4);
+  self->_inputFeatureChannels = *(descriptor + 3);
+  v56 = *(descriptor + 5);
+  self->_outputFeatureChannels = *(descriptor + 4);
   self->_layout = v56;
-  self->super._strideInPixelsX = *(a4 + 6);
-  self->super._strideInPixelsY = *(a4 + 7);
-  self->_groups = *(a4 + 8);
-  self->_neuron_deprecated = *(a4 + 10);
-  self->_scaleFactor = *(a4 + 11);
-  self->super._dilationRateX = *(a4 + 12);
-  self->super._dilationRateY = *(a4 + 13);
+  self->super._strideInPixelsX = *(descriptor + 6);
+  self->super._strideInPixelsY = *(descriptor + 7);
+  self->_groups = *(descriptor + 8);
+  self->_neuron_deprecated = *(descriptor + 10);
+  self->_scaleFactor = *(descriptor + 11);
+  self->super._dilationRateX = *(descriptor + 12);
+  self->super._dilationRateY = *(descriptor + 13);
   self->super._checkFlags |= 2u;
   if (((*(**(&self->super.super.super.isa + *MEMORY[0x277CD7350]) + 56))(*(&self->super.super.super.isa + *MEMORY[0x277CD7350])) & 1) == 0)
   {
@@ -923,25 +923,25 @@ LABEL_23:
   self->super._batchEncode = (*(*v55 + 128))(v55);
   self->_qType = v92;
   self->_weightsDataType = v15;
-  self->_weightsLayout = a7;
+  self->_weightsLayout = layout;
   self->_biasOriginal = 0;
   self->_channelMultiplier = v88;
   self->_neuronABuffer = 0;
   self->_accumulatorPrecisionOption = 1;
   self->super._pluginOptions = 2;
-  self->_batchNormalizationData = *(a4 + 9);
-  self->_fusedNeuronDescriptor = *(a4 + 15);
+  self->_batchNormalizationData = *(descriptor + 9);
+  self->_fusedNeuronDescriptor = *(descriptor + 15);
   v65 = v15 == 268435488 && v97 == 268435472;
   self->_convertFloat32Weights = v65;
-  v66 = *(a4 + 9);
+  v66 = *(descriptor + 9);
   if (v66)
   {
-    objc_msgSend_bytes(*(a4 + 9), v57, v58, v59, v60, v61, v62, v63);
+    objc_msgSend_bytes(*(descriptor + 9), v57, v58, v59, v60, v61, v62, v63);
   }
 
-  if (objc_msgSend_data(*(a4 + 15), v57, v58, v59, v60, v61, v62, v63))
+  if (objc_msgSend_data(*(descriptor + 15), v57, v58, v59, v60, v61, v62, v63))
   {
-    v74 = objc_msgSend_data(*(a4 + 15), v67, v68, v69, v70, v71, v72, v73);
+    v74 = objc_msgSend_data(*(descriptor + 15), v67, v68, v69, v70, v71, v72, v73);
     objc_msgSend_bytes(v74, v75, v76, v77, v78, v79, v80, v81);
   }
 
@@ -951,10 +951,10 @@ LABEL_23:
     self->_biasOriginal = objc_msgSend_initWithBytes_length_(v82, v83, v93, 4 * self->_outputFeatureChannels, v84, v85, v86, v87);
   }
 
-  return objc_msgSend_PrepareAndLoadData_dataType_weightsLayout_weights_biases_quantizationType_ranges_lookUpTable_convertFloat32Weights_(self, v67, a4, v15, a7, a5, v93, v92);
+  return objc_msgSend_PrepareAndLoadData_dataType_weightsLayout_weights_biases_quantizationType_ranges_lookUpTable_convertFloat32Weights_(self, v67, descriptor, v15, layout, weights, v93, v92);
 }
 
-- (MPSCNNConvolution)initWithDevice:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const float *)a5 biasTerms:(const float *)a6 flags:(unint64_t)a7 fullyConnected:(BOOL)a8 convolutionTranspose:(BOOL)a9
+- (MPSCNNConvolution)initWithDevice:(id)device convolutionDescriptor:(id)descriptor kernelWeights:(const float *)weights biasTerms:(const float *)terms flags:(unint64_t)flags fullyConnected:(BOOL)connected convolutionTranspose:(BOOL)transpose
 {
   v22.receiver = self;
   v22.super_class = MPSCNNConvolution;
@@ -962,12 +962,12 @@ LABEL_23:
   if (result)
   {
     v21 = 268435472;
-    HIBYTE(v20) = a9;
-    LOBYTE(v20) = a8;
-    v19 = a6;
+    HIBYTE(v20) = transpose;
+    LOBYTE(v20) = connected;
+    termsCopy = terms;
     v18 = -1;
     v17 = result;
-    if (objc_msgSend_initialize_convolutionDescriptor_kernelWeights_dataType_weightsLayout_range_lookUpTable_qType_biasTerms_flags_fullyConnected_convolutionTranspose_preferredWeightsDataType_(result, v16, a3, a4, a5, 268435488, 0, 0, 0, v18, v19, a7, v20))
+    if (objc_msgSend_initialize_convolutionDescriptor_kernelWeights_dataType_weightsLayout_range_lookUpTable_qType_biasTerms_flags_fullyConnected_convolutionTranspose_preferredWeightsDataType_(result, v16, device, descriptor, weights, 268435488, 0, 0, 0, v18, termsCopy, flags, v20))
     {
 
       return 0;
@@ -982,16 +982,16 @@ LABEL_23:
   return result;
 }
 
-- (MPSCNNConvolution)initWithDevice:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const float *)a5 biasTerms:(const float *)a6 flags:(unint64_t)a7 fullyConnected:(BOOL)a8
+- (MPSCNNConvolution)initWithDevice:(id)device convolutionDescriptor:(id)descriptor kernelWeights:(const float *)weights biasTerms:(const float *)terms flags:(unint64_t)flags fullyConnected:(BOOL)connected
 {
   v18.receiver = self;
   v18.super_class = MPSCNNConvolution;
   result = [(MPSCNNKernel *)&v18 initWithDevice:?];
   if (result)
   {
-    v17 = a6;
+    termsCopy = terms;
     v16 = result;
-    if (objc_msgSend_initialize_convolutionDescriptor_kernelWeights_dataType_weightsLayout_range_lookUpTable_qType_biasTerms_flags_fullyConnected_convolutionTranspose_preferredWeightsDataType_(result, v15, a3, a4, a5, 268435488, 0, 0, 0, -1, v17, a7, a8))
+    if (objc_msgSend_initialize_convolutionDescriptor_kernelWeights_dataType_weightsLayout_range_lookUpTable_qType_biasTerms_flags_fullyConnected_convolutionTranspose_preferredWeightsDataType_(result, v15, device, descriptor, weights, 268435488, 0, 0, 0, -1, termsCopy, flags, connected))
     {
 
       return 0;
@@ -1033,20 +1033,20 @@ LABEL_23:
   return result;
 }
 
-- (id)initializeWithDevice:(id)a3 weights:(id)a4 fullyConnected:(BOOL)a5 convolutionTranspose:(BOOL)a6
+- (id)initializeWithDevice:(id)device weights:(id)weights fullyConnected:(BOOL)connected convolutionTranspose:(BOOL)transpose
 {
-  v12 = self;
+  selfCopy = self;
   v13 = *MEMORY[0x277CD7378];
   if ((*(&self->super.super.super.isa + v13) & 1) == 0)
   {
-    if (!a4 && MTLReportFailureTypeEnabled())
+    if (!weights && MTLReportFailureTypeEnabled())
     {
       v184 = objc_opt_class();
       v187 = NSStringFromClass(v184);
       MTLReportFailure();
     }
 
-    if (!a3 && MTLReportFailureTypeEnabled())
+    if (!device && MTLReportFailureTypeEnabled())
     {
       v185 = objc_opt_class();
       v187 = NSStringFromClass(v185);
@@ -1054,16 +1054,16 @@ LABEL_23:
     }
   }
 
-  if ((objc_msgSend_load(a4, a2, a3, a4, a5, a6, v6, v7, v187) & 1) == 0 && MTLReportFailureTypeEnabled())
+  if ((objc_msgSend_load(weights, a2, device, weights, connected, transpose, v6, v7, v187) & 1) == 0 && MTLReportFailureTypeEnabled())
   {
     v183 = objc_opt_class();
     v188 = NSStringFromClass(v183);
     MTLReportFailure();
   }
 
-  v21 = objc_msgSend_descriptor(a4, v14, v15, v16, v17, v18, v19, v20, v188);
-  v29 = objc_msgSend_dataType(a4, v22, v23, v24, v25, v26, v27, v28);
-  if ((*(&v12->super.super.super.isa + v13) & 1) == 0)
+  v21 = objc_msgSend_descriptor(weights, v14, v15, v16, v17, v18, v19, v20, v188);
+  v29 = objc_msgSend_dataType(weights, v22, v23, v24, v25, v26, v27, v28);
+  if ((*(&selfCopy->super.super.super.isa + v13) & 1) == 0)
   {
     if (!v21 && MTLReportFailureTypeEnabled())
     {
@@ -1080,7 +1080,7 @@ LABEL_23:
 
   if (objc_opt_respondsToSelector())
   {
-    v37 = objc_msgSend_weightsLayout(a4, v30, v31, v32, v33, v34, v35, v36);
+    v37 = objc_msgSend_weightsLayout(weights, v30, v31, v32, v33, v34, v35, v36);
   }
 
   else
@@ -1090,7 +1090,7 @@ LABEL_23:
 
   if (objc_opt_respondsToSelector())
   {
-    objc_msgSend_kernelWeightsDataType(a4, v38, v39, v40, v41, v42, v43, v44);
+    objc_msgSend_kernelWeightsDataType(weights, v38, v39, v40, v41, v42, v43, v44);
   }
 
   switch(v29)
@@ -1098,7 +1098,7 @@ LABEL_23:
     case 8u:
       if (objc_opt_respondsToSelector())
       {
-        v75 = objc_msgSend_weightsQuantizationType(a4, v68, v69, v70, v71, v72, v73, v74);
+        v75 = objc_msgSend_weightsQuantizationType(weights, v68, v69, v70, v71, v72, v73, v74);
         if (v75 != 2)
         {
           if (v75 != 1)
@@ -1118,8 +1118,8 @@ LABEL_23:
             MTLReportFailure();
           }
 
-          objc_msgSend_rangesForUInt8Kernel(a4, v76, v77, v78, v79, v80, v81, v82, v189);
-          if (!objc_msgSend_rangesForUInt8Kernel(a4, v83, v84, v85, v86, v87, v88, v89) && MTLReportFailureTypeEnabled())
+          objc_msgSend_rangesForUInt8Kernel(weights, v76, v77, v78, v79, v80, v81, v82, v189);
+          if (!objc_msgSend_rangesForUInt8Kernel(weights, v83, v84, v85, v86, v87, v88, v89) && MTLReportFailureTypeEnabled())
           {
             MTLReportFailure();
           }
@@ -1133,16 +1133,16 @@ LABEL_23:
           MTLReportFailure();
         }
 
-        objc_msgSend_lookupTableForUInt8Kernel(a4, v138, v139, v140, v141, v142, v143, v144, v189);
-        if (!objc_msgSend_lookupTableForUInt8Kernel(a4, v145, v146, v147, v148, v149, v150, v151) && MTLReportFailureTypeEnabled())
+        objc_msgSend_lookupTableForUInt8Kernel(weights, v138, v139, v140, v141, v142, v143, v144, v189);
+        if (!objc_msgSend_lookupTableForUInt8Kernel(weights, v145, v146, v147, v148, v149, v150, v151) && MTLReportFailureTypeEnabled())
         {
           MTLReportFailure();
         }
       }
 
-      else if ((objc_opt_respondsToSelector() & 1) == 0 || !objc_msgSend_lookupTableForUInt8Kernel(a4, v99, v100, v101, v102, v103, v104, v105))
+      else if ((objc_opt_respondsToSelector() & 1) == 0 || !objc_msgSend_lookupTableForUInt8Kernel(weights, v99, v100, v101, v102, v103, v104, v105))
       {
-        if ((objc_opt_respondsToSelector() & 1) == 0 || !objc_msgSend_rangesForUInt8Kernel(a4, v113, v114, v115, v116, v117, v118, v119))
+        if ((objc_opt_respondsToSelector() & 1) == 0 || !objc_msgSend_rangesForUInt8Kernel(weights, v113, v114, v115, v116, v117, v118, v119))
         {
           if (MTLReportFailureTypeEnabled())
           {
@@ -1154,58 +1154,58 @@ LABEL_23:
         }
 
 LABEL_35:
-        v120 = objc_msgSend_weights(a4, v90, v91, v92, v93, v94, v95, v96, v189);
-        v128 = objc_msgSend_rangesForUInt8Kernel(a4, v121, v122, v123, v124, v125, v126, v127);
-        HIBYTE(v196) = a6;
-        LOBYTE(v196) = a5;
-        v194 = objc_msgSend_biasTerms(a4, v129, v130, v131, v132, v133, v134, v135);
-        v137 = objc_msgSend_initialize_convolutionDescriptor_kernelWeights_dataType_weightsLayout_range_lookUpTable_qType_biasTerms_flags_fullyConnected_convolutionTranspose_preferredWeightsDataType_(v12, v136, a3, v21, v120, 8, v37, v128, 0, 0, v194, 0, v196);
+        v120 = objc_msgSend_weights(weights, v90, v91, v92, v93, v94, v95, v96, v189);
+        v128 = objc_msgSend_rangesForUInt8Kernel(weights, v121, v122, v123, v124, v125, v126, v127);
+        HIBYTE(v196) = transpose;
+        LOBYTE(v196) = connected;
+        v194 = objc_msgSend_biasTerms(weights, v129, v130, v131, v132, v133, v134, v135);
+        v137 = objc_msgSend_initialize_convolutionDescriptor_kernelWeights_dataType_weightsLayout_range_lookUpTable_qType_biasTerms_flags_fullyConnected_convolutionTranspose_preferredWeightsDataType_(selfCopy, v136, device, v21, v120, 8, v37, v128, 0, 0, v194, 0, v196);
 LABEL_43:
         v97 = v137;
         goto LABEL_44;
       }
 
-      v152 = objc_msgSend_weights(a4, v106, v107, v108, v109, v110, v111, v112, v189);
-      v160 = objc_msgSend_lookupTableForUInt8Kernel(a4, v153, v154, v155, v156, v157, v158, v159);
-      HIBYTE(v195) = a6;
-      LOBYTE(v195) = a5;
-      v193 = objc_msgSend_biasTerms(a4, v161, v162, v163, v164, v165, v166, v167);
+      v152 = objc_msgSend_weights(weights, v106, v107, v108, v109, v110, v111, v112, v189);
+      v160 = objc_msgSend_lookupTableForUInt8Kernel(weights, v153, v154, v155, v156, v157, v158, v159);
+      HIBYTE(v195) = transpose;
+      LOBYTE(v195) = connected;
+      v193 = objc_msgSend_biasTerms(weights, v161, v162, v163, v164, v165, v166, v167);
       v192 = 2;
       v190 = v160;
-      v56 = v12;
-      v57 = a3;
+      v56 = selfCopy;
+      deviceCopy3 = device;
       v58 = v21;
       v59 = v152;
       v55 = 8;
       goto LABEL_42;
     case 0x10000010u:
-      v60 = objc_msgSend_weights(a4, v38, v39, v40, v41, v42, v43, v44);
-      HIBYTE(v195) = a6;
-      LOBYTE(v195) = a5;
-      v193 = objc_msgSend_biasTerms(a4, v61, v62, v63, v64, v65, v66, v67);
+      v60 = objc_msgSend_weights(weights, v38, v39, v40, v41, v42, v43, v44);
+      HIBYTE(v195) = transpose;
+      LOBYTE(v195) = connected;
+      v193 = objc_msgSend_biasTerms(weights, v61, v62, v63, v64, v65, v66, v67);
       v192 = -1;
       v190 = 0;
-      v56 = v12;
-      v57 = a3;
+      v56 = selfCopy;
+      deviceCopy3 = device;
       v58 = v21;
       v59 = v60;
       v55 = 268435472;
       goto LABEL_42;
     case 0x10000020u:
-      v45 = objc_msgSend_weights(a4, v38, v39, v40, v41, v42, v43, v44);
-      v53 = objc_msgSend_biasTerms(a4, v46, v47, v48, v49, v50, v51, v52);
-      HIBYTE(v195) = a6;
-      LOBYTE(v195) = a5;
+      v45 = objc_msgSend_weights(weights, v38, v39, v40, v41, v42, v43, v44);
+      v53 = objc_msgSend_biasTerms(weights, v46, v47, v48, v49, v50, v51, v52);
+      HIBYTE(v195) = transpose;
+      LOBYTE(v195) = connected;
       v55 = 268435488;
       v193 = v53;
       v192 = -1;
       v190 = 0;
-      v56 = v12;
-      v57 = a3;
+      v56 = selfCopy;
+      deviceCopy3 = device;
       v58 = v21;
       v59 = v45;
 LABEL_42:
-      v137 = objc_msgSend_initialize_convolutionDescriptor_kernelWeights_dataType_weightsLayout_range_lookUpTable_qType_biasTerms_flags_fullyConnected_convolutionTranspose_preferredWeightsDataType_(v56, v54, v57, v58, v59, v55, v37, 0, v190, v192, v193, 0, v195);
+      v137 = objc_msgSend_initialize_convolutionDescriptor_kernelWeights_dataType_weightsLayout_range_lookUpTable_qType_biasTerms_flags_fullyConnected_convolutionTranspose_preferredWeightsDataType_(v56, v54, deviceCopy3, v58, v59, v55, v37, 0, v190, v192, v193, 0, v195);
       goto LABEL_43;
   }
 
@@ -1222,45 +1222,45 @@ LABEL_42:
 LABEL_44:
   if (objc_opt_respondsToSelector())
   {
-    v175 = objc_msgSend_performSelector_(a4, v168, sel_label, v170, v171, v172, v173, v174);
-    objc_msgSend_setLabel_(v12, v176, v175, v177, v178, v179, v180, v181);
+    v175 = objc_msgSend_performSelector_(weights, v168, sel_label, v170, v171, v172, v173, v174);
+    objc_msgSend_setLabel_(selfCopy, v176, v175, v177, v178, v179, v180, v181);
   }
 
-  objc_msgSend_purge(a4, v168, v169, v170, v171, v172, v173, v174, v189, v191);
-  v12->_dataSource = a4;
+  objc_msgSend_purge(weights, v168, v169, v170, v171, v172, v173, v174, v189, v191);
+  selfCopy->_dataSource = weights;
   if (v97)
   {
 
     return 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (MPSCNNConvolution)initWithDevice:(id)a3 weights:(id)a4 fullyConnected:(BOOL)a5 convolutionTranspose:(BOOL)a6
+- (MPSCNNConvolution)initWithDevice:(id)device weights:(id)weights fullyConnected:(BOOL)connected convolutionTranspose:(BOOL)transpose
 {
-  v6 = a6;
-  v7 = a5;
+  transposeCopy = transpose;
+  connectedCopy = connected;
   v14.receiver = self;
   v14.super_class = MPSCNNConvolution;
   result = [(MPSCNNKernel *)&v14 initWithDevice:?];
   if (result)
   {
-    return objc_msgSend_initializeWithDevice_weights_fullyConnected_convolutionTranspose_(result, v11, a3, a4, v7, v6, v12, v13);
+    return objc_msgSend_initializeWithDevice_weights_fullyConnected_convolutionTranspose_(result, v11, device, weights, connectedCopy, transposeCopy, v12, v13);
   }
 
   return result;
 }
 
-- (MPSCNNConvolution)initWithDevice:(id)a3 weights:(id)a4 fullyConnected:(BOOL)a5
+- (MPSCNNConvolution)initWithDevice:(id)device weights:(id)weights fullyConnected:(BOOL)connected
 {
-  v5 = a5;
+  connectedCopy = connected;
   v12.receiver = self;
   v12.super_class = MPSCNNConvolution;
   result = [(MPSCNNKernel *)&v12 initWithDevice:?];
   if (result)
   {
-    return objc_msgSend_initializeWithDevice_weights_fullyConnected_convolutionTranspose_(result, v9, a3, a4, v5, 0, v10, v11);
+    return objc_msgSend_initializeWithDevice_weights_fullyConnected_convolutionTranspose_(result, v9, device, weights, connectedCopy, 0, v10, v11);
   }
 
   return result;
@@ -1279,7 +1279,7 @@ LABEL_44:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v34.receiver = self;
   v34.super_class = MPSCNNConvolution;
@@ -1299,7 +1299,7 @@ LABEL_44:
     v7[53] = self->_channelMultiplier;
     v7[29] = self->super._dilationRateX;
     v7[30] = self->super._dilationRateY;
-    v7[45] = objc_msgSend_copyWithZone_device_(self->_neuron_deprecated, v8, a3, a4, v9, v10, v11, v12);
+    v7[45] = objc_msgSend_copyWithZone_device_(self->_neuron_deprecated, v8, zone, device, v9, v10, v11, v12);
     *(v13 + 70) = self->super._checkFlags | 2;
     if (((*(**(&self->super.super.super.isa + *MEMORY[0x277CD7350]) + 56))(*(&self->super.super.super.isa + *MEMORY[0x277CD7350])) & 1) == 0)
     {
@@ -1350,7 +1350,7 @@ LABEL_44:
 
     if (objc_opt_respondsToSelector())
     {
-      v24 = objc_msgSend_copyWithZone_device_(self->_dataSource, v19, a3, a4, v20, v21, v22, v23);
+      v24 = objc_msgSend_copyWithZone_device_(self->_dataSource, v19, zone, device, v20, v21, v22, v23);
     }
 
     else
@@ -1359,7 +1359,7 @@ LABEL_44:
       dataSource = self->_dataSource;
       if (v31)
       {
-        v24 = objc_msgSend_copyWithZone_(dataSource, v25, a3, v26, v27, v28, v29, v30);
+        v24 = objc_msgSend_copyWithZone_(dataSource, v25, zone, v26, v27, v28, v29, v30);
       }
 
       else
@@ -1381,18 +1381,18 @@ LABEL_44:
   [(MPSCNNKernel *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = 1;
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v242.receiver = self;
   v242.super_class = MPSCNNConvolution;
   [(MPSCNNKernel *)&v242 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v6, self->_layout, @"MPSCNNConvolutionFeatureChannelsLayout", v7, v8, v9, v10);
-  objc_msgSend_encodeBool_forKey_(a3, v11, self->_fullyConnected, @"MPSCNNConvolutionIsFullyConnected", v12, v13, v14, v15);
-  objc_msgSend_encodeBool_forKey_(a3, v16, self->_convolutionTranspose, @"MPSCNNConvolutionIsConvolutionTranspose", v17, v18, v19, v20);
-  objc_msgSend_encodeBool_forKey_(a3, v21, self->_convertFloat32Weights, @"MPSCNNConvolutionConvertFloat32Weights", v22, v23, v24, v25);
-  objc_msgSend_encodeInt64_forKey_(a3, v26, self->_flags, @"MPSCNNConvolutionFlags", v27, v28, v29, v30);
+  objc_msgSend_encodeInt64_forKey_(coder, v6, self->_layout, @"MPSCNNConvolutionFeatureChannelsLayout", v7, v8, v9, v10);
+  objc_msgSend_encodeBool_forKey_(coder, v11, self->_fullyConnected, @"MPSCNNConvolutionIsFullyConnected", v12, v13, v14, v15);
+  objc_msgSend_encodeBool_forKey_(coder, v16, self->_convolutionTranspose, @"MPSCNNConvolutionIsConvolutionTranspose", v17, v18, v19, v20);
+  objc_msgSend_encodeBool_forKey_(coder, v21, self->_convertFloat32Weights, @"MPSCNNConvolutionConvertFloat32Weights", v22, v23, v24, v25);
+  objc_msgSend_encodeInt64_forKey_(coder, v26, self->_flags, @"MPSCNNConvolutionFlags", v27, v28, v29, v30);
   v239 = 0;
   v240 = 0;
   v241 = 0;
@@ -1403,8 +1403,8 @@ LABEL_44:
     v5 = v241 == 0;
   }
 
-  objc_msgSend_encodeBool_forKey_(a3, v31, v5, @"MPSCNNConvolutionNeuronBufferA.isNull", v34, v35, v36, v37);
-  objc_msgSend_encodeBool_forKey_(a3, v39, self->_batchNormalizationData == 0, @"MPSCNNConvolutionBatchNormalizationData.isNull", v40, v41, v42, v43);
+  objc_msgSend_encodeBool_forKey_(coder, v31, v5, @"MPSCNNConvolutionNeuronBufferA.isNull", v34, v35, v36, v37);
+  objc_msgSend_encodeBool_forKey_(coder, v39, self->_batchNormalizationData == 0, @"MPSCNNConvolutionBatchNormalizationData.isNull", v40, v41, v42, v43);
   batchNormalizationData = self->_batchNormalizationData;
   if (batchNormalizationData)
   {
@@ -1415,7 +1415,7 @@ LABEL_44:
     {
       v54 = v53;
       MPSCopyToFromNetworkByteOrder32();
-      objc_msgSend_encodeBytes_length_forKey_(a3, v55, v54, 8 * outputFeatureChannels, @"MPSCNNConvolutionBatchNormalizationData.data", v56, v57, v58);
+      objc_msgSend_encodeBytes_length_forKey_(coder, v55, v54, 8 * outputFeatureChannels, @"MPSCNNConvolutionBatchNormalizationData.data", v56, v57, v58);
       free(v54);
     }
   }
@@ -1440,8 +1440,8 @@ LABEL_44:
             v79 = strlen(v77);
             if (v79)
             {
-              objc_msgSend_encodeBytes_length_forKey_(a3, v80, v78, v79 + 1, @"MPSCNNConvolutionDataSourceClass", v81, v82, v83);
-              objc_msgSend_encodeObject_forKey_(a3, v84, dataSource, @"MPSCNNConvolutionDataSource", v85, v86, v87, v88);
+              objc_msgSend_encodeBytes_length_forKey_(coder, v80, v78, v79 + 1, @"MPSCNNConvolutionDataSourceClass", v81, v82, v83);
+              objc_msgSend_encodeObject_forKey_(coder, v84, dataSource, @"MPSCNNConvolutionDataSource", v85, v86, v87, v88);
             }
           }
         }
@@ -1452,19 +1452,19 @@ LABEL_44:
     }
   }
 
-  objc_msgSend_encodeInt64_forKey_(a3, v44, self->_inputFeatureChannels, @"MPSCNNConvolutionInputFeatureChannels", v47, v48, v49, v50);
-  objc_msgSend_encodeInt64_forKey_(a3, v89, self->_outputFeatureChannels, @"MPSCNNConvolutionOutputFeatureChannels", v90, v91, v92, v93);
-  objc_msgSend_encodeInt64_forKey_(a3, v94, self->_groups, @"MPSCNNConvolutionGroups", v95, v96, v97, v98);
-  objc_msgSend_encodeInt32_forKey_(a3, v99, v239, @"MPSCNNConvolutionNeuronInfo.type", v100, v101, v102, v103);
+  objc_msgSend_encodeInt64_forKey_(coder, v44, self->_inputFeatureChannels, @"MPSCNNConvolutionInputFeatureChannels", v47, v48, v49, v50);
+  objc_msgSend_encodeInt64_forKey_(coder, v89, self->_outputFeatureChannels, @"MPSCNNConvolutionOutputFeatureChannels", v90, v91, v92, v93);
+  objc_msgSend_encodeInt64_forKey_(coder, v94, self->_groups, @"MPSCNNConvolutionGroups", v95, v96, v97, v98);
+  objc_msgSend_encodeInt32_forKey_(coder, v99, v239, @"MPSCNNConvolutionNeuronInfo.type", v100, v101, v102, v103);
   LODWORD(v104) = HIDWORD(v239);
-  objc_msgSend_encodeFloat_forKey_(a3, v105, @"MPSCNNConvolutionNeuronInfo.a", v106, v107, v108, v109, v110, v104);
+  objc_msgSend_encodeFloat_forKey_(coder, v105, @"MPSCNNConvolutionNeuronInfo.a", v106, v107, v108, v109, v110, v104);
   LODWORD(v111) = v240;
-  objc_msgSend_encodeFloat_forKey_(a3, v112, @"MPSCNNConvolutionNeuronInfo.b", v113, v114, v115, v116, v117, v111);
+  objc_msgSend_encodeFloat_forKey_(coder, v112, @"MPSCNNConvolutionNeuronInfo.b", v113, v114, v115, v116, v117, v111);
   LODWORD(v118) = HIDWORD(v240);
-  objc_msgSend_encodeFloat_forKey_(a3, v119, @"MPSCNNConvolutionNeuronInfo.c", v120, v121, v122, v123, v124, v118);
-  objc_msgSend_encodeInt64_forKey_(a3, v125, self->_scaleFactor, @"MPSCNNConvolutionScaleFactor", v126, v127, v128, v129);
-  objc_msgSend_encodeInt64_forKey_(a3, v130, self->_qType, @"MPSCNNConvolutionQuantizationType", v131, v132, v133, v134);
-  objc_msgSend_encodeInt64_forKey_(a3, v135, self->_channelMultiplier, @"MPSCNNConvolutionChannelMultipler", v136, v137, v138, v139);
+  objc_msgSend_encodeFloat_forKey_(coder, v119, @"MPSCNNConvolutionNeuronInfo.c", v120, v121, v122, v123, v124, v118);
+  objc_msgSend_encodeInt64_forKey_(coder, v125, self->_scaleFactor, @"MPSCNNConvolutionScaleFactor", v126, v127, v128, v129);
+  objc_msgSend_encodeInt64_forKey_(coder, v130, self->_qType, @"MPSCNNConvolutionQuantizationType", v131, v132, v133, v134);
+  objc_msgSend_encodeInt64_forKey_(coder, v135, self->_channelMultiplier, @"MPSCNNConvolutionChannelMultipler", v136, v137, v138, v139);
   v147 = self->_dataSource;
   if (v147)
   {
@@ -1556,7 +1556,7 @@ LABEL_36:
           v233 = 0;
           v234 = v237;
           v235 = 0;
-          sub_239D5E500(a3, v228, self, v214, v215, v216, v217, v218);
+          sub_239D5E500(coder, v228, self, v214, v215, v216, v217, v218);
           objc_msgSend_purge(self->_dataSource, v219, v220, v221, v222, v223, v224, v225);
           if (v186 == 268435488)
           {
@@ -1603,7 +1603,7 @@ LABEL_39:
   if (!objc_msgSend_plugin(self, v170, v171, v172, v173, v174, v175, v176))
   {
     v177 = (*(&self->super.super.super.isa + *MEMORY[0x277CD7370]))[4];
-    (*(*v177 + 88))(v177, a3, self, self->_weights, self->_bias, self->_neuronABuffer, self->_biasOriginal, self->_qWts, self->_qType);
+    (*(*v177 + 88))(v177, coder, self, self->_weights, self->_bias, self->_neuronABuffer, self->_biasOriginal, self->_qWts, self->_qType);
   }
 }
 
@@ -2028,11 +2028,11 @@ LABEL_64:
   return v12;
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6 kernelOffset:(id *)a7
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset kernelOffset:(id *)kernelOffset
 {
   v44.receiver = self;
   v44.super_class = MPSCNNConvolution;
-  v8 = [(MPSCNNKernel *)&v44 destinationImageDescriptorForSourceImages:a3 sourceStates:a4 paddingMethod:a5 sourceOffset:a6 kernelOffset:a7];
+  v8 = [(MPSCNNKernel *)&v44 destinationImageDescriptorForSourceImages:images sourceStates:states paddingMethod:method sourceOffset:offset kernelOffset:kernelOffset];
   v16 = objc_msgSend_width(v8, v9, v10, v11, v12, v13, v14, v15);
   objc_msgSend_setWidth_(v8, v17, self->_scaleFactor * v16, v18, v19, v20, v21, v22);
   v30 = objc_msgSend_height(v8, v23, v24, v25, v26, v27, v28, v29);
@@ -2041,12 +2041,12 @@ LABEL_64:
   return v8;
 }
 
-- (void)copyToGradientState:(id)a3 sourceImage:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6
+- (void)copyToGradientState:(id)state sourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage
 {
   v8.receiver = self;
   v8.super_class = MPSCNNConvolution;
-  [(MPSCNNKernel *)&v8 copyToGradientState:a3 sourceImage:a4 sourceStates:a5 destinationImage:a6];
-  *(a3 + 18) = self->_outputFeatureChannels / (self->_scaleFactor * self->_scaleFactor);
+  [(MPSCNNKernel *)&v8 copyToGradientState:state sourceImage:image sourceStates:states destinationImage:destinationImage];
+  *(state + 18) = self->_outputFeatureChannels / (self->_scaleFactor * self->_scaleFactor);
 }
 
 - (id)debugDescription
@@ -2067,19 +2067,19 @@ LABEL_64:
   return result;
 }
 
-- (void)encodeToCommandBuffer:(id)a3 sourceImage:(id)a4 destinationImage:(id)a5 state:(id *)a6
+- (void)encodeToCommandBuffer:(id)buffer sourceImage:(id)image destinationImage:(id)destinationImage state:(id *)state
 {
-  objc_msgSend_encodeToCommandBuffer_sourceImage_destinationImage_(self, a2, a3, a4, a5, a6, v6, v7);
+  objc_msgSend_encodeToCommandBuffer_sourceImage_destinationImage_(self, a2, buffer, image, destinationImage, state, v6, v7);
   v11 = [MPSCNNConvolutionState alloc];
-  v19 = objc_msgSend_width(a4, v12, v13, v14, v15, v16, v17, v18);
-  v27 = objc_msgSend_height(a4, v20, v21, v22, v23, v24, v25, v26);
+  v19 = objc_msgSend_width(image, v12, v13, v14, v15, v16, v17, v18);
+  v27 = objc_msgSend_height(image, v20, v21, v22, v23, v24, v25, v26);
   kernelWidth = self->super._kernelWidth;
   kernelHeight = self->super._kernelHeight;
   objc_msgSend_offset(self, v30, v31, v32, v33, v34, v35, v36);
-  *a6 = objc_msgSend_initWithSourceWidth_sourceHeight_kernelWidth_kernelHeight_sourceOffset_(v11, v37, v19, v27, kernelWidth, kernelHeight, v39, v38);
+  *state = objc_msgSend_initWithSourceWidth_sourceHeight_kernelWidth_kernelHeight_sourceOffset_(v11, v37, v19, v27, kernelWidth, kernelHeight, v39, v38);
 }
 
-- (id)resourceListForSourceImages:(id)a3 destinationImages:(id)a4
+- (id)resourceListForSourceImages:(id)images destinationImages:(id)destinationImages
 {
   outputFeatureChannels = self->_outputFeatureChannels;
   v9 = outputFeatureChannels;
@@ -2092,12 +2092,12 @@ LABEL_64:
   v11 = ((outputFeatureChannels / self->_groups + 3) & 0x1FFFFFFFCLL) * 4 * self->_groups;
   if (v11)
   {
-    return objc_msgSend_resourceListWithBufferSizes_(MEMORY[0x277CD72A0], a2, v10 & 0x7FFFFFFF0, a4, v4, v5, v6, v7, v11, 0);
+    return objc_msgSend_resourceListWithBufferSizes_(MEMORY[0x277CD72A0], a2, v10 & 0x7FFFFFFF0, destinationImages, v4, v5, v6, v7, v11, 0);
   }
 
   else
   {
-    return objc_msgSend_resourceListWithBufferSizes_(MEMORY[0x277CD72A0], a2, v10 & 0x7FFFFFFF0, a4, v4, v5, v6, v7, 0);
+    return objc_msgSend_resourceListWithBufferSizes_(MEMORY[0x277CD72A0], a2, v10 & 0x7FFFFFFF0, destinationImages, v4, v5, v6, v7, 0);
   }
 }
 
@@ -2313,13 +2313,13 @@ LABEL_13:
 
   else
   {
-    v9 = self;
+    selfCopy = self;
     v10 = MTLReportFailureTypeEnabled();
-    self = v9;
+    self = selfCopy;
     if (v10)
     {
       MTLReportFailure();
-      self = v9;
+      self = selfCopy;
     }
   }
 

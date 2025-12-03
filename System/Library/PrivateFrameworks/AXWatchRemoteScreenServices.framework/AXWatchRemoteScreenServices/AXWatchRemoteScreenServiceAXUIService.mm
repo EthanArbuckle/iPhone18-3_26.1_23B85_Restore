@@ -1,6 +1,6 @@
 @interface AXWatchRemoteScreenServiceAXUIService
 - (_TtC27AXWatchRemoteScreenServices37AXWatchRemoteScreenServiceAXUIService)init;
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3;
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client;
 @end
 
 @implementation AXWatchRemoteScreenServiceAXUIService
@@ -13,11 +13,11 @@
   return [(AXWatchRemoteScreenServiceAXUIService *)&v3 init];
 }
 
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client
 {
-  v5 = a3;
-  v6 = self;
-  sub_23D6BDDDC(a3);
+  clientCopy = client;
+  selfCopy = self;
+  sub_23D6BDDDC(client);
 }
 
 @end

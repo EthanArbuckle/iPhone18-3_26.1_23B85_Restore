@@ -1,22 +1,22 @@
 @interface BSUINavigationItem
-- (void)_setManualScrollEdgeAppearanceProgress:(double)a3;
+- (void)_setManualScrollEdgeAppearanceProgress:(double)progress;
 - (void)notifyRightBarButtonItemsDidChange;
-- (void)setLeadingItemGroups:(id)a3;
-- (void)setLeftBarButtonItem:(id)a3;
-- (void)setLeftBarButtonItem:(id)a3 animated:(BOOL)a4;
-- (void)setLeftBarButtonItems:(id)a3;
-- (void)setLeftBarButtonItems:(id)a3 animated:(BOOL)a4;
-- (void)setPinnedTrailingGroup:(id)a3;
-- (void)setRightBarButtonItem:(id)a3;
-- (void)setRightBarButtonItem:(id)a3 animated:(BOOL)a4;
-- (void)setRightBarButtonItems:(id)a3;
-- (void)setRightBarButtonItems:(id)a3 animated:(BOOL)a4;
-- (void)setTrailingItemGroups:(id)a3;
+- (void)setLeadingItemGroups:(id)groups;
+- (void)setLeftBarButtonItem:(id)item;
+- (void)setLeftBarButtonItem:(id)item animated:(BOOL)animated;
+- (void)setLeftBarButtonItems:(id)items;
+- (void)setLeftBarButtonItems:(id)items animated:(BOOL)animated;
+- (void)setPinnedTrailingGroup:(id)group;
+- (void)setRightBarButtonItem:(id)item;
+- (void)setRightBarButtonItem:(id)item animated:(BOOL)animated;
+- (void)setRightBarButtonItems:(id)items;
+- (void)setRightBarButtonItems:(id)items animated:(BOOL)animated;
+- (void)setTrailingItemGroups:(id)groups;
 @end
 
 @implementation BSUINavigationItem
 
-- (void)_setManualScrollEdgeAppearanceProgress:(double)a3
+- (void)_setManualScrollEdgeAppearanceProgress:(double)progress
 {
   if ([(BSUINavigationItem *)self _isManualScrollEdgeAppearanceEnabled]&& [(BSUINavigationItem *)self isUpdatingManualScrollEdgeAppearanceProgress])
   {
@@ -29,131 +29,131 @@
   {
     v5.receiver = self;
     v5.super_class = BSUINavigationItem;
-    [(BSUINavigationItem *)&v5 _setManualScrollEdgeAppearanceProgress:a3];
+    [(BSUINavigationItem *)&v5 _setManualScrollEdgeAppearanceProgress:progress];
   }
 }
 
-- (void)setLeftBarButtonItem:(id)a3
+- (void)setLeftBarButtonItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(BSUINavigationItem *)self willChangeValueForKey:@"bsui_leftBarButtonItems"];
   v5.receiver = self;
   v5.super_class = BSUINavigationItem;
-  [(BSUINavigationItem *)&v5 setLeftBarButtonItem:v4];
+  [(BSUINavigationItem *)&v5 setLeftBarButtonItem:itemCopy];
 
   [(BSUINavigationItem *)self didChangeValueForKey:@"bsui_leftBarButtonItems"];
 }
 
-- (void)setLeftBarButtonItem:(id)a3 animated:(BOOL)a4
+- (void)setLeftBarButtonItem:(id)item animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  [(BSUINavigationItem *)self willChangeValueForKey:@"bsui_leftBarButtonItems"];
-  v7.receiver = self;
-  v7.super_class = BSUINavigationItem;
-  [(BSUINavigationItem *)&v7 setLeftBarButtonItem:v6 animated:v4];
-
-  [(BSUINavigationItem *)self didChangeValueForKey:@"bsui_leftBarButtonItems"];
-}
-
-- (void)setLeftBarButtonItems:(id)a3
-{
-  v4 = a3;
-  [(BSUINavigationItem *)self willChangeValueForKey:@"bsui_leftBarButtonItems"];
-  v5.receiver = self;
-  v5.super_class = BSUINavigationItem;
-  [(BSUINavigationItem *)&v5 setLeftBarButtonItems:v4];
-
-  [(BSUINavigationItem *)self didChangeValueForKey:@"bsui_leftBarButtonItems"];
-}
-
-- (void)setLeftBarButtonItems:(id)a3 animated:(BOOL)a4
-{
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  itemCopy = item;
   [(BSUINavigationItem *)self willChangeValueForKey:@"bsui_leftBarButtonItems"];
   v7.receiver = self;
   v7.super_class = BSUINavigationItem;
-  [(BSUINavigationItem *)&v7 setLeftBarButtonItems:v6 animated:v4];
+  [(BSUINavigationItem *)&v7 setLeftBarButtonItem:itemCopy animated:animatedCopy];
 
   [(BSUINavigationItem *)self didChangeValueForKey:@"bsui_leftBarButtonItems"];
 }
 
-- (void)setRightBarButtonItem:(id)a3
+- (void)setLeftBarButtonItems:(id)items
 {
-  v4 = a3;
-  [(BSUINavigationItem *)self willChangeValueForKey:@"bsui_rightBarButtonItems"];
-  v5.receiver = self;
-  v5.super_class = BSUINavigationItem;
-  [(BSUINavigationItem *)&v5 setRightBarButtonItem:v4];
-
-  [(BSUINavigationItem *)self didChangeValueForKey:@"bsui_rightBarButtonItems"];
-}
-
-- (void)setRightBarButtonItem:(id)a3 animated:(BOOL)a4
-{
-  v4 = a4;
-  v6 = a3;
-  [(BSUINavigationItem *)self willChangeValueForKey:@"bsui_rightBarButtonItems"];
-  v7.receiver = self;
-  v7.super_class = BSUINavigationItem;
-  [(BSUINavigationItem *)&v7 setRightBarButtonItem:v6 animated:v4];
-
-  [(BSUINavigationItem *)self didChangeValueForKey:@"bsui_rightBarButtonItems"];
-}
-
-- (void)setRightBarButtonItems:(id)a3
-{
-  v4 = a3;
-  [(BSUINavigationItem *)self willChangeValueForKey:@"bsui_rightBarButtonItems"];
-  v5.receiver = self;
-  v5.super_class = BSUINavigationItem;
-  [(BSUINavigationItem *)&v5 setRightBarButtonItems:v4];
-
-  [(BSUINavigationItem *)self didChangeValueForKey:@"bsui_rightBarButtonItems"];
-}
-
-- (void)setRightBarButtonItems:(id)a3 animated:(BOOL)a4
-{
-  v4 = a4;
-  v6 = a3;
-  [(BSUINavigationItem *)self willChangeValueForKey:@"bsui_rightBarButtonItems"];
-  v7.receiver = self;
-  v7.super_class = BSUINavigationItem;
-  [(BSUINavigationItem *)&v7 setRightBarButtonItems:v6 animated:v4];
-
-  [(BSUINavigationItem *)self didChangeValueForKey:@"bsui_rightBarButtonItems"];
-}
-
-- (void)setLeadingItemGroups:(id)a3
-{
-  v4 = a3;
+  itemsCopy = items;
   [(BSUINavigationItem *)self willChangeValueForKey:@"bsui_leftBarButtonItems"];
   v5.receiver = self;
   v5.super_class = BSUINavigationItem;
-  [(BSUINavigationItem *)&v5 setLeadingItemGroups:v4];
+  [(BSUINavigationItem *)&v5 setLeftBarButtonItems:itemsCopy];
 
   [(BSUINavigationItem *)self didChangeValueForKey:@"bsui_leftBarButtonItems"];
 }
 
-- (void)setTrailingItemGroups:(id)a3
+- (void)setLeftBarButtonItems:(id)items animated:(BOOL)animated
 {
-  v4 = a3;
+  animatedCopy = animated;
+  itemsCopy = items;
+  [(BSUINavigationItem *)self willChangeValueForKey:@"bsui_leftBarButtonItems"];
+  v7.receiver = self;
+  v7.super_class = BSUINavigationItem;
+  [(BSUINavigationItem *)&v7 setLeftBarButtonItems:itemsCopy animated:animatedCopy];
+
+  [(BSUINavigationItem *)self didChangeValueForKey:@"bsui_leftBarButtonItems"];
+}
+
+- (void)setRightBarButtonItem:(id)item
+{
+  itemCopy = item;
   [(BSUINavigationItem *)self willChangeValueForKey:@"bsui_rightBarButtonItems"];
   v5.receiver = self;
   v5.super_class = BSUINavigationItem;
-  [(BSUINavigationItem *)&v5 setTrailingItemGroups:v4];
+  [(BSUINavigationItem *)&v5 setRightBarButtonItem:itemCopy];
 
   [(BSUINavigationItem *)self didChangeValueForKey:@"bsui_rightBarButtonItems"];
 }
 
-- (void)setPinnedTrailingGroup:(id)a3
+- (void)setRightBarButtonItem:(id)item animated:(BOOL)animated
 {
-  v4 = a3;
+  animatedCopy = animated;
+  itemCopy = item;
+  [(BSUINavigationItem *)self willChangeValueForKey:@"bsui_rightBarButtonItems"];
+  v7.receiver = self;
+  v7.super_class = BSUINavigationItem;
+  [(BSUINavigationItem *)&v7 setRightBarButtonItem:itemCopy animated:animatedCopy];
+
+  [(BSUINavigationItem *)self didChangeValueForKey:@"bsui_rightBarButtonItems"];
+}
+
+- (void)setRightBarButtonItems:(id)items
+{
+  itemsCopy = items;
   [(BSUINavigationItem *)self willChangeValueForKey:@"bsui_rightBarButtonItems"];
   v5.receiver = self;
   v5.super_class = BSUINavigationItem;
-  [(BSUINavigationItem *)&v5 setPinnedTrailingGroup:v4];
+  [(BSUINavigationItem *)&v5 setRightBarButtonItems:itemsCopy];
+
+  [(BSUINavigationItem *)self didChangeValueForKey:@"bsui_rightBarButtonItems"];
+}
+
+- (void)setRightBarButtonItems:(id)items animated:(BOOL)animated
+{
+  animatedCopy = animated;
+  itemsCopy = items;
+  [(BSUINavigationItem *)self willChangeValueForKey:@"bsui_rightBarButtonItems"];
+  v7.receiver = self;
+  v7.super_class = BSUINavigationItem;
+  [(BSUINavigationItem *)&v7 setRightBarButtonItems:itemsCopy animated:animatedCopy];
+
+  [(BSUINavigationItem *)self didChangeValueForKey:@"bsui_rightBarButtonItems"];
+}
+
+- (void)setLeadingItemGroups:(id)groups
+{
+  groupsCopy = groups;
+  [(BSUINavigationItem *)self willChangeValueForKey:@"bsui_leftBarButtonItems"];
+  v5.receiver = self;
+  v5.super_class = BSUINavigationItem;
+  [(BSUINavigationItem *)&v5 setLeadingItemGroups:groupsCopy];
+
+  [(BSUINavigationItem *)self didChangeValueForKey:@"bsui_leftBarButtonItems"];
+}
+
+- (void)setTrailingItemGroups:(id)groups
+{
+  groupsCopy = groups;
+  [(BSUINavigationItem *)self willChangeValueForKey:@"bsui_rightBarButtonItems"];
+  v5.receiver = self;
+  v5.super_class = BSUINavigationItem;
+  [(BSUINavigationItem *)&v5 setTrailingItemGroups:groupsCopy];
+
+  [(BSUINavigationItem *)self didChangeValueForKey:@"bsui_rightBarButtonItems"];
+}
+
+- (void)setPinnedTrailingGroup:(id)group
+{
+  groupCopy = group;
+  [(BSUINavigationItem *)self willChangeValueForKey:@"bsui_rightBarButtonItems"];
+  v5.receiver = self;
+  v5.super_class = BSUINavigationItem;
+  [(BSUINavigationItem *)&v5 setPinnedTrailingGroup:groupCopy];
 
   [(BSUINavigationItem *)self didChangeValueForKey:@"bsui_rightBarButtonItems"];
 }

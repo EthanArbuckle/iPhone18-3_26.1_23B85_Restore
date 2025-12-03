@@ -1,50 +1,50 @@
 @interface PKProvisioningAnalyticsSessionStepReporter
-- (void)_reportProvisioningStep:(id)a3 finishedWithStatus:(BOOL)a4 error:(id)a5 context:(id)a6;
-- (void)reportProvisioningCompleteWithSuccess:(BOOL)a3;
-- (void)reportProvisioningStepStart:(id)a3;
-- (void)reportProvisioningStepStart:(id)a3 context:(id)a4;
-- (void)setProvisionedPass:(id)a3;
+- (void)_reportProvisioningStep:(id)step finishedWithStatus:(BOOL)status error:(id)error context:(id)context;
+- (void)reportProvisioningCompleteWithSuccess:(BOOL)success;
+- (void)reportProvisioningStepStart:(id)start;
+- (void)reportProvisioningStepStart:(id)start context:(id)context;
+- (void)setProvisionedPass:(id)pass;
 @end
 
 @implementation PKProvisioningAnalyticsSessionStepReporter
 
-- (void)reportProvisioningStepStart:(id)a3
+- (void)reportProvisioningStepStart:(id)start
 {
-  v4 = a3;
-  v5 = [(PKProvisioningAnalyticsSessionReporter *)self responder];
-  [v5 reportProvisioningStepStartForReporter:self step:v4 context:0];
+  startCopy = start;
+  responder = [(PKProvisioningAnalyticsSessionReporter *)self responder];
+  [responder reportProvisioningStepStartForReporter:self step:startCopy context:0];
 }
 
-- (void)reportProvisioningStepStart:(id)a3 context:(id)a4
+- (void)reportProvisioningStepStart:(id)start context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKProvisioningAnalyticsSessionReporter *)self responder];
-  [v8 reportProvisioningStepStartForReporter:self step:v7 context:v6];
+  contextCopy = context;
+  startCopy = start;
+  responder = [(PKProvisioningAnalyticsSessionReporter *)self responder];
+  [responder reportProvisioningStepStartForReporter:self step:startCopy context:contextCopy];
 }
 
-- (void)_reportProvisioningStep:(id)a3 finishedWithStatus:(BOOL)a4 error:(id)a5 context:(id)a6
+- (void)_reportProvisioningStep:(id)step finishedWithStatus:(BOOL)status error:(id)error context:(id)context
 {
-  v7 = a4;
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(PKProvisioningAnalyticsSessionReporter *)self responder];
-  [v13 reportProvisioningStepForReporter:self step:v12 success:v7 error:v11 context:v10];
+  statusCopy = status;
+  contextCopy = context;
+  errorCopy = error;
+  stepCopy = step;
+  responder = [(PKProvisioningAnalyticsSessionReporter *)self responder];
+  [responder reportProvisioningStepForReporter:self step:stepCopy success:statusCopy error:errorCopy context:contextCopy];
 }
 
-- (void)reportProvisioningCompleteWithSuccess:(BOOL)a3
+- (void)reportProvisioningCompleteWithSuccess:(BOOL)success
 {
-  v3 = a3;
-  v5 = [(PKProvisioningAnalyticsSessionReporter *)self responder];
-  [v5 reportProvisioningCompleteForReporter:self success:v3];
+  successCopy = success;
+  responder = [(PKProvisioningAnalyticsSessionReporter *)self responder];
+  [responder reportProvisioningCompleteForReporter:self success:successCopy];
 }
 
-- (void)setProvisionedPass:(id)a3
+- (void)setProvisionedPass:(id)pass
 {
-  v4 = a3;
-  v5 = [(PKProvisioningAnalyticsSessionReporter *)self responder];
-  [v5 setPass:v4];
+  passCopy = pass;
+  responder = [(PKProvisioningAnalyticsSessionReporter *)self responder];
+  [responder setPass:passCopy];
 }
 
 @end

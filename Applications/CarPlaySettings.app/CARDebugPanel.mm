@@ -1,5 +1,5 @@
 @interface CARDebugPanel
-- (CARDebugPanel)initWithPanelController:(id)a3;
+- (CARDebugPanel)initWithPanelController:(id)controller;
 - (id)cellSpecifier;
 - (id)cellSpecifiers;
 - (void)viewDidLoad;
@@ -7,21 +7,21 @@
 
 @implementation CARDebugPanel
 
-- (CARDebugPanel)initWithPanelController:(id)a3
+- (CARDebugPanel)initWithPanelController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = CARDebugPanel;
-  v5 = [(CARSettingsPanel *)&v13 initWithPanelController:v4];
+  v5 = [(CARSettingsPanel *)&v13 initWithPanelController:controllerCopy];
   if (v5)
   {
-    v6 = [[CARDebugDynamicTextPanel alloc] initWithPanelController:v4];
+    v6 = [[CARDebugDynamicTextPanel alloc] initWithPanelController:controllerCopy];
     v14[0] = v6;
-    v7 = [[CARDebugColorsPanel alloc] initWithPanelController:v4];
+    v7 = [[CARDebugColorsPanel alloc] initWithPanelController:controllerCopy];
     v14[1] = v7;
-    v8 = [[CARDebugTableCellsPanel alloc] initWithPanelController:v4];
+    v8 = [[CARDebugTableCellsPanel alloc] initWithPanelController:controllerCopy];
     v14[2] = v8;
-    v9 = [[CARDebugSettingsCollectionPanel alloc] initWithPanelController:v4];
+    v9 = [[CARDebugSettingsCollectionPanel alloc] initWithPanelController:controllerCopy];
     v14[3] = v9;
     v10 = [NSArray arrayWithObjects:v14 count:4];
     panels = v5->_panels;
@@ -60,9 +60,9 @@
   cellSpecifiers = self->_cellSpecifiers;
   if (!cellSpecifiers)
   {
-    v4 = [(CARDebugPanel *)self panels];
+    panels = [(CARDebugPanel *)self panels];
     v5 = NSStringFromSelector("cellSpecifier");
-    v6 = [v4 valueForKey:v5];
+    v6 = [panels valueForKey:v5];
     v7 = [NSMutableArray arrayWithArray:v6];
 
     v8 = self->_cellSpecifiers;

@@ -2,9 +2,9 @@
 - (VCPLoudnessAnalyzer)init;
 - (id).cxx_construct;
 - (id)results;
-- (int)finalizeAnalysisAtTime:(id *)a3;
-- (int)processAudioSamples:(AudioBufferList *)a3 timestamp:(AudioTimeStamp *)a4;
-- (int)setupWithSample:(opaqueCMSampleBuffer *)a3 andSampleBatchSize:(int)a4;
+- (int)finalizeAnalysisAtTime:(id *)time;
+- (int)processAudioSamples:(AudioBufferList *)samples timestamp:(AudioTimeStamp *)timestamp;
+- (int)setupWithSample:(opaqueCMSampleBuffer *)sample andSampleBatchSize:(int)size;
 - (void)dealloc;
 @end
 
@@ -20,9 +20,9 @@
   {
     v2->_framePosition = 0;
     v2->_sampleRate = 16000.0;
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     loudnessResults = v3->_loudnessResults;
-    v3->_loudnessResults = v4;
+    v3->_loudnessResults = array;
 
     v6 = v3;
   }
@@ -30,9 +30,9 @@
   return v3;
 }
 
-- (int)setupWithSample:(opaqueCMSampleBuffer *)a3 andSampleBatchSize:(int)a4
+- (int)setupWithSample:(opaqueCMSampleBuffer *)sample andSampleBatchSize:(int)size
 {
-  FormatDescription = CMSampleBufferGetFormatDescription(a3);
+  FormatDescription = CMSampleBufferGetFormatDescription(sample);
   if (CMAudioFormatDescriptionGetStreamBasicDescription(FormatDescription))
   {
     operator new();
@@ -68,9 +68,9 @@
   [(VCPLoudnessAnalyzer *)&v6 dealloc];
 }
 
-- (int)processAudioSamples:(AudioBufferList *)a3 timestamp:(AudioTimeStamp *)a4
+- (int)processAudioSamples:(AudioBufferList *)samples timestamp:(AudioTimeStamp *)timestamp
 {
-  std::vector<float>::__insert_with_size[abi:ne200100]<float *,float *>(&self->_loudnessSampleBuffer, self->_loudnessSampleBuffer.__end_, a3->mBuffers[0].mData, a3->mBuffers[0].mData + (a3->mBuffers[0].mDataByteSize & 0xFFFFFFFFFFFFFFFCLL), a3->mBuffers[0].mDataByteSize >> 2);
+  std::vector<float>::__insert_with_size[abi:ne200100]<float *,float *>(&self->_loudnessSampleBuffer, self->_loudnessSampleBuffer.__end_, samples->mBuffers[0].mData, samples->mBuffers[0].mData + (samples->mBuffers[0].mDataByteSize & 0xFFFFFFFFFFFFFFFCLL), samples->mBuffers[0].mDataByteSize >> 2);
   begin = self->_loudnessSampleBuffer.__begin_;
   samplesFor100ms = self->_samplesFor100ms;
   if (samplesFor100ms <= self->_loudnessSampleBuffer.__end_ - begin)
@@ -231,7 +231,7 @@
   return 0;
 }
 
-- (int)finalizeAnalysisAtTime:(id *)a3
+- (int)finalizeAnalysisAtTime:(id *)time
 {
   v36[3] = *MEMORY[0x1E69E9840];
   begin = self->_momentaryEnergyValues.__begin_;
@@ -282,17 +282,17 @@
         }
 
         CMTimeMake(&time, (self->_sampleRate * v9), self->_sampleRate);
-        v30 = time;
+        timeCopy = time;
         CMTimeMake(&time, ((self->_sampleRate * v11) / 10.0), self->_sampleRate);
-        v29 = time;
+        timeCopy2 = time;
         loudnessResults = self->_loudnessResults;
         v35[0] = @"start";
-        time = v30;
+        time = timeCopy;
         v16 = CMTimeCopyAsDictionary(&time, 0);
         v36[0] = v16;
         v35[1] = @"duration";
-        time = v29;
-        rhs = v30;
+        time = timeCopy2;
+        rhs = timeCopy;
         CMTimeSubtract(&v24, &time, &rhs);
         time = v24;
         v17 = CMTimeCopyAsDictionary(&time, 0);

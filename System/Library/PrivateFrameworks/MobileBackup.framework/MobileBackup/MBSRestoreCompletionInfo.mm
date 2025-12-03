@@ -1,14 +1,14 @@
 @interface MBSRestoreCompletionInfo
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MBSRestoreCompletionInfo
@@ -45,14 +45,14 @@
   return v3;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -63,16 +63,16 @@
       while (1)
       {
         v24 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          [objc_msgSend(a3 "data")];
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [objc_msgSend(from "data")];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v24 & 0x7F) << v6;
@@ -90,9 +90,9 @@
         }
       }
 
-      v12 = [a3 hasError] ? 0 : v8;
+      v12 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v12 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v12 & 7) == 4)
       {
         break;
       }
@@ -114,16 +114,16 @@ LABEL_15:
         while (1)
         {
           v25 = 0;
-          v17 = [a3 position] + 1;
-          if (v17 >= [a3 position] && (v18 = objc_msgSend(a3, "position") + 1, v18 <= objc_msgSend(a3, "length")))
+          v17 = [from position] + 1;
+          if (v17 >= [from position] && (v18 = objc_msgSend(from, "position") + 1, v18 <= objc_msgSend(from, "length")))
           {
-            [objc_msgSend(a3 "data")];
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [objc_msgSend(from "data")];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v16 |= (v25 & 0x7F) << v14;
@@ -141,7 +141,7 @@ LABEL_15:
           }
         }
 
-        v19 = [a3 hasError] ? 0 : v16;
+        v19 = [from hasError] ? 0 : v16;
 LABEL_34:
         self->_errorCode = v19;
       }
@@ -155,17 +155,17 @@ LABEL_34:
         }
       }
 
-      v22 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v22 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  LOBYTE(v21) = [a3 hasError] ^ 1;
+  LOBYTE(v21) = [from hasError] ^ 1;
   return v21;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -180,24 +180,24 @@ LABEL_34:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 2) = self->_errorCode;
-    *(a3 + 24) |= 1u;
+    *(to + 2) = self->_errorCode;
+    *(to + 24) |= 1u;
   }
 
   errorDescription = self->_errorDescription;
   if (errorDescription)
   {
-    [a3 setErrorDescription:errorDescription];
+    [to setErrorDescription:errorDescription];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -205,25 +205,25 @@ LABEL_34:
     *(v5 + 24) |= 1u;
   }
 
-  v6[2] = [(NSString *)self->_errorDescription copyWithZone:a3];
+  v6[2] = [(NSString *)self->_errorDescription copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 24);
+    v6 = *(equal + 24);
     if (*&self->_has)
     {
-      if ((*(a3 + 24) & 1) == 0 || self->_errorCode != *(a3 + 2))
+      if ((*(equal + 24) & 1) == 0 || self->_errorCode != *(equal + 2))
       {
         goto LABEL_9;
       }
     }
 
-    else if (*(a3 + 24))
+    else if (*(equal + 24))
     {
 LABEL_9:
       LOBYTE(v5) = 0;
@@ -231,7 +231,7 @@ LABEL_9:
     }
 
     errorDescription = self->_errorDescription;
-    if (errorDescription | *(a3 + 2))
+    if (errorDescription | *(equal + 2))
     {
 
       LOBYTE(v5) = [(NSString *)errorDescription isEqual:?];
@@ -261,15 +261,15 @@ LABEL_9:
   return [(NSString *)self->_errorDescription hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 24))
+  if (*(from + 24))
   {
-    self->_errorCode = *(a3 + 2);
+    self->_errorCode = *(from + 2);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(MBSRestoreCompletionInfo *)self setErrorDescription:?];
   }

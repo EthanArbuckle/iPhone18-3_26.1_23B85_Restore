@@ -1,23 +1,23 @@
 @interface AMDAppTabInfo
-+ (id)deleteAllTabs:(id *)a3;
-+ (id)deleteTabsForUseCase:(id)a3 error:(id *)a4;
-+ (id)fetchAllTabInfo:(id *)a3;
-+ (id)getInfoForTab:(id)a3 error:(id *)a4;
-+ (id)refreshTabsForUseCase:(id)a3 tabs:(id)a4 error:(id *)a5;
-+ (void)saveTabInfo:(id)a3 error:(id *)a4;
++ (id)deleteAllTabs:(id *)tabs;
++ (id)deleteTabsForUseCase:(id)case error:(id *)error;
++ (id)fetchAllTabInfo:(id *)info;
++ (id)getInfoForTab:(id)tab error:(id *)error;
++ (id)refreshTabsForUseCase:(id)case tabs:(id)tabs error:(id *)error;
++ (void)saveTabInfo:(id)info error:(id *)error;
 @end
 
 @implementation AMDAppTabInfo
 
-+ (void)saveTabInfo:(id)a3 error:(id *)a4
++ (void)saveTabInfo:(id)info error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v25 = a4;
+  objc_storeStrong(location, info);
+  errorCopy = error;
   v24 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v23 = [v24 getManagedObjectContext];
+  getManagedObjectContext = [v24 getManagedObjectContext];
   v16 = 0;
   v17 = &v16;
   v18 = 838860800;
@@ -25,14 +25,14 @@
   v20 = __Block_byref_object_copy_;
   v21 = __Block_byref_object_dispose_;
   v22 = 0;
-  v7 = v23;
+  v7 = getManagedObjectContext;
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
   v10 = 0;
   v11 = __35__AMDAppTabInfo_saveTabInfo_error___block_invoke;
   v12 = &unk_278CB5A08;
   v13 = MEMORY[0x277D82BE0](location[0]);
-  v14 = MEMORY[0x277D82BE0](v23);
+  v14 = MEMORY[0x277D82BE0](getManagedObjectContext);
   v15[0] = MEMORY[0x277D82BE0](v24);
   v15[1] = &v16;
   [v7 performBlockAndWait:&v8];
@@ -40,7 +40,7 @@
   {
     v5 = v17[5];
     v4 = v5;
-    *v25 = v5;
+    *errorCopy = v5;
   }
 
   objc_storeStrong(v15, 0);
@@ -48,7 +48,7 @@
   objc_storeStrong(&v13, 0);
   _Block_object_dispose(&v16, 8);
   objc_storeStrong(&v22, 0);
-  objc_storeStrong(&v23, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   objc_storeStrong(&v24, 0);
   objc_storeStrong(location, 0);
 }
@@ -150,18 +150,18 @@ void __35__AMDAppTabInfo_saveTabInfo_error___block_invoke(uint64_t a1)
   *MEMORY[0x277D85DE8];
 }
 
-+ (id)refreshTabsForUseCase:(id)a3 tabs:(id)a4 error:(id *)a5
++ (id)refreshTabsForUseCase:(id)case tabs:(id)tabs error:(id *)error
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v40 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, case);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
-  v37 = a5;
-  v36 = [v40 deleteTabsForUseCase:location[0] error:a5];
-  if (*a5)
+  objc_storeStrong(&v38, tabs);
+  errorCopy = error;
+  v36 = [selfCopy deleteTabsForUseCase:location[0] error:error];
+  if (*error)
   {
     v41 = 0;
     v35 = 1;
@@ -186,7 +186,7 @@ void __35__AMDAppTabInfo_saveTabInfo_error___block_invoke(uint64_t a1)
     v34 = [v13 dictionaryWithDictionary:?];
     MEMORY[0x277D82BD8](v12);
     v33 = +[AMDCoreDataPersistentContainer sharedContainer];
-    v32 = [v33 getManagedObjectContext];
+    getManagedObjectContext = [v33 getManagedObjectContext];
     v25 = 0;
     v26 = &v25;
     v27 = 838860800;
@@ -194,14 +194,14 @@ void __35__AMDAppTabInfo_saveTabInfo_error___block_invoke(uint64_t a1)
     v29 = __Block_byref_object_copy_;
     v30 = __Block_byref_object_dispose_;
     v31 = 0;
-    v11 = v32;
+    v11 = getManagedObjectContext;
     v16 = MEMORY[0x277D85DD0];
     v17 = -1073741824;
     v18 = 0;
     v19 = __50__AMDAppTabInfo_refreshTabsForUseCase_tabs_error___block_invoke;
     v20 = &unk_278CB5A30;
     v21 = MEMORY[0x277D82BE0](v38);
-    v22 = MEMORY[0x277D82BE0](v32);
+    v22 = MEMORY[0x277D82BE0](getManagedObjectContext);
     v23 = MEMORY[0x277D82BE0](location[0]);
     v24[0] = MEMORY[0x277D82BE0](v33);
     v24[1] = &v25;
@@ -210,7 +210,7 @@ void __35__AMDAppTabInfo_saveTabInfo_error___block_invoke(uint64_t a1)
     {
       v10 = v26[5];
       v5 = v10;
-      *v37 = v10;
+      *errorCopy = v10;
       v41 = 0;
     }
 
@@ -230,7 +230,7 @@ void __35__AMDAppTabInfo_saveTabInfo_error___block_invoke(uint64_t a1)
     objc_storeStrong(&v21, 0);
     _Block_object_dispose(&v25, 8);
     objc_storeStrong(&v31, 0);
-    objc_storeStrong(&v32, 0);
+    objc_storeStrong(&getManagedObjectContext, 0);
     objc_storeStrong(&v33, 0);
     objc_storeStrong(&v34, 0);
   }
@@ -298,15 +298,15 @@ void __50__AMDAppTabInfo_refreshTabsForUseCase_tabs_error___block_invoke(void *a
   *MEMORY[0x277D85DE8];
 }
 
-+ (id)deleteTabsForUseCase:(id)a3 error:(id *)a4
++ (id)deleteTabsForUseCase:(id)case error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v34 = a4;
+  objc_storeStrong(location, case);
+  errorCopy = error;
   v33 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v32 = [v33 getManagedObjectContext];
+  getManagedObjectContext = [v33 getManagedObjectContext];
   v25 = 0;
   v26 = &v25;
   v27 = 838860800;
@@ -321,14 +321,14 @@ void __50__AMDAppTabInfo_refreshTabsForUseCase_tabs_error___block_invoke(void *a
   v22 = __Block_byref_object_copy_;
   v23 = __Block_byref_object_dispose_;
   v24 = 0;
-  v9 = v32;
+  v9 = getManagedObjectContext;
   v10 = MEMORY[0x277D85DD0];
   v11 = -1073741824;
   v12 = 0;
   v13 = __44__AMDAppTabInfo_deleteTabsForUseCase_error___block_invoke;
   v14 = &unk_278CB5A58;
   v15 = MEMORY[0x277D82BE0](location[0]);
-  v16 = MEMORY[0x277D82BE0](v32);
+  v16 = MEMORY[0x277D82BE0](getManagedObjectContext);
   v17[1] = &v25;
   v17[0] = MEMORY[0x277D82BE0](v33);
   v17[2] = &v18;
@@ -337,7 +337,7 @@ void __50__AMDAppTabInfo_refreshTabsForUseCase_tabs_error___block_invoke(void *a
   {
     v7 = v26[5];
     v4 = v7;
-    *v34 = v7;
+    *errorCopy = v7;
     v36 = 0;
   }
 
@@ -353,7 +353,7 @@ void __50__AMDAppTabInfo_refreshTabsForUseCase_tabs_error___block_invoke(void *a
   objc_storeStrong(&v24, 0);
   _Block_object_dispose(&v25, 8);
   objc_storeStrong(&v31, 0);
-  objc_storeStrong(&v32, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   objc_storeStrong(&v33, 0);
   objc_storeStrong(location, 0);
   v5 = v36;
@@ -407,13 +407,13 @@ void __44__AMDAppTabInfo_deleteTabsForUseCase_error___block_invoke(void *a1)
   objc_storeStrong(v19, 0);
 }
 
-+ (id)getInfoForTab:(id)a3 error:(id *)a4
++ (id)getInfoForTab:(id)tab error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v36 = a4;
+  objc_storeStrong(location, tab);
+  errorCopy = error;
   if (location[0])
   {
     v28 = 0;
@@ -431,16 +431,16 @@ void __44__AMDAppTabInfo_deleteTabsForUseCase_error___block_invoke(void *a1)
     v26 = __Block_byref_object_dispose_;
     v27 = 0;
     v10 = +[AMDCoreDataPersistentContainer sharedContainer];
-    v20 = [v10 getManagedObjectContext];
+    getManagedObjectContext = [v10 getManagedObjectContext];
     MEMORY[0x277D82BD8](v10);
-    v9 = v20;
+    v9 = getManagedObjectContext;
     v13 = MEMORY[0x277D85DD0];
     v14 = -1073741824;
     v15 = 0;
     v16 = __37__AMDAppTabInfo_getInfoForTab_error___block_invoke;
     v17 = &unk_278CB5A80;
     v18 = MEMORY[0x277D82BE0](location[0]);
-    v19[0] = MEMORY[0x277D82BE0](v20);
+    v19[0] = MEMORY[0x277D82BE0](getManagedObjectContext);
     v19[1] = &v28;
     v19[2] = &v21;
     [v9 performBlockAndWait:&v13];
@@ -448,7 +448,7 @@ void __44__AMDAppTabInfo_deleteTabsForUseCase_error___block_invoke(void *a1)
     {
       v8 = v29[5];
       v5 = v8;
-      *v36 = v8;
+      *errorCopy = v8;
       v38 = 0;
     }
 
@@ -460,7 +460,7 @@ void __44__AMDAppTabInfo_deleteTabsForUseCase_error___block_invoke(void *a1)
     v35 = 1;
     objc_storeStrong(v19, 0);
     objc_storeStrong(&v18, 0);
-    objc_storeStrong(&v20, 0);
+    objc_storeStrong(&getManagedObjectContext, 0);
     _Block_object_dispose(&v21, 8);
     objc_storeStrong(&v27, 0);
     _Block_object_dispose(&v28, 8);
@@ -471,7 +471,7 @@ void __44__AMDAppTabInfo_deleteTabsForUseCase_error___block_invoke(void *a1)
   {
     v11 = [AMDError allocError:15 withMessage:@"no tab name"];
     v4 = v11;
-    *v36 = v11;
+    *errorCopy = v11;
     v38 = 0;
     v35 = 1;
   }
@@ -548,11 +548,11 @@ void __37__AMDAppTabInfo_getInfoForTab_error___block_invoke(void *a1)
   *MEMORY[0x277D85DE8];
 }
 
-+ (id)deleteAllTabs:(id *)a3
++ (id)deleteAllTabs:(id *)tabs
 {
-  v33 = a1;
+  selfCopy = self;
   v32 = a2;
-  v31 = a3;
+  tabsCopy = tabs;
   v30 = +[AMDCoreDataPersistentContainer sharedContainer];
   location = [v30 getManagedObjectContext];
   v22 = 0;
@@ -584,7 +584,7 @@ void __37__AMDAppTabInfo_getInfoForTab_error___block_invoke(void *a1)
   {
     v6 = v23[5];
     v3 = v6;
-    *v31 = v6;
+    *tabsCopy = v6;
     v34 = 0;
   }
 
@@ -640,11 +640,11 @@ void __31__AMDAppTabInfo_deleteAllTabs___block_invoke(void *a1)
   objc_storeStrong(v18, 0);
 }
 
-+ (id)fetchAllTabInfo:(id *)a3
++ (id)fetchAllTabInfo:(id *)info
 {
-  v32 = a1;
+  selfCopy = self;
   v31 = a2;
-  v30 = a3;
+  infoCopy = info;
   v7 = +[AMDCoreDataPersistentContainer sharedContainer];
   location = [v7 getManagedObjectContext];
   MEMORY[0x277D82BD8](v7);
@@ -676,7 +676,7 @@ void __31__AMDAppTabInfo_deleteAllTabs___block_invoke(void *a1)
   {
     v6 = v23[5];
     v3 = v6;
-    *v30 = v6;
+    *infoCopy = v6;
     v33 = 0;
   }
 

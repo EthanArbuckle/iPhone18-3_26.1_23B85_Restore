@@ -2,7 +2,7 @@
 - (void)cancel;
 - (void)hold;
 - (void)resume;
-- (void)touchWithDelay:(double)a3;
+- (void)touchWithDelay:(double)delay;
 - (void)unschedule;
 @end
 
@@ -35,13 +35,13 @@
     {
       [(UIHeldAction *)self unschedule];
       self->_holding = 1;
-      v3 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       holdBegan = self->_holdBegan;
-      self->_holdBegan = v3;
+      self->_holdBegan = date;
 
       v5 = self->_holdBegan;
-      v6 = [(UIDelayedAction *)self _startDate];
-      [(NSDate *)v5 timeIntervalSinceDate:v6];
+      _startDate = [(UIDelayedAction *)self _startDate];
+      [(NSDate *)v5 timeIntervalSinceDate:_startDate];
       self->_timeBalance = v7 + self->_timeBalance;
 
       self->_timeBalance = fmin(self->_timeBalance, self->_baseDelay);
@@ -53,8 +53,8 @@
 {
   if (self->_holding && ![(UIDelayedAction *)self _canceled])
   {
-    v3 = [MEMORY[0x1E695DF00] date];
-    [v3 timeIntervalSinceDate:self->_holdBegan];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:self->_holdBegan];
     self->_timeBalance = self->_timeBalance - v4;
 
     v5 = fmax(self->_timeBalance, 0.0);
@@ -65,16 +65,16 @@
   }
 }
 
-- (void)touchWithDelay:(double)a3
+- (void)touchWithDelay:(double)delay
 {
   self->_holding = 0;
   holdBegan = self->_holdBegan;
   self->_holdBegan = 0;
 
-  self->_baseDelay = a3;
+  self->_baseDelay = delay;
   v6.receiver = self;
   v6.super_class = UIHeldAction;
-  [(UIDelayedAction *)&v6 touchWithDelay:a3];
+  [(UIDelayedAction *)&v6 touchWithDelay:delay];
 }
 
 @end

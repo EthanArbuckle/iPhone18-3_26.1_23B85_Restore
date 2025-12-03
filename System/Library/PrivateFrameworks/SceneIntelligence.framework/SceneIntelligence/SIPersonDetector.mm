@@ -1,22 +1,22 @@
 @interface SIPersonDetector
 - (CGSize)getInputResolution;
 - (CGSize)getOutputResolution;
-- (SIPersonDetector)initWithNetworkConfiguration:(id)a3;
-- (int64_t)copyResultsToData:(id)a3;
-- (int64_t)evaluateForInput:(__CVBuffer *)a3;
-- (int64_t)evaluateForInput:(id)a3 output:(id)a4;
+- (SIPersonDetector)initWithNetworkConfiguration:(id)configuration;
+- (int64_t)copyResultsToData:(id)data;
+- (int64_t)evaluateForInput:(__CVBuffer *)input;
+- (int64_t)evaluateForInput:(id)input output:(id)output;
 @end
 
 @implementation SIPersonDetector
 
-- (SIPersonDetector)initWithNetworkConfiguration:(id)a3
+- (SIPersonDetector)initWithNetworkConfiguration:(id)configuration
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   kdebug_trace();
   v11.receiver = self;
   v11.super_class = SIPersonDetector;
-  v5 = [(SIModel *)&v11 initWithNetworkConfiguration:v4];
+  v5 = [(SIModel *)&v11 initWithNetworkConfiguration:configurationCopy];
   if (v5)
   {
     v12 = kSIME5PersonDetectorInputTensorName;
@@ -35,10 +35,10 @@
 
 - (CGSize)getInputResolution
 {
-  v3 = [(SIModel *)self network];
-  v4 = [v3 getInputWidth:kSIME5PersonDetectorInputTensorName];
-  v5 = [(SIModel *)self network];
-  v6 = [v5 getInputHeight:kSIME5PersonDetectorInputTensorName];
+  network = [(SIModel *)self network];
+  v4 = [network getInputWidth:kSIME5PersonDetectorInputTensorName];
+  network2 = [(SIModel *)self network];
+  v6 = [network2 getInputHeight:kSIME5PersonDetectorInputTensorName];
 
   v7 = v4;
   v8 = v6;
@@ -56,55 +56,55 @@
   return result;
 }
 
-- (int64_t)evaluateForInput:(__CVBuffer *)a3
+- (int64_t)evaluateForInput:(__CVBuffer *)input
 {
-  v5 = [(SIModel *)self inputs];
-  v6 = [v5 objectForKeyedSubscript:kSIME5PersonDetectorInputTensorName];
-  [v6 setPixelBuffer:a3];
+  inputs = [(SIModel *)self inputs];
+  v6 = [inputs objectForKeyedSubscript:kSIME5PersonDetectorInputTensorName];
+  [v6 setPixelBuffer:input];
 
-  v7 = [(SIModel *)self inputs];
-  v8 = [(SIModel *)self outputs];
-  [(SIModel *)self evaluateWithInput:v7 outputs:v8];
+  inputs2 = [(SIModel *)self inputs];
+  outputs = [(SIModel *)self outputs];
+  [(SIModel *)self evaluateWithInput:inputs2 outputs:outputs];
 
   return 0;
 }
 
-- (int64_t)evaluateForInput:(id)a3 output:(id)a4
+- (int64_t)evaluateForInput:(id)input output:(id)output
 {
-  v5 = a3;
-  v6 = -[SIPersonDetector evaluateForInput:](self, "evaluateForInput:", [v5 inputImageBuffer]);
+  inputCopy = input;
+  v6 = -[SIPersonDetector evaluateForInput:](self, "evaluateForInput:", [inputCopy inputImageBuffer]);
 
   return v6;
 }
 
-- (int64_t)copyResultsToData:(id)a3
+- (int64_t)copyResultsToData:(id)data
 {
   v110 = *MEMORY[0x277D85DE8];
-  v98 = [a3 boundingBoxes];
+  boundingBoxes = [data boundingBoxes];
   kdebug_trace();
-  v4 = [(SIModel *)self network];
-  v99 = [v4 getOutputHeight:kSIME5PersonDetectorOutputHeatMapTensorName];
+  network = [(SIModel *)self network];
+  v99 = [network getOutputHeight:kSIME5PersonDetectorOutputHeatMapTensorName];
 
-  v5 = [(SIModel *)self network];
-  v6 = [v5 getOutputWidth:kSIME5PersonDetectorOutputHeatMapTensorName];
+  network2 = [(SIModel *)self network];
+  v6 = [network2 getOutputWidth:kSIME5PersonDetectorOutputHeatMapTensorName];
 
-  v7 = [(SIModel *)self network];
-  v8 = [v7 getRawOutput:kSIME5PersonDetectorOutputHeatMapTensorName];
+  network3 = [(SIModel *)self network];
+  v8 = [network3 getRawOutput:kSIME5PersonDetectorOutputHeatMapTensorName];
 
-  v9 = [(SIModel *)self network];
-  v10 = [v9 getRawOutput:kSIME5PersonDetectorOutputHeatMapMaxPoolTensorName];
+  network4 = [(SIModel *)self network];
+  v10 = [network4 getRawOutput:kSIME5PersonDetectorOutputHeatMapMaxPoolTensorName];
 
-  v11 = [(SIModel *)self network];
-  v96 = [v11 getRawOutput:kSIME5PersonDetectorOutputBoundingBoxSizeTensorName];
+  network5 = [(SIModel *)self network];
+  v96 = [network5 getRawOutput:kSIME5PersonDetectorOutputBoundingBoxSizeTensorName];
 
-  v12 = [(SIModel *)self network];
-  v95 = [v12 getRawOutput:kSIME5PersonDetectorOutputBoundingBoxCenterTensorName];
+  network6 = [(SIModel *)self network];
+  v95 = [network6 getRawOutput:kSIME5PersonDetectorOutputBoundingBoxCenterTensorName];
 
-  v13 = [(SIModel *)self network];
-  v14 = [v13 supportFloat16IO];
+  network7 = [(SIModel *)self network];
+  supportFloat16IO = [network7 supportFloat16IO];
 
-  v97 = v98;
-  if (v14)
+  v97 = boundingBoxes;
+  if (supportFloat16IO)
   {
     v104 = 0;
     v105 = 0;

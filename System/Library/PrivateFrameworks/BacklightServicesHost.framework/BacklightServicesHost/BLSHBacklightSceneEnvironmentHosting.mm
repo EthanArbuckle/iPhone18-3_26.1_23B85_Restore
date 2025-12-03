@@ -1,42 +1,42 @@
 @interface BLSHBacklightSceneEnvironmentHosting
-+ (id)createLocalHostEnvironmentForEnvironment:(id)a3;
-+ (void)enableSubhostingForEnvironment:(id)a3 withSessionProvider:(id)a4;
-+ (void)enableSubhostingForEnvironment:(id)a3 withSessionProvider:(id)a4 osTimerProvider:(id)a5;
-+ (void)resetBudgetForEnvironment:(id)a3 reason:(id)a4;
++ (id)createLocalHostEnvironmentForEnvironment:(id)environment;
++ (void)enableSubhostingForEnvironment:(id)environment withSessionProvider:(id)provider;
++ (void)enableSubhostingForEnvironment:(id)environment withSessionProvider:(id)provider osTimerProvider:(id)timerProvider;
++ (void)resetBudgetForEnvironment:(id)environment reason:(id)reason;
 @end
 
 @implementation BLSHBacklightSceneEnvironmentHosting
 
-+ (void)enableSubhostingForEnvironment:(id)a3 withSessionProvider:(id)a4
++ (void)enableSubhostingForEnvironment:(id)environment withSessionProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
+  providerCopy = provider;
+  environmentCopy = environment;
   v8 = objc_alloc_init(BLSHBacklightOSTimerProvider);
-  [a1 enableSubhostingForEnvironment:v7 withSessionProvider:v6 osTimerProvider:v8];
+  [self enableSubhostingForEnvironment:environmentCopy withSessionProvider:providerCopy osTimerProvider:v8];
 }
 
-+ (void)enableSubhostingForEnvironment:(id)a3 withSessionProvider:(id)a4 osTimerProvider:(id)a5
++ (void)enableSubhostingForEnvironment:(id)environment withSessionProvider:(id)provider osTimerProvider:(id)timerProvider
 {
-  v13 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v13 delegate];
+  environmentCopy = environment;
+  providerCopy = provider;
+  timerProviderCopy = timerProvider;
+  delegate = [environmentCopy delegate];
 
-  if (!v11)
+  if (!delegate)
   {
-    [BLSHBacklightSceneEnvironmentHosting enableSubhostingForEnvironment:v13 withSessionProvider:a2 osTimerProvider:a1];
+    [BLSHBacklightSceneEnvironmentHosting enableSubhostingForEnvironment:environmentCopy withSessionProvider:a2 osTimerProvider:self];
   }
 
-  v12 = [[BLSHLocalHostSceneEnvironmentUpdater alloc] initWithSessionProvider:v9 localHostEnvironment:v13 osTimerProvider:v10];
-  [v13 setUpdater:v12];
+  v12 = [[BLSHLocalHostSceneEnvironmentUpdater alloc] initWithSessionProvider:providerCopy localHostEnvironment:environmentCopy osTimerProvider:timerProviderCopy];
+  [environmentCopy setUpdater:v12];
 }
 
-+ (void)resetBudgetForEnvironment:(id)a3 reason:(id)a4
++ (void)resetBudgetForEnvironment:(id)environment reason:(id)reason
 {
-  v5 = a4;
-  v6 = [a3 updater];
+  reasonCopy = reason;
+  updater = [environment updater];
   v7 = objc_opt_class();
-  v10 = v6;
+  v10 = updater;
   if (v7)
   {
     if (objc_opt_isKindOfClass())
@@ -57,13 +57,13 @@
 
   v9 = v8;
 
-  [v9 resetAllLocalHostBudgetsForReason:v5];
+  [v9 resetAllLocalHostBudgetsForReason:reasonCopy];
 }
 
-+ (id)createLocalHostEnvironmentForEnvironment:(id)a3
++ (id)createLocalHostEnvironmentForEnvironment:(id)environment
 {
-  v3 = a3;
-  v4 = [[BLSHLocalHostSceneEnvironment alloc] initWithBacklightSceneEnvironment:v3];
+  environmentCopy = environment;
+  v4 = [[BLSHLocalHostSceneEnvironment alloc] initWithBacklightSceneEnvironment:environmentCopy];
 
   return v4;
 }

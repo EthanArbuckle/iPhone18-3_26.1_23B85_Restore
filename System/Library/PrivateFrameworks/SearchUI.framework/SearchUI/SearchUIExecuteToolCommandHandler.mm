@@ -1,6 +1,6 @@
 @interface SearchUIExecuteToolCommandHandler
 - (id)command;
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5;
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment;
 @end
 
 @implementation SearchUIExecuteToolCommandHandler
@@ -9,26 +9,26 @@
 {
   v4.receiver = self;
   v4.super_class = SearchUIExecuteToolCommandHandler;
-  v2 = [(SearchUICommandHandler *)&v4 command];
+  command = [(SearchUICommandHandler *)&v4 command];
 
-  return v2;
+  return command;
 }
 
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = [a3 toolInvocationData];
-  if (v5)
+  toolInvocationData = [command toolInvocationData];
+  if (toolInvocationData)
   {
     v6 = SearchUITapLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134217984;
-      v9 = [v5 length];
+      v9 = [toolInvocationData length];
       _os_log_impl(&dword_1DA169000, v6, OS_LOG_TYPE_DEFAULT, "Executing tool command with data length: %lu", &v8, 0xCu);
     }
 
-    [SearchUIToolKitUtilities executeToolInvocationFromData:v5 completionHandler:&__block_literal_global_20];
+    [SearchUIToolKitUtilities executeToolInvocationFromData:toolInvocationData completionHandler:&__block_literal_global_20];
   }
 
   else

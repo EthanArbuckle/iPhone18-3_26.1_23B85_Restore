@@ -15,7 +15,7 @@
 
   else
   {
-    write(v5, [a1 bytes], objc_msgSend(a1, "length"));
+    write(v5, [self bytes], objc_msgSend(self, "length"));
     close(v5);
     v3 = v2;
   }

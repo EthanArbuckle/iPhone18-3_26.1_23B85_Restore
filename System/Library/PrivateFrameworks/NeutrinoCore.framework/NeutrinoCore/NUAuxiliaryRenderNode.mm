@@ -1,19 +1,19 @@
 @interface NUAuxiliaryRenderNode
-- (NUAuxiliaryRenderNode)initWithInput:(id)a3 auxiliaryImageType:(int64_t)a4;
-- (NUAuxiliaryRenderNode)initWithSettings:(id)a3 inputs:(id)a4;
+- (NUAuxiliaryRenderNode)initWithInput:(id)input auxiliaryImageType:(int64_t)type;
+- (NUAuxiliaryRenderNode)initWithSettings:(id)settings inputs:(id)inputs;
 - (NURenderNode)inputNode;
-- (id)_evaluateImageProperties:(id *)a3;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
+- (id)_evaluateImageProperties:(id *)properties;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
 - (int64_t)auxiliaryImageType;
 @end
 
 @implementation NUAuxiliaryRenderNode
 
-- (id)_evaluateImageProperties:(id *)a3
+- (id)_evaluateImageProperties:(id *)properties
 {
   v7.receiver = self;
   v7.super_class = NUAuxiliaryRenderNode;
-  v3 = [(NURenderNode *)&v7 _evaluateImageProperties:a3];
+  v3 = [(NURenderNode *)&v7 _evaluateImageProperties:properties];
   if (v3)
   {
     v4 = v3;
@@ -29,39 +29,39 @@
   return v5;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 copy];
+  cacheCopy = cache;
+  v9 = [state copy];
   [v9 setAuxiliaryImageType:{-[NUAuxiliaryRenderNode auxiliaryImageType](self, "auxiliaryImageType")}];
-  v10 = [(NUAuxiliaryRenderNode *)self inputNode];
-  v11 = [v10 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+  inputNode = [(NUAuxiliaryRenderNode *)self inputNode];
+  v11 = [inputNode nodeByReplayingAgainstCache:cacheCopy pipelineState:v9 error:error];
 
   return v11;
 }
 
 - (NURenderNode)inputNode
 {
-  v2 = [(NURenderNode *)self inputs];
-  v3 = [v2 objectForKeyedSubscript:@"input"];
+  inputs = [(NURenderNode *)self inputs];
+  v3 = [inputs objectForKeyedSubscript:@"input"];
 
   return v3;
 }
 
 - (int64_t)auxiliaryImageType
 {
-  v2 = [(NURenderNode *)self settings];
-  v3 = [v2 objectForKeyedSubscript:@"type"];
-  v4 = [v3 integerValue];
+  settings = [(NURenderNode *)self settings];
+  v3 = [settings objectForKeyedSubscript:@"type"];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (NUAuxiliaryRenderNode)initWithInput:(id)a3 auxiliaryImageType:(int64_t)a4
+- (NUAuxiliaryRenderNode)initWithInput:(id)input auxiliaryImageType:(int64_t)type
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  inputCopy = input;
+  if (!inputCopy)
   {
     v13 = NUAssertLogger_31991();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -82,8 +82,8 @@
         v20 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v35 = v20;
         v36 = 2114;
@@ -94,8 +94,8 @@
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -104,9 +104,9 @@
     _NUAssertFailHandler("[NUAuxiliaryRenderNode initWithInput:auxiliaryImageType:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUAuxiliaryRenderNode.m", 22, @"Invalid parameter not satisfying: %s", v25, v26, v27, v28, "node != nil");
   }
 
-  v7 = v6;
+  v7 = inputCopy;
   v32 = @"type";
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v33 = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
   v30 = @"input";
@@ -119,11 +119,11 @@
   return v11;
 }
 
-- (NUAuxiliaryRenderNode)initWithSettings:(id)a3 inputs:(id)a4
+- (NUAuxiliaryRenderNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_32008);
@@ -167,8 +167,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -184,8 +184,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;

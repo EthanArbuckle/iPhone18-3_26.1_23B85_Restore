@@ -2,14 +2,14 @@
 + (void)load;
 - (BOOL)BOOLValue;
 - (id)formatedValue;
-- (void)setBoolValue:(BOOL)a3;
+- (void)setBoolValue:(BOOL)value;
 @end
 
 @implementation DBHomeKitBoolCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___DBHomeKitBoolCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -31,15 +31,15 @@
 
 - (BOOL)BOOLValue
 {
-  v2 = [(DBHomeKitCharacteristic *)self value];
-  v3 = [v2 BOOLValue];
+  value = [(DBHomeKitCharacteristic *)self value];
+  bOOLValue = [value BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setBoolValue:(BOOL)a3
+- (void)setBoolValue:(BOOL)value
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:value];
   [(DBHomeKitCharacteristic *)self setValue:v4];
 }
 

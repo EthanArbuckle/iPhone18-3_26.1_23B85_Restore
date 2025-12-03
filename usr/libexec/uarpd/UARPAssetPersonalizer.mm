@@ -1,9 +1,9 @@
 @interface UARPAssetPersonalizer
-- (BOOL)personalizeAsset:(id)a3 error:(id *)a4;
-- (BOOL)prepareAsAppleConnectSSO:(id)a3 error:(id *)a4;
-- (BOOL)prepareCommon:(id)a3 error:(id *)a4;
+- (BOOL)personalizeAsset:(id)asset error:(id *)error;
+- (BOOL)prepareAsAppleConnectSSO:(id)o error:(id *)error;
+- (BOOL)prepareCommon:(id)common error:(id *)error;
 - (UARPAssetPersonalizer)init;
-- (id)performTatsuRequest:(id)a3;
+- (id)performTatsuRequest:(id)request;
 - (void)dealloc;
 @end
 
@@ -41,13 +41,13 @@
   [(UARPAssetPersonalizer *)&v4 dealloc];
 }
 
-- (BOOL)prepareCommon:(id)a3 error:(id *)a4
+- (BOOL)prepareCommon:(id)common error:(id *)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  commonCopy = common;
+  v6 = commonCopy;
+  if (commonCopy)
   {
-    v7 = [v5 copy];
+    v7 = [commonCopy copy];
     signingServer = self->_signingServer;
     self->_signingServer = v7;
   }
@@ -96,9 +96,9 @@ LABEL_15:
   return v14;
 }
 
-- (BOOL)prepareAsAppleConnectSSO:(id)a3 error:(id *)a4
+- (BOOL)prepareAsAppleConnectSSO:(id)o error:(id *)error
 {
-  v5 = [(UARPAssetPersonalizer *)self prepareCommon:a3 error:a4];
+  v5 = [(UARPAssetPersonalizer *)self prepareCommon:o error:error];
   if (v5)
   {
     if (AMAuthInstallSsoInitialize())
@@ -133,14 +133,14 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)personalizeAsset:(id)a3 error:(id *)a4
+- (BOOL)personalizeAsset:(id)asset error:(id *)error
 {
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [a3 tatsuTickets];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  tatsuTickets = [asset tatsuTickets];
+  v6 = [tatsuTickets countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -151,21 +151,21 @@ LABEL_8:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(tatsuTickets);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 tatsuRequest];
+        tatsuRequest = [v10 tatsuRequest];
 
-        if (v11)
+        if (tatsuRequest)
         {
-          v12 = [v10 tatsuRequest];
-          v13 = [(UARPAssetPersonalizer *)self performTatsuRequest:v12];
+          tatsuRequest2 = [v10 tatsuRequest];
+          v13 = [(UARPAssetPersonalizer *)self performTatsuRequest:tatsuRequest2];
           [v10 setTatsuResponse:v13];
 
-          v14 = [v10 tatsuResponse];
+          tatsuResponse = [v10 tatsuResponse];
 
-          if (!v14)
+          if (!tatsuResponse)
           {
             if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
             {
@@ -178,7 +178,7 @@ LABEL_8:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [tatsuTickets countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -194,9 +194,9 @@ LABEL_14:
   return v15;
 }
 
-- (id)performTatsuRequest:(id)a3
+- (id)performTatsuRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -216,7 +216,7 @@ LABEL_14:
     v17 = 2114;
     v18 = v7;
     v19 = 2114;
-    v20 = v4;
+    v20 = requestCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "UARP: TSS Request to %{public}@%{public}@ is %{public}@", buf, 0x20u);
   }
 

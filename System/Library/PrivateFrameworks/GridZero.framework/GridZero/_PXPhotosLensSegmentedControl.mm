@@ -1,49 +1,49 @@
 @interface _PXPhotosLensSegmentedControl
-+ (double)_cornerRadiusForTraitCollection:(id)a3 size:(int)a4;
-+ (double)_sectionIndicatorInsetForTraitCollection:(id)a3 size:(int)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (_PXPhotosLensSegmentedControl)initWithFrame:(CGRect)a3;
-- (void)_highlightSegment:(int64_t)a3;
++ (double)_cornerRadiusForTraitCollection:(id)collection size:(int)size;
++ (double)_sectionIndicatorInsetForTraitCollection:(id)collection size:(int)size;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (_PXPhotosLensSegmentedControl)initWithFrame:(CGRect)frame;
+- (void)_highlightSegment:(int64_t)segment;
 - (void)_updateAppearanceEffect;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _PXPhotosLensSegmentedControl
 
-- (void)_highlightSegment:(int64_t)a3
+- (void)_highlightSegment:(int64_t)segment
 {
-  if ((a3 & 0x8000000000000000) == 0 && [(_PXPhotosLensSegmentedControl *)self selectedSegmentIndex]!= a3)
+  if ((segment & 0x8000000000000000) == 0 && [(_PXPhotosLensSegmentedControl *)self selectedSegmentIndex]!= segment)
   {
     self->_lastTouchRemainedOnSelectedSegment = 0;
   }
 
   v5.receiver = self;
   v5.super_class = _PXPhotosLensSegmentedControl;
-  [(_PXPhotosLensSegmentedControl *)&v5 _highlightSegment:a3];
+  [(_PXPhotosLensSegmentedControl *)&v5 _highlightSegment:segment];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   self->_lastTouchRemainedOnSelectedSegment = 0;
   v4.receiver = self;
   v4.super_class = _PXPhotosLensSegmentedControl;
-  [(_PXPhotosLensSegmentedControl *)&v4 touchesCancelled:a3 withEvent:a4];
+  [(_PXPhotosLensSegmentedControl *)&v4 touchesCancelled:cancelled withEvent:event];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  endedCopy = ended;
   [(_PXPhotosLensSegmentedControl *)self bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v7 anyObject];
-  [v16 locationInView:self];
+  anyObject = [endedCopy anyObject];
+  [anyObject locationInView:self];
   v21.x = v17;
   v21.y = v18;
   v22.origin.x = v9;
@@ -59,45 +59,45 @@
 
   v20.receiver = self;
   v20.super_class = _PXPhotosLensSegmentedControl;
-  [(_PXPhotosLensSegmentedControl *)&v20 touchesEnded:v7 withEvent:v6];
+  [(_PXPhotosLensSegmentedControl *)&v20 touchesEnded:endedCopy withEvent:eventCopy];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   p_locationForCurrentTouch = &self->_locationForCurrentTouch;
   self->_locationForPreviousTouch = self->_locationForCurrentTouch;
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 anyObject];
-  [v9 locationInView:self];
+  eventCopy = event;
+  movedCopy = moved;
+  anyObject = [movedCopy anyObject];
+  [anyObject locationInView:self];
   p_locationForCurrentTouch->x = v10;
   p_locationForCurrentTouch->y = v11;
 
   v12.receiver = self;
   v12.super_class = _PXPhotosLensSegmentedControl;
-  [(_PXPhotosLensSegmentedControl *)&v12 touchesMoved:v8 withEvent:v7];
+  [(_PXPhotosLensSegmentedControl *)&v12 touchesMoved:movedCopy withEvent:eventCopy];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   self->_lastTouchRemainedOnSelectedSegment = 1;
   p_locationForPreviousTouch = &self->_locationForPreviousTouch;
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 anyObject];
-  [v9 locationInView:self];
+  eventCopy = event;
+  beganCopy = began;
+  anyObject = [beganCopy anyObject];
+  [anyObject locationInView:self];
   p_locationForPreviousTouch->x = v10;
   p_locationForPreviousTouch->y = v11;
 
   self->_locationForCurrentTouch = *p_locationForPreviousTouch;
   v12.receiver = self;
   v12.super_class = _PXPhotosLensSegmentedControl;
-  [(_PXPhotosLensSegmentedControl *)&v12 touchesBegan:v8 withEvent:v7];
+  [(_PXPhotosLensSegmentedControl *)&v12 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   if (!objc_opt_class() || (objc_opt_isKindOfClass() & 1) == 0)
   {
 
@@ -105,20 +105,20 @@
 LABEL_9:
     v12.receiver = self;
     v12.super_class = _PXPhotosLensSegmentedControl;
-    v10 = [(_PXPhotosLensSegmentedControl *)&v12 gestureRecognizerShouldBegin:v4];
+    v10 = [(_PXPhotosLensSegmentedControl *)&v12 gestureRecognizerShouldBegin:beginCopy];
     goto LABEL_10;
   }
 
-  v5 = v4;
+  v5 = beginCopy;
 
   if (!v5)
   {
     goto LABEL_9;
   }
 
-  v6 = [v5 view];
+  view = [v5 view];
 
-  if (v6 == self)
+  if (view == self)
   {
     goto LABEL_9;
   }
@@ -151,11 +151,11 @@ LABEL_10:
   }
 }
 
-- (_PXPhotosLensSegmentedControl)initWithFrame:(CGRect)a3
+- (_PXPhotosLensSegmentedControl)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _PXPhotosLensSegmentedControl;
-  v3 = [(_PXPhotosLensSegmentedControl *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_PXPhotosLensSegmentedControl *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -175,32 +175,32 @@ LABEL_10:
   return v4;
 }
 
-+ (double)_sectionIndicatorInsetForTraitCollection:(id)a3 size:(int)a4
++ (double)_sectionIndicatorInsetForTraitCollection:(id)collection size:(int)size
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&size;
+  collectionCopy = collection;
   v7 = 4.0;
   if (MEMORY[0x21CEE04B0]())
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS____PXPhotosLensSegmentedControl;
-    objc_msgSendSuper2(&v10, sel__sectionIndicatorInsetForTraitCollection_size_, v6, v4);
+    objc_msgSendSuper2(&v10, sel__sectionIndicatorInsetForTraitCollection_size_, collectionCopy, v4);
     v7 = v8;
   }
 
   return v7;
 }
 
-+ (double)_cornerRadiusForTraitCollection:(id)a3 size:(int)a4
++ (double)_cornerRadiusForTraitCollection:(id)collection size:(int)size
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&size;
+  collectionCopy = collection;
   v7 = 18.0;
   if (MEMORY[0x21CEE04B0]())
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS____PXPhotosLensSegmentedControl;
-    objc_msgSendSuper2(&v10, sel__cornerRadiusForTraitCollection_size_, v6, v4);
+    objc_msgSendSuper2(&v10, sel__cornerRadiusForTraitCollection_size_, collectionCopy, v4);
     v7 = v8;
   }
 

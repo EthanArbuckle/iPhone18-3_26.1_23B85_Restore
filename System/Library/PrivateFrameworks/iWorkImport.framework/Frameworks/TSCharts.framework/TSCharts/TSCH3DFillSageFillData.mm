@@ -1,45 +1,45 @@
 @interface TSCH3DFillSageFillData
-+ (id)dataWithFill:(id)a3;
++ (id)dataWithFill:(id)fill;
 - (Color)diffuse;
 - (Color)emissive;
 - (Color)specular;
-- (TSCH3DFillSageFillData)initWithFill:(id)a3;
-- (float)layerRotationForIndex:(unint64_t)a3;
-- (float)layerScaleForIndex:(unint64_t)a3;
+- (TSCH3DFillSageFillData)initWithFill:(id)fill;
+- (float)layerRotationForIndex:(unint64_t)index;
+- (float)layerScaleForIndex:(unint64_t)index;
 - (float)shininess;
 - (id)diffuseMaterial;
 - (id)environment;
 - (id)modulateMaterial;
 - (id)phongMaterials;
-- (id)textureForIndex:(unint64_t)a3;
-- (int)layerTilingModeForIndex:(unint64_t)a3;
-- (int64_t)layerBlendModeForIndex:(unint64_t)a3;
+- (id)textureForIndex:(unint64_t)index;
+- (int)layerTilingModeForIndex:(unint64_t)index;
+- (int64_t)layerBlendModeForIndex:(unint64_t)index;
 - (unint64_t)diffuseCount;
 - (unint64_t)modulateCount;
-- (void)p_addMaterial:(id)a3 blendMode:(int64_t)a4;
+- (void)p_addMaterial:(id)material blendMode:(int64_t)mode;
 @end
 
 @implementation TSCH3DFillSageFillData
 
-+ (id)dataWithFill:(id)a3
++ (id)dataWithFill:(id)fill
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v10 = objc_msgSend_initWithFill_(v5, v6, v7, v8, v9, v4);
+  fillCopy = fill;
+  v5 = [self alloc];
+  v10 = objc_msgSend_initWithFill_(v5, v6, v7, v8, v9, fillCopy);
 
   return v10;
 }
 
-- (TSCH3DFillSageFillData)initWithFill:(id)a3
+- (TSCH3DFillSageFillData)initWithFill:(id)fill
 {
-  v5 = a3;
+  fillCopy = fill;
   v54.receiver = self;
   v54.super_class = TSCH3DFillSageFillData;
   v6 = [(TSCH3DFillSageFillData *)&v54 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fill, a3);
+    objc_storeStrong(&v6->_fill, fill);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     textures = v7->_textures;
     v7->_textures = v8;
@@ -87,9 +87,9 @@
   return v7;
 }
 
-- (void)p_addMaterial:(id)a3 blendMode:(int64_t)a4
+- (void)p_addMaterial:(id)material blendMode:(int64_t)mode
 {
-  v50 = a3;
+  materialCopy = material;
   if (!self->_textures)
   {
     v10 = MEMORY[0x277D81150];
@@ -110,9 +110,9 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v36, v37, v38, v39);
   }
 
-  objc_msgSend_addObject_(self->_textures, v6, v7, v8, v9, v50);
+  objc_msgSend_addObject_(self->_textures, v6, v7, v8, v9, materialCopy);
   textureBlendModes = self->_textureBlendModes;
-  v45 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v41, v42, v43, v44, a4);
+  v45 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v41, v42, v43, v44, mode);
   objc_msgSend_addObject_(textureBlendModes, v46, v47, v48, v49, v45);
 }
 
@@ -275,9 +275,9 @@
   return result;
 }
 
-- (float)layerScaleForIndex:(unint64_t)a3
+- (float)layerScaleForIndex:(unint64_t)index
 {
-  v6 = objc_msgSend_materialAtIndex_(self, a2, v3, v4, v5, a3);
+  v6 = objc_msgSend_materialAtIndex_(self, a2, v3, v4, v5, index);
   v11 = objc_msgSend_firstTiling(v6, v7, v8, v9, v10);
   v16 = v11;
   if (v11)
@@ -312,9 +312,9 @@
   return v20;
 }
 
-- (float)layerRotationForIndex:(unint64_t)a3
+- (float)layerRotationForIndex:(unint64_t)index
 {
-  v6 = objc_msgSend_materialAtIndex_(self, a2, v3, v4, v5, a3);
+  v6 = objc_msgSend_materialAtIndex_(self, a2, v3, v4, v5, index);
   v11 = objc_msgSend_firstTiling(v6, v7, v8, v9, v10);
   objc_msgSend_rotation(v11, v12, v13, v14, v15);
   v17 = v16;
@@ -322,28 +322,28 @@
   return v17;
 }
 
-- (int64_t)layerBlendModeForIndex:(unint64_t)a3
+- (int64_t)layerBlendModeForIndex:(unint64_t)index
 {
   objc_opt_class();
-  v9 = objc_msgSend_objectAtIndexedSubscript_(self->_textureBlendModes, v5, v6, v7, v8, a3);
+  v9 = objc_msgSend_objectAtIndexedSubscript_(self->_textureBlendModes, v5, v6, v7, v8, index);
   v10 = TSUCheckedDynamicCast();
   v15 = objc_msgSend_integerValue(v10, v11, v12, v13, v14);
 
   return v15;
 }
 
-- (int)layerTilingModeForIndex:(unint64_t)a3
+- (int)layerTilingModeForIndex:(unint64_t)index
 {
-  v6 = objc_msgSend_materialAtIndex_(self, a2, v3, v4, v5, a3);
+  v6 = objc_msgSend_materialAtIndex_(self, a2, v3, v4, v5, index);
   v11 = objc_msgSend_firstTiling(v6, v7, v8, v9, v10);
   v16 = objc_msgSend_mode(v11, v12, v13, v14, v15);
 
   return v16;
 }
 
-- (id)textureForIndex:(unint64_t)a3
+- (id)textureForIndex:(unint64_t)index
 {
-  v6 = objc_msgSend_materialAtIndex_(self, a2, v3, v4, v5, a3);
+  v6 = objc_msgSend_materialAtIndex_(self, a2, v3, v4, v5, index);
   objc_opt_class();
   v11 = objc_msgSend_firstTexture(v6, v7, v8, v9, v10);
   v12 = TSUDynamicCast();

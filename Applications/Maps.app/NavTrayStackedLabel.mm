@@ -1,9 +1,9 @@
 @interface NavTrayStackedLabel
 - (CGSize)intrinsicContentSize;
 - (NavTrayStackedLabel)init;
-- (NavTrayStackedLabel)initWithFrame:(CGRect)a3;
+- (NavTrayStackedLabel)initWithFrame:(CGRect)frame;
 - (void)_setup;
-- (void)setInterLabelPadding:(double)a3;
+- (void)setInterLabelPadding:(double)padding;
 @end
 
 @implementation NavTrayStackedLabel
@@ -24,11 +24,11 @@
   return result;
 }
 
-- (void)setInterLabelPadding:(double)a3
+- (void)setInterLabelPadding:(double)padding
 {
-  if (vabdd_f64(self->_interLabelPadding, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_interLabelPadding, padding) > 2.22044605e-16)
   {
-    self->_interLabelPadding = a3;
+    self->_interLabelPadding = padding;
     [(NSLayoutConstraint *)self->_interLabelConstraint setConstant:?];
 
     [(NavTrayStackedLabel *)self invalidateIntrinsicContentSize];
@@ -53,37 +53,37 @@
   [(UILabel *)self->_bottomLabel setAdjustsFontSizeToFitWidth:1];
   [(UILabel *)self->_bottomLabel setAccessibilityIdentifier:@"BottomLabel"];
   [(NavTrayStackedLabel *)self addSubview:self->_bottomLabel];
-  v7 = [(UILabel *)self->_bottomLabel topAnchor];
-  v8 = [(UILabel *)self->_topLabel bottomAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  topAnchor = [(UILabel *)self->_bottomLabel topAnchor];
+  bottomAnchor = [(UILabel *)self->_topLabel bottomAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:bottomAnchor];
   interLabelConstraint = self->_interLabelConstraint;
   self->_interLabelConstraint = v9;
 
-  v30 = [(UILabel *)self->_topLabel leadingAnchor];
-  v29 = [(NavTrayStackedLabel *)self leadingAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  leadingAnchor = [(UILabel *)self->_topLabel leadingAnchor];
+  leadingAnchor2 = [(NavTrayStackedLabel *)self leadingAnchor];
+  v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v31[0] = v28;
-  v27 = [(UILabel *)self->_topLabel trailingAnchor];
-  v26 = [(NavTrayStackedLabel *)self trailingAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  trailingAnchor = [(UILabel *)self->_topLabel trailingAnchor];
+  trailingAnchor2 = [(NavTrayStackedLabel *)self trailingAnchor];
+  v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v31[1] = v25;
-  v24 = [(UILabel *)self->_topLabel topAnchor];
-  v23 = [(NavTrayStackedLabel *)self topAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  topAnchor2 = [(UILabel *)self->_topLabel topAnchor];
+  topAnchor3 = [(NavTrayStackedLabel *)self topAnchor];
+  v22 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
   v31[2] = v22;
-  v11 = [(UILabel *)self->_bottomLabel leadingAnchor];
-  v12 = [(NavTrayStackedLabel *)self leadingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  leadingAnchor3 = [(UILabel *)self->_bottomLabel leadingAnchor];
+  leadingAnchor4 = [(NavTrayStackedLabel *)self leadingAnchor];
+  v13 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v31[3] = v13;
-  v14 = [(UILabel *)self->_bottomLabel trailingAnchor];
-  v15 = [(NavTrayStackedLabel *)self trailingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  trailingAnchor3 = [(UILabel *)self->_bottomLabel trailingAnchor];
+  trailingAnchor4 = [(NavTrayStackedLabel *)self trailingAnchor];
+  v16 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v17 = self->_interLabelConstraint;
   v31[4] = v16;
   v31[5] = v17;
-  v18 = [(UILabel *)self->_bottomLabel bottomAnchor];
-  v19 = [(NavTrayStackedLabel *)self bottomAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  bottomAnchor2 = [(UILabel *)self->_bottomLabel bottomAnchor];
+  bottomAnchor3 = [(NavTrayStackedLabel *)self bottomAnchor];
+  v20 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v31[6] = v20;
   v21 = [NSArray arrayWithObjects:v31 count:7];
   [NSLayoutConstraint activateConstraints:v21];
@@ -103,11 +103,11 @@
   return v3;
 }
 
-- (NavTrayStackedLabel)initWithFrame:(CGRect)a3
+- (NavTrayStackedLabel)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = NavTrayStackedLabel;
-  v3 = [(NavTrayStackedLabel *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NavTrayStackedLabel *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();

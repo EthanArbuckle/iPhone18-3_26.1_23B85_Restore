@@ -1,47 +1,47 @@
 @interface TUIDeviceSpecifierProvider
 - (NSArray)specifiers;
-- (TUIDeviceSpecifierProvider)initWithAccountManager:(id)a3;
-- (TUIDeviceSpecifierProvider)initWithAccountManager:(id)a3 stateManager:(id)a4;
+- (TUIDeviceSpecifierProvider)initWithAccountManager:(id)manager;
+- (TUIDeviceSpecifierProvider)initWithAccountManager:(id)manager stateManager:(id)stateManager;
 - (TUIDeviceSpecifierProviderDelegate)delegate;
 - (id)_deviceErrorSpecifierGroup;
 - (id)_deviceList;
-- (id)_iconURLForDevice:(id)a3;
-- (id)_removeDeviceSpecifier:(id)a3;
-- (id)_specifierForDevice:(id)a3;
+- (id)_iconURLForDevice:(id)device;
+- (id)_removeDeviceSpecifier:(id)specifier;
+- (id)_specifierForDevice:(id)device;
 - (id)_specifierForError;
 - (id)_specifiersForDevicesWithError;
-- (void)_deviceSpecifierWasTapped:(id)a3;
-- (void)deviceListModified:(id)a3;
+- (void)_deviceSpecifierWasTapped:(id)tapped;
+- (void)deviceListModified:(id)modified;
 - (void)refreshDeviceList;
 @end
 
 @implementation TUIDeviceSpecifierProvider
 
-- (TUIDeviceSpecifierProvider)initWithAccountManager:(id)a3 stateManager:(id)a4
+- (TUIDeviceSpecifierProvider)initWithAccountManager:(id)manager stateManager:(id)stateManager
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  stateManagerCopy = stateManager;
   v15.receiver = self;
   v15.super_class = TUIDeviceSpecifierProvider;
   v9 = [(TUIDeviceSpecifierProvider *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accountManager, a3);
-    objc_storeStrong(&v10->_stateManager, a4);
-    v11 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v9->_accountManager, manager);
+    objc_storeStrong(&v10->_stateManager, stateManager);
+    array = [MEMORY[0x277CBEB18] array];
     devicesWithErrors = v10->_devicesWithErrors;
-    v10->_devicesWithErrors = v11;
+    v10->_devicesWithErrors = array;
 
-    v13 = [(TUIDeviceSpecifierProvider *)v10 _deviceList];
+    _deviceList = [(TUIDeviceSpecifierProvider *)v10 _deviceList];
   }
 
   return v10;
 }
 
-- (TUIDeviceSpecifierProvider)initWithAccountManager:(id)a3
+- (TUIDeviceSpecifierProvider)initWithAccountManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_15 != -1)
   {
     [TUIDeviceSpecifierProvider initWithAccountManager:];
@@ -68,11 +68,11 @@ uint64_t __53__TUIDeviceSpecifierProvider_initWithAccountManager___block_invoke(
   specifiers = self->_specifiers;
   if (!specifiers)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    v5 = [(TUIDeviceSpecifierProvider *)self _specifiersForDevicesWithError];
-    [v4 addObjectsFromArray:v5];
+    array = [MEMORY[0x277CBEB18] array];
+    _specifiersForDevicesWithError = [(TUIDeviceSpecifierProvider *)self _specifiersForDevicesWithError];
+    [array addObjectsFromArray:_specifiersForDevicesWithError];
 
-    v6 = [v4 copy];
+    v6 = [array copy];
     v7 = self->_specifiers;
     self->_specifiers = v6;
 
@@ -85,28 +85,28 @@ uint64_t __53__TUIDeviceSpecifierProvider_initWithAccountManager___block_invoke(
 - (id)_specifiersForDevicesWithError
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v3 = [(TUIDeviceSpecifierProvider *)self _deviceList];
-  v4 = [v3 loadError];
+  _deviceList = [(TUIDeviceSpecifierProvider *)self _deviceList];
+  loadError = [_deviceList loadError];
 
-  if (v4)
+  if (loadError)
   {
-    v5 = [(TUIDeviceSpecifierProvider *)self _specifierForError];
-    v29[0] = v5;
+    _specifierForError = [(TUIDeviceSpecifierProvider *)self _specifierForError];
+    v29[0] = _specifierForError;
     v6 = MEMORY[0x277CBEA60];
     v7 = v29;
     goto LABEL_3;
   }
 
-  v12 = [v3 devices];
-  v13 = [v12 count];
+  devices = [_deviceList devices];
+  v13 = [devices count];
 
   if (v13)
   {
     if ([(NSMutableArray *)self->_devicesWithErrors count])
     {
-      v5 = [MEMORY[0x277CBEB18] array];
-      v14 = [(TUIDeviceSpecifierProvider *)self _deviceErrorSpecifierGroup];
-      [v5 addObject:v14];
+      _specifierForError = [MEMORY[0x277CBEB18] array];
+      _deviceErrorSpecifierGroup = [(TUIDeviceSpecifierProvider *)self _deviceErrorSpecifierGroup];
+      [_specifierForError addObject:_deviceErrorSpecifierGroup];
 
       v24 = 0u;
       v25 = 0u;
@@ -128,7 +128,7 @@ uint64_t __53__TUIDeviceSpecifierProvider_initWithAccountManager___block_invoke(
             }
 
             v20 = [(TUIDeviceSpecifierProvider *)self _specifierForDevice:*(*(&v22 + 1) + 8 * i), v22];
-            [v5 addObject:v20];
+            [_specifierForError addObject:v20];
           }
 
           v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -137,12 +137,12 @@ uint64_t __53__TUIDeviceSpecifierProvider_initWithAccountManager___block_invoke(
         while (v17);
       }
 
-      v8 = [v5 copy];
+      v8 = [_specifierForError copy];
       goto LABEL_4;
     }
 
-    v5 = [(TUIDeviceSpecifierProvider *)self _spinnerSpecifierGroup];
-    v27 = v5;
+    _specifierForError = [(TUIDeviceSpecifierProvider *)self _spinnerSpecifierGroup];
+    v27 = _specifierForError;
     v6 = MEMORY[0x277CBEA60];
     v7 = &v27;
 LABEL_3:
@@ -152,10 +152,10 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v5 = [(TUIDeviceSpecifierProvider *)self _spinnerSpecifierGroup];
-  v28[0] = v5;
-  v21 = [(TUIDeviceSpecifierProvider *)self _specifierForSpinner];
-  v28[1] = v21;
+  _specifierForError = [(TUIDeviceSpecifierProvider *)self _spinnerSpecifierGroup];
+  v28[0] = _specifierForError;
+  _specifierForSpinner = [(TUIDeviceSpecifierProvider *)self _specifierForSpinner];
+  v28[1] = _specifierForSpinner;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
 
 LABEL_5:
@@ -222,37 +222,37 @@ LABEL_5:
   return v5;
 }
 
-- (id)_specifierForDevice:(id)a3
+- (id)_specifierForDevice:(id)device
 {
   v4 = MEMORY[0x277D3FAD8];
-  v5 = a3;
-  v6 = [v5 name];
-  v7 = [v4 preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:0 cell:1 edit:0];
+  deviceCopy = device;
+  name = [deviceCopy name];
+  v7 = [v4 preferenceSpecifierNamed:name target:self set:0 get:0 detail:0 cell:1 edit:0];
 
   [v7 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-  v8 = [v5 name];
-  [v7 setProperty:v8 forKey:*MEMORY[0x277D40170]];
+  name2 = [deviceCopy name];
+  [v7 setProperty:name2 forKey:*MEMORY[0x277D40170]];
 
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D76F30]];
   [v7 setProperty:v9 forKey:*MEMORY[0x277D40140]];
 
-  v10 = [v5 modelDisplayName];
-  [v7 setProperty:v10 forKey:*MEMORY[0x277D40160]];
+  modelDisplayName = [deviceCopy modelDisplayName];
+  [v7 setProperty:modelDisplayName forKey:*MEMORY[0x277D40160]];
 
   v11 = MEMORY[0x277CBEC38];
   [v7 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D40020]];
-  v12 = [(TUIDeviceSpecifierProvider *)self _iconURLForDevice:v5];
+  v12 = [(TUIDeviceSpecifierProvider *)self _iconURLForDevice:deviceCopy];
   [v7 setProperty:v12 forKey:*MEMORY[0x277D40030]];
 
   [v7 setControllerLoadAction:sel__deviceSpecifierWasTapped_];
-  [v7 setUserInfo:v5];
+  [v7 setUserInfo:deviceCopy];
 
   [v7 setProperty:v11 forKey:*MEMORY[0x277D3FF38]];
 
   return v7;
 }
 
-- (id)_removeDeviceSpecifier:(id)a3
+- (id)_removeDeviceSpecifier:(id)specifier
 {
   v4 = MEMORY[0x277D3FAD8];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -264,25 +264,25 @@ LABEL_5:
   return v7;
 }
 
-- (void)_deviceSpecifierWasTapped:(id)a3
+- (void)_deviceSpecifierWasTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
+  tappedCopy = tapped;
+  userInfo = [tappedCopy userInfo];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = MEMORY[0x277CBEBC0];
-    v7 = [v5 deviceDetailUri];
-    v8 = [v6 URLWithString:v7];
+    deviceDetailUri = [userInfo deviceDetailUri];
+    v8 = [v6 URLWithString:deviceDetailUri];
 
     if (v8)
     {
       v9 = [objc_alloc(MEMORY[0x277CBAB50]) initWithURL:v8];
-      v10 = [v5 deviceDetailHttpMethod];
-      [v9 setHTTPMethod:v10];
+      deviceDetailHttpMethod = [userInfo deviceDetailHttpMethod];
+      [v9 setHTTPMethod:deviceDetailHttpMethod];
 
-      v11 = [(TUIDeviceSpecifierProvider *)self delegate];
-      [v11 specifierProvider:self loadRequest:v9 withIdentifier:@"_AAUIRemotePageIdentifierTrustedDevice" specifier:v4];
+      delegate = [(TUIDeviceSpecifierProvider *)self delegate];
+      [delegate specifierProvider:self loadRequest:v9 withIdentifier:@"_AAUIRemotePageIdentifierTrustedDevice" specifier:tappedCopy];
     }
 
     else
@@ -331,10 +331,10 @@ uint64_t __56__TUIDeviceSpecifierProvider__deviceSpecifierWasTapped___block_invo
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_iconURLForDevice:(id)a3
+- (id)_iconURLForDevice:(id)device
 {
-  v3 = [a3 modelSmallPhotoURL3x];
-  v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
+  modelSmallPhotoURL3x = [device modelSmallPhotoURL3x];
+  v4 = [MEMORY[0x277CBEBC0] URLWithString:modelSmallPhotoURL3x];
 
   return v4;
 }
@@ -373,10 +373,10 @@ uint64_t __41__TUIDeviceSpecifierProvider__deviceList__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)deviceListModified:(id)a3
+- (void)deviceListModified:(id)modified
 {
   v49 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  modifiedCopy = modified;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_15 != -1)
   {
     [TUIDeviceSpecifierProvider deviceListModified:];
@@ -385,11 +385,11 @@ uint64_t __41__TUIDeviceSpecifierProvider__deviceList__block_invoke()
   v4 = TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_15;
   if (os_log_type_enabled(TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_15, OS_LOG_TYPE_DEBUG))
   {
-    [(TUIDeviceSpecifierProvider *)v4 deviceListModified:v3, self];
+    [(TUIDeviceSpecifierProvider *)v4 deviceListModified:modifiedCopy, self];
   }
 
   [(NSMutableArray *)self->_devicesWithErrors removeAllObjects];
-  v26 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = dispatch_group_create();
   v42[0] = 0;
   v42[1] = v42;
@@ -401,7 +401,7 @@ uint64_t __41__TUIDeviceSpecifierProvider__deviceList__block_invoke()
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v3;
+  obj = modifiedCopy;
   v6 = [obj countByEnumeratingWithState:&v38 objects:v48 count:16];
   if (v6)
   {
@@ -420,8 +420,8 @@ uint64_t __41__TUIDeviceSpecifierProvider__deviceList__block_invoke()
         }
 
         v10 = *(*(&v38 + 1) + 8 * v9);
-        v11 = [v10 pushToken];
-        if (v11 && ([v10 pushToken], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", &stru_287F92480), v12, v11, !v13))
+        pushToken = [v10 pushToken];
+        if (pushToken && ([v10 pushToken], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", &stru_287F92480), v12, pushToken, !v13))
         {
           if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_15 != -1)
           {
@@ -431,16 +431,16 @@ uint64_t __41__TUIDeviceSpecifierProvider__deviceList__block_invoke()
           v16 = TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_15;
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
           {
-            v17 = [v10 pushToken];
+            pushToken2 = [v10 pushToken];
             *buf = 138412290;
-            v45 = v17;
+            selfCopy = pushToken2;
             _os_log_impl(&dword_26F50B000, v16, OS_LOG_TYPE_DEBUG, "checking device %@ for errors", buf, 0xCu);
           }
 
           v18 = MEMORY[0x277CBEA90];
-          v19 = [v10 pushToken];
-          v20 = v19;
-          v14 = [v18 kt_dataWithHexString:{objc_msgSend(v19, "UTF8String")}];
+          pushToken3 = [v10 pushToken];
+          v20 = pushToken3;
+          v14 = [v18 kt_dataWithHexString:{objc_msgSend(pushToken3, "UTF8String")}];
 
           objc_initWeak(buf, self);
           dispatch_group_enter(v5);
@@ -451,7 +451,7 @@ uint64_t __41__TUIDeviceSpecifierProvider__deviceList__block_invoke()
           v33[3] = &unk_279DDB2B0;
           objc_copyWeak(&v37, buf);
           v33[4] = v10;
-          v34 = v26;
+          v34 = array;
           v36 = v42;
           v35 = v5;
           [v21 loggableDataForDeviceID:v14 application:v25 completionBlock:v33];
@@ -470,11 +470,11 @@ uint64_t __41__TUIDeviceSpecifierProvider__deviceList__block_invoke()
           v14 = TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_15;
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
           {
-            v15 = [v10 name];
+            name = [v10 name];
             *buf = v24;
-            v45 = self;
+            selfCopy = self;
             v46 = 2114;
-            v47 = v15;
+            v47 = name;
             _os_log_debug_impl(&dword_26F50B000, v14, OS_LOG_TYPE_DEBUG, "%{public}@ device %{public}@ ignored", buf, 0x16u);
           }
         }
@@ -495,9 +495,9 @@ uint64_t __41__TUIDeviceSpecifierProvider__deviceList__block_invoke()
   block[2] = __49__TUIDeviceSpecifierProvider_deviceListModified___block_invoke_109;
   block[3] = &unk_279DDB2D8;
   objc_copyWeak(&v32, buf);
-  v30 = v26;
+  v30 = array;
   v31 = v42;
-  v22 = v26;
+  v22 = array;
   dispatch_group_notify(v5, MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v32);

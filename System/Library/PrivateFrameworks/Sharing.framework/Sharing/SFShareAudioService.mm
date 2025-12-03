@@ -1,12 +1,12 @@
 @interface SFShareAudioService
 - (SFShareAudioService)init;
-- (void)_handleSessionEnded:(id)a3 error:(id)a4;
-- (void)_handleSessionStarted:(id)a3;
-- (void)_handleShareAudioFoundDevice:(id)a3;
-- (void)_handleShareAudioPairingCompleted:(id)a3 error:(id)a4;
-- (void)_handleShareAudioRequest2:(id)a3 contact:(id)a4 responseHandler:(id)a5;
-- (void)_handleShareAudioRequest:(id)a3 responseHandler:(id)a4;
-- (void)_handleShareAudioResponse:(int)a3 error:(id)a4;
+- (void)_handleSessionEnded:(id)ended error:(id)error;
+- (void)_handleSessionStarted:(id)started;
+- (void)_handleShareAudioFoundDevice:(id)device;
+- (void)_handleShareAudioPairingCompleted:(id)completed error:(id)error;
+- (void)_handleShareAudioRequest2:(id)request2 contact:(id)contact responseHandler:(id)handler;
+- (void)_handleShareAudioRequest:(id)request responseHandler:(id)handler;
+- (void)_handleShareAudioResponse:(int)response error:(id)error;
 - (void)_handleShareAudioSearchTimeout;
 - (void)_invalidate;
 - (void)_sfServiceStart;
@@ -204,48 +204,48 @@ LABEL_7:
   }
 }
 
-- (void)_handleSessionStarted:(id)a3
+- (void)_handleSessionStarted:(id)started
 {
-  v5 = a3;
+  startedCopy = started;
   sfSession = self->_sfSession;
   if (sfSession)
   {
-    [gLogCategory_SFShareAudioService _handleSessionStarted:sfSession, v5];
+    [gLogCategory_SFShareAudioService _handleSessionStarted:sfSession, startedCopy];
   }
 
   else
   {
     if (gLogCategory_SFShareAudioService <= 30 && (gLogCategory_SFShareAudioService != -1 || _LogCategory_Initialize()))
     {
-      [SFShareAudioService _handleSessionStarted:v5];
+      [SFShareAudioService _handleSessionStarted:startedCopy];
     }
 
-    [v5 setStatusMonitor:self->_statusMonitor];
-    objc_storeStrong(&self->_sfSession, a3);
+    [startedCopy setStatusMonitor:self->_statusMonitor];
+    objc_storeStrong(&self->_sfSession, started);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __45__SFShareAudioService__handleSessionStarted___block_invoke;
     v7[3] = &unk_1E788B4F8;
     v7[4] = self;
-    [v5 registerRequestID:@"_shAu" options:&unk_1F1D7D768 handler:v7];
+    [startedCopy registerRequestID:@"_shAu" options:&unk_1F1D7D768 handler:v7];
   }
 }
 
-- (void)_handleSessionEnded:(id)a3 error:(id)a4
+- (void)_handleSessionEnded:(id)ended error:(id)error
 {
-  v21 = a3;
-  v6 = a4;
+  endedCopy = ended;
+  errorCopy = error;
   sfSession = self->_sfSession;
-  if (sfSession == v21)
+  if (sfSession == endedCopy)
   {
-    if (v21)
+    if (endedCopy)
     {
       if (gLogCategory_SFShareAudioService <= 30)
       {
         if (gLogCategory_SFShareAudioService != -1 || (v8 = _LogCategory_Initialize(), sfSession = self->_sfSession, v8))
         {
-          v19 = [(SFSession *)sfSession peer];
-          v20 = v6;
+          peer = [(SFSession *)sfSession peer];
+          v20 = errorCopy;
           LogPrintF();
 
           sfSession = self->_sfSession;
@@ -272,7 +272,7 @@ LABEL_7:
       self->_searchTimer = 0;
     }
 
-    [(CUBluetoothClient *)self->_searchBTClient invalidate:v19];
+    [(CUBluetoothClient *)self->_searchBTClient invalidate:peer];
     searchBTClient = self->_searchBTClient;
     self->_searchBTClient = 0;
 
@@ -293,10 +293,10 @@ LABEL_7:
   }
 }
 
-- (void)_handleShareAudioRequest:(id)a3 responseHandler:(id)a4
+- (void)_handleShareAudioRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (gLogCategory_SFShareAudioService <= 30 && (gLogCategory_SFShareAudioService != -1 || _LogCategory_Initialize()))
   {
     [SFShareAudioService _handleShareAudioRequest:responseHandler:];
@@ -310,10 +310,10 @@ LABEL_7:
   v13[3] = &unk_1E78910F8;
   v13[4] = sfSession;
   v13[5] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = requestCopy;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = requestCopy;
   v12 = sfSession;
   [(SFSession *)v12 appleIDVerifyProof:v11 dispatchQueue:dispatchQueue completion:v13];
 }
@@ -333,11 +333,11 @@ void __64__SFShareAudioService__handleShareAudioRequest_responseHandler___block_
   }
 }
 
-- (void)_handleShareAudioRequest2:(id)a3 contact:(id)a4 responseHandler:(id)a5
+- (void)_handleShareAudioRequest2:(id)request2 contact:(id)contact responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  request2Copy = request2;
+  contactCopy = contact;
+  handlerCopy = handler;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -349,7 +349,7 @@ void __64__SFShareAudioService__handleShareAudioRequest_responseHandler___block_
   aBlock[2] = __73__SFShareAudioService__handleShareAudioRequest2_contact_responseHandler___block_invoke;
   aBlock[3] = &unk_1E7891120;
   v33 = &v34;
-  v11 = v10;
+  v11 = handlerCopy;
   v32 = v11;
   v12 = _Block_copy(aBlock);
   if (self->_responseHandler)
@@ -386,7 +386,7 @@ void __64__SFShareAudioService__handleShareAudioRequest_responseHandler___block_
       v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
       CFStringGetTypeID();
       [v17 setObject:CFDictionaryGetTypedValue() forKeyedSubscript:@"deviceName"];
-      v18 = v9;
+      v18 = contactCopy;
       if (v18)
       {
         v41 = 0;
@@ -560,15 +560,15 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)_handleShareAudioResponse:(int)a3 error:(id)a4
+- (void)_handleShareAudioResponse:(int)response error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   if (gLogCategory_SFShareAudioService <= 30 && (gLogCategory_SFShareAudioService != -1 || _LogCategory_Initialize()))
   {
-    [SFShareAudioService _handleShareAudioResponse:a3 error:?];
+    [SFShareAudioService _handleShareAudioResponse:response error:?];
   }
 
-  if (a3 == 2)
+  if (response == 2)
   {
     v7 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, self->_dispatchQueue);
     searchTimer = self->_searchTimer;
@@ -612,9 +612,9 @@ LABEL_7:
       responseHandler = self->_responseHandler;
       self->_responseHandler = 0;
 
-      if (v6)
+      if (errorCopy)
       {
-        (*(v13 + 2))(v13, v6, 0, 0);
+        (*(v13 + 2))(v13, errorCopy, 0, 0);
       }
 
       else
@@ -643,9 +643,9 @@ void __55__SFShareAudioService__handleShareAudioResponse_error___block_invoke_2(
   }
 }
 
-- (void)_handleShareAudioFoundDevice:(id)a3
+- (void)_handleShareAudioFoundDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   searchTimer = self->_searchTimer;
   if (searchTimer)
   {
@@ -659,8 +659,8 @@ void __55__SFShareAudioService__handleShareAudioResponse_error___block_invoke_2(
   searchBTClient = self->_searchBTClient;
   self->_searchBTClient = 0;
 
-  v9 = [v4 addressString];
-  objc_storeStrong(&self->_headphonesAddress, v9);
+  addressString = [deviceCopy addressString];
+  objc_storeStrong(&self->_headphonesAddress, addressString);
   v10 = [(SFSession *)self->_sfSession pairingDeriveKeyForIdentifier:@"ShareAudio" keyLength:16];
   if (gLogCategory_SFShareAudioService <= 30 && (gLogCategory_SFShareAudioService != -1 || _LogCategory_Initialize()))
   {
@@ -673,7 +673,7 @@ void __55__SFShareAudioService__handleShareAudioResponse_error___block_invoke_2(
   self->_pairingSession = v11;
   v13 = v11;
 
-  [(SFBluetoothPairingSession *)v13 setDeviceAddress:v9];
+  [(SFBluetoothPairingSession *)v13 setDeviceAddress:addressString];
   [(SFBluetoothPairingSession *)v13 setGuestAddress:self->_guestDeviceAddress];
   [(SFBluetoothPairingSession *)v13 setGuestKey:v10];
   [(SFBluetoothPairingSession *)v13 setGuestMode:1];
@@ -683,8 +683,8 @@ void __55__SFShareAudioService__handleShareAudioResponse_error___block_invoke_2(
   v16[3] = &unk_1E7891170;
   v16[4] = v13;
   v16[5] = self;
-  v17 = v4;
-  v14 = v4;
+  v17 = deviceCopy;
+  v14 = deviceCopy;
   [(SFBluetoothPairingSession *)v13 setCompletionHandler:v16];
   [(SFBluetoothPairingSession *)v13 activate];
 }
@@ -699,10 +699,10 @@ uint64_t __52__SFShareAudioService__handleShareAudioFoundDevice___block_invoke(u
   return result;
 }
 
-- (void)_handleShareAudioPairingCompleted:(id)a3 error:(id)a4
+- (void)_handleShareAudioPairingCompleted:(id)completed error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  completedCopy = completed;
+  errorCopy = error;
   [(SFBluetoothPairingSession *)self->_pairingSession invalidate];
   pairingSession = self->_pairingSession;
   self->_pairingSession = 0;
@@ -713,14 +713,14 @@ uint64_t __52__SFShareAudioService__handleShareAudioFoundDevice___block_invoke(u
     responseHandler = self->_responseHandler;
     self->_responseHandler = 0;
 
-    if (v7)
+    if (errorCopy)
     {
       if (gLogCategory_SFShareAudioService <= 90 && (gLogCategory_SFShareAudioService != -1 || _LogCategory_Initialize()))
       {
         [SFShareAudioService _handleShareAudioPairingCompleted:error:];
       }
 
-      (*(v9 + 2))(v9, v7, 0, 0);
+      (*(v9 + 2))(v9, errorCopy, 0, 0);
     }
 
     else
@@ -729,17 +729,17 @@ uint64_t __52__SFShareAudioService__handleShareAudioFoundDevice___block_invoke(u
       if (v11)
       {
         v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        v13 = [v6 colorCode];
-        if (v13)
+        colorCode = [completedCopy colorCode];
+        if (colorCode)
         {
-          v14 = [MEMORY[0x1E696AD98] numberWithInt:v13];
+          v14 = [MEMORY[0x1E696AD98] numberWithInt:colorCode];
           [v12 setObject:v14 forKeyedSubscript:@"colorCode"];
         }
 
-        v15 = [v6 productIdentifier];
-        if (v15)
+        productIdentifier = [completedCopy productIdentifier];
+        if (productIdentifier)
         {
-          v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v15];
+          v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:productIdentifier];
           [v12 setObject:v16 forKeyedSubscript:@"productID"];
         }
 

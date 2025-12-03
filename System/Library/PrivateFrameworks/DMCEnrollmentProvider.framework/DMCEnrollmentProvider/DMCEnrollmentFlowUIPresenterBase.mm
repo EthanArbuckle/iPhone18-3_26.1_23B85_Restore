@@ -1,27 +1,27 @@
 @interface DMCEnrollmentFlowUIPresenterBase
-- (DMCEnrollmentFlowUIPresenterBase)initWithBaseViewController:(id)a3;
+- (DMCEnrollmentFlowUIPresenterBase)initWithBaseViewController:(id)controller;
 - (UIViewController)baseViewController;
 - (void)dealloc;
-- (void)dismissWithCompletion:(id)a3;
-- (void)presentActivityPageWithTitle:(id)a3 text:(id)a4 showButtomView:(BOOL)a5;
-- (void)presentOKAlertWithTitle:(id)a3 message:(id)a4 action:(id)a5;
-- (void)pushViewController:(id)a3 foundationViewController:(id)a4;
-- (void)requestDevicePasscodeWithDescriptionText:(id)a3 completionHandler:(id)a4;
-- (void)setDismissedCompletionBlock:(id)a3;
+- (void)dismissWithCompletion:(id)completion;
+- (void)presentActivityPageWithTitle:(id)title text:(id)text showButtomView:(BOOL)view;
+- (void)presentOKAlertWithTitle:(id)title message:(id)message action:(id)action;
+- (void)pushViewController:(id)controller foundationViewController:(id)viewController;
+- (void)requestDevicePasscodeWithDescriptionText:(id)text completionHandler:(id)handler;
+- (void)setDismissedCompletionBlock:(id)block;
 @end
 
 @implementation DMCEnrollmentFlowUIPresenterBase
 
-- (DMCEnrollmentFlowUIPresenterBase)initWithBaseViewController:(id)a3
+- (DMCEnrollmentFlowUIPresenterBase)initWithBaseViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = DMCEnrollmentFlowUIPresenterBase;
   v5 = [(DMCEnrollmentFlowUIPresenterBase *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_baseViewController, v4);
+    objc_storeWeak(&v5->_baseViewController, controllerCopy);
   }
 
   return v6;
@@ -43,56 +43,56 @@
   [(DMCEnrollmentFlowUIPresenterBase *)&v4 dealloc];
 }
 
-- (void)pushViewController:(id)a3 foundationViewController:(id)a4
+- (void)pushViewController:(id)controller foundationViewController:(id)viewController
 {
-  v12 = a3;
-  v6 = a4;
-  if (!v6)
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  if (!viewControllerCopy)
   {
-    v7 = [(DMCEnrollmentFlowUIPresenterBase *)self navigationController];
-    v8 = [v7 viewControllers];
-    v6 = [v8 objectAtIndexedSubscript:0];
+    navigationController = [(DMCEnrollmentFlowUIPresenterBase *)self navigationController];
+    viewControllers = [navigationController viewControllers];
+    viewControllerCopy = [viewControllers objectAtIndexedSubscript:0];
   }
 
-  v9 = [(DMCEnrollmentFlowUIPresenterBase *)self navigationController];
+  navigationController2 = [(DMCEnrollmentFlowUIPresenterBase *)self navigationController];
 
-  if (v9)
+  if (navigationController2)
   {
-    v10 = [(DMCEnrollmentFlowUIPresenterBase *)self navigationController];
-    [(UIViewController *)v10 dmc_popToViewController:v6 pushViewController:v12];
+    navigationController3 = [(DMCEnrollmentFlowUIPresenterBase *)self navigationController];
+    [(UIViewController *)navigationController3 dmc_popToViewController:viewControllerCopy pushViewController:controllerCopy];
   }
 
   else
   {
-    v10 = [[DMCNavigationController alloc] initWithRootViewController:v12];
-    [(DMCNavigationController *)v10 setDismissedCompletionBlock:self->_dismissedCompletionBlock];
-    v11 = [(DMCEnrollmentFlowUIPresenterBase *)self baseViewController];
-    [v11 presentViewController:v10 animated:1 completion:0];
+    navigationController3 = [[DMCNavigationController alloc] initWithRootViewController:controllerCopy];
+    [(DMCNavigationController *)navigationController3 setDismissedCompletionBlock:self->_dismissedCompletionBlock];
+    baseViewController = [(DMCEnrollmentFlowUIPresenterBase *)self baseViewController];
+    [baseViewController presentViewController:navigationController3 animated:1 completion:0];
 
-    [(DMCEnrollmentFlowUIPresenterBase *)self setNavigationController:v10];
+    [(DMCEnrollmentFlowUIPresenterBase *)self setNavigationController:navigationController3];
   }
 }
 
-- (void)setDismissedCompletionBlock:(id)a3
+- (void)setDismissedCompletionBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   dismissedCompletionBlock = self->_dismissedCompletionBlock;
   self->_dismissedCompletionBlock = v4;
 
-  v6 = [(DMCEnrollmentFlowUIPresenterBase *)self navigationController];
-  [v6 setDismissedCompletionBlock:self->_dismissedCompletionBlock];
+  navigationController = [(DMCEnrollmentFlowUIPresenterBase *)self navigationController];
+  [navigationController setDismissedCompletionBlock:self->_dismissedCompletionBlock];
 }
 
-- (void)dismissWithCompletion:(id)a3
+- (void)dismissWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__DMCEnrollmentFlowUIPresenterBase_dismissWithCompletion___block_invoke;
   v6[3] = &unk_278EE7830;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -102,19 +102,19 @@ void __58__DMCEnrollmentFlowUIPresenterBase_dismissWithCompletion___block_invoke
   [v2 dismissViewControllerAnimated:1 completion:*(a1 + 40)];
 }
 
-- (void)requestDevicePasscodeWithDescriptionText:(id)a3 completionHandler:(id)a4
+- (void)requestDevicePasscodeWithDescriptionText:(id)text completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __95__DMCEnrollmentFlowUIPresenterBase_requestDevicePasscodeWithDescriptionText_completionHandler___block_invoke;
   block[3] = &unk_278EE7C80;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = textCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = textCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -244,35 +244,35 @@ void __95__DMCEnrollmentFlowUIPresenterBase_requestDevicePasscodeWithDescription
   v6();
 }
 
-- (void)presentActivityPageWithTitle:(id)a3 text:(id)a4 showButtomView:(BOOL)a5
+- (void)presentActivityPageWithTitle:(id)title text:(id)text showButtomView:(BOOL)view
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[DMCActivityViewController alloc] initWithActivityTitle:v9 activityText:v8 showBottomView:v5];
+  viewCopy = view;
+  textCopy = text;
+  titleCopy = title;
+  v10 = [[DMCActivityViewController alloc] initWithActivityTitle:titleCopy activityText:textCopy showBottomView:viewCopy];
 
   [(DMCEnrollmentFlowUIPresenterBase *)self setActivityController:v10];
   [(DMCEnrollmentFlowUIPresenterBase *)self pushViewController:v10];
 }
 
-- (void)presentOKAlertWithTitle:(id)a3 message:(id)a4 action:(id)a5
+- (void)presentOKAlertWithTitle:(id)title message:(id)message action:(id)action
 {
-  v8 = a5;
-  v9 = [MEMORY[0x277D75110] alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  actionCopy = action;
+  v9 = [MEMORY[0x277D75110] alertControllerWithTitle:title message:message preferredStyle:1];
   v10 = MEMORY[0x277D750F8];
   v11 = DMCLocalizedString();
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __75__DMCEnrollmentFlowUIPresenterBase_presentOKAlertWithTitle_message_action___block_invoke;
   v16[3] = &unk_278EE7358;
-  v17 = v8;
-  v12 = v8;
+  v17 = actionCopy;
+  v12 = actionCopy;
   v13 = [v10 actionWithTitle:v11 style:0 handler:v16];
 
   [v9 addAction:v13];
-  v14 = [(DMCEnrollmentFlowUIPresenterBase *)self navigationController];
+  navigationController = [(DMCEnrollmentFlowUIPresenterBase *)self navigationController];
 
-  if (v14)
+  if (navigationController)
   {
     [(DMCEnrollmentFlowUIPresenterBase *)self navigationController];
   }

@@ -1,10 +1,10 @@
 @interface PGGraphBusinessEdge
-- (BOOL)hasProperties:(id)a3;
-- (PGGraphBusinessEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7;
+- (BOOL)hasProperties:(id)properties;
+- (PGGraphBusinessEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties;
 - (id)edgeDescription;
-- (id)initFromSourceNode:(id)a3 toBusinessNode:(id)a4 confidence:(double)a5 hasRoutineInfo:(BOOL)a6 universalStartDate:(id)a7 universalEndDate:(id)a8;
+- (id)initFromSourceNode:(id)node toBusinessNode:(id)businessNode confidence:(double)confidence hasRoutineInfo:(BOOL)info universalStartDate:(id)date universalEndDate:(id)endDate;
 - (id)propertyDictionary;
-- (void)checkConsistencyOfProperties:(id)a3 withExtraPropertyKeys:(id)a4;
+- (void)checkConsistencyOfProperties:(id)properties withExtraPropertyKeys:(id)keys;
 @end
 
 @implementation PGGraphBusinessEdge
@@ -14,8 +14,8 @@
   v3 = MEMORY[0x277CCACA8];
   v10.receiver = self;
   v10.super_class = PGGraphBusinessEdge;
-  v4 = [(PGGraphOptimizedEdge *)&v10 edgeDescription];
-  v5 = v4;
+  edgeDescription = [(PGGraphOptimizedEdge *)&v10 edgeDescription];
+  v5 = edgeDescription;
   if (self->_hasRoutineInfo)
   {
     v6 = @"Has Routine Info, ";
@@ -27,7 +27,7 @@
   }
 
   universalStartDate = self->_universalStartDate;
-  v8 = [v3 stringWithFormat:@"%@ (%@%@ - %@)", v4, v6, universalStartDate, self->_universalEndDate];
+  v8 = [v3 stringWithFormat:@"%@ (%@%@ - %@)", edgeDescription, v6, universalStartDate, self->_universalEndDate];
 
   return v8;
 }
@@ -58,11 +58,11 @@
   return v9;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"confidence"];
     v7 = v6;
@@ -120,37 +120,37 @@ LABEL_11:
   return v18;
 }
 
-- (void)checkConsistencyOfProperties:(id)a3 withExtraPropertyKeys:(id)a4
+- (void)checkConsistencyOfProperties:(id)properties withExtraPropertyKeys:(id)keys
 {
   v4.receiver = self;
   v4.super_class = PGGraphBusinessEdge;
-  [(PGGraphOptimizedEdge *)&v4 checkConsistencyOfProperties:a3 withExtraPropertyKeys:a4];
+  [(PGGraphOptimizedEdge *)&v4 checkConsistencyOfProperties:properties withExtraPropertyKeys:keys];
 }
 
-- (PGGraphBusinessEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7
+- (PGGraphBusinessEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  labelCopy = label;
+  nodeCopy = node;
+  targetNodeCopy = targetNode;
+  propertiesCopy = properties;
   v16 = PGAbstractMethodException(self, a2);
   objc_exception_throw(v16);
 }
 
-- (id)initFromSourceNode:(id)a3 toBusinessNode:(id)a4 confidence:(double)a5 hasRoutineInfo:(BOOL)a6 universalStartDate:(id)a7 universalEndDate:(id)a8
+- (id)initFromSourceNode:(id)node toBusinessNode:(id)businessNode confidence:(double)confidence hasRoutineInfo:(BOOL)info universalStartDate:(id)date universalEndDate:(id)endDate
 {
-  v15 = a7;
-  v16 = a8;
+  dateCopy = date;
+  endDateCopy = endDate;
   v20.receiver = self;
   v20.super_class = PGGraphBusinessEdge;
-  v17 = [(PGGraphEdge *)&v20 initWithSourceNode:a3 targetNode:a4];
+  v17 = [(PGGraphEdge *)&v20 initWithSourceNode:node targetNode:businessNode];
   p_isa = &v17->super.super.super.super.isa;
   if (v17)
   {
-    v17->_confidence = a5;
-    v17->_hasRoutineInfo = a6;
-    objc_storeStrong(&v17->_universalStartDate, a7);
-    objc_storeStrong(p_isa + 8, a8);
+    v17->_confidence = confidence;
+    v17->_hasRoutineInfo = info;
+    objc_storeStrong(&v17->_universalStartDate, date);
+    objc_storeStrong(p_isa + 8, endDate);
   }
 
   return p_isa;

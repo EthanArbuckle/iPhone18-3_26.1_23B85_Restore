@@ -6,7 +6,7 @@
 
 - (void)proxCardFlowDidDismiss
 {
-  v2 = self;
+  selfCopy = self;
   sub_10009712C();
 }
 

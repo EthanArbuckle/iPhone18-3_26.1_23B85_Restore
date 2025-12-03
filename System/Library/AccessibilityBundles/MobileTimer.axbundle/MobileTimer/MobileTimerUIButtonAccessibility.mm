@@ -10,16 +10,16 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(MobileTimerUIButtonAccessibility *)self accessibilityIdentifier];
-  if ([v3 isEqualToString:@"WeatherButton"])
+  accessibilityIdentifier = [(MobileTimerUIButtonAccessibility *)self accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:@"WeatherButton"])
   {
     v4 = @"weather.button";
 LABEL_5:
-    v5 = accessibilityNonLocalizedString(v4);
+    accessibilityLabel = accessibilityNonLocalizedString(v4);
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"YahooButton"])
+  if ([accessibilityIdentifier isEqualToString:@"YahooButton"])
   {
     v4 = @"yahoo.button";
     goto LABEL_5;
@@ -27,47 +27,47 @@ LABEL_5:
 
   v8.receiver = self;
   v8.super_class = MobileTimerUIButtonAccessibility;
-  v5 = [(MobileTimerUIButtonAccessibility *)&v8 accessibilityLabel];
+  accessibilityLabel = [(MobileTimerUIButtonAccessibility *)&v8 accessibilityLabel];
 LABEL_7:
-  v6 = v5;
+  v6 = accessibilityLabel;
 
   return v6;
 }
 
 - (id)accessibilityLanguage
 {
-  v3 = [(MobileTimerUIButtonAccessibility *)self accessibilityIdentifier];
-  if ([v3 isEqualToString:@"WeatherButton"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"YahooButton"))
+  accessibilityIdentifier = [(MobileTimerUIButtonAccessibility *)self accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:@"WeatherButton"] & 1) != 0 || (objc_msgSend(accessibilityIdentifier, "isEqualToString:", @"YahooButton"))
   {
-    v4 = @"en-US";
+    accessibilityLanguage = @"en-US";
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = MobileTimerUIButtonAccessibility;
-    v4 = [(MobileTimerUIButtonAccessibility *)&v6 accessibilityLanguage];
+    accessibilityLanguage = [(MobileTimerUIButtonAccessibility *)&v6 accessibilityLanguage];
   }
 
-  return v4;
+  return accessibilityLanguage;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(MobileTimerUIButtonAccessibility *)self accessibilityIdentifier];
-  if (([v3 isEqualToString:@"WeatherButton"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"YahooButton"))
+  accessibilityIdentifier = [(MobileTimerUIButtonAccessibility *)self accessibilityIdentifier];
+  if (([accessibilityIdentifier isEqualToString:@"WeatherButton"] & 1) != 0 || objc_msgSend(accessibilityIdentifier, "isEqualToString:", @"YahooButton"))
   {
-    v4 = *MEMORY[0x29EDC7F98];
+    accessibilityTraits = *MEMORY[0x29EDC7F98];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = MobileTimerUIButtonAccessibility;
-    v4 = [(MobileTimerUIButtonAccessibility *)&v6 accessibilityTraits];
+    accessibilityTraits = [(MobileTimerUIButtonAccessibility *)&v6 accessibilityTraits];
   }
 
-  return v4;
+  return accessibilityTraits;
 }
 
 - (BOOL)isAccessibilityElement
@@ -92,8 +92,8 @@ LABEL_7:
   v3 = [(MobileTimerUIButtonAccessibility *)self _accessibilityViewAncestorIsKindOf:_isAlarmTableViewCellDescendantDisclosureButton__AlarmTableViewCellClass];
   v4 = v3 != 0;
 
-  v5 = [(MobileTimerUIButtonAccessibility *)self accessibilityIdentification];
-  v6 = [v5 isEqualToString:@"UITableCellViewDisclosure"];
+  accessibilityIdentification = [(MobileTimerUIButtonAccessibility *)self accessibilityIdentification];
+  v6 = [accessibilityIdentification isEqualToString:@"UITableCellViewDisclosure"];
 
   return v4 & v6;
 }

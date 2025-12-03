@@ -1,34 +1,34 @@
 @interface TSCERemoteDataSourceFetcher
-+ (id)fetcherWithCoordinator:(id)a3;
-- (BOOL)canFetchKey:(id)a3;
++ (id)fetcherWithCoordinator:(id)coordinator;
+- (BOOL)canFetchKey:(id)key;
 - (NSString)identifier;
 - (TSCERemoteDataCoordinator)coordinator;
 - (TSCERemoteDataSourceFetcher)init;
-- (TSCERemoteDataSourceFetcher)initWithCoordinator:(id)a3;
-- (id)addRemoteDataInterest:(id)a3;
-- (id)fetchableKeysFromSet:(id)a3;
-- (id)removeRemoteDataInterest:(id)a3;
+- (TSCERemoteDataSourceFetcher)initWithCoordinator:(id)coordinator;
+- (id)addRemoteDataInterest:(id)interest;
+- (id)fetchableKeysFromSet:(id)set;
+- (id)removeRemoteDataInterest:(id)interest;
 - (int64_t)dataKind;
-- (void)autoCompleteQuotesWithInput:(id)a3 completion:(id)a4;
+- (void)autoCompleteQuotesWithInput:(id)input completion:(id)completion;
 - (void)dealloc;
-- (void)enqueueRequestForKeys:(id)a3;
-- (void)fetchQuotesWithTickers:(id)a3 completion:(id)a4;
-- (void)p_configureReachabilityWithHost:(id)a3;
+- (void)enqueueRequestForKeys:(id)keys;
+- (void)fetchQuotesWithTickers:(id)tickers completion:(id)completion;
+- (void)p_configureReachabilityWithHost:(id)host;
 - (void)p_refreshSpecifiers;
 - (void)requestCompleted;
 - (void)requestLaunched;
 - (void)resumeUpdating;
-- (void)sendRequestForKeys:(id)a3;
+- (void)sendRequestForKeys:(id)keys;
 - (void)stopUpdating;
 @end
 
 @implementation TSCERemoteDataSourceFetcher
 
-+ (id)fetcherWithCoordinator:(id)a3
++ (id)fetcherWithCoordinator:(id)coordinator
 {
-  v3 = a3;
+  coordinatorCopy = coordinator;
   v4 = objc_alloc(objc_opt_class());
-  v8 = objc_msgSend_initWithCoordinator_(v4, v5, v3, v6, v7);
+  v8 = objc_msgSend_initWithCoordinator_(v4, v5, coordinatorCopy, v6, v7);
 
   return v8;
 }
@@ -49,9 +49,9 @@
   objc_exception_throw(v21);
 }
 
-- (TSCERemoteDataSourceFetcher)initWithCoordinator:(id)a3
+- (TSCERemoteDataSourceFetcher)initWithCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   v42.receiver = self;
   v42.super_class = TSCERemoteDataSourceFetcher;
   v5 = [(TSCERemoteDataSourceFetcher *)&v42 init];
@@ -65,7 +65,7 @@
     newlyRequestedKeys = v5->_newlyRequestedKeys;
     v5->_newlyRequestedKeys = v8;
 
-    objc_storeWeak(&v5->_coordinator, v4);
+    objc_storeWeak(&v5->_coordinator, coordinatorCopy);
     v14 = objc_msgSend_reachabilityCheckHost(v5, v10, v11, v12, v13);
     v5->_offline = 0;
     v5->_state = 0;
@@ -87,9 +87,9 @@
   return v5;
 }
 
-- (void)p_configureReachabilityWithHost:(id)a3
+- (void)p_configureReachabilityWithHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   objc_initWeak(&location, self);
   v50 = MEMORY[0x277D85DD0];
   v51 = 3221225472;
@@ -97,7 +97,7 @@
   v53 = &unk_278464818;
   objc_copyWeak(&v54, &location);
   v5 = MEMORY[0x223DA1C10](&v50);
-  v9 = objc_msgSend_networkReachabilityWithHostName_(MEMORY[0x277D81270], v6, v4, v7, v8, v50, v51, v52, v53);
+  v9 = objc_msgSend_networkReachabilityWithHostName_(MEMORY[0x277D81270], v6, hostCopy, v7, v8, v50, v51, v52, v53);
   objc_msgSend_setServerReachability_(self, v10, v9, v11, v12);
 
   v17 = objc_msgSend_serverReachability(self, v13, v14, v15, v16);
@@ -133,10 +133,10 @@
   [(TSCERemoteDataSourceFetcher *)&v4 dealloc];
 }
 
-- (id)addRemoteDataInterest:(id)a3
+- (id)addRemoteDataInterest:(id)interest
 {
-  v4 = a3;
-  v8 = objc_msgSend_fetchableKeysFromSet_(self, v5, v4, v6, v7);
+  interestCopy = interest;
+  v8 = objc_msgSend_fetchableKeysFromSet_(self, v5, interestCopy, v6, v7);
   v13 = objc_msgSend_queue(self, v9, v10, v11, v12);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -144,17 +144,17 @@
   v17[3] = &unk_27845FEF0;
   v14 = v8;
   v18 = v14;
-  v19 = self;
+  selfCopy = self;
   dispatch_async(v13, v17);
 
   v15 = v14;
   return v14;
 }
 
-- (id)removeRemoteDataInterest:(id)a3
+- (id)removeRemoteDataInterest:(id)interest
 {
-  v4 = a3;
-  v8 = objc_msgSend_fetchableKeysFromSet_(self, v5, v4, v6, v7);
+  interestCopy = interest;
+  v8 = objc_msgSend_fetchableKeysFromSet_(self, v5, interestCopy, v6, v7);
   v13 = objc_msgSend_queue(self, v9, v10, v11, v12);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -171,17 +171,17 @@
   return v14;
 }
 
-- (void)enqueueRequestForKeys:(id)a3
+- (void)enqueueRequestForKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v9 = objc_msgSend_queue(self, v5, v6, v7, v8);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_2213DE538;
   v11[3] = &unk_27845FEF0;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = keysCopy;
+  v10 = keysCopy;
   dispatch_async(v9, v11);
 }
 
@@ -509,9 +509,9 @@ LABEL_39:
   objc_exception_throw(v26);
 }
 
-- (BOOL)canFetchKey:(id)a3
+- (BOOL)canFetchKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = MEMORY[0x277D81150];
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSCERemoteDataSourceFetcher canFetchKey:]", v6, v7);
   v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCERemoteDataSourceFetcher.mm", v10, v11);
@@ -531,9 +531,9 @@ LABEL_39:
   objc_exception_throw(v29);
 }
 
-- (id)fetchableKeysFromSet:(id)a3
+- (id)fetchableKeysFromSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v9 = objc_msgSend_set(TSCERemoteDataSpecifierSet, v5, v6, v7, v8);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -542,16 +542,16 @@ LABEL_39:
   v17[4] = self;
   v10 = v9;
   v18 = v10;
-  objc_msgSend_enumerateSpecifiersWithBlock_(v4, v11, v17, v12, v13);
+  objc_msgSend_enumerateSpecifiersWithBlock_(setCopy, v11, v17, v12, v13);
   v14 = v18;
   v15 = v10;
 
   return v10;
 }
 
-- (void)sendRequestForKeys:(id)a3
+- (void)sendRequestForKeys:(id)keys
 {
-  v3 = a3;
+  keysCopy = keys;
   v4 = MEMORY[0x277D81150];
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSCERemoteDataSourceFetcher sendRequestForKeys:]", v6, v7);
   v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCERemoteDataSourceFetcher.mm", v10, v11);
@@ -571,10 +571,10 @@ LABEL_39:
   objc_exception_throw(v29);
 }
 
-- (void)fetchQuotesWithTickers:(id)a3 completion:(id)a4
+- (void)fetchQuotesWithTickers:(id)tickers completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  tickersCopy = tickers;
+  completionCopy = completion;
   v7 = MEMORY[0x277D81150];
   v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSCERemoteDataSourceFetcher fetchQuotesWithTickers:completion:]", v9, v10);
   v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCERemoteDataSourceFetcher.mm", v13, v14);
@@ -594,10 +594,10 @@ LABEL_39:
   objc_exception_throw(v32);
 }
 
-- (void)autoCompleteQuotesWithInput:(id)a3 completion:(id)a4
+- (void)autoCompleteQuotesWithInput:(id)input completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  inputCopy = input;
+  completionCopy = completion;
   v7 = MEMORY[0x277D81150];
   v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSCERemoteDataSourceFetcher autoCompleteQuotesWithInput:completion:]", v9, v10);
   v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCERemoteDataSourceFetcher.mm", v13, v14);

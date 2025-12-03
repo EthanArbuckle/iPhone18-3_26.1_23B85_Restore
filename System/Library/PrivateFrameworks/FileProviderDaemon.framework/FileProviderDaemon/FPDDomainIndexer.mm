@@ -3,30 +3,30 @@
 - (BOOL)needsAuthentication;
 - (BOOL)needsIndexing;
 - (FPDDomain)domain;
-- (FPDDomainIndexer)initWithExtension:(id)a3 domain:(id)a4 enabled:(BOOL)a5 supportingIndexAll:(BOOL)a6;
+- (FPDDomainIndexer)initWithExtension:(id)extension domain:(id)domain enabled:(BOOL)enabled supportingIndexAll:(BOOL)all;
 - (FPDDomainIndexerDelegate)delegate;
 - (FPDExtension)extension;
 - (id)description;
 - (id)localSpotlightIndexer;
-- (void)__indexOneBatchIfPossibleClearingNeedsIndexing:(BOOL)a3;
+- (void)__indexOneBatchIfPossibleClearingNeedsIndexing:(BOOL)indexing;
 - (void)_cancelTimer;
-- (void)_handleOneBatchCompletionWithError:(id)a3 hasMoreChanges:(BOOL)a4;
-- (void)_indexOneBatchIfPossibleClearingNeedsIndexing:(BOOL)a3;
-- (void)_signalChangesWithCompletionHandler:(id)a3;
+- (void)_handleOneBatchCompletionWithError:(id)error hasMoreChanges:(BOOL)changes;
+- (void)_indexOneBatchIfPossibleClearingNeedsIndexing:(BOOL)indexing;
+- (void)_signalChangesWithCompletionHandler:(id)handler;
 - (void)_unregisterFromScheduler;
 - (void)clearNeedsAuth;
-- (void)dropIndexForReason:(unint64_t)a3 completion:(id)a4;
-- (void)dumpStateTo:(id)a3 withName:(id)a4;
-- (void)indexOneBatchWithCompletionHandler:(id)a3;
+- (void)dropIndexForReason:(unint64_t)reason completion:(id)completion;
+- (void)dumpStateTo:(id)to withName:(id)name;
+- (void)indexOneBatchWithCompletionHandler:(id)handler;
 - (void)invalidate;
-- (void)pauseIndexingWithCompletionHandler:(id)a3;
-- (void)resumeIndexingWithCompletionHandler:(id)a3;
-- (void)setIndexingEnabled:(BOOL)a3 completionHandler:(id)a4;
+- (void)pauseIndexingWithCompletionHandler:(id)handler;
+- (void)resumeIndexingWithCompletionHandler:(id)handler;
+- (void)setIndexingEnabled:(BOOL)enabled completionHandler:(id)handler;
 - (void)setNeedsAuth;
-- (void)sharedSchedulerCanRun:(id)a3;
-- (void)signalChangesWithCompletionHandler:(id)a3;
-- (void)signalNeedsReindexFromScratchWithDropReason:(unint64_t)a3 completionHandler:(id)a4;
-- (void)signalNeedsReindexItemsWithIdentifiers:(id)a3 indexReason:(int64_t)a4 completionHandler:(id)a5;
+- (void)sharedSchedulerCanRun:(id)run;
+- (void)signalChangesWithCompletionHandler:(id)handler;
+- (void)signalNeedsReindexFromScratchWithDropReason:(unint64_t)reason completionHandler:(id)handler;
+- (void)signalNeedsReindexItemsWithIdentifiers:(id)identifiers indexReason:(int64_t)reason completionHandler:(id)handler;
 - (void)start;
 @end
 
@@ -34,27 +34,27 @@
 
 - (BOOL)needsAuthentication
 {
-  v2 = [(FPDDomainIndexer *)self state];
-  v3 = [v2 needsAuth];
+  state = [(FPDDomainIndexer *)self state];
+  needsAuth = [state needsAuth];
 
-  return v3;
+  return needsAuth;
 }
 
 - (BOOL)isIndexed
 {
-  v3 = [(FPDDomainIndexer *)self state];
-  if (([v3 droppedIndex] & 1) != 0 || !self->_isStarted)
+  state = [(FPDDomainIndexer *)self state];
+  if (([state droppedIndex] & 1) != 0 || !self->_isStarted)
   {
-    v5 = [(FPDDomainIndexer *)self state];
-    v4 = [v5 needsIndexing];
+    state2 = [(FPDDomainIndexer *)self state];
+    needsIndexing = [state2 needsIndexing];
   }
 
   else
   {
-    v4 = 1;
+    needsIndexing = 1;
   }
 
-  return v4;
+  return needsIndexing;
 }
 
 - (FPDDomain)domain
@@ -126,19 +126,19 @@ void __34__FPDDomainIndexer_clearNeedsAuth__block_invoke(uint64_t a1)
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_extension);
-  v6 = [WeakRetained identifier];
+  identifier = [WeakRetained identifier];
   v7 = [(NSString *)self->_domainIdentifier isEqualToString:*MEMORY[0x1E6967178]];
   if (v7)
   {
-    v8 = @"(default)";
+    fp_obfuscatedFilename = @"(default)";
   }
 
   else
   {
-    v8 = [(NSString *)self->_domainIdentifier fp_obfuscatedFilename];
+    fp_obfuscatedFilename = [(NSString *)self->_domainIdentifier fp_obfuscatedFilename];
   }
 
-  v9 = [v3 stringWithFormat:@"<%@: %p %@:%@ e:%d>", v4, self, v6, v8, self->_enabled];
+  v9 = [v3 stringWithFormat:@"<%@: %p %@:%@ e:%d>", v4, self, identifier, fp_obfuscatedFilename, self->_enabled];
   if (!v7)
   {
   }
@@ -146,22 +146,22 @@ void __34__FPDDomainIndexer_clearNeedsAuth__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (FPDDomainIndexer)initWithExtension:(id)a3 domain:(id)a4 enabled:(BOOL)a5 supportingIndexAll:(BOOL)a6
+- (FPDDomainIndexer)initWithExtension:(id)extension domain:(id)domain enabled:(BOOL)enabled supportingIndexAll:(BOOL)all
 {
-  v11 = a3;
-  v12 = a4;
+  extensionCopy = extension;
+  domainCopy = domain;
   v34.receiver = self;
   v34.super_class = FPDDomainIndexer;
   v13 = [(FPDDomainIndexer *)&v34 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_extension, v11);
-    v15 = objc_storeWeak(&v14->_domain, v12);
-    v16 = [v12 nsDomain];
-    v17 = [v16 spotlightDomainIdentifier];
+    objc_storeWeak(&v13->_extension, extensionCopy);
+    v15 = objc_storeWeak(&v14->_domain, domainCopy);
+    nsDomain = [domainCopy nsDomain];
+    spotlightDomainIdentifier = [nsDomain spotlightDomainIdentifier];
     spotlightDomainIdentifier = v14->_spotlightDomainIdentifier;
-    v14->_spotlightDomainIdentifier = v17;
+    v14->_spotlightDomainIdentifier = spotlightDomainIdentifier;
 
     if (!v14->_spotlightDomainIdentifier)
     {
@@ -169,30 +169,30 @@ void __34__FPDDomainIndexer_clearNeedsAuth__block_invoke(uint64_t a1)
     }
 
     WeakRetained = objc_loadWeakRetained(&v14->_domain);
-    v20 = [WeakRetained identifier];
+    identifier = [WeakRetained identifier];
     domainIdentifier = v14->_domainIdentifier;
-    v14->_domainIdentifier = v20;
+    v14->_domainIdentifier = identifier;
 
     v22 = objc_loadWeakRetained(&v14->_domain);
-    v23 = [v22 providerDomainID];
+    providerDomainID = [v22 providerDomainID];
     providerDomainID = v14->_providerDomainID;
-    v14->_providerDomainID = v23;
+    v14->_providerDomainID = providerDomainID;
 
     v25 = [FPDDomainIndexerState alloc];
-    v26 = [v12 supportURL];
-    v27 = [(FPDDomainIndexerState *)v25 initWithSupportURL:v26];
+    supportURL = [domainCopy supportURL];
+    v27 = [(FPDDomainIndexerState *)v25 initWithSupportURL:supportURL];
     state = v14->_state;
     v14->_state = v27;
 
-    v14->_enabled = a5;
+    v14->_enabled = enabled;
     v29 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v30 = dispatch_queue_create("indexer", v29);
     queue = v14->_queue;
     v14->_queue = v30;
 
     v14->_maxRetryDelayInSec = 60;
-    -[FPDDomainIndexerState setNeedsIndexing:](v14->_state, "setNeedsIndexing:", [v12 shouldIndexWhenStart]);
-    v14->_supportingIndexAll = a6;
+    -[FPDDomainIndexerState setNeedsIndexing:](v14->_state, "setNeedsIndexing:", [domainCopy shouldIndexWhenStart]);
+    v14->_supportingIndexAll = all;
     v32 = indexingScheduler();
     [v32 ping];
   }
@@ -345,11 +345,11 @@ void __32__FPDDomainIndexer_setNeedsAuth__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_handleOneBatchCompletionWithError:(id)a3 hasMoreChanges:(BOOL)a4
+- (void)_handleOneBatchCompletionWithError:(id)error hasMoreChanges:(BOOL)changes
 {
-  v4 = a4;
+  changesCopy = changes;
   v65 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_opt_respondsToSelector();
@@ -364,21 +364,21 @@ void __32__FPDDomainIndexer_setNeedsAuth__block_invoke(uint64_t a1)
   v11 = fp_current_or_default_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v38 = [v7 fp_prettyDescription];
-    v39 = v38;
+    fp_prettyDescription = [errorCopy fp_prettyDescription];
+    v39 = fp_prettyDescription;
     v40 = @"success";
-    if (v38)
+    if (fp_prettyDescription)
     {
-      v40 = v38;
+      v40 = fp_prettyDescription;
     }
 
     v41 = @"no";
     *buf = 134218754;
     v58 = section;
     v59 = 2112;
-    v60 = self;
+    selfCopy = self;
     v61 = 2112;
-    if (v4)
+    if (changesCopy)
     {
       v41 = @"yes";
     }
@@ -391,18 +391,18 @@ void __32__FPDDomainIndexer_setNeedsAuth__block_invoke(uint64_t a1)
 
   self->_isIndexing = 0;
   *&self->_batchIndexedCount = vaddq_s64(*&self->_batchIndexedCount, vdupq_n_s64(1uLL));
-  if (v7)
+  if (errorCopy)
   {
     ++self->_consecutiveBatchErrorCount;
-    objc_storeStrong(&self->_lastError, a3);
-    if ([v7 fp_isFileProviderError:-1000])
+    objc_storeStrong(&self->_lastError, error);
+    if ([errorCopy fp_isFileProviderError:-1000])
     {
-      v4 = 0;
+      changesCopy = 0;
     }
 
     else
     {
-      v4 = [v7 fp_isFeatureUnsupportedError] ^ 1;
+      changesCopy = [errorCopy fp_isFeatureUnsupportedError] ^ 1;
     }
   }
 
@@ -420,49 +420,49 @@ void __32__FPDDomainIndexer_setNeedsAuth__block_invoke(uint64_t a1)
 
   if ([(FPDDomainIndexer *)self learnNeedsAuthenticationFromBatchError])
   {
-    v13 = [(FPDDomainIndexer *)self state];
-    v14 = [v13 needsAuth];
+    state = [(FPDDomainIndexer *)self state];
+    needsAuth = [state needsAuth];
 
-    if (v14)
+    if (needsAuth)
     {
-      if (v7)
+      if (errorCopy)
       {
         goto LABEL_18;
       }
 
-      v15 = [(FPDDomainIndexer *)self state];
-      [v15 setNeedsAuth:0];
+      state2 = [(FPDDomainIndexer *)self state];
+      [state2 setNeedsAuth:0];
     }
 
     else
     {
-      if (![v7 fp_isFileProviderError:-1000])
+      if (![errorCopy fp_isFileProviderError:-1000])
       {
         goto LABEL_18;
       }
 
-      v15 = [(FPDDomainIndexer *)self state];
-      [v15 setNeedsAuth:1];
+      state2 = [(FPDDomainIndexer *)self state];
+      [state2 setNeedsAuth:1];
     }
   }
 
 LABEL_18:
-  v16 = [(FPDDomainIndexer *)self state];
-  v17 = [v16 droppedIndex];
-  if (v7)
+  state3 = [(FPDDomainIndexer *)self state];
+  droppedIndex = [state3 droppedIndex];
+  if (errorCopy)
   {
     v18 = 0;
   }
 
   else
   {
-    v18 = v17;
+    v18 = droppedIndex;
   }
 
   if (v18)
   {
-    v19 = objc_loadWeakRetained(&self->_domain);
-    if ([v19 isHidden])
+    state4 = objc_loadWeakRetained(&self->_domain);
+    if ([state4 isHidden])
     {
 LABEL_25:
 
@@ -470,26 +470,26 @@ LABEL_25:
     }
 
     v20 = objc_loadWeakRetained(&self->_domain);
-    v21 = [v20 isHiddenByUser];
+    isHiddenByUser = [v20 isHiddenByUser];
 
-    if ((v21 & 1) == 0)
+    if ((isHiddenByUser & 1) == 0)
     {
-      v19 = [(FPDDomainIndexer *)self state];
-      [v19 setDroppedIndex:0];
+      state4 = [(FPDDomainIndexer *)self state];
+      [state4 setDroppedIndex:0];
       goto LABEL_25;
     }
   }
 
 LABEL_26:
-  if ((v4 & 1) == 0)
+  if ((changesCopy & 1) == 0)
   {
-    v22 = [(FPDDomainIndexer *)self state];
-    v23 = [v22 needsIndexing];
+    state5 = [(FPDDomainIndexer *)self state];
+    needsIndexing = [state5 needsIndexing];
 
-    if ((v23 & 1) == 0)
+    if ((needsIndexing & 1) == 0)
     {
-      v28 = [(FPDDomainIndexer *)self state];
-      [v28 setNeedsIndexing:0];
+      state6 = [(FPDDomainIndexer *)self state];
+      [state6 setNeedsIndexing:0];
 
       lastIndexingStartDate = self->_lastIndexingStartDate;
       self->_lastIndexingStartDate = 0;
@@ -506,10 +506,10 @@ LABEL_26:
     }
   }
 
-  v24 = [(FPDDomainIndexer *)self state];
-  v25 = [v24 needsIndexing];
+  state7 = [(FPDDomainIndexer *)self state];
+  needsIndexing2 = [state7 needsIndexing];
 
-  if (!(v4 & 1 | ((v25 & 1) == 0)))
+  if (!(changesCopy & 1 | ((needsIndexing2 & 1) == 0)))
   {
     v26 = fp_current_or_default_log();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -518,15 +518,15 @@ LABEL_26:
     }
   }
 
-  if (!v7)
+  if (!errorCopy)
   {
 LABEL_48:
-    [(FPDDomainIndexer *)self _indexOneBatchIfPossibleClearingNeedsIndexing:v4 ^ 1u];
+    [(FPDDomainIndexer *)self _indexOneBatchIfPossibleClearingNeedsIndexing:changesCopy ^ 1u];
     goto LABEL_49;
   }
 
   [(FPDDomainIndexer *)self _unregisterFromScheduler];
-  if ([v7 fp_isFeatureUnsupportedError])
+  if ([errorCopy fp_isFeatureUnsupportedError])
   {
     v27 = fp_current_or_default_log();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -544,8 +544,8 @@ LABEL_36:
     v30 = fp_current_or_default_log();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      v31 = [v7 fp_prettyDescription];
-      [(FPDDomainIndexer *)v31 _handleOneBatchCompletionWithError:buf hasMoreChanges:v30];
+      fp_prettyDescription2 = [errorCopy fp_prettyDescription];
+      [(FPDDomainIndexer *)fp_prettyDescription2 _handleOneBatchCompletionWithError:buf hasMoreChanges:v30];
     }
 
     goto LABEL_49;
@@ -559,8 +559,8 @@ LABEL_36:
     v35 = fp_current_or_default_log();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
-      v36 = [v7 fp_prettyDescription];
-      [(FPDDomainIndexer *)v36 _handleOneBatchCompletionWithError:buf hasMoreChanges:v35];
+      fp_prettyDescription3 = [errorCopy fp_prettyDescription];
+      [(FPDDomainIndexer *)fp_prettyDescription3 _handleOneBatchCompletionWithError:buf hasMoreChanges:v35];
     }
 
     goto LABEL_48;
@@ -580,12 +580,12 @@ LABEL_36:
   v44 = fp_current_or_default_log();
   if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
   {
-    v52 = [v7 fp_prettyDescription];
+    fp_prettyDescription4 = [errorCopy fp_prettyDescription];
     v53 = self->_consecutiveBatchErrorCount;
     *buf = 138412802;
-    v58 = v52;
+    v58 = fp_prettyDescription4;
     v59 = 2048;
-    v60 = v43 / 0xF4240;
+    selfCopy = v43 / 0xF4240;
     v61 = 2048;
     v62 = v53;
     _os_log_error_impl(&dword_1CEFC7000, v44, OS_LOG_TYPE_ERROR, "[ERROR] we received an error %@, retry in %llums (count:%lu)...", buf, 0x20u);
@@ -634,7 +634,7 @@ void __70__FPDDomainIndexer__handleOneBatchCompletionWithError_hasMoreChanges___
   }
 }
 
-- (void)sharedSchedulerCanRun:(id)a3
+- (void)sharedSchedulerCanRun:(id)run
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -673,7 +673,7 @@ uint64_t __42__FPDDomainIndexer_sharedSchedulerCanRun___block_invoke(uint64_t a1
   return __fp_leave_section_Debug();
 }
 
-- (void)_indexOneBatchIfPossibleClearingNeedsIndexing:(BOOL)a3
+- (void)_indexOneBatchIfPossibleClearingNeedsIndexing:(BOOL)indexing
 {
   v20[1] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -682,8 +682,8 @@ uint64_t __42__FPDDomainIndexer_sharedSchedulerCanRun___block_invoke(uint64_t a1
     [FPDDomainIndexer _indexOneBatchIfPossibleClearingNeedsIndexing:];
   }
 
-  v5 = [(FPDDomainIndexer *)self state];
-  if ([v5 droppedIndex])
+  state = [(FPDDomainIndexer *)self state];
+  if ([state droppedIndex])
   {
     WeakRetained = objc_loadWeakRetained(&self->_domain);
     if ([WeakRetained isHidden])
@@ -700,9 +700,9 @@ LABEL_18:
     }
 
     v14 = objc_loadWeakRetained(&self->_domain);
-    v15 = [v14 isHiddenByUser];
+    isHiddenByUser = [v14 isHiddenByUser];
 
-    if (v15)
+    if (isHiddenByUser)
     {
       goto LABEL_18;
     }
@@ -712,7 +712,7 @@ LABEL_18:
   {
   }
 
-  self->_clearNeedsIndexing = a3;
+  self->_clearNeedsIndexing = indexing;
   objc_initWeak(&location, self);
   if (!self->_registeredWithScheduler)
   {
@@ -755,9 +755,9 @@ LABEL_21:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__indexOneBatchIfPossibleClearingNeedsIndexing:(BOOL)a3
+- (void)__indexOneBatchIfPossibleClearingNeedsIndexing:(BOOL)indexing
 {
-  v3 = a3;
+  indexingCopy = indexing;
   dispatch_assert_queue_V2(self->_queue);
   if (self->_timerSource)
   {
@@ -807,10 +807,10 @@ LABEL_21:
     }
 
     self->_isIndexing = 1;
-    if (v3)
+    if (indexingCopy)
     {
-      v7 = [(FPDDomainIndexer *)self state];
-      [v7 setNeedsIndexing:0];
+      state = [(FPDDomainIndexer *)self state];
+      [state setNeedsIndexing:0];
     }
 
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -896,10 +896,10 @@ void __67__FPDDomainIndexer___indexOneBatchIfPossibleClearingNeedsIndexing___blo
   __fp_pop_log();
 }
 
-- (void)indexOneBatchWithCompletionHandler:(id)a3
+- (void)indexOneBatchWithCompletionHandler:(id)handler
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing implementation of %s in %@", "-[FPDDomainIndexer indexOneBatchWithCompletionHandler:]", self];
   v6 = fp_current_or_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -912,12 +912,12 @@ void __67__FPDDomainIndexer___indexOneBatchIfPossibleClearingNeedsIndexing___blo
   __assert_rtn("-[FPDDomainIndexer indexOneBatchWithCompletionHandler:]", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/fileproviderd/FPDDomainIndexer/FPDDomainIndexer.m", 527, [v5 UTF8String]);
 }
 
-- (void)signalNeedsReindexFromScratchWithDropReason:(unint64_t)a3 completionHandler:(id)a4
+- (void)signalNeedsReindexFromScratchWithDropReason:(unint64_t)reason completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_domain);
-  v8 = [WeakRetained session];
-  v9 = [v8 newFileProviderProxyWithTimeout:0 pid:180.0];
+  session = [WeakRetained session];
+  v9 = [session newFileProviderProxyWithTimeout:0 pid:180.0];
 
   domainIdentifier = self->_domainIdentifier;
   v12[0] = MEMORY[0x1E69E9820];
@@ -925,9 +925,9 @@ void __67__FPDDomainIndexer___indexOneBatchIfPossibleClearingNeedsIndexing___blo
   v12[2] = __82__FPDDomainIndexer_signalNeedsReindexFromScratchWithDropReason_completionHandler___block_invoke;
   v12[3] = &unk_1E83BE1A8;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
-  [v9 dropIndexForDomain:domainIdentifier dropReason:a3 completionHandler:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [v9 dropIndexForDomain:domainIdentifier dropReason:reason completionHandler:v12];
 }
 
 void __82__FPDDomainIndexer_signalNeedsReindexFromScratchWithDropReason_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -945,13 +945,13 @@ void __82__FPDDomainIndexer_signalNeedsReindexFromScratchWithDropReason_completi
   [v4 signalChangesWithCompletionHandler:v7];
 }
 
-- (void)signalNeedsReindexItemsWithIdentifiers:(id)a3 indexReason:(int64_t)a4 completionHandler:(id)a5
+- (void)signalNeedsReindexItemsWithIdentifiers:(id)identifiers indexReason:(int64_t)reason completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [a3 fp_map:&__block_literal_global_135];
+  handlerCopy = handler;
+  v9 = [identifiers fp_map:&__block_literal_global_135];
   WeakRetained = objc_loadWeakRetained(&self->_domain);
-  v11 = [WeakRetained session];
-  v12 = [v11 newFileProviderProxyWithTimeout:0 pid:180.0];
+  session = [WeakRetained session];
+  v12 = [session newFileProviderProxyWithTimeout:0 pid:180.0];
 
   domainIdentifier = self->_domainIdentifier;
   v15[0] = MEMORY[0x1E69E9820];
@@ -959,9 +959,9 @@ void __82__FPDDomainIndexer_signalNeedsReindexFromScratchWithDropReason_completi
   v15[2] = __89__FPDDomainIndexer_signalNeedsReindexItemsWithIdentifiers_indexReason_completionHandler___block_invoke_2;
   v15[3] = &unk_1E83BE1A8;
   v15[4] = self;
-  v16 = v8;
-  v14 = v8;
-  [v12 signalNeedsReindexItemsWithIdentifiers:v9 domainIdentifier:domainIdentifier indexReason:a4 completionHandler:v15];
+  v16 = handlerCopy;
+  v14 = handlerCopy;
+  [v12 signalNeedsReindexItemsWithIdentifiers:v9 domainIdentifier:domainIdentifier indexReason:reason completionHandler:v15];
 }
 
 id __89__FPDDomainIndexer_signalNeedsReindexItemsWithIdentifiers_indexReason_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -992,28 +992,28 @@ void __89__FPDDomainIndexer_signalNeedsReindexItemsWithIdentifiers_indexReason_c
 {
   v3 = MEMORY[0x1E696AEC0];
   WeakRetained = objc_loadWeakRetained(&self->_extension);
-  v5 = [WeakRetained identifier];
-  v6 = [v3 stringWithFormat:@"com.apple.FileProvider/%@", v5];
+  identifier = [WeakRetained identifier];
+  v6 = [v3 stringWithFormat:@"com.apple.FileProvider/%@", identifier];
 
   v7 = [v6 stringByAppendingPathComponent:self->_spotlightDomainIdentifier];
 
   v8 = objc_alloc(MEMORY[0x1E6964E78]);
   v9 = objc_loadWeakRetained(&self->_extension);
-  v10 = [v9 descriptor];
-  v11 = [v10 topLevelBundleIdentifier];
-  v12 = [v8 _initWithName:v7 protectionClass:0 bundleIdentifier:v11 options:0];
+  descriptor = [v9 descriptor];
+  topLevelBundleIdentifier = [descriptor topLevelBundleIdentifier];
+  v12 = [v8 _initWithName:v7 protectionClass:0 bundleIdentifier:topLevelBundleIdentifier options:0];
 
   return v12;
 }
 
-- (void)dropIndexForReason:(unint64_t)a3 completion:(id)a4
+- (void)dropIndexForReason:(unint64_t)reason completion:(id)completion
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(FPDDomainIndexer *)self state];
-  v8 = [v7 droppedIndex];
+  completionCopy = completion;
+  state = [(FPDDomainIndexer *)self state];
+  droppedIndex = [state droppedIndex];
 
-  if (v8)
+  if (droppedIndex)
   {
     v9 = fp_current_or_default_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1021,13 +1021,13 @@ void __89__FPDDomainIndexer_signalNeedsReindexItemsWithIdentifiers_indexReason_c
       [FPDDomainIndexer dropIndexForReason:completion:];
     }
 
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    v10 = [(FPDDomainIndexer *)self state];
-    [v10 recordIndexDropReason:a3];
+    state2 = [(FPDDomainIndexer *)self state];
+    [state2 recordIndexDropReason:reason];
 
     v11 = fp_current_or_default_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -1035,7 +1035,7 @@ void __89__FPDDomainIndexer_signalNeedsReindexItemsWithIdentifiers_indexReason_c
       [FPDDomainIndexer dropIndexForReason:completion:];
     }
 
-    v12 = [(FPDDomainIndexer *)self localSpotlightIndexer];
+    localSpotlightIndexer = [(FPDDomainIndexer *)self localSpotlightIndexer];
     v13 = self->_domainIdentifier;
     v23[0] = self->_spotlightDomainIdentifier;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
@@ -1044,12 +1044,12 @@ void __89__FPDDomainIndexer_signalNeedsReindexItemsWithIdentifiers_indexReason_c
     v18[2] = __50__FPDDomainIndexer_dropIndexForReason_completion___block_invoke;
     v18[3] = &unk_1E83C1DA8;
     v18[4] = self;
-    v19 = v12;
+    v19 = localSpotlightIndexer;
     v20 = v13;
-    v21 = v6;
-    v22 = a3;
+    v21 = completionCopy;
+    reasonCopy = reason;
     v15 = v13;
-    v16 = v12;
+    v16 = localSpotlightIndexer;
     [v16 deleteSearchableItemsWithDomainIdentifiers:v14 reason:0 completionHandler:v18];
   }
 
@@ -1176,9 +1176,9 @@ LABEL_8:
   __fp_pop_log();
 }
 
-- (void)_signalChangesWithCompletionHandler:(id)a3
+- (void)_signalChangesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
   if (self->_timerSource)
   {
@@ -1191,8 +1191,8 @@ LABEL_8:
     [(FPDDomainIndexer *)self _cancelTimer];
   }
 
-  v6 = [(FPDDomainIndexer *)self state];
-  [v6 setNeedsIndexing:1];
+  state = [(FPDDomainIndexer *)self state];
+  [state setNeedsIndexing:1];
 
   if (self->_isIndexing)
   {
@@ -1222,20 +1222,20 @@ LABEL_12:
   [(FPDDomainIndexer *)self _indexOneBatchIfPossibleClearingNeedsIndexing:1];
   isIndexing = 0;
 LABEL_13:
-  (v4)[2](v4, isIndexing);
+  (handlerCopy)[2](handlerCopy, isIndexing);
 }
 
-- (void)signalChangesWithCompletionHandler:(id)a3
+- (void)signalChangesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__FPDDomainIndexer_signalChangesWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E83BE310;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1273,18 +1273,18 @@ void __55__FPDDomainIndexer_signalChangesWithCompletionHandler___block_invoke(ui
   __fp_pop_log();
 }
 
-- (void)setIndexingEnabled:(BOOL)a3 completionHandler:(id)a4
+- (void)setIndexingEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__FPDDomainIndexer_setIndexingEnabled_completionHandler___block_invoke;
   block[3] = &unk_1E83BE248;
-  v11 = a3;
+  enabledCopy = enabled;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -1362,9 +1362,9 @@ void __57__FPDDomainIndexer_setIndexingEnabled_completionHandler___block_invoke(
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pauseIndexingWithCompletionHandler:(id)a3
+- (void)pauseIndexingWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = fp_current_or_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
@@ -1372,12 +1372,12 @@ void __57__FPDDomainIndexer_setIndexingEnabled_completionHandler___block_invoke(
   }
 
   v5 = FPNotSupportedError();
-  v3[2](v3, v5);
+  handlerCopy[2](handlerCopy, v5);
 }
 
-- (void)resumeIndexingWithCompletionHandler:(id)a3
+- (void)resumeIndexingWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = fp_current_or_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
@@ -1385,28 +1385,28 @@ void __57__FPDDomainIndexer_setIndexingEnabled_completionHandler___block_invoke(
   }
 
   v5 = FPNotSupportedError();
-  v3[2](v3, v5);
+  handlerCopy[2](handlerCopy, v5);
 }
 
-- (void)dumpStateTo:(id)a3 withName:(id)a4
+- (void)dumpStateTo:(id)to withName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  toCopy = to;
+  nameCopy = name;
+  if ([nameCopy length])
   {
     WeakRetained = objc_loadWeakRetained(&self->_domain);
-    v9 = [WeakRetained nsDomain];
-    v10 = [v9 displayName];
-    v11 = [v10 fp_obfuscatedFilename];
+    nsDomain = [WeakRetained nsDomain];
+    displayName = [nsDomain displayName];
+    fp_obfuscatedFilename = [displayName fp_obfuscatedFilename];
 
-    if ([v11 length])
+    if ([fp_obfuscatedFilename length])
     {
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%@)", v11];
+      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%@)", fp_obfuscatedFilename];
 
-      v11 = v12;
+      fp_obfuscatedFilename = v12;
     }
 
-    [v6 write:{@"domain: %@ %@\n", v7, v11}];
+    [toCopy write:{@"domain: %@ %@\n", nameCopy, fp_obfuscatedFilename}];
   }
 
   queue = self->_queue;
@@ -1414,16 +1414,16 @@ void __57__FPDDomainIndexer_setIndexingEnabled_completionHandler___block_invoke(
   block[1] = 3221225472;
   block[2] = __41__FPDDomainIndexer_dumpStateTo_withName___block_invoke;
   block[3] = &unk_1E83BE158;
-  v14 = v6;
+  v14 = toCopy;
   v26 = v14;
-  v27 = self;
+  selfCopy = self;
   dispatch_sync(queue, block);
   v15 = [objc_alloc(MEMORY[0x1E696AC00]) initWithFileDescriptor:objc_msgSend(v14 closeOnDealloc:{"fd"), 0}];
-  v16 = [(FPDDomainIndexer *)self extension];
-  v17 = [v16 domainForIdentifier:self->_domainIdentifier reason:0];
-  v18 = [v17 session];
-  v19 = [v18 existingFileProviderProxyWithTimeout:0 onlyAlreadyLifetimeExtended:0 pid:-1.0];
-  v20 = [v19 synchronousRemoteObjectProxy];
+  extension = [(FPDDomainIndexer *)self extension];
+  v17 = [extension domainForIdentifier:self->_domainIdentifier reason:0];
+  session = [v17 session];
+  v19 = [session existingFileProviderProxyWithTimeout:0 onlyAlreadyLifetimeExtended:0 pid:-1.0];
+  synchronousRemoteObjectProxy = [v19 synchronousRemoteObjectProxy];
   domainIdentifier = self->_domainIdentifier;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
@@ -1431,7 +1431,7 @@ void __57__FPDDomainIndexer_setIndexingEnabled_completionHandler___block_invoke(
   v23[3] = &unk_1E83BDFC8;
   v24 = v14;
   v22 = v14;
-  [v20 dumpIndexStateForDomain:domainIdentifier toFileHandler:v15 completionHandler:v23];
+  [synchronousRemoteObjectProxy dumpIndexStateForDomain:domainIdentifier toFileHandler:v15 completionHandler:v23];
 }
 
 void __41__FPDDomainIndexer_dumpStateTo_withName___block_invoke(uint64_t a1)
@@ -1515,10 +1515,10 @@ void __41__FPDDomainIndexer_dumpStateTo_withName___block_invoke_2(uint64_t a1, v
 
 - (BOOL)needsIndexing
 {
-  v2 = [(FPDDomainIndexer *)self state];
-  v3 = [v2 needsIndexing];
+  state = [(FPDDomainIndexer *)self state];
+  needsIndexing = [state needsIndexing];
 
-  return v3;
+  return needsIndexing;
 }
 
 - (FPDDomainIndexerDelegate)delegate

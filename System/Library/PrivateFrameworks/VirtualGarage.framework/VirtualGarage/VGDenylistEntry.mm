@@ -1,7 +1,7 @@
 @interface VGDenylistEntry
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isSupersetOfEntry:(id)a3;
-- (VGDenylistEntry)initWithModelId:(id)a3 firmwareIds:(id)a4 years:(id)a5 models:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isSupersetOfEntry:(id)entry;
+- (VGDenylistEntry)initWithModelId:(id)id firmwareIds:(id)ids years:(id)years models:(id)models;
 - (id)description;
 @end
 
@@ -16,7 +16,7 @@
   v70 = v3;
   v4 = self->_firmwareIds;
   v5 = v4;
-  v72 = self;
+  selfCopy = self;
   if (v4)
   {
     if ([(NSArray *)v4 count])
@@ -71,7 +71,7 @@
 
       v20 = [v17 stringWithFormat:@"%@ [%@]", v19, v16];
 
-      self = v72;
+      self = selfCopy;
       v5 = v66;
     }
 
@@ -147,7 +147,7 @@
 
       v40 = [v37 stringWithFormat:@"%@ [%@]", v39, v36];
 
-      self = v72;
+      self = selfCopy;
       v25 = v65;
       v20 = v67;
     }
@@ -223,7 +223,7 @@
 
       v59 = [v56 stringWithFormat:@"%@ [%@]", v58, v55];
 
-      self = v72;
+      self = selfCopy;
       v20 = v68;
     }
 
@@ -249,13 +249,13 @@
   return v62;
 }
 
-- (BOOL)isSupersetOfEntry:(id)a3
+- (BOOL)isSupersetOfEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   modelId = self->_modelId;
-  if ((!modelId || [(NSNumber *)modelId isEqualToNumber:v4[1]]) && __37__VGDenylistEntry_isSupersetOfEntry___block_invoke(v4[2], self->_firmwareIds) && __37__VGDenylistEntry_isSupersetOfEntry___block_invoke(v4[3], self->_years))
+  if ((!modelId || [(NSNumber *)modelId isEqualToNumber:entryCopy[1]]) && __37__VGDenylistEntry_isSupersetOfEntry___block_invoke(entryCopy[2], self->_firmwareIds) && __37__VGDenylistEntry_isSupersetOfEntry___block_invoke(entryCopy[3], self->_years))
   {
-    v6 = __37__VGDenylistEntry_isSupersetOfEntry___block_invoke(v4[4], self->_models);
+    v6 = __37__VGDenylistEntry_isSupersetOfEntry___block_invoke(entryCopy[4], self->_models);
   }
 
   else
@@ -285,10 +285,10 @@ uint64_t __37__VGDenylistEntry_isSupersetOfEntry___block_invoke(void *a1, void *
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v25 = 1;
   }
@@ -298,7 +298,7 @@ uint64_t __37__VGDenylistEntry_isSupersetOfEntry___block_invoke(void *a1, void *
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       modelId = v5->_modelId;
       v7 = self->_modelId;
       v8 = modelId;
@@ -363,22 +363,22 @@ LABEL_13:
   return v25;
 }
 
-- (VGDenylistEntry)initWithModelId:(id)a3 firmwareIds:(id)a4 years:(id)a5 models:(id)a6
+- (VGDenylistEntry)initWithModelId:(id)id firmwareIds:(id)ids years:(id)years models:(id)models
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  idCopy = id;
+  idsCopy = ids;
+  yearsCopy = years;
+  modelsCopy = models;
   v24.receiver = self;
   v24.super_class = VGDenylistEntry;
   v15 = [(VGDenylistEntry *)&v24 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_modelId, a3);
-    if (v12)
+    objc_storeStrong(&v15->_modelId, id);
+    if (idsCopy)
     {
-      v17 = [v12 copy];
+      v17 = [idsCopy copy];
     }
 
     else
@@ -389,9 +389,9 @@ LABEL_13:
     firmwareIds = v16->_firmwareIds;
     v16->_firmwareIds = v17;
 
-    if (v13)
+    if (yearsCopy)
     {
-      v19 = [v13 copy];
+      v19 = [yearsCopy copy];
     }
 
     else
@@ -402,9 +402,9 @@ LABEL_13:
     years = v16->_years;
     v16->_years = v19;
 
-    if (v14)
+    if (modelsCopy)
     {
-      v21 = [v14 copy];
+      v21 = [modelsCopy copy];
     }
 
     else

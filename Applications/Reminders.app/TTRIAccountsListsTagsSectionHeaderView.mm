@@ -1,13 +1,13 @@
 @interface TTRIAccountsListsTagsSectionHeaderView
-- (_TtC9Reminders38TTRIAccountsListsTagsSectionHeaderView)initWithCoder:(id)a3;
-- (_TtC9Reminders38TTRIAccountsListsTagsSectionHeaderView)initWithReuseIdentifier:(id)a3;
+- (_TtC9Reminders38TTRIAccountsListsTagsSectionHeaderView)initWithCoder:(id)coder;
+- (_TtC9Reminders38TTRIAccountsListsTagsSectionHeaderView)initWithReuseIdentifier:(id)identifier;
 @end
 
 @implementation TTRIAccountsListsTagsSectionHeaderView
 
-- (_TtC9Reminders38TTRIAccountsListsTagsSectionHeaderView)initWithReuseIdentifier:(id)a3
+- (_TtC9Reminders38TTRIAccountsListsTagsSectionHeaderView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -21,7 +21,7 @@
   return sub_10039AA7C(v3, v4);
 }
 
-- (_TtC9Reminders38TTRIAccountsListsTagsSectionHeaderView)initWithCoder:(id)a3
+- (_TtC9Reminders38TTRIAccountsListsTagsSectionHeaderView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9Reminders38TTRIAccountsListsTagsSectionHeaderView_menu;
   v5 = sub_100058000(&qword_10076BDC8);

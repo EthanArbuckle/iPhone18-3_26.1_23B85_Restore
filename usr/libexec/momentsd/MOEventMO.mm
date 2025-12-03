@@ -1,78 +1,78 @@
 @interface MOEventMO
-+ (id)managedObjectWithEvent:(id)a3 inManagedObjectContext:(id)a4;
-+ (void)setPropertiesOfEventMO:(id)a3 withEvent:(id)a4;
-- (id)clonedObjectWithContext:(id)a3;
++ (id)managedObjectWithEvent:(id)event inManagedObjectContext:(id)context;
++ (void)setPropertiesOfEventMO:(id)o withEvent:(id)event;
+- (id)clonedObjectWithContext:(id)context;
 @end
 
 @implementation MOEventMO
 
-+ (id)managedObjectWithEvent:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithEvent:(id)event inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MOEventMO alloc] initWithContext:v5];
+  contextCopy = context;
+  eventCopy = event;
+  v7 = [[MOEventMO alloc] initWithContext:contextCopy];
 
-  [MOEventMO setPropertiesOfEventMO:v7 withEvent:v6];
+  [MOEventMO setPropertiesOfEventMO:v7 withEvent:eventCopy];
 
   return v7;
 }
 
-+ (void)setPropertiesOfEventMO:(id)a3 withEvent:(id)a4
++ (void)setPropertiesOfEventMO:(id)o withEvent:(id)event
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 eventIdentifier];
-  [v6 setEventIdentifier:v7];
+  eventCopy = event;
+  oCopy = o;
+  eventIdentifier = [eventCopy eventIdentifier];
+  [oCopy setEventIdentifier:eventIdentifier];
 
-  v8 = [v5 startDate];
-  [v6 setStartDate:v8];
+  startDate = [eventCopy startDate];
+  [oCopy setStartDate:startDate];
 
-  v9 = [v5 endDate];
-  [v6 setEndDate:v9];
+  endDate = [eventCopy endDate];
+  [oCopy setEndDate:endDate];
 
-  v10 = [v5 creationDate];
-  [v6 setCreationDate:v10];
+  creationDate = [eventCopy creationDate];
+  [oCopy setCreationDate:creationDate];
 
-  v11 = [v5 sourceCreationDate];
-  [v6 setSourceCreationDate:v11];
+  sourceCreationDate = [eventCopy sourceCreationDate];
+  [oCopy setSourceCreationDate:sourceCreationDate];
 
-  v12 = [v5 expirationDate];
-  [v6 setExpirationDate:v12];
+  expirationDate = [eventCopy expirationDate];
+  [oCopy setExpirationDate:expirationDate];
 
-  v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 provider]);
-  [v6 setProvider:v13];
+  v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [eventCopy provider]);
+  [oCopy setProvider:v13];
 
-  v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 category]);
-  [v6 setCategory:v14];
+  v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [eventCopy category]);
+  [oCopy setCategory:v14];
 
-  v15 = [v5 identifierFromProvider];
-  [v6 setIdentifierFromProvider:v15];
+  identifierFromProvider = [eventCopy identifierFromProvider];
+  [oCopy setIdentifierFromProvider:identifierFromProvider];
 
-  v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 mode]);
-  [v6 setMode:v16];
+  v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [eventCopy mode]);
+  [oCopy setMode:v16];
 
-  [v6 setIsInvalid:{objc_msgSend(v5, "isInvalid")}];
-  [v6 setIsHighConfidence:{objc_msgSend(v5, "isHighConfidence")}];
-  v17 = [v5 trends];
-  [v6 setTrends:v17];
+  [oCopy setIsInvalid:{objc_msgSend(eventCopy, "isInvalid")}];
+  [oCopy setIsHighConfidence:{objc_msgSend(eventCopy, "isHighConfidence")}];
+  trends = [eventCopy trends];
+  [oCopy setTrends:trends];
 
-  v18 = [v5 patterns];
-  [v6 setPatterns:v18];
+  patterns = [eventCopy patterns];
+  [oCopy setPatterns:patterns];
 
-  [v6 setIsGatheringComplete:{objc_msgSend(v5, "isGComplete")}];
-  v19 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 timeAtHomeSubType]);
-  [v6 setTimeAtHomeSubType:v19];
+  [oCopy setIsGatheringComplete:{objc_msgSend(eventCopy, "isGComplete")}];
+  v19 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [eventCopy timeAtHomeSubType]);
+  [oCopy setTimeAtHomeSubType:v19];
 
-  v20 = [v5 rehydrationFailCount];
-  v21 = [NSNumber numberWithUnsignedInteger:v20];
-  [v6 setRehydrationFailCount:v21];
+  rehydrationFailCount = [eventCopy rehydrationFailCount];
+  v21 = [NSNumber numberWithUnsignedInteger:rehydrationFailCount];
+  [oCopy setRehydrationFailCount:v21];
 }
 
-- (id)clonedObjectWithContext:(id)a3
+- (id)clonedObjectWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [[MOEvent alloc] initWithEventMO:self];
-  v6 = [MOEventMO managedObjectWithEvent:v5 inManagedObjectContext:v4];
+  v6 = [MOEventMO managedObjectWithEvent:v5 inManagedObjectContext:contextCopy];
 
   return v6;
 }

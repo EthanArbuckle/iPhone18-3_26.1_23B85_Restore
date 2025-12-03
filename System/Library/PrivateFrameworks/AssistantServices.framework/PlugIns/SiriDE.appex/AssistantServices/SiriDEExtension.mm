@@ -1,10 +1,10 @@
 @interface SiriDEExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation SiriDEExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v3 = [[DEAttachmentItem alloc] initWithPath:@"/private/var/mobile/Library/Logs/CrashReporter/Assistant/assistant_dump.log"];
   [v3 setDisplayName:@"State Snapshot"];

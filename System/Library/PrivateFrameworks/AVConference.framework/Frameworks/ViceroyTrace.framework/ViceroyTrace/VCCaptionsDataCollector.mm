@@ -1,18 +1,18 @@
 @interface VCCaptionsDataCollector
-- (VCCaptionsDataCollector)initWithDispatchQueue:(id)a3;
-- (void)addAggregatedCaptionsConfigurationToReport:(id)a3;
-- (void)addAggregatedCaptionsHistogramsToReport:(id)a3 shouldAlwaysAdd:(BOOL)a4;
-- (void)addAggregatedCaptionsMetricsToReport:(id)a3;
-- (void)addAggregatedCaptionsValueTypesToReport:(id)a3;
-- (void)addAggregatedLanguageDetectorMetricsToReport:(id)a3;
+- (VCCaptionsDataCollector)initWithDispatchQueue:(id)queue;
+- (void)addAggregatedCaptionsConfigurationToReport:(id)report;
+- (void)addAggregatedCaptionsHistogramsToReport:(id)report shouldAlwaysAdd:(BOOL)add;
+- (void)addAggregatedCaptionsMetricsToReport:(id)report;
+- (void)addAggregatedCaptionsValueTypesToReport:(id)report;
+- (void)addAggregatedLanguageDetectorMetricsToReport:(id)report;
 - (void)dealloc;
-- (void)processCaptionsConfiguration:(id)a3;
-- (void)processCaptionsMetrics:(id)a3;
+- (void)processCaptionsConfiguration:(id)configuration;
+- (void)processCaptionsMetrics:(id)metrics;
 @end
 
 @implementation VCCaptionsDataCollector
 
-- (VCCaptionsDataCollector)initWithDispatchQueue:(id)a3
+- (VCCaptionsDataCollector)initWithDispatchQueue:(id)queue
 {
   v6.receiver = self;
   v6.super_class = VCCaptionsDataCollector;
@@ -25,14 +25,14 @@ LABEL_7:
     return 0;
   }
 
-  if (!a3)
+  if (!queue)
   {
     [VCCaptionsDataCollector initWithDispatchQueue:];
     goto LABEL_7;
   }
 
-  dispatch_retain(a3);
-  v4->_stateQueue = a3;
+  dispatch_retain(queue);
+  v4->_stateQueue = queue;
   v4->_captionsUtteranceHistogram = [[VCReportingHistogram alloc] initWithType:70 bucketValues:0];
   v4->_captionsRatioHistogram = [[VCReportingHistogram alloc] initWithType:69 bucketValues:0];
   v4->_captionsRatioLongHistogram = [[VCReportingHistogram alloc] initWithType:69 bucketValues:0];
@@ -59,12 +59,12 @@ LABEL_7:
   [(VCCaptionsDataCollector *)&v4 dealloc];
 }
 
-- (void)processCaptionsMetrics:(id)a3
+- (void)processCaptionsMetrics:(id)metrics
 {
   dispatch_assert_queue_V2(self->_stateQueue);
-  if ([a3 objectForKeyedSubscript:@"ACFCR"])
+  if ([metrics objectForKeyedSubscript:@"ACFCR"])
   {
-    v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"ACFCR", "integerValue"}];
+    v5 = [objc_msgSend(metrics objectForKeyedSubscript:{@"ACFCR", "integerValue"}];
     self->_receivedCaptionsMetrics = 1;
     [(VCHistogram *)self->_captionsRatioHistogram addValue:v5];
     v6 = self->_maxCaptionsRatio <= v5 ? v5 : self->_maxCaptionsRatio;
@@ -82,12 +82,12 @@ LABEL_7:
     }
   }
 
-  if ([a3 objectForKeyedSubscript:@"ACUL"])
+  if ([metrics objectForKeyedSubscript:@"ACUL"])
   {
-    if ([a3 objectForKeyedSubscript:@"ACTC"])
+    if ([metrics objectForKeyedSubscript:@"ACTC"])
     {
-      v10 = [objc_msgSend(a3 objectForKeyedSubscript:{@"ACTC", "integerValue"}];
-      v11 = [objc_msgSend(a3 objectForKeyedSubscript:{@"ACUL", "integerValue"}];
+      v10 = [objc_msgSend(metrics objectForKeyedSubscript:{@"ACTC", "integerValue"}];
+      v11 = [objc_msgSend(metrics objectForKeyedSubscript:{@"ACUL", "integerValue"}];
       v12 = v10 - self->_captionTaskCount;
       if (v12)
       {
@@ -100,7 +100,7 @@ LABEL_7:
     }
   }
 
-  v14 = [a3 objectForKeyedSubscript:@"ACLC"];
+  v14 = [metrics objectForKeyedSubscript:@"ACLC"];
   if (v14)
   {
     v15 = v14;
@@ -119,22 +119,22 @@ LABEL_7:
     [(NSMutableDictionary *)languageCodeDict setObject:v16 forKeyedSubscript:v15];
   }
 
-  self->_utteranceCount = [objc_msgSend(a3 objectForKeyedSubscript:{@"ACUtteranceCount", "integerValue"}];
-  self->_translatedUtteranceCount = [objc_msgSend(a3 objectForKeyedSubscript:{@"ACTranslatedUtteranceCount", "integerValue"}];
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"ACTranslatedLatencyAverage", "doubleValue"}];
+  self->_utteranceCount = [objc_msgSend(metrics objectForKeyedSubscript:{@"ACUtteranceCount", "integerValue"}];
+  self->_translatedUtteranceCount = [objc_msgSend(metrics objectForKeyedSubscript:{@"ACTranslatedUtteranceCount", "integerValue"}];
+  [objc_msgSend(metrics objectForKeyedSubscript:{@"ACTranslatedLatencyAverage", "doubleValue"}];
   self->_translatedLatencyAverage = v18;
 }
 
-- (void)processCaptionsConfiguration:(id)a3
+- (void)processCaptionsConfiguration:(id)configuration
 {
   v41 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_stateQueue);
-  v5 = [a3 objectForKeyedSubscript:@"ACSU"];
-  v6 = [v5 charValue];
+  v5 = [configuration objectForKeyedSubscript:@"ACSU"];
+  charValue = [v5 charValue];
   if (v5)
   {
-    v7 = v6;
-    if (![(VCHistogram *)self->_captionsUsage addOnlyExactMatchingValue:v6])
+    v7 = charValue;
+    if (![(VCHistogram *)self->_captionsUsage addOnlyExactMatchingValue:charValue])
     {
       if (objc_opt_class() == self)
       {
@@ -175,7 +175,7 @@ LABEL_7:
             v35 = 2112;
             v36 = v8;
             v37 = 2048;
-            v38 = self;
+            selfCopy3 = self;
             v39 = 1024;
             v40 = v7;
             _os_log_error_impl(&dword_23D4DF000, v10, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to find bucket for usage=%hhu", &v29, 0x36u);
@@ -185,7 +185,7 @@ LABEL_7:
     }
   }
 
-  v11 = [a3 objectForKeyedSubscript:@"ACLocale"];
+  v11 = [configuration objectForKeyedSubscript:@"ACLocale"];
   if (v11)
   {
     v12 = v11;
@@ -193,7 +193,7 @@ LABEL_7:
     self->_captionsLocale = v12;
   }
 
-  v13 = [a3 objectForKeyedSubscript:@"ACSourceLocale"];
+  v13 = [configuration objectForKeyedSubscript:@"ACSourceLocale"];
   if (v13)
   {
     v14 = v13;
@@ -201,12 +201,12 @@ LABEL_7:
     self->_captionsSourceLocale = v14;
   }
 
-  v15 = [a3 objectForKeyedSubscript:@"ACSpeechModel"];
-  v16 = [v15 unsignedCharValue];
+  v15 = [configuration objectForKeyedSubscript:@"ACSpeechModel"];
+  unsignedCharValue = [v15 unsignedCharValue];
   if (v15)
   {
-    v17 = v16;
-    if (![(VCHistogram *)self->_captionsSpeechModel addOnlyExactMatchingValue:v16])
+    v17 = unsignedCharValue;
+    if (![(VCHistogram *)self->_captionsSpeechModel addOnlyExactMatchingValue:unsignedCharValue])
     {
       if (objc_opt_class() == self)
       {
@@ -247,7 +247,7 @@ LABEL_7:
             v35 = 2112;
             v36 = v18;
             v37 = 2048;
-            v38 = self;
+            selfCopy3 = self;
             v39 = 1024;
             v40 = v17;
             _os_log_error_impl(&dword_23D4DF000, v20, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to find bucket for speech model=%hhu", &v29, 0x36u);
@@ -257,18 +257,18 @@ LABEL_7:
     }
   }
 
-  v21 = [a3 objectForKeyedSubscript:@"ACExplicitLanguageFilterEnabled"];
+  v21 = [configuration objectForKeyedSubscript:@"ACExplicitLanguageFilterEnabled"];
   if (v21)
   {
     -[VCCaptionsDataCollector setExplicitLanguageFilterEnabled:](self, "setExplicitLanguageFilterEnabled:", [v21 BOOLValue]);
   }
 
-  v22 = [a3 objectForKeyedSubscript:@"ACCallType"];
-  v23 = [v22 unsignedCharValue];
+  v22 = [configuration objectForKeyedSubscript:@"ACCallType"];
+  unsignedCharValue2 = [v22 unsignedCharValue];
   if (v22)
   {
-    v24 = v23;
-    if (![(VCHistogram *)self->_callTypeHistogram addOnlyExactMatchingValue:v23])
+    v24 = unsignedCharValue2;
+    if (![(VCHistogram *)self->_callTypeHistogram addOnlyExactMatchingValue:unsignedCharValue2])
     {
       if (objc_opt_class() == self)
       {
@@ -309,7 +309,7 @@ LABEL_7:
             v35 = 2112;
             v36 = v25;
             v37 = 2048;
-            v38 = self;
+            selfCopy3 = self;
             v39 = 1024;
             v40 = v24;
             _os_log_error_impl(&dword_23D4DF000, v27, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to find bucket for call type=%hhu", &v29, 0x36u);
@@ -322,25 +322,25 @@ LABEL_7:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addAggregatedCaptionsConfigurationToReport:(id)a3
+- (void)addAggregatedCaptionsConfigurationToReport:(id)report
 {
   dispatch_assert_queue_V2(self->_stateQueue);
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_isCaptionsEnabled), @"VCACE"}];
-  [a3 setObject:-[VCHistogram description](self->_captionsUsage forKeyedSubscript:{"description"), @"VCACU"}];
-  [a3 setObject:self->_captionsLocale forKeyedSubscript:@"VCACL"];
-  [a3 setObject:self->_captionsSourceLocale forKeyedSubscript:@"VCACSL"];
-  [a3 setObject:-[VCHistogram description](self->_captionsSpeechModel forKeyedSubscript:{"description"), @"VCACSM"}];
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_isExplicitLanguageFilterEnabled), @"VCACELFE"}];
+  [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_isCaptionsEnabled), @"VCACE"}];
+  [report setObject:-[VCHistogram description](self->_captionsUsage forKeyedSubscript:{"description"), @"VCACU"}];
+  [report setObject:self->_captionsLocale forKeyedSubscript:@"VCACL"];
+  [report setObject:self->_captionsSourceLocale forKeyedSubscript:@"VCACSL"];
+  [report setObject:-[VCHistogram description](self->_captionsSpeechModel forKeyedSubscript:{"description"), @"VCACSM"}];
+  [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_isExplicitLanguageFilterEnabled), @"VCACELFE"}];
   v5 = [(VCHistogram *)self->_callTypeHistogram description];
 
-  [a3 setObject:v5 forKeyedSubscript:@"VCACCT"];
+  [report setObject:v5 forKeyedSubscript:@"VCACCT"];
 }
 
-- (void)addAggregatedLanguageDetectorMetricsToReport:(id)a3
+- (void)addAggregatedLanguageDetectorMetricsToReport:(id)report
 {
   v18 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_stateQueue);
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_isLanguageDetectorEnabled), @"VCALDE"}];
+  [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_isLanguageDetectorEnabled), @"VCALDE"}];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -365,7 +365,7 @@ LABEL_7:
         {
           v11 = @"VCADLC";
 LABEL_10:
-          [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_languageCodeDict, "objectForKeyedSubscript:", v10), "unsignedIntValue")), v11}];
+          [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_languageCodeDict, "objectForKeyedSubscript:", v10), "unsignedIntValue")), v11}];
           continue;
         }
 
@@ -385,42 +385,42 @@ LABEL_10:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addAggregatedCaptionsHistogramsToReport:(id)a3 shouldAlwaysAdd:(BOOL)a4
+- (void)addAggregatedCaptionsHistogramsToReport:(id)report shouldAlwaysAdd:(BOOL)add
 {
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (a4 || self->_receivedCaptionsMetrics)
+  if (add || self->_receivedCaptionsMetrics)
   {
-    [a3 setObject:-[VCHistogram description](self->_captionsRatioHistogram forKeyedSubscript:{"description"), @"VCACR"}];
-    [a3 setObject:-[VCHistogram description](self->_captionsRatioLongHistogram forKeyedSubscript:{"description"), @"VCACRL"}];
+    [report setObject:-[VCHistogram description](self->_captionsRatioHistogram forKeyedSubscript:{"description"), @"VCACR"}];
+    [report setObject:-[VCHistogram description](self->_captionsRatioLongHistogram forKeyedSubscript:{"description"), @"VCACRL"}];
     v7 = [(VCHistogram *)self->_captionsUtteranceHistogram description];
 
-    [a3 setObject:v7 forKeyedSubscript:@"VCACUD"];
+    [report setObject:v7 forKeyedSubscript:@"VCACUD"];
   }
 }
 
-- (void)addAggregatedCaptionsValueTypesToReport:(id)a3
+- (void)addAggregatedCaptionsValueTypesToReport:(id)report
 {
   dispatch_assert_queue_V2(self->_stateQueue);
   if (self->_receivedCaptionsMetrics)
   {
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_maxCaptionsRatio), @"VCACRM"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_captionTaskCount), @"VCACTC"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", self->_captionsEnabledDuration), @"VCACED"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_utteranceCount), @"VCACUC"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_translatedUtteranceCount), @"VCACTUC"}];
+    [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_maxCaptionsRatio), @"VCACRM"}];
+    [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_captionTaskCount), @"VCACTC"}];
+    [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", self->_captionsEnabledDuration), @"VCACED"}];
+    [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_utteranceCount), @"VCACUC"}];
+    [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_translatedUtteranceCount), @"VCACTUC"}];
     v5 = [MEMORY[0x277CCABA8] numberWithDouble:self->_translatedLatencyAverage];
 
-    [a3 setObject:v5 forKeyedSubscript:@"VCACTLA"];
+    [report setObject:v5 forKeyedSubscript:@"VCACTLA"];
   }
 }
 
-- (void)addAggregatedCaptionsMetricsToReport:(id)a3
+- (void)addAggregatedCaptionsMetricsToReport:(id)report
 {
   [(VCCaptionsDataCollector *)self addAggregatedCaptionsConfigurationToReport:?];
-  [(VCCaptionsDataCollector *)self addAggregatedCaptionsHistogramsToReport:a3 shouldAlwaysAdd:0];
-  [(VCCaptionsDataCollector *)self addAggregatedCaptionsValueTypesToReport:a3];
+  [(VCCaptionsDataCollector *)self addAggregatedCaptionsHistogramsToReport:report shouldAlwaysAdd:0];
+  [(VCCaptionsDataCollector *)self addAggregatedCaptionsValueTypesToReport:report];
 
-  [(VCCaptionsDataCollector *)self addAggregatedLanguageDetectorMetricsToReport:a3];
+  [(VCCaptionsDataCollector *)self addAggregatedLanguageDetectorMetricsToReport:report];
 }
 
 - (void)initWithDispatchQueue:.cold.1()

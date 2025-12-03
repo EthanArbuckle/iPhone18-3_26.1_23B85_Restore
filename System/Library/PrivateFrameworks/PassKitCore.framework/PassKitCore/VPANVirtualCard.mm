@@ -1,63 +1,63 @@
 @interface VPANVirtualCard
-+ (id)anyInDatabase:(id)a3 withVirtualCardIdentifier:(id)a4;
-+ (id)insertVPANVirtualCardMetadataWithIdentifier:(id)a3 cardholderNameFromSafari:(id)a4 inDatabase:(id)a5;
-+ (id)insertVPANVirtualCardMetadataWithIdentifier:(id)a3 dateLastUsedBySafari:(id)a4 inDatabase:(id)a5;
-+ (void)updateVirtualCard:(id)a3 fromDatabase:(id)a4;
-- (VPANVirtualCard)initWithVirtualCardIdentifier:(id)a3 inDatabase:(id)a4;
-- (void)updateCardholderNameFromSafari:(id)a3;
-- (void)updateDateLastUsedBySafari:(id)a3;
-- (void)updateVirtualCard:(id)a3;
++ (id)anyInDatabase:(id)database withVirtualCardIdentifier:(id)identifier;
++ (id)insertVPANVirtualCardMetadataWithIdentifier:(id)identifier cardholderNameFromSafari:(id)safari inDatabase:(id)database;
++ (id)insertVPANVirtualCardMetadataWithIdentifier:(id)identifier dateLastUsedBySafari:(id)safari inDatabase:(id)database;
++ (void)updateVirtualCard:(id)card fromDatabase:(id)database;
+- (VPANVirtualCard)initWithVirtualCardIdentifier:(id)identifier inDatabase:(id)database;
+- (void)updateCardholderNameFromSafari:(id)safari;
+- (void)updateDateLastUsedBySafari:(id)safari;
+- (void)updateVirtualCard:(id)card;
 @end
 
 @implementation VPANVirtualCard
 
-- (VPANVirtualCard)initWithVirtualCardIdentifier:(id)a3 inDatabase:(id)a4
+- (VPANVirtualCard)initWithVirtualCardIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = a3;
+  databaseCopy = database;
+  identifierCopy = identifier;
   v8 = +[NSMutableDictionary dictionary];
-  [v8 setObjectOrNull:v7 forKey:@"a"];
+  [v8 setObjectOrNull:identifierCopy forKey:@"a"];
 
-  v9 = [(SQLiteEntity *)self initWithPropertyValues:v8 inDatabase:v6];
+  v9 = [(SQLiteEntity *)self initWithPropertyValues:v8 inDatabase:databaseCopy];
   return v9;
 }
 
-+ (id)insertVPANVirtualCardMetadataWithIdentifier:(id)a3 dateLastUsedBySafari:(id)a4 inDatabase:(id)a5
++ (id)insertVPANVirtualCardMetadataWithIdentifier:(id)identifier dateLastUsedBySafari:(id)safari inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithVirtualCardIdentifier:v10 inDatabase:v8];
+  databaseCopy = database;
+  safariCopy = safari;
+  identifierCopy = identifier;
+  v11 = [[self alloc] initWithVirtualCardIdentifier:identifierCopy inDatabase:databaseCopy];
 
-  [v11 updateDateLastUsedBySafari:v9];
+  [v11 updateDateLastUsedBySafari:safariCopy];
 
   return v11;
 }
 
-+ (id)insertVPANVirtualCardMetadataWithIdentifier:(id)a3 cardholderNameFromSafari:(id)a4 inDatabase:(id)a5
++ (id)insertVPANVirtualCardMetadataWithIdentifier:(id)identifier cardholderNameFromSafari:(id)safari inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithVirtualCardIdentifier:v10 inDatabase:v8];
+  databaseCopy = database;
+  safariCopy = safari;
+  identifierCopy = identifier;
+  v11 = [[self alloc] initWithVirtualCardIdentifier:identifierCopy inDatabase:databaseCopy];
 
-  [v11 updateCardholderNameFromSafari:v9];
+  [v11 updateCardholderNameFromSafari:safariCopy];
 
   return v11;
 }
 
-+ (id)anyInDatabase:(id)a3 withVirtualCardIdentifier:(id)a4
++ (id)anyInDatabase:(id)database withVirtualCardIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [a1 _predicateForVirtualCardIdentifier:a4];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForVirtualCardIdentifier:identifier];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   return v8;
 }
 
-- (void)updateDateLastUsedBySafari:(id)a3
+- (void)updateDateLastUsedBySafari:(id)safari
 {
-  v4 = a3;
+  safariCopy = safari;
   v6 = objc_alloc_init(NSMutableDictionary);
   v5 = _SQLValueForDate();
 
@@ -65,9 +65,9 @@
   [(SQLiteEntity *)self setValuesWithDictionary:v6];
 }
 
-- (void)updateCardholderNameFromSafari:(id)a3
+- (void)updateCardholderNameFromSafari:(id)safari
 {
-  v4 = a3;
+  safariCopy = safari;
   v6 = objc_alloc_init(NSMutableDictionary);
   v5 = _SQLValueForString();
 
@@ -75,30 +75,30 @@
   [(SQLiteEntity *)self setValuesWithDictionary:v6];
 }
 
-+ (void)updateVirtualCard:(id)a3 fromDatabase:(id)a4
++ (void)updateVirtualCard:(id)card fromDatabase:(id)database
 {
-  v8 = a3;
-  v5 = a4;
-  if ([v8 type] == 2)
+  cardCopy = card;
+  databaseCopy = database;
+  if ([cardCopy type] == 2)
   {
-    v6 = [v8 identifier];
-    v7 = [VPANVirtualCard anyInDatabase:v5 withVirtualCardIdentifier:v6];
+    identifier = [cardCopy identifier];
+    v7 = [VPANVirtualCard anyInDatabase:databaseCopy withVirtualCardIdentifier:identifier];
 
-    [v7 updateVirtualCard:v8];
+    [v7 updateVirtualCard:cardCopy];
   }
 }
 
-- (void)updateVirtualCard:(id)a3
+- (void)updateVirtualCard:(id)card
 {
-  v7 = a3;
-  if ([v7 type] == 2)
+  cardCopy = card;
+  if ([cardCopy type] == 2)
   {
     v4 = [(SQLiteEntity *)self valueForProperty:@"b"];
     v5 = _DateForSQLValue();
 
-    [v7 setLastAutoFilledBySafari:v5];
+    [cardCopy setLastAutoFilledBySafari:v5];
     v6 = [(SQLiteEntity *)self valueForProperty:@"c"];
-    [v7 setNameFromSafari:v6];
+    [cardCopy setNameFromSafari:v6];
   }
 }
 

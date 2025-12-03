@@ -1,15 +1,15 @@
 @interface SKUIRedeemResultLinksTableViewSection
-- (SKUIRedeemResultLinksTableViewSection)initWithLinks:(id)a3;
+- (SKUIRedeemResultLinksTableViewSection)initWithLinks:(id)links;
 - (UIEdgeInsets)contentInsets;
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forIndexPath:(id)a5;
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forIndexPath:(id)path;
 @end
 
 @implementation SKUIRedeemResultLinksTableViewSection
 
-- (SKUIRedeemResultLinksTableViewSection)initWithLinks:(id)a3
+- (SKUIRedeemResultLinksTableViewSection)initWithLinks:(id)links
 {
-  v4 = a3;
+  linksCopy = links;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIRedeemResultLinksTableViewSection initWithLinks:];
@@ -20,7 +20,7 @@
   v5 = [(SKUIRedeemResultLinksTableViewSection *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [linksCopy copy];
     links = v5->_links;
     v5->_links = v6;
   }
@@ -28,49 +28,49 @@
   return v5;
 }
 
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"SKUIRRLTVC"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"SKUIRRLTVC"];
   if (!v7)
   {
     v7 = [[SKUITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"SKUIRRLTVC"];
     [(SKUITableViewCell *)v7 setAccessoryType:1];
-    v8 = [(SKUITableViewCell *)v7 textLabel];
+    textLabel = [(SKUITableViewCell *)v7 textLabel];
     v9 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
-    [v8 setFont:v9];
+    [textLabel setFont:v9];
   }
 
   v10 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
   [(SKUITableViewCell *)v7 setTopBorderColor:v10];
-  v11 = [MEMORY[0x277D75418] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v12 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [(SKUITableViewCell *)v7 setBorderPaddingLeft:30.0];
     [(SKUITableViewCell *)v7 setTextLabelInsets:0.0, 15.0, 0.0, -15.0];
   }
 
   v13 = [(NSArray *)self->_links count];
-  if ([v6 row] == v13 - 1)
+  if ([pathCopy row] == v13 - 1)
   {
     [(SKUITableViewCell *)v7 setBottomBorderColor:v10];
   }
 
-  v14 = -[NSArray objectAtIndex:](self->_links, "objectAtIndex:", [v6 row]);
-  v15 = [(SKUITableViewCell *)v7 textLabel];
-  v16 = [v14 title];
-  [v15 setText:v16];
+  v14 = -[NSArray objectAtIndex:](self->_links, "objectAtIndex:", [pathCopy row]);
+  textLabel2 = [(SKUITableViewCell *)v7 textLabel];
+  title = [v14 title];
+  [textLabel2 setText:title];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 backgroundColor];
-  [v6 setBackgroundColor:v7];
+  cellCopy = cell;
+  backgroundColor = [view backgroundColor];
+  [cellCopy setBackgroundColor:backgroundColor];
 }
 
 - (UIEdgeInsets)contentInsets

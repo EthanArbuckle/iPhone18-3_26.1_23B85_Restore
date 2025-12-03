@@ -1,16 +1,16 @@
 @interface GuideHomeHeaderView
-+ (double)maximumRequiredHeightWithFeaturedGuideTitle:(id)a3 maxWidth:(double)a4;
++ (double)maximumRequiredHeightWithFeaturedGuideTitle:(id)title maxWidth:(double)width;
 - (CGSize)sizeForEditorsPickLabel;
-- (GuideHomeHeaderView)initWithFrame:(CGRect)a3;
+- (GuideHomeHeaderView)initWithFrame:(CGRect)frame;
 - (GuideHomeHeaderViewActionDelegate)headerDelegate;
 - (void)addCollectionNameView;
 - (void)addOpenGuideButton;
 - (void)addPublisherLogoImage;
-- (void)configureWithGuidesHomeHeaderViewModel:(id)a3 maxWidth:(double)a4 delegate:(id)a5;
-- (void)didChangeContentYOffset:(double)a3;
-- (void)didTapOpenGuide:(id)a3;
+- (void)configureWithGuidesHomeHeaderViewModel:(id)model maxWidth:(double)width delegate:(id)delegate;
+- (void)didChangeContentYOffset:(double)offset;
+- (void)didTapOpenGuide:(id)guide;
 - (void)displayEditorsPickLabel;
-- (void)setImageMetadataUsingWidth:(double)a3;
+- (void)setImageMetadataUsingWidth:(double)width;
 - (void)setupBottomGradient;
 - (void)setupConstraints;
 - (void)setupEditorsPickView;
@@ -31,177 +31,177 @@
   return WeakRetained;
 }
 
-- (void)didTapOpenGuide:(id)a3
+- (void)didTapOpenGuide:(id)guide
 {
-  v6 = [(GuideHomeHeaderView *)self headerDelegate];
-  v4 = [(GuideHomeHeaderView *)self viewModel];
-  v5 = [v4 featuredGuide];
-  [v6 didSelectGuide:v5];
+  headerDelegate = [(GuideHomeHeaderView *)self headerDelegate];
+  viewModel = [(GuideHomeHeaderView *)self viewModel];
+  featuredGuide = [viewModel featuredGuide];
+  [headerDelegate didSelectGuide:featuredGuide];
 }
 
 - (void)setupConstraints
 {
-  v3 = [(GuideHomeHeaderView *)self constraints];
-  v4 = [v3 count];
+  constraints = [(GuideHomeHeaderView *)self constraints];
+  v4 = [constraints count];
 
   if (!v4)
   {
-    v129 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-    v127 = [v129 topAnchor];
-    v128 = [(GuideHomeHeaderView *)self contentView];
-    v126 = [v128 topAnchor];
-    v125 = [v127 constraintEqualToAnchor:v126];
+    gradientAndImageContainerView = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+    topAnchor = [gradientAndImageContainerView topAnchor];
+    contentView = [(GuideHomeHeaderView *)self contentView];
+    topAnchor2 = [contentView topAnchor];
+    v125 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v130[0] = v125;
-    v124 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-    v122 = [v124 leadingAnchor];
-    v123 = [(GuideHomeHeaderView *)self contentView];
-    v121 = [v123 leadingAnchor];
-    v120 = [v122 constraintEqualToAnchor:v121];
+    gradientAndImageContainerView2 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+    leadingAnchor = [gradientAndImageContainerView2 leadingAnchor];
+    contentView2 = [(GuideHomeHeaderView *)self contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    v120 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v130[1] = v120;
-    v119 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-    v117 = [v119 trailingAnchor];
-    v118 = [(GuideHomeHeaderView *)self contentView];
-    v116 = [v118 trailingAnchor];
-    v115 = [v117 constraintEqualToAnchor:v116];
+    gradientAndImageContainerView3 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+    trailingAnchor = [gradientAndImageContainerView3 trailingAnchor];
+    contentView3 = [(GuideHomeHeaderView *)self contentView];
+    trailingAnchor2 = [contentView3 trailingAnchor];
+    v115 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v130[2] = v115;
-    v114 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-    v113 = [v114 heightAnchor];
+    gradientAndImageContainerView4 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+    heightAnchor = [gradientAndImageContainerView4 heightAnchor];
     +[GuideHomeHeaderView maximumCollectionImageHeight];
-    v112 = [v113 constraintEqualToConstant:?];
+    v112 = [heightAnchor constraintEqualToConstant:?];
     v130[3] = v112;
-    v111 = [(GuideHomeHeaderView *)self collectionImageView];
-    v109 = [v111 topAnchor];
-    v110 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-    v108 = [v110 topAnchor];
-    v107 = [v109 constraintEqualToAnchor:v108];
+    collectionImageView = [(GuideHomeHeaderView *)self collectionImageView];
+    topAnchor3 = [collectionImageView topAnchor];
+    gradientAndImageContainerView5 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+    topAnchor4 = [gradientAndImageContainerView5 topAnchor];
+    v107 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v130[4] = v107;
-    v106 = [(GuideHomeHeaderView *)self collectionImageView];
-    v104 = [v106 leadingAnchor];
-    v105 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-    v103 = [v105 leadingAnchor];
-    v102 = [v104 constraintEqualToAnchor:v103];
+    collectionImageView2 = [(GuideHomeHeaderView *)self collectionImageView];
+    leadingAnchor3 = [collectionImageView2 leadingAnchor];
+    gradientAndImageContainerView6 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+    leadingAnchor4 = [gradientAndImageContainerView6 leadingAnchor];
+    v102 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v130[5] = v102;
-    v101 = [(GuideHomeHeaderView *)self collectionImageView];
-    v99 = [v101 trailingAnchor];
-    v100 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-    v98 = [v100 trailingAnchor];
-    v97 = [v99 constraintEqualToAnchor:v98];
+    collectionImageView3 = [(GuideHomeHeaderView *)self collectionImageView];
+    trailingAnchor3 = [collectionImageView3 trailingAnchor];
+    gradientAndImageContainerView7 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+    trailingAnchor4 = [gradientAndImageContainerView7 trailingAnchor];
+    v97 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v130[6] = v97;
-    v96 = [(GuideHomeHeaderView *)self collectionImageView];
-    v94 = [v96 bottomAnchor];
-    v95 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-    v93 = [v95 bottomAnchor];
-    v92 = [v94 constraintEqualToAnchor:v93];
+    collectionImageView4 = [(GuideHomeHeaderView *)self collectionImageView];
+    bottomAnchor = [collectionImageView4 bottomAnchor];
+    gradientAndImageContainerView8 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+    bottomAnchor2 = [gradientAndImageContainerView8 bottomAnchor];
+    v92 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v130[7] = v92;
-    v91 = [(GuideHomeHeaderView *)self bottomGradientView];
-    v89 = [v91 leadingAnchor];
-    v90 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-    v88 = [v90 leadingAnchor];
-    v87 = [v89 constraintEqualToAnchor:v88];
+    bottomGradientView = [(GuideHomeHeaderView *)self bottomGradientView];
+    leadingAnchor5 = [bottomGradientView leadingAnchor];
+    gradientAndImageContainerView9 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+    leadingAnchor6 = [gradientAndImageContainerView9 leadingAnchor];
+    v87 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v130[8] = v87;
-    v86 = [(GuideHomeHeaderView *)self bottomGradientView];
-    v84 = [v86 trailingAnchor];
-    v85 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-    v83 = [v85 trailingAnchor];
-    v82 = [v84 constraintEqualToAnchor:v83];
+    bottomGradientView2 = [(GuideHomeHeaderView *)self bottomGradientView];
+    trailingAnchor5 = [bottomGradientView2 trailingAnchor];
+    gradientAndImageContainerView10 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+    trailingAnchor6 = [gradientAndImageContainerView10 trailingAnchor];
+    v82 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v130[9] = v82;
-    v81 = [(GuideHomeHeaderView *)self bottomGradientView];
-    v79 = [v81 bottomAnchor];
-    v80 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-    v78 = [v80 bottomAnchor];
-    v77 = [v79 constraintEqualToAnchor:v78];
+    bottomGradientView3 = [(GuideHomeHeaderView *)self bottomGradientView];
+    bottomAnchor3 = [bottomGradientView3 bottomAnchor];
+    gradientAndImageContainerView11 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+    bottomAnchor4 = [gradientAndImageContainerView11 bottomAnchor];
+    v77 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v130[10] = v77;
-    v76 = [(GuideHomeHeaderView *)self bottomGradientView];
-    v75 = [v76 heightAnchor];
-    v74 = [v75 constraintEqualToConstant:104.0];
+    bottomGradientView4 = [(GuideHomeHeaderView *)self bottomGradientView];
+    heightAnchor2 = [bottomGradientView4 heightAnchor];
+    v74 = [heightAnchor2 constraintEqualToConstant:104.0];
     v130[11] = v74;
-    v73 = [(GuideHomeHeaderView *)self topGradientView];
-    v71 = [v73 leadingAnchor];
-    v72 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-    v70 = [v72 leadingAnchor];
-    v69 = [v71 constraintEqualToAnchor:v70];
+    topGradientView = [(GuideHomeHeaderView *)self topGradientView];
+    leadingAnchor7 = [topGradientView leadingAnchor];
+    gradientAndImageContainerView12 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+    leadingAnchor8 = [gradientAndImageContainerView12 leadingAnchor];
+    v69 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     v130[12] = v69;
-    v68 = [(GuideHomeHeaderView *)self topGradientView];
-    v66 = [v68 trailingAnchor];
-    v67 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-    v65 = [v67 trailingAnchor];
-    v64 = [v66 constraintEqualToAnchor:v65];
+    topGradientView2 = [(GuideHomeHeaderView *)self topGradientView];
+    trailingAnchor7 = [topGradientView2 trailingAnchor];
+    gradientAndImageContainerView13 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+    trailingAnchor8 = [gradientAndImageContainerView13 trailingAnchor];
+    v64 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     v130[13] = v64;
-    v63 = [(GuideHomeHeaderView *)self topGradientView];
-    v61 = [v63 topAnchor];
-    v62 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-    v60 = [v62 topAnchor];
-    v59 = [v61 constraintEqualToAnchor:v60];
+    topGradientView3 = [(GuideHomeHeaderView *)self topGradientView];
+    topAnchor5 = [topGradientView3 topAnchor];
+    gradientAndImageContainerView14 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+    topAnchor6 = [gradientAndImageContainerView14 topAnchor];
+    v59 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v130[14] = v59;
-    v58 = [(GuideHomeHeaderView *)self topGradientView];
-    v57 = [v58 heightAnchor];
-    v56 = [v57 constraintEqualToConstant:242.0];
+    topGradientView4 = [(GuideHomeHeaderView *)self topGradientView];
+    heightAnchor3 = [topGradientView4 heightAnchor];
+    v56 = [heightAnchor3 constraintEqualToConstant:242.0];
     v130[15] = v56;
-    v55 = [(GuideHomeHeaderView *)self publisherLogoImageView];
-    v53 = [v55 leadingAnchor];
-    v54 = [(GuideHomeHeaderView *)self contentView];
-    v52 = [v54 leadingAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52 constant:16.0];
+    publisherLogoImageView = [(GuideHomeHeaderView *)self publisherLogoImageView];
+    leadingAnchor9 = [publisherLogoImageView leadingAnchor];
+    contentView4 = [(GuideHomeHeaderView *)self contentView];
+    leadingAnchor10 = [contentView4 leadingAnchor];
+    v51 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:16.0];
     v130[16] = v51;
-    v50 = [(GuideHomeHeaderView *)self publisherLogoImageView];
-    v48 = [v50 bottomAnchor];
-    v49 = [(GuideHomeHeaderView *)self metadataStackView];
-    v47 = [v49 topAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    publisherLogoImageView2 = [(GuideHomeHeaderView *)self publisherLogoImageView];
+    bottomAnchor5 = [publisherLogoImageView2 bottomAnchor];
+    metadataStackView = [(GuideHomeHeaderView *)self metadataStackView];
+    topAnchor7 = [metadataStackView topAnchor];
+    v46 = [bottomAnchor5 constraintEqualToAnchor:topAnchor7];
     v130[17] = v46;
-    v45 = [(GuideHomeHeaderView *)self publisherLogoImageView];
-    v44 = [v45 heightAnchor];
-    v43 = [v44 constraintEqualToConstant:40.0];
+    publisherLogoImageView3 = [(GuideHomeHeaderView *)self publisherLogoImageView];
+    heightAnchor4 = [publisherLogoImageView3 heightAnchor];
+    v43 = [heightAnchor4 constraintEqualToConstant:40.0];
     v130[18] = v43;
-    v42 = [(GuideHomeHeaderView *)self metadataStackView];
-    v40 = [v42 leadingAnchor];
-    v41 = [(GuideHomeHeaderView *)self contentView];
-    v39 = [v41 leadingAnchor];
-    v38 = [v40 constraintEqualToAnchor:v39 constant:16.0];
+    metadataStackView2 = [(GuideHomeHeaderView *)self metadataStackView];
+    leadingAnchor11 = [metadataStackView2 leadingAnchor];
+    contentView5 = [(GuideHomeHeaderView *)self contentView];
+    leadingAnchor12 = [contentView5 leadingAnchor];
+    v38 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12 constant:16.0];
     v130[19] = v38;
-    v37 = [(GuideHomeHeaderView *)self metadataStackView];
-    v35 = [v37 trailingAnchor];
-    v36 = [(GuideHomeHeaderView *)self contentView];
-    v34 = [v36 trailingAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34 constant:-16.0];
+    metadataStackView3 = [(GuideHomeHeaderView *)self metadataStackView];
+    trailingAnchor9 = [metadataStackView3 trailingAnchor];
+    contentView6 = [(GuideHomeHeaderView *)self contentView];
+    trailingAnchor10 = [contentView6 trailingAnchor];
+    v33 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10 constant:-16.0];
     v130[20] = v33;
-    v32 = [(GuideHomeHeaderView *)self metadataStackView];
-    v30 = [v32 topAnchor];
-    v31 = [(GuideHomeHeaderView *)self contentView];
-    v29 = [v31 topAnchor];
-    v28 = [v30 constraintGreaterThanOrEqualToAnchor:v29];
+    metadataStackView4 = [(GuideHomeHeaderView *)self metadataStackView];
+    topAnchor8 = [metadataStackView4 topAnchor];
+    contentView7 = [(GuideHomeHeaderView *)self contentView];
+    topAnchor9 = [contentView7 topAnchor];
+    v28 = [topAnchor8 constraintGreaterThanOrEqualToAnchor:topAnchor9];
     v130[21] = v28;
-    v27 = [(GuideHomeHeaderView *)self metadataStackView];
-    v25 = [v27 bottomAnchor];
-    v26 = [(GuideHomeHeaderView *)self contentView];
-    v24 = [v26 bottomAnchor];
-    v23 = [v25 constraintEqualToAnchor:v24 constant:-24.0];
+    metadataStackView5 = [(GuideHomeHeaderView *)self metadataStackView];
+    bottomAnchor6 = [metadataStackView5 bottomAnchor];
+    contentView8 = [(GuideHomeHeaderView *)self contentView];
+    bottomAnchor7 = [contentView8 bottomAnchor];
+    v23 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7 constant:-24.0];
     v130[22] = v23;
-    v22 = [(GuideHomeHeaderView *)self contentView];
-    v21 = [v22 topAnchor];
-    v20 = [(GuideHomeHeaderView *)self topAnchor];
-    v19 = [v21 constraintEqualToAnchor:v20];
+    contentView9 = [(GuideHomeHeaderView *)self contentView];
+    topAnchor10 = [contentView9 topAnchor];
+    topAnchor11 = [(GuideHomeHeaderView *)self topAnchor];
+    v19 = [topAnchor10 constraintEqualToAnchor:topAnchor11];
     v130[23] = v19;
-    v18 = [(GuideHomeHeaderView *)self contentView];
-    v17 = [v18 leadingAnchor];
-    v16 = [(GuideHomeHeaderView *)self leadingAnchor];
-    v15 = [v17 constraintEqualToAnchor:v16];
+    contentView10 = [(GuideHomeHeaderView *)self contentView];
+    leadingAnchor13 = [contentView10 leadingAnchor];
+    leadingAnchor14 = [(GuideHomeHeaderView *)self leadingAnchor];
+    v15 = [leadingAnchor13 constraintEqualToAnchor:leadingAnchor14];
     v130[24] = v15;
-    v5 = [(GuideHomeHeaderView *)self contentView];
-    v6 = [v5 trailingAnchor];
-    v7 = [(GuideHomeHeaderView *)self trailingAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7];
+    contentView11 = [(GuideHomeHeaderView *)self contentView];
+    trailingAnchor11 = [contentView11 trailingAnchor];
+    trailingAnchor12 = [(GuideHomeHeaderView *)self trailingAnchor];
+    v8 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
     v130[25] = v8;
-    v9 = [(GuideHomeHeaderView *)self contentView];
-    v10 = [v9 bottomAnchor];
-    v11 = [(GuideHomeHeaderView *)self bottomAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    contentView12 = [(GuideHomeHeaderView *)self contentView];
+    bottomAnchor8 = [contentView12 bottomAnchor];
+    bottomAnchor9 = [(GuideHomeHeaderView *)self bottomAnchor];
+    v12 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9];
     v130[26] = v12;
     v13 = [NSArray arrayWithObjects:v130 count:27];
     [(GuideHomeHeaderView *)self setConstraints:v13];
 
-    v14 = [(GuideHomeHeaderView *)self constraints];
-    [NSLayoutConstraint activateConstraints:v14];
+    constraints2 = [(GuideHomeHeaderView *)self constraints];
+    [NSLayoutConstraint activateConstraints:constraints2];
   }
 }
 
@@ -210,16 +210,16 @@
   v3 = [[GradientView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(GuideHomeHeaderView *)self setTopGradientView:v3];
 
-  v4 = [(GuideHomeHeaderView *)self topGradientView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  topGradientView = [(GuideHomeHeaderView *)self topGradientView];
+  [topGradientView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v5 = +[UIColor clearColor];
-  v6 = [(GuideHomeHeaderView *)self topGradientView];
-  [v6 setBackgroundColor:v5];
+  topGradientView2 = [(GuideHomeHeaderView *)self topGradientView];
+  [topGradientView2 setBackgroundColor:v5];
 
-  v8 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-  v7 = [(GuideHomeHeaderView *)self topGradientView];
-  [v8 addSubview:v7];
+  gradientAndImageContainerView = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+  topGradientView3 = [(GuideHomeHeaderView *)self topGradientView];
+  [gradientAndImageContainerView addSubview:topGradientView3];
 }
 
 - (void)setupBottomGradient
@@ -227,47 +227,47 @@
   v3 = [[GradientView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(GuideHomeHeaderView *)self setBottomGradientView:v3];
 
-  v4 = [(GuideHomeHeaderView *)self bottomGradientView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bottomGradientView = [(GuideHomeHeaderView *)self bottomGradientView];
+  [bottomGradientView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v5 = +[UIColor clearColor];
-  v6 = [(GuideHomeHeaderView *)self bottomGradientView];
-  [v6 setBackgroundColor:v5];
+  bottomGradientView2 = [(GuideHomeHeaderView *)self bottomGradientView];
+  [bottomGradientView2 setBackgroundColor:v5];
 
-  v8 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-  v7 = [(GuideHomeHeaderView *)self bottomGradientView];
-  [v8 addSubview:v7];
+  gradientAndImageContainerView = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+  bottomGradientView3 = [(GuideHomeHeaderView *)self bottomGradientView];
+  [gradientAndImageContainerView addSubview:bottomGradientView3];
 }
 
 - (void)addOpenGuideButton
 {
-  v3 = [(GuideHomeHeaderView *)self openGuideButton];
+  openGuideButton = [(GuideHomeHeaderView *)self openGuideButton];
 
-  if (!v3)
+  if (!openGuideButton)
   {
     v4 = objc_alloc_init(UIView);
     [(GuideHomeHeaderView *)self setButtonView:v4];
 
-    v5 = [(GuideHomeHeaderView *)self buttonView];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    buttonView = [(GuideHomeHeaderView *)self buttonView];
+    [buttonView setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v6 = +[UIColor clearColor];
-    v7 = [(GuideHomeHeaderView *)self buttonView];
-    [v7 setBackgroundColor:v6];
+    buttonView2 = [(GuideHomeHeaderView *)self buttonView];
+    [buttonView2 setBackgroundColor:v6];
 
-    v8 = [(GuideHomeHeaderView *)self buttonView];
-    [v8 setUserInteractionEnabled:1];
+    buttonView3 = [(GuideHomeHeaderView *)self buttonView];
+    [buttonView3 setUserInteractionEnabled:1];
 
     v9 = [@"GuideHomeHeader" stringByAppendingString:@"ButtonView"];
-    v10 = [(GuideHomeHeaderView *)self buttonView];
-    [v10 setAccessibilityIdentifier:v9];
+    buttonView4 = [(GuideHomeHeaderView *)self buttonView];
+    [buttonView4 setAccessibilityIdentifier:v9];
 
     v64 = [UIBlurEffect effectWithStyle:1];
     v11 = [[UIVisualEffectView alloc] initWithEffect:v64];
     [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v11 _setContinuousCornerRadius:10.0];
-    v12 = [(GuideHomeHeaderView *)self buttonView];
-    [v12 addSubview:v11];
+    buttonView5 = [(GuideHomeHeaderView *)self buttonView];
+    [buttonView5 addSubview:v11];
 
     v66 = NSFontAttributeName;
     v13 = +[UIFont system17Bold];
@@ -284,66 +284,66 @@
     [v17 setAttributedTitle:v62 forState:0];
     [v17 addTarget:self action:"didTapOpenGuide:" forControlEvents:64];
     v18 = +[UIColor whiteColor];
-    v19 = [v17 titleLabel];
-    [v19 setTextColor:v18];
+    titleLabel = [v17 titleLabel];
+    [titleLabel setTextColor:v18];
 
     v20 = [@"GuideHomeHeader" stringByAppendingString:@"Button"];
     [v17 setAccessibilityIdentifier:v20];
 
     [(GuideHomeHeaderView *)self setOpenGuideButton:v17];
-    v21 = [(GuideHomeHeaderView *)self buttonView];
-    [v21 addSubview:v17];
+    buttonView6 = [(GuideHomeHeaderView *)self buttonView];
+    [buttonView6 addSubview:v17];
 
-    v22 = [(GuideHomeHeaderView *)self metadataStackView];
-    v23 = [(GuideHomeHeaderView *)self buttonView];
-    [v22 addArrangedSubview:v23];
+    metadataStackView = [(GuideHomeHeaderView *)self metadataStackView];
+    buttonView7 = [(GuideHomeHeaderView *)self buttonView];
+    [metadataStackView addArrangedSubview:buttonView7];
 
     [(GuideHomeHeaderView *)self maxWidth];
     v25 = v24 + -32.0;
-    v61 = [(GuideHomeHeaderView *)self buttonView];
-    v60 = [v61 heightAnchor];
-    v59 = [v60 constraintEqualToConstant:50.0];
+    buttonView8 = [(GuideHomeHeaderView *)self buttonView];
+    heightAnchor = [buttonView8 heightAnchor];
+    v59 = [heightAnchor constraintEqualToConstant:50.0];
     v65[0] = v59;
-    v58 = [(GuideHomeHeaderView *)self buttonView];
-    v57 = [v58 widthAnchor];
-    v56 = [v57 constraintEqualToConstant:v25];
+    buttonView9 = [(GuideHomeHeaderView *)self buttonView];
+    widthAnchor = [buttonView9 widthAnchor];
+    v56 = [widthAnchor constraintEqualToConstant:v25];
     v65[1] = v56;
-    v54 = [v11 topAnchor];
-    v55 = [(GuideHomeHeaderView *)self buttonView];
-    v53 = [v55 topAnchor];
-    v52 = [v54 constraintEqualToAnchor:v53];
+    topAnchor = [v11 topAnchor];
+    buttonView10 = [(GuideHomeHeaderView *)self buttonView];
+    topAnchor2 = [buttonView10 topAnchor];
+    v52 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v65[2] = v52;
-    v50 = [v11 leadingAnchor];
-    v51 = [(GuideHomeHeaderView *)self buttonView];
-    v49 = [v51 leadingAnchor];
-    v48 = [v50 constraintEqualToAnchor:v49];
+    leadingAnchor = [v11 leadingAnchor];
+    buttonView11 = [(GuideHomeHeaderView *)self buttonView];
+    leadingAnchor2 = [buttonView11 leadingAnchor];
+    v48 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v65[3] = v48;
-    v46 = [v11 trailingAnchor];
-    v47 = [(GuideHomeHeaderView *)self buttonView];
-    v45 = [v47 trailingAnchor];
-    v43 = [v46 constraintEqualToAnchor:v45];
+    trailingAnchor = [v11 trailingAnchor];
+    buttonView12 = [(GuideHomeHeaderView *)self buttonView];
+    trailingAnchor2 = [buttonView12 trailingAnchor];
+    v43 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v44 = v11;
     v65[4] = v43;
-    v41 = [v11 bottomAnchor];
-    v42 = [(GuideHomeHeaderView *)self buttonView];
-    v40 = [v42 bottomAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    bottomAnchor = [v11 bottomAnchor];
+    buttonView13 = [(GuideHomeHeaderView *)self buttonView];
+    bottomAnchor2 = [buttonView13 bottomAnchor];
+    v39 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v65[5] = v39;
-    v38 = [v17 topAnchor];
-    v37 = [v11 topAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37];
+    topAnchor3 = [v17 topAnchor];
+    topAnchor4 = [v11 topAnchor];
+    v36 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v65[6] = v36;
-    v35 = [v17 leadingAnchor];
-    v26 = [v11 leadingAnchor];
-    v27 = [v35 constraintEqualToAnchor:v26];
+    leadingAnchor3 = [v17 leadingAnchor];
+    leadingAnchor4 = [v11 leadingAnchor];
+    v27 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v65[7] = v27;
-    v28 = [v17 trailingAnchor];
-    v29 = [v11 trailingAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    trailingAnchor3 = [v17 trailingAnchor];
+    trailingAnchor4 = [v11 trailingAnchor];
+    v30 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v65[8] = v30;
-    v31 = [v17 bottomAnchor];
-    v32 = [v11 bottomAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32];
+    bottomAnchor3 = [v17 bottomAnchor];
+    bottomAnchor4 = [v11 bottomAnchor];
+    v33 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v65[9] = v33;
     v34 = [NSArray arrayWithObjects:v65 count:10];
     [NSLayoutConstraint activateConstraints:v34];
@@ -356,19 +356,19 @@
   [(GuideHomeHeaderView *)self setCollectionLabel:v3];
 
   v4 = +[UIColor whiteColor];
-  v5 = [(GuideHomeHeaderView *)self collectionLabel];
-  [v5 setTextColor:v4];
+  collectionLabel = [(GuideHomeHeaderView *)self collectionLabel];
+  [collectionLabel setTextColor:v4];
 
-  v6 = [(GuideHomeHeaderView *)self collectionLabel];
-  [v6 setNumberOfLines:0];
+  collectionLabel2 = [(GuideHomeHeaderView *)self collectionLabel];
+  [collectionLabel2 setNumberOfLines:0];
 
   v7 = [@"GuideHomeHeader" stringByAppendingString:@"CollectionLabel"];
-  v8 = [(GuideHomeHeaderView *)self collectionLabel];
-  [v8 setAccessibilityIdentifier:v7];
+  collectionLabel3 = [(GuideHomeHeaderView *)self collectionLabel];
+  [collectionLabel3 setAccessibilityIdentifier:v7];
 
-  v10 = [(GuideHomeHeaderView *)self metadataStackView];
-  v9 = [(GuideHomeHeaderView *)self collectionLabel];
-  [v10 addArrangedSubview:v9];
+  metadataStackView = [(GuideHomeHeaderView *)self metadataStackView];
+  collectionLabel4 = [(GuideHomeHeaderView *)self collectionLabel];
+  [metadataStackView addArrangedSubview:collectionLabel4];
 }
 
 - (void)addPublisherLogoImage
@@ -376,22 +376,22 @@
   v3 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(GuideHomeHeaderView *)self setPublisherLogoImageView:v3];
 
-  v4 = [(GuideHomeHeaderView *)self publisherLogoImageView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  publisherLogoImageView = [(GuideHomeHeaderView *)self publisherLogoImageView];
+  [publisherLogoImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(GuideHomeHeaderView *)self publisherLogoImageView];
-  [v5 setAccessibilityIgnoresInvertColors:1];
+  publisherLogoImageView2 = [(GuideHomeHeaderView *)self publisherLogoImageView];
+  [publisherLogoImageView2 setAccessibilityIgnoresInvertColors:1];
 
   v6 = [@"GuideHomeHeader" stringByAppendingString:@"PublisherLogoImage"];
-  v7 = [(GuideHomeHeaderView *)self publisherLogoImageView];
-  [v7 setAccessibilityIdentifier:v6];
+  publisherLogoImageView3 = [(GuideHomeHeaderView *)self publisherLogoImageView];
+  [publisherLogoImageView3 setAccessibilityIdentifier:v6];
 
-  v8 = [(GuideHomeHeaderView *)self publisherLogoImageView];
-  [v8 setContentMode:1];
+  publisherLogoImageView4 = [(GuideHomeHeaderView *)self publisherLogoImageView];
+  [publisherLogoImageView4 setContentMode:1];
 
-  v10 = [(GuideHomeHeaderView *)self contentView];
-  v9 = [(GuideHomeHeaderView *)self publisherLogoImageView];
-  [v10 addSubview:v9];
+  contentView = [(GuideHomeHeaderView *)self contentView];
+  publisherLogoImageView5 = [(GuideHomeHeaderView *)self publisherLogoImageView];
+  [contentView addSubview:publisherLogoImageView5];
 }
 
 - (void)setupEditorsPickView
@@ -400,70 +400,70 @@
   v3 = [[UIVisualEffectView alloc] initWithEffect:v29];
   [(GuideHomeHeaderView *)self setEditorPickView:v3];
 
-  v4 = [(GuideHomeHeaderView *)self editorPickView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  editorPickView = [(GuideHomeHeaderView *)self editorPickView];
+  [editorPickView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v5 = +[UIColor clearColor];
-  v6 = [(GuideHomeHeaderView *)self editorPickView];
-  [v6 setBackgroundColor:v5];
+  editorPickView2 = [(GuideHomeHeaderView *)self editorPickView];
+  [editorPickView2 setBackgroundColor:v5];
 
   v7 = +[UIColor blackColor];
   v8 = [v7 colorWithAlphaComponent:0.2];
-  v9 = [(GuideHomeHeaderView *)self editorPickView];
-  v10 = [v9 contentView];
-  [v10 setBackgroundColor:v8];
+  editorPickView3 = [(GuideHomeHeaderView *)self editorPickView];
+  contentView = [editorPickView3 contentView];
+  [contentView setBackgroundColor:v8];
 
   v11 = [@"GuideHomeHeader" stringByAppendingString:@"EditorPick"];
-  v12 = [(GuideHomeHeaderView *)self editorPickView];
-  [v12 setAccessibilityIdentifier:v11];
+  editorPickView4 = [(GuideHomeHeaderView *)self editorPickView];
+  [editorPickView4 setAccessibilityIdentifier:v11];
 
   v13 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(GuideHomeHeaderView *)self setEditorPickLabel:v13];
 
   v14 = [@"GuideHomeHeader" stringByAppendingString:@"EditorPickLabel"];
-  v15 = [(GuideHomeHeaderView *)self editorPickLabel];
-  [v15 setAccessibilityIdentifier:v14];
+  editorPickLabel = [(GuideHomeHeaderView *)self editorPickLabel];
+  [editorPickLabel setAccessibilityIdentifier:v14];
 
-  v16 = [(GuideHomeHeaderView *)self editorPickLabel];
-  [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+  editorPickLabel2 = [(GuideHomeHeaderView *)self editorPickLabel];
+  [editorPickLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v17 = +[UIColor whiteColor];
-  v18 = [(GuideHomeHeaderView *)self editorPickLabel];
-  [v18 setTextColor:v17];
+  editorPickLabel3 = [(GuideHomeHeaderView *)self editorPickLabel];
+  [editorPickLabel3 setTextColor:v17];
 
-  v19 = [(GuideHomeHeaderView *)self editorPickLabel];
+  editorPickLabel4 = [(GuideHomeHeaderView *)self editorPickLabel];
   LODWORD(v20) = 1148846080;
-  [v19 setContentCompressionResistancePriority:0 forAxis:v20];
+  [editorPickLabel4 setContentCompressionResistancePriority:0 forAxis:v20];
 
-  v21 = [(GuideHomeHeaderView *)self editorPickLabel];
-  [v21 setNumberOfLines:1];
+  editorPickLabel5 = [(GuideHomeHeaderView *)self editorPickLabel];
+  [editorPickLabel5 setNumberOfLines:1];
 
-  v22 = [(GuideHomeHeaderView *)self editorPickLabel];
-  [v22 setTextAlignment:1];
+  editorPickLabel6 = [(GuideHomeHeaderView *)self editorPickLabel];
+  [editorPickLabel6 setTextAlignment:1];
 
-  v23 = [(GuideHomeHeaderView *)self editorPickView];
-  [v23 setHidden:1];
+  editorPickView5 = [(GuideHomeHeaderView *)self editorPickView];
+  [editorPickView5 setHidden:1];
 
-  v24 = [(GuideHomeHeaderView *)self editorPickView];
-  v25 = [v24 contentView];
-  v26 = [(GuideHomeHeaderView *)self editorPickLabel];
-  [v25 addSubview:v26];
+  editorPickView6 = [(GuideHomeHeaderView *)self editorPickView];
+  contentView2 = [editorPickView6 contentView];
+  editorPickLabel7 = [(GuideHomeHeaderView *)self editorPickLabel];
+  [contentView2 addSubview:editorPickLabel7];
 
-  v27 = [(GuideHomeHeaderView *)self contentView];
-  v28 = [(GuideHomeHeaderView *)self editorPickView];
-  [v27 addSubview:v28];
+  contentView3 = [(GuideHomeHeaderView *)self contentView];
+  editorPickView7 = [(GuideHomeHeaderView *)self editorPickView];
+  [contentView3 addSubview:editorPickView7];
 }
 
 - (CGSize)sizeForEditorsPickLabel
 {
-  v3 = [(GuideHomeHeaderView *)self editorPickLabel];
-  v4 = [v3 attributedText];
-  [v4 size];
+  editorPickLabel = [(GuideHomeHeaderView *)self editorPickLabel];
+  attributedText = [editorPickLabel attributedText];
+  [attributedText size];
   v6 = v5;
   v8 = v7;
 
-  v9 = [(GuideHomeHeaderView *)self editorPickView];
-  [v9 _setContinuousCornerRadius:4.0];
+  editorPickView = [(GuideHomeHeaderView *)self editorPickView];
+  [editorPickView _setContinuousCornerRadius:4.0];
 
   v10 = v6 + 16.0;
   v11 = v8 + 6.0;
@@ -477,28 +477,28 @@
   v3 = [[UIStackView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(GuideHomeHeaderView *)self setMetadataStackView:v3];
 
-  v4 = [(GuideHomeHeaderView *)self metadataStackView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  metadataStackView = [(GuideHomeHeaderView *)self metadataStackView];
+  [metadataStackView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(GuideHomeHeaderView *)self metadataStackView];
-  [v5 setAxis:1];
+  metadataStackView2 = [(GuideHomeHeaderView *)self metadataStackView];
+  [metadataStackView2 setAxis:1];
 
-  v6 = [(GuideHomeHeaderView *)self metadataStackView];
-  [v6 setDistribution:0];
+  metadataStackView3 = [(GuideHomeHeaderView *)self metadataStackView];
+  [metadataStackView3 setDistribution:0];
 
-  v7 = [(GuideHomeHeaderView *)self metadataStackView];
-  [v7 setAlignment:1];
+  metadataStackView4 = [(GuideHomeHeaderView *)self metadataStackView];
+  [metadataStackView4 setAlignment:1];
 
-  v8 = [(GuideHomeHeaderView *)self metadataStackView];
-  [v8 setSpacing:20.0];
+  metadataStackView5 = [(GuideHomeHeaderView *)self metadataStackView];
+  [metadataStackView5 setSpacing:20.0];
 
   v9 = [@"GuideHomeHeader" stringByAppendingString:@"MetadataStack"];
-  v10 = [(GuideHomeHeaderView *)self metadataStackView];
-  [v10 setAccessibilityIdentifier:v9];
+  metadataStackView6 = [(GuideHomeHeaderView *)self metadataStackView];
+  [metadataStackView6 setAccessibilityIdentifier:v9];
 
-  v11 = [(GuideHomeHeaderView *)self contentView];
-  v12 = [(GuideHomeHeaderView *)self metadataStackView];
-  [v11 addSubview:v12];
+  contentView = [(GuideHomeHeaderView *)self contentView];
+  metadataStackView7 = [(GuideHomeHeaderView *)self metadataStackView];
+  [contentView addSubview:metadataStackView7];
 
   [(GuideHomeHeaderView *)self addCollectionNameView];
 }
@@ -508,23 +508,23 @@
   v3 = objc_alloc_init(UIView);
   [(GuideHomeHeaderView *)self setGradientAndImageContainerView:v3];
 
-  v4 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  gradientAndImageContainerView = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+  [gradientAndImageContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v5 = +[UIColor clearColor];
-  v6 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-  [v6 setBackgroundColor:v5];
+  gradientAndImageContainerView2 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+  [gradientAndImageContainerView2 setBackgroundColor:v5];
 
-  v7 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-  [v7 setClipsToBounds:1];
+  gradientAndImageContainerView3 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+  [gradientAndImageContainerView3 setClipsToBounds:1];
 
   v8 = [@"GuideHomeHeader" stringByAppendingString:@"GradientAndImageContainer"];
-  v9 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-  [v9 setAccessibilityIdentifier:v8];
+  gradientAndImageContainerView4 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+  [gradientAndImageContainerView4 setAccessibilityIdentifier:v8];
 
-  v10 = [(GuideHomeHeaderView *)self contentView];
-  v11 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-  [v10 addSubview:v11];
+  contentView = [(GuideHomeHeaderView *)self contentView];
+  gradientAndImageContainerView5 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+  [contentView addSubview:gradientAndImageContainerView5];
 
   [(GuideHomeHeaderView *)self setupGuideImageView];
   [(GuideHomeHeaderView *)self setupBottomGradient];
@@ -537,22 +537,22 @@
   v3 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(GuideHomeHeaderView *)self setCollectionImageView:v3];
 
-  v4 = [(GuideHomeHeaderView *)self collectionImageView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  collectionImageView = [(GuideHomeHeaderView *)self collectionImageView];
+  [collectionImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(GuideHomeHeaderView *)self collectionImageView];
-  [v5 setAccessibilityIgnoresInvertColors:1];
+  collectionImageView2 = [(GuideHomeHeaderView *)self collectionImageView];
+  [collectionImageView2 setAccessibilityIgnoresInvertColors:1];
 
   v6 = [@"GuideHomeHeader" stringByAppendingString:@"CollectionImage"];
-  v7 = [(GuideHomeHeaderView *)self collectionImageView];
-  [v7 setAccessibilityIdentifier:v6];
+  collectionImageView3 = [(GuideHomeHeaderView *)self collectionImageView];
+  [collectionImageView3 setAccessibilityIdentifier:v6];
 
-  v8 = [(GuideHomeHeaderView *)self collectionImageView];
-  [v8 setContentMode:2];
+  collectionImageView4 = [(GuideHomeHeaderView *)self collectionImageView];
+  [collectionImageView4 setContentMode:2];
 
-  v10 = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
-  v9 = [(GuideHomeHeaderView *)self collectionImageView];
-  [v10 addSubview:v9];
+  gradientAndImageContainerView = [(GuideHomeHeaderView *)self gradientAndImageContainerView];
+  collectionImageView5 = [(GuideHomeHeaderView *)self collectionImageView];
+  [gradientAndImageContainerView addSubview:collectionImageView5];
 }
 
 - (void)setupSubviews
@@ -560,19 +560,19 @@
   v3 = objc_alloc_init(UIView);
   [(GuideHomeHeaderView *)self setContentView:v3];
 
-  v4 = [(GuideHomeHeaderView *)self contentView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentView = [(GuideHomeHeaderView *)self contentView];
+  [contentView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v5 = +[UIColor clearColor];
-  v6 = [(GuideHomeHeaderView *)self contentView];
-  [v6 setBackgroundColor:v5];
+  contentView2 = [(GuideHomeHeaderView *)self contentView];
+  [contentView2 setBackgroundColor:v5];
 
   v7 = [@"GuideHomeHeader" stringByAppendingString:@"Content"];
-  v8 = [(GuideHomeHeaderView *)self contentView];
-  [v8 setAccessibilityIdentifier:v7];
+  contentView3 = [(GuideHomeHeaderView *)self contentView];
+  [contentView3 setAccessibilityIdentifier:v7];
 
-  v9 = [(GuideHomeHeaderView *)self contentView];
-  [(GuideHomeHeaderView *)self addSubview:v9];
+  contentView4 = [(GuideHomeHeaderView *)self contentView];
+  [(GuideHomeHeaderView *)self addSubview:contentView4];
 
   [(GuideHomeHeaderView *)self setupGradientAndImageContainerView];
   [(GuideHomeHeaderView *)self addPublisherLogoImage];
@@ -581,36 +581,36 @@
   [(GuideHomeHeaderView *)self setupEditorsPickView];
 }
 
-- (void)setImageMetadataUsingWidth:(double)a3
+- (void)setImageMetadataUsingWidth:(double)width
 {
-  v5 = [(GuideHomeHeaderView *)self logoWidthConstraint];
-  [v5 setActive:0];
+  logoWidthConstraint = [(GuideHomeHeaderView *)self logoWidthConstraint];
+  [logoWidthConstraint setActive:0];
 
   [(GuideHomeHeaderView *)self setLogoWidthConstraint:0];
   objc_initWeak(&location, self);
-  v6 = [(GuideHomeHeaderView *)self viewModel];
+  viewModel = [(GuideHomeHeaderView *)self viewModel];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1008CFE6C;
   v17[3] = &unk_101650EA8;
   objc_copyWeak(&v18, &location);
-  [v6 publisherLogoImageWithCompletion:v17];
+  [viewModel publisherLogoImageWithCompletion:v17];
 
-  v7 = [(GuideHomeHeaderView *)self collectionImageView];
-  v8 = [v7 image];
-  if (v8)
+  collectionImageView = [(GuideHomeHeaderView *)self collectionImageView];
+  image = [collectionImageView image];
+  if (image)
   {
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  v9 = [(GuideHomeHeaderView *)self viewModel];
+  viewModel2 = [(GuideHomeHeaderView *)self viewModel];
 
-  if (v9)
+  if (viewModel2)
   {
     v10 = +[NSDate date];
-    v11 = [(GuideHomeHeaderView *)self viewModel];
+    viewModel3 = [(GuideHomeHeaderView *)self viewModel];
     +[GuideHomeHeaderView maximumCollectionImageHeight];
     v13 = v12;
     v14[0] = _NSConcreteStackBlock;
@@ -618,9 +618,9 @@ LABEL_5:
     v14[2] = sub_1008CFFF0;
     v14[3] = &unk_10162DA08;
     objc_copyWeak(&v16, &location);
-    v7 = v10;
-    v15 = v7;
-    [v11 collectionImageForSize:v14 onCompletion:{a3, v13}];
+    collectionImageView = v10;
+    v15 = collectionImageView;
+    [viewModel3 collectionImageForSize:v14 onCompletion:{width, v13}];
 
     objc_destroyWeak(&v16);
     goto LABEL_5;
@@ -641,84 +641,84 @@ LABEL_6:
   [v6 lineHeight];
   v8 = v5 + 48.0 + v7;
 
-  v9 = [(GuideHomeHeaderView *)self editorsPickTopConstraint];
-  [v9 setConstant:v8];
+  editorsPickTopConstraint = [(GuideHomeHeaderView *)self editorsPickTopConstraint];
+  [editorsPickTopConstraint setConstant:v8];
 }
 
 - (void)displayEditorsPickLabel
 {
-  v3 = [(GuideHomeHeaderView *)self editorPickLabel];
-  v4 = [v3 attributedText];
-  v5 = [(GuideHomeHeaderView *)self viewModel];
-  v6 = [v5 sectionTitle];
-  v7 = [v4 isEqualToAttributedString:v6];
+  editorPickLabel = [(GuideHomeHeaderView *)self editorPickLabel];
+  attributedText = [editorPickLabel attributedText];
+  viewModel = [(GuideHomeHeaderView *)self viewModel];
+  sectionTitle = [viewModel sectionTitle];
+  v7 = [attributedText isEqualToAttributedString:sectionTitle];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [(GuideHomeHeaderView *)self editorPickView];
-    [v8 setHidden:0];
+    editorPickView = [(GuideHomeHeaderView *)self editorPickView];
+    [editorPickView setHidden:0];
 
-    v9 = [(GuideHomeHeaderView *)self viewModel];
-    v10 = [v9 sectionTitle];
-    v11 = [(GuideHomeHeaderView *)self editorPickLabel];
-    [v11 setAttributedText:v10];
+    viewModel2 = [(GuideHomeHeaderView *)self viewModel];
+    sectionTitle2 = [viewModel2 sectionTitle];
+    editorPickLabel2 = [(GuideHomeHeaderView *)self editorPickLabel];
+    [editorPickLabel2 setAttributedText:sectionTitle2];
 
     [(GuideHomeHeaderView *)self sizeForEditorsPickLabel];
     v13 = v12;
     v15 = v14;
-    v16 = [(GuideHomeHeaderView *)self editorPickView];
-    v17 = [v16 topAnchor];
-    v18 = [(GuideHomeHeaderView *)self contentView];
-    v19 = [v18 topAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    editorPickView2 = [(GuideHomeHeaderView *)self editorPickView];
+    topAnchor = [editorPickView2 topAnchor];
+    contentView = [(GuideHomeHeaderView *)self contentView];
+    topAnchor2 = [contentView topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [(GuideHomeHeaderView *)self setEditorsPickTopConstraint:v20];
 
     [(GuideHomeHeaderView *)self updateEditorsPickTop];
-    v43 = [(GuideHomeHeaderView *)self editorPickLabel];
-    v41 = [v43 centerXAnchor];
-    v42 = [(GuideHomeHeaderView *)self editorPickView];
-    v40 = [v42 centerXAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    editorPickLabel3 = [(GuideHomeHeaderView *)self editorPickLabel];
+    centerXAnchor = [editorPickLabel3 centerXAnchor];
+    editorPickView3 = [(GuideHomeHeaderView *)self editorPickView];
+    centerXAnchor2 = [editorPickView3 centerXAnchor];
+    v39 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v44[0] = v39;
-    v38 = [(GuideHomeHeaderView *)self editorPickLabel];
-    v36 = [v38 centerYAnchor];
-    v37 = [(GuideHomeHeaderView *)self editorPickView];
-    v35 = [v37 centerYAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35];
+    editorPickLabel4 = [(GuideHomeHeaderView *)self editorPickLabel];
+    centerYAnchor = [editorPickLabel4 centerYAnchor];
+    editorPickView4 = [(GuideHomeHeaderView *)self editorPickView];
+    centerYAnchor2 = [editorPickView4 centerYAnchor];
+    v34 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v44[1] = v34;
-    v33 = [(GuideHomeHeaderView *)self editorsPickTopConstraint];
-    v44[2] = v33;
-    v32 = [(GuideHomeHeaderView *)self editorPickView];
-    v31 = [v32 leadingAnchor];
-    v21 = [(GuideHomeHeaderView *)self contentView];
-    v22 = [v21 leadingAnchor];
-    v23 = [v31 constraintEqualToAnchor:v22 constant:16.0];
+    editorsPickTopConstraint = [(GuideHomeHeaderView *)self editorsPickTopConstraint];
+    v44[2] = editorsPickTopConstraint;
+    editorPickView5 = [(GuideHomeHeaderView *)self editorPickView];
+    leadingAnchor = [editorPickView5 leadingAnchor];
+    contentView2 = [(GuideHomeHeaderView *)self contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v44[3] = v23;
-    v24 = [(GuideHomeHeaderView *)self editorPickView];
-    v25 = [v24 heightAnchor];
-    v26 = [v25 constraintEqualToConstant:v15];
+    editorPickView6 = [(GuideHomeHeaderView *)self editorPickView];
+    heightAnchor = [editorPickView6 heightAnchor];
+    v26 = [heightAnchor constraintEqualToConstant:v15];
     v44[4] = v26;
-    v27 = [(GuideHomeHeaderView *)self editorPickView];
-    v28 = [v27 widthAnchor];
-    v29 = [v28 constraintEqualToConstant:v13];
+    editorPickView7 = [(GuideHomeHeaderView *)self editorPickView];
+    widthAnchor = [editorPickView7 widthAnchor];
+    v29 = [widthAnchor constraintEqualToConstant:v13];
     v44[5] = v29;
     v30 = [NSArray arrayWithObjects:v44 count:6];
     [NSLayoutConstraint activateConstraints:v30];
   }
 }
 
-- (void)didChangeContentYOffset:(double)a3
+- (void)didChangeContentYOffset:(double)offset
 {
-  v6 = [(GuideHomeHeaderView *)self publisherLogoImageView];
-  [v6 frame];
-  v8 = a3 / v7;
+  publisherLogoImageView = [(GuideHomeHeaderView *)self publisherLogoImageView];
+  [publisherLogoImageView frame];
+  v8 = offset / v7;
 
   v9 = fmin(fmax(1.0 - v8, 0.0), 1.0);
-  v10 = [(GuideHomeHeaderView *)self publisherLogoImageView];
-  [v10 setAlpha:v9];
+  publisherLogoImageView2 = [(GuideHomeHeaderView *)self publisherLogoImageView];
+  [publisherLogoImageView2 setAlpha:v9];
 
-  v11 = [(GuideHomeHeaderView *)self metadataStackView];
-  [v11 setAlpha:v9];
+  metadataStackView = [(GuideHomeHeaderView *)self metadataStackView];
+  [metadataStackView setAlpha:v9];
 
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
@@ -727,20 +727,20 @@ LABEL_6:
   v29[4] = self;
   *&v29[5] = v8;
   [UIView animateWithDuration:v29 animations:0.2];
-  v12 = [(GuideHomeHeaderView *)self collectionImageView];
-  [v12 setAlpha:v9];
+  collectionImageView = [(GuideHomeHeaderView *)self collectionImageView];
+  [collectionImageView setAlpha:v9];
 
-  v13 = [(GuideHomeHeaderView *)self topGradientView];
-  [v13 setAlpha:v9];
+  topGradientView = [(GuideHomeHeaderView *)self topGradientView];
+  [topGradientView setAlpha:v9];
 
-  v14 = [(GuideHomeHeaderView *)self contentView];
-  [v14 setAlpha:v9];
+  contentView = [(GuideHomeHeaderView *)self contentView];
+  [contentView setAlpha:v9];
 
-  if (a3 >= 0.0)
+  if (offset >= 0.0)
   {
     CGAffineTransformMakeScale(&v24, 1.0, 1.0);
-    v21 = [(GuideHomeHeaderView *)self collectionImageView];
-    v22 = v21;
+    collectionImageView2 = [(GuideHomeHeaderView *)self collectionImageView];
+    v22 = collectionImageView2;
     v25 = *&v24.a;
     v26 = *&v24.c;
     v23 = *&v24.tx;
@@ -748,70 +748,70 @@ LABEL_6:
 
   else
   {
-    v15 = [(GuideHomeHeaderView *)self viewModel];
-    v16 = [v15 collectionLongTitle];
-    v17 = v16;
-    if (!v16)
+    viewModel = [(GuideHomeHeaderView *)self viewModel];
+    collectionLongTitle = [viewModel collectionLongTitle];
+    collectionTitle = collectionLongTitle;
+    if (!collectionLongTitle)
     {
-      v3 = [(GuideHomeHeaderView *)self viewModel];
-      v17 = [v3 collectionTitle];
+      viewModel2 = [(GuideHomeHeaderView *)self viewModel];
+      collectionTitle = [viewModel2 collectionTitle];
     }
 
     [(GuideHomeHeaderView *)self maxWidth];
-    [GuideHomeHeaderView maximumRequiredHeightWithFeaturedGuideTitle:v17 maxWidth:?];
+    [GuideHomeHeaderView maximumRequiredHeightWithFeaturedGuideTitle:collectionTitle maxWidth:?];
     v19 = v18;
-    if (!v16)
+    if (!collectionLongTitle)
     {
     }
 
-    v20 = fmax(fabs(a3) / v19 + 1.0, 0.0);
+    v20 = fmax(fabs(offset) / v19 + 1.0, 0.0);
     CGAffineTransformMakeScale(&v28, v20, v20);
-    v21 = [(GuideHomeHeaderView *)self collectionImageView];
-    v22 = v21;
+    collectionImageView2 = [(GuideHomeHeaderView *)self collectionImageView];
+    v22 = collectionImageView2;
     v25 = *&v28.a;
     v26 = *&v28.c;
     v23 = *&v28.tx;
   }
 
   v27 = v23;
-  [v21 setTransform:&v25];
+  [collectionImageView2 setTransform:&v25];
 }
 
-- (void)configureWithGuidesHomeHeaderViewModel:(id)a3 maxWidth:(double)a4 delegate:(id)a5
+- (void)configureWithGuidesHomeHeaderViewModel:(id)model maxWidth:(double)width delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a5;
-  [(GuideHomeHeaderView *)self setMaxWidth:a4];
-  [(GuideHomeHeaderView *)self setViewModel:v8];
-  [(GuideHomeHeaderView *)self setHeaderDelegate:v9];
+  modelCopy = model;
+  delegateCopy = delegate;
+  [(GuideHomeHeaderView *)self setMaxWidth:width];
+  [(GuideHomeHeaderView *)self setViewModel:modelCopy];
+  [(GuideHomeHeaderView *)self setHeaderDelegate:delegateCopy];
 
   [(GuideHomeHeaderView *)self setupConstraints];
-  v10 = [v8 collectionLongTitle];
-  v11 = v10;
-  if (!v10)
+  collectionLongTitle = [modelCopy collectionLongTitle];
+  collectionTitle = collectionLongTitle;
+  if (!collectionLongTitle)
   {
-    v11 = [v8 collectionTitle];
+    collectionTitle = [modelCopy collectionTitle];
   }
 
-  v12 = [(GuideHomeHeaderView *)self collectionLabel];
-  [v12 setAttributedText:v11];
+  collectionLabel = [(GuideHomeHeaderView *)self collectionLabel];
+  [collectionLabel setAttributedText:collectionTitle];
 
-  if (!v10)
+  if (!collectionLongTitle)
   {
   }
 
-  v13 = [(GuideHomeHeaderView *)self viewModel];
-  v14 = [v13 backgroundColor];
-  [(GuideHomeHeaderView *)self setBackgroundColor:v14];
+  viewModel = [(GuideHomeHeaderView *)self viewModel];
+  backgroundColor = [viewModel backgroundColor];
+  [(GuideHomeHeaderView *)self setBackgroundColor:backgroundColor];
 
   [(GuideHomeHeaderView *)self displayEditorsPickLabel];
-  v15 = [(GuideHomeHeaderView *)self topGradientView];
-  v16 = [v15 gradientLayer];
-  [v16 setStartPoint:{0.5, 0.0}];
+  topGradientView = [(GuideHomeHeaderView *)self topGradientView];
+  gradientLayer = [topGradientView gradientLayer];
+  [gradientLayer setStartPoint:{0.5, 0.0}];
 
-  v17 = [(GuideHomeHeaderView *)self topGradientView];
-  v18 = [v17 gradientLayer];
-  [v18 setEndPoint:{0.5, 1.0}];
+  topGradientView2 = [(GuideHomeHeaderView *)self topGradientView];
+  gradientLayer2 = [topGradientView2 gradientLayer];
+  [gradientLayer2 setEndPoint:{0.5, 1.0}];
 
   v19 = +[UIColor blackColor];
   v20 = [v19 colorWithAlphaComponent:0.5];
@@ -820,39 +820,39 @@ LABEL_6:
   v22 = [v21 colorWithAlphaComponent:0.0];
   v39[1] = [v22 CGColor];
   v23 = [NSArray arrayWithObjects:v39 count:2];
-  v24 = [(GuideHomeHeaderView *)self topGradientView];
-  v25 = [v24 gradientLayer];
-  [v25 setColors:v23];
+  topGradientView3 = [(GuideHomeHeaderView *)self topGradientView];
+  gradientLayer3 = [topGradientView3 gradientLayer];
+  [gradientLayer3 setColors:v23];
 
-  v26 = [(GuideHomeHeaderView *)self bottomGradientView];
-  v27 = [v26 gradientLayer];
-  [v27 setStartPoint:{0.5, 0.0}];
+  bottomGradientView = [(GuideHomeHeaderView *)self bottomGradientView];
+  gradientLayer4 = [bottomGradientView gradientLayer];
+  [gradientLayer4 setStartPoint:{0.5, 0.0}];
 
-  v28 = [(GuideHomeHeaderView *)self bottomGradientView];
-  v29 = [v28 gradientLayer];
-  [v29 setEndPoint:{0.5, 1.0}];
+  bottomGradientView2 = [(GuideHomeHeaderView *)self bottomGradientView];
+  gradientLayer5 = [bottomGradientView2 gradientLayer];
+  [gradientLayer5 setEndPoint:{0.5, 1.0}];
 
-  v30 = [(GuideHomeHeaderView *)self viewModel];
-  v31 = [v30 backgroundColor];
-  v32 = [v31 colorWithAlphaComponent:0.0];
+  viewModel2 = [(GuideHomeHeaderView *)self viewModel];
+  backgroundColor2 = [viewModel2 backgroundColor];
+  v32 = [backgroundColor2 colorWithAlphaComponent:0.0];
   v38[0] = [v32 CGColor];
-  v33 = [(GuideHomeHeaderView *)self viewModel];
-  v34 = [v33 backgroundColor];
-  v38[1] = [v34 CGColor];
+  viewModel3 = [(GuideHomeHeaderView *)self viewModel];
+  backgroundColor3 = [viewModel3 backgroundColor];
+  v38[1] = [backgroundColor3 CGColor];
   v35 = [NSArray arrayWithObjects:v38 count:2];
-  v36 = [(GuideHomeHeaderView *)self bottomGradientView];
-  v37 = [v36 gradientLayer];
-  [v37 setColors:v35];
+  bottomGradientView3 = [(GuideHomeHeaderView *)self bottomGradientView];
+  gradientLayer6 = [bottomGradientView3 gradientLayer];
+  [gradientLayer6 setColors:v35];
 
-  [(GuideHomeHeaderView *)self setImageMetadataUsingWidth:a4];
+  [(GuideHomeHeaderView *)self setImageMetadataUsingWidth:width];
   [(GuideHomeHeaderView *)self addOpenGuideButton];
 }
 
-- (GuideHomeHeaderView)initWithFrame:(CGRect)a3
+- (GuideHomeHeaderView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = GuideHomeHeaderView;
-  v3 = [(GuideHomeHeaderView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GuideHomeHeaderView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();
@@ -867,9 +867,9 @@ LABEL_6:
   return v3;
 }
 
-+ (double)maximumRequiredHeightWithFeaturedGuideTitle:(id)a3 maxWidth:(double)a4
++ (double)maximumRequiredHeightWithFeaturedGuideTitle:(id)title maxWidth:(double)width
 {
-  [a3 boundingRectWithSize:1 options:0 context:{a4 + -32.0, 1.79769313e308}];
+  [title boundingRectWithSize:1 options:0 context:{width + -32.0, 1.79769313e308}];
   v5 = v4;
   +[GuideHomeHeaderView maximumCollectionImageHeight];
   return v5 + v6 + 94.0;

@@ -1,6 +1,6 @@
 @interface PXStoryScrubberLayoutSettings
 + (PXStoryScrubberLayoutSettings)sharedInstance;
-+ (id)_sliderFor:(id)a3 path:(id)a4;
++ (id)_sliderFor:(id)for path:(id)path;
 + (id)settingsControllerModule;
 - (void)setDefaultValues;
 @end
@@ -15,9 +15,9 @@
   PXVisionScaledFloat();
 }
 
-+ (id)_sliderFor:(id)a3 path:(id)a4
++ (id)_sliderFor:(id)for path:(id)path
 {
-  v4 = [MEMORY[0x1E69C66A0] rowWithTitle:a3 valueKeyPath:a4];
+  v4 = [MEMORY[0x1E69C66A0] rowWithTitle:for valueKeyPath:path];
   v5 = [v4 minValue:1.0 maxValue:100.0];
   v6 = [v5 px_increment:1.0];
 
@@ -30,36 +30,36 @@
   v3 = MEMORY[0x1E69C6638];
   v24 = MEMORY[0x1E69C6638];
   v40 = NSStringFromSelector(sel_currentAssetWidthLandscape);
-  v39 = [a1 _sliderFor:@"Current Asset Width" path:v40];
+  v39 = [self _sliderFor:@"Current Asset Width" path:v40];
   v44[0] = v39;
   v38 = NSStringFromSelector(sel_defaultAssetWidthLandscape);
-  v37 = [a1 _sliderFor:@"Default Asset Width" path:v38];
+  v37 = [self _sliderFor:@"Default Asset Width" path:v38];
   v44[1] = v37;
   v36 = NSStringFromSelector(sel_scrubberHeightLandscape);
-  v35 = [a1 _sliderFor:@"Scrubber Height" path:v36];
+  v35 = [self _sliderFor:@"Scrubber Height" path:v36];
   v44[2] = v35;
   v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:3];
   v33 = [v3 sectionWithRows:v34 title:@"Landscape Mode"];
   v45[0] = v33;
   v4 = MEMORY[0x1E69C6638];
   v32 = NSStringFromSelector(sel_currentAssetWidthPortrait);
-  v31 = [a1 _sliderFor:@"Current Asset Width" path:v32];
+  v31 = [self _sliderFor:@"Current Asset Width" path:v32];
   v43[0] = v31;
   v30 = NSStringFromSelector(sel_defaultAssetWidthPortrait);
-  v29 = [a1 _sliderFor:@"Default Asset Width" path:v30];
+  v29 = [self _sliderFor:@"Default Asset Width" path:v30];
   v43[1] = v29;
   v28 = NSStringFromSelector(sel_scrubberHeightPortrait);
-  v27 = [a1 _sliderFor:@"Scrubber Height" path:v28];
+  v27 = [self _sliderFor:@"Scrubber Height" path:v28];
   v43[2] = v27;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:3];
   v23 = [v4 sectionWithRows:v26 title:@"Portrait Mode"];
   v45[1] = v23;
   v5 = MEMORY[0x1E69C6638];
   v22 = NSStringFromSelector(sel_currentAssetPadding);
-  v21 = [a1 _sliderFor:@"Current Asset Padding" path:v22];
+  v21 = [self _sliderFor:@"Current Asset Padding" path:v22];
   v42[0] = v21;
   v20 = NSStringFromSelector(sel_defaultAssetPadding);
-  v19 = [a1 _sliderFor:@"Default Asset Padding" path:v20];
+  v19 = [self _sliderFor:@"Default Asset Padding" path:v20];
   v42[1] = v19;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:2];
   v7 = [v5 sectionWithRows:v6 title:@"Horizontal Padding"];
@@ -74,8 +74,8 @@
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v41 count:1];
   v15 = [v8 sectionWithRows:v14 title:@"Appearance"];
   v45[3] = v15;
-  v16 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
-  v45[4] = v16;
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  v45[4] = px_restoreDefaultsSection;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:5];
   v25 = [v24 moduleWithTitle:@"Layout Settings" contents:v17];
 

@@ -1,18 +1,18 @@
 @interface MIDICISession
 - (BOOL)sendProfile:(MIDICIProfile *)profile onChannel:(MIDIChannelNumber)channel profileData:(NSData *)profileSpecificData;
-- (BOOL)toggleProfile:(id)a3 onChannel:(unsigned __int8)a4 enabling:(BOOL)a5 error:(id *)a6;
-- (BOOL)updateProfileStateForChannel:(unsigned __int8)a3 withProfile:(id)a4 enabled:(BOOL)a5;
+- (BOOL)toggleProfile:(id)profile onChannel:(unsigned __int8)channel enabling:(BOOL)enabling error:(id *)error;
+- (BOOL)updateProfileStateForChannel:(unsigned __int8)channel withProfile:(id)profile enabled:(BOOL)enabled;
 - (MIDICIDeviceIdentification)deviceID;
 - (MIDICIProfileState)profileStateForChannel:(MIDIChannelNumber)channel;
 - (MIDICISession)init;
 - (MIDICISession)initWithDiscoveredNode:(MIDICIDiscoveredNode *)discoveredNode dataReadyHandler:(void *)handler disconnectHandler:(MIDICISessionDisconnectBlock)disconnectHandler;
-- (MIDICISession)initWithMIDIDestination:(unsigned int)a3 dataReadyHandler:(id)a4 disconnectHandler:(id)a5 profileSpecificDataHandler:(id)a6;
+- (MIDICISession)initWithMIDIDestination:(unsigned int)destination dataReadyHandler:(id)handler disconnectHandler:(id)disconnectHandler profileSpecificDataHandler:(id)dataHandler;
 - (id)description;
-- (void)addProfileState:(char *)a3 length:(unsigned int)a4 channel:(unsigned __int8)a5;
-- (void)getProperty:(id)a3 onChannel:(unsigned __int8)a4 responseHandler:(id)a5;
-- (void)handleCINotification:(const MIDINotification *)a3 withHandler:(id)a4;
-- (void)hasProperty:(id)a3 onChannel:(unsigned __int8)a4 responseHandler:(id)a5;
-- (void)setProperty:(id)a3 onChannel:(unsigned __int8)a4 responseHandler:(id)a5;
+- (void)addProfileState:(char *)state length:(unsigned int)length channel:(unsigned __int8)channel;
+- (void)getProperty:(id)property onChannel:(unsigned __int8)channel responseHandler:(id)handler;
+- (void)handleCINotification:(const MIDINotification *)notification withHandler:(id)handler;
+- (void)hasProperty:(id)property onChannel:(unsigned __int8)channel responseHandler:(id)handler;
+- (void)setProperty:(id)property onChannel:(unsigned __int8)channel responseHandler:(id)handler;
 @end
 
 @implementation MIDICISession
@@ -31,50 +31,50 @@
   return result;
 }
 
-- (BOOL)updateProfileStateForChannel:(unsigned __int8)a3 withProfile:(id)a4 enabled:(BOOL)a5
+- (BOOL)updateProfileStateForChannel:(unsigned __int8)channel withProfile:(id)profile enabled:(BOOL)enabled
 {
-  v5 = a5;
-  v6 = a3;
+  enabledCopy = enabled;
+  channelCopy = channel;
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = v8;
+  profileCopy = profile;
+  v9 = profileCopy;
   v10 = "NO";
-  if (v5)
+  if (enabledCopy)
   {
     v10 = "YES";
   }
 
-  NSLog(&cfstr_Updateprofiles.isa, v6, v8, v10);
-  if (v6 == 127)
+  NSLog(&cfstr_Updateprofiles.isa, channelCopy, profileCopy, v10);
+  if (channelCopy == 127)
   {
     v11 = 16;
   }
 
   else
   {
-    v11 = v6;
+    v11 = channelCopy;
   }
 
   v12 = [(NSMutableArray *)self->_profileStates objectAtIndex:v11];
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 disabledProfiles];
-    if (v5)
+    disabledProfiles = [v12 disabledProfiles];
+    if (enabledCopy)
     {
-      v15 = [v14 mutableCopy];
+      v15 = [disabledProfiles mutableCopy];
 
-      v16 = [v13 enabledProfiles];
-      v17 = [v16 mutableCopy];
+      enabledProfiles = [v13 enabledProfiles];
+      v17 = [enabledProfiles mutableCopy];
       v18 = v15;
     }
 
     else
     {
-      v17 = [v14 mutableCopy];
+      v17 = [disabledProfiles mutableCopy];
 
-      v16 = [v13 enabledProfiles];
-      v15 = [v16 mutableCopy];
+      enabledProfiles = [v13 enabledProfiles];
+      v15 = [enabledProfiles mutableCopy];
       v18 = v17;
     }
 
@@ -105,7 +105,7 @@
             [v17 addObject:v23];
 
             NSLog(&cfstr_Updating.isa);
-            if (v5)
+            if (enabledCopy)
             {
               v25 = v17;
             }
@@ -144,23 +144,23 @@ LABEL_25:
   return v24;
 }
 
-- (void)addProfileState:(char *)a3 length:(unsigned int)a4 channel:(unsigned __int8)a5
+- (void)addProfileState:(char *)state length:(unsigned int)length channel:(unsigned __int8)channel
 {
-  v5 = a5;
-  v7 = a3 + 2;
-  v6 = *a3;
-  v8 = *&a3[5 * *a3 + 2];
-  if (a5 == 127)
+  channelCopy = channel;
+  v7 = state + 2;
+  v6 = *state;
+  v8 = *&state[5 * *state + 2];
+  if (channel == 127)
   {
-    v9 = 16;
+    channelCopy2 = 16;
   }
 
   else
   {
-    v9 = a5;
+    channelCopy2 = channel;
   }
 
-  v19 = v9;
+  v19 = channelCopy2;
   v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if (v6)
@@ -191,7 +191,7 @@ LABEL_25:
     while (v14 < v8);
   }
 
-  v18 = [[MIDICIProfileState alloc] initWithChannel:v5 enabledProfiles:v21 disabledProfiles:v10];
+  v18 = [[MIDICIProfileState alloc] initWithChannel:channelCopy enabledProfiles:v21 disabledProfiles:v10];
   [(NSMutableArray *)self->_profileStates replaceObjectAtIndex:v19 withObject:v18];
 }
 
@@ -202,27 +202,27 @@ LABEL_25:
   v7 = v6;
   if (v6 && (v5 == 127 || v5 <= 0xF))
   {
-    v8 = [(MIDICIProfile *)v6 profileID];
-    [v8 bytes];
+    profileID = [(MIDICIProfile *)v6 profileID];
+    [profileID bytes];
   }
 
   return 0;
 }
 
-- (BOOL)toggleProfile:(id)a3 onChannel:(unsigned __int8)a4 enabling:(BOOL)a5 error:(id *)a6
+- (BOOL)toggleProfile:(id)profile onChannel:(unsigned __int8)channel enabling:(BOOL)enabling error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = v8;
-  if (v8 && (v7 == 127 || v7 <= 0xF))
+  channelCopy = channel;
+  profileCopy = profile;
+  v9 = profileCopy;
+  if (profileCopy && (channelCopy == 127 || channelCopy <= 0xF))
   {
-    v10 = [v8 profileID];
-    [v10 bytes];
+    profileID = [profileCopy profileID];
+    [profileID bytes];
 
-    if (a6)
+    if (error)
     {
       v11 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-10844 userInfo:0];
-      *a6 = v11;
+      *error = v11;
     }
   }
 
@@ -244,12 +244,12 @@ LABEL_25:
   return [(NSMutableArray *)self->_profileStates objectAtIndex:channel];
 }
 
-- (void)handleCINotification:(const MIDINotification *)a3 withHandler:(id)a4
+- (void)handleCINotification:(const MIDINotification *)notification withHandler:(id)handler
 {
-  v35 = a4;
+  handlerCopy = handler;
   v6 = 0;
-  messageID = a3->messageID;
-  messageSize = a3->messageSize;
+  messageID = notification->messageID;
+  messageSize = notification->messageSize;
   while (1)
   {
     if (messageID <= 20)
@@ -257,9 +257,9 @@ LABEL_25:
       if (messageID == 11)
       {
         NSLog(&cfstr_Handlecinotifi.isa);
-        *&v36[16] = a3[3];
-        *v36 = *&a3[1].messageID;
-        self->_destination = a3[4].messageID;
+        *&v36[16] = notification[3];
+        *v36 = *&notification[1].messageID;
+        self->_destination = notification[4].messageID;
         self->_deviceID = *&v36[4];
         v10 = [[MIDICIDeviceInfo alloc] initWithDestination:0 deviceID:&self->_deviceID];
         deviceInfo = self->_deviceInfo;
@@ -275,10 +275,10 @@ LABEL_25:
 
         NSLog(&cfstr_Handlecinotifi_0.isa);
         self->_supportsProfileCapability = 1;
-        [(MIDICISession *)self addProfileState:&a3[1].messageID + 1 length:messageSize - 1 channel:LOBYTE(a3[1].messageID)];
+        [(MIDICISession *)self addProfileState:&notification[1].messageID + 1 length:messageSize - 1 channel:LOBYTE(notification[1].messageID)];
       }
 
-      a3 = (a3 + messageSize + 8);
+      notification = (notification + messageSize + 8);
       goto LABEL_11;
     }
 
@@ -291,14 +291,14 @@ LABEL_25:
     {
       if (messageID == 32)
       {
-        v30 = [(MIDICISession *)self propertyChangedCallback];
+        propertyChangedCallback = [(MIDICISession *)self propertyChangedCallback];
 
-        if (v30)
+        if (propertyChangedCallback)
         {
-          messageID_low = LOBYTE(a3[1].messageID);
-          v32 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:&a3[1].messageID + 1 length:messageSize - 1];
-          v33 = [(MIDICISession *)self propertyChangedCallback];
-          (v33)[2](v33, self, messageID_low, v32);
+          messageID_low = LOBYTE(notification[1].messageID);
+          v32 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:&notification[1].messageID + 1 length:messageSize - 1];
+          propertyChangedCallback2 = [(MIDICISession *)self propertyChangedCallback];
+          (propertyChangedCallback2)[2](propertyChangedCallback2, self, messageID_low, v32);
 
           v19 = 0;
           v27 = 0;
@@ -329,12 +329,12 @@ LABEL_28:
     }
 
     self->_supportsPropertyCapability = 1;
-    v9 = a3[1].messageID;
-    a3 = (a3 + messageSize + 8);
+    v9 = notification[1].messageID;
+    notification = (notification + messageSize + 8);
     self->_maxRequests = v9;
 LABEL_11:
-    messageID = a3->messageID;
-    messageSize = a3->messageSize;
+    messageID = notification->messageID;
+    messageSize = notification->messageSize;
     v6 = 1;
   }
 
@@ -345,23 +345,23 @@ LABEL_11:
       goto LABEL_28;
     }
 
-    v23 = [(MIDICISession *)self profileSpecificDataBlock];
-    v24 = _Block_copy(v23);
+    profileSpecificDataBlock = [(MIDICISession *)self profileSpecificDataBlock];
+    v24 = _Block_copy(profileSpecificDataBlock);
     NSLog(&cfstr_Handlecinotifi_2.isa, @"kMIDIMsgProfileSpecificData", v24);
 
-    v34 = LOBYTE(a3[1].messageID);
+    v34 = LOBYTE(notification[1].messageID);
     v25 = [MIDICIProfile alloc];
-    v26 = [MEMORY[0x277CBEA90] dataWithBytes:&a3[1].messageID + 1 length:5];
+    v26 = [MEMORY[0x277CBEA90] dataWithBytes:&notification[1].messageID + 1 length:5];
     v19 = [(MIDICIProfile *)v25 initWithData:v26];
 
-    v27 = [MEMORY[0x277CBEA90] dataWithBytes:&a3[1].messageSize + 2 length:messageSize - 5];
-    v28 = [(MIDICISession *)self profileSpecificDataBlock];
+    v27 = [MEMORY[0x277CBEA90] dataWithBytes:&notification[1].messageSize + 2 length:messageSize - 5];
+    profileSpecificDataBlock2 = [(MIDICISession *)self profileSpecificDataBlock];
 
-    if (v28)
+    if (profileSpecificDataBlock2)
     {
       NSLog(&cfstr_NotifyingProfi.isa);
-      v29 = [(MIDICISession *)self profileSpecificDataBlock];
-      (v29)[2](v29, self, v34, v19, v27);
+      profileSpecificDataBlock3 = [(MIDICISession *)self profileSpecificDataBlock];
+      (profileSpecificDataBlock3)[2](profileSpecificDataBlock3, self, v34, v19, v27);
 
       NSLog(&cfstr_DoneNotifying.isa);
     }
@@ -376,8 +376,8 @@ LABEL_11:
 
   else
   {
-    v12 = [(MIDICISession *)self profileChangedCallback];
-    v13 = v12;
+    profileChangedCallback = [(MIDICISession *)self profileChangedCallback];
+    v13 = profileChangedCallback;
     if (messageID == 21)
     {
       v14 = @"kMIDIMsgProfileEnabled";
@@ -388,22 +388,22 @@ LABEL_11:
       v14 = @"kMIDIMsgProfileDisabled";
     }
 
-    v15 = _Block_copy(v12);
+    v15 = _Block_copy(profileChangedCallback);
     NSLog(&cfstr_Handlecinotifi_1.isa, v14, v15);
 
-    v16 = LOBYTE(a3[1].messageID);
+    v16 = LOBYTE(notification[1].messageID);
     v17 = [MIDICIProfile alloc];
-    v18 = [MEMORY[0x277CBEA90] dataWithBytes:&a3[1].messageID + 1 length:5];
+    v18 = [MEMORY[0x277CBEA90] dataWithBytes:&notification[1].messageID + 1 length:5];
     v19 = [(MIDICIProfile *)v17 initWithData:v18];
 
     [(MIDICISession *)self updateProfileStateForChannel:v16 withProfile:v19 enabled:messageID == 21];
-    v20 = [(MIDICISession *)self profileChangedCallback];
+    profileChangedCallback2 = [(MIDICISession *)self profileChangedCallback];
 
-    if (v20)
+    if (profileChangedCallback2)
     {
       NSLog(&cfstr_Notifying.isa);
-      v21 = [(MIDICISession *)self profileChangedCallback];
-      (v21)[2](v21, self, v16, v19, messageID == 21);
+      profileChangedCallback3 = [(MIDICISession *)self profileChangedCallback];
+      (profileChangedCallback3)[2](profileChangedCallback3, self, v16, v19, messageID == 21);
 
       v22 = @"Done notifying.";
     }
@@ -425,7 +425,7 @@ LABEL_33:
   }
 
 LABEL_34:
-  v35[2]();
+  handlerCopy[2]();
 LABEL_35:
 }
 
@@ -453,36 +453,36 @@ LABEL_35:
   return v4;
 }
 
-- (MIDICISession)initWithMIDIDestination:(unsigned int)a3 dataReadyHandler:(id)a4 disconnectHandler:(id)a5 profileSpecificDataHandler:(id)a6
+- (MIDICISession)initWithMIDIDestination:(unsigned int)destination dataReadyHandler:(id)handler disconnectHandler:(id)disconnectHandler profileSpecificDataHandler:(id)dataHandler
 {
-  v8 = *&a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  v8 = *&destination;
+  handlerCopy = handler;
+  disconnectHandlerCopy = disconnectHandler;
+  dataHandlerCopy = dataHandler;
   if (v8)
   {
-    v13 = [(MIDICISession *)self initWithMIDIDestination:v8 dataReadyHandler:v10];
+    v13 = [(MIDICISession *)self initWithMIDIDestination:v8 dataReadyHandler:handlerCopy];
     if (v13)
     {
-      v14 = _Block_copy(v11);
+      v14 = _Block_copy(disconnectHandlerCopy);
       sessionDisconnectCallback = v13->_sessionDisconnectCallback;
       v13->_sessionDisconnectCallback = v14;
 
-      v16 = _Block_copy(v12);
+      v16 = _Block_copy(dataHandlerCopy);
       profileSpecificDataCallback = v13->_profileSpecificDataCallback;
       v13->_profileSpecificDataCallback = v16;
     }
 
     self = v13;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 - (MIDICISession)initWithDiscoveredNode:(MIDICIDiscoveredNode *)discoveredNode dataReadyHandler:(void *)handler disconnectHandler:(MIDICISessionDisconnectBlock)disconnectHandler
@@ -494,24 +494,24 @@ LABEL_35:
   {
     v19.receiver = self;
     v19.super_class = MIDICISession;
-    v14 = [(MIDICISession *)&v19 init];
-    if (v14)
+    selfCopy = [(MIDICISession *)&v19 init];
+    if (selfCopy)
     {
-      v14->_destination = [(MIDICIDiscoveredNode *)v8 destination];
+      selfCopy->_destination = [(MIDICIDiscoveredNode *)v8 destination];
       v15 = _Block_copy(v10);
-      sessionDisconnectCallback = v14->_sessionDisconnectCallback;
-      v14->_sessionDisconnectCallback = v15;
+      sessionDisconnectCallback = selfCopy->_sessionDisconnectCallback;
+      selfCopy->_sessionDisconnectCallback = v15;
 
-      v17 = [(MIDICIDiscoveredNode *)v8 maximumSysExSize];
-      v14->_maxSysExSize = [v17 unsignedLongValue];
+      maximumSysExSize = [(MIDICIDiscoveredNode *)v8 maximumSysExSize];
+      selfCopy->_maxSysExSize = [maximumSysExSize unsignedLongValue];
 
-      v14->_client = 0;
+      selfCopy->_client = 0;
     }
   }
 
   else
   {
-    v14 = self;
+    selfCopy = self;
   }
 
   return 0;
@@ -526,23 +526,23 @@ LABEL_35:
   return 0;
 }
 
-- (void)setProperty:(id)a3 onChannel:(unsigned __int8)a4 responseHandler:(id)a5
+- (void)setProperty:(id)property onChannel:(unsigned __int8)channel responseHandler:(id)handler
 {
-  self->_propertyResponseCallback = _Block_copy(a5);
+  self->_propertyResponseCallback = _Block_copy(handler);
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)getProperty:(id)a3 onChannel:(unsigned __int8)a4 responseHandler:(id)a5
+- (void)getProperty:(id)property onChannel:(unsigned __int8)channel responseHandler:(id)handler
 {
-  self->_propertyResponseCallback = _Block_copy(a5);
+  self->_propertyResponseCallback = _Block_copy(handler);
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)hasProperty:(id)a3 onChannel:(unsigned __int8)a4 responseHandler:(id)a5
+- (void)hasProperty:(id)property onChannel:(unsigned __int8)channel responseHandler:(id)handler
 {
-  self->_propertyResponseCallback = _Block_copy(a5);
+  self->_propertyResponseCallback = _Block_copy(handler);
 
   MEMORY[0x2821F96F8]();
 }

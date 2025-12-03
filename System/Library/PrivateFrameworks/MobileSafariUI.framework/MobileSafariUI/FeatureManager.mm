@@ -55,22 +55,22 @@ void __38__FeatureManager_sharedFeatureManager__block_invoke()
 
 - (BOOL)areTabGroupSuggestionsEnabled
 {
-  v2 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  v3 = [v2 BOOLForKey:*MEMORY[0x277D29020]];
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  v3 = [safari_browserDefaults BOOLForKey:*MEMORY[0x277D29020]];
 
   return v3;
 }
 
 - (BOOL)areSharedTabGroupsEnabled
 {
-  v3 = [(WBUFeatureManager *)self isCloudAccountHSA2];
-  if (v3)
+  isCloudAccountHSA2 = [(WBUFeatureManager *)self isCloudAccountHSA2];
+  if (isCloudAccountHSA2)
   {
 
-    LOBYTE(v3) = [(WBUFeatureManager *)self isSafariSyncEnabled];
+    LOBYTE(isCloudAccountHSA2) = [(WBUFeatureManager *)self isSafariSyncEnabled];
   }
 
-  return v3;
+  return isCloudAccountHSA2;
 }
 
 @end

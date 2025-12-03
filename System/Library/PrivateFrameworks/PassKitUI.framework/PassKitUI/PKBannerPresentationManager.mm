@@ -1,9 +1,9 @@
 @interface PKBannerPresentationManager
-+ (id)_managerForDestination:(int64_t)a3 withProvider:(id)a4;
-- (id)_createPresentableWithConfiguration:(id)a3;
++ (id)_managerForDestination:(int64_t)destination withProvider:(id)provider;
+- (id)_createPresentableWithConfiguration:(id)configuration;
 - (id)_source;
 - (void)_displayBanner;
-- (void)bannerSourceDidInvalidate:(id)a3;
+- (void)bannerSourceDidInvalidate:(id)invalidate;
 @end
 
 @implementation PKBannerPresentationManager
@@ -11,24 +11,24 @@
 - (id)_source
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = *(a1 + 32);
+  v2 = *(self + 32);
   if (!v2)
   {
-    v3 = [MEMORY[0x1E698E580] bannerSourceForDestination:*(a1 + 8) forRequesterIdentifier:*(a1 + 24)];
-    v4 = *(a1 + 32);
-    *(a1 + 32) = v3;
+    v3 = [MEMORY[0x1E698E580] bannerSourceForDestination:*(self + 8) forRequesterIdentifier:*(self + 24)];
+    v4 = *(self + 32);
+    *(self + 32) = v3;
 
-    [*(a1 + 32) setDelegate:a1];
+    [*(self + 32) setDelegate:self];
     v5 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = *(a1 + 8);
-      v7 = *(a1 + 32);
+      v6 = *(self + 8);
+      v7 = *(self + 32);
       v9 = 134218240;
       v10 = v6;
       v11 = 2048;
@@ -36,16 +36,16 @@
       _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "PKBannerPresentationManager (%lld): source created %p.", &v9, 0x16u);
     }
 
-    v2 = *(a1 + 32);
+    v2 = *(self + 32);
   }
 
   return v2;
 }
 
-+ (id)_managerForDestination:(int64_t)a3 withProvider:(id)a4
++ (id)_managerForDestination:(int64_t)destination withProvider:(id)provider
 {
-  v5 = a4;
-  if (a3 || !v5)
+  providerCopy = provider;
+  if (destination || !providerCopy)
   {
     __break(1u);
   }
@@ -57,8 +57,8 @@
     block[2] = __67__PKBannerPresentationManager__managerForDestination_withProvider___block_invoke;
     block[3] = &unk_1E80119C8;
     v19 = 0;
-    a3 = v5;
-    v18 = a3;
+    destination = providerCopy;
+    destinationCopy = destination;
     if (_MergedGlobals_608 == -1)
     {
       goto LABEL_4;
@@ -73,9 +73,9 @@ LABEL_4:
     goto LABEL_8;
   }
 
-  v6 = [qword_1EBD6AD70 provider];
+  provider = [qword_1EBD6AD70 provider];
 
-  if (v6 == a3)
+  if (provider == destination)
   {
     v7 = qword_1EBD6AD70;
 LABEL_8:
@@ -88,7 +88,7 @@ LABEL_8:
   v11 = *MEMORY[0x1E695D930];
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
-  v14 = [qword_1EBD6AD70 provider];
+  provider2 = [qword_1EBD6AD70 provider];
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
   [v10 raise:v11 format:{@"PKBannerPresentationManager: cannot register provider %@ for destination %ld - already registered provider %@ previously.", v13, 0, v16}];
@@ -125,19 +125,19 @@ void __67__PKBannerPresentationManager__managerForDestination_withProvider___blo
   qword_1EBD6AD70 = v2;
 }
 
-- (id)_createPresentableWithConfiguration:(id)a3
+- (id)_createPresentableWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [PKBannerPresentable alloc];
-  v6 = self;
-  result = v4;
+  selfCopy = self;
+  result = configurationCopy;
   v8 = result;
   if (!v5)
   {
     goto LABEL_5;
   }
 
-  if (v6)
+  if (selfCopy)
   {
     v20.receiver = v5;
     v20.super_class = PKBannerPresentable;
@@ -145,22 +145,22 @@ void __67__PKBannerPresentationManager__managerForDestination_withProvider___blo
     v5 = v9;
     if (v9)
     {
-      v9->_destination = v6;
-      v10 = [v8 factory];
+      v9->_destination = selfCopy;
+      factory = [v8 factory];
       factory = v5->_factory;
-      v5->_factory = v10;
+      v5->_factory = factory;
 
-      v12 = [v8 didStartHandler];
+      didStartHandler = [v8 didStartHandler];
       didStartHandler = v5->_didStartHandler;
-      v5->_didStartHandler = v12;
+      v5->_didStartHandler = didStartHandler;
 
-      v14 = [v8 didFinishHandler];
+      didFinishHandler = [v8 didFinishHandler];
       didFinishHandler = v5->_didFinishHandler;
-      v5->_didFinishHandler = v14;
+      v5->_didFinishHandler = didFinishHandler;
 
-      v16 = [MEMORY[0x1E696AFB0] UUID];
-      v17 = [v16 UUIDString];
-      v18 = [v17 copy];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      v18 = [uUIDString copy];
       requestIdentifier = v5->_requestIdentifier;
       v5->_requestIdentifier = v18;
     }
@@ -177,18 +177,18 @@ LABEL_5:
 - (void)_displayBanner
 {
   v71 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = a1[5];
-    v3 = a1[2];
+    v2 = self[5];
+    v3 = self[2];
     if (v2)
     {
-      if (![v3 shouldRevokeCurrentRequestForManager:a1])
+      if (![v3 shouldRevokeCurrentRequestForManager:self])
       {
         return;
       }
 
-      v4 = a1[5];
+      v4 = self[5];
       if (v4)
       {
         v5 = *(v4 + 8);
@@ -202,7 +202,7 @@ LABEL_5:
       v6 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = a1[1];
+        v7 = self[1];
         *buf = 134218240;
         *&buf[4] = v7;
         *&buf[12] = 2048;
@@ -214,18 +214,18 @@ LABEL_5:
       goto LABEL_62;
     }
 
-    v8 = [v3 nextRequestForManager:a1];
-    v9 = a1[5];
-    a1[5] = v8;
+    v8 = [v3 nextRequestForManager:self];
+    v9 = self[5];
+    self[5] = v8;
 
-    v10 = a1[5];
+    v10 = self[5];
     if (!v10)
     {
       return;
     }
 
     v11 = *(v10 + 8);
-    if (!v11 || (v5 = v11, *(v11 + 1) != a1))
+    if (!v11 || (v5 = v11, *(v11 + 1) != self))
     {
       __break(1u);
     }
@@ -234,7 +234,7 @@ LABEL_5:
     v55[1] = 3221225472;
     v56 = __45__PKBannerPresentationManager__displayBanner__block_invoke;
     v57 = &unk_1E80220F8;
-    v58 = a1;
+    selfCopy = self;
     v12 = v55;
     if ((*(v5 + 24) & 1) != 0 || *(v5 + 25) == 1)
     {
@@ -263,7 +263,7 @@ LABEL_5:
     v17 = *(v5 + 7);
     *(v5 + 7) = v16;
 
-    v18 = [(PKBannerPresentationManager *)*(v5 + 1) _source];
+    _source = [(PKBannerPresentationManager *)*(v5 + 1) _source];
     v19 = *(v5 + 4);
     if (!v19)
     {
@@ -354,7 +354,7 @@ LABEL_30:
           v62 = MEMORY[0x1E695E118];
           v48 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
           v59 = 0;
-          v49 = [v18 postPresentable:v5 options:1 userInfo:v48 error:&v59];
+          v49 = [_source postPresentable:v5 options:1 userInfo:v48 error:&v59];
           v50 = v59;
 
           v51 = os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT);
@@ -414,11 +414,11 @@ LABEL_62:
     *(v5 + 4) = 0;
 
     v60 = 0;
-    v22 = [v18 layoutDescriptionWithError:&v60];
+    v22 = [_source layoutDescriptionWithError:&v60];
     v23 = v60;
     if (v22)
     {
-      v24 = (*(v20 + 16))(v20, [v18 destination], v22);
+      v24 = (*(v20 + 16))(v20, [_source destination], v22);
       v25 = *(v5 + 5);
       *(v5 + 5) = v24;
 
@@ -473,7 +473,7 @@ uint64_t __45__PKBannerPresentationManager__displayBanner__block_invoke(uint64_t
   return [(PKBannerPresentationManager *)v4 _displayBanner];
 }
 
-- (void)bannerSourceDidInvalidate:(id)a3
+- (void)bannerSourceDidInvalidate:(id)invalidate
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = PKLogFacilityTypeGetObject();

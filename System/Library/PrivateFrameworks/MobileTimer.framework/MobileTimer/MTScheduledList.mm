@@ -1,41 +1,41 @@
 @interface MTScheduledList
-+ (id)_dateIntervalFilter:(id)a3;
-+ (id)_nextScheduledObjectInSets:(id)a3;
-+ (void)_sort:(id)a3;
-+ (void)_sortAndFilter:(id)a3 objectsToScheduleAhead:(id)a4;
-- (BOOL)isScheduled:(id)a3;
-- (MTScheduledList)initWithDelegate:(id)a3;
++ (id)_dateIntervalFilter:(id)filter;
++ (id)_nextScheduledObjectInSets:(id)sets;
++ (void)_sort:(id)_sort;
++ (void)_sortAndFilter:(id)filter objectsToScheduleAhead:(id)ahead;
+- (BOOL)isScheduled:(id)scheduled;
+- (MTScheduledList)initWithDelegate:(id)delegate;
 - (MTScheduledListDelegate)delegate;
 - (NSArray)scheduledAlertsAndNotifications;
 - (NSArray)scheduledObjects;
-- (id)_scheduledListForTriggerType:(unint64_t)a3;
+- (id)_scheduledListForTriggerType:(unint64_t)type;
 - (id)description;
 - (id)nextScheduledAlertOrNotification;
 - (id)nextScheduledObject;
-- (id)nextScheduledObjectWithTriggerType:(unint64_t)a3;
-- (id)scheduledObjectsToFireBeforeDate:(id)a3;
-- (id)scheduledObjectsToFireInInterval:(id)a3;
-- (void)_performScheduleChangingBlock:(id)a3 withCompletion:(id)a4;
-- (void)_scheduleObject:(id)a3;
-- (void)_unschedule:(id)a3;
-- (void)_unscheduleObject:(id)a3;
+- (id)nextScheduledObjectWithTriggerType:(unint64_t)type;
+- (id)scheduledObjectsToFireBeforeDate:(id)date;
+- (id)scheduledObjectsToFireInInterval:(id)interval;
+- (void)_performScheduleChangingBlock:(id)block withCompletion:(id)completion;
+- (void)_scheduleObject:(id)object;
+- (void)_unschedule:(id)_unschedule;
+- (void)_unscheduleObject:(id)object;
 - (void)reset;
-- (void)schedule:(id)a3 afterDate:(id)a4 withCompletion:(id)a5;
-- (void)unschedule:(id)a3;
+- (void)schedule:(id)schedule afterDate:(id)date withCompletion:(id)completion;
+- (void)unschedule:(id)unschedule;
 @end
 
 @implementation MTScheduledList
 
-- (MTScheduledList)initWithDelegate:(id)a3
+- (MTScheduledList)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = MTScheduledList;
   v5 = [(MTScheduledList *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = objc_opt_new();
     orderedScheduledAlerts = v6->_orderedScheduledAlerts;
     v6->_orderedScheduledAlerts = v7;
@@ -56,29 +56,29 @@
   return v6;
 }
 
-+ (void)_sort:(id)a3
++ (void)_sort:(id)_sort
 {
-  v5 = a3;
+  _sortCopy = _sort;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    [(MTScheduledList *)a2 _sort:a1];
+    [(MTScheduledList *)a2 _sort:self];
   }
 
-  v6 = [objc_opt_class() _scheduledObjectComparator];
-  [v5 sortUsingComparator:v6];
+  _scheduledObjectComparator = [objc_opt_class() _scheduledObjectComparator];
+  [_sortCopy sortUsingComparator:_scheduledObjectComparator];
 }
 
-+ (void)_sortAndFilter:(id)a3 objectsToScheduleAhead:(id)a4
++ (void)_sortAndFilter:(id)filter objectsToScheduleAhead:(id)ahead
 {
-  v7 = a3;
-  v8 = a4;
+  filterCopy = filter;
+  aheadCopy = ahead;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    [MTScheduledList _sortAndFilter:a2 objectsToScheduleAhead:a1];
+    [MTScheduledList _sortAndFilter:a2 objectsToScheduleAhead:self];
   }
 
-  v9 = [objc_opt_class() _scheduledObjectComparator];
-  [v7 sortUsingComparator:v9];
+  _scheduledObjectComparator = [objc_opt_class() _scheduledObjectComparator];
+  [filterCopy sortUsingComparator:_scheduledObjectComparator];
 
   v10 = objc_opt_new();
   v11 = objc_opt_new();
@@ -93,41 +93,41 @@
   v35 = v14;
   v15 = v10;
   v36 = v15;
-  [v7 enumerateObjectsUsingBlock:v33];
+  [filterCopy enumerateObjectsUsingBlock:v33];
   if ([v13 count])
   {
-    v16 = [v13 firstObject];
+    firstObject = [v13 firstObject];
     v17 = objc_opt_new();
-    v18 = [MEMORY[0x1E695DEE8] mtGregorianCalendar];
+    mtGregorianCalendar = [MEMORY[0x1E695DEE8] mtGregorianCalendar];
     v24 = MEMORY[0x1E69E9820];
     v25 = 3221225472;
     v26 = __57__MTScheduledList__sortAndFilter_objectsToScheduleAhead___block_invoke_2;
     v27 = &unk_1E7B0C898;
-    v19 = v16;
+    v19 = firstObject;
     v28 = v19;
-    v29 = v18;
+    v29 = mtGregorianCalendar;
     v20 = v17;
     v30 = v20;
-    v31 = v8;
-    v32 = a1;
-    v21 = v18;
+    v31 = aheadCopy;
+    selfCopy = self;
+    v21 = mtGregorianCalendar;
     [v15 enumerateObjectsUsingBlock:&v24];
-    v22 = [v19 trigger];
-    v23 = [v22 isPastOverrideEvent];
+    trigger = [v19 trigger];
+    isPastOverrideEvent = [trigger isPastOverrideEvent];
 
-    if (v23)
+    if (isPastOverrideEvent)
     {
       [v20 addObject:v19];
     }
 
     if ([v20 count])
     {
-      [v7 removeObjectsInArray:v20];
+      [filterCopy removeObjectsInArray:v20];
     }
 
     if ([v14 count])
     {
-      [v7 removeObjectsInArray:v14];
+      [filterCopy removeObjectsInArray:v14];
     }
   }
 }
@@ -292,11 +292,11 @@ uint64_t __45__MTScheduledList__scheduledObjectComparator__block_invoke(uint64_t
 - (NSArray)scheduledAlertsAndNotifications
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(NSMutableOrderedSet *)self->_orderedScheduledAlerts array];
-  v5 = [v3 arrayWithArray:v4];
+  array = [(NSMutableOrderedSet *)self->_orderedScheduledAlerts array];
+  v5 = [v3 arrayWithArray:array];
 
-  v6 = [(NSMutableOrderedSet *)self->_orderedScheduledNotifications array];
-  [v5 addObjectsFromArray:v6];
+  array2 = [(NSMutableOrderedSet *)self->_orderedScheduledNotifications array];
+  [v5 addObjectsFromArray:array2];
 
   [objc_opt_class() _sortAndFilter:v5];
 
@@ -306,29 +306,29 @@ uint64_t __45__MTScheduledList__scheduledObjectComparator__block_invoke(uint64_t
 - (NSArray)scheduledObjects
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(MTScheduledList *)self scheduledAlertsAndNotifications];
-  v5 = [v3 arrayWithArray:v4];
+  scheduledAlertsAndNotifications = [(MTScheduledList *)self scheduledAlertsAndNotifications];
+  v5 = [v3 arrayWithArray:scheduledAlertsAndNotifications];
 
-  v6 = [(NSMutableOrderedSet *)self->_orderedScheduledEvents array];
-  [v5 addObjectsFromArray:v6];
+  array = [(NSMutableOrderedSet *)self->_orderedScheduledEvents array];
+  [v5 addObjectsFromArray:array];
 
   [objc_opt_class() _sortAndFilter:v5];
 
   return v5;
 }
 
-- (id)scheduledObjectsToFireBeforeDate:(id)a3
+- (id)scheduledObjectsToFireBeforeDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_opt_class();
-  v6 = [(MTScheduledList *)self scheduledObjects];
+  scheduledObjects = [(MTScheduledList *)self scheduledObjects];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __52__MTScheduledList_scheduledObjectsToFireBeforeDate___block_invoke;
   v10[3] = &unk_1E7B0C8E0;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v5 _filterScheduledObjects:v6 withBlock:v10];
+  v11 = dateCopy;
+  v7 = dateCopy;
+  v8 = [v5 _filterScheduledObjects:scheduledObjects withBlock:v10];
 
   return v8;
 }
@@ -343,27 +343,27 @@ BOOL __52__MTScheduledList_scheduledObjectsToFireBeforeDate___block_invoke(uint6
   return v6;
 }
 
-- (id)scheduledObjectsToFireInInterval:(id)a3
+- (id)scheduledObjectsToFireInInterval:(id)interval
 {
-  v4 = a3;
+  intervalCopy = interval;
   v5 = objc_opt_class();
-  v6 = [(MTScheduledList *)self scheduledObjects];
-  v7 = [objc_opt_class() _dateIntervalFilter:v4];
+  scheduledObjects = [(MTScheduledList *)self scheduledObjects];
+  v7 = [objc_opt_class() _dateIntervalFilter:intervalCopy];
 
-  v8 = [v5 _filterScheduledObjects:v6 withBlock:v7];
+  v8 = [v5 _filterScheduledObjects:scheduledObjects withBlock:v7];
 
   return v8;
 }
 
-+ (id)_dateIntervalFilter:(id)a3
++ (id)_dateIntervalFilter:(id)filter
 {
-  v3 = a3;
+  filterCopy = filter;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __39__MTScheduledList__dateIntervalFilter___block_invoke;
   aBlock[3] = &unk_1E7B0C8E0;
-  v8 = v3;
-  v4 = v3;
+  v8 = filterCopy;
+  v4 = filterCopy;
   v5 = _Block_copy(aBlock);
 
   return v5;
@@ -410,14 +410,14 @@ BOOL __39__MTScheduledList__dateIntervalFilter___block_invoke(uint64_t a1, void 
   return v7;
 }
 
-+ (id)_nextScheduledObjectInSets:(id)a3
++ (id)_nextScheduledObjectInSets:(id)sets
 {
   v24 = *MEMORY[0x1E69E9840];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = a3;
+  obj = sets;
   v3 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v3)
   {
@@ -433,18 +433,18 @@ BOOL __39__MTScheduledList__dateIntervalFilter___block_invoke(uint64_t a1, void 
           objc_enumerationMutation(obj);
         }
 
-        v8 = [*(*(&v19 + 1) + 8 * i) firstObject];
-        v9 = v8;
+        firstObject = [*(*(&v19 + 1) + 8 * i) firstObject];
+        v9 = firstObject;
         if (!v5)
         {
           goto LABEL_8;
         }
 
-        v10 = [v8 trigger];
-        v11 = [v10 triggerDate];
-        v12 = [v5 trigger];
-        v13 = [v12 triggerDate];
-        v14 = [v11 mtIsBeforeDate:v13];
+        trigger = [firstObject trigger];
+        triggerDate = [trigger triggerDate];
+        trigger2 = [v5 trigger];
+        triggerDate2 = [trigger2 triggerDate];
+        v14 = [triggerDate mtIsBeforeDate:triggerDate2];
 
         if (v14)
         {
@@ -471,16 +471,16 @@ LABEL_8:
   return v5;
 }
 
-- (id)nextScheduledObjectWithTriggerType:(unint64_t)a3
+- (id)nextScheduledObjectWithTriggerType:(unint64_t)type
 {
   v4 = [(MTScheduledList *)self _scheduledListForTriggerType:?];
-  v5 = [v4 array];
+  array = [v4 array];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__MTScheduledList_nextScheduledObjectWithTriggerType___block_invoke;
   v8[3] = &__block_descriptor_40_e27_B16__0__MTScheduledObject_8l;
-  v8[4] = a3;
-  v6 = [v5 na_firstObjectPassingTest:v8];
+  v8[4] = type;
+  v6 = [array na_firstObjectPassingTest:v8];
 
   return v6;
 }
@@ -493,9 +493,9 @@ BOOL __54__MTScheduledList_nextScheduledObjectWithTriggerType___block_invoke(uin
   return v4;
 }
 
-- (id)_scheduledListForTriggerType:(unint64_t)a3
+- (id)_scheduledListForTriggerType:(unint64_t)type
 {
-  v4 = [MTScheduledObject scheduledTypeForTriggerType:a3];
+  v4 = [MTScheduledObject scheduledTypeForTriggerType:type];
   if (v4 > 2)
   {
     v5 = 0;
@@ -519,16 +519,16 @@ BOOL __54__MTScheduledList_nextScheduledObjectWithTriggerType___block_invoke(uin
   [(NSMutableDictionary *)scheduledAlertMap removeAllObjects];
 }
 
-- (void)unschedule:(id)a3
+- (void)unschedule:(id)unschedule
 {
-  v4 = a3;
+  unscheduleCopy = unschedule;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __30__MTScheduledList_unschedule___block_invoke;
   v6[3] = &unk_1E7B0C928;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = unscheduleCopy;
+  selfCopy = self;
+  v5 = unscheduleCopy;
   [(MTScheduledList *)self _performScheduleChangingBlock:v6 withCompletion:0];
 }
 
@@ -568,19 +568,19 @@ void __30__MTScheduledList_unschedule___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_unschedule:(id)a3
+- (void)_unschedule:(id)_unschedule
 {
   v18 = *MEMORY[0x1E69E9840];
   scheduledAlertMap = self->_scheduledAlertMap;
-  v5 = [a3 identifier];
-  v6 = [(NSMutableDictionary *)scheduledAlertMap objectForKeyedSubscript:v5];
+  identifier = [_unschedule identifier];
+  v6 = [(NSMutableDictionary *)scheduledAlertMap objectForKeyedSubscript:identifier];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [v6 allValues];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [v6 allValues];
+  v8 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -592,14 +592,14 @@ void __30__MTScheduledList_unschedule___block_invoke(uint64_t a1)
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         [(MTScheduledList *)self _unscheduleObject:*(*(&v13 + 1) + 8 * v11++)];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -608,20 +608,20 @@ void __30__MTScheduledList_unschedule___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)schedule:(id)a3 afterDate:(id)a4 withCompletion:(id)a5
+- (void)schedule:(id)schedule afterDate:(id)date withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  scheduleCopy = schedule;
+  dateCopy = date;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __53__MTScheduledList_schedule_afterDate_withCompletion___block_invoke;
   v12[3] = &unk_1E7B0C9A0;
-  v13 = v8;
-  v14 = self;
-  v15 = v9;
-  v10 = v9;
-  v11 = v8;
-  [(MTScheduledList *)self _performScheduleChangingBlock:v12 withCompletion:a5];
+  v13 = scheduleCopy;
+  selfCopy = self;
+  v15 = dateCopy;
+  v10 = dateCopy;
+  v11 = scheduleCopy;
+  [(MTScheduledList *)self _performScheduleChangingBlock:v12 withCompletion:completion];
 }
 
 void __53__MTScheduledList_schedule_afterDate_withCompletion___block_invoke(uint64_t a1)
@@ -675,39 +675,39 @@ void __53__MTScheduledList_schedule_afterDate_withCompletion___block_invoke(uint
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_scheduleObject:(id)a3
+- (void)_scheduleObject:(id)object
 {
-  v16 = a3;
-  v4 = [v16 trigger];
-  v5 = -[MTScheduledList _scheduledListForTriggerType:](self, "_scheduledListForTriggerType:", [v4 triggerType]);
+  objectCopy = object;
+  trigger = [objectCopy trigger];
+  v5 = -[MTScheduledList _scheduledListForTriggerType:](self, "_scheduledListForTriggerType:", [trigger triggerType]);
 
-  [v5 addObject:v16];
+  [v5 addObject:objectCopy];
   scheduledAlertMap = self->_scheduledAlertMap;
-  v7 = [v16 scheduleable];
-  v8 = [v7 identifier];
-  v9 = [(NSMutableDictionary *)scheduledAlertMap objectForKeyedSubscript:v8];
+  scheduleable = [objectCopy scheduleable];
+  identifier = [scheduleable identifier];
+  v9 = [(NSMutableDictionary *)scheduledAlertMap objectForKeyedSubscript:identifier];
 
   if (!v9)
   {
     v9 = objc_opt_new();
     v10 = self->_scheduledAlertMap;
-    v11 = [v16 scheduleable];
-    v12 = [v11 identifier];
-    [(NSMutableDictionary *)v10 setObject:v9 forKeyedSubscript:v12];
+    scheduleable2 = [objectCopy scheduleable];
+    identifier2 = [scheduleable2 identifier];
+    [(NSMutableDictionary *)v10 setObject:v9 forKeyedSubscript:identifier2];
   }
 
   v13 = MEMORY[0x1E696AD98];
-  v14 = [v16 trigger];
-  v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(v14, "triggerType")}];
-  [v9 setObject:v16 forKeyedSubscript:v15];
+  trigger2 = [objectCopy trigger];
+  v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(trigger2, "triggerType")}];
+  [v9 setObject:objectCopy forKeyedSubscript:v15];
 }
 
-- (void)_performScheduleChangingBlock:(id)a3 withCompletion:(id)a4
+- (void)_performScheduleChangingBlock:(id)block withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTScheduledList *)self nextScheduledAlertOrNotification];
-  v7[2](v7);
+  completionCopy = completion;
+  blockCopy = block;
+  nextScheduledAlertOrNotification = [(MTScheduledList *)self nextScheduledAlertOrNotification];
+  blockCopy[2](blockCopy);
 
   v9 = objc_opt_new();
   [objc_opt_class() _sortAndFilter:self->_orderedScheduledAlerts objectsToScheduleAhead:v9];
@@ -719,43 +719,43 @@ void __53__MTScheduledList_schedule_afterDate_withCompletion___block_invoke(uint
   [v9 na_each:v12];
   [objc_opt_class() _sort:self->_orderedScheduledNotifications];
   [objc_opt_class() _sort:self->_orderedScheduledEvents];
-  v10 = [(MTScheduledList *)self nextScheduledAlertOrNotification];
-  if (v8 == v10 || ([v8 isEqual:v10] & 1) != 0)
+  nextScheduledAlertOrNotification2 = [(MTScheduledList *)self nextScheduledAlertOrNotification];
+  if (nextScheduledAlertOrNotification == nextScheduledAlertOrNotification2 || ([nextScheduledAlertOrNotification isEqual:nextScheduledAlertOrNotification2] & 1) != 0)
   {
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
-    v11 = [(MTScheduledList *)self delegate];
-    [v11 scheduledListDidChange:self withCompletion:v6];
+    delegate = [(MTScheduledList *)self delegate];
+    [delegate scheduledListDidChange:self withCompletion:completionCopy];
   }
 }
 
-- (BOOL)isScheduled:(id)a3
+- (BOOL)isScheduled:(id)scheduled
 {
-  v4 = a3;
+  scheduledCopy = scheduled;
   scheduledAlertMap = self->_scheduledAlertMap;
-  v6 = [v4 scheduleable];
-  v7 = [v6 identifier];
-  v8 = [(NSMutableDictionary *)scheduledAlertMap objectForKeyedSubscript:v7];
+  scheduleable = [scheduledCopy scheduleable];
+  identifier = [scheduleable identifier];
+  v8 = [(NSMutableDictionary *)scheduledAlertMap objectForKeyedSubscript:identifier];
   v9 = MEMORY[0x1E696AD98];
-  v10 = [v4 trigger];
-  v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(v10, "triggerType")}];
+  trigger = [scheduledCopy trigger];
+  v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(trigger, "triggerType")}];
   v12 = [v8 objectForKeyedSubscript:v11];
 
   if (v12)
   {
-    v13 = [v4 trigger];
-    v14 = [v13 triggerDate];
+    trigger2 = [scheduledCopy trigger];
+    triggerDate = [trigger2 triggerDate];
 
-    v15 = [v12 trigger];
-    v16 = [v15 triggerDate];
+    trigger3 = [v12 trigger];
+    triggerDate2 = [trigger3 triggerDate];
 
-    v17 = [v14 compare:v16] != -1;
+    v17 = [triggerDate compare:triggerDate2] != -1;
   }
 
   else
@@ -766,39 +766,39 @@ void __53__MTScheduledList_schedule_afterDate_withCompletion___block_invoke(uint
   return v17;
 }
 
-- (void)_unscheduleObject:(id)a3
+- (void)_unscheduleObject:(id)object
 {
-  v16 = a3;
-  v4 = [v16 trigger];
-  v5 = -[MTScheduledList _scheduledListForTriggerType:](self, "_scheduledListForTriggerType:", [v4 triggerType]);
+  objectCopy = object;
+  trigger = [objectCopy trigger];
+  v5 = -[MTScheduledList _scheduledListForTriggerType:](self, "_scheduledListForTriggerType:", [trigger triggerType]);
 
-  [v5 removeObject:v16];
+  [v5 removeObject:objectCopy];
   scheduledAlertMap = self->_scheduledAlertMap;
-  v7 = [v16 scheduleable];
-  v8 = [v7 identifier];
-  v9 = [(NSMutableDictionary *)scheduledAlertMap objectForKeyedSubscript:v8];
+  scheduleable = [objectCopy scheduleable];
+  identifier = [scheduleable identifier];
+  v9 = [(NSMutableDictionary *)scheduledAlertMap objectForKeyedSubscript:identifier];
 
   v10 = MEMORY[0x1E696AD98];
-  v11 = [v16 trigger];
-  v12 = [v10 numberWithUnsignedInteger:{objc_msgSend(v11, "triggerType")}];
+  trigger2 = [objectCopy trigger];
+  v12 = [v10 numberWithUnsignedInteger:{objc_msgSend(trigger2, "triggerType")}];
   [v9 removeObjectForKey:v12];
 
   if (![v9 count])
   {
     v13 = self->_scheduledAlertMap;
-    v14 = [v16 scheduleable];
-    v15 = [v14 identifier];
-    [(NSMutableDictionary *)v13 removeObjectForKey:v15];
+    scheduleable2 = [objectCopy scheduleable];
+    identifier2 = [scheduleable2 identifier];
+    [(NSMutableDictionary *)v13 removeObjectForKey:identifier2];
   }
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MTScheduledList *)self orderedScheduledAlerts];
-  v5 = [(MTScheduledList *)self orderedScheduledNotifications];
-  v6 = [(MTScheduledList *)self orderedScheduledEvents];
-  v7 = [v3 stringWithFormat:@"Alerts: %@, Notifications: %@, Events: %@", v4, v5, v6];
+  orderedScheduledAlerts = [(MTScheduledList *)self orderedScheduledAlerts];
+  orderedScheduledNotifications = [(MTScheduledList *)self orderedScheduledNotifications];
+  orderedScheduledEvents = [(MTScheduledList *)self orderedScheduledEvents];
+  v7 = [v3 stringWithFormat:@"Alerts: %@, Notifications: %@, Events: %@", orderedScheduledAlerts, orderedScheduledNotifications, orderedScheduledEvents];
 
   return v7;
 }

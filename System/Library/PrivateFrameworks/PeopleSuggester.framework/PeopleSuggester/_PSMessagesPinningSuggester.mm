@@ -1,15 +1,15 @@
 @interface _PSMessagesPinningSuggester
 - (BOOL)loadPSConfig;
 - (_CDInteractionStore)interactionStore;
-- (_PSMessagesPinningSuggester)initWithRegularityThreshold:(double)a3 intensityThreshold:(double)a4 regularityWeight:(double)a5 intensityWeight:(double)a6 minimalInteration:(int64_t)a7 minimalUniqueDaysInteracted:(int64_t)a8 interactionStore:(id)a9 lookbackWindow:(double)a10 outgoingOnly:(BOOL)a11;
-- (id)chatGuidsBasedOnRegularityAndIntensityWithMaxSuggestions:(int64_t)a3 referenceDate:(id)a4 minimumDaysOfHistory:(int64_t)a5 maxInteractionsForQuery:(int64_t)a6;
-- (id)chatGuidsForMessagesPinningWithMaxSuggestions:(int64_t)a3;
-- (id)chatGuidsForPinningHeuristicApproachWithMaxSuggestions:(int64_t)a3 forReferenceDate:(id)a4;
-- (id)getPayloadOfFeedback:(id)a3;
+- (_PSMessagesPinningSuggester)initWithRegularityThreshold:(double)threshold intensityThreshold:(double)intensityThreshold regularityWeight:(double)weight intensityWeight:(double)intensityWeight minimalInteration:(int64_t)interation minimalUniqueDaysInteracted:(int64_t)interacted interactionStore:(id)store lookbackWindow:(double)self0 outgoingOnly:(BOOL)self1;
+- (id)chatGuidsBasedOnRegularityAndIntensityWithMaxSuggestions:(int64_t)suggestions referenceDate:(id)date minimumDaysOfHistory:(int64_t)history maxInteractionsForQuery:(int64_t)query;
+- (id)chatGuidsForMessagesPinningWithMaxSuggestions:(int64_t)suggestions;
+- (id)chatGuidsForPinningHeuristicApproachWithMaxSuggestions:(int64_t)suggestions forReferenceDate:(id)date;
+- (id)getPayloadOfFeedback:(id)feedback;
 - (void)dealloc;
-- (void)provideMessagesPinningFeedback:(id)a3;
-- (void)submitMessagesPinningFeedback:(id)a3;
-- (void)updateModelProperties:(id)a3;
+- (void)provideMessagesPinningFeedback:(id)feedback;
+- (void)submitMessagesPinningFeedback:(id)feedback;
+- (void)updateModelProperties:(id)properties;
 @end
 
 @implementation _PSMessagesPinningSuggester
@@ -35,11 +35,11 @@
   return v5 != 0;
 }
 
-- (void)updateModelProperties:(id)a3
+- (void)updateModelProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   [(_PSMessagesPinningSuggester *)self setConfigVersion:@"2"];
-  v8 = [v4 objectForKeyedSubscript:@"2"];
+  v8 = [propertiesCopy objectForKeyedSubscript:@"2"];
 
   v5 = [v8 objectForKeyedSubscript:@"_PSMessagesPinningBoostGroups"];
   -[_PSMessagesPinningSuggester setBoostGroups:](self, "setBoostGroups:", [v5 integerValue] != 0);
@@ -51,28 +51,28 @@
   -[_PSMessagesPinningSuggester setBoostIndividualFavorites:](self, "setBoostIndividualFavorites:", [v7 integerValue] != 0);
 }
 
-- (_PSMessagesPinningSuggester)initWithRegularityThreshold:(double)a3 intensityThreshold:(double)a4 regularityWeight:(double)a5 intensityWeight:(double)a6 minimalInteration:(int64_t)a7 minimalUniqueDaysInteracted:(int64_t)a8 interactionStore:(id)a9 lookbackWindow:(double)a10 outgoingOnly:(BOOL)a11
+- (_PSMessagesPinningSuggester)initWithRegularityThreshold:(double)threshold intensityThreshold:(double)intensityThreshold regularityWeight:(double)weight intensityWeight:(double)intensityWeight minimalInteration:(int64_t)interation minimalUniqueDaysInteracted:(int64_t)interacted interactionStore:(id)store lookbackWindow:(double)self0 outgoingOnly:(BOOL)self1
 {
-  v21 = a9;
+  storeCopy = store;
   v29.receiver = self;
   v29.super_class = _PSMessagesPinningSuggester;
   v22 = [(_PSMessagesPinningSuggester *)&v29 init];
   v23 = v22;
   if (v22)
   {
-    v22->_regularityThreshold = a3;
-    v22->_intensityThreshold = a4;
-    v22->_regularityWeight = a5;
-    v22->_intensityWeight = a6;
-    v22->_minimalInteractions = a7;
-    v22->_minimalUniqueDaysInteracted = a8;
-    if (v21)
+    v22->_regularityThreshold = threshold;
+    v22->_intensityThreshold = intensityThreshold;
+    v22->_regularityWeight = weight;
+    v22->_intensityWeight = intensityWeight;
+    v22->_minimalInteractions = interation;
+    v22->_minimalUniqueDaysInteracted = interacted;
+    if (storeCopy)
     {
-      objc_storeStrong(&v22->_interactionStore, a9);
+      objc_storeStrong(&v22->_interactionStore, store);
     }
 
-    v23->_lookbackWindow = a10;
-    v23->_outgoingOnly = a11;
+    v23->_lookbackWindow = window;
+    v23->_outgoingOnly = only;
     v23->_lock._os_unfair_lock_opaque = 0;
     v24 = objc_alloc(MEMORY[0x1E696B0B8]);
     v25 = [v24 initWithMachServiceName:*MEMORY[0x1E6997A00] options:4096];
@@ -104,8 +104,8 @@
   if (!interactionStore)
   {
     v4 = MEMORY[0x1E69978F8];
-    v5 = [MEMORY[0x1E69978F8] defaultDatabaseDirectory];
-    v6 = [v4 storeWithDirectory:v5 readOnly:1];
+    defaultDatabaseDirectory = [MEMORY[0x1E69978F8] defaultDatabaseDirectory];
+    v6 = [v4 storeWithDirectory:defaultDatabaseDirectory readOnly:1];
     v7 = self->_interactionStore;
     self->_interactionStore = v6;
 
@@ -118,7 +118,7 @@
   return v8;
 }
 
-- (id)chatGuidsForMessagesPinningWithMaxSuggestions:(int64_t)a3
+- (id)chatGuidsForMessagesPinningWithMaxSuggestions:(int64_t)suggestions
 {
   v13 = 0;
   v14 = &v13;
@@ -129,14 +129,14 @@
   connection = self->_connection;
   if (connection)
   {
-    v6 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_15];
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    date = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_15];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:suggestions];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __77___PSMessagesPinningSuggester_chatGuidsForMessagesPinningWithMaxSuggestions___block_invoke_44;
     v12[3] = &unk_1E7C243A0;
     v12[4] = &v13;
-    [v6 rankedMessagesPinsWithMaxSuggestions:v7 reply:v12];
+    [date rankedMessagesPinsWithMaxSuggestions:v7 reply:v12];
 
     if ([v14[5] count])
     {
@@ -153,8 +153,8 @@
 
   else
   {
-    v6 = [MEMORY[0x1E695DF00] date];
-    v9 = [(_PSMessagesPinningSuggester *)self chatGuidsForPinningHeuristicApproachWithMaxSuggestions:a3 forReferenceDate:v6];
+    date = [MEMORY[0x1E695DF00] date];
+    v9 = [(_PSMessagesPinningSuggester *)self chatGuidsForPinningHeuristicApproachWithMaxSuggestions:suggestions forReferenceDate:date];
   }
 
   v10 = v9;
@@ -164,18 +164,18 @@
   return v10;
 }
 
-- (id)chatGuidsForPinningHeuristicApproachWithMaxSuggestions:(int64_t)a3 forReferenceDate:(id)a4
+- (id)chatGuidsForPinningHeuristicApproachWithMaxSuggestions:(int64_t)suggestions forReferenceDate:(id)date
 {
-  v6 = a4;
-  v7 = [(_PSMessagesPinningSuggester *)self chatGuidsBasedOnRegularityAndIntensityWithMaxSuggestions:a3 referenceDate:v6 minimumDaysOfHistory:+[_PSPrivacyDataRetentionPeriod maxInteractionsForQuery:"numberOfDaysInMonth"], 2500];
+  dateCopy = date;
+  2500 = [(_PSMessagesPinningSuggester *)self chatGuidsBasedOnRegularityAndIntensityWithMaxSuggestions:suggestions referenceDate:dateCopy minimumDaysOfHistory:+[_PSPrivacyDataRetentionPeriod maxInteractionsForQuery:"numberOfDaysInMonth"], 2500];
 
-  return v7;
+  return 2500;
 }
 
-- (id)chatGuidsBasedOnRegularityAndIntensityWithMaxSuggestions:(int64_t)a3 referenceDate:(id)a4 minimumDaysOfHistory:(int64_t)a5 maxInteractionsForQuery:(int64_t)a6
+- (id)chatGuidsBasedOnRegularityAndIntensityWithMaxSuggestions:(int64_t)suggestions referenceDate:(id)date minimumDaysOfHistory:(int64_t)history maxInteractionsForQuery:(int64_t)query
 {
   v204[2] = *MEMORY[0x1E69E9840];
-  v149 = a4;
+  dateCopy = date;
   if ([MEMORY[0x1E69978B8] isRunningOnInternalBuild])
   {
     v9 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.PeopleSuggester.MessagesPinning"];
@@ -183,16 +183,16 @@
     {
       [(_PSMessagesPinningSuggester *)self setMinimalInteractions:0];
       [(_PSMessagesPinningSuggester *)self setMinimalUniqueDaysInteracted:0];
-      a5 = 0;
+      history = 0;
     }
   }
 
-  v164 = self;
-  v10 = [(_PSMessagesPinningSuggester *)self outgoingOnly];
+  selfCopy = self;
+  outgoingOnly = [(_PSMessagesPinningSuggester *)self outgoingOnly];
   v11 = MEMORY[0x1E696AE18];
   v12 = +[_PSConstants mobileMessagesBundleId];
   v13 = v12;
-  if (v10)
+  if (outgoingOnly)
   {
     v204[0] = v12;
     v14 = +[_PSConstants macMessagesBundleId];
@@ -212,7 +212,7 @@
   v16 = ;
 
   v17 = MEMORY[0x1E696AE18];
-  v18 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:(-86400 * a5)];
+  v18 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:(-86400 * history)];
   v19 = [v17 predicateWithFormat:@"startDate < %@", v18];
 
   v20 = MEMORY[0x1E696AB28];
@@ -222,10 +222,10 @@
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v202 count:2];
   v22 = [v20 andPredicateWithSubpredicates:v21];
 
-  v23 = [(_PSMessagesPinningSuggester *)v164 interactionStore];
+  interactionStore = [(_PSMessagesPinningSuggester *)selfCopy interactionStore];
   v192 = 0;
   v147 = v22;
-  v24 = [v23 queryInteractionsUsingPredicate:v22 sortDescriptors:0 limit:1 error:&v192];
+  v24 = [interactionStore queryInteractionsUsingPredicate:v22 sortDescriptors:0 limit:1 error:&v192];
   v25 = v192;
 
   v148 = v25;
@@ -254,9 +254,9 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  [(_PSMessagesPinningSuggester *)v164 lookbackWindow];
-  v150 = [v149 dateByAddingTimeInterval:-v28];
-  v29 = [MEMORY[0x1E696AE18] predicateWithFormat:@"startDate >= %@", v150];
+  [(_PSMessagesPinningSuggester *)selfCopy lookbackWindow];
+  v150 = [dateCopy dateByAddingTimeInterval:-v28];
+  v150 = [MEMORY[0x1E696AE18] predicateWithFormat:@"startDate >= %@", v150];
 
   v163 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v30 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -267,8 +267,8 @@ LABEL_11:
   v162 = [MEMORY[0x1E695DFA8] set];
   v159 = +[_PSContactResolver handlesForContactFavorites];
   v145 = MEMORY[0x1E695E0F0];
-  v151 = a6;
-  v152 = v29;
+  queryCopy = query;
+  v152 = v150;
   v146 = v16;
   v171 = v31;
   v160 = v32;
@@ -284,13 +284,13 @@ LABEL_11:
     v36 = [v34 andPredicateWithSubpredicates:v35];
 
     v37 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"startDate" ascending:0];
-    v38 = [(_PSMessagesPinningSuggester *)v164 interactionStore];
+    interactionStore2 = [(_PSMessagesPinningSuggester *)selfCopy interactionStore];
     v153 = v37;
     v200 = v37;
     v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v200 count:1];
     v191 = 0;
     v154 = v36;
-    v40 = [v38 queryInteractionsUsingPredicate:v36 sortDescriptors:v39 limit:a6 error:&v191];
+    v40 = [interactionStore2 queryInteractionsUsingPredicate:v36 sortDescriptors:v39 limit:query error:&v191];
     v41 = v191;
 
     v156 = v41;
@@ -312,14 +312,14 @@ LABEL_18:
       goto LABEL_77;
     }
 
-    v44 = [v40 lastObject];
-    v45 = [v44 startDate];
-    [v150 timeIntervalSinceDate:v45];
+    lastObject = [v40 lastObject];
+    startDate = [lastObject startDate];
+    [v150 timeIntervalSinceDate:startDate];
     if (v46 < 0.0)
     {
       v47 = [v40 count];
 
-      if (v47 != v151)
+      if (v47 != queryCopy)
       {
         v16 = v146;
         v42 = v165;
@@ -327,9 +327,9 @@ LABEL_18:
       }
 
       v48 = MEMORY[0x1E696AE18];
-      v44 = [v40 lastObject];
-      v45 = [v44 startDate];
-      v49 = [v48 predicateWithFormat:@"((startDate >= %@) AND (startDate < %@))", v150, v45];
+      lastObject = [v40 lastObject];
+      startDate = [lastObject startDate];
+      v49 = [v48 predicateWithFormat:@"((startDate >= %@) AND (startDate < %@))", v150, startDate];
 
       v152 = v49;
       v16 = v146;
@@ -362,13 +362,13 @@ LABEL_24:
 
         v51 = *(*(&v187 + 1) + 8 * i);
         v52 = objc_autoreleasePoolPush();
-        v53 = [v51 domainIdentifier];
-        v54 = [v53 componentsSeparatedByString:@""];;
-        v55 = [v54 lastObject];
+        domainIdentifier = [v51 domainIdentifier];
+        v54 = [domainIdentifier componentsSeparatedByString:@""];;
+        lastObject2 = [v54 lastObject];
 
-        if (v53)
+        if (domainIdentifier)
         {
-          v56 = v55 == 0;
+          v56 = lastObject2 == 0;
         }
 
         else
@@ -381,61 +381,61 @@ LABEL_24:
           goto LABEL_74;
         }
 
-        v57 = [v51 recipients];
-        if ([v57 count] != 1 || !objc_msgSend(v51, "direction"))
+        recipients = [v51 recipients];
+        if ([recipients count] != 1 || !objc_msgSend(v51, "direction"))
         {
           goto LABEL_45;
         }
 
-        v58 = [v51 recipients];
-        v59 = [v58 firstObject];
-        v60 = [v59 personId];
+        recipients2 = [v51 recipients];
+        firstObject = [recipients2 firstObject];
+        personId = [firstObject personId];
 
-        if (v60)
+        if (personId)
         {
-          v61 = [v51 recipients];
-          v62 = [v61 firstObject];
-          v57 = [v62 identifier];
+          recipients3 = [v51 recipients];
+          firstObject2 = [recipients3 firstObject];
+          recipients = [firstObject2 identifier];
 
-          v63 = [v51 recipients];
-          v64 = [v63 firstObject];
-          v65 = [v64 personId];
+          recipients4 = [v51 recipients];
+          firstObject3 = [recipients4 firstObject];
+          personId2 = [firstObject3 personId];
 
-          v66 = [v160 objectForKeyedSubscript:v57];
+          v66 = [v160 objectForKeyedSubscript:recipients];
 
           if (v66)
           {
-            v67 = [v160 objectForKeyedSubscript:v57];
+            v67 = [v160 objectForKeyedSubscript:recipients];
 
-            v65 = v67;
+            personId2 = v67;
           }
 
           else
           {
-            [v160 setObject:v65 forKeyedSubscript:v57];
+            [v160 setObject:personId2 forKeyedSubscript:recipients];
           }
 
-          v68 = [v161 objectForKeyedSubscript:v65];
+          v68 = [v161 objectForKeyedSubscript:personId2];
 
           if (v68)
           {
-            v69 = [v161 objectForKeyedSubscript:v65];
+            v69 = [v161 objectForKeyedSubscript:personId2];
 
             v70 = [v69 componentsSeparatedByString:@""];;
-            v71 = [v70 lastObject];
+            lastObject3 = [v70 lastObject];
 
-            v55 = v71;
-            v53 = v69;
+            lastObject2 = lastObject3;
+            domainIdentifier = v69;
           }
 
           else
           {
-            [v161 setObject:v53 forKeyedSubscript:v65];
+            [v161 setObject:domainIdentifier forKeyedSubscript:personId2];
           }
 
-          if ([v159 containsObject:v57])
+          if ([v159 containsObject:recipients])
           {
-            [v162 addObject:v53];
+            [v162 addObject:domainIdentifier];
           }
 
 LABEL_45:
@@ -443,20 +443,20 @@ LABEL_45:
 
         if ([v51 direction] == 1 || objc_msgSend(v51, "direction") == 3)
         {
-          v172 = [v51 recipients];
-          if ([v172 count] == 1)
+          recipients5 = [v51 recipients];
+          if ([recipients5 count] == 1)
           {
-            v72 = [v51 recipients];
-            v73 = [v72 firstObject];
-            v169 = [v73 personId];
-            v166 = v73;
-            v167 = v72;
-            if (!v169)
+            recipients6 = [v51 recipients];
+            firstObject4 = [recipients6 firstObject];
+            personId3 = [firstObject4 personId];
+            v166 = firstObject4;
+            v167 = recipients6;
+            if (!personId3)
             {
 
-              v169 = 0;
+              personId3 = 0;
               v31 = v171;
-              v81 = v172;
+              v81 = recipients5;
               goto LABEL_73;
             }
 
@@ -477,9 +477,9 @@ LABEL_45:
           v75 = 0;
         }
 
-        v76 = [v51 sender];
-        v77 = [v76 personId];
-        if (v77)
+        sender = [v51 sender];
+        personId4 = [sender personId];
+        if (personId4)
         {
           v78 = 0;
         }
@@ -511,44 +511,44 @@ LABEL_62:
           }
 
 LABEL_63:
-          v79 = [v168 objectForKey:v55];
+          v79 = [v168 objectForKey:lastObject2];
 
           if (!v79)
           {
-            [v168 setObject:v53 forKey:v55];
+            [v168 setObject:domainIdentifier forKey:lastObject2];
           }
 
-          v80 = [v51 startDate];
-          v81 = [_PSMessagesPinningUtilities startOfDayForDate:v80];
+          startDate2 = [v51 startDate];
+          v81 = [_PSMessagesPinningUtilities startOfDayForDate:startDate2];
 
-          v82 = [v165 objectForKey:v55];
+          v82 = [v165 objectForKey:lastObject2];
 
           if (v82)
           {
-            v83 = [v165 objectForKey:v55];
-            v84 = [v83 intValue];
+            v83 = [v165 objectForKey:lastObject2];
+            intValue = [v83 intValue];
 
-            v85 = [MEMORY[0x1E696AD98] numberWithInt:(v84 + 1)];
-            [v165 setObject:v85 forKey:v55];
+            v85 = [MEMORY[0x1E696AD98] numberWithInt:(intValue + 1)];
+            [v165 setObject:v85 forKey:lastObject2];
           }
 
           else
           {
-            [v165 setObject:&unk_1F2D8B5E0 forKey:v55];
+            [v165 setObject:&unk_1F2D8B5E0 forKey:lastObject2];
           }
 
-          v86 = [v31 objectForKey:v55];
+          v86 = [v31 objectForKey:lastObject2];
 
           if (v86)
           {
-            v87 = [v31 objectForKey:v55];
+            v87 = [v31 objectForKey:lastObject2];
             [v87 addObject:v81];
           }
 
           else
           {
             v87 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{v81, 0}];
-            [v31 setObject:v87 forKey:v55];
+            [v31 setObject:v87 forKey:lastObject2];
           }
 
           [v163 addObject:v81];
@@ -583,15 +583,15 @@ LABEL_77:
     objc_autoreleasePoolPop(context);
     if (!v156)
     {
-      a6 = v151;
-      if ([v24 count] < v151)
+      query = queryCopy;
+      if ([v24 count] < queryCopy)
       {
-        v88 = [v42 allKeys];
+        allKeys = [v42 allKeys];
         v183 = 0u;
         v184 = 0u;
         v185 = 0u;
         v186 = 0u;
-        v89 = [v88 countByEnumeratingWithState:&v183 objects:v196 count:16];
+        v89 = [allKeys countByEnumeratingWithState:&v183 objects:v196 count:16];
         if (v89)
         {
           v90 = v89;
@@ -602,7 +602,7 @@ LABEL_77:
             {
               if (*v184 != v91)
               {
-                objc_enumerationMutation(v88);
+                objc_enumerationMutation(allKeys);
               }
 
               v93 = *(*(&v183 + 1) + 8 * j);
@@ -611,20 +611,20 @@ LABEL_77:
               v96 = [v95 count];
 
               LODWORD(v95) = [v94 intValue];
-              if ([(_PSMessagesPinningSuggester *)v164 minimalInteractions]> v95 || v96 < [(_PSMessagesPinningSuggester *)v164 minimalUniqueDaysInteracted])
+              if ([(_PSMessagesPinningSuggester *)selfCopy minimalInteractions]> v95 || v96 < [(_PSMessagesPinningSuggester *)selfCopy minimalUniqueDaysInteracted])
               {
                 [v165 removeObjectForKey:v93];
                 [v31 removeObjectForKey:v93];
               }
             }
 
-            v90 = [v88 countByEnumeratingWithState:&v183 objects:v196 count:16];
+            v90 = [allKeys countByEnumeratingWithState:&v183 objects:v196 count:16];
           }
 
           while (v90);
         }
 
-        v97 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
+        v97 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:suggestions];
         v98 = [v163 count];
         v179 = 0u;
         v180 = 0u;
@@ -655,14 +655,14 @@ LABEL_77:
 
               v110 = [v168 objectForKey:v105];
               v111 = [v162 containsObject:v110];
-              if ([(_PSMessagesPinningSuggester *)v164 boostIndividualFavorites]&& (v111 & 1) != 0 || ([(_PSMessagesPinningSuggester *)v164 regularityThreshold], v107 >= v117) && ([(_PSMessagesPinningSuggester *)v164 intensityThreshold], v109 >= v118))
+              if ([(_PSMessagesPinningSuggester *)selfCopy boostIndividualFavorites]&& (v111 & 1) != 0 || ([(_PSMessagesPinningSuggester *)selfCopy regularityThreshold], v107 >= v117) && ([(_PSMessagesPinningSuggester *)selfCopy intensityThreshold], v109 >= v118))
               {
-                [(_PSMessagesPinningSuggester *)v164 regularityWeight];
+                [(_PSMessagesPinningSuggester *)selfCopy regularityWeight];
                 v113 = v112;
-                [(_PSMessagesPinningSuggester *)v164 intensityWeight];
+                [(_PSMessagesPinningSuggester *)selfCopy intensityWeight];
                 v194[0] = v105;
-                v115 = [MEMORY[0x1E696AD98] numberWithDouble:v109 * v114 + v107 * v113];
-                v194[1] = v115;
+                v113 = [MEMORY[0x1E696AD98] numberWithDouble:v109 * v114 + v107 * v113];
+                v194[1] = v113;
                 v116 = [MEMORY[0x1E695DEC8] arrayWithObjects:v194 count:2];
 
                 if ([v97 count])
@@ -683,7 +683,7 @@ LABEL_77:
           while (v101);
         }
 
-        v119 = [MEMORY[0x1E695DFA0] orderedSet];
+        orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
         v175 = 0u;
         v176 = 0u;
         v177 = 0u;
@@ -704,12 +704,12 @@ LABEL_77:
                 objc_enumerationMutation(v120);
               }
 
-              v126 = [*(*(&v175 + 1) + 8 * m) firstObject];
-              v127 = [v168 objectForKey:v126];
-              [v119 addObject:v127];
-              if ([v126 containsString:@"chat"])
+              firstObject5 = [*(*(&v175 + 1) + 8 * m) firstObject];
+              v127 = [v168 objectForKey:firstObject5];
+              [orderedSet addObject:v127];
+              if ([firstObject5 containsString:@"chat"])
               {
-                v123 |= [v119 count] <= a3;
+                v123 |= [orderedSet count] <= suggestions;
               }
             }
 
@@ -724,10 +724,10 @@ LABEL_77:
           v123 = 0;
         }
 
-        if ([(_PSMessagesPinningSuggester *)v164 boostIndividualFavorites])
+        if ([(_PSMessagesPinningSuggester *)selfCopy boostIndividualFavorites])
         {
-          v128 = [v119 copy];
-          v129 = [v119 count];
+          v128 = [orderedSet copy];
+          v129 = [orderedSet count];
           if (v129 - 1 >= 0)
           {
             v130 = v129;
@@ -736,8 +736,8 @@ LABEL_77:
               v131 = [v128 objectAtIndexedSubscript:--v130];
               if ([v162 containsObject:v131])
               {
-                [v119 removeObject:v131];
-                [v119 insertObject:v131 atIndex:0];
+                [orderedSet removeObject:v131];
+                [orderedSet insertObject:v131 atIndex:0];
               }
             }
 
@@ -745,30 +745,30 @@ LABEL_77:
           }
         }
 
-        v132 = [v119 array];
-        v133 = [v119 count];
-        if (v133 >= a3)
+        array = [orderedSet array];
+        v133 = [orderedSet count];
+        if (v133 >= suggestions)
         {
-          v134 = a3;
+          suggestionsCopy = suggestions;
         }
 
         else
         {
-          v134 = v133;
+          suggestionsCopy = v133;
         }
 
-        v135 = [v132 subarrayWithRange:{0, v134}];
+        v135 = [array subarrayWithRange:{0, suggestionsCopy}];
         v136 = [v135 mutableCopy];
 
-        if (-[_PSMessagesPinningSuggester boostGroups](v164, "boostGroups") && ((-[_PSMessagesPinningSuggester boostIndividualFavorites](v164, "boostIndividualFavorites") | v123) & 1) == 0 && [v120 count] >= 4 && objc_msgSend(v120, "count") >= 4)
+        if (-[_PSMessagesPinningSuggester boostGroups](selfCopy, "boostGroups") && ((-[_PSMessagesPinningSuggester boostIndividualFavorites](selfCopy, "boostIndividualFavorites") | v123) & 1) == 0 && [v120 count] >= 4 && objc_msgSend(v120, "count") >= 4)
         {
           v137 = 3;
           while (1)
           {
             v138 = [v120 objectAtIndexedSubscript:v137];
-            v139 = [v138 firstObject];
+            firstObject6 = [v138 firstObject];
 
-            if ([v139 containsString:@"chat"])
+            if ([firstObject6 containsString:@"chat"])
             {
               break;
             }
@@ -782,7 +782,7 @@ LABEL_77:
             goto LABEL_139;
           }
 
-          v141 = [v168 objectForKey:v139];
+          v141 = [v168 objectForKey:firstObject6];
           [v136 removeLastObject];
           [v136 addObject:v141];
         }
@@ -814,34 +814,34 @@ LABEL_141:
   return v27;
 }
 
-- (void)provideMessagesPinningFeedback:(id)a3
+- (void)provideMessagesPinningFeedback:(id)feedback
 {
   connection = self->_connection;
-  v7 = a3;
+  feedbackCopy = feedback;
   if (connection)
   {
     v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_97_0];
-    [v5 provideMessagesPinningFeedback:v7];
+    [v5 provideMessagesPinningFeedback:feedbackCopy];
 
     v6 = v5;
   }
 
   else
   {
-    [(_PSMessagesPinningSuggester *)self submitMessagesPinningFeedback:v7];
-    v6 = v7;
+    [(_PSMessagesPinningSuggester *)self submitMessagesPinningFeedback:feedbackCopy];
+    v6 = feedbackCopy;
   }
 }
 
-- (void)submitMessagesPinningFeedback:(id)a3
+- (void)submitMessagesPinningFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   v5 = [[_PS_TPSDiscoverabilitySignal alloc] initWithIdentifier:@"com.apple.messages.pinningUIShown"];
   [(_PS_TPSDiscoverabilitySignal *)v5 donateSignalWithCompletion:&__block_literal_global_103];
-  v6 = [v4 actionType];
+  actionType = [feedbackCopy actionType];
   v7 = +[_PSLogging feedbackChannel];
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (v6 == 1)
+  if (actionType == 1)
   {
     if (v8)
     {
@@ -851,7 +851,7 @@ LABEL_141:
     }
   }
 
-  else if (v6)
+  else if (actionType)
   {
     if (v8)
     {
@@ -869,16 +869,16 @@ LABEL_9:
     _os_log_impl(&dword_1B5ED1000, v7, OS_LOG_TYPE_INFO, v9, buf, 2u);
   }
 
-  v11 = [(_PSMessagesPinningSuggester *)self getPayloadOfFeedback:v4];
+  v11 = [(_PSMessagesPinningSuggester *)self getPayloadOfFeedback:feedbackCopy];
   v10 = v11;
   AnalyticsSendEventLazy();
 }
 
-- (id)getPayloadOfFeedback:(id)a3
+- (id)getPayloadOfFeedback:(id)feedback
 {
-  v3 = a3;
+  feedbackCopy = feedback;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v5 = +[_PSMessagesPinningUtilities actionTypeToString:](_PSMessagesPinningUtilities, "actionTypeToString:", [v3 actionType]);
+  v5 = +[_PSMessagesPinningUtilities actionTypeToString:](_PSMessagesPinningUtilities, "actionTypeToString:", [feedbackCopy actionType]);
   v35 = v5;
   if (v5)
   {
@@ -887,12 +887,12 @@ LABEL_9:
 
   else
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
-    [v4 setObject:v6 forKeyedSubscript:@"actionType"];
+    null = [MEMORY[0x1E695DFB0] null];
+    [v4 setObject:null forKeyedSubscript:@"actionType"];
   }
 
-  v7 = [v3 actualPinnings];
-  v8 = [_PSMessagesPinningUtilities suggestionsToString:v7];
+  actualPinnings = [feedbackCopy actualPinnings];
+  v8 = [_PSMessagesPinningUtilities suggestionsToString:actualPinnings];
 
   v34 = v8;
   if (v8)
@@ -902,12 +902,12 @@ LABEL_9:
 
   else
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
-    [v4 setObject:v9 forKeyedSubscript:@"actualPinnings"];
+    null2 = [MEMORY[0x1E695DFB0] null];
+    [v4 setObject:null2 forKeyedSubscript:@"actualPinnings"];
   }
 
-  v10 = [v3 onboardingSuggestions];
-  v11 = [_PSMessagesPinningUtilities suggestionsToString:v10];
+  onboardingSuggestions = [feedbackCopy onboardingSuggestions];
+  v11 = [_PSMessagesPinningUtilities suggestionsToString:onboardingSuggestions];
 
   v33 = v11;
   if (v11)
@@ -917,27 +917,27 @@ LABEL_9:
 
   else
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
-    [v4 setObject:v12 forKeyedSubscript:@"onboardingSuggestions"];
+    null3 = [MEMORY[0x1E695DFB0] null];
+    [v4 setObject:null3 forKeyedSubscript:@"onboardingSuggestions"];
   }
 
-  v13 = [v3 actualPinnings];
-  v14 = [v13 count];
+  actualPinnings2 = [feedbackCopy actualPinnings];
+  v14 = [actualPinnings2 count];
 
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v14];
   [v4 setObject:v15 forKeyedSubscript:@"numOfActualPinnings"];
 
-  v16 = [v3 onboardingSuggestions];
-  v17 = [v16 count];
+  onboardingSuggestions2 = [feedbackCopy onboardingSuggestions];
+  v17 = [onboardingSuggestions2 count];
 
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v17];
   [v4 setObject:v18 forKeyedSubscript:@"numOfSuggestions"];
 
-  v19 = [v3 actualPinnings];
-  v20 = [_PSMessagesPinningUtilities chatGuidsFromSuggestions:v19];
+  actualPinnings3 = [feedbackCopy actualPinnings];
+  v20 = [_PSMessagesPinningUtilities chatGuidsFromSuggestions:actualPinnings3];
 
-  v21 = [v3 onboardingSuggestions];
-  v22 = [_PSMessagesPinningUtilities chatGuidsFromSuggestions:v21];
+  onboardingSuggestions3 = [feedbackCopy onboardingSuggestions];
+  v22 = [_PSMessagesPinningUtilities chatGuidsFromSuggestions:onboardingSuggestions3];
 
   v23 = [_PSMessagesPinningUtilities intersectionsOfActualPinnings:v20 fromTopN:3 suggestions:v22];
   if (v23)
@@ -947,8 +947,8 @@ LABEL_9:
 
   else
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
-    [v4 setObject:v24 forKeyedSubscript:@"numOfGoodSuggestionsInTop3"];
+    null4 = [MEMORY[0x1E695DFB0] null];
+    [v4 setObject:null4 forKeyedSubscript:@"numOfGoodSuggestionsInTop3"];
   }
 
   v25 = [_PSMessagesPinningUtilities intersectionsOfActualPinnings:v20 fromTopN:9 suggestions:v22];
@@ -959,12 +959,12 @@ LABEL_9:
 
   else
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
-    [v4 setObject:v26 forKeyedSubscript:@"numOfGoodSuggestionsInTop9"];
+    null5 = [MEMORY[0x1E695DFB0] null];
+    [v4 setObject:null5 forKeyedSubscript:@"numOfGoodSuggestionsInTop9"];
   }
 
-  v27 = [v3 eventDate];
-  v28 = [_PSMessagesPinningUtilities dateToString:v27];
+  eventDate = [feedbackCopy eventDate];
+  v28 = [_PSMessagesPinningUtilities dateToString:eventDate];
 
   if (v28)
   {
@@ -973,11 +973,11 @@ LABEL_9:
 
   else
   {
-    v29 = [MEMORY[0x1E695DFB0] null];
-    [v4 setObject:v29 forKeyedSubscript:@"eventDate"];
+    null6 = [MEMORY[0x1E695DFB0] null];
+    [v4 setObject:null6 forKeyedSubscript:@"eventDate"];
   }
 
-  v30 = +[_PSMessagesPinningUtilities interactionMethodToString:](_PSMessagesPinningUtilities, "interactionMethodToString:", [v3 interactionMethod]);
+  v30 = +[_PSMessagesPinningUtilities interactionMethodToString:](_PSMessagesPinningUtilities, "interactionMethodToString:", [feedbackCopy interactionMethod]);
   if (v30)
   {
     [v4 setObject:v30 forKeyedSubscript:@"trialId"];
@@ -985,8 +985,8 @@ LABEL_9:
 
   else
   {
-    v31 = [MEMORY[0x1E695DFB0] null];
-    [v4 setObject:v31 forKeyedSubscript:@"trialId"];
+    null7 = [MEMORY[0x1E695DFB0] null];
+    [v4 setObject:null7 forKeyedSubscript:@"trialId"];
   }
 
   return v4;

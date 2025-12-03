@@ -1,41 +1,41 @@
 @interface PRUISPosterSnapshotRequest
-+ (id)snapshotRequestForPRPosterConfiguration:(id)a3 definition:(id)a4 interfaceOrientation:(int64_t)a5;
-+ (id)snapshotRequestForPRSPosterConfiguration:(id)a3 definition:(id)a4 interfaceOrientation:(int64_t)a5;
-+ (id)snapshotRequestForPRSPosterConfiguration:(id)a3 definition:(id)a4 interfaceOrientation:(int64_t)a5 userInterfaceStyle:(int64_t)a6;
-+ (id)snapshotRequestForPoster:(id)a3 definition:(id)a4 interfaceOrientation:(int64_t)a5;
++ (id)snapshotRequestForPRPosterConfiguration:(id)configuration definition:(id)definition interfaceOrientation:(int64_t)orientation;
++ (id)snapshotRequestForPRSPosterConfiguration:(id)configuration definition:(id)definition interfaceOrientation:(int64_t)orientation;
++ (id)snapshotRequestForPRSPosterConfiguration:(id)configuration definition:(id)definition interfaceOrientation:(int64_t)orientation userInterfaceStyle:(int64_t)style;
++ (id)snapshotRequestForPoster:(id)poster definition:(id)definition interfaceOrientation:(int64_t)orientation;
 - (BOOL)determineColorStatistics;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)attachments;
-- (PRUISPosterSnapshotRequest)initWithPoster:(id)a3 definition:(id)a4 interfaceOrientation:(int64_t)a5;
-- (PRUISPosterSnapshotRequest)initWithPoster:(id)a3 definition:(id)a4 interfaceOrientation:(int64_t)a5 userInterfaceStyle:(int64_t)a6;
-- (PRUISPosterSnapshotRequest)initWithPoster:(id)a3 snapshotDescriptor:(id)a4;
+- (PRUISPosterSnapshotRequest)initWithPoster:(id)poster definition:(id)definition interfaceOrientation:(int64_t)orientation;
+- (PRUISPosterSnapshotRequest)initWithPoster:(id)poster definition:(id)definition interfaceOrientation:(int64_t)orientation userInterfaceStyle:(int64_t)style;
+- (PRUISPosterSnapshotRequest)initWithPoster:(id)poster snapshotDescriptor:(id)descriptor;
 - (UIScreen)screen;
-- (id)buildPUISnapshotRequestForPriority:(int64_t)a3 sceneAttachments:(id)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)buildPUISnapshotRequestForPriority:(int64_t)priority sceneAttachments:(id)attachments error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)serverPosterPath;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setAttachmentConfiguration:(id)a3;
-- (void)setSnapshotDescriptor:(id)a3;
+- (void)setAttachmentConfiguration:(id)configuration;
+- (void)setSnapshotDescriptor:(id)descriptor;
 @end
 
 @implementation PRUISPosterSnapshotRequest
 
-- (PRUISPosterSnapshotRequest)initWithPoster:(id)a3 snapshotDescriptor:(id)a4
+- (PRUISPosterSnapshotRequest)initWithPoster:(id)poster snapshotDescriptor:(id)descriptor
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 _path];
-  v11 = [v10 isServerPosterPath];
+  posterCopy = poster;
+  descriptorCopy = descriptor;
+  _path = [posterCopy _path];
+  isServerPosterPath = [_path isServerPosterPath];
 
-  if ((v11 & 1) == 0)
+  if ((isServerPosterPath & 1) == 0)
   {
     [PRUISPosterSnapshotRequest initWithPoster:a2 snapshotDescriptor:?];
   }
 
-  if (!v9)
+  if (!descriptorCopy)
   {
     [PRUISPosterSnapshotRequest initWithPoster:a2 snapshotDescriptor:?];
   }
@@ -46,17 +46,17 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_poster, a3);
-    v14 = [v8 _path];
-    v15 = [v14 extendValidityForReason:@"Snapshot Request"];
+    objc_storeStrong(&v12->_poster, poster);
+    _path2 = [posterCopy _path];
+    v15 = [_path2 extendValidityForReason:@"Snapshot Request"];
     sandboxExtension = v13->_sandboxExtension;
     v13->_sandboxExtension = v15;
 
-    v17 = [v9 snapshotDefinition];
+    snapshotDefinition = [descriptorCopy snapshotDefinition];
     definition = v13->_definition;
-    v13->_definition = v17;
+    v13->_definition = snapshotDefinition;
 
-    v19 = [v9 copy];
+    v19 = [descriptorCopy copy];
     snapshotDescriptor = v13->_snapshotDescriptor;
     v13->_snapshotDescriptor = v19;
 
@@ -79,7 +79,7 @@
   [(PRUISPosterSnapshotRequest *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PRUISPosterSnapshotRequest allocWithZone:?]snapshotDescriptor:"initWithPoster:snapshotDescriptor:", self->_poster, self->_snapshotDescriptor];
   v4->_timeout = self->_timeout;
@@ -88,7 +88,7 @@
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(PRUISPosterSnapshotRequest *)[PRUISMutablePosterSnapshotRequest allocWithZone:?]snapshotDescriptor:"initWithPoster:snapshotDescriptor:", self->_poster, self->_snapshotDescriptor];
   [(PRUISPosterSnapshotRequest *)v4 setTimeout:self->_timeout];
@@ -97,26 +97,26 @@
   return v4;
 }
 
-- (void)setAttachmentConfiguration:(id)a3
+- (void)setAttachmentConfiguration:(id)configuration
 {
-  v12 = a3;
-  v5 = [(PRUISPosterAttachmentConfiguration *)self->_attachmentConfiguration isEqual:v12];
+  configurationCopy = configuration;
+  v5 = [(PRUISPosterAttachmentConfiguration *)self->_attachmentConfiguration isEqual:configurationCopy];
   if (!v5)
   {
-    v6 = v12;
-    if (v12)
+    v6 = configurationCopy;
+    if (configurationCopy)
     {
-      v7 = [(PRUISPosterAttachmentConfiguration *)v12 attachmentHostWindowScene];
-      v8 = [v7 screen];
-      v9 = [(PRUISPosterSnapshotRequest *)self screen];
-      v10 = [v8 isEqual:v9];
+      attachmentHostWindowScene = [(PRUISPosterAttachmentConfiguration *)configurationCopy attachmentHostWindowScene];
+      screen = [attachmentHostWindowScene screen];
+      screen2 = [(PRUISPosterSnapshotRequest *)self screen];
+      v10 = [screen isEqual:screen2];
 
       if ((v10 & 1) == 0)
       {
         [PRUISPosterSnapshotRequest setAttachmentConfiguration:a2];
       }
 
-      v6 = v12;
+      v6 = configurationCopy;
     }
 
     attachmentConfiguration = self->_attachmentConfiguration;
@@ -126,16 +126,16 @@
   MEMORY[0x1EEE66BB8](v5);
 }
 
-- (void)setSnapshotDescriptor:(id)a3
+- (void)setSnapshotDescriptor:(id)descriptor
 {
-  v5 = a3;
-  if (!v5)
+  descriptorCopy = descriptor;
+  if (!descriptorCopy)
   {
     [PRUISPosterSnapshotRequest setSnapshotDescriptor:a2];
   }
 
-  v8 = v5;
-  if (([v5 isEqual:self->_snapshotDescriptor] & 1) == 0)
+  v8 = descriptorCopy;
+  if (([descriptorCopy isEqual:self->_snapshotDescriptor] & 1) == 0)
   {
     v6 = [v8 copy];
     snapshotDescriptor = self->_snapshotDescriptor;
@@ -143,11 +143,11 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = [MEMORY[0x1E698E6A0] builderWithObject:self ofExpectedClass:objc_opt_class()];
-  v6 = v4;
+  v6 = equalCopy;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __38__PRUISPosterSnapshotRequest_isEqual___block_invoke;
@@ -207,20 +207,20 @@ uint64_t __38__PRUISPosterSnapshotRequest_isEqual___block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(PRUISPosterSnapshotRequest *)self poster];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  poster = [(PRUISPosterSnapshotRequest *)self poster];
+  v5 = [builder appendObject:poster];
 
-  v6 = [(PRUISPosterSnapshotRequest *)self snapshotDescriptor];
-  v7 = [v3 appendObject:v6];
+  snapshotDescriptor = [(PRUISPosterSnapshotRequest *)self snapshotDescriptor];
+  v7 = [builder appendObject:snapshotDescriptor];
 
-  v8 = [(PRUISPosterSnapshotRequest *)self attachmentConfiguration];
-  v9 = [v3 appendObject:v8];
+  attachmentConfiguration = [(PRUISPosterSnapshotRequest *)self attachmentConfiguration];
+  v9 = [builder appendObject:attachmentConfiguration];
 
   [(PRUISPosterSnapshotRequest *)self timeout];
-  v10 = [v3 appendDouble:?];
-  v11 = [v3 appendInt64:{-[PRUISPosterSnapshotRequest priority](self, "priority")}];
-  v12 = [v3 hash];
+  v10 = [builder appendDouble:?];
+  v11 = [builder appendInt64:{-[PRUISPosterSnapshotRequest priority](self, "priority")}];
+  v12 = [builder hash];
 
   return v12;
 }
@@ -228,52 +228,52 @@ uint64_t __38__PRUISPosterSnapshotRequest_isEqual___block_invoke(uint64_t a1)
 - (id)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(PRUISPosterSnapshotRequest *)self poster];
-  v5 = [v3 appendObject:v4 withName:@"poster"];
+  poster = [(PRUISPosterSnapshotRequest *)self poster];
+  v5 = [v3 appendObject:poster withName:@"poster"];
 
-  v6 = [(PRUISPosterSnapshotRequest *)self snapshotDescriptor];
-  v7 = [v3 appendObject:v6 withName:@"snapshotDescriptor"];
+  snapshotDescriptor = [(PRUISPosterSnapshotRequest *)self snapshotDescriptor];
+  v7 = [v3 appendObject:snapshotDescriptor withName:@"snapshotDescriptor"];
 
-  v8 = [(PRUISPosterSnapshotRequest *)self attachmentConfiguration];
-  v9 = [v3 appendObject:v8 withName:@"attachmentConfiguration" skipIfNil:1];
+  attachmentConfiguration = [(PRUISPosterSnapshotRequest *)self attachmentConfiguration];
+  v9 = [v3 appendObject:attachmentConfiguration withName:@"attachmentConfiguration" skipIfNil:1];
 
   [(PRUISPosterSnapshotRequest *)self timeout];
   v10 = [v3 appendDouble:@"timeout" withName:4 decimalPrecision:?];
   v11 = [v3 appendInt64:-[PRUISPosterSnapshotRequest priority](self withName:{"priority"), @"priority"}];
-  v12 = [v3 build];
+  build = [v3 build];
 
-  return v12;
+  return build;
 }
 
 - (id)serverPosterPath
 {
-  v2 = [(PRUISPosterSnapshotRequest *)self poster];
-  v3 = [v2 _path];
+  poster = [(PRUISPosterSnapshotRequest *)self poster];
+  _path = [poster _path];
 
-  return v3;
+  return _path;
 }
 
-- (id)buildPUISnapshotRequestForPriority:(int64_t)a3 sceneAttachments:(id)a4 error:(id *)a5
+- (id)buildPUISnapshotRequestForPriority:(int64_t)priority sceneAttachments:(id)attachments error:(id *)error
 {
   v104[1] = *MEMORY[0x1E69E9840];
-  v96 = a4;
-  v9 = [(PRUISPosterSnapshotRequest *)self serverPosterPath];
-  if (([v9 isServerPosterPath] & 1) == 0)
+  attachmentsCopy = attachments;
+  serverPosterPath = [(PRUISPosterSnapshotRequest *)self serverPosterPath];
+  if (([serverPosterPath isServerPosterPath] & 1) == 0)
   {
     [PRUISPosterSnapshotRequest buildPUISnapshotRequestForPriority:a2 sceneAttachments:? error:?];
   }
 
-  v10 = [(PRUISPosterSnapshotRequest *)self snapshotDescriptor];
-  v11 = [v10 snapshotDefinition];
-  v12 = [v11 uniqueIdentifier];
-  if ([v12 length])
+  snapshotDescriptor = [(PRUISPosterSnapshotRequest *)self snapshotDescriptor];
+  snapshotDefinition = [snapshotDescriptor snapshotDefinition];
+  uniqueIdentifier = [snapshotDefinition uniqueIdentifier];
+  if ([uniqueIdentifier length])
   {
-    v13 = [MEMORY[0x1E69C5320] modelObjectCacheForPath:v9];
-    v14 = [v13 configuredProperties];
-    if (v14)
+    v13 = [MEMORY[0x1E69C5320] modelObjectCacheForPath:serverPosterPath];
+    configuredProperties = [v13 configuredProperties];
+    if (configuredProperties)
     {
-      v94 = v14;
-      v87 = a3;
+      v94 = configuredProperties;
+      priorityCopy2 = priority;
 
       v15 = 0;
     }
@@ -281,7 +281,7 @@ uint64_t __38__PRUISPosterSnapshotRequest_isEqual___block_invoke(uint64_t a1)
     else
     {
       v102 = 0;
-      v19 = [MEMORY[0x1E69C5328] loadConfiguredPropertiesForPath:v9 error:&v102];
+      v19 = [MEMORY[0x1E69C5328] loadConfiguredPropertiesForPath:serverPosterPath error:&v102];
       v15 = v102;
 
       v94 = v19;
@@ -293,17 +293,17 @@ uint64_t __38__PRUISPosterSnapshotRequest_isEqual___block_invoke(uint64_t a1)
           v103 = *MEMORY[0x1E696A588];
           v104[0] = @"Unable to load configured properties for path.";
           [MEMORY[0x1E695DF20] dictionaryWithObjects:v104 forKeys:&v103 count:1];
-          v80 = v79 = v11;
+          v80 = v79 = snapshotDefinition;
           v15 = [v78 errorWithDomain:@"com.apple.PosterBoardUIServices.errorDomain" code:-1 userInfo:v80];
 
-          v11 = v79;
+          snapshotDefinition = v79;
         }
 
-        if (a5)
+        if (error)
         {
           v81 = v15;
           v17 = 0;
-          *a5 = v15;
+          *error = v15;
         }
 
         else
@@ -311,11 +311,11 @@ uint64_t __38__PRUISPosterSnapshotRequest_isEqual___block_invoke(uint64_t a1)
           v17 = 0;
         }
 
-        v18 = v96;
+        v18 = attachmentsCopy;
         goto LABEL_28;
       }
 
-      v87 = a3;
+      priorityCopy2 = priority;
     }
 
     v20 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:{-[PRUISPosterSnapshotDescriptor userInterfaceStyle](self->_snapshotDescriptor, "userInterfaceStyle")}];
@@ -331,34 +331,34 @@ uint64_t __38__PRUISPosterSnapshotRequest_isEqual___block_invoke(uint64_t a1)
       v20 = v21;
     }
 
-    v22 = [v10 displayConfiguration];
-    [v10 canvasBounds];
+    displayConfiguration = [snapshotDescriptor displayConfiguration];
+    [snapshotDescriptor canvasBounds];
     v24 = v23;
     v26 = v25;
     v28 = v27;
     v30 = v29;
     v31 = objc_alloc_init(PRUISPosterSceneSettingsBuilder);
-    -[PRUISPosterSceneSettingsBuilder setSnapshotOptions:](v31, "setSnapshotOptions:", [MEMORY[0x1E69C5338] snapshotOptionsForDefinition:v11]);
+    -[PRUISPosterSceneSettingsBuilder setSnapshotOptions:](v31, "setSnapshotOptions:", [MEMORY[0x1E69C5338] snapshotOptionsForDefinition:snapshotDefinition]);
     [(PRUISPosterSceneSettingsBuilder *)v31 setTraitCollection:v20];
-    v93 = v22;
-    [(PRUISPosterSceneSettingsBuilder *)v31 setDisplayConfiguration:v22];
+    v93 = displayConfiguration;
+    [(PRUISPosterSceneSettingsBuilder *)v31 setDisplayConfiguration:displayConfiguration];
     v95 = v31;
     [(PRUISPosterSceneSettingsBuilder *)v31 setCanvasBounds:v24, v26, v28, v30];
-    v32 = [(PRUISPosterSnapshotDescriptor *)self->_snapshotDescriptor interfaceOrientation];
+    interfaceOrientation = [(PRUISPosterSnapshotDescriptor *)self->_snapshotDescriptor interfaceOrientation];
     v88 = v15;
-    if (v32)
+    if (interfaceOrientation)
     {
-      v33 = v32;
+      v33 = interfaceOrientation;
       if (PUIDynamicRotationIsActive())
       {
-        v34 = [v9 role];
-        v35 = v12;
-        v36 = v11;
+        role = [serverPosterPath role];
+        v35 = uniqueIdentifier;
+        v36 = snapshotDefinition;
         v37 = PFPosterRoleSupportsDynamicRotation();
 
         v38 = (v37 & 1) == 0;
-        v11 = v36;
-        v12 = v35;
+        snapshotDefinition = v36;
+        uniqueIdentifier = v35;
         if (v38)
         {
           v39 = v33;
@@ -376,22 +376,22 @@ LABEL_21:
         v99[1] = 3221225472;
         v99[2] = __88__PRUISPosterSnapshotRequest_buildPUISnapshotRequestForPriority_sceneAttachments_error___block_invoke_2;
         v99[3] = &unk_1E83A77B0;
-        v83 = v96;
+        v83 = attachmentsCopy;
         v100 = v83;
         [(PRUISPosterSceneSettingsBuilder *)v95 applySceneSettings:v99];
-        v90 = v11;
-        v42 = [v11 levelSets];
-        v92 = [v42 bs_mapNoNulls:&__block_literal_global_20];
+        v90 = snapshotDefinition;
+        levelSets = [snapshotDefinition levelSets];
+        v92 = [levelSets bs_mapNoNulls:&__block_literal_global_20];
 
-        v43 = [(PRUISPosterSnapshotRequest *)self snapshotDescriptor];
-        v44 = [v43 contentOcclusionRectangles];
+        snapshotDescriptor2 = [(PRUISPosterSnapshotRequest *)self snapshotDescriptor];
+        contentOcclusionRectangles = [snapshotDescriptor2 contentOcclusionRectangles];
 
-        v85 = v44;
-        if (v44)
+        v85 = contentOcclusionRectangles;
+        if (contentOcclusionRectangles)
         {
           v45 = objc_alloc(MEMORY[0x1E69C5580]);
-          v46 = [v44 allRects];
-          v47 = [v45 initWithNameToRectMap:v46];
+          allRects = [contentOcclusionRectangles allRects];
+          v47 = [v45 initWithNameToRectMap:allRects];
         }
 
         else
@@ -400,26 +400,26 @@ LABEL_21:
         }
 
         v48 = objc_alloc(MEMORY[0x1E69C5610]);
-        [v10 canvasBounds];
+        [snapshotDescriptor canvasBounds];
         v50 = v49;
         v52 = v51;
         v54 = v53;
         v56 = v55;
-        v57 = [v20 userInterfaceStyle];
+        userInterfaceStyle = [v20 userInterfaceStyle];
         v86 = v20;
-        v58 = [v20 accessibilityContrast];
-        [v10 salientContentRectangle];
-        v63 = [v48 initWithDisplayConfiguration:v93 canvasBounds:v39 interfaceOrientation:v33 deviceOrientation:v57 userInterfaceStyle:v58 accessibilityContrast:v47 salientContentRectangle:v50 contentOcclusionRectangles:{v52, v54, v56, v59, v60, v61, v62}];
+        accessibilityContrast = [v20 accessibilityContrast];
+        [snapshotDescriptor salientContentRectangle];
+        v63 = [v48 initWithDisplayConfiguration:v93 canvasBounds:v39 interfaceOrientation:v33 deviceOrientation:userInterfaceStyle userInterfaceStyle:accessibilityContrast accessibilityContrast:v47 salientContentRectangle:v50 contentOcclusionRectangles:{v52, v54, v56, v59, v60, v61, v62}];
         v64 = objc_alloc(MEMORY[0x1E69C55F0]);
-        [v10 persistenceScale];
-        v89 = v12;
-        v65 = [v64 initWithLevelSets:v92 snapshotDefinitionIdentifier:v12 persistenceScale:?];
-        v91 = v10;
+        [snapshotDescriptor persistenceScale];
+        v89 = uniqueIdentifier;
+        v65 = [v64 initWithLevelSets:v92 snapshotDefinitionIdentifier:uniqueIdentifier persistenceScale:?];
+        v91 = snapshotDescriptor;
         v84 = v47;
         if ([(PRUISPosterSnapshotRequest *)self determineColorStatistics])
         {
-          v66 = [MEMORY[0x1E69C55B0] defaultAnalysisDescriptor];
-          v67 = [v66 copyWithShouldDetermineColorStatistics:1];
+          defaultAnalysisDescriptor = [MEMORY[0x1E69C55B0] defaultAnalysisDescriptor];
+          v67 = [defaultAnalysisDescriptor copyWithShouldDetermineColorStatistics:1];
         }
 
         else
@@ -429,8 +429,8 @@ LABEL_21:
 
         v68 = [objc_alloc(MEMORY[0x1E69C55D8]) initWithOutputDescriptor:v65 sceneDescriptor:v63 attachments:v83 analysis:v67];
         v82 = v63;
-        v11 = v90;
-        v69 = [(PRUISPosterSceneSettingsBuilder *)v95 buildWithPath:v9 configuredProperties:v94 snapshotDefinition:v90 sceneDescriptor:v63];
+        snapshotDefinition = v90;
+        v69 = [(PRUISPosterSceneSettingsBuilder *)v95 buildWithPath:serverPosterPath configuredProperties:v94 snapshotDefinition:v90 sceneDescriptor:v63];
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __88__PRUISPosterSnapshotRequest_buildPUISnapshotRequestForPriority_sceneAttachments_error___block_invoke_4;
@@ -438,19 +438,19 @@ LABEL_21:
         v98 = v69;
         v70 = v69;
         v71 = _Block_copy(aBlock);
-        v72 = v9;
+        v72 = serverPosterPath;
         v73 = objc_alloc(MEMORY[0x1E69C5600]);
         v74 = v67;
-        v75 = [(PRUISPosterSnapshotRequest *)self retryCount];
+        retryCount = [(PRUISPosterSnapshotRequest *)self retryCount];
         [(PRUISPosterSnapshotRequest *)self timeout];
         v76 = v73;
-        v9 = v72;
-        v17 = [v76 initWithPath:v72 sceneSettingsApplicator:v71 priority:v87 snapshotDescriptor:v68 retryCount:v75 timeout:?];
+        serverPosterPath = v72;
+        v17 = [v76 initWithPath:v72 sceneSettingsApplicator:v71 priority:priorityCopy2 snapshotDescriptor:v68 retryCount:retryCount timeout:?];
 
-        v18 = v96;
-        v10 = v91;
+        v18 = attachmentsCopy;
+        snapshotDescriptor = v91;
         v15 = v88;
-        v12 = v89;
+        uniqueIdentifier = v89;
 LABEL_28:
 
         goto LABEL_29;
@@ -459,8 +459,8 @@ LABEL_28:
 
     else
     {
-      v40 = [v9 role];
-      v41 = [v40 isEqualToString:*MEMORY[0x1E69C53A8]];
+      role2 = [serverPosterPath role];
+      v41 = [role2 isEqualToString:*MEMORY[0x1E69C53A8]];
 
       if (v41)
       {
@@ -477,14 +477,14 @@ LABEL_28:
     goto LABEL_21;
   }
 
-  if (a5)
+  if (error)
   {
     v16 = PFFunctionNameForAddress();
-    *a5 = PFGeneralErrorFromObjectWithLocalizedFailureReason();
+    *error = PFGeneralErrorFromObjectWithLocalizedFailureReason();
   }
 
   v17 = 0;
-  v18 = v96;
+  v18 = attachmentsCopy;
 LABEL_29:
 
   return v17;
@@ -519,104 +519,104 @@ id __88__PRUISPosterSnapshotRequest_buildPUISnapshotRequestForPriority_sceneAtta
   return v6;
 }
 
-+ (id)snapshotRequestForPRPosterConfiguration:(id)a3 definition:(id)a4 interfaceOrientation:(int64_t)a5
++ (id)snapshotRequestForPRPosterConfiguration:(id)configuration definition:(id)definition interfaceOrientation:(int64_t)orientation
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithPoster:v9 definition:v8 interfaceOrientation:a5];
+  definitionCopy = definition;
+  configurationCopy = configuration;
+  v10 = [[self alloc] initWithPoster:configurationCopy definition:definitionCopy interfaceOrientation:orientation];
 
   return v10;
 }
 
-+ (id)snapshotRequestForPRSPosterConfiguration:(id)a3 definition:(id)a4 interfaceOrientation:(int64_t)a5
++ (id)snapshotRequestForPRSPosterConfiguration:(id)configuration definition:(id)definition interfaceOrientation:(int64_t)orientation
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  configurationCopy = configuration;
+  definitionCopy = definition;
+  if (!configurationCopy)
   {
     [PRUISPosterSnapshotRequest(Deprecated) snapshotRequestForPRSPosterConfiguration:a2 definition:? interfaceOrientation:?];
   }
 
-  v11 = v10;
-  v12 = [a1 alloc];
+  v11 = definitionCopy;
+  v12 = [self alloc];
   v13 = objc_alloc(MEMORY[0x1E69C52E8]);
-  v14 = [v9 _path];
-  v15 = [v13 _initWithPath:v14];
-  v16 = [v12 initWithPoster:v15 definition:v11 interfaceOrientation:a5];
+  _path = [configurationCopy _path];
+  v15 = [v13 _initWithPath:_path];
+  v16 = [v12 initWithPoster:v15 definition:v11 interfaceOrientation:orientation];
 
   return v16;
 }
 
-+ (id)snapshotRequestForPRSPosterConfiguration:(id)a3 definition:(id)a4 interfaceOrientation:(int64_t)a5 userInterfaceStyle:(int64_t)a6
++ (id)snapshotRequestForPRSPosterConfiguration:(id)configuration definition:(id)definition interfaceOrientation:(int64_t)orientation userInterfaceStyle:(int64_t)style
 {
-  v11 = a3;
-  v12 = a4;
-  if (!v11)
+  configurationCopy = configuration;
+  definitionCopy = definition;
+  if (!configurationCopy)
   {
     [PRUISPosterSnapshotRequest(Deprecated) snapshotRequestForPRSPosterConfiguration:a2 definition:? interfaceOrientation:? userInterfaceStyle:?];
   }
 
-  v13 = v12;
-  v14 = [a1 alloc];
+  v13 = definitionCopy;
+  v14 = [self alloc];
   v15 = objc_alloc(MEMORY[0x1E69C52E8]);
-  v16 = [v11 _path];
-  v17 = [v15 _initWithPath:v16];
-  v18 = [v14 initWithPoster:v17 definition:v13 interfaceOrientation:a5 userInterfaceStyle:a6];
+  _path = [configurationCopy _path];
+  v17 = [v15 _initWithPath:_path];
+  v18 = [v14 initWithPoster:v17 definition:v13 interfaceOrientation:orientation userInterfaceStyle:style];
 
   return v18;
 }
 
-+ (id)snapshotRequestForPoster:(id)a3 definition:(id)a4 interfaceOrientation:(int64_t)a5
++ (id)snapshotRequestForPoster:(id)poster definition:(id)definition interfaceOrientation:(int64_t)orientation
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithPoster:v9 definition:v8 interfaceOrientation:a5];
+  definitionCopy = definition;
+  posterCopy = poster;
+  v10 = [[self alloc] initWithPoster:posterCopy definition:definitionCopy interfaceOrientation:orientation];
 
   return v10;
 }
 
-- (PRUISPosterSnapshotRequest)initWithPoster:(id)a3 definition:(id)a4 interfaceOrientation:(int64_t)a5 userInterfaceStyle:(int64_t)a6
+- (PRUISPosterSnapshotRequest)initWithPoster:(id)poster definition:(id)definition interfaceOrientation:(int64_t)orientation userInterfaceStyle:(int64_t)style
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [[PRUISPosterSnapshotDescriptor alloc] initWithUserInterfaceStyle:a6 interfaceOrientation:a5 snapshotDefinition:v10];
+  definitionCopy = definition;
+  posterCopy = poster;
+  v12 = [[PRUISPosterSnapshotDescriptor alloc] initWithUserInterfaceStyle:style interfaceOrientation:orientation snapshotDefinition:definitionCopy];
 
-  v13 = [(PRUISPosterSnapshotRequest *)self initWithPoster:v11 snapshotDescriptor:v12];
+  v13 = [(PRUISPosterSnapshotRequest *)self initWithPoster:posterCopy snapshotDescriptor:v12];
   return v13;
 }
 
-- (PRUISPosterSnapshotRequest)initWithPoster:(id)a3 definition:(id)a4 interfaceOrientation:(int64_t)a5
+- (PRUISPosterSnapshotRequest)initWithPoster:(id)poster definition:(id)definition interfaceOrientation:(int64_t)orientation
 {
   v8 = MEMORY[0x1E69DCEB0];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 mainScreen];
-  v12 = [v11 traitCollection];
-  v13 = -[PRUISPosterSnapshotRequest initWithPoster:definition:interfaceOrientation:userInterfaceStyle:](self, "initWithPoster:definition:interfaceOrientation:userInterfaceStyle:", v10, v9, a5, [v12 userInterfaceStyle]);
+  definitionCopy = definition;
+  posterCopy = poster;
+  mainScreen = [v8 mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  v13 = -[PRUISPosterSnapshotRequest initWithPoster:definition:interfaceOrientation:userInterfaceStyle:](self, "initWithPoster:definition:interfaceOrientation:userInterfaceStyle:", posterCopy, definitionCopy, orientation, [traitCollection userInterfaceStyle]);
 
   return v13;
 }
 
 - (NSArray)attachments
 {
-  v2 = [(PRUISPosterSnapshotRequest *)self attachmentConfiguration];
-  v3 = [v2 attachments];
+  attachmentConfiguration = [(PRUISPosterSnapshotRequest *)self attachmentConfiguration];
+  attachments = [attachmentConfiguration attachments];
 
-  return v3;
+  return attachments;
 }
 
 - (UIScreen)screen
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [(PRUISPosterSnapshotRequest *)self snapshotDescriptor];
-  v3 = [v2 displayConfiguration];
+  snapshotDescriptor = [(PRUISPosterSnapshotRequest *)self snapshotDescriptor];
+  displayConfiguration = [snapshotDescriptor displayConfiguration];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [MEMORY[0x1E69DCEB0] screens];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  screens = [MEMORY[0x1E69DCEB0] screens];
+  v5 = [screens countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -627,22 +627,22 @@ id __88__PRUISPosterSnapshotRequest_buildPUISnapshotRequestForPriority_sceneAtta
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(screens);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 displayConfiguration];
-        v11 = [v10 isEqual:v3];
+        displayConfiguration2 = [v9 displayConfiguration];
+        v11 = [displayConfiguration2 isEqual:displayConfiguration];
 
         if (v11)
         {
-          v12 = v9;
+          mainScreen = v9;
 
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [screens countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -652,18 +652,18 @@ id __88__PRUISPosterSnapshotRequest_buildPUISnapshotRequestForPriority_sceneAtta
     }
   }
 
-  v12 = [MEMORY[0x1E69DCEB0] mainScreen];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
 LABEL_11:
 
-  return v12;
+  return mainScreen;
 }
 
 - (BOOL)determineColorStatistics
 {
-  v2 = [(PRUISPosterSnapshotRequest *)self snapshotDescriptor];
-  v3 = [v2 determineColorStatistics];
+  snapshotDescriptor = [(PRUISPosterSnapshotRequest *)self snapshotDescriptor];
+  determineColorStatistics = [snapshotDescriptor determineColorStatistics];
 
-  return v3;
+  return determineColorStatistics;
 }
 
 - (void)initWithPoster:(char *)a1 snapshotDescriptor:.cold.1(char *a1)

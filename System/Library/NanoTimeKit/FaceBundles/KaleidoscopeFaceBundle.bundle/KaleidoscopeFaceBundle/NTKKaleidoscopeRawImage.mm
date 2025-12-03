@@ -1,12 +1,12 @@
 @interface NTKKaleidoscopeRawImage
-- (NTKKaleidoscopeRawImage)initWithContent:(NTKKaleidoscopeRawImage *)self width:(SEL)a2 height:;
+- (NTKKaleidoscopeRawImage)initWithContent:(NTKKaleidoscopeRawImage *)self width:(SEL)width height:;
 - (void)dealloc;
-- (void)write:(id)a3;
+- (void)write:(id)write;
 @end
 
 @implementation NTKKaleidoscopeRawImage
 
-- (NTKKaleidoscopeRawImage)initWithContent:(NTKKaleidoscopeRawImage *)self width:(SEL)a2 height:
+- (NTKKaleidoscopeRawImage)initWithContent:(NTKKaleidoscopeRawImage *)self width:(SEL)width height:
 {
   v5 = v4;
   v6 = v3;
@@ -34,17 +34,17 @@
   [(NTKKaleidoscopeRawImage *)&v3 dealloc];
 }
 
-- (void)write:(id)a3
+- (void)write:(id)write
 {
-  v4 = a3;
+  writeCopy = write;
   width = self->_width;
   height = self->_height;
   v14 = height * width;
   v15 = height * width;
-  v12 = v4;
+  v12 = writeCopy;
   if (height * width <= 0)
   {
-    v11 = v4;
+    v11 = writeCopy;
     v7 = 0;
     v13 = 0;
   }

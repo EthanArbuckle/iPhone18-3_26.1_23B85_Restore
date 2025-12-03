@@ -3,13 +3,13 @@
 - (MPSCNNBatchNormalizationStatisticsGradient)initWithDevice:(id)device fusedNeuronDescriptor:(MPSNNNeuronDescriptor *)fusedNeuronDescriptor;
 - (MPSImage)encodeToCommandBuffer:(id)commandBuffer sourceGradient:(MPSImage *)sourceGradient sourceImage:(MPSImage *)sourceImage gradientState:(MPSState *)gradientState;
 - (MPSImageBatch)encodeBatchToCommandBuffer:(id)commandBuffer sourceGradients:(MPSImageBatch *)sourceGradients sourceImages:(MPSImageBatch *)sourceImages gradientStates:(MPSStateBatch *)gradientStates;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (unint64_t)maxBatchSize;
 - (void)dealloc;
 - (void)encodeBatchToCommandBuffer:(id)commandBuffer sourceGradients:(MPSImageBatch *)sourceGradients sourceImages:(MPSImageBatch *)sourceImages batchNormalizationState:(MPSCNNBatchNormalizationState *)batchNormalizationState;
 - (void)encodeBatchToCommandBuffer:(id)commandBuffer sourceGradients:(MPSImageBatch *)sourceGradients sourceImages:(MPSImageBatch *)sourceImages gradientStates:(MPSStateBatch *)gradientStates destinationGradients:(MPSImageBatch *)destinationGradients;
 - (void)encodeToCommandBuffer:(id)commandBuffer sourceGradient:(MPSImage *)sourceGradient sourceImage:(MPSImage *)sourceImage gradientState:(MPSState *)gradientState destinationGradient:(MPSImage *)destinationGradient;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSCNNBatchNormalizationStatisticsGradient
@@ -260,16 +260,16 @@ LABEL_15:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v106.receiver = self;
   v106.super_class = MPSCNNBatchNormalizationStatisticsGradient;
   [(MPSCNNGradientKernel *)&v106 encodeWithCoder:?];
   if (self->_fusedNeuronDescriptor)
   {
-    objc_msgSend_encodeBool_forKey_(a3, v5, 1, @"kMPSCNNBatchNormalizationStatisticsGradientIsNeuronFusedKey", v6, v7, v8, v9);
+    objc_msgSend_encodeBool_forKey_(coder, v5, 1, @"kMPSCNNBatchNormalizationStatisticsGradientIsNeuronFusedKey", v6, v7, v8, v9);
     v17 = objc_msgSend_neuronType(self->_fusedNeuronDescriptor, v10, v11, v12, v13, v14, v15, v16);
-    objc_msgSend_encodeInt32_forKey_(a3, v18, v17, @"kMPSCNNBatchNormalizationStatisticsGradientFusedNeuronType", v19, v20, v21, v22);
+    objc_msgSend_encodeInt32_forKey_(coder, v18, v17, @"kMPSCNNBatchNormalizationStatisticsGradientFusedNeuronType", v19, v20, v21, v22);
     v37 = objc_msgSend_neuronType(self->_fusedNeuronDescriptor, v23, v24, v25, v26, v27, v28, v29);
     fusedNeuronDescriptor = self->_fusedNeuronDescriptor;
     if (v37 == 10)
@@ -278,13 +278,13 @@ LABEL_15:
       v47 = objc_msgSend_length(v39, v40, v41, v42, v43, v44, v45, v46);
       v55 = objc_msgSend_data(self->_fusedNeuronDescriptor, v48, v49, v50, v51, v52, v53, v54);
       objc_msgSend_bytes(v55, v56, v57, v58, v59, v60, v61, v62);
-      objc_msgSend_encodeInt64_forKey_(a3, v63, v47, @"kMPSCNNBatchNormalizationFusedNeuronPReLULength", v64, v65, v66, v67);
+      objc_msgSend_encodeInt64_forKey_(coder, v63, v47, @"kMPSCNNBatchNormalizationFusedNeuronPReLULength", v64, v65, v66, v67);
       v68 = malloc_type_malloc(v47 & 0xFFFFFFFFFFFFFFFCLL, 0x100004052888210uLL);
       if (v68)
       {
         v69 = v68;
         MPSCopyToFromNetworkByteOrder32();
-        objc_msgSend_encodeBytes_length_forKey_(a3, v70, v69, v47 & 0xFFFFFFFFFFFFFFFCLL, @"kMPSCNNBatchNormalizationFusedNeuronPReLUData", v71, v72, v73);
+        objc_msgSend_encodeBytes_length_forKey_(coder, v70, v69, v47 & 0xFFFFFFFFFFFFFFFCLL, @"kMPSCNNBatchNormalizationFusedNeuronPReLUData", v71, v72, v73);
         free(v69);
       }
     }
@@ -292,21 +292,21 @@ LABEL_15:
     else
     {
       objc_msgSend_a(fusedNeuronDescriptor, v30, v31, v32, v33, v34, v35, v36);
-      objc_msgSend_encodeFloat_forKey_(a3, v74, @"kMPSCNNBatchNormalizationStatisticsGradientFusedNeuronA", v75, v76, v77, v78, v79);
+      objc_msgSend_encodeFloat_forKey_(coder, v74, @"kMPSCNNBatchNormalizationStatisticsGradientFusedNeuronA", v75, v76, v77, v78, v79);
       objc_msgSend_b(self->_fusedNeuronDescriptor, v80, v81, v82, v83, v84, v85, v86);
-      objc_msgSend_encodeFloat_forKey_(a3, v87, @"kMPSCNNBatchNormalizationStatisticsGradientFusedNeuronB", v88, v89, v90, v91, v92);
+      objc_msgSend_encodeFloat_forKey_(coder, v87, @"kMPSCNNBatchNormalizationStatisticsGradientFusedNeuronB", v88, v89, v90, v91, v92);
       objc_msgSend_c(self->_fusedNeuronDescriptor, v93, v94, v95, v96, v97, v98, v99);
-      objc_msgSend_encodeFloat_forKey_(a3, v100, @"kMPSCNNBatchNormalizationStatisticsGradientFusedNeuronC", v101, v102, v103, v104, v105);
+      objc_msgSend_encodeFloat_forKey_(coder, v100, @"kMPSCNNBatchNormalizationStatisticsGradientFusedNeuronC", v101, v102, v103, v104, v105);
     }
   }
 
   else
   {
-    objc_msgSend_encodeBool_forKey_(a3, v5, 0, @"kMPSCNNBatchNormalizationStatisticsGradientIsNeuronFusedKey", v6, v7, v8, v9);
+    objc_msgSend_encodeBool_forKey_(coder, v5, 0, @"kMPSCNNBatchNormalizationStatisticsGradientIsNeuronFusedKey", v6, v7, v8, v9);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   MPSDevice = MPSDevice::GetMPSDevice();
   if (!MPSDevice)
@@ -317,7 +317,7 @@ LABEL_15:
   v8 = MPSDevice;
   v63.receiver = self;
   v63.super_class = MPSCNNBatchNormalizationStatisticsGradient;
-  v16 = [(MPSCNNGradientKernel *)&v63 copyWithZone:a3 device:a4];
+  v16 = [(MPSCNNGradientKernel *)&v63 copyWithZone:zone device:device];
   if (v16)
   {
     *(v16 + 54) = objc_msgSend_copy(self->_fusedNeuronDescriptor, v9, v10, v11, v12, v13, v14, v15);
@@ -331,7 +331,7 @@ LABEL_15:
         v41 = objc_msgSend_bytes(v33, v34, v35, v36, v37, v38, v39, v40);
         v49 = objc_msgSend_data(*(v16 + 54), v42, v43, v44, v45, v46, v47, v48);
         v57 = objc_msgSend_length(v49, v50, v51, v52, v53, v54, v55, v56);
-        *(v16 + 55) = objc_msgSend_newBufferWithBytes_length_options_(a4, v58, v41, v57, 16 * v24, v59, v60, v61);
+        *(v16 + 55) = objc_msgSend_newBufferWithBytes_length_options_(device, v58, v41, v57, 16 * v24, v59, v60, v61);
       }
     }
   }

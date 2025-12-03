@@ -1,10 +1,10 @@
 @interface GKApplicationProxy
-+ (id)metadataForBundleURL:(id)a3;
++ (id)metadataForBundleURL:(id)l;
 - (BOOL)isGameCenterEnabled;
 - (BOOL)isInstalled;
 - (BOOL)isRestricted;
-- (GKApplicationProxy)initWithBundleID:(id)a3;
-- (GKApplicationProxy)initWithProxy:(id)a3;
+- (GKApplicationProxy)initWithBundleID:(id)d;
+- (GKApplicationProxy)initWithProxy:(id)proxy;
 - (NSBundle)bundle;
 - (NSDate)purchaseDate;
 - (NSDictionary)metadata;
@@ -18,10 +18,10 @@
 {
   if ([(LSApplicationProxy *)self->_lsProxy foundBackingBundle])
   {
-    v3 = [(GKApplicationProxy *)self bundleURL];
-    if (v3)
+    bundleURL = [(GKApplicationProxy *)self bundleURL];
+    if (bundleURL)
     {
-      v4 = [MEMORY[0x277CCA8D8] bundleWithURL:v3];
+      v4 = [MEMORY[0x277CCA8D8] bundleWithURL:bundleURL];
     }
 
     else
@@ -40,16 +40,16 @@
 
 - (NSNumber)externalVersion
 {
-  v2 = [(GKApplicationProxy *)self metadata];
-  v3 = [v2 objectForKeyedSubscript:@"softwareVersionExternalIdentifier"];
+  metadata = [(GKApplicationProxy *)self metadata];
+  v3 = [metadata objectForKeyedSubscript:@"softwareVersionExternalIdentifier"];
 
   return v3;
 }
 
 - (NSNumber)adamID
 {
-  v2 = [(GKApplicationProxy *)self metadata];
-  v3 = [v2 objectForKeyedSubscript:@"itemId"];
+  metadata = [(GKApplicationProxy *)self metadata];
+  v3 = [metadata objectForKeyedSubscript:@"itemId"];
 
   return v3;
 }
@@ -59,9 +59,9 @@
   metadata = self->_metadata;
   if (!metadata)
   {
-    v4 = [(LSApplicationProxy *)self->_lsProxy bundleURL];
-    v5 = [v4 URLByDeletingLastPathComponent];
-    v6 = [v5 URLByAppendingPathComponent:@"iTunesMetadata.plist"];
+    bundleURL = [(LSApplicationProxy *)self->_lsProxy bundleURL];
+    uRLByDeletingLastPathComponent = [bundleURL URLByDeletingLastPathComponent];
+    v6 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"iTunesMetadata.plist"];
 
     if (v6)
     {
@@ -76,33 +76,33 @@
   return metadata;
 }
 
-- (GKApplicationProxy)initWithProxy:(id)a3
+- (GKApplicationProxy)initWithProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v8.receiver = self;
   v8.super_class = GKApplicationProxy;
   v5 = [(GKApplicationProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(GKApplicationProxy *)v5 setLsProxy:v4];
+    [(GKApplicationProxy *)v5 setLsProxy:proxyCopy];
   }
 
   return v6;
 }
 
-- (GKApplicationProxy)initWithBundleID:(id)a3
+- (GKApplicationProxy)initWithBundleID:(id)d
 {
-  v4 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:a3];
+  v4 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:d];
   v5 = [(GKApplicationProxy *)self initWithProxy:v4];
 
   return v5;
 }
 
-+ (id)metadataForBundleURL:(id)a3
++ (id)metadataForBundleURL:(id)l
 {
-  v3 = [a3 URLByDeletingLastPathComponent];
-  v4 = [v3 URLByAppendingPathComponent:@"iTunesMetadata.plist"];
+  uRLByDeletingLastPathComponent = [l URLByDeletingLastPathComponent];
+  v4 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"iTunesMetadata.plist"];
 
   if (v4)
   {
@@ -124,11 +124,11 @@
     [GKApplicationProxy purchaseDate];
   }
 
-  v3 = [(GKApplicationProxy *)self metadata];
-  v4 = [v3 objectForKeyedSubscript:@"purchaseDate"];
+  metadata = [(GKApplicationProxy *)self metadata];
+  v4 = [metadata objectForKeyedSubscript:@"purchaseDate"];
   if (!v4)
   {
-    v5 = [v3 objectForKeyedSubscript:@"com.apple.iTunesStore.downloadInfo"];
+    v5 = [metadata objectForKeyedSubscript:@"com.apple.iTunesStore.downloadInfo"];
     v4 = [v5 objectForKeyedSubscript:@"purchaseDate"];
   }
 
@@ -168,30 +168,30 @@ void __34__GKApplicationProxy_purchaseDate__block_invoke()
 
 - (BOOL)isRestricted
 {
-  v2 = [(LSApplicationProxy *)self->_lsProxy appState];
-  v3 = [v2 isRestricted];
+  appState = [(LSApplicationProxy *)self->_lsProxy appState];
+  isRestricted = [appState isRestricted];
 
-  return v3;
+  return isRestricted;
 }
 
 - (BOOL)isGameCenterEnabled
 {
-  v2 = [(GKApplicationProxy *)self metadata];
-  v3 = [v2 objectForKeyedSubscript:@"gameCenterEnabled"];
-  v4 = [v3 BOOLValue];
+  metadata = [(GKApplicationProxy *)self metadata];
+  v3 = [metadata objectForKeyedSubscript:@"gameCenterEnabled"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isInstalled
 {
-  v3 = [(LSApplicationProxy *)self->_lsProxy foundBackingBundle];
-  if (v3)
+  foundBackingBundle = [(LSApplicationProxy *)self->_lsProxy foundBackingBundle];
+  if (foundBackingBundle)
   {
-    LOBYTE(v3) = [(LSApplicationProxy *)self->_lsProxy installType]== 0;
+    LOBYTE(foundBackingBundle) = [(LSApplicationProxy *)self->_lsProxy installType]== 0;
   }
 
-  return v3;
+  return foundBackingBundle;
 }
 
 @end

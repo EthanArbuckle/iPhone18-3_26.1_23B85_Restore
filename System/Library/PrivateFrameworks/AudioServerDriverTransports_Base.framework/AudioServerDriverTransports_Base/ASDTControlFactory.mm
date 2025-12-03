@@ -1,17 +1,17 @@
 @interface ASDTControlFactory
-+ (id)controlForConfig:(id)a3 withDevice:(id)a4;
++ (id)controlForConfig:(id)config withDevice:(id)device;
 @end
 
 @implementation ASDTControlFactory
 
-+ (id)controlForConfig:(id)a3 withDevice:(id)a4
++ (id)controlForConfig:(id)config withDevice:(id)device
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 asdtSubclass];
-  if ([(objc_class *)v7 isSubclassOfClass:objc_opt_class()]&& ([(objc_class *)v7 conformsToProtocol:&unk_28535C9D0]& 1) != 0)
+  configCopy = config;
+  deviceCopy = device;
+  asdtSubclass = [configCopy asdtSubclass];
+  if ([(objc_class *)asdtSubclass isSubclassOfClass:objc_opt_class()]&& ([(objc_class *)asdtSubclass conformsToProtocol:&unk_28535C9D0]& 1) != 0)
   {
-    v8 = [[v7 alloc] initWithConfig:v5 withDevice:v6];
+    v8 = [[asdtSubclass alloc] initWithConfig:configCopy withDevice:deviceCopy];
   }
 
   else
@@ -19,7 +19,7 @@
     v9 = ASDTBaseLogType();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [ASDTControlFactory controlForConfig:v7 withDevice:v9];
+      [ASDTControlFactory controlForConfig:asdtSubclass withDevice:v9];
     }
 
     v8 = 0;

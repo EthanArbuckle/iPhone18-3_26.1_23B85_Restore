@@ -1,65 +1,65 @@
 @interface ATStorePodcastDownloadAssetsOperation
-- (id)_downloadConfigurationWithSessionIdentifier:(id)a3 isHLS:(BOOL)a4;
+- (id)_downloadConfigurationWithSessionIdentifier:(id)identifier isHLS:(BOOL)s;
 - (id)_icavUrlSession;
 - (id)_urlSession;
 - (id)keyLoader;
-- (void)_moveAssetToPurchasesDirectoryFromTmpPath:(id)a3 downloadError:(id)a4 isHLSAsset:(BOOL)a5;
+- (void)_moveAssetToPurchasesDirectoryFromTmpPath:(id)path downloadError:(id)error isHLSAsset:(BOOL)asset;
 - (void)cancel;
 - (void)execute;
-- (void)finishWithError:(id)a3 operationResult:(id)a4;
+- (void)finishWithError:(id)error operationResult:(id)result;
 @end
 
 @implementation ATStorePodcastDownloadAssetsOperation
 
-- (void)_moveAssetToPurchasesDirectoryFromTmpPath:(id)a3 downloadError:(id)a4 isHLSAsset:(BOOL)a5
+- (void)_moveAssetToPurchasesDirectoryFromTmpPath:(id)path downloadError:(id)error isHLSAsset:(BOOL)asset
 {
-  v5 = a5;
+  assetCopy = asset;
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ATStoreDownloadOperation *)self asset];
-  [v10 setProtectionType:1];
+  pathCopy = path;
+  errorCopy = error;
+  asset = [(ATStoreDownloadOperation *)self asset];
+  [asset setProtectionType:1];
 
-  v11 = [(ATStoreDownloadOperation *)self asset];
-  v12 = [v11 identifier];
+  asset2 = [(ATStoreDownloadOperation *)self asset];
+  identifier = [asset2 identifier];
 
-  if (v5)
+  if (assetCopy)
   {
-    v13 = @"movpkg";
+    pathExtension = @"movpkg";
   }
 
   else
   {
-    v13 = [v8 pathExtension];
-    if (!v13)
+    pathExtension = [pathCopy pathExtension];
+    if (!pathExtension)
     {
       goto LABEL_5;
     }
   }
 
-  v14 = [v12 stringByAppendingPathExtension:v13];
+  v14 = [identifier stringByAppendingPathExtension:pathExtension];
 
-  v12 = v14;
+  identifier = v14;
 LABEL_5:
   v15 = [MEMORY[0x277D2B5F8] pathForBaseLocationPath:400];
-  v16 = [MEMORY[0x277CCAA00] defaultManager];
-  [v16 createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:0];
 
-  v17 = [v15 stringByAppendingPathComponent:v12];
-  v18 = [MEMORY[0x277CCAA00] defaultManager];
-  [v18 removeItemAtPath:v17 error:0];
+  v17 = [v15 stringByAppendingPathComponent:identifier];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager2 removeItemAtPath:v17 error:0];
 
-  v28 = v5;
-  if (v5)
+  v28 = assetCopy;
+  if (assetCopy)
   {
-    v19 = [v8 stringByAppendingPathExtension:v13];
+    v19 = [pathCopy stringByAppendingPathExtension:pathExtension];
 
-    v8 = v19;
+    pathCopy = v19;
   }
 
-  v20 = [MEMORY[0x277CCAA00] defaultManager];
-  v29 = v9;
-  v21 = [v20 moveItemAtPath:v8 toPath:v17 error:&v29];
+  defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+  v29 = errorCopy;
+  v21 = [defaultManager3 moveItemAtPath:pathCopy toPath:v17 error:&v29];
   v22 = v29;
 
   if ((v21 & 1) == 0)
@@ -69,7 +69,7 @@ LABEL_5:
     {
       v24 = &stru_2836EC190;
       *buf = 138544386;
-      v31 = self;
+      selfCopy = self;
       v32 = 2114;
       if (v28)
       {
@@ -78,7 +78,7 @@ LABEL_5:
 
       v33 = v24;
       v34 = 2114;
-      v35 = v8;
+      v35 = pathCopy;
       v36 = 2114;
       v37 = v17;
       v38 = 2114;
@@ -103,12 +103,12 @@ LABEL_5:
   [(ATStorePodcastDownloadAssetsOperation *)self finishWithError:v22 operationResult:v26];
 }
 
-- (id)_downloadConfigurationWithSessionIdentifier:(id)a3 isHLS:(BOOL)a4
+- (id)_downloadConfigurationWithSessionIdentifier:(id)identifier isHLS:(BOOL)s
 {
-  v6 = a3;
-  if (a4)
+  identifierCopy = identifier;
+  if (s)
   {
-    [MEMORY[0x277CCAD38] backgroundSessionConfigurationWithIdentifier:v6];
+    [MEMORY[0x277CCAD38] backgroundSessionConfigurationWithIdentifier:identifierCopy];
   }
 
   else
@@ -116,16 +116,16 @@ LABEL_5:
     [MEMORY[0x277CCAD38] defaultSessionConfiguration];
   }
   v7 = ;
-  v8 = [(ATStoreDownloadOperation *)self asset];
-  [v7 setAllowsCellularAccess:{objc_msgSend(v8, "canUseCellularData")}];
+  asset = [(ATStoreDownloadOperation *)self asset];
+  [v7 setAllowsCellularAccess:{objc_msgSend(asset, "canUseCellularData")}];
 
   [v7 setHTTPShouldUsePipelining:1];
   [v7 setHTTPShouldSetCookies:0];
   [v7 setHTTPCookieAcceptPolicy:1];
-  v9 = [MEMORY[0x277D7FA80] currentDeviceInfo];
-  v10 = [v9 isWatch];
+  currentDeviceInfo = [MEMORY[0x277D7FA80] currentDeviceInfo];
+  isWatch = [currentDeviceInfo isWatch];
 
-  if (v10)
+  if (isWatch)
   {
     [v7 set_prefersInfraWiFi:1];
     [v7 set_companionProxyPreference:2];
@@ -137,23 +137,23 @@ LABEL_5:
 - (id)_urlSession
 {
   v3 = [MEMORY[0x277CCAB68] stringWithString:@"com.apple.airtraffic.ATPodcastEpisodeDownloadOperation"];
-  v4 = [(ATStoreDownloadOperation *)self asset];
-  v5 = [v4 powerRequired];
+  asset = [(ATStoreDownloadOperation *)self asset];
+  powerRequired = [asset powerRequired];
 
-  if (v5)
+  if (powerRequired)
   {
     [v3 appendString:@".power"];
   }
 
-  v6 = [(ATStoreDownloadOperation *)self asset];
-  v7 = [v6 canUseCellularData];
+  asset2 = [(ATStoreDownloadOperation *)self asset];
+  canUseCellularData = [asset2 canUseCellularData];
 
-  if ((v7 & 1) == 0)
+  if ((canUseCellularData & 1) == 0)
   {
     [v3 appendString:@".wifi"];
   }
 
-  v8 = [MEMORY[0x277D7FC90] sharedSessionManager];
+  mEMORY[0x277D7FC90] = [MEMORY[0x277D7FC90] sharedSessionManager];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __52__ATStorePodcastDownloadAssetsOperation__urlSession__block_invoke;
@@ -161,7 +161,7 @@ LABEL_5:
   v12[4] = self;
   v13 = v3;
   v9 = v3;
-  v10 = [v8 sessionWithIdentifier:v9 creationBlock:v12];
+  v10 = [mEMORY[0x277D7FC90] sessionWithIdentifier:v9 creationBlock:v12];
 
   return v10;
 }
@@ -178,23 +178,23 @@ id __52__ATStorePodcastDownloadAssetsOperation__urlSession__block_invoke(uint64_
 - (id)_icavUrlSession
 {
   v3 = [MEMORY[0x277CCAB68] stringWithString:@"com.apple.airtraffic.ATPodcastEpisodeDownloadOperation.HLS"];
-  v4 = [(ATStoreDownloadOperation *)self asset];
-  v5 = [v4 powerRequired];
+  asset = [(ATStoreDownloadOperation *)self asset];
+  powerRequired = [asset powerRequired];
 
-  if (v5)
+  if (powerRequired)
   {
     [v3 appendString:@".power"];
   }
 
-  v6 = [(ATStoreDownloadOperation *)self asset];
-  v7 = [v6 canUseCellularData];
+  asset2 = [(ATStoreDownloadOperation *)self asset];
+  canUseCellularData = [asset2 canUseCellularData];
 
-  if ((v7 & 1) == 0)
+  if ((canUseCellularData & 1) == 0)
   {
     [v3 appendString:@".wifi"];
   }
 
-  v8 = [MEMORY[0x277D7FC90] sharedSessionManager];
+  mEMORY[0x277D7FC90] = [MEMORY[0x277D7FC90] sharedSessionManager];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __56__ATStorePodcastDownloadAssetsOperation__icavUrlSession__block_invoke;
@@ -202,7 +202,7 @@ id __52__ATStorePodcastDownloadAssetsOperation__urlSession__block_invoke(uint64_
   v12[4] = self;
   v13 = v3;
   v9 = v3;
-  v10 = [v8 sessionWithIdentifier:v9 creationBlock:v12];
+  v10 = [mEMORY[0x277D7FC90] sessionWithIdentifier:v9 creationBlock:v12];
 
   return v10;
 }
@@ -216,11 +216,11 @@ id __56__ATStorePodcastDownloadAssetsOperation__icavUrlSession__block_invoke(uin
   return v4;
 }
 
-- (void)finishWithError:(id)a3 operationResult:(id)a4
+- (void)finishWithError:(id)error operationResult:(id)result
 {
   v8.receiver = self;
   v8.super_class = ATStorePodcastDownloadAssetsOperation;
-  [(ATStoreDownloadOperation *)&v8 finishWithError:a3 operationResult:a4];
+  [(ATStoreDownloadOperation *)&v8 finishWithError:error operationResult:result];
   request = self->_request;
   self->_request = 0;
 
@@ -239,15 +239,15 @@ id __56__ATStorePodcastDownloadAssetsOperation__icavUrlSession__block_invoke(uin
   if (self->_request)
   {
     v3 = MEMORY[0x277CBEBC0];
-    v4 = [(ATStoreDownloadOperation *)self asset];
-    v5 = [v4 storeInfo];
-    v6 = [v5 redownloadParams];
-    v7 = [v3 URLWithString:v6];
-    v8 = [v7 pf_isHLSPlaylistObjC];
+    asset = [(ATStoreDownloadOperation *)self asset];
+    storeInfo = [asset storeInfo];
+    redownloadParams = [storeInfo redownloadParams];
+    v7 = [v3 URLWithString:redownloadParams];
+    pf_isHLSPlaylistObjC = [v7 pf_isHLSPlaylistObjC];
 
     v9 = _ATLogCategoryStoreDownloads();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-    if (v8)
+    if (pf_isHLSPlaylistObjC)
     {
       if (v10)
       {
@@ -279,40 +279,40 @@ id __56__ATStorePodcastDownloadAssetsOperation__icavUrlSession__block_invoke(uin
   v3 = _ATLogCategoryStoreDownloads();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ATStoreDownloadOperation *)self asset];
-    v5 = [(ATStoreDownloadOperation *)self asset];
-    v6 = [v5 powerRequired];
-    v7 = [(ATStoreDownloadOperation *)self asset];
-    v8 = [v7 canUseCellularData];
-    v9 = [(ATStoreDownloadOperation *)self asset];
-    v10 = [v9 resumeData];
+    asset = [(ATStoreDownloadOperation *)self asset];
+    asset2 = [(ATStoreDownloadOperation *)self asset];
+    powerRequired = [asset2 powerRequired];
+    asset3 = [(ATStoreDownloadOperation *)self asset];
+    canUseCellularData = [asset3 canUseCellularData];
+    asset4 = [(ATStoreDownloadOperation *)self asset];
+    resumeData = [asset4 resumeData];
     *buf = 138544386;
-    v29 = self;
+    selfCopy = self;
     v30 = 2114;
-    v31 = v4;
+    v31 = asset;
     v32 = 1024;
-    v33 = v6;
+    v33 = powerRequired;
     v34 = 1024;
-    v35 = v8;
+    v35 = canUseCellularData;
     v36 = 1024;
-    v37 = v10 != 0;
+    v37 = resumeData != 0;
     _os_log_impl(&dword_223819000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ starting download for asset %{public}@. requiresPower=%d, canUseCellularData=%d, hasResumeData=%d", buf, 0x28u);
   }
 
-  v11 = [(ATStoreDownloadOperation *)self asset];
-  v12 = [v11 storeInfo];
-  v13 = [v12 redownloadParams];
+  asset5 = [(ATStoreDownloadOperation *)self asset];
+  storeInfo = [asset5 storeInfo];
+  redownloadParams = [storeInfo redownloadParams];
 
   v14 = _ATLogCategoryStoreDownloads();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v13;
+    selfCopy = redownloadParams;
     _os_log_impl(&dword_223819000, v14, OS_LOG_TYPE_DEFAULT, "Downloading from remote url: %@", buf, 0xCu);
   }
 
-  v15 = [MEMORY[0x277CBEBC0] URLWithString:v13];
-  if (v13)
+  v15 = [MEMORY[0x277CBEBC0] URLWithString:redownloadParams];
+  if (redownloadParams)
   {
     if (![(ATStorePodcastDownloadAssetsOperation *)self isCancelled])
     {
@@ -323,16 +323,16 @@ id __56__ATStorePodcastDownloadAssetsOperation__icavUrlSession__block_invoke(uin
       v26[4] = self;
       v27 = v15;
       v19 = MEMORY[0x223DED0C0](v26);
-      v20 = [MEMORY[0x277D7FC00] sharedManager];
-      v21 = [(ATStoreDownloadOperation *)self asset];
-      v22 = [v21 totalBytes];
+      mEMORY[0x277D7FC00] = [MEMORY[0x277D7FC00] sharedManager];
+      asset6 = [(ATStoreDownloadOperation *)self asset];
+      totalBytes = [asset6 totalBytes];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __48__ATStorePodcastDownloadAssetsOperation_execute__block_invoke_33;
       v24[3] = &unk_2784E5AF0;
       v25 = v19;
       v23 = v19;
-      [v20 ensureStorageIsAvailable:v22 withCompletionHandler:v24];
+      [mEMORY[0x277D7FC00] ensureStorageIsAvailable:totalBytes withCompletionHandler:v24];
 
       goto LABEL_11;
     }

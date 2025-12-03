@@ -2,39 +2,39 @@
 - (BOOL)_shouldShowCancelButton;
 - (BOOL)canBecomeFirstResponder;
 - (BOOL)canResignFirstResponder;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isFirstResponder;
 - (BOOL)resignFirstResponder;
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SRCompactTextRequestView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SRCompactTextRequestView)initWithFrame:(CGRect)frame;
 - (SRCompactTextRequestViewDelegate)delegate;
 - (double)_preferredHeight;
-- (void)_accessibilityBoldStatusDidChange:(id)a3;
+- (void)_accessibilityBoldStatusDidChange:(id)change;
 - (void)_beginEditing;
-- (void)_beginEditingGestureWasRecognized:(id)a3;
-- (void)_cancelButtonWasTapped:(id)a3;
-- (void)_setShowingCancelButton:(BOOL)a3 animated:(BOOL)a4;
+- (void)_beginEditingGestureWasRecognized:(id)recognized;
+- (void)_cancelButtonWasTapped:(id)tapped;
+- (void)_setShowingCancelButton:(BOOL)button animated:(BOOL)animated;
 - (void)_updateCancelButtonFont;
 - (void)layoutSubviews;
-- (void)setAllowsCancellation:(BOOL)a3;
-- (void)textField:(id)a3 willDismissEditMenuWithAnimator:(id)a4;
-- (void)textField:(id)a3 willPresentEditMenuWithAnimator:(id)a4;
-- (void)textFieldDidChangeSelection:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)textRequestSuggestionsButton:(id)a3 didEnableSuggestions:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAllowsCancellation:(BOOL)cancellation;
+- (void)textField:(id)field willDismissEditMenuWithAnimator:(id)animator;
+- (void)textField:(id)field willPresentEditMenuWithAnimator:(id)animator;
+- (void)textFieldDidChangeSelection:(id)selection;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)textRequestSuggestionsButton:(id)button didEnableSuggestions:(BOOL)suggestions;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SRCompactTextRequestView
 
-- (SRCompactTextRequestView)initWithFrame:(CGRect)a3
+- (SRCompactTextRequestView)initWithFrame:(CGRect)frame
 {
   v23.receiver = self;
   v23.super_class = SRCompactTextRequestView;
-  v3 = [(SRCompactTextRequestView *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SRCompactTextRequestView *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIButton buttonWithType:0];
@@ -94,7 +94,7 @@
     [(SRCompactTextRequestField *)v3->_textField addGestureRecognizer:v3->_beginEditingGestureRecognizer];
     if (+[AFSystemAssistantExperienceStatusManager saeAvailable])
     {
-      v17 = [(SRCompactTextRequestField *)v3->_textField inputAssistantItem];
+      inputAssistantItem = [(SRCompactTextRequestField *)v3->_textField inputAssistantItem];
       v18 = [UIImage _systemImageNamed:@"siri"];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
@@ -102,69 +102,69 @@
       v21[3] = &unk_100168B90;
       v22 = v3;
       v19 = [UIAction actionWithTitle:@"siri" image:v18 identifier:0 handler:v21];
-      [v17 _setDictationReplacementAction:v19];
+      [inputAssistantItem _setDictationReplacementAction:v19];
     }
   }
 
   return v3;
 }
 
-- (void)textFieldDidChangeSelection:(id)a3
+- (void)textFieldDidChangeSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [v4 text];
+  text = [selectionCopy text];
 
-  [WeakRetained textRequestView:self didChangeTextFieldText:v5];
+  [WeakRetained textRequestView:self didChangeTextFieldText:text];
 }
 
 - (void)_beginEditing
 {
-  v3 = [(SRCompactTextRequestView *)self delegate];
+  delegate = [(SRCompactTextRequestView *)self delegate];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100080BB4;
   v4[3] = &unk_100168888;
   v4[4] = self;
-  [v3 textRequestView:self requestsKeyboardWithCompletion:v4];
+  [delegate textRequestView:self requestsKeyboardWithCompletion:v4];
 }
 
-- (void)_beginEditingGestureWasRecognized:(id)a3
+- (void)_beginEditingGestureWasRecognized:(id)recognized
 {
-  if ([a3 state] == 3)
+  if ([recognized state] == 3)
   {
 
     [(SRCompactTextRequestView *)self _beginEditing];
   }
 }
 
-- (void)setAllowsCancellation:(BOOL)a3
+- (void)setAllowsCancellation:(BOOL)cancellation
 {
-  self->_allowsCancellation = a3 & ~+[AFSystemAssistantExperienceStatusManager saeAvailable];
-  v4 = [(SRCompactTextRequestView *)self _shouldShowCancelButton];
+  self->_allowsCancellation = cancellation & ~+[AFSystemAssistantExperienceStatusManager saeAvailable];
+  _shouldShowCancelButton = [(SRCompactTextRequestView *)self _shouldShowCancelButton];
 
-  [(SRCompactTextRequestView *)self _setShowingCancelButton:v4];
+  [(SRCompactTextRequestView *)self _setShowingCancelButton:_shouldShowCancelButton];
 }
 
 - (BOOL)_shouldShowCancelButton
 {
-  v3 = [(SRCompactTextRequestView *)self allowsCancellation];
-  if (v3)
+  allowsCancellation = [(SRCompactTextRequestView *)self allowsCancellation];
+  if (allowsCancellation)
   {
 
-    LOBYTE(v3) = [(SRCompactTextRequestView *)self isFirstResponder];
+    LOBYTE(allowsCancellation) = [(SRCompactTextRequestView *)self isFirstResponder];
   }
 
-  return v3;
+  return allowsCancellation;
 }
 
-- (void)_setShowingCancelButton:(BOOL)a3 animated:(BOOL)a4
+- (void)_setShowingCancelButton:(BOOL)button animated:(BOOL)animated
 {
-  if (self->_showingCancelButton != a3)
+  if (self->_showingCancelButton != button)
   {
-    v4 = a4;
+    animatedCopy = animated;
     v7 = +[UIView _isInAnimationBlock];
-    self->_showingCancelButton = a3;
+    self->_showingCancelButton = button;
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100080E08;
@@ -179,7 +179,7 @@
 
     else
     {
-      v10 = !v4;
+      v10 = !animatedCopy;
     }
 
     if (v10)
@@ -194,39 +194,39 @@
   }
 }
 
-- (void)_cancelButtonWasTapped:(id)a3
+- (void)_cancelButtonWasTapped:(id)tapped
 {
-  v4 = [(SRCompactTextRequestView *)self _textField];
-  [v4 setText:&stru_10016AE90];
+  _textField = [(SRCompactTextRequestView *)self _textField];
+  [_textField setText:&stru_10016AE90];
 
   [(SRCompactTextRequestView *)self resignFirstResponder];
 }
 
 - (void)_updateCancelButtonFont
 {
-  v3 = [(SRCompactTextRequestView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  v5 = sub_100088A08(v4, UIContentSizeCategoryExtraSmall, UIContentSizeCategoryAccessibilityExtraExtraLarge);
+  traitCollection = [(SRCompactTextRequestView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v5 = sub_100088A08(preferredContentSizeCategory, UIContentSizeCategoryExtraSmall, UIContentSizeCategoryAccessibilityExtraExtraLarge);
   v9 = [UITraitCollection traitCollectionWithPreferredContentSizeCategory:v5];
 
   v6 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:v9];
-  v7 = [(SRCompactTextRequestView *)self _cancelButton];
-  v8 = [v7 titleLabel];
-  [v8 setFont:v6];
+  _cancelButton = [(SRCompactTextRequestView *)self _cancelButton];
+  titleLabel = [_cancelButton titleLabel];
+  [titleLabel setFont:v6];
 
-  [v7 sizeToFit];
+  [_cancelButton sizeToFit];
 }
 
 - (double)_preferredHeight
 {
-  v2 = [(SRCompactTextRequestView *)self _textField];
-  [v2 intrinsicContentSize];
+  _textField = [(SRCompactTextRequestView *)self _textField];
+  [_textField intrinsicContentSize];
   v4 = v3;
 
   return v4;
 }
 
-- (void)_accessibilityBoldStatusDidChange:(id)a3
+- (void)_accessibilityBoldStatusDidChange:(id)change
 {
   [(SRCompactTextRequestView *)self _updateCancelButtonFont];
   [(SRCompactTextRequestView *)self setNeedsLayout];
@@ -236,8 +236,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(SRCompactTextRequestView *)self _textField];
-  [v3 intrinsicContentSize];
+  _textField = [(SRCompactTextRequestView *)self _textField];
+  [_textField intrinsicContentSize];
   v5 = v4;
 
   [(SRCompactTextRequestView *)self _preferredHeight];
@@ -248,12 +248,12 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SRCompactTextRequestView *)self _textField];
-  [v6 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  _textField = [(SRCompactTextRequestView *)self _textField];
+  [_textField sizeThatFits:{width, height}];
   v8 = v7;
 
   [(SRCompactTextRequestView *)self _preferredHeight];
@@ -270,12 +270,12 @@
   v25.super_class = SRCompactTextRequestView;
   [(SRCompactTextRequestView *)&v25 layoutSubviews];
   [(SRCompactTextRequestView *)self bounds];
-  v3 = [(SRCompactTextRequestView *)self _textField];
-  v4 = [(SRCompactTextRequestView *)self _cancelButton];
+  _textField = [(SRCompactTextRequestView *)self _textField];
+  _cancelButton = [(SRCompactTextRequestView *)self _cancelButton];
   [(SRCompactTextRequestView *)self safeAreaInsets];
   UIEdgeInsetsAdd();
-  [v3 intrinsicContentSize];
-  [v4 frame];
+  [_textField intrinsicContentSize];
+  [_cancelButton frame];
   v6 = v5;
   y = CGPointZero.y;
   UIRectCenteredIntegralRect();
@@ -299,24 +299,24 @@
     }
   }
 
-  [v3 setBounds:{CGPointZero.x, y, rect - (left + right), v20 - (UIEdgeInsetsZero.top + bottom)}];
+  [_textField setBounds:{CGPointZero.x, y, rect - (left + right), v20 - (UIEdgeInsetsZero.top + bottom)}];
   UIRectGetCenter();
-  [v3 setCenter:?];
-  [v4 frame];
+  [_textField setCenter:?];
+  [_cancelButton frame];
   v26.origin.x = v21;
   v26.origin.y = v22;
   v26.size.width = rect;
   v26.size.height = v20;
   CGRectGetMidY(v26);
-  v14 = [(SRCompactTextRequestView *)self _isShowingCancelButton];
-  v15 = [(SRCompactTextRequestView *)self _laysOutContentRightToLeft];
-  if (v14)
+  _isShowingCancelButton = [(SRCompactTextRequestView *)self _isShowingCancelButton];
+  _laysOutContentRightToLeft = [(SRCompactTextRequestView *)self _laysOutContentRightToLeft];
+  if (_isShowingCancelButton)
   {
     v16 = v21;
     v17 = v22;
     v18 = rect;
     v19 = v20;
-    if (!v15)
+    if (!_laysOutContentRightToLeft)
     {
       CGRectGetMaxX(*&v16);
       goto LABEL_12;
@@ -329,7 +329,7 @@
     v17 = v22;
     v18 = rect;
     v19 = v20;
-    if (!v15)
+    if (!_laysOutContentRightToLeft)
     {
       CGRectGetMaxX(*&v16);
       goto LABEL_12;
@@ -339,25 +339,25 @@
   CGRectGetMinX(*&v16);
 LABEL_12:
   UIRectIntegralWithScale();
-  [v4 setBounds:{CGPointZero.x, y}];
+  [_cancelButton setBounds:{CGPointZero.x, y}];
   UIRectGetCenter();
-  [v4 setCenter:?];
+  [_cancelButton setCenter:?];
 }
 
 - (BOOL)canBecomeFirstResponder
 {
-  v2 = [(SRCompactTextRequestView *)self _textField];
-  v3 = [v2 canBecomeFirstResponder];
+  _textField = [(SRCompactTextRequestView *)self _textField];
+  canBecomeFirstResponder = [_textField canBecomeFirstResponder];
 
-  return v3;
+  return canBecomeFirstResponder;
 }
 
 - (BOOL)canResignFirstResponder
 {
-  v2 = [(SRCompactTextRequestView *)self _textField];
-  v3 = [v2 canResignFirstResponder];
+  _textField = [(SRCompactTextRequestView *)self _textField];
+  canResignFirstResponder = [_textField canResignFirstResponder];
 
-  return v3;
+  return canResignFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
@@ -365,29 +365,29 @@ LABEL_12:
   v6.receiver = self;
   v6.super_class = SRCompactTextRequestView;
   [(SRCompactTextRequestView *)&v6 resignFirstResponder];
-  v3 = [(SRCompactTextRequestView *)self _textField];
-  v4 = [v3 resignFirstResponder];
+  _textField = [(SRCompactTextRequestView *)self _textField];
+  resignFirstResponder = [_textField resignFirstResponder];
 
-  return v4;
+  return resignFirstResponder;
 }
 
 - (BOOL)isFirstResponder
 {
-  v2 = [(SRCompactTextRequestView *)self _textField];
-  v3 = [v2 isEditing];
+  _textField = [(SRCompactTextRequestView *)self _textField];
+  isEditing = [_textField isEditing];
 
-  return v3;
+  return isEditing;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(SRCompactTextRequestView *)self _beginEditingGestureRecognizer];
+  beginCopy = begin;
+  _beginEditingGestureRecognizer = [(SRCompactTextRequestView *)self _beginEditingGestureRecognizer];
 
-  if (v5 == v4)
+  if (_beginEditingGestureRecognizer == beginCopy)
   {
-    v7 = [(SRCompactTextRequestView *)self _textField];
-    v6 = [v7 isEditing] ^ 1;
+    _textField = [(SRCompactTextRequestView *)self _textField];
+    v6 = [_textField isEditing] ^ 1;
   }
 
   else
@@ -398,24 +398,24 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
   if ([(SRCompactTextRequestView *)self allowsCancellation])
   {
     [(SRCompactTextRequestView *)self _setShowingCancelButton:1 animated:1];
   }
 
-  v4 = [(SRCompactTextRequestView *)self delegate];
-  [v4 textRequestViewWillBeginEditing:self];
+  delegate = [(SRCompactTextRequestView *)self delegate];
+  [delegate textRequestViewWillBeginEditing:self];
 
   return 1;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = [a3 text];
-  v5 = [(SRCompactTextRequestView *)self delegate];
-  [v5 textRequestView:self siriRequestCommittedWithText:v4];
+  text = [return text];
+  delegate = [(SRCompactTextRequestView *)self delegate];
+  [delegate textRequestView:self siriRequestCommittedWithText:text];
 
   if ((+[AFSystemAssistantExperienceStatusManager saeAvailable]& 1) == 0)
   {
@@ -425,49 +425,49 @@ LABEL_12:
   return 1;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
   [(SRCompactTextRequestView *)self _setShowingCancelButton:0 animated:1];
-  v4 = [(SRCompactTextRequestView *)self delegate];
-  [v4 textRequestViewDidEndEditing:self];
+  delegate = [(SRCompactTextRequestView *)self delegate];
+  [delegate textRequestViewDidEndEditing:self];
 }
 
-- (void)textField:(id)a3 willPresentEditMenuWithAnimator:(id)a4
+- (void)textField:(id)field willPresentEditMenuWithAnimator:(id)animator
 {
-  v5 = [(SRCompactTextRequestView *)self delegate:a3];
+  v5 = [(SRCompactTextRequestView *)self delegate:field];
   [v5 textRequestViewWillBeginTextEditMenuInteraction:self];
 }
 
-- (void)textField:(id)a3 willDismissEditMenuWithAnimator:(id)a4
+- (void)textField:(id)field willDismissEditMenuWithAnimator:(id)animator
 {
-  v6 = a3;
-  v7 = a4;
+  fieldCopy = field;
+  animatorCopy = animator;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000817F8;
   v8[3] = &unk_1001676A0;
   objc_copyWeak(&v9, &location);
-  [v7 addCompletion:v8];
+  [animatorCopy addCompletion:v8];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = SRCompactTextRequestView;
-  [(SRCompactTextRequestView *)&v4 traitCollectionDidChange:a3];
+  [(SRCompactTextRequestView *)&v4 traitCollectionDidChange:change];
   [(SRCompactTextRequestView *)self _updateCancelButtonFont];
   [(SRCompactTextRequestView *)self setNeedsLayout];
   [(SRCompactTextRequestView *)self layoutIfNeeded];
 }
 
-- (void)textRequestSuggestionsButton:(id)a3 didEnableSuggestions:(BOOL)a4
+- (void)textRequestSuggestionsButton:(id)button didEnableSuggestions:(BOOL)suggestions
 {
-  v4 = a4;
-  v6 = [(SRCompactTextRequestView *)self delegate];
-  [v6 textRequestView:self didEnableSuggestions:v4];
+  suggestionsCopy = suggestions;
+  delegate = [(SRCompactTextRequestView *)self delegate];
+  [delegate textRequestView:self didEnableSuggestions:suggestionsCopy];
 }
 
 - (SRCompactTextRequestViewDelegate)delegate

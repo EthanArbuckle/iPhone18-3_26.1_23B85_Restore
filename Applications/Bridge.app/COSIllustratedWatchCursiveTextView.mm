@@ -1,10 +1,10 @@
 @interface COSIllustratedWatchCursiveTextView
 + (BOOL)isRenderingInMetal;
 + (double)delayForStartOfAnimation;
-+ (void)setDelayForStartOfAnimation:(double)a3;
-- (_TtC6Bridge34COSIllustratedWatchCursiveTextView)initWithBackgroundImageName:(id)a3;
-- (_TtC6Bridge34COSIllustratedWatchCursiveTextView)initWithCoder:(id)a3;
-- (_TtC6Bridge34COSIllustratedWatchCursiveTextView)initWithFrame:(CGRect)a3;
++ (void)setDelayForStartOfAnimation:(double)animation;
+- (_TtC6Bridge34COSIllustratedWatchCursiveTextView)initWithBackgroundImageName:(id)name;
+- (_TtC6Bridge34COSIllustratedWatchCursiveTextView)initWithCoder:(id)coder;
+- (_TtC6Bridge34COSIllustratedWatchCursiveTextView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)startAnimation;
 - (void)stopAnimation;
@@ -12,9 +12,9 @@
 
 @implementation COSIllustratedWatchCursiveTextView
 
-- (_TtC6Bridge34COSIllustratedWatchCursiveTextView)initWithBackgroundImageName:(id)a3
+- (_TtC6Bridge34COSIllustratedWatchCursiveTextView)initWithBackgroundImageName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -28,7 +28,7 @@
   return sub_10016102C(v3, v4);
 }
 
-- (_TtC6Bridge34COSIllustratedWatchCursiveTextView)initWithCoder:(id)a3
+- (_TtC6Bridge34COSIllustratedWatchCursiveTextView)initWithCoder:(id)coder
 {
   *&self->BPSIllustratedWatchView_opaque[OBJC_IVAR____TtC6Bridge34COSIllustratedWatchCursiveTextView_helloView] = 0;
   *&self->BPSIllustratedWatchView_opaque[OBJC_IVAR____TtC6Bridge34COSIllustratedWatchCursiveTextView_backgroundImage] = 0;
@@ -48,7 +48,7 @@
   return *&qword_1002BE7F0;
 }
 
-+ (void)setDelayForStartOfAnimation:(double)a3
++ (void)setDelayForStartOfAnimation:(double)animation
 {
   if (qword_1002BE520 != -1)
   {
@@ -56,7 +56,7 @@
   }
 
   swift_beginAccess();
-  qword_1002BE7F0 = *&a3;
+  qword_1002BE7F0 = *&animation;
 }
 
 + (BOOL)isRenderingInMetal
@@ -84,7 +84,7 @@
   if (v2)
   {
     v3 = *((swift_isaMask & *v2) + 0x78);
-    v5 = self;
+    selfCopy = self;
     v4 = v2;
     v3();
   }
@@ -101,7 +101,7 @@
   if (v2)
   {
     v3 = *((swift_isaMask & *v2) + 0x80);
-    v5 = self;
+    selfCopy = self;
     v4 = v2;
     v3();
   }
@@ -121,7 +121,7 @@
   sub_10016124C();
 }
 
-- (_TtC6Bridge34COSIllustratedWatchCursiveTextView)initWithFrame:(CGRect)a3
+- (_TtC6Bridge34COSIllustratedWatchCursiveTextView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

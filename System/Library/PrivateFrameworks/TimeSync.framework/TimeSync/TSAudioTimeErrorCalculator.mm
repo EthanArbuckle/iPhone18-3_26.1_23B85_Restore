@@ -1,18 +1,18 @@
 @interface TSAudioTimeErrorCalculator
-- (BOOL)exportTimeErrorToDirectoryURL:(id)a3 withFilename:(id)a4;
-- (BOOL)exportTimeErrorToPath:(id)a3;
+- (BOOL)exportTimeErrorToDirectoryURL:(id)l withFilename:(id)filename;
+- (BOOL)exportTimeErrorToPath:(id)path;
 - (NSArray)audioTimeErrors;
 - (NSArray)timeErrors;
-- (TSAudioTimeErrorCalculator)initWithChannelA:(const float *)a3 andChannelB:(const float *)a4 ofLength:(int64_t)a5 withInterval:(int64_t)a6 correlationLength:(int64_t)a7 upscaleFactor:(int64_t)a8 atSamplingRate:(double)a9 correlationType:(int64_t)a10;
-- (id)initNoCopyWithChannelA:(const float *)a3 andChannelB:(const float *)a4 ofLength:(int64_t)a5 withInterval:(int64_t)a6 correlationLength:(int64_t)a7 upscaleFactor:(int64_t)a8 atSamplingRate:(double)a9 correlationType:(int64_t)a10;
-- (void)_processTimeErrorFromStartOffset:(int64_t)a3 atIndex:(int64_t)a4 withCount:(int64_t)a5;
-- (void)calculateTimeErrorFromStartOffset:(int64_t)a3 toEndOffset:(int64_t)a4 withThreadingOption:(int64_t)a5;
+- (TSAudioTimeErrorCalculator)initWithChannelA:(const float *)a andChannelB:(const float *)b ofLength:(int64_t)length withInterval:(int64_t)interval correlationLength:(int64_t)correlationLength upscaleFactor:(int64_t)factor atSamplingRate:(double)rate correlationType:(int64_t)self0;
+- (id)initNoCopyWithChannelA:(const float *)a andChannelB:(const float *)b ofLength:(int64_t)length withInterval:(int64_t)interval correlationLength:(int64_t)correlationLength upscaleFactor:(int64_t)factor atSamplingRate:(double)rate correlationType:(int64_t)self0;
+- (void)_processTimeErrorFromStartOffset:(int64_t)offset atIndex:(int64_t)index withCount:(int64_t)count;
+- (void)calculateTimeErrorFromStartOffset:(int64_t)offset toEndOffset:(int64_t)endOffset withThreadingOption:(int64_t)option;
 - (void)dealloc;
 @end
 
 @implementation TSAudioTimeErrorCalculator
 
-- (TSAudioTimeErrorCalculator)initWithChannelA:(const float *)a3 andChannelB:(const float *)a4 ofLength:(int64_t)a5 withInterval:(int64_t)a6 correlationLength:(int64_t)a7 upscaleFactor:(int64_t)a8 atSamplingRate:(double)a9 correlationType:(int64_t)a10
+- (TSAudioTimeErrorCalculator)initWithChannelA:(const float *)a andChannelB:(const float *)b ofLength:(int64_t)length withInterval:(int64_t)interval correlationLength:(int64_t)correlationLength upscaleFactor:(int64_t)factor atSamplingRate:(double)rate correlationType:(int64_t)self0
 {
   v23.receiver = self;
   v23.super_class = TSAudioTimeErrorCalculator;
@@ -20,15 +20,15 @@
   v18 = v17;
   if (v17)
   {
-    v17->_interval = a6;
-    v17->_correlationLength = a7;
-    v17->_numberOfSamples = a5;
-    v17->_samplingRate = a9;
-    v17->_upscaleFactor = a8;
-    v17->_correlationType = a10;
-    v17->_channelASamples = malloc_type_calloc(a5, 4uLL, 0x100004052888210uLL);
+    v17->_interval = interval;
+    v17->_correlationLength = correlationLength;
+    v17->_numberOfSamples = length;
+    v17->_samplingRate = rate;
+    v17->_upscaleFactor = factor;
+    v17->_correlationType = type;
+    v17->_channelASamples = malloc_type_calloc(length, 4uLL, 0x100004052888210uLL);
     v18->_channelBSamples = malloc_type_calloc(v18->_numberOfSamples, 4uLL, 0x100004052888210uLL);
-    v19 = (a6 + v18->_numberOfSamples - 1) / a6;
+    v19 = (interval + v18->_numberOfSamples - 1) / interval;
     v18->_maxMeasurements = v19;
     v18->_sampleTimestamps = malloc_type_calloc(v19, 8uLL, 0x100004000313F17uLL);
     v20 = malloc_type_calloc(v18->_maxMeasurements, 8uLL, 0x100004000313F17uLL);
@@ -36,8 +36,8 @@
     channelASamples = v18->_channelASamples;
     if (channelASamples && v18->_channelBSamples && v18->_sampleTimestamps && v20)
     {
-      memcpy(channelASamples, a3, 4 * v18->_numberOfSamples);
-      memcpy(v18->_channelBSamples, a4, 4 * v18->_numberOfSamples);
+      memcpy(channelASamples, a, 4 * v18->_numberOfSamples);
+      memcpy(v18->_channelBSamples, b, 4 * v18->_numberOfSamples);
       bzero(v18->_sampleTimestamps, 8 * v18->_maxMeasurements);
       bzero(v18->_timeErrors, 8 * v18->_maxMeasurements);
     }
@@ -52,7 +52,7 @@
   return v18;
 }
 
-- (id)initNoCopyWithChannelA:(const float *)a3 andChannelB:(const float *)a4 ofLength:(int64_t)a5 withInterval:(int64_t)a6 correlationLength:(int64_t)a7 upscaleFactor:(int64_t)a8 atSamplingRate:(double)a9 correlationType:(int64_t)a10
+- (id)initNoCopyWithChannelA:(const float *)a andChannelB:(const float *)b ofLength:(int64_t)length withInterval:(int64_t)interval correlationLength:(int64_t)correlationLength upscaleFactor:(int64_t)factor atSamplingRate:(double)rate correlationType:(int64_t)self0
 {
   v22.receiver = self;
   v22.super_class = TSAudioTimeErrorCalculator;
@@ -61,15 +61,15 @@
   if (v17)
   {
     v17->_noCopy = 1;
-    v17->_interval = a6;
-    v17->_correlationLength = a7;
-    v17->_samplingRate = a9;
-    v17->_upscaleFactor = a8;
-    v17->_correlationType = a10;
-    v17->_channelASamples = a3;
-    v17->_channelBSamples = a4;
-    v19 = (a5 + a6 - 1) / a6;
-    v18->_numberOfSamples = a5;
+    v17->_interval = interval;
+    v17->_correlationLength = correlationLength;
+    v17->_samplingRate = rate;
+    v17->_upscaleFactor = factor;
+    v17->_correlationType = type;
+    v17->_channelASamples = a;
+    v17->_channelBSamples = b;
+    v19 = (length + interval - 1) / interval;
+    v18->_numberOfSamples = length;
     v18->_maxMeasurements = v19;
     v18->_sampleTimestamps = malloc_type_calloc(v19, 8uLL, 0x100004000313F17uLL);
     v20 = malloc_type_calloc(v18->_maxMeasurements, 8uLL, 0x100004000313F17uLL);
@@ -90,7 +90,7 @@
   return v18;
 }
 
-- (void)_processTimeErrorFromStartOffset:(int64_t)a3 atIndex:(int64_t)a4 withCount:(int64_t)a5
+- (void)_processTimeErrorFromStartOffset:(int64_t)offset atIndex:(int64_t)index withCount:(int64_t)count
 {
   correlationType = self->_correlationType;
   if (correlationType > 2)
@@ -104,38 +104,38 @@
   }
 
   v13 = v10;
-  v11 = [v10 correlationBlock];
-  if (a5 >= 1)
+  correlationBlock = [v10 correlationBlock];
+  if (count >= 1)
   {
-    v12 = a5 + a4;
+    v12 = count + index;
     do
     {
-      self->_sampleTimestamps[a4] = a3 / self->_samplingRate;
-      self->_timeErrors[a4++] = (v11)[2](v11, &self->_channelASamples[a3], &self->_channelBSamples[a3], self->_correlationLength);
-      a3 += self->_interval;
+      self->_sampleTimestamps[index] = offset / self->_samplingRate;
+      self->_timeErrors[index++] = (correlationBlock)[2](correlationBlock, &self->_channelASamples[offset], &self->_channelBSamples[offset], self->_correlationLength);
+      offset += self->_interval;
     }
 
-    while (a4 < v12);
+    while (index < v12);
   }
 }
 
-- (void)calculateTimeErrorFromStartOffset:(int64_t)a3 toEndOffset:(int64_t)a4 withThreadingOption:(int64_t)a5
+- (void)calculateTimeErrorFromStartOffset:(int64_t)offset toEndOffset:(int64_t)endOffset withThreadingOption:(int64_t)option
 {
   v9 = mach_absolute_time();
-  v10 = a3 & ~(a3 >> 63);
+  v10 = offset & ~(offset >> 63);
   numberOfSamples = self->_numberOfSamples;
-  if (numberOfSamples <= a4)
+  if (numberOfSamples <= endOffset)
   {
-    v12 = numberOfSamples - 1;
+    endOffsetCopy = numberOfSamples - 1;
   }
 
   else
   {
-    v12 = a4;
+    endOffsetCopy = endOffset;
   }
 
-  v13 = (v12 - v10 + 1) / self->_interval;
-  if (a5 != 1 && (a5 || v13 <= 10000 / self->_upscaleFactor) || ([MEMORY[0x277CCAC38] processInfo], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "activeProcessorCount"), v14, v15 == 1))
+  v13 = (endOffsetCopy - v10 + 1) / self->_interval;
+  if (option != 1 && (option || v13 <= 10000 / self->_upscaleFactor) || ([MEMORY[0x277CCAC38] processInfo], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "activeProcessorCount"), v14, v15 == 1))
   {
     [(TSAudioTimeErrorCalculator *)self _processTimeErrorFromStartOffset:v10 atIndex:0 withCount:v13];
   }
@@ -167,7 +167,7 @@
         v21 = v17;
         v28 = v21;
         v29 = v25;
-        v30 = self;
+        selfCopy = self;
         v31 = v10;
         v32 = v18;
         v33 = v20;
@@ -211,7 +211,7 @@ intptr_t __96__TSAudioTimeErrorCalculator_calculateTimeErrorFromStartOffset_toEn
 
 - (NSArray)audioTimeErrors
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (!self->_calculatedTimeError)
   {
     [(TSAudioTimeErrorCalculator *)self calculateTimeError];
@@ -223,7 +223,7 @@ intptr_t __96__TSAudioTimeErrorCalculator_calculateTimeErrorFromStartOffset_toEn
     do
     {
       v5 = [[TSAudioTimeErrorValue alloc] initWithSampleTimestamp:self->_sampleTimestamps[v4] andTimeError:self->_timeErrors[v4]];
-      [v3 addObject:v5];
+      [array addObject:v5];
 
       ++v4;
     }
@@ -231,12 +231,12 @@ intptr_t __96__TSAudioTimeErrorCalculator_calculateTimeErrorFromStartOffset_toEn
     while (v4 < self->_measurementsInBuffer);
   }
 
-  return v3;
+  return array;
 }
 
 - (NSArray)timeErrors
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (!self->_calculatedTimeError)
   {
     [(TSAudioTimeErrorCalculator *)self calculateTimeError];
@@ -249,7 +249,7 @@ intptr_t __96__TSAudioTimeErrorCalculator_calculateTimeErrorFromStartOffset_toEn
     {
       v5 = self->_timeErrors[v4];
       v6 = [[TSTimeErrorValue alloc] initWithTimestamp:(self->_sampleTimestamps[v4] * 1000000000.0) andError:(v5 * 1000000000.0)];
-      [v3 addObject:v6];
+      [array addObject:v6];
 
       ++v4;
     }
@@ -257,17 +257,17 @@ intptr_t __96__TSAudioTimeErrorCalculator_calculateTimeErrorFromStartOffset_toEn
     while (v4 < self->_measurementsInBuffer);
   }
 
-  return v3;
+  return array;
 }
 
-- (BOOL)exportTimeErrorToDirectoryURL:(id)a3 withFilename:(id)a4
+- (BOOL)exportTimeErrorToDirectoryURL:(id)l withFilename:(id)filename
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isFileURL])
+  lCopy = l;
+  filenameCopy = filename;
+  if ([lCopy isFileURL])
   {
-    v8 = [v6 path];
-    v9 = [v8 stringByAppendingPathComponent:v7];
+    path = [lCopy path];
+    v9 = [path stringByAppendingPathComponent:filenameCopy];
 
     v10 = [(TSAudioTimeErrorCalculator *)self exportTimeErrorToPath:v9];
   }
@@ -280,10 +280,10 @@ intptr_t __96__TSAudioTimeErrorCalculator_calculateTimeErrorFromStartOffset_toEn
   return v10;
 }
 
-- (BOOL)exportTimeErrorToPath:(id)a3
+- (BOOL)exportTimeErrorToPath:(id)path
 {
-  v5 = a3;
-  v6 = fopen([a3 UTF8String], "w");
+  pathCopy = path;
+  v6 = fopen([path UTF8String], "w");
   if (v6)
   {
     if (!self->_calculatedTimeError)

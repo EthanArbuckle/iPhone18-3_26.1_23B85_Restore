@@ -37,24 +37,24 @@ void __57__HMDCameraRecordingReachabilityEventModel_hmbProperties__block_invoke(
 - (id)createEvent
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraRecordingReachabilityEventModel *)self dateOfOccurrence];
-  if (v3)
+  dateOfOccurrence = [(HMDCameraRecordingReachabilityEventModel *)self dateOfOccurrence];
+  if (dateOfOccurrence)
   {
     v4 = objc_alloc(MEMORY[0x277CD1928]);
-    v5 = [(HMBModel *)self hmbModelID];
-    v6 = [(HMDCameraRecordingReachabilityEventModel *)self dateOfOccurrence];
-    v7 = [v4 initWithUniqueIdentifier:v5 dateOfOccurrence:v6 reachable:{-[HMDCameraRecordingReachabilityEventModel reachable](self, "reachable")}];
+    hmbModelID = [(HMBModel *)self hmbModelID];
+    dateOfOccurrence2 = [(HMDCameraRecordingReachabilityEventModel *)self dateOfOccurrence];
+    v7 = [v4 initWithUniqueIdentifier:hmbModelID dateOfOccurrence:dateOfOccurrence2 reachable:{-[HMDCameraRecordingReachabilityEventModel reachable](self, "reachable")}];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [(HMBModel *)v9 debugDescription];
+      v12 = [(HMBModel *)selfCopy debugDescription];
       v15 = 138543618;
       v16 = v11;
       v17 = 2112;
@@ -73,10 +73,10 @@ void __57__HMDCameraRecordingReachabilityEventModel_hmbProperties__block_invoke(
 
 - (BOOL)reachable
 {
-  v2 = [(HMDCameraRecordingReachabilityEventModel *)self reachableField];
-  v3 = [v2 BOOLValue];
+  reachableField = [(HMDCameraRecordingReachabilityEventModel *)self reachableField];
+  bOOLValue = [reachableField BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

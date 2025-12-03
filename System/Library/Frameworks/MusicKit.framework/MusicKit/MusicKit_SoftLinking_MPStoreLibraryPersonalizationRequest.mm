@@ -1,15 +1,15 @@
 @interface MusicKit_SoftLinking_MPStoreLibraryPersonalizationRequest
-- (MusicKit_SoftLinking_MPStoreLibraryPersonalizationRequest)initWithUnpersonalizedRequest:(id)a3 unpersonalizedContentDescriptors:(id)a4 representedObjects:(id)a5;
-- (void)performWithCompletionHandler:(id)a3;
+- (MusicKit_SoftLinking_MPStoreLibraryPersonalizationRequest)initWithUnpersonalizedRequest:(id)request unpersonalizedContentDescriptors:(id)descriptors representedObjects:(id)objects;
+- (void)performWithCompletionHandler:(id)handler;
 @end
 
 @implementation MusicKit_SoftLinking_MPStoreLibraryPersonalizationRequest
 
-- (MusicKit_SoftLinking_MPStoreLibraryPersonalizationRequest)initWithUnpersonalizedRequest:(id)a3 unpersonalizedContentDescriptors:(id)a4 representedObjects:(id)a5
+- (MusicKit_SoftLinking_MPStoreLibraryPersonalizationRequest)initWithUnpersonalizedRequest:(id)request unpersonalizedContentDescriptors:(id)descriptors representedObjects:(id)objects
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  descriptorsCopy = descriptors;
+  objectsCopy = objects;
   v25.receiver = self;
   v25.super_class = MusicKit_SoftLinking_MPStoreLibraryPersonalizationRequest;
   v11 = [(MusicKit_SoftLinking_MPStoreLibraryPersonalizationRequest *)&v25 init];
@@ -34,35 +34,35 @@
     v13 = v12;
     _Block_object_dispose(&v27, 8);
     v14 = [v12 alloc];
-    v15 = [v8 _underlyingRequest];
-    v16 = [v9 _underlyingSectionedCollection];
-    v17 = [v14 initWithUnpersonalizedRequest:v15 unpersonalizedContentDescriptors:v16];
+    _underlyingRequest = [requestCopy _underlyingRequest];
+    _underlyingSectionedCollection = [descriptorsCopy _underlyingSectionedCollection];
+    v17 = [v14 initWithUnpersonalizedRequest:_underlyingRequest unpersonalizedContentDescriptors:_underlyingSectionedCollection];
     underlyingPersonalizationRequest = v11->_underlyingPersonalizationRequest;
     v11->_underlyingPersonalizationRequest = v17;
 
     v19 = v11->_underlyingPersonalizationRequest;
-    v20 = [v10 _underlyingSectionedCollection];
-    [(MPStoreLibraryPersonalizationRequest *)v19 setRepresentedObjects:v20];
+    _underlyingSectionedCollection2 = [objectsCopy _underlyingSectionedCollection];
+    [(MPStoreLibraryPersonalizationRequest *)v19 setRepresentedObjects:_underlyingSectionedCollection2];
 
     v21 = v11->_underlyingPersonalizationRequest;
-    v22 = [v8 _underlyingRequest];
-    v23 = [v22 itemProperties];
-    [(MPStoreLibraryPersonalizationRequest *)v21 setItemProperties:v23];
+    _underlyingRequest2 = [requestCopy _underlyingRequest];
+    itemProperties = [_underlyingRequest2 itemProperties];
+    [(MPStoreLibraryPersonalizationRequest *)v21 setItemProperties:itemProperties];
   }
 
   return v11;
 }
 
-- (void)performWithCompletionHandler:(id)a3
+- (void)performWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   underlyingPersonalizationRequest = self->_underlyingPersonalizationRequest;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __90__MusicKit_SoftLinking_MPStoreLibraryPersonalizationRequest_performWithCompletionHandler___block_invoke;
   v7[3] = &unk_2782296F0;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(MPStoreLibraryPersonalizationRequest *)underlyingPersonalizationRequest performWithResponseHandler:v7];
 }
 

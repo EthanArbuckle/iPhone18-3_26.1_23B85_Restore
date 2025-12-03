@@ -6,7 +6,7 @@
 
 - (NSString)csd_pseudonym
 {
-  v2 = [(IDSMessageContext *)self toID];
+  toID = [(IDSMessageContext *)self toID];
   v3 = IDSCopyAddressDestinationForDestination();
 
   v4 = IDSCopyRawAddressForDestination();

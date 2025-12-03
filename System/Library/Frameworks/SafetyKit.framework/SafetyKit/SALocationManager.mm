@@ -1,9 +1,9 @@
 @interface SALocationManager
 - (SALocationManager)init;
 - (SALocationManagerProtocol)delegate;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)notifyLocation:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)notifyLocation:(id)location;
 - (void)startMonitoringLocation;
 - (void)stopMonitoringLocation;
 @end
@@ -28,13 +28,13 @@
   return v2;
 }
 
-- (void)notifyLocation:(id)a3
+- (void)notifyLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(SALocationManager *)self delegate];
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  locationCopy = location;
+  delegate = [(SALocationManager *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 locationManager:self didUpdateLocation:v4];
+    [delegate locationManager:self didUpdateLocation:locationCopy];
   }
 
   else
@@ -59,12 +59,12 @@
   }
 
   [(CLLocationManager *)self->_locationManager startUpdatingLocation];
-  v4 = [(CLLocationManager *)self->_locationManager location];
+  location = [(CLLocationManager *)self->_locationManager location];
 
-  if (v4)
+  if (location)
   {
-    v5 = [(CLLocationManager *)self->_locationManager location];
-    [(SALocationManager *)self notifyLocation:v5];
+    location2 = [(CLLocationManager *)self->_locationManager location];
+    [(SALocationManager *)self notifyLocation:location2];
   }
 
   v6 = *MEMORY[0x277D85DE8];
@@ -79,31 +79,31 @@
   v1 = *MEMORY[0x277D85DE8];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = a4;
+  locationsCopy = locations;
   v6 = sa_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [SALocationManager locationManager:v5 didUpdateLocations:v6];
+    [SALocationManager locationManager:locationsCopy didUpdateLocations:v6];
   }
 
-  v7 = [v5 firstObject];
+  firstObject = [locationsCopy firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [v5 firstObject];
-    [(SALocationManager *)self notifyLocation:v8];
+    firstObject2 = [locationsCopy firstObject];
+    [(SALocationManager *)self notifyLocation:firstObject2];
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = sa_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [SALocationManager locationManager:v4 didFailWithError:v5];
+    [SALocationManager locationManager:errorCopy didFailWithError:v5];
   }
 }
 

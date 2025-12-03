@@ -4,23 +4,23 @@
 - (NSDictionary)selectedFocusFaces;
 - (id)_currentDeviceUUID;
 - (id)faceLibraryCollection;
-- (id)selectedFocusModeIdentifiersForWatchFaceIdentifier:(id)a3;
+- (id)selectedFocusModeIdentifiersForWatchFaceIdentifier:(id)identifier;
 - (void)_loadFocusFaces;
 - (void)_saveFocusFaces;
-- (void)_switchToWatchFaceWithIdentifier:(id)a3 saveExistingFaceState:(BOOL)a4 abortIfNotCurrent:(id)a5;
-- (void)faceCollectionDidLoad:(id)a3;
-- (void)focusModeDidEnd:(id)a3;
-- (void)focusModeDidStart:(id)a3;
-- (void)processCollectionAndFinish:(id)a3;
-- (void)selectWatchFaceIdentifier:(id)a3 forFocusModeIdentifier:(id)a4;
-- (void)watchFacesForCurrentDeviceWithCompletion:(id)a3;
+- (void)_switchToWatchFaceWithIdentifier:(id)identifier saveExistingFaceState:(BOOL)state abortIfNotCurrent:(id)current;
+- (void)faceCollectionDidLoad:(id)load;
+- (void)focusModeDidEnd:(id)end;
+- (void)focusModeDidStart:(id)start;
+- (void)processCollectionAndFinish:(id)finish;
+- (void)selectWatchFaceIdentifier:(id)identifier forFocusModeIdentifier:(id)modeIdentifier;
+- (void)watchFacesForCurrentDeviceWithCompletion:(id)completion;
 @end
 
 @implementation NSSWatchFaceCoordinator
 
-- (void)watchFacesForCurrentDeviceWithCompletion:(id)a3
+- (void)watchFacesForCurrentDeviceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = NSSLogForType();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -29,15 +29,15 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s", &v12, 0xCu);
   }
 
-  v6 = objc_retainBlock(v4);
+  v6 = objc_retainBlock(completionCopy);
   completion = self->_completion;
   self->_completion = v6;
 
-  v8 = [(NSSWatchFaceCoordinator *)self faceLibraryCollection];
-  v9 = [v8 hasLoaded];
+  faceLibraryCollection = [(NSSWatchFaceCoordinator *)self faceLibraryCollection];
+  hasLoaded = [faceLibraryCollection hasLoaded];
   v10 = NSSLogForType();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (hasLoaded)
   {
     if (v11)
     {
@@ -45,7 +45,7 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "NTKPersistentFaceCollection is loaded, moving to process", &v12, 2u);
     }
 
-    [(NSSWatchFaceCoordinator *)self processCollectionAndFinish:v8];
+    [(NSSWatchFaceCoordinator *)self processCollectionAndFinish:faceLibraryCollection];
   }
 
   else
@@ -53,28 +53,28 @@
     if (v11)
     {
       v12 = 138412290;
-      v13 = v8;
+      v13 = faceLibraryCollection;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "NTKPersistentFaceCollection was not loaded, waiting for collection loading: %@", &v12, 0xCu);
     }
 
-    [v8 addObserver:self];
+    [faceLibraryCollection addObserver:self];
   }
 }
 
 - (id)_currentDeviceUUID
 {
   v2 = +[CLKDevice currentDevice];
-  v3 = [v2 nrDevice];
-  v4 = [v3 pairingID];
+  nrDevice = [v2 nrDevice];
+  pairingID = [nrDevice pairingID];
 
-  return v4;
+  return pairingID;
 }
 
 - (id)faceLibraryCollection
 {
-  v3 = [(NSSWatchFaceCoordinator *)self _currentDeviceUUID];
-  v4 = [(NTKPersistentFaceCollection *)self->_collection deviceUUID];
-  v5 = [v4 isEqual:v3];
+  _currentDeviceUUID = [(NSSWatchFaceCoordinator *)self _currentDeviceUUID];
+  deviceUUID = [(NTKPersistentFaceCollection *)self->_collection deviceUUID];
+  v5 = [deviceUUID isEqual:_currentDeviceUUID];
 
   collection = self->_collection;
   if (!collection || (v5 & 1) == 0)
@@ -105,7 +105,7 @@
     }
 
     v10 = [NTKPersistentFaceCollection alloc];
-    v11 = [v10 initWithCollectionIdentifier:NTKCollectionIdentifierLibraryFaces deviceUUID:v3];
+    v11 = [v10 initWithCollectionIdentifier:NTKCollectionIdentifierLibraryFaces deviceUUID:_currentDeviceUUID];
     v12 = self->_collection;
     self->_collection = v11;
 
@@ -117,30 +117,30 @@
   return collection;
 }
 
-- (void)processCollectionAndFinish:(id)a3
+- (void)processCollectionAndFinish:(id)finish
 {
-  v3 = a3;
-  v4 = [v3 numberOfFaces];
-  v5 = [[NSMutableArray alloc] initWithCapacity:v4];
-  v6 = [v3 selectedFace];
-  v7 = [v3 uuidForFace:v6];
+  finishCopy = finish;
+  numberOfFaces = [finishCopy numberOfFaces];
+  v5 = [[NSMutableArray alloc] initWithCapacity:numberOfFaces];
+  selectedFace = [finishCopy selectedFace];
+  v7 = [finishCopy uuidForFace:selectedFace];
 
   v8 = NSSLogForType();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 UUIDString];
+    uUIDString = [v7 UUIDString];
     *buf = 138412290;
-    v22 = v9;
+    v22 = uUIDString;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "NTKPersistentFaceCollection creation: selectedFaceidentifier %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (numberOfFaces)
   {
-    for (i = 0; i != v4; ++i)
+    for (i = 0; i != numberOfFaces; ++i)
     {
-      v11 = [v3 faceAtIndex:i];
+      v11 = [finishCopy faceAtIndex:i];
       v12 = objc_alloc_init(NSSWatchFace);
-      v13 = [v3 uuidForFace:v11];
+      v13 = [finishCopy uuidForFace:v11];
       [v12 setFaceIdentifier:v13];
       [v11 name];
       v15 = v14 = v5;
@@ -162,27 +162,27 @@
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "NTKPersistentFaceCollection finished, calling completion", buf, 2u);
   }
 
-  v18 = [(NSSWatchFaceCoordinator *)self completion];
-  (v18)[2](v18, v5, 0);
+  completion = [(NSSWatchFaceCoordinator *)self completion];
+  (completion)[2](completion, v5, 0);
 
   completion = self->_completion;
   self->_completion = 0;
 }
 
-- (void)faceCollectionDidLoad:(id)a3
+- (void)faceCollectionDidLoad:(id)load
 {
-  v4 = a3;
+  loadCopy = load;
   v5 = NSSLogForType();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = loadCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "NTKPersistentFaceCollection loaded, moving to process: %@", &v7, 0xCu);
   }
 
-  if (self->_collection == v4)
+  if (self->_collection == loadCopy)
   {
-    [(NSSWatchFaceCoordinator *)self processCollectionAndFinish:v4];
+    [(NSSWatchFaceCoordinator *)self processCollectionAndFinish:loadCopy];
   }
 
   else
@@ -226,9 +226,9 @@
     domainAccessor = self->_domainAccessor;
   }
 
-  v7 = [(NPSDomainAccessor *)domainAccessor pairingID];
-  v8 = [(NSSWatchFaceCoordinator *)self _currentDeviceUUID];
-  v9 = [v7 isEqual:v8];
+  pairingID = [(NPSDomainAccessor *)domainAccessor pairingID];
+  _currentDeviceUUID = [(NSSWatchFaceCoordinator *)self _currentDeviceUUID];
+  v9 = [pairingID isEqual:_currentDeviceUUID];
 
   if ((v9 & 1) == 0)
   {
@@ -274,16 +274,16 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v15, 0xCu);
   }
 
-  v4 = [(NSSWatchFaceCoordinator *)self domainAccessor];
-  v5 = [v4 synchronize];
+  domainAccessor = [(NSSWatchFaceCoordinator *)self domainAccessor];
+  synchronize = [domainAccessor synchronize];
 
   v6 = NSSLogForType();
   v7 = v6;
-  if (v5)
+  if (synchronize)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_10001F77C(v5);
+      sub_10001F77C(synchronize);
     }
   }
 
@@ -293,8 +293,8 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "NSSWatchFaceCoordinator: Successfully synced domain accessor", &v15, 2u);
   }
 
-  v8 = [(NSSWatchFaceCoordinator *)self domainAccessor];
-  v9 = [v8 objectForKey:@"SelectedFocusFaces"];
+  domainAccessor2 = [(NSSWatchFaceCoordinator *)self domainAccessor];
+  v9 = [domainAccessor2 objectForKey:@"SelectedFocusFaces"];
 
   if (!v9)
   {
@@ -323,19 +323,19 @@
 
   v4 = +[NSUserDefaults standardUserDefaults];
   [v4 setObject:self->_previousFaceIdentifier forKey:@"PreviousFaceIdentifier"];
-  v5 = [(NSSWatchFaceCoordinator *)self domainAccessor];
-  [v5 setObject:self->_selectedFocusFaces forKey:@"SelectedFocusFaces"];
+  domainAccessor = [(NSSWatchFaceCoordinator *)self domainAccessor];
+  [domainAccessor setObject:self->_selectedFocusFaces forKey:@"SelectedFocusFaces"];
 
-  v6 = [(NSSWatchFaceCoordinator *)self domainAccessor];
-  v7 = [v6 synchronize];
+  domainAccessor2 = [(NSSWatchFaceCoordinator *)self domainAccessor];
+  synchronize = [domainAccessor2 synchronize];
 
   v8 = NSSLogForType();
   v9 = v8;
-  if (v7)
+  if (synchronize)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_10001F77C(v7);
+      sub_10001F77C(synchronize);
     }
   }
 
@@ -345,36 +345,36 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "NSSWatchFaceCoordinator: Successfully synced domain accessor", buf, 2u);
   }
 
-  v10 = [(NSSWatchFaceCoordinator *)self npsManager];
+  npsManager = [(NSSWatchFaceCoordinator *)self npsManager];
   v13 = @"SelectedFocusFaces";
   v11 = [NSArray arrayWithObjects:&v13 count:1];
   v12 = [NSSet setWithArray:v11];
-  [v10 synchronizeNanoDomain:@"com.apple.nanosystemsettings" keys:v12];
+  [npsManager synchronizeNanoDomain:@"com.apple.nanosystemsettings" keys:v12];
 }
 
-- (id)selectedFocusModeIdentifiersForWatchFaceIdentifier:(id)a3
+- (id)selectedFocusModeIdentifiersForWatchFaceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSSWatchFaceCoordinator *)self selectedFocusFaces];
+  identifierCopy = identifier;
+  selectedFocusFaces = [(NSSWatchFaceCoordinator *)self selectedFocusFaces];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10001E800;
   v11[3] = &unk_100035240;
-  v12 = v4;
+  v12 = identifierCopy;
   v6 = objc_opt_new();
   v13 = v6;
-  v7 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v11];
+  v7 = identifierCopy;
+  [selectedFocusFaces enumerateKeysAndObjectsUsingBlock:v11];
   v8 = v13;
   v9 = v6;
 
   return v6;
 }
 
-- (void)selectWatchFaceIdentifier:(id)a3 forFocusModeIdentifier:(id)a4
+- (void)selectWatchFaceIdentifier:(id)identifier forFocusModeIdentifier:(id)modeIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
   v8 = NSSLogForType();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -383,18 +383,18 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s", &v14, 0xCu);
   }
 
-  v9 = [(NSSWatchFaceCoordinator *)self selectedFocusFaces];
-  v10 = [v9 mutableCopy];
+  selectedFocusFaces = [(NSSWatchFaceCoordinator *)self selectedFocusFaces];
+  v10 = [selectedFocusFaces mutableCopy];
 
-  if (v6)
+  if (identifierCopy)
   {
-    v11 = [v6 UUIDString];
-    [v10 setObject:v11 forKey:v7];
+    uUIDString = [identifierCopy UUIDString];
+    [v10 setObject:uUIDString forKey:modeIdentifierCopy];
   }
 
   else
   {
-    [v10 removeObjectForKey:v7];
+    [v10 removeObjectForKey:modeIdentifierCopy];
   }
 
   v12 = [v10 copy];
@@ -404,20 +404,20 @@
   [(NSSWatchFaceCoordinator *)self _saveFocusFaces];
 }
 
-- (void)focusModeDidStart:(id)a3
+- (void)focusModeDidStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   v5 = NSSLogForType();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = startCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "NSSWatchFaceCoordinator: Focus mode did start (%@)", &v10, 0xCu);
   }
 
   [(NSSWatchFaceCoordinator *)self _loadFocusFaces];
-  v6 = [(NSSWatchFaceCoordinator *)self selectedFocusFaces];
-  v7 = [v6 objectForKey:v4];
+  selectedFocusFaces = [(NSSWatchFaceCoordinator *)self selectedFocusFaces];
+  v7 = [selectedFocusFaces objectForKey:startCopy];
   v8 = NSSLogForType();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
   if (v7)
@@ -442,20 +442,20 @@
   }
 }
 
-- (void)focusModeDidEnd:(id)a3
+- (void)focusModeDidEnd:(id)end
 {
-  v4 = a3;
+  endCopy = end;
   v5 = NSSLogForType();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = endCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "NSSWatchFaceCoordinator: Focus mode did end (%@)", &v11, 0xCu);
   }
 
   [(NSSWatchFaceCoordinator *)self _loadFocusFaces];
-  v6 = [(NSSWatchFaceCoordinator *)self selectedFocusFaces];
-  v7 = [v6 objectForKey:v4];
+  selectedFocusFaces = [(NSSWatchFaceCoordinator *)self selectedFocusFaces];
+  v7 = [selectedFocusFaces objectForKey:endCopy];
   if (self->_previousFaceIdentifier)
   {
     v8 = NSSLogForType();
@@ -475,20 +475,20 @@
   }
 }
 
-- (void)_switchToWatchFaceWithIdentifier:(id)a3 saveExistingFaceState:(BOOL)a4 abortIfNotCurrent:(id)a5
+- (void)_switchToWatchFaceWithIdentifier:(id)identifier saveExistingFaceState:(BOOL)state abortIfNotCurrent:(id)current
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  stateCopy = state;
+  identifierCopy = identifier;
+  currentCopy = current;
   v10 = NSSLogForType();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v19 = "[NSSWatchFaceCoordinator _switchToWatchFaceWithIdentifier:saveExistingFaceState:abortIfNotCurrent:]";
     v20 = 2112;
-    v21 = v8;
+    v21 = identifierCopy;
     v22 = 1024;
-    v23 = v6;
+    v23 = stateCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s - identifier: %@ saveFace: %{BOOL}d", buf, 0x1Cu);
   }
 
@@ -496,12 +496,12 @@
   v13[1] = 3221225472;
   v13[2] = sub_10001EE74;
   v13[3] = &unk_100035268;
-  v14 = v8;
-  v15 = v9;
-  v16 = self;
-  v17 = v6;
-  v11 = v9;
-  v12 = v8;
+  v14 = identifierCopy;
+  v15 = currentCopy;
+  selfCopy = self;
+  v17 = stateCopy;
+  v11 = currentCopy;
+  v12 = identifierCopy;
   [(NSSWatchFaceCoordinator *)self watchFacesForCurrentDeviceWithCompletion:v13];
 }
 

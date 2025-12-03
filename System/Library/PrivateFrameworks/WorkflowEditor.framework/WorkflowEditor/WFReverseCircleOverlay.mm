@@ -1,5 +1,5 @@
 @interface WFReverseCircleOverlay
-+ (id)circleWithCenterCoordinate:(CLLocationCoordinate2D)a3 radius:(double)a4 boundingMapRect:(id)a5;
++ (id)circleWithCenterCoordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius boundingMapRect:(id)rect;
 - ($9AD185B98C4A4E0F06446A487FEC3478)boundingMapRect;
 - ($9AD185B98C4A4E0F06446A487FEC3478)boundingRect;
 - ($9AD185B98C4A4E0F06446A487FEC3478)innerCircleBoundingMapRect;
@@ -45,16 +45,16 @@
   return result;
 }
 
-+ (id)circleWithCenterCoordinate:(CLLocationCoordinate2D)a3 radius:(double)a4 boundingMapRect:(id)a5
++ (id)circleWithCenterCoordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius boundingMapRect:(id)rect
 {
-  var1 = a5.var1.var1;
-  var0 = a5.var1.var0;
-  v7 = a5.var0.var1;
-  v8 = a5.var0.var0;
-  v9 = [(MKCircle *)WFReverseCircleOverlay circleWithCenterCoordinate:a3.latitude radius:a3.longitude, a4];
-  [v9 setBoundingRect:{v8, v7, var0, var1}];
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v7 = rect.var0.var1;
+  v8 = rect.var0.var0;
+  radius = [(MKCircle *)WFReverseCircleOverlay circleWithCenterCoordinate:coordinate.latitude radius:coordinate.longitude, radius];
+  [radius setBoundingRect:{v8, v7, var0, var1}];
 
-  return v9;
+  return radius;
 }
 
 @end

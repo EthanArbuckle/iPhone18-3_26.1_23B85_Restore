@@ -1,29 +1,29 @@
 @interface GCDeviceButtonInputDescription
 - (GCDeviceButtonInputDescription)init;
-- (GCDeviceButtonInputDescription)initWithCoder:(id)a3;
-- (GCDeviceButtonInputDescription)initWithName:(id)a3 additionalAliases:(id)a4 attributes:(unint64_t)a5 nameLocalizationKey:(id)a6 symbolName:(id)a7 sourceAttributes:(unint64_t)a8 sourceNameLocalizationKey:(id)a9 sourceSymbolName:(id)a10 sourceTouchedThreshold:(float)a11 sourcePressedThreshold:(float)a12 sourceExtendedEventField:(int64_t)a13;
-- (void)encodeWithCoder:(id)a3;
+- (GCDeviceButtonInputDescription)initWithCoder:(id)coder;
+- (GCDeviceButtonInputDescription)initWithName:(id)name additionalAliases:(id)aliases attributes:(unint64_t)attributes nameLocalizationKey:(id)key symbolName:(id)symbolName sourceAttributes:(unint64_t)sourceAttributes sourceNameLocalizationKey:(id)localizationKey sourceSymbolName:(id)self0 sourceTouchedThreshold:(float)self1 sourcePressedThreshold:(float)self2 sourceExtendedEventField:(int64_t)self3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCDeviceButtonInputDescription
 
-- (GCDeviceButtonInputDescription)initWithName:(id)a3 additionalAliases:(id)a4 attributes:(unint64_t)a5 nameLocalizationKey:(id)a6 symbolName:(id)a7 sourceAttributes:(unint64_t)a8 sourceNameLocalizationKey:(id)a9 sourceSymbolName:(id)a10 sourceTouchedThreshold:(float)a11 sourcePressedThreshold:(float)a12 sourceExtendedEventField:(int64_t)a13
+- (GCDeviceButtonInputDescription)initWithName:(id)name additionalAliases:(id)aliases attributes:(unint64_t)attributes nameLocalizationKey:(id)key symbolName:(id)symbolName sourceAttributes:(unint64_t)sourceAttributes sourceNameLocalizationKey:(id)localizationKey sourceSymbolName:(id)self0 sourceTouchedThreshold:(float)self1 sourcePressedThreshold:(float)self2 sourceExtendedEventField:(int64_t)self3
 {
   v41.receiver = self;
   v41.super_class = GCDeviceButtonInputDescription;
-  v20 = a10;
-  v21 = a9;
-  v22 = a7;
-  v23 = a6;
-  v24 = a4;
-  v25 = a3;
+  sourceSymbolNameCopy = sourceSymbolName;
+  localizationKeyCopy = localizationKey;
+  symbolNameCopy = symbolName;
+  keyCopy = key;
+  aliasesCopy = aliases;
+  nameCopy = name;
   v26 = [(GCDeviceButtonInputDescription *)&v41 init];
-  v27 = [v25 copy];
+  v27 = [nameCopy copy];
 
   name = v26->_name;
   v26->_name = v27;
 
-  v29 = [v24 copy];
+  v29 = [aliasesCopy copy];
   v30 = v29;
   if (!v29)
   {
@@ -35,29 +35,29 @@
   {
   }
 
-  v26->_attributes = a5;
-  v31 = [v23 copy];
+  v26->_attributes = attributes;
+  v31 = [keyCopy copy];
 
   nameLocalizationKey = v26->_nameLocalizationKey;
   v26->_nameLocalizationKey = v31;
 
-  v33 = [v22 copy];
+  v33 = [symbolNameCopy copy];
   symbolName = v26->_symbolName;
   v26->_symbolName = v33;
 
-  v26->_sourceAttributes = a8;
-  v35 = [v21 copy];
+  v26->_sourceAttributes = sourceAttributes;
+  v35 = [localizationKeyCopy copy];
 
   sourceNameLocalizationKey = v26->_sourceNameLocalizationKey;
   v26->_sourceNameLocalizationKey = v35;
 
-  v37 = [v20 copy];
+  v37 = [sourceSymbolNameCopy copy];
   sourceSymbolName = v26->_sourceSymbolName;
   v26->_sourceSymbolName = v37;
 
-  v26->_sourceTouchedThreshold = a11;
-  v26->_sourcePressedThreshold = a12;
-  v26->_sourceExtendedEventFieldIndex = a13;
+  v26->_sourceTouchedThreshold = threshold;
+  v26->_sourcePressedThreshold = pressedThreshold;
+  v26->_sourceExtendedEventFieldIndex = field;
   return v26;
 }
 
@@ -68,26 +68,26 @@
   return 0;
 }
 
-- (GCDeviceButtonInputDescription)initWithCoder:(id)a3
+- (GCDeviceButtonInputDescription)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v3 decodeObjectOfClasses:v7 forKey:@"additionalAliases"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"additionalAliases"];
 
-  v9 = [v3 decodeIntegerForKey:@"attributes"];
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"nameLocalizationKey"];
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"symbolName"];
-  v12 = [v3 decodeIntegerForKey:@"sourceAttributes"];
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"sourceNameLocalizationKey"];
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"sourceSymbolName"];
-  [v3 decodeFloatForKey:@"sourceTouchedThreshold"];
+  v9 = [coderCopy decodeIntegerForKey:@"attributes"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nameLocalizationKey"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"symbolName"];
+  v12 = [coderCopy decodeIntegerForKey:@"sourceAttributes"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceNameLocalizationKey"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceSymbolName"];
+  [coderCopy decodeFloatForKey:@"sourceTouchedThreshold"];
   v16 = v15;
-  [v3 decodeFloatForKey:@"sourcePressedThreshold"];
+  [coderCopy decodeFloatForKey:@"sourcePressedThreshold"];
   v18 = v17;
-  v19 = [v3 decodeIntegerForKey:@"sourceExtendedEventFieldIndex"];
+  v19 = [coderCopy decodeIntegerForKey:@"sourceExtendedEventFieldIndex"];
 
   LODWORD(v20) = v16;
   LODWORD(v21) = v18;
@@ -96,23 +96,23 @@
   return v22;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v7 = a3;
-  [v7 encodeObject:name forKey:@"name"];
-  [v7 encodeObject:self->_additionalAliases forKey:@"additionalAliases"];
-  [v7 encodeInteger:self->_attributes forKey:@"attributes"];
-  [v7 encodeObject:self->_nameLocalizationKey forKey:@"nameLocalizationKey"];
-  [v7 encodeObject:self->_symbolName forKey:@"symbolName"];
-  [v7 encodeInteger:self->_sourceAttributes forKey:@"sourceAttributes"];
-  [v7 encodeObject:self->_sourceNameLocalizationKey forKey:@"sourceNameLocalizationKey"];
-  [v7 encodeObject:self->_sourceSymbolName forKey:@"sourceSymbolName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_additionalAliases forKey:@"additionalAliases"];
+  [coderCopy encodeInteger:self->_attributes forKey:@"attributes"];
+  [coderCopy encodeObject:self->_nameLocalizationKey forKey:@"nameLocalizationKey"];
+  [coderCopy encodeObject:self->_symbolName forKey:@"symbolName"];
+  [coderCopy encodeInteger:self->_sourceAttributes forKey:@"sourceAttributes"];
+  [coderCopy encodeObject:self->_sourceNameLocalizationKey forKey:@"sourceNameLocalizationKey"];
+  [coderCopy encodeObject:self->_sourceSymbolName forKey:@"sourceSymbolName"];
   *&v5 = self->_sourceTouchedThreshold;
-  [v7 encodeFloat:@"sourceTouchedThreshold" forKey:v5];
+  [coderCopy encodeFloat:@"sourceTouchedThreshold" forKey:v5];
   *&v6 = self->_sourcePressedThreshold;
-  [v7 encodeFloat:@"sourcePressedThreshold" forKey:v6];
-  [v7 encodeInteger:self->_sourceExtendedEventFieldIndex forKey:@"sourceExtendedEventFieldIndex"];
+  [coderCopy encodeFloat:@"sourcePressedThreshold" forKey:v6];
+  [coderCopy encodeInteger:self->_sourceExtendedEventFieldIndex forKey:@"sourceExtendedEventFieldIndex"];
 }
 
 @end

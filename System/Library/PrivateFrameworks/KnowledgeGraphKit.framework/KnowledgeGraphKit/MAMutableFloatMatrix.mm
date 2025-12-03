@@ -1,61 +1,61 @@
 @interface MAMutableFloatMatrix
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addScalar:(float)a3;
-- (void)appendRow:(id)a3;
-- (void)setFloat:(float)a3 atRow:(int64_t)a4 column:(int64_t)a5;
-- (void)subtractMatrix:(id)a3;
-- (void)subtractScalar:(float)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addScalar:(float)scalar;
+- (void)appendRow:(id)row;
+- (void)setFloat:(float)float atRow:(int64_t)row column:(int64_t)column;
+- (void)subtractMatrix:(id)matrix;
+- (void)subtractScalar:(float)scalar;
 @end
 
 @implementation MAMutableFloatMatrix
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [MAFloatMatrix allocWithZone:a3];
-  v5 = [(MAFloatMatrix *)self wrapper];
-  v6 = [v5 copy];
+  v4 = [MAFloatMatrix allocWithZone:zone];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  v6 = [wrapper copy];
   v7 = [(MAFloatMatrix *)v4 initWithWrapper:v6];
 
   return v7;
 }
 
-- (void)appendRow:(id)a3
+- (void)appendRow:(id)row
 {
-  v4 = a3;
-  v6 = [(MAFloatMatrix *)self wrapper];
-  v5 = [v4 wrapper];
+  rowCopy = row;
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  wrapper2 = [rowCopy wrapper];
 
-  [v6 appendRow:v5];
+  [wrapper appendRow:wrapper2];
 }
 
-- (void)addScalar:(float)a3
+- (void)addScalar:(float)scalar
 {
-  v5 = [(MAFloatMatrix *)self wrapper];
-  *&v4 = a3;
-  [v5 addScalar:v4];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  *&v4 = scalar;
+  [wrapper addScalar:v4];
 }
 
-- (void)subtractScalar:(float)a3
+- (void)subtractScalar:(float)scalar
 {
-  v5 = [(MAFloatMatrix *)self wrapper];
-  *&v4 = a3;
-  [v5 subtractScalar:v4];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  *&v4 = scalar;
+  [wrapper subtractScalar:v4];
 }
 
-- (void)subtractMatrix:(id)a3
+- (void)subtractMatrix:(id)matrix
 {
-  v4 = a3;
-  v6 = [(MAFloatMatrix *)self wrapper];
-  v5 = [v4 wrapper];
+  matrixCopy = matrix;
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  wrapper2 = [matrixCopy wrapper];
 
-  [v6 subtract:v5];
+  [wrapper subtract:wrapper2];
 }
 
-- (void)setFloat:(float)a3 atRow:(int64_t)a4 column:(int64_t)a5
+- (void)setFloat:(float)float atRow:(int64_t)row column:(int64_t)column
 {
-  v9 = [(MAFloatMatrix *)self wrapper];
-  *&v8 = a3;
-  [v9 setFloat:a4 atRow:a5 column:v8];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  *&v8 = float;
+  [wrapper setFloat:row atRow:column column:v8];
 }
 
 @end

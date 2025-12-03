@@ -2,8 +2,8 @@
 - (CATransform3D)transformFromClientContextToDisplay;
 - (_PUIDPointerControllerClientState)init;
 - (void)invalidateAutomaticRegionExitTimer;
-- (void)setTransformFromClientContextToDisplay:(CATransform3D *)a3;
-- (void)startAutomaticRegionExitTimerWithDelayInterval:(double)a3 fireHandler:(id)a4;
+- (void)setTransformFromClientContextToDisplay:(CATransform3D *)display;
+- (void)startAutomaticRegionExitTimerWithDelayInterval:(double)interval fireHandler:(id)handler;
 @end
 
 @implementation _PUIDPointerControllerClientState
@@ -39,9 +39,9 @@
   self->_automaticHoverRegionExitTimer = 0;
 }
 
-- (void)startAutomaticRegionExitTimerWithDelayInterval:(double)a3 fireHandler:(id)a4
+- (void)startAutomaticRegionExitTimerWithDelayInterval:(double)interval fireHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   [(NSTimer *)self->_automaticHoverRegionExitTimer invalidate];
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
@@ -49,9 +49,9 @@
   v10[2] = sub_10001011C;
   v10[3] = &unk_1000490F0;
   objc_copyWeak(&v12, &location);
-  v7 = v6;
+  v7 = handlerCopy;
   v11 = v7;
-  v8 = [NSTimer scheduledTimerWithTimeInterval:1 repeats:v10 block:a3];
+  v8 = [NSTimer scheduledTimerWithTimeInterval:1 repeats:v10 block:interval];
   automaticHoverRegionExitTimer = self->_automaticHoverRegionExitTimer;
   self->_automaticHoverRegionExitTimer = v8;
 
@@ -76,19 +76,19 @@
   return self;
 }
 
-- (void)setTransformFromClientContextToDisplay:(CATransform3D *)a3
+- (void)setTransformFromClientContextToDisplay:(CATransform3D *)display
 {
-  v3 = *&a3->m11;
-  v4 = *&a3->m13;
-  v5 = *&a3->m23;
-  *&self->_transformFromClientContextToDisplay.m21 = *&a3->m21;
+  v3 = *&display->m11;
+  v4 = *&display->m13;
+  v5 = *&display->m23;
+  *&self->_transformFromClientContextToDisplay.m21 = *&display->m21;
   *&self->_transformFromClientContextToDisplay.m23 = v5;
   *&self->_transformFromClientContextToDisplay.m11 = v3;
   *&self->_transformFromClientContextToDisplay.m13 = v4;
-  v6 = *&a3->m31;
-  v7 = *&a3->m33;
-  v8 = *&a3->m43;
-  *&self->_transformFromClientContextToDisplay.m41 = *&a3->m41;
+  v6 = *&display->m31;
+  v7 = *&display->m33;
+  v8 = *&display->m43;
+  *&self->_transformFromClientContextToDisplay.m41 = *&display->m41;
   *&self->_transformFromClientContextToDisplay.m43 = v8;
   *&self->_transformFromClientContextToDisplay.m31 = v6;
   *&self->_transformFromClientContextToDisplay.m33 = v7;

@@ -1,19 +1,19 @@
 @interface TTRITimeZonePickerViewController
-- (_TtC15RemindersUICore32TTRITimeZonePickerViewController)initWithCoder:(id)a3;
-- (_TtC15RemindersUICore32TTRITimeZonePickerViewController)initWithCollectionViewLayout:(id)a3;
-- (_TtC15RemindersUICore32TTRITimeZonePickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)cancelButtonAction:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)presentationControllerDidAttemptToDismiss:(id)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC15RemindersUICore32TTRITimeZonePickerViewController)initWithCoder:(id)coder;
+- (_TtC15RemindersUICore32TTRITimeZonePickerViewController)initWithCollectionViewLayout:(id)layout;
+- (_TtC15RemindersUICore32TTRITimeZonePickerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)cancelButtonAction:(id)action;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation TTRITimeZonePickerViewController
 
-- (_TtC15RemindersUICore32TTRITimeZonePickerViewController)initWithCoder:(id)a3
+- (_TtC15RemindersUICore32TTRITimeZonePickerViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore32TTRITimeZonePickerViewController_dataSource) = 0;
   v3 = (self + OBJC_IVAR____TtC15RemindersUICore32TTRITimeZonePickerViewController_lastConsumedViewModel);
@@ -25,7 +25,7 @@
   *v4 = 0;
   v4[1] = 0;
   v5 = qword_27CE56FE0;
-  v6 = a3;
+  coderCopy = coder;
   if (v5 != -1)
   {
     swift_once();
@@ -43,25 +43,25 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_21DA49778();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   ObjectType = swift_getObjectType();
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CE5F150);
   MEMORY[0x28223BE20](v6 - 8);
   v8 = &v15 - v7;
   v15.receiver = self;
   v15.super_class = ObjectType;
-  v9 = self;
-  [(TTRITimeZonePickerViewController *)&v15 viewDidAppear:v3];
+  selfCopy = self;
+  [(TTRITimeZonePickerViewController *)&v15 viewDidAppear:appearCopy];
   v10 = sub_21DBFA89C();
   (*(*(v10 - 8) + 56))(v8, 1, 1, v10);
   sub_21DBFA84C();
-  v11 = v9;
+  v11 = selfCopy;
   v12 = sub_21DBFA83C();
   v13 = swift_allocObject();
   v14 = MEMORY[0x277D85700];
@@ -71,11 +71,11 @@
   sub_21D1B59C4(0, 0, v8, &unk_21DC38190, v13);
 }
 
-- (void)cancelButtonAction:(id)a3
+- (void)cancelButtonAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_21DBFBC1C();
     swift_unknownObjectRelease();
@@ -84,7 +84,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore32TTRITimeZonePickerViewController_presenter);
@@ -103,54 +103,54 @@
   sub_21D0CF7E0(v8, &qword_27CE5C690);
 }
 
-- (_TtC15RemindersUICore32TTRITimeZonePickerViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC15RemindersUICore32TTRITimeZonePickerViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15RemindersUICore32TTRITimeZonePickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15RemindersUICore32TTRITimeZonePickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_21DBF5D5C();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21DBF5CAC();
-  v10 = a3;
-  v11 = self;
-  sub_21DA4B498(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_21DA4B498(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   v5 = sub_21DBFA16C();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   sub_21D7FBA74(v5, v7);
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = self;
-  sub_21DA4B920(v4);
+  clickedCopy = clicked;
+  selfCopy = self;
+  sub_21DA4B920(clickedCopy);
 }
 
-- (void)presentationControllerDidAttemptToDismiss:(id)a3
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss
 {
   v3 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore32TTRITimeZonePickerViewController_presenter);
   v4 = qword_27CE56CF8;
-  v6 = self;
+  selfCopy = self;
   if (v4 != -1)
   {
     swift_once();

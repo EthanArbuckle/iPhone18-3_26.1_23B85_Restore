@@ -1,8 +1,8 @@
 @interface SCKZoneMemoryStore
 - (SCKZoneMemoryStore)init;
-- (void)addPendingCommands:(id)a3;
-- (void)applyServerRecordsDiff:(id)a3;
-- (void)clearPendingCommandsUpToCount:(unint64_t)a3;
+- (void)addPendingCommands:(id)commands;
+- (void)applyServerRecordsDiff:(id)diff;
+- (void)clearPendingCommandsUpToCount:(unint64_t)count;
 @end
 
 @implementation SCKZoneMemoryStore
@@ -26,29 +26,29 @@
   return v3;
 }
 
-- (void)applyServerRecordsDiff:(id)a3
+- (void)applyServerRecordsDiff:(id)diff
 {
-  v4 = a3;
-  v7 = [(SCKZoneMemoryStore *)self serverRecords];
-  v5 = [v4 applyToRecords:v7];
+  diffCopy = diff;
+  serverRecords = [(SCKZoneMemoryStore *)self serverRecords];
+  v5 = [diffCopy applyToRecords:serverRecords];
 
   serverRecords = self->_serverRecords;
   self->_serverRecords = v5;
 }
 
-- (void)addPendingCommands:(id)a3
+- (void)addPendingCommands:(id)commands
 {
-  v4 = a3;
-  v7 = [(SCKZoneMemoryStore *)self pendingCommands];
-  v5 = [v7 arrayByAddingObjectsFromArray:v4];
+  commandsCopy = commands;
+  pendingCommands = [(SCKZoneMemoryStore *)self pendingCommands];
+  v5 = [pendingCommands arrayByAddingObjectsFromArray:commandsCopy];
 
   pendingCommands = self->_pendingCommands;
   self->_pendingCommands = v5;
 }
 
-- (void)clearPendingCommandsUpToCount:(unint64_t)a3
+- (void)clearPendingCommandsUpToCount:(unint64_t)count
 {
-  v4 = [(NSArray *)self->_pendingCommands subarrayWithRange:a3, [(NSArray *)self->_pendingCommands count]- a3];
+  v4 = [(NSArray *)self->_pendingCommands subarrayWithRange:count, [(NSArray *)self->_pendingCommands count]- count];
   pendingCommands = self->_pendingCommands;
   self->_pendingCommands = v4;
 

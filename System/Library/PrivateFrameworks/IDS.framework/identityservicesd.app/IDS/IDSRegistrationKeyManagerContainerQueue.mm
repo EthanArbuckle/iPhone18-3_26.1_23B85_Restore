@@ -1,6 +1,6 @@
 @interface IDSRegistrationKeyManagerContainerQueue
 - (IDSRegistrationKeyManagerContainerQueue)init;
-- (void)performSyncBlock:(id)a3;
+- (void)performSyncBlock:(id)block;
 @end
 
 @implementation IDSRegistrationKeyManagerContainerQueue
@@ -26,12 +26,12 @@
   return v2;
 }
 
-- (void)performSyncBlock:(id)a3
+- (void)performSyncBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy2 = block;
+  if (blockCopy2)
   {
-    block = v4;
+    block = blockCopy2;
     if (dispatch_get_specific(self->_specific))
     {
       block[2]();
@@ -42,7 +42,7 @@
       dispatch_sync(self->_backingQueue, block);
     }
 
-    v4 = block;
+    blockCopy2 = block;
   }
 }
 

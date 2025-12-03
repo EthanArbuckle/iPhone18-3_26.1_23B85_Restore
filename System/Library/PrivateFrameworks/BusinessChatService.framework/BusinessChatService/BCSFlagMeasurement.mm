@@ -1,15 +1,15 @@
 @interface BCSFlagMeasurement
-+ (id)newFlagMeasurement:(int64_t)a3 withHandlers:(id)a4;
-- (void)setFlag:(BOOL)a3;
++ (id)newFlagMeasurement:(int64_t)measurement withHandlers:(id)handlers;
+- (void)setFlag:(BOOL)flag;
 @end
 
 @implementation BCSFlagMeasurement
 
-+ (id)newFlagMeasurement:(int64_t)a3 withHandlers:(id)a4
++ (id)newFlagMeasurement:(int64_t)measurement withHandlers:(id)handlers
 {
-  v6 = a4;
+  handlersCopy = handlers;
   v7 = [BCSFlagMeasurement alloc];
-  v8 = v6;
+  v8 = handlersCopy;
   if (v7)
   {
     v11.receiver = v7;
@@ -18,19 +18,19 @@
     v7 = v9;
     if (v9)
     {
-      v9->_flagMeasurementType = a3;
-      objc_storeStrong(&v9->_realTimeMeasurementHandlers, a4);
+      v9->_flagMeasurementType = measurement;
+      objc_storeStrong(&v9->_realTimeMeasurementHandlers, handlers);
     }
   }
 
   return v7;
 }
 
-- (void)setFlag:(BOOL)a3
+- (void)setFlag:(BOOL)flag
 {
   if (!self || !self->_flagWasSet)
   {
-    self->_flag = a3;
+    self->_flag = flag;
     self->_flagWasSet = 1;
     realTimeMeasurementHandlers = self->_realTimeMeasurementHandlers;
     v4[0] = MEMORY[0x277D85DD0];

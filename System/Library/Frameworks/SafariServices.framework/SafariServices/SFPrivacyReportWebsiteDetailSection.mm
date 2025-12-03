@@ -1,23 +1,23 @@
 @interface SFPrivacyReportWebsiteDetailSection
-- (SFPrivacyReportWebsiteDetailSection)initWithTitle:(id)a3 trackers:(id)a4;
+- (SFPrivacyReportWebsiteDetailSection)initWithTitle:(id)title trackers:(id)trackers;
 @end
 
 @implementation SFPrivacyReportWebsiteDetailSection
 
-- (SFPrivacyReportWebsiteDetailSection)initWithTitle:(id)a3 trackers:(id)a4
+- (SFPrivacyReportWebsiteDetailSection)initWithTitle:(id)title trackers:(id)trackers
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  trackersCopy = trackers;
   v15.receiver = self;
   v15.super_class = SFPrivacyReportWebsiteDetailSection;
   v8 = [(SFPrivacyReportWebsiteDetailSection *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [titleCopy copy];
     title = v8->_title;
     v8->_title = v9;
 
-    v11 = [v7 copy];
+    v11 = [trackersCopy copy];
     trackers = v8->_trackers;
     v8->_trackers = v11;
 

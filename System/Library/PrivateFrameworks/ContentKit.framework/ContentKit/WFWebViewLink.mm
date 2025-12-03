@@ -1,6 +1,6 @@
 @interface WFWebViewLink
 - (CGRect)rect;
-- (WFWebViewLink)initWithHref:(id)a3 rect:(CGRect)a4;
+- (WFWebViewLink)initWithHref:(id)href rect:(CGRect)rect;
 @end
 
 @implementation WFWebViewLink
@@ -18,20 +18,20 @@
   return result;
 }
 
-- (WFWebViewLink)initWithHref:(id)a3 rect:(CGRect)a4
+- (WFWebViewLink)initWithHref:(id)href rect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  hrefCopy = href;
   v15.receiver = self;
   v15.super_class = WFWebViewLink;
   v11 = [(WFWebViewLink *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_href, a3);
+    objc_storeStrong(&v11->_href, href);
     v12->_rect.origin.x = x;
     v12->_rect.origin.y = y;
     v12->_rect.size.width = width;

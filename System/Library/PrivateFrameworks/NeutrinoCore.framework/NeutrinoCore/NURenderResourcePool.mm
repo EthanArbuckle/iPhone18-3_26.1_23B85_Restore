@@ -1,14 +1,14 @@
 @interface NURenderResourcePool
 + (id)shared;
 - (NURenderResourcePool)init;
-- (id)_checkOutResourceForKey:(id)a3 matching:(id)a4;
-- (id)_resourceMatching:(id)a3;
-- (id)checkOutResourceForKey:(id)a3 matching:(id)a4;
-- (void)_checkInResource:(id)a3 forKey:(id)a4;
-- (void)_evictResource:(id)a3 ifNotUsedSince:(id)a4;
+- (id)_checkOutResourceForKey:(id)key matching:(id)matching;
+- (id)_resourceMatching:(id)matching;
+- (id)checkOutResourceForKey:(id)key matching:(id)matching;
+- (void)_checkInResource:(id)resource forKey:(id)key;
+- (void)_evictResource:(id)resource ifNotUsedSince:(id)since;
 - (void)_flush;
-- (void)_scheduleEvictionOfResource:(id)a3;
-- (void)checkInResource:(id)a3 forKey:(id)a4;
+- (void)_scheduleEvictionOfResource:(id)resource;
+- (void)checkInResource:(id)resource forKey:(id)key;
 - (void)flush;
 @end
 
@@ -47,19 +47,19 @@
   dispatch_sync(queue, block);
 }
 
-- (void)_evictResource:(id)a3 ifNotUsedSince:(id)a4
+- (void)_evictResource:(id)resource ifNotUsedSince:(id)since
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 inUse] & 1) == 0)
+  resourceCopy = resource;
+  sinceCopy = since;
+  if (([resourceCopy inUse] & 1) == 0)
   {
-    v8 = [v6 lastUseTime];
-    v9 = [v8 isEqualToDate:v7];
+    lastUseTime = [resourceCopy lastUseTime];
+    v9 = [lastUseTime isEqualToDate:sinceCopy];
 
     if (v9)
     {
-      v10 = [(NSMutableArray *)self->_resources indexOfObjectIdenticalTo:v6];
+      v10 = [(NSMutableArray *)self->_resources indexOfObjectIdenticalTo:resourceCopy];
       if (v10 != 0x7FFFFFFFFFFFFFFFLL)
       {
         [(NSMutableArray *)self->_resources removeObjectAtIndex:v10];
@@ -72,16 +72,16 @@
         if (os_log_type_enabled(_NULogger, OS_LOG_TYPE_INFO))
         {
           v12 = v11;
-          v13 = [v6 key];
-          v14 = [v6 object];
-          v15 = [v6 useCount];
+          v13 = [resourceCopy key];
+          object = [resourceCopy object];
+          useCount = [resourceCopy useCount];
           v16 = [(NSMutableArray *)self->_resources count];
           v23 = 138413058;
           v24 = v13;
           v25 = 2048;
-          v26 = v14;
+          v26 = object;
           v27 = 2048;
-          v28 = v15;
+          v28 = useCount;
           v29 = 2048;
           v30 = v16;
           _os_log_impl(&dword_1C0184000, v12, OS_LOG_TYPE_INFO, "NURenderResource: evicted unused resource: %@ %p [%lu] (%lu remaining)", &v23, 0x2Au);
@@ -93,21 +93,21 @@
         }
 
         v17 = _NULogger;
-        v18 = [v6 sid];
+        v18 = [resourceCopy sid];
         if ((v18 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
         {
           v19 = v18;
           if (os_signpost_enabled(v17))
           {
-            v20 = [v6 key];
-            v21 = [v6 object];
-            v22 = [v6 useCount];
+            v20 = [resourceCopy key];
+            object2 = [resourceCopy object];
+            useCount2 = [resourceCopy useCount];
             v23 = 138412802;
             v24 = v20;
             v25 = 2048;
-            v26 = v21;
+            v26 = object2;
             v27 = 2048;
-            v28 = v22;
+            v28 = useCount2;
             _os_signpost_emit_with_name_impl(&dword_1C0184000, v17, OS_SIGNPOST_EVENT, v19, "NURenderResource.evicted", "key=%@, obj=%p, count=%lu", &v23, 0x20u);
           }
         }
@@ -116,14 +116,14 @@
   }
 }
 
-- (void)_scheduleEvictionOfResource:(id)a3
+- (void)_scheduleEvictionOfResource:(id)resource
 {
-  v4 = a3;
-  v5 = [v4 lastUseTime];
+  resourceCopy = resource;
+  lastUseTime = [resourceCopy lastUseTime];
   +[NUGlobalSettings renderResourceEvictionDelay];
   if (v6 <= 0.0)
   {
-    [(NURenderResourcePool *)self _evictResource:v4 ifNotUsedSince:v5];
+    [(NURenderResourcePool *)self _evictResource:resourceCopy ifNotUsedSince:lastUseTime];
   }
 
   else
@@ -137,8 +137,8 @@
     v10[2] = __52__NURenderResourcePool__scheduleEvictionOfResource___block_invoke;
     v10[3] = &unk_1E810A1C0;
     objc_copyWeak(&v13, &location);
-    v11 = v4;
-    v12 = v5;
+    v11 = resourceCopy;
+    v12 = lastUseTime;
     dispatch_after(v8, queue, v10);
 
     objc_destroyWeak(&v13);
@@ -152,19 +152,19 @@ void __52__NURenderResourcePool__scheduleEvictionOfResource___block_invoke(uint6
   [WeakRetained _evictResource:*(a1 + 32) ifNotUsedSince:*(a1 + 40)];
 }
 
-- (void)_checkInResource:(id)a3 forKey:(id)a4
+- (void)_checkInResource:(id)resource forKey:(id)key
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resourceCopy = resource;
+  keyCopy = key;
   v8 = [MEMORY[0x1E695DF00] now];
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __48__NURenderResourcePool__checkInResource_forKey___block_invoke;
   v22 = &unk_1E810A198;
-  v9 = v7;
+  v9 = keyCopy;
   v23 = v9;
-  v10 = v6;
+  v10 = resourceCopy;
   v24 = v10;
   v11 = [(NURenderResourcePool *)self _resourceMatching:&v19];
   if (!v11)
@@ -190,14 +190,14 @@ void __52__NURenderResourcePool__scheduleEvictionOfResource___block_invoke(uint6
     if (os_signpost_enabled(v13))
     {
       v16 = [(_NURenderResource *)v11 key];
-      v17 = [(_NURenderResource *)v11 object];
-      v18 = [(_NURenderResource *)v11 useCount];
+      object = [(_NURenderResource *)v11 object];
+      useCount = [(_NURenderResource *)v11 useCount];
       *buf = 138412802;
       v26 = v16;
       v27 = 2048;
-      v28 = v17;
+      v28 = object;
       v29 = 2048;
-      v30 = v18;
+      v30 = useCount;
       _os_signpost_emit_with_name_impl(&dword_1C0184000, v13, OS_SIGNPOST_INTERVAL_END, v15, "NURenderResource.use", "key=%@, obj=%p, count=%lu", buf, 0x20u);
     }
   }
@@ -223,12 +223,12 @@ BOOL __48__NURenderResourcePool__checkInResource_forKey___block_invoke(uint64_t 
   return v6;
 }
 
-- (void)checkInResource:(id)a3 forKey:(id)a4
+- (void)checkInResource:(id)resource forKey:(id)key
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  resourceCopy = resource;
+  keyCopy = key;
+  if (!resourceCopy)
   {
     v11 = NUAssertLogger_12301();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -249,8 +249,8 @@ BOOL __48__NURenderResourcePool__checkInResource_forKey___block_invoke(uint64_t 
         v25 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v47 = v25;
         v48 = 2114;
@@ -261,8 +261,8 @@ BOOL __48__NURenderResourcePool__checkInResource_forKey___block_invoke(uint64_t 
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v47 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -271,7 +271,7 @@ BOOL __48__NURenderResourcePool__checkInResource_forKey___block_invoke(uint64_t 
     _NUAssertFailHandler("[NURenderResourcePool checkInResource:forKey:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderResourcePool.m", 78, @"Invalid parameter not satisfying: %s", v30, v31, v32, v33, "object != nil");
   }
 
-  if (!v7)
+  if (!keyCopy)
   {
     v18 = NUAssertLogger_12301();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -292,8 +292,8 @@ BOOL __48__NURenderResourcePool__checkInResource_forKey___block_invoke(uint64_t 
         v34 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v37 = [v35 callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v35 callStackSymbols];
+        v38 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v47 = v34;
         v48 = 2114;
@@ -304,8 +304,8 @@ BOOL __48__NURenderResourcePool__checkInResource_forKey___block_invoke(uint64_t 
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v47 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -320,22 +320,22 @@ BOOL __48__NURenderResourcePool__checkInResource_forKey___block_invoke(uint64_t 
   block[2] = __47__NURenderResourcePool_checkInResource_forKey___block_invoke;
   block[3] = &unk_1E810B3A0;
   block[4] = self;
-  v44 = v6;
-  v45 = v7;
-  v9 = v7;
-  v10 = v6;
+  v44 = resourceCopy;
+  v45 = keyCopy;
+  v9 = keyCopy;
+  v10 = resourceCopy;
   dispatch_sync(queue, block);
 }
 
-- (id)_resourceMatching:(id)a3
+- (id)_resourceMatching:(id)matching
 {
-  v4 = a3;
+  matchingCopy = matching;
   resources = self->_resources;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __42__NURenderResourcePool__resourceMatching___block_invoke;
   v10[3] = &unk_1E810A170;
-  v6 = v4;
+  v6 = matchingCopy;
   v11 = v6;
   v7 = [(NSMutableArray *)resources indexOfObjectPassingTest:v10];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -351,18 +351,18 @@ BOOL __48__NURenderResourcePool__checkInResource_forKey___block_invoke(uint64_t 
   return v8;
 }
 
-- (id)_checkOutResourceForKey:(id)a3 matching:(id)a4
+- (id)_checkOutResourceForKey:(id)key matching:(id)matching
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  matchingCopy = matching;
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __57__NURenderResourcePool__checkOutResourceForKey_matching___block_invoke;
   v15 = &unk_1E810A148;
-  v16 = v6;
-  v17 = v7;
-  v8 = v7;
-  v9 = v6;
+  v16 = keyCopy;
+  v17 = matchingCopy;
+  v8 = matchingCopy;
+  v9 = keyCopy;
   v10 = [(NURenderResourcePool *)self _resourceMatching:&v12];
   [v10 setInUse:{1, v12, v13, v14, v15}];
 
@@ -396,12 +396,12 @@ uint64_t __57__NURenderResourcePool__checkOutResourceForKey_matching___block_inv
   return v4;
 }
 
-- (id)checkOutResourceForKey:(id)a3 matching:(id)a4
+- (id)checkOutResourceForKey:(id)key matching:(id)matching
 {
   v64 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  keyCopy = key;
+  matchingCopy = matching;
+  if (!keyCopy)
   {
     v20 = NUAssertLogger_12301();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -422,8 +422,8 @@ uint64_t __57__NURenderResourcePool__checkOutResourceForKey_matching___block_inv
         v34 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v37 = [v35 callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v35 callStackSymbols];
+        v38 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v60 = 138543618;
         *&v60[4] = v34;
         *&v60[12] = 2114;
@@ -434,8 +434,8 @@ uint64_t __57__NURenderResourcePool__checkOutResourceForKey_matching___block_inv
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v60 = 138543362;
       *&v60[4] = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v60, 0xCu);
@@ -444,8 +444,8 @@ uint64_t __57__NURenderResourcePool__checkOutResourceForKey_matching___block_inv
     _NUAssertFailHandler("[NURenderResourcePool checkOutResourceForKey:matching:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderResourcePool.m", 47, @"Invalid parameter not satisfying: %s", v39, v40, v41, v42, "key != nil");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = matchingCopy;
+  if (!matchingCopy)
   {
     v27 = NUAssertLogger_12301();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -466,8 +466,8 @@ uint64_t __57__NURenderResourcePool__checkOutResourceForKey_matching___block_inv
         v43 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v44 = MEMORY[0x1E696AF00];
         v45 = v43;
-        v46 = [v44 callStackSymbols];
-        v47 = [v46 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v44 callStackSymbols];
+        v47 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *v60 = 138543618;
         *&v60[4] = v43;
         *&v60[12] = 2114;
@@ -478,8 +478,8 @@ uint64_t __57__NURenderResourcePool__checkOutResourceForKey_matching___block_inv
 
     else if (v31)
     {
-      v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v33 = [v32 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v33 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *v60 = 138543362;
       *&v60[4] = v33;
       _os_log_error_impl(&dword_1C0184000, v30, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v60, 0xCu);
@@ -501,7 +501,7 @@ uint64_t __57__NURenderResourcePool__checkOutResourceForKey_matching___block_inv
   block[3] = &unk_1E810A120;
   v55 = v60;
   block[4] = self;
-  v10 = v6;
+  v10 = keyCopy;
   v53 = v10;
   v11 = v8;
   v54 = v11;
@@ -518,11 +518,11 @@ uint64_t __57__NURenderResourcePool__checkOutResourceForKey_matching___block_inv
     if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
     {
       v14 = [*(*&v60[8] + 40) key];
-      v15 = [*(*&v60[8] + 40) object];
+      object = [*(*&v60[8] + 40) object];
       *buf = 138412546;
       v57 = v14;
       v58 = 2048;
-      v59 = v15;
+      v59 = object;
       _os_signpost_emit_with_name_impl(&dword_1C0184000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v13, "NURenderResource.use", "key=%@, obj=%p", buf, 0x16u);
     }
   }
@@ -545,11 +545,11 @@ uint64_t __57__NURenderResourcePool__checkOutResourceForKey_matching___block_inv
     }
   }
 
-  v18 = [*(*&v60[8] + 40) object];
+  object2 = [*(*&v60[8] + 40) object];
 
   _Block_object_dispose(v60, 8);
 
-  return v18;
+  return object2;
 }
 
 uint64_t __56__NURenderResourcePool_checkOutResourceForKey_matching___block_invoke(uint64_t a1)
@@ -585,9 +585,9 @@ uint64_t __56__NURenderResourcePool_checkOutResourceForKey_matching___block_invo
 + (id)shared
 {
   v2 = +[NUFactory sharedFactory];
-  v3 = [v2 renderResourcePool];
+  renderResourcePool = [v2 renderResourcePool];
 
-  return v3;
+  return renderResourcePool;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface AVTAvatarAttributeEditorOverridingLayout
-- (AVTAvatarAttributeEditorOverridingLayout)initWithLayout:(id)a3;
+- (AVTAvatarAttributeEditorOverridingLayout)initWithLayout:(id)layout;
 - (BOOL)RTL;
 - (BOOL)showSideGroupPicker;
 - (CGRect)attributesContentViewFrame;
@@ -24,27 +24,27 @@
 
 @implementation AVTAvatarAttributeEditorOverridingLayout
 
-- (AVTAvatarAttributeEditorOverridingLayout)initWithLayout:(id)a3
+- (AVTAvatarAttributeEditorOverridingLayout)initWithLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   v18.receiver = self;
   v18.super_class = AVTAvatarAttributeEditorOverridingLayout;
   v6 = [(AVTAvatarAttributeEditorOverridingLayout *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backingLayout, a3);
-    [v5 avatarContainerFrame];
+    objc_storeStrong(&v6->_backingLayout, layout);
+    [layoutCopy avatarContainerFrame];
     v7->_avatarContainerFrame.origin.x = v8;
     v7->_avatarContainerFrame.origin.y = v9;
     v7->_avatarContainerFrame.size.width = v10;
     v7->_avatarContainerFrame.size.height = v11;
-    [v5 attributesContentViewFrame];
+    [layoutCopy attributesContentViewFrame];
     v7->_attributesContentViewFrame.origin.x = v12;
     v7->_attributesContentViewFrame.origin.y = v13;
     v7->_attributesContentViewFrame.size.width = v14;
     v7->_attributesContentViewFrame.size.height = v15;
-    [v5 avatarContainerAlpha];
+    [layoutCopy avatarContainerAlpha];
     v7->_avatarContainerAlpha = v16;
   }
 
@@ -53,16 +53,16 @@
 
 - (NSString)contentSizeCategory
 {
-  v2 = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
-  v3 = [v2 contentSizeCategory];
+  backingLayout = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
+  contentSizeCategory = [backingLayout contentSizeCategory];
 
-  return v3;
+  return contentSizeCategory;
 }
 
 - (CGSize)containerSize
 {
-  v2 = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
-  [v2 containerSize];
+  backingLayout = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
+  [backingLayout containerSize];
   v4 = v3;
   v6 = v5;
 
@@ -75,8 +75,8 @@
 
 - (UIEdgeInsets)edgeInsets
 {
-  v2 = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
-  [v2 edgeInsets];
+  backingLayout = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
+  [backingLayout edgeInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -95,8 +95,8 @@
 
 - (double)userInfoViewHeight
 {
-  v2 = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
-  [v2 userInfoViewHeight];
+  backingLayout = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
+  [backingLayout userInfoViewHeight];
   v4 = v3;
 
   return v4;
@@ -104,8 +104,8 @@
 
 - (double)screenScale
 {
-  v2 = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
-  [v2 screenScale];
+  backingLayout = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
+  [backingLayout screenScale];
   v4 = v3;
 
   return v4;
@@ -113,8 +113,8 @@
 
 - (CGRect)groupDialContainerFrame
 {
-  v2 = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
-  [v2 groupDialContainerFrame];
+  backingLayout = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
+  [backingLayout groupDialContainerFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -133,8 +133,8 @@
 
 - (CGRect)sideGroupContainerFrame
 {
-  v2 = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
-  [v2 sideGroupContainerFrame];
+  backingLayout = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
+  [backingLayout sideGroupContainerFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -153,16 +153,16 @@
 
 - (BOOL)showSideGroupPicker
 {
-  v2 = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
-  v3 = [v2 showSideGroupPicker];
+  backingLayout = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
+  showSideGroupPicker = [backingLayout showSideGroupPicker];
 
-  return v3;
+  return showSideGroupPicker;
 }
 
 - (CGRect)userInfoFrame
 {
-  v2 = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
-  [v2 userInfoFrame];
+  backingLayout = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
+  [backingLayout userInfoFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -181,8 +181,8 @@
 
 - (double)headerMaskingViewAlpha
 {
-  v2 = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
-  [v2 headerMaskingViewAlpha];
+  backingLayout = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
+  [backingLayout headerMaskingViewAlpha];
   v4 = v3;
 
   return v4;
@@ -190,8 +190,8 @@
 
 - (CGRect)headerMaskingViewFrame
 {
-  v2 = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
-  [v2 headerMaskingViewFrame];
+  backingLayout = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
+  [backingLayout headerMaskingViewFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -210,8 +210,8 @@
 
 - (double)verticalRuleAlpha
 {
-  v2 = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
-  [v2 verticalRuleAlpha];
+  backingLayout = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
+  [backingLayout verticalRuleAlpha];
   v4 = v3;
 
   return v4;
@@ -219,8 +219,8 @@
 
 - (CGRect)verticalRuleFrame
 {
-  v2 = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
-  [v2 verticalRuleFrame];
+  backingLayout = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
+  [backingLayout verticalRuleFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -239,8 +239,8 @@
 
 - (UIEdgeInsets)attributesContentViewInsets
 {
-  v2 = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
-  [v2 attributesContentViewInsets];
+  backingLayout = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
+  [backingLayout attributesContentViewInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -259,8 +259,8 @@
 
 - (UIEdgeInsets)attributesContentViewScrollIndicatorInsets
 {
-  v2 = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
-  [v2 attributesContentViewScrollIndicatorInsets];
+  backingLayout = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
+  [backingLayout attributesContentViewScrollIndicatorInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -279,16 +279,16 @@
 
 - (unint64_t)supportedLayoutOrientation
 {
-  v2 = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
-  v3 = [v2 supportedLayoutOrientation];
+  backingLayout = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
+  supportedLayoutOrientation = [backingLayout supportedLayoutOrientation];
 
-  return v3;
+  return supportedLayoutOrientation;
 }
 
 - (double)maxGroupLabelWidth
 {
-  v2 = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
-  [v2 maxGroupLabelWidth];
+  backingLayout = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
+  [backingLayout maxGroupLabelWidth];
   v4 = v3;
 
   return v4;
@@ -296,8 +296,8 @@
 
 - (BOOL)RTL
 {
-  v2 = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
-  v3 = [v2 RTL];
+  backingLayout = [(AVTAvatarAttributeEditorOverridingLayout *)self backingLayout];
+  v3 = [backingLayout RTL];
 
   return v3;
 }

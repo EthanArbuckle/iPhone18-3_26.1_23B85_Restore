@@ -3,8 +3,8 @@
 - (id)delegate;
 - (id)navigationDelegate;
 - (void)_done;
-- (void)segueToViewController:(id)a3;
-- (void)willNavigateToSubsequentController:(id)a3;
+- (void)segueToViewController:(id)controller;
+- (void)willNavigateToSubsequentController:(id)controller;
 @end
 
 @implementation AuxiliaryDebugViewController
@@ -25,33 +25,33 @@
 
 - (void)_done
 {
-  v3 = [(AuxiliaryDebugViewController *)self delegate];
-  [v3 debugControllerDidFinish:self];
+  delegate = [(AuxiliaryDebugViewController *)self delegate];
+  [delegate debugControllerDidFinish:self];
 }
 
-- (void)willNavigateToSubsequentController:(id)a3
+- (void)willNavigateToSubsequentController:(id)controller
 {
-  v4 = a3;
-  v5 = [(AuxiliaryDebugViewController *)self delegate];
-  [v4 setDelegate:v5];
+  controllerCopy = controller;
+  delegate = [(AuxiliaryDebugViewController *)self delegate];
+  [controllerCopy setDelegate:delegate];
 }
 
-- (void)segueToViewController:(id)a3
+- (void)segueToViewController:(id)controller
 {
-  v4 = a3;
-  [(AuxiliaryDebugViewController *)self willNavigateToSubsequentController:v4];
-  v5 = [(AuxiliaryDebugViewController *)self navigationDelegate];
+  controllerCopy = controller;
+  [(AuxiliaryDebugViewController *)self willNavigateToSubsequentController:controllerCopy];
+  navigationDelegate = [(AuxiliaryDebugViewController *)self navigationDelegate];
 
-  if (v5)
+  if (navigationDelegate)
   {
-    v6 = [(AuxiliaryDebugViewController *)self navigationDelegate];
-    [v6 debugViewController:self segueToViewController:v4];
+    navigationDelegate2 = [(AuxiliaryDebugViewController *)self navigationDelegate];
+    [navigationDelegate2 debugViewController:self segueToViewController:controllerCopy];
   }
 
   else
   {
-    v6 = [(AuxiliaryDebugViewController *)self navigationController];
-    [v6 pushViewController:v4 animated:1];
+    navigationDelegate2 = [(AuxiliaryDebugViewController *)self navigationController];
+    [navigationDelegate2 pushViewController:controllerCopy animated:1];
   }
 }
 
@@ -62,12 +62,12 @@
   v2 = [(AuxiliaryDebugViewController *)&v7 initWithStyle:1];
   if (v2)
   {
-    v3 = [objc_opt_class() navigationDestinationTitle];
-    [(AuxiliaryDebugViewController *)v2 setTitle:v3];
+    navigationDestinationTitle = [objc_opt_class() navigationDestinationTitle];
+    [(AuxiliaryDebugViewController *)v2 setTitle:navigationDestinationTitle];
 
     v4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:v2 action:"_done"];
-    v5 = [(AuxiliaryDebugViewController *)v2 navigationItem];
-    [v5 setRightBarButtonItem:v4];
+    navigationItem = [(AuxiliaryDebugViewController *)v2 navigationItem];
+    [navigationItem setRightBarButtonItem:v4];
   }
 
   return v2;

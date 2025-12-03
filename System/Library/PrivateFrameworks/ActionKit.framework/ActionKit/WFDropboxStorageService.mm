@@ -1,13 +1,13 @@
 @interface WFDropboxStorageService
 - (INAppDescriptor)associatedAppDescriptor;
-- (id)saveFiles:(id)a3 withManagedLevel:(unint64_t)a4 toPath:(id)a5 options:(unint64_t)a6 progress:(id)a7 completionHandler:(id)a8;
-- (void)appendText:(id)a3 toPath:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6;
-- (void)createFolderAtPath:(id)a3 completionHandler:(id)a4;
-- (void)deleteFiles:(id)a3 deleteImmediately:(BOOL)a4 completionHandler:(id)a5;
-- (void)finishRetrievalWithContentsOfFolderAtPath:(id)a3 sessionManager:(id)a4 retrievalHandler:(id)a5;
-- (void)getSharingURLsForFiles:(id)a3 usePublicURLs:(BOOL)a4 completionHandler:(id)a5;
-- (void)retrieveFilesAtPath:(id)a3 options:(unint64_t)a4 progress:(id)a5 completionHandler:(id)a6;
-- (void)searchFiles:(id)a3 inPath:(id)a4 completionHandler:(id)a5;
+- (id)saveFiles:(id)files withManagedLevel:(unint64_t)level toPath:(id)path options:(unint64_t)options progress:(id)progress completionHandler:(id)handler;
+- (void)appendText:(id)text toPath:(id)path options:(unint64_t)options completionHandler:(id)handler;
+- (void)createFolderAtPath:(id)path completionHandler:(id)handler;
+- (void)deleteFiles:(id)files deleteImmediately:(BOOL)immediately completionHandler:(id)handler;
+- (void)finishRetrievalWithContentsOfFolderAtPath:(id)path sessionManager:(id)manager retrievalHandler:(id)handler;
+- (void)getSharingURLsForFiles:(id)files usePublicURLs:(BOOL)ls completionHandler:(id)handler;
+- (void)retrieveFilesAtPath:(id)path options:(unint64_t)options progress:(id)progress completionHandler:(id)handler;
+- (void)searchFiles:(id)files inPath:(id)path completionHandler:(id)handler;
 @end
 
 @implementation WFDropboxStorageService
@@ -15,42 +15,42 @@
 - (INAppDescriptor)associatedAppDescriptor
 {
   v2 = [objc_alloc(MEMORY[0x277CD3A58]) initWithLocalizedName:0 bundleIdentifier:@"com.getdropbox.Dropbox" extensionBundleIdentifier:0 counterpartIdentifiers:0 teamIdentifier:@"G7HH3F8CAK" supportedIntents:0 bundleURL:0 documentTypes:0];
-  v3 = [MEMORY[0x277CD3A88] sharedResolver];
-  v4 = [v3 resolvedAppMatchingDescriptor:v2];
+  mEMORY[0x277CD3A88] = [MEMORY[0x277CD3A88] sharedResolver];
+  v4 = [mEMORY[0x277CD3A88] resolvedAppMatchingDescriptor:v2];
 
   if ([v4 isInstalled])
   {
-    v5 = v4;
+    appDescriptor = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CFC238] platformFileManagerLocation];
-    v5 = [v6 appDescriptor];
+    platformFileManagerLocation = [MEMORY[0x277CFC238] platformFileManagerLocation];
+    appDescriptor = [platformFileManagerLocation appDescriptor];
   }
 
-  return v5;
+  return appDescriptor;
 }
 
-- (void)searchFiles:(id)a3 inPath:(id)a4 completionHandler:(id)a5
+- (void)searchFiles:(id)files inPath:(id)path completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  pathCopy = path;
+  filesCopy = files;
   v10 = +[(WFAccount *)WFDropboxAccount];
-  v11 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
   v12 = objc_alloc_init(WFDropboxSessionManager);
-  v13 = [v11 credential];
-  [(WFDropboxSessionManager *)v12 setCredential:v13];
+  credential = [firstObject credential];
+  [(WFDropboxSessionManager *)v12 setCredential:credential];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __64__WFDropboxStorageService_searchFiles_inPath_completionHandler___block_invoke;
   v15[3] = &unk_278C20490;
-  v16 = v7;
-  v14 = v7;
-  [(WFDropboxSessionManager *)v12 searchFiles:v9 inPath:v8 completionHandler:v15];
+  v16 = handlerCopy;
+  v14 = handlerCopy;
+  [(WFDropboxSessionManager *)v12 searchFiles:filesCopy inPath:pathCopy completionHandler:v15];
 }
 
 void __64__WFDropboxStorageService_searchFiles_inPath_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -70,17 +70,17 @@ void __64__WFDropboxStorageService_searchFiles_inPath_completionHandler___block_
   }
 }
 
-- (void)appendText:(id)a3 toPath:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6
+- (void)appendText:(id)text toPath:(id)path options:(unint64_t)options completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  textCopy = text;
+  pathCopy = path;
+  handlerCopy = handler;
   v13 = +[(WFAccount *)WFDropboxAccount];
-  v14 = [v13 firstObject];
+  firstObject = [v13 firstObject];
 
   v15 = objc_alloc_init(WFDropboxSessionManager);
-  v16 = [v14 credential];
-  [(WFDropboxSessionManager *)v15 setCredential:v16];
+  credential = [firstObject credential];
+  [(WFDropboxSessionManager *)v15 setCredential:credential];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -88,25 +88,25 @@ void __64__WFDropboxStorageService_searchFiles_inPath_completionHandler___block_
   aBlock[3] = &unk_278C1B4C0;
   v17 = v15;
   v34 = v17;
-  v18 = v12;
+  v18 = handlerCopy;
   v35 = v18;
   v19 = _Block_copy(aBlock);
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __71__WFDropboxStorageService_appendText_toPath_options_completionHandler___block_invoke_3;
   v25[3] = &unk_278C1B510;
-  v26 = v11;
-  v27 = self;
+  v26 = pathCopy;
+  selfCopy = self;
   v30 = v18;
   v31 = v19;
-  v28 = v10;
+  v28 = textCopy;
   v29 = v17;
-  v32 = a5;
+  optionsCopy = options;
   v20 = v17;
   v21 = v19;
-  v22 = v10;
+  v22 = textCopy;
   v23 = v18;
-  v24 = v11;
+  v24 = pathCopy;
   [(WFDropboxSessionManager *)v20 getItemAtPath:v24 completionHandler:v25];
 }
 
@@ -233,28 +233,28 @@ void __71__WFDropboxStorageService_appendText_toPath_options_completionHandler__
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createFolderAtPath:(id)a3 completionHandler:(id)a4
+- (void)createFolderAtPath:(id)path completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  handlerCopy = handler;
   v8 = +[(WFAccount *)WFDropboxAccount];
-  v9 = [v8 firstObject];
+  firstObject = [v8 firstObject];
 
   v10 = objc_alloc_init(WFDropboxSessionManager);
-  v11 = [v9 credential];
-  [(WFDropboxSessionManager *)v10 setCredential:v11];
+  credential = [firstObject credential];
+  [(WFDropboxSessionManager *)v10 setCredential:credential];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __64__WFDropboxStorageService_createFolderAtPath_completionHandler___block_invoke;
   v15[3] = &unk_278C1B498;
-  v16 = v6;
+  v16 = pathCopy;
   v17 = v10;
-  v18 = self;
-  v19 = v7;
+  selfCopy = self;
+  v19 = handlerCopy;
   v12 = v10;
-  v13 = v7;
-  v14 = v6;
+  v13 = handlerCopy;
+  v14 = pathCopy;
   [(WFDropboxSessionManager *)v12 createFolderAtPath:v14 completionHandler:v15];
 }
 
@@ -363,17 +363,17 @@ void __64__WFDropboxStorageService_createFolderAtPath_completionHandler___block_
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteFiles:(id)a3 deleteImmediately:(BOOL)a4 completionHandler:(id)a5
+- (void)deleteFiles:(id)files deleteImmediately:(BOOL)immediately completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __75__WFDropboxStorageService_deleteFiles_deleteImmediately_completionHandler___block_invoke;
   v9[3] = &unk_278C1F398;
-  v10 = v6;
-  v7 = v6;
-  v8 = a3;
-  [v8 getObjectRepresentations:v9 forClass:objc_opt_class()];
+  v10 = handlerCopy;
+  v7 = handlerCopy;
+  filesCopy = files;
+  [filesCopy getObjectRepresentations:v9 forClass:objc_opt_class()];
 }
 
 void __75__WFDropboxStorageService_deleteFiles_deleteImmediately_completionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -422,17 +422,17 @@ void __75__WFDropboxStorageService_deleteFiles_deleteImmediately_completionHandl
   [v7 deleteItem:a2 completionHandler:v9];
 }
 
-- (void)getSharingURLsForFiles:(id)a3 usePublicURLs:(BOOL)a4 completionHandler:(id)a5
+- (void)getSharingURLsForFiles:(id)files usePublicURLs:(BOOL)ls completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __82__WFDropboxStorageService_getSharingURLsForFiles_usePublicURLs_completionHandler___block_invoke;
   v9[3] = &unk_278C1F398;
-  v10 = v6;
-  v7 = v6;
-  v8 = a3;
-  [v8 getObjectRepresentations:v9 forClass:objc_opt_class()];
+  v10 = handlerCopy;
+  v7 = handlerCopy;
+  filesCopy = files;
+  [filesCopy getObjectRepresentations:v9 forClass:objc_opt_class()];
 }
 
 void __82__WFDropboxStorageService_getSharingURLsForFiles_usePublicURLs_completionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -477,16 +477,16 @@ void __82__WFDropboxStorageService_getSharingURLsForFiles_usePublicURLs_completi
   [v7 getSharedLinkForFile:a2 completionHandler:v9];
 }
 
-- (id)saveFiles:(id)a3 withManagedLevel:(unint64_t)a4 toPath:(id)a5 options:(unint64_t)a6 progress:(id)a7 completionHandler:(id)a8
+- (id)saveFiles:(id)files withManagedLevel:(unint64_t)level toPath:(id)path options:(unint64_t)options progress:(id)progress completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a7;
-  v16 = a8;
-  if (!v13)
+  filesCopy = files;
+  pathCopy = path;
+  progressCopy = progress;
+  handlerCopy = handler;
+  if (!filesCopy)
   {
-    v35 = [MEMORY[0x277CCA890] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"WFDropboxStorageService.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"fileRepresentations"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDropboxStorageService.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"fileRepresentations"}];
   }
 
   v53[0] = 0;
@@ -505,16 +505,16 @@ void __82__WFDropboxStorageService_getSharingURLsForFiles_usePublicURLs_completi
   v51 = v19;
   v52 = v53;
   v20 = [(WFStorageServiceCancellableOperation *)v18 initWithCancelBlock:v50];
-  v38 = a6;
-  v37 = [v13 if_map:&__block_literal_global_206];
+  optionsCopy = options;
+  v37 = [filesCopy if_map:&__block_literal_global_206];
   v21 = [MEMORY[0x277CFC2E0] collectionWithItems:v37];
   v22 = +[(WFAccount *)WFDropboxAccount];
-  v23 = [v22 firstObject];
-  v36 = v13;
+  firstObject = [v22 firstObject];
+  v36 = filesCopy;
 
   v24 = objc_alloc_init(WFDropboxSessionManager);
-  v25 = [v23 credential];
-  [(WFDropboxSessionManager *)v24 setCredential:v25];
+  credential = [firstObject credential];
+  [(WFDropboxSessionManager *)v24 setCredential:credential];
 
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
@@ -522,13 +522,13 @@ void __82__WFDropboxStorageService_getSharingURLsForFiles_usePublicURLs_completi
   v40[3] = &unk_278C1B3D0;
   v26 = v20;
   v41 = v26;
-  v27 = v16;
+  v27 = handlerCopy;
   v47 = v27;
-  v28 = v14;
-  v49 = v38;
+  v28 = pathCopy;
+  v49 = optionsCopy;
   v42 = v28;
-  v43 = self;
-  v29 = v15;
+  selfCopy = self;
+  v29 = progressCopy;
   v44 = v29;
   v30 = v19;
   v45 = v30;
@@ -863,16 +863,16 @@ void __96__WFDropboxStorageService_saveFiles_withManagedLevel_toPath_options_pro
   }
 }
 
-- (void)finishRetrievalWithContentsOfFolderAtPath:(id)a3 sessionManager:(id)a4 retrievalHandler:(id)a5
+- (void)finishRetrievalWithContentsOfFolderAtPath:(id)path sessionManager:(id)manager retrievalHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __101__WFDropboxStorageService_finishRetrievalWithContentsOfFolderAtPath_sessionManager_retrievalHandler___block_invoke;
   v9[3] = &unk_278C20490;
-  v10 = v7;
-  v8 = v7;
-  [a4 getContentsOfFolderAtPath:a3 completionHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [manager getContentsOfFolderAtPath:path completionHandler:v9];
 }
 
 void __101__WFDropboxStorageService_finishRetrievalWithContentsOfFolderAtPath_sessionManager_retrievalHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -892,21 +892,21 @@ void __101__WFDropboxStorageService_finishRetrievalWithContentsOfFolderAtPath_se
   }
 }
 
-- (void)retrieveFilesAtPath:(id)a3 options:(unint64_t)a4 progress:(id)a5 completionHandler:(id)a6
+- (void)retrieveFilesAtPath:(id)path options:(unint64_t)options progress:(id)progress completionHandler:(id)handler
 {
-  v7 = a4;
-  v9 = a3;
-  v10 = a6;
+  optionsCopy = options;
+  pathCopy = path;
+  handlerCopy = handler;
   v11 = +[(WFAccount *)WFDropboxAccount];
-  v12 = [v11 firstObject];
+  firstObject = [v11 firstObject];
 
   v13 = objc_alloc_init(WFDropboxSessionManager);
-  v14 = [v12 credential];
-  [(WFDropboxSessionManager *)v13 setCredential:v14];
+  credential = [firstObject credential];
+  [(WFDropboxSessionManager *)v13 setCredential:credential];
 
-  if ([v9 isEqualToString:@"/"])
+  if ([pathCopy isEqualToString:@"/"])
   {
-    [(WFDropboxStorageService *)self finishRetrievalWithContentsOfFolderAtPath:&stru_2850323E8 sessionManager:v13 retrievalHandler:v10];
+    [(WFDropboxStorageService *)self finishRetrievalWithContentsOfFolderAtPath:&stru_2850323E8 sessionManager:v13 retrievalHandler:handlerCopy];
   }
 
   else
@@ -915,10 +915,10 @@ void __101__WFDropboxStorageService_finishRetrievalWithContentsOfFolderAtPath_se
     v15[1] = 3221225472;
     v15[2] = __82__WFDropboxStorageService_retrieveFilesAtPath_options_progress_completionHandler___block_invoke;
     v15[3] = &unk_278C1B2F0;
-    v20 = v7 & 1;
-    v19 = v10;
-    v16 = v9;
-    v17 = self;
+    v20 = optionsCopy & 1;
+    v19 = handlerCopy;
+    v16 = pathCopy;
+    selfCopy = self;
     v18 = v13;
     [(WFDropboxSessionManager *)v18 getItemAtPath:v16 completionHandler:v15];
   }

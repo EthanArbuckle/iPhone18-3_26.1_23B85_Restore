@@ -10,16 +10,16 @@
 
 - (__CFString)uri
 {
-  v2 = [a1 query];
-  v3 = CFURLCopyPath(a1);
+  query = [self query];
+  v3 = CFURLCopyPath(self);
   v4 = v3;
   if (v3)
   {
-    if (v2)
+    if (query)
     {
       v5 = MEMORY[0x277CCACA8];
-      v6 = [(__CFString *)v3 stringByURLQuoting];
-      v7 = [v5 stringWithFormat:@"%@?%@", v6, v2];
+      stringByURLQuoting = [(__CFString *)v3 stringByURLQuoting];
+      v7 = [v5 stringWithFormat:@"%@?%@", stringByURLQuoting, query];
     }
 
     else
@@ -38,46 +38,46 @@
 
 - (id)URLWithoutUsername
 {
-  v2 = [a1 user];
+  user = [self user];
 
-  if (v2)
+  if (user)
   {
     v3 = MEMORY[0x277CBEBC0];
-    v4 = [a1 scheme];
-    v5 = [a1 host];
-    v6 = [a1 port];
-    v7 = [v6 intValue];
-    v8 = [a1 uri];
-    v9 = [v3 da_URLWithScheme:v4 host:v5 port:v7 uri:v8];
+    scheme = [self scheme];
+    host = [self host];
+    port = [self port];
+    intValue = [port intValue];
+    v8 = [self uri];
+    selfCopy = [v3 da_URLWithScheme:scheme host:host port:intValue uri:v8];
   }
 
   else
   {
-    v9 = a1;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)URLByRemovingLastPathComponent
 {
-  v2 = [a1 scheme];
-  v3 = [a1 user];
-  v4 = [a1 password];
-  v5 = [a1 host];
-  v6 = [a1 path];
-  if ([v6 isEqualToString:@"/"])
+  scheme = [self scheme];
+  user = [self user];
+  password = [self password];
+  host = [self host];
+  path = [self path];
+  if ([path isEqualToString:@"/"])
   {
-    v7 = &stru_285AA6518;
+    stringByDeletingLastPathComponent = &stru_285AA6518;
   }
 
   else
   {
-    v7 = [v6 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
   }
 
-  v8 = [MEMORY[0x277CBEBC0] da_URLWithScheme:v2 host:v5 port:0 uri:v7];
-  v9 = [v8 URLWithUsername:v3 withPassword:v4];
+  v8 = [MEMORY[0x277CBEBC0] da_URLWithScheme:scheme host:host port:0 uri:stringByDeletingLastPathComponent];
+  v9 = [v8 URLWithUsername:user withPassword:password];
 
   return v9;
 }
@@ -90,12 +90,12 @@
   {
     if (v7)
     {
-      v11 = [a1 scheme];
-      v12 = [v11 stringByAppendingString:@"://"];
+      scheme = [self scheme];
+      v12 = [scheme stringByAppendingString:@"://"];
 
-      v13 = [a1 URLWithoutUsername];
-      v14 = [v13 absoluteString];
-      v15 = [v14 mutableCopy];
+      uRLWithoutUsername = [self URLWithoutUsername];
+      absoluteString = [uRLWithoutUsername absoluteString];
+      v15 = [absoluteString mutableCopy];
 
       if ([v15 hasPrefix:v12])
       {
@@ -104,29 +104,29 @@
         v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@@", v16, v17];
         [v15 insertString:v18 atIndex:{objc_msgSend(v12, "length")}];
 
-        v9 = [MEMORY[0x277CBEBC0] da_URLWithDirtyString:v15];
+        selfCopy = [MEMORY[0x277CBEBC0] da_URLWithDirtyString:v15];
       }
 
       else
       {
-        v9 = a1;
+        selfCopy = self;
       }
 
       goto LABEL_5;
     }
 
-    v8 = [a1 URLWithUsername:v6];
+    uRLWithoutUsername2 = [self URLWithUsername:v6];
   }
 
   else
   {
-    v8 = [a1 URLWithoutUsername];
+    uRLWithoutUsername2 = [self URLWithoutUsername];
   }
 
-  v9 = v8;
+  selfCopy = uRLWithoutUsername2;
 LABEL_5:
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)URLWithUsername:()DAKeychainAddition
@@ -135,11 +135,11 @@ LABEL_5:
   v5 = v4;
   if (v4 && ![(__CFString *)v4 isEqualToString:&stru_285AA6518])
   {
-    v7 = [a1 scheme];
-    v8 = [v7 stringByAppendingString:@"://"];
+    scheme = [self scheme];
+    v8 = [scheme stringByAppendingString:@"://"];
 
-    v9 = [a1 absoluteString];
-    v10 = [v9 mutableCopy];
+    absoluteString = [self absoluteString];
+    v10 = [absoluteString mutableCopy];
 
     if ([v10 hasPrefix:v8])
     {
@@ -147,21 +147,21 @@ LABEL_5:
       v12 = [(__CFString *)v11 stringByAppendingString:@"@"];
       [v10 insertString:v12 atIndex:{objc_msgSend(v8, "length")}];
 
-      v6 = [MEMORY[0x277CBEBC0] da_URLWithDirtyString:v10];
+      selfCopy = [MEMORY[0x277CBEBC0] da_URLWithDirtyString:v10];
     }
 
     else
     {
-      v6 = a1;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v6 = [a1 URLWithoutUsername];
+    selfCopy = [self URLWithoutUsername];
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface IconListRootFolderView
-- (BOOL)canBeginPagingAtLocation:(CGPoint)a3 inView:(id)a4;
+- (BOOL)canBeginPagingAtLocation:(CGPoint)location inView:(id)view;
 - (CGPoint)pageContentScale;
 - (CGPoint)pageContentTranslation;
 - (SBFolder)folder;
-- (id)indicatorDescriptionForPageIndex:(int64_t)a3;
-- (void)_didAddIconListView:(id)a3;
+- (id)indicatorDescriptionForPageIndex:(int64_t)index;
+- (void)_didAddIconListView:(id)view;
 - (void)_updatePageControlNumberOfPages;
-- (void)addPagingDidChangeHandler:(id)a3;
-- (void)handlePageControlInteraction:(id)a3;
+- (void)addPagingDidChangeHandler:(id)handler;
+- (void)handlePageControlInteraction:(id)interaction;
 - (void)layoutSubviews;
-- (void)pageControl:(id)a3 didMoveCurrentPageToPage:(int64_t)a4 withScrubbing:(BOOL)a5;
-- (void)setFolder:(id)a3;
-- (void)setPageContentAlpha:(double)a3;
-- (void)setPageContentScale:(CGPoint)a3;
-- (void)setPageContentTranslation:(CGPoint)a3;
-- (void)willBeginPagingInteractively:(BOOL)a3;
+- (void)pageControl:(id)control didMoveCurrentPageToPage:(int64_t)page withScrubbing:(BOOL)scrubbing;
+- (void)setFolder:(id)folder;
+- (void)setPageContentAlpha:(double)alpha;
+- (void)setPageContentScale:(CGPoint)scale;
+- (void)setPageContentTranslation:(CGPoint)translation;
+- (void)willBeginPagingInteractively:(BOOL)interactively;
 @end
 
 @implementation IconListRootFolderView
@@ -28,11 +28,11 @@
   return result;
 }
 
-- (void)setPageContentScale:(CGPoint)a3
+- (void)setPageContentScale:(CGPoint)scale
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = scale.y;
+  x = scale.x;
+  selfCopy = self;
   sub_21EA8A8EC(x, y);
 }
 
@@ -40,52 +40,52 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for IconListRootFolderView();
-  v2 = [(SBFolderView *)&v4 folder];
+  folder = [(SBFolderView *)&v4 folder];
 
-  return v2;
+  return folder;
 }
 
-- (void)setFolder:(id)a3
+- (void)setFolder:(id)folder
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for IconListRootFolderView();
-  v4 = a3;
+  folderCopy = folder;
   v5 = v6.receiver;
-  [(SBFolderView *)&v6 setFolder:v4];
+  [(SBFolderView *)&v6 setFolder:folderCopy];
   sub_21EA4C948([v5 folder]);
 }
 
-- (void)_didAddIconListView:(id)a3
+- (void)_didAddIconListView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_21EA8AADC(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_21EA8AADC(viewCopy);
 }
 
 - (void)_updatePageControlNumberOfPages
 {
-  v2 = self;
-  v3 = [(SBFolderView *)v2 pageControl];
-  v4 = [(SBIconListPageControl *)v3 numberOfPages];
+  selfCopy = self;
+  pageControl = [(SBFolderView *)selfCopy pageControl];
+  numberOfPages = [(SBIconListPageControl *)pageControl numberOfPages];
 
-  v7.receiver = v2;
+  v7.receiver = selfCopy;
   v7.super_class = type metadata accessor for IconListRootFolderView();
   [(SBFolderView *)&v7 _updatePageControlNumberOfPages];
-  v5 = [(SBFolderView *)v2 pageControl];
-  v6 = [(SBIconListPageControl *)v5 numberOfPages];
+  pageControl2 = [(SBFolderView *)selfCopy pageControl];
+  numberOfPages2 = [(SBIconListPageControl *)pageControl2 numberOfPages];
 
-  if (v4 != v6)
+  if (numberOfPages != numberOfPages2)
   {
     sub_21EA8B85C();
-    [(SBFolderView *)v2 setNeedsLayout];
+    [(SBFolderView *)selfCopy setNeedsLayout];
   }
 }
 
-- (void)pageControl:(id)a3 didMoveCurrentPageToPage:(int64_t)a4 withScrubbing:(BOOL)a5
+- (void)pageControl:(id)control didMoveCurrentPageToPage:(int64_t)page withScrubbing:(BOOL)scrubbing
 {
   v6 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC15ControlCenterUI22IconListRootFolderView_isScrubbing);
-  v7 = self;
-  sub_21EA8ADEC(a4, 1, v6);
+  selfCopy = self;
+  sub_21EA8ADEC(page, 1, v6);
 }
 
 - (void)layoutSubviews
@@ -97,25 +97,25 @@
   sub_21EA8B44C();
 }
 
-- (id)indicatorDescriptionForPageIndex:(int64_t)a3
+- (id)indicatorDescriptionForPageIndex:(int64_t)index
 {
-  sub_21EA8BAE0(a3);
+  sub_21EA8BAE0(index);
   v3 = sub_21EAA8DC0();
 
   return v3;
 }
 
-- (void)handlePageControlInteraction:(id)a3
+- (void)handlePageControlInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = self;
-  sub_21EA8BFF8(v4);
+  interactionCopy = interaction;
+  selfCopy = self;
+  sub_21EA8BFF8(interactionCopy);
 }
 
-- (void)setPageContentAlpha:(double)a3
+- (void)setPageContentAlpha:(double)alpha
 {
-  v4 = self;
-  sub_21EA8D0BC(a3);
+  selfCopy = self;
+  sub_21EA8D0BC(alpha);
 }
 
 - (CGPoint)pageContentTranslation
@@ -127,17 +127,17 @@
   return result;
 }
 
-- (void)setPageContentTranslation:(CGPoint)a3
+- (void)setPageContentTranslation:(CGPoint)translation
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = translation.y;
+  x = translation.x;
+  selfCopy = self;
   sub_21EA8D278(x, y, &unk_28301A150, sub_21EA8D948, &block_descriptor_100);
 }
 
-- (void)addPagingDidChangeHandler:(id)a3
+- (void)addPagingDidChangeHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -146,7 +146,7 @@
   v7 = OBJC_IVAR____TtC15ControlCenterUI22IconListRootFolderView_pagingDidChangeHandlers;
   swift_beginAccess();
   v8 = *(&self->super.super.super.super.super.isa + v7);
-  v9 = self;
+  selfCopy = self;
 
   isUniquelyReferenced_nonNull_native = swift_isUniquelyReferenced_nonNull_native();
   *(&self->super.super.super.super.super.isa + v7) = v8;
@@ -171,20 +171,20 @@
   swift_endAccess();
 }
 
-- (BOOL)canBeginPagingAtLocation:(CGPoint)a3 inView:(id)a4
+- (BOOL)canBeginPagingAtLocation:(CGPoint)location inView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
-  LOBYTE(self) = sub_21EA8D57C(v7, x, y);
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
+  selfCopy = self;
+  LOBYTE(self) = sub_21EA8D57C(viewCopy, x, y);
 
   return self & 1;
 }
 
-- (void)willBeginPagingInteractively:(BOOL)a3
+- (void)willBeginPagingInteractively:(BOOL)interactively
 {
-  v3 = self;
+  selfCopy = self;
   sub_21EA8D774();
 }
 

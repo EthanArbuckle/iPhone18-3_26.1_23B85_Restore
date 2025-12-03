@@ -1,5 +1,5 @@
 @interface PHHandsetDialerDeleteButton
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateImageViewAlpha;
 @end
 
@@ -28,15 +28,15 @@
   }
 
   v5 = v3;
-  v6 = [(PHHandsetDialerDeleteButton *)self imageView];
-  [v6 setAlpha:v5];
+  imageView = [(PHHandsetDialerDeleteButton *)self imageView];
+  [imageView setAlpha:v5];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PHHandsetDialerDeleteButton;
-  [(PHHandsetDialerDeleteButton *)&v4 traitCollectionDidChange:a3];
+  [(PHHandsetDialerDeleteButton *)&v4 traitCollectionDidChange:change];
   [(PHHandsetDialerDeleteButton *)self updateImageViewAlpha];
 }
 

@@ -1,17 +1,17 @@
 @interface _NUOrientationPipeline
 - (_NUOrientationPipeline)init;
-- (_NUOrientationPipeline)initWithIdentifier:(id)a3;
-- (id)_evaluateOutputPort:(id)a3 context:(id)a4 error:(id *)a5;
+- (_NUOrientationPipeline)initWithIdentifier:(id)identifier;
+- (id)_evaluateOutputPort:(id)port context:(id)context error:(id *)error;
 @end
 
 @implementation _NUOrientationPipeline
 
-- (id)_evaluateOutputPort:(id)a3 context:(id)a4 error:(id *)a5
+- (id)_evaluateOutputPort:(id)port context:(id)context error:(id *)error
 {
   v81 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  portCopy = port;
+  contextCopy = context;
+  if (!portCopy)
   {
     v32 = NUAssertLogger_5769();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -32,8 +32,8 @@
         v53 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v54 = MEMORY[0x1E696AF00];
         v55 = v53;
-        v56 = [v54 callStackSymbols];
-        v57 = [v56 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v54 callStackSymbols];
+        v57 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v53;
         *&buf[12] = 2114;
@@ -44,8 +44,8 @@
 
     else if (v36)
     {
-      v37 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v38 = [v37 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v38 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v38;
       _os_log_error_impl(&dword_1C0184000, v35, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -54,8 +54,8 @@
     _NUAssertFailHandler("[_NUOrientationPipeline _evaluateOutputPort:context:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 3285, @"Invalid parameter not satisfying: %s", v58, v59, v60, v61, "outputPort != nil");
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = contextCopy;
+  if (!contextCopy)
   {
     v39 = NUAssertLogger_5769();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -76,8 +76,8 @@
         v62 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v63 = MEMORY[0x1E696AF00];
         v64 = v62;
-        v65 = [v63 callStackSymbols];
-        v66 = [v65 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v63 callStackSymbols];
+        v66 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v62;
         *&buf[12] = 2114;
@@ -88,8 +88,8 @@
 
     else if (v43)
     {
-      v44 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v45 = [v44 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v45 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v45;
       _os_log_error_impl(&dword_1C0184000, v42, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -98,7 +98,7 @@
     _NUAssertFailHandler("[_NUOrientationPipeline _evaluateOutputPort:context:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 3286, @"Invalid parameter not satisfying: %s", v67, v68, v69, v70, "context != nil");
   }
 
-  if (!a5)
+  if (!error)
   {
     v46 = NUAssertLogger_5769();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
@@ -119,8 +119,8 @@
         v71 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v72 = MEMORY[0x1E696AF00];
         v73 = v71;
-        v74 = [v72 callStackSymbols];
-        v75 = [v74 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v72 callStackSymbols];
+        v75 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v71;
         *&buf[12] = 2114;
@@ -131,8 +131,8 @@
 
     else if (v50)
     {
-      v51 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v52 = [v51 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v52 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v52;
       _os_log_error_impl(&dword_1C0184000, v49, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -141,7 +141,7 @@
     _NUAssertFailHandler("[_NUOrientationPipeline _evaluateOutputPort:context:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 3287, @"Invalid parameter not satisfying: %s", v76, v77, v78, v79, "error != NULL");
   }
 
-  v11 = [v9 dataForChannel:@"media"];
+  v11 = [contextCopy dataForChannel:@"media"];
   if ([v11 isNull])
   {
     v12 = [NUError missingError:@"Missing media input" object:self];
@@ -151,42 +151,42 @@
   {
     if ([v11 type] == 1)
     {
-      v13 = [v11 media];
+      media = [v11 media];
       v14 = [v10 dataForChannel:@"orientation"];
       if ([v14 isNull])
       {
-        v15 = [v13 geometry];
-        v16 = [v15 orientation];
+        geometry = [media geometry];
+        orientation = [geometry orientation];
       }
 
       else
       {
-        v15 = [v14 value];
-        v16 = [v15 integerValue];
+        geometry = [v14 value];
+        orientation = [geometry integerValue];
       }
 
-      v18 = v16;
+      v18 = orientation;
 
       if ((v18 - 1) >= 8)
       {
         [NUError invalidError:@"Invalid orientation value" object:v14];
-        *a5 = v17 = 0;
+        *error = v17 = 0;
       }
 
       else
       {
         v19 = [NUOrientationNode alloc];
-        v20 = [v13 renderNode];
-        v21 = [(NUOrientationNode *)v19 initWithOrientation:v18 input:v20];
+        renderNode = [media renderNode];
+        v21 = [(NUOrientationNode *)v19 initWithOrientation:v18 input:renderNode];
 
-        v22 = [v13 geometry];
-        v23 = [v22 size];
+        geometry2 = [media geometry];
+        v23 = [geometry2 size];
         v25 = NUOrientationTransformImageSize(v18, v23, v24);
         v27 = v26;
         v28 = [_NUMediaGeometry alloc];
-        if (v22)
+        if (geometry2)
         {
-          [v22 duration];
+          [geometry2 duration];
         }
 
         else
@@ -195,7 +195,7 @@
         }
 
         v29 = [(_NUMediaGeometry *)v28 initWithSize:v25 orientation:v27 duration:1, buf];
-        v30 = [v13 filteredMediaWithRenderNode:v21 geometry:v29];
+        v30 = [media filteredMediaWithRenderNode:v21 geometry:v29];
         v17 = [[NUChannelMediaData alloc] initWithMedia:v30];
       }
 
@@ -206,7 +206,7 @@
   }
 
   v17 = 0;
-  *a5 = v12;
+  *error = v12;
 LABEL_19:
 
   return v17;
@@ -232,10 +232,10 @@ LABEL_19:
   return v4;
 }
 
-- (_NUOrientationPipeline)initWithIdentifier:(id)a3
+- (_NUOrientationPipeline)initWithIdentifier:(id)identifier
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_1383);
@@ -279,8 +279,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -296,8 +296,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;

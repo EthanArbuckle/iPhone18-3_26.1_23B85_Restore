@@ -1,14 +1,14 @@
 @interface GKPeerPickerViewController
-- (GKPeerPickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (GKPeerPickerViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation GKPeerPickerViewController
 
-- (GKPeerPickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (GKPeerPickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = GKPeerPickerViewController;
-  return [(GKPeerPickerViewController *)&v5 initWithNibName:a3 bundle:a4];
+  return [(GKPeerPickerViewController *)&v5 initWithNibName:name bundle:bundle];
 }
 
 @end

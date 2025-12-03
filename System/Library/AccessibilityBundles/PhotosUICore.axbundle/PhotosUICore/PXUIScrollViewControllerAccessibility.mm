@@ -1,44 +1,44 @@
 @interface PXUIScrollViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)scrollViewActiveRect;
-- (void)_axAdjustScrollViewInsetsWithNavController:(id)a3;
+- (void)_axAdjustScrollViewInsetsWithNavController:(id)controller;
 @end
 
 @implementation PXUIScrollViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXUIScrollViewController" hasInstanceVariable:@"_scrollView" withType:"_PXUIScrollView"];
-  [v3 validateClass:@"PXUIScrollViewController" hasInstanceMethod:@"scrollViewActiveRect" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXUIScrollViewController" hasInstanceVariable:@"_scrollView" withType:"_PXUIScrollView"];
+  [validationsCopy validateClass:@"PXUIScrollViewController" hasInstanceMethod:@"scrollViewActiveRect" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
 }
 
-- (void)_axAdjustScrollViewInsetsWithNavController:(id)a3
+- (void)_axAdjustScrollViewInsetsWithNavController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PXUIScrollViewControllerAccessibility *)self accessibilityIdentification];
-  v6 = [v5 isEqualToString:@"AXPhotosDetailsUIViewController"];
+  controllerCopy = controller;
+  accessibilityIdentification = [(PXUIScrollViewControllerAccessibility *)self accessibilityIdentification];
+  v6 = [accessibilityIdentification isEqualToString:@"AXPhotosDetailsUIViewController"];
 
   if (v6)
   {
     v7 = [(PXUIScrollViewControllerAccessibility *)self safeUIViewForKey:@"_scrollView"];
-    v8 = [v7 window];
-    v9 = [v8 windowScene];
-    v10 = [v9 statusBarManager];
-    [v10 statusBarFrame];
+    window = [v7 window];
+    windowScene = [window windowScene];
+    statusBarManager = [windowScene statusBarManager];
+    [statusBarManager statusBarFrame];
     v12 = v11;
 
-    if (v4)
+    if (controllerCopy)
     {
-      v13 = [v4 navigationBar];
-      [v13 bounds];
+      navigationBar = [controllerCopy navigationBar];
+      [navigationBar bounds];
       v12 = v12 + CGRectGetHeight(v23);
     }
 
     MEMORY[0x29C2E6930](@"PUNavigationController");
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v4 safeValueForKey:@"_extendedToolbar"];
+      v14 = [controllerCopy safeValueForKey:@"_extendedToolbar"];
       v15 = [v14 _accessibilityFindSubviewDescendantsPassingTest:&__block_literal_global_5];
     }
 
@@ -48,7 +48,7 @@
     }
 
     objc_opt_class();
-    v16 = [v15 firstObject];
+    firstObject = [v15 firstObject];
     v17 = __UIAccessibilityCastAsClass();
 
     if (v17)
@@ -62,14 +62,14 @@
       v19 = 0.0;
     }
 
-    v20 = [MEMORY[0x29EDC7DD0] _applicationKeyWindow];
-    v21 = [v20 rootViewController];
+    _applicationKeyWindow = [MEMORY[0x29EDC7DD0] _applicationKeyWindow];
+    rootViewController = [_applicationKeyWindow rootViewController];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v22 = [v21 tabBar];
-      [v22 bounds];
+      tabBar = [rootViewController tabBar];
+      [tabBar bounds];
       v19 = v19 + CGRectGetHeight(v24);
     }
 
@@ -95,8 +95,8 @@ uint64_t __84__PXUIScrollViewControllerAccessibility__axAdjustScrollViewInsetsWi
   y = v5;
   width = v7;
   height = v9;
-  v11 = [(PXUIScrollViewControllerAccessibility *)self accessibilityIdentification];
-  v12 = [v11 isEqualToString:@"AXExplorerViewControllerScrollViewController"];
+  accessibilityIdentification = [(PXUIScrollViewControllerAccessibility *)self accessibilityIdentification];
+  v12 = [accessibilityIdentification isEqualToString:@"AXExplorerViewControllerScrollViewController"];
 
   if (v12)
   {
@@ -115,8 +115,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v15 = [(PXUIScrollViewControllerAccessibility *)self accessibilityIdentification];
-  v16 = [v15 isEqualToString:@"AXPhotosDetailsUIViewController"];
+  accessibilityIdentification2 = [(PXUIScrollViewControllerAccessibility *)self accessibilityIdentification];
+  v16 = [accessibilityIdentification2 isEqualToString:@"AXPhotosDetailsUIViewController"];
 
   if (v16)
   {

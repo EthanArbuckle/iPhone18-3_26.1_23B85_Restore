@@ -4,31 +4,31 @@
 - (NSArray)panes;
 - (NSDictionary)pickerOptions;
 - (NSString)name;
-- (_TtC9WeatherUI14PreferencePane)initWithName:(id)a3 panes:(id)a4;
-- (_TtC9WeatherUI14PreferencePane)initWithName:(id)a3 userDefaults:(id)a4 sliders:(id)a5 toggles:(id)a6 pickerOptions:(id)a7 pickerSelections:(id)a8;
+- (_TtC9WeatherUI14PreferencePane)initWithName:(id)name panes:(id)panes;
+- (_TtC9WeatherUI14PreferencePane)initWithName:(id)name userDefaults:(id)defaults sliders:(id)sliders toggles:(id)toggles pickerOptions:(id)options pickerSelections:(id)selections;
 - (_TtP9WeatherUI22PreferencePaneDelegate_)delegate;
-- (id)fractionValueForOption:(id)a3;
-- (id)getValueForKey:(id)a3;
-- (void)preferencePaneDidChangeWithPreference:(id)a3;
+- (id)fractionValueForOption:(id)option;
+- (id)getValueForKey:(id)key;
+- (void)preferencePaneDidChangeWithPreference:(id)preference;
 - (void)reset;
-- (void)set:(id)a3 forKey:(id)a4;
-- (void)setDefaultPickersSelections:(id)a3;
-- (void)setDefaultSliders:(id)a3;
-- (void)setDefaultToggles:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setName:(id)a3;
-- (void)setPanes:(id)a3;
-- (void)setPickerOptions:(id)a3;
-- (void)setPickersSelections:(id)a3;
-- (void)setSliders:(id)a3;
-- (void)setToggles:(id)a3;
+- (void)set:(id)set forKey:(id)key;
+- (void)setDefaultPickersSelections:(id)selections;
+- (void)setDefaultSliders:(id)sliders;
+- (void)setDefaultToggles:(id)toggles;
+- (void)setDelegate:(id)delegate;
+- (void)setName:(id)name;
+- (void)setPanes:(id)panes;
+- (void)setPickerOptions:(id)options;
+- (void)setPickersSelections:(id)selections;
+- (void)setSliders:(id)sliders;
+- (void)setToggles:(id)toggles;
 @end
 
 @implementation PreferencePane
 
 - (NSString)name
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BCDC0E5C();
 
   v3 = sub_1BCE1D240();
@@ -36,16 +36,16 @@
   return v3;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   sub_1BCE1D280();
-  v4 = self;
+  selfCopy = self;
   sub_1BCDC0F40();
 }
 
 - (NSArray)panes
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BCDC1410();
 
   if (v3)
@@ -62,57 +62,57 @@
   return v4;
 }
 
-- (void)setPanes:(id)a3
+- (void)setPanes:(id)panes
 {
-  if (a3)
+  if (panes)
   {
     type metadata accessor for PreferencePane();
     sub_1BCE1D570();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_1BCDC14F8();
 }
 
-- (void)setSliders:(id)a3
+- (void)setSliders:(id)sliders
 {
   v4 = sub_1BCE1D570();
-  v5 = self;
+  selfCopy = self;
   sub_1BCDC19A8(v4);
 }
 
-- (void)setToggles:(id)a3
+- (void)setToggles:(id)toggles
 {
   v4 = sub_1BCE1D570();
-  v5 = self;
+  selfCopy = self;
   sub_1BCDC1B10(v4);
 }
 
-- (void)setPickersSelections:(id)a3
+- (void)setPickersSelections:(id)selections
 {
   v4 = sub_1BCE1D570();
-  v5 = self;
+  selfCopy = self;
   sub_1BCDC1C20(v4);
 }
 
-- (void)setDefaultSliders:(id)a3
+- (void)setDefaultSliders:(id)sliders
 {
   v4 = sub_1BCE1D110();
-  v5 = self;
+  selfCopy = self;
   sub_1BCDC1D4C(v4);
 }
 
-- (void)setDefaultToggles:(id)a3
+- (void)setDefaultToggles:(id)toggles
 {
   v4 = sub_1BCE1D110();
-  v5 = self;
+  selfCopy = self;
   sub_1BCDC1EE0(v4);
 }
 
-- (void)setDefaultPickersSelections:(id)a3
+- (void)setDefaultPickersSelections:(id)selections
 {
   v4 = sub_1BCE1D110();
-  v5 = self;
+  selfCopy = self;
   sub_1BCDC2038(v4);
 }
 
@@ -132,17 +132,17 @@
   return v2;
 }
 
-- (void)setPickerOptions:(id)a3
+- (void)setPickerOptions:(id)options
 {
-  v3 = a3;
-  if (a3)
+  optionsCopy = options;
+  if (options)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBD07878);
-    v3 = sub_1BCE1D110();
+    optionsCopy = sub_1BCE1D110();
   }
 
-  v5 = self;
-  sub_1BCDC224C(v3);
+  selfCopy = self;
+  sub_1BCDC224C(optionsCopy);
 }
 
 - (_TtP9WeatherUI22PreferencePaneDelegate_)delegate
@@ -152,14 +152,14 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1BCDC23D8();
 }
 
-- (_TtC9WeatherUI14PreferencePane)initWithName:(id)a3 panes:(id)a4
+- (_TtC9WeatherUI14PreferencePane)initWithName:(id)name panes:(id)panes
 {
   sub_1BCE1D280();
   type metadata accessor for PreferencePane();
@@ -167,7 +167,7 @@
   return PreferencePane.init(name:panes:)();
 }
 
-- (_TtC9WeatherUI14PreferencePane)initWithName:(id)a3 userDefaults:(id)a4 sliders:(id)a5 toggles:(id)a6 pickerOptions:(id)a7 pickerSelections:(id)a8
+- (_TtC9WeatherUI14PreferencePane)initWithName:(id)name userDefaults:(id)defaults sliders:(id)sliders toggles:(id)toggles pickerOptions:(id)options pickerSelections:(id)selections
 {
   v9 = sub_1BCE1D280();
   v11 = v10;
@@ -176,14 +176,14 @@
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBD07878);
   v14 = sub_1BCE1D110();
   v15 = sub_1BCE1D110();
-  v16 = a4;
-  return PreferencePane.init(name:userDefaults:sliders:toggles:pickerOptions:pickerSelections:)(v9, v11, a4, v12, v13, v14, v15);
+  defaultsCopy = defaults;
+  return PreferencePane.init(name:userDefaults:sliders:toggles:pickerOptions:pickerSelections:)(v9, v11, defaults, v12, v13, v14, v15);
 }
 
-- (id)getValueForKey:(id)a3
+- (id)getValueForKey:(id)key
 {
   sub_1BCE1D280();
-  v4 = self;
+  selfCopy = self;
   sub_1BCDC33E4(v13);
 
   v5 = v14;
@@ -207,12 +207,12 @@
   return v11;
 }
 
-- (void)set:(id)a3 forKey:(id)a4
+- (void)set:(id)set forKey:(id)key
 {
-  if (a3)
+  if (set)
   {
-    v6 = a4;
-    v7 = self;
+    keyCopy = key;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1BCE1DBF0();
     swift_unknownObjectRelease();
@@ -221,8 +221,8 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a4;
-    v9 = self;
+    keyCopy2 = key;
+    selfCopy2 = self;
   }
 
   sub_1BCE1D280();
@@ -232,16 +232,16 @@
   sub_1BCD808E0(v10);
 }
 
-- (void)preferencePaneDidChangeWithPreference:(id)a3
+- (void)preferencePaneDidChangeWithPreference:(id)preference
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BCDC3A10(v4);
+  preferenceCopy = preference;
+  selfCopy = self;
+  sub_1BCDC3A10(preferenceCopy);
 }
 
 - (void)reset
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BCDC3B04();
 }
 
@@ -259,11 +259,11 @@
   return v2;
 }
 
-- (id)fractionValueForOption:(id)a3
+- (id)fractionValueForOption:(id)option
 {
   v4 = sub_1BCE1D280();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   v9 = PreferencePane.fractionValue(forOption:)(v8);

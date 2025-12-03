@@ -1,38 +1,38 @@
 @interface HUAvatarTableViewCell
 - (HFUserHandle)userHandle;
-- (HUAvatarTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUAvatarTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (NSString)description;
 - (void)_setupConstraints;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAvatarSize:(double)a3;
-- (void)setContentConfiguration:(id)a3;
-- (void)setUserHandle:(id)a3;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)setAvatarSize:(double)size;
+- (void)setContentConfiguration:(id)configuration;
+- (void)setUserHandle:(id)handle;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUAvatarTableViewCell
 
-- (HUAvatarTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUAvatarTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v13.receiver = self;
   v13.super_class = HUAvatarTableViewCell;
-  v4 = [(HUAvatarTableViewCell *)&v13 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUAvatarTableViewCell *)&v13 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [HUAvatarContentView alloc];
-    v6 = [MEMORY[0x277D756E0] cellConfiguration];
-    v7 = [(HUAvatarContentView *)v5 initWithConfiguration:v6];
+    cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
+    v7 = [(HUAvatarContentView *)v5 initWithConfiguration:cellConfiguration];
     avatarContentView = v4->_avatarContentView;
     v4->_avatarContentView = v7;
 
-    v9 = [(HUAvatarTableViewCell *)v4 contentView];
-    [v9 addSubview:v4->_avatarContentView];
+    contentView = [(HUAvatarTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_avatarContentView];
 
     v4->_showAccessLevelDescription = 0;
-    v10 = [(HUAvatarTableViewCell *)v4 defaultContentConfiguration];
+    defaultContentConfiguration = [(HUAvatarTableViewCell *)v4 defaultContentConfiguration];
     contentConfiguration = v4->_contentConfiguration;
-    v4->_contentConfiguration = v10;
+    v4->_contentConfiguration = defaultContentConfiguration;
 
     [(HUAvatarTableViewCell *)v4 _setupConstraints];
   }
@@ -43,16 +43,16 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HUAvatarTableViewCell *)self userHandle];
-  v5 = [v4 userID];
-  [v3 appendString:v5 withName:@"userHandle"];
+  userHandle = [(HUAvatarTableViewCell *)self userHandle];
+  userID = [userHandle userID];
+  [v3 appendString:userID withName:@"userHandle"];
 
-  v6 = [(HUAvatarTableViewCell *)self item];
-  v7 = [v3 appendObject:v6 withName:@"item"];
+  item = [(HUAvatarTableViewCell *)self item];
+  v7 = [v3 appendObject:item withName:@"item"];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 - (void)prepareForReuse
@@ -61,9 +61,9 @@
   v5.super_class = HUAvatarTableViewCell;
   [(HUAvatarTableViewCell *)&v5 prepareForReuse];
   [(HUAvatarTableViewCell *)self setUserHandle:0];
-  v3 = [(HUAvatarTableViewCell *)self defaultContentConfiguration];
-  v4 = [(HUAvatarTableViewCell *)self avatarContentView];
-  [v4 setConfiguration:v3];
+  defaultContentConfiguration = [(HUAvatarTableViewCell *)self defaultContentConfiguration];
+  avatarContentView = [(HUAvatarTableViewCell *)self avatarContentView];
+  [avatarContentView setConfiguration:defaultContentConfiguration];
 }
 
 - (void)layoutSubviews
@@ -71,23 +71,23 @@
   v22.receiver = self;
   v22.super_class = HUAvatarTableViewCell;
   [(HUAvatarTableViewCell *)&v22 layoutSubviews];
-  v3 = [(HUAvatarTableViewCell *)self effectiveUserInterfaceLayoutDirection];
-  v4 = [(HUAvatarTableViewCell *)self avatarContentView];
-  v5 = [v4 listContentView];
-  v6 = [v5 textLayoutGuide];
-  [v6 layoutFrame];
+  effectiveUserInterfaceLayoutDirection = [(HUAvatarTableViewCell *)self effectiveUserInterfaceLayoutDirection];
+  avatarContentView = [(HUAvatarTableViewCell *)self avatarContentView];
+  listContentView = [avatarContentView listContentView];
+  textLayoutGuide = [listContentView textLayoutGuide];
+  [textLayoutGuide layoutFrame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(HUAvatarTableViewCell *)self avatarContentView];
-  v16 = [v15 listContentView];
-  [(HUAvatarTableViewCell *)self convertRect:v16 fromView:v8, v10, v12, v14];
+  avatarContentView2 = [(HUAvatarTableViewCell *)self avatarContentView];
+  listContentView2 = [avatarContentView2 listContentView];
+  [(HUAvatarTableViewCell *)self convertRect:listContentView2 fromView:v8, v10, v12, v14];
   v18 = v17;
   v20 = v19;
 
-  if (v3 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     [(HUAvatarTableViewCell *)self bounds];
     v18 = v21 - (v18 + v20);
@@ -98,28 +98,28 @@
 
 - (HFUserHandle)userHandle
 {
-  v2 = [(HUAvatarTableViewCell *)self avatarContentView];
-  v3 = [v2 userHandle];
+  avatarContentView = [(HUAvatarTableViewCell *)self avatarContentView];
+  userHandle = [avatarContentView userHandle];
 
-  return v3;
+  return userHandle;
 }
 
-- (void)setUserHandle:(id)a3
+- (void)setUserHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(HUAvatarTableViewCell *)self avatarContentView];
-  [v5 setUserHandle:v4];
+  handleCopy = handle;
+  avatarContentView = [(HUAvatarTableViewCell *)self avatarContentView];
+  [avatarContentView setUserHandle:handleCopy];
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v4 = [(HUAvatarTableViewCell *)self defaultContentConfiguration];
-  v5 = [(HUAvatarTableViewCell *)self item];
-  v9 = [HUListContentConfigurationUtilities labelConfiguration:v4 forItem:v5];
+  defaultContentConfiguration = [(HUAvatarTableViewCell *)self defaultContentConfiguration];
+  item = [(HUAvatarTableViewCell *)self item];
+  v9 = [HUListContentConfigurationUtilities labelConfiguration:defaultContentConfiguration forItem:item];
 
-  v6 = [(HUAvatarTableViewCell *)self item];
-  v7 = [v6 latestResults];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D13F80]];
+  item2 = [(HUAvatarTableViewCell *)self item];
+  latestResults = [item2 latestResults];
+  v8 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F80]];
 
   if ([(HUAvatarTableViewCell *)self showAccessLevelDescription]&& v8)
   {
@@ -129,51 +129,51 @@
   [(HUAvatarTableViewCell *)self setContentConfiguration:v9];
 }
 
-- (void)setContentConfiguration:(id)a3
+- (void)setContentConfiguration:(id)configuration
 {
-  objc_storeStrong(&self->_contentConfiguration, a3);
-  v5 = a3;
-  v6 = [(HUAvatarTableViewCell *)self avatarContentView];
-  [v6 setConfiguration:v5];
+  objc_storeStrong(&self->_contentConfiguration, configuration);
+  configurationCopy = configuration;
+  avatarContentView = [(HUAvatarTableViewCell *)self avatarContentView];
+  [avatarContentView setConfiguration:configurationCopy];
 }
 
-- (void)setAvatarSize:(double)a3
+- (void)setAvatarSize:(double)size
 {
-  self->_avatarSize = a3;
-  v4 = [(HUAvatarTableViewCell *)self avatarContentView];
-  [v4 setAvatarSize:a3];
+  self->_avatarSize = size;
+  avatarContentView = [(HUAvatarTableViewCell *)self avatarContentView];
+  [avatarContentView setAvatarSize:size];
 }
 
 - (void)_setupConstraints
 {
   v26[4] = *MEMORY[0x277D85DE8];
-  v3 = [(HUAvatarTableViewCell *)self avatarContentView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  avatarContentView = [(HUAvatarTableViewCell *)self avatarContentView];
+  [avatarContentView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v16 = MEMORY[0x277CCAAD0];
-  v25 = [(HUAvatarTableViewCell *)self avatarContentView];
-  v23 = [v25 leadingAnchor];
-  v24 = [(HUAvatarTableViewCell *)self contentView];
-  v22 = [v24 leadingAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  avatarContentView2 = [(HUAvatarTableViewCell *)self avatarContentView];
+  leadingAnchor = [avatarContentView2 leadingAnchor];
+  contentView = [(HUAvatarTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v26[0] = v21;
-  v20 = [(HUAvatarTableViewCell *)self avatarContentView];
-  v18 = [v20 trailingAnchor];
-  v19 = [(HUAvatarTableViewCell *)self contentView];
-  v17 = [v19 trailingAnchor];
-  v15 = [v18 constraintEqualToAnchor:v17];
+  avatarContentView3 = [(HUAvatarTableViewCell *)self avatarContentView];
+  trailingAnchor = [avatarContentView3 trailingAnchor];
+  contentView2 = [(HUAvatarTableViewCell *)self contentView];
+  trailingAnchor2 = [contentView2 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v26[1] = v15;
-  v14 = [(HUAvatarTableViewCell *)self avatarContentView];
-  v4 = [v14 topAnchor];
-  v5 = [(HUAvatarTableViewCell *)self contentView];
-  v6 = [v5 topAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  avatarContentView4 = [(HUAvatarTableViewCell *)self avatarContentView];
+  topAnchor = [avatarContentView4 topAnchor];
+  contentView3 = [(HUAvatarTableViewCell *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v26[2] = v7;
-  v8 = [(HUAvatarTableViewCell *)self avatarContentView];
-  v9 = [v8 bottomAnchor];
-  v10 = [(HUAvatarTableViewCell *)self contentView];
-  v11 = [v10 bottomAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  avatarContentView5 = [(HUAvatarTableViewCell *)self avatarContentView];
+  bottomAnchor = [avatarContentView5 bottomAnchor];
+  contentView4 = [(HUAvatarTableViewCell *)self contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v26[3] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:4];
   [v16 activateConstraints:v13];

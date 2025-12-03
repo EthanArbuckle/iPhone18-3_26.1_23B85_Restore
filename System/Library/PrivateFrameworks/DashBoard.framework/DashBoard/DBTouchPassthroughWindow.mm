@@ -1,18 +1,18 @@
 @interface DBTouchPassthroughWindow
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation DBTouchPassthroughWindow
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v13.receiver = self;
   v13.super_class = type metadata accessor for DBTouchPassthroughWindow();
   v7 = v13.receiver;
-  v8 = a4;
-  v9 = [(DBTouchPassthroughWindow *)&v13 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(DBTouchPassthroughWindow *)&v13 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 

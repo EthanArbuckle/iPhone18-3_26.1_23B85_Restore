@@ -1,30 +1,30 @@
 @interface ACProtobufAccountCredential
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)credentialItemsDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCredentialItems:(id)a3;
-- (void)addDirtyProperties:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setCredentialItemsDictionary:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCredentialItems:(id)items;
+- (void)addDirtyProperties:(id)properties;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setCredentialItemsDictionary:(id)dictionary;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ACProtobufAccountCredential
 
-- (void)setCredentialItemsDictionary:(id)a3
+- (void)setCredentialItemsDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   [(ACProtobufAccountCredential *)self clearCredentialItems];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __69__ACProtobufAccountCredential_Helpers__setCredentialItemsDictionary___block_invoke;
   v5[3] = &unk_1E7976BE8;
   v5[4] = self;
-  [v4 enumerateKeysAndObjectsUsingBlock:v5];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v5];
 }
 
 void __69__ACProtobufAccountCredential_Helpers__setCredentialItemsDictionary___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -44,8 +44,8 @@ void __69__ACProtobufAccountCredential_Helpers__setCredentialItemsDictionary___b
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(ACProtobufAccountCredential *)self credentialItems];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  credentialItems = [(ACProtobufAccountCredential *)self credentialItems];
+  v5 = [credentialItems countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -56,16 +56,16 @@ void __69__ACProtobufAccountCredential_Helpers__setCredentialItemsDictionary___b
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(credentialItems);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 value];
+        value = [v9 value];
         v11 = [v9 key];
-        [v3 setObject:v10 forKeyedSubscript:v11];
+        [v3 setObject:value forKeyedSubscript:v11];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [credentialItems countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -76,40 +76,40 @@ void __69__ACProtobufAccountCredential_Helpers__setCredentialItemsDictionary___b
   return v3;
 }
 
-- (void)addCredentialItems:(id)a3
+- (void)addCredentialItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   credentialItems = self->_credentialItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!credentialItems)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_credentialItems;
     self->_credentialItems = v6;
 
-    v4 = v8;
+    itemsCopy = v8;
     credentialItems = self->_credentialItems;
   }
 
-  [(NSMutableArray *)credentialItems addObject:v4];
+  [(NSMutableArray *)credentialItems addObject:itemsCopy];
 }
 
-- (void)addDirtyProperties:(id)a3
+- (void)addDirtyProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   dirtyProperties = self->_dirtyProperties;
-  v8 = v4;
+  v8 = propertiesCopy;
   if (!dirtyProperties)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_dirtyProperties;
     self->_dirtyProperties = v6;
 
-    v4 = v8;
+    propertiesCopy = v8;
     dirtyProperties = self->_dirtyProperties;
   }
 
-  [(NSMutableArray *)dirtyProperties addObject:v4];
+  [(NSMutableArray *)dirtyProperties addObject:propertiesCopy];
 }
 
 - (id)description
@@ -118,8 +118,8 @@ void __69__ACProtobufAccountCredential_Helpers__setCredentialItemsDictionary___b
   v8.receiver = self;
   v8.super_class = ACProtobufAccountCredential;
   v4 = [(ACProtobufAccountCredential *)&v8 description];
-  v5 = [(ACProtobufAccountCredential *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ACProtobufAccountCredential *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -127,7 +127,7 @@ void __69__ACProtobufAccountCredential_Helpers__setCredentialItemsDictionary___b
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_credentialItems count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_credentialItems, "count")}];
@@ -150,8 +150,8 @@ void __69__ACProtobufAccountCredential_Helpers__setCredentialItemsDictionary___b
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -160,33 +160,33 @@ void __69__ACProtobufAccountCredential_Helpers__setCredentialItemsDictionary___b
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"credentialItems"];
+    [dictionary setObject:v4 forKey:@"credentialItems"];
   }
 
   credentialType = self->_credentialType;
   if (credentialType)
   {
-    [v3 setObject:credentialType forKey:@"credentialType"];
+    [dictionary setObject:credentialType forKey:@"credentialType"];
   }
 
   dirtyProperties = self->_dirtyProperties;
   if (dirtyProperties)
   {
-    [v3 setObject:dirtyProperties forKey:@"dirtyProperties"];
+    [dictionary setObject:dirtyProperties forKey:@"dirtyProperties"];
   }
 
   v13 = [MEMORY[0x1E696AD98] numberWithBool:{self->_requiresTouchID, v16}];
-  [v3 setObject:v13 forKey:@"requiresTouchID"];
+  [dictionary setObject:v13 forKey:@"requiresTouchID"];
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -259,47 +259,47 @@ void __69__ACProtobufAccountCredential_Helpers__setCredentialItemsDictionary___b
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(ACProtobufAccountCredential *)self credentialItemsCount])
   {
-    [v12 clearCredentialItems];
-    v4 = [(ACProtobufAccountCredential *)self credentialItemsCount];
-    if (v4)
+    [toCopy clearCredentialItems];
+    credentialItemsCount = [(ACProtobufAccountCredential *)self credentialItemsCount];
+    if (credentialItemsCount)
     {
-      v5 = v4;
+      v5 = credentialItemsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ACProtobufAccountCredential *)self credentialItemsAtIndex:i];
-        [v12 addCredentialItems:v7];
+        [toCopy addCredentialItems:v7];
       }
     }
   }
 
-  [v12 setCredentialType:self->_credentialType];
+  [toCopy setCredentialType:self->_credentialType];
   if ([(ACProtobufAccountCredential *)self dirtyPropertiesCount])
   {
-    [v12 clearDirtyProperties];
-    v8 = [(ACProtobufAccountCredential *)self dirtyPropertiesCount];
-    if (v8)
+    [toCopy clearDirtyProperties];
+    dirtyPropertiesCount = [(ACProtobufAccountCredential *)self dirtyPropertiesCount];
+    if (dirtyPropertiesCount)
     {
-      v9 = v8;
+      v9 = dirtyPropertiesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(ACProtobufAccountCredential *)self dirtyPropertiesAtIndex:j];
-        [v12 addDirtyProperties:v11];
+        [toCopy addDirtyProperties:v11];
       }
     }
   }
 
-  v12[32] = self->_requiresTouchID;
+  toCopy[32] = self->_requiresTouchID;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -320,7 +320,7 @@ void __69__ACProtobufAccountCredential_Helpers__setCredentialItemsDictionary___b
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v26 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v26 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addCredentialItems:v11];
 
         ++v10;
@@ -333,7 +333,7 @@ void __69__ACProtobufAccountCredential_Helpers__setCredentialItemsDictionary___b
     while (v8);
   }
 
-  v12 = [(NSString *)self->_credentialType copyWithZone:a3];
+  v12 = [(NSString *)self->_credentialType copyWithZone:zone];
   v13 = *(v5 + 16);
   *(v5 + 16) = v12;
 
@@ -357,7 +357,7 @@ void __69__ACProtobufAccountCredential_Helpers__setCredentialItemsDictionary___b
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{a3, v22}];
+        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{zone, v22}];
         [v5 addDirtyProperties:v19];
 
         ++v18;
@@ -375,10 +375,10 @@ void __69__ACProtobufAccountCredential_Helpers__setCredentialItemsDictionary___b
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v8 = [v4 isMemberOfClass:objc_opt_class()] && ((credentialItems = self->_credentialItems, !(credentialItems | *(v4 + 1))) || -[NSMutableArray isEqual:](credentialItems, "isEqual:")) && ((credentialType = self->_credentialType, !(credentialType | *(v4 + 2))) || -[NSString isEqual:](credentialType, "isEqual:")) && ((dirtyProperties = self->_dirtyProperties, !(dirtyProperties | *(v4 + 3))) || -[NSMutableArray isEqual:](dirtyProperties, "isEqual:")) && self->_requiresTouchID == v4[32];
+  equalCopy = equal;
+  v8 = [equalCopy isMemberOfClass:objc_opt_class()] && ((credentialItems = self->_credentialItems, !(credentialItems | *(equalCopy + 1))) || -[NSMutableArray isEqual:](credentialItems, "isEqual:")) && ((credentialType = self->_credentialType, !(credentialType | *(equalCopy + 2))) || -[NSString isEqual:](credentialType, "isEqual:")) && ((dirtyProperties = self->_dirtyProperties, !(dirtyProperties | *(equalCopy + 3))) || -[NSMutableArray isEqual:](dirtyProperties, "isEqual:")) && self->_requiresTouchID == equalCopy[32];
 
   return v8;
 }
@@ -390,15 +390,15 @@ void __69__ACProtobufAccountCredential_Helpers__setCredentialItemsDictionary___b
   return v4 ^ [(NSMutableArray *)self->_dirtyProperties hash]^ (2654435761 * self->_requiresTouchID);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -422,7 +422,7 @@ void __69__ACProtobufAccountCredential_Helpers__setCredentialItemsDictionary___b
     while (v7);
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ACProtobufAccountCredential *)self setCredentialType:?];
   }
@@ -431,7 +431,7 @@ void __69__ACProtobufAccountCredential_Helpers__setCredentialItemsDictionary___b
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {
@@ -455,7 +455,7 @@ void __69__ACProtobufAccountCredential_Helpers__setCredentialItemsDictionary___b
     while (v12);
   }
 
-  self->_requiresTouchID = *(v4 + 32);
+  self->_requiresTouchID = *(fromCopy + 32);
   v15 = *MEMORY[0x1E69E9840];
 }
 

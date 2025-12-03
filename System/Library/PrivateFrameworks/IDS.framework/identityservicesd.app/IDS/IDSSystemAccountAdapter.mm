@@ -1,42 +1,42 @@
 @interface IDSSystemAccountAdapter
-- (IDSSystemAccountAdapter)initWithQueue:(id)a3;
-- (id)_ACAccountWithTypeIdentifier:(id)a3 matchingCriteria:(id)a4 error:(id *)a5;
-- (id)_firstAccountInStore:(id)a3 withType:(id)a4 matchingCriteria:(id)a5;
-- (id)_systemAccountRepresentationOfACAccount:(id)a3 DSIDKey:(id)a4;
-- (id)_systemAccountWithIdentifier:(id)a3 DSIDKey:(id)a4 criteria:(id)a5 error:(id *)a6;
-- (id)iCloudSystemAccountWithError:(id *)a3;
-- (id)iTunesSystemAccountWithError:(id *)a3;
-- (void)_ACAccountWithTypeIdentifier:(id)a3 matchingCriteria:(id)a4 completion:(id)a5;
-- (void)_systemAccountWithIdentifier:(id)a3 DSIDKey:(id)a4 criteria:(id)a5 completion:(id)a6;
-- (void)iCloudSystemAccountWithCompletion:(id)a3;
-- (void)iTunesSystemAccountWithCompletion:(id)a3;
+- (IDSSystemAccountAdapter)initWithQueue:(id)queue;
+- (id)_ACAccountWithTypeIdentifier:(id)identifier matchingCriteria:(id)criteria error:(id *)error;
+- (id)_firstAccountInStore:(id)store withType:(id)type matchingCriteria:(id)criteria;
+- (id)_systemAccountRepresentationOfACAccount:(id)account DSIDKey:(id)key;
+- (id)_systemAccountWithIdentifier:(id)identifier DSIDKey:(id)key criteria:(id)criteria error:(id *)error;
+- (id)iCloudSystemAccountWithError:(id *)error;
+- (id)iTunesSystemAccountWithError:(id *)error;
+- (void)_ACAccountWithTypeIdentifier:(id)identifier matchingCriteria:(id)criteria completion:(id)completion;
+- (void)_systemAccountWithIdentifier:(id)identifier DSIDKey:(id)key criteria:(id)criteria completion:(id)completion;
+- (void)iCloudSystemAccountWithCompletion:(id)completion;
+- (void)iTunesSystemAccountWithCompletion:(id)completion;
 @end
 
 @implementation IDSSystemAccountAdapter
 
-- (IDSSystemAccountAdapter)initWithQueue:(id)a3
+- (IDSSystemAccountAdapter)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = IDSSystemAccountAdapter;
   v6 = [(IDSSystemAccountAdapter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;
 }
 
-- (void)iCloudSystemAccountWithCompletion:(id)a3
+- (void)iCloudSystemAccountWithCompletion:(id)completion
 {
   v4 = qword_100CBD0A0;
-  v5 = a3;
-  v7 = v5;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (v4 == -1)
   {
-    v6 = v5;
+    v6 = completionCopy;
   }
 
   else
@@ -48,14 +48,14 @@
   [(IDSSystemAccountAdapter *)self _systemAccountWithIdentifier:qword_100CBD0A8 DSIDKey:@"personID" criteria:&stru_100BD8B20 completion:v6];
 }
 
-- (void)iTunesSystemAccountWithCompletion:(id)a3
+- (void)iTunesSystemAccountWithCompletion:(id)completion
 {
   v4 = qword_100CBD0B0;
-  v5 = a3;
-  v7 = v5;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (v4 == -1)
   {
-    v6 = v5;
+    v6 = completionCopy;
   }
 
   else
@@ -67,7 +67,7 @@
   [(IDSSystemAccountAdapter *)self _systemAccountWithIdentifier:qword_100CBD0B8 DSIDKey:@"dsid" criteria:&stru_100BD8B40 completion:v6];
 }
 
-- (id)iCloudSystemAccountWithError:(id *)a3
+- (id)iCloudSystemAccountWithError:(id *)error
 {
   if (qword_100CBD0A0 != -1)
   {
@@ -76,10 +76,10 @@
 
   v5 = qword_100CBD0A8;
 
-  return [(IDSSystemAccountAdapter *)self _systemAccountWithIdentifier:v5 DSIDKey:@"personID" criteria:&stru_100BD8B60 error:a3];
+  return [(IDSSystemAccountAdapter *)self _systemAccountWithIdentifier:v5 DSIDKey:@"personID" criteria:&stru_100BD8B60 error:error];
 }
 
-- (id)iTunesSystemAccountWithError:(id *)a3
+- (id)iTunesSystemAccountWithError:(id *)error
 {
   if (qword_100CBD0B0 != -1)
   {
@@ -88,99 +88,99 @@
 
   v5 = qword_100CBD0B8;
 
-  return [(IDSSystemAccountAdapter *)self _systemAccountWithIdentifier:v5 DSIDKey:@"dsid" criteria:&stru_100BD8B80 error:a3];
+  return [(IDSSystemAccountAdapter *)self _systemAccountWithIdentifier:v5 DSIDKey:@"dsid" criteria:&stru_100BD8B80 error:error];
 }
 
-- (void)_systemAccountWithIdentifier:(id)a3 DSIDKey:(id)a4 criteria:(id)a5 completion:(id)a6
+- (void)_systemAccountWithIdentifier:(id)identifier DSIDKey:(id)key criteria:(id)criteria completion:(id)completion
 {
-  v10 = a3;
+  identifierCopy = identifier;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100352058;
   v14[3] = &unk_100BD8BA8;
   v14[4] = self;
-  v15 = a4;
-  v16 = v10;
-  v17 = a6;
-  v11 = v17;
-  v12 = v10;
-  v13 = v15;
-  [(IDSSystemAccountAdapter *)self _ACAccountWithTypeIdentifier:v12 matchingCriteria:a5 completion:v14];
+  keyCopy = key;
+  v16 = identifierCopy;
+  completionCopy = completion;
+  v11 = completionCopy;
+  v12 = identifierCopy;
+  v13 = keyCopy;
+  [(IDSSystemAccountAdapter *)self _ACAccountWithTypeIdentifier:v12 matchingCriteria:criteria completion:v14];
 }
 
-- (void)_ACAccountWithTypeIdentifier:(id)a3 matchingCriteria:(id)a4 completion:(id)a5
+- (void)_ACAccountWithTypeIdentifier:(id)identifier matchingCriteria:(id)criteria completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  criteriaCopy = criteria;
+  completionCopy = completion;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100352318;
   v15[3] = &unk_100BD8BF8;
   v15[4] = self;
   v16 = objc_alloc_init(IMWeakLinkClass());
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v11 = v10;
-  v12 = v8;
-  v13 = v9;
+  v17 = identifierCopy;
+  v18 = criteriaCopy;
+  v19 = completionCopy;
+  v11 = completionCopy;
+  v12 = identifierCopy;
+  v13 = criteriaCopy;
   v14 = v16;
   [v14 accountTypeWithIdentifier:v12 completion:v15];
 }
 
-- (id)_systemAccountWithIdentifier:(id)a3 DSIDKey:(id)a4 criteria:(id)a5 error:(id *)a6
+- (id)_systemAccountWithIdentifier:(id)identifier DSIDKey:(id)key criteria:(id)criteria error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  keyCopy = key;
+  criteriaCopy = criteria;
   v13 = objc_autoreleasePoolPush();
   v20 = 0;
-  v14 = [(IDSSystemAccountAdapter *)self _ACAccountWithTypeIdentifier:v10 matchingCriteria:v12 error:&v20];
+  v14 = [(IDSSystemAccountAdapter *)self _ACAccountWithTypeIdentifier:identifierCopy matchingCriteria:criteriaCopy error:&v20];
   v15 = v20;
   if (v15)
   {
 
     objc_autoreleasePoolPop(v13);
-    if (a6)
+    if (error)
     {
       v16 = [NSError alloc];
       v21 = NSUnderlyingErrorKey;
       v22 = v15;
       v17 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-      *a6 = [v16 initWithDomain:@"IDSSystemAccountAdapterErrorDomain" code:-1000 userInfo:v17];
+      *error = [v16 initWithDomain:@"IDSSystemAccountAdapterErrorDomain" code:-1000 userInfo:v17];
 
-      a6 = 0;
+      error = 0;
     }
   }
 
   else
   {
-    a6 = [(IDSSystemAccountAdapter *)self _systemAccountRepresentationOfACAccount:v14 DSIDKey:v11];
+    error = [(IDSSystemAccountAdapter *)self _systemAccountRepresentationOfACAccount:v14 DSIDKey:keyCopy];
     v18 = +[IMRGLog registration];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v24 = v10;
+      v24 = identifierCopy;
       v25 = 2112;
-      v26 = a6;
+      errorCopy = error;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Done checking for system signed in account { identifier: %@, systemAccount: %@ }", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v13);
   }
 
-  return a6;
+  return error;
 }
 
-- (id)_ACAccountWithTypeIdentifier:(id)a3 matchingCriteria:(id)a4 error:(id *)a5
+- (id)_ACAccountWithTypeIdentifier:(id)identifier matchingCriteria:(id)criteria error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  criteriaCopy = criteria;
   v10 = objc_autoreleasePoolPush();
   v11 = objc_alloc_init(IMWeakLinkClass());
   v19 = 0;
-  v12 = [v11 accountTypeWithAccountTypeIdentifier:v8 error:&v19];
+  v12 = [v11 accountTypeWithAccountTypeIdentifier:identifierCopy error:&v19];
   v13 = v19;
   v14 = v13;
   if (!v12 || v13)
@@ -189,7 +189,7 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v21 = v8;
+      v21 = identifierCopy;
       v22 = 2112;
       v23 = v14;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Did not find account type { identifier: %@, accountsError: %@ }", buf, 0x16u);
@@ -200,26 +200,26 @@
 
   else
   {
-    v15 = [(IDSSystemAccountAdapter *)self _firstAccountInStore:v11 withType:v12 matchingCriteria:v9];
+    v15 = [(IDSSystemAccountAdapter *)self _firstAccountInStore:v11 withType:v12 matchingCriteria:criteriaCopy];
   }
 
   objc_autoreleasePoolPop(v10);
-  if (a5 && v14)
+  if (error && v14)
   {
     v17 = v14;
-    *a5 = v14;
+    *error = v14;
   }
 
   return v15;
 }
 
-- (id)_firstAccountInStore:(id)a3 withType:(id)a4 matchingCriteria:(id)a5
+- (id)_firstAccountInStore:(id)store withType:(id)type matchingCriteria:(id)criteria
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  storeCopy = store;
+  typeCopy = type;
+  criteriaCopy = criteria;
   v10 = objc_autoreleasePoolPush();
-  [v7 accountsWithAccountType:v8];
+  [storeCopy accountsWithAccountType:typeCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -237,10 +237,10 @@
           objc_enumerationMutation(v11);
         }
 
-        if (v9)
+        if (criteriaCopy)
         {
           v15 = *(*(&v17 + 1) + 8 * i);
-          if (v9[2](v9, v15))
+          if (criteriaCopy[2](criteriaCopy, v15))
           {
             v12 = v15;
             goto LABEL_12;
@@ -265,18 +265,18 @@ LABEL_12:
   return v12;
 }
 
-- (id)_systemAccountRepresentationOfACAccount:(id)a3 DSIDKey:(id)a4
+- (id)_systemAccountRepresentationOfACAccount:(id)account DSIDKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
+  accountCopy = account;
+  keyCopy = key;
   v7 = objc_autoreleasePoolPush();
-  if (v5)
+  if (accountCopy)
   {
-    v8 = [v5 username];
-    if (v6)
+    username = [accountCopy username];
+    if (keyCopy)
     {
-      v9 = [v5 accountProperties];
-      v10 = [v9 objectForKey:v6];
+      accountProperties = [accountCopy accountProperties];
+      v10 = [accountProperties objectForKey:keyCopy];
 
       if (v10)
       {
@@ -294,7 +294,7 @@ LABEL_12:
       v11 = 0;
     }
 
-    v12 = [[IDSSystemAccount alloc] initWithUsername:v8 DSID:v11];
+    v12 = [[IDSSystemAccount alloc] initWithUsername:username DSID:v11];
   }
 
   else

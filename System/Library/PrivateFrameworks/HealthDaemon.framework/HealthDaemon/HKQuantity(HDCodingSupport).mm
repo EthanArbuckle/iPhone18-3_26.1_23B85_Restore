@@ -8,11 +8,11 @@
 - (HDCodableQuantity)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableQuantity);
-  v3 = [a1 _unit];
-  v4 = [v3 unitString];
-  [(HDCodableQuantity *)v2 setUnitString:v4];
+  _unit = [self _unit];
+  unitString = [_unit unitString];
+  [(HDCodableQuantity *)v2 setUnitString:unitString];
 
-  [a1 doubleValueForUnit:v3];
+  [self doubleValueForUnit:_unit];
   [(HDCodableQuantity *)v2 setValue:?];
 
   return v2;
@@ -29,8 +29,8 @@
     if ([v4 hasUnitString] && objc_msgSend(v4, "hasValue"))
     {
       v5 = MEMORY[0x277CCDAB0];
-      v6 = [v4 unitString];
-      v7 = [v5 unitFromString:v6];
+      unitString = [v4 unitString];
+      v7 = [v5 unitFromString:unitString];
 
       v8 = MEMORY[0x277CCD7E8];
       [v4 value];

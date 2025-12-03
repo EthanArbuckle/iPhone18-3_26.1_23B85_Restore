@@ -1,20 +1,20 @@
 @interface CoreThemeDefinitionMigrator
-- (BOOL)_checkDiskSpace:(id *)a3;
-- (BOOL)_updateMetadata:(id *)a3;
-- (BOOL)migrateWithError:(id *)a3;
-- (CoreThemeDefinitionMigrator)initWithURL:(id)a3 oldVersion:(int64_t)a4 newVersion:(int64_t)a5;
-- (id)mappingModelForMigrationWithError:(id *)a3;
+- (BOOL)_checkDiskSpace:(id *)space;
+- (BOOL)_updateMetadata:(id *)metadata;
+- (BOOL)migrateWithError:(id *)error;
+- (CoreThemeDefinitionMigrator)initWithURL:(id)l oldVersion:(int64_t)version newVersion:(int64_t)newVersion;
+- (id)mappingModelForMigrationWithError:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation CoreThemeDefinitionMigrator
 
-- (BOOL)_checkDiskSpace:(id *)a3
+- (BOOL)_checkDiskSpace:(id *)space
 {
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v5 attributesOfItemAtPath:-[NSURL path](self->_documentURL error:{"path"), 0}];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [defaultManager attributesOfItemAtPath:-[NSURL path](self->_documentURL error:{"path"), 0}];
   v7 = [v6 objectForKey:*MEMORY[0x277CCA1C0]];
-  v8 = [v5 attributesOfFileSystemForPath:-[NSString stringByDeletingLastPathComponent](-[CoreThemeDefinitionMigrator temporaryMigrationPath](self error:{"temporaryMigrationPath"), "stringByDeletingLastPathComponent"), a3}];
+  v8 = [defaultManager attributesOfFileSystemForPath:-[NSString stringByDeletingLastPathComponent](-[CoreThemeDefinitionMigrator temporaryMigrationPath](self error:{"temporaryMigrationPath"), "stringByDeletingLastPathComponent"), space}];
   if (v8)
   {
     v9 = *MEMORY[0x277CCA1D0];
@@ -23,15 +23,15 @@
     [v7 doubleValue];
     if (v11 >= v12)
     {
-      v19 = [objc_msgSend(v5 attributesOfFileSystemForPath:-[NSURL path](self->_documentURL error:{"path"), 0), "objectForKey:", v9}];
-      v20 = [v7 unsignedLongLongValue];
-      if (v20 <= [v19 unsignedLongLongValue])
+      v19 = [objc_msgSend(defaultManager attributesOfFileSystemForPath:-[NSURL path](self->_documentURL error:{"path"), 0), "objectForKey:", v9}];
+      unsignedLongLongValue = [v7 unsignedLongLongValue];
+      if (unsignedLongLongValue <= [v19 unsignedLongLongValue])
       {
         LOBYTE(v8) = 1;
         return v8;
       }
 
-      if (a3)
+      if (space)
       {
         v21 = MEMORY[0x277CCA9B8];
         v22 = CoreThemeDefinitionErrorDomain[0];
@@ -45,7 +45,7 @@
       }
     }
 
-    else if (a3)
+    else if (space)
     {
       v13 = MEMORY[0x277CCA9B8];
       v14 = CoreThemeDefinitionErrorDomain[0];
@@ -56,7 +56,7 @@
 LABEL_8:
       v25 = [v16 errorWithDomain:v17 code:v18 userInfo:v15];
       LOBYTE(v8) = 0;
-      *a3 = v25;
+      *space = v25;
       return v8;
     }
 
@@ -66,11 +66,11 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)_updateMetadata:(id *)a3
+- (BOOL)_updateMetadata:(id *)metadata
 {
   v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:{-[CoreThemeDefinitionMigrator temporaryMigrationPath](self, "temporaryMigrationPath")}];
   v6 = *MEMORY[0x277CBE2E8];
-  v7 = [MEMORY[0x277CBE4D8] metadataForPersistentStoreOfType:*MEMORY[0x277CBE2E8] URL:v5 options:0 error:a3];
+  v7 = [MEMORY[0x277CBE4D8] metadataForPersistentStoreOfType:*MEMORY[0x277CBE2E8] URL:v5 options:0 error:metadata];
   if (v7)
   {
     v8 = [v7 mutableCopy];
@@ -79,14 +79,14 @@ LABEL_8:
     v9 = objc_alloc_init(MEMORY[0x277CCAD78]);
     [v8 setObject:objc_msgSend(v9 forKey:{"UUIDString"), @"uuid"}];
 
-    v10 = [MEMORY[0x277CBE4D8] setMetadata:v8 forPersistentStoreOfType:v6 URL:v5 options:0 error:a3];
+    v10 = [MEMORY[0x277CBE4D8] setMetadata:v8 forPersistentStoreOfType:v6 URL:v5 options:0 error:metadata];
     LOBYTE(v7) = v10;
   }
 
   return v7;
 }
 
-- (CoreThemeDefinitionMigrator)initWithURL:(id)a3 oldVersion:(int64_t)a4 newVersion:(int64_t)a5
+- (CoreThemeDefinitionMigrator)initWithURL:(id)l oldVersion:(int64_t)version newVersion:(int64_t)newVersion
 {
   v22 = *MEMORY[0x277D85DE8];
   v20.receiver = self;
@@ -95,12 +95,12 @@ LABEL_8:
   v9 = v8;
   if (v8)
   {
-    v8->_oldVersion = a4;
-    v8->_newVersion = a5;
-    v8->_documentURL = a3;
+    v8->_oldVersion = version;
+    v8->_newVersion = newVersion;
+    v8->_documentURL = l;
     v10 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CoreThemeDefinition"];
-    v11 = [v10 pathForResource:+[CoreThemeDocument dataModelNameForVersion:](CoreThemeDocument ofType:{"dataModelNameForVersion:", a4), @"mom"}];
-    v12 = [v10 pathForResource:+[CoreThemeDocument dataModelNameForVersion:](CoreThemeDocument ofType:{"dataModelNameForVersion:", a5), @"mom"}];
+    v11 = [v10 pathForResource:+[CoreThemeDocument dataModelNameForVersion:](CoreThemeDocument ofType:{"dataModelNameForVersion:", version), @"mom"}];
+    v12 = [v10 pathForResource:+[CoreThemeDocument dataModelNameForVersion:](CoreThemeDocument ofType:{"dataModelNameForVersion:", newVersion), @"mom"}];
     v13 = v12;
     if (v11)
     {
@@ -152,10 +152,10 @@ LABEL_10:
   [(CoreThemeDefinitionMigrator *)&v3 dealloc];
 }
 
-- (id)mappingModelForMigrationWithError:(id *)a3
+- (id)mappingModelForMigrationWithError:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBE458] inferredMappingModelForSourceModel:-[NSMigrationManager sourceModel](self->_migrationManager destinationModel:"sourceModel") error:{-[NSMigrationManager destinationModel](self->_migrationManager, "destinationModel"), a3}];
+  v4 = [MEMORY[0x277CBE458] inferredMappingModelForSourceModel:-[NSMigrationManager sourceModel](self->_migrationManager destinationModel:"sourceModel") error:{-[NSMigrationManager destinationModel](self->_migrationManager, "destinationModel"), error}];
   v5 = [(NSDictionary *)[(NSManagedObjectModel *)[(NSMigrationManager *)self->_migrationManager sourceModel] entitiesByName] objectForKey:@"SimpleArtworkRenditionSpec"];
   v6 = [(NSDictionary *)[(NSManagedObjectModel *)[(NSMigrationManager *)self->_migrationManager sourceModel] entitiesByName] objectForKey:@"SimpleArtworkElementProduction"];
   v7 = [(NSDictionary *)[(NSManagedObjectModel *)[(NSMigrationManager *)self->_migrationManager sourceModel] entitiesByName] objectForKey:@"Asset"];
@@ -284,7 +284,7 @@ LABEL_34:
   return v4;
 }
 
-- (BOOL)migrateWithError:(id *)a3
+- (BOOL)migrateWithError:(id *)error
 {
   oldVersion = self->_oldVersion;
   newVersion = self->_newVersion;
@@ -298,29 +298,29 @@ LABEL_34:
   v14[6] = v4;
   if (oldVersion >= newVersion)
   {
-    if (a3)
+    if (error)
     {
       v12 = [MEMORY[0x277CCA9B8] errorWithDomain:CoreThemeDefinitionErrorDomain[0] code:2 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjectsAndKeys:", @"Migration code not written yet.", *MEMORY[0x277CCA470], 0)}];
       LOBYTE(v7) = 0;
-      *a3 = v12;
+      *error = v12;
       return v7;
     }
 
     goto LABEL_13;
   }
 
-  LODWORD(v7) = [(CoreThemeDefinitionMigrator *)self _checkDiskSpace:a3];
+  LODWORD(v7) = [(CoreThemeDefinitionMigrator *)self _checkDiskSpace:error];
   if (v7)
   {
-    v7 = [(CoreThemeDefinitionMigrator *)self mappingModelForMigrationWithError:a3];
+    v7 = [(CoreThemeDefinitionMigrator *)self mappingModelForMigrationWithError:error];
     if (v7)
     {
       v10 = v7;
       v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:{-[CoreThemeDefinitionMigrator temporaryMigrationPath](self, "temporaryMigrationPath")}];
-      LODWORD(v7) = [(NSMigrationManager *)self->_migrationManager migrateStoreFromURL:self->_documentURL type:*MEMORY[0x277CBE2E8] options:0 withMappingModel:v10 toDestinationURL:v11 destinationType:*MEMORY[0x277CBE2E8] destinationOptions:0 error:a3];
+      LODWORD(v7) = [(NSMigrationManager *)self->_migrationManager migrateStoreFromURL:self->_documentURL type:*MEMORY[0x277CBE2E8] options:0 withMappingModel:v10 toDestinationURL:v11 destinationType:*MEMORY[0x277CBE2E8] destinationOptions:0 error:error];
       if (v7)
       {
-        if ([(CoreThemeDefinitionMigrator *)self _updateMetadata:a3])
+        if ([(CoreThemeDefinitionMigrator *)self _updateMetadata:error])
         {
           LOBYTE(v7) = 1;
           return v7;

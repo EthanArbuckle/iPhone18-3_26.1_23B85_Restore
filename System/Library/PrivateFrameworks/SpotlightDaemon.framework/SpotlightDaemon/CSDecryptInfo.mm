@@ -1,12 +1,12 @@
 @interface CSDecryptInfo
-- (CSDecryptInfo)initWithPlistObject:(id *)a3 externalID:(id)a4;
+- (CSDecryptInfo)initWithPlistObject:(id *)object externalID:(id)d;
 @end
 
 @implementation CSDecryptInfo
 
-- (CSDecryptInfo)initWithPlistObject:(id *)a3 externalID:(id)a4
+- (CSDecryptInfo)initWithPlistObject:(id *)object externalID:(id)d
 {
-  v7 = a4;
+  dCopy = d;
   v16.receiver = self;
   v16.super_class = CSDecryptInfo;
   v8 = [(CSDecryptInfo *)&v16 init];
@@ -16,13 +16,13 @@
   }
 
   v9 = *MEMORY[0x277CBECE8];
-  v14 = *&a3->var0;
-  var2 = a3->var2;
+  v14 = *&object->var0;
+  var2 = object->var2;
   v10 = _MDPlistContainerCopyObject();
   decryptInfo = v8->_decryptInfo;
   v8->_decryptInfo = v10;
 
-  objc_storeStrong(&v8->_externalID, a4);
+  objc_storeStrong(&v8->_externalID, d);
   if (!v8->_decryptInfo)
   {
     goto LABEL_5;

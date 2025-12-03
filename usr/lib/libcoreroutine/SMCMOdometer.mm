@@ -1,7 +1,7 @@
 @interface SMCMOdometer
 - (SMCMOdometer)init;
-- (void)odometer:(id)a3 didUpdateGpsAvailability:(BOOL)a4;
-- (void)startOdometerUpdatesForActivity:(int64_t)a3 withHandler:(id)a4;
+- (void)odometer:(id)odometer didUpdateGpsAvailability:(BOOL)availability;
+- (void)startOdometerUpdatesForActivity:(int64_t)activity withHandler:(id)handler;
 - (void)stopOdometerUpdates;
 @end
 
@@ -17,9 +17,9 @@
   return self;
 }
 
-- (void)odometer:(id)a3 didUpdateGpsAvailability:(BOOL)a4
+- (void)odometer:(id)odometer didUpdateGpsAvailability:(BOOL)availability
 {
-  v4 = a4;
+  availabilityCopy = availability;
   v11 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -27,7 +27,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = @"NO";
-      if (v4)
+      if (availabilityCopy)
       {
         v6 = @"YES";
       }
@@ -41,17 +41,17 @@
   }
 }
 
-- (void)startOdometerUpdatesForActivity:(int64_t)a3 withHandler:(id)a4
+- (void)startOdometerUpdatesForActivity:(int64_t)activity withHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(SMCMOdometer *)self odometer];
-  [v7 startOdometerUpdatesForActivity:a3 withHandler:v6];
+  handlerCopy = handler;
+  odometer = [(SMCMOdometer *)self odometer];
+  [odometer startOdometerUpdatesForActivity:activity withHandler:handlerCopy];
 }
 
 - (void)stopOdometerUpdates
 {
-  v2 = [(SMCMOdometer *)self odometer];
-  [v2 stopOdometerUpdates];
+  odometer = [(SMCMOdometer *)self odometer];
+  [odometer stopOdometerUpdates];
 }
 
 @end

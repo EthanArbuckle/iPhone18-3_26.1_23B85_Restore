@@ -1,45 +1,45 @@
 @interface AVFloat64Range
-+ (id)float64RangeWithAudioValueRange:(AudioValueRange)a3;
-+ (id)float64RangeWithMinimum:(double)a3 maximum:(double)a4;
-- (AVFloat64Range)initWithMinimum:(double)a3 maximum:(double)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)float64RangeWithAudioValueRange:(AudioValueRange)range;
++ (id)float64RangeWithMinimum:(double)minimum maximum:(double)maximum;
+- (AVFloat64Range)initWithMinimum:(double)minimum maximum:(double)maximum;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation AVFloat64Range
 
-- (AVFloat64Range)initWithMinimum:(double)a3 maximum:(double)a4
+- (AVFloat64Range)initWithMinimum:(double)minimum maximum:(double)maximum
 {
   v7.receiver = self;
   v7.super_class = AVFloat64Range;
   result = [(AVFloat64Range *)&v7 init];
   if (result)
   {
-    result->_minimum = a3;
-    result->_maximum = a4;
+    result->_minimum = minimum;
+    result->_maximum = maximum;
   }
 
   return result;
 }
 
-+ (id)float64RangeWithMinimum:(double)a3 maximum:(double)a4
++ (id)float64RangeWithMinimum:(double)minimum maximum:(double)maximum
 {
-  v4 = [[a1 alloc] initWithMinimum:a3 maximum:a4];
+  v4 = [[self alloc] initWithMinimum:minimum maximum:maximum];
 
   return v4;
 }
 
-+ (id)float64RangeWithAudioValueRange:(AudioValueRange)a3
++ (id)float64RangeWithAudioValueRange:(AudioValueRange)range
 {
-  v3 = [[a1 alloc] initWithAudioValueRange:{a3.mMinimum, a3.mMaximum}];
+  v3 = [[self alloc] initWithAudioValueRange:{range.mMinimum, range.mMaximum}];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -50,7 +50,7 @@
     return 0;
   }
 
-  [a3 minimum];
+  [equal minimum];
   v6 = v5;
   [(AVFloat64Range *)self minimum];
   if (v6 != v7)
@@ -58,7 +58,7 @@
     return 0;
   }
 
-  [a3 maximum];
+  [equal maximum];
   v9 = v8;
   [(AVFloat64Range *)self maximum];
   return v9 == v10;

@@ -1,26 +1,26 @@
 @interface AKAvailabilityInvitation
-- (AKAvailabilityInvitation)initWithAvailableDuringActivityIdentifiers:(id)a3 unavailableDuringActivityIdentifiers:(id)a4;
-- (AKAvailabilityInvitation)initWithStatusKitInvitationPayload:(id)a3;
+- (AKAvailabilityInvitation)initWithAvailableDuringActivityIdentifiers:(id)identifiers unavailableDuringActivityIdentifiers:(id)activityIdentifiers;
+- (AKAvailabilityInvitation)initWithStatusKitInvitationPayload:(id)payload;
 - (id)_payloadDictionary;
-- (id)statusKitInvitationPayloadWithDateCreated:(id)a3;
+- (id)statusKitInvitationPayloadWithDateCreated:(id)created;
 @end
 
 @implementation AKAvailabilityInvitation
 
-- (AKAvailabilityInvitation)initWithAvailableDuringActivityIdentifiers:(id)a3 unavailableDuringActivityIdentifiers:(id)a4
+- (AKAvailabilityInvitation)initWithAvailableDuringActivityIdentifiers:(id)identifiers unavailableDuringActivityIdentifiers:(id)activityIdentifiers
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  activityIdentifiersCopy = activityIdentifiers;
   v14.receiver = self;
   v14.super_class = AKAvailabilityInvitation;
   v8 = [(AKAvailabilityInvitation *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifiersCopy copy];
     availableDuringActivityIdentifiers = v8->_availableDuringActivityIdentifiers;
     v8->_availableDuringActivityIdentifiers = v9;
 
-    v11 = [v7 copy];
+    v11 = [activityIdentifiersCopy copy];
     unavailableDuringActivityIdentifiers = v8->_unavailableDuringActivityIdentifiers;
     v8->_unavailableDuringActivityIdentifiers = v11;
   }
@@ -28,32 +28,32 @@
   return v8;
 }
 
-- (AKAvailabilityInvitation)initWithStatusKitInvitationPayload:(id)a3
+- (AKAvailabilityInvitation)initWithStatusKitInvitationPayload:(id)payload
 {
-  v4 = [a3 payloadDictionary];
-  v5 = v4;
-  if (v4)
+  payloadDictionary = [payload payloadDictionary];
+  v5 = payloadDictionary;
+  if (payloadDictionary)
   {
-    v6 = [v4 availabilityKit_stringArrayForKey:@"a" allowEmptyString:0];
+    v6 = [payloadDictionary availabilityKit_stringArrayForKey:@"a" allowEmptyString:0];
     v7 = [v5 availabilityKit_stringArrayForKey:@"u" allowEmptyString:0];
     self = [(AKAvailabilityInvitation *)self initWithAvailableDuringActivityIdentifiers:v6 unavailableDuringActivityIdentifiers:v7];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)statusKitInvitationPayloadWithDateCreated:(id)a3
+- (id)statusKitInvitationPayloadWithDateCreated:(id)created
 {
-  v4 = a3;
-  v5 = [(AKAvailabilityInvitation *)self _payloadDictionary];
-  v6 = [objc_alloc(MEMORY[0x277D680D0]) initWithDictionary:v5 dateCreated:v4];
+  createdCopy = created;
+  _payloadDictionary = [(AKAvailabilityInvitation *)self _payloadDictionary];
+  v6 = [objc_alloc(MEMORY[0x277D680D0]) initWithDictionary:_payloadDictionary dateCreated:createdCopy];
 
   return v6;
 }
@@ -61,16 +61,16 @@
 - (id)_payloadDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(AKAvailabilityInvitation *)self availableDuringActivityIdentifiers];
-  v5 = [v4 copy];
+  availableDuringActivityIdentifiers = [(AKAvailabilityInvitation *)self availableDuringActivityIdentifiers];
+  v5 = [availableDuringActivityIdentifiers copy];
 
   if (v5)
   {
     [v3 setObject:v5 forKeyedSubscript:@"a"];
   }
 
-  v6 = [(AKAvailabilityInvitation *)self unavailableDuringActivityIdentifiers];
-  v7 = [v6 copy];
+  unavailableDuringActivityIdentifiers = [(AKAvailabilityInvitation *)self unavailableDuringActivityIdentifiers];
+  v7 = [unavailableDuringActivityIdentifiers copy];
 
   if (v7)
   {

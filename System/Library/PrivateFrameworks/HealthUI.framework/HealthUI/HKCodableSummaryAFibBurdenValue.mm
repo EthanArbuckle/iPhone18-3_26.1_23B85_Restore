@@ -1,11 +1,11 @@
 @interface HKCodableSummaryAFibBurdenValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableSummaryAFibBurdenValue
@@ -16,87 +16,87 @@
   v8.receiver = self;
   v8.super_class = HKCodableSummaryAFibBurdenValue;
   v4 = [(HKCodableSummaryAFibBurdenValue *)&v8 description];
-  v5 = [(HKCodableSummaryAFibBurdenValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableSummaryAFibBurdenValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   burdenValue = self->_burdenValue;
   if (burdenValue)
   {
-    v5 = [(HKCodableAFibBurdenValue *)burdenValue dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"burdenValue"];
+    dictionaryRepresentation = [(HKCodableAFibBurdenValue *)burdenValue dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"burdenValue"];
   }
 
   lastAnalysisDayIndexRange = self->_lastAnalysisDayIndexRange;
   if (lastAnalysisDayIndexRange)
   {
-    v7 = [(HKCodableDayIndexRange *)lastAnalysisDayIndexRange dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"lastAnalysisDayIndexRange"];
+    dictionaryRepresentation2 = [(HKCodableDayIndexRange *)lastAnalysisDayIndexRange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"lastAnalysisDayIndexRange"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_burdenValue)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_lastAnalysisDayIndexRange)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_burdenValue)
   {
-    [v4 setBurdenValue:?];
-    v4 = v5;
+    [toCopy setBurdenValue:?];
+    toCopy = v5;
   }
 
   if (self->_lastAnalysisDayIndexRange)
   {
     [v5 setLastAnalysisDayIndexRange:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HKCodableAFibBurdenValue *)self->_burdenValue copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HKCodableAFibBurdenValue *)self->_burdenValue copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(HKCodableDayIndexRange *)self->_lastAnalysisDayIndexRange copyWithZone:a3];
+  v8 = [(HKCodableDayIndexRange *)self->_lastAnalysisDayIndexRange copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((burdenValue = self->_burdenValue, !(burdenValue | v4[1])) || -[HKCodableAFibBurdenValue isEqual:](burdenValue, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((burdenValue = self->_burdenValue, !(burdenValue | equalCopy[1])) || -[HKCodableAFibBurdenValue isEqual:](burdenValue, "isEqual:")))
   {
     lastAnalysisDayIndexRange = self->_lastAnalysisDayIndexRange;
-    if (lastAnalysisDayIndexRange | v4[2])
+    if (lastAnalysisDayIndexRange | equalCopy[2])
     {
       v7 = [(HKCodableDayIndexRange *)lastAnalysisDayIndexRange isEqual:?];
     }
@@ -115,12 +115,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   burdenValue = self->_burdenValue;
-  v6 = v4[1];
-  v9 = v4;
+  v6 = fromCopy[1];
+  v9 = fromCopy;
   if (burdenValue)
   {
     if (!v6)
@@ -141,10 +141,10 @@
     [(HKCodableSummaryAFibBurdenValue *)self setBurdenValue:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   lastAnalysisDayIndexRange = self->_lastAnalysisDayIndexRange;
-  v8 = v4[2];
+  v8 = fromCopy[2];
   if (lastAnalysisDayIndexRange)
   {
     if (!v8)
@@ -165,10 +165,10 @@ LABEL_7:
     lastAnalysisDayIndexRange = [(HKCodableSummaryAFibBurdenValue *)self setLastAnalysisDayIndexRange:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
 
-  MEMORY[0x1EEE66BB8](lastAnalysisDayIndexRange, v4);
+  MEMORY[0x1EEE66BB8](lastAnalysisDayIndexRange, fromCopy);
 }
 
 @end

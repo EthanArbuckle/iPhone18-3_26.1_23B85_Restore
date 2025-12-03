@@ -1,23 +1,23 @@
 @interface HMWeeklyScheduleEntry
 + (id)logCategory;
-- (BOOL)isEqual:(id)a3;
-- (HMWeeklyScheduleEntry)initWithCoder:(id)a3;
-- (HMWeeklyScheduleEntry)initWithDictionary:(id)a3;
-- (HMWeeklyScheduleEntry)initWithStart:(id)a3 end:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMWeeklyScheduleEntry)initWithCoder:(id)coder;
+- (HMWeeklyScheduleEntry)initWithDictionary:(id)dictionary;
+- (HMWeeklyScheduleEntry)initWithStart:(id)start end:(id)end;
 - (id)serializeForAdd;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMWeeklyScheduleEntry
 
-- (HMWeeklyScheduleEntry)initWithDictionary:(id)a3
+- (HMWeeklyScheduleEntry)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v6 = [v4 hmf_integerForKey:@"startWeekday" error:0];
+    v6 = [dictionaryCopy hmf_integerForKey:@"startWeekday" error:0];
     v7 = [v5 hmf_integerForKey:@"startHour" error:0];
     v8 = [v5 hmf_integerForKey:@"startMinute" error:0];
     v9 = objc_alloc_init(MEMORY[0x1E695DF10]);
@@ -36,7 +36,7 @@
       if (v13)
       {
         self = [(HMWeeklyScheduleEntry *)self initWithStart:v9 end:v13];
-        v14 = self;
+        selfCopy = self;
       }
 
       else
@@ -53,7 +53,7 @@
         }
 
         objc_autoreleasePoolPop(v18);
-        v14 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -71,17 +71,17 @@
       }
 
       objc_autoreleasePoolPop(v15);
-      v14 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
   v21 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy;
 }
 
 - (id)serializeForAdd
@@ -89,18 +89,18 @@
   v25[6] = *MEMORY[0x1E69E9840];
   v24[0] = @"startWeekday";
   v3 = MEMORY[0x1E696AD98];
-  v23 = [(HMWeeklyScheduleEntry *)self start];
-  v22 = [v3 numberWithInteger:{objc_msgSend(v23, "weekday")}];
+  start = [(HMWeeklyScheduleEntry *)self start];
+  v22 = [v3 numberWithInteger:{objc_msgSend(start, "weekday")}];
   v25[0] = v22;
   v24[1] = @"startHour";
   v4 = MEMORY[0x1E696AD98];
-  v21 = [(HMWeeklyScheduleEntry *)self start];
-  v5 = [v4 numberWithInteger:{objc_msgSend(v21, "hour")}];
+  start2 = [(HMWeeklyScheduleEntry *)self start];
+  v5 = [v4 numberWithInteger:{objc_msgSend(start2, "hour")}];
   v25[1] = v5;
   v24[2] = @"startMinute";
   v6 = MEMORY[0x1E696AD98];
-  v7 = [(HMWeeklyScheduleEntry *)self start];
-  v8 = [v6 numberWithInteger:{objc_msgSend(v7, "minute")}];
+  start3 = [(HMWeeklyScheduleEntry *)self start];
+  v8 = [v6 numberWithInteger:{objc_msgSend(start3, "minute")}];
   v25[2] = v8;
   v24[3] = @"endWeekday";
   v9 = MEMORY[0x1E696AD98];
@@ -124,12 +124,12 @@
   return v18;
 }
 
-- (HMWeeklyScheduleEntry)initWithCoder:(id)a3
+- (HMWeeklyScheduleEntry)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMScheduleEntryStartCodingKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMScheduleEntryEndCodingKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMScheduleEntryStartCodingKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMScheduleEntryEndCodingKey"];
   v7 = v6;
   if (v5)
   {
@@ -144,7 +144,7 @@
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -164,28 +164,28 @@
 
   else
   {
-    v12 = [(HMWeeklyScheduleEntry *)self initWithStart:v5 end:v6];
-    v13 = v12;
+    selfCopy = [(HMWeeklyScheduleEntry *)self initWithStart:v5 end:v6];
+    v13 = selfCopy;
   }
 
   v14 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMWeeklyScheduleEntry *)self start];
-  [v4 encodeObject:v5 forKey:@"HMScheduleEntryStartCodingKey"];
+  coderCopy = coder;
+  start = [(HMWeeklyScheduleEntry *)self start];
+  [coderCopy encodeObject:start forKey:@"HMScheduleEntryStartCodingKey"];
 
   v6 = [(HMWeeklyScheduleEntry *)self end];
-  [v4 encodeObject:v6 forKey:@"HMScheduleEntryEndCodingKey"];
+  [coderCopy encodeObject:v6 forKey:@"HMScheduleEntryEndCodingKey"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -195,7 +195,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -209,9 +209,9 @@
 
       v7 = v6;
 
-      v8 = [(HMWeeklyScheduleEntry *)self start];
-      v9 = [(HMWeeklyScheduleEntry *)v7 start];
-      if ([v8 isEqual:v9])
+      start = [(HMWeeklyScheduleEntry *)self start];
+      start2 = [(HMWeeklyScheduleEntry *)v7 start];
+      if ([start isEqual:start2])
       {
         v10 = [(HMWeeklyScheduleEntry *)self end];
         v11 = [(HMWeeklyScheduleEntry *)v7 end];
@@ -233,18 +233,18 @@
   return v12;
 }
 
-- (HMWeeklyScheduleEntry)initWithStart:(id)a3 end:(id)a4
+- (HMWeeklyScheduleEntry)initWithStart:(id)start end:(id)end
 {
-  v7 = a3;
-  v8 = a4;
+  startCopy = start;
+  endCopy = end;
   v12.receiver = self;
   v12.super_class = HMWeeklyScheduleEntry;
   v9 = [(HMWeeklyScheduleEntry *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_start, a3);
-    objc_storeStrong(&v10->_end, a4);
+    objc_storeStrong(&v9->_start, start);
+    objc_storeStrong(&v10->_end, end);
   }
 
   return v10;

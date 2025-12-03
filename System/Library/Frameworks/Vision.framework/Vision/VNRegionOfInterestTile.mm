@@ -1,6 +1,6 @@
 @interface VNRegionOfInterestTile
 - (CGRect)pixelCropRect;
-- (VNRegionOfInterestTile)initWithTiling:(id)a3 pixelCropRect:(CGRect)a4;
+- (VNRegionOfInterestTile)initWithTiling:(id)tiling pixelCropRect:(CGRect)rect;
 - (id)description;
 @end
 
@@ -33,20 +33,20 @@
   return v10;
 }
 
-- (VNRegionOfInterestTile)initWithTiling:(id)a3 pixelCropRect:(CGRect)a4
+- (VNRegionOfInterestTile)initWithTiling:(id)tiling pixelCropRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  tilingCopy = tiling;
   v13.receiver = self;
   v13.super_class = VNRegionOfInterestTile;
   v10 = [(VNRegionOfInterestTile *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_tiling, v9);
+    objc_storeWeak(&v10->_tiling, tilingCopy);
     v11->_pixelCropRect.origin.x = x;
     v11->_pixelCropRect.origin.y = y;
     v11->_pixelCropRect.size.width = width;

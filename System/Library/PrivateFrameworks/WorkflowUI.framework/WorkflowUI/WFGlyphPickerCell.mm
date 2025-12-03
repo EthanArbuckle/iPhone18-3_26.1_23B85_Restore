@@ -1,13 +1,13 @@
 @interface WFGlyphPickerCell
 - (BOOL)outline;
-- (WFGlyphPickerCell)initWithFrame:(CGRect)a3;
+- (WFGlyphPickerCell)initWithFrame:(CGRect)frame;
 - (WFGlyphView)glyphView;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 - (unsigned)glyphCharacter;
-- (void)setGlyphCharacter:(unsigned __int16)a3;
-- (void)setOutline:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setGlyphCharacter:(unsigned __int16)character;
+- (void)setOutline:(BOOL)outline;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation WFGlyphPickerCell
@@ -29,9 +29,9 @@
 - (unint64_t)accessibilityTraits
 {
   v2 = *MEMORY[0x277D76548];
-  v3 = [(WFGlyphPickerCell *)self isSelected];
+  isSelected = [(WFGlyphPickerCell *)self isSelected];
   v4 = *MEMORY[0x277D76598];
-  if (!v3)
+  if (!isSelected)
   {
     v4 = 0;
   }
@@ -39,13 +39,13 @@
   return v4 | v2;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v7.receiver = self;
   v7.super_class = WFGlyphPickerCell;
   [(WFGlyphPickerCell *)&v7 setSelected:?];
-  if (v3)
+  if (selectedCopy)
   {
     [MEMORY[0x277D75348] systemGray5Color];
   }
@@ -55,73 +55,73 @@
     [MEMORY[0x277D75348] clearColor];
   }
   v5 = ;
-  v6 = [(WFGlyphPickerCell *)self contentView];
-  [v6 setBackgroundColor:v5];
+  contentView = [(WFGlyphPickerCell *)self contentView];
+  [contentView setBackgroundColor:v5];
 }
 
-- (void)setGlyphCharacter:(unsigned __int16)a3
+- (void)setGlyphCharacter:(unsigned __int16)character
 {
-  v3 = a3;
-  v5 = [(WFGlyphPickerCell *)self glyphView];
-  [v5 setGlyphCharacter:v3];
+  characterCopy = character;
+  glyphView = [(WFGlyphPickerCell *)self glyphView];
+  [glyphView setGlyphCharacter:characterCopy];
 
-  v7 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v6 = [(WFGlyphPickerCell *)self glyphView];
-  [v6 setGlyphColor:v7];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  glyphView2 = [(WFGlyphPickerCell *)self glyphView];
+  [glyphView2 setGlyphColor:secondaryLabelColor];
 }
 
 - (unsigned)glyphCharacter
 {
-  v2 = [(WFGlyphPickerCell *)self glyphView];
-  v3 = [v2 glyphCharacter];
+  glyphView = [(WFGlyphPickerCell *)self glyphView];
+  glyphCharacter = [glyphView glyphCharacter];
 
-  return v3;
+  return glyphCharacter;
 }
 
-- (void)setOutline:(BOOL)a3
+- (void)setOutline:(BOOL)outline
 {
-  v3 = a3;
-  v4 = [(WFGlyphPickerCell *)self glyphView];
-  [v4 setOutline:v3];
+  outlineCopy = outline;
+  glyphView = [(WFGlyphPickerCell *)self glyphView];
+  [glyphView setOutline:outlineCopy];
 }
 
 - (BOOL)outline
 {
-  v2 = [(WFGlyphPickerCell *)self glyphView];
-  v3 = [v2 outline];
+  glyphView = [(WFGlyphPickerCell *)self glyphView];
+  outline = [glyphView outline];
 
-  return v3;
+  return outline;
 }
 
-- (WFGlyphPickerCell)initWithFrame:(CGRect)a3
+- (WFGlyphPickerCell)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = WFGlyphPickerCell;
-  v3 = [(WFGlyphPickerCell *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WFGlyphPickerCell *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(WFGlyphView);
     [(WFGlyphView *)v4 setGlyphInsets:8.0, 8.0, 8.0, 8.0];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(WFGlyphView *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(WFGlyphView *)v4 setBackgroundColor:clearColor];
 
     [(WFGlyphView *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(WFGlyphPickerCell *)v3 contentView];
-    [v6 addSubview:v4];
+    contentView = [(WFGlyphPickerCell *)v3 contentView];
+    [contentView addSubview:v4];
 
     objc_storeWeak(&v3->_glyphView, v4);
-    v7 = [MEMORY[0x277D75348] clearColor];
-    v8 = [(WFGlyphPickerCell *)v3 contentView];
-    [v8 setBackgroundColor:v7];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    contentView2 = [(WFGlyphPickerCell *)v3 contentView];
+    [contentView2 setBackgroundColor:clearColor2];
 
-    v9 = [(WFGlyphPickerCell *)v3 contentView];
-    v10 = [v9 layer];
-    [v10 setCornerRadius:10.0];
+    contentView3 = [(WFGlyphPickerCell *)v3 contentView];
+    layer = [contentView3 layer];
+    [layer setCornerRadius:10.0];
 
     v11 = *MEMORY[0x277CDA138];
-    v12 = [(WFGlyphPickerCell *)v3 contentView];
-    v13 = [v12 layer];
-    [v13 setCornerCurve:v11];
+    contentView4 = [(WFGlyphPickerCell *)v3 contentView];
+    layer2 = [contentView4 layer];
+    [layer2 setCornerCurve:v11];
 
     v14 = _NSDictionaryOfVariableBindings(&cfstr_Glyphview.isa, v4, 0);
     v15 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[glyphView]|" options:0 metrics:0 views:v14];

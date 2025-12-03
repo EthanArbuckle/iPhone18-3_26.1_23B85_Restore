@@ -1,5 +1,5 @@
 @interface _GCDeviceDBBundle
-- (_GCDeviceDBBundle)initWithBundle:(id)a3 error:(id *)a4;
+- (_GCDeviceDBBundle)initWithBundle:(id)bundle error:(id *)error;
 - (id)debugDescription;
 - (id)description;
 - (id)redactedDescription;
@@ -7,25 +7,25 @@
 
 @implementation _GCDeviceDBBundle
 
-- (_GCDeviceDBBundle)initWithBundle:(id)a3 error:(id *)a4
+- (_GCDeviceDBBundle)initWithBundle:(id)bundle error:(id *)error
 {
   v99[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  bundleCopy = bundle;
   v89.receiver = self;
   v89.super_class = _GCDeviceDBBundle;
   v9 = [(_GCDeviceDBBundle *)&v89 init];
-  if (!v8)
+  if (!bundleCopy)
   {
     [_GCDeviceDBBundle initWithBundle:a2 error:v9];
   }
 
-  objc_storeStrong(&v9->_bundle, a3);
-  v10 = [v8 configurationType];
-  v11 = [v10 isEqualToString:0x1F4E1BFD0];
+  objc_storeStrong(&v9->_bundle, bundle);
+  configurationType = [bundleCopy configurationType];
+  v11 = [configurationType isEqualToString:0x1F4E1BFD0];
 
   if ((v11 & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v26 = MEMORY[0x1E696ABC0];
       v27 = *MEMORY[0x1E696A578];
@@ -34,22 +34,22 @@
       v98[0] = v27;
       v98[1] = v28;
       v29 = MEMORY[0x1E696AEC0];
-      v19 = [v8 configurationType];
-      v30 = [v29 stringWithFormat:@"The provided bundle has the wrong configuration type: '%@'.", v19];
+      configurationType2 = [bundleCopy configurationType];
+      v30 = [v29 stringWithFormat:@"The provided bundle has the wrong configuration type: '%@'.", configurationType2];
       v99[1] = v30;
       v98[2] = *MEMORY[0x1E696A368];
-      v31 = [v8 bundleURL];
-      v32 = [v31 path];
-      v33 = v32;
+      bundleURL = [bundleCopy bundleURL];
+      path = [bundleURL path];
+      v33 = path;
       v34 = @"<missing path>";
-      if (v32)
+      if (path)
       {
-        v34 = v32;
+        v34 = path;
       }
 
       v99[2] = v34;
       v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v99 forKeys:v98 count:3];
-      *a4 = [(NSError *)v26 gc_deviceDBError:v35 userInfo:?];
+      *error = [(NSError *)v26 gc_deviceDBError:v35 userInfo:?];
 
       goto LABEL_29;
     }
@@ -57,16 +57,16 @@
     goto LABEL_31;
   }
 
-  v12 = [v8 compatibilityVersion];
+  compatibilityVersion = [bundleCopy compatibilityVersion];
   v13 = +[GCVersion currentSourceVersion];
-  v14 = [v12 isGreaterThanSourceVersion:v13];
+  v14 = [compatibilityVersion isGreaterThanSourceVersion:v13];
 
   if (!v14)
   {
-    v19 = [v8 infoDictionary];
-    if (!v19)
+    configurationType2 = [bundleCopy infoDictionary];
+    if (!configurationType2)
     {
-      if (!a4)
+      if (!error)
       {
 LABEL_30:
 
@@ -80,30 +80,30 @@ LABEL_30:
       v95[0] = @"Failed to initialize Device DB Bundle.";
       v95[1] = @"The provided bundle did not return an Info Dictionary.";
       v94[2] = *MEMORY[0x1E696A368];
-      v53 = [v8 bundleURL];
-      v54 = [v53 path];
-      v55 = v54;
+      bundleURL2 = [bundleCopy bundleURL];
+      path2 = [bundleURL2 path];
+      v55 = path2;
       v56 = @"<missing path>";
-      if (v54)
+      if (path2)
       {
-        v56 = v54;
+        v56 = path2;
       }
 
       v95[2] = v56;
       v57 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v95 forKeys:v94 count:3];
-      *a4 = [(NSError *)v51 gc_deviceDBError:v57 userInfo:?];
+      *error = [(NSError *)v51 gc_deviceDBError:v57 userInfo:?];
 
 LABEL_29:
-      a4 = 0;
+      error = 0;
       goto LABEL_30;
     }
 
     v88 = 0;
-    v36 = [v19 gc_requiredObjectForKey:@"Devices" ofClass:objc_opt_class() error:&v88];
+    v36 = [configurationType2 gc_requiredObjectForKey:@"Devices" ofClass:objc_opt_class() error:&v88];
     v37 = v88;
     if (!v36)
     {
-      if (a4)
+      if (error)
       {
         v61 = MEMORY[0x1E696ABC0];
         v62 = *MEMORY[0x1E696A578];
@@ -112,21 +112,21 @@ LABEL_29:
         v92[0] = v62;
         v92[1] = v63;
         v64 = v37;
-        v65 = [v37 localizedFailureReason];
-        v93[1] = v65;
+        localizedFailureReason = [v37 localizedFailureReason];
+        v93[1] = localizedFailureReason;
         v92[2] = *MEMORY[0x1E696A368];
-        v66 = [v8 bundleURL];
-        v67 = [v66 path];
-        v68 = v67;
+        bundleURL3 = [bundleCopy bundleURL];
+        path3 = [bundleURL3 path];
+        v68 = path3;
         v69 = @"<missing path>";
-        if (v67)
+        if (path3)
         {
-          v69 = v67;
+          v69 = path3;
         }
 
         v93[2] = v69;
         v70 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v93 forKeys:v92 count:3];
-        *a4 = [(NSError *)v61 gc_deviceDBError:v70 userInfo:?];
+        *error = [(NSError *)v61 gc_deviceDBError:v70 userInfo:?];
 
         v37 = v64;
       }
@@ -147,7 +147,7 @@ LABEL_29:
     v77[2] = __42___GCDeviceDBBundle_initWithBundle_error___block_invoke;
     v77[3] = &unk_1E8415528;
     v81 = &v82;
-    v39 = v8;
+    v39 = bundleCopy;
     v78 = v39;
     v75 = v9;
     v79 = v75;
@@ -157,7 +157,7 @@ LABEL_29:
     v41 = v83[5];
     if (v41)
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_28;
       }
@@ -168,33 +168,33 @@ LABEL_29:
       v43 = *MEMORY[0x1E696A588];
       v90[0] = v42;
       v90[1] = v43;
-      v74 = [v41 localizedFailureReason];
-      v91[1] = v74;
+      localizedFailureReason2 = [v41 localizedFailureReason];
+      v91[1] = localizedFailureReason2;
       v90[2] = *MEMORY[0x1E696A368];
-      v73 = [v39 bundleURL];
-      v44 = [v73 path];
-      v72 = v44;
+      bundleURL4 = [v39 bundleURL];
+      path4 = [bundleURL4 path];
+      v72 = path4;
       v45 = @"<missing path>";
-      if (v44)
+      if (path4)
       {
-        v45 = v44;
+        v45 = path4;
       }
 
       v91[2] = v45;
       v90[3] = 0x1F4E1C010;
-      v46 = [(NSError *)v83[5] gc_dbFailingPath];
-      v47 = v46;
-      if (!v46)
+      gc_dbFailingPath = [(NSError *)v83[5] gc_dbFailingPath];
+      v47 = gc_dbFailingPath;
+      if (!gc_dbFailingPath)
       {
-        v46 = MEMORY[0x1E695E0F0];
+        gc_dbFailingPath = MEMORY[0x1E695E0F0];
       }
 
-      v48 = [v46 arrayByAddingObject:@"Devices"];
+      v48 = [gc_dbFailingPath arrayByAddingObject:@"Devices"];
       v91[3] = v48;
       v49 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v91 forKeys:v90 count:4];
-      *a4 = [(NSError *)v71 gc_deviceDBError:v49 userInfo:?];
+      *error = [(NSError *)v71 gc_deviceDBError:v49 userInfo:?];
 
-      devices = v74;
+      devices = localizedFailureReason2;
     }
 
     else
@@ -209,14 +209,14 @@ LABEL_28:
 
     if (!v41)
     {
-      a4 = v75;
+      error = v75;
       goto LABEL_30;
     }
 
     goto LABEL_29;
   }
 
-  if (a4)
+  if (error)
   {
     v15 = MEMORY[0x1E696ABC0];
     v16 = *MEMORY[0x1E696A578];
@@ -225,22 +225,22 @@ LABEL_28:
     v96[0] = v16;
     v96[1] = v17;
     v18 = MEMORY[0x1E696AEC0];
-    v19 = [v8 compatibilityVersion];
-    v20 = [v18 stringWithFormat:@"Bundle requires version '%@'.", v19];
+    configurationType2 = [bundleCopy compatibilityVersion];
+    v20 = [v18 stringWithFormat:@"Bundle requires version '%@'.", configurationType2];
     v97[1] = v20;
     v96[2] = *MEMORY[0x1E696A368];
-    v21 = [v8 bundleURL];
-    v22 = [v21 path];
-    v23 = v22;
+    bundleURL5 = [bundleCopy bundleURL];
+    path5 = [bundleURL5 path];
+    v23 = path5;
     v24 = @"<missing path>";
-    if (v22)
+    if (path5)
     {
-      v24 = v22;
+      v24 = path5;
     }
 
     v97[2] = v24;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v97 forKeys:v96 count:3];
-    *a4 = [(NSError *)v15 gc_deviceDBError:v25 userInfo:?];
+    *error = [(NSError *)v15 gc_deviceDBError:v25 userInfo:?];
 
     goto LABEL_29;
   }
@@ -248,15 +248,15 @@ LABEL_28:
 LABEL_31:
 
   v59 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
 - (id)redactedDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_GCDeviceDBBundle *)self identifier];
-  v5 = [(_GCDeviceDBBundle *)self version];
-  v6 = [v3 stringWithFormat:@"%@ (v%@)", v4, v5];
+  identifier = [(_GCDeviceDBBundle *)self identifier];
+  version = [(_GCDeviceDBBundle *)self version];
+  v6 = [v3 stringWithFormat:@"%@ (v%@)", identifier, version];
 
   return v6;
 }
@@ -264,9 +264,9 @@ LABEL_31:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_GCDeviceDBBundle *)self identifier];
-  v5 = [(_GCDeviceDBBundle *)self version];
-  v6 = [v3 stringWithFormat:@"%@ (v%@)", v4, v5];
+  identifier = [(_GCDeviceDBBundle *)self identifier];
+  version = [(_GCDeviceDBBundle *)self version];
+  v6 = [v3 stringWithFormat:@"%@ (v%@)", identifier, version];
 
   return v6;
 }
@@ -276,9 +276,9 @@ LABEL_31:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_GCDeviceDBBundle *)self identifier];
-  v7 = [(_GCDeviceDBBundle *)self version];
-  v8 = [v3 stringWithFormat:@"<%@ %p> %@ (v%@)", v5, self, v6, v7];
+  identifier = [(_GCDeviceDBBundle *)self identifier];
+  version = [(_GCDeviceDBBundle *)self version];
+  v8 = [v3 stringWithFormat:@"<%@ %p> %@ (v%@)", v5, self, identifier, version];
 
   return v8;
 }

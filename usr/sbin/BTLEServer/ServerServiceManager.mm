@@ -2,23 +2,23 @@
 + (id)instance;
 + (void)initialize;
 - (ServerServiceManager)init;
-- (id)nameForCentral:(id)a3;
+- (id)nameForCentral:(id)central;
 - (id)peripheralManagerStateString;
-- (void)addService:(id)a3;
+- (void)addService:(id)service;
 - (void)createServices;
 - (void)destroyServices;
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 central:(id)a4 didUpdateANCSAuthorization:(BOOL)a5;
-- (void)peripheralManager:(id)a3 didAddService:(id)a4 error:(id)a5;
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4;
-- (void)peripheralManager:(id)a3 didReceiveWriteRequests:(id)a4;
-- (void)peripheralManagerDidUpdateState:(id)a3;
-- (void)peripheralManagerIsReadyToUpdateSubscribers:(id)a3;
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager central:(id)central didUpdateANCSAuthorization:(BOOL)authorization;
+- (void)peripheralManager:(id)manager didAddService:(id)service error:(id)error;
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request;
+- (void)peripheralManager:(id)manager didReceiveWriteRequests:(id)requests;
+- (void)peripheralManagerDidUpdateState:(id)state;
+- (void)peripheralManagerIsReadyToUpdateSubscribers:(id)subscribers;
 - (void)refreshPersistanceAssertion;
-- (void)removeService:(id)a3;
-- (void)respondToRequest:(id)a3 withResult:(int64_t)a4;
-- (void)updateValue:(id)a3 forCharacteristic:(id)a4 onSubscribedCentrals:(id)a5;
+- (void)removeService:(id)service;
+- (void)respondToRequest:(id)request withResult:(int64_t)result;
+- (void)updateValue:(id)value forCharacteristic:(id)characteristic onSubscribedCentrals:(id)centrals;
 @end
 
 @implementation ServerServiceManager
@@ -37,7 +37,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = qword_1000DDB10;
     qword_1000DDB10 = &off_1000C4138;
@@ -103,9 +103,9 @@
         if (v8)
         {
           v9 = objc_alloc_init(v8);
-          v10 = [(ServerServiceManager *)self serverServiceMap];
-          v11 = [v9 service];
-          [v10 setObject:v9 forKey:v11];
+          serverServiceMap = [(ServerServiceManager *)self serverServiceMap];
+          service = [v9 service];
+          [serverServiceMap setObject:v9 forKey:service];
 
           [v9 start];
         }
@@ -123,20 +123,20 @@
 
 - (void)destroyServices
 {
-  v3 = [(ServerServiceManager *)self serverServiceMap];
-  [v3 enumerateKeysAndObjectsUsingBlock:&stru_1000BE0F8];
+  serverServiceMap = [(ServerServiceManager *)self serverServiceMap];
+  [serverServiceMap enumerateKeysAndObjectsUsingBlock:&stru_1000BE0F8];
 
-  v4 = [(ServerServiceManager *)self serverServiceMap];
-  [v4 removeAllObjects];
+  serverServiceMap2 = [(ServerServiceManager *)self serverServiceMap];
+  [serverServiceMap2 removeAllObjects];
 
-  v5 = [(ServerServiceManager *)self pendingUpdates];
-  [v5 removeAllObjects];
+  pendingUpdates = [(ServerServiceManager *)self pendingUpdates];
+  [pendingUpdates removeAllObjects];
 }
 
 - (void)refreshPersistanceAssertion
 {
-  v3 = [(ServerServiceManager *)self peripheralManager];
-  if ([v3 state] == 4)
+  peripheralManager = [(ServerServiceManager *)self peripheralManager];
+  if ([peripheralManager state] == 4)
   {
 
 LABEL_6:
@@ -145,16 +145,16 @@ LABEL_6:
     return;
   }
 
-  v4 = [(ServerServiceManager *)self shouldPersist];
+  shouldPersist = [(ServerServiceManager *)self shouldPersist];
 
-  if (!v4)
+  if (!shouldPersist)
   {
     goto LABEL_6;
   }
 
-  v5 = [(ServerServiceManager *)self persistanceAssertion];
+  persistanceAssertion = [(ServerServiceManager *)self persistanceAssertion];
 
-  if (!v5)
+  if (!persistanceAssertion)
   {
     v8 = [NSString stringWithFormat:@"com.apple.%@", objc_opt_class()];
     v6 = v8;
@@ -164,53 +164,53 @@ LABEL_6:
   }
 }
 
-- (void)addService:(id)a3
+- (void)addService:(id)service
 {
-  v4 = a3;
-  v5 = [(ServerServiceManager *)self peripheralManager];
-  [v5 addService:v4];
+  serviceCopy = service;
+  peripheralManager = [(ServerServiceManager *)self peripheralManager];
+  [peripheralManager addService:serviceCopy];
 }
 
-- (void)removeService:(id)a3
+- (void)removeService:(id)service
 {
-  v4 = a3;
-  v5 = [(ServerServiceManager *)self peripheralManager];
-  [v5 removeService:v4];
+  serviceCopy = service;
+  peripheralManager = [(ServerServiceManager *)self peripheralManager];
+  [peripheralManager removeService:serviceCopy];
 }
 
-- (void)respondToRequest:(id)a3 withResult:(int64_t)a4
+- (void)respondToRequest:(id)request withResult:(int64_t)result
 {
-  v6 = a3;
+  requestCopy = request;
   v7 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100077EA4(v7, v6);
+    sub_100077EA4(v7, requestCopy);
   }
 
-  v8 = [(ServerServiceManager *)self peripheralManager];
-  [v8 respondToRequest:v6 withResult:a4];
+  peripheralManager = [(ServerServiceManager *)self peripheralManager];
+  [peripheralManager respondToRequest:requestCopy withResult:result];
 }
 
-- (void)updateValue:(id)a3 forCharacteristic:(id)a4 onSubscribedCentrals:(id)a5
+- (void)updateValue:(id)value forCharacteristic:(id)characteristic onSubscribedCentrals:(id)centrals
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  characteristicCopy = characteristic;
+  centralsCopy = centrals;
   v11 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100077F8C(v11, v9, v8);
+    sub_100077F8C(v11, characteristicCopy, valueCopy);
   }
 
-  v12 = [(ServerServiceManager *)self pendingUpdates];
-  if ([v12 count])
+  pendingUpdates = [(ServerServiceManager *)self pendingUpdates];
+  if ([pendingUpdates count])
   {
   }
 
   else
   {
-    v13 = [(ServerServiceManager *)self peripheralManager];
-    v14 = [v13 updateValue:v8 forCharacteristic:v9 onSubscribedCentrals:v10];
+    peripheralManager = [(ServerServiceManager *)self peripheralManager];
+    v14 = [peripheralManager updateValue:valueCopy forCharacteristic:characteristicCopy onSubscribedCentrals:centralsCopy];
 
     if (v14)
     {
@@ -218,9 +218,9 @@ LABEL_6:
     }
   }
 
-  v15 = [(ServerServiceManager *)self pendingUpdates];
-  v16 = [ATTUpdate updateWithValue:v8 characteristic:v9 centrals:v10];
-  [v15 addObject:v16];
+  pendingUpdates2 = [(ServerServiceManager *)self pendingUpdates];
+  v16 = [ATTUpdate updateWithValue:valueCopy characteristic:characteristicCopy centrals:centralsCopy];
+  [pendingUpdates2 addObject:v16];
 
   v17 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
@@ -231,28 +231,28 @@ LABEL_6:
 LABEL_8:
 }
 
-- (void)peripheralManagerDidUpdateState:(id)a3
+- (void)peripheralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(ServerServiceManager *)self peripheralManagerStateString];
+    peripheralManagerStateString = [(ServerServiceManager *)self peripheralManagerStateString];
     *buf = 138412290;
-    v13 = v7;
+    v13 = peripheralManagerStateString;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PeripheralManager state is now %@", buf, 0xCu);
   }
 
   [(ServerServiceManager *)self refreshPersistanceAssertion];
-  v8 = [(ServerServiceManager *)self serverServiceMap];
+  serverServiceMap = [(ServerServiceManager *)self serverServiceMap];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10004ADFC;
   v10[3] = &unk_1000BE120;
-  v9 = v4;
+  v9 = stateCopy;
   v11 = v9;
-  [v8 enumerateKeysAndObjectsUsingBlock:v10];
+  [serverServiceMap enumerateKeysAndObjectsUsingBlock:v10];
 
   if ([v9 state] == 5)
   {
@@ -265,73 +265,73 @@ LABEL_8:
   }
 }
 
-- (void)peripheralManager:(id)a3 didAddService:(id)a4 error:(id)a5
+- (void)peripheralManager:(id)manager didAddService:(id)service error:(id)error
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ServerServiceManager *)self serverServiceMap];
-  v11 = [v10 objectForKey:v8];
+  managerCopy = manager;
+  serviceCopy = service;
+  errorCopy = error;
+  serverServiceMap = [(ServerServiceManager *)self serverServiceMap];
+  v11 = [serverServiceMap objectForKey:serviceCopy];
 
   if (v11)
   {
-    [v11 peripheralManager:v12 didAddService:v8 error:v9];
+    [v11 peripheralManager:managerCopy didAddService:serviceCopy error:errorCopy];
   }
 }
 
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ServerServiceManager *)self serverServiceMap];
-  v9 = [v7 characteristic];
-  v10 = [v9 service];
-  v11 = [v8 objectForKey:v10];
+  managerCopy = manager;
+  requestCopy = request;
+  serverServiceMap = [(ServerServiceManager *)self serverServiceMap];
+  characteristic = [requestCopy characteristic];
+  service = [characteristic service];
+  v11 = [serverServiceMap objectForKey:service];
 
   if (v11)
   {
     v12 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000780E8(v12, v7, self);
+      sub_1000780E8(v12, requestCopy, self);
     }
 
-    [v11 peripheralManager:v6 didReceiveReadRequest:v7];
+    [v11 peripheralManager:managerCopy didReceiveReadRequest:requestCopy];
   }
 
   else
   {
-    v13 = [(ServerServiceManager *)self peripheralManager];
-    [v13 respondToRequest:v7 withResult:10];
+    peripheralManager = [(ServerServiceManager *)self peripheralManager];
+    [peripheralManager respondToRequest:requestCopy withResult:10];
   }
 }
 
-- (void)peripheralManager:(id)a3 didReceiveWriteRequests:(id)a4
+- (void)peripheralManager:(id)manager didReceiveWriteRequests:(id)requests
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 firstObject];
-  v9 = [(ServerServiceManager *)self serverServiceMap];
-  v10 = [v8 characteristic];
-  v11 = [v10 service];
-  v12 = [v9 objectForKey:v11];
+  managerCopy = manager;
+  requestsCopy = requests;
+  firstObject = [requestsCopy firstObject];
+  serverServiceMap = [(ServerServiceManager *)self serverServiceMap];
+  characteristic = [firstObject characteristic];
+  service = [characteristic service];
+  v12 = [serverServiceMap objectForKey:service];
 
   if (v12)
   {
     v26 = v12;
-    v27 = v8;
-    v28 = v6;
+    v27 = firstObject;
+    v28 = managerCopy;
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v13 = v7;
+    v13 = requestsCopy;
     v14 = [v13 countByEnumeratingWithState:&v31 objects:v41 count:16];
     if (v14)
     {
       v15 = v14;
       v16 = *v32;
-      v29 = self;
+      selfCopy = self;
       do
       {
         v17 = 0;
@@ -347,20 +347,20 @@ LABEL_8:
           {
             v19 = *(*(&v31 + 1) + 8 * v17);
             v20 = v18;
-            v30 = [v19 central];
-            v21 = [(ServerServiceManager *)self nameForCentral:v30];
-            v22 = [v19 characteristic];
-            v23 = [v22 UUID];
-            v24 = [v19 value];
+            central = [v19 central];
+            v21 = [(ServerServiceManager *)self nameForCentral:central];
+            characteristic2 = [v19 characteristic];
+            uUID = [characteristic2 UUID];
+            value = [v19 value];
             *buf = 138412802;
             v36 = v21;
             v37 = 2112;
-            v38 = v23;
+            v38 = uUID;
             v39 = 2112;
-            v40 = v24;
+            v40 = value;
             _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "Central %@ sent a write request on characteristic %@: %@", buf, 0x20u);
 
-            self = v29;
+            self = selfCopy;
           }
 
           v17 = v17 + 1;
@@ -374,26 +374,26 @@ LABEL_8:
     }
 
     v12 = v26;
-    v6 = v28;
+    managerCopy = v28;
     [v26 peripheralManager:v28 didReceiveWriteRequests:v13];
-    v8 = v27;
+    firstObject = v27;
   }
 
   else
   {
-    v25 = [(ServerServiceManager *)self peripheralManager];
-    [v25 respondToRequest:v8 withResult:10];
+    peripheralManager = [(ServerServiceManager *)self peripheralManager];
+    [peripheralManager respondToRequest:firstObject withResult:10];
   }
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ServerServiceManager *)self serverServiceMap];
-  v12 = [v10 service];
-  v13 = [v11 objectForKey:v12];
+  managerCopy = manager;
+  centralCopy = central;
+  characteristicCopy = characteristic;
+  serverServiceMap = [(ServerServiceManager *)self serverServiceMap];
+  service = [characteristicCopy service];
+  v13 = [serverServiceMap objectForKey:service];
 
   if (v13)
   {
@@ -401,27 +401,27 @@ LABEL_8:
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [(ServerServiceManager *)self nameForCentral:v9];
-      v17 = [v10 UUID];
+      v16 = [(ServerServiceManager *)self nameForCentral:centralCopy];
+      uUID = [characteristicCopy UUID];
       v18 = 138412546;
       v19 = v16;
       v20 = 2112;
-      v21 = v17;
+      v21 = uUID;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Central %@ is now subscribed to characteristic %@", &v18, 0x16u);
     }
 
-    [v13 peripheralManager:v8 central:v9 didSubscribeToCharacteristic:v10];
+    [v13 peripheralManager:managerCopy central:centralCopy didSubscribeToCharacteristic:characteristicCopy];
   }
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ServerServiceManager *)self serverServiceMap];
-  v12 = [v10 service];
-  v13 = [v11 objectForKey:v12];
+  managerCopy = manager;
+  centralCopy = central;
+  characteristicCopy = characteristic;
+  serverServiceMap = [(ServerServiceManager *)self serverServiceMap];
+  service = [characteristicCopy service];
+  v13 = [serverServiceMap objectForKey:service];
 
   if (v13)
   {
@@ -429,22 +429,22 @@ LABEL_8:
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [(ServerServiceManager *)self nameForCentral:v9];
-      v17 = [v10 UUID];
+      v16 = [(ServerServiceManager *)self nameForCentral:centralCopy];
+      uUID = [characteristicCopy UUID];
       v18 = 138412546;
       v19 = v16;
       v20 = 2112;
-      v21 = v17;
+      v21 = uUID;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Central %@ is now unsubscribed from characteristic %@", &v18, 0x16u);
     }
 
-    [v13 peripheralManager:v8 central:v9 didUnsubscribeFromCharacteristic:v10];
+    [v13 peripheralManager:managerCopy central:centralCopy didUnsubscribeFromCharacteristic:characteristicCopy];
   }
 }
 
-- (void)peripheralManagerIsReadyToUpdateSubscribers:(id)a3
+- (void)peripheralManagerIsReadyToUpdateSubscribers:(id)subscribers
 {
-  v4 = a3;
+  subscribersCopy = subscribers;
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
@@ -453,22 +453,22 @@ LABEL_8:
 
   while (1)
   {
-    v6 = [(ServerServiceManager *)self pendingUpdates];
-    v7 = [v6 count];
+    pendingUpdates = [(ServerServiceManager *)self pendingUpdates];
+    v7 = [pendingUpdates count];
 
     if (!v7)
     {
       break;
     }
 
-    v8 = [(ServerServiceManager *)self pendingUpdates];
-    v9 = [v8 firstObject];
+    pendingUpdates2 = [(ServerServiceManager *)self pendingUpdates];
+    firstObject = [pendingUpdates2 firstObject];
 
-    v10 = [(ServerServiceManager *)self peripheralManager];
-    v11 = [v9 value];
-    v12 = [v9 characteristic];
-    v13 = [v9 centrals];
-    v14 = [v10 updateValue:v11 forCharacteristic:v12 onSubscribedCentrals:v13];
+    peripheralManager = [(ServerServiceManager *)self peripheralManager];
+    value = [firstObject value];
+    characteristic = [firstObject characteristic];
+    centrals = [firstObject centrals];
+    v14 = [peripheralManager updateValue:value forCharacteristic:characteristic onSubscribedCentrals:centrals];
 
     if ((v14 & 1) == 0)
     {
@@ -476,33 +476,33 @@ LABEL_8:
       break;
     }
 
-    v15 = [(ServerServiceManager *)self pendingUpdates];
-    [v15 removeObjectAtIndex:0];
+    pendingUpdates3 = [(ServerServiceManager *)self pendingUpdates];
+    [pendingUpdates3 removeObjectAtIndex:0];
   }
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didUpdateANCSAuthorization:(BOOL)a5
+- (void)peripheralManager:(id)manager central:(id)central didUpdateANCSAuthorization:(BOOL)authorization
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ServerServiceManager *)self serverServiceMap];
+  managerCopy = manager;
+  centralCopy = central;
+  serverServiceMap = [(ServerServiceManager *)self serverServiceMap];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10004B79C;
   v13[3] = &unk_1000BE148;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
-  [v10 enumerateKeysAndObjectsUsingBlock:v13];
+  v14 = managerCopy;
+  v15 = centralCopy;
+  authorizationCopy = authorization;
+  v11 = centralCopy;
+  v12 = managerCopy;
+  [serverServiceMap enumerateKeysAndObjectsUsingBlock:v13];
 }
 
-- (id)nameForCentral:(id)a3
+- (id)nameForCentral:(id)central
 {
-  v3 = [a3 identifier];
+  identifier = [central identifier];
   v4 = +[ConnectionManager instance];
-  v5 = [v4 peripheralForIdentifier:v3];
+  v5 = [v4 peripheralForIdentifier:identifier];
 
   if (v5)
   {
@@ -511,7 +511,7 @@ LABEL_8:
 
   else
   {
-    [v3 UUIDString];
+    [identifier UUIDString];
   }
   v6 = ;
 
@@ -520,17 +520,17 @@ LABEL_8:
 
 - (id)peripheralManagerStateString
 {
-  v2 = [(ServerServiceManager *)self peripheralManager];
-  v3 = [v2 state];
+  peripheralManager = [(ServerServiceManager *)self peripheralManager];
+  state = [peripheralManager state];
 
-  if ((v3 - 1) > 9)
+  if ((state - 1) > 9)
   {
     return @"unknown";
   }
 
   else
   {
-    return *(&off_1000BE168 + (v3 - 1));
+    return *(&off_1000BE168 + (state - 1));
   }
 }
 

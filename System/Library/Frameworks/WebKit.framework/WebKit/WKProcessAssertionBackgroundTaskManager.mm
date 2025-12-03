@@ -5,7 +5,7 @@
 - (uint64_t)_handleBackgroundTaskExpirationOnMainThread;
 - (uint64_t)_scheduleReleaseTask;
 - (uint64_t)_updateBackgroundTask;
-- (uint64_t)setProcessStateMonitorEnabled:(uint64_t)a1;
+- (uint64_t)setProcessStateMonitorEnabled:(uint64_t)enabled;
 - (void)_cancelPendingReleaseTask;
 - (void)_handleBackgroundTaskExpiration;
 - (void)_handleBackgroundTaskExpirationOnMainThread;
@@ -13,11 +13,11 @@
 - (void)_releaseBackgroundTask;
 - (void)_scheduleReleaseTask;
 - (void)_updateBackgroundTask;
-- (void)addAssertionNeedingBackgroundTask:(void *)a3;
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4;
+- (void)addAssertionNeedingBackgroundTask:(void *)task;
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error;
 - (void)dealloc;
-- (void)removeAssertionNeedingBackgroundTask:(void *)a3;
-- (void)setProcessStateMonitorEnabled:(BOOL)a3;
+- (void)removeAssertionNeedingBackgroundTask:(void *)task;
+- (void)setProcessStateMonitorEnabled:(BOOL)enabled;
 @end
 
 @implementation WKProcessAssertionBackgroundTaskManager
@@ -53,24 +53,24 @@
   v2 = [(WKProcessAssertionBackgroundTaskManager *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v4 = *MEMORY[0x1E69DDBC0];
-    v5 = [MEMORY[0x1E69DC668] sharedApplication];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __47__WKProcessAssertionBackgroundTaskManager_init__block_invoke;
     v11[3] = &unk_1E7632398;
     v11[4] = v2;
-    [v3 addObserverForName:v4 object:v5 queue:0 usingBlock:v11];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserverForName:v4 object:mEMORY[0x1E69DC668] queue:0 usingBlock:v11];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v7 = *MEMORY[0x1E69DDAC8];
-    v8 = [MEMORY[0x1E69DC668] sharedApplication];
+    mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __47__WKProcessAssertionBackgroundTaskManager_init__block_invoke_2;
     v10[3] = &unk_1E7632398;
     v10[4] = v2;
-    [v6 addObserverForName:v7 object:v8 queue:0 usingBlock:v10];
+    [defaultCenter2 addObserverForName:v7 object:mEMORY[0x1E69DC668]2 queue:0 usingBlock:v10];
   }
 
   return v2;
@@ -78,14 +78,14 @@
 
 - (void)_updateBackgroundTask
 {
-  *a1 = &unk_1F1100BA8;
-  v2 = a1[2];
-  a1[2] = 0;
+  *self = &unk_1F1100BA8;
+  v2 = self[2];
+  self[2] = 0;
   if (v2)
   {
   }
 
-  return a1;
+  return self;
 }
 
 uint64_t __47__WKProcessAssertionBackgroundTaskManager_init__block_invoke(uint64_t a1)
@@ -116,9 +116,9 @@ uint64_t __47__WKProcessAssertionBackgroundTaskManager_init__block_invoke_2(uint
   [(WKProcessAssertionBackgroundTaskManager *)&v3 dealloc];
 }
 
-- (void)addAssertionNeedingBackgroundTask:(void *)a3
+- (void)addAssertionNeedingBackgroundTask:(void *)task
 {
-  v5 = WTF::ThreadSafeRefCountedAndCanMakeThreadSafeWeakPtr<WebKit::NetworkDataTask,(WTF::DestructionThread)1>::controlBlock(a3 + 1);
+  v5 = WTF::ThreadSafeRefCountedAndCanMakeThreadSafeWeakPtr<WebKit::NetworkDataTask,(WTF::DestructionThread)1>::controlBlock(task + 1);
   if (WTF::ThreadSafeWeakPtrControlBlock::objectHasStartedDeletion(v5))
   {
     __break(0xC471u);
@@ -132,7 +132,7 @@ uint64_t __47__WKProcessAssertionBackgroundTaskManager_init__block_invoke_2(uint
     MEMORY[0x19EB01E30](&self->_assertionsNeedingBackgroundTask.m_lock);
   }
 
-  v7 = WTF::ThreadSafeRefCountedAndCanMakeThreadSafeWeakPtr<WebKit::NetworkDataTask,(WTF::DestructionThread)1>::controlBlock(a3 + 1);
+  v7 = WTF::ThreadSafeRefCountedAndCanMakeThreadSafeWeakPtr<WebKit::NetworkDataTask,(WTF::DestructionThread)1>::controlBlock(task + 1);
   v8 = WTF::ThreadSafeWeakPtrControlBlock::weakRef(v7);
   m_maxOperationCountWithoutCleanup = self->_assertionsNeedingBackgroundTask.m_maxOperationCountWithoutCleanup;
   v10 = self->_assertionsNeedingBackgroundTask.m_operationCountSinceLastCleanup + 1;
@@ -229,7 +229,7 @@ LABEL_30:
   }
 
   v22 = *(m_table - 2);
-  v23 = WTF::PairHash<WTF::RefPtr<WTF::ThreadSafeWeakPtrControlBlock,WTF::RawPtrTraits<WTF::ThreadSafeWeakPtrControlBlock>,WTF::ThreadSafeWeakPtrControlBlockRefDerefTraits>,WebCore::RealtimeMediaSource const*>::hash(v8, a3) & v22;
+  v23 = WTF::PairHash<WTF::RefPtr<WTF::ThreadSafeWeakPtrControlBlock,WTF::RawPtrTraits<WTF::ThreadSafeWeakPtrControlBlock>,WTF::ThreadSafeWeakPtrControlBlockRefDerefTraits>,WebCore::RealtimeMediaSource const*>::hash(v8, task) & v22;
   v24 = &m_table[4 * v23];
   v25 = *v24;
   v26 = v24[1];
@@ -237,7 +237,7 @@ LABEL_30:
   {
     v27 = 0;
     v28 = 1;
-    while (v25 != v8 || v26 != a3)
+    while (v25 != v8 || v26 != task)
     {
       if (v25 == -1)
       {
@@ -274,7 +274,7 @@ LABEL_30:
 LABEL_41:
   *v24 = v8;
   v29 = self->_assertionsNeedingBackgroundTask.m_set.m_impl.m_table;
-  v24[1] = a3;
+  v24[1] = task;
   if (v29)
   {
     v30 = *(v29 - 3) + 1;
@@ -315,7 +315,7 @@ LABEL_49:
   [(WKProcessAssertionBackgroundTaskManager *)self _updateBackgroundTask];
 }
 
-- (void)removeAssertionNeedingBackgroundTask:(void *)a3
+- (void)removeAssertionNeedingBackgroundTask:(void *)task
 {
   v5 = 0;
   p_m_lock = &self->_assertionsNeedingBackgroundTask.m_lock;
@@ -411,18 +411,18 @@ LABEL_27:
   }
 
 LABEL_28:
-  if (*(a3 + 1))
+  if (*(task + 1))
   {
     goto LABEL_64;
   }
 
-  v19 = WTF::ThreadSafeRefCountedAndCanMakeThreadSafeWeakPtr<WebKit::NetworkDataTask,(WTF::DestructionThread)1>::controlBlock(a3 + 1);
+  v19 = WTF::ThreadSafeRefCountedAndCanMakeThreadSafeWeakPtr<WebKit::NetworkDataTask,(WTF::DestructionThread)1>::controlBlock(task + 1);
   if (!WTF::ThreadSafeWeakPtrControlBlock::weakRefCount(v19))
   {
     goto LABEL_64;
   }
 
-  v20 = WTF::ThreadSafeRefCountedAndCanMakeThreadSafeWeakPtr<WebKit::NetworkDataTask,(WTF::DestructionThread)1>::controlBlock(a3 + 1);
+  v20 = WTF::ThreadSafeRefCountedAndCanMakeThreadSafeWeakPtr<WebKit::NetworkDataTask,(WTF::DestructionThread)1>::controlBlock(task + 1);
   v21 = WTF::ThreadSafeWeakPtrControlBlock::weakRef(v20);
   v23 = v21;
   v24 = self->_assertionsNeedingBackgroundTask.m_set.m_impl.m_table;
@@ -433,11 +433,11 @@ LABEL_28:
   }
 
   v25 = *(v24 - 2);
-  v26 = WTF::PairHash<WTF::RefPtr<WTF::ThreadSafeWeakPtrControlBlock,WTF::RawPtrTraits<WTF::ThreadSafeWeakPtrControlBlock>,WTF::ThreadSafeWeakPtrControlBlockRefDerefTraits>,WebCore::RealtimeMediaSource const*>::hash(v21, a3) & v25;
+  v26 = WTF::PairHash<WTF::RefPtr<WTF::ThreadSafeWeakPtrControlBlock,WTF::RawPtrTraits<WTF::ThreadSafeWeakPtrControlBlock>,WTF::ThreadSafeWeakPtrControlBlockRefDerefTraits>,WebCore::RealtimeMediaSource const*>::hash(v21, task) & v25;
   v27 = &v24[4 * v26];
   v28 = *v27;
   v29 = *(v27 + 1);
-  if (*v27 == v23 && v29 == a3)
+  if (*v27 == v23 && v29 == task)
   {
 LABEL_44:
     if (!v23)
@@ -456,7 +456,7 @@ LABEL_44:
     v28 = *v27;
     v29 = *(v27 + 1);
     ++v31;
-    if (*v27 == v23 && v29 == a3)
+    if (*v27 == v23 && v29 == task)
     {
       goto LABEL_44;
     }
@@ -831,14 +831,14 @@ LABEL_67:
 
 - (void)_scheduleReleaseTask
 {
-  *a1 = &unk_1F1100B80;
-  v2 = a1[2];
-  a1[2] = 0;
+  *self = &unk_1F1100B80;
+  v2 = self[2];
+  self[2] = 0;
   if (v2)
   {
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_cancelPendingReleaseTask
@@ -851,7 +851,7 @@ LABEL_67:
     if (os_log_type_enabled(qword_1ED641030, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 134217984;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_19D52D000, v4, OS_LOG_TYPE_DEFAULT, "%p - WKProcessAssertionBackgroundTaskManager: _cancelPendingReleaseTask because the application is foreground again", &v5, 0xCu);
       pendingTaskReleaseTask = self->_pendingTaskReleaseTask;
     }
@@ -861,14 +861,14 @@ LABEL_67:
   }
 }
 
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error
 {
   v9 = *MEMORY[0x1E69E9840];
   v6 = qword_1ED641030;
   if (os_log_type_enabled(qword_1ED641030, OS_LOG_TYPE_ERROR))
   {
     v7 = 138543362;
-    v8 = a4;
+    errorCopy = error;
     _os_log_error_impl(&dword_19D52D000, v6, OS_LOG_TYPE_ERROR, "WKProcessAssertionBackgroundTaskManager: FinishTaskInterruptable assertion was invalidated, error: %{public}@", &v7, 0xCu);
   }
 
@@ -905,14 +905,14 @@ LABEL_67:
 
 - (void)_handleBackgroundTaskExpirationOnMainThread
 {
-  *a1 = &unk_1F1100BF8;
-  v2 = a1[2];
-  a1[2] = 0;
+  *self = &unk_1F1100BF8;
+  v2 = self[2];
+  self[2] = 0;
   if (v2)
   {
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_releaseBackgroundTask
@@ -924,7 +924,7 @@ LABEL_67:
     if (os_log_type_enabled(qword_1ED641030, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134217984;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&dword_19D52D000, v3, OS_LOG_TYPE_DEFAULT, "%p - WKProcessAssertionBackgroundTaskManager: endBackgroundTask", &v9, 0xCu);
     }
 
@@ -952,10 +952,10 @@ LABEL_67:
   }
 }
 
-- (void)setProcessStateMonitorEnabled:(BOOL)a3
+- (void)setProcessStateMonitorEnabled:(BOOL)enabled
 {
   m_ptr = self->m_processStateMonitor.m_ptr;
-  if (a3)
+  if (enabled)
   {
     if (!m_ptr)
     {
@@ -1013,10 +1013,10 @@ LABEL_67:
 
 - (uint64_t)_updateBackgroundTask
 {
-  result = WTF::ThreadSafeWeakHashSet<WebKit::ProcessAndUIAssertion>::isEmptyIgnoringNullReferences(*(a1 + 8) + 24);
+  result = WTF::ThreadSafeWeakHashSet<WebKit::ProcessAndUIAssertion>::isEmptyIgnoringNullReferences(*(self + 8) + 24);
   if (result)
   {
-    v3 = *(a1 + 8);
+    v3 = *(self + 8);
 
     return [v3 _releaseBackgroundTask];
   }
@@ -1036,7 +1036,7 @@ LABEL_67:
   return WTF::fastFree(this, a2);
 }
 
-- (uint64_t)setProcessStateMonitorEnabled:(uint64_t)a1
+- (uint64_t)setProcessStateMonitorEnabled:(uint64_t)enabled
 {
   WebKit::WebProcessPool::allProcessPools(&v7);
   if (v8)

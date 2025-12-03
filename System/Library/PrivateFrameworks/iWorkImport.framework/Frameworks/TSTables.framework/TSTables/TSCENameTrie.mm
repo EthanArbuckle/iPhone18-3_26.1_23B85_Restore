@@ -1,39 +1,39 @@
 @interface TSCENameTrie
-- (BOOL)containsName:(id)a3;
-- (BOOL)insertFoldedName:(id)a3;
-- (BOOL)insertName:(id)a3;
-- (TSCENameTrie)initWithLocale:(id)a3;
+- (BOOL)containsName:(id)name;
+- (BOOL)insertFoldedName:(id)name;
+- (BOOL)insertName:(id)name;
+- (TSCENameTrie)initWithLocale:(id)locale;
 - (id).cxx_construct;
-- (id)foldName:(id)a3;
-- (void)enumerateNamesMatchingPrefix:(id)a3 block:(id)a4;
-- (void)nodeForName:(id)a3 createIfMissing:(BOOL)a4;
-- (void)removeName:(id)a3;
+- (id)foldName:(id)name;
+- (void)enumerateNamesMatchingPrefix:(id)prefix block:(id)block;
+- (void)nodeForName:(id)name createIfMissing:(BOOL)missing;
+- (void)removeName:(id)name;
 @end
 
 @implementation TSCENameTrie
 
-- (TSCENameTrie)initWithLocale:(id)a3
+- (TSCENameTrie)initWithLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   v9.receiver = self;
   v9.super_class = TSCENameTrie;
   v6 = [(TSCENameTrie *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_locale, a3);
+    objc_storeStrong(&v6->_locale, locale);
   }
 
   return v7;
 }
 
-- (void)nodeForName:(id)a3 createIfMissing:(BOOL)a4
+- (void)nodeForName:(id)name createIfMissing:(BOOL)missing
 {
-  v6 = a3;
-  v11 = v6;
-  if (v6)
+  nameCopy = name;
+  v11 = nameCopy;
+  if (nameCopy)
   {
-    v15 = objc_msgSend_length(v6, v7, v8, v9, v10);
+    v15 = objc_msgSend_length(nameCopy, v7, v8, v9, v10);
     v16 = 0;
     p_root = &self->_root;
     while (v15 != v16)
@@ -42,7 +42,7 @@
       v18 = sub_2210C3024(p_root, &v20);
       if (!v18 || !v18[3])
       {
-        if (a4)
+        if (missing)
         {
           operator new();
         }
@@ -68,21 +68,21 @@ LABEL_9:
   return p_root;
 }
 
-- (id)foldName:(id)a3
+- (id)foldName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9 = objc_msgSend_locale(self->_locale, v5, v6, v7, v8);
-  v13 = objc_msgSend_tsce_stringByFoldingForNamedReferenceMatchingWithLocale_(v4, v10, v9, v11, v12);
+  v13 = objc_msgSend_tsce_stringByFoldingForNamedReferenceMatchingWithLocale_(nameCopy, v10, v9, v11, v12);
 
   return v13;
 }
 
-- (BOOL)insertFoldedName:(id)a3
+- (BOOL)insertFoldedName:(id)name
 {
-  v4 = a3;
-  if ((objc_msgSend_length(v4, v5, v6, v7, v8) - 1001) >= 0xFFFFFFFFFFFFFC18 && (IfMissing = objc_msgSend_nodeForName_createIfMissing_(self, v9, v4, 1, v10)) != 0)
+  nameCopy = name;
+  if ((objc_msgSend_length(nameCopy, v5, v6, v7, v8) - 1001) >= 0xFFFFFFFFFFFFFC18 && (IfMissing = objc_msgSend_nodeForName_createIfMissing_(self, v9, nameCopy, 1, v10)) != 0)
   {
-    sub_221141CA4(IfMissing, v4);
+    sub_221141CA4(IfMissing, nameCopy);
     v12 = 1;
   }
 
@@ -94,12 +94,12 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)insertName:(id)a3
+- (BOOL)insertName:(id)name
 {
-  v4 = a3;
-  if ((objc_msgSend_length(v4, v5, v6, v7, v8) - 1001) >= 0xFFFFFFFFFFFFFC18)
+  nameCopy = name;
+  if ((objc_msgSend_length(nameCopy, v5, v6, v7, v8) - 1001) >= 0xFFFFFFFFFFFFFC18)
   {
-    v13 = objc_msgSend_foldName_(self, v9, v4, v10, v11);
+    v13 = objc_msgSend_foldName_(self, v9, nameCopy, v10, v11);
     inserted = objc_msgSend_insertFoldedName_(self, v14, v13, v15, v16);
   }
 
@@ -111,12 +111,12 @@ LABEL_9:
   return inserted;
 }
 
-- (BOOL)containsName:(id)a3
+- (BOOL)containsName:(id)name
 {
-  v4 = a3;
-  if ((objc_msgSend_length(v4, v5, v6, v7, v8) - 1001) >= 0xFFFFFFFFFFFFFC18)
+  nameCopy = name;
+  if ((objc_msgSend_length(nameCopy, v5, v6, v7, v8) - 1001) >= 0xFFFFFFFFFFFFFC18)
   {
-    v13 = objc_msgSend_foldName_(self, v9, v4, v10, v11);
+    v13 = objc_msgSend_foldName_(self, v9, nameCopy, v10, v11);
     IfMissing = objc_msgSend_nodeForName_createIfMissing_(self, v14, v13, 0, v15);
     if (IfMissing)
     {
@@ -137,10 +137,10 @@ LABEL_9:
   return v12;
 }
 
-- (void)removeName:(id)a3
+- (void)removeName:(id)name
 {
-  v4 = a3;
-  v8 = objc_msgSend_foldName_(self, v5, v4, v6, v7);
+  nameCopy = name;
+  v8 = objc_msgSend_foldName_(self, v5, nameCopy, v6, v7);
   v13 = objc_msgSend_length(v8, v9, v10, v11, v12);
   if (v8)
   {
@@ -280,10 +280,10 @@ LABEL_26:
   }
 }
 
-- (void)enumerateNamesMatchingPrefix:(id)a3 block:(id)a4
+- (void)enumerateNamesMatchingPrefix:(id)prefix block:(id)block
 {
-  v17 = a4;
-  v9 = objc_msgSend_foldName_(self, v6, a3, v7, v8);
+  blockCopy = block;
+  v9 = objc_msgSend_foldName_(self, v6, prefix, v7, v8);
   if (!objc_msgSend_length(v9, v10, v11, v12, v13))
   {
     p_root = &self->_root;
@@ -294,7 +294,7 @@ LABEL_26:
   if (p_root)
   {
 LABEL_5:
-    sub_221141878(p_root, v17);
+    sub_221141878(p_root, blockCopy);
   }
 }
 

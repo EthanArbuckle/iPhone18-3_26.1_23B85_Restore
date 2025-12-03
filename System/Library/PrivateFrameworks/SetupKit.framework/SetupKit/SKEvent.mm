@@ -1,14 +1,14 @@
 @interface SKEvent
-- (SKEvent)initWithEventType:(int)a3;
-- (SKEvent)initWithEventType:(int)a3 error:(id)a4;
-- (id)descriptionWithLevel:(int)a3;
+- (SKEvent)initWithEventType:(int)type;
+- (SKEvent)initWithEventType:(int)type error:(id)error;
+- (id)descriptionWithLevel:(int)level;
 @end
 
 @implementation SKEvent
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -50,28 +50,28 @@
   return v11;
 }
 
-- (SKEvent)initWithEventType:(int)a3 error:(id)a4
+- (SKEvent)initWithEventType:(int)type error:(id)error
 {
-  v7 = a4;
+  errorCopy = error;
   v8 = [(SKEvent *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_error, a4);
-    v9->_eventType = a3;
+    objc_storeStrong(&v8->_error, error);
+    v9->_eventType = type;
     v10 = v9;
   }
 
   return v9;
 }
 
-- (SKEvent)initWithEventType:(int)a3
+- (SKEvent)initWithEventType:(int)type
 {
   v4 = [(SKEvent *)self init];
   v5 = v4;
   if (v4)
   {
-    v4->_eventType = a3;
+    v4->_eventType = type;
     v6 = v4;
   }
 

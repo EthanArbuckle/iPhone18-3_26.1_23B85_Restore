@@ -4,15 +4,15 @@
 - (NSArray)dates;
 - (NSArray)phoneNumbers;
 - (NSArray)streetAddresses;
-- (WFDataDetectorResults)initWithTextCheckingResults:(id)a3 number:(id)a4 dictionaries:(id)a5 dictionaryType:(id)a6;
+- (WFDataDetectorResults)initWithTextCheckingResults:(id)results number:(id)number dictionaries:(id)dictionaries dictionaryType:(id)type;
 @end
 
 @implementation WFDataDetectorResults
 
 - (NSArray)dateComponentsResults
 {
-  v2 = [(WFDataDetectorResults *)self textCheckingResults];
-  v3 = [v2 if_compactMap:&__block_literal_global_13_21721];
+  textCheckingResults = [(WFDataDetectorResults *)self textCheckingResults];
+  v3 = [textCheckingResults if_compactMap:&__block_literal_global_13_21721];
 
   return v3;
 }
@@ -47,8 +47,8 @@ id __46__WFDataDetectorResults_dateComponentsResults__block_invoke(uint64_t a1, 
 
 - (NSArray)dates
 {
-  v2 = [(WFDataDetectorResults *)self textCheckingResults];
-  v3 = [v2 if_compactMap:&__block_literal_global_10_21725];
+  textCheckingResults = [(WFDataDetectorResults *)self textCheckingResults];
+  v3 = [textCheckingResults if_compactMap:&__block_literal_global_10_21725];
 
   return v3;
 }
@@ -71,8 +71,8 @@ id __30__WFDataDetectorResults_dates__block_invoke(uint64_t a1, void *a2)
 
 - (NSArray)phoneNumbers
 {
-  v2 = [(WFDataDetectorResults *)self textCheckingResults];
-  v3 = [v2 if_compactMap:&__block_literal_global_6_21728];
+  textCheckingResults = [(WFDataDetectorResults *)self textCheckingResults];
+  v3 = [textCheckingResults if_compactMap:&__block_literal_global_6_21728];
 
   return v3;
 }
@@ -95,8 +95,8 @@ id __37__WFDataDetectorResults_phoneNumbers__block_invoke(uint64_t a1, void *a2)
 
 - (NSArray)streetAddresses
 {
-  v2 = [(WFDataDetectorResults *)self textCheckingResults];
-  v3 = [v2 if_compactMap:&__block_literal_global_3_21732];
+  textCheckingResults = [(WFDataDetectorResults *)self textCheckingResults];
+  v3 = [textCheckingResults if_compactMap:&__block_literal_global_3_21732];
 
   return v3;
 }
@@ -119,8 +119,8 @@ id __40__WFDataDetectorResults_streetAddresses__block_invoke(uint64_t a1, void *
 
 - (NSArray)URLs
 {
-  v2 = [(WFDataDetectorResults *)self textCheckingResults];
-  v3 = [v2 if_compactMap:&__block_literal_global_21736];
+  textCheckingResults = [(WFDataDetectorResults *)self textCheckingResults];
+  v3 = [textCheckingResults if_compactMap:&__block_literal_global_21736];
 
   return v3;
 }
@@ -142,27 +142,27 @@ id __29__WFDataDetectorResults_URLs__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (WFDataDetectorResults)initWithTextCheckingResults:(id)a3 number:(id)a4 dictionaries:(id)a5 dictionaryType:(id)a6
+- (WFDataDetectorResults)initWithTextCheckingResults:(id)results number:(id)number dictionaries:(id)dictionaries dictionaryType:(id)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  resultsCopy = results;
+  numberCopy = number;
+  dictionariesCopy = dictionaries;
+  typeCopy = type;
   v21.receiver = self;
   v21.super_class = WFDataDetectorResults;
   v14 = [(WFDataDetectorResults *)&v21 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [resultsCopy copy];
     textCheckingResults = v14->_textCheckingResults;
     v14->_textCheckingResults = v15;
 
-    objc_storeStrong(&v14->_number, a4);
-    v17 = [v12 copy];
+    objc_storeStrong(&v14->_number, number);
+    v17 = [dictionariesCopy copy];
     dictionaries = v14->_dictionaries;
     v14->_dictionaries = v17;
 
-    objc_storeStrong(&v14->_dictionaryType, a6);
+    objc_storeStrong(&v14->_dictionaryType, type);
     v19 = v14;
   }
 

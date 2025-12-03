@@ -1,26 +1,26 @@
 @interface PKPaymentSetupListSectionController
 - (NSDirectionalEdgeInsets)headerDirectionalLayoutMargins;
 - (PKPaymentSetupListSectionController)init;
-- (PKPaymentSetupListSectionController)initWithIdentifiers:(id)a3;
-- (id)decoratePaymentSetListCell:(id)a3 forItem:(id)a4 style:(unint64_t)a5;
+- (PKPaymentSetupListSectionController)initWithIdentifiers:(id)identifiers;
+- (id)decoratePaymentSetListCell:(id)cell forItem:(id)item style:(unint64_t)style;
 - (id)defaultListLayout;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier;
 @end
 
 @implementation PKPaymentSetupListSectionController
 
-- (PKPaymentSetupListSectionController)initWithIdentifiers:(id)a3
+- (PKPaymentSetupListSectionController)initWithIdentifiers:(id)identifiers
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v16.receiver = self;
   v16.super_class = PKPaymentSetupListSectionController;
   v6 = [(PKPaymentSetupListSectionController *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifiers, a3);
+    objc_storeStrong(&v6->_identifiers, identifiers);
     *&v7->_headerDirectionalLayoutMargins.top = xmmword_1BE115AF0;
     *&v7->_headerDirectionalLayoutMargins.bottom = xmmword_1BE115AF0;
     objc_initWeak(&location, v7);
@@ -58,34 +58,34 @@ void __59__PKPaymentSetupListSectionController_initWithIdentifiers___block_invok
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E696AFB0]);
-  v4 = [v3 UUIDString];
-  v8[0] = v4;
+  uUIDString = [v3 UUIDString];
+  v8[0] = uUIDString;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   v6 = [(PKPaymentSetupListSectionController *)self initWithIdentifiers:v5];
 
   return v6;
 }
 
-- (id)decoratePaymentSetListCell:(id)a3 forItem:(id)a4 style:(unint64_t)a5
+- (id)decoratePaymentSetListCell:(id)cell forItem:(id)item style:(unint64_t)style
 {
-  v7 = a3;
-  result = a4;
+  cellCopy = cell;
+  result = item;
   v9 = result;
-  if (a5 == 1)
+  if (style == 1)
   {
-    v10 = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
-    v19 = [v10 textProperties];
+    subtitleCellConfiguration = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
+    textProperties = [subtitleCellConfiguration textProperties];
     v20 = PKOBKListSubtitleCellTitleFont();
-    [v19 setFont:v20];
+    [textProperties setFont:v20];
 
-    v21 = [v10 secondaryTextProperties];
-    v22 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v21 setColor:v22];
+    secondaryTextProperties = [subtitleCellConfiguration secondaryTextProperties];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [secondaryTextProperties setColor:secondaryLabelColor];
 
-    v15 = [v10 secondaryTextProperties];
-    v16 = [v9 icon];
-    v23 = PKOBKListSubtitleCellSubtitleFont(v16 != 0);
-    [v15 setFont:v23];
+    secondaryTextProperties2 = [subtitleCellConfiguration secondaryTextProperties];
+    icon = [v9 icon];
+    v23 = PKOBKListSubtitleCellSubtitleFont(icon != 0);
+    [secondaryTextProperties2 setFont:v23];
 
     v17 = 15.0;
     v18 = 13.0;
@@ -93,25 +93,25 @@ void __59__PKPaymentSetupListSectionController_initWithIdentifiers___block_invok
 
   else
   {
-    if (a5)
+    if (style)
     {
 LABEL_47:
       __break(1u);
       return result;
     }
 
-    v10 = [MEMORY[0x1E69DCC28] cellConfiguration];
-    v11 = [v10 textProperties];
+    subtitleCellConfiguration = [MEMORY[0x1E69DCC28] cellConfiguration];
+    textProperties2 = [subtitleCellConfiguration textProperties];
     v12 = PKOBKListInlineCellTitleFont();
-    [v11 setFont:v12];
+    [textProperties2 setFont:v12];
 
-    v13 = [v10 secondaryTextProperties];
-    v14 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v13 setColor:v14];
+    secondaryTextProperties3 = [subtitleCellConfiguration secondaryTextProperties];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [secondaryTextProperties3 setColor:secondaryLabelColor2];
 
-    v15 = [v10 secondaryTextProperties];
-    v16 = PKOBKListInlineCellSubtitleFont();
-    [v15 setFont:v16];
+    secondaryTextProperties2 = [subtitleCellConfiguration secondaryTextProperties];
+    icon = PKOBKListInlineCellSubtitleFont();
+    [secondaryTextProperties2 setFont:icon];
     v17 = 1.0;
     v18 = 15.0;
   }
@@ -126,8 +126,8 @@ LABEL_47:
     v24 = 16.0;
   }
 
-  [v10 setImageToTextPadding:v24];
-  [v10 directionalLayoutMargins];
+  [subtitleCellConfiguration setImageToTextPadding:v24];
+  [subtitleCellConfiguration directionalLayoutMargins];
   v26 = v25;
   if (_UISolariumFeatureFlagEnabled())
   {
@@ -149,39 +149,39 @@ LABEL_47:
     v28 = 16.0;
   }
 
-  [v10 setDirectionalLayoutMargins:{v27, v28, v27, v26}];
+  [subtitleCellConfiguration setDirectionalLayoutMargins:{v27, v28, v27, v26}];
   v29 = _UISolariumFeatureFlagEnabled();
   result = _UISolariumFeatureFlagEnabled();
-  if (!v10)
+  if (!subtitleCellConfiguration)
   {
     goto LABEL_47;
   }
 
   v30 = result;
-  v31 = [v10 imageProperties];
-  [v31 setAccessibilityIgnoresInvertColors:1];
-  v32 = [v9 title];
-  [v10 setText:v32];
+  imageProperties = [subtitleCellConfiguration imageProperties];
+  [imageProperties setAccessibilityIgnoresInvertColors:1];
+  title = [v9 title];
+  [subtitleCellConfiguration setText:title];
 
-  v33 = [v9 subtitle];
-  [v10 setSecondaryText:v33];
+  subtitle = [v9 subtitle];
+  [subtitleCellConfiguration setSecondaryText:subtitle];
 
-  v34 = [v9 icon];
-  [v10 setImage:v34];
+  icon2 = [v9 icon];
+  [subtitleCellConfiguration setImage:icon2];
 
   v35 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v36 = [v9 badgeText];
-  if (v36)
+  badgeText = [v9 badgeText];
+  if (badgeText)
   {
-    v37 = [PKCellAccessoryBadge accessoryBadgeWithTitle:v36];
+    v37 = [PKCellAccessoryBadge accessoryBadgeWithTitle:badgeText];
     [v35 addObject:v37];
   }
 
-  v38 = [v9 labelText];
-  v57 = v38;
-  if (v38)
+  labelText = [v9 labelText];
+  v57 = labelText;
+  if (labelText)
   {
-    v39 = [objc_alloc(MEMORY[0x1E69DC7B8]) initWithText:v38];
+    v39 = [objc_alloc(MEMORY[0x1E69DC7B8]) initWithText:labelText];
     v40 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC90]);
     [v39 setFont:v40];
 
@@ -237,12 +237,12 @@ LABEL_25:
 
   if ([v9 useMultiSelectAccessory])
   {
-    v56 = v36;
+    v56 = badgeText;
     v45 = v30;
-    v46 = v31;
+    v46 = imageProperties;
     v47 = v29;
-    v48 = [v7 accessories];
-    v49 = [v48 pk_firstObjectPassingTest:&__block_literal_global_149];
+    accessories = [cellCopy accessories];
+    v49 = [accessories pk_firstObjectPassingTest:&__block_literal_global_149];
 
     if (!v49)
     {
@@ -253,9 +253,9 @@ LABEL_25:
     [v35 safelyAddObject:v49];
 
     v29 = v47;
-    v31 = v46;
+    imageProperties = v46;
     v30 = v45;
-    v36 = v56;
+    badgeText = v56;
   }
 
   if (v30)
@@ -278,16 +278,16 @@ LABEL_25:
     v51 = 16.0;
   }
 
-  [v7 setContentConfiguration:v10];
-  [v7 setConfigurationUpdateHandler:&__block_literal_global_36_0];
-  [v7 setAccessories:v35];
-  [v7 setIndentsAccessories:0];
-  v52 = [v9 identifier];
-  [v7 setAccessibilityIdentifier:v52];
+  [cellCopy setContentConfiguration:subtitleCellConfiguration];
+  [cellCopy setConfigurationUpdateHandler:&__block_literal_global_36_0];
+  [cellCopy setAccessories:v35];
+  [cellCopy setIndentsAccessories:0];
+  identifier = [v9 identifier];
+  [cellCopy setAccessibilityIdentifier:identifier];
 
-  [v7 setDirectionalLayoutMargins:{v50, v51, v50, v51}];
+  [cellCopy setDirectionalLayoutMargins:{v50, v51, v50, v51}];
 
-  return v10;
+  return subtitleCellConfiguration;
 }
 
 uint64_t __80__PKPaymentSetupListSectionController_decoratePaymentSetListCell_forItem_style___block_invoke(uint64_t a1, void *a2)
@@ -324,8 +324,8 @@ void __80__PKPaymentSetupListSectionController_decoratePaymentSetListCell_forIte
 - (id)defaultListLayout
 {
   v2 = [objc_alloc(MEMORY[0x1E69DC7E0]) initWithAppearance:2];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [v2 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v2 setBackgroundColor:clearColor];
 
   if (_UISolariumFeatureFlagEnabled())
   {
@@ -342,7 +342,7 @@ void __80__PKPaymentSetupListSectionController_decoratePaymentSetListCell_forIte
   return v2;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v5 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
   v6 = v5;
@@ -354,24 +354,24 @@ void __80__PKPaymentSetupListSectionController_decoratePaymentSetListCell_forIte
   return v6;
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentSetupListSectionController *)self defaultListLayout];
-  v9 = [(PKPaymentSetupListSectionController *)self headerAttributedStringForIdentifier:v7];
+  environmentCopy = environment;
+  identifierCopy = identifier;
+  defaultListLayout = [(PKPaymentSetupListSectionController *)self defaultListLayout];
+  v9 = [(PKPaymentSetupListSectionController *)self headerAttributedStringForIdentifier:identifierCopy];
   if (v9)
   {
-    [v8 setHeaderMode:1];
+    [defaultListLayout setHeaderMode:1];
   }
 
-  v10 = [(PKPaymentSetupListSectionController *)self footerAttributedStringForIdentifier:v7];
+  v10 = [(PKPaymentSetupListSectionController *)self footerAttributedStringForIdentifier:identifierCopy];
   if (v10)
   {
-    [v8 setFooterMode:1];
+    [defaultListLayout setFooterMode:1];
   }
 
-  v11 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v8 layoutEnvironment:v6];
+  v11 = [MEMORY[0x1E6995580] sectionWithListConfiguration:defaultListLayout layoutEnvironment:environmentCopy];
   [v11 contentInsets];
   v13 = v12;
   v15 = v14;
@@ -381,37 +381,37 @@ void __80__PKPaymentSetupListSectionController_decoratePaymentSetListCell_forIte
   return v11;
 }
 
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (*MEMORY[0x1E69DDC08] == v8)
+  registrationCopy = registration;
+  kindCopy = kind;
+  identifierCopy = identifier;
+  if (*MEMORY[0x1E69DDC08] == kindCopy)
   {
-    v13 = [(PKPaymentSetupListSectionController *)self headerAttributedStringForIdentifier:v9];
+    v13 = [(PKPaymentSetupListSectionController *)self headerAttributedStringForIdentifier:identifierCopy];
     if (!v13)
     {
       goto LABEL_8;
     }
 
     v11 = v13;
-    v12 = [MEMORY[0x1E69DCC28] headerConfiguration];
-    [v12 setAxesPreservingSuperviewLayoutMargins:0];
-    [v12 setAttributedText:v11];
-    [v12 setDirectionalLayoutMargins:{self->_headerDirectionalLayoutMargins.top, self->_headerDirectionalLayoutMargins.leading, self->_headerDirectionalLayoutMargins.bottom, self->_headerDirectionalLayoutMargins.trailing}];
+    headerConfiguration = [MEMORY[0x1E69DCC28] headerConfiguration];
+    [headerConfiguration setAxesPreservingSuperviewLayoutMargins:0];
+    [headerConfiguration setAttributedText:v11];
+    [headerConfiguration setDirectionalLayoutMargins:{self->_headerDirectionalLayoutMargins.top, self->_headerDirectionalLayoutMargins.leading, self->_headerDirectionalLayoutMargins.bottom, self->_headerDirectionalLayoutMargins.trailing}];
     goto LABEL_7;
   }
 
-  if (*MEMORY[0x1E69DDC00] == v8)
+  if (*MEMORY[0x1E69DDC00] == kindCopy)
   {
-    v10 = [(PKPaymentSetupListSectionController *)self footerAttributedStringForIdentifier:v9];
+    v10 = [(PKPaymentSetupListSectionController *)self footerAttributedStringForIdentifier:identifierCopy];
     if (v10)
     {
       v11 = v10;
-      v12 = [MEMORY[0x1E69DCC28] footerConfiguration];
-      [v12 setAttributedText:v11];
+      headerConfiguration = [MEMORY[0x1E69DCC28] footerConfiguration];
+      [headerConfiguration setAttributedText:v11];
 LABEL_7:
-      [v14 setContentConfiguration:v12];
+      [registrationCopy setContentConfiguration:headerConfiguration];
     }
   }
 

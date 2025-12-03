@@ -1,34 +1,34 @@
 @interface ICASSessionType
-- (ICASSessionType)initWithSessionType:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASSessionType)initWithSessionType:(int64_t)type;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASSessionType
 
-- (ICASSessionType)initWithSessionType:(int64_t)a3
+- (ICASSessionType)initWithSessionType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = ICASSessionType;
   result = [(ICASSessionType *)&v5 init];
   if (result)
   {
-    result->_sessionType = a3;
+    result->_sessionType = type;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASSessionType *)self sessionType];
-  if ((v3 - 1) > 4)
+  sessionType = [(ICASSessionType *)self sessionType];
+  if ((sessionType - 1) > 4)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799AF800[v3 - 1];
+    return off_2799AF800[sessionType - 1];
   }
 }
 

@@ -1,27 +1,27 @@
 @interface SVXActivationUtils
-- (id)createActivationContextWithRequestInfo:(id)a3 context:(id)a4;
-- (id)createDeactivationContextWithReason:(int64_t)a3 options:(unint64_t)a4 context:(id)a5;
+- (id)createActivationContextWithRequestInfo:(id)info context:(id)context;
+- (id)createDeactivationContextWithReason:(int64_t)reason options:(unint64_t)options context:(id)context;
 @end
 
 @implementation SVXActivationUtils
 
-- (id)createDeactivationContextWithReason:(int64_t)a3 options:(unint64_t)a4 context:(id)a5
+- (id)createDeactivationContextWithReason:(int64_t)reason options:(unint64_t)options context:(id)context
 {
-  v6 = a5;
-  v7 = [v6 timestamp];
-  if (!v7)
+  contextCopy = context;
+  timestamp = [contextCopy timestamp];
+  if (!timestamp)
   {
-    v7 = mach_absolute_time();
+    timestamp = mach_absolute_time();
   }
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__SVXActivationUtils_createDeactivationContextWithReason_options_context___block_invoke;
   v11[3] = &unk_279C67960;
-  v13 = a3;
-  v14 = v7;
-  v12 = v6;
-  v8 = v6;
+  reasonCopy = reason;
+  v14 = timestamp;
+  v12 = contextCopy;
+  v8 = contextCopy;
   v9 = [SVXDeactivationContext newWithBuilder:v11];
 
   return v9;
@@ -48,36 +48,36 @@ void __74__SVXActivationUtils_createDeactivationContextWithReason_options_contex
   [v5 setUserInfo:v7];
 }
 
-- (id)createActivationContextWithRequestInfo:(id)a3 context:(id)a4
+- (id)createActivationContextWithRequestInfo:(id)info context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 speechRequestOptions];
-  v8 = [v7 activationEventMachAbsoluteTime];
-  if (!v8)
+  infoCopy = info;
+  contextCopy = context;
+  speechRequestOptions = [infoCopy speechRequestOptions];
+  activationEventMachAbsoluteTime = [speechRequestOptions activationEventMachAbsoluteTime];
+  if (!activationEventMachAbsoluteTime)
   {
-    v8 = [v5 timestamp];
-    if (!v8)
+    activationEventMachAbsoluteTime = [infoCopy timestamp];
+    if (!activationEventMachAbsoluteTime)
     {
-      v8 = [v6 timestamp];
-      if (!v8)
+      activationEventMachAbsoluteTime = [contextCopy timestamp];
+      if (!activationEventMachAbsoluteTime)
       {
-        v8 = mach_absolute_time();
+        activationEventMachAbsoluteTime = mach_absolute_time();
       }
     }
   }
 
-  v9 = v8;
+  v9 = activationEventMachAbsoluteTime;
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __69__SVXActivationUtils_createActivationContextWithRequestInfo_context___block_invoke;
   v14[3] = &unk_279C67938;
-  v15 = v5;
-  v16 = v6;
+  v15 = infoCopy;
+  v16 = contextCopy;
   v17 = v9;
-  v10 = v6;
-  v11 = v5;
+  v10 = contextCopy;
+  v11 = infoCopy;
   v12 = [SVXActivationContext newWithBuilder:v14];
 
   return v12;

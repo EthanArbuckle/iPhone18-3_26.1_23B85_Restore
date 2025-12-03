@@ -1,39 +1,39 @@
 @interface _UIFocusRotaryRingArrowView
-- (_UIFocusRotaryRingArrowView)initWithFrame:(CGRect)a3 color:(id)a4;
+- (_UIFocusRotaryRingArrowView)initWithFrame:(CGRect)frame color:(id)color;
 - (id)_trianglePath;
 - (void)_updateShapePath;
 - (void)layoutSubviews;
-- (void)updateArrowColor:(id)a3;
+- (void)updateArrowColor:(id)color;
 @end
 
 @implementation _UIFocusRotaryRingArrowView
 
-- (_UIFocusRotaryRingArrowView)initWithFrame:(CGRect)a3 color:(id)a4
+- (_UIFocusRotaryRingArrowView)initWithFrame:(CGRect)frame color:(id)color
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  colorCopy = color;
   v15.receiver = self;
   v15.super_class = _UIFocusRotaryRingArrowView;
-  v10 = [(UIView *)&v15 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(UIView *)&v15 initWithFrame:x, y, width, height];
+  if (height)
   {
     v11 = objc_alloc_init(MEMORY[0x1E69794A0]);
-    shapeLayer = v10->_shapeLayer;
-    v10->_shapeLayer = v11;
+    shapeLayer = height->_shapeLayer;
+    height->_shapeLayer = v11;
 
-    _UIFocusRotaryRingConfigureShadowForLayer(v10->_shapeLayer);
-    v13 = [(UIView *)v10 layer];
-    [v13 addSublayer:v10->_shapeLayer];
+    _UIFocusRotaryRingConfigureShadowForLayer(height->_shapeLayer);
+    layer = [(UIView *)height layer];
+    [layer addSublayer:height->_shapeLayer];
 
-    [(UIView *)v10 setAutoresizingMask:0];
-    [(_UIFocusRotaryRingArrowView *)v10 updateArrowColor:v9];
-    [(_UIFocusRotaryRingArrowView *)v10 _updateShapePath];
+    [(UIView *)height setAutoresizingMask:0];
+    [(_UIFocusRotaryRingArrowView *)height updateArrowColor:colorCopy];
+    [(_UIFocusRotaryRingArrowView *)height _updateShapePath];
   }
 
-  return v10;
+  return height;
 }
 
 - (void)layoutSubviews
@@ -44,20 +44,20 @@
   [(_UIFocusRotaryRingArrowView *)self _updateShapePath];
 }
 
-- (void)updateArrowColor:(id)a3
+- (void)updateArrowColor:(id)color
 {
-  v5 = a3;
-  v6 = [a3 CGColor];
+  colorCopy = color;
+  cGColor = [color CGColor];
   shapeLayer = self->_shapeLayer;
 
-  [(CAShapeLayer *)shapeLayer setFillColor:v6];
+  [(CAShapeLayer *)shapeLayer setFillColor:cGColor];
 }
 
 - (void)_updateShapePath
 {
-  v4 = [(_UIFocusRotaryRingArrowView *)self _trianglePath];
-  v3 = v4;
-  -[CAShapeLayer setPath:](self->_shapeLayer, "setPath:", [v4 CGPath]);
+  _trianglePath = [(_UIFocusRotaryRingArrowView *)self _trianglePath];
+  v3 = _trianglePath;
+  -[CAShapeLayer setPath:](self->_shapeLayer, "setPath:", [_trianglePath CGPath]);
 }
 
 - (id)_trianglePath

@@ -1,6 +1,6 @@
 @interface _NSNoChangeToken
 + (void)initialize;
-- (_NSNoChangeToken)initWithCoder:(id)a3;
+- (_NSNoChangeToken)initWithCoder:(id)coder;
 @end
 
 @implementation _NSNoChangeToken
@@ -10,7 +10,7 @@
   objc_opt_self();
   if (!_NSNoChangeSingleton)
   {
-    v3 = NSAllocateObject(a1, 0, 0);
+    v3 = NSAllocateObject(self, 0, 0);
     _NSNoChangeSingleton = v3;
     if (v3)
     {
@@ -21,7 +21,7 @@
   }
 }
 
-- (_NSNoChangeToken)initWithCoder:(id)a3
+- (_NSNoChangeToken)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _NSNoChangeToken;

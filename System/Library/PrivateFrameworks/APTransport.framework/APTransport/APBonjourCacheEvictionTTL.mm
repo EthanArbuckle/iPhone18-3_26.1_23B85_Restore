@@ -1,16 +1,16 @@
 @interface APBonjourCacheEvictionTTL
-- (BOOL)shouldEvict:(id)a3;
+- (BOOL)shouldEvict:(id)evict;
 @end
 
 @implementation APBonjourCacheEvictionTTL
 
-- (BOOL)shouldEvict:(id)a3
+- (BOOL)shouldEvict:(id)evict
 {
   [(APBonjourCacheEvictionTTL *)self timeToLiveSeconds];
   result = 0;
   if (v5 > 0.0)
   {
-    v6 = [a3 objectForKeyedSubscript:@"lastSeen"];
+    v6 = [evict objectForKeyedSubscript:@"lastSeen"];
     if (!v6)
     {
       return 1;

@@ -1,6 +1,6 @@
 @interface WFSpotlightSettingsClient
 + (WFSpotlightSettingsClient)shared;
-- (BOOL)isSpotlightEnabledForBundleIdentifier:(id)a3;
+- (BOOL)isSpotlightEnabledForBundleIdentifier:(id)identifier;
 @end
 
 @implementation WFSpotlightSettingsClient
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (BOOL)isSpotlightEnabledForBundleIdentifier:(id)a3
+- (BOOL)isSpotlightEnabledForBundleIdentifier:(id)identifier
 {
   v4 = sub_231158E58();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   LOBYTE(v4) = SpotlightSettingsClient.isSpotlightEnabled(for:)(v8);

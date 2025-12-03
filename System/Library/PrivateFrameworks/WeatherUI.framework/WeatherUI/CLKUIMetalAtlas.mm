@@ -1,7 +1,7 @@
 @interface CLKUIMetalAtlas
-+ (id)_createMTLTextureWithBacking:(id)a3 device:(id)a4 encoder:(id)a5;
-- (CLKUIMetalAtlas)initWithUuid:(id)a3 nilTexture:(id)a4;
-- (void)bind:(id)a3 slot:(unint64_t)a4;
++ (id)_createMTLTextureWithBacking:(id)backing device:(id)device encoder:(id)encoder;
+- (CLKUIMetalAtlas)initWithUuid:(id)uuid nilTexture:(id)texture;
+- (void)bind:(id)bind slot:(unint64_t)slot;
 - (void)dealloc;
 - (void)prewarm;
 - (void)purge;
@@ -9,17 +9,17 @@
 
 @implementation CLKUIMetalAtlas
 
-- (CLKUIMetalAtlas)initWithUuid:(id)a3 nilTexture:(id)a4
+- (CLKUIMetalAtlas)initWithUuid:(id)uuid nilTexture:(id)texture
 {
-  v7 = a4;
+  textureCopy = texture;
   v13.receiver = self;
   v13.super_class = CLKUIMetalAtlas;
-  v8 = [(CLKUIAtlas *)&v13 initWithUuid:a3];
+  v8 = [(CLKUIAtlas *)&v13 initWithUuid:uuid];
   v9 = v8;
   if (v8)
   {
     v8->_prewarmState = 0;
-    objc_storeStrong(&v8->_nilTexture, a4);
+    objc_storeStrong(&v8->_nilTexture, texture);
     v10 = objc_alloc_init(MEMORY[0x1E696AE68]);
     prewarmLock = v9->_prewarmLock;
     v9->_prewarmLock = v10;
@@ -45,14 +45,14 @@
   [(CLKUIMetalAtlas *)&v5 dealloc];
 }
 
-+ (id)_createMTLTextureWithBacking:(id)a3 device:(id)a4 encoder:(id)a5
++ (id)_createMTLTextureWithBacking:(id)backing device:(id)device encoder:(id)encoder
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  backingCopy = backing;
+  deviceCopy = device;
+  encoderCopy = encoder;
+  if (backingCopy)
   {
-    [v7 structure];
+    [backingCopy structure];
     +[CLKUIMetalAtlas _createMTLTextureWithBacking:device:encoder:];
   }
 
@@ -62,7 +62,7 @@
 - (void)prewarm
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = [a1 uuid];
+  uuid = [self uuid];
   v6 = @"none";
   if (*a2 == 1)
   {
@@ -81,7 +81,7 @@
 
   v8 = v7;
   v9 = 138412546;
-  v10 = v5;
+  v10 = uuid;
   v11 = 2112;
   v12 = v8;
   _os_log_error_impl(&dword_1BC940000, a3, OS_LOG_TYPE_ERROR, "Not prewarming %@ because prewarmState = %@, but the texture is already loaded", &v9, 0x16u);
@@ -115,13 +115,13 @@ void __26__CLKUIMetalAtlas_prewarm__block_invoke(uint64_t a1)
   }
 }
 
-- (void)bind:(id)a3 slot:(unint64_t)a4
+- (void)bind:(id)bind slot:(unint64_t)slot
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CLKUIAtlas *)self uuid];
+  bindCopy = bind;
+  uuid = [(CLKUIAtlas *)self uuid];
 
-  if (!v7)
+  if (!uuid)
   {
     goto LABEL_25;
   }
@@ -129,9 +129,9 @@ void __26__CLKUIMetalAtlas_prewarm__block_invoke(uint64_t a1)
   v8 = CLKLoggingObjectForDomain();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(CLKUIAtlas *)self uuid];
+    uuid2 = [(CLKUIAtlas *)self uuid];
     *buf = 138412290;
-    v31 = v9;
+    v31 = uuid2;
     _os_log_impl(&dword_1BC940000, v8, OS_LOG_TYPE_DEFAULT, "Binding atlas %@", buf, 0xCu);
   }
 
@@ -161,44 +161,44 @@ void __26__CLKUIMetalAtlas_prewarm__block_invoke(uint64_t a1)
       goto LABEL_23;
     }
 
-    v16 = [(CLKUIAtlas *)self uuid];
+    uuid3 = [(CLKUIAtlas *)self uuid];
     *buf = 138412290;
-    v31 = v16;
+    v31 = uuid3;
     _os_log_impl(&dword_1BC940000, v14, OS_LOG_TYPE_DEFAULT, "Texture prewarmed in atlas %@", buf, 0xCu);
     goto LABEL_22;
   }
 
   if (v15)
   {
-    v17 = [(CLKUIAtlas *)self uuid];
+    uuid4 = [(CLKUIAtlas *)self uuid];
     *buf = 138412290;
-    v31 = v17;
+    v31 = uuid4;
     _os_log_impl(&dword_1BC940000, v14, OS_LOG_TYPE_DEFAULT, "Texure not prewarmed. %@", buf, 0xCu);
   }
 
-  v18 = [(CLKUIAtlas *)self backing];
-  v14 = v18;
-  if (v18)
+  backing = [(CLKUIAtlas *)self backing];
+  v14 = backing;
+  if (backing)
   {
-    v19 = [v18 bytesLength];
-    v16 = +[CLKUIResourceManager sharedInstance];
-    if (([v16 ensureMemoryAvailable:v19] & 1) == 0)
+    bytesLength = [backing bytesLength];
+    uuid3 = +[CLKUIResourceManager sharedInstance];
+    if (([uuid3 ensureMemoryAvailable:bytesLength] & 1) == 0)
     {
       v20 = CLKLoggingObjectForDomain();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [(CLKUIAtlas *)self uuid];
+        uuid5 = [(CLKUIAtlas *)self uuid];
         *buf = 138412290;
-        v31 = v21;
+        v31 = uuid5;
         _os_log_impl(&dword_1BC940000, v20, OS_LOG_TYPE_DEFAULT, "failed to ensure enough memory for %@", buf, 0xCu);
       }
     }
 
-    v22 = [v6 device];
-    v23 = v22;
-    if (v22)
+    device = [bindCopy device];
+    v23 = device;
+    if (device)
     {
-      v24 = v22;
+      v24 = device;
     }
 
     else
@@ -208,14 +208,14 @@ void __26__CLKUIMetalAtlas_prewarm__block_invoke(uint64_t a1)
 
     v25 = v24;
 
-    v26 = [CLKUIMetalAtlas _createMTLTextureWithBacking:v14 device:v25 encoder:v6];
+    v26 = [CLKUIMetalAtlas _createMTLTextureWithBacking:v14 device:v25 encoder:bindCopy];
     v27 = self->_texture;
     self->_texture = v26;
 
     self->_prewarmState = 2;
     [(CLKUIAtlas *)self setStatus:3];
-    [v16 notifyAtlas:self willChangeToMemoryCost:v19];
-    [(CLKUIAtlas *)self setMemoryCost:v19];
+    [uuid3 notifyAtlas:self willChangeToMemoryCost:bytesLength];
+    [(CLKUIAtlas *)self setMemoryCost:bytesLength];
 
 LABEL_22:
   }
@@ -232,7 +232,7 @@ LABEL_25:
   [(CLKUIAtlas *)self setBoundTime:CACurrentMediaTime()];
   nilTexture = self->_texture;
 LABEL_26:
-  [v6 setFragmentTexture:nilTexture atIndex:a4];
+  [bindCopy setFragmentTexture:nilTexture atIndex:slot];
 }
 
 void __29__CLKUIMetalAtlas_bind_slot___block_invoke(uint64_t a1)
@@ -255,9 +255,9 @@ void __29__CLKUIMetalAtlas_bind_slot___block_invoke(uint64_t a1)
 
 - (void)purge
 {
-  v3 = [(CLKUIAtlas *)self uuid];
+  uuid = [(CLKUIAtlas *)self uuid];
 
-  if (v3)
+  if (uuid)
   {
     if (self->_loaderQueue)
     {

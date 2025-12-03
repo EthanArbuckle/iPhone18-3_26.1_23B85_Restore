@@ -1,14 +1,14 @@
 @interface GATSchemaGATRequestContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GATSchemaGATRequestCanceled)canceled;
-- (GATSchemaGATRequestContext)initWithDictionary:(id)a3;
-- (GATSchemaGATRequestContext)initWithJSON:(id)a3;
+- (GATSchemaGATRequestContext)initWithDictionary:(id)dictionary;
+- (GATSchemaGATRequestContext)initWithJSON:(id)n;
 - (GATSchemaGATRequestEnded)ended;
 - (GATSchemaGATRequestFailed)failed;
 - (GATSchemaGATRequestHandoff)handoff;
 - (GATSchemaGATRequestStarted)startedOrChanged;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
@@ -17,25 +17,25 @@
 - (void)deleteFailed;
 - (void)deleteHandoff;
 - (void)deleteStartedOrChanged;
-- (void)setCanceled:(id)a3;
-- (void)setEnded:(id)a3;
-- (void)setFailed:(id)a3;
-- (void)setHandoff:(id)a3;
-- (void)setStartedOrChanged:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCanceled:(id)canceled;
+- (void)setEnded:(id)ended;
+- (void)setFailed:(id)failed;
+- (void)setHandoff:(id)handoff;
+- (void)setStartedOrChanged:(id)changed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GATSchemaGATRequestContext
 
-- (GATSchemaGATRequestContext)initWithDictionary:(id)a3
+- (GATSchemaGATRequestContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = GATSchemaGATRequestContext;
   v5 = [(GATSchemaGATRequestContext *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"startedOrChanged"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"startedOrChanged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(GATSchemaGATRequestContext *)v5 setStartedOrChanged:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"ended"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ended"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       [(GATSchemaGATRequestContext *)v5 setEnded:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"failed"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"failed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,7 +59,7 @@
       [(GATSchemaGATRequestContext *)v5 setFailed:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"canceled"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"canceled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
       [(GATSchemaGATRequestContext *)v5 setCanceled:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"handoff"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"handoff"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (GATSchemaGATRequestContext)initWithJSON:(id)a3
+- (GATSchemaGATRequestContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(GATSchemaGATRequestContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(GATSchemaGATRequestContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(GATSchemaGATRequestContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -117,90 +117,90 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_canceled)
   {
-    v4 = [(GATSchemaGATRequestContext *)self canceled];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    canceled = [(GATSchemaGATRequestContext *)self canceled];
+    dictionaryRepresentation = [canceled dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"canceled"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"canceled"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"canceled"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"canceled"];
     }
   }
 
   if (self->_ended)
   {
-    v7 = [(GATSchemaGATRequestContext *)self ended];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    ended = [(GATSchemaGATRequestContext *)self ended];
+    dictionaryRepresentation2 = [ended dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"ended"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"ended"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"ended"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"ended"];
     }
   }
 
   if (self->_failed)
   {
-    v10 = [(GATSchemaGATRequestContext *)self failed];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    failed = [(GATSchemaGATRequestContext *)self failed];
+    dictionaryRepresentation3 = [failed dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"failed"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"failed"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"failed"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"failed"];
     }
   }
 
   if (self->_handoff)
   {
-    v13 = [(GATSchemaGATRequestContext *)self handoff];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    handoff = [(GATSchemaGATRequestContext *)self handoff];
+    dictionaryRepresentation4 = [handoff dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"handoff"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"handoff"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"handoff"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"handoff"];
     }
   }
 
   if (self->_startedOrChanged)
   {
-    v16 = [(GATSchemaGATRequestContext *)self startedOrChanged];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    startedOrChanged = [(GATSchemaGATRequestContext *)self startedOrChanged];
+    dictionaryRepresentation5 = [startedOrChanged dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"startedOrChanged"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"startedOrChanged"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"startedOrChanged"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"startedOrChanged"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -212,34 +212,34 @@
   return v6 ^ [(GATSchemaGATRequestHandoff *)self->_handoff hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   whichContextevent = self->_whichContextevent;
-  if (whichContextevent != [v4 whichContextevent])
+  if (whichContextevent != [equalCopy whichContextevent])
   {
     goto LABEL_28;
   }
 
-  v6 = [(GATSchemaGATRequestContext *)self startedOrChanged];
-  v7 = [v4 startedOrChanged];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(GATSchemaGATRequestContext *)self startedOrChanged];
+  startedOrChanged2 = [equalCopy startedOrChanged];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_27;
   }
 
-  v8 = [(GATSchemaGATRequestContext *)self startedOrChanged];
-  if (v8)
+  startedOrChanged3 = [(GATSchemaGATRequestContext *)self startedOrChanged];
+  if (startedOrChanged3)
   {
-    v9 = v8;
-    v10 = [(GATSchemaGATRequestContext *)self startedOrChanged];
-    v11 = [v4 startedOrChanged];
-    v12 = [v10 isEqual:v11];
+    v9 = startedOrChanged3;
+    startedOrChanged4 = [(GATSchemaGATRequestContext *)self startedOrChanged];
+    startedOrChanged5 = [equalCopy startedOrChanged];
+    v12 = [startedOrChanged4 isEqual:startedOrChanged5];
 
     if (!v12)
     {
@@ -251,20 +251,20 @@
   {
   }
 
-  v6 = [(GATSchemaGATRequestContext *)self ended];
-  v7 = [v4 ended];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(GATSchemaGATRequestContext *)self ended];
+  startedOrChanged2 = [equalCopy ended];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_27;
   }
 
-  v13 = [(GATSchemaGATRequestContext *)self ended];
-  if (v13)
+  ended = [(GATSchemaGATRequestContext *)self ended];
+  if (ended)
   {
-    v14 = v13;
-    v15 = [(GATSchemaGATRequestContext *)self ended];
-    v16 = [v4 ended];
-    v17 = [v15 isEqual:v16];
+    v14 = ended;
+    ended2 = [(GATSchemaGATRequestContext *)self ended];
+    ended3 = [equalCopy ended];
+    v17 = [ended2 isEqual:ended3];
 
     if (!v17)
     {
@@ -276,20 +276,20 @@
   {
   }
 
-  v6 = [(GATSchemaGATRequestContext *)self failed];
-  v7 = [v4 failed];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(GATSchemaGATRequestContext *)self failed];
+  startedOrChanged2 = [equalCopy failed];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_27;
   }
 
-  v18 = [(GATSchemaGATRequestContext *)self failed];
-  if (v18)
+  failed = [(GATSchemaGATRequestContext *)self failed];
+  if (failed)
   {
-    v19 = v18;
-    v20 = [(GATSchemaGATRequestContext *)self failed];
-    v21 = [v4 failed];
-    v22 = [v20 isEqual:v21];
+    v19 = failed;
+    failed2 = [(GATSchemaGATRequestContext *)self failed];
+    failed3 = [equalCopy failed];
+    v22 = [failed2 isEqual:failed3];
 
     if (!v22)
     {
@@ -301,20 +301,20 @@
   {
   }
 
-  v6 = [(GATSchemaGATRequestContext *)self canceled];
-  v7 = [v4 canceled];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(GATSchemaGATRequestContext *)self canceled];
+  startedOrChanged2 = [equalCopy canceled];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_27;
   }
 
-  v23 = [(GATSchemaGATRequestContext *)self canceled];
-  if (v23)
+  canceled = [(GATSchemaGATRequestContext *)self canceled];
+  if (canceled)
   {
-    v24 = v23;
-    v25 = [(GATSchemaGATRequestContext *)self canceled];
-    v26 = [v4 canceled];
-    v27 = [v25 isEqual:v26];
+    v24 = canceled;
+    canceled2 = [(GATSchemaGATRequestContext *)self canceled];
+    canceled3 = [equalCopy canceled];
+    v27 = [canceled2 isEqual:canceled3];
 
     if (!v27)
     {
@@ -326,12 +326,12 @@
   {
   }
 
-  v6 = [(GATSchemaGATRequestContext *)self handoff];
-  v7 = [v4 handoff];
-  if ((v6 != 0) != (v7 == 0))
+  startedOrChanged = [(GATSchemaGATRequestContext *)self handoff];
+  startedOrChanged2 = [equalCopy handoff];
+  if ((startedOrChanged != 0) != (startedOrChanged2 == 0))
   {
-    v28 = [(GATSchemaGATRequestContext *)self handoff];
-    if (!v28)
+    handoff = [(GATSchemaGATRequestContext *)self handoff];
+    if (!handoff)
     {
 
 LABEL_31:
@@ -339,10 +339,10 @@ LABEL_31:
       goto LABEL_29;
     }
 
-    v29 = v28;
-    v30 = [(GATSchemaGATRequestContext *)self handoff];
-    v31 = [v4 handoff];
-    v32 = [v30 isEqual:v31];
+    v29 = handoff;
+    handoff2 = [(GATSchemaGATRequestContext *)self handoff];
+    handoff3 = [equalCopy handoff];
+    v32 = [handoff2 isEqual:handoff3];
 
     if (v32)
     {
@@ -362,50 +362,50 @@ LABEL_29:
   return v33;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(GATSchemaGATRequestContext *)self startedOrChanged];
+  toCopy = to;
+  startedOrChanged = [(GATSchemaGATRequestContext *)self startedOrChanged];
 
-  if (v4)
+  if (startedOrChanged)
   {
-    v5 = [(GATSchemaGATRequestContext *)self startedOrChanged];
+    startedOrChanged2 = [(GATSchemaGATRequestContext *)self startedOrChanged];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(GATSchemaGATRequestContext *)self ended];
+  ended = [(GATSchemaGATRequestContext *)self ended];
 
-  if (v6)
+  if (ended)
   {
-    v7 = [(GATSchemaGATRequestContext *)self ended];
+    ended2 = [(GATSchemaGATRequestContext *)self ended];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(GATSchemaGATRequestContext *)self failed];
+  failed = [(GATSchemaGATRequestContext *)self failed];
 
-  if (v8)
+  if (failed)
   {
-    v9 = [(GATSchemaGATRequestContext *)self failed];
+    failed2 = [(GATSchemaGATRequestContext *)self failed];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(GATSchemaGATRequestContext *)self canceled];
+  canceled = [(GATSchemaGATRequestContext *)self canceled];
 
-  if (v10)
+  if (canceled)
   {
-    v11 = [(GATSchemaGATRequestContext *)self canceled];
+    canceled2 = [(GATSchemaGATRequestContext *)self canceled];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(GATSchemaGATRequestContext *)self handoff];
+  handoff = [(GATSchemaGATRequestContext *)self handoff];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (handoff)
   {
-    v14 = [(GATSchemaGATRequestContext *)self handoff];
+    handoff2 = [(GATSchemaGATRequestContext *)self handoff];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
@@ -434,9 +434,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setHandoff:(id)a3
+- (void)setHandoff:(id)handoff
 {
-  v4 = a3;
+  handoffCopy = handoff;
   startedOrChanged = self->_startedOrChanged;
   self->_startedOrChanged = 0;
 
@@ -450,14 +450,14 @@ LABEL_29:
   self->_canceled = 0;
 
   v9 = 5;
-  if (!v4)
+  if (!handoffCopy)
   {
     v9 = 0;
   }
 
   self->_whichContextevent = v9;
   handoff = self->_handoff;
-  self->_handoff = v4;
+  self->_handoff = handoffCopy;
 }
 
 - (void)deleteCanceled
@@ -485,9 +485,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setCanceled:(id)a3
+- (void)setCanceled:(id)canceled
 {
-  v4 = a3;
+  canceledCopy = canceled;
   startedOrChanged = self->_startedOrChanged;
   self->_startedOrChanged = 0;
 
@@ -500,9 +500,9 @@ LABEL_29:
   handoff = self->_handoff;
   self->_handoff = 0;
 
-  self->_whichContextevent = 4 * (v4 != 0);
+  self->_whichContextevent = 4 * (canceledCopy != 0);
   canceled = self->_canceled;
-  self->_canceled = v4;
+  self->_canceled = canceledCopy;
 }
 
 - (void)deleteFailed
@@ -530,9 +530,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setFailed:(id)a3
+- (void)setFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   startedOrChanged = self->_startedOrChanged;
   self->_startedOrChanged = 0;
 
@@ -546,14 +546,14 @@ LABEL_29:
   self->_handoff = 0;
 
   v9 = 3;
-  if (!v4)
+  if (!failedCopy)
   {
     v9 = 0;
   }
 
   self->_whichContextevent = v9;
   failed = self->_failed;
-  self->_failed = v4;
+  self->_failed = failedCopy;
 }
 
 - (void)deleteEnded
@@ -581,9 +581,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setEnded:(id)a3
+- (void)setEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   startedOrChanged = self->_startedOrChanged;
   self->_startedOrChanged = 0;
 
@@ -596,9 +596,9 @@ LABEL_29:
   handoff = self->_handoff;
   self->_handoff = 0;
 
-  self->_whichContextevent = 2 * (v4 != 0);
+  self->_whichContextevent = 2 * (endedCopy != 0);
   ended = self->_ended;
-  self->_ended = v4;
+  self->_ended = endedCopy;
 }
 
 - (void)deleteStartedOrChanged
@@ -626,9 +626,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setStartedOrChanged:(id)a3
+- (void)setStartedOrChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   ended = self->_ended;
   self->_ended = 0;
 
@@ -641,58 +641,58 @@ LABEL_29:
   handoff = self->_handoff;
   self->_handoff = 0;
 
-  self->_whichContextevent = v4 != 0;
+  self->_whichContextevent = changedCopy != 0;
   startedOrChanged = self->_startedOrChanged;
-  self->_startedOrChanged = v4;
+  self->_startedOrChanged = changedCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v22.receiver = self;
   v22.super_class = GATSchemaGATRequestContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:v4];
-  v6 = [(GATSchemaGATRequestContext *)self startedOrChanged];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:policyCopy];
+  startedOrChanged = [(GATSchemaGATRequestContext *)self startedOrChanged];
+  v7 = [startedOrChanged applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(GATSchemaGATRequestContext *)self deleteStartedOrChanged];
   }
 
-  v9 = [(GATSchemaGATRequestContext *)self ended];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  ended = [(GATSchemaGATRequestContext *)self ended];
+  v10 = [ended applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(GATSchemaGATRequestContext *)self deleteEnded];
   }
 
-  v12 = [(GATSchemaGATRequestContext *)self failed];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  failed = [(GATSchemaGATRequestContext *)self failed];
+  v13 = [failed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(GATSchemaGATRequestContext *)self deleteFailed];
   }
 
-  v15 = [(GATSchemaGATRequestContext *)self canceled];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  canceled = [(GATSchemaGATRequestContext *)self canceled];
+  v16 = [canceled applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(GATSchemaGATRequestContext *)self deleteCanceled];
   }
 
-  v18 = [(GATSchemaGATRequestContext *)self handoff];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  handoff = [(GATSchemaGATRequestContext *)self handoff];
+  v19 = [handoff applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(GATSchemaGATRequestContext *)self deleteHandoff];
   }

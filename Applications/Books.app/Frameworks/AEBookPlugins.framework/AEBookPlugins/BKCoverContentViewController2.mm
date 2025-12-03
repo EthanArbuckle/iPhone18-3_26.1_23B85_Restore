@@ -1,19 +1,19 @@
 @interface BKCoverContentViewController2
 - (BKCoverContentViewController2)init;
 - (BOOL)contentNeedsFilter;
-- (CGRect)cachedRectForAnnotation:(id)a3;
-- (CGRect)cachedVisibleRectForAnnotation:(id)a3;
+- (CGRect)cachedRectForAnnotation:(id)annotation;
+- (CGRect)cachedVisibleRectForAnnotation:(id)annotation;
 - (id)_getURLToLoad;
 - (id)currentLocation;
 - (void)_forceWebContentBackgroundColor;
 - (void)loadViewUIImage;
-- (void)navigationHandler:(id)a3 didFinishLoadOfURL:(id)a4;
+- (void)navigationHandler:(id)handler didFinishLoadOfURL:(id)l;
 - (void)releaseViews;
-- (void)setActivityIndicatorVisible:(BOOL)a3 animated:(BOOL)a4 afterDelay:(double)a5;
-- (void)setCoverImage:(id)a3 isUndesirable:(BOOL)a4;
-- (void)setTheme:(id)a3;
+- (void)setActivityIndicatorVisible:(BOOL)visible animated:(BOOL)animated afterDelay:(double)delay;
+- (void)setCoverImage:(id)image isUndesirable:(BOOL)undesirable;
+- (void)setTheme:(id)theme;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation BKCoverContentViewController2
@@ -53,9 +53,9 @@
 
 - (BOOL)contentNeedsFilter
 {
-  v2 = [(BKCoverContentViewController2 *)self coverImage];
+  coverImage = [(BKCoverContentViewController2 *)self coverImage];
 
-  return v2 == 0;
+  return coverImage == 0;
 }
 
 - (id)currentLocation
@@ -65,7 +65,7 @@
   return v2;
 }
 
-- (CGRect)cachedRectForAnnotation:(id)a3
+- (CGRect)cachedRectForAnnotation:(id)annotation
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -78,7 +78,7 @@
   return result;
 }
 
-- (CGRect)cachedVisibleRectForAnnotation:(id)a3
+- (CGRect)cachedVisibleRectForAnnotation:(id)annotation
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -91,42 +91,42 @@
   return result;
 }
 
-- (void)setCoverImage:(id)a3 isUndesirable:(BOOL)a4
+- (void)setCoverImage:(id)image isUndesirable:(BOOL)undesirable
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  undesirableCopy = undesirable;
+  imageCopy = image;
+  if (!imageCopy)
   {
-    v10 = [(BKContentViewController *)self configuration];
-    [v10 layoutSize];
+    configuration = [(BKContentViewController *)self configuration];
+    [configuration layoutSize];
 
-    v9 = [(BKContentViewController *)self book];
-    v11 = [v9 pageProgressionDirection];
-    [v11 isEqualToString:AEHelperStringMetadataPageProgressionRightToLeftValue];
+    book = [(BKContentViewController *)self book];
+    pageProgressionDirection = [book pageProgressionDirection];
+    [pageProgressionDirection isEqualToString:AEHelperStringMetadataPageProgressionRightToLeftValue];
 
-    v12 = [v9 bookLanguage];
-    v13 = [v9 coverWritingModeString];
-    [v13 imIsVerticalWritingMode];
+    bookLanguage = [book bookLanguage];
+    coverWritingModeString = [book coverWritingModeString];
+    [coverWritingModeString imIsVerticalWritingMode];
     BKGenericBookCoverLayoutFromLanguageAndVerticality();
 
     v14 = +[UIScreen mainScreen];
     [v14 scale];
 
     CGSizeScale();
-    v15 = [v9 genericCoverTemplate];
+    genericCoverTemplate = [book genericCoverTemplate];
     v16 = BKGenericBookCoverTemplateNameValid();
 
-    v17 = [v9 shortBookTitle];
-    v18 = [v9 bookAuthor];
+    shortBookTitle = [book shortBookTitle];
+    bookAuthor = [book bookAuthor];
     if (v16)
     {
-      v19 = [v9 genericCoverTemplate];
+      genericCoverTemplate2 = [book genericCoverTemplate];
       ImageWithTemplate = BKGenericBookCoverCreateImageWithTemplate();
     }
 
     else
     {
-      v19 = [v9 databaseKey];
+      genericCoverTemplate2 = [book databaseKey];
       ImageWithTemplate = BKGenericBookCoverCreateImageWithItemIDAndLayout();
     }
 
@@ -136,7 +136,7 @@
     {
       v26 = [UIImage imageWithCGImage:v21];
       CFRelease(v21);
-      if (!v4)
+      if (!undesirableCopy)
       {
         goto LABEL_13;
       }
@@ -145,7 +145,7 @@
     else
     {
       v26 = 0;
-      if (!v4)
+      if (!undesirableCopy)
       {
 LABEL_13:
 
@@ -153,69 +153,69 @@ LABEL_13:
       }
     }
 
-    v22 = [(BKContentViewController *)self book];
-    v23 = [v22 embeddedArtHrefRejected];
+    book2 = [(BKContentViewController *)self book];
+    embeddedArtHrefRejected = [book2 embeddedArtHrefRejected];
 
-    if (!v23)
+    if (!embeddedArtHrefRejected)
     {
-      v24 = [(BKContentViewController *)self book];
-      [v24 setEmbeddedArtHrefRejected:&__kCFBooleanTrue];
+      book3 = [(BKContentViewController *)self book];
+      [book3 setEmbeddedArtHrefRejected:&__kCFBooleanTrue];
     }
 
     goto LABEL_13;
   }
 
-  v26 = v6;
-  v7 = [(BKContentViewController *)self book];
-  v8 = [v7 embeddedArtHrefRejected];
+  v26 = imageCopy;
+  book4 = [(BKContentViewController *)self book];
+  embeddedArtHrefRejected2 = [book4 embeddedArtHrefRejected];
 
-  if (v8)
+  if (embeddedArtHrefRejected2)
   {
     goto LABEL_15;
   }
 
-  v9 = [(BKContentViewController *)self book];
-  [v9 setEmbeddedArtHrefRejected:&__kCFBooleanFalse];
+  book = [(BKContentViewController *)self book];
+  [book setEmbeddedArtHrefRejected:&__kCFBooleanFalse];
 LABEL_14:
 
 LABEL_15:
-  v25 = [(BKCoverContentViewController2 *)self coverImage];
-  [v25 setImage:v26];
+  coverImage = [(BKCoverContentViewController2 *)self coverImage];
+  [coverImage setImage:v26];
 
   [(BKContentViewController *)self contentReady];
 }
 
 - (void)loadViewUIImage
 {
-  v3 = [(BKCoverContentViewController2 *)self coverImage];
+  coverImage = [(BKCoverContentViewController2 *)self coverImage];
 
-  if (!v3)
+  if (!coverImage)
   {
     v4 = [UIImageView alloc];
-    v5 = [(BKCoverContentViewController2 *)self view];
-    [v5 bounds];
+    view = [(BKCoverContentViewController2 *)self view];
+    [view bounds];
     v6 = [v4 initWithFrame:?];
     [(BKCoverContentViewController2 *)self setCoverImage:v6];
   }
 
   v7 = +[UIColor clearColor];
-  v8 = [(BKCoverContentViewController2 *)self coverImage];
-  [v8 setBackgroundColor:v7];
+  coverImage2 = [(BKCoverContentViewController2 *)self coverImage];
+  [coverImage2 setBackgroundColor:v7];
 
-  v9 = [(BKCoverContentViewController2 *)self coverImage];
-  [v9 setOpaque:0];
+  coverImage3 = [(BKCoverContentViewController2 *)self coverImage];
+  [coverImage3 setOpaque:0];
 
-  v10 = [(BKCoverContentViewController2 *)self coverImage];
-  [v10 setContentMode:1];
+  coverImage4 = [(BKCoverContentViewController2 *)self coverImage];
+  [coverImage4 setContentMode:1];
 
-  v11 = [(BKCoverContentViewController2 *)self coverImage];
-  [v11 setAutoresizingMask:18];
+  coverImage5 = [(BKCoverContentViewController2 *)self coverImage];
+  [coverImage5 setAutoresizingMask:18];
 
-  v12 = [(BKCoverContentViewController2 *)self view];
-  v13 = [(BKCoverContentViewController2 *)self coverImage];
-  [v12 addSubview:v13];
+  view2 = [(BKCoverContentViewController2 *)self view];
+  coverImage6 = [(BKCoverContentViewController2 *)self coverImage];
+  [view2 addSubview:coverImage6];
 
-  v14 = [(BKCoverContentViewController2 *)self _getURLToLoad];
+  _getURLToLoad = [(BKCoverContentViewController2 *)self _getURLToLoad];
   objc_initWeak(&location, self);
   dispatchQueue = self->_dispatchQueue;
   v17[0] = _NSConcreteStackBlock;
@@ -223,9 +223,9 @@ LABEL_15:
   v17[2] = sub_38F3C;
   v17[3] = &unk_1E37F8;
   objc_copyWeak(&v20, &location);
-  v18 = v14;
-  v19 = self;
-  v16 = v14;
+  v18 = _getURLToLoad;
+  selfCopy = self;
+  v16 = _getURLToLoad;
   dispatch_async(dispatchQueue, v17);
 
   objc_destroyWeak(&v20);
@@ -234,29 +234,29 @@ LABEL_15:
 
 - (id)_getURLToLoad
 {
-  v3 = [(BKContentViewController *)self book];
-  v4 = [v3 embeddedArtHrefMinusSubpath];
+  book = [(BKContentViewController *)self book];
+  embeddedArtHrefMinusSubpath = [book embeddedArtHrefMinusSubpath];
 
-  v5 = [(BKContentViewController *)self book];
-  v6 = [v5 baseURL];
+  book2 = [(BKContentViewController *)self book];
+  baseURL = [book2 baseURL];
 
   v7 = 0;
-  if (v4 && v6)
+  if (embeddedArtHrefMinusSubpath && baseURL)
   {
-    v8 = [NSURL URLWithString:v4 relativeToURL:v6];
+    v8 = [NSURL URLWithString:embeddedArtHrefMinusSubpath relativeToURL:baseURL];
     v7 = BEURLHandleriBooksImgUrlFromiBooksURL();
   }
 
   return v7;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  [(BKCoverContentViewController2 *)self setActivityIndicatorVisible:0 animated:a3 afterDelay:0.0];
+  disappearCopy = disappear;
+  [(BKCoverContentViewController2 *)self setActivityIndicatorVisible:0 animated:disappear afterDelay:0.0];
   v5.receiver = self;
   v5.super_class = BKCoverContentViewController2;
-  [(BKContentViewController *)&v5 viewWillDisappear:v3];
+  [(BKContentViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
 - (void)viewDidLoad
@@ -264,78 +264,78 @@ LABEL_15:
   v58.receiver = self;
   v58.super_class = BKCoverContentViewController2;
   [(BKContentViewController *)&v58 viewDidLoad];
-  v3 = [(BKCoverContentViewController2 *)self _getURLToLoad];
+  _getURLToLoad = [(BKCoverContentViewController2 *)self _getURLToLoad];
   v4 = [BKActivityIndicatorOverlayView alloc];
-  v5 = [(BKCoverContentViewController2 *)self theme];
-  v6 = [v5 contentTextColor];
-  v7 = [v6 colorWithAlphaComponent:0.7];
-  v8 = [(BKCoverContentViewController2 *)self theme];
-  v9 = [v8 backgroundColorForTraitEnvironment:self];
+  theme = [(BKCoverContentViewController2 *)self theme];
+  contentTextColor = [theme contentTextColor];
+  v7 = [contentTextColor colorWithAlphaComponent:0.7];
+  theme2 = [(BKCoverContentViewController2 *)self theme];
+  v9 = [theme2 backgroundColorForTraitEnvironment:self];
   v10 = [(BKActivityIndicatorOverlayView *)v4 initWithBackgroundColor:v7 foregroundColor:v9];
   activityIndicator = self->_activityIndicator;
   self->_activityIndicator = v10;
 
-  if (v3 && !BEDoesURLPointToAnImageFile())
+  if (_getURLToLoad && !BEDoesURLPointToAnImageFile())
   {
-    v12 = [(BKContentViewController *)self configuration];
-    [v12 layoutSize];
+    configuration = [(BKContentViewController *)self configuration];
+    [configuration layoutSize];
     v14 = v13;
 
-    v15 = [(BKContentViewController *)self book];
+    book = [(BKContentViewController *)self book];
     v16 = [BEWebViewFactoryPaginationOptions alloc];
-    v17 = [v15 obeyPageBreaks];
-    v18 = [(BKContentViewController *)self configuration];
-    [v18 gutterWidth];
-    v55 = [v16 initWithMode:0 usePaginationLineGrid:0 respectPageBreaks:v17 isHorizontalScroll:0 contentLayoutSize:objc_msgSend(v15 gapBetweenPages:"shouldAllowRemoteInspection") viewportWidth:CGSizeZero.width fixedLayoutSize:CGSizeZero.height pageLength:v19 fontSize:v14 developerExtrasEnabled:{CGSizeZero.width, CGSizeZero.height, v14, 0.0}];
+    obeyPageBreaks = [book obeyPageBreaks];
+    configuration2 = [(BKContentViewController *)self configuration];
+    [configuration2 gutterWidth];
+    v55 = [v16 initWithMode:0 usePaginationLineGrid:0 respectPageBreaks:obeyPageBreaks isHorizontalScroll:0 contentLayoutSize:objc_msgSend(book gapBetweenPages:"shouldAllowRemoteInspection") viewportWidth:CGSizeZero.width fixedLayoutSize:CGSizeZero.height pageLength:v19 fontSize:v14 developerExtrasEnabled:{CGSizeZero.width, CGSizeZero.height, v14, 0.0}];
 
     v20 = [BECFIUtilitiesJSOptions alloc];
-    v56 = v15;
-    v21 = [v15 assetID];
-    v22 = [(BKCoverContentViewController2 *)self ordinal];
-    v23 = [v15 spineIndexInPackage];
-    v54 = [v20 initWithManifestId:0 assetId:v21 chapterIndex:v22 spineIndex:{objc_msgSend(v23, "unsignedIntegerValue")}];
+    v56 = book;
+    assetID = [book assetID];
+    ordinal = [(BKCoverContentViewController2 *)self ordinal];
+    spineIndexInPackage = [book spineIndexInPackage];
+    v54 = [v20 initWithManifestId:0 assetId:assetID chapterIndex:ordinal spineIndex:{objc_msgSend(spineIndexInPackage, "unsignedIntegerValue")}];
 
-    v24 = [(BKCoverContentViewController2 *)self view];
-    [v24 bounds];
+    view = [(BKCoverContentViewController2 *)self view];
+    [view bounds];
     v26 = v25;
-    v27 = [(BKCoverContentViewController2 *)self view];
-    [v27 bounds];
+    view2 = [(BKCoverContentViewController2 *)self view];
+    [view2 bounds];
     v29 = v28;
-    v30 = [(BKContentViewController *)self book];
-    v31 = [v30 assetID];
-    v32 = [(BKContentViewController *)self book];
-    [v32 cacheItem];
-    v33 = v57 = v3;
-    v34 = [BEWebViewFactory viewConfiguredForCoverContent:v31 bookID:v33 protocolCacheItem:v55 paginationOptions:v54 cfiOptions:0.0, 0.0, v26, v29];
+    book2 = [(BKContentViewController *)self book];
+    assetID2 = [book2 assetID];
+    book3 = [(BKContentViewController *)self book];
+    [book3 cacheItem];
+    v33 = v57 = _getURLToLoad;
+    v34 = [BEWebViewFactory viewConfiguredForCoverContent:assetID2 bookID:v33 protocolCacheItem:v55 paginationOptions:v54 cfiOptions:0.0, 0.0, v26, v29];
     coverWebView = self->_coverWebView;
     self->_coverWebView = v34;
 
-    v36 = [(WKWebView *)self->_coverWebView be_navigationHandler];
-    [v36 setDelegate:self];
+    be_navigationHandler = [(WKWebView *)self->_coverWebView be_navigationHandler];
+    [be_navigationHandler setDelegate:self];
 
     [(WKWebView *)self->_coverWebView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v37 = [(BKCoverContentViewController2 *)self view];
-    [v37 addSubview:self->_coverWebView];
-    v53 = [(WKWebView *)self->_coverWebView leftAnchor];
-    v52 = [v37 leftAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52];
+    view3 = [(BKCoverContentViewController2 *)self view];
+    [view3 addSubview:self->_coverWebView];
+    leftAnchor = [(WKWebView *)self->_coverWebView leftAnchor];
+    leftAnchor2 = [view3 leftAnchor];
+    v51 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v59[0] = v51;
-    v50 = [(WKWebView *)self->_coverWebView rightAnchor];
-    v49 = [v37 rightAnchor];
-    v48 = [v50 constraintEqualToAnchor:v49];
+    rightAnchor = [(WKWebView *)self->_coverWebView rightAnchor];
+    rightAnchor2 = [view3 rightAnchor];
+    v48 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v59[1] = v48;
-    v38 = [(WKWebView *)self->_coverWebView topAnchor];
-    v39 = [v37 topAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    topAnchor = [(WKWebView *)self->_coverWebView topAnchor];
+    topAnchor2 = [view3 topAnchor];
+    v40 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v59[2] = v40;
-    v41 = [(WKWebView *)self->_coverWebView bottomAnchor];
-    v42 = [v37 bottomAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42];
+    bottomAnchor = [(WKWebView *)self->_coverWebView bottomAnchor];
+    bottomAnchor2 = [view3 bottomAnchor];
+    v43 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v59[3] = v43;
     v44 = [NSArray arrayWithObjects:v59 count:4];
     [NSLayoutConstraint activateConstraints:v44];
 
-    v3 = v57;
+    _getURLToLoad = v57;
     v45 = self->_coverWebView;
     v46 = [NSURLRequest requestWithURL:v57];
     v47 = [(WKWebView *)v45 loadRequest:v46];
@@ -349,45 +349,45 @@ LABEL_15:
 
 - (void)_forceWebContentBackgroundColor
 {
-  v3 = [(BKCoverContentViewController2 *)self themePage];
-  v4 = [(BKCoverContentViewController2 *)self view];
-  v5 = [v3 backgroundColorForTraitEnvironment:v4];
-  v8 = [v5 bc_rgbaHexValue];
+  themePage = [(BKCoverContentViewController2 *)self themePage];
+  view = [(BKCoverContentViewController2 *)self view];
+  v5 = [themePage backgroundColorForTraitEnvironment:view];
+  bc_rgbaHexValue = [v5 bc_rgbaHexValue];
 
-  v6 = [NSString stringWithFormat:@"document.body.style.backgroundColor = #%@", v8];
-  v7 = [(BKCoverContentViewController2 *)self coverWebView];
-  [v7 evaluateJavaScript:v6 completionHandler:0];
+  v6 = [NSString stringWithFormat:@"document.body.style.backgroundColor = #%@", bc_rgbaHexValue];
+  coverWebView = [(BKCoverContentViewController2 *)self coverWebView];
+  [coverWebView evaluateJavaScript:v6 completionHandler:0];
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
   v4.receiver = self;
   v4.super_class = BKCoverContentViewController2;
-  [(BKContentViewController *)&v4 setTheme:a3];
+  [(BKContentViewController *)&v4 setTheme:theme];
   [(BKCoverContentViewController2 *)self _forceWebContentBackgroundColor];
 }
 
-- (void)setActivityIndicatorVisible:(BOOL)a3 animated:(BOOL)a4 afterDelay:(double)a5
+- (void)setActivityIndicatorVisible:(BOOL)visible animated:(BOOL)animated afterDelay:(double)delay
 {
-  v6 = a4;
+  animatedCopy = animated;
   activityIndicator = self->_activityIndicator;
-  if (a3)
+  if (visible)
   {
-    v9 = [(BKCoverContentViewController2 *)self view];
-    [(BKActivityIndicatorOverlayView *)activityIndicator showIndicatorCenteredInView:v9 animated:v6 animationDelay:a5];
+    view = [(BKCoverContentViewController2 *)self view];
+    [(BKActivityIndicatorOverlayView *)activityIndicator showIndicatorCenteredInView:view animated:animatedCopy animationDelay:delay];
   }
 
   else
   {
     v8 = self->_activityIndicator;
 
-    [(BKActivityIndicatorOverlayView *)v8 hideIndicatorAnimated:a4 animationDelay:?];
+    [(BKActivityIndicatorOverlayView *)v8 hideIndicatorAnimated:animated animationDelay:?];
   }
 }
 
-- (void)navigationHandler:(id)a3 didFinishLoadOfURL:(id)a4
+- (void)navigationHandler:(id)handler didFinishLoadOfURL:(id)l
 {
-  [(BKCoverContentViewController2 *)self stopActivityIndicator:1, a4];
+  [(BKCoverContentViewController2 *)self stopActivityIndicator:1, l];
 
   [(BKCoverContentViewController2 *)self _forceWebContentBackgroundColor];
 }

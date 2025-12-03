@@ -1,40 +1,40 @@
 @interface CKPhotoSearchResultCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
-- (void)configureWithQueryResult:(id)a3 searchText:(id)a4 mode:(unint64_t)a5;
+- (void)configureWithQueryResult:(id)result searchText:(id)text mode:(unint64_t)mode;
 - (void)prepareForReuse;
 @end
 
 @implementation CKPhotoSearchResultCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKPhotoSearchResultCell" isKindOfClass:@"CKEditableSearchResultCell"];
-  [v3 validateClass:@"CKPhotoSearchResultCell" hasInstanceMethod:@"isLivePhoto" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKEditableSearchResultCell" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKPhotoSearchResultCell" hasInstanceMethod:@"isVideo" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKPhotoSearchResultCell" hasInstanceMethod:@"durationLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKPhotoSearchResultCell" hasInstanceMethod:@"prepareForReuse" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CKPhotoSearchResultCell" hasInstanceMethod:@"configureWithQueryResult:searchText:mode:" withFullSignature:{"v", "@", "@", "Q", 0}];
-  [v3 validateClass:@"CKSpotlightQueryResult"];
-  [v3 validateClass:@"CKSpotlightQueryResult" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CSSearchableItem"];
-  [v3 validateClass:@"CSSearchableItem" hasInstanceMethod:@"attributeSet" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CSSearchableItemAttributeSet"];
-  [v3 validateClass:@"CSSearchableItemAttributeSet" hasInstanceMethod:@"contentURL" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKPhotoSearchResultCell" isKindOfClass:@"CKEditableSearchResultCell"];
+  [validationsCopy validateClass:@"CKPhotoSearchResultCell" hasInstanceMethod:@"isLivePhoto" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKEditableSearchResultCell" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKPhotoSearchResultCell" hasInstanceMethod:@"isVideo" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKPhotoSearchResultCell" hasInstanceMethod:@"durationLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKPhotoSearchResultCell" hasInstanceMethod:@"prepareForReuse" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CKPhotoSearchResultCell" hasInstanceMethod:@"configureWithQueryResult:searchText:mode:" withFullSignature:{"v", "@", "@", "Q", 0}];
+  [validationsCopy validateClass:@"CKSpotlightQueryResult"];
+  [validationsCopy validateClass:@"CKSpotlightQueryResult" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CSSearchableItem"];
+  [validationsCopy validateClass:@"CSSearchableItem" hasInstanceMethod:@"attributeSet" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CSSearchableItemAttributeSet"];
+  [validationsCopy validateClass:@"CSSearchableItemAttributeSet" hasInstanceMethod:@"contentURL" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(CKPhotoSearchResultCellAccessibility *)self _axContact];
-  v4 = AXCKLocalizedFromStringWithContact(v3);
+  _axContact = [(CKPhotoSearchResultCellAccessibility *)self _axContact];
+  v4 = AXCKLocalizedFromStringWithContact(_axContact);
 
   if ([(CKPhotoSearchResultCellAccessibility *)self safeBoolForKey:@"isVideo"])
   {
     v5 = accessibilityLocalizedString(@"video.attachment");
-    v6 = [(CKPhotoSearchResultCellAccessibility *)self safeUIViewForKey:@"durationLabel"];
-    v7 = [v6 accessibilityLabel];
+    _axImageURL = [(CKPhotoSearchResultCellAccessibility *)self safeUIViewForKey:@"durationLabel"];
+    accessibilityLabel = [_axImageURL accessibilityLabel];
     v8 = AXLocalizeDurationTime();
   }
 
@@ -51,19 +51,19 @@
     }
 
     v5 = accessibilityLocalizedString(v9);
-    v10 = [(CKPhotoSearchResultCellAccessibility *)self _axDescription];
-    v6 = [(CKPhotoSearchResultCellAccessibility *)self _axImageURL];
-    if ([v10 length] || !v6)
+    _axDescription = [(CKPhotoSearchResultCellAccessibility *)self _axDescription];
+    _axImageURL = [(CKPhotoSearchResultCellAccessibility *)self _axImageURL];
+    if ([_axDescription length] || !_axImageURL)
     {
       goto LABEL_16;
     }
 
-    v7 = UIAccessibilityPhotoCreationDate();
+    accessibilityLabel = UIAccessibilityPhotoCreationDate();
     v11 = UIAccessibilityEmojiDescription();
     if ([v11 length])
     {
       v12 = accessibilityUIKitLocalizedString();
-      v17 = v7;
+      v17 = accessibilityLabel;
       v16 = v11;
       v8 = __UIAXStringForVariables();
     }
@@ -81,17 +81,17 @@
         v13 = 0;
       }
 
-      v17 = v7;
+      v17 = accessibilityLabel;
       v16 = v12;
       v8 = __UIAXStringForVariables();
 
-      v10 = v13;
+      _axDescription = v13;
     }
 
     [(CKPhotoSearchResultCellAccessibility *)self _axSetDescription:v8, v16, v17, @"__AXStringForVariablesSentinel"];
   }
 
-  v10 = v8;
+  _axDescription = v8;
 LABEL_16:
 
   v14 = __UIAXStringForVariables();
@@ -99,13 +99,13 @@ LABEL_16:
   return v14;
 }
 
-- (void)configureWithQueryResult:(id)a3 searchText:(id)a4 mode:(unint64_t)a5
+- (void)configureWithQueryResult:(id)result searchText:(id)text mode:(unint64_t)mode
 {
   v10.receiver = self;
   v10.super_class = CKPhotoSearchResultCellAccessibility;
-  v8 = a3;
-  [(CKPhotoSearchResultCellAccessibility *)&v10 configureWithQueryResult:v8 searchText:a4 mode:a5];
-  v9 = [v8 safeValueForKeyPath:{@"item.attributeSet.contentURL", v10.receiver, v10.super_class}];
+  resultCopy = result;
+  [(CKPhotoSearchResultCellAccessibility *)&v10 configureWithQueryResult:resultCopy searchText:text mode:mode];
+  v9 = [resultCopy safeValueForKeyPath:{@"item.attributeSet.contentURL", v10.receiver, v10.super_class}];
 
   [(CKPhotoSearchResultCellAccessibility *)self _axSetImageURL:v9];
 }

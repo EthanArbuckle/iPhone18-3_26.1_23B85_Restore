@@ -1,9 +1,9 @@
 @interface PXGLayoutGuide
-- (CGRect)rectInLayout:(id)a3;
+- (CGRect)rectInLayout:(id)layout;
 - (CGRect)referenceRect;
 - (PXGLayout)referenceLayout;
-- (void)performChanges:(id)a3;
-- (void)setRect:(CGRect)a3 inLayout:(id)a4;
+- (void)performChanges:(id)changes;
+- (void)setRect:(CGRect)rect inLayout:(id)layout;
 @end
 
 @implementation PXGLayoutGuide
@@ -28,20 +28,20 @@
   return result;
 }
 
-- (void)setRect:(CGRect)a3 inLayout:(id)a4
+- (void)setRect:(CGRect)rect inLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  [(PXGLayoutGuide *)self rectInLayout:v9];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  layoutCopy = layout;
+  [(PXGLayoutGuide *)self rectInLayout:layoutCopy];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
   [(PXGLayoutGuide *)self setReferenceRect:x, y, width, height];
-  [(PXGLayoutGuide *)self setReferenceLayout:v9];
+  [(PXGLayoutGuide *)self setReferenceLayout:layoutCopy];
 
   v19.origin.x = x;
   v19.origin.y = y;
@@ -58,25 +58,25 @@
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXGLayoutGuide;
-  [(PXGLayoutGuide *)&v3 performChanges:a3];
+  [(PXGLayoutGuide *)&v3 performChanges:changes];
 }
 
-- (CGRect)rectInLayout:(id)a3
+- (CGRect)rectInLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   [(PXGLayoutGuide *)self referenceRect];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(PXGLayoutGuide *)self referenceLayout];
-  if (v13)
+  referenceLayout = [(PXGLayoutGuide *)self referenceLayout];
+  if (referenceLayout)
   {
-    [v4 convertRect:v13 fromLayout:{v6, v8, v10, v12}];
+    [layoutCopy convertRect:referenceLayout fromLayout:{v6, v8, v10, v12}];
     v15 = v14;
     v17 = v16;
     v19 = v18;

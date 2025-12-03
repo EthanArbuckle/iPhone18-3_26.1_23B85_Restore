@@ -1,7 +1,7 @@
 @interface ICQDaemonOfferStub
 - (Class)offerClass;
 - (ICQDaemonOfferCriteria)criteria;
-- (ICQDaemonOfferStub)initWithServerDictionary:(id)a3;
+- (ICQDaemonOfferStub)initWithServerDictionary:(id)dictionary;
 - (NSDictionary)offerResetPayload;
 - (NSString)offerId;
 - (NSString)offerResetURL;
@@ -12,15 +12,15 @@
 
 @implementation ICQDaemonOfferStub
 
-- (ICQDaemonOfferStub)initWithServerDictionary:(id)a3
+- (ICQDaemonOfferStub)initWithServerDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ICQDaemonOfferStub;
   v5 = [(ICQDaemonOfferStub *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     serverDict = v5->_serverDict;
     v5->_serverDict = v6;
   }
@@ -49,8 +49,8 @@
 
 - (ICQDaemonOfferCriteria)criteria
 {
-  v2 = [(ICQDaemonOfferStub *)self serverDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"criteria"];
+  serverDictionary = [(ICQDaemonOfferStub *)self serverDictionary];
+  v3 = [serverDictionary objectForKeyedSubscript:@"criteria"];
 
   v4 = [[ICQDaemonOfferCriteria alloc] initWithServerDictionary:v3];
 
@@ -76,9 +76,9 @@
 
   else
   {
-    v4 = [(ICQDaemonOfferStub *)self isEventOffer];
+    isEventOffer = [(ICQDaemonOfferStub *)self isEventOffer];
     v3 = off_27A650D88;
-    if (v4)
+    if (isEventOffer)
     {
       v3 = off_27A650D80;
     }
@@ -92,9 +92,9 @@
 
 - (id)persistedOffer
 {
-  v2 = [(ICQDaemonOfferStub *)self offerClass];
+  offerClass = [(ICQDaemonOfferStub *)self offerClass];
 
-  return [(objc_class *)v2 persistedObject];
+  return [(objc_class *)offerClass persistedObject];
 }
 
 - (int64_t)requestType

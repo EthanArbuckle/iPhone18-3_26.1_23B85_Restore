@@ -1,30 +1,30 @@
 @interface ARWorldTrackingReferenceAnchorData
-- (ARWorldTrackingReferenceAnchorData)initWithCoder:(id)a3;
-- (ARWorldTrackingReferenceAnchorData)initWithUpdatedAnchors:(id)a3 addedAnchors:(id)a4 removedAnchors:(id)a5 externalAnchors:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (id)anchorsForCameraWithTransform:(double)a3 referenceOriginTransform:(double)a4 existingAnchors:(double)a5 anchorsToRemove:(float32x4_t)a6;
-- (id)externalAnchorsWithReferenceOriginTransform:(float32x4_t)a3 existingAnchors:(float32x4_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (ARWorldTrackingReferenceAnchorData)initWithCoder:(id)coder;
+- (ARWorldTrackingReferenceAnchorData)initWithUpdatedAnchors:(id)anchors addedAnchors:(id)addedAnchors removedAnchors:(id)removedAnchors externalAnchors:(id)externalAnchors;
+- (BOOL)isEqual:(id)equal;
+- (id)anchorsForCameraWithTransform:(double)transform referenceOriginTransform:(double)originTransform existingAnchors:(double)anchors anchorsToRemove:(float32x4_t)remove;
+- (id)externalAnchorsWithReferenceOriginTransform:(float32x4_t)transform existingAnchors:(float32x4_t)anchors;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARWorldTrackingReferenceAnchorData
 
-- (ARWorldTrackingReferenceAnchorData)initWithUpdatedAnchors:(id)a3 addedAnchors:(id)a4 removedAnchors:(id)a5 externalAnchors:(id)a6
+- (ARWorldTrackingReferenceAnchorData)initWithUpdatedAnchors:(id)anchors addedAnchors:(id)addedAnchors removedAnchors:(id)removedAnchors externalAnchors:(id)externalAnchors
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  anchorsCopy = anchors;
+  addedAnchorsCopy = addedAnchors;
+  removedAnchorsCopy = removedAnchors;
+  externalAnchorsCopy = externalAnchors;
   v20.receiver = self;
   v20.super_class = ARWorldTrackingReferenceAnchorData;
   v15 = [(ARWorldTrackingReferenceAnchorData *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_updatedAnchors, a3);
-    objc_storeStrong(&v16->_addedAnchors, a4);
-    objc_storeStrong(&v16->_removedAnchors, a5);
-    objc_storeStrong(&v16->_externalAnchors, a6);
+    objc_storeStrong(&v15->_updatedAnchors, anchors);
+    objc_storeStrong(&v16->_addedAnchors, addedAnchors);
+    objc_storeStrong(&v16->_removedAnchors, removedAnchors);
+    objc_storeStrong(&v16->_externalAnchors, externalAnchors);
     v17 = [MEMORY[0x1E695DFD8] set];
     receivedAnchors = v16->_receivedAnchors;
     v16->_receivedAnchors = v17;
@@ -33,17 +33,17 @@
   return v16;
 }
 
-- (id)anchorsForCameraWithTransform:(double)a3 referenceOriginTransform:(double)a4 existingAnchors:(double)a5 anchorsToRemove:(float32x4_t)a6
+- (id)anchorsForCameraWithTransform:(double)transform referenceOriginTransform:(double)originTransform existingAnchors:(double)anchors anchorsToRemove:(float32x4_t)remove
 {
   v120 = *MEMORY[0x1E69E9840];
   v14 = a11;
   v80 = a12;
-  v15 = [a1 updatedAnchors];
-  [v15 count];
-  v16 = [a1 addedAnchors];
-  [v16 count];
-  v17 = [a1 removedAnchors];
-  [v17 count];
+  updatedAnchors = [self updatedAnchors];
+  [updatedAnchors count];
+  addedAnchors = [self addedAnchors];
+  [addedAnchors count];
+  removedAnchors = [self removedAnchors];
+  [removedAnchors count];
   kdebug_trace();
 
   v81 = v14;
@@ -53,9 +53,9 @@
   v107 = 0u;
   v108 = 0u;
   v109 = 0u;
-  v18 = [a1 updatedAnchors];
-  v19 = [v18 countByEnumeratingWithState:&v106 objects:v116 count:16];
-  v83 = a1;
+  updatedAnchors2 = [self updatedAnchors];
+  v19 = [updatedAnchors2 countByEnumeratingWithState:&v106 objects:v116 count:16];
+  selfCopy = self;
   if (v19)
   {
     v20 = v19;
@@ -66,12 +66,12 @@
       {
         if (*v107 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(updatedAnchors2);
         }
 
         v23 = *(*(&v106 + 1) + 8 * i);
-        v24 = [v23 identifier];
-        v25 = [v97 objectForKey:v24];
+        identifier = [v23 identifier];
+        v25 = [v97 objectForKey:identifier];
 
         if (!v25)
         {
@@ -80,22 +80,22 @@
           {
             v43 = objc_opt_class();
             v44 = NSStringFromClass(v43);
-            v45 = [v23 identifier];
+            identifier2 = [v23 identifier];
             *buf = 138543874;
             *&buf[4] = v44;
             *&buf[12] = 2048;
-            *&buf[14] = v83;
+            *&buf[14] = selfCopy;
             *&buf[22] = 2114;
-            *&buf[24] = v45;
+            *&buf[24] = identifier2;
             _os_log_impl(&dword_1C241C000, v35, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: VIO returned an updated anchor that is not surfaced by ARSession: %{public}@", buf, 0x20u);
 
-            a1 = v83;
+            self = selfCopy;
           }
 
           goto LABEL_16;
         }
 
-        [a1 timestamp];
+        [self timestamp];
         v27 = v26;
         [v25 lastUpdateTimestamp];
         if (v27 > v28)
@@ -137,14 +137,14 @@
             *v119 = 0u;
             do
             {
-              *&buf[v41] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a6, COERCE_FLOAT(*(&v110 + v41))), a7, *(&v110 + v41), 1), a8, *(&v110 + v41), 2), a9, *(&v110 + v41), 3);
+              *&buf[v41] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(remove, COERCE_FLOAT(*(&v110 + v41))), a7, *(&v110 + v41), 1), a8, *(&v110 + v41), 2), a9, *(&v110 + v41), 3);
               v41 += 16;
             }
 
             while (v41 != 64);
             [v35 setTransform:*buf, *&buf[16], *&v118, v119[0]];
-            v42 = [v23 sessionIdentifier];
-            [v35 setSessionIdentifier:v42];
+            sessionIdentifier = [v23 sessionIdentifier];
+            [v35 setSessionIdentifier:sessionIdentifier];
 
             [v96 addObject:v35];
 LABEL_16:
@@ -152,7 +152,7 @@ LABEL_16:
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v106 objects:v116 count:16];
+      v20 = [updatedAnchors2 countByEnumeratingWithState:&v106 objects:v116 count:16];
     }
 
     while (v20);
@@ -162,7 +162,7 @@ LABEL_16:
   v105 = 0u;
   v102 = 0u;
   v103 = 0u;
-  obj = [a1 addedAnchors];
+  obj = [self addedAnchors];
   v46 = [obj countByEnumeratingWithState:&v102 objects:v115 count:16];
   if (v46)
   {
@@ -178,7 +178,7 @@ LABEL_16:
         }
 
         v50 = *(*(&v102 + 1) + 8 * j);
-        v51 = [a1[6] member:v50];
+        v51 = [self[6] member:v50];
         v52 = v51;
         if (v51)
         {
@@ -216,14 +216,14 @@ LABEL_16:
           *v119 = 0u;
           do
           {
-            *&buf[v65] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a6, COERCE_FLOAT(*(&v110 + v65))), a7, *(&v110 + v65), 1), a8, *(&v110 + v65), 2), a9, *(&v110 + v65), 3);
+            *&buf[v65] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(remove, COERCE_FLOAT(*(&v110 + v65))), a7, *(&v110 + v65), 1), a8, *(&v110 + v65), 2), a9, *(&v110 + v65), 3);
             v65 += 16;
           }
 
           while (v65 != 64);
           [v59 setTransform:*buf, *&buf[16], *&v118, v119[0]];
-          v66 = [v50 sessionIdentifier];
-          [v59 setSessionIdentifier:v66];
+          sessionIdentifier2 = [v50 sessionIdentifier];
+          [v59 setSessionIdentifier:sessionIdentifier2];
 
           [v96 addObject:v59];
         }
@@ -235,16 +235,16 @@ LABEL_16:
           {
             v67 = objc_opt_class();
             v68 = NSStringFromClass(v67);
-            v69 = [v50 identifier];
+            identifier3 = [v50 identifier];
             *buf = 138543874;
             *&buf[4] = v68;
             *&buf[12] = 2048;
-            *&buf[14] = v83;
+            *&buf[14] = selfCopy;
             *&buf[22] = 2114;
-            *&buf[24] = v69;
+            *&buf[24] = identifier3;
             _os_log_impl(&dword_1C241C000, v59, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Ignoring locally added anchor: %{public}@", buf, 0x20u);
 
-            a1 = v83;
+            self = selfCopy;
           }
         }
       }
@@ -259,8 +259,8 @@ LABEL_16:
   v101 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v70 = [a1 removedAnchors];
-  v71 = [v70 countByEnumeratingWithState:&v98 objects:v114 count:16];
+  removedAnchors2 = [self removedAnchors];
+  v71 = [removedAnchors2 countByEnumeratingWithState:&v98 objects:v114 count:16];
   if (v71)
   {
     v72 = v71;
@@ -271,12 +271,12 @@ LABEL_16:
       {
         if (*v99 != v73)
         {
-          objc_enumerationMutation(v70);
+          objc_enumerationMutation(removedAnchors2);
         }
 
         v75 = *(*(&v98 + 1) + 8 * k);
-        v76 = [v75 identifier];
-        v77 = [v97 objectForKey:v76];
+        identifier4 = [v75 identifier];
+        v77 = [v97 objectForKey:identifier4];
 
         if ([v77 isMemberOfClass:objc_opt_class()])
         {
@@ -285,7 +285,7 @@ LABEL_16:
         }
       }
 
-      v72 = [v70 countByEnumeratingWithState:&v98 objects:v114 count:16];
+      v72 = [removedAnchors2 countByEnumeratingWithState:&v98 objects:v114 count:16];
     }
 
     while (v72);
@@ -294,17 +294,17 @@ LABEL_16:
   [v96 count];
   [v80 count];
   kdebug_trace();
-  v78 = [v96 allObjects];
+  allObjects = [v96 allObjects];
 
-  return v78;
+  return allObjects;
 }
 
-- (id)externalAnchorsWithReferenceOriginTransform:(float32x4_t)a3 existingAnchors:(float32x4_t)a4
+- (id)externalAnchorsWithReferenceOriginTransform:(float32x4_t)transform existingAnchors:(float32x4_t)anchors
 {
   v62 = *MEMORY[0x1E69E9840];
   v8 = a7;
-  v9 = [a1 externalAnchors];
-  v10 = [v9 count];
+  externalAnchors = [self externalAnchors];
+  v10 = [externalAnchors count];
 
   if (v10)
   {
@@ -314,9 +314,9 @@ LABEL_16:
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v40 = a1;
-    v13 = [a1 externalAnchors];
-    v14 = [v13 countByEnumeratingWithState:&v50 objects:v58 count:16];
+    selfCopy = self;
+    externalAnchors2 = [self externalAnchors];
+    v14 = [externalAnchors2 countByEnumeratingWithState:&v50 objects:v58 count:16];
     if (!v14)
     {
       goto LABEL_20;
@@ -324,7 +324,7 @@ LABEL_16:
 
     v15 = v14;
     v45 = *v51;
-    v39 = v13;
+    v39 = externalAnchors2;
     while (1)
     {
       v16 = 0;
@@ -332,12 +332,12 @@ LABEL_16:
       {
         if (*v51 != v45)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(externalAnchors2);
         }
 
         v17 = *(*(&v50 + 1) + 8 * v16);
         v18 = [v12 member:v17];
-        if (v18 || ([v40[6] member:v17], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+        if (v18 || ([selfCopy[6] member:v17], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
         {
           v19 = v18;
           [v18 referenceTransform];
@@ -374,14 +374,14 @@ LABEL_16:
           v61 = 0u;
           do
           {
-            *&buf[v32] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(&v54 + v32))), a3, *(&v54 + v32), 1), a4, *(&v54 + v32), 2), a5, *(&v54 + v32), 3);
+            *&buf[v32] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(&v54 + v32))), transform, *(&v54 + v32), 1), anchors, *(&v54 + v32), 2), a5, *(&v54 + v32), 3);
             v32 += 16;
           }
 
           while (v32 != 64);
           [v26 setTransform:{*buf, *&buf[16], *&v60, *&v61}];
-          v33 = [v17 sessionIdentifier];
-          [v26 setSessionIdentifier:v33];
+          sessionIdentifier = [v17 sessionIdentifier];
+          [v26 setSessionIdentifier:sessionIdentifier];
 
           [v11 addObject:v26];
           goto LABEL_14;
@@ -392,14 +392,14 @@ LABEL_16:
         {
           v34 = objc_opt_class();
           v26 = NSStringFromClass(v34);
-          v35 = [v17 identifier];
+          identifier = [v17 identifier];
           *buf = 138543874;
           *&buf[4] = v26;
           *&buf[12] = 2048;
-          *&buf[14] = v40;
-          v13 = v39;
+          *&buf[14] = selfCopy;
+          externalAnchors2 = v39;
           *&buf[22] = 2114;
-          *&buf[24] = v35;
+          *&buf[24] = identifier;
           _os_log_impl(&dword_1C241C000, v19, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: External anchor was neither found in received list nor existing anchors: %{public}@", buf, 0x20u);
 
 LABEL_14:
@@ -409,51 +409,51 @@ LABEL_14:
       }
 
       while (v16 != v15);
-      v36 = [v13 countByEnumeratingWithState:&v50 objects:v58 count:16];
+      v36 = [externalAnchors2 countByEnumeratingWithState:&v50 objects:v58 count:16];
       v15 = v36;
       if (!v36)
       {
 LABEL_20:
 
-        v37 = [v11 allObjects];
+        allObjects = [v11 allObjects];
 
         goto LABEL_22;
       }
     }
   }
 
-  v37 = MEMORY[0x1E695E0F0];
+  allObjects = MEMORY[0x1E695E0F0];
 LABEL_22:
 
-  return v37;
+  return allObjects;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timestamp = self->_timestamp;
-  v5 = a3;
-  [v5 encodeDouble:@"timestamp" forKey:timestamp];
-  [v5 encodeObject:self->_updatedAnchors forKey:@"updatedAnchors"];
-  [v5 encodeObject:self->_addedAnchors forKey:@"addedAnchors"];
-  [v5 encodeObject:self->_removedAnchors forKey:@"removedAnchors"];
-  [v5 encodeObject:self->_externalAnchors forKey:@"externalAnchors"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"timestamp" forKey:timestamp];
+  [coderCopy encodeObject:self->_updatedAnchors forKey:@"updatedAnchors"];
+  [coderCopy encodeObject:self->_addedAnchors forKey:@"addedAnchors"];
+  [coderCopy encodeObject:self->_removedAnchors forKey:@"removedAnchors"];
+  [coderCopy encodeObject:self->_externalAnchors forKey:@"externalAnchors"];
 }
 
-- (ARWorldTrackingReferenceAnchorData)initWithCoder:(id)a3
+- (ARWorldTrackingReferenceAnchorData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = ARWorldTrackingReferenceAnchorData;
   v5 = [(ARWorldTrackingReferenceAnchorData *)&v32 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"timestamp"];
+    [coderCopy decodeDoubleForKey:@"timestamp"];
     v5->_timestamp = v6;
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v7 setWithObjects:{v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"updatedAnchors"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"updatedAnchors"];
     updatedAnchors = v5->_updatedAnchors;
     v5->_updatedAnchors = v11;
 
@@ -461,7 +461,7 @@ LABEL_22:
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v16 = [v13 setWithObjects:{v14, v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"addedAnchors"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"addedAnchors"];
     addedAnchors = v5->_addedAnchors;
     v5->_addedAnchors = v17;
 
@@ -469,7 +469,7 @@ LABEL_22:
     v20 = objc_opt_class();
     v21 = objc_opt_class();
     v22 = [v19 setWithObjects:{v20, v21, objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"removedAnchors"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"removedAnchors"];
     removedAnchors = v5->_removedAnchors;
     v5->_removedAnchors = v23;
 
@@ -477,7 +477,7 @@ LABEL_22:
     v26 = objc_opt_class();
     v27 = objc_opt_class();
     v28 = [v25 setWithObjects:{v26, v27, objc_opt_class(), 0}];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"externalAnchors"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"externalAnchors"];
     externalAnchors = v5->_externalAnchors;
     v5->_externalAnchors = v29;
   }
@@ -485,13 +485,13 @@ LABEL_22:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = vabdd_f64(self->_timestamp, v5[1]) < 2.22044605e-16 && [(NSSet *)self->_updatedAnchors isEqualToSet:*(v5 + 2)]&& [(NSSet *)self->_addedAnchors isEqualToSet:*(v5 + 3)]&& [(NSSet *)self->_removedAnchors isEqualToSet:*(v5 + 4)]&& [(NSSet *)self->_externalAnchors isEqualToSet:*(v5 + 5)];
   }
 

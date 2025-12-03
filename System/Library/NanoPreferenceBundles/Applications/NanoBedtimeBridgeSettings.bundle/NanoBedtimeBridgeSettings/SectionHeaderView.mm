@@ -1,13 +1,13 @@
 @interface SectionHeaderView
-- (_TtC25NanoBedtimeBridgeSettings17SectionHeaderView)initWithCoder:(id)a3;
-- (_TtC25NanoBedtimeBridgeSettings17SectionHeaderView)initWithFrame:(CGRect)a3;
-- (_TtC25NanoBedtimeBridgeSettings17SectionHeaderView)initWithSpecifier:(id)a3;
-- (double)preferredHeightForWidth:(double)a3;
+- (_TtC25NanoBedtimeBridgeSettings17SectionHeaderView)initWithCoder:(id)coder;
+- (_TtC25NanoBedtimeBridgeSettings17SectionHeaderView)initWithFrame:(CGRect)frame;
+- (_TtC25NanoBedtimeBridgeSettings17SectionHeaderView)initWithSpecifier:(id)specifier;
+- (double)preferredHeightForWidth:(double)width;
 @end
 
 @implementation SectionHeaderView
 
-- (_TtC25NanoBedtimeBridgeSettings17SectionHeaderView)initWithSpecifier:(id)a3
+- (_TtC25NanoBedtimeBridgeSettings17SectionHeaderView)initWithSpecifier:(id)specifier
 {
   sub_117CC();
   sub_117BC();
@@ -17,12 +17,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = sub_2B88(a3);
+  v4 = sub_2B88(specifier);
 
   return v4;
 }
 
-- (_TtC25NanoBedtimeBridgeSettings17SectionHeaderView)initWithCoder:(id)a3
+- (_TtC25NanoBedtimeBridgeSettings17SectionHeaderView)initWithCoder:(id)coder
 {
   sub_117CC();
   sub_117BC();
@@ -32,11 +32,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_3EFC();
 }
 
-- (double)preferredHeightForWidth:(double)a3
+- (double)preferredHeightForWidth:(double)width
 {
   sub_117CC();
   sub_117BC();
@@ -46,20 +46,20 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  [(SectionHeaderView *)v5 directionalLayoutMargins];
-  v7 = a3 - v6;
-  [(SectionHeaderView *)v5 directionalLayoutMargins];
+  selfCopy = self;
+  [(SectionHeaderView *)selfCopy directionalLayoutMargins];
+  v7 = width - v6;
+  [(SectionHeaderView *)selfCopy directionalLayoutMargins];
   v9 = v7 - v8;
   LODWORD(v10) = 1148846080;
   LODWORD(v8) = 1112014848;
-  [(SectionHeaderView *)v5 systemLayoutSizeFittingSize:v9 withHorizontalFittingPriority:0.0 verticalFittingPriority:v10, v8];
+  [(SectionHeaderView *)selfCopy systemLayoutSizeFittingSize:v9 withHorizontalFittingPriority:0.0 verticalFittingPriority:v10, v8];
   v12 = v11;
 
   return v12;
 }
 
-- (_TtC25NanoBedtimeBridgeSettings17SectionHeaderView)initWithFrame:(CGRect)a3
+- (_TtC25NanoBedtimeBridgeSettings17SectionHeaderView)initWithFrame:(CGRect)frame
 {
   sub_117CC();
   sub_117BC();

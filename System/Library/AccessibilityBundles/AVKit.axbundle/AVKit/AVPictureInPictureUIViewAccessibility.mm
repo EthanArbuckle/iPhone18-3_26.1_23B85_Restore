@@ -7,8 +7,8 @@
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v3 = [(AVPictureInPictureUIViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"PIPUIView"];
+  accessibilityIdentifier = [(AVPictureInPictureUIViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"PIPUIView"];
 
   if (v4)
   {
@@ -55,8 +55,8 @@
 
 - (BOOL)_accessibilityIsUsingRemoteParentActivateAction
 {
-  v3 = [(AVPictureInPictureUIViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"PIPUIView"];
+  accessibilityIdentifier = [(AVPictureInPictureUIViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"PIPUIView"];
 
   if (v4)
   {

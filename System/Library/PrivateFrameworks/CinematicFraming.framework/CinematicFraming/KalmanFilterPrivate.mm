@@ -1,8 +1,8 @@
 @interface KalmanFilterPrivate
 - (KalmanFilterPrivate)init;
 - (void)_predict:(KalmanFilterPrivate *)self;
-- (void)_update:(float)a3;
-- (void)addObservation:(float)a3;
+- (void)_update:(float)_update;
+- (void)addObservation:(float)observation;
 @end
 
 @implementation KalmanFilterPrivate
@@ -90,7 +90,7 @@
   *&self->_anon_20[32] = v16.i64[0];
 }
 
-- (void)_update:(float)a3
+- (void)_update:(float)_update
 {
   v6 = *self->_anon_20;
   *v3.i32 = v6.f32[0] + *self->_noiseScaling;
@@ -98,7 +98,7 @@
   [(KalmanFilterPrivate *)self estimatedObservation];
   v7 = 0;
   v9 = *self->_anon_20;
-  *self->_stateEstimate = vmlaq_n_f32(*self->_stateEstimate, v19, a3 - v8);
+  *self->_stateEstimate = vmlaq_n_f32(*self->_stateEstimate, v19, _update - v8);
   v10 = *&self->_observationModel[4];
   v11 = vsubq_f32(*MEMORY[0x277D860B0], vmulq_n_f32(v19, v10.f32[0]));
   v12 = vsubq_f32(*(MEMORY[0x277D860B0] + 16), vmulq_lane_f32(v19, *v10.f32, 1));
@@ -129,13 +129,13 @@
   *&self->_anon_20[32] = v18;
 }
 
-- (void)addObservation:(float)a3
+- (void)addObservation:(float)observation
 {
   if (self[1].super.isa)
   {
-    v5 = LODWORD(a3);
-    *self->_stateEstimate = LODWORD(a3);
-    self->_previousObservation = a3;
+    v5 = LODWORD(observation);
+    *self->_stateEstimate = LODWORD(observation);
+    self->_previousObservation = observation;
     LOBYTE(self[1].super.isa) = 0;
   }
 
@@ -144,10 +144,10 @@
     *&v5 = self->_previousObservation;
   }
 
-  v6 = a3 - *&v5;
-  *&v3 = (a3 - *&v5) - self->_previousVelocity;
+  v6 = observation - *&v5;
+  *&v3 = (observation - *&v5) - self->_previousVelocity;
   v8 = v3;
-  v10 = *&a3;
+  v10 = *&observation;
   *(&v3 + 1) = *&v3 * *&v3;
   *&self->_observationMeanSquared = vmla_n_f32(vmul_n_f32(*&v3, 1.0 - self->_measurementNoise), *&self->_observationMeanSquared, self->_measurementNoise);
   [(KalmanFilterPrivate *)self covariance];

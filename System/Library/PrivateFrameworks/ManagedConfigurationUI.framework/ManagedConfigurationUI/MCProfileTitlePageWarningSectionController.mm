@@ -1,49 +1,49 @@
 @interface MCProfileTitlePageWarningSectionController
-- (MCProfileTitlePageWarningSectionController)initWithWarning:(id)a3;
+- (MCProfileTitlePageWarningSectionController)initWithWarning:(id)warning;
 - (UITableView)tableView;
 - (double)heightForHeader;
-- (id)cellForRowAtIndex:(unint64_t)a3;
+- (id)cellForRowAtIndex:(unint64_t)index;
 - (id)titleForHeader;
-- (void)registerCellClassWithTableView:(id)a3;
+- (void)registerCellClassWithTableView:(id)view;
 @end
 
 @implementation MCProfileTitlePageWarningSectionController
 
-- (MCProfileTitlePageWarningSectionController)initWithWarning:(id)a3
+- (MCProfileTitlePageWarningSectionController)initWithWarning:(id)warning
 {
-  v5 = a3;
+  warningCopy = warning;
   v9.receiver = self;
   v9.super_class = MCProfileTitlePageWarningSectionController;
   v6 = [(MCProfileTitlePageWarningSectionController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_warning, a3);
+    objc_storeStrong(&v6->_warning, warning);
   }
 
   return v7;
 }
 
-- (void)registerCellClassWithTableView:(id)a3
+- (void)registerCellClassWithTableView:(id)view
 {
-  v4 = a3;
-  [(MCProfileTitlePageWarningSectionController *)self setTableView:v4];
-  [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"warningCell"];
+  viewCopy = view;
+  [(MCProfileTitlePageWarningSectionController *)self setTableView:viewCopy];
+  [viewCopy registerClass:objc_opt_class() forCellReuseIdentifier:@"warningCell"];
 }
 
-- (id)cellForRowAtIndex:(unint64_t)a3
+- (id)cellForRowAtIndex:(unint64_t)index
 {
-  v4 = [(MCProfileTitlePageWarningSectionController *)self tableView];
+  tableView = [(MCProfileTitlePageWarningSectionController *)self tableView];
 
-  if (v4)
+  if (tableView)
   {
-    v5 = [(MCProfileTitlePageWarningSectionController *)self tableView];
-    v6 = [v5 dequeueReusableCellWithIdentifier:@"warningCell"];
+    tableView2 = [(MCProfileTitlePageWarningSectionController *)self tableView];
+    v6 = [tableView2 dequeueReusableCellWithIdentifier:@"warningCell"];
 
-    v7 = [(MCProfileTitlePageWarningSectionController *)self warning];
-    v8 = [v7 localizedBody];
-    v9 = [v6 label];
-    [v9 setText:v8];
+    warning = [(MCProfileTitlePageWarningSectionController *)self warning];
+    localizedBody = [warning localizedBody];
+    label = [v6 label];
+    [label setText:localizedBody];
   }
 
   else
@@ -56,10 +56,10 @@
 
 - (id)titleForHeader
 {
-  v2 = [(MCProfileTitlePageWarningSectionController *)self warning];
-  v3 = [v2 localizedTitle];
+  warning = [(MCProfileTitlePageWarningSectionController *)self warning];
+  localizedTitle = [warning localizedTitle];
 
-  return v3;
+  return localizedTitle;
 }
 
 - (double)heightForHeader

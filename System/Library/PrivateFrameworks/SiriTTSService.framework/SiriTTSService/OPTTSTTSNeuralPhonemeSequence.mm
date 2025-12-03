@@ -1,11 +1,11 @@
 @interface OPTTSTTSNeuralPhonemeSequence
 - (NSArray)phonemes;
-- (OPTTSTTSNeuralPhonemeSequence)initWithFlatbuffData:(id)a3 root:(const TTSNeuralPhonemeSequence *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::schema_fb::TTSNeuralPhonemeSequence>)addObjectToBuffer:(void *)a3;
+- (OPTTSTTSNeuralPhonemeSequence)initWithFlatbuffData:(id)data root:(const TTSNeuralPhonemeSequence *)root verify:(BOOL)verify;
+- (Offset<siri::speech::schema_fb::TTSNeuralPhonemeSequence>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
-- (id)phonemes_objectAtIndex:(unint64_t)a3;
+- (id)phonemes_objectAtIndex:(unint64_t)index;
 - (unint64_t)phonemes_count;
-- (void)phonemes_enumerateObjectsUsingBlock:(id)a3;
+- (void)phonemes_enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation OPTTSTTSNeuralPhonemeSequence
@@ -39,21 +39,21 @@ apple::aiml::flatbuffers2::DetachedBuffer *__45__OPTTSTTSNeuralPhonemeSequence_f
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TTSNeuralPhonemeSequence>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TTSNeuralPhonemeSequence>)addObjectToBuffer:(void *)buffer
 {
   v30 = *MEMORY[0x1E69E9840];
   v26 = 0;
   v27 = 0;
   v28 = 0;
-  v5 = [(OPTTSTTSNeuralPhonemeSequence *)self phonemes];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::TextToSpeechRequest_::ContextInfoEntry>>::reserve(&v26, [v5 count]);
+  phonemes = [(OPTTSTTSNeuralPhonemeSequence *)self phonemes];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::TextToSpeechRequest_::ContextInfoEntry>>::reserve(&v26, [phonemes count]);
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [(OPTTSTTSNeuralPhonemeSequence *)self phonemes];
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v29 count:16];
+  phonemes2 = [(OPTTSTTSNeuralPhonemeSequence *)self phonemes];
+  v7 = [phonemes2 countByEnumeratingWithState:&v22 objects:v29 count:16];
   if (v7)
   {
     v8 = *v23;
@@ -63,16 +63,16 @@ apple::aiml::flatbuffers2::DetachedBuffer *__45__OPTTSTTSNeuralPhonemeSequence_f
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(phonemes2);
         }
 
-        v10 = [*(*(&v22 + 1) + 8 * i) UTF8String];
-        v11 = strlen(v10);
-        String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v10, v11);
+        uTF8String = [*(*(&v22 + 1) + 8 * i) UTF8String];
+        v11 = strlen(uTF8String);
+        String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v11);
         std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::TextToSpeechRequest_::ContextInfoEntry>>::push_back[abi:ne200100](&v26, &String);
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v22 objects:v29 count:16];
+      v7 = [phonemes2 countByEnumeratingWithState:&v22 objects:v29 count:16];
     }
 
     while (v7);
@@ -89,14 +89,14 @@ apple::aiml::flatbuffers2::DetachedBuffer *__45__OPTTSTTSNeuralPhonemeSequence_f
     v13 = v26;
   }
 
-  v14 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, v13, (v27 - v26) >> 2);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v15 = *(a3 + 5);
-  v16 = *(a3 + 6);
-  v17 = *(a3 + 4);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<apple::aiml::flatbuffers2::Offset<apple::aiml::flatbuffers2::String>>>(a3, v14);
-  v18.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v17 - v16 + v15);
+  v14 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, v13, (v27 - v26) >> 2);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v15 = *(buffer + 5);
+  v16 = *(buffer + 6);
+  v17 = *(buffer + 4);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<apple::aiml::flatbuffers2::Offset<apple::aiml::flatbuffers2::String>>>(buffer, v14);
+  v18.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v17 - v16 + v15);
   if (v12)
   {
     operator delete(v12);
@@ -106,14 +106,14 @@ apple::aiml::flatbuffers2::DetachedBuffer *__45__OPTTSTTSNeuralPhonemeSequence_f
   return v18;
 }
 
-- (void)phonemes_enumerateObjectsUsingBlock:(id)a3
+- (void)phonemes_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"phonemes"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -136,7 +136,7 @@ apple::aiml::flatbuffers2::DetachedBuffer *__45__OPTTSTTSNeuralPhonemeSequence_f
           do
           {
             v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:&v14[*v14->var0 + 4] length:*v14[*v14->var0].var0 encoding:4];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -184,13 +184,13 @@ apple::aiml::flatbuffers2::DetachedBuffer *__45__OPTTSTTSNeuralPhonemeSequence_f
   return v5;
 }
 
-- (id)phonemes_objectAtIndex:(unint64_t)a3
+- (id)phonemes_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"phonemes"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_9;
@@ -204,12 +204,12 @@ LABEL_3:
     if (v11)
     {
       v12 = &root[v11 + *root[v11].var0];
-      if (*v12->var0 <= a3)
+      if (*v12->var0 <= index)
       {
         __assert_rtn("Get", "flatbuffers.h", 275, "i < size()");
       }
 
-      var0 = v12[4 * a3 + 4 + *v12[4 * a3 + 4].var0].var0;
+      var0 = v12[4 * index + 4 + *v12[4 * index + 4].var0].var0;
       v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:var0 + 1 length:*var0 encoding:4];
       goto LABEL_3;
     }
@@ -226,12 +226,12 @@ LABEL_9:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"phonemes"];
   if (!v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __41__OPTTSTTSNeuralPhonemeSequence_phonemes__block_invoke;
     v6[3] = &unk_1E7AF3888;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(OPTTSTTSNeuralPhonemeSequence *)self phonemes_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"phonemes"];
@@ -240,10 +240,10 @@ LABEL_9:
   return v3;
 }
 
-- (OPTTSTTSNeuralPhonemeSequence)initWithFlatbuffData:(id)a3 root:(const TTSNeuralPhonemeSequence *)a4 verify:(BOOL)a5
+- (OPTTSTTSNeuralPhonemeSequence)initWithFlatbuffData:(id)data root:(const TTSNeuralPhonemeSequence *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = OPTTSTTSNeuralPhonemeSequence;
   v10 = [(OPTTSTTSNeuralPhonemeSequence *)&v25 init];
@@ -252,35 +252,35 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_14;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_15;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_1B1C41700;
   v23 = 0;

@@ -1,8 +1,8 @@
 @interface TSDBitmapRenderingQualityImageMapValue
-- (CGImage)degradedImageRefForProvider:(id)a3 quality:(unint64_t)a4 canvasScale:(double)a5;
-- (CGImage)getDegradedImageRefFromProvider:(id)a3 quality:(unint64_t)a4 canvasScale:(double)a5;
+- (CGImage)degradedImageRefForProvider:(id)provider quality:(unint64_t)quality canvasScale:(double)scale;
+- (CGImage)getDegradedImageRefFromProvider:(id)provider quality:(unint64_t)quality canvasScale:(double)scale;
 - (CGSize)maxSize;
-- (void)addSize:(CGSize)a3;
+- (void)addSize:(CGSize)size;
 - (void)dealloc;
 @end
 
@@ -16,7 +16,7 @@
   [(TSDBitmapRenderingQualityImageMapValue *)&v3 dealloc];
 }
 
-- (void)addSize:(CGSize)a3
+- (void)addSize:(CGSize)size
 {
   TSUCeilSize();
   height = self->mMaxSize.height;
@@ -38,12 +38,12 @@
   }
 }
 
-- (CGImage)degradedImageRefForProvider:(id)a3 quality:(unint64_t)a4 canvasScale:(double)a5
+- (CGImage)degradedImageRefForProvider:(id)provider quality:(unint64_t)quality canvasScale:(double)scale
 {
   result = self->mDegradedImageRef;
   if (!result)
   {
-    DegradedImageRefFromProvider_quality_canvasScale = objc_msgSend_getDegradedImageRefFromProvider_quality_canvasScale_(self, a2, a3, a4, a5);
+    DegradedImageRefFromProvider_quality_canvasScale = objc_msgSend_getDegradedImageRefFromProvider_quality_canvasScale_(self, a2, provider, quality, scale);
     self->mDegradedImageRef = DegradedImageRefFromProvider_quality_canvasScale;
     CGImageRetain(DegradedImageRefFromProvider_quality_canvasScale);
     return self->mDegradedImageRef;
@@ -52,10 +52,10 @@
   return result;
 }
 
-- (CGImage)getDegradedImageRefFromProvider:(id)a3 quality:(unint64_t)a4 canvasScale:(double)a5
+- (CGImage)getDegradedImageRefFromProvider:(id)provider quality:(unint64_t)quality canvasScale:(double)scale
 {
-  v8 = a3;
-  if (a4 == 2)
+  providerCopy = provider;
+  if (quality == 2)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSDBitmapRenderingQualityImageMapValue getDegradedImageRefFromProvider:quality:canvasScale:]");
@@ -79,10 +79,10 @@
   }
 
   v22 = [TSDBitmapRenderingQualityInfo alloc];
-  v24 = objc_msgSend_initWithQuality_canvasScale_(v22, v23, a4, a5);
+  v24 = objc_msgSend_initWithQuality_canvasScale_(v22, v23, quality, scale);
   v25 = [TSDImageRenderingConfiguration alloc];
   v27 = objc_msgSend_initWithBitmapQualityInfo_(v25, v26, v24);
-  v29 = objc_msgSend_CGImageResampledToSize_renderingConfiguration_(v8, v28, v27, v17, v19);
+  v29 = objc_msgSend_CGImageResampledToSize_renderingConfiguration_(providerCopy, v28, v27, v17, v19);
 
   return v29;
 }

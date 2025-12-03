@@ -1,48 +1,48 @@
 @interface OrgApacheLuceneStoreMMapDirectory
 + (void)initialize;
-- (OrgApacheLuceneStoreMMapDirectory)initWithOrgLukhnosPortmobileFilePath:(id)a3;
-- (OrgApacheLuceneStoreMMapDirectory)initWithOrgLukhnosPortmobileFilePath:(id)a3 withInt:(int)a4;
-- (id)openInputWithNSString:(id)a3 withOrgApacheLuceneStoreIOContext:(id)a4;
-- (void)setUseUnmapWithBoolean:(BOOL)a3;
+- (OrgApacheLuceneStoreMMapDirectory)initWithOrgLukhnosPortmobileFilePath:(id)path;
+- (OrgApacheLuceneStoreMMapDirectory)initWithOrgLukhnosPortmobileFilePath:(id)path withInt:(int)int;
+- (id)openInputWithNSString:(id)string withOrgApacheLuceneStoreIOContext:(id)context;
+- (void)setUseUnmapWithBoolean:(BOOL)boolean;
 @end
 
 @implementation OrgApacheLuceneStoreMMapDirectory
 
-- (OrgApacheLuceneStoreMMapDirectory)initWithOrgLukhnosPortmobileFilePath:(id)a3
+- (OrgApacheLuceneStoreMMapDirectory)initWithOrgLukhnosPortmobileFilePath:(id)path
 {
   Default = OrgApacheLuceneStoreFSLockFactory_getDefault();
-  OrgApacheLuceneStoreMMapDirectory_initWithOrgLukhnosPortmobileFilePath_withOrgApacheLuceneStoreLockFactory_withInt_(self, a3, Default, OrgApacheLuceneStoreMMapDirectory_DEFAULT_MAX_CHUNK_SIZE_);
+  OrgApacheLuceneStoreMMapDirectory_initWithOrgLukhnosPortmobileFilePath_withOrgApacheLuceneStoreLockFactory_withInt_(self, path, Default, OrgApacheLuceneStoreMMapDirectory_DEFAULT_MAX_CHUNK_SIZE_);
   return self;
 }
 
-- (OrgApacheLuceneStoreMMapDirectory)initWithOrgLukhnosPortmobileFilePath:(id)a3 withInt:(int)a4
+- (OrgApacheLuceneStoreMMapDirectory)initWithOrgLukhnosPortmobileFilePath:(id)path withInt:(int)int
 {
   Default = OrgApacheLuceneStoreFSLockFactory_getDefault();
-  OrgApacheLuceneStoreMMapDirectory_initWithOrgLukhnosPortmobileFilePath_withOrgApacheLuceneStoreLockFactory_withInt_(self, a3, Default, a4);
+  OrgApacheLuceneStoreMMapDirectory_initWithOrgLukhnosPortmobileFilePath_withOrgApacheLuceneStoreLockFactory_withInt_(self, path, Default, int);
   return self;
 }
 
-- (void)setUseUnmapWithBoolean:(BOOL)a3
+- (void)setUseUnmapWithBoolean:(BOOL)boolean
 {
-  if (a3 && (OrgApacheLuceneStoreMMapDirectory_UNMAP_SUPPORTED_ & 1) == 0)
+  if (boolean && (OrgApacheLuceneStoreMMapDirectory_UNMAP_SUPPORTED_ & 1) == 0)
   {
     v3 = new_JavaLangIllegalArgumentException_initWithNSString_(@"Unmap hack not supported on this platform!");
     objc_exception_throw(v3);
   }
 
-  self->useUnmapHack_ = a3;
+  self->useUnmapHack_ = boolean;
 }
 
-- (id)openInputWithNSString:(id)a3 withOrgApacheLuceneStoreIOContext:(id)a4
+- (id)openInputWithNSString:(id)string withOrgApacheLuceneStoreIOContext:(id)context
 {
-  [(OrgApacheLuceneStoreBaseDirectory *)self ensureOpen:a3];
+  [(OrgApacheLuceneStoreBaseDirectory *)self ensureOpen:string];
   directory = self->super.directory_;
   if (!directory)
   {
     JreThrowNullPointerException();
   }
 
-  v7 = [(OrgLukhnosPortmobileFilePath *)directory resolveWithNSString:a3];
+  v7 = [(OrgLukhnosPortmobileFilePath *)directory resolveWithNSString:string];
   if ((atomic_load_explicit(OrgLukhnosPortmobileFileStandardOpenOptionEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1000280F8();
@@ -58,13 +58,13 @@
 
   [v7 description];
   v17 = JreStrcat("$$$", v10, v11, v12, v13, v14, v15, v16, @"MMapIndexInput(path=");
-  v18 = [(OrgApacheLuceneStoreMMapDirectory *)self getUseUnmap];
+  getUseUnmap = [(OrgApacheLuceneStoreMMapDirectory *)self getUseUnmap];
   if (!v9)
   {
     JreThrowNullPointerException();
   }
 
-  v19 = v18;
+  v19 = getUseUnmap;
   v20 = [v9 size];
   v24 = sub_10006FC68(self, v17, v9, 0, v20, v21, v22, v23);
   v25 = [v9 size];
@@ -85,7 +85,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if ((atomic_load_explicit(OrgApacheLuceneUtilConstants__initialized, memory_order_acquire) & 1) == 0)
     {

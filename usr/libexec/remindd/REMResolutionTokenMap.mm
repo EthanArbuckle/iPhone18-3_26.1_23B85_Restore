@@ -1,12 +1,12 @@
 @interface REMResolutionTokenMap
-+ (id)newObjectFromJSONObject:(id)a3;
-+ (id)objc_newObjectFromJSONString:(id)a3;
++ (id)newObjectFromJSONObject:(id)object;
++ (id)objc_newObjectFromJSONString:(id)string;
 - (id)objc_toJSONString;
 @end
 
 @implementation REMResolutionTokenMap
 
-+ (id)newObjectFromJSONObject:(id)a3
++ (id)newObjectFromJSONObject:(id)object
 {
   v3 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   swift_getObjCClassMetadata();
@@ -17,7 +17,7 @@
 
 - (id)objc_toJSONString
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001E1D20();
   v4 = v3;
 
@@ -34,7 +34,7 @@
   return v5;
 }
 
-+ (id)objc_newObjectFromJSONString:(id)a3
++ (id)objc_newObjectFromJSONString:(id)string
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   swift_getObjCClassMetadata();

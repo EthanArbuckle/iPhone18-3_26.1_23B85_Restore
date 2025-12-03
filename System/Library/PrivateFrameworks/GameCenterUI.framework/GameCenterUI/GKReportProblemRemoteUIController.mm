@@ -1,6 +1,6 @@
 @interface GKReportProblemRemoteUIController
-+ (id)controllerForProblemPlayer:(id)a3 completionHandler:(id)a4;
-- (GKReportProblemRemoteUIController)initWithProblemPlayer:(id)a3;
++ (id)controllerForProblemPlayer:(id)player completionHandler:(id)handler;
+- (GKReportProblemRemoteUIController)initWithProblemPlayer:(id)player;
 - (id)fallbackURL;
 - (id)postBodyForInitialLoad;
 - (int)preferredLayoutStyle;
@@ -8,22 +8,22 @@
 
 @implementation GKReportProblemRemoteUIController
 
-+ (id)controllerForProblemPlayer:(id)a3 completionHandler:(id)a4
++ (id)controllerForProblemPlayer:(id)player completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  playerCopy = player;
+  handlerCopy = handler;
+  if (!playerCopy)
   {
-    [GKReportProblemRemoteUIController controllerForProblemPlayer:a2 completionHandler:a1];
+    [GKReportProblemRemoteUIController controllerForProblemPlayer:a2 completionHandler:self];
   }
 
-  v9 = [v7 internal];
-  v10 = [v9 playerID];
+  internal = [playerCopy internal];
+  playerID = [internal playerID];
 
-  if (!v10)
+  if (!playerID)
   {
-    [GKReportProblemRemoteUIController controllerForProblemPlayer:a2 completionHandler:a1];
-    if (!v8)
+    [GKReportProblemRemoteUIController controllerForProblemPlayer:a2 completionHandler:self];
+    if (!handlerCopy)
     {
       goto LABEL_6;
     }
@@ -31,11 +31,11 @@
     goto LABEL_5;
   }
 
-  if (v8)
+  if (handlerCopy)
   {
 LABEL_5:
-    v13 = [[GKReportProblemRemoteUIController alloc] initWithProblemPlayer:v7];
-    v14 = v8;
+    v13 = [[GKReportProblemRemoteUIController alloc] initWithProblemPlayer:playerCopy];
+    v14 = handlerCopy;
     v11 = v13;
     gk_dispatch_as_group();
   }
@@ -111,16 +111,16 @@ uint64_t __82__GKReportProblemRemoteUIController_controllerForProblemPlayer_comp
   }
 }
 
-- (GKReportProblemRemoteUIController)initWithProblemPlayer:(id)a3
+- (GKReportProblemRemoteUIController)initWithProblemPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   v10.receiver = self;
   v10.super_class = GKReportProblemRemoteUIController;
   v6 = [(GKRemoteUIController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_problemPlayer, a3);
+    objc_storeStrong(&v6->_problemPlayer, player);
     v8 = v7;
   }
 
@@ -129,10 +129,10 @@ uint64_t __82__GKReportProblemRemoteUIController_controllerForProblemPlayer_comp
 
 - (int)preferredLayoutStyle
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  return v3 == 1;
+  return userInterfaceIdiom == 1;
 }
 
 - (id)fallbackURL
@@ -147,36 +147,36 @@ uint64_t __82__GKReportProblemRemoteUIController_controllerForProblemPlayer_comp
 {
   v15.receiver = self;
   v15.super_class = GKReportProblemRemoteUIController;
-  v3 = [(GKRemoteUIController *)&v15 postBodyForInitialLoad];
-  v4 = [(GKRemoteUIController *)self playerID];
+  postBodyForInitialLoad = [(GKRemoteUIController *)&v15 postBodyForInitialLoad];
+  playerID = [(GKRemoteUIController *)self playerID];
 
-  if (v4)
+  if (playerID)
   {
-    v5 = [(GKRemoteUIController *)self playerID];
-    [v3 setObject:v5 forKeyedSubscript:@"playerID"];
+    playerID2 = [(GKRemoteUIController *)self playerID];
+    [postBodyForInitialLoad setObject:playerID2 forKeyedSubscript:@"playerID"];
   }
 
-  v6 = [(GKRemoteUIController *)self authToken];
+  authToken = [(GKRemoteUIController *)self authToken];
 
-  if (v6)
+  if (authToken)
   {
-    v7 = [(GKRemoteUIController *)self authToken];
-    [v3 setObject:v7 forKeyedSubscript:@"authToken"];
+    authToken2 = [(GKRemoteUIController *)self authToken];
+    [postBodyForInitialLoad setObject:authToken2 forKeyedSubscript:@"authToken"];
   }
 
-  v8 = [(GKReportProblemRemoteUIController *)self problemPlayer];
-  v9 = [v8 internal];
-  v10 = [v9 playerID];
+  problemPlayer = [(GKReportProblemRemoteUIController *)self problemPlayer];
+  internal = [problemPlayer internal];
+  playerID3 = [internal playerID];
 
-  if (v10)
+  if (playerID3)
   {
-    v11 = [(GKReportProblemRemoteUIController *)self problemPlayer];
-    v12 = [v11 internal];
-    v13 = [v12 playerID];
-    [v3 setObject:v13 forKeyedSubscript:@"problemPlayerID"];
+    problemPlayer2 = [(GKReportProblemRemoteUIController *)self problemPlayer];
+    internal2 = [problemPlayer2 internal];
+    playerID4 = [internal2 playerID];
+    [postBodyForInitialLoad setObject:playerID4 forKeyedSubscript:@"problemPlayerID"];
   }
 
-  return v3;
+  return postBodyForInitialLoad;
 }
 
 + (void)controllerForProblemPlayer:(uint64_t)a1 completionHandler:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

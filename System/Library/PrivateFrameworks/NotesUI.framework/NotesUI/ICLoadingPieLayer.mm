@@ -1,10 +1,10 @@
 @interface ICLoadingPieLayer
-- (CGPath)newPathForProgress:(double)a3;
+- (CGPath)newPathForProgress:(double)progress;
 - (ICLoadingPieLayer)init;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setObservedProgress:(id)a3;
-- (void)setProgress:(double)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setObservedProgress:(id)progress;
+- (void)setProgress:(double)progress;
 @end
 
 @implementation ICLoadingPieLayer
@@ -56,7 +56,7 @@
   return v3;
 }
 
-- (CGPath)newPathForProgress:(double)a3
+- (CGPath)newPathForProgress:(double)progress
 {
   Mutable = CGPathCreateMutable();
   [(ICLoadingPieLayer *)self bounds];
@@ -64,13 +64,13 @@
   CGPathAddEllipseInRect(Mutable, 0, v8);
   CGPathMoveToPoint(Mutable, 0, 12.0, 12.0);
   CGPathAddLineToPoint(Mutable, 0, 12.0, 2.0);
-  CGPathAddArc(Mutable, 0, 12.0, 12.0, 10.0, -1.57079633, a3 * 6.28318531 + -1.57079633, 0);
+  CGPathAddArc(Mutable, 0, 12.0, 12.0, 10.0, -1.57079633, progress * 6.28318531 + -1.57079633, 0);
   return Mutable;
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  if (a3 >= 1.0 && [(ICLoadingPieLayer *)self removeOnCompletion])
+  if (progress >= 1.0 && [(ICLoadingPieLayer *)self removeOnCompletion])
   {
 
     [(ICLoadingPieLayer *)self removeFromSuperlayer];
@@ -79,47 +79,47 @@
   else
   {
     v5 = fmax(self->_progress, 0.1);
-    self->_progress = a3;
+    self->_progress = progress;
     v17 = objc_alloc_init(MEMORY[0x1E6979390]);
     [v17 setKeyPath:@"path"];
-    v6 = fmax(a3, 0.1) - v5;
+    v6 = fmax(progress, 0.1) - v5;
     v7 = fmax(v6 / 0.1, 1.0);
-    v8 = [MEMORY[0x1E695DF70] array];
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     if (v7 >= 1)
     {
       v10 = 0;
       do
       {
         v11 = [(ICLoadingPieLayer *)self newPathForProgress:v5 + (++v10 / v7) * v6];
-        [v8 addObject:v11];
+        [array addObject:v11];
 
         *&v12 = v10 / v7;
         v13 = [MEMORY[0x1E696AD98] numberWithFloat:v12];
-        [v9 addObject:v13];
+        [array2 addObject:v13];
       }
 
       while (v10 < v7);
     }
 
-    [v17 setValues:v8];
-    [v17 setKeyTimes:v9];
-    v14 = [v8 lastObject];
-    v15 = [(ICLoadingPieLayer *)self pieLayer];
-    [v15 setPath:v14];
+    [v17 setValues:array];
+    [v17 setKeyTimes:array2];
+    lastObject = [array lastObject];
+    pieLayer = [(ICLoadingPieLayer *)self pieLayer];
+    [pieLayer setPath:lastObject];
 
-    v16 = [(ICLoadingPieLayer *)self pieLayer];
-    [v16 addAnimation:v17 forKey:@"path"];
+    pieLayer2 = [(ICLoadingPieLayer *)self pieLayer];
+    [pieLayer2 addAnimation:v17 forKey:@"path"];
   }
 }
 
-- (void)setObservedProgress:(id)a3
+- (void)setObservedProgress:(id)progress
 {
-  v6 = a3;
-  if (([v6 isEqual:self->_observedProgress] & 1) == 0)
+  progressCopy = progress;
+  if (([progressCopy isEqual:self->_observedProgress] & 1) == 0)
   {
     [(NSProgress *)self->_observedProgress ic_removeObserver:self forKeyPath:@"fractionCompleted" context:&compoundliteral_2];
-    objc_storeStrong(&self->_observedProgress, a3);
+    objc_storeStrong(&self->_observedProgress, progress);
     [(NSProgress *)self->_observedProgress ic_addObserver:self forKeyPath:@"fractionCompleted" context:&compoundliteral_2];
     observedProgress = self->_observedProgress;
     if (observedProgress)
@@ -130,16 +130,16 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  if (([(ICLoadingPieLayer *)self ic_didAddObserverForContext:a6 inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotesSupport/Ironcade/SharedUI/Views/ICLoadingPieLayer.m"]& 1) != 0)
+  changeCopy = change;
+  objectCopy = object;
+  pathCopy = path;
+  if (([(ICLoadingPieLayer *)self ic_didAddObserverForContext:context inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotesSupport/Ironcade/SharedUI/Views/ICLoadingPieLayer.m"]& 1) != 0)
   {
-    v13 = [(ICLoadingPieLayer *)self ic_shouldIgnoreObserveValue:v10 ofObject:v11 forKeyPath:v12];
+    v13 = [(ICLoadingPieLayer *)self ic_shouldIgnoreObserveValue:changeCopy ofObject:objectCopy forKeyPath:pathCopy];
 
-    if (a6 == &compoundliteral_2 && (v13 & 1) == 0)
+    if (context == &compoundliteral_2 && (v13 & 1) == 0)
     {
       dispatchMainAfterDelay();
     }
@@ -149,7 +149,7 @@
   {
     v14.receiver = self;
     v14.super_class = ICLoadingPieLayer;
-    [(ICLoadingPieLayer *)&v14 observeValueForKeyPath:v12 ofObject:v11 change:v10 context:a6];
+    [(ICLoadingPieLayer *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 

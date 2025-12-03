@@ -1,17 +1,17 @@
 @interface PGMyPetAndPersonMemoryGenerator
-- (PGMyPetAndPersonMemoryGenerator)initWithMemoryGenerationContext:(id)a3;
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3;
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4;
+- (PGMyPetAndPersonMemoryGenerator)initWithMemoryGenerationContext:(id)context;
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type;
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block;
 @end
 
 @implementation PGMyPetAndPersonMemoryGenerator
 
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block
 {
   v34[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [(PGGraphNodeCollection *)PGGraphPetNodeCollection nodesInGraph:v5];
+  graphCopy = graph;
+  blockCopy = block;
+  v7 = [(PGGraphNodeCollection *)PGGraphPetNodeCollection nodesInGraph:graphCopy];
   v8 = MEMORY[0x277D22BF8];
   v9 = +[PGGraphFeatureNodeCollection momentOfFeature];
   v10 = [v8 adjacencyWithSources:v7 relation:v9 targetsClass:objc_opt_class()];
@@ -20,30 +20,30 @@
   v12 = +[PGGraphMomentNode featureOfMoment];
   v34[0] = v12;
   v13 = +[PGGraphPersonNode filterIncludingMe];
-  v14 = [v13 relation];
-  v34[1] = v14;
+  relation = [v13 relation];
+  v34[1] = relation;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
   v16 = [v11 chain:v15];
 
   v17 = objc_alloc_init(MEMORY[0x277D22BD0]);
   v18 = MEMORY[0x277D22BF8];
-  v19 = [v10 targets];
-  v20 = [v18 adjacencyWithSources:v19 relation:v16 targetsClass:objc_opt_class()];
-  v21 = [v20 transposed];
+  targets = [v10 targets];
+  v20 = [v18 adjacencyWithSources:targets relation:v16 targetsClass:objc_opt_class()];
+  transposed = [v20 transposed];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __89__PGMyPetAndPersonMemoryGenerator_enumerateMomentNodesAndFeatureNodesInGraph_usingBlock___block_invoke;
   v28[3] = &unk_278889AC8;
   v29 = v17;
-  v30 = v21;
+  v30 = transposed;
   v32 = v10;
-  v33 = v6;
-  v31 = v5;
+  v33 = blockCopy;
+  v31 = graphCopy;
   v22 = v10;
-  v23 = v5;
-  v24 = v6;
-  v25 = v21;
+  v23 = graphCopy;
+  v24 = blockCopy;
+  v25 = transposed;
   v26 = v17;
   [v22 enumerateTargetsBySourceWithBlock:v28];
 
@@ -115,27 +115,27 @@ void __89__PGMyPetAndPersonMemoryGenerator_enumerateMomentNodesAndFeatureNodesIn
   *a1[6] = *a4;
 }
 
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3 == 3)
+  if (type == 3)
   {
     result = 7004;
   }
 
   else
   {
-    v4 = a3;
-    v5 = [(PGMemoryGenerator *)self loggingConnection];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    typeCopy = type;
+    loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
       v9 = 138412546;
       v10 = v8;
       v11 = 1024;
-      v12 = v4;
-      _os_log_error_impl(&dword_22F0FC000, v5, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
+      v12 = typeCopy;
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
     }
 
     result = 0;
@@ -145,11 +145,11 @@ void __89__PGMyPetAndPersonMemoryGenerator_enumerateMomentNodesAndFeatureNodesIn
   return result;
 }
 
-- (PGMyPetAndPersonMemoryGenerator)initWithMemoryGenerationContext:(id)a3
+- (PGMyPetAndPersonMemoryGenerator)initWithMemoryGenerationContext:(id)context
 {
   v9.receiver = self;
   v9.super_class = PGMyPetAndPersonMemoryGenerator;
-  v3 = [(PGMyPetMemoryGenerator *)&v9 initWithMemoryGenerationContext:a3];
+  v3 = [(PGMyPetMemoryGenerator *)&v9 initWithMemoryGenerationContext:context];
   if (v3)
   {
     v4 = objc_alloc_init(PGMemoryMomentRequirements);

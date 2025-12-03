@@ -1,43 +1,43 @@
 @interface SBWindowSelfHostWrapper
-+ (id)wrapperForUseInWindow:(id)a3 hostRequester:(id)a4 sceneIdentifier:(id)a5;
-+ (id)wrapperForWindow:(id)a3 orientation:(int64_t)a4 hostRequester:(id)a5 sceneIdentifier:(id)a6;
++ (id)wrapperForUseInWindow:(id)window hostRequester:(id)requester sceneIdentifier:(id)identifier;
++ (id)wrapperForWindow:(id)window orientation:(int64_t)orientation hostRequester:(id)requester sceneIdentifier:(id)identifier;
 @end
 
 @implementation SBWindowSelfHostWrapper
 
-+ (id)wrapperForUseInWindow:(id)a3 hostRequester:(id)a4 sceneIdentifier:(id)a5
++ (id)wrapperForUseInWindow:(id)window hostRequester:(id)requester sceneIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a1 wrapperForWindow:0 orientation:objc_msgSend(a3 hostRequester:"interfaceOrientation") sceneIdentifier:{v9, v8}];
+  identifierCopy = identifier;
+  requesterCopy = requester;
+  v10 = [self wrapperForWindow:0 orientation:objc_msgSend(window hostRequester:"interfaceOrientation") sceneIdentifier:{requesterCopy, identifierCopy}];
 
   return v10;
 }
 
-+ (id)wrapperForWindow:(id)a3 orientation:(int64_t)a4 hostRequester:(id)a5 sceneIdentifier:(id)a6
++ (id)wrapperForWindow:(id)window orientation:(int64_t)orientation hostRequester:(id)requester sceneIdentifier:(id)identifier
 {
-  v9 = a3;
+  windowCopy = window;
   v10 = MEMORY[0x277D0AAD8];
-  v11 = a6;
-  v12 = a5;
-  v13 = [v10 sharedInstance];
-  v14 = [v13 sceneWithIdentifier:v11];
+  identifierCopy = identifier;
+  requesterCopy = requester;
+  sharedInstance = [v10 sharedInstance];
+  v14 = [sharedInstance sceneWithIdentifier:identifierCopy];
 
-  v15 = [MEMORY[0x277D75968] targetForUIWindow:v9];
-  v16 = [v14 uiPresentationManager];
-  v17 = [v16 createPresenterForLayerTarget:v15 identifier:v12];
+  v15 = [MEMORY[0x277D75968] targetForUIWindow:windowCopy];
+  uiPresentationManager = [v14 uiPresentationManager];
+  v17 = [uiPresentationManager createPresenterForLayerTarget:v15 identifier:requesterCopy];
 
   [v17 activate];
-  v18 = [v17 presentationView];
-  if (a4 != 1)
+  presentationView = [v17 presentationView];
+  if (orientation != 1)
   {
     memset(&v36, 0, sizeof(v36));
-    if (a4 == 3)
+    if (orientation == 3)
     {
       v19 = 1.57079633;
     }
 
-    else if (a4 == 4)
+    else if (orientation == 4)
     {
       v19 = -1.57079633;
     }
@@ -45,7 +45,7 @@
     else
     {
       v19 = 3.14159265;
-      if (a4 != 2)
+      if (orientation != 2)
       {
         v19 = 0.0;
       }
@@ -53,8 +53,8 @@
 
     CGAffineTransformMakeRotation(&v36, -v19);
     v35 = v36;
-    [v18 setTransform:&v35];
-    [v18 frame];
+    [presentationView setTransform:&v35];
+    [presentationView frame];
     x = v38.origin.x;
     y = v38.origin.y;
     width = v38.size.width;
@@ -69,7 +69,7 @@
     v33 = v36;
     CGAffineTransformConcat(&v35, &v33, &t2);
     v36 = v35;
-    [v18 setTransform:&v35];
+    [presentationView setTransform:&v35];
   }
 
   v26 = objc_alloc_init(SBWindowSelfHostWrapper);
@@ -78,11 +78,11 @@
   v28 = v17;
 
   window = v26->_window;
-  v26->_window = v9;
-  v30 = v9;
+  v26->_window = windowCopy;
+  v30 = windowCopy;
 
   hostView = v26->_hostView;
-  v26->_hostView = v18;
+  v26->_hostView = presentationView;
 
   return v26;
 }

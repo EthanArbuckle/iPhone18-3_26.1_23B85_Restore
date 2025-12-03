@@ -1,70 +1,70 @@
 @interface HKEmergencyCardContactsTableItem
 - (BOOL)hasPresentableData;
-- (BOOL)refreshFromData:(BOOL)a3;
+- (BOOL)refreshFromData:(BOOL)data;
 - (HKEmergencyCardContactUpdateDelegate)delegate;
-- (id)_dequeueAndConfigureContactEditCellForIndex:(int64_t)a3 inTableView:(id)a4;
-- (id)_dequeueAndConfigureContactViewCellForIndex:(int64_t)a3 inTableView:(id)a4;
+- (id)_dequeueAndConfigureContactEditCellForIndex:(int64_t)index inTableView:(id)view;
+- (id)_dequeueAndConfigureContactViewCellForIndex:(int64_t)index inTableView:(id)view;
 - (id)_footerAttributedText;
 - (id)_footerAttributedTextForPrimaryProfile;
 - (id)_footerAttributedTextForSecondaryProfile;
 - (id)_footerTextForSecondaryProfile;
-- (id)_footerTextWithGivenName:(id)a3;
-- (id)initInEditMode:(BOOL)a3;
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4;
+- (id)_footerTextWithGivenName:(id)name;
+- (id)initInEditMode:(BOOL)mode;
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index;
 - (id)title;
 - (id)titleForFooter;
 - (id)titleForHeader;
-- (int64_t)commitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4;
-- (int64_t)editingStyleForRowAtIndex:(int64_t)a3;
-- (int64_t)itemTypeForRowIndex:(int64_t)a3;
+- (int64_t)commitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index;
+- (int64_t)editingStyleForRowAtIndex:(int64_t)index;
+- (int64_t)itemTypeForRowIndex:(int64_t)index;
 - (int64_t)numberOfRows;
-- (void)_addEmergencyContactToData:(id)a3;
+- (void)_addEmergencyContactToData:(id)data;
 - (void)_setupContactPickingFlow;
-- (void)callEmergencyContact:(id)a3;
-- (void)emergencyContactFlow:(id)a3 didSelectContact:(id)a4;
-- (void)emergencyContactRelationshipPicker:(id)a3 didChooseRelationshipNamed:(id)a4;
-- (void)emergencyContactRelationshipPickerDidCancel:(id)a3;
-- (void)medicalIDEditorCellDidTapLabel:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndex:(int64_t)a4;
+- (void)callEmergencyContact:(id)contact;
+- (void)emergencyContactFlow:(id)flow didSelectContact:(id)contact;
+- (void)emergencyContactRelationshipPicker:(id)picker didChooseRelationshipNamed:(id)named;
+- (void)emergencyContactRelationshipPickerDidCancel:(id)cancel;
+- (void)medicalIDEditorCellDidTapLabel:(id)label;
+- (void)tableView:(id)view didSelectRowAtIndex:(int64_t)index;
 @end
 
 @implementation HKEmergencyCardContactsTableItem
 
-- (id)initInEditMode:(BOOL)a3
+- (id)initInEditMode:(BOOL)mode
 {
   v4.receiver = self;
   v4.super_class = HKEmergencyCardContactsTableItem;
-  return [(HKEmergencyCardTableItem *)&v4 initInEditMode:a3];
+  return [(HKEmergencyCardTableItem *)&v4 initInEditMode:mode];
 }
 
 - (BOOL)hasPresentableData
 {
-  v3 = [(HKEmergencyCardTableItem *)self data];
-  v4 = [v3 emergencyContacts];
-  if ([v4 count])
+  data = [(HKEmergencyCardTableItem *)self data];
+  emergencyContacts = [data emergencyContacts];
+  if ([emergencyContacts count])
   {
-    v5 = 1;
+    shouldShowHints = 1;
   }
 
   else
   {
-    v5 = [(HKEmergencyCardTableItem *)self shouldShowHints];
+    shouldShowHints = [(HKEmergencyCardTableItem *)self shouldShowHints];
   }
 
-  return v5;
+  return shouldShowHints;
 }
 
-- (int64_t)itemTypeForRowIndex:(int64_t)a3
+- (int64_t)itemTypeForRowIndex:(int64_t)index
 {
-  v5 = [(HKEmergencyCardTableItem *)self isInEditMode];
-  v6 = [(HKEmergencyCardTableItem *)self data];
-  v7 = [v6 emergencyContacts];
-  v8 = [v7 count];
+  isInEditMode = [(HKEmergencyCardTableItem *)self isInEditMode];
+  data = [(HKEmergencyCardTableItem *)self data];
+  emergencyContacts = [data emergencyContacts];
+  v8 = [emergencyContacts count];
   v9 = v8;
-  if (v5)
+  if (isInEditMode)
   {
 
-    v10 = v9 == a3;
+    v10 = v9 == index;
     v11 = 3;
     goto LABEL_10;
   }
@@ -73,11 +73,11 @@
   {
 
 LABEL_9:
-    v14 = [(HKEmergencyCardTableItem *)self data];
-    v15 = [v14 emergencyContacts];
-    v16 = [v15 count];
+    data2 = [(HKEmergencyCardTableItem *)self data];
+    emergencyContacts2 = [data2 emergencyContacts];
+    v16 = [emergencyContacts2 count];
 
-    v10 = v16 == a3;
+    v10 = v16 == index;
     v11 = 1;
 LABEL_10:
     if (v10)
@@ -91,14 +91,14 @@ LABEL_10:
     }
   }
 
-  v12 = [(HKEmergencyCardTableItem *)self shouldShowHints];
+  shouldShowHints = [(HKEmergencyCardTableItem *)self shouldShowHints];
 
-  if (!v12)
+  if (!shouldShowHints)
   {
     goto LABEL_9;
   }
 
-  if (a3)
+  if (index)
   {
     return 2;
   }
@@ -109,17 +109,17 @@ LABEL_10:
   }
 }
 
-- (void)callEmergencyContact:(id)a3
+- (void)callEmergencyContact:(id)contact
 {
-  v3 = [a3 phoneNumber];
-  [HKMedicalIDTelephoneUtilities callEmergencyContact:v3];
+  phoneNumber = [contact phoneNumber];
+  [HKMedicalIDTelephoneUtilities callEmergencyContact:phoneNumber];
 }
 
 - (int64_t)numberOfRows
 {
-  v3 = [(HKEmergencyCardTableItem *)self data];
-  v4 = [v3 emergencyContacts];
-  v5 = [v4 count];
+  data = [(HKEmergencyCardTableItem *)self data];
+  emergencyContacts = [data emergencyContacts];
+  v5 = [emergencyContacts count];
 
   v6 = v5 + [(HKEmergencyCardTableItem *)self isInEditMode];
   if (![(HKEmergencyCardTableItem *)self isInEditMode]&& [(HKEmergencyCardTableItem *)self shouldShowHints]&& v6 == 0)
@@ -129,20 +129,20 @@ LABEL_10:
 
   if (![(HKEmergencyCardTableItem *)self isInEditMode])
   {
-    v7 = [(HKEmergencyCardTableItem *)self shouldShowHints];
-    v8 = v6 > 0 || v7;
+    shouldShowHints = [(HKEmergencyCardTableItem *)self shouldShowHints];
+    v8 = v6 > 0 || shouldShowHints;
     v6 += v8;
   }
 
   return v6;
 }
 
-- (BOOL)refreshFromData:(BOOL)a3
+- (BOOL)refreshFromData:(BOOL)data
 {
-  v3 = a3;
+  dataCopy = data;
   if ([(HKEmergencyCardTableItem *)self isInEditMode])
   {
-    v5 = [(HKEmergencyCardTableItem *)self isSecondaryProfile]& v3;
+    v5 = [(HKEmergencyCardTableItem *)self isSecondaryProfile]& dataCopy;
   }
 
   else
@@ -150,34 +150,34 @@ LABEL_10:
     v5 = 0;
   }
 
-  v6 = [(HKEmergencyCardTableItem *)self data];
-  v7 = [v6 updateEmergencyContactsAutopopulateForSecondaryProfileIfEmpty:v5];
+  data = [(HKEmergencyCardTableItem *)self data];
+  v7 = [data updateEmergencyContactsAutopopulateForSecondaryProfileIfEmpty:v5];
 
   return v7;
 }
 
-- (id)_dequeueAndConfigureContactViewCellForIndex:(int64_t)a3 inTableView:(id)a4
+- (id)_dequeueAndConfigureContactViewCellForIndex:(int64_t)index inTableView:(id)view
 {
-  v6 = a4;
-  v7 = [(HKEmergencyCardContactsTableItem *)self itemTypeForRowIndex:a3];
+  viewCopy = view;
+  v7 = [(HKEmergencyCardContactsTableItem *)self itemTypeForRowIndex:index];
   if (v7 == 5)
   {
-    v8 = [v6 dequeueReusableCellWithIdentifier:0x1F430FD00];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:0x1F430FD00];
   }
 
   else if (v7 == 2)
   {
-    v8 = [v6 dequeueReusableCellWithIdentifier:0x1F430F660];
-    v9 = [(HKEmergencyCardContactsTableItem *)self _footerAttributedText];
-    [v8 setFooterAttributedText:v9];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:0x1F430F660];
+    _footerAttributedText = [(HKEmergencyCardContactsTableItem *)self _footerAttributedText];
+    [v8 setFooterAttributedText:_footerAttributedText];
   }
 
   else
   {
-    v8 = [v6 dequeueReusableCellWithIdentifier:0x1F431A620];
-    v10 = [(HKEmergencyCardTableItem *)self data];
-    v11 = [v10 emergencyContacts];
-    v12 = [v11 objectAtIndexedSubscript:{-[HKEmergencyCardContactsTableItem contactIndexForRowIndex:](self, "contactIndexForRowIndex:", a3)}];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:0x1F431A620];
+    data = [(HKEmergencyCardTableItem *)self data];
+    emergencyContacts = [data emergencyContacts];
+    v12 = [emergencyContacts objectAtIndexedSubscript:{-[HKEmergencyCardContactsTableItem contactIndexForRowIndex:](self, "contactIndexForRowIndex:", index)}];
     [v8 setContact:v12];
   }
 
@@ -215,8 +215,8 @@ LABEL_10:
   v10 = objc_alloc(MEMORY[0x1E696AD40]);
   v11 = *MEMORY[0x1E69DB650];
   v30[0] = *MEMORY[0x1E69DB650];
-  v12 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v31[0] = v12;
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v31[0] = secondaryLabelColor;
   v13 = *MEMORY[0x1E69DB648];
   v30[1] = *MEMORY[0x1E69DB648];
   v14 = *MEMORY[0x1E69DDD28];
@@ -251,43 +251,43 @@ LABEL_10:
 - (id)_footerAttributedTextForSecondaryProfile
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v2 = [(HKEmergencyCardContactsTableItem *)self _footerTextForSecondaryProfile];
+  _footerTextForSecondaryProfile = [(HKEmergencyCardContactsTableItem *)self _footerTextForSecondaryProfile];
   v3 = objc_alloc(MEMORY[0x1E696AAB0]);
   v9[0] = *MEMORY[0x1E69DB650];
-  v4 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v10[0] = v4;
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v10[0] = secondaryLabelColor;
   v9[1] = *MEMORY[0x1E69DB648];
   v5 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
   v10[1] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
-  v7 = [v3 initWithString:v2 attributes:v6];
+  v7 = [v3 initWithString:_footerTextForSecondaryProfile attributes:v6];
 
   return v7;
 }
 
 - (id)_footerTextForSecondaryProfile
 {
-  v3 = [(HKEmergencyCardTableItem *)self profileFirstName];
-  v4 = [(HKEmergencyCardContactsTableItem *)self _footerTextWithGivenName:v3];
+  profileFirstName = [(HKEmergencyCardTableItem *)self profileFirstName];
+  v4 = [(HKEmergencyCardContactsTableItem *)self _footerTextWithGivenName:profileFirstName];
 
   return v4;
 }
 
-- (id)_footerTextWithGivenName:(id)a3
+- (id)_footerTextWithGivenName:(id)name
 {
   v3 = MEMORY[0x1E696AAE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = [v3 bundleWithIdentifier:@"com.apple.HealthUI"];
   v6 = [v5 localizedStringForKey:@"EMERGENCY_CONTACT_HINT_WITH_NAME_%@_%@" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-tinker"];
 
-  v7 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v6, v4, v4];
+  nameCopy = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v6, nameCopy, nameCopy];
 
-  return v7;
+  return nameCopy;
 }
 
-- (id)_dequeueAndConfigureContactEditCellForIndex:(int64_t)a3 inTableView:(id)a4
+- (id)_dequeueAndConfigureContactEditCellForIndex:(int64_t)index inTableView:(id)view
 {
-  v6 = [a4 dequeueReusableCellWithIdentifier:@"contactsTableItemEditCell"];
+  v6 = [view dequeueReusableCellWithIdentifier:@"contactsTableItemEditCell"];
   if (!v6)
   {
     v6 = [[HKMedicalIDEditorEmergencyContactCell alloc] initWithStyle:1 reuseIdentifier:@"contactsTableItemEditCell"];
@@ -295,44 +295,44 @@ LABEL_10:
     [(HKMedicalIDEditorCell *)v6 setMinimumLabelWidth:87.0];
   }
 
-  v7 = [(HKEmergencyCardTableItem *)self data];
-  v8 = [v7 emergencyContacts];
-  v9 = [v8 objectAtIndexedSubscript:a3];
+  data = [(HKEmergencyCardTableItem *)self data];
+  emergencyContacts = [data emergencyContacts];
+  v9 = [emergencyContacts objectAtIndexedSubscript:index];
   [(HKMedicalIDEditorEmergencyContactCell *)v6 setContact:v9];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index
 {
-  v6 = a3;
+  viewCopy = view;
   if ([(HKEmergencyCardTableItem *)self isInEditMode])
   {
-    v7 = [(HKEmergencyCardTableItem *)self data];
-    v8 = [v7 emergencyContacts];
-    v9 = [v8 count];
+    data = [(HKEmergencyCardTableItem *)self data];
+    emergencyContacts = [data emergencyContacts];
+    v9 = [emergencyContacts count];
 
-    if (v9 == a4)
+    if (v9 == index)
     {
-      v10 = [(HKEmergencyCardTableItem *)self data];
-      v11 = [v10 emergencyContacts];
-      v12 = [v11 count] > 9;
+      data2 = [(HKEmergencyCardTableItem *)self data];
+      emergencyContacts2 = [data2 emergencyContacts];
+      v12 = [emergencyContacts2 count] > 9;
 
       v13 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v14 = [v13 localizedStringForKey:@"add_emergency_contact" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-      v15 = [(HKEmergencyCardTableItem *)self _dequeueNoValueCellInTableView:v6 withTitle:v14 disabled:v12];
+      v15 = [(HKEmergencyCardTableItem *)self _dequeueNoValueCellInTableView:viewCopy withTitle:v14 disabled:v12];
 
       objc_storeStrong(&self->_lastDequeuedAddContactCell, v15);
       [(HKEmergencyCardContactsTableItem *)self _setupContactPickingFlow];
       goto LABEL_7;
     }
 
-    v16 = [(HKEmergencyCardContactsTableItem *)self _dequeueAndConfigureContactEditCellForIndex:a4 inTableView:v6];
+    v16 = [(HKEmergencyCardContactsTableItem *)self _dequeueAndConfigureContactEditCellForIndex:index inTableView:viewCopy];
   }
 
   else
   {
-    v16 = [(HKEmergencyCardContactsTableItem *)self _dequeueAndConfigureContactViewCellForIndex:a4 inTableView:v6];
+    v16 = [(HKEmergencyCardContactsTableItem *)self _dequeueAndConfigureContactViewCellForIndex:index inTableView:viewCopy];
   }
 
   v15 = v16;
@@ -352,9 +352,9 @@ LABEL_7:
 - (void)_setupContactPickingFlow
 {
   v3 = [HKMedicalIDEmergencyContactFlow alloc];
-  v4 = [(HKEmergencyCardTableItem *)self owningViewController];
-  v5 = [(HKEmergencyCardTableItem *)self data];
-  v6 = [(HKMedicalIDEmergencyContactFlow *)v3 initWithPresentingViewController:v4 forMedicalIDData:v5];
+  owningViewController = [(HKEmergencyCardTableItem *)self owningViewController];
+  data = [(HKEmergencyCardTableItem *)self data];
+  v6 = [(HKMedicalIDEmergencyContactFlow *)v3 initWithPresentingViewController:owningViewController forMedicalIDData:data];
   contactPicker = self->_contactPicker;
   self->_contactPicker = v6;
 
@@ -365,13 +365,13 @@ LABEL_7:
   [(HKMedicalIDEmergencyContactFlow *)v8 fetchFamilyContactsForSuggestion];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndex:(int64_t)a4
+- (void)tableView:(id)view didSelectRowAtIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [v6 indexPathForSelectedRow];
-  [v6 deselectRowAtIndexPath:v7 animated:1];
+  viewCopy = view;
+  indexPathForSelectedRow = [viewCopy indexPathForSelectedRow];
+  [viewCopy deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 
-  v8 = [(HKEmergencyCardContactsTableItem *)self itemTypeForRowIndex:a4];
+  v8 = [(HKEmergencyCardContactsTableItem *)self itemTypeForRowIndex:index];
   if (v8 == 4)
   {
 
@@ -380,21 +380,21 @@ LABEL_7:
 
   else if (v8 == 1)
   {
-    v9 = [(HKEmergencyCardTableItem *)self data];
-    v10 = [v9 emergencyContacts];
-    v11 = [v10 objectAtIndexedSubscript:{-[HKEmergencyCardContactsTableItem contactIndexForRowIndex:](self, "contactIndexForRowIndex:", a4)}];
+    data = [(HKEmergencyCardTableItem *)self data];
+    emergencyContacts = [data emergencyContacts];
+    v11 = [emergencyContacts objectAtIndexedSubscript:{-[HKEmergencyCardContactsTableItem contactIndexForRowIndex:](self, "contactIndexForRowIndex:", index)}];
 
     [(HKEmergencyCardContactsTableItem *)self callEmergencyContact:v11];
   }
 }
 
-- (int64_t)editingStyleForRowAtIndex:(int64_t)a3
+- (int64_t)editingStyleForRowAtIndex:(int64_t)index
 {
-  v4 = [(HKEmergencyCardTableItem *)self data];
-  v5 = [v4 emergencyContacts];
-  v6 = [v5 count];
+  data = [(HKEmergencyCardTableItem *)self data];
+  emergencyContacts = [data emergencyContacts];
+  v6 = [emergencyContacts count];
 
-  if (v6 == a3)
+  if (v6 == index)
   {
     return 2;
   }
@@ -405,78 +405,78 @@ LABEL_7:
   }
 }
 
-- (int64_t)commitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4
+- (int64_t)commitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index
 {
-  if (a3 == 1)
+  if (style == 1)
   {
-    v6 = [(HKEmergencyCardTableItem *)self data];
-    v7 = [v6 emergencyContacts];
-    v8 = [v7 mutableCopy];
+    data = [(HKEmergencyCardTableItem *)self data];
+    emergencyContacts = [data emergencyContacts];
+    v8 = [emergencyContacts mutableCopy];
 
-    [v8 removeObjectAtIndex:{-[HKEmergencyCardContactsTableItem contactIndexForRowIndex:](self, "contactIndexForRowIndex:", a4)}];
-    v9 = [(HKEmergencyCardTableItem *)self data];
-    [v9 setEmergencyContacts:v8];
+    [v8 removeObjectAtIndex:{-[HKEmergencyCardContactsTableItem contactIndexForRowIndex:](self, "contactIndexForRowIndex:", index)}];
+    data2 = [(HKEmergencyCardTableItem *)self data];
+    [data2 setEmergencyContacts:v8];
 
     return 1;
   }
 
   else
   {
-    [(HKEmergencyCardContactsTableItem *)self _presentEmergencyContactPickerIfPossible:a3];
+    [(HKEmergencyCardContactsTableItem *)self _presentEmergencyContactPickerIfPossible:style];
     return 0;
   }
 }
 
-- (void)medicalIDEditorCellDidTapLabel:(id)a3
+- (void)medicalIDEditorCellDidTapLabel:(id)label
 {
-  v4 = [a3 contact];
+  contact = [label contact];
   selectedContact = self->_selectedContact;
-  self->_selectedContact = v4;
+  self->_selectedContact = contact;
 
   v8 = objc_alloc_init(HKEmergencyContactRelationshipPicker);
   [(HKEmergencyContactRelationshipPicker *)v8 setDelegate:self];
   v6 = [[HKNavigationController alloc] initWithRootViewController:v8];
-  v7 = [(HKEmergencyCardTableItem *)self owningViewController];
-  [v7 presentViewController:v6 animated:1 completion:0];
+  owningViewController = [(HKEmergencyCardTableItem *)self owningViewController];
+  [owningViewController presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)emergencyContactRelationshipPicker:(id)a3 didChooseRelationshipNamed:(id)a4
+- (void)emergencyContactRelationshipPicker:(id)picker didChooseRelationshipNamed:(id)named
 {
-  [(_HKEmergencyContact *)self->_selectedContact setRelationship:a4];
+  [(_HKEmergencyContact *)self->_selectedContact setRelationship:named];
   selectedContact = self->_selectedContact;
   self->_selectedContact = 0;
 
-  v6 = [(HKEmergencyCardTableItem *)self owningViewController];
-  [v6 dismissViewControllerAnimated:1 completion:0];
+  owningViewController = [(HKEmergencyCardTableItem *)self owningViewController];
+  [owningViewController dismissViewControllerAnimated:1 completion:0];
 
-  v7 = [(HKEmergencyCardContactsTableItem *)self delegate];
-  [v7 updateEmergencyContactTableItem];
+  delegate = [(HKEmergencyCardContactsTableItem *)self delegate];
+  [delegate updateEmergencyContactTableItem];
 }
 
-- (void)emergencyContactRelationshipPickerDidCancel:(id)a3
+- (void)emergencyContactRelationshipPickerDidCancel:(id)cancel
 {
   selectedContact = self->_selectedContact;
   self->_selectedContact = 0;
 
-  v5 = [(HKEmergencyCardTableItem *)self owningViewController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  owningViewController = [(HKEmergencyCardTableItem *)self owningViewController];
+  [owningViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_addEmergencyContactToData:(id)a3
+- (void)_addEmergencyContactToData:(id)data
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HKEmergencyCardTableItem *)self data];
-  v6 = [v5 emergencyContacts];
+  dataCopy = data;
+  data = [(HKEmergencyCardTableItem *)self data];
+  emergencyContacts = [data emergencyContacts];
 
-  if (v6)
+  if (emergencyContacts)
   {
-    v7 = [v6 arrayByAddingObject:v4];
+    v7 = [emergencyContacts arrayByAddingObject:dataCopy];
   }
 
   else
   {
-    v10[0] = v4;
+    v10[0] = dataCopy;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   }
 
@@ -485,16 +485,16 @@ LABEL_7:
     [getSOSUtilitiesClass_0() setAllowedToMessageSOSContacts:1];
   }
 
-  v8 = [(HKEmergencyCardTableItem *)self data];
-  [v8 setEmergencyContacts:v7];
+  data2 = [(HKEmergencyCardTableItem *)self data];
+  [data2 setEmergencyContacts:v7];
 
-  v9 = [(HKEmergencyCardContactsTableItem *)self delegate];
-  [v9 updateEmergencyContactTableItem];
+  delegate = [(HKEmergencyCardContactsTableItem *)self delegate];
+  [delegate updateEmergencyContactTableItem];
 }
 
-- (void)emergencyContactFlow:(id)a3 didSelectContact:(id)a4
+- (void)emergencyContactFlow:(id)flow didSelectContact:(id)contact
 {
-  [(HKEmergencyCardContactsTableItem *)self _addEmergencyContactToData:a4];
+  [(HKEmergencyCardContactsTableItem *)self _addEmergencyContactToData:contact];
   selectedContact = self->_selectedContact;
   self->_selectedContact = 0;
 }
@@ -508,7 +508,7 @@ LABEL_7:
 
   if ([(HKEmergencyCardTableItem *)self isSecondaryProfile])
   {
-    v3 = [(HKEmergencyCardContactsTableItem *)self _footerTextForSecondaryProfile];
+    _footerTextForSecondaryProfile = [(HKEmergencyCardContactsTableItem *)self _footerTextForSecondaryProfile];
     goto LABEL_10;
   }
 
@@ -533,18 +533,18 @@ LABEL_7:
   if (([v4 deviceSupportsSOS] & 1) != 0 || objc_msgSend(MEMORY[0x1E696C608], "hasPairedWatch"))
   {
     v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v3 = [v6 localizedStringForKey:@"EMERGENCY_CONTACT_FOOTNOTE_LONG" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
+    _footerTextForSecondaryProfile = [v6 localizedStringForKey:@"EMERGENCY_CONTACT_FOOTNOTE_LONG" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
   }
 
   else
   {
 LABEL_9:
-    v3 = &stru_1F42FFBE0;
+    _footerTextForSecondaryProfile = &stru_1F42FFBE0;
   }
 
 LABEL_10:
 
-  return v3;
+  return _footerTextForSecondaryProfile;
 }
 
 - (id)titleForHeader

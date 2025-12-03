@@ -1,6 +1,6 @@
 @interface HDCloudSyncPipelineStagePull
 + (id)operationTagDependencies;
-- (HDCloudSyncPipelineStagePull)initWithConfiguration:(id)a3 cloudState:(id)a4;
+- (HDCloudSyncPipelineStagePull)initWithConfiguration:(id)configuration cloudState:(id)state;
 - (void)_reportLastPulledUpdateDate;
 - (void)main;
 @end
@@ -18,11 +18,11 @@
   return v2;
 }
 
-- (HDCloudSyncPipelineStagePull)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncPipelineStagePull)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v7.receiver = self;
   v7.super_class = HDCloudSyncPipelineStagePull;
-  v4 = [(HDCloudSyncPipelineStage *)&v7 initWithConfiguration:a3 cloudState:a4];
+  v4 = [(HDCloudSyncPipelineStage *)&v7 initWithConfiguration:configuration cloudState:state];
   v5 = v4;
   if (v4)
   {
@@ -35,18 +35,18 @@
 - (void)main
 {
   v63 = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 context];
-  v5 = [v4 options];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  context = [configuration context];
+  options = [context options];
 
-  if ((v5 & 2) != 0)
+  if ((options & 2) != 0)
   {
     _HKInitializeLogging();
     v14 = *MEMORY[0x277CCC328];
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v58 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_228986000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: Skipping due to pipeline options.", buf, 0xCu);
     }
 
@@ -57,18 +57,18 @@
   {
     if (self)
     {
-      v6 = [(HDCloudSyncOperation *)self profile];
+      profile = [(HDCloudSyncOperation *)self profile];
       v55 = 0;
-      v7 = [HDSampleEntity minimumSampleStartDateForProfile:v6 error:&v55];
+      v7 = [HDSampleEntity minimumSampleStartDateForProfile:profile error:&v55];
       v8 = v55;
 
       _HKInitializeLogging();
       v9 = HKLogSyncCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(HDCloudSyncOperation *)self profile];
-        v11 = [v10 database];
-        v12 = [v11 databaseSizeInBytes];
+        profile2 = [(HDCloudSyncOperation *)self profile];
+        database = [profile2 database];
+        databaseSizeInBytes = [database databaseSizeInBytes];
         if (v7)
         {
           v13 = [MEMORY[0x277CCACA8] stringWithFormat:@", oldest sample start date %@", v7];
@@ -80,9 +80,9 @@
         }
 
         *buf = 138543874;
-        v58 = self;
+        selfCopy3 = self;
         v59 = 2112;
-        v60 = v12;
+        v60 = databaseSizeInBytes;
         v61 = 2112;
         v62 = v13;
         _os_log_impl(&dword_228986000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Aggregated database size is %@ bytes%@", buf, 0x20u);
@@ -93,14 +93,14 @@
     }
 
     v15 = [HDCloudSyncCompoundOperation alloc];
-    v16 = [(HDCloudSyncOperation *)self configuration];
-    v17 = [(HDCloudSyncOperation *)self cloudState];
-    v18 = [(HDCloudSyncCompoundOperation *)v15 initWithConfiguration:v16 cloudState:v17 name:@"Pull" continueOnSubOperationError:1];
+    configuration2 = [(HDCloudSyncOperation *)self configuration];
+    cloudState = [(HDCloudSyncOperation *)self cloudState];
+    v18 = [(HDCloudSyncCompoundOperation *)v15 initWithConfiguration:configuration2 cloudState:cloudState name:@"Pull" continueOnSubOperationError:1];
 
-    v19 = [(HDCloudSyncOperation *)self configuration];
-    v20 = [v19 computedState];
-    v21 = [v20 pullTargets];
-    v22 = [v21 sortedArrayUsingComparator:&__block_literal_global_222];
+    configuration3 = [(HDCloudSyncOperation *)self configuration];
+    computedState = [configuration3 computedState];
+    pullTargets = [computedState pullTargets];
+    v22 = [pullTargets sortedArrayUsingComparator:&__block_literal_global_222];
 
     v54 = 0u;
     v52 = 0u;
@@ -124,9 +124,9 @@
 
           v27 = *(*(&v51 + 1) + 8 * v26);
           v28 = [HDCloudSyncPullStoreOperation alloc];
-          v29 = [(HDCloudSyncOperation *)self configuration];
-          v30 = [(HDCloudSyncOperation *)self cloudState];
-          v31 = [(HDCloudSyncPullStoreOperation *)v28 initWithConfiguration:v29 cloudState:v30 target:v27];
+          configuration4 = [(HDCloudSyncOperation *)self configuration];
+          cloudState2 = [(HDCloudSyncOperation *)self cloudState];
+          v31 = [(HDCloudSyncPullStoreOperation *)v28 initWithConfiguration:configuration4 cloudState:cloudState2 target:v27];
 
           [(HDCloudSyncCompoundOperation *)v18 addOperation:v31 transitionHandler:0];
           ++v26;
@@ -152,11 +152,11 @@
     v49[4] = self;
     [(HDCloudSyncOperation *)v18 setOnError:v49];
     [(HDCloudSyncCompoundOperation *)v18 start];
-    v32 = [(HDCloudSyncOperation *)self configuration];
-    v33 = [v32 context];
-    v34 = [v33 reason];
+    configuration5 = [(HDCloudSyncOperation *)self configuration];
+    context2 = [configuration5 context];
+    reason = [context2 reason];
 
-    if (v34 == 33)
+    if (reason == 33)
     {
       _HKInitializeLogging();
       v35 = MEMORY[0x277CCC328];
@@ -180,7 +180,7 @@
         if (os_log_type_enabled(*v35, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v58 = self;
+          selfCopy3 = self;
           v59 = 2114;
           v60 = v39;
           _os_log_error_impl(&dword_228986000, v40, OS_LOG_TYPE_ERROR, "%{public}@: Failed to report feature checkpoint due to error: %{public}@", buf, 0x16u);
@@ -188,15 +188,15 @@
       }
     }
 
-    v41 = [(HDCloudSyncOperation *)v18 progress];
-    v42 = [v41 totalUnitCount];
+    progress = [(HDCloudSyncOperation *)v18 progress];
+    totalUnitCount = [progress totalUnitCount];
 
-    v43 = [(HDCloudSyncOperation *)self progress];
-    [v43 setTotalUnitCount:{objc_msgSend(v43, "totalUnitCount") + v42}];
+    progress2 = [(HDCloudSyncOperation *)self progress];
+    [progress2 setTotalUnitCount:{objc_msgSend(progress2, "totalUnitCount") + totalUnitCount}];
 
-    v44 = [(HDCloudSyncOperation *)self progress];
-    v45 = [(HDCloudSyncOperation *)v18 progress];
-    [v44 addChild:v45 withPendingUnitCount:v42];
+    progress3 = [(HDCloudSyncOperation *)self progress];
+    progress4 = [(HDCloudSyncOperation *)v18 progress];
+    [progress3 addChild:progress4 withPendingUnitCount:totalUnitCount];
   }
 
   v46 = *MEMORY[0x277D85DE8];
@@ -420,16 +420,16 @@ uint64_t __36__HDCloudSyncPipelineStagePull_main__block_invoke_2(uint64_t a1)
 
 - (void)_reportLastPulledUpdateDate
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 configuration];
-    v2 = [v1 repository];
-    v3 = [v2 profile];
-    v6 = [v3 legacyRepositoryProfile];
+    configuration = [self configuration];
+    repository = [configuration repository];
+    profile = [repository profile];
+    legacyRepositoryProfile = [profile legacyRepositoryProfile];
 
-    v4 = HDCloudSyncLastPulledUpdateDate(v6);
-    v5 = [v6 cloudSyncManager];
-    [v5 didCompleteSuccessfulPullOfUpdateWithDate:v4];
+    v4 = HDCloudSyncLastPulledUpdateDate(legacyRepositoryProfile);
+    cloudSyncManager = [legacyRepositoryProfile cloudSyncManager];
+    [cloudSyncManager didCompleteSuccessfulPullOfUpdateWithDate:v4];
   }
 }
 

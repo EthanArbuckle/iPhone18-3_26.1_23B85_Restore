@@ -1,15 +1,15 @@
 @interface _UICubicPolyTangent
 + (id)keyboardTrackpadCurve;
 - (_UICubicPolyTangent)init;
-- (double)clipForIOFixedMath:(double)a3 polynomialPower:(int)a4 tangencyStartingAt:(double)a5;
-- (double)gainForPower:(int)a3;
-- (double)piecewiseCubicAcceleratedSpeed:(double)a3;
-- (double)quarticDerivative:(double)a3;
-- (double)quarticTangentFunction:(double)a3 powerOfEarliestTangent:(int)a4;
-- (double)tangentSpeedForPower:(int)a3;
-- (int)RootPowerOfEarliestTangent:(int)a3;
+- (double)clipForIOFixedMath:(double)math polynomialPower:(int)power tangencyStartingAt:(double)at;
+- (double)gainForPower:(int)power;
+- (double)piecewiseCubicAcceleratedSpeed:(double)speed;
+- (double)quarticDerivative:(double)derivative;
+- (double)quarticTangentFunction:(double)function powerOfEarliestTangent:(int)tangent;
+- (double)tangentSpeedForPower:(int)power;
+- (int)RootPowerOfEarliestTangent:(int)tangent;
 - (void)clipGainsForIOFixedMathWithTangency;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation _UICubicPolyTangent
@@ -31,12 +31,12 @@
   return result;
 }
 
-- (double)clipForIOFixedMath:(double)a3 polynomialPower:(int)a4 tangencyStartingAt:(double)a5
+- (double)clipForIOFixedMath:(double)math polynomialPower:(int)power tangencyStartingAt:(double)at
 {
-  result = pow(a5 * 0.0078125 * 16383.0, 1.0 / a4) / a5;
-  if (result >= a3)
+  result = pow(at * 0.0078125 * 16383.0, 1.0 / power) / at;
+  if (result >= math)
   {
-    result = a3;
+    result = math;
   }
 
   if (result < 0.0)
@@ -70,15 +70,15 @@
   self->_quarticGain = v9;
 }
 
-- (double)tangentSpeedForPower:(int)a3
+- (double)tangentSpeedForPower:(int)power
 {
-  if (a3 < 1)
+  if (power < 1)
   {
     return 0.0;
   }
 
-  v3 = 8 * (a3 - 1) + 40;
-  if (a3 >= 4)
+  v3 = 8 * (power - 1) + 40;
+  if (power >= 4)
   {
     v3 = 64;
   }
@@ -86,15 +86,15 @@
   return *(&self->super.isa + v3);
 }
 
-- (double)gainForPower:(int)a3
+- (double)gainForPower:(int)power
 {
-  if (a3 < 1)
+  if (power < 1)
   {
     return 0.0;
   }
 
-  v3 = 8 * (a3 - 1) + 8;
-  if (a3 >= 4)
+  v3 = 8 * (power - 1) + 8;
+  if (power >= 4)
   {
     v3 = 32;
   }
@@ -102,14 +102,14 @@
   return *(&self->super.isa + v3);
 }
 
-- (int)RootPowerOfEarliestTangent:(int)a3
+- (int)RootPowerOfEarliestTangent:(int)tangent
 {
-  if (a3 > 4)
+  if (tangent > 4)
   {
     return 0;
   }
 
-  v3 = *&a3;
+  v3 = *&tangent;
   v5 = 0;
   v6 = 0.0;
   do
@@ -128,11 +128,11 @@
   return v5;
 }
 
-- (double)quarticDerivative:(double)a3
+- (double)quarticDerivative:(double)derivative
 {
-  v3 = (self->_parabolicGain + self->_parabolicGain) * (self->_parabolicGain * a3);
+  v3 = (self->_parabolicGain + self->_parabolicGain) * (self->_parabolicGain * derivative);
   v4 = *&self->_cubicGain;
-  v5 = vmulq_n_f64(v4, a3);
+  v5 = vmulq_n_f64(v4, derivative);
   v4.f64[1] = vmuld_lane_f64(4.0, v4, 1);
   v6.f64[1] = v5.f64[1];
   v6.f64[0] = 3.0;
@@ -140,21 +140,21 @@
   return self->_initialLinearGain + v3 + v7.f64[0] + v7.f64[1];
 }
 
-- (double)quarticTangentFunction:(double)a3 powerOfEarliestTangent:(int)a4
+- (double)quarticTangentFunction:(double)function powerOfEarliestTangent:(int)tangent
 {
   v6 = [(_UICubicPolyTangent *)self RootPowerOfEarliestTangent:2];
   [(_UICubicPolyTangent *)self tangentSpeedForPower:v6];
   v8 = v7;
-  if (a4 == 1)
+  if (tangent == 1)
   {
     [(_UICubicPolyTangent *)self quarticDerivative:self->_tangentLineSpeed];
     v10 = v9;
     [(_UICubicPolyTangent *)self quarticFunction:self->_tangentLineSpeed];
     v12 = v11 - v10 * self->_tangentLineSpeed;
-    v13 = a3;
-    if (v8 >= a3 || v8 == 0.0)
+    functionCopy2 = function;
+    if (v8 >= function || v8 == 0.0)
     {
-      return v10 * a3 + v12;
+      return v10 * function + v12;
     }
 
     v23 = v8 * v10 + v12;
@@ -166,12 +166,12 @@
     v23 = v14;
     [(_UICubicPolyTangent *)self quarticDerivative:v8];
     v10 = v15;
-    v13 = a3;
+    functionCopy2 = function;
   }
 
   if (v6 == 3)
   {
-    v17 = v23 * (v23 * (v10 * 3.0)) * v13 + v23 * (v23 * v23) - v23 * (v23 * (v10 * 3.0)) * self->_tangentCbrtSpeed;
+    v17 = v23 * (v23 * (v10 * 3.0)) * functionCopy2 + v23 * (v23 * v23) - v23 * (v23 * (v10 * 3.0)) * self->_tangentCbrtSpeed;
     v18 = 0.33333;
   }
 
@@ -179,14 +179,14 @@
   {
     if (v6 == 2)
     {
-      return sqrt(v23 * (v10 + v10) * v13 + v23 * v23 - v23 * (v10 + v10) * self->_tangentSqrtSpeed);
+      return sqrt(v23 * (v10 + v10) * functionCopy2 + v23 * v23 - v23 * (v10 + v10) * self->_tangentSqrtSpeed);
     }
 
     v19 = vdupq_lane_s64(*&v23, 0);
     v20.f64[1] = v19.f64[1];
     v20.f64[0] = v23 * (v10 * 4.0);
     v21 = vmulq_n_f64(vmulq_n_f64(v20, v23), v23);
-    v19.f64[0] = v13;
+    v19.f64[0] = functionCopy2;
     v22 = vmulq_f64(v19, v21);
     v17 = v22.f64[0] + v22.f64[1] - self->_tangentHyperCbrtSpeed * v21.f64[0];
     v18 = 0.25;
@@ -195,44 +195,44 @@
   return pow(v17, v18);
 }
 
-- (double)piecewiseCubicAcceleratedSpeed:(double)a3
+- (double)piecewiseCubicAcceleratedSpeed:(double)speed
 {
   v5 = [(_UICubicPolyTangent *)self RootPowerOfEarliestTangent:1];
   [(_UICubicPolyTangent *)self tangentSpeedForPower:v5];
-  if (v6 >= a3 || v6 == 0.0)
+  if (v6 >= speed || v6 == 0.0)
   {
 
-    [(_UICubicPolyTangent *)self quarticFunction:a3];
+    [(_UICubicPolyTangent *)self quarticFunction:speed];
   }
 
   else
   {
 
-    [(_UICubicPolyTangent *)self quarticTangentFunction:v5 powerOfEarliestTangent:a3];
+    [(_UICubicPolyTangent *)self quarticTangentFunction:v5 powerOfEarliestTangent:speed];
   }
 
   return result;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v7 = a3;
-  v6 = a4;
-  if ([v6 isEqualToString:@"linear"])
+  settingsCopy = settings;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"linear"])
   {
-    [v7 linear];
+    [settingsCopy linear];
     [(_UICubicPolyTangent *)self setTangentLineSpeed:?];
   }
 
-  else if ([v6 isEqualToString:@"parabolic"])
+  else if ([keyCopy isEqualToString:@"parabolic"])
   {
-    [v7 parabolic];
+    [settingsCopy parabolic];
     [(_UICubicPolyTangent *)self setTangentSqrtSpeed:?];
   }
 
-  else if ([v6 isEqualToString:@"gain"])
+  else if ([keyCopy isEqualToString:@"gain"])
   {
-    [v7 gain];
+    [settingsCopy gain];
     [(_UICubicPolyTangent *)self setParabolicGain:?];
   }
 }

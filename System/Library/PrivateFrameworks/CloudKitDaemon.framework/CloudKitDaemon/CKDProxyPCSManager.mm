@@ -1,7 +1,7 @@
 @interface CKDProxyPCSManager
 - (CKDProxyPCSManager)init;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)weAreNeverEverEverUsingEncryption:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)weAreNeverEverEverUsingEncryption:(id)encryption;
 @end
 
 @implementation CKDProxyPCSManager
@@ -21,22 +21,22 @@
   return v4;
 }
 
-- (void)weAreNeverEverEverUsingEncryption:(id)a3
+- (void)weAreNeverEverEverUsingEncryption:(id)encryption
 {
   v5 = MEMORY[0x277CCA890];
-  v6 = a3;
+  encryptionCopy = encryption;
   v14 = objc_msgSend_currentHandler(v5, v7, v8);
-  v11 = objc_msgSend_selector(v6, v9, v10);
+  v11 = objc_msgSend_selector(encryptionCopy, v9, v10);
 
   v12 = NSStringFromSelector(v11);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v14, v13, a2, self, @"CKDProxyPCSManager.m", 29, @"[CKDPCSManager %@] was called in a container that should never ever ever use PCS.", v12);
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  if (objc_msgSend_instancesRespondToSelector_(CKDPCSManager, a2, a3) && (objc_msgSend_instancesRespondToSelector_(MEMORY[0x277D82BB8], v4, a3) & 1) == 0)
+  if (objc_msgSend_instancesRespondToSelector_(CKDPCSManager, a2, selector) && (objc_msgSend_instancesRespondToSelector_(MEMORY[0x277D82BB8], v4, selector) & 1) == 0)
   {
-    v6 = objc_msgSend_instanceMethodSignatureForSelector_(CKDPCSManager, v5, a3);
+    v6 = objc_msgSend_instanceMethodSignatureForSelector_(CKDPCSManager, v5, selector);
   }
 
   else

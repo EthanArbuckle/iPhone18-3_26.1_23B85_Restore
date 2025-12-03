@@ -1,21 +1,21 @@
 @interface BKSHIDAuthenticatedKeyCommandSpecification
 + (id)protobufSchema;
-+ (id)specificationWithKeyCommand:(id)a3 context:(unint64_t)a4;
-- (BKSHIDAuthenticatedKeyCommandSpecification)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)specificationWithKeyCommand:(id)command context:(unint64_t)context;
+- (BKSHIDAuthenticatedKeyCommandSpecification)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (id)_init;
 - (id)initForProtobufDecoding;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDAuthenticatedKeyCommandSpecification
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v6 = a3;
-  v4 = [v6 appendUInt64:self->_context withName:@"context" format:1];
-  v5 = [v6 appendObject:self->_keyCommand withName:@"keyCommands"];
+  formatterCopy = formatter;
+  v4 = [formatterCopy appendUInt64:self->_context withName:@"context" format:1];
+  v5 = [formatterCopy appendObject:self->_keyCommand withName:@"keyCommands"];
 }
 
 - (id)initForProtobufDecoding
@@ -25,35 +25,35 @@
   return [(BKSHIDAuthenticatedKeyCommandSpecification *)&v3 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   keyCommand = self->_keyCommand;
-  v5 = a3;
-  [v5 encodeObject:keyCommand forKey:@"keyCommand"];
-  [v5 encodeInt64:self->_context forKey:@"context"];
+  coderCopy = coder;
+  [coderCopy encodeObject:keyCommand forKey:@"keyCommand"];
+  [coderCopy encodeInt64:self->_context forKey:@"context"];
 }
 
-- (BKSHIDAuthenticatedKeyCommandSpecification)initWithCoder:(id)a3
+- (BKSHIDAuthenticatedKeyCommandSpecification)initWithCoder:(id)coder
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[BKSHIDAuthenticatedKeyCommandSpecification alloc] _init];
+  coderCopy = coder;
+  _init = [[BKSHIDAuthenticatedKeyCommandSpecification alloc] _init];
 
-  if (v5)
+  if (_init)
   {
-    v5->_context = [v4 decodeInt64ForKey:@"context"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyCommand"];
-    keyCommand = v5->_keyCommand;
-    v5->_keyCommand = v6;
+    _init->_context = [coderCopy decodeInt64ForKey:@"context"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyCommand"];
+    keyCommand = _init->_keyCommand;
+    _init->_keyCommand = v6;
 
-    v8 = v5->_keyCommand;
+    v8 = _init->_keyCommand;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v9 = MEMORY[0x1E696ABC0];
       v10 = *MEMORY[0x1E696A798];
       v20 = *MEMORY[0x1E696A588];
-      v11 = v5->_keyCommand;
+      v11 = _init->_keyCommand;
       v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_keyCommand invalid class:%@", objc_opt_class()];
       v21[0] = v12;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
@@ -69,22 +69,22 @@
           _os_log_error_impl(&dword_186345000, v15, OS_LOG_TYPE_ERROR, "error decoding authenticated key command spec:%{public}@", buf, 0xCu);
         }
 
-        [v4 failWithError:v14];
+        [coderCopy failWithError:v14];
       }
     }
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return v5;
+  return _init;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && v4[1] == self->_context)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && equalCopy[1] == self->_context)
   {
-    v5 = v4[2];
+    v5 = equalCopy[2];
     keyCommand = self->_keyCommand;
     v7 = BSEqualObjects();
   }
@@ -146,7 +146,7 @@
   block[1] = 3221225472;
   block[2] = __60__BKSHIDAuthenticatedKeyCommandSpecification_protobufSchema__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (protobufSchema_onceToken_13750 != -1)
   {
     dispatch_once(&protobufSchema_onceToken_13750, block);
@@ -174,14 +174,14 @@ void __60__BKSHIDAuthenticatedKeyCommandSpecification_protobufSchema__block_invo
   [v2 addRepeatingField:"_keyCommands" containsClass:objc_opt_class()];
 }
 
-+ (id)specificationWithKeyCommand:(id)a3 context:(unint64_t)a4
++ (id)specificationWithKeyCommand:(id)command context:(unint64_t)context
 {
-  v5 = a3;
-  v6 = [[BKSHIDAuthenticatedKeyCommandSpecification alloc] _init];
-  [v6 setContext:a4];
-  [v6 setKeyCommand:v5];
+  commandCopy = command;
+  _init = [[BKSHIDAuthenticatedKeyCommandSpecification alloc] _init];
+  [_init setContext:context];
+  [_init setKeyCommand:commandCopy];
 
-  return v6;
+  return _init;
 }
 
 @end

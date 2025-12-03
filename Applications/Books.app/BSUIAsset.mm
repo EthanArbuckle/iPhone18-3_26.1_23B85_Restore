@@ -1,19 +1,19 @@
 @interface BSUIAsset
 + (id)propertiesNeededFromBKLibraryAsset;
-- (BSUIAsset)initWithLibraryAsset:(id)a3;
+- (BSUIAsset)initWithLibraryAsset:(id)asset;
 @end
 
 @implementation BSUIAsset
 
-- (BSUIAsset)initWithLibraryAsset:(id)a3
+- (BSUIAsset)initWithLibraryAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = objc_alloc_init(NSMutableDictionary);
-  v6 = [v4 displayAuthor];
-  v7 = v6;
-  if (v6)
+  displayAuthor = [assetCopy displayAuthor];
+  v7 = displayAuthor;
+  if (displayAuthor)
   {
-    v8 = v6;
+    v8 = displayAuthor;
   }
 
   else
@@ -24,11 +24,11 @@
   v9 = v8;
 
   [v5 setObject:v9 forKey:BSUIAssetKeyAuthor];
-  v10 = [v4 title];
-  v11 = v10;
-  if (v10)
+  title = [assetCopy title];
+  v11 = title;
+  if (title)
   {
-    v12 = v10;
+    v12 = title;
   }
 
   else
@@ -39,11 +39,11 @@
   v13 = v12;
 
   [v5 setObject:v13 forKey:BSUIAssetKeyTitle];
-  v14 = [v4 sortTitle];
-  v15 = v14;
-  if (v14)
+  sortTitle = [assetCopy sortTitle];
+  v15 = sortTitle;
+  if (sortTitle)
   {
-    v16 = v14;
+    v16 = sortTitle;
   }
 
   else
@@ -54,11 +54,11 @@
   v17 = v16;
 
   [v5 setObject:v17 forKey:BSUIAssetKeySortTitle];
-  v18 = [v4 isExplicit];
-  v19 = v18;
-  if (v18)
+  isExplicit = [assetCopy isExplicit];
+  v19 = isExplicit;
+  if (isExplicit)
   {
-    v20 = v18;
+    v20 = isExplicit;
   }
 
   else
@@ -69,11 +69,11 @@
   v21 = v20;
 
   [v5 setObject:v21 forKey:BSUIAssetKeyIsExplicit];
-  v22 = [v4 storeID];
-  v23 = v22;
-  if (v22)
+  storeID = [assetCopy storeID];
+  v23 = storeID;
+  if (storeID)
   {
-    v24 = v22;
+    v24 = storeID;
   }
 
   else
@@ -84,11 +84,11 @@
   v25 = v24;
 
   [v5 setObject:v25 forKey:BSUIAssetKeyStoreID];
-  v26 = [v4 readingProgress];
-  v27 = v26;
-  if (v26)
+  readingProgress = [assetCopy readingProgress];
+  v27 = readingProgress;
+  if (readingProgress)
   {
-    v28 = v26;
+    v28 = readingProgress;
   }
 
   else
@@ -99,7 +99,7 @@
   v29 = v28;
 
   [v5 setObject:v29 forKey:BSUIAssetKeyReadingProgress];
-  v30 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [v4 contentType]);
+  v30 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [assetCopy contentType]);
   v31 = v30;
   if (v30)
   {
@@ -114,7 +114,7 @@
   v33 = v32;
 
   [v5 setObject:v33 forKey:BSUIAssetKeyContentType];
-  v34 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isFinished]);
+  v34 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [assetCopy isFinished]);
   v35 = v34;
   if (v34)
   {
@@ -129,7 +129,7 @@
   v37 = v36;
 
   [v5 setObject:v37 forKey:BSUIAssetKeyIsFinished];
-  v38 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isNew]);
+  v38 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [assetCopy isNew]);
   v39 = v38;
   if (v38)
   {
@@ -144,7 +144,7 @@
   v41 = v40;
 
   [v5 setObject:v41 forKey:BSUIAssetKeyIsNew];
-  v42 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isSample]);
+  v42 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [assetCopy isSample]);
   v43 = v42;
   if (v42)
   {
@@ -159,7 +159,7 @@
   v45 = v44;
 
   [v5 setObject:v45 forKey:BSUIAssetKeyIsSample];
-  v46 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isNonLocalSample]);
+  v46 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [assetCopy isNonLocalSample]);
   v47 = v46;
   if (v46)
   {
@@ -174,7 +174,7 @@
   v49 = v48;
 
   [v5 setObject:v49 forKey:BSUIAssetKeyIsNonLocalSample];
-  v50 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isInSamples]);
+  v50 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [assetCopy isInSamples]);
   v51 = v50;
   if (v50)
   {
@@ -189,7 +189,7 @@
   v53 = v52;
 
   [v5 setObject:v53 forKey:BSUIAssetKeyIsInSamples];
-  v54 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isInSamples]);
+  v54 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [assetCopy isInSamples]);
   v55 = v54;
   if (v54)
   {
@@ -204,7 +204,7 @@
   v57 = v56;
 
   [v5 setObject:v57 forKey:BSUIAssetKeyIsMemberOfSamplesCollection];
-  v58 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isLocal]);
+  v58 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [assetCopy isLocal]);
   v59 = v58;
   if (v58)
   {
@@ -219,7 +219,7 @@
   v61 = v60;
 
   [v5 setObject:v61 forKey:BSUIAssetKeyIsLocal];
-  v62 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isSupplementalContent]);
+  v62 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [assetCopy isSupplementalContent]);
   v63 = v62;
   if (v62)
   {
@@ -234,11 +234,11 @@
   v65 = v64;
 
   [v5 setObject:v65 forKey:BSUIAssetKeyIsSupplementalContent];
-  v66 = [v4 seriesID];
-  v67 = v66;
-  if (v66)
+  seriesID = [assetCopy seriesID];
+  v67 = seriesID;
+  if (seriesID)
   {
-    v68 = v66;
+    v68 = seriesID;
   }
 
   else
@@ -249,11 +249,11 @@
   v69 = v68;
 
   [v5 setObject:v69 forKey:BSUIAssetKeySeriesID];
-  v70 = [v4 lastEngagedDate];
-  v71 = v70;
-  if (v70)
+  lastEngagedDate = [assetCopy lastEngagedDate];
+  v71 = lastEngagedDate;
+  if (lastEngagedDate)
   {
-    v72 = v70;
+    v72 = lastEngagedDate;
   }
 
   else
@@ -264,11 +264,11 @@
   v73 = v72;
 
   [v5 setObject:v73 forKey:BSUIAssetKeyLastEngagedDate];
-  v74 = [v4 lastOpenDate];
-  v75 = v74;
-  if (v74)
+  lastOpenDate = [assetCopy lastOpenDate];
+  v75 = lastOpenDate;
+  if (lastOpenDate)
   {
-    v76 = v74;
+    v76 = lastOpenDate;
   }
 
   else
@@ -279,11 +279,11 @@
   v77 = v76;
 
   [v5 setObject:v77 forKey:BSUIAssetKeyLastOpenDate];
-  v78 = [v4 pageProgressionDirection];
-  v79 = v78;
-  if (v78)
+  pageProgressionDirection = [assetCopy pageProgressionDirection];
+  v79 = pageProgressionDirection;
+  if (pageProgressionDirection)
   {
-    v80 = v78;
+    v80 = pageProgressionDirection;
   }
 
   else
@@ -294,11 +294,11 @@
   v81 = v80;
 
   [v5 setObject:v81 forKey:BSUIAssetKeyPageProgressionDirection];
-  v82 = [v4 dateFinished];
-  v83 = v82;
-  if (v82)
+  dateFinished = [assetCopy dateFinished];
+  v83 = dateFinished;
+  if (dateFinished)
   {
-    v84 = v82;
+    v84 = dateFinished;
   }
 
   else
@@ -309,8 +309,8 @@
   v85 = v84;
 
   [v5 setObject:v85 forKey:BSUIAssetKeyDateFinished];
-  v86 = [v4 hasRACSupport];
-  v87 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v86 BOOLValue]);
+  hasRACSupport = [assetCopy hasRACSupport];
+  v87 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [hasRACSupport BOOLValue]);
   v88 = v87;
   if (v87)
   {
@@ -325,11 +325,11 @@
   v90 = v89;
 
   [v5 setObject:v90 forKey:BSUIAssetKeyHasRACSupport];
-  v91 = [v4 cloudAssetType];
-  v92 = v91;
-  if (v91)
+  cloudAssetType = [assetCopy cloudAssetType];
+  v92 = cloudAssetType;
+  if (cloudAssetType)
   {
-    v93 = v91;
+    v93 = cloudAssetType;
   }
 
   else
@@ -340,11 +340,11 @@
   v94 = v93;
 
   [v5 setObject:v94 forKey:BSUIAssetKeyCloudAssetType];
-  v95 = [v4 purchaseDate];
-  v96 = v95;
-  if (v95)
+  purchaseDate = [assetCopy purchaseDate];
+  v96 = purchaseDate;
+  if (purchaseDate)
   {
-    v97 = v95;
+    v97 = purchaseDate;
   }
 
   else
@@ -355,10 +355,10 @@
   v98 = v97;
 
   [v5 setObject:v98 forKey:BSUIAssetKeyPurchasedDate];
-  if ([v4 contentType] == 5)
+  if ([assetCopy contentType] == 5)
   {
-    v99 = [v4 seriesBooks];
-    v100 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v99 count]);
+    seriesBooks = [assetCopy seriesBooks];
+    v100 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [seriesBooks count]);
     v101 = v100;
     if (v100)
     {
@@ -373,15 +373,15 @@
     v103 = v102;
 
     [v5 setObject:v103 forKey:BSUIAssetKeySeriesItemCount];
-    v104 = [v4 seriesBooks];
-    v105 = [v104 count];
+    seriesBooks2 = [assetCopy seriesBooks];
+    v105 = [seriesBooks2 count];
 
     if (v105)
     {
       objc_opt_class();
-      v106 = [v4 seriesBooks];
-      v107 = [v106 allObjects];
-      v108 = [v107 objectAtIndexedSubscript:0];
+      seriesBooks3 = [assetCopy seriesBooks];
+      allObjects = [seriesBooks3 allObjects];
+      v108 = [allObjects objectAtIndexedSubscript:0];
       v109 = BUDynamicCast();
 
       if ([v109 isAudiobook])
@@ -413,11 +413,11 @@
   }
 
   v115 = BKLibraryAssetIdentifierFromAsset();
-  v116 = [v115 permanentOrTemporaryAssetID];
-  v117 = v116;
-  if (v116)
+  permanentOrTemporaryAssetID = [v115 permanentOrTemporaryAssetID];
+  v117 = permanentOrTemporaryAssetID;
+  if (permanentOrTemporaryAssetID)
   {
-    v118 = v116;
+    v118 = permanentOrTemporaryAssetID;
   }
 
   else
@@ -428,19 +428,19 @@
   v119 = v118;
 
   [v5 setObject:v119 forKey:BSUIAssetKeyAssetID];
-  if (([v4 isStore] & 1) == 0 && (objc_msgSend(v4, "isManagedBook") & 1) == 0)
+  if (([assetCopy isStore] & 1) == 0 && (objc_msgSend(assetCopy, "isManagedBook") & 1) == 0)
   {
-    v120 = [v4 path];
-    if ([v120 length])
+    path = [assetCopy path];
+    if ([path length])
     {
-      v121 = [NSURL fileURLWithPath:v120];
-      v122 = [v121 standardizedURL];
+      v121 = [NSURL fileURLWithPath:path];
+      standardizedURL = [v121 standardizedURL];
 
-      v123 = [v122 absoluteString];
-      v124 = v123;
-      if (v123)
+      absoluteString = [standardizedURL absoluteString];
+      v124 = absoluteString;
+      if (absoluteString)
       {
-        v125 = v123;
+        v125 = absoluteString;
       }
 
       else
@@ -453,7 +453,7 @@
       [v5 setObject:v126 forKey:BSUIAssetKeyFileURL];
     }
 
-    v127 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v4 fileSize]);
+    v127 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [assetCopy fileSize]);
     v128 = v127;
     if (v127)
     {
@@ -470,11 +470,11 @@
     [v5 setObject:v130 forKey:BSUIAssetKeyFileSize];
   }
 
-  v131 = [v4 coverURL];
-  v132 = v131;
-  if (v131)
+  coverURL = [assetCopy coverURL];
+  v132 = coverURL;
+  if (coverURL)
   {
-    v133 = v131;
+    v133 = coverURL;
   }
 
   else

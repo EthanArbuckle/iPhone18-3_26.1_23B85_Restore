@@ -1,27 +1,27 @@
 @interface BMStorePublisherManager
-- (BMStorePublisherManager)initWithStreamIdentifier:(id)a3 streamConfig:(id)a4 accessClient:(id)a5 eventDataClass:(Class)a6 useCase:(id)a7;
-- (id)_createStreamReaderForRemoteName:(id)a3 eventDataClass:(Class)a4;
-- (id)_publisherForDevice:(id)a3 options:(id)a4;
-- (id)_publishersForDevices:(id)a3 includeLocal:(BOOL)a4 options:(id)a5;
-- (id)_streamReaderWithRemoteName:(id)a3;
+- (BMStorePublisherManager)initWithStreamIdentifier:(id)identifier streamConfig:(id)config accessClient:(id)client eventDataClass:(Class)class useCase:(id)case;
+- (id)_createStreamReaderForRemoteName:(id)name eventDataClass:(Class)class;
+- (id)_publisherForDevice:(id)device options:(id)options;
+- (id)_publishersForDevices:(id)devices includeLocal:(BOOL)local options:(id)options;
+- (id)_streamReaderWithRemoteName:(id)name;
 @end
 
 @implementation BMStorePublisherManager
 
-- (BMStorePublisherManager)initWithStreamIdentifier:(id)a3 streamConfig:(id)a4 accessClient:(id)a5 eventDataClass:(Class)a6 useCase:(id)a7
+- (BMStorePublisherManager)initWithStreamIdentifier:(id)identifier streamConfig:(id)config accessClient:(id)client eventDataClass:(Class)class useCase:(id)case
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  identifierCopy = identifier;
+  configCopy = config;
+  clientCopy = client;
+  caseCopy = case;
   v26.receiver = self;
   v26.super_class = BMStorePublisherManager;
   v16 = [(BMStorePublisherManager *)&v26 init];
   if (v16)
   {
-    v17 = [v13 remoteName];
+    remoteName = [configCopy remoteName];
 
-    if (v17)
+    if (remoteName)
     {
       v18 = __biome_log_for_category();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -30,14 +30,14 @@
       }
     }
 
-    objc_storeStrong(&v16->_config, a4);
-    v19 = [v12 copy];
+    objc_storeStrong(&v16->_config, config);
+    v19 = [identifierCopy copy];
     streamIdentifier = v16->_streamIdentifier;
     v16->_streamIdentifier = v19;
 
-    objc_storeStrong(&v16->_accessClient, a5);
-    v16->_eventDataClass = a6;
-    objc_storeStrong(&v16->_useCase, a7);
+    objc_storeStrong(&v16->_accessClient, client);
+    v16->_eventDataClass = class;
+    objc_storeStrong(&v16->_useCase, case);
     v21 = objc_alloc(MEMORY[0x1E69C5D60]);
     v22 = objc_opt_new();
     v23 = [v21 initWithGuardedData:v22];
@@ -48,18 +48,18 @@
   return v16;
 }
 
-- (id)_publishersForDevices:(id)a3 includeLocal:(BOOL)a4 options:(id)a5
+- (id)_publishersForDevices:(id)devices includeLocal:(BOOL)local options:(id)options
 {
-  v6 = a4;
+  localCopy = local;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  devicesCopy = devices;
+  optionsCopy = options;
   v10 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = v8;
+  v11 = devicesCopy;
   v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v12)
   {
@@ -74,7 +74,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [(BMStorePublisherManager *)self _publisherForDevice:*(*(&v20 + 1) + 8 * i) options:v9, v20];
+        v16 = [(BMStorePublisherManager *)self _publisherForDevice:*(*(&v20 + 1) + 8 * i) options:optionsCopy, v20];
         if (v16)
         {
           [v10 addObject:v16];
@@ -87,9 +87,9 @@
     while (v13);
   }
 
-  if (v6)
+  if (localCopy)
   {
-    v17 = [(BMStorePublisherManager *)self _publisherForDevice:0 options:v9];
+    v17 = [(BMStorePublisherManager *)self _publisherForDevice:0 options:optionsCopy];
     if (v17)
     {
       [v10 addObject:v17];
@@ -101,60 +101,60 @@
   return v10;
 }
 
-- (id)_publisherForDevice:(id)a3 options:(id)a4
+- (id)_publisherForDevice:(id)device options:(id)options
 {
-  v6 = a4;
-  v7 = [a3 deviceIdentifier];
-  v8 = [(BMStorePublisherManager *)self _streamReaderWithRemoteName:v7];
+  optionsCopy = options;
+  deviceIdentifier = [device deviceIdentifier];
+  v8 = [(BMStorePublisherManager *)self _streamReaderWithRemoteName:deviceIdentifier];
 
   v9 = [[BPSBiomeStorePublisher alloc] initWithStreamDatastoreReader:v8 streamsAccessClient:self->_accessClient];
-  v10 = [v6 startDate];
+  startDate = [optionsCopy startDate];
 
-  if (v10)
+  if (startDate)
   {
-    v11 = [v6 startDate];
-    [v11 timeIntervalSinceReferenceDate];
+    startDate2 = [optionsCopy startDate];
+    [startDate2 timeIntervalSinceReferenceDate];
     v12 = [(BPSBiomeStorePublisher *)v9 withStartTime:?];
   }
 
-  v13 = [v6 endDate];
+  endDate = [optionsCopy endDate];
 
-  if (v13)
+  if (endDate)
   {
-    v14 = [v6 endDate];
-    [v14 timeIntervalSinceReferenceDate];
+    endDate2 = [optionsCopy endDate];
+    [endDate2 timeIntervalSinceReferenceDate];
     v15 = [(BPSBiomeStorePublisher *)v9 withEndTime:?];
   }
 
-  v16 = [v6 indexSearch];
+  indexSearch = [optionsCopy indexSearch];
 
-  if (v16)
+  if (indexSearch)
   {
-    v17 = [v6 indexSearch];
-    v18 = [(BPSBiomeStorePublisher *)v9 withIndexSearch:v17];
+    indexSearch2 = [optionsCopy indexSearch];
+    v18 = [(BPSBiomeStorePublisher *)v9 withIndexSearch:indexSearch2];
   }
 
-  if ([v6 maxEvents])
+  if ([optionsCopy maxEvents])
   {
-    v19 = -[BPSBiomeStorePublisher withMaxEvents:](v9, "withMaxEvents:", [v6 maxEvents]);
+    v19 = -[BPSBiomeStorePublisher withMaxEvents:](v9, "withMaxEvents:", [optionsCopy maxEvents]);
   }
 
-  if ([v6 lastN])
+  if ([optionsCopy lastN])
   {
-    v20 = -[BPSBiomeStorePublisher withLastEvents:](v9, "withLastEvents:", [v6 lastN]);
+    v20 = -[BPSBiomeStorePublisher withLastEvents:](v9, "withLastEvents:", [optionsCopy lastN]);
   }
 
-  if ([v6 reversed])
+  if ([optionsCopy reversed])
   {
-    v21 = [(BPSBiomeStorePublisher *)v9 reverse];
+    reverse = [(BPSBiomeStorePublisher *)v9 reverse];
   }
 
   return v9;
 }
 
-- (id)_streamReaderWithRemoteName:(id)a3
+- (id)_streamReaderWithRemoteName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -166,9 +166,9 @@
   v9[1] = 3221225472;
   v9[2] = __55__BMStorePublisherManager__streamReaderWithRemoteName___block_invoke;
   v9[3] = &unk_1E6E52A78;
-  v6 = v4;
+  v6 = nameCopy;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   [(_PASLock *)protectedState runWithLockAcquired:v9];
   v7 = v14[5];
@@ -232,15 +232,15 @@ void __55__BMStorePublisherManager__streamReaderWithRemoteName___block_invoke(ui
   }
 }
 
-- (id)_createStreamReaderForRemoteName:(id)a3 eventDataClass:(Class)a4
+- (id)_createStreamReaderForRemoteName:(id)name eventDataClass:(Class)class
 {
   v6 = MEMORY[0x1E698F150];
-  v7 = a3;
+  nameCopy = name;
   v8 = [v6 alloc];
   streamIdentifier = self->_streamIdentifier;
-  v10 = [(BMStoreConfig *)self->_config copyWithRemoteName:v7];
+  v10 = [(BMStoreConfig *)self->_config copyWithRemoteName:nameCopy];
 
-  v11 = [v8 initWithStream:streamIdentifier config:v10 eventDataClass:a4 useCase:self->_useCase];
+  v11 = [v8 initWithStream:streamIdentifier config:v10 eventDataClass:class useCase:self->_useCase];
 
   return v11;
 }

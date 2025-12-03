@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = sub_100488038;
   block[3] = &unk_10183B690;
-  block[4] = a1;
+  block[4] = self;
   if (qword_101A35040 != -1)
   {
     dispatch_once(&qword_101A35040, block);
@@ -483,12 +483,12 @@ LABEL_65:
 
 + (BOOL)crl_isHorizontallyCompactOnLandscape
 {
-  if ([a1 crl_phoneUI667HOrSmaller])
+  if ([self crl_phoneUI667HOrSmaller])
   {
     return 1;
   }
 
-  return [a1 crl_phoneUI812H];
+  return [self crl_phoneUI812H];
 }
 
 + (BOOL)crl_deviceIsLandscape

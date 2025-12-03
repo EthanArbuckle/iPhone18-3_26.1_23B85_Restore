@@ -1,52 +1,52 @@
 @interface TRSetupConfigurationResponse
-- (TRSetupConfigurationResponse)initWithCoder:(id)a3;
-- (id)_stringFromAccountServices:(id)a3;
+- (TRSetupConfigurationResponse)initWithCoder:(id)coder;
+- (id)_stringFromAccountServices:(id)services;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRSetupConfigurationResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = TRSetupConfigurationResponse;
-  [(TRMessage *)&v6 encodeWithCoder:v4];
+  [(TRMessage *)&v6 encodeWithCoder:coderCopy];
   if (self->_needsNetwork)
   {
-    [v4 encodeBool:1 forKey:@"TRSetupConfigurationMessages_nN"];
+    [coderCopy encodeBool:1 forKey:@"TRSetupConfigurationMessages_nN"];
   }
 
   unauthenticatedAccountServices = self->_unauthenticatedAccountServices;
   if (unauthenticatedAccountServices)
   {
-    [v4 encodeObject:unauthenticatedAccountServices forKey:@"TRSetupConfigurationMessages_uAS"];
+    [coderCopy encodeObject:unauthenticatedAccountServices forKey:@"TRSetupConfigurationMessages_uAS"];
   }
 
   if (self->_useAIDA)
   {
-    [v4 encodeBool:1 forKey:@"TRSetupConfigurationMessages_uAIDA"];
+    [coderCopy encodeBool:1 forKey:@"TRSetupConfigurationMessages_uAIDA"];
   }
 }
 
-- (TRSetupConfigurationResponse)initWithCoder:(id)a3
+- (TRSetupConfigurationResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = TRSetupConfigurationResponse;
-  v5 = [(TRMessage *)&v12 initWithCoder:v4];
+  v5 = [(TRMessage *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_needsNetwork = [v4 decodeBoolForKey:@"TRSetupConfigurationMessages_nN"];
+    v5->_needsNetwork = [coderCopy decodeBoolForKey:@"TRSetupConfigurationMessages_nN"];
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"TRSetupConfigurationMessages_uAS"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"TRSetupConfigurationMessages_uAS"];
     unauthenticatedAccountServices = v5->_unauthenticatedAccountServices;
     v5->_unauthenticatedAccountServices = v9;
 
-    v5->_useAIDA = [v4 decodeBoolForKey:@"TRSetupConfigurationMessages_uAIDA"];
+    v5->_useAIDA = [coderCopy decodeBoolForKey:@"TRSetupConfigurationMessages_uAIDA"];
   }
 
   return v5;
@@ -77,16 +77,16 @@
   return v9;
 }
 
-- (id)_stringFromAccountServices:(id)a3
+- (id)_stringFromAccountServices:(id)services
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAB68] string];
+  servicesCopy = services;
+  string = [MEMORY[0x277CCAB68] string];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = servicesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -102,7 +102,7 @@
         }
 
         v10 = StringFromTRAccountService([*(*(&v13 + 1) + 8 * i) unsignedIntegerValue]);
-        [v4 appendString:v10];
+        [string appendString:v10];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -113,7 +113,7 @@
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return string;
 }
 
 @end

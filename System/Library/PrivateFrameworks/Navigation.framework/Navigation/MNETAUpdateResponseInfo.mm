@@ -2,7 +2,7 @@
 - (NSArray)alternateRoutes;
 - (NSDateInterval)responseTime;
 - (_TtC10Navigation23MNETAUpdateResponseInfo)init;
-- (id)init:(id)a3;
+- (id)init:(id)init;
 @end
 
 @implementation MNETAUpdateResponseInfo
@@ -24,10 +24,10 @@
   return v2;
 }
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v3 = a3;
-  v4 = sub_1D3131A3C(v3);
+  initCopy = init;
+  v4 = sub_1D3131A3C(initCopy);
 
   return v4;
 }

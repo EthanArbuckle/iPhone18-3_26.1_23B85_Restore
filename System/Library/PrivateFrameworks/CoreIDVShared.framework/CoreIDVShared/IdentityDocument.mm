@@ -1,24 +1,24 @@
 @interface IdentityDocument
 - (_TtC13CoreIDVShared16IdentityDocument)init;
-- (_TtC13CoreIDVShared16IdentityDocument)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC13CoreIDVShared16IdentityDocument)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IdentityDocument
 
-- (_TtC13CoreIDVShared16IdentityDocument)initWithCoder:(id)a3
+- (_TtC13CoreIDVShared16IdentityDocument)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_225B573D4();
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  IdentityDocument.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  IdentityDocument.encode(with:)(coderCopy);
 }
 
 - (_TtC13CoreIDVShared16IdentityDocument)init

@@ -3,30 +3,30 @@
 + (id)sharedPurchasedBookManifest;
 + (id)syncedBookManifest;
 + (void)unloadPurchaseManifest;
-- (BLBookManifest)initWithManifestPath:(id)a3;
-- (BOOL)removeManifestEntryWithDownloadPermalink:(id)a3;
-- (BOOL)removeManifestEntryWithPackageHash:(id)a3;
-- (BOOL)removeManifestEntryWithStoreItemID:(id)a3;
+- (BLBookManifest)initWithManifestPath:(id)path;
+- (BOOL)removeManifestEntryWithDownloadPermalink:(id)permalink;
+- (BOOL)removeManifestEntryWithPackageHash:(id)hash;
+- (BOOL)removeManifestEntryWithStoreItemID:(id)d;
 - (id)_entries;
 - (id)_manifest;
-- (id)_stringFromObject:(id)a3;
-- (id)bookPathForAdamID:(id)a3 withPublicationVersion:(id)a4;
-- (id)bookPathPermalink:(id)a3;
-- (id)manifestEntriesWithProperty:(id)a3 equalToNumber:(id)a4 limitCount:(int64_t)a5;
-- (id)manifestEntriesWithProperty:(id)a3 equalToValue:(id)a4 limitCount:(int64_t)a5;
-- (id)manifestEntryForAdamID:(id)a3 withPublicationVersion:(id)a4;
+- (id)_stringFromObject:(id)object;
+- (id)bookPathForAdamID:(id)d withPublicationVersion:(id)version;
+- (id)bookPathPermalink:(id)permalink;
+- (id)manifestEntriesWithProperty:(id)property equalToNumber:(id)number limitCount:(int64_t)count;
+- (id)manifestEntriesWithProperty:(id)property equalToValue:(id)value limitCount:(int64_t)count;
+- (id)manifestEntryForAdamID:(id)d withPublicationVersion:(id)version;
 - (void)_invalidateAfterExternalChange;
-- (void)addManifestEntries:(id)a3;
-- (void)addManifestEntry:(id)a3;
+- (void)addManifestEntries:(id)entries;
+- (void)addManifestEntry:(id)entry;
 - (void)dealloc;
 - (void)synchronizeData;
 @end
 
 @implementation BLBookManifest
 
-- (BLBookManifest)initWithManifestPath:(id)a3
+- (BLBookManifest)initWithManifestPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = BLBookManifest;
   v5 = [(BLBookManifest *)&v13 init];
@@ -37,7 +37,7 @@
     dispatchQueue = v5->_dispatchQueue;
     v5->_dispatchQueue = v7;
 
-    v9 = [v4 copy];
+    v9 = [pathCopy copy];
     manifestPath = v5->_manifestPath;
     v5->_manifestPath = v9;
 
@@ -78,8 +78,8 @@
   {
     v4 = [IMLibraryPlist libraryPlistWithKind:1];
     v5 = [BLBookManifest alloc];
-    v6 = [v4 path];
-    v7 = [(BLBookManifest *)v5 initWithManifestPath:v6];
+    path = [v4 path];
+    v7 = [(BLBookManifest *)v5 initWithManifestPath:path];
     v8 = qword_10013EC48;
     qword_10013EC48 = v7;
   }
@@ -113,14 +113,14 @@
     if (v6)
     {
       v7 = [IMLibraryPlist libraryPlistWithKind:3];
-      v8 = [v7 path];
-      if (v8)
+      path = [v7 path];
+      if (path)
       {
         v9 = [BLBookManifest alloc];
-        v10 = [v7 path];
-        v11 = [(BLBookManifest *)v9 initWithManifestPath:v10];
+        path2 = [v7 path];
+        v11 = [(BLBookManifest *)v9 initWithManifestPath:path2];
 
-        v2 = v10;
+        v2 = path2;
       }
 
       else
@@ -153,41 +153,41 @@
   return v3;
 }
 
-- (void)addManifestEntry:(id)a3
+- (void)addManifestEntry:(id)entry
 {
-  if (a3)
+  if (entry)
   {
-    v6 = a3;
-    v4 = a3;
-    v5 = [NSArray arrayWithObjects:&v6 count:1];
+    entryCopy = entry;
+    entryCopy2 = entry;
+    v5 = [NSArray arrayWithObjects:&entryCopy count:1];
 
-    [(BLBookManifest *)self addManifestEntries:v5, v6];
+    [(BLBookManifest *)self addManifestEntries:v5, entryCopy];
   }
 }
 
-- (void)addManifestEntries:(id)a3
+- (void)addManifestEntries:(id)entries
 {
-  v4 = a3;
-  v5 = [(BLBookManifest *)self dispatchQueue];
+  entriesCopy = entries;
+  dispatchQueue = [(BLBookManifest *)self dispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000AB78C;
   v7[3] = &unk_10011D1A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = entriesCopy;
+  v6 = entriesCopy;
+  dispatch_sync(dispatchQueue, v7);
 }
 
-- (id)bookPathPermalink:(id)a3
+- (id)bookPathPermalink:(id)permalink
 {
-  v4 = a3;
-  if (!v4)
+  permalinkCopy = permalink;
+  if (!permalinkCopy)
   {
     goto LABEL_5;
   }
 
-  v5 = [(BLBookManifest *)self manifestEntriesWithProperty:@"iTunesU Permlink" equalToValue:v4 limitCount:1];
+  v5 = [(BLBookManifest *)self manifestEntriesWithProperty:@"iTunesU Permlink" equalToValue:permalinkCopy limitCount:1];
   if ([v5 count] != 1)
   {
     v8 = 0;
@@ -214,25 +214,25 @@ LABEL_8:
   return v8;
 }
 
-- (id)bookPathForAdamID:(id)a3 withPublicationVersion:(id)a4
+- (id)bookPathForAdamID:(id)d withPublicationVersion:(id)version
 {
-  v5 = [(BLBookManifest *)self manifestEntryForAdamID:a3 withPublicationVersion:a4];
+  v5 = [(BLBookManifest *)self manifestEntryForAdamID:d withPublicationVersion:version];
   v6 = [v5 objectForKey:@"Path"];
   v7 = [(BLBookManifest *)self _stringFromObject:v6];
 
   return v7;
 }
 
-- (id)manifestEntryForAdamID:(id)a3 withPublicationVersion:(id)a4
+- (id)manifestEntryForAdamID:(id)d withPublicationVersion:(id)version
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dCopy = d;
+  versionCopy = version;
+  if (!dCopy)
   {
     goto LABEL_8;
   }
 
-  v8 = [(BLBookManifest *)self manifestEntriesWithProperty:@"s" equalToValue:v6 limitCount:1];
+  v8 = [(BLBookManifest *)self manifestEntriesWithProperty:@"s" equalToValue:dCopy limitCount:1];
   if ([v8 count] == 1)
   {
     v9 = [v8 objectAtIndex:0];
@@ -244,9 +244,9 @@ LABEL_8:
       v11 = BUDynamicCast();
 
       v12 = 0;
-      if (v7 && v11)
+      if (versionCopy && v11)
       {
-        if ([v11 isEqualToNumber:v7])
+        if ([v11 isEqualToNumber:versionCopy])
         {
           v9 = v9;
           v12 = v9;
@@ -275,25 +275,25 @@ LABEL_13:
   return v12;
 }
 
-- (id)manifestEntriesWithProperty:(id)a3 equalToValue:(id)a4 limitCount:(int64_t)a5
+- (id)manifestEntriesWithProperty:(id)property equalToValue:(id)value limitCount:(int64_t)count
 {
-  v8 = a3;
-  v9 = a4;
+  propertyCopy = property;
+  valueCopy = value;
   v10 = +[NSMutableArray array];
-  v11 = [(BLBookManifest *)self dispatchQueue];
+  dispatchQueue = [(BLBookManifest *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000ABD34;
   block[3] = &unk_10011E708;
   block[4] = self;
-  v19 = v8;
-  v20 = v9;
+  v19 = propertyCopy;
+  v20 = valueCopy;
   v12 = v10;
   v21 = v12;
-  v22 = a5;
-  v13 = v9;
-  v14 = v8;
-  dispatch_sync(v11, block);
+  countCopy = count;
+  v13 = valueCopy;
+  v14 = propertyCopy;
+  dispatch_sync(dispatchQueue, block);
 
   v15 = v21;
   v16 = v12;
@@ -301,25 +301,25 @@ LABEL_13:
   return v12;
 }
 
-- (id)manifestEntriesWithProperty:(id)a3 equalToNumber:(id)a4 limitCount:(int64_t)a5
+- (id)manifestEntriesWithProperty:(id)property equalToNumber:(id)number limitCount:(int64_t)count
 {
-  v8 = a3;
-  v9 = a4;
+  propertyCopy = property;
+  numberCopy = number;
   v10 = +[NSMutableArray array];
-  v11 = [(BLBookManifest *)self dispatchQueue];
+  dispatchQueue = [(BLBookManifest *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000ABFFC;
   block[3] = &unk_10011E708;
   block[4] = self;
-  v19 = v8;
-  v20 = v9;
+  v19 = propertyCopy;
+  v20 = numberCopy;
   v12 = v10;
   v21 = v12;
-  v22 = a5;
-  v13 = v9;
-  v14 = v8;
-  dispatch_sync(v11, block);
+  countCopy = count;
+  v13 = numberCopy;
+  v14 = propertyCopy;
+  dispatch_sync(dispatchQueue, block);
 
   v15 = v21;
   v16 = v12;
@@ -327,98 +327,98 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)removeManifestEntryWithStoreItemID:(id)a3
+- (BOOL)removeManifestEntryWithStoreItemID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(BLBookManifest *)self dispatchQueue];
+  dispatchQueue = [(BLBookManifest *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000AC35C;
   block[3] = &unk_10011E228;
   block[4] = self;
-  v9 = v4;
+  v9 = dCopy;
   v10 = &v11;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(dispatchQueue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(dCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return dCopy;
 }
 
-- (BOOL)removeManifestEntryWithDownloadPermalink:(id)a3
+- (BOOL)removeManifestEntryWithDownloadPermalink:(id)permalink
 {
-  v4 = a3;
+  permalinkCopy = permalink;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(BLBookManifest *)self dispatchQueue];
+  dispatchQueue = [(BLBookManifest *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000AC654;
   block[3] = &unk_10011E228;
   block[4] = self;
-  v9 = v4;
+  v9 = permalinkCopy;
   v10 = &v11;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = permalinkCopy;
+  dispatch_sync(dispatchQueue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(permalinkCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return permalinkCopy;
 }
 
-- (BOOL)removeManifestEntryWithPackageHash:(id)a3
+- (BOOL)removeManifestEntryWithPackageHash:(id)hash
 {
-  v4 = a3;
+  hashCopy = hash;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(BLBookManifest *)self dispatchQueue];
+  dispatchQueue = [(BLBookManifest *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000AC930;
   block[3] = &unk_10011E228;
   block[4] = self;
-  v9 = v4;
+  v9 = hashCopy;
   v10 = &v11;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = hashCopy;
+  dispatch_sync(dispatchQueue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(hashCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return hashCopy;
 }
 
 - (void)synchronizeData
 {
-  v3 = [(BLBookManifest *)self dispatchQueue];
+  dispatchQueue = [(BLBookManifest *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000ACBA4;
   block[3] = &unk_10011CFE8;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(dispatchQueue, block);
 }
 
 - (id)_entries
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v3 = [(BLBookManifest *)self _manifest];
+  _manifest = [(BLBookManifest *)self _manifest];
   objc_opt_class();
-  v4 = [v3 objectForKey:@"Books"];
+  v4 = [_manifest objectForKey:@"Books"];
   v5 = BUDynamicCast();
 
   if (!v5)
   {
     objc_opt_class();
-    v6 = [v3 objectForKey:@"Purchases"];
+    v6 = [_manifest objectForKey:@"Purchases"];
     v5 = BUDynamicCast();
   }
 
@@ -519,16 +519,16 @@ LABEL_14:
   return manifest;
 }
 
-- (id)_stringFromObject:(id)a3
+- (id)_stringFromObject:(id)object
 {
-  v3 = a3;
-  if (v3)
+  objectCopy = object;
+  if (objectCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
-      v4 = BUDynamicCast();
+      stringValue = BUDynamicCast();
       goto LABEL_10;
     }
 
@@ -537,7 +537,7 @@ LABEL_14:
     {
       objc_opt_class();
       v5 = BUDynamicCast();
-      v4 = [v5 stringValue];
+      stringValue = [v5 stringValue];
 
       goto LABEL_10;
     }
@@ -546,7 +546,7 @@ LABEL_14:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412546;
-      v10 = v3;
+      v10 = objectCopy;
       v11 = 2114;
       v12 = objc_opt_class();
       v7 = v12;
@@ -554,10 +554,10 @@ LABEL_14:
     }
   }
 
-  v4 = 0;
+  stringValue = 0;
 LABEL_10:
 
-  return v4;
+  return stringValue;
 }
 
 @end

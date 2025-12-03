@@ -1,6 +1,6 @@
 @interface CLIndoorSettings
-+ (id)settingToSet:(id)a3;
-- (CLIndoorSettings)initWithSettings:(id)a3;
++ (id)settingToSet:(id)set;
+- (CLIndoorSettings)initWithSettings:(id)settings;
 - (id).cxx_construct;
 - (optional<double>)indoorPrefetchClusterMergeRadius;
 - (optional<double>)indoorTilePrefetchRadius;
@@ -12,15 +12,15 @@
 
 @implementation CLIndoorSettings
 
-+ (id)settingToSet:(id)a3
++ (id)settingToSet:(id)set
 {
-  v3 = a3;
-  if (v3)
+  setCopy = set;
+  if (setCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [NSSet setWithArray:v3];
+      v4 = [NSSet setWithArray:setCopy];
 LABEL_9:
       v5 = v4;
       goto LABEL_16;
@@ -29,14 +29,14 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v3;
+      v5 = setCopy;
       goto LABEL_16;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v4 = [NSSet setWithObject:v3];
+      v4 = [NSSet setWithObject:setCopy];
       goto LABEL_9;
     }
 
@@ -48,7 +48,7 @@ LABEL_9:
     v6 = qword_10045B068;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [v3 description];
+      v7 = [setCopy description];
       v9 = 138543362;
       v10 = v7;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Cannot cast %{public}@ to a set", &v9, 0xCu);
@@ -61,32 +61,32 @@ LABEL_16:
   return v5;
 }
 
-- (CLIndoorSettings)initWithSettings:(id)a3
+- (CLIndoorSettings)initWithSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v77.receiver = self;
   v77.super_class = CLIndoorSettings;
   v5 = [(CLIndoorSettings *)&v77 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:off_10045B338];
+    v6 = [settingsCopy objectForKeyedSubscript:off_10045B338];
     v65 = v6;
     if (v6)
     {
-      v7 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
     }
 
     else
     {
-      v7 = 1;
+      bOOLValue = 1;
     }
 
-    v5->_pipelinedEnabled = v7;
-    v8 = [v4 objectForKeyedSubscript:off_10045B340];
+    v5->_pipelinedEnabled = bOOLValue;
+    v8 = [settingsCopy objectForKeyedSubscript:off_10045B340];
     v9 = [CLIndoorSettings settingToSet:v8];
     [(CLIndoorSettings *)v5 setDisabledVenues:v9];
 
-    v10 = [v4 objectForKeyedSubscript:off_10045B348];
+    v10 = [settingsCopy objectForKeyedSubscript:off_10045B348];
     v64 = v10;
     if (v10)
     {
@@ -99,7 +99,7 @@ LABEL_16:
     }
 
     [(CLIndoorSettings *)v5 setDebounceInterval:v11];
-    v12 = [v4 objectForKeyedSubscript:off_10045B350];
+    v12 = [settingsCopy objectForKeyedSubscript:off_10045B350];
     v63 = v12;
     if (v12)
     {
@@ -112,55 +112,55 @@ LABEL_16:
     }
 
     [(CLIndoorSettings *)v5 setErrorBackoffDuration:(v13 * 1000000000.0)];
-    v14 = [v4 objectForKeyedSubscript:off_10045B3B0];
+    v14 = [settingsCopy objectForKeyedSubscript:off_10045B3B0];
     v62 = v14;
     if (v14)
     {
-      v15 = [v14 intValue];
+      intValue = [v14 intValue];
     }
 
     else
     {
-      v15 = 86400;
+      intValue = 86400;
     }
 
-    v5->_tilePrefetchActivityInterval.__rep_ = v15;
-    v71 = [v4 objectForKeyedSubscript:off_10045B3B8];
+    v5->_tilePrefetchActivityInterval.__rep_ = intValue;
+    v71 = [settingsCopy objectForKeyedSubscript:off_10045B3B8];
     if (v71)
     {
       v5->_tilePrefetchPredictionActivityCycleAllowance.m_storage = [v71 unsignedIntValue];
       v5->_tilePrefetchPredictionActivityCycleAllowance.m_initialized = 1;
     }
 
-    v70 = [v4 objectForKeyedSubscript:off_10045B358];
+    v70 = [settingsCopy objectForKeyedSubscript:off_10045B358];
     if (v70)
     {
       [v70 doubleValue];
       [(CLIndoorSettings *)v5 setTilePrefetchRadius:1, v16];
     }
 
-    v69 = [v4 objectForKeyedSubscript:off_10045B360];
+    v69 = [settingsCopy objectForKeyedSubscript:off_10045B360];
     if (v69)
     {
       [v69 doubleValue];
       [(CLIndoorSettings *)v5 setTilePrefetchMaxCount:1, v17];
     }
 
-    v68 = [v4 objectForKeyedSubscript:off_10045B368];
+    v68 = [settingsCopy objectForKeyedSubscript:off_10045B368];
     if (v68)
     {
       [v68 doubleValue];
       [(CLIndoorSettings *)v5 setPrefetchClusterMergeRadius:1, v18];
     }
 
-    v67 = [v4 objectForKeyedSubscript:off_10045B370];
+    v67 = [settingsCopy objectForKeyedSubscript:off_10045B370];
     if (v67)
     {
       [v67 doubleValue];
       [(CLIndoorSettings *)v5 setTilePrefetchRadius:1, v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:off_10045B378];
+    v20 = [settingsCopy objectForKeyedSubscript:off_10045B378];
     v21 = v20;
     if (v20)
     {
@@ -168,7 +168,7 @@ LABEL_16:
       [(CLIndoorSettings *)v5 setTilePrefetchMaxCount:1, v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:off_10045B380];
+    v23 = [settingsCopy objectForKeyedSubscript:off_10045B380];
     v24 = v23;
     if (v23)
     {
@@ -176,7 +176,7 @@ LABEL_16:
       [(CLIndoorSettings *)v5 setPrefetchClusterMergeRadius:1, v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:off_10045B388];
+    v26 = [settingsCopy objectForKeyedSubscript:off_10045B388];
     v27 = v26;
     if (v26)
     {
@@ -184,14 +184,14 @@ LABEL_16:
       [(CLIndoorSettings *)v5 setRegionalTilePrefetchRadius:1, v28];
     }
 
-    v66 = [v4 objectForKeyedSubscript:off_10045B390];
+    v66 = [settingsCopy objectForKeyedSubscript:off_10045B390];
     if (v21)
     {
       [v66 doubleValue];
       [(CLIndoorSettings *)v5 setRegionalTilePrefetchMaxCount:1, v29];
     }
 
-    v30 = [v4 objectForKeyedSubscript:off_10045B398];
+    v30 = [settingsCopy objectForKeyedSubscript:off_10045B398];
     v31 = v30;
     if (v30)
     {
@@ -200,7 +200,7 @@ LABEL_16:
     }
 
     v5->_tilePrefetchRelevancyWindow.__rep_ = 604800;
-    v33 = [v4 objectForKeyedSubscript:off_10045B330];
+    v33 = [settingsCopy objectForKeyedSubscript:off_10045B330];
     v34 = +[GEOCountryConfiguration sharedConfiguration];
     v35 = [v34 defaultForKey:@"CLPipelineAvailabilityServer" defaultValue:@"https://cl4.apple.com/2/m2/a.1/"];
 
@@ -229,11 +229,11 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEBUG, "indoorAvailabilityTilesServerUrl = %{private}@", buf, 0xCu);
     }
 
-    v39 = [v4 objectForKeyedSubscript:off_10045B3A0];
+    v39 = [settingsCopy objectForKeyedSubscript:off_10045B3A0];
     v40 = [CLIndoorSettings settingToSet:v39];
     [(CLIndoorSettings *)v5 setForcedVenues:v40];
 
-    v41 = [v4 objectForKeyedSubscript:off_10045B3A8];
+    v41 = [settingsCopy objectForKeyedSubscript:off_10045B3A8];
     v42 = v41;
     if (v41)
     {
@@ -286,7 +286,7 @@ LABEL_16:
       v5->_fakeLastFix = 0;
     }
 
-    v57 = [v4 objectForKeyedSubscript:off_10045B3C0];
+    v57 = [settingsCopy objectForKeyedSubscript:off_10045B3C0];
     v58 = v57;
     if (v57)
     {

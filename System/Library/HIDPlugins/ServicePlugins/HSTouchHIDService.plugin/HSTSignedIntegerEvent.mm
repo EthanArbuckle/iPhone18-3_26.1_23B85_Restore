@@ -1,19 +1,19 @@
 @interface HSTSignedIntegerEvent
-- (BOOL)decodeFromMap:(void *)a3;
-- (void)encodeToMap:(void *)a3;
+- (BOOL)decodeFromMap:(void *)map;
+- (void)encodeToMap:(void *)map;
 @end
 
 @implementation HSTSignedIntegerEvent
 
-- (void)encodeToMap:(void *)a3
+- (void)encodeToMap:(void *)map
 {
   v5.receiver = self;
   v5.super_class = HSTSignedIntegerEvent;
   [(HSTEvent *)&v5 encodeToMap:?];
-  HSUtil::Encoder::encodeInt(a3, HSUtil::CoderKey::Literal<(char)118,(char)97,(char)108,(char)117,(char)101>::Key, self->value);
+  HSUtil::Encoder::encodeInt(map, HSUtil::CoderKey::Literal<(char)118,(char)97,(char)108,(char)117,(char)101>::Key, self->value);
 }
 
-- (BOOL)decodeFromMap:(void *)a3
+- (BOOL)decodeFromMap:(void *)map
 {
   v6.receiver = self;
   v6.super_class = HSTSignedIntegerEvent;
@@ -29,8 +29,8 @@
     return 0;
   }
 
-  self->value = HSUtil::Decoder::decodeInt(a3, HSUtil::CoderKey::Literal<(char)118,(char)97,(char)108,(char)117,(char)101>::Key);
-  if (*a3)
+  self->value = HSUtil::Decoder::decodeInt(map, HSUtil::CoderKey::Literal<(char)118,(char)97,(char)108,(char)117,(char)101>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTEvent.mm", __b);

@@ -1,19 +1,19 @@
 @interface CACLabeledGridOverlayView
-- (CACLabeledGridOverlayView)initWithFrame:(CGRect)a3;
-- (id)_newLineViewWithFrame:(CGRect)a3;
-- (void)addLabeledElements:(id)a3;
+- (CACLabeledGridOverlayView)initWithFrame:(CGRect)frame;
+- (id)_newLineViewWithFrame:(CGRect)frame;
+- (void)addLabeledElements:(id)elements;
 - (void)clearLabeledElements;
-- (void)zoomOverRect:(CGRect)a3;
+- (void)zoomOverRect:(CGRect)rect;
 @end
 
 @implementation CACLabeledGridOverlayView
 
-- (CACLabeledGridOverlayView)initWithFrame:(CGRect)a3
+- (CACLabeledGridOverlayView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v29.receiver = self;
   v29.super_class = CACLabeledGridOverlayView;
   v7 = [(CACLabeledGridOverlayView *)&v29 initWithFrame:?];
@@ -27,27 +27,27 @@
     zoomController = v7->_zoomController;
     v7->_zoomController = v10;
 
-    v12 = [(CACLabeledGridOverlayView *)v7 layer];
-    [v12 setCreatesCompositingGroup:1];
+    layer = [(CACLabeledGridOverlayView *)v7 layer];
+    [layer setCreatesCompositingGroup:1];
 
     v13 = [CACAdaptiveBackdropView alloc];
-    v14 = [MEMORY[0x277D759A0] mainScreen];
-    [v14 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v15 = [(CACAdaptiveBackdropView *)v13 initWithFrame:?];
     backdrop = v7->_backdrop;
     v7->_backdrop = v15;
 
-    v17 = [(CACAdaptiveBackdropView *)v7->_backdrop layer];
-    [v17 setCaptureOnly:1];
+    layer2 = [(CACAdaptiveBackdropView *)v7->_backdrop layer];
+    [layer2 setCaptureOnly:1];
 
     [(CACLabeledGridOverlayView *)v7 insertSubview:v7->_backdrop atIndex:0];
-    v18 = [CACOverlayContainerView badgeViewContainerWithFrame:0 usingContrast:x, y, width, height];
+    height = [CACOverlayContainerView badgeViewContainerWithFrame:0 usingContrast:x, y, width, height];
     badgesContainer = v7->_badgesContainer;
-    v7->_badgesContainer = v18;
+    v7->_badgesContainer = height;
 
-    v20 = [CACOverlayContainerView badgeViewContainerWithFrame:1 usingContrast:x, y, width, height];
+    height2 = [CACOverlayContainerView badgeViewContainerWithFrame:1 usingContrast:x, y, width, height];
     contrastBadgesContainer = v7->_contrastBadgesContainer;
-    v7->_contrastBadgesContainer = v20;
+    v7->_contrastBadgesContainer = height2;
 
     v22 = objc_opt_new();
     allBadgeViews = v7->_allBadgeViews;
@@ -73,8 +73,8 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v3 = [(CACLabeledGridOverlayView *)self subviews];
-  v4 = [v3 countByEnumeratingWithState:&v30 objects:v36 count:16];
+  subviews = [(CACLabeledGridOverlayView *)self subviews];
+  v4 = [subviews countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v4)
   {
     v5 = v4;
@@ -86,13 +86,13 @@
       {
         if (*v31 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(*(&v30 + 1) + 8 * v7);
-        v9 = [(CACLabeledGridOverlayView *)self backdrop];
+        backdrop = [(CACLabeledGridOverlayView *)self backdrop];
 
-        if (v8 != v9)
+        if (v8 != backdrop)
         {
           [v8 removeFromSuperview];
         }
@@ -101,7 +101,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v30 objects:v36 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v30 objects:v36 count:16];
     }
 
     while (v5);
@@ -111,10 +111,10 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = [(CACLabeledGridOverlayView *)self badgesContainer];
-  v11 = [v10 subviews];
+  badgesContainer = [(CACLabeledGridOverlayView *)self badgesContainer];
+  subviews2 = [badgesContainer subviews];
 
-  v12 = [v11 countByEnumeratingWithState:&v26 objects:v35 count:16];
+  v12 = [subviews2 countByEnumeratingWithState:&v26 objects:v35 count:16];
   if (v12)
   {
     v13 = v12;
@@ -126,14 +126,14 @@
       {
         if (*v27 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(subviews2);
         }
 
         [*(*(&v26 + 1) + 8 * v15++) removeFromSuperview];
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v26 objects:v35 count:16];
+      v13 = [subviews2 countByEnumeratingWithState:&v26 objects:v35 count:16];
     }
 
     while (v13);
@@ -143,10 +143,10 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v16 = [(CACLabeledGridOverlayView *)self contrastBadgesContainer];
-  v17 = [v16 subviews];
+  contrastBadgesContainer = [(CACLabeledGridOverlayView *)self contrastBadgesContainer];
+  subviews3 = [contrastBadgesContainer subviews];
 
-  v18 = [v17 countByEnumeratingWithState:&v22 objects:v34 count:16];
+  v18 = [subviews3 countByEnumeratingWithState:&v22 objects:v34 count:16];
   if (v18)
   {
     v19 = v18;
@@ -158,43 +158,43 @@
       {
         if (*v23 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(subviews3);
         }
 
         [*(*(&v22 + 1) + 8 * v21++) removeFromSuperview];
       }
 
       while (v19 != v21);
-      v19 = [v17 countByEnumeratingWithState:&v22 objects:v34 count:16];
+      v19 = [subviews3 countByEnumeratingWithState:&v22 objects:v34 count:16];
     }
 
     while (v19);
   }
 }
 
-- (void)addLabeledElements:(id)a3
+- (void)addLabeledElements:(id)elements
 {
   v361 = *MEMORY[0x277D85DE8];
-  [(NSMutableArray *)self->_labeledElements addObjectsFromArray:a3];
-  v4 = [(CACLabeledGridOverlayView *)self zoomController];
-  v5 = [v4 view];
-  [v5 removeFromSuperview];
+  [(NSMutableArray *)self->_labeledElements addObjectsFromArray:elements];
+  zoomController = [(CACLabeledGridOverlayView *)self zoomController];
+  view = [zoomController view];
+  [view removeFromSuperview];
 
-  v6 = [(CACLabeledGridOverlayView *)self badgesContainer];
-  [v6 removeFromSuperview];
+  badgesContainer = [(CACLabeledGridOverlayView *)self badgesContainer];
+  [badgesContainer removeFromSuperview];
 
-  v7 = [(CACLabeledGridOverlayView *)self contrastBadgesContainer];
-  [v7 removeFromSuperview];
+  contrastBadgesContainer = [(CACLabeledGridOverlayView *)self contrastBadgesContainer];
+  [contrastBadgesContainer removeFromSuperview];
 
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [(NSMutableArray *)self->_labeledElements firstObject];
-  [v10 rectangle];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  firstObject = [(NSMutableArray *)self->_labeledElements firstObject];
+  [firstObject rectangle];
   v15 = CACViewRectFromPortraitUpRect(self, v11, v12, v13, v14);
   v17 = v16;
 
-  v18 = [(NSMutableArray *)self->_labeledElements lastObject];
-  [v18 rectangle];
+  lastObject = [(NSMutableArray *)self->_labeledElements lastObject];
+  [lastObject rectangle];
   v23 = CACViewRectFromPortraitUpRect(self, v19, v20, v21, v22);
   v25 = v24;
   v27 = v26;
@@ -218,7 +218,7 @@
   v353 = 0u;
   v350 = 0u;
   v351 = 0u;
-  v316 = self;
+  selfCopy = self;
   v31 = self->_labeledElements;
   v32 = [(NSMutableArray *)v31 countByEnumeratingWithState:&v350 objects:v360 count:16];
   if (v32)
@@ -235,14 +235,14 @@
         }
 
         [*(*(&v350 + 1) + 8 * i) rectangle];
-        v364.origin.x = CACViewRectFromPortraitUpRect(v316, v36, v37, v38, v39);
+        v364.origin.x = CACViewRectFromPortraitUpRect(selfCopy, v36, v37, v38, v39);
         x = v364.origin.x;
         y = v364.origin.y;
         width = v364.size.width;
         height = v364.size.height;
         MaxX = CGRectGetMaxX(v364);
-        v45 = [v8 lastObject];
-        [v45 floatValue];
+        lastObject2 = [array lastObject];
+        [lastObject2 floatValue];
         v47 = v46 + 1.0;
 
         if (MaxX > v47)
@@ -252,7 +252,7 @@
           v365.size.width = width;
           v365.size.height = height;
           v48 = [MEMORY[0x277CCABB0] numberWithDouble:CGRectGetMaxX(v365)];
-          [v8 addObject:v48];
+          [array addObject:v48];
         }
 
         v366.origin.x = x;
@@ -260,8 +260,8 @@
         v366.size.width = width;
         v366.size.height = height;
         MaxY = CGRectGetMaxY(v366);
-        v50 = [v9 lastObject];
-        [v50 floatValue];
+        lastObject3 = [array2 lastObject];
+        [lastObject3 floatValue];
         v52 = v51 + 1.0;
 
         if (MaxY > v52)
@@ -271,7 +271,7 @@
           v367.size.width = width;
           v367.size.height = height;
           v53 = [MEMORY[0x277CCABB0] numberWithDouble:CGRectGetMaxY(v367)];
-          [v9 addObject:v53];
+          [array2 addObject:v53];
         }
       }
 
@@ -281,16 +281,16 @@
     while (v33);
   }
 
-  [(CACLabeledGridOverlayView *)v316 bounds];
+  [(CACLabeledGridOverlayView *)selfCopy bounds];
   v55 = v54;
   v57 = v56;
   v58 = [objc_allocWithZone(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, v314, v56}];
-  v59 = [MEMORY[0x277D75348] blackColor];
-  [v58 setBackgroundColor:v59];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [v58 setBackgroundColor:blackColor];
 
   [v58 setAlpha:0.5];
   v281 = v58;
-  [(CACLabeledGridOverlayView *)v316 addSubview:v58];
+  [(CACLabeledGridOverlayView *)selfCopy addSubview:v58];
   v60 = objc_allocWithZone(MEMORY[0x277D75D18]);
   v368.origin.x = v314;
   v368.origin.y = v17;
@@ -302,20 +302,20 @@
   v369.size.width = v320;
   v369.size.height = v317;
   v62 = [v60 initWithFrame:{v61, 0.0, v55 - CGRectGetMaxX(v369), v57}];
-  v63 = [MEMORY[0x277D75348] blackColor];
-  [v62 setBackgroundColor:v63];
+  blackColor2 = [MEMORY[0x277D75348] blackColor];
+  [v62 setBackgroundColor:blackColor2];
 
   [v62 setAlpha:0.5];
   v280 = v62;
-  [(CACLabeledGridOverlayView *)v316 addSubview:v62];
+  [(CACLabeledGridOverlayView *)selfCopy addSubview:v62];
   v64 = [objc_allocWithZone(MEMORY[0x277D75D18]) initWithFrame:{v314, 0.0, v320, v17}];
-  v65 = [MEMORY[0x277D75348] blackColor];
-  [v64 setBackgroundColor:v65];
+  blackColor3 = [MEMORY[0x277D75348] blackColor];
+  [v64 setBackgroundColor:blackColor3];
 
   [v64 setAlpha:0.5];
   v279 = v64;
-  [(CACLabeledGridOverlayView *)v316 addSubview:v64];
-  v66 = v316;
+  [(CACLabeledGridOverlayView *)selfCopy addSubview:v64];
+  v66 = selfCopy;
   v67 = objc_allocWithZone(MEMORY[0x277D75D18]);
   v370.origin.x = v314;
   v370.origin.y = v17;
@@ -327,28 +327,28 @@
   v371.size.width = v320;
   v371.size.height = v317;
   v69 = [v67 initWithFrame:{v314, v68, v320, v57 - CGRectGetMaxY(v371)}];
-  v70 = [MEMORY[0x277D75348] blackColor];
-  [v69 setBackgroundColor:v70];
+  blackColor4 = [MEMORY[0x277D75348] blackColor];
+  [v69 setBackgroundColor:blackColor4];
 
   [v69 setAlpha:0.5];
   v278 = v69;
-  [(CACLabeledGridOverlayView *)v316 addSubview:v69];
-  v71 = [v8 count];
-  v284 = v9;
-  v282 = v8;
-  v296 = v71 == [v9 count] && objc_msgSend(v8, "count") == 3;
+  [(CACLabeledGridOverlayView *)selfCopy addSubview:v69];
+  v71 = [array count];
+  v284 = array2;
+  v282 = array;
+  v296 = v71 == [array2 count] && objc_msgSend(array, "count") == 3;
   v72 = objc_opt_new();
-  [(CACLabeledGridOverlayView *)v316 setOutOfBoxBadgeViews:v72];
+  [(CACLabeledGridOverlayView *)selfCopy setOutOfBoxBadgeViews:v72];
 
   v73 = objc_opt_new();
-  [(CACLabeledGridOverlayView *)v316 setZoomedGridBadgeViews:v73];
+  [(CACLabeledGridOverlayView *)selfCopy setZoomedGridBadgeViews:v73];
 
-  v74 = [(CACLabeledGridOverlayView *)v316 showsElementsAsClickable];
+  showsElementsAsClickable = [(CACLabeledGridOverlayView *)selfCopy showsElementsAsClickable];
   v346 = 0u;
   v347 = 0u;
   v348 = 0u;
   v349 = 0u;
-  v75 = v316->_labeledElements;
+  v75 = selfCopy->_labeledElements;
   v76 = [(NSMutableArray *)v75 countByEnumeratingWithState:&v346 objects:v359 count:16];
   if (!v76)
   {
@@ -358,7 +358,7 @@
 
   v77 = v76;
   v78 = 0;
-  v79 = !v74;
+  v79 = !showsElementsAsClickable;
   v295 = *v347;
   v80 = *MEMORY[0x277CBF3A0];
   v81 = *(MEMORY[0x277CBF3A0] + 8);
@@ -439,15 +439,15 @@
               }
 
 LABEL_67:
-              v153 = [(CACLabeledGridOverlayView *)v66 zoomController];
-              [v153 zoomFactor];
+              zoomController2 = [(CACLabeledGridOverlayView *)v66 zoomController];
+              [zoomController2 zoomFactor];
               v291 = v154;
 
               v155 = [CACLabeledBadgeView alloc];
-              v156 = [v84 label];
-              v157 = [(CACLabeledBadgeView *)v155 initWithFrame:v156 label:0 arrowOrientation:v79 badgePresentation:0 badgeIndicator:v80, v81, *&v304, v303];
+              label = [v84 label];
+              v303 = [(CACLabeledBadgeView *)v155 initWithFrame:label label:0 arrowOrientation:v79 badgePresentation:0 badgeIndicator:v80, v81, *&v304, v303];
               v158 = v66;
-              v115 = v157;
+              v115 = v303;
 
               [v115 systemLayoutSizeFittingSize:{v293, v292}];
               v290 = v159;
@@ -492,8 +492,8 @@ LABEL_67:
               v401.size.width = v290;
               v401.size.height = v311;
               [v115 setFrame:{v289, v291 * (v165 - CGRectGetHeight(v401) * 0.5) + v288 * v291, v290, v311}];
-              v166 = [(CACLabeledGridOverlayView *)v158 zoomedGridBadgeViews];
-              [v166 addObject:v115];
+              zoomedGridBadgeViews = [(CACLabeledGridOverlayView *)v158 zoomedGridBadgeViews];
+              [zoomedGridBadgeViews addObject:v115];
 
               v402.origin.x = v300;
               v402.origin.y = v298;
@@ -502,11 +502,11 @@ LABEL_67:
               if (!CGRectIsEmpty(v402))
               {
                 v167 = [CACLabeledBadgeView alloc];
-                v168 = [v84 label];
-                v169 = [(CACLabeledBadgeView *)v167 initWithFrame:v168 label:0 arrowOrientation:v79 badgePresentation:0 badgeIndicator:v300, v298, v297, v299];
+                label2 = [v84 label];
+                v299 = [(CACLabeledBadgeView *)v167 initWithFrame:label2 label:0 arrowOrientation:v79 badgePresentation:0 badgeIndicator:v300, v298, v297, v299];
 
-                v170 = [(CACLabeledGridOverlayView *)v316 outOfBoxBadgeViews];
-                [v170 addObject:v169];
+                outOfBoxBadgeViews = [(CACLabeledGridOverlayView *)selfCopy outOfBoxBadgeViews];
+                [outOfBoxBadgeViews addObject:v299];
               }
 
               if ((v78 & 1) == 0)
@@ -646,10 +646,10 @@ LABEL_57:
       }
 
       v111 = [CACLabeledBadgeView alloc];
-      v112 = [v84 label];
-      v113 = [(CACLabeledBadgeView *)v111 initWithFrame:v112 label:0 arrowOrientation:v79 badgePresentation:0 badgeIndicator:v80, v81, *&v304, v303];
+      label3 = [v84 label];
+      v3032 = [(CACLabeledBadgeView *)v111 initWithFrame:label3 label:0 arrowOrientation:v79 badgePresentation:0 badgeIndicator:v80, v81, *&v304, v303];
       v114 = v66;
-      v115 = v113;
+      v115 = v3032;
 
       [v115 systemLayoutSizeFittingSize:{v293, v292}];
       v117 = v116;
@@ -692,7 +692,7 @@ LABEL_57:
             v378.size.width = v123;
             *&v378.size.height = v323;
             v126 = CGRectGetMinY(v378) + 5.0;
-            [(CACLabeledGridOverlayView *)v316 safeAreaInsets];
+            [(CACLabeledGridOverlayView *)selfCopy safeAreaInsets];
             if (v127 >= v126)
             {
               v126 = v127;
@@ -767,14 +767,14 @@ LABEL_57:
       v131 = v309;
 LABEL_48:
       [v115 setFrame:{v125, v130, v117, v131}];
-      v140 = [(CACLabeledGridOverlayView *)v316 badgesContainer];
-      [v140 addSubview:v115];
+      badgesContainer2 = [(CACLabeledGridOverlayView *)selfCopy badgesContainer];
+      [badgesContainer2 addSubview:v115];
 
       if (UIAccessibilityDarkerSystemColorsEnabled())
       {
-        v141 = [(CACLabeledGridOverlayView *)v316 contrastBadgesContainer];
-        v142 = [v115 contrastedCopy];
-        [v141 addSubview:v142];
+        contrastBadgesContainer2 = [(CACLabeledGridOverlayView *)selfCopy contrastBadgesContainer];
+        contrastedCopy = [v115 contrastedCopy];
+        [contrastBadgesContainer2 addSubview:contrastedCopy];
       }
 
       v80 = v294;
@@ -783,7 +783,7 @@ LABEL_72:
 
       ++v82;
       ++v83;
-      v66 = v316;
+      v66 = selfCopy;
     }
 
     while (v77 != v83);
@@ -796,16 +796,16 @@ LABEL_72:
   if (v78)
   {
     v171 = CACZWLensInnerBorderWidth() + 1.0;
-    v172 = [(CACLabeledGridOverlayView *)v316 zoomController];
-    v173 = [v172 view];
-    [(CACLabeledGridOverlayView *)v316 addSubview:v173];
+    zoomController3 = [(CACLabeledGridOverlayView *)selfCopy zoomController];
+    view2 = [zoomController3 view];
+    [(CACLabeledGridOverlayView *)selfCopy addSubview:view2];
 
-    v174 = [(CACLabeledGridOverlayView *)v316 backdrop];
-    [(CACLabeledGridOverlayView *)v316 bringSubviewToFront:v174];
+    backdrop = [(CACLabeledGridOverlayView *)selfCopy backdrop];
+    [(CACLabeledGridOverlayView *)selfCopy bringSubviewToFront:backdrop];
 
-    v175 = [(CACLabeledGridOverlayView *)v316 zoomController];
-    v176 = [v175 lensChromeView];
-    [v176 frame];
+    zoomController4 = [(CACLabeledGridOverlayView *)selfCopy zoomController];
+    lensChromeView = [zoomController4 lensChromeView];
+    [lensChromeView frame];
     v178 = v177;
     v180 = v179;
     v318 = v182;
@@ -817,8 +817,8 @@ LABEL_72:
       v184 = 1;
       do
       {
-        v185 = [(CACLabeledGridOverlayView *)v316 _newLineViewWithFrame:v171 + v178 + (v321 + v171 * -2.0) * ((v183 - 6 * (v184 / 3)) / 6.0), v171 + v180, 1.0, *&v318 + v171 * -2.0];
-        [(CACLabeledGridOverlayView *)v316 addSubview:v185];
+        v185 = [(CACLabeledGridOverlayView *)selfCopy _newLineViewWithFrame:v171 + v178 + (v321 + v171 * -2.0) * ((v183 - 6 * (v184 / 3)) / 6.0), v171 + v180, 1.0, *&v318 + v171 * -2.0];
+        [(CACLabeledGridOverlayView *)selfCopy addSubview:v185];
 
         ++v184;
         v183 += 2;
@@ -834,8 +834,8 @@ LABEL_72:
       v188 = 1;
       do
       {
-        v189 = [(CACLabeledGridOverlayView *)v316 _newLineViewWithFrame:v186, v171 + v180 + (*&v318 + v171 * -2.0) * ((v187 - 6 * (v188 / 3)) / 6.0), v321 + v171 * -2.0, 1.0];
-        [(CACLabeledGridOverlayView *)v316 addSubview:v189];
+        v189 = [(CACLabeledGridOverlayView *)selfCopy _newLineViewWithFrame:v186, v171 + v180 + (*&v318 + v171 * -2.0) * ((v187 - 6 * (v188 / 3)) / 6.0), v321 + v171 * -2.0, 1.0];
+        [(CACLabeledGridOverlayView *)selfCopy addSubview:v189];
 
         ++v188;
         v187 += 2;
@@ -848,8 +848,8 @@ LABEL_72:
     v337 = 0u;
     v334 = 0u;
     v335 = 0u;
-    v324 = [(CACLabeledGridOverlayView *)v316 zoomedGridBadgeViews];
-    v190 = [v324 countByEnumeratingWithState:&v334 objects:v356 count:16];
+    zoomedGridBadgeViews2 = [(CACLabeledGridOverlayView *)selfCopy zoomedGridBadgeViews];
+    v190 = [zoomedGridBadgeViews2 countByEnumeratingWithState:&v334 objects:v356 count:16];
     if (v190)
     {
       v191 = v190;
@@ -863,29 +863,29 @@ LABEL_72:
         {
           if (*v335 != v193)
           {
-            objc_enumerationMutation(v324);
+            objc_enumerationMutation(zoomedGridBadgeViews2);
           }
 
           v196 = *(*(&v334 + 1) + 8 * v194);
-          v197 = [(CACLabeledGridOverlayView *)v316 zoomController];
-          v198 = [v197 lensChromeView];
-          [v198 frame];
+          zoomController5 = [(CACLabeledGridOverlayView *)selfCopy zoomController];
+          lensChromeView2 = [zoomController5 lensChromeView];
+          [lensChromeView2 frame];
           v200 = (v321 - v171 * 2.0) * ((v195 - 6 * (v192 / 3)) / 6.0) + v171 + v199;
 
-          v201 = [(CACLabeledGridOverlayView *)v316 zoomController];
-          v202 = [v201 lensChromeView];
-          [v202 frame];
+          zoomController6 = [(CACLabeledGridOverlayView *)selfCopy zoomController];
+          lensChromeView3 = [zoomController6 lensChromeView];
+          [lensChromeView3 frame];
           v204 = (*&v318 - v171 * 2.0) * ((((v192 / 3) * 2.0) + 1.0) / 6.0) + v171 + v203;
 
           [v196 setCenter:{v200, v204}];
-          v205 = [(CACLabeledGridOverlayView *)v316 badgesContainer];
-          [v205 addSubview:v196];
+          badgesContainer3 = [(CACLabeledGridOverlayView *)selfCopy badgesContainer];
+          [badgesContainer3 addSubview:v196];
 
           if (UIAccessibilityDarkerSystemColorsEnabled())
           {
-            v206 = [(CACLabeledGridOverlayView *)v316 contrastBadgesContainer];
-            v207 = [v196 contrastedCopy];
-            [v206 addSubview:v207];
+            contrastBadgesContainer3 = [(CACLabeledGridOverlayView *)selfCopy contrastBadgesContainer];
+            contrastedCopy2 = [v196 contrastedCopy];
+            [contrastBadgesContainer3 addSubview:contrastedCopy2];
           }
 
           ++v192;
@@ -894,7 +894,7 @@ LABEL_72:
         }
 
         while (v191 != v194);
-        v191 = [v324 countByEnumeratingWithState:&v334 objects:v356 count:16];
+        v191 = [zoomedGridBadgeViews2 countByEnumeratingWithState:&v334 objects:v356 count:16];
       }
 
       while (v191);
@@ -905,7 +905,7 @@ LABEL_72:
     v330 = 0u;
     v331 = 0u;
     v305 = v282;
-    v208 = v316;
+    v208 = selfCopy;
     v312 = [v305 countByEnumeratingWithState:&v330 objects:v355 count:16];
     if (v312)
     {
@@ -958,9 +958,9 @@ LABEL_72:
                 v229 = v228;
                 v231 = v230;
                 v233 = v232;
-                v234 = [(CACLabeledGridOverlayView *)v208 zoomController];
-                v235 = [v234 lensChromeView];
-                [v235 frame];
+                zoomController7 = [(CACLabeledGridOverlayView *)v208 zoomController];
+                lensChromeView4 = [zoomController7 lensChromeView];
+                [lensChromeView4 frame];
                 v407.origin.x = v236;
                 v407.origin.y = v237;
                 v407.size.width = v238;
@@ -977,8 +977,8 @@ LABEL_72:
                   v243 = v242;
                   v245 = v244;
                   v247 = v246;
-                  v248 = [(CACLabeledGridOverlayView *)v208 zoomController];
-                  [v248 lensChromeView];
+                  zoomController8 = [(CACLabeledGridOverlayView *)v208 zoomController];
+                  [zoomController8 lensChromeView];
                   v322 = v221;
                   v250 = v249 = v214;
                   [v250 frame];
@@ -996,11 +996,11 @@ LABEL_72:
                   v214 = v249;
                   v221 = v322;
 
-                  v208 = v316;
+                  v208 = selfCopy;
                   if (IsNull)
                   {
-                    [(CACLabeledGridOverlayView *)v316 addSubview:v322];
-                    [(CACLabeledGridOverlayView *)v316 addSubview:v225];
+                    [(CACLabeledGridOverlayView *)selfCopy addSubview:v322];
+                    [(CACLabeledGridOverlayView *)selfCopy addSubview:v225];
                   }
                 }
 
@@ -1060,8 +1060,8 @@ LABEL_110:
         }
 
         [*(*(&v342 + 1) + 8 * k) floatValue];
-        v266 = [(CACLabeledGridOverlayView *)v316 _newLineViewWithFrame:v265, v313, 1.0, v317];
-        [(CACLabeledGridOverlayView *)v316 addSubview:v266];
+        v317 = [(CACLabeledGridOverlayView *)selfCopy _newLineViewWithFrame:v265, v313, 1.0, v317];
+        [(CACLabeledGridOverlayView *)selfCopy addSubview:v317];
       }
 
       v262 = [v260 countByEnumeratingWithState:&v342 objects:v358 count:16];
@@ -1091,8 +1091,8 @@ LABEL_110:
         }
 
         [*(*(&v338 + 1) + 8 * m) floatValue];
-        v273 = [(CACLabeledGridOverlayView *)v316 _newLineViewWithFrame:v314, v272, v320, 1.0];
-        [(CACLabeledGridOverlayView *)v316 addSubview:v273];
+        v273 = [(CACLabeledGridOverlayView *)selfCopy _newLineViewWithFrame:v314, v272, v320, 1.0];
+        [(CACLabeledGridOverlayView *)selfCopy addSubview:v273];
       }
 
       v269 = [v267 countByEnumeratingWithState:&v338 objects:v357 count:16];
@@ -1101,49 +1101,49 @@ LABEL_110:
     while (v269);
   }
 
-  v208 = v316;
-  [(CACLabeledGridOverlayView *)v316 setIsSmallEnoughForZooming:0];
-  v274 = [(CACLabeledGridOverlayView *)v316 zoomController];
-  v275 = [v274 view];
-  [v275 removeFromSuperview];
+  v208 = selfCopy;
+  [(CACLabeledGridOverlayView *)selfCopy setIsSmallEnoughForZooming:0];
+  zoomController9 = [(CACLabeledGridOverlayView *)selfCopy zoomController];
+  view3 = [zoomController9 view];
+  [view3 removeFromSuperview];
 
 LABEL_125:
   if (UIAccessibilityDarkerSystemColorsEnabled())
   {
-    v276 = [(CACLabeledGridOverlayView *)v208 contrastBadgesContainer];
-    [(CACLabeledGridOverlayView *)v208 addSubview:v276];
+    contrastBadgesContainer4 = [(CACLabeledGridOverlayView *)v208 contrastBadgesContainer];
+    [(CACLabeledGridOverlayView *)v208 addSubview:contrastBadgesContainer4];
   }
 
-  v277 = [(CACLabeledGridOverlayView *)v208 badgesContainer];
-  [(CACLabeledGridOverlayView *)v208 addSubview:v277];
+  badgesContainer4 = [(CACLabeledGridOverlayView *)v208 badgesContainer];
+  [(CACLabeledGridOverlayView *)v208 addSubview:badgesContainer4];
 }
 
-- (id)_newLineViewWithFrame:(CGRect)a3
+- (id)_newLineViewWithFrame:(CGRect)frame
 {
-  v3 = [[CACAdaptiveBackdropView alloc] initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(CACAdaptiveBackdropView *)v3 layer];
-  [v4 setCaptureOnly:0];
+  v3 = [[CACAdaptiveBackdropView alloc] initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  layer = [(CACAdaptiveBackdropView *)v3 layer];
+  [layer setCaptureOnly:0];
 
   return v3;
 }
 
-- (void)zoomOverRect:(CGRect)a3
+- (void)zoomOverRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = [[CACZoomController alloc] initWithContainingView:self];
   [(CACLabeledGridOverlayView *)self setZoomController:v8];
 
-  v9 = [(CACLabeledGridOverlayView *)self zoomController];
-  [v9 hide];
+  zoomController = [(CACLabeledGridOverlayView *)self zoomController];
+  [zoomController hide];
 
-  v10 = [(CACLabeledGridOverlayView *)self zoomController];
-  [v10 moveZoomRegion:{x, y, width, height}];
+  zoomController2 = [(CACLabeledGridOverlayView *)self zoomController];
+  [zoomController2 moveZoomRegion:{x, y, width, height}];
 
-  v11 = [(CACLabeledGridOverlayView *)self zoomController];
-  [v11 show];
+  zoomController3 = [(CACLabeledGridOverlayView *)self zoomController];
+  [zoomController3 show];
 }
 
 @end

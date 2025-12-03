@@ -10,13 +10,13 @@
   v4 = a3;
   if (v4)
   {
-    [a1 _intentsPrepareForEncoding];
+    [self _intentsPrepareForEncoding];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __69__NSUserActivity_INCacheSupport__generateCachePayloadWithCompletion___block_invoke;
     v5[3] = &unk_1E7287288;
     v6 = v4;
-    [a1 _createUserActivityDataWithOptions:0 completionHandler:v5];
+    [self _createUserActivityDataWithOptions:0 completionHandler:v5];
   }
 }
 

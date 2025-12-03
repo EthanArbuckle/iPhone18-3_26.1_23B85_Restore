@@ -1,26 +1,26 @@
 @interface DBSplashScreenAlert
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (DBSplashScreenAlert)initWithEnvironmentConfiguration:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (DBSplashScreenAlert)initWithEnvironmentConfiguration:(id)configuration;
 - (void)_showAlertIfNecessary;
 - (void)connect;
 - (void)invalidate;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation DBSplashScreenAlert
 
-- (DBSplashScreenAlert)initWithEnvironmentConfiguration:(id)a3
+- (DBSplashScreenAlert)initWithEnvironmentConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = DBSplashScreenAlert;
   v6 = [(DBSplashScreenAlert *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_environmentConfiguration, a3);
+    objc_storeStrong(&v6->_environmentConfiguration, configuration);
     v8 = dispatch_get_global_queue(25, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -36,19 +36,19 @@
 - (void)_showAlertIfNecessary
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 objectForKey:@"DBReconnectingWithNewOverrideCanvasKey"];
-  v5 = [v4 BOOLValue];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:@"DBReconnectingWithNewOverrideCanvasKey"];
+  bOOLValue = [v4 BOOLValue];
 
   LODWORD(v4) = SBSGetScreenLockStatus();
-  v6 = DBLogForCategory(0xBuLL);
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (!v4 || (v5 & 1) != 0)
+  anonymousListener = DBLogForCategory(0xBuLL);
+  v7 = os_log_type_enabled(anonymousListener, OS_LOG_TYPE_DEFAULT);
+  if (!v4 || (bOOLValue & 1) != 0)
   {
     if (v7)
     {
       *buf = 0;
-      _os_log_impl(&dword_248146000, v6, OS_LOG_TYPE_DEFAULT, "Device is not locked or rescaling, will not present splash screen alert", buf, 2u);
+      _os_log_impl(&dword_248146000, anonymousListener, OS_LOG_TYPE_DEFAULT, "Device is not locked or rescaling, will not present splash screen alert", buf, 2u);
     }
   }
 
@@ -57,23 +57,23 @@
     if (v7)
     {
       *buf = 0;
-      _os_log_impl(&dword_248146000, v6, OS_LOG_TYPE_DEFAULT, "Device is locked and not rescaling, showing alert", buf, 2u);
+      _os_log_impl(&dword_248146000, anonymousListener, OS_LOG_TYPE_DEFAULT, "Device is locked and not rescaling, showing alert", buf, 2u);
     }
 
-    v6 = [MEMORY[0x277CCAE98] anonymousListener];
-    [v6 setDelegate:self];
-    [v6 resume];
-    objc_storeStrong(&self->_listener, v6);
+    anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
+    [anonymousListener setDelegate:self];
+    [anonymousListener resume];
+    objc_storeStrong(&self->_listener, anonymousListener);
     v8 = [objc_alloc(MEMORY[0x277D66BD8]) initWithServiceName:@"com.apple.CarPlaySplashScreen" viewControllerClassName:@"CARSplashScreenViewController"];
     v9 = objc_alloc_init(MEMORY[0x277D66BD0]);
-    v10 = [(NSXPCListener *)self->_listener endpoint];
-    v11 = [v10 _endpoint];
-    [v9 setXpcEndpoint:v11];
+    endpoint = [(NSXPCListener *)self->_listener endpoint];
+    _endpoint = [endpoint _endpoint];
+    [v9 setXpcEndpoint:_endpoint];
 
     v23 = @"vehicleSupportsGaugeCluster";
     v12 = MEMORY[0x277CCABB0];
-    v13 = [(DBSplashScreenAlert *)self environmentConfiguration];
-    v14 = [v12 numberWithBool:{objc_msgSend(v13, "supportsGaugeCluster")}];
+    environmentConfiguration = [(DBSplashScreenAlert *)self environmentConfiguration];
+    v14 = [v12 numberWithBool:{objc_msgSend(environmentConfiguration, "supportsGaugeCluster")}];
     v24[0] = v14;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
     [v9 setUserInfo:v15];
@@ -109,28 +109,28 @@ void __44__DBSplashScreenAlert__showAlertIfNecessary__block_invoke(uint64_t a1)
   [v1 dismissAlertAnimated:1];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v5 = MEMORY[0x277CCAE90];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = [v5 interfaceWithProtocol:&unk_285B71D48];
-  [v6 setRemoteObjectInterface:v7];
+  [connectionCopy setRemoteObjectInterface:v7];
   v8 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_285B04420];
-  [v6 setExportedInterface:v8];
-  [v6 setExportedObject:self];
-  [v6 setInterruptionHandler:&__block_literal_global_28];
-  [v6 setInvalidationHandler:&__block_literal_global_146];
-  [v6 resume];
-  [(DBSplashScreenAlert *)self setConnection:v6];
+  [connectionCopy setExportedInterface:v8];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy setInterruptionHandler:&__block_literal_global_28];
+  [connectionCopy setInvalidationHandler:&__block_literal_global_146];
+  [connectionCopy resume];
+  [(DBSplashScreenAlert *)self setConnection:connectionCopy];
 
   return 1;
 }
 
 - (void)invalidate
 {
-  v3 = [(DBSplashScreenAlert *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 dismissAlertAnimated:1];
+  connection = [(DBSplashScreenAlert *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy dismissAlertAnimated:1];
 }
 
 - (void)connect
@@ -143,7 +143,7 @@ void __44__DBSplashScreenAlert__showAlertIfNecessary__block_invoke(uint64_t a1)
   }
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
   v3 = DBLogForCategory(0xBuLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -153,7 +153,7 @@ void __44__DBSplashScreenAlert__showAlertIfNecessary__block_invoke(uint64_t a1)
   }
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   v4 = DBLogForCategory(0xBuLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -162,19 +162,19 @@ void __44__DBSplashScreenAlert__showAlertIfNecessary__block_invoke(uint64_t a1)
     _os_log_impl(&dword_248146000, v4, OS_LOG_TYPE_DEFAULT, "Alert did deactivate", v6, 2u);
   }
 
-  v5 = [(DBSplashScreenAlert *)self alertHandle];
-  [v5 invalidate];
+  alertHandle = [(DBSplashScreenAlert *)self alertHandle];
+  [alertHandle invalidate];
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  errorCopy = error;
   v5 = DBLogForCategory(0xBuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = errorCopy;
     _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "Alert did invalidate with error: %@", &v6, 0xCu);
   }
 }

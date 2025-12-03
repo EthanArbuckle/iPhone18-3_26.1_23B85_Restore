@@ -1,22 +1,22 @@
 @interface SiriNLUTypesUtils
-+ (BOOL)isSdaAskRepeat:(id)a3;
-+ (BOOL)isTopSdaAskRepeat:(id)a3;
++ (BOOL)isSdaAskRepeat:(id)repeat;
++ (BOOL)isTopSdaAskRepeat:(id)repeat;
 @end
 
 @implementation SiriNLUTypesUtils
 
-+ (BOOL)isSdaAskRepeat:(id)a3
++ (BOOL)isSdaAskRepeat:(id)repeat
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [a3 prompted];
-  v4 = [v3 target];
-  v5 = [v4 identifiers];
+  prompted = [repeat prompted];
+  target = [prompted target];
+  identifiers = [target identifiers];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [identifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -27,11 +27,11 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(identifiers);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) value];
-        v11 = [v10 isEqual:@"SystemPrompted_SystemAskedUserToRepeat"];
+        value = [*(*(&v15 + 1) + 8 * i) value];
+        v11 = [value isEqual:@"SystemPrompted_SystemAskedUserToRepeat"];
 
         if (v11)
         {
@@ -40,7 +40,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [identifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -57,16 +57,16 @@ LABEL_11:
   return v12;
 }
 
-+ (BOOL)isTopSdaAskRepeat:(id)a3
++ (BOOL)isTopSdaAskRepeat:(id)repeat
 {
-  v4 = [a3 turnContext];
-  v5 = [v4 nlContext];
-  v6 = [v5 systemDialogActs];
+  turnContext = [repeat turnContext];
+  nlContext = [turnContext nlContext];
+  systemDialogActs = [nlContext systemDialogActs];
 
-  if (v6 && [v6 count])
+  if (systemDialogActs && [systemDialogActs count])
   {
-    v7 = [v6 objectAtIndex:0];
-    v8 = [a1 isSdaAskRepeat:v7];
+    v7 = [systemDialogActs objectAtIndex:0];
+    v8 = [self isSdaAskRepeat:v7];
   }
 
   else

@@ -1,31 +1,31 @@
 @interface GeoTagMO
-+ (BOOL)isNetworkWithinRangeOfLocation:(id)a3 range:(double)a4 location:(id)a5 container:(id)a6 count:(unint64_t *)a7;
-+ (id)generateInstance:(id)a3;
-+ (id)geoTagsAtLocation:(id)a3 withinDistance:(double)a4 inBand:(unsigned int)a5 container:(id)a6;
-+ (id)geoTagsForNetwork:(id)a3 container:(id)a4;
-+ (id)geoTagsInBand:(unsigned int)a3 ssid:(id)a4 moc:(id)a5;
++ (BOOL)isNetworkWithinRangeOfLocation:(id)location range:(double)range location:(id)a5 container:(id)container count:(unint64_t *)count;
++ (id)generateInstance:(id)instance;
++ (id)geoTagsAtLocation:(id)location withinDistance:(double)distance inBand:(unsigned int)band container:(id)container;
++ (id)geoTagsForNetwork:(id)network container:(id)container;
++ (id)geoTagsInBand:(unsigned int)band ssid:(id)ssid moc:(id)moc;
 @end
 
 @implementation GeoTagMO
 
-+ (id)generateInstance:(id)a3
++ (id)generateInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v4 = +[GeoTagMO entity];
-  v5 = [v4 name];
-  v6 = [AnalyticsStoreProxy createEntity:v5 moc:v3];
+  name = [v4 name];
+  v6 = [AnalyticsStoreProxy createEntity:name moc:instanceCopy];
 
   return v6;
 }
 
-+ (id)geoTagsForNetwork:(id)a3 container:(id)a4
++ (id)geoTagsForNetwork:(id)network container:(id)container
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  networkCopy = network;
+  containerCopy = container;
   v7 = +[GeoTagMO entity];
-  v8 = [v7 name];
-  v9 = [AnalyticsStoreProxy fetchRequestForEntity:v8];
+  name = [v7 name];
+  v9 = [AnalyticsStoreProxy fetchRequestForEntity:name];
 
   [v9 setFetchLimit:10];
   [v9 setRelationshipKeyPathsForPrefetching:&unk_1F483E518];
@@ -34,10 +34,10 @@
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
   [v9 setSortDescriptors:v11];
 
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.network.ssid == %@", v5];
-  v13 = [v6 viewContext];
+  networkCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.network.ssid == %@", networkCopy];
+  viewContext = [containerCopy viewContext];
 
-  v14 = [AnalyticsStoreProxy fetch:v9 withPredicate:v12 moc:v13];
+  v14 = [AnalyticsStoreProxy fetch:v9 withPredicate:networkCopy moc:viewContext];
 
   if (v14)
   {
@@ -51,7 +51,7 @@
       v22 = 2048;
       v23 = [v14 count];
       v24 = 2112;
-      v25 = v5;
+      v25 = networkCopy;
       _os_log_impl(&dword_1C8460000, v15, OS_LOG_TYPE_DEBUG, "%{public}s::%d:ResultCount:%lu ssid:%@", buf, 0x26u);
     }
   }
@@ -61,14 +61,14 @@
   return v14;
 }
 
-+ (id)geoTagsInBand:(unsigned int)a3 ssid:(id)a4 moc:(id)a5
++ (id)geoTagsInBand:(unsigned int)band ssid:(id)ssid moc:(id)moc
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  ssidCopy = ssid;
+  mocCopy = moc;
   v9 = +[GeoTagMO entity];
-  v10 = [v9 name];
-  v11 = [AnalyticsStoreProxy fetchRequestForEntity:v10];
+  name = [v9 name];
+  v11 = [AnalyticsStoreProxy fetchRequestForEntity:name];
 
   [v11 setFetchLimit:10];
   [v11 setRelationshipKeyPathsForPrefetching:&unk_1F483E530];
@@ -77,37 +77,37 @@
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
   [v11 setSortDescriptors:v13];
 
-  if (a3 == 2)
+  if (band == 2)
   {
     v14 = MEMORY[0x1E696AB28];
     v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.mostRecentChannel > %d", 14];
     v33[0] = v15;
-    v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.network.ssid == %@", v7];
-    v33[1] = v16;
+    ssidCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.network.ssid == %@", ssidCopy];
+    v33[1] = ssidCopy;
     v17 = MEMORY[0x1E695DEC8];
     v18 = v33;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (band == 1)
   {
     v14 = MEMORY[0x1E696AB28];
     v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.mostRecentChannel <= %d", 14];
     v34[0] = v15;
-    v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.network.ssid == %@", v7];
-    v34[1] = v16;
+    ssidCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.network.ssid == %@", ssidCopy];
+    v34[1] = ssidCopy;
     v17 = MEMORY[0x1E695DEC8];
     v18 = v34;
 LABEL_5:
     v19 = [v17 arrayWithObjects:v18 count:2];
-    v20 = [v14 andPredicateWithSubpredicates:v19];
+    ssidCopy2 = [v14 andPredicateWithSubpredicates:v19];
 
     goto LABEL_7;
   }
 
-  v20 = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.network.ssid == %@", v7];
+  ssidCopy2 = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.network.ssid == %@", ssidCopy];
 LABEL_7:
-  v21 = [AnalyticsStoreProxy fetch:v11 withPredicate:v20 moc:v8];
+  v21 = [AnalyticsStoreProxy fetch:v11 withPredicate:ssidCopy2 moc:mocCopy];
 
   if (v21)
   {
@@ -121,7 +121,7 @@ LABEL_7:
       v29 = 2048;
       v30 = [v21 count];
       v31 = 2112;
-      v32 = v7;
+      v32 = ssidCopy;
       _os_log_impl(&dword_1C8460000, v22, OS_LOG_TYPE_DEBUG, "%{public}s::%d:ResultCount:%lu ssid:%@", buf, 0x26u);
     }
   }
@@ -131,15 +131,15 @@ LABEL_7:
   return v21;
 }
 
-+ (id)geoTagsAtLocation:(id)a3 withinDistance:(double)a4 inBand:(unsigned int)a5 container:(id)a6
++ (id)geoTagsAtLocation:(id)location withinDistance:(double)distance inBand:(unsigned int)band container:(id)container
 {
   v90 = *MEMORY[0x1E69E9840];
-  v64 = a3;
-  v8 = a6;
-  v54 = [MEMORY[0x1E695DF70] array];
-  v56 = v8;
-  v9 = [v8 viewContext];
-  v10 = [NetworkMO allStoredSsids:v9];
+  locationCopy = location;
+  containerCopy = container;
+  array = [MEMORY[0x1E695DF70] array];
+  v56 = containerCopy;
+  viewContext = [containerCopy viewContext];
+  v10 = [NetworkMO allStoredSsids:viewContext];
 
   v78 = 0u;
   v79 = 0u;
@@ -163,13 +163,13 @@ LABEL_7:
         v62 = v11;
         v12 = *(*(&v76 + 1) + 8 * v11);
         context = objc_autoreleasePoolPush();
-        v13 = [v56 viewContext];
+        viewContext2 = [v56 viewContext];
         v58 = v12;
-        v14 = [GeoTagMO geoTagsInBand:a5 ssid:*&v12 moc:v13];
+        v14 = [GeoTagMO geoTagsInBand:band ssid:*&v12 moc:viewContext2];
 
-        v15 = [MEMORY[0x1E696AD60] string];
-        v66 = [MEMORY[0x1E696AD60] string];
-        v60 = [MEMORY[0x1E695DF00] date];
+        string = [MEMORY[0x1E696AD60] string];
+        string2 = [MEMORY[0x1E696AD60] string];
+        date = [MEMORY[0x1E695DF00] date];
         v72 = 0u;
         v73 = 0u;
         v74 = 0u;
@@ -179,7 +179,7 @@ LABEL_7:
         if (v68)
         {
           v67 = *v73;
-          v63 = v15;
+          v63 = string;
           while (2)
           {
             for (i = 0; i != v68; ++i)
@@ -198,40 +198,40 @@ LABEL_7:
                 v21 = v20;
                 [v17 longitude];
                 v23 = [v19 initWithLatitude:v21 longitude:v22];
-                [v23 distanceFromLocation:v64];
+                [v23 distanceFromLocation:locationCopy];
                 v25 = v24;
-                if (a4 != 0.0 && v24 < a4)
+                if (distance != 0.0 && v24 < distance)
                 {
-                  [v54 addObject:v17];
+                  [array addObject:v17];
                   v35 = [v17 bss];
-                  v71 = [v35 network];
-                  v36 = [v71 ssid];
+                  network = [v35 network];
+                  ssid = [network ssid];
                   v37 = [v17 bss];
-                  v38 = [v37 bssid];
+                  bssid = [v37 bssid];
                   v39 = [v17 bss];
-                  v40 = [v39 network];
-                  v41 = [v40 authFlags];
+                  network2 = [v39 network];
+                  authFlags = [network2 authFlags];
                   v42 = [v17 bss];
-                  v52 = v41;
-                  v15 = v63;
-                  [v63 appendFormat:@"[ssid: %@[%@] {auth:%d, chan:%d, %fm away}], ", v36, v38, v52, objc_msgSend(v42, "mostRecentChannel"), *&v25];
+                  v52 = authFlags;
+                  string = v63;
+                  [v63 appendFormat:@"[ssid: %@[%@] {auth:%d, chan:%d, %fm away}], ", ssid, bssid, v52, objc_msgSend(v42, "mostRecentChannel"), *&v25];
 
                   objc_autoreleasePoolPop(v18);
                   goto LABEL_21;
                 }
 
                 v69 = [v17 bss];
-                v26 = [v69 network];
-                v27 = [v26 ssid];
+                network3 = [v69 network];
+                ssid2 = [network3 ssid];
                 v28 = [v17 bss];
-                v29 = [v28 bssid];
+                bssid2 = [v28 bssid];
                 [v17 bss];
                 v30 = v70 = v18;
-                v31 = [v30 network];
+                network4 = [v30 network];
                 v32 = v23;
-                v33 = [v31 authFlags];
+                authFlags2 = [network4 authFlags];
                 v34 = [v17 bss];
-                [v66 appendFormat:@"[ssid: %@[%@] {auth:%d, chan:%d, %fm away}], ", v27, v29, v33, objc_msgSend(v34, "mostRecentChannel"), *&v25];
+                [string2 appendFormat:@"[ssid: %@[%@] {auth:%d, chan:%d, %fm away}], ", ssid2, bssid2, authFlags2, objc_msgSend(v34, "mostRecentChannel"), *&v25];
 
                 v18 = v70;
               }
@@ -252,7 +252,7 @@ LABEL_7:
               objc_autoreleasePoolPop(v18);
             }
 
-            v15 = v63;
+            string = v63;
             v68 = [v65 countByEnumeratingWithState:&v72 objects:v88 count:16];
             if (v68)
             {
@@ -268,7 +268,7 @@ LABEL_21:
         v43 = WALogCategoryDeviceStoreHandle();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
         {
-          [v60 timeIntervalSinceNow];
+          [date timeIntervalSinceNow];
           v45 = v44;
           v46 = [v65 count];
           *buf = 136447234;
@@ -276,7 +276,7 @@ LABEL_21:
           v82 = 1024;
           v83 = 140;
           v84 = 2112;
-          v85 = v58;
+          distanceCopy2 = v58;
           v86 = 2048;
           *v87 = v45;
           *&v87[8] = 2048;
@@ -292,11 +292,11 @@ LABEL_21:
           v82 = 1024;
           v83 = 141;
           v84 = 2048;
-          v85 = a4;
+          distanceCopy2 = distance;
           v86 = 1024;
-          *v87 = a5;
+          *v87 = band;
           *&v87[4] = 2112;
-          *&v87[6] = v15;
+          *&v87[6] = string;
           _os_log_impl(&dword_1C8460000, v47, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Networks within %fm of geotag in band :%d - %@", buf, 0x2Cu);
         }
 
@@ -308,9 +308,9 @@ LABEL_21:
           v82 = 1024;
           v83 = 142;
           v84 = 2048;
-          v85 = a4;
+          distanceCopy2 = distance;
           v86 = 2112;
-          *v87 = v66;
+          *v87 = string2;
           _os_log_impl(&dword_1C8460000, v48, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Networks NOT within %fm of geotag - %@", buf, 0x26u);
         }
 
@@ -325,8 +325,8 @@ LABEL_21:
     while (v57);
   }
 
-  v49 = v54;
-  if (![v54 count])
+  v49 = array;
+  if (![array count])
   {
 
     v49 = 0;
@@ -337,15 +337,15 @@ LABEL_21:
   return v49;
 }
 
-+ (BOOL)isNetworkWithinRangeOfLocation:(id)a3 range:(double)a4 location:(id)a5 container:(id)a6 count:(unint64_t *)a7
++ (BOOL)isNetworkWithinRangeOfLocation:(id)location range:(double)range location:(id)a5 container:(id)container count:(unint64_t *)count
 {
   v64[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  locationCopy = location;
   v12 = a5;
-  v13 = a6;
+  containerCopy = container;
   v14 = +[GeoTagMO entity];
-  v15 = [v14 name];
-  v16 = [AnalyticsStoreProxy fetchRequestForEntity:v15];
+  name = [v14 name];
+  v16 = [AnalyticsStoreProxy fetchRequestForEntity:name];
 
   [v16 setFetchLimit:10];
   v17 = [MEMORY[0x1E695DEC8] arrayWithObject:@"geoTag.bss.bssid"];
@@ -356,15 +356,15 @@ LABEL_21:
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:1];
   [v16 setSortDescriptors:v19];
 
-  v20 = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.network.ssid == %@", v11];
-  v21 = [v13 viewContext];
-  v22 = [AnalyticsStoreProxy fetch:v16 withPredicate:v20 moc:v21];
+  locationCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.network.ssid == %@", locationCopy];
+  viewContext = [containerCopy viewContext];
+  v22 = [AnalyticsStoreProxy fetch:v16 withPredicate:locationCopy moc:viewContext];
 
   if (!v22)
   {
     v23 = 0;
     v37 = 0;
-    if (!a7)
+    if (!count)
     {
       goto LABEL_22;
     }
@@ -372,8 +372,8 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v47 = v13;
-  v48 = a7;
+  v47 = containerCopy;
+  countCopy = count;
   v23 = [v22 count];
   v24 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -385,7 +385,7 @@ LABEL_21:
     v57 = 2048;
     v58 = v23;
     v59 = 2112;
-    v60 = v11;
+    v60 = locationCopy;
     _os_log_impl(&dword_1C8460000, v24, OS_LOG_TYPE_DEBUG, "%{public}s::%d:ResultCount:%lu ssid:%@", buf, 0x26u);
   }
 
@@ -399,8 +399,8 @@ LABEL_21:
   {
     v27 = v26;
     v44 = v23;
-    v45 = v20;
-    v46 = v11;
+    v45 = locationCopy;
+    v46 = locationCopy;
     v28 = *v50;
     while (2)
     {
@@ -418,21 +418,21 @@ LABEL_21:
         [v30 longitude];
         v35 = [v31 initWithLatitude:v33 longitude:v34];
         [v35 distanceFromLocation:v12];
-        if (v36 < a4)
+        if (v36 < range)
         {
           v38 = v36;
           v39 = WALogCategoryDeviceStoreHandle();
-          v11 = v46;
+          locationCopy = v46;
           if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
           {
             v40 = [v30 bss];
-            v41 = [v40 bssid];
+            bssid = [v40 bssid];
             *buf = 136447234;
             v54 = "+[GeoTagMO isNetworkWithinRangeOfLocation:range:location:container:count:]";
             v55 = 1024;
             v56 = 181;
             v57 = 2112;
-            v58 = v41;
+            v58 = bssid;
             v59 = 2112;
             v60 = v46;
             v61 = 2048;
@@ -455,9 +455,9 @@ LABEL_21:
     }
 
     v37 = 0;
-    v11 = v46;
+    locationCopy = v46;
 LABEL_16:
-    v20 = v45;
+    locationCopy = v45;
     v23 = v44;
   }
 
@@ -466,12 +466,12 @@ LABEL_16:
     v37 = 0;
   }
 
-  v13 = v47;
-  a7 = v48;
-  if (v48)
+  containerCopy = v47;
+  count = countCopy;
+  if (countCopy)
   {
 LABEL_21:
-    *a7 = v23;
+    *count = v23;
   }
 
 LABEL_22:

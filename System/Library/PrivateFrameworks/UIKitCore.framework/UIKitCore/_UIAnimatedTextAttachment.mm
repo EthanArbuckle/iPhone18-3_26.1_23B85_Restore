@@ -1,11 +1,11 @@
 @interface _UIAnimatedTextAttachment
 - (_UIAnimatedTextAttachment)init;
-- (void)_initiateAnimationUsingSpringBehavior:(id)a3;
+- (void)_initiateAnimationUsingSpringBehavior:(id)behavior;
 - (void)_updatePresentationValues;
-- (void)addAlongsideAnimation:(id)a3;
-- (void)addCompletionHandler:(id)a3;
-- (void)animateToTargetHeight:(double)a3 delay:(double)a4 usingSpringBehavior:(id)a5;
-- (void)setBounds:(CGRect)a3;
+- (void)addAlongsideAnimation:(id)animation;
+- (void)addCompletionHandler:(id)handler;
+- (void)animateToTargetHeight:(double)height delay:(double)delay usingSpringBehavior:(id)behavior;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation _UIAnimatedTextAttachment
@@ -27,13 +27,13 @@
     heightAnimationProperty = v2->_heightAnimationProperty;
     v2->_heightAnimationProperty = v4;
 
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     animateAlongsideHandlers = v2->_animateAlongsideHandlers;
-    v2->_animateAlongsideHandlers = v6;
+    v2->_animateAlongsideHandlers = array;
 
-    v8 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     completionHandlers = v2->_completionHandlers;
-    v2->_completionHandlers = v8;
+    v2->_completionHandlers = array2;
 
     objc_initWeak(&location, v2);
     v16[0] = v2->_heightAnimationProperty;
@@ -52,12 +52,12 @@
   return v2;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v9.receiver = self;
   v9.super_class = _UIAnimatedTextAttachment;
   [(_UIAnimatedTextAttachment *)&v9 setBounds:?];
@@ -73,46 +73,46 @@
   [UIView performWithoutAnimation:v8];
 }
 
-- (void)addAlongsideAnimation:(id)a3
+- (void)addAlongsideAnimation:(id)animation
 {
   animateAlongsideHandlers = self->_animateAlongsideHandlers;
-  v5 = [a3 copy];
+  v5 = [animation copy];
   v4 = _Block_copy(v5);
   [(NSMutableArray *)animateAlongsideHandlers addObject:v4];
 }
 
-- (void)addCompletionHandler:(id)a3
+- (void)addCompletionHandler:(id)handler
 {
   completionHandlers = self->_completionHandlers;
-  v5 = [a3 copy];
+  v5 = [handler copy];
   v4 = _Block_copy(v5);
   [(NSMutableArray *)completionHandlers addObject:v4];
 }
 
-- (void)animateToTargetHeight:(double)a3 delay:(double)a4 usingSpringBehavior:(id)a5
+- (void)animateToTargetHeight:(double)height delay:(double)delay usingSpringBehavior:(id)behavior
 {
-  v8 = a5;
-  self->_targetHeight = a3;
-  if (!v8)
+  behaviorCopy = behavior;
+  self->_targetHeight = height;
+  if (!behaviorCopy)
   {
-    v8 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:1.0 response:0.4];
+    behaviorCopy = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:1.0 response:0.4];
   }
 
-  v9 = v8;
-  if (a4 <= 0.0)
+  v9 = behaviorCopy;
+  if (delay <= 0.0)
   {
-    [(_UIAnimatedTextAttachment *)self _initiateAnimationUsingSpringBehavior:v8];
+    [(_UIAnimatedTextAttachment *)self _initiateAnimationUsingSpringBehavior:behaviorCopy];
   }
 
   else
   {
-    [(_UIAnimatedTextAttachment *)self performSelector:sel__initiateAnimationUsingSpringBehavior_ withObject:v8 afterDelay:a4];
+    [(_UIAnimatedTextAttachment *)self performSelector:sel__initiateAnimationUsingSpringBehavior_ withObject:behaviorCopy afterDelay:delay];
   }
 }
 
-- (void)_initiateAnimationUsingSpringBehavior:(id)a3
+- (void)_initiateAnimationUsingSpringBehavior:(id)behavior
 {
-  v4 = a3;
+  behaviorCopy = behavior;
   [(_UIAnimatedTextAttachment *)self targetHeight];
   v6[4] = self;
   v7[0] = MEMORY[0x1E69E9820];
@@ -125,7 +125,7 @@
   v6[1] = 3221225472;
   v6[2] = __67___UIAnimatedTextAttachment__initiateAnimationUsingSpringBehavior___block_invoke_2;
   v6[3] = &unk_1E70F3FD8;
-  [UIView _animateUsingSpringBehavior:v4 tracking:0 animations:v7 completion:v6];
+  [UIView _animateUsingSpringBehavior:behaviorCopy tracking:0 animations:v7 completion:v6];
 }
 
 - (void)_updatePresentationValues

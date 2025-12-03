@@ -1,26 +1,26 @@
 @interface PCSKeySyncing
 + (id)defaultSyncingManager;
 - (BOOL)iCDPStatus;
-- (BOOL)saveClient:(id)a3;
-- (BOOL)setiCDPStatus:(BOOL)a3;
-- (BOOL)storePCSKeyData:(id)a3 current:(BOOL)a4;
-- (BOOL)updateSyncDevice:(id)a3 version:(id)a4;
+- (BOOL)saveClient:(id)client;
+- (BOOL)setiCDPStatus:(BOOL)status;
+- (BOOL)storePCSKeyData:(id)data current:(BOOL)current;
+- (BOOL)updateSyncDevice:(id)device version:(id)version;
 - (PCSKeySyncing)init;
 - (_PCSIdentitySetData)copyIdentitySet;
 - (id)allClients;
-- (id)copyAllPCSKeys:(id *)a3;
-- (id)copySHA256Hash:(id)a3;
+- (id)copyAllPCSKeys:(id *)keys;
+- (id)copySHA256Hash:(id)hash;
 - (id)dsid;
-- (id)getClientWithIdentifier:(id)a3;
-- (id)outStandingPCSKeys:(id)a3;
-- (id)pcsKeyData:(id)a3;
+- (id)getClientWithIdentifier:(id)identifier;
+- (id)outStandingPCSKeys:(id)keys;
+- (id)pcsKeyData:(id)data;
 - (id)syncDevices;
 - (id)userRegistry;
-- (void)addUpdateNotify:(id)a3;
-- (void)signalComplete:(id)a3;
+- (void)addUpdateNotify:(id)notify;
+- (void)signalComplete:(id)complete;
 - (void)syncKeysWithDatabase;
-- (void)updateClient:(id)a3;
-- (void)updateProtocolVersionIfNeeded:(id)a3;
+- (void)updateClient:(id)client;
+- (void)updateProtocolVersionIfNeeded:(id)needed;
 @end
 
 @implementation PCSKeySyncing
@@ -56,10 +56,10 @@
 
 - (id)userRegistry
 {
-  v2 = [(PCSKeySyncing *)self dsid];
-  if (v2)
+  dsid = [(PCSKeySyncing *)self dsid];
+  if (dsid)
   {
-    v3 = [[UserRegistryDB alloc] initWithDSID:v2];
+    v3 = [[UserRegistryDB alloc] initWithDSID:dsid];
   }
 
   else
@@ -72,53 +72,53 @@
 
 - (id)dsid
 {
-  v2 = [(PCSKeySyncing *)self accounts];
-  v3 = [v2 dsid];
+  accounts = [(PCSKeySyncing *)self accounts];
+  dsid = [accounts dsid];
 
-  return v3;
+  return dsid;
 }
 
-- (void)addUpdateNotify:(id)a3
+- (void)addUpdateNotify:(id)notify
 {
-  v4 = a3;
+  notifyCopy = notify;
   notifyHooks = self->_notifyHooks;
-  v9 = v4;
+  v9 = notifyCopy;
   if (!notifyHooks)
   {
     v6 = +[NSMutableArray array];
     v7 = self->_notifyHooks;
     self->_notifyHooks = v6;
 
-    v4 = v9;
+    notifyCopy = v9;
     notifyHooks = self->_notifyHooks;
   }
 
-  v8 = objc_retainBlock(v4);
+  v8 = objc_retainBlock(notifyCopy);
   [(NSMutableArray *)notifyHooks addObject:v8];
 }
 
-- (void)signalComplete:(id)a3
+- (void)signalComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   notifyHooks = self->_notifyHooks;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000177A4;
   v7[3] = &unk_1000395B0;
-  v8 = v4;
-  v6 = v4;
+  v8 = completeCopy;
+  v6 = completeCopy;
   [(NSMutableArray *)notifyHooks enumerateObjectsUsingBlock:v7];
 }
 
 - (_PCSIdentitySetData)copyIdentitySet
 {
-  v3 = [(PCSKeySyncing *)self accounts];
-  v4 = [v3 dsid];
+  accounts = [(PCSKeySyncing *)self accounts];
+  dsid = [accounts dsid];
 
-  if (v4)
+  if (dsid)
   {
     v10 = kPCSSetupDSID;
-    v11 = v4;
+    v11 = dsid;
     v5 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
     v6 = PCSIdentitySetCreate();
   }
@@ -127,10 +127,10 @@
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(PCSKeySyncing *)self accounts];
-      v8 = [v7 lastError];
+      accounts2 = [(PCSKeySyncing *)self accounts];
+      lastError = [accounts2 lastError];
       *buf = 138412290;
-      v13 = v8;
+      v13 = lastError;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Failed to fetch dsid from accounts: %@", buf, 0xCu);
     }
 
@@ -140,11 +140,11 @@
   return v6;
 }
 
-- (id)pcsKeyData:(id)a3
+- (id)pcsKeyData:(id)data
 {
-  v4 = a3;
-  v5 = [(PCSKeySyncing *)self copyIdentitySet];
-  if (!v5)
+  dataCopy = data;
+  copyIdentitySet = [(PCSKeySyncing *)self copyIdentitySet];
+  if (!copyIdentitySet)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -160,7 +160,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v6 = v5;
+  v6 = copyIdentitySet;
   v7 = PCSIdentitySetCopyIdentity();
   CFRelease(v6);
   if (!v7)
@@ -168,7 +168,7 @@ LABEL_12:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v13 = v4;
+      v13 = dataCopy;
       v9 = "Failed to get identity for public key %@";
       v10 = 12;
       goto LABEL_11;
@@ -193,18 +193,18 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)storePCSKeyData:(id)a3 current:(BOOL)a4
+- (BOOL)storePCSKeyData:(id)data current:(BOOL)current
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PCSKeySyncing *)self copyIdentitySet];
-  if (!v7)
+  currentCopy = current;
+  dataCopy = data;
+  copyIdentitySet = [(PCSKeySyncing *)self copyIdentitySet];
+  if (!copyIdentitySet)
   {
     v13 = 0;
     goto LABEL_19;
   }
 
-  v8 = v7;
+  v8 = copyIdentitySet;
   v9 = PCSIdentityCreateWithExportedPrivateKey();
   if (!v9)
   {
@@ -255,7 +255,7 @@ LABEL_17:
   }
 
 LABEL_11:
-  if (v4)
+  if (currentCopy)
   {
     PCSIdentitySetSetCurrentIdentity();
   }
@@ -270,27 +270,27 @@ LABEL_19:
 
 - (BOOL)iCDPStatus
 {
-  v2 = [(PCSKeySyncing *)self copyIdentitySet];
-  if (!v2)
+  copyIdentitySet = [(PCSKeySyncing *)self copyIdentitySet];
+  if (!copyIdentitySet)
   {
     return 0;
   }
 
-  v3 = v2;
+  v3 = copyIdentitySet;
   IsICDP = PCSIdentitySetIsICDP();
   CFRelease(v3);
   return IsICDP;
 }
 
-- (BOOL)setiCDPStatus:(BOOL)a3
+- (BOOL)setiCDPStatus:(BOOL)status
 {
-  v3 = [(PCSKeySyncing *)self copyIdentitySet];
-  if (!v3)
+  copyIdentitySet = [(PCSKeySyncing *)self copyIdentitySet];
+  if (!copyIdentitySet)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = copyIdentitySet;
   v5 = PCSIdentitySetEnableICDP();
   if ((v5 & 1) == 0)
   {
@@ -309,20 +309,20 @@ LABEL_19:
   return v5;
 }
 
-- (id)copyAllPCSKeys:(id *)a3
+- (id)copyAllPCSKeys:(id *)keys
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100022C70();
   }
 
-  v4 = [(PCSKeySyncing *)self copyIdentitySet];
-  if (!v4)
+  copyIdentitySet = [(PCSKeySyncing *)self copyIdentitySet];
+  if (!copyIdentitySet)
   {
     return 0;
   }
 
-  v5 = v4;
+  v5 = copyIdentitySet;
   ExternalForm = PCSIdentitySetCreateExternalForm();
   CFRelease(v5);
   return ExternalForm;
@@ -330,15 +330,15 @@ LABEL_19:
 
 - (void)syncKeysWithDatabase
 {
-  v3 = [(PCSKeySyncing *)self copyIdentitySet];
-  if (v3)
+  copyIdentitySet = [(PCSKeySyncing *)self copyIdentitySet];
+  if (copyIdentitySet)
   {
-    v4 = v3;
-    v5 = [(PCSKeySyncing *)self userRegistry];
-    v6 = v5;
-    if (v5)
+    v4 = copyIdentitySet;
+    userRegistry = [(PCSKeySyncing *)self userRegistry];
+    v6 = userRegistry;
+    if (userRegistry)
     {
-      v7 = v5;
+      v7 = userRegistry;
       PCSServiceItemsGetEachName();
       CFRelease(v4);
     }
@@ -356,138 +356,138 @@ LABEL_19:
   }
 }
 
-- (BOOL)updateSyncDevice:(id)a3 version:(id)a4
+- (BOOL)updateSyncDevice:(id)device version:(id)version
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PCSKeySyncing *)self userRegistry];
-  v9 = [v8 beginExclusiveTransaction];
-  if (v9)
+  deviceCopy = device;
+  versionCopy = version;
+  userRegistry = [(PCSKeySyncing *)self userRegistry];
+  beginExclusiveTransaction = [userRegistry beginExclusiveTransaction];
+  if (beginExclusiveTransaction)
   {
     v10 = +[NSDate date];
     v11 = [v10 description];
-    [v8 updateSyncDevice:v6 seen:v11 version:v7];
+    [userRegistry updateSyncDevice:deviceCopy seen:v11 version:versionCopy];
 
-    [v8 endTransaction:1];
+    [userRegistry endTransaction:1];
   }
 
-  return v9;
+  return beginExclusiveTransaction;
 }
 
 - (id)syncDevices
 {
-  v2 = [(PCSKeySyncing *)self userRegistry];
-  v3 = [v2 syncDevices];
+  userRegistry = [(PCSKeySyncing *)self userRegistry];
+  syncDevices = [userRegistry syncDevices];
 
-  return v3;
+  return syncDevices;
 }
 
-- (id)outStandingPCSKeys:(id)a3
+- (id)outStandingPCSKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(PCSKeySyncing *)self userRegistry];
-  v6 = [v5 missingKeysFromDevice:v4 type:1];
+  keysCopy = keys;
+  userRegistry = [(PCSKeySyncing *)self userRegistry];
+  v6 = [userRegistry missingKeysFromDevice:keysCopy type:1];
 
   return v6;
 }
 
-- (id)copySHA256Hash:(id)a3
+- (id)copySHA256Hash:(id)hash
 {
-  v3 = a3;
+  hashCopy = hash;
   v4 = [NSMutableData dataWithLength:32];
   ccsha256_di();
-  [v3 length];
-  [v3 bytes];
+  [hashCopy length];
+  [hashCopy bytes];
 
   [v4 mutableBytes];
   ccdigest();
   return v4;
 }
 
-- (id)getClientWithIdentifier:(id)a3
+- (id)getClientWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PCSKeySyncing *)self settings];
-  v6 = [v5 dictionaryForKey:@"clients"];
+  identifierCopy = identifier;
+  settings = [(PCSKeySyncing *)self settings];
+  v6 = [settings dictionaryForKey:@"clients"];
 
   v7 = [PCSKeyClient alloc];
-  v8 = [v6 objectForKeyedSubscript:v4];
-  v9 = [(PCSKeySyncing *)self accounts];
-  v10 = [v9 dsid];
-  v11 = [(PCSKeyClient *)v7 initWithName:v4 values:v8 dsid:v10];
+  v8 = [v6 objectForKeyedSubscript:identifierCopy];
+  accounts = [(PCSKeySyncing *)self accounts];
+  dsid = [accounts dsid];
+  v11 = [(PCSKeyClient *)v7 initWithName:identifierCopy values:v8 dsid:dsid];
 
   return v11;
 }
 
-- (void)updateClient:(id)a3
+- (void)updateClient:(id)client
 {
-  v12 = a3;
-  v4 = [(PCSKeySyncing *)self settings];
-  v5 = [v4 dictionaryForKey:@"clients"];
+  clientCopy = client;
+  settings = [(PCSKeySyncing *)self settings];
+  v5 = [settings dictionaryForKey:@"clients"];
 
-  v6 = [v12 uuid];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  uuid = [clientCopy uuid];
+  v7 = [v5 objectForKeyedSubscript:uuid];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(PCSKeySyncing *)self accounts];
-    v9 = [v8 dsid];
-    [v12 updateWithValues:v7 dsid:v9];
+    accounts = [(PCSKeySyncing *)self accounts];
+    dsid = [accounts dsid];
+    [clientCopy updateWithValues:v7 dsid:dsid];
 
-    v10 = [v12 uuid];
-    v11 = [v12 buildVersion];
-    [(PCSKeySyncing *)self updateSyncDevice:v10 version:v11];
+    uuid2 = [clientCopy uuid];
+    buildVersion = [clientCopy buildVersion];
+    [(PCSKeySyncing *)self updateSyncDevice:uuid2 version:buildVersion];
   }
 }
 
-- (BOOL)saveClient:(id)a3
+- (BOOL)saveClient:(id)client
 {
-  v4 = a3;
-  [v4 setIsNewWatch:0];
-  v5 = [v4 uuid];
+  clientCopy = client;
+  [clientCopy setIsNewWatch:0];
+  uuid = [clientCopy uuid];
 
-  if (v5)
+  if (uuid)
   {
-    v6 = [(PCSKeySyncing *)self accounts];
-    v7 = [v6 dsid];
-    v8 = [v4 getValues:v7];
+    accounts = [(PCSKeySyncing *)self accounts];
+    dsid = [accounts dsid];
+    v8 = [clientCopy getValues:dsid];
 
-    v9 = [(PCSKeySyncing *)self settings];
-    v10 = [v9 dictionaryForKey:@"clients"];
+    settings = [(PCSKeySyncing *)self settings];
+    v10 = [settings dictionaryForKey:@"clients"];
 
     v11 = [NSMutableDictionary dictionaryWithDictionary:v10];
-    v12 = [v4 uuid];
-    [v11 setObject:v8 forKey:v12];
+    uuid2 = [clientCopy uuid];
+    [v11 setObject:v8 forKey:uuid2];
 
-    v13 = [(PCSKeySyncing *)self settings];
-    [v13 setObject:v11 forKey:@"clients"];
+    settings2 = [(PCSKeySyncing *)self settings];
+    [settings2 setObject:v11 forKey:@"clients"];
   }
 
-  return v5 != 0;
+  return uuid != 0;
 }
 
-- (void)updateProtocolVersionIfNeeded:(id)a3
+- (void)updateProtocolVersionIfNeeded:(id)needed
 {
-  v4 = a3;
-  if ([v4 protocolVersion] <= 0)
+  neededCopy = needed;
+  if ([neededCopy protocolVersion] <= 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138412290;
-      v6 = v4;
+      v6 = neededCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "updating protocol for client %@", &v5, 0xCu);
     }
 
-    [v4 setProtocolVersion:1];
-    [(PCSKeySyncing *)self saveClient:v4];
+    [neededCopy setProtocolVersion:1];
+    [(PCSKeySyncing *)self saveClient:neededCopy];
   }
 }
 
 - (id)allClients
 {
-  v3 = [(PCSKeySyncing *)self settings];
-  v4 = [v3 dictionaryForKey:@"clients"];
+  settings = [(PCSKeySyncing *)self settings];
+  v4 = [settings dictionaryForKey:@"clients"];
 
   +[NSMutableArray array];
   v9[0] = _NSConcreteStackBlock;

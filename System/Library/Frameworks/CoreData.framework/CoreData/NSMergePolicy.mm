@@ -4,17 +4,17 @@
 - (BOOL)resolveConstraintConflicts:(NSArray *)list error:(NSError *)error;
 - (BOOL)resolveOptimisticLockingVersionConflicts:(NSArray *)list error:(NSError *)error;
 - (NSMergePolicy)init;
-- (NSMergePolicy)initWithCoder:(id)a3;
+- (NSMergePolicy)initWithCoder:(id)coder;
 - (id)initWithMergeType:(NSMergePolicyType)ty;
-- (uint64_t)_byPropertyObjectTrumpResolveConstraintConflict:(void *)a1;
-- (uint64_t)_byPropertyStoreTrumpResolveConstraintConflict:(void *)a1;
-- (uint64_t)_mergeToManyUnionRelationshipsForObject:(void *)a1 andObject:(void *)a2;
-- (uint64_t)_overwriteResolveConstraintConflict:(void *)a1;
-- (uint64_t)_rollbackResolveConstraintConflict:(void *)a1;
-- (uint64_t)_valuesOnObject:(uint64_t)a1 matchAgainstValues:(void *)a2;
-- (void)_mergeChangesObjectUpdatesTrumpForObject:(id)a3 withRecord:(id)a4;
-- (void)_mergeChangesStoreUpdatesTrumpForObject:(id)a3 withRecord:(id)a4;
-- (void)_mergeToManyRelationshipsForObject:(void *)a1 ontoObject:(void *)a2;
+- (uint64_t)_byPropertyObjectTrumpResolveConstraintConflict:(void *)conflict;
+- (uint64_t)_byPropertyStoreTrumpResolveConstraintConflict:(void *)conflict;
+- (uint64_t)_mergeToManyUnionRelationshipsForObject:(void *)object andObject:(void *)andObject;
+- (uint64_t)_overwriteResolveConstraintConflict:(void *)conflict;
+- (uint64_t)_rollbackResolveConstraintConflict:(void *)conflict;
+- (uint64_t)_valuesOnObject:(uint64_t)object matchAgainstValues:(void *)values;
+- (void)_mergeChangesObjectUpdatesTrumpForObject:(id)object withRecord:(id)record;
+- (void)_mergeChangesStoreUpdatesTrumpForObject:(id)object withRecord:(id)record;
+- (void)_mergeToManyRelationshipsForObject:(void *)object ontoObject:(void *)ontoObject;
 - (void)dealloc;
 @end
 
@@ -40,7 +40,7 @@
   if (NSMergeByPropertyStoreTrumpMergePolicy == self || NSMergeByPropertyObjectTrumpMergePolicy == self || NSOverwriteMergePolicy == self || NSRollbackMergePolicy == self || NSErrorMergePolicy == self)
   {
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -73,9 +73,9 @@
   return [(NSMergePolicy *)&v3 init];
 }
 
-- (NSMergePolicy)initWithCoder:(id)a3
+- (NSMergePolicy)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntForKey:@"NSTypeCode"] - 1;
+  v4 = [coder decodeIntForKey:@"NSTypeCode"] - 1;
   if (v4 > 3)
   {
     v5 = &NSErrorMergePolicy;
@@ -91,7 +91,7 @@
   return v7;
 }
 
-- (uint64_t)_valuesOnObject:(uint64_t)a1 matchAgainstValues:(void *)a2
+- (uint64_t)_valuesOnObject:(uint64_t)object matchAgainstValues:(void *)values
 {
   v5 = 0;
   v6 = &v5;
@@ -101,9 +101,9 @@
   v4[1] = 3221225472;
   v4[2] = __52__NSMergePolicy__valuesOnObject_matchAgainstValues___block_invoke;
   v4[3] = &unk_1E6EC1CD8;
-  v4[4] = a1;
+  v4[4] = object;
   v4[5] = &v5;
-  [a2 enumerateKeysAndObjectsUsingBlock:v4];
+  [values enumerateKeysAndObjectsUsingBlock:v4];
   v2 = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
   return v2;
@@ -136,32 +136,32 @@ uint64_t __52__NSMergePolicy__valuesOnObject_matchAgainstValues___block_invoke(u
   return result;
 }
 
-- (uint64_t)_rollbackResolveConstraintConflict:(void *)a1
+- (uint64_t)_rollbackResolveConstraintConflict:(void *)conflict
 {
-  v1 = [objc_msgSend(a1 "conflictingObjects")];
-  v2 = [v1 isInserted];
-  v3 = [v1 managedObjectContext];
-  if (v2)
+  v1 = [objc_msgSend(conflict "conflictingObjects")];
+  isInserted = [v1 isInserted];
+  managedObjectContext = [v1 managedObjectContext];
+  if (isInserted)
   {
 
-    return [v3 deleteObject:v1];
+    return [managedObjectContext deleteObject:v1];
   }
 
   else
   {
 
-    return [v3 refreshObject:v1 mergeChanges:0];
+    return [managedObjectContext refreshObject:v1 mergeChanges:0];
   }
 }
 
-- (uint64_t)_mergeToManyUnionRelationshipsForObject:(void *)a1 andObject:(void *)a2
+- (uint64_t)_mergeToManyUnionRelationshipsForObject:(void *)object andObject:(void *)andObject
 {
   v56 = *MEMORY[0x1E69E9840];
-  v2 = [a2 entity];
-  if (v2)
+  entity = [andObject entity];
+  if (entity)
   {
-    v3 = v2;
-    result = [*(v2 + 104) keys];
+    v3 = entity;
+    result = [*(entity + 104) keys];
     v5 = v3[14];
     v6 = *(v5 + 144);
     v40 = *(v5 + 152) + v6;
@@ -173,27 +173,27 @@ uint64_t __52__NSMergePolicy__valuesOnObject_matchAgainstValues___block_invoke(u
       while (1)
       {
         v8 = *(v3[12] + 24 + 8 * v6);
-        v9 = [v8 inverseRelationship];
-        v10 = [v9 name];
-        v11 = [v9 isToMany];
-        v43 = [v9 isOrdered];
-        v12 = [v8 isOrdered];
+        inverseRelationship = [v8 inverseRelationship];
+        name = [inverseRelationship name];
+        isToMany = [inverseRelationship isToMany];
+        isOrdered = [inverseRelationship isOrdered];
+        isOrdered2 = [v8 isOrdered];
         v13 = *(v7 + 8 * v6);
         v41 = v6;
         v39 = v8;
-        if (v12)
+        if (isOrdered2)
         {
           break;
         }
 
-        v17 = [a1 mutableSetValueForKey:v13];
-        v15 = [a2 mutableSetValueForKey:*(v7 + 8 * v6)];
+        v17 = [object mutableSetValueForKey:v13];
+        v15 = [andObject mutableSetValueForKey:*(v7 + 8 * v6)];
         v46 = 0u;
         v47 = 0u;
         v48 = 0u;
         v49 = 0u;
-        v18 = [v15 allObjects];
-        v19 = [v18 countByEnumeratingWithState:&v46 objects:v54 count:16];
+        allObjects = [v15 allObjects];
+        v19 = [allObjects countByEnumeratingWithState:&v46 objects:v54 count:16];
         if (v19)
         {
           v20 = v19;
@@ -205,43 +205,43 @@ uint64_t __52__NSMergePolicy__valuesOnObject_matchAgainstValues___block_invoke(u
               v23 = v15;
               if (*v47 != v21)
               {
-                objc_enumerationMutation(v18);
+                objc_enumerationMutation(allObjects);
               }
 
               v24 = *(*(&v46 + 1) + 8 * i);
               [v17 addObject:v24];
-              if (!v9)
+              if (!inverseRelationship)
               {
 LABEL_40:
                 [NSMergePolicy _cannotResolveConflictOnEntity:v38 relationshipWithNoInverse:v39];
               }
 
-              if (v11)
+              if (isToMany)
               {
-                if (v43)
+                if (isOrdered)
                 {
-                  v25 = [v24 mutableOrderedSetValueForKey:v10];
+                  v25 = [v24 mutableOrderedSetValueForKey:name];
                 }
 
                 else
                 {
-                  v25 = [v24 mutableSetValueForKey:v10];
+                  v25 = [v24 mutableSetValueForKey:name];
                 }
 
                 v26 = v25;
-                [v25 removeObject:a2];
-                [v26 addObject:a1];
+                [v25 removeObject:andObject];
+                [v26 addObject:object];
               }
 
               else
               {
-                [v24 setValue:a1 forKey:v10];
+                [v24 setValue:object forKey:name];
               }
 
               v15 = v23;
             }
 
-            v20 = [v18 countByEnumeratingWithState:&v46 objects:v54 count:16];
+            v20 = [allObjects countByEnumeratingWithState:&v46 objects:v54 count:16];
           }
 
           while (v20);
@@ -259,24 +259,24 @@ LABEL_38:
         }
       }
 
-      v14 = [a1 mutableOrderedSetValueForKey:v13];
-      v15 = [a2 mutableOrderedSetValueForKey:*(v7 + 8 * v6)];
+      v14 = [object mutableOrderedSetValueForKey:v13];
+      v15 = [andObject mutableOrderedSetValueForKey:*(v7 + 8 * v6)];
       if ([v15 count])
       {
-        v16 = [v15 objectsAtIndexes:{objc_msgSend(MEMORY[0x1E696AC90], "indexSetWithIndexesInRange:", 0, objc_msgSend(v15, "count"))}];
+        array = [v15 objectsAtIndexes:{objc_msgSend(MEMORY[0x1E696AC90], "indexSetWithIndexesInRange:", 0, objc_msgSend(v15, "count"))}];
       }
 
       else
       {
-        v16 = [MEMORY[0x1E695DEC8] array];
+        array = [MEMORY[0x1E695DEC8] array];
       }
 
-      v27 = v16;
+      v27 = array;
       v52 = 0u;
       v53 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v28 = [v16 countByEnumeratingWithState:&v50 objects:v55 count:16];
+      v28 = [array countByEnumeratingWithState:&v50 objects:v55 count:16];
       if (!v28)
       {
         goto LABEL_38;
@@ -297,31 +297,31 @@ LABEL_38:
 
           v33 = *(*(&v50 + 1) + 8 * j);
           [v14 addObject:v33];
-          if (!v9)
+          if (!inverseRelationship)
           {
             goto LABEL_40;
           }
 
-          if (v11)
+          if (isToMany)
           {
-            if (v43)
+            if (isOrdered)
             {
-              v34 = [v33 mutableOrderedSetValueForKey:v10];
+              v34 = [v33 mutableOrderedSetValueForKey:name];
             }
 
             else
             {
-              v34 = [v33 mutableSetValueForKey:v10];
+              v34 = [v33 mutableSetValueForKey:name];
             }
 
             v35 = v34;
-            [v34 removeObject:a2];
-            [v35 addObject:a1];
+            [v34 removeObject:andObject];
+            [v35 addObject:object];
           }
 
           else
           {
-            [v33 setValue:a1 forKey:v10];
+            [v33 setValue:object forKey:name];
           }
 
           v15 = v32;
@@ -347,26 +347,26 @@ LABEL_39:
   return result;
 }
 
-- (uint64_t)_overwriteResolveConstraintConflict:(void *)a1
+- (uint64_t)_overwriteResolveConstraintConflict:(void *)conflict
 {
-  v2 = [a1 databaseObject];
-  -[NSMergePolicy _mergeToManyUnionRelationshipsForObject:andObject:]([objc_msgSend(a1 "conflictingObjects")], objc_msgSend(a1, "databaseObject"));
-  v3 = [v2 managedObjectContext];
+  databaseObject = [conflict databaseObject];
+  -[NSMergePolicy _mergeToManyUnionRelationshipsForObject:andObject:]([objc_msgSend(conflict "conflictingObjects")], objc_msgSend(conflict, "databaseObject"));
+  managedObjectContext = [databaseObject managedObjectContext];
 
-  return [v3 deleteObject:v2];
+  return [managedObjectContext deleteObject:databaseObject];
 }
 
-- (void)_mergeToManyRelationshipsForObject:(void *)a1 ontoObject:(void *)a2
+- (void)_mergeToManyRelationshipsForObject:(void *)object ontoObject:(void *)ontoObject
 {
-  v2 = a1;
+  objectCopy = object;
   v105 = *MEMORY[0x1E69E9840];
-  v3 = [a1 entity];
-  v4 = v3;
-  if (v3)
+  entity = [object entity];
+  v4 = entity;
+  if (entity)
   {
-    v5 = [*(v3 + 104) keys];
+    keys = [*(entity + 104) keys];
     v6 = v4[14];
-    if (!v2)
+    if (!objectCopy)
     {
       goto LABEL_7;
     }
@@ -374,15 +374,15 @@ LABEL_39:
 
   else
   {
-    v5 = [0 keys];
+    keys = [0 keys];
     v6 = 0;
-    if (!v2)
+    if (!objectCopy)
     {
       goto LABEL_7;
     }
   }
 
-  v7 = v2[6];
+  v7 = objectCopy[6];
   if (v7)
   {
     v67 = *(v7 + 8);
@@ -396,24 +396,24 @@ LABEL_8:
   v66 = *(v6 + 152) + v8;
   if (v8 < v66)
   {
-    v72 = v2;
-    v68 = v5;
+    v72 = objectCopy;
+    v68 = keys;
     v65 = v4;
     do
     {
       v9 = *(v4[12] + 24 + 8 * v8);
-      v10 = [v9 inverseRelationship];
-      v11 = [v10 name];
-      v12 = [v10 isToMany];
-      v73 = [v10 isOrdered];
+      inverseRelationship = [v9 inverseRelationship];
+      name = [inverseRelationship name];
+      isToMany = [inverseRelationship isToMany];
+      isOrdered = [inverseRelationship isOrdered];
       v64 = v9;
-      v13 = [v9 isOrdered];
-      v14 = *(v5 + 8 * v8);
+      isOrdered2 = [v9 isOrdered];
+      v14 = *(keys + 8 * v8);
       v69 = v8;
-      if (v13)
+      if (isOrdered2)
       {
-        v15 = [v2 mutableOrderedSetValueForKey:v14];
-        v16 = [v67 objectForKey:*(v5 + 8 * v8)];
+        v15 = [objectCopy mutableOrderedSetValueForKey:v14];
+        v16 = [v67 objectForKey:*(keys + 8 * v8)];
         v17 = objc_alloc_init(MEMORY[0x1E695DFA8]);
         v95 = 0u;
         v96 = 0u;
@@ -446,23 +446,23 @@ LABEL_8:
           while (v19);
         }
 
-        v23 = [a2 mutableOrderedSetValueForKey:*(v68 + 8 * v69)];
+        v23 = [ontoObject mutableOrderedSetValueForKey:*(v68 + 8 * v69)];
         if ([v15 count])
         {
-          v24 = [v15 objectsAtIndexes:{objc_msgSend(MEMORY[0x1E696AC90], "indexSetWithIndexesInRange:", 0, objc_msgSend(v15, "count"))}];
+          array = [v15 objectsAtIndexes:{objc_msgSend(MEMORY[0x1E696AC90], "indexSetWithIndexesInRange:", 0, objc_msgSend(v15, "count"))}];
         }
 
         else
         {
-          v24 = [MEMORY[0x1E695DEC8] array];
+          array = [MEMORY[0x1E695DEC8] array];
         }
 
-        v48 = v24;
+        v48 = array;
         v93 = 0u;
         v94 = 0u;
         v91 = 0u;
         v92 = 0u;
-        v49 = [v24 countByEnumeratingWithState:&v91 objects:v103 count:16];
+        v49 = [array countByEnumeratingWithState:&v91 objects:v103 count:16];
         obja = v15;
         if (v49)
         {
@@ -479,32 +479,32 @@ LABEL_8:
 
               v53 = *(*(&v91 + 1) + 8 * j);
               [v23 addObject:v53];
-              if (!v10)
+              if (!inverseRelationship)
               {
 
                 goto LABEL_96;
               }
 
-              if (v12)
+              if (isToMany)
               {
-                if (v73)
+                if (isOrdered)
                 {
-                  v54 = [v53 mutableOrderedSetValueForKey:v11];
+                  v54 = [v53 mutableOrderedSetValueForKey:name];
                 }
 
                 else
                 {
-                  v54 = [v53 mutableSetValueForKey:v11];
+                  v54 = [v53 mutableSetValueForKey:name];
                 }
 
                 v55 = v54;
                 [v54 removeObject:v72];
-                [v55 addObject:a2];
+                [v55 addObject:ontoObject];
               }
 
               else
               {
-                [v53 setValue:a2 forKey:v11];
+                [v53 setValue:ontoObject forKey:name];
               }
             }
 
@@ -537,23 +537,23 @@ LABEL_8:
               if ([v23 containsObject:v60])
               {
                 [v23 removeObject:v60];
-                if (!v10)
+                if (!inverseRelationship)
                 {
 
                   [NSMergePolicy _cannotResolveConflictOnEntity:v65 relationshipWithNoInverse:v64];
                 }
 
-                if (v73)
+                if (isOrdered)
                 {
-                  v61 = [v60 mutableOrderedSetValueForKey:v11];
+                  v61 = [v60 mutableOrderedSetValueForKey:name];
                 }
 
                 else
                 {
-                  v61 = [v60 mutableSetValueForKey:v11];
+                  v61 = [v60 mutableSetValueForKey:name];
                 }
 
-                [v61 removeObject:a2];
+                [v61 removeObject:ontoObject];
               }
             }
 
@@ -568,8 +568,8 @@ LABEL_8:
 
       else
       {
-        v25 = [v2 mutableSetValueForKey:v14];
-        v26 = [v67 objectForKey:*(v5 + 8 * v8)];
+        v25 = [objectCopy mutableSetValueForKey:v14];
+        v26 = [v67 objectForKey:*(keys + 8 * v8)];
         v27 = objc_alloc_init(MEMORY[0x1E695DFA8]);
         v83 = 0u;
         v84 = 0u;
@@ -603,14 +603,14 @@ LABEL_8:
         }
 
         v63 = v27;
-        v33 = [a2 mutableSetValueForKey:*(v68 + 8 * v69)];
-        v34 = [v25 allObjects];
+        v33 = [ontoObject mutableSetValueForKey:*(v68 + 8 * v69)];
+        allObjects = [v25 allObjects];
         v79 = 0u;
         v80 = 0u;
         v81 = 0u;
         v82 = 0u;
-        obj = v34;
-        v35 = [v34 countByEnumeratingWithState:&v79 objects:v100 count:16];
+        obj = allObjects;
+        v35 = [allObjects countByEnumeratingWithState:&v79 objects:v100 count:16];
         if (v35)
         {
           v36 = v35;
@@ -626,7 +626,7 @@ LABEL_8:
 
               v39 = *(*(&v79 + 1) + 8 * n);
               [v33 addObject:v39];
-              if (!v10)
+              if (!inverseRelationship)
               {
 LABEL_95:
 
@@ -634,26 +634,26 @@ LABEL_96:
                 [NSMergePolicy _cannotResolveConflictOnEntity:v65 relationshipWithNoInverse:v64];
               }
 
-              if (v12)
+              if (isToMany)
               {
-                if (v73)
+                if (isOrdered)
                 {
-                  v40 = [v39 mutableOrderedSetValueForKey:v11];
+                  v40 = [v39 mutableOrderedSetValueForKey:name];
                 }
 
                 else
                 {
-                  v40 = [v39 mutableSetValueForKey:v11];
+                  v40 = [v39 mutableSetValueForKey:name];
                 }
 
                 v41 = v40;
                 [v40 removeObject:v72];
-                [v41 addObject:a2];
+                [v41 addObject:ontoObject];
               }
 
               else
               {
-                [v39 setValue:a2 forKey:v11];
+                [v39 setValue:ontoObject forKey:name];
               }
 
               [v25 removeObject:v39];
@@ -687,29 +687,29 @@ LABEL_96:
               if ([v33 containsObject:v46])
               {
                 [v33 removeObject:v46];
-                if (!v10)
+                if (!inverseRelationship)
                 {
                   goto LABEL_95;
                 }
 
-                if (v12)
+                if (isToMany)
                 {
-                  if (v73)
+                  if (isOrdered)
                   {
-                    v47 = [v46 mutableOrderedSetValueForKey:v11];
+                    v47 = [v46 mutableOrderedSetValueForKey:name];
                   }
 
                   else
                   {
-                    v47 = [v46 mutableSetValueForKey:v11];
+                    v47 = [v46 mutableSetValueForKey:name];
                   }
 
-                  [v47 removeObject:a2];
+                  [v47 removeObject:ontoObject];
                 }
 
                 else
                 {
-                  [v46 setValue:0 forKey:v11];
+                  [v46 setValue:0 forKey:name];
                 }
               }
             }
@@ -723,9 +723,9 @@ LABEL_96:
         v4 = v65;
       }
 
-      v5 = v68;
+      keys = v68;
       v8 = v69 + 1;
-      v2 = v72;
+      objectCopy = v72;
     }
 
     while (v69 + 1 != v66);
@@ -734,26 +734,26 @@ LABEL_96:
   v62 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_byPropertyStoreTrumpResolveConstraintConflict:(void *)a1
+- (uint64_t)_byPropertyStoreTrumpResolveConstraintConflict:(void *)conflict
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [objc_msgSend(a1 "conflictingObjects")];
-  v3 = [a1 conflictingObjects];
-  if ([a1 _isDBConflict])
+  v2 = [objc_msgSend(conflict "conflictingObjects")];
+  conflictingObjects = [conflict conflictingObjects];
+  if ([conflict _isDBConflict])
   {
-    v4 = [a1 databaseObject];
+    databaseObject = [conflict databaseObject];
   }
 
   else
   {
-    v4 = 0;
+    databaseObject = 0;
   }
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [conflictingObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -764,49 +764,49 @@ LABEL_96:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(conflictingObjects);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if (v4 != v9)
+        if (databaseObject != v9)
         {
-          [NSMergePolicy _mergeToManyRelationshipsForObject:v9 ontoObject:v4];
+          [NSMergePolicy _mergeToManyRelationshipsForObject:v9 ontoObject:databaseObject];
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [conflictingObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 
-  v10 = [v2 managedObjectContext];
+  managedObjectContext = [v2 managedObjectContext];
   v11 = *MEMORY[0x1E69E9840];
 
-  return [v10 deleteObject:v2];
+  return [managedObjectContext deleteObject:v2];
 }
 
-- (uint64_t)_byPropertyObjectTrumpResolveConstraintConflict:(void *)a1
+- (uint64_t)_byPropertyObjectTrumpResolveConstraintConflict:(void *)conflict
 {
-  v2 = [objc_msgSend(a1 "conflictingObjects")];
-  v3 = [a1 databaseObject];
-  v48 = [v2 isInserted];
-  v44 = [v2 managedObjectContext];
-  v4 = [v2 entity];
-  v5 = v4;
-  v45 = v4;
-  if (v4)
+  v2 = [objc_msgSend(conflict "conflictingObjects")];
+  databaseObject = [conflict databaseObject];
+  isInserted = [v2 isInserted];
+  managedObjectContext = [v2 managedObjectContext];
+  entity = [v2 entity];
+  v5 = entity;
+  v45 = entity;
+  if (entity)
   {
-    v6 = [*(v4 + 104) keys];
+    keys = [*(entity + 104) keys];
     v5 = v5[14];
   }
 
   else
   {
-    v6 = [0 keys];
+    keys = [0 keys];
   }
 
-  v7 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   if (v2 && (v8 = v2[6]) != 0)
   {
     v9 = *(v8 + 8);
@@ -821,12 +821,12 @@ LABEL_96:
   v11 = v5[7];
   if (v10 < v11 + v10)
   {
-    v12 = (v6 + 8 * v10);
+    v12 = (keys + 8 * v10);
     do
     {
       v13 = [v9 valueForKey:*v12];
       v14 = [v2 valueForKey:*v12];
-      if (v7 == v14)
+      if (null == v14)
       {
         v15 = 0;
       }
@@ -836,9 +836,9 @@ LABEL_96:
         v15 = v14;
       }
 
-      if ((v48 & 1) != 0 || (v7 != v13 ? (v16 = v13) : (v16 = 0), ([v16 isEqual:v15] & 1) == 0))
+      if ((isInserted & 1) != 0 || (null != v13 ? (v16 = v13) : (v16 = 0), ([v16 isEqual:v15] & 1) == 0))
       {
-        [v3 setValue:v15 forKey:*v12];
+        [databaseObject setValue:v15 forKey:*v12];
       }
 
       ++v12;
@@ -855,11 +855,11 @@ LABEL_96:
     v19 = 8 * v17;
     v46 = v2;
     v47 = v9;
-    v42 = v3;
+    v42 = databaseObject;
     while (1)
     {
-      v20 = [v9 valueForKey:*(v6 + v19)];
-      if (v7 == v20)
+      v20 = [v9 valueForKey:*(keys + v19)];
+      if (null == v20)
       {
         v21 = 0;
       }
@@ -869,45 +869,45 @@ LABEL_96:
         v21 = v20;
       }
 
-      v22 = [v2 valueForKey:*(v6 + v19)];
+      v22 = [v2 valueForKey:*(keys + v19)];
       v23 = v22;
-      if (v7 == v22)
+      if (null == v22)
       {
-        v24 = 0;
+        objectID = 0;
       }
 
       else
       {
-        v24 = [v22 objectID];
+        objectID = [v22 objectID];
       }
 
-      if (v48 & 1) == 0 && ([v21 isEqual:v24])
+      if (isInserted & 1) == 0 && ([v21 isEqual:objectID])
       {
         goto LABEL_52;
       }
 
-      v25 = v3;
-      v26 = [v3 valueForKey:*(v6 + v19)];
+      v25 = databaseObject;
+      v26 = [databaseObject valueForKey:*(keys + v19)];
       v27 = *(*(v45 + 96) + 24 + v19);
-      v28 = [v27 inverseRelationship];
-      v29 = [v28 name];
-      v30 = [v28 isToMany];
+      inverseRelationship = [v27 inverseRelationship];
+      name = [inverseRelationship name];
+      isToMany = [inverseRelationship isToMany];
       if (!v26)
       {
-        if (v28)
+        if (inverseRelationship)
         {
-          if (v30)
+          if (isToMany)
           {
-            v37 = [v28 isOrdered];
-            v38 = [v28 name];
-            if (v37)
+            isOrdered = [inverseRelationship isOrdered];
+            name2 = [inverseRelationship name];
+            if (isOrdered)
             {
-              v39 = [v23 mutableOrderedSetValueForKey:v38];
+              v39 = [v23 mutableOrderedSetValueForKey:name2];
             }
 
             else
             {
-              v39 = [v23 mutableSetValueForKey:v38];
+              v39 = [v23 mutableSetValueForKey:name2];
             }
 
             v40 = v39;
@@ -917,14 +917,14 @@ LABEL_96:
 
           else
           {
-            [v23 setValue:v25 forKey:v29];
+            [v23 setValue:v25 forKey:name];
           }
         }
 
         goto LABEL_51;
       }
 
-      if (v28)
+      if (inverseRelationship)
       {
         break;
       }
@@ -932,14 +932,14 @@ LABEL_96:
 LABEL_47:
       if ([v27 deleteRule] == 2)
       {
-        [v44 deleteObject:v26];
+        [managedObjectContext deleteObject:v26];
       }
 
 LABEL_51:
-      [v46 setValue:0 forKey:*(v6 + v19)];
-      v3 = v25;
+      [v46 setValue:0 forKey:*(keys + v19)];
+      databaseObject = v25;
       v2 = v46;
-      [v3 setValue:v23 forKey:*(v6 + v19)];
+      [databaseObject setValue:v23 forKey:*(keys + v19)];
 LABEL_52:
       v19 += 8;
       --v18;
@@ -950,19 +950,19 @@ LABEL_52:
       }
     }
 
-    if (!v30)
+    if (!isToMany)
     {
-      [v23 setValue:v25 forKey:v29];
-      [v26 setValue:0 forKey:v29];
+      [v23 setValue:v25 forKey:name];
+      [v26 setValue:0 forKey:name];
       goto LABEL_47;
     }
 
-    v31 = [v28 isOrdered];
-    v32 = [v28 name];
-    if (v31)
+    isOrdered2 = [inverseRelationship isOrdered];
+    name3 = [inverseRelationship name];
+    if (isOrdered2)
     {
-      v43 = [v26 mutableOrderedSetValueForKey:v32];
-      v33 = [v23 mutableOrderedSetValueForKey:{objc_msgSend(v28, "name")}];
+      v43 = [v26 mutableOrderedSetValueForKey:name3];
+      v33 = [v23 mutableOrderedSetValueForKey:{objc_msgSend(inverseRelationship, "name")}];
       if (([v33 containsObject:v25] & 1) == 0)
       {
         v34 = [v33 indexOfObject:v46];
@@ -979,8 +979,8 @@ LABEL_52:
 
     else
     {
-      [objc_msgSend(v26 mutableSetValueForKey:{v32), "removeObject:", v25}];
-      v33 = [v23 mutableSetValueForKey:{objc_msgSend(v28, "name")}];
+      [objc_msgSend(v26 mutableSetValueForKey:{name3), "removeObject:", v25}];
+      v33 = [v23 mutableSetValueForKey:{objc_msgSend(inverseRelationship, "name")}];
       [v33 addObject:v42];
     }
 
@@ -992,9 +992,9 @@ LABEL_46:
   }
 
 LABEL_53:
-  [NSMergePolicy _mergeToManyRelationshipsForObject:v2 ontoObject:v3];
+  [NSMergePolicy _mergeToManyRelationshipsForObject:v2 ontoObject:databaseObject];
 
-  return [v44 deleteObject:v2];
+  return [managedObjectContext deleteObject:v2];
 }
 
 void __33__NSMergePolicy_resolveConflict___block_invoke(uint64_t a1)
@@ -1006,19 +1006,19 @@ void __33__NSMergePolicy_resolveConflict___block_invoke(uint64_t a1)
   [(NSXPCStore *)v3 _clearCachedRowForObjectWithID:v4 generation:v2];
 }
 
-- (void)_mergeChangesStoreUpdatesTrumpForObject:(id)a3 withRecord:(id)a4
+- (void)_mergeChangesStoreUpdatesTrumpForObject:(id)object withRecord:(id)record
 {
   v44 = *MEMORY[0x1E69E9840];
-  v39 = [a3 managedObjectContext];
-  v42 = a3;
-  if ([a3 isInserted])
+  managedObjectContext = [object managedObjectContext];
+  objectCopy = object;
+  if ([object isInserted])
   {
-    [(NSManagedObjectContext *)v39 _forceMoveInsertToUpdatedList:a3];
+    [(NSManagedObjectContext *)managedObjectContext _forceMoveInsertToUpdatedList:object];
   }
 
-  v41 = [a4 ancestorSnapshot];
-  v6 = [a4 objectForKey:@"snapshot"];
-  v7 = [a4 objectForKey:@"cachedRow"];
+  ancestorSnapshot = [record ancestorSnapshot];
+  v6 = [record objectForKey:@"snapshot"];
+  v7 = [record objectForKey:@"cachedRow"];
   v8 = v7;
   if (v6)
   {
@@ -1028,7 +1028,7 @@ void __33__NSMergePolicy_resolveConflict___block_invoke(uint64_t a1)
 
   else
   {
-    v9 = [a4 objectForKey:@"databaseRow"];
+    v9 = [record objectForKey:@"databaseRow"];
   }
 
   if (v6)
@@ -1043,22 +1043,22 @@ void __33__NSMergePolicy_resolveConflict___block_invoke(uint64_t a1)
 
   v11 = !v10;
   v43 = v11;
-  v12 = [v42 entity];
-  v13 = v12;
-  if (v12)
+  entity = [objectCopy entity];
+  v13 = entity;
+  if (entity)
   {
-    v14 = [*(v12 + 104) keys];
+    keys = [*(entity + 104) keys];
     v15 = *(v13 + 112);
   }
 
   else
   {
-    v14 = [0 keys];
+    keys = [0 keys];
     v15 = 0;
   }
 
-  v16 = [MEMORY[0x1E695DFB0] null];
-  v40 = [-[NSManagedObjectContext _committedSnapshotForObject:](v39 v42)];
+  null = [MEMORY[0x1E695DFB0] null];
+  v40 = [-[NSManagedObjectContext _committedSnapshotForObject:](managedObjectContext objectCopy)];
   v17 = *(v15 + 48);
   v18 = *(v15 + 56);
   v38 = v15;
@@ -1068,8 +1068,8 @@ void __33__NSMergePolicy_resolveConflict___block_invoke(uint64_t a1)
     v35 = *MEMORY[0x1E696A250];
     do
     {
-      v19 = [v8 objectForKey:*(v14 + 8 * v17)];
-      if (v19 == v16)
+      v19 = [v8 objectForKey:*(keys + 8 * v17)];
+      if (v19 == null)
       {
         v20 = 0;
       }
@@ -1079,8 +1079,8 @@ void __33__NSMergePolicy_resolveConflict___block_invoke(uint64_t a1)
         v20 = v19;
       }
 
-      v21 = [v9 objectForKey:*(v14 + 8 * v17)];
-      if (v21 == v16)
+      v21 = [v9 objectForKey:*(keys + 8 * v17)];
+      if (v21 == null)
       {
         v22 = 0;
       }
@@ -1092,7 +1092,7 @@ void __33__NSMergePolicy_resolveConflict___block_invoke(uint64_t a1)
 
       if (v20 != v22 && ([*(*(v13 + 96) + 24 + 8 * v17) _epsilonEquals:v22 rhs:v20 withFlags:1] & 1) == 0)
       {
-        if (!v41 || (v23 = [v41 objectForKey:*(v14 + 8 * v17)], v24 = v23, v23 == v20) || (objc_msgSend(v23, "isEqual:", v20) & 1) != 0)
+        if (!ancestorSnapshot || (v23 = [ancestorSnapshot objectForKey:*(keys + 8 * v17)], v24 = v23, v23 == v20) || (objc_msgSend(v23, "isEqual:", v20) & 1) != 0)
         {
           v20 = v22;
         }
@@ -1102,7 +1102,7 @@ void __33__NSMergePolicy_resolveConflict___block_invoke(uint64_t a1)
           v20 = v22;
         }
 
-        [v42 setValue:v20 forKey:*(v14 + 8 * v17)];
+        [objectCopy setValue:v20 forKey:*(keys + 8 * v17)];
         [v40 setValue:v20 atIndex:v17];
       }
 
@@ -1119,62 +1119,62 @@ void __33__NSMergePolicy_resolveConflict___block_invoke(uint64_t a1)
   {
     while (1)
     {
-      v27 = [v8 objectForKey:*(v14 + 8 * v25)];
-      if (v27 == v16)
+      v27 = [v8 objectForKey:*(keys + 8 * v25)];
+      if (v27 == null)
       {
-        v28 = 0;
+        objectID = 0;
       }
 
       else
       {
-        v28 = v27;
+        objectID = v27;
       }
 
       if (v43)
       {
-        v28 = [v28 objectID];
+        objectID = [objectID objectID];
       }
 
-      v29 = [v9 objectForKey:*(v14 + 8 * v25)];
-      if (v29 == v16)
+      v29 = [v9 objectForKey:*(keys + 8 * v25)];
+      if (v29 == null)
       {
-        v30 = 0;
+        objectID2 = 0;
       }
 
       else
       {
-        v30 = v29;
+        objectID2 = v29;
       }
 
       if ((z9dsptsiQ80etb9782fsrs98bfdle88 & 1) == 0)
       {
-        v30 = [v30 objectID];
+        objectID2 = [objectID2 objectID];
       }
 
-      if (v28 == v30 || ([v30 isEqual:v28] & 1) != 0)
+      if (objectID == objectID2 || ([objectID2 isEqual:objectID] & 1) != 0)
       {
         goto LABEL_60;
       }
 
-      if (!v41)
+      if (!ancestorSnapshot)
       {
         goto LABEL_55;
       }
 
-      v31 = [v41 objectForKey:*(v14 + 8 * v25)];
+      v31 = [ancestorSnapshot objectForKey:*(keys + 8 * v25)];
       v32 = v31;
-      if (v31 == v28 || ([v31 isEqual:v28] & 1) != 0)
+      if (v31 == objectID || ([v31 isEqual:objectID] & 1) != 0)
       {
         goto LABEL_55;
       }
 
-      if (v32 != v30)
+      if (v32 != objectID2)
       {
         break;
       }
 
-      v30 = v28;
-      if (!v28)
+      objectID2 = objectID;
+      if (!objectID)
       {
 LABEL_58:
         v33 = 0;
@@ -1182,9 +1182,9 @@ LABEL_58:
       }
 
 LABEL_56:
-      v33 = [NSManagedObjectContext _retainedObjectWithID:v39 optionalHandler:v30 withInlineStorage:0];
+      v33 = [NSManagedObjectContext _retainedObjectWithID:managedObjectContext optionalHandler:objectID2 withInlineStorage:0];
 LABEL_59:
-      [v42 setValue:v33 forKey:*(v14 + 8 * v25)];
+      [objectCopy setValue:v33 forKey:*(keys + 8 * v25)];
       [v40 setValue:v33 atIndex:v25];
 
 LABEL_60:
@@ -1195,13 +1195,13 @@ LABEL_60:
       }
     }
 
-    if ([v32 isEqual:v30])
+    if ([v32 isEqual:objectID2])
     {
-      v30 = v28;
+      objectID2 = objectID;
     }
 
 LABEL_55:
-    if (!v30)
+    if (!objectID2)
     {
       goto LABEL_58;
     }
@@ -1211,14 +1211,14 @@ LABEL_55:
 
 LABEL_61:
 
-  if (v41)
+  if (ancestorSnapshot)
   {
-    [(NSMergePolicy *)self mergeToManyRelationshipForSourceObject:v42 withOldSnapshot:v8 newSnapshot:v9 andAncestor:v41 andLegacyPath:v43];
+    [(NSMergePolicy *)self mergeToManyRelationshipForSourceObject:objectCopy withOldSnapshot:v8 newSnapshot:v9 andAncestor:ancestorSnapshot andLegacyPath:v43];
   }
 
-  if (z9dsptsiQ80etb9782fsrs98bfdle88 == 1 && [v42 isDeleted])
+  if (z9dsptsiQ80etb9782fsrs98bfdle88 == 1 && [objectCopy isDeleted])
   {
-    -[NSManagedObjectContext _insertObjectWithGlobalID:globalID:]([v42 managedObjectContext], v42, objc_msgSend(v42, "objectID"));
+    -[NSManagedObjectContext _insertObjectWithGlobalID:globalID:]([objectCopy managedObjectContext], objectCopy, objc_msgSend(objectCopy, "objectID"));
   }
 
   v34 = *MEMORY[0x1E69E9840];
@@ -1709,18 +1709,18 @@ LABEL_62:
   v65 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_mergeChangesObjectUpdatesTrumpForObject:(id)a3 withRecord:(id)a4
+- (void)_mergeChangesObjectUpdatesTrumpForObject:(id)object withRecord:(id)record
 {
   v79 = *MEMORY[0x1E69E9840];
   context = objc_autoreleasePoolPush();
-  v53 = [a3 managedObjectContext];
-  v7 = [(NSManagedObjectContext *)v53 _committedSnapshotForObject:a3];
-  if ([a3 isDeleted])
+  managedObjectContext = [object managedObjectContext];
+  v7 = [(NSManagedObjectContext *)managedObjectContext _committedSnapshotForObject:object];
+  if ([object isDeleted])
   {
     if (self)
     {
-      v8 = [a4 objectForKey:@"snapshot"];
-      v9 = [a4 objectForKey:@"cachedRow"];
+      v8 = [record objectForKey:@"snapshot"];
+      v9 = [record objectForKey:@"cachedRow"];
       v10 = v9;
       if (v8)
       {
@@ -1730,7 +1730,7 @@ LABEL_62:
 
       else
       {
-        v11 = [a4 objectForKey:@"databaseRow"];
+        v11 = [record objectForKey:@"databaseRow"];
       }
 
       if (v8)
@@ -1744,11 +1744,11 @@ LABEL_62:
       }
 
       v13 = !v12;
-      v14 = [a3 managedObjectContext];
-      v15 = v14;
-      if (v14)
+      managedObjectContext2 = [object managedObjectContext];
+      v15 = managedObjectContext2;
+      if (managedObjectContext2)
       {
-        v16 = *(v14 + 32);
+        v16 = *(managedObjectContext2 + 32);
       }
 
       else
@@ -1760,13 +1760,13 @@ LABEL_62:
       v70 = 3221225472;
       v71 = __68__NSMergePolicy__mergeDeletionWithStoreChangesForObject_withRecord___block_invoke;
       v72 = &unk_1E6EC2860;
-      v73 = a3;
+      objectCopy = object;
       v74 = v10;
       v78 = v13;
       v75 = v11;
-      v76 = v14;
+      v76 = managedObjectContext2;
       v77 = v16;
-      [(NSManagedObjectContext *)v14 lockObjectStore];
+      [(NSManagedObjectContext *)managedObjectContext2 lockObjectStore];
       if (v16 == [v15 persistentStoreCoordinator])
       {
         [v16 performBlockAndWait:buf];
@@ -1781,13 +1781,13 @@ LABEL_62:
     }
   }
 
-  else if ([a3 isInserted])
+  else if ([object isInserted])
   {
-    [(NSManagedObjectContext *)v53 _forceMoveInsertToUpdatedList:a3];
+    [(NSManagedObjectContext *)managedObjectContext _forceMoveInsertToUpdatedList:object];
   }
 
-  v17 = [a4 objectForKey:@"snapshot"];
-  v18 = [a4 objectForKey:@"cachedRow"];
+  v17 = [record objectForKey:@"snapshot"];
+  v18 = [record objectForKey:@"cachedRow"];
   if (v17)
   {
     v57 = v18;
@@ -1797,7 +1797,7 @@ LABEL_62:
   else
   {
     v58 = v18;
-    v57 = [a4 objectForKey:@"databaseRow"];
+    v57 = [record objectForKey:@"databaseRow"];
   }
 
   if (v17)
@@ -1812,24 +1812,24 @@ LABEL_62:
 
   v20 = !v19;
   v56 = v20;
-  v21 = [(NSManagedObject *)a3 _newChangedValuesForRefresh__];
+  _newChangedValuesForRefresh__ = [(NSManagedObject *)object _newChangedValuesForRefresh__];
   v55 = [v7 copy];
-  v22 = [a3 entity];
-  v54 = v22;
-  if (v22)
+  entity = [object entity];
+  v54 = entity;
+  if (entity)
   {
-    v23 = v22;
-    v24 = [*(v22 + 104) keys];
+    v23 = entity;
+    keys = [*(entity + 104) keys];
     v25 = *(v23 + 112);
   }
 
   else
   {
-    v24 = [0 keys];
+    keys = [0 keys];
     v25 = 0;
   }
 
-  v26 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v27 = *(v25 + 48);
   v28 = *(v25 + 56);
   v52 = v25;
@@ -1840,8 +1840,8 @@ LABEL_62:
     do
     {
       v29 = objc_autoreleasePoolPush();
-      v30 = [v58 objectForKey:*(v24 + 8 * v27)];
-      if (v30 == v26)
+      v30 = [v58 objectForKey:*(keys + 8 * v27)];
+      if (v30 == null)
       {
         v31 = 0;
       }
@@ -1851,8 +1851,8 @@ LABEL_62:
         v31 = v30;
       }
 
-      v32 = [v57 objectForKey:*(v24 + 8 * v27)];
-      if (v32 == v26)
+      v32 = [v57 objectForKey:*(keys + 8 * v27)];
+      if (v32 == null)
       {
         v33 = 0;
       }
@@ -1873,7 +1873,7 @@ LABEL_62:
             v33 = [v33 copy];
           }
 
-          [a3 setValue:v33 forKey:*(v24 + 8 * v27)];
+          [object setValue:v33 forKey:*(keys + 8 * v27)];
           [v55 setValue:v33 atIndex:v27];
         }
       }
@@ -1892,43 +1892,43 @@ LABEL_62:
   {
     do
     {
-      v37 = [v58 objectForKey:*(v24 + 8 * v35)];
-      if (v37 == v26)
+      v37 = [v58 objectForKey:*(keys + 8 * v35)];
+      if (v37 == null)
       {
-        v38 = 0;
+        objectID = 0;
       }
 
       else
       {
-        v38 = v37;
+        objectID = v37;
       }
 
       if (v56)
       {
-        v38 = [v38 objectID];
+        objectID = [objectID objectID];
       }
 
-      v39 = [v57 objectForKey:*(v24 + 8 * v35)];
-      if (v39 == v26)
+      v39 = [v57 objectForKey:*(keys + 8 * v35)];
+      if (v39 == null)
       {
-        v40 = 0;
+        objectID2 = 0;
       }
 
       else
       {
-        v40 = v39;
+        objectID2 = v39;
       }
 
       if ((z9dsptsiQ80etb9782fsrs98bfdle88 & 1) == 0)
       {
-        v40 = [v40 objectID];
+        objectID2 = [objectID2 objectID];
       }
 
-      if (v38 != v40 && ([v40 isEqual:v38] & 1) == 0)
+      if (objectID != objectID2 && ([objectID2 isEqual:objectID] & 1) == 0)
       {
-        if (v40)
+        if (objectID2)
         {
-          v41 = [NSManagedObjectContext _retainedObjectWithID:v53 optionalHandler:v40 withInlineStorage:0];
+          v41 = [NSManagedObjectContext _retainedObjectWithID:managedObjectContext optionalHandler:objectID2 withInlineStorage:0];
         }
 
         else
@@ -1936,7 +1936,7 @@ LABEL_62:
           v41 = 0;
         }
 
-        [a3 setValue:v41 forKey:*(v24 + 8 * v35)];
+        [object setValue:v41 forKey:*(keys + 8 * v35)];
         [v55 setValue:v41 atIndex:v35];
       }
 
@@ -1947,14 +1947,14 @@ LABEL_62:
     while (v36);
   }
 
-  [(NSManagedObject *)a3 _setOriginalSnapshot__:v55];
-  if ([(NSKnownKeysDictionary *)v21 count])
+  [(NSManagedObject *)object _setOriginalSnapshot__:v55];
+  if ([(NSKnownKeysDictionary *)_newChangedValuesForRefresh__ count])
   {
     v65 = 0u;
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v42 = [(NSKnownKeysDictionary *)v21 countByEnumeratingWithState:&v63 objects:v68 count:16];
+    v42 = [(NSKnownKeysDictionary *)_newChangedValuesForRefresh__ countByEnumeratingWithState:&v63 objects:v68 count:16];
     if (v42)
     {
       v43 = *v64;
@@ -1964,24 +1964,24 @@ LABEL_62:
         {
           if (*v64 != v43)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(_newChangedValuesForRefresh__);
           }
 
-          [a3 willChangeValueForKey:*(*(&v63 + 1) + 8 * i)];
+          [object willChangeValueForKey:*(*(&v63 + 1) + 8 * i)];
         }
 
-        v42 = [(NSKnownKeysDictionary *)v21 countByEnumeratingWithState:&v63 objects:v68 count:16];
+        v42 = [(NSKnownKeysDictionary *)_newChangedValuesForRefresh__ countByEnumeratingWithState:&v63 objects:v68 count:16];
       }
 
       while (v42);
     }
 
-    [(NSManagedObject *)a3 _updateFromRefreshSnapshot:v21 includingTransients:0];
+    [(NSManagedObject *)object _updateFromRefreshSnapshot:_newChangedValuesForRefresh__ includingTransients:0];
     v61 = 0u;
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v45 = [(NSKnownKeysDictionary *)v21 countByEnumeratingWithState:&v59 objects:v67 count:16];
+    v45 = [(NSKnownKeysDictionary *)_newChangedValuesForRefresh__ countByEnumeratingWithState:&v59 objects:v67 count:16];
     if (v45)
     {
       v46 = *v60;
@@ -1991,13 +1991,13 @@ LABEL_62:
         {
           if (*v60 != v46)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(_newChangedValuesForRefresh__);
           }
 
-          [a3 didChangeValueForKey:*(*(&v59 + 1) + 8 * j)];
+          [object didChangeValueForKey:*(*(&v59 + 1) + 8 * j)];
         }
 
-        v45 = [(NSKnownKeysDictionary *)v21 countByEnumeratingWithState:&v59 objects:v67 count:16];
+        v45 = [(NSKnownKeysDictionary *)_newChangedValuesForRefresh__ countByEnumeratingWithState:&v59 objects:v67 count:16];
       }
 
       while (v45);
@@ -2029,7 +2029,7 @@ LABEL_62:
     goto LABEL_254;
   }
 
-  v150 = self;
+  selfCopy = self;
   if (!self->_type)
   {
     goto LABEL_257;
@@ -2038,7 +2038,7 @@ LABEL_62:
   v145 = objc_alloc_init(MEMORY[0x1E696AAC8]);
   if ([-[NSArray firstObject](list "firstObject")])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v176 = 0u;
     v177 = 0u;
     v174 = 0u;
@@ -2046,7 +2046,7 @@ LABEL_62:
     v6 = [(NSArray *)list countByEnumeratingWithState:&v174 objects:v195 count:16];
     if (v6)
     {
-      v7 = 0;
+      managedObjectContext = 0;
       v8 = *v175;
       do
       {
@@ -2062,8 +2062,8 @@ LABEL_62:
           v171 = 0u;
           v172 = 0u;
           v173 = 0u;
-          v11 = [v10 conflictingObjects];
-          v12 = [v11 countByEnumeratingWithState:&v170 objects:v194 count:16];
+          conflictingObjects = [v10 conflictingObjects];
+          v12 = [conflictingObjects countByEnumeratingWithState:&v170 objects:v194 count:16];
           if (v12)
           {
             v13 = *v171;
@@ -2073,18 +2073,18 @@ LABEL_62:
               {
                 if (*v171 != v13)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(conflictingObjects);
                 }
 
                 v15 = *(*(&v170 + 1) + 8 * j);
-                [v5 addObject:{objc_msgSend(v15, "objectID")}];
-                if (!v7)
+                [array addObject:{objc_msgSend(v15, "objectID")}];
+                if (!managedObjectContext)
                 {
-                  v7 = [v15 managedObjectContext];
+                  managedObjectContext = [v15 managedObjectContext];
                 }
               }
 
-              v12 = [v11 countByEnumeratingWithState:&v170 objects:v194 count:16];
+              v12 = [conflictingObjects countByEnumeratingWithState:&v170 objects:v194 count:16];
             }
 
             while (v12);
@@ -2095,9 +2095,9 @@ LABEL_62:
       }
 
       while (v6);
-      if (v7)
+      if (managedObjectContext)
       {
-        v16 = [_PFRoutines createDictionaryPartitioningObjectsIDByRootEntity:v5];
+        v16 = [_PFRoutines createDictionaryPartitioningObjectsIDByRootEntity:array];
         v203[0] = 0;
         v203[1] = v203;
         v203[2] = 0x3052000000;
@@ -2108,7 +2108,7 @@ LABEL_62:
         v169[1] = 3221225472;
         v169[2] = __50__NSMergePolicy_resolveConstraintConflicts_error___block_invoke;
         v169[3] = &unk_1E6EC1CD8;
-        v169[4] = v7;
+        v169[4] = managedObjectContext;
         v169[5] = v203;
         [(__CFDictionary *)v16 enumerateKeysAndObjectsUsingBlock:v169];
 
@@ -2140,7 +2140,7 @@ LABEL_24:
       objc_enumerationMutation(list);
     }
 
-    if (!v150)
+    if (!selfCopy)
     {
       break;
     }
@@ -2148,16 +2148,16 @@ LABEL_24:
     v19 = *(*(&v165 + 1) + 8 * v158);
     if ([v19 _isDBConflict])
     {
-      v20 = [v19 databaseObject];
+      databaseObject = [v19 databaseObject];
       v21 = [objc_msgSend(v19 "conflictingObjects")];
-      if ([v21 isDeleted] & 1) != 0 || (objc_msgSend(v20, "isDeleted"))
+      if ([v21 isDeleted] & 1) != 0 || (objc_msgSend(databaseObject, "isDeleted"))
       {
         goto LABEL_76;
       }
 
-      v163 = [v19 constraint];
-      v22 = [v19 databaseSnapshot];
-      if (v20 && (v23 = v20[6]) != 0)
+      constraint = [v19 constraint];
+      databaseSnapshot = [v19 databaseSnapshot];
+      if (databaseObject && (v23 = databaseObject[6]) != 0)
       {
         v161 = *(v23 + 8);
       }
@@ -2171,7 +2171,7 @@ LABEL_24:
       v190 = 0u;
       v187 = 0u;
       v188 = 0u;
-      v50 = [v163 countByEnumeratingWithState:&v187 objects:v203 count:16];
+      v50 = [constraint countByEnumeratingWithState:&v187 objects:v203 count:16];
       if (v50)
       {
         v51 = *v188;
@@ -2181,12 +2181,12 @@ LABEL_24:
           {
             if (*v188 != v51)
             {
-              objc_enumerationMutation(v163);
+              objc_enumerationMutation(constraint);
             }
 
             v53 = *(*(&v187 + 1) + 8 * k);
             v54 = [v21 valueForKey:v53];
-            v55 = [v22 valueForKey:v53];
+            v55 = [databaseSnapshot valueForKey:v53];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -2224,9 +2224,9 @@ LABEL_24:
               goto LABEL_76;
             }
 
-            if ([v20 hasChanges])
+            if ([databaseObject hasChanges])
             {
-              v58 = [v20 valueForKey:v53];
+              v58 = [databaseObject valueForKey:v53];
               if (([v58 isEqual:{objc_msgSend(v161, "valueForKey:", v53)}] & 1) == 0 && (objc_msgSend(v58, "isEqual:", v54) & 1) == 0 && (!objc_msgSend(v58, "isNSString") || !+[_PFRoutines isSanitizedVersionOf:equalTo:](_PFRoutines, v54, v58)))
               {
                 goto LABEL_76;
@@ -2234,7 +2234,7 @@ LABEL_24:
             }
           }
 
-          v50 = [v163 countByEnumeratingWithState:&v187 objects:v203 count:16];
+          v50 = [constraint countByEnumeratingWithState:&v187 objects:v203 count:16];
         }
 
         while (v50);
@@ -2245,14 +2245,14 @@ LABEL_24:
 
     else
     {
-      v24 = [MEMORY[0x1E695DF70] array];
-      v25 = [v19 constraintValues];
+      array2 = [MEMORY[0x1E695DF70] array];
+      constraintValues = [v19 constraintValues];
       v189 = 0u;
       v190 = 0u;
       v187 = 0u;
       v188 = 0u;
-      v26 = [v19 conflictingObjects];
-      v27 = [v26 countByEnumeratingWithState:&v187 objects:v203 count:16];
+      conflictingObjects2 = [v19 conflictingObjects];
+      v27 = [conflictingObjects2 countByEnumeratingWithState:&v187 objects:v203 count:16];
       if (v27)
       {
         v28 = *v188;
@@ -2262,23 +2262,23 @@ LABEL_24:
           {
             if (*v188 != v28)
             {
-              objc_enumerationMutation(v26);
+              objc_enumerationMutation(conflictingObjects2);
             }
 
             v30 = *(*(&v187 + 1) + 8 * m);
-            if (([v30 isDeleted] & 1) == 0 && -[NSMergePolicy _valuesOnObject:matchAgainstValues:](v30, v25))
+            if (([v30 isDeleted] & 1) == 0 && -[NSMergePolicy _valuesOnObject:matchAgainstValues:](v30, constraintValues))
             {
-              [v24 addObject:v30];
+              [array2 addObject:v30];
             }
           }
 
-          v27 = [v26 countByEnumeratingWithState:&v187 objects:v203 count:16];
+          v27 = [conflictingObjects2 countByEnumeratingWithState:&v187 objects:v203 count:16];
         }
 
         while (v27);
       }
 
-      if ([v24 count] < 2)
+      if ([array2 count] < 2)
       {
         goto LABEL_76;
       }
@@ -2288,7 +2288,7 @@ LABEL_24:
       v186 = 0u;
       v183 = 0u;
       v184 = 0u;
-      v32 = [v24 countByEnumeratingWithState:&v183 objects:&v199 count:16];
+      v32 = [array2 countByEnumeratingWithState:&v183 objects:&v199 count:16];
       if (v32)
       {
         v33 = *v184;
@@ -2298,25 +2298,25 @@ LABEL_24:
           {
             if (*v184 != v33)
             {
-              objc_enumerationMutation(v24);
+              objc_enumerationMutation(array2);
             }
 
             v35 = *(*(&v183 + 1) + 8 * n);
-            if (!v35 || (v36 = *(v35 + 48)) == 0 || (v37 = *(v36 + 8)) == 0)
+            if (!v35 || (v36 = *(v35 + 48)) == 0 || (null = *(v36 + 8)) == 0)
             {
-              v37 = [MEMORY[0x1E695DFB0] null];
+              null = [MEMORY[0x1E695DFB0] null];
             }
 
-            [v31 addObject:v37];
+            [v31 addObject:null];
           }
 
-          v32 = [v24 countByEnumeratingWithState:&v183 objects:&v199 count:16];
+          v32 = [array2 countByEnumeratingWithState:&v183 objects:&v199 count:16];
         }
 
         while (v32);
       }
 
-      v152 = -[NSConstraintConflict initWithConstraint:databaseObject:databaseSnapshot:conflictingObjects:conflictingSnapshots:]([NSConstraintConflict alloc], "initWithConstraint:databaseObject:databaseSnapshot:conflictingObjects:conflictingSnapshots:", [v19 constraint], 0, 0, v24, v31);
+      v152 = -[NSConstraintConflict initWithConstraint:databaseObject:databaseSnapshot:conflictingObjects:conflictingSnapshots:]([NSConstraintConflict alloc], "initWithConstraint:databaseObject:databaseSnapshot:conflictingObjects:conflictingSnapshots:", [v19 constraint], 0, 0, array2, v31);
     }
 
     if (!v152)
@@ -2329,14 +2329,14 @@ LABEL_24:
     v182 = 0u;
     v179 = 0u;
     v180 = 0u;
-    v39 = [(NSConstraintConflict *)v152 conflictingObjects];
-    v40 = [(NSArray *)v39 countByEnumeratingWithState:&v179 objects:v196 count:16];
+    conflictingObjects3 = [(NSConstraintConflict *)v152 conflictingObjects];
+    v40 = [(NSArray *)conflictingObjects3 countByEnumeratingWithState:&v179 objects:v196 count:16];
     if (!v40)
     {
       goto LABEL_73;
     }
 
-    v41 = 0;
+    managedObjectContext2 = 0;
     v42 = *v180;
     do
     {
@@ -2344,34 +2344,34 @@ LABEL_24:
       {
         if (*v180 != v42)
         {
-          objc_enumerationMutation(v39);
+          objc_enumerationMutation(conflictingObjects3);
         }
 
         v44 = *(*(&v179 + 1) + 8 * ii);
-        if (!v41)
+        if (!managedObjectContext2)
         {
-          v41 = [*(*(&v179 + 1) + 8 * ii) managedObjectContext];
+          managedObjectContext2 = [*(*(&v179 + 1) + 8 * ii) managedObjectContext];
         }
 
         [v38 addObject:{objc_msgSend(v44, "entity")}];
       }
 
-      v40 = [(NSArray *)v39 countByEnumeratingWithState:&v179 objects:v196 count:16];
+      v40 = [(NSArray *)conflictingObjects3 countByEnumeratingWithState:&v179 objects:v196 count:16];
     }
 
     while (v40);
-    if (!v41)
+    if (!managedObjectContext2)
     {
 LABEL_73:
       v48 = &unk_1EF4352D8;
       goto LABEL_74;
     }
 
-    v45 = [(NSConstraintConflict *)v152 databaseObject];
-    p_isa = &v45->super.isa;
-    if (v45)
+    databaseObject2 = [(NSConstraintConflict *)v152 databaseObject];
+    p_isa = &databaseObject2->super.isa;
+    if (databaseObject2)
     {
-      [v38 addObject:{-[NSManagedObject entity](v45, "entity")}];
+      [v38 addObject:{-[NSManagedObject entity](databaseObject2, "entity")}];
     }
 
     v47 = [v38 count];
@@ -2385,9 +2385,9 @@ LABEL_73:
     {
       if (![(NSConstraintConflict *)v152 _isDBConflict])
       {
-        v61 = [(NSConstraintConflict *)v152 conflictingObjects];
-        v62 = [(NSConstraintConflict *)v152 conflictingSnapshots];
-        v63 = [(NSConstraintConflict *)v152 constraintValues];
+        conflictingObjects4 = [(NSConstraintConflict *)v152 conflictingObjects];
+        conflictingSnapshots = [(NSConstraintConflict *)v152 conflictingSnapshots];
+        constraintValues2 = [(NSConstraintConflict *)v152 constraintValues];
         v64 = [(NSArray *)[(NSConstraintConflict *)v152 conflictingSnapshots] count];
         if (!v64)
         {
@@ -2398,15 +2398,15 @@ LABEL_73:
         v65 = 0;
         while (1)
         {
-          v66 = [(NSArray *)v62 objectAtIndex:v65];
-          if ([MEMORY[0x1E695DFB0] null] == v66 && (objc_msgSend(-[NSArray objectAtIndex:](v61, "objectAtIndex:", v65), "hasChanges") & 1) == 0)
+          v66 = [(NSArray *)conflictingSnapshots objectAtIndex:v65];
+          if ([MEMORY[0x1E695DFB0] null] == v66 && (objc_msgSend(-[NSArray objectAtIndex:](conflictingObjects4, "objectAtIndex:", v65), "hasChanges") & 1) == 0)
           {
-            p_isa = [(NSArray *)v61 objectAtIndex:v65];
+            p_isa = [(NSArray *)conflictingObjects4 objectAtIndex:v65];
           }
 
-          else if ([NSMergePolicy _valuesOnObject:v66 matchAgainstValues:v63])
+          else if ([NSMergePolicy _valuesOnObject:v66 matchAgainstValues:constraintValues2])
           {
-            p_isa = [(NSArray *)v61 objectAtIndex:v65];
+            p_isa = [(NSArray *)conflictingObjects4 objectAtIndex:v65];
 LABEL_121:
             if (p_isa)
             {
@@ -2420,7 +2420,7 @@ LABEL_122:
             v186 = 0u;
             v183 = 0u;
             v184 = 0u;
-            v69 = [(NSArray *)v61 countByEnumeratingWithState:&v183 objects:&v199 count:16];
+            v69 = [(NSArray *)conflictingObjects4 countByEnumeratingWithState:&v183 objects:&v199 count:16];
             if (v69)
             {
               v70 = *v184;
@@ -2430,7 +2430,7 @@ LABEL_122:
                 {
                   if (*v184 != v70)
                   {
-                    objc_enumerationMutation(v61);
+                    objc_enumerationMutation(conflictingObjects4);
                   }
 
                   v72 = *(*(&v183 + 1) + 8 * jj);
@@ -2447,7 +2447,7 @@ LABEL_122:
                   [v73 addObject:v72];
                 }
 
-                v69 = [(NSArray *)v61 countByEnumeratingWithState:&v183 objects:&v199 count:16];
+                v69 = [(NSArray *)conflictingObjects4 countByEnumeratingWithState:&v183 objects:&v199 count:16];
               }
 
               while (v69);
@@ -2456,15 +2456,15 @@ LABEL_122:
             v74 = [v67 count];
             if (!v74)
             {
-              v75 = [v68 firstObject];
+              firstObject = [v68 firstObject];
 LABEL_169:
-              p_isa = v75;
+              p_isa = firstObject;
               goto LABEL_170;
             }
 
             if (v74 == 1)
             {
-              v75 = [v67 lastObject];
+              firstObject = [v67 lastObject];
               goto LABEL_169;
             }
 
@@ -2520,7 +2520,7 @@ LABEL_247:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0 || ([v76 _referenceData], (objc_opt_respondsToSelector() & 1) == 0))
             {
-              v75 = [v67 firstObject];
+              firstObject = [v67 firstObject];
               goto LABEL_169;
             }
 
@@ -2571,15 +2571,15 @@ LABEL_247:
 LABEL_170:
 
 LABEL_171:
-            type = v150->_type;
+            type = selfCopy->_type;
             if (type - 3 < 2)
             {
               v199 = 0u;
               v200 = 0u;
               v201 = 0u;
               v202 = 0u;
-              v131 = [(NSConstraintConflict *)v152 conflictingObjects];
-              v132 = [(NSArray *)v131 countByEnumeratingWithState:&v199 objects:v203 count:16];
+              conflictingObjects5 = [(NSConstraintConflict *)v152 conflictingObjects];
+              v132 = [(NSArray *)conflictingObjects5 countByEnumeratingWithState:&v199 objects:v203 count:16];
               if (v132)
               {
                 v133 = *v200;
@@ -2589,7 +2589,7 @@ LABEL_171:
                   {
                     if (*v200 != v133)
                     {
-                      objc_enumerationMutation(v131);
+                      objc_enumerationMutation(conflictingObjects5);
                     }
 
                     v135 = *(*(&v199 + 1) + 8 * nn);
@@ -2599,7 +2599,7 @@ LABEL_171:
                     }
                   }
 
-                  v132 = [(NSArray *)v131 countByEnumeratingWithState:&v199 objects:v203 count:16];
+                  v132 = [(NSArray *)conflictingObjects5 countByEnumeratingWithState:&v199 objects:v203 count:16];
                 }
 
                 while (v132);
@@ -2616,19 +2616,19 @@ LABEL_243:
               goto LABEL_245;
             }
 
-            v92 = [(NSConstraintConflict *)v152 conflictingObjects];
+            conflictingObjects6 = [(NSConstraintConflict *)v152 conflictingObjects];
             v202 = 0u;
             v201 = 0u;
             v200 = 0u;
             v199 = 0u;
-            v93 = [(NSArray *)v92 countByEnumeratingWithState:&v199 objects:v203 count:16];
+            v93 = [(NSArray *)conflictingObjects6 countByEnumeratingWithState:&v199 objects:v203 count:16];
             if (!v93)
             {
               goto LABEL_243;
             }
 
             v156 = *v200;
-            v153 = v92;
+            v153 = conflictingObjects6;
             while (2)
             {
               v94 = 0;
@@ -2670,34 +2670,34 @@ LABEL_186:
 
                 v160 = *(v98 + 8);
 LABEL_187:
-                v99 = [p_isa entity];
-                v100 = v99;
-                if (v99)
+                entity = [p_isa entity];
+                v100 = entity;
+                if (entity)
                 {
-                  v101 = [*(v99 + 104) keys];
+                  keys = [*(entity + 104) keys];
                   v102 = v100[14];
                 }
 
                 else
                 {
-                  v101 = [0 keys];
+                  keys = [0 keys];
                   v102 = 0;
                 }
 
-                v164 = [MEMORY[0x1E695DFB0] null];
+                null2 = [MEMORY[0x1E695DFB0] null];
                 v159 = v100;
                 v162 = v95;
                 v103 = v102[6];
                 v104 = v102[7];
                 if (v103 < v104 + v103)
                 {
-                  v105 = (v101 + 8 * v103);
+                  v105 = (keys + 8 * v103);
                   do
                   {
-                    if (!v97 || ((v106 = [v97 valueForKey:*v105], v164 != v106) ? (v107 = v106) : (v107 = 0), (v108 = objc_msgSend(p_isa, "valueForKey:", *v105), v107 | v108) && objc_msgSend(v107, "isEqual:", v108)))
+                    if (!v97 || ((v106 = [v97 valueForKey:*v105], null2 != v106) ? (v107 = v106) : (v107 = 0), (v108 = objc_msgSend(p_isa, "valueForKey:", *v105), v107 | v108) && objc_msgSend(v107, "isEqual:", v108)))
                     {
                       v109 = [v160 valueForKey:*v105];
-                      v110 = v164 == v109 ? 0 : v109;
+                      v110 = null2 == v109 ? 0 : v109;
                       v111 = [v162 valueForKey:*v105];
                       v112 = v111;
                       if (v111 | v110)
@@ -2725,42 +2725,42 @@ LABEL_187:
                   do
                   {
                     v116 = p_isa;
-                    v117 = [p_isa valueForKey:*(v101 + v115)];
-                    if (!v97 || ((v118 = [v97 valueForKey:*(v101 + v115)], v164 != v118) ? (v119 = v118) : (v119 = 0), v119 | v117 && objc_msgSend(v119, "isEqual:", objc_msgSend(v117, "objectID"))))
+                    v117 = [p_isa valueForKey:*(keys + v115)];
+                    if (!v97 || ((v118 = [v97 valueForKey:*(keys + v115)], null2 != v118) ? (v119 = v118) : (v119 = 0), v119 | v117 && objc_msgSend(v119, "isEqual:", objc_msgSend(v117, "objectID"))))
                     {
-                      v120 = [v160 valueForKey:*(v101 + v115)];
-                      v121 = v164 == v120 ? 0 : v120;
-                      v122 = [v162 valueForKey:*(v101 + v115)];
+                      v120 = [v160 valueForKey:*(keys + v115)];
+                      v121 = null2 == v120 ? 0 : v120;
+                      v122 = [v162 valueForKey:*(keys + v115)];
                       v123 = v122;
                       if (v122 | v121)
                       {
                         if (([v122 isEqual:v121] & 1) == 0)
                         {
                           v124 = *(v159[12] + 24 + v115);
-                          v125 = [v124 inverseRelationship];
-                          v126 = [v125 name];
-                          v127 = [v125 isToMany];
+                          inverseRelationship = [v124 inverseRelationship];
+                          name = [inverseRelationship name];
+                          isToMany = [inverseRelationship isToMany];
                           if (v117)
                           {
-                            if (!v125)
+                            if (!inverseRelationship)
                             {
                               [NSMergePolicy _cannotResolveConflictOnEntity:v159 relationshipWithNoInverse:v124];
                             }
 
-                            if (v127)
+                            if (isToMany)
                             {
-                              v128 = [v125 isOrdered];
-                              v129 = [v125 name];
-                              if (v128)
+                              isOrdered = [inverseRelationship isOrdered];
+                              name2 = [inverseRelationship name];
+                              if (isOrdered)
                               {
-                                [objc_msgSend(v117 mutableOrderedSetValueForKey:{v129), "removeObject:", v116}];
-                                v130 = [v123 mutableOrderedSetValueForKey:{objc_msgSend(v125, "name")}];
+                                [objc_msgSend(v117 mutableOrderedSetValueForKey:{name2), "removeObject:", v116}];
+                                v130 = [v123 mutableOrderedSetValueForKey:{objc_msgSend(inverseRelationship, "name")}];
                               }
 
                               else
                               {
-                                [objc_msgSend(v117 mutableSetValueForKey:{v129), "removeObject:", v116}];
-                                v130 = [v123 mutableSetValueForKey:{objc_msgSend(v125, "name")}];
+                                [objc_msgSend(v117 mutableSetValueForKey:{name2), "removeObject:", v116}];
+                                v130 = [v123 mutableSetValueForKey:{objc_msgSend(inverseRelationship, "name")}];
                               }
 
                               [v130 addObject:v116];
@@ -2769,8 +2769,8 @@ LABEL_187:
 
                             else
                             {
-                              [v123 setValue:v116 forKey:v126];
-                              [v117 setValue:0 forKey:v126];
+                              [v123 setValue:v116 forKey:name];
+                              [v117 setValue:0 forKey:name];
                             }
 
                             if ([v124 deleteRule] == 2)
@@ -2779,8 +2779,8 @@ LABEL_187:
                             }
                           }
 
-                          [v162 setValue:0 forKey:*(v101 + v115)];
-                          [v116 setValue:v123 forKey:*(v101 + v115)];
+                          [v162 setValue:0 forKey:*(keys + v115)];
+                          [v116 setValue:v123 forKey:*(keys + v115)];
                         }
                       }
                     }
@@ -2822,7 +2822,7 @@ LABEL_187:
       }
 
       v59 = 0;
-      v60 = v150->_type;
+      v60 = selfCopy->_type;
       if (v60 > 2)
       {
         if (v60 == 3)
@@ -2988,7 +2988,7 @@ uint64_t __50__NSMergePolicy_resolveConstraintConflicts_error___block_invoke_2(u
   }
 
   v34 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   obj = v4;
   if ([-[NSArray objectAtIndex:](v4 objectAtIndex:{0), "objectForKey:", @"snapshot"}])
   {
@@ -3005,7 +3005,7 @@ uint64_t __50__NSMergePolicy_resolveConstraintConflicts_error___block_invoke_2(u
     goto LABEL_4;
   }
 
-  v26 = 0;
+  managedObjectContext = 0;
   v27 = *v43;
   do
   {
@@ -3020,7 +3020,7 @@ uint64_t __50__NSMergePolicy_resolveConstraintConflicts_error___block_invoke_2(u
       v30 = [objc_msgSend(v29 objectForKey:{@"newVersion", "unsignedIntValue"}];
       v31 = [v29 objectForKey:@"object"];
       v32 = v31;
-      if (v26)
+      if (managedObjectContext)
       {
         if (!v31)
         {
@@ -3030,7 +3030,7 @@ uint64_t __50__NSMergePolicy_resolveConstraintConflicts_error___block_invoke_2(u
 
       else
       {
-        v26 = [v31 managedObjectContext];
+        managedObjectContext = [v31 managedObjectContext];
         if (!v32)
         {
           continue;
@@ -3039,7 +3039,7 @@ uint64_t __50__NSMergePolicy_resolveConstraintConflicts_error___block_invoke_2(u
 
       if (!v30 || [v32 isDeleted])
       {
-        [v6 addObject:{objc_msgSend(v32, "objectID")}];
+        [array addObject:{objc_msgSend(v32, "objectID")}];
       }
     }
 
@@ -3048,20 +3048,20 @@ uint64_t __50__NSMergePolicy_resolveConstraintConflicts_error___block_invoke_2(u
 
   while (v25);
   v4 = obj;
-  if (v26)
+  if (managedObjectContext)
   {
-    v33 = [_PFRoutines createDictionaryPartitioningObjectsIDByRootEntity:v6];
+    v33 = [_PFRoutines createDictionaryPartitioningObjectsIDByRootEntity:array];
     v46 = 0;
     v47 = &v46;
     v48 = 0x3052000000;
     v49 = __Block_byref_object_copy__16;
     v50 = __Block_byref_object_dispose__16;
-    v51 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
     v41[2] = __64__NSMergePolicy_resolveOptimisticLockingVersionConflicts_error___block_invoke;
     v41[3] = &unk_1E6EC1CD8;
-    v41[4] = v26;
+    v41[4] = managedObjectContext;
     v41[5] = &v46;
     [(__CFDictionary *)v33 enumerateKeysAndObjectsUsingBlock:v41];
 
@@ -3096,11 +3096,11 @@ LABEL_6:
       v10 = *(*(&v37 + 1) + 8 * v9);
       v11 = [objc_msgSend(v10 objectForKey:{@"newVersion", "unsignedIntValue"}];
       v12 = [v10 objectForKey:@"object"];
-      v13 = [v12 managedObjectContext];
-      v14 = v13;
+      managedObjectContext2 = [v12 managedObjectContext];
+      v14 = managedObjectContext2;
       if (v12)
       {
-        v15 = v13 == 0;
+        v15 = managedObjectContext2 == 0;
       }
 
       else
@@ -3113,8 +3113,8 @@ LABEL_6:
         v14 = *(v12 + 32);
         if (v14)
         {
-          v16 = [v12 objectID];
-          v17 = [v14 objectRegisteredForID:v16];
+          objectID = [v12 objectID];
+          v17 = [v14 objectRegisteredForID:objectID];
           if (v17 == v12)
           {
             *(v12 + 16) &= ~0x80u;
@@ -3122,7 +3122,7 @@ LABEL_6:
 
           else if (!v17)
           {
-            [(NSManagedObjectContext *)v14 _registerObject:v12 withID:v16];
+            [(NSManagedObjectContext *)v14 _registerObject:v12 withID:objectID];
           }
         }
       }
@@ -3145,19 +3145,19 @@ LABEL_6:
           else if (type == 4)
           {
             [v14 refreshObject:v12 mergeChanges:0];
-            v19 = [v12 objectID];
-            v20 = [v19 persistentStore];
-            if (@"NSXPCStore" == [v20 type])
+            objectID2 = [v12 objectID];
+            persistentStore = [objectID2 persistentStore];
+            if (@"NSXPCStore" == [persistentStore type])
             {
-              v21 = [v20 _persistentStoreCoordinator];
+              _persistentStoreCoordinator = [persistentStore _persistentStoreCoordinator];
               v46 = MEMORY[0x1E69E9820];
               v47 = 3221225472;
               v48 = __33__NSMergePolicy_resolveConflict___block_invoke;
               v49 = &unk_1E6EC19D8;
               v50 = v14;
-              v51 = v20;
-              v52 = v19;
-              [v21 performBlockAndWait:&v46];
+              array2 = persistentStore;
+              v52 = objectID2;
+              [_persistentStoreCoordinator performBlockAndWait:&v46];
             }
           }
         }

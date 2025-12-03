@@ -1,12 +1,12 @@
 @interface ParagraphCollectionViewCell
-- (_TtC8AppStore27ParagraphCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore27ParagraphCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation ParagraphCollectionViewCell
 
-- (_TtC8AppStore27ParagraphCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore27ParagraphCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore27ParagraphCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();
@@ -27,7 +27,7 @@
   v17.super_class = swift_getObjectType();
   v2 = v17.receiver;
   [(ParagraphCollectionViewCell *)&v17 layoutSubviews];
-  v3 = [v2 contentView];
+  contentView = [v2 contentView];
   sub_100005744(0, &qword_100972EB0);
   LayoutMarginsAware<>.layoutFrame.getter();
   v5 = v4;

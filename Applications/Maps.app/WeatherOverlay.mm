@@ -8,20 +8,20 @@
 - (id)mapView;
 - (id)view;
 - (id)weatherLocationDataProvider;
-- (void)_deviceOrientationDidChange:(id)a3;
-- (void)_installInContentView:(id)a3;
+- (void)_deviceOrientationDidChange:(id)change;
+- (void)_installInContentView:(id)view;
 - (void)_invalidateConstraints;
 - (void)_updateConstraintsIfNeeded;
 - (void)_updateLayout;
 - (void)_updateLocation;
-- (void)mapView:(id)a3 didChangeMapType:(unint64_t)a4;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
-- (void)setAlpha:(double)a3;
-- (void)setContainerStyle:(unint64_t)a3;
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHost:(id)a3;
-- (void)setMapViewProvider:(id)a3;
-- (void)weatherStackViewController:(id)a3 openURL:(id)a4;
+- (void)mapView:(id)view didChangeMapType:(unint64_t)type;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
+- (void)setAlpha:(double)alpha;
+- (void)setContainerStyle:(unint64_t)style;
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setHost:(id)host;
+- (void)setMapViewProvider:(id)provider;
+- (void)weatherStackViewController:(id)controller openURL:(id)l;
 @end
 
 @implementation WeatherOverlay
@@ -38,9 +38,9 @@
     v6 = [[WeatherMapPanningCoordinator alloc] initWithWeatherLocationDataProvider:self->_locationDataProvider];
     [(WeatherOverlay *)self setMapPanningCoordinator:v6];
 
-    v7 = [(WeatherOverlay *)self mapPanningCoordinator];
-    v8 = [(WeatherOverlay *)self mapView];
-    [v7 handleMapViewRegionDidChange:v8];
+    mapPanningCoordinator = [(WeatherOverlay *)self mapPanningCoordinator];
+    mapView = [(WeatherOverlay *)self mapView];
+    [mapPanningCoordinator handleMapViewRegionDidChange:mapView];
 
     locationDataProvider = self->_locationDataProvider;
   }
@@ -50,10 +50,10 @@
 
 - (id)mapView
 {
-  v2 = [(WeatherOverlay *)self mapViewProvider];
-  v3 = [v2 mapView];
+  mapViewProvider = [(WeatherOverlay *)self mapViewProvider];
+  mapView = [mapViewProvider mapView];
 
-  return v3;
+  return mapView;
 }
 
 - (MapViewProviding)mapViewProvider
@@ -65,21 +65,21 @@
 
 - (id)view
 {
-  v2 = [(WeatherOverlay *)self stackViewController];
-  v3 = [v2 view];
+  stackViewController = [(WeatherOverlay *)self stackViewController];
+  view = [stackViewController view];
 
-  return v3;
+  return view;
 }
 
 - (void)_updateLayout
 {
   containerStyle = self->_containerStyle;
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
   v6 = _UISolariumEnabled();
-  v7 = v5 == 5;
-  v8 = (v5 & 0xFFFFFFFFFFFFFFFBLL) == 1 || containerStyle >= 8;
+  v7 = userInterfaceIdiom == 5;
+  v8 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 || containerStyle >= 8;
   v9 = 0xA3u >> containerStyle;
   if (v8)
   {
@@ -120,18 +120,18 @@
 
     if (v4)
     {
-      v5 = [(WeatherOverlay *)self _alignToBottom];
+      _alignToBottom = [(WeatherOverlay *)self _alignToBottom];
       hasLeadingEdgeLayout = self->_hasLeadingEdgeLayout;
-      v7 = [(WeatherOverlay *)self view];
-      v8 = v7;
+      view = [(WeatherOverlay *)self view];
+      v8 = view;
       if (hasLeadingEdgeLayout)
       {
-        [v7 leadingAnchor];
+        [view leadingAnchor];
       }
 
       else
       {
-        [v7 trailingAnchor];
+        [view trailingAnchor];
       }
       v9 = ;
 
@@ -145,25 +145,25 @@
         [v4 trailingAnchor];
       }
       v10 = ;
-      v11 = [(WeatherOverlay *)self view];
-      v12 = v11;
-      if (v5)
+      view2 = [(WeatherOverlay *)self view];
+      v12 = view2;
+      if (_alignToBottom)
       {
-        v13 = [v11 bottomAnchor];
+        bottomAnchor = [view2 bottomAnchor];
 
         [v4 bottomAnchor];
       }
 
       else
       {
-        v13 = [v11 topAnchor];
+        bottomAnchor = [view2 topAnchor];
 
         [v4 topAnchor];
       }
       v14 = ;
       v15 = [v9 constraintEqualToAnchor:v10];
       v19[0] = v15;
-      v16 = [v13 constraintEqualToAnchor:v14];
+      v16 = [bottomAnchor constraintEqualToAnchor:v14];
       v19[1] = v16;
       v17 = [NSArray arrayWithObjects:v19 count:2];
       constraints = self->_constraints;
@@ -181,24 +181,24 @@
     return 1;
   }
 
-  v3 = [(WeatherOverlay *)self view];
-  v4 = sub_10000FA08(v3);
+  view = [(WeatherOverlay *)self view];
+  v4 = sub_10000FA08(view);
 
   if (v4 == 5)
   {
     return 1;
   }
 
-  v5 = [(WeatherOverlay *)self view];
-  v6 = sub_10000FA08(v5);
+  view2 = [(WeatherOverlay *)self view];
+  v6 = sub_10000FA08(view2);
 
   if (v6 == 1)
   {
     return 1;
   }
 
-  v9 = [(WeatherOverlay *)self view];
-  if (sub_10000FA08(v9))
+  view3 = [(WeatherOverlay *)self view];
+  if (sub_10000FA08(view3))
   {
     v7 = 0;
   }
@@ -219,8 +219,8 @@
     return 0;
   }
 
-  v3 = [(WeatherOverlay *)self view];
-  v4 = sub_10000FA08(v3) == 0;
+  view = [(WeatherOverlay *)self view];
+  v4 = sub_10000FA08(view) == 0;
 
   return v4;
 }
@@ -232,20 +232,20 @@
   return WeakRetained;
 }
 
-- (void)weatherStackViewController:(id)a3 openURL:(id)a4
+- (void)weatherStackViewController:(id)controller openURL:(id)l
 {
-  v5 = a4;
+  lCopy = l;
   v6 = [MapsWebLinkPresenter alloc];
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  v8 = [WeakRetained containingViewController];
-  v9 = [(MapsWebLinkPresenter *)v6 initWithPresentingViewController:v8];
+  containingViewController = [WeakRetained containingViewController];
+  v9 = [(MapsWebLinkPresenter *)v6 initWithPresentingViewController:containingViewController];
 
-  [(MapsWebLinkPresenter *)v9 presentWebURL:v5];
+  [(MapsWebLinkPresenter *)v9 presentWebURL:lCopy];
 }
 
-- (void)mapView:(id)a3 didChangeMapType:(unint64_t)a4
+- (void)mapView:(id)view didChangeMapType:(unint64_t)type
 {
-  if (a4 - 1 < 4 || a4 == 107)
+  if (type - 1 < 4 || type == 107)
   {
     v4 = 2;
   }
@@ -255,31 +255,31 @@
     v4 = 0;
   }
 
-  v5 = [(WeatherOverlay *)self stackViewController];
-  [v5 setOverrideUserInterfaceStyle:v4];
+  stackViewController = [(WeatherOverlay *)self stackViewController];
+  [stackViewController setOverrideUserInterfaceStyle:v4];
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
-  v5 = a3;
+  viewCopy = view;
   if (![(WeatherOverlay *)self isHidden])
   {
-    [(WeatherMapPanningCoordinator *)self->_mapPanningCoordinator handleMapViewRegionDidChange:v5];
+    [(WeatherMapPanningCoordinator *)self->_mapPanningCoordinator handleMapViewRegionDidChange:viewCopy];
   }
 }
 
 - (void)_updateLocation
 {
-  v4 = [(WeatherOverlay *)self mapPanningCoordinator];
-  v3 = [(WeatherOverlay *)self mapView];
-  [v4 handleMapViewRegionDidChange:v3 forceUpdate:1];
+  mapPanningCoordinator = [(WeatherOverlay *)self mapPanningCoordinator];
+  mapView = [(WeatherOverlay *)self mapView];
+  [mapPanningCoordinator handleMapViewRegionDidChange:mapView forceUpdate:1];
 }
 
-- (void)setMapViewProvider:(id)a3
+- (void)setMapViewProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = objc_loadWeakRetained(&self->_mapViewProvider);
-  v6 = v4;
+  v6 = providerCopy;
   if (v6 | v5)
   {
     obj = v6;
@@ -294,105 +294,105 @@
   }
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  v4 = [(WeatherOverlay *)self stackViewController];
-  [v4 setOverlayAlpha:a3];
+  stackViewController = [(WeatherOverlay *)self stackViewController];
+  [stackViewController setOverlayAlpha:alpha];
 }
 
 - (double)alpha
 {
-  v2 = [(WeatherOverlay *)self stackViewController];
-  [v2 overlayAlpha];
+  stackViewController = [(WeatherOverlay *)self stackViewController];
+  [stackViewController overlayAlpha];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  hiddenCopy = hidden;
   if ([(WeatherOverlay *)self isHidden])
   {
-    if (!v5)
+    if (!hiddenCopy)
     {
-      v7 = [(WeatherOverlay *)self locationDataProvider];
-      [v7 coordinate];
+      locationDataProvider = [(WeatherOverlay *)self locationDataProvider];
+      [locationDataProvider coordinate];
       v9 = v8;
       v11 = v10;
 
-      v12 = [(WeatherOverlay *)self mapPanningCoordinator];
-      v13 = [(WeatherOverlay *)self mapView];
-      [v12 handleMapViewRegionDidChange:v13];
+      mapPanningCoordinator = [(WeatherOverlay *)self mapPanningCoordinator];
+      mapView = [(WeatherOverlay *)self mapView];
+      [mapPanningCoordinator handleMapViewRegionDidChange:mapView];
 
-      v14 = [(WeatherOverlay *)self locationDataProvider];
-      [v14 coordinate];
+      locationDataProvider2 = [(WeatherOverlay *)self locationDataProvider];
+      [locationDataProvider2 coordinate];
       v16 = v15;
       v18 = v17;
 
       v22.latitude = v9;
       v22.longitude = v11;
-      LODWORD(v14) = CLLocationCoordinate2DIsValid(v22);
+      LODWORD(locationDataProvider2) = CLLocationCoordinate2DIsValid(v22);
       v23.latitude = v16;
       v23.longitude = v18;
-      if (v14 != CLLocationCoordinate2DIsValid(v23) || v9 != v16 || v11 != v18)
+      if (locationDataProvider2 != CLLocationCoordinate2DIsValid(v23) || v9 != v16 || v11 != v18)
       {
-        v19 = [(WeatherOverlay *)self stackViewController];
-        [v19 clearSavedLocation];
+        stackViewController = [(WeatherOverlay *)self stackViewController];
+        [stackViewController clearSavedLocation];
       }
     }
   }
 
-  v20 = [(WeatherOverlay *)self stackViewController];
-  [v20 setOverlayHidden:v5 animated:v4];
+  stackViewController2 = [(WeatherOverlay *)self stackViewController];
+  [stackViewController2 setOverlayHidden:hiddenCopy animated:animatedCopy];
 }
 
 - (BOOL)isHidden
 {
-  v2 = [(WeatherOverlay *)self stackViewController];
-  v3 = [v2 overlayHidden];
+  stackViewController = [(WeatherOverlay *)self stackViewController];
+  overlayHidden = [stackViewController overlayHidden];
 
-  return v3;
+  return overlayHidden;
 }
 
-- (void)setContainerStyle:(unint64_t)a3
+- (void)setContainerStyle:(unint64_t)style
 {
-  if (self->_containerStyle != a3)
+  if (self->_containerStyle != style)
   {
-    self->_containerStyle = a3;
+    self->_containerStyle = style;
     [(WeatherOverlay *)self _updateLayout];
   }
 }
 
-- (void)_deviceOrientationDidChange:(id)a3
+- (void)_deviceOrientationDidChange:(id)change
 {
   [(WeatherOverlay *)self _invalidateConstraints];
 
   [(WeatherOverlay *)self _updateLayout];
 }
 
-- (void)_installInContentView:(id)a3
+- (void)_installInContentView:(id)view
 {
-  v8 = a3;
-  v4 = [(WeatherOverlay *)self view];
-  v5 = [v4 superview];
+  viewCopy = view;
+  view = [(WeatherOverlay *)self view];
+  superview = [view superview];
 
-  if (v5 != v8)
+  if (superview != viewCopy)
   {
-    v6 = [(WeatherOverlay *)self view];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view2 = [(WeatherOverlay *)self view];
+    [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v7 = [(WeatherOverlay *)self view];
-    [v8 addSubview:v7];
+    view3 = [(WeatherOverlay *)self view];
+    [viewCopy addSubview:view3];
 
     [(WeatherOverlay *)self _updateLayout];
   }
 }
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
-  obj = a3;
+  obj = host;
   WeakRetained = objc_loadWeakRetained(&self->_host);
 
   if (WeakRetained != obj)
@@ -400,15 +400,15 @@
     stackViewController = self->_stackViewController;
     if (stackViewController)
     {
-      v6 = [(WeatherStackViewController *)stackViewController parentViewController];
+      parentViewController = [(WeatherStackViewController *)stackViewController parentViewController];
 
-      if (v6)
+      if (parentViewController)
       {
         [(WeatherStackViewController *)self->_stackViewController willMoveToParentViewController:0];
         if ([(WeatherStackViewController *)self->_stackViewController isViewLoaded])
         {
-          v7 = [(WeatherStackViewController *)self->_stackViewController view];
-          [v7 removeFromSuperview];
+          view = [(WeatherStackViewController *)self->_stackViewController view];
+          [view removeFromSuperview];
         }
 
         [(WeatherStackViewController *)self->_stackViewController removeFromParentViewController];
@@ -422,19 +422,19 @@
       if (!self->_stackViewController)
       {
         v8 = [WeatherStackViewController alloc];
-        v9 = [(WeatherOverlay *)self weatherLocationDataProvider];
-        v10 = [(WeatherStackViewController *)v8 initWithWeatherLocationDataProvider:v9 delegate:self];
+        weatherLocationDataProvider = [(WeatherOverlay *)self weatherLocationDataProvider];
+        v10 = [(WeatherStackViewController *)v8 initWithWeatherLocationDataProvider:weatherLocationDataProvider delegate:self];
         v11 = self->_stackViewController;
         self->_stackViewController = v10;
       }
 
-      v12 = [obj containingViewController];
-      [(WeatherStackViewController *)self->_stackViewController willMoveToParentViewController:v12];
-      [v12 addChildViewController:self->_stackViewController];
-      v13 = [obj overlayContentView];
-      [(WeatherOverlay *)self _installInContentView:v13];
+      containingViewController = [obj containingViewController];
+      [(WeatherStackViewController *)self->_stackViewController willMoveToParentViewController:containingViewController];
+      [containingViewController addChildViewController:self->_stackViewController];
+      overlayContentView = [obj overlayContentView];
+      [(WeatherOverlay *)self _installInContentView:overlayContentView];
 
-      [(WeatherStackViewController *)self->_stackViewController didMoveToParentViewController:v12];
+      [(WeatherStackViewController *)self->_stackViewController didMoveToParentViewController:containingViewController];
     }
 
     v14 = +[NSNotificationCenter defaultCenter];

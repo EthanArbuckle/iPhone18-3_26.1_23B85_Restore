@@ -12,14 +12,14 @@
     return 0;
   }
 
-  v3 = [(UIScene *)self screen];
-  v4 = [v3 displayConfiguration];
-  v5 = [v4 name];
+  screen = [(UIScene *)self screen];
+  displayConfiguration = [screen displayConfiguration];
+  name = [displayConfiguration name];
 
-  NSLog(@"Found window scene with display name %@", v5);
-  LOBYTE(v3) = [v5 hasPrefix:@"TVOut"];
+  NSLog(@"Found window scene with display name %@", name);
+  LOBYTE(screen) = [name hasPrefix:@"TVOut"];
 
-  return v3;
+  return screen;
 }
 
 @end

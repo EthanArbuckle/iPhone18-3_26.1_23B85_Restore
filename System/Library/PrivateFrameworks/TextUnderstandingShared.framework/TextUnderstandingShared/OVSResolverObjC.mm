@@ -1,13 +1,13 @@
 @interface OVSResolverObjC
-+ (BOOL)containsOVSInTokens:(id)a3 forLocaleIdentifier:(id)a4;
-+ (unsigned)_lexiconTokenForToken:(id)a3 lexicon:(_LXLexicon *)a4;
++ (BOOL)containsOVSInTokens:(id)tokens forLocaleIdentifier:(id)identifier;
++ (unsigned)_lexiconTokenForToken:(id)token lexicon:(_LXLexicon *)lexicon;
 @end
 
 @implementation OVSResolverObjC
 
-+ (unsigned)_lexiconTokenForToken:(id)a3 lexicon:(_LXLexicon *)a4
++ (unsigned)_lexiconTokenForToken:(id)token lexicon:(_LXLexicon *)lexicon
 {
-  v4 = a3;
+  tokenCopy = token;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -19,18 +19,18 @@
   return v5;
 }
 
-+ (BOOL)containsOVSInTokens:(id)a3 forLocaleIdentifier:(id)a4
++ (BOOL)containsOVSInTokens:(id)tokens forLocaleIdentifier:(id)identifier
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  tokensCopy = tokens;
+  identifierCopy = identifier;
+  if ([tokensCopy count])
   {
-    v8 = [(__CFString *)v7 length];
+    v8 = [(__CFString *)identifierCopy length];
     v9 = @"en_US";
     if (v8)
     {
-      v9 = v7;
+      v9 = identifierCopy;
     }
 
     v10 = v9;
@@ -45,13 +45,13 @@
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v13 = v6;
+      v13 = tokensCopy;
       v14 = [v13 countByEnumeratingWithState:&v28 objects:v33 count:16];
       if (v14)
       {
         v15 = v14;
         v26 = v10;
-        v27 = v7;
+        v27 = identifierCopy;
         v16 = *v29;
         while (2)
         {
@@ -66,7 +66,7 @@
             v19 = [(__CFString *)v18 localizedLowercaseString:v26];
             if ([v19 lengthOfBytesUsingEncoding:4] || CFStringGetCStringPtr(v18, 4u))
             {
-              if ([a1 _lexiconTokenForToken:v19 lexicon:v12])
+              if ([self _lexiconTokenForToken:v19 lexicon:v12])
               {
                 v20 = LXLexiconCopyEntryForTokenID();
                 v21 = LXEntryGetMetaFlags() & 0x3800000;
@@ -93,7 +93,7 @@
         v22 = 0;
 LABEL_23:
         v10 = v26;
-        v7 = v27;
+        identifierCopy = v27;
       }
 
       else

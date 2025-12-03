@@ -1,18 +1,18 @@
 @interface TXRParserImageIO
-+ (CGImage)newCGImageFromImage:(id)a3 colorSpace:(CGColorSpace *)a4 error:(id *)a5;
-+ (id)decodeCGImage:(CGImage *)a3 desiredPixelFormat:(unint64_t)a4 bufferAllocator:(id)a5 options:(id)a6 error:(id *)a7;
-+ (id)decodeCGImageNonIndexed:(CGImage *)a3 desiredPixelFormat:(unint64_t)a4 bufferAllocator:(id)a5 options:(id)a6 error:(id *)a7;
-+ (int)determineColorSpaceClass:(CGImage *)a3 displayGamut:(unint64_t)a4 options:(id)a5;
-- (BOOL)parseData:(id)a3 bufferAllocator:(id)a4 options:(id)a5 error:(id *)a6;
++ (CGImage)newCGImageFromImage:(id)image colorSpace:(CGColorSpace *)space error:(id *)error;
++ (id)decodeCGImage:(CGImage *)image desiredPixelFormat:(unint64_t)format bufferAllocator:(id)allocator options:(id)options error:(id *)error;
++ (id)decodeCGImageNonIndexed:(CGImage *)indexed desiredPixelFormat:(unint64_t)format bufferAllocator:(id)allocator options:(id)options error:(id *)error;
++ (int)determineColorSpaceClass:(CGImage *)class displayGamut:(unint64_t)gamut options:(id)options;
+- (BOOL)parseData:(id)data bufferAllocator:(id)allocator options:(id)options error:(id *)error;
 @end
 
 @implementation TXRParserImageIO
 
-- (BOOL)parseData:(id)a3 bufferAllocator:(id)a4 options:(id)a5 error:(id *)a6
+- (BOOL)parseData:(id)data bufferAllocator:(id)allocator options:(id)options error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = CGImageSourceCreateWithData(a3, 0);
+  allocatorCopy = allocator;
+  optionsCopy = options;
+  v12 = CGImageSourceCreateWithData(data, 0);
   if (!v12)
   {
     goto LABEL_11;
@@ -25,21 +25,21 @@
     goto LABEL_11;
   }
 
-  if (v11)
+  if (optionsCopy)
   {
     v15 = v14;
     v16 = *MEMORY[0x277CD3410];
     if (CFDictionaryContainsKey(v14, *MEMORY[0x277CD3410]))
     {
       v17 = CFDictionaryGetValue(v15, v16);
-      v18 = [v17 integerValue];
-      if (([v11 originOperation] & 0xF) != 0)
+      integerValue = [v17 integerValue];
+      if (([optionsCopy originOperation] & 0xF) != 0)
       {
-        v19 = [v11 copyWithZone:0];
+        v19 = [optionsCopy copyWithZone:0];
 
         [v19 setOriginOperation:{objc_msgSend(v19, "originOperation") & 0xFFFFFFFFFFFFFFF0}];
-        [v19 setOriginOperation:{objc_msgSend(v19, "originOperation") | v18}];
-        v11 = v19;
+        [v19 setOriginOperation:{objc_msgSend(v19, "originOperation") | integerValue}];
+        optionsCopy = v19;
       }
     }
   }
@@ -47,7 +47,7 @@
   ImageAtIndex = CGImageSourceCreateImageAtIndex(v13, 0, 0);
   if (ImageAtIndex)
   {
-    v21 = [TXRParserImageIO decodeCGImage:ImageAtIndex desiredPixelFormat:0 bufferAllocator:v10 options:v11 error:a6];
+    v21 = [TXRParserImageIO decodeCGImage:ImageAtIndex desiredPixelFormat:0 bufferAllocator:allocatorCopy options:optionsCopy error:error];
     v22 = v21 != 0;
     if (v21)
     {
@@ -57,8 +57,8 @@
 
       -[TXRImageInfo setBytesPerRow:](self->_imageInfo, "setBytesPerRow:", [v21 bytesPerRow]);
       -[TXRImageInfo setBytesPerImage:](self->_imageInfo, "setBytesPerImage:", [v21 bytesPerImage]);
-      v25 = [v21 buffer];
-      [(TXRImageInfo *)self->_imageInfo setBuffer:v25];
+      buffer = [v21 buffer];
+      [(TXRImageInfo *)self->_imageInfo setBuffer:buffer];
 
       -[TXRImageInfo setOffset:](self->_imageInfo, "setOffset:", [v21 offset]);
       v26 = objc_alloc_init(TXRTextureInfo);
@@ -74,19 +74,19 @@
       [(TXRTextureInfo *)self->_textureInfo setArrayLength:1];
     }
 
-    else if (a6)
+    else if (error)
     {
-      *a6 = _newTXRErrorWithCodeAndErrorString(0, @"Image decoding failed");
+      *error = _newTXRErrorWithCodeAndErrorString(0, @"Image decoding failed");
     }
   }
 
   else
   {
 LABEL_11:
-    if (a6)
+    if (error)
     {
       _newTXRErrorWithCodeAndErrorString(0, @"Image decoding failed");
-      *a6 = v22 = 0;
+      *error = v22 = 0;
     }
 
     else
@@ -98,24 +98,24 @@ LABEL_11:
   return v22;
 }
 
-+ (int)determineColorSpaceClass:(CGImage *)a3 displayGamut:(unint64_t)a4 options:(id)a5
++ (int)determineColorSpaceClass:(CGImage *)class displayGamut:(unint64_t)gamut options:(id)options
 {
-  v7 = a5;
-  v8 = v7;
-  if (v7 && [v7 colorSpaceHandling])
+  optionsCopy = options;
+  v8 = optionsCopy;
+  if (optionsCopy && [optionsCopy colorSpaceHandling])
   {
-    v9 = [v8 colorSpaceHandling];
-    if ((v9 - 1) >= 3)
+    colorSpaceHandling = [v8 colorSpaceHandling];
+    if ((colorSpaceHandling - 1) >= 3)
     {
       +[TXRParserImageIO determineColorSpaceClass:displayGamut:options:];
     }
 
-    v10 = 3 - v9;
+    v10 = 3 - colorSpaceHandling;
   }
 
   else
   {
-    ColorSpace = CGImageGetColorSpace(a3);
+    ColorSpace = CGImageGetColorSpace(class);
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
     DeviceGray = CGColorSpaceCreateDeviceGray();
     if (!ColorSpace || (v14 = DeviceGray, CFEqual(DeviceRGB, ColorSpace)) || CFEqual(v14, ColorSpace))
@@ -139,7 +139,7 @@ LABEL_11:
         }
 
         CGColorSpaceRelease(v17);
-        if (a4 == 1 && CGColorSpaceIsWideGamutRGB(ColorSpace))
+        if (gamut == 1 && CGColorSpaceIsWideGamutRGB(ColorSpace))
         {
           v10 = 3;
           goto LABEL_9;
@@ -155,27 +155,27 @@ LABEL_9:
   return v10;
 }
 
-+ (id)decodeCGImage:(CGImage *)a3 desiredPixelFormat:(unint64_t)a4 bufferAllocator:(id)a5 options:(id)a6 error:(id *)a7
++ (id)decodeCGImage:(CGImage *)image desiredPixelFormat:(unint64_t)format bufferAllocator:(id)allocator options:(id)options error:(id *)error
 {
-  v12 = a6;
-  v13 = a5;
-  ColorSpace = CGImageGetColorSpace(a3);
+  optionsCopy = options;
+  allocatorCopy = allocator;
+  ColorSpace = CGImageGetColorSpace(image);
   CGColorSpaceRetain(ColorSpace);
-  v15 = [a1 decodeCGImageNonIndexed:a3 desiredPixelFormat:a4 bufferAllocator:v13 options:v12 error:a7];
+  v15 = [self decodeCGImageNonIndexed:image desiredPixelFormat:format bufferAllocator:allocatorCopy options:optionsCopy error:error];
 
   CGColorSpaceRelease(ColorSpace);
 
   return v15;
 }
 
-+ (id)decodeCGImageNonIndexed:(CGImage *)a3 desiredPixelFormat:(unint64_t)a4 bufferAllocator:(id)a5 options:(id)a6 error:(id *)a7
++ (id)decodeCGImageNonIndexed:(CGImage *)indexed desiredPixelFormat:(unint64_t)format bufferAllocator:(id)allocator options:(id)options error:(id *)error
 {
   v75[2] = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
-  v14 = [TXRParserImageIO determineColorSpaceClass:a3 displayGamut:1 options:v11];
+  allocatorCopy = allocator;
+  optionsCopy = options;
+  Width = CGImageGetWidth(indexed);
+  Height = CGImageGetHeight(indexed);
+  v14 = [TXRParserImageIO determineColorSpaceClass:indexed displayGamut:1 options:optionsCopy];
   ColorSpace = 0;
   if (v14 > 1)
   {
@@ -196,7 +196,7 @@ LABEL_9:
 
 LABEL_19:
     ColorSpace = CGColorSpaceCreateWithName(*v16);
-    if (!v11)
+    if (!optionsCopy)
     {
       goto LABEL_20;
     }
@@ -215,7 +215,7 @@ LABEL_19:
 
   else
   {
-    ColorSpace = CGImageGetColorSpace(a3);
+    ColorSpace = CGImageGetColorSpace(indexed);
     if (CGColorSpaceGetModel(ColorSpace) != kCGColorSpaceModelRGB)
     {
       ColorSpace = CGColorSpaceCreateDeviceRGB();
@@ -225,19 +225,19 @@ LABEL_19:
   }
 
 LABEL_11:
-  if (!v11)
+  if (!optionsCopy)
   {
 LABEL_20:
-    AlphaInfo = CGImageGetAlphaInfo(a3);
+    AlphaInfo = CGImageGetAlphaInfo(indexed);
     v19 = 0;
     v18 = AlphaInfo - 1;
     goto LABEL_21;
   }
 
 LABEL_12:
-  v17 = [v11 multiplyAlpha];
-  v18 = CGImageGetAlphaInfo(a3) - 1;
-  if (!v17)
+  multiplyAlpha = [optionsCopy multiplyAlpha];
+  v18 = CGImageGetAlphaInfo(indexed) - 1;
+  if (!multiplyAlpha)
   {
     v19 = 0;
 LABEL_21:
@@ -261,9 +261,9 @@ LABEL_21:
 LABEL_22:
   v23 = 0x8000000020;
   v24 = 125;
-  if (a4 <= 39)
+  if (format <= 39)
   {
-    if (a4 - 10 < 2)
+    if (format - 10 < 2)
     {
 LABEL_77:
       if (v19)
@@ -280,7 +280,7 @@ LABEL_77:
       v24 = 11;
     }
 
-    else if (a4 - 30 >= 2)
+    else if (format - 30 >= 2)
     {
       if (v19)
       {
@@ -292,7 +292,7 @@ LABEL_77:
         v48 = 4355;
       }
 
-      if (a4 == 25)
+      if (format == 25)
       {
         v21 = v48;
         v24 = 25;
@@ -320,7 +320,7 @@ LABEL_55:
 
   else
   {
-    switch(a4)
+    switch(format)
     {
       case 0x37uLL:
       case 0x8DuLL:
@@ -580,7 +580,7 @@ LABEL_55:
       case 0x8EuLL:
         goto LABEL_55;
       default:
-        if (a4 == 41)
+        if (format == 41)
         {
           if (v19)
           {
@@ -596,7 +596,7 @@ LABEL_55:
           v24 = 41;
         }
 
-        else if (a4 == 40)
+        else if (format == 40)
         {
           v23 = 0x1000000005;
           v21 = 5;
@@ -611,14 +611,14 @@ LABEL_55:
   v57 = pixelBytes(v24);
   v25 = Width * v57;
   v63 = Height * v25;
-  v61 = [v10 newBufferWithLength:?];
+  v61 = [allocatorCopy newBufferWithLength:?];
   v64 = [v61 map];
-  v26 = [v11 originOperation];
-  v62 = v10;
+  originOperation = [optionsCopy originOperation];
+  v62 = allocatorCopy;
   v58 = v20;
-  if (v26 > 255)
+  if (originOperation > 255)
   {
-    switch(v26)
+    switch(originOperation)
     {
       case 256:
         goto LABEL_31;
@@ -626,7 +626,7 @@ LABEL_55:
 LABEL_33:
         v28 = Height;
         v29 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:v63];
-        v30 = [v64 bytes];
+        bytes = [v64 bytes];
         goto LABEL_34;
       case 512:
         goto LABEL_31;
@@ -635,15 +635,15 @@ LABEL_33:
 
   else
   {
-    v27 = v26 - 15;
-    if ((v26 - 15) <= 0x39)
+    v27 = originOperation - 15;
+    if ((originOperation - 15) <= 0x39)
     {
       if (((1 << v27) & 0x1540000000002A8) != 0)
       {
 LABEL_31:
         v28 = Height;
         v29 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:v63];
-        v30 = [v29 mutableBytes];
+        bytes = [v29 mutableBytes];
         goto LABEL_34;
       }
 
@@ -658,7 +658,7 @@ LABEL_31:
       }
     }
 
-    if ((v26 - 1) < 8 || v26 == 240)
+    if ((originOperation - 1) < 8 || originOperation == 240)
     {
 LABEL_199:
       +[TXRParserImageIO decodeCGImageNonIndexed:desiredPixelFormat:bufferAllocator:options:error:];
@@ -666,11 +666,11 @@ LABEL_199:
   }
 
   v28 = Height;
-  v30 = [v64 bytes];
+  bytes = [v64 bytes];
   v29 = 0;
 LABEL_34:
   v31 = v28;
-  v73[0] = v30;
+  v73[0] = bytes;
   v73[1] = v28;
   v32 = Width;
   v73[2] = Width;
@@ -681,14 +681,14 @@ LABEL_34:
   v69 = v21;
   v70 = 0;
   v71 = 0;
-  v33 = v30;
-  if (MEMORY[0x2743860E0](v73, v68, 0, a3, 512))
+  v33 = bytes;
+  if (MEMORY[0x2743860E0](v73, v68, 0, indexed, 512))
   {
     _newTXRErrorWithCodeAndErrorString(0, @"Could retrieve image data from CGImageRef");
-    *a7 = v34 = 0;
+    *error = v34 = 0;
     v35 = v61;
     v36 = v29;
-    v37 = v11;
+    v37 = optionsCopy;
     goto LABEL_192;
   }
 
@@ -697,24 +697,24 @@ LABEL_34:
   CGColorSpaceRelease(ColorSpace);
   v36 = v29;
   v38 = v25;
-  v37 = v11;
-  if (v11)
+  v37 = optionsCopy;
+  if (optionsCopy)
   {
-    v39 = [v11 originOperation];
+    originOperation2 = [optionsCopy originOperation];
     v40 = 0;
     v41 = 1;
-    if (v39 <= 65)
+    if (originOperation2 <= 65)
     {
-      if (v39 > 21)
+      if (originOperation2 > 21)
       {
-        if (v39 <= 23)
+        if (originOperation2 <= 23)
         {
-          if (v39 != 22)
+          if (originOperation2 != 22)
           {
 LABEL_96:
-            v45 = [v36 mutableBytes];
+            mutableBytes = [v36 mutableBytes];
             v40 = 0;
-            v44 = 0;
+            bytes2 = 0;
             v54 = 0x100000000;
             goto LABEL_102;
           }
@@ -726,7 +726,7 @@ LABEL_124:
           goto LABEL_125;
         }
 
-        if (v39 == 24)
+        if (originOperation2 == 24)
         {
 LABEL_123:
           v41 = 0;
@@ -734,10 +734,10 @@ LABEL_123:
           goto LABEL_124;
         }
 
-        if (v39 != 65)
+        if (originOperation2 != 65)
         {
           v42 = 0;
-          if (v39 == 64)
+          if (originOperation2 == 64)
           {
             goto LABEL_68;
           }
@@ -746,10 +746,10 @@ LABEL_123:
         }
 
 LABEL_101:
-        v45 = [v64 bytes];
+        mutableBytes = [v64 bytes];
         v54 = 0;
         v40 = 0;
-        v44 = 0;
+        bytes2 = 0;
 LABEL_102:
         v46 = componentsPerPixel(v59);
         v43 = v46;
@@ -757,7 +757,7 @@ LABEL_102:
         src.height = v31;
         src.width = v32;
         src.rowBytes = v38;
-        dest.data = v45;
+        dest.data = mutableBytes;
         dest.height = v31;
         dest.width = v32;
         dest.rowBytes = v38;
@@ -783,12 +783,12 @@ LABEL_102:
 
             v47 = vImageVerticalReflect_ARGB8888(&src, &dest, 0);
 LABEL_136:
-            if (a7 && !v47)
+            if (error && !v47)
             {
-              *a7 = _newTXRErrorWithCodeAndErrorString(0, @"Unable to vertically flip image");
+              *error = _newTXRErrorWithCodeAndErrorString(0, @"Unable to vertically flip image");
             }
 
-            v33 = v45;
+            v33 = mutableBytes;
             if ((v54 & 1) == 0)
             {
 LABEL_169:
@@ -886,11 +886,11 @@ LABEL_187:
             }
 
 LABEL_140:
-            src.data = v45;
+            src.data = mutableBytes;
             src.height = v31;
             src.width = v32;
             src.rowBytes = v38;
-            dest.data = v44;
+            dest.data = bytes2;
             dest.height = v31;
             dest.width = v32;
             dest.rowBytes = v38;
@@ -941,12 +941,12 @@ LABEL_140:
 
                 v49 = vImageHorizontalReflect_PlanarF(&src, &dest, 0);
 LABEL_165:
-                if (a7 && !v49)
+                if (error && !v49)
                 {
-                  *a7 = _newTXRErrorWithCodeAndErrorString(0, @"Unable to horizontally flip image");
+                  *error = _newTXRErrorWithCodeAndErrorString(0, @"Unable to horizontally flip image");
                 }
 
-                v33 = v44;
+                v33 = bytes2;
                 goto LABEL_169;
               }
 
@@ -1009,11 +1009,11 @@ LABEL_115:
         goto LABEL_136;
       }
 
-      if (v39 > 18)
+      if (originOperation2 > 18)
       {
-        if (v39 != 19)
+        if (originOperation2 != 19)
         {
-          if (v39 == 20)
+          if (originOperation2 == 20)
           {
             goto LABEL_101;
           }
@@ -1022,19 +1022,19 @@ LABEL_115:
         }
 
 LABEL_100:
-        v45 = [v36 mutableBytes];
-        v44 = [v64 bytes];
+        mutableBytes = [v36 mutableBytes];
+        bytes2 = [v64 bytes];
         v40 = 0;
         v54 = 1;
         goto LABEL_102;
       }
 
-      if (v39 != 18)
+      if (originOperation2 != 18)
       {
-        if ((v39 - 1) >= 8)
+        if ((originOperation2 - 1) >= 8)
         {
           v42 = 0;
-          if ((v39 - 15) >= 2)
+          if ((originOperation2 - 15) >= 2)
           {
             goto LABEL_125;
           }
@@ -1047,13 +1047,13 @@ LABEL_68:
 
     else
     {
-      if (v39 <= 71)
+      if (originOperation2 <= 71)
       {
-        if (v39 > 68)
+        if (originOperation2 > 68)
         {
-          if (v39 != 69)
+          if (originOperation2 != 69)
           {
-            if (v39 != 70)
+            if (originOperation2 != 70)
             {
               goto LABEL_124;
             }
@@ -1064,10 +1064,10 @@ LABEL_68:
           goto LABEL_123;
         }
 
-        if (v39 != 66)
+        if (originOperation2 != 66)
         {
           v42 = 0;
-          if (v39 != 67)
+          if (originOperation2 != 67)
           {
             goto LABEL_125;
           }
@@ -1078,14 +1078,14 @@ LABEL_68:
         goto LABEL_100;
       }
 
-      if (v39 <= 511)
+      if (originOperation2 <= 511)
       {
-        if (v39 != 72)
+        if (originOperation2 != 72)
         {
-          if (v39 != 256)
+          if (originOperation2 != 256)
           {
             v42 = 0;
-            if (v39 == 240)
+            if (originOperation2 == 240)
             {
               goto LABEL_68;
             }
@@ -1100,17 +1100,17 @@ LABEL_125:
         }
 
 LABEL_99:
-        v45 = [v36 mutableBytes];
+        mutableBytes = [v36 mutableBytes];
         v54 = 0;
-        v44 = 0;
+        bytes2 = 0;
         v40 = 1;
         goto LABEL_102;
       }
 
-      if (v39 != 512)
+      if (originOperation2 != 512)
       {
         v42 = 0;
-        if (v39 != 768)
+        if (originOperation2 != 768)
         {
           goto LABEL_125;
         }
@@ -1123,8 +1123,8 @@ LABEL_94:
     v43 = componentsPerPixel(v59);
     v40 = 0;
     HIDWORD(v54) = 0;
-    v44 = 0;
-    v45 = v33;
+    bytes2 = 0;
+    mutableBytes = v33;
     goto LABEL_140;
   }
 
@@ -1139,13 +1139,13 @@ LABEL_192:
   return v34;
 }
 
-+ (CGImage)newCGImageFromImage:(id)a3 colorSpace:(CGColorSpace *)a4 error:(id *)a5
++ (CGImage)newCGImageFromImage:(id)image colorSpace:(CGColorSpace *)space error:(id *)error
 {
-  v7 = a3;
-  v8 = v7;
-  if (!a4)
+  imageCopy = image;
+  v8 = imageCopy;
+  if (!space)
   {
-    if (isSRGB([v7 pixelFormat]))
+    if (isSRGB([imageCopy pixelFormat]))
     {
       v9 = MEMORY[0x277CBF430];
     }
@@ -1155,13 +1155,13 @@ LABEL_192:
       v9 = MEMORY[0x277CBF428];
     }
 
-    a4 = CGColorSpaceCreateWithName(*v9);
+    space = CGColorSpaceCreateWithName(*v9);
 LABEL_10:
-    NumberOfComponents = CGColorSpaceGetNumberOfComponents(a4);
-    v12 = [v8 pixelFormat];
+    NumberOfComponents = CGColorSpaceGetNumberOfComponents(space);
+    pixelFormat = [v8 pixelFormat];
     if (NumberOfComponents == 2)
     {
-      if (v12 == 30)
+      if (pixelFormat == 30)
       {
         v13 = 3;
         goto LABEL_32;
@@ -1184,12 +1184,12 @@ LABEL_10:
     {
       if (NumberOfComponents == 1)
       {
-        if (v12 == 10)
+        if (pixelFormat == 10)
         {
           v13 = 0;
 LABEL_32:
-          v17 = [v8 buffer];
-          v18 = [v17 map];
+          buffer = [v8 buffer];
+          v18 = [buffer map];
 
           v19 = CGDataProviderCreateWithData(0, [v18 bytes], objc_msgSend(v8, "bytesPerImage"), 0);
           v20 = pixelBytes([v8 pixelFormat]);
@@ -1200,8 +1200,8 @@ LABEL_32:
           [v8 dimensions];
           v26 = v25;
           [v8 dimensions];
-          v10 = CGImageCreate(v26, v27, v21, 8 * (v20 & 0x1F), v24, a4, v13, v19, 0, 0, kCGRenderingIntentDefault);
-          CGColorSpaceRelease(a4);
+          v10 = CGImageCreate(v26, v27, v21, 8 * (v20 & 0x1F), v24, space, v13, v19, 0, 0, kCGRenderingIntentDefault);
+          CGColorSpaceRelease(space);
 
           goto LABEL_33;
         }
@@ -1221,13 +1221,13 @@ LABEL_32:
         v14 = 55;
 LABEL_28:
         v15 = objc_alloc_init(TXRDefaultBufferAllocator);
-        v16 = [TXRDataConverter newImageFromSourceImage:v8 newPixelFormat:v14 bufferAllocator:v15 gammaDegamma:0 error:a5];
+        v16 = [TXRDataConverter newImageFromSourceImage:v8 newPixelFormat:v14 bufferAllocator:v15 gammaDegamma:0 error:error];
 
         v8 = v16;
         goto LABEL_32;
       }
 
-      if (v12 == 80 || [v8 pixelFormat] == 81)
+      if (pixelFormat == 80 || [v8 pixelFormat] == 81)
       {
         v13 = 8196;
         goto LABEL_32;
@@ -1256,16 +1256,16 @@ LABEL_28:
     goto LABEL_32;
   }
 
-  if (CGColorSpaceGetModel(a4) < kCGColorSpaceModelCMYK)
+  if (CGColorSpaceGetModel(space) < kCGColorSpaceModelCMYK)
   {
-    CGColorSpaceRetain(a4);
+    CGColorSpaceRetain(space);
     goto LABEL_10;
   }
 
-  if (a5)
+  if (error)
   {
     _newTXRErrorWithCodeAndErrorString(13, @"Cannot create CGImage with given colorSpace.  ColorModel of colorSpace must be Monochrome or RGB ");
-    *a5 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else

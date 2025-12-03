@@ -1,41 +1,41 @@
 @interface BCSCallerIdParquetMessage
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addIntent:(id)a3;
-- (void)addName:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsVerified:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addIntent:(id)intent;
+- (void)addName:(id)name;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsVerified:(BOOL)verified;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BCSCallerIdParquetMessage
 
-- (void)addName:(id)a3
+- (void)addName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   names = self->_names;
-  v8 = v4;
+  v8 = nameCopy;
   if (!names)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_names;
     self->_names = v6;
 
-    v4 = v8;
+    nameCopy = v8;
     names = self->_names;
   }
 
-  [(NSMutableArray *)names addObject:v4];
+  [(NSMutableArray *)names addObject:nameCopy];
 }
 
-- (void)setHasIsVerified:(BOOL)a3
+- (void)setHasIsVerified:(BOOL)verified
 {
-  if (a3)
+  if (verified)
   {
     v3 = 2;
   }
@@ -48,22 +48,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addIntent:(id)a3
+- (void)addIntent:(id)intent
 {
-  v4 = a3;
+  intentCopy = intent;
   intents = self->_intents;
-  v8 = v4;
+  v8 = intentCopy;
   if (!intents)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_intents;
     self->_intents = v6;
 
-    v4 = v8;
+    intentCopy = v8;
     intents = self->_intents;
   }
 
-  [(NSMutableArray *)intents addObject:v4];
+  [(NSMutableArray *)intents addObject:intentCopy];
 }
 
 - (id)description
@@ -72,8 +72,8 @@
   v8.receiver = self;
   v8.super_class = BCSCallerIdParquetMessage;
   v4 = [(BCSCallerIdParquetMessage *)&v8 description];
-  v5 = [(BCSCallerIdParquetMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BCSCallerIdParquetMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -81,17 +81,17 @@
 - (id)dictionaryRepresentation
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_phoneHash];
-    [v3 setObject:v4 forKey:@"phone_hash"];
+    [dictionary setObject:v4 forKey:@"phone_hash"];
   }
 
   phoneNumber = self->_phoneNumber;
   if (phoneNumber)
   {
-    [v3 setObject:phoneNumber forKey:@"phone_number"];
+    [dictionary setObject:phoneNumber forKey:@"phone_number"];
   }
 
   if ([(NSMutableArray *)self->_names count])
@@ -116,8 +116,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -126,19 +126,19 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"name"];
+    [dictionary setObject:v6 forKey:@"name"];
   }
 
   logo = self->_logo;
   if (logo)
   {
-    [v3 setObject:logo forKey:@"logo"];
+    [dictionary setObject:logo forKey:@"logo"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v14 = [MEMORY[0x277CCABB0] numberWithBool:self->_isVerified];
-    [v3 setObject:v14 forKey:@"is_verified"];
+    [dictionary setObject:v14 forKey:@"is_verified"];
   }
 
   if ([(NSMutableArray *)self->_intents count])
@@ -163,8 +163,8 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation2 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation2];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v25 objects:v33 count:16];
@@ -173,30 +173,30 @@
       while (v18);
     }
 
-    [v3 setObject:v15 forKey:@"intent"];
+    [dictionary setObject:v15 forKey:@"intent"];
   }
 
   logoFormat = self->_logoFormat;
   if (logoFormat)
   {
-    [v3 setObject:logoFormat forKey:@"logo_format"];
+    [dictionary setObject:logoFormat forKey:@"logo_format"];
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -205,18 +205,18 @@
       while (1)
       {
         LOBYTE(v35[0]) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:v35 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v35 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v35[0] & 0x7F) << v6;
@@ -234,11 +234,11 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -253,18 +253,18 @@ LABEL_15:
           while (1)
           {
             LOBYTE(v35[0]) = 0;
-            v28 = [a3 position] + 1;
-            if (v28 >= [a3 position] && (v29 = objc_msgSend(a3, "position") + 1, v29 <= objc_msgSend(a3, "length")))
+            v28 = [from position] + 1;
+            if (v28 >= [from position] && (v29 = objc_msgSend(from, "position") + 1, v29 <= objc_msgSend(from, "length")))
             {
-              v30 = [a3 data];
-              [v30 getBytes:v35 range:{objc_msgSend(a3, "position"), 1}];
+              data2 = [from data];
+              [data2 getBytes:v35 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v27 |= (v35[0] & 0x7F) << v25;
@@ -282,7 +282,7 @@ LABEL_15:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v31 = 0;
           }
@@ -333,18 +333,18 @@ LABEL_58:
             while (1)
             {
               LOBYTE(v35[0]) = 0;
-              v18 = [a3 position] + 1;
-              if (v18 >= [a3 position] && (v19 = objc_msgSend(a3, "position") + 1, v19 <= objc_msgSend(a3, "length")))
+              v18 = [from position] + 1;
+              if (v18 >= [from position] && (v19 = objc_msgSend(from, "position") + 1, v19 <= objc_msgSend(from, "length")))
               {
-                v20 = [a3 data];
-                [v20 getBytes:v35 range:{objc_msgSend(a3, "position"), 1}];
+                data3 = [from data];
+                [data3 getBytes:v35 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v17 |= (v35[0] & 0x7F) << v15;
@@ -362,7 +362,7 @@ LABEL_58:
               }
             }
 
-            v21 = (v17 != 0) & ~[a3 hasError];
+            v21 = (v17 != 0) & ~[from hasError];
 LABEL_60:
             self->_isVerified = v21;
             goto LABEL_61;
@@ -399,7 +399,7 @@ LABEL_54:
 
       v35[0] = 0;
       v35[1] = 0;
-      if (!PBReaderPlaceMark() || !BCSCallerIdLocalizedStringReadFrom(v22, a3))
+      if (!PBReaderPlaceMark() || !BCSCallerIdLocalizedStringReadFrom(v22, from))
       {
 
         return 0;
@@ -408,19 +408,19 @@ LABEL_54:
       PBReaderRecallMark();
 
 LABEL_61:
-      v33 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v33 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     phoneHash = self->_phoneHash;
@@ -515,28 +515,28 @@ LABEL_61:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_phoneHash;
-    *(v4 + 60) |= 1u;
+    toCopy[1] = self->_phoneHash;
+    *(toCopy + 60) |= 1u;
   }
 
-  v13 = v4;
+  v13 = toCopy;
   if (self->_phoneNumber)
   {
-    [v4 setPhoneNumber:?];
+    [toCopy setPhoneNumber:?];
   }
 
   if ([(BCSCallerIdParquetMessage *)self namesCount])
   {
     [v13 clearNames];
-    v5 = [(BCSCallerIdParquetMessage *)self namesCount];
-    if (v5)
+    namesCount = [(BCSCallerIdParquetMessage *)self namesCount];
+    if (namesCount)
     {
-      v6 = v5;
+      v6 = namesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(BCSCallerIdParquetMessage *)self nameAtIndex:i];
@@ -559,10 +559,10 @@ LABEL_61:
   if ([(BCSCallerIdParquetMessage *)self intentsCount])
   {
     [v13 clearIntents];
-    v9 = [(BCSCallerIdParquetMessage *)self intentsCount];
-    if (v9)
+    intentsCount = [(BCSCallerIdParquetMessage *)self intentsCount];
+    if (intentsCount)
     {
-      v10 = v9;
+      v10 = intentsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(BCSCallerIdParquetMessage *)self intentAtIndex:j];
@@ -577,10 +577,10 @@ LABEL_61:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -588,7 +588,7 @@ LABEL_61:
     *(v5 + 60) |= 1u;
   }
 
-  v7 = [(NSString *)self->_phoneNumber copyWithZone:a3];
+  v7 = [(NSString *)self->_phoneNumber copyWithZone:zone];
   v8 = *(v6 + 48);
   *(v6 + 48) = v7;
 
@@ -611,7 +611,7 @@ LABEL_61:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v31 + 1) + 8 * i) copyWithZone:a3];
+        v14 = [*(*(&v31 + 1) + 8 * i) copyWithZone:zone];
         [v6 addName:v14];
       }
 
@@ -621,7 +621,7 @@ LABEL_61:
     while (v11);
   }
 
-  v15 = [(NSData *)self->_logo copyWithZone:a3];
+  v15 = [(NSData *)self->_logo copyWithZone:zone];
   v16 = *(v6 + 24);
   *(v6 + 24) = v15;
 
@@ -650,7 +650,7 @@ LABEL_61:
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v27 + 1) + 8 * j) copyWithZone:{a3, v27}];
+        v22 = [*(*(&v27 + 1) + 8 * j) copyWithZone:{zone, v27}];
         [v6 addIntent:v22];
       }
 
@@ -660,7 +660,7 @@ LABEL_61:
     while (v19);
   }
 
-  v23 = [(NSString *)self->_logoFormat copyWithZone:a3];
+  v23 = [(NSString *)self->_logoFormat copyWithZone:zone];
   v24 = *(v6 + 32);
   *(v6 + 32) = v23;
 
@@ -668,36 +668,36 @@ LABEL_61:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(equalCopy + 60);
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_phoneHash != *(v4 + 1))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_phoneHash != *(equalCopy + 1))
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_20;
   }
 
   phoneNumber = self->_phoneNumber;
-  if (phoneNumber | *(v4 + 6) && ![(NSString *)phoneNumber isEqual:?])
+  if (phoneNumber | *(equalCopy + 6) && ![(NSString *)phoneNumber isEqual:?])
   {
     goto LABEL_20;
   }
 
   names = self->_names;
-  if (names | *(v4 + 5))
+  if (names | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)names isEqual:?])
     {
@@ -706,7 +706,7 @@ LABEL_61:
   }
 
   logo = self->_logo;
-  if (logo | *(v4 + 3))
+  if (logo | *(equalCopy + 3))
   {
     if (![(NSData *)logo isEqual:?])
     {
@@ -714,10 +714,10 @@ LABEL_61:
     }
   }
 
-  v9 = *(v4 + 60);
+  v9 = *(equalCopy + 60);
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 60) & 2) == 0)
+    if ((*(equalCopy + 60) & 2) == 0)
     {
       goto LABEL_15;
     }
@@ -727,34 +727,34 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if ((*(v4 + 60) & 2) == 0)
+  if ((*(equalCopy + 60) & 2) == 0)
   {
     goto LABEL_20;
   }
 
-  v14 = *(v4 + 56);
+  v14 = *(equalCopy + 56);
   if (self->_isVerified)
   {
-    if ((*(v4 + 56) & 1) == 0)
+    if ((*(equalCopy + 56) & 1) == 0)
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_20;
   }
 
 LABEL_15:
   intents = self->_intents;
-  if (intents | *(v4 + 2) && ![(NSMutableArray *)intents isEqual:?])
+  if (intents | *(equalCopy + 2) && ![(NSMutableArray *)intents isEqual:?])
   {
     goto LABEL_20;
   }
 
   logoFormat = self->_logoFormat;
-  if (logoFormat | *(v4 + 4))
+  if (logoFormat | *(equalCopy + 4))
   {
     v12 = [(NSString *)logoFormat isEqual:?];
   }
@@ -799,18 +799,18 @@ LABEL_21:
   return v8 ^ v9 ^ [(NSString *)self->_logoFormat hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 60))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 60))
   {
-    self->_phoneHash = v4[1];
+    self->_phoneHash = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (v4[6])
+  if (fromCopy[6])
   {
     [(BCSCallerIdParquetMessage *)self setPhoneNumber:?];
   }

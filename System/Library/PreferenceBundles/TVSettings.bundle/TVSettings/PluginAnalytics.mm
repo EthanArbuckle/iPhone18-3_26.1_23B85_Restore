@@ -1,6 +1,6 @@
 @interface PluginAnalytics
 + (id)sharedInstance;
-- (void)_recordEvent:(id)a3 field:(id)a4 value:(id)a5;
+- (void)_recordEvent:(id)event field:(id)field value:(id)value;
 @end
 
 @implementation PluginAnalytics
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = sub_E4DC;
   block[3] = &unk_20C48;
-  block[4] = a1;
+  block[4] = self;
   if (qword_28020 != -1)
   {
     dispatch_once(&qword_28020, block);
@@ -22,12 +22,12 @@
   return v2;
 }
 
-- (void)_recordEvent:(id)a3 field:(id)a4 value:(id)a5
+- (void)_recordEvent:(id)event field:(id)field value:(id)value
 {
-  v8 = a4;
-  v9 = a5;
-  v6 = v9;
-  v7 = v8;
+  fieldCopy = field;
+  valueCopy = value;
+  v6 = valueCopy;
+  v7 = fieldCopy;
   AnalyticsSendEventLazy();
 }
 

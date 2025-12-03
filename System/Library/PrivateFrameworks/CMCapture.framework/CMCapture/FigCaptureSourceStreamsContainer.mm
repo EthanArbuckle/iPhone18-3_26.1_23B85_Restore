@@ -1,11 +1,11 @@
 @interface FigCaptureSourceStreamsContainer
-- (uint64_t)_populateStreamsFromDeviceVendorForPosition:(uint64_t)a3 baseZoomFactorOverrides:(uint64_t)a4 clientBaseZoomFactorsByPortType:;
+- (uint64_t)_populateStreamsFromDeviceVendorForPosition:(uint64_t)position baseZoomFactorOverrides:(uint64_t)overrides clientBaseZoomFactorsByPortType:;
 - (uint64_t)portTypesSupportingDepth;
 - (uint64_t)streamProvidingSDOFRenderingParameters;
 - (uint64_t)switchOverZoomFactors;
 - (uint64_t)switchOverZoomFactorsWithoutFudge;
 - (void)dealloc;
-- (void)initWithDeviceType:(uint64_t)a3 position:(int)a4 stillImageDepthDataType:(void *)a5 device:(uint64_t)a6 baseZoomFactorOverrides:(uint64_t)a7 clientBaseZoomFactorsByPortType:;
+- (void)initWithDeviceType:(uint64_t)type position:(int)position stillImageDepthDataType:(void *)dataType device:(uint64_t)device baseZoomFactorOverrides:(uint64_t)overrides clientBaseZoomFactorsByPortType:;
 - (void)zoomFactorsForDepth;
 @end
 
@@ -18,23 +18,23 @@
   [(FigCaptureSourceStreamsContainer *)&v3 dealloc];
 }
 
-- (void)initWithDeviceType:(uint64_t)a3 position:(int)a4 stillImageDepthDataType:(void *)a5 device:(uint64_t)a6 baseZoomFactorOverrides:(uint64_t)a7 clientBaseZoomFactorsByPortType:
+- (void)initWithDeviceType:(uint64_t)type position:(int)position stillImageDepthDataType:(void *)dataType device:(uint64_t)device baseZoomFactorOverrides:(uint64_t)overrides clientBaseZoomFactorsByPortType:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = FigCaptureSourceStreamsContainer;
   v13 = objc_msgSendSuper2(&v16, sel_init);
   v14 = v13;
   if (v13)
   {
     *(v13 + 2) = a2;
-    *(v13 + 3) = a4;
-    *(v13 + 2) = a5;
-    if ([(FigCaptureSourceStreamsContainer *)v14 _populateStreamsFromDeviceVendorForPosition:a3 baseZoomFactorOverrides:a6 clientBaseZoomFactorsByPortType:a7])
+    *(v13 + 3) = position;
+    *(v13 + 2) = dataType;
+    if ([(FigCaptureSourceStreamsContainer *)v14 _populateStreamsFromDeviceVendorForPosition:type baseZoomFactorOverrides:device clientBaseZoomFactorsByPortType:overrides])
     {
       OUTLINED_FUNCTION_1_5();
       FigDebugAssert3();
@@ -46,21 +46,21 @@
   return v14;
 }
 
-- (uint64_t)_populateStreamsFromDeviceVendorForPosition:(uint64_t)a3 baseZoomFactorOverrides:(uint64_t)a4 clientBaseZoomFactorsByPortType:
+- (uint64_t)_populateStreamsFromDeviceVendorForPosition:(uint64_t)position baseZoomFactorOverrides:(uint64_t)overrides clientBaseZoomFactorsByPortType:
 {
   if (result)
   {
     v7 = result;
     v75[0] = 0;
     v8 = FigCaptureSourceUnderlyingDeviceTypes(*(result + 8));
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     if ([v8 count])
     {
       v11 = 0;
       do
       {
-        [v9 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", a2)}];
+        [array addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", a2)}];
         ++v11;
       }
 
@@ -77,10 +77,10 @@
 
     else
     {
-      v13 = [v12 firstObject];
-      *(v7 + 32) = v13;
+      firstObject = [v12 firstObject];
+      *(v7 + 32) = firstObject;
       v14 = *(v7 + 24);
-      v22 = OUTLINED_FUNCTION_14_8(v13, v15, v16, v17, v18, v19, v20, v21, v38, v40, v42, v44, v46, v48, v50, v52, v54, v56, v58, v60, v62, v64, v66, v68, v70, v72, 0);
+      v22 = OUTLINED_FUNCTION_14_8(firstObject, v15, v16, v17, v18, v19, v20, v21, v38, v40, v42, v44, v46, v48, v50, v52, v54, v56, v58, v60, v62, v64, v66, v68, v70, v72, 0);
       if (v22)
       {
         v23 = v22;
@@ -117,7 +117,7 @@
 
         else
         {
-          v36 = [[BWFigVideoCaptureSynchronizedStreamsGroup alloc] initWithSynchronizedStreamsGroup:v35 activeStreams:*(v7 + 24) readOnly:1 baseZoomFactorOverrides:a3 clientBaseZoomFactorsByPortType:a4 error:v75];
+          v36 = [[BWFigVideoCaptureSynchronizedStreamsGroup alloc] initWithSynchronizedStreamsGroup:v35 activeStreams:*(v7 + 24) readOnly:1 baseZoomFactorOverrides:position clientBaseZoomFactorsByPortType:overrides error:v75];
 
           if (v75[0])
           {
@@ -127,13 +127,13 @@
 
           else
           {
-            v37 = [(BWFigVideoCaptureSynchronizedStreamsGroup *)v36 clientBaseZoomFactorsByPortType];
-            if (!v37)
+            clientBaseZoomFactorsByPortType = [(BWFigVideoCaptureSynchronizedStreamsGroup *)v36 clientBaseZoomFactorsByPortType];
+            if (!clientBaseZoomFactorsByPortType)
             {
-              v37 = [(BWFigVideoCaptureSynchronizedStreamsGroup *)v36 baseZoomFactorsByPortType];
+              clientBaseZoomFactorsByPortType = [(BWFigVideoCaptureSynchronizedStreamsGroup *)v36 baseZoomFactorsByPortType];
             }
 
-            *(v7 + 48) = v37;
+            *(v7 + 48) = clientBaseZoomFactorsByPortType;
             *(v7 + 56) = [(BWFigVideoCaptureSynchronizedStreamsGroup *)v36 baseZoomFactorsByPortType];
           }
         }
@@ -191,9 +191,9 @@
       case 6:
       case 9:
       case 0xA:
-        v7 = [*(result + 32) portType];
+        portType = [*(result + 32) portType];
         v1 = MEMORY[0x1E695DEC8];
-        v2 = &v7;
+        v2 = &portType;
         goto LABEL_4;
       case 7:
         v6 = *off_1E798A0C8;
@@ -216,24 +216,24 @@ LABEL_11:
 
 - (void)zoomFactorsForDepth
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = a1;
-  v2 = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
+  array = [MEMORY[0x1E695DF70] array];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = [(FigCaptureSourceStreamsContainer *)v1 portTypesSupportingDepth];
+  obj = [(FigCaptureSourceStreamsContainer *)selfCopy portTypesSupportingDepth];
   v32 = [obj countByEnumeratingWithState:&v43 objects:v42 count:16];
   if (v32)
   {
     v30 = *v44;
     v29 = *off_1E798C1B8;
-    v31 = v1;
+    v31 = selfCopy;
     do
     {
       v3 = 0;
@@ -245,7 +245,7 @@ LABEL_11:
         }
 
         v4 = *(*(&v43 + 1) + 8 * v3);
-        v5 = *(v1 + 8);
+        v5 = *(selfCopy + 8);
         v6 = v5 > 9;
         v7 = (1 << v5) & 0x310;
         v8 = v6 || v7 == 0;
@@ -256,13 +256,13 @@ LABEL_11:
 
         else
         {
-          [objc_msgSend(*(v1 + 48) objectForKeyedSubscript:{*(*(&v43 + 1) + 8 * v3)), "floatValue"}];
+          [objc_msgSend(*(selfCopy + 48) objectForKeyedSubscript:{*(*(&v43 + 1) + 8 * v3)), "floatValue"}];
           v10 = v9;
         }
 
         v33 = v3;
         v11 = [MEMORY[0x1E695DFA8] set];
-        v12 = [objc_msgSend(*(v1 + 40) objectForKeyedSubscript:{v4), "getProperty:error:", v29, 0}];
+        v12 = [objc_msgSend(*(selfCopy + 40) objectForKeyedSubscript:{v4), "getProperty:error:", v29, 0}];
         if ([v12 count])
         {
           v14 = 0;
@@ -327,7 +327,7 @@ LABEL_11:
                 objc_enumerationMutation(v23);
               }
 
-              [v2 addObject:*(*(&v36[0] + 1) + 8 * j)];
+              [array addObject:*(*(&v36[0] + 1) + 8 * j)];
             }
 
             v25 = [v23 countByEnumeratingWithState:v36 objects:v35 count:16];
@@ -337,7 +337,7 @@ LABEL_11:
         }
 
         v3 = v33 + 1;
-        v1 = v31;
+        selfCopy = v31;
       }
 
       while (v33 + 1 != v32);
@@ -347,7 +347,7 @@ LABEL_11:
     while (v32);
   }
 
-  return v2;
+  return array;
 }
 
 - (uint64_t)streamProvidingSDOFRenderingParameters

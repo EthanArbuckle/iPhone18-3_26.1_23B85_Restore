@@ -1,16 +1,16 @@
 @interface SMMadridMessageWaitingForAck
-- (SMMadridMessageWaitingForAck)initWithIdentifier:(id)a3 messageType:(unint64_t)a4 messageSentDate:(id)a5 pendingRetryCount:(int64_t)a6 conversation:(id)a7 callback:(id)a8;
+- (SMMadridMessageWaitingForAck)initWithIdentifier:(id)identifier messageType:(unint64_t)type messageSentDate:(id)date pendingRetryCount:(int64_t)count conversation:(id)conversation callback:(id)callback;
 @end
 
 @implementation SMMadridMessageWaitingForAck
 
-- (SMMadridMessageWaitingForAck)initWithIdentifier:(id)a3 messageType:(unint64_t)a4 messageSentDate:(id)a5 pendingRetryCount:(int64_t)a6 conversation:(id)a7 callback:(id)a8
+- (SMMadridMessageWaitingForAck)initWithIdentifier:(id)identifier messageType:(unint64_t)type messageSentDate:(id)date pendingRetryCount:(int64_t)count conversation:(id)conversation callback:(id)callback
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  if (!v15)
+  identifierCopy = identifier;
+  dateCopy = date;
+  conversationCopy = conversation;
+  callbackCopy = callback;
+  if (!identifierCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -25,7 +25,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v16)
+  if (!dateCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -38,7 +38,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (a6 < 0)
+  if (count < 0)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -50,7 +50,7 @@ LABEL_13:
 
 LABEL_14:
 
-    v23 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
@@ -60,22 +60,22 @@ LABEL_14:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_identifier, a3);
-    v20->_messageType = a4;
-    v21 = [v18 copy];
+    objc_storeStrong(&v19->_identifier, identifier);
+    v20->_messageType = type;
+    v21 = [callbackCopy copy];
     callback = v20->_callback;
     v20->_callback = v21;
 
-    objc_storeStrong(&v20->_messageSentDate, a5);
-    v20->_pendingRetryCount = a6;
-    objc_storeStrong(&v20->_conversation, a7);
+    objc_storeStrong(&v20->_messageSentDate, date);
+    v20->_pendingRetryCount = count;
+    objc_storeStrong(&v20->_conversation, conversation);
   }
 
   self = v20;
-  v23 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v23;
+  return selfCopy;
 }
 
 @end

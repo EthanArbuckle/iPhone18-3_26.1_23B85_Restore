@@ -5,10 +5,10 @@
 - (MUContactStore)init;
 - (void)_contactStoreDidChange;
 - (void)_invokeObservers;
-- (void)fetchContactForPickerDisplayUsingContact:(id)a3 callbackQueue:(id)a4 completion:(id)a5;
-- (void)fetchStoredContactForMatchingMapItem:(id)a3 callbackQueue:(id)a4 completion:(id)a5;
-- (void)fetchUnifiedContactForIdentifier:(id)a3 callbackQueue:(id)a4 completion:(id)a5;
-- (void)removeMapsDataFromContact:(id)a3 callbackQueue:(id)a4 completion:(id)a5;
+- (void)fetchContactForPickerDisplayUsingContact:(id)contact callbackQueue:(id)queue completion:(id)completion;
+- (void)fetchStoredContactForMatchingMapItem:(id)item callbackQueue:(id)queue completion:(id)completion;
+- (void)fetchUnifiedContactForIdentifier:(id)identifier callbackQueue:(id)queue completion:(id)completion;
+- (void)removeMapsDataFromContact:(id)contact callbackQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation MUContactStore
@@ -16,47 +16,47 @@
 - (BOOL)_calculateIfContainerIsGuardianRestricted
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MUContactStore *)self cnContactStore];
-  v4 = [v3 defaultContainerIdentifier];
+  cnContactStore = [(MUContactStore *)self cnContactStore];
+  defaultContainerIdentifier = [cnContactStore defaultContainerIdentifier];
 
-  if (v4)
+  if (defaultContainerIdentifier)
   {
     v5 = MEMORY[0x1E695CE48];
-    v14[0] = v4;
+    v14[0] = defaultContainerIdentifier;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
     v7 = [v5 predicateForContainersWithIdentifiers:v6];
 
-    v8 = [(MUContactStore *)self cnContactStore];
-    v9 = [v8 containersMatchingPredicate:v7 error:0];
+    cnContactStore2 = [(MUContactStore *)self cnContactStore];
+    v9 = [cnContactStore2 containersMatchingPredicate:v7 error:0];
 
     if ([v9 count] == 1)
     {
-      v10 = [v9 firstObject];
-      v11 = [v10 isGuardianRestricted];
+      firstObject = [v9 firstObject];
+      isGuardianRestricted = [firstObject isGuardianRestricted];
     }
 
     else
     {
-      v11 = 0;
+      isGuardianRestricted = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    isGuardianRestricted = 0;
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return v11;
+  return isGuardianRestricted;
 }
 
-- (void)fetchStoredContactForMatchingMapItem:(id)a3 callbackQueue:(id)a4 completion:(id)a5
+- (void)fetchStoredContactForMatchingMapItem:(id)item callbackQueue:(id)queue completion:(id)completion
 {
   v30[3] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   v10 = MEMORY[0x1E695CD78];
-  v11 = a3;
+  itemCopy = item;
   v12 = [v10 alloc];
   v13 = *MEMORY[0x1E695C410];
   v30[0] = *MEMORY[0x1E695C2E0];
@@ -66,9 +66,9 @@
   v15 = [v12 initWithKeysToFetch:v14];
 
   v16 = MEMORY[0x1E695CD58];
-  v17 = [v11 _mapsDataString];
+  _mapsDataString = [itemCopy _mapsDataString];
 
-  v18 = [v16 predicateForContactMatchingMapString:v17];
+  v18 = [v16 predicateForContactMatchingMapString:_mapsDataString];
   [v15 setPredicate:v18];
 
   [v15 setSortOrder:1];
@@ -80,10 +80,10 @@
   block[3] = &unk_1E82197D0;
   objc_copyWeak(&v28, &location);
   v25 = v15;
-  v26 = v8;
-  v27 = v9;
-  v20 = v9;
-  v21 = v8;
+  v26 = queueCopy;
+  v27 = completionCopy;
+  v20 = completionCopy;
+  v21 = queueCopy;
   v22 = v15;
   dispatch_async(queue, block);
 
@@ -142,16 +142,16 @@ void __80__MUContactStore_fetchStoredContactForMatchingMapItem_callbackQueue_com
   *a3 = 1;
 }
 
-- (void)fetchContactForPickerDisplayUsingContact:(id)a3 callbackQueue:(id)a4 completion:(id)a5
+- (void)fetchContactForPickerDisplayUsingContact:(id)contact callbackQueue:(id)queue completion:(id)completion
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E695D148] descriptorForRequiredKeys];
-  v30[0] = v11;
+  contactCopy = contact;
+  queueCopy = queue;
+  completionCopy = completion;
+  descriptorForRequiredKeys = [MEMORY[0x1E695D148] descriptorForRequiredKeys];
+  v30[0] = descriptorForRequiredKeys;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
-  v13 = [v8 areKeysAvailable:v12];
+  v13 = [contactCopy areKeysAvailable:v12];
 
   if (v13)
   {
@@ -159,11 +159,11 @@ void __80__MUContactStore_fetchStoredContactForMatchingMapItem_callbackQueue_com
     block[1] = 3221225472;
     block[2] = __84__MUContactStore_fetchContactForPickerDisplayUsingContact_callbackQueue_completion___block_invoke;
     block[3] = &unk_1E821A618;
-    v28 = v8;
-    v29 = v10;
-    v14 = v10;
-    v15 = v8;
-    dispatch_async(v9, block);
+    v28 = contactCopy;
+    v29 = completionCopy;
+    v14 = completionCopy;
+    v15 = contactCopy;
+    dispatch_async(queueCopy, block);
   }
 
   else
@@ -176,12 +176,12 @@ void __80__MUContactStore_fetchStoredContactForMatchingMapItem_callbackQueue_com
     v20[3] = &unk_1E82197F8;
     objc_copyWeak(&v25, &location);
     v20[4] = self;
-    v21 = v8;
-    v22 = v11;
-    v23 = v9;
-    v24 = v10;
-    v17 = v10;
-    v18 = v8;
+    v21 = contactCopy;
+    v22 = descriptorForRequiredKeys;
+    v23 = queueCopy;
+    v24 = completionCopy;
+    v17 = completionCopy;
+    v18 = contactCopy;
     dispatch_async(queue, v20);
 
     objc_destroyWeak(&v25);
@@ -237,11 +237,11 @@ void __84__MUContactStore_fetchContactForPickerDisplayUsingContact_callbackQueue
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeMapsDataFromContact:(id)a3 callbackQueue:(id)a4 completion:(id)a5
+- (void)removeMapsDataFromContact:(id)contact callbackQueue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 mutableCopy];
+  queueCopy = queue;
+  completionCopy = completion;
+  v10 = [contact mutableCopy];
   [v10 setMapsData:0];
   if ([(MUContactStore *)self hasContactAccess])
   {
@@ -253,10 +253,10 @@ void __84__MUContactStore_fetchContactForPickerDisplayUsingContact_callbackQueue
     block[3] = &unk_1E82197D0;
     objc_copyWeak(&v20, &location);
     v17 = v10;
-    v18 = v8;
-    v19 = v9;
+    v18 = queueCopy;
+    v19 = completionCopy;
     v12 = v10;
-    v13 = v9;
+    v13 = completionCopy;
     dispatch_async(queue, block);
 
     objc_destroyWeak(&v20);
@@ -270,10 +270,10 @@ void __84__MUContactStore_fetchContactForPickerDisplayUsingContact_callbackQueue
     v22[2] = __69__MUContactStore_removeMapsDataFromContact_callbackQueue_completion___block_invoke;
     v22[3] = &unk_1E821A618;
     v23 = v10;
-    v24 = v9;
+    v24 = completionCopy;
     v14 = v10;
-    v15 = v9;
-    dispatch_async(v8, v22);
+    v15 = completionCopy;
+    dispatch_async(queueCopy, v22);
   }
 }
 
@@ -334,11 +334,11 @@ void __69__MUContactStore_removeMapsDataFromContact_callbackQueue_completion___b
   return cnContactStore;
 }
 
-- (void)fetchUnifiedContactForIdentifier:(id)a3 callbackQueue:(id)a4 completion:(id)a5
+- (void)fetchUnifiedContactForIdentifier:(id)identifier callbackQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -346,12 +346,12 @@ void __69__MUContactStore_removeMapsDataFromContact_callbackQueue_completion___b
   block[2] = __76__MUContactStore_fetchUnifiedContactForIdentifier_callbackQueue_completion___block_invoke;
   block[3] = &unk_1E82197D0;
   objc_copyWeak(&v19, &location);
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = identifierCopy;
+  v17 = queueCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = queueCopy;
+  v14 = identifierCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v19);
@@ -473,8 +473,8 @@ void __40__MUContactStore__contactStoreDidChange__block_invoke(uint64_t a1)
     observers = v2->_observers;
     v2->_observers = v7;
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v2 selector:sel__contactStoreDidChange name:*MEMORY[0x1E695C3D8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__contactStoreDidChange name:*MEMORY[0x1E695C3D8] object:0];
 
     [(MUContactStore *)v2 _contactStoreDidChange];
   }

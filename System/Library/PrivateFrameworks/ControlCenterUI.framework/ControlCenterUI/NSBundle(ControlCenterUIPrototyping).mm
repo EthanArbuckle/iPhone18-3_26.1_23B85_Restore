@@ -6,8 +6,8 @@
 
 - (uint64_t)ccui_prototypeModuleSize
 {
-  v1 = [a1 infoDictionary];
-  v2 = [v1 bs_safeDictionaryForKey:@"_CCModuleSizePROTOTYPE"];
+  infoDictionary = [self infoDictionary];
+  v2 = [infoDictionary bs_safeDictionaryForKey:@"_CCModuleSizePROTOTYPE"];
 
   if (v2)
   {

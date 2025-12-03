@@ -1,46 +1,46 @@
 @interface XRStringPair
-- (BOOL)isEqual:(id)a3;
-- (XRStringPair)initWithCoder:(id)a3;
-- (XRStringPair)initWithFirst:(id)a3 second:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (XRStringPair)initWithCoder:(id)coder;
+- (XRStringPair)initWithFirst:(id)first second:(id)second;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hashValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation XRStringPair
 
-- (XRStringPair)initWithFirst:(id)a3 second:(id)a4
+- (XRStringPair)initWithFirst:(id)first second:(id)second
 {
-  v7 = a3;
-  v8 = a4;
+  firstCopy = first;
+  secondCopy = second;
   v12.receiver = self;
   v12.super_class = XRStringPair;
   v9 = [(XRStringPair *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_first, a3);
-    objc_storeStrong(&v10->_second, a4);
+    objc_storeStrong(&v9->_first, first);
+    objc_storeStrong(&v10->_second, second);
   }
 
   return v10;
 }
 
-- (XRStringPair)initWithCoder:(id)a3
+- (XRStringPair)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = XRStringPair;
   v5 = [(XRStringPair *)&v17 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"_first", v8);
+    v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"_first", v8);
     first = v5->_first;
     v5->_first = v9;
 
     v11 = objc_opt_class();
-    v14 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v12, v11, @"_second", v13);
+    v14 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v12, v11, @"_second", v13);
     second = v5->_second;
     v5->_second = v14;
   }
@@ -48,21 +48,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   first = self->_first;
-  v9 = a3;
-  objc_msgSend_encodeObject_forKey_(v9, v5, first, @"_first", v6);
-  objc_msgSend_encodeObject_forKey_(v9, v7, self->_second, @"_second", v8);
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, first, @"_first", v6);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_second, @"_second", v8);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v10 = objc_msgSend_first(self, v6, v7, v8, v9);
     v15 = objc_msgSend_first(v5, v11, v12, v13, v14);
     if (objc_msgSend_isEqualToString_(v10, v16, v15, v17, v18))
@@ -86,7 +86,7 @@
   return isEqualToString;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [XRStringPair alloc];
   v9 = objc_msgSend_first(self, v5, v6, v7, v8);

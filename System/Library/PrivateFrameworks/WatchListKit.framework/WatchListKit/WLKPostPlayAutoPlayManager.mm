@@ -1,17 +1,17 @@
 @interface WLKPostPlayAutoPlayManager
 + (id)defaultManager;
 - (BOOL)_hasPreviousPreferenceAsDisableAutoPlay;
-- (BOOL)isEnabledForType:(unint64_t)a3;
-- (WLKPostPlayAutoPlayManager)initWithCache:(id)a3;
-- (void)_fetchStatusForType:(unint64_t)a3 withCompletion:(id)a4;
-- (void)_handleAccountDidChange:(id)a3;
-- (void)_migrateFromSystemPreferencesStoreOrSettingsStoreWithCompletion:(id)a3;
-- (void)_migrateOffStatusWithCompletion:(id)a3;
-- (void)_networkReachabilityDidChange:(id)a3;
-- (void)_performUserSettingsOperation:(id)a3 dsid:(id)a4 completion:(id)a5;
-- (void)fetchStatusForAllTypesWithCompletion:(id)a3;
-- (void)getStatusForType:(unint64_t)a3 withCompletion:(id)a4;
-- (void)setSettings:(id)a3 completion:(id)a4;
+- (BOOL)isEnabledForType:(unint64_t)type;
+- (WLKPostPlayAutoPlayManager)initWithCache:(id)cache;
+- (void)_fetchStatusForType:(unint64_t)type withCompletion:(id)completion;
+- (void)_handleAccountDidChange:(id)change;
+- (void)_migrateFromSystemPreferencesStoreOrSettingsStoreWithCompletion:(id)completion;
+- (void)_migrateOffStatusWithCompletion:(id)completion;
+- (void)_networkReachabilityDidChange:(id)change;
+- (void)_performUserSettingsOperation:(id)operation dsid:(id)dsid completion:(id)completion;
+- (void)fetchStatusForAllTypesWithCompletion:(id)completion;
+- (void)getStatusForType:(unint64_t)type withCompletion:(id)completion;
+- (void)setSettings:(id)settings completion:(id)completion;
 @end
 
 @implementation WLKPostPlayAutoPlayManager
@@ -77,16 +77,16 @@ LABEL_11:
   return v6;
 }
 
-- (WLKPostPlayAutoPlayManager)initWithCache:(id)a3
+- (WLKPostPlayAutoPlayManager)initWithCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   v16.receiver = self;
   v16.super_class = WLKPostPlayAutoPlayManager;
   v6 = [(WLKPostPlayAutoPlayManager *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cache, a3);
+    objc_storeStrong(&v6->_cache, cache);
     v8 = dispatch_queue_create("WLKPostPlayAutoPlayManagerPersistentCacheQueue", 0);
     queue = v7->_queue;
     v7->_queue = v8;
@@ -95,12 +95,12 @@ LABEL_11:
     ongoingUpdateOperations = v7->_ongoingUpdateOperations;
     v7->_ongoingUpdateOperations = v10;
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v7 selector:sel__handleAccountDidChange_ name:@"WLKAccountMonitorAccountDidChange" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__handleAccountDidChange_ name:@"WLKAccountMonitorAccountDidChange" object:0];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
     v14 = +[WLKReachabilityMonitor sharedInstance];
-    [v13 addObserver:v7 selector:sel__networkReachabilityDidChange_ name:@"WLKReachabilityMonitorReachabilityDidChange" object:v14];
+    [defaultCenter2 addObserver:v7 selector:sel__networkReachabilityDidChange_ name:@"WLKReachabilityMonitorReachabilityDidChange" object:v14];
 
     [(WLKPostPlayAutoPlayManager *)v7 _migrateFromSystemPreferencesStoreOrSettingsStoreWithCompletion:0];
   }
@@ -108,35 +108,35 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)isEnabledForType:(unint64_t)a3
+- (BOOL)isEnabledForType:(unint64_t)type
 {
-  v4 = [(WLKPostPlayAutoPlayManager *)self cache];
-  LOBYTE(a3) = [v4 currentSettingForType:a3];
+  cache = [(WLKPostPlayAutoPlayManager *)self cache];
+  LOBYTE(type) = [cache currentSettingForType:type];
 
-  return a3;
+  return type;
 }
 
-- (void)getStatusForType:(unint64_t)a3 withCompletion:(id)a4
+- (void)getStatusForType:(unint64_t)type withCompletion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v19 = 0;
   v7 = WLKPostPlayAutoPlayCheckHasActiveAccount(&v19);
   v8 = v19;
   if (v7)
   {
-    v9 = [(WLKPostPlayAutoPlayManager *)self cache];
-    v10 = [v9 hasCacheForType:a3];
+    cache = [(WLKPostPlayAutoPlayManager *)self cache];
+    v10 = [cache hasCacheForType:type];
 
     if (v10)
     {
-      v11 = [(WLKPostPlayAutoPlayManager *)self cache];
-      v12 = [v11 currentSettingForType:a3];
+      cache2 = [(WLKPostPlayAutoPlayManager *)self cache];
+      v12 = [cache2 currentSettingForType:type];
 
       v13 = WLKSystemLogObject();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+        v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
         *buf = 138412546;
         v21 = v14;
         v22 = 1024;
@@ -144,9 +144,9 @@ LABEL_11:
         _os_log_impl(&dword_272A0F000, v13, OS_LOG_TYPE_DEFAULT, "WLKPostPlayAutoPlay - getStatusForType: %@, replied with cached state: %d", buf, 0x12u);
       }
 
-      if (v6)
+      if (completionCopy)
       {
-        v6[2](v6, v12, 0);
+        completionCopy[2](completionCopy, v12, 0);
       }
     }
 
@@ -155,13 +155,13 @@ LABEL_11:
       v16 = WLKSystemLogObject();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+        v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
         *buf = 138412290;
         v21 = v17;
         _os_log_impl(&dword_272A0F000, v16, OS_LOG_TYPE_DEFAULT, "WLKPostPlayAutoPlay - getStatusForType: %@, no cache found.", buf, 0xCu);
       }
 
-      [(WLKPostPlayAutoPlayManager *)self _fetchStatusForType:a3 withCompletion:v6];
+      [(WLKPostPlayAutoPlayManager *)self _fetchStatusForType:type withCompletion:completionCopy];
     }
   }
 
@@ -173,20 +173,20 @@ LABEL_11:
       [WLKPostPlayAutoPlayManager getStatusForType:withCompletion:];
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      (v6)[2](v6, 1, v8);
+      (completionCopy)[2](completionCopy, 1, v8);
     }
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSettings:(id)a3 completion:(id)a4
+- (void)setSettings:(id)settings completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  completionCopy = completion;
   v16 = 0;
   v8 = WLKPostPlayAutoPlayCheckHasActiveAccount(&v16);
   v9 = v16;
@@ -197,18 +197,18 @@ LABEL_11:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v6;
+      v18 = settingsCopy;
       _os_log_impl(&dword_272A0F000, v11, OS_LOG_TYPE_DEFAULT, "WLKPostPlayAutoPlay - setSettings: %@", buf, 0xCu);
     }
 
-    if ([v6 _hasValues])
+    if ([settingsCopy _hasValues])
     {
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __53__WLKPostPlayAutoPlayManager_setSettings_completion___block_invoke;
       v14[3] = &unk_279E5FEC0;
-      v15 = v7;
-      [(WLKPostPlayAutoPlayManager *)self _performUserSettingsAction:1 settings:v6 dsid:0 isMigration:0 completion:v14];
+      v15 = completionCopy;
+      [(WLKPostPlayAutoPlayManager *)self _performUserSettingsAction:1 settings:settingsCopy dsid:0 isMigration:0 completion:v14];
     }
 
     else
@@ -220,9 +220,9 @@ LABEL_11:
         _os_log_impl(&dword_272A0F000, v12, OS_LOG_TYPE_DEFAULT, "WLKPostPlayAutoPlay - Nothing to update since settings has no values set", buf, 2u);
       }
 
-      if (v7)
+      if (completionCopy)
       {
-        (*(v7 + 2))(v7, v6, 0);
+        (*(completionCopy + 2))(completionCopy, settingsCopy, 0);
       }
     }
   }
@@ -234,9 +234,9 @@ LABEL_11:
       [WLKPostPlayAutoPlayManager getStatusForType:withCompletion:];
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0, v9);
+      (*(completionCopy + 2))(completionCopy, 0, v9);
     }
   }
 
@@ -254,9 +254,9 @@ uint64_t __53__WLKPostPlayAutoPlayManager_setSettings_completion___block_invoke(
   return result;
 }
 
-- (void)fetchStatusForAllTypesWithCompletion:(id)a3
+- (void)fetchStatusForAllTypesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = WLKSystemLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -272,8 +272,8 @@ uint64_t __53__WLKPostPlayAutoPlayManager_setSettings_completion___block_invoke(
   block[3] = &unk_279E5F908;
   objc_copyWeak(&v10, buf);
   block[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v10);
@@ -421,9 +421,9 @@ void __67__WLKPostPlayAutoPlayManager_fetchStatusForAllTypesWithCompletion___blo
   }
 }
 
-- (void)_migrateOffStatusWithCompletion:(id)a3
+- (void)_migrateOffStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v14 = 0;
   v5 = WLKPostPlayAutoPlayCheckHasActiveAccount(&v14);
   v6 = v14;
@@ -445,7 +445,7 @@ void __67__WLKPostPlayAutoPlayManager_fetchStatusForAllTypesWithCompletion___blo
     v11[1] = 3221225472;
     v11[2] = __62__WLKPostPlayAutoPlayManager__migrateOffStatusWithCompletion___block_invoke;
     v11[3] = &unk_279E5FEC0;
-    v12 = v4;
+    v12 = completionCopy;
     [(WLKPostPlayAutoPlayManager *)self _performUserSettingsAction:1 settings:v9 dsid:0 isMigration:1 completion:v11];
   }
 
@@ -456,9 +456,9 @@ void __67__WLKPostPlayAutoPlayManager_fetchStatusForAllTypesWithCompletion___blo
       [WLKPostPlayAutoPlayManager getStatusForType:withCompletion:];
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, v6);
+      (*(completionCopy + 2))(completionCopy, v6);
     }
   }
 }
@@ -474,9 +474,9 @@ uint64_t __62__WLKPostPlayAutoPlayManager__migrateOffStatusWithCompletion___bloc
   return result;
 }
 
-- (void)_migrateFromSystemPreferencesStoreOrSettingsStoreWithCompletion:(id)a3
+- (void)_migrateFromSystemPreferencesStoreOrSettingsStoreWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = WLKSystemLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -491,8 +491,8 @@ uint64_t __62__WLKPostPlayAutoPlayManager__migrateOffStatusWithCompletion___bloc
   v8[2] = __94__WLKPostPlayAutoPlayManager__migrateFromSystemPreferencesStoreOrSettingsStoreWithCompletion___block_invoke;
   v8[3] = &unk_279E5E660;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(queue, v8);
 
   objc_destroyWeak(&v10);
@@ -558,7 +558,7 @@ void __94__WLKPostPlayAutoPlayManager__migrateFromSystemPreferencesStoreOrSettin
   }
 }
 
-- (void)_handleAccountDidChange:(id)a3
+- (void)_handleAccountDidChange:(id)change
 {
   v4 = WLKSystemLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -571,7 +571,7 @@ void __94__WLKPostPlayAutoPlayManager__migrateFromSystemPreferencesStoreOrSettin
   [(WLKPostPlayAutoPlayManager *)self fetchStatusForAllTypesWithCompletion:0];
 }
 
-- (void)_networkReachabilityDidChange:(id)a3
+- (void)_networkReachabilityDidChange:(id)change
 {
   v4 = WLKSystemLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -581,9 +581,9 @@ void __94__WLKPostPlayAutoPlayManager__migrateFromSystemPreferencesStoreOrSettin
   }
 
   v5 = +[WLKReachabilityMonitor sharedInstance];
-  v6 = [v5 isNetworkReachable];
+  isNetworkReachable = [v5 isNetworkReachable];
 
-  if (v6)
+  if (isNetworkReachable)
   {
     v7 = WLKSystemLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -596,9 +596,9 @@ void __94__WLKPostPlayAutoPlayManager__migrateFromSystemPreferencesStoreOrSettin
   }
 }
 
-- (void)_fetchStatusForType:(unint64_t)a3 withCompletion:(id)a4
+- (void)_fetchStatusForType:(unint64_t)type withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v15 = 0;
   v7 = WLKPostPlayAutoPlayCheckHasActiveAccount(&v15);
   v8 = v15;
@@ -611,8 +611,8 @@ void __94__WLKPostPlayAutoPlayManager__migrateFromSystemPreferencesStoreOrSettin
     block[2] = __65__WLKPostPlayAutoPlayManager__fetchStatusForType_withCompletion___block_invoke;
     block[3] = &unk_279E5FF60;
     objc_copyWeak(v13, &location);
-    v13[1] = a3;
-    v12 = v6;
+    v13[1] = type;
+    v12 = completionCopy;
     dispatch_async(queue, block);
 
     objc_destroyWeak(v13);
@@ -627,9 +627,9 @@ void __94__WLKPostPlayAutoPlayManager__migrateFromSystemPreferencesStoreOrSettin
       [WLKPostPlayAutoPlayManager getStatusForType:withCompletion:];
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, 1, v8);
+      (*(completionCopy + 2))(completionCopy, 1, v8);
     }
   }
 }
@@ -785,11 +785,11 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)_performUserSettingsOperation:(id)a3 dsid:(id)a4 completion:(id)a5
+- (void)_performUserSettingsOperation:(id)operation dsid:(id)dsid completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationCopy = operation;
+  dsidCopy = dsid;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
@@ -797,13 +797,13 @@ LABEL_21:
   v15[2] = __76__WLKPostPlayAutoPlayManager__performUserSettingsOperation_dsid_completion___block_invoke;
   v15[3] = &unk_279E5FFD8;
   objc_copyWeak(&v20, &location);
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = operationCopy;
+  v17 = dsidCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v12 = dsidCopy;
+  v13 = completionCopy;
+  v14 = operationCopy;
   dispatch_async(queue, v15);
 
   objc_destroyWeak(&v20);

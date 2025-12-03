@@ -1,15 +1,15 @@
 @interface GKBulletinNearbyInvite
-- (GKBulletinNearbyInvite)initWithPlayer:(id)a3 localizedGameName:(id)a4 inviteDictionary:(id)a5;
-- (void)handleAction:(id)a3;
+- (GKBulletinNearbyInvite)initWithPlayer:(id)player localizedGameName:(id)name inviteDictionary:(id)dictionary;
+- (void)handleAction:(id)action;
 @end
 
 @implementation GKBulletinNearbyInvite
 
-- (GKBulletinNearbyInvite)initWithPlayer:(id)a3 localizedGameName:(id)a4 inviteDictionary:(id)a5
+- (GKBulletinNearbyInvite)initWithPlayer:(id)player localizedGameName:(id)name inviteDictionary:(id)dictionary
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  playerCopy = player;
+  nameCopy = name;
+  dictionaryCopy = dictionary;
   v11 = +[GKReporter reporter];
   [v11 reportEvent:GKReporterDomainInviteInitiateType type:GKNearbyInviteInitiate];
 
@@ -30,17 +30,17 @@
   v14 = [(GKMultiplayerBulletin *)&v36 initWithPushNotification:&__NSDictionary0__struct];
   if (v14)
   {
-    v15 = [v10 objectForKey:@"adamID"];
-    v16 = [v10 objectForKey:@"bundleID"];
-    v17 = [v10 objectForKey:@"inviteMessage"];
-    v35 = [v8 displayNameWithOptions:0];
+    v15 = [dictionaryCopy objectForKey:@"adamID"];
+    v16 = [dictionaryCopy objectForKey:@"bundleID"];
+    v17 = [dictionaryCopy objectForKey:@"inviteMessage"];
+    v35 = [playerCopy displayNameWithOptions:0];
     [(GKBulletin *)v14 setMessage:v17];
-    [(GKBulletin *)v14 setGameName:v9];
-    [(GKGameplayBulletin *)v14 setOriginatorPlayer:v8];
+    [(GKBulletin *)v14 setGameName:nameCopy];
+    [(GKGameplayBulletin *)v14 setOriginatorPlayer:playerCopy];
     [(GKMultiplayerBulletin *)v14 setGameInviteMessage];
-    v18 = [(GKBulletin *)v14 message];
+    message = [(GKBulletin *)v14 message];
 
-    if (v18)
+    if (message)
     {
       v33 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings GAME_INVITE_NOTIFICATION_TITLE];
       v34 = v17;
@@ -56,7 +56,7 @@
       [(GKBulletin *)v14 setSoundPath:v22];
 
       [(GKBulletin *)v14 setTitle:v33];
-      objc_storeStrong(&v14->_inviteDictionary, a5);
+      objc_storeStrong(&v14->_inviteDictionary, dictionary);
       v23 = objc_alloc_init(GKBulletinAction);
       [(GKBulletinAction *)v23 setType:1];
       v24 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings ACCEPT_INVITE_BUTTON_TITLE];
@@ -107,11 +107,11 @@
         *buf = 138413058;
         v38 = v35;
         v39 = 2112;
-        v40 = v9;
+        v40 = nameCopy;
         v41 = 2112;
         v42 = v17;
         v43 = 2112;
-        v44 = v10;
+        v44 = dictionaryCopy;
         _os_log_debug_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "no message in nearby invite -- displayName:%@ gameName:%@ message:%@ from dict:%@", buf, 0x2Au);
       }
     }
@@ -120,9 +120,9 @@
   return v14;
 }
 
-- (void)handleAction:(id)a3
+- (void)handleAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -137,7 +137,7 @@
 
   v16.receiver = self;
   v16.super_class = GKBulletinNearbyInvite;
-  [(GKBulletin *)&v16 handleAction:v4];
+  [(GKBulletin *)&v16 handleAction:actionCopy];
   if (!os_log_GKGeneral)
   {
     v7 = GKOSLoggers();
@@ -147,26 +147,26 @@
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v18 = v4;
+    v18 = actionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "bulletin handle nearby invite action: %@", buf, 0xCu);
   }
 
-  v9 = [(GKBulletinNearbyInvite *)self inviteDictionary];
-  v10 = [v9 objectForKey:@"bundleID"];
+  inviteDictionary = [(GKBulletinNearbyInvite *)self inviteDictionary];
+  v10 = [inviteDictionary objectForKey:@"bundleID"];
   v11 = [GKClientProxy clientForBundleID:v10];
   if (v11)
   {
-    if ([v4 isEqualToString:@"GKAccepted"])
+    if ([actionCopy isEqualToString:@"GKAccepted"])
     {
       v12 = 1;
     }
 
     else
     {
-      v12 = [v4 isEqualToString:@"GKDefault"];
+      v12 = [actionCopy isEqualToString:@"GKDefault"];
     }
 
-    v13 = [v9 mutableCopy];
+    v13 = [inviteDictionary mutableCopy];
     v14 = [NSNumber numberWithBool:v12];
     [v13 setObject:v14 forKey:@"accepted"];
 

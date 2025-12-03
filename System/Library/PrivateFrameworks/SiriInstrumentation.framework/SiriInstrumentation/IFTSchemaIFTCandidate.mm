@@ -1,26 +1,26 @@
 @interface IFTSchemaIFTCandidate
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTCandidate)initWithDictionary:(id)a3;
-- (IFTSchemaIFTCandidate)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTCandidate)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTCandidate)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTCandidate
 
-- (IFTSchemaIFTCandidate)initWithDictionary:(id)a3
+- (IFTSchemaIFTCandidate)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = IFTSchemaIFTCandidate;
   v5 = [(IFTSchemaIFTCandidate *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"statementId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"statementId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,14 +28,14 @@
       [(IFTSchemaIFTCandidate *)v5 setStatementId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"source"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"source"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTCandidate setSource:](v5, "setSource:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"promptStatus"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"promptStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(IFTSchemaIFTCandidate *)v5 setPromptStatus:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"value"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"value"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTCandidate)initWithJSON:(id)a3
+- (IFTSchemaIFTCandidate)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTCandidate *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTCandidate *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTCandidate *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,20 +93,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_promptStatus)
   {
-    v4 = [(IFTSchemaIFTCandidate *)self promptStatus];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    promptStatus = [(IFTSchemaIFTCandidate *)self promptStatus];
+    dictionaryRepresentation = [promptStatus dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"promptStatus"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"promptStatus"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"promptStatus"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"promptStatus"];
     }
   }
 
@@ -123,44 +123,44 @@
       v8 = off_1E78D81F0[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"source"];
+    [dictionary setObject:v8 forKeyedSubscript:@"source"];
   }
 
   if (self->_statementId)
   {
-    v9 = [(IFTSchemaIFTCandidate *)self statementId];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    statementId = [(IFTSchemaIFTCandidate *)self statementId];
+    dictionaryRepresentation2 = [statementId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"statementId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"statementId"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"statementId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"statementId"];
     }
   }
 
   if (self->_value)
   {
-    v12 = [(IFTSchemaIFTCandidate *)self value];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    value = [(IFTSchemaIFTCandidate *)self value];
+    dictionaryRepresentation3 = [value dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"value"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"value"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"value"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"value"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -181,28 +181,28 @@
   return v5 ^ v6 ^ [(IFTSchemaIFTTypedValue *)self->_value hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(IFTSchemaIFTCandidate *)self statementId];
-  v6 = [v4 statementId];
-  if ((v5 != 0) == (v6 == 0))
+  statementId = [(IFTSchemaIFTCandidate *)self statementId];
+  statementId2 = [equalCopy statementId];
+  if ((statementId != 0) == (statementId2 == 0))
   {
     goto LABEL_19;
   }
 
-  v7 = [(IFTSchemaIFTCandidate *)self statementId];
-  if (v7)
+  statementId3 = [(IFTSchemaIFTCandidate *)self statementId];
+  if (statementId3)
   {
-    v8 = v7;
-    v9 = [(IFTSchemaIFTCandidate *)self statementId];
-    v10 = [v4 statementId];
-    v11 = [v9 isEqual:v10];
+    v8 = statementId3;
+    statementId4 = [(IFTSchemaIFTCandidate *)self statementId];
+    statementId5 = [equalCopy statementId];
+    v11 = [statementId4 isEqual:statementId5];
 
     if (!v11)
     {
@@ -214,7 +214,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[40] & 1))
+  if ((*&self->_has & 1) != (equalCopy[40] & 1))
   {
     goto LABEL_20;
   }
@@ -222,26 +222,26 @@
   if (*&self->_has)
   {
     source = self->_source;
-    if (source != [v4 source])
+    if (source != [equalCopy source])
     {
       goto LABEL_20;
     }
   }
 
-  v5 = [(IFTSchemaIFTCandidate *)self promptStatus];
-  v6 = [v4 promptStatus];
-  if ((v5 != 0) == (v6 == 0))
+  statementId = [(IFTSchemaIFTCandidate *)self promptStatus];
+  statementId2 = [equalCopy promptStatus];
+  if ((statementId != 0) == (statementId2 == 0))
   {
     goto LABEL_19;
   }
 
-  v13 = [(IFTSchemaIFTCandidate *)self promptStatus];
-  if (v13)
+  promptStatus = [(IFTSchemaIFTCandidate *)self promptStatus];
+  if (promptStatus)
   {
-    v14 = v13;
-    v15 = [(IFTSchemaIFTCandidate *)self promptStatus];
-    v16 = [v4 promptStatus];
-    v17 = [v15 isEqual:v16];
+    v14 = promptStatus;
+    promptStatus2 = [(IFTSchemaIFTCandidate *)self promptStatus];
+    promptStatus3 = [equalCopy promptStatus];
+    v17 = [promptStatus2 isEqual:promptStatus3];
 
     if (!v17)
     {
@@ -253,12 +253,12 @@
   {
   }
 
-  v5 = [(IFTSchemaIFTCandidate *)self value];
-  v6 = [v4 value];
-  if ((v5 != 0) != (v6 == 0))
+  statementId = [(IFTSchemaIFTCandidate *)self value];
+  statementId2 = [equalCopy value];
+  if ((statementId != 0) != (statementId2 == 0))
   {
-    v18 = [(IFTSchemaIFTCandidate *)self value];
-    if (!v18)
+    value = [(IFTSchemaIFTCandidate *)self value];
+    if (!value)
     {
 
 LABEL_23:
@@ -266,10 +266,10 @@ LABEL_23:
       goto LABEL_21;
     }
 
-    v19 = v18;
-    v20 = [(IFTSchemaIFTCandidate *)self value];
-    v21 = [v4 value];
-    v22 = [v20 isEqual:v21];
+    v19 = value;
+    value2 = [(IFTSchemaIFTCandidate *)self value];
+    value3 = [equalCopy value];
+    v22 = [value2 isEqual:value3];
 
     if (v22)
     {
@@ -289,14 +289,14 @@ LABEL_21:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(IFTSchemaIFTCandidate *)self statementId];
+  toCopy = to;
+  statementId = [(IFTSchemaIFTCandidate *)self statementId];
 
-  if (v4)
+  if (statementId)
   {
-    v5 = [(IFTSchemaIFTCandidate *)self statementId];
+    statementId2 = [(IFTSchemaIFTCandidate *)self statementId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -305,55 +305,55 @@ LABEL_21:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(IFTSchemaIFTCandidate *)self promptStatus];
+  promptStatus = [(IFTSchemaIFTCandidate *)self promptStatus];
 
-  if (v6)
+  if (promptStatus)
   {
-    v7 = [(IFTSchemaIFTCandidate *)self promptStatus];
+    promptStatus2 = [(IFTSchemaIFTCandidate *)self promptStatus];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(IFTSchemaIFTCandidate *)self value];
+  value = [(IFTSchemaIFTCandidate *)self value];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (value)
   {
-    v10 = [(IFTSchemaIFTCandidate *)self value];
+    value2 = [(IFTSchemaIFTCandidate *)self value];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = IFTSchemaIFTCandidate;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTCandidate *)self statementId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  statementId = [(IFTSchemaIFTCandidate *)self statementId];
+  v7 = [statementId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTCandidate *)self deleteStatementId];
   }
 
-  v9 = [(IFTSchemaIFTCandidate *)self promptStatus];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  promptStatus = [(IFTSchemaIFTCandidate *)self promptStatus];
+  v10 = [promptStatus applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTCandidate *)self deletePromptStatus];
   }
 
-  v12 = [(IFTSchemaIFTCandidate *)self value];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  value = [(IFTSchemaIFTCandidate *)self value];
+  v13 = [value applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(IFTSchemaIFTCandidate *)self deleteValue];
   }

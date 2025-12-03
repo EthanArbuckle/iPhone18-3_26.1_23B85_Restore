@@ -1,20 +1,20 @@
 @interface HRCArbiterAlgorithmsWrapper
-- (HRCArbiterAlgorithmsWrapper)initWithDelegate:(id)a3;
+- (HRCArbiterAlgorithmsWrapper)initWithDelegate:(id)delegate;
 - (HRCArbiterAlgorithmsWrapperDelegate)delegate;
-- (void)_handleAlgsOutputHeartRate:(const void *)a3;
+- (void)_handleAlgsOutputHeartRate:(const void *)rate;
 - (void)resetAlgorithms;
 - (void)setupAlgorithms;
 @end
 
 @implementation HRCArbiterAlgorithmsWrapper
 
-- (HRCArbiterAlgorithmsWrapper)initWithDelegate:(id)a3
+- (HRCArbiterAlgorithmsWrapper)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v7.receiver = self;
   v7.super_class = HRCArbiterAlgorithmsWrapper;
   v5 = [(HRCArbiterAlgorithmsWrapper *)&v7 init];
-  objc_storeWeak(&v5->_delegate, v4);
+  objc_storeWeak(&v5->_delegate, delegateCopy);
 
   return v5;
 }
@@ -45,16 +45,16 @@
   sub_10001FD44(self->_algorithms.__ptr_);
 }
 
-- (void)_handleAlgsOutputHeartRate:(const void *)a3
+- (void)_handleAlgsOutputHeartRate:(const void *)rate
 {
-  v4 = [(HRCArbiterAlgorithmsWrapper *)self delegate];
-  v5 = *(a3 + 1);
-  v7[0] = *a3;
+  delegate = [(HRCArbiterAlgorithmsWrapper *)self delegate];
+  v5 = *(rate + 1);
+  v7[0] = *rate;
   v7[1] = v5;
-  v6 = *(a3 + 3);
-  v7[2] = *(a3 + 2);
+  v6 = *(rate + 3);
+  v7[2] = *(rate + 2);
   v7[3] = v6;
-  [v4 handleHeartRateOutput:v7];
+  [delegate handleHeartRateOutput:v7];
 }
 
 - (HRCArbiterAlgorithmsWrapperDelegate)delegate

@@ -1,6 +1,6 @@
 @interface SQLiteDatabase
-- (BOOL)connectionNeedsResetForCorruption:(id)a3;
-- (BOOL)connectionNeedsResetForReopen:(id)a3;
+- (BOOL)connectionNeedsResetForCorruption:(id)corruption;
+- (BOOL)connectionNeedsResetForReopen:(id)reopen;
 - (_TtC20AttributionKitDaemon14SQLiteDatabase)init;
 @end
 
@@ -13,20 +13,20 @@
   return result;
 }
 
-- (BOOL)connectionNeedsResetForReopen:(id)a3
+- (BOOL)connectionNeedsResetForReopen:(id)reopen
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000625CC(v4);
+  reopenCopy = reopen;
+  selfCopy = self;
+  sub_1000625CC(reopenCopy);
 
   return 1;
 }
 
-- (BOOL)connectionNeedsResetForCorruption:(id)a3
+- (BOOL)connectionNeedsResetForCorruption:(id)corruption
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000628C4(v4);
+  corruptionCopy = corruption;
+  selfCopy = self;
+  sub_1000628C4(corruptionCopy);
 }
 
 @end

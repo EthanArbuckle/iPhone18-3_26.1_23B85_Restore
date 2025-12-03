@@ -1,35 +1,35 @@
 @interface AnonymousSiriWorkflowRunnerClientDelegate
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6;
-- (void)workflowRunnerClient:(id)a3 didStartActionWithIdentifier:(id)a4;
-- (void)workflowRunnerClient:(id)a3 performSiriRequest:(id)a4 completionHandler:(id)a5;
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled;
+- (void)workflowRunnerClient:(id)client didStartActionWithIdentifier:(id)identifier;
+- (void)workflowRunnerClient:(id)client performSiriRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation AnonymousSiriWorkflowRunnerClientDelegate
 
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  v12 = a5;
+  clientCopy = client;
+  outputCopy = output;
+  selfCopy = self;
+  errorCopy = error;
   AnonymousSiriWorkflowRunnerClientDelegate.workflowRunnerClient(_:didFinishRunningWorkflowWithOutput:error:cancelled:)();
 }
 
-- (void)workflowRunnerClient:(id)a3 performSiriRequest:(id)a4 completionHandler:(id)a5
+- (void)workflowRunnerClient:(id)client performSiriRequest:(id)request completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   *(swift_allocObject() + 16) = v8;
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
+  clientCopy = client;
+  requestCopy = request;
+  selfCopy = self;
   AnonymousSiriWorkflowRunnerClientDelegate.workflowRunnerClient(_:performSiriRequest:completionHandler:)();
 }
 
-- (void)workflowRunnerClient:(id)a3 didStartActionWithIdentifier:(id)a4
+- (void)workflowRunnerClient:(id)client didStartActionWithIdentifier:(id)identifier
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a3;
-  v7 = self;
+  clientCopy = client;
+  selfCopy = self;
   AnonymousSiriWorkflowRunnerClientDelegate.workflowRunnerClient(_:didStartActionWithIdentifier:)();
 }
 

@@ -1,10 +1,10 @@
 @interface _DASWidgetRefreshBudgetPolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4;
+- (BOOL)appliesToActivity:(id)activity;
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state;
 - (_DASWidgetRefreshBudgetPolicy)init;
 - (id)initializeTriggers;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASWidgetRefreshBudgetPolicy
@@ -24,9 +24,9 @@
     widgetOverrideKeypath = v2->_widgetOverrideKeypath;
     v2->_widgetOverrideKeypath = v5;
 
-    v7 = [(_DASWidgetRefreshBudgetPolicy *)v2 initializeTriggers];
+    initializeTriggers = [(_DASWidgetRefreshBudgetPolicy *)v2 initializeTriggers];
     triggers = v2->_triggers;
-    v2->_triggers = v7;
+    v2->_triggers = initializeTriggers;
 
     policyName = v2->_policyName;
     v2->_policyName = @"Widget Refresh Policy";
@@ -52,11 +52,11 @@
   return v2;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = [a3 widgetBudgetID];
+  widgetBudgetID = [activity widgetBudgetID];
 
-  return v3 != 0;
+  return widgetBudgetID != 0;
 }
 
 + (id)policyInstance
@@ -65,7 +65,7 @@
   block[1] = 3221225472;
   block[2] = sub_10011B460;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B9B0 != -1)
   {
     dispatch_once(&qword_10020B9B0, block);
@@ -94,27 +94,27 @@
   return v4;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v7 = a3;
-  v8 = a4;
+  activityCopy = activity;
+  stateCopy = state;
   v9 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:@"Widget Refresh Policy"];
   v10 = +[_CDContextQueries keyPathForInUseStatus];
-  v11 = [v8 objectForKeyedSubscript:v10];
-  v12 = [v11 unsignedLongLongValue];
+  v11 = [stateCopy objectForKeyedSubscript:v10];
+  unsignedLongLongValue = [v11 unsignedLongLongValue];
 
-  if ((v12 & 0xD) == 0)
+  if ((unsignedLongLongValue & 0xD) == 0)
   {
     v13 = +[_CDContextQueries keyPathForLastUseDate];
-    v14 = [v8 objectForKeyedSubscript:v13];
+    v14 = [stateCopy objectForKeyedSubscript:v13];
 
     v15 = +[NSDate date];
     [v15 timeIntervalSinceDate:v14];
     v17 = v16;
     if (v16 > *&qword_10020ADA0)
     {
-      v18 = [v7 startAfter];
-      [v15 timeIntervalSinceDate:v18];
+      startAfter = [activityCopy startAfter];
+      [v15 timeIntervalSinceDate:startAfter];
       v20 = v19;
       v21 = *&qword_10020ADA8;
 
@@ -130,24 +130,24 @@
     }
   }
 
-  v24 = [(_DASBudgetManager *)self->_budgetManager widgetRefreshBudgetManager];
-  v25 = [v7 widgetBudgetID];
-  [v24 balanceForWidgetBudgetID:v25];
+  widgetRefreshBudgetManager = [(_DASBudgetManager *)self->_budgetManager widgetRefreshBudgetManager];
+  widgetBudgetID = [activityCopy widgetBudgetID];
+  [widgetRefreshBudgetManager balanceForWidgetBudgetID:widgetBudgetID];
   v27 = v26;
 
   if (v27 == -INFINITY)
   {
-    v28 = [NSPredicate predicateWithFormat:@"IndividualBalance=%d", 0x80000000];
-    [(_DASPolicyResponseRationale *)v9 addRationaleWithCondition:v28];
+    0x80000000 = [NSPredicate predicateWithFormat:@"IndividualBalance=%d", 0x80000000];
+    [(_DASPolicyResponseRationale *)v9 addRationaleWithCondition:0x80000000];
 
     v23 = [_DASPolicyResponse policyResponseWithDecision:33 validityDuration:v9 rationale:0x384uLL];
     goto LABEL_17;
   }
 
   LODWORD(v4) = vcvtmd_s64_f64(v27);
-  v29 = [v8 objectForKeyedSubscript:self->_widgetOverrideKeypath];
-  v30 = [v7 widgetBudgetID];
-  v31 = [v29 containsObject:v30];
+  v29 = [stateCopy objectForKeyedSubscript:self->_widgetOverrideKeypath];
+  widgetBudgetID2 = [activityCopy widgetBudgetID];
+  v31 = [v29 containsObject:widgetBudgetID2];
 
   if (v31)
   {
@@ -158,14 +158,14 @@
   if (v4 < 1)
   {
     v33 = +[_CDContextQueries keyPathForPluginStatus];
-    v34 = [v8 objectForKeyedSubscript:v33];
-    v35 = [v34 BOOLValue];
+    v34 = [stateCopy objectForKeyedSubscript:v33];
+    bOOLValue = [v34 BOOLValue];
 
     v36 = [NSPredicate predicateWithFormat:@"IndividualBalance=%d", v4];
     [(_DASPolicyResponseRationale *)v9 addRationaleWithCondition:v36];
 
     v37 = 33;
-    if (!v35 || v4)
+    if (!bOOLValue || v4)
     {
       goto LABEL_16;
     }
@@ -189,9 +189,9 @@ LABEL_17:
   return v23;
 }
 
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state
 {
-  v5 = [a3 isEqualToString:{@"com.apple.duetactivityscheduler.widget.overridelist", a4}];
+  v5 = [trigger isEqualToString:{@"com.apple.duetactivityscheduler.widget.overridelist", state}];
   if (v5)
   {
     [(_DASBudgetManager *)self->_budgetManager reinstantiateConfiguredBudgets];

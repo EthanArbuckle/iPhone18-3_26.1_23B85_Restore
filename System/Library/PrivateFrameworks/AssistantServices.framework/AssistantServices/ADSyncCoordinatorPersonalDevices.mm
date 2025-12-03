@@ -1,35 +1,35 @@
 @interface ADSyncCoordinatorPersonalDevices
 - (ADSyncCoordinatorPersonalDevices)init;
-- (BOOL)addAggregationIdForUser:(id)a3 aggregationId:(id)a4;
-- (BOOL)addSeedForUser:(id)a3 seed:(id)a4;
-- (id)fetchSynchronizedAnalyticsIdsForHome:(id)a3;
-- (id)fetchSynchronizedAnalyticsIdsForUser:(id)a3;
+- (BOOL)addAggregationIdForUser:(id)user aggregationId:(id)id;
+- (BOOL)addSeedForUser:(id)user seed:(id)seed;
+- (id)fetchSynchronizedAnalyticsIdsForHome:(id)home;
+- (id)fetchSynchronizedAnalyticsIdsForUser:(id)user;
 @end
 
 @implementation ADSyncCoordinatorPersonalDevices
 
-- (id)fetchSynchronizedAnalyticsIdsForUser:(id)a3
+- (id)fetchSynchronizedAnalyticsIdsForUser:(id)user
 {
   v3 = +[NSDate now];
   v4 = [ADBiomeStreamProcessor processorForBMSiriUserSeed:v3 userId:0];
-  v5 = [v4 fetchIdItemPair];
+  fetchIdItemPair = [v4 fetchIdItemPair];
   v6 = [ADBiomeStreamProcessor processorForBMSiriUserAggregationId:v3 userId:0];
-  v7 = [v6 fetchIdItemPair];
-  v8 = [[ADSynchronizedUserAnalyticsIds alloc] initWithUserEphemeralSeeds:v5 andUserAggregationIds:v7];
+  fetchIdItemPair2 = [v6 fetchIdItemPair];
+  v8 = [[ADSynchronizedUserAnalyticsIds alloc] initWithUserEphemeralSeeds:fetchIdItemPair andUserAggregationIds:fetchIdItemPair2];
 
   return v8;
 }
 
-- (id)fetchSynchronizedAnalyticsIdsForHome:(id)a3
+- (id)fetchSynchronizedAnalyticsIdsForHome:(id)home
 {
-  v4 = a3;
-  if (!v4)
+  homeCopy = home;
+  if (!homeCopy)
   {
-    v4 = self->_currentHomeId;
+    homeCopy = self->_currentHomeId;
   }
 
   v5 = +[ADAnalyticsIdentifiersUtils idWhenNotPartOfHome];
-  v6 = [(NSUUID *)v4 isEqual:v5];
+  v6 = [(NSUUID *)homeCopy isEqual:v5];
 
   if (v6)
   {
@@ -39,41 +39,41 @@
   else
   {
     v8 = +[NSDate now];
-    v9 = [ADBiomeStreamProcessor processorForBMSiriHomeSeed:v8 homeId:v4 userId:0];
-    v10 = [v9 fetchIdItemPair];
-    v7 = [[ADSynchronizedHomeAnalyticsIds alloc] initWithHomeEphemeralSeeds:v10];
+    v9 = [ADBiomeStreamProcessor processorForBMSiriHomeSeed:v8 homeId:homeCopy userId:0];
+    fetchIdItemPair = [v9 fetchIdItemPair];
+    v7 = [[ADSynchronizedHomeAnalyticsIds alloc] initWithHomeEphemeralSeeds:fetchIdItemPair];
   }
 
   return v7;
 }
 
-- (BOOL)addSeedForUser:(id)a3 seed:(id)a4
+- (BOOL)addSeedForUser:(id)user seed:(id)seed
 {
-  v4 = a4;
+  seedCopy = seed;
   v5 = BiomeLibrary();
-  v6 = [v5 Siri];
-  v7 = [v6 AnalyticsIdentifiers];
-  v8 = [v7 UserSeed];
+  siri = [v5 Siri];
+  analyticsIdentifiers = [siri AnalyticsIdentifiers];
+  userSeed = [analyticsIdentifiers UserSeed];
 
-  v9 = [v8 source];
-  v10 = [v4 toBMSiriUserSeed];
+  source = [userSeed source];
+  toBMSiriUserSeed = [seedCopy toBMSiriUserSeed];
 
-  [v9 sendEvent:v10];
+  [source sendEvent:toBMSiriUserSeed];
   return 1;
 }
 
-- (BOOL)addAggregationIdForUser:(id)a3 aggregationId:(id)a4
+- (BOOL)addAggregationIdForUser:(id)user aggregationId:(id)id
 {
-  v4 = a4;
+  idCopy = id;
   v5 = BiomeLibrary();
-  v6 = [v5 Siri];
-  v7 = [v6 AnalyticsIdentifiers];
-  v8 = [v7 UserAggregationId];
+  siri = [v5 Siri];
+  analyticsIdentifiers = [siri AnalyticsIdentifiers];
+  userAggregationId = [analyticsIdentifiers UserAggregationId];
 
-  v9 = [v8 source];
-  v10 = [v4 toBMSiriUserAggregationId];
+  source = [userAggregationId source];
+  toBMSiriUserAggregationId = [idCopy toBMSiriUserAggregationId];
 
-  [v9 sendEvent:v10];
+  [source sendEvent:toBMSiriUserAggregationId];
   return 1;
 }
 
@@ -96,13 +96,13 @@
     v2->_defaultUserId = @"singleUserDevice";
 
     v5 = +[ADHomeInfoManager sharedInfoManager];
-    v6 = [v5 currentHome];
+    currentHome = [v5 currentHome];
 
-    if (v6)
+    if (currentHome)
     {
-      v7 = [v6 uniqueIdentifier];
+      uniqueIdentifier = [currentHome uniqueIdentifier];
       currentHomeId = v2->_currentHomeId;
-      v2->_currentHomeId = v7;
+      v2->_currentHomeId = uniqueIdentifier;
 
       v9 = 1;
     }

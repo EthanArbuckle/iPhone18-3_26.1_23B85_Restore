@@ -1,20 +1,20 @@
 @interface HFUnknownCondition
-- (id)hf_naturalLanguageSummaryWithOptions:(id)a3;
+- (id)hf_naturalLanguageSummaryWithOptions:(id)options;
 @end
 
 @implementation HFUnknownCondition
 
-- (id)hf_naturalLanguageSummaryWithOptions:(id)a3
+- (id)hf_naturalLanguageSummaryWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = _HFLocalizedStringWithDefaultValue(@"HFConditionNameUnknown", @"HFConditionNameUnknown", 1);
-  v6 = [v4 formattingContext];
+  formattingContext = [optionsCopy formattingContext];
 
-  if (v6 != 5)
+  if (formattingContext != 5)
   {
-    v7 = [v5 hf_stringByCapitalizingFirstWord];
+    hf_stringByCapitalizingFirstWord = [v5 hf_stringByCapitalizingFirstWord];
 
-    v5 = v7;
+    v5 = hf_stringByCapitalizingFirstWord;
   }
 
   v8 = [[HFConditionUISummary alloc] initWithCondition:self title:v5 description:0];

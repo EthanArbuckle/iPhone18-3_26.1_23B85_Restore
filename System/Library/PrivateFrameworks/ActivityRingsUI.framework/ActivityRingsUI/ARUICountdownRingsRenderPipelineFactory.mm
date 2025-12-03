@@ -1,29 +1,29 @@
 @interface ARUICountdownRingsRenderPipelineFactory
-- (ARUICountdownRingsRenderPipelineFactory)initWithDevice:(id)a3 library:(id)a4;
-- (ARUICountdownRingsRenderPipelineFactory)initWithDeviceSPI:(id)a3 librarySPI:(id)a4;
-- (id)pipelineForConfiguration:(id)a3;
+- (ARUICountdownRingsRenderPipelineFactory)initWithDevice:(id)device library:(id)library;
+- (ARUICountdownRingsRenderPipelineFactory)initWithDeviceSPI:(id)i librarySPI:(id)pI;
+- (id)pipelineForConfiguration:(id)configuration;
 @end
 
 @implementation ARUICountdownRingsRenderPipelineFactory
 
-- (ARUICountdownRingsRenderPipelineFactory)initWithDevice:(id)a3 library:(id)a4
+- (ARUICountdownRingsRenderPipelineFactory)initWithDevice:(id)device library:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  libraryCopy = library;
   v16.receiver = self;
   v16.super_class = ARUICountdownRingsRenderPipelineFactory;
-  v8 = [(ARUIPipelineFactory *)&v16 initWithDevice:v6 library:v7];
+  v8 = [(ARUIPipelineFactory *)&v16 initWithDevice:deviceCopy library:libraryCopy];
   if (v8)
   {
-    v9 = [(ARUIRingsRenderState *)[ARUIRingsEmptyState alloc] initWithDevice:v6 library:v7];
+    v9 = [(ARUIRingsRenderState *)[ARUIRingsEmptyState alloc] initWithDevice:deviceCopy library:libraryCopy];
     emptyState = v8->_emptyState;
     v8->_emptyState = v9;
 
-    v11 = [(ARUIRingsRenderState *)[ARUIRingsCountdownState alloc] initWithDevice:v6 library:v7];
+    v11 = [(ARUIRingsRenderState *)[ARUIRingsCountdownState alloc] initWithDevice:deviceCopy library:libraryCopy];
     countdownState = v8->_countdownState;
     v8->_countdownState = v11;
 
-    v13 = [(ARUIRingsRenderState *)[ARUIRingsAlphaReductionState alloc] initWithDevice:v6 library:v7];
+    v13 = [(ARUIRingsRenderState *)[ARUIRingsAlphaReductionState alloc] initWithDevice:deviceCopy library:libraryCopy];
     alphaReductionState = v8->_alphaReductionState;
     v8->_alphaReductionState = v13;
   }
@@ -31,23 +31,23 @@
   return v8;
 }
 
-- (ARUICountdownRingsRenderPipelineFactory)initWithDeviceSPI:(id)a3 librarySPI:(id)a4
+- (ARUICountdownRingsRenderPipelineFactory)initWithDeviceSPI:(id)i librarySPI:(id)pI
 {
-  v6 = a4;
+  pICopy = pI;
   v15.receiver = self;
   v15.super_class = ARUICountdownRingsRenderPipelineFactory;
-  v7 = [(ARUIPipelineFactory *)&v15 initWithDeviceSPI:a3 librarySPI:v6];
+  v7 = [(ARUIPipelineFactory *)&v15 initWithDeviceSPI:i librarySPI:pICopy];
   if (v7)
   {
-    v8 = [(ARUIRingsRenderState *)[ARUIRingsEmptyState alloc] initWithPipelineLibrary:v6];
+    v8 = [(ARUIRingsRenderState *)[ARUIRingsEmptyState alloc] initWithPipelineLibrary:pICopy];
     emptyState = v7->_emptyState;
     v7->_emptyState = v8;
 
-    v10 = [(ARUIRingsRenderState *)[ARUIRingsCountdownState alloc] initWithPipelineLibrary:v6];
+    v10 = [(ARUIRingsRenderState *)[ARUIRingsCountdownState alloc] initWithPipelineLibrary:pICopy];
     countdownState = v7->_countdownState;
     v7->_countdownState = v10;
 
-    v12 = [(ARUIRingsRenderState *)[ARUIRingsAlphaReductionState alloc] initWithPipelineLibrary:v6];
+    v12 = [(ARUIRingsRenderState *)[ARUIRingsAlphaReductionState alloc] initWithPipelineLibrary:pICopy];
     alphaReductionState = v7->_alphaReductionState;
     v7->_alphaReductionState = v12;
   }
@@ -55,32 +55,32 @@
   return v7;
 }
 
-- (id)pipelineForConfiguration:(id)a3
+- (id)pipelineForConfiguration:(id)configuration
 {
-  v4 = a3;
-  if ([v4 hasVisibleRings])
+  configurationCopy = configuration;
+  if ([configurationCopy hasVisibleRings])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = [v4 hasEmptyRing];
+    array = [MEMORY[0x1E695DF70] array];
+    hasEmptyRing = [configurationCopy hasEmptyRing];
     v7 = &OBJC_IVAR___ARUICountdownRingsRenderPipelineFactory__countdownState;
-    if (v6)
+    if (hasEmptyRing)
     {
       v7 = &OBJC_IVAR___ARUICountdownRingsRenderPipelineFactory__emptyState;
     }
 
-    [v5 addObject:*(&self->super.super.super.isa + *v7)];
-    if ([v4 needsAlphaReductionPass])
+    [array addObject:*(&self->super.super.super.isa + *v7)];
+    if ([configurationCopy needsAlphaReductionPass])
     {
-      [v5 addObject:self->_alphaReductionState];
+      [array addObject:self->_alphaReductionState];
     }
   }
 
   else
   {
-    v5 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v5;
+  return array;
 }
 
 @end

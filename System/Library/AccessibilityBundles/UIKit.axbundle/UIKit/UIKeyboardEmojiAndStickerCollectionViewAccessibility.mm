@@ -1,5 +1,5 @@
 @interface UIKeyboardEmojiAndStickerCollectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityFirstOpaqueElement;
 - (id)_accessibilityLocalizedVisibleSectionNames;
 - (id)_accessibilityScrollStatus;
@@ -8,14 +8,14 @@
 
 @implementation UIKeyboardEmojiAndStickerCollectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v9 = location;
   v8 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UIKeyboardEmojiSplitCharacterPicker"];
   v5 = @"UIKeyboardEmojiAndStickerCollectionView";
   [location[0] validateClass:? isKindOfClass:?];
@@ -34,7 +34,7 @@
 
 - (id)_accessibilitySortedElementsWithin
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   v7 = [(UIKeyboardEmojiAndStickerCollectionViewAccessibility *)self safeValueForKeyPath:@"delegate._flowLayout"];
   v8 = [v7 safeIntegerForKey:@"scrollDirection"];
@@ -42,23 +42,23 @@
   v12 = v8;
   if (v8)
   {
-    v6 = [(UIKeyboardEmojiAndStickerCollectionViewAccessibility *)v14 subviews];
-    v10 = [v6 ax_filteredArrayUsingBlock:&__block_literal_global_3];
-    *&v3 = MEMORY[0x29EDC9740](v6).n128_u64[0];
+    subviews = [(UIKeyboardEmojiAndStickerCollectionViewAccessibility *)selfCopy subviews];
+    v10 = [subviews ax_filteredArrayUsingBlock:&__block_literal_global_3];
+    *&v3 = MEMORY[0x29EDC9740](subviews).n128_u64[0];
     v9 = [v10 sortedArrayUsingSelector:{sel__emojiCompare_, v3}];
-    v15 = MEMORY[0x29EDC9748](v9);
+    _accessibilitySortedElementsWithin = MEMORY[0x29EDC9748](v9);
     objc_storeStrong(&v9, 0);
     objc_storeStrong(&v10, 0);
   }
 
   else
   {
-    v11.receiver = v14;
+    v11.receiver = selfCopy;
     v11.super_class = UIKeyboardEmojiAndStickerCollectionViewAccessibility;
-    v15 = [(UIKeyboardEmojiAndStickerCollectionViewAccessibility *)&v11 _accessibilitySortedElementsWithin];
+    _accessibilitySortedElementsWithin = [(UIKeyboardEmojiAndStickerCollectionViewAccessibility *)&v11 _accessibilitySortedElementsWithin];
   }
 
-  v4 = v15;
+  v4 = _accessibilitySortedElementsWithin;
 
   return v4;
 }
@@ -75,18 +75,18 @@ uint64_t __90__UIKeyboardEmojiAndStickerCollectionViewAccessibility__accessibili
 
 - (id)_accessibilityScrollStatus
 {
-  v11 = self;
+  selfCopy = self;
   v10[1] = a2;
   v9.receiver = self;
   v9.super_class = UIKeyboardEmojiAndStickerCollectionViewAccessibility;
   v10[0] = [(UIKeyboardEmojiAndStickerCollectionViewAccessibility *)&v9 _accessibilityScrollStatus];
-  v8 = [(UIKeyboardEmojiAndStickerCollectionViewAccessibility *)v11 _accessibilityLocalizedVisibleSectionNames];
+  _accessibilityLocalizedVisibleSectionNames = [(UIKeyboardEmojiAndStickerCollectionViewAccessibility *)selfCopy _accessibilityLocalizedVisibleSectionNames];
   v7 = 0;
-  if ([v8 count])
+  if ([_accessibilityLocalizedVisibleSectionNames count])
   {
-    v4 = [(UIKeyboardEmojiAndStickerCollectionViewAccessibility *)v11 _accessibilityLocalizedVisibleSectionNames];
+    _accessibilityLocalizedVisibleSectionNames2 = [(UIKeyboardEmojiAndStickerCollectionViewAccessibility *)selfCopy _accessibilityLocalizedVisibleSectionNames];
     v6 = MEMORY[0x29ED3D9D0]();
-    MEMORY[0x29EDC9740](v4);
+    MEMORY[0x29EDC9740](_accessibilityLocalizedVisibleSectionNames2);
     v5 = accessibilityLocalizedString(@"emoji.keyboard.pages_and_visible_categories");
     v12 = AXCFormattedString();
     MEMORY[0x29EDC9740](v5);
@@ -100,7 +100,7 @@ uint64_t __90__UIKeyboardEmojiAndStickerCollectionViewAccessibility__accessibili
   }
 
   objc_storeStrong(&v7, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&_accessibilityLocalizedVisibleSectionNames, 0);
   objc_storeStrong(v10, 0);
   v2 = v12;
 
@@ -109,8 +109,8 @@ uint64_t __90__UIKeyboardEmojiAndStickerCollectionViewAccessibility__accessibili
 
 - (id)_accessibilityLocalizedVisibleSectionNames
 {
-  v53[1] = a1;
-  if (a1)
+  v53[1] = self;
+  if (self)
   {
     v53[0] = [MEMORY[0x29EDB8DE8] array];
     v51 = 0;
@@ -119,12 +119,12 @@ uint64_t __90__UIKeyboardEmojiAndStickerCollectionViewAccessibility__accessibili
     v49 = MEMORY[0x29EDC9748](v50);
     objc_storeStrong(&v50, 0);
     v52 = v49;
-    v17 = [v49 dataSource];
+    dataSource = [v49 dataSource];
     v47 = 0;
     LOBYTE(v18) = 0;
-    if (v17)
+    if (dataSource)
     {
-      v48 = [v52 dataSource];
+      dataSource2 = [v52 dataSource];
       v47 = 1;
       NSClassFromString(&cfstr_Uikeyboardemoj_10.isa);
       v18 = objc_opt_isKindOfClass() ^ 1;
@@ -132,10 +132,10 @@ uint64_t __90__UIKeyboardEmojiAndStickerCollectionViewAccessibility__accessibili
 
     if (v47)
     {
-      MEMORY[0x29EDC9740](v48);
+      MEMORY[0x29EDC9740](dataSource2);
     }
 
-    MEMORY[0x29EDC9740](v17);
+    MEMORY[0x29EDC9740](dataSource);
     if (v18)
     {
       [v52 visibleBounds];
@@ -143,8 +143,8 @@ uint64_t __90__UIKeyboardEmojiAndStickerCollectionViewAccessibility__accessibili
       v46.origin.y = v2;
       v46.size.width = v3;
       v46.size.height = v4;
-      v45 = [v52 numberOfSections];
-      for (i = 0; i < v45; ++i)
+      numberOfSections = [v52 numberOfSections];
+      for (i = 0; i < numberOfSections; ++i)
       {
         v15 = v52;
         v14 = *MEMORY[0x29EDC8048];
@@ -235,11 +235,11 @@ double __98__UIKeyboardEmojiAndStickerCollectionViewAccessibility__accessibility
 
 - (id)_accessibilityFirstOpaqueElement
 {
-  v11 = self;
+  selfCopy = self;
   v10[1] = a2;
   v9 = 0;
   objc_opt_class();
-  v4 = [(UIKeyboardEmojiAndStickerCollectionViewAccessibility *)v11 _accessibilityValueForKey:@"LastEmojiSelected"];
+  v4 = [(UIKeyboardEmojiAndStickerCollectionViewAccessibility *)selfCopy _accessibilityValueForKey:@"LastEmojiSelected"];
   v8 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v4);
   v7 = MEMORY[0x29EDC9748](v8);
@@ -247,19 +247,19 @@ double __98__UIKeyboardEmojiAndStickerCollectionViewAccessibility__accessibility
   v10[0] = v7;
   if ([v7 _accessibilityViewIsVisible])
   {
-    v12 = MEMORY[0x29EDC9748](v10[0]);
+    _accessibilityFirstOpaqueElement = MEMORY[0x29EDC9748](v10[0]);
   }
 
   else
   {
-    v5.receiver = v11;
+    v5.receiver = selfCopy;
     v5.super_class = UIKeyboardEmojiAndStickerCollectionViewAccessibility;
-    v12 = [(UIKeyboardEmojiAndStickerCollectionViewAccessibility *)&v5 _accessibilityFirstOpaqueElement];
+    _accessibilityFirstOpaqueElement = [(UIKeyboardEmojiAndStickerCollectionViewAccessibility *)&v5 _accessibilityFirstOpaqueElement];
   }
 
   v6 = 1;
   objc_storeStrong(v10, 0);
-  v2 = v12;
+  v2 = _accessibilityFirstOpaqueElement;
 
   return v2;
 }

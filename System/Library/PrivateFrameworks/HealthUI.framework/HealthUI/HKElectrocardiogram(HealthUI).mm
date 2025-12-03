@@ -27,7 +27,7 @@
   CGAffineTransformMakeScale(&v15, a2 / a7, a3 / 1000.0);
   *&v11 = a4 * 1000.0;
   *&v12 = a5 * 1000.0;
-  v13 = [a1 _hk_waveformPathsWithNumberOfValues:a7 transform:&v15 maximumNumberOfValuesPerPath:0 shouldResetXValues:0 initialValuesToOmit:0 minimumValueInMicrovolts:v11 maximumValueInMicrovolts:v12];
+  v13 = [self _hk_waveformPathsWithNumberOfValues:a7 transform:&v15 maximumNumberOfValuesPerPath:0 shouldResetXValues:0 initialValuesToOmit:0 minimumValueInMicrovolts:v11 maximumValueInMicrovolts:v12];
 
   return v13;
 }
@@ -62,7 +62,7 @@
   v21 = *a6;
   v22 = v17;
   v23 = a6[2];
-  [a1 _enumerateDataForLead:1 block:v20];
+  [self _enumerateDataForLead:1 block:v20];
   [v34[5] addObject:v28[5]];
   v18 = v34[5];
   _Block_object_dispose(&v27, 8);
@@ -76,21 +76,21 @@
 {
   *&a5 = *&a5 * 1000.0;
   *&a6 = *&a6 * 1000.0;
-  return [a1 _hk_waveformPathsWithPointsPerSecond:2560 pointsPerMillivolt:0 maximumNumberOfValuesPerPath:0 shouldResetXValues:a3 initialValuesToOmit:a4 minimumValueInMicrovolts:a5 maximumValueInMicrovolts:a6];
+  return [self _hk_waveformPathsWithPointsPerSecond:2560 pointsPerMillivolt:0 maximumNumberOfValuesPerPath:0 shouldResetXValues:a3 initialValuesToOmit:a4 minimumValueInMicrovolts:a5 maximumValueInMicrovolts:a6];
 }
 
 - (uint64_t)hk_waveformPathsWithPointsPerSecond:()HealthUI pointsPerMillivolt:wrappingDuration:omittingInitialDuration:
 {
   LODWORD(a7) = -1081711002;
   LODWORD(a8) = 1073951539;
-  return [a1 hk_waveformPathsWithPointsPerSecond:a3 pointsPerMillivolt:a4 wrappingDuration:a5 omittingInitialDuration:a6 minimumValueInMillivolts:a7 maximumValueInMillivolts:a8];
+  return [self hk_waveformPathsWithPointsPerSecond:a3 pointsPerMillivolt:a4 wrappingDuration:a5 omittingInitialDuration:a6 minimumValueInMillivolts:a7 maximumValueInMillivolts:a8];
 }
 
 - (uint64_t)hk_waveformPathsWithPointsPerSecond:()HealthUI pointsPerMillivolt:wrappingDuration:omittingInitialDuration:minimumValueInMillivolts:maximumValueInMillivolts:
 {
-  v14 = [a1 samplingFrequency];
-  v15 = [MEMORY[0x1E696C510] hertzUnit];
-  [v14 doubleValueForUnit:v15];
+  samplingFrequency = [self samplingFrequency];
+  hertzUnit = [MEMORY[0x1E696C510] hertzUnit];
+  [samplingFrequency doubleValueForUnit:hertzUnit];
   v17 = v16;
 
   v20 = vcvtpd_s64_f64(v17 * a4);
@@ -98,31 +98,31 @@
 
   *&v18 = a6 * 1000.0;
   *&v19 = a7 * 1000.0;
-  return [a1 _hk_waveformPathsWithPointsPerSecond:v20 pointsPerMillivolt:1 maximumNumberOfValuesPerPath:v21 shouldResetXValues:a2 initialValuesToOmit:a3 minimumValueInMicrovolts:v18 maximumValueInMicrovolts:v19];
+  return [self _hk_waveformPathsWithPointsPerSecond:v20 pointsPerMillivolt:1 maximumNumberOfValuesPerPath:v21 shouldResetXValues:a2 initialValuesToOmit:a3 minimumValueInMicrovolts:v18 maximumValueInMicrovolts:v19];
 }
 
 - (id)_hk_waveformPathsWithPointsPerSecond:()HealthUI pointsPerMillivolt:maximumNumberOfValuesPerPath:shouldResetXValues:initialValuesToOmit:minimumValueInMicrovolts:maximumValueInMicrovolts:
 {
-  v17 = [a1 endDate];
-  v18 = [a1 startDate];
-  [v17 timeIntervalSinceDate:v18];
+  endDate = [self endDate];
+  startDate = [self startDate];
+  [endDate timeIntervalSinceDate:startDate];
   v20 = v19 * a2;
 
-  v21 = v20 / [a1 numberOfVoltageMeasurements];
-  v22 = [a1 numberOfVoltageMeasurements];
+  v21 = v20 / [self numberOfVoltageMeasurements];
+  numberOfVoltageMeasurements = [self numberOfVoltageMeasurements];
   CGAffineTransformMakeScale(&v27, v21, a3 / 1000.0);
   *&v23 = a4;
   *&v24 = a5;
-  v25 = [a1 _hk_waveformPathsWithNumberOfValues:v22 transform:&v27 maximumNumberOfValuesPerPath:a7 shouldResetXValues:a8 initialValuesToOmit:a9 minimumValueInMicrovolts:v23 maximumValueInMicrovolts:v24];
+  v25 = [self _hk_waveformPathsWithNumberOfValues:numberOfVoltageMeasurements transform:&v27 maximumNumberOfValuesPerPath:a7 shouldResetXValues:a8 initialValuesToOmit:a9 minimumValueInMicrovolts:v23 maximumValueInMicrovolts:v24];
 
   return v25;
 }
 
 - (id)hk_cardHeaderColor
 {
-  v1 = [a1 _hk_classificationHasAbnormalHeaderColorAndStyle];
+  _hk_classificationHasAbnormalHeaderColorAndStyle = [self _hk_classificationHasAbnormalHeaderColorAndStyle];
   v2 = objc_opt_class();
-  if (v1)
+  if (_hk_classificationHasAbnormalHeaderColorAndStyle)
   {
     [v2 hk_abnormalCardHeaderColor];
   }
@@ -145,9 +145,9 @@
 
 - (id)hk_classificationTextColor
 {
-  v1 = [a1 _hk_classificationHasAbnormalHeaderColorAndStyle];
+  _hk_classificationHasAbnormalHeaderColorAndStyle = [self _hk_classificationHasAbnormalHeaderColorAndStyle];
   v2 = objc_opt_class();
-  if (v1)
+  if (_hk_classificationHasAbnormalHeaderColorAndStyle)
   {
     [v2 hk_abnormalClassificationTextColor];
   }
@@ -163,9 +163,9 @@
 
 - (id)hk_timeStampTextColor
 {
-  v1 = [a1 _hk_classificationHasAbnormalHeaderColorAndStyle];
+  _hk_classificationHasAbnormalHeaderColorAndStyle = [self _hk_classificationHasAbnormalHeaderColorAndStyle];
   v2 = objc_opt_class();
-  if (v1)
+  if (_hk_classificationHasAbnormalHeaderColorAndStyle)
   {
     [v2 hk_abnormalTimeStampTextColor];
   }
@@ -181,9 +181,9 @@
 
 - (id)hk_timeStampCompositingFilter
 {
-  v1 = [a1 _hk_classificationHasAbnormalHeaderColorAndStyle];
+  _hk_classificationHasAbnormalHeaderColorAndStyle = [self _hk_classificationHasAbnormalHeaderColorAndStyle];
   v2 = objc_opt_class();
-  if (v1)
+  if (_hk_classificationHasAbnormalHeaderColorAndStyle)
   {
     [v2 hk_abnormalTimeStampCompositingFilter];
   }
@@ -199,9 +199,9 @@
 
 - (id)hk_BPMTextColor
 {
-  v1 = [a1 _hk_classificationHasAbnormalBPMFontColorAndStyle];
+  _hk_classificationHasAbnormalBPMFontColorAndStyle = [self _hk_classificationHasAbnormalBPMFontColorAndStyle];
   v2 = objc_opt_class();
-  if (v1)
+  if (_hk_classificationHasAbnormalBPMFontColorAndStyle)
   {
     [v2 hk_abnormalBPMTextColor];
   }
@@ -217,9 +217,9 @@
 
 - (id)hk_numSymptomsTextColor
 {
-  v1 = [a1 hk_hasPositiveSymptoms];
+  hk_hasPositiveSymptoms = [self hk_hasPositiveSymptoms];
   v2 = objc_opt_class();
-  if (v1)
+  if (hk_hasPositiveSymptoms)
   {
     [v2 hk_positiveNumSymptomsTextColor];
   }
@@ -236,9 +236,9 @@
 + (id)hk_positiveNumSymptomsTextColor
 {
   v0 = [HKDisplayCategory categoryWithID:11];
-  v1 = [v0 color];
+  color = [v0 color];
 
-  return v1;
+  return color;
 }
 
 + (id)hk_localizedAverageBPM:()HealthUI
@@ -248,8 +248,8 @@
     v3 = MEMORY[0x1E696AD98];
     [a3 _beatsPerMinute];
     v4 = [v3 numberWithDouble:?];
-    v5 = [MEMORY[0x1E696ADA0] hk_heartRateNumberFormatter];
-    v6 = [v5 stringFromNumber:v4];
+    hk_heartRateNumberFormatter = [MEMORY[0x1E696ADA0] hk_heartRateNumberFormatter];
+    v6 = [hk_heartRateNumberFormatter stringFromNumber:v4];
 
     v7 = MEMORY[0x1E696AEC0];
     v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -271,18 +271,18 @@
 - (id)hk_localizedAverageBPM
 {
   v2 = objc_opt_class();
-  v3 = [a1 averageHeartRate];
-  v4 = [v2 hk_localizedAverageBPM:v3];
+  averageHeartRate = [self averageHeartRate];
+  v4 = [v2 hk_localizedAverageBPM:averageHeartRate];
 
   return v4;
 }
 
 - (id)hk_localizedDuration
 {
-  v2 = [MEMORY[0x1E696AB70] hk_fullStyleDateComponentsFormatter];
-  v3 = [a1 startDate];
-  v4 = [a1 endDate];
-  v5 = [v2 stringFromDate:v3 toDate:v4];
+  hk_fullStyleDateComponentsFormatter = [MEMORY[0x1E696AB70] hk_fullStyleDateComponentsFormatter];
+  startDate = [self startDate];
+  endDate = [self endDate];
+  v5 = [hk_fullStyleDateComponentsFormatter stringFromDate:startDate toDate:endDate];
 
   return v5;
 }
@@ -290,17 +290,17 @@
 - (__CFString)hk_localizedNumSymptoms
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 _localizedSymptoms];
-  v4 = [v2 numberWithUnsignedInteger:{objc_msgSend(v3, "count")}];
+  _localizedSymptoms = [self _localizedSymptoms];
+  v4 = [v2 numberWithUnsignedInteger:{objc_msgSend(_localizedSymptoms, "count")}];
 
-  if ([a1 hk_isSymptomsNotSet])
+  if ([self hk_isSymptomsNotSet])
   {
     v5 = &stru_1F42FFBE0;
   }
 
   else
   {
-    if ([a1 hk_isSymptomsNoSymptoms])
+    if ([self hk_isSymptomsNoSymptoms])
     {
 
       v4 = &unk_1F43821A0;
@@ -318,10 +318,10 @@
 
 - (id)hk_localizedUppercaseNumSymptoms
 {
-  v1 = [a1 hk_localizedNumSymptoms];
-  v2 = [v1 localizedUppercaseString];
+  hk_localizedNumSymptoms = [self hk_localizedNumSymptoms];
+  localizedUppercaseString = [hk_localizedNumSymptoms localizedUppercaseString];
 
-  return v2;
+  return localizedUppercaseString;
 }
 
 @end

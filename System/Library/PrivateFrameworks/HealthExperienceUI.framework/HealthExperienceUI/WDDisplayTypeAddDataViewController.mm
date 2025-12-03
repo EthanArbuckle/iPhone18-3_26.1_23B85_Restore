@@ -1,11 +1,11 @@
 @interface WDDisplayTypeAddDataViewController
 - (id)createValueFieldManualEntryItem;
 - (id)generateHKObjects;
-- (id)manualEntryItemsForSection:(int64_t)a3;
+- (id)manualEntryItemsForSection:(int64_t)section;
 - (void)_setDefaultValuesIfNecessary;
-- (void)_updateManualEntryItemWithCurrentBMI:(id)a3;
-- (void)manualEntryItemDidUpdate:(id)a3;
-- (void)validateDataWithCompletion:(id)a3;
+- (void)_updateManualEntryItemWithCurrentBMI:(id)i;
+- (void)manualEntryItemDidUpdate:(id)update;
+- (void)validateDataWithCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -14,20 +14,20 @@
 - (id)createValueFieldManualEntryItem
 {
   v3 = [(HKUnitPreferenceController *)self->super._unitController unitForDisplayType:self->super._displayType];
-  v4 = [(HKDisplayType *)self->super._displayType chartingRules];
-  v5 = [v4 allowedDecimalPrecisionRuleForUnit:v3];
-  v6 = [v5 maximumDecimalPrecision];
+  chartingRules = [(HKDisplayType *)self->super._displayType chartingRules];
+  v5 = [chartingRules allowedDecimalPrecisionRuleForUnit:v3];
+  maximumDecimalPrecision = [v5 maximumDecimalPrecision];
 
-  v7 = [(HKDisplayType *)self->super._displayType localization];
-  v8 = [v7 labelDisplayName];
+  localization = [(HKDisplayType *)self->super._displayType localization];
+  labelDisplayName = [localization labelDisplayName];
 
   if ([(HKDisplayType *)self->super._displayType displayTypeIdentifier]== 15)
   {
-    v9 = [(HKDisplayType *)self->super._displayType localization];
-    v10 = [v9 displayName];
+    localization2 = [(HKDisplayType *)self->super._displayType localization];
+    displayName = [localization2 displayName];
 
     v11 = [(HKUnitPreferenceController *)self->super._unitController localizedDisplayNameForDisplayType:self->super._displayType];
-    v8 = v10;
+    labelDisplayName = displayName;
   }
 
   else
@@ -35,14 +35,14 @@
     v11 = &stru_1F3823B88;
   }
 
-  if (![v8 length])
+  if (![labelDisplayName length])
   {
     v12 = [(HKUnitPreferenceController *)self->super._unitController localizedDisplayNameForDisplayType:self->super._displayType];
 
-    v8 = v12;
+    labelDisplayName = v12;
   }
 
-  if (v6)
+  if (maximumDecimalPrecision)
   {
     v13 = 2;
   }
@@ -56,7 +56,7 @@
   v14 = HKDecimalFormatter();
   v15 = [WDAddDataManualEntryItem numericItemWithManualEntryType:v13 numberFormatter:v14];
 
-  [v15 setTitle:v8];
+  [v15 setTitle:labelDisplayName];
   [v15 setSecondaryLabel:v11];
 
   return v15;
@@ -64,15 +64,15 @@
 
 - (void)viewDidLoad
 {
-  v3 = [(HKDateCache *)self->super._dateCache endOfDayMidnight];
-  v4 = [WDAddDataManualEntryItem twoPartDateTimeItemWithMaximumDate:v3];
+  endOfDayMidnight = [(HKDateCache *)self->super._dateCache endOfDayMidnight];
+  v4 = [WDAddDataManualEntryItem twoPartDateTimeItemWithMaximumDate:endOfDayMidnight];
   dateTimeEntryItem = self->_dateTimeEntryItem;
   self->_dateTimeEntryItem = v4;
 
   [(WDAddDataManualEntryItem *)self->_dateTimeEntryItem setDelegate:self];
-  v6 = [(WDDisplayTypeAddDataViewController *)self createValueFieldManualEntryItem];
+  createValueFieldManualEntryItem = [(WDDisplayTypeAddDataViewController *)self createValueFieldManualEntryItem];
   valueFieldManualEntryItem = self->_valueFieldManualEntryItem;
-  self->_valueFieldManualEntryItem = v6;
+  self->_valueFieldManualEntryItem = createValueFieldManualEntryItem;
 
   [(WDAddDataManualEntryItem *)self->_valueFieldManualEntryItem setDelegate:self];
   v8.receiver = self;
@@ -82,34 +82,34 @@
   [(WDDisplayTypeAddDataViewController *)self _setDefaultValuesIfNecessary];
 }
 
-- (void)validateDataWithCompletion:(id)a3
+- (void)validateDataWithCompletion:(id)completion
 {
-  v27 = a3;
-  v4 = [(HKManualEntryValidationController *)self->super._validationController supportedQuantityTypes];
-  v5 = [(HKDisplayType *)self->super._displayType objectType];
-  v6 = [v5 identifier];
-  v7 = [v4 containsObject:v6];
+  completionCopy = completion;
+  supportedQuantityTypes = [(HKManualEntryValidationController *)self->super._validationController supportedQuantityTypes];
+  objectType = [(HKDisplayType *)self->super._displayType objectType];
+  identifier = [objectType identifier];
+  v7 = [supportedQuantityTypes containsObject:identifier];
 
   if (v7)
   {
     v8 = [(HKUnitPreferenceController *)self->super._unitController unitForDisplayType:self->super._displayType];
-    v9 = [(HKDisplayType *)self->super._displayType presentation];
-    v10 = [(WDAddDataManualEntryItem *)self->_valueFieldManualEntryItem generateValue];
-    v11 = [v9 adjustedValueForClientValue:v10];
+    presentation = [(HKDisplayType *)self->super._displayType presentation];
+    generateValue = [(WDAddDataManualEntryItem *)self->_valueFieldManualEntryItem generateValue];
+    v11 = [presentation adjustedValueForClientValue:generateValue];
 
     v12 = MEMORY[0x1E696C348];
     [v11 doubleValue];
     v13 = [v12 quantityWithUnit:v8 doubleValue:?];
     validationController = self->super._validationController;
-    v15 = [(HKDisplayType *)self->super._displayType objectType];
-    v16 = [(HKManualEntryValidationController *)validationController validateQuantity:v13 ofType:v15];
+    objectType2 = [(HKDisplayType *)self->super._displayType objectType];
+    v16 = [(HKManualEntryValidationController *)validationController validateQuantity:v13 ofType:objectType2];
 
     v17 = v16 == 1;
     v18 = v16 != 1;
     if (v17)
     {
-      v20 = [(HKDisplayType *)self->super._displayType presentation];
-      v21 = [v20 adjustedValueForDaemonValue:v11];
+      presentation2 = [(HKDisplayType *)self->super._displayType presentation];
+      v21 = [presentation2 adjustedValueForDaemonValue:v11];
 
       v22 = [(HKDisplayType *)self->super._displayType hk_valueFormatterForUnit:v8];
       v23 = [v22 stringFromValue:v21 displayType:self->super._displayType unitController:self->super._unitController];
@@ -132,25 +132,25 @@
     v18 = 1;
   }
 
-  v27[2](v27, v18, v19, 1);
+  completionCopy[2](completionCopy, v18, v19, 1);
 }
 
 - (id)generateHKObjects
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(WDAddDataManualEntryItem *)self->_dateTimeEntryItem generateValue];
-  v4 = [(WDAddDataViewController *)self defaultMetadata];
-  v5 = [(WDAddDataManualEntryItem *)self->_valueFieldManualEntryItem generateValue];
-  v6 = [(HKDisplayType *)self->super._displayType presentation];
-  v7 = [v6 adjustedValueForClientValue:v5];
+  generateValue = [(WDAddDataManualEntryItem *)self->_dateTimeEntryItem generateValue];
+  defaultMetadata = [(WDAddDataViewController *)self defaultMetadata];
+  generateValue2 = [(WDAddDataManualEntryItem *)self->_valueFieldManualEntryItem generateValue];
+  presentation = [(HKDisplayType *)self->super._displayType presentation];
+  v7 = [presentation adjustedValueForClientValue:generateValue2];
 
   v8 = [(HKUnitPreferenceController *)self->super._unitController unitForDisplayType:self->super._displayType];
   v9 = MEMORY[0x1E696C348];
   [v7 doubleValue];
   v10 = [v9 quantityWithUnit:v8 doubleValue:?];
   v11 = MEMORY[0x1E696C358];
-  v12 = [(HKDisplayType *)self->super._displayType sampleType];
-  v13 = [v11 quantitySampleWithType:v12 quantity:v10 startDate:v3 endDate:v3 metadata:v4];
+  sampleType = [(HKDisplayType *)self->super._displayType sampleType];
+  v13 = [v11 quantitySampleWithType:sampleType quantity:v10 startDate:generateValue endDate:generateValue metadata:defaultMetadata];
 
   v16[0] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
@@ -158,7 +158,7 @@
   return v14;
 }
 
-- (id)manualEntryItemsForSection:(int64_t)a3
+- (id)manualEntryItemsForSection:(int64_t)section
 {
   v6[2] = *MEMORY[0x1E69E9840];
   valueFieldManualEntryItem = self->_valueFieldManualEntryItem;
@@ -179,16 +179,16 @@
   }
 }
 
-- (void)_updateManualEntryItemWithCurrentBMI:(id)a3
+- (void)_updateManualEntryItemWithCurrentBMI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   healthStore = self->super._healthStore;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __75__WDDisplayTypeAddDataViewController__updateManualEntryItemWithCurrentBMI___block_invoke;
   v7[3] = &unk_1E7EEB588;
-  v8 = v4;
-  v6 = v4;
+  v8 = iCopy;
+  v6 = iCopy;
   [(HKHealthStore *)healthStore calculateBMIWithCompletion:v7];
 }
 
@@ -207,21 +207,21 @@ void __75__WDDisplayTypeAddDataViewController__updateManualEntryItemWithCurrentB
   }
 }
 
-- (void)manualEntryItemDidUpdate:(id)a3
+- (void)manualEntryItemDidUpdate:(id)update
 {
-  v17 = [(WDAddDataManualEntryItem *)self->_valueFieldManualEntryItem generateValue];
-  if (v17 && (-[HKManualEntryValidationController supportedQuantityTypes](self->super._validationController, "supportedQuantityTypes"), v4 = objc_claimAutoreleasedReturnValue(), -[HKDisplayType objectType](self->super._displayType, "objectType"), v5 = objc_claimAutoreleasedReturnValue(), [v5 identifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v4, "containsObject:", v6), v6, v5, v4, v7))
+  generateValue = [(WDAddDataManualEntryItem *)self->_valueFieldManualEntryItem generateValue];
+  if (generateValue && (-[HKManualEntryValidationController supportedQuantityTypes](self->super._validationController, "supportedQuantityTypes"), v4 = objc_claimAutoreleasedReturnValue(), -[HKDisplayType objectType](self->super._displayType, "objectType"), v5 = objc_claimAutoreleasedReturnValue(), [v5 identifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v4, "containsObject:", v6), v6, v5, v4, v7))
   {
     v8 = [(HKUnitPreferenceController *)self->super._unitController unitForDisplayType:self->super._displayType];
-    v9 = [(HKDisplayType *)self->super._displayType presentation];
-    v10 = [v9 adjustedValueForClientValue:v17];
+    presentation = [(HKDisplayType *)self->super._displayType presentation];
+    v10 = [presentation adjustedValueForClientValue:generateValue];
 
     v11 = MEMORY[0x1E696C348];
     [v10 doubleValue];
     v12 = [v11 quantityWithUnit:v8 doubleValue:?];
     validationController = self->super._validationController;
-    v14 = [(HKDisplayType *)self->super._displayType objectType];
-    v15 = [(HKManualEntryValidationController *)validationController validateQuantity:v12 ofType:v14];
+    objectType = [(HKDisplayType *)self->super._displayType objectType];
+    v15 = [(HKManualEntryValidationController *)validationController validateQuantity:v12 ofType:objectType];
 
     v16 = v15 != 2;
   }

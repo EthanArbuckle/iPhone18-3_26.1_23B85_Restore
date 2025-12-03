@@ -7,10 +7,10 @@
 
 - (BOOL)shouldPrioritize
 {
-  v2 = [(PLResourceLocalAvailabilityRequestOptions *)self downloadOptions];
-  v3 = [v2 isHighPriority];
+  downloadOptions = [(PLResourceLocalAvailabilityRequestOptions *)self downloadOptions];
+  isHighPriority = [downloadOptions isHighPriority];
 
-  return v3;
+  return isHighPriority;
 }
 
 - (PLResourceLocalAvailabilityRequestOptions)init
@@ -20,9 +20,9 @@
   v2 = [(PLResourceLocalAvailabilityRequestOptions *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E6994BA8] defaultOptions];
+    defaultOptions = [MEMORY[0x1E6994BA8] defaultOptions];
     downloadOptions = v2->_downloadOptions;
-    v2->_downloadOptions = v3;
+    v2->_downloadOptions = defaultOptions;
   }
 
   return v2;

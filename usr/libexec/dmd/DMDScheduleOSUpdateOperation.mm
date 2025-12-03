@@ -1,7 +1,7 @@
 @interface DMDScheduleOSUpdateOperation
 + (id)whitelistedClassesForRequest;
-- (void)endOperationWithWrongProductKey:(id)a3 action:(unint64_t)a4;
-- (void)runWithRequest:(id)a3;
+- (void)endOperationWithWrongProductKey:(id)key action:(unint64_t)action;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -21,24 +21,24 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)endOperationWithWrongProductKey:(id)a3 action:(unint64_t)a4
+- (void)endOperationWithWrongProductKey:(id)key action:(unint64_t)action
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = [DMFScheduleOSUpdateResultObject alloc];
   v8 = DMFErrorWithCodeAndUserInfo();
-  v9 = [v7 initWithAction:a4 productKey:v6 error:v8];
+  v9 = [v7 initWithAction:action productKey:keyCopy error:v8];
 
   [(DMDScheduleOSUpdateOperation *)self endOperationWithResultObject:v9];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v6 = DMFOSUpdateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v38 = v5;
+    v38 = requestCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "schedule-os-update starting, request = %{public}@", buf, 0xCu);
   }
 
@@ -46,22 +46,22 @@
   v36 = 0;
   v8 = [v7 currentStatusWithError:&v36];
   v9 = v36;
-  v10 = [v5 action];
-  if (v10 == 2)
+  action = [requestCopy action];
+  if (action == 2)
   {
-    v10 = [v8 isDownloadComplete];
+    action = [v8 isDownloadComplete];
   }
 
-  v11 = [v5 productKey];
+  productKey = [requestCopy productKey];
   v12 = [objc_opt_class() productKeyFromStatus:v8];
-  v13 = [objc_opt_class() defaultProductKey];
-  if (!v11 || ([v11 isEqualToString:v13] & 1) != 0 || !v12 || (objc_msgSend(v11, "isEqualToString:", v12) & 1) != 0)
+  defaultProductKey = [objc_opt_class() defaultProductKey];
+  if (!productKey || ([productKey isEqualToString:defaultProductKey] & 1) != 0 || !v12 || (objc_msgSend(productKey, "isEqualToString:", v12) & 1) != 0)
   {
-    v32 = [v5 productVersion];
-    v14 = [v5 useDelay];
-    v30 = self;
+    productVersion = [requestCopy productVersion];
+    useDelay = [requestCopy useDelay];
+    selfCopy = self;
     v31 = v8;
-    if (v10 == 1)
+    if (action == 1)
     {
       v22 = DMFOSUpdateLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
@@ -83,19 +83,19 @@
       }
     }
 
-    else if (v10)
+    else if (action)
     {
       v24 = +[NSAssertionHandler currentHandler];
-      v25 = self;
+      selfCopy2 = self;
       v21 = v24;
-      [v24 handleFailureInMethod:a2 object:v25 file:@"DMDScheduleOSUpdateOperation.m" lineNumber:122 description:@"unexpected action value"];
+      [v24 handleFailureInMethod:a2 object:selfCopy2 file:@"DMDScheduleOSUpdateOperation.m" lineNumber:122 description:@"unexpected action value"];
       v17 = 0;
       v18 = v9;
     }
 
     else
     {
-      v15 = v14;
+      v15 = useDelay;
       v16 = DMFOSUpdateLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
@@ -104,12 +104,12 @@
       }
 
       v35 = v9;
-      v17 = [v7 availableUpdateWithVersion:v32 useDelay:v15 error:&v35];
+      v17 = [v7 availableUpdateWithVersion:productVersion useDelay:v15 error:&v35];
       v18 = v35;
 
       if (v17)
       {
-        v19 = [v17 productKey];
+        productKey2 = [v17 productKey];
 
         v34 = v18;
         v20 = [v7 startDownloadWithError:&v34];
@@ -117,26 +117,26 @@
 
         if ((v20 & 1) == 0)
         {
-          v12 = v19;
+          v12 = productKey2;
           v9 = v21;
           goto LABEL_26;
         }
 
         v18 = 0;
-        v12 = v19;
+        v12 = productKey2;
       }
 
       else
       {
         v21 = v12;
-        v12 = v11;
+        v12 = productKey;
       }
     }
 
     v9 = v18;
 LABEL_26:
-    v27 = [[DMFScheduleOSUpdateResultObject alloc] initWithAction:v10 productKey:v12 error:v9];
-    [(DMDScheduleOSUpdateOperation *)v30 endOperationWithResultObject:v27];
+    v27 = [[DMFScheduleOSUpdateResultObject alloc] initWithAction:action productKey:v12 error:v9];
+    [(DMDScheduleOSUpdateOperation *)selfCopy endOperationWithResultObject:v27];
     v28 = DMFOSUpdateLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
@@ -146,7 +146,7 @@ LABEL_26:
     }
 
     v8 = v31;
-    v13 = v29;
+    defaultProductKey = v29;
     goto LABEL_29;
   }
 
@@ -157,7 +157,7 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "schedule-os-update wrong product key", buf, 2u);
   }
 
-  [(DMDScheduleOSUpdateOperation *)self endOperationWithWrongProductKey:v11 action:v10];
+  [(DMDScheduleOSUpdateOperation *)self endOperationWithWrongProductKey:productKey action:action];
 LABEL_29:
 }
 

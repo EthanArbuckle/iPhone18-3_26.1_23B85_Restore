@@ -1,12 +1,12 @@
 @interface PLImageScrollView
-- (PLImageScrollView)initWithFrame:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)willAnimateRotationToInterfaceOrientation:(id)a3;
+- (PLImageScrollView)initWithFrame:(CGRect)frame;
+- (void)setFrame:(CGRect)frame;
+- (void)willAnimateRotationToInterfaceOrientation:(id)orientation;
 @end
 
 @implementation PLImageScrollView
 
-- (void)willAnimateRotationToInterfaceOrientation:(id)a3
+- (void)willAnimateRotationToInterfaceOrientation:(id)orientation
 {
   [(PLImageScrollView *)self zoomScale];
   v6 = v5;
@@ -15,7 +15,7 @@
   v10 = v9;
   v11.receiver = self;
   v11.super_class = PLImageScrollView;
-  [(PLImageScrollView *)&v11 willAnimateRotationToInterfaceOrientation:a3];
+  [(PLImageScrollView *)&v11 willAnimateRotationToInterfaceOrientation:orientation];
   if ([(PLImageScrollView *)self adjustZoomScaleAfterRotation])
   {
     [(PLImageScrollView *)self setZoomScale:v6];
@@ -23,19 +23,19 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v3.receiver = self;
   v3.super_class = PLImageScrollView;
-  [(PLImageScrollView *)&v3 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PLImageScrollView *)&v3 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (PLImageScrollView)initWithFrame:(CGRect)a3
+- (PLImageScrollView)initWithFrame:(CGRect)frame
 {
   v18 = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = PLImageScrollView;
-  v3 = [(PLImageScrollView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLImageScrollView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

@@ -1,10 +1,10 @@
 @interface CRLAASApplicationTracker
-- (void)updateBoardInitialAppStateEventData:(id)a3;
+- (void)updateBoardInitialAppStateEventData:(id)data;
 @end
 
 @implementation CRLAASApplicationTracker
 
-- (void)updateBoardInitialAppStateEventData:(id)a3
+- (void)updateBoardInitialAppStateEventData:(id)data
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

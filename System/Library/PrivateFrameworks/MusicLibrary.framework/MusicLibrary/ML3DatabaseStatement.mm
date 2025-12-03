@@ -1,20 +1,20 @@
 @interface ML3DatabaseStatement
 - (BOOL)isBusy;
-- (ML3DatabaseStatement)initWithSQLiteStatement:(sqlite3_stmt *)a3 SQL:(id)a4;
+- (ML3DatabaseStatement)initWithSQLiteStatement:(sqlite3_stmt *)statement SQL:(id)l;
 - (NSString)sql;
 - (id)description;
 - (int)clearBindings;
 - (int)finalizeStatement;
 - (int)reset;
 - (int)step;
-- (void)bindBytes:(const void *)a3 length:(int)a4 forParameterAtPosition:(int)a5;
-- (void)bindBytesNoCopy:(const void *)a3 length:(int)a4 forParameterAtPosition:(int)a5;
-- (void)bindUTF8String:(const char *)a3 forParameterAtPosition:(int)a4;
-- (void)bindUTF8StringNoCopy:(const char *)a3 forParameterAtPosition:(int)a4;
-- (void)bindUTF8StringNoCopy:(const char *)a3 length:(int)a4 forParameterAtPosition:(int)a5;
-- (void)bindValue:(id)a3 forParameterAtPosition:(int)a4;
-- (void)bindValuesForParameterNames:(id)a3;
-- (void)bindValuesInArray:(id)a3;
+- (void)bindBytes:(const void *)bytes length:(int)length forParameterAtPosition:(int)position;
+- (void)bindBytesNoCopy:(const void *)copy length:(int)length forParameterAtPosition:(int)position;
+- (void)bindUTF8String:(const char *)string forParameterAtPosition:(int)position;
+- (void)bindUTF8StringNoCopy:(const char *)copy forParameterAtPosition:(int)position;
+- (void)bindUTF8StringNoCopy:(const char *)copy length:(int)length forParameterAtPosition:(int)position;
+- (void)bindValue:(id)value forParameterAtPosition:(int)position;
+- (void)bindValuesForParameterNames:(id)names;
+- (void)bindValuesInArray:(id)array;
 - (void)dealloc;
 @end
 
@@ -70,24 +70,24 @@
   return sqliteStatement;
 }
 
-- (void)bindValuesInArray:(id)a3
+- (void)bindValuesInArray:(id)array
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __42__ML3DatabaseStatement_bindValuesInArray___block_invoke;
   v3[3] = &unk_278765D38;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [array enumerateObjectsUsingBlock:v3];
 }
 
-- (void)bindValuesForParameterNames:(id)a3
+- (void)bindValuesForParameterNames:(id)names
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __52__ML3DatabaseStatement_bindValuesForParameterNames___block_invoke;
   v3[3] = &unk_278765440;
   v3[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v3];
+  [names enumerateKeysAndObjectsUsingBlock:v3];
 }
 
 void __52__ML3DatabaseStatement_bindValuesForParameterNames___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -100,72 +100,72 @@ void __52__ML3DatabaseStatement_bindValuesForParameterNames___block_invoke(uint6
   [*(a1 + 32) bindValue:v8 forParameterAtPosition:{sqlite3_bind_parameter_index(*(*(a1 + 32) + 24), v7)}];
 }
 
-- (void)bindValue:(id)a3 forParameterAtPosition:(int)a4
+- (void)bindValue:(id)value forParameterAtPosition:(int)position
 {
-  if (a3)
+  if (value)
   {
-    [a3 ml_bindToSQLiteStatement:self->_sqliteStatement atPosition:*&a4];
+    [value ml_bindToSQLiteStatement:self->_sqliteStatement atPosition:*&position];
   }
 
   else
   {
-    sqlite3_bind_null(self->_sqliteStatement, a4);
+    sqlite3_bind_null(self->_sqliteStatement, position);
   }
 }
 
-- (void)bindUTF8StringNoCopy:(const char *)a3 length:(int)a4 forParameterAtPosition:(int)a5
+- (void)bindUTF8StringNoCopy:(const char *)copy length:(int)length forParameterAtPosition:(int)position
 {
   sqliteStatement = self->_sqliteStatement;
-  if (!a3)
+  if (!copy)
   {
-    a3 = "";
+    copy = "";
   }
 
-  sqlite3_bind_text(sqliteStatement, a5, a3, a4, 0);
+  sqlite3_bind_text(sqliteStatement, position, copy, length, 0);
 }
 
-- (void)bindUTF8StringNoCopy:(const char *)a3 forParameterAtPosition:(int)a4
+- (void)bindUTF8StringNoCopy:(const char *)copy forParameterAtPosition:(int)position
 {
   sqliteStatement = self->_sqliteStatement;
-  if (!a3)
+  if (!copy)
   {
-    a3 = "";
+    copy = "";
   }
 
-  sqlite3_bind_text(sqliteStatement, a4, a3, -1, 0);
+  sqlite3_bind_text(sqliteStatement, position, copy, -1, 0);
 }
 
-- (void)bindUTF8String:(const char *)a3 forParameterAtPosition:(int)a4
+- (void)bindUTF8String:(const char *)string forParameterAtPosition:(int)position
 {
   sqliteStatement = self->_sqliteStatement;
-  if (!a3)
+  if (!string)
   {
-    a3 = "";
+    string = "";
   }
 
-  sqlite3_bind_text(sqliteStatement, a4, a3, -1, 0xFFFFFFFFFFFFFFFFLL);
+  sqlite3_bind_text(sqliteStatement, position, string, -1, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)bindBytesNoCopy:(const void *)a3 length:(int)a4 forParameterAtPosition:(int)a5
+- (void)bindBytesNoCopy:(const void *)copy length:(int)length forParameterAtPosition:(int)position
 {
   sqliteStatement = self->_sqliteStatement;
-  if (!a3)
+  if (!copy)
   {
-    a3 = "";
+    copy = "";
   }
 
-  sqlite3_bind_blob(sqliteStatement, a5, a3, a4, 0);
+  sqlite3_bind_blob(sqliteStatement, position, copy, length, 0);
 }
 
-- (void)bindBytes:(const void *)a3 length:(int)a4 forParameterAtPosition:(int)a5
+- (void)bindBytes:(const void *)bytes length:(int)length forParameterAtPosition:(int)position
 {
   sqliteStatement = self->_sqliteStatement;
-  if (!a3)
+  if (!bytes)
   {
-    a3 = "";
+    bytes = "";
   }
 
-  sqlite3_bind_blob(sqliteStatement, a5, a3, a4, 0xFFFFFFFFFFFFFFFFLL);
+  sqlite3_bind_blob(sqliteStatement, position, bytes, length, 0xFFFFFFFFFFFFFFFFLL);
 }
 
 - (int)clearBindings
@@ -209,9 +209,9 @@ void __52__ML3DatabaseStatement_bindValuesForParameterNames___block_invoke(uint6
   v9.receiver = self;
   v9.super_class = ML3DatabaseStatement;
   v4 = [(ML3DatabaseStatement *)&v9 description];
-  v5 = [(ML3DatabaseStatement *)self isExecuting];
+  isExecuting = [(ML3DatabaseStatement *)self isExecuting];
   v6 = [(ML3DatabaseStatement *)self sql];
-  v7 = [v3 stringWithFormat:@"%@ executing=%d, sql='%@'", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"%@ executing=%d, sql='%@'", v4, isExecuting, v6];
 
   return v7;
 }
@@ -220,8 +220,8 @@ void __52__ML3DatabaseStatement_bindValuesForParameterNames___block_invoke(uint6
 {
   if (self->_sqliteStatement)
   {
-    v4 = [MEMORY[0x277CCA890] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"ML3DatabaseStatement.m" lineNumber:38 description:{@"%@ %p has a dangling SQLite resource. (%p) A connection should have free'd this resource.", objc_opt_class(), self, self->_sqliteStatement}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3DatabaseStatement.m" lineNumber:38 description:{@"%@ %p has a dangling SQLite resource. (%p) A connection should have free'd this resource.", objc_opt_class(), self, self->_sqliteStatement}];
   }
 
   v5.receiver = self;
@@ -229,10 +229,10 @@ void __52__ML3DatabaseStatement_bindValuesForParameterNames___block_invoke(uint6
   [(ML3DatabaseStatement *)&v5 dealloc];
 }
 
-- (ML3DatabaseStatement)initWithSQLiteStatement:(sqlite3_stmt *)a3 SQL:(id)a4
+- (ML3DatabaseStatement)initWithSQLiteStatement:(sqlite3_stmt *)statement SQL:(id)l
 {
-  v6 = a4;
-  if (a3)
+  lCopy = l;
+  if (statement)
   {
     v14.receiver = self;
     v14.super_class = ML3DatabaseStatement;
@@ -240,8 +240,8 @@ void __52__ML3DatabaseStatement_bindValuesForParameterNames___block_invoke(uint6
     v8 = v7;
     if (v7)
     {
-      v7->_sqliteStatement = a3;
-      v9 = [v6 copy];
+      v7->_sqliteStatement = statement;
+      v9 = [lCopy copy];
       sql = v8->_sql;
       v8->_sql = v9;
 
@@ -249,7 +249,7 @@ void __52__ML3DatabaseStatement_bindValuesForParameterNames___block_invoke(uint6
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -257,10 +257,10 @@ void __52__ML3DatabaseStatement_bindValuesForParameterNames___block_invoke(uint6
     v12 = [MLException exceptionWithName:*MEMORY[0x277CBE658] reason:@"attempt to create a database statement without an underlying sqlite3_stmt" userInfo:0];
     [v12 raise];
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

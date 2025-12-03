@@ -1,24 +1,24 @@
 @interface MTURLDeresAction
-- (MTURLDeresAction)initWithField:(id)a3 configDictionary:(id)a4;
-- (id)allowedQueryItemsFromItems:(id)a3;
-- (id)performAction:(id)a3 context:(id)a4;
+- (MTURLDeresAction)initWithField:(id)field configDictionary:(id)dictionary;
+- (id)allowedQueryItemsFromItems:(id)items;
+- (id)performAction:(id)action context:(id)context;
 @end
 
 @implementation MTURLDeresAction
 
-- (MTURLDeresAction)initWithField:(id)a3 configDictionary:(id)a4
+- (MTURLDeresAction)initWithField:(id)field configDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = MTURLDeresAction;
-  v7 = [(MTTreatmentAction *)&v25 initWithField:a3 configDictionary:v6];
+  v7 = [(MTTreatmentAction *)&v25 initWithField:field configDictionary:dictionaryCopy];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"scope"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"scope"];
     [(MTURLDeresAction *)v7 setScope:v8];
 
-    v9 = [v6 objectForKeyedSubscript:@"allowedParams"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"allowedParams"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,11 +73,11 @@
   return v7;
 }
 
-- (id)performAction:(id)a3 context:(id)a4
+- (id)performAction:(id)action context:(id)context
 {
   v22.receiver = self;
   v22.super_class = MTURLDeresAction;
-  v5 = [(MTTreatmentAction *)&v22 performAction:a3 context:a4];
+  v5 = [(MTTreatmentAction *)&v22 performAction:action context:context];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -86,34 +86,34 @@
   }
 
   v6 = [MEMORY[0x277CCACE0] componentsWithString:v5];
-  v7 = [(MTURLDeresAction *)self scope];
-  v8 = [v7 isEqualToString:@"hostname"];
+  scope = [(MTURLDeresAction *)self scope];
+  v8 = [scope isEqualToString:@"hostname"];
 
   if (!v8)
   {
     [v6 setPassword:0];
     [v6 setUser:0];
-    v11 = [(MTURLDeresAction *)self scope];
-    if ([v11 isEqualToString:@"urlWithoutParams"])
+    scope2 = [(MTURLDeresAction *)self scope];
+    if ([scope2 isEqualToString:@"urlWithoutParams"])
     {
     }
 
     else
     {
-      v12 = [(MTURLDeresAction *)self scope];
-      v13 = [v12 isEqualToString:@"fullWithoutParams"];
+      scope3 = [(MTURLDeresAction *)self scope];
+      v13 = [scope3 isEqualToString:@"fullWithoutParams"];
 
       if (!v13)
       {
-        v17 = [(MTURLDeresAction *)self scope];
-        if ([v17 isEqualToString:@"urlWithoutPath"])
+        scope4 = [(MTURLDeresAction *)self scope];
+        if ([scope4 isEqualToString:@"urlWithoutPath"])
         {
         }
 
         else
         {
-          v18 = [(MTURLDeresAction *)self scope];
-          v19 = [v18 isEqualToString:@"fullWithoutPath"];
+          scope5 = [(MTURLDeresAction *)self scope];
+          v19 = [scope5 isEqualToString:@"fullWithoutPath"];
 
           if (!v19)
           {
@@ -122,8 +122,8 @@
         }
 
         [v6 setFragment:0];
-        v20 = [v6 queryItems];
-        v21 = [(MTURLDeresAction *)self allowedQueryItemsFromItems:v20];
+        queryItems = [v6 queryItems];
+        v21 = [(MTURLDeresAction *)self allowedQueryItemsFromItems:queryItems];
         [v6 setQueryItems:v21];
 
         [v6 setPath:0];
@@ -132,31 +132,31 @@
     }
 
     [v6 setFragment:0];
-    v14 = [v6 queryItems];
-    v15 = [(MTURLDeresAction *)self allowedQueryItemsFromItems:v14];
+    queryItems2 = [v6 queryItems];
+    v15 = [(MTURLDeresAction *)self allowedQueryItemsFromItems:queryItems2];
     [v6 setQueryItems:v15];
 
 LABEL_9:
-    v9 = [v6 string];
+    string = [v6 string];
     goto LABEL_10;
   }
 
-  v9 = [v6 host];
+  string = [v6 host];
 LABEL_10:
-  v10 = v9;
+  v10 = string;
 
 LABEL_11:
 
   return v10;
 }
 
-- (id)allowedQueryItemsFromItems:(id)a3
+- (id)allowedQueryItemsFromItems:(id)items
 {
-  v4 = a3;
-  v5 = [(MTURLDeresAction *)self allowedParams];
-  if ([v5 count])
+  itemsCopy = items;
+  allowedParams = [(MTURLDeresAction *)self allowedParams];
+  if ([allowedParams count])
   {
-    v6 = [v4 count];
+    v6 = [itemsCopy count];
 
     if (v6)
     {
@@ -166,7 +166,7 @@ LABEL_11:
       v12[3] = &unk_2798CDE70;
       v12[4] = self;
       v7 = [MEMORY[0x277CCAC30] predicateWithBlock:v12];
-      v8 = [v4 filteredArrayUsingPredicate:v7];
+      v8 = [itemsCopy filteredArrayUsingPredicate:v7];
 
       if ([v8 count])
       {
@@ -180,7 +180,7 @@ LABEL_11:
 
       v10 = v9;
 
-      v4 = v8;
+      itemsCopy = v8;
       goto LABEL_9;
     }
   }

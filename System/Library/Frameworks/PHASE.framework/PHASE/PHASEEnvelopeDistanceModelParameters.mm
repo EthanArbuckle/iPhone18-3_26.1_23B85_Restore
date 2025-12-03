@@ -18,28 +18,28 @@
   v5 = envelope;
   v40.receiver = self;
   v40.super_class = PHASEEnvelopeDistanceModelParameters;
-  v6 = [(PHASEDistanceModelParameters *)&v40 initInternal];
-  if (v6)
+  initInternal = [(PHASEDistanceModelParameters *)&v40 initInternal];
+  if (initInternal)
   {
-    v7 = [(PHASEEnvelope *)v5 startPoint];
+    startPoint = [(PHASEEnvelope *)v5 startPoint];
     if (v8 >= 0.0)
     {
-      v11 = [(PHASEEnvelope *)v5 startPoint];
-      if (v12 >= 0.0 && (v11 = [(PHASEEnvelope *)v5 startPoint], v14 = v13, v13 <= 1.0))
+      startPoint2 = [(PHASEEnvelope *)v5 startPoint];
+      if (v12 >= 0.0 && (startPoint2 = [(PHASEEnvelope *)v5 startPoint], v14 = v13, v13 <= 1.0))
       {
         for (i = 0; ; ++i)
         {
-          v18 = [(PHASEEnvelope *)v5 segments];
-          v19 = [v18 count] > i;
+          segments = [(PHASEEnvelope *)v5 segments];
+          v19 = [segments count] > i;
 
           if (!v19)
           {
-            objc_storeStrong(v6 + 2, envelope);
+            objc_storeStrong(initInternal + 2, envelope);
             goto LABEL_18;
           }
 
-          v20 = [(PHASEEnvelope *)v5 segments];
-          v21 = [v20 objectAtIndexedSubscript:i];
+          segments2 = [(PHASEEnvelope *)v5 segments];
+          v21 = [segments2 objectAtIndexedSubscript:i];
           [v21 endPoint];
           v23 = v22 < 0.0;
 
@@ -48,8 +48,8 @@
             break;
           }
 
-          v25 = [(PHASEEnvelope *)v5 segments];
-          v26 = [v25 objectAtIndexedSubscript:i];
+          segments3 = [(PHASEEnvelope *)v5 segments];
+          v26 = [segments3 objectAtIndexedSubscript:i];
           [v26 endPoint];
           if (v27 < 0.0)
           {
@@ -58,8 +58,8 @@ LABEL_24:
             v9 = **(Phase::Logger::GetInstance(v32) + 448);
             if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
             {
-              v37 = [(PHASEEnvelope *)v5 segments];
-              v38 = [v37 objectAtIndexedSubscript:i];
+              segments4 = [(PHASEEnvelope *)v5 segments];
+              v38 = [segments4 objectAtIndexedSubscript:i];
               [v38 endPoint];
               *buf = 136315906;
               v42 = "PHASEDistanceModel.mm";
@@ -75,8 +75,8 @@ LABEL_24:
             goto LABEL_10;
           }
 
-          v28 = [(PHASEEnvelope *)v5 segments];
-          v29 = [v28 objectAtIndexedSubscript:i];
+          segments5 = [(PHASEEnvelope *)v5 segments];
+          v29 = [segments5 objectAtIndexedSubscript:i];
           [v29 endPoint];
           v31 = v30 > 1.0;
 
@@ -89,8 +89,8 @@ LABEL_24:
         v9 = **(Phase::Logger::GetInstance(v24) + 448);
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
         {
-          v34 = [(PHASEEnvelope *)v5 segments];
-          v35 = [v34 objectAtIndexedSubscript:i];
+          segments6 = [(PHASEEnvelope *)v5 segments];
+          v35 = [segments6 objectAtIndexedSubscript:i];
           [v35 endPoint];
           *buf = 136315906;
           v42 = "PHASEDistanceModel.mm";
@@ -106,7 +106,7 @@ LABEL_24:
 
       else
       {
-        v9 = **(Phase::Logger::GetInstance(v11) + 448);
+        v9 = **(Phase::Logger::GetInstance(startPoint2) + 448);
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
         {
           [(PHASEEnvelope *)v5 startPoint];
@@ -123,7 +123,7 @@ LABEL_24:
 
     else
     {
-      v9 = **(Phase::Logger::GetInstance(v7) + 448);
+      v9 = **(Phase::Logger::GetInstance(startPoint) + 448);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         [(PHASEEnvelope *)v5 startPoint];
@@ -145,7 +145,7 @@ LABEL_10:
   else
   {
 LABEL_18:
-    v16 = v6;
+    v16 = initInternal;
   }
 
   return v16;

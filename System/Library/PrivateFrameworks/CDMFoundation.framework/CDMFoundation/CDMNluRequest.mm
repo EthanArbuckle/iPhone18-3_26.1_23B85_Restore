@@ -1,7 +1,7 @@
 @interface CDMNluRequest
 - (SIRINLUEXTERNALCDMNluRequest)objcProto;
-- (void)encodeWithCoder:(id)a3;
-- (void)setObjcProto:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setObjcProto:(id)proto;
 @end
 
 @implementation CDMNluRequest
@@ -13,18 +13,18 @@
   return v2;
 }
 
-- (void)setObjcProto:(id)a3
+- (void)setObjcProto:(id)proto
 {
-  v5 = a3;
-  v6 = self;
-  sub_1DC41849C(a3);
+  protoCopy = proto;
+  selfCopy = self;
+  sub_1DC41849C(proto);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1DC418F1C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1DC418F1C(coderCopy);
 }
 
 @end

@@ -9,9 +9,9 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC4Maps9UserGuide_collectionHandler);
-  v5 = self;
-  [v4 removeObserver:v5];
-  v6.receiver = v5;
+  selfCopy = self;
+  [v4 removeObserver:selfCopy];
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(UserGuide *)&v6 dealloc];
 }

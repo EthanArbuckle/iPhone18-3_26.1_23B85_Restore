@@ -1,5 +1,5 @@
 @interface AVCaptureSystemPressureStateInternal
-- (AVCaptureSystemPressureStateInternal)initWithFigLevel:(int)a3 factors:(unint64_t)a4 recommendedFrameRateRangeForPortrait:(id)a5 recommendedFrameRateRangeForPhotoMode:(id)a6;
+- (AVCaptureSystemPressureStateInternal)initWithFigLevel:(int)level factors:(unint64_t)factors recommendedFrameRateRangeForPortrait:(id)portrait recommendedFrameRateRangeForPhotoMode:(id)mode;
 - (AVFrameRateRange)recommendedFrameRateRangeForPhotoMode;
 - (AVFrameRateRange)recommendedFrameRateRangeForPortrait;
 - (void)dealloc;
@@ -21,7 +21,7 @@
   [(AVCaptureSystemPressureStateInternal *)&v3 dealloc];
 }
 
-- (AVCaptureSystemPressureStateInternal)initWithFigLevel:(int)a3 factors:(unint64_t)a4 recommendedFrameRateRangeForPortrait:(id)a5 recommendedFrameRateRangeForPhotoMode:(id)a6
+- (AVCaptureSystemPressureStateInternal)initWithFigLevel:(int)level factors:(unint64_t)factors recommendedFrameRateRangeForPortrait:(id)portrait recommendedFrameRateRangeForPhotoMode:(id)mode
 {
   v13.receiver = self;
   v13.super_class = AVCaptureSystemPressureStateInternal;
@@ -29,10 +29,10 @@
   v11 = v10;
   if (v10)
   {
-    v10->_figLevel = a3;
-    v10->_factors = a4;
-    v10->_recommendedFrameRateRangeForPortrait = a5;
-    v11->_recommendedFrameRateRangeForPhotoMode = a6;
+    v10->_figLevel = level;
+    v10->_factors = factors;
+    v10->_recommendedFrameRateRangeForPortrait = portrait;
+    v11->_recommendedFrameRateRangeForPhotoMode = mode;
   }
 
   return v11;

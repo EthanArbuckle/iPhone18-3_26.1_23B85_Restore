@@ -1,11 +1,11 @@
 @interface VCPCNNModelEspressoV2
-- (VCPCNNModelEspressoV2)initWithParameters:(id)a3 outputNames:(id)a4 inputNames:(id)a5 functionName:(id)a6 precompiled:(BOOL)a7;
-- (e5rt_execution_stream_operation)createPrecompiledOp:(id)a3 isPrecompiled:(BOOL)a4 functionName:(id)a5;
+- (VCPCNNModelEspressoV2)initWithParameters:(id)parameters outputNames:(id)names inputNames:(id)inputNames functionName:(id)name precompiled:(BOOL)precompiled;
+- (e5rt_execution_stream_operation)createPrecompiledOp:(id)op isPrecompiled:(BOOL)precompiled functionName:(id)name;
 - (id).cxx_construct;
 - (id)inputsSize;
 - (id)inputsType;
 - (id)outputsType;
-- (int)espressoForward:(void *)a3;
+- (int)espressoForward:(void *)forward;
 - (int)espressoForwardInputs:(vector<void *);
 - (int)getOutputs;
 - (vector<VCPEspressoV2Data)outputs;
@@ -14,14 +14,14 @@
 
 @implementation VCPCNNModelEspressoV2
 
-- (VCPCNNModelEspressoV2)initWithParameters:(id)a3 outputNames:(id)a4 inputNames:(id)a5 functionName:(id)a6 precompiled:(BOOL)a7
+- (VCPCNNModelEspressoV2)initWithParameters:(id)parameters outputNames:(id)names inputNames:(id)inputNames functionName:(id)name precompiled:(BOOL)precompiled
 {
-  v7 = a7;
+  precompiledCopy = precompiled;
   v62 = *MEMORY[0x1E69E9840];
-  v44 = a3;
-  v46 = a4;
-  v13 = a5;
-  v45 = a6;
+  parametersCopy = parameters;
+  namesCopy = names;
+  inputNamesCopy = inputNames;
+  nameCopy = name;
   v56.receiver = self;
   v56.super_class = VCPCNNModelEspressoV2;
   v14 = [(VCPCNNModelEspressoV2 *)&v56 init];
@@ -29,15 +29,15 @@
   v16 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_netFileUrl, a3);
-    objc_storeStrong(&v15->_inputNames, a5);
-    objc_storeStrong(&v15->_outputNames, a4);
-    objc_storeStrong(&v15->_functionName, a6);
+    objc_storeStrong(&v14->_netFileUrl, parameters);
+    objc_storeStrong(&v15->_inputNames, inputNames);
+    objc_storeStrong(&v15->_outputNames, names);
+    objc_storeStrong(&v15->_functionName, name);
     v17 = MEMORY[0x1E695DFF8];
-    v18 = [(NSURL *)v15->_netFileUrl path];
-    if (v7)
+    path = [(NSURL *)v15->_netFileUrl path];
+    if (precompiledCopy)
     {
-      v19 = [v18 stringByAppendingPathExtension:@"bundle"];
+      v19 = [path stringByAppendingPathExtension:@"bundle"];
       v20 = [v17 URLWithString:v19];
 
       v21 = [(VCPCNNModelEspressoV2 *)v15 createPrecompiledOp:v20 isPrecompiled:1 functionName:v15->_functionName];
@@ -45,7 +45,7 @@
 
     else
     {
-      v22 = [v18 stringByAppendingPathExtension:@"mlmodelc"];
+      v22 = [path stringByAppendingPathExtension:@"mlmodelc"];
       v23 = [v17 URLWithString:v22];
       v20 = [v23 URLByAppendingPathComponent:@"model.mil"];
 
@@ -55,15 +55,15 @@
     v24 = v21;
     v55 = v21;
 
-    v25 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     inputIOArray = v15->_inputIOArray;
-    v15->_inputIOArray = v25;
+    v15->_inputIOArray = array;
 
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v27 = v13;
+    v27 = inputNamesCopy;
     v28 = [v27 countByEnumeratingWithState:&v51 objects:v61 count:16];
     if (v28)
     {
@@ -103,15 +103,15 @@ LABEL_7:
     {
 LABEL_13:
 
-      v33 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       outputIOArray = v15->_outputIOArray;
-      v15->_outputIOArray = v33;
+      v15->_outputIOArray = array2;
 
       v49 = 0u;
       v50 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v27 = v46;
+      v27 = namesCopy;
       v35 = [v27 countByEnumeratingWithState:&v47 objects:v60 count:16];
       if (!v35)
       {
@@ -209,16 +209,16 @@ LABEL_27:
   return v41;
 }
 
-- (e5rt_execution_stream_operation)createPrecompiledOp:(id)a3 isPrecompiled:(BOOL)a4 functionName:(id)a5
+- (e5rt_execution_stream_operation)createPrecompiledOp:(id)op isPrecompiled:(BOOL)precompiled functionName:(id)name
 {
-  v6 = a4;
+  precompiledCopy = precompiled;
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if (v6)
+  opCopy = op;
+  nameCopy = name;
+  if (precompiledCopy)
   {
-    v9 = [v7 path];
-    [v9 UTF8String];
+    path = [opCopy path];
+    [path UTF8String];
     v10 = e5rt_program_library_create() == 0;
 
     if (!v10)
@@ -241,11 +241,11 @@ LABEL_27:
       goto LABEL_33;
     }
 
-    v11 = [v7 path];
-    v12 = v11;
-    [v11 UTF8String];
-    v13 = v8;
-    [v8 UTF8String];
+    path2 = [opCopy path];
+    v12 = path2;
+    [path2 UTF8String];
+    v13 = nameCopy;
+    [nameCopy UTF8String];
     v14 = e5rt_execution_stream_operation_create_precompiled_compute_operation() == 0;
 
     if (!v14)
@@ -317,17 +317,17 @@ LABEL_79:
     goto LABEL_33;
   }
 
-  v18 = [v7 path];
-  v19 = [v18 containsString:@"mubb_md"];
+  path3 = [opCopy path];
+  v19 = [path3 containsString:@"mubb_md"];
 
   if (v19)
   {
     v20 = +[MADStateHandler sharedStateHandler];
     [v20 enterKnownTimeoutRisk:6];
 
-    v21 = [v7 path];
-    v22 = v21;
-    [v21 UTF8String];
+    path4 = [opCopy path];
+    v22 = path4;
+    [path4 UTF8String];
     LOBYTE(v20) = e5rt_e5_compiler_compile() == 0;
 
     if ((v20 & 1) == 0)
@@ -346,9 +346,9 @@ LABEL_79:
 
   else
   {
-    v23 = [v7 path];
-    v24 = v23;
-    [v23 UTF8String];
+    path5 = [opCopy path];
+    v24 = path5;
+    [path5 UTF8String];
     v25 = e5rt_e5_compiler_compile() == 0;
 
     if (!v25)
@@ -362,8 +362,8 @@ LABEL_79:
     }
   }
 
-  v27 = v8;
-  [v8 UTF8String];
+  v27 = nameCopy;
+  [nameCopy UTF8String];
   if (e5rt_program_library_retain_program_function())
   {
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -447,7 +447,7 @@ LABEL_36:
   return 0;
 }
 
-- (int)espressoForward:(void *)a3
+- (int)espressoForward:(void *)forward
 {
   v10 = *MEMORY[0x1E69E9840];
   if ([(NSMutableArray *)self->_inputIOArray count]!= 1)
@@ -462,7 +462,7 @@ LABEL_36:
   }
 
   v5 = [(NSMutableArray *)self->_inputIOArray objectAtIndexedSubscript:0];
-  v6 = [v5 prepareInput:a3];
+  v6 = [v5 prepareInput:forward];
 
   if (v6)
   {
@@ -538,8 +538,8 @@ LABEL_36:
 
       v7 = [VCPEspressoV2Data alloc];
       v8 = [(NSMutableArray *)self->_outputIOArray objectAtIndexedSubscript:v4];
-      v9 = [v8 tensorType];
-      v10 = [(VCPEspressoV2Data *)v7 initWithTensorType:v9 size:v6 dataPtr:v15];
+      tensorType = [v8 tensorType];
+      v10 = [(VCPEspressoV2Data *)v7 initWithTensorType:tensorType size:v6 dataPtr:v15];
       begin = self->_outputs.__begin_;
       v12 = begin[v4];
       begin[v4] = v10;
@@ -563,7 +563,7 @@ LABEL_36:
 - (id)inputsSize
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -583,7 +583,7 @@ LABEL_36:
         }
 
         v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{objc_msgSend(*(*(&v10 + 1) + 8 * i), "getTensorShape", v10)}];
-        [v3 addObject:v8];
+        [array addObject:v8];
       }
 
       v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -592,13 +592,13 @@ LABEL_36:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)outputsType
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -618,7 +618,7 @@ LABEL_36:
         }
 
         v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(*(*(&v10 + 1) + 8 * i), "tensorType", v10)}];
-        [v3 addObject:v8];
+        [array addObject:v8];
       }
 
       v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -627,13 +627,13 @@ LABEL_36:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)inputsType
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -653,7 +653,7 @@ LABEL_36:
         }
 
         v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(*(*(&v10 + 1) + 8 * i), "tensorType", v10)}];
-        [v3 addObject:v8];
+        [array addObject:v8];
       }
 
       v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -662,7 +662,7 @@ LABEL_36:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (void)dealloc

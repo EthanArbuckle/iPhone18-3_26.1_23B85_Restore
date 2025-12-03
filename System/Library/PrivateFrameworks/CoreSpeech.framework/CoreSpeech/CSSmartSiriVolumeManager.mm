@@ -1,13 +1,13 @@
 @interface CSSmartSiriVolumeManager
 + (CSSmartSiriVolumeManager)sharedInstance;
 - (CSConnectionServiceDelegate)delegate;
-- (CSSmartSiriVolumeManager)initWithSamplingRate:(float)a3;
-- (void)CSAlarmMonitor:(id)a3 didReceiveAlarmChanged:(int64_t)a4;
-- (void)CSAutomaticVolumeEnabledMonitor:(id)a3 didReceiveEnabled:(BOOL)a4;
-- (void)CSTimerMonitor:(id)a3 didReceiveTimerChanged:(int64_t)a4;
-- (void)CSVolumeMonitor:(id)a3 didReceiveAlarmVolumeChanged:(float)a4;
-- (void)CSVolumeMonitor:(id)a3 didReceiveMusicVolumeChanged:(float)a4;
-- (void)voiceTriggerDidDetectKeyword:(id)a3 deviceId:(id)a4;
+- (CSSmartSiriVolumeManager)initWithSamplingRate:(float)rate;
+- (void)CSAlarmMonitor:(id)monitor didReceiveAlarmChanged:(int64_t)changed;
+- (void)CSAutomaticVolumeEnabledMonitor:(id)monitor didReceiveEnabled:(BOOL)enabled;
+- (void)CSTimerMonitor:(id)monitor didReceiveTimerChanged:(int64_t)changed;
+- (void)CSVolumeMonitor:(id)monitor didReceiveAlarmVolumeChanged:(float)changed;
+- (void)CSVolumeMonitor:(id)monitor didReceiveMusicVolumeChanged:(float)changed;
+- (void)voiceTriggerDidDetectKeyword:(id)keyword deviceId:(id)id;
 @end
 
 @implementation CSSmartSiriVolumeManager
@@ -19,17 +19,17 @@
   return WeakRetained;
 }
 
-- (void)CSAutomaticVolumeEnabledMonitor:(id)a3 didReceiveEnabled:(BOOL)a4
+- (void)CSAutomaticVolumeEnabledMonitor:(id)monitor didReceiveEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v6 = a3;
+  enabledCopy = enabled;
+  monitorCopy = monitor;
   v7 = CSLogCategoryASV;
   if (os_log_type_enabled(CSLogCategoryASV, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315394;
     v12 = "[CSSmartSiriVolumeManager CSAutomaticVolumeEnabledMonitor:didReceiveEnabled:]";
     v13 = 1026;
-    v14 = v4;
+    v14 = enabledCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s Automatic Volume State changed to %{public}d", &v11, 0x12u);
   }
 
@@ -43,42 +43,42 @@
   }
 }
 
-- (void)voiceTriggerDidDetectKeyword:(id)a3 deviceId:(id)a4
+- (void)voiceTriggerDidDetectKeyword:(id)keyword deviceId:(id)id
 {
-  v11 = a3;
-  v6 = a4;
-  if (v11)
+  keywordCopy = keyword;
+  idCopy = id;
+  if (keywordCopy)
   {
     v7 = kVTEIfirstPassTriggerSource;
-    v8 = [v11 objectForKeyedSubscript:kVTEIfirstPassTriggerSource];
+    v8 = [keywordCopy objectForKeyedSubscript:kVTEIfirstPassTriggerSource];
 
     if (v8)
     {
-      v9 = [v11 objectForKeyedSubscript:v7];
+      v9 = [keywordCopy objectForKeyedSubscript:v7];
       v10 = [v9 isEqualToString:kVTEIFirstPassTriggeredFromApplicationProcessor];
 
       if (v10)
       {
-        [(CSSmartSiriVolumeProcessor *)self->_smartSiriVolume didDetectKeywordWithResult:v11];
+        [(CSSmartSiriVolumeProcessor *)self->_smartSiriVolume didDetectKeywordWithResult:keywordCopy];
       }
     }
   }
 }
 
-- (void)CSVolumeMonitor:(id)a3 didReceiveAlarmVolumeChanged:(float)a4
+- (void)CSVolumeMonitor:(id)monitor didReceiveAlarmVolumeChanged:(float)changed
 {
-  v6 = a3;
+  monitorCopy = monitor;
   v7 = CSLogCategoryASV;
   if (os_log_type_enabled(CSLogCategoryASV, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136315394;
     v13 = "[CSSmartSiriVolumeManager CSVolumeMonitor:didReceiveAlarmVolumeChanged:]";
     v14 = 2050;
-    v15 = a4;
+    changedCopy = changed;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s AlarmVolume changed to %{public}f", &v12, 0x16u);
   }
 
-  *&v8 = a4;
+  *&v8 = changed;
   [(CSSmartSiriVolumeProcessor *)self->_smartSiriVolume didReceiveAlarmVolumeChanged:v8];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = objc_opt_respondsToSelector();
@@ -90,20 +90,20 @@
   }
 }
 
-- (void)CSVolumeMonitor:(id)a3 didReceiveMusicVolumeChanged:(float)a4
+- (void)CSVolumeMonitor:(id)monitor didReceiveMusicVolumeChanged:(float)changed
 {
-  v6 = a3;
+  monitorCopy = monitor;
   v7 = CSLogCategoryASV;
   if (os_log_type_enabled(CSLogCategoryASV, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136315394;
     v13 = "[CSSmartSiriVolumeManager CSVolumeMonitor:didReceiveMusicVolumeChanged:]";
     v14 = 2050;
-    v15 = a4;
+    changedCopy = changed;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s MusicVolume changed to %{public}f", &v12, 0x16u);
   }
 
-  *&v8 = a4;
+  *&v8 = changed;
   [(CSSmartSiriVolumeProcessor *)self->_smartSiriVolume didReceiveMusicVolumeChanged:v8];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = objc_opt_respondsToSelector();
@@ -115,20 +115,20 @@
   }
 }
 
-- (void)CSTimerMonitor:(id)a3 didReceiveTimerChanged:(int64_t)a4
+- (void)CSTimerMonitor:(id)monitor didReceiveTimerChanged:(int64_t)changed
 {
-  v6 = a3;
+  monitorCopy = monitor;
   v7 = CSLogCategoryASV;
   if (os_log_type_enabled(CSLogCategoryASV, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315394;
     v12 = "[CSSmartSiriVolumeManager CSTimerMonitor:didReceiveTimerChanged:]";
     v13 = 1026;
-    v14 = a4;
+    changedCopy = changed;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s TimerState changed to %{public}d", &v11, 0x12u);
   }
 
-  [(CSSmartSiriVolumeProcessor *)self->_smartSiriVolume didReceiveTimerChanged:a4];
+  [(CSSmartSiriVolumeProcessor *)self->_smartSiriVolume didReceiveTimerChanged:changed];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_opt_respondsToSelector();
 
@@ -139,20 +139,20 @@
   }
 }
 
-- (void)CSAlarmMonitor:(id)a3 didReceiveAlarmChanged:(int64_t)a4
+- (void)CSAlarmMonitor:(id)monitor didReceiveAlarmChanged:(int64_t)changed
 {
-  v6 = a3;
+  monitorCopy = monitor;
   v7 = CSLogCategoryASV;
   if (os_log_type_enabled(CSLogCategoryASV, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315394;
     v12 = "[CSSmartSiriVolumeManager CSAlarmMonitor:didReceiveAlarmChanged:]";
     v13 = 1026;
-    v14 = a4;
+    changedCopy = changed;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s AlarmState changed to %{public}d", &v11, 0x12u);
   }
 
-  [(CSSmartSiriVolumeProcessor *)self->_smartSiriVolume didReceiveAlarmChanged:a4];
+  [(CSSmartSiriVolumeProcessor *)self->_smartSiriVolume didReceiveAlarmChanged:changed];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_opt_respondsToSelector();
 
@@ -163,7 +163,7 @@
   }
 }
 
-- (CSSmartSiriVolumeManager)initWithSamplingRate:(float)a3
+- (CSSmartSiriVolumeManager)initWithSamplingRate:(float)rate
 {
   if ((+[CSUtils supportSmartVolume]& 1) == 0)
   {
@@ -212,21 +212,21 @@
       *buf = 136315394;
       v18 = "[CSSmartSiriVolumeManager initWithSamplingRate:]";
       v19 = 2050;
-      v20 = a3;
+      rateCopy = rate;
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%s ERR: Failed to initialize Smart Siri Volume with sampling %{public}f", buf, 0x16u);
     }
 
 LABEL_10:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
 LABEL_5:
   self = self;
-  v12 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v12;
+  return selfCopy;
 }
 
 + (CSSmartSiriVolumeManager)sharedInstance

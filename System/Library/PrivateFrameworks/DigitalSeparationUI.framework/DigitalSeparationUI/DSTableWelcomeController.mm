@@ -2,26 +2,26 @@
 - (BOOL)isFiltering;
 - (BOOL)isKeyboardActive;
 - (BOOL)isSearchBarEmpty;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (void)addBorderedIcon:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (void)addBorderedIcon:(id)icon;
 - (void)hideButtonsIfSearching;
 - (void)hideKeyboard;
 - (void)hideNoResultsView;
 - (void)hideNoSharingView;
-- (void)presentErrorAlertController:(id)a3 okHandler:(id)a4;
-- (void)presentErrorAlertWithTitle:(id)a3 message:(id)a4 continueHandler:(id)a5 tryAgainHandler:(id)a6;
+- (void)presentErrorAlertController:(id)controller okHandler:(id)handler;
+- (void)presentErrorAlertWithTitle:(id)title message:(id)message continueHandler:(id)handler tryAgainHandler:(id)againHandler;
 - (void)setupSearchBar;
 - (void)setupTableView;
-- (void)showNoResultsViewWithSearchText:(id)a3;
-- (void)showNoSharingViewWithText:(id)a3 image:(id)a4;
+- (void)showNoResultsViewWithSearchText:(id)text;
+- (void)showNoSharingViewWithText:(id)text image:(id)image;
 - (void)startContentSpinner;
 - (void)stopContentSpinner;
-- (void)tableView:(id)a3 didHighlightRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didHighlightRowAtIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)willDismissSearchController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)willDismissSearchController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation DSTableWelcomeController
@@ -37,11 +37,11 @@
   }
 
   [(DSTableWelcomeController *)self setupTableView];
-  v3 = [(OBTableWelcomeController *)self tableView];
-  [v3 setEditing:1];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setEditing:1];
 
-  v4 = [(OBTableWelcomeController *)self tableView];
-  [v4 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"header"];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"header"];
 }
 
 - (void)setupTableView
@@ -49,11 +49,11 @@
   v3 = objc_alloc_init(DSTableView);
   [(OBTableWelcomeController *)self setTableView:v3];
 
-  v4 = [(OBTableWelcomeController *)self tableView];
-  [v4 setDelegate:self];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setDelegate:self];
 
-  v5 = [(OBTableWelcomeController *)self tableView];
-  [v5 setDataSource:self];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setDataSource:self];
 }
 
 - (void)setupSearchBar
@@ -62,48 +62,48 @@
   searchController = self->_searchController;
   self->_searchController = v3;
 
-  v5 = [(DSTableWelcomeController *)self searchController];
-  [v5 setSearchResultsUpdater:self];
+  searchController = [(DSTableWelcomeController *)self searchController];
+  [searchController setSearchResultsUpdater:self];
 
-  v6 = [(DSTableWelcomeController *)self searchController];
-  [v6 setObscuresBackgroundDuringPresentation:0];
+  searchController2 = [(DSTableWelcomeController *)self searchController];
+  [searchController2 setObscuresBackgroundDuringPresentation:0];
 
-  v7 = [(DSTableWelcomeController *)self searchController];
-  v8 = [v7 searchBar];
-  [v8 setPlaceholder:&stru_285BA4988];
+  searchController3 = [(DSTableWelcomeController *)self searchController];
+  searchBar = [searchController3 searchBar];
+  [searchBar setPlaceholder:&stru_285BA4988];
 
   [(DSTableWelcomeController *)self setDefinesPresentationContext:1];
-  v9 = [(DSTableWelcomeController *)self searchController];
-  [v9 setDelegate:self];
+  searchController4 = [(DSTableWelcomeController *)self searchController];
+  [searchController4 setDelegate:self];
 
-  v10 = [(DSTableWelcomeController *)self searchController];
-  v11 = [v10 searchBar];
-  [v11 setShowsScopeBar:1];
+  searchController5 = [(DSTableWelcomeController *)self searchController];
+  searchBar2 = [searchController5 searchBar];
+  [searchBar2 setShowsScopeBar:1];
 
-  v12 = [(DSTableWelcomeController *)self searchController];
-  v13 = [v12 searchBar];
-  [v13 setDelegate:self];
+  searchController6 = [(DSTableWelcomeController *)self searchController];
+  searchBar3 = [searchController6 searchBar];
+  [searchBar3 setDelegate:self];
 
-  v14 = [(DSTableWelcomeController *)self searchController];
-  v15 = [(OBBaseWelcomeController *)self navigationItem];
-  [v15 setSearchController:v14];
+  searchController7 = [(DSTableWelcomeController *)self searchController];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setSearchController:searchController7];
 
-  v16 = [(OBBaseWelcomeController *)self navigationItem];
-  [v16 setHidesSearchBarWhenScrolling:0];
+  navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem2 setHidesSearchBarWhenScrolling:0];
 
   if (_UISolariumEnabled())
   {
-    v17 = [(OBBaseWelcomeController *)self navigationItem];
-    [v17 setPreferredSearchBarPlacement:2];
+    navigationItem3 = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem3 setPreferredSearchBarPlacement:2];
   }
 }
 
 - (BOOL)isSearchBarEmpty
 {
-  v2 = [(DSTableWelcomeController *)self searchController];
-  v3 = [v2 searchBar];
-  v4 = [v3 text];
-  v5 = [v4 length] == 0;
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar = [searchController searchBar];
+  text = [searchBar text];
+  v5 = [text length] == 0;
 
   return v5;
 }
@@ -115,91 +115,91 @@
     return 0;
   }
 
-  v4 = [(DSTableWelcomeController *)self searchController];
-  v5 = [v4 isActive];
+  searchController = [(DSTableWelcomeController *)self searchController];
+  isActive = [searchController isActive];
 
-  return v5;
+  return isActive;
 }
 
 - (BOOL)isKeyboardActive
 {
-  v2 = [(DSTableWelcomeController *)self searchController];
-  v3 = [v2 searchBar];
-  v4 = [v3 searchTextField];
-  v5 = [v4 isFirstResponder];
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar = [searchController searchBar];
+  searchTextField = [searchBar searchTextField];
+  isFirstResponder = [searchTextField isFirstResponder];
 
-  return v5;
+  return isFirstResponder;
 }
 
-- (void)presentErrorAlertWithTitle:(id)a3 message:(id)a4 continueHandler:(id)a5 tryAgainHandler:(id)a6
+- (void)presentErrorAlertWithTitle:(id)title message:(id)message continueHandler:(id)handler tryAgainHandler:(id)againHandler
 {
   v10 = MEMORY[0x277D75110];
-  v11 = a6;
-  v12 = a5;
-  v19 = [v10 alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  againHandlerCopy = againHandler;
+  handlerCopy = handler;
+  v19 = [v10 alertControllerWithTitle:title message:message preferredStyle:1];
   v13 = MEMORY[0x277D750F8];
   v14 = DSUILocStringForKey(@"CONTINUE");
-  v15 = [v13 actionWithTitle:v14 style:0 handler:v12];
+  v15 = [v13 actionWithTitle:v14 style:0 handler:handlerCopy];
 
   v16 = MEMORY[0x277D750F8];
   v17 = DSUILocStringForKey(@"TRY_AGAIN");
-  v18 = [v16 actionWithTitle:v17 style:0 handler:v11];
+  v18 = [v16 actionWithTitle:v17 style:0 handler:againHandlerCopy];
 
   [v19 addAction:v15];
   [v19 addAction:v18];
   [(DSTableWelcomeController *)self presentViewController:v19 animated:1 completion:0];
 }
 
-- (void)presentErrorAlertController:(id)a3 okHandler:(id)a4
+- (void)presentErrorAlertController:(id)controller okHandler:(id)handler
 {
   v6 = MEMORY[0x277D750F8];
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  controllerCopy = controller;
   v9 = DSUILocStringForKey(@"OK");
-  v10 = [v6 actionWithTitle:v9 style:0 handler:v7];
+  v10 = [v6 actionWithTitle:v9 style:0 handler:handlerCopy];
 
-  [v8 addAction:v10];
-  [(DSTableWelcomeController *)self presentViewController:v8 animated:1 completion:0];
+  [controllerCopy addAction:v10];
+  [(DSTableWelcomeController *)self presentViewController:controllerCopy animated:1 completion:0];
 }
 
 - (void)hideKeyboard
 {
-  v3 = [(DSTableWelcomeController *)self searchController];
-  v4 = [v3 searchBar];
-  v5 = [v4 searchTextField];
-  [v5 resignFirstResponder];
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar = [searchController searchBar];
+  searchTextField = [searchBar searchTextField];
+  [searchTextField resignFirstResponder];
 
-  v6 = [(DSTableWelcomeController *)self boldButton];
-  [v6 setHidden:0];
+  boldButton = [(DSTableWelcomeController *)self boldButton];
+  [boldButton setHidden:0];
 
-  v7 = [(DSTableWelcomeController *)self linkButton];
-  [v7 setHidden:{-[DSTableWelcomeController isModelEmpty](self, "isModelEmpty")}];
+  linkButton = [(DSTableWelcomeController *)self linkButton];
+  [linkButton setHidden:{-[DSTableWelcomeController isModelEmpty](self, "isModelEmpty")}];
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
   v4 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_hideKeyboard];
   tapGesture = self->_tapGesture;
   self->_tapGesture = v4;
 
-  v6 = [(DSTableWelcomeController *)self tapGesture];
-  [v6 setCancelsTouchesInView:0];
+  tapGesture = [(DSTableWelcomeController *)self tapGesture];
+  [tapGesture setCancelsTouchesInView:0];
 
-  v8 = [(DSTableWelcomeController *)self view];
-  v7 = [(DSTableWelcomeController *)self tapGesture];
-  [v8 addGestureRecognizer:v7];
+  view = [(DSTableWelcomeController *)self view];
+  tapGesture2 = [(DSTableWelcomeController *)self tapGesture];
+  [view addGestureRecognizer:tapGesture2];
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
-  v5 = [(OBTableWelcomeController *)self tableView];
-  v4 = [(DSTableWelcomeController *)self tapGesture];
-  [v5 removeGestureRecognizer:v4];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  tapGesture = [(DSTableWelcomeController *)self tapGesture];
+  [tableView removeGestureRecognizer:tapGesture];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v4 = [a3 dequeueReusableCellWithIdentifier:{@"DSCell", a4}];
+  v4 = [view dequeueReusableCellWithIdentifier:{@"DSCell", path}];
   if (!v4)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75B48]);
@@ -208,162 +208,162 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
-    v5 = 0;
+    spinner = 0;
   }
 
   else
   {
     if ([(DSTableWelcomeController *)self isSpinnerActive])
     {
-      v5 = [(DSTableWelcomeController *)self spinner];
+      spinner = [(DSTableWelcomeController *)self spinner];
     }
 
     else
     {
-      v5 = 0;
+      spinner = 0;
     }
   }
 
-  return v5;
+  return spinner;
 }
 
-- (void)tableView:(id)a3 didHighlightRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v7 = [(OBTableWelcomeController *)self tableView];
-  v6 = [v7 cellForRowAtIndexPath:v5];
+  pathCopy = path;
+  tableView = [(OBTableWelcomeController *)self tableView];
+  v6 = [tableView cellForRowAtIndexPath:pathCopy];
 
   [v6 setHighlighted:0];
 }
 
 - (void)startContentSpinner
 {
-  v3 = [(DSTableWelcomeController *)self spinner];
-  [v3 startAnimating];
+  spinner = [(DSTableWelcomeController *)self spinner];
+  [spinner startAnimating];
 
-  v4 = [(DSTableWelcomeController *)self spinner];
-  [v4 setHidesWhenStopped:1];
+  spinner2 = [(DSTableWelcomeController *)self spinner];
+  [spinner2 setHidesWhenStopped:1];
 
   [(DSTableWelcomeController *)self setIsSpinnerActive:1];
-  v5 = [(OBTableWelcomeController *)self tableView];
-  [v5 reloadData];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)stopContentSpinner
 {
-  v3 = [(DSTableWelcomeController *)self spinner];
-  [v3 stopAnimating];
+  spinner = [(DSTableWelcomeController *)self spinner];
+  [spinner stopAnimating];
 
   [(DSTableWelcomeController *)self setIsSpinnerActive:0];
-  v4 = [(OBTableWelcomeController *)self tableView];
-  [v4 reloadData];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)addBorderedIcon:(id)a3
+- (void)addBorderedIcon:(id)icon
 {
   v4 = MEMORY[0x277D755E8];
-  v5 = a3;
-  v28 = [[v4 alloc] initWithImage:v5];
+  iconCopy = icon;
+  v28 = [[v4 alloc] initWithImage:iconCopy];
 
   [v28 _setCornerRadius:13.0];
   [v28 setClipsToBounds:1];
-  v6 = [MEMORY[0x277D75C80] currentTraitCollection];
-  v7 = [v6 userInterfaceStyle];
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+  userInterfaceStyle = [currentTraitCollection userInterfaceStyle];
 
-  if (v7 != 2)
+  if (userInterfaceStyle != 2)
   {
-    v8 = [MEMORY[0x277D75348] systemLightGrayColor];
-    v9 = [v8 CGColor];
-    v10 = [v28 layer];
-    [v10 setBorderColor:v9];
+    systemLightGrayColor = [MEMORY[0x277D75348] systemLightGrayColor];
+    cGColor = [systemLightGrayColor CGColor];
+    layer = [v28 layer];
+    [layer setBorderColor:cGColor];
 
-    v11 = [v28 layer];
-    [v11 setBorderWidth:1.0];
+    layer2 = [v28 layer];
+    [layer2 setBorderWidth:1.0];
   }
 
-  v12 = [(DSTableWelcomeController *)self headerView];
-  v13 = [v12 customIconContainerView];
-  [v13 addSubview:v28];
+  headerView = [(DSTableWelcomeController *)self headerView];
+  customIconContainerView = [headerView customIconContainerView];
+  [customIconContainerView addSubview:v28];
 
   [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v14 = [v28 heightAnchor];
-  v15 = [v14 constraintEqualToConstant:60.0];
+  heightAnchor = [v28 heightAnchor];
+  v15 = [heightAnchor constraintEqualToConstant:60.0];
   [v15 setActive:1];
 
-  v16 = [v28 widthAnchor];
-  v17 = [v16 constraintEqualToConstant:60.0];
+  widthAnchor = [v28 widthAnchor];
+  v17 = [widthAnchor constraintEqualToConstant:60.0];
   [v17 setActive:1];
 
-  v18 = [v28 centerXAnchor];
-  v19 = [(DSTableWelcomeController *)self headerView];
-  v20 = [v19 customIconContainerView];
-  v21 = [v20 centerXAnchor];
-  v22 = [v18 constraintEqualToAnchor:v21];
+  centerXAnchor = [v28 centerXAnchor];
+  headerView2 = [(DSTableWelcomeController *)self headerView];
+  customIconContainerView2 = [headerView2 customIconContainerView];
+  centerXAnchor2 = [customIconContainerView2 centerXAnchor];
+  v22 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v22 setActive:1];
 
-  v23 = [v28 centerYAnchor];
-  v24 = [(DSTableWelcomeController *)self headerView];
-  v25 = [v24 customIconContainerView];
-  v26 = [v25 centerYAnchor];
-  v27 = [v23 constraintEqualToAnchor:v26];
+  centerYAnchor = [v28 centerYAnchor];
+  headerView3 = [(DSTableWelcomeController *)self headerView];
+  customIconContainerView3 = [headerView3 customIconContainerView];
+  centerYAnchor2 = [customIconContainerView3 centerYAnchor];
+  v27 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v27 setActive:1];
 }
 
-- (void)showNoSharingViewWithText:(id)a3 image:(id)a4
+- (void)showNoSharingViewWithText:(id)text image:(id)image
 {
-  v6 = a4;
-  v7 = a3;
+  imageCopy = image;
+  textCopy = text;
   [(DSTableWelcomeController *)self setIsShowingNoSharingView:1];
-  v8 = [(DSTableWelcomeController *)self headerView];
-  [v8 setTitle:&stru_285BA4988];
+  headerView = [(DSTableWelcomeController *)self headerView];
+  [headerView setTitle:&stru_285BA4988];
 
-  v9 = [(DSTableWelcomeController *)self headerView];
-  [v9 setDetailText:&stru_285BA4988];
+  headerView2 = [(DSTableWelcomeController *)self headerView];
+  [headerView2 setDetailText:&stru_285BA4988];
 
-  v10 = [(OBTableWelcomeController *)self tableView];
-  [v10 setHidden:1];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setHidden:1];
 
-  v11 = [MEMORY[0x277D75390] emptyProminentConfiguration];
-  [v11 setSecondaryText:v7];
+  emptyProminentConfiguration = [MEMORY[0x277D75390] emptyProminentConfiguration];
+  [emptyProminentConfiguration setSecondaryText:textCopy];
 
-  [v11 setImage:v6];
-  [(DSTableWelcomeController *)self _setContentUnavailableConfiguration:v11];
+  [emptyProminentConfiguration setImage:imageCopy];
+  [(DSTableWelcomeController *)self _setContentUnavailableConfiguration:emptyProminentConfiguration];
 }
 
 - (void)hideNoSharingView
 {
   [(DSTableWelcomeController *)self setIsShowingNoSharingView:0];
   [(DSTableWelcomeController *)self _setContentUnavailableConfiguration:0];
-  v3 = [(OBTableWelcomeController *)self tableView];
-  [v3 setHidden:0];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setHidden:0];
 }
 
-- (void)showNoResultsViewWithSearchText:(id)a3
+- (void)showNoResultsViewWithSearchText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   [(DSTableWelcomeController *)self setIsShowingNoResultsView:1];
   if ([(DSTableWelcomeController *)self isShowingNoSharingView])
   {
     [(DSTableWelcomeController *)self hideNoSharingView];
   }
 
-  v10 = [MEMORY[0x277D75390] emptyProminentConfiguration];
+  emptyProminentConfiguration = [MEMORY[0x277D75390] emptyProminentConfiguration];
   v5 = DSUILocStringForKey(@"NO_RESULTS_TITLE");
-  [v10 setText:v5];
+  [emptyProminentConfiguration setText:v5];
 
   v6 = MEMORY[0x277CCACA8];
   v7 = DSUILocStringForKey(@"NO_RESULTS_SECONDARY");
-  v8 = [v6 localizedStringWithFormat:v7, v4];
+  textCopy = [v6 localizedStringWithFormat:v7, textCopy];
 
-  [v10 setSecondaryText:v8];
+  [emptyProminentConfiguration setSecondaryText:textCopy];
   v9 = [MEMORY[0x277D755B8] systemImageNamed:@"magnifyingglass"];
-  [v10 setImage:v9];
+  [emptyProminentConfiguration setImage:v9];
 
-  [(DSTableWelcomeController *)self _setContentUnavailableConfiguration:v10];
+  [(DSTableWelcomeController *)self _setContentUnavailableConfiguration:emptyProminentConfiguration];
 }
 
 - (void)hideNoResultsView
@@ -380,24 +380,24 @@
   [(OBTableWelcomeController *)&v19 viewDidLayoutSubviews];
   if ([(DSTableWelcomeController *)self isShowingNoSharingView])
   {
-    v3 = [(OBTableWelcomeController *)self scrollView];
-    [v3 safeAreaInsets];
+    scrollView = [(OBTableWelcomeController *)self scrollView];
+    [scrollView safeAreaInsets];
     v5 = v4;
 
-    v6 = [(DSTableWelcomeController *)self view];
-    [v6 layoutMargins];
+    view = [(DSTableWelcomeController *)self view];
+    [view layoutMargins];
     v8 = v7;
-    v9 = [(DSTableWelcomeController *)self view];
-    [v9 layoutMargins];
+    view2 = [(DSTableWelcomeController *)self view];
+    [view2 layoutMargins];
     v11 = v10;
-    v12 = [(OBTableWelcomeController *)self scrollView];
-    [v12 contentInset];
+    scrollView2 = [(OBTableWelcomeController *)self scrollView];
+    [scrollView2 contentInset];
     v14 = v5 + v13;
-    v15 = [(DSTableWelcomeController *)self view];
-    [v15 layoutMargins];
+    view3 = [(DSTableWelcomeController *)self view];
+    [view3 layoutMargins];
     v17 = v16;
-    v18 = [(DSTableWelcomeController *)self view];
-    [v18 setLayoutMargins:{v8, v11, v14, v17}];
+    view4 = [(DSTableWelcomeController *)self view];
+    [view4 setLayoutMargins:{v8, v11, v14, v17}];
   }
 }
 
@@ -405,31 +405,31 @@
 {
   if ([(DSTableWelcomeController *)self isKeyboardActive])
   {
-    v3 = [(DSTableWelcomeController *)self headerView];
-    [v3 setTitle:&stru_285BA4988];
+    headerView = [(DSTableWelcomeController *)self headerView];
+    [headerView setTitle:&stru_285BA4988];
 
-    v4 = [(DSTableWelcomeController *)self headerView];
-    [v4 setDetailText:&stru_285BA4988];
+    headerView2 = [(DSTableWelcomeController *)self headerView];
+    [headerView2 setDetailText:&stru_285BA4988];
 
-    v5 = [(DSTableWelcomeController *)self boldButton];
-    [v5 setHidden:1];
+    boldButton = [(DSTableWelcomeController *)self boldButton];
+    [boldButton setHidden:1];
 
-    v6 = [(DSTableWelcomeController *)self linkButton];
-    v9 = v6;
-    v7 = 1;
+    linkButton = [(DSTableWelcomeController *)self linkButton];
+    linkButton2 = linkButton;
+    isModelEmpty = 1;
   }
 
   else
   {
-    v8 = [(DSTableWelcomeController *)self boldButton];
-    [v8 setHidden:0];
+    boldButton2 = [(DSTableWelcomeController *)self boldButton];
+    [boldButton2 setHidden:0];
 
-    v9 = [(DSTableWelcomeController *)self linkButton];
-    v7 = [(DSTableWelcomeController *)self isModelEmpty];
-    v6 = v9;
+    linkButton2 = [(DSTableWelcomeController *)self linkButton];
+    isModelEmpty = [(DSTableWelcomeController *)self isModelEmpty];
+    linkButton = linkButton2;
   }
 
-  [v6 setHidden:v7];
+  [linkButton setHidden:isModelEmpty];
 }
 
 @end

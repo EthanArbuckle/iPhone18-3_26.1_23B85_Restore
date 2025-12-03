@@ -9,11 +9,11 @@
   v5.receiver = self;
   v5.super_class = SBHCenterAcceleratedAppSuspendSettings;
   [(SBHCenterAppSuspendSettings *)&v5 setDefaultValues];
-  v3 = [(SBHCenterAppZoomSettings *)self appFadeSettings];
-  [v3 setDelay:0.15];
+  appFadeSettings = [(SBHCenterAppZoomSettings *)self appFadeSettings];
+  [appFadeSettings setDelay:0.15];
 
-  v4 = [(SBHCenterAppZoomSettings *)self appFadeSettings];
-  [v4 setDuration:0.3];
+  appFadeSettings2 = [(SBHCenterAppZoomSettings *)self appFadeSettings];
+  [appFadeSettings2 setDuration:0.3];
 }
 
 @end

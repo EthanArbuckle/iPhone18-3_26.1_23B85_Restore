@@ -1,59 +1,59 @@
 @interface PRUISMutablePosterSnapshotRequest
-- (void)appendAttachment:(id)a3;
-- (void)setAttachmentConfiguration:(id)a3;
-- (void)setAttachments:(id)a3;
-- (void)setDefinition:(id)a3;
-- (void)setDetermineColorStatistics:(BOOL)a3;
-- (void)setInterfaceOrientation:(int64_t)a3;
-- (void)setRetryCount:(unsigned int)a3;
-- (void)setScreen:(id)a3;
-- (void)setUserInterfaceStyle:(int64_t)a3;
+- (void)appendAttachment:(id)attachment;
+- (void)setAttachmentConfiguration:(id)configuration;
+- (void)setAttachments:(id)attachments;
+- (void)setDefinition:(id)definition;
+- (void)setDetermineColorStatistics:(BOOL)statistics;
+- (void)setInterfaceOrientation:(int64_t)orientation;
+- (void)setRetryCount:(unsigned int)count;
+- (void)setScreen:(id)screen;
+- (void)setUserInterfaceStyle:(int64_t)style;
 @end
 
 @implementation PRUISMutablePosterSnapshotRequest
 
-- (void)setDefinition:(id)a3
+- (void)setDefinition:(id)definition
 {
   snapshotDescriptor = self->super._snapshotDescriptor;
-  v5 = a3;
+  definitionCopy = definition;
   v8 = [(PRUISPosterSnapshotDescriptor *)snapshotDescriptor mutableCopy];
-  [v8 setSnapshotDefinition:v5];
+  [v8 setSnapshotDefinition:definitionCopy];
 
   v6 = [v8 copy];
   v7 = self->super._snapshotDescriptor;
   self->super._snapshotDescriptor = v6;
 }
 
-- (void)setUserInterfaceStyle:(int64_t)a3
+- (void)setUserInterfaceStyle:(int64_t)style
 {
   v7 = [(PRUISPosterSnapshotDescriptor *)self->super._snapshotDescriptor mutableCopy];
-  [v7 setUserInterfaceStyle:a3];
+  [v7 setUserInterfaceStyle:style];
   v5 = [v7 copy];
   snapshotDescriptor = self->super._snapshotDescriptor;
   self->super._snapshotDescriptor = v5;
 }
 
-- (void)setInterfaceOrientation:(int64_t)a3
+- (void)setInterfaceOrientation:(int64_t)orientation
 {
   v7 = [(PRUISPosterSnapshotDescriptor *)self->super._snapshotDescriptor mutableCopy];
-  [v7 setInterfaceOrientation:a3];
+  [v7 setInterfaceOrientation:orientation];
   v5 = [v7 copy];
   snapshotDescriptor = self->super._snapshotDescriptor;
   self->super._snapshotDescriptor = v5;
 }
 
-- (void)setScreen:(id)a3
+- (void)setScreen:(id)screen
 {
-  v9 = a3;
-  if (!v9)
+  screenCopy = screen;
+  if (!screenCopy)
   {
-    v9 = [MEMORY[0x1E69DCEB0] mainScreen];
+    screenCopy = [MEMORY[0x1E69DCEB0] mainScreen];
   }
 
-  v4 = [(PRUISPosterSnapshotRequest *)self screen];
-  if (([v4 isEqual:v9] & 1) == 0)
+  screen = [(PRUISPosterSnapshotRequest *)self screen];
+  if (([screen isEqual:screenCopy] & 1) == 0)
   {
-    v5 = [MEMORY[0x1E699FAC0] pui_displayConfigurationForScreen:v9];
+    v5 = [MEMORY[0x1E699FAC0] pui_displayConfigurationForScreen:screenCopy];
     v6 = [(PRUISPosterSnapshotDescriptor *)self->super._snapshotDescriptor mutableCopy];
     [v6 setDisplayConfiguration:v5];
     v7 = [v6 copy];
@@ -62,55 +62,55 @@
   }
 }
 
-- (void)setDetermineColorStatistics:(BOOL)a3
+- (void)setDetermineColorStatistics:(BOOL)statistics
 {
-  v3 = a3;
-  if ([(PRUISPosterSnapshotRequest *)self determineColorStatistics]!= a3)
+  statisticsCopy = statistics;
+  if ([(PRUISPosterSnapshotRequest *)self determineColorStatistics]!= statistics)
   {
     v7 = [(PRUISPosterSnapshotDescriptor *)self->super._snapshotDescriptor mutableCopy];
-    [v7 setDetermineColorStatistics:v3];
+    [v7 setDetermineColorStatistics:statisticsCopy];
     v5 = [v7 copy];
     snapshotDescriptor = self->super._snapshotDescriptor;
     self->super._snapshotDescriptor = v5;
   }
 }
 
-- (void)setAttachmentConfiguration:(id)a3
+- (void)setAttachmentConfiguration:(id)configuration
 {
-  v4 = [a3 copy];
+  v4 = [configuration copy];
   self->super._attachmentConfiguration = v4;
 
   MEMORY[0x1EEE66BB8](v4);
 }
 
-- (void)setAttachments:(id)a3
+- (void)setAttachments:(id)attachments
 {
-  v4 = a3;
-  if ([v4 count])
+  attachmentsCopy = attachments;
+  if ([attachmentsCopy count])
   {
-    v5 = [(PRUISPosterSnapshotRequest *)self attachmentConfiguration];
-    v6 = [v5 attachmentHostWindowScene];
-    if (v6)
+    attachmentConfiguration = [(PRUISPosterSnapshotRequest *)self attachmentConfiguration];
+    attachmentHostWindowScene = [attachmentConfiguration attachmentHostWindowScene];
+    if (attachmentHostWindowScene)
     {
       goto LABEL_8;
     }
 
-    v7 = [(PRUISPosterSnapshotRequest *)self screen];
-    v8 = v7;
-    if (!v7)
+    screen = [(PRUISPosterSnapshotRequest *)self screen];
+    mainScreen = screen;
+    if (!screen)
     {
-      v8 = [MEMORY[0x1E69DCEB0] mainScreen];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
     }
 
-    v6 = _findUIWindowSceneForUIScreen(v8);
-    if (!v7)
+    attachmentHostWindowScene = _findUIWindowSceneForUIScreen(mainScreen);
+    if (!screen)
     {
     }
 
-    if (v6)
+    if (attachmentHostWindowScene)
     {
 LABEL_8:
-      v9 = [PRUISPosterAttachmentConfiguration attachmentConfigurationWithHostWindowScene:v6 attachments:v4];
+      v9 = [PRUISPosterAttachmentConfiguration attachmentConfigurationWithHostWindowScene:attachmentHostWindowScene attachments:attachmentsCopy];
       [(PRUISMutablePosterSnapshotRequest *)self setAttachmentConfiguration:v9];
     }
 
@@ -132,35 +132,35 @@ LABEL_8:
   }
 }
 
-- (void)setRetryCount:(unsigned int)a3
+- (void)setRetryCount:(unsigned int)count
 {
-  if (self->super._retryCount != a3)
+  if (self->super._retryCount != count)
   {
-    if (a3 >= 5)
+    if (count >= 5)
     {
-      v3 = 5;
+      countCopy = 5;
     }
 
     else
     {
-      v3 = a3;
+      countCopy = count;
     }
 
-    self->super._retryCount = v3;
+    self->super._retryCount = countCopy;
   }
 }
 
-- (void)appendAttachment:(id)a3
+- (void)appendAttachment:(id)attachment
 {
-  v19 = a3;
-  if (!v19)
+  attachmentCopy = attachment;
+  if (!attachmentCopy)
   {
     [PRUISMutablePosterSnapshotRequest(Deprecated) appendAttachment:a2];
   }
 
-  v5 = [(PRUISPosterSnapshotRequest *)self attachmentConfiguration];
-  v6 = [v5 attachments];
-  v7 = [v6 mutableCopy];
+  attachmentConfiguration = [(PRUISPosterSnapshotRequest *)self attachmentConfiguration];
+  attachments = [attachmentConfiguration attachments];
+  v7 = [attachments mutableCopy];
   v8 = v7;
   if (v7)
   {
@@ -174,26 +174,26 @@ LABEL_8:
 
   v10 = v9;
 
-  [v10 addObject:v19];
-  v11 = [(PRUISPosterSnapshotRequest *)self attachmentConfiguration];
-  v12 = [v11 attachmentHostWindowScene];
-  v13 = v12;
-  if (v12)
+  [v10 addObject:attachmentCopy];
+  attachmentConfiguration2 = [(PRUISPosterSnapshotRequest *)self attachmentConfiguration];
+  attachmentHostWindowScene = [attachmentConfiguration2 attachmentHostWindowScene];
+  v13 = attachmentHostWindowScene;
+  if (attachmentHostWindowScene)
   {
-    v14 = v12;
+    v14 = attachmentHostWindowScene;
   }
 
   else
   {
-    v15 = [(PRUISPosterSnapshotRequest *)self screen];
-    v16 = v15;
-    if (!v15)
+    screen = [(PRUISPosterSnapshotRequest *)self screen];
+    mainScreen = screen;
+    if (!screen)
     {
-      v16 = [MEMORY[0x1E69DCEB0] mainScreen];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
     }
 
-    v14 = _findUIWindowSceneForUIScreen(v16);
-    if (!v15)
+    v14 = _findUIWindowSceneForUIScreen(mainScreen);
+    if (!screen)
     {
     }
   }

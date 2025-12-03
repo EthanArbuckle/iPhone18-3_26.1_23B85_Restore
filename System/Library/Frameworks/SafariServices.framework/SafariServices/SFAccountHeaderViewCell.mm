@@ -1,38 +1,38 @@
 @interface SFAccountHeaderViewCell
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (SFAccountHeaderViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (SFAccountHeaderViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (SFAccountHeaderViewCellDelegate)delegate;
 - (void)_hideMonogramIcon;
-- (void)_showMonogramIconWithBackgroundColor:(id)a3;
-- (void)_textFieldChanged:(id)a3;
+- (void)_showMonogramIconWithBackgroundColor:(id)color;
+- (void)_textFieldChanged:(id)changed;
 - (void)_updateSharedAccountBadgeImageViewIfNecessary;
 - (void)commitCustomTitle;
 - (void)layoutSubviews;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHeaderTitleForHighLevelDomain:(id)a3 customTitle:(id)a4;
-- (void)setIcon:(id)a3;
-- (void)setSavedAccount:(id)a3;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setHeaderTitleForHighLevelDomain:(id)domain customTitle:(id)title;
+- (void)setIcon:(id)icon;
+- (void)setSavedAccount:(id)account;
 @end
 
 @implementation SFAccountHeaderViewCell
 
-- (SFAccountHeaderViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SFAccountHeaderViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v65[2] = *MEMORY[0x1E69E9840];
   v63.receiver = self;
   v63.super_class = SFAccountHeaderViewCell;
-  v4 = [(SFAccountHeaderViewCell *)&v63 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(SFAccountHeaderViewCell *)&v63 initWithStyle:0 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(SFAccountHeaderViewCell *)v4 contentView];
+    contentView = [(SFAccountHeaderViewCell *)v4 contentView];
     v7 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     iconImageView = v5->_iconImageView;
     v5->_iconImageView = v7;
 
     [(UIImageView *)v5->_iconImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v6 addSubview:v5->_iconImageView];
+    [contentView addSubview:v5->_iconImageView];
     v9 = objc_alloc_init(MEMORY[0x1E69DD0B0]);
     titleTextField = v5->_titleTextField;
     v5->_titleTextField = v9;
@@ -41,8 +41,8 @@
     v11 = +[_SFAccountManagerAppearanceValues titleFontForStackViewLabel];
     [(UITextField *)v5->_titleTextField setFont:v11];
 
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    [(UITextField *)v5->_titleTextField setBackgroundColor:v12];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UITextField *)v5->_titleTextField setBackgroundColor:clearColor];
 
     [(UITextField *)v5->_titleTextField addTarget:v5 action:sel__textFieldChanged_ forControlEvents:0x20000];
     v13 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -52,8 +52,8 @@
     v15 = +[_SFAccountManagerAppearanceValues subtitleFontForStackViewLabel];
     [(UILabel *)v5->_lastModifiedDateLabel setFont:v15];
 
-    v16 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v5->_lastModifiedDateLabel setTextColor:v16];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v5->_lastModifiedDateLabel setTextColor:secondaryLabelColor];
 
     [(UILabel *)v5->_lastModifiedDateLabel setAdjustsFontForContentSizeCategory:1];
     [(UILabel *)v5->_lastModifiedDateLabel setNumberOfLines:0];
@@ -70,57 +70,57 @@
     [(UIStackView *)v5->_labelStackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIStackView *)v5->_labelStackView setAxis:1];
     [(UIStackView *)v5->_labelStackView setSpacing:1.0];
-    v61 = v6;
-    [v6 addSubview:v5->_labelStackView];
-    v22 = [v6 layoutMarginsGuide];
+    v61 = contentView;
+    [contentView addSubview:v5->_labelStackView];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
     v48 = MEMORY[0x1E696ACD8];
-    v60 = [(UIImageView *)v5->_iconImageView leadingAnchor];
-    v59 = [v22 leadingAnchor];
-    v58 = [v60 constraintEqualToAnchor:v59];
+    leadingAnchor = [(UIImageView *)v5->_iconImageView leadingAnchor];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v58 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v64[0] = v58;
-    v57 = [(UIImageView *)v5->_iconImageView centerYAnchor];
-    v56 = [v22 centerYAnchor];
-    v55 = [v57 constraintEqualToAnchor:v56];
+    centerYAnchor = [(UIImageView *)v5->_iconImageView centerYAnchor];
+    centerYAnchor2 = [layoutMarginsGuide centerYAnchor];
+    v55 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v64[1] = v55;
-    v54 = [(UIImageView *)v5->_iconImageView heightAnchor];
-    v53 = [v54 constraintEqualToConstant:56.0];
+    heightAnchor = [(UIImageView *)v5->_iconImageView heightAnchor];
+    v53 = [heightAnchor constraintEqualToConstant:56.0];
     v64[2] = v53;
-    v52 = [(UIImageView *)v5->_iconImageView widthAnchor];
-    v50 = [v52 constraintEqualToConstant:56.0];
+    widthAnchor = [(UIImageView *)v5->_iconImageView widthAnchor];
+    v50 = [widthAnchor constraintEqualToConstant:56.0];
     v64[3] = v50;
-    v49 = [v22 bottomAnchor];
-    v47 = [(UIImageView *)v5->_iconImageView bottomAnchor];
-    v46 = [v49 constraintGreaterThanOrEqualToAnchor:v47];
+    bottomAnchor = [layoutMarginsGuide bottomAnchor];
+    bottomAnchor2 = [(UIImageView *)v5->_iconImageView bottomAnchor];
+    v46 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
     v64[4] = v46;
-    v45 = [(UIImageView *)v5->_iconImageView trailingAnchor];
-    v44 = [(UIStackView *)v5->_labelStackView leadingAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44 constant:-11.0];
+    trailingAnchor = [(UIImageView *)v5->_iconImageView trailingAnchor];
+    leadingAnchor3 = [(UIStackView *)v5->_labelStackView leadingAnchor];
+    v43 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3 constant:-11.0];
     v64[5] = v43;
-    v42 = [(UIStackView *)v5->_labelStackView trailingAnchor];
-    v51 = v22;
-    v41 = [v22 trailingAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41];
+    trailingAnchor2 = [(UIStackView *)v5->_labelStackView trailingAnchor];
+    v51 = layoutMarginsGuide;
+    trailingAnchor3 = [layoutMarginsGuide trailingAnchor];
+    v40 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     v64[6] = v40;
-    v39 = [(UIStackView *)v5->_labelStackView centerYAnchor];
-    v23 = [(UIImageView *)v5->_iconImageView centerYAnchor];
-    v24 = [v39 constraintEqualToAnchor:v23];
+    centerYAnchor3 = [(UIStackView *)v5->_labelStackView centerYAnchor];
+    centerYAnchor4 = [(UIImageView *)v5->_iconImageView centerYAnchor];
+    v24 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v64[7] = v24;
-    v25 = [v22 bottomAnchor];
-    v26 = [(UIStackView *)v5->_labelStackView bottomAnchor];
-    v27 = [v25 constraintGreaterThanOrEqualToAnchor:v26];
+    bottomAnchor3 = [layoutMarginsGuide bottomAnchor];
+    bottomAnchor4 = [(UIStackView *)v5->_labelStackView bottomAnchor];
+    v27 = [bottomAnchor3 constraintGreaterThanOrEqualToAnchor:bottomAnchor4];
     v64[8] = v27;
-    v28 = [(UITextField *)v5->_titleTextField heightAnchor];
+    heightAnchor2 = [(UITextField *)v5->_titleTextField heightAnchor];
     v29 = +[_SFAccountManagerAppearanceValues titleFontForStackViewLabel];
     [v29 lineHeight];
-    v30 = [v28 constraintGreaterThanOrEqualToConstant:?];
+    v30 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:?];
     v64[9] = v30;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:10];
     [v48 activateConstraints:v31];
 
     v32 = [SFAccountIconSharingBadgeImageCoordinator alloc];
     v33 = v5->_iconImageView;
-    v34 = [(SFAccountHeaderViewCell *)v5 contentView];
-    v35 = [(SFAccountIconSharingBadgeImageCoordinator *)v32 initWithIconImageView:v33 iconDiameter:v34 parentView:56.0];
+    contentView2 = [(SFAccountHeaderViewCell *)v5 contentView];
+    v35 = [(SFAccountIconSharingBadgeImageCoordinator *)v32 initWithIconImageView:v33 iconDiameter:contentView2 parentView:56.0];
     badgeImageCoordinator = v5->_badgeImageCoordinator;
     v5->_badgeImageCoordinator = v35;
 
@@ -138,28 +138,28 @@
   [(SFAccountIconSharingBadgeImageCoordinator *)self->_badgeImageCoordinator containerDidLayoutSubviews];
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   [(SFAccountHeaderViewCell *)self _hideMonogramIcon];
   [(UIImageView *)self->_iconImageView _setContinuousCornerRadius:12.0];
-  v5 = [(UIImageView *)self->_iconImageView layer];
-  [v5 setMasksToBounds:1];
+  layer = [(UIImageView *)self->_iconImageView layer];
+  [layer setMasksToBounds:1];
 
-  [(UIImageView *)self->_iconImageView setImage:v4];
+  [(UIImageView *)self->_iconImageView setImage:iconCopy];
 
   [(SFAccountHeaderViewCell *)self _updateSharedAccountBadgeImageViewIfNecessary];
 }
 
-- (void)setHeaderTitleForHighLevelDomain:(id)a3 customTitle:(id)a4
+- (void)setHeaderTitleForHighLevelDomain:(id)domain customTitle:(id)title
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
+  domainCopy = domain;
+  titleCopy = title;
+  v8 = [domainCopy length];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [domainCopy copy];
   }
 
   else
@@ -172,10 +172,10 @@
   {
   }
 
-  v10 = [v7 length];
+  v10 = [titleCopy length];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [titleCopy copy];
   }
 
   else
@@ -201,8 +201,8 @@
   }
 
   v27 = *MEMORY[0x1E69DB650];
-  v15 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  v28[0] = v15;
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  v28[0] = tertiaryLabelColor;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
   v17 = [v13 initWithString:highLevelDomain attributes:v16];
   [(UITextField *)self->_titleTextField setAttributedPlaceholder:v17];
@@ -212,19 +212,19 @@
     [(UITextField *)self->_titleTextField setText:self->_customTitle];
   }
 
-  v18 = [(UIImageView *)self->_iconImageView image];
+  image = [(UIImageView *)self->_iconImageView image];
 
-  if (!v18)
+  if (!image)
   {
-    v19 = [(NSString *)self->_highLevelDomain safari_stringByTrimmingWhitespace];
-    if ([v19 length])
+    safari_stringByTrimmingWhitespace = [(NSString *)self->_highLevelDomain safari_stringByTrimmingWhitespace];
+    if ([safari_stringByTrimmingWhitespace length])
     {
     }
 
     else
     {
-      v20 = [(NSString *)self->_customTitle safari_stringByTrimmingWhitespace];
-      v21 = [v20 length];
+      safari_stringByTrimmingWhitespace2 = [(NSString *)self->_customTitle safari_stringByTrimmingWhitespace];
+      v21 = [safari_stringByTrimmingWhitespace2 length];
 
       if (!v21)
       {
@@ -236,8 +236,8 @@
     }
 
     v22 = MEMORY[0x1E69C9888];
-    v23 = [v6 safari_bestURLForUserTypedString];
-    v24 = [v22 monogramStringForTitle:v7 url:v23 shouldRemoveGrammaticalArticles:0];
+    safari_bestURLForUserTypedString = [domainCopy safari_bestURLForUserTypedString];
+    v24 = [v22 monogramStringForTitle:titleCopy url:safari_bestURLForUserTypedString shouldRemoveGrammaticalArticles:0];
     p_monogramLabel = &self->_monogramLabel;
     [(UILabel *)self->_monogramLabel setText:v24];
 
@@ -250,8 +250,8 @@ LABEL_21:
 
 - (void)commitCustomTitle
 {
-  v3 = [(UITextField *)self->_titleTextField text];
-  obj = [v3 safari_stringByTrimmingWhitespace];
+  text = [(UITextField *)self->_titleTextField text];
+  obj = [text safari_stringByTrimmingWhitespace];
 
   if (([obj isEqualToString:self->_highLevelDomain] & 1) == 0)
   {
@@ -260,16 +260,16 @@ LABEL_21:
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a3;
+  editingCopy = editing;
   v7.receiver = self;
   v7.super_class = SFAccountHeaderViewCell;
-  [(SFAccountHeaderViewCell *)&v7 setEditing:a3 animated:a4];
-  [(UITextField *)self->_titleTextField setUserInteractionEnabled:v4];
+  [(SFAccountHeaderViewCell *)&v7 setEditing:editing animated:animated];
+  [(UITextField *)self->_titleTextField setUserInteractionEnabled:editingCopy];
   if (![(NSString *)self->_customTitle length]|| self->_savedAccount && [(NSString *)self->_customTitle isEqualToString:self->_highLevelDomain])
   {
-    if (v4)
+    if (editingCopy)
     {
       highLevelDomain = 0;
     }
@@ -283,13 +283,13 @@ LABEL_21:
   }
 }
 
-- (void)_showMonogramIconWithBackgroundColor:(id)a3
+- (void)_showMonogramIconWithBackgroundColor:(id)color
 {
   v32 = self->_iconImageView;
-  v5 = a3;
+  colorCopy = color;
   [(UIImageView *)v32 _setContinuousCornerRadius:0.0];
-  v6 = [(UIImageView *)v32 layer];
-  [v6 setMasksToBounds:0];
+  layer = [(UIImageView *)v32 layer];
+  [layer setMasksToBounds:0];
 
   if (!self->_monogramBackgroundView)
   {
@@ -300,8 +300,8 @@ LABEL_21:
     self->_monogramBackgroundView = v9;
 
     [(UIView *)self->_monogramBackgroundView setFrame:v7, v8, 56.0, 56.0];
-    v11 = [(UIView *)self->_monogramBackgroundView layer];
-    [v11 setMasksToBounds:1];
+    layer2 = [(UIView *)self->_monogramBackgroundView layer];
+    [layer2 setMasksToBounds:1];
 
     [(UIView *)self->_monogramBackgroundView _setContinuousCornerRadius:12.0];
     [(UIView *)self->_monogramBackgroundView _setAllowsHighContrastForBackgroundColor:1];
@@ -309,8 +309,8 @@ LABEL_21:
     v12 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"key.fill"];
     v13 = [v12 imageWithAlignmentRectInsets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
 
-    v14 = [MEMORY[0x1E69DC888] whiteColor];
-    v15 = [v13 imageWithTintColor:v14 renderingMode:1];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v15 = [v13 imageWithTintColor:whiteColor renderingMode:1];
 
     v16 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v15];
     keyIconImageView = self->_keyIconImageView;
@@ -331,8 +331,8 @@ LABEL_21:
     [(UILabel *)self->_monogramLabel setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)self->_monogramLabel setTextAlignment:1];
     [(UILabel *)self->_monogramLabel setNumberOfLines:0];
-    v21 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)self->_monogramLabel setTextColor:v21];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)self->_monogramLabel setTextColor:whiteColor2];
 
     [(UILabel *)self->_monogramLabel setFrame:v7, v8, 56.0, 56.0];
     v22 = [MEMORY[0x1E69DB878] _sf_roundedSystemFontOfSize:42 weight:*MEMORY[0x1E69DB978]];
@@ -343,19 +343,19 @@ LABEL_21:
   }
 
   [(UIImageView *)v32 setImage:0];
-  [(UIView *)self->_monogramBackgroundView setBackgroundColor:v5];
+  [(UIView *)self->_monogramBackgroundView setBackgroundColor:colorCopy];
 
   [(UIView *)self->_monogramBackgroundView setHidden:0];
   [(UILabel *)self->_monogramLabel setHidden:0];
-  v23 = [(NSString *)self->_highLevelDomain safari_stringByTrimmingWhitespace];
-  if ([v23 length])
+  safari_stringByTrimmingWhitespace = [(NSString *)self->_highLevelDomain safari_stringByTrimmingWhitespace];
+  if ([safari_stringByTrimmingWhitespace length])
   {
 
 LABEL_6:
     v26 = MEMORY[0x1E69C9888];
     customTitle = self->_customTitle;
-    v28 = [(NSString *)self->_highLevelDomain safari_bestURLForUserTypedString];
-    v29 = [v26 monogramStringForTitle:customTitle url:v28 shouldRemoveGrammaticalArticles:0];
+    safari_bestURLForUserTypedString = [(NSString *)self->_highLevelDomain safari_bestURLForUserTypedString];
+    v29 = [v26 monogramStringForTitle:customTitle url:safari_bestURLForUserTypedString shouldRemoveGrammaticalArticles:0];
     [(UILabel *)self->_monogramLabel setText:v29];
 
     v30 = 0;
@@ -363,8 +363,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v24 = [(NSString *)self->_customTitle safari_stringByTrimmingWhitespace];
-  v25 = [v24 length];
+  safari_stringByTrimmingWhitespace2 = [(NSString *)self->_customTitle safari_stringByTrimmingWhitespace];
+  v25 = [safari_stringByTrimmingWhitespace2 length];
 
   if (v25)
   {
@@ -388,9 +388,9 @@ LABEL_7:
   [(UILabel *)monogramLabel setHidden:1];
 }
 
-- (void)setSavedAccount:(id)a3
+- (void)setSavedAccount:(id)account
 {
-  objc_storeStrong(&self->_savedAccount, a3);
+  objc_storeStrong(&self->_savedAccount, account);
 
   [(SFAccountHeaderViewCell *)self _updateSharedAccountBadgeImageViewIfNecessary];
 }
@@ -412,7 +412,7 @@ LABEL_7:
   [(SFAccountIconSharingBadgeImageCoordinator *)badgeImageCoordinator setShowsBadge:v4];
 }
 
-- (void)_textFieldChanged:(id)a3
+- (void)_textFieldChanged:(id)changed
 {
   [(SFAccountHeaderViewCell *)self invalidateIntrinsicContentSize];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -422,13 +422,13 @@ LABEL_7:
   }
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  v8 = a5;
-  v9 = [a3 text];
-  v10 = [v9 length];
-  v11 = [v8 length];
+  length = range.length;
+  stringCopy = string;
+  text = [field text];
+  v10 = [text length];
+  v11 = [stringCopy length];
 
   v12 = *MEMORY[0x1E69C8D40];
   if (v12 <= [(NSString *)self->_customTitle length])
@@ -439,9 +439,9 @@ LABEL_7:
   return v10 - length + v11 <= v12;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  if (self->_titleTextField == a3)
+  if (self->_titleTextField == return)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())

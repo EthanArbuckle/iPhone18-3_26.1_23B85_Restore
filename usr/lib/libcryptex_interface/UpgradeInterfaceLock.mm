@@ -7,8 +7,8 @@
 - (id)_createXPCRequest;
 - (id)acquireLock;
 - (int)releaseLock;
-- (void)_handleXPCMessage:(id)a3;
-- (void)_onNextLockRelease:(id)a3;
+- (void)_handleXPCMessage:(id)message;
+- (void)_onNextLockRelease:(id)release;
 - (void)dealloc;
 @end
 
@@ -77,23 +77,23 @@ uint64_t __41__UpgradeInterfaceLock_getSharedInstance__block_invoke()
 
 - (BOOL)isLocked
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(UpgradeInterfaceLock *)self queue];
+  queue = [(UpgradeInterfaceLock *)self queue];
   v5[0] = MEMORY[0x29EDCA5F8];
   v5[1] = 3221225472;
   v5[2] = __32__UpgradeInterfaceLock_isLocked__block_invoke;
   v5[3] = &unk_29EEA93C8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __32__UpgradeInterfaceLock_isLocked__block_invoke(uint64_t a1)
@@ -112,7 +112,7 @@ uint64_t __32__UpgradeInterfaceLock_isLocked__block_invoke(uint64_t a1)
   v3 = dispatch_group_create();
   if (v3)
   {
-    v4 = [(UpgradeInterfaceLock *)self queue];
+    queue = [(UpgradeInterfaceLock *)self queue];
     block[0] = MEMORY[0x29EDCA5F8];
     block[1] = 3221225472;
     block[2] = __35__UpgradeInterfaceLock_releaseLock__block_invoke;
@@ -121,7 +121,7 @@ uint64_t __32__UpgradeInterfaceLock_isLocked__block_invoke(uint64_t a1)
     v13 = &v14;
     v5 = v3;
     v12 = v5;
-    dispatch_barrier_sync(v4, block);
+    dispatch_barrier_sync(queue, block);
 
     v6 = dispatch_time(0, 10000000000);
     v7 = dispatch_group_wait(v5, v6);
@@ -181,14 +181,14 @@ void __35__UpgradeInterfaceLock_releaseLock__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(UpgradeInterfaceLock *)self queue];
+  queue = [(UpgradeInterfaceLock *)self queue];
   v6[0] = MEMORY[0x29EDCA5F8];
   v6[1] = 3221225472;
   v6[2] = __35__UpgradeInterfaceLock_acquireLock__block_invoke;
   v6[3] = &unk_29EEA93C8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_barrier_sync(v3, v6);
+  dispatch_barrier_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -206,16 +206,16 @@ uint64_t __35__UpgradeInterfaceLock_acquireLock__block_invoke(uint64_t a1)
   return MEMORY[0x2A1C71028]();
 }
 
-- (void)_onNextLockRelease:(id)a3
+- (void)_onNextLockRelease:(id)release
 {
-  v4 = a3;
-  v5 = [(UpgradeInterfaceLock *)self queue];
-  dispatch_assert_queue_barrier(v5);
+  releaseCopy = release;
+  queue = [(UpgradeInterfaceLock *)self queue];
+  dispatch_assert_queue_barrier(queue);
 
-  v7 = [(UpgradeInterfaceLock *)self onNextLockReleaseCallbacks];
-  v6 = MEMORY[0x29C290870](v4);
+  onNextLockReleaseCallbacks = [(UpgradeInterfaceLock *)self onNextLockReleaseCallbacks];
+  v6 = MEMORY[0x29C290870](releaseCopy);
 
-  [v7 addObject:v6];
+  [onNextLockReleaseCallbacks addObject:v6];
 }
 
 - (id)_createXPCRequest
@@ -228,32 +228,32 @@ uint64_t __35__UpgradeInterfaceLock_acquireLock__block_invoke(uint64_t a1)
 
 - (BOOL)_isLockedOnQueue
 {
-  v2 = self;
-  v3 = [(UpgradeInterfaceLock *)self queue];
-  dispatch_assert_queue_V2(v3);
+  selfCopy = self;
+  queue = [(UpgradeInterfaceLock *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(UpgradeInterfaceLock *)v2 lockConn];
-  LOBYTE(v2) = v4 != 0;
+  lockConn = [(UpgradeInterfaceLock *)selfCopy lockConn];
+  LOBYTE(selfCopy) = lockConn != 0;
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)_acquireLockOnQueue
 {
   v47 = *MEMORY[0x29EDCA608];
   cf = 0;
-  v3 = [(UpgradeInterfaceLock *)self queue];
-  dispatch_assert_queue_barrier(v3);
+  queue = [(UpgradeInterfaceLock *)self queue];
+  dispatch_assert_queue_barrier(queue);
 
   if (![(UpgradeInterfaceLock *)self _isLockedOnQueue])
   {
-    v10 = [(UpgradeInterfaceLock *)self queue];
-    connection = cryptex_xpc_create_connection(v10);
+    queue2 = [(UpgradeInterfaceLock *)self queue];
+    connection = cryptex_xpc_create_connection(queue2);
 
     if (connection)
     {
-      v7 = [(UpgradeInterfaceLock *)self _createXPCRequest];
-      if (!v7)
+      _createXPCRequest = [(UpgradeInterfaceLock *)self _createXPCRequest];
+      if (!_createXPCRequest)
       {
         v15 = [(UpgradeInterfaceLock *)self log];
 
@@ -278,7 +278,7 @@ uint64_t __35__UpgradeInterfaceLock_acquireLock__block_invoke(uint64_t a1)
         goto LABEL_39;
       }
 
-      v11 = xpc_connection_send_message_with_reply_sync(connection, v7);
+      v11 = xpc_connection_send_message_with_reply_sync(connection, _createXPCRequest);
       v8 = v11;
       if (v11)
       {
@@ -395,13 +395,13 @@ LABEL_39:
 
       [(UpgradeInterfaceLock *)self setLockConn:connection];
 
-      v35 = [(UpgradeInterfaceLock *)self lockConn];
+      lockConn = [(UpgradeInterfaceLock *)self lockConn];
       handler[0] = MEMORY[0x29EDCA5F8];
       handler[1] = 3221225472;
       handler[2] = __43__UpgradeInterfaceLock__acquireLockOnQueue__block_invoke;
       handler[3] = &unk_29EEA9418;
       handler[4] = self;
-      xpc_connection_set_event_handler(v35, handler);
+      xpc_connection_set_event_handler(lockConn, handler);
     }
 
     else
@@ -425,7 +425,7 @@ LABEL_39:
       v21 = createError("[UpgradeInterfaceLock _acquireLockOnQueue]", "upgrade_lock_interface.m", 161, "com.apple.security.cryptex", 23, 0, v14);
       free(v14);
       v6 = v21;
-      v7 = 0;
+      _createXPCRequest = 0;
       v8 = 0;
     }
 
@@ -442,7 +442,7 @@ LABEL_39:
   }
 
   v6 = 0;
-  v7 = 0;
+  _createXPCRequest = 0;
   v8 = 0;
   connection = 0;
   *__error() = v4;
@@ -459,14 +459,14 @@ LABEL_40:
   return v40;
 }
 
-- (void)_handleXPCMessage:(id)a3
+- (void)_handleXPCMessage:(id)message
 {
   v21 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  messageCopy = message;
+  v5 = messageCopy;
+  if (messageCopy)
   {
-    v6 = MEMORY[0x29C290A60](v4);
+    v6 = MEMORY[0x29C290A60](messageCopy);
     if (MEMORY[0x29C290B80](v5) == MEMORY[0x29EDCAA18])
     {
       v12 = *__error();
@@ -479,13 +479,13 @@ LABEL_40:
       }
 
       *__error() = v12;
-      v14 = [(UpgradeInterfaceLock *)self queue];
+      queue = [(UpgradeInterfaceLock *)self queue];
       block[0] = MEMORY[0x29EDCA5F8];
       block[1] = 3221225472;
       block[2] = __42__UpgradeInterfaceLock__handleXPCMessage___block_invoke;
       block[3] = &unk_29EEA92A8;
       block[4] = self;
-      dispatch_barrier_async(v14, block);
+      dispatch_barrier_async(queue, block);
     }
 
     else
@@ -502,8 +502,8 @@ LABEL_40:
       }
 
       *__error() = v7;
-      v9 = [(UpgradeInterfaceLock *)self lockConn];
-      xpc_connection_cancel(v9);
+      lockConn = [(UpgradeInterfaceLock *)self lockConn];
+      xpc_connection_cancel(lockConn);
     }
   }
 

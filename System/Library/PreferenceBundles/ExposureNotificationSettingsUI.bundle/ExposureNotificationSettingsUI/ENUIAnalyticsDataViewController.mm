@@ -21,22 +21,22 @@
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = OBJC_IVAR___PSListController__specifiers;
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
     v5 = ENUILocalizedString();
-    [(ENUIAnalyticsDataViewController *)v2 setTitle:v5];
+    [(ENUIAnalyticsDataViewController *)selfCopy setTitle:v5];
 
     v6 = objc_alloc_init(NSMutableArray);
-    if (-[ENUIAnalyticsDataViewController fetchCompleted](v2, "fetchCompleted") && (-[ENUIAnalyticsDataViewController analyticsDataFileURLs](v2, "analyticsDataFileURLs"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, v8))
+    if (-[ENUIAnalyticsDataViewController fetchCompleted](selfCopy, "fetchCompleted") && (-[ENUIAnalyticsDataViewController analyticsDataFileURLs](selfCopy, "analyticsDataFileURLs"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, v8))
     {
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      obj = v2->_analyticsDataFileURLs;
+      obj = selfCopy->_analyticsDataFileURLs;
       v9 = [(NSArray *)obj countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v9)
       {
@@ -52,14 +52,14 @@
             }
 
             v13 = *(*(&v24 + 1) + 8 * i);
-            v14 = [v13 lastPathComponent];
-            v15 = [PSSpecifier preferenceSpecifierNamed:v14 target:v2 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+            lastPathComponent = [v13 lastPathComponent];
+            v15 = [PSSpecifier preferenceSpecifierNamed:lastPathComponent target:selfCopy set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
             v16 = objc_opt_class();
             NSStringFromClass(v16);
-            v18 = v17 = v2;
+            v18 = v17 = selfCopy;
             [v15 setProperty:v13 forKey:v18];
 
-            v2 = v17;
+            selfCopy = v17;
             [v6 addObject:v15];
           }
 
@@ -70,20 +70,20 @@
       }
     }
 
-    else if ([(ENUIAnalyticsDataViewController *)v2 fetchCompleted])
+    else if ([(ENUIAnalyticsDataViewController *)selfCopy fetchCompleted])
     {
       v19 = +[PSSpecifier emptyGroupSpecifier];
-      v2->_analyticsDataFileURLs;
+      selfCopy->_analyticsDataFileURLs;
       v20 = ENUILocalizedString();
       [v19 setObject:v20 forKeyedSubscript:PSFooterTextGroupKey];
 
       [v6 addObject:v19];
     }
 
-    v21 = *&v2->PSListController_opaque[v3];
-    *&v2->PSListController_opaque[v3] = v6;
+    v21 = *&selfCopy->PSListController_opaque[v3];
+    *&selfCopy->PSListController_opaque[v3] = v6;
 
-    v4 = *&v2->PSListController_opaque[v3];
+    v4 = *&selfCopy->PSListController_opaque[v3];
   }
 
   return v4;

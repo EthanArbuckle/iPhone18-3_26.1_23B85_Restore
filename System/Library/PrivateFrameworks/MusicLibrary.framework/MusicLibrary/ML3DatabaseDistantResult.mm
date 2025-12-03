@@ -1,14 +1,14 @@
 @interface ML3DatabaseDistantResult
 - (BOOL)_fetchRowsIfEmpty;
 - (ML3DatabaseDistantResult)init;
-- (ML3DatabaseDistantResult)initWithDistantConnection:(id)a3 sql:(id)a4 parameters:(id)a5;
-- (ML3DatabaseDistantResult)initWithStatement:(id)a3;
+- (ML3DatabaseDistantResult)initWithDistantConnection:(id)connection sql:(id)sql parameters:(id)parameters;
+- (ML3DatabaseDistantResult)initWithStatement:(id)statement;
 - (id)columnNameIndexMap;
 - (id)description;
-- (unint64_t)indexForColumnName:(id)a3;
-- (void)_localEnumerateRowsWithBlock:(id)a3;
-- (void)_remoteEnumerateRowsWithBlock:(id)a3;
-- (void)enumerateRowsWithBlock:(id)a3;
+- (unint64_t)indexForColumnName:(id)name;
+- (void)_localEnumerateRowsWithBlock:(id)block;
+- (void)_remoteEnumerateRowsWithBlock:(id)block;
+- (void)enumerateRowsWithBlock:(id)block;
 @end
 
 @implementation ML3DatabaseDistantResult
@@ -31,15 +31,15 @@
         distantConnection = self->_distantConnection;
         if (distantConnection)
         {
-          v6 = [(ML3DatabaseDistantConnection *)distantConnection currentTransactionID];
-          if (v6)
+          currentTransactionID = [(ML3DatabaseDistantConnection *)distantConnection currentTransactionID];
+          if (currentTransactionID)
           {
             [(ML3DatabaseConnection *)self->_distantConnection pushTransaction];
             v7 = +[MLMediaLibraryService sharedMediaLibraryService];
             v8 = dispatch_semaphore_create(0);
             v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-            v10 = [(ML3DatabaseResult *)self limitProperty];
-            v11 = v10 == 0;
+            limitProperty = [(ML3DatabaseResult *)self limitProperty];
+            v11 = limitProperty == 0;
 
             if (v11)
             {
@@ -49,9 +49,9 @@
             else
             {
               v33[0] = @"MLDatabaseQueryOptionLimitPropertyKey";
-              v12 = [(ML3DatabaseResult *)self limitProperty];
+              limitProperty2 = [(ML3DatabaseResult *)self limitProperty];
               v33[1] = @"MLDatabaseQueryOptionLimitValueKey";
-              v34[0] = v12;
+              v34[0] = limitProperty2;
               v13 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[ML3DatabaseResult limitValue](self, "limitValue")}];
               v34[1] = v13;
               v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:2];
@@ -66,10 +66,10 @@
             v19 = v9;
             v28 = &v29;
             v25 = v19;
-            v26 = self;
+            selfCopy = self;
             v20 = v8;
             v27 = v20;
-            [v7 executeQuery:v17 withParameters:parameters options:v14 onTransaction:v6 withCompletionHandler:v24];
+            [v7 executeQuery:v17 withParameters:parameters options:v14 onTransaction:currentTransactionID withCompletionHandler:v24];
             dispatch_semaphore_wait(v20, 0xFFFFFFFFFFFFFFFFLL);
             cachedRows = self->_cachedRows;
             self->_cachedRows = v19;
@@ -174,34 +174,34 @@ void __45__ML3DatabaseDistantResult__fetchRowsIfEmpty__block_invoke(uint64_t a1,
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (void)_localEnumerateRowsWithBlock:(id)a3
+- (void)_localEnumerateRowsWithBlock:(id)block
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   distantConnection = self->_distantConnection;
   if (distantConnection)
   {
-    v6 = [(ML3DatabaseConnection *)distantConnection _owningPool];
+    _owningPool = [(ML3DatabaseConnection *)distantConnection _owningPool];
 
-    if (v6)
+    if (_owningPool)
     {
-      v7 = [(ML3DatabaseConnection *)self->_distantConnection _owningPool];
-      v8 = [v7 _connectionForWriting:0 useThreadConnection:0 storeThreadLocalConnection:0];
-      v9 = [(ML3DatabaseResult *)self limitProperty];
+      _owningPool2 = [(ML3DatabaseConnection *)self->_distantConnection _owningPool];
+      v8 = [_owningPool2 _connectionForWriting:0 useThreadConnection:0 storeThreadLocalConnection:0];
+      limitProperty = [(ML3DatabaseResult *)self limitProperty];
 
       sql = self->_sql;
       parameters = self->_parameters;
-      if (v9)
+      if (limitProperty)
       {
-        v12 = [(ML3DatabaseResult *)self limitProperty];
-        v13 = [v8 executeQuery:sql withParameters:parameters limitProperty:v12 limitValue:{-[ML3DatabaseResult limitValue](self, "limitValue")}];
+        limitProperty2 = [(ML3DatabaseResult *)self limitProperty];
+        v13 = [v8 executeQuery:sql withParameters:parameters limitProperty:limitProperty2 limitValue:{-[ML3DatabaseResult limitValue](self, "limitValue")}];
 
         if (v13)
         {
 LABEL_5:
-          [v13 enumerateRowsWithBlock:v4];
+          [v13 enumerateRowsWithBlock:blockCopy];
 LABEL_12:
-          [v7 checkInConnection:v8];
+          [_owningPool2 checkInConnection:v8];
 
           goto LABEL_13;
         }
@@ -219,9 +219,9 @@ LABEL_12:
       v15 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v8 sqliteError];
+        sqliteError = [v8 sqliteError];
         v17 = 138543362;
-        v18 = v16;
+        v18 = sqliteError;
         _os_log_impl(&dword_22D2FA000, v15, OS_LOG_TYPE_DEFAULT, "Could not fallback to local connection. Local result could not be obtained from query. %{public}@", &v17, 0xCu);
       }
 
@@ -229,22 +229,22 @@ LABEL_12:
     }
   }
 
-  v7 = os_log_create("com.apple.amp.medialibrary", "Default");
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  _owningPool2 = os_log_create("com.apple.amp.medialibrary", "Default");
+  if (os_log_type_enabled(_owningPool2, OS_LOG_TYPE_DEFAULT))
   {
     v14 = self->_distantConnection;
     v17 = 138543362;
     v18 = v14;
-    _os_log_impl(&dword_22D2FA000, v7, OS_LOG_TYPE_DEFAULT, "Could not fallback to local connection. Result does not have a connection or a pool reference. %{public}@", &v17, 0xCu);
+    _os_log_impl(&dword_22D2FA000, _owningPool2, OS_LOG_TYPE_DEFAULT, "Could not fallback to local connection. Result does not have a connection or a pool reference. %{public}@", &v17, 0xCu);
   }
 
 LABEL_13:
 }
 
-- (void)_remoteEnumerateRowsWithBlock:(id)a3
+- (void)_remoteEnumerateRowsWithBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   if ([(ML3DatabaseDistantResult *)self _fetchRowsIfEmpty])
   {
     v11[0] = 0;
@@ -267,7 +267,7 @@ LABEL_4:
           objc_enumerationMutation(v5);
         }
 
-        (*(v4 + 2))(v4, *(*(&v12 + 1) + 8 * v9), 0, v11);
+        (*(blockCopy + 2))(blockCopy, *(*(&v12 + 1) + 8 * v9), 0, v11);
         if (v11[0])
         {
           break;
@@ -296,22 +296,22 @@ LABEL_4:
       _os_log_impl(&dword_22D2FA000, v10, OS_LOG_TYPE_DEFAULT, "Distant result fetch failed. Trying to fallback to a local connection...", v11, 2u);
     }
 
-    [(ML3DatabaseDistantResult *)self _localEnumerateRowsWithBlock:v4];
+    [(ML3DatabaseDistantResult *)self _localEnumerateRowsWithBlock:blockCopy];
   }
 }
 
-- (void)enumerateRowsWithBlock:(id)a3
+- (void)enumerateRowsWithBlock:(id)block
 {
   distantConnection = self->_distantConnection;
-  v5 = a3;
+  blockCopy = block;
   if ([(ML3DatabaseConnection *)distantConnection isInTransaction])
   {
-    [(ML3DatabaseDistantResult *)self _remoteEnumerateRowsWithBlock:v5];
+    [(ML3DatabaseDistantResult *)self _remoteEnumerateRowsWithBlock:blockCopy];
   }
 
   else
   {
-    [(ML3DatabaseDistantResult *)self _localEnumerateRowsWithBlock:v5];
+    [(ML3DatabaseDistantResult *)self _localEnumerateRowsWithBlock:blockCopy];
   }
 }
 
@@ -351,14 +351,14 @@ void __46__ML3DatabaseDistantResult_columnNameIndexMap__block_invoke(uint64_t a1
   }
 }
 
-- (unint64_t)indexForColumnName:(id)a3
+- (unint64_t)indexForColumnName:(id)name
 {
-  v4 = a3;
-  v5 = [(ML3DatabaseDistantResult *)self columnNameIndexMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  columnNameIndexMap = [(ML3DatabaseDistantResult *)self columnNameIndexMap];
+  v6 = [columnNameIndexMap objectForKeyedSubscript:nameCopy];
 
-  v7 = [v6 unsignedIntegerValue];
-  return v7;
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (id)description
@@ -381,7 +381,7 @@ void __46__ML3DatabaseDistantResult_columnNameIndexMap__block_invoke(uint64_t a1
   return 0;
 }
 
-- (ML3DatabaseDistantResult)initWithStatement:(id)a3
+- (ML3DatabaseDistantResult)initWithStatement:(id)statement
 {
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
@@ -390,23 +390,23 @@ void __46__ML3DatabaseDistantResult_columnNameIndexMap__block_invoke(uint64_t a1
   return 0;
 }
 
-- (ML3DatabaseDistantResult)initWithDistantConnection:(id)a3 sql:(id)a4 parameters:(id)a5
+- (ML3DatabaseDistantResult)initWithDistantConnection:(id)connection sql:(id)sql parameters:(id)parameters
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  connectionCopy = connection;
+  sqlCopy = sql;
+  parametersCopy = parameters;
   v18.receiver = self;
   v18.super_class = ML3DatabaseDistantResult;
   v12 = [(ML3DatabaseResult *)&v18 initWithStatement:0 connection:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_distantConnection, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_distantConnection, connection);
+    v14 = [sqlCopy copy];
     sql = v13->_sql;
     v13->_sql = v14;
 
-    objc_storeStrong(&v13->_parameters, a5);
+    objc_storeStrong(&v13->_parameters, parameters);
     cachedRows = v13->_cachedRows;
     v13->_cachedRows = 0;
   }

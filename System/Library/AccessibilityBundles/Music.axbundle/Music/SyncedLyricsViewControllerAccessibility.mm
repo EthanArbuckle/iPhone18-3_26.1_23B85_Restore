@@ -1,16 +1,16 @@
 @interface SyncedLyricsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation SyncedLyricsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"LyricsX.SyncedLyricsViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"LyricsX.SyncedLyricsViewController" hasSwiftField:@"scrollView" withSwiftType:"UIScrollView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"LyricsX.SyncedLyricsViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"LyricsX.SyncedLyricsViewController" hasSwiftField:@"scrollView" withSwiftType:"UIScrollView"];
 }
 
 - (void)viewDidLoad

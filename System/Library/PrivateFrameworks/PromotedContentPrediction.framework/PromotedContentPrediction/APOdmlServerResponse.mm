@@ -1,43 +1,43 @@
 @interface APOdmlServerResponse
-- (APOdmlServerResponse)initWithCoder:(id)a3;
-- (APOdmlServerResponse)initWithSLPResponse:(id)a3;
-- (APOdmlServerResponse)initWithSRPResponse:(id)a3;
-- (APOdmlServerResponse)initWithSRPResponseData:(id)a3;
+- (APOdmlServerResponse)initWithCoder:(id)coder;
+- (APOdmlServerResponse)initWithSLPResponse:(id)response;
+- (APOdmlServerResponse)initWithSRPResponse:(id)response;
+- (APOdmlServerResponse)initWithSRPResponseData:(id)data;
 - (id)falseFeatureValue;
-- (id)oneHotEncode:(id)a3 trueKey:(id)a4;
+- (id)oneHotEncode:(id)encode trueKey:(id)key;
 - (id)trueFeatureValue;
-- (int)ageFromBirthYear:(id)a3;
-- (void)addAgeRange:(id)a3 birthYear:(id)a4;
-- (void)addCachedFeatures:(id)a3 deviceModel:(id)a4;
-- (void)addDeviceClass:(id)a3 newFeatureValues:(id)a4;
-- (void)addGender:(id)a3 gender:(id)a4;
-- (void)addStorefront:(id)a3 storefront:(id)a4;
-- (void)addUserRating:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int)ageFromBirthYear:(id)year;
+- (void)addAgeRange:(id)range birthYear:(id)year;
+- (void)addCachedFeatures:(id)features deviceModel:(id)model;
+- (void)addDeviceClass:(id)class newFeatureValues:(id)values;
+- (void)addGender:(id)gender gender:(id)a4;
+- (void)addStorefront:(id)storefront storefront:(id)a4;
+- (void)addUserRating:(id)rating;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation APOdmlServerResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
+  coderCopy = coder;
   v6 = objc_msgSend_featureValues(self, v4, v5);
-  objc_msgSend_encodeObject_forKey_(v12, v7, v6, @"featureValues");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, v6, @"featureValues");
 
   v10 = objc_msgSend_odmlEnabled(self, v8, v9);
-  objc_msgSend_encodeBool_forKey_(v12, v11, v10, @"odmlEnabled");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v11, v10, @"odmlEnabled");
 }
 
-- (APOdmlServerResponse)initWithCoder:(id)a3
+- (APOdmlServerResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = APOdmlServerResponse;
   v6 = [(APOdmlServerResponse *)&v11 init];
   if (v6)
   {
-    v6->_odmlEnabled = objc_msgSend_decodeBoolForKey_(v4, v5, @"odmlEnabled");
-    v8 = objc_msgSend_decodeObjectForKey_(v4, v7, @"featureValues");
+    v6->_odmlEnabled = objc_msgSend_decodeBoolForKey_(coderCopy, v5, @"odmlEnabled");
+    v8 = objc_msgSend_decodeObjectForKey_(coderCopy, v7, @"featureValues");
     featureValues = v6->_featureValues;
     v6->_featureValues = v8;
   }
@@ -45,16 +45,16 @@
   return v6;
 }
 
-- (APOdmlServerResponse)initWithSRPResponse:(id)a3
+- (APOdmlServerResponse)initWithSRPResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v11.receiver = self;
   v11.super_class = APOdmlServerResponse;
   v6 = [(APOdmlServerResponse *)&v11 init];
   if (v6)
   {
-    v6->_odmlEnabled = objc_msgSend_isValidResponse_(APOdmlSRPResponseParser, v5, v4);
-    v8 = objc_msgSend_parseResponseForFeatureValues_(APOdmlSRPResponseParser, v7, v4);
+    v6->_odmlEnabled = objc_msgSend_isValidResponse_(APOdmlSRPResponseParser, v5, responseCopy);
+    v8 = objc_msgSend_parseResponseForFeatureValues_(APOdmlSRPResponseParser, v7, responseCopy);
     featureValues = v6->_featureValues;
     v6->_featureValues = v8;
   }
@@ -62,16 +62,16 @@
   return v6;
 }
 
-- (APOdmlServerResponse)initWithSLPResponse:(id)a3
+- (APOdmlServerResponse)initWithSLPResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v11.receiver = self;
   v11.super_class = APOdmlServerResponse;
   v6 = [(APOdmlServerResponse *)&v11 init];
   if (v6)
   {
-    v6->_odmlEnabled = objc_msgSend_isValidResponse_(APOdmlSLPResponseParser, v5, v4);
-    v8 = objc_msgSend_parseResponseForFeatureValues_(APOdmlSLPResponseParser, v7, v4);
+    v6->_odmlEnabled = objc_msgSend_isValidResponse_(APOdmlSLPResponseParser, v5, responseCopy);
+    v8 = objc_msgSend_parseResponseForFeatureValues_(APOdmlSLPResponseParser, v7, responseCopy);
     featureValues = v6->_featureValues;
     v6->_featureValues = v8;
   }
@@ -79,16 +79,16 @@
   return v6;
 }
 
-- (APOdmlServerResponse)initWithSRPResponseData:(id)a3
+- (APOdmlServerResponse)initWithSRPResponseData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = APOdmlServerResponse;
   v5 = [(APOdmlServerResponse *)&v14 init];
   if (v5)
   {
     v6 = [ADOdmlResponseV2 alloc];
-    v8 = objc_msgSend_initWithData_(v6, v7, v4);
+    v8 = objc_msgSend_initWithData_(v6, v7, dataCopy);
     v5->_odmlEnabled = objc_msgSend_isValidResponse_(APOdmlSRPResponseParser, v9, v8);
     v11 = objc_msgSend_parseResponseForFeatureValues_(APOdmlSRPResponseParser, v10, v8);
     featureValues = v5->_featureValues;
@@ -98,17 +98,17 @@
   return v5;
 }
 
-- (void)addUserRating:(id)a3
+- (void)addUserRating:(id)rating
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  ratingCopy = rating;
   v5 = objc_alloc(MEMORY[0x277CBEB38]);
   v8 = objc_msgSend_featureValues(self, v6, v7);
   v10 = objc_msgSend_initWithDictionary_(v5, v9, v8);
 
-  if (v4)
+  if (ratingCopy)
   {
-    if (objc_msgSend_BOOLValue(v4, v11, v12))
+    if (objc_msgSend_BOOLValue(ratingCopy, v11, v12))
     {
       v23 = @"userratingdisplay_off";
       v13 = kAPOdmlFeatureTypeUserRatingValueOn;
@@ -143,17 +143,17 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addCachedFeatures:(id)a3 deviceModel:(id)a4
+- (void)addCachedFeatures:(id)features deviceModel:(id)model
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = a3;
+  modelCopy = model;
+  featuresCopy = features;
   v9 = [v6 alloc];
   v12 = objc_msgSend_featureValues(self, v10, v11);
   v31 = objc_msgSend_initWithDictionary_(v9, v13, v12);
 
-  objc_msgSend_addDeviceClass_newFeatureValues_(self, v14, v7, v31);
-  v16 = objc_msgSend_objectForKey_(v8, v15, @"it");
+  objc_msgSend_addDeviceClass_newFeatureValues_(self, v14, modelCopy, v31);
+  v16 = objc_msgSend_objectForKey_(featuresCopy, v15, @"it");
 
   v18 = objc_msgSend_objectForKey_(v16, v17, @"dm");
   v20 = objc_msgSend_objectForKey_(v18, v19, @"13");
@@ -166,12 +166,12 @@
   objc_msgSend_setFeatureValues_(self, v30, v31);
 }
 
-- (void)addDeviceClass:(id)a3 newFeatureValues:(id)a4
+- (void)addDeviceClass:(id)class newFeatureValues:(id)values
 {
   v22[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v8 = a4;
-  if (!v6)
+  classCopy = class;
+  valuesCopy = values;
+  if (!classCopy)
   {
     v9 = kAPOdmlFeatureTypeDeviceClassNull;
     v22[0] = @"deviceclass_ipad";
@@ -181,7 +181,7 @@
     goto LABEL_9;
   }
 
-  if (objc_msgSend_isEqualToString_(v6, v7, @"iphone"))
+  if (objc_msgSend_isEqualToString_(classCopy, v7, @"iphone"))
   {
     v9 = kAPOdmlFeatureTypeDeviceClassIphone;
     v21 = @"deviceclass_ipad";
@@ -195,11 +195,11 @@ LABEL_9:
     v14 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v7, v12, 3);
     v16 = objc_msgSend_oneHotEncode_trueKey_(self, v15, v14, *v9);
 
-    objc_msgSend_addEntriesFromDictionary_(v8, v17, v16);
+    objc_msgSend_addEntriesFromDictionary_(valuesCopy, v17, v16);
     goto LABEL_10;
   }
 
-  if (objc_msgSend_isEqualToString_(v6, v7, @"ipad"))
+  if (objc_msgSend_isEqualToString_(classCopy, v7, @"ipad"))
   {
     v9 = kAPOdmlFeatureTypeDeviceClassIpad;
     v20 = @"deviceclass_iphone";
@@ -209,7 +209,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (objc_msgSend_isEqualToString_(v6, v7, @"ipod"))
+  if (objc_msgSend_isEqualToString_(classCopy, v7, @"ipod"))
   {
     v9 = kAPOdmlFeatureTypeDeviceClassIpod;
     v19 = @"deviceclass_iphone";
@@ -224,14 +224,14 @@ LABEL_10:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addAgeRange:(id)a3 birthYear:(id)a4
+- (void)addAgeRange:(id)range birthYear:(id)year
 {
   v33[7] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v8 = a4;
-  if (v8)
+  rangeCopy = range;
+  yearCopy = year;
+  if (yearCopy)
   {
-    v9 = objc_msgSend_ageFromBirthYear_(self, v7, v8);
+    v9 = objc_msgSend_ageFromBirthYear_(self, v7, yearCopy);
     if (v9 > 17)
     {
       if (v9 > 0x18)
@@ -364,14 +364,14 @@ LABEL_10:
   v21 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v7, v17, 7);
   v23 = objc_msgSend_oneHotEncode_trueKey_(self, v22, v21, *v10);
 
-  objc_msgSend_addEntriesFromDictionary_(v6, v24, v23);
+  objc_msgSend_addEntriesFromDictionary_(rangeCopy, v24, v23);
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addGender:(id)a3 gender:(id)a4
+- (void)addGender:(id)gender gender:(id)a4
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  genderCopy = gender;
   v8 = a4;
   if (!v8)
   {
@@ -380,7 +380,7 @@ LABEL_10:
     v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v7, v24, 2);
     v11 = objc_msgSend_oneHotEncode_trueKey_(self, v10, v9, @"gender_null");
 
-    objc_msgSend_addEntriesFromDictionary_(v6, v12, v11);
+    objc_msgSend_addEntriesFromDictionary_(genderCopy, v12, v11);
   }
 
   if (objc_msgSend_isEqualToString_(v8, v7, @"10"))
@@ -394,7 +394,7 @@ LABEL_7:
     v17 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v13, v16, 2);
     v19 = objc_msgSend_oneHotEncode_trueKey_(self, v18, v17, *v14);
 
-    objc_msgSend_addEntriesFromDictionary_(v6, v20, v19);
+    objc_msgSend_addEntriesFromDictionary_(genderCopy, v20, v19);
     goto LABEL_8;
   }
 
@@ -412,10 +412,10 @@ LABEL_8:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addStorefront:(id)a3 storefront:(id)a4
+- (void)addStorefront:(id)storefront storefront:(id)a4
 {
   v61[13] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  storefrontCopy = storefront;
   v7 = a4;
   v9 = v7;
   if (!v7)
@@ -478,7 +478,7 @@ LABEL_29:
     v43 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v36, v24, 13);
     v45 = objc_msgSend_oneHotEncode_trueKey_(self, v44, v43, *v11);
 
-    objc_msgSend_addEntriesFromDictionary_(v6, v46, v45);
+    objc_msgSend_addEntriesFromDictionary_(storefrontCopy, v46, v45);
     goto LABEL_30;
   }
 
@@ -743,20 +743,20 @@ LABEL_30:
   return v4;
 }
 
-- (id)oneHotEncode:(id)a3 trueKey:(id)a4
+- (id)oneHotEncode:(id)encode trueKey:(id)key
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  encodeCopy = encode;
+  keyCopy = key;
   v10 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v8, v9);
   v13 = objc_msgSend_trueFeatureValue(self, v11, v12);
-  objc_msgSend_setValue_forKey_(v10, v14, v13, v7);
+  objc_msgSend_setValue_forKey_(v10, v14, v13, keyCopy);
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v15 = v6;
+  v15 = encodeCopy;
   v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(v15, v16, &v31, v35, 16);
   if (v17)
   {
@@ -788,10 +788,10 @@ LABEL_30:
   return v28;
 }
 
-- (int)ageFromBirthYear:(id)a3
+- (int)ageFromBirthYear:(id)year
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
+  yearCopy = year;
   v7 = objc_msgSend_currentCalendar(v3, v5, v6);
   v10 = objc_msgSend_date(MEMORY[0x277CBEAA8], v8, v9);
   v12 = objc_msgSend_components_fromDate_(v7, v11, 28, v10);
@@ -800,7 +800,7 @@ LABEL_30:
   v16 = objc_msgSend_year(v12, v14, v15);
   v18 = objc_msgSend_numberWithInteger_(v13, v17, v16);
   LODWORD(v10) = objc_msgSend_intValue(v18, v19, v20);
-  v23 = objc_msgSend_intValue(v4, v21, v22);
+  v23 = objc_msgSend_intValue(yearCopy, v21, v22);
 
   return v10 - v23;
 }

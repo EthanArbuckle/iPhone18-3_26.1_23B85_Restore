@@ -2,19 +2,19 @@
 + (NSSet)entryKeys;
 + (_UIStatusBarData)staticDisplayData;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)existingEntryKeys;
-- (_UIStatusBarData)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dataByApplyingOverlay:(id)a3;
-- (id)dataByApplyingUpdate:(id)a3 keys:(id)a4;
+- (_UIStatusBarData)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dataByApplyingOverlay:(id)overlay;
+- (id)dataByApplyingUpdate:(id)update keys:(id)keys;
 - (id)description;
-- (id)updateFromData:(id)a3;
+- (id)updateFromData:(id)data;
 - (unint64_t)hash;
-- (void)_applyUpdate:(id)a3 keys:(id)a4;
-- (void)applyUpdate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)makeUpdateFromData:(id)a3;
+- (void)_applyUpdate:(id)update keys:(id)keys;
+- (void)applyUpdate:(id)update;
+- (void)encodeWithCoder:(id)coder;
+- (void)makeUpdateFromData:(id)data;
 @end
 
 @implementation _UIStatusBarData
@@ -51,8 +51,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [objc_opt_class() entryKeys];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  entryKeys = [objc_opt_class() entryKeys];
+  v5 = [entryKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -64,7 +64,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(entryKeys);
         }
 
         v9 = [(_UIStatusBarData *)self valueForKey:*(*(&v12 + 1) + 8 * v8)];
@@ -78,7 +78,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [entryKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -87,7 +87,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(objc_opt_class());
@@ -95,8 +95,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [objc_opt_class() entryKeys];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  entryKeys = [objc_opt_class() entryKeys];
+  v6 = [entryKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -107,7 +107,7 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(entryKeys);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -118,7 +118,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [entryKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -127,16 +127,16 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [objc_opt_class() entryKeys];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  entryKeys = [objc_opt_class() entryKeys];
+  v6 = [entryKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -147,28 +147,28 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(entryKeys);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
         v11 = [(_UIStatusBarData *)self valueForKey:v10];
         if (v11)
         {
-          [v4 encodeObject:v11 forKey:v10];
+          [coderCopy encodeObject:v11 forKey:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [entryKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (_UIStatusBarData)initWithCoder:(id)a3
+- (_UIStatusBarData)initWithCoder:(id)coder
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = _UIStatusBarData;
   v5 = [(_UIStatusBarData *)&v18 init];
@@ -176,8 +176,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [objc_opt_class() entryKeys];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  entryKeys = [objc_opt_class() entryKeys];
+  v7 = [entryKeys countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -189,11 +189,11 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(entryKeys);
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
-        v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:v11];
+        v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:v11];
         if (v12)
         {
           [(_UIStatusBarData *)v5 setValue:v12 forKey:v11];
@@ -203,7 +203,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v8 = [entryKeys countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v8);
@@ -212,14 +212,14 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -229,7 +229,7 @@
     if (v8)
     {
       v9 = v8;
-      v21 = v4;
+      v21 = equalCopy;
       v10 = *v24;
       while (2)
       {
@@ -293,7 +293,7 @@ LABEL_23:
 
       v6 = 1;
 LABEL_24:
-      v4 = v21;
+      equalCopy = v21;
     }
 
     else
@@ -317,8 +317,8 @@ LABEL_24:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [objc_opt_class() entryKeys];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  entryKeys = [objc_opt_class() entryKeys];
+  v4 = [entryKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -329,7 +329,7 @@ LABEL_24:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(entryKeys);
         }
 
         v8 = [(_UIStatusBarData *)self valueForKey:*(*(&v11 + 1) + 8 * i)];
@@ -341,7 +341,7 @@ LABEL_24:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [entryKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -365,8 +365,8 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [objc_opt_class() entryKeys];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  entryKeys = [objc_opt_class() entryKeys];
+  v5 = [entryKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -377,7 +377,7 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(entryKeys);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -388,7 +388,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [entryKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -405,8 +405,8 @@ LABEL_11:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [objc_opt_class() entryKeys];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  entryKeys = [objc_opt_class() entryKeys];
+  v5 = [entryKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -417,7 +417,7 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(entryKeys);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -428,27 +428,27 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [entryKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 
-  v12 = [v3 string];
+  string = [v3 string];
 
-  return v12;
+  return string;
 }
 
-- (void)_applyUpdate:(id)a3 keys:(id)a4
+- (void)_applyUpdate:(id)update keys:(id)keys
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  keysCopy = keys;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = [keysCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -459,45 +459,45 @@ LABEL_11:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(keysCopy);
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        v13 = [v6 valueForKey:v12];
+        v13 = [updateCopy valueForKey:v12];
         if (v13)
         {
           [(_UIStatusBarData *)self setValue:v13 forKey:v12];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [keysCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)applyUpdate:(id)a3
+- (void)applyUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = +[_UIStatusBarData entryKeys];
-  [(_UIStatusBarData *)self _applyUpdate:v4 keys:v5];
+  [(_UIStatusBarData *)self _applyUpdate:updateCopy keys:v5];
 }
 
-- (id)dataByApplyingOverlay:(id)a3
+- (id)dataByApplyingOverlay:(id)overlay
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  v6 = v5;
-  if (v4 && v4 != v5)
+  overlayCopy = overlay;
+  selfCopy = self;
+  v6 = selfCopy;
+  if (overlayCopy && overlayCopy != selfCopy)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [(_UIStatusBarData *)v4 existingEntryKeys];
-    v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    existingEntryKeys = [(_UIStatusBarData *)overlayCopy existingEntryKeys];
+    v8 = [existingEntryKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
       v9 = v8;
@@ -509,7 +509,7 @@ LABEL_11:
         {
           if (*v19 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(existingEntryKeys);
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
@@ -524,12 +524,12 @@ LABEL_11:
               v11 = v15;
             }
 
-            v16 = [(_UIStatusBarData *)v4 valueForKey:v13];
+            v16 = [(_UIStatusBarData *)overlayCopy valueForKey:v13];
             [(_UIStatusBarData *)v11 setValue:v16 forKey:v13];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v9 = [existingEntryKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v9);
@@ -546,17 +546,17 @@ LABEL_11:
   return v6;
 }
 
-- (id)dataByApplyingUpdate:(id)a3 keys:(id)a4
+- (id)dataByApplyingUpdate:(id)update keys:(id)keys
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  keysCopy = keys;
   v8 = objc_alloc_init(objc_opt_class());
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v7;
+  v9 = keysCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -572,7 +572,7 @@ LABEL_11:
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [v6 valueForKey:{v14, v18}];
+        v15 = [updateCopy valueForKey:{v14, v18}];
         if (!v15)
         {
           v15 = [(_UIStatusBarData *)self valueForKey:v14];
@@ -595,20 +595,20 @@ LABEL_11:
   return v8;
 }
 
-- (id)updateFromData:(id)a3
+- (id)updateFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [(_UIStatusBarData *)self copy];
-  [v5 makeUpdateFromData:v4];
+  [v5 makeUpdateFromData:dataCopy];
 
   return v5;
 }
 
-- (void)makeUpdateFromData:(id)a3
+- (void)makeUpdateFromData:(id)data
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     v17 = 0u;
     v18 = 0u;
@@ -630,7 +630,7 @@ LABEL_11:
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v4 valueForKey:v10];
+          v11 = [dataCopy valueForKey:v10];
           v12 = [(_UIStatusBarData *)self valueForKey:v10];
           v13 = v12;
           if (v11)

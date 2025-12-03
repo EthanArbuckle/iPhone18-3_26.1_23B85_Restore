@@ -1,20 +1,20 @@
 @interface WGNewWidgetsButton
-- (CGSize)_numberLabelSizeForText:(id)a3 withAttributes:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_numberLabelSizeForText:(id)text withAttributes:(id)attributes;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (WGNewWidgetsButton)init;
-- (id)_attributedStringWithColor:(id)a3;
-- (id)_numberAttributedStringWithNumberText:(id)a3 attributes:(id)a4;
-- (id)_numberImageForNumberText:(id)a3 withAttributes:(id)a4;
+- (id)_attributedStringWithColor:(id)color;
+- (id)_numberAttributedStringWithNumberText:(id)text attributes:(id)attributes;
+- (id)_numberImageForNumberText:(id)text withAttributes:(id)attributes;
 - (id)_numberTextAttributes;
-- (id)_textAttributesWithColor:(id)a3;
+- (id)_textAttributesWithColor:(id)color;
 - (id)_textFont;
-- (void)_buttonStateChanged:(id)a3;
-- (void)_setAttributeTitleForButton:(id)a3 withColor:(id)a4;
+- (void)_buttonStateChanged:(id)changed;
+- (void)_setAttributeTitleForButton:(id)button withColor:(id)color;
 - (void)_updateButtons;
 - (void)layoutSubviews;
-- (void)setBadgeNumber:(unint64_t)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLegibilitySettings:(id)a3;
+- (void)setBadgeNumber:(unint64_t)number;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLegibilitySettings:(id)settings;
 @end
 
 @implementation WGNewWidgetsButton
@@ -27,24 +27,24 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(WGNewWidgetsButton *)v2 titleLabel];
-    [v4 setNumberOfLines:0];
+    titleLabel = [(WGNewWidgetsButton *)v2 titleLabel];
+    [titleLabel setNumberOfLines:0];
 
     v5 = [MEMORY[0x277D75220] buttonWithType:0];
     vibrantButton = v3->_vibrantButton;
     v3->_vibrantButton = v5;
 
     [(UIButton *)v3->_vibrantButton _setDrawsAsBackdropOverlayWithBlendMode:3];
-    v7 = [(UIButton *)v3->_vibrantButton titleLabel];
-    [v7 setNumberOfLines:0];
+    titleLabel2 = [(UIButton *)v3->_vibrantButton titleLabel];
+    [titleLabel2 setNumberOfLines:0];
 
     [(WGNewWidgetsButton *)v3 addSubview:v3->_vibrantButton];
     v8 = [MEMORY[0x277D75220] buttonWithType:0];
     overlayButton = v3->_overlayButton;
     v3->_overlayButton = v8;
 
-    v10 = [(UIButton *)v3->_overlayButton titleLabel];
-    [v10 setNumberOfLines:0];
+    titleLabel3 = [(UIButton *)v3->_overlayButton titleLabel];
+    [titleLabel3 setNumberOfLines:0];
 
     [(WGNewWidgetsButton *)v3 addSubview:v3->_overlayButton];
     v11 = objc_alloc_init(MEMORY[0x277CBEA78]);
@@ -59,19 +59,19 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIButton *)self->_overlayButton sizeThatFits:a3.width, a3.height];
+  [(UIButton *)self->_overlayButton sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setBadgeNumber:(unint64_t)a3
+- (void)setBadgeNumber:(unint64_t)number
 {
-  self->_badgeNumber = a3;
-  v4 = [MEMORY[0x277CCACA8] localizedStringWithFormat:@"%u", a3];
-  [(WGNewWidgetsButton *)self setNumberText:v4];
+  self->_badgeNumber = number;
+  number = [MEMORY[0x277CCACA8] localizedStringWithFormat:@"%u", number];
+  [(WGNewWidgetsButton *)self setNumberText:number];
 
   v5 = MEMORY[0x277CCACA8];
   v6 = _os_feature_enabled_impl();
@@ -94,13 +94,13 @@
   [(WGNewWidgetsButton *)self _updateButtons];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   [(UIButton *)self->_vibrantButton setHighlighted:?];
   overlayButton = self->_overlayButton;
 
-  [(UIButton *)overlayButton setHighlighted:v3];
+  [(UIButton *)overlayButton setHighlighted:highlightedCopy];
 }
 
 - (void)layoutSubviews
@@ -117,80 +117,80 @@
   [(UIButton *)self->_overlayButton setFrame:v4, v6, v8, v10];
 }
 
-- (void)_buttonStateChanged:(id)a3
+- (void)_buttonStateChanged:(id)changed
 {
   [(UIButton *)self->_vibrantButton setSelected:[(UIButton *)self->_overlayButton isSelected]];
   vibrantButton = self->_vibrantButton;
-  v5 = [(UIButton *)self->_overlayButton isHighlighted];
+  isHighlighted = [(UIButton *)self->_overlayButton isHighlighted];
 
-  [(UIButton *)vibrantButton setHighlighted:v5];
+  [(UIButton *)vibrantButton setHighlighted:isHighlighted];
 }
 
 - (void)_updateButtons
 {
   vibrantButton = self->_vibrantButton;
-  v4 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(WGNewWidgetsButton *)self _setAttributeTitleForButton:vibrantButton withColor:v4];
+  primaryColor = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(WGNewWidgetsButton *)self _setAttributeTitleForButton:vibrantButton withColor:primaryColor];
 
   overlayButton = self->_overlayButton;
-  v6 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(WGNewWidgetsButton *)self _setAttributeTitleForButton:overlayButton withColor:v6];
+  primaryColor2 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(WGNewWidgetsButton *)self _setAttributeTitleForButton:overlayButton withColor:primaryColor2];
 
   [(WGNewWidgetsButton *)self setNeedsLayout];
 }
 
-- (void)_setAttributeTitleForButton:(id)a3 withColor:(id)a4
+- (void)_setAttributeTitleForButton:(id)button withColor:(id)color
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WGNewWidgetsButton *)self _attributedStringWithColor:v6];
-  [v7 setAttributedTitle:v8 forState:0];
+  colorCopy = color;
+  buttonCopy = button;
+  v8 = [(WGNewWidgetsButton *)self _attributedStringWithColor:colorCopy];
+  [buttonCopy setAttributedTitle:v8 forState:0];
 
-  v9 = [(WGNewWidgetsButton *)self _attributedStringWithColor:v6];
+  v9 = [(WGNewWidgetsButton *)self _attributedStringWithColor:colorCopy];
 
-  [v7 setAttributedTitle:v9 forState:4];
-  [v7 setAttributedTitle:v9 forState:1];
+  [buttonCopy setAttributedTitle:v9 forState:4];
+  [buttonCopy setAttributedTitle:v9 forState:1];
 }
 
 - (id)_textFont
 {
-  v2 = [MEMORY[0x277CF0D60] preferredFontProvider];
-  v3 = [v2 preferredFontForTextStyle:*MEMORY[0x277D76940] hiFontStyle:1];
+  preferredFontProvider = [MEMORY[0x277CF0D60] preferredFontProvider];
+  v3 = [preferredFontProvider preferredFontForTextStyle:*MEMORY[0x277D76940] hiFontStyle:1];
 
   return v3;
 }
 
-- (id)_textAttributesWithColor:(id)a3
+- (id)_textAttributesWithColor:(id)color
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [(WGNewWidgetsButton *)self _textFont];
-  if (v6)
+  colorCopy = color;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  _textFont = [(WGNewWidgetsButton *)self _textFont];
+  if (_textFont)
   {
-    [v5 setObject:v6 forKey:*MEMORY[0x277D740A8]];
+    [dictionary setObject:_textFont forKey:*MEMORY[0x277D740A8]];
   }
 
-  if (v4)
+  if (colorCopy)
   {
-    [v5 setObject:v4 forKey:*MEMORY[0x277D740C0]];
+    [dictionary setObject:colorCopy forKey:*MEMORY[0x277D740C0]];
   }
 
-  v7 = [MEMORY[0x277D74248] defaultParagraphStyle];
-  v8 = [v7 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+  v8 = [defaultParagraphStyle mutableCopy];
 
   [v8 setAlignment:1];
-  [v5 setObject:v8 forKey:*MEMORY[0x277D74118]];
+  [dictionary setObject:v8 forKey:*MEMORY[0x277D74118]];
 
-  return v5;
+  return dictionary;
 }
 
 - (id)_numberTextAttributes
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(WGNewWidgetsButton *)self _numberFont];
-  if (v4)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  _numberFont = [(WGNewWidgetsButton *)self _numberFont];
+  if (_numberFont)
   {
-    [v3 setObject:v4 forKey:*MEMORY[0x277D740A8]];
+    [dictionary setObject:_numberFont forKey:*MEMORY[0x277D740A8]];
   }
 
   legibilitySettings = self->_legibilitySettings;
@@ -204,32 +204,32 @@
     [MEMORY[0x277D75348] blackColor];
   }
   v6 = ;
-  [v3 setObject:v6 forKey:*MEMORY[0x277D740C0]];
+  [dictionary setObject:v6 forKey:*MEMORY[0x277D740C0]];
 
-  v7 = [MEMORY[0x277D74248] defaultParagraphStyle];
-  v8 = [v7 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+  v8 = [defaultParagraphStyle mutableCopy];
 
   [v8 setAlignment:1];
-  [v3 setObject:v8 forKey:*MEMORY[0x277D74118]];
+  [dictionary setObject:v8 forKey:*MEMORY[0x277D74118]];
 
-  return v3;
+  return dictionary;
 }
 
-- (id)_attributedStringWithColor:(id)a3
+- (id)_attributedStringWithColor:(id)color
 {
-  v4 = a3;
-  v5 = [(WGNewWidgetsButton *)self numberText];
-  v6 = [(WGNewWidgetsButton *)self _numberTextAttributes];
-  v7 = [(WGNewWidgetsButton *)self _numberAttributedStringWithNumberText:v5 attributes:v6];
+  colorCopy = color;
+  numberText = [(WGNewWidgetsButton *)self numberText];
+  _numberTextAttributes = [(WGNewWidgetsButton *)self _numberTextAttributes];
+  v7 = [(WGNewWidgetsButton *)self _numberAttributedStringWithNumberText:numberText attributes:_numberTextAttributes];
 
   v8 = objc_alloc(MEMORY[0x277CCAB48]);
-  v9 = [(WGNewWidgetsButton *)self text];
-  v10 = [(WGNewWidgetsButton *)self _textAttributesWithColor:v4];
+  text = [(WGNewWidgetsButton *)self text];
+  v10 = [(WGNewWidgetsButton *)self _textAttributesWithColor:colorCopy];
 
-  v11 = [v8 initWithString:v9 attributes:v10];
-  v12 = [v11 string];
-  v13 = [(WGNewWidgetsButton *)self numberText];
-  v14 = [v12 rangeOfString:v13];
+  v11 = [v8 initWithString:text attributes:v10];
+  string = [v11 string];
+  numberText2 = [(WGNewWidgetsButton *)self numberText];
+  v14 = [string rangeOfString:numberText2];
   v16 = v15;
 
   if (v14 != 0x7FFFFFFFFFFFFFFFLL)
@@ -240,37 +240,37 @@
   return v11;
 }
 
-- (id)_numberAttributedStringWithNumberText:(id)a3 attributes:(id)a4
+- (id)_numberAttributedStringWithNumberText:(id)text attributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:v6];
-  if (v7)
+  textCopy = text;
+  attributesCopy = attributes;
+  v8 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:textCopy];
+  if (attributesCopy)
   {
-    v9 = [v7 description];
+    v9 = [attributesCopy description];
     [v8 appendString:v9];
   }
 
   legibilitySettings = self->_legibilitySettings;
   if (legibilitySettings)
   {
-    v11 = [(_UILegibilitySettings *)legibilitySettings primaryColor];
-    v12 = [v11 description];
+    primaryColor = [(_UILegibilitySettings *)legibilitySettings primaryColor];
+    v12 = [primaryColor description];
     [v8 appendString:v12];
 
-    v13 = [(_UILegibilitySettings *)self->_legibilitySettings shadowColor];
-    v14 = [v13 description];
+    shadowColor = [(_UILegibilitySettings *)self->_legibilitySettings shadowColor];
+    v14 = [shadowColor description];
     [v8 appendString:v14];
   }
 
   v15 = [(NSCache *)self->_numberAttributedStringCache objectForKey:v8];
   if (!v15)
   {
-    v16 = [(WGNewWidgetsButton *)self _numberImageForNumberText:v6 withAttributes:v7];
+    v16 = [(WGNewWidgetsButton *)self _numberImageForNumberText:textCopy withAttributes:attributesCopy];
     v17 = [objc_alloc(MEMORY[0x277D74270]) initWithData:0 ofType:0];
     [v17 setImage:v16];
-    v18 = [(WGNewWidgetsButton *)self _numberFont];
-    [v18 descender];
+    _numberFont = [(WGNewWidgetsButton *)self _numberFont];
+    [_numberFont descender];
     _WGMainScreenScale();
     BSFloatFloorForScale();
     v20 = v19;
@@ -284,15 +284,15 @@
   return v15;
 }
 
-- (id)_numberImageForNumberText:(id)a3 withAttributes:(id)a4
+- (id)_numberImageForNumberText:(id)text withAttributes:(id)attributes
 {
-  v6 = a4;
-  [(WGNewWidgetsButton *)self _numberLabelSizeForText:a3 withAttributes:v6];
+  attributesCopy = attributes;
+  [(WGNewWidgetsButton *)self _numberLabelSizeForText:text withAttributes:attributesCopy];
   width = v21.width;
   height = v21.height;
   UIGraphicsBeginImageContextWithOptions(v21, 0, 0.0);
-  v9 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [v9 set];
+  primaryColor = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [primaryColor set];
 
   v10 = *MEMORY[0x277CBF348];
   v11 = *(MEMORY[0x277CBF348] + 8);
@@ -312,8 +312,8 @@
     height = v16;
   }
 
-  v17 = [(WGNewWidgetsButton *)self numberText];
-  [v17 drawInRect:v6 withAttributes:{v10, v11, width, height}];
+  numberText = [(WGNewWidgetsButton *)self numberText];
+  [numberText drawInRect:attributesCopy withAttributes:{v10, v11, width, height}];
 
   v18 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -321,11 +321,11 @@
   return v18;
 }
 
-- (CGSize)_numberLabelSizeForText:(id)a3 withAttributes:(id)a4
+- (CGSize)_numberLabelSizeForText:(id)text withAttributes:(id)attributes
 {
-  v6 = a3;
-  [v6 sizeWithAttributes:a4];
-  v7 = [v6 length];
+  textCopy = text;
+  [textCopy sizeWithAttributes:attributes];
+  v7 = [textCopy length];
 
   if (v7 == 1)
   {
@@ -336,8 +336,8 @@
 
   else
   {
-    v10 = [(WGNewWidgetsButton *)self _numberFont];
-    [v10 capHeight];
+    _numberFont = [(WGNewWidgetsButton *)self _numberFont];
+    [_numberFont capHeight];
     _WGMainScreenScale();
     BSFloatCeilForScale();
     v9 = v11;
@@ -352,9 +352,9 @@
   return result;
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  objc_storeStrong(&self->_legibilitySettings, a3);
+  objc_storeStrong(&self->_legibilitySettings, settings);
 
   [(WGNewWidgetsButton *)self _updateButtons];
 }

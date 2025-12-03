@@ -1,5 +1,5 @@
 @interface _CUILayerStackRendition
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4;
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version;
 - (id)metrics;
 - (void)dealloc;
 @end
@@ -20,30 +20,30 @@
   [(_CUIRawDataRendition *)&v3 dealloc];
 }
 
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version
 {
   v50.receiver = self;
   v50.super_class = _CUILayerStackRendition;
-  v5 = [(_CUIRawDataRendition *)&v50 _initWithCSIHeader:a3 version:*&a4];
-  if (a3->var6 != 1145132097)
+  v5 = [(_CUIRawDataRendition *)&v50 _initWithCSIHeader:header version:*&version];
+  if (header->var6 != 1145132097)
   {
     [_CUILayerStackRendition _initWithCSIHeader:version:];
   }
 
-  LODWORD(v6) = a3->var3;
-  LODWORD(v7) = a3->var4;
+  LODWORD(v6) = header->var3;
+  LODWORD(v7) = header->var4;
   v8 = v6;
   v9 = v7;
 
   v5[28] = -[CUIRenditionMetrics initwithImageSize:scale:]([CUIRenditionMetrics alloc], v8, v9, [v5 internalScale]);
-  var10 = a3->var10;
+  var10 = header->var10;
   if (var10)
   {
     v48 = 0;
-    v47 = a3;
-    v49 = &a3->var11.var1[a3->var11.var0] + var10;
+    headerCopy = header;
+    v49 = &header->var11.var1[header->var11.var0] + var10;
     v11 = v49 + 4;
-    v12 = &a3->var11.var1[a3->var11.var0 + 1];
+    v12 = &header->var11.var1[header->var11.var0 + 1];
     v13 = &OBJC_IVAR___CSIBitmapWrapper__targetPlatform;
     v14 = OBJC_CLASS___CUIPSDLayer_ptr;
     v15 = OBJC_CLASS___CUIPSDLayer_ptr;
@@ -162,7 +162,7 @@
     while (v12 < v11);
     if ((v48 & 1) == 0)
     {
-      v36 = v47->var10;
+      v36 = headerCopy->var10;
       if (v36)
       {
         v37 = 4 - v36;

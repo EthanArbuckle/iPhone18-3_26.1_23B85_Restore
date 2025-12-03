@@ -1,9 +1,9 @@
 @interface CRLAnalyticsOSSignpostManager
 + (_TtC8Freeform29CRLAnalyticsOSSignpostManager)shared;
 - (_TtC8Freeform29CRLAnalyticsOSSignpostManager)init;
-- (void)beginSignpostIntervalWithName:(id)a3 with:(id)a4;
-- (void)endSignpostIntervalFor:(id)a3;
-- (void)endSignpostIntervalWithName:(id)a3;
+- (void)beginSignpostIntervalWithName:(id)name with:(id)with;
+- (void)endSignpostIntervalFor:(id)for;
+- (void)endSignpostIntervalWithName:(id)name;
 @end
 
 @implementation CRLAnalyticsOSSignpostManager
@@ -20,27 +20,27 @@
   return v3;
 }
 
-- (void)beginSignpostIntervalWithName:(id)a3 with:(id)a4
+- (void)beginSignpostIntervalWithName:(id)name with:(id)with
 {
   sub_1006055C8();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
-  CRLAnalyticsOSSignpostManager.beginSignpostInterval(name:with:)(v7, v6);
+  nameCopy = name;
+  selfCopy = self;
+  CRLAnalyticsOSSignpostManager.beginSignpostInterval(name:with:)(nameCopy, v6);
 }
 
-- (void)endSignpostIntervalFor:(id)a3
+- (void)endSignpostIntervalFor:(id)for
 {
-  v5 = a3;
-  v6 = self;
-  CRLAnalyticsOSSignpostManager.endSignpostInterval(for:)(a3);
+  forCopy = for;
+  selfCopy = self;
+  CRLAnalyticsOSSignpostManager.endSignpostInterval(for:)(for);
 }
 
-- (void)endSignpostIntervalWithName:(id)a3
+- (void)endSignpostIntervalWithName:(id)name
 {
-  v4 = a3;
-  v5 = self;
-  CRLAnalyticsOSSignpostManager.endSignpostInterval(name:)(v4);
+  nameCopy = name;
+  selfCopy = self;
+  CRLAnalyticsOSSignpostManager.endSignpostInterval(name:)(nameCopy);
 }
 
 - (_TtC8Freeform29CRLAnalyticsOSSignpostManager)init

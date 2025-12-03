@@ -1,26 +1,26 @@
 @interface SBBlurthroughSwitcherEventResponse
-- (SBBlurthroughSwitcherEventResponse)initWithFromLeafAppLayout:(id)a3 throughLeafAppLayout:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBBlurthroughSwitcherEventResponse)initWithFromLeafAppLayout:(id)layout throughLeafAppLayout:(id)appLayout;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBBlurthroughSwitcherEventResponse
 
-- (SBBlurthroughSwitcherEventResponse)initWithFromLeafAppLayout:(id)a3 throughLeafAppLayout:(id)a4
+- (SBBlurthroughSwitcherEventResponse)initWithFromLeafAppLayout:(id)layout throughLeafAppLayout:(id)appLayout
 {
-  v8 = a3;
-  v9 = a4;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
   v12.receiver = self;
   v12.super_class = SBBlurthroughSwitcherEventResponse;
   v10 = [(SBChainableModifierEventResponse *)&v12 init];
   if (v10)
   {
-    if (v8)
+    if (layoutCopy)
     {
-      if (v9)
+      if (appLayoutCopy)
       {
 LABEL_4:
-        objc_storeStrong(&v10->_fromLeafAppLayout, a3);
-        objc_storeStrong(&v10->_throughLeafAppLayout, a4);
+        objc_storeStrong(&v10->_fromLeafAppLayout, layout);
+        objc_storeStrong(&v10->_throughLeafAppLayout, appLayout);
         goto LABEL_5;
       }
     }
@@ -28,7 +28,7 @@ LABEL_4:
     else
     {
       [SBBlurthroughSwitcherEventResponse initWithFromLeafAppLayout:a2 throughLeafAppLayout:v10];
-      if (v9)
+      if (appLayoutCopy)
       {
         goto LABEL_4;
       }
@@ -43,16 +43,16 @@ LABEL_5:
   return v10;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v10.receiver = self;
   v10.super_class = SBBlurthroughSwitcherEventResponse;
-  v4 = [(SBChainableModifierEventResponse *)&v10 descriptionBuilderWithMultilinePrefix:a3];
-  v5 = [(SBAppLayout *)self->_fromLeafAppLayout succinctDescription];
-  v6 = [v4 appendObject:v5 withName:@"fromLeafAppLayout"];
+  v4 = [(SBChainableModifierEventResponse *)&v10 descriptionBuilderWithMultilinePrefix:prefix];
+  succinctDescription = [(SBAppLayout *)self->_fromLeafAppLayout succinctDescription];
+  v6 = [v4 appendObject:succinctDescription withName:@"fromLeafAppLayout"];
 
-  v7 = [(SBAppLayout *)self->_throughLeafAppLayout succinctDescription];
-  v8 = [v4 appendObject:v7 withName:@"throughLeafAppLayout"];
+  succinctDescription2 = [(SBAppLayout *)self->_throughLeafAppLayout succinctDescription];
+  v8 = [v4 appendObject:succinctDescription2 withName:@"throughLeafAppLayout"];
 
   return v4;
 }

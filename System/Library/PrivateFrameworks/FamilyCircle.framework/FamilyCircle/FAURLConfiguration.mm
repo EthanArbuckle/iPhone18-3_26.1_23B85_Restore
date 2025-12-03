@@ -1,21 +1,21 @@
 @interface FAURLConfiguration
-- (id)URLForEndpoint:(id)a3;
-- (void)URLForEndpoint:(id)a3 withCompletion:(id)a4;
-- (void)fetchAAURLConfigurationWithCompletion:(id)a3;
+- (id)URLForEndpoint:(id)endpoint;
+- (void)URLForEndpoint:(id)endpoint withCompletion:(id)completion;
+- (void)fetchAAURLConfigurationWithCompletion:(id)completion;
 @end
 
 @implementation FAURLConfiguration
 
-- (void)URLForEndpoint:(id)a3 withCompletion:(id)a4
+- (void)URLForEndpoint:(id)endpoint withCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  completionCopy = completion;
   v8 = _FALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = endpointCopy;
     _os_log_impl(&dword_1B70B0000, v8, OS_LOG_TYPE_DEFAULT, "Desired enpoint %@", buf, 0xCu);
   }
 
@@ -23,10 +23,10 @@
   v12[1] = 3221225472;
   v12[2] = __52__FAURLConfiguration_URLForEndpoint_withCompletion___block_invoke;
   v12[3] = &unk_1E7CA4770;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = endpointCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = endpointCopy;
   [(FAURLConfiguration *)self fetchAAURLConfigurationWithCompletion:v12];
 
   v11 = *MEMORY[0x1E69E9840];
@@ -63,28 +63,28 @@ void __52__FAURLConfiguration_URLForEndpoint_withCompletion___block_invoke(uint6
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)URLForEndpoint:(id)a3
+- (id)URLForEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v5 = objc_alloc(MEMORY[0x1E6985DF8]);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __37__FAURLConfiguration_URLForEndpoint___block_invoke;
   v9[3] = &unk_1E7CA4798;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = endpointCopy;
+  v6 = endpointCopy;
   v7 = [v5 initWithBlock:v9];
 
   return v7;
 }
 
-- (void)fetchAAURLConfigurationWithCompletion:(id)a3
+- (void)fetchAAURLConfigurationWithCompletion:(id)completion
 {
   v3 = MEMORY[0x1E698B968];
-  v4 = a3;
-  v5 = [v3 sharedServer];
-  [v5 configurationWithCompletion:v4];
+  completionCopy = completion;
+  sharedServer = [v3 sharedServer];
+  [sharedServer configurationWithCompletion:completionCopy];
 }
 
 void __52__FAURLConfiguration_URLForEndpoint_withCompletion___block_invoke_cold_1(uint64_t a1, NSObject *a2)

@@ -1,14 +1,14 @@
 @interface NearbyTransitFeatureDiscoveryDataStore
 - (BOOL)hasUserEverAddedFavorite;
 - (NearbyTransitFeatureDiscoveryDataStore)init;
-- (NearbyTransitFeatureDiscoveryDataStore)initWithDictionary:(id)a3;
+- (NearbyTransitFeatureDiscoveryDataStore)initWithDictionary:(id)dictionary;
 - (unint64_t)numberOfSessionsShown;
 - (unint64_t)numberOfTimesDismissed;
 - (void)_persistData;
-- (void)_setInitialTipDisplayDate:(id)a3;
-- (void)_setUserDismissedTipOnDate:(id)a3;
+- (void)_setInitialTipDisplayDate:(id)date;
+- (void)_setUserDismissedTipOnDate:(id)date;
 - (void)incrementSessionsShown;
-- (void)setUserEverAddedFavorite:(BOOL)a3;
+- (void)setUserEverAddedFavorite:(BOOL)favorite;
 - (void)userDismissedTip;
 @end
 
@@ -20,15 +20,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (unint64_t)numberOfTimesDismissed
@@ -37,15 +37,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntValue];
+    unsignedIntValue = [v2 unsignedIntValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (unint64_t)numberOfSessionsShown
@@ -54,15 +54,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntValue];
+    unsignedIntValue = [v2 unsignedIntValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (NearbyTransitFeatureDiscoveryDataStore)init
@@ -85,11 +85,11 @@
   return v6;
 }
 
-- (void)_setInitialTipDisplayDate:(id)a3
+- (void)_setInitialTipDisplayDate:(id)date
 {
-  v4 = a3;
-  v5 = [(NearbyTransitFeatureDiscoveryDataStore *)self initialTipDisplayDate];
-  if (v5)
+  dateCopy = date;
+  initialTipDisplayDate = [(NearbyTransitFeatureDiscoveryDataStore *)self initialTipDisplayDate];
+  if (initialTipDisplayDate)
   {
     v6 = sub_10005F62C();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -99,18 +99,18 @@
     }
   }
 
-  if (([v4 isEqualToDate:v5] & 1) == 0)
+  if (([dateCopy isEqualToDate:initialTipDisplayDate] & 1) == 0)
   {
-    [(NSMutableDictionary *)self->_defaultsDictionary setObject:v4 forKeyedSubscript:@"NearbyTransitFeatureDiscoveryInitialTipDisplayDate"];
+    [(NSMutableDictionary *)self->_defaultsDictionary setObject:dateCopy forKeyedSubscript:@"NearbyTransitFeatureDiscoveryInitialTipDisplayDate"];
     [(NearbyTransitFeatureDiscoveryDataStore *)self _persistData];
   }
 }
 
 - (void)incrementSessionsShown
 {
-  v3 = [(NearbyTransitFeatureDiscoveryDataStore *)self initialTipDisplayDate];
+  initialTipDisplayDate = [(NearbyTransitFeatureDiscoveryDataStore *)self initialTipDisplayDate];
 
-  if (!v3)
+  if (!initialTipDisplayDate)
   {
     v4 = +[NSDate date];
     [(NSMutableDictionary *)self->_defaultsDictionary setObject:v4 forKeyedSubscript:@"NearbyTransitFeatureDiscoveryInitialTipDisplayDate"];
@@ -122,25 +122,25 @@
   [(NearbyTransitFeatureDiscoveryDataStore *)self _persistData];
 }
 
-- (void)setUserEverAddedFavorite:(BOOL)a3
+- (void)setUserEverAddedFavorite:(BOOL)favorite
 {
-  v3 = a3;
-  if ([(NearbyTransitFeatureDiscoveryDataStore *)self hasUserEverAddedFavorite]!= a3)
+  favoriteCopy = favorite;
+  if ([(NearbyTransitFeatureDiscoveryDataStore *)self hasUserEverAddedFavorite]!= favorite)
   {
-    v5 = [NSNumber numberWithBool:v3];
+    v5 = [NSNumber numberWithBool:favoriteCopy];
     [(NSMutableDictionary *)self->_defaultsDictionary setObject:v5 forKeyedSubscript:@"NearbyTransitFeatureDiscoveryHasUserEverAddedFavorite"];
 
     [(NearbyTransitFeatureDiscoveryDataStore *)self _persistData];
   }
 }
 
-- (void)_setUserDismissedTipOnDate:(id)a3
+- (void)_setUserDismissedTipOnDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [NSNumber numberWithUnsignedInteger:[(NearbyTransitFeatureDiscoveryDataStore *)self numberOfTimesDismissed]+ 1];
   [(NSMutableDictionary *)self->_defaultsDictionary setObject:v5 forKeyedSubscript:@"NearbyTransitFeatureDiscoveryDismissedCount"];
 
-  [(NSMutableDictionary *)self->_defaultsDictionary setObject:v4 forKeyedSubscript:@"NearbyTransitFeatureDiscoveryLastDimissedDate"];
+  [(NSMutableDictionary *)self->_defaultsDictionary setObject:dateCopy forKeyedSubscript:@"NearbyTransitFeatureDiscoveryLastDimissedDate"];
 
   [(NearbyTransitFeatureDiscoveryDataStore *)self _persistData];
 }
@@ -157,15 +157,15 @@
   [v3 setObject:self->_defaultsDictionary forKey:@"__internal__NearbyTransitTipInfoKey"];
 }
 
-- (NearbyTransitFeatureDiscoveryDataStore)initWithDictionary:(id)a3
+- (NearbyTransitFeatureDiscoveryDataStore)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = NearbyTransitFeatureDiscoveryDataStore;
   v5 = [(NearbyTransitFeatureDiscoveryDataStore *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [dictionaryCopy mutableCopy];
     defaultsDictionary = v5->_defaultsDictionary;
     v5->_defaultsDictionary = v6;
   }

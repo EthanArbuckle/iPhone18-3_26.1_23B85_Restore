@@ -2,10 +2,10 @@
 - (AXVoiceOverPunctuationPickerDelegate)delegate;
 - (BOOL)hasRealTextInSearchField;
 - (id)activePunctuationList;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_handleSearchFieldTextChange:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_handleSearchFieldTextChange:(id)change;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)loadView;
 - (void)updateConstraints;
@@ -54,25 +54,25 @@
 
   [(UICollectionView *)self->_collectionView setDelegate:self];
   [(UICollectionView *)self->_collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"AXVOPunctuationCollectionViewCell"];
-  v16 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
-  [v16 addSubview:self->_searchField];
+  view = [(AXVoiceOverPunctuationSelectionPicker *)self view];
+  [view addSubview:self->_searchField];
 
-  v17 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
-  [v17 addSubview:self->_collectionView];
+  view2 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
+  [view2 addSubview:self->_collectionView];
 
-  v18 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
-  [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(UICollectionView *)self->_collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UISearchField *)self->_searchField setTranslatesAutoresizingMaskIntoConstraints:0];
   v19 = +[NSMutableArray array];
   punctuationList = self->_punctuationList;
-  v37 = self;
+  selfCopy = self;
   self->_punctuationList = v19;
 
   v21 = +[AXLanguageManager sharedInstance];
-  v22 = [v21 dialectForSystemLanguage];
-  v38 = [v22 specificLanguageID];
+  dialectForSystemLanguage = [v21 dialectForSystemLanguage];
+  specificLanguageID = [dialectForSystemLanguage specificLanguageID];
 
   v23 = +[NSCharacterSet whitespaceNewlineAndSpecialCharacterSet];
   [SCRCPunctuationVerboseness verbosenessDictionaryForLevel:0];
@@ -80,8 +80,8 @@
   v41 = 0u;
   v42 = 0u;
   v35 = v43 = 0u;
-  v24 = [v35 allKeys];
-  v25 = [v24 sortedArrayUsingComparator:&__block_literal_global_57];
+  allKeys = [v35 allKeys];
+  v25 = [allKeys sortedArrayUsingComparator:&__block_literal_global_57];
 
   v26 = [v25 countByEnumeratingWithState:&v40 objects:v47 count:16];
   if (v26)
@@ -105,7 +105,7 @@
           if (v31 || (v31 = AXCopyUnicodeDescriptionStringForCharacter()) != 0)
           {
             v32 = v31;
-            v33 = v37->_punctuationList;
+            v33 = selfCopy->_punctuationList;
             v45[0] = @"character";
             v45[1] = @"description";
             v46[0] = v30;
@@ -122,7 +122,7 @@
     while (v27);
   }
 
-  [(AXVoiceOverPunctuationSelectionPicker *)v37 updateConstraints];
+  [(AXVoiceOverPunctuationSelectionPicker *)selfCopy updateConstraints];
 }
 
 - (void)dealloc
@@ -135,9 +135,9 @@
   [(AXVoiceOverPunctuationSelectionPicker *)&v4 dealloc];
 }
 
-- (void)_handleSearchFieldTextChange:(id)a3
+- (void)_handleSearchFieldTextChange:(id)change
 {
-  v4 = [(UISearchField *)self->_searchField text];
+  text = [(UISearchField *)self->_searchField text];
   [(NSMutableArray *)self->_filteredPunctuationList removeAllObjects];
   if ([(AXVoiceOverPunctuationSelectionPicker *)self hasRealTextInSearchField])
   {
@@ -163,7 +163,7 @@
           v9 = *(*(&v13 + 1) + 8 * i);
           v10 = [v9 objectForKeyedSubscript:@"description"];
           v11 = [v9 objectForKeyedSubscript:@"character"];
-          if ([v10 rangeOfString:v4 options:1] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v11, "rangeOfString:options:", v4, 1) != 0x7FFFFFFFFFFFFFFFLL)
+          if ([v10 rangeOfString:text options:1] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v11, "rangeOfString:options:", text, 1) != 0x7FFFFFFFFFFFFFFFLL)
           {
             [(NSMutableArray *)self->_filteredPunctuationList addObject:v9];
           }
@@ -181,70 +181,70 @@
 
 - (void)updateConstraints
 {
-  v3 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
+  view = [(AXVoiceOverPunctuationSelectionPicker *)self view];
   searchField = self->_searchField;
-  v5 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
-  v6 = [NSLayoutConstraint constraintWithItem:searchField attribute:5 relatedBy:0 toItem:v5 attribute:5 multiplier:1.0 constant:5.0];
-  [v3 addConstraint:v6];
+  view2 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
+  v6 = [NSLayoutConstraint constraintWithItem:searchField attribute:5 relatedBy:0 toItem:view2 attribute:5 multiplier:1.0 constant:5.0];
+  [view addConstraint:v6];
 
-  v7 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
+  view3 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
   v8 = self->_searchField;
-  v9 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
-  v10 = [NSLayoutConstraint constraintWithItem:v8 attribute:6 relatedBy:0 toItem:v9 attribute:6 multiplier:1.0 constant:-5.0];
-  [v7 addConstraint:v10];
+  view4 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
+  v10 = [NSLayoutConstraint constraintWithItem:v8 attribute:6 relatedBy:0 toItem:view4 attribute:6 multiplier:1.0 constant:-5.0];
+  [view3 addConstraint:v10];
 
-  v11 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
-  v12 = [(UISearchField *)self->_searchField topAnchor];
-  v13 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
-  v14 = [v13 safeAreaLayoutGuide];
-  v15 = [v14 topAnchor];
-  v16 = [v12 constraintEqualToAnchor:v15 constant:5.0];
-  [v11 addConstraint:v16];
+  view5 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
+  topAnchor = [(UISearchField *)self->_searchField topAnchor];
+  view6 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
+  safeAreaLayoutGuide = [view6 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:5.0];
+  [view5 addConstraint:v16];
 
-  v17 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
+  view7 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
   v18 = [NSLayoutConstraint constraintWithItem:self->_searchField attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:30.0];
-  [v17 addConstraint:v18];
+  [view7 addConstraint:v18];
 
-  v19 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
+  view8 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
   v20 = [NSLayoutConstraint constraintWithItem:self->_collectionView attribute:3 relatedBy:0 toItem:self->_searchField attribute:4 multiplier:1.0 constant:5.0];
-  [v19 addConstraint:v20];
+  [view8 addConstraint:v20];
 
-  v21 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
+  view9 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
   collectionView = self->_collectionView;
-  v23 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
-  v24 = [NSLayoutConstraint constraintWithItem:collectionView attribute:5 relatedBy:0 toItem:v23 attribute:5 multiplier:1.0 constant:5.0];
-  [v21 addConstraint:v24];
+  view10 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
+  v24 = [NSLayoutConstraint constraintWithItem:collectionView attribute:5 relatedBy:0 toItem:view10 attribute:5 multiplier:1.0 constant:5.0];
+  [view9 addConstraint:v24];
 
-  v25 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
+  view11 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
   v26 = self->_collectionView;
-  v27 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
-  v28 = [NSLayoutConstraint constraintWithItem:v26 attribute:8 relatedBy:0 toItem:v27 attribute:8 multiplier:1.0 constant:-45.0];
-  [v25 addConstraint:v28];
+  view12 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
+  v28 = [NSLayoutConstraint constraintWithItem:v26 attribute:8 relatedBy:0 toItem:view12 attribute:8 multiplier:1.0 constant:-45.0];
+  [view11 addConstraint:v28];
 
-  v32 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
+  view13 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
   v29 = self->_collectionView;
-  v30 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
-  v31 = [NSLayoutConstraint constraintWithItem:v29 attribute:7 relatedBy:0 toItem:v30 attribute:7 multiplier:1.0 constant:-10.0];
-  [v32 addConstraint:v31];
+  view14 = [(AXVoiceOverPunctuationSelectionPicker *)self view];
+  v31 = [NSLayoutConstraint constraintWithItem:v29 attribute:7 relatedBy:0 toItem:view14 attribute:7 multiplier:1.0 constant:-10.0];
+  [view13 addConstraint:v31];
 }
 
 - (BOOL)hasRealTextInSearchField
 {
-  v3 = [(UISearchField *)self->_searchField markedTextRange];
+  markedTextRange = [(UISearchField *)self->_searchField markedTextRange];
   searchField = self->_searchField;
-  v5 = [(UISearchField *)searchField beginningOfDocument];
-  v6 = [(UISearchField *)self->_searchField endOfDocument];
-  v7 = [(UISearchField *)searchField textRangeFromPosition:v5 toPosition:v6];
+  beginningOfDocument = [(UISearchField *)searchField beginningOfDocument];
+  endOfDocument = [(UISearchField *)self->_searchField endOfDocument];
+  v7 = [(UISearchField *)searchField textRangeFromPosition:beginningOfDocument toPosition:endOfDocument];
 
-  if ([v3 isEqual:v7])
+  if ([markedTextRange isEqual:v7])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [(UISearchField *)self->_searchField text];
-    v8 = [v9 length] != 0;
+    text = [(UISearchField *)self->_searchField text];
+    v8 = [text length] != 0;
   }
 
   return v8;
@@ -252,9 +252,9 @@
 
 - (id)activePunctuationList
 {
-  v3 = [(AXVoiceOverPunctuationSelectionPicker *)self hasRealTextInSearchField];
+  hasRealTextInSearchField = [(AXVoiceOverPunctuationSelectionPicker *)self hasRealTextInSearchField];
   v4 = &OBJC_IVAR___AXVoiceOverPunctuationSelectionPicker__punctuationList;
-  if (v3)
+  if (hasRealTextInSearchField)
   {
     v4 = &OBJC_IVAR___AXVoiceOverPunctuationSelectionPicker__filteredPunctuationList;
   }
@@ -264,45 +264,45 @@
   return v5;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(AXVoiceOverPunctuationSelectionPicker *)self activePunctuationList:a3];
+  v4 = [(AXVoiceOverPunctuationSelectionPicker *)self activePunctuationList:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v12 = a4;
-  v5 = [v12 row];
-  v6 = [(AXVoiceOverPunctuationSelectionPicker *)self activePunctuationList];
-  v7 = [v6 count];
+  pathCopy = path;
+  v5 = [pathCopy row];
+  activePunctuationList = [(AXVoiceOverPunctuationSelectionPicker *)self activePunctuationList];
+  v7 = [activePunctuationList count];
 
   if (v5 < v7)
   {
-    v8 = [(AXVoiceOverPunctuationSelectionPicker *)self delegate];
-    v9 = [(AXVoiceOverPunctuationSelectionPicker *)self activePunctuationList];
-    v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v12, "row")}];
+    delegate = [(AXVoiceOverPunctuationSelectionPicker *)self delegate];
+    activePunctuationList2 = [(AXVoiceOverPunctuationSelectionPicker *)self activePunctuationList];
+    v10 = [activePunctuationList2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
     v11 = [v10 objectForKeyedSubscript:@"character"];
-    [v8 buttonPickerWantsToInsertText:v11];
+    [delegate buttonPickerWantsToInsertText:v11];
 
     [(AXVoiceOverPunctuationSelectionPicker *)self dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AXVoiceOverPunctuationSelectionPicker *)self activePunctuationList];
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:@"AXVOPunctuationCollectionViewCell" forIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  activePunctuationList = [(AXVoiceOverPunctuationSelectionPicker *)self activePunctuationList];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"AXVOPunctuationCollectionViewCell" forIndexPath:pathCopy];
 
-  v10 = [v6 row];
-  if (v10 < [v8 count])
+  v10 = [pathCopy row];
+  if (v10 < [activePunctuationList count])
   {
     v11 = [AXAttributedString alloc];
-    v12 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+    v12 = [activePunctuationList objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
     v13 = [v12 objectForKeyedSubscript:@"character"];
     v14 = [v11 initWithString:v13];
 
@@ -311,8 +311,8 @@
     v15 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     [v14 setAttributes:v15];
 
-    v16 = [v9 label];
-    [v16 setText:v14];
+    label = [v9 label];
+    [label setText:v14];
   }
 
   [v9 setAccessibilityTraits:UIAccessibilityTraitButton];

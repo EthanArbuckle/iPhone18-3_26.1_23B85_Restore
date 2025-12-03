@@ -1,27 +1,27 @@
 @interface FollowUpControllerImpl
-- (FollowUpControllerImpl)initWithRegistry:(const void *)a3;
+- (FollowUpControllerImpl)initWithRegistry:(const void *)registry;
 - (id).cxx_construct;
-- (id)_createCellularPlanFollowUpItemWithReason:(int)a3 userInfo:(id)a4 uniqueIdentifier:(id)a5;
-- (id)_createInstallReplaceFollowUpItemWithReason:(int)a3 userInfo:(id)a4 uniqueIdentifier:(id)a5;
-- (id)_createTurnOnWifiCallingFollowUp:(id)a3 userInfo:(id)a4;
-- (id)_localize:(id)a3 keyName:(id)a4;
-- (id)_textForReason:(int)a3 carrierName:(id)a4;
-- (id)_titleForReason:(int)a3 carrierName:(id)a4 isNotification:(BOOL)a5;
+- (id)_createCellularPlanFollowUpItemWithReason:(int)reason userInfo:(id)info uniqueIdentifier:(id)identifier;
+- (id)_createInstallReplaceFollowUpItemWithReason:(int)reason userInfo:(id)info uniqueIdentifier:(id)identifier;
+- (id)_createTurnOnWifiCallingFollowUp:(id)up userInfo:(id)info;
+- (id)_localize:(id)_localize keyName:(id)name;
+- (id)_textForReason:(int)reason carrierName:(id)name;
+- (id)_titleForReason:(int)reason carrierName:(id)name isNotification:(BOOL)notification;
 - (id)getPendingFollowUpItems;
-- (void)_clearFollowUpForCategory:(id)a3;
-- (void)_clearFollowUpForIdentifier:(id)a3;
-- (void)_createNoteForFollowupItem:(id)a3 withAction:(id)a4 reason:(int)a5 carrierName:(id)a6;
-- (void)clearFollowUp:(int)a3;
-- (void)clearFollowUpWithUID:(id)a3;
-- (void)hideNotificationWithIdentifier:(id)a3;
-- (void)publishNotificationWithIdentifier:(id)a3 header:(id)a4 title:(id)a5 body:(id)a6 userInfo:(id)a7 url:(id)a8 shouldBackgroundDefaultAction:(BOOL)a9;
-- (void)showFollowUp:(int)a3 userInfo:(id)a4 withUniqueIdentifier:(id)a5;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)_clearFollowUpForCategory:(id)category;
+- (void)_clearFollowUpForIdentifier:(id)identifier;
+- (void)_createNoteForFollowupItem:(id)item withAction:(id)action reason:(int)reason carrierName:(id)name;
+- (void)clearFollowUp:(int)up;
+- (void)clearFollowUpWithUID:(id)d;
+- (void)hideNotificationWithIdentifier:(id)identifier;
+- (void)publishNotificationWithIdentifier:(id)identifier header:(id)header title:(id)title body:(id)body userInfo:(id)info url:(id)url shouldBackgroundDefaultAction:(BOOL)action;
+- (void)showFollowUp:(int)up userInfo:(id)info withUniqueIdentifier:(id)identifier;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation FollowUpControllerImpl
 
-- (FollowUpControllerImpl)initWithRegistry:(const void *)a3
+- (FollowUpControllerImpl)initWithRegistry:(const void *)registry
 {
   v15.receiver = self;
   v15.super_class = FollowUpControllerImpl;
@@ -29,8 +29,8 @@
   v5 = v4;
   if (v4)
   {
-    v7 = *a3;
-    v6 = *(a3 + 1);
+    v7 = *registry;
+    v6 = *(registry + 1);
     if (v6)
     {
       atomic_fetch_add_explicit((v6 + 8), 1uLL, memory_order_relaxed);
@@ -59,17 +59,17 @@
   return v5;
 }
 
-- (void)showFollowUp:(int)a3 userInfo:(id)a4 withUniqueIdentifier:(id)a5
+- (void)showFollowUp:(int)up userInfo:(id)info withUniqueIdentifier:(id)identifier
 {
-  v6 = *&a3;
-  v15 = a4;
-  v8 = a5;
+  v6 = *&up;
+  infoCopy = info;
+  identifierCopy = identifier;
   v9 = objc_autoreleasePoolPush();
   if ((v6 - 3) >= 5)
   {
     if (v6 == 8)
     {
-      v10 = [(FollowUpControllerImpl *)self _createInstallReplaceFollowUpItemWithReason:8 userInfo:v15 uniqueIdentifier:v8];
+      v10 = [(FollowUpControllerImpl *)self _createInstallReplaceFollowUpItemWithReason:8 userInfo:infoCopy uniqueIdentifier:identifierCopy];
     }
 
     else
@@ -80,13 +80,13 @@
         goto LABEL_7;
       }
 
-      v10 = [(FollowUpControllerImpl *)self _createTurnOnWifiCallingFollowUp:v8 userInfo:v15];
+      v10 = [(FollowUpControllerImpl *)self _createTurnOnWifiCallingFollowUp:identifierCopy userInfo:infoCopy];
     }
   }
 
   else
   {
-    v10 = [(FollowUpControllerImpl *)self _createCellularPlanFollowUpItemWithReason:v6 userInfo:v15 uniqueIdentifier:v8];
+    v10 = [(FollowUpControllerImpl *)self _createCellularPlanFollowUpItemWithReason:v6 userInfo:infoCopy uniqueIdentifier:identifierCopy];
   }
 
   v11 = v10;
@@ -110,11 +110,11 @@ LABEL_7:
   objc_autoreleasePoolPop(v9);
 }
 
-- (void)clearFollowUp:(int)a3
+- (void)clearFollowUp:(int)up
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = sub_1014F9C70(a3);
-  if ((a3 - 1) > 7)
+  v6 = sub_1014F9C70(up);
+  if ((up - 1) > 7)
   {
     [(FollowUpControllerImpl *)self _clearFollowUpForIdentifier:v6];
   }
@@ -123,7 +123,7 @@ LABEL_7:
   {
     [(FollowUpControllerImpl *)self _clearFollowUpForCategory:v6];
 
-    if (a3 == 4)
+    if (up == 4)
     {
       v7 = self->fUserNotificationCenter;
       v8 = sub_100032AC8(&self->fUserNotificationQueue.fObj.fObj);
@@ -134,11 +134,11 @@ LABEL_7:
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)clearFollowUpWithUID:(id)a3
+- (void)clearFollowUpWithUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v4 = objc_autoreleasePoolPush();
-  [(FollowUpControllerImpl *)self _clearFollowUpForIdentifier:v5];
+  [(FollowUpControllerImpl *)self _clearFollowUpForIdentifier:dCopy];
   objc_autoreleasePoolPop(v4);
 }
 
@@ -162,10 +162,10 @@ LABEL_7:
   return v7;
 }
 
-- (id)_titleForReason:(int)a3 carrierName:(id)a4 isNotification:(BOOL)a5
+- (id)_titleForReason:(int)reason carrierName:(id)name isNotification:(BOOL)notification
 {
-  v5 = a5;
-  v8 = a4;
+  notificationCopy = notification;
+  nameCopy = name;
   ServiceMap = Registry::getServiceMap(self->fRegistry.__ptr_);
   v10 = ServiceMap;
   if ((v11 & 0x8000000000000000) != 0)
@@ -217,18 +217,18 @@ LABEL_9:
 
   v20 = 0;
   v21 = @"CTUF_CELLULAR_PLAN_SIMSETUP_TITLE";
-  if (a3 > 3)
+  if (reason > 3)
   {
-    if (a3 > 5)
+    if (reason > 5)
     {
-      if (a3 == 6)
+      if (reason == 6)
       {
         v22 = @"Set Up Cellular";
       }
 
       else
       {
-        if (a3 != 7)
+        if (reason != 7)
         {
           goto LABEL_34;
         }
@@ -239,7 +239,7 @@ LABEL_9:
 LABEL_33:
       v20 = [(FollowUpControllerImpl *)self _localize:v22 keyName:v21];
 LABEL_34:
-      if (!v8)
+      if (!nameCopy)
       {
         goto LABEL_43;
       }
@@ -247,9 +247,9 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    if (a3 == 4)
+    if (reason == 4)
     {
-      if (!v8)
+      if (!nameCopy)
       {
         v26 = @"CTUF_FINISH_CELLULAR_PLAN_SETTING_UP_TITLE";
         v27 = @"Finish Setting up your Cellular Plan";
@@ -262,7 +262,7 @@ LABEL_34:
 
     else
     {
-      if (!v8)
+      if (!nameCopy)
       {
         v26 = @"CTUF_CELLULAR_PLAN_FAILED_TO_TRANSFER_TITLE";
         v27 = @"Failed to transfer Cellular Plan";
@@ -275,26 +275,26 @@ LABEL_34:
 
     v20 = [(FollowUpControllerImpl *)self _localize:v24 keyName:v23];
 LABEL_35:
-    v25 = [(__CFString *)v20 stringByReplacingOccurrencesOfString:@"%@" withString:v8];
+    v25 = [(__CFString *)v20 stringByReplacingOccurrencesOfString:@"%@" withString:nameCopy];
 
     v20 = v25;
     goto LABEL_43;
   }
 
-  if (a3 < 2)
+  if (reason < 2)
   {
     v20 = &stru_101F6AFB8;
     goto LABEL_43;
   }
 
-  if (a3 != 2)
+  if (reason != 2)
   {
-    if (a3 != 3)
+    if (reason != 3)
     {
       goto LABEL_34;
     }
 
-    if (v5)
+    if (notificationCopy)
     {
       v22 = @"Finish Cellular Setup";
     }
@@ -304,7 +304,7 @@ LABEL_35:
       v22 = @"Finish Setting Up Cellular";
     }
 
-    if (v5)
+    if (notificationCopy)
     {
       v21 = @"CTUF_PENDING_PLAN_NOTIFICATION_TITLE";
     }
@@ -329,9 +329,9 @@ LABEL_43:
   return v20;
 }
 
-- (id)_textForReason:(int)a3 carrierName:(id)a4
+- (id)_textForReason:(int)reason carrierName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   ServiceMap = Registry::getServiceMap(self->fRegistry.__ptr_);
   v8 = ServiceMap;
   v10 = v9;
@@ -434,17 +434,17 @@ LABEL_19:
   v29 = @"CTUF_CELLULAR_PLAN_READY_TO_INSTALL_TEXT";
   v30 = @"Tap this notification to finish your cellular plan set up.";
   v31 = &stru_101F6AFB8;
-  if (a3 > 4)
+  if (reason > 4)
   {
-    if (a3 == 5)
+    if (reason == 5)
     {
       v29 = @"CTUF_CELLULAR_PLAN_FAILED_TO_TRANSFER_TEXT";
       v30 = @"Tap this notification to see the details";
     }
 
-    else if (a3 != 6)
+    else if (reason != 6)
     {
-      if (a3 != 7)
+      if (reason != 7)
       {
         goto LABEL_35;
       }
@@ -456,7 +456,7 @@ LABEL_19:
     goto LABEL_33;
   }
 
-  if (a3 == 2)
+  if (reason == 2)
   {
     if ((v18 & 1) == 0)
     {
@@ -473,15 +473,15 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if (a3 != 3)
+  if (reason != 3)
   {
-    if (a3 != 4)
+    if (reason != 4)
     {
 LABEL_35:
-      if (v6)
+      if (nameCopy)
       {
 LABEL_36:
-        v33 = [(__CFString *)v31 stringByReplacingOccurrencesOfString:@"%@" withString:v6];
+        v33 = [(__CFString *)v31 stringByReplacingOccurrencesOfString:@"%@" withString:nameCopy];
         goto LABEL_54;
       }
 
@@ -491,7 +491,7 @@ LABEL_36:
     goto LABEL_33;
   }
 
-  if (v6)
+  if (nameCopy)
   {
     if (isIPad)
     {
@@ -547,14 +547,14 @@ LABEL_54:
   return v38;
 }
 
-- (id)_localize:(id)a3 keyName:(id)a4
+- (id)_localize:(id)_localize keyName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v22 = v6;
-  if (v6)
+  _localizeCopy = _localize;
+  nameCopy = name;
+  v22 = _localizeCopy;
+  if (_localizeCopy)
   {
-    CFRetain(v6);
+    CFRetain(_localizeCopy);
   }
 
   ServiceMap = Registry::getServiceMap(self->fRegistry.__ptr_);
@@ -606,7 +606,7 @@ LABEL_11:
   if (v16)
   {
 LABEL_12:
-    (*(*v16 + 40))(&v21, v16, kAlertDialogLocalizationTable, v7, v22);
+    (*(*v16 + 40))(&v21, v16, kAlertDialogLocalizationTable, nameCopy, v22);
     v18 = v22;
     v22 = v21;
     v23 = v18;
@@ -627,9 +627,9 @@ LABEL_13:
   return v19;
 }
 
-- (void)_clearFollowUpForIdentifier:(id)a3
+- (void)_clearFollowUpForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_autoreleasePoolPush();
   fFollowUpController = self->fFollowUpController;
   if (!fFollowUpController)
@@ -641,16 +641,16 @@ LABEL_13:
     fFollowUpController = self->fFollowUpController;
   }
 
-  v10 = v4;
+  v10 = identifierCopy;
   v9 = [NSArray arrayWithObjects:&v10 count:1];
   [(FLFollowUpController *)fFollowUpController clearPendingFollowUpItemsWithUniqueIdentifiers:v9 error:0];
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)_clearFollowUpForCategory:(id)a3
+- (void)_clearFollowUpForCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   fFollowUpController = self->fFollowUpController;
   if (!fFollowUpController)
   {
@@ -682,13 +682,13 @@ LABEL_13:
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 categoryIdentifier];
-        v15 = [v14 isEqualToString:v4];
+        categoryIdentifier = [v13 categoryIdentifier];
+        v15 = [categoryIdentifier isEqualToString:categoryCopy];
 
         if (v15)
         {
-          v16 = [v13 uniqueIdentifier];
-          [v8 addObject:v16];
+          uniqueIdentifier = [v13 uniqueIdentifier];
+          [v8 addObject:uniqueIdentifier];
         }
       }
 
@@ -704,10 +704,10 @@ LABEL_13:
   }
 }
 
-- (id)_createTurnOnWifiCallingFollowUp:(id)a3 userInfo:(id)a4
+- (id)_createTurnOnWifiCallingFollowUp:(id)up userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  upCopy = up;
+  infoCopy = info;
   ServiceMap = Registry::getServiceMap(self->fRegistry.__ptr_);
   v9 = ServiceMap;
   if ((v10 & 0x8000000000000000) != 0)
@@ -758,7 +758,7 @@ LABEL_9:
   }
 
   v19 = objc_opt_new();
-  [v19 setUniqueIdentifier:v6];
+  [v19 setUniqueIdentifier:upCopy];
   if (v18)
   {
     [(FollowUpControllerImpl *)self _localize:@"Turn on WLAN Calling" keyName:@"CTUF_TITLE_WLANCALL_NEED_ACTION"];
@@ -787,7 +787,7 @@ LABEL_9:
   [v19 setDisplayStyle:1];
   [v19 setGroupIdentifier:FLGroupIdentifierAccount];
   [v19 setCategoryIdentifier:@"com.apple.coretelephony.wificalling-default.need-action"];
-  [v19 setUserInfo:v7];
+  [v19 setUserInfo:infoCopy];
   v22 = objc_opt_new();
   [v22 setIdentifier:@"com.followup.showurl"];
   if (v18)
@@ -846,38 +846,38 @@ LABEL_9:
   return v19;
 }
 
-- (void)_createNoteForFollowupItem:(id)a3 withAction:(id)a4 reason:(int)a5 carrierName:(id)a6
+- (void)_createNoteForFollowupItem:(id)item withAction:(id)action reason:(int)reason carrierName:(id)name
 {
-  v7 = *&a5;
-  v17 = a3;
-  v10 = a4;
-  v11 = a6;
+  v7 = *&reason;
+  itemCopy = item;
+  actionCopy = action;
+  nameCopy = name;
   v12 = objc_opt_new();
-  v13 = [(FollowUpControllerImpl *)self _titleForReason:v7 carrierName:v11 isNotification:1];
+  v13 = [(FollowUpControllerImpl *)self _titleForReason:v7 carrierName:nameCopy isNotification:1];
   [v12 setTitle:v13];
 
-  v14 = [(FollowUpControllerImpl *)self _textForReason:v7 carrierName:v11];
+  v14 = [(FollowUpControllerImpl *)self _textForReason:v7 carrierName:nameCopy];
   [v12 setInformativeText:v14];
 
-  [v12 setActivateAction:v10];
+  [v12 setActivateAction:actionCopy];
   v15 = +[FLFollowUpNotification defaultOptions];
   v16 = [v15 setByAddingObject:FLNotificationOptionExtensionActions];
   [v12 setOptions:v16];
 
-  [v17 setNotification:v12];
+  [itemCopy setNotification:v12];
 }
 
-- (id)_createInstallReplaceFollowUpItemWithReason:(int)a3 userInfo:(id)a4 uniqueIdentifier:(id)a5
+- (id)_createInstallReplaceFollowUpItemWithReason:(int)reason userInfo:(id)info uniqueIdentifier:(id)identifier
 {
-  v8 = a4;
-  v55 = a5;
-  if ((a3 - 3) > 5)
+  infoCopy = info;
+  identifierCopy = identifier;
+  if ((reason - 3) > 5)
   {
     v21 = 0;
     goto LABEL_30;
   }
 
-  [v8 objectForKeyedSubscript:@"CarrierName"];
+  [infoCopy objectForKeyedSubscript:@"CarrierName"];
   v57 = v9 = &kLocationPopupShown_ptr;
   if ([v57 length])
   {
@@ -987,8 +987,8 @@ LABEL_14:
 
   if ([v57 length])
   {
-    v31 = [v21 informativeText];
-    v32 = [v31 stringByReplacingOccurrencesOfString:@"%@" withString:v57];
+    informativeText = [v21 informativeText];
+    v32 = [informativeText stringByReplacingOccurrencesOfString:@"%@" withString:v57];
     [v21 setInformativeText:v32];
 
     v33 = [v56 stringByReplacingOccurrencesOfString:@"%@" withString:v57];
@@ -998,18 +998,18 @@ LABEL_14:
 
   [v21 setExtensionIdentifier:@"com.apple.CoreTelephony.CTFollowUpExtension"];
   [v21 setGroupIdentifier:FLGroupIdentifierDevice];
-  v34 = sub_1014F9C70(a3);
+  v34 = sub_1014F9C70(reason);
   [v21 setCategoryIdentifier:v34];
 
   v35 = objc_opt_new();
-  [v35 setUserInfo:v8];
+  [v35 setUserInfo:infoCopy];
   v36 = [(FollowUpControllerImpl *)self _localize:@"Update" keyName:@"CBMessageAcceptButton"];
   [v35 setLabel:v36];
 
   [v35 setIdentifier:@"com.followup.install-replace"];
   v37 = v9[245];
-  v38 = sub_1014F9C70(a3);
-  v39 = [v8 objectForKeyedSubscript:@"IccidHash"];
+  v38 = sub_1014F9C70(reason);
+  v39 = [infoCopy objectForKeyedSubscript:@"IccidHash"];
   v40 = [v37 stringWithFormat:@"%@.%@", v38, v39];
   [v21 setUniqueIdentifier:v40];
 
@@ -1018,31 +1018,31 @@ LABEL_14:
   [v21 setActions:v41];
 
   v42 = objc_opt_new();
-  [v42 setUserInfo:v8];
-  v43 = [v35 label];
-  [v42 setLabel:v43];
+  [v42 setUserInfo:infoCopy];
+  label = [v35 label];
+  [v42 setLabel:label];
 
   [v42 setIdentifier:@"com.followup.install-replace-action"];
   v44 = objc_opt_new();
-  [v44 setUserInfo:v8];
+  [v44 setUserInfo:infoCopy];
   [v44 setIdentifier:@"com.apple.coretelephony.cellularplan-default.plan-installreplace-dismiss"];
   v45 = [(FollowUpControllerImpl *)self _localize:@"Not Now" keyName:@"CTFU_LABEL_ACTION_NOTNOW"];
   [v44 setLabel:v45];
 
-  v46 = [NSMutableDictionary dictionaryWithDictionary:v8];
+  v46 = [NSMutableDictionary dictionaryWithDictionary:infoCopy];
   [v46 setValue:v56 forKey:@"LastDayInformativeText"];
   v47 = [NSSet setWithObjects:FLNotificationOptionForce, FLNotificationOptionSpringboardAlert, FLNotificationOptionNotificationCenter, FLNotificationOptionExtensionActions, 0];
   v48 = objc_opt_new();
-  v49 = [v21 title];
-  [v48 setTitle:v49];
+  title = [v21 title];
+  [v48 setTitle:title];
 
-  v50 = [v21 informativeText];
-  [v48 setInformativeText:v50];
+  informativeText2 = [v21 informativeText];
+  [v48 setInformativeText:informativeText2];
 
   [v48 setActivateAction:v42];
   [v48 setClearAction:v44];
-  v51 = [v48 options];
-  v52 = [v51 setByAddingObjectsFromSet:v47];
+  options = [v48 options];
+  v52 = [options setByAddingObjectsFromSet:v47];
   [v48 setOptions:v52];
 
   [v48 setFrequency:10.0];
@@ -1054,11 +1054,11 @@ LABEL_30:
   return v21;
 }
 
-- (id)_createCellularPlanFollowUpItemWithReason:(int)a3 userInfo:(id)a4 uniqueIdentifier:(id)a5
+- (id)_createCellularPlanFollowUpItemWithReason:(int)reason userInfo:(id)info uniqueIdentifier:(id)identifier
 {
-  v6 = *&a3;
-  v8 = a4;
-  v9 = a5;
+  v6 = *&reason;
+  infoCopy = info;
+  identifierCopy = identifier;
   if ((v6 - 3) > 5)
   {
     v10 = 0;
@@ -1066,7 +1066,7 @@ LABEL_30:
   }
 
   v10 = objc_opt_new();
-  v11 = [v8 objectForKeyedSubscript:@"CarrierName"];
+  v11 = [infoCopy objectForKeyedSubscript:@"CarrierName"];
   v12 = [(FollowUpControllerImpl *)self _titleForReason:v6 carrierName:v11 isNotification:0];
   [v10 setTitle:v12];
 
@@ -1085,7 +1085,7 @@ LABEL_30:
 
   v15 = objc_opt_new();
   v28 = objc_opt_new();
-  [v15 setUserInfo:v8];
+  [v15 setUserInfo:infoCopy];
   if (v6 <= 5)
   {
     if (v6 == 3)
@@ -1094,8 +1094,8 @@ LABEL_30:
       [v15 setLabel:v24];
 
       [v15 setIdentifier:@"com.followup.install"];
-      v17 = [v8 objectForKeyedSubscript:@"CarrierName"];
-      [(FollowUpControllerImpl *)self _createNoteForFollowupItem:v10 withAction:v15 reason:3 carrierName:v17];
+      uniqueIdentifier = [infoCopy objectForKeyedSubscript:@"CarrierName"];
+      [(FollowUpControllerImpl *)self _createNoteForFollowupItem:v10 withAction:v15 reason:3 carrierName:uniqueIdentifier];
     }
 
     else
@@ -1109,12 +1109,12 @@ LABEL_30:
       [v15 setLabel:v16];
 
       [v15 setIdentifier:@"com.followup.transfer-websheet"];
-      v17 = [v10 uniqueIdentifier];
+      uniqueIdentifier = [v10 uniqueIdentifier];
       v18 = [(FollowUpControllerImpl *)self _localize:@"Settings" keyName:@"SETTINGS"];
-      v19 = [v10 title];
-      v20 = [v10 informativeText];
+      title = [v10 title];
+      informativeText = [v10 informativeText];
       LOBYTE(v27) = 1;
-      [(FollowUpControllerImpl *)self publishNotificationWithIdentifier:v17 header:v18 title:v19 body:v20 userInfo:v8 url:0 shouldBackgroundDefaultAction:v27];
+      [(FollowUpControllerImpl *)self publishNotificationWithIdentifier:uniqueIdentifier header:v18 title:title body:informativeText userInfo:infoCopy url:0 shouldBackgroundDefaultAction:v27];
     }
 
 LABEL_16:
@@ -1146,7 +1146,7 @@ LABEL_16:
   v22 = [(FollowUpControllerImpl *)self _localize:@"Don't Install Cellular Plan" keyName:@"CTFU_LABEL_ACTION_CELLULAR_PLAN_NOT_INSTALL"];
   [v28 setLabel:v22];
 
-  [v10 setUniqueIdentifier:v9];
+  [v10 setUniqueIdentifier:identifierCopy];
   v29[0] = v15;
   v29[1] = v28;
   v23 = [NSArray arrayWithObjects:v29 count:2];
@@ -1158,68 +1158,68 @@ LABEL_18:
   return v10;
 }
 
-- (void)publishNotificationWithIdentifier:(id)a3 header:(id)a4 title:(id)a5 body:(id)a6 userInfo:(id)a7 url:(id)a8 shouldBackgroundDefaultAction:(BOOL)a9
+- (void)publishNotificationWithIdentifier:(id)identifier header:(id)header title:(id)title body:(id)body userInfo:(id)info url:(id)url shouldBackgroundDefaultAction:(BOOL)action
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  identifierCopy = identifier;
+  headerCopy = header;
+  titleCopy = title;
+  bodyCopy = body;
+  infoCopy = info;
+  urlCopy = url;
   v21 = objc_opt_new();
-  [v21 setHeader:v16];
+  [v21 setHeader:headerCopy];
   v22 = [UNNotificationIcon iconForApplicationIdentifier:@"com.apple.Preferences"];
   [v21 setIcon:v22];
 
-  [v21 setTitle:v17];
-  [v21 setBody:v18];
-  [v21 setUserInfo:v19];
+  [v21 setTitle:titleCopy];
+  [v21 setBody:bodyCopy];
+  [v21 setUserInfo:infoCopy];
   v23 = +[UNNotificationSound defaultSound];
   [v21 setSound:v23];
 
-  [v21 setShouldBackgroundDefaultAction:a9];
-  [v21 setDefaultActionURL:v20];
-  v24 = [UNNotificationRequest requestWithIdentifier:v15 content:v21 trigger:0];
+  [v21 setShouldBackgroundDefaultAction:action];
+  [v21 setDefaultActionURL:urlCopy];
+  v24 = [UNNotificationRequest requestWithIdentifier:identifierCopy content:v21 trigger:0];
   v25 = self->fUserNotificationCenter;
   v26 = v24;
   v27 = sub_100032AC8(&self->fUserNotificationQueue.fObj.fObj);
   operator new();
 }
 
-- (void)hideNotificationWithIdentifier:(id)a3
+- (void)hideNotificationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->fUserNotificationCenter;
-  v6 = v4;
+  v6 = identifierCopy;
   v7 = sub_100032AC8(&self->fUserNotificationQueue.fObj.fObj);
   operator new();
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v25 = a4;
-  v7 = a5;
+  responseCopy = response;
+  handlerCopy = handler;
   v8 = [[SBSRemoteAlertDefinition alloc] initWithServiceName:@"com.apple.SIMSetupUIService" viewControllerClassName:@"TSSIMSetupSupportViewController"];
   v9 = objc_opt_new();
-  v10 = [v25 notification];
-  v11 = [v10 request];
-  v12 = [v11 content];
-  v13 = [v12 userInfo];
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
+  userInfo = [content userInfo];
 
   v14 = objc_opt_new();
   [v14 setObject:&off_101F91290 forKey:@"FlowTypeKey"];
   [v14 setObject:&off_101F91290 forKey:@"RequestTypeKey"];
-  v15 = [v13 objectForKeyedSubscript:@"CarrierName"];
+  v15 = [userInfo objectForKeyedSubscript:@"CarrierName"];
   [v14 setObject:v15 forKey:@"CarrierName"];
 
-  v16 = [v13 objectForKeyedSubscript:@"ServerURL"];
+  v16 = [userInfo objectForKeyedSubscript:@"ServerURL"];
   [v14 setObject:v16 forKey:@"WebsheetURLKey"];
 
-  v17 = [v13 objectForKeyedSubscript:@"PostData"];
+  v17 = [userInfo objectForKeyedSubscript:@"PostData"];
 
   if (v17)
   {
-    v18 = [v13 objectForKeyedSubscript:@"PostData"];
+    v18 = [userInfo objectForKeyedSubscript:@"PostData"];
     [v14 setObject:v18 forKey:@"WebsheetPostdataKey"];
   }
 
@@ -1232,14 +1232,14 @@ LABEL_18:
   v21 = objc_opt_new();
   [v21 setReason:@"Transfer Websheet"];
   [(SBSRemoteAlertHandle *)self->fRemoteAlertHandle activateWithContext:v21];
-  v22 = [v25 notification];
-  v23 = [v22 request];
-  v24 = [v23 identifier];
-  [(FollowUpControllerImpl *)self _clearFollowUpForIdentifier:v24];
+  notification2 = [responseCopy notification];
+  request2 = [notification2 request];
+  identifier = [request2 identifier];
+  [(FollowUpControllerImpl *)self _clearFollowUpForIdentifier:identifier];
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 }
 

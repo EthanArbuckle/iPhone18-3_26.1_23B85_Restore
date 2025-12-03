@@ -1,47 +1,47 @@
 @interface HDMHValenceDistributionSummaryQueryServer
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5;
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_dayIndexRangeWithAnchorIndex:(int64_t)a3;
-- (BOOL)_queue_surfaceValenceDistributionSummariesWithError:(id *)a3;
-- (HDMHValenceDistributionSummaryQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_dayIndexRangeWithAnchorIndex:(int64_t)index;
+- (BOOL)_queue_surfaceValenceDistributionSummariesWithError:(id *)error;
+- (HDMHValenceDistributionSummaryQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (id)objectTypes;
 - (void)_queue_start;
 @end
 
 @implementation HDMHValenceDistributionSummaryQueryServer
 
-- (HDMHValenceDistributionSummaryQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDMHValenceDistributionSummaryQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v11 = a4;
+  configurationCopy = configuration;
   v17.receiver = self;
   v17.super_class = HDMHValenceDistributionSummaryQueryServer;
-  v12 = [(HDQueryServer *)&v17 initWithUUID:a3 configuration:v11 client:a5 delegate:a6];
+  v12 = [(HDQueryServer *)&v17 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_configuration, a4);
-    v14 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    objc_storeStrong(&v12->_configuration, configuration);
+    hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
     gregorianCalendar = v13->_gregorianCalendar;
-    v13->_gregorianCalendar = v14;
+    v13->_gregorianCalendar = hk_gregorianCalendar;
   }
 
   return v13;
 }
 
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error
 {
-  v6 = a4;
-  v7 = [v6 entitlements];
+  clientCopy = client;
+  entitlements = [clientCopy entitlements];
   v8 = *MEMORY[0x277CCC8B0];
-  v9 = [v7 hasEntitlement:*MEMORY[0x277CCC8B0]];
+  v9 = [entitlements hasEntitlement:*MEMORY[0x277CCC8B0]];
 
-  if (v9 & 1) != 0 || ([v6 entitlements], v10 = objc_claimAutoreleasedReturnValue(), v11 = *MEMORY[0x277CCC898], v12 = objc_msgSend(v10, "hasPrivateAccessEntitlementWithIdentifier:", *MEMORY[0x277CCC898]), v10, (v12))
+  if (v9 & 1) != 0 || ([clientCopy entitlements], v10 = objc_claimAutoreleasedReturnValue(), v11 = *MEMORY[0x277CCC898], v12 = objc_msgSend(v10, "hasPrivateAccessEntitlementWithIdentifier:", *MEMORY[0x277CCC898]), v10, (v12))
   {
     v13 = 1;
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:4 format:{@"Missing required entitlement: %@ for core apps or %@ for second-party access.", v8, v11}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:4 format:{@"Missing required entitlement: %@ for core apps or %@ for second-party access.", v8, v11}];
     v13 = 0;
   }
 
@@ -51,8 +51,8 @@
 - (id)objectTypes
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [MEMORY[0x277CCD8D8] stateOfMindType];
-  v4 = [v2 setWithObject:v3];
+  stateOfMindType = [MEMORY[0x277CCD8D8] stateOfMindType];
+  v4 = [v2 setWithObject:stateOfMindType];
 
   return v4;
 }
@@ -63,20 +63,20 @@
   v32.receiver = self;
   v32.super_class = HDMHValenceDistributionSummaryQueryServer;
   [(HDQueryServer *)&v32 _queue_start];
-  v3 = [(HDQueryServer *)self clientProxy];
-  v4 = [v3 remoteObjectProxy];
+  clientProxy = [(HDQueryServer *)self clientProxy];
+  remoteObjectProxy = [clientProxy remoteObjectProxy];
 
-  v5 = [(HDQueryServer *)self client];
-  v6 = [v5 authorizationOracle];
-  v7 = [(HDMHValenceDistributionSummaryQueryServer *)self objectTypes];
+  client = [(HDQueryServer *)self client];
+  authorizationOracle = [client authorizationOracle];
+  objectTypes = [(HDMHValenceDistributionSummaryQueryServer *)self objectTypes];
   v31 = 0;
-  v8 = [v6 authorizationStatusRecordsForTypes:v7 error:&v31];
+  v8 = [authorizationOracle authorizationStatusRecordsForTypes:objectTypes error:&v31];
   v9 = v31;
 
   if (!v8)
   {
-    v20 = [(HDQueryServer *)self queryUUID];
-    [v4 client_deliverError:v9 forQuery:v20];
+    queryUUID = [(HDQueryServer *)self queryUUID];
+    [remoteObjectProxy client_deliverError:v9 forQuery:queryUUID];
     goto LABEL_19;
   }
 
@@ -84,22 +84,22 @@
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v10 = [v8 allValues];
-  v11 = [v10 countByEnumeratingWithState:&v27 objects:v37 count:16];
+  allValues = [v8 allValues];
+  v11 = [allValues countByEnumeratingWithState:&v27 objects:v37 count:16];
   if (!v11)
   {
 
 LABEL_18:
-    v20 = [MEMORY[0x277D106B8] contextForReadingProtectedData];
-    v21 = [(HDQueryServer *)self profile];
-    v22 = [v21 database];
+    queryUUID = [MEMORY[0x277D106B8] contextForReadingProtectedData];
+    profile = [(HDQueryServer *)self profile];
+    database = [profile database];
     v25[4] = self;
     v26 = v9;
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __57__HDMHValenceDistributionSummaryQueryServer__queue_start__block_invoke;
     v25[3] = &unk_2798AABE8;
-    [v22 performTransactionWithContext:v20 error:&v26 block:v25 inaccessibilityHandler:0];
+    [database performTransactionWithContext:queryUUID error:&v26 block:v25 inaccessibilityHandler:0];
     v23 = v26;
 
     v9 = v23;
@@ -108,33 +108,33 @@ LABEL_18:
 
   v12 = v11;
   v13 = *v28;
-  v14 = 1;
+  canRead = 1;
   do
   {
     for (i = 0; i != v12; ++i)
     {
       if (*v28 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(allValues);
       }
 
-      if (v14)
+      if (canRead)
       {
-        v14 = [*(*(&v27 + 1) + 8 * i) canRead];
+        canRead = [*(*(&v27 + 1) + 8 * i) canRead];
       }
 
       else
       {
-        v14 = 0;
+        canRead = 0;
       }
     }
 
-    v12 = [v10 countByEnumeratingWithState:&v27 objects:v37 count:16];
+    v12 = [allValues countByEnumeratingWithState:&v27 objects:v37 count:16];
   }
 
   while (v12);
 
-  if (v14)
+  if (canRead)
   {
     goto LABEL_18;
   }
@@ -153,14 +153,14 @@ LABEL_18:
     _os_log_impl(&dword_258977000, v17, OS_LOG_TYPE_DEFAULT, "[%{public}@] Avoiding exposing health data due to missing authorization: %{public}@", buf, 0x16u);
   }
 
-  v20 = [(HDQueryServer *)self queryUUID];
-  [v4 client_deliverValenceDistributionSummaries:MEMORY[0x277CBEBF8] clearPending:0 isFinalBatch:1 queryUUID:v20];
+  queryUUID = [(HDQueryServer *)self queryUUID];
+  [remoteObjectProxy client_deliverValenceDistributionSummaries:MEMORY[0x277CBEBF8] clearPending:0 isFinalBatch:1 queryUUID:queryUUID];
 LABEL_19:
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_queue_surfaceValenceDistributionSummariesWithError:(id *)a3
+- (BOOL)_queue_surfaceValenceDistributionSummariesWithError:(id *)error
 {
   v55 = 0;
   v56 = &v55;
@@ -180,19 +180,19 @@ LABEL_19:
   v46[1] = v46;
   v46[2] = 0x2020000000;
   v46[3] = 0;
-  v5 = [(HKMHValenceDistributionSummaryQueryConfiguration *)self->_configuration limit];
-  v30 = a3;
-  v6 = [(HDQueryServer *)self clientProxy];
-  v7 = [v6 remoteObjectProxy];
+  limit = [(HKMHValenceDistributionSummaryQueryConfiguration *)self->_configuration limit];
+  errorCopy = error;
+  clientProxy = [(HDQueryServer *)self clientProxy];
+  remoteObjectProxy = [clientProxy remoteObjectProxy];
 
   v8 = [HDMHDaySummaryEnumerator alloc];
-  v9 = [(HDQueryServer *)self profile];
-  v10 = [(HKMHValenceDistributionSummaryQueryConfiguration *)self->_configuration dayIndexRange];
+  profile = [(HDQueryServer *)self profile];
+  dayIndexRange = [(HKMHValenceDistributionSummaryQueryConfiguration *)self->_configuration dayIndexRange];
   v12 = v11;
-  v13 = [(HKMHValenceDistributionSummaryQueryConfiguration *)self->_configuration gregorianCalendar];
-  v14 = [(HDQueryServer *)self predicateForQueryClient];
+  gregorianCalendar = [(HKMHValenceDistributionSummaryQueryConfiguration *)self->_configuration gregorianCalendar];
+  predicateForQueryClient = [(HDQueryServer *)self predicateForQueryClient];
   LOBYTE(v29) = [(HKMHValenceDistributionSummaryQueryConfiguration *)self->_configuration ascending];
-  v15 = [(HDMHDaySummaryEnumerator *)v8 initWithProfile:v9 dayIndexRange:v10 gregorianCalendar:v12 predicate:v13 pendingDailyStateOfMind:v14 ascending:0, v29];
+  v15 = [(HDMHDaySummaryEnumerator *)v8 initWithProfile:profile dayIndexRange:dayIndexRange gregorianCalendar:v12 predicate:gregorianCalendar pendingDailyStateOfMind:predicateForQueryClient ascending:0, v29];
 
   v40 = 0;
   v41 = &v40;
@@ -208,20 +208,20 @@ LABEL_19:
   v31[4] = self;
   v33 = &v47;
   v34 = &v55;
-  v16 = v7;
+  v16 = remoteObjectProxy;
   v32 = v16;
   v35 = &v51;
   v36 = &v40;
   v37 = v46;
-  v38 = v5;
+  v38 = limit;
   v17 = [(HDMHDaySummaryEnumerator *)v15 enumerateWithError:&v39 handler:v31];
   v18 = v39;
   v19 = v41[5];
   if (v19)
   {
     v20 = v56[5];
-    v21 = [v19 valenceDistributionSummary];
-    [v20 addObject:v21];
+    valenceDistributionSummary = [v19 valenceDistributionSummary];
+    [v20 addObject:valenceDistributionSummary];
   }
 
   if ((v48[3] & 1) == 0)
@@ -230,14 +230,14 @@ LABEL_19:
     {
       v22 = v56[5];
       v23 = *(v52 + 24);
-      v24 = [(HDQueryServer *)self queryUUID];
-      [v16 client_deliverValenceDistributionSummaries:v22 clearPending:v23 isFinalBatch:1 queryUUID:v24];
+      queryUUID = [(HDQueryServer *)self queryUUID];
+      [v16 client_deliverValenceDistributionSummaries:v22 clearPending:v23 isFinalBatch:1 queryUUID:queryUUID];
     }
 
     else
     {
-      v24 = [(HDQueryServer *)self queryUUID];
-      [v16 client_deliverError:v18 forQuery:v24];
+      queryUUID = [(HDQueryServer *)self queryUUID];
+      [v16 client_deliverError:v18 forQuery:queryUUID];
     }
   }
 
@@ -245,10 +245,10 @@ LABEL_19:
   v26 = v25;
   if (v25)
   {
-    if (v30)
+    if (errorCopy)
     {
       v27 = v25;
-      *v30 = v26;
+      *errorCopy = v26;
     }
 
     else
@@ -331,13 +331,13 @@ LABEL_4:
 LABEL_5:
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_dayIndexRangeWithAnchorIndex:(int64_t)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_dayIndexRangeWithAnchorIndex:(int64_t)index
 {
   if (([(HKMHValenceDistributionSummaryQueryConfiguration *)self->_configuration options]& 2) != 0)
   {
-    v6 = [MEMORY[0x277CBEAA8] hk_noonWithDayIndex:a3 calendar:self->_gregorianCalendar];
+    v6 = [MEMORY[0x277CBEAA8] hk_noonWithDayIndex:index calendar:self->_gregorianCalendar];
     v7 = [(NSCalendar *)self->_gregorianCalendar hk_startOfMonthForDate:v6];
-    a3 = [v7 hk_dayIndexWithCalendar:self->_gregorianCalendar];
+    index = [v7 hk_dayIndexWithCalendar:self->_gregorianCalendar];
     [(NSCalendar *)self->_gregorianCalendar rangeOfUnit:16 inUnit:8 forDate:v7];
     v5 = v8;
 LABEL_6:
@@ -347,19 +347,19 @@ LABEL_6:
 
   if (([(HKMHValenceDistributionSummaryQueryConfiguration *)self->_configuration options]& 1) != 0)
   {
-    v6 = [MEMORY[0x277CBEAA8] hk_noonWithDayIndex:a3 calendar:self->_gregorianCalendar];
+    v6 = [MEMORY[0x277CBEAA8] hk_noonWithDayIndex:index calendar:self->_gregorianCalendar];
     v7 = [(NSCalendar *)self->_gregorianCalendar hk_startOfWeekWithFirstWeekday:[(NSCalendar *)self->_gregorianCalendar firstWeekday] beforeDate:v6 addingWeeks:0];
-    a3 = [v7 hk_dayIndexWithCalendar:self->_gregorianCalendar];
+    index = [v7 hk_dayIndexWithCalendar:self->_gregorianCalendar];
     v5 = 7;
     goto LABEL_6;
   }
 
   v5 = 1;
 LABEL_7:
-  v9 = a3;
+  indexCopy = index;
   v10 = v5;
   result.var1 = v10;
-  result.var0 = v9;
+  result.var0 = indexCopy;
   return result;
 }
 

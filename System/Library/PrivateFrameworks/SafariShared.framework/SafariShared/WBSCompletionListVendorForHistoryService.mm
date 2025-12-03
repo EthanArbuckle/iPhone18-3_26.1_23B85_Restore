@@ -1,22 +1,22 @@
 @interface WBSCompletionListVendorForHistoryService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (WBSCompletionListVendorForHistoryService)initWithDataSource:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (WBSCompletionListVendorForHistoryService)initWithDataSource:(id)source;
 - (WBSCompletionListVendorForHistoryServiceDataSource)dataSource;
 - (void)_connect;
 @end
 
 @implementation WBSCompletionListVendorForHistoryService
 
-- (WBSCompletionListVendorForHistoryService)initWithDataSource:(id)a3
+- (WBSCompletionListVendorForHistoryService)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = WBSCompletionListVendorForHistoryService;
   v5 = [(WBSCompletionListVendorForHistoryService *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dataSource, v4);
+    objc_storeWeak(&v5->_dataSource, sourceCopy);
     [(WBSCompletionListVendorForHistoryService *)v6 _connect];
     v7 = v6;
   }
@@ -26,9 +26,9 @@
 
 - (void)_connect
 {
-  v3 = [MEMORY[0x1E696B0D8] anonymousListener];
+  anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
   xpcListener = self->_xpcListener;
-  self->_xpcListener = v3;
+  self->_xpcListener = anonymousListener;
 
   [(NSXPCListener *)self->_xpcListener setDelegate:self];
   [(NSXPCListener *)self->_xpcListener resume];
@@ -37,8 +37,8 @@
   self->_historyProxy = v5;
 
   v7 = self->_historyProxy;
-  v8 = [(NSXPCListener *)self->_xpcListener endpoint];
-  [(WBSHistoryConnectionProxy *)v7 setCompletionListVendorEndpoint:v8 completionHandler:&__block_literal_global_23];
+  endpoint = [(NSXPCListener *)self->_xpcListener endpoint];
+  [(WBSHistoryConnectionProxy *)v7 setCompletionListVendorEndpoint:endpoint completionHandler:&__block_literal_global_23];
 }
 
 void __52__WBSCompletionListVendorForHistoryService__connect__block_invoke(uint64_t a1, void *a2)
@@ -61,14 +61,14 @@ void __52__WBSCompletionListVendorForHistoryService__connect__block_invoke(uint6
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   HasEntitlement = WBSAuditTokenHasEntitlement();

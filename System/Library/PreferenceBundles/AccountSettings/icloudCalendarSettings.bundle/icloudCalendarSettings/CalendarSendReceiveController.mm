@@ -1,32 +1,32 @@
 @interface CalendarSendReceiveController
-- (CalendarSendReceiveController)initWithEmailData:(id)a3 userAccount:(id)a4;
-- (id)_getEmail:(id)a3;
+- (CalendarSendReceiveController)initWithEmailData:(id)data userAccount:(id)account;
+- (id)_getEmail:(id)email;
 - (id)_receiveEmailSpecifiers;
 - (id)_sendEmailSpecifiers;
 - (id)specifiers;
-- (void)_didSelectEmailForSend:(id)a3;
-- (void)_didSelectOptionForReceive:(id)a3 withOption:(id)a4;
-- (void)_updateSettingsForEmail:(id)a3;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)_didSelectEmailForSend:(id)send;
+- (void)_didSelectOptionForReceive:(id)receive withOption:(id)option;
+- (void)_updateSettingsForEmail:(id)email;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation CalendarSendReceiveController
 
-- (CalendarSendReceiveController)initWithEmailData:(id)a3 userAccount:(id)a4
+- (CalendarSendReceiveController)initWithEmailData:(id)data userAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  accountCopy = account;
   v12.receiver = self;
   v12.super_class = CalendarSendReceiveController;
   v8 = [(CalendarSendReceiveController *)&v12 init];
   if (v8)
   {
-    v9 = [[NSMutableArray alloc] initWithArray:v6];
+    v9 = [[NSMutableArray alloc] initWithArray:dataCopy];
     emailList = v8->_emailList;
     v8->_emailList = v9;
 
-    objc_storeStrong(&v8->_icloudAccount, a4);
+    objc_storeStrong(&v8->_icloudAccount, account);
   }
 
   return v8;
@@ -37,25 +37,25 @@
   v9.receiver = self;
   v9.super_class = CalendarSendReceiveController;
   [(CalendarSendReceiveController *)&v9 viewDidLoad];
-  v3 = [(CalendarSendReceiveController *)self table];
+  table = [(CalendarSendReceiveController *)self table];
   v4 = objc_opt_class();
   v5 = +[CalendarPopupButtonCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 
-  v6 = [(CalendarSendReceiveController *)self navigationItem];
+  navigationItem = [(CalendarSendReceiveController *)self navigationItem];
   v7 = [NSBundle bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"CALENDAR_SEND_RECEIVE_LABEL" value:&stru_14AB8 table:@"calendarSettings"];
-  [v6 setTitle:v8];
+  [navigationItem setTitle:v8];
 }
 
 - (id)specifiers
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(CalendarSendReceiveController *)self _sendEmailSpecifiers];
-  [v3 addObjectsFromArray:v4];
+  _sendEmailSpecifiers = [(CalendarSendReceiveController *)self _sendEmailSpecifiers];
+  [v3 addObjectsFromArray:_sendEmailSpecifiers];
 
-  v5 = [(CalendarSendReceiveController *)self _receiveEmailSpecifiers];
-  [v3 addObjectsFromArray:v5];
+  _receiveEmailSpecifiers = [(CalendarSendReceiveController *)self _receiveEmailSpecifiers];
+  [v3 addObjectsFromArray:_receiveEmailSpecifiers];
 
   v6 = [v3 copy];
   v7 = OBJC_IVAR___PSListController__specifiers;
@@ -156,8 +156,8 @@
 
         v23 = *(*(&v32 + 1) + 8 * i);
         v24 = [PSSpecifier preferenceSpecifierNamed:&stru_14AB8 target:self set:0 get:0 detail:0 cell:-1 edit:0];
-        v25 = [v23 address];
-        [v24 setIdentifier:v25];
+        address = [v23 address];
+        [v24 setIdentifier:address];
 
         [v24 setProperty:objc_opt_class() forKey:v20];
         [v24 setProperty:&__kCFBooleanTrue forKey:v21];
@@ -173,37 +173,37 @@
   return v16;
 }
 
-- (id)_getEmail:(id)a3
+- (id)_getEmail:(id)email
 {
   if ([(NSMutableArray *)self->_emailList count])
   {
     v4 = [(NSMutableArray *)self->_emailList objectAtIndexedSubscript:0];
-    v5 = [v4 address];
+    address = [v4 address];
   }
 
   else
   {
-    v5 = &stru_14AB8;
+    address = &stru_14AB8;
   }
 
-  return v5;
+  return address;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v42 = a3;
-  v44 = a4;
+  viewCopy = view;
+  cellCopy = cell;
   val = self;
-  v43 = a5;
+  pathCopy = path;
   v8 = [(CalendarSendReceiveController *)self specifierAtIndexPath:?];
   v45 = v8;
   v9 = v8;
   if (v8)
   {
-    [v8 setProperty:&__kCFBooleanTrue forKey:{PSEnabledKey, v42}];
+    [v8 setProperty:&__kCFBooleanTrue forKey:{PSEnabledKey, viewCopy}];
     v10 = objc_alloc_init(NSMutableArray);
-    v11 = [v9 identifier];
-    v12 = [v11 isEqualToString:@"SEND_FROM_SPECIFIER_ID"];
+    identifier = [v9 identifier];
+    v12 = [identifier isEqualToString:@"SEND_FROM_SPECIFIER_ID"];
 
     if (v12)
     {
@@ -233,15 +233,15 @@
 
             v16 = *(*(&v59 + 1) + 8 * i);
             objc_initWeak(&location, self);
-            v17 = [v16 address];
-            v18 = [v16 address];
+            address = [v16 address];
+            address2 = [v16 address];
             v56[0] = _NSConcreteStackBlock;
             v56[1] = 3221225472;
             v56[2] = sub_845C;
             v56[3] = &unk_14830;
             objc_copyWeak(&v57, &location);
             v56[4] = v16;
-            v19 = [UIAction actionWithTitle:v17 image:0 identifier:v18 handler:v56];
+            v19 = [UIAction actionWithTitle:address image:0 identifier:address2 handler:v56];
 
             if ([v16 send])
             {
@@ -286,9 +286,9 @@
             }
 
             v24 = *(*(&v52 + 1) + 8 * j);
-            v25 = [v24 address];
-            v26 = [v45 identifier];
-            v27 = [v25 isEqualToString:v26];
+            address3 = [v24 address];
+            identifier2 = [v45 identifier];
+            v27 = [address3 isEqualToString:identifier2];
 
             if (v27)
             {
@@ -313,8 +313,8 @@
               v48[4] = v24;
               v33 = [UIAction actionWithTitle:v32 image:0 identifier:0 handler:v48];
 
-              v34 = [v24 receive];
-              v35 = [v34 isEqualToString:@"PUSH"];
+              receive = [v24 receive];
+              v35 = [receive isEqualToString:@"PUSH"];
 
               v36 = v30;
               if ((v35 & 1) != 0 || ([v24 receive], v37 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend(v37, "isEqualToString:", @"EMAIL"), v37, v36 = v33, v38))
@@ -347,27 +347,27 @@
 
 LABEL_29:
 
-    v40 = v44;
+    v40 = cellCopy;
     v41 = [UIMenu menuWithChildren:v20];
     [v40 setPopupMenu:v41];
 
 LABEL_31:
-    [v44 reloadWithSpecifier:v45 animated:1];
+    [cellCopy reloadWithSpecifier:v45 animated:1];
     goto LABEL_32;
   }
 
   v20 = _CalLogSystem();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
-    sub_B51C(v43, v20);
+    sub_B51C(pathCopy, v20);
   }
 
 LABEL_32:
 }
 
-- (void)_didSelectEmailForSend:(id)a3
+- (void)_didSelectEmailForSend:(id)send
 {
-  v4 = a3;
+  sendCopy = send;
   v5 = objc_alloc_init(NSMutableArray);
   v20 = 0u;
   v21 = 0u;
@@ -390,12 +390,12 @@ LABEL_32:
 
         v10 = *(*(&v20 + 1) + 8 * i);
         v11 = [CalInviteEmail alloc];
-        v12 = [v10 toDictionary];
-        v13 = [(CalInviteEmail *)v11 initWithDictionary:v12];
+        toDictionary = [v10 toDictionary];
+        v13 = [(CalInviteEmail *)v11 initWithDictionary:toDictionary];
 
-        v14 = [(CalInviteEmail *)v13 address];
-        v15 = [v4 address];
-        v16 = [v14 isEqualToString:v15];
+        address = [(CalInviteEmail *)v13 address];
+        address2 = [sendCopy address];
+        v16 = [address isEqualToString:address2];
 
         [(CalInviteEmail *)v13 setSend:v16];
         [v5 addObject:v13];
@@ -410,27 +410,27 @@ LABEL_32:
   v17 = _CalLogSystem();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v4 address];
+    address3 = [sendCopy address];
     *buf = 138412290;
-    v25 = v18;
+    v25 = address3;
     _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "selected address for send receive is %@", buf, 0xCu);
   }
 
   [(CalendarSendReceiveController *)self _updateSettingsForEmail:v5];
 }
 
-- (void)_didSelectOptionForReceive:(id)a3 withOption:(id)a4
+- (void)_didSelectOptionForReceive:(id)receive withOption:(id)option
 {
-  v6 = a3;
-  v22 = a4;
+  receiveCopy = receive;
+  optionCopy = option;
   v7 = _CalLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 address];
+    address = [receiveCopy address];
     *buf = 138412546;
-    v30 = v22;
+    v30 = optionCopy;
     v31 = 2112;
-    v32 = v8;
+    v32 = address;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "selected option %@ for receive address %@", buf, 0x16u);
   }
 
@@ -439,7 +439,7 @@ LABEL_32:
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v21 = self;
+  selfCopy = self;
   obj = self->_emailList;
   v10 = [(NSMutableArray *)obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
@@ -458,16 +458,16 @@ LABEL_32:
 
         v14 = *(*(&v24 + 1) + 8 * v13);
         v15 = [CalInviteEmail alloc];
-        v16 = [v14 toDictionary];
-        v17 = [(CalInviteEmail *)v15 initWithDictionary:v16];
+        toDictionary = [v14 toDictionary];
+        v17 = [(CalInviteEmail *)v15 initWithDictionary:toDictionary];
 
-        v18 = [(CalInviteEmail *)v17 address];
-        v19 = [v6 address];
-        v20 = [v18 isEqualToString:v19];
+        address2 = [(CalInviteEmail *)v17 address];
+        address3 = [receiveCopy address];
+        v20 = [address2 isEqualToString:address3];
 
         if (v20)
         {
-          [(CalInviteEmail *)v17 setReceive:v22];
+          [(CalInviteEmail *)v17 setReceive:optionCopy];
         }
 
         [v9 addObject:v17];
@@ -482,16 +482,16 @@ LABEL_32:
     while (v11);
   }
 
-  [(CalendarSendReceiveController *)v21 _updateSettingsForEmail:v9];
+  [(CalendarSendReceiveController *)selfCopy _updateSettingsForEmail:v9];
 }
 
-- (void)_updateSettingsForEmail:(id)a3
+- (void)_updateSettingsForEmail:(id)email
 {
-  v4 = a3;
+  emailCopy = email;
   v5 = [CalendarUpdateSettingsRequest alloc];
   icloudAccount = self->_icloudAccount;
-  v7 = [(ACAccount *)icloudAccount accountStore];
-  v8 = [(CalendarUpdateSettingsRequest *)v5 initWithAccount:icloudAccount accountStore:v7 emailList:v4];
+  accountStore = [(ACAccount *)icloudAccount accountStore];
+  v8 = [(CalendarUpdateSettingsRequest *)v5 initWithAccount:icloudAccount accountStore:accountStore emailList:emailCopy];
 
   v9 = [[CalendarSpinner alloc] initWithViewController:self];
   spinner = self->_spinner;
@@ -505,7 +505,7 @@ LABEL_32:
   v12[3] = &unk_14858;
   objc_copyWeak(&v14, &location);
   v12[4] = self;
-  v11 = v4;
+  v11 = emailCopy;
   v13 = v11;
   [(CalendarUpdateSettingsRequest *)v8 performRequestWithCallback:v12];
 

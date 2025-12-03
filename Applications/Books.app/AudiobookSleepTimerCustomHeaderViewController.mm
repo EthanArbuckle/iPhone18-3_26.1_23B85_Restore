@@ -1,6 +1,6 @@
 @interface AudiobookSleepTimerCustomHeaderViewController
-- (_TtC5Books45AudiobookSleepTimerCustomHeaderViewController)initWithCoder:(id)a3;
-- (_TtC5Books45AudiobookSleepTimerCustomHeaderViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5Books45AudiobookSleepTimerCustomHeaderViewController)initWithCoder:(id)coder;
+- (_TtC5Books45AudiobookSleepTimerCustomHeaderViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 @end
 
@@ -8,38 +8,38 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003A95A8();
 }
 
-- (_TtC5Books45AudiobookSleepTimerCustomHeaderViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Books45AudiobookSleepTimerCustomHeaderViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1007A2254();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_1007A2214();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for AudiobookSleepTimerCustomHeaderViewController();
-  v9 = [(AudiobookSleepTimerCustomHeaderViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(AudiobookSleepTimerCustomHeaderViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC5Books45AudiobookSleepTimerCustomHeaderViewController)initWithCoder:(id)a3
+- (_TtC5Books45AudiobookSleepTimerCustomHeaderViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for AudiobookSleepTimerCustomHeaderViewController();
-  v4 = a3;
-  v5 = [(AudiobookSleepTimerCustomHeaderViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AudiobookSleepTimerCustomHeaderViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,21 +1,21 @@
 @interface RMSControlInterface
-- (RMSControlInterface)initWithProtobuf:(id)a3;
+- (RMSControlInterface)initWithProtobuf:(id)protobuf;
 - (id)protobuf;
 @end
 
 @implementation RMSControlInterface
 
-- (RMSControlInterface)initWithProtobuf:(id)a3
+- (RMSControlInterface)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v7.receiver = self;
   v7.super_class = RMSControlInterface;
   v5 = [(RMSControlInterface *)&v7 init];
   if (v5)
   {
-    v5->_supportsSpeakerSelection = [v4 supportsSpeakerSelection];
-    v5->_supportsVolumeControl = [v4 supportsVolumeControl];
-    v5->_supportsDirectionalControl = [v4 supportsDirectionalControl];
+    v5->_supportsSpeakerSelection = [protobufCopy supportsSpeakerSelection];
+    v5->_supportsVolumeControl = [protobufCopy supportsVolumeControl];
+    v5->_supportsDirectionalControl = [protobufCopy supportsDirectionalControl];
   }
 
   return v5;

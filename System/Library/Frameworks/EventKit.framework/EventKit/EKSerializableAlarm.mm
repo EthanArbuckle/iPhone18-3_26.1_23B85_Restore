@@ -1,7 +1,7 @@
 @interface EKSerializableAlarm
 + (id)classesForKey;
-- (EKSerializableAlarm)initWithAlarm:(id)a3;
-- (id)createAlarm:(id *)a3;
+- (EKSerializableAlarm)initWithAlarm:(id)alarm;
+- (id)createAlarm:(id *)alarm;
 @end
 
 @implementation EKSerializableAlarm
@@ -32,30 +32,30 @@
   return v6;
 }
 
-- (EKSerializableAlarm)initWithAlarm:(id)a3
+- (EKSerializableAlarm)initWithAlarm:(id)alarm
 {
-  v4 = a3;
+  alarmCopy = alarm;
   v10.receiver = self;
   v10.super_class = EKSerializableAlarm;
   v5 = [(EKSerializableAlarm *)&v10 init];
   if (v5)
   {
     v6 = MEMORY[0x1E696AD98];
-    [v4 relativeOffset];
+    [alarmCopy relativeOffset];
     v7 = [v6 numberWithDouble:?];
     [(EKSerializableAlarm *)v5 setRelativeOffset:v7];
 
-    v8 = [v4 absoluteDate];
-    [(EKSerializableAlarm *)v5 setAbsoluteDate:v8];
+    absoluteDate = [alarmCopy absoluteDate];
+    [(EKSerializableAlarm *)v5 setAbsoluteDate:absoluteDate];
 
-    -[EKSerializableAlarm setIsAbsolute:](v5, "setIsAbsolute:", [v4 isAbsolute]);
-    -[EKSerializableAlarm setIsDefaultAlarm:](v5, "setIsDefaultAlarm:", [v4 isDefaultAlarm]);
+    -[EKSerializableAlarm setIsAbsolute:](v5, "setIsAbsolute:", [alarmCopy isAbsolute]);
+    -[EKSerializableAlarm setIsDefaultAlarm:](v5, "setIsDefaultAlarm:", [alarmCopy isDefaultAlarm]);
   }
 
   return v5;
 }
 
-- (id)createAlarm:(id *)a3
+- (id)createAlarm:(id *)alarm
 {
   v12[1] = *MEMORY[0x1E69E9840];
   if ([(EKSerializableAlarm *)self isDefaultAlarm])
@@ -63,50 +63,50 @@
 LABEL_5:
     if ([(EKSerializableAlarm *)self isAbsolute])
     {
-      v7 = [(EKSerializableAlarm *)self absoluteDate];
-      [EKAlarm alarmWithAbsoluteDate:v7];
+      absoluteDate = [(EKSerializableAlarm *)self absoluteDate];
+      [EKAlarm alarmWithAbsoluteDate:absoluteDate];
     }
 
     else
     {
-      v7 = [(EKSerializableAlarm *)self relativeOffset];
-      [v7 doubleValue];
+      absoluteDate = [(EKSerializableAlarm *)self relativeOffset];
+      [absoluteDate doubleValue];
       [EKAlarm alarmWithRelativeOffset:?];
     }
-    a3 = ;
+    alarm = ;
 
-    [a3 setDefaultAlarm:{-[EKSerializableAlarm isDefaultAlarm](self, "isDefaultAlarm")}];
+    [alarm setDefaultAlarm:{-[EKSerializableAlarm isDefaultAlarm](self, "isDefaultAlarm")}];
     goto LABEL_9;
   }
 
-  v5 = [(EKSerializableAlarm *)self relativeOffset];
-  if (v5)
+  relativeOffset = [(EKSerializableAlarm *)self relativeOffset];
+  if (relativeOffset)
   {
 
     goto LABEL_5;
   }
 
-  v6 = [(EKSerializableAlarm *)self absoluteDate];
+  absoluteDate2 = [(EKSerializableAlarm *)self absoluteDate];
 
-  if (v6)
+  if (absoluteDate2)
   {
     goto LABEL_5;
   }
 
-  if (a3)
+  if (alarm)
   {
     v11 = *MEMORY[0x1E696A580];
     v12[0] = @"Either the relative offset or absolute date must be set.";
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-    *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:0 userInfo:v10];
+    *alarm = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:0 userInfo:v10];
 
-    a3 = 0;
+    alarm = 0;
   }
 
 LABEL_9:
   v8 = *MEMORY[0x1E69E9840];
 
-  return a3;
+  return alarm;
 }
 
 @end

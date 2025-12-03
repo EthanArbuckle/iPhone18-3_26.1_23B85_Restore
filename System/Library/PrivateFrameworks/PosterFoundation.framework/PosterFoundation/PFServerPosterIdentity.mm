@@ -1,26 +1,26 @@
 @interface PFServerPosterIdentity
-+ (id)configurationIdentityWithProvider:(id)a3 identifier:(id)a4 role:(id)a5 posterUUID:(id)a6 version:(unint64_t)a7 supplement:(unint64_t)a8;
++ (id)configurationIdentityWithProvider:(id)provider identifier:(id)identifier role:(id)role posterUUID:(id)d version:(unint64_t)version supplement:(unint64_t)supplement;
 + (id)debugDescription;
-+ (id)descriptorIdentityWithProvider:(id)a3 identifier:(id)a4 role:(id)a5 posterUUID:(id)a6 version:(unint64_t)a7;
-+ (id)incomingConfigurationIdentityWithProvider:(id)a3 role:(id)a4 posterUUID:(id)a5 version:(unint64_t)a6 supplement:(unint64_t)a7;
-+ (id)staticDescriptorIdentityWithProvider:(id)a3 identifier:(id)a4 role:(id)a5 posterUUID:(id)a6 version:(unint64_t)a7;
-+ (id)suggestionDescriptorIdentityWithProvider:(id)a3 identifier:(id)a4 role:(id)a5 posterUUID:(id)a6 version:(unint64_t)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isNewerVersionOfIdentity:(id)a3;
-- (BOOL)setupPersistenceForPathContainerURL:(id)a3 error:(id *)a4;
++ (id)descriptorIdentityWithProvider:(id)provider identifier:(id)identifier role:(id)role posterUUID:(id)d version:(unint64_t)version;
++ (id)incomingConfigurationIdentityWithProvider:(id)provider role:(id)role posterUUID:(id)d version:(unint64_t)version supplement:(unint64_t)supplement;
++ (id)staticDescriptorIdentityWithProvider:(id)provider identifier:(id)identifier role:(id)role posterUUID:(id)d version:(unint64_t)version;
++ (id)suggestionDescriptorIdentityWithProvider:(id)provider identifier:(id)identifier role:(id)role posterUUID:(id)d version:(unint64_t)version;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isNewerVersionOfIdentity:(id)identity;
+- (BOOL)setupPersistenceForPathContainerURL:(id)l error:(id *)error;
 - (NSString)debugDescription;
 - (NSString)description;
 - (NSString)stablePersistenceIdentifier;
 - (PFServerPosterIdentity)init;
-- (PFServerPosterIdentity)initWithBSXPCCoder:(id)a3;
-- (PFServerPosterIdentity)initWithCoder:(id)a3;
-- (id)_initWithProvider:(uint64_t)a3 type:(void *)a4 role:(void *)a5 posterUUID:(uint64_t)a6 version:(uint64_t)a7 supplement:(void *)a8 descriptorIdentifier:(char)a9 isIncomingConfiguration:;
-- (int64_t)compare:(id)a3;
-- (uint64_t)_isRootEqual:(uint64_t)a1;
+- (PFServerPosterIdentity)initWithBSXPCCoder:(id)coder;
+- (PFServerPosterIdentity)initWithCoder:(id)coder;
+- (id)_initWithProvider:(uint64_t)provider type:(void *)type role:(void *)role posterUUID:(uint64_t)d version:(uint64_t)version supplement:(void *)supplement descriptorIdentifier:(char)identifier isIncomingConfiguration:;
+- (int64_t)compare:(id)compare;
+- (uint64_t)_isRootEqual:(uint64_t)equal;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PFServerPosterIdentity
@@ -43,7 +43,7 @@
     v15 = 2114;
     v16 = v11;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = @"PFServerPosterIdentity.m";
     v21 = 1024;
@@ -59,64 +59,64 @@
   return result;
 }
 
-- (id)_initWithProvider:(uint64_t)a3 type:(void *)a4 role:(void *)a5 posterUUID:(uint64_t)a6 version:(uint64_t)a7 supplement:(void *)a8 descriptorIdentifier:(char)a9 isIncomingConfiguration:
+- (id)_initWithProvider:(uint64_t)provider type:(void *)type role:(void *)role posterUUID:(uint64_t)d version:(uint64_t)version supplement:(void *)supplement descriptorIdentifier:(char)identifier isIncomingConfiguration:
 {
   v16 = a2;
-  v17 = a4;
-  v18 = a5;
-  v19 = a8;
-  if (a1)
+  typeCopy = type;
+  roleCopy = role;
+  supplementCopy = supplement;
+  if (self)
   {
     if (!v16)
     {
       [PFServerPosterIdentity _initWithProvider:? type:? role:? posterUUID:? version:? supplement:? descriptorIdentifier:? isIncomingConfiguration:?];
     }
 
-    if (!v17)
+    if (!typeCopy)
     {
       [PFServerPosterIdentity _initWithProvider:? type:? role:? posterUUID:? version:? supplement:? descriptorIdentifier:? isIncomingConfiguration:?];
     }
 
-    if ((a3 - 1) >= 4)
+    if ((provider - 1) >= 4)
     {
       [PFServerPosterIdentity _initWithProvider:? type:? role:? posterUUID:? version:? supplement:? descriptorIdentifier:? isIncomingConfiguration:?];
     }
 
-    v34.receiver = a1;
+    v34.receiver = self;
     v34.super_class = PFServerPosterIdentity;
-    a1 = objc_msgSendSuper2(&v34, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v34, sel_init);
+    if (self)
     {
       v20 = [v16 copy];
-      v21 = *(a1 + 2);
-      *(a1 + 2) = v20;
+      v21 = *(self + 2);
+      *(self + 2) = v20;
 
-      *(a1 + 3) = a3;
-      v22 = [v17 copy];
-      v23 = *(a1 + 8);
-      *(a1 + 8) = v22;
+      *(self + 3) = provider;
+      v22 = [typeCopy copy];
+      v23 = *(self + 8);
+      *(self + 8) = v22;
 
-      v24 = [v18 copy];
-      v25 = *(a1 + 4);
-      *(a1 + 4) = v24;
+      v24 = [roleCopy copy];
+      v25 = *(self + 4);
+      *(self + 4) = v24;
 
-      *(a1 + 5) = a6;
-      *(a1 + 6) = a7;
-      v26 = [v19 copy];
-      v27 = *(a1 + 7);
-      *(a1 + 7) = v26;
+      *(self + 5) = d;
+      *(self + 6) = version;
+      v26 = [supplementCopy copy];
+      v27 = *(self + 7);
+      *(self + 7) = v26;
 
-      *(a1 + 8) = a9;
+      *(self + 8) = identifier;
       if ((__disableUniquing & 1) == 0)
       {
         os_unfair_lock_lock(&__allIdentitiesLock);
-        v28 = [__allIdentities member:a1];
+        v28 = [__allIdentities member:self];
         if (v28)
         {
           os_unfair_lock_unlock(&__allIdentitiesLock);
           v29 = v28;
 
-          a1 = v29;
+          self = v29;
         }
 
         else
@@ -131,14 +131,14 @@
             v30 = __allIdentities;
           }
 
-          [v30 addObject:a1];
+          [v30 addObject:self];
           os_unfair_lock_unlock(&__allIdentitiesLock);
         }
       }
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)dealloc
@@ -158,13 +158,13 @@
   [(PFServerPosterIdentity *)&v6 dealloc];
 }
 
-+ (id)staticDescriptorIdentityWithProvider:(id)a3 identifier:(id)a4 role:(id)a5 posterUUID:(id)a6 version:(unint64_t)a7
++ (id)staticDescriptorIdentityWithProvider:(id)provider identifier:(id)identifier role:(id)role posterUUID:(id)d version:(unint64_t)version
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = v12;
+  providerCopy = provider;
+  identifierCopy = identifier;
+  roleCopy = role;
+  dCopy = d;
+  v16 = providerCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v16)
   {
@@ -176,7 +176,7 @@
     [PFServerPosterIdentity staticDescriptorIdentityWithProvider:a2 identifier:? role:? posterUUID:? version:?];
   }
 
-  v17 = v13;
+  v17 = identifierCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v17)
   {
@@ -188,7 +188,7 @@
     [PFServerPosterIdentity staticDescriptorIdentityWithProvider:a2 identifier:? role:? posterUUID:? version:?];
   }
 
-  v18 = v15;
+  v18 = dCopy;
   NSClassFromString(&cfstr_Nsuuid.isa);
   if (!v18)
   {
@@ -200,18 +200,18 @@
     [PFServerPosterIdentity staticDescriptorIdentityWithProvider:a2 identifier:? role:? posterUUID:? version:?];
   }
 
-  v19 = [[PFServerPosterIdentity alloc] _initWithProvider:v16 type:2 role:v14 posterUUID:v18 version:a7 supplement:0 descriptorIdentifier:v17];
+  v19 = [[PFServerPosterIdentity alloc] _initWithProvider:v16 type:2 role:roleCopy posterUUID:v18 version:version supplement:0 descriptorIdentifier:v17];
 
   return v19;
 }
 
-+ (id)descriptorIdentityWithProvider:(id)a3 identifier:(id)a4 role:(id)a5 posterUUID:(id)a6 version:(unint64_t)a7
++ (id)descriptorIdentityWithProvider:(id)provider identifier:(id)identifier role:(id)role posterUUID:(id)d version:(unint64_t)version
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = v12;
+  providerCopy = provider;
+  identifierCopy = identifier;
+  roleCopy = role;
+  dCopy = d;
+  v16 = providerCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v16)
   {
@@ -223,7 +223,7 @@
     [PFServerPosterIdentity descriptorIdentityWithProvider:a2 identifier:? role:? posterUUID:? version:?];
   }
 
-  v17 = v13;
+  v17 = identifierCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v17)
   {
@@ -235,7 +235,7 @@
     [PFServerPosterIdentity descriptorIdentityWithProvider:a2 identifier:? role:? posterUUID:? version:?];
   }
 
-  v18 = v15;
+  v18 = dCopy;
   NSClassFromString(&cfstr_Nsuuid.isa);
   if (!v18)
   {
@@ -247,19 +247,19 @@
     [PFServerPosterIdentity descriptorIdentityWithProvider:a2 identifier:? role:? posterUUID:? version:?];
   }
 
-  v19 = [[PFServerPosterIdentity alloc] _initWithProvider:v16 type:1 role:v14 posterUUID:v18 version:a7 supplement:0 descriptorIdentifier:v17];
+  v19 = [[PFServerPosterIdentity alloc] _initWithProvider:v16 type:1 role:roleCopy posterUUID:v18 version:version supplement:0 descriptorIdentifier:v17];
 
   return v19;
 }
 
-+ (id)configurationIdentityWithProvider:(id)a3 identifier:(id)a4 role:(id)a5 posterUUID:(id)a6 version:(unint64_t)a7 supplement:(unint64_t)a8
++ (id)configurationIdentityWithProvider:(id)provider identifier:(id)identifier role:(id)role posterUUID:(id)d version:(unint64_t)version supplement:(unint64_t)supplement
 {
   v35 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = v14;
+  providerCopy = provider;
+  identifierCopy = identifier;
+  roleCopy = role;
+  dCopy = d;
+  v18 = providerCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v18)
   {
@@ -271,7 +271,7 @@
     [PFServerPosterIdentity configurationIdentityWithProvider:a2 identifier:? role:? posterUUID:? version:? supplement:?];
   }
 
-  v19 = v15;
+  v19 = identifierCopy;
   if (v19)
   {
     NSClassFromString(&cfstr_Nsstring.isa);
@@ -281,7 +281,7 @@
     }
   }
 
-  v20 = v17;
+  v20 = dCopy;
   NSClassFromString(&cfstr_Nsuuid.isa);
   if (!v20)
   {
@@ -293,9 +293,9 @@
     [PFServerPosterIdentity configurationIdentityWithProvider:a2 identifier:? role:? posterUUID:? version:? supplement:?];
   }
 
-  if (PFPosterRoleIsValid(v16))
+  if (PFPosterRoleIsValid(roleCopy))
   {
-    v21 = v16;
+    v21 = roleCopy;
   }
 
   else
@@ -307,7 +307,7 @@
       *buf = 136446978;
       v28 = "+[PFServerPosterIdentity configurationIdentityWithProvider:identifier:role:posterUUID:version:supplement:]";
       v29 = 2114;
-      v30 = v16;
+      v30 = roleCopy;
       v31 = 2114;
       v32 = v21;
       v33 = 2114;
@@ -328,18 +328,18 @@
     [PFServerPosterIdentity configurationIdentityWithProvider:a2 identifier:? role:? posterUUID:? version:? supplement:?];
   }
 
-  v24 = [[PFServerPosterIdentity alloc] _initWithProvider:v18 type:3 role:v23 posterUUID:v20 version:a7 supplement:a8 descriptorIdentifier:v19];
+  v24 = [[PFServerPosterIdentity alloc] _initWithProvider:v18 type:3 role:v23 posterUUID:v20 version:version supplement:supplement descriptorIdentifier:v19];
   v25 = *MEMORY[0x1E69E9840];
 
   return v24;
 }
 
-+ (id)incomingConfigurationIdentityWithProvider:(id)a3 role:(id)a4 posterUUID:(id)a5 version:(unint64_t)a6 supplement:(unint64_t)a7
++ (id)incomingConfigurationIdentityWithProvider:(id)provider role:(id)role posterUUID:(id)d version:(unint64_t)version supplement:(unint64_t)supplement
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = v12;
+  providerCopy = provider;
+  roleCopy = role;
+  dCopy = d;
+  v15 = providerCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v15)
   {
@@ -351,7 +351,7 @@
     [PFServerPosterIdentity incomingConfigurationIdentityWithProvider:a2 role:? posterUUID:? version:? supplement:?];
   }
 
-  v16 = v14;
+  v16 = dCopy;
   NSClassFromString(&cfstr_Nsuuid.isa);
   if (!v16)
   {
@@ -363,18 +363,18 @@
     [PFServerPosterIdentity incomingConfigurationIdentityWithProvider:a2 role:? posterUUID:? version:? supplement:?];
   }
 
-  v17 = [[PFServerPosterIdentity alloc] _initWithProvider:v15 type:3 role:v13 posterUUID:v16 version:a6 supplement:a7 descriptorIdentifier:0 isIncomingConfiguration:1];
+  v17 = [[PFServerPosterIdentity alloc] _initWithProvider:v15 type:3 role:roleCopy posterUUID:v16 version:version supplement:supplement descriptorIdentifier:0 isIncomingConfiguration:1];
 
   return v17;
 }
 
-+ (id)suggestionDescriptorIdentityWithProvider:(id)a3 identifier:(id)a4 role:(id)a5 posterUUID:(id)a6 version:(unint64_t)a7
++ (id)suggestionDescriptorIdentityWithProvider:(id)provider identifier:(id)identifier role:(id)role posterUUID:(id)d version:(unint64_t)version
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = v12;
+  providerCopy = provider;
+  identifierCopy = identifier;
+  roleCopy = role;
+  dCopy = d;
+  v16 = providerCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v16)
   {
@@ -386,7 +386,7 @@
     [PFServerPosterIdentity suggestionDescriptorIdentityWithProvider:a2 identifier:? role:? posterUUID:? version:?];
   }
 
-  v17 = v13;
+  v17 = identifierCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v17)
   {
@@ -398,7 +398,7 @@
     [PFServerPosterIdentity suggestionDescriptorIdentityWithProvider:a2 identifier:? role:? posterUUID:? version:?];
   }
 
-  v18 = v15;
+  v18 = dCopy;
   NSClassFromString(&cfstr_Nsuuid.isa);
   if (!v18)
   {
@@ -410,20 +410,20 @@
     [PFServerPosterIdentity suggestionDescriptorIdentityWithProvider:a2 identifier:? role:? posterUUID:? version:?];
   }
 
-  v19 = [[PFServerPosterIdentity alloc] _initWithProvider:v16 type:4 role:v14 posterUUID:v18 version:a7 supplement:0 descriptorIdentifier:v17];
+  v19 = [[PFServerPosterIdentity alloc] _initWithProvider:v16 type:4 role:roleCopy posterUUID:v18 version:version supplement:0 descriptorIdentifier:v17];
 
   return v19;
 }
 
-- (BOOL)isNewerVersionOfIdentity:(id)a3
+- (BOOL)isNewerVersionOfIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v7 = 0;
-  if ([(PFServerPosterIdentity *)self _isRootEqual:v4])
+  if ([(PFServerPosterIdentity *)self _isRootEqual:identityCopy])
   {
     version = self->_version;
-    v6 = v4[5];
-    if (version > v6 || version == v6 && self->_supplement > v4[6])
+    v6 = identityCopy[5];
+    if (version > v6 || version == v6 && self->_supplement > identityCopy[6])
     {
       v7 = 1;
     }
@@ -432,16 +432,16 @@
   return v7;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v5 = a3;
-  if (!v5)
+  compareCopy = compare;
+  if (!compareCopy)
   {
     [PFServerPosterIdentity compare:a2];
   }
 
-  v6 = v5;
-  v7 = [(NSString *)self->_role compare:v5[8]];
+  v6 = compareCopy;
+  v7 = [(NSString *)self->_role compare:compareCopy[8]];
   if (v7)
   {
     goto LABEL_4;
@@ -516,40 +516,40 @@ LABEL_5:
   return v8;
 }
 
-- (BOOL)setupPersistenceForPathContainerURL:(id)a3 error:(id *)a4
+- (BOOL)setupPersistenceForPathContainerURL:(id)l error:(id *)error
 {
   v85 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v68 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [(PFServerPosterIdentity *)self provider];
-  v67 = v5;
-  v7 = [v5 URLByAppendingPathComponent:v6];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  provider = [(PFServerPosterIdentity *)self provider];
+  v67 = lCopy;
+  v7 = [lCopy URLByAppendingPathComponent:provider];
 
   v8 = MEMORY[0x1E695DFF8];
-  v9 = [(PFServerPosterIdentity *)self type];
-  v10 = [(PFServerPosterIdentity *)self posterUUID];
-  v11 = [v8 pf_posterPathIdentifierURLProviderURL:v7 type:v9 posterUUID:v10];
+  type = [(PFServerPosterIdentity *)self type];
+  posterUUID = [(PFServerPosterIdentity *)self posterUUID];
+  v11 = [v8 pf_posterPathIdentifierURLProviderURL:v7 type:type posterUUID:posterUUID];
 
   v12 = MEMORY[0x1E695DFF8];
-  v13 = [(PFServerPosterIdentity *)self type];
-  v14 = [(PFServerPosterIdentity *)self posterUUID];
-  v15 = [v12 pf_posterPathInstanceURLForProviderURL:v7 type:v13 posterUUID:v14 version:{-[PFServerPosterIdentity version](self, "version")}];
+  type2 = [(PFServerPosterIdentity *)self type];
+  posterUUID2 = [(PFServerPosterIdentity *)self posterUUID];
+  v15 = [v12 pf_posterPathInstanceURLForProviderURL:v7 type:type2 posterUUID:posterUUID2 version:{-[PFServerPosterIdentity version](self, "version")}];
 
   v16 = [MEMORY[0x1E695DFF8] pf_roleIdentifierURLForType:-[PFServerPosterIdentity type](self identifierURL:{"type"), v11}];
   v66 = v11;
   v17 = [MEMORY[0x1E695DFF8] pf_descriptorIdentifierURLForType:-[PFServerPosterIdentity type](self identifierURL:{"type"), v11}];
-  v18 = [(PFServerPosterIdentity *)self role];
+  role = [(PFServerPosterIdentity *)self role];
   if ([v16 checkResourceIsReachableAndReturnError:0])
   {
 LABEL_4:
-    v64 = v18;
-    v23 = [(PFServerPosterIdentity *)self descriptorIdentifier];
+    v64 = role;
+    descriptorIdentifier = [(PFServerPosterIdentity *)self descriptorIdentifier];
     if (([v17 checkResourceIsReachableAndReturnError:0] & 1) == 0)
     {
       v24 = v7;
       v25 = v15;
-      v19 = v23;
-      v22 = [v23 dataUsingEncoding:4];
+      v19 = descriptorIdentifier;
+      v22 = [descriptorIdentifier dataUsingEncoding:4];
       v79 = 0;
       v26 = [v22 writeToURL:v17 options:268435457 error:&v79];
       v27 = v79;
@@ -564,11 +564,11 @@ LABEL_4:
         }
 
         v15 = v25;
-        if (a4)
+        if (error)
         {
           v54 = v28;
           v44 = 0;
-          *a4 = v28;
+          *error = v28;
         }
 
         else
@@ -584,10 +584,10 @@ LABEL_4:
 
       v15 = v25;
       v7 = v24;
-      v23 = v19;
+      descriptorIdentifier = v19;
     }
 
-    v19 = v23;
+    v19 = descriptorIdentifier;
     v22 = [MEMORY[0x1E695DFF8] pf_posterPathScratchURLForInstanceURL:v15];
     if (([v22 checkResourceIsReachableAndReturnError:0] & 1) == 0)
     {
@@ -596,7 +596,7 @@ LABEL_4:
       v30 = v15;
       v31 = PFFileProtectionNoneAttributes();
       v78 = 0;
-      v32 = [v68 createDirectoryAtURL:v22 withIntermediateDirectories:1 attributes:v31 error:&v78];
+      v32 = [defaultManager createDirectoryAtURL:v22 withIntermediateDirectories:1 attributes:v31 error:&v78];
       v28 = v78;
 
       if ((v32 & 1) == 0)
@@ -609,11 +609,11 @@ LABEL_4:
 
         v15 = v30;
         v49 = v66;
-        if (a4)
+        if (error)
         {
           v56 = v28;
           v44 = 0;
-          *a4 = v28;
+          *error = v28;
         }
 
         else
@@ -632,15 +632,15 @@ LABEL_4:
     }
 
     v33 = MEMORY[0x1E695DFF8];
-    v34 = [(PFServerPosterIdentity *)self supplement];
+    supplement = [(PFServerPosterIdentity *)self supplement];
     v63 = v15;
-    v28 = [v33 pf_posterPathSupplementURLForInstanceURL:v15 supplement:v34];
+    v28 = [v33 pf_posterPathSupplementURLForInstanceURL:v15 supplement:supplement];
     if (([v28 checkResourceIsReachableAndReturnError:0] & 1) == 0)
     {
       v35 = v17;
       v36 = PFFileProtectionNoneAttributes();
       v77 = 0;
-      v37 = [v68 createDirectoryAtURL:v28 withIntermediateDirectories:1 attributes:v36 error:&v77];
+      v37 = [defaultManager createDirectoryAtURL:v28 withIntermediateDirectories:1 attributes:v36 error:&v77];
       v38 = v77;
 
       if ((v37 & 1) == 0)
@@ -652,11 +652,11 @@ LABEL_4:
         }
 
         v49 = v66;
-        if (a4)
+        if (error)
         {
           v58 = v38;
           v44 = 0;
-          *a4 = v38;
+          *error = v38;
         }
 
         else
@@ -742,11 +742,11 @@ LABEL_53:
 LABEL_54:
 
     v59 = v67;
-    v18 = v64;
+    role = v64;
     goto LABEL_55;
   }
 
-  v19 = [v18 dataUsingEncoding:4];
+  v19 = [role dataUsingEncoding:4];
   v80 = 0;
   v20 = [v19 writeToURL:v16 options:268435457 error:&v80];
   v21 = v80;
@@ -764,11 +764,11 @@ LABEL_54:
   }
 
   v49 = v66;
-  if (a4)
+  if (error)
   {
     v51 = v22;
     v44 = 0;
-    *a4 = v22;
+    *error = v22;
   }
 
   else
@@ -788,8 +788,8 @@ LABEL_55:
   v20 = *MEMORY[0x1E69E9840];
   v2 = objc_autoreleasePoolPush();
   os_unfair_lock_lock(&__allIdentitiesLock);
-  v3 = [__allIdentities allObjects];
-  v4 = [v3 sortedArrayUsingSelector:sel_compare_];
+  allObjects = [__allIdentities allObjects];
+  v4 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
   os_unfair_lock_unlock(&__allIdentitiesLock);
   v5 = [MEMORY[0x1E696AD60] stringWithFormat:@"allIdentities = %llu {", objc_msgSend(v4, "count")];
@@ -831,30 +831,30 @@ LABEL_55:
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   provider = self->_provider;
-  v5 = a3;
-  [v5 encodeObject:provider forKey:@"p"];
-  [v5 encodeInt64:self->_type forKey:@"t"];
-  [v5 encodeObject:self->_posterUUID forKey:@"u"];
-  [v5 encodeInt64:self->_version forKey:@"v"];
-  [v5 encodeInt64:self->_supplement forKey:@"s"];
-  [v5 encodeObject:self->_descriptorIdentifier forKey:@"d"];
-  [v5 encodeObject:self->_role forKey:@"r"];
+  coderCopy = coder;
+  [coderCopy encodeObject:provider forKey:@"p"];
+  [coderCopy encodeInt64:self->_type forKey:@"t"];
+  [coderCopy encodeObject:self->_posterUUID forKey:@"u"];
+  [coderCopy encodeInt64:self->_version forKey:@"v"];
+  [coderCopy encodeInt64:self->_supplement forKey:@"s"];
+  [coderCopy encodeObject:self->_descriptorIdentifier forKey:@"d"];
+  [coderCopy encodeObject:self->_role forKey:@"r"];
 }
 
-- (PFServerPosterIdentity)initWithBSXPCCoder:(id)a3
+- (PFServerPosterIdentity)initWithBSXPCCoder:(id)coder
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeStringForKey:@"p"];
-  v6 = [v4 decodeInt64ForKey:@"t"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"u"];
-  v8 = [v4 decodeInt64ForKey:@"v"];
-  v9 = [v4 decodeInt64ForKey:@"s"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"d"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"r"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeStringForKey:@"p"];
+  v6 = [coderCopy decodeInt64ForKey:@"t"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"u"];
+  v8 = [coderCopy decodeInt64ForKey:@"v"];
+  v9 = [coderCopy decodeInt64ForKey:@"s"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"d"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"r"];
 
   if (PFPosterRoleIsValid(v11))
   {
@@ -898,30 +898,30 @@ LABEL_10:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   provider = self->_provider;
-  v5 = a3;
-  [v5 encodeObject:provider forKey:@"p"];
-  [v5 encodeInt64:self->_type forKey:@"t"];
-  [v5 encodeObject:self->_posterUUID forKey:@"u"];
-  [v5 encodeInt64:self->_version forKey:@"v"];
-  [v5 encodeInt64:self->_supplement forKey:@"s"];
-  [v5 encodeObject:self->_descriptorIdentifier forKey:@"d"];
-  [v5 encodeObject:self->_role forKey:@"r"];
+  coderCopy = coder;
+  [coderCopy encodeObject:provider forKey:@"p"];
+  [coderCopy encodeInt64:self->_type forKey:@"t"];
+  [coderCopy encodeObject:self->_posterUUID forKey:@"u"];
+  [coderCopy encodeInt64:self->_version forKey:@"v"];
+  [coderCopy encodeInt64:self->_supplement forKey:@"s"];
+  [coderCopy encodeObject:self->_descriptorIdentifier forKey:@"d"];
+  [coderCopy encodeObject:self->_role forKey:@"r"];
 }
 
-- (PFServerPosterIdentity)initWithCoder:(id)a3
+- (PFServerPosterIdentity)initWithCoder:(id)coder
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"p"];
-  v6 = [v4 decodeInt64ForKey:@"t"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"u"];
-  v8 = [v4 decodeInt64ForKey:@"v"];
-  v9 = [v4 decodeInt64ForKey:@"s"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"d"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"r"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"p"];
+  v6 = [coderCopy decodeInt64ForKey:@"t"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"u"];
+  v8 = [coderCopy decodeInt64ForKey:@"v"];
+  v9 = [coderCopy decodeInt64ForKey:@"s"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"d"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"r"];
 
   if (PFPosterRoleIsValid(v11))
   {
@@ -1026,39 +1026,39 @@ LABEL_8:
   return v7;
 }
 
-- (uint64_t)_isRootEqual:(uint64_t)a1
+- (uint64_t)_isRootEqual:(uint64_t)equal
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (equal)
   {
-    if (a1 == v3)
+    if (equal == v3)
     {
-      a1 = 1;
+      equal = 1;
     }
 
     else
     {
       v5 = objc_opt_class();
-      if (v5 == objc_opt_class() && (*(a1 + 24) == 3 || (v7 = *(a1 + 56), v8 = v4[7], BSEqualStrings())) && (v9 = *(a1 + 16), v10 = v4[2], BSEqualStrings()) && *(a1 + 24) == v4[3] && (v11 = *(a1 + 32), v12 = v4[4], BSEqualObjects()))
+      if (v5 == objc_opt_class() && (*(equal + 24) == 3 || (v7 = *(equal + 56), v8 = v4[7], BSEqualStrings())) && (v9 = *(equal + 16), v10 = v4[2], BSEqualStrings()) && *(equal + 24) == v4[3] && (v11 = *(equal + 32), v12 = v4[4], BSEqualObjects()))
       {
-        a1 = [*(a1 + 64) isEqualToString:v4[8]];
+        equal = [*(equal + 64) isEqualToString:v4[8]];
       }
 
       else
       {
-        a1 = 0;
+        equal = 0;
       }
     }
   }
 
-  return a1;
+  return equal;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(PFServerPosterIdentity *)self _isRootEqual:v4]&& self->_version == v4[5] && self->_supplement == v4[6] && [(NSString *)self->_role isEqualToString:v4[8]];
+  equalCopy = equal;
+  v5 = [(PFServerPosterIdentity *)self _isRootEqual:equalCopy]&& self->_version == equalCopy[5] && self->_supplement == equalCopy[6] && [(NSString *)self->_role isEqualToString:equalCopy[8]];
 
   return v5;
 }

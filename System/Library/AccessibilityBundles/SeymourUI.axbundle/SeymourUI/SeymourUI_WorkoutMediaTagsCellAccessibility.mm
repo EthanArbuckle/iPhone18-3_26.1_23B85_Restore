@@ -1,15 +1,15 @@
 @interface SeymourUI_WorkoutMediaTagsCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation SeymourUI_WorkoutMediaTagsCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SeymourUI.WorkoutMediaTagsCell" hasInstanceMethod:@"tagsLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SeymourUI.WorkoutMediaTagsCell" hasInstanceMethod:@"accessibilityMediaTags" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SeymourUI.WorkoutMediaTagsCell" hasInstanceMethod:@"tagsLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SeymourUI.WorkoutMediaTagsCell" hasInstanceMethod:@"accessibilityMediaTags" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -24,12 +24,12 @@
 
   v5 = [(SeymourUI_WorkoutMediaTagsCellAccessibility *)self safeArrayForKey:@"accessibilityMediaTags"];
   v6 = _accessibilityDescriptionForMediaTags(v5);
-  v7 = [v4 text];
+  text = [v4 text];
 
-  if (v7)
+  if (text)
   {
-    v8 = [v4 text];
-    v10 = _accessibilityReplaceStylsticBulletsForSpeaking(v8, v9);
+    text2 = [v4 text];
+    v10 = _accessibilityReplaceStylsticBulletsForSpeaking(text2, v9);
   }
 
   else

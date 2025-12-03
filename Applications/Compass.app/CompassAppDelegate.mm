@@ -1,34 +1,34 @@
 @interface CompassAppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
 - (void)_finishedRotationTest;
 @end
 
 @implementation CompassAppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v5 = [(CompassAppDelegate *)self window:a3];
-  v6 = [v5 rootViewController];
+  v5 = [(CompassAppDelegate *)self window:application];
+  rootViewController = [v5 rootViewController];
   compassController = self->_compassController;
-  self->_compassController = v6;
+  self->_compassController = rootViewController;
 
   return 1;
 }
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  objc_storeStrong(&self->_testName, a4);
-  if ([v9 containsString:@"Rotate"])
+  applicationCopy = application;
+  testCopy = test;
+  optionsCopy = options;
+  objc_storeStrong(&self->_testName, test);
+  if ([testCopy containsString:@"Rotate"])
   {
     v11 = +[NSNotificationCenter defaultCenter];
     [v11 addObserver:self selector:"_finishedRotationTest" name:@"CompassFinishedRotationTestNotification" object:0];
 
     v12 = objc_alloc_init(CompassTestOptions);
-    if ([v9 isEqualToString:@"RotateWithBearing"])
+    if ([testCopy isEqualToString:@"RotateWithBearing"])
     {
       [(CompassTestOptions *)v12 setShouldSetBearing:1];
     }
@@ -39,7 +39,7 @@
     block[1] = 3221225472;
     block[2] = sub_1000068E8;
     block[3] = &unk_100014460;
-    v17 = v9;
+    v17 = testCopy;
     dispatch_after(v13, &_dispatch_main_q, block);
 
     v14 = 1;
@@ -47,7 +47,7 @@
 
   else
   {
-    v14 = [v8 runTest:v9 options:v10];
+    v14 = [applicationCopy runTest:testCopy options:optionsCopy];
   }
 
   return v14;

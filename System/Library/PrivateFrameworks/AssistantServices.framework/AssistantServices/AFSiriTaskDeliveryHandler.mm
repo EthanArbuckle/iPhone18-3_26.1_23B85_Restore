@@ -1,7 +1,7 @@
 @interface AFSiriTaskDeliveryHandler
 - (AFSiriTaskService)service;
 - (AFSiriTaskServiceDelegate)delegate;
-- (void)deliverSiriTask:(id)a3 completionHandler:(id)a4;
+- (void)deliverSiriTask:(id)task completionHandler:(id)handler;
 @end
 
 @implementation AFSiriTaskDeliveryHandler
@@ -20,18 +20,18 @@
   return WeakRetained;
 }
 
-- (void)deliverSiriTask:(id)a3 completionHandler:(id)a4
+- (void)deliverSiriTask:(id)task completionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  handlerCopy = handler;
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v21 = "[AFSiriTaskDeliveryHandler deliverSiriTask:completionHandler:]";
     v22 = 2112;
-    v23 = v6;
+    v23 = taskCopy;
     _os_log_impl(&dword_1912FE000, v8, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
@@ -39,18 +39,18 @@
   v18[1] = 3221225472;
   v18[2] = __63__AFSiriTaskDeliveryHandler_deliverSiriTask_completionHandler___block_invoke;
   v18[3] = &unk_1E7348AA8;
-  v19 = v7;
-  v9 = v7;
+  v19 = handlerCopy;
+  v9 = handlerCopy;
   v10 = MEMORY[0x193AFB7B0](v18);
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __63__AFSiriTaskDeliveryHandler_deliverSiriTask_completionHandler___block_invoke_2;
   v15[3] = &unk_1E73496E8;
-  v16 = v6;
+  v16 = taskCopy;
   v17 = v10;
   v15[4] = self;
-  v12 = v6;
+  v12 = taskCopy;
   v13 = v10;
   dispatch_async(queue, v15);
 

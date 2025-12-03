@@ -1,10 +1,10 @@
 @interface ICActivityStreamDockView
 - (ICActivityStreamCoordinating)coordinator;
-- (ICActivityStreamDockView)initWithFrame:(CGRect)a3;
+- (ICActivityStreamDockView)initWithFrame:(CGRect)frame;
 - (ICActivityStreamSelection)selection;
 - (ICCloudSyncingObject)object;
 - (double)closeButtonImageHeight;
-- (void)setHorizontalStackLeadingConstraint:(id)a3;
+- (void)setHorizontalStackLeadingConstraint:(id)constraint;
 - (void)update;
 @end
 
@@ -17,16 +17,16 @@
   return Strong;
 }
 
-- (void)setHorizontalStackLeadingConstraint:(id)a3
+- (void)setHorizontalStackLeadingConstraint:(id)constraint
 {
   v4 = *(self + OBJC_IVAR___ICActivityStreamDockView_horizontalStackLeadingConstraint);
-  *(self + OBJC_IVAR___ICActivityStreamDockView_horizontalStackLeadingConstraint) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___ICActivityStreamDockView_horizontalStackLeadingConstraint) = constraint;
+  constraintCopy = constraint;
 }
 
 - (void)update
 {
-  v2 = self;
+  selfCopy = self;
   ActivityStreamDockView.update()();
 }
 
@@ -46,17 +46,17 @@
 
 - (double)closeButtonImageHeight
 {
-  v2 = self;
-  if (![(ICActivityStreamDockView *)v2 ic_hasCompactHeight])
+  selfCopy = self;
+  if (![(ICActivityStreamDockView *)selfCopy ic_hasCompactHeight])
   {
 
     return 30.0;
   }
 
-  v3 = [(ICActivityStreamDockView *)v2 ic_hasCompactWidth];
+  ic_hasCompactWidth = [(ICActivityStreamDockView *)selfCopy ic_hasCompactWidth];
 
   result = 22.0;
-  if ((v3 & 1) == 0)
+  if ((ic_hasCompactWidth & 1) == 0)
   {
     return 30.0;
   }
@@ -64,7 +64,7 @@
   return result;
 }
 
-- (ICActivityStreamDockView)initWithFrame:(CGRect)a3
+- (ICActivityStreamDockView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,13 +1,13 @@
 @interface TSCEFunctionFormulaNode
-- (TSCEFunctionFormulaNode)initWithFunctionIndex:(unsigned __int16)a3 children:(id)a4;
-- (TSCEFunctionFormulaNode)initWithFunctionIndex:(unsigned __int16)a3 numArgs:(unsigned int)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 hostCellRef:(const TSCECellRef *)a4 symbolTable:(void *)a5 calcEngine:(id)a6;
+- (TSCEFunctionFormulaNode)initWithFunctionIndex:(unsigned __int16)index children:(id)children;
+- (TSCEFunctionFormulaNode)initWithFunctionIndex:(unsigned __int16)index numArgs:(unsigned int)args;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array hostCellRef:(const TSCECellRef *)ref symbolTable:(void *)table calcEngine:(id)engine;
 @end
 
 @implementation TSCEFunctionFormulaNode
 
-- (TSCEFunctionFormulaNode)initWithFunctionIndex:(unsigned __int16)a3 numArgs:(unsigned int)a4
+- (TSCEFunctionFormulaNode)initWithFunctionIndex:(unsigned __int16)index numArgs:(unsigned int)args
 {
   v11.receiver = self;
   v11.super_class = TSCEFunctionFormulaNode;
@@ -15,30 +15,30 @@
   v7 = v6;
   if (v6)
   {
-    *(&v6->super._nodeType + 1) = a3;
+    *(&v6->super._nodeType + 1) = index;
     v8 = objc_opt_new();
     children = v7->super._children;
     v7->super._children = v8;
 
-    *(&v7->super._nodeType + 1) = a4;
+    *(&v7->super._nodeType + 1) = args;
   }
 
   return v7;
 }
 
-- (TSCEFunctionFormulaNode)initWithFunctionIndex:(unsigned __int16)a3 children:(id)a4
+- (TSCEFunctionFormulaNode)initWithFunctionIndex:(unsigned __int16)index children:(id)children
 {
-  v6 = a4;
+  childrenCopy = children;
   v20.receiver = self;
   v20.super_class = TSCEFunctionFormulaNode;
   v7 = [(TSCEFormulaNode *)&v20 initWithNodeType:14];
   v12 = v7;
   if (v7)
   {
-    *(&v7->super._nodeType + 1) = a3;
-    if (v6)
+    *(&v7->super._nodeType + 1) = index;
+    if (childrenCopy)
     {
-      v13 = objc_msgSend_mutableCopy(v6, v8, v9, v10, v11);
+      v13 = objc_msgSend_mutableCopy(childrenCopy, v8, v9, v10, v11);
     }
 
     else
@@ -55,7 +55,7 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = TSCEFunctionFormulaNode;
@@ -69,10 +69,10 @@
   return v4;
 }
 
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 hostCellRef:(const TSCECellRef *)a4 symbolTable:(void *)a5 calcEngine:(id)a6
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array hostCellRef:(const TSCECellRef *)ref symbolTable:(void *)table calcEngine:(id)engine
 {
-  v187 = a6;
-  v185 = self;
+  engineCopy = engine;
+  selfCopy = self;
   v12 = objc_msgSend_children(self, v8, v9, v10, v11);
   v188 = v12;
   v17 = objc_msgSend_count(v12, v13, v14, v15, v16);
@@ -114,13 +114,13 @@
 
         if (objc_msgSend_isIdentifierNode(v79, v85, v86, v87, v88))
         {
-          objc_msgSend_appendToNodeArray_hostCellRef_symbolTable_calcEngine_(v70, v100, a3, a4, a5, v187);
+          objc_msgSend_appendToNodeArray_hostCellRef_symbolTable_calcEngine_(v70, v100, array, ref, table, engineCopy);
           v105 = objc_msgSend_fullIdentifier(v79, v101, v102, v103, v104);
-          TSCESymbolTable::beginScope(a5);
+          TSCESymbolTable::beginScope(table);
           ++v64;
           if (v105)
           {
-            Symbol = TSCESymbolTable::createSymbol(a5, &v105->var0);
+            Symbol = TSCESymbolTable::createSymbol(table, &v105->var0);
           }
 
           else
@@ -136,7 +136,7 @@
         }
 
         TSCEASTCompactWhitespace::TSCEASTCompactWhitespace(v190, 0);
-        TSCEASTLetBindElement::appendLetNodeHeader(a3, v105, v190, Symbol, v63 != 0);
+        TSCEASTLetBindElement::appendLetNodeHeader(array, v105, v190, Symbol, v63 != 0);
         v191 = v190;
         sub_22107C2C0(&v191);
 
@@ -146,11 +146,11 @@
       }
 
       while (v107 < v21);
-      objc_msgSend_appendToNodeArray_hostCellRef_symbolTable_calcEngine_(v183, v60, a3, a4, a5, v187);
+      objc_msgSend_appendToNodeArray_hostCellRef_symbolTable_calcEngine_(v183, v60, array, ref, table, engineCopy);
       for (; v64; --v64)
       {
-        TSCEASTLetBindElement::appendEndScopeNode(a3, v108, v109, v110, v111);
-        TSCESymbolTable::endScope(a5, v112, v113, v114, v115);
+        TSCEASTLetBindElement::appendEndScopeNode(array, v108, v109, v110, v111);
+        TSCESymbolTable::endScope(table, v112, v113, v114, v115);
       }
     }
 
@@ -164,7 +164,7 @@
       objc_msgSend_lastObject(v12, v18, v22, v19, v20);
       objc_claimAutoreleasedReturnValue();
       v23 = objc_opt_new();
-      TSCESymbolTable::beginScope(a5);
+      TSCESymbolTable::beginScope(table);
       v27 = v21 - 1;
       if (v21 != 1)
       {
@@ -175,7 +175,7 @@
           v29 = objc_msgSend_objectAtIndex_(v188, v24, v28, v25, v26);
           if ((objc_msgSend_isEmptyNode(v29, v30, v31, v32, v33) & 1) == 0 && objc_msgSend_isIdentifierNode(v29, v34, v35, v36, v37) && (v38 = v29, objc_msgSend_fullIdentifier(v38, v39, v40, v41, v42), v43 = objc_claimAutoreleasedReturnValue(), v38, v43))
           {
-            v44 = TSCESymbolTable::createSymbol(a5, &v43->isa);
+            v44 = TSCESymbolTable::createSymbol(table, &v43->isa);
             if (v184)
             {
               v48 = v184;
@@ -212,11 +212,11 @@
     }
 
 LABEL_52:
-    v156 = objc_msgSend_whitespaceBefore(v185, v18, v22, v19, v20);
-    TSCEASTWhitespaceElement::appendWhitespaceElement(a3, 31, v156);
+    v156 = objc_msgSend_whitespaceBefore(selfCopy, v18, v22, v19, v20);
+    TSCEASTWhitespaceElement::appendWhitespaceElement(array, 31, v156);
 
-    v116 = objc_msgSend_whitespaceAfter(v185, v157, v158, v159, v160);
-    TSCEASTWhitespaceElement::appendWhitespaceElement(a3, 32, v116);
+    v116 = objc_msgSend_whitespaceAfter(selfCopy, v157, v158, v159, v160);
+    TSCEASTWhitespaceElement::appendWhitespaceElement(array, 32, v116);
     goto LABEL_53;
   }
 
@@ -228,7 +228,7 @@ LABEL_37:
     {
       v129 = v124;
       v130 = objc_msgSend_objectAtIndex_(v12, v125, 0, v127, v128);
-      objc_msgSend_appendToNodeArray_hostCellRef_symbolTable_calcEngine_(v130, v131, a3, a4, a5, v187);
+      objc_msgSend_appendToNodeArray_hostCellRef_symbolTable_calcEngine_(v130, v131, array, ref, table, engineCopy);
 
       if (v21 != 1)
       {
@@ -241,13 +241,13 @@ LABEL_37:
             __C();
           }
 
-          objc_msgSend_appendToNodeArray_hostCellRef_symbolTable_calcEngine_(v138, v134, a3, a4, a5, v187);
+          objc_msgSend_appendToNodeArray_hostCellRef_symbolTable_calcEngine_(v138, v134, array, ref, table, engineCopy);
         }
       }
     }
 
-    v139 = v185[21];
-    if (v185[21])
+    v139 = selfCopy[21];
+    if (selfCopy[21])
     {
       v140 = objc_msgSend_count(v12, v125, v126, v127, v128);
       v144 = v140;
@@ -262,7 +262,7 @@ LABEL_37:
         v144 = -1;
       }
 
-      TSCEASTFunctionElement::appendFunctionElement(a3, v139, v144, 0, v143);
+      TSCEASTFunctionElement::appendFunctionElement(array, v139, v144, 0, v143);
     }
 
     else
@@ -282,14 +282,14 @@ LABEL_37:
   if (objc_msgSend_nodeType(v116, v117, v118, v119, v120) != 6)
   {
 
-    v22 = v185[21];
+    v22 = selfCopy[21];
     goto LABEL_37;
   }
 
-  v123 = v185[21];
-  if (v185[21])
+  v123 = selfCopy[21];
+  if (selfCopy[21])
   {
-    TSCEASTFunctionElement::appendFunctionElement(a3, v123, 0, 0, v122);
+    TSCEASTFunctionElement::appendFunctionElement(array, v123, 0, 0, v122);
   }
 
   else

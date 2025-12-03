@@ -1,32 +1,32 @@
 @interface LNFetchSuggestedActionsFromViewAppIntentConnectionOperation
-- (LNFetchSuggestedActionsFromViewAppIntentConnectionOperation)initWithConnectionInterface:(id)a3 queue:(id)a4 completionHandler:(id)a5;
-- (void)finishWithError:(id)a3;
+- (LNFetchSuggestedActionsFromViewAppIntentConnectionOperation)initWithConnectionInterface:(id)interface queue:(id)queue completionHandler:(id)handler;
+- (void)finishWithError:(id)error;
 - (void)start;
 @end
 
 @implementation LNFetchSuggestedActionsFromViewAppIntentConnectionOperation
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(LNFetchSuggestedActionsFromViewAppIntentConnectionOperation *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(LNFetchSuggestedActionsFromViewAppIntentConnectionOperation *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(LNFetchSuggestedActionsFromViewAppIntentConnectionOperation *)self results];
-    v7 = [(LNConnectionOperation *)self validatingResult:v6 error:v4];
+    results = [(LNFetchSuggestedActionsFromViewAppIntentConnectionOperation *)self results];
+    v7 = [(LNConnectionOperation *)self validatingResult:results error:errorCopy];
 
-    v8 = [(LNFetchSuggestedActionsFromViewAppIntentConnectionOperation *)self completionHandler];
-    v9 = [(LNFetchSuggestedActionsFromViewAppIntentConnectionOperation *)self results];
-    (v8)[2](v8, v9, v7);
+    completionHandler2 = [(LNFetchSuggestedActionsFromViewAppIntentConnectionOperation *)self completionHandler];
+    results2 = [(LNFetchSuggestedActionsFromViewAppIntentConnectionOperation *)self results];
+    (completionHandler2)[2](completionHandler2, results2, v7);
 
     [(LNFetchSuggestedActionsFromViewAppIntentConnectionOperation *)self setCompletionHandler:0];
-    v4 = v7;
+    errorCopy = v7;
   }
 
   v10.receiver = self;
   v10.super_class = LNFetchSuggestedActionsFromViewAppIntentConnectionOperation;
-  [(LNConnectionOperation *)&v10 finishWithError:v4];
+  [(LNConnectionOperation *)&v10 finishWithError:errorCopy];
 }
 
 - (void)start
@@ -41,13 +41,13 @@
     _os_log_impl(&dword_19763D000, v3, OS_LOG_TYPE_INFO, "Fetching suggested actions", buf, 2u);
   }
 
-  v4 = [(LNInterfaceConnectionOperation *)self connectionInterface];
+  connectionInterface = [(LNInterfaceConnectionOperation *)self connectionInterface];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __68__LNFetchSuggestedActionsFromViewAppIntentConnectionOperation_start__block_invoke;
   v5[3] = &unk_1E74B1F78;
   v5[4] = self;
-  [v4 fetchSuggestedActionsFromViewWithCompletionHandler:v5];
+  [connectionInterface fetchSuggestedActionsFromViewWithCompletionHandler:v5];
 }
 
 void __68__LNFetchSuggestedActionsFromViewAppIntentConnectionOperation_start__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -62,15 +62,15 @@ void __68__LNFetchSuggestedActionsFromViewAppIntentConnectionOperation_start__bl
   os_activity_scope_leave(&v8);
 }
 
-- (LNFetchSuggestedActionsFromViewAppIntentConnectionOperation)initWithConnectionInterface:(id)a3 queue:(id)a4 completionHandler:(id)a5
+- (LNFetchSuggestedActionsFromViewAppIntentConnectionOperation)initWithConnectionInterface:(id)interface queue:(id)queue completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  interfaceCopy = interface;
+  queueCopy = queue;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  if (interfaceCopy)
   {
-    if (v11)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -78,8 +78,8 @@ void __68__LNFetchSuggestedActionsFromViewAppIntentConnectionOperation_start__bl
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"LNFetchSuggestedActionsFromViewAppIntentConnectionOperation.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNFetchSuggestedActionsFromViewAppIntentConnectionOperation.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
 
     if (v12)
     {
@@ -87,14 +87,14 @@ void __68__LNFetchSuggestedActionsFromViewAppIntentConnectionOperation_start__bl
     }
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"LNFetchSuggestedActionsFromViewAppIntentConnectionOperation.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNFetchSuggestedActionsFromViewAppIntentConnectionOperation.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
-  v13 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v21.receiver = self;
   v21.super_class = LNFetchSuggestedActionsFromViewAppIntentConnectionOperation;
-  v14 = [(LNInterfaceConnectionOperation *)&v21 initWithIdentifier:v13 connectionInterface:v9 priority:1 queue:v10 activity:&__block_literal_global_12363];
+  v14 = [(LNInterfaceConnectionOperation *)&v21 initWithIdentifier:uUID connectionInterface:interfaceCopy priority:1 queue:queueCopy activity:&__block_literal_global_12363];
 
   if (v14)
   {

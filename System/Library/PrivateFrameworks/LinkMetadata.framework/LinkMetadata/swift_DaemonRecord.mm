@@ -1,15 +1,15 @@
 @interface swift_DaemonRecord
 + (NSArray)enumerated;
 + (NSString)daemonFilePath;
-+ (id)fromBundleIdentifier:(id)a3;
-+ (void)setEnumerated:(id)a3;
++ (id)fromBundleIdentifier:(id)identifier;
++ (void)setEnumerated:(id)enumerated;
 - (NSString)bundleIdentifier;
-- (void)setBundleIdentifier:(id)a3;
+- (void)setBundleIdentifier:(id)identifier;
 @end
 
 @implementation swift_DaemonRecord
 
-+ (id)fromBundleIdentifier:(id)a3
++ (id)fromBundleIdentifier:(id)identifier
 {
   v3 = sub_18F093B8C();
   v5 = static DaemonRecord.from(bundleIdentifier:)(v3, v4);
@@ -25,11 +25,11 @@
   return v2;
 }
 
-- (void)setBundleIdentifier:(id)a3
+- (void)setBundleIdentifier:(id)identifier
 {
   v4 = sub_18F093B8C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   DaemonRecord.bundleIdentifier.setter(v4, v6);
 }
 
@@ -50,7 +50,7 @@
   return v2;
 }
 
-+ (void)setEnumerated:(id)a3
++ (void)setEnumerated:(id)enumerated
 {
   swift_getObjCClassMetadata();
   v3 = sub_18F093DCC();

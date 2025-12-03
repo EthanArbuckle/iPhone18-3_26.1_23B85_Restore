@@ -1,43 +1,43 @@
 @interface WAGGesturesPhoneBuddyFlowMediaPlayerView
-- (WAGGesturesPhoneBuddyFlowMediaPlayerView)initWithVideoURL:(id)a3 placeholderImageName:(id)a4;
+- (WAGGesturesPhoneBuddyFlowMediaPlayerView)initWithVideoURL:(id)l placeholderImageName:(id)name;
 - (id)_phoneBuddyFlowPanelLog;
 - (void)_advanceToNextStep;
-- (void)_avQueuePlayerTryToRemoveObserverForKeyPath:(id)a3;
-- (void)_clearOutAnimationsForViewAndAllSubviews:(id)a3;
+- (void)_avQueuePlayerTryToRemoveObserverForKeyPath:(id)path;
+- (void)_clearOutAnimationsForViewAndAllSubviews:(id)subviews;
 - (void)_handleCurrentPlayerState;
 - (void)_handleFadeOutAnimationDidFinish;
 - (void)_startVideoPlayback;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)playerDidFinishPlaying:(id)a3;
-- (void)startVideoPlaybackWithFadeInAnimaton:(BOOL)a3;
-- (void)stopAndResetVideoPlaybackToStartWithFadeInAnimation:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)playerDidFinishPlaying:(id)playing;
+- (void)startVideoPlaybackWithFadeInAnimaton:(BOOL)animaton;
+- (void)stopAndResetVideoPlaybackToStartWithFadeInAnimation:(BOOL)animation;
 @end
 
 @implementation WAGGesturesPhoneBuddyFlowMediaPlayerView
 
-- (WAGGesturesPhoneBuddyFlowMediaPlayerView)initWithVideoURL:(id)a3 placeholderImageName:(id)a4
+- (WAGGesturesPhoneBuddyFlowMediaPlayerView)initWithVideoURL:(id)l placeholderImageName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  nameCopy = name;
   v21.receiver = self;
   v21.super_class = WAGGesturesPhoneBuddyFlowMediaPlayerView;
   v8 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)&v21 init];
   v9 = v8;
   if (v8)
   {
-    v10 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)v8 _phoneBuddyFlowPanelLog];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    _phoneBuddyFlowPanelLog = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)v8 _phoneBuddyFlowPanelLog];
+    if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
       v23 = v9;
       v24 = 2080;
       v25 = "[WAGGesturesPhoneBuddyFlowMediaPlayerView initWithVideoURL:placeholderImageName:]";
-      _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view:%@ -- %s", buf, 0x16u);
+      _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view:%@ -- %s", buf, 0x16u);
     }
 
-    v11 = [AVPlayerItem playerItemWithURL:v6];
+    v11 = [AVPlayerItem playerItemWithURL:lCopy];
     v12 = [AVPlayer playerWithPlayerItem:v11];
     [v12 addObserver:v9 forKeyPath:@"status" options:0 context:0];
     [v12 addObserver:v9 forKeyPath:@"timeControlStatus" options:0 context:0];
@@ -46,11 +46,11 @@
     v9->_playerLayer = v13;
 
     [(AVPlayerLayer *)v9->_playerLayer removeAllAnimations];
-    v15 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)v9 layer];
-    [v15 addSublayer:v9->_playerLayer];
+    layer = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)v9 layer];
+    [layer addSublayer:v9->_playerLayer];
 
     v16 = [NSBundle bundleForClass:objc_opt_class()];
-    v17 = [UIImage imageNamed:v7 inBundle:v16 withConfiguration:0];
+    v17 = [UIImage imageNamed:nameCopy inBundle:v16 withConfiguration:0];
 
     v18 = [[UIImageView alloc] initWithImage:v17];
     placeholderImageView = v9->_placeholderImageView;
@@ -65,14 +65,14 @@
 
 - (void)dealloc
 {
-  v3 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v6 = self;
+    selfCopy = self;
     v7 = 2080;
     v8 = "[WAGGesturesPhoneBuddyFlowMediaPlayerView dealloc]";
-    _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view:%@ -- %s", buf, 0x16u);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view:%@ -- %s", buf, 0x16u);
   }
 
   [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _avQueuePlayerTryToRemoveObserverForKeyPath:@"status"];
@@ -95,25 +95,25 @@
 
 - (void)_handleCurrentPlayerState
 {
-  v3 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = self;
+    selfCopy = self;
     v22 = 2080;
     v23 = "[WAGGesturesPhoneBuddyFlowMediaPlayerView _handleCurrentPlayerState]";
-    _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view:%@ -- %s", buf, 0x16u);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view:%@ -- %s", buf, 0x16u);
   }
 
   instructionState = self->_instructionState;
   switch(instructionState)
   {
     case 3:
-      v15 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      _phoneBuddyFlowPanelLog2 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
+      if (os_log_type_enabled(_phoneBuddyFlowPanelLog2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view will try to perform fade in animation", buf, 2u);
+        _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog2, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view will try to perform fade in animation", buf, 2u);
       }
 
       v17[0] = _NSConcreteStackBlock;
@@ -129,15 +129,15 @@
       [UIView animateWithDuration:65540 delay:v17 options:v16 animations:1.0 completion:0.0];
       break;
     case 2:
-      v10 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      _phoneBuddyFlowPanelLog3 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
+      if (os_log_type_enabled(_phoneBuddyFlowPanelLog3, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view will try to perform fade out animation", buf, 2u);
+        _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog3, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view will try to perform fade out animation", buf, 2u);
       }
 
-      v11 = [(AVPlayerLayer *)self->_playerLayer player];
-      [v11 pause];
+      player = [(AVPlayerLayer *)self->_playerLayer player];
+      [player pause];
 
       objc_initWeak(buf, self);
       +[CATransaction begin];
@@ -167,18 +167,18 @@
       objc_destroyWeak(buf);
       break;
     case 1:
-      v5 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+      _phoneBuddyFlowPanelLog4 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
+      if (os_log_type_enabled(_phoneBuddyFlowPanelLog4, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = [(AVPlayerLayer *)self->_playerLayer player];
-        v7 = [v6 status];
+        player2 = [(AVPlayerLayer *)self->_playerLayer player];
+        status = [player2 status];
         *buf = 134217984;
-        v21 = v7;
-        _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view will try to call _startVideoPlayback, player status is:%ld", buf, 0xCu);
+        selfCopy = status;
+        _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog4, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view will try to call _startVideoPlayback, player status is:%ld", buf, 0xCu);
       }
 
-      v8 = [(AVPlayerLayer *)self->_playerLayer player];
-      v9 = [v8 status] == &dword_0 + 1;
+      player3 = [(AVPlayerLayer *)self->_playerLayer player];
+      v9 = [player3 status] == &dword_0 + 1;
 
       if (v9)
       {
@@ -191,56 +191,56 @@
 
 - (void)_handleFadeOutAnimationDidFinish
 {
-  v3 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     instructionState = self->_instructionState;
     LODWORD(v7) = 134217984;
     *(&v7 + 4) = instructionState;
-    _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view _handleFadeOutAnimationDidFinish _instructionState is:%ld", &v7, 0xCu);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view _handleFadeOutAnimationDidFinish _instructionState is:%ld", &v7, 0xCu);
   }
 
   if (self->_instructionState == 2)
   {
     [(AVPlayerLayer *)self->_playerLayer setOpacity:0.0];
     [(AVPlayerLayer *)self->_playerLayer removeAnimationForKey:@"opacity"];
-    v5 = [(AVPlayerLayer *)self->_playerLayer player];
-    [v5 pause];
+    player = [(AVPlayerLayer *)self->_playerLayer player];
+    [player pause];
 
-    v6 = [(AVPlayerLayer *)self->_playerLayer player];
+    player2 = [(AVPlayerLayer *)self->_playerLayer player];
     v7 = *&kCMTimeZero.value;
     epoch = kCMTimeZero.epoch;
-    [v6 seekToTime:&v7];
+    [player2 seekToTime:&v7];
 
     [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _advanceToNextStep];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  pathCopy = path;
+  objectCopy = object;
+  _phoneBuddyFlowPanelLog = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v22 = self;
+    selfCopy = self;
     v23 = 2080;
     v24 = "[WAGGesturesPhoneBuddyFlowMediaPlayerView observeValueForKeyPath:ofObject:change:context:]";
-    _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view:%@ -- %s", buf, 0x16u);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view:%@ -- %s", buf, 0x16u);
   }
 
-  v11 = [(AVPlayerLayer *)self->_playerLayer player];
-  if ([v9 isEqual:v11])
+  player = [(AVPlayerLayer *)self->_playerLayer player];
+  if ([objectCopy isEqual:player])
   {
-    v12 = [v8 isEqualToString:@"status"];
+    v12 = [pathCopy isEqualToString:@"status"];
 
     if (v12)
     {
-      v13 = [(AVPlayerLayer *)self->_playerLayer player];
-      v14 = [v13 status];
+      player2 = [(AVPlayerLayer *)self->_playerLayer player];
+      status = [player2 status];
 
-      if (v14 == &dword_0 + 1)
+      if (status == &dword_0 + 1)
       {
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
@@ -256,17 +256,17 @@
   {
   }
 
-  v15 = [(AVPlayerLayer *)self->_playerLayer player];
-  if ([v9 isEqual:v15])
+  player3 = [(AVPlayerLayer *)self->_playerLayer player];
+  if ([objectCopy isEqual:player3])
   {
-    v16 = [v8 isEqualToString:@"timeControlStatus"];
+    v16 = [pathCopy isEqualToString:@"timeControlStatus"];
 
     if (v16)
     {
-      v17 = [(AVPlayerLayer *)self->_playerLayer player];
-      v18 = [v17 timeControlStatus];
+      player4 = [(AVPlayerLayer *)self->_playerLayer player];
+      timeControlStatus = [player4 timeControlStatus];
 
-      if (v18 == &dword_0 + 2)
+      if (timeControlStatus == &dword_0 + 2)
       {
         v19[0] = _NSConcreteStackBlock;
         v19[1] = 3221225472;
@@ -285,34 +285,34 @@
 
 - (void)_startVideoPlayback
 {
-  v3 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412546;
-    v6 = self;
+    selfCopy = self;
     v7 = 2080;
     v8 = "[WAGGesturesPhoneBuddyFlowMediaPlayerView _startVideoPlayback]";
-    _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view:%@ -- %s", &v5, 0x16u);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view:%@ -- %s", &v5, 0x16u);
   }
 
-  v4 = [(AVPlayerLayer *)self->_playerLayer player];
-  [v4 play];
+  player = [(AVPlayerLayer *)self->_playerLayer player];
+  [player play];
 }
 
-- (void)startVideoPlaybackWithFadeInAnimaton:(BOOL)a3
+- (void)startVideoPlaybackWithFadeInAnimaton:(BOOL)animaton
 {
-  v3 = a3;
+  animatonCopy = animaton;
   if (([(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self isHidden]& 1) == 0 && !self->_instructionState)
   {
-    v5 = [(AVPlayerLayer *)self->_playerLayer player];
-    [v5 pause];
+    player = [(AVPlayerLayer *)self->_playerLayer player];
+    [player pause];
 
-    v6 = [(AVPlayerLayer *)self->_playerLayer player];
+    player2 = [(AVPlayerLayer *)self->_playerLayer player];
     v10 = *&kCMTimeZero.value;
     epoch = kCMTimeZero.epoch;
-    [v6 seekToTime:&v10];
+    [player2 seekToTime:&v10];
 
-    if (v3)
+    if (animatonCopy)
     {
       self->_instructionState = 3;
       [(AVPlayerLayer *)self->_playerLayer setOpacity:0.0];
@@ -325,29 +325,29 @@
     }
 
     v7 = +[NSNotificationCenter defaultCenter];
-    v8 = [(AVPlayerLayer *)self->_playerLayer player];
-    v9 = [v8 currentItem];
-    [v7 addObserver:self selector:"playerDidFinishPlaying:" name:AVPlayerItemDidPlayToEndTimeNotification object:v9];
+    player3 = [(AVPlayerLayer *)self->_playerLayer player];
+    currentItem = [player3 currentItem];
+    [v7 addObserver:self selector:"playerDidFinishPlaying:" name:AVPlayerItemDidPlayToEndTimeNotification object:currentItem];
 
     [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _handleCurrentPlayerState];
   }
 }
 
-- (void)stopAndResetVideoPlaybackToStartWithFadeInAnimation:(BOOL)a3
+- (void)stopAndResetVideoPlaybackToStartWithFadeInAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   v5 = +[NSNotificationCenter defaultCenter];
-  v6 = [(AVPlayerLayer *)self->_playerLayer player];
-  v7 = [v6 currentItem];
-  [v5 removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:v7];
+  player = [(AVPlayerLayer *)self->_playerLayer player];
+  currentItem = [player currentItem];
+  [v5 removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:currentItem];
 
-  v8 = [(AVPlayerLayer *)self->_playerLayer player];
+  player2 = [(AVPlayerLayer *)self->_playerLayer player];
   v12 = *&kCMTimeZero.value;
   epoch = kCMTimeZero.epoch;
-  [v8 seekToTime:&v12];
+  [player2 seekToTime:&v12];
 
-  v9 = [(AVPlayerLayer *)self->_playerLayer player];
-  [v9 pause];
+  player3 = [(AVPlayerLayer *)self->_playerLayer player];
+  [player3 pause];
 
   [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _clearOutAnimationsForViewAndAllSubviews:self];
   [(AVPlayerLayer *)self->_playerLayer opacity];
@@ -358,7 +358,7 @@
     [(AVPlayerLayer *)self->_playerLayer setOpacity:v11];
   }
 
-  if (v3)
+  if (animationCopy)
   {
     [(AVPlayerLayer *)self->_playerLayer setOpacity:0.0];
     [(UIImageView *)self->_placeholderImageView setAlpha:0.0];
@@ -367,7 +367,7 @@
   self->_instructionState = 0;
 }
 
-- (void)playerDidFinishPlaying:(id)a3
+- (void)playerDidFinishPlaying:(id)playing
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -379,13 +379,13 @@
 
 - (void)_advanceToNextStep
 {
-  v3 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     instructionState = self->_instructionState;
     v11 = 134217984;
     v12 = instructionState;
-    _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view current state is %ld", &v11, 0xCu);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view current state is %ld", &v11, 0xCu);
   }
 
   v5 = self->_instructionState;
@@ -393,11 +393,11 @@
   {
     if (v5 == 2)
     {
-      v8 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      _phoneBuddyFlowPanelLog2 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
+      if (os_log_type_enabled(_phoneBuddyFlowPanelLog2, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v11) = 0;
-        _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view  state is WAGGesturesPhoneBuddyFlowMediaPlayerStateFadeOutAnimation", &v11, 2u);
+        _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog2, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view  state is WAGGesturesPhoneBuddyFlowMediaPlayerStateFadeOutAnimation", &v11, 2u);
       }
 
       v6 = 3;
@@ -409,11 +409,11 @@
       goto LABEL_17;
     }
 
-    v7 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    _phoneBuddyFlowPanelLog3 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
+    if (os_log_type_enabled(_phoneBuddyFlowPanelLog3, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v11) = 0;
-      _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view  state is WAGGesturesPhoneBuddyFlowMediaPlayerStateFadeInAnimation", &v11, 2u);
+      _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog3, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view  state is WAGGesturesPhoneBuddyFlowMediaPlayerStateFadeInAnimation", &v11, 2u);
     }
   }
 
@@ -432,41 +432,41 @@
 LABEL_16:
   self->_instructionState = v6;
 LABEL_17:
-  v9 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog4 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog4, OS_LOG_TYPE_DEFAULT))
   {
     v10 = self->_instructionState;
     v11 = 134217984;
     v12 = v10;
-    _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view new state is %ld", &v11, 0xCu);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog4, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view new state is %ld", &v11, 0xCu);
   }
 
   [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _handleCurrentPlayerState];
 }
 
-- (void)_clearOutAnimationsForViewAndAllSubviews:(id)a3
+- (void)_clearOutAnimationsForViewAndAllSubviews:(id)subviews
 {
-  v4 = a3;
-  v5 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  subviewsCopy = subviews;
+  _phoneBuddyFlowPanelLog = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v4;
-    _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view _clearOutAnimationsForAllSubviewsOfView:%@.", buf, 0xCu);
+    v20 = subviewsCopy;
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view _clearOutAnimationsForAllSubviewsOfView:%@.", buf, 0xCu);
   }
 
-  if (v4)
+  if (subviewsCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [v4 subviews];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    subviews = [subviewsCopy subviews];
+    v7 = [subviews countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
-      v13 = v4;
+      v13 = subviewsCopy;
       v9 = *v15;
       do
       {
@@ -474,38 +474,38 @@ LABEL_17:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subviews);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
           [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _clearOutAnimationsForViewAndAllSubviews:v11];
           +[CATransaction begin];
-          v12 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
-          if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+          _phoneBuddyFlowPanelLog2 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
+          if (os_log_type_enabled(_phoneBuddyFlowPanelLog2, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
-            _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view _clearOutAnimationsForAllSubviewsOfView will remove animation.", buf, 2u);
+            _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog2, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view _clearOutAnimationsForAllSubviewsOfView will remove animation.", buf, 2u);
           }
 
           [v11 _removeAllAnimations:1];
           +[CATransaction commit];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [subviews countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
-      v4 = v13;
+      subviewsCopy = v13;
     }
   }
 
   else
   {
-    v6 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    subviews = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
+    if (os_log_type_enabled(subviews, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view _clearOutAnimationsForAllSubviewsOfView will return.", buf, 2u);
+      _os_log_impl(&dword_0, subviews, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view _clearOutAnimationsForAllSubviewsOfView will return.", buf, 2u);
     }
   }
 }
@@ -522,31 +522,31 @@ LABEL_17:
   return v3;
 }
 
-- (void)_avQueuePlayerTryToRemoveObserverForKeyPath:(id)a3
+- (void)_avQueuePlayerTryToRemoveObserverForKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  pathCopy = path;
+  _phoneBuddyFlowPanelLog = [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(AVPlayerLayer *)self->_playerLayer player];
+    player = [(AVPlayerLayer *)self->_playerLayer player];
     v10 = 138412802;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v4;
+    v13 = pathCopy;
     v14 = 2112;
-    v15 = v6;
-    _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view:%@ -- will attempt to remove observer for keyPath: %@, _avQueuePlayer is:%@", &v10, 0x20u);
+    v15 = player;
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy media player view:%@ -- will attempt to remove observer for keyPath: %@, _avQueuePlayer is:%@", &v10, 0x20u);
   }
 
-  if (v4)
+  if (pathCopy)
   {
-    v7 = [(AVPlayerLayer *)self->_playerLayer player];
-    v8 = v7 == 0;
+    player2 = [(AVPlayerLayer *)self->_playerLayer player];
+    v8 = player2 == 0;
 
     if (!v8)
     {
-      v9 = [(AVPlayerLayer *)self->_playerLayer player];
-      [v9 removeObserver:self forKeyPath:v4];
+      player3 = [(AVPlayerLayer *)self->_playerLayer player];
+      [player3 removeObserver:self forKeyPath:pathCopy];
     }
   }
 }

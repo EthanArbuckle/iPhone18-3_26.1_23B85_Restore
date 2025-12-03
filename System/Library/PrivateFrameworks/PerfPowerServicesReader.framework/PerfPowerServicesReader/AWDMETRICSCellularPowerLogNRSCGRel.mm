@@ -1,19 +1,19 @@
 @interface AWDMETRICSCellularPowerLogNRSCGRel
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsEvent:(id)a3;
-- (int)StringAsFr:(id)a3;
+- (int)StringAsEvent:(id)event;
+- (int)StringAsFr:(id)fr;
 - (int)event;
 - (int)fr;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEvent:(BOOL)a3;
-- (void)setHasFr:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEvent:(BOOL)event;
+- (void)setHasFr:(BOOL)fr;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSCellularPowerLogNRSCGRel
@@ -31,9 +31,9 @@
   }
 }
 
-- (void)setHasEvent:(BOOL)a3
+- (void)setHasEvent:(BOOL)event
 {
-  if (a3)
+  if (event)
   {
     v3 = 2;
   }
@@ -46,40 +46,40 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsEvent:(id)a3
+- (int)StringAsEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CFG_REL"])
+  eventCopy = event;
+  if ([eventCopy isEqualToString:@"CFG_REL"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"RLF"])
+  else if ([eventCopy isEqualToString:@"RLF"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DATA_INACTIVE_PROPRIETARY"])
+  else if ([eventCopy isEqualToString:@"DATA_INACTIVE_PROPRIETARY"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DATA_INACTIVE_SPEC"])
+  else if ([eventCopy isEqualToString:@"DATA_INACTIVE_SPEC"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"MSIM"])
+  else if ([eventCopy isEqualToString:@"MSIM"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NAS_CONN_ABORT"])
+  else if ([eventCopy isEqualToString:@"NAS_CONN_ABORT"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"OTHER"])
+  else if ([eventCopy isEqualToString:@"OTHER"])
   {
     v4 = 6;
   }
@@ -92,9 +92,9 @@
   return v4;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 8;
   }
@@ -120,9 +120,9 @@
   }
 }
 
-- (void)setHasFr:(BOOL)a3
+- (void)setHasFr:(BOOL)fr
 {
-  if (a3)
+  if (fr)
   {
     v3 = 4;
   }
@@ -135,20 +135,20 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsFr:(id)a3
+- (int)StringAsFr:(id)fr
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SUB6"])
+  frCopy = fr;
+  if ([frCopy isEqualToString:@"SUB6"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MMWAVE"])
+  else if ([frCopy isEqualToString:@"MMWAVE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"INVALID"])
+  else if ([frCopy isEqualToString:@"INVALID"])
   {
     v4 = 2;
   }
@@ -167,20 +167,20 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSCellularPowerLogNRSCGRel;
   v4 = [(AWDMETRICSCellularPowerLogNRSCGRel *)&v8 description];
-  v5 = [(AWDMETRICSCellularPowerLogNRSCGRel *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSCellularPowerLogNRSCGRel *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v5 forKey:@"timestamp"];
+    [dictionary setObject:v5 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -193,7 +193,7 @@ LABEL_3:
 
 LABEL_11:
       v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-      [v3 setObject:v8 forKey:@"subs_id"];
+      [dictionary setObject:v8 forKey:@"subs_id"];
 
       if ((*&self->_has & 4) == 0)
       {
@@ -212,7 +212,7 @@ LABEL_12:
         v10 = off_279A10ED8[fr];
       }
 
-      [v3 setObject:v10 forKey:@"fr"];
+      [dictionary setObject:v10 forKey:@"fr"];
 
       goto LABEL_16;
     }
@@ -234,7 +234,7 @@ LABEL_12:
     v7 = off_279A10EA0[event];
   }
 
-  [v3 setObject:v7 forKey:@"event"];
+  [dictionary setObject:v7 forKey:@"event"];
 
   has = self->_has;
   if ((has & 8) != 0)
@@ -250,12 +250,12 @@ LABEL_4:
 
 LABEL_16:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -306,14 +306,14 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 28) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -332,8 +332,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 4) = self->_event;
-  *(v4 + 28) |= 2u;
+  *(toCopy + 4) = self->_event;
+  *(toCopy + 28) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -347,21 +347,21 @@ LABEL_4:
   }
 
 LABEL_11:
-  *(v4 + 6) = self->_subsId;
-  *(v4 + 28) |= 8u;
+  *(toCopy + 6) = self->_subsId;
+  *(toCopy + 28) |= 8u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_5:
-    *(v4 + 5) = self->_fr;
-    *(v4 + 28) |= 4u;
+    *(toCopy + 5) = self->_fr;
+    *(toCopy + 28) |= 4u;
   }
 
 LABEL_6:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -413,23 +413,23 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_21:
     v5 = 0;
@@ -438,34 +438,34 @@ LABEL_21:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_event != *(v4 + 4))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_event != *(equalCopy + 4))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 28) & 8) == 0 || self->_subsId != *(v4 + 6))
+    if ((*(equalCopy + 28) & 8) == 0 || self->_subsId != *(equalCopy + 6))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 28) & 8) != 0)
+  else if ((*(equalCopy + 28) & 8) != 0)
   {
     goto LABEL_21;
   }
 
-  v5 = (*(v4 + 28) & 4) == 0;
+  v5 = (*(equalCopy + 28) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0 || self->_fr != *(v4 + 5))
+    if ((*(equalCopy + 28) & 4) == 0 || self->_fr != *(equalCopy + 5))
     {
       goto LABEL_21;
     }
@@ -532,15 +532,15 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -553,14 +553,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 2) == 0)
+  else if ((*(fromCopy + 28) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_event = *(v4 + 4);
+  self->_event = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -573,12 +573,12 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_subsId = *(v4 + 6);
+  self->_subsId = *(fromCopy + 6);
   *&self->_has |= 8u;
-  if ((*(v4 + 28) & 4) != 0)
+  if ((*(fromCopy + 28) & 4) != 0)
   {
 LABEL_5:
-    self->_fr = *(v4 + 5);
+    self->_fr = *(fromCopy + 5);
     *&self->_has |= 4u;
   }
 

@@ -1,34 +1,34 @@
 @interface TSTTableTileGroup
-+ (TSTTableTileGroup)groupWithStartingTileID:(unint64_t)a3;
++ (TSTTableTileGroup)groupWithStartingTileID:(unint64_t)d;
 - (TSTTableTileGroup)init;
-- (TSTTableTileGroup)initWithStartingTileID:(unint64_t)a3;
-- (id)_tileForLazyReference:(id)a3;
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
-- (void)enumerateLoadedTilesWithBlock:(id)a3;
-- (void)enumerateReferencesWithBlock:(id)a3;
-- (void)enumerateTilesWithBlock:(id)a3;
-- (void)setObject:(id)a3 atIndexedSubscript:(unint64_t)a4;
-- (void)setReference:(id)a3 forTileID:(unint64_t)a4;
+- (TSTTableTileGroup)initWithStartingTileID:(unint64_t)d;
+- (id)_tileForLazyReference:(id)reference;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
+- (void)enumerateLoadedTilesWithBlock:(id)block;
+- (void)enumerateReferencesWithBlock:(id)block;
+- (void)enumerateTilesWithBlock:(id)block;
+- (void)setObject:(id)object atIndexedSubscript:(unint64_t)subscript;
+- (void)setReference:(id)reference forTileID:(unint64_t)d;
 @end
 
 @implementation TSTTableTileGroup
 
-+ (TSTTableTileGroup)groupWithStartingTileID:(unint64_t)a3
++ (TSTTableTileGroup)groupWithStartingTileID:(unint64_t)d
 {
-  v4 = [a1 alloc];
-  v8 = objc_msgSend_initWithStartingTileID_(v4, v5, a3, v6, v7);
+  v4 = [self alloc];
+  v8 = objc_msgSend_initWithStartingTileID_(v4, v5, d, v6, v7);
 
   return v8;
 }
 
-- (TSTTableTileGroup)initWithStartingTileID:(unint64_t)a3
+- (TSTTableTileGroup)initWithStartingTileID:(unint64_t)d
 {
   v5.receiver = self;
   v5.super_class = TSTTableTileGroup;
   result = [(TSTTableTileGroup *)&v5 init];
   if (result)
   {
-    result->_startingTileID = a3;
+    result->_startingTileID = d;
   }
 
   return result;
@@ -50,24 +50,24 @@
   objc_exception_throw(v21);
 }
 
-- (void)setReference:(id)a3 forTileID:(unint64_t)a4
+- (void)setReference:(id)reference forTileID:(unint64_t)d
 {
-  v6 = a3;
-  v7 = &self->super.isa + sub_2213CF1FC(a4, self->_startingTileID);
+  referenceCopy = reference;
+  v7 = &self->super.isa + sub_2213CF1FC(d, self->_startingTileID);
   v8 = v7[257];
-  v7[257] = v6;
-  v10 = v6;
+  v7[257] = referenceCopy;
+  v10 = referenceCopy;
 
   v9 = v7[1];
   v7[1] = 0;
 }
 
-- (id)_tileForLazyReference:(id)a3
+- (id)_tileForLazyReference:(id)reference
 {
-  v4 = a3;
-  objc_sync_enter(v4);
+  referenceCopy = reference;
+  objc_sync_enter(referenceCopy);
   v87 = 0;
-  v8 = objc_msgSend_objectAndReturnError_(v4, v5, &v87, v6, v7);
+  v8 = objc_msgSend_objectAndReturnError_(referenceCopy, v5, &v87, v6, v7);
   v9 = v87;
   v13 = v9;
   if (!v8 || v9)
@@ -128,14 +128,14 @@
   objc_opt_class();
   v14 = TSUCheckedDynamicCast();
 
-  objc_sync_exit(v4);
+  objc_sync_exit(referenceCopy);
 
   return v14;
 }
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
-  v4 = sub_2213CF1FC(a3, self->_startingTileID);
+  v4 = sub_2213CF1FC(subscript, self->_startingTileID);
   tiles = self->_tiles;
   v9 = self->_tiles[v4];
   if (v9)
@@ -163,20 +163,20 @@ LABEL_5:
   return v14;
 }
 
-- (void)setObject:(id)a3 atIndexedSubscript:(unint64_t)a4
+- (void)setObject:(id)object atIndexedSubscript:(unint64_t)subscript
 {
-  v16 = a3;
-  v7 = (&self->super.isa + sub_2213CF1FC(a4, self->_startingTileID));
-  objc_storeStrong(v7 + 1, a3);
-  v11 = objc_msgSend_referenceForObject_(MEMORY[0x277D80868], v8, v16, v9, v10);
+  objectCopy = object;
+  v7 = (&self->super.isa + sub_2213CF1FC(subscript, self->_startingTileID));
+  objc_storeStrong(v7 + 1, object);
+  v11 = objc_msgSend_referenceForObject_(MEMORY[0x277D80868], v8, objectCopy, v9, v10);
   objc_msgSend_setKeepObjectInMemory_(v11, v12, 1, v13, v14);
   v15 = v7[257];
   v7[257] = v11;
 }
 
-- (void)enumerateTilesWithBlock:(id)a3
+- (void)enumerateTilesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = 0;
   while (1)
   {
@@ -198,7 +198,7 @@ LABEL_5:
     }
 
     v11 = 0;
-    v4[2](v4, v10, v5 + self->_startingTileID, &v11);
+    blockCopy[2](blockCopy, v10, v5 + self->_startingTileID, &v11);
     if (v11)
     {
       break;
@@ -215,9 +215,9 @@ LABEL_4:
 LABEL_11:
 }
 
-- (void)enumerateLoadedTilesWithBlock:(id)a3
+- (void)enumerateLoadedTilesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = 0;
   while (1)
   {
@@ -225,7 +225,7 @@ LABEL_11:
     if (v6)
     {
       v7 = 0;
-      v4[2](v4, v6, v5 + self->_startingTileID, &v7);
+      blockCopy[2](blockCopy, v6, v5 + self->_startingTileID, &v7);
       if (v7)
       {
         break;
@@ -241,9 +241,9 @@ LABEL_11:
 LABEL_7:
 }
 
-- (void)enumerateReferencesWithBlock:(id)a3
+- (void)enumerateReferencesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = 0;
   while (1)
   {
@@ -251,7 +251,7 @@ LABEL_7:
     if (v6)
     {
       v7 = 0;
-      v4[2](v4, v6, v5 + self->_startingTileID, &v7);
+      blockCopy[2](blockCopy, v6, v5 + self->_startingTileID, &v7);
       if (v7)
       {
         break;

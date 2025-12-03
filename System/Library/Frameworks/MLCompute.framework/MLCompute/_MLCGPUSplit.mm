@@ -1,28 +1,28 @@
 @interface _MLCGPUSplit
-+ (id)layerWithDevice:(id)a3 dimension:(unint64_t)a4;
-- (_MLCGPUSplit)initWithDevice:(id)a3 dimension:(unint64_t)a4;
++ (id)layerWithDevice:(id)device dimension:(unint64_t)dimension;
+- (_MLCGPUSplit)initWithDevice:(id)device dimension:(unint64_t)dimension;
 @end
 
 @implementation _MLCGPUSplit
 
-- (_MLCGPUSplit)initWithDevice:(id)a3 dimension:(unint64_t)a4
+- (_MLCGPUSplit)initWithDevice:(id)device dimension:(unint64_t)dimension
 {
-  v5 = a3;
+  deviceCopy = device;
   v19.receiver = self;
   v19.super_class = _MLCGPUSplit;
   v6 = [(_MLCGPUSplit *)&v19 init];
   if (v6)
   {
-    v7 = [v5 deviceList];
-    v8 = [v7 count];
+    deviceList = [deviceCopy deviceList];
+    v8 = [deviceList count];
 
     v9 = [MEMORY[0x277CBEBF8] mutableCopy];
     if (v8)
     {
       for (i = 0; i != v8; ++i)
       {
-        v11 = [v5 deviceList];
-        v12 = [v11 objectAtIndexedSubscript:i];
+        deviceList2 = [deviceCopy deviceList];
+        v12 = [deviceList2 objectAtIndexedSubscript:i];
 
         v13 = [objc_alloc(MEMORY[0x277CD7788]) initWithDevice:v12];
         if (v13)
@@ -49,10 +49,10 @@
   return v6;
 }
 
-+ (id)layerWithDevice:(id)a3 dimension:(unint64_t)a4
++ (id)layerWithDevice:(id)device dimension:(unint64_t)dimension
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithDevice:v6 dimension:a4];
+  deviceCopy = device;
+  v7 = [[self alloc] initWithDevice:deviceCopy dimension:dimension];
 
   return v7;
 }

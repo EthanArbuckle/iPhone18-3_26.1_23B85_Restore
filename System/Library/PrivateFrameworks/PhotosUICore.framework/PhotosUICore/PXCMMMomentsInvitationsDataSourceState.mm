@@ -1,33 +1,33 @@
 @interface PXCMMMomentsInvitationsDataSourceState
 - (PHPhotoLibrary)photoLibrary;
-- (PXCMMMomentsInvitationsDataSourceState)initWithAssetCollections:(id)a3 invitationsByAssetCollectionObjectID:(id)a4;
-- (id)stateUpdatedWithChange:(id)a3 changeDetails:(id *)a4;
+- (PXCMMMomentsInvitationsDataSourceState)initWithAssetCollections:(id)collections invitationsByAssetCollectionObjectID:(id)d;
+- (id)stateUpdatedWithChange:(id)change changeDetails:(id *)details;
 @end
 
 @implementation PXCMMMomentsInvitationsDataSourceState
 
-- (id)stateUpdatedWithChange:(id)a3 changeDetails:(id *)a4
+- (id)stateUpdatedWithChange:(id)change changeDetails:(id *)details
 {
   v62 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PXCMMMomentsInvitationsDataSourceState *)self assetCollections];
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  v8 = [v5 changeDetailsForFetchResult:v6];
-  v44 = v6;
+  changeCopy = change;
+  assetCollections = [(PXCMMMomentsInvitationsDataSourceState *)self assetCollections];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v8 = [changeCopy changeDetailsForFetchResult:assetCollections];
+  v44 = assetCollections;
   if (v8)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __79__PXCMMMomentsInvitationsDataSourceState_stateUpdatedWithChange_changeDetails___block_invoke;
     aBlock[3] = &unk_1E773F1C0;
-    v59 = v7;
+    v59 = dictionary;
     v9 = _Block_copy(aBlock);
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v10 = [v8 insertedObjects];
-    v11 = [v10 countByEnumeratingWithState:&v54 objects:v61 count:16];
+    insertedObjects = [v8 insertedObjects];
+    v11 = [insertedObjects countByEnumeratingWithState:&v54 objects:v61 count:16];
     if (v11)
     {
       v12 = v11;
@@ -38,13 +38,13 @@
         {
           if (*v55 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(insertedObjects);
           }
 
           v9[2](v9, *(*(&v54 + 1) + 8 * i));
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v54 objects:v61 count:16];
+        v12 = [insertedObjects countByEnumeratingWithState:&v54 objects:v61 count:16];
       }
 
       while (v12);
@@ -54,8 +54,8 @@
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v15 = [v8 changedObjects];
-    v16 = [v15 countByEnumeratingWithState:&v50 objects:v60 count:16];
+    changedObjects = [v8 changedObjects];
+    v16 = [changedObjects countByEnumeratingWithState:&v50 objects:v60 count:16];
     if (v16)
     {
       v17 = v16;
@@ -66,97 +66,97 @@
         {
           if (*v51 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(changedObjects);
           }
 
           v9[2](v9, *(*(&v50 + 1) + 8 * j));
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v50 objects:v60 count:16];
+        v17 = [changedObjects countByEnumeratingWithState:&v50 objects:v60 count:16];
       }
 
       while (v17);
     }
 
-    v20 = [v8 fetchResultAfterChanges];
-    v6 = v44;
+    fetchResultAfterChanges = [v8 fetchResultAfterChanges];
+    assetCollections = v44;
   }
 
   else
   {
-    v20 = v6;
+    fetchResultAfterChanges = assetCollections;
   }
 
-  v21 = [v20 fetchedObjectIDs];
-  v22 = [v8 changedIndexes];
-  if (v22)
+  fetchedObjectIDs = [fetchResultAfterChanges fetchedObjectIDs];
+  changedIndexes = [v8 changedIndexes];
+  if (changedIndexes)
   {
-    v23 = [v8 changedIndexes];
-    v24 = [v23 mutableCopy];
+    changedIndexes2 = [v8 changedIndexes];
+    indexSet = [changedIndexes2 mutableCopy];
   }
 
   else
   {
-    v24 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
   }
 
-  v25 = [(PXCMMMomentsInvitationsDataSourceState *)self invitationsByAssetCollectionObjectID];
+  invitationsByAssetCollectionObjectID = [(PXCMMMomentsInvitationsDataSourceState *)self invitationsByAssetCollectionObjectID];
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
   v45[2] = __79__PXCMMMomentsInvitationsDataSourceState_stateUpdatedWithChange_changeDetails___block_invoke_2;
   v45[3] = &unk_1E773F1E8;
-  v26 = v7;
+  v26 = dictionary;
   v46 = v26;
-  v41 = v21;
+  v41 = fetchedObjectIDs;
   v47 = v41;
-  v42 = v5;
+  v42 = changeCopy;
   v48 = v42;
-  v27 = v24;
+  v27 = indexSet;
   v49 = v27;
   [v26 enumerateKeysAndObjectsUsingBlock:v45];
-  v28 = [v8 removedObjects];
-  if (v28)
+  removedObjects = [v8 removedObjects];
+  if (removedObjects)
   {
   }
 
   else if (![v26 count])
   {
-    v29 = v25;
+    v29 = invitationsByAssetCollectionObjectID;
     goto LABEL_27;
   }
 
-  v29 = [v25 mutableCopy];
-  v30 = [v8 removedObjects];
+  v29 = [invitationsByAssetCollectionObjectID mutableCopy];
+  removedObjects2 = [v8 removedObjects];
 
-  if (v30)
+  if (removedObjects2)
   {
-    v31 = [v8 removedObjects];
-    [v29 removeObjectsForKeys:v31];
+    removedObjects3 = [v8 removedObjects];
+    [v29 removeObjectsForKeys:removedObjects3];
   }
 
   [v29 addEntriesFromDictionary:v26];
 LABEL_27:
-  if (v20 == v6 && v29 == v25)
+  if (fetchResultAfterChanges == assetCollections && v29 == invitationsByAssetCollectionObjectID)
   {
-    v32 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v32 = [[PXCMMMomentsInvitationsDataSourceState alloc] initWithAssetCollections:v20 invitationsByAssetCollectionObjectID:v29];
+    selfCopy = [[PXCMMMomentsInvitationsDataSourceState alloc] initWithAssetCollections:fetchResultAfterChanges invitationsByAssetCollectionObjectID:v29];
   }
 
-  v40 = v32;
+  v40 = selfCopy;
   v33 = [off_1E7721450 alloc];
-  v34 = [v8 removedIndexes];
-  v35 = [v8 insertedIndexes];
-  v36 = [v8 movedIndexes];
-  v37 = [v33 initWithIncrementalChangeDetailsRemovedIndexes:v34 insertedIndexes:v35 movesToIndexes:v36 movesFromIndexes:objc_msgSend(v8 changedIndexes:{"movedFromIndexes"), v27}];
+  removedIndexes = [v8 removedIndexes];
+  insertedIndexes = [v8 insertedIndexes];
+  movedIndexes = [v8 movedIndexes];
+  v37 = [v33 initWithIncrementalChangeDetailsRemovedIndexes:removedIndexes insertedIndexes:insertedIndexes movesToIndexes:movedIndexes movesFromIndexes:objc_msgSend(v8 changedIndexes:{"movedFromIndexes"), v27}];
 
-  if (a4)
+  if (details)
   {
     v38 = v37;
-    *a4 = v37;
+    *details = v37;
   }
 
   return v40;
@@ -219,24 +219,24 @@ LABEL_4:
 
 - (PHPhotoLibrary)photoLibrary
 {
-  v2 = [(PXCMMMomentsInvitationsDataSourceState *)self assetCollections];
-  v3 = [v2 photoLibrary];
+  assetCollections = [(PXCMMMomentsInvitationsDataSourceState *)self assetCollections];
+  photoLibrary = [assetCollections photoLibrary];
 
-  return v3;
+  return photoLibrary;
 }
 
-- (PXCMMMomentsInvitationsDataSourceState)initWithAssetCollections:(id)a3 invitationsByAssetCollectionObjectID:(id)a4
+- (PXCMMMomentsInvitationsDataSourceState)initWithAssetCollections:(id)collections invitationsByAssetCollectionObjectID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  collectionsCopy = collections;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = PXCMMMomentsInvitationsDataSourceState;
   v9 = [(PXCMMMomentsInvitationsDataSourceState *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_assetCollections, a3);
-    objc_storeStrong(&v10->_invitationsByAssetCollectionObjectID, a4);
+    objc_storeStrong(&v9->_assetCollections, collections);
+    objc_storeStrong(&v10->_invitationsByAssetCollectionObjectID, d);
   }
 
   return v10;

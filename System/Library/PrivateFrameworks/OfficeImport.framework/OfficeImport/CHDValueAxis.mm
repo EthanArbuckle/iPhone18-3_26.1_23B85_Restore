@@ -1,15 +1,15 @@
 @interface CHDValueAxis
-- (CHDValueAxis)initWithResources:(id)a3;
+- (CHDValueAxis)initWithResources:(id)resources;
 - (id)contentFormatWithBuiltInUnit;
 @end
 
 @implementation CHDValueAxis
 
-- (CHDValueAxis)initWithResources:(id)a3
+- (CHDValueAxis)initWithResources:(id)resources
 {
   v4.receiver = self;
   v4.super_class = CHDValueAxis;
-  result = [(CHDAxis *)&v4 initWithResources:a3];
+  result = [(CHDAxis *)&v4 initWithResources:resources];
   if (result)
   {
     result->mMajorUnitValue = 0.0;
@@ -38,21 +38,21 @@
 
   else
   {
-    v7 = [(CHDAxis *)self contentFormat];
-    v8 = [v7 formatString];
+    contentFormat = [(CHDAxis *)self contentFormat];
+    formatString = [contentFormat formatString];
 
-    if (v8)
+    if (formatString)
     {
-      v9 = [v7 formatString];
-      v10 = [v9 string];
+      formatString2 = [contentFormat formatString];
+      string = [formatString2 string];
 
-      if (v10 && [v10 length] && (v11 = objc_msgSend(v10, "length"), v11 - 1 >= 0))
+      if (string && [string length] && (v11 = objc_msgSend(string, "length"), v11 - 1 >= 0))
       {
         v12 = 0;
         while (1)
         {
           v13 = v11 - 1;
-          v14 = [v10 substringWithRange:{v11 - 1, 1}];
+          v14 = [string substringWithRange:{v11 - 1, 1}];
           v12 ^= [v14 isEqualToString:@"'"];
           if ((v12 & 1) == 0 && (([v14 isEqualToString:@"#"] & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"0") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"?") & 1) != 0 || objc_msgSend(v14, "isEqualToString:", @".")))
           {
@@ -67,7 +67,7 @@
         }
 
         v17 = MEMORY[0x277CCAB68];
-        v18 = [v10 substringToIndex:v11];
+        v18 = [string substringToIndex:v11];
         v19 = [v17 stringWithString:v18];
 
         v20 = self->mBuiltInUnit - 1;
@@ -82,7 +82,7 @@
           v21 = 0;
         }
 
-        v22 = [v10 substringFromIndex:v11];
+        v22 = [string substringFromIndex:v11];
         [v19 appendString:v22];
 
         v23 = [MEMORY[0x277CCACA8] stringWithString:v19];
@@ -93,9 +93,9 @@
           v25 = [EDContentFormat contentFormatWithFormatString:v24];
 
           WeakRetained = objc_loadWeakRetained(&self->super.mResources);
-          v27 = [WeakRetained contentFormats];
+          contentFormats = [WeakRetained contentFormats];
 
-          v15 = [v27 objectAtIndex:{objc_msgSend(v27, "addOrEquivalentObject:", v25)}];
+          v15 = [contentFormats objectAtIndex:{objc_msgSend(contentFormats, "addOrEquivalentObject:", v25)}];
         }
 
         else
@@ -103,7 +103,7 @@
           v15 = 0;
         }
 
-        v10 = v23;
+        string = v23;
       }
 
       else

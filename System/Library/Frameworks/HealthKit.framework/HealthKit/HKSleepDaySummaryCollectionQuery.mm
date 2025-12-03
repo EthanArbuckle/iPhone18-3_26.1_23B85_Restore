@@ -1,15 +1,15 @@
 @interface HKSleepDaySummaryCollectionQuery
 - (HKSleepDaySummaryCollectionQuery)init;
-- (HKSleepDaySummaryCollectionQuery)initWithMorningIndexRange:(id)a3 resultsHandler:(id)a4;
+- (HKSleepDaySummaryCollectionQuery)initWithMorningIndexRange:(id)range resultsHandler:(id)handler;
 @end
 
 @implementation HKSleepDaySummaryCollectionQuery
 
-- (HKSleepDaySummaryCollectionQuery)initWithMorningIndexRange:(id)a3 resultsHandler:(id)a4
+- (HKSleepDaySummaryCollectionQuery)initWithMorningIndexRange:(id)range resultsHandler:(id)handler
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v6 = _Block_copy(a4);
+  var1 = range.var1;
+  var0 = range.var0;
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = sub_191C6E40C(var0, var1, sub_191C6E590, v7);

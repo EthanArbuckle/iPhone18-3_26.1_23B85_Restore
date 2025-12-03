@@ -1,16 +1,16 @@
 @interface SearchUIRequestUserReportUtility
-+ (id)createUserReportViewControllerWith:(id)a3 rowModel:(id)a4 environment:(id)a5;
++ (id)createUserReportViewControllerWith:(id)with rowModel:(id)model environment:(id)environment;
 - (SearchUIRequestUserReportUtility)init;
 @end
 
 @implementation SearchUIRequestUserReportUtility
 
-+ (id)createUserReportViewControllerWith:(id)a3 rowModel:(id)a4 environment:(id)a5
++ (id)createUserReportViewControllerWith:(id)with rowModel:(id)model environment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = sub_1DA22D72C(v7, v8, v9);
+  withCopy = with;
+  modelCopy = model;
+  environmentCopy = environment;
+  v10 = sub_1DA22D72C(withCopy, modelCopy, environmentCopy);
 
   return v10;
 }

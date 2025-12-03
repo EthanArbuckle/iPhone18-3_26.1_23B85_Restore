@@ -1,41 +1,41 @@
 @interface PLPlatterActionButton
 - (BOOL)adjustForContentSizeCategoryChange;
 - (BSUIFontProvider)_fontProvider;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (MTMaterialView)_materialBackgroundView;
 - (NSString)preferredContentSizeCategory;
-- (PLPlatterActionButton)initWithFrame:(CGRect)a3;
-- (int64_t)_wordCountForText:(id)a3;
+- (PLPlatterActionButton)initWithFrame:(CGRect)frame;
+- (int64_t)_wordCountForText:(id)text;
 - (void)_configureBackgroundColoringViewIfNecessary;
 - (void)_configureBackgroundViewIfNecessary;
 - (void)_configureTitleLabelEffects;
 - (void)_configureTitleLabelIfNecessary;
-- (void)_handleHoverGestureRecognizerEvent:(id)a3;
+- (void)_handleHoverGestureRecognizerEvent:(id)event;
 - (void)_layoutBackgroundView;
 - (void)_layoutTitleLabel;
 - (void)_updateTitleLabelFont;
 - (void)layoutSubviews;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setBackgroundMaterialRecipe:(int64_t)a3;
-- (void)setBackgroundTintColor:(id)a3;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setBackgroundMaterialRecipe:(int64_t)recipe;
+- (void)setBackgroundTintColor:(id)color;
 - (void)setCornerRadius:(double)cornerRadius;
-- (void)setCustomBackgroundColor:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setMaterialGroupNameBase:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleAlpha:(double)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)setCustomBackgroundColor:(id)color;
+- (void)setFont:(id)font;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setMaterialGroupNameBase:(id)base;
+- (void)setTextColor:(id)color;
+- (void)setTitle:(id)title;
+- (void)setTitleAlpha:(double)alpha;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation PLPlatterActionButton
 
-- (PLPlatterActionButton)initWithFrame:(CGRect)a3
+- (PLPlatterActionButton)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = PLPlatterActionButton;
-  v3 = [(PLPlatterActionButton *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLPlatterActionButton *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -43,10 +43,10 @@
     [(PLPlatterActionButton *)v4 setClipsToBounds:1];
     v4->_cornerRadius = 13.0;
     v4->_titleAlpha = 1.0;
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v7 = [objc_alloc(MEMORY[0x277D755A0]) initWithTarget:v4 action:sel__handleHoverGestureRecognizerEvent_];
       [(PLPlatterActionButton *)v4 addGestureRecognizer:v7];
@@ -56,23 +56,23 @@
   return v4;
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v5.receiver = self;
   v5.super_class = PLPlatterActionButton;
-  v3 = a3;
-  [(PLPlatterActionButton *)&v5 willMoveToSuperview:v3];
-  v4 = [v3 layer];
+  superviewCopy = superview;
+  [(PLPlatterActionButton *)&v5 willMoveToSuperview:superviewCopy];
+  layer = [superviewCopy layer];
 
-  [v4 setAllowsGroupBlending:0];
+  [layer setAllowsGroupBlending:0];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v7 = a3;
+  titleCopy = title;
   if ((BSEqualStrings() & 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [titleCopy copy];
     title = self->_title;
     self->_title = v4;
 
@@ -85,9 +85,9 @@
   }
 }
 
-- (void)setTitleAlpha:(double)a3
+- (void)setTitleAlpha:(double)alpha
 {
-  self->_titleAlpha = a3;
+  self->_titleAlpha = alpha;
   titleLabel = self->_titleLabel;
   if (titleLabel)
   {
@@ -97,12 +97,12 @@
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v6 = a3;
+  fontCopy = font;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [fontCopy copy];
     font = self->_font;
     self->_font = v4;
 
@@ -111,12 +111,12 @@
   }
 }
 
-- (void)setBackgroundTintColor:(id)a3
+- (void)setBackgroundTintColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [colorCopy copy];
     backgroundTintColor = self->_backgroundTintColor;
     self->_backgroundTintColor = v4;
 
@@ -124,12 +124,12 @@
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [colorCopy copy];
     textColor = self->_textColor;
     self->_textColor = v4;
 
@@ -152,39 +152,39 @@
   [(PLPlatterActionButton *)self _layoutBackgroundView];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UILabel *)self->_titleLabel sizeThatFits:a3.width, a3.height];
+  [(UILabel *)self->_titleLabel sizeThatFits:fits.width, fits.height];
   v5 = v4 + 16.0;
   result.height = v5;
   result.width = v3;
   return result;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v18.receiver = self;
   v18.super_class = PLPlatterActionButton;
-  v5 = [(PLPlatterActionButton *)&v18 isHighlighted];
+  isHighlighted = [(PLPlatterActionButton *)&v18 isHighlighted];
   v17.receiver = self;
   v17.super_class = PLPlatterActionButton;
-  [(PLPlatterActionButton *)&v17 setHighlighted:v3];
+  [(PLPlatterActionButton *)&v17 setHighlighted:highlightedCopy];
   v16.receiver = self;
   v16.super_class = PLPlatterActionButton;
-  v6 = [(PLPlatterActionButton *)&v16 isHighlighted];
-  if (v5 != v6)
+  isHighlighted2 = [(PLPlatterActionButton *)&v16 isHighlighted];
+  if (isHighlighted != isHighlighted2)
   {
-    v7 = v6;
+    v7 = isHighlighted2;
     [(PLPlatterActionButton *)self _configureBackgroundViewIfNecessary];
-    v8 = [(PLPlatterActionButton *)self _materialBackgroundView];
+    _materialBackgroundView = [(PLPlatterActionButton *)self _materialBackgroundView];
     v9 = objc_opt_class();
 
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v9 newDefaultHighlightAnimator];
-      v11 = [(PLPlatterActionButton *)self _materialBackgroundView];
-      objc_initWeak(&location, v11);
+      newDefaultHighlightAnimator = [v9 newDefaultHighlightAnimator];
+      _materialBackgroundView2 = [(PLPlatterActionButton *)self _materialBackgroundView];
+      objc_initWeak(&location, _materialBackgroundView2);
 
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
@@ -192,8 +192,8 @@
       v12[3] = &unk_278425050;
       objc_copyWeak(&v13, &location);
       v14 = v7;
-      [v10 addAnimations:v12];
-      [v10 startAnimation];
+      [newDefaultHighlightAnimator addAnimations:v12];
+      [newDefaultHighlightAnimator startAnimation];
       objc_destroyWeak(&v13);
       objc_destroyWeak(&location);
     }
@@ -206,11 +206,11 @@ void __40__PLPlatterActionButton_setHighlighted___block_invoke(uint64_t a1)
   [WeakRetained setHighlighted:*(a1 + 40)];
 }
 
-- (void)setBackgroundMaterialRecipe:(int64_t)a3
+- (void)setBackgroundMaterialRecipe:(int64_t)recipe
 {
-  if (self->_backgroundMaterialRecipe != a3)
+  if (self->_backgroundMaterialRecipe != recipe)
   {
-    self->_backgroundMaterialRecipe = a3;
+    self->_backgroundMaterialRecipe = recipe;
     [(PLPlatterActionButton *)self _configureBackgroundViewIfNecessary];
 
     [(PLPlatterActionButton *)self setNeedsLayout];
@@ -257,8 +257,8 @@ void __40__PLPlatterActionButton_setHighlighted___block_invoke(uint64_t a1)
         v4 = 8;
       }
 
-      v5 = [(PLPlatterActionButton *)self _fontProvider];
-      v6 = [v5 preferredFontForTextStyle:*MEMORY[0x277D769D0] hiFontStyle:v4];
+      _fontProvider = [(PLPlatterActionButton *)self _fontProvider];
+      v6 = [_fontProvider preferredFontForTextStyle:*MEMORY[0x277D769D0] hiFontStyle:v4];
 
       v3 = v6;
     }
@@ -292,8 +292,8 @@ void __40__PLPlatterActionButton_setHighlighted___block_invoke(uint64_t a1)
 
   else
   {
-    v7 = [(PLPlatterActionButton *)self _materialBackgroundView];
-    v8 = [v7 visualStylingProviderForCategory:1];
+    _materialBackgroundView = [(PLPlatterActionButton *)self _materialBackgroundView];
+    v8 = [_materialBackgroundView visualStylingProviderForCategory:1];
     v9 = self->_titleLabelVisualStylingProvider;
     self->_titleLabelVisualStylingProvider = v8;
 
@@ -333,11 +333,11 @@ void __40__PLPlatterActionButton_setHighlighted___block_invoke(uint64_t a1)
 
     [(UILabel *)self->_titleLabel setNumberOfLines:v8];
     [(PLPlatterActionButton *)self _updateTitleLabelFont];
-    v10 = [(PLPlatterActionButton *)self traitCollection];
-    [v10 displayScale];
+    traitCollection = [(PLPlatterActionButton *)self traitCollection];
+    [traitCollection displayScale];
 
-    v11 = [(UILabel *)self->_titleLabel font];
-    [v11 lineHeight];
+    font = [(UILabel *)self->_titleLabel font];
+    [font lineHeight];
     UIRoundToScale();
     v13 = v12;
 
@@ -384,27 +384,27 @@ void __40__PLPlatterActionButton_setHighlighted___block_invoke(uint64_t a1)
 {
   if (self->_cornerRadius != cornerRadius)
   {
-    v3 = self;
+    selfCopy = self;
     self->_cornerRadius = cornerRadius;
     if (!self->_isBackgroundGlass)
     {
       [(PLPlatterActionButton *)self _configureBackgroundViewIfNecessary];
-      [(UIView *)v3->_backgroundView _setContinuousCornerRadius:v3->_cornerRadius];
-      [(PLPlatterActionButton *)v3 _configureBackgroundColoringViewIfNecessary];
-      self = v3->_backgroundTintColoringView;
-      cornerRadius = v3->_cornerRadius;
+      [(UIView *)selfCopy->_backgroundView _setContinuousCornerRadius:selfCopy->_cornerRadius];
+      [(PLPlatterActionButton *)selfCopy _configureBackgroundColoringViewIfNecessary];
+      self = selfCopy->_backgroundTintColoringView;
+      cornerRadius = selfCopy->_cornerRadius;
     }
 
     [(PLPlatterActionButton *)self _setContinuousCornerRadius:cornerRadius];
 
-    [(PLPlatterActionButton *)v3 setNeedsLayout];
+    [(PLPlatterActionButton *)selfCopy setNeedsLayout];
   }
 }
 
 - (void)_configureBackgroundViewIfNecessary
 {
   customBackgroundColor = self->_customBackgroundColor;
-  v4 = [(UIView *)self->_backgroundView backgroundColor];
+  backgroundColor = [(UIView *)self->_backgroundView backgroundColor];
   v5 = BSEqualObjects();
 
   if (self->_backgroundMaterialRecipe)
@@ -417,16 +417,16 @@ void __40__PLPlatterActionButton_setHighlighted___block_invoke(uint64_t a1)
     v6 = 1;
   }
 
-  v7 = [(PLPlatterActionButton *)self _materialBackgroundView];
-  if (v7)
+  _materialBackgroundView = [(PLPlatterActionButton *)self _materialBackgroundView];
+  if (_materialBackgroundView)
   {
-    v8 = [(PLPlatterActionButton *)self _materialBackgroundView];
-    if ([v8 recipe] == self->_backgroundMaterialRecipe)
+    _materialBackgroundView2 = [(PLPlatterActionButton *)self _materialBackgroundView];
+    if ([_materialBackgroundView2 recipe] == self->_backgroundMaterialRecipe)
     {
       [(PLPlatterActionButton *)self _materialBackgroundView];
       v9 = v17 = v6;
-      v10 = [v9 groupNameBase];
-      v11 = v10 == self->_materialGroupNameBase;
+      groupNameBase = [v9 groupNameBase];
+      v11 = groupNameBase == self->_materialGroupNameBase;
 
       v6 = v17;
     }
@@ -495,8 +495,8 @@ void __40__PLPlatterActionButton_setHighlighted___block_invoke(uint64_t a1)
   [(UILabel *)self->_titleLabel frame];
   CGRectGetHeight(v7);
   BSRectWithSize();
-  v3 = [(PLPlatterActionButton *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(PLPlatterActionButton *)self traitCollection];
+  [traitCollection displayScale];
 
   [(PLPlatterActionButton *)self bounds];
   UIRectCenteredIntegralRectScale();
@@ -505,16 +505,16 @@ void __40__PLPlatterActionButton_setHighlighted___block_invoke(uint64_t a1)
   [(UILabel *)titleLabel setFrame:?];
 }
 
-- (int64_t)_wordCountForText:(id)a3
+- (int64_t)_wordCountForText:(id)text
 {
-  v3 = a3;
-  if ([(__CFString *)v3 length])
+  textCopy = text;
+  if ([(__CFString *)textCopy length])
   {
-    Length = CFStringGetLength(v3);
+    Length = CFStringGetLength(textCopy);
     v5 = CFLocaleCopyCurrent();
     v9.location = 0;
     v9.length = Length;
-    v6 = CFStringTokenizerCreate(*MEMORY[0x277CBECE8], v3, v9, 3uLL, v5);
+    v6 = CFStringTokenizerCreate(*MEMORY[0x277CBECE8], textCopy, v9, 3uLL, v5);
     v7 = -1;
     do
     {
@@ -550,16 +550,16 @@ void __40__PLPlatterActionButton_setHighlighted___block_invoke(uint64_t a1)
   return backgroundView;
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
-    if (a3)
+    self->_adjustsFontForContentSizeCategory = category;
+    if (category)
     {
-      v5 = [MEMORY[0x277D75128] sharedApplication];
-      v6 = [v5 preferredContentSizeCategory];
-      [(PLPlatterActionButton *)self setPreferredContentSizeCategory:v6];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+      [(PLPlatterActionButton *)self setPreferredContentSizeCategory:preferredContentSizeCategory];
     }
 
     [(PLPlatterActionButton *)self adjustForContentSizeCategoryChange];
@@ -580,18 +580,18 @@ void __40__PLPlatterActionButton_setHighlighted___block_invoke(uint64_t a1)
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
 
-  v5 = [(PLPlatterActionButton *)self preferredContentSizeCategory];
-  v6 = [v4 isEqualToString:v5];
+  preferredContentSizeCategory2 = [(PLPlatterActionButton *)self preferredContentSizeCategory];
+  v6 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
   if ((v6 & 1) == 0)
   {
     fontProvider = self->_fontProvider;
     self->_fontProvider = 0;
 
-    [(PLPlatterActionButton *)self setPreferredContentSizeCategory:v4];
+    [(PLPlatterActionButton *)self setPreferredContentSizeCategory:preferredContentSizeCategory];
     [(PLPlatterActionButton *)self _updateTitleLabelFont];
     [(PLPlatterActionButton *)self setNeedsLayout];
   }
@@ -599,45 +599,45 @@ void __40__PLPlatterActionButton_setHighlighted___block_invoke(uint64_t a1)
   return v6 ^ 1;
 }
 
-- (void)setCustomBackgroundColor:(id)a3
+- (void)setCustomBackgroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_customBackgroundColor, a3);
+    objc_storeStrong(&self->_customBackgroundColor, color);
     [(PLPlatterActionButton *)self _configureBackgroundViewIfNecessary];
     [(PLPlatterActionButton *)self setNeedsLayout];
   }
 }
 
-- (void)setMaterialGroupNameBase:(id)a3
+- (void)setMaterialGroupNameBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   if ((BSEqualStrings() & 1) == 0)
   {
-    objc_storeStrong(&self->_materialGroupNameBase, a3);
+    objc_storeStrong(&self->_materialGroupNameBase, base);
     [(PLPlatterActionButton *)self _configureBackgroundViewIfNecessary];
     [(PLPlatterActionButton *)self setNeedsLayout];
   }
 }
 
-- (void)_handleHoverGestureRecognizerEvent:(id)a3
+- (void)_handleHoverGestureRecognizerEvent:(id)event
 {
-  v4 = [a3 state];
-  if (v4 == 3)
+  state = [event state];
+  if (state == 3)
   {
     v5 = MEMORY[0x277D75D18];
     v7 = MEMORY[0x277D85DD0];
     v8 = 3221225472;
     v9 = __60__PLPlatterActionButton__handleHoverGestureRecognizerEvent___block_invoke_2;
     v10 = &unk_2784250D8;
-    v11 = self;
+    selfCopy = self;
     v6 = &v7;
   }
 
   else
   {
-    if (v4 != 1)
+    if (state != 1)
     {
       return;
     }
@@ -647,11 +647,11 @@ void __40__PLPlatterActionButton_setHighlighted___block_invoke(uint64_t a1)
     v13 = 3221225472;
     v14 = __60__PLPlatterActionButton__handleHoverGestureRecognizerEvent___block_invoke;
     v15 = &unk_2784250D8;
-    v16 = self;
+    selfCopy2 = self;
     v6 = &v12;
   }
 
-  [v5 animateWithDuration:v6 animations:{0.2, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16}];
+  [v5 animateWithDuration:v6 animations:{0.2, v7, v8, v9, v10, selfCopy, v12, v13, v14, v15, selfCopy2}];
 }
 
 @end

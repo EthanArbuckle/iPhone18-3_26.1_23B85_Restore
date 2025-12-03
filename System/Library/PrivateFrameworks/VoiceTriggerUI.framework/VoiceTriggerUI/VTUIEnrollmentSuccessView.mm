@@ -1,18 +1,18 @@
 @interface VTUIEnrollmentSuccessView
-- (VTUIEnrollmentSuccessView)initWithFrame:(CGRect)a3;
+- (VTUIEnrollmentSuccessView)initWithFrame:(CGRect)frame;
 - (id)_createFooter;
 - (id)footerView;
 - (void)_setupContent;
-- (void)addFinishButtonTarget:(id)a3 selector:(SEL)a4;
+- (void)addFinishButtonTarget:(id)target selector:(SEL)selector;
 @end
 
 @implementation VTUIEnrollmentSuccessView
 
-- (VTUIEnrollmentSuccessView)initWithFrame:(CGRect)a3
+- (VTUIEnrollmentSuccessView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = VTUIEnrollmentSuccessView;
-  v3 = [(VTUIEnrollmentBaseView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VTUIEnrollmentBaseView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -24,20 +24,20 @@
 
 - (void)_setupContent
 {
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [(VTUIEnrollmentSuccessView *)self setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [(VTUIEnrollmentSuccessView *)self setBackgroundColor:systemBackgroundColor];
 
   v4 = +[VTUIStringsHelper sharedStringsHelper];
   v5 = [v4 uiLocalizedStringForKey:@"TEXT_TITLE_READY"];
   [(VTUIEnrollmentBaseView *)self setTitle:v5];
 
   v6 = +[VTUIStyle sharedStyle];
-  v7 = [v6 shouldSetupForMultipleTriggerPhrases];
+  shouldSetupForMultipleTriggerPhrases = [v6 shouldSetupForMultipleTriggerPhrases];
 
   v8 = MEMORY[0x277CCAB68];
   v9 = +[VTUIStyle sharedStyle];
   v10 = v9;
-  if (v7)
+  if (shouldSetupForMultipleTriggerPhrases)
   {
     v11 = @"TEXT_MAIN_READY_MIXED";
   }
@@ -47,7 +47,7 @@
     v11 = @"TEXT_MAIN_READY";
   }
 
-  if (v7)
+  if (shouldSetupForMultipleTriggerPhrases)
   {
     v12 = @"TEXT_MAIN_READY_MIXED_SPEAK_FREELY_SUFFIX";
   }
@@ -88,10 +88,10 @@
   [(VTUIButton *)self->_finishButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [v5 addSubview:self->_finishButton];
   v8 = +[VTUIStyle sharedStyle];
-  v9 = [v8 isBuddyOrFollowUp];
+  isBuddyOrFollowUp = [v8 isBuddyOrFollowUp];
 
   v10 = self->_finishButton;
-  if (v9)
+  if (isBuddyOrFollowUp)
   {
     v11 = +[VTUIStyle sharedStyle];
     [v11 VTUIDeviceSpecificString:@"BUTTON_CONTINUE_SETUP"];
@@ -110,32 +110,32 @@
     v13 = self->_finishButton;
     [v3 primaryButtonHeight];
     [(VTUIButton *)v13 _setCornerRadius:v14 * 0.5];
-    v15 = [MEMORY[0x277D75230] _tintedGlassButtonConfiguration];
-    [(VTUIButton *)self->_finishButton setConfiguration:v15];
+    _tintedGlassButtonConfiguration = [MEMORY[0x277D75230] _tintedGlassButtonConfiguration];
+    [(VTUIButton *)self->_finishButton setConfiguration:_tintedGlassButtonConfiguration];
   }
 
   v29 = MEMORY[0x277CCAAD0];
-  v34 = [(VTUIButton *)self->_finishButton topAnchor];
-  v33 = [v5 topAnchor];
+  topAnchor = [(VTUIButton *)self->_finishButton topAnchor];
+  topAnchor2 = [v5 topAnchor];
   [v3 continueButtonOffset];
-  v32 = [v34 constraintEqualToAnchor:v33 constant:?];
+  v32 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
   v35[0] = v32;
-  v31 = [(VTUIButton *)self->_finishButton centerXAnchor];
-  v30 = [v5 centerXAnchor];
-  v16 = [v31 constraintEqualToAnchor:v30];
+  centerXAnchor = [(VTUIButton *)self->_finishButton centerXAnchor];
+  centerXAnchor2 = [v5 centerXAnchor];
+  v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v35[1] = v16;
-  v17 = [(VTUIButton *)self->_finishButton widthAnchor];
+  widthAnchor = [(VTUIButton *)self->_finishButton widthAnchor];
   [v3 footerButtonMaximumWidth];
-  v18 = [v17 constraintEqualToConstant:?];
+  v18 = [widthAnchor constraintEqualToConstant:?];
   v35[2] = v18;
-  v19 = [(VTUIButton *)self->_finishButton heightAnchor];
+  heightAnchor = [(VTUIButton *)self->_finishButton heightAnchor];
   [v3 primaryButtonHeight];
-  v20 = [v19 constraintEqualToConstant:?];
+  v20 = [heightAnchor constraintEqualToConstant:?];
   v35[3] = v20;
-  v21 = [(VTUIButton *)self->_finishButton bottomAnchor];
-  v22 = [v5 bottomAnchor];
+  bottomAnchor = [(VTUIButton *)self->_finishButton bottomAnchor];
+  bottomAnchor2 = [v5 bottomAnchor];
   [v3 continueButtonFromBottom];
-  [v21 constraintEqualToAnchor:v22 constant:-v23];
+  [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v23];
   v24 = v28 = v5;
   v35[4] = v24;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:5];
@@ -151,9 +151,9 @@
   footerView = self->_footerView;
   if (!footerView)
   {
-    v4 = [(VTUIEnrollmentSuccessView *)self _createFooter];
+    _createFooter = [(VTUIEnrollmentSuccessView *)self _createFooter];
     v5 = self->_footerView;
-    self->_footerView = v4;
+    self->_footerView = _createFooter;
 
     footerView = self->_footerView;
   }
@@ -161,11 +161,11 @@
   return footerView;
 }
 
-- (void)addFinishButtonTarget:(id)a3 selector:(SEL)a4
+- (void)addFinishButtonTarget:(id)target selector:(SEL)selector
 {
-  v6 = a3;
-  v7 = [(VTUIEnrollmentSuccessView *)self finishButton];
-  [v7 addTarget:v6 action:a4 forControlEvents:64];
+  targetCopy = target;
+  finishButton = [(VTUIEnrollmentSuccessView *)self finishButton];
+  [finishButton addTarget:targetCopy action:selector forControlEvents:64];
 }
 
 @end

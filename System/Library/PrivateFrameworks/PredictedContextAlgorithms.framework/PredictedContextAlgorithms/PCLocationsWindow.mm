@@ -1,14 +1,14 @@
 @interface PCLocationsWindow
-- (PCLocationsWindow)initWithRawHistory:(id)a3 maxUncertainty:(double)a4;
-- (id)fixAtOrAfter:(double)a3;
-- (id)fixAtOrBefore:(double)a3;
+- (PCLocationsWindow)initWithRawHistory:(id)history maxUncertainty:(double)uncertainty;
+- (id)fixAtOrAfter:(double)after;
+- (id)fixAtOrBefore:(double)before;
 @end
 
 @implementation PCLocationsWindow
 
-- (PCLocationsWindow)initWithRawHistory:(id)a3 maxUncertainty:(double)a4
+- (PCLocationsWindow)initWithRawHistory:(id)history maxUncertainty:(double)uncertainty
 {
-  v7 = a3;
+  historyCopy = history;
   v16.receiver = self;
   v16.super_class = PCLocationsWindow;
   v8 = [(PCLocationsWindow *)&v16 init];
@@ -19,9 +19,9 @@
     v15[2] = __55__PCLocationsWindow_initWithRawHistory_maxUncertainty___block_invoke;
     v15[3] = &__block_descriptor_48_e45_B24__0__PCPLocationHistory_8__NSDictionary_16l;
     v15[4] = a2;
-    *&v15[5] = a4;
+    *&v15[5] = uncertainty;
     v9 = [MEMORY[0x1E696AE18] predicateWithBlock:v15];
-    v10 = [v7 filteredArrayUsingPredicate:v9];
+    v10 = [historyCopy filteredArrayUsingPredicate:v9];
     v11 = [v10 sortedArrayUsingComparator:&__block_literal_global];
     sorted = v8->_sorted;
     v8->_sorted = v11;
@@ -90,10 +90,10 @@ uint64_t __55__PCLocationsWindow_initWithRawHistory_maxUncertainty___block_invok
   return v9;
 }
 
-- (id)fixAtOrBefore:(double)a3
+- (id)fixAtOrBefore:(double)before
 {
-  v5 = [(PCLocationsWindow *)self sorted];
-  v6 = [v5 count];
+  sorted = [(PCLocationsWindow *)self sorted];
+  v6 = [sorted count];
 
   if (v6 - 1 < 0)
   {
@@ -106,11 +106,11 @@ LABEL_4:
     while (1)
     {
       --v6;
-      v7 = [(PCLocationsWindow *)self sorted];
-      v8 = [v7 objectAtIndexedSubscript:v6];
+      sorted2 = [(PCLocationsWindow *)self sorted];
+      v8 = [sorted2 objectAtIndexedSubscript:v6];
 
       [v8 timeCFAbsolute];
-      if (v9 <= a3)
+      if (v9 <= before)
       {
         break;
       }
@@ -125,15 +125,15 @@ LABEL_4:
   return v8;
 }
 
-- (id)fixAtOrAfter:(double)a3
+- (id)fixAtOrAfter:(double)after
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PCLocationsWindow *)self sorted];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  sorted = [(PCLocationsWindow *)self sorted];
+  v5 = [sorted countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -143,19 +143,19 @@ LABEL_4:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sorted);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
         [v8 timeCFAbsolute];
-        if (v9 >= a3)
+        if (v9 >= after)
         {
           v5 = v8;
           goto LABEL_11;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [sorted countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;

@@ -6,9 +6,9 @@
 
 - (id)startAccessingLocator
 {
-  v1 = [a1 asURL];
-  v2 = v1;
-  if (v1 && [v1 startAccessingSecurityScopedResource])
+  asURL = [self asURL];
+  v2 = asURL;
+  if (asURL && [asURL startAccessingSecurityScopedResource])
   {
     v3 = MEMORY[0x1E69672A0];
     v6[0] = MEMORY[0x1E69E9820];

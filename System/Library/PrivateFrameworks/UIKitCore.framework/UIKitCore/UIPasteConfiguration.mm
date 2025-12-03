@@ -1,15 +1,15 @@
 @interface UIPasteConfiguration
-+ (UIPasteConfiguration)pasteConfigurationWithAcceptableTypes:(id)a3;
-+ (id)_pasteConfigurationForAcceptingClasses:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (UIPasteConfiguration)pasteConfigurationWithAcceptableTypes:(id)types;
++ (id)_pasteConfigurationForAcceptingClasses:(id)classes;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)acceptableTypeIdentifiers;
 - (UIPasteConfiguration)init;
 - (UIPasteConfiguration)initWithAcceptableTypeIdentifiers:(NSArray *)acceptableTypeIdentifiers;
-- (UIPasteConfiguration)initWithCoder:(id)a3;
+- (UIPasteConfiguration)initWithCoder:(id)coder;
 - (UIPasteConfiguration)initWithTypeIdentifiersForAcceptingClass:(id)aClass;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)addTypeIdentifiersForAcceptingClass:(id)aClass;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAcceptableTypeIdentifiers:(NSArray *)acceptableTypeIdentifiers;
 @end
 
@@ -32,22 +32,22 @@
 
 - (NSArray)acceptableTypeIdentifiers
 {
-  v2 = [(NSMutableOrderedSet *)self->_acceptableTypes array];
-  v3 = [v2 copy];
+  array = [(NSMutableOrderedSet *)self->_acceptableTypes array];
+  v3 = [array copy];
 
   return v3;
 }
 
-+ (id)_pasteConfigurationForAcceptingClasses:(id)a3
++ (id)_pasteConfigurationForAcceptingClasses:(id)classes
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  classesCopy = classes;
   v4 = objc_alloc_init(UIPasteConfiguration);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v3;
+  v5 = classesCopy;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -89,14 +89,14 @@
 - (void)addTypeIdentifiersForAcceptingClass:(id)aClass
 {
   acceptableTypes = self->_acceptableTypes;
-  v4 = [aClass readableTypeIdentifiersForItemProvider];
-  [(NSMutableOrderedSet *)acceptableTypes addObjectsFromArray:v4];
+  readableTypeIdentifiersForItemProvider = [aClass readableTypeIdentifiersForItemProvider];
+  [(NSMutableOrderedSet *)acceptableTypes addObjectsFromArray:readableTypeIdentifiersForItemProvider];
 }
 
-+ (UIPasteConfiguration)pasteConfigurationWithAcceptableTypes:(id)a3
++ (UIPasteConfiguration)pasteConfigurationWithAcceptableTypes:(id)types
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithAcceptableTypes:v4];
+  typesCopy = types;
+  v5 = [[self alloc] initWithAcceptableTypes:typesCopy];
 
   return v5;
 }
@@ -124,7 +124,7 @@
   self->_acceptableTypes = v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(NSMutableOrderedSet *)self->_acceptableTypes copy];
@@ -134,14 +134,14 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     acceptableTypes = self->_acceptableTypes;
-    v6 = v4[1];
+    v6 = equalCopy[1];
 
     return [(NSMutableOrderedSet *)acceptableTypes isEqualToOrderedSet:v6];
   }
@@ -150,22 +150,22 @@
   {
     v9.receiver = self;
     v9.super_class = UIPasteConfiguration;
-    v8 = [(UIPasteConfiguration *)&v9 isEqual:v4];
+    v8 = [(UIPasteConfiguration *)&v9 isEqual:equalCopy];
 
     return v8;
   }
 }
 
-- (UIPasteConfiguration)initWithCoder:(id)a3
+- (UIPasteConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(UIPasteConfiguration *)self init];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"at"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"at"];
     v10 = [v9 mutableCopy];
     acceptableTypes = v5->_acceptableTypes;
     v5->_acceptableTypes = v10;
@@ -174,14 +174,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   acceptableTypes = self->_acceptableTypes;
   if (acceptableTypes)
   {
-    v4 = a3;
+    coderCopy = coder;
     v5 = [(NSMutableOrderedSet *)acceptableTypes copy];
-    [v4 encodeObject:v5 forKey:@"at"];
+    [coderCopy encodeObject:v5 forKey:@"at"];
   }
 }
 

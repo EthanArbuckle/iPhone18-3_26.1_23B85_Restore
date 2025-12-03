@@ -1,24 +1,24 @@
 @interface ABBufferQueryCount
-- (ABBufferQueryCount)initWithAddressBook:(void *)a3 predicate:(id)a4 includeLinkedContacts:(BOOL)a5 managedConfiguration:(id)a6;
+- (ABBufferQueryCount)initWithAddressBook:(void *)book predicate:(id)predicate includeLinkedContacts:(BOOL)contacts managedConfiguration:(id)configuration;
 @end
 
 @implementation ABBufferQueryCount
 
-- (ABBufferQueryCount)initWithAddressBook:(void *)a3 predicate:(id)a4 includeLinkedContacts:(BOOL)a5 managedConfiguration:(id)a6
+- (ABBufferQueryCount)initWithAddressBook:(void *)book predicate:(id)predicate includeLinkedContacts:(BOOL)contacts managedConfiguration:(id)configuration
 {
-  v7 = a5;
+  contactsCopy = contacts;
   v24.receiver = self;
   v24.super_class = ABBufferQueryCount;
   v10 = [(ABBufferQueryCount *)&v24 init];
   if (v10)
   {
-    if (a3 && (CPRecordStoreGetDatabase(), CPSqliteDatabaseConnectionForWriting()))
+    if (book && (CPRecordStoreGetDatabase(), CPSqliteDatabaseConnectionForWriting()))
     {
-      v10->super._managedConfiguration = a6;
-      v10->super._predicate = a4;
-      if (v7)
+      v10->super._managedConfiguration = configuration;
+      v10->super._predicate = predicate;
+      if (contactsCopy)
       {
-        v10->super._fetchLinkedContacts = v7;
+        v10->super._fetchLinkedContacts = contactsCopy;
       }
 
       v22[0] = 0;
@@ -26,17 +26,17 @@
       v22[2] = 0x2020000000;
       v23 = 1;
       v10->super._sortOrder = -1;
-      CFRetain(a3);
-      v10->super._addressBook = a3;
+      CFRetain(book);
+      v10->super._addressBook = book;
       v11 = [@"SELECT count() FROM preferredmatched;" mutableCopy];
-      -[ABBufferQuery prependWithClauseToQueryString:whereClause:](v10, "prependWithClauseToQueryString:whereClause:", v11, [a4 query]);
+      -[ABBufferQuery prependWithClauseToQueryString:whereClause:](v10, "prependWithClauseToQueryString:whereClause:", v11, [predicate query]);
       v12 = CPSqliteConnectionStatementForSQL();
       v13 = v12;
       if (v12)
       {
         if (*(v12 + 8))
         {
-          ABRegulatoryLogReadContactsData(a3);
+          ABRegulatoryLogReadContactsData(book);
           [(ABBufferQuery *)v10 setStatement:v13];
           v14 = objc_opt_new();
           v21[0] = MEMORY[0x1E69E9820];
@@ -67,10 +67,10 @@
           v18[4] = v22;
           v18[5] = v13;
           [v14 setPointerBinder:v18];
-          if ([a4 bindBlock])
+          if ([predicate bindBlock])
           {
-            v15 = [a4 bindBlock];
-            (*(v15 + 16))(v15, v14);
+            bindBlock = [predicate bindBlock];
+            (*(bindBlock + 16))(bindBlock, v14);
           }
         }
       }

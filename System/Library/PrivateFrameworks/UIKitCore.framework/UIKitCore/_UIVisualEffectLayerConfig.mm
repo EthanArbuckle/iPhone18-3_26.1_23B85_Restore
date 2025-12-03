@@ -1,38 +1,38 @@
 @interface _UIVisualEffectLayerConfig
-+ (id)layerWithFillColor:(id)a3 opacity:(double)a4 filterType:(id)a5;
++ (id)layerWithFillColor:(id)color opacity:(double)opacity filterType:(id)type;
 - (id)description;
-- (void)configureLayerView:(id)a3;
-- (void)deconfigureLayerView:(id)a3;
+- (void)configureLayerView:(id)view;
+- (void)deconfigureLayerView:(id)view;
 @end
 
 @implementation _UIVisualEffectLayerConfig
 
-+ (id)layerWithFillColor:(id)a3 opacity:(double)a4 filterType:(id)a5
++ (id)layerWithFillColor:(id)color opacity:(double)opacity filterType:(id)type
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = objc_alloc_init(a1);
+  colorCopy = color;
+  typeCopy = type;
+  v10 = objc_alloc_init(self);
   v11 = *(v10 + 1);
-  *(v10 + 1) = v9;
-  v12 = v9;
+  *(v10 + 1) = typeCopy;
+  v12 = typeCopy;
 
-  v10[2] = a4;
+  v10[2] = opacity;
   v13 = *(v10 + 3);
-  *(v10 + 3) = v8;
+  *(v10 + 3) = colorCopy;
 
   return v10;
 }
 
-- (void)configureLayerView:(id)a3
+- (void)configureLayerView:(id)view
 {
-  v9 = a3;
-  v4 = [(_UIVisualEffectLayerConfig *)self fillColor];
-  [v9 setBackgroundColor:v4];
+  viewCopy = view;
+  fillColor = [(_UIVisualEffectLayerConfig *)self fillColor];
+  [viewCopy setBackgroundColor:fillColor];
 
   [(_UIVisualEffectLayerConfig *)self opacity];
-  [v9 setAlpha:?];
-  v5 = [(_UIVisualEffectLayerConfig *)self filterType];
-  if (v5)
+  [viewCopy setAlpha:?];
+  filterType = [(_UIVisualEffectLayerConfig *)self filterType];
+  if (filterType)
   {
     v6 = MEMORY[0x1E6979378];
     self = [(_UIVisualEffectLayerConfig *)self filterType];
@@ -44,24 +44,24 @@
     v7 = 0;
   }
 
-  v8 = [v9 layer];
-  [v8 setCompositingFilter:v7];
+  layer = [viewCopy layer];
+  [layer setCompositingFilter:v7];
 
-  if (v5)
+  if (filterType)
   {
   }
 }
 
-- (void)deconfigureLayerView:(id)a3
+- (void)deconfigureLayerView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = +[UIColor clearColor];
-  [v3 setBackgroundColor:v4];
+  [viewCopy setBackgroundColor:v4];
 
-  [v3 setAlpha:1.0];
-  v5 = [v3 layer];
+  [viewCopy setAlpha:1.0];
+  layer = [viewCopy layer];
 
-  [v5 setCompositingFilter:0];
+  [layer setCompositingFilter:0];
 }
 
 - (id)description

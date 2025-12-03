@@ -1,37 +1,37 @@
 @interface GKImageRequest
 + (NSArray)searchBundles;
-+ (void)setSearchBundles:(id)a3;
++ (void)setSearchBundles:(id)bundles;
 - (BOOL)isAvatarImageRequest;
 - (BOOL)isContactImageRequest;
 - (BOOL)isResourceRequest;
 - (BOOL)isSystemImageRequest;
 - (GKImageRequest)init;
-- (GKImageRequest)initWithURLRequest:(id)a3 dataConsumer:(id)a4 delegate:(id)a5;
+- (GKImageRequest)initWithURLRequest:(id)request dataConsumer:(id)consumer delegate:(id)delegate;
 - (GKImageRequestDelegate)delegate;
 - (id)description;
 - (id)makeLoadOperation;
 - (unint64_t)cacheOptions;
-- (void)didLoadResource:(id)a3 error:(id)a4;
+- (void)didLoadResource:(id)resource error:(id)error;
 @end
 
 @implementation GKImageRequest
 
-- (GKImageRequest)initWithURLRequest:(id)a3 dataConsumer:(id)a4 delegate:(id)a5
+- (GKImageRequest)initWithURLRequest:(id)request dataConsumer:(id)consumer delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  consumerCopy = consumer;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = GKImageRequest;
   v11 = [(GKResourceRequest *)&v15 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [requestCopy copy];
     urlRequest = v11->_urlRequest;
     v11->_urlRequest = v12;
 
-    objc_storeStrong(&v11->_dataConsumer, a4);
-    objc_storeWeak(&v11->_delegate, v10);
+    objc_storeStrong(&v11->_dataConsumer, consumer);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
   }
 
   return v11;
@@ -49,49 +49,49 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(GKImageRequest *)self urlRequest];
-  v7 = [(GKImageRequest *)self dataConsumer];
-  v8 = [v3 stringWithFormat:@"<%@:%p urlRequest = %@, dataConsumer = %@>", v5, self, v6, v7];
+  urlRequest = [(GKImageRequest *)self urlRequest];
+  dataConsumer = [(GKImageRequest *)self dataConsumer];
+  v8 = [v3 stringWithFormat:@"<%@:%p urlRequest = %@, dataConsumer = %@>", v5, self, urlRequest, dataConsumer];
 
   return v8;
 }
 
 - (BOOL)isResourceRequest
 {
-  v2 = [(GKImageRequest *)self urlRequest];
-  v3 = [v2 URL];
-  v4 = [v3 scheme];
-  v5 = [@"resource" isEqual:v4];
+  urlRequest = [(GKImageRequest *)self urlRequest];
+  v3 = [urlRequest URL];
+  scheme = [v3 scheme];
+  v5 = [@"resource" isEqual:scheme];
 
   return v5;
 }
 
 - (BOOL)isSystemImageRequest
 {
-  v2 = [(GKImageRequest *)self urlRequest];
-  v3 = [v2 URL];
-  v4 = [v3 scheme];
-  v5 = [@"systemimage" isEqual:v4];
+  urlRequest = [(GKImageRequest *)self urlRequest];
+  v3 = [urlRequest URL];
+  scheme = [v3 scheme];
+  v5 = [@"systemimage" isEqual:scheme];
 
   return v5;
 }
 
 - (BOOL)isAvatarImageRequest
 {
-  v2 = [(GKImageRequest *)self urlRequest];
-  v3 = [v2 URL];
-  v4 = [v3 scheme];
-  v5 = [@"avatarimage" isEqual:v4];
+  urlRequest = [(GKImageRequest *)self urlRequest];
+  v3 = [urlRequest URL];
+  scheme = [v3 scheme];
+  v5 = [@"avatarimage" isEqual:scheme];
 
   return v5;
 }
 
 - (BOOL)isContactImageRequest
 {
-  v2 = [(GKImageRequest *)self urlRequest];
-  v3 = [v2 URL];
-  v4 = [v3 scheme];
-  v5 = [@"contactimage" isEqual:v4];
+  urlRequest = [(GKImageRequest *)self urlRequest];
+  v3 = [urlRequest URL];
+  scheme = [v3 scheme];
+  v5 = [@"contactimage" isEqual:scheme];
 
   return v5;
 }
@@ -111,9 +111,9 @@
   return 2;
 }
 
-+ (void)setSearchBundles:(id)a3
++ (void)setSearchBundles:(id)bundles
 {
-  v3 = [a3 copy];
+  v3 = [bundles copy];
   v4 = _searchBundles;
   _searchBundles = v3;
 
@@ -130,8 +130,8 @@
 
   else
   {
-    v3 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6[0] = v3;
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6[0] = mainBundle;
     v4 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.GameCenterUI"];
     v6[1] = v4;
     v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:2];
@@ -145,11 +145,11 @@
   if ([(GKImageRequest *)self isResourceRequest])
   {
     v3 = [GKLoadBundleResourceOperation alloc];
-    v4 = [(GKImageRequest *)self urlRequest];
-    v5 = [v4 URL];
-    v6 = [v5 host];
-    v7 = [objc_opt_class() searchBundles];
-    v8 = [(GKLoadBundleResourceOperation *)v3 initWithResourceName:v6 searchBundles:v7];
+    urlRequest = [(GKImageRequest *)self urlRequest];
+    dataConsumer = [urlRequest URL];
+    host = [dataConsumer host];
+    searchBundles = [objc_opt_class() searchBundles];
+    v8 = [(GKLoadBundleResourceOperation *)v3 initWithResourceName:host searchBundles:searchBundles];
 
 LABEL_5:
 LABEL_6:
@@ -160,38 +160,38 @@ LABEL_6:
   if ([(GKImageRequest *)self isSystemImageRequest])
   {
     v9 = [GKLoadSystemImageResourceOperation alloc];
-    v4 = [(GKImageRequest *)self urlRequest];
-    v5 = [v4 URL];
-    v6 = [v5 host];
-    v8 = [(GKLoadSystemImageResourceOperation *)v9 initWithSystemImageName:v6];
+    urlRequest = [(GKImageRequest *)self urlRequest];
+    dataConsumer = [urlRequest URL];
+    host = [dataConsumer host];
+    v8 = [(GKLoadSystemImageResourceOperation *)v9 initWithSystemImageName:host];
     goto LABEL_5;
   }
 
   if ([(GKImageRequest *)self isAvatarImageRequest])
   {
-    v11 = [(GKImageRequest *)self urlRequest];
-    v12 = [v11 URL];
-    v4 = [v12 host];
+    urlRequest2 = [(GKImageRequest *)self urlRequest];
+    v12 = [urlRequest2 URL];
+    urlRequest = [v12 host];
 
-    if ([v4 isEqualToString:@"G"])
+    if ([urlRequest isEqualToString:@"G"])
     {
-      v13 = [(GKImageRequest *)self urlRequest];
-      v14 = [v13 URL];
-      v15 = [v14 port];
+      urlRequest3 = [(GKImageRequest *)self urlRequest];
+      v14 = [urlRequest3 URL];
+      port = [v14 port];
 
-      if (v15)
+      if (port)
       {
         v16 = MEMORY[0x277CCACA8];
-        v17 = [(GKImageRequest *)self urlRequest];
-        v18 = [v17 URL];
-        v19 = [v18 port];
-        v20 = [v16 stringWithFormat:@"G:%@", v19];
+        urlRequest4 = [(GKImageRequest *)self urlRequest];
+        v18 = [urlRequest4 URL];
+        port2 = [v18 port];
+        v20 = [v16 stringWithFormat:@"G:%@", port2];
 
-        v4 = v20;
+        urlRequest = v20;
       }
     }
 
-    v21 = [[GKLoadAvatarResourceOperation alloc] initWithPlayerId:v4];
+    v21 = [[GKLoadAvatarResourceOperation alloc] initWithPlayerId:urlRequest];
   }
 
   else
@@ -199,18 +199,18 @@ LABEL_6:
     if (![(GKImageRequest *)self isContactImageRequest])
     {
       v25 = [GKLoadImageResourceOperation alloc];
-      v4 = [(GKImageRequest *)self urlRequest];
-      v5 = [(GKImageRequest *)self dataConsumer];
-      v8 = [(GKLoadImageResourceOperation *)v25 initWithURLRequest:v4 dataConsumer:v5];
+      urlRequest = [(GKImageRequest *)self urlRequest];
+      dataConsumer = [(GKImageRequest *)self dataConsumer];
+      v8 = [(GKLoadImageResourceOperation *)v25 initWithURLRequest:urlRequest dataConsumer:dataConsumer];
       goto LABEL_6;
     }
 
-    v22 = [(GKImageRequest *)self urlRequest];
-    v23 = [v22 URL];
-    v24 = [v23 host];
-    v4 = [v24 stringByRemovingPercentEncoding];
+    urlRequest5 = [(GKImageRequest *)self urlRequest];
+    v23 = [urlRequest5 URL];
+    host2 = [v23 host];
+    urlRequest = [host2 stringByRemovingPercentEncoding];
 
-    v21 = [[GKLoadContactResourceOperation alloc] initWithContactId:v4];
+    v21 = [[GKLoadContactResourceOperation alloc] initWithContactId:urlRequest];
   }
 
   v8 = v21;
@@ -219,20 +219,20 @@ LABEL_7:
   return v8;
 }
 
-- (void)didLoadResource:(id)a3 error:(id)a4
+- (void)didLoadResource:(id)resource error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(GKImageRequest *)self delegate];
-  v8 = v7;
-  if (v6)
+  resourceCopy = resource;
+  errorCopy = error;
+  delegate = [(GKImageRequest *)self delegate];
+  v8 = delegate;
+  if (errorCopy)
   {
-    [v7 imageRequest:self didFailWithError:v6];
+    [delegate imageRequest:self didFailWithError:errorCopy];
   }
 
   else
   {
-    [v7 imageRequest:self didLoadImage:v9];
+    [delegate imageRequest:self didLoadImage:resourceCopy];
   }
 }
 

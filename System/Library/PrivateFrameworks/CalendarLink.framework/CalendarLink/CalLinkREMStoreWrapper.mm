@@ -1,6 +1,6 @@
 @interface CalLinkREMStoreWrapper
 - (CalLinkREMStoreWrapper)init;
-- (id)fetchReminderDataForReminderURLs:(id)a3 error:(id *)a4;
+- (id)fetchReminderDataForReminderURLs:(id)ls error:(id *)error;
 @end
 
 @implementation CalLinkREMStoreWrapper
@@ -38,16 +38,16 @@
   return v2;
 }
 
-- (id)fetchReminderDataForReminderURLs:(id)a3 error:(id *)a4
+- (id)fetchReminderDataForReminderURLs:(id)ls error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lsCopy = ls;
   v5 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = v4;
+  v6 = lsCopy;
   v7 = [v6 countByEnumeratingWithState:&v23 objects:v32 count:16];
   if (v7)
   {
@@ -93,7 +93,7 @@
     while (v7);
   }
 
-  v14 = [(REMStore *)self->_reminderStore fetchRemindersWithObjectIDs:v5 error:a4];
+  v14 = [(REMStore *)self->_reminderStore fetchRemindersWithObjectIDs:v5 error:error];
   if (v14)
   {
     v15 = objc_opt_new();

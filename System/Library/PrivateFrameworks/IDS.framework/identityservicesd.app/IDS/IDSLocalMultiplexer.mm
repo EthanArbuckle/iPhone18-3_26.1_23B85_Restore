@@ -1,13 +1,13 @@
 @interface IDSLocalMultiplexer
 + (id)sharedInstance;
-- (BOOL)connectionCancel:(id)a3;
-- (BOOL)connectionRequest:(id)a3;
-- (BOOL)listenRequest:(id)a3;
-- (BOOL)registerMultiplexerTransport:(id)a3;
-- (BOOL)setupTransportForConnection:(id)a3;
-- (BOOL)unregisterMultiplexerTransport:(id)a3;
+- (BOOL)connectionCancel:(id)cancel;
+- (BOOL)connectionRequest:(id)request;
+- (BOOL)listenRequest:(id)request;
+- (BOOL)registerMultiplexerTransport:(id)transport;
+- (BOOL)setupTransportForConnection:(id)connection;
+- (BOOL)unregisterMultiplexerTransport:(id)transport;
 - (IDSLocalMultiplexer)init;
-- (id)_localTransportForSession:(id)a3;
+- (id)_localTransportForSession:(id)session;
 @end
 
 @implementation IDSLocalMultiplexer
@@ -127,21 +127,21 @@ LABEL_15:
   return v19;
 }
 
-- (BOOL)registerMultiplexerTransport:(id)a3
+- (BOOL)registerMultiplexerTransport:(id)transport
 {
-  v4 = a3;
+  transportCopy = transport;
   transports = self->_transports;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)transports objectForKeyedSubscript:v6];
+  identifier = [transportCopy identifier];
+  v7 = [(NSMutableDictionary *)transports objectForKeyedSubscript:identifier];
 
   if (v7)
   {
     v8 = +[IDSFoundationLog Multiplexer];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 identifier];
+      identifier2 = [transportCopy identifier];
       v15 = 138412290;
-      v16 = v9;
+      v16 = identifier2;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Transport %@ already registered! Cannot register duplicate.", &v15, 0xCu);
     }
   }
@@ -149,39 +149,39 @@ LABEL_15:
   else
   {
     v10 = self->_transports;
-    v11 = [v4 identifier];
-    [(NSMutableDictionary *)v10 setObject:v4 forKeyedSubscript:v11];
+    identifier3 = [transportCopy identifier];
+    [(NSMutableDictionary *)v10 setObject:transportCopy forKeyedSubscript:identifier3];
 
     v12 = +[IDSFoundationLog Multiplexer];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = self->_transports;
       v15 = 138412546;
-      v16 = v4;
+      v16 = transportCopy;
       v17 = 2112;
       v18 = v13;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Multiplexer added transport %@ to list of transports %@", &v15, 0x16u);
     }
 
-    v8 = [v4 routeClientConnections:self->_pendingConnections];
+    v8 = [transportCopy routeClientConnections:self->_pendingConnections];
     [(NSMutableSet *)self->_pendingConnections minusSet:v8];
   }
 
   return v7 == 0;
 }
 
-- (BOOL)unregisterMultiplexerTransport:(id)a3
+- (BOOL)unregisterMultiplexerTransport:(id)transport
 {
-  v4 = a3;
+  transportCopy = transport;
   transports = self->_transports;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)transports objectForKeyedSubscript:v6];
+  identifier = [transportCopy identifier];
+  v7 = [(NSMutableDictionary *)transports objectForKeyedSubscript:identifier];
 
   if (v7)
   {
     v8 = self->_transports;
-    v9 = [v4 identifier];
-    [(NSMutableDictionary *)v8 setObject:0 forKeyedSubscript:v9];
+    identifier2 = [transportCopy identifier];
+    [(NSMutableDictionary *)v8 setObject:0 forKeyedSubscript:identifier2];
   }
 
   else
@@ -189,9 +189,9 @@ LABEL_15:
     v10 = +[IDSFoundationLog Multiplexer];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v4 identifier];
+      identifier3 = [transportCopy identifier];
       v13 = 138412290;
-      v14 = v11;
+      v14 = identifier3;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Transport %@ not registered! Cannot unregister.", &v13, 0xCu);
     }
   }
@@ -199,9 +199,9 @@ LABEL_15:
   return v7 != 0;
 }
 
-- (BOOL)setupTransportForConnection:(id)a3
+- (BOOL)setupTransportForConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   memset(src, 170, sizeof(src));
   if (os_nexus_controller_alloc_provider_instance())
   {
@@ -223,11 +223,11 @@ LABEL_7:
   getpid();
   if (!os_nexus_controller_bind_provider_instance())
   {
-    v9 = [v4 processUUID];
+    processUUID = [connectionCopy processUUID];
     v29[0] = 0xAAAAAAAAAAAAAAAALL;
     v29[1] = 0xAAAAAAAAAAAAAAAALL;
-    [v9 getUUIDBytes:v29];
-    [v4 pid];
+    [processUUID getUUIDBytes:v29];
+    [connectionCopy pid];
     if (os_nexus_controller_bind_provider_instance())
     {
       v10 = +[IDSFoundationLog Multiplexer];
@@ -236,7 +236,7 @@ LABEL_7:
 LABEL_15:
 
 LABEL_16:
-        [v4 invalidate];
+        [connectionCopy invalidate];
         v7 = 0;
 LABEL_17:
 
@@ -270,31 +270,31 @@ LABEL_17:
 
         if (v15)
         {
-          v16 = [v4 localEndpoint];
-          v17 = [v4 remoteEndpoint];
+          localEndpoint = [connectionCopy localEndpoint];
+          remoteEndpoint = [connectionCopy remoteEndpoint];
           *buf = 138412546;
-          *&buf[4] = v16;
+          *&buf[4] = localEndpoint;
           v27 = 2112;
-          v28 = v17;
+          v28 = remoteEndpoint;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "registration nexusdata localEndpoint %@ remoteEndpoint %@", buf, 0x16u);
         }
 
         *buf = 0;
-        v18 = [v4 localEndpoint];
-        v19 = [v4 remoteEndpoint];
+        localEndpoint2 = [connectionCopy localEndpoint];
+        remoteEndpoint2 = [connectionCopy remoteEndpoint];
         assign_message = nw_path_create_assign_message();
 
         if (assign_message)
         {
-          v21 = [(IDSTransportLevelAgent *)self->_agent registration];
+          registration = [(IDSTransportLevelAgent *)self->_agent registration];
           v22 = [NSData dataWithBytes:assign_message length:*buf];
-          v23 = [v4 clientUUID];
-          v24 = [v21 assignNexusData:v22 toClient:v23];
+          clientUUID = [connectionCopy clientUUID];
+          v24 = [registration assignNexusData:v22 toClient:clientUUID];
 
           free(assign_message);
           if (v24)
           {
-            [v4 setOsChannel:extended];
+            [connectionCopy setOsChannel:extended];
             v7 = 1;
             goto LABEL_17;
           }
@@ -351,39 +351,39 @@ LABEL_14:
 
 LABEL_8:
 
-  [v4 invalidate];
+  [connectionCopy invalidate];
   v7 = 0;
 LABEL_9:
 
   return v7;
 }
 
-- (id)_localTransportForSession:(id)a3
+- (id)_localTransportForSession:(id)session
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_transportsInstances objectForKeyedSubscript:v4];
+  sessionCopy = session;
+  v5 = [(NSMutableDictionary *)self->_transportsInstances objectForKeyedSubscript:sessionCopy];
   if (!v5)
   {
-    v5 = [[IDSMultiplexerLocalTransport alloc] initWithIdentifier:v4];
-    [(NSMutableDictionary *)self->_transportsInstances setObject:v5 forKeyedSubscript:v4];
+    v5 = [[IDSMultiplexerLocalTransport alloc] initWithIdentifier:sessionCopy];
+    [(NSMutableDictionary *)self->_transportsInstances setObject:v5 forKeyedSubscript:sessionCopy];
     v7 = _NSConcreteStackBlock;
     v8 = 3221225472;
     v9 = sub_100471260;
     v10 = &unk_100BDA470;
-    v11 = self;
-    v12 = v4;
+    selfCopy = self;
+    v12 = sessionCopy;
     [(IDSMultiplexerLocalTransport *)v5 setPacketBufferReadHandler:&v7];
-    [(IDSLocalMultiplexer *)self registerMultiplexerTransport:v5, v7, v8, v9, v10, v11];
+    [(IDSLocalMultiplexer *)self registerMultiplexerTransport:v5, v7, v8, v9, v10, selfCopy];
   }
 
   return v5;
 }
 
-- (BOOL)connectionRequest:(id)a3
+- (BOOL)connectionRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 path];
-  if (v5)
+  requestCopy = request;
+  path = [requestCopy path];
+  if (path)
   {
     v6 = nw_path_copy_endpoint();
     v7 = +[IDSFoundationLog Multiplexer];
@@ -402,9 +402,9 @@ LABEL_9:
         v9 = +[IDSFoundationLog Multiplexer];
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [v4 clientUUID];
+          clientUUID = [requestCopy clientUUID];
           *buf = 138412290;
-          *&buf[4] = v10;
+          *&buf[4] = clientUUID;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "client endpoint type not 'host' for client %@", buf, 0xCu);
         }
       }
@@ -431,7 +431,7 @@ LABEL_9:
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Client params: %@", buf, 0xCu);
       }
 
-      endpoint = nw_path_copy_effective_local_endpoint(v5);
+      endpoint = nw_path_copy_effective_local_endpoint(path);
       if (endpoint)
       {
         v15 = +[IDSFoundationLog Multiplexer];
@@ -443,7 +443,7 @@ LABEL_9:
         }
       }
 
-      v45 = nw_path_copy_effective_remote_endpoint(v5);
+      v45 = nw_path_copy_effective_remote_endpoint(path);
       if (v45)
       {
         v16 = +[IDSFoundationLog Multiplexer];
@@ -458,12 +458,12 @@ LABEL_9:
       v17 = +[IDSFoundationLog Multiplexer];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v4 multiplexerParams];
-        v19 = [v4 clientUUID];
+        multiplexerParams = [requestCopy multiplexerParams];
+        clientUUID2 = [requestCopy clientUUID];
         *buf = 138412546;
-        *&buf[4] = v18;
+        *&buf[4] = multiplexerParams;
         *&buf[12] = 2112;
-        *&buf[14] = v19;
+        *&buf[14] = clientUUID2;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "client request [%@] for client %@", buf, 0x16u);
       }
 
@@ -475,17 +475,17 @@ LABEL_9:
         memset(buf, 170, 16);
         nw_parameters_get_proc_uuid();
         os_unfair_lock_lock(&self->_lock);
-        v23 = [v4 multiplexerParams];
-        v24 = [v23 sessionID];
-        v43 = [(IDSLocalMultiplexer *)self _localTransportForSession:v24];
+        multiplexerParams2 = [requestCopy multiplexerParams];
+        sessionID = [multiplexerParams2 sessionID];
+        v43 = [(IDSLocalMultiplexer *)self _localTransportForSession:sessionID];
 
         v25 = objc_alloc_init(IDSMultiplexerConnection);
-        v26 = [v4 clientUUID];
-        [(IDSMultiplexerConnection *)v25 setClientUUID:v26];
+        clientUUID3 = [requestCopy clientUUID];
+        [(IDSMultiplexerConnection *)v25 setClientUUID:clientUUID3];
 
-        [(IDSMultiplexerConnection *)v25 setPath:v5];
-        v27 = [v4 multiplexerParams];
-        [(IDSMultiplexerConnection *)v25 setMultiplexerParams:v27];
+        [(IDSMultiplexerConnection *)v25 setPath:path];
+        multiplexerParams3 = [requestCopy multiplexerParams];
+        [(IDSMultiplexerConnection *)v25 setMultiplexerParams:multiplexerParams3];
 
         [(IDSMultiplexerConnection *)v25 setParameters:v7];
         [(IDSMultiplexerConnection *)v25 setPid:v22];
@@ -500,8 +500,8 @@ LABEL_9:
           [(IDSMultiplexerConnection *)v25 setIsTCP:1];
         }
 
-        v29 = [v4 endpoint];
-        type = nw_endpoint_get_type(v29);
+        endpoint = [requestCopy endpoint];
+        type = nw_endpoint_get_type(endpoint);
 
         if (type == nw_endpoint_type_host)
         {
@@ -528,8 +528,8 @@ LABEL_9:
         }
 
         connections = self->_connections;
-        v38 = [v4 clientUUID];
-        [(NSMutableDictionary *)connections setObject:v25 forKeyedSubscript:v38];
+        clientUUID4 = [requestCopy clientUUID];
+        [(NSMutableDictionary *)connections setObject:v25 forKeyedSubscript:clientUUID4];
 
         v39 = +[IDSFoundationLog Multiplexer];
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -555,9 +555,9 @@ LABEL_9:
         v35 = +[IDSFoundationLog Multiplexer];
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
         {
-          v36 = [v4 clientUUID];
+          clientUUID5 = [requestCopy clientUUID];
           *buf = 138412290;
-          *&buf[4] = v36;
+          *&buf[4] = clientUUID5;
           _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Client UUID %@ having pid 0 (root) is not supported", buf, 0xCu);
         }
       }
@@ -567,9 +567,9 @@ LABEL_9:
     {
       if (v8)
       {
-        v34 = [v4 clientUUID];
+        clientUUID6 = [requestCopy clientUUID];
         *buf = 138412290;
-        *&buf[4] = v34;
+        *&buf[4] = clientUUID6;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "client does not have endpoint %@", buf, 0xCu);
       }
 
@@ -582,9 +582,9 @@ LABEL_9:
     v6 = +[IDSFoundationLog Multiplexer];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [v4 clientUUID];
+      clientUUID7 = [requestCopy clientUUID];
       *buf = 138412290;
-      *&buf[4] = v33;
+      *&buf[4] = clientUUID7;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "no nw_path for client %@", buf, 0xCu);
     }
 
@@ -594,13 +594,13 @@ LABEL_9:
   return v21;
 }
 
-- (BOOL)connectionCancel:(id)a3
+- (BOOL)connectionCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   os_unfair_lock_lock(&self->_lock);
   connections = self->_connections;
-  v6 = [v4 clientUUID];
-  v7 = [(NSMutableDictionary *)connections objectForKeyedSubscript:v6];
+  clientUUID = [cancelCopy clientUUID];
+  v7 = [(NSMutableDictionary *)connections objectForKeyedSubscript:clientUUID];
 
   v8 = +[IDSFoundationLog Multiplexer];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -618,13 +618,13 @@ LABEL_9:
 
   if (v7)
   {
-    v11 = [v7 transport];
-    [v11 cancelClientConnection:v7];
+    transport = [v7 transport];
+    [transport cancelClientConnection:v7];
 
     [v7 invalidate];
     v12 = self->_connections;
-    v13 = [v4 clientUUID];
-    [(NSMutableDictionary *)v12 setObject:0 forKeyedSubscript:v13];
+    clientUUID2 = [cancelCopy clientUUID];
+    [(NSMutableDictionary *)v12 setObject:0 forKeyedSubscript:clientUUID2];
 
     [(NSMutableSet *)self->_pendingConnections removeObject:v7];
   }
@@ -634,11 +634,11 @@ LABEL_9:
   return 1;
 }
 
-- (BOOL)listenRequest:(id)a3
+- (BOOL)listenRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 path];
-  if (v5)
+  requestCopy = request;
+  path = [requestCopy path];
+  if (path)
   {
     v6 = nw_path_copy_endpoint();
     v7 = +[IDSFoundationLog Multiplexer];
@@ -647,35 +647,35 @@ LABEL_9:
     {
       if (v8)
       {
-        v13 = [v4 clientUUID];
+        clientUUID = [requestCopy clientUUID];
         *buf = 138412290;
-        *v64 = v13;
+        *v64 = clientUUID;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "client does not have endpoint %@", buf, 0xCu);
       }
 
 LABEL_14:
-      v12 = nw_path_copy_parameters();
+      clientUUID7 = nw_path_copy_parameters();
       v14 = +[IDSFoundationLog Multiplexer];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *v64 = v12;
+        *v64 = clientUUID7;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Client params: %@", buf, 0xCu);
       }
 
-      v15 = nw_path_copy_effective_local_endpoint(v5);
-      if (v15)
+      clientUUID6 = nw_path_copy_effective_local_endpoint(path);
+      if (clientUUID6)
       {
         v16 = +[IDSFoundationLog Multiplexer];
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          *v64 = v15;
+          *v64 = clientUUID6;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "client local endpoint %@", buf, 0xCu);
         }
       }
 
-      v17 = nw_path_copy_effective_remote_endpoint(v5);
+      v17 = nw_path_copy_effective_remote_endpoint(path);
       if (v17)
       {
         v18 = +[IDSFoundationLog Multiplexer];
@@ -690,22 +690,22 @@ LABEL_14:
       v19 = +[IDSFoundationLog Multiplexer];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v4 multiplexerParams];
-        [v4 clientUUID];
-        v21 = v12;
+        multiplexerParams = [requestCopy multiplexerParams];
+        [requestCopy clientUUID];
+        v21 = clientUUID7;
         v22 = v17;
-        v23 = v15;
+        v23 = clientUUID6;
         v25 = v24 = self;
         *buf = 138412546;
-        *v64 = v20;
+        *v64 = multiplexerParams;
         *&v64[8] = 2112;
         *&v64[10] = v25;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "client request [%@] for client %@", buf, 0x16u);
 
         self = v24;
-        v15 = v23;
+        clientUUID6 = v23;
         v17 = v22;
-        v12 = v21;
+        clientUUID7 = v21;
       }
 
       pid = nw_parameters_get_pid();
@@ -714,9 +714,9 @@ LABEL_14:
         v28 = +[IDSFoundationLog Multiplexer];
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
-          v30 = [v4 clientUUID];
+          clientUUID2 = [requestCopy clientUUID];
           *buf = 138412290;
-          *v64 = v30;
+          *v64 = clientUUID2;
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Client UUID %@ having pid 0 (root) is not supported", buf, 0xCu);
         }
 
@@ -783,10 +783,10 @@ LABEL_40:
             goto LABEL_40;
           }
 
-          endpoint = v15;
+          endpoint = clientUUID6;
           os_channel_attr_set_key();
           os_channel_attr_set();
-          v57 = self;
+          selfCopy = self;
           extended = os_channel_create_extended();
           if (extended)
           {
@@ -794,7 +794,7 @@ LABEL_40:
             *&address.sa_data[6] = 0xAAAAAAAAAAAAAAAALL;
             address.sa_family = 2;
             *&address.sa_data[2] = 0;
-            *address.sa_data = __rev16(nw_endpoint_get_port(v15));
+            *address.sa_data = __rev16(nw_endpoint_get_port(clientUUID6));
             address.sa_len = 16;
             v33 = nw_endpoint_create_address(&address);
             *&address.sa_len = 528;
@@ -816,43 +816,43 @@ LABEL_40:
             {
               v37 = assign_message;
               v55 = v33;
-              v50 = [(IDSTransportLevelAgent *)v57->_agent registration];
+              registration = [(IDSTransportLevelAgent *)selfCopy->_agent registration];
               [NSData dataWithBytes:v37 length:0];
               v38 = v52 = v37;
-              v39 = [v4 clientUUID];
-              v51 = [v50 assignNexusData:v38 toClient:v39];
+              clientUUID3 = [requestCopy clientUUID];
+              v51 = [registration assignNexusData:v38 toClient:clientUUID3];
 
               free(v52);
               if (v51)
               {
-                os_unfair_lock_lock(&v57->_lock);
-                v40 = [v4 multiplexerParams];
-                v41 = [v40 sessionID];
-                v53 = [(IDSLocalMultiplexer *)v57 _localTransportForSession:v41];
+                os_unfair_lock_lock(&selfCopy->_lock);
+                multiplexerParams2 = [requestCopy multiplexerParams];
+                sessionID = [multiplexerParams2 sessionID];
+                v53 = [(IDSLocalMultiplexer *)selfCopy _localTransportForSession:sessionID];
 
                 v42 = objc_alloc_init(IDSMultiplexerConnection);
-                v43 = [v4 clientUUID];
-                [(IDSMultiplexerConnection *)v42 setClientUUID:v43];
+                clientUUID4 = [requestCopy clientUUID];
+                [(IDSMultiplexerConnection *)v42 setClientUUID:clientUUID4];
 
-                [(IDSMultiplexerConnection *)v42 setPath:v5];
-                v44 = [v4 multiplexerParams];
-                [(IDSMultiplexerConnection *)v42 setMultiplexerParams:v44];
+                [(IDSMultiplexerConnection *)v42 setPath:path];
+                multiplexerParams3 = [requestCopy multiplexerParams];
+                [(IDSMultiplexerConnection *)v42 setMultiplexerParams:multiplexerParams3];
 
-                [(IDSMultiplexerConnection *)v42 setParameters:v12];
+                [(IDSMultiplexerConnection *)v42 setParameters:clientUUID7];
                 [(IDSMultiplexerConnection *)v42 setPid:v27];
                 v45 = [[NSUUID alloc] initWithUUIDBytes:v62];
                 [(IDSMultiplexerConnection *)v42 setProcessUUID:v45];
 
                 [(IDSMultiplexerConnection *)v42 setLocalEndpoint:v55];
                 [(IDSMultiplexerConnection *)v42 setRemoteEndpoint:v34];
-                v15 = endpoint;
+                clientUUID6 = endpoint;
                 [(IDSMultiplexerConnection *)v42 setLocalPort:nw_endpoint_get_port(endpoint)];
                 [(IDSMultiplexerConnection *)v42 setRemotePort:0];
                 LODWORD(v45) = nw_endpoint_get_port(endpoint);
                 [(IDSMultiplexerConnection *)v42 setPortsSignature:nw_endpoint_get_port(v17) | (v45 << 16)];
-                connections = v57->_connections;
-                v47 = [v4 clientUUID];
-                [(NSMutableDictionary *)connections setObject:v42 forKeyedSubscript:v47];
+                connections = selfCopy->_connections;
+                clientUUID5 = [requestCopy clientUUID];
+                [(NSMutableDictionary *)connections setObject:v42 forKeyedSubscript:clientUUID5];
 
                 v48 = +[IDSFoundationLog Multiplexer];
                 if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
@@ -866,14 +866,14 @@ LABEL_40:
                 v49 = v53;
                 [(IDSMultiplexerConnection *)v42 setTransport:v53];
                 [(IDSMultiplexerConnection *)v42 setOsChannel:v54];
-                os_unfair_lock_unlock(&v57->_lock);
+                os_unfair_lock_unlock(&selfCopy->_lock);
                 [v53 addListenerConnection:v42];
               }
 
               else
               {
                 v49 = +[IDSFoundationLog Multiplexer];
-                v15 = endpoint;
+                clientUUID6 = endpoint;
                 if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 0;
@@ -893,7 +893,7 @@ LABEL_40:
                 _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "nw_path_create_assign_message failed", buf, 2u);
               }
 
-              v15 = endpoint;
+              clientUUID6 = endpoint;
             }
 
             goto LABEL_42;
@@ -940,13 +940,13 @@ LABEL_42:
       goto LABEL_14;
     }
 
-    v12 = +[IDSFoundationLog Multiplexer];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    clientUUID7 = +[IDSFoundationLog Multiplexer];
+    if (os_log_type_enabled(clientUUID7, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v4 clientUUID];
+      clientUUID6 = [requestCopy clientUUID];
       *buf = 138412290;
-      *v64 = v15;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "client endpoint type not 'host' for client %@", buf, 0xCu);
+      *v64 = clientUUID6;
+      _os_log_impl(&_mh_execute_header, clientUUID7, OS_LOG_TYPE_DEFAULT, "client endpoint type not 'host' for client %@", buf, 0xCu);
 LABEL_43:
     }
 
@@ -958,9 +958,9 @@ LABEL_44:
   v6 = +[IDSFoundationLog Multiplexer];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v4 clientUUID];
+    clientUUID7 = [requestCopy clientUUID];
     *buf = 138412290;
-    *v64 = v12;
+    *v64 = clientUUID7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "no nw_path for client %@", buf, 0xCu);
     goto LABEL_44;
   }

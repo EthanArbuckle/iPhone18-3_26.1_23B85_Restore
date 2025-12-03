@@ -139,7 +139,7 @@ id __20__AirplaneMode_init__block_invoke(uint64_t a1)
 
 - (void)airplaneModeChanged
 {
-  v3 = [(RadiosPreferences *)self->_radiosPreferences airplaneMode];
+  airplaneMode = [(RadiosPreferences *)self->_radiosPreferences airplaneMode];
   if (gLogObjects)
   {
     v4 = gNumLogObjects < 3;
@@ -172,11 +172,11 @@ id __20__AirplaneMode_init__block_invoke(uint64_t a1)
     v9[0] = 67109376;
     v9[1] = airplaneMode;
     v10 = 1024;
-    v11 = v3;
+    v11 = airplaneMode;
     _os_log_impl(&def_3A0E8, v6, OS_LOG_TYPE_INFO, "airplaneMode = %d -> %d", v9, 0xEu);
   }
 
-  self->_airplaneMode = v3;
+  self->_airplaneMode = airplaneMode;
   self->_initComplete = 1;
   v8 = +[NSNotificationCenter defaultCenter];
   [v8 postNotificationName:ueaPluginSystemSettingsAirplaneModeChanged object:0];

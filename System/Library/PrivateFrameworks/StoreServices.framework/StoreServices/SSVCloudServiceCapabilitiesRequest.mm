@@ -1,16 +1,16 @@
 @interface SSVCloudServiceCapabilitiesRequest
-- (SSVCloudServiceCapabilitiesRequest)initWithXPCEncoding:(id)a3;
+- (SSVCloudServiceCapabilitiesRequest)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
-- (void)startWithCompletionBlock:(id)a3;
-- (void)startWithResponseBlock:(id)a3;
+- (void)startWithCompletionBlock:(id)block;
+- (void)startWithResponseBlock:(id)block;
 @end
 
 @implementation SSVCloudServiceCapabilitiesRequest
 
-- (void)startWithResponseBlock:(id)a3
+- (void)startWithResponseBlock:(id)block
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -19,19 +19,19 @@
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v9 = v7;
     }
@@ -56,9 +56,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v38, v35}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v38, v35}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -71,19 +71,19 @@ LABEL_16:
     v17 = +[SSLogConfig sharedConfig];
   }
 
-  v18 = [v17 shouldLog];
+  shouldLog2 = [v17 shouldLog];
   if ([v17 shouldLogToDisk])
   {
-    v19 = v18 | 2;
+    v19 = shouldLog2 | 2;
   }
 
   else
   {
-    v19 = v18;
+    v19 = shouldLog2;
   }
 
-  v20 = [v17 OSLogObject];
-  if (!os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
+  oSLogObject2 = [v17 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
   {
     v19 &= 2u;
   }
@@ -97,21 +97,21 @@ LABEL_16:
   v22 = *(&self->super._usesTaskCompletionAssertions + 1);
   v23 = MEMORY[0x1E696AF00];
   v24 = v21;
-  v25 = [v23 callStackSymbols];
+  callStackSymbols = [v23 callStackSymbols];
   v38 = 138543874;
   v39 = v21;
   v40 = 1024;
   v41 = v22;
   v42 = 2114;
-  v43 = v25;
+  v43 = callStackSymbols;
   LODWORD(v35) = 28;
   v26 = _os_log_send_and_compose_impl();
 
   if (v26)
   {
-    v20 = [MEMORY[0x1E696AEC0] stringWithCString:v26 encoding:{4, &v38, v35}];
+    oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v26 encoding:{4, &v38, v35}];
     free(v26);
-    SSFileLog(v17, @"%@", v27, v28, v29, v30, v31, v32, v20);
+    SSFileLog(v17, @"%@", v27, v28, v29, v30, v31, v32, oSLogObject2);
 LABEL_26:
   }
 
@@ -120,8 +120,8 @@ LABEL_26:
   v36[2] = __61__SSVCloudServiceCapabilitiesRequest_startWithResponseBlock___block_invoke;
   v36[3] = &unk_1E84ABEF0;
   v36[4] = self;
-  v37 = v4;
-  v33 = v4;
+  v37 = blockCopy;
+  v33 = blockCopy;
   [(SSRequest *)self _startWithMessageID:175 messageBlock:v36];
 }
 
@@ -174,15 +174,15 @@ LABEL_8:
   [*(a1 + 32) _shutdownRequest];
 }
 
-- (void)startWithCompletionBlock:(id)a3
+- (void)startWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__SSVCloudServiceCapabilitiesRequest_startWithCompletionBlock___block_invoke;
   v6[3] = &unk_1E84B2FC8;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(SSVCloudServiceCapabilitiesRequest *)self startWithResponseBlock:v6];
 }
 
@@ -197,11 +197,11 @@ uint64_t __63__SSVCloudServiceCapabilitiesRequest_startWithCompletionBlock___blo
   return result;
 }
 
-- (SSVCloudServiceCapabilitiesRequest)initWithXPCEncoding:(id)a3
+- (SSVCloudServiceCapabilitiesRequest)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v8.receiver = self;
     v8.super_class = SSVCloudServiceCapabilitiesRequest;

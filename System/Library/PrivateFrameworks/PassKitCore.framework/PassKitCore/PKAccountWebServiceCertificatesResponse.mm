@@ -1,24 +1,24 @@
 @interface PKAccountWebServiceCertificatesResponse
-- (PKAccountWebServiceCertificatesResponse)initWithData:(id)a3;
+- (PKAccountWebServiceCertificatesResponse)initWithData:(id)data;
 @end
 
 @implementation PKAccountWebServiceCertificatesResponse
 
-- (PKAccountWebServiceCertificatesResponse)initWithData:(id)a3
+- (PKAccountWebServiceCertificatesResponse)initWithData:(id)data
 {
   v32 = *MEMORY[0x1E69E9840];
   v26.receiver = self;
   v26.super_class = PKAccountWebServiceCertificatesResponse;
-  v3 = [(PKWebServiceResponse *)&v26 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v26 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [MEMORY[0x1E695DF70] array];
+      v6 = jSONObject;
+      array = [MEMORY[0x1E695DF70] array];
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
@@ -40,7 +40,7 @@
             }
 
             v13 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:*(*(&v22 + 1) + 8 * v12) options:0];
-            [v7 safelyAddObject:v13];
+            [array safelyAddObject:v13];
 
             ++v12;
           }
@@ -52,7 +52,7 @@
         while (v10);
       }
 
-      v14 = [MEMORY[0x1E695DEC8] arrayWithArray:v7];
+      v14 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
       encryptionCertificates = v4->_encryptionCertificates;
       v4->_encryptionCertificates = v14;
 
@@ -72,11 +72,11 @@ LABEL_14:
       }
 
       v18 = objc_opt_class();
-      v7 = NSStringFromClass(v18);
+      array = NSStringFromClass(v18);
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
       *buf = 138543618;
-      v28 = v7;
+      v28 = array;
       v29 = 2114;
       v30 = v20;
       _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "Malformed %{public}@: expected dictionary and received %{public}@", buf, 0x16u);

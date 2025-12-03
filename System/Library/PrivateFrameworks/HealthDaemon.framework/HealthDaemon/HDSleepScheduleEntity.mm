@@ -1,9 +1,9 @@
 @interface HDSleepScheduleEntity
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
 + (id)indices;
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7;
-+ (id)mostRecentSleepScheduleForWeekday:(unint64_t)a3 beforeDate:(id)a4 profile:(id)a5 encodingOptions:(id)a6 error:(id *)a7;
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error;
++ (id)mostRecentSleepScheduleForWeekday:(unint64_t)weekday beforeDate:(id)date profile:(id)profile encodingOptions:(id)options error:(id *)error;
 @end
 
 @implementation HDSleepScheduleEntity
@@ -23,7 +23,7 @@
   v7[1] = 3221225472;
   v7[2] = __32__HDSleepScheduleEntity_indices__block_invoke;
   v7[3] = &__block_descriptor_40_e18__16__0__NSString_8l;
-  v7[4] = a1;
+  v7[4] = self;
   v4 = [v3 hk_map:v7];
 
   v5 = *MEMORY[0x277D85DE8];
@@ -48,17 +48,17 @@ id __32__HDSleepScheduleEntity_indices__block_invoke(uint64_t a1, void *a2)
   return v9;
 }
 
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error
 {
   v28[13] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = a5;
+  objectCopy = object;
+  dCopy = d;
+  databaseCopy = database;
   v15 = objc_opt_class();
   if (([v15 isEqual:objc_opt_class()] & 1) == 0)
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"HDSleepScheduleEntity.m" lineNumber:96 description:{@"Subclasses must override %s", "+[HDSleepScheduleEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSleepScheduleEntity.m" lineNumber:96 description:{@"Subclasses must override %s", "+[HDSleepScheduleEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
   }
 
   v28[0] = @"data_id";
@@ -79,11 +79,11 @@ id __32__HDSleepScheduleEntity_indices__block_invoke(uint64_t a1, void *a2)
   v25[1] = 3221225472;
   v25[2] = __87__HDSleepScheduleEntity_insertDataObject_withProvenance_inDatabase_persistentID_error___block_invoke;
   v25[3] = &unk_278613DE8;
-  v26 = v12;
-  v27 = v13;
-  v17 = v13;
-  v18 = v12;
-  v19 = [a1 insertOrReplaceEntity:1 database:v14 properties:v16 error:a7 bindingHandler:v25];
+  v26 = objectCopy;
+  v27 = dCopy;
+  v17 = dCopy;
+  v18 = objectCopy;
+  v19 = [self insertOrReplaceEntity:1 database:databaseCopy properties:v16 error:error bindingHandler:v25];
 
   if (v19)
   {
@@ -132,50 +132,50 @@ void __87__HDSleepScheduleEntity_insertDataObject_withProvenance_inDatabase_pers
   MEMORY[0x22AAC6BB0](a2, @"override_day_index", v13);
 }
 
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection
 {
-  if (a3)
+  if (object)
   {
-    [a4 addSleepSchedules:a3];
+    [collection addSleepSchedules:object];
   }
 
-  return a3 != 0;
+  return object != 0;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[_HDSleepScheduleEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[_HDSleepScheduleEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }
 
-+ (id)mostRecentSleepScheduleForWeekday:(unint64_t)a3 beforeDate:(id)a4 profile:(id)a5 encodingOptions:(id)a6 error:(id *)a7
++ (id)mostRecentSleepScheduleForWeekday:(unint64_t)weekday beforeDate:(id)date profile:(id)profile encodingOptions:(id)options error:(id *)error
 {
-  v13 = a4;
-  v14 = a6;
-  v15 = a5;
+  dateCopy = date;
+  optionsCopy = options;
+  profileCopy = profile;
   if ((HKSleepScheduleWeekdaysIsSingleDay() & 1) == 0)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"HDSleepScheduleEntity.m" lineNumber:213 description:{@"Invalid parameter not satisfying: %@", @"HKSleepScheduleWeekdaysIsSingleDay(weekday)"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSleepScheduleEntity.m" lineNumber:213 description:{@"Invalid parameter not satisfying: %@", @"HKSleepScheduleWeekdaysIsSingleDay(weekday)"}];
   }
 
-  if (v13)
+  if (dateCopy)
   {
-    HDSleepScheduleEntityPredicateForWeekdayBeforeDate(a3, v13);
+    HDSleepScheduleEntityPredicateForWeekdayBeforeDate(weekday, dateCopy);
   }
 
   else
   {
-    HDSleepScheduleEntityPredicateForWeekday(a3);
+    HDSleepScheduleEntityPredicateForWeekday(weekday);
   }
   v16 = ;
   v17 = [MEMORY[0x277CCD720] dataTypeWithCode:198];
-  v18 = [(HDSampleEntity *)HDSleepScheduleEntity mostRecentSampleWithType:v17 profile:v15 encodingOptions:v14 predicate:v16 anchor:0 error:a7];
+  v18 = [(HDSampleEntity *)HDSleepScheduleEntity mostRecentSampleWithType:v17 profile:profileCopy encodingOptions:optionsCopy predicate:v16 anchor:0 error:error];
 
   return v18;
 }

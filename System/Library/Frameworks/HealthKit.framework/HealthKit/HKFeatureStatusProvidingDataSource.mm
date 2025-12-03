@@ -1,11 +1,11 @@
 @interface HKFeatureStatusProvidingDataSource
 - (HKFeatureAvailabilityRequirementEvaluationDataSource)dataSource;
 - (HKFeatureStatusProvidingDataSource)init;
-- (id)_featureStatusProvidingForFeatureIdentifierAndContext:(id)a3;
-- (id)_makeFeatureStatusProviderForFeatureIdentifier:(id)a3 context:(id)a4 dataSource:(id)a5;
-- (id)featureStatusProvidingForFeatureIdentifier:(id)a3 context:(id)a4;
-- (id)makeAndRegisterBridgedObserverForKey:(id)a3 handle:(id)a4;
-- (void)unregisterBridgedObserver:(id)a3 forKey:(id)a4;
+- (id)_featureStatusProvidingForFeatureIdentifierAndContext:(id)context;
+- (id)_makeFeatureStatusProviderForFeatureIdentifier:(id)identifier context:(id)context dataSource:(id)source;
+- (id)featureStatusProvidingForFeatureIdentifier:(id)identifier context:(id)context;
+- (id)makeAndRegisterBridgedObserverForKey:(id)key handle:(id)handle;
+- (void)unregisterBridgedObserver:(id)observer forKey:(id)key;
 @end
 
 @implementation HKFeatureStatusProvidingDataSource
@@ -19,9 +19,9 @@
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     featureStatusProvidingByFeatureIdentifierAndContext = v3->_featureStatusProvidingByFeatureIdentifierAndContext;
-    v3->_featureStatusProvidingByFeatureIdentifierAndContext = v4;
+    v3->_featureStatusProvidingByFeatureIdentifierAndContext = dictionary;
 
     v6 = HKCreateSerialDispatchQueue(v3, 0);
     observationQueue = v3->_observationQueue;
@@ -31,36 +31,36 @@
   return v3;
 }
 
-- (id)featureStatusProvidingForFeatureIdentifier:(id)a3 context:(id)a4
+- (id)featureStatusProvidingForFeatureIdentifier:(id)identifier context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[HKFeatureIdentifierAndContext alloc] initWithFeatureIdentifier:v7 context:v6];
+  contextCopy = context;
+  identifierCopy = identifier;
+  v8 = [[HKFeatureIdentifierAndContext alloc] initWithFeatureIdentifier:identifierCopy context:contextCopy];
 
   v9 = [(HKFeatureStatusProvidingDataSource *)self _featureStatusProvidingForFeatureIdentifierAndContext:v8];
 
   return v9;
 }
 
-- (id)_featureStatusProvidingForFeatureIdentifierAndContext:(id)a3
+- (id)_featureStatusProvidingForFeatureIdentifierAndContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_lock);
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if (WeakRetained)
   {
-    v6 = [(NSMutableDictionary *)self->_featureStatusProvidingByFeatureIdentifierAndContext objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_featureStatusProvidingByFeatureIdentifierAndContext objectForKeyedSubscript:contextCopy];
 
     if (!v6)
     {
-      v7 = [v4 featureIdentifier];
-      v8 = [v4 context];
-      v9 = [(HKFeatureStatusProvidingDataSource *)self _makeFeatureStatusProviderForFeatureIdentifier:v7 context:v8 dataSource:WeakRetained];
+      featureIdentifier = [contextCopy featureIdentifier];
+      context = [contextCopy context];
+      v9 = [(HKFeatureStatusProvidingDataSource *)self _makeFeatureStatusProviderForFeatureIdentifier:featureIdentifier context:context dataSource:WeakRetained];
 
-      [(NSMutableDictionary *)self->_featureStatusProvidingByFeatureIdentifierAndContext setObject:v9 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_featureStatusProvidingByFeatureIdentifierAndContext setObject:v9 forKeyedSubscript:contextCopy];
     }
 
-    v10 = [(NSMutableDictionary *)self->_featureStatusProvidingByFeatureIdentifierAndContext objectForKeyedSubscript:v4];
+    v10 = [(NSMutableDictionary *)self->_featureStatusProvidingByFeatureIdentifierAndContext objectForKeyedSubscript:contextCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -80,20 +80,20 @@
   return v10;
 }
 
-- (id)_makeFeatureStatusProviderForFeatureIdentifier:(id)a3 context:(id)a4 dataSource:(id)a5
+- (id)_makeFeatureStatusProviderForFeatureIdentifier:(id)identifier context:(id)context dataSource:(id)source
 {
-  v7 = a5;
+  sourceCopy = source;
   v8 = MEMORY[0x1E695DFD8];
-  v9 = a3;
-  v10 = [v8 setWithObject:a4];
+  identifierCopy = identifier;
+  v10 = [v8 setWithObject:context];
   v11 = [HKFeatureAvailabilityContextConstraint onlySomeContexts:v10];
 
-  v12 = [v7 featureAvailabilityProvidingDataSource];
-  v13 = [v12 featureAvailabilityProvidingForFeatureIdentifier:v9];
+  featureAvailabilityProvidingDataSource = [sourceCopy featureAvailabilityProvidingDataSource];
+  v13 = [featureAvailabilityProvidingDataSource featureAvailabilityProvidingForFeatureIdentifier:identifierCopy];
 
   if (v13)
   {
-    v14 = [HKFeatureStatusManager childFeatureStatusManagerWithFeatureAvailabilityProviding:v13 featureAvailabilityDataSource:v7 contextConstraint:v11];
+    v14 = [HKFeatureStatusManager childFeatureStatusManagerWithFeatureAvailabilityProviding:v13 featureAvailabilityDataSource:sourceCopy contextConstraint:v11];
   }
 
   else
@@ -104,23 +104,23 @@
   return v14;
 }
 
-- (id)makeAndRegisterBridgedObserverForKey:(id)a3 handle:(id)a4
+- (id)makeAndRegisterBridgedObserverForKey:(id)key handle:(id)handle
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HKFeatureStatusProvidingDataSource *)self _featureStatusProvidingForFeatureIdentifierAndContext:v7];
-  v9 = [[_HKFeatureStatusProvidingObserverBridge alloc] initWithFeatureIdentifierAndContext:v7 handle:v6];
+  handleCopy = handle;
+  keyCopy = key;
+  v8 = [(HKFeatureStatusProvidingDataSource *)self _featureStatusProvidingForFeatureIdentifierAndContext:keyCopy];
+  v9 = [[_HKFeatureStatusProvidingObserverBridge alloc] initWithFeatureIdentifierAndContext:keyCopy handle:handleCopy];
 
   [v8 registerObserver:v9 queue:self->_observationQueue];
 
   return v9;
 }
 
-- (void)unregisterBridgedObserver:(id)a3 forKey:(id)a4
+- (void)unregisterBridgedObserver:(id)observer forKey:(id)key
 {
-  v6 = a3;
-  v7 = [(HKFeatureStatusProvidingDataSource *)self _featureStatusProvidingForFeatureIdentifierAndContext:a4];
-  [v7 unregisterObserver:v6];
+  observerCopy = observer;
+  v7 = [(HKFeatureStatusProvidingDataSource *)self _featureStatusProvidingForFeatureIdentifierAndContext:key];
+  [v7 unregisterObserver:observerCopy];
 }
 
 - (HKFeatureAvailabilityRequirementEvaluationDataSource)dataSource

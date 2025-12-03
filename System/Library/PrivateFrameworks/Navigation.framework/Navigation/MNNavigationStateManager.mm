@@ -6,69 +6,69 @@
 - (MNNavigationStateManager)init;
 - (id)_initialState;
 - (id)navSessionDestination;
-- (unint64_t)_stateTypeForState:(id)a3;
+- (unint64_t)_stateTypeForState:(id)state;
 - (unint64_t)currentStateType;
-- (void)_changeToDesiredLocationProviderTypeForState:(id)a3;
-- (void)_replayStateForNewObserver:(id)a3;
+- (void)_changeToDesiredLocationProviderTypeForState:(id)state;
+- (void)_replayStateForNewObserver:(id)observer;
 - (void)advanceToNextLeg;
-- (void)changeUserOptions:(id)a3;
+- (void)changeUserOptions:(id)options;
 - (void)dealloc;
-- (void)disableNavigationCapability:(unint64_t)a3;
-- (void)enableNavigationCapability:(unint64_t)a3;
+- (void)disableNavigationCapability:(unint64_t)capability;
+- (void)enableNavigationCapability:(unint64_t)capability;
 - (void)forceReroute;
-- (void)insertWaypoint:(id)a3;
-- (void)pauseRealtimeUpdatesForSubscriber:(id)a3;
-- (void)recordPedestrianTracePath:(id)a3;
-- (void)recordTraceBookmarkAtCurrentPositionWthScreenshotData:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)removeWaypointAtIndex:(unint64_t)a3;
-- (void)repeatCurrentGuidanceWithReply:(id)a3;
-- (void)repeatCurrentTrafficAlertWithReply:(id)a3;
-- (void)rerouteWithWaypoints:(id)a3;
+- (void)insertWaypoint:(id)waypoint;
+- (void)pauseRealtimeUpdatesForSubscriber:(id)subscriber;
+- (void)recordPedestrianTracePath:(id)path;
+- (void)recordTraceBookmarkAtCurrentPositionWthScreenshotData:(id)data;
+- (void)registerObserver:(id)observer;
+- (void)removeWaypointAtIndex:(unint64_t)index;
+- (void)repeatCurrentGuidanceWithReply:(id)reply;
+- (void)repeatCurrentTrafficAlertWithReply:(id)reply;
+- (void)rerouteWithWaypoints:(id)waypoints;
 - (void)reset;
 - (void)resumeOriginalDestination;
-- (void)resumeRealtimeUpdatesForSubscriber:(id)a3;
-- (void)setCurrentState:(id)a3;
-- (void)setDisplayedStepIndex:(unint64_t)a3;
-- (void)setGuidanceType:(unint64_t)a3;
-- (void)setJunctionViewImageWidth:(double)a3 height:(double)a4;
-- (void)setRideIndex:(unint64_t)a3 forSegmentIndex:(unint64_t)a4;
-- (void)setRoutesForPreview:(id)a3 selectedRouteIndex:(unint64_t)a4;
-- (void)setSimulationPosition:(double)a3;
-- (void)setSimulationSpeedMultiplier:(double)a3;
-- (void)setSimulationSpeedOverride:(double)a3;
-- (void)setTracePlaybackSpeed:(double)a3;
-- (void)setTracePosition:(double)a3;
-- (void)setVoiceGuidanceLevelOverride:(unint64_t)a3;
+- (void)resumeRealtimeUpdatesForSubscriber:(id)subscriber;
+- (void)setCurrentState:(id)state;
+- (void)setDisplayedStepIndex:(unint64_t)index;
+- (void)setGuidanceType:(unint64_t)type;
+- (void)setJunctionViewImageWidth:(double)width height:(double)height;
+- (void)setRideIndex:(unint64_t)index forSegmentIndex:(unint64_t)segmentIndex;
+- (void)setRoutesForPreview:(id)preview selectedRouteIndex:(unint64_t)index;
+- (void)setSimulationPosition:(double)position;
+- (void)setSimulationSpeedMultiplier:(double)multiplier;
+- (void)setSimulationSpeedOverride:(double)override;
+- (void)setTracePlaybackSpeed:(double)speed;
+- (void)setTracePosition:(double)position;
+- (void)setVoiceGuidanceLevelOverride:(unint64_t)override;
 - (void)start;
-- (void)startNavigationWithDetails:(id)a3 activeBlock:(id)a4;
+- (void)startNavigationWithDetails:(id)details activeBlock:(id)block;
 - (void)stopCurrentGuidancePrompt;
-- (void)stopNavigationWithReason:(unint64_t)a3;
+- (void)stopNavigationWithReason:(unint64_t)reason;
 - (void)switchToDestinationRoute;
-- (void)switchToRoute:(id)a3;
-- (void)transitionToState:(id)a3;
-- (void)updateDestination:(id)a3;
-- (void)updateForUserIncidentReport:(id)a3;
-- (void)vibrateForPrompt:(unint64_t)a3 withReply:(id)a4;
+- (void)switchToRoute:(id)route;
+- (void)transitionToState:(id)state;
+- (void)updateDestination:(id)destination;
+- (void)updateForUserIncidentReport:(id)report;
+- (void)vibrateForPrompt:(unint64_t)prompt withReply:(id)reply;
 @end
 
 @implementation MNNavigationStateManager
 
 - (unint64_t)currentStateType
 {
-  v2 = [(MNNavigationStateManager *)self currentState];
-  v3 = v2;
-  if (v2)
+  currentState = [(MNNavigationStateManager *)self currentState];
+  v3 = currentState;
+  if (currentState)
   {
-    v4 = [v2 type];
+    type = [currentState type];
   }
 
   else
   {
-    v4 = 0;
+    type = 0;
   }
 
-  return v4;
+  return type;
 }
 
 + (id)sharedManager
@@ -106,206 +106,206 @@
   return WeakRetained;
 }
 
-- (void)resumeRealtimeUpdatesForSubscriber:(id)a3
+- (void)resumeRealtimeUpdatesForSubscriber:(id)subscriber
 {
-  v4 = a3;
-  v5 = [(MNNavigationStateManager *)self currentState];
-  [v5 resumeRealtimeUpdatesForSubscriber:v4];
+  subscriberCopy = subscriber;
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState resumeRealtimeUpdatesForSubscriber:subscriberCopy];
 }
 
-- (void)pauseRealtimeUpdatesForSubscriber:(id)a3
+- (void)pauseRealtimeUpdatesForSubscriber:(id)subscriber
 {
-  v4 = a3;
-  v5 = [(MNNavigationStateManager *)self currentState];
-  [v5 pauseRealtimeUpdatesForSubscriber:v4];
+  subscriberCopy = subscriber;
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState pauseRealtimeUpdatesForSubscriber:subscriberCopy];
 }
 
-- (void)setSimulationPosition:(double)a3
+- (void)setSimulationPosition:(double)position
 {
-  v4 = [(MNNavigationStateManager *)self currentState];
-  [v4 setSimulationPosition:a3];
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState setSimulationPosition:position];
 }
 
-- (void)setSimulationSpeedMultiplier:(double)a3
+- (void)setSimulationSpeedMultiplier:(double)multiplier
 {
-  v4 = [(MNNavigationStateManager *)self currentState];
-  [v4 setSimulationSpeedMultiplier:a3];
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState setSimulationSpeedMultiplier:multiplier];
 }
 
-- (void)setSimulationSpeedOverride:(double)a3
+- (void)setSimulationSpeedOverride:(double)override
 {
-  v4 = [(MNNavigationStateManager *)self currentState];
-  [v4 setSimulationSpeedOverride:a3];
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState setSimulationSpeedOverride:override];
 }
 
-- (void)recordPedestrianTracePath:(id)a3
+- (void)recordPedestrianTracePath:(id)path
 {
-  v4 = a3;
-  v5 = [(MNNavigationStateManager *)self currentState];
-  [v5 recordPedestrianTracePath:v4];
+  pathCopy = path;
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState recordPedestrianTracePath:pathCopy];
 }
 
-- (void)recordTraceBookmarkAtCurrentPositionWthScreenshotData:(id)a3
+- (void)recordTraceBookmarkAtCurrentPositionWthScreenshotData:(id)data
 {
-  v4 = a3;
-  v5 = [(MNNavigationStateManager *)self currentState];
-  [v5 recordTraceBookmarkAtCurrentPositionWthScreenshotData:v4];
+  dataCopy = data;
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState recordTraceBookmarkAtCurrentPositionWthScreenshotData:dataCopy];
 }
 
-- (void)setTracePosition:(double)a3
+- (void)setTracePosition:(double)position
 {
-  v4 = [(MNNavigationStateManager *)self currentState];
-  [v4 setTracePosition:a3];
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState setTracePosition:position];
 }
 
-- (void)setTracePlaybackSpeed:(double)a3
+- (void)setTracePlaybackSpeed:(double)speed
 {
-  v4 = [(MNNavigationStateManager *)self currentState];
-  [v4 setTracePlaybackSpeed:a3];
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState setTracePlaybackSpeed:speed];
 }
 
-- (void)enableNavigationCapability:(unint64_t)a3
+- (void)enableNavigationCapability:(unint64_t)capability
 {
-  v4 = [(MNNavigationStateManager *)self currentState];
-  [v4 enableNavigationCapability:a3];
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState enableNavigationCapability:capability];
 }
 
-- (void)disableNavigationCapability:(unint64_t)a3
+- (void)disableNavigationCapability:(unint64_t)capability
 {
-  v4 = [(MNNavigationStateManager *)self currentState];
-  [v4 disableNavigationCapability:a3];
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState disableNavigationCapability:capability];
 }
 
-- (void)updateForUserIncidentReport:(id)a3
+- (void)updateForUserIncidentReport:(id)report
 {
-  v4 = a3;
-  v5 = [(MNNavigationStateManager *)self currentState];
-  [v5 updateForUserIncidentReport:v4];
+  reportCopy = report;
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState updateForUserIncidentReport:reportCopy];
 }
 
-- (void)setJunctionViewImageWidth:(double)a3 height:(double)a4
+- (void)setJunctionViewImageWidth:(double)width height:(double)height
 {
-  v6 = [(MNNavigationStateManager *)self currentState];
-  [v6 setJunctionViewImageWidth:a3 height:a4];
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState setJunctionViewImageWidth:width height:height];
 }
 
-- (void)setRideIndex:(unint64_t)a3 forSegmentIndex:(unint64_t)a4
+- (void)setRideIndex:(unint64_t)index forSegmentIndex:(unint64_t)segmentIndex
 {
-  v6 = [(MNNavigationStateManager *)self currentState];
-  [v6 setRideIndex:a3 forSegmentIndex:a4];
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState setRideIndex:index forSegmentIndex:segmentIndex];
 }
 
-- (void)setDisplayedStepIndex:(unint64_t)a3
+- (void)setDisplayedStepIndex:(unint64_t)index
 {
-  v4 = [(MNNavigationStateManager *)self currentState];
-  [v4 setDisplayedStepIndex:a3];
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState setDisplayedStepIndex:index];
 }
 
 - (void)stopCurrentGuidancePrompt
 {
-  v2 = [(MNNavigationStateManager *)self currentState];
-  [v2 stopCurrentGuidancePrompt];
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState stopCurrentGuidancePrompt];
 }
 
-- (void)vibrateForPrompt:(unint64_t)a3 withReply:(id)a4
+- (void)vibrateForPrompt:(unint64_t)prompt withReply:(id)reply
 {
-  v6 = a4;
-  v7 = [(MNNavigationStateManager *)self currentState];
-  [v7 vibrateForPrompt:a3 withReply:v6];
+  replyCopy = reply;
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState vibrateForPrompt:prompt withReply:replyCopy];
 }
 
-- (void)repeatCurrentTrafficAlertWithReply:(id)a3
+- (void)repeatCurrentTrafficAlertWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(MNNavigationStateManager *)self currentState];
-  [v5 repeatCurrentTrafficAlertWithReply:v4];
+  replyCopy = reply;
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState repeatCurrentTrafficAlertWithReply:replyCopy];
 }
 
-- (void)repeatCurrentGuidanceWithReply:(id)a3
+- (void)repeatCurrentGuidanceWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(MNNavigationStateManager *)self currentState];
-  [v5 repeatCurrentGuidanceWithReply:v4];
+  replyCopy = reply;
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState repeatCurrentGuidanceWithReply:replyCopy];
 }
 
-- (void)setVoiceGuidanceLevelOverride:(unint64_t)a3
+- (void)setVoiceGuidanceLevelOverride:(unint64_t)override
 {
-  v4 = [(MNNavigationStateManager *)self currentState];
-  [v4 setVoiceGuidanceLevelOverride:a3];
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState setVoiceGuidanceLevelOverride:override];
 }
 
-- (void)changeUserOptions:(id)a3
+- (void)changeUserOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(MNNavigationStateManager *)self currentState];
-  [v5 changeUserOptions:v4];
+  optionsCopy = options;
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState changeUserOptions:optionsCopy];
 }
 
-- (void)setGuidanceType:(unint64_t)a3
+- (void)setGuidanceType:(unint64_t)type
 {
-  v4 = [(MNNavigationStateManager *)self currentState];
-  [v4 setGuidanceType:a3];
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState setGuidanceType:type];
 }
 
 - (void)switchToDestinationRoute
 {
-  v2 = [(MNNavigationStateManager *)self currentState];
-  [v2 switchToDestinationRoute];
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState switchToDestinationRoute];
 }
 
-- (void)switchToRoute:(id)a3
+- (void)switchToRoute:(id)route
 {
-  v4 = a3;
-  v5 = [(MNNavigationStateManager *)self currentState];
-  [v5 switchToRoute:v4];
+  routeCopy = route;
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState switchToRoute:routeCopy];
 }
 
 - (void)forceReroute
 {
-  v2 = [(MNNavigationStateManager *)self currentState];
-  [v2 forceReroute];
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState forceReroute];
 }
 
 - (void)resumeOriginalDestination
 {
-  v2 = [(MNNavigationStateManager *)self currentState];
-  [v2 resumeOriginalDestination];
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState resumeOriginalDestination];
 }
 
-- (void)updateDestination:(id)a3
+- (void)updateDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(MNNavigationStateManager *)self currentState];
-  [v5 updateDestination:v4];
+  destinationCopy = destination;
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState updateDestination:destinationCopy];
 }
 
 - (void)advanceToNextLeg
 {
-  v2 = [(MNNavigationStateManager *)self currentState];
-  [v2 advanceToNextLeg];
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState advanceToNextLeg];
 }
 
-- (void)removeWaypointAtIndex:(unint64_t)a3
+- (void)removeWaypointAtIndex:(unint64_t)index
 {
-  v4 = [(MNNavigationStateManager *)self currentState];
-  [v4 removeWaypointAtIndex:a3];
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState removeWaypointAtIndex:index];
 }
 
-- (void)insertWaypoint:(id)a3
+- (void)insertWaypoint:(id)waypoint
 {
-  v4 = a3;
-  v5 = [(MNNavigationStateManager *)self currentState];
-  [v5 insertWaypoint:v4];
+  waypointCopy = waypoint;
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState insertWaypoint:waypointCopy];
 }
 
-- (void)rerouteWithWaypoints:(id)a3
+- (void)rerouteWithWaypoints:(id)waypoints
 {
-  v4 = a3;
-  v5 = [(MNNavigationStateManager *)self currentState];
-  [v5 rerouteWithWaypoints:v4];
+  waypointsCopy = waypoints;
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState rerouteWithWaypoints:waypointsCopy];
 }
 
-- (void)stopNavigationWithReason:(unint64_t)a3
+- (void)stopNavigationWithReason:(unint64_t)reason
 {
   v5 = MNGetMNNavigationStateManagerLog();
   v6 = os_signpost_id_generate(v5);
@@ -314,8 +314,8 @@
   if (v6 - 1 > 0xFFFFFFFFFFFFFFFDLL)
   {
 
-    v11 = [(MNNavigationStateManager *)self currentState];
-    [v11 stopNavigationWithReason:a3];
+    currentState = [(MNNavigationStateManager *)self currentState];
+    [currentState stopNavigationWithReason:reason];
 
     v12 = v8;
   }
@@ -328,8 +328,8 @@
       _os_signpost_emit_with_name_impl(&dword_1D311E000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "StopNavigation", "", buf, 2u);
     }
 
-    v9 = [(MNNavigationStateManager *)self currentState];
-    [v9 stopNavigationWithReason:a3];
+    currentState2 = [(MNNavigationStateManager *)self currentState];
+    [currentState2 stopNavigationWithReason:reason];
 
     v10 = v8;
     if (os_signpost_enabled(v10))
@@ -340,17 +340,17 @@
   }
 }
 
-- (void)startNavigationWithDetails:(id)a3 activeBlock:(id)a4
+- (void)startNavigationWithDetails:(id)details activeBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MNNavigationStateManager *)self currentState];
-  [v8 startNavigationWithDetails:v7 activeBlock:v6];
+  blockCopy = block;
+  detailsCopy = details;
+  currentState = [(MNNavigationStateManager *)self currentState];
+  [currentState startNavigationWithDetails:detailsCopy activeBlock:blockCopy];
 }
 
-- (void)setRoutesForPreview:(id)a3 selectedRouteIndex:(unint64_t)a4
+- (void)setRoutesForPreview:(id)preview selectedRouteIndex:(unint64_t)index
 {
-  v6 = a3;
+  previewCopy = preview;
   v7 = MNGetMNNavigationStateManagerLog();
   v8 = os_signpost_id_generate(v7);
   v9 = v7;
@@ -358,8 +358,8 @@
   if (v8 - 1 > 0xFFFFFFFFFFFFFFFDLL)
   {
 
-    v13 = [(MNNavigationStateManager *)self currentState];
-    [v13 setRoutesForPreview:v6 selectedRouteIndex:a4];
+    currentState = [(MNNavigationStateManager *)self currentState];
+    [currentState setRoutesForPreview:previewCopy selectedRouteIndex:index];
 
     v14 = v10;
   }
@@ -372,8 +372,8 @@
       _os_signpost_emit_with_name_impl(&dword_1D311E000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "SetRoutesForPreview", "", buf, 2u);
     }
 
-    v11 = [(MNNavigationStateManager *)self currentState];
-    [v11 setRoutesForPreview:v6 selectedRouteIndex:a4];
+    currentState2 = [(MNNavigationStateManager *)self currentState];
+    [currentState2 setRoutesForPreview:previewCopy selectedRouteIndex:index];
 
     v12 = v10;
     if (os_signpost_enabled(v12))
@@ -391,20 +391,20 @@
   return v2;
 }
 
-- (void)_replayStateForNewObserver:(id)a3
+- (void)_replayStateForNewObserver:(id)observer
 {
-  v6 = a3;
-  v4 = [(MNNavigationStateManager *)self currentState];
-  v5 = [v4 type];
+  observerCopy = observer;
+  currentState = [(MNNavigationStateManager *)self currentState];
+  type = [currentState type];
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 stateManager:self willChangeFromState:0 toState:v5];
+    [observerCopy stateManager:self willChangeFromState:0 toState:type];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 stateManager:self didChangeFromState:0 toState:v5];
+    [observerCopy stateManager:self didChangeFromState:0 toState:type];
   }
 }
 
@@ -421,10 +421,10 @@
   return v3;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  v9 = v4;
+  observerCopy = observer;
+  v9 = observerCopy;
   if (!self->_navigationStateObservers)
   {
     v5 = objc_alloc(MEMORY[0x1E69A22D8]);
@@ -433,17 +433,17 @@
     navigationStateObservers = self->_navigationStateObservers;
     self->_navigationStateObservers = v7;
 
-    v4 = v9;
+    observerCopy = v9;
   }
 
-  [(MNNavigationStateManager *)self _replayStateForNewObserver:v4];
+  [(MNNavigationStateManager *)self _replayStateForNewObserver:observerCopy];
   [(GEOObserverHashTable *)self->_navigationStateObservers registerObserver:v9];
 }
 
 - (void)reset
 {
-  v3 = [(MNNavigationStateManager *)self _initialState];
-  [(MNNavigationStateManager *)self transitionToState:v3];
+  _initialState = [(MNNavigationStateManager *)self _initialState];
+  [(MNNavigationStateManager *)self transitionToState:_initialState];
 }
 
 - (void)start
@@ -469,8 +469,8 @@
     }
   }
 
-  v3 = [(MNNavigationStateManager *)self _initialState];
-  [(MNNavigationStateManager *)self transitionToState:v3];
+  _initialState = [(MNNavigationStateManager *)self _initialState];
+  [(MNNavigationStateManager *)self transitionToState:_initialState];
 
   isolater = self->_isolater;
   geo_isolate_sync();
@@ -518,12 +518,12 @@ void __41__MNNavigationStateManager_sharedManager__block_invoke()
   sharedManager__singleton = v0;
 }
 
-- (void)setCurrentState:(id)a3
+- (void)setCurrentState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   isolater = self->_isolater;
-  v7 = v4;
-  v6 = v4;
+  v7 = stateCopy;
+  v6 = stateCopy;
   geo_isolate_sync();
 }
 
@@ -542,11 +542,11 @@ void __53__MNNavigationStateManager_Testing__setCurrentState___block_invoke(uint
   }
 }
 
-- (unint64_t)_stateTypeForState:(id)a3
+- (unint64_t)_stateTypeForState:(id)state
 {
-  if (a3)
+  if (state)
   {
-    return [a3 type];
+    return [state type];
   }
 
   else
@@ -555,36 +555,36 @@ void __53__MNNavigationStateManager_Testing__setCurrentState___block_invoke(uint
   }
 }
 
-- (void)_changeToDesiredLocationProviderTypeForState:(id)a3
+- (void)_changeToDesiredLocationProviderTypeForState:(id)state
 {
-  v6 = a3;
+  stateCopy = state;
   v3 = +[MNLocationManager shared];
-  if (v6)
+  if (stateCopy)
   {
-    v4 = [v6 desiredLocationProviderType];
+    desiredLocationProviderType = [stateCopy desiredLocationProviderType];
   }
 
   else
   {
-    v4 = 0;
+    desiredLocationProviderType = 0;
   }
 
-  if (v4 != [v3 locationProviderType])
+  if (desiredLocationProviderType != [v3 locationProviderType])
   {
-    if (v4 > 1)
+    if (desiredLocationProviderType > 1)
     {
-      switch(v4)
+      switch(desiredLocationProviderType)
       {
         case 2:
           [v3 useHybridLocationProvider];
           goto LABEL_17;
         case 3:
-          v5 = [v6 traceManager];
-          [v3 useTraceLocationProvider:v5];
+          traceManager = [stateCopy traceManager];
+          [v3 useTraceLocationProvider:traceManager];
           break;
         case 4:
-          v5 = [v6 simulationLocationProvider];
-          [v3 useSimulationLocationProvider:v5];
+          traceManager = [stateCopy simulationLocationProvider];
+          [v3 useSimulationLocationProvider:traceManager];
           break;
         default:
           goto LABEL_17;
@@ -593,15 +593,15 @@ void __53__MNNavigationStateManager_Testing__setCurrentState___block_invoke(uint
       goto LABEL_15;
     }
 
-    if (v4)
+    if (desiredLocationProviderType)
     {
-      if (v4 != 1)
+      if (desiredLocationProviderType != 1)
       {
         goto LABEL_17;
       }
 
-      v5 = [v6 clParameters];
-      [v3 useGPSLocationProviderWithCLParameters:v5];
+      traceManager = [stateCopy clParameters];
+      [v3 useGPSLocationProviderWithCLParameters:traceManager];
 LABEL_15:
 
       goto LABEL_17;
@@ -613,13 +613,13 @@ LABEL_15:
 LABEL_17:
 }
 
-- (void)transitionToState:(id)a3
+- (void)transitionToState:(id)state
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MNNavigationStateManager *)self currentState];
-  v6 = [(MNNavigationStateManager *)self _stateTypeForState:v5];
-  v7 = [(MNNavigationStateManager *)self _stateTypeForState:v4];
+  stateCopy = state;
+  currentState = [(MNNavigationStateManager *)self currentState];
+  v6 = [(MNNavigationStateManager *)self _stateTypeForState:currentState];
+  v7 = [(MNNavigationStateManager *)self _stateTypeForState:stateCopy];
   v8 = MNGetMNNavigationStateManagerLog();
   if (os_signpost_enabled(v8))
   {
@@ -650,13 +650,13 @@ LABEL_17:
     _os_signpost_emit_with_name_impl(&dword_1D311E000, v8, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "TransitionToState", "%{public}@ to %{public}@", buf, 0x16u);
   }
 
-  [v4 preEnterState];
+  [stateCopy preEnterState];
   [(GEOObserverHashTable *)self->_navigationStateObservers stateManager:self willChangeFromState:v6 toState:v7];
-  [v5 leaveState];
-  [(MNNavigationStateManager *)self _changeToDesiredLocationProviderTypeForState:v4];
+  [currentState leaveState];
+  [(MNNavigationStateManager *)self _changeToDesiredLocationProviderTypeForState:stateCopy];
   isolater = self->_isolater;
   v20 = MEMORY[0x1E69E9820];
-  v12 = v4;
+  v12 = stateCopy;
   geo_isolate_sync();
   [v12 enterState];
   if (os_signpost_enabled(v8))
@@ -732,19 +732,19 @@ LABEL_17:
 
 - (id)navSessionDestination
 {
-  v2 = [(MNNavigationStateManager *)self currentState];
+  currentState = [(MNNavigationStateManager *)self currentState];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 currentDestination];
+    currentDestination = [currentState currentDestination];
   }
 
   else
   {
-    v3 = 0;
+    currentDestination = 0;
   }
 
-  return v3;
+  return currentDestination;
 }
 
 @end

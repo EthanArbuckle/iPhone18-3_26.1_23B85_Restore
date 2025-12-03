@@ -1,44 +1,44 @@
 @interface ARCoachingFrame
-- (ARCoachingFrame)initWithFrame:(id)a3;
+- (ARCoachingFrame)initWithFrame:(id)frame;
 @end
 
 @implementation ARCoachingFrame
 
-- (ARCoachingFrame)initWithFrame:(id)a3
+- (ARCoachingFrame)initWithFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   v15.receiver = self;
   v15.super_class = ARCoachingFrame;
   v5 = [(ARCoachingFrame *)&v15 init];
   if (v5)
   {
-    v6 = [v4 camera];
+    camera = [frameCopy camera];
     camera = v5->_camera;
-    v5->_camera = v6;
+    v5->_camera = camera;
 
-    [v4 timestamp];
+    [frameCopy timestamp];
     v5->_timestamp = v8;
-    v9 = [v4 geoTrackingStatus];
+    geoTrackingStatus = [frameCopy geoTrackingStatus];
     geoTrackingStatus = v5->_geoTrackingStatus;
-    v5->_geoTrackingStatus = v9;
+    v5->_geoTrackingStatus = geoTrackingStatus;
 
-    v11 = [v4 anchors];
+    anchors = [frameCopy anchors];
     anchors = v5->_anchors;
-    v5->_anchors = v11;
+    v5->_anchors = anchors;
 
-    if ([v4 deviceOrientation])
+    if ([frameCopy deviceOrientation])
     {
-      if ([v4 deviceOrientation] == 3)
+      if ([frameCopy deviceOrientation] == 3)
       {
         v13 = 4;
       }
 
-      else if ([v4 deviceOrientation] == 4)
+      else if ([frameCopy deviceOrientation] == 4)
       {
         v13 = 3;
       }
 
-      else if ([v4 deviceOrientation] == 2)
+      else if ([frameCopy deviceOrientation] == 2)
       {
         v13 = 2;
       }

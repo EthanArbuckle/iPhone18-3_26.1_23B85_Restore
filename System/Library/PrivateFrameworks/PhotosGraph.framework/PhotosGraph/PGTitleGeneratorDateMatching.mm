@@ -1,27 +1,27 @@
 @interface PGTitleGeneratorDateMatching
-+ (BOOL)type:(int64_t)a3 isBetterThanType:(int64_t)a4;
++ (BOOL)type:(int64_t)type isBetterThanType:(int64_t)thanType;
 + (id)_typeMatchings;
 - (BOOL)_dateNodeIntersectsWithReferenceDateIntervalByIgnoringYear;
 - (PGTitle)title;
-- (PGTitleGeneratorDateMatching)initWithType:(int64_t)a3 referenceDateInterval:(id)a4 highlightNode:(id)a5 titleGenerationContext:(id)a6;
-- (PGTitleGeneratorDateMatching)initWithType:(int64_t)a3 referenceDateInterval:(id)a4 momentNodes:(id)a5 titleGenerationContext:(id)a6 holidayName:(id)a7 isForHighlight:(BOOL)a8;
+- (PGTitleGeneratorDateMatching)initWithType:(int64_t)type referenceDateInterval:(id)interval highlightNode:(id)node titleGenerationContext:(id)context;
+- (PGTitleGeneratorDateMatching)initWithType:(int64_t)type referenceDateInterval:(id)interval momentNodes:(id)nodes titleGenerationContext:(id)context holidayName:(id)name isForHighlight:(BOOL)highlight;
 - (int64_t)_findBestType;
-- (int64_t)_matchingTypeForDateNode:(id)a3;
+- (int64_t)_matchingTypeForDateNode:(id)node;
 - (unint64_t)allowedTimeTitleFormats;
 @end
 
 @implementation PGTitleGeneratorDateMatching
 
-- (int64_t)_matchingTypeForDateNode:(id)a3
+- (int64_t)_matchingTypeForDateNode:(id)node
 {
   v37 = *MEMORY[0x277D85DE8];
-  v21 = a3;
+  nodeCopy = node;
   [objc_opt_class() _typeMatchings];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   obj = v33 = 0u;
-  v4 = 0;
+  type = 0;
   v5 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v5)
   {
@@ -43,8 +43,8 @@ LABEL_3:
       v8 = self->_graph;
       v9 = self->_momentNodes;
       v10 = self->_referenceDateInterval;
-      v11 = [v21 collection];
-      v12 = [v11 momentNodes];
+      collection = [nodeCopy collection];
+      momentNodes = [collection momentNodes];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __57__PGTitleGeneratorDateMatching__matchingTypeForDateNode___block_invoke;
@@ -57,12 +57,12 @@ LABEL_3:
       v25 = v14;
       v15 = v10;
       v26 = v15;
-      [v12 enumerateNodesUsingBlock:v22];
+      [momentNodes enumerateNodesUsingBlock:v22];
 
       v16 = *(v29 + 24);
       if (v16 == 1)
       {
-        v4 = [v7 type];
+        type = [v7 type];
       }
 
       _Block_object_dispose(&v28, 8);
@@ -85,7 +85,7 @@ LABEL_3:
   }
 
   v17 = *MEMORY[0x277D85DE8];
-  return v4;
+  return type;
 }
 
 void __57__PGTitleGeneratorDateMatching__matchingTypeForDateNode___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -166,8 +166,8 @@ void __57__PGTitleGeneratorDateMatching__matchingTypeForDateNode___block_invoke(
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v3 = self->_dateNodes;
-    v4 = [(NSSet *)v3 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    startDate = self->_dateNodes;
+    v4 = [(NSSet *)startDate countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v4)
     {
       v5 = v4;
@@ -180,26 +180,26 @@ void __57__PGTitleGeneratorDateMatching__matchingTypeForDateNode___block_invoke(
         {
           if (*v34 != v8)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(startDate);
           }
 
-          v10 = [*(*(&v33 + 1) + 8 * i) localDate];
-          if (!v7 || [v7 compare:v10] == 1)
+          localDate = [*(*(&v33 + 1) + 8 * i) localDate];
+          if (!v7 || [v7 compare:localDate] == 1)
           {
-            v11 = v10;
+            v11 = localDate;
 
             v7 = v11;
           }
 
-          if (!v6 || [v6 compare:v10] == -1)
+          if (!v6 || [v6 compare:localDate] == -1)
           {
-            v12 = v10;
+            v12 = localDate;
 
             v6 = v12;
           }
         }
 
-        v5 = [(NSSet *)v3 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v5 = [(NSSet *)startDate countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v5);
@@ -210,11 +210,11 @@ void __57__PGTitleGeneratorDateMatching__matchingTypeForDateNode___block_invoke(
         goto LABEL_31;
       }
 
-      v3 = [(NSDateInterval *)self->_referenceDateInterval startDate];
-      v13 = [MEMORY[0x277D27690] components:24 fromDate:v3];
+      startDate = [(NSDateInterval *)self->_referenceDateInterval startDate];
+      v13 = [MEMORY[0x277D27690] components:24 fromDate:startDate];
       v14 = MEMORY[0x277D27690];
-      v15 = [(NSDateInterval *)self->_referenceDateInterval endDate];
-      v32 = [v14 components:24 fromDate:v15];
+      endDate = [(NSDateInterval *)self->_referenceDateInterval endDate];
+      v32 = [v14 components:24 fromDate:endDate];
       while (2)
       {
 
@@ -227,17 +227,17 @@ void __57__PGTitleGeneratorDateMatching__matchingTypeForDateNode___block_invoke(
           v19 = [v13 day];
           if (v19 == [v17 day])
           {
-            v20 = [v13 month];
-            if (v20 == [v17 month])
+            month = [v13 month];
+            if (month == [v17 month])
             {
               LOBYTE(v7) = 1;
               goto LABEL_28;
             }
           }
 
-          v15 = [MEMORY[0x277D27690] dateByAddingDays:1 toDate:v16];
+          endDate = [MEMORY[0x277D27690] dateByAddingDays:1 toDate:v16];
 
-          v21 = [MEMORY[0x277D27690] components:24 fromDate:v15];
+          v21 = [MEMORY[0x277D27690] components:24 fromDate:endDate];
 
           v22 = [v21 day];
           if (v22 > [v18 day])
@@ -245,25 +245,25 @@ void __57__PGTitleGeneratorDateMatching__matchingTypeForDateNode___block_invoke(
             break;
           }
 
-          v23 = [v21 month];
+          month2 = [v21 month];
           v17 = v21;
-          v16 = v15;
+          v16 = endDate;
         }
 
-        while (v23 <= [v18 month]);
-        v24 = [MEMORY[0x277D27690] dateByAddingDays:1 toDate:v3];
+        while (month2 <= [v18 month]);
+        v24 = [MEMORY[0x277D27690] dateByAddingDays:1 toDate:startDate];
 
         v25 = [MEMORY[0x277D27690] components:24 fromDate:v24];
 
         v26 = [v25 day];
         if (v26 <= [v32 day])
         {
-          v27 = [v25 month];
-          if (v27 <= [v32 month])
+          month3 = [v25 month];
+          if (month3 <= [v32 month])
           {
 
             v13 = v25;
-            v3 = v24;
+            startDate = v24;
             continue;
           }
         }
@@ -273,8 +273,8 @@ void __57__PGTitleGeneratorDateMatching__matchingTypeForDateNode___block_invoke(
 
       LOBYTE(v7) = 0;
       v17 = v21;
-      v3 = v24;
-      v16 = v15;
+      startDate = v24;
+      v16 = endDate;
       v13 = v25;
 LABEL_28:
 
@@ -378,22 +378,22 @@ LABEL_12:
     v11 = [PGHighlightsTitleSpecFactory titleSpecForHolidayEventIncludingLocationIfPossible:1];
     [v11 setInsertNonBreakableSpace:(lineBreakBehavior >> 1) & 1];
     v12 = [PGTitleSpecArgumentEvaluationContext alloc];
-    v13 = [(PGTitleGenerationContext *)self->_titleGenerationContext locationHelper];
-    v14 = [(PGTitleGenerationContext *)self->_titleGenerationContext serviceManager];
-    v15 = [(PGTitleSpecArgumentEvaluationContext *)v12 initWithLocationHelper:v13 serviceManager:v14];
+    locationHelper = [(PGTitleGenerationContext *)self->_titleGenerationContext locationHelper];
+    serviceManager = [(PGTitleGenerationContext *)self->_titleGenerationContext serviceManager];
+    v15 = [(PGTitleSpecArgumentEvaluationContext *)v12 initWithLocationHelper:locationHelper serviceManager:serviceManager];
 
     v16 = [v11 titleWithMomentNodes:self->_momentNodes argumentEvaluationContext:v15];
-    v17 = [v16 stringValue];
+    stringValue = [v16 stringValue];
 
-    if (!v17)
+    if (!stringValue)
     {
       v18 = [PGHighlightsTitleSpecFactory titleSpecForHolidayEventIncludingLocationIfPossible:0];
       [v18 setInsertNonBreakableSpace:(lineBreakBehavior >> 1) & 1];
       v19 = [v18 titleWithMomentNodes:self->_momentNodes argumentEvaluationContext:v15];
-      v17 = [v19 stringValue];
+      stringValue = [v19 stringValue];
     }
 
-    v7 = v17;
+    v7 = stringValue;
   }
 
   if (lineBreakBehavior)
@@ -419,13 +419,13 @@ LABEL_23:
   return v9;
 }
 
-- (PGTitleGeneratorDateMatching)initWithType:(int64_t)a3 referenceDateInterval:(id)a4 momentNodes:(id)a5 titleGenerationContext:(id)a6 holidayName:(id)a7 isForHighlight:(BOOL)a8
+- (PGTitleGeneratorDateMatching)initWithType:(int64_t)type referenceDateInterval:(id)interval momentNodes:(id)nodes titleGenerationContext:(id)context holidayName:(id)name isForHighlight:(BOOL)highlight
 {
   v43 = *MEMORY[0x277D85DE8];
-  v15 = a4;
-  v16 = a5;
-  v38 = a6;
-  v17 = a7;
+  intervalCopy = interval;
+  nodesCopy = nodes;
+  contextCopy = context;
+  nameCopy = name;
   v40.receiver = self;
   v40.super_class = PGTitleGeneratorDateMatching;
   v18 = [(PGTitleGeneratorDateMatching *)&v40 init];
@@ -434,24 +434,24 @@ LABEL_23:
     goto LABEL_19;
   }
 
-  if ([v16 count])
+  if ([nodesCopy count])
   {
-    v36 = v17;
-    v37 = v15;
-    v19 = [v16 anyObject];
-    v20 = [v19 graph];
+    v36 = nameCopy;
+    v37 = intervalCopy;
+    anyObject = [nodesCopy anyObject];
+    graph = [anyObject graph];
 
-    v21 = v20;
-    objc_storeStrong(&v18->_graph, v20);
-    objc_storeStrong(&v18->_referenceDateInterval, a4);
-    objc_storeStrong(&v18->_momentNodes, a5);
-    v22 = [PGCommonTitleUtility dateNodesFromMomentNodes:v16];
+    v21 = graph;
+    objc_storeStrong(&v18->_graph, graph);
+    objc_storeStrong(&v18->_referenceDateInterval, interval);
+    objc_storeStrong(&v18->_momentNodes, nodes);
+    v22 = [PGCommonTitleUtility dateNodesFromMomentNodes:nodesCopy];
     dateNodes = v18->_dateNodes;
     v18->_dateNodes = v22;
 
-    objc_storeStrong(&v18->_titleGenerationContext, a6);
-    objc_storeStrong(&v18->_holidayName, a7);
-    v18->_isForHighlight = a8;
+    objc_storeStrong(&v18->_titleGenerationContext, context);
+    objc_storeStrong(&v18->_holidayName, name);
+    v18->_isForHighlight = highlight;
     if ([(NSSet *)v18->_dateNodes count]== 1 && !v18->_holidayName)
     {
       v24 = +[PGUserDefaults isAlwaysShowingHolidayCalendarEvents];
@@ -463,12 +463,12 @@ LABEL_23:
 
         if (v27)
         {
-          a3 = 4;
+          type = 4;
 LABEL_18:
-          v18->_type = a3;
+          v18->_type = type;
 
-          v17 = v36;
-          v15 = v37;
+          nameCopy = v36;
+          intervalCopy = v37;
 LABEL_19:
           v28 = v18;
           goto LABEL_20;
@@ -487,7 +487,7 @@ LABEL_19:
           if (v31)
           {
             objc_storeStrong(&v18->_holidayName, v30);
-            a3 = 4;
+            type = 4;
           }
 
           else
@@ -500,15 +500,15 @@ LABEL_19:
               _os_log_fault_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_FAULT, "Date %@ contains celebration but holiday name is nil", buf, 0xCu);
             }
 
-            a3 = [(PGTitleGeneratorDateMatching *)v18 _findBestType];
+            type = [(PGTitleGeneratorDateMatching *)v18 _findBestType];
           }
         }
       }
     }
 
-    if (!a3)
+    if (!type)
     {
-      a3 = [(PGTitleGeneratorDateMatching *)v18 _findBestType];
+      type = [(PGTitleGeneratorDateMatching *)v18 _findBestType];
     }
 
     goto LABEL_18;
@@ -521,27 +521,27 @@ LABEL_20:
   return v28;
 }
 
-- (PGTitleGeneratorDateMatching)initWithType:(int64_t)a3 referenceDateInterval:(id)a4 highlightNode:(id)a5 titleGenerationContext:(id)a6
+- (PGTitleGeneratorDateMatching)initWithType:(int64_t)type referenceDateInterval:(id)interval highlightNode:(id)node titleGenerationContext:(id)context
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = [a5 collection];
-  v13 = [v12 momentNodes];
+  intervalCopy = interval;
+  contextCopy = context;
+  collection = [node collection];
+  momentNodes = [collection momentNodes];
 
-  if ([v13 count])
+  if ([momentNodes count])
   {
-    v14 = [v13 temporarySet];
-    self = [(PGTitleGeneratorDateMatching *)self initWithType:a3 referenceDateInterval:v10 momentNodes:v14 titleGenerationContext:v11];
+    temporarySet = [momentNodes temporarySet];
+    self = [(PGTitleGeneratorDateMatching *)self initWithType:type referenceDateInterval:intervalCopy momentNodes:temporarySet titleGenerationContext:contextCopy];
 
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 + (id)_typeMatchings
@@ -636,18 +636,18 @@ uint64_t __46__PGTitleGeneratorDateMatching__typeMatchings__block_invoke_2(uint6
   return v9;
 }
 
-+ (BOOL)type:(int64_t)a3 isBetterThanType:(int64_t)a4
++ (BOOL)type:(int64_t)type isBetterThanType:(int64_t)thanType
 {
   v4 = 0;
   v24 = *MEMORY[0x277D85DE8];
-  if (a3 && a3 != a4)
+  if (type && type != thanType)
   {
-    v7 = [objc_opt_class() _typeMatchings];
+    _typeMatchings = [objc_opt_class() _typeMatchings];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v8 = [_typeMatchings countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
       v9 = v8;
@@ -663,16 +663,16 @@ uint64_t __46__PGTitleGeneratorDateMatching__typeMatchings__block_invoke_2(uint6
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(_typeMatchings);
           }
 
           v15 = *(*(&v19 + 1) + 8 * v14);
-          if ([v15 type] == a3)
+          if ([v15 type] == type)
           {
             v13 = v10;
           }
 
-          if ([v15 type] == a4)
+          if ([v15 type] == thanType)
           {
             v12 = v10;
           }
@@ -683,7 +683,7 @@ uint64_t __46__PGTitleGeneratorDateMatching__typeMatchings__block_invoke_2(uint6
 
         while (v9 != v14);
         v10 = v18 + v9;
-        v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v9 = [_typeMatchings countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v9);

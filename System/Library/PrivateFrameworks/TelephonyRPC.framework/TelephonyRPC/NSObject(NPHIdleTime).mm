@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __44__NSObject_NPHIdleTime__performBlockAtIdle___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (performBlockAtIdle__onceToken != -1)
   {
     dispatch_once(&performBlockAtIdle__onceToken, block);
@@ -32,7 +32,7 @@
   v7 = [v4 copy];
 
   [v6 addObject:v7];
-  result = [a1 NPHRequestIdleTimeNotification];
+  result = [self NPHRequestIdleTimeNotification];
   v9 = *MEMORY[0x277D85DE8];
   return result;
 }
@@ -49,8 +49,8 @@
   }
 
   v1 = [MEMORY[0x277CCAB88] notificationWithName:@"NPHIdleNotification" object:0];
-  v2 = [MEMORY[0x277CCABA0] defaultQueue];
-  [v2 enqueueNotification:v1 postingStyle:1];
+  defaultQueue = [MEMORY[0x277CCABA0] defaultQueue];
+  [defaultQueue enqueueNotification:v1 postingStyle:1];
 
   v3 = *MEMORY[0x277D85DE8];
 }
@@ -68,12 +68,12 @@
     _os_log_impl(&dword_26D269000, v2, OS_LOG_TYPE_DEFAULT, "%s sIdleBlocks.count:%lu", &v9, 0x16u);
   }
 
-  v3 = [sIdleBlocks firstObject];
-  if (v3)
+  firstObject = [sIdleBlocks firstObject];
+  if (firstObject)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    v3[2](v3);
-    [v4 timeIntervalSinceNow];
+    date = [MEMORY[0x277CBEAA8] date];
+    firstObject[2](firstObject);
+    [date timeIntervalSinceNow];
     v6 = v5 * -1000.0;
     if (v5 * -1000.0 > 100.0)
     {
@@ -91,7 +91,7 @@
     [sIdleBlocks removeObjectAtIndex:0];
     if ([sIdleBlocks count])
     {
-      [a1 NPHRequestIdleTimeNotification];
+      [self NPHRequestIdleTimeNotification];
     }
   }
 

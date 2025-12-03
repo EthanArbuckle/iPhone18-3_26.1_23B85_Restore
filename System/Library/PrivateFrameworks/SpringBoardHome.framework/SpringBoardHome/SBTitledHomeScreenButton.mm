@@ -1,34 +1,34 @@
 @interface SBTitledHomeScreenButton
 - (CGSize)preferredContentFittingSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SBTitledHomeScreenButton)initWithFrame:(CGRect)a3 backgroundView:(id)a4 type:(int64_t)a5 content:(id)a6;
-- (SBTitledHomeScreenButton)initWithFrame:(CGRect)a3 material:(int64_t)a4 type:(int64_t)a5 content:(id)a6;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SBTitledHomeScreenButton)initWithFrame:(CGRect)frame backgroundView:(id)view type:(int64_t)type content:(id)content;
+- (SBTitledHomeScreenButton)initWithFrame:(CGRect)frame material:(int64_t)material type:(int64_t)type content:(id)content;
 - (SBTitledHomeScreenButtonMetrics)metrics;
-- (id)contentImageWithTitle:(id)a3;
+- (id)contentImageWithTitle:(id)title;
 - (id)defaultContentImage;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setMetrics:(SBTitledHomeScreenButtonMetrics *)a3;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setMetrics:(SBTitledHomeScreenButtonMetrics *)metrics;
 @end
 
 @implementation SBTitledHomeScreenButton
 
-- (SBTitledHomeScreenButton)initWithFrame:(CGRect)a3 material:(int64_t)a4 type:(int64_t)a5 content:(id)a6
+- (SBTitledHomeScreenButton)initWithFrame:(CGRect)frame material:(int64_t)material type:(int64_t)type content:(id)content
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  contentCopy = content;
   v36.receiver = self;
   v36.super_class = SBTitledHomeScreenButton;
-  v17 = [(SBHomeScreenButton *)&v36 initWithFrame:a4 material:x, y, width, height];
-  v18 = v17;
-  if (v17)
+  height = [(SBHomeScreenButton *)&v36 initWithFrame:material material:x, y, width, height];
+  v18 = height;
+  if (height)
   {
-    v17->_type = a5;
-    objc_storeStrong(&v17->_content, a6);
+    height->_type = type;
+    objc_storeStrong(&height->_content, content);
     if (objc_opt_respondsToSelector())
     {
       [MEMORY[0x1E69DC740] _homescreenCloseGlassButtonConfiguration];
@@ -39,9 +39,9 @@
       [MEMORY[0x1E69DC740] clearGlassButtonConfiguration];
     }
     v19 = ;
-    v20 = [v19 background];
-    v21 = [MEMORY[0x1E69DC888] clearColor];
-    [v20 setBackgroundColor:v21];
+    background = [v19 background];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [background setBackgroundColor:clearColor];
 
     [(SBTitledHomeScreenButton *)v18 setConfiguration:v19];
     v22 = [objc_alloc(MEMORY[0x1E69DCDB0]) initWithDelegate:v18];
@@ -66,8 +66,8 @@
 
     else
     {
-      v6 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v6 userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
       {
         v18->_metrics.minimumButtonHeight = 26.0;
 LABEL_22:
@@ -93,8 +93,8 @@ LABEL_23:
 
         else
         {
-          v6 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v6 userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
+          currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
           {
             v18->_metrics.baselineToTop = 18.0;
 LABEL_40:
@@ -112,8 +112,8 @@ LABEL_40:
 
         else
         {
-          v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-          [v7 _referenceBounds];
+          mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+          [mainScreen _referenceBounds];
         }
 
         BSSizeRoundForScale();
@@ -151,8 +151,8 @@ LABEL_41:
 
     else
     {
-      v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -181,24 +181,24 @@ LABEL_42:
   return v18;
 }
 
-- (SBTitledHomeScreenButton)initWithFrame:(CGRect)a3 backgroundView:(id)a4 type:(int64_t)a5 content:(id)a6
+- (SBTitledHomeScreenButton)initWithFrame:(CGRect)frame backgroundView:(id)view type:(int64_t)type content:(id)content
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a4;
-  v16 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  contentCopy = content;
   v37.receiver = self;
   v37.super_class = SBTitledHomeScreenButton;
-  v17 = [(SBHomeScreenButton *)&v37 initWithFrame:v15 backgroundView:x, y, width, height];
-  v18 = v17;
-  if (v17)
+  height = [(SBHomeScreenButton *)&v37 initWithFrame:viewCopy backgroundView:x, y, width, height];
+  v18 = height;
+  if (height)
   {
-    v17->_type = a5;
-    objc_storeStrong(&v17->_content, a6);
-    v19 = [v15 layer];
-    [v19 setCornerCurve:*MEMORY[0x1E69796E8]];
+    height->_type = type;
+    objc_storeStrong(&height->_content, content);
+    layer = [viewCopy layer];
+    [layer setCornerCurve:*MEMORY[0x1E69796E8]];
 
     if (objc_opt_respondsToSelector())
     {
@@ -210,9 +210,9 @@ LABEL_42:
       [MEMORY[0x1E69DC740] clearGlassButtonConfiguration];
     }
     v20 = ;
-    v21 = [v20 background];
-    v22 = [MEMORY[0x1E69DC888] clearColor];
-    [v21 setBackgroundColor:v22];
+    background = [v20 background];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [background setBackgroundColor:clearColor];
 
     [(SBTitledHomeScreenButton *)v18 setConfiguration:v20];
     v23 = [objc_alloc(MEMORY[0x1E69DCDB0]) initWithDelegate:v18];
@@ -242,8 +242,8 @@ LABEL_42:
 
     else
     {
-      v6 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v6 userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
       {
         v18->_metrics.minimumButtonHeight = 26.0;
         goto LABEL_23;
@@ -259,8 +259,8 @@ LABEL_42:
 
     else
     {
-      v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -298,8 +298,8 @@ LABEL_24:
 
       else
       {
-        v6 = [MEMORY[0x1E69DC938] currentDevice];
-        if ([v6 userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
+        currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+        if ([currentDevice userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
         {
           v18->_metrics.baselineToTop = 18.0;
 LABEL_41:
@@ -317,8 +317,8 @@ LABEL_41:
 
       else
       {
-        v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v7 _referenceBounds];
+        mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -356,15 +356,15 @@ LABEL_43:
   return v18;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(SBTitledHomeScreenButton *)self preferredContentFittingSize];
   v7 = v6;
   v9 = v8;
-  v10 = [(SBTitledHomeScreenButton *)self configuration];
-  [v10 contentInsets];
+  configuration = [(SBTitledHomeScreenButton *)self configuration];
+  [configuration contentInsets];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -406,10 +406,10 @@ LABEL_43:
   return result;
 }
 
-- (id)contentImageWithTitle:(id)a3
+- (id)contentImageWithTitle:(id)title
 {
   v53[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  titleCopy = title;
   v5 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
   [v5 setLineBreakMode:4];
   v36 = v5;
@@ -433,16 +433,16 @@ LABEL_43:
     v15 = v9;
     v9 = [MEMORY[0x1E69DB878] systemFontOfSize:v6 weight:v11];
 
-    v16 = [(SBHomeScreenButton *)self legibilitySettings];
-    if (v16)
+    legibilitySettings = [(SBHomeScreenButton *)self legibilitySettings];
+    if (legibilitySettings)
     {
-      v17 = [(SBHomeScreenButton *)self legibilitySettings];
-      v18 = [v17 primaryColor];
+      legibilitySettings2 = [(SBHomeScreenButton *)self legibilitySettings];
+      primaryColor = [legibilitySettings2 primaryColor];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E69DC888] labelColor];
+      primaryColor = [MEMORY[0x1E69DC888] labelColor];
     }
 
     v52[0] = v12;
@@ -450,10 +450,10 @@ LABEL_43:
     v53[0] = v9;
     v53[1] = v36;
     v52[2] = v14;
-    v53[2] = v18;
+    v53[2] = primaryColor;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:v52 count:3];
 
-    [v4 sizeWithAttributes:v19];
+    [titleCopy sizeWithAttributes:v19];
     v21 = v20;
     v23 = v22;
 
@@ -517,10 +517,10 @@ LABEL_43:
   v41 = v29;
   v42 = v21;
   v43 = v23;
-  v38 = v4;
+  v38 = titleCopy;
   v39 = v19;
   v31 = v19;
-  v32 = v4;
+  v32 = titleCopy;
   v33 = [v30 imageWithActions:v37];
   v34 = [v33 imageWithAlignmentRectInsets:{v46, v47, v44, v45}];
 
@@ -552,8 +552,8 @@ uint64_t __50__SBTitledHomeScreenButton_contentImageWithTitle___block_invoke(uin
       [SBTitledHomeScreenButton defaultContentImage];
     }
 
-    v3 = [(SBTitledHomeScreenButton *)self content];
-    v4 = [(SBTitledHomeScreenButton *)self contentImageWithTitle:v3];
+    content = [(SBTitledHomeScreenButton *)self content];
+    v4 = [(SBTitledHomeScreenButton *)self contentImageWithTitle:content];
     v5 = defaultContentImage_image;
     defaultContentImage_image = v4;
   }
@@ -561,26 +561,26 @@ uint64_t __50__SBTitledHomeScreenButton_contentImageWithTitle___block_invoke(uin
   else
   {
     [(SBTitledHomeScreenButton *)self metrics:0];
-    v3 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:5 weight:0.0];
+    content = [MEMORY[0x1E69DCAD8] configurationWithPointSize:5 weight:0.0];
     v6 = MEMORY[0x1E69DCAB8];
-    v7 = [(SBTitledHomeScreenButton *)self content];
-    v8 = [v6 systemImageNamed:v7 withConfiguration:v3];
+    content2 = [(SBTitledHomeScreenButton *)self content];
+    v8 = [v6 systemImageNamed:content2 withConfiguration:content];
     v9 = defaultContentImage_image;
     defaultContentImage_image = v8;
 
-    v10 = [(SBHomeScreenButton *)self legibilitySettings];
-    if (v10)
+    legibilitySettings = [(SBHomeScreenButton *)self legibilitySettings];
+    if (legibilitySettings)
     {
-      v11 = [(SBHomeScreenButton *)self legibilitySettings];
-      v12 = [v11 primaryColor];
+      legibilitySettings2 = [(SBHomeScreenButton *)self legibilitySettings];
+      primaryColor = [legibilitySettings2 primaryColor];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E69DC888] labelColor];
+      primaryColor = [MEMORY[0x1E69DC888] labelColor];
     }
 
-    v13 = [defaultContentImage_image imageWithTintColor:v12];
+    v13 = [defaultContentImage_image imageWithTintColor:primaryColor];
     v14 = [v13 imageWithRenderingMode:1];
     v15 = defaultContentImage_image;
     defaultContentImage_image = v14;
@@ -605,47 +605,47 @@ void __47__SBTitledHomeScreenButton_defaultContentImage__block_invoke_2()
   defaultContentImage_image = 0;
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(SBHomeScreenButton *)self legibilitySettings];
+  settingsCopy = settings;
+  legibilitySettings = [(SBHomeScreenButton *)self legibilitySettings];
 
-  if (v5 != v4)
+  if (legibilitySettings != settingsCopy)
   {
     v7.receiver = self;
     v7.super_class = SBTitledHomeScreenButton;
-    [(SBHomeScreenButton *)&v7 setLegibilitySettings:v4];
-    v6 = [(SBTitledHomeScreenButton *)self defaultContentImage];
-    [(SBTitledHomeScreenButton *)self setImage:v6 forState:0];
+    [(SBHomeScreenButton *)&v7 setLegibilitySettings:settingsCopy];
+    defaultContentImage = [(SBTitledHomeScreenButton *)self defaultContentImage];
+    [(SBTitledHomeScreenButton *)self setImage:defaultContentImage forState:0];
   }
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
   v6 = MEMORY[0x1E69DCDC0];
-  v7 = a5;
+  regionCopy = region;
   [(SBTitledHomeScreenButton *)self bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v7 identifier];
+  identifier = [regionCopy identifier];
 
-  v17 = [v6 regionWithRect:v16 identifier:{v9, v11, v13, v15}];
+  v17 = [v6 regionWithRect:identifier identifier:{v9, v11, v13, v15}];
 
   return v17;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:self];
   v6 = [MEMORY[0x1E69DCDB8] effectWithPreview:v5];
-  v7 = self;
-  v8 = v7;
-  if (v7)
+  selfCopy = self;
+  v8 = selfCopy;
+  if (selfCopy)
   {
-    v9 = [(SBTitledHomeScreenButton *)v7 configuration];
-    [v9 contentInsets];
+    configuration = [(SBTitledHomeScreenButton *)selfCopy configuration];
+    [configuration contentInsets];
     v25 = v10;
     v12 = v11;
     v14 = v13;
@@ -660,8 +660,8 @@ void __47__SBTitledHomeScreenButton_defaultContentImage__block_invoke_2()
     v16 = *(MEMORY[0x1E69DC5C0] + 24);
   }
 
-  v17 = [(SBHomeScreenButton *)v8 backgroundView];
-  [v17 _cornerRadius];
+  backgroundView = [(SBHomeScreenButton *)v8 backgroundView];
+  [backgroundView _cornerRadius];
 
   [(SBTitledHomeScreenButton *)v8 frame];
   v22 = [MEMORY[0x1E69DCDC8] shapeWithRoundedRect:SBHDirectionalEdgeInsetsInsetRect(-[SBTitledHomeScreenButton effectiveUserInterfaceLayoutDirection](v8 cornerRadius:{"effectiveUserInterfaceLayoutDirection"), v18, v19, v20, v21, v25, v12, v14, v16)}];
@@ -689,12 +689,12 @@ void __47__SBTitledHomeScreenButton_defaultContentImage__block_invoke_2()
   return self;
 }
 
-- (void)setMetrics:(SBTitledHomeScreenButtonMetrics *)a3
+- (void)setMetrics:(SBTitledHomeScreenButtonMetrics *)metrics
 {
-  v4 = *&a3->minimumHorizontalPadding;
-  v3 = *&a3->preferredTitlePointSize;
-  v5 = *&a3->minimumButtonWidth;
-  self->_metrics.minimumTitlePointSize = a3->minimumTitlePointSize;
+  v4 = *&metrics->minimumHorizontalPadding;
+  v3 = *&metrics->preferredTitlePointSize;
+  v5 = *&metrics->minimumButtonWidth;
+  self->_metrics.minimumTitlePointSize = metrics->minimumTitlePointSize;
   *&self->_metrics.minimumHorizontalPadding = v4;
   *&self->_metrics.preferredTitlePointSize = v3;
   *&self->_metrics.minimumButtonWidth = v5;

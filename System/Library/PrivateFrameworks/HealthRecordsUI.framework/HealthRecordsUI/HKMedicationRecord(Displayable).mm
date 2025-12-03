@@ -7,22 +7,22 @@
 
 - (id)codings
 {
-  v1 = [a1 medicationCodingCollection];
-  v2 = [v1 codings];
+  medicationCodingCollection = [self medicationCodingCollection];
+  codings = [medicationCodingCollection codings];
 
-  return v2;
+  return codings;
 }
 
 - (id)meaningfulDateTitle
 {
-  if ([a1 notTaken])
+  if ([self notTaken])
   {
     HRLocalizedString(@"MEDICATION_RECORD_SORT_DATE_TITLE_NOT_TAKEN");
   }
 
   else
   {
-    [a1 sortDateTitle];
+    [self sortDateTitle];
   }
   v2 = ;
 

@@ -1,30 +1,30 @@
 @interface TVRUIDockController
-- (TVRUIDockController)initWithHostingViewController:(id)a3 actionProvider:(id)a4 upNextProvider:(id)a5 nowPlayingProvider:(id)a6 layoutHandler:(id)a7;
+- (TVRUIDockController)initWithHostingViewController:(id)controller actionProvider:(id)provider upNextProvider:(id)nextProvider nowPlayingProvider:(id)playingProvider layoutHandler:(id)handler;
 - (TVRUIDockLayoutManager)layoutManager;
-- (void)setDevice:(id)a3;
-- (void)setStyleProvider:(id)a3;
+- (void)setDevice:(id)device;
+- (void)setStyleProvider:(id)provider;
 @end
 
 @implementation TVRUIDockController
 
-- (TVRUIDockController)initWithHostingViewController:(id)a3 actionProvider:(id)a4 upNextProvider:(id)a5 nowPlayingProvider:(id)a6 layoutHandler:(id)a7
+- (TVRUIDockController)initWithHostingViewController:(id)controller actionProvider:(id)provider upNextProvider:(id)nextProvider nowPlayingProvider:(id)playingProvider layoutHandler:(id)handler
 {
-  v26 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  controllerCopy = controller;
+  providerCopy = provider;
+  nextProviderCopy = nextProvider;
+  playingProviderCopy = playingProvider;
+  handlerCopy = handler;
   v27.receiver = self;
   v27.super_class = TVRUIDockController;
   v17 = [(TVRUIDockController *)&v27 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_hostingViewController, a3);
-    objc_storeStrong(&v18->_actionProvider, a4);
-    objc_storeStrong(&v18->_upNextProvider, a5);
-    objc_storeStrong(&v18->_nowPlayingProvider, a6);
-    v19 = _Block_copy(v16);
+    objc_storeStrong(&v17->_hostingViewController, controller);
+    objc_storeStrong(&v18->_actionProvider, provider);
+    objc_storeStrong(&v18->_upNextProvider, nextProvider);
+    objc_storeStrong(&v18->_nowPlayingProvider, playingProvider);
+    v19 = _Block_copy(handlerCopy);
     layoutHandler = v18->_layoutHandler;
     v18->_layoutHandler = v19;
 
@@ -37,10 +37,10 @@
     v18->_launchableAppsController = v23;
 
     [(TVRUIDockViewController *)v18->_viewController setLaunchableAppsController:v18->_launchableAppsController];
-    [(TVRUIDockViewController *)v18->_viewController setActionProvider:v13];
-    [(TVRUIDockViewController *)v18->_viewController setUpNextProvider:v14];
-    [(TVRUIDockViewController *)v18->_viewController setNowPlayingProvider:v15];
-    [(TVRUIDockViewController *)v18->_viewController setLayoutHandler:v16];
+    [(TVRUIDockViewController *)v18->_viewController setActionProvider:providerCopy];
+    [(TVRUIDockViewController *)v18->_viewController setUpNextProvider:nextProviderCopy];
+    [(TVRUIDockViewController *)v18->_viewController setNowPlayingProvider:playingProviderCopy];
+    [(TVRUIDockViewController *)v18->_viewController setLayoutHandler:handlerCopy];
     [(TVRUIDockController *)v18 setEnabled:1];
   }
 
@@ -53,9 +53,9 @@
   if (!layoutManager)
   {
     v4 = [TVRUIDockLayoutManager alloc];
-    v5 = [(TVRUIDockController *)self hostingViewController];
-    v6 = [v5 view];
-    v7 = [(TVRUIDockLayoutManager *)v4 initWithDockHostingView:v6 dockInfoProvider:self->_viewController];
+    hostingViewController = [(TVRUIDockController *)self hostingViewController];
+    view = [hostingViewController view];
+    v7 = [(TVRUIDockLayoutManager *)v4 initWithDockHostingView:view dockInfoProvider:self->_viewController];
     v8 = self->_layoutManager;
     self->_layoutManager = v7;
 
@@ -65,15 +65,15 @@
   return layoutManager;
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  v5 = a3;
-  v6 = [v5 isEqualToDevice:self->_device];
-  objc_storeStrong(&self->_device, a3);
+  deviceCopy = device;
+  v6 = [deviceCopy isEqualToDevice:self->_device];
+  objc_storeStrong(&self->_device, device);
   if ((v6 & 1) == 0)
   {
-    v7 = [(TVRUIDockController *)self launchableAppsController];
-    [v7 setDevice:v5];
+    launchableAppsController = [(TVRUIDockController *)self launchableAppsController];
+    [launchableAppsController setDevice:deviceCopy];
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -90,12 +90,12 @@ void __33__TVRUIDockController_setDevice___block_invoke(uint64_t a1)
   [v1 resetContentAnimated:0];
 }
 
-- (void)setStyleProvider:(id)a3
+- (void)setStyleProvider:(id)provider
 {
-  objc_storeStrong(&self->_styleProvider, a3);
-  v5 = a3;
-  v6 = [(TVRUIDockController *)self viewController];
-  [v6 setStyleProvider:v5];
+  objc_storeStrong(&self->_styleProvider, provider);
+  providerCopy = provider;
+  viewController = [(TVRUIDockController *)self viewController];
+  [viewController setStyleProvider:providerCopy];
 }
 
 @end

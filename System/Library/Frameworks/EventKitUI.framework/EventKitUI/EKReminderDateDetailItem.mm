@@ -1,7 +1,7 @@
 @interface EKReminderDateDetailItem
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (void)reset;
-- (void)setHidesBottomSeparator:(BOOL)a3;
+- (void)setHidesBottomSeparator:(BOOL)separator;
 @end
 
 @implementation EKReminderDateDetailItem
@@ -15,9 +15,9 @@
   self->_cell = 0;
 }
 
-- (void)setHidesBottomSeparator:(BOOL)a3
+- (void)setHidesBottomSeparator:(BOOL)separator
 {
-  self->_hidesBottomSeparator = a3;
+  self->_hidesBottomSeparator = separator;
   cell = self->_cell;
   if (cell)
   {
@@ -25,7 +25,7 @@
   }
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   cell = self->_cell;
   if (!cell)

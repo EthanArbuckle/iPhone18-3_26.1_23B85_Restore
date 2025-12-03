@@ -2,22 +2,22 @@
 - ($46ED5D845D7CE1E0F0FD877A143EA26B)colorMatrix;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)range;
 - (NUHistogramCalculator)init;
-- (id)_computeHistogramForBufferBGRA8:(id)a3 error:(id *)a4;
-- (id)_computeHistogramForBufferRGBAhHLG:(id)a3 error:(id *)a4;
-- (id)computeHistogramFromBuffer:(id)a3 error:(id *)a4;
-- (id)computeHistogramFromMatte:(id)a3;
-- (id)computeHistogramFromMatteBuffer:(id)a3;
-- (void)setColorMatrix:(id *)a3;
+- (id)_computeHistogramForBufferBGRA8:(id)a8 error:(id *)error;
+- (id)_computeHistogramForBufferRGBAhHLG:(id)g error:(id *)error;
+- (id)computeHistogramFromBuffer:(id)buffer error:(id *)error;
+- (id)computeHistogramFromMatte:(id)matte;
+- (id)computeHistogramFromMatteBuffer:(id)buffer;
+- (void)setColorMatrix:(id *)matrix;
 @end
 
 @implementation NUHistogramCalculator
 
-- (void)setColorMatrix:(id *)a3
+- (void)setColorMatrix:(id *)matrix
 {
-  var0 = a3->var0;
-  var1 = a3->var1;
-  var3 = a3->var3;
-  self->_colorMatrix.b = a3->var2;
+  var0 = matrix->var0;
+  var1 = matrix->var1;
+  var3 = matrix->var3;
+  self->_colorMatrix.b = matrix->var2;
   self->_colorMatrix.a = var3;
   self->_colorMatrix.r = var0;
   self->_colorMatrix.g = var1;
@@ -43,22 +43,22 @@
   return result;
 }
 
-- (id)computeHistogramFromMatte:(id)a3
+- (id)computeHistogramFromMatte:(id)matte
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 extent], !CGRectIsEmpty(v46)))
+  matteCopy = matte;
+  v5 = matteCopy;
+  if (matteCopy && ([matteCopy extent], !CGRectIsEmpty(v46)))
   {
-    v8 = [MEMORY[0x1E695F648] areaHistogramFilter];
-    [v8 setInputImage:v5];
+    areaHistogramFilter = [MEMORY[0x1E695F648] areaHistogramFilter];
+    [areaHistogramFilter setInputImage:v5];
     [v5 extent];
-    [v8 setExtent:?];
-    [v8 setCount:{-[NUHistogramCalculator binCount](self, "binCount")}];
+    [areaHistogramFilter setExtent:?];
+    [areaHistogramFilter setCount:{-[NUHistogramCalculator binCount](self, "binCount")}];
     LODWORD(v9) = 1.0;
-    [v8 setScale:v9];
-    v10 = [v8 outputImage];
-    if (!v10)
+    [areaHistogramFilter setScale:v9];
+    outputImage = [areaHistogramFilter outputImage];
+    if (!outputImage)
     {
       v22 = NUAssertLogger_1900();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -79,8 +79,8 @@
           v29 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v30 = MEMORY[0x1E696AF00];
           v31 = v29;
-          v32 = [v30 callStackSymbols];
-          v33 = [v32 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v30 callStackSymbols];
+          v33 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v41 = v29;
           v42 = 2114;
@@ -91,8 +91,8 @@
 
       else if (v26)
       {
-        v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v28 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v41 = v28;
         _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -101,24 +101,24 @@
       _NUAssertFailHandler("[NUHistogramCalculator computeHistogramFromMatte:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Histogram/NUHistogramCalculator.m", 270, @"Failed to produce histogram for matte image", v34, v35, v36, v37, v38);
     }
 
-    v11 = v10;
+    v11 = outputImage;
     v12 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:{4 * -[NUHistogramCalculator binCount](self, "binCount")}];
-    v13 = [MEMORY[0x1E695F620] context];
-    v14 = [v12 mutableBytes];
+    context = [MEMORY[0x1E695F620] context];
+    mutableBytes = [v12 mutableBytes];
     v15 = [v12 length];
     [v11 extent];
-    [v13 render:v11 toBitmap:v14 rowBytes:v15 bounds:*MEMORY[0x1E695F928] format:0 colorSpace:?];
-    v16 = [v12 bytes];
+    [context render:v11 toBitmap:mutableBytes rowBytes:v15 bounds:*MEMORY[0x1E695F928] format:0 colorSpace:?];
+    bytes = [v12 bytes];
     [v5 extent];
     v19 = v17 * v18;
-    v20 = [(NUHistogramCalculator *)self binCount];
-    v7 = [(NUHistogram *)[NUMutableHistogram alloc] initWithBinCount:v20 range:0.0, 1.0];
+    binCount = [(NUHistogramCalculator *)self binCount];
+    v7 = [(NUHistogram *)[NUMutableHistogram alloc] initWithBinCount:binCount range:0.0, 1.0];
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __51__NUHistogramCalculator_computeHistogramFromMatte___block_invoke;
     v39[3] = &__block_descriptor_56_e12_q24__0_q8q16l;
-    v39[4] = v20;
-    v39[5] = v16;
+    v39[4] = binCount;
+    v39[5] = bytes;
     *&v39[6] = v19;
     [(NUMutableHistogram *)v7 write:v39];
   }
@@ -166,9 +166,9 @@ uint64_t __51__NUHistogramCalculator_computeHistogramFromMatte___block_invoke(ui
   return v3;
 }
 
-- (id)computeHistogramFromMatteBuffer:(id)a3
+- (id)computeHistogramFromMatteBuffer:(id)buffer
 {
-  if (a3)
+  if (buffer)
   {
     v4 = [MEMORY[0x1E695F658] imageWithNUImageBuffer:?];
     v5 = [(NUHistogramCalculator *)self computeHistogramFromMatte:v4];
@@ -182,11 +182,11 @@ uint64_t __51__NUHistogramCalculator_computeHistogramFromMatte___block_invoke(ui
   return v5;
 }
 
-- (id)_computeHistogramForBufferRGBAhHLG:(id)a3 error:(id *)a4
+- (id)_computeHistogramForBufferRGBAhHLG:(id)g error:(id *)error
 {
   v98 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  gCopy = g;
+  if (!gCopy)
   {
     v39 = NUAssertLogger_1900();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -207,8 +207,8 @@ uint64_t __51__NUHistogramCalculator_computeHistogramFromMatte___block_invoke(ui
         v53 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v54 = MEMORY[0x1E696AF00];
         v55 = v53;
-        v56 = [v54 callStackSymbols];
-        v57 = [v56 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v54 callStackSymbols];
+        v57 = [callStackSymbols componentsJoinedByString:@"\n"];
         matrix = 5.8382e-34;
         v86 = v53;
         *v87 = 2114;
@@ -219,8 +219,8 @@ uint64_t __51__NUHistogramCalculator_computeHistogramFromMatte___block_invoke(ui
 
     else if (v43)
     {
-      v44 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v45 = [v44 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v45 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       matrix = 5.8381e-34;
       v86 = v45;
       _os_log_error_impl(&dword_1C0184000, v42, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &matrix, 0xCu);
@@ -229,7 +229,7 @@ uint64_t __51__NUHistogramCalculator_computeHistogramFromMatte___block_invoke(ui
     _NUAssertFailHandler("[NUHistogramCalculator _computeHistogramForBufferRGBAhHLG:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Histogram/NUHistogramCalculator.m", 169, @"Invalid parameter not satisfying: %s", v58, v59, v60, v61, "buffer != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v46 = NUAssertLogger_1900();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
@@ -250,8 +250,8 @@ uint64_t __51__NUHistogramCalculator_computeHistogramFromMatte___block_invoke(ui
         v62 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v63 = MEMORY[0x1E696AF00];
         v64 = v62;
-        v65 = [v63 callStackSymbols];
-        v66 = [v65 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v63 callStackSymbols];
+        v66 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         matrix = 5.8382e-34;
         v86 = v62;
         *v87 = 2114;
@@ -262,8 +262,8 @@ uint64_t __51__NUHistogramCalculator_computeHistogramFromMatte___block_invoke(ui
 
     else if (v50)
     {
-      v51 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v52 = [v51 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v52 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       matrix = 5.8381e-34;
       v86 = v52;
       _os_log_error_impl(&dword_1C0184000, v49, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &matrix, 0xCu);
@@ -272,7 +272,7 @@ uint64_t __51__NUHistogramCalculator_computeHistogramFromMatte___block_invoke(ui
     _NUAssertFailHandler("[NUHistogramCalculator _computeHistogramForBufferRGBAhHLG:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Histogram/NUHistogramCalculator.m", 170, @"Invalid parameter not satisfying: %s", v67, v68, v69, v70, "error != NULL");
   }
 
-  v7 = v6;
+  v7 = gCopy;
   min = self->_range.min;
   max = self->_range.max;
   v10 = [(NUImageHistogram *)[NUMutableImageHistogram alloc] initWithBinCount:self->_binCount range:min, max];
@@ -296,7 +296,7 @@ uint64_t __51__NUHistogramCalculator_computeHistogramFromMatte___block_invoke(ui
   if (v80[3])
   {
     v16 = [MEMORY[0x1E696AD98] numberWithLong:?];
-    *a4 = [NUError failureError:@"vImageConvert_Planar16FtoPlanarF failed" object:v16];
+    *error = [NUError failureError:@"vImageConvert_Planar16FtoPlanarF failed" object:v16];
 
     v17 = 0;
   }
@@ -350,7 +350,7 @@ uint64_t __51__NUHistogramCalculator_computeHistogramFromMatte___block_invoke(ui
     {
       v36 = [MEMORY[0x1E696AD98] numberWithLong:v35];
       [NUError failureError:@"vImageMatrixMultiply_ARGBFFFF failed" object:v36];
-      *a4 = v17 = 0;
+      *error = v17 = 0;
     }
 
     else
@@ -368,7 +368,7 @@ uint64_t __51__NUHistogramCalculator_computeHistogramFromMatte___block_invoke(ui
       if (v80[3])
       {
         v37 = [MEMORY[0x1E696AD98] numberWithLong:?];
-        *a4 = [NUError failureError:@"vImageHistogramCalculation_ARGBFFFF failed" object:v37];
+        *error = [NUError failureError:@"vImageHistogramCalculation_ARGBFFFF failed" object:v37];
 
         v17 = 0;
       }
@@ -401,11 +401,11 @@ uint64_t __66__NUHistogramCalculator__computeHistogramForBufferRGBAhHLG_error___
   return [*(a1 + 32) size] * v9;
 }
 
-- (id)_computeHistogramForBufferBGRA8:(id)a3 error:(id *)a4
+- (id)_computeHistogramForBufferBGRA8:(id)a8 error:(id *)error
 {
   v82 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  a8Copy = a8;
+  if (!a8Copy)
   {
     v24 = NUAssertLogger_1900();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -426,8 +426,8 @@ uint64_t __66__NUHistogramCalculator__computeHistogramForBufferRGBAhHLG_error___
         v38 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v39 = MEMORY[0x1E696AF00];
         v40 = v38;
-        v41 = [v39 callStackSymbols];
-        v42 = [v41 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v39 callStackSymbols];
+        v42 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(src.data) = 138543618;
         *(&src.data + 4) = v38;
         WORD2(src.height) = 2114;
@@ -438,8 +438,8 @@ uint64_t __66__NUHistogramCalculator__computeHistogramForBufferRGBAhHLG_error___
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v30 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v30 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(src.data) = 138543362;
       *(&src.data + 4) = v30;
       _os_log_error_impl(&dword_1C0184000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &src, 0xCu);
@@ -448,7 +448,7 @@ uint64_t __66__NUHistogramCalculator__computeHistogramForBufferRGBAhHLG_error___
     _NUAssertFailHandler("[NUHistogramCalculator _computeHistogramForBufferBGRA8:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Histogram/NUHistogramCalculator.m", 114, @"Invalid parameter not satisfying: %s", v43, v44, v45, v46, "buffer != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v31 = NUAssertLogger_1900();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -469,8 +469,8 @@ uint64_t __66__NUHistogramCalculator__computeHistogramForBufferRGBAhHLG_error___
         v47 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v48 = MEMORY[0x1E696AF00];
         v49 = v47;
-        v50 = [v48 callStackSymbols];
-        v51 = [v50 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v48 callStackSymbols];
+        v51 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         LODWORD(src.data) = 138543618;
         *(&src.data + 4) = v47;
         WORD2(src.height) = 2114;
@@ -481,8 +481,8 @@ uint64_t __66__NUHistogramCalculator__computeHistogramForBufferRGBAhHLG_error___
 
     else if (v35)
     {
-      v36 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v37 = [v36 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v37 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       LODWORD(src.data) = 138543362;
       *(&src.data + 4) = v37;
       _os_log_error_impl(&dword_1C0184000, v34, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &src, 0xCu);
@@ -491,7 +491,7 @@ uint64_t __66__NUHistogramCalculator__computeHistogramForBufferRGBAhHLG_error___
     _NUAssertFailHandler("[NUHistogramCalculator _computeHistogramForBufferBGRA8:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Histogram/NUHistogramCalculator.m", 115, @"Invalid parameter not satisfying: %s", v52, v53, v54, v55, "error != NULL");
   }
 
-  v7 = v6;
+  v7 = a8Copy;
   v8 = objc_alloc_init(NUMutableImageHistogram);
   src.data = [v7 bytes];
   [v7 size];
@@ -540,7 +540,7 @@ uint64_t __66__NUHistogramCalculator__computeHistogramForBufferRGBAhHLG_error___
   {
     v20 = [MEMORY[0x1E696AD98] numberWithLong:?];
     [NUError failureError:@"vImageMatrixMultiply_ARGB8888 failed" object:v20];
-    *a4 = v21 = 0;
+    *error = v21 = 0;
   }
 
   else
@@ -556,7 +556,7 @@ uint64_t __66__NUHistogramCalculator__computeHistogramForBufferRGBAhHLG_error___
     if (v75[3])
     {
       v22 = [MEMORY[0x1E696AD98] numberWithLong:?];
-      *a4 = [NUError failureError:@"vImageHistogramCalculation_ARGB8888 failed" object:v22];
+      *error = [NUError failureError:@"vImageHistogramCalculation_ARGB8888 failed" object:v22];
 
       v21 = 0;
     }
@@ -586,11 +586,11 @@ uint64_t __63__NUHistogramCalculator__computeHistogramForBufferBGRA8_error___blo
   return [*(a1 + 32) size] * v6;
 }
 
-- (id)computeHistogramFromBuffer:(id)a3 error:(id *)a4
+- (id)computeHistogramFromBuffer:(id)buffer error:(id *)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  bufferCopy = buffer;
+  if (!bufferCopy)
   {
     v19 = NUAssertLogger_1900();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -611,8 +611,8 @@ uint64_t __63__NUHistogramCalculator__computeHistogramForBufferBGRA8_error___blo
         v33 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v34 = MEMORY[0x1E696AF00];
         v35 = v33;
-        v36 = [v34 callStackSymbols];
-        v37 = [v36 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v34 callStackSymbols];
+        v37 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v52 = v33;
         v53 = 2114;
@@ -623,8 +623,8 @@ uint64_t __63__NUHistogramCalculator__computeHistogramForBufferBGRA8_error___blo
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v52 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -633,7 +633,7 @@ uint64_t __63__NUHistogramCalculator__computeHistogramForBufferBGRA8_error___blo
     _NUAssertFailHandler("[NUHistogramCalculator computeHistogramFromBuffer:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Histogram/NUHistogramCalculator.m", 58, @"Invalid parameter not satisfying: %s", v38, v39, v40, v41, "buffer != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v26 = NUAssertLogger_1900();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -654,8 +654,8 @@ uint64_t __63__NUHistogramCalculator__computeHistogramForBufferBGRA8_error___blo
         v42 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v43 = MEMORY[0x1E696AF00];
         v44 = v42;
-        v45 = [v43 callStackSymbols];
-        v46 = [v45 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v43 callStackSymbols];
+        v46 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v52 = v42;
         v53 = 2114;
@@ -666,8 +666,8 @@ uint64_t __63__NUHistogramCalculator__computeHistogramForBufferBGRA8_error___blo
 
     else if (v30)
     {
-      v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v32 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v32 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v52 = v32;
       _os_log_error_impl(&dword_1C0184000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -676,21 +676,21 @@ uint64_t __63__NUHistogramCalculator__computeHistogramForBufferBGRA8_error___blo
     _NUAssertFailHandler("[NUHistogramCalculator computeHistogramFromBuffer:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Histogram/NUHistogramCalculator.m", 59, @"Invalid parameter not satisfying: %s", v47, v48, v49, v50, "error != NULL");
   }
 
-  v7 = v6;
-  v8 = [v6 format];
+  v7 = bufferCopy;
+  format = [bufferCopy format];
   v9 = +[NUPixelFormat BGRA8];
-  v10 = [v8 isEqualToPixelFormat:v9];
+  v10 = [format isEqualToPixelFormat:v9];
 
   if (!v10)
   {
-    v12 = [v7 format];
+    format2 = [v7 format];
     v13 = +[NUPixelFormat RGBAh];
-    v14 = [v12 isEqualToPixelFormat:v13];
+    v14 = [format2 isEqualToPixelFormat:v13];
 
     if (!v14)
     {
-      v16 = [v7 format];
-      *a4 = [NUError unsupportedError:@"Unsupported pixel format" object:v16];
+      format3 = [v7 format];
+      *error = [NUError unsupportedError:@"Unsupported pixel format" object:format3];
 
       v17 = 0;
       goto LABEL_17;
@@ -700,14 +700,14 @@ uint64_t __63__NUHistogramCalculator__computeHistogramForBufferBGRA8_error___blo
     {
       if (self->_range.min >= 0.0 && self->_range.max <= 12.0)
       {
-        v11 = [(NUHistogramCalculator *)self _computeHistogramForBufferRGBAhHLG:v7 error:a4];
+        v11 = [(NUHistogramCalculator *)self _computeHistogramForBufferRGBAhHLG:v7 error:error];
         goto LABEL_21;
       }
 
       v15 = @"Unsupported histogram range for half float HDR image";
 LABEL_16:
       [NUError unsupportedError:v15 object:self];
-      *a4 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_17;
     }
 
@@ -727,7 +727,7 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  v11 = [(NUHistogramCalculator *)self _computeHistogramForBufferBGRA8:v7 error:a4];
+  v11 = [(NUHistogramCalculator *)self _computeHistogramForBufferBGRA8:v7 error:error];
 LABEL_21:
   v17 = v11;
 LABEL_17:

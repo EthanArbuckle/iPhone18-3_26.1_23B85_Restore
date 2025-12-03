@@ -1,11 +1,11 @@
 @interface ANSTBaseNetworkEspresso
 - ($C4732ECC957FA13B9B3DF4A51A95735B)network;
-- ($FD4688982923A924290ECB669CAF1EC2)getTensorByName:(const char *)a3;
-- (BOOL)bindNetworkInputWithEspressoBuffer:(id *)a3 withInputName:(id)a4;
-- (BOOL)bindNetworkInputWithImage:(__CVBuffer *)a3 withInputName:(id)a4;
-- (BOOL)bindNetworkOutput:(const char *)a3;
+- ($FD4688982923A924290ECB669CAF1EC2)getTensorByName:(const char *)name;
+- (BOOL)bindNetworkInputWithEspressoBuffer:(id *)buffer withInputName:(id)name;
+- (BOOL)bindNetworkInputWithImage:(__CVBuffer *)image withInputName:(id)name;
+- (BOOL)bindNetworkOutput:(const char *)output;
 - (BOOL)buildPlan;
-- (BOOL)getBlobDimensionByName:(const char *)a3 andDestination:(unint64_t *)a4;
+- (BOOL)getBlobDimensionByName:(const char *)name andDestination:(unint64_t *)destination;
 - (BOOL)initContext;
 - (BOOL)initMLNetwork;
 - (BOOL)initNetwork;
@@ -13,10 +13,10 @@
 - (BOOL)initPlan;
 - (BOOL)prepare;
 - (BOOL)runNetwork;
-- (BOOL)setInput:(id)a3 fromCVPixelBuffer:(__CVBuffer *)a4;
-- (CGSize)getResolutionByBlobName:(const char *)a3;
+- (BOOL)setInput:(id)input fromCVPixelBuffer:(__CVBuffer *)buffer;
+- (CGSize)getResolutionByBlobName:(const char *)name;
 - (id).cxx_construct;
-- (id)_initWithNetworkEngine:(int64_t)a3 qualityOfService:(unsigned int)a4 networkName:(id)a5 networkFileName:(id)a6 networkResolution:(id)a7;
+- (id)_initWithNetworkEngine:(int64_t)engine qualityOfService:(unsigned int)service networkName:(id)name networkFileName:(id)fileName networkResolution:(id)resolution;
 - (void)cleanUpOutputPixelBufferMap;
 - (void)dealloc;
 - (void)updateOutputBlobMap;
@@ -24,21 +24,21 @@
 
 @implementation ANSTBaseNetworkEspresso
 
-- (id)_initWithNetworkEngine:(int64_t)a3 qualityOfService:(unsigned int)a4 networkName:(id)a5 networkFileName:(id)a6 networkResolution:(id)a7
+- (id)_initWithNetworkEngine:(int64_t)engine qualityOfService:(unsigned int)service networkName:(id)name networkFileName:(id)fileName networkResolution:(id)resolution
 {
   v33 = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  nameCopy = name;
+  fileNameCopy = fileName;
+  resolutionCopy = resolution;
   v15 = MEMORY[0x277CCA8D8];
   v16 = objc_opt_class();
   v18 = objc_msgSend_bundleForClass_(v15, v17, v16);
-  v20 = objc_msgSend_pathForResource_ofType_inDirectory_(v18, v19, v12, @"mlmodelc", @"Models");
+  v20 = objc_msgSend_pathForResource_ofType_inDirectory_(v18, v19, nameCopy, @"mlmodelc", @"Models");
   objc_storeStrong(&self->_netPath, v20);
-  objc_storeStrong(&self->_netFileName, a6);
-  self->_engineType = a3;
-  HIDWORD(v22) = a4 - 9;
-  LODWORD(v22) = a4 - 9;
+  objc_storeStrong(&self->_netFileName, fileName);
+  self->_engineType = engine;
+  HIDWORD(v22) = service - 9;
+  LODWORD(v22) = service - 9;
   v21 = v22 >> 3;
   if (v21 > 3)
   {
@@ -52,7 +52,7 @@
 
   self->_planPriority = v23;
   self->_isPrepared = 0;
-  objc_storeStrong(&self->_networkResolution, a7);
+  objc_storeStrong(&self->_networkResolution, resolution);
   v24 = _ANSTLoggingGetOSLogForCategoryANSTKit();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
@@ -308,7 +308,7 @@ LABEL_9:
   }
 }
 
-- (BOOL)getBlobDimensionByName:(const char *)a3 andDestination:(unint64_t *)a4
+- (BOOL)getBlobDimensionByName:(const char *)name andDestination:(unint64_t *)destination
 {
   v13 = *MEMORY[0x277D85DE8];
   plan = self->_network.plan;
@@ -320,7 +320,7 @@ LABEL_9:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       last_error = espresso_get_last_error();
-      sub_22E656FCC(a3, last_error, v12);
+      sub_22E656FCC(name, last_error, v12);
     }
   }
 
@@ -345,13 +345,13 @@ LABEL_9:
   return 1;
 }
 
-- (BOOL)bindNetworkInputWithImage:(__CVBuffer *)a3 withInputName:(id)a4
+- (BOOL)bindNetworkInputWithImage:(__CVBuffer *)image withInputName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  nameCopy = name;
   plan = self->_network.plan;
   v7 = *&self->_network.network_index;
-  v8 = v5;
+  v8 = nameCopy;
   objc_msgSend_UTF8String(v8, v9, v10);
   v11 = espresso_network_bind_cvpixelbuffer();
   if (v11)
@@ -359,7 +359,7 @@ LABEL_9:
     v12 = _ANSTLoggingGetOSLogForCategoryANSTKit();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = v5;
+      v13 = nameCopy;
       v16 = objc_msgSend_UTF8String(v13, v14, v15);
       last_error = espresso_get_last_error();
       sub_22E657014(v16, last_error, v20);
@@ -370,13 +370,13 @@ LABEL_9:
   return v11 == 0;
 }
 
-- (BOOL)bindNetworkInputWithEspressoBuffer:(id *)a3 withInputName:(id)a4
+- (BOOL)bindNetworkInputWithEspressoBuffer:(id *)buffer withInputName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  nameCopy = name;
   plan = self->_network.plan;
   v7 = *&self->_network.network_index;
-  v8 = v5;
+  v8 = nameCopy;
   objc_msgSend_UTF8String(v8, v9, v10);
   v11 = espresso_network_bind_buffer();
   if (v11)
@@ -384,7 +384,7 @@ LABEL_9:
     v12 = _ANSTLoggingGetOSLogForCategoryANSTKit();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = v5;
+      v13 = nameCopy;
       v16 = objc_msgSend_UTF8String(v13, v14, v15);
       last_error = espresso_get_last_error();
       sub_22E65705C(v16, last_error, v20);
@@ -395,16 +395,16 @@ LABEL_9:
   return v11 == 0;
 }
 
-- (BOOL)bindNetworkOutput:(const char *)a3
+- (BOOL)bindNetworkOutput:(const char *)output
 {
   v16 = *MEMORY[0x277D85DE8];
   disabledOutputSet = self->_disabledOutputSet;
-  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, a3);
+  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, output);
   LOBYTE(disabledOutputSet) = objc_msgSend_containsObject_(disabledOutputSet, v7, v6);
 
   if ((disabledOutputSet & 1) == 0)
   {
-    sub_22E5D8EB4(__p, a3);
+    sub_22E5D8EB4(__p, output);
     if (!sub_22E5DA9D8(&self->_outputBufferMap.__table_.__bucket_list_.__ptr_, __p))
     {
       sub_22E5DA69C("unordered_map::at: key not found");
@@ -437,9 +437,9 @@ LABEL_10:
   return result;
 }
 
-- ($FD4688982923A924290ECB669CAF1EC2)getTensorByName:(const char *)a3
+- ($FD4688982923A924290ECB669CAF1EC2)getTensorByName:(const char *)name
 {
-  sub_22E5D8EB4(__p, a3);
+  sub_22E5D8EB4(__p, name);
   v8 = __p;
   v4 = sub_22E5DA72C(&self->_outputBufferMap.__table_.__bucket_list_.__ptr_, __p);
   if (v7 < 0)
@@ -450,10 +450,10 @@ LABEL_10:
   return (v4 + 5);
 }
 
-- (CGSize)getResolutionByBlobName:(const char *)a3
+- (CGSize)getResolutionByBlobName:(const char *)name
 {
   v6[4] = *MEMORY[0x277D85DE8];
-  objc_msgSend_getBlobDimensionByName_andDestination_(self, a2, a3, v6);
+  objc_msgSend_getBlobDimensionByName_andDestination_(self, a2, name, v6);
   v3 = *MEMORY[0x277D85DE8];
   v4 = v6[0];
   v5 = v6[1];
@@ -488,20 +488,20 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)setInput:(id)a3 fromCVPixelBuffer:(__CVBuffer *)a4
+- (BOOL)setInput:(id)input fromCVPixelBuffer:(__CVBuffer *)buffer
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  inputCopy = input;
   if (self->_isPrepared)
   {
-    if (CVPixelBufferGetPixelFormatType(a4) == 1111970369 || CVPixelBufferGetPixelFormatType(a4) == 1278226488)
+    if (CVPixelBufferGetPixelFormatType(buffer) == 1111970369 || CVPixelBufferGetPixelFormatType(buffer) == 1278226488)
     {
-      v8 = objc_msgSend_bindNetworkInputWithImage_withInputName_(self, v7, a4, v6);
+      v8 = objc_msgSend_bindNetworkInputWithImage_withInputName_(self, v7, buffer, inputCopy);
     }
 
     else
     {
-      v12 = v6;
+      v12 = inputCopy;
       v15 = objc_msgSend_UTF8String(v12, v13, v14);
       sub_22E5D8EB4(__p, v15);
       if (sub_22E5DA9D8(&self->_input_espresso_buffer.__table_.__bucket_list_.__ptr_, __p))
@@ -511,8 +511,8 @@ LABEL_10:
 
       v31.i64[0] = __p;
       *(sub_22E5DAAD4(&self->_input_espresso_buffer.__table_.__bucket_list_.__ptr_, __p) + 50) = 65568;
-      v19 = v6;
-      v22 = objc_msgSend_UTF8String(v6, v20, v21);
+      v19 = inputCopy;
+      v22 = objc_msgSend_UTF8String(inputCopy, v20, v21);
       objc_msgSend_getBlobDimensionByName_andDestination_(self, v23, v22, &v31);
       v29 = vextq_s8(v32, v32, 8uLL);
       v30 = vextq_s8(v31, v31, 8uLL);
@@ -521,14 +521,14 @@ LABEL_10:
       if (!espresso_buffer_pack_tensor_shape())
       {
 LABEL_10:
-        CVPixelBufferLockBaseAddress(a4, 0);
-        BaseAddress = CVPixelBufferGetBaseAddress(a4);
+        CVPixelBufferLockBaseAddress(buffer, 0);
+        BaseAddress = CVPixelBufferGetBaseAddress(buffer);
         v31.i64[0] = __p;
         sub_22E5DAAD4(&self->_input_espresso_buffer.__table_.__bucket_list_.__ptr_, __p)[5] = BaseAddress;
         v31.i64[0] = __p;
         v17 = sub_22E5DAAD4(&self->_input_espresso_buffer.__table_.__bucket_list_.__ptr_, __p);
-        v8 = objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self, v18, (v17 + 5), v6);
-        CVPixelBufferUnlockBaseAddress(a4, 0);
+        v8 = objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self, v18, (v17 + 5), inputCopy);
+        CVPixelBufferUnlockBaseAddress(buffer, 0);
       }
 
       else

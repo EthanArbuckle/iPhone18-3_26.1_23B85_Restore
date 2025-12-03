@@ -1,32 +1,32 @@
 @interface MockEmittableSiriAnalyticsMessageStream
-- (void)emitMessage:(id)a3;
-- (void)emitMessage:(id)a3 timestamp:(unint64_t)a4;
-- (void)enqueueLargeMessageObjectFromPath:(id)a3 assetIdentifier:(id)a4 messageMetadata:(id)a5 completion:(id)a6;
+- (void)emitMessage:(id)message;
+- (void)emitMessage:(id)message timestamp:(unint64_t)timestamp;
+- (void)enqueueLargeMessageObjectFromPath:(id)path assetIdentifier:(id)identifier messageMetadata:(id)metadata completion:(id)completion;
 @end
 
 @implementation MockEmittableSiriAnalyticsMessageStream
 
-- (void)emitMessage:(id)a3
+- (void)emitMessage:(id)message
 {
-  v4 = a3;
-  v5 = self;
-  MockEmittableSiriAnalyticsMessageStream.emitMessage(_:)(v4);
+  messageCopy = message;
+  selfCopy = self;
+  MockEmittableSiriAnalyticsMessageStream.emitMessage(_:)(messageCopy);
 }
 
-- (void)emitMessage:(id)a3 timestamp:(unint64_t)a4
+- (void)emitMessage:(id)message timestamp:(unint64_t)timestamp
 {
-  v5 = a3;
-  v6 = self;
-  specialized MockEmittableSiriAnalyticsMessageStream.emitMessage(_:timestamp:)(v5);
+  messageCopy = message;
+  selfCopy = self;
+  specialized MockEmittableSiriAnalyticsMessageStream.emitMessage(_:timestamp:)(messageCopy);
 }
 
-- (void)enqueueLargeMessageObjectFromPath:(id)a3 assetIdentifier:(id)a4 messageMetadata:(id)a5 completion:(id)a6
+- (void)enqueueLargeMessageObjectFromPath:(id)path assetIdentifier:(id)identifier messageMetadata:(id)metadata completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4UUIDVSgMd, &_s10Foundation4UUIDVSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8, v9);
   v11 = &v14 - v10;
-  if (a4)
+  if (identifier)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v12 = type metadata accessor for UUID();

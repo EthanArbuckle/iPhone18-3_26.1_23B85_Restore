@@ -1,77 +1,77 @@
 @interface SASamplePrinter
-- (BOOL)frame:(uint64_t)a3 matchesFrame:;
-- (BOOL)printLaunchdThrottledProcessesToStream:(uint64_t)a1;
-- (SASamplePrinter)initWithSampleStore:(id)a3;
-- (SAStack)stackForThread:(void *)a3 threadStateIndexes:(void *)a4 task:(uint64_t)a5 taskSampleCount:(BOOL)a6 isTarget:;
-- (__CFString)displayNameForDispatchQueue:(void *)a1;
-- (__CFString)displayNameForPid:(uint64_t)a1 aroundTimestamp:(uint64_t)a2 includePid:(void *)a3;
-- (__CFString)displayNameForTask:(__CFString *)a1;
-- (__CFString)displayStringForResourceCoalition:(void *)a1;
-- (__CFString)rawNameForTask:(__CFString *)a1;
-- (__CFString)timeIndexDescriptionForStartSampleIndex:(unint64_t)a3 endSampleIndex:(unsigned int)a4 formattedToLength:;
-- (__CFString)timeIndexDescriptionForTimestamp:(uint64_t)a1;
-- (double)timeSpentAsleepBetweenStartTimestamp:(void *)a3 endTimestamp:;
-- (id)_findIOBefore:(void *)a3 during:(void *)a4 after:(void *)a5 thread:(unint64_t)a6 stateIndex:(void *)a7 inIO:(void *)a8 nextIO:;
-- (id)architectureStringForTask:(uint64_t)a1;
-- (id)binaryImagesHitByTask:(uint64_t)a1;
-- (id)callTreeForDispatchQueue:(id)a3 andThread:(id)a4 inTask:(id)a5;
-- (id)callTreeForDispatchQueue:(id)a3 swiftTask:(id)a4 thread:(id)a5 inTask:(id)a6;
-- (id)callTreeForExecutable:(id)a3;
-- (id)callTreeForSwiftTask:(id)a3 thread:(id)a4 inTask:(id)a5;
-- (id)callTreeForTask:(id)a3;
-- (id)callTreeForThread:(id)a3 inTask:(id)a4;
-- (id)callTreesForThreadsInTask:(id)a3;
-- (id)copyDescriptionForTimeRanges:(uint64_t)a1;
-- (id)displayNameForPid:(uint64_t)a3 threadId:(void *)a4 timestamp:;
-- (id)displayNameForTask:(int)a3 includePid:;
-- (id)displayNameForTask:(uint64_t)a3 threadId:;
-- (id)displayNameForTask:(void *)a3 thread:(void *)a4 threadState:;
-- (id)displayStringForOnBehalfOfForTasks:(unsigned int)a3 includePid:;
-- (id)displayedBinaryLoadInfoForBinary:(uint64_t)a1 segment:(void *)a2 desiredLoadAddress:(uint64_t)a3 offsetIntoLoadInfo:(unint64_t)a4 isInKernelAddressSpace:(char)a5 exclave:(void *)a6 binariesToDisplay:(void *)a7 extraBinariesToDisplay:(void *)a8;
-- (id)displayedBinaryLoadInfoForLoadInfo:(uint64_t)a1 offsetIntoLoadInfo:(void *)a2 binariesToDisplay:(unint64_t)a3 extraBinariesToDisplay:(void *)a4;
+- (BOOL)frame:(uint64_t)frame matchesFrame:;
+- (BOOL)printLaunchdThrottledProcessesToStream:(uint64_t)stream;
+- (SASamplePrinter)initWithSampleStore:(id)store;
+- (SAStack)stackForThread:(void *)thread threadStateIndexes:(void *)indexes task:(uint64_t)task taskSampleCount:(BOOL)count isTarget:;
+- (__CFString)displayNameForDispatchQueue:(void *)queue;
+- (__CFString)displayNameForPid:(uint64_t)pid aroundTimestamp:(uint64_t)timestamp includePid:(void *)includePid;
+- (__CFString)displayNameForTask:(__CFString *)task;
+- (__CFString)displayStringForResourceCoalition:(void *)coalition;
+- (__CFString)rawNameForTask:(__CFString *)task;
+- (__CFString)timeIndexDescriptionForStartSampleIndex:(unint64_t)index endSampleIndex:(unsigned int)sampleIndex formattedToLength:;
+- (__CFString)timeIndexDescriptionForTimestamp:(uint64_t)timestamp;
+- (double)timeSpentAsleepBetweenStartTimestamp:(void *)timestamp endTimestamp:;
+- (id)_findIOBefore:(void *)before during:(void *)during after:(void *)after thread:(unint64_t)thread stateIndex:(void *)index inIO:(void *)o nextIO:;
+- (id)architectureStringForTask:(uint64_t)task;
+- (id)binaryImagesHitByTask:(uint64_t)task;
+- (id)callTreeForDispatchQueue:(id)queue andThread:(id)thread inTask:(id)task;
+- (id)callTreeForDispatchQueue:(id)queue swiftTask:(id)task thread:(id)thread inTask:(id)inTask;
+- (id)callTreeForExecutable:(id)executable;
+- (id)callTreeForSwiftTask:(id)task thread:(id)thread inTask:(id)inTask;
+- (id)callTreeForTask:(id)task;
+- (id)callTreeForThread:(id)thread inTask:(id)task;
+- (id)callTreesForThreadsInTask:(id)task;
+- (id)copyDescriptionForTimeRanges:(uint64_t)ranges;
+- (id)displayNameForPid:(uint64_t)pid threadId:(void *)id timestamp:;
+- (id)displayNameForTask:(int)task includePid:;
+- (id)displayNameForTask:(uint64_t)task threadId:;
+- (id)displayNameForTask:(void *)task thread:(void *)thread threadState:;
+- (id)displayStringForOnBehalfOfForTasks:(unsigned int)tasks includePid:;
+- (id)displayedBinaryLoadInfoForBinary:(uint64_t)binary segment:(void *)segment desiredLoadAddress:(uint64_t)address offsetIntoLoadInfo:(unint64_t)info isInKernelAddressSpace:(char)space exclave:(void *)exclave binariesToDisplay:(void *)display extraBinariesToDisplay:(void *)toDisplay;
+- (id)displayedBinaryLoadInfoForLoadInfo:(uint64_t)info offsetIntoLoadInfo:(void *)loadInfo binariesToDisplay:(unint64_t)display extraBinariesToDisplay:(void *)toDisplay;
 - (id)eventEndTimeWithWallTime;
 - (id)eventStartTimeWithWallTime;
-- (id)kernelVersionAtWallTime:(uint64_t)a1;
-- (id)sortedLoadInfosForBinaryImages:(uint64_t)a1;
-- (id)stacksForTask:(uint64_t)a3 taskSampleCount:;
-- (id)stateChangeStringForThreadState:(unint64_t)a3 serialDispatchQueue:(unint64_t)a4 swiftTaskStates:(void *)a5 thread:(void *)a6 threadStateIndexes:(void *)a7 taskState:(void *)a8 task:(uint64_t)a9 iteratorIndex:(char)a10 missingStateIsInAnotherStack:(uint64_t)a11 numSamplesOmittedSincePreviousDisplayedSample:(void *)a12 sampleTimestamp:(void *)a13 previousSampleTimestamp:(void *)a14 previousDisplayedTimestamp:(void *)a15 previousTaskState:(void *)a16 previousThread:(void *)a17 previousThreadState:(char)a18 dispatchQueueChanges:(char)a19 swiftTaskChanges:(char)a20 priorityChanges:(char)a21 nameChanges:(char)a22 threadChanges:(char)a23 isTimeJump:(void *)a24 ioEventsSincePreviousThreadState:;
+- (id)kernelVersionAtWallTime:(uint64_t)time;
+- (id)sortedLoadInfosForBinaryImages:(uint64_t)images;
+- (id)stacksForTask:(uint64_t)task taskSampleCount:;
+- (id)stateChangeStringForThreadState:(unint64_t)state serialDispatchQueue:(unint64_t)queue swiftTaskStates:(void *)states thread:(void *)thread threadStateIndexes:(void *)indexes taskState:(void *)taskState task:(uint64_t)task iteratorIndex:(char)self0 missingStateIsInAnotherStack:(uint64_t)self1 numSamplesOmittedSincePreviousDisplayedSample:(void *)self2 sampleTimestamp:(void *)self3 previousSampleTimestamp:(void *)self4 previousDisplayedTimestamp:(void *)self5 previousTaskState:(void *)self6 previousThread:(void *)self7 previousThreadState:(char)self8 dispatchQueueChanges:(char)self9 swiftTaskChanges:(char)taskChanges priorityChanges:(char)priorityChanges nameChanges:(char)nameChanges threadChanges:(char)threadChanges isTimeJump:(void *)jump ioEventsSincePreviousThreadState:;
 - (uint64_t)checkForBadOptions;
-- (uint64_t)copyDescriptionForIOEvent:(void *)a1;
-- (uint64_t)copyDescriptionForIOEvents:(id *)a1;
-- (uint64_t)copyDescriptionForTruncatedLeafFrame:(uint64_t)a3 otherCallTreeDescription:(void *)a4 binariesToDisplay:(void *)a5 extraBinariesToDisplay:;
+- (uint64_t)copyDescriptionForIOEvent:(void *)event;
+- (uint64_t)copyDescriptionForIOEvents:(id *)events;
+- (uint64_t)copyDescriptionForTruncatedLeafFrame:(uint64_t)frame otherCallTreeDescription:(void *)description binariesToDisplay:(void *)display extraBinariesToDisplay:;
 - (uint64_t)hasTargetProcess;
-- (uint64_t)highestPriorityInTask:(char)a3 useBasePriority:;
-- (uint64_t)largestFootprintInTask:(void *)a1;
-- (uint64_t)numIOsForTask:(void *)a3 ioSize:;
-- (uint64_t)printTaskHeaderForTask:(uint64_t)a3 specialDispatchQueueId:(uint64_t)a4 specialThreadId:(int)a5 omitSpecial:(int)a6 omitOther:;
-- (uint64_t)shouldPrintTask:(unint64_t)a3 thread:(unint64_t)a4 dispatchQueue:;
-- (uint64_t)shouldPrintTimeOutsideSamplingRange:(uint64_t)a1;
-- (uint64_t)taskHasSwallowedAnExceptionNotedByHIException:(uint64_t)a1;
-- (void)addHeaderForDispatchQueue:(void *)a3 orSwiftTaskStates:(char *)a4 orThread:(void *)a5 andThreadStateIndexes:(void *)a6 toStack:(void *)a7 task:(uint64_t)a8 taskSampleCount:;
-- (void)addStack:(void *)a3 toStream:(uint64_t)a4 sampleCount:(void *)a5 binariesToDisplay:(uint64_t)a6 primaryState:(int)a7 primaryMicrostackshotState:(char)a8 onlyHeaviestStack:(char)a9 isKernel:;
-- (void)addStackForDispatchQueue:(void *)a3 orSwiftTaskStates:(char *)a4 orThread:(void *)a5 andThreadStateIndexes:(uint64_t)a6 task:(void *)a7 toRootObjects:(char)a8 nameChanges:(char)a9 dispatchQueueChanges:(char)a10 swiftTaskChanges:(char)a11 threadChanges:(char)a12 priorityChanges:(uint64_t)a13 microstackshotSummary:(unsigned __int8)a14 onlyHeaviestStack:(char)a15 includeState:;
-- (void)addStackForSwiftTask:(unint64_t)a3 andThread:(uint64_t)a4 task:(void *)a5 toRootObjects:;
-- (void)addTaskHeaderToStream:(void *)a3 displayName:(uint64_t)a4 pid:(void *)a5 mainBinary:(void *)a6 mainBinaryPath:(void *)a7 sharedCaches:(uint64_t)a8 uid:(double)a9 bundleIdentifier:(void *)a10 bundleVersion:(__int128)a11 bundleShortVersion:(void *)a12 bundleBuildVersion:(void *)a13 bundleProjectName:(void *)a14 bundleSourceVersion:(void *)a15 bundleProductBuildVersion:(uint64_t)a16 adamID:(void *)a17 installerVersionID:(char)a18 developerType:(void *)a19 appType:(char)a20 isBeta:(void *)a21 cohortID:(void *)a22 vendorID:(void *)a23 distributorID:(void *)a24 codesigningID:(void *)a25 teamID:(void *)a26 resourceCoalitionSampleCounts:(void *)a27 onBehalfOfProcesses:(void *)a28 architectureString:(void *)a29 kernelVersion:(void *)a30 parentName:(void *)a31 responsibleName:(void *)a32 taskExecedFromName:(void *)a33 taskExecedToName:(void *)a34 forkTimestamp:(void *)a35 startTimestamp:(unint64_t)a36 endTimestamp:(unint64_t)a37 startSampleIndex:(unint64_t)a38 endSampleIndex:(unint64_t)a39 numSamples:(uint64_t)a40 totalNumSamples:(uint64_t)a41 numSamplesSuspended:(unint64_t)a42 numSamplesTerminated:(unint64_t)a43 startingTaskSize:(unint64_t)a44 endingTaskSize:(unint64_t)a45 maxTaskSize:(unint64_t)a46 startSampleIndexOfMaxTaskSize:(unsigned int)a47 endSampleIndexOfMaxTaskSize:(unint64_t)a48 numPageins:(unint64_t)a49 cpuTimeNs:(unint64_t)a50 cpuInstructions:(unint64_t)a51 cpuCycles:(unint64_t)a52 nonThreadCpuTimeNs:(unint64_t)a53 nonThreadCpuInstructions:(char)a54 nonThreadCpuCycles:(char)a55 usesSuddenTermination:(void *)a56 allowsIdleExit:(void *)a57 memoryLimitStr:(char)a58 jetsamPriorityStr:(char)a59 isTranslocated:(char)a60 hardenedHeap:(char)a61 mteCheckedAllocationsEnabled:(char)a62 mteUserDataAllocationsTagged:(char)a63 mteSoftModeEnabled:mteInheritanceTurnedOn:isRunningBoardManaged:isUnresponsive:timeOfLastResponse:numThreads:numIdleWorkQueueThreads:numOtherHiddenThreads:hieSwallowedException:numSamplesWQExceededConstrainedThreadLimit:numSamplesWQExceededTotalThreadLimit:numSamplesWQExceededCooperativeThreadLimit:numSamplesWQExceededActiveConstrainedThreadLimit:numSamplesTALEngaged:isRunawayMitigated:threadsDeadlocked:threadsBlockedByADeadlock:ioSize:numIOs:isReportHeader:;
-- (void)avoidOverlapInBinaryLoadInfos:(int)a3 onlyExclaves:(void *)a4 inTask:;
-- (void)copyDescriptionsForFrame:(void *)a3 binariesToDisplay:(void *)a4 extraBinariesToDisplay:;
-- (void)filterToDisplayTimeIndexStart:(unint64_t)a3 end:(unint64_t)a4;
-- (void)filterToMachAbsTimeRangeStart:(unint64_t)a3 end:(unint64_t)a4;
-- (void)filterToTimestampRangeStart:(id)a3 end:(id)a4;
-- (void)filterToWallTimeRangeStart:(double)a3 end:(double)a4;
-- (void)iterateDispatchQueue:(void *)a3 orSwiftTaskStates:(void *)a4 orThread:(void *)a5 threadStateIndexes:(unint64_t)a6 startingAtIndex:(uint64_t)a7 endingAfterTimestamp:(void *)a8 task:(char)a9 stopAtTimeJumps:(uint64_t)a10 callback:;
-- (void)printBinaryImagesForTask:(uint64_t)a1;
-- (void)printHIDEvent:(uint64_t)a1;
+- (uint64_t)highestPriorityInTask:(char)task useBasePriority:;
+- (uint64_t)largestFootprintInTask:(void *)task;
+- (uint64_t)numIOsForTask:(void *)task ioSize:;
+- (uint64_t)printTaskHeaderForTask:(uint64_t)task specialDispatchQueueId:(uint64_t)id specialThreadId:(int)threadId omitSpecial:(int)special omitOther:;
+- (uint64_t)shouldPrintTask:(unint64_t)task thread:(unint64_t)thread dispatchQueue:;
+- (uint64_t)shouldPrintTimeOutsideSamplingRange:(uint64_t)range;
+- (uint64_t)taskHasSwallowedAnExceptionNotedByHIException:(uint64_t)exception;
+- (void)addHeaderForDispatchQueue:(void *)queue orSwiftTaskStates:(char *)states orThread:(void *)thread andThreadStateIndexes:(void *)indexes toStack:(void *)stack task:(uint64_t)task taskSampleCount:;
+- (void)addStack:(void *)stack toStream:(uint64_t)stream sampleCount:(void *)count binariesToDisplay:(uint64_t)display primaryState:(int)state primaryMicrostackshotState:(char)microstackshotState onlyHeaviestStack:(char)heaviestStack isKernel:;
+- (void)addStackForDispatchQueue:(void *)queue orSwiftTaskStates:(char *)states orThread:(void *)thread andThreadStateIndexes:(uint64_t)indexes task:(void *)task toRootObjects:(char)objects nameChanges:(char)changes dispatchQueueChanges:(char)self0 swiftTaskChanges:(char)self1 threadChanges:(char)self2 priorityChanges:(uint64_t)self3 microstackshotSummary:(unsigned __int8)self4 onlyHeaviestStack:(char)self5 includeState:;
+- (void)addStackForSwiftTask:(unint64_t)task andThread:(uint64_t)thread task:(void *)a5 toRootObjects:;
+- (void)addTaskHeaderToStream:(void *)stream displayName:(uint64_t)name pid:(void *)pid mainBinary:(void *)binary mainBinaryPath:(void *)path sharedCaches:(uint64_t)caches uid:(double)uid bundleIdentifier:(void *)self0 bundleVersion:(__int128)self1 bundleShortVersion:(void *)self2 bundleBuildVersion:(void *)self3 bundleProjectName:(void *)self4 bundleSourceVersion:(void *)self5 bundleProductBuildVersion:(uint64_t)self6 adamID:(void *)self7 installerVersionID:(char)self8 developerType:(void *)self9 appType:(char)appType isBeta:(void *)beta cohortID:(void *)cohortID vendorID:(void *)vendorID distributorID:(void *)distributorID codesigningID:(void *)codesigningID teamID:(void *)teamID resourceCoalitionSampleCounts:(void *)counts onBehalfOfProcesses:(void *)processes architectureString:(void *)string kernelVersion:(void *)stream0 parentName:(void *)stream1 responsibleName:(void *)stream2 taskExecedFromName:(void *)stream3 taskExecedToName:(void *)stream4 forkTimestamp:(void *)stream5 startTimestamp:(unint64_t)stream6 endTimestamp:(unint64_t)stream7 startSampleIndex:(unint64_t)stream8 endSampleIndex:(unint64_t)stream9 numSamples:(uint64_t)name0 totalNumSamples:(uint64_t)name1 numSamplesSuspended:(unint64_t)name2 numSamplesTerminated:(unint64_t)name3 startingTaskSize:(unint64_t)name4 endingTaskSize:(unint64_t)name5 maxTaskSize:(unint64_t)name6 startSampleIndexOfMaxTaskSize:(unsigned int)name7 endSampleIndexOfMaxTaskSize:(unint64_t)name8 numPageins:(unint64_t)name9 cpuTimeNs:(unint64_t)pid0 cpuInstructions:(unint64_t)pid1 cpuCycles:(unint64_t)pid2 nonThreadCpuTimeNs:(unint64_t)pid3 nonThreadCpuInstructions:(char)pid4 nonThreadCpuCycles:(char)pid5 usesSuddenTermination:(void *)pid6 allowsIdleExit:(void *)pid7 memoryLimitStr:(char)pid8 jetsamPriorityStr:(char)pid9 isTranslocated:(char)binary0 hardenedHeap:(char)binary1 mteCheckedAllocationsEnabled:(char)binary2 mteUserDataAllocationsTagged:(char)binary3 mteSoftModeEnabled:mteInheritanceTurnedOn:isRunningBoardManaged:isUnresponsive:timeOfLastResponse:numThreads:numIdleWorkQueueThreads:numOtherHiddenThreads:hieSwallowedException:numSamplesWQExceededConstrainedThreadLimit:numSamplesWQExceededTotalThreadLimit:numSamplesWQExceededCooperativeThreadLimit:numSamplesWQExceededActiveConstrainedThreadLimit:numSamplesTALEngaged:isRunawayMitigated:threadsDeadlocked:threadsBlockedByADeadlock:ioSize:numIOs:isReportHeader:;
+- (void)avoidOverlapInBinaryLoadInfos:(int)infos onlyExclaves:(void *)exclaves inTask:;
+- (void)copyDescriptionsForFrame:(void *)frame binariesToDisplay:(void *)display extraBinariesToDisplay:;
+- (void)filterToDisplayTimeIndexStart:(unint64_t)start end:(unint64_t)end;
+- (void)filterToMachAbsTimeRangeStart:(unint64_t)start end:(unint64_t)end;
+- (void)filterToTimestampRangeStart:(id)start end:(id)end;
+- (void)filterToWallTimeRangeStart:(double)start end:(double)end;
+- (void)iterateDispatchQueue:(void *)queue orSwiftTaskStates:(void *)states orThread:(void *)thread threadStateIndexes:(unint64_t)indexes startingAtIndex:(uint64_t)index endingAfterTimestamp:(void *)timestamp task:(char)task stopAtTimeJumps:(uint64_t)self0 callback:;
+- (void)printBinaryImagesForTask:(uint64_t)task;
+- (void)printHIDEvent:(uint64_t)event;
 - (void)printHeader;
-- (void)printLoadInfos:(id *)a1;
-- (void)printMultipleTasks:(uint64_t)a1;
+- (void)printLoadInfos:(id *)infos;
+- (void)printMultipleTasks:(uint64_t)tasks;
 - (void)printReport;
-- (void)printSingleStackForTasks:(uint64_t)a3 limitToDispatchQueueIds:(uint64_t)a4 limitToThreadIds:(char)a5 intersection:(uint64_t)a6 sampleCount:;
-- (void)printStack:(void *)a3 stream:;
-- (void)printTask:(uint64_t)a3 specialDispatchQueueId:(uint64_t)a4 specialThreadId:(int)a5 omitSpecial:(int)a6 omitOther:;
-- (void)printToMutableData:(id)a3;
-- (void)printToStream:(__sFILE *)a3;
-- (void)setOptions:(id)a3;
-- (void)sortHeavyCallTree:(uint64_t)a1;
+- (void)printSingleStackForTasks:(uint64_t)tasks limitToDispatchQueueIds:(uint64_t)ids limitToThreadIds:(char)threadIds intersection:(uint64_t)intersection sampleCount:;
+- (void)printStack:(void *)stack stream:;
+- (void)printTask:(uint64_t)task specialDispatchQueueId:(uint64_t)id specialThreadId:(int)threadId omitSpecial:(int)special omitOther:;
+- (void)printToMutableData:(id)data;
+- (void)printToStream:(__sFILE *)stream;
+- (void)setOptions:(id)options;
+- (void)sortHeavyCallTree:(uint64_t)tree;
 - (void)updateIndexes;
 @end
 
@@ -80,63 +80,63 @@
 - (void)updateIndexes
 {
   v58 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_40;
   }
 
-  v3 = (a1 + 32);
-  v2 = *(a1 + 32);
-  if (v2 && *(a1 + 40) && ([v2 le:?] & 1) == 0)
+  v3 = (self + 32);
+  v2 = *(self + 32);
+  if (v2 && *(self + 40) && ([v2 le:?] & 1) == 0)
   {
     v31 = *__error();
     v32 = _sa_logt();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
-      v33 = [*(a1 + 32) debugDescription];
-      v34 = [v33 UTF8String];
-      v35 = [*(a1 + 40) debugDescription];
+      v33 = [*(self + 32) debugDescription];
+      uTF8String = [v33 UTF8String];
+      v35 = [*(self + 40) debugDescription];
       *buf = 136315394;
-      *&buf[4] = v34;
+      *&buf[4] = uTF8String;
       *&buf[12] = 2080;
       *&buf[14] = [v35 UTF8String];
       _os_log_error_impl(&dword_1E0E2F000, v32, OS_LOG_TYPE_ERROR, "reportStartTime %s > reportEndTime %s", buf, 0x16u);
     }
 
     *__error() = v31;
-    v36 = [*(a1 + 32) debugDescription];
+    v36 = [*(self + 32) debugDescription];
     v37 = v36;
-    v38 = [v36 UTF8String];
-    v39 = [*(a1 + 40) debugDescription];
+    uTF8String2 = [v36 UTF8String];
+    v39 = [*(self + 40) debugDescription];
     v40 = v39;
     [v39 UTF8String];
-    _SASetCrashLogMessage(1631, "reportStartTime %s > reportEndTime %s", v41, v42, v43, v44, v45, v46, v38);
+    _SASetCrashLogMessage(1631, "reportStartTime %s > reportEndTime %s", v41, v42, v43, v44, v45, v46, uTF8String2);
 
     _os_crash();
     __break(1u);
   }
 
-  if (*(a1 + 48) == 1)
+  if (*(self + 48) == 1)
   {
-    v4 = [*(a1 + 168) startTime];
-    v5 = [*(a1 + 168) endTime];
-    v6 = *(a1 + 32);
-    if (v6 && v4 && [v6 gt:v4])
+    startTime = [*(self + 168) startTime];
+    endTime = [*(self + 168) endTime];
+    v6 = *(self + 32);
+    if (v6 && startTime && [v6 gt:startTime])
     {
-      v7 = [*(a1 + 168) indexOfFirstSampleOnOrAfterTimestamp:*(a1 + 32)];
-      *(a1 + 56) = v7;
+      v7 = [*(self + 168) indexOfFirstSampleOnOrAfterTimestamp:*(self + 32)];
+      *(self + 56) = v7;
       if (v7 == 0x7FFFFFFFFFFFFFFFLL)
       {
 LABEL_18:
-        v15 = *(a1 + 40);
-        if (v15 && v5 && [v15 lt:v5])
+        v15 = *(self + 40);
+        if (v15 && endTime && [v15 lt:endTime])
         {
-          v16 = [*(a1 + 168) indexOfLastSampleOnOrBeforeTimestamp:*(a1 + 40)];
-          *(a1 + 64) = v16;
+          v16 = [*(self + 168) indexOfLastSampleOnOrBeforeTimestamp:*(self + 40)];
+          *(self + 64) = v16;
           if (v16 == 0x7FFFFFFFFFFFFFFFLL)
           {
 LABEL_25:
-            v21 = *(a1 + 56);
+            v21 = *(self + 56);
             if (v21 == 0x7FFFFFFFFFFFFFFFLL)
             {
               v22 = 0;
@@ -145,7 +145,7 @@ LABEL_25:
             else
             {
               v22 = 0;
-              v23 = *(a1 + 64);
+              v23 = *(self + 64);
               if (v23 != 0x7FFFFFFFFFFFFFFFLL)
               {
                 v24 = v23 >= v21;
@@ -157,50 +157,50 @@ LABEL_25:
               }
             }
 
-            *(a1 + 72) = v22;
+            *(self + 72) = v22;
 
             goto LABEL_32;
           }
 
-          v17 = [*(a1 + 168) sampleTimestamps];
-          v18 = [v17 objectAtIndexedSubscript:*(a1 + 64)];
+          sampleTimestamps = [*(self + 168) sampleTimestamps];
+          lastObject = [sampleTimestamps objectAtIndexedSubscript:*(self + 64)];
         }
 
         else
         {
-          v19 = [*(a1 + 168) sampleTimestamps];
-          *(a1 + 64) = [v19 count] - 1;
+          sampleTimestamps2 = [*(self + 168) sampleTimestamps];
+          *(self + 64) = [sampleTimestamps2 count] - 1;
 
-          v17 = [*(a1 + 168) sampleTimestamps];
-          v18 = [v17 lastObject];
+          sampleTimestamps = [*(self + 168) sampleTimestamps];
+          lastObject = [sampleTimestamps lastObject];
         }
 
-        v20 = *(a1 + 40);
-        *(a1 + 40) = v18;
+        v20 = *(self + 40);
+        *(self + 40) = lastObject;
 
         goto LABEL_25;
       }
 
-      v8 = [*(a1 + 168) sampleTimestamps];
-      v9 = [v8 objectAtIndexedSubscript:*(a1 + 56)];
+      sampleTimestamps3 = [*(self + 168) sampleTimestamps];
+      firstObject = [sampleTimestamps3 objectAtIndexedSubscript:*(self + 56)];
     }
 
     else
     {
-      *(a1 + 56) = 0;
-      v8 = [*(a1 + 168) sampleTimestamps];
-      v9 = [v8 firstObject];
+      *(self + 56) = 0;
+      sampleTimestamps3 = [*(self + 168) sampleTimestamps];
+      firstObject = [sampleTimestamps3 firstObject];
     }
 
     v14 = *v3;
-    *v3 = v9;
+    *v3 = firstObject;
 
     goto LABEL_18;
   }
 
   v10.f64[0] = NAN;
   v10.f64[1] = NAN;
-  *(a1 + 56) = vnegq_f64(v10);
+  *(self + 56) = vnegq_f64(v10);
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
@@ -213,13 +213,13 @@ LABEL_25:
   v51 = __Block_byref_object_copy__4;
   v52 = __Block_byref_object_dispose__4;
   v53 = 0;
-  *(a1 + 72) = 0;
-  v11 = *(a1 + 168);
+  *(self + 72) = 0;
+  v11 = *(self + 168);
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
   v47[2] = __32__SASamplePrinter_updateIndexes__block_invoke;
   v47[3] = &unk_1E86F7438;
-  v47[4] = a1;
+  v47[4] = self;
   v47[5] = buf;
   v47[6] = &v48;
   [v11 enumerateTasks:v47];
@@ -232,31 +232,31 @@ LABEL_25:
   v13 = v49[5];
   if (v13)
   {
-    objc_storeStrong((a1 + 40), v13);
+    objc_storeStrong((self + 40), v13);
   }
 
   _Block_object_dispose(&v48, 8);
 
   _Block_object_dispose(buf, 8);
 LABEL_32:
-  if (*v3 && *(a1 + 40) && [*v3 le:?])
+  if (*v3 && *(self + 40) && [*v3 le:?])
   {
-    v26 = [*(a1 + 168) targetMainBinaryUUID];
+    targetMainBinaryUUID = [*(self + 168) targetMainBinaryUUID];
 
-    v27 = *(a1 + 168);
-    if (v26)
+    v27 = *(self + 168);
+    if (targetMainBinaryUUID)
     {
-      v28 = [SATimeRange timeRangeStart:*(a1 + 32) end:*(a1 + 40)];
+      v28 = [SATimeRange timeRangeStart:*(self + 32) end:*(self + 40)];
       [(SASampleStore *)v27 findTargetProcessesInTimeRange:v28];
 LABEL_39:
 
       goto LABEL_40;
     }
 
-    if ([*(a1 + 168) targetProcessId] != -1)
+    if ([*(self + 168) targetProcessId] != -1)
     {
-      v29 = *(a1 + 168);
-      v28 = [SATimeRange timeRangeStart:*(a1 + 32) end:*(a1 + 40)];
+      v29 = *(self + 168);
+      v28 = [SATimeRange timeRangeStart:*(self + 32) end:*(self + 40)];
       [(SASampleStore *)v29 findTargetProcessInTimeRange:v28];
       goto LABEL_39;
     }
@@ -269,13 +269,13 @@ LABEL_40:
 - (void)printReport
 {
   v521 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_13;
   }
 
   context = objc_autoreleasePoolPush();
-  if (!*(a1 + 8))
+  if (!*(self + 8))
   {
     v405 = *__error();
     v381 = _sa_logt();
@@ -292,44 +292,44 @@ LABEL_40:
     goto LABEL_424;
   }
 
-  if ([*(a1 + 168) isEmpty])
+  if ([*(self + 168) isEmpty])
   {
-    v3 = *(a1 + 8);
+    v3 = *(self + 8);
     v4 = @"No samples\n";
 LABEL_11:
     [v3 appendString:v4];
     goto LABEL_12;
   }
 
-  if (([(SASamplePrinter *)a1 checkForBadOptions]& 1) != 0)
+  if (([(SASamplePrinter *)self checkForBadOptions]& 1) != 0)
   {
     goto LABEL_12;
   }
 
-  if (*(a1 + 48) == 1)
+  if (*(self + 48) == 1)
   {
-    v5 = *(a1 + 56);
+    v5 = *(self + 56);
     if (v5 == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_10;
     }
 
-    v6 = *(a1 + 64);
+    v6 = *(self + 64);
     if (v6 == 0x7FFFFFFFFFFFFFFFLL || v5 > v6)
     {
       goto LABEL_10;
     }
   }
 
-  else if (!*(a1 + 72))
+  else if (!*(self + 72))
   {
 LABEL_10:
-    v3 = *(a1 + 8);
+    v3 = *(self + 8);
     v4 = @"No samples for specified time interval\n";
     goto LABEL_11;
   }
 
-  if (!*(a1 + 32))
+  if (!*(self + 32))
   {
     v412 = *__error();
     v413 = _sa_logt();
@@ -346,7 +346,7 @@ LABEL_10:
     goto LABEL_428;
   }
 
-  if (!*(a1 + 40))
+  if (!*(self + 40))
   {
 LABEL_428:
     v420 = *__error();
@@ -364,29 +364,29 @@ LABEL_428:
     goto LABEL_431;
   }
 
-  [*(a1 + 168) symbolicate];
-  v8 = *(a1 + 168);
+  [*(self + 168) symbolicate];
+  v8 = *(self + 168);
   v481[0] = MEMORY[0x1E69E9820];
   v481[1] = 3221225472;
   v481[2] = __29__SASamplePrinter_preprocess__block_invoke;
   v481[3] = &unk_1E86F5BD0;
-  v472 = a1;
-  v481[4] = a1;
+  selfCopy = self;
+  v481[4] = self;
   [v8 enumerateTasks:v481];
-  v9 = [*(a1 + 168) exclaves];
-  v10 = v9 == 0;
+  exclaves = [*(self + 168) exclaves];
+  v10 = exclaves == 0;
 
   if (!v10)
   {
-    v11 = [(SASampleStore *)*(a1 + 168) lastTaskWithPid:?];
+    v11 = [(SASampleStore *)*(self + 168) lastTaskWithPid:?];
     if (v11)
     {
-      v12 = [(SASamplePrinter *)a1 binaryImagesHitByTask:v11];
+      v12 = [(SASamplePrinter *)self binaryImagesHitByTask:v11];
       *v475 = MEMORY[0x1E69E9820];
       v476 = 3221225472;
       v477 = __29__SASamplePrinter_preprocess__block_invoke_2;
       v478 = &unk_1E86F7688;
-      v479 = a1;
+      selfCopy2 = self;
       v13 = v12;
       v480 = v13;
       [(SATask *)v11 enumerateFrames:v475];
@@ -394,8 +394,8 @@ LABEL_428:
       v493 = 0u;
       v490 = 0u;
       v491 = 0u;
-      v14 = [*(a1 + 168) exclaves];
-      v15 = [v14 countByEnumeratingWithState:&v490 objects:&v507 count:16];
+      exclaves2 = [*(self + 168) exclaves];
+      v15 = [exclaves2 countByEnumeratingWithState:&v490 objects:&v507 count:16];
       if (v15)
       {
         v16 = *v491;
@@ -405,7 +405,7 @@ LABEL_428:
           {
             if (*v491 != v16)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(exclaves2);
             }
 
             v18 = *(*(&v490 + 1) + 8 * i);
@@ -413,19 +413,19 @@ LABEL_428:
             v473[1] = 3221225472;
             v473[2] = __29__SASamplePrinter_preprocess__block_invoke_3;
             v473[3] = &unk_1E86F7688;
-            v473[4] = v472;
+            v473[4] = selfCopy;
             v474 = v13;
             [(SAExclave *)v18 enumerateFrames:v473];
           }
 
-          v15 = [v14 countByEnumeratingWithState:&v490 objects:&v507 count:16];
+          v15 = [exclaves2 countByEnumeratingWithState:&v490 objects:&v507 count:16];
         }
 
         while (v15);
       }
 
-      v19 = [(SASamplePrinter *)v472 sortedLoadInfosForBinaryImages:v13];
-      [(SASamplePrinter *)v472 avoidOverlapInBinaryLoadInfos:v19 onlyExclaves:1 inTask:v11];
+      v19 = [(SASamplePrinter *)selfCopy sortedLoadInfosForBinaryImages:v13];
+      [(SASamplePrinter *)selfCopy avoidOverlapInBinaryLoadInfos:v19 onlyExclaves:1 inTask:v11];
     }
 
     else
@@ -442,29 +442,29 @@ LABEL_428:
     }
   }
 
-  v22 = [*(v472 + 168) cpuSignalHandlerStackLeafKernelFrame];
-  v23 = v22 == 0;
+  cpuSignalHandlerStackLeafKernelFrame = [*(selfCopy + 168) cpuSignalHandlerStackLeafKernelFrame];
+  v23 = cpuSignalHandlerStackLeafKernelFrame == 0;
 
   if (v23)
   {
-    [*(v472 + 168) findCpuSignalHandlerStackLeafKernelFrame];
+    [*(selfCopy + 168) findCpuSignalHandlerStackLeafKernelFrame];
   }
 
-  [*(v472 + 168) attemptedSamplingInterval];
-  v24 = v472;
-  if (v25 != 0.0 && *(v472 + 48) == 1 && ([*(v472 + 168) sampleTimestamps], v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "count") > 1, v26, v24 = v472, v27))
+  [*(selfCopy + 168) attemptedSamplingInterval];
+  v24 = selfCopy;
+  if (v25 != 0.0 && *(selfCopy + 48) == 1 && ([*(selfCopy + 168) sampleTimestamps], v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "count") > 1, v26, v24 = selfCopy, v27))
   {
     v28 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v29 = *(v472 + 104);
-    *(v472 + 104) = v28;
+    v29 = *(selfCopy + 104);
+    *(selfCopy + 104) = v28;
 
-    *(v472 + 96) = 0;
+    *(selfCopy + 96) = 0;
     v500 = 0u;
     v501 = 0u;
     v502 = 0u;
     v503 = 0u;
-    v30 = [*(v472 + 168) sampleTimestamps];
-    v31 = [v30 countByEnumeratingWithState:&v500 objects:v511 count:16];
+    sampleTimestamps = [*(selfCopy + 168) sampleTimestamps];
+    v31 = [sampleTimestamps countByEnumeratingWithState:&v500 objects:v511 count:16];
     if (v31)
     {
       v32 = *v501;
@@ -475,7 +475,7 @@ LABEL_428:
         {
           if (*v501 != v32)
           {
-            objc_enumerationMutation(v30);
+            objc_enumerationMutation(sampleTimestamps);
           }
 
           v35 = *(*(&v500 + 1) + 8 * j);
@@ -483,10 +483,10 @@ LABEL_428:
           if (v33 > 0.0)
           {
             v37 = v36 - v33;
-            v38 = *(v472 + 96);
+            v38 = *(selfCopy + 96);
             if (v38 > v37 || v38 == 0.0)
             {
-              *(v472 + 96) = v37;
+              *(selfCopy + 96) = v37;
             }
           }
 
@@ -494,20 +494,20 @@ LABEL_428:
           v33 = v39;
         }
 
-        v31 = [v30 countByEnumeratingWithState:&v500 objects:v511 count:16];
+        v31 = [sampleTimestamps countByEnumeratingWithState:&v500 objects:v511 count:16];
       }
 
       while (v31);
     }
 
-    v40 = *(v472 + 96);
-    [*(v472 + 168) attemptedSamplingInterval];
-    v41 = v472;
+    v40 = *(selfCopy + 96);
+    [*(selfCopy + 168) attemptedSamplingInterval];
+    v41 = selfCopy;
     if (v40 < v42)
     {
-      [*(v472 + 168) attemptedSamplingInterval];
-      v41 = v472;
-      *(v472 + 96) = v43;
+      [*(selfCopy + 168) attemptedSamplingInterval];
+      v41 = selfCopy;
+      *(selfCopy + 96) = v43;
     }
 
     *&v495 = 0;
@@ -516,14 +516,14 @@ LABEL_428:
     *(&v496 + 1) = __Block_byref_object_copy__4;
     *&v497 = __Block_byref_object_dispose__4;
     *(&v497 + 1) = 0;
-    v44 = [*(v41 + 168) sampleTimestamps];
+    sampleTimestamps2 = [*(v41 + 168) sampleTimestamps];
     *&v486 = MEMORY[0x1E69E9820];
     *(&v486 + 1) = 3221225472;
     *&v487 = __37__SASamplePrinter_calculateTimeJumps__block_invoke;
     *(&v487 + 1) = &unk_1E86F73E8;
     *&v488 = v41;
     *(&v488 + 1) = &v495;
-    [v44 enumerateObjectsUsingBlock:&v486];
+    [sampleTimestamps2 enumerateObjectsUsingBlock:&v486];
 
     _Block_object_dispose(&v495, 8);
   }
@@ -534,20 +534,20 @@ LABEL_428:
     *(v24 + 104) = 0;
   }
 
-  v46 = *(v472 + 136);
-  location = (v472 + 136);
-  *(v472 + 136) = 0;
+  v46 = *(selfCopy + 136);
+  location = (selfCopy + 136);
+  *(selfCopy + 136) = 0;
 
-  v47 = *(v472 + 144);
-  *(v472 + 144) = 0;
+  v47 = *(selfCopy + 144);
+  *(selfCopy + 144) = 0;
 
-  if ([*(v472 + 168) targetHIDEventMachAbs])
+  if ([*(selfCopy + 168) targetHIDEventMachAbs])
   {
     v488 = 0u;
     v489 = 0u;
     v486 = 0u;
     v487 = 0u;
-    obj = [*(v472 + 168) hidEvents];
+    obj = [*(selfCopy + 168) hidEvents];
     v48 = [obj countByEnumeratingWithState:&v486 objects:v511 count:16];
     if (v48)
     {
@@ -562,30 +562,30 @@ LABEL_428:
           }
 
           v51 = *(*(&v486 + 1) + 8 * k);
-          v52 = [v51 hidEventTimestamp];
-          v53 = [v52 machAbsTime];
-          if (v53 == [*(v472 + 168) targetHIDEventMachAbs])
+          hidEventTimestamp = [v51 hidEventTimestamp];
+          machAbsTime = [hidEventTimestamp machAbsTime];
+          if (machAbsTime == [*(selfCopy + 168) targetHIDEventMachAbs])
           {
-            if ([*(v472 + 168) targetProcessId] == -1)
+            if ([*(selfCopy + 168) targetProcessId] == -1)
             {
 
 LABEL_66:
-              objc_storeStrong((v472 + 120), v51);
-              v58 = *(v472 + 168);
+              objc_storeStrong((selfCopy + 120), v51);
+              v58 = *(selfCopy + 168);
               if (v58 && (*(v58 + 404) & 1) != 0)
               {
                 v59 = objc_alloc_init(MEMORY[0x1E695DF70]);
-                v60 = *(v472 + 128);
-                *(v472 + 128) = v59;
+                v60 = *(selfCopy + 128);
+                *(selfCopy + 128) = v59;
 
                 v441 = objc_alloc_init(MEMORY[0x1E695DF90]);
-                v61 = [v51 hidEventTimestamp];
-                v62 = [*(v472 + 168) indexOfLastSampleOnOrBeforeTimestamp:v61];
+                hidEventTimestamp2 = [v51 hidEventTimestamp];
+                v62 = [*(selfCopy + 168) indexOfLastSampleOnOrBeforeTimestamp:hidEventTimestamp2];
                 v505 = 0u;
                 v506 = 0u;
                 memset(v504, 0, sizeof(v504));
-                v444 = [*(v472 + 120) steps];
-                v448 = [v444 countByEnumeratingWithState:v504 objects:&v500 count:16];
+                steps = [*(selfCopy + 120) steps];
+                v448 = [steps countByEnumeratingWithState:v504 objects:&v500 count:16];
                 if (v448)
                 {
                   v440 = 0;
@@ -593,29 +593,29 @@ LABEL_66:
                   do
                   {
                     v63 = 0;
-                    v466 = v61;
+                    v466 = hidEventTimestamp2;
                     do
                     {
                       if (**&v504[16] != v446)
                       {
                         v64 = v63;
-                        objc_enumerationMutation(v444);
+                        objc_enumerationMutation(steps);
                         v63 = v64;
                       }
 
                       v453 = v63;
                       v65 = *(*&v504[8] + 8 * v63);
-                      v66 = *(v472 + 168);
-                      v67 = [v65 timestamp];
-                      v456 = [v66 indexOfLastSampleOnOrBeforeTimestamp:v67];
+                      v66 = *(selfCopy + 168);
+                      timestamp = [v65 timestamp];
+                      v456 = [v66 indexOfLastSampleOnOrBeforeTimestamp:timestamp];
 
                       if (v456 != 0x7FFFFFFFFFFFFFFFLL && (v62 == 0x7FFFFFFFFFFFFFFFLL || v62 < v456))
                       {
-                        v68 = *(v472 + 168);
+                        v68 = *(selfCopy + 168);
                         v69 = [v65 pid];
                         v70 = [v65 tid];
-                        v71 = [v65 timestamp];
-                        v450 = [(SASampleStore *)v68 taskWithPid:v69 orTid:v70 atTimestamp:v71];
+                        timestamp2 = [v65 timestamp];
+                        v450 = [(SASampleStore *)v68 taskWithPid:v69 orTid:v70 atTimestamp:timestamp2];
 
                         if (v450)
                         {
@@ -632,11 +632,11 @@ LABEL_66:
                           v442 = v72;
                           if ([v65 tid])
                           {
-                            v73 = [v450 threads];
+                            threads = [v450 threads];
                             v74 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v65, "tid")}];
-                            v459 = [v73 objectForKeyedSubscript:v74];
+                            mainThread = [threads objectForKeyedSubscript:v74];
 
-                            if (!v459)
+                            if (!mainThread)
                             {
                               v75 = *__error();
                               v76 = _sa_logt();
@@ -651,25 +651,25 @@ LABEL_66:
                                 _os_log_error_impl(&dword_1E0E2F000, v76, OS_LOG_TYPE_ERROR, "No thread %llu in %@ for hid event", buf, 0x16u);
                               }
 
-                              v459 = 0;
+                              mainThread = 0;
                               *__error() = v75;
                             }
                           }
 
                           else
                           {
-                            v459 = [v450 mainThread];
-                            if (!v459)
+                            mainThread = [v450 mainThread];
+                            if (!mainThread)
                             {
                               v484 = 0u;
                               v485 = 0u;
                               v482 = 0u;
                               v483 = 0u;
-                              v81 = [v450 threads];
-                              v82 = [v81 countByEnumeratingWithState:&v482 objects:&v495 count:16];
+                              threads2 = [v450 threads];
+                              v82 = [threads2 countByEnumeratingWithState:&v482 objects:&v495 count:16];
                               if (v82)
                               {
-                                v459 = 0;
+                                mainThread = 0;
                                 v83 = 0;
                                 v84 = *v483;
                                 do
@@ -678,13 +678,13 @@ LABEL_66:
                                   {
                                     if (*v483 != v84)
                                     {
-                                      objc_enumerationMutation(v81);
+                                      objc_enumerationMutation(threads2);
                                     }
 
                                     v86 = *(*(&v482 + 1) + 8 * m);
                                     v87 = [v86 firstThreadStateOnOrAfterTime:v466 sampleIndex:0x7FFFFFFFFFFFFFFFLL];
-                                    v88 = [v65 timestamp];
-                                    v89 = [v86 lastThreadStateOnOrBeforeTime:v88 sampleIndex:0x7FFFFFFFFFFFFFFFLL];
+                                    timestamp3 = [v65 timestamp];
+                                    v89 = [v86 lastThreadStateOnOrBeforeTime:timestamp3 sampleIndex:0x7FFFFFFFFFFFFFFFLL];
 
                                     if (v89)
                                     {
@@ -698,24 +698,24 @@ LABEL_66:
 
                                     if (!v90)
                                     {
-                                      v91 = [v89 cpuTimeNs];
-                                      if (v91 > [v87 cpuTimeNs])
+                                      cpuTimeNs = [v89 cpuTimeNs];
+                                      if (cpuTimeNs > [v87 cpuTimeNs])
                                       {
-                                        v92 = [v89 cpuTimeNs];
-                                        if (v83 < v92 - [v87 cpuTimeNs])
+                                        cpuTimeNs2 = [v89 cpuTimeNs];
+                                        if (v83 < cpuTimeNs2 - [v87 cpuTimeNs])
                                         {
-                                          v93 = [v89 cpuTimeNs];
-                                          v94 = [v87 cpuTimeNs];
+                                          cpuTimeNs3 = [v89 cpuTimeNs];
+                                          cpuTimeNs4 = [v87 cpuTimeNs];
                                           v95 = v86;
 
-                                          v83 = v93 - v94;
-                                          v459 = v95;
+                                          v83 = cpuTimeNs3 - cpuTimeNs4;
+                                          mainThread = v95;
                                         }
                                       }
                                     }
                                   }
 
-                                  v82 = [v81 countByEnumeratingWithState:&v482 objects:&v495 count:16];
+                                  v82 = [threads2 countByEnumeratingWithState:&v482 objects:&v495 count:16];
                                 }
 
                                 while (v82);
@@ -723,14 +723,14 @@ LABEL_66:
 
                               else
                               {
-                                v459 = 0;
+                                mainThread = 0;
                               }
                             }
                           }
 
                           v96 = [SAHIDStepSample alloc];
                           v97 = [v65 tid];
-                          v98 = [v65 timestamp];
+                          timestamp4 = [v65 timestamp];
                           if (v96)
                           {
                             *buf = v96;
@@ -742,18 +742,18 @@ LABEL_66:
                               objc_storeStrong(&v99->_task, v450);
                               v96->_threadId = v97;
                               objc_storeStrong(&v96->_startTimestamp, v466);
-                              objc_storeStrong(&v96->_endTimestamp, v98);
+                              objc_storeStrong(&v96->_endTimestamp, timestamp4);
                               v96->_startSampleIndex = v442;
                               v96->_endSampleIndex = v456;
                             }
                           }
 
-                          [*(v472 + 128) addObject:v96];
+                          [*(selfCopy + 128) addObject:v96];
                           v100 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v65, "tid")}];
                           v101 = [v441 objectForKeyedSubscript:v100];
-                          v102 = [v101 unsignedLongValue];
+                          unsignedLongValue = [v101 unsignedLongValue];
 
-                          v103 = v456 - v442 + v102 + 1;
+                          v103 = v456 - v442 + unsignedLongValue + 1;
                           v104 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v103];
                           v105 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v65, "tid")}];
                           [v441 setObject:v104 forKeyedSubscript:v105];
@@ -761,7 +761,7 @@ LABEL_66:
                           if (v103 > v440)
                           {
                             objc_storeStrong(location, v450);
-                            objc_storeStrong((v472 + 144), v459);
+                            objc_storeStrong((selfCopy + 144), mainThread);
                             v440 = v103;
                           }
                         }
@@ -787,14 +787,14 @@ LABEL_66:
                         v62 = v456;
                       }
 
-                      v61 = [v65 timestamp];
+                      hidEventTimestamp2 = [v65 timestamp];
 
                       v63 = v453 + 1;
-                      v466 = v61;
+                      v466 = hidEventTimestamp2;
                     }
 
                     while (v453 + 1 != v448);
-                    v448 = [v444 countByEnumeratingWithState:v504 objects:&v500 count:16];
+                    v448 = [steps countByEnumeratingWithState:v504 objects:&v500 count:16];
                   }
 
                   while (v448);
@@ -804,10 +804,10 @@ LABEL_66:
               goto LABEL_116;
             }
 
-            v54 = [v51 steps];
-            v55 = [v54 lastObject];
-            v56 = [v55 pid];
-            v57 = v56 == [*(v472 + 168) targetProcessId];
+            steps2 = [v51 steps];
+            lastObject = [steps2 lastObject];
+            v56 = [lastObject pid];
+            v57 = v56 == [*(selfCopy + 168) targetProcessId];
 
             if (v57)
             {
@@ -833,40 +833,40 @@ LABEL_66:
 LABEL_116:
   }
 
-  v108 = [*(v472 + 168) timestampOfLastStackshot];
-  v109 = v472;
-  if (v108 || *(v472 + 48) == 1 && ([*(v472 + 168) sampleTimestamps], v112 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v112, "lastObject"), v108 = objc_claimAutoreleasedReturnValue(), v112, v109 = v472, v108))
+  timestampOfLastStackshot = [*(selfCopy + 168) timestampOfLastStackshot];
+  uTF8String = selfCopy;
+  if (timestampOfLastStackshot || *(selfCopy + 48) == 1 && ([*(selfCopy + 168) sampleTimestamps], v112 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v112, "lastObject"), timestampOfLastStackshot = objc_claimAutoreleasedReturnValue(), v112, uTF8String = selfCopy, timestampOfLastStackshot))
   {
-    v110 = [SADependencyGraphNode dependencyGraphForThreadsInSampleStore:v109[21] atTimestamp:v108];
-    v111 = *(v472 + 152);
-    *(v472 + 152) = v110;
+    v110 = [SADependencyGraphNode dependencyGraphForThreadsInSampleStore:uTF8String[21] atTimestamp:timestampOfLastStackshot];
+    v111 = *(selfCopy + 152);
+    *(selfCopy + 152) = v110;
 
-    v109 = v472;
+    uTF8String = selfCopy;
   }
 
-  if ([v109[2] printJson])
+  if ([uTF8String[2] printJson])
   {
-    [v109[1] appendString:@"{"];
+    [uTF8String[1] appendString:@"{"];
   }
 
-  if ([v109[2] displayHeader])
+  if ([uTF8String[2] displayHeader])
   {
     [SASamplePrinter printHeader];
   }
 
-  if (![v109[2] displayBody])
+  if (![uTF8String[2] displayBody])
   {
     goto LABEL_278;
   }
 
-  if ([v109[2] systemstatsFormat])
+  if ([uTF8String[2] systemstatsFormat])
   {
-    v113 = [v109 options];
-    v114 = [v113 printJson];
+    options = [uTF8String options];
+    printJson = [options printJson];
 
-    if (!v114)
+    if (!printJson)
     {
-      [*(v472 + 8) appendString:@"\nBinary Images:\n"];
+      [*(selfCopy + 8) appendString:@"\nBinary Images:\n"];
       v115 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:512];
       *&v486 = MEMORY[0x1E69E9820];
       *(&v486 + 1) = 3221225472;
@@ -875,7 +875,7 @@ LABEL_116:
       v116 = v115;
       *&v488 = v116;
       v117 = MEMORY[0x1E12EBE50](&v486);
-      v118 = *(v472 + 168);
+      v118 = *(selfCopy + 168);
       *&v490 = MEMORY[0x1E69E9820];
       *(&v490 + 1) = 3221225472;
       *&v491 = __52__SASamplePrinter_printSystemStatsStyleBinaryImages__block_invoke_2;
@@ -885,8 +885,8 @@ LABEL_116:
       v454 = v116;
       *&v492 = v454;
       [v118 enumerateTasks:&v490];
-      v119 = [v454 allKeys];
-      v120 = [v119 sortedArrayUsingComparator:&__block_literal_global_1971];
+      allKeys = [v454 allKeys];
+      v120 = [allKeys sortedArrayUsingComparator:&__block_literal_global_1971];
 
       v502 = 0u;
       v503 = 0u;
@@ -933,8 +933,8 @@ LABEL_116:
                   }
 
                   v127 = *(*(&v495 + 1) + 8 * n);
-                  v128 = [v127 binary];
-                  v129 = v128 == v124;
+                  binary = [v127 binary];
+                  v129 = binary == v124;
 
                   if (!v129)
                   {
@@ -944,66 +944,66 @@ LABEL_116:
                     {
                       v170 = [v127 debugDescription];
                       v171 = v170;
-                      v109 = [v170 UTF8String];
+                      uTF8String = [v170 UTF8String];
                       v172 = [v124 debugDescription];
                       v173 = v172;
-                      v174 = [v172 UTF8String];
+                      uTF8String2 = [v172 UTF8String];
                       *v504 = 136315394;
-                      *&v504[4] = v109;
+                      *&v504[4] = uTF8String;
                       *&v504[12] = 2080;
-                      *&v504[14] = v174;
+                      *&v504[14] = uTF8String2;
                       _os_log_error_impl(&dword_1E0E2F000, v169, OS_LOG_TYPE_ERROR, "load info %s not using binary %s", v504, 0x16u);
                     }
 
                     *__error() = v168;
                     v175 = [v127 debugDescription];
                     v176 = v175;
-                    v177 = [v175 UTF8String];
+                    uTF8String3 = [v175 UTF8String];
                     v178 = [v124 debugDescription];
                     v179 = v178;
                     [v178 UTF8String];
-                    _SASetCrashLogMessage(9107, "load info %s not using binary %s", v180, v181, v182, v183, v184, v185, v177);
+                    _SASetCrashLogMessage(9107, "load info %s not using binary %s", v180, v181, v182, v183, v184, v185, uTF8String3);
 
                     _os_crash();
                     __break(1u);
                     goto LABEL_193;
                   }
 
-                  v130 = [v127 segment];
-                  v131 = [v127 isInKernelAddressSpace];
-                  v132 = [v130 name];
-                  v133 = *(v472 + 88);
+                  segment = [v127 segment];
+                  isInKernelAddressSpace = [v127 isInKernelAddressSpace];
+                  name = [segment name];
+                  v133 = *(selfCopy + 88);
                   if (!v133)
                   {
                     v134 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:512];
-                    v135 = *(v472 + 88);
-                    *(v472 + 88) = v134;
+                    v135 = *(selfCopy + 88);
+                    *(selfCopy + 88) = v134;
 
-                    v133 = *(v472 + 88);
+                    v133 = *(selfCopy + 88);
                   }
 
                   v136 = [v133 objectForKeyedSubscript:v124];
                   if (!v136)
                   {
                     v136 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:1];
-                    [*(v472 + 88) setObject:v136 forKeyedSubscript:v124];
+                    [*(selfCopy + 88) setObject:v136 forKeyedSubscript:v124];
                   }
 
                   v137 = [MEMORY[0x1E696AD98] numberWithLong:v121];
-                  if (v132)
+                  if (name)
                   {
-                    [v136 setObject:v137 forKeyedSubscript:v132];
+                    [v136 setObject:v137 forKeyedSubscript:name];
                   }
 
                   else
                   {
-                    v138 = [MEMORY[0x1E695DFB0] null];
-                    [v136 setObject:v137 forKeyedSubscript:v138];
+                    null = [MEMORY[0x1E695DFB0] null];
+                    [v136 setObject:v137 forKeyedSubscript:null];
                   }
 
-                  [*(v472 + 8) printWithFormat:@"%lu", v121];
-                  v139 = *(v472 + 8);
-                  if (v131)
+                  [*(selfCopy + 8) printWithFormat:@"%lu", v121];
+                  v139 = *(selfCopy + 8);
+                  if (isInKernelAddressSpace)
                   {
                     v140 = "*";
                   }
@@ -1013,11 +1013,11 @@ LABEL_116:
                     v140 = "";
                   }
 
-                  v141 = [v124 bundleIdentifier];
-                  if (v141)
+                  bundleIdentifier = [v124 bundleIdentifier];
+                  if (bundleIdentifier)
                   {
-                    v142 = [v124 bundleIdentifier];
-                    v143 = SACopySanitizedString(v142, 1, 0);
+                    bundleIdentifier2 = [v124 bundleIdentifier];
+                    v143 = SACopySanitizedString(bundleIdentifier2, 1, 0);
                     [v139 printWithFormat:@"\t%s%@", v140, v143];
                   }
 
@@ -1026,25 +1026,25 @@ LABEL_116:
                     [v139 printWithFormat:@"\t%s%@", v140, &stru_1F5BBF440];
                   }
 
-                  [*(v472 + 8) appendString:@"\t"];
-                  v144 = [v124 bundleVersion];
-                  v145 = [v124 bundleShortVersion];
-                  v146 = [v124 binaryVersion];
-                  v147 = v146;
-                  if (v145 || v144 || v146)
+                  [*(selfCopy + 8) appendString:@"\t"];
+                  bundleVersion = [v124 bundleVersion];
+                  bundleShortVersion = [v124 bundleShortVersion];
+                  binaryVersion = [v124 binaryVersion];
+                  v147 = binaryVersion;
+                  if (bundleShortVersion || bundleVersion || binaryVersion)
                   {
-                    if (v145)
+                    if (bundleShortVersion)
                     {
-                      v148 = *(v472 + 8);
-                      v149 = SACopySanitizedString(v145, 1, 0);
+                      v148 = *(selfCopy + 8);
+                      v149 = SACopySanitizedString(bundleShortVersion, 1, 0);
                       [v148 appendString:v149];
                     }
 
-                    if (v144 | v147)
+                    if (bundleVersion | v147)
                     {
-                      if (v144)
+                      if (bundleVersion)
                       {
-                        v150 = v144;
+                        v150 = bundleVersion;
                       }
 
                       else
@@ -1052,55 +1052,55 @@ LABEL_116:
                         v150 = v147;
                       }
 
-                      v151 = *(v472 + 8);
+                      v151 = *(selfCopy + 8);
                       v152 = SACopySanitizedString(v150, 1, 0);
                       [v151 printWithFormat:@" (%@)", v152];
                     }
                   }
 
-                  v153 = *(v472 + 8);
-                  v154 = [v124 uuid];
-                  v155 = [v154 UUIDString];
-                  v156 = v155;
+                  v153 = *(selfCopy + 8);
+                  uuid = [v124 uuid];
+                  uUIDString = [uuid UUIDString];
+                  v156 = uUIDString;
                   v157 = &stru_1F5BBF440;
-                  if (v155)
+                  if (uUIDString)
                   {
-                    v157 = v155;
+                    v157 = uUIDString;
                   }
 
                   [v153 printWithFormat:@"\t<%@>", v157];
 
-                  if (v130 && [v467 count] == 1 && objc_msgSend(v130, "hasOffsetIntoBinary") && !objc_msgSend(v130, "offsetIntoBinary"))
+                  if (segment && [v467 count] == 1 && objc_msgSend(segment, "hasOffsetIntoBinary") && !objc_msgSend(segment, "offsetIntoBinary"))
                   {
 
-                    v130 = 0;
+                    segment = 0;
                   }
 
-                  v158 = *(v472 + 8);
-                  v159 = [v130 name];
-                  v160 = v159;
+                  v158 = *(selfCopy + 8);
+                  name2 = [segment name];
+                  v160 = name2;
                   v161 = &stru_1F5BBF440;
-                  if (v159)
+                  if (name2)
                   {
-                    v161 = v159;
+                    v161 = name2;
                   }
 
                   [v158 printWithFormat:@"\t%@", v161];
 
-                  [*(v472 + 8) appendString:@"\t"];
-                  v109 = [v124 path];
-                  if (v109)
+                  [*(selfCopy + 8) appendString:@"\t"];
+                  uTF8String = [v124 path];
+                  if (uTF8String)
                   {
-                    if ([*(v472 + 168) sanitizePaths])
+                    if ([*(selfCopy + 168) sanitizePaths])
                     {
                     }
 
-                    v162 = *(v472 + 8);
-                    v163 = SACopySanitizedString(v109, 1, 0);
+                    v162 = *(selfCopy + 8);
+                    v163 = SACopySanitizedString(uTF8String, 1, 0);
                     [v162 appendString:v163];
                   }
 
-                  [*(v472 + 8) appendString:@"\n"];
+                  [*(selfCopy + 8) appendString:@"\n"];
 
                   ++v121;
                 }
@@ -1125,7 +1125,7 @@ LABEL_116:
         while (v449);
       }
 
-      v109 = v472;
+      uTF8String = selfCopy;
       goto LABEL_180;
     }
 
@@ -1145,45 +1145,45 @@ LABEL_431:
   }
 
 LABEL_180:
-  if ([v109[2] printJson])
+  if ([uTF8String[2] printJson])
   {
-    [v109[1] appendString:{@", tasks:["}];
+    [uTF8String[1] appendString:{@", tasks:["}];
   }
 
-  v164 = v109[2];
+  v164 = uTF8String[2];
   if (!v164 || (v165 = v164[21], v165 == 1) || !v165 && *(v164 + 11) != 1)
   {
     if (*location)
     {
-      v167 = *location;
+      targetProcess = *location;
     }
 
     else
     {
 LABEL_193:
-      v167 = [v109[21] targetProcess];
-      v109 = v472;
+      targetProcess = [uTF8String[21] targetProcess];
+      uTF8String = selfCopy;
     }
 
     v186 = [MEMORY[0x1E695E0F0] mutableCopy];
-    v187 = v109[21];
+    v187 = uTF8String[21];
     *&v490 = MEMORY[0x1E69E9820];
     *(&v490 + 1) = 3221225472;
     *&v491 = __41__SASamplePrinter_printTasksIndividually__block_invoke;
     *(&v491 + 1) = &unk_1E86F5418;
-    v188 = v167;
+    v188 = targetProcess;
     *&v492 = v188;
-    *(&v492 + 1) = v109;
+    *(&v492 + 1) = uTF8String;
     v189 = v186;
     *&v493 = v189;
     [v187 enumerateTasks:&v490];
-    v190 = [*(v472 + 16) processSortAttributes];
+    processSortAttributes = [*(selfCopy + 16) processSortAttributes];
     *v504 = MEMORY[0x1E69E9820];
     *&v504[8] = 3221225472;
     *&v504[16] = __41__SASamplePrinter_printTasksIndividually__block_invoke_2;
     *&v504[24] = &unk_1E86F77F0;
-    *&v505 = v472;
-    v191 = v190;
+    *&v505 = selfCopy;
+    v191 = processSortAttributes;
     *(&v505 + 1) = v191;
     [v189 sortUsingComparator:v504];
     *&v482 = 0;
@@ -1194,7 +1194,7 @@ LABEL_193:
     *(&v486 + 1) = 3221225472;
     *&v487 = __41__SASamplePrinter_printTasksIndividually__block_invoke_1480;
     *(&v487 + 1) = &unk_1E86F7818;
-    *&v488 = v472;
+    *&v488 = selfCopy;
     *&v489 = &v482;
     v192 = v188;
     *(&v488 + 1) = v192;
@@ -1209,8 +1209,8 @@ LABEL_193:
     v503 = 0u;
     v500 = 0u;
     v501 = 0u;
-    v195 = [*(v472 + 168) targetProcesses];
-    v196 = [v195 countByEnumeratingWithState:&v500 objects:v511 count:16];
+    targetProcesses = [*(selfCopy + 168) targetProcesses];
+    v196 = [targetProcesses countByEnumeratingWithState:&v500 objects:v511 count:16];
     if (v196)
     {
       v197 = *v501;
@@ -1220,13 +1220,13 @@ LABEL_193:
         {
           if (*v501 != v197)
           {
-            objc_enumerationMutation(v195);
+            objc_enumerationMutation(targetProcesses);
           }
 
           v194[2](v194, *(*(&v500 + 1) + 8 * ii));
         }
 
-        v196 = [v195 countByEnumeratingWithState:&v500 objects:v511 count:16];
+        v196 = [targetProcesses countByEnumeratingWithState:&v500 objects:v511 count:16];
       }
 
       while (v196);
@@ -1265,110 +1265,110 @@ LABEL_193:
 
   if (*location)
   {
-    v166 = *location;
+    targetProcess2 = *location;
   }
 
   else
   {
-    v166 = [v109[21] targetProcess];
-    v109 = v472;
+    targetProcess2 = [uTF8String[21] targetProcess];
+    uTF8String = selfCopy;
   }
 
-  v204 = v109[21];
-  v203 = v109 + 21;
-  v205 = [v204 targetProcesses];
-  v206 = [*(v472 + 16) taskAggregation] == 3;
+  v204 = uTF8String[21];
+  v203 = uTF8String + 21;
+  targetProcesses2 = [v204 targetProcesses];
+  v206 = [*(selfCopy + 16) taskAggregation] == 3;
   v207 = objc_alloc(MEMORY[0x1E695DF90]);
-  v208 = [*v203 tasksByUniquePid];
-  v209 = [v207 initWithCapacity:{objc_msgSend(v208, "count")}];
+  tasksByUniquePid = [*v203 tasksByUniquePid];
+  v209 = [v207 initWithCapacity:{objc_msgSend(tasksByUniquePid, "count")}];
 
   v210 = *v203;
   *&v495 = MEMORY[0x1E69E9820];
   *(&v495 + 1) = 3221225472;
   *&v496 = __44__SASamplePrinter_printTasksWithAggregation__block_invoke;
   *(&v496 + 1) = &unk_1E86F7840;
-  v468 = v166;
+  v468 = targetProcess2;
   *&v497 = v468;
-  v461 = v205;
+  v461 = targetProcesses2;
   *(&v497 + 1) = v461;
-  *&v498 = v472;
+  *&v498 = selfCopy;
   v499 = v206;
   v458 = v209;
   *(&v498 + 1) = v458;
   [v210 enumerateTasks:&v495];
-  v211 = [*(v472 + 16) processSortAttributes];
-  v212 = [v458 allValues];
+  processSortAttributes2 = [*(selfCopy + 16) processSortAttributes];
+  allValues = [v458 allValues];
   *&v482 = MEMORY[0x1E69E9820];
   *(&v482 + 1) = 3221225472;
   *&v483 = __44__SASamplePrinter_printTasksWithAggregation__block_invoke_1486;
   *(&v483 + 1) = &unk_1E86F7868;
-  *&v484 = v472;
-  v452 = v211;
+  *&v484 = selfCopy;
+  v452 = processSortAttributes2;
   *(&v484 + 1) = v452;
-  v455 = [v212 sortedArrayUsingComparator:&v482];
+  v455 = [allValues sortedArrayUsingComparator:&v482];
 
   if (!v468)
   {
     goto LABEL_224;
   }
 
-  v213 = [*(v472 + 16) printJson];
-  if (v213)
+  printJson2 = [*(selfCopy + 16) printJson];
+  if (printJson2)
   {
-    [*(v472 + 8) appendString:@"\n\n\n{"];
+    [*(selfCopy + 8) appendString:@"\n\n\n{"];
   }
 
-  v214 = [*(v472 + 168) targetDispatchQueueId];
-  v215 = [*(v472 + 168) targetThreadId];
-  v216 = [*(v472 + 16) printTargetThreadOnly];
-  if (v214)
+  targetDispatchQueueId = [*(selfCopy + 168) targetDispatchQueueId];
+  targetThreadId = [*(selfCopy + 168) targetThreadId];
+  printTargetThreadOnly = [*(selfCopy + 16) printTargetThreadOnly];
+  if (targetDispatchQueueId)
   {
     v217 = 0;
   }
 
   else
   {
-    v217 = v216;
+    v217 = printTargetThreadOnly;
   }
 
-  if (v217 != 1 || v215)
+  if (v217 != 1 || targetThreadId)
   {
-    if (!(v214 | v215))
+    if (!(targetDispatchQueueId | targetThreadId))
     {
-      [(SASamplePrinter *)v472 printTask:v468 specialDispatchQueueId:0 specialThreadId:0 omitSpecial:0 omitOther:0];
+      [(SASamplePrinter *)selfCopy printTask:v468 specialDispatchQueueId:0 specialThreadId:0 omitSpecial:0 omitOther:0];
       goto LABEL_232;
     }
 
 LABEL_226:
-    [(SASamplePrinter *)v472 printTask:v468 specialDispatchQueueId:v214 specialThreadId:v215 omitSpecial:0 omitOther:1];
-    v234 = [*(v472 + 16) printTargetThreadOnly];
-    v235 = v472;
-    if (v234)
+    [(SASamplePrinter *)selfCopy printTask:v468 specialDispatchQueueId:targetDispatchQueueId specialThreadId:targetThreadId omitSpecial:0 omitOther:1];
+    printTargetThreadOnly2 = [*(selfCopy + 16) printTargetThreadOnly];
+    v235 = selfCopy;
+    if (printTargetThreadOnly2)
     {
-      v236 = *(v472 + 168);
-      if (!v236 || (*(v236 + 404) & 1) == 0 || !*(v472 + 120))
+      v236 = *(selfCopy + 168);
+      if (!v236 || (*(v236 + 404) & 1) == 0 || !*(selfCopy + 120))
       {
 LABEL_233:
-        v233 = v213 ^ 1;
+        v233 = printJson2 ^ 1;
         if ([*(v235 + 16) printJson])
         {
-          [*(v472 + 8) appendString:@"}"];
+          [*(selfCopy + 8) appendString:@"}"];
         }
 
         goto LABEL_235;
       }
     }
 
-    [(SASamplePrinter *)v472 printTask:v468 specialDispatchQueueId:v214 specialThreadId:v215 omitSpecial:1 omitOther:0];
+    [(SASamplePrinter *)selfCopy printTask:v468 specialDispatchQueueId:targetDispatchQueueId specialThreadId:targetThreadId omitSpecial:1 omitOther:0];
 LABEL_232:
-    v235 = v472;
+    v235 = selfCopy;
     goto LABEL_233;
   }
 
-  v218 = [v468 mainThread];
-  v215 = [v218 threadId];
+  mainThread2 = [v468 mainThread];
+  targetThreadId = [mainThread2 threadId];
 
-  if (v215)
+  if (targetThreadId)
   {
     goto LABEL_226;
   }
@@ -1379,17 +1379,17 @@ LABEL_232:
   {
     v221 = [v468 debugDescription];
     v222 = v221;
-    v223 = [v221 UTF8String];
+    uTF8String4 = [v221 UTF8String];
     *v511 = 136315138;
-    v512 = v223;
+    v512 = uTF8String4;
     _os_log_error_impl(&dword_1E0E2F000, v220, OS_LOG_TYPE_ERROR, "no target dispatch queue nor thread id, target task %s, but no main thread", v511, 0xCu);
   }
 
   *__error() = v219;
   v224 = [v468 debugDescription];
   v225 = v224;
-  v226 = [v224 UTF8String];
-  _SASetCrashLogMessage(6452, "no target dispatch queue nor thread id, target task %s, but no main thread", v227, v228, v229, v230, v231, v232, v226);
+  uTF8String5 = [v224 UTF8String];
+  _SASetCrashLogMessage(6452, "no target dispatch queue nor thread id, target task %s, but no main thread", v227, v228, v229, v230, v231, v232, uTF8String5);
 
   _os_crash();
   __break(1u);
@@ -1398,13 +1398,13 @@ LABEL_224:
 LABEL_235:
   if (v461)
   {
-    if ([*(v472 + 16) printJson])
+    if ([*(selfCopy + 16) printJson])
     {
-      v237 = v472;
+      v237 = selfCopy;
       if ((v233 & 1) == 0)
       {
-        [*(v472 + 8) appendString:{@", "}];
-        v237 = v472;
+        [*(selfCopy + 8) appendString:{@", "}];
+        v237 = selfCopy;
       }
 
       [*(v237 + 8) appendString:@"\n\n\n{"];
@@ -1431,20 +1431,20 @@ LABEL_235:
           }
 
           v243 = *(*(&v490 + 1) + 8 * kk);
-          v244 = [v243 mainBinary];
-          v245 = [v244 uuid];
-          v246 = v245;
-          if (v245)
+          mainBinary = [v243 mainBinary];
+          uuid2 = [mainBinary uuid];
+          v246 = uuid2;
+          if (uuid2)
           {
-            v247 = v245;
+            null2 = uuid2;
           }
 
           else
           {
-            v247 = [MEMORY[0x1E695DFB0] null];
+            null2 = [MEMORY[0x1E695DFB0] null];
           }
 
-          v248 = v247;
+          v248 = null2;
 
           v249 = [v238 objectForKeyedSubscript:v248];
           if (!v249)
@@ -1462,8 +1462,8 @@ LABEL_235:
       while (v240);
     }
 
-    v250 = [v238 allValues];
-    v251 = [v250 sortedArrayUsingComparator:&__block_literal_global_1492];
+    allValues2 = [v238 allValues];
+    v251 = [allValues2 sortedArrayUsingComparator:&__block_literal_global_1492];
 
     v488 = 0u;
     v489 = 0u;
@@ -1483,7 +1483,7 @@ LABEL_235:
             objc_enumerationMutation(v252);
           }
 
-          [(SASamplePrinter *)v472 printMultipleTasks:?];
+          [(SASamplePrinter *)selfCopy printMultipleTasks:?];
         }
 
         v253 = [v252 countByEnumeratingWithState:&v486 objects:&v507 count:16];
@@ -1492,9 +1492,9 @@ LABEL_235:
       while (v253);
     }
 
-    if ([*(v472 + 16) printJson])
+    if ([*(selfCopy + 16) printJson])
     {
-      [*(v472 + 8) appendString:@"}"];
+      [*(selfCopy + 8) appendString:@"}"];
     }
   }
 
@@ -1516,21 +1516,21 @@ LABEL_235:
         }
 
         v260 = *(*&v504[8] + 8 * nn);
-        if ([*(v472 + 16) printJson])
+        if ([*(selfCopy + 16) printJson])
         {
           if ((v233 & 1) == 0)
           {
-            [*(v472 + 8) appendString:{@", "}];
+            [*(selfCopy + 8) appendString:{@", "}];
           }
 
-          [*(v472 + 8) appendString:@"\n\n\n{"];
+          [*(selfCopy + 8) appendString:@"\n\n\n{"];
           v233 = 0;
         }
 
-        [(SASamplePrinter *)v472 printMultipleTasks:v260];
-        if ([*(v472 + 16) printJson])
+        [(SASamplePrinter *)selfCopy printMultipleTasks:v260];
+        if ([*(selfCopy + 16) printJson])
         {
-          [*(v472 + 8) appendString:@"}"];
+          [*(selfCopy + 8) appendString:@"}"];
         }
       }
 
@@ -1541,27 +1541,27 @@ LABEL_235:
   }
 
 LABEL_276:
-  v109 = v472;
-  if ([*(v472 + 16) printJson])
+  uTF8String = selfCopy;
+  if ([*(selfCopy + 16) printJson])
   {
-    [*(v472 + 8) appendString:@"]"];
+    [*(selfCopy + 8) appendString:@"]"];
   }
 
 LABEL_278:
-  if (![v109[2] displayFooter])
+  if (![uTF8String[2] displayFooter])
   {
     goto LABEL_405;
   }
 
-  if ([v109[2] printJson])
+  if ([uTF8String[2] printJson])
   {
-    [v109[1] appendString:{@", \n\nsharedcaches:["}];
+    [uTF8String[1] appendString:{@", \n\nsharedcaches:["}];
     v507 = 0u;
     v508 = 0u;
     v509 = 0u;
     v510 = 0u;
-    v261 = [v109[21] sharedCaches];
-    v262 = [v261 countByEnumeratingWithState:&v507 objects:v511 count:16];
+    sharedCaches = [uTF8String[21] sharedCaches];
+    v262 = [sharedCaches countByEnumeratingWithState:&v507 objects:v511 count:16];
     if (v262)
     {
       v263 = 1;
@@ -1572,82 +1572,82 @@ LABEL_278:
         {
           if (*v508 != v264)
           {
-            objc_enumerationMutation(v261);
+            objc_enumerationMutation(sharedCaches);
           }
 
           v266 = *(*(&v507 + 1) + 8 * i1);
-          v267 = [MEMORY[0x1E695DFB0] null];
-          v268 = v267;
-          if (v266 == v267)
+          null3 = [MEMORY[0x1E695DFB0] null];
+          v268 = null3;
+          if (v266 == null3)
           {
           }
 
           else
           {
-            v269 = [v266 binaryLoadInfos];
-            v270 = [v269 count] == 0;
+            binaryLoadInfos = [v266 binaryLoadInfos];
+            v270 = [binaryLoadInfos count] == 0;
 
             if (!v270)
             {
               if ((v263 & 1) == 0)
               {
-                [*(v472 + 8) appendString:{@", \n\n"}];
+                [*(selfCopy + 8) appendString:{@", \n\n"}];
               }
 
-              [*(v472 + 8) appendString:@"{"];
-              v271 = *(v472 + 8);
-              v272 = [v266 uuid];
-              v273 = [v272 UUIDString];
-              SAJSONWriteDictionaryFirstEntry(v271, @"uuid", v273);
+              [*(selfCopy + 8) appendString:@"{"];
+              v271 = *(selfCopy + 8);
+              uuid3 = [v266 uuid];
+              uUIDString2 = [uuid3 UUIDString];
+              SAJSONWriteDictionaryFirstEntry(v271, @"uuid", uUIDString2);
 
-              v274 = *(v472 + 8);
+              v274 = *(selfCopy + 8);
               v275 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v266, "slide")}];
               SAJSONWriteDictionaryEntry(v274, @"slide", v275);
 
-              v276 = *(v472 + 8);
+              v276 = *(selfCopy + 8);
               v277 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v266, "slidBaseAddress")}];
               SAJSONWriteDictionaryEntry(v276, @"slidBaseAddress", v277);
 
-              v278 = *(v472 + 8);
-              v279 = [v266 binaryLoadInfos];
-              SAJSONWriteDictionaryEntry(v278, @"binaryLoadInfos", v279);
+              v278 = *(selfCopy + 8);
+              binaryLoadInfos2 = [v266 binaryLoadInfos];
+              SAJSONWriteDictionaryEntry(v278, @"binaryLoadInfos", binaryLoadInfos2);
 
-              [*(v472 + 8) appendString:@"}"];
+              [*(selfCopy + 8) appendString:@"}"];
               v263 = 0;
             }
           }
         }
 
-        v262 = [v261 countByEnumeratingWithState:&v507 objects:v511 count:16];
+        v262 = [sharedCaches countByEnumeratingWithState:&v507 objects:v511 count:16];
       }
 
       while (v262);
     }
 
-    [*(v472 + 8) appendString:@"]\n\n"];
+    [*(selfCopy + 8) appendString:@"]\n\n"];
 LABEL_404:
-    v109 = v472;
+    uTF8String = selfCopy;
     goto LABEL_405;
   }
 
-  v280 = [v109[21] kextStat];
+  kextStat = [uTF8String[21] kextStat];
 
-  if (v280)
+  if (kextStat)
   {
-    v281 = *(v472 + 8);
-    v282 = [*(v472 + 168) kextStat];
-    [v281 printWithFormat:@"\n\nKextstat:\n%@", v282];
+    v281 = *(selfCopy + 8);
+    kextStat2 = [*(selfCopy + 168) kextStat];
+    [v281 printWithFormat:@"\n\nKextstat:\n%@", kextStat2];
   }
 
-  v283 = v472;
-  if ([*(v472 + 16) displayAllBinaries])
+  v283 = selfCopy;
+  if ([*(selfCopy + 16) displayAllBinaries])
   {
     v488 = 0u;
     v489 = 0u;
     v486 = 0u;
     v487 = 0u;
-    v284 = [*(v472 + 168) sharedCaches];
-    v285 = [v284 countByEnumeratingWithState:&v486 objects:&v507 count:16];
+    sharedCaches2 = [*(selfCopy + 168) sharedCaches];
+    v285 = [sharedCaches2 countByEnumeratingWithState:&v486 objects:&v507 count:16];
     if (!v285)
     {
       goto LABEL_308;
@@ -1660,36 +1660,36 @@ LABEL_404:
       {
         if (*v487 != v286)
         {
-          objc_enumerationMutation(v284);
+          objc_enumerationMutation(sharedCaches2);
         }
 
         v288 = *(*(&v486 + 1) + 8 * i2);
-        v289 = [MEMORY[0x1E695DFB0] null];
-        if (v288 != v289)
+        null4 = [MEMORY[0x1E695DFB0] null];
+        if (v288 != null4)
         {
-          v290 = [v288 binaryLoadInfos];
-          v291 = [v290 count] == 0;
+          binaryLoadInfos3 = [v288 binaryLoadInfos];
+          v291 = [binaryLoadInfos3 count] == 0;
 
           if (v291)
           {
             continue;
           }
 
-          v292 = *(v472 + 8);
+          v292 = *(selfCopy + 8);
           v293 = _shared_cache_display_string(v288);
           [v292 printWithFormat:@"\n\nShared Cache %@:\n", v293];
 
-          v289 = [v288 binaryLoadInfos];
-          [(SASamplePrinter *)v472 printLoadInfos:v289];
+          null4 = [v288 binaryLoadInfos];
+          [(SASamplePrinter *)selfCopy printLoadInfos:null4];
         }
       }
 
-      v285 = [v284 countByEnumeratingWithState:&v486 objects:&v507 count:16];
+      v285 = [sharedCaches2 countByEnumeratingWithState:&v486 objects:&v507 count:16];
       if (!v285)
       {
 LABEL_308:
 
-        v283 = v472;
+        v283 = selfCopy;
         break;
       }
     }
@@ -1697,27 +1697,27 @@ LABEL_308:
 
   if ([*(v283 + 16) displayTrialInformation])
   {
-    v294 = [*(v472 + 168) activeTrials];
-    v295 = v294 == 0;
+    activeTrials = [*(selfCopy + 168) activeTrials];
+    v295 = activeTrials == 0;
 
     if (!v295)
     {
-      v296 = [*(v472 + 16) printJson];
-      v297 = *(v472 + 8);
-      if (v296)
+      printJson3 = [*(selfCopy + 16) printJson];
+      v297 = *(selfCopy + 8);
+      if (printJson3)
       {
-        v462 = [*(v472 + 168) activeTrials];
-        SAJSONWriteDictionaryEntry(v297, @"activeTrials", v462);
+        activeTrials2 = [*(selfCopy + 168) activeTrials];
+        SAJSONWriteDictionaryEntry(v297, @"activeTrials", activeTrials2);
       }
 
       else
       {
-        [*(v472 + 8) appendString:@"\n\n"];
+        [*(selfCopy + 8) appendString:@"\n\n"];
         v505 = 0u;
         v506 = 0u;
         memset(v504, 0, sizeof(v504));
-        v298 = [*(v472 + 168) activeTrials];
-        v463 = [v298 objectForKeyedSubscript:0x1F5BC2440];
+        activeTrials3 = [*(selfCopy + 168) activeTrials];
+        v463 = [activeTrials3 objectForKeyedSubscript:0x1F5BC2440];
 
         v299 = [v463 countByEnumeratingWithState:v504 objects:&v500 count:16];
         if (v299)
@@ -1739,8 +1739,8 @@ LABEL_308:
               v305 = v304;
               if (v304)
               {
-                v306 = [v304 allKeys];
-                v307 = [v306 sortedArrayUsingComparator:&__block_literal_global_11];
+                allKeys2 = [v304 allKeys];
+                v307 = [allKeys2 sortedArrayUsingComparator:&__block_literal_global_11];
                 v308 = [v307 componentsJoinedByString:{@", "}];
               }
 
@@ -1757,7 +1757,7 @@ LABEL_308:
                 v311 = v308;
               }
 
-              [*(v472 + 8) printWithFormat:@"%-*s%@ (treatment:%@ namespaces:%@)\n", 18, "Trial Experiment: ", v309, v310, v311];
+              [*(selfCopy + 8) printWithFormat:@"%-*s%@ (treatment:%@ namespaces:%@)\n", 18, "Trial Experiment: ", v309, v310, v311];
             }
 
             v299 = [v463 countByEnumeratingWithState:v504 objects:&v500 count:16];
@@ -1770,8 +1770,8 @@ LABEL_308:
         v485 = 0u;
         v482 = 0u;
         v483 = 0u;
-        v312 = [*(v472 + 168) activeTrials];
-        v464 = [v312 objectForKeyedSubscript:0x1F5BC2460];
+        activeTrials4 = [*(selfCopy + 168) activeTrials];
+        v464 = [activeTrials4 objectForKeyedSubscript:0x1F5BC2460];
 
         v313 = [v464 countByEnumeratingWithState:&v482 objects:&v495 count:16];
         if (v313)
@@ -1793,8 +1793,8 @@ LABEL_308:
               v319 = v318;
               if (v318)
               {
-                v320 = [v318 allKeys];
-                v321 = [v320 sortedArrayUsingComparator:&__block_literal_global_11];
+                allKeys3 = [v318 allKeys];
+                v321 = [allKeys3 sortedArrayUsingComparator:&__block_literal_global_11];
                 v322 = [v321 componentsJoinedByString:{@", "}];
               }
 
@@ -1817,7 +1817,7 @@ LABEL_308:
                 v326 = v322;
               }
 
-              [*(v472 + 8) printWithFormat:@"%-*s%@ (ramp:%@ namespaces:%@)\n", 18, "Trial Rollout: ", v323, v325, v326];
+              [*(selfCopy + 8) printWithFormat:@"%-*s%@ (ramp:%@ namespaces:%@)\n", 18, "Trial Rollout: ", v323, v325, v326];
             }
 
             v313 = [v464 countByEnumeratingWithState:&v482 objects:&v495 count:16];
@@ -1829,21 +1829,21 @@ LABEL_308:
     }
   }
 
-  v327 = *(v472 + 168);
+  v327 = *(selfCopy + 168);
   if (v327)
   {
     if (v327[404])
     {
-      v328 = [*(v472 + 16) hidEventDisplayOptions];
-      v327 = *(v472 + 168);
-      if ((v328 & 0x18) != 0)
+      hidEventDisplayOptions = [*(selfCopy + 16) hidEventDisplayOptions];
+      v327 = *(selfCopy + 168);
+      if ((hidEventDisplayOptions & 0x18) != 0)
       {
         v492 = 0u;
         v493 = 0u;
         v490 = 0u;
         v491 = 0u;
-        v329 = [v327 hidEvents];
-        v330 = [v329 countByEnumeratingWithState:&v490 objects:v511 count:16];
+        hidEvents = [v327 hidEvents];
+        v330 = [hidEvents countByEnumeratingWithState:&v490 objects:v511 count:16];
         if (v330)
         {
           v331 = *v491;
@@ -1854,92 +1854,92 @@ LABEL_308:
             {
               if (*v491 != v331)
               {
-                objc_enumerationMutation(v329);
+                objc_enumerationMutation(hidEvents);
               }
 
               v334 = *(*(&v490 + 1) + 8 * i5);
-              if (([*(v472 + 16) hidEventDisplayOptions] & 0x10) != 0)
+              if (([*(selfCopy + 16) hidEventDisplayOptions] & 0x10) != 0)
               {
                 goto LABEL_436;
               }
 
-              if (([*(v472 + 16) hidEventDisplayOptions] & 4) != 0)
+              if (([*(selfCopy + 16) hidEventDisplayOptions] & 4) != 0)
               {
-                if ([*(v472 + 168) targetHIDEventMachAbs])
+                if ([*(selfCopy + 168) targetHIDEventMachAbs])
                 {
-                  v335 = [v334 hidEventTimestamp];
-                  v336 = [v335 machAbsTime];
-                  LOBYTE(v336) = v336 == [*(v472 + 168) targetHIDEventMachAbs];
+                  hidEventTimestamp3 = [v334 hidEventTimestamp];
+                  machAbsTime2 = [hidEventTimestamp3 machAbsTime];
+                  LOBYTE(machAbsTime2) = machAbsTime2 == [*(selfCopy + 168) targetHIDEventMachAbs];
 
-                  if (v336)
+                  if (machAbsTime2)
                   {
                     continue;
                   }
                 }
               }
 
-              v338 = [v334 steps];
-              v339 = [v338 lastObject];
-              v340 = [v339 timestamp];
-              [v340 machAbsTimeSeconds];
+              steps3 = [v334 steps];
+              lastObject2 = [steps3 lastObject];
+              timestamp5 = [lastObject2 timestamp];
+              [timestamp5 machAbsTimeSeconds];
               v342 = v341;
-              v343 = [v334 hidEventTimestamp];
-              [v343 machAbsTimeSeconds];
+              hidEventTimestamp4 = [v334 hidEventTimestamp];
+              [hidEventTimestamp4 machAbsTimeSeconds];
               v345 = v344;
 
               v337 = v342 - v345;
               if (v342 - v345 >= 0.2)
               {
 LABEL_436:
-                v346 = [v334 steps];
-                v347 = [v346 lastObject];
-                v348 = [v347 timestamp];
-                v349 = [v348 lt:*(v472 + 32)];
+                steps4 = [v334 steps];
+                lastObject3 = [steps4 lastObject];
+                timestamp6 = [lastObject3 timestamp];
+                v349 = [timestamp6 lt:*(selfCopy + 32)];
 
                 if ((v349 & 1) == 0)
                 {
-                  v350 = [v334 steps];
-                  v351 = [v350 firstObject];
-                  v352 = [v351 timestamp];
-                  v353 = [v352 gt:*(v472 + 40)];
+                  steps5 = [v334 steps];
+                  firstObject = [steps5 firstObject];
+                  timestamp7 = [firstObject timestamp];
+                  v353 = [timestamp7 gt:*(selfCopy + 40)];
 
                   if ((v353 & 1) == 0)
                   {
                     v354 = @"\n";
                     if (v332)
                     {
-                      v355 = [*(v472 + 16) hidEventDisplayOptions];
+                      hidEventDisplayOptions2 = [*(selfCopy + 16) hidEventDisplayOptions];
                       v354 = @"\n\nAll HID events:\n";
-                      if ((v355 & 0x10) == 0)
+                      if ((hidEventDisplayOptions2 & 0x10) == 0)
                       {
-                        if (([*(v472 + 16) hidEventDisplayOptions] & 4) == 0 || (v356 = objc_msgSend(*(v472 + 168), "targetHIDEventMachAbs"), v354 = @"\n\nOther slow HID events:\n", !v356))
+                        if (([*(selfCopy + 16) hidEventDisplayOptions] & 4) == 0 || (v356 = objc_msgSend(*(selfCopy + 168), "targetHIDEventMachAbs"), v354 = @"\n\nOther slow HID events:\n", !v356))
                         {
                           v354 = @"\n\nSlow HID events:\n";
                         }
                       }
                     }
 
-                    [*(v472 + 8) appendString:v354];
-                    [(SASamplePrinter *)v472 printHIDEvent:v334];
+                    [*(selfCopy + 8) appendString:v354];
+                    [(SASamplePrinter *)selfCopy printHIDEvent:v334];
                     v332 = 0;
                   }
                 }
               }
             }
 
-            v330 = [v329 countByEnumeratingWithState:&v490 objects:v511 count:{16, v337}];
+            v330 = [hidEvents countByEnumeratingWithState:&v490 objects:v511 count:{16, v337}];
           }
 
           while (v330);
         }
 
-        v327 = *(v472 + 168);
+        v327 = *(selfCopy + 168);
       }
     }
   }
 
-  v357 = [v327 ioEvents];
-  v358 = [v357 count] == 0;
+  ioEvents = [v327 ioEvents];
+  v358 = [ioEvents count] == 0;
 
   if (v358)
   {
@@ -1951,8 +1951,8 @@ LABEL_436:
   v491 = 0u;
   v492 = 0u;
   v493 = 0u;
-  v359 = [*(v472 + 168) ioEvents];
-  v360 = [v359 countByEnumeratingWithState:&v490 objects:v511 count:16];
+  ioEvents2 = [*(selfCopy + 168) ioEvents];
+  v360 = [ioEvents2 countByEnumeratingWithState:&v490 objects:v511 count:16];
   if (!v360)
   {
 
@@ -1967,51 +1967,51 @@ LABEL_436:
     {
       if (*v491 != v362)
       {
-        objc_enumerationMutation(v359);
+        objc_enumerationMutation(ioEvents2);
       }
 
       v364 = *(*(&v490 + 1) + 8 * i6);
-      v365 = [v364 endTimestamp];
-      if (([*(v472 + 32) gt:v365] & 1) == 0)
+      endTimestamp = [v364 endTimestamp];
+      if (([*(selfCopy + 32) gt:endTimestamp] & 1) == 0)
       {
-        if ([*(v472 + 40) lt:v365])
+        if ([*(selfCopy + 40) lt:endTimestamp])
         {
 
           goto LABEL_388;
         }
 
-        v366 = [v364 startTimestamp];
-        [v365 machContTimeSeconds];
-        if (v367 == 0.0 || ([v366 machContTimeSeconds], v368 == 0.0))
+        startTimestamp = [v364 startTimestamp];
+        [endTimestamp machContTimeSeconds];
+        if (v367 == 0.0 || ([startTimestamp machContTimeSeconds], v368 == 0.0))
         {
-          [v365 machAbsTimeSeconds];
-          if (v372 == 0.0 || ([v366 machAbsTimeSeconds], v373 == 0.0))
+          [endTimestamp machAbsTimeSeconds];
+          if (v372 == 0.0 || ([startTimestamp machAbsTimeSeconds], v373 == 0.0))
           {
-            [v365 wallTime];
-            if (v375 == 0.0 || ([v366 wallTime], v376 == 0.0))
+            [endTimestamp wallTime];
+            if (v375 == 0.0 || ([startTimestamp wallTime], v376 == 0.0))
             {
               v378 = 0;
               goto LABEL_383;
             }
 
-            [v365 wallTime];
+            [endTimestamp wallTime];
             v370 = v377;
-            [v366 wallTime];
+            [startTimestamp wallTime];
           }
 
           else
           {
-            [v365 machAbsTimeSeconds];
+            [endTimestamp machAbsTimeSeconds];
             v370 = v374;
-            [v366 machAbsTimeSeconds];
+            [startTimestamp machAbsTimeSeconds];
           }
         }
 
         else
         {
-          [v365 machContTimeSeconds];
+          [endTimestamp machContTimeSeconds];
           v370 = v369;
-          [v366 machContTimeSeconds];
+          [startTimestamp machContTimeSeconds];
         }
 
         v378 = ((v370 - v371) * 1000000.0);
@@ -2022,7 +2022,7 @@ LABEL_383:
       }
     }
 
-    v360 = [v359 countByEnumeratingWithState:&v490 objects:v511 count:16];
+    v360 = [ioEvents2 countByEnumeratingWithState:&v490 objects:v511 count:16];
     if (v360)
     {
       continue;
@@ -2073,7 +2073,7 @@ LABEL_424:
 LABEL_393:
     if (v379)
     {
-      [*(v472 + 8) printWithFormat:@"\n\n%s\n", v379];
+      [*(selfCopy + 8) printWithFormat:@"\n\n%s\n", v379];
       free(v379);
     }
   }
@@ -2081,50 +2081,50 @@ LABEL_393:
 LABEL_398:
   free(inited);
 LABEL_399:
-  v109 = v472;
-  if (*(v472 + 48) == 1)
+  uTF8String = selfCopy;
+  if (*(selfCopy + 48) == 1)
   {
-    v382 = *(v472 + 168);
-    v383 = *(v472 + 56);
-    v384 = *(v472 + 64);
-    v385 = [*(v472 + 16) forceOneBasedTimeIndexes];
+    v382 = *(selfCopy + 168);
+    v383 = *(selfCopy + 56);
+    v384 = *(selfCopy + 64);
+    forceOneBasedTimeIndexes = [*(selfCopy + 16) forceOneBasedTimeIndexes];
     v386 = v383 + 1;
-    v109 = v472;
-    if (v385)
+    uTF8String = selfCopy;
+    if (forceOneBasedTimeIndexes)
     {
-      v386 -= *(v472 + 56);
+      v386 -= *(selfCopy + 56);
     }
 
     if (v382)
     {
-      [(SAWSUpdateDataStore *)v382[19] printFrameRateReportWithStartSampleIndex:v383 endSampleIndex:v384 startDisplayIndex:v386 sampleDataStore:v382 toStream:*(v472 + 8)];
+      [(SAWSUpdateDataStore *)v382[19] printFrameRateReportWithStartSampleIndex:v383 endSampleIndex:v384 startDisplayIndex:v386 sampleDataStore:v382 toStream:*(selfCopy + 8)];
       goto LABEL_404;
     }
   }
 
 LABEL_405:
-  v387 = [v109[21] customOutput];
+  customOutput = [uTF8String[21] customOutput];
 
-  v388 = v472;
-  if (v387)
+  v388 = selfCopy;
+  if (customOutput)
   {
-    v389 = [*(v472 + 16) printJson];
-    v390 = *(v472 + 8);
-    if (v389)
+    printJson4 = [*(selfCopy + 16) printJson];
+    v390 = *(selfCopy + 8);
+    if (printJson4)
     {
-      v391 = [*(v472 + 168) customOutput];
-      SAJSONWriteDictionaryEntry(v390, @"customOutput", v391);
+      customOutput2 = [*(selfCopy + 168) customOutput];
+      SAJSONWriteDictionaryEntry(v390, @"customOutput", customOutput2);
     }
 
     else
     {
-      [*(v472 + 8) printWithFormat:@"\n\nCustom Output:\n"];
-      v392 = *(v472 + 8);
-      v391 = [*(v472 + 168) customOutput];
-      [v392 appendString:v391];
+      [*(selfCopy + 8) printWithFormat:@"\n\nCustom Output:\n"];
+      v392 = *(selfCopy + 8);
+      customOutput2 = [*(selfCopy + 168) customOutput];
+      [v392 appendString:customOutput2];
     }
 
-    v388 = v472;
+    v388 = selfCopy;
   }
 
   if ([*(v388 + 16) printJson])
@@ -2138,23 +2138,23 @@ LABEL_405:
     v394 = _sa_logt();
     if (os_log_type_enabled(v394, OS_LOG_TYPE_FAULT))
     {
-      v471 = [*(v472 + 16) debugDescription];
-      v397 = [*(v472 + 168) targetProcessId];
-      v398 = [*(v472 + 168) targetProcess];
-      v399 = [v398 debugDescription];
-      v400 = [*(v472 + 168) targetThreadId];
-      v401 = [*(v472 + 168) targetProcess];
-      v402 = [v401 threads];
-      v403 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(*(v472 + 168), "targetThreadId")}];
-      v404 = [v402 objectForKeyedSubscript:v403];
+      v471 = [*(selfCopy + 16) debugDescription];
+      targetProcessId = [*(selfCopy + 168) targetProcessId];
+      targetProcess3 = [*(selfCopy + 168) targetProcess];
+      v399 = [targetProcess3 debugDescription];
+      targetThreadId2 = [*(selfCopy + 168) targetThreadId];
+      targetProcess4 = [*(selfCopy + 168) targetProcess];
+      threads3 = [targetProcess4 threads];
+      v403 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(*(selfCopy + 168), "targetThreadId")}];
+      v404 = [threads3 objectForKeyedSubscript:v403];
       *v511 = 138544386;
       v512 = v471;
       v513 = 1024;
-      v514 = v397;
+      v514 = targetProcessId;
       v515 = 2114;
       v516 = v399;
       v517 = 2048;
-      v518 = v400;
+      v518 = targetThreadId2;
       v519 = 2114;
       v520 = v404;
       _os_log_fault_impl(&dword_1E0E2F000, v394, OS_LOG_TYPE_FAULT, "Hit 65324447!\noptions: %{public}@\ntargetTask %d: %{public}@\ntargetThread 0x%llx: %{public}@", v511, 0x30u);
@@ -2247,47 +2247,47 @@ void __29__SASamplePrinter_preprocess__block_invoke(uint64_t a1, void *a2)
 - (uint64_t)checkForBadOptions
 {
   v124 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v14 = 0;
     goto LABEL_28;
   }
 
-  if ([*(a1 + 16) callTreeAggregation] >= 4)
+  if ([*(self + 16) callTreeAggregation] >= 4)
   {
-    v9 = *(a1 + 8);
+    v9 = *(self + 8);
     if (!v9)
     {
       v12 = *__error();
       v13 = _sa_logt();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v34 = [*(a1 + 16) callTreeAggregation];
+        callTreeAggregation = [*(self + 16) callTreeAggregation];
         *buf = 134217984;
-        *&buf[4] = v34;
+        *&buf[4] = callTreeAggregation;
         _os_log_error_impl(&dword_1E0E2F000, v13, OS_LOG_TYPE_ERROR, "unknown callTreeAggregation %llu", buf, 0xCu);
       }
 
       goto LABEL_26;
     }
 
-    v107 = [*(a1 + 16) callTreeAggregation];
+    callTreeAggregation2 = [*(self + 16) callTreeAggregation];
     v10 = @"unknown callTreeAggregation %llu";
   }
 
   else
   {
-    if ([*(a1 + 16) swiftAsyncCallTreeAggregation] < 6)
+    if ([*(self + 16) swiftAsyncCallTreeAggregation] < 6)
     {
-      v2 = *(a1 + 16);
+      v2 = *(self + 16);
       if (!v2 || (v3 = *(v2 + 168), v3 == 1) || !v3 && *(v2 + 11) != 1 || (v4 = *(v2 + 152), v4 == 3) || !v4 && (*(v2 + 11) & 1) != 0)
       {
-        v5 = [*(a1 + 168) targetProcess];
-        v6 = [*(a1 + 168) targetProcesses];
-        v7 = v6;
-        if (v5 && v6)
+        targetProcess = [*(self + 168) targetProcess];
+        targetProcesses = [*(self + 168) targetProcesses];
+        v7 = targetProcesses;
+        if (targetProcess && targetProcesses)
         {
-          v8 = *(a1 + 8);
+          v8 = *(self + 8);
           if (v8)
           {
             [v8 printWithFormat:@"Cannot target a single task and multiple tasks at the same time"];
@@ -2310,34 +2310,34 @@ void __29__SASamplePrinter_preprocess__block_invoke(uint64_t a1, void *a2)
           goto LABEL_110;
         }
 
-        if ([*(a1 + 168) targetDispatchQueueId])
+        if ([*(self + 168) targetDispatchQueueId])
         {
-          if (v5)
+          if (targetProcess)
           {
-            v17 = [v5 dispatchQueues];
-            v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(*(a1 + 168), "targetDispatchQueueId")}];
-            v19 = [v17 objectForKeyedSubscript:v18];
+            dispatchQueues = [targetProcess dispatchQueues];
+            v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(*(self + 168), "targetDispatchQueueId")}];
+            v19 = [dispatchQueues objectForKeyedSubscript:v18];
 
             if (v19)
             {
-              if (![*(a1 + 168) targetThreadId])
+              if (![*(self + 168) targetThreadId])
               {
                 goto LABEL_55;
               }
 
 LABEL_39:
-              v20 = [v5 threads];
-              v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(*(a1 + 168), "targetThreadId")}];
-              v108 = [v20 objectForKeyedSubscript:v21];
+              threads = [targetProcess threads];
+              v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(*(self + 168), "targetThreadId")}];
+              v108 = [threads objectForKeyedSubscript:v21];
 
               if (!v108)
               {
-                v35 = *(a1 + 8);
+                v35 = *(self + 8);
                 if (v35)
                 {
-                  v36 = [*(a1 + 168) targetThreadId];
-                  v37 = [(SASamplePrinter *)a1 displayNameForTask:v5];
-                  [v35 printWithFormat:@"targeting thread 0x%llx in %@ but no such thread found", v36, v37];
+                  targetThreadId = [*(self + 168) targetThreadId];
+                  v37 = [(SASamplePrinter *)self displayNameForTask:targetProcess];
+                  [v35 printWithFormat:@"targeting thread 0x%llx in %@ but no such thread found", targetThreadId, v37];
                 }
 
                 else
@@ -2346,10 +2346,10 @@ LABEL_39:
                   v58 = _sa_logt();
                   if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
                   {
-                    v83 = [*(a1 + 168) targetThreadId];
-                    v84 = [(SASamplePrinter *)a1 displayNameForTask:v5];
+                    targetThreadId2 = [*(self + 168) targetThreadId];
+                    v84 = [(SASamplePrinter *)self displayNameForTask:targetProcess];
                     *buf = 134218242;
-                    *&buf[4] = v83;
+                    *&buf[4] = targetThreadId2;
                     *&buf[12] = 2112;
                     *&buf[14] = v84;
                     _os_log_error_impl(&dword_1E0E2F000, v58, OS_LOG_TYPE_ERROR, "targeting thread 0x%llx in %@ but no such thread found", buf, 0x16u);
@@ -2369,10 +2369,10 @@ LABEL_39:
                 *&buf[8] = buf;
                 *&buf[16] = 0x2020000000;
                 LOBYTE(v121) = 0;
-                v22 = *(a1 + 32);
-                v23 = *(a1 + 40);
-                v24 = *(a1 + 56);
-                v25 = *(a1 + 64);
+                v22 = *(self + 32);
+                v23 = *(self + 40);
+                v24 = *(self + 56);
+                v25 = *(self + 64);
                 v110[0] = MEMORY[0x1E69E9820];
                 v110[1] = 3221225472;
                 v110[2] = __37__SASamplePrinter_checkForBadOptions__block_invoke;
@@ -2383,7 +2383,7 @@ LABEL_39:
                 [v108 enumerateThreadStatesBetweenStartTime:v22 startSampleIndex:v24 endTime:v23 endSampleIndex:v25 reverseOrder:0 block:v110];
                 if ((*(*&buf[8] + 24) & 1) == 0)
                 {
-                  v54 = *(a1 + 8);
+                  v54 = *(self + 8);
                   if (v54)
                   {
                     [v54 printWithFormat:@"Target dispatch queue %llu never runs on target thread 0x%llx", objc_msgSend(v19, "identifier"), objc_msgSend(v108, "threadId")];
@@ -2395,12 +2395,12 @@ LABEL_39:
                     v65 = _sa_logt();
                     if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
                     {
-                      v90 = [v19 identifier];
-                      v91 = [v108 threadId];
+                      identifier = [v19 identifier];
+                      threadId = [v108 threadId];
                       *v118 = 134218240;
-                      *&v118[4] = v90;
+                      *&v118[4] = identifier;
                       *&v118[12] = 2048;
-                      *&v118[14] = v91;
+                      *&v118[14] = threadId;
                       _os_log_error_impl(&dword_1E0E2F000, v65, OS_LOG_TYPE_ERROR, "Target dispatch queue %llu never runs on target thread 0x%llx", v118, 0x16u);
                     }
 
@@ -2425,16 +2425,16 @@ LABEL_39:
               }
 
 LABEL_64:
-              v41 = [*(a1 + 168) targetMainBinaryUUID];
-              v42 = v41 == 0;
+              targetMainBinaryUUID = [*(self + 168) targetMainBinaryUUID];
+              v42 = targetMainBinaryUUID == 0;
 
               if (!v42 && v7 == 0)
               {
-                v46 = *(a1 + 8);
+                v46 = *(self + 8);
                 if (v46)
                 {
-                  v47 = [*(a1 + 168) targetMainBinaryUUID];
-                  [v46 printWithFormat:@"targeting main binary %@, but no target tasks", v47];
+                  targetMainBinaryUUID2 = [*(self + 168) targetMainBinaryUUID];
+                  [v46 printWithFormat:@"targeting main binary %@, but no target tasks", targetMainBinaryUUID2];
                 }
 
                 else
@@ -2443,9 +2443,9 @@ LABEL_64:
                   v52 = _sa_logt();
                   if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
                   {
-                    v74 = [*(a1 + 168) targetMainBinaryUUID];
+                    targetMainBinaryUUID3 = [*(self + 168) targetMainBinaryUUID];
                     *buf = 138412290;
-                    *&buf[4] = v74;
+                    *&buf[4] = targetMainBinaryUUID3;
                     _os_log_error_impl(&dword_1E0E2F000, v52, OS_LOG_TYPE_ERROR, "targeting main binary %@, but no target tasks", buf, 0xCu);
                   }
 
@@ -2455,14 +2455,14 @@ LABEL_64:
                 goto LABEL_196;
               }
 
-              if ([*(a1 + 168) targetHIDEventMachAbs] || objc_msgSend(*(a1 + 168), "targetHIDEventEndMachAbs"))
+              if ([*(self + 168) targetHIDEventMachAbs] || objc_msgSend(*(self + 168), "targetHIDEventEndMachAbs"))
               {
-                v43 = [*(a1 + 168) targetProcesses];
-                v44 = v43 == 0;
+                targetProcesses2 = [*(self + 168) targetProcesses];
+                v44 = targetProcesses2 == 0;
 
                 if (!v44)
                 {
-                  v45 = *(a1 + 8);
+                  v45 = *(self + 8);
                   if (v45)
                   {
                     [v45 printWithFormat:@"targeting a HID event while targeting multiple processes"];
@@ -2484,25 +2484,25 @@ LABEL_196:
                 }
               }
 
-              if ([*(a1 + 16) printHeavyStacks])
+              if ([*(self + 16) printHeavyStacks])
               {
 LABEL_73:
-                if (((v26 | v27 | [*(a1 + 16) printTargetThreadOnly] ^ 1) & 1) == 0)
+                if (((v26 | v27 | [*(self + 16) printTargetThreadOnly] ^ 1) & 1) == 0)
                 {
-                  if (v5)
+                  if (targetProcess)
                   {
-                    v48 = [v5 mainThread];
-                    v49 = v48 == 0;
+                    mainThread = [targetProcess mainThread];
+                    v49 = mainThread == 0;
 
                     if (!v49)
                     {
                       goto LABEL_76;
                     }
 
-                    v72 = *(a1 + 8);
+                    v72 = *(self + 8);
                     if (v72)
                     {
-                      v73 = [(SASamplePrinter *)a1 displayNameForTask:v5];
+                      v73 = [(SASamplePrinter *)self displayNameForTask:targetProcess];
                       [v72 printWithFormat:@"printTargetThreadOnly, but target task %@ has no main thread", v73];
                     }
 
@@ -2512,7 +2512,7 @@ LABEL_73:
                       v87 = _sa_logt();
                       if (os_log_type_enabled(v87, OS_LOG_TYPE_ERROR))
                       {
-                        v102 = [(SASamplePrinter *)a1 displayNameForTask:v5];
+                        v102 = [(SASamplePrinter *)self displayNameForTask:targetProcess];
                         *buf = 138412290;
                         *&buf[4] = v102;
                         _os_log_error_impl(&dword_1E0E2F000, v87, OS_LOG_TYPE_ERROR, "printTargetThreadOnly, but target task %@ has no main thread", buf, 0xCu);
@@ -2524,7 +2524,7 @@ LABEL_73:
 
                   else
                   {
-                    v68 = *(a1 + 8);
+                    v68 = *(self + 8);
                     if (v68)
                     {
                       [v68 printWithFormat:@"printTargetThreadOnly, but no target task provided"];
@@ -2550,11 +2550,11 @@ LABEL_73:
                 }
 
 LABEL_76:
-                if ([*(a1 + 16) systemstatsFormat])
+                if ([*(self + 16) systemstatsFormat])
                 {
-                  if ([*(a1 + 16) printJson])
+                  if ([*(self + 16) printJson])
                   {
-                    v50 = *(a1 + 8);
+                    v50 = *(self + 8);
                     if (v50)
                     {
                       [v50 printWithFormat:@"printJson not supported with systemstatsFormat"];
@@ -2575,9 +2575,9 @@ LABEL_178:
                     goto LABEL_177;
                   }
 
-                  if ([*(a1 + 16) displayIOInCallTrees])
+                  if ([*(self + 16) displayIOInCallTrees])
                   {
-                    v69 = *(a1 + 8);
+                    v69 = *(self + 8);
                     if (v69)
                     {
                       [v69 printWithFormat:@"displayIOInCallTrees not supported with systemstatsFormat"];
@@ -2598,9 +2598,9 @@ LABEL_177:
                     goto LABEL_178;
                   }
 
-                  if ([*(a1 + 16) callTreeTimestampsTimeDomain] && objc_msgSend(*(a1 + 16), "callTreeTimestampsTimeDomain") != 1)
+                  if ([*(self + 16) callTreeTimestampsTimeDomain] && objc_msgSend(*(self + 16), "callTreeTimestampsTimeDomain") != 1)
                   {
-                    v92 = *(a1 + 8);
+                    v92 = *(self + 8);
                     if (v92)
                     {
                       [v92 printWithFormat:@"callTreeTimestampsTimeDomain time domains other than kSATimeDomainWallTime not supported with systemstatsFormat"];
@@ -2619,9 +2619,9 @@ LABEL_177:
                   }
                 }
 
-                if ([*(a1 + 16) swiftAsyncPrintLeafyCCallstackOnTopOfSwiftAsyncCallstacksAlways] && objc_msgSend(*(a1 + 16), "swiftAsyncPrintLeafyCCallstackOnTopOfCRootCallstacksAlways"))
+                if ([*(self + 16) swiftAsyncPrintLeafyCCallstackOnTopOfSwiftAsyncCallstacksAlways] && objc_msgSend(*(self + 16), "swiftAsyncPrintLeafyCCallstackOnTopOfCRootCallstacksAlways"))
                 {
-                  v75 = *(a1 + 8);
+                  v75 = *(self + 8);
                   if (v75)
                   {
                     [v75 printWithFormat:@"swiftAsyncPrintLeafyCCallstackOnTopOfSwiftAsyncCallstacksAlways and swiftAsyncPrintLeafyCCallstackOnTopOfCRootCallstacksAlways both set"];
@@ -2648,9 +2648,9 @@ LABEL_110:
                 goto LABEL_28;
               }
 
-              if ((*(a1 + 48) & 1) == 0)
+              if ((*(self + 48) & 1) == 0)
               {
-                v66 = *(a1 + 8);
+                v66 = *(self + 8);
                 if (v66)
                 {
                   [v66 printWithFormat:@"cannot display timeline format without time indexes"];
@@ -2668,9 +2668,9 @@ LABEL_110:
                 goto LABEL_195;
               }
 
-              if (([*(a1 + 16) displayBlockedThreads] & 1) == 0)
+              if (([*(self + 16) displayBlockedThreads] & 1) == 0)
               {
-                v67 = *(a1 + 8);
+                v67 = *(self + 8);
                 if (v67)
                 {
                   [v67 printWithFormat:@"cannot display timeline format without displaying blocked threads"];
@@ -2688,9 +2688,9 @@ LABEL_110:
                 goto LABEL_195;
               }
 
-              if (([*(a1 + 16) displayRunnableThreads] & 1) == 0)
+              if (([*(self + 16) displayRunnableThreads] & 1) == 0)
               {
-                v70 = *(a1 + 8);
+                v70 = *(self + 8);
                 if (v70)
                 {
                   [v70 printWithFormat:@"cannot display timeline format without displaying runnable threads"];
@@ -2708,9 +2708,9 @@ LABEL_110:
                 goto LABEL_195;
               }
 
-              if (([*(a1 + 16) displayRunningThreads] & 1) == 0)
+              if (([*(self + 16) displayRunningThreads] & 1) == 0)
               {
-                v82 = *(a1 + 8);
+                v82 = *(self + 8);
                 if (v82)
                 {
                   [v82 printWithFormat:@"cannot display timeline format without displaying running threads"];
@@ -2728,13 +2728,13 @@ LABEL_110:
                 goto LABEL_195;
               }
 
-              v59 = *(a1 + 16);
+              v59 = *(self + 16);
               if (v59)
               {
                 v60 = *(v59 + 152);
                 if (v60 == 3 || !v60 && *(v59 + 11) == 1)
                 {
-                  v61 = *(a1 + 8);
+                  v61 = *(self + 8);
                   if (v61)
                   {
                     [v61 printWithFormat:@"conflicting display options: kSAAggregateCallTreesByProcess and !printHeavyStacks"];
@@ -2762,7 +2762,7 @@ LABEL_195:
                   {
                     if (v88 == 4)
                     {
-                      v89 = *(a1 + 8);
+                      v89 = *(self + 8);
                       if (v89)
                       {
                         [v89 printWithFormat:@"conflicting display options: kSAAggregateSwiftAsyncCallTreesByProcess and !printHeavyStacks"];
@@ -2784,7 +2784,7 @@ LABEL_195:
                   }
 
 LABEL_180:
-                  v93 = *(a1 + 8);
+                  v93 = *(self + 8);
                   if (v93)
                   {
                     [v93 printWithFormat:@"conflicting display options: kSAAggregateSwiftAsyncCallTreesByBaseFunction and !printHeavyStacks"];
@@ -2831,10 +2831,10 @@ LABEL_182:
                 *&v118[8] = v118;
                 *&v118[16] = 0x2020000000;
                 v119 = 0;
-                v95 = *(a1 + 32);
-                v96 = *(a1 + 40);
-                v97 = *(a1 + 56);
-                v98 = *(a1 + 64);
+                v95 = *(self + 32);
+                v96 = *(self + 40);
+                v97 = *(self + 56);
+                v98 = *(self + 64);
                 v109[0] = MEMORY[0x1E69E9820];
                 v109[1] = 3221225472;
                 v109[2] = __37__SASamplePrinter_checkForBadOptions__block_invoke_382;
@@ -2844,11 +2844,11 @@ LABEL_182:
                 [(SARecipe *)v19 enumerateStatesBetweenStartTime:v95 startSampleIndex:v97 endTime:v96 endSampleIndex:v98 reverseOrder:0 block:v109];
                 if (*(*&v118[8] + 24) == 1)
                 {
-                  v99 = *(a1 + 8);
+                  v99 = *(self + 8);
                   if (v99)
                   {
                     v100 = [SASamplePrinter displayNameForDispatchQueue:v19];
-                    v101 = [(SASamplePrinter *)a1 displayNameForTask:v5];
+                    v101 = [(SASamplePrinter *)self displayNameForTask:targetProcess];
                     [v99 printWithFormat:@"cannot display timeline format with concurrent target dispatch queue %@ in %@", v100, v101];
                   }
 
@@ -2859,7 +2859,7 @@ LABEL_182:
                     if (os_log_type_enabled(v104, OS_LOG_TYPE_ERROR))
                     {
                       v105 = [SASamplePrinter displayNameForDispatchQueue:v19];
-                      v106 = [(SASamplePrinter *)a1 displayNameForTask:v5];
+                      v106 = [(SASamplePrinter *)self displayNameForTask:targetProcess];
                       *v114 = 138412546;
                       v115 = v105;
                       v116 = 2112;
@@ -2884,12 +2884,12 @@ LABEL_182:
               goto LABEL_73;
             }
 
-            v31 = *(a1 + 8);
+            v31 = *(self + 8);
             if (v31)
             {
-              v32 = [*(a1 + 168) targetDispatchQueueId];
-              v33 = [(SASamplePrinter *)a1 displayNameForTask:v5];
-              [v31 printWithFormat:@"targeting dispatch queue %llu in %@ but no such dispatch queue found", v32, v33];
+              targetDispatchQueueId = [*(self + 168) targetDispatchQueueId];
+              v33 = [(SASamplePrinter *)self displayNameForTask:targetProcess];
+              [v31 printWithFormat:@"targeting dispatch queue %llu in %@ but no such dispatch queue found", targetDispatchQueueId, v33];
             }
 
             else
@@ -2898,10 +2898,10 @@ LABEL_182:
               v56 = _sa_logt();
               if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
               {
-                v76 = [*(a1 + 168) targetDispatchQueueId];
-                v77 = [(SASamplePrinter *)a1 displayNameForTask:v5];
+                targetDispatchQueueId2 = [*(self + 168) targetDispatchQueueId];
+                v77 = [(SASamplePrinter *)self displayNameForTask:targetProcess];
                 *buf = 134218242;
-                *&buf[4] = v76;
+                *&buf[4] = targetDispatchQueueId2;
                 *&buf[12] = 2112;
                 *&buf[14] = v77;
                 _os_log_error_impl(&dword_1E0E2F000, v56, OS_LOG_TYPE_ERROR, "targeting dispatch queue %llu in %@ but no such dispatch queue found", buf, 0x16u);
@@ -2915,10 +2915,10 @@ LABEL_108:
             goto LABEL_109;
           }
 
-          v30 = *(a1 + 8);
+          v30 = *(self + 8);
           if (v30)
           {
-            [v30 printWithFormat:@"targeting dispatch queue %llu, but no target task", objc_msgSend(*(a1 + 168), "targetDispatchQueueId")];
+            [v30 printWithFormat:@"targeting dispatch queue %llu, but no target task", objc_msgSend(*(self + 168), "targetDispatchQueueId")];
             goto LABEL_108;
           }
 
@@ -2926,16 +2926,16 @@ LABEL_108:
           v40 = _sa_logt();
           if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
           {
-            v71 = [*(a1 + 168) targetDispatchQueueId];
+            targetDispatchQueueId3 = [*(self + 168) targetDispatchQueueId];
             *buf = 134217984;
-            *&buf[4] = v71;
+            *&buf[4] = targetDispatchQueueId3;
             _os_log_error_impl(&dword_1E0E2F000, v40, OS_LOG_TYPE_ERROR, "targeting dispatch queue %llu, but no target task", buf, 0xCu);
           }
         }
 
         else
         {
-          if (![*(a1 + 168) targetThreadId])
+          if (![*(self + 168) targetThreadId])
           {
             v19 = 0;
 LABEL_55:
@@ -2945,16 +2945,16 @@ LABEL_55:
             goto LABEL_64;
           }
 
-          if (v5)
+          if (targetProcess)
           {
             v19 = 0;
             goto LABEL_39;
           }
 
-          v38 = *(a1 + 8);
+          v38 = *(self + 8);
           if (v38)
           {
-            [v38 printWithFormat:@"targeting thread 0x%llx, but no target task", objc_msgSend(*(a1 + 168), "targetThreadId")];
+            [v38 printWithFormat:@"targeting thread 0x%llx, but no target task", objc_msgSend(*(self + 168), "targetThreadId")];
             goto LABEL_108;
           }
 
@@ -2962,9 +2962,9 @@ LABEL_55:
           v40 = _sa_logt();
           if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
           {
-            v85 = [*(a1 + 168) targetThreadId];
+            targetThreadId3 = [*(self + 168) targetThreadId];
             *buf = 134217984;
-            *&buf[4] = v85;
+            *&buf[4] = targetThreadId3;
             _os_log_error_impl(&dword_1E0E2F000, v40, OS_LOG_TYPE_ERROR, "targeting thread 0x%llx, but no target task", buf, 0xCu);
           }
         }
@@ -2973,7 +2973,7 @@ LABEL_55:
         goto LABEL_108;
       }
 
-      v11 = *(a1 + 8);
+      v11 = *(self + 8);
       if (v11)
       {
         v10 = @"conflicting display options: aggregation of multiple task instances requires kSAAggregateCallTreesByProcess";
@@ -2994,29 +2994,29 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    v9 = *(a1 + 8);
+    v9 = *(self + 8);
     if (!v9)
     {
       v12 = *__error();
       v13 = _sa_logt();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v53 = [*(a1 + 16) callTreeAggregation];
+        callTreeAggregation3 = [*(self + 16) callTreeAggregation];
         *buf = 134217984;
-        *&buf[4] = v53;
+        *&buf[4] = callTreeAggregation3;
         _os_log_error_impl(&dword_1E0E2F000, v13, OS_LOG_TYPE_ERROR, "unknown swiftAsyncCallTreeAggregation %llu", buf, 0xCu);
       }
 
       goto LABEL_26;
     }
 
-    v107 = [*(a1 + 16) callTreeAggregation];
+    callTreeAggregation2 = [*(self + 16) callTreeAggregation];
     v10 = @"unknown swiftAsyncCallTreeAggregation %llu";
   }
 
   v11 = v9;
 LABEL_20:
-  [v11 printWithFormat:v10, v107];
+  [v11 printWithFormat:v10, callTreeAggregation2];
 LABEL_27:
   v14 = 1;
 LABEL_28:
@@ -3047,8 +3047,8 @@ void __37__SASamplePrinter_calculateTimeJumps__block_invoke(uint64_t a1, id obj,
   v1 = MEMORY[0x1EEE9AC00]();
   v1684 = *MEMORY[0x1E69E9840];
   v1542 = v1;
-  v1478 = [*(v1 + 16) printJson];
-  if (v1478)
+  printJson = [*(v1 + 16) printJson];
+  if (printJson)
   {
     v2 = *(v1 + 8);
     v3 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:67];
@@ -3057,18 +3057,18 @@ void __37__SASamplePrinter_calculateTimeJumps__block_invoke(uint64_t a1, id obj,
     v1 = v1542;
   }
 
-  v1432 = [(SASamplePrinter *)v1 eventStartTimeWithWallTime];
-  if (v1432 && ([*(v1542 + 16) omitAbsoluteWallTimes] & 1) == 0)
+  eventStartTimeWithWallTime = [(SASamplePrinter *)v1 eventStartTimeWithWallTime];
+  if (eventStartTimeWithWallTime && ([*(v1542 + 16) omitAbsoluteWallTimes] & 1) == 0)
   {
     v21 = *(v1542 + 8);
-    if (v1478)
+    if (printJson)
     {
-      SAJSONWriteDictionaryEntry(*(v1542 + 8), @"startTime", v1432);
+      SAJSONWriteDictionaryEntry(*(v1542 + 8), @"startTime", eventStartTimeWithWallTime);
     }
 
     else
     {
-      [v1432 wallTime];
+      [eventStartTimeWithWallTime wallTime];
       v23 = v22;
       if ([*(v1542 + 16) displayDetailedWallTime])
       {
@@ -3092,54 +3092,54 @@ void __37__SASamplePrinter_calculateTimeJumps__block_invoke(uint64_t a1, id obj,
     [*(v1542 + 8) printWithFormat:@"%-*sUNKNOWN\n", 18, "Date/Time: "];
   }
 
-  v1431 = [(SASamplePrinter *)v1542 eventEndTimeWithWallTime];
-  v4 = v1432 == 0;
-  if (!v1431)
+  eventEndTimeWithWallTime = [(SASamplePrinter *)v1542 eventEndTimeWithWallTime];
+  v4 = eventStartTimeWithWallTime == 0;
+  if (!eventEndTimeWithWallTime)
   {
     v4 = 1;
   }
 
-  if (v4 || ([v1431 wallTime], v6 = v5, objc_msgSend(v1432, "wallTime"), v6 <= v7) || (objc_msgSend(*(v1542 + 16), "omitAbsoluteWallTimes") & 1) != 0)
+  if (v4 || ([eventEndTimeWithWallTime wallTime], v6 = v5, objc_msgSend(eventStartTimeWithWallTime, "wallTime"), v6 <= v7) || (objc_msgSend(*(v1542 + 16), "omitAbsoluteWallTimes") & 1) != 0)
   {
-    if (v1478)
+    if (printJson)
     {
       goto LABEL_12;
     }
 
 LABEL_32:
     v32 = (v1542 + 168);
-    v33 = [*(v1542 + 168) osProductName];
-    v34 = v33;
+    osProductName = [*(v1542 + 168) osProductName];
+    v34 = osProductName;
     v35 = @"???";
-    if (v33)
+    if (osProductName)
     {
-      v35 = v33;
+      v35 = osProductName;
     }
 
-    v20 = v35;
+    osBuildVersion3 = v35;
 
-    v36 = [*v32 osProductVersion];
-    v37 = v36;
+    osProductVersion = [*v32 osProductVersion];
+    v37 = osProductVersion;
     v38 = @"???";
-    if (v36)
+    if (osProductVersion)
     {
-      v38 = v36;
+      v38 = osProductVersion;
     }
 
     v39 = v38;
 
-    v40 = [*v32 osBuildVersion];
-    v41 = v40;
+    osBuildVersion = [*v32 osBuildVersion];
+    v41 = osBuildVersion;
     v42 = @"???";
-    if (v40)
+    if (osBuildVersion)
     {
-      v42 = v40;
+      v42 = osBuildVersion;
     }
 
     v43 = v42;
 
     v18 = v1542;
-    [*(v1542 + 8) printWithFormat:@"%-*s%@ %@", 18, "OS Version: ", v20, v39];
+    [*(v1542 + 8) printWithFormat:@"%-*s%@ %@", 18, "OS Version: ", osBuildVersion3, v39];
     LOBYTE(v1379) = v43;
     [*(v1542 + 8) printWithFormat:@" (Build %@)\n"];
 
@@ -3147,9 +3147,9 @@ LABEL_32:
   }
 
   v26 = *(v1542 + 8);
-  if (!v1478)
+  if (!printJson)
   {
-    [v1431 wallTime];
+    [eventEndTimeWithWallTime wallTime];
     v28 = v27;
     if ([*(v1542 + 16) displayDetailedWallTime])
     {
@@ -3168,55 +3168,55 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  SAJSONWriteDictionaryEntry(*(v1542 + 8), @"endTime", v1431);
+  SAJSONWriteDictionaryEntry(*(v1542 + 8), @"endTime", eventEndTimeWithWallTime);
 LABEL_12:
-  v8 = [*(v1542 + 168) osProductName];
+  osProductName2 = [*(v1542 + 168) osProductName];
 
-  if (v8)
+  if (osProductName2)
   {
     v9 = *(v1542 + 8);
-    v10 = [*(v1542 + 168) osProductName];
-    SAJSONWriteDictionaryEntry(v9, @"osProductName", v10);
+    osProductName3 = [*(v1542 + 168) osProductName];
+    SAJSONWriteDictionaryEntry(v9, @"osProductName", osProductName3);
   }
 
-  v11 = [*(v1542 + 168) osProductVersion];
+  osProductVersion2 = [*(v1542 + 168) osProductVersion];
 
-  if (v11)
+  if (osProductVersion2)
   {
     v12 = *(v1542 + 8);
-    v13 = [*(v1542 + 168) osProductVersion];
-    SAJSONWriteDictionaryEntry(v12, @"osProductVersion", v13);
+    osProductVersion3 = [*(v1542 + 168) osProductVersion];
+    SAJSONWriteDictionaryEntry(v12, @"osProductVersion", osProductVersion3);
   }
 
-  v14 = [*(v1542 + 168) osProductVersionExtra];
+  osProductVersionExtra = [*(v1542 + 168) osProductVersionExtra];
 
-  if (v14)
+  if (osProductVersionExtra)
   {
     v15 = *(v1542 + 8);
-    v16 = [*(v1542 + 168) osProductVersionExtra];
-    SAJSONWriteDictionaryEntry(v15, @"osProductVersionExtra", v16);
+    osProductVersionExtra2 = [*(v1542 + 168) osProductVersionExtra];
+    SAJSONWriteDictionaryEntry(v15, @"osProductVersionExtra", osProductVersionExtra2);
   }
 
-  v17 = [*(v1542 + 168) osBuildVersion];
+  osBuildVersion2 = [*(v1542 + 168) osBuildVersion];
 
   v18 = v1542;
-  if (v17)
+  if (osBuildVersion2)
   {
     v19 = *(v1542 + 8);
-    v20 = [*(v1542 + 168) osBuildVersion];
-    SAJSONWriteDictionaryEntry(v19, @"osBuildVersion", v20);
+    osBuildVersion3 = [*(v1542 + 168) osBuildVersion];
+    SAJSONWriteDictionaryEntry(v19, @"osBuildVersion", osBuildVersion3);
     v18 = v1542;
 LABEL_39:
   }
 
   v1488 = (v18 + 168);
-  v44 = [*(v18 + 168) machineArchitecture];
-  v1430 = v44;
-  if (v44 && [v44 length])
+  machineArchitecture = [*(v18 + 168) machineArchitecture];
+  v1430 = machineArchitecture;
+  if (machineArchitecture && [machineArchitecture length])
   {
     v45 = v1542;
     v46 = *(v1542 + 8);
-    if (v1478)
+    if (printJson)
     {
       SAJSONWriteDictionaryEntry(v46, @"arch", v1430);
       goto LABEL_49;
@@ -3228,7 +3228,7 @@ LABEL_39:
   else
   {
     v45 = v1542;
-    if (v1478)
+    if (printJson)
     {
       goto LABEL_49;
     }
@@ -3248,7 +3248,7 @@ LABEL_49:
     if ((*(v45 + 160) & 1) == 0)
     {
       v51 = (v18 + 168);
-      if (v1478)
+      if (printJson)
       {
         goto LABEL_60;
       }
@@ -3257,7 +3257,7 @@ LABEL_49:
     }
 
     v51 = (v18 + 168);
-    if (v1478)
+    if (printJson)
     {
       goto LABEL_55;
     }
@@ -3266,9 +3266,9 @@ LABEL_49:
   }
 
   v48 = *(v45 + 8);
-  v49 = [v47 UUIDString];
-  v50 = v49;
-  if ((v1478 & 1) == 0)
+  uUIDString = [v47 UUIDString];
+  v50 = uUIDString;
+  if ((printJson & 1) == 0)
   {
     LOBYTE(v1379) = 18;
     [v48 printWithFormat:@"%-*s%@\n"];
@@ -3287,7 +3287,7 @@ LABEL_57:
     goto LABEL_59;
   }
 
-  SAJSONWriteDictionaryEntry(v48, @"incidentIdentifier", v49);
+  SAJSONWriteDictionaryEntry(v48, @"incidentIdentifier", uUIDString);
 
   v45 = v1542;
   v51 = (v18 + 168);
@@ -3300,10 +3300,10 @@ LABEL_55:
 LABEL_60:
   if ([*v51 dataSource])
   {
-    v52 = [*v51 dataSource];
-    v53 = v52 & 1;
+    dataSource = [*v51 dataSource];
+    v53 = dataSource & 1;
     v54 = v1672;
-    if (v52)
+    if (dataSource)
     {
       strcpy(v1672, "Stackshots");
       v54 = &v1672[10];
@@ -3311,7 +3311,7 @@ LABEL_60:
 
     if (([*v51 dataSource] & 2) != 0)
     {
-      if (v52)
+      if (dataSource)
       {
         v54 += __snprintf_chk(v54, &v1673 - v54, 0, 0x80uLL, ", ");
         v51 = v1488;
@@ -3355,9 +3355,9 @@ LABEL_60:
       v56 = v1488;
     }
 
-    v57 = [*v56 dataSource];
+    dataSource2 = [*v56 dataSource];
     v45 = v1542;
-    if ((v57 & 0x10) != 0)
+    if ((dataSource2 & 0x10) != 0)
     {
       if (v53)
       {
@@ -3374,19 +3374,19 @@ LABEL_60:
   }
 
   v60 = *(v45 + 8);
-  v59 = (v45 + 8);
-  v58 = v60;
-  p_isa = &v59->isa;
-  if (v1478)
+  teamID = (v45 + 8);
+  uuid = v60;
+  p_isa = &teamID->isa;
+  if (printJson)
   {
-    v61 = SANSStringForCString(v1672);
-    SAJSONWriteDictionaryEntry(v58, @"dataSource", v61);
+    sharedCaches = SANSStringForCString(v1672);
+    SAJSONWriteDictionaryEntry(uuid, @"dataSource", sharedCaches);
   }
 
   else
   {
     LOBYTE(v1379) = 18;
-    [v58 printWithFormat:@"%-*s%s\n"];
+    [uuid printWithFormat:@"%-*s%s\n"];
     v1648 = 0u;
     v1647 = 0u;
     v1646 = 0u;
@@ -3397,7 +3397,7 @@ LABEL_60:
     {
       v63 = *v1646;
       j = "Kernel Cache: ";
-      v59 = @"%-*s0x%llx %@\n";
+      teamID = @"%-*s0x%llx %@\n";
       do
       {
         for (i = 0; i != v62; ++i)
@@ -3410,8 +3410,8 @@ LABEL_60:
           v65 = *(*(&v1645 + 1) + 8 * i);
           v66 = *p_isa;
           [v65 loadAddress];
-          v58 = [v65 uuid];
-          v1399 = [v58 UUIDString];
+          uuid = [v65 uuid];
+          uUIDString2 = [uuid UUIDString];
           LOBYTE(v1379) = 18;
           [v66 printWithFormat:@"%-*s0x%llx %@\n"];
         }
@@ -3426,56 +3426,56 @@ LABEL_60:
     v1643 = 0u;
     v1642 = 0u;
     v1641 = 0u;
-    v61 = [*v1488 sharedCaches];
-    v67 = [v61 countByEnumeratingWithState:&v1641 objects:v1670 count:16];
+    sharedCaches = [*v1488 sharedCaches];
+    v67 = [sharedCaches countByEnumeratingWithState:&v1641 objects:v1670 count:16];
     if (v67)
     {
       v68 = *v1642;
-      v59 = @"%-*s%@\n";
+      teamID = @"%-*s%@\n";
       do
       {
         for (j = 0; j != v67; ++j)
         {
           if (*v1642 != v68)
           {
-            objc_enumerationMutation(v61);
+            objc_enumerationMutation(sharedCaches);
           }
 
           v69 = *p_isa;
-          v58 = _shared_cache_display_string(*(*(&v1641 + 1) + 8 * j));
+          uuid = _shared_cache_display_string(*(*(&v1641 + 1) + 8 * j));
           LOBYTE(v1379) = 18;
           [v69 printWithFormat:@"%-*s%@\n"];
         }
 
-        v67 = [v61 countByEnumeratingWithState:&v1641 objects:v1670 count:16];
+        v67 = [sharedCaches countByEnumeratingWithState:&v1641 objects:v1670 count:16];
       }
 
       while (v67);
     }
   }
 
-  v70 = [*v1488 reason];
+  reason = [*v1488 reason];
 
-  if (v70)
+  if (reason)
   {
-    v58 = *p_isa;
-    v71 = [*v1488 reason];
-    v72 = v71;
-    if (v1478)
+    uuid = *p_isa;
+    reason2 = [*v1488 reason];
+    v72 = reason2;
+    if (printJson)
     {
-      SAJSONWriteDictionaryEntry(v58, @"reason", v71);
+      SAJSONWriteDictionaryEntry(uuid, @"reason", reason2);
 
       goto LABEL_105;
     }
 
-    v1385 = SACopySanitizedString(v71, 1, 0xFFuLL);
+    v1385 = SACopySanitizedString(reason2, 1, 0xFFuLL);
     LOBYTE(v1379) = 18;
-    [v58 printWithFormat:@"%-*s%@\n"];
+    [uuid printWithFormat:@"%-*s%@\n"];
 
     goto LABEL_104;
   }
 
-  if ((v1478 & 1) == 0)
+  if ((printJson & 1) == 0)
   {
 LABEL_104:
     [*p_isa appendString:@"\n"];
@@ -3487,33 +3487,33 @@ LABEL_105:
     v73 = *(v1542 + 120);
     if (v73)
     {
-      v1427 = [v73 hidEventTimestamp];
-      v74 = [*(v1542 + 120) steps];
-      v58 = [v74 lastObject];
-      v1426 = [v58 timestamp];
+      hidEventTimestamp = [v73 hidEventTimestamp];
+      steps = [*(v1542 + 120) steps];
+      uuid = [steps lastObject];
+      timestamp = [uuid timestamp];
     }
 
     else
     {
-      v58 = [*v1488 targetHIDEventMachAbs];
-      v1427 = +[SATimestamp timestampWithMachAbsTime:machContTime:wallTime:machTimebase:](SATimestamp, "timestampWithMachAbsTime:machContTime:wallTime:machTimebase:", v58, 0, [*v1488 machTimebase], 0.0);
+      uuid = [*v1488 targetHIDEventMachAbs];
+      hidEventTimestamp = +[SATimestamp timestampWithMachAbsTime:machContTime:wallTime:machTimebase:](SATimestamp, "timestampWithMachAbsTime:machContTime:wallTime:machTimebase:", uuid, 0, [*v1488 machTimebase], 0.0);
       if ([*v1488 targetHIDEventEndMachAbs])
       {
-        v58 = [*v1488 targetHIDEventEndMachAbs];
-        v1426 = +[SATimestamp timestampWithMachAbsTime:machContTime:wallTime:machTimebase:](SATimestamp, "timestampWithMachAbsTime:machContTime:wallTime:machTimebase:", v58, 0, [*v1488 machTimebase], 0.0);
+        uuid = [*v1488 targetHIDEventEndMachAbs];
+        timestamp = +[SATimestamp timestampWithMachAbsTime:machContTime:wallTime:machTimebase:](SATimestamp, "timestampWithMachAbsTime:machContTime:wallTime:machTimebase:", uuid, 0, [*v1488 machTimebase], 0.0);
       }
 
       else
       {
-        v1426 = 0;
+        timestamp = 0;
       }
     }
   }
 
   else
   {
-    v1426 = 0;
-    v1427 = 0;
+    timestamp = 0;
+    hidEventTimestamp = 0;
   }
 
   if (![(SASamplePrinter *)v1542 hasTargetProcess])
@@ -3523,24 +3523,24 @@ LABEL_105:
     goto LABEL_234;
   }
 
-  v1428 = [*v1488 targetProcesses];
-  if ([v1428 count])
+  targetProcesses = [*v1488 targetProcesses];
+  if ([targetProcesses count])
   {
-    if (v1478)
+    if (printJson)
     {
-      v75 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v1428, "count")}];
+      v75 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(targetProcesses, "count")}];
       v1640 = 0u;
       v1639 = 0u;
       v1638 = 0u;
       v1637 = 0u;
-      v76 = v1428;
-      v59 = [v76 countByEnumeratingWithState:&v1637 objects:v1669 count:16];
-      if (v59)
+      v76 = targetProcesses;
+      teamID = [v76 countByEnumeratingWithState:&v1637 objects:v1669 count:16];
+      if (teamID)
       {
         v77 = *v1638;
         do
         {
-          for (k = 0; k != v59; k = (k + 1))
+          for (k = 0; k != teamID; k = (k + 1))
           {
             if (*v1638 != v77)
             {
@@ -3551,10 +3551,10 @@ LABEL_105:
             [v75 addObject:v79];
           }
 
-          v59 = [v76 countByEnumeratingWithState:&v1637 objects:v1669 count:16];
+          teamID = [v76 countByEnumeratingWithState:&v1637 objects:v1669 count:16];
         }
 
-        while (v59);
+        while (teamID);
       }
 
       v80 = *p_isa;
@@ -3564,20 +3564,20 @@ LABEL_105:
       goto LABEL_231;
     }
 
-    v84 = [v1428 lastObject];
-    v1504 = [v84 mainBinary];
+    lastObject = [targetProcesses lastObject];
+    mainBinary = [lastObject mainBinary];
 
     v1449 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v1436 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v1428, "count")}];
-    v1433 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v1428, "count")}];
-    v1443 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v1428, "count")}];
-    obja = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v1428, "count")}];
-    v1519 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v1428, "count")}];
+    v1436 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(targetProcesses, "count")}];
+    v1433 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(targetProcesses, "count")}];
+    v1443 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(targetProcesses, "count")}];
+    obja = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(targetProcesses, "count")}];
+    v1519 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(targetProcesses, "count")}];
     v1636 = 0u;
     v1635 = 0u;
     v1634 = 0u;
     v1633 = 0u;
-    v1439 = v1428;
+    v1439 = targetProcesses;
     v1452 = [v1439 countByEnumeratingWithState:&v1633 objects:v1668 count:16];
     if (!v1452)
     {
@@ -3592,8 +3592,8 @@ LABEL_203:
       v1512 = [(SASamplePrinter *)v1542 displayStringForOnBehalfOfForTasks:v1439 includePid:0];
       if ([obja count])
       {
-        v58 = [obja allObjects];
-        v1498 = [v58 sortedArrayUsingComparator:&__block_literal_global_11];
+        uuid = [obja allObjects];
+        v1498 = [uuid sortedArrayUsingComparator:&__block_literal_global_11];
       }
 
       else
@@ -3603,8 +3603,8 @@ LABEL_203:
 
       if ([v1519 count])
       {
-        v58 = [v1519 allObjects];
-        v1490 = [v58 sortedArrayUsingComparator:&__block_literal_global_11];
+        uuid = [v1519 allObjects];
+        v1490 = [uuid sortedArrayUsingComparator:&__block_literal_global_11];
       }
 
       else
@@ -3614,9 +3614,9 @@ LABEL_203:
 
       if ([v1449 count])
       {
-        v132 = [v1449 allObjects];
-        v58 = [v132 sortedArrayUsingComparator:&__block_literal_global_11];
-        v1484 = [v58 componentsJoinedByString:{@", "}];
+        allObjects = [v1449 allObjects];
+        uuid = [allObjects sortedArrayUsingComparator:&__block_literal_global_11];
+        v1484 = [uuid componentsJoinedByString:{@", "}];
       }
 
       else
@@ -3626,9 +3626,9 @@ LABEL_203:
 
       if ([v1436 count])
       {
-        v133 = [v1436 allObjects];
-        v58 = [v133 sortedArrayUsingComparator:&__block_literal_global_11];
-        v1460 = [v58 componentsJoinedByString:{@", "}];
+        allObjects2 = [v1436 allObjects];
+        uuid = [allObjects2 sortedArrayUsingComparator:&__block_literal_global_11];
+        v1460 = [uuid componentsJoinedByString:{@", "}];
       }
 
       else
@@ -3638,9 +3638,9 @@ LABEL_203:
 
       if ([v1433 count])
       {
-        v134 = [v1433 allObjects];
-        v58 = [v134 sortedArrayUsingComparator:&__block_literal_global_11];
-        v135 = [v58 componentsJoinedByString:{@", "}];
+        allObjects3 = [v1433 allObjects];
+        uuid = [allObjects3 sortedArrayUsingComparator:&__block_literal_global_11];
+        v135 = [uuid componentsJoinedByString:{@", "}];
       }
 
       else
@@ -3648,16 +3648,16 @@ LABEL_203:
         v135 = 0;
       }
 
-      if (v1504)
+      if (mainBinary)
       {
-        v136 = [v1439 lastObject];
+        lastObject2 = [v1439 lastObject];
         v1411 = *p_isa;
-        v137 = [v1504 path];
-        v58 = v137;
+        path = [mainBinary path];
+        uuid = path;
         v138 = @"UNKNOWN PATH";
-        if (v137)
+        if (path)
         {
-          v138 = v137;
+          v138 = path;
         }
 
         v1410 = v138;
@@ -3665,31 +3665,31 @@ LABEL_203:
 
       else
       {
-        v136 = 0;
+        lastObject2 = 0;
         v1411 = *p_isa;
         v1410 = @"MULTIPLE PATHS";
       }
 
-      v1420 = [v1504 bundleIdentifier];
-      v1446 = [v1504 bundleVersion];
-      v1424 = [v1504 bundleShortVersion];
-      v1418 = [v136 bundleBuildVersion];
-      v1453 = [v136 bundleProjectName];
-      v1416 = [v136 bundleSourceVersion];
-      v1422 = [v136 bundleProductBuildVersion];
-      v1409 = [v136 adamID];
-      v1414 = [v136 installerVersionID];
-      v1408 = [v136 developerType];
-      v1412 = [v136 appType];
-      j = [v136 isBeta];
-      v139 = [v136 cohortID];
-      v140 = [v136 vendorID];
-      v1407 = [v136 distributorID];
-      v141 = [v136 codesigningID];
-      v59 = [v136 teamID];
-      if (v136)
+      bundleIdentifier = [mainBinary bundleIdentifier];
+      bundleVersion = [mainBinary bundleVersion];
+      bundleShortVersion = [mainBinary bundleShortVersion];
+      bundleBuildVersion = [lastObject2 bundleBuildVersion];
+      bundleProjectName = [lastObject2 bundleProjectName];
+      bundleSourceVersion = [lastObject2 bundleSourceVersion];
+      bundleProductBuildVersion = [lastObject2 bundleProductBuildVersion];
+      adamID = [lastObject2 adamID];
+      installerVersionID = [lastObject2 installerVersionID];
+      developerType = [lastObject2 developerType];
+      appType = [lastObject2 appType];
+      j = [lastObject2 isBeta];
+      cohortID = [lastObject2 cohortID];
+      vendorID = [lastObject2 vendorID];
+      distributorID = [lastObject2 distributorID];
+      codesigningID = [lastObject2 codesigningID];
+      teamID = [lastObject2 teamID];
+      if (lastObject2)
       {
-        v142 = [(SASamplePrinter *)v1542 architectureStringForTask:v136];
+        v142 = [(SASamplePrinter *)v1542 architectureStringForTask:lastObject2];
       }
 
       else
@@ -3697,14 +3697,14 @@ LABEL_203:
         v142 = 0;
       }
 
-      *&v1380 = v1446;
-      *(&v1380 + 1) = v1424;
-      -[SASamplePrinter addTaskHeaderToStream:displayName:pid:mainBinary:mainBinaryPath:sharedCaches:uid:bundleIdentifier:bundleVersion:bundleShortVersion:bundleBuildVersion:bundleProjectName:bundleSourceVersion:bundleProductBuildVersion:adamID:installerVersionID:developerType:appType:isBeta:cohortID:vendorID:distributorID:codesigningID:teamID:resourceCoalitionSampleCounts:onBehalfOfProcesses:architectureString:kernelVersion:parentName:responsibleName:taskExecedFromName:taskExecedToName:forkTimestamp:startTimestamp:endTimestamp:startSampleIndex:endSampleIndex:numSamples:totalNumSamples:numSamplesSuspended:numSamplesTerminated:startingTaskSize:endingTaskSize:maxTaskSize:startSampleIndexOfMaxTaskSize:endSampleIndexOfMaxTaskSize:numPageins:cpuTimeNs:cpuInstructions:cpuCycles:nonThreadCpuTimeNs:nonThreadCpuInstructions:nonThreadCpuCycles:usesSuddenTermination:allowsIdleExit:memoryLimitStr:jetsamPriorityStr:isTranslocated:hardenedHeap:mteCheckedAllocationsEnabled:mteUserDataAllocationsTagged:mteSoftModeEnabled:mteInheritanceTurnedOn:isRunningBoardManaged:isUnresponsive:timeOfLastResponse:numThreads:numIdleWorkQueueThreads:numOtherHiddenThreads:hieSwallowedException:numSamplesWQExceededConstrainedThreadLimit:numSamplesWQExceededTotalThreadLimit:numSamplesWQExceededCooperativeThreadLimit:numSamplesWQExceededActiveConstrainedThreadLimit:numSamplesTALEngaged:isRunawayMitigated:threadsDeadlocked:threadsBlockedByADeadlock:ioSize:numIOs:isReportHeader:](v1542, v1411, v1484, 0xFFFFFFFFLL, v1504, v1410, 0, 4294966982, 0.0, v1420, v1380, v1418, v1453, v1416, v1422, v1409, v1414, v1408, v1412, j, v139, v140, v141, v59, v1443, v1512, v142, v1456, v1460, v135, 0, 0, 0, 0, 0, 0x7FFFFFFFFFFFFFFFuLL, 0x7FFFFFFFFFFFFFFFuLL, 0, 0, 0, 0, 0, 0, 0, 0x7FFFFFFFFFFFFFFFuLL, 0x7FFFFFFFFFFFFFFFuLL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [v136 isTranslocated], v1463 & 1, v1479 & 1, v1466 & 1, v1470 & 1, v1474 & 1);
-      if (v136)
+      *&v1380 = bundleVersion;
+      *(&v1380 + 1) = bundleShortVersion;
+      -[SASamplePrinter addTaskHeaderToStream:displayName:pid:mainBinary:mainBinaryPath:sharedCaches:uid:bundleIdentifier:bundleVersion:bundleShortVersion:bundleBuildVersion:bundleProjectName:bundleSourceVersion:bundleProductBuildVersion:adamID:installerVersionID:developerType:appType:isBeta:cohortID:vendorID:distributorID:codesigningID:teamID:resourceCoalitionSampleCounts:onBehalfOfProcesses:architectureString:kernelVersion:parentName:responsibleName:taskExecedFromName:taskExecedToName:forkTimestamp:startTimestamp:endTimestamp:startSampleIndex:endSampleIndex:numSamples:totalNumSamples:numSamplesSuspended:numSamplesTerminated:startingTaskSize:endingTaskSize:maxTaskSize:startSampleIndexOfMaxTaskSize:endSampleIndexOfMaxTaskSize:numPageins:cpuTimeNs:cpuInstructions:cpuCycles:nonThreadCpuTimeNs:nonThreadCpuInstructions:nonThreadCpuCycles:usesSuddenTermination:allowsIdleExit:memoryLimitStr:jetsamPriorityStr:isTranslocated:hardenedHeap:mteCheckedAllocationsEnabled:mteUserDataAllocationsTagged:mteSoftModeEnabled:mteInheritanceTurnedOn:isRunningBoardManaged:isUnresponsive:timeOfLastResponse:numThreads:numIdleWorkQueueThreads:numOtherHiddenThreads:hieSwallowedException:numSamplesWQExceededConstrainedThreadLimit:numSamplesWQExceededTotalThreadLimit:numSamplesWQExceededCooperativeThreadLimit:numSamplesWQExceededActiveConstrainedThreadLimit:numSamplesTALEngaged:isRunawayMitigated:threadsDeadlocked:threadsBlockedByADeadlock:ioSize:numIOs:isReportHeader:](v1542, v1411, v1484, 0xFFFFFFFFLL, mainBinary, v1410, 0, 4294966982, 0.0, bundleIdentifier, v1380, bundleBuildVersion, bundleProjectName, bundleSourceVersion, bundleProductBuildVersion, adamID, installerVersionID, developerType, appType, j, cohortID, vendorID, codesigningID, teamID, v1443, v1512, v142, v1456, v1460, v135, 0, 0, 0, 0, 0, 0x7FFFFFFFFFFFFFFFuLL, 0x7FFFFFFFFFFFFFFFuLL, 0, 0, 0, 0, 0, 0, 0, 0x7FFFFFFFFFFFFFFFuLL, 0x7FFFFFFFFFFFFFFFuLL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [lastObject2 isTranslocated], v1463 & 1, v1479 & 1, v1466 & 1, v1470 & 1, v1474 & 1);
+      if (lastObject2)
       {
       }
 
-      if (v1504)
+      if (mainBinary)
       {
       }
 
@@ -3737,47 +3737,47 @@ LABEL_128:
 
       v1459 = v85;
       v1511 = *(*(&v1633 + 1) + 8 * v85);
-      v1483 = [v1511 startTimestamp];
-      v1489 = [v1511 endTimestamp];
-      if (!v1504)
+      startTimestamp = [v1511 startTimestamp];
+      endTimestamp = [v1511 endTimestamp];
+      if (!mainBinary)
       {
-        v1504 = 0;
+        mainBinary = 0;
         goto LABEL_143;
       }
 
-      v87 = [v1511 mainBinary];
-      v88 = v87;
-      if (!v87)
+      mainBinary2 = [v1511 mainBinary];
+      v88 = mainBinary2;
+      if (!mainBinary2)
       {
         goto LABEL_140;
       }
 
-      v89 = [v87 uuid];
-      v90 = [v1504 uuid];
-      if (([v89 isEqual:v90] & 1) == 0)
+      uuid2 = [mainBinary2 uuid];
+      uuid3 = [mainBinary uuid];
+      if (([uuid2 isEqual:uuid3] & 1) == 0)
       {
 
 LABEL_140:
-        v96 = v1504;
-        v1504 = 0;
+        path6 = mainBinary;
+        mainBinary = 0;
         goto LABEL_141;
       }
 
-      v91 = [v88 path];
-      if (!v91)
+      path2 = [v88 path];
+      if (!path2)
       {
         goto LABEL_188;
       }
 
-      v92 = [v1504 path];
-      if (!v92)
+      path3 = [mainBinary path];
+      if (!path3)
       {
         break;
       }
 
-      v93 = [v88 path];
-      v94 = [v1504 path];
-      v95 = [v93 isEqual:v94];
+      path4 = [v88 path];
+      path5 = [mainBinary path];
+      v95 = [path4 isEqual:path5];
 
       if ((v95 & 1) == 0)
       {
@@ -3785,11 +3785,11 @@ LABEL_140:
       }
 
 LABEL_189:
-      v96 = [v1504 path];
-      if (!v96)
+      path6 = [mainBinary path];
+      if (!path6)
       {
-        v125 = [v88 path];
-        v126 = v125 == 0;
+        path7 = [v88 path];
+        v126 = path7 == 0;
 
         if (v126)
         {
@@ -3797,16 +3797,16 @@ LABEL_189:
         }
 
         v127 = v88;
-        v96 = v1504;
-        v1504 = v127;
+        path6 = mainBinary;
+        mainBinary = v127;
       }
 
 LABEL_141:
 
 LABEL_142:
 LABEL_143:
-      v58 = [(SASamplePrinter *)v1542 rawNameForTask:v1511];
-      v97 = SACopySanitizedStringWhitespaceOnlyNullable(v58);
+      uuid = [(SASamplePrinter *)v1542 rawNameForTask:v1511];
+      v97 = SACopySanitizedStringWhitespaceOnlyNullable(uuid);
       v98 = v97;
       v99 = @"UNKNOWN PROCESS";
       if (v97)
@@ -3817,10 +3817,10 @@ LABEL_143:
       v1496 = v99;
 
       [v1449 addObject:v1496];
-      v100 = [v1511 ppid];
-      if (v100 != -1 && v100 != [v1511 pid])
+      ppid = [v1511 ppid];
+      if (ppid != -1 && ppid != [v1511 pid])
       {
-        v101 = [(SASampleStore *)*v1488 lastTaskWithPid:v100 onOrBeforeTimestamp:v1489];
+        v101 = [(SASampleStore *)*v1488 lastTaskWithPid:ppid onOrBeforeTimestamp:endTimestamp];
         if (v101)
         {
           v102 = v101;
@@ -3828,7 +3828,7 @@ LABEL_143:
           goto LABEL_150;
         }
 
-        v102 = [(SASampleStore *)*v1488 firstTaskWithPid:v100];
+        v102 = [(SASampleStore *)*v1488 firstTaskWithPid:ppid];
 
         if (v102)
         {
@@ -3839,18 +3839,18 @@ LABEL_150:
 
         else
         {
-          v102 = [(SASamplePrinter *)v1542 displayNameForPid:v100 threadId:0 timestamp:v1483];
+          v102 = [(SASamplePrinter *)v1542 displayNameForPid:ppid threadId:0 timestamp:startTimestamp];
           [v1436 addObject:v102];
         }
       }
 
-      v104 = [v1511 rpid];
-      if (v104 < 1 || v104 == [v1511 pid])
+      rpid = [v1511 rpid];
+      if (rpid < 1 || rpid == [v1511 pid])
       {
         goto LABEL_159;
       }
 
-      v105 = [(SASampleStore *)*v1488 lastTaskWithPid:v104 onOrBeforeTimestamp:v1489];
+      v105 = [(SASampleStore *)*v1488 lastTaskWithPid:rpid onOrBeforeTimestamp:endTimestamp];
       if (v105)
       {
         v106 = v105;
@@ -3858,11 +3858,11 @@ LABEL_150:
 
       else
       {
-        v106 = [(SASampleStore *)*v1488 firstTaskWithPid:v104];
+        v106 = [(SASampleStore *)*v1488 firstTaskWithPid:rpid];
 
         if (!v106)
         {
-          v106 = [(SASamplePrinter *)v1542 displayNameForPid:v104 threadId:0 timestamp:v1483];
+          v106 = [(SASamplePrinter *)v1542 displayNameForPid:rpid threadId:0 timestamp:startTimestamp];
           [v1433 addObject:v106];
           goto LABEL_158;
         }
@@ -3883,8 +3883,8 @@ LABEL_159:
       v1631 = 0u;
       v1630 = 0u;
       v1629 = 0u;
-      v109 = [v1511 threads];
-      v110 = [v109 countByEnumeratingWithState:&v1629 objects:v1667 count:16];
+      threads = [v1511 threads];
+      v110 = [threads countByEnumeratingWithState:&v1629 objects:v1667 count:16];
       if (v110)
       {
         v111 = *v1630;
@@ -3895,45 +3895,45 @@ LABEL_159:
           {
             if (*v1630 != v111)
             {
-              objc_enumerationMutation(v109);
+              objc_enumerationMutation(threads);
             }
 
             v113 = [*(v1542 + 152) objectForKeyedSubscript:*(*(&v1629 + 1) + 8 * v112)];
             v114 = v113;
             if (v113)
             {
-              v115 = [v113 threadState];
-              v116 = [v115 startTimestamp];
-              if ([v116 gt:*(v1542 + 40)])
+              threadState = [v113 threadState];
+              startTimestamp2 = [threadState startTimestamp];
+              if ([startTimestamp2 gt:*(v1542 + 40)])
               {
 
 LABEL_169:
                 goto LABEL_171;
               }
 
-              v117 = [v114 threadState];
-              v118 = [v117 endTimestamp];
-              v58 = [v118 lt:*(v1542 + 32)];
+              threadState2 = [v114 threadState];
+              endTimestamp2 = [threadState2 endTimestamp];
+              uuid = [endTimestamp2 lt:*(v1542 + 32)];
 
-              if ((v58 & 1) == 0)
+              if ((uuid & 1) == 0)
               {
                 if ([v114 isPartOfADeadlock])
                 {
-                  v58 = [v114 thread];
-                  v119 = [v114 threadState];
-                  v115 = [(SASamplePrinter *)v1542 displayNameForTask:v58 thread:v119 threadState:?];
+                  uuid = [v114 thread];
+                  threadState3 = [v114 threadState];
+                  threadState = [(SASamplePrinter *)v1542 displayNameForTask:uuid thread:threadState3 threadState:?];
 
-                  [obja addObject:v115];
+                  [obja addObject:threadState];
                   goto LABEL_169;
                 }
 
                 if ([v114 isBlockedByADeadlock])
                 {
-                  v58 = [v114 thread];
-                  v120 = [v114 threadState];
-                  v115 = [(SASamplePrinter *)v1542 displayNameForTask:v58 thread:v120 threadState:?];
+                  uuid = [v114 thread];
+                  threadState4 = [v114 threadState];
+                  threadState = [(SASamplePrinter *)v1542 displayNameForTask:uuid thread:threadState4 threadState:?];
 
-                  [v1519 addObject:v115];
+                  [v1519 addObject:threadState];
                   goto LABEL_169;
                 }
               }
@@ -3945,7 +3945,7 @@ LABEL_171:
           }
 
           while (v110 != v112);
-          v121 = [v109 countByEnumeratingWithState:&v1629 objects:v1667 count:16];
+          v121 = [threads countByEnumeratingWithState:&v1629 objects:v1667 count:16];
           v110 = v121;
         }
 
@@ -3954,16 +3954,16 @@ LABEL_171:
 
       if (![v1511 pid] && !v1456)
       {
-        [v1483 wallTime];
+        [startTimestamp wallTime];
         v123 = [(SASamplePrinter *)v1542 kernelVersionAtWallTime:v122];
-        v58 = v123;
-        if (!v123 || (SACopySanitizedString(v123, 1, 0), v1456 = objc_claimAutoreleasedReturnValue(), v58, !v1456))
+        uuid = v123;
+        if (!v123 || (SACopySanitizedString(v123, 1, 0), v1456 = objc_claimAutoreleasedReturnValue(), uuid, !v1456))
         {
           v1456 = @"???";
         }
       }
 
-      v124 = [v1511 hardenedHeap];
+      hardenedHeap = [v1511 hardenedHeap];
       if (v1511)
       {
         v1479 |= v1511[75];
@@ -3972,7 +3972,7 @@ LABEL_171:
         v1474 |= v1511[78];
       }
 
-      v1463 |= v124;
+      v1463 |= hardenedHeap;
       v85 = v1459 + 1;
       if (v1459 + 1 == v1452)
       {
@@ -3994,22 +3994,22 @@ LABEL_188:
   v83 = *(v1542 + 136);
   if (v83)
   {
-    v1518 = v83;
+    targetProcess = v83;
   }
 
   else
   {
-    v1518 = [*v1488 targetProcess];
+    targetProcess = [*v1488 targetProcess];
 
-    if (!v1518)
+    if (!targetProcess)
     {
       v361 = *__error();
       v362 = _sa_logt();
       if (os_log_type_enabled(v362, OS_LOG_TYPE_ERROR))
       {
-        v1337 = [*v1488 targetProcessId];
+        targetProcessId = [*v1488 targetProcessId];
         *v1677 = 67109120;
-        *&v1677[4] = v1337;
+        *&v1677[4] = targetProcessId;
         _os_log_error_impl(&dword_1E0E2F000, v362, OS_LOG_TYPE_ERROR, "No task for target pid %d", v1677, 8u);
       }
 
@@ -4019,10 +4019,10 @@ LABEL_188:
     }
   }
 
-  if (v1478)
+  if (printJson)
   {
     v129 = *p_isa;
-    v130 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v1518, "pid")}];
+    v130 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(targetProcess, "pid")}];
     SAJSONWriteDictionaryEntry(v129, @"targetTaskPid", v130);
 
 LABEL_231:
@@ -4032,17 +4032,17 @@ LABEL_232:
     goto LABEL_233;
   }
 
-  v1437 = [v1518 startTimestamp];
-  v1440 = [v1518 endTimestamp];
-  v131 = [v1518 ppid];
-  if (v131 == -1 || v131 == [v1518 pid])
+  startTimestamp3 = [targetProcess startTimestamp];
+  endTimestamp3 = [targetProcess endTimestamp];
+  ppid2 = [targetProcess ppid];
+  if (ppid2 == -1 || ppid2 == [targetProcess pid])
   {
     v1497 = 0;
   }
 
   else
   {
-    v363 = [(SASampleStore *)*v1488 lastTaskWithPid:v131 onOrBeforeTimestamp:v1440];
+    v363 = [(SASampleStore *)*v1488 lastTaskWithPid:ppid2 onOrBeforeTimestamp:endTimestamp3];
     if (v363)
     {
       v364 = v363;
@@ -4050,11 +4050,11 @@ LABEL_232:
 
     else
     {
-      v364 = [(SASampleStore *)*v1488 firstTaskWithPid:v131];
+      v364 = [(SASampleStore *)*v1488 firstTaskWithPid:ppid2];
 
       if (!v364)
       {
-        v1497 = [(SASamplePrinter *)v1542 displayNameForPid:v131 threadId:0 timestamp:v1437];
+        v1497 = [(SASamplePrinter *)v1542 displayNameForPid:ppid2 threadId:0 timestamp:startTimestamp3];
         goto LABEL_1307;
       }
     }
@@ -4063,15 +4063,15 @@ LABEL_232:
   }
 
 LABEL_1307:
-  v1153 = [v1518 rpid];
-  if (v1153 < 1 || v1153 == [v1518 pid])
+  rpid2 = [targetProcess rpid];
+  if (rpid2 < 1 || rpid2 == [targetProcess pid])
   {
     v1494 = 0;
   }
 
   else
   {
-    v1154 = [(SASampleStore *)*v1488 lastTaskWithPid:v1153 onOrBeforeTimestamp:v1440];
+    v1154 = [(SASampleStore *)*v1488 lastTaskWithPid:rpid2 onOrBeforeTimestamp:endTimestamp3];
     if (v1154)
     {
       v1155 = v1154;
@@ -4079,11 +4079,11 @@ LABEL_1307:
 
     else
     {
-      v1155 = [(SASampleStore *)*v1488 firstTaskWithPid:v1153];
+      v1155 = [(SASampleStore *)*v1488 firstTaskWithPid:rpid2];
 
       if (!v1155)
       {
-        v1494 = [(SASamplePrinter *)v1542 displayNameForPid:v1153 threadId:0 timestamp:v1437];
+        v1494 = [(SASamplePrinter *)v1542 displayNameForPid:rpid2 threadId:0 timestamp:startTimestamp3];
         goto LABEL_1314;
       }
     }
@@ -4092,9 +4092,9 @@ LABEL_1307:
   }
 
 LABEL_1314:
-  if ([v1518 resourceCoalitionID])
+  if ([targetProcess resourceCoalitionID])
   {
-    v1156 = [SASamplePrinter displayStringForResourceCoalition:v1518];
+    v1156 = [SASamplePrinter displayStringForResourceCoalition:targetProcess];
     v1665 = v1156;
     v1666 = &unk_1F5BDCA90;
     v1486 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v1666 forKeys:&v1665 count:1];
@@ -4105,7 +4105,7 @@ LABEL_1314:
     v1486 = 0;
   }
 
-  v1664 = v1518;
+  v1664 = targetProcess;
   v1157 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v1664 count:1];
   v1481 = [(SASamplePrinter *)v1542 displayStringForOnBehalfOfForTasks:v1157 includePid:1u];
 
@@ -4113,8 +4113,8 @@ LABEL_1314:
   v1627 = 0u;
   v1626 = 0u;
   v1625 = 0u;
-  v1158 = [v1518 threads];
-  v1159 = [v1158 countByEnumeratingWithState:&v1625 objects:v1663 count:16];
+  threads2 = [targetProcess threads];
+  v1159 = [threads2 countByEnumeratingWithState:&v1625 objects:v1663 count:16];
   if (!v1159)
   {
     v1516 = 0;
@@ -4132,32 +4132,32 @@ LABEL_1314:
     {
       if (*v1626 != v1160)
       {
-        objc_enumerationMutation(v1158);
+        objc_enumerationMutation(threads2);
       }
 
       v1162 = [*(v1542 + 152) objectForKeyedSubscript:*(*(&v1625 + 1) + 8 * v1161)];
       v1163 = v1162;
       if (v1162)
       {
-        v1164 = [v1162 threadState];
-        v1165 = [v1164 startTimestamp];
-        if ([v1165 gt:*(v1542 + 40)])
+        threadState5 = [v1162 threadState];
+        startTimestamp4 = [threadState5 startTimestamp];
+        if ([startTimestamp4 gt:*(v1542 + 40)])
         {
 
           goto LABEL_1325;
         }
 
-        v1166 = [v1163 threadState];
-        v1167 = [v1166 endTimestamp];
-        v1168 = [v1167 lt:*(v1542 + 32)];
+        threadState6 = [v1163 threadState];
+        endTimestamp4 = [threadState6 endTimestamp];
+        v1168 = [endTimestamp4 lt:*(v1542 + 32)];
 
         if ((v1168 & 1) == 0)
         {
           if ([v1163 isPartOfADeadlock])
           {
-            v1169 = [v1163 thread];
-            v1170 = [v1163 threadState];
-            v1164 = [(SASamplePrinter *)v1542 displayNameForTask:v1169 thread:v1170 threadState:?];
+            thread = [v1163 thread];
+            threadState7 = [v1163 threadState];
+            threadState5 = [(SASamplePrinter *)v1542 displayNameForTask:thread thread:threadState7 threadState:?];
 
             v1171 = objj;
             if (objj)
@@ -4165,26 +4165,26 @@ LABEL_1314:
               goto LABEL_1331;
             }
 
-            objj = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v1164, 0}];
+            objj = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{threadState5, 0}];
             goto LABEL_1325;
           }
 
           if ([v1163 isBlockedByADeadlock])
           {
-            v1172 = [v1163 thread];
-            v1173 = [v1163 threadState];
-            v1164 = [(SASamplePrinter *)v1542 displayNameForTask:v1172 thread:v1173 threadState:?];
+            thread2 = [v1163 thread];
+            threadState8 = [v1163 threadState];
+            threadState5 = [(SASamplePrinter *)v1542 displayNameForTask:thread2 thread:threadState8 threadState:?];
 
             v1171 = v1516;
             if (v1516)
             {
 LABEL_1331:
-              [v1171 addObject:v1164];
+              [v1171 addObject:threadState5];
             }
 
             else
             {
-              v1516 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v1164, 0}];
+              v1516 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{threadState5, 0}];
             }
 
 LABEL_1325:
@@ -4196,7 +4196,7 @@ LABEL_1325:
     }
 
     while (v1159 != v1161);
-    v1174 = [v1158 countByEnumeratingWithState:&v1625 objects:v1663 count:16];
+    v1174 = [threads2 countByEnumeratingWithState:&v1625 objects:v1663 count:16];
     v1159 = v1174;
   }
 
@@ -4205,15 +4205,15 @@ LABEL_1340:
 
   [objj sortUsingComparator:&__block_literal_global_64];
   [v1516 sortUsingComparator:&__block_literal_global_64];
-  if ([v1518 pid])
+  if ([targetProcess pid])
   {
     v1509 = 0;
   }
 
   else
   {
-    v1175 = [v1518 startTimestamp];
-    [v1175 wallTime];
+    startTimestamp5 = [targetProcess startTimestamp];
+    [startTimestamp5 wallTime];
     v1177 = [(SASamplePrinter *)v1542 kernelVersionAtWallTime:v1176];
 
     if (!v1177 || (SACopySanitizedString(v1177, 1, 0), v1509 = objc_claimAutoreleasedReturnValue(), v1177, !v1509))
@@ -4223,7 +4223,7 @@ LABEL_1340:
   }
 
   v1435 = *(v1542 + 8);
-  v1178 = [(SASamplePrinter *)v1542 rawNameForTask:v1518];
+  v1178 = [(SASamplePrinter *)v1542 rawNameForTask:targetProcess];
   v1179 = SACopySanitizedStringWhitespaceOnlyNullable(v1178);
   v1180 = v1179;
   v1181 = @"UNKNOWN PROCESS";
@@ -4233,44 +4233,44 @@ LABEL_1340:
   }
 
   v1425 = v1181;
-  v1423 = [v1518 pid];
-  v1182 = [v1518 mainBinaryPath];
-  j = v1182;
+  v1423 = [targetProcess pid];
+  mainBinaryPath = [targetProcess mainBinaryPath];
+  j = mainBinaryPath;
   v1183 = @"UNKNOWN PATH";
-  if (v1182)
+  if (mainBinaryPath)
   {
-    v1183 = v1182;
+    v1183 = mainBinaryPath;
   }
 
   v1421 = v1183;
-  v1458 = [v1518 bundleIdentifier];
-  v1476 = [v1518 bundleVersion];
-  v1455 = [v1518 bundleShortVersion];
-  v1472 = [v1518 bundleBuildVersion];
-  v1468 = [v1518 bundleProjectName];
-  v1465 = [v1518 bundleSourceVersion];
-  v1462 = [v1518 bundleProductBuildVersion];
-  v1419 = [v1518 adamID];
-  v1451 = [v1518 installerVersionID];
-  v1417 = [v1518 developerType];
-  v1448 = [v1518 appType];
-  v1415 = [v1518 isBeta];
-  v1444 = [v1518 cohortID];
-  v1184 = [v1518 vendorID];
-  v1413 = [v1518 distributorID];
-  v1185 = [v1518 codesigningID];
-  v1186 = [v1518 teamID];
-  v59 = [(SASamplePrinter *)v1542 architectureStringForTask:v1518];
-  v1187 = [v1518 forkTimestamp];
-  *&v1383 = v1476;
-  *(&v1383 + 1) = v1455;
-  -[SASamplePrinter addTaskHeaderToStream:displayName:pid:mainBinary:mainBinaryPath:sharedCaches:uid:bundleIdentifier:bundleVersion:bundleShortVersion:bundleBuildVersion:bundleProjectName:bundleSourceVersion:bundleProductBuildVersion:adamID:installerVersionID:developerType:appType:isBeta:cohortID:vendorID:distributorID:codesigningID:teamID:resourceCoalitionSampleCounts:onBehalfOfProcesses:architectureString:kernelVersion:parentName:responsibleName:taskExecedFromName:taskExecedToName:forkTimestamp:startTimestamp:endTimestamp:startSampleIndex:endSampleIndex:numSamples:totalNumSamples:numSamplesSuspended:numSamplesTerminated:startingTaskSize:endingTaskSize:maxTaskSize:startSampleIndexOfMaxTaskSize:endSampleIndexOfMaxTaskSize:numPageins:cpuTimeNs:cpuInstructions:cpuCycles:nonThreadCpuTimeNs:nonThreadCpuInstructions:nonThreadCpuCycles:usesSuddenTermination:allowsIdleExit:memoryLimitStr:jetsamPriorityStr:isTranslocated:hardenedHeap:mteCheckedAllocationsEnabled:mteUserDataAllocationsTagged:mteSoftModeEnabled:mteInheritanceTurnedOn:isRunningBoardManaged:isUnresponsive:timeOfLastResponse:numThreads:numIdleWorkQueueThreads:numOtherHiddenThreads:hieSwallowedException:numSamplesWQExceededConstrainedThreadLimit:numSamplesWQExceededTotalThreadLimit:numSamplesWQExceededCooperativeThreadLimit:numSamplesWQExceededActiveConstrainedThreadLimit:numSamplesTALEngaged:isRunawayMitigated:threadsDeadlocked:threadsBlockedByADeadlock:ioSize:numIOs:isReportHeader:](v1542, v1435, v1425, v1423, 0, v1421, 0, 4294966982, 0.0, v1458, v1383, v1472, v1468, v1465, v1462, v1419, v1451, v1417, v1448, v1415, v1444, v1184, v1185, v1186, v1486, v1481, v59, v1509, v1497, v1494, 0, 0, v1187, 0, 0, 0x7FFFFFFFFFFFFFFFuLL, 0x7FFFFFFFFFFFFFFFuLL, 0, 0, 0, 0, 0, 0, 0, 0x7FFFFFFFFFFFFFFFuLL, 0x7FFFFFFFFFFFFFFFuLL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [v1518 isTranslocated], objc_msgSend(v1518, "hardenedHeap"), v1518[75] & 1, v1518[76] & 1, v1518[77] & 1, v1518[78] & 1);
+  bundleIdentifier2 = [targetProcess bundleIdentifier];
+  bundleVersion2 = [targetProcess bundleVersion];
+  bundleShortVersion2 = [targetProcess bundleShortVersion];
+  bundleBuildVersion2 = [targetProcess bundleBuildVersion];
+  bundleProjectName2 = [targetProcess bundleProjectName];
+  bundleSourceVersion2 = [targetProcess bundleSourceVersion];
+  bundleProductBuildVersion2 = [targetProcess bundleProductBuildVersion];
+  adamID2 = [targetProcess adamID];
+  installerVersionID2 = [targetProcess installerVersionID];
+  developerType2 = [targetProcess developerType];
+  appType2 = [targetProcess appType];
+  isBeta = [targetProcess isBeta];
+  cohortID2 = [targetProcess cohortID];
+  vendorID2 = [targetProcess vendorID];
+  distributorID2 = [targetProcess distributorID];
+  codesigningID2 = [targetProcess codesigningID];
+  teamID2 = [targetProcess teamID];
+  teamID = [(SASamplePrinter *)v1542 architectureStringForTask:targetProcess];
+  forkTimestamp = [targetProcess forkTimestamp];
+  *&v1383 = bundleVersion2;
+  *(&v1383 + 1) = bundleShortVersion2;
+  -[SASamplePrinter addTaskHeaderToStream:displayName:pid:mainBinary:mainBinaryPath:sharedCaches:uid:bundleIdentifier:bundleVersion:bundleShortVersion:bundleBuildVersion:bundleProjectName:bundleSourceVersion:bundleProductBuildVersion:adamID:installerVersionID:developerType:appType:isBeta:cohortID:vendorID:distributorID:codesigningID:teamID:resourceCoalitionSampleCounts:onBehalfOfProcesses:architectureString:kernelVersion:parentName:responsibleName:taskExecedFromName:taskExecedToName:forkTimestamp:startTimestamp:endTimestamp:startSampleIndex:endSampleIndex:numSamples:totalNumSamples:numSamplesSuspended:numSamplesTerminated:startingTaskSize:endingTaskSize:maxTaskSize:startSampleIndexOfMaxTaskSize:endSampleIndexOfMaxTaskSize:numPageins:cpuTimeNs:cpuInstructions:cpuCycles:nonThreadCpuTimeNs:nonThreadCpuInstructions:nonThreadCpuCycles:usesSuddenTermination:allowsIdleExit:memoryLimitStr:jetsamPriorityStr:isTranslocated:hardenedHeap:mteCheckedAllocationsEnabled:mteUserDataAllocationsTagged:mteSoftModeEnabled:mteInheritanceTurnedOn:isRunningBoardManaged:isUnresponsive:timeOfLastResponse:numThreads:numIdleWorkQueueThreads:numOtherHiddenThreads:hieSwallowedException:numSamplesWQExceededConstrainedThreadLimit:numSamplesWQExceededTotalThreadLimit:numSamplesWQExceededCooperativeThreadLimit:numSamplesWQExceededActiveConstrainedThreadLimit:numSamplesTALEngaged:isRunawayMitigated:threadsDeadlocked:threadsBlockedByADeadlock:ioSize:numIOs:isReportHeader:](v1542, v1435, v1425, v1423, 0, v1421, 0, 4294966982, 0.0, bundleIdentifier2, v1383, bundleBuildVersion2, bundleProjectName2, bundleSourceVersion2, bundleProductBuildVersion2, adamID2, installerVersionID2, developerType2, appType2, isBeta, cohortID2, vendorID2, codesigningID2, teamID2, v1486, v1481, teamID, v1509, v1497, v1494, 0, 0, forkTimestamp, 0, 0, 0x7FFFFFFFFFFFFFFFuLL, 0x7FFFFFFFFFFFFFFFuLL, 0, 0, 0, 0, 0, 0, 0, 0x7FFFFFFFFFFFFFFFuLL, 0x7FFFFFFFFFFFFFFFuLL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [targetProcess isTranslocated], objc_msgSend(targetProcess, "hardenedHeap"), targetProcess[75] & 1, targetProcess[76] & 1, targetProcess[77] & 1, targetProcess[78] & 1);
 
   [*(v1542 + 8) appendString:@"\n"];
-  if (v1427 && *v1488 && (*(*v1488 + 404) & 1) != 0)
+  if (hidEventTimestamp && *v1488 && (*(*v1488 + 404) & 1) != 0)
   {
     v82 = 0.0;
-    if ([v1427 lt:*(v1542 + 32)] && (objc_msgSend(*(v1542 + 32), "machAbsTimeSeconds"), v1189 = v1188, objc_msgSend(v1427, "machAbsTimeSeconds"), v1191 = v1189 - v1190, -[SASamplePrinter shouldPrintTimeOutsideSamplingRange:](v1542, v1191)))
+    if ([hidEventTimestamp lt:*(v1542 + 32)] && (objc_msgSend(*(v1542 + 32), "machAbsTimeSeconds"), v1189 = v1188, objc_msgSend(hidEventTimestamp, "machAbsTimeSeconds"), v1191 = v1189 - v1190, -[SASamplePrinter shouldPrintTimeOutsideSamplingRange:](v1542, v1191)))
     {
       v1192 = objc_alloc(MEMORY[0x1E696AEC0]);
       if (v1191 >= 0.1)
@@ -4294,11 +4294,11 @@ LABEL_1340:
     }
 
     v1442 = v1198;
-    if (v1426)
+    if (timestamp)
     {
-      if ([v1426 gt:*(v1542 + 40)])
+      if ([timestamp gt:*(v1542 + 40)])
       {
-        [v1426 machAbsTimeSeconds];
+        [timestamp machAbsTimeSeconds];
         v1315 = v1314;
         [*(v1542 + 40) machAbsTimeSeconds];
         v1317 = v1315 - v1316;
@@ -4339,7 +4339,7 @@ LABEL_1340:
   else
   {
     v82 = 0.0;
-    if ([v1518 isUnresponsive] && (objc_msgSend(v1518, "timeOfLastResponse"), v1195 = v1194, v1194 > 0.0) && (objc_msgSend(*(v1542 + 32), "wallTime"), v1195 < v1196) && (v1197 = v1196 - v1195, -[SASamplePrinter shouldPrintTimeOutsideSamplingRange:](v1542, v1197)))
+    if ([targetProcess isUnresponsive] && (objc_msgSend(targetProcess, "timeOfLastResponse"), v1195 = v1194, v1194 > 0.0) && (objc_msgSend(*(v1542 + 32), "wallTime"), v1195 < v1196) && (v1197 = v1196 - v1195, -[SASamplePrinter shouldPrintTimeOutsideSamplingRange:](v1542, v1197)))
     {
       LOBYTE(v1379) = LOBYTE(v1197);
       v1442 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"process was unresponsive for %.0f seconds before sampling"];
@@ -4354,19 +4354,19 @@ LABEL_1340:
 
 LABEL_233:
 LABEL_234:
-  v144 = [*v1488 targetProcess];
-  if (v144 && (v145 = *(v1542 + 136)) != 0)
+  targetProcess2 = [*v1488 targetProcess];
+  if (targetProcess2 && (v145 = *(v1542 + 136)) != 0)
   {
-    v146 = [*v1488 targetProcess];
-    v147 = v145 == v146;
+    targetProcess3 = [*v1488 targetProcess];
+    v147 = v145 == targetProcess3;
 
     if (!v147)
     {
       v148 = *(v1542 + 8);
-      v144 = [*(v1542 + 168) targetProcess];
-      v149 = [(SASamplePrinter *)v1542 displayNameForTask:v144];
+      targetProcess2 = [*(v1542 + 168) targetProcess];
+      v149 = [(SASamplePrinter *)v1542 displayNameForTask:targetProcess2];
       v150 = v149;
-      if (v1478)
+      if (printJson)
       {
         SAJSONWriteDictionaryEntry(v148, @"affectedProcess", v149);
       }
@@ -4386,31 +4386,31 @@ LABEL_234:
 LABEL_241:
   }
 
-  v1454 = [*v1488 event];
-  v151 = [*v1488 eventNote];
-  v1450 = v151;
-  if (__PAIR128__(v1454, v151) != 0)
+  event = [*v1488 event];
+  eventNote = [*v1488 eventNote];
+  v1450 = eventNote;
+  if (__PAIR128__(event, eventNote) != 0)
   {
-    if (v151)
+    if (eventNote)
     {
       v152 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v153 = v1454;
-      if (!v1454)
+      v153 = event;
+      if (!event)
       {
         v153 = @"???";
       }
 
-      v154 = [v152 initWithFormat:@"%@ (%@)", v153, v1450];
+      v1450 = [v152 initWithFormat:@"%@ (%@)", v153, v1450];
     }
 
     else
     {
-      v154 = v1454;
+      v1450 = event;
     }
 
-    v155 = v154;
+    v155 = v1450;
     v156 = *p_isa;
-    if (v1478)
+    if (printJson)
     {
       SAJSONWriteDictionaryEntry(v156, @"event", v155);
     }
@@ -4422,21 +4422,21 @@ LABEL_241:
     }
   }
 
-  v157 = [*v1488 signature];
+  signature = [*v1488 signature];
 
-  if (v157)
+  if (signature)
   {
     v158 = *p_isa;
-    v159 = [*v1488 signature];
-    v160 = v159;
-    if (v1478)
+    signature2 = [*v1488 signature];
+    v160 = signature2;
+    if (printJson)
     {
-      SAJSONWriteDictionaryEntry(v158, @"signature", v159);
+      SAJSONWriteDictionaryEntry(v158, @"signature", signature2);
     }
 
     else
     {
-      v1386 = SACopySanitizedString(v159, 1, 0xFFuLL);
+      v1386 = SACopySanitizedString(signature2, 1, 0xFFuLL);
       LOBYTE(v1379) = 18;
       [v158 printWithFormat:@"%-*s%@\n"];
     }
@@ -4444,33 +4444,33 @@ LABEL_241:
 
   if ([*v1488 targetDispatchQueueId])
   {
-    v161 = [*v1488 targetProcess];
-    v162 = [v161 dispatchQueues];
-    v59 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(*v1488, "targetDispatchQueueId")}];
-    v163 = [v162 objectForKeyedSubscript:v59];
+    targetProcess4 = [*v1488 targetProcess];
+    dispatchQueues = [targetProcess4 dispatchQueues];
+    teamID = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(*v1488, "targetDispatchQueueId")}];
+    v163 = [dispatchQueues objectForKeyedSubscript:teamID];
 
     if (v163)
     {
       v164 = *p_isa;
-      if (v1478)
+      if (printJson)
       {
         v165 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(*v1488, "targetDispatchQueueId")}];
         SAJSONWriteDictionaryEntry(v164, @"targetDispatchQueueId", v165);
 
-        v166 = [v163 dispatchQueueLabel];
+        dispatchQueueLabel = [v163 dispatchQueueLabel];
 
-        if (v166)
+        if (dispatchQueueLabel)
         {
           v167 = *p_isa;
-          v168 = [v163 dispatchQueueLabel];
-          SAJSONWriteDictionaryEntry(v167, @"targetDispatchQueueLabel", v168);
+          dispatchQueueLabel2 = [v163 dispatchQueueLabel];
+          SAJSONWriteDictionaryEntry(v167, @"targetDispatchQueueLabel", dispatchQueueLabel2);
           goto LABEL_263;
         }
       }
 
       else
       {
-        v168 = [SASamplePrinter displayNameForDispatchQueue:v163];
+        dispatchQueueLabel2 = [SASamplePrinter displayNameForDispatchQueue:v163];
         LOBYTE(v1379) = 18;
         [v164 printWithFormat:@"%-*s%@\n"];
 LABEL_263:
@@ -4481,7 +4481,7 @@ LABEL_263:
   if ([*v1488 targetThreadId])
   {
     v169 = *p_isa;
-    if (v1478)
+    if (printJson)
     {
       v170 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(*v1488, "targetThreadId")}];
       SAJSONWriteDictionaryEntry(v169, @"targetThreadId", v170);
@@ -4495,81 +4495,81 @@ LABEL_263:
     }
   }
 
-  v171 = [*v1488 issueType];
+  issueType = [*v1488 issueType];
 
-  if (v171)
+  if (issueType)
   {
     v172 = *p_isa;
-    v173 = [*v1488 issueType];
-    v174 = v173;
-    if (v1478)
+    issueType2 = [*v1488 issueType];
+    v174 = issueType2;
+    if (printJson)
     {
-      SAJSONWriteDictionaryEntry(v172, @"issueType", v173);
+      SAJSONWriteDictionaryEntry(v172, @"issueType", issueType2);
     }
 
     else
     {
-      v1387 = SACopySanitizedString(v173, 1, 0);
+      v1387 = SACopySanitizedString(issueType2, 1, 0);
       LOBYTE(v1379) = 18;
       [v172 printWithFormat:@"%-*s%@\n"];
     }
   }
 
-  v175 = [*v1488 mitigationReason];
+  mitigationReason = [*v1488 mitigationReason];
 
-  if (v175)
+  if (mitigationReason)
   {
     v176 = *p_isa;
-    v177 = [*v1488 mitigationReason];
-    v178 = v177;
-    if (v1478)
+    mitigationReason2 = [*v1488 mitigationReason];
+    v178 = mitigationReason2;
+    if (printJson)
     {
-      SAJSONWriteDictionaryEntry(v176, @"mitigationReason", v177);
+      SAJSONWriteDictionaryEntry(v176, @"mitigationReason", mitigationReason2);
     }
 
     else
     {
-      v1388 = SACopySanitizedString(v177, 1, 0);
+      v1388 = SACopySanitizedString(mitigationReason2, 1, 0);
       LOBYTE(v1379) = 18;
       [v176 printWithFormat:@"%-*s%@\n"];
     }
   }
 
-  v179 = [*v1488 actionTaken];
+  actionTaken = [*v1488 actionTaken];
 
-  if (v179)
+  if (actionTaken)
   {
     v180 = *p_isa;
-    v181 = [*v1488 actionTaken];
-    v182 = v181;
-    if (v1478)
+    actionTaken2 = [*v1488 actionTaken];
+    v182 = actionTaken2;
+    if (printJson)
     {
-      SAJSONWriteDictionaryEntry(v180, @"actionTaken", v181);
+      SAJSONWriteDictionaryEntry(v180, @"actionTaken", actionTaken2);
     }
 
     else
     {
-      v1389 = SACopySanitizedString(v181, 1, 0);
+      v1389 = SACopySanitizedString(actionTaken2, 1, 0);
       LOBYTE(v1379) = 18;
       [v180 printWithFormat:@"%-*s%@\n"];
     }
   }
 
-  v183 = [*v1488 detector];
+  detector = [*v1488 detector];
 
-  if (v183)
+  if (detector)
   {
     v184 = *p_isa;
-    v185 = [*v1488 detector];
-    v186 = v185;
-    if (v1478)
+    detector2 = [*v1488 detector];
+    v186 = detector2;
+    if (printJson)
     {
-      SAJSONWriteDictionaryEntry(v184, @"detector", v185);
+      SAJSONWriteDictionaryEntry(v184, @"detector", detector2);
     }
 
     else
     {
-      v1390 = SACopySanitizedString(v185, 1, 0);
+      v1390 = SACopySanitizedString(detector2, 1, 0);
       LOBYTE(v1379) = 18;
       [v184 printWithFormat:@"%-*s%@\n"];
     }
@@ -4581,7 +4581,7 @@ LABEL_263:
     [*v1488 cpuDuration];
     if (v188 > 0.0)
     {
-      if (v1478)
+      if (printJson)
       {
         v189 = *p_isa;
         v190 = MEMORY[0x1E696AD98];
@@ -4660,7 +4660,7 @@ LABEL_263:
     [*v1488 wakeupsDuration];
     if (v225 > 0.0)
     {
-      if (v1478)
+      if (printJson)
       {
         v226 = *p_isa;
         v227 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(*v1488, "numWakeups")}];
@@ -4685,24 +4685,24 @@ LABEL_263:
 
       else
       {
-        v59 = (v1542 + 168);
+        teamID = (v1542 + 168);
         v236 = *(v1542 + 168);
         *(v1542 + 112) = 1;
-        v237 = [v236 numWakeups];
+        numWakeups = [v236 numWakeups];
         [*(v1542 + 168) wakeupsDuration];
         v239 = v238;
         v240 = *(v1542 + 8);
-        v241 = [*(v1542 + 168) numWakeups];
+        numWakeups2 = [*(v1542 + 168) numWakeups];
         [*(v1542 + 168) wakeupsDuration];
-        [v240 printWithFormat:@"%-*s%llu wakeups over the last %.0f seconds (%.0f wakeups per second average)", 18, "Wakeups: ", v241, v242, v237 / v239];
+        [v240 printWithFormat:@"%-*s%llu wakeups over the last %.0f seconds (%.0f wakeups per second average)", 18, "Wakeups: ", numWakeups2, v242, numWakeups / v239];
         if ([*(v1542 + 168) numWakeupsLimit] && (objc_msgSend(*v1488, "wakeupsLimitDuration"), v243 > 0.0))
         {
-          v244 = [*v1488 numWakeupsLimit];
+          numWakeupsLimit = [*v1488 numWakeupsLimit];
           [*v1488 wakeupsLimitDuration];
           v246 = v245;
           v247 = *p_isa;
           [*v1488 wakeupsLimitDuration];
-          [v247 printWithFormat:@", exceeding limit of %.0f wakeups per second over %.0f seconds\n", v244 / v246, v248];
+          [v247 printWithFormat:@", exceeding limit of %.0f wakeups per second over %.0f seconds\n", numWakeupsLimit / v246, v248];
         }
 
         else
@@ -4728,7 +4728,7 @@ LABEL_263:
     [*v1488 writeDuration];
     if (v252 > 0.0)
     {
-      if (v1478)
+      if (printJson)
       {
         v253 = *p_isa;
         v254 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(*v1488, "bytesWritten")}];
@@ -4755,22 +4755,22 @@ LABEL_263:
       {
         v263 = *(v1542 + 168);
         *(v1542 + 112) = 1;
-        v59 = [v263 bytesWritten];
+        teamID = [v263 bytesWritten];
         [*(v1542 + 168) writeDuration];
         v265 = v264;
         v266 = *(v1542 + 8);
         v267 = SAFormattedBytesEx([*(v1542 + 168) bytesWritten], 0, 0, 1, 0);
         [*(v1542 + 168) writeDuration];
         v269 = v268;
-        v270 = SAFormattedBytesDouble(0, 0, v59 / v265);
+        v270 = SAFormattedBytesDouble(0, 0, teamID / v265);
         [v266 printWithFormat:@"%-*s%@ of file backed memory dirtied over %.0f seconds (%@ per second average)", 18, "Writes: ", v267, v269, v270];
 
         if ([*(v1542 + 168) bytesWrittenLimit] && (objc_msgSend(*v1488, "writeLimitDuration"), v271 > 0.0))
         {
-          v272 = [*v1488 bytesWrittenLimit];
+          bytesWrittenLimit = [*v1488 bytesWrittenLimit];
           [*v1488 writeLimitDuration];
           v274 = *p_isa;
-          v275 = SAFormattedBytesDouble(0, 0, v272 / v273);
+          v275 = SAFormattedBytesDouble(0, 0, bytesWrittenLimit / v273);
           [*v1488 writeLimitDuration];
           [v274 printWithFormat:@", exceeding limit of %@ per second over %.0f seconds\n", v275, v276];
         }
@@ -4801,8 +4801,8 @@ LABEL_263:
 
   [*(v1542 + 168) attemptedSamplingInterval];
   v285 = v284;
-  v286 = [*(v1542 + 168) eventTimeRange];
-  [v286 deltaSecondsWithTimeDomainPriorityList:&unk_1F5BDCCB8 timeDomainUsed:0];
+  eventTimeRange = [*(v1542 + 168) eventTimeRange];
+  [eventTimeRange deltaSecondsWithTimeDomainPriorityList:&unk_1F5BDCCB8 timeDomainUsed:0];
   v288 = v287;
 
   [*(v1542 + 32) deltaSecondsTo:*(v1542 + 40) timeDomainPriorityList:&unk_1F5BDCCD0 timeDomainUsed:0];
@@ -4814,21 +4814,21 @@ LABEL_263:
     v288 = v82 + v291 + v292;
   }
 
-  v293 = [*v1488 durationNote];
+  durationNote = [*v1488 durationNote];
 
-  if (v293)
+  if (durationNote)
   {
     if (v1442)
     {
       v294 = objc_alloc(MEMORY[0x1E696AEC0]);
       [*v1488 durationNote];
       v1379 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-      v1447 = [v294 initWithFormat:@"%@, %@"];
+      durationNote2 = [v294 initWithFormat:@"%@, %@"];
     }
 
     else
     {
-      v1447 = [*v1488 durationNote];
+      durationNote2 = [*v1488 durationNote];
     }
 
     goto LABEL_324;
@@ -4836,37 +4836,37 @@ LABEL_263:
 
   if (v1442)
   {
-    v1447 = v1442;
+    durationNote2 = v1442;
     goto LABEL_324;
   }
 
-  v324 = [*v1488 eventTimeRange];
+  eventTimeRange2 = [*v1488 eventTimeRange];
 
-  if (!v324)
+  if (!eventTimeRange2)
   {
-    v1447 = 0;
+    durationNote2 = 0;
     goto LABEL_324;
   }
 
-  v325 = [*(v1542 + 168) eventTimeRange];
-  v326 = [v325 startTime];
-  [v326 deltaSecondsTo:*(v1542 + 32) timeDomainPriorityList:&unk_1F5BDCCE8 timeDomainUsed:0];
+  eventTimeRange3 = [*(v1542 + 168) eventTimeRange];
+  startTime = [eventTimeRange3 startTime];
+  [startTime deltaSecondsTo:*(v1542 + 32) timeDomainPriorityList:&unk_1F5BDCCE8 timeDomainUsed:0];
   v328 = v327;
 
-  v59 = (v1542 + 168);
-  v329 = [*(v1542 + 168) eventTimeRange];
-  v330 = [v329 startTime];
-  [v330 deltaSecondsTo:*(v1542 + 40) timeDomainPriorityList:&unk_1F5BDCD00 timeDomainUsed:0];
+  teamID = (v1542 + 168);
+  eventTimeRange4 = [*(v1542 + 168) eventTimeRange];
+  startTime2 = [eventTimeRange4 startTime];
+  [startTime2 deltaSecondsTo:*(v1542 + 40) timeDomainPriorityList:&unk_1F5BDCD00 timeDomainUsed:0];
   v332 = v331;
 
-  v333 = [*(v1542 + 168) eventTimeRange];
-  v334 = [v333 endTime];
-  [v334 deltaSecondsTo:*(v1542 + 32) timeDomainPriorityList:&unk_1F5BDCD18 timeDomainUsed:0];
+  eventTimeRange5 = [*(v1542 + 168) eventTimeRange];
+  endTime = [eventTimeRange5 endTime];
+  [endTime deltaSecondsTo:*(v1542 + 32) timeDomainPriorityList:&unk_1F5BDCD18 timeDomainUsed:0];
   v336 = v335;
 
-  v337 = [*(v1542 + 168) eventTimeRange];
-  v338 = [v337 endTime];
-  [v338 deltaSecondsTo:*(v1542 + 40) timeDomainPriorityList:&unk_1F5BDCD30 timeDomainUsed:0];
+  eventTimeRange6 = [*(v1542 + 168) eventTimeRange];
+  endTime2 = [eventTimeRange6 endTime];
+  [endTime2 deltaSecondsTo:*(v1542 + 40) timeDomainPriorityList:&unk_1F5BDCD30 timeDomainUsed:0];
   v340 = v339;
 
   if (v336 > 0.0)
@@ -4874,7 +4874,7 @@ LABEL_263:
     v341 = objc_alloc(MEMORY[0x1E696AEC0]);
     seconds_string_for_nanoseconds((v336 * 1000000000.0), 2);
     v1379 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-    v1447 = [v341 initWithFormat:@"no overlap, event ends %@ before samples start"];
+    durationNote2 = [v341 initWithFormat:@"no overlap, event ends %@ before samples start"];
 
     goto LABEL_324;
   }
@@ -4884,7 +4884,7 @@ LABEL_263:
     v360 = objc_alloc(MEMORY[0x1E696AEC0]);
     seconds_string_for_nanoseconds((v332 * -1000000000.0), 2);
     v1379 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-    v1447 = [v360 initWithFormat:@"no overlap, event starts %@ after samples end"];
+    durationNote2 = [v360 initWithFormat:@"no overlap, event starts %@ after samples end"];
 
     goto LABEL_324;
   }
@@ -4940,7 +4940,7 @@ LABEL_415:
 
     v1312 = 0;
 LABEL_1569:
-    v1447 = 0;
+    durationNote2 = 0;
     goto LABEL_1570;
   }
 
@@ -4948,8 +4948,8 @@ LABEL_1569:
   v1310 = -1000000000.0;
 LABEL_1541:
   v1311 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v59 = seconds_string_for_nanoseconds((v365 * v1310), 2);
-  LOBYTE(v1379) = v59;
+  teamID = seconds_string_for_nanoseconds((v365 * v1310), 2);
+  LOBYTE(v1379) = teamID;
   v1312 = [v1311 initWithFormat:v1309];
 
   if (!v371)
@@ -4958,7 +4958,7 @@ LABEL_1541:
     if (v1312)
     {
       v1312 = v1312;
-      v1447 = v1312;
+      durationNote2 = v1312;
       goto LABEL_1570;
     }
 
@@ -4969,68 +4969,68 @@ LABEL_1541:
   if (v1312)
   {
     LOBYTE(v1379) = v371;
-    v1447 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@, %@"];
+    durationNote2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@, %@"];
     v1308 = v1542;
     goto LABEL_1570;
   }
 
 LABEL_1547:
-  v1447 = v371;
+  durationNote2 = v371;
   v1312 = 0;
 LABEL_1570:
   if (v328 > 0.0 || v365 < 0.0)
   {
-    v1322 = [*(v1308 + 168) eventTimeRange];
-    v1323 = [v1322 startTime];
-    if ([v1323 isComparable:*(v1542 + 32)])
+    eventTimeRange7 = [*(v1308 + 168) eventTimeRange];
+    startTime3 = [eventTimeRange7 startTime];
+    if ([startTime3 isComparable:*(v1542 + 32)])
     {
-      v1324 = [*(v1542 + 168) eventTimeRange];
-      v1325 = [v1324 startTime];
-      if ([v1325 ge:*(v1542 + 32)])
+      eventTimeRange8 = [*(v1542 + 168) eventTimeRange];
+      startTime4 = [eventTimeRange8 startTime];
+      if ([startTime4 ge:*(v1542 + 32)])
       {
-        v1326 = [*v1488 eventTimeRange];
-        v59 = [v1326 startTime];
+        eventTimeRange9 = [*v1488 eventTimeRange];
+        teamID = [eventTimeRange9 startTime];
       }
 
       else
       {
-        v59 = *(v1542 + 32);
+        teamID = *(v1542 + 32);
       }
     }
 
     else
     {
-      v59 = 0;
+      teamID = 0;
     }
 
-    v1327 = [*(v1542 + 168) eventTimeRange];
-    v1328 = [v1327 endTime];
-    if ([v1328 isComparable:*(v1542 + 40)])
+    eventTimeRange10 = [*(v1542 + 168) eventTimeRange];
+    endTime3 = [eventTimeRange10 endTime];
+    if ([endTime3 isComparable:*(v1542 + 40)])
     {
-      v1329 = [*(v1542 + 168) eventTimeRange];
-      j = [v1329 endTime];
+      eventTimeRange11 = [*(v1542 + 168) eventTimeRange];
+      j = [eventTimeRange11 endTime];
       if ([j le:*(v1542 + 40)])
       {
-        v1330 = [*v1488 eventTimeRange];
-        v1331 = [v1330 endTime];
+        eventTimeRange12 = [*v1488 eventTimeRange];
+        endTime4 = [eventTimeRange12 endTime];
       }
 
       else
       {
-        v1331 = *(v1542 + 40);
+        endTime4 = *(v1542 + 40);
       }
     }
 
     else
     {
-      v1331 = 0;
+      endTime4 = 0;
     }
 
-    if (v59)
+    if (teamID)
     {
-      if (v1331)
+      if (endTime4)
       {
-        [(__CFString *)v59 deltaSecondsTo:v1331 timeDomainPriorityList:&unk_1F5BDCD48 timeDomainUsed:0];
+        [(__CFString *)teamID deltaSecondsTo:endTime4 timeDomainPriorityList:&unk_1F5BDCD48 timeDomainUsed:0];
         v1333 = v285 + v1332;
         if ([(SASamplePrinter *)v1542 shouldPrintTimeOutsideSamplingRange:v288), v285 + v1332)])
         {
@@ -5039,7 +5039,7 @@ LABEL_1570:
           v1379 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
           v1335 = [v1334 initWithFormat:@"%@ overlap, %@"];
 
-          v1447 = v1335;
+          durationNote2 = v1335;
         }
       }
     }
@@ -5047,7 +5047,7 @@ LABEL_1570:
 
 LABEL_324:
   v295 = *p_isa;
-  if (v1478)
+  if (printJson)
   {
     v296 = [MEMORY[0x1E696AD98] numberWithDouble:v288];
     SAJSONWriteDictionaryEntry(v295, @"duration", v296);
@@ -5059,9 +5059,9 @@ LABEL_324:
       SAJSONWriteDictionaryEntry(v297, @"sampledDuration", v298);
     }
 
-    if (v1447)
+    if (durationNote2)
     {
-      SAJSONWriteDictionaryEntry(*p_isa, @"durationNote", v1447);
+      SAJSONWriteDictionaryEntry(*p_isa, @"durationNote", durationNote2);
     }
 
     v299 = *(v1542 + 8);
@@ -5088,13 +5088,13 @@ LABEL_324:
       SAJSONWriteDictionaryEntry(v305, @"attemptedSamplingInterval", v307);
     }
 
-    v308 = [*v1488 kperfTriggers];
+    kperfTriggers = [*v1488 kperfTriggers];
 
-    if (v308)
+    if (kperfTriggers)
     {
       v309 = *p_isa;
-      v310 = [*v1488 kperfTriggers];
-      SAJSONWriteDictionaryEntry(v309, @"kperfTriggers", v310);
+      kperfTriggers2 = [*v1488 kperfTriggers];
+      SAJSONWriteDictionaryEntry(v309, @"kperfTriggers", kperfTriggers2);
     }
 
     v311 = v1488;
@@ -5145,10 +5145,10 @@ LABEL_324:
     [*p_isa printWithFormat:@"%-*s%.02fs", 18, "Duration Sampled: ", *&v291];
   }
 
-  if (v1447)
+  if (durationNote2)
   {
     v321 = *p_isa;
-    v322 = SACopySanitizedString(v1447, 1, 0);
+    v322 = SACopySanitizedString(durationNote2, 1, 0);
     [v321 printWithFormat:@" (%@)", v322];
   }
 
@@ -5162,22 +5162,22 @@ LABEL_324:
     goto LABEL_365;
   }
 
-  v323 = [*v1488 timeWhenTransitionedToSamplingAllProcesses];
-  if (v323)
+  timeWhenTransitionedToSamplingAllProcesses = [*v1488 timeWhenTransitionedToSamplingAllProcesses];
+  if (timeWhenTransitionedToSamplingAllProcesses)
   {
-    v59 = [*(v1542 + 168) timeWhenTransitionedToSamplingAllProcesses];
-    if (([(__CFString *)v59 lt:*(v1542 + 40)]& 1) != 0)
+    teamID = [*(v1542 + 168) timeWhenTransitionedToSamplingAllProcesses];
+    if (([(__CFString *)teamID lt:*(v1542 + 40)]& 1) != 0)
     {
       objb = 1;
       goto LABEL_363;
     }
   }
 
-  v342 = [*v1488 timeWhenTransitionedToSamplingAllThreads];
-  if (!v342)
+  timeWhenTransitionedToSamplingAllThreads = [*v1488 timeWhenTransitionedToSamplingAllThreads];
+  if (!timeWhenTransitionedToSamplingAllThreads)
   {
     objb = 0;
-    if (!v323)
+    if (!timeWhenTransitionedToSamplingAllProcesses)
     {
       goto LABEL_364;
     }
@@ -5185,10 +5185,10 @@ LABEL_324:
     goto LABEL_363;
   }
 
-  v343 = [*(v1542 + 168) timeWhenTransitionedToSamplingAllThreads];
-  objb = [v343 lt:*(v1542 + 40)];
+  timeWhenTransitionedToSamplingAllThreads2 = [*(v1542 + 168) timeWhenTransitionedToSamplingAllThreads];
+  objb = [timeWhenTransitionedToSamplingAllThreads2 lt:*(v1542 + 40)];
 
-  if (v323)
+  if (timeWhenTransitionedToSamplingAllProcesses)
   {
 LABEL_363:
   }
@@ -5201,8 +5201,8 @@ LABEL_365:
     goto LABEL_369;
   }
 
-  v344 = [*v1488 stepsNote];
-  if ((v344 != 0) | objb & 1 || ([*v1488 kperfTriggers], v344 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v344, "count")))
+  stepsNote = [*v1488 stepsNote];
+  if ((stepsNote != 0) | objb & 1 || ([*v1488 kperfTriggers], stepsNote = objc_claimAutoreleasedReturnValue(), objc_msgSend(stepsNote, "count")))
   {
 
     goto LABEL_369;
@@ -5220,8 +5220,8 @@ LABEL_365:
   {
 LABEL_369:
     objc_msgSend(*p_isa, "appendString:", @" (");
-    v345 = [*v1488 kperfTriggers];
-    v346 = [v345 count] == 0;
+    kperfTriggers3 = [*v1488 kperfTriggers];
+    v346 = [kperfTriggers3 count] == 0;
 
     if (!v346)
     {
@@ -5229,8 +5229,8 @@ LABEL_369:
       v1623 = 0u;
       v1622 = 0u;
       v1621 = 0u;
-      v347 = [*v1488 kperfTriggers];
-      v348 = [v347 countByEnumeratingWithState:&v1621 objects:v1662 count:16];
+      kperfTriggers4 = [*v1488 kperfTriggers];
+      v348 = [kperfTriggers4 countByEnumeratingWithState:&v1621 objects:v1662 count:16];
       v1520 = v348 != 0;
       if (v348)
       {
@@ -5242,7 +5242,7 @@ LABEL_369:
           {
             if (*v1622 != v349)
             {
-              objc_enumerationMutation(v347);
+              objc_enumerationMutation(kperfTriggers4);
             }
 
             v351 = *(*(&v1621 + 1) + 8 * m);
@@ -5251,15 +5251,15 @@ LABEL_369:
               [*p_isa appendString:{@", "}];
             }
 
-            v352 = [v351 type];
+            type = [v351 type];
             v353 = *p_isa;
-            if (v352 == 2)
+            if (type == 2)
             {
               saos_printf_time_scaled(v353, [v351 timerPeriodNs]);
               [*p_isa appendString:@" sampling interval (on-cpu only)"];
             }
 
-            else if (v352 == 1)
+            else if (type == 1)
             {
               saos_printf_time_scaled(v353, [v351 timerPeriodNs]);
               [*p_isa appendString:@" sampling interval"];
@@ -5274,7 +5274,7 @@ LABEL_369:
             j = 1;
           }
 
-          v348 = [v347 countByEnumeratingWithState:&v1621 objects:v1662 count:16];
+          v348 = [kperfTriggers4 countByEnumeratingWithState:&v1621 objects:v1662 count:16];
         }
 
         while (v348);
@@ -5361,9 +5361,9 @@ LABEL_420:
         {
           v1520 = 1;
 LABEL_427:
-          v373 = [*v354 stepsNote];
+          stepsNote2 = [*v354 stepsNote];
 
-          if (v373)
+          if (stepsNote2)
           {
             if (v1520)
             {
@@ -5371,8 +5371,8 @@ LABEL_427:
             }
 
             v374 = *p_isa;
-            v375 = [*v1488 stepsNote];
-            v376 = SACopySanitizedString(v375, 1, 0);
+            stepsNote3 = [*v1488 stepsNote];
+            v376 = SACopySanitizedString(stepsNote3, 1, 0);
             [v374 appendString:v376];
 
             if ((objb & 1) == 0)
@@ -5393,15 +5393,15 @@ LABEL_447:
             if (!v1520)
             {
 LABEL_435:
-              v377 = [*v1488 timeWhenTransitionedToSamplingAllProcesses];
-              if (v377 && ([*(v1542 + 168) timeWhenTransitionedToSamplingAllProcesses], v378 = objc_claimAutoreleasedReturnValue(), v379 = objc_msgSend(v378, "lt:", *(v1542 + 40)), v378, v377, v379))
+              timeWhenTransitionedToSamplingAllProcesses2 = [*v1488 timeWhenTransitionedToSamplingAllProcesses];
+              if (timeWhenTransitionedToSamplingAllProcesses2 && ([*(v1542 + 168) timeWhenTransitionedToSamplingAllProcesses], v378 = objc_claimAutoreleasedReturnValue(), v379 = objc_msgSend(v378, "lt:", *(v1542 + 40)), v378, timeWhenTransitionedToSamplingAllProcesses2, v379))
               {
-                v380 = [*v1488 timeWhenTransitionedToSamplingAllThreads];
-                if (v380 && ([*(v1542 + 168) timeWhenTransitionedToSamplingAllThreads], v381 = objc_claimAutoreleasedReturnValue(), v382 = objc_msgSend(v381, "lt:", *(v1542 + 40)), v381, v380, v382))
+                timeWhenTransitionedToSamplingAllThreads3 = [*v1488 timeWhenTransitionedToSamplingAllThreads];
+                if (timeWhenTransitionedToSamplingAllThreads3 && ([*(v1542 + 168) timeWhenTransitionedToSamplingAllThreads], v381 = objc_claimAutoreleasedReturnValue(), v382 = objc_msgSend(v381, "lt:", *(v1542 + 40)), v381, timeWhenTransitionedToSamplingAllThreads3, v382))
                 {
-                  v383 = [*v1488 timeWhenTransitionedToSamplingAllProcesses];
-                  v384 = [*v1488 timeWhenTransitionedToSamplingAllThreads];
-                  v385 = [v383 ne:v384];
+                  timeWhenTransitionedToSamplingAllProcesses3 = [*v1488 timeWhenTransitionedToSamplingAllProcesses];
+                  timeWhenTransitionedToSamplingAllThreads4 = [*v1488 timeWhenTransitionedToSamplingAllThreads];
+                  v385 = [timeWhenTransitionedToSamplingAllProcesses3 ne:timeWhenTransitionedToSamplingAllThreads4];
 
                   if (v385)
                   {
@@ -5409,18 +5409,18 @@ LABEL_435:
                     v387 = _sa_logt();
                     if (os_log_type_enabled(v387, OS_LOG_TYPE_DEBUG))
                     {
-                      v1338 = [*(v1542 + 168) targetProcessId];
-                      v1339 = [*(v1542 + 168) timeWhenTransitionedToSamplingAllThreads];
-                      [v1339 machAbsTimeSeconds];
+                      targetProcessId2 = [*(v1542 + 168) targetProcessId];
+                      timeWhenTransitionedToSamplingAllThreads5 = [*(v1542 + 168) timeWhenTransitionedToSamplingAllThreads];
+                      [timeWhenTransitionedToSamplingAllThreads5 machAbsTimeSeconds];
                       v1341 = v1340;
                       [*(v1542 + 32) machAbsTimeSeconds];
                       v1343 = v1342;
-                      v1344 = [*(v1542 + 168) timeWhenTransitionedToSamplingAllProcesses];
-                      [v1344 machAbsTimeSeconds];
+                      timeWhenTransitionedToSamplingAllProcesses4 = [*(v1542 + 168) timeWhenTransitionedToSamplingAllProcesses];
+                      [timeWhenTransitionedToSamplingAllProcesses4 machAbsTimeSeconds];
                       v1346 = v1345;
                       [*(v1542 + 32) machAbsTimeSeconds];
                       *v1677 = 67109632;
-                      *&v1677[4] = v1338;
+                      *&v1677[4] = targetProcessId2;
                       *&v1677[8] = 2048;
                       *&v1677[10] = v1341 - v1343;
                       *&v1677[18] = 2048;
@@ -5432,8 +5432,8 @@ LABEL_435:
                   }
 
                   v388 = *(v1542 + 8);
-                  v389 = [*(v1542 + 168) timeWhenTransitionedToSamplingAllThreads];
-                  [v389 machAbsTimeSeconds];
+                  timeWhenTransitionedToSamplingAllThreads6 = [*(v1542 + 168) timeWhenTransitionedToSamplingAllThreads];
+                  [timeWhenTransitionedToSamplingAllThreads6 machAbsTimeSeconds];
                   v391 = v390;
                   [*(v1542 + 32) machAbsTimeSeconds];
                   v1379 = v391 - v392;
@@ -5443,8 +5443,8 @@ LABEL_435:
                 else
                 {
                   v397 = *(v1542 + 8);
-                  v389 = [*(v1542 + 168) timeWhenTransitionedToSamplingAllProcesses];
-                  [v389 machAbsTimeSeconds];
+                  timeWhenTransitionedToSamplingAllThreads6 = [*(v1542 + 168) timeWhenTransitionedToSamplingAllProcesses];
+                  [timeWhenTransitionedToSamplingAllThreads6 machAbsTimeSeconds];
                   v399 = v398;
                   [*(v1542 + 32) machAbsTimeSeconds];
                   v1379 = v399 - v400;
@@ -5455,8 +5455,8 @@ LABEL_435:
               else
               {
                 v393 = *(v1542 + 8);
-                v389 = [*(v1542 + 168) timeWhenTransitionedToSamplingAllThreads];
-                [v389 machAbsTimeSeconds];
+                timeWhenTransitionedToSamplingAllThreads6 = [*(v1542 + 168) timeWhenTransitionedToSamplingAllThreads];
+                [timeWhenTransitionedToSamplingAllThreads6 machAbsTimeSeconds];
                 v395 = v394;
                 [*(v1542 + 32) machAbsTimeSeconds];
                 v1379 = v395 - v396;
@@ -5516,7 +5516,7 @@ LABEL_450:
       if (*(*&v1677[8] + 24))
       {
         v406 = *p_isa;
-        if (v1478)
+        if (printJson)
         {
           v407 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:*(*&v1677[8] + 24)];
           SAJSONWriteDictionaryEntry(v406, @"numStepsMissing", v407);
@@ -5540,7 +5540,7 @@ LABEL_450:
   [*v311 reportTimeThreshold];
   if (v408 <= 0.0)
   {
-    if ((v1478 & 1) == 0)
+    if ((printJson & 1) == 0)
     {
       goto LABEL_465;
     }
@@ -5549,7 +5549,7 @@ LABEL_450:
   else
   {
     v409 = *p_isa;
-    if (v1478)
+    if (printJson)
     {
       v410 = MEMORY[0x1E696AD98];
       [*v1488 reportTimeThreshold];
@@ -5567,16 +5567,16 @@ LABEL_465:
   }
 
 LABEL_466:
-  v412 = [*v1488 wrWorkflowName];
+  wrWorkflowName = [*v1488 wrWorkflowName];
 
-  if (v412)
+  if (wrWorkflowName)
   {
     v413 = *p_isa;
-    v414 = [*v1488 wrWorkflowName];
-    v415 = v414;
-    if (v1478)
+    wrWorkflowName2 = [*v1488 wrWorkflowName];
+    v415 = wrWorkflowName2;
+    if (printJson)
     {
-      SAJSONWriteDictionaryEntry(v413, @"wrWorkflowName", v414);
+      SAJSONWriteDictionaryEntry(v413, @"wrWorkflowName", wrWorkflowName2);
     }
 
     else
@@ -5585,12 +5585,12 @@ LABEL_466:
       [v413 printWithFormat:@"%-*s%@\n"];
     }
 
-    v416 = [*v1488 wrError];
-    v417 = v416;
-    if (v416)
+    wrError = [*v1488 wrError];
+    v417 = wrError;
+    if (wrError)
     {
-      v418 = [v416 userInfo];
-      v419 = [v418 objectForKeyedSubscript:*MEMORY[0x1E696A278]];
+      userInfo = [wrError userInfo];
+      v419 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A278]];
       v420 = v419;
       if (v419)
       {
@@ -5603,7 +5603,7 @@ LABEL_466:
       }
 
       v422 = *p_isa;
-      if (v1478)
+      if (printJson)
       {
         SAJSONWriteDictionaryEntry(v422, @"wrError", v421);
       }
@@ -5615,16 +5615,16 @@ LABEL_466:
       }
     }
 
-    v423 = [*v1488 wrDiagnosticName];
+    wrDiagnosticName = [*v1488 wrDiagnosticName];
 
-    if (v423)
+    if (wrDiagnosticName)
     {
       v424 = *p_isa;
-      v425 = [*v1488 wrDiagnosticName];
-      v426 = v425;
-      if (v1478)
+      wrDiagnosticName2 = [*v1488 wrDiagnosticName];
+      v426 = wrDiagnosticName2;
+      if (printJson)
       {
-        SAJSONWriteDictionaryEntry(v424, @"wrDiagnosticName", v425);
+        SAJSONWriteDictionaryEntry(v424, @"wrDiagnosticName", wrDiagnosticName2);
       }
 
       else
@@ -5646,7 +5646,7 @@ LABEL_466:
         if (v430 >= v431)
         {
           v432 = *p_isa;
-          if (v1478)
+          if (printJson)
           {
             v433 = MEMORY[0x1E696AD98];
             [*v1488 wrWorkflowDuration];
@@ -5703,7 +5703,7 @@ LABEL_466:
     if (v446 > 0.0 && ([*v1488 wrWorkflowDurationOmittingNetworkBoundIntervalsThreshold], v447 > 0.0) && (objc_msgSend(*v1488, "wrWorkflowDurationOmittingNetworkBoundIntervals"), v449 = v448, objc_msgSend(*v1488, "wrWorkflowDurationOmittingNetworkBoundIntervalsThreshold"), v449 >= v450))
     {
       v455 = *p_isa;
-      if (v1478)
+      if (printJson)
       {
         v456 = MEMORY[0x1E696AD98];
         [*v1488 wrWorkflowDurationOmittingNetworkBoundIntervals];
@@ -5775,7 +5775,7 @@ LABEL_500:
       [*v1488 wrWorkflowTimeoutDuration];
       if (v451 > 0.0)
       {
-        if (v1478)
+        if (printJson)
         {
           goto LABEL_500;
         }
@@ -5800,69 +5800,69 @@ LABEL_511:
       }
     }
 
-    v475 = [*v1488 wrSignpostName];
+    wrSignpostName = [*v1488 wrSignpostName];
 
-    if (v475)
+    if (wrSignpostName)
     {
-      if (v1478)
+      if (printJson)
       {
         v476 = *p_isa;
-        v477 = [*v1488 wrSignpostName];
-        SAJSONWriteDictionaryEntry(v476, @"wrSignpostName", v477);
+        wrSignpostName2 = [*v1488 wrSignpostName];
+        SAJSONWriteDictionaryEntry(v476, @"wrSignpostName", wrSignpostName2);
 
-        v478 = [*v1488 wrSignpostSubsystem];
+        wrSignpostSubsystem = [*v1488 wrSignpostSubsystem];
 
-        if (v478)
+        if (wrSignpostSubsystem)
         {
           v479 = *p_isa;
-          v480 = [*v1488 wrSignpostSubsystem];
-          SAJSONWriteDictionaryEntry(v479, @"wrSignpostSubsystem", v480);
+          wrSignpostSubsystem2 = [*v1488 wrSignpostSubsystem];
+          SAJSONWriteDictionaryEntry(v479, @"wrSignpostSubsystem", wrSignpostSubsystem2);
         }
 
-        v481 = [*v1488 wrSignpostCategory];
+        wrSignpostCategory = [*v1488 wrSignpostCategory];
 
-        if (v481)
+        if (wrSignpostCategory)
         {
           v482 = *p_isa;
-          v483 = [*v1488 wrSignpostCategory];
-          SAJSONWriteDictionaryEntry(v482, @"wrSignpostCategory", v483);
+          wrSignpostCategory2 = [*v1488 wrSignpostCategory];
+          SAJSONWriteDictionaryEntry(v482, @"wrSignpostCategory", wrSignpostCategory2);
           goto LABEL_525;
         }
       }
 
       else
       {
-        v483 = [*v1488 wrSignpostName];
-        v484 = [*v1488 wrSignpostSubsystem];
-        if (v484)
+        wrSignpostCategory2 = [*v1488 wrSignpostName];
+        wrSignpostSubsystem3 = [*v1488 wrSignpostSubsystem];
+        if (wrSignpostSubsystem3)
         {
-          v485 = [*v1488 wrSignpostCategory];
-          v486 = v485 == 0;
+          wrSignpostCategory3 = [*v1488 wrSignpostCategory];
+          v486 = wrSignpostCategory3 == 0;
 
           if (!v486)
           {
-            v487 = [*v1488 wrSignpostSubsystem];
-            v488 = [*v1488 wrSignpostCategory];
-            v489 = [v483 stringByAppendingFormat:@" [%@:%@]", v487, v488];
+            wrSignpostSubsystem4 = [*v1488 wrSignpostSubsystem];
+            wrSignpostCategory4 = [*v1488 wrSignpostCategory];
+            v488 = [wrSignpostCategory2 stringByAppendingFormat:@" [%@:%@]", wrSignpostSubsystem4, wrSignpostCategory4];
 
-            v483 = v489;
+            wrSignpostCategory2 = v488;
           }
         }
 
-        [*p_isa printWithFormat:@"%-*s%@\n", 18, "Signpost: ", v483];
+        [*p_isa printWithFormat:@"%-*s%@\n", 18, "Signpost: ", wrSignpostCategory2];
 LABEL_525:
       }
     }
 
-    v490 = [*v1488 wrTriggeringSignpostName];
-    if (v490)
+    wrTriggeringSignpostName = [*v1488 wrTriggeringSignpostName];
+    if (wrTriggeringSignpostName)
     {
-      v491 = [*v1488 wrSignpostName];
-      if (v491)
+      wrSignpostName3 = [*v1488 wrSignpostName];
+      if (wrSignpostName3)
       {
-        v492 = [*v1488 wrTriggeringSignpostName];
-        v493 = [*v1488 wrSignpostName];
-        v494 = [v492 isEqualToString:v493];
+        wrTriggeringSignpostName2 = [*v1488 wrTriggeringSignpostName];
+        wrSignpostName4 = [*v1488 wrSignpostName];
+        v494 = [wrTriggeringSignpostName2 isEqualToString:wrSignpostName4];
 
         if (v494)
         {
@@ -5874,52 +5874,52 @@ LABEL_525:
       {
       }
 
-      if (v1478)
+      if (printJson)
       {
         v495 = *p_isa;
-        v496 = [*v1488 wrTriggeringSignpostName];
-        SAJSONWriteDictionaryEntry(v495, @"wrTriggeringSignpostName", v496);
+        wrTriggeringSignpostName3 = [*v1488 wrTriggeringSignpostName];
+        SAJSONWriteDictionaryEntry(v495, @"wrTriggeringSignpostName", wrTriggeringSignpostName3);
 
-        v497 = [*v1488 wrTriggeringSignpostSubsystem];
+        wrTriggeringSignpostSubsystem = [*v1488 wrTriggeringSignpostSubsystem];
 
-        if (v497)
+        if (wrTriggeringSignpostSubsystem)
         {
           v498 = *p_isa;
-          v499 = [*v1488 wrTriggeringSignpostSubsystem];
-          SAJSONWriteDictionaryEntry(v498, @"wrTriggeringSignpostSubsystem", v499);
+          wrTriggeringSignpostSubsystem2 = [*v1488 wrTriggeringSignpostSubsystem];
+          SAJSONWriteDictionaryEntry(v498, @"wrTriggeringSignpostSubsystem", wrTriggeringSignpostSubsystem2);
         }
 
-        v500 = [*v1488 wrTriggeringSignpostCategory];
+        wrTriggeringSignpostCategory = [*v1488 wrTriggeringSignpostCategory];
 
-        if (v500)
+        if (wrTriggeringSignpostCategory)
         {
           v501 = *p_isa;
-          v502 = [*v1488 wrTriggeringSignpostCategory];
-          SAJSONWriteDictionaryEntry(v501, @"wrTriggeringSignpostCategory", v502);
+          wrTriggeringSignpostCategory2 = [*v1488 wrTriggeringSignpostCategory];
+          SAJSONWriteDictionaryEntry(v501, @"wrTriggeringSignpostCategory", wrTriggeringSignpostCategory2);
           goto LABEL_540;
         }
       }
 
       else
       {
-        v502 = [*v1488 wrTriggeringSignpostName];
-        v503 = [*v1488 wrTriggeringSignpostSubsystem];
-        if (v503)
+        wrTriggeringSignpostCategory2 = [*v1488 wrTriggeringSignpostName];
+        wrTriggeringSignpostSubsystem3 = [*v1488 wrTriggeringSignpostSubsystem];
+        if (wrTriggeringSignpostSubsystem3)
         {
-          v504 = [*v1488 wrTriggeringSignpostCategory];
-          v505 = v504 == 0;
+          wrTriggeringSignpostCategory3 = [*v1488 wrTriggeringSignpostCategory];
+          v505 = wrTriggeringSignpostCategory3 == 0;
 
           if (!v505)
           {
-            v506 = [*v1488 wrTriggeringSignpostSubsystem];
-            v507 = [*v1488 wrTriggeringSignpostCategory];
-            v508 = [v502 stringByAppendingFormat:@" [%@:%@]", v506, v507];
+            wrTriggeringSignpostSubsystem4 = [*v1488 wrTriggeringSignpostSubsystem];
+            wrTriggeringSignpostCategory4 = [*v1488 wrTriggeringSignpostCategory];
+            v507 = [wrTriggeringSignpostCategory2 stringByAppendingFormat:@" [%@:%@]", wrTriggeringSignpostSubsystem4, wrTriggeringSignpostCategory4];
 
-            v502 = v508;
+            wrTriggeringSignpostCategory2 = v507;
           }
         }
 
-        [*p_isa printWithFormat:@"%-*s%@\n", 18, "Triggering Signpost: ", v502];
+        [*p_isa printWithFormat:@"%-*s%@\n", 18, "Triggering Signpost: ", wrTriggeringSignpostCategory2];
 LABEL_540:
       }
     }
@@ -5929,11 +5929,11 @@ LABEL_541:
     {
       if ([*v1488 wrSignpostCountThreshold])
       {
-        v509 = [*v1488 wrSignpostCount];
-        if (v509 >= [*v1488 wrSignpostCountThreshold])
+        wrSignpostCount = [*v1488 wrSignpostCount];
+        if (wrSignpostCount >= [*v1488 wrSignpostCountThreshold])
         {
           v510 = *p_isa;
-          if (v1478)
+          if (printJson)
           {
             v511 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(*v1488, "wrSignpostCount")}];
             SAJSONWriteDictionaryEntry(v510, @"wrSignpostCount", v511);
@@ -5966,7 +5966,7 @@ LABEL_541:
         if (v517 >= v518)
         {
           v519 = *p_isa;
-          if (v1478)
+          if (printJson)
           {
             v520 = MEMORY[0x1E696AD98];
             [*v1488 wrSignpostDurationUnion];
@@ -6031,7 +6031,7 @@ LABEL_541:
         if (v536 >= v537)
         {
           v538 = *p_isa;
-          if (v1478)
+          if (printJson)
           {
             v539 = MEMORY[0x1E696AD98];
             [*v1488 wrSignpostDurationSum];
@@ -6088,7 +6088,7 @@ LABEL_541:
     if (v552 > 0.0 && ([*v1488 wrSignpostDurationSingleThreshold], v553 > 0.0) && (objc_msgSend(*v1488, "wrSignpostDurationSingle"), v555 = v554, objc_msgSend(*v1488, "wrSignpostDurationSingleThreshold"), v555 >= v556))
     {
       v620 = *p_isa;
-      if (v1478)
+      if (printJson)
       {
         v621 = MEMORY[0x1E696AD98];
         [*v1488 wrSignpostDurationSingle];
@@ -6141,22 +6141,22 @@ LABEL_575:
       }
     }
 
-    else if ((v1478 & 1) == 0)
+    else if ((printJson & 1) == 0)
     {
       goto LABEL_575;
     }
   }
 
-  v557 = [*v1488 hardwareModel];
-  if (v557 || [*v1488 numActiveCPUs] || objc_msgSend(*v1488, "memSize") || objc_msgSend(*v1488, "hwPageSize") || objc_msgSend(*v1488, "vmPageSize"))
+  hardwareModel = [*v1488 hardwareModel];
+  if (hardwareModel || [*v1488 numActiveCPUs] || objc_msgSend(*v1488, "memSize") || objc_msgSend(*v1488, "hwPageSize") || objc_msgSend(*v1488, "vmPageSize"))
   {
 LABEL_582:
 
     goto LABEL_583;
   }
 
-  v557 = [*v1488 bootArgs];
-  if (!v557)
+  hardwareModel = [*v1488 bootArgs];
+  if (!hardwareModel)
   {
     if (([*(v1542 + 16) displayEmptyBootArgs] & 1) == 0)
     {
@@ -6164,16 +6164,16 @@ LABEL_582:
     }
 
 LABEL_583:
-    v558 = [*v1488 hardwareModel];
+    hardwareModel2 = [*v1488 hardwareModel];
 
-    if (v558)
+    if (hardwareModel2)
     {
       v559 = *p_isa;
-      v560 = [*v1488 hardwareModel];
-      v561 = v560;
-      if (v1478)
+      hardwareModel3 = [*v1488 hardwareModel];
+      v561 = hardwareModel3;
+      if (printJson)
       {
-        SAJSONWriteDictionaryEntry(v559, @"hardwareModel", v560);
+        SAJSONWriteDictionaryEntry(v559, @"hardwareModel", hardwareModel3);
 
         if (![*v1488 numActiveCPUs])
         {
@@ -6181,7 +6181,7 @@ LABEL_592:
           if ([*v1488 memSize])
           {
             v565 = *p_isa;
-            if (v1478)
+            if (printJson)
             {
               v566 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(*v1488, "memSize")}];
               SAJSONWriteDictionaryEntry(v565, @"memSize", v566);
@@ -6192,7 +6192,7 @@ LABEL_601:
                 if ([*v1488 vmPageSize])
                 {
                   v570 = *p_isa;
-                  if (v1478)
+                  if (printJson)
                   {
                     v571 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(*v1488, "vmPageSize")}];
                     SAJSONWriteDictionaryEntry(v570, @"vmPageSize", v571);
@@ -6200,26 +6200,26 @@ LABEL_601:
                     if (![*v1488 sharedCacheResidentSizeInBytes])
                     {
 LABEL_611:
-                      v579 = [*v1488 bootArgs];
-                      if (v579)
+                      bootArgs = [*v1488 bootArgs];
+                      if (bootArgs)
                       {
-                        v580 = [*v1488 bootArgs];
-                        if ([v580 length])
+                        bootArgs2 = [*v1488 bootArgs];
+                        if ([bootArgs2 length])
                         {
 
 LABEL_617:
-                          v582 = [*v1488 bootArgs];
-                          v583 = v582;
+                          bootArgs3 = [*v1488 bootArgs];
+                          v583 = bootArgs3;
                           v584 = @"???";
-                          if (v582)
+                          if (bootArgs3)
                           {
-                            v584 = v582;
+                            v584 = bootArgs3;
                           }
 
                           v585 = v584;
 
                           v586 = *p_isa;
-                          if (v1478)
+                          if (printJson)
                           {
                             SAJSONWriteDictionaryEntry(*p_isa, @"bootArgs", v585);
                           }
@@ -6234,9 +6234,9 @@ LABEL_617:
                           goto LABEL_623;
                         }
 
-                        v581 = [*(v1542 + 16) displayEmptyBootArgs];
+                        displayEmptyBootArgs = [*(v1542 + 16) displayEmptyBootArgs];
 
-                        if (v581)
+                        if (displayEmptyBootArgs)
                         {
                           goto LABEL_617;
                         }
@@ -6248,7 +6248,7 @@ LABEL_617:
                       }
 
 LABEL_623:
-                      if ((v1478 & 1) == 0)
+                      if ((printJson & 1) == 0)
                       {
                         [*p_isa appendString:@"\n"];
                       }
@@ -6275,7 +6275,7 @@ LABEL_623:
                     goto LABEL_611;
                   }
 
-                  if (v1478)
+                  if (printJson)
                   {
 LABEL_607:
                     v572 = *p_isa;
@@ -6331,7 +6331,7 @@ LABEL_598:
               goto LABEL_601;
             }
 
-            if (v1478)
+            if (printJson)
             {
               goto LABEL_598;
             }
@@ -6352,7 +6352,7 @@ LABEL_589:
         goto LABEL_592;
       }
 
-      v1392 = SACopySanitizedString(v560, 1, 0);
+      v1392 = SACopySanitizedString(hardwareModel3, 1, 0);
       LOBYTE(v1379) = 18;
       [v559 printWithFormat:@"%-*s%@\n"];
 
@@ -6369,7 +6369,7 @@ LABEL_589:
         goto LABEL_592;
       }
 
-      if (v1478)
+      if (printJson)
       {
         goto LABEL_589;
       }
@@ -6382,16 +6382,16 @@ LABEL_589:
     goto LABEL_592;
   }
 
-  v1200 = [*v1488 bootArgs];
-  if ([v1200 length])
+  bootArgs4 = [*v1488 bootArgs];
+  if ([bootArgs4 length])
   {
 
     goto LABEL_582;
   }
 
-  v1336 = [*(v1542 + 16) displayEmptyBootArgs];
+  displayEmptyBootArgs2 = [*(v1542 + 16) displayEmptyBootArgs];
 
-  if (v1336)
+  if (displayEmptyBootArgs2)
   {
     goto LABEL_583;
   }
@@ -6399,17 +6399,17 @@ LABEL_589:
 LABEL_625:
   [*v1488 lastWakeTime];
   v588 = v587;
-  v589 = [*v1488 eventTimeRange];
-  v590 = [v589 startTime];
+  eventTimeRange13 = [*v1488 eventTimeRange];
+  startTime5 = [eventTimeRange13 startTime];
 
-  if (!v590 || ([v590 machAbsTimeSeconds], v591 == 0.0) && (objc_msgSend(v590, "machContTimeSeconds"), v592 == 0.0) || ((objc_msgSend(v590, "machAbsTimeSeconds"), v593 == 0.0) || (objc_msgSend(v590, "machContTimeSeconds"), v594 == 0.0)) && (objc_msgSend(*(v1542 + 32), "machAbsTimeSeconds"), v595 != 0.0) && (objc_msgSend(*(v1542 + 32), "machContTimeSeconds"), v596 != 0.0))
+  if (!startTime5 || ([startTime5 machAbsTimeSeconds], v591 == 0.0) && (objc_msgSend(startTime5, "machContTimeSeconds"), v592 == 0.0) || ((objc_msgSend(startTime5, "machAbsTimeSeconds"), v593 == 0.0) || (objc_msgSend(startTime5, "machContTimeSeconds"), v594 == 0.0)) && (objc_msgSend(*(v1542 + 32), "machAbsTimeSeconds"), v595 != 0.0) && (objc_msgSend(*(v1542 + 32), "machContTimeSeconds"), v596 != 0.0))
   {
     v597 = *(v1542 + 32);
 
-    v590 = v597;
+    startTime5 = v597;
   }
 
-  v1464 = v590;
+  v1464 = startTime5;
   [v1464 wallTime];
   v598 = v1464;
   v1441 = v1464;
@@ -6432,7 +6432,7 @@ LABEL_625:
         goto LABEL_646;
       }
 
-      if (v1478)
+      if (printJson)
       {
         goto LABEL_643;
       }
@@ -6441,7 +6441,7 @@ LABEL_625:
     else
     {
       v603 = *p_isa;
-      if (v1478)
+      if (printJson)
       {
         v604 = MEMORY[0x1E696AD98];
         [v1464 machContTimeSeconds];
@@ -6456,7 +6456,7 @@ LABEL_646:
           {
             if (v588 == 0.0 || ([v1441 wallTime], v614 <= v588))
             {
-              if (v1478)
+              if (printJson)
               {
                 goto LABEL_664;
               }
@@ -6465,12 +6465,12 @@ LABEL_646:
             else
             {
               v615 = *p_isa;
-              if (v1478)
+              if (printJson)
               {
                 v616 = MEMORY[0x1E696AD98];
                 [v1441 wallTime];
-                v618 = [v616 numberWithDouble:v617 - v588];
-                SAJSONWriteDictionaryEntry(v615, @"timeSinceWake", v618);
+                v588 = [v616 numberWithDouble:v617 - v588];
+                SAJSONWriteDictionaryEntry(v615, @"timeSinceWake", v588);
 
                 goto LABEL_664;
               }
@@ -6484,7 +6484,7 @@ LABEL_646:
           else
           {
             v613 = *p_isa;
-            if (v1478)
+            if (printJson)
             {
               SAJSONWriteDictionaryEntry(v613, @"timeSinceWake", @"n/a");
               goto LABEL_664;
@@ -6530,10 +6530,10 @@ LABEL_664:
   v1461 = [*(v1542 + 168) fanSpeedClosestToTimestamp:*(v1542 + 40)];
   if (v1461 && ([v1461 fanSpeedIsValid] & 1) != 0 || v1457 && objc_msgSend(v1457, "fanSpeedIsValid"))
   {
-    v626 = [v1457 fanSpeedIsValid];
-    if (v1478)
+    fanSpeedIsValid = [v1457 fanSpeedIsValid];
+    if (printJson)
     {
-      if (v626)
+      if (fanSpeedIsValid)
       {
         v627 = *p_isa;
         v628 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v1457, "fanSpeed")}];
@@ -6550,7 +6550,7 @@ LABEL_664:
 
     else
     {
-      if (v626)
+      if (fanSpeedIsValid)
       {
         v631 = v1457;
       }
@@ -6560,16 +6560,16 @@ LABEL_664:
         v631 = v1461;
       }
 
-      v632 = [v631 fanSpeed];
+      fanSpeed = [v631 fanSpeed];
       LOBYTE(v1379) = 18;
       [*p_isa printWithFormat:@"%-*s%d rpm"];
       if ([v1461 fanSpeedIsValid])
       {
-        v633 = [v1461 fanSpeed];
-        v634 = v633 - v632 >= 0 ? v633 - v632 : v632 - v633;
+        fanSpeed2 = [v1461 fanSpeed];
+        v634 = fanSpeed2 - fanSpeed >= 0 ? fanSpeed2 - fanSpeed : fanSpeed - fanSpeed2;
         if (v634 >= 0x64)
         {
-          LOBYTE(v1379) = v633;
+          LOBYTE(v1379) = fanSpeed2;
           [*p_isa printWithFormat:@" -> %d (%+d)"];
         }
       }
@@ -6612,7 +6612,7 @@ LABEL_664:
     }
 
     v640 = *p_isa;
-    if (v1478)
+    if (printJson)
     {
       v641 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
       SAJSONWriteDictionaryEntry(v640, @"totalCpuNanoseconds", v641);
@@ -6672,8 +6672,8 @@ LABEL_690:
     v1499 = 0;
   }
 
-  v650 = [*v1488 memoryPressureEvents];
-  v651 = [v650 count] == 0;
+  memoryPressureEvents = [*v1488 memoryPressureEvents];
+  v651 = [memoryPressureEvents count] == 0;
 
   if (!v651)
   {
@@ -6681,8 +6681,8 @@ LABEL_690:
     v1610 = 0u;
     v1609 = 0u;
     v1608 = 0u;
-    v1521 = [*v1488 memoryPressureEvents];
-    v652 = [v1521 countByEnumeratingWithState:&v1608 objects:v1661 count:16];
+    memoryPressureEvents2 = [*v1488 memoryPressureEvents];
+    v652 = [memoryPressureEvents2 countByEnumeratingWithState:&v1608 objects:v1661 count:16];
     if (!v652)
     {
       goto LABEL_718;
@@ -6692,7 +6692,7 @@ LABEL_690:
     j = 0;
     v654 = 0;
     v655 = *v1609;
-    v656 = 100;
+    memoryStatusLevel = 100;
     objc = -1;
     do
     {
@@ -6700,19 +6700,19 @@ LABEL_690:
       {
         if (*v1609 != v655)
         {
-          objc_enumerationMutation(v1521);
+          objc_enumerationMutation(memoryPressureEvents2);
         }
 
         v658 = *(*(&v1608 + 1) + 8 * n);
         v659 = *(v1542 + 32);
-        v660 = [v658 timestamp];
-        LOBYTE(v659) = [v659 gt:v660];
+        timestamp2 = [v658 timestamp];
+        LOBYTE(v659) = [v659 gt:timestamp2];
 
         if ((v659 & 1) == 0)
         {
           v661 = *(v1542 + 40);
-          v662 = [v658 timestamp];
-          LOBYTE(v661) = [v661 lt:v662];
+          timestamp3 = [v658 timestamp];
+          LOBYTE(v661) = [v661 lt:timestamp3];
 
           if (v661)
           {
@@ -6724,9 +6724,9 @@ LABEL_690:
             objc = [v658 availableBytes];
           }
 
-          if ([v658 memoryStatusLevel] < v656)
+          if ([v658 memoryStatusLevel] < memoryStatusLevel)
           {
-            v656 = [v658 memoryStatusLevel];
+            memoryStatusLevel = [v658 memoryStatusLevel];
           }
 
           v654 += [v658 memoryStatusLevel];
@@ -6735,7 +6735,7 @@ LABEL_690:
         }
       }
 
-      v652 = [v1521 countByEnumeratingWithState:&v1608 objects:v1661 count:16];
+      v652 = [memoryPressureEvents2 countByEnumeratingWithState:&v1608 objects:v1661 count:16];
     }
 
     while (v652);
@@ -6745,18 +6745,18 @@ LABEL_714:
     {
       v663 = v654 / j;
       v664 = *p_isa;
-      if (v1478)
+      if (printJson)
       {
-        v665 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:100 - v663];
-        SAJSONWriteDictionaryEntry(v664, @"averageMemoryPressure", v665);
+        v663 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:100 - v663];
+        SAJSONWriteDictionaryEntry(v664, @"averageMemoryPressure", v663);
 
         v666 = *p_isa;
         v667 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v653 / j];
         SAJSONWriteDictionaryEntry(v666, @"averageAvailableBytes", v667);
 
         v668 = *p_isa;
-        v669 = [MEMORY[0x1E696AD98] numberWithInt:100 - v656];
-        SAJSONWriteDictionaryEntry(v668, @"highestMemoryPressure", v669);
+        v656 = [MEMORY[0x1E696AD98] numberWithInt:100 - memoryStatusLevel];
+        SAJSONWriteDictionaryEntry(v668, @"highestMemoryPressure", v656);
 
         v670 = *p_isa;
         v1522 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:objc];
@@ -6765,9 +6765,9 @@ LABEL_714:
         goto LABEL_719;
       }
 
-      [v664 printWithFormat:@"%-*saverage %u%%, highest %u%%\n", 18, "Memory pressure: ", 100 - v663, 100 - v656];
+      [v664 printWithFormat:@"%-*saverage %u%%, highest %u%%\n", 18, "Memory pressure: ", 100 - v663, 100 - memoryStatusLevel];
       v671 = *p_isa;
-      v1521 = SAFormattedBytesEx(v653 / j, 1, 0, 1, 0);
+      memoryPressureEvents2 = SAFormattedBytesEx(v653 / j, 1, 0, 1, 0);
       v1401 = SAFormattedBytesEx(objc, 1, 0, 1, 0);
       LOBYTE(v1379) = 18;
       [v671 printWithFormat:@"%-*saverage %@, lowest %@\n"];
@@ -6778,8 +6778,8 @@ LABEL_718:
   }
 
 LABEL_719:
-  v672 = [*v1488 lostPerfEvents];
-  v673 = [v672 count] == 0;
+  lostPerfEvents = [*v1488 lostPerfEvents];
+  v673 = [lostPerfEvents count] == 0;
 
   if (!v673)
   {
@@ -6788,8 +6788,8 @@ LABEL_719:
     v1606 = 0u;
     v1605 = 0u;
     v1604 = 0u;
-    v674 = [*v1488 lostPerfEvents];
-    v675 = [v674 countByEnumeratingWithState:&v1604 objects:v1660 count:16];
+    lostPerfEvents2 = [*v1488 lostPerfEvents];
+    v675 = [lostPerfEvents2 countByEnumeratingWithState:&v1604 objects:v1660 count:16];
     if (v675)
     {
       v676 = *v1605;
@@ -6800,16 +6800,16 @@ LABEL_719:
         {
           if (*v1605 != v676)
           {
-            objc_enumerationMutation(v674);
+            objc_enumerationMutation(lostPerfEvents2);
           }
 
           v679 = *(*(&v1604 + 1) + 8 * ii);
-          v680 = [v679 endTime];
-          if (v680)
+          endTime5 = [v679 endTime];
+          if (endTime5)
           {
             v681 = *(v1542 + 32);
-            v682 = [v679 endTime];
-            LOBYTE(v681) = [v681 ge:v682];
+            endTime6 = [v679 endTime];
+            LOBYTE(v681) = [v681 ge:endTime6];
 
             if (v681)
             {
@@ -6817,12 +6817,12 @@ LABEL_719:
             }
           }
 
-          v683 = [v679 startTime];
-          if (v683)
+          startTime6 = [v679 startTime];
+          if (startTime6)
           {
             v684 = *(v1542 + 40);
-            v685 = [v679 startTime];
-            LOBYTE(v684) = [v684 le:v685];
+            startTime7 = [v679 startTime];
+            LOBYTE(v684) = [v684 le:startTime7];
 
             if (v684)
             {
@@ -6830,56 +6830,56 @@ LABEL_719:
             }
           }
 
-          v686 = [v679 startTime];
+          startTime8 = [v679 startTime];
           v687 = *(v1542 + 32);
-          if (v686)
+          if (startTime8)
           {
-            v688 = [v679 startTime];
-            if ([v687 le:v688])
+            startTime9 = [v679 startTime];
+            if ([v687 le:startTime9])
             {
-              v689 = [v679 startTime];
+              startTime10 = [v679 startTime];
             }
 
             else
             {
-              v689 = *(v1542 + 32);
+              startTime10 = *(v1542 + 32);
             }
           }
 
           else
           {
-            v689 = v687;
+            startTime10 = v687;
           }
 
-          v690 = [v679 endTime];
+          endTime7 = [v679 endTime];
           v691 = *(v1542 + 40);
-          if (v690)
+          if (endTime7)
           {
-            v692 = [v679 endTime];
-            if ([v691 ge:v692])
+            endTime8 = [v679 endTime];
+            if ([v691 ge:endTime8])
             {
-              v693 = [v679 endTime];
+              endTime9 = [v679 endTime];
             }
 
             else
             {
-              v693 = *(v1542 + 40);
+              endTime9 = *(v1542 + 40);
             }
           }
 
           else
           {
-            v693 = v691;
+            endTime9 = v691;
           }
 
-          [v689 deltaSecondsTo:v693 timeDomainPriorityList:&unk_1F5BDCD60 timeDomainUsed:0];
+          [startTime10 deltaSecondsTo:endTime9 timeDomainPriorityList:&unk_1F5BDCD60 timeDomainUsed:0];
           v695 = v694;
-          v696 = [v679 lostPerf];
-          v697 = v696;
+          lostPerf = [v679 lostPerf];
+          v697 = lostPerf;
           v698 = @"No lost perf";
-          if (v696)
+          if (lostPerf)
           {
-            v698 = v696;
+            v698 = lostPerf;
           }
 
           v699 = v698;
@@ -6893,7 +6893,7 @@ LABEL_719:
           v677 = v677 + v695;
         }
 
-        v675 = [v674 countByEnumeratingWithState:&v1604 objects:v1660 count:16];
+        v675 = [lostPerfEvents2 countByEnumeratingWithState:&v1604 objects:v1660 count:16];
       }
 
       while (v675);
@@ -6910,8 +6910,8 @@ LABEL_748:
     {
       if (v677 + 0.001 < v290)
       {
-        v703 = [MEMORY[0x1E696AD98] numberWithDouble:v290 - v677];
-        [objd setObject:v703 forKeyedSubscript:@"Unknown"];
+        v677 = [MEMORY[0x1E696AD98] numberWithDouble:v290 - v677];
+        [objd setObject:v677 forKeyedSubscript:@"Unknown"];
       }
 
       v704 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(objd, "count")}];
@@ -6920,9 +6920,9 @@ LABEL_748:
       v1601 = 0u;
       v1600 = 0u;
       v705 = [objd keysSortedByValueUsingSelector:sel_compare_];
-      v1523 = [v705 reverseObjectEnumerator];
+      reverseObjectEnumerator = [v705 reverseObjectEnumerator];
 
-      v706 = [v1523 countByEnumeratingWithState:&v1600 objects:v1659 count:16];
+      v706 = [reverseObjectEnumerator countByEnumeratingWithState:&v1600 objects:v1659 count:16];
       if (v706)
       {
         j = *v1601;
@@ -6932,7 +6932,7 @@ LABEL_748:
           {
             if (*v1601 != j)
             {
-              objc_enumerationMutation(v1523);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v708 = *(*(&v1600 + 1) + 8 * jj);
@@ -6952,11 +6952,11 @@ LABEL_748:
             }
 
             v714 = seconds_string_for_nanoseconds((v711 * 1000000000.0), v713);
-            v715 = [v712 initWithFormat:@"%@ %@ (%.0f%%)", v708, v714, v711 * 100.0 / v290];
-            [v704 addObject:v715];
+            v290 = [v712 initWithFormat:@"%@ %@ (%.0f%%)", v708, v714, v711 * 100.0 / v290];
+            [v704 addObject:v290];
           }
 
-          v706 = [v1523 countByEnumeratingWithState:&v1600 objects:v1659 count:16];
+          v706 = [reverseObjectEnumerator countByEnumeratingWithState:&v1600 objects:v1659 count:16];
         }
 
         while (v706);
@@ -6969,8 +6969,8 @@ LABEL_748:
     }
   }
 
-  v717 = [*v1488 ioEvents];
-  v718 = [v717 count] == 0;
+  ioEvents = [*v1488 ioEvents];
+  v718 = [ioEvents count] == 0;
 
   if (!v718)
   {
@@ -6980,8 +6980,8 @@ LABEL_748:
     v1598 = 0u;
     v1597 = 0u;
     v1596 = 0u;
-    v1505 = [*v1488 ioEvents];
-    v719 = [v1505 countByEnumeratingWithState:&v1596 objects:v1658 count:16];
+    ioEvents2 = [*v1488 ioEvents];
+    v719 = [ioEvents2 countByEnumeratingWithState:&v1596 objects:v1658 count:16];
     if (v719)
     {
       v1513 = 0;
@@ -6993,38 +6993,38 @@ LABEL_748:
         {
           if (*v1597 != v721)
           {
-            objc_enumerationMutation(v1505);
+            objc_enumerationMutation(ioEvents2);
           }
 
           v723 = *(*(&v1596 + 1) + 8 * kk);
           v724 = *(v1542 + 32);
-          v725 = [v723 endTimestamp];
-          LOBYTE(v724) = [v724 gt:v725];
+          endTimestamp5 = [v723 endTimestamp];
+          LOBYTE(v724) = [v724 gt:endTimestamp5];
 
           if ((v724 & 1) == 0)
           {
             v726 = *(v1542 + 40);
-            v727 = [v723 endTimestamp];
-            LOBYTE(v726) = [v726 lt:v727];
+            endTimestamp6 = [v723 endTimestamp];
+            LOBYTE(v726) = [v726 lt:endTimestamp6];
 
             if (v726)
             {
               goto LABEL_776;
             }
 
-            v728 = [v723 tier];
+            tier = [v723 tier];
             v729 = MEMORY[0x1E696AD98];
-            v730 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v728];
+            v730 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:tier];
             v731 = [obje objectForKeyedSubscript:v730];
             v732 = [v729 numberWithUnsignedLongLong:{objc_msgSend(v731, "unsignedLongLongValue") + 1}];
-            v733 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v728];
+            v733 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:tier];
             [obje setObject:v732 forKeyedSubscript:v733];
 
             v734 = MEMORY[0x1E696AD98];
-            v735 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v728];
+            v735 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:tier];
             v736 = [v1524 objectForKeyedSubscript:v735];
             v737 = [v734 numberWithUnsignedLongLong:{objc_msgSend(v723, "size") + objc_msgSend(v736, "unsignedLongLongValue")}];
-            j = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v728];
+            j = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:tier];
             [v1524 setObject:v737 forKeyedSubscript:j];
 
             ++v1513;
@@ -7032,7 +7032,7 @@ LABEL_748:
           }
         }
 
-        v719 = [v1505 countByEnumeratingWithState:&v1596 objects:v1658 count:16];
+        v719 = [ioEvents2 countByEnumeratingWithState:&v1596 objects:v1658 count:16];
       }
 
       while (v719);
@@ -7052,7 +7052,7 @@ LABEL_776:
       v739 = v738;
       [*(v1542 + 32) machAbsTimeSeconds];
       v741 = *(v1542 + 8);
-      if (v1478)
+      if (printJson)
       {
         v742 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v1513];
         SAJSONWriteDictionaryEntry(v741, @"ioCountTotal", v742);
@@ -7065,8 +7065,8 @@ LABEL_776:
         v1594 = 0u;
         v1593 = 0u;
         v1592 = 0u;
-        v745 = [obje allKeys];
-        v1506 = [v745 sortedArrayUsingSelector:sel_compare_];
+        allKeys = [obje allKeys];
+        v1506 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
         v746 = [v1506 countByEnumeratingWithState:&v1592 objects:v1657 count:16];
         if (v746)
@@ -7127,8 +7127,8 @@ LABEL_776:
         v1590 = 0u;
         v1589 = 0u;
         v1588 = 0u;
-        v762 = [obje allKeys];
-        v1506 = [v762 sortedArrayUsingSelector:sel_compare_];
+        allKeys2 = [obje allKeys];
+        v1506 = [allKeys2 sortedArrayUsingSelector:sel_compare_];
 
         v1500 = [v1506 countByEnumeratingWithState:&v1588 objects:v1656 count:16];
         if (v1500)
@@ -7189,20 +7189,20 @@ LABEL_776:
     }
   }
 
-  v774 = [*v1488 nandGarbageCollectionEvents];
-  v775 = [v774 count] == 0;
+  nandGarbageCollectionEvents = [*v1488 nandGarbageCollectionEvents];
+  v775 = [nandGarbageCollectionEvents count] == 0;
 
   if (!v775)
   {
-    if (v1478)
+    if (printJson)
     {
       v776 = *p_isa;
-      v777 = [*v1488 nandGarbageCollectionEvents];
-      SAJSONWriteDictionaryEntry(v776, @"nandGarbageCollectionEvents", v777);
+      nandGarbageCollectionEvents2 = [*v1488 nandGarbageCollectionEvents];
+      SAJSONWriteDictionaryEntry(v776, @"nandGarbageCollectionEvents", nandGarbageCollectionEvents2);
       goto LABEL_837;
     }
 
-    v777 = objc_alloc_init(MEMORY[0x1E695DF90]);
+    nandGarbageCollectionEvents2 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v1587 = 0u;
     v1586 = 0u;
     v1585 = 0u;
@@ -7223,12 +7223,12 @@ LABEL_776:
           }
 
           v782 = *(*(&v1584 + 1) + 8 * i1);
-          v783 = [v782 endTimestamp];
-          if (v783)
+          endTimestamp7 = [v782 endTimestamp];
+          if (endTimestamp7)
           {
             v784 = *(v1542 + 32);
-            v785 = [v782 endTimestamp];
-            LOBYTE(v784) = [v784 ge:v785];
+            endTimestamp8 = [v782 endTimestamp];
+            LOBYTE(v784) = [v784 ge:endTimestamp8];
 
             if (v784)
             {
@@ -7236,12 +7236,12 @@ LABEL_776:
             }
           }
 
-          v786 = [v782 startTimestamp];
-          if (v786)
+          startTimestamp6 = [v782 startTimestamp];
+          if (startTimestamp6)
           {
             v787 = *(v1542 + 40);
-            v788 = [v782 startTimestamp];
-            LOBYTE(v787) = [v787 le:v788];
+            startTimestamp7 = [v782 startTimestamp];
+            LOBYTE(v787) = [v787 le:startTimestamp7];
 
             if (v787)
             {
@@ -7249,64 +7249,64 @@ LABEL_776:
             }
           }
 
-          v789 = [v782 startTimestamp];
-          if (v789)
+          startTimestamp8 = [v782 startTimestamp];
+          if (startTimestamp8)
           {
-            v790 = [v782 startTimestamp];
-            if ([v790 ge:*(v1542 + 32)])
+            startTimestamp9 = [v782 startTimestamp];
+            if ([startTimestamp9 ge:*(v1542 + 32)])
             {
-              v791 = [v782 startTimestamp];
+              startTimestamp10 = [v782 startTimestamp];
             }
 
             else
             {
-              v791 = *(v1542 + 32);
+              startTimestamp10 = *(v1542 + 32);
             }
           }
 
           else
           {
-            v791 = *(v1542 + 32);
+            startTimestamp10 = *(v1542 + 32);
           }
 
-          v792 = [v782 endTimestamp];
-          if (v792)
+          endTimestamp9 = [v782 endTimestamp];
+          if (endTimestamp9)
           {
-            v793 = [v782 endTimestamp];
-            if ([v793 le:*(v1542 + 40)])
+            endTimestamp10 = [v782 endTimestamp];
+            if ([endTimestamp10 le:*(v1542 + 40)])
             {
-              v794 = [v782 endTimestamp];
+              endTimestamp11 = [v782 endTimestamp];
             }
 
             else
             {
-              v794 = *(v1542 + 40);
+              endTimestamp11 = *(v1542 + 40);
             }
           }
 
           else
           {
-            v794 = *(v1542 + 40);
+            endTimestamp11 = *(v1542 + 40);
           }
 
-          [v791 deltaSecondsTo:v794 timeDomainPriorityList:&unk_1F5BDCD78 timeDomainUsed:0];
+          [startTimestamp10 deltaSecondsTo:endTimestamp11 timeDomainPriorityList:&unk_1F5BDCD78 timeDomainUsed:0];
           v796 = v795;
-          v797 = [v782 reason];
-          v798 = v797;
+          reason3 = [v782 reason];
+          v798 = reason3;
           v799 = @"unknown";
-          if (v797)
+          if (reason3)
           {
-            v799 = v797;
+            v799 = reason3;
           }
 
           v800 = v799;
 
           v801 = MEMORY[0x1E696AD98];
-          v802 = [v777 objectForKeyedSubscript:v800];
+          v802 = [nandGarbageCollectionEvents2 objectForKeyedSubscript:v800];
           [v802 doubleValue];
           v780 = v780 + v796;
-          v804 = [v801 numberWithDouble:v780 + v803];
-          [v777 setObject:v804 forKeyedSubscript:v800];
+          v803 = [v801 numberWithDouble:v780 + v803];
+          [nandGarbageCollectionEvents2 setObject:v803 forKeyedSubscript:v800];
         }
 
         v778 = [objf countByEnumeratingWithState:&v1584 objects:v1655 count:16];
@@ -7317,7 +7317,7 @@ LABEL_834:
 
       if (v780 > 0.0)
       {
-        objf = [v777 keysSortedByValueUsingComparator:&__block_literal_global_1164];
+        objf = [nandGarbageCollectionEvents2 keysSortedByValueUsingComparator:&__block_literal_global_1164];
         v805 = *p_isa;
         v1406 = [objf componentsJoinedByString:{@", "}];
         LOBYTE(v1379) = 18;
@@ -7336,32 +7336,32 @@ LABEL_836:
 LABEL_837:
   }
 
-  v806 = [*v1488 systemAdvisoryLevels];
+  systemAdvisoryLevels = [*v1488 systemAdvisoryLevels];
 
-  if (v806)
+  if (systemAdvisoryLevels)
   {
-    if (v1478)
+    if (printJson)
     {
-      v807 = [*(v1542 + 168) systemAdvisoryLevels];
+      systemAdvisoryLevels2 = [*(v1542 + 168) systemAdvisoryLevels];
       v1583[0] = MEMORY[0x1E69E9820];
       v1583[1] = 3221225472;
       v1583[2] = __30__SASamplePrinter_printHeader__block_invoke_4;
       v1583[3] = &unk_1E86F75C0;
       v1583[4] = v1542;
-      [v807 enumerateKeysAndObjectsUsingBlock:v1583];
+      [systemAdvisoryLevels2 enumerateKeysAndObjectsUsingBlock:v1583];
     }
 
     else
     {
       v808 = objc_alloc_init(MEMORY[0x1E696AD60]);
-      v809 = [*v1488 systemAdvisoryLevels];
+      systemAdvisoryLevels3 = [*v1488 systemAdvisoryLevels];
       v1581[0] = MEMORY[0x1E69E9820];
       v1581[1] = 3221225472;
       v1581[2] = __30__SASamplePrinter_printHeader__block_invoke_5;
       v1581[3] = &unk_1E86F75C0;
       v810 = v808;
       v1582 = v810;
-      [v809 enumerateKeysAndObjectsUsingBlock:v1581];
+      [systemAdvisoryLevels3 enumerateKeysAndObjectsUsingBlock:v1581];
 
       if ([v810 hasSuffix:{@", "}])
       {
@@ -7379,18 +7379,18 @@ LABEL_837:
     }
   }
 
-  v814 = [*v1488 homeVolumeSpace];
+  homeVolumeSpace = [*v1488 homeVolumeSpace];
 
-  if (v814)
+  if (homeVolumeSpace)
   {
-    v815 = [*v1488 homeVolumeSpace];
-    v816 = [v815 objectForKeyedSubscript:0x1F5BBF8A0];
+    homeVolumeSpace2 = [*v1488 homeVolumeSpace];
+    v816 = [homeVolumeSpace2 objectForKeyedSubscript:0x1F5BBF8A0];
 
-    v817 = [*v1488 homeVolumeSpace];
-    v818 = [v817 objectForKeyedSubscript:0x1F5BBF8C0];
+    homeVolumeSpace3 = [*v1488 homeVolumeSpace];
+    v818 = [homeVolumeSpace3 objectForKeyedSubscript:0x1F5BBF8C0];
 
-    v819 = [*v1488 homeVolumeSpace];
-    v820 = [v819 objectForKeyedSubscript:0x1F5BBF8E0];
+    homeVolumeSpace4 = [*v1488 homeVolumeSpace];
+    v820 = [homeVolumeSpace4 objectForKeyedSubscript:0x1F5BBF8E0];
 
     if (v816)
     {
@@ -7411,7 +7411,7 @@ LABEL_837:
           }
 
           v821 = *p_isa;
-          if (v1478)
+          if (printJson)
           {
             SAJSONWriteDictionaryEntry(*p_isa, @"homeVolumeTotalSpace", v816);
             SAJSONWriteDictionaryEntry(*p_isa, @"homeVolumeAvailableSpace", v818);
@@ -7444,19 +7444,19 @@ LABEL_837:
     }
   }
 
-  v824 = [*v1488 powerModeTransitions];
-  v825 = [v824 count] == 0;
+  powerModeTransitions = [*v1488 powerModeTransitions];
+  v825 = [powerModeTransitions count] == 0;
 
   if (v825)
   {
     goto LABEL_915;
   }
 
-  if (v1478)
+  if (printJson)
   {
     v827 = *p_isa;
-    v828 = [*v1488 powerModeTransitions];
-    SAJSONWriteDictionaryEntry(v827, @"powerModeTransitions", v828);
+    powerModeTransitions2 = [*v1488 powerModeTransitions];
+    SAJSONWriteDictionaryEntry(v827, @"powerModeTransitions", powerModeTransitions2);
 
     goto LABEL_915;
   }
@@ -7466,8 +7466,8 @@ LABEL_837:
   v1578 = 0u;
   v1579 = 0u;
   v1580 = 0u;
-  v829 = [*v1488 powerModeTransitions];
-  v830 = [v829 countByEnumeratingWithState:&v1577 objects:v1654 count:16];
+  powerModeTransitions3 = [*v1488 powerModeTransitions];
+  v830 = [powerModeTransitions3 countByEnumeratingWithState:&v1577 objects:v1654 count:16];
   if (!v830)
   {
 
@@ -7477,7 +7477,7 @@ LABEL_837:
 
   v831 = 0;
   v832 = 0;
-  v833 = 0;
+  lowPowerMode2 = 0;
   v834 = 0;
   v835 = 0;
   v836 = *v1578;
@@ -7489,20 +7489,20 @@ LABEL_837:
     {
       if (*v1578 != v836)
       {
-        objc_enumerationMutation(v829);
+        objc_enumerationMutation(powerModeTransitions3);
       }
 
       v839 = *(*(&v1577 + 1) + 8 * v838);
       if ([v839 lowPowerModeChanged])
       {
-        v840 = [v839 timestamp];
-        v841 = v840;
-        if (!v840)
+        timestamp4 = [v839 timestamp];
+        v841 = timestamp4;
+        if (!timestamp4)
         {
           goto LABEL_879;
         }
 
-        if ([v840 isComparable:*(v1542 + 40)] && objc_msgSend(v841, "gt:", *(v1542 + 40)))
+        if ([timestamp4 isComparable:*(v1542 + 40)] && objc_msgSend(v841, "gt:", *(v1542 + 40)))
         {
           if (v834)
           {
@@ -7510,7 +7510,7 @@ LABEL_837:
 LABEL_888:
             if (v832)
             {
-              if (v833)
+              if (lowPowerMode2)
               {
                 [*(v1542 + 40) wallTime];
                 v850 = v849;
@@ -7558,7 +7558,7 @@ LABEL_913:
             }
 
             *v1677 = 0;
-            if (v833)
+            if (lowPowerMode2)
             {
               goto LABEL_909;
             }
@@ -7566,9 +7566,9 @@ LABEL_913:
 
           else
           {
-            v852 = [v839 lowPowerMode];
+            lowPowerMode = [v839 lowPowerMode];
 
-            if ((v852 & 1) == 0)
+            if ((lowPowerMode & 1) == 0)
             {
               goto LABEL_909;
             }
@@ -7593,12 +7593,12 @@ LABEL_903:
 
         if ([v841 isComparable:*(v1542 + 32)] && (objc_msgSend(v841, "lt:", *(v1542 + 32)) & 1) == 0)
         {
-          if ((v834 & 1) == 0 || (v833 & 1) != [v839 lowPowerMode])
+          if ((v834 & 1) == 0 || (lowPowerMode2 & 1) != [v839 lowPowerMode])
           {
             if (([v839 lowPowerMode] & 1) == 0)
             {
-              v842 = [v839 timestamp];
-              [v842 wallTime];
+              timestamp5 = [v839 timestamp];
+              [timestamp5 wallTime];
               v844 = v843;
               v845 = v835;
               if (!v835)
@@ -7623,7 +7623,7 @@ LABEL_903:
         else
         {
 LABEL_879:
-          v833 = [v839 lowPowerMode];
+          lowPowerMode2 = [v839 lowPowerMode];
         }
 
         v831 = 1;
@@ -7638,7 +7638,7 @@ LABEL_879:
       break;
     }
 
-    v830 = [v829 countByEnumeratingWithState:&v1577 objects:v1654 count:16];
+    v830 = [powerModeTransitions3 countByEnumeratingWithState:&v1577 objects:v1654 count:16];
     if (v830)
     {
       continue;
@@ -7670,7 +7670,7 @@ LABEL_915:
 
   if (v866)
   {
-    if (v1478)
+    if (printJson)
     {
       v868 = *p_isa;
       v869 = *v1488;
@@ -7686,13 +7686,13 @@ LABEL_915:
       if (!*v1488 || !v871[145])
       {
 LABEL_941:
-        v890 = [v871 models];
+        models = [v871 models];
 
-        if (v890)
+        if (models)
         {
           v891 = *p_isa;
-          v892 = [*v1488 models];
-          SAJSONWriteDictionaryEntry(v891, @"models", v892);
+          models2 = [*v1488 models];
+          SAJSONWriteDictionaryEntry(v891, @"models", models2);
         }
 
         objh = [(SASamplePrinter *)v1542 printLaunchdThrottledProcessesToStream:?];
@@ -7750,9 +7750,9 @@ LABEL_933:
       goto LABEL_941;
     }
 
-    v872 = [(SASampleStore *)*v1488 isAnyPowerMitigationEnabledAtTailspinCapture];
+    isAnyPowerMitigationEnabledAtTailspinCapture = [(SASampleStore *)*v1488 isAnyPowerMitigationEnabledAtTailspinCapture];
     v874 = v1488;
-    if ((v872 & 1) != 0 || (v875 = [*(v1542 + 16) displayDefaultPowerModes], v874 = v1488, v875))
+    if ((isAnyPowerMitigationEnabledAtTailspinCapture & 1) != 0 || (v875 = [*(v1542 + 16) displayDefaultPowerModes], v874 = v1488, v875))
     {
       v876 = *p_isa;
       v877 = *v874;
@@ -7779,7 +7779,7 @@ LABEL_929:
   v871 = *v874;
   if (*v874 && (v878 = v871[145]) != 0)
   {
-    if (v1478)
+    if (printJson)
     {
       goto LABEL_933;
     }
@@ -7805,25 +7805,25 @@ LABEL_929:
     v1499 = 1;
   }
 
-  else if (v1478)
+  else if (printJson)
   {
     goto LABEL_941;
   }
 
-  v894 = [v871 eventTimeRange];
-  v895 = [v894 startTime];
-  v896 = v895;
-  if (!v895)
+  eventTimeRange14 = [v871 eventTimeRange];
+  startTime11 = [eventTimeRange14 startTime];
+  v896 = startTime11;
+  if (!startTime11)
   {
     v896 = *(v1542 + 32);
   }
 
   objg = v896;
 
-  v897 = [*v1488 eventTimeRange];
-  v898 = [v897 endTime];
-  v899 = v898;
-  if (!v898)
+  eventTimeRange15 = [*v1488 eventTimeRange];
+  endTime10 = [eventTimeRange15 endTime];
+  v899 = endTime10;
+  if (!endTime10)
   {
     v899 = *(v1542 + 40);
   }
@@ -7832,15 +7832,15 @@ LABEL_929:
 
   if (objg && v1525)
   {
-    v900 = [*v1488 models];
-    v1434 = v900;
-    if (!v900)
+    models3 = [*v1488 models];
+    v1434 = models3;
+    if (!models3)
     {
       v979 = @"%-*sUNKNOWN\n";
       goto LABEL_1081;
     }
 
-    if (![v900 count])
+    if (![models3 count])
     {
       goto LABEL_1080;
     }
@@ -7872,12 +7872,12 @@ LABEL_960:
     v1480 = v901;
     v1514 = *(*(&v1573 + 1) + 8 * v901);
     v1501 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v903 = [v1514 loadedChanges];
-    v904 = [v903 count] == 0;
+    loadedChanges = [v1514 loadedChanges];
+    v904 = [loadedChanges count] == 0;
 
     if (v904)
     {
-      v1492 = 0;
+      timestamp6 = 0;
       v908 = 0;
       goto LABEL_1027;
     }
@@ -7888,25 +7888,25 @@ LABEL_960:
     v908 = 0;
     while (1)
     {
-      v909 = [v1514 loadedChanges];
-      v910 = [v909 objectAtIndexedSubscript:v905];
+      loadedChanges2 = [v1514 loadedChanges];
+      v910 = [loadedChanges2 objectAtIndexedSubscript:v905];
 
-      v911 = [v910 loaded];
-      if (v911)
+      loaded = [v910 loaded];
+      if (loaded)
       {
         if ((v907 & 1) == 0)
         {
-          v1492 = [v910 timestamp];
+          timestamp6 = [v910 timestamp];
 
-          if (v1492)
+          if (timestamp6)
           {
-            if ([v1492 isComparable:v1525] && (objc_msgSend(v1492, "gt:", v1525) & 1) != 0)
+            if ([timestamp6 isComparable:v1525] && (objc_msgSend(timestamp6, "gt:", v1525) & 1) != 0)
             {
 
               goto LABEL_1027;
             }
 
-            v906 = v1492;
+            v906 = timestamp6;
           }
 
           else
@@ -7915,11 +7915,11 @@ LABEL_960:
           }
         }
 
-        v923 = [v910 loadedRequesters];
-        if (v923)
+        loadedRequesters = [v910 loadedRequesters];
+        if (loadedRequesters)
         {
-          v924 = [v910 loadedRequesters];
-          [v1501 addObjectsFromArray:v924];
+          loadedRequesters2 = [v910 loadedRequesters];
+          [v1501 addObjectsFromArray:loadedRequesters2];
         }
 
         goto LABEL_1006;
@@ -7932,24 +7932,24 @@ LABEL_960:
 
 LABEL_1005:
       [v1501 removeAllObjects];
-      v923 = v906;
+      loadedRequesters = v906;
       v906 = 0;
 LABEL_1006:
 
-      v935 = [v1514 loadedChanges];
-      v936 = [v935 count];
+      loadedChanges3 = [v1514 loadedChanges];
+      v936 = [loadedChanges3 count];
 
       ++v905;
-      v907 = v911;
+      v907 = loaded;
       if (v905 >= v936)
       {
-        if (v911)
+        if (loaded)
         {
           if ((v908 & 1) == 0)
           {
             v937 = *p_isa;
-            v938 = [v1514 identifier];
-            [v937 printWithFormat:@"%-*s%@\n", 18, "Model: ", v938];
+            identifier = [v1514 identifier];
+            [v937 printWithFormat:@"%-*s%@\n", 18, "Model: ", identifier];
           }
 
           [*p_isa printWithFormat:@"%-*s", 18, "  Loaded: "];
@@ -7999,8 +7999,8 @@ LABEL_1006:
           v946 = *p_isa;
           if (v945)
           {
-            v947 = [v1501 allObjects];
-            v948 = [v947 sortedArrayUsingComparator:&__block_literal_global_11];
+            allObjects4 = [v1501 allObjects];
+            v948 = [allObjects4 sortedArrayUsingComparator:&__block_literal_global_11];
             [v948 componentsJoinedByString:{@", "}];
             v1379 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
             [v946 printWithFormat:@", requested by %@"];
@@ -8015,14 +8015,14 @@ LABEL_1006:
           v908 = 1;
         }
 
-        v1492 = v906;
+        timestamp6 = v906;
 LABEL_1027:
         v1572 = 0u;
         v1571 = 0u;
         v1570 = 0u;
         v1569 = 0u;
-        v1507 = [v1514 executions];
-        v949 = [v1507 countByEnumeratingWithState:&v1569 objects:v1652 count:16];
+        executions = [v1514 executions];
+        v949 = [executions countByEnumeratingWithState:&v1569 objects:v1652 count:16];
         if (!v949)
         {
           goto LABEL_1072;
@@ -8035,23 +8035,23 @@ LABEL_1027:
 LABEL_1030:
           if (*v1570 != v950)
           {
-            objc_enumerationMutation(v1507);
+            objc_enumerationMutation(executions);
           }
 
           v952 = *(*(&v1569 + 1) + 8 * v951);
-          v953 = [v952 startTime];
-          v954 = [v952 endTime];
-          v955 = v954;
-          if (v953)
+          startTime12 = [v952 startTime];
+          endTime11 = [v952 endTime];
+          v955 = endTime11;
+          if (startTime12)
           {
-            if ([v953 isComparable:v1525] && (objc_msgSend(v953, "gt:", v1525) & 1) != 0)
+            if ([startTime12 isComparable:v1525] && (objc_msgSend(startTime12, "gt:", v1525) & 1) != 0)
             {
 
               goto LABEL_1072;
             }
 
             *v1677 = 0;
-            [objg deltaSecondsTo:v953 timeDomainPriorityList:&unk_1F5BDCDD8 timeDomainUsed:v1677];
+            [objg deltaSecondsTo:startTime12 timeDomainPriorityList:&unk_1F5BDCDD8 timeDomainUsed:v1677];
             if (*v1677)
             {
               v957 = v956;
@@ -8090,7 +8090,7 @@ LABEL_1039:
           else
           {
             v957 = NAN;
-            if (v954)
+            if (endTime11)
             {
               goto LABEL_1039;
             }
@@ -8104,8 +8104,8 @@ LABEL_1046:
             if ((v908 & 1) == 0)
             {
               v961 = *p_isa;
-              v962 = [v1514 identifier];
-              [v961 printWithFormat:@"%-*s%@\n", 18, "Model: ", v962];
+              identifier2 = [v1514 identifier];
+              [v961 printWithFormat:@"%-*s%@\n", 18, "Model: ", identifier2];
             }
 
             [*p_isa printWithFormat:@"%-*s", 18, "  Executing: "];
@@ -8160,11 +8160,11 @@ LABEL_1046:
             }
 
             v971 = *p_isa;
-            v972 = [v952 requester];
-            v973 = v972;
-            if (v972)
+            requester = [v952 requester];
+            v973 = requester;
+            if (requester)
             {
-              v974 = v972;
+              v974 = requester;
             }
 
             else
@@ -8172,12 +8172,12 @@ LABEL_1046:
               v974 = @"UNKNOWN";
             }
 
-            v975 = [v952 useCaseID];
-            v976 = v975;
+            useCaseID = [v952 useCaseID];
+            v976 = useCaseID;
             v977 = @"UNKNOWN";
-            if (v975)
+            if (useCaseID)
             {
-              v977 = v975;
+              v977 = useCaseID;
             }
 
             [v971 printWithFormat:@", requested by %@ use case %@", v974, v977];
@@ -8190,7 +8190,7 @@ LABEL_1068:
 
           if (v949 == ++v951)
           {
-            v949 = [v1507 countByEnumeratingWithState:&v1569 objects:v1652 count:16];
+            v949 = [executions countByEnumeratingWithState:&v1569 objects:v1652 count:16];
             if (v949)
             {
               continue;
@@ -8233,11 +8233,11 @@ LABEL_1081:
       }
     }
 
-    v912 = [v910 timestamp];
-    if (v912)
+    timestamp7 = [v910 timestamp];
+    if (timestamp7)
     {
       *v1677 = 0;
-      [objg deltaSecondsTo:v912 timeDomainPriorityList:&unk_1F5BDCD90 timeDomainUsed:v1677];
+      [objg deltaSecondsTo:timestamp7 timeDomainPriorityList:&unk_1F5BDCD90 timeDomainUsed:v1677];
       if (*v1677)
       {
         v914 = v913;
@@ -8320,8 +8320,8 @@ LABEL_981:
           v932 = *p_isa;
           if (v931)
           {
-            v933 = [v1501 allObjects];
-            v934 = [v933 sortedArrayUsingComparator:&__block_literal_global_11];
+            allObjects5 = [v1501 allObjects];
+            v934 = [allObjects5 sortedArrayUsingComparator:&__block_literal_global_11];
             [v934 componentsJoinedByString:{@", "}];
             v1379 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
             [v932 printWithFormat:@", requested by %@"];
@@ -8339,8 +8339,8 @@ LABEL_981:
 
 LABEL_980:
         v917 = *p_isa;
-        v918 = [v1514 identifier];
-        [v917 printWithFormat:@"%-*s%@\n", 18, "Model: ", v918];
+        identifier3 = [v1514 identifier];
+        [v917 printWithFormat:@"%-*s%@\n", 18, "Model: ", identifier3];
 
         goto LABEL_981;
       }
@@ -8348,8 +8348,8 @@ LABEL_980:
 
     else
     {
-      v915 = [v1514 loadedChanges];
-      v916 = v905 < [v915 count] - 1;
+      loadedChanges4 = [v1514 loadedChanges];
+      v916 = v905 < [loadedChanges4 count] - 1;
 
       if (!v916)
       {
@@ -8370,7 +8370,7 @@ LABEL_1004:
 
 LABEL_1083:
 
-  if (!(v1478 & 1 | ((v1499 & 1) == 0)))
+  if (!(printJson & 1 | ((v1499 & 1) == 0)))
   {
     [*p_isa printWithFormat:@"\n"];
   }
@@ -8385,10 +8385,10 @@ LABEL_1083:
   v1011 = v1010;
   *(&v1675 + 1) = v1011;
   v1012 = MEMORY[0x1E12EBE50](&v1673);
-  v1013 = [*(v1542 + 168) targetProcess];
-  if (v1013)
+  targetProcess5 = [*(v1542 + 168) targetProcess];
+  if (targetProcess5)
   {
-    (v1012)[2](v1012, v1013);
+    (v1012)[2](v1012, targetProcess5);
   }
 
   else
@@ -8396,8 +8396,8 @@ LABEL_1083:
     v1682 = 0u;
     v1683 = 0u;
     memset(buf, 0, sizeof(buf));
-    v1083 = [*v1488 targetProcesses];
-    v1084 = [v1083 countByEnumeratingWithState:buf objects:v1677 count:16];
+    targetProcesses2 = [*v1488 targetProcesses];
+    v1084 = [targetProcesses2 countByEnumeratingWithState:buf objects:v1677 count:16];
     if (v1084)
     {
       v1085 = **&buf[16];
@@ -8407,13 +8407,13 @@ LABEL_1083:
         {
           if (**&buf[16] != v1085)
           {
-            objc_enumerationMutation(v1083);
+            objc_enumerationMutation(targetProcesses2);
           }
 
           v1012[2](v1012, *(*&buf[8] + 8 * i2));
         }
 
-        v1084 = [v1083 countByEnumeratingWithState:buf objects:v1677 count:16];
+        v1084 = [targetProcesses2 countByEnumeratingWithState:buf objects:v1677 count:16];
       }
 
       while (v1084);
@@ -8423,10 +8423,10 @@ LABEL_1083:
   v1087 = [v1011 count];
   if (v1087)
   {
-    v1088 = [v1542 options];
-    v1089 = [v1088 printJson];
+    options = [v1542 options];
+    printJson2 = [options printJson];
 
-    if (!v1089)
+    if (!printJson2)
     {
       v1398 = [v1011 componentsJoinedByString:{@", "}];
       LOBYTE(v1379) = 18;
@@ -8467,8 +8467,8 @@ LABEL_1229:
   v1096 = v1093;
   v1680 = v1096;
   [v1094 enumerateTasks:v1677];
-  v1097 = [v1542 options];
-  LODWORD(v1094) = [v1097 printJson];
+  options2 = [v1542 options];
+  LODWORD(v1094) = [options2 printJson];
 
   if (v1094)
   {
@@ -8489,17 +8489,17 @@ LABEL_1229:
 
   if ([v1095 count])
   {
-    v1098 = [*v1488 workQueueHardThreadLimit];
+    workQueueHardThreadLimit = [*v1488 workQueueHardThreadLimit];
     [v1095 componentsJoinedByString:{@", "}];
-    v1381 = LOBYTE(v1379) = v1098;
+    v1381 = LOBYTE(v1379) = workQueueHardThreadLimit;
     [v1091 printWithFormat:@"Processes reached dispatch thread hard limit (%u): %@\n"];
   }
 
   if ([v1096 count])
   {
-    v1099 = [*v1488 workQueueSoftThreadLimit];
+    workQueueSoftThreadLimit = [*v1488 workQueueSoftThreadLimit];
     [v1096 componentsJoinedByString:{@", "}];
-    v1382 = LOBYTE(v1379) = v1099;
+    v1382 = LOBYTE(v1379) = workQueueSoftThreadLimit;
     [v1091 printWithFormat:@"Processes reached dispatch thread soft limit (%u): %@\n"];
   }
 
@@ -8528,10 +8528,10 @@ LABEL_1229:
   v1107 = v1105;
   v1679 = v1107;
   [v1106 enumerateTasks:v1677];
-  v1108 = [v1542 options];
-  v1109 = [v1108 printJson];
+  options3 = [v1542 options];
+  printJson3 = [options3 printJson];
 
-  if (v1109)
+  if (printJson3)
   {
 LABEL_1602:
     v1363 = *__error();
@@ -8579,10 +8579,10 @@ LABEL_1087:
   v987 = v986 != 0;
   if (v986)
   {
-    v988 = [v1542 options];
-    v989 = [v988 printJson];
+    options4 = [v1542 options];
+    printJson4 = [options4 printJson];
 
-    if (v989)
+    if (printJson4)
     {
       SAJSONWriteDictionaryEntry(*p_isa, @"deadlocks", v985);
     }
@@ -8620,14 +8620,14 @@ LABEL_1087:
 
   if ([v984 count])
   {
-    v994 = [v1542 options];
-    v995 = [v994 printJson];
+    options5 = [v1542 options];
+    printJson5 = [options5 printJson];
 
     v996 = *(v1542 + 8);
-    if (v995)
+    if (printJson5)
     {
-      v997 = [v984 allObjects];
-      v998 = [v997 sortedArrayUsingComparator:&__block_literal_global_11];
+      allObjects6 = [v984 allObjects];
+      v998 = [allObjects6 sortedArrayUsingComparator:&__block_literal_global_11];
       SAJSONWriteDictionaryEntry(v996, @"blockedByDeadlock", v998);
     }
 
@@ -8644,8 +8644,8 @@ LABEL_1087:
         v1000 = "s";
       }
 
-      v997 = [v984 allObjects];
-      v998 = [v997 sortedArrayUsingComparator:&__block_literal_global_11];
+      allObjects6 = [v984 allObjects];
+      v998 = [allObjects6 sortedArrayUsingComparator:&__block_literal_global_11];
       v1001 = [v998 componentsJoinedByString:{@", "}];
       [v996 printWithFormat:@"%-*s%lu task%s - %@\n", 18, "Blocked by Deadlock: ", v999, v1000, v1001];
     }
@@ -8653,14 +8653,14 @@ LABEL_1087:
     v987 = 1;
   }
 
-  if (!(v1478 & 1 | (((v987 | objh) & 1) == 0)))
+  if (!(printJson & 1 | (((v987 | objh) & 1) == 0)))
   {
     [*p_isa printWithFormat:@"\n"];
   }
 
   if ([*v1488 appleInternalIsKnown])
   {
-    if (v1478)
+    if (printJson)
     {
       v1002 = *p_isa;
       if ([*v1488 isAppleInternal])
@@ -8695,10 +8695,10 @@ LABEL_1087:
     if ([*v1488 isAppleInternal] && objc_msgSend(*v1488, "hasInternalCarryDeviceDistinction"))
     {
       v1006 = *p_isa;
-      v1007 = [*v1488 isInternalCarryDevice];
-      if (v1478)
+      isInternalCarryDevice = [*v1488 isInternalCarryDevice];
+      if (printJson)
       {
-        if (v1007)
+        if (isInternalCarryDevice)
         {
           v1008 = MEMORY[0x1E695E118];
         }
@@ -8713,7 +8713,7 @@ LABEL_1087:
 
       else
       {
-        if (v1007)
+        if (isInternalCarryDevice)
         {
           v1014 = "Yes";
         }
@@ -8728,45 +8728,45 @@ LABEL_1087:
     }
   }
 
-  v1015 = [*v1488 automatedDeviceGroup];
+  automatedDeviceGroup = [*v1488 automatedDeviceGroup];
 
-  if (v1015)
+  if (automatedDeviceGroup)
   {
     v1016 = *p_isa;
-    v1017 = [*v1488 automatedDeviceGroup];
-    v1018 = v1017;
-    if (v1478)
+    automatedDeviceGroup2 = [*v1488 automatedDeviceGroup];
+    v1018 = automatedDeviceGroup2;
+    if (printJson)
     {
-      SAJSONWriteDictionaryEntry(v1016, @"automatedDeviceGroup", v1017);
+      SAJSONWriteDictionaryEntry(v1016, @"automatedDeviceGroup", automatedDeviceGroup2);
     }
 
     else
     {
-      v1019 = SACopySanitizedString(v1017, 1, 0xFFuLL);
+      v1019 = SACopySanitizedString(automatedDeviceGroup2, 1, 0xFFuLL);
       [v1016 printWithFormat:@"%-*s%@\n", 18, "Automated Device Group: ", v1019];
     }
   }
 
-  v1020 = [*v1488 nonDefaultFeatureFlags];
+  nonDefaultFeatureFlags = [*v1488 nonDefaultFeatureFlags];
 
-  if (v1020)
+  if (nonDefaultFeatureFlags)
   {
-    if (v1478)
+    if (printJson)
     {
-      v1021 = [*(v1542 + 168) nonDefaultFeatureFlags];
+      nonDefaultFeatureFlags2 = [*(v1542 + 168) nonDefaultFeatureFlags];
       v1568[0] = MEMORY[0x1E69E9820];
       v1568[1] = 3221225472;
       v1568[2] = __30__SASamplePrinter_printHeader__block_invoke_6;
       v1568[3] = &unk_1E86F75C0;
       v1568[4] = v1542;
-      [v1021 enumerateKeysAndObjectsUsingBlock:v1568];
+      [nonDefaultFeatureFlags2 enumerateKeysAndObjectsUsingBlock:v1568];
     }
 
     else
     {
       v1022 = objc_alloc_init(MEMORY[0x1E696AD60]);
       v1023 = objc_alloc_init(MEMORY[0x1E696AD60]);
-      v1024 = [*v1488 nonDefaultFeatureFlags];
+      nonDefaultFeatureFlags3 = [*v1488 nonDefaultFeatureFlags];
       v1565[0] = MEMORY[0x1E69E9820];
       v1565[1] = 3221225472;
       v1565[2] = __30__SASamplePrinter_printHeader__block_invoke_7;
@@ -8775,7 +8775,7 @@ LABEL_1087:
       v1566 = v1025;
       v1026 = v1023;
       v1567 = v1026;
-      [v1024 enumerateKeysAndObjectsUsingBlock:v1565];
+      [nonDefaultFeatureFlags3 enumerateKeysAndObjectsUsingBlock:v1565];
 
       if ([v1025 length])
       {
@@ -8801,24 +8801,24 @@ LABEL_1087:
     }
   }
 
-  v1029 = [*v1488 preferredLanguages];
+  preferredLanguages = [*v1488 preferredLanguages];
 
-  if (v1029)
+  if (preferredLanguages)
   {
-    if (v1478)
+    if (printJson)
     {
       v1030 = *p_isa;
-      v1031 = [*v1488 preferredLanguages];
-      SAJSONWriteDictionaryEntry(v1030, @"preferredLanguages", v1031);
+      preferredLanguages2 = [*v1488 preferredLanguages];
+      SAJSONWriteDictionaryEntry(v1030, @"preferredLanguages", preferredLanguages2);
     }
 
     else
     {
-      v1032 = [*v1488 preferredLanguages];
-      v1031 = v1032;
-      if (v1032)
+      preferredLanguages3 = [*v1488 preferredLanguages];
+      preferredLanguages2 = preferredLanguages3;
+      if (preferredLanguages3)
       {
-        v1033 = [v1032 componentsJoinedByString:{@", "}];
+        v1033 = [preferredLanguages3 componentsJoinedByString:{@", "}];
         v1034 = SACopySanitizedString(v1033, 1, 0);
 
         [*p_isa printWithFormat:@"%-*s%@\n", 18, "Preferred User Language: ", v1034];
@@ -8834,30 +8834,30 @@ LABEL_1087:
           _os_log_debug_impl(&dword_1E0E2F000, v1036, OS_LOG_TYPE_DEBUG, "preferredLang nil!", v1677, 2u);
         }
 
-        v1031 = 0;
+        preferredLanguages2 = 0;
         *__error() = v1035;
       }
     }
   }
 
-  v1037 = [*v1488 countryCode];
+  countryCode = [*v1488 countryCode];
 
-  if (v1037)
+  if (countryCode)
   {
-    if (v1478)
+    if (printJson)
     {
       v1038 = *p_isa;
-      v1039 = [*v1488 countryCode];
-      SAJSONWriteDictionaryEntry(v1038, @"countryCode", v1039);
+      countryCode2 = [*v1488 countryCode];
+      SAJSONWriteDictionaryEntry(v1038, @"countryCode", countryCode2);
     }
 
     else
     {
-      v1040 = [*v1488 countryCode];
-      v1041 = v1040;
-      if (v1040)
+      countryCode3 = [*v1488 countryCode];
+      v1041 = countryCode3;
+      if (countryCode3)
       {
-        v1042 = [v1040 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F5BBF440];
+        v1042 = [countryCode3 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F5BBF440];
 
         v1043 = [v1042 stringByReplacingOccurrencesOfString:@"\t" withString:&stru_1F5BBF440];
 
@@ -8881,8 +8881,8 @@ LABEL_1087:
     }
   }
 
-  v1047 = [*v1488 keyboardLanguages];
-  v1048 = [v1047 count] == 0;
+  keyboardLanguages = [*v1488 keyboardLanguages];
+  v1048 = [keyboardLanguages count] == 0;
 
   if (v1048)
   {
@@ -8891,7 +8891,7 @@ LABEL_1087:
       goto LABEL_1187;
     }
 
-    if (v1478)
+    if (printJson)
     {
       goto LABEL_1172;
     }
@@ -8899,10 +8899,10 @@ LABEL_1087:
     goto LABEL_1182;
   }
 
-  if ((v1478 & 1) == 0)
+  if ((printJson & 1) == 0)
   {
-    v1053 = [*v1488 keyboardLanguages];
-    v1054 = [v1053 componentsJoinedByString:{@", "}];
+    keyboardLanguages2 = [*v1488 keyboardLanguages];
+    v1054 = [keyboardLanguages2 componentsJoinedByString:{@", "}];
 
     if (v1054)
     {
@@ -8950,8 +8950,8 @@ LABEL_1182:
   }
 
   v1049 = *p_isa;
-  v1050 = [*v1488 keyboardLanguages];
-  SAJSONWriteDictionaryEntry(v1049, @"keyboardLanguages", v1050);
+  keyboardLanguages3 = [*v1488 keyboardLanguages];
+  SAJSONWriteDictionaryEntry(v1049, @"keyboardLanguages", keyboardLanguages3);
 
   if (([*v1488 hasHardwareKeyboardInfo] & 1) == 0)
   {
@@ -8974,24 +8974,24 @@ LABEL_1172:
 LABEL_1187:
   if ([*v1488 isRootInstalled])
   {
-    if (v1478)
+    if (printJson)
     {
       SAJSONWriteDictionaryEntry(*p_isa, @"isRootInstalled", MEMORY[0x1E695E118]);
-      v1060 = [*v1488 installedRootNames];
-      v1061 = [v1060 count] == 0;
+      installedRootNames = [*v1488 installedRootNames];
+      v1061 = [installedRootNames count] == 0;
 
       if (!v1061)
       {
         v1062 = *p_isa;
-        v1063 = [*v1488 installedRootNames];
-        SAJSONWriteDictionaryEntry(v1062, @"installedRootNames", v1063);
+        installedRootNames2 = [*v1488 installedRootNames];
+        SAJSONWriteDictionaryEntry(v1062, @"installedRootNames", installedRootNames2);
       }
 
       goto LABEL_1191;
     }
 
-    v1066 = [*v1488 installedRootNames];
-    v1067 = [v1066 count] == 0;
+    installedRootNames3 = [*v1488 installedRootNames];
+    v1067 = [installedRootNames3 count] == 0;
 
     if (v1067 || ([*v1488 installedRootNames], v1068 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v1068, "componentsJoinedByString:", @", "), v1069 = objc_claimAutoreleasedReturnValue(), v1068, !v1069))
     {
@@ -9024,7 +9024,7 @@ LABEL_1203:
 LABEL_1204:
     if ([*v1488 gpuRestartCount])
     {
-      if (v1478)
+      if (printJson)
       {
         goto LABEL_1206;
       }
@@ -9032,19 +9032,19 @@ LABEL_1204:
       [*p_isa printWithFormat:@"%-*s%llu\n", 18, "GPU Restart Count: ", objc_msgSend(*v1488, "gpuRestartCount")];
       if ([*v1488 gpuRestartLastMachAbs] && objc_msgSend(*v1488, "machTimebase") && objc_msgSend(*v1488, "machTimebase") >> 32 && objc_msgSend(*(v1542 + 32), "machAbsTime"))
       {
-        v1077 = [*(v1542 + 168) gpuRestartLastMachAbs];
-        if (v1077 >= [*(v1542 + 32) machAbsTime])
+        gpuRestartLastMachAbs = [*(v1542 + 168) gpuRestartLastMachAbs];
+        if (gpuRestartLastMachAbs >= [*(v1542 + 32) machAbsTime])
         {
-          v1112 = [*(v1542 + 168) gpuRestartLastMachAbs];
-          v1113 = [*(v1542 + 32) machAbsTime];
-          v1114 = [*(v1542 + 168) machTimebase];
+          gpuRestartLastMachAbs2 = [*(v1542 + 168) gpuRestartLastMachAbs];
+          machAbsTime = [*(v1542 + 32) machAbsTime];
+          machTimebase = [*(v1542 + 168) machTimebase];
           v1115 = 0;
-          if (HIDWORD(v1114))
+          if (HIDWORD(machTimebase))
           {
-            if (v1114)
+            if (machTimebase)
             {
-              v1115 = v1112 - v1113;
-              if (v1114 != HIDWORD(v1114))
+              v1115 = gpuRestartLastMachAbs2 - machAbsTime;
+              if (machTimebase != HIDWORD(machTimebase))
               {
                 v1115 = __udivti3();
               }
@@ -9056,16 +9056,16 @@ LABEL_1204:
 
         else
         {
-          v1078 = [*(v1542 + 32) machAbsTime];
-          v1079 = [*(v1542 + 168) gpuRestartLastMachAbs];
-          v1080 = [*(v1542 + 168) machTimebase];
+          machAbsTime2 = [*(v1542 + 32) machAbsTime];
+          gpuRestartLastMachAbs3 = [*(v1542 + 168) gpuRestartLastMachAbs];
+          machTimebase2 = [*(v1542 + 168) machTimebase];
           v1081 = 0;
-          if (HIDWORD(v1080))
+          if (HIDWORD(machTimebase2))
           {
-            if (v1080)
+            if (machTimebase2)
             {
-              v1081 = v1078 - v1079;
-              if (v1080 != HIDWORD(v1080))
+              v1081 = machAbsTime2 - gpuRestartLastMachAbs3;
+              if (machTimebase2 != HIDWORD(machTimebase2))
               {
                 v1081 = __udivti3();
               }
@@ -9088,7 +9088,7 @@ LABEL_1191:
       goto LABEL_1204;
     }
 
-    if ((v1478 & 1) == 0)
+    if ((printJson & 1) == 0)
     {
       goto LABEL_1203;
     }
@@ -9116,7 +9116,7 @@ LABEL_1206:
   if ([*v1488 hasEnterprisePersona])
   {
     v1116 = *p_isa;
-    if (v1478)
+    if (printJson)
     {
       SAJSONWriteDictionaryEntry(v1116, @"hasEnterprisePersona", MEMORY[0x1E695E118]);
       goto LABEL_1262;
@@ -9125,7 +9125,7 @@ LABEL_1206:
     [v1116 printWithFormat:@"%-*sYes\n", 18, "Has Enterprise Persona: "];
   }
 
-  else if (v1478)
+  else if (printJson)
   {
     goto LABEL_1262;
   }
@@ -9144,7 +9144,7 @@ LABEL_1206:
   *&v1677[8] = v1677;
   *&v1677[16] = 0x2020000000;
   v1677[24] = 0;
-  v1118 = [*v1488 mountStatusTracker];
+  mountStatusTracker = [*v1488 mountStatusTracker];
   v1119 = *(v1542 + 32);
   v1120 = *(v1542 + 40);
   v1563[0] = MEMORY[0x1E69E9820];
@@ -9154,7 +9154,7 @@ LABEL_1206:
   v1564 = v1117;
   v1563[4] = v1542;
   v1563[5] = v1677;
-  [(SAMountStatusTracker *)v1118 enumerateUnresponsiveMountsBetweenStartTime:v1119 endTime:v1120 block:v1563];
+  [(SAMountStatusTracker *)mountStatusTracker enumerateUnresponsiveMountsBetweenStartTime:v1119 endTime:v1120 block:v1563];
 
   if (*(*&v1677[8] + 24) == 1)
   {
@@ -9162,7 +9162,7 @@ LABEL_1206:
   }
 
   _Block_object_dispose(v1677, 8);
-  v1121 = v1478;
+  v1121 = printJson;
   if (!*(v1542 + 176))
   {
     v1121 = 1;
@@ -9176,10 +9176,10 @@ LABEL_1206:
 LABEL_1262:
   if ([*(v1542 + 16) printSpinSignatureStack] && -[SASamplePrinter hasTargetProcess](v1542))
   {
-    v1508 = [*v1488 targetProcesses];
-    if (v1508)
+    targetProcesses3 = [*v1488 targetProcesses];
+    if (targetProcesses3)
     {
-      v1122 = 0;
+      isMainThread = 0;
       obji = 0;
       goto LABEL_1266;
     }
@@ -9204,13 +9204,13 @@ LABEL_1290:
       {
         if ([*v1137 targetThreadId])
         {
-          v1150 = [obji threads];
+          threads3 = [obji threads];
           v1151 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(*v1488, "targetThreadId")}];
-          v1502 = [v1150 objectForKeyedSubscript:v1151];
+          mainThread = [threads3 objectForKeyedSubscript:v1151];
 
-          if (v1502)
+          if (mainThread)
           {
-            v1122 = [v1502 isMainThread];
+            isMainThread = [mainThread isMainThread];
             v1124 = 1;
           }
 
@@ -9220,15 +9220,15 @@ LABEL_1290:
             v1202 = _sa_logt();
             if (os_log_type_enabled(v1202, OS_LOG_TYPE_DEFAULT))
             {
-              v1203 = [*v1488 targetThreadId];
+              targetThreadId = [*v1488 targetThreadId];
               *v1677 = 134217984;
-              *&v1677[4] = v1203;
+              *&v1677[4] = targetThreadId;
               _os_log_impl(&dword_1E0E2F000, v1202, OS_LOG_TYPE_DEFAULT, "WARNING: Target thread 0x%llx not found", v1677, 0xCu);
             }
 
             v1124 = 0;
-            v1122 = 0;
-            v1502 = 0;
+            isMainThread = 0;
+            mainThread = 0;
             *__error() = v1201;
           }
         }
@@ -9236,15 +9236,15 @@ LABEL_1290:
         else
         {
           v1124 = 0;
-          v1122 = 0;
-          v1502 = 0;
+          isMainThread = 0;
+          mainThread = 0;
         }
 
         if ([*v1488 targetDispatchQueueId])
         {
-          v1204 = [obji dispatchQueues];
+          dispatchQueues2 = [obji dispatchQueues];
           v1205 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(*v1488, "targetDispatchQueueId")}];
-          v1206 = [v1204 objectForKeyedSubscript:v1205];
+          v1206 = [dispatchQueues2 objectForKeyedSubscript:v1205];
 
           if (v1206)
           {
@@ -9256,16 +9256,16 @@ LABEL_1290:
           v1208 = _sa_logt();
           if (os_log_type_enabled(v1208, OS_LOG_TYPE_DEFAULT))
           {
-            v1209 = [*v1488 targetDispatchQueueId];
+            targetDispatchQueueId = [*v1488 targetDispatchQueueId];
             *v1677 = 134217984;
-            *&v1677[4] = v1209;
+            *&v1677[4] = targetDispatchQueueId;
             _os_log_impl(&dword_1E0E2F000, v1208, OS_LOG_TYPE_DEFAULT, "WARNING: Target dispatch queue %llu not found", v1677, 0xCu);
           }
 
           *__error() = v1207;
         }
 
-        if (!v1502)
+        if (!mainThread)
         {
           v1210 = *(v1542 + 16);
           if (v1210)
@@ -9274,19 +9274,19 @@ LABEL_1290:
             if (v1211 == 3 || !v1211 && (*(v1210 + 11) & 1) != 0)
             {
 LABEL_1266:
-              v1502 = 0;
+              mainThread = 0;
               goto LABEL_1267;
             }
           }
 
           if (![*v1488 targetThreadId])
           {
-            v1502 = [obji mainThread];
-            if (v1502)
+            mainThread = [obji mainThread];
+            if (mainThread)
             {
               v1123 = 0;
               v1124 = 1;
-              v1122 = 1;
+              isMainThread = 1;
             }
 
             else
@@ -9302,7 +9302,7 @@ LABEL_1266:
               }
 
               v1354 = __error();
-              v1502 = 0;
+              mainThread = 0;
               v1123 = 0;
               *v1354 = v1351;
             }
@@ -9310,7 +9310,7 @@ LABEL_1266:
             goto LABEL_1269;
           }
 
-          v1502 = 0;
+          mainThread = 0;
         }
 
         v1123 = 0;
@@ -9320,14 +9320,14 @@ LABEL_1266:
       v1149 = *(v1135 + 144);
       if (v1149)
       {
-        v1502 = v1149;
-        v1122 = [v1149 isMainThread];
+        mainThread = v1149;
+        isMainThread = [v1149 isMainThread];
 LABEL_1267:
         v1123 = 0;
 LABEL_1268:
         v1124 = 1;
 LABEL_1269:
-        if (((v1478 | v1124 ^ 1) & 1) == 0)
+        if (((printJson | v1124 ^ 1) & 1) == 0)
         {
           v1493 = v1123;
           [*p_isa appendString:@"\n"];
@@ -9338,10 +9338,10 @@ LABEL_1269:
           *&v1677[24] = __Block_byref_object_copy__4;
           v1678 = __Block_byref_object_dispose__4;
           v1679 = 0;
-          if (v1508)
+          if (targetProcesses3)
           {
-            v1125 = [v1508 firstObject];
-            v1126 = [(SASamplePrinter *)v1542 binaryImagesHitByTask:v1125];
+            firstObject = [targetProcesses3 firstObject];
+            v1126 = [(SASamplePrinter *)v1542 binaryImagesHitByTask:firstObject];
             v1127 = *(*&v1677[8] + 40);
             *(*&v1677[8] + 40) = v1126;
 
@@ -9349,7 +9349,7 @@ LABEL_1269:
             v1561 = 0u;
             v1560 = 0u;
             v1559 = 0u;
-            v1515 = v1508;
+            v1515 = targetProcesses3;
             v1128 = [v1515 countByEnumeratingWithState:&v1559 objects:v1651 count:16];
             if (v1128)
             {
@@ -9366,7 +9366,7 @@ LABEL_1269:
 
                   v1132 = *(*(&v1559 + 1) + 8 * i4);
                   v1133 = [v1132 pid] == 0;
-                  v1134 = [v1132 threads];
+                  threads4 = [v1132 threads];
                   v1554[0] = MEMORY[0x1E69E9820];
                   v1554[1] = 3221225472;
                   v1554[2] = __30__SASamplePrinter_printHeader__block_invoke_1379;
@@ -9376,7 +9376,7 @@ LABEL_1269:
                   v1556 = v1527;
                   v1557 = v1132;
                   v1558 = v1677;
-                  [v1134 enumerateKeysAndObjectsUsingBlock:v1554];
+                  [threads4 enumerateKeysAndObjectsUsingBlock:v1554];
 
                   v1130 &= v1133;
                 }
@@ -9413,10 +9413,10 @@ LABEL_1386:
             v1140 = *p_isa;
             if (v1493)
             {
-              if (v1502)
+              if (mainThread)
               {
                 v1141 = [SASamplePrinter displayNameForDispatchQueue:v1493];
-                [v1140 printWithFormat:@"Heaviest stack for dispatch queue %@ thread 0x%llx:\n", v1141, objc_msgSend(v1502, "threadId")];
+                [v1140 printWithFormat:@"Heaviest stack for dispatch queue %@ thread 0x%llx:\n", v1141, objc_msgSend(mainThread, "threadId")];
 
                 v1142 = objc_alloc_init(MEMORY[0x1E695DF70]);
                 *buf = 0;
@@ -9435,7 +9435,7 @@ LABEL_1386:
                 v1147 = v1142;
                 v1552 = v1147;
                 v1553 = buf;
-                [v1502 enumerateThreadStatesBetweenStartTime:v1143 startSampleIndex:v1146 endTime:v1144 endSampleIndex:v1145 reverseOrder:0 block:v1550];
+                [mainThread enumerateThreadStatesBetweenStartTime:v1143 startSampleIndex:v1146 endTime:v1144 endSampleIndex:v1145 reverseOrder:0 block:v1550];
                 if ([v1147 count])
                 {
                   if (*(*&buf[8] + 24))
@@ -9448,7 +9448,7 @@ LABEL_1386:
                     v1148 = v1147;
                   }
 
-                  [(SASamplePrinter *)v1542 addStackForDispatchQueue:0 orSwiftTaskStates:v1502 orThread:v1148 andThreadStateIndexes:obji task:v1527 toRootObjects:0 nameChanges:0 dispatchQueueChanges:0 swiftTaskChanges:0 threadChanges:0 priorityChanges:0 microstackshotSummary:1u onlyHeaviestStack:0 includeState:?];
+                  [(SASamplePrinter *)v1542 addStackForDispatchQueue:0 orSwiftTaskStates:mainThread orThread:v1148 andThreadStateIndexes:obji task:v1527 toRootObjects:0 nameChanges:0 dispatchQueueChanges:0 swiftTaskChanges:0 threadChanges:0 priorityChanges:0 microstackshotSummary:1u onlyHeaviestStack:0 includeState:?];
                 }
 
                 _Block_object_dispose(buf, 8);
@@ -9465,10 +9465,10 @@ LABEL_1386:
             else
             {
               v1152 = v1542;
-              if (!v1502)
+              if (!mainThread)
               {
                 [v1140 appendString:@"Heaviest stack for the target process:\n"];
-                v1212 = [obji threads];
+                threads5 = [obji threads];
                 v1547[0] = MEMORY[0x1E69E9820];
                 v1547[1] = 3221225472;
                 v1547[2] = __30__SASamplePrinter_printHeader__block_invoke_2_1399;
@@ -9476,22 +9476,22 @@ LABEL_1386:
                 v1547[4] = v1542;
                 v1548 = obji;
                 v1549 = v1527;
-                [v1212 enumerateKeysAndObjectsUsingBlock:v1547];
+                [threads5 enumerateKeysAndObjectsUsingBlock:v1547];
 
                 goto LABEL_1386;
               }
 
-              if (v1122)
+              if (isMainThread)
               {
                 [*p_isa appendString:@"Heaviest stack for the main thread of the target process:\n"];
               }
 
               else
               {
-                [v1140 printWithFormat:@"Heaviest stack for thread 0x%llx:\n", objc_msgSend(v1502, "threadId")];
+                [v1140 printWithFormat:@"Heaviest stack for thread 0x%llx:\n", objc_msgSend(mainThread, "threadId")];
               }
 
-              [(SASamplePrinter *)v1542 addStackForDispatchQueue:0 orSwiftTaskStates:v1502 orThread:0 andThreadStateIndexes:obji task:v1527 toRootObjects:0 nameChanges:0 dispatchQueueChanges:0 swiftTaskChanges:0 threadChanges:0 priorityChanges:0 microstackshotSummary:1u onlyHeaviestStack:0 includeState:?];
+              [(SASamplePrinter *)v1542 addStackForDispatchQueue:0 orSwiftTaskStates:mainThread orThread:0 andThreadStateIndexes:obji task:v1527 toRootObjects:0 nameChanges:0 dispatchQueueChanges:0 swiftTaskChanges:0 threadChanges:0 priorityChanges:0 microstackshotSummary:1u onlyHeaviestStack:0 includeState:?];
             }
           }
 
@@ -9541,15 +9541,15 @@ LABEL_1387:
 LABEL_1399:
 
               v1218 = *p_isa;
-              v1219 = [v1214 sampleCount];
-              [(SASamplePrinter *)v1542 addStack:v1213 toStream:v1218 sampleCount:v1219 binariesToDisplay:*(*&v1677[8] + 40) primaryState:0 primaryMicrostackshotState:0 onlyHeaviestStack:1 isKernel:v1130];
+              sampleCount = [v1214 sampleCount];
+              [(SASamplePrinter *)v1542 addStack:v1213 toStream:v1218 sampleCount:sampleCount binariesToDisplay:*(*&v1677[8] + 40) primaryState:0 primaryMicrostackshotState:0 onlyHeaviestStack:1 isKernel:v1130];
 
               v1220 = v1542;
             }
 
             else
             {
-              if (v1508)
+              if (targetProcesses3)
               {
                 v1221 = *__error();
                 v1222 = _sa_logt();
@@ -9571,13 +9571,13 @@ LABEL_1399:
                 {
                   v1348 = [(SASamplePrinter *)v1542 displayNameForTask:?];
                   v1349 = [SASamplePrinter displayNameForDispatchQueue:v1493];
-                  v1350 = [v1502 threadId];
+                  threadId = [mainThread threadId];
                   *buf = 138412802;
                   *&buf[4] = v1348;
                   *&buf[12] = 2112;
                   *&buf[14] = v1349;
                   *&buf[22] = 2048;
-                  *&buf[24] = v1350;
+                  *&buf[24] = threadId;
                   _os_log_error_impl(&dword_1E0E2F000, v1224, OS_LOG_TYPE_ERROR, "No heaviest callstack for %@, dispatch queue %@, thread 0x%llx", buf, 0x20u);
                 }
 
@@ -9604,19 +9604,19 @@ LABEL_1399:
       else
       {
         v1123 = 0;
-        v1502 = 0;
+        mainThread = 0;
       }
     }
 
     else
     {
       v1123 = 0;
-      v1502 = 0;
+      mainThread = 0;
       obji = 0;
     }
   }
 
-  if (v1478)
+  if (printJson)
   {
     goto LABEL_1527;
   }
@@ -9628,11 +9628,11 @@ LABEL_1399:
 
   if (([*(v1542 + 16) hidEventDisplayOptions] & 2) == 0)
   {
-    v1225 = [*v1488 targetProcess];
-    v1226 = v1225;
-    if (v1225)
+    targetProcess6 = [*v1488 targetProcess];
+    v1226 = targetProcess6;
+    if (targetProcess6)
     {
-      v1503 = [v1225 pid];
+      v1503 = [targetProcess6 pid];
 
       goto LABEL_1419;
     }
@@ -9644,8 +9644,8 @@ LABEL_1417:
 
   v1503 = -1;
 LABEL_1419:
-  v1228 = [*v1488 hidEvents];
-  objk = [v1228 mutableCopy];
+  hidEvents = [*v1488 hidEvents];
+  objk = [hidEvents mutableCopy];
 
   v1230 = *v1488;
   if (*v1488)
@@ -9677,14 +9677,14 @@ LABEL_1419:
     {
       if (v1236)
       {
-        v1239 = [v1236 steps];
-        v1240 = [v1239 lastObject];
+        steps2 = [v1236 steps];
+        lastObject3 = [steps2 lastObject];
 
-        if (v1240)
+        if (lastObject3)
         {
-          v1241 = [v1238 hidEventTimestamp];
-          v1242 = [v1240 timestamp];
-          v1243 = [v1240 pid];
+          hidEventTimestamp2 = [v1238 hidEventTimestamp];
+          timestamp8 = [lastObject3 timestamp];
+          v1243 = [lastObject3 pid];
 
           v1244 = 0;
           v1528 = v1238;
@@ -9717,7 +9717,7 @@ LABEL_1519:
     }
 
     v1247 = v1245;
-    v1241 = [v1247 startTime];
+    hidEventTimestamp2 = [v1247 startTime];
 
     if (v1246)
     {
@@ -9730,7 +9730,7 @@ LABEL_1519:
     }
 
     v1250 = v1249;
-    v1242 = [v1250 endTime];
+    timestamp8 = [v1250 endTime];
 
     v1528 = 0;
     if (v1246)
@@ -9744,10 +9744,10 @@ LABEL_1519:
     }
 
 LABEL_1433:
-    v1251 = [*v1488 eventTimeRange];
-    v1252 = [v1251 startTime];
-    v1253 = v1252;
-    if (!v1252)
+    eventTimeRange16 = [*v1488 eventTimeRange];
+    startTime13 = [eventTimeRange16 startTime];
+    v1253 = startTime13;
+    if (!startTime13)
     {
       v1253 = *(v1542 + 32);
     }
@@ -9755,9 +9755,9 @@ LABEL_1433:
     v1254 = v1253;
 
     [v1254 machAbsTimeSeconds];
-    if (v1255 == 0.0 || ([v1242 machAbsTimeSeconds], v1256 == 0.0))
+    if (v1255 == 0.0 || ([timestamp8 machAbsTimeSeconds], v1256 == 0.0))
     {
-      if (![v1254 isComparable:v1242] || (objc_msgSend(v1254, "gt:", v1242) & 1) != 0)
+      if (![v1254 isComparable:timestamp8] || (objc_msgSend(v1254, "gt:", timestamp8) & 1) != 0)
       {
 LABEL_1441:
 
@@ -9769,24 +9769,24 @@ LABEL_1441:
     {
       [v1254 machAbsTimeSeconds];
       v1258 = v1257;
-      [v1242 machAbsTimeSeconds];
+      [timestamp8 machAbsTimeSeconds];
       if (v1258 > v1259 + 0.25)
       {
         goto LABEL_1441;
       }
     }
 
-    v1260 = [*v1488 eventTimeRange];
-    v1261 = [v1260 endTime];
-    v1262 = v1261;
-    if (!v1261)
+    eventTimeRange17 = [*v1488 eventTimeRange];
+    endTime12 = [eventTimeRange17 endTime];
+    v1262 = endTime12;
+    if (!endTime12)
     {
       v1262 = *(v1542 + 40);
     }
 
     v1517 = v1262;
 
-    if ([v1517 isComparable:v1241] && (objc_msgSend(v1517, "lt:", v1241) & 1) != 0)
+    if ([v1517 isComparable:hidEventTimestamp2] && (objc_msgSend(v1517, "lt:", hidEventTimestamp2) & 1) != 0)
     {
       v1264 = 2;
       goto LABEL_1513;
@@ -9873,8 +9873,8 @@ LABEL_1489:
         if (v1291 != -1)
         {
           v1292 = objc_getProperty(v1244, v1289, 32, 1);
-          v1293 = [v1292 startTime];
-          v1294 = [(SASamplePrinter *)v1542 displayNameForPid:v1291 threadId:0 timestamp:v1293];
+          startTime14 = [v1292 startTime];
+          v1294 = [(SASamplePrinter *)v1542 displayNameForPid:v1291 threadId:0 timestamp:startTime14];
           [v1510 appendFormat:@" to %@", v1294];
         }
       }
@@ -9887,25 +9887,25 @@ LABEL_1489:
       goto LABEL_1512;
     }
 
-    v1270 = [v1528 steps];
-    v1482 = [v1270 lastObject];
+    steps3 = [v1528 steps];
+    lastObject4 = [steps3 lastObject];
 
     v1477 = v1528 == *(v1542 + 120);
     [v1528 thresholdToGroupSameEventType];
     v1272 = v1271;
-    if (v1271 <= 0.0 || !v1482)
+    if (v1271 <= 0.0 || !lastObject4)
     {
       v1473 = 0;
       goto LABEL_1502;
     }
 
-    if ([v1482 pid] == -1 || (objc_msgSend(v1242, "machAbsTimeSeconds"), v1273 == 0.0))
+    if ([lastObject4 pid] == -1 || (objc_msgSend(timestamp8, "machAbsTimeSeconds"), v1273 == 0.0))
     {
       v1473 = 0;
       goto LABEL_1502;
     }
 
-    v1469 = v1242;
+    v1469 = timestamp8;
     v1274 = v1233 + 1;
     if (v1233 + 1 >= [objk count])
     {
@@ -9925,8 +9925,8 @@ LABEL_1489:
         goto LABEL_1486;
       }
 
-      v1487 = [v1275 hidEventTimestamp];
-      [v1487 machAbsTimeSeconds];
+      hidEventTimestamp3 = [v1275 hidEventTimestamp];
+      [hidEventTimestamp3 machAbsTimeSeconds];
       if (v1276 == 0.0)
       {
         v1495 = v1274;
@@ -9935,25 +9935,25 @@ LABEL_1489:
 
       [v1469 machAbsTimeSeconds];
       v1278 = v1277;
-      [v1487 machAbsTimeSeconds];
+      [hidEventTimestamp3 machAbsTimeSeconds];
       if (v1272 + v1278 >= v1279)
       {
-        v1280 = [v1275 steps];
-        v1281 = [v1280 lastObject];
+        steps4 = [v1275 steps];
+        lastObject5 = [steps4 lastObject];
 
-        v1282 = v1281;
-        if (v1281)
+        v1282 = lastObject5;
+        if (lastObject5)
         {
-          v1283 = [v1281 pid];
-          if (v1283 == [v1482 pid])
+          v1283 = [lastObject5 pid];
+          if (v1283 == [lastObject4 pid])
           {
             v1429 = v1275 == *(v1542 + 120);
-            v1284 = [v1281 timestamp];
+            timestamp9 = [lastObject5 timestamp];
 
             [objk removeObjectAtIndex:v1274];
             ++v1473;
             v1477 |= v1429;
-            v1469 = v1284;
+            v1469 = timestamp9;
           }
 
           else
@@ -9961,7 +9961,7 @@ LABEL_1489:
             v1495 = v1274;
           }
 
-          v1282 = v1281;
+          v1282 = lastObject5;
         }
 
         else
@@ -9988,7 +9988,7 @@ LABEL_1486:
     v1301 = _sa_logt();
     if (os_log_type_enabled(v1301, OS_LOG_TYPE_DEBUG))
     {
-      [v1487 machAbsTimeSeconds];
+      [hidEventTimestamp3 machAbsTimeSeconds];
       v1303 = v1302;
       [v1469 machAbsTimeSeconds];
       LODWORD(v1673) = 134217984;
@@ -10000,8 +10000,8 @@ LABEL_1486:
 LABEL_1501:
 
 LABEL_1502:
-    v1295 = [v1528 hidEventTypeString];
-    [v1510 appendString:v1295];
+    hidEventTypeString = [v1528 hidEventTypeString];
+    [v1510 appendString:hidEventTypeString];
 
     if (v1477)
     {
@@ -10015,11 +10015,11 @@ LABEL_1502:
 
     if (v1503 == -1)
     {
-      v1296 = v1482;
-      if (v1482)
+      v1296 = lastObject4;
+      if (lastObject4)
       {
-        v1297 = [v1482 pid];
-        v1296 = v1482;
+        v1297 = [lastObject4 pid];
+        v1296 = lastObject4;
       }
 
       else
@@ -10027,8 +10027,8 @@ LABEL_1502:
         v1297 = 0xFFFFFFFFLL;
       }
 
-      v1298 = [v1296 timestamp];
-      v1299 = [(SASamplePrinter *)v1542 displayNameForPid:v1297 threadId:0 timestamp:v1298];
+      timestamp10 = [v1296 timestamp];
+      v1299 = [(SASamplePrinter *)v1542 displayNameForPid:v1297 threadId:0 timestamp:timestamp10];
       [v1510 appendFormat:@" to %@", v1299];
     }
 
@@ -10067,7 +10067,7 @@ LABEL_1527:
   {
     if (([*(v1542 + 16) hidEventDisplayOptions] & 4) != 0)
     {
-      v1306 = v1478;
+      v1306 = printJson;
     }
 
     else
@@ -10087,28 +10087,28 @@ LABEL_1527:
 
 - (id)eventStartTimeWithWallTime
 {
-  v2 = [*(a1 + 168) eventTimeRange];
-  v3 = [v2 startTime];
+  eventTimeRange = [*(self + 168) eventTimeRange];
+  startTime = [eventTimeRange startTime];
 
-  if (v3)
+  if (startTime)
   {
-    [v3 wallTime];
+    [startTime wallTime];
     if (v4 != 0.0)
     {
       goto LABEL_6;
     }
   }
 
-  v5 = *(a1 + 32);
+  v5 = *(self + 32);
 
   if (v5)
   {
     [v5 wallTime];
     if (v6 != 0.0)
     {
-      v3 = v5;
+      startTime = v5;
 LABEL_6:
-      v7 = v3;
+      v7 = startTime;
       v5 = v7;
       goto LABEL_8;
     }
@@ -10122,28 +10122,28 @@ LABEL_8:
 
 - (id)eventEndTimeWithWallTime
 {
-  v2 = [*(a1 + 168) eventTimeRange];
-  v3 = [v2 endTime];
+  eventTimeRange = [*(self + 168) eventTimeRange];
+  endTime = [eventTimeRange endTime];
 
-  if (v3)
+  if (endTime)
   {
-    [v3 wallTime];
+    [endTime wallTime];
     if (v4 != 0.0)
     {
       goto LABEL_6;
     }
   }
 
-  v5 = *(a1 + 40);
+  v5 = *(self + 40);
 
   if (v5)
   {
     [v5 wallTime];
     if (v6 != 0.0)
     {
-      v3 = v5;
+      endTime = v5;
 LABEL_6:
-      v7 = v3;
+      v7 = endTime;
       v5 = v7;
       goto LABEL_8;
     }
@@ -10157,13 +10157,13 @@ LABEL_8:
 
 - (uint64_t)hasTargetProcess
 {
-  if (*(a1 + 136) || ([*(a1 + 168) targetProcessId] & 0x80000000) == 0)
+  if (*(self + 136) || ([*(self + 168) targetProcessId] & 0x80000000) == 0)
   {
     return 1;
   }
 
-  v4 = [*(a1 + 168) targetProcesses];
-  v2 = [v4 count] != 0;
+  targetProcesses = [*(self + 168) targetProcesses];
+  v2 = [targetProcesses count] != 0;
 
   return v2;
 }
@@ -10530,23 +10530,23 @@ LABEL_11:
   return v5;
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
-  if (a3)
+  if (options)
   {
-    v4 = a3;
+    optionsCopy = options;
   }
 
   else
   {
-    v4 = objc_alloc_init(SASamplePrintOptions);
+    optionsCopy = objc_alloc_init(SASamplePrintOptions);
   }
 
   options = self->_options;
-  self->_options = v4;
+  self->_options = optionsCopy;
 }
 
-- (SASamplePrinter)initWithSampleStore:(id)a3
+- (SASamplePrinter)initWithSampleStore:(id)store
 {
   v19.receiver = self;
   v19.super_class = SASamplePrinter;
@@ -10557,29 +10557,29 @@ LABEL_11:
     options = v4->_options;
     v4->_options = v5;
 
-    objc_storeStrong(&v4->_sampleStore, a3);
+    objc_storeStrong(&v4->_sampleStore, store);
     v7 = objc_alloc(MEMORY[0x1E695DF90]);
-    v8 = [a3 tasksByPid];
-    v9 = [v7 initWithCapacity:{objc_msgSend(v8, "count")}];
+    tasksByPid = [store tasksByPid];
+    v9 = [v7 initWithCapacity:{objc_msgSend(tasksByPid, "count")}];
     binaryImagesHit = v4->_binaryImagesHit;
     v4->_binaryImagesHit = v9;
 
-    v11 = [(SASampleStore *)v4->_sampleStore startTime];
+    startTime = [(SASampleStore *)v4->_sampleStore startTime];
     reportStartTime = v4->_reportStartTime;
-    v4->_reportStartTime = v11;
+    v4->_reportStartTime = startTime;
 
-    v13 = [(SASampleStore *)v4->_sampleStore endTime];
+    endTime = [(SASampleStore *)v4->_sampleStore endTime];
     reportEndTime = v4->_reportEndTime;
-    v4->_reportEndTime = v13;
+    v4->_reportEndTime = endTime;
 
-    v15 = [a3 sampleTimestamps];
-    v4->_hasTimeIndexes = [v15 count] != 0;
+    sampleTimestamps = [store sampleTimestamps];
+    v4->_hasTimeIndexes = [sampleTimestamps count] != 0;
 
     if (v4->_hasTimeIndexes)
     {
       v4->_reportStartSampleIndex = 0;
-      v16 = [(SASampleStore *)v4->_sampleStore sampleTimestamps];
-      v4->_reportEndSampleIndex = [v16 count] - 1;
+      sampleTimestamps2 = [(SASampleStore *)v4->_sampleStore sampleTimestamps];
+      v4->_reportEndSampleIndex = [sampleTimestamps2 count] - 1;
     }
 
     else
@@ -10595,36 +10595,36 @@ LABEL_11:
   return v4;
 }
 
-- (double)timeSpentAsleepBetweenStartTimestamp:(void *)a3 endTimestamp:
+- (double)timeSpentAsleepBetweenStartTimestamp:(void *)timestamp endTimestamp:
 {
   v3 = 0.0;
-  if (a1)
+  if (self)
   {
-    [a3 machContTimeSeconds];
+    [timestamp machContTimeSeconds];
     if (v6 > 0.0)
     {
       [a2 machContTimeSeconds];
       if (v7 > 0.0)
       {
-        [a3 machContTimeSeconds];
+        [timestamp machContTimeSeconds];
         v9 = v8;
         [a2 machContTimeSeconds];
         goto LABEL_8;
       }
     }
 
-    [a3 wallTime];
+    [timestamp wallTime];
     if (v11 > 0.0)
     {
       [a2 wallTime];
       if (v12 > 0.0)
       {
-        [a3 wallTime];
+        [timestamp wallTime];
         v9 = v13;
         [a2 wallTime];
 LABEL_8:
         v14 = v9 - v10;
-        [a3 machAbsTimeSeconds];
+        [timestamp machAbsTimeSeconds];
         v16 = v15;
         [a2 machAbsTimeSeconds];
         v18 = v14 - (v16 - v17);
@@ -10644,24 +10644,24 @@ LABEL_8:
   return v3;
 }
 
-- (__CFString)rawNameForTask:(__CFString *)a1
+- (__CFString)rawNameForTask:(__CFString *)task
 {
-  if (a1)
+  if (task)
   {
     if ([a2 pid])
     {
-      a1 = [a2 name];
+      task = [a2 name];
     }
 
     else
     {
-      a1 = @"kernel_task";
+      task = @"kernel_task";
     }
 
     v2 = vars8;
   }
 
-  return a1;
+  return task;
 }
 
 void __32__SASamplePrinter_updateIndexes__block_invoke(uint64_t a1, void *a2)
@@ -10787,28 +10787,28 @@ LABEL_15:
   }
 }
 
-- (void)filterToTimestampRangeStart:(id)a3 end:(id)a4
+- (void)filterToTimestampRangeStart:(id)start end:(id)end
 {
   self->_hasFilterApplied = 1;
-  objc_storeStrong(&self->_reportStartTime, a3);
-  objc_storeStrong(&self->_reportEndTime, a4);
+  objc_storeStrong(&self->_reportStartTime, start);
+  objc_storeStrong(&self->_reportEndTime, end);
 
   [(SASamplePrinter *)self updateIndexes];
 }
 
-- (void)filterToMachAbsTimeRangeStart:(unint64_t)a3 end:(unint64_t)a4
+- (void)filterToMachAbsTimeRangeStart:(unint64_t)start end:(unint64_t)end
 {
   self->_hasFilterApplied = 1;
-  if (a3)
+  if (start)
   {
-    v6 = [SATimestamp timestampWithMachAbsTime:a3 machContTime:0 wallTime:[(SASampleStore *)self->_sampleStore machTimebase] machTimebase:0.0];
+    v6 = [SATimestamp timestampWithMachAbsTime:start machContTime:0 wallTime:[(SASampleStore *)self->_sampleStore machTimebase] machTimebase:0.0];
     reportStartTime = self->_reportStartTime;
     self->_reportStartTime = v6;
   }
 
-  if (a4)
+  if (end)
   {
-    v8 = [SATimestamp timestampWithMachAbsTime:a4 machContTime:0 wallTime:[(SASampleStore *)self->_sampleStore machTimebase] machTimebase:0.0];
+    v8 = [SATimestamp timestampWithMachAbsTime:end machContTime:0 wallTime:[(SASampleStore *)self->_sampleStore machTimebase] machTimebase:0.0];
     reportEndTime = self->_reportEndTime;
     self->_reportEndTime = v8;
   }
@@ -10816,19 +10816,19 @@ LABEL_15:
   [(SASamplePrinter *)self updateIndexes];
 }
 
-- (void)filterToWallTimeRangeStart:(double)a3 end:(double)a4
+- (void)filterToWallTimeRangeStart:(double)start end:(double)end
 {
   self->_hasFilterApplied = 1;
-  if (a3 != 0.0)
+  if (start != 0.0)
   {
-    v6 = [SATimestamp timestampWithMachAbsTime:0 machContTime:0 wallTime:[(SASampleStore *)self->_sampleStore machTimebase] machTimebase:a3];
+    v6 = [SATimestamp timestampWithMachAbsTime:0 machContTime:0 wallTime:[(SASampleStore *)self->_sampleStore machTimebase] machTimebase:start];
     reportStartTime = self->_reportStartTime;
     self->_reportStartTime = v6;
   }
 
-  if (a4 != 0.0)
+  if (end != 0.0)
   {
-    v8 = [SATimestamp timestampWithMachAbsTime:0 machContTime:0 wallTime:[(SASampleStore *)self->_sampleStore machTimebase] machTimebase:a4];
+    v8 = [SATimestamp timestampWithMachAbsTime:0 machContTime:0 wallTime:[(SASampleStore *)self->_sampleStore machTimebase] machTimebase:end];
     reportEndTime = self->_reportEndTime;
     self->_reportEndTime = v8;
   }
@@ -10836,19 +10836,19 @@ LABEL_15:
   [(SASamplePrinter *)self updateIndexes];
 }
 
-- (void)filterToDisplayTimeIndexStart:(unint64_t)a3 end:(unint64_t)a4
+- (void)filterToDisplayTimeIndexStart:(unint64_t)start end:(unint64_t)end
 {
   v38 = *MEMORY[0x1E69E9840];
-  if (a4 && a4 < a3)
+  if (end && end < start)
   {
     v7 = *__error();
     v8 = _sa_logt();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v33 = a3;
+      startCopy2 = start;
       v34 = 2048;
-      v35 = a4;
+      endCopy3 = end;
       _os_log_error_impl(&dword_1E0E2F000, v8, OS_LOG_TYPE_ERROR, "Passed invalid sample index range %lu-%lu", buf, 0x16u);
     }
 
@@ -10871,9 +10871,9 @@ LABEL_15:
   }
 
   self->_hasFilterApplied = 1;
-  if (a3)
+  if (start)
   {
-    v9 = a3 - 1;
+    v9 = start - 1;
   }
 
   else
@@ -10881,16 +10881,16 @@ LABEL_15:
     v9 = 0;
   }
 
-  v10 = a4;
-  if (!a4)
+  endCopy2 = end;
+  if (!end)
   {
-    v11 = [(SASampleStore *)self->_sampleStore sampleTimestamps];
-    v10 = [v11 count];
+    sampleTimestamps = [(SASampleStore *)self->_sampleStore sampleTimestamps];
+    endCopy2 = [sampleTimestamps count];
   }
 
-  v12 = v10 - 1;
-  v13 = [(SASampleStore *)self->_sampleStore sampleTimestamps];
-  v14 = [v13 count];
+  v12 = endCopy2 - 1;
+  sampleTimestamps2 = [(SASampleStore *)self->_sampleStore sampleTimestamps];
+  v14 = [sampleTimestamps2 count];
 
   if (v12 >= v14)
   {
@@ -10898,13 +10898,13 @@ LABEL_15:
     v26 = _sa_logt();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      v30 = [(SASampleStore *)self->_sampleStore sampleTimestamps];
+      sampleTimestamps3 = [(SASampleStore *)self->_sampleStore sampleTimestamps];
       *buf = 134218496;
-      v33 = a3;
+      startCopy2 = start;
       v34 = 2048;
-      v35 = a4;
+      endCopy3 = end;
       v36 = 2048;
-      v37 = [v30 count];
+      v37 = [sampleTimestamps3 count];
       _os_log_error_impl(&dword_1E0E2F000, v26, OS_LOG_TYPE_ERROR, "Requested sample index range %lu-%lu outside valid range 1-%lu", buf, 0x20u);
     }
 
@@ -10913,14 +10913,14 @@ LABEL_15:
   }
 
   self->_reportStartSampleIndex = v9;
-  v15 = [(SASampleStore *)self->_sampleStore sampleTimestamps];
-  v16 = [v15 objectAtIndexedSubscript:v9];
+  sampleTimestamps4 = [(SASampleStore *)self->_sampleStore sampleTimestamps];
+  v16 = [sampleTimestamps4 objectAtIndexedSubscript:v9];
   reportStartTime = self->_reportStartTime;
   self->_reportStartTime = v16;
 
   self->_reportEndSampleIndex = v12;
-  v18 = [(SASampleStore *)self->_sampleStore sampleTimestamps];
-  v19 = [v18 objectAtIndexedSubscript:v12];
+  sampleTimestamps5 = [(SASampleStore *)self->_sampleStore sampleTimestamps];
+  v19 = [sampleTimestamps5 objectAtIndexedSubscript:v12];
   reportEndTime = self->_reportEndTime;
   self->_reportEndTime = v19;
 
@@ -10930,10 +10930,10 @@ LABEL_15:
     goto LABEL_24;
   }
 
-  v21 = [(SASampleStore *)self->_sampleStore targetMainBinaryUUID];
+  targetMainBinaryUUID = [(SASampleStore *)self->_sampleStore targetMainBinaryUUID];
 
   sampleStore = self->_sampleStore;
-  if (!v21)
+  if (!targetMainBinaryUUID)
   {
     if ([(SASampleStore *)self->_sampleStore targetProcessId]!= -1)
     {
@@ -10954,9 +10954,9 @@ LABEL_27:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)printToStream:(__sFILE *)a3
+- (void)printToStream:(__sFILE *)stream
 {
-  v4 = [[SAFileOutputStream alloc] initWithFileStream:a3];
+  v4 = [[SAFileOutputStream alloc] initWithFileStream:stream];
   stream = self->_stream;
   self->_stream = v4;
 
@@ -10965,9 +10965,9 @@ LABEL_27:
   self->_stream = 0;
 }
 
-- (void)printToMutableData:(id)a3
+- (void)printToMutableData:(id)data
 {
-  v4 = [[SAMutableDataOutputStream alloc] initWithMutableData:a3];
+  v4 = [[SAMutableDataOutputStream alloc] initWithMutableData:data];
   stream = self->_stream;
   self->_stream = v4;
 
@@ -10976,15 +10976,15 @@ LABEL_27:
   self->_stream = 0;
 }
 
-- (__CFString)displayNameForTask:(__CFString *)a1
+- (__CFString)displayNameForTask:(__CFString *)task
 {
-  if (a1)
+  if (task)
   {
-    a1 = [(SASamplePrinter *)a1 displayNameForTask:a2 includePid:1];
+    task = [(SASamplePrinter *)task displayNameForTask:a2 includePid:1];
     v2 = vars8;
   }
 
-  return a1;
+  return task;
 }
 
 void __37__SASamplePrinter_checkForBadOptions__block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -11022,23 +11022,23 @@ void __37__SASamplePrinter_checkForBadOptions__block_invoke_382(uint64_t a1, voi
   *(v11 + 40) = v10;
 }
 
-- (__CFString)displayNameForDispatchQueue:(void *)a1
+- (__CFString)displayNameForDispatchQueue:(void *)queue
 {
-  if (a1)
+  if (queue)
   {
-    v2 = [a1 dispatchQueueLabel];
+    dispatchQueueLabel = [queue dispatchQueueLabel];
 
     v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-    if (v2)
+    if (dispatchQueueLabel)
     {
-      v4 = [a1 dispatchQueueLabel];
-      v5 = SACopySanitizedString(v4, 1, 0);
-      v6 = [v3 initWithFormat:@"%@(%llu)", v5, objc_msgSend(a1, "identifier")];
+      dispatchQueueLabel2 = [queue dispatchQueueLabel];
+      v5 = SACopySanitizedString(dispatchQueueLabel2, 1, 0);
+      v6 = [v3 initWithFormat:@"%@(%llu)", v5, objc_msgSend(queue, "identifier")];
     }
 
     else
     {
-      v6 = [v3 initWithFormat:@"%llu", objc_msgSend(a1, "identifier")];
+      v6 = [v3 initWithFormat:@"%llu", objc_msgSend(queue, "identifier")];
     }
   }
 
@@ -11050,29 +11050,29 @@ void __37__SASamplePrinter_checkForBadOptions__block_invoke_382(uint64_t a1, voi
   return v6;
 }
 
-- (uint64_t)taskHasSwallowedAnExceptionNotedByHIException:(uint64_t)a1
+- (uint64_t)taskHasSwallowedAnExceptionNotedByHIException:(uint64_t)exception
 {
-  v2 = a1;
-  if (a1)
+  exceptionCopy = exception;
+  if (exception)
   {
     v6 = 0;
     v7 = &v6;
     v8 = 0x2020000000;
     v9 = 0;
-    v3 = [a2 threads];
+    threads = [a2 threads];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __65__SASamplePrinter_taskHasSwallowedAnExceptionNotedByHIException___block_invoke;
     v5[3] = &unk_1E86F5B80;
-    v5[4] = v2;
+    v5[4] = exceptionCopy;
     v5[5] = &v6;
-    [v3 enumerateKeysAndObjectsUsingBlock:v5];
+    [threads enumerateKeysAndObjectsUsingBlock:v5];
 
-    LOBYTE(v2) = *(v7 + 24);
+    LOBYTE(exceptionCopy) = *(v7 + 24);
     _Block_object_dispose(&v6, 8);
   }
 
-  return v2 & 1;
+  return exceptionCopy & 1;
 }
 
 void __65__SASamplePrinter_taskHasSwallowedAnExceptionNotedByHIException___block_invoke(uint64_t a1, uint64_t a2, void *a3, _BYTE *a4)
@@ -11130,18 +11130,18 @@ void __60__SASamplePrinter_printProcessesWithHIESwallowedExceptions___block_invo
   }
 }
 
-- (BOOL)printLaunchdThrottledProcessesToStream:(uint64_t)a1
+- (BOOL)printLaunchdThrottledProcessesToStream:(uint64_t)stream
 {
   v58 = *MEMORY[0x1E69E9840];
-  v32 = *(a1 + 48);
-  v25 = [*(a1 + 168) dataStyle] != 1 && objc_msgSend(*(a1 + 168), "dataStyle") != 0;
+  v32 = *(stream + 48);
+  v25 = [*(stream + 168) dataStyle] != 1 && objc_msgSend(*(stream + 168), "dataStyle") != 0;
   v33 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v3 = [*(a1 + 168) tasksByPid];
-  obj = [v3 objectForKeyedSubscript:&unk_1F5BDCA30];
+  tasksByPid = [*(stream + 168) tasksByPid];
+  obj = [tasksByPid objectForKeyedSubscript:&unk_1F5BDCA30];
 
   v29 = [obj countByEnumeratingWithState:&v52 objects:v57 count:16];
   if (v29)
@@ -11166,9 +11166,9 @@ void __60__SASamplePrinter_printProcessesWithHIESwallowedExceptions___block_invo
         v50 = 0u;
         v51 = 0u;
         v35 = v6;
-        v7 = [v6 threads];
-        v8 = [v7 allKeys];
-        v31 = [v8 sortedArrayUsingSelector:sel_compare_];
+        threads = [v6 threads];
+        allKeys = [threads allKeys];
+        v31 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
         v9 = [v31 countByEnumeratingWithState:&v48 objects:v56 count:16];
         if (v9)
@@ -11184,8 +11184,8 @@ void __60__SASamplePrinter_printProcessesWithHIESwallowedExceptions___block_invo
               }
 
               v11 = *(*(&v48 + 1) + 8 * i);
-              v12 = [v35 threads];
-              v13 = [v12 objectForKeyedSubscript:v11];
+              threads2 = [v35 threads];
+              v13 = [threads2 objectForKeyedSubscript:v11];
 
               v46[0] = 0;
               v46[1] = v46;
@@ -11199,16 +11199,16 @@ void __60__SASamplePrinter_printProcessesWithHIESwallowedExceptions___block_invo
               v44[3] = __Block_byref_object_copy__4;
               v44[4] = __Block_byref_object_dispose__4;
               v45 = 0;
-              v14 = *(a1 + 32);
-              v15 = *(a1 + 40);
-              v16 = *(a1 + 56);
-              v17 = *(a1 + 64);
+              v14 = *(stream + 32);
+              v15 = *(stream + 40);
+              v16 = *(stream + 56);
+              v17 = *(stream + 64);
               v39[0] = MEMORY[0x1E69E9820];
               v39[1] = 3221225472;
               v39[2] = __58__SASamplePrinter_printLaunchdThrottledProcessesToStream___block_invoke;
               v39[3] = &unk_1E86F74D8;
               v43 = v32;
-              v39[4] = a1;
+              v39[4] = stream;
               v41 = v46;
               v42 = v44;
               v40 = v33;
@@ -11237,14 +11237,14 @@ void __60__SASamplePrinter_printProcessesWithHIESwallowedExceptions___block_invo
   v18 = [v33 count];
   if (v18)
   {
-    v19 = [a1 options];
-    v20 = [v19 printJson];
+    options = [stream options];
+    printJson = [options printJson];
 
-    if (v20)
+    if (printJson)
     {
-      v21 = *(a1 + 8);
-      v22 = [v33 allKeys];
-      SAJSONWriteDictionaryEntry(v21, @"launchdThrottledProcesses", v22);
+      v21 = *(stream + 8);
+      allKeys2 = [v33 allKeys];
+      SAJSONWriteDictionaryEntry(v21, @"launchdThrottledProcesses", allKeys2);
     }
 
     else
@@ -11256,7 +11256,7 @@ void __60__SASamplePrinter_printProcessesWithHIESwallowedExceptions___block_invo
       v36[3] = &unk_1E86F7500;
       v37 = v25;
       v38 = v32;
-      v36[4] = a1;
+      v36[4] = stream;
       v36[5] = a2;
       [v33 enumerateKeysAndObjectsUsingBlock:v36];
     }
@@ -11988,45 +11988,45 @@ LABEL_19:
   }
 }
 
-- (id)displayNameForTask:(void *)a3 thread:(void *)a4 threadState:
+- (id)displayNameForTask:(void *)task thread:(void *)thread threadState:
 {
-  if (a1)
+  if (self)
   {
     if (a2)
     {
-      v5 = -[SASamplePrinter displayNameForTask:threadId:](a1, a2, [a3 threadId]);
+      v5 = -[SASamplePrinter displayNameForTask:threadId:](self, a2, [task threadId]);
     }
 
     else
     {
-      v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ 0x%llx", @"Thread", objc_msgSend(a3, "threadId")];
+      v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ 0x%llx", @"Thread", objc_msgSend(task, "threadId")];
     }
 
     v6 = v5;
-    v7 = [a4 name];
-    v8 = v7;
-    if (v7)
+    name = [thread name];
+    v8 = name;
+    if (name)
     {
-      v9 = [v6 stringByAppendingFormat:@" %@", v7];
+      v9 = [v6 stringByAppendingFormat:@" %@", name];
 
       v6 = v9;
     }
 
-    v10 = [a4 dispatchQueue];
-    v11 = v10;
-    if (v10)
+    dispatchQueue = [thread dispatchQueue];
+    v11 = dispatchQueue;
+    if (dispatchQueue)
     {
-      v12 = [SASamplePrinter displayNameForDispatchQueue:v10];
+      v12 = [SASamplePrinter displayNameForDispatchQueue:dispatchQueue];
       v13 = [v6 stringByAppendingFormat:@" %@ %@", @"DispatchQueue", v12];
 
       v6 = v13;
     }
 
-    v14 = [a4 swiftTask];
-    v15 = v14;
-    if (v14)
+    swiftTask = [thread swiftTask];
+    v15 = swiftTask;
+    if (swiftTask)
     {
-      if ([v14 identifier] == -1)
+      if ([swiftTask identifier] == -1)
       {
         [v6 stringByAppendingFormat:@" %@ %@", @"Swift Task", @"UNKNOWN"];
       }
@@ -12049,12 +12049,12 @@ LABEL_19:
   return v6;
 }
 
-- (id)displayNameForTask:(int)a3 includePid:
+- (id)displayNameForTask:(int)task includePid:
 {
-  if (a1)
+  if (self)
   {
     v6 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:64];
-    v7 = [(SASamplePrinter *)a1 rawNameForTask:a2];
+    v7 = [(SASamplePrinter *)self rawNameForTask:a2];
     v8 = SACopySanitizedStringWhitespaceOnlyNullable(v7);
     v9 = v8;
     if (v8)
@@ -12069,22 +12069,22 @@ LABEL_19:
 
     [v6 appendString:v10];
 
-    v11 = [a2 bundleName];
+    bundleName = [a2 bundleName];
 
-    if (v11)
+    if (bundleName)
     {
-      v12 = [a2 bundleName];
-      v13 = SACopySanitizedString(v12, 1, 0);
+      bundleName2 = [a2 bundleName];
+      v13 = SACopySanitizedString(bundleName2, 1, 0);
       [v6 appendFormat:@" (%@)", v13];
     }
 
-    if (a3)
+    if (task)
     {
       [v6 appendFormat:@" [%d]", objc_msgSend(a2, "pid")];
       if ([a2 uniquePid] != -1)
       {
-        v14 = [a2 uniquePid];
-        if (v14 != [a2 pid])
+        uniquePid = [a2 uniquePid];
+        if (uniquePid != [a2 pid])
         {
           [v6 appendFormat:@" [unique pid %llu]", objc_msgSend(a2, "uniquePid")];
         }
@@ -12100,14 +12100,14 @@ LABEL_19:
   return v6;
 }
 
-- (id)kernelVersionAtWallTime:(uint64_t)a1
+- (id)kernelVersionAtWallTime:(uint64_t)time
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = [*(a1 + 168) bootCycles];
+  bootCycles = [*(time + 168) bootCycles];
 
-  if (a2 == 0.0 || v4 == 0)
+  if (a2 == 0.0 || bootCycles == 0)
   {
-    v6 = [*(a1 + 168) kernelVersion];
+    kernelVersion = [*(time + 168) kernelVersion];
   }
 
   else
@@ -12116,10 +12116,10 @@ LABEL_19:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [*(a1 + 168) bootCycles];
-    v8 = [v7 reverseObjectEnumerator];
+    bootCycles2 = [*(time + 168) bootCycles];
+    reverseObjectEnumerator = [bootCycles2 reverseObjectEnumerator];
 
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -12130,20 +12130,20 @@ LABEL_19:
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
           [v13 wallTimeAtMachAbsZero];
           if (v14 <= a2)
           {
-            v6 = [v13 kernelVersion];
+            kernelVersion = [v13 kernelVersion];
 
             goto LABEL_17;
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v10)
         {
           continue;
@@ -12153,43 +12153,43 @@ LABEL_19:
       }
     }
 
-    v6 = 0;
+    kernelVersion = 0;
   }
 
 LABEL_17:
   v15 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return kernelVersion;
 }
 
-- (id)displayNameForPid:(uint64_t)a3 threadId:(void *)a4 timestamp:
+- (id)displayNameForPid:(uint64_t)pid threadId:(void *)id timestamp:
 {
-  if (a1)
+  if (self)
   {
-    if (a2 == -1 && !a3)
+    if (a2 == -1 && !pid)
     {
       goto LABEL_4;
     }
 
-    info = a1[5].info;
-    if (a4)
+    info = self[5].info;
+    if (id)
     {
-      [(SASampleStore *)info taskWithPid:a2 orTid:a3 atTimestamp:a4];
+      [(SASampleStore *)info taskWithPid:a2 orTid:pid atTimestamp:id];
     }
 
     else
     {
-      [(SASampleStore *)info lastTaskWithPid:a2 orTid:a3];
+      [(SASampleStore *)info lastTaskWithPid:a2 orTid:pid];
     }
     v10 = ;
     if (!v10)
     {
-      if (a3)
+      if (pid)
       {
         v12 = objc_alloc(MEMORY[0x1E696AEC0]);
         if (a2 == -1)
         {
-          v7 = [v12 initWithFormat:@"UNKNOWN TASK thread 0x%llx", a3, v17, v18];
+          v7 = [v12 initWithFormat:@"UNKNOWN TASK thread 0x%llx", pid, v17, v18];
         }
 
         else
@@ -12200,7 +12200,7 @@ LABEL_17:
             v13 = @"kernel_task";
           }
 
-          v7 = [v12 initWithFormat:@"%@ [%d] thread 0x%llx", v13, a2, a3];
+          v7 = [v12 initWithFormat:@"%@ [%d] thread 0x%llx", v13, a2, pid];
         }
 
         goto LABEL_5;
@@ -12226,7 +12226,7 @@ LABEL_5:
       goto LABEL_11;
     }
 
-    v8 = [(SASamplePrinter *)a1 displayNameForTask:v10 threadId:a3];
+    v8 = [(SASamplePrinter *)self displayNameForTask:v10 threadId:pid];
   }
 
   else
@@ -12239,22 +12239,22 @@ LABEL_11:
   return v8;
 }
 
-- (__CFString)displayStringForResourceCoalition:(void *)a1
+- (__CFString)displayStringForResourceCoalition:(void *)coalition
 {
-  if ([a1 resourceCoalitionID])
+  if ([coalition resourceCoalitionID])
   {
-    v2 = [a1 resourceCoalitionName];
+    resourceCoalitionName = [coalition resourceCoalitionName];
 
     v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-    if (v2)
+    if (resourceCoalitionName)
     {
-      v4 = [a1 resourceCoalitionName];
-      v5 = [v3 initWithFormat:@"%@(%llu)", v4, objc_msgSend(a1, "resourceCoalitionID")];
+      resourceCoalitionName2 = [coalition resourceCoalitionName];
+      v5 = [v3 initWithFormat:@"%@(%llu)", resourceCoalitionName2, objc_msgSend(coalition, "resourceCoalitionID")];
     }
 
     else
     {
-      v5 = [v3 initWithFormat:@"%llu", objc_msgSend(a1, "resourceCoalitionID")];
+      v5 = [v3 initWithFormat:@"%llu", objc_msgSend(coalition, "resourceCoalitionID")];
     }
   }
 
@@ -12266,7 +12266,7 @@ LABEL_11:
   return v5;
 }
 
-- (id)displayStringForOnBehalfOfForTasks:(unsigned int)a3 includePid:
+- (id)displayStringForOnBehalfOfForTasks:(unsigned int)tasks includePid:
 {
   v56 = *MEMORY[0x1E69E9840];
   v37 = objc_alloc_init(SAOnBehalfOfMultiple);
@@ -12276,54 +12276,54 @@ LABEL_11:
   v52 = __Block_byref_object_copy__4;
   v53 = __Block_byref_object_dispose__4;
   v54 = 0;
-  v36 = [*(a1 + 168) sampleTimestamps];
-  v5 = [v36 count];
-  v6 = *(a1 + 168);
+  sampleTimestamps = [*(self + 168) sampleTimestamps];
+  v5 = [sampleTimestamps count];
+  v6 = *(self + 168);
   if ((v5 & 7) != 0)
   {
-    v7 = [v6 sampleTimestamps];
-    v8 = ([v7 count] >> 3) + 1;
+    sampleTimestamps2 = [v6 sampleTimestamps];
+    v8 = ([sampleTimestamps2 count] >> 3) + 1;
   }
 
   else
   {
-    v7 = [v6 sampleTimestamps];
-    v8 = [v7 count] >> 3;
+    sampleTimestamps2 = [v6 sampleTimestamps];
+    v8 = [sampleTimestamps2 count] >> 3;
   }
 
-  v9 = *(a1 + 168);
+  v9 = *(self + 168);
   if ((v8 & 7) != 0)
   {
-    v10 = [v9 sampleTimestamps];
-    v11 = [v10 count];
-    v12 = *(a1 + 168);
+    sampleTimestamps3 = [v9 sampleTimestamps];
+    v11 = [sampleTimestamps3 count];
+    v12 = *(self + 168);
     if ((v11 & 7) != 0)
     {
-      v13 = [v12 sampleTimestamps];
-      v14 = ([v13 count] >> 3) + 1;
+      sampleTimestamps4 = [v12 sampleTimestamps];
+      v14 = ([sampleTimestamps4 count] >> 3) + 1;
     }
 
     else
     {
-      v13 = [v12 sampleTimestamps];
-      v14 = [v13 count] >> 3;
+      sampleTimestamps4 = [v12 sampleTimestamps];
+      v14 = [sampleTimestamps4 count] >> 3;
     }
 
-    v18 = [*(a1 + 168) sampleTimestamps];
-    v19 = [v18 count];
-    v20 = *(a1 + 168);
+    sampleTimestamps5 = [*(self + 168) sampleTimestamps];
+    v19 = [sampleTimestamps5 count];
+    v20 = *(self + 168);
     if ((v19 & 7) != 0)
     {
-      v21 = [v20 sampleTimestamps];
-      v22 = [v21 count];
+      sampleTimestamps6 = [v20 sampleTimestamps];
+      v22 = [sampleTimestamps6 count];
 
       v23 = ((v22 >> 3) + 1) & 7;
     }
 
     else
     {
-      v24 = [v20 sampleTimestamps];
-      v25 = [v24 count];
+      sampleTimestamps7 = [v20 sampleTimestamps];
+      v25 = [sampleTimestamps7 count];
 
       v23 = (v25 >> 3) & 7;
     }
@@ -12333,19 +12333,19 @@ LABEL_11:
 
   else
   {
-    v10 = [v9 sampleTimestamps];
-    v15 = [v10 count];
-    v16 = *(a1 + 168);
+    sampleTimestamps3 = [v9 sampleTimestamps];
+    v15 = [sampleTimestamps3 count];
+    v16 = *(self + 168);
     if ((v15 & 7) != 0)
     {
-      v13 = [v16 sampleTimestamps];
-      v17 = ([v13 count] >> 3) + 1;
+      sampleTimestamps4 = [v16 sampleTimestamps];
+      v17 = ([sampleTimestamps4 count] >> 3) + 1;
     }
 
     else
     {
-      v13 = [v16 sampleTimestamps];
-      v17 = [v13 count] >> 3;
+      sampleTimestamps4 = [v16 sampleTimestamps];
+      v17 = [sampleTimestamps4 count] >> 3;
     }
   }
 
@@ -12367,16 +12367,16 @@ LABEL_11:
           objc_enumerationMutation(v26);
         }
 
-        v30 = [*(*(&v45 + 1) + 8 * i) threads];
+        threads = [*(*(&v45 + 1) + 8 * i) threads];
         v41[0] = MEMORY[0x1E69E9820];
         v41[1] = 3221225472;
         v41[2] = __65__SASamplePrinter_displayStringForOnBehalfOfForTasks_includePid___block_invoke;
         v41[3] = &unk_1E86F7F90;
-        v41[4] = a1;
+        v41[4] = self;
         v42 = v37;
         v43 = &v49;
         v44 = v17;
-        [v30 enumerateKeysAndObjectsUsingBlock:v41];
+        [threads enumerateKeysAndObjectsUsingBlock:v41];
       }
 
       v27 = [v26 countByEnumeratingWithState:&v45 objects:v55 count:16];
@@ -12399,7 +12399,7 @@ LABEL_11:
 
   if (v37 && v37->_count)
   {
-    v32 = [(SAOnBehalfOfMultiple *)v37 displayStringWithPids:a3];
+    v32 = [(SAOnBehalfOfMultiple *)v37 displayStringWithPids:tasks];
   }
 
   else
@@ -12414,10 +12414,10 @@ LABEL_11:
   return v32;
 }
 
-- (id)architectureStringForTask:(uint64_t)a1
+- (id)architectureStringForTask:(uint64_t)task
 {
-  v4 = [a2 architectureString];
-  v5 = *(a1 + 168);
+  architectureString = [a2 architectureString];
+  v5 = *(task + 168);
   if (v5)
   {
     v6 = *(v5 + 240);
@@ -12445,27 +12445,27 @@ LABEL_11:
       CSArchitectureGetFamily();
       if ((CSArchitectureMatchesArchitecture() & 1) == 0)
       {
-        v7 = [v4 stringByAppendingString:@" (translated)"];
+        v7 = [architectureString stringByAppendingString:@" (translated)"];
 
-        v4 = v7;
+        architectureString = v7;
       }
     }
   }
 
 LABEL_7:
 
-  return v4;
+  return architectureString;
 }
 
-- (void)addTaskHeaderToStream:(void *)a3 displayName:(uint64_t)a4 pid:(void *)a5 mainBinary:(void *)a6 mainBinaryPath:(void *)a7 sharedCaches:(uint64_t)a8 uid:(double)a9 bundleIdentifier:(void *)a10 bundleVersion:(__int128)a11 bundleShortVersion:(void *)a12 bundleBuildVersion:(void *)a13 bundleProjectName:(void *)a14 bundleSourceVersion:(void *)a15 bundleProductBuildVersion:(uint64_t)a16 adamID:(void *)a17 installerVersionID:(char)a18 developerType:(void *)a19 appType:(char)a20 isBeta:(void *)a21 cohortID:(void *)a22 vendorID:(void *)a23 distributorID:(void *)a24 codesigningID:(void *)a25 teamID:(void *)a26 resourceCoalitionSampleCounts:(void *)a27 onBehalfOfProcesses:(void *)a28 architectureString:(void *)a29 kernelVersion:(void *)a30 parentName:(void *)a31 responsibleName:(void *)a32 taskExecedFromName:(void *)a33 taskExecedToName:(void *)a34 forkTimestamp:(void *)a35 startTimestamp:(unint64_t)a36 endTimestamp:(unint64_t)a37 startSampleIndex:(unint64_t)a38 endSampleIndex:(unint64_t)a39 numSamples:(uint64_t)a40 totalNumSamples:(uint64_t)a41 numSamplesSuspended:(unint64_t)a42 numSamplesTerminated:(unint64_t)a43 startingTaskSize:(unint64_t)a44 endingTaskSize:(unint64_t)a45 maxTaskSize:(unint64_t)a46 startSampleIndexOfMaxTaskSize:(unsigned int)a47 endSampleIndexOfMaxTaskSize:(unint64_t)a48 numPageins:(unint64_t)a49 cpuTimeNs:(unint64_t)a50 cpuInstructions:(unint64_t)a51 cpuCycles:(unint64_t)a52 nonThreadCpuTimeNs:(unint64_t)a53 nonThreadCpuInstructions:(char)a54 nonThreadCpuCycles:(char)a55 usesSuddenTermination:(void *)a56 allowsIdleExit:(void *)a57 memoryLimitStr:(char)a58 jetsamPriorityStr:(char)a59 isTranslocated:(char)a60 hardenedHeap:(char)a61 mteCheckedAllocationsEnabled:(char)a62 mteUserDataAllocationsTagged:(char)a63 mteSoftModeEnabled:mteInheritanceTurnedOn:isRunningBoardManaged:isUnresponsive:timeOfLastResponse:numThreads:numIdleWorkQueueThreads:numOtherHiddenThreads:hieSwallowedException:numSamplesWQExceededConstrainedThreadLimit:numSamplesWQExceededTotalThreadLimit:numSamplesWQExceededCooperativeThreadLimit:numSamplesWQExceededActiveConstrainedThreadLimit:numSamplesTALEngaged:isRunawayMitigated:threadsDeadlocked:threadsBlockedByADeadlock:ioSize:numIOs:isReportHeader:
+- (void)addTaskHeaderToStream:(void *)stream displayName:(uint64_t)name pid:(void *)pid mainBinary:(void *)binary mainBinaryPath:(void *)path sharedCaches:(uint64_t)caches uid:(double)uid bundleIdentifier:(void *)self0 bundleVersion:(__int128)self1 bundleShortVersion:(void *)self2 bundleBuildVersion:(void *)self3 bundleProjectName:(void *)self4 bundleSourceVersion:(void *)self5 bundleProductBuildVersion:(uint64_t)self6 adamID:(void *)self7 installerVersionID:(char)self8 developerType:(void *)self9 appType:(char)appType isBeta:(void *)beta cohortID:(void *)cohortID vendorID:(void *)vendorID distributorID:(void *)distributorID codesigningID:(void *)codesigningID teamID:(void *)teamID resourceCoalitionSampleCounts:(void *)counts onBehalfOfProcesses:(void *)processes architectureString:(void *)string kernelVersion:(void *)stream0 parentName:(void *)stream1 responsibleName:(void *)stream2 taskExecedFromName:(void *)stream3 taskExecedToName:(void *)stream4 forkTimestamp:(void *)stream5 startTimestamp:(unint64_t)stream6 endTimestamp:(unint64_t)stream7 startSampleIndex:(unint64_t)stream8 endSampleIndex:(unint64_t)stream9 numSamples:(uint64_t)name0 totalNumSamples:(uint64_t)name1 numSamplesSuspended:(unint64_t)name2 numSamplesTerminated:(unint64_t)name3 startingTaskSize:(unint64_t)name4 endingTaskSize:(unint64_t)name5 maxTaskSize:(unint64_t)name6 startSampleIndexOfMaxTaskSize:(unsigned int)name7 endSampleIndexOfMaxTaskSize:(unint64_t)name8 numPageins:(unint64_t)name9 cpuTimeNs:(unint64_t)pid0 cpuInstructions:(unint64_t)pid1 cpuCycles:(unint64_t)pid2 nonThreadCpuTimeNs:(unint64_t)pid3 nonThreadCpuInstructions:(char)pid4 nonThreadCpuCycles:(char)pid5 usesSuddenTermination:(void *)pid6 allowsIdleExit:(void *)pid7 memoryLimitStr:(char)pid8 jetsamPriorityStr:(char)pid9 isTranslocated:(char)binary0 hardenedHeap:(char)binary1 mteCheckedAllocationsEnabled:(char)binary2 mteUserDataAllocationsTagged:(char)binary3 mteSoftModeEnabled:mteInheritanceTurnedOn:isRunningBoardManaged:isUnresponsive:timeOfLastResponse:numThreads:numIdleWorkQueueThreads:numOtherHiddenThreads:hieSwallowedException:numSamplesWQExceededConstrainedThreadLimit:numSamplesWQExceededTotalThreadLimit:numSamplesWQExceededCooperativeThreadLimit:numSamplesWQExceededActiveConstrainedThreadLimit:numSamplesTALEngaged:isRunawayMitigated:threadsDeadlocked:threadsBlockedByADeadlock:ioSize:numIOs:isReportHeader:
 {
-  v85 = a1;
+  selfCopy = self;
   v86 = a77;
-  v349 = a52;
+  cyclesCopy = cycles;
   v377 = *MEMORY[0x1E69E9840];
   if (a80)
   {
-    if ([*(a1 + 16) printJson])
+    if ([*(self + 16) printJson])
     {
       v307 = *__error();
       v308 = _sa_logt();
@@ -12481,7 +12481,7 @@ LABEL_7:
       __break(1u);
     }
 
-    else if (![*(v85 + 16) systemstatsFormat])
+    else if (![*(selfCopy + 16) systemstatsFormat])
     {
       goto LABEL_4;
     }
@@ -12502,18 +12502,18 @@ LABEL_7:
   }
 
 LABEL_4:
-  if (!a18)
+  if (!iD)
   {
-    if (!a19)
+    if (!type)
     {
       v87 = 0;
       v88 = 0;
       goto LABEL_14;
     }
 
-    if (([a19 isEqualToString:@"System"] & 1) == 0 && (objc_msgSend(a19, "isEqualToString:", @"Internal") & 1) == 0)
+    if (([type isEqualToString:@"System"] & 1) == 0 && (objc_msgSend(type, "isEqualToString:", @"Internal") & 1) == 0)
     {
-      v87 = [a19 isEqualToString:@"Hidden"];
+      v87 = [type isEqualToString:@"Hidden"];
       goto LABEL_13;
     }
 
@@ -12522,16 +12522,16 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (a18 == 1)
+  if (iD == 1)
   {
     goto LABEL_12;
   }
 
   v87 = 0;
   v88 = 1;
-  if (a10 && a18 == -1)
+  if (identifier && iD == -1)
   {
-    v87 = [a10 hasPrefix:@"com.apple."];
+    v87 = [identifier hasPrefix:@"com.apple."];
 LABEL_13:
     v88 = 1;
   }
@@ -12539,39 +12539,39 @@ LABEL_13:
 LABEL_14:
   v353 = v88;
   v351 = v87;
-  if ([*(v85 + 16) printJson])
+  if ([*(selfCopy + 16) printJson])
   {
-    SAJSONWriteDictionaryFirstEntry(a2, @"name", a3);
-    if (a5)
+    SAJSONWriteDictionaryFirstEntry(a2, @"name", stream);
+    if (pid)
     {
-      v89 = [a5 uuid];
-      v90 = [v89 UUIDString];
-      SAJSONWriteDictionaryEntry(a2, @"uuid", v90);
+      uuid = [pid uuid];
+      uUIDString = [uuid UUIDString];
+      SAJSONWriteDictionaryEntry(a2, @"uuid", uUIDString);
     }
 
-    if (a6)
+    if (binary)
     {
-      SAJSONWriteDictionaryEntry(a2, @"path", a6);
+      SAJSONWriteDictionaryEntry(a2, @"path", binary);
     }
 
-    v91 = a23;
-    if (a7)
+    vendorIDCopy2 = vendorID;
+    if (path)
     {
-      SAJSONWriteDictionaryEntry(a2, @"sharedcaches", a7);
+      SAJSONWriteDictionaryEntry(a2, @"sharedcaches", path);
     }
 
-    if (a8 != -314)
+    if (caches != -314)
     {
       v92 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
       SAJSONWriteDictionaryEntry(a2, @"uid", v92);
     }
 
-    if (!a16)
+    if (!productBuildVersion)
     {
 LABEL_50:
-      if (a17)
+      if (d)
       {
-        v106 = SACopySanitizedString(a17, 1, 0);
+        v106 = SACopySanitizedString(d, 1, 0);
         SAJSONWriteDictionaryEntry(a2, @"appExternalID", v106);
       }
 
@@ -12590,244 +12590,244 @@ LABEL_50:
         SAJSONWriteDictionaryEntry(a2, @"isFirstParty", v107);
       }
 
-      if (a20)
+      if (appType)
       {
         SAJSONWriteDictionaryEntry(a2, @"isBeta", MEMORY[0x1E695E118]);
-        if (a21)
+        if (beta)
         {
-          SAJSONWriteDictionaryEntry(a2, @"cohort", a21);
+          SAJSONWriteDictionaryEntry(a2, @"cohort", beta);
         }
       }
 
-      if (a22)
+      if (cohortID)
       {
-        SAJSONWriteDictionaryEntry(a2, @"betaIdentifier", a22);
+        SAJSONWriteDictionaryEntry(a2, @"betaIdentifier", cohortID);
       }
 
-      if (a10)
+      if (identifier)
       {
-        v108 = SACopySanitizedString(a10, 1, 0);
+        v108 = SACopySanitizedString(identifier, 1, 0);
         SAJSONWriteDictionaryEntry(a2, @"bundleIdentifier", v108);
       }
 
-      if (a28)
+      if (processes)
       {
-        SAJSONWriteDictionaryEntry(a2, @"version", a28);
-        v109 = a34;
+        SAJSONWriteDictionaryEntry(a2, @"version", processes);
+        toNameCopy2 = toName;
         goto LABEL_90;
       }
 
-      v110 = a11;
-      v109 = a34;
-      if (a11 == 0)
+      versionCopy2 = version;
+      toNameCopy2 = toName;
+      if (version == 0)
       {
 LABEL_90:
-        if (a12)
+        if (shortVersion)
         {
-          v127 = SACopySanitizedString(a12, 1, 0);
+          v127 = SACopySanitizedString(shortVersion, 1, 0);
           SAJSONWriteDictionaryEntry(a2, @"buildVersion", v127);
         }
 
-        if (a15)
+        if (sourceVersion)
         {
-          v128 = SACopySanitizedString(a15, 1, 0);
+          v128 = SACopySanitizedString(sourceVersion, 1, 0);
           SAJSONWriteDictionaryEntry(a2, @"productBuildVersion", v128);
         }
 
-        if (a13)
+        if (buildVersion)
         {
-          v129 = SACopySanitizedString(a13, 1, 0);
+          v129 = SACopySanitizedString(buildVersion, 1, 0);
           SAJSONWriteDictionaryEntry(a2, @"projectName", v129);
         }
 
-        if (a14)
+        if (projectName)
         {
-          v130 = SACopySanitizedString(a14, 1, 0);
+          v130 = SACopySanitizedString(projectName, 1, 0);
           SAJSONWriteDictionaryEntry(a2, @"sourceVersion", v130);
         }
 
-        if (v91)
+        if (vendorIDCopy2)
         {
-          SAJSONWriteDictionaryEntry(a2, @"codesigningID", v91);
+          SAJSONWriteDictionaryEntry(a2, @"codesigningID", vendorIDCopy2);
         }
 
-        if (a24)
+        if (distributorID)
         {
-          SAJSONWriteDictionaryEntry(a2, @"teamID", a24);
+          SAJSONWriteDictionaryEntry(a2, @"teamID", distributorID);
         }
 
-        if ([a25 count] > 1 || objc_msgSend(a25, "count") == 1 && (objc_msgSend(a25, "allKeys"), v131 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v131, "firstObject"), v132 = objc_claimAutoreleasedReturnValue(), v133 = objc_msgSend(v132, "isEqualToString:", @"none"), v132, v131, (v133 & 1) == 0))
+        if ([codesigningID count] > 1 || objc_msgSend(codesigningID, "count") == 1 && (objc_msgSend(codesigningID, "allKeys"), v131 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v131, "firstObject"), v132 = objc_claimAutoreleasedReturnValue(), v133 = objc_msgSend(v132, "isEqualToString:", @"none"), v132, v131, (v133 & 1) == 0))
         {
-          SAJSONWriteDictionaryEntry(a2, @"resourceCoalitionSampleCounts", a25);
+          SAJSONWriteDictionaryEntry(a2, @"resourceCoalitionSampleCounts", codesigningID);
         }
 
-        if (a26)
+        if (teamID)
         {
-          SAJSONWriteDictionaryEntry(a2, @"onBehalfOf", a26);
+          SAJSONWriteDictionaryEntry(a2, @"onBehalfOf", teamID);
         }
 
-        if (a29)
+        if (string)
         {
-          SAJSONWriteDictionaryEntry(a2, @"parent", a29);
+          SAJSONWriteDictionaryEntry(a2, @"parent", string);
         }
 
-        if (a30)
+        if (kernelVersion)
         {
-          SAJSONWriteDictionaryEntry(a2, @"responsible", a30);
+          SAJSONWriteDictionaryEntry(a2, @"responsible", kernelVersion);
         }
 
-        if (a31)
+        if (parentName)
         {
-          SAJSONWriteDictionaryEntry(a2, @"taskExecedFrom", a31);
+          SAJSONWriteDictionaryEntry(a2, @"taskExecedFrom", parentName);
         }
 
-        if (a32)
+        if (responsibleName)
         {
-          SAJSONWriteDictionaryEntry(a2, @"taskExecedTo", a32);
+          SAJSONWriteDictionaryEntry(a2, @"taskExecedTo", responsibleName);
         }
 
-        if (a27)
+        if (counts)
         {
-          SAJSONWriteDictionaryEntry(a2, @"arch", a27);
+          SAJSONWriteDictionaryEntry(a2, @"arch", counts);
         }
 
-        if (v109)
+        if (toNameCopy2)
         {
-          SAJSONWriteDictionaryEntry(a2, @"startTime", v109);
+          SAJSONWriteDictionaryEntry(a2, @"startTime", toNameCopy2);
         }
 
-        if (a35)
+        if (timestamp)
         {
-          SAJSONWriteDictionaryEntry(a2, @"endTime", a35);
+          SAJSONWriteDictionaryEntry(a2, @"endTime", timestamp);
         }
 
-        if (a36 != 0x7FFFFFFFFFFFFFFFLL)
+        if (startTimestamp != 0x7FFFFFFFFFFFFFFFLL)
         {
           v134 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
           SAJSONWriteDictionaryEntry(a2, @"startSampleIndex", v134);
         }
 
-        if (a37 != 0x7FFFFFFFFFFFFFFFLL)
+        if (endTimestamp != 0x7FFFFFFFFFFFFFFFLL)
         {
           v135 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
           SAJSONWriteDictionaryEntry(a2, @"endSampleIndex", v135);
         }
 
-        v136 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a38];
+        v136 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
         SAJSONWriteDictionaryEntry(a2, @"numSamples", v136);
 
-        if (a40)
+        if (samples)
         {
           v137 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
           SAJSONWriteDictionaryEntry(a2, @"numSamplesSuspended", v137);
         }
 
-        if (a41)
+        if (numSamples)
         {
           v138 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
           SAJSONWriteDictionaryEntry(a2, @"numSamplesTerminated", v138);
         }
 
-        if (a42)
+        if (suspended)
         {
           v139 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
           SAJSONWriteDictionaryEntry(a2, @"startingTaskSize", v139);
         }
 
-        if (a43)
+        if (terminated)
         {
           v140 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
           SAJSONWriteDictionaryEntry(a2, @"endingTaskSize", v140);
         }
 
-        if (a44)
+        if (size)
         {
           v141 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
           SAJSONWriteDictionaryEntry(a2, @"maxTaskSize", v141);
         }
 
-        if (a45 != 0x7FFFFFFFFFFFFFFFLL)
+        if (taskSize != 0x7FFFFFFFFFFFFFFFLL)
         {
           v142 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
           SAJSONWriteDictionaryEntry(a2, @"startSampleIndexOfMaxTaskSize", v142);
         }
 
-        if (a46 != 0x7FFFFFFFFFFFFFFFLL)
+        if (maxTaskSize != 0x7FFFFFFFFFFFFFFFLL)
         {
           v143 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
           SAJSONWriteDictionaryEntry(a2, @"endSampleIndexOfMaxTaskSize", v143);
         }
 
-        if (a47)
+        if (ofMaxTaskSize)
         {
           v144 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
           SAJSONWriteDictionaryEntry(a2, @"numPageins", v144);
         }
 
-        if (a48)
+        if (indexOfMaxTaskSize)
         {
           v145 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
           SAJSONWriteDictionaryEntry(a2, @"cpuNanoseconds", v145);
         }
 
-        if (a49)
+        if (pageins)
         {
           v146 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
           SAJSONWriteDictionaryEntry(a2, @"cpuInstructions", v146);
         }
 
-        if (a50)
+        if (ns)
         {
           v147 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
           SAJSONWriteDictionaryEntry(a2, @"cpuCycles", v147);
         }
 
-        if (a54)
+        if (cpuInstructions)
         {
           SAJSONWriteDictionaryEntry(a2, @"usesSuddenTermination", MEMORY[0x1E695E118]);
         }
 
-        if (a55)
+        if (cpuCycles)
         {
           SAJSONWriteDictionaryEntry(a2, @"allowsIdleExit", MEMORY[0x1E695E118]);
         }
 
-        if (a56)
+        if (termination)
         {
-          SAJSONWriteDictionaryEntry(a2, @"memoryLimitStr", a56);
+          SAJSONWriteDictionaryEntry(a2, @"memoryLimitStr", termination);
         }
 
-        if (a57)
+        if (exit)
         {
-          SAJSONWriteDictionaryEntry(a2, @"jetsamPriorityStr", a57);
+          SAJSONWriteDictionaryEntry(a2, @"jetsamPriorityStr", exit);
         }
 
-        if (a58)
+        if (str)
         {
           SAJSONWriteDictionaryEntry(a2, @"isTranslocated", MEMORY[0x1E695E118]);
         }
 
-        if (a59)
+        if (priorityStr)
         {
           SAJSONWriteDictionaryEntry(a2, @"hardenedHeap", MEMORY[0x1E695E118]);
         }
 
-        if (a60)
+        if (translocated)
         {
           SAJSONWriteDictionaryEntry(a2, @"mteCheckedAllocationsEnabled", MEMORY[0x1E695E118]);
         }
 
-        if (a61)
+        if (heap)
         {
           SAJSONWriteDictionaryEntry(a2, @"mteUserDataAllocationsTagged", MEMORY[0x1E695E118]);
         }
 
-        if (a62)
+        if (enabled)
         {
           SAJSONWriteDictionaryEntry(a2, @"mteSoftModeEnabled", MEMORY[0x1E695E118]);
         }
 
-        if (a63)
+        if (tagged)
         {
           SAJSONWriteDictionaryEntry(a2, @"mteInheritanceTurnedOn", MEMORY[0x1E695E118]);
         }
@@ -12840,9 +12840,9 @@ LABEL_90:
         if (a65)
         {
           SAJSONWriteDictionaryEntry(a2, @"isUnresponsive", MEMORY[0x1E695E118]);
-          if (a9 > 0.0)
+          if (uid > 0.0)
           {
-            v148 = [MEMORY[0x1E696AD98] numberWithDouble:a9];
+            v148 = [MEMORY[0x1E696AD98] numberWithDouble:uid];
             SAJSONWriteDictionaryEntry(a2, @"timeOfLastResponseCF", v148);
           }
         }
@@ -12932,21 +12932,21 @@ LABEL_498:
         return;
       }
 
-      if (*(&a11 + 1))
+      if (*(&version + 1))
       {
-        v111 = SACopySanitizedString(*(&a11 + 1), 1, 0);
+        v111 = SACopySanitizedString(*(&version + 1), 1, 0);
 
-        v110 = a11;
-        if (a11)
+        versionCopy2 = version;
+        if (version)
         {
 LABEL_69:
-          v112 = SACopySanitizedString(v110, 1, 0);
+          v112 = SACopySanitizedString(versionCopy2, 1, 0);
 
 LABEL_89:
-          v126 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ (%@)", v111, v112];
-          SAJSONWriteDictionaryEntry(a2, @"version", v126);
+          v112 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ (%@)", v111, v112];
+          SAJSONWriteDictionaryEntry(a2, @"version", v112);
 
-          v91 = a23;
+          vendorIDCopy2 = vendorID;
           goto LABEL_90;
         }
       }
@@ -12954,7 +12954,7 @@ LABEL_89:
       else
       {
         v111 = @"???";
-        if (a11)
+        if (version)
         {
           goto LABEL_69;
         }
@@ -12964,14 +12964,14 @@ LABEL_89:
       goto LABEL_89;
     }
 
-    v93 = [*(v85 + 168) osProductName];
+    osProductName = [*(selfCopy + 168) osProductName];
 
-    if (v93)
+    if (osProductName)
     {
-      v94 = [*(v85 + 168) osProductName];
-      v95 = SAIsEmbeddedPlatform(v94);
+      osProductName2 = [*(selfCopy + 168) osProductName];
+      v95 = SAIsEmbeddedPlatform(osProductName2);
 
-      v96 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a16];
+      v96 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:productBuildVersion];
       if (!v95)
       {
         v97 = @"appItemID";
@@ -12984,7 +12984,7 @@ LABEL_49:
 
     else
     {
-      v96 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a16];
+      v96 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:productBuildVersion];
     }
 
     v97 = @"adamID";
@@ -12993,29 +12993,29 @@ LABEL_49:
 
   if (a80)
   {
-    [a2 printWithFormat:@"%-*s%@\n", 18, "Command: ", a3];
+    [a2 printWithFormat:@"%-*s%@\n", 18, "Command: ", stream];
   }
 
   else
   {
     v98 = "Powerstats for: ";
-    if (([*(v85 + 16) microstackshotsFormat] & 1) == 0 && !objc_msgSend(*(v85 + 16), "systemstatsFormat"))
+    if (([*(selfCopy + 16) microstackshotsFormat] & 1) == 0 && !objc_msgSend(*(selfCopy + 16), "systemstatsFormat"))
     {
       v98 = "Process: ";
     }
 
-    [a2 printWithFormat:@"%-*s%@", 18, v98, a3];
-    *(v85 + 113) = 1;
-    if (([*(v85 + 16) systemstatsFormat] & 1) == 0)
+    [a2 printWithFormat:@"%-*s%@", 18, v98, stream];
+    *(selfCopy + 113) = 1;
+    if (([*(selfCopy + 16) systemstatsFormat] & 1) == 0)
     {
-      v99 = a38;
-      if (a38 && a40 == a38)
+      indexCopy2 = index;
+      if (index && samples == index)
       {
         [a2 appendString:@" (suspended)"];
-        v99 = a38;
+        indexCopy2 = index;
       }
 
-      if (v99 && a41 == a38)
+      if (indexCopy2 && numSamples == index)
       {
         [a2 appendString:@" (zombie)"];
       }
@@ -13024,18 +13024,18 @@ LABEL_49:
     [a2 appendString:@"\n"];
   }
 
-  v348 = a3;
-  v100 = a7;
-  if (!a5)
+  streamCopy = stream;
+  pathCopy3 = path;
+  if (!pid)
   {
 LABEL_73:
-    v114 = [*(v85 + 16) systemstatsFormat];
-    if (a6 && (v114 & 1) == 0)
+    systemstatsFormat = [*(selfCopy + 16) systemstatsFormat];
+    if (binary && (systemstatsFormat & 1) == 0)
     {
-      v115 = [*(v85 + 168) sanitizePaths];
-      v116 = a6;
-      v117 = v116;
-      if (v115)
+      sanitizePaths = [*(selfCopy + 168) sanitizePaths];
+      binaryCopy = binary;
+      v117 = binaryCopy;
+      if (sanitizePaths)
       {
       }
 
@@ -13043,69 +13043,69 @@ LABEL_73:
       [a2 printWithFormat:@"%-*s%@\n", 18, "Path: ", v118];
     }
 
-    if (a10)
+    if (identifier)
     {
-      v119 = SACopySanitizedString(a10, 1, 0);
+      v119 = SACopySanitizedString(identifier, 1, 0);
       [a2 printWithFormat:@"%-*s%@\n", 18, "Identifier: ", v119];
     }
 
-    v120 = a25;
-    v121 = a23;
-    if (a28)
+    codesigningIDCopy2 = codesigningID;
+    vendorIDCopy4 = vendorID;
+    if (processes)
     {
-      [a2 printWithFormat:@"%-*s%@\n", 18, "Version: ", a28];
-      v122 = a34;
+      [a2 printWithFormat:@"%-*s%@\n", 18, "Version: ", processes];
+      toNameCopy6 = toName;
       goto LABEL_204;
     }
 
-    v123 = a11;
-    v122 = a34;
-    if (a11 == 0)
+    versionCopy4 = version;
+    toNameCopy6 = toName;
+    if (version == 0)
     {
 LABEL_204:
-      if (a12)
+      if (shortVersion)
       {
-        v159 = SACopySanitizedString(a12, 1, 0);
+        v159 = SACopySanitizedString(shortVersion, 1, 0);
         [a2 printWithFormat:@"%-*s%@\n", 18, "Build Version: ", v159];
       }
 
-      if (a15)
+      if (sourceVersion)
       {
-        v160 = SACopySanitizedString(a15, 1, 0);
+        v160 = SACopySanitizedString(sourceVersion, 1, 0);
         [a2 printWithFormat:@"%-*s%@\n", 18, "Product Build Version: ", v160];
       }
 
-      if (a13)
+      if (buildVersion)
       {
-        v161 = SACopySanitizedString(a13, 1, 0);
+        v161 = SACopySanitizedString(buildVersion, 1, 0);
         [a2 printWithFormat:@"%-*s%@\n", 18, "Project Name: ", v161];
       }
 
-      if (a14)
+      if (projectName)
       {
-        v162 = SACopySanitizedString(a14, 1, 0);
+        v162 = SACopySanitizedString(projectName, 1, 0);
         [a2 printWithFormat:@"%-*s%@\n", 18, "Source Version: ", v162];
       }
 
-      if (v121 && (!a10 || ![v121 isEqualToString:a10] || objc_msgSend(*(v85 + 16), "displayCodesigningIDsMatchingBundleIDs")))
+      if (vendorIDCopy4 && (!identifier || ![vendorIDCopy4 isEqualToString:identifier] || objc_msgSend(*(selfCopy + 16), "displayCodesigningIDsMatchingBundleIDs")))
       {
-        [a2 printWithFormat:@"%-*s%@\n", 18, "Codesigning ID: ", v121];
+        [a2 printWithFormat:@"%-*s%@\n", 18, "Codesigning ID: ", vendorIDCopy4];
       }
 
-      if (a24)
+      if (distributorID)
       {
-        [a2 printWithFormat:@"%-*s%@\n", 18, "Team ID: ", a24];
+        [a2 printWithFormat:@"%-*s%@\n", 18, "Team ID: ", distributorID];
       }
 
-      if (a16)
+      if (productBuildVersion)
       {
-        v163 = [*(v85 + 168) osProductName];
+        osProductName3 = [*(selfCopy + 168) osProductName];
 
         v164 = "Adam ID: ";
-        if (v163)
+        if (osProductName3)
         {
-          v165 = [*(v85 + 168) osProductName];
-          v166 = SAIsEmbeddedPlatform(v165);
+          osProductName4 = [*(selfCopy + 168) osProductName];
+          v166 = SAIsEmbeddedPlatform(osProductName4);
 
           if (!v166)
           {
@@ -13113,12 +13113,12 @@ LABEL_204:
           }
         }
 
-        [a2 printWithFormat:@"%-*s%llu\n", 18, v164, a16];
+        [a2 printWithFormat:@"%-*s%llu\n", 18, v164, productBuildVersion];
       }
 
-      if (a17)
+      if (d)
       {
-        v167 = SACopySanitizedString(a17, 1, 0);
+        v167 = SACopySanitizedString(d, 1, 0);
         [a2 printWithFormat:@"%-*s%@\n", 18, "App External ID: ", v167];
       }
 
@@ -13133,25 +13133,25 @@ LABEL_204:
         [a2 printWithFormat:@"%-*s%s\n", 18, "Is First Party: ", v168];
       }
 
-      if (a20)
+      if (appType)
       {
         [a2 printWithFormat:@"%-*sYes\n", 18, "Is Beta: "];
-        if (a21)
+        if (beta)
         {
-          [a2 printWithFormat:@"%-*s%@\n", 18, "Cohort: ", a21];
+          [a2 printWithFormat:@"%-*s%@\n", 18, "Cohort: ", beta];
         }
       }
 
-      if (a22)
+      if (cohortID)
       {
-        [a2 printWithFormat:@"%-*s%@\n", 18, "Beta Identifier: ", a22];
+        [a2 printWithFormat:@"%-*s%@\n", 18, "Beta Identifier: ", cohortID];
       }
 
-      v356 = v85;
-      if ([v100 count])
+      v356 = selfCopy;
+      if ([pathCopy3 count])
       {
-        v169 = [*(v85 + 168) sharedCaches];
-        if ([v169 count] > 1)
+        sharedCaches = [*(selfCopy + 168) sharedCaches];
+        if ([sharedCaches count] > 1)
         {
 
 LABEL_239:
@@ -13159,7 +13159,7 @@ LABEL_239:
           v368 = 0u;
           v365 = 0u;
           v366 = 0u;
-          v171 = v100;
+          v171 = pathCopy3;
           v172 = [v171 countByEnumeratingWithState:&v365 objects:v376 count:16];
           if (v172)
           {
@@ -13184,26 +13184,26 @@ LABEL_239:
             while (v173);
           }
 
-          v122 = a34;
-          v120 = a25;
+          toNameCopy6 = toName;
+          codesigningIDCopy2 = codesigningID;
           goto LABEL_247;
         }
 
-        v170 = [v100 count];
+        v170 = [pathCopy3 count];
 
         if (v170 > 1)
         {
           goto LABEL_239;
         }
 
-        v205 = [*(v85 + 168) sharedCaches];
-        if ([v205 count])
+        sharedCaches2 = [*(selfCopy + 168) sharedCaches];
+        if ([sharedCaches2 count])
         {
-          v206 = [v100 firstObject];
-          v207 = [MEMORY[0x1E695DFB0] null];
+          firstObject = [pathCopy3 firstObject];
+          null = [MEMORY[0x1E695DFB0] null];
 
-          v208 = v206 == v207;
-          v100 = a7;
+          v208 = firstObject == null;
+          pathCopy3 = path;
           if (v208)
           {
             [a2 printWithFormat:@"%-*s%@\n", 18, "Shared Cache: ", @"None"];
@@ -13215,26 +13215,26 @@ LABEL_239:
         {
         }
 
-        if ([*(v85 + 16) displayAllBinaries])
+        if ([*(selfCopy + 16) displayAllBinaries])
         {
-          v235 = [v100 firstObject];
-          v236 = _shared_cache_display_string(v235);
+          firstObject2 = [pathCopy3 firstObject];
+          v236 = _shared_cache_display_string(firstObject2);
           [a2 printWithFormat:@"%-*s%@\n", 18, "Shared Cache: ", v236];
         }
       }
 
 LABEL_247:
-      if ([v120 count] > 1 || objc_msgSend(v120, "count") == 1 && (objc_msgSend(v120, "allKeys"), v191 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v191, "firstObject"), v192 = objc_claimAutoreleasedReturnValue(), v193 = objc_msgSend(v192, "isEqualToString:", @"none"), v192, v191, (v193 & 1) == 0))
+      if ([codesigningIDCopy2 count] > 1 || objc_msgSend(codesigningIDCopy2, "count") == 1 && (objc_msgSend(codesigningIDCopy2, "allKeys"), v191 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v191, "firstObject"), v192 = objc_claimAutoreleasedReturnValue(), v193 = objc_msgSend(v192, "isEqualToString:", @"none"), v192, v191, (v193 & 1) == 0))
       {
-        v177 = [v120 allKeys];
+        allKeys = [codesigningIDCopy2 allKeys];
         v364[0] = MEMORY[0x1E69E9820];
         v364[1] = 3221225472;
         v364[2] = __1459__SASamplePrinter_addTaskHeaderToStream_displayName_pid_mainBinary_mainBinaryPath_sharedCaches_uid_bundleIdentifier_bundleVersion_bundleShortVersion_bundleBuildVersion_bundleProjectName_bundleSourceVersion_bundleProductBuildVersion_adamID_installerVersionID_developerType_appType_isBeta_cohortID_vendorID_distributorID_codesigningID_teamID_resourceCoalitionSampleCounts_onBehalfOfProcesses_architectureString_kernelVersion_parentName_responsibleName_taskExecedFromName_taskExecedToName_forkTimestamp_startTimestamp_endTimestamp_startSampleIndex_endSampleIndex_numSamples_totalNumSamples_numSamplesSuspended_numSamplesTerminated_startingTaskSize_endingTaskSize_maxTaskSize_startSampleIndexOfMaxTaskSize_endSampleIndexOfMaxTaskSize_numPageins_cpuTimeNs_cpuInstructions_cpuCycles_nonThreadCpuTimeNs_nonThreadCpuInstructions_nonThreadCpuCycles_usesSuddenTermination_allowsIdleExit_memoryLimitStr_jetsamPriorityStr_isTranslocated_hardenedHeap_mteCheckedAllocationsEnabled_mteUserDataAllocationsTagged_mteSoftModeEnabled_mteInheritanceTurnedOn_isRunningBoardManaged_isUnresponsive_timeOfLastResponse_numThreads_numIdleWorkQueueThreads_numOtherHiddenThreads_hieSwallowedException_numSamplesWQExceededConstrainedThreadLimit_numSamplesWQExceededTotalThreadLimit_numSamplesWQExceededCooperativeThreadLimit_numSamplesWQExceededActiveConstrainedThreadLimit_numSamplesTALEngaged_isRunawayMitigated_threadsDeadlocked_threadsBlockedByADeadlock_ioSize_numIOs_isReportHeader___block_invoke;
         v364[3] = &unk_1E86F7A18;
-        v364[4] = v120;
-        v178 = [v177 sortedArrayUsingComparator:v364];
+        v364[4] = codesigningIDCopy2;
+        v178 = [allKeys sortedArrayUsingComparator:v364];
 
-        if (a38)
+        if (index)
         {
           v355 = v86;
           v179 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v178, "count")}];
@@ -13259,11 +13259,11 @@ LABEL_247:
                 }
 
                 v184 = *(*(&v360 + 1) + 8 * j);
-                v185 = [a25 objectForKeyedSubscript:v184];
-                v186 = [v185 unsignedLongLongValue];
+                v185 = [codesigningID objectForKeyedSubscript:v184];
+                unsignedLongLongValue = [v185 unsignedLongLongValue];
 
                 v187 = objc_alloc(MEMORY[0x1E696AEC0]);
-                if (v186 == 1)
+                if (unsignedLongLongValue == 1)
                 {
                   v188 = "";
                 }
@@ -13273,8 +13273,8 @@ LABEL_247:
                   v188 = "s";
                 }
 
-                v189 = [v187 initWithFormat:@"%llu sample%s %@", v186, v188, v184];
-                [v179 addObject:v189];
+                v184 = [v187 initWithFormat:@"%llu sample%s %@", unsignedLongLongValue, v188, v184];
+                [v179 addObject:v184];
               }
 
               v181 = [obj countByEnumeratingWithState:&v360 objects:v375 count:16];
@@ -13285,7 +13285,7 @@ LABEL_247:
 
           v190 = v179;
           v86 = v355;
-          v122 = a34;
+          toNameCopy6 = toName;
           v178 = v354;
         }
 
@@ -13297,43 +13297,43 @@ LABEL_247:
         v194 = [v190 componentsJoinedByString:{@", "}];
         [a2 printWithFormat:@"%-*s%@\n", 18, "Resource Coalition: ", v194];
 
-        v85 = v356;
+        selfCopy = v356;
       }
 
-      if (a26)
+      if (teamID)
       {
-        [a2 printWithFormat:@"%-*s%@\n", 18, "On Behalf Of: ", a26];
+        [a2 printWithFormat:@"%-*s%@\n", 18, "On Behalf Of: ", teamID];
       }
 
-      v195 = a35;
-      if ([*(v85 + 16) systemstatsFormat])
+      timestampCopy3 = timestamp;
+      if ([*(selfCopy + 16) systemstatsFormat])
       {
         goto LABEL_382;
       }
 
-      if (a27)
+      if (counts)
       {
-        [a2 printWithFormat:@"%-*s%@\n", 18, "Architecture: ", a27];
+        [a2 printWithFormat:@"%-*s%@\n", 18, "Architecture: ", counts];
       }
 
-      if (a31)
+      if (parentName)
       {
-        [a2 printWithFormat:@"%-*s%@\n", 18, "Execed from: ", a31];
+        [a2 printWithFormat:@"%-*s%@\n", 18, "Execed from: ", parentName];
       }
 
-      if (a32)
+      if (responsibleName)
       {
-        [a2 printWithFormat:@"%-*s%@\n", 18, "Execed to: ", a32];
+        [a2 printWithFormat:@"%-*s%@\n", 18, "Execed to: ", responsibleName];
       }
 
-      if (a29)
+      if (string)
       {
-        [a2 printWithFormat:@"%-*s%@\n", 18, "Parent: ", a29];
+        [a2 printWithFormat:@"%-*s%@\n", 18, "Parent: ", string];
       }
 
-      if (a30)
+      if (kernelVersion)
       {
-        [a2 printWithFormat:@"%-*s%@\n", 18, "Responsible: ", a30];
+        [a2 printWithFormat:@"%-*s%@\n", 18, "Responsible: ", kernelVersion];
       }
 
       if (a64)
@@ -13341,20 +13341,20 @@ LABEL_247:
         [a2 printWithFormat:@"%-*sYes\n", 18, "RunningBoard Mgd: "];
       }
 
-      if (a4 != -1)
+      if (name != -1)
       {
-        [a2 printWithFormat:@"%-*s%i\n", 18, "PID: ", a4];
+        [a2 printWithFormat:@"%-*s%i\n", 18, "PID: ", name];
       }
 
-      if (a8 != -314)
+      if (caches != -314)
       {
-        [a2 printWithFormat:@"%-*s%d\n", 18, "UID: ", a8];
+        [a2 printWithFormat:@"%-*s%d\n", 18, "UID: ", caches];
       }
 
-      if (a54)
+      if (cpuInstructions)
       {
         [a2 printWithFormat:@"%-*sTracked", 18, "Sudden Term: "];
-        if (a55)
+        if (cpuCycles)
         {
           [a2 appendString:@" (allows idle exit)"];
         }
@@ -13362,22 +13362,22 @@ LABEL_247:
         [a2 appendString:@"\n"];
       }
 
-      if (a56)
+      if (termination)
       {
-        [a2 printWithFormat:@"%-*s%@\n", 18, "Memory Limit: ", a56];
+        [a2 printWithFormat:@"%-*s%@\n", 18, "Memory Limit: ", termination];
       }
 
-      if (a57)
+      if (exit)
       {
-        [a2 printWithFormat:@"%-*s%@\n", 18, "Jetsam Priority: ", a57];
+        [a2 printWithFormat:@"%-*s%@\n", 18, "Jetsam Priority: ", exit];
       }
 
-      if (!a42)
+      if (!suspended)
       {
 LABEL_316:
-        if (a47)
+        if (ofMaxTaskSize)
         {
-          [a2 printWithFormat:@"%-*s%u pages\n", 18, "Pageins: ", a47];
+          [a2 printWithFormat:@"%-*s%u pages\n", 18, "Pageins: ", ofMaxTaskSize];
         }
 
         if (a79)
@@ -13393,11 +13393,11 @@ LABEL_316:
           }
 
           v217 = SAFormattedBytesEx(a78, 1, 0, 1, 0);
-          [a2 printWithFormat:@"%-*s%lu I/O%s (%@)\n", 18, "I/O: ", a79, v216, v217, v348, a52];
+          [a2 printWithFormat:@"%-*s%lu I/O%s (%@)\n", 18, "I/O: ", a79, v216, v217, streamCopy, cycles];
         }
 
-        [a33 wallTime];
-        v85 = v356;
+        [fromName wallTime];
+        selfCopy = v356;
         if (v218 != 0.0)
         {
           [v356[4] wallTime];
@@ -13405,7 +13405,7 @@ LABEL_316:
           {
             [v356[4] wallTime];
             v221 = v220;
-            [a33 wallTime];
+            [fromName wallTime];
             v223 = v221 - v222;
             if (v223 < 0.0)
             {
@@ -13416,14 +13416,14 @@ LABEL_316:
           }
         }
 
-        if (!v122 || ([v122 gt:v356[4]] & 1) == 0 && !objc_msgSend(v356[2], "microstackshotsFormat"))
+        if (!toNameCopy6 || ([toNameCopy6 gt:v356[4]] & 1) == 0 && !objc_msgSend(v356[2], "microstackshotsFormat"))
         {
           goto LABEL_357;
         }
 
-        if ([v122 gt:v356[4]])
+        if ([toNameCopy6 gt:v356[4]])
         {
-          v224 = v122;
+          v224 = toNameCopy6;
         }
 
         else
@@ -13441,12 +13441,12 @@ LABEL_316:
             [v356[4] machContTimeSeconds];
             if (v228 != 0.0)
             {
-              [v122 machContTimeSeconds];
+              [toNameCopy6 machContTimeSeconds];
               if (v229 != 0.0)
               {
                 [v356[4] wallTime];
                 v231 = v230;
-                [v122 machContTimeSeconds];
+                [toNameCopy6 machContTimeSeconds];
                 v233 = v232;
                 [v356[4] machContTimeSeconds];
 LABEL_345:
@@ -13458,12 +13458,12 @@ LABEL_345:
             [v356[4] machAbsTimeSeconds];
             if (v237 != 0.0)
             {
-              [v122 machAbsTimeSeconds];
+              [toNameCopy6 machAbsTimeSeconds];
               if (v238 != 0.0)
               {
                 [v356[4] wallTime];
                 v231 = v239;
-                [v122 machAbsTimeSeconds];
+                [toNameCopy6 machAbsTimeSeconds];
                 v233 = v240;
                 [v356[4] machAbsTimeSeconds];
                 goto LABEL_345;
@@ -13480,10 +13480,10 @@ LABEL_346:
             [v356[4] wallTime];
             if (v241 != 0.0)
             {
-              v242 = [v356[2] displayDetailedWallTime];
+              displayDetailedWallTime = [v356[2] displayDetailedWallTime];
               [v356[4] wallTime];
-              v208 = v242 == 0;
-              v85 = v356;
+              v208 = displayDetailedWallTime == 0;
+              selfCopy = v356;
               if (v208)
               {
                 v244 = 3;
@@ -13514,44 +13514,44 @@ LABEL_346:
             v247 = _CopyStringForTime(v246, v245);
             [a2 printWithFormat:@"%-*s%@\n", 18, "Start time: ", v247];
 
-            v85 = v356;
+            selfCopy = v356;
           }
         }
 
 LABEL_357:
-        if (v195 && (([v195 lt:*(v85 + 40)] & 1) != 0 || objc_msgSend(*(v85 + 16), "microstackshotsFormat")))
+        if (timestampCopy3 && (([timestampCopy3 lt:*(selfCopy + 40)] & 1) != 0 || objc_msgSend(*(selfCopy + 16), "microstackshotsFormat")))
         {
-          if ([v195 lt:*(v85 + 40)])
+          if ([timestampCopy3 lt:*(selfCopy + 40)])
           {
-            v248 = v195;
+            v248 = timestampCopy3;
           }
 
           else
           {
-            v248 = *(v85 + 40);
+            v248 = *(selfCopy + 40);
           }
 
           [v248 wallTime];
           v250 = v249;
           if (v249 == 0.0)
           {
-            [*(v85 + 40) wallTime];
+            [*(selfCopy + 40) wallTime];
             if (v251 != 0.0)
             {
-              [*(v85 + 40) machContTimeSeconds];
-              if (v252 == 0.0 || ([v195 machContTimeSeconds], v253 == 0.0))
+              [*(selfCopy + 40) machContTimeSeconds];
+              if (v252 == 0.0 || ([timestampCopy3 machContTimeSeconds], v253 == 0.0))
               {
-                [*(v85 + 40) machAbsTimeSeconds];
+                [*(selfCopy + 40) machAbsTimeSeconds];
                 if (v259 != 0.0)
                 {
-                  [v195 machAbsTimeSeconds];
+                  [timestampCopy3 machAbsTimeSeconds];
                   if (v260 != 0.0)
                   {
-                    [*(v85 + 40) wallTime];
+                    [*(selfCopy + 40) wallTime];
                     v262 = v261;
-                    [*(v85 + 40) machAbsTimeSeconds];
+                    [*(selfCopy + 40) machAbsTimeSeconds];
                     v264 = v263;
-                    [v195 machAbsTimeSeconds];
+                    [timestampCopy3 machAbsTimeSeconds];
                     v250 = v262 + v264 - v265;
                   }
                 }
@@ -13559,11 +13559,11 @@ LABEL_357:
 
               else
               {
-                [*(v85 + 40) wallTime];
+                [*(selfCopy + 40) wallTime];
                 v255 = v254;
-                [*(v85 + 40) machContTimeSeconds];
+                [*(selfCopy + 40) machContTimeSeconds];
                 v257 = v256;
-                [v195 machContTimeSeconds];
+                [timestampCopy3 machContTimeSeconds];
                 v250 = v255 - (v257 - v258);
               }
             }
@@ -13571,15 +13571,15 @@ LABEL_357:
 
           if (v250 != 0.0)
           {
-            if ([*(v85 + 16) omitAbsoluteWallTimes])
+            if ([*(selfCopy + 16) omitAbsoluteWallTimes])
             {
-              [*(v85 + 32) wallTime];
+              [*(selfCopy + 32) wallTime];
               if (v266 != 0.0)
               {
-                v267 = [*(v85 + 16) displayDetailedWallTime];
+                displayDetailedWallTime2 = [*(selfCopy + 16) displayDetailedWallTime];
                 [v356[4] wallTime];
-                v208 = v267 == 0;
-                v85 = v356;
+                v208 = displayDetailedWallTime2 == 0;
+                selfCopy = v356;
                 if (v208)
                 {
                   v269 = 3;
@@ -13596,7 +13596,7 @@ LABEL_357:
 
             else
             {
-              if ([*(v85 + 16) displayDetailedWallTime])
+              if ([*(selfCopy + 16) displayDetailedWallTime])
               {
                 v271 = 9;
               }
@@ -13610,7 +13610,7 @@ LABEL_357:
               v272 = _CopyStringForTime(v271, v270);
               [a2 printWithFormat:@"%-*s%@\n", 18, "End time: ", v272];
 
-              v85 = v356;
+              selfCopy = v356;
             }
           }
         }
@@ -13621,36 +13621,36 @@ LABEL_382:
           goto LABEL_405;
         }
 
-        [a2 printWithFormat:@"%-*s%lu", 18, "Num samples: ", a38];
-        if (*(v85 + 48) == 1)
+        [a2 printWithFormat:@"%-*s%lu", 18, "Num samples: ", index];
+        if (*(selfCopy + 48) == 1)
         {
-          if (a36 == 0x7FFFFFFFFFFFFFFFLL)
+          if (startTimestamp == 0x7FFFFFFFFFFFFFFFLL)
           {
-            if (v122 && [v122 gt:*(v85 + 40)])
+            if (toNameCopy6 && [toNameCopy6 gt:*(selfCopy + 40)])
             {
-              v273 = v122;
+              v273 = toNameCopy6;
             }
 
             else
             {
-              v273 = v195;
+              v273 = timestampCopy3;
               if (!v273)
               {
                 goto LABEL_405;
               }
             }
 
-            v279 = [(SASamplePrinter *)v85 timeIndexDescriptionForTimestamp:v273];
+            v279 = [(SASamplePrinter *)selfCopy timeIndexDescriptionForTimestamp:v273];
             [a2 printWithFormat:@" (task existed only %@)\n", v279];
 
-            v85 = v356;
+            selfCopy = v356;
 LABEL_405:
-            if (([*(v85 + 16) systemstatsFormat] & 1) == 0)
+            if (([*(selfCopy + 16) systemstatsFormat] & 1) == 0)
             {
-              if (a48)
+              if (indexOfMaxTaskSize)
               {
                 [a2 printWithFormat:@"%-*s", 18, "CPU Time: "];
-                if ([*(v85 + 16) displayDetailedCpuTime])
+                if ([*(selfCopy + 16) displayDetailedCpuTime])
                 {
                   v280 = 9;
                 }
@@ -13660,17 +13660,17 @@ LABEL_405:
                   v280 = 3;
                 }
 
-                saos_printf_seconds(a2, a48, v280);
-                if (a50)
+                saos_printf_seconds(a2, indexOfMaxTaskSize, v280);
+                if (ns)
                 {
-                  saos_printf_cycles_instructions(a2, a50, a49, [*(v85 + 16) displayDetailedCpuTime]);
+                  saos_printf_cycles_instructions(a2, ns, pageins, [*(selfCopy + 16) displayDetailedCpuTime]);
                 }
 
                 [a2 appendString:@"\n"];
-                v281 = [*(v85 + 16) displayDetailedCpuTime];
-                if (a51)
+                displayDetailedCpuTime = [*(selfCopy + 16) displayDetailedCpuTime];
+                if (instructions)
                 {
-                  v282 = v281;
+                  v282 = displayDetailedCpuTime;
                 }
 
                 else
@@ -13678,10 +13678,10 @@ LABEL_405:
                   v282 = 0;
                 }
 
-                if (a51 > 0x98967F || v282)
+                if (instructions > 0x98967F || v282)
                 {
                   [a2 printWithFormat:@"%-*s", 18, "CPU Time (exited threads): "];
-                  if ([*(v85 + 16) displayDetailedCpuTime])
+                  if ([*(selfCopy + 16) displayDetailedCpuTime])
                   {
                     v283 = 9;
                   }
@@ -13691,46 +13691,46 @@ LABEL_405:
                     v283 = 3;
                   }
 
-                  saos_printf_seconds(a2, a51, v283);
-                  if (a53)
+                  saos_printf_seconds(a2, instructions, v283);
+                  if (timeNs)
                   {
-                    saos_printf_cycles_instructions(a2, a53, v349, [*(v85 + 16) displayDetailedCpuTime]);
+                    saos_printf_cycles_instructions(a2, timeNs, cyclesCopy, [*(selfCopy + 16) displayDetailedCpuTime]);
                   }
 
                   [a2 appendString:@"\n"];
                 }
               }
 
-              if (a58)
+              if (str)
               {
                 [a2 printWithFormat:@"%-*sTranslocated\n", 18, "Note: "];
               }
 
-              if (a59)
+              if (priorityStr)
               {
                 [a2 printWithFormat:@"%-*sHas hardened heap\n", 18, "Note: "];
               }
 
-              if ((a60 & 1) != 0 || (a61 & 1) != 0 || (a62 & 1) != 0 || a63)
+              if ((translocated & 1) != 0 || (heap & 1) != 0 || (enabled & 1) != 0 || tagged)
               {
                 v284 = objc_alloc_init(MEMORY[0x1E695DF70]);
                 v285 = v284;
-                if (a60)
+                if (translocated)
                 {
                   [v284 addObject:@"enabled"];
                 }
 
-                if (a61)
+                if (heap)
                 {
                   [v285 addObject:@"pure-data"];
                 }
 
-                if (a62)
+                if (enabled)
                 {
                   [v285 addObject:@"soft-mode"];
                 }
 
-                if (a63)
+                if (tagged)
                 {
                   [v285 addObject:@"inheritance"];
                 }
@@ -13738,40 +13738,40 @@ LABEL_405:
                 v286 = [v285 componentsJoinedByString:{@", "}];
                 [a2 printWithFormat:@"%-*s%@\n", 18, "MTE Config: ", v286];
 
-                v85 = v356;
+                selfCopy = v356;
               }
 
-              if (a40)
+              if (samples)
               {
                 v287 = "s";
-                if (a40 == 1)
+                if (samples == 1)
                 {
                   v287 = "";
                 }
 
-                [a2 printWithFormat:@"%-*sSuspended for %lu sample%s\n", 18, "Note: ", a40, v287];
+                [a2 printWithFormat:@"%-*sSuspended for %lu sample%s\n", 18, "Note: ", samples, v287];
               }
 
-              if (a41)
+              if (numSamples)
               {
                 v288 = "s";
-                if (a41 == 1)
+                if (numSamples == 1)
                 {
                   v288 = "";
                 }
 
-                [a2 printWithFormat:@"%-*sTerminated (zombie) for %lu sample%s\n", 18, "Note: ", a41, v288];
+                [a2 printWithFormat:@"%-*sTerminated (zombie) for %lu sample%s\n", 18, "Note: ", numSamples, v288];
               }
 
               if (a65)
               {
                 [a2 printWithFormat:@"%-*sUnresponsive", 18, "Note: "];
-                if (a9 > 0.0)
+                if (uid > 0.0)
                 {
-                  [*(v85 + 32) wallTime];
-                  if (v289 + -2.0 >= a9)
+                  [*(selfCopy + 32) wallTime];
+                  if (v289 + -2.0 >= uid)
                   {
-                    [a2 printWithFormat:@" for %.0f seconds before sampling", v289 - a9];
+                    [a2 printWithFormat:@" for %.0f seconds before sampling", v289 - uid];
                   }
                 }
 
@@ -13783,8 +13783,8 @@ LABEL_405:
                 [a2 printWithFormat:@"%-*s%lu\n", 18, "Num threads: ", a66];
               }
 
-              v290 = [*(v85 + 16) displayIdleWorkQueueThreads];
-              if (a67 && (v290 & 1) == 0)
+              displayIdleWorkQueueThreads = [*(selfCopy + 16) displayIdleWorkQueueThreads];
+              if (a67 && (displayIdleWorkQueueThreads & 1) == 0)
               {
                 v291 = "s";
                 if (a67 == 1)
@@ -13829,29 +13829,29 @@ LABEL_405:
 
               if (a70)
               {
-                [a2 printWithFormat:@"%-*s%4d  (too many dispatch threads blocked in synchronous operations)\n", 18, "Dispatch Thread Soft Limit Reached: ", objc_msgSend(*(v85 + 168), "workQueueSoftThreadLimit")];
-                v294 = [v356[21] workQueueSoftThreadLimit];
+                [a2 printWithFormat:@"%-*s%4d  (too many dispatch threads blocked in synchronous operations)\n", 18, "Dispatch Thread Soft Limit Reached: ", objc_msgSend(*(selfCopy + 168), "workQueueSoftThreadLimit")];
+                workQueueSoftThreadLimit = [v356[21] workQueueSoftThreadLimit];
                 v295 = "s";
                 if (a70 == 1)
                 {
                   v295 = "";
                 }
 
-                v85 = v356;
-                [a2 printWithFormat:@"%-*sWorkqueue exceeded constrained thread limit (%u) for %lu sample%s (too many dispatch threads blocked in synchronous operations)\n", 18, "Note: ", v294, a70, v295];
+                selfCopy = v356;
+                [a2 printWithFormat:@"%-*sWorkqueue exceeded constrained thread limit (%u) for %lu sample%s (too many dispatch threads blocked in synchronous operations)\n", 18, "Note: ", workQueueSoftThreadLimit, a70, v295];
               }
 
               if (a71)
               {
-                [a2 printWithFormat:@"%-*s%4d  (too many dispatch threads blocked in synchronous operations)\n", 18, "Dispatch Thread Hard Limit Reached: ", objc_msgSend(*(v85 + 168), "workQueueHardThreadLimit")];
-                v296 = [*(v85 + 168) workQueueHardThreadLimit];
+                [a2 printWithFormat:@"%-*s%4d  (too many dispatch threads blocked in synchronous operations)\n", 18, "Dispatch Thread Hard Limit Reached: ", objc_msgSend(*(selfCopy + 168), "workQueueHardThreadLimit")];
+                workQueueHardThreadLimit = [*(selfCopy + 168) workQueueHardThreadLimit];
                 v297 = "s";
                 if (a71 == 1)
                 {
                   v297 = "";
                 }
 
-                [a2 printWithFormat:@"%-*sWorkqueue exceeded total thread limit (%u) for %lu sample%s (too many dispatch threads blocked in synchronous operations)\n", 18, "Note: ", v296, a71, v297];
+                [a2 printWithFormat:@"%-*sWorkqueue exceeded total thread limit (%u) for %lu sample%s (too many dispatch threads blocked in synchronous operations)\n", 18, "Note: ", workQueueHardThreadLimit, a71, v297];
               }
 
               if (a72)
@@ -13914,23 +13914,23 @@ LABEL_405:
             goto LABEL_498;
           }
 
-          v275 = [*(v85 + 16) forceOneBasedTimeIndexes];
-          v276 = a36 + 1;
-          if (v275)
+          forceOneBasedTimeIndexes = [*(selfCopy + 16) forceOneBasedTimeIndexes];
+          v276 = startTimestamp + 1;
+          if (forceOneBasedTimeIndexes)
           {
-            v276 -= *(v85 + 56);
+            v276 -= *(selfCopy + 56);
           }
 
           objc_msgSend(a2, "printWithFormat:", @" (%lu"), v276;
-          if (a36 < a37)
+          if (startTimestamp < endTimestamp)
           {
-            if (*(v85 + 48) == 1)
+            if (*(selfCopy + 48) == 1)
             {
-              v277 = [*(v85 + 16) forceOneBasedTimeIndexes];
-              v278 = a37 + 1;
-              if (v277)
+              forceOneBasedTimeIndexes2 = [*(selfCopy + 16) forceOneBasedTimeIndexes];
+              v278 = endTimestamp + 1;
+              if (forceOneBasedTimeIndexes2)
               {
-                v278 -= *(v85 + 56);
+                v278 -= *(selfCopy + 56);
               }
             }
 
@@ -13948,15 +13948,15 @@ LABEL_404:
           goto LABEL_405;
         }
 
-        if (!a39 || ([*(v85 + 16) systemstatsFormat] & 1) != 0)
+        if (!sampleIndex || ([*(selfCopy + 16) systemstatsFormat] & 1) != 0)
         {
           v274 = @"\n";
           goto LABEL_404;
         }
 
-        if (a39 >= a38)
+        if (sampleIndex >= index)
         {
-          [a2 printWithFormat:@" (%.0f%%)\n", a38 * 100.0 / a39];
+          [a2 printWithFormat:@" (%.0f%%)\n", index * 100.0 / sampleIndex];
           goto LABEL_405;
         }
 
@@ -13965,63 +13965,63 @@ LABEL_505:
         v324 = _sa_logt();
         if (os_log_type_enabled(v324, OS_LOG_TYPE_ERROR))
         {
-          v325 = [v348 UTF8String];
+          uTF8String = [streamCopy UTF8String];
           *buf = 136315650;
-          v370 = v325;
+          v370 = uTF8String;
           v371 = 2048;
-          v372 = a39;
+          sampleIndexCopy = sampleIndex;
           v373 = 2048;
-          v374 = a38;
+          indexCopy3 = index;
           _os_log_error_impl(&dword_1E0E2F000, v324, OS_LOG_TYPE_ERROR, "%s: totalNumSamples %lu < numSamples %lu", buf, 0x20u);
         }
 
         *__error() = v323;
-        v326 = [v348 UTF8String];
-        _SASetCrashLogMessage(8334, "%s: totalNumSamples %lu < numSamples %lu", v327, v328, v329, v330, v331, v332, v326);
+        uTF8String2 = [streamCopy UTF8String];
+        _SASetCrashLogMessage(8334, "%s: totalNumSamples %lu < numSamples %lu", v327, v328, v329, v330, v331, v332, uTF8String2);
         _os_crash();
         __break(1u);
       }
 
-      v196 = SAFormattedBytesEx(a42, 1, 0, 1, 0);
+      v196 = SAFormattedBytesEx(suspended, 1, 0, 1, 0);
       [a2 printWithFormat:@"%-*s%@", 18, "Footprint: ", v196];
 
-      if (!a43 || (v197 = 1, a42 * 1.05 > a43) && a43 * 1.05 > a42)
+      if (!terminated || (displayAllTaskSizeChanges = 1, suspended * 1.05 > terminated) && terminated * 1.05 > suspended)
       {
-        v197 = [v356[2] displayAllTaskSizeChanges];
+        displayAllTaskSizeChanges = [v356[2] displayAllTaskSizeChanges];
       }
 
-      v198 = a43 - a42;
-      if (a43 >= a42 && v197)
+      v198 = terminated - suspended;
+      if (terminated >= suspended && displayAllTaskSizeChanges)
       {
-        v199 = a43;
+        suspendedCopy = terminated;
       }
 
       else
       {
-        v199 = a42;
+        suspendedCopy = suspended;
       }
 
-      if (v199 * 1.05 <= a44)
+      if (suspendedCopy * 1.05 <= size)
       {
-        v209 = SAFormattedBytesEx(a43, 1, 0, 1, 0);
+        v209 = SAFormattedBytesEx(terminated, 1, 0, 1, 0);
         v210 = SAFormattedSignedBytes(v198, 1, 0);
         [a2 printWithFormat:@" -> %@ (%@)", v209, v210];
 
-        v195 = a35;
+        timestampCopy3 = timestamp;
       }
 
       else
       {
-        v200 = [v356[2] displayAllTaskSizeChanges];
-        v201 = v197 | v200;
-        v195 = a35;
+        displayAllTaskSizeChanges2 = [v356[2] displayAllTaskSizeChanges];
+        v201 = displayAllTaskSizeChanges | displayAllTaskSizeChanges2;
+        timestampCopy3 = timestamp;
         if ((v201 & 1) == 0)
         {
           goto LABEL_315;
         }
 
-        v202 = v200;
-        v203 = SAFormattedBytesEx(a43, 1, 0, 1, 0);
+        v202 = displayAllTaskSizeChanges2;
+        v203 = SAFormattedBytesEx(terminated, 1, 0, 1, 0);
         v204 = SAFormattedSignedBytes(v198, 1, 0);
         [a2 printWithFormat:@" -> %@ (%@)", v203, v204];
 
@@ -14033,8 +14033,8 @@ LABEL_315:
         }
       }
 
-      v211 = [(SASamplePrinter *)v356 timeIndexDescriptionForStartSampleIndex:a45 endSampleIndex:a46 formattedToLength:0];
-      v212 = SAFormattedBytesEx(a44, 1, 0, 1, 0);
+      v211 = [(SASamplePrinter *)v356 timeIndexDescriptionForStartSampleIndex:taskSize endSampleIndex:maxTaskSize formattedToLength:0];
+      v212 = SAFormattedBytesEx(size, 1, 0, 1, 0);
       v213 = v212;
       v214 = " ";
       if (!v211)
@@ -14053,20 +14053,20 @@ LABEL_315:
       goto LABEL_315;
     }
 
-    if (*(&a11 + 1))
+    if (*(&version + 1))
     {
-      v124 = SACopySanitizedString(*(&a11 + 1), 1, 0);
+      v124 = SACopySanitizedString(*(&version + 1), 1, 0);
 
-      v123 = a11;
-      if (a11)
+      versionCopy4 = version;
+      if (version)
       {
 LABEL_85:
-        v125 = SACopySanitizedString(v123, 1, 0);
+        v125 = SACopySanitizedString(versionCopy4, 1, 0);
 
 LABEL_203:
         [a2 printWithFormat:@"%-*s%@ (%@)\n", 18, "Version: ", v124, v125];
 
-        v121 = a23;
+        vendorIDCopy4 = vendorID;
         goto LABEL_204;
       }
     }
@@ -14074,7 +14074,7 @@ LABEL_203:
     else
     {
       v124 = @"???";
-      if (a11)
+      if (version)
       {
         goto LABEL_85;
       }
@@ -14084,38 +14084,38 @@ LABEL_203:
     goto LABEL_203;
   }
 
-  if (![*(v85 + 16) systemstatsFormat])
+  if (![*(selfCopy + 16) systemstatsFormat])
   {
-    v104 = [a5 uuid];
-    v105 = [v104 UUIDString];
-    [a2 printWithFormat:@"%-*s%@\n", 18, "UUID: ", v105];
+    uuid2 = [pid uuid];
+    uUIDString2 = [uuid2 UUIDString];
+    [a2 printWithFormat:@"%-*s%@\n", 18, "UUID: ", uUIDString2];
 
 LABEL_72:
     goto LABEL_73;
   }
 
-  v101 = [*(v85 + 88) objectForKeyedSubscript:a5];
+  v101 = [*(selfCopy + 88) objectForKeyedSubscript:pid];
   if (v101)
   {
     v102 = v101;
-    v103 = [MEMORY[0x1E695DFB0] null];
-    v104 = [v102 objectForKeyedSubscript:v103];
+    null2 = [MEMORY[0x1E695DFB0] null];
+    uuid2 = [v102 objectForKeyedSubscript:null2];
 
-    if (v104)
+    if (uuid2)
     {
 
       v86 = a77;
 LABEL_71:
-      [a2 printWithFormat:@"%-*s%lu\n", 18, "UUID: ", objc_msgSend(v104, "unsignedLongValue")];
-      v100 = a7;
+      [a2 printWithFormat:@"%-*s%lu\n", 18, "UUID: ", objc_msgSend(uuid2, "unsignedLongValue")];
+      pathCopy3 = path;
       goto LABEL_72;
     }
 
-    v113 = [v102 allValues];
-    v104 = [v113 firstObject];
+    allValues = [v102 allValues];
+    uuid2 = [allValues firstObject];
 
     v86 = a77;
-    if (v104)
+    if (uuid2)
     {
       goto LABEL_71;
     }
@@ -14125,28 +14125,28 @@ LABEL_71:
   v334 = _sa_logt();
   if (os_log_type_enabled(v334, OS_LOG_TYPE_ERROR))
   {
-    v335 = [v348 UTF8String];
-    v336 = [a5 uuid];
-    v337 = [v336 UUIDString];
+    uTF8String3 = [streamCopy UTF8String];
+    uuid3 = [pid uuid];
+    uUIDString3 = [uuid3 UUIDString];
     *buf = 136315394;
-    v370 = v335;
+    v370 = uTF8String3;
     v371 = 2080;
-    v372 = [v337 UTF8String];
+    sampleIndexCopy = [uUIDString3 UTF8String];
     _os_log_error_impl(&dword_1E0E2F000, v334, OS_LOG_TYPE_ERROR, "%s: no index for main binary %s, required by systemstats format", buf, 0x16u);
   }
 
   *__error() = v333;
-  v338 = [v348 UTF8String];
-  v339 = [a5 uuid];
-  v340 = [v339 UUIDString];
-  [v340 UTF8String];
-  _SASetCrashLogMessage(8026, "%s: no index for main binary %s, required by systemstats format", v341, v342, v343, v344, v345, v346, v338);
+  uTF8String4 = [streamCopy UTF8String];
+  uuid4 = [pid uuid];
+  uUIDString4 = [uuid4 UUIDString];
+  [uUIDString4 UTF8String];
+  _SASetCrashLogMessage(8026, "%s: no index for main binary %s, required by systemstats format", v341, v342, v343, v344, v345, v346, uTF8String4);
 
   _os_crash();
   __break(1u);
 }
 
-- (uint64_t)shouldPrintTimeOutsideSamplingRange:(uint64_t)a1
+- (uint64_t)shouldPrintTimeOutsideSamplingRange:(uint64_t)range
 {
   v17 = *MEMORY[0x1E69E9840];
   if (a2 < 0.0)
@@ -14166,7 +14166,7 @@ LABEL_71:
     __break(1u);
   }
 
-  [*(a1 + 168) attemptedSamplingInterval];
+  [*(range + 168) attemptedSamplingInterval];
   v4 = v3 != 0.0;
   if (v3 >= a2)
   {
@@ -14337,15 +14337,15 @@ void __30__SASamplePrinter_printHeader__block_invoke_1352(uint64_t a1, void *a2,
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (id)binaryImagesHitByTask:(uint64_t)a1
+- (id)binaryImagesHitByTask:(uint64_t)task
 {
-  if (!a1)
+  if (!task)
   {
     v14 = 0;
     goto LABEL_23;
   }
 
-  v4 = *(a1 + 136);
+  v4 = *(task + 136);
   if (v4)
   {
     if (v4 == a2)
@@ -14356,47 +14356,47 @@ void __30__SASamplePrinter_printHeader__block_invoke_1352(uint64_t a1, void *a2,
 
   else
   {
-    v5 = [*(a1 + 168) targetProcess];
+    targetProcess = [*(task + 168) targetProcess];
 
-    if (v5 == a2)
+    if (targetProcess == a2)
     {
       goto LABEL_13;
     }
   }
 
-  v6 = *(a1 + 16);
+  v6 = *(task + 16);
   if (v6)
   {
     v7 = *(v6 + 168);
     if (v7 != 1 && (v7 || (*(v6 + 11) & 1) != 0))
     {
-      v8 = [*(a1 + 168) targetProcesses];
-      v9 = [v8 containsObject:a2];
+      targetProcesses = [*(task + 168) targetProcesses];
+      v9 = [targetProcesses containsObject:a2];
 
-      v10 = [a2 mainBinary];
-      if (v10)
+      mainBinary = [a2 mainBinary];
+      if (mainBinary)
       {
-        if (([*(a1 + 16) taskAggregation] != 3) | v9 & 1)
+        if (([*(task + 16) taskAggregation] != 3) | v9 & 1)
         {
-          v11 = 0;
-          v12 = 0;
+          sharedCache = 0;
+          resourceCoalitionID = 0;
         }
 
         else
         {
-          v12 = [a2 resourceCoalitionID];
-          if (v12)
+          resourceCoalitionID = [a2 resourceCoalitionID];
+          if (resourceCoalitionID)
           {
-            v11 = [a2 sharedCache];
+            sharedCache = [a2 sharedCache];
           }
 
           else
           {
-            v11 = 0;
+            sharedCache = 0;
           }
         }
 
-        v13 = [[SATaskAggregationIdentifier alloc] initWithBinary:v10 sharedCache:v11 rcid:v12 isTarget:v9];
+        v13 = [[SATaskAggregationIdentifier alloc] initWithBinary:mainBinary sharedCache:sharedCache rcid:resourceCoalitionID isTarget:v9];
       }
 
       else
@@ -14411,11 +14411,11 @@ void __30__SASamplePrinter_printHeader__block_invoke_1352(uint64_t a1, void *a2,
 LABEL_13:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a2];
 LABEL_20:
-  v14 = [*(a1 + 80) objectForKeyedSubscript:v13];
+  v14 = [*(task + 80) objectForKeyedSubscript:v13];
   if (!v14)
   {
     v14 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:10];
-    [*(a1 + 80) setObject:v14 forKeyedSubscript:v13];
+    [*(task + 80) setObject:v14 forKeyedSubscript:v13];
   }
 
 LABEL_23:
@@ -14456,28 +14456,28 @@ void __30__SASamplePrinter_printHeader__block_invoke_1379(uint64_t a1, uint64_t 
   }
 }
 
-- (void)addStackForDispatchQueue:(void *)a3 orSwiftTaskStates:(char *)a4 orThread:(void *)a5 andThreadStateIndexes:(uint64_t)a6 task:(void *)a7 toRootObjects:(char)a8 nameChanges:(char)a9 dispatchQueueChanges:(char)a10 swiftTaskChanges:(char)a11 threadChanges:(char)a12 priorityChanges:(uint64_t)a13 microstackshotSummary:(unsigned __int8)a14 onlyHeaviestStack:(char)a15 includeState:
+- (void)addStackForDispatchQueue:(void *)queue orSwiftTaskStates:(char *)states orThread:(void *)thread andThreadStateIndexes:(uint64_t)indexes task:(void *)task toRootObjects:(char)objects nameChanges:(char)changes dispatchQueueChanges:(char)self0 swiftTaskChanges:(char)self1 threadChanges:(char)self2 priorityChanges:(uint64_t)self3 microstackshotSummary:(unsigned __int8)self4 onlyHeaviestStack:(char)self5 includeState:
 {
   v175 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_55;
   }
 
-  LOBYTE(v15) = a8;
-  v19 = a1;
-  LODWORD(v20) = a14;
+  LOBYTE(v15) = objects;
+  statesCopy = self;
+  LODWORD(v20) = summary;
   v21 = objc_autoreleasePoolPush();
-  if ((a14 & 1) == 0)
+  if ((summary & 1) == 0)
   {
-    v91 = [*(v19 + 16) printHeavyStacks];
-    if (a3)
+    printHeavyStacks = [*(statesCopy + 16) printHeavyStacks];
+    if (queue)
     {
       goto LABEL_8;
     }
 
 LABEL_6:
-    if (!a2 && a4)
+    if (!a2 && states)
     {
       goto LABEL_14;
     }
@@ -14485,66 +14485,66 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v91 = 1;
-  if (!a3)
+  printHeavyStacks = 1;
+  if (!queue)
   {
     goto LABEL_6;
   }
 
 LABEL_8:
-  if ((a3 || !a2 || a4) && (a2 || a4 || !a3))
+  if ((queue || !a2 || states) && (a2 || states || !queue))
   {
     goto LABEL_62;
   }
 
 LABEL_14:
-  LODWORD(v22) = [*(v19 + 16) displayBlockedReasons];
+  LODWORD(v22) = [*(statesCopy + 16) displayBlockedReasons];
   if (v22)
   {
-    v23 = [*(v19 + 16) displayBlockedReasonsLackingProcessOwners];
-    if ([*(v19 + 16) displayAddressesInBlockedReasons])
+    displayBlockedReasonsLackingProcessOwners = [*(statesCopy + 16) displayBlockedReasonsLackingProcessOwners];
+    if ([*(statesCopy + 16) displayAddressesInBlockedReasons])
     {
-      v23 |= 2uLL;
+      displayBlockedReasonsLackingProcessOwners |= 2uLL;
     }
   }
 
   else
   {
-    v23 = 0;
+    displayBlockedReasonsLackingProcessOwners = 0;
   }
 
-  v83 = [*(v19 + 16) patchTruncatedStacks];
-  v80 = [*(v19 + 16) displayBlockedThreads];
-  v77 = [*(v19 + 16) displayRunnableThreads];
-  v75 = [*(v19 + 16) displayRunningThreads];
-  v82 = [*(v19 + 16) displayKernelFrames];
-  v81 = [*(v19 + 16) displayExclaveFrames];
-  v79 = [*(v19 + 16) displayUserFrames];
-  v73 = [*(v19 + 16) displayIOInCallTrees];
-  v78 = [*(v19 + 16) callTreeTimestampsTimeDomain] != 0;
-  v76 = [*(v19 + 16) displayOnBehalfOfInCallTrees];
-  v89 = [*(v19 + 16) showThreadStateAsLeafFrame];
-  v74 = [*(v19 + 16) includeUserIdleAndBatteryStateInStacks];
-  v72 = [*(v19 + 16) omitStacksOnAC];
-  v71 = [*(v19 + 16) omitStacksOnBattery];
-  v70 = [*(v19 + 16) omitStacksWithUserIdle];
-  v69 = [*(v19 + 16) omitStacksWithUserActive];
-  v68 = [*(v19 + 16) omitStacksWithPCore];
-  v67 = [*(v19 + 16) omitStacksWithECore];
-  v66 = [*(v19 + 16) omitStacksBelowBasePriority];
-  v65 = [*(v19 + 16) omitStacksAboveBasePriority];
-  if ([*(v19 + 16) swiftAsyncDisplayCRootCallstacks])
+  patchTruncatedStacks = [*(statesCopy + 16) patchTruncatedStacks];
+  displayBlockedThreads = [*(statesCopy + 16) displayBlockedThreads];
+  displayRunnableThreads = [*(statesCopy + 16) displayRunnableThreads];
+  displayRunningThreads = [*(statesCopy + 16) displayRunningThreads];
+  displayKernelFrames = [*(statesCopy + 16) displayKernelFrames];
+  displayExclaveFrames = [*(statesCopy + 16) displayExclaveFrames];
+  displayUserFrames = [*(statesCopy + 16) displayUserFrames];
+  displayIOInCallTrees = [*(statesCopy + 16) displayIOInCallTrees];
+  v78 = [*(statesCopy + 16) callTreeTimestampsTimeDomain] != 0;
+  displayOnBehalfOfInCallTrees = [*(statesCopy + 16) displayOnBehalfOfInCallTrees];
+  showThreadStateAsLeafFrame = [*(statesCopy + 16) showThreadStateAsLeafFrame];
+  includeUserIdleAndBatteryStateInStacks = [*(statesCopy + 16) includeUserIdleAndBatteryStateInStacks];
+  omitStacksOnAC = [*(statesCopy + 16) omitStacksOnAC];
+  omitStacksOnBattery = [*(statesCopy + 16) omitStacksOnBattery];
+  omitStacksWithUserIdle = [*(statesCopy + 16) omitStacksWithUserIdle];
+  omitStacksWithUserActive = [*(statesCopy + 16) omitStacksWithUserActive];
+  omitStacksWithPCore = [*(statesCopy + 16) omitStacksWithPCore];
+  omitStacksWithECore = [*(statesCopy + 16) omitStacksWithECore];
+  omitStacksBelowBasePriority = [*(statesCopy + 16) omitStacksBelowBasePriority];
+  omitStacksAboveBasePriority = [*(statesCopy + 16) omitStacksAboveBasePriority];
+  if ([*(statesCopy + 16) swiftAsyncDisplayCRootCallstacks])
   {
-    v24 = 1;
+    swiftAsyncPrintLeafyCCallstackOnTopOfCRootCallstacksAlways = 1;
   }
 
   else
   {
-    v24 = [*(v19 + 16) swiftAsyncPrintLeafyCCallstackOnTopOfCRootCallstacksAlways];
+    swiftAsyncPrintLeafyCCallstackOnTopOfCRootCallstacksAlways = [*(statesCopy + 16) swiftAsyncPrintLeafyCCallstackOnTopOfCRootCallstacksAlways];
   }
 
-  v25 = *(v19 + 16);
-  v64 = v24;
+  v25 = *(statesCopy + 16);
+  v64 = swiftAsyncPrintLeafyCCallstackOnTopOfCRootCallstacksAlways;
   if (!v25)
   {
     goto LABEL_74;
@@ -14574,46 +14574,46 @@ LABEL_14:
   for (i = v27; ; i = 0)
   {
     v85 = v15;
-    v84 = v23;
-    v61 = (([v25 printTargetThreadOnly] & 1) != 0 || v20) && (v28 = *(v19 + 168)) != 0 && (*(v28 + 404) & 1) != 0 && *(v19 + 120) != 0;
-    v29 = [v19 options];
-    v88 = [v29 tidsToPrint];
+    v84 = displayBlockedReasonsLackingProcessOwners;
+    v61 = (([v25 printTargetThreadOnly] & 1) != 0 || v20) && (v28 = *(statesCopy + 168)) != 0 && (*(v28 + 404) & 1) != 0 && *(statesCopy + 120) != 0;
+    options = [statesCopy options];
+    tidsToPrint = [options tidsToPrint];
 
-    v30 = a6;
-    if (((v91 ^ 1 | (a15 & v89)) & 1) == 0)
+    indexesCopy = indexes;
+    if (((printHeavyStacks ^ 1 | (stack & showThreadStateAsLeafFrame)) & 1) == 0)
     {
-      v30 = 0;
+      indexesCopy = 0;
     }
 
-    v20 = v20 ? 0 : v30;
+    v20 = v20 ? 0 : indexesCopy;
     if (a2)
     {
       break;
     }
 
-    if (a3)
+    if (queue)
     {
       v31 = 0;
       goto LABEL_46;
     }
 
-    v35 = [a4 indexOfFirstThreadStateOnOrAfterTime:*(v19 + 32) sampleIndex:*(v19 + 56)];
+    v35 = [states indexOfFirstThreadStateOnOrAfterTime:*(statesCopy + 32) sampleIndex:*(statesCopy + 56)];
     if (v35 == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_54;
     }
 
     v31 = v35;
-    if (!a5)
+    if (!thread)
     {
       goto LABEL_46;
     }
 
     v36 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v35];
-    v37 = [a5 indexOfObject:v36 inSortedRange:0 options:objc_msgSend(a5 usingComparator:{"count"), 1280, &__block_literal_global_2430}];
+    v37 = [thread indexOfObject:v36 inSortedRange:0 options:objc_msgSend(thread usingComparator:{"count"), 1280, &__block_literal_global_2430}];
 
     v31 = v37;
-    if (v37 < [a5 count])
+    if (v37 < [thread count])
     {
       goto LABEL_46;
     }
@@ -14621,15 +14621,15 @@ LABEL_14:
     v21 = v37;
     v38 = *__error();
     v39 = _sa_logt();
-    v19 = a4;
-    a3 = a5;
+    statesCopy = states;
+    queue = thread;
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
     {
-      v40 = [a4 debugDescription];
-      v41 = [v40 UTF8String];
-      v42 = [a5 count];
+      v40 = [states debugDescription];
+      uTF8String = [v40 UTF8String];
+      v42 = [thread count];
       *buf = 136315650;
-      *&buf[4] = v41;
+      *&buf[4] = uTF8String;
       *&buf[12] = 2048;
       *&buf[14] = v21;
       *&buf[22] = 2048;
@@ -14637,22 +14637,22 @@ LABEL_14:
       _os_log_error_impl(&dword_1E0E2F000, v39, OS_LOG_TYPE_ERROR, "%s: startingIndex %lu < threadStateIndexes.count %lu", buf, 0x20u);
     }
 
-    a4 = a5;
+    states = thread;
     *__error() = v38;
-    v43 = [v19 debugDescription];
+    v43 = [statesCopy debugDescription];
     v44 = v43;
-    v45 = [v43 UTF8String];
-    [a5 count];
-    _SASetCrashLogMessage(11793, "%s: startingIndex %lu < threadStateIndexes.count %lu", v46, v47, v48, v49, v50, v51, v45);
+    uTF8String2 = [v43 UTF8String];
+    [thread count];
+    _SASetCrashLogMessage(11793, "%s: startingIndex %lu < threadStateIndexes.count %lu", v46, v47, v48, v49, v50, v51, uTF8String2);
 
     _os_crash();
     __break(1u);
 LABEL_62:
     v15 = *__error();
-    v23 = _sa_logt();
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    displayBlockedReasonsLackingProcessOwners = _sa_logt();
+    if (os_log_type_enabled(displayBlockedReasonsLackingProcessOwners, OS_LOG_TYPE_ERROR))
     {
-      if (a4)
+      if (states)
       {
         v22 = "y";
       }
@@ -14664,19 +14664,19 @@ LABEL_62:
 
       if (a2)
       {
-        a4 = "y";
+        states = "y";
       }
 
       else
       {
-        a4 = "n";
+        states = "n";
       }
 
       *buf = 136315650;
       *&buf[4] = v22;
       *&buf[12] = 2080;
-      *&buf[14] = a4;
-      if (a3)
+      *&buf[14] = states;
+      if (queue)
       {
         v52 = "y";
       }
@@ -14688,12 +14688,12 @@ LABEL_62:
 
       *&buf[22] = 2080;
       v172 = v52;
-      _os_log_error_impl(&dword_1E0E2F000, v23, OS_LOG_TYPE_ERROR, "aThread %s, dispatchQueue %s, swiftTaskStates %s", buf, 0x20u);
+      _os_log_error_impl(&dword_1E0E2F000, displayBlockedReasonsLackingProcessOwners, OS_LOG_TYPE_ERROR, "aThread %s, dispatchQueue %s, swiftTaskStates %s", buf, 0x20u);
     }
 
     else
     {
-      if (a4)
+      if (states)
       {
         v22 = "y";
       }
@@ -14705,12 +14705,12 @@ LABEL_62:
 
       if (a2)
       {
-        a4 = "y";
+        states = "y";
       }
 
       else
       {
-        a4 = "n";
+        states = "n";
       }
     }
 
@@ -14722,7 +14722,7 @@ LABEL_74:
     v63 = 0;
   }
 
-  v31 = [(SARecipe *)a2 indexOfFirstStateOnOrAfterTime:*(v19 + 56) sampleIndex:?];
+  v31 = [(SARecipe *)a2 indexOfFirstStateOnOrAfterTime:*(statesCopy + 56) sampleIndex:?];
   if (v31 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_54;
@@ -14797,81 +14797,81 @@ LABEL_46:
   v144[1] = v144;
   v144[2] = 0x2020000000;
   v145 = 0;
-  v60 = *(v19 + 40);
-  v59 = *(v19 + 48) & (v91 ^ 1);
+  v60 = *(statesCopy + 40);
+  v59 = *(statesCopy + 48) & (printHeavyStacks ^ 1);
   v92[0] = MEMORY[0x1E69E9820];
   v92[1] = 3221225472;
   v92[2] = __245__SASamplePrinter_addStackForDispatchQueue_orSwiftTaskStates_orThread_andThreadStateIndexes_task_toRootObjects_nameChanges_dispatchQueueChanges_swiftTaskChanges_threadChanges_priorityChanges_microstackshotSummary_onlyHeaviestStack_includeState___block_invoke_2433;
   v92[3] = &unk_1E86F7DB8;
   v115 = 0;
-  v92[4] = v19;
-  v92[5] = a6;
+  v92[4] = statesCopy;
+  v92[5] = indexes;
   v109 = v31;
-  v92[6] = a4;
-  v92[7] = a5;
+  v92[6] = states;
+  v92[7] = thread;
   v92[8] = a2;
-  v92[9] = a3;
-  v93 = v88;
+  v92[9] = queue;
+  v93 = tidsToPrint;
   v116 = v61;
-  v95 = a13;
+  priorityChangesCopy = priorityChanges;
   v96 = v146;
   v97 = v159;
   v98 = &v147;
-  v117 = v75;
-  v118 = v77;
-  v119 = v80;
-  v113 = v65;
-  v114 = v66;
-  v120 = v69;
-  v121 = v70;
-  v122 = v71;
-  v123 = v72;
-  v124 = v68;
-  v125 = v67;
+  v117 = displayRunningThreads;
+  v118 = displayRunnableThreads;
+  v119 = displayBlockedThreads;
+  v113 = omitStacksAboveBasePriority;
+  v114 = omitStacksBelowBasePriority;
+  v120 = omitStacksWithUserActive;
+  v121 = omitStacksWithUserIdle;
+  v122 = omitStacksOnBattery;
+  v123 = omitStacksOnAC;
+  v124 = omitStacksWithPCore;
+  v125 = omitStacksWithECore;
   v126 = v64;
   v110 = i;
   v111 = v63;
-  v127 = v73;
+  v127 = displayIOInCallTrees;
   v99 = v144;
   v100 = v170;
   v101 = buf;
   v102 = v168;
   v103 = &v151;
-  v128 = a15;
-  v129 = v91;
+  stackCopy = stack;
+  v129 = printHeavyStacks;
   v104 = v157;
   v105 = v160;
   v106 = v164;
-  v130 = a9;
-  v131 = a10;
-  v132 = a12;
+  changesCopy = changes;
+  queueChangesCopy = queueChanges;
+  threadChangesCopy = threadChanges;
   v133 = v85;
-  v134 = a11;
-  v135 = v79;
-  v136 = v82;
-  v137 = v81;
-  v94 = a7;
+  taskChangesCopy = taskChanges;
+  v135 = displayUserFrames;
+  v136 = displayKernelFrames;
+  v137 = displayExclaveFrames;
+  taskCopy = task;
   v107 = v162;
   v108 = v166;
-  v138 = v83;
+  v138 = patchTruncatedStacks;
   v139 = v22;
-  v140 = v76;
-  v141 = v89;
-  v142 = v74;
+  v140 = displayOnBehalfOfInCallTrees;
+  v141 = showThreadStateAsLeafFrame;
+  v142 = includeUserIdleAndBatteryStateInStacks;
   v112 = v84;
   v143 = v78;
-  [(SASamplePrinter *)v19 iterateDispatchQueue:a2 orSwiftTaskStates:a3 orThread:a4 threadStateIndexes:a5 startingAtIndex:v31 endingAfterTimestamp:v60 task:v20 stopAtTimeJumps:v59 callback:v92];
-  if (a15)
+  [(SASamplePrinter *)statesCopy iterateDispatchQueue:a2 orSwiftTaskStates:queue orThread:states threadStateIndexes:thread startingAtIndex:v31 endingAfterTimestamp:v60 task:v20 stopAtTimeJumps:v59 callback:v92];
+  if (stack)
   {
-    if ((v91 & 1) == 0)
+    if ((printHeavyStacks & 1) == 0)
     {
       v32 = v148[3];
       if (v152[5] || v32)
       {
-        v33 = [(SASamplePrinter *)v19 stateChangeStringForThreadState:a2 serialDispatchQueue:a3 swiftTaskStates:0 thread:0 threadStateIndexes:0 taskState:0 task:0 iteratorIndex:0 missingStateIsInAnotherStack:v32 numSamplesOmittedSincePreviousDisplayedSample:0 sampleTimestamp:0 previousSampleTimestamp:0 previousDisplayedTimestamp:0 previousTaskState:0 previousThread:0 previousThreadState:0 dispatchQueueChanges:0 swiftTaskChanges:0 priorityChanges:0 nameChanges:0 threadChanges:0 isTimeJump:v152[5] ioEventsSincePreviousThreadState:?];
+        v33 = [(SASamplePrinter *)statesCopy stateChangeStringForThreadState:a2 serialDispatchQueue:queue swiftTaskStates:0 thread:0 threadStateIndexes:0 taskState:0 task:0 iteratorIndex:0 missingStateIsInAnotherStack:v32 numSamplesOmittedSincePreviousDisplayedSample:0 sampleTimestamp:0 previousSampleTimestamp:0 previousDisplayedTimestamp:0 previousTaskState:0 previousThread:0 previousThreadState:0 dispatchQueueChanges:0 swiftTaskChanges:0 priorityChanges:0 nameChanges:0 threadChanges:0 isTimeJump:v152[5] ioEventsSincePreviousThreadState:?];
         if (v33)
         {
-          [a7 addObject:v33];
+          [task addObject:v33];
         }
       }
     }
@@ -14919,9 +14919,9 @@ void __30__SASamplePrinter_printHeader__block_invoke_1386(void *a1, void *a2, ui
   }
 }
 
-- (void)sortHeavyCallTree:(uint64_t)a1
+- (void)sortHeavyCallTree:(uint64_t)tree
 {
-  if (a1)
+  if (tree)
   {
     [a2 sortUsingComparator:&__block_literal_global_2784];
     v3[0] = MEMORY[0x1E69E9820];
@@ -14934,24 +14934,24 @@ void __30__SASamplePrinter_printHeader__block_invoke_1386(void *a1, void *a2, ui
   }
 }
 
-- (void)addStack:(void *)a3 toStream:(uint64_t)a4 sampleCount:(void *)a5 binariesToDisplay:(uint64_t)a6 primaryState:(int)a7 primaryMicrostackshotState:(char)a8 onlyHeaviestStack:(char)a9 isKernel:
+- (void)addStack:(void *)stack toStream:(uint64_t)stream sampleCount:(void *)count binariesToDisplay:(uint64_t)display primaryState:(int)state primaryMicrostackshotState:(char)microstackshotState onlyHeaviestStack:(char)heaviestStack isKernel:
 {
   v15 = objc_autoreleasePoolPush();
   v16 = 1;
-  if (([*(a1 + 16) printHeavyStacks] & 1) == 0 && (a8 & 1) == 0)
+  if (([*(self + 16) printHeavyStacks] & 1) == 0 && (microstackshotState & 1) == 0)
   {
-    v16 = *(a1 + 48) ^ 1;
+    v16 = *(self + 48) ^ 1;
   }
 
-  v17 = [*(a1 + 16) printJson];
-  if ([*(a1 + 16) displayBlockedReasons])
+  printJson = [*(self + 16) printJson];
+  if ([*(self + 16) displayBlockedReasons])
   {
-    v18 = [*(a1 + 16) displayBlockedReasonsLackingProcessOwners];
-    v19 = [*(a1 + 16) displayAddressesInBlockedReasons];
-    v20 = v18 | 2;
-    if (!v19)
+    displayBlockedReasonsLackingProcessOwners = [*(self + 16) displayBlockedReasonsLackingProcessOwners];
+    displayAddressesInBlockedReasons = [*(self + 16) displayAddressesInBlockedReasons];
+    v20 = displayBlockedReasonsLackingProcessOwners | 2;
+    if (!displayAddressesInBlockedReasons)
     {
-      v20 = v18;
+      v20 = displayBlockedReasonsLackingProcessOwners;
     }
 
     v40 = v20;
@@ -14962,70 +14962,70 @@ void __30__SASamplePrinter_printHeader__block_invoke_1386(void *a1, void *a2, ui
     v40 = 0;
   }
 
-  v39 = [*(a1 + 16) showThreadStateAsLeafFrame];
-  v38 = [*(a1 + 16) callTreeTimestampsTimeDomain] != 0;
-  v37 = [*(a1 + 16) displayOnBehalfOfInCallTrees];
+  showThreadStateAsLeafFrame = [*(self + 16) showThreadStateAsLeafFrame];
+  v38 = [*(self + 16) callTreeTimestampsTimeDomain] != 0;
+  displayOnBehalfOfInCallTrees = [*(self + 16) displayOnBehalfOfInCallTrees];
   v102[0] = 0;
   v102[1] = v102;
   v102[2] = 0x2020000000;
   v103 = 1;
-  if (v17)
+  if (printJson)
   {
-    [a3 appendString:{@", \n\nstack:["}];
+    [stack appendString:{@", \n\nstack:["}];
   }
 
-  v21 = a6;
+  displayCopy = display;
   v36 = a2;
-  v22 = log10(a4 + 1.0);
-  if (a9)
+  v22 = log10(stream + 1.0);
+  if (heaviestStack)
   {
-    v23 = a5;
+    countCopy = count;
   }
 
   else
   {
-    v24 = [(SASampleStore *)*(a1 + 168) lastTaskWithPid:?];
+    v24 = [(SASampleStore *)*(self + 168) lastTaskWithPid:?];
     if (v24)
     {
-      v23 = [(SASamplePrinter *)a1 binaryImagesHitByTask:v24];
+      countCopy = [(SASamplePrinter *)self binaryImagesHitByTask:v24];
     }
 
     else
     {
-      v23 = 0;
+      countCopy = 0;
     }
   }
 
-  if ([*(a1 + 16) omitFramesBelowSampleCount] < 1)
+  if ([*(self + 16) omitFramesBelowSampleCount] < 1)
   {
-    v25 = 0;
+    omitFramesBelowSampleCount = 0;
   }
 
   else
   {
-    v25 = [*(a1 + 16) omitFramesBelowSampleCount];
+    omitFramesBelowSampleCount = [*(self + 16) omitFramesBelowSampleCount];
   }
 
-  if ([*(a1 + 16) omitFramesBelowPercentOfStackSamples] >= 1)
+  if ([*(self + 16) omitFramesBelowPercentOfStackSamples] >= 1)
   {
-    v26 = [*(a1 + 16) omitFramesBelowPercentOfStackSamples];
-    if (v25 <= v26 * a4 / 0x64uLL)
+    omitFramesBelowPercentOfStackSamples = [*(self + 16) omitFramesBelowPercentOfStackSamples];
+    if (omitFramesBelowSampleCount <= omitFramesBelowPercentOfStackSamples * stream / 0x64uLL)
     {
-      v25 = v26 * a4 / 0x64uLL;
+      omitFramesBelowSampleCount = omitFramesBelowPercentOfStackSamples * stream / 0x64uLL;
     }
   }
 
-  if ([*(a1 + 16) omitFramesAfterLineCount] < 1)
+  if ([*(self + 16) omitFramesAfterLineCount] < 1)
   {
-    v27 = 0;
+    omitFramesAfterLineCount = 0;
   }
 
   else
   {
-    v27 = [*(a1 + 16) omitFramesAfterLineCount];
+    omitFramesAfterLineCount = [*(self + 16) omitFramesAfterLineCount];
   }
 
-  LODWORD(a4) = vcvtpd_u64_f64(v22);
+  LODWORD(stream) = vcvtpd_u64_f64(v22);
   v101[0] = 0;
   v101[1] = v101;
   v101[2] = 0x2020000000;
@@ -15072,32 +15072,32 @@ void __30__SASamplePrinter_printHeader__block_invoke_1386(void *a1, void *a2, ui
   v43[1] = 3221225472;
   v43[2] = __134__SASamplePrinter_addStack_toStream_sampleCount_binariesToDisplay_primaryState_primaryMicrostackshotState_onlyHeaviestStack_isKernel___block_invoke;
   v43[3] = &unk_1E86F7E30;
-  v63 = a8;
+  microstackshotStateCopy = microstackshotState;
   v46 = v101;
   v47 = v99;
   v48 = v93;
   v49 = &v95;
-  v57 = v27;
-  v58 = v25;
-  v64 = v17;
+  v57 = omitFramesAfterLineCount;
+  v58 = omitFramesBelowSampleCount;
+  v64 = printJson;
   v50 = v91;
   v51 = v102;
-  v43[4] = a1;
-  v43[5] = a3;
+  v43[4] = self;
+  v43[5] = stack;
   v65 = v16 & 1;
   v52 = &v69;
   v53 = &v83;
-  v61 = a4;
+  streamCopy = stream;
   v54 = &v73;
   v55 = &v87;
   v56 = &v77;
-  v28 = v23;
+  v28 = countCopy;
   v44 = v28;
-  v45 = a5;
-  v66 = v39;
-  v67 = v37;
-  v62 = a7;
-  v59 = v21;
+  countCopy2 = count;
+  v66 = showThreadStateAsLeafFrame;
+  v67 = displayOnBehalfOfInCallTrees;
+  stateCopy = state;
+  v59 = displayCopy;
   v60 = v40;
   v68 = v38;
   [SACallTreeFrame enumerateTree:v36 block:v43];
@@ -15108,11 +15108,11 @@ void __30__SASamplePrinter_printHeader__block_invoke_1386(void *a1, void *a2, ui
     v96[3] = 0;
   }
 
-  if (v17)
+  if (printJson)
   {
     v30 = @"]\n";
 LABEL_30:
-    [a3 appendString:v30];
+    [stack appendString:v30];
     goto LABEL_39;
   }
 
@@ -15126,20 +15126,20 @@ LABEL_30:
   {
     v32 = v74[3];
     v33 = v78[5];
-    _saos_printf_indent_and_kernel_dot(a3, *(v84 + 6), *(v88 + 24), 0);
-    [a3 printWithFormat:@"%-*lu  ", a4, v31 - v32 + 1];
-    [a3 appendString:v33];
+    _saos_printf_indent_and_kernel_dot(stack, *(v84 + 6), *(v88 + 24), 0);
+    [stack printWithFormat:@"%-*lu  ", stream, v31 - v32 + 1];
+    [stack appendString:v33];
     v30 = @"\n";
     goto LABEL_30;
   }
 
-  if (*(a1 + 48) == 1)
+  if (*(self + 48) == 1)
   {
-    v34 = [*(a1 + 16) forceOneBasedTimeIndexes];
+    forceOneBasedTimeIndexes = [*(self + 16) forceOneBasedTimeIndexes];
     v35 = v31 + 1;
-    if (v34)
+    if (forceOneBasedTimeIndexes)
     {
-      v35 -= *(a1 + 56);
+      v35 -= *(self + 56);
     }
   }
 
@@ -15148,7 +15148,7 @@ LABEL_30:
     v35 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  saos_printf_timeline_frame(a3, *(v84 + 6), a4, v70[3] - v74[3] + 1, *(v88 + 24), v78[5], v35);
+  saos_printf_timeline_frame(stack, *(v84 + 6), stream, v70[3] - v74[3] + 1, *(v88 + 24), v78[5], v35);
 LABEL_39:
 
   _Block_object_dispose(&v69, 8);
@@ -15167,34 +15167,34 @@ LABEL_39:
   objc_autoreleasePoolPop(v15);
 }
 
-- (void)printBinaryImagesForTask:(uint64_t)a1
+- (void)printBinaryImagesForTask:(uint64_t)task
 {
-  v13 = [(SASamplePrinter *)a1 binaryImagesHitByTask:a2];
-  v4 = [a2 mainBinaryLoadInfo];
-  v5 = v4;
-  if (v4)
+  v13 = [(SASamplePrinter *)task binaryImagesHitByTask:a2];
+  mainBinaryLoadInfo = [a2 mainBinaryLoadInfo];
+  v5 = mainBinaryLoadInfo;
+  if (mainBinaryLoadInfo)
   {
-    if ([v4 loadAddress])
+    if ([mainBinaryLoadInfo loadAddress])
     {
-      v6 = [v5 binary];
-      v7 = [v13 objectForKeyedSubscript:v6];
+      binary = [v5 binary];
+      v7 = [v13 objectForKeyedSubscript:binary];
       v8 = [v7 count];
 
       if (!v8)
       {
-        v9 = [SASamplePrinter displayedBinaryLoadInfoForLoadInfo:a1 offsetIntoLoadInfo:v5 binariesToDisplay:0 extraBinariesToDisplay:v13];
+        v9 = [SASamplePrinter displayedBinaryLoadInfoForLoadInfo:task offsetIntoLoadInfo:v5 binariesToDisplay:0 extraBinariesToDisplay:v13];
       }
     }
   }
 
   if ([v13 count])
   {
-    v10 = [(SASamplePrinter *)a1 sortedLoadInfosForBinaryImages:v13];
+    v10 = [(SASamplePrinter *)task sortedLoadInfosForBinaryImages:v13];
     if ([v10 count])
     {
-      v11 = [*(a1 + 16) printJson];
-      v12 = *(a1 + 8);
-      if (v11)
+      printJson = [*(task + 16) printJson];
+      v12 = *(task + 8);
+      if (printJson)
       {
         [v12 appendString:{@", binaryImages:"}];
       }
@@ -15204,18 +15204,18 @@ LABEL_39:
         [v12 printWithFormat:@"\n%*sBinary Images:\n", 2, ""];
       }
 
-      [(SASamplePrinter *)a1 printLoadInfos:v10];
+      [(SASamplePrinter *)task printLoadInfos:v10];
     }
   }
 }
 
-- (void)printHIDEvent:(uint64_t)a1
+- (void)printHIDEvent:(uint64_t)event
 {
   v84 = *MEMORY[0x1E69E9840];
-  v4 = [a1 options];
-  v5 = [v4 printJson];
+  options = [event options];
+  printJson = [options printJson];
 
-  if (v5)
+  if (printJson)
   {
     v64 = *__error();
     v65 = _sa_logt();
@@ -15231,69 +15231,69 @@ LABEL_39:
     __break(1u);
   }
 
-  v6 = [a2 hidEventTimestamp];
-  v7 = *(a1 + 8);
-  v8 = [a2 hidEventTypeString];
-  [v7 printWithFormat:@"HID event %@", v8];
+  hidEventTimestamp = [a2 hidEventTimestamp];
+  v7 = *(event + 8);
+  hidEventTypeString = [a2 hidEventTypeString];
+  [v7 printWithFormat:@"HID event %@", hidEventTypeString];
 
-  if (*(a1 + 48) == 1)
+  if (*(event + 48) == 1)
   {
-    v9 = *(a1 + 8);
-    v10 = [(SASamplePrinter *)a1 timeIndexDescriptionForTimestamp:v6];
+    v9 = *(event + 8);
+    v10 = [(SASamplePrinter *)event timeIndexDescriptionForTimestamp:hidEventTimestamp];
     [v9 printWithFormat:@" started %@\n", v10];
 
     goto LABEL_19;
   }
 
-  [v6 machAbsTimeSeconds];
+  [hidEventTimestamp machAbsTimeSeconds];
   v11 = 0.0;
-  if (v12 == 0.0 || ([*(a1 + 32) machAbsTimeSeconds], v13 == 0.0))
+  if (v12 == 0.0 || ([*(event + 32) machAbsTimeSeconds], v13 == 0.0))
   {
     v17 = 0;
   }
 
   else
   {
-    [v6 machAbsTimeSeconds];
+    [hidEventTimestamp machAbsTimeSeconds];
     v15 = v14;
-    [*(a1 + 32) machAbsTimeSeconds];
+    [*(event + 32) machAbsTimeSeconds];
     v11 = v15 - v16;
     v17 = 1;
   }
 
-  [v6 machContTimeSeconds];
+  [hidEventTimestamp machContTimeSeconds];
   if (v18 != 0.0)
   {
-    [*(a1 + 32) machContTimeSeconds];
+    [*(event + 32) machContTimeSeconds];
     if (v19 != 0.0)
     {
-      [v6 machContTimeSeconds];
+      [hidEventTimestamp machContTimeSeconds];
       v21 = v20;
-      [*(a1 + 32) machContTimeSeconds];
+      [*(event + 32) machContTimeSeconds];
       v11 = v21 - v22;
       v17 = 1;
     }
   }
 
-  [v6 wallTime];
-  if (v23 == 0.0 || ([*(a1 + 32) wallTime], v24 == 0.0))
+  [hidEventTimestamp wallTime];
+  if (v23 == 0.0 || ([*(event + 32) wallTime], v24 == 0.0))
   {
     if (!v17)
     {
-      [*(a1 + 8) printWithFormat:@"\n", v73];
+      [*(event + 8) printWithFormat:@"\n", v73];
       goto LABEL_19;
     }
   }
 
   else
   {
-    [v6 wallTime];
+    [hidEventTimestamp wallTime];
     v26 = v25;
-    [*(a1 + 32) wallTime];
+    [*(event + 32) wallTime];
     v11 = v26 - v27;
   }
 
-  v28 = *(a1 + 8);
+  v28 = *(event + 8);
   if (v11 >= 0.0)
   {
     [v28 printWithFormat:@" started %.1f seconds after start of sampling\n", *&v11];
@@ -15305,18 +15305,18 @@ LABEL_39:
   }
 
 LABEL_19:
-  [*(a1 + 8) printWithFormat:@"%-48s %-11s %11s  %s\n", "Event", "Time Index", "Delay", "Process/Thread"];
-  v29 = *(a1 + 8);
-  v30 = [(SASamplePrinter *)a1 displayNameForPid:0 threadId:*(a1 + 32) timestamp:?];
+  [*(event + 8) printWithFormat:@"%-48s %-11s %11s  %s\n", "Event", "Time Index", "Delay", "Process/Thread"];
+  v29 = *(event + 8);
+  v30 = [(SASamplePrinter *)event displayNameForPid:0 threadId:*(event + 32) timestamp:?];
   [v29 printWithFormat:@"%-48s %-11s %11s  %s\n", "handleReport", "No samples", "N/A", objc_msgSend(v30, "UTF8String")];
 
-  v31 = v6;
+  timestamp = hidEventTimestamp;
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
   obj = [a2 steps];
-  v74 = v31;
+  v74 = timestamp;
   v77 = [obj countByEnumeratingWithState:&v78 objects:v83 count:16];
   if (v77)
   {
@@ -15325,16 +15325,16 @@ LABEL_19:
     {
       for (i = 0; i != v77; ++i)
       {
-        v33 = v31;
+        v33 = timestamp;
         if (*v79 != v76)
         {
           objc_enumerationMutation(obj);
         }
 
         v34 = *(*(&v78 + 1) + 8 * i);
-        v31 = [v34 timestamp];
-        v35 = [v34 debugidString];
-        [v31 machAbsTimeSeconds];
+        timestamp = [v34 timestamp];
+        debugidString = [v34 debugidString];
+        [timestamp machAbsTimeSeconds];
         v37 = v36;
         [v33 machAbsTimeSeconds];
         v39 = (v37 - v38) * 1000.0;
@@ -15352,15 +15352,15 @@ LABEL_19:
         }
 
         v43 = &stru_1F5BBF440;
-        if (*(a1 + 48) == 1)
+        if (*(event + 48) == 1)
         {
-          v44 = [*(a1 + 168) indexOfFirstSampleOnOrAfterTimestamp:v33];
-          v45 = [*(a1 + 168) indexOfLastSampleOnOrBeforeTimestamp:v31];
+          v44 = [*(event + 168) indexOfFirstSampleOnOrAfterTimestamp:v33];
+          v45 = [*(event + 168) indexOfLastSampleOnOrBeforeTimestamp:timestamp];
           v46 = 0x7FFFFFFFFFFFFFFFLL;
           if (v44 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v47 = *(a1 + 56);
-            v48 = *(a1 + 64);
+            v47 = *(event + 56);
+            v48 = *(event + 64);
             if (v47 <= v44)
             {
               v49 = v44;
@@ -15368,7 +15368,7 @@ LABEL_19:
 
             else
             {
-              v49 = *(a1 + 56);
+              v49 = *(event + 56);
             }
 
             if (v47 == 0x7FFFFFFFFFFFFFFFLL)
@@ -15405,25 +15405,25 @@ LABEL_19:
           v43 = @"No samples";
           if (v45 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v53 = *(a1 + 56);
-            v52 = *(a1 + 64);
-            v54 = v52 >= v45 ? v45 : *(a1 + 64);
+            v53 = *(event + 56);
+            v52 = *(event + 64);
+            v54 = v52 >= v45 ? v45 : *(event + 64);
             v55 = v52 == 0x7FFFFFFFFFFFFFFFLL ? v45 : v54;
             v56 = v53 <= v55 ? v55 : 0x7FFFFFFFFFFFFFFFLL;
             v57 = v53 == 0x7FFFFFFFFFFFFFFFLL ? v55 : v56;
             if (v46 != 0x7FFFFFFFFFFFFFFFLL && v57 != 0x7FFFFFFFFFFFFFFFLL && v46 <= v57)
             {
-              v43 = [(SASamplePrinter *)a1 timeIndexDescriptionForStartSampleIndex:v46 endSampleIndex:v57 formattedToLength:0xBu];
+              v43 = [(SASamplePrinter *)event timeIndexDescriptionForStartSampleIndex:v46 endSampleIndex:v57 formattedToLength:0xBu];
             }
           }
         }
 
         v59 = [v34 pid];
         v60 = [v34 tid];
-        v61 = [v34 timestamp];
-        v62 = [(SASamplePrinter *)a1 displayNameForPid:v59 threadId:v60 timestamp:v61];
+        timestamp2 = [v34 timestamp];
+        v62 = [(SASamplePrinter *)event displayNameForPid:v59 threadId:v60 timestamp:timestamp2];
 
-        [*(a1 + 8) printWithFormat:@"%-48s %-11s %9.3fms  %@\n", objc_msgSend(v35, "UTF8String"), -[__CFString UTF8String](v43, "UTF8String"), *&v39, v62];
+        [*(event + 8) printWithFormat:@"%-48s %-11s %9.3fms  %@\n", objc_msgSend(debugidString, "UTF8String"), -[__CFString UTF8String](v43, "UTF8String"), *&v39, v62];
       }
 
       v77 = [obj countByEnumeratingWithState:&v78 objects:v83 count:16];
@@ -15435,12 +15435,12 @@ LABEL_19:
   v63 = *MEMORY[0x1E69E9840];
 }
 
-- (void)printLoadInfos:(id *)a1
+- (void)printLoadInfos:(id *)infos
 {
   v140 = *MEMORY[0x1E69E9840];
-  if (![a1[2] printJson])
+  if (![infos[2] printJson])
   {
-    if ([a1[2] tabDelineateBinaryImageSections])
+    if ([infos[2] tabDelineateBinaryImageSections])
     {
       v111 = 0;
       v112 = 0;
@@ -15479,53 +15479,53 @@ LABEL_19:
         }
 
         v8 = *(*(&v126 + 1) + 8 * v7);
-        v9 = [v8 binary];
-        v10 = [v9 bundleIdentifier];
-        v11 = v10;
-        if (v10)
+        binary = [v8 binary];
+        bundleIdentifier = [binary bundleIdentifier];
+        v11 = bundleIdentifier;
+        if (bundleIdentifier)
         {
-          v12 = v10;
+          name = bundleIdentifier;
         }
 
         else
         {
-          v12 = [v9 name];
+          name = [binary name];
         }
 
-        if (([a1[2] displayBinaryImagesLackingNameOrPath] & 1) == 0 && !v12)
+        if (([infos[2] displayBinaryImagesLackingNameOrPath] & 1) == 0 && !name)
         {
-          if (((v6 | [a1[2] displayBinaryImageAddresses]) & 1) == 0)
+          if (((v6 | [infos[2] displayBinaryImageAddresses]) & 1) == 0)
           {
             goto LABEL_52;
           }
 
 LABEL_21:
-          v118 = v12;
+          v118 = name;
           v14 = [@"???" length];
           goto LABEL_22;
         }
 
-        if (!v12)
+        if (!name)
         {
           goto LABEL_21;
         }
 
-        v118 = v12;
-        v13 = SACopySanitizedString(v12, 1, 0);
+        v118 = name;
+        v13 = SACopySanitizedString(name, 1, 0);
         v14 = [v13 length];
 
 LABEL_22:
-        v15 = [v9 bundleVersion];
-        v16 = [v9 bundleShortVersion];
-        v17 = [v9 binaryVersion];
-        v120 = v17;
-        if (v16 || v15 || v17)
+        bundleVersion = [binary bundleVersion];
+        bundleShortVersion = [binary bundleShortVersion];
+        binaryVersion = [binary binaryVersion];
+        v120 = binaryVersion;
+        if (bundleShortVersion || bundleVersion || binaryVersion)
         {
           ++v14;
-          if (v16)
+          if (bundleShortVersion)
           {
-            v18 = v15 | v17;
-            v19 = SACopySanitizedString(v16, 1, 0);
+            v18 = bundleVersion | binaryVersion;
+            v19 = SACopySanitizedString(bundleShortVersion, 1, 0);
             v20 = [v19 length];
 
             if (v18)
@@ -15545,9 +15545,9 @@ LABEL_22:
             }
 
 LABEL_30:
-            if (v15)
+            if (bundleVersion)
             {
-              v22 = v15;
+              v22 = bundleVersion;
             }
 
             else
@@ -15561,7 +15561,7 @@ LABEL_30:
             goto LABEL_34;
           }
 
-          if (v15 | v17)
+          if (bundleVersion | binaryVersion)
           {
             goto LABEL_30;
           }
@@ -15579,16 +15579,16 @@ LABEL_34:
         }
 
         v113 = v24;
-        v25 = [v8 exclave];
-        v26 = v25;
-        if (v25)
+        exclave = [v8 exclave];
+        v26 = exclave;
+        if (exclave)
         {
-          v27 = [v25 name];
+          name2 = [exclave name];
 
-          if (v27)
+          if (name2)
           {
-            v28 = [v26 name];
-            v29 = [v28 length] + 9;
+            name3 = [v26 name];
+            v29 = [name3 length] + 9;
           }
 
           else
@@ -15612,9 +15612,9 @@ LABEL_34:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0 || ([v8 isZerothAndOnlySegment] & 1) == 0)
         {
-          v31 = [v8 segment];
-          v32 = [v31 name];
-          v33 = [v32 length];
+          segment = [v8 segment];
+          name4 = [segment name];
+          v33 = [name4 length];
 
           if (v111 <= v33)
           {
@@ -15629,7 +15629,7 @@ LABEL_34:
           v111 = v34;
         }
 
-        v12 = v118;
+        name = v118;
 LABEL_52:
 
         v6 = 0;
@@ -15669,27 +15669,27 @@ LABEL_63:
           }
 
           v38 = *(*(&v122 + 1) + 8 * v37);
-          v39 = [v38 binary];
-          v40 = [v38 segment];
-          v41 = [v38 exclave];
-          v42 = [v39 bundleIdentifier];
-          v43 = v42;
-          if (v42)
+          binary2 = [v38 binary];
+          segment2 = [v38 segment];
+          exclave2 = [v38 exclave];
+          bundleIdentifier2 = [binary2 bundleIdentifier];
+          v43 = bundleIdentifier2;
+          if (bundleIdentifier2)
           {
-            v44 = v42;
+            name5 = bundleIdentifier2;
           }
 
           else
           {
-            v44 = [v39 name];
+            name5 = [binary2 name];
           }
 
-          if (([a1[2] displayBinaryImagesLackingNameOrPath] & 1) == 0 && !v44 && ((v36 | objc_msgSend(a1[2], "displayBinaryImageAddresses")) & 1) == 0)
+          if (([infos[2] displayBinaryImagesLackingNameOrPath] & 1) == 0 && !name5 && ((v36 | objc_msgSend(infos[2], "displayBinaryImageAddresses")) & 1) == 0)
           {
             goto LABEL_158;
           }
 
-          v121 = v44;
+          v121 = name5;
           memset(v136, 0, sizeof(v136));
           if ([v38 isInKernelAddressSpace])
           {
@@ -15704,8 +15704,8 @@ LABEL_63:
             v45 = v136;
           }
 
-          v119 = v40;
-          if ([a1[2] displayBinaryImageAddresses])
+          v119 = segment2;
+          if ([infos[2] displayBinaryImageAddresses])
           {
             if ([v38 loadAddress])
             {
@@ -15755,15 +15755,15 @@ LABEL_168:
               }
             }
 
-            [a1[1] printWithFormat:@"%*s", 22, v136];
-            if (v40)
+            [infos[1] printWithFormat:@"%*s", 22, v136];
+            if (segment2)
             {
-              v51 = [v40 length];
+              v51 = [segment2 length];
               v48 = v121;
               if (!v51)
               {
 LABEL_85:
-                v51 = [v39 length];
+                v51 = [binary2 length];
                 if (!v51)
                 {
                   goto LABEL_101;
@@ -15774,7 +15774,7 @@ LABEL_95:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0 || [v38 highestOffset] < v51)
               {
-                [a1[1] printWithFormat:@" - %#18llx", v51 + objc_msgSend(v38, "loadAddress") - 1];
+                [infos[1] printWithFormat:@" - %#18llx", v51 + objc_msgSend(v38, "loadAddress") - 1];
                 goto LABEL_102;
               }
 
@@ -15783,27 +15783,27 @@ LABEL_95:
               if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
               {
                 v83 = [v38 debugDescription];
-                v84 = [v83 UTF8String];
-                v85 = [v38 highestOffset];
+                uTF8String = [v83 UTF8String];
+                highestOffset = [v38 highestOffset];
                 *buf = 136315650;
-                v131 = v84;
+                v131 = uTF8String;
                 v132 = 2048;
                 v133 = v51;
                 v134 = 2048;
-                v135 = v85;
+                v135 = highestOffset;
                 _os_log_error_impl(&dword_1E0E2F000, v56, OS_LOG_TYPE_ERROR, "load info %s length 0x%llx has a hit at 0x%llx", buf, 0x20u);
 
                 v48 = v121;
               }
 
               *__error() = v55;
-              v40 = v119;
+              segment2 = v119;
             }
 
             else
             {
               v48 = v121;
-              if ([v39 length])
+              if ([binary2 length])
               {
                 goto LABEL_85;
               }
@@ -15811,17 +15811,17 @@ LABEL_95:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v52 = [v38 highestOffset];
+                highestOffset2 = [v38 highestOffset];
               }
 
               else
               {
-                v52 = 0;
+                highestOffset2 = 0;
               }
 
-              v53 = [(SABinary *)v39 segmentAtOffsetIntoBinary:?];
+              v53 = [(SABinary *)binary2 segmentAtOffsetIntoBinary:?];
               v54 = v53;
-              if (v53 && [v53 hasOffsetIntoBinary] && !objc_msgSend(v54, "offsetIntoBinary") && objc_msgSend(v54, "length") && v52 < objc_msgSend(v54, "length"))
+              if (v53 && [v53 hasOffsetIntoBinary] && !objc_msgSend(v54, "offsetIntoBinary") && objc_msgSend(v54, "length") && highestOffset2 < objc_msgSend(v54, "length"))
               {
                 v51 = [v54 length];
               }
@@ -15838,9 +15838,9 @@ LABEL_95:
             }
 
 LABEL_101:
-            [a1[1] printWithFormat:@" - %18s", "???"];
+            [infos[1] printWithFormat:@" - %18s", "???"];
 LABEL_102:
-            if ([a1[2] tabDelineateBinaryImageSections])
+            if ([infos[2] tabDelineateBinaryImageSections])
             {
               v57 = @"\t";
             }
@@ -15850,34 +15850,34 @@ LABEL_102:
               v57 = @"  ";
             }
 
-            [a1[1] appendString:v57];
+            [infos[1] appendString:v57];
             if (!v48)
             {
 LABEL_106:
               v50 = [@"???" mutableCopy];
 LABEL_107:
-              v117 = v41;
-              if ([a1[2] tabDelineateBinaryImageSections])
+              v117 = exclave2;
+              if ([infos[2] tabDelineateBinaryImageSections])
               {
                 [v50 appendString:@"\t"];
               }
 
-              v58 = [v39 bundleVersion];
-              v59 = [v39 bundleShortVersion];
-              v60 = [v39 binaryVersion];
-              v61 = v60;
-              v115 = v60;
-              if (v59 || v58 || v60)
+              bundleVersion2 = [binary2 bundleVersion];
+              bundleShortVersion2 = [binary2 bundleShortVersion];
+              binaryVersion2 = [binary2 binaryVersion];
+              v61 = binaryVersion2;
+              v115 = binaryVersion2;
+              if (bundleShortVersion2 || bundleVersion2 || binaryVersion2)
               {
-                if (([a1[2] tabDelineateBinaryImageSections] & 1) == 0)
+                if (([infos[2] tabDelineateBinaryImageSections] & 1) == 0)
                 {
                   [v50 appendString:@" "];
                 }
 
-                if (v59)
+                if (bundleShortVersion2)
                 {
-                  v62 = v58 | v61;
-                  v63 = SACopySanitizedString(v59, 1, 0);
+                  v62 = bundleVersion2 | v61;
+                  v63 = SACopySanitizedString(bundleShortVersion2, 1, 0);
                   [v50 appendFormat:@"%@", v63];
 
                   v61 = v115;
@@ -15888,12 +15888,12 @@ LABEL_107:
                   }
                 }
 
-                else if (v58 | v61)
+                else if (bundleVersion2 | v61)
                 {
 LABEL_118:
-                  if (v58)
+                  if (bundleVersion2)
                   {
-                    v64 = v58;
+                    v64 = bundleVersion2;
                   }
 
                   else
@@ -15906,32 +15906,32 @@ LABEL_118:
                 }
               }
 
-              [a1[1] printWithFormat:@"%-*s", v113, objc_msgSend(v50, "UTF8String")];
-              if ([a1[2] tabDelineateBinaryImageSections])
+              [infos[1] printWithFormat:@"%-*s", v113, objc_msgSend(v50, "UTF8String")];
+              if ([infos[2] tabDelineateBinaryImageSections])
               {
-                [a1[1] appendString:@"\t"];
+                [infos[1] appendString:@"\t"];
               }
 
-              if (([a1[2] tabDelineateBinaryImageSections] & 1) == 0 && v112 >= 1)
+              if (([infos[2] tabDelineateBinaryImageSections] & 1) == 0 && v112 >= 1)
               {
-                v66 = a1[1];
+                v66 = infos[1];
                 if (v117)
                 {
-                  v67 = [v117 name];
-                  if (v67)
+                  name6 = [v117 name];
+                  if (name6)
                   {
-                    v68 = [v117 name];
+                    name7 = [v117 name];
                   }
 
                   else
                   {
-                    v68 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%#18llx", objc_msgSend(v117, "identifier")];
+                    name7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%#18llx", objc_msgSend(v117, "identifier")];
                   }
 
-                  v69 = v68;
-                  [v66 printWithFormat:@" exclave %-*s", (v112 - 9), objc_msgSend(v68, "UTF8String")];
+                  v69 = name7;
+                  [v66 printWithFormat:@" exclave %-*s", (v112 - 9), objc_msgSend(name7, "UTF8String")];
 
-                  v40 = v119;
+                  segment2 = v119;
                 }
 
                 else
@@ -15940,54 +15940,54 @@ LABEL_118:
                 }
               }
 
-              v70 = [v39 uuid];
+              uuid = [binary2 uuid];
 
-              if (v70)
+              if (uuid)
               {
-                if (([a1[2] tabDelineateBinaryImageSections] & 1) == 0)
+                if (([infos[2] tabDelineateBinaryImageSections] & 1) == 0)
                 {
-                  [a1[1] appendString:@" "];
+                  [infos[1] appendString:@" "];
                 }
 
-                v71 = a1[1];
-                v72 = [v39 uuid];
-                v73 = [v72 UUIDString];
-                [v71 printWithFormat:@"<%@>", v73];
+                v71 = infos[1];
+                uuid2 = [binary2 uuid];
+                uUIDString = [uuid2 UUIDString];
+                [v71 printWithFormat:@"<%@>", uUIDString];
 
-                v40 = v119;
+                segment2 = v119;
               }
 
-              if ([a1[2] tabDelineateBinaryImageSections])
+              if ([infos[2] tabDelineateBinaryImageSections])
               {
-                [a1[1] appendString:@"\t"];
+                [infos[1] appendString:@"\t"];
               }
 
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v74 = [v38 isZerothAndOnlySegment];
+                isZerothAndOnlySegment = [v38 isZerothAndOnlySegment];
               }
 
               else
               {
-                v74 = 0;
+                isZerothAndOnlySegment = 0;
               }
 
-              if ([a1[2] tabDelineateBinaryImageSections])
+              if ([infos[2] tabDelineateBinaryImageSections])
               {
-                if (!((v40 == 0) | v74 & 1))
+                if (!((segment2 == 0) | isZerothAndOnlySegment & 1))
                 {
-                  v75 = a1[1];
-                  v76 = [v40 name];
-                  [v75 printWithFormat:@"%s", objc_msgSend(v76, "UTF8String"), v105];
+                  v75 = infos[1];
+                  name8 = [segment2 name];
+                  [v75 printWithFormat:@"%s", objc_msgSend(name8, "UTF8String"), v105];
                   goto LABEL_148;
                 }
               }
 
               else if (v111 >= 1)
               {
-                v77 = (v40 == 0) | v74;
-                v78 = a1[1];
+                v77 = (segment2 == 0) | isZerothAndOnlySegment;
+                v78 = infos[1];
                 if (v77)
                 {
                   [v78 printWithFormat:@"%-*s", v111, ""];
@@ -15995,41 +15995,41 @@ LABEL_118:
 
                 else
                 {
-                  v76 = [v40 name];
-                  [v78 printWithFormat:@"%-*s", v111, objc_msgSend(v76, "UTF8String")];
+                  name8 = [segment2 name];
+                  [v78 printWithFormat:@"%-*s", v111, objc_msgSend(name8, "UTF8String")];
 LABEL_148:
                 }
               }
 
-              if ([a1[2] tabDelineateBinaryImageSections])
+              if ([infos[2] tabDelineateBinaryImageSections])
               {
-                [a1[1] appendString:@"\t"];
+                [infos[1] appendString:@"\t"];
               }
 
-              v79 = [v39 path];
-              if (v79)
+              path = [binary2 path];
+              if (path)
               {
-                v80 = v79;
-                if (([a1[2] tabDelineateBinaryImageSections] & 1) == 0)
+                v80 = path;
+                if (([infos[2] tabDelineateBinaryImageSections] & 1) == 0)
                 {
-                  [a1[1] appendString:@"  "];
+                  [infos[1] appendString:@"  "];
                 }
 
-                if ([a1[21] sanitizePaths])
+                if ([infos[21] sanitizePaths])
                 {
                 }
 
-                v81 = a1[1];
+                v81 = infos[1];
                 v82 = SACopySanitizedString(v80, 1, 0);
                 [v81 printWithFormat:@"%@", v82];
 
-                v40 = v119;
+                segment2 = v119;
               }
 
-              [a1[1] appendString:@"\n"];
+              [infos[1] appendString:@"\n"];
 
-              v41 = v117;
-              v44 = v121;
+              exclave2 = v117;
+              name5 = v121;
 LABEL_158:
 
               v36 = 0;
@@ -16055,7 +16055,7 @@ LABEL_164:
 
           else
           {
-            [a1[1] printWithFormat:@"%*s", 4, v136];
+            [infos[1] printWithFormat:@"%*s", 4, v136];
             v48 = v121;
             if (!v121)
             {
@@ -16074,13 +16074,13 @@ LABEL_164:
     }
   }
 
-  v4 = a1[1];
+  v4 = infos[1];
   v5 = *MEMORY[0x1E69E9840];
 
   SAJSONWriteArray(v4, a2);
 }
 
-- (void)avoidOverlapInBinaryLoadInfos:(int)a3 onlyExclaves:(void *)a4 inTask:
+- (void)avoidOverlapInBinaryLoadInfos:(int)infos onlyExclaves:(void *)exclaves inTask:
 {
   v87 = *MEMORY[0x1E69E9840];
   v64 = 0u;
@@ -16110,8 +16110,8 @@ LABEL_164:
         }
 
         v12 = *(*(&v64 + 1) + 8 * v11);
-        v13 = [v12 segment];
-        v14 = [v13 length];
+        segment = [v12 segment];
+        v14 = [segment length];
         if (v14)
         {
           v15 = v14;
@@ -16119,32 +16119,32 @@ LABEL_164:
 
         else
         {
-          v16 = [v12 binary];
-          v15 = [v16 length];
+          binary = [v12 binary];
+          v15 = [binary length];
 
           v10 = MEMORY[0x1E69E9AC8];
           if (!v15)
           {
             if ([v12 highestOffset])
             {
-              v17 = [v12 highestOffset];
-              if (v17 >= 0x10000000)
+              highestOffset = [v12 highestOffset];
+              if (highestOffset >= 0x10000000)
               {
                 v15 = 0x10000000;
               }
 
               else
               {
-                v15 = v17;
+                v15 = highestOffset;
               }
             }
 
             else
             {
-              v18 = [*(a1 + 168) vmPageSize];
-              if (v18)
+              vmPageSize = [*(self + 168) vmPageSize];
+              if (vmPageSize)
               {
-                v15 = v18;
+                v15 = vmPageSize;
               }
 
               else
@@ -16155,19 +16155,19 @@ LABEL_164:
           }
         }
 
-        v19 = [*(a1 + 168) vmPageSize];
-        v20 = v19;
-        if (!v19)
+        vmPageSize2 = [*(self + 168) vmPageSize];
+        v20 = vmPageSize2;
+        if (!vmPageSize2)
         {
           v20 = *v10;
         }
 
         if (v15 % v20)
         {
-          v21 = [*(a1 + 168) vmPageSize];
-          if (v21)
+          vmPageSize3 = [*(self + 168) vmPageSize];
+          if (vmPageSize3)
           {
-            v22 = v21;
+            v22 = vmPageSize3;
           }
 
           else
@@ -16175,9 +16175,9 @@ LABEL_164:
             v22 = *v10;
           }
 
-          v23 = [*(a1 + 168) vmPageSize];
-          v24 = v23;
-          if (!v23)
+          vmPageSize4 = [*(self + 168) vmPageSize];
+          v24 = vmPageSize4;
+          if (!vmPageSize4)
           {
             v24 = *v10;
           }
@@ -16188,43 +16188,43 @@ LABEL_164:
         v25 = [v12 loadAddress] + v15;
         if ([v12 loadAddress] < v9)
         {
-          if (a3 && ([v12 exclave], v26 = objc_claimAutoreleasedReturnValue(), v26, !v26))
+          if (infos && ([v12 exclave], v26 = objc_claimAutoreleasedReturnValue(), v26, !v26))
           {
-            v30 = [v8 exclave];
+            exclave = [v8 exclave];
 
-            if (v30)
+            if (exclave)
             {
               v31 = *__error();
               v32 = _sa_logt();
               if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
               {
-                v59 = [a4 debugDescription];
-                v53 = [v8 binary];
-                v57 = [v53 name];
-                v51 = [v8 binary];
-                v55 = [v51 uuid];
-                v45 = [v8 loadAddress];
-                v49 = [v12 binary];
-                v37 = [v49 name];
-                v47 = [v12 binary];
-                v38 = [v47 uuid];
-                v39 = [v12 loadAddress];
+                v59 = [exclaves debugDescription];
+                binary2 = [v8 binary];
+                name = [binary2 name];
+                binary3 = [v8 binary];
+                uuid = [binary3 uuid];
+                loadAddress = [v8 loadAddress];
+                binary4 = [v12 binary];
+                name2 = [binary4 name];
+                binary5 = [v12 binary];
+                uuid2 = [binary5 uuid];
+                loadAddress2 = [v12 loadAddress];
                 *buf = v42;
                 v69 = v59;
                 v70 = 2112;
-                v71 = v57;
+                v71 = name;
                 v72 = 2112;
-                v73 = v55;
+                v73 = uuid;
                 v74 = 2048;
-                v75 = v45;
+                v75 = loadAddress;
                 v76 = 2048;
                 v77 = v25;
                 v78 = 2112;
-                v79 = v37;
+                v79 = name2;
                 v80 = 2112;
-                v81 = v38;
+                v81 = uuid2;
                 v82 = 2048;
-                v83 = v39;
+                v83 = loadAddress2;
                 v84 = 2048;
                 v85 = v25;
                 _os_log_debug_impl(&dword_1E0E2F000, v32, OS_LOG_TYPE_DEBUG, "%@: adjusted load address of %@ <%@> from 0x%llx to 0x%llx to avoid overlapping with %@ <%@> 0x%llx - 0x%llx", buf, 0x5Cu);
@@ -16233,13 +16233,13 @@ LABEL_164:
               }
 
               *__error() = v31;
-              v33 = [v8 loadAddress];
+              loadAddress3 = [v8 loadAddress];
               if (v8)
               {
                 v8[3] = v25;
               }
 
-              v9 = v25 + v9 - v33;
+              v9 = v25 + v9 - loadAddress3;
               v10 = MEMORY[0x1E69E9AC8];
             }
           }
@@ -16250,33 +16250,33 @@ LABEL_164:
             v28 = _sa_logt();
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
             {
-              v58 = [a4 debugDescription];
-              v52 = [v12 binary];
-              v56 = [v52 name];
-              v50 = [v12 binary];
-              v54 = [v50 uuid];
-              v44 = [v12 loadAddress];
-              v48 = [v8 binary];
-              v34 = [v48 name];
-              v46 = [v8 binary];
-              v35 = [v46 uuid];
-              v36 = [v8 loadAddress];
+              v58 = [exclaves debugDescription];
+              binary6 = [v12 binary];
+              name3 = [binary6 name];
+              binary7 = [v12 binary];
+              uuid3 = [binary7 uuid];
+              loadAddress4 = [v12 loadAddress];
+              binary8 = [v8 binary];
+              name4 = [binary8 name];
+              binary9 = [v8 binary];
+              uuid4 = [binary9 uuid];
+              loadAddress5 = [v8 loadAddress];
               *buf = v42;
               v69 = v58;
               v70 = 2112;
-              v71 = v56;
+              v71 = name3;
               v72 = 2112;
-              v73 = v54;
+              v73 = uuid3;
               v74 = 2048;
-              v75 = v44;
+              v75 = loadAddress4;
               v76 = 2048;
               v77 = v9;
               v78 = 2112;
-              v79 = v34;
+              v79 = name4;
               v80 = 2112;
-              v81 = v35;
+              v81 = uuid4;
               v82 = 2048;
-              v83 = v36;
+              v83 = loadAddress5;
               v84 = 2048;
               v85 = v9;
               _os_log_debug_impl(&dword_1E0E2F000, v28, OS_LOG_TYPE_DEBUG, "%@: adjusted load address of %@ <%@> from 0x%llx to 0x%llx to avoid overlapping with %@ <%@> 0x%llx - 0x%llx", buf, 0x5Cu);
@@ -16341,16 +16341,16 @@ void __29__SASamplePrinter_preprocess__block_invoke_2(uint64_t a1, id *a2)
   }
 }
 
-- (id)displayedBinaryLoadInfoForLoadInfo:(uint64_t)a1 offsetIntoLoadInfo:(void *)a2 binariesToDisplay:(unint64_t)a3 extraBinariesToDisplay:(void *)a4
+- (id)displayedBinaryLoadInfoForLoadInfo:(uint64_t)info offsetIntoLoadInfo:(void *)loadInfo binariesToDisplay:(unint64_t)display extraBinariesToDisplay:(void *)toDisplay
 {
-  if (a1)
+  if (info)
   {
-    v7 = [a2 binary];
-    v8 = [a2 segment];
-    v9 = [a2 loadAddress];
-    v10 = [a2 isInKernelAddressSpace];
-    v11 = [a2 exclave];
-    v12 = [SASamplePrinter displayedBinaryLoadInfoForBinary:v7 segment:v8 desiredLoadAddress:v9 offsetIntoLoadInfo:a3 isInKernelAddressSpace:v10 exclave:v11 binariesToDisplay:a4 extraBinariesToDisplay:0];
+    binary = [loadInfo binary];
+    segment = [loadInfo segment];
+    loadAddress = [loadInfo loadAddress];
+    isInKernelAddressSpace = [loadInfo isInKernelAddressSpace];
+    exclave = [loadInfo exclave];
+    v12 = [SASamplePrinter displayedBinaryLoadInfoForBinary:binary segment:segment desiredLoadAddress:loadAddress offsetIntoLoadInfo:display isInKernelAddressSpace:isInKernelAddressSpace exclave:exclave binariesToDisplay:toDisplay extraBinariesToDisplay:0];
   }
 
   else
@@ -16380,18 +16380,18 @@ void __29__SASamplePrinter_preprocess__block_invoke_3(uint64_t a1, id *a2)
   }
 }
 
-- (id)sortedLoadInfosForBinaryImages:(uint64_t)a1
+- (id)sortedLoadInfosForBinaryImages:(uint64_t)images
 {
   v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a2, "count")}];
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __50__SASamplePrinter_sortedLoadInfosForBinaryImages___block_invoke;
   v12 = &unk_1E86F7A40;
-  v13 = a1;
+  imagesCopy = images;
   v5 = v4;
   v14 = v5;
   [a2 enumerateKeysAndObjectsUsingBlock:&v9];
-  [v5 sortUsingComparator:{&__block_literal_global_1926, v9, v10, v11, v12, v13}];
+  [v5 sortUsingComparator:{&__block_literal_global_1926, v9, v10, v11, v12, imagesCopy}];
   v6 = v14;
   v7 = v5;
 
@@ -16458,75 +16458,75 @@ LABEL_6:
 LABEL_10:
 }
 
-- (uint64_t)shouldPrintTask:(unint64_t)a3 thread:(unint64_t)a4 dispatchQueue:
+- (uint64_t)shouldPrintTask:(unint64_t)task thread:(unint64_t)thread dispatchQueue:
 {
   v94 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v64 = 0;
     goto LABEL_102;
   }
 
-  v7 = [a1 options];
-  v8 = [v7 pidsToPrint];
+  options = [self options];
+  pidsToPrint = [options pidsToPrint];
 
-  v9 = [a1 options];
-  v10 = [v9 uniquePidsToPrint];
+  options2 = [self options];
+  uniquePidsToPrint = [options2 uniquePidsToPrint];
 
-  v11 = [a1 options];
-  v12 = [v11 processNamesToPrint];
+  options3 = [self options];
+  processNamesToPrint = [options3 processNamesToPrint];
 
-  v13 = [a1 options];
-  v14 = [v13 processUUIDsToPrint];
+  options4 = [self options];
+  processUUIDsToPrint = [options4 processUUIDsToPrint];
 
-  v15 = [a1 options];
-  v16 = [v15 tidsToPrint];
+  options5 = [self options];
+  tidsToPrint = [options5 tidsToPrint];
 
-  if (!v8 && !v10 && !v16 && !v12 && !v14)
+  if (!pidsToPrint && !uniquePidsToPrint && !tidsToPrint && !processNamesToPrint && !processUUIDsToPrint)
   {
-    v17 = [a1 options];
-    v18 = [v17 printTargetThreadOnly];
+    options6 = [self options];
+    printTargetThreadOnly = [options6 printTargetThreadOnly];
 
-    if (!v18)
+    if (!printTargetThreadOnly)
     {
       goto LABEL_100;
     }
   }
 
-  v19 = [*(a1 + 168) targetProcess];
+  targetProcess = [*(self + 168) targetProcess];
 
-  if (v19 != a2)
+  if (targetProcess != a2)
   {
     goto LABEL_9;
   }
 
-  if (!(a3 | a4))
+  if (!(task | thread))
   {
     goto LABEL_100;
   }
 
-  v28 = [a1 options];
-  v29 = [v28 printTargetThreadOnly];
+  options7 = [self options];
+  printTargetThreadOnly2 = [options7 printTargetThreadOnly];
 
-  if (!v29)
+  if (!printTargetThreadOnly2)
   {
     goto LABEL_100;
   }
 
-  if ([*(a1 + 168) targetThreadId] && objc_msgSend(*(a1 + 168), "targetDispatchQueueId"))
+  if ([*(self + 168) targetThreadId] && objc_msgSend(*(self + 168), "targetDispatchQueueId"))
   {
-    if (!a3)
+    if (!task)
     {
       goto LABEL_9;
     }
 
-    if (!a4)
+    if (!thread)
     {
       goto LABEL_9;
     }
 
-    v30 = [a3 threadId];
-    if (v30 != [*(a1 + 168) targetThreadId])
+    threadId = [task threadId];
+    if (threadId != [*(self + 168) targetThreadId])
     {
       goto LABEL_9;
     }
@@ -16534,21 +16534,21 @@ LABEL_10:
 
   else
   {
-    if ([*(a1 + 168) targetThreadId])
+    if ([*(self + 168) targetThreadId])
     {
-      if (!a3)
+      if (!task)
       {
         goto LABEL_9;
       }
 
-      v31 = [a3 threadId];
-      v32 = [*(a1 + 168) targetThreadId];
+      threadId2 = [task threadId];
+      targetThreadId = [*(self + 168) targetThreadId];
       goto LABEL_46;
     }
 
-    if (![*(a1 + 168) targetDispatchQueueId])
+    if (![*(self + 168) targetDispatchQueueId])
     {
-      if ([a3 isMainThread])
+      if ([task isMainThread])
       {
         goto LABEL_100;
       }
@@ -16556,33 +16556,33 @@ LABEL_10:
       goto LABEL_9;
     }
 
-    if (!a4)
+    if (!thread)
     {
       goto LABEL_9;
     }
   }
 
-  v31 = [a4 identifier];
-  v32 = [*(a1 + 168) targetDispatchQueueId];
+  threadId2 = [thread identifier];
+  targetThreadId = [*(self + 168) targetDispatchQueueId];
 LABEL_46:
-  if (v31 == v32)
+  if (threadId2 == targetThreadId)
   {
     goto LABEL_100;
   }
 
 LABEL_9:
-  v20 = [*(a1 + 168) targetProcesses];
-  v21 = [v20 containsObject:a2];
+  targetProcesses = [*(self + 168) targetProcesses];
+  v21 = [targetProcesses containsObject:a2];
 
   if (v21)
   {
     goto LABEL_100;
   }
 
-  if (v8)
+  if (pidsToPrint)
   {
     v22 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(a2, "pid")}];
-    v23 = [v8 containsObject:v22];
+    v23 = [pidsToPrint containsObject:v22];
 
     if (v23)
     {
@@ -16590,10 +16590,10 @@ LABEL_9:
     }
   }
 
-  if (v10)
+  if (uniquePidsToPrint)
   {
     v24 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a2, "uniquePid")}];
-    v25 = [v10 containsObject:v24];
+    v25 = [uniquePidsToPrint containsObject:v24];
 
     if (v25)
     {
@@ -16601,21 +16601,21 @@ LABEL_9:
     }
   }
 
-  if (v12)
+  if (processNamesToPrint)
   {
-    v26 = [a2 name];
-    if (v26 && ([v12 containsObject:v26] & 1) != 0 || !objc_msgSend(a2, "pid") && (objc_msgSend(v12, "containsObject:", @"kernel_task") & 1) != 0)
+    name = [a2 name];
+    if (name && ([processNamesToPrint containsObject:name] & 1) != 0 || !objc_msgSend(a2, "pid") && (objc_msgSend(processNamesToPrint, "containsObject:", @"kernel_task") & 1) != 0)
     {
       goto LABEL_23;
     }
   }
 
-  if (v14)
+  if (processUUIDsToPrint)
   {
-    v27 = [a2 mainBinary];
-    v26 = [v27 uuid];
+    mainBinary = [a2 mainBinary];
+    name = [mainBinary uuid];
 
-    if (v26 && [v14 containsObject:v26])
+    if (name && [processUUIDsToPrint containsObject:name])
     {
 LABEL_23:
 
@@ -16623,20 +16623,20 @@ LABEL_23:
     }
   }
 
-  v33 = [a1 options];
-  v34 = [v33 printProblematicProcessesAndThreads];
+  options8 = [self options];
+  printProblematicProcessesAndThreads = [options8 printProblematicProcessesAndThreads];
 
-  if (!v34)
+  if (!printProblematicProcessesAndThreads)
   {
     goto LABEL_58;
   }
 
-  v35 = [a2 lastTaskStateOnOrBeforeTime:*(a1 + 40) sampleIndex:*(a1 + 64)];
+  v35 = [a2 lastTaskStateOnOrBeforeTime:*(self + 40) sampleIndex:*(self + 64)];
   v68 = v35;
   v36 = v35;
   if (!v35 || ([v35 wqExceededTotalThreadLimit] & 1) == 0 && (objc_msgSend(v36, "wqExceededConstrainedThreadLimit") & 1) == 0)
   {
-    if (!a3)
+    if (!task)
     {
       v89 = 0u;
       v90 = 0u;
@@ -16659,10 +16659,10 @@ LABEL_50:
           objc_enumerationMutation(obj);
         }
 
-        v41 = [*(a1 + 152) objectForKeyedSubscript:*(*(&v87 + 1) + 8 * v40)];
-        v42 = [v41 isPartOfADeadlock];
+        v41 = [*(self + 152) objectForKeyedSubscript:*(*(&v87 + 1) + 8 * v40)];
+        isPartOfADeadlock = [v41 isPartOfADeadlock];
 
-        if (v42)
+        if (isPartOfADeadlock)
         {
           break;
         }
@@ -16685,8 +16685,8 @@ LABEL_56:
       goto LABEL_99;
     }
 
-    v37 = *(a1 + 152);
-    v38 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a3, "threadId")}];
+    v37 = *(self + 152);
+    v38 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(task, "threadId")}];
     v39 = [v37 objectForKeyedSubscript:v38];
     LOBYTE(v37) = [v39 isPartOfADeadlock];
 
@@ -16698,10 +16698,10 @@ LABEL_57:
       v84 = &v83;
       v85 = 0x2020000000;
       v86 = 0;
-      v43 = *(a1 + 32);
-      v44 = *(a1 + 40);
-      v45 = *(a1 + 56);
-      v46 = *(a1 + 64);
+      v43 = *(self + 32);
+      v44 = *(self + 40);
+      v45 = *(self + 56);
+      v46 = *(self + 64);
       v82[0] = MEMORY[0x1E69E9820];
       v82[1] = 3221225472;
       v82[2] = __56__SASamplePrinter_shouldPrintTask_thread_dispatchQueue___block_invoke;
@@ -16717,15 +16717,15 @@ LABEL_57:
       }
 
 LABEL_58:
-      if (!v16)
+      if (!tidsToPrint)
       {
         goto LABEL_71;
       }
 
-      if (a3)
+      if (task)
       {
-        v48 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a3, "threadId")}];
-        v49 = [v16 containsObject:v48];
+        v48 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(task, "threadId")}];
+        v49 = [tidsToPrint containsObject:v48];
 
         if ((v49 & 1) == 0)
         {
@@ -16739,8 +16739,8 @@ LABEL_58:
       v81 = 0u;
       v78 = 0u;
       v79 = 0u;
-      v71 = [a2 threads];
-      v50 = [v71 countByEnumeratingWithState:&v78 objects:v92 count:16];
+      threads = [a2 threads];
+      v50 = [threads countByEnumeratingWithState:&v78 objects:v92 count:16];
       if (!v50)
       {
         goto LABEL_70;
@@ -16753,25 +16753,25 @@ LABEL_58:
         {
           if (*v79 != v51)
           {
-            objc_enumerationMutation(v71);
+            objc_enumerationMutation(threads);
           }
 
-          if ([v16 containsObject:*(*(&v78 + 1) + 8 * i)])
+          if ([tidsToPrint containsObject:*(*(&v78 + 1) + 8 * i)])
           {
 
             goto LABEL_100;
           }
         }
 
-        v50 = [v71 countByEnumeratingWithState:&v78 objects:v92 count:16];
+        v50 = [threads countByEnumeratingWithState:&v78 objects:v92 count:16];
       }
 
       while (v50);
 LABEL_70:
 
 LABEL_71:
-      v53 = [a1 options];
-      if (![v53 printTargetThreadOnly])
+      options9 = [self options];
+      if (![options9 printTargetThreadOnly])
       {
 
 LABEL_93:
@@ -16779,7 +16779,7 @@ LABEL_93:
         goto LABEL_101;
       }
 
-      v54 = [*(a1 + 128) count] == 0;
+      v54 = [*(self + 128) count] == 0;
 
       if (v54)
       {
@@ -16790,7 +16790,7 @@ LABEL_93:
       v77 = 0u;
       v74 = 0u;
       v75 = 0u;
-      v72 = *(a1 + 128);
+      v72 = *(self + 128);
       v56 = [v72 countByEnumeratingWithState:&v74 objects:v91 count:16];
       if (!v56)
       {
@@ -16808,15 +16808,15 @@ LABEL_75:
         }
 
         v59 = *(*(&v74 + 1) + 8 * v58);
-        if (a3)
+        if (task)
         {
           if (v59)
           {
             if (v59[2])
             {
-              v60 = [a3 threadId];
+              threadId3 = [task threadId];
               v61 = v59[2];
-              if (v60 == v61)
+              if (threadId3 == v61)
               {
                 goto LABEL_97;
               }
@@ -16916,9 +16916,9 @@ uint64_t __59__SASamplePrinter_highestPriorityInThread_useBasePriority___block_i
   return result;
 }
 
-- (uint64_t)highestPriorityInTask:(char)a3 useBasePriority:
+- (uint64_t)highestPriorityInTask:(char)task useBasePriority:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -16927,15 +16927,15 @@ uint64_t __59__SASamplePrinter_highestPriorityInThread_useBasePriority___block_i
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v5 = [a2 threads];
+  threads = [a2 threads];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__SASamplePrinter_highestPriorityInTask_useBasePriority___block_invoke;
   v8[3] = &unk_1E86F7728;
-  v9 = a3;
-  v8[4] = a1;
+  taskCopy = task;
+  v8[4] = self;
   v8[5] = &v10;
-  [v5 enumerateKeysAndObjectsUsingBlock:v8];
+  [threads enumerateKeysAndObjectsUsingBlock:v8];
 
   v6 = *(v11 + 6);
   _Block_object_dispose(&v10, 8);
@@ -16979,9 +16979,9 @@ void __57__SASamplePrinter_highestPriorityInTask_useBasePriority___block_invoke(
   }
 }
 
-- (uint64_t)largestFootprintInTask:(void *)a1
+- (uint64_t)largestFootprintInTask:(void *)task
 {
-  if (!a1)
+  if (!task)
   {
     return 0;
   }
@@ -16990,10 +16990,10 @@ void __57__SASamplePrinter_highestPriorityInTask_useBasePriority___block_invoke(
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v2 = a1[4];
-  v3 = a1[5];
-  v4 = a1[7];
-  v5 = a1[8];
+  v2 = task[4];
+  v3 = task[5];
+  v4 = task[7];
+  v5 = task[8];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__SASamplePrinter_largestFootprintInTask___block_invoke;
@@ -17367,13 +17367,13 @@ LABEL_14:
   return result;
 }
 
-- (void)printTask:(uint64_t)a3 specialDispatchQueueId:(uint64_t)a4 specialThreadId:(int)a5 omitSpecial:(int)a6 omitOther:
+- (void)printTask:(uint64_t)task specialDispatchQueueId:(uint64_t)id specialThreadId:(int)threadId omitSpecial:(int)special omitOther:
 {
   v76 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v12 = objc_autoreleasePoolPush();
-    if (a5 && a6)
+    if (threadId && special)
     {
       v55 = *__error();
       v56 = _sa_logt();
@@ -17389,26 +17389,26 @@ LABEL_14:
       __break(1u);
     }
 
-    v13 = [(SASamplePrinter *)a1 printTaskHeaderForTask:a2 specialDispatchQueueId:a3 specialThreadId:a4 omitSpecial:a5 omitOther:a6];
+    v13 = [(SASamplePrinter *)self printTaskHeaderForTask:a2 specialDispatchQueueId:task specialThreadId:id omitSpecial:threadId omitOther:special];
     if (v13 < 0)
     {
       goto LABEL_49;
     }
 
     v14 = v13;
-    if ([*(a1 + 16) binaryImagesBeforeStacks])
+    if ([*(self + 16) binaryImagesBeforeStacks])
     {
-      [(SASamplePrinter *)a1 printBinaryImagesForTask:a2];
+      [(SASamplePrinter *)self printBinaryImagesForTask:a2];
     }
 
-    v15 = *(a1 + 16);
+    v15 = *(self + 16);
     if (!v15 || (v16 = *(v15 + 152), v16 != 3) && (v16 || *(v15 + 11) != 1))
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = [(SASamplePrinter *)a1 stacksForTask:a2 taskSampleCount:v14];
-      if ([*(a1 + 16) printJson])
+      v24 = [(SASamplePrinter *)self stacksForTask:a2 taskSampleCount:v14];
+      if ([*(self + 16) printJson])
       {
-        [*(a1 + 8) appendString:{@", threads:["}];
+        [*(self + 8) appendString:{@", threads:["}];
       }
 
       v72 = 0u;
@@ -17437,23 +17437,23 @@ LABEL_14:
             v31 = *(*(&v70 + 1) + 8 * i);
             if (!v31 || (*(v31 + 8) & 1) == 0)
             {
-              v32 = [*(a1 + 16) printJson];
+              printJson = [*(self + 16) printJson];
               v33 = @"\n";
-              if (v32)
+              if (printJson)
               {
                 if (v28)
                 {
-                  [*(a1 + 8) appendString:{@", "}];
+                  [*(self + 8) appendString:{@", "}];
                 }
 
                 v33 = @"{";
               }
 
-              [*(a1 + 8) appendString:v33];
-              [(SASamplePrinter *)a1 printStack:v31 stream:*(a1 + 8)];
-              if ([*(a1 + 16) printJson])
+              [*(self + 8) appendString:v33];
+              [(SASamplePrinter *)self printStack:v31 stream:*(self + 8)];
+              if ([*(self + 16) printJson])
               {
-                [*(a1 + 8) appendString:@"}"];
+                [*(self + 8) appendString:@"}"];
               }
 
               ++v28;
@@ -17475,37 +17475,37 @@ LABEL_14:
         v34 = 1;
       }
 
-      if ([*(a1 + 16) printJson])
+      if ([*(self + 16) printJson])
       {
-        [*(a1 + 8) appendString:@"]\n\n"];
+        [*(self + 8) appendString:@"]\n\n"];
       }
 
       else if (v34)
       {
-        if (*(a1 + 48) != 1)
+        if (*(self + 48) != 1)
         {
           goto LABEL_39;
         }
 
         [a2 taskStates];
         v35 = v65 = v23;
-        v36 = [v35 firstObject];
+        firstObject = [v35 firstObject];
         v37 = v12;
-        v38 = [v36 endSampleIndex];
-        v39 = [a2 taskStates];
-        v40 = [v39 lastObject];
+        endSampleIndex = [firstObject endSampleIndex];
+        taskStates = [a2 taskStates];
+        lastObject = [taskStates lastObject];
         v41 = a2;
-        v42 = [v40 endSampleIndex];
+        endSampleIndex2 = [lastObject endSampleIndex];
 
         v23 = v65;
-        v43 = v38 >= v42;
+        v43 = endSampleIndex >= endSampleIndex2;
         v12 = v37;
         a2 = v41;
         if (!v43)
         {
 LABEL_39:
-          [*(a1 + 8) appendString:@"\n"];
-          [*(a1 + 8) printWithFormat:@"%*sNo threads sampled\n", 2, ""];
+          [*(self + 8) appendString:@"\n"];
+          [*(self + 8) printWithFormat:@"%*sNo threads sampled\n", 2, ""];
         }
       }
 
@@ -17513,24 +17513,24 @@ LABEL_39:
       goto LABEL_47;
     }
 
-    if (!(a4 | a3))
+    if (!(id | task))
     {
       *buf = a2;
       v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:buf count:1];
-      [(SASamplePrinter *)a1 printSingleStackForTasks:v44 limitToDispatchQueueIds:0 limitToThreadIds:0 intersection:0 sampleCount:v14];
+      [(SASamplePrinter *)self printSingleStackForTasks:v44 limitToDispatchQueueIds:0 limitToThreadIds:0 intersection:0 sampleCount:v14];
 
       goto LABEL_47;
     }
 
     v68 = v12;
-    if (a6)
+    if (special)
     {
       v17 = objc_alloc(MEMORY[0x1E695DFD8]);
-      v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+      v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:id];
       v19 = [v17 initWithObjects:{v18, 0}];
 
       v20 = objc_alloc(MEMORY[0x1E695DFD8]);
-      v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+      v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:task];
       v22 = [v20 initWithObjects:{v21, 0}];
     }
 
@@ -17539,15 +17539,15 @@ LABEL_39:
       v45 = objc_alloc(MEMORY[0x1E695DFA8]);
       [a2 threads];
       v47 = v46 = a2;
-      v48 = [v47 allKeys];
-      v66 = [v45 initWithArray:v48];
+      allKeys = [v47 allKeys];
+      v66 = [v45 initWithArray:allKeys];
 
       v49 = objc_alloc(MEMORY[0x1E695DFA8]);
-      v50 = [v46 dispatchQueues];
-      v51 = [v50 allKeys];
-      v22 = [v49 initWithArray:v51];
+      dispatchQueues = [v46 dispatchQueues];
+      allKeys2 = [dispatchQueues allKeys];
+      v22 = [v49 initWithArray:allKeys2];
 
-      if (!a5)
+      if (!threadId)
       {
         a2 = v46;
         v12 = v68;
@@ -17555,11 +17555,11 @@ LABEL_39:
         goto LABEL_46;
       }
 
-      v52 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+      v52 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:id];
       v19 = v66;
       [v66 removeObject:v52];
 
-      v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+      v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:task];
       [v22 removeObject:v21];
       a2 = v46;
     }
@@ -17568,12 +17568,12 @@ LABEL_39:
 LABEL_46:
     v74 = a2;
     v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v74 count:1];
-    [(SASamplePrinter *)a1 printSingleStackForTasks:v53 limitToDispatchQueueIds:v22 limitToThreadIds:v19 intersection:a6 sampleCount:v14];
+    [(SASamplePrinter *)self printSingleStackForTasks:v53 limitToDispatchQueueIds:v22 limitToThreadIds:v19 intersection:special sampleCount:v14];
 
 LABEL_47:
-    if (([*(a1 + 16) binaryImagesBeforeStacks] & 1) == 0)
+    if (([*(self + 16) binaryImagesBeforeStacks] & 1) == 0)
     {
-      [(SASamplePrinter *)a1 printBinaryImagesForTask:a2];
+      [(SASamplePrinter *)self printBinaryImagesForTask:a2];
     }
 
 LABEL_49:
@@ -18601,11 +18601,11 @@ uint64_t __44__SASamplePrinter_printTasksWithAggregation__block_invoke_1490(uint
   return v8;
 }
 
-- (void)printMultipleTasks:(uint64_t)a1
+- (void)printMultipleTasks:(uint64_t)tasks
 {
   v178 = *MEMORY[0x1E69E9840];
   context = objc_autoreleasePoolPush();
-  v131 = *(a1 + 48);
+  v131 = *(tasks + 48);
   v167 = 0;
   v168 = &v167;
   v169 = 0x3032000000;
@@ -18632,7 +18632,7 @@ uint64_t __44__SASamplePrinter_printTasksWithAggregation__block_invoke_1490(uint
   v152 = 0;
   v122 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
   v130 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a2, "count")}];
-  v111 = [a2 firstObject];
+  firstObject = [a2 firstObject];
   v147 = 0u;
   v148 = 0u;
   v145 = 0u;
@@ -18666,19 +18666,19 @@ uint64_t __44__SASamplePrinter_printTasksWithAggregation__block_invoke_1490(uint
         v6 = *(*(&v145 + 1) + 8 * i);
         if ([v6 pid])
         {
-          v7 = [v6 sharedCache];
-          v8 = v7;
-          if (v7)
+          sharedCache = [v6 sharedCache];
+          v8 = sharedCache;
+          if (sharedCache)
           {
-            v9 = v7;
+            null = sharedCache;
           }
 
           else
           {
-            v9 = [MEMORY[0x1E695DFB0] null];
+            null = [MEMORY[0x1E695DFB0] null];
           }
 
-          v10 = v9;
+          v10 = null;
 
           v143 = 0u;
           v144 = 0u;
@@ -18719,7 +18719,7 @@ uint64_t __44__SASamplePrinter_printTasksWithAggregation__block_invoke_1490(uint
 LABEL_20:
         }
 
-        if (([*(a1 + 168) dataSource] != 8 || objc_msgSend(*(a1 + 168), "haveKPerfSched")) && objc_msgSend(*(a1 + 168), "dataStyle") != 1 && objc_msgSend(*(a1 + 168), "dataStyle"))
+        if (([*(tasks + 168) dataSource] != 8 || objc_msgSend(*(tasks + 168), "haveKPerfSched")) && objc_msgSend(*(tasks + 168), "dataStyle") != 1 && objc_msgSend(*(tasks + 168), "dataStyle"))
         {
           *&buf = 0;
           v140 = 0;
@@ -18727,7 +18727,7 @@ LABEL_20:
           v138 = 0;
           v137 = 0;
           v136 = 0;
-          [(SATask *)v6 cpuTimeNs:&v140 cpuInstructions:&v139 cpuCycles:&v138 nonThreadCpuTimeNs:&v137 nonThreadCpuInstructions:&v136 nonThreadCpuCycles:*(a1 + 32) betweenStartTime:*(a1 + 40) endTime:?];
+          [(SATask *)v6 cpuTimeNs:&v140 cpuInstructions:&v139 cpuCycles:&v138 nonThreadCpuTimeNs:&v137 nonThreadCpuInstructions:&v136 nonThreadCpuCycles:*(tasks + 32) betweenStartTime:*(tasks + 40) endTime:?];
           v114 += buf;
           v115 += v140;
           v116 += v139;
@@ -18740,35 +18740,35 @@ LABEL_20:
         *(&buf + 1) = &buf;
         v174 = 0x2020000000;
         v175 = 0;
-        v15 = [v6 taskStates];
-        v16 = [v15 count] == 0;
+        taskStates = [v6 taskStates];
+        v16 = [taskStates count] == 0;
 
         if (v16)
         {
-          v40 = [v6 threads];
+          threads = [v6 threads];
           v133[0] = MEMORY[0x1E69E9820];
           v133[1] = 3221225472;
           v133[2] = __51__SASamplePrinter_printTaskHeaderForMultipleTasks___block_invoke_2;
           v133[3] = &unk_1E86F78B0;
-          v133[4] = a1;
+          v133[4] = tasks;
           v133[5] = &v167;
           v134 = v131;
           v133[6] = &v157;
           v133[7] = &v161;
           v133[8] = &v153;
           v133[9] = &buf;
-          [v40 enumerateKeysAndObjectsUsingBlock:v133];
+          [threads enumerateKeysAndObjectsUsingBlock:v133];
         }
 
         else
         {
-          v17 = [v6 indexOfFirstTaskStateOnOrAfterTime:*(a1 + 32) sampleIndex:*(a1 + 56)];
+          v17 = [v6 indexOfFirstTaskStateOnOrAfterTime:*(tasks + 32) sampleIndex:*(tasks + 56)];
           if (v17 == 0x7FFFFFFFFFFFFFFFLL)
           {
             goto LABEL_48;
           }
 
-          v18 = [v6 indexOfLastTaskStateOnOrBeforeTime:*(a1 + 40) sampleIndex:*(a1 + 64)];
+          v18 = [v6 indexOfLastTaskStateOnOrBeforeTime:*(tasks + 40) sampleIndex:*(tasks + 64)];
           v19 = v18;
           if (v18 == 0x7FFFFFFFFFFFFFFFLL)
           {
@@ -18781,20 +18781,20 @@ LABEL_20:
             goto LABEL_48;
           }
 
-          v21 = [v6 taskStates];
-          v22 = [v21 objectAtIndexedSubscript:v17];
+          taskStates2 = [v6 taskStates];
+          v22 = [taskStates2 objectAtIndexedSubscript:v17];
 
           if (!v168[5] || ([v22 startTimestamp], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "lt:", v168[5]), v23, v24))
           {
-            v25 = [v22 startTimestamp];
+            startTimestamp = [v22 startTimestamp];
             v26 = v168[5];
-            v168[5] = v25;
+            v168[5] = startTimestamp;
 
             if (v131)
             {
-              v27 = [v22 startSampleIndex];
-              v158[3] = v27;
-              if (v27 == 0x7FFFFFFFFFFFFFFFLL)
+              startSampleIndex = [v22 startSampleIndex];
+              v158[3] = startSampleIndex;
+              if (startSampleIndex == 0x7FFFFFFFFFFFFFFFLL)
               {
                 v28 = [v22 endSampleIndex] + 1;
                 v158[3] = v28;
@@ -18802,28 +18802,28 @@ LABEL_20:
             }
           }
 
-          v29 = [v6 taskStates];
-          v30 = [v29 objectAtIndexedSubscript:v19];
+          taskStates3 = [v6 taskStates];
+          v30 = [taskStates3 objectAtIndexedSubscript:v19];
 
           if (!v162[5] || ([v30 endTimestamp], v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "gt:", v162[5]), v31, v32))
           {
-            v33 = [v30 endTimestamp];
+            endTimestamp = [v30 endTimestamp];
             v34 = v162[5];
-            v162[5] = v33;
+            v162[5] = endTimestamp;
 
             if (v131)
             {
-              v35 = [v30 endSampleIndex];
-              v154[3] = v35;
+              endSampleIndex = [v30 endSampleIndex];
+              v154[3] = endSampleIndex;
             }
           }
 
           if ((v150[3] & 1) == 0)
           {
-            v36 = *(a1 + 32);
-            v37 = *(a1 + 40);
-            v38 = *(a1 + 56);
-            v39 = *(a1 + 64);
+            v36 = *(tasks + 32);
+            v37 = *(tasks + 40);
+            v38 = *(tasks + 56);
+            v39 = *(tasks + 64);
             v135[0] = MEMORY[0x1E69E9820];
             v135[1] = 3221225472;
             v135[2] = __51__SASamplePrinter_printTaskHeaderForMultipleTasks___block_invoke;
@@ -18843,12 +18843,12 @@ LABEL_20:
         v41 = [SASamplePrinter displayStringForResourceCoalition:v6];
         v42 = [v130 objectForKeyedSubscript:v41];
         v43 = MEMORY[0x1E696AD98];
-        v44 = [v42 unsignedLongLongValue];
-        v45 = [v43 numberWithUnsignedLongLong:*(*(&buf + 1) + 24) + v44];
+        unsignedLongLongValue = [v42 unsignedLongLongValue];
+        v45 = [v43 numberWithUnsignedLongLong:*(*(&buf + 1) + 24) + unsignedLongLongValue];
         [v130 setObject:v45 forKeyedSubscript:v41];
 
-        v46 = [(SASamplePrinter *)a1 numIOsForTask:v6 ioSize:&v140];
-        v47 = [v6 hardenedHeap];
+        v46 = [(SASamplePrinter *)tasks numIOsForTask:v6 ioSize:&v140];
+        hardenedHeap = [v6 hardenedHeap];
         if (v6)
         {
           LOBYTE(v128) = v6[75] | v128;
@@ -18859,7 +18859,7 @@ LABEL_20:
 
         v126 += v46;
         v125 += v46;
-        v127 |= v47;
+        v127 |= hardenedHeap;
 LABEL_48:
         _Block_object_dispose(&buf, 8);
       }
@@ -18892,14 +18892,14 @@ LABEL_52:
       v49 = v154[3];
       if (v49 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        if (v49 >= *(a1 + 64))
+        if (v49 >= *(tasks + 64))
         {
-          v49 = *(a1 + 64);
+          v49 = *(tasks + 64);
         }
 
-        if (v48 <= *(a1 + 56))
+        if (v48 <= *(tasks + 56))
         {
-          v48 = *(a1 + 56);
+          v48 = *(tasks + 56);
         }
 
         v121 = v49 - v48 + 1;
@@ -18907,114 +18907,114 @@ LABEL_52:
     }
   }
 
-  v50 = [*(a1 + 168) targetProcesses];
-  v51 = [v50 isEqual:obj];
+  targetProcesses = [*(tasks + 168) targetProcesses];
+  v51 = [targetProcesses isEqual:obj];
 
   if (v51)
   {
     goto LABEL_61;
   }
 
-  if (!v121 && ![*(a1 + 16) displayTasksWithZeroCount])
+  if (!v121 && ![*(tasks + 16) displayTasksWithZeroCount])
   {
     goto LABEL_88;
   }
 
-  if ([*(a1 + 16) omitTasksBelowSampleCount] < 1)
+  if ([*(tasks + 16) omitTasksBelowSampleCount] < 1)
   {
-    v55 = 0;
+    omitTasksBelowSampleCount = 0;
   }
 
   else
   {
-    v55 = [*(a1 + 16) omitTasksBelowSampleCount];
+    omitTasksBelowSampleCount = [*(tasks + 16) omitTasksBelowSampleCount];
   }
 
-  if ([*(a1 + 16) omitTasksBelowPercentOfTotalSamples] >= 1)
+  if ([*(tasks + 16) omitTasksBelowPercentOfTotalSamples] >= 1)
   {
-    v70 = *(a1 + 72);
-    v71 = [*(a1 + 16) omitTasksBelowPercentOfTotalSamples];
-    if (v55 <= v70 * v71 / 0x64uLL)
+    v70 = *(tasks + 72);
+    omitTasksBelowPercentOfTotalSamples = [*(tasks + 16) omitTasksBelowPercentOfTotalSamples];
+    if (omitTasksBelowSampleCount <= v70 * omitTasksBelowPercentOfTotalSamples / 0x64uLL)
     {
-      v55 = v70 * v71 / 0x64uLL;
+      omitTasksBelowSampleCount = v70 * omitTasksBelowPercentOfTotalSamples / 0x64uLL;
     }
   }
 
-  if (!v55 || v121 > v55)
+  if (!omitTasksBelowSampleCount || v121 > omitTasksBelowSampleCount)
   {
 LABEL_61:
-    v52 = [v111 mainBinary];
-    if (!v52)
+    mainBinary = [firstObject mainBinary];
+    if (!mainBinary)
     {
       v76 = *__error();
       v77 = _sa_logt();
       if (os_log_type_enabled(v77, OS_LOG_TYPE_ERROR))
       {
-        v78 = [v111 debugDescription];
+        v78 = [firstObject debugDescription];
         v79 = v78;
-        v80 = [v78 UTF8String];
+        uTF8String = [v78 UTF8String];
         LODWORD(buf) = 136315138;
-        *(&buf + 4) = v80;
+        *(&buf + 4) = uTF8String;
         _os_log_error_impl(&dword_1E0E2F000, v77, OS_LOG_TYPE_ERROR, "%s: No main binary printing multiple tasks", &buf, 0xCu);
       }
 
       *__error() = v76;
-      v81 = [v111 debugDescription];
+      v81 = [firstObject debugDescription];
       v82 = v81;
-      v83 = [v81 UTF8String];
-      _SASetCrashLogMessage(6788, "%s: No main binary printing multiple tasks", v84, v85, v86, v87, v88, v89, v83);
+      uTF8String2 = [v81 UTF8String];
+      _SASetCrashLogMessage(6788, "%s: No main binary printing multiple tasks", v84, v85, v86, v87, v88, v89, uTF8String2);
 
       _os_crash();
       __break(1u);
     }
 
-    v53 = *(a1 + 136);
+    v53 = *(tasks + 136);
     if (v53)
     {
-      v54 = *(a1 + 136);
+      targetProcess = *(tasks + 136);
     }
 
     else
     {
-      v54 = [*(a1 + 168) targetProcess];
+      targetProcess = [*(tasks + 168) targetProcess];
     }
 
-    v56 = [v54 mainBinary];
+    mainBinary2 = [targetProcess mainBinary];
 
     if (!v53)
     {
     }
 
-    if (v56 == v52)
+    if (mainBinary2 == mainBinary)
     {
       v57 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v58 = [(SASamplePrinter *)a1 displayNameForTask:v111 includePid:0];
+      v58 = [(SASamplePrinter *)tasks displayNameForTask:firstObject includePid:0];
       v113 = [v57 initWithFormat:@"%@ (other tasks)", v58];
     }
 
     else
     {
-      v113 = [(SASamplePrinter *)a1 displayNameForTask:v111 includePid:0];
+      v113 = [(SASamplePrinter *)tasks displayNameForTask:firstObject includePid:0];
     }
 
-    v112 = [(SASamplePrinter *)a1 architectureStringForTask:v111];
-    if (([*(a1 + 16) printJson] & 1) == 0)
+    v112 = [(SASamplePrinter *)tasks architectureStringForTask:firstObject];
+    if (([*(tasks + 16) printJson] & 1) == 0)
     {
-      [*(a1 + 8) appendString:@"\n\n"];
+      [*(tasks + 8) appendString:@"\n\n"];
     }
 
-    v124 = v52;
-    v110 = [(SASamplePrinter *)a1 displayStringForOnBehalfOfForTasks:1u includePid:?];
-    if ([v111 pid])
+    v124 = mainBinary;
+    v110 = [(SASamplePrinter *)tasks displayStringForOnBehalfOfForTasks:1u includePid:?];
+    if ([firstObject pid])
     {
       v132 = 0;
     }
 
     else
     {
-      v59 = [v111 startTimestamp];
-      [v59 wallTime];
-      v61 = [(SASamplePrinter *)a1 kernelVersionAtWallTime:v60];
+      startTimestamp2 = [firstObject startTimestamp];
+      [startTimestamp2 wallTime];
+      v61 = [(SASamplePrinter *)tasks kernelVersionAtWallTime:v60];
 
       if (!v61 || (SACopySanitizedString(v61, 1, 0), v132 = objc_claimAutoreleasedReturnValue(), v61, !v132))
       {
@@ -19022,36 +19022,36 @@ LABEL_61:
       }
     }
 
-    v96 = *(a1 + 8);
-    v109 = [v111 mainBinaryPath];
-    v108 = [v111 bundleIdentifier];
-    v107 = [v111 bundleVersion];
-    v106 = [v111 bundleShortVersion];
-    v102 = [v111 bundleBuildVersion];
-    v105 = [v111 bundleProjectName];
-    v104 = [v111 bundleSourceVersion];
-    v103 = [v111 bundleProductBuildVersion];
-    v95 = [v111 adamID];
-    v101 = [v111 installerVersionID];
-    v94 = [v111 developerType];
-    v100 = [v111 appType];
-    v93 = [v111 isBeta];
-    v98 = [v111 cohortID];
-    v99 = [v111 vendorID];
-    v92 = [v111 distributorID];
-    v62 = [v111 codesigningID];
-    v63 = [v111 teamID];
+    v96 = *(tasks + 8);
+    mainBinaryPath = [firstObject mainBinaryPath];
+    bundleIdentifier = [firstObject bundleIdentifier];
+    bundleVersion = [firstObject bundleVersion];
+    bundleShortVersion = [firstObject bundleShortVersion];
+    bundleBuildVersion = [firstObject bundleBuildVersion];
+    bundleProjectName = [firstObject bundleProjectName];
+    bundleSourceVersion = [firstObject bundleSourceVersion];
+    bundleProductBuildVersion = [firstObject bundleProductBuildVersion];
+    adamID = [firstObject adamID];
+    installerVersionID = [firstObject installerVersionID];
+    developerType = [firstObject developerType];
+    appType = [firstObject appType];
+    isBeta = [firstObject isBeta];
+    cohortID = [firstObject cohortID];
+    vendorID = [firstObject vendorID];
+    distributorID = [firstObject distributorID];
+    codesigningID = [firstObject codesigningID];
+    teamID = [firstObject teamID];
     v64 = v168[5];
     v65 = v162[5];
     v66 = v158[3];
     v67 = v154[3];
-    v68 = *(a1 + 72);
-    v69 = [v111 isTranslocated];
-    [v111 isRunningBoardManaged];
+    v68 = *(tasks + 72);
+    isTranslocated = [firstObject isTranslocated];
+    [firstObject isRunningBoardManaged];
     v91 = *(v150 + 24);
-    *&v90 = v107;
-    *(&v90 + 1) = v106;
-    [SASamplePrinter addTaskHeaderToStream:a1 displayName:v96 pid:v113 mainBinary:0xFFFFFFFFLL mainBinaryPath:v124 sharedCaches:v109 uid:v122 bundleIdentifier:4294966982 bundleVersion:0.0 bundleShortVersion:v108 bundleBuildVersion:v90 bundleProjectName:v102 bundleSourceVersion:v105 bundleProductBuildVersion:v104 adamID:v103 installerVersionID:v95 developerType:v101 appType:v94 isBeta:v100 cohortID:v93 vendorID:v98 distributorID:v99 codesigningID:v62 teamID:v63 resourceCoalitionSampleCounts:v130 onBehalfOfProcesses:v110 architectureString:v112 kernelVersion:v132 parentName:0 responsibleName:0 taskExecedFromName:0 taskExecedToName:0 forkTimestamp:0 startTimestamp:v64 endTimestamp:v65 startSampleIndex:v66 endSampleIndex:v67 numSamples:v121 totalNumSamples:v68 numSamplesSuspended:0 numSamplesTerminated:0 startingTaskSize:0 endingTaskSize:0 maxTaskSize:0 startSampleIndexOfMaxTaskSize:0x7FFFFFFFFFFFFFFFuLL endSampleIndexOfMaxTaskSize:0x7FFFFFFFFFFFFFFFuLL numPageins:0 cpuTimeNs:v114 cpuInstructions:v115 cpuCycles:v116 nonThreadCpuTimeNs:v117 nonThreadCpuInstructions:v118 nonThreadCpuCycles:v119 usesSuddenTermination:0 allowsIdleExit:0 memoryLimitStr:0 jetsamPriorityStr:0 isTranslocated:v69 hardenedHeap:v127 & 1 mteCheckedAllocationsEnabled:v128 & 1 mteUserDataAllocationsTagged:BYTE4(v128) & 1 mteSoftModeEnabled:v129 & 1 mteInheritanceTurnedOn:BYTE4(v129) & 1 isRunningBoardManaged:? isUnresponsive:? timeOfLastResponse:? numThreads:? numIdleWorkQueueThreads:? numOtherHiddenThreads:? hieSwallowedException:? numSamplesWQExceededConstrainedThreadLimit:? numSamplesWQExceededTotalThreadLimit:? numSamplesWQExceededCooperativeThreadLimit:? numSamplesWQExceededActiveConstrainedThreadLimit:? numSamplesTALEngaged:? isRunawayMitigated:? threadsDeadlocked:? threadsBlockedByADeadlock:? ioSize:? numIOs:? isReportHeader:?];
+    *&v90 = bundleVersion;
+    *(&v90 + 1) = bundleShortVersion;
+    [SASamplePrinter addTaskHeaderToStream:tasks displayName:v96 pid:v113 mainBinary:0xFFFFFFFFLL mainBinaryPath:v124 sharedCaches:mainBinaryPath uid:v122 bundleIdentifier:4294966982 bundleVersion:0.0 bundleShortVersion:bundleIdentifier bundleBuildVersion:v90 bundleProjectName:bundleBuildVersion bundleSourceVersion:bundleProjectName bundleProductBuildVersion:bundleSourceVersion adamID:bundleProductBuildVersion installerVersionID:adamID developerType:installerVersionID appType:developerType isBeta:appType cohortID:isBeta vendorID:cohortID distributorID:vendorID codesigningID:codesigningID teamID:teamID resourceCoalitionSampleCounts:v130 onBehalfOfProcesses:v110 architectureString:v112 kernelVersion:v132 parentName:0 responsibleName:0 taskExecedFromName:0 taskExecedToName:0 forkTimestamp:0 startTimestamp:v64 endTimestamp:v65 startSampleIndex:v66 endSampleIndex:v67 numSamples:v121 totalNumSamples:v68 numSamplesSuspended:0 numSamplesTerminated:0 startingTaskSize:0 endingTaskSize:0 maxTaskSize:0 startSampleIndexOfMaxTaskSize:0x7FFFFFFFFFFFFFFFuLL endSampleIndexOfMaxTaskSize:0x7FFFFFFFFFFFFFFFuLL numPageins:0 cpuTimeNs:v114 cpuInstructions:v115 cpuCycles:v116 nonThreadCpuTimeNs:v117 nonThreadCpuInstructions:v118 nonThreadCpuCycles:v119 usesSuddenTermination:0 allowsIdleExit:0 memoryLimitStr:0 jetsamPriorityStr:0 isTranslocated:isTranslocated hardenedHeap:v127 & 1 mteCheckedAllocationsEnabled:v128 & 1 mteUserDataAllocationsTagged:BYTE4(v128) & 1 mteSoftModeEnabled:v129 & 1 mteInheritanceTurnedOn:BYTE4(v129) & 1 isRunningBoardManaged:? isUnresponsive:? timeOfLastResponse:? numThreads:? numIdleWorkQueueThreads:? numOtherHiddenThreads:? hieSwallowedException:? numSamplesWQExceededConstrainedThreadLimit:? numSamplesWQExceededTotalThreadLimit:? numSamplesWQExceededCooperativeThreadLimit:? numSamplesWQExceededActiveConstrainedThreadLimit:? numSamplesTALEngaged:? isRunawayMitigated:? threadsDeadlocked:? threadsBlockedByADeadlock:? ioSize:? numIOs:? isReportHeader:?];
   }
 
   else
@@ -19068,7 +19068,7 @@ LABEL_88:
   _Block_object_dispose(&v167, 8);
   if ((v121 & 0x8000000000000000) == 0)
   {
-    v72 = *(a1 + 16);
+    v72 = *(tasks + 16);
     if (v72)
     {
       v73 = *(v72 + 152);
@@ -19076,14 +19076,14 @@ LABEL_88:
       {
         if (v121)
         {
-          [(SASamplePrinter *)a1 printSingleStackForTasks:0 limitToDispatchQueueIds:0 limitToThreadIds:0 intersection:v121 sampleCount:?];
-          v72 = *(a1 + 16);
+          [(SASamplePrinter *)tasks printSingleStackForTasks:0 limitToDispatchQueueIds:0 limitToThreadIds:0 intersection:v121 sampleCount:?];
+          v72 = *(tasks + 16);
         }
 
         if (([v72 systemstatsFormat] & 1) == 0)
         {
-          v74 = [obj firstObject];
-          [(SASamplePrinter *)a1 printBinaryImagesForTask:v74];
+          firstObject2 = [obj firstObject];
+          [(SASamplePrinter *)tasks printBinaryImagesForTask:firstObject2];
         }
       }
     }
@@ -19094,10 +19094,10 @@ LABEL_88:
   objc_autoreleasePoolPop(context);
 }
 
-- (void)printSingleStackForTasks:(uint64_t)a3 limitToDispatchQueueIds:(uint64_t)a4 limitToThreadIds:(char)a5 intersection:(uint64_t)a6 sampleCount:
+- (void)printSingleStackForTasks:(uint64_t)tasks limitToDispatchQueueIds:(uint64_t)ids limitToThreadIds:(char)threadIds intersection:(uint64_t)intersection sampleCount:
 {
   v178 = *MEMORY[0x1E69E9840];
-  if (([*(a1 + 16) printHeavyStacks] & 1) == 0)
+  if (([*(self + 16) printHeavyStacks] & 1) == 0)
   {
     v76 = *__error();
     v77 = _sa_logt();
@@ -19132,7 +19132,7 @@ LABEL_93:
     goto LABEL_96;
   }
 
-  if (a3 | a4 && [a2 count] != 1)
+  if (tasks | ids && [a2 count] != 1)
   {
 LABEL_96:
     v92 = *__error();
@@ -19151,8 +19151,8 @@ LABEL_96:
   }
 
   v131 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v132 = a1;
-  if (([*(a1 + 16) microstackshotsFormat] & 1) != 0 || objc_msgSend(*(a1 + 16), "systemstatsFormat"))
+  selfCopy = self;
+  if (([*(self + 16) microstackshotsFormat] & 1) != 0 || objc_msgSend(*(self + 16), "systemstatsFormat"))
   {
     self = objc_alloc_init(SAMicrostackshotSummary);
   }
@@ -19181,19 +19181,19 @@ LABEL_96:
         }
 
         v15 = *(*(&v166 + 1) + 8 * i);
-        v16 = [v15 threads];
+        threads = [v15 threads];
         v162[0] = MEMORY[0x1E69E9820];
         v162[1] = 3221225472;
         v162[2] = __110__SASamplePrinter_printSingleStackForTasks_limitToDispatchQueueIds_limitToThreadIds_intersection_sampleCount___block_invoke;
         v162[3] = &unk_1E86F7B48;
-        v162[4] = a3;
-        v162[5] = a4;
-        v165 = a5;
-        v162[6] = v132;
+        v162[4] = tasks;
+        v162[5] = ids;
+        threadIdsCopy = threadIds;
+        v162[6] = selfCopy;
         v162[7] = v15;
         v163 = v131;
-        v164 = self;
-        [v16 enumerateKeysAndObjectsUsingBlock:v162];
+        selfCopy2 = self;
+        [threads enumerateKeysAndObjectsUsingBlock:v162];
       }
 
       v12 = [obj countByEnumeratingWithState:&v166 objects:v177 count:16];
@@ -19202,18 +19202,18 @@ LABEL_96:
     while (v12);
   }
 
-  v125 = [obj firstObject];
-  v124 = [(SASamplePrinter *)v132 binaryImagesHitByTask:v125];
-  if ([v125 pid])
+  firstObject = [obj firstObject];
+  v124 = [(SASamplePrinter *)selfCopy binaryImagesHitByTask:firstObject];
+  if ([firstObject pid])
   {
     v17 = 0;
   }
 
   else
   {
-    if (v125)
+    if (firstObject)
     {
-      objc_copyStruct(&dest, (v125 + 288), 8, 1, 0);
+      objc_copyStruct(&dest, (firstObject + 288), 8, 1, 0);
     }
 
     v17 = CSArchitectureIs32Bit() ^ 1;
@@ -19223,8 +19223,8 @@ LABEL_96:
   v161 = 0u;
   v158 = 0u;
   v159 = 0u;
-  v130 = obj;
-  v18 = [v130 countByEnumeratingWithState:&v158 objects:v176 count:16];
+  mainBinary = obj;
+  v18 = [mainBinary countByEnumeratingWithState:&v158 objects:v176 count:16];
   if (!v18)
   {
     obja = 0;
@@ -19240,26 +19240,26 @@ LABEL_96:
     {
       if (*v159 != v19)
       {
-        objc_enumerationMutation(v130);
+        objc_enumerationMutation(mainBinary);
       }
 
       v21 = *(*(&v158 + 1) + 8 * j);
-      v22 = [v21 mainBinaryLoadInfo];
-      v23 = v22;
-      if (v22)
+      mainBinaryLoadInfo = [v21 mainBinaryLoadInfo];
+      v23 = mainBinaryLoadInfo;
+      if (mainBinaryLoadInfo)
       {
         if (!obja)
         {
           goto LABEL_32;
         }
 
-        v24 = [v22 loadAddress];
-        v25 = [obja mainBinaryLoadInfo];
-        v26 = [v25 loadAddress];
+        loadAddress = [mainBinaryLoadInfo loadAddress];
+        mainBinaryLoadInfo2 = [obja mainBinaryLoadInfo];
+        loadAddress2 = [mainBinaryLoadInfo2 loadAddress];
 
         if (!v17)
         {
-          if (v24 >= v26)
+          if (loadAddress >= loadAddress2)
           {
             goto LABEL_33;
           }
@@ -19271,7 +19271,7 @@ LABEL_32:
           goto LABEL_33;
         }
 
-        if (v24 > v26)
+        if (loadAddress > loadAddress2)
         {
           goto LABEL_32;
         }
@@ -19280,7 +19280,7 @@ LABEL_32:
 LABEL_33:
     }
 
-    v18 = [v130 countByEnumeratingWithState:&v158 objects:v176 count:16];
+    v18 = [mainBinary countByEnumeratingWithState:&v158 objects:v176 count:16];
   }
 
   while (v18);
@@ -19291,37 +19291,37 @@ LABEL_33:
     goto LABEL_69;
   }
 
-  v130 = [v125 mainBinary];
-  if (!v130)
+  mainBinary = [firstObject mainBinary];
+  if (!mainBinary)
   {
 LABEL_99:
     v100 = *__error();
     v101 = _sa_logt();
     if (os_log_type_enabled(v101, OS_LOG_TYPE_ERROR))
     {
-      v102 = [v125 debugDescription];
+      v102 = [firstObject debugDescription];
       v103 = v102;
-      v104 = [v102 UTF8String];
-      v105 = [v125 mainBinaryLoadInfo];
-      v106 = [v105 debugDescription];
+      uTF8String = [v102 UTF8String];
+      mainBinaryLoadInfo3 = [firstObject mainBinaryLoadInfo];
+      v106 = [mainBinaryLoadInfo3 debugDescription];
       v107 = v106;
-      v108 = [v106 UTF8String];
+      uTF8String2 = [v106 UTF8String];
       LODWORD(dest.receiver) = 136315394;
-      *(&p_dest->receiver + 4) = v104;
+      *(&p_dest->receiver + 4) = uTF8String;
       WORD2(dest.super_class) = 2080;
-      *(&p_dest->super_class + 6) = v108;
+      *(&p_dest->super_class + 6) = uTF8String2;
       _os_log_error_impl(&dword_1E0E2F000, v101, OS_LOG_TYPE_ERROR, "No main binary for %s with main binary load info %s", &dest, 0x16u);
     }
 
     *__error() = v100;
-    v109 = [v125 debugDescription];
+    v109 = [firstObject debugDescription];
     v110 = v109;
-    v111 = [v109 UTF8String];
-    v112 = [v125 mainBinaryLoadInfo];
-    v113 = [v112 debugDescription];
+    uTF8String3 = [v109 UTF8String];
+    mainBinaryLoadInfo4 = [firstObject mainBinaryLoadInfo];
+    v113 = [mainBinaryLoadInfo4 debugDescription];
     v114 = v113;
     [v113 UTF8String];
-    _SASetCrashLogMessage(9227, "No main binary for %s with main binary load info %s", v115, v116, v117, v118, v119, v120, v111);
+    _SASetCrashLogMessage(9227, "No main binary for %s with main binary load info %s", v115, v116, v117, v118, v119, v120, uTF8String3);
 
     _os_crash();
     __break(1u);
@@ -19334,8 +19334,8 @@ LABEL_99:
     v157 = 0u;
     v154 = 0u;
     v155 = 0u;
-    v126 = [v124 objectForKeyedSubscript:v130];
-    v128 = [v126 countByEnumeratingWithState:&v154 objects:v175 count:16];
+    mainBinaryLoadInfo5 = [v124 objectForKeyedSubscript:mainBinary];
+    v128 = [mainBinaryLoadInfo5 countByEnumeratingWithState:&v154 objects:v175 count:16];
     if (v128)
     {
       v127 = *v155;
@@ -19347,7 +19347,7 @@ LABEL_99:
           if (*v155 != v127)
           {
             v30 = v29;
-            objc_enumerationMutation(v126);
+            objc_enumerationMutation(mainBinaryLoadInfo5);
             v29 = v30;
           }
 
@@ -19357,8 +19357,8 @@ LABEL_99:
           v151 = 0u;
           v152 = 0u;
           v153 = 0u;
-          v32 = [obja binaryLoadInfos];
-          v33 = [v32 countByEnumeratingWithState:&v150 objects:v174 count:16];
+          binaryLoadInfos = [obja binaryLoadInfos];
+          v33 = [binaryLoadInfos countByEnumeratingWithState:&v150 objects:v174 count:16];
           if (v33)
           {
             v34 = *v151;
@@ -19368,25 +19368,25 @@ LABEL_99:
               {
                 if (*v151 != v34)
                 {
-                  objc_enumerationMutation(v32);
+                  objc_enumerationMutation(binaryLoadInfos);
                 }
 
                 v36 = *(*(&v150 + 1) + 8 * k);
-                v37 = [v36 binary];
-                v38 = [v31 binary];
-                v39 = v38;
-                if (v37 == v38)
+                binary = [v36 binary];
+                binary2 = [v31 binary];
+                v39 = binary2;
+                if (binary == binary2)
                 {
-                  v40 = [v36 segment];
-                  v41 = [v31 segment];
-                  v42 = v40 == v41;
+                  segment = [v36 segment];
+                  segment2 = [v31 segment];
+                  v42 = segment == segment2;
 
                   if (v42)
                   {
-                    v43 = [v36 loadAddress];
+                    loadAddress3 = [v36 loadAddress];
                     if (v31)
                     {
-                      v31[3] = v43;
+                      v31[3] = loadAddress3;
                     }
 
                     goto LABEL_56;
@@ -19398,7 +19398,7 @@ LABEL_99:
                 }
               }
 
-              v33 = [v32 countByEnumeratingWithState:&v150 objects:v174 count:16];
+              v33 = [binaryLoadInfos countByEnumeratingWithState:&v150 objects:v174 count:16];
               if (v33)
               {
                 continue;
@@ -19414,7 +19414,7 @@ LABEL_56:
         }
 
         while (v129 + 1 != v128);
-        v128 = [v126 countByEnumeratingWithState:&v154 objects:v175 count:16];
+        v128 = [mainBinaryLoadInfo5 countByEnumeratingWithState:&v154 objects:v175 count:16];
       }
 
       while (v128);
@@ -19426,26 +19426,26 @@ LABEL_56:
     if (!v122)
     {
       v122 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
-      [v124 setObject:v122 forKeyedSubscript:v130];
+      [v124 setObject:v122 forKeyedSubscript:mainBinary];
     }
 
     v44 = [SABinaryLoadInfoToDisplay alloc];
-    v126 = [obja mainBinaryLoadInfo];
+    mainBinaryLoadInfo5 = [obja mainBinaryLoadInfo];
     if (v44)
     {
-      v45 = [v126 binary];
-      v46 = [v126 segment];
-      v47 = [v126 loadAddress];
+      binary3 = [mainBinaryLoadInfo5 binary];
+      segment3 = [mainBinaryLoadInfo5 segment];
+      loadAddress4 = [mainBinaryLoadInfo5 loadAddress];
       dest.receiver = v44;
       dest.super_class = SABinaryLoadInfoToDisplay;
-      v44 = objc_msgSendSuper2(&dest, sel_initWithBinary_segment_loadAddress_, v45, v46, v47);
+      v44 = objc_msgSendSuper2(&dest, sel_initWithBinary_segment_loadAddress_, binary3, segment3, loadAddress4);
 
       if (v44)
       {
-        v44->_isInKernelAddressSpace = [v126 isInKernelAddressSpace];
-        v48 = [v126 exclave];
+        v44->_isInKernelAddressSpace = [mainBinaryLoadInfo5 isInKernelAddressSpace];
+        exclave = [mainBinaryLoadInfo5 exclave];
         exclave = v44->_exclave;
-        v44->_exclave = v48;
+        v44->_exclave = exclave;
       }
     }
 
@@ -19463,7 +19463,7 @@ LABEL_69:
   v171 = 0x2810000000;
   v172 = "";
   v173 = 0;
-  v50 = v132;
+  v50 = selfCopy;
   if (self)
   {
     v142 = 0;
@@ -19492,57 +19492,57 @@ LABEL_69:
     v136[5] = &dest;
     [v53 enumerateKeysAndObjectsUsingBlock:v136];
 
-    v50 = v132;
-    v54 = [*(v132 + 16) printJson];
-    v55 = *(v132 + 8);
-    if (v54)
+    v50 = selfCopy;
+    printJson = [*(selfCopy + 16) printJson];
+    v55 = *(selfCopy + 8);
+    if (printJson)
     {
       [v55 appendString:{@", primaryMicrostackshotState:{"}];
-      v56 = *(v132 + 8);
+      v56 = *(selfCopy + 8);
       v57 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v143[3]];
       SAJSONWriteDictionaryFirstEntry(v56, @"count", v57);
 
-      +[SACallTreeState writeJSONDictionaryEntriesToStream:microstackshotState:primaryMicrostackshotState:includeIdleAndBattery:](SACallTreeState, *(v132 + 8), *(v147 + 6), ~*(v147 + 6), [*(v132 + 16) includeUserIdleAndBatteryStateInStacks]);
-      [*(v132 + 8) appendString:@"}"];
-      [*(v132 + 8) appendString:{@", primaryCountedState:{"}];
-      v58 = *(v132 + 8);
+      +[SACallTreeState writeJSONDictionaryEntriesToStream:microstackshotState:primaryMicrostackshotState:includeIdleAndBattery:](SACallTreeState, *(selfCopy + 8), *(v147 + 6), ~*(v147 + 6), [*(selfCopy + 16) includeUserIdleAndBatteryStateInStacks]);
+      [*(selfCopy + 8) appendString:@"}"];
+      [*(selfCopy + 8) appendString:{@", primaryCountedState:{"}];
+      v58 = *(selfCopy + 8);
       v59 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v138[3]];
       SAJSONWriteDictionaryFirstEntry(v58, @"count", v59);
 
-      v50 = v132;
+      v50 = selfCopy;
       [SACallTreeState writeJSONDictionaryEntriesToStream:*(dest.super_class + 4) state:0 primaryState:?];
-      [*(v132 + 8) appendString:@"}"];
-      if (([*(v132 + 16) includeUserIdleAndBatteryStateInStacks] & 1) == 0)
+      [*(selfCopy + 8) appendString:@"}"];
+      if (([*(selfCopy + 16) includeUserIdleAndBatteryStateInStacks] & 1) == 0)
       {
-        v60 = *(v132 + 8);
+        v60 = *(selfCopy + 8);
         v61 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_userActiveCount];
         SAJSONWriteDictionaryEntry(v60, @"userActiveSampleCount", v61);
 
-        v62 = *(v132 + 8);
+        v62 = *(selfCopy + 8);
         v63 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_userIdleCount];
         SAJSONWriteDictionaryEntry(v62, @"userIdleSampleCount", v63);
 
-        v64 = *(v132 + 8);
+        v64 = *(selfCopy + 8);
         v65 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_onBatteryCount];
         SAJSONWriteDictionaryEntry(v64, @"onBatterySampleCount", v65);
 
-        v66 = *(v132 + 8);
+        v66 = *(selfCopy + 8);
         v67 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_onACCount];
         SAJSONWriteDictionaryEntry(v66, @"onACSampleCount", v67);
 
-        v50 = v132;
+        v50 = selfCopy;
       }
     }
 
     else
     {
       [v55 printWithFormat:@"%-*s%lu samples ", 18, "Primary state: ", v143[3]];
-      saos_printf_microstackshot_state(*(v132 + 8), *(v147 + 6), ~*(v147 + 6), [*(v132 + 16) systemstatsFormat], objc_msgSend(*(v132 + 16), "includeUserIdleAndBatteryStateInStacks"));
+      saos_printf_microstackshot_state(*(selfCopy + 8), *(v147 + 6), ~*(v147 + 6), [*(selfCopy + 16) systemstatsFormat], objc_msgSend(*(selfCopy + 16), "includeUserIdleAndBatteryStateInStacks"));
       super_class = dest.super_class;
-      v69 = [*(v132 + 16) systemstatsFormat];
+      systemstatsFormat = [*(selfCopy + 16) systemstatsFormat];
       if ((*(super_class + 4) & 0x1FFFFFFFFFFFFFFFLL) != 0)
       {
-        v70 = v69;
+        v70 = systemstatsFormat;
       }
 
       else
@@ -19552,16 +19552,16 @@ LABEL_69:
 
       if ((v70 & 1) == 0)
       {
-        [*(v132 + 8) appendString:{@", "}];
-        _saos_printf_state_appended_noparens(*(v132 + 8), *(dest.super_class + 4), 0, 0);
+        [*(selfCopy + 8) appendString:{@", "}];
+        _saos_printf_state_appended_noparens(*(selfCopy + 8), *(dest.super_class + 4), 0, 0);
       }
 
-      [*(v132 + 8) appendString:@"\n"];
-      if (([*(v132 + 16) includeUserIdleAndBatteryStateInStacks] & 1) == 0)
+      [*(selfCopy + 8) appendString:@"\n"];
+      if (([*(selfCopy + 16) includeUserIdleAndBatteryStateInStacks] & 1) == 0)
       {
-        [*(v132 + 8) printWithFormat:@"%-*s%lu samples Idle, %lu samples Active", 18, "User Activity: ", self->_userIdleCount, self->_userActiveCount];
-        v71 = *(v132 + 8);
-        v72 = a6 - (self->_userActiveCount + self->_userIdleCount);
+        [*(selfCopy + 8) printWithFormat:@"%-*s%lu samples Idle, %lu samples Active", 18, "User Activity: ", self->_userIdleCount, self->_userActiveCount];
+        v71 = *(selfCopy + 8);
+        v72 = intersection - (self->_userActiveCount + self->_userIdleCount);
         if (v72)
         {
           [v71 printWithFormat:@", %lu samples Unknown\n", v72];
@@ -19572,9 +19572,9 @@ LABEL_69:
           [v71 appendString:@"\n"];
         }
 
-        [*(v132 + 8) printWithFormat:@"%-*s%lu samples on Battery, %lu samples on AC", 18, "Power Source: ", self->_onBatteryCount, self->_onACCount];
-        v73 = *(v132 + 8);
-        v74 = a6 - (self->_onACCount + self->_onBatteryCount);
+        [*(selfCopy + 8) printWithFormat:@"%-*s%lu samples on Battery, %lu samples on AC", 18, "Power Source: ", self->_onBatteryCount, self->_onACCount];
+        v73 = *(selfCopy + 8);
+        v74 = intersection - (self->_onACCount + self->_onBatteryCount);
         if (v74)
         {
           [v73 printWithFormat:@", %lu samples Unknown\n", v74];
@@ -19598,7 +19598,7 @@ LABEL_69:
     [(SASamplePrinter *)v50 sortHeavyCallTree:v131];
   }
 
-  -[SASamplePrinter addStack:toStream:sampleCount:binariesToDisplay:primaryState:primaryMicrostackshotState:onlyHeaviestStack:isKernel:](v50, v131, *(v50 + 8), a6, v124, dest.super_class + 32, *(v147 + 6), 0, [v125 pid] == 0);
+  -[SASamplePrinter addStack:toStream:sampleCount:binariesToDisplay:primaryState:primaryMicrostackshotState:onlyHeaviestStack:isKernel:](v50, v131, *(v50 + 8), intersection, v124, dest.super_class + 32, *(v147 + 6), 0, [firstObject pid] == 0);
   _Block_object_dispose(&dest, 8);
   _Block_object_dispose(&v146, 8);
 
@@ -19703,7 +19703,7 @@ void __51__SASamplePrinter_printTaskHeaderForMultipleTasks___block_invoke_2(uint
   }
 }
 
-- (uint64_t)numIOsForTask:(void *)a3 ioSize:
+- (uint64_t)numIOsForTask:(void *)task ioSize:
 {
   v13 = 0;
   v14 = &v13;
@@ -19713,63 +19713,63 @@ void __51__SASamplePrinter_printTaskHeaderForMultipleTasks___block_invoke_2(uint
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [a2 threads];
+  threads = [a2 threads];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __40__SASamplePrinter_numIOsForTask_ioSize___block_invoke;
   v8[3] = &unk_1E86F7410;
-  v8[4] = a1;
+  v8[4] = self;
   v8[5] = &v13;
   v8[6] = &v9;
-  [v5 enumerateKeysAndObjectsUsingBlock:v8];
+  [threads enumerateKeysAndObjectsUsingBlock:v8];
 
-  *a3 = v14[3];
+  *task = v14[3];
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
   _Block_object_dispose(&v13, 8);
   return v6;
 }
 
-- (uint64_t)printTaskHeaderForTask:(uint64_t)a3 specialDispatchQueueId:(uint64_t)a4 specialThreadId:(int)a5 omitSpecial:(int)a6 omitOther:
+- (uint64_t)printTaskHeaderForTask:(uint64_t)task specialDispatchQueueId:(uint64_t)id specialThreadId:(int)threadId omitSpecial:(int)special omitOther:
 {
-  LODWORD(v7) = a5;
-  v9 = a3;
+  LODWORD(v7) = threadId;
+  taskCopy = task;
   v10 = buf;
   v531 = *MEMORY[0x1E69E9840];
   v371 = a2;
-  if (a5 && a6)
+  if (threadId && special)
   {
     v206 = *__error();
     v207 = _sa_logt();
     if (os_log_type_enabled(v207, OS_LOG_TYPE_ERROR))
     {
-      a4 = [v371 debugDescription];
-      v208 = [a4 UTF8String];
+      id = [v371 debugDescription];
+      uTF8String = [id UTF8String];
       *buf = 136315138;
-      *&buf[4] = v208;
+      *&buf[4] = uTF8String;
       _os_log_error_impl(&dword_1E0E2F000, v207, OS_LOG_TYPE_ERROR, "%s: omitSpecialThreadId and omitOtherThreads", buf, 0xCu);
     }
 
     *__error() = v206;
     v209 = [v371 debugDescription];
     v210 = v209;
-    v211 = [v209 UTF8String];
-    _SASetCrashLogMessage(6979, "%s: omitSpecialThreadId and omitOtherThreads", v212, v213, v214, v215, v216, v217, v211);
+    uTF8String2 = [v209 UTF8String];
+    _SASetCrashLogMessage(6979, "%s: omitSpecialThreadId and omitOtherThreads", v212, v213, v214, v215, v216, v217, uTF8String2);
 
     _os_crash();
     __break(1u);
     goto LABEL_262;
   }
 
-  v11 = *(a1 + 48);
-  if (!a3)
+  v11 = *(self + 48);
+  if (!task)
   {
     goto LABEL_10;
   }
 
-  v12 = [a2 dispatchQueues];
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v9];
-  v374 = [v12 objectForKeyedSubscript:v13];
+  dispatchQueues = [a2 dispatchQueues];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:taskCopy];
+  v374 = [dispatchQueues objectForKeyedSubscript:v13];
 
   a2 = v371;
   if (!v374)
@@ -19777,13 +19777,13 @@ void __51__SASamplePrinter_printTaskHeaderForMultipleTasks___block_invoke_2(uint
     goto LABEL_271;
   }
 
-  if (a4)
+  if (id)
   {
     while (1)
     {
-      v14 = [a2 threads];
-      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
-      v365 = [v14 objectForKeyedSubscript:v15];
+      threads = [a2 threads];
+      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:id];
+      v365 = [threads objectForKeyedSubscript:v15];
 
       if (v365)
       {
@@ -19794,26 +19794,26 @@ void __51__SASamplePrinter_printTaskHeaderForMultipleTasks___block_invoke_2(uint
       v7 = _sa_logt();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v9 = [v371 debugDescription];
-        v17 = [v9 UTF8String];
+        taskCopy = [v371 debugDescription];
+        uTF8String3 = [taskCopy UTF8String];
         *buf = 136315394;
-        *&buf[4] = v17;
+        *&buf[4] = uTF8String3;
         *&buf[12] = 2048;
-        *&buf[14] = a4;
+        *&buf[14] = id;
         _os_log_error_impl(&dword_1E0E2F000, v7, OS_LOG_TYPE_ERROR, "%s: specialThreadId 0x%llx doesn't exist", buf, 0x16u);
       }
 
       *__error() = v16;
       v18 = [v371 debugDescription];
       v19 = v18;
-      v20 = [v18 UTF8String];
-      _SASetCrashLogMessage(6992, "%s: specialThreadId 0x%llx doesn't exist", v21, v22, v23, v24, v25, v26, v20);
+      uTF8String4 = [v18 UTF8String];
+      _SASetCrashLogMessage(6992, "%s: specialThreadId 0x%llx doesn't exist", v21, v22, v23, v24, v25, v26, uTF8String4);
 
       _os_crash();
       __break(1u);
 LABEL_10:
       v374 = 0;
-      if (!a4)
+      if (!id)
       {
         goto LABEL_11;
       }
@@ -19826,13 +19826,13 @@ LABEL_11:
     v365 = 0;
   }
 
-  v359 = a4 | v9;
-  if (a4 | v9)
+  v359 = id | taskCopy;
+  if (id | taskCopy)
   {
     if (v7)
     {
       v27 = @"(other dispatch queues/threads)";
-      if (!v9)
+      if (!taskCopy)
       {
         v27 = @"(other threads)";
       }
@@ -19844,26 +19844,26 @@ LABEL_11:
     {
       v28 = objc_alloc(MEMORY[0x1E696AEC0]);
       v29 = v28;
-      if (v9)
+      if (taskCopy)
       {
         v30 = [SASamplePrinter displayNameForDispatchQueue:v374];
         v31 = v30;
-        if (a4)
+        if (id)
         {
-          v32 = [v29 initWithFormat:@"%@ 0x%llx, %@ %@", @"Thread", a4, @"DispatchQueue", v30];
+          v300 = [v29 initWithFormat:@"%@ 0x%llx, %@ %@", @"Thread", id, @"DispatchQueue", v30];
         }
 
         else
         {
-          v32 = [v29 initWithFormat:@"%@ %@", @"DispatchQueue", v30, v298, v300];
+          v300 = [v29 initWithFormat:@"%@ %@", @"DispatchQueue", v30, v298, v300];
         }
 
-        v362 = v32;
+        v362 = v300;
       }
 
       else
       {
-        v362 = [v28 initWithFormat:@"%@ 0x%llx", @"Thread", a4];
+        v362 = [v28 initWithFormat:@"%@ 0x%llx", @"Thread", id];
       }
     }
   }
@@ -19921,7 +19921,7 @@ LABEL_11:
   v465 = &v464;
   v466 = 0x2020000000;
   v467 = 0x7FFFFFFFFFFFFFFFLL;
-  a4 = &v458;
+  id = &v458;
   v458 = 0;
   v459 = &v458;
   v460 = 0x3032000000;
@@ -19968,30 +19968,30 @@ LABEL_11:
   v366 = (v365 | v374) != 0;
   if (v365 | v374)
   {
-    v33 = *(a1 + 32);
-    v34 = *(a1 + 40);
-    v35 = *(a1 + 56);
-    v36 = *(a1 + 64);
+    v33 = *(self + 32);
+    v34 = *(self + 40);
+    v35 = *(self + 56);
+    v36 = *(self + 64);
     v427[0] = MEMORY[0x1E69E9820];
     v427[1] = 3221225472;
     v427[2] = __103__SASamplePrinter_printTaskHeaderForTask_specialDispatchQueueId_specialThreadId_omitSpecial_omitOther___block_invoke;
     v427[3] = &unk_1E86F78D8;
-    v427[4] = a1;
+    v427[4] = self;
     v427[5] = &v432;
     v427[6] = &v428;
     v427[7] = buf;
     [(SATask *)v371 enumerateThreadStatesForThread:v365 dispatchQueue:v374 betweenStartTime:v33 startSampleIndex:v35 endTime:v34 endSampleIndex:v36 reverseOrder:0 block:v427];
   }
 
-  v37 = *(a1 + 32);
-  v38 = *(a1 + 40);
-  v39 = *(a1 + 56);
-  v40 = *(a1 + 64);
+  v37 = *(self + 32);
+  v38 = *(self + 40);
+  v39 = *(self + 56);
+  v40 = *(self + 64);
   v426[0] = MEMORY[0x1E69E9820];
   v426[1] = 3221225472;
   v426[2] = __103__SASamplePrinter_printTaskHeaderForTask_specialDispatchQueueId_specialThreadId_omitSpecial_omitOther___block_invoke_2;
   v426[3] = &unk_1E86F7900;
-  v426[4] = a1;
+  v426[4] = self;
   v426[5] = &v458;
   v426[6] = &v452;
   v426[7] = &v472;
@@ -20017,13 +20017,13 @@ LABEL_11:
 LABEL_262:
     v218 = *__error();
     v219 = _sa_logt();
-    v9 = "y";
+    taskCopy = "y";
     v10 = "n";
     if (os_log_type_enabled(v219, OS_LOG_TYPE_ERROR))
     {
-      a4 = [v371 debugDescription];
-      v220 = a4;
-      v221 = [a4 UTF8String];
+      id = [v371 debugDescription];
+      idCopy = id;
+      uTF8String5 = [id UTF8String];
       if (v459[5])
       {
         v222 = "y";
@@ -20045,21 +20045,21 @@ LABEL_262:
       }
 
       *v514 = 136315650;
-      *(v6 + 4) = v221;
+      *(v6 + 4) = uTF8String5;
       WORD2(v515) = 2080;
       *(v6 + 14) = v222;
       HIWORD(v516) = 2080;
-      v517 = v223;
+      taskSizeInBytes3 = v223;
       _os_log_error_impl(&dword_1E0E2F000, v219, OS_LOG_TYPE_ERROR, "%s: firstTaskState %s, lastTaskState %s", v514, 0x20u);
     }
 
     *__error() = v218;
     v224 = [v371 debugDescription];
     v225 = v224;
-    v226 = [v224 UTF8String];
+    uTF8String6 = [v224 UTF8String];
     v459[5];
     v453[5];
-    _SASetCrashLogMessage(7121, "%s: firstTaskState %s, lastTaskState %s", v227, v228, v229, v230, v231, v232, v226);
+    _SASetCrashLogMessage(7121, "%s: firstTaskState %s, lastTaskState %s", v227, v228, v229, v230, v231, v232, uTF8String6);
 
     _os_crash();
     __break(1u);
@@ -20068,40 +20068,40 @@ LABEL_271:
     v234 = _sa_logt();
     if (os_log_type_enabled(v234, OS_LOG_TYPE_ERROR))
     {
-      a4 = [v371 debugDescription];
-      v235 = [a4 UTF8String];
+      id = [v371 debugDescription];
+      uTF8String7 = [id UTF8String];
       *buf = 136315394;
-      *(v10 + 4) = v235;
+      *(v10 + 4) = uTF8String7;
       *&buf[12] = 2048;
-      *(v10 + 14) = v9;
+      *(v10 + 14) = taskCopy;
       _os_log_error_impl(&dword_1E0E2F000, v234, OS_LOG_TYPE_ERROR, "%s: specialDispatchQueue %llu doesn't exist", buf, 0x16u);
     }
 
     *__error() = v233;
     v236 = [v371 debugDescription];
     v237 = v236;
-    v238 = [v236 UTF8String];
-    _SASetCrashLogMessage(6986, "%s: specialDispatchQueue %llu doesn't exist", v239, v240, v241, v242, v243, v244, v238);
+    uTF8String8 = [v236 UTF8String];
+    _SASetCrashLogMessage(6986, "%s: specialDispatchQueue %llu doesn't exist", v239, v240, v241, v242, v243, v244, uTF8String8);
 
     _os_crash();
     __break(1u);
     goto LABEL_274;
   }
 
-  v364 = [v371 startTimestamp];
-  v363 = [v371 endTimestamp];
-  v41 = a6;
+  startTimestamp = [v371 startTimestamp];
+  endTimestamp = [v371 endTimestamp];
+  specialCopy = special;
   v42 = v7;
   if (!v459[5])
   {
     v51 = -1;
-    if (!v364 || !v363 || ([v364 gt:*(a1 + 40)] & 1) != 0 || (objc_msgSend(v363, "lt:", *(a1 + 32)) & 1) != 0)
+    if (!startTimestamp || !endTimestamp || ([startTimestamp gt:*(self + 40)] & 1) != 0 || (objc_msgSend(endTimestamp, "lt:", *(self + 32)) & 1) != 0)
     {
       goto LABEL_256;
     }
   }
 
-  if ((v11 & 1) != 0 || ([v371 taskStates], v43 = objc_claimAutoreleasedReturnValue(), v44 = objc_msgSend(v43, "count") == 0, v43, v41 = a6, !v44))
+  if ((v11 & 1) != 0 || ([v371 taskStates], v43 = objc_claimAutoreleasedReturnValue(), v44 = objc_msgSend(v43, "count") == 0, v43, specialCopy = special, !v44))
   {
     if (!v359)
     {
@@ -20130,7 +20130,7 @@ LABEL_271:
       goto LABEL_48;
     }
 
-    if (!v41)
+    if (!specialCopy)
     {
       goto LABEL_50;
     }
@@ -20150,38 +20150,38 @@ LABEL_48:
     goto LABEL_278;
   }
 
-  if (v359 && (a6 & 1) != 0)
+  if (v359 && (special & 1) != 0)
   {
     v501[3] = v433[3];
     goto LABEL_47;
   }
 
-  v52 = [v371 threads];
+  threads2 = [v371 threads];
   v420[0] = MEMORY[0x1E69E9820];
   v420[1] = 3221225472;
   v420[2] = __103__SASamplePrinter_printTaskHeaderForTask_specialDispatchQueueId_specialThreadId_omitSpecial_omitOther___block_invoke_1537;
   v420[3] = &unk_1E86F7950;
-  v420[4] = a1;
+  v420[4] = self;
   v425 = v42;
   v421 = v374;
   v422 = v365;
   v423 = &v500;
   v424 = &v508;
-  [v52 enumerateKeysAndObjectsUsingBlock:v420];
+  [threads2 enumerateKeysAndObjectsUsingBlock:v420];
 
 LABEL_50:
-  v53 = *(a1 + 136);
-  v54 = v53;
+  v53 = *(self + 136);
+  targetProcess = v53;
   if (!v53)
   {
-    v54 = [*(a1 + 168) targetProcess];
+    targetProcess = [*(self + 168) targetProcess];
   }
 
   v55 = v42;
-  if (v54 != v371)
+  if (targetProcess != v371)
   {
-    v56 = [*(a1 + 168) targetProcesses];
-    v57 = [v56 containsObject:v371];
+    targetProcesses = [*(self + 168) targetProcesses];
+    v57 = [targetProcesses containsObject:v371];
 
     v55 = v57 ^ 1 | v42;
   }
@@ -20196,33 +20196,33 @@ LABEL_50:
     if (!v501[3])
     {
       v58 = v371;
-      if (![*(a1 + 16) displayTasksWithZeroCount])
+      if (![*(self + 16) displayTasksWithZeroCount])
       {
         goto LABEL_74;
       }
     }
 
-    if ([*(a1 + 16) omitTasksBelowSampleCount] < 1)
+    if ([*(self + 16) omitTasksBelowSampleCount] < 1)
     {
-      v59 = 0;
+      omitTasksBelowSampleCount = 0;
     }
 
     else
     {
-      v59 = [*(a1 + 16) omitTasksBelowSampleCount];
+      omitTasksBelowSampleCount = [*(self + 16) omitTasksBelowSampleCount];
     }
 
-    if ([*(a1 + 16) omitTasksBelowPercentOfTotalSamples] >= 1)
+    if ([*(self + 16) omitTasksBelowPercentOfTotalSamples] >= 1)
     {
-      v60 = *(a1 + 72);
-      v61 = [*(a1 + 16) omitTasksBelowPercentOfTotalSamples];
-      if (v59 <= v60 * v61 / 0x64uLL)
+      v60 = *(self + 72);
+      omitTasksBelowPercentOfTotalSamples = [*(self + 16) omitTasksBelowPercentOfTotalSamples];
+      if (omitTasksBelowSampleCount <= v60 * omitTasksBelowPercentOfTotalSamples / 0x64uLL)
       {
-        v59 = v60 * v61 / 0x64uLL;
+        omitTasksBelowSampleCount = v60 * omitTasksBelowPercentOfTotalSamples / 0x64uLL;
       }
     }
 
-    if (v59 && v501[3] <= v59)
+    if (omitTasksBelowSampleCount && v501[3] <= omitTasksBelowSampleCount)
     {
 LABEL_74:
       v51 = -1;
@@ -20243,19 +20243,19 @@ LABEL_74:
     v62 = v459[5];
     if (v62)
     {
-      v63 = [v62 startSampleIndex];
-      v64 = *(a1 + 56);
-      if (v63 > v64)
+      startSampleIndex = [v62 startSampleIndex];
+      v64 = *(self + 56);
+      if (startSampleIndex > v64)
       {
-        v64 = v63;
+        v64 = startSampleIndex;
       }
 
       v417[3] = v64;
-      v65 = [v453[5] endSampleIndex];
-      v66 = *(a1 + 64);
-      if (v65 < v66)
+      endSampleIndex = [v453[5] endSampleIndex];
+      v66 = *(self + 64);
+      if (endSampleIndex < v66)
       {
-        v66 = v65;
+        v66 = endSampleIndex;
       }
 
       v413[3] = v66;
@@ -20263,26 +20263,26 @@ LABEL_74:
 
     else
     {
-      v67 = [v58 threads];
+      threads3 = [v58 threads];
       v411[0] = MEMORY[0x1E69E9820];
       v411[1] = 3221225472;
       v411[2] = __103__SASamplePrinter_printTaskHeaderForTask_specialDispatchQueueId_specialThreadId_omitSpecial_omitOther___block_invoke_1541;
       v411[3] = &unk_1E86F7978;
       v411[4] = &v416;
       v411[5] = &v412;
-      [v67 enumerateKeysAndObjectsUsingBlock:v411];
+      [threads3 enumerateKeysAndObjectsUsingBlock:v411];
 
       v68 = v417[3];
-      if (v68 <= *(a1 + 56))
+      if (v68 <= *(self + 56))
       {
-        v68 = *(a1 + 56);
+        v68 = *(self + 56);
       }
 
       v417[3] = v68;
       v69 = v413[3];
-      if (v69 >= *(a1 + 64))
+      if (v69 >= *(self + 64))
       {
-        v69 = *(a1 + 64);
+        v69 = *(self + 64);
       }
 
       v413[3] = v69;
@@ -20290,9 +20290,9 @@ LABEL_74:
     }
   }
 
-  v70 = [*(a1 + 168) tasksByUniquePid];
+  tasksByUniquePid = [*(self + 168) tasksByUniquePid];
   v71 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v58, "uniquePid")}];
-  v72 = [v70 objectForKeyedSubscript:v71];
+  v72 = [tasksByUniquePid objectForKeyedSubscript:v71];
   v73 = v72;
   if (v72)
   {
@@ -20301,17 +20301,17 @@ LABEL_74:
 
   else
   {
-    v75 = [*(a1 + 168) tasksByPid];
+    tasksByPid = [*(self + 168) tasksByPid];
     v76 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v58, "pid")}];
-    v74 = [v75 objectForKeyedSubscript:v76];
+    v74 = [tasksByPid objectForKeyedSubscript:v76];
   }
 
   v410 = 0u;
   v409 = 0u;
   v408 = 0u;
   v407 = 0u;
-  a4 = v74;
-  v77 = [a4 countByEnumeratingWithState:&v407 objects:v525 count:16];
+  id = v74;
+  v77 = [id countByEnumeratingWithState:&v407 objects:v525 count:16];
   if (!v77)
   {
 LABEL_274:
@@ -20328,7 +20328,7 @@ LABEL_85:
   {
     if (*v408 != v80)
     {
-      objc_enumerationMutation(a4);
+      objc_enumerationMutation(id);
     }
 
     v82 = *(*(&v407 + 1) + 8 * v81);
@@ -20347,7 +20347,7 @@ LABEL_85:
 
     if (v77 == ++v81)
     {
-      v77 = [a4 countByEnumeratingWithState:&v407 objects:v525 count:16];
+      v77 = [id countByEnumeratingWithState:&v407 objects:v525 count:16];
       if (!v77)
       {
 
@@ -20364,25 +20364,25 @@ LABEL_275:
         {
           v247 = [v371 debugDescription];
           v248 = v247;
-          v249 = [v247 UTF8String];
-          v250 = [a4 debugDescription];
+          uTF8String9 = [v247 UTF8String];
+          v250 = [id debugDescription];
           v251 = v250;
-          v252 = [v250 UTF8String];
+          uTF8String10 = [v250 UTF8String];
           *v514 = 136315394;
-          *(v6 + 4) = v249;
+          *(v6 + 4) = uTF8String9;
           WORD2(v515) = 2080;
-          *(v6 + 14) = v252;
+          *(v6 + 14) = uTF8String10;
           _os_log_error_impl(&dword_1E0E2F000, v246, OS_LOG_TYPE_ERROR, "%s not in tasksWithSamePid %s", v514, 0x16u);
         }
 
         *__error() = v245;
         v253 = [v371 debugDescription];
         v254 = v253;
-        v255 = [v253 UTF8String];
-        v256 = [a4 debugDescription];
+        uTF8String11 = [v253 UTF8String];
+        v256 = [id debugDescription];
         v257 = v256;
         [v256 UTF8String];
-        _SASetCrashLogMessage(7281, "%s not in tasksWithSamePid %s", v258, v259, v260, v261, v262, v263, v255);
+        _SASetCrashLogMessage(7281, "%s not in tasksWithSamePid %s", v258, v259, v260, v261, v262, v263, uTF8String11);
 
         _os_crash();
         __break(1u);
@@ -20393,10 +20393,10 @@ LABEL_278:
         {
           v266 = [v371 debugDescription];
           v267 = v266;
-          v268 = [v266 UTF8String];
+          uTF8String12 = [v266 UTF8String];
           v269 = v501[3];
           *v514 = 136315394;
-          *(v6 + 4) = v268;
+          *(v6 + 4) = uTF8String12;
           WORD2(v515) = 2048;
           *(v6 + 14) = v269;
           _os_log_error_impl(&dword_1E0E2F000, v265, OS_LOG_TYPE_ERROR, "%s: %lu numSamples (!hasTimeIndexes, no task states)", v514, 0x16u);
@@ -20405,9 +20405,9 @@ LABEL_278:
         *__error() = v264;
         v270 = [v371 debugDescription];
         v271 = v270;
-        v272 = [v270 UTF8String];
+        uTF8String13 = [v270 UTF8String];
         v296 = v501[3];
-        _SASetCrashLogMessage(7142, "%s: %lu numSamples (!hasTimeIndexes, no task states)", v273, v274, v275, v276, v277, v278, v272);
+        _SASetCrashLogMessage(7142, "%s: %lu numSamples (!hasTimeIndexes, no task states)", v273, v274, v275, v276, v277, v278, uTF8String13);
 
         _os_crash();
         __break(1u);
@@ -20418,25 +20418,25 @@ LABEL_281:
         {
           v281 = [v371 debugDescription];
           v282 = v281;
-          v283 = [v281 UTF8String];
+          uTF8String14 = [v281 UTF8String];
           v284 = v501[3];
           v285 = v433[3];
           *v514 = 136315650;
-          *(v6 + 4) = v283;
+          *(v6 + 4) = uTF8String14;
           WORD2(v515) = 2048;
           *(v6 + 14) = v284;
           HIWORD(v516) = 2048;
-          v517 = v285;
+          taskSizeInBytes3 = v285;
           _os_log_error_impl(&dword_1E0E2F000, v280, OS_LOG_TYPE_ERROR, "%s: numSamples %lu >= specialNumSamples %lu", v514, 0x20u);
         }
 
         *__error() = v279;
         v286 = [v371 debugDescription];
         v287 = v286;
-        v288 = [v286 UTF8String];
+        uTF8String15 = [v286 UTF8String];
         v297 = v501[3];
         v299 = v433[3];
-        _SASetCrashLogMessage(7189, "%s: numSamples %lu >= specialNumSamples %lu", v289, v290, v291, v292, v293, v294, v288);
+        _SASetCrashLogMessage(7189, "%s: numSamples %lu >= specialNumSamples %lu", v289, v290, v291, v292, v293, v294, uTF8String15);
 
         _os_crash();
         __break(1u);
@@ -20456,17 +20456,17 @@ LABEL_96:
     goto LABEL_103;
   }
 
-  v86 = [v78 sharedCache];
-  v87 = [v371 sharedCache];
-  v88 = v87;
-  if (v86 == v87)
+  sharedCache = [v78 sharedCache];
+  sharedCache2 = [v371 sharedCache];
+  v88 = sharedCache2;
+  if (sharedCache == sharedCache2)
   {
-    v89 = [v78 endTimestamp];
-    v90 = [v89 ge:*(a1 + 32)];
+    endTimestamp2 = [v78 endTimestamp];
+    v90 = [endTimestamp2 ge:*(self + 32)];
 
     if (v90)
     {
-      v360 = [(SASamplePrinter *)a1 displayNameForTask:v78];
+      v360 = [(SASamplePrinter *)self displayNameForTask:v78];
       v85 = v371;
       goto LABEL_103;
     }
@@ -20486,38 +20486,38 @@ LABEL_108:
     goto LABEL_109;
   }
 
-  v91 = [v84 sharedCache];
-  v92 = [v85 sharedCache];
-  v93 = v92;
-  if (v91 != v92)
+  sharedCache3 = [v84 sharedCache];
+  sharedCache4 = [v85 sharedCache];
+  v93 = sharedCache4;
+  if (sharedCache3 != sharedCache4)
   {
 
     goto LABEL_108;
   }
 
-  v94 = [v84 startTimestamp];
-  v95 = [v94 le:*(a1 + 40)];
+  startTimestamp2 = [v84 startTimestamp];
+  v95 = [startTimestamp2 le:*(self + 40)];
 
   if (!v95)
   {
     goto LABEL_108;
   }
 
-  v358 = [(SASamplePrinter *)a1 displayNameForTask:v84];
+  v358 = [(SASamplePrinter *)self displayNameForTask:v84];
 LABEL_109:
 
   v96 = v371;
-  v97 = [v371 startTimestamp];
-  v98 = a1;
-  v99 = [v371 ppid];
-  if (v99 == -1 || v99 == [v371 pid])
+  startTimestamp3 = [v371 startTimestamp];
+  selfCopy3 = self;
+  ppid = [v371 ppid];
+  if (ppid == -1 || ppid == [v371 pid])
   {
     v357 = 0;
   }
 
   else
   {
-    v100 = [(SASampleStore *)*(a1 + 168) lastTaskWithPid:v99 onOrBeforeTimestamp:v97];
+    v100 = [(SASampleStore *)*(self + 168) lastTaskWithPid:ppid onOrBeforeTimestamp:startTimestamp3];
     if (v100)
     {
       v101 = v100;
@@ -20525,54 +20525,54 @@ LABEL_109:
 
     else
     {
-      v101 = [(SASampleStore *)*(a1 + 168) firstTaskWithPid:v99];
+      v101 = [(SASampleStore *)*(self + 168) firstTaskWithPid:ppid];
 
       if (!v101)
       {
-        v98 = a1;
-        v357 = [(SASamplePrinter *)a1 displayNameForPid:v99 threadId:0 timestamp:v97];
+        selfCopy3 = self;
+        v357 = [(SASamplePrinter *)self displayNameForPid:ppid threadId:0 timestamp:startTimestamp3];
         v96 = v371;
         goto LABEL_116;
       }
     }
 
-    v357 = [(SASamplePrinter *)a1 displayNameForTask:v101];
+    v357 = [(SASamplePrinter *)self displayNameForTask:v101];
 
     v96 = v371;
-    v98 = a1;
+    selfCopy3 = self;
   }
 
 LABEL_116:
-  v102 = [v96 rpid];
-  if (v102 < 1 || v102 == [v96 pid])
+  rpid = [v96 rpid];
+  if (rpid < 1 || rpid == [v96 pid])
   {
     v356 = 0;
     goto LABEL_123;
   }
 
-  v103 = [(SASampleStore *)*(v98 + 168) lastTaskWithPid:v102 onOrBeforeTimestamp:v97];
+  v103 = [(SASampleStore *)*(selfCopy3 + 168) lastTaskWithPid:rpid onOrBeforeTimestamp:startTimestamp3];
   if (v103)
   {
     v104 = v103;
 
 LABEL_122:
-    v356 = [(SASamplePrinter *)a1 displayNameForTask:v104];
+    v356 = [(SASamplePrinter *)self displayNameForTask:v104];
 
     goto LABEL_123;
   }
 
-  v104 = [(SASampleStore *)*(v98 + 168) firstTaskWithPid:v102];
+  v104 = [(SASampleStore *)*(selfCopy3 + 168) firstTaskWithPid:rpid];
 
   if (v104)
   {
     goto LABEL_122;
   }
 
-  v356 = [(SASamplePrinter *)a1 displayNameForPid:v102 threadId:0 timestamp:v97];
+  v356 = [(SASamplePrinter *)self displayNameForPid:rpid threadId:0 timestamp:startTimestamp3];
 LABEL_123:
 
   v105 = v371;
-  v106 = a1;
+  selfCopy5 = self;
   if ([v371 pid])
   {
     v361 = 0;
@@ -20580,13 +20580,13 @@ LABEL_123:
 
   else
   {
-    v107 = [v371 startTimestamp];
-    [v107 wallTime];
-    v109 = [(SASamplePrinter *)a1 kernelVersionAtWallTime:v108];
+    startTimestamp4 = [v371 startTimestamp];
+    [startTimestamp4 wallTime];
+    v109 = [(SASamplePrinter *)self kernelVersionAtWallTime:v108];
 
     v105 = v371;
-    v106 = a1;
-    if (!v109 || (SACopySanitizedString(v109, 1, 0), v361 = objc_claimAutoreleasedReturnValue(), v109, v105 = v371, v106 = a1, !v361))
+    selfCopy5 = self;
+    if (!v109 || (SACopySanitizedString(v109, 1, 0), v361 = objc_claimAutoreleasedReturnValue(), v109, v105 = v371, selfCopy5 = self, !v361))
     {
       v361 = @"???";
     }
@@ -20596,23 +20596,23 @@ LABEL_123:
   v111 = v459[5];
   if (v111)
   {
-    v112 = [v111 taskSizeInBytes];
-    v113 = a6;
+    taskSizeInBytes = [v111 taskSizeInBytes];
+    specialCopy3 = special;
     v110 = v459;
-    if (v112)
+    if (taskSizeInBytes)
     {
-      v332 = [v459[5] taskSizeInBytes];
+      taskSizeInBytes2 = [v459[5] taskSizeInBytes];
       *v514 = 0;
       v515 = v514;
       v516 = 0x2020000000;
-      v517 = [v453[5] taskSizeInBytes];
+      taskSizeInBytes3 = [v453[5] taskSizeInBytes];
       v114 = *(v515 + 3);
       if (!v114)
       {
-        v115 = *(v106 + 32);
-        v116 = *(v106 + 40);
-        v117 = *(v106 + 56);
-        v118 = *(v106 + 64);
+        v115 = *(selfCopy5 + 32);
+        v116 = *(selfCopy5 + 40);
+        v117 = *(selfCopy5 + 56);
+        v118 = *(selfCopy5 + 64);
         v406[0] = MEMORY[0x1E69E9820];
         v406[1] = 3221225472;
         v406[2] = __103__SASamplePrinter_printTaskHeaderForTask_specialDispatchQueueId_specialThreadId_omitSpecial_omitOther___block_invoke_1544;
@@ -20629,22 +20629,22 @@ LABEL_123:
 
     else
     {
-      v332 = 0;
+      taskSizeInBytes2 = 0;
       v331 = 0;
     }
   }
 
   else
   {
-    v332 = 0;
+    taskSizeInBytes2 = 0;
     v331 = 0;
-    v113 = a6;
+    specialCopy3 = special;
   }
 
   if (v110[5])
   {
-    v119 = [v453[5] pageins];
-    v330 = v119 - [v459[5] pageins];
+    pageins = [v453[5] pageins];
+    v330 = pageins - [v459[5] pageins];
   }
 
   else
@@ -20658,27 +20658,27 @@ LABEL_123:
   v402 = 0;
   v401 = 0;
   v400 = 0;
-  if ([*(v106 + 168) dataSource] != 8 || (objc_msgSend(*(v106 + 168), "haveKPerfSched") | v113) == 1)
+  if ([*(selfCopy5 + 168) dataSource] != 8 || (objc_msgSend(*(selfCopy5 + 168), "haveKPerfSched") | specialCopy3) == 1)
   {
-    if ([*(v106 + 168) dataStyle] == 1)
+    if ([*(selfCopy5 + 168) dataStyle] == 1)
     {
-      if (!v113)
+      if (!specialCopy3)
       {
         goto LABEL_153;
       }
     }
 
-    else if (![*(v106 + 168) dataStyle] && (v113 & 1) == 0)
+    else if (![*(selfCopy5 + 168) dataStyle] && (specialCopy3 & 1) == 0)
     {
       goto LABEL_153;
     }
 
-    if ((((v365 | v374) != 0) & v113) == 0)
+    if ((((v365 | v374) != 0) & specialCopy3) == 0)
     {
-      [(SATask *)v105 cpuTimeNs:&v404 cpuInstructions:&v403 cpuCycles:&v402 nonThreadCpuTimeNs:&v401 nonThreadCpuInstructions:&v400 nonThreadCpuCycles:*(v106 + 32) betweenStartTime:*(v106 + 40) endTime:?];
+      [(SATask *)v105 cpuTimeNs:&v404 cpuInstructions:&v403 cpuCycles:&v402 nonThreadCpuTimeNs:&v401 nonThreadCpuInstructions:&v400 nonThreadCpuCycles:*(selfCopy5 + 32) betweenStartTime:*(selfCopy5 + 40) endTime:?];
     }
 
-    if (((v42 | v113) & v366) == 1)
+    if (((v42 | specialCopy3) & v366) == 1)
     {
       if (v42)
       {
@@ -20691,7 +20691,7 @@ LABEL_152:
         goto LABEL_153;
       }
 
-      if (v113)
+      if (specialCopy3)
       {
         v122 = *(*&buf[8] + 40);
         v405 = *(*&buf[8] + 32);
@@ -20707,22 +20707,22 @@ LABEL_153:
   v397 = &v396;
   v398 = 0x2020000000;
   v399 = 0;
-  if (!(v365 | v374) || (v42 & 1) != 0 || (v113 & 1) != 0)
+  if (!(v365 | v374) || (v42 & 1) != 0 || (specialCopy3 & 1) != 0)
   {
-    v130 = [v105 threads];
+    threads4 = [v105 threads];
     v381[0] = MEMORY[0x1E69E9820];
     v381[1] = 3221225472;
     v381[2] = __103__SASamplePrinter_printTaskHeaderForTask_specialDispatchQueueId_specialThreadId_omitSpecial_omitOther___block_invoke_3;
     v381[3] = &unk_1E86F5B80;
-    v381[4] = v106;
+    v381[4] = selfCopy5;
     v381[5] = &v396;
-    [v130 enumerateKeysAndObjectsUsingBlock:v381];
+    [threads4 enumerateKeysAndObjectsUsingBlock:v381];
   }
 
   else if (v374)
   {
-    v123 = [v105 threads];
-    v368 = [v123 count];
+    threads5 = [v105 threads];
+    v368 = [threads5 count];
 
     if (v365)
     {
@@ -20730,8 +20730,8 @@ LABEL_153:
       v394 = 0u;
       v393 = 0u;
       v392 = 0u;
-      v124 = [v365 threadStates];
-      v125 = [v124 countByEnumeratingWithState:&v392 objects:v524 count:16];
+      threadStates = [v365 threadStates];
+      v125 = [threadStates countByEnumeratingWithState:&v392 objects:v524 count:16];
       if (v125)
       {
         v126 = *v393;
@@ -20741,11 +20741,11 @@ LABEL_160:
         {
           if (*v393 != v126)
           {
-            objc_enumerationMutation(v124);
+            objc_enumerationMutation(threadStates);
           }
 
-          v128 = [*(*(&v392 + 1) + 8 * v127) dispatchQueue];
-          v129 = v128 == v374;
+          dispatchQueue = [*(*(&v392 + 1) + 8 * v127) dispatchQueue];
+          v129 = dispatchQueue == v374;
 
           if (!v129)
           {
@@ -20754,7 +20754,7 @@ LABEL_160:
 
           if (v125 == ++v127)
           {
-            v125 = [v124 countByEnumeratingWithState:&v392 objects:v524 count:16];
+            v125 = [threadStates countByEnumeratingWithState:&v392 objects:v524 count:16];
             if (v125)
             {
               goto LABEL_160;
@@ -20769,10 +20769,10 @@ LABEL_160:
     else
     {
       v132 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      v133 = *(a1 + 32);
-      v134 = *(a1 + 40);
-      v135 = *(a1 + 56);
-      v136 = *(a1 + 64);
+      v133 = *(self + 32);
+      v134 = *(self + 40);
+      v135 = *(self + 56);
+      v136 = *(self + 64);
       v390[0] = MEMORY[0x1E69E9820];
       v390[1] = 3221225472;
       v390[2] = __103__SASamplePrinter_printTaskHeaderForTask_specialDispatchQueueId_specialThreadId_omitSpecial_omitOther___block_invoke_2_1545;
@@ -20799,15 +20799,15 @@ LABEL_160:
             }
 
             v142 = *(*(&v386 + 1) + 8 * i);
-            v143 = [v371 threads];
-            v144 = [v143 objectForKeyedSubscript:v142];
+            threads6 = [v371 threads];
+            v144 = [threads6 objectForKeyedSubscript:v142];
 
             v385 = 0u;
             v384 = 0u;
             v383 = 0u;
             v382 = 0u;
-            v145 = [v144 threadStates];
-            v146 = [v145 countByEnumeratingWithState:&v382 objects:v522 count:16];
+            threadStates2 = [v144 threadStates];
+            v146 = [threadStates2 countByEnumeratingWithState:&v382 objects:v522 count:16];
             if (v146)
             {
               v147 = *v383;
@@ -20817,11 +20817,11 @@ LABEL_160:
                 {
                   if (*v383 != v147)
                   {
-                    objc_enumerationMutation(v145);
+                    objc_enumerationMutation(threadStates2);
                   }
 
-                  v149 = [*(*(&v382 + 1) + 8 * j) dispatchQueue];
-                  v150 = v149 == v374;
+                  dispatchQueue2 = [*(*(&v382 + 1) + 8 * j) dispatchQueue];
+                  v150 = dispatchQueue2 == v374;
 
                   if (!v150)
                   {
@@ -20830,7 +20830,7 @@ LABEL_160:
                   }
                 }
 
-                v146 = [v145 countByEnumeratingWithState:&v382 objects:v522 count:16];
+                v146 = [threadStates2 countByEnumeratingWithState:&v382 objects:v522 count:16];
                 if (v146)
                 {
                   continue;
@@ -20854,44 +20854,44 @@ LABEL_185:
 
   else
   {
-    v131 = [v105 threads];
-    [v131 count];
+    threads7 = [v105 threads];
+    [threads7 count];
   }
 
-  v151 = a1;
+  selfCopy9 = self;
   v152 = v371;
-  v355 = [(SASamplePrinter *)a1 architectureStringForTask:v371];
+  v355 = [(SASamplePrinter *)self architectureStringForTask:v371];
   if (v362)
   {
     v153 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v154 = [(SASamplePrinter *)a1 displayNameForTask:v371];
-    v354 = [v153 initWithFormat:@"%@ %@", v154, v362];
+    v154 = [(SASamplePrinter *)self displayNameForTask:v371];
+    v362 = [v153 initWithFormat:@"%@ %@", v154, v362];
 
     v152 = v371;
-    v151 = a1;
+    selfCopy9 = self;
   }
 
   else
   {
-    v354 = [(SASamplePrinter *)a1 displayNameForTask:v371];
+    v362 = [(SASamplePrinter *)self displayNameForTask:v371];
   }
 
   if ([v152 pid])
   {
-    v155 = [v371 sharedCache];
-    v156 = v155;
-    if (v155)
+    sharedCache5 = [v371 sharedCache];
+    v156 = sharedCache5;
+    if (sharedCache5)
     {
-      v157 = v155;
+      null = sharedCache5;
     }
 
     else
     {
-      v157 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v353 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v157, 0}];
-    v151 = a1;
+    v353 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{null, 0}];
+    selfCopy9 = self;
   }
 
   else
@@ -20907,7 +20907,7 @@ LABEL_185:
     v521 = v159;
     v352 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v521 forKeys:&v520 count:1];
 
-    v151 = a1;
+    selfCopy9 = self;
   }
 
   else
@@ -20915,15 +20915,15 @@ LABEL_185:
     v352 = 0;
   }
 
-  if ([*(v151 + 168) dataStyle] == 1 || !objc_msgSend(*(v151 + 168), "dataStyle"))
+  if ([*(selfCopy9 + 168) dataStyle] == 1 || !objc_msgSend(*(selfCopy9 + 168), "dataStyle"))
   {
-    if ([*(v151 + 168) dataSource] == 8)
+    if ([*(selfCopy9 + 168) dataSource] == 8)
     {
       v328 = 0;
       goto LABEL_207;
     }
 
-    v160 = [*(v151 + 168) dataSource] != 0;
+    v160 = [*(selfCopy9 + 168) dataSource] != 0;
   }
 
   else
@@ -20934,24 +20934,24 @@ LABEL_185:
   v328 = v160;
 LABEL_207:
   v380 = 0;
-  [(SASamplePrinter *)v151 numIOsForTask:v371 ioSize:&v380];
-  if ((v366 & a6) == 1)
+  [(SASamplePrinter *)selfCopy9 numIOsForTask:v371 ioSize:&v380];
+  if ((v366 & special) == 1)
   {
     *v514 = 0;
     v515 = v514;
     v516 = 0x3032000000;
-    v517 = __Block_byref_object_copy__4;
+    taskSizeInBytes3 = __Block_byref_object_copy__4;
     v518 = __Block_byref_object_dispose__4;
     v519 = 0;
-    v161 = *(v151 + 32);
-    v162 = *(v151 + 40);
-    v163 = *(v151 + 56);
-    v164 = *(v151 + 64);
+    v161 = *(selfCopy9 + 32);
+    v162 = *(selfCopy9 + 40);
+    v163 = *(selfCopy9 + 56);
+    v164 = *(selfCopy9 + 64);
     v379[0] = MEMORY[0x1E69E9820];
     v379[1] = 3221225472;
     v379[2] = __103__SASamplePrinter_printTaskHeaderForTask_specialDispatchQueueId_specialThreadId_omitSpecial_omitOther___block_invoke_5;
     v379[3] = &unk_1E86F79F0;
-    v379[4] = v151;
+    v379[4] = selfCopy9;
     v379[5] = v514;
     [(SATask *)v371 enumerateThreadStatesForThread:v365 dispatchQueue:v374 betweenStartTime:v161 startSampleIndex:v163 endTime:v162 endSampleIndex:v164 reverseOrder:0 block:v379];
     v165 = *(v515 + 5);
@@ -20972,7 +20972,7 @@ LABEL_207:
   {
     v513 = v371;
     v166 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v513 count:1];
-    v351 = [(SASamplePrinter *)v151 displayStringForOnBehalfOfForTasks:v166 includePid:1u];
+    v351 = [(SASamplePrinter *)selfCopy9 displayStringForOnBehalfOfForTasks:v166 includePid:1u];
   }
 
   v378 = 0u;
@@ -20980,7 +20980,7 @@ LABEL_207:
   v375 = 0u;
   v376 = 0u;
   [v371 threads];
-  v168 = v167 = a1;
+  v168 = selfCopy10 = self;
   v169 = [v168 countByEnumeratingWithState:&v375 objects:v512 count:16];
   if (v169)
   {
@@ -20997,29 +20997,29 @@ LABEL_207:
           objc_enumerationMutation(v168);
         }
 
-        v172 = [*(v167 + 152) objectForKeyedSubscript:*(*(&v375 + 1) + 8 * v171)];
+        v172 = [*(selfCopy10 + 152) objectForKeyedSubscript:*(*(&v375 + 1) + 8 * v171)];
         v173 = v172;
         if (v172)
         {
-          v174 = [v172 threadState];
-          v175 = [v174 startTimestamp];
-          if ([v175 gt:*(a1 + 40)])
+          threadState = [v172 threadState];
+          startTimestamp5 = [threadState startTimestamp];
+          if ([startTimestamp5 gt:*(self + 40)])
           {
 
             goto LABEL_222;
           }
 
-          v176 = [v173 threadState];
-          v177 = [v176 endTimestamp];
-          v178 = [v177 lt:*(a1 + 32)];
+          threadState2 = [v173 threadState];
+          endTimestamp3 = [threadState2 endTimestamp];
+          v178 = [endTimestamp3 lt:*(self + 32)];
 
           if ((v178 & 1) == 0)
           {
             if ([v173 isPartOfADeadlock])
             {
-              v179 = [v173 thread];
-              v180 = [v173 threadState];
-              v174 = [(SASamplePrinter *)a1 displayNameForTask:v179 thread:v180 threadState:?];
+              thread = [v173 thread];
+              threadState3 = [v173 threadState];
+              threadState = [(SASamplePrinter *)self displayNameForTask:thread thread:threadState3 threadState:?];
 
               v181 = v370;
               if (v370)
@@ -21027,26 +21027,26 @@ LABEL_207:
                 goto LABEL_228;
               }
 
-              v370 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v174, 0}];
+              v370 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{threadState, 0}];
               goto LABEL_222;
             }
 
             if ([v173 isBlockedByADeadlock])
             {
-              v182 = [v173 thread];
-              v183 = [v173 threadState];
-              v174 = [(SASamplePrinter *)a1 displayNameForTask:v182 thread:v183 threadState:?];
+              thread2 = [v173 thread];
+              threadState4 = [v173 threadState];
+              threadState = [(SASamplePrinter *)self displayNameForTask:thread2 thread:threadState4 threadState:?];
 
               v181 = v367;
               if (v367)
               {
 LABEL_228:
-                [v181 addObject:v174];
+                [v181 addObject:threadState];
               }
 
               else
               {
-                v367 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v174, 0}];
+                v367 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{threadState, 0}];
               }
 
 LABEL_222:
@@ -21055,7 +21055,7 @@ LABEL_222:
         }
 
         ++v171;
-        v167 = a1;
+        selfCopy10 = self;
       }
 
       while (v169 != v171);
@@ -21074,17 +21074,17 @@ LABEL_237:
 
   [v370 sortUsingComparator:&__block_literal_global_64];
   [v367 sortUsingComparator:&__block_literal_global_64];
-  v185 = a1;
-  [(SASamplePrinter *)a1 taskHasSwallowedAnExceptionNotedByHIException:v371];
+  selfCopy13 = self;
+  [(SASamplePrinter *)self taskHasSwallowedAnExceptionNotedByHIException:v371];
   v186 = *(v449 + 6);
   if (v186 == 0x80000000)
   {
-    v350 = 0;
+    v189 = 0;
   }
 
   else if (*(v445 + 6) <= v186)
   {
-    v350 = SAFormattedBytesEx(v186 << 20, 1, 0, 0, 0x100000uLL);
+    v189 = SAFormattedBytesEx(v186 << 20, 1, 0, 0, 0x100000uLL);
   }
 
   else
@@ -21092,9 +21092,9 @@ LABEL_237:
     v187 = objc_alloc(MEMORY[0x1E696AEC0]);
     v188 = SAFormattedBytesEx(*(v449 + 6) << 20, 1, 0, 0, 0x100000uLL);
     v189 = SAFormattedBytesEx(*(v445 + 6) << 20, 1, 0, 0, 0x100000uLL);
-    v350 = [v187 initWithFormat:@"%@ - %@", v188, v189];
+    v189 = [v187 initWithFormat:@"%@ - %@", v188, v189];
 
-    v185 = a1;
+    selfCopy13 = self;
   }
 
   v190 = *(v441 + 6);
@@ -21117,39 +21117,39 @@ LABEL_237:
       v349 = [v191 initWithFormat:@"%d - %d", *(v441 + 6), *(v437 + 6)];
     }
 
-    v185 = a1;
+    selfCopy13 = self;
   }
 
-  if (([*(v185 + 16) printJson] & 1) == 0)
+  if (([*(selfCopy13 + 16) printJson] & 1) == 0)
   {
-    [*(a1 + 8) appendString:@"\n\n"];
+    [*(self + 8) appendString:@"\n\n"];
   }
 
-  v327 = *(a1 + 8);
-  v348 = [v371 mainBinary];
-  v347 = [v371 mainBinaryPath];
+  v327 = *(self + 8);
+  mainBinary = [v371 mainBinary];
+  mainBinaryPath = [v371 mainBinaryPath];
   v326 = [v371 uid];
-  v345 = [v371 bundleIdentifier];
-  v344 = [v371 bundleVersion];
-  v343 = [v371 bundleShortVersion];
-  v342 = [v371 bundleBuildVersion];
-  v346 = [v371 bundleProjectName];
-  v341 = [v371 bundleSourceVersion];
-  v340 = [v371 bundleProductBuildVersion];
-  v325 = [v371 adamID];
-  v339 = [v371 installerVersionID];
-  v324 = [v371 developerType];
-  v338 = [v371 appType];
-  v323 = [v371 isBeta];
-  v336 = [v371 cohortID];
-  v335 = [v371 vendorID];
-  v309 = [v371 distributorID];
-  v334 = [v371 codesigningID];
-  v333 = [v371 teamID];
-  v337 = [v371 forkTimestamp];
+  bundleIdentifier = [v371 bundleIdentifier];
+  bundleVersion = [v371 bundleVersion];
+  bundleShortVersion = [v371 bundleShortVersion];
+  bundleBuildVersion = [v371 bundleBuildVersion];
+  bundleProjectName = [v371 bundleProjectName];
+  bundleSourceVersion = [v371 bundleSourceVersion];
+  bundleProductBuildVersion = [v371 bundleProductBuildVersion];
+  adamID = [v371 adamID];
+  installerVersionID = [v371 installerVersionID];
+  developerType = [v371 developerType];
+  appType = [v371 appType];
+  isBeta = [v371 isBeta];
+  cohortID = [v371 cohortID];
+  vendorID = [v371 vendorID];
+  distributorID = [v371 distributorID];
+  codesigningID = [v371 codesigningID];
+  teamID = [v371 teamID];
+  forkTimestamp = [v371 forkTimestamp];
   if (v328)
   {
-    v329 = *(a1 + 72);
+    v329 = *(self + 72);
   }
 
   else
@@ -21172,10 +21172,10 @@ LABEL_237:
   v312 = v402;
   v311 = v401;
   v194 = v400;
-  v310 = [v193 usesSuddenTermination];
-  v308 = [v193 allowsIdleExit];
-  v195 = [v193 isTranslocated];
-  v196 = [v193 hardenedHeap];
+  usesSuddenTermination = [v193 usesSuddenTermination];
+  allowsIdleExit = [v193 allowsIdleExit];
+  isTranslocated = [v193 isTranslocated];
+  hardenedHeap = [v193 hardenedHeap];
   if (v193)
   {
     v197 = v193[75];
@@ -21196,8 +21196,8 @@ LABEL_237:
   [v193 isUnresponsive];
   [v193 timeOfLastResponse];
   v202 = v201;
-  v203 = [v193 threads];
-  [v203 count];
+  threads8 = [v193 threads];
+  [threads8 count];
   v307 = *(v477 + 24);
   v305 = v485[3];
   v306 = v481[3];
@@ -21205,9 +21205,9 @@ LABEL_237:
   v304 = v489[3];
   v302 = v493[3];
   v301 = v397[3];
-  *&v295 = v344;
-  *(&v295 + 1) = v343;
-  [SASamplePrinter addTaskHeaderToStream:a1 displayName:v327 pid:v354 mainBinary:0xFFFFFFFFLL mainBinaryPath:v348 sharedCaches:v347 uid:v353 bundleIdentifier:v326 bundleVersion:v202 bundleShortVersion:v345 bundleBuildVersion:v295 bundleProjectName:v342 bundleSourceVersion:v346 bundleProductBuildVersion:v341 adamID:v340 installerVersionID:v325 developerType:v339 appType:v324 isBeta:v338 cohortID:v323 vendorID:v336 distributorID:v335 codesigningID:v334 teamID:v333 resourceCoalitionSampleCounts:v352 onBehalfOfProcesses:v351 architectureString:v355 kernelVersion:v361 parentName:v357 responsibleName:v356 taskExecedFromName:v360 taskExecedToName:v358 forkTimestamp:v337 startTimestamp:v364 endTimestamp:v363 startSampleIndex:v372 endSampleIndex:v322 numSamples:v321 totalNumSamples:v329 numSamplesSuspended:v320 numSamplesTerminated:v319 startingTaskSize:v332 endingTaskSize:v331 maxTaskSize:v318 startSampleIndexOfMaxTaskSize:v317 endSampleIndexOfMaxTaskSize:v316 numPageins:v330 cpuTimeNs:v315 cpuInstructions:v314 cpuCycles:v313 nonThreadCpuTimeNs:v312 nonThreadCpuInstructions:v311 nonThreadCpuCycles:v194 usesSuddenTermination:v310 allowsIdleExit:v308 memoryLimitStr:v350 jetsamPriorityStr:v349 isTranslocated:v195 hardenedHeap:v196 mteCheckedAllocationsEnabled:v197 & 1 mteUserDataAllocationsTagged:v198 & 1 mteSoftModeEnabled:v199 & 1 mteInheritanceTurnedOn:v200 & 1 isRunningBoardManaged:? isUnresponsive:? timeOfLastResponse:? numThreads:? numIdleWorkQueueThreads:? numOtherHiddenThreads:? hieSwallowedException:? numSamplesWQExceededConstrainedThreadLimit:? numSamplesWQExceededTotalThreadLimit:? numSamplesWQExceededCooperativeThreadLimit:? numSamplesWQExceededActiveConstrainedThreadLimit:? numSamplesTALEngaged:? isRunawayMitigated:? threadsDeadlocked:? threadsBlockedByADeadlock:? ioSize:? numIOs:? isReportHeader:?];
+  *&v295 = bundleVersion;
+  *(&v295 + 1) = bundleShortVersion;
+  [SASamplePrinter addTaskHeaderToStream:self displayName:v327 pid:v362 mainBinary:0xFFFFFFFFLL mainBinaryPath:mainBinary sharedCaches:mainBinaryPath uid:v353 bundleIdentifier:v326 bundleVersion:v202 bundleShortVersion:bundleIdentifier bundleBuildVersion:v295 bundleProjectName:bundleBuildVersion bundleSourceVersion:bundleProjectName bundleProductBuildVersion:bundleSourceVersion adamID:bundleProductBuildVersion installerVersionID:adamID developerType:installerVersionID appType:developerType isBeta:appType cohortID:isBeta vendorID:cohortID distributorID:vendorID codesigningID:codesigningID teamID:teamID resourceCoalitionSampleCounts:v352 onBehalfOfProcesses:v351 architectureString:v355 kernelVersion:v361 parentName:v357 responsibleName:v356 taskExecedFromName:v360 taskExecedToName:v358 forkTimestamp:forkTimestamp startTimestamp:startTimestamp endTimestamp:endTimestamp startSampleIndex:v372 endSampleIndex:v322 numSamples:v321 totalNumSamples:v329 numSamplesSuspended:v320 numSamplesTerminated:v319 startingTaskSize:taskSizeInBytes2 endingTaskSize:v331 maxTaskSize:v318 startSampleIndexOfMaxTaskSize:v317 endSampleIndexOfMaxTaskSize:v316 numPageins:v330 cpuTimeNs:v315 cpuInstructions:v314 cpuCycles:v313 nonThreadCpuTimeNs:v312 nonThreadCpuInstructions:v311 nonThreadCpuCycles:v194 usesSuddenTermination:usesSuddenTermination allowsIdleExit:allowsIdleExit memoryLimitStr:v189 jetsamPriorityStr:v349 isTranslocated:isTranslocated hardenedHeap:hardenedHeap mteCheckedAllocationsEnabled:v197 & 1 mteUserDataAllocationsTagged:v198 & 1 mteSoftModeEnabled:v199 & 1 mteInheritanceTurnedOn:v200 & 1 isRunningBoardManaged:? isUnresponsive:? timeOfLastResponse:? numThreads:? numIdleWorkQueueThreads:? numOtherHiddenThreads:? hieSwallowedException:? numSamplesWQExceededConstrainedThreadLimit:? numSamplesWQExceededTotalThreadLimit:? numSamplesWQExceededCooperativeThreadLimit:? numSamplesWQExceededActiveConstrainedThreadLimit:? numSamplesTALEngaged:? isRunawayMitigated:? threadsDeadlocked:? threadsBlockedByADeadlock:? ioSize:? numIOs:? isReportHeader:?];
 
   v51 = v501[3];
   _Block_object_dispose(&v396, 8);
@@ -21576,17 +21576,17 @@ void __103__SASamplePrinter_printTaskHeaderForTask_specialDispatchQueueId_specia
   }
 }
 
-- (__CFString)displayNameForPid:(uint64_t)a1 aroundTimestamp:(uint64_t)a2 includePid:(void *)a3
+- (__CFString)displayNameForPid:(uint64_t)pid aroundTimestamp:(uint64_t)timestamp includePid:(void *)includePid
 {
   v83 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (pid)
   {
-    v6 = [*(a1 + 168) tasksByPid];
+    tasksByPid = [*(pid + 168) tasksByPid];
     v7 = 0x1E696A000uLL;
-    v8 = [MEMORY[0x1E696AD98] numberWithInt:a2];
-    v9 = [v6 objectForKeyedSubscript:v8];
+    v8 = [MEMORY[0x1E696AD98] numberWithInt:timestamp];
+    v9 = [tasksByPid objectForKeyedSubscript:v8];
 
-    if (a3)
+    if (includePid)
     {
       v78 = 0u;
       v79 = 0u;
@@ -21597,15 +21597,15 @@ void __103__SASamplePrinter_printTaskHeaderForTask_specialDispatchQueueId_specia
       if (v11)
       {
         v12 = v11;
-        v74 = a2;
+        timestampCopy = timestamp;
         v75 = v9;
-        v13 = 0;
-        v14 = 0;
+        endTimestamp = 0;
+        lastObject = 0;
         v15 = *v77;
 LABEL_5:
         v16 = 0;
-        v17 = v13;
-        v18 = v14;
+        v17 = endTimestamp;
+        v18 = lastObject;
         while (1)
         {
           if (*v77 != v15)
@@ -21614,17 +21614,17 @@ LABEL_5:
           }
 
           v19 = *(*(&v76 + 1) + 8 * v16);
-          v13 = [v19 endTimestamp];
-          if (([v13 ge:a3] & 1) == 0)
+          endTimestamp = [v19 endTimestamp];
+          if (([endTimestamp ge:includePid] & 1) == 0)
           {
             break;
           }
 
-          v14 = v19;
+          lastObject = v19;
 
           ++v16;
-          v17 = v13;
-          v18 = v14;
+          v17 = endTimestamp;
+          v18 = lastObject;
           if (v12 == v16)
           {
             v12 = [v10 countByEnumeratingWithState:&v76 objects:v82 count:16];
@@ -21643,8 +21643,8 @@ LABEL_5:
           goto LABEL_26;
         }
 
-        v20 = [v19 startTimestamp];
-        if ([v20 le:a3])
+        startTimestamp = [v19 startTimestamp];
+        if ([startTimestamp le:includePid])
         {
           goto LABEL_14;
         }
@@ -21652,10 +21652,10 @@ LABEL_5:
         if (v17)
         {
           [v17 machContTimeSeconds];
-          if (v31 == 0.0 || ([a3 machContTimeSeconds], v32 == 0.0))
+          if (v31 == 0.0 || ([includePid machContTimeSeconds], v32 == 0.0))
           {
             [v17 machAbsTimeSeconds];
-            if (v36 == 0.0 || ([a3 machAbsTimeSeconds], v37 == 0.0))
+            if (v36 == 0.0 || ([includePid machAbsTimeSeconds], v37 == 0.0))
             {
               [v17 wallTime];
               if (v39 == 0.0)
@@ -21663,7 +21663,7 @@ LABEL_5:
                 goto LABEL_58;
               }
 
-              [a3 wallTime];
+              [includePid wallTime];
               if (v40 == 0.0)
               {
                 goto LABEL_58;
@@ -21671,14 +21671,14 @@ LABEL_5:
 
               [v17 wallTime];
               v34 = v41;
-              [a3 wallTime];
+              [includePid wallTime];
             }
 
             else
             {
               [v17 machAbsTimeSeconds];
               v34 = v38;
-              [a3 machAbsTimeSeconds];
+              [includePid machAbsTimeSeconds];
             }
           }
 
@@ -21686,7 +21686,7 @@ LABEL_5:
           {
             [v17 machContTimeSeconds];
             v34 = v33;
-            [a3 machContTimeSeconds];
+            [includePid machContTimeSeconds];
           }
 
           v42 = v34 - v35;
@@ -21702,42 +21702,42 @@ LABEL_5:
 
           if (v42 != 0.0)
           {
-            [v20 machContTimeSeconds];
-            if (v44 == 0.0 || ([a3 machContTimeSeconds], v45 == 0.0))
+            [startTimestamp machContTimeSeconds];
+            if (v44 == 0.0 || ([includePid machContTimeSeconds], v45 == 0.0))
             {
-              [v20 machAbsTimeSeconds];
-              if (v49 == 0.0 || ([a3 machAbsTimeSeconds], v50 == 0.0))
+              [startTimestamp machAbsTimeSeconds];
+              if (v49 == 0.0 || ([includePid machAbsTimeSeconds], v50 == 0.0))
               {
-                [v20 wallTime];
+                [startTimestamp wallTime];
                 if (v52 == 0.0)
                 {
                   goto LABEL_58;
                 }
 
-                [a3 wallTime];
+                [includePid wallTime];
                 if (v53 == 0.0)
                 {
                   goto LABEL_58;
                 }
 
-                [v20 wallTime];
+                [startTimestamp wallTime];
                 v47 = v54;
-                [a3 wallTime];
+                [includePid wallTime];
               }
 
               else
               {
-                [v20 machAbsTimeSeconds];
+                [startTimestamp machAbsTimeSeconds];
                 v47 = v51;
-                [a3 machAbsTimeSeconds];
+                [includePid machAbsTimeSeconds];
               }
             }
 
             else
             {
-              [v20 machContTimeSeconds];
+              [startTimestamp machContTimeSeconds];
               v47 = v46;
-              [a3 machContTimeSeconds];
+              [includePid machContTimeSeconds];
             }
 
             v55 = v47 - v48;
@@ -21758,51 +21758,51 @@ LABEL_5:
           }
 
 LABEL_58:
-          if ([v17 machContTime] && objc_msgSend(a3, "machContTime"))
+          if ([v17 machContTime] && objc_msgSend(includePid, "machContTime"))
           {
-            v56 = [v17 machContTime];
-            v57 = [a3 machContTime];
+            machContTime = [v17 machContTime];
+            machContTime2 = [includePid machContTime];
           }
 
           else
           {
-            if (![v17 machAbsTime] || !objc_msgSend(a3, "machAbsTime"))
+            if (![v17 machAbsTime] || !objc_msgSend(includePid, "machAbsTime"))
             {
               goto LABEL_14;
             }
 
-            v56 = [v17 machAbsTime];
-            v57 = [a3 machAbsTime];
+            machContTime = [v17 machAbsTime];
+            machContTime2 = [includePid machAbsTime];
           }
 
-          if (v56 - v57 >= 0)
+          if (machContTime - machContTime2 >= 0)
           {
-            v58 = v56 - v57;
+            v58 = machContTime - machContTime2;
           }
 
           else
           {
-            v58 = v57 - v56;
+            v58 = machContTime2 - machContTime;
           }
 
-          if (v56 != v57)
+          if (machContTime != machContTime2)
           {
-            if ([v20 machContTime] && objc_msgSend(a3, "machContTime"))
+            if ([startTimestamp machContTime] && objc_msgSend(includePid, "machContTime"))
             {
-              v59 = [v20 machContTime];
-              v60 = [a3 machContTime];
+              machContTime3 = [startTimestamp machContTime];
+              machContTime4 = [includePid machContTime];
               goto LABEL_74;
             }
 
-            if ([v20 machAbsTime] && objc_msgSend(a3, "machAbsTime"))
+            if ([startTimestamp machAbsTime] && objc_msgSend(includePid, "machAbsTime"))
             {
-              v59 = [v20 machAbsTime];
-              v60 = [a3 machAbsTime];
+              machContTime3 = [startTimestamp machAbsTime];
+              machContTime4 = [includePid machAbsTime];
 LABEL_74:
-              v61 = v59 - v60;
-              if (v59 - v60 < 0)
+              v61 = machContTime3 - machContTime4;
+              if (machContTime3 - machContTime4 < 0)
               {
-                v61 = v60 - v59;
+                v61 = machContTime4 - machContTime3;
               }
 
               if (v58 < v61)
@@ -21819,12 +21819,12 @@ LABEL_14:
 LABEL_15:
 
 LABEL_26:
-          v13 = v17;
-          v14 = v18;
+          endTimestamp = v17;
+          lastObject = v18;
 LABEL_27:
 
           v9 = v75;
-          a2 = v74;
+          timestamp = timestampCopy;
           v7 = 0x1E696A000;
           goto LABEL_28;
         }
@@ -21834,26 +21834,26 @@ LABEL_27:
         if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
         {
           v64 = [v10 debugDescription];
-          v65 = [v64 UTF8String];
+          uTF8String = [v64 UTF8String];
           *buf = 136315138;
-          v81 = v65;
+          v81 = uTF8String;
           _os_log_error_impl(&dword_1E0E2F000, v63, OS_LOG_TYPE_ERROR, "no earlierTaskEndTimestamp in %s", buf, 0xCu);
         }
 
         *__error() = v62;
         v66 = [v10 debugDescription];
-        v67 = [v66 UTF8String];
-        _SASetCrashLogMessage(14008, "no earlierTaskEndTimestamp in %s", v68, v69, v70, v71, v72, v73, v67);
+        uTF8String2 = [v66 UTF8String];
+        _SASetCrashLogMessage(14008, "no earlierTaskEndTimestamp in %s", v68, v69, v70, v71, v72, v73, uTF8String2);
 
         _os_crash();
         __break(1u);
         goto LABEL_85;
       }
 
-      v14 = 0;
+      lastObject = 0;
 LABEL_28:
 
-      if (v14)
+      if (lastObject)
       {
         goto LABEL_29;
       }
@@ -21861,31 +21861,31 @@ LABEL_28:
 
     else
     {
-      v14 = [v9 lastObject];
-      if (v14)
+      lastObject = [v9 lastObject];
+      if (lastObject)
       {
 LABEL_29:
-        v28 = [(SASamplePrinter *)a1 displayNameForTask:v14 includePid:0];
+        v28 = [(SASamplePrinter *)pid displayNameForTask:lastObject includePid:0];
 LABEL_30:
 
         goto LABEL_31;
       }
     }
 
-    Property = *(a1 + 168);
+    Property = *(pid + 168);
     if (Property)
     {
       Property = objc_getProperty(Property, v22, 1128, 1);
     }
 
     v24 = Property;
-    v25 = [*(v7 + 3480) numberWithInt:a2];
+    v25 = [*(v7 + 3480) numberWithInt:timestamp];
     v26 = [v24 objectForKeyedSubscript:v25];
 
     if (!v26)
     {
       v27 = @"UNKNOWN";
-      if (!a2)
+      if (!timestamp)
       {
         v27 = @"kernel_task";
       }
@@ -21920,16 +21920,16 @@ uint64_t __1459__SASamplePrinter_addTaskHeaderToStream_displayName_pid_mainBinar
   return [a2 compare:a3 options:577];
 }
 
-- (__CFString)timeIndexDescriptionForStartSampleIndex:(unint64_t)a3 endSampleIndex:(unsigned int)a4 formattedToLength:
+- (__CFString)timeIndexDescriptionForStartSampleIndex:(unint64_t)index endSampleIndex:(unsigned int)sampleIndex formattedToLength:
 {
   v57 = *MEMORY[0x1E69E9840];
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = &stru_1F5BBF440;
     goto LABEL_76;
   }
 
-  if (a2 != 0x7FFFFFFFFFFFFFFFLL && a2 > a3)
+  if (a2 != 0x7FFFFFFFFFFFFFFFLL && a2 > index)
   {
     v41 = *__error();
     v42 = _sa_logt();
@@ -21938,7 +21938,7 @@ uint64_t __1459__SASamplePrinter_addTaskHeaderToStream_displayName_pid_mainBinar
       *buf = 134218240;
       v54 = a2;
       v55 = 2048;
-      v56 = a3;
+      indexCopy = index;
       _os_log_error_impl(&dword_1E0E2F000, v42, OS_LOG_TYPE_ERROR, "startSampleIndex %lu > endSampleIndex %lu", buf, 0x16u);
     }
 
@@ -21948,10 +21948,10 @@ uint64_t __1459__SASamplePrinter_addTaskHeaderToStream_displayName_pid_mainBinar
     __break(1u);
   }
 
-  v8 = *(a1 + 64);
+  v8 = *(self + 64);
   if (a2 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v8 <= a3)
+    if (v8 <= index)
     {
       goto LABEL_7;
     }
@@ -21960,17 +21960,17 @@ uint64_t __1459__SASamplePrinter_addTaskHeaderToStream_displayName_pid_mainBinar
   else if (v8 < a2)
   {
 LABEL_7:
-    if (!a4)
+    if (!sampleIndex)
     {
       v9 = objc_alloc(MEMORY[0x1E696AEC0]);
-      if (*(a1 + 48) == 1)
+      if (*(self + 48) == 1)
       {
-        v10 = *(a1 + 64);
-        v11 = [*(a1 + 16) forceOneBasedTimeIndexes];
+        v10 = *(self + 64);
+        forceOneBasedTimeIndexes = [*(self + 16) forceOneBasedTimeIndexes];
         v12 = v10 + 1;
-        if (v11)
+        if (forceOneBasedTimeIndexes)
         {
-          v12 -= *(a1 + 56);
+          v12 -= *(self + 56);
         }
       }
 
@@ -21991,19 +21991,19 @@ LABEL_75:
     goto LABEL_33;
   }
 
-  if (*(a1 + 56) > a3)
+  if (*(self + 56) > index)
   {
-    if (!a4)
+    if (!sampleIndex)
     {
       v9 = objc_alloc(MEMORY[0x1E696AEC0]);
-      if (*(a1 + 48) == 1)
+      if (*(self + 48) == 1)
       {
-        v13 = *(a1 + 56);
-        v14 = [*(a1 + 16) forceOneBasedTimeIndexes];
+        v13 = *(self + 56);
+        forceOneBasedTimeIndexes2 = [*(self + 16) forceOneBasedTimeIndexes];
         v15 = v13 + 1;
-        if (v14)
+        if (forceOneBasedTimeIndexes2)
         {
-          v15 -= *(a1 + 56);
+          v15 -= *(self + 56);
         }
       }
 
@@ -22024,31 +22024,31 @@ LABEL_33:
 
   if (a2 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a4)
+    if (sampleIndex)
     {
-      if (a4 >> 1 <= 1)
+      if (sampleIndex >> 1 <= 1)
       {
         v16 = 1;
       }
 
       else
       {
-        v16 = a4 >> 1;
+        v16 = sampleIndex >> 1;
       }
 
-      v18 = (a4 & 1) == 0 && a4 > 3;
+      v18 = (sampleIndex & 1) == 0 && sampleIndex > 3;
       v19 = (v16 - v18);
       v20 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v21 = *(a1 + 48);
-      if (a2 == a3)
+      v21 = *(self + 48);
+      if (a2 == index)
       {
-        if (*(a1 + 48))
+        if (*(self + 48))
         {
-          v22 = [*(a1 + 16) forceOneBasedTimeIndexes];
-          v23 = a3 + 1;
-          if (v22)
+          forceOneBasedTimeIndexes3 = [*(self + 16) forceOneBasedTimeIndexes];
+          v23 = index + 1;
+          if (forceOneBasedTimeIndexes3)
           {
-            v23 -= *(a1 + 56);
+            v23 -= *(self + 56);
           }
         }
 
@@ -22066,12 +22066,12 @@ LABEL_33:
 
       else
       {
-        if (*(a1 + 48))
+        if (*(self + 48))
         {
           v31 = a2 + 1;
-          if ([*(a1 + 16) forceOneBasedTimeIndexes])
+          if ([*(self + 16) forceOneBasedTimeIndexes])
           {
-            v31 -= *(a1 + 56);
+            v31 -= *(self + 56);
           }
         }
 
@@ -22080,13 +22080,13 @@ LABEL_33:
           v31 = 0x7FFFFFFFFFFFFFFFLL;
         }
 
-        if (*(a1 + 48) == 1)
+        if (*(self + 48) == 1)
         {
-          v35 = [*(a1 + 16) forceOneBasedTimeIndexes];
-          v36 = a3 + 1;
-          if (v35)
+          forceOneBasedTimeIndexes4 = [*(self + 16) forceOneBasedTimeIndexes];
+          v36 = index + 1;
+          if (forceOneBasedTimeIndexes4)
           {
-            v36 -= *(a1 + 56);
+            v36 -= *(self + 56);
           }
         }
 
@@ -22106,16 +22106,16 @@ LABEL_33:
     else
     {
       v20 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v26 = *(a1 + 48);
-      if (a2 == a3)
+      v26 = *(self + 48);
+      if (a2 == index)
       {
-        if (*(a1 + 48))
+        if (*(self + 48))
         {
-          v27 = [*(a1 + 16) forceOneBasedTimeIndexes];
-          v28 = a3 + 1;
-          if (v27)
+          forceOneBasedTimeIndexes5 = [*(self + 16) forceOneBasedTimeIndexes];
+          v28 = index + 1;
+          if (forceOneBasedTimeIndexes5)
           {
-            v28 -= *(a1 + 56);
+            v28 -= *(self + 56);
           }
         }
 
@@ -22130,12 +22130,12 @@ LABEL_33:
 
       else
       {
-        if (*(a1 + 48))
+        if (*(self + 48))
         {
           v32 = a2 + 1;
-          if ([*(a1 + 16) forceOneBasedTimeIndexes])
+          if ([*(self + 16) forceOneBasedTimeIndexes])
           {
-            v32 -= *(a1 + 56);
+            v32 -= *(self + 56);
           }
         }
 
@@ -22144,13 +22144,13 @@ LABEL_33:
           v32 = 0x7FFFFFFFFFFFFFFFLL;
         }
 
-        if (*(a1 + 48) == 1)
+        if (*(self + 48) == 1)
         {
-          v37 = [*(a1 + 16) forceOneBasedTimeIndexes];
-          v38 = a3 + 1;
-          if (v37)
+          forceOneBasedTimeIndexes6 = [*(self + 16) forceOneBasedTimeIndexes];
+          v38 = index + 1;
+          if (forceOneBasedTimeIndexes6)
           {
-            v38 -= *(a1 + 56);
+            v38 -= *(self + 56);
           }
         }
 
@@ -22169,18 +22169,18 @@ LABEL_33:
     goto LABEL_75;
   }
 
-  if (a4)
+  if (sampleIndex)
   {
     goto LABEL_33;
   }
 
   v29 = objc_alloc(MEMORY[0x1E696AEC0]);
-  if (*(a1 + 48) == 1)
+  if (*(self + 48) == 1)
   {
-    v30 = a3 + 1;
-    if ([*(a1 + 16) forceOneBasedTimeIndexes])
+    v30 = index + 1;
+    if ([*(self + 16) forceOneBasedTimeIndexes])
     {
-      v30 -= *(a1 + 56);
+      v30 -= *(self + 56);
     }
   }
 
@@ -22189,13 +22189,13 @@ LABEL_33:
     v30 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (*(a1 + 48) == 1)
+  if (*(self + 48) == 1)
   {
-    v33 = [*(a1 + 16) forceOneBasedTimeIndexes];
-    v34 = a3 + 2;
-    if (v33)
+    forceOneBasedTimeIndexes7 = [*(self + 16) forceOneBasedTimeIndexes];
+    v34 = index + 2;
+    if (forceOneBasedTimeIndexes7)
     {
-      v34 -= *(a1 + 56);
+      v34 -= *(self + 56);
     }
   }
 
@@ -22211,33 +22211,33 @@ LABEL_76:
   return v4;
 }
 
-- (__CFString)timeIndexDescriptionForTimestamp:(uint64_t)a1
+- (__CFString)timeIndexDescriptionForTimestamp:(uint64_t)timestamp
 {
   v59 = *MEMORY[0x1E69E9840];
-  if (*(a1 + 48) != 1)
+  if (*(timestamp + 48) != 1)
   {
     v13 = &stru_1F5BBF440;
     goto LABEL_46;
   }
 
-  if ([a2 lt:*(a1 + 32)])
+  if ([a2 lt:*(timestamp + 32)])
   {
-    [*(a1 + 32) machAbsTimeSeconds];
+    [*(timestamp + 32) machAbsTimeSeconds];
     v5 = v4;
     [a2 machAbsTimeSeconds];
     v7 = v5 - v6;
     v8 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v9 = *(a1 + 48);
+    v9 = *(timestamp + 48);
     if (v7 >= 0.1)
     {
-      if (*(a1 + 48))
+      if (*(timestamp + 48))
       {
-        v22 = *(a1 + 56);
-        v23 = [*(a1 + 16) forceOneBasedTimeIndexes];
+        v22 = *(timestamp + 56);
+        forceOneBasedTimeIndexes = [*(timestamp + 16) forceOneBasedTimeIndexes];
         v24 = v22 + 1;
-        if (v23)
+        if (forceOneBasedTimeIndexes)
         {
-          v24 -= *(a1 + 56);
+          v24 -= *(timestamp + 56);
         }
       }
 
@@ -22253,14 +22253,14 @@ LABEL_76:
 
     else
     {
-      if (*(a1 + 48))
+      if (*(timestamp + 48))
       {
-        v10 = *(a1 + 56);
-        v11 = [*(a1 + 16) forceOneBasedTimeIndexes];
+        v10 = *(timestamp + 56);
+        forceOneBasedTimeIndexes2 = [*(timestamp + 16) forceOneBasedTimeIndexes];
         v12 = v10 + 1;
-        if (v11)
+        if (forceOneBasedTimeIndexes2)
         {
-          v12 -= *(a1 + 56);
+          v12 -= *(timestamp + 56);
         }
       }
 
@@ -22276,10 +22276,10 @@ LABEL_76:
 
   else
   {
-    if (![a2 gt:*(a1 + 40)])
+    if (![a2 gt:*(timestamp + 40)])
     {
-      v25 = [*(a1 + 168) indexOfLastSampleOnOrBeforeTimestamp:a2];
-      v26 = [*(a1 + 168) indexOfFirstSampleOnOrAfterTimestamp:a2];
+      v25 = [*(timestamp + 168) indexOfLastSampleOnOrBeforeTimestamp:a2];
+      v26 = [*(timestamp + 168) indexOfFirstSampleOnOrAfterTimestamp:a2];
       if (v25 > v26)
       {
         v41 = *__error();
@@ -22292,7 +22292,7 @@ LABEL_76:
           v55 = 2048;
           v56 = v26;
           v57 = 2080;
-          v58 = [v43 UTF8String];
+          uTF8String = [v43 UTF8String];
           _os_log_error_impl(&dword_1E0E2F000, v42, OS_LOG_TYPE_ERROR, "indexBefore %lu > indexAfter %lu for %s", buf, 0x20u);
         }
 
@@ -22306,16 +22306,16 @@ LABEL_76:
       }
 
       v27 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v28 = *(a1 + 48);
+      v28 = *(timestamp + 48);
       if (v26 == v25)
       {
-        if (*(a1 + 48))
+        if (*(timestamp + 48))
         {
-          v29 = [*(a1 + 16) forceOneBasedTimeIndexes];
+          forceOneBasedTimeIndexes3 = [*(timestamp + 16) forceOneBasedTimeIndexes];
           v30 = v25 + 1;
-          if (v29)
+          if (forceOneBasedTimeIndexes3)
           {
-            v30 -= *(a1 + 56);
+            v30 -= *(timestamp + 56);
           }
         }
 
@@ -22330,12 +22330,12 @@ LABEL_76:
 
       else
       {
-        if (*(a1 + 48))
+        if (*(timestamp + 48))
         {
           v35 = v25 + 1;
-          if ([*(a1 + 16) forceOneBasedTimeIndexes])
+          if ([*(timestamp + 16) forceOneBasedTimeIndexes])
           {
-            v35 -= *(a1 + 56);
+            v35 -= *(timestamp + 56);
           }
         }
 
@@ -22344,13 +22344,13 @@ LABEL_76:
           v35 = 0x7FFFFFFFFFFFFFFFLL;
         }
 
-        if (*(a1 + 48) == 1)
+        if (*(timestamp + 48) == 1)
         {
-          v37 = [*(a1 + 16) forceOneBasedTimeIndexes];
+          forceOneBasedTimeIndexes4 = [*(timestamp + 16) forceOneBasedTimeIndexes];
           v38 = v26 + 1;
-          if (v37)
+          if (forceOneBasedTimeIndexes4)
           {
-            v38 -= *(a1 + 56);
+            v38 -= *(timestamp + 56);
           }
         }
 
@@ -22370,20 +22370,20 @@ LABEL_76:
 
     [a2 machAbsTimeSeconds];
     v15 = v14;
-    [*(a1 + 40) machAbsTimeSeconds];
+    [*(timestamp + 40) machAbsTimeSeconds];
     v17 = v15 - v16;
     v8 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v18 = *(a1 + 48);
+    v18 = *(timestamp + 48);
     if (v17 >= 0.1)
     {
-      if (*(a1 + 48))
+      if (*(timestamp + 48))
       {
-        v32 = *(a1 + 64);
-        v33 = [*(a1 + 16) forceOneBasedTimeIndexes];
+        v32 = *(timestamp + 64);
+        forceOneBasedTimeIndexes5 = [*(timestamp + 16) forceOneBasedTimeIndexes];
         v34 = v32 + 1;
-        if (v33)
+        if (forceOneBasedTimeIndexes5)
         {
-          v34 -= *(a1 + 56);
+          v34 -= *(timestamp + 56);
         }
       }
 
@@ -22399,14 +22399,14 @@ LABEL_76:
 
     else
     {
-      if (*(a1 + 48))
+      if (*(timestamp + 48))
       {
-        v19 = *(a1 + 64);
-        v20 = [*(a1 + 16) forceOneBasedTimeIndexes];
+        v19 = *(timestamp + 64);
+        forceOneBasedTimeIndexes6 = [*(timestamp + 16) forceOneBasedTimeIndexes];
         v21 = v19 + 1;
-        if (v20)
+        if (forceOneBasedTimeIndexes6)
         {
-          v21 -= *(a1 + 56);
+          v21 -= *(timestamp + 56);
         }
       }
 
@@ -22429,25 +22429,25 @@ LABEL_46:
   return v13;
 }
 
-- (id)displayedBinaryLoadInfoForBinary:(uint64_t)a1 segment:(void *)a2 desiredLoadAddress:(uint64_t)a3 offsetIntoLoadInfo:(unint64_t)a4 isInKernelAddressSpace:(char)a5 exclave:(void *)a6 binariesToDisplay:(void *)a7 extraBinariesToDisplay:(void *)a8
+- (id)displayedBinaryLoadInfoForBinary:(uint64_t)binary segment:(void *)segment desiredLoadAddress:(uint64_t)address offsetIntoLoadInfo:(unint64_t)info isInKernelAddressSpace:(char)space exclave:(void *)exclave binariesToDisplay:(void *)display extraBinariesToDisplay:(void *)toDisplay
 {
   v78 = *MEMORY[0x1E69E9840];
-  if (a7 == a8)
+  if (display == toDisplay)
   {
-    v12 = 0;
+    toDisplayCopy = 0;
   }
 
   else
   {
-    v12 = a8;
+    toDisplayCopy = toDisplay;
   }
 
-  v13 = v12;
-  v60 = a7;
-  v14 = [a7 objectForKeyedSubscript:a1];
+  v13 = toDisplayCopy;
+  displayCopy = display;
+  v14 = [display objectForKeyedSubscript:binary];
   v66 = v13;
-  v64 = a1;
-  v15 = [v13 objectForKeyedSubscript:a1];
+  binaryCopy = binary;
+  v15 = [v13 objectForKeyedSubscript:binary];
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
@@ -22467,13 +22467,13 @@ LABEL_46:
         }
 
         v20 = *(*(&v71 + 1) + 8 * i);
-        v21 = [v20 segment];
-        v22 = v21;
-        if (v21 == a2)
+        segment = [v20 segment];
+        v22 = segment;
+        if (segment == segment)
         {
-          v23 = [v20 exclave];
+          exclave = [v20 exclave];
 
-          if (v23 == a6)
+          if (exclave == exclave)
           {
             v17 = v20;
             v24 = 1;
@@ -22517,12 +22517,12 @@ LABEL_33:
       {
         *v75 = v37;
         *&v75[8] = SABinaryLoadInfoToDisplay;
-        v38 = objc_msgSendSuper2(v75, sel_initWithBinary_segment_loadAddress_, v64, a2, a3);
+        v38 = objc_msgSendSuper2(v75, sel_initWithBinary_segment_loadAddress_, binaryCopy, segment, address);
         v17 = v38;
         if (v38)
         {
-          *(v38 + 40) = a5;
-          objc_storeStrong(v38 + 4, a6);
+          *(v38 + 40) = space;
+          objc_storeStrong(v38 + 4, exclave);
         }
       }
 
@@ -22532,7 +22532,7 @@ LABEL_33:
       }
     }
 
-    v36 = a4;
+    infoCopy2 = info;
     v35 = v66;
     goto LABEL_38;
   }
@@ -22551,9 +22551,9 @@ LABEL_18:
     }
 
     v30 = *(*(&v67 + 1) + 8 * v29);
-    v31 = [v30 segment];
-    v32 = v31;
-    if (v31 == a2)
+    segment2 = [v30 segment];
+    v32 = segment2;
+    if (segment2 == segment)
     {
       break;
     }
@@ -22573,9 +22573,9 @@ LABEL_24:
     }
   }
 
-  v33 = [v30 exclave];
+  exclave2 = [v30 exclave];
 
-  if (v33 != a6)
+  if (exclave2 != exclave)
   {
     goto LABEL_24;
   }
@@ -22597,35 +22597,35 @@ LABEL_32:
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
     {
       v46 = [v63 debugDescription];
-      v47 = [v46 UTF8String];
+      uTF8String = [v46 UTF8String];
       v48 = [v30 debugDescription];
-      v49 = [v48 UTF8String];
+      uTF8String2 = [v48 UTF8String];
       *v75 = 136315394;
-      *&v75[4] = v47;
+      *&v75[4] = uTF8String;
       *&v75[12] = 2080;
-      *&v75[14] = v49;
+      *&v75[14] = uTF8String2;
       _os_log_error_impl(&dword_1E0E2F000, v45, OS_LOG_TYPE_ERROR, "mismatch between binaries and extra binaries: %s vs %s", v75, 0x16u);
     }
 
     *__error() = v44;
     v50 = [v63 debugDescription];
-    v51 = [v50 UTF8String];
+    uTF8String3 = [v50 UTF8String];
     v52 = [v30 debugDescription];
     [v52 UTF8String];
-    _SASetCrashLogMessage(8549, "mismatch between binaries and extra binaries: %s vs %s", v53, v54, v55, v56, v57, v58, v51);
+    _SASetCrashLogMessage(8549, "mismatch between binaries and extra binaries: %s vs %s", v53, v54, v55, v56, v57, v58, uTF8String3);
 
     _os_crash();
     __break(1u);
   }
 
   v34 = 1;
-  v36 = a4;
+  infoCopy2 = info;
   v35 = v66;
   v24 = v62;
 LABEL_38:
-  if ([v17 highestOffset] < v36)
+  if ([v17 highestOffset] < infoCopy2)
   {
-    [v17 setHighestOffset:v36];
+    [v17 setHighestOffset:infoCopy2];
   }
 
   if ((v24 & 1) == 0)
@@ -22638,7 +22638,7 @@ LABEL_38:
     else
     {
       v39 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v17, 0}];
-      [v60 setObject:v39 forKeyedSubscript:v64];
+      [displayCopy setObject:v39 forKeyedSubscript:binaryCopy];
     }
   }
 
@@ -22662,7 +22662,7 @@ LABEL_38:
     else
     {
       v41 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v17, 0}];
-      [v35 setObject:v41 forKeyedSubscript:v64];
+      [v35 setObject:v41 forKeyedSubscript:binaryCopy];
     }
   }
 
@@ -23253,14 +23253,14 @@ LABEL_3:
   return result;
 }
 
-- (id)stacksForTask:(uint64_t)a3 taskSampleCount:
+- (id)stacksForTask:(uint64_t)task taskSampleCount:
 {
-  v3 = a1;
+  selfCopy = self;
   v69 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = v3[2];
+    v7 = selfCopy[2];
     if (v7)
     {
       v8 = v7[19];
@@ -23273,21 +23273,21 @@ LABEL_3:
       {
         do
         {
-          a3 = *__error();
+          task = *__error();
           v6 = _sa_logt();
           if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
           {
-            v9 = [v3[2] debugDescription];
-            v10 = [v9 UTF8String];
+            v9 = [selfCopy[2] debugDescription];
+            uTF8String = [v9 UTF8String];
             *buf = 136315138;
-            *&buf[4] = v10;
+            *&buf[4] = uTF8String;
             _os_log_error_impl(&dword_1E0E2F000, v6, OS_LOG_TYPE_ERROR, "stacksForTask without kSAAggregateCallTreesByProcess: %s", buf, 0xCu);
           }
 
-          *__error() = a3;
-          v3 = [v3[2] debugDescription];
-          v11 = [v3 UTF8String];
-          _SASetCrashLogMessage(9379, "stacksForTask without kSAAggregateCallTreesByProcess: %s", v12, v13, v14, v15, v16, v17, v11);
+          *__error() = task;
+          selfCopy = [selfCopy[2] debugDescription];
+          uTF8String2 = [selfCopy UTF8String];
+          _SASetCrashLogMessage(9379, "stacksForTask without kSAAggregateCallTreesByProcess: %s", v12, v13, v14, v15, v16, v17, uTF8String2);
 
           _os_crash();
           __break(1u);
@@ -23300,35 +23300,35 @@ LABEL_8:
     }
 
     v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v19 = v3[2];
+    v19 = selfCopy[2];
     if (!v19 || v19[20] != 1 && (v20 = v19[19], v20 != 3) && (v20 || (*(v19 + 11) & 1) == 0))
     {
       v21 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v22 = [a2 swiftTasks];
+      swiftTasks = [a2 swiftTasks];
       v61[0] = MEMORY[0x1E69E9820];
       v61[1] = 3221225472;
       v61[2] = __61__SASamplePrinter_stacksForSwiftAsyncInTask_taskSampleCount___block_invoke;
       v61[3] = &unk_1E86F7E80;
-      v61[4] = v3;
+      v61[4] = selfCopy;
       v62 = v21;
       v23 = v21;
-      [v22 enumerateKeysAndObjectsUsingBlock:v61];
+      [swiftTasks enumerateKeysAndObjectsUsingBlock:v61];
 
       v24 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v23, "count")}];
       *buf = MEMORY[0x1E69E9820];
       *&buf[8] = 3221225472;
       *&buf[16] = __61__SASamplePrinter_stacksForSwiftAsyncInTask_taskSampleCount___block_invoke_3;
       v64 = &unk_1E86F7EC8;
-      v65 = v3;
+      v65 = selfCopy;
       v25 = v24;
       v66 = v25;
       v67 = a2;
-      v68 = a3;
+      taskCopy = task;
       [v23 enumerateKeysAndObjectsUsingBlock:buf];
       v26 = v25;
 
       [v18 addObjectsFromArray:v26];
-      v19 = v3[2];
+      v19 = selfCopy[2];
       if (!v19)
       {
         goto LABEL_25;
@@ -23342,28 +23342,28 @@ LABEL_8:
       {
         if (v27 == 2)
         {
-          v28 = [a2 threads];
+          threads = [a2 threads];
           v59[0] = MEMORY[0x1E69E9820];
           v59[1] = 3221225472;
           v59[2] = __49__SASamplePrinter_stacksForTask_taskSampleCount___block_invoke;
           v59[3] = &unk_1E86F7B98;
-          v59[4] = v3;
+          v59[4] = selfCopy;
           v59[5] = a2;
           v29 = v60;
           v60[0] = v18;
-          v60[1] = a3;
-          [v28 enumerateKeysAndObjectsUsingBlock:v59];
+          v60[1] = task;
+          [threads enumerateKeysAndObjectsUsingBlock:v59];
 
 LABEL_21:
-          v33 = [v3[2] callTreeSortAttributes];
+          callTreeSortAttributes = [selfCopy[2] callTreeSortAttributes];
           v52[0] = MEMORY[0x1E69E9820];
           v52[1] = 3221225472;
           v52[2] = __49__SASamplePrinter_stacksForTask_taskSampleCount___block_invoke_2048;
           v52[3] = &unk_1E86F7C38;
-          v53 = v33;
-          v34 = v33;
+          v53 = callTreeSortAttributes;
+          v34 = callTreeSortAttributes;
           [v18 sortUsingComparator:v52];
-          v3 = [v18 copy];
+          selfCopy = [v18 copy];
 
           objc_autoreleasePoolPop(v6);
           goto LABEL_22;
@@ -23374,7 +23374,7 @@ LABEL_25:
         v38 = _sa_logt();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
         {
-          v39 = v3[2];
+          v39 = selfCopy[2];
           if (v39)
           {
             v40 = v39[19];
@@ -23398,20 +23398,20 @@ LABEL_25:
           }
 
           v41 = [v39 debugDescription];
-          v42 = [v41 UTF8String];
+          uTF8String3 = [v41 UTF8String];
           *buf = 134218242;
           *&buf[4] = v40;
           *&buf[12] = 2080;
-          *&buf[14] = v42;
+          *&buf[14] = uTF8String3;
           _os_log_error_impl(&dword_1E0E2F000, v38, OS_LOG_TYPE_ERROR, "stacksForTask with not kSAAggregateCallTreesByDispatchQueue nor Thread %llu: %s", buf, 0x16u);
         }
 
         *__error() = v37;
-        v43 = v3[2];
-        v44 = [(SASamplePrintOptions *)v43 callTreeAggregationResolved];
+        v43 = selfCopy[2];
+        callTreeAggregationResolved = [(SASamplePrintOptions *)v43 callTreeAggregationResolved];
         v45 = [v43 debugDescription];
         [v45 UTF8String];
-        _SASetCrashLogMessage(9406, "stacksForTask with not kSAAggregateCallTreesByDispatchQueue nor Thread %llu: %s", v46, v47, v48, v49, v50, v51, v44);
+        _SASetCrashLogMessage(9406, "stacksForTask with not kSAAggregateCallTreesByDispatchQueue nor Thread %llu: %s", v46, v47, v48, v49, v50, v51, callTreeAggregationResolved);
 
         _os_crash();
         __break(1u);
@@ -23423,29 +23423,29 @@ LABEL_25:
       goto LABEL_25;
     }
 
-    v30 = [a2 dispatchQueues];
+    dispatchQueues = [a2 dispatchQueues];
     v57[0] = MEMORY[0x1E69E9820];
     v57[1] = 3221225472;
     v57[2] = __49__SASamplePrinter_stacksForTask_taskSampleCount___block_invoke_2;
     v57[3] = &unk_1E86F7BC0;
-    v57[4] = v3;
+    v57[4] = selfCopy;
     v57[5] = a2;
     v29 = v58;
     v31 = v18;
     v58[0] = v31;
-    v58[1] = a3;
-    [v30 enumerateKeysAndObjectsUsingBlock:v57];
+    v58[1] = task;
+    [dispatchQueues enumerateKeysAndObjectsUsingBlock:v57];
 
-    v32 = [a2 threads];
+    threads2 = [a2 threads];
     v54[0] = MEMORY[0x1E69E9820];
     v54[1] = 3221225472;
     v54[2] = __49__SASamplePrinter_stacksForTask_taskSampleCount___block_invoke_3;
     v54[3] = &unk_1E86F7B98;
-    v54[4] = v3;
+    v54[4] = selfCopy;
     v54[5] = a2;
     v55 = v31;
-    v56 = a3;
-    [v32 enumerateKeysAndObjectsUsingBlock:v54];
+    taskCopy2 = task;
+    [threads2 enumerateKeysAndObjectsUsingBlock:v54];
 
     goto LABEL_21;
   }
@@ -23453,12 +23453,12 @@ LABEL_25:
 LABEL_22:
   v35 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)printStack:(void *)a3 stream:
+- (void)printStack:(void *)stack stream:
 {
-  v4 = self;
+  selfCopy = self;
   v255 = *MEMORY[0x1E69E9840];
   if (!self)
   {
@@ -23466,39 +23466,39 @@ LABEL_22:
   }
 
   v6 = objc_getProperty(self, self, 56, 1);
-  v8 = objc_getProperty(v4, v7, 40, 1);
-  v10 = objc_getProperty(v4, v9, 48, 1);
-  v11 = *(v4 + 11);
-  v225 = objc_getProperty(v4, v12, 64, 1);
-  v212 = *(v4 + 12);
-  v213 = *(v4 + 4);
-  v205 = *(v4 + 9);
-  v202 = *(v4 + 10);
-  v14 = objc_getProperty(v4, v13, 88, 1);
-  v217 = v4[4];
-  v209 = v4[5];
-  v214 = v4[6];
-  v203 = v4[7];
-  v219 = *(v4 + 12);
+  v8 = objc_getProperty(selfCopy, v7, 40, 1);
+  v10 = objc_getProperty(selfCopy, v9, 48, 1);
+  v11 = *(selfCopy + 11);
+  v225 = objc_getProperty(selfCopy, v12, 64, 1);
+  v212 = *(selfCopy + 12);
+  v213 = *(selfCopy + 4);
+  v205 = *(selfCopy + 9);
+  v202 = *(selfCopy + 10);
+  v14 = objc_getProperty(selfCopy, v13, 88, 1);
+  v217 = selfCopy[4];
+  v209 = selfCopy[5];
+  v214 = selfCopy[6];
+  v203 = selfCopy[7];
+  v219 = *(selfCopy + 12);
   v220 = v14;
-  v204 = *(v4 + 13);
-  v216 = *(v4 + 13);
-  v208 = *(v4 + 14);
-  v210 = *(v4 + 14);
-  v211 = *(v4 + 17);
-  v218 = *(v4 + 18);
-  v16 = *(v4 + 19);
-  for (i = *(v4 + 20); ; i = 0.0)
+  v204 = *(selfCopy + 13);
+  v216 = *(selfCopy + 13);
+  v208 = *(selfCopy + 14);
+  v210 = *(selfCopy + 14);
+  v211 = *(selfCopy + 17);
+  v218 = *(selfCopy + 18);
+  v16 = *(selfCopy + 19);
+  for (i = *(selfCopy + 20); ; i = 0.0)
   {
     context = objc_autoreleasePoolPush();
-    v228 = a3;
+    stackCopy = stack;
     v223 = v6;
-    v224 = a1;
+    selfCopy2 = self;
     v221 = v10;
     v222 = v8;
-    if ([*(a1 + 16) printJson])
+    if ([*(self + 16) printJson])
     {
-      [a3 appendString:@"\n\n"];
+      [stack appendString:@"\n\n"];
       if (![v6 count] && (objc_msgSend(v8, "count") || objc_msgSend(v10, "count")))
       {
         if (![v8 count])
@@ -23525,39 +23525,39 @@ LABEL_167:
                 v120 = v119;
               }
 
-              SAJSONWriteDictionaryEntry(a3, v120, v118);
+              SAJSONWriteDictionaryEntry(stack, v120, v118);
 
               v121 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v210];
-              SAJSONWriteDictionaryEntry(a3, @"cycles", v121);
+              SAJSONWriteDictionaryEntry(stack, @"cycles", v121);
 
               v122 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v204];
-              SAJSONWriteDictionaryEntry(a3, @"intructions", v122);
+              SAJSONWriteDictionaryEntry(stack, @"intructions", v122);
             }
 
             if ((v217 & 0x80000000) == 0)
             {
               v123 = [MEMORY[0x1E696AD98] numberWithInt:?];
-              SAJSONWriteDictionaryEntry(a3, @"minPriority", v123);
+              SAJSONWriteDictionaryEntry(stack, @"minPriority", v123);
 
               v124 = [MEMORY[0x1E696AD98] numberWithInt:v209];
-              SAJSONWriteDictionaryEntry(a3, @"maxPriority", v124);
+              SAJSONWriteDictionaryEntry(stack, @"maxPriority", v124);
 
               if ((v214 & 0x80000000) == 0)
               {
                 v125 = [MEMORY[0x1E696AD98] numberWithInt:v214];
-                SAJSONWriteDictionaryEntry(a3, @"minBasePriority", v125);
+                SAJSONWriteDictionaryEntry(stack, @"minBasePriority", v125);
 
                 v126 = [MEMORY[0x1E696AD98] numberWithInt:v203];
-                SAJSONWriteDictionaryEntry(a3, @"maxBasePriority", v126);
+                SAJSONWriteDictionaryEntry(stack, @"maxBasePriority", v126);
               }
             }
 
             if (v225)
             {
-              SAJSONWriteDictionaryEntry(a3, @"threadName", v225);
+              SAJSONWriteDictionaryEntry(stack, @"threadName", v225);
               if (v212)
               {
-                SAJSONWriteDictionaryEntry(a3, @"threadNameChanges", MEMORY[0x1E695E118]);
+                SAJSONWriteDictionaryEntry(stack, @"threadNameChanges", MEMORY[0x1E695E118]);
               }
             }
 
@@ -23584,14 +23584,14 @@ LABEL_167:
                     }
 
                     v133 = *(*(&v230 + 1) + 8 * j);
-                    v134 = [MEMORY[0x1E695DFB0] null];
+                    null = [MEMORY[0x1E695DFB0] null];
 
-                    if (v133 != v134)
+                    if (v133 != null)
                     {
-                      v135 = [v133 dispatchQueueLabel];
-                      if (v135)
+                      dispatchQueueLabel = [v133 dispatchQueueLabel];
+                      if (dispatchQueueLabel)
                       {
-                        [v127 addObject:v135];
+                        [v127 addObject:dispatchQueueLabel];
                       }
                     }
                   }
@@ -23602,20 +23602,20 @@ LABEL_167:
                 while (v130);
               }
 
-              a3 = v228;
+              stack = stackCopy;
               v6 = v223;
-              a1 = v224;
+              self = selfCopy2;
               if ([v127 count])
               {
                 if ([v127 count] == 1)
                 {
-                  v136 = [v127 firstObject];
-                  SAJSONWriteDictionaryEntry(v228, @"dispatchQueueLabel", v136);
+                  firstObject = [v127 firstObject];
+                  SAJSONWriteDictionaryEntry(stackCopy, @"dispatchQueueLabel", firstObject);
                 }
 
                 else
                 {
-                  SAJSONWriteDictionaryEntry(v228, @"dispatchQueueLabel", v127);
+                  SAJSONWriteDictionaryEntry(stackCopy, @"dispatchQueueLabel", v127);
                 }
               }
 
@@ -23623,19 +23623,19 @@ LABEL_167:
             }
 
             v137 = v221;
-            if (*(a1 + 48) == 1)
+            if (*(self + 48) == 1)
             {
               v138 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v213];
-              SAJSONWriteDictionaryEntry(a3, @"numSamples", v138);
+              SAJSONWriteDictionaryEntry(stack, @"numSamples", v138);
 
               v139 = MEMORY[0x1E696AD98];
-              if (*(a1 + 48) == 1)
+              if (*(self + 48) == 1)
               {
-                v140 = [*(a1 + 16) forceOneBasedTimeIndexes];
+                forceOneBasedTimeIndexes = [*(self + 16) forceOneBasedTimeIndexes];
                 v141 = v205 + 1;
-                if (v140)
+                if (forceOneBasedTimeIndexes)
                 {
-                  v141 -= *(a1 + 56);
+                  v141 -= *(self + 56);
                 }
               }
 
@@ -23645,16 +23645,16 @@ LABEL_167:
               }
 
               v142 = [v139 numberWithUnsignedInteger:v141];
-              SAJSONWriteDictionaryEntry(a3, @"firstSampleIndex", v142);
+              SAJSONWriteDictionaryEntry(stack, @"firstSampleIndex", v142);
 
               v143 = MEMORY[0x1E696AD98];
-              if (*(a1 + 48) == 1)
+              if (*(self + 48) == 1)
               {
-                v144 = [*(a1 + 16) forceOneBasedTimeIndexes];
+                forceOneBasedTimeIndexes2 = [*(self + 16) forceOneBasedTimeIndexes];
                 v145 = v202 + 1;
-                if (v144)
+                if (forceOneBasedTimeIndexes2)
                 {
-                  v145 -= *(a1 + 56);
+                  v145 -= *(self + 56);
                 }
               }
 
@@ -23664,16 +23664,16 @@ LABEL_167:
               }
 
               v146 = [v143 numberWithUnsignedInteger:v145];
-              SAJSONWriteDictionaryEntry(a3, @"lastSampleIndex", v146);
+              SAJSONWriteDictionaryEntry(stack, @"lastSampleIndex", v146);
             }
 
             if (v218)
             {
               v147 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-              SAJSONWriteDictionaryEntry(a3, @"numIOs", v147);
+              SAJSONWriteDictionaryEntry(stack, @"numIOs", v147);
 
               v148 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v211];
-              SAJSONWriteDictionaryEntry(a3, @"ioSize", v148);
+              SAJSONWriteDictionaryEntry(stack, @"ioSize", v148);
             }
 
             goto LABEL_284;
@@ -23681,26 +23681,26 @@ LABEL_167:
 
           if ([v10 count] == 1)
           {
-            v96 = [v10 firstObject];
-            v97 = [MEMORY[0x1E695DFB0] null];
+            firstObject2 = [v10 firstObject];
+            null2 = [MEMORY[0x1E695DFB0] null];
 
-            if (v96 == v97)
+            if (firstObject2 == null2)
             {
               goto LABEL_152;
             }
 
-            v98 = [v96 identifier];
-            if (!v98)
+            identifier = [firstObject2 identifier];
+            if (!identifier)
             {
               goto LABEL_152;
             }
 
-            v99 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v98];
-            SAJSONWriteDictionaryFirstEntry(a3, @"swiftTaskID", v99);
+            v99 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:identifier];
+            SAJSONWriteDictionaryFirstEntry(stack, @"swiftTaskID", v99);
             goto LABEL_151;
           }
 
-          v207 = v4;
+          v207 = selfCopy;
           v83 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v10, "count")}];
           v249 = 0u;
           v250 = 0u;
@@ -23722,9 +23722,9 @@ LABEL_167:
                 }
 
                 v158 = *(*(&v249 + 1) + 8 * k);
-                v159 = [MEMORY[0x1E695DFB0] null];
+                null3 = [MEMORY[0x1E695DFB0] null];
 
-                if (v158 == v159)
+                if (v158 == null3)
                 {
                   [v83 addObject:&unk_1F5BDCA90];
                 }
@@ -23742,29 +23742,29 @@ LABEL_167:
             while (v155);
           }
 
-          a3 = v228;
-          SAJSONWriteDictionaryFirstEntry(v228, @"swiftTaskID", v83);
+          stack = stackCopy;
+          SAJSONWriteDictionaryFirstEntry(stackCopy, @"swiftTaskID", v83);
 LABEL_166:
 
-          v4 = v207;
+          selfCopy = v207;
           v6 = v223;
-          a1 = v224;
+          self = selfCopy2;
           v8 = v222;
           goto LABEL_167;
         }
 
         if ([v8 count] == 1)
         {
-          v27 = [v8 firstObject];
-          v28 = [MEMORY[0x1E695DFB0] null];
+          firstObject3 = [v8 firstObject];
+          null4 = [MEMORY[0x1E695DFB0] null];
 
-          if (v27 != v28)
+          if (firstObject3 != null4)
           {
-            v29 = [v27 identifier];
-            if (v29)
+            identifier2 = [firstObject3 identifier];
+            if (identifier2)
             {
-              v30 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v29];
-              SAJSONWriteDictionaryFirstEntry(a3, @"dispatchQueueID", v30);
+              v30 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:identifier2];
+              SAJSONWriteDictionaryFirstEntry(stack, @"dispatchQueueID", v30);
             }
           }
         }
@@ -23792,9 +23792,9 @@ LABEL_166:
                 }
 
                 v106 = *(*(&v238 + 1) + 8 * m);
-                v107 = [MEMORY[0x1E695DFB0] null];
+                null5 = [MEMORY[0x1E695DFB0] null];
 
-                if (v106 == v107)
+                if (v106 == null5)
                 {
                   [v100 addObject:&unk_1F5BDCA90];
                 }
@@ -23812,11 +23812,11 @@ LABEL_166:
             while (v103);
           }
 
-          a3 = v228;
-          SAJSONWriteDictionaryFirstEntry(v228, @"dispatchQueueID", v100);
+          stack = stackCopy;
+          SAJSONWriteDictionaryFirstEntry(stackCopy, @"dispatchQueueID", v100);
 
           v6 = v223;
-          a1 = v224;
+          self = selfCopy2;
           v10 = v221;
           v8 = v222;
         }
@@ -23831,7 +23831,7 @@ LABEL_166:
           goto LABEL_148;
         }
 
-        v207 = v4;
+        v207 = selfCopy;
         v83 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v10, "count")}];
         v234 = 0u;
         v235 = 0u;
@@ -23853,9 +23853,9 @@ LABEL_166:
               }
 
               v115 = *(*(&v234 + 1) + 8 * n);
-              v116 = [MEMORY[0x1E695DFB0] null];
+              null6 = [MEMORY[0x1E695DFB0] null];
 
-              if (v115 == v116)
+              if (v115 == null6)
               {
                 [v83 addObject:&unk_1F5BDCA90];
               }
@@ -23878,29 +23878,29 @@ LABEL_166:
       {
         if ([v6 count] == 1)
         {
-          v17 = [v6 firstObject];
-          SAJSONWriteDictionaryFirstEntry(a3, @"threadID", v17);
+          firstObject4 = [v6 firstObject];
+          SAJSONWriteDictionaryFirstEntry(stack, @"threadID", firstObject4);
         }
 
         else
         {
-          SAJSONWriteDictionaryFirstEntry(a3, @"threadID", v6);
+          SAJSONWriteDictionaryFirstEntry(stack, @"threadID", v6);
         }
 
         if ([v8 count])
         {
           if ([v8 count] == 1)
           {
-            v31 = [v8 firstObject];
-            v32 = [MEMORY[0x1E695DFB0] null];
+            firstObject5 = [v8 firstObject];
+            null7 = [MEMORY[0x1E695DFB0] null];
 
-            if (v31 != v32)
+            if (firstObject5 != null7)
             {
-              v33 = [v31 identifier];
-              if (v33)
+              identifier3 = [firstObject5 identifier];
+              if (identifier3)
               {
-                v34 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v33];
-                SAJSONWriteDictionaryEntry(a3, @"dispatchQueueID", v34);
+                v34 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:identifier3];
+                SAJSONWriteDictionaryEntry(stack, @"dispatchQueueID", v34);
               }
             }
           }
@@ -23928,9 +23928,9 @@ LABEL_166:
                   }
 
                   v80 = *(*(&v238 + 1) + 8 * ii);
-                  v81 = [MEMORY[0x1E695DFB0] null];
+                  null8 = [MEMORY[0x1E695DFB0] null];
 
-                  if (v80 == v81)
+                  if (v80 == null8)
                   {
                     [v74 addObject:&unk_1F5BDCA90];
                   }
@@ -23948,11 +23948,11 @@ LABEL_166:
               while (v77);
             }
 
-            a3 = v228;
-            SAJSONWriteDictionaryEntry(v228, @"dispatchQueueID", v74);
+            stack = stackCopy;
+            SAJSONWriteDictionaryEntry(stackCopy, @"dispatchQueueID", v74);
 
             v6 = v223;
-            a1 = v224;
+            self = selfCopy2;
             v10 = v221;
             v8 = v222;
           }
@@ -23966,29 +23966,29 @@ LABEL_166:
         if ([v10 count] == 1)
         {
 LABEL_148:
-          v96 = [v10 firstObject];
-          v109 = [MEMORY[0x1E695DFB0] null];
+          firstObject2 = [v10 firstObject];
+          null9 = [MEMORY[0x1E695DFB0] null];
 
-          if (v96 == v109)
+          if (firstObject2 == null9)
           {
             goto LABEL_152;
           }
 
-          v110 = [v96 identifier];
-          if (!v110)
+          identifier4 = [firstObject2 identifier];
+          if (!identifier4)
           {
             goto LABEL_152;
           }
 
-          v99 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v110];
-          SAJSONWriteDictionaryEntry(a3, @"swiftTaskID", v99);
+          v99 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:identifier4];
+          SAJSONWriteDictionaryEntry(stack, @"swiftTaskID", v99);
 LABEL_151:
 
 LABEL_152:
           goto LABEL_167;
         }
 
-        v207 = v4;
+        v207 = selfCopy;
         v83 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v10, "count")}];
         v234 = 0u;
         v235 = 0u;
@@ -24010,9 +24010,9 @@ LABEL_152:
               }
 
               v89 = *(*(&v234 + 1) + 8 * jj);
-              v90 = [MEMORY[0x1E695DFB0] null];
+              null10 = [MEMORY[0x1E695DFB0] null];
 
-              if (v89 == v90)
+              if (v89 == null10)
               {
                 [v83 addObject:&unk_1F5BDCA90];
               }
@@ -24031,13 +24031,13 @@ LABEL_152:
         }
       }
 
-      a3 = v228;
-      SAJSONWriteDictionaryEntry(v228, @"swiftTaskID", v83);
+      stack = stackCopy;
+      SAJSONWriteDictionaryEntry(stackCopy, @"swiftTaskID", v83);
       goto LABEL_166;
     }
 
-    [a3 printWithFormat:@"%*s", 2, ""];
-    v206 = v4;
+    [stack printWithFormat:@"%*s", 2, ""];
+    v206 = selfCopy;
     if ([v6 count])
     {
       obj = v11;
@@ -24050,7 +24050,7 @@ LABEL_152:
       if (v19)
       {
         v20 = v19;
-        v21 = 0;
+        v201 = 0;
         v22 = *v239;
         v23 = @"Thread ";
         do
@@ -24063,8 +24063,8 @@ LABEL_152:
             }
 
             v25 = *(*(&v238 + 1) + 8 * kk);
-            v26 = [v228 appendString:v23] + v21;
-            v21 = v26 + [v228 printWithFormat:@"0x%llx", objc_msgSend(v25, "unsignedLongLongValue")];
+            v26 = [stackCopy appendString:v23] + v201;
+            v201 = v26 + [stackCopy printWithFormat:@"0x%llx", objc_msgSend(v25, "unsignedLongLongValue")];
             v23 = @",";
           }
 
@@ -24077,29 +24077,29 @@ LABEL_152:
 
       else
       {
-        v21 = 0;
+        v201 = 0;
       }
 
-      a3 = v228;
+      stack = stackCopy;
       if (obj)
       {
-        v21 += [v228 appendString:@" (idle work queue)"];
+        v201 += [stackCopy appendString:@" (idle work queue)"];
       }
 
-      a1 = v224;
+      self = selfCopy2;
       v10 = v221;
     }
 
     else
     {
-      v21 = 0;
+      v201 = 0;
     }
 
     if ([v10 count] > 1 || objc_msgSend(v10, "count") == 1 && (objc_msgSend(v10, "firstObject"), v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E695DFB0], "null"), v36 = objc_claimAutoreleasedReturnValue(), v36, v35, v35 != v36))
     {
-      if (v21)
+      if (v201)
       {
-        [a3 printWithFormat:@"%*s", 4, ""];
+        [stack printWithFormat:@"%*s", 4, ""];
       }
 
       v236 = 0u;
@@ -24111,7 +24111,7 @@ LABEL_152:
       if (v38)
       {
         v39 = v38;
-        v21 = 0;
+        v201 = 0;
         v40 = *v235;
         v41 = 1;
         do
@@ -24126,20 +24126,20 @@ LABEL_152:
             v43 = *(*(&v234 + 1) + 8 * mm);
             if (v41)
             {
-              v44 = v228;
-              v45 = [v228 appendString:@"Swift Task"] + v21;
-              v46 = v45 + [v228 appendString:@" "];
+              v44 = stackCopy;
+              v45 = [stackCopy appendString:@"Swift Task"] + v201;
+              v46 = v45 + [stackCopy appendString:@" "];
             }
 
             else
             {
-              v44 = v228;
-              v46 = [v228 appendString:{@", "}] + v21;
+              v44 = stackCopy;
+              v46 = [stackCopy appendString:{@", "}] + v201;
             }
 
-            v47 = [MEMORY[0x1E695DFB0] null];
+            null11 = [MEMORY[0x1E695DFB0] null];
 
-            if (v43 == v47)
+            if (v43 == null11)
             {
               v48 = [v44 appendString:@"none"];
             }
@@ -24155,7 +24155,7 @@ LABEL_152:
             }
 
             v41 = 0;
-            v21 = v48 + v46;
+            v201 = v48 + v46;
           }
 
           v39 = [v37 countByEnumeratingWithState:&v234 objects:&v249 count:16];
@@ -24167,20 +24167,20 @@ LABEL_152:
 
       else
       {
-        v21 = 0;
+        v201 = 0;
       }
 
-      a3 = v228;
+      stack = stackCopy;
       v6 = v223;
-      a1 = v224;
+      self = selfCopy2;
       v8 = v222;
     }
 
     if ([v8 count] > 1 || objc_msgSend(v8, "count") == 1 && (objc_msgSend(v8, "firstObject"), v49 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E695DFB0], "null"), v50 = objc_claimAutoreleasedReturnValue(), v50, v49, v49 != v50))
     {
-      if (v21)
+      if (v201)
       {
-        [a3 printWithFormat:@"%*s", 4, ""];
+        [stack printWithFormat:@"%*s", 4, ""];
       }
 
       v232 = 0u;
@@ -24192,7 +24192,7 @@ LABEL_152:
       if (v51)
       {
         v52 = v51;
-        v21 = 0;
+        v201 = 0;
         v53 = 1;
         v54 = *v231;
         do
@@ -24205,8 +24205,8 @@ LABEL_152:
             }
 
             v56 = *(*(&v230 + 1) + 8 * nn);
-            v57 = [MEMORY[0x1E695DFB0] null];
-            if (v56 == v57)
+            null12 = [MEMORY[0x1E695DFB0] null];
+            if (v56 == null12)
             {
               v58 = 0;
             }
@@ -24220,17 +24220,17 @@ LABEL_152:
 
             if (v53)
             {
-              v60 = [v228 appendString:@"DispatchQueue"] + v21;
-              v61 = v60 + [v228 appendString:@" "];
+              v60 = [stackCopy appendString:@"DispatchQueue"] + v201;
+              v61 = v60 + [stackCopy appendString:@" "];
             }
 
             else
             {
-              v61 = [v228 appendString:{@", "}] + v21;
+              v61 = [stackCopy appendString:{@", "}] + v201;
             }
 
             v62 = [SASamplePrinter displayNameForDispatchQueue:v59];
-            v21 = [v228 printWithFormat:@"%@", v62] + v61;
+            v201 = [stackCopy printWithFormat:@"%@", v62] + v61;
 
             v53 = 0;
           }
@@ -24244,20 +24244,20 @@ LABEL_152:
 
       else
       {
-        v21 = 0;
+        v201 = 0;
       }
 
-      a3 = v228;
+      stack = stackCopy;
       v6 = v223;
-      a1 = v224;
+      self = selfCopy2;
       v8 = v222;
     }
 
     if (v225)
     {
-      if (v21)
+      if (v201)
       {
-        [a3 printWithFormat:@"%*s", 4, ""];
+        [stack printWithFormat:@"%*s", 4, ""];
       }
 
       v63 = SACopySanitizedString(v225, 1, 0);
@@ -24272,39 +24272,39 @@ LABEL_152:
         v65 = @"Thread name %@";
       }
 
-      v21 = [a3 printWithFormat:v65, v63];
+      v201 = [stack printWithFormat:v65, v63];
     }
 
-    if (*(a1 + 48) != 1)
+    if (*(self + 48) != 1)
     {
       if (v220)
       {
         [v220 machAbsTimeSeconds];
         v70 = v69;
-        [*(a1 + 32) machAbsTimeSeconds];
+        [*(self + 32) machAbsTimeSeconds];
         v72 = v70 - v71;
         if (v72 > 0.0)
         {
           if (v72 >= 0.01)
           {
-            v73 = [a3 printWithFormat:@"(not sampled for first %.2fs)", *&v72];
+            v73 = [stack printWithFormat:@"(not sampled for first %.2fs)", *&v72];
           }
 
           else
           {
-            v73 = [a3 appendString:@"(not sampled for first <0.01s)"];
+            v73 = [stack appendString:@"(not sampled for first <0.01s)"];
           }
 
-          v21 += v73;
+          v201 += v73;
         }
       }
 
       goto LABEL_236;
     }
 
-    if (v21)
+    if (v201)
     {
-      [a3 printWithFormat:@"%*s", 4, ""];
+      [stack printWithFormat:@"%*s", 4, ""];
     }
 
     if (v213 == 1)
@@ -24317,19 +24317,19 @@ LABEL_152:
       v66 = "s";
     }
 
-    v21 = [a3 printWithFormat:@"%lu sample%s", v213, v66, v201];
+    v201 = [stack printWithFormat:@"%lu sample%s", v213, v66, v201];
     if (v205 == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_236;
     }
 
-    if (*(a1 + 48) == 1)
+    if (*(self + 48) == 1)
     {
-      v67 = [*(a1 + 16) forceOneBasedTimeIndexes];
+      forceOneBasedTimeIndexes3 = [*(self + 16) forceOneBasedTimeIndexes];
       v68 = v205 + 1;
-      if (v67)
+      if (forceOneBasedTimeIndexes3)
       {
-        v68 -= *(a1 + 56);
+        v68 -= *(self + 56);
       }
     }
 
@@ -24338,18 +24338,18 @@ LABEL_152:
       v68 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v92 = objc_msgSend(a3, "printWithFormat:", @" (%lu"), v68 + v21;
+    v92 = objc_msgSend(stack, "printWithFormat:", @" (%lu"), v68 + v201;
     v93 = v202 - v205;
-    v4 = v213;
+    selfCopy = v213;
     if (v202 != v205)
     {
-      if (*(a1 + 48) == 1)
+      if (*(self + 48) == 1)
       {
-        v94 = [*(a1 + 16) forceOneBasedTimeIndexes];
+        forceOneBasedTimeIndexes4 = [*(self + 16) forceOneBasedTimeIndexes];
         v95 = v202 + 1;
-        if (v94)
+        if (forceOneBasedTimeIndexes4)
         {
-          v95 -= *(a1 + 56);
+          v95 -= *(self + 56);
         }
       }
 
@@ -24358,10 +24358,10 @@ LABEL_152:
         v95 = 0x7FFFFFFFFFFFFFFFLL;
       }
 
-      v92 += [a3 printWithFormat:@"-%lu", v95];
+      v92 += [stack printWithFormat:@"-%lu", v95];
     }
 
-    if ([*(a1 + 16) printHeavyStacks])
+    if ([*(self + 16) printHeavyStacks])
     {
       goto LABEL_215;
     }
@@ -24416,25 +24416,25 @@ LABEL_295:
 
   if (v93 + 1 != v213)
   {
-    v92 += [a3 printWithFormat:@" with gaps of %d", v93 + 1 - v213];
+    v92 += [stack printWithFormat:@" with gaps of %d", v93 + 1 - v213];
   }
 
 LABEL_215:
   if (v220)
   {
-    v149 = [*(a1 + 168) indexOfFirstSampleOnOrAfterTimestamp:?];
+    v149 = [*(self + 168) indexOfFirstSampleOnOrAfterTimestamp:?];
     if (v149)
     {
       v150 = v149;
       if (v149 != 0x7FFFFFFFFFFFFFFFLL && v149 <= v205)
       {
-        if (*(a1 + 48) == 1)
+        if (*(self + 48) == 1)
         {
-          v151 = [*(a1 + 16) forceOneBasedTimeIndexes];
+          forceOneBasedTimeIndexes5 = [*(self + 16) forceOneBasedTimeIndexes];
           v152 = v150 + 1;
-          if (v151)
+          if (forceOneBasedTimeIndexes5)
           {
-            v152 -= *(a1 + 56);
+            v152 -= *(self + 56);
           }
         }
 
@@ -24443,46 +24443,46 @@ LABEL_215:
           v152 = 0x7FFFFFFFFFFFFFFFLL;
         }
 
-        v92 += [a3 printWithFormat:@", not sampled before %lu", v152];
+        v92 += [stack printWithFormat:@", not sampled before %lu", v152];
       }
     }
   }
 
-  v21 = [a3 appendString:@""]) + v92;
+  v201 = [stack appendString:@""]) + v92;
 LABEL_236:
   v161 = v217;
   if ((v217 & 0x80000000) == 0)
   {
-    if (v21)
+    if (v201)
     {
-      [a3 printWithFormat:@"%*s", 4, ""];
+      [stack printWithFormat:@"%*s", 4, ""];
       v161 = v217;
     }
 
     v162 = v161;
-    v21 = [a3 printWithFormat:@"priority %d", v161];
+    v201 = [stack printWithFormat:@"priority %d", v161];
     if (v162 != v209)
     {
-      v21 += [a3 printWithFormat:@"-%d", v209];
+      v201 += [stack printWithFormat:@"-%d", v209];
     }
 
     if ((v214 & 0x80000000) == 0)
     {
-      v163 = objc_msgSend(a3, "printWithFormat:", @" (base %d"), v214 + v21;
+      v163 = objc_msgSend(stack, "printWithFormat:", @" (base %d"), v214 + v201;
       if (v214 != v203)
       {
-        v163 += [a3 printWithFormat:@"-%d", v203];
+        v163 += [stack printWithFormat:@"-%d", v203];
       }
 
-      v21 = [a3 appendString:@""]) + v163;
+      v201 = [stack appendString:@""]) + v163;
     }
   }
 
   if (v219)
   {
-    if (v21)
+    if (v201)
     {
-      [a3 printWithFormat:@"%*s", 4, ""];
+      [stack printWithFormat:@"%*s", 4, ""];
     }
 
     v164 = @"cpu time ";
@@ -24501,8 +24501,8 @@ LABEL_236:
       v165 = v164;
     }
 
-    v166 = [a3 appendString:v165];
-    if ([*(a1 + 16) displayDetailedCpuTime])
+    v166 = [stack appendString:v165];
+    if ([*(self + 16) displayDetailedCpuTime])
     {
       v167 = 9;
     }
@@ -24512,22 +24512,22 @@ LABEL_236:
       v167 = 3;
     }
 
-    v21 = saos_printf_seconds(a3, v219, v167) + v166;
+    v201 = saos_printf_seconds(stack, v219, v167) + v166;
     if (v210)
     {
-      v21 += saos_printf_cycles_instructions(a3, v210, v204, [*(a1 + 16) displayDetailedCpuTime]);
+      v201 += saos_printf_cycles_instructions(stack, v210, v204, [*(self + 16) displayDetailedCpuTime]);
     }
   }
 
-  if (v16 > 0.0 && (([*(a1 + 16) displayDetailedCpuTime] & 1) != 0 || -[SASamplePrinter shouldPrintTimeOutsideSamplingRange:](a1, v16)))
+  if (v16 > 0.0 && (([*(self + 16) displayDetailedCpuTime] & 1) != 0 || -[SASamplePrinter shouldPrintTimeOutsideSamplingRange:](self, v16)))
   {
-    if (v21)
+    if (v201)
     {
-      [a3 printWithFormat:@"%*s", 4, ""];
+      [stack printWithFormat:@"%*s", 4, ""];
     }
 
-    v168 = [a3 appendString:@"last ran "];
-    if ([*(a1 + 16) displayDetailedCpuTime])
+    v168 = [stack appendString:@"last ran "];
+    if ([*(self + 16) displayDetailedCpuTime])
     {
       v169 = 9;
     }
@@ -24537,19 +24537,19 @@ LABEL_236:
       v169 = 3;
     }
 
-    v170 = saos_printf_seconds(a3, (v16 * 1000000000.0), v169);
-    v21 = v170 + v168 + [a3 appendString:@" ago"];
+    v170 = saos_printf_seconds(stack, (v16 * 1000000000.0), v169);
+    v201 = v170 + v168 + [stack appendString:@" ago"];
   }
 
-  if (!(v216 & 1 | (i <= 0.0)) && (([*(a1 + 16) displayDetailedCpuTime] & 1) != 0 || -[SASamplePrinter shouldPrintTimeOutsideSamplingRange:](a1, i)))
+  if (!(v216 & 1 | (i <= 0.0)) && (([*(self + 16) displayDetailedCpuTime] & 1) != 0 || -[SASamplePrinter shouldPrintTimeOutsideSamplingRange:](self, i)))
   {
-    if (v21)
+    if (v201)
     {
-      [a3 printWithFormat:@"%*s", 4, ""];
+      [stack printWithFormat:@"%*s", 4, ""];
     }
 
-    v171 = [a3 appendString:@"runnable before first sample for "];
-    if ([*(a1 + 16) displayDetailedCpuTime])
+    v171 = [stack appendString:@"runnable before first sample for "];
+    if ([*(self + 16) displayDetailedCpuTime])
     {
       v172 = 9;
     }
@@ -24559,15 +24559,15 @@ LABEL_236:
       v172 = 3;
     }
 
-    v21 = saos_printf_seconds(a3, (i * 1000000000.0), v172) + v171;
+    v201 = saos_printf_seconds(stack, (i * 1000000000.0), v172) + v171;
   }
 
   v173 = v218;
   if (v218)
   {
-    if (v21)
+    if (v201)
     {
-      [a3 printWithFormat:@"%*s", 4, ""];
+      [stack printWithFormat:@"%*s", 4, ""];
       v173 = v218;
     }
 
@@ -24583,28 +24583,28 @@ LABEL_236:
 
     v175 = v173;
     v176 = SAFormattedBytesEx(v211, 1, 0, 1, 0);
-    [a3 printWithFormat:@"%lu I/O%s (%@)", v175, v174, v176];
+    [stack printWithFormat:@"%lu I/O%s (%@)", v175, v174, v176];
   }
 
-  [a3 appendString:@"\n"];
-  v4 = v206;
+  [stack appendString:@"\n"];
+  selfCopy = v206;
   v137 = v221;
 LABEL_284:
   objc_autoreleasePoolPop(context);
 
-  if (!v4)
+  if (!selfCopy)
   {
     goto LABEL_291;
   }
 
-  if (!*(v4 + 4) || objc_getProperty(v4, v177, 120, 1))
+  if (!*(selfCopy + 4) || objc_getProperty(selfCopy, v177, 120, 1))
   {
-    if (objc_getProperty(v4, v177, 120, 1))
+    if (objc_getProperty(selfCopy, v177, 120, 1))
     {
-      v229 = objc_getProperty(v4, v178, 120, 1);
-      v179 = *(v4 + 4);
-      v181 = objc_getProperty(v4, v180, 128, 1);
-      [(SASamplePrinter *)a1 addStack:v229 toStream:a3 sampleCount:v179 binariesToDisplay:v181 primaryState:0 primaryMicrostackshotState:0 onlyHeaviestStack:0 isKernel:*(v4 + 15) & 1];
+      v229 = objc_getProperty(selfCopy, v178, 120, 1);
+      v179 = *(selfCopy + 4);
+      v181 = objc_getProperty(selfCopy, v180, 128, 1);
+      [(SASamplePrinter *)self addStack:v229 toStream:stack sampleCount:v179 binariesToDisplay:v181 primaryState:0 primaryMicrostackshotState:0 onlyHeaviestStack:0 isKernel:*(selfCopy + 15) & 1];
 
       v182 = *MEMORY[0x1E69E9840];
 
@@ -24620,14 +24620,14 @@ LABEL_291:
   v193 = _sa_logt();
   if (os_log_type_enabled(v193, OS_LOG_TYPE_ERROR))
   {
-    v194 = *(v4 + 4);
+    v194 = *(selfCopy + 4);
     *v253 = 134217984;
     v254 = v194;
     _os_log_error_impl(&dword_1E0E2F000, v193, OS_LOG_TYPE_ERROR, "%lu count, but no rootObjects", v253, 0xCu);
   }
 
   *__error() = v192;
-  _SASetCrashLogMessage(9966, "%lu count, but no rootObjects", v195, v196, v197, v198, v199, v200, *(v4 + 4));
+  _SASetCrashLogMessage(9966, "%lu count, but no rootObjects", v195, v196, v197, v198, v199, v200, *(selfCopy + 4));
   _os_crash();
   __break(1u);
 }
@@ -24642,17 +24642,17 @@ void __49__SASamplePrinter_stacksForTask_taskSampleCount___block_invoke(uint64_t
   }
 }
 
-- (SAStack)stackForThread:(void *)a3 threadStateIndexes:(void *)a4 task:(uint64_t)a5 taskSampleCount:(BOOL)a6 isTarget:
+- (SAStack)stackForThread:(void *)thread threadStateIndexes:(void *)indexes task:(uint64_t)task taskSampleCount:(BOOL)count isTarget:
 {
-  if (a1)
+  if (self)
   {
     v12 = objc_alloc_init(SAStack);
-    v13 = [a4 pid];
+    v13 = [indexes pid];
     if (v12)
     {
       v12->_isKernel = v13 == 0;
       v12->_isMainThread = [a2 isMainThread];
-      v12->_isTargetCallTree = a6;
+      v12->_isTargetCallTree = count;
     }
 
     else
@@ -24680,13 +24680,13 @@ void __49__SASamplePrinter_stacksForTask_taskSampleCount___block_invoke(uint64_t
       objc_setProperty_atomic(v12, v20, v21, 48);
     }
 
-    v22 = [(SASamplePrinter *)a1 binaryImagesHitByTask:a4];
+    v22 = [(SASamplePrinter *)self binaryImagesHitByTask:indexes];
     v24 = v22;
     if (v12)
     {
       objc_setProperty_atomic(v12, v23, v22, 128);
 
-      [(SASamplePrinter *)a1 addHeaderForDispatchQueue:0 orSwiftTaskStates:a2 orThread:a3 andThreadStateIndexes:v12 toStack:a4 task:a5 taskSampleCount:?];
+      [(SASamplePrinter *)self addHeaderForDispatchQueue:0 orSwiftTaskStates:a2 orThread:thread andThreadStateIndexes:v12 toStack:indexes task:task taskSampleCount:?];
       if (!v12->_omit && v12->_count)
       {
         v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -24695,10 +24695,10 @@ void __49__SASamplePrinter_stacksForTask_taskSampleCount___block_invoke(uint64_t
         v28 = [(NSMutableArray *)v12->_swiftTasks count];
         v29 = [(NSMutableArray *)v12->_threadIds count];
         v30 = v12->_minPriority != v12->_maxPriority || v12->_minBasePriority != v12->_maxBasePriority;
-        [(SASamplePrinter *)a1 addStackForDispatchQueue:0 orSwiftTaskStates:a2 orThread:a3 andThreadStateIndexes:a4 task:v25 toRootObjects:threadNameChanges nameChanges:v27 > 1 dispatchQueueChanges:v28 > 1 swiftTaskChanges:v29 > 1 threadChanges:v30 priorityChanges:0 microstackshotSummary:0 onlyHeaviestStack:1 includeState:?];
-        if ([*(a1 + 16) printHeavyStacks])
+        [(SASamplePrinter *)self addStackForDispatchQueue:0 orSwiftTaskStates:a2 orThread:thread andThreadStateIndexes:indexes task:v25 toRootObjects:threadNameChanges nameChanges:v27 > 1 dispatchQueueChanges:v28 > 1 swiftTaskChanges:v29 > 1 threadChanges:v30 priorityChanges:0 microstackshotSummary:0 onlyHeaviestStack:1 includeState:?];
+        if ([*(self + 16) printHeavyStacks])
         {
-          [(SASamplePrinter *)a1 sortHeavyCallTree:v25];
+          [(SASamplePrinter *)self sortHeavyCallTree:v25];
         }
 
         objc_setProperty_atomic(v12, v31, v25, 120);
@@ -24708,7 +24708,7 @@ void __49__SASamplePrinter_stacksForTask_taskSampleCount___block_invoke(uint64_t
     else
     {
 
-      [(SASamplePrinter *)a1 addHeaderForDispatchQueue:0 orSwiftTaskStates:a2 orThread:a3 andThreadStateIndexes:0 toStack:a4 task:a5 taskSampleCount:?];
+      [(SASamplePrinter *)self addHeaderForDispatchQueue:0 orSwiftTaskStates:a2 orThread:thread andThreadStateIndexes:0 toStack:indexes task:task taskSampleCount:?];
     }
   }
 
@@ -26240,24 +26240,24 @@ void __56__SASamplePrinter_stacksForThread_task_taskSampleCount___block_invoke_2
   [v11 addObject:v12];
 }
 
-- (void)addHeaderForDispatchQueue:(void *)a3 orSwiftTaskStates:(char *)a4 orThread:(void *)a5 andThreadStateIndexes:(void *)a6 toStack:(void *)a7 task:(uint64_t)a8 taskSampleCount:
+- (void)addHeaderForDispatchQueue:(void *)queue orSwiftTaskStates:(char *)states orThread:(void *)thread andThreadStateIndexes:(void *)indexes toStack:(void *)stack task:(uint64_t)task taskSampleCount:
 {
   v253 = *MEMORY[0x1E69E9840];
   v16 = objc_autoreleasePoolPush();
-  if ((a3 || a2 || !a4) && (a3 || !a2 || a4) && (a2 || a4 || !a3))
+  if ((queue || a2 || !states) && (queue || !a2 || states) && (a2 || states || !queue))
   {
-    a1 = *__error();
+    self = *__error();
     v87 = _sa_logt();
     if (os_log_type_enabled(v87, OS_LOG_TYPE_ERROR))
     {
-      if (a4)
+      if (states)
       {
-        a4 = "y";
+        states = "y";
       }
 
       else
       {
-        a4 = "n";
+        states = "n";
       }
 
       if (a2)
@@ -26271,10 +26271,10 @@ void __56__SASamplePrinter_stacksForThread_task_taskSampleCount___block_invoke_2
       }
 
       *buf = 136315650;
-      *&buf[4] = a4;
+      *&buf[4] = states;
       *&buf[12] = 2080;
       *&buf[14] = v88;
-      if (a3)
+      if (queue)
       {
         a2 = "y";
       }
@@ -26291,17 +26291,17 @@ void __56__SASamplePrinter_stacksForThread_task_taskSampleCount___block_invoke_2
 
     else
     {
-      if (a4)
+      if (states)
       {
-        a4 = "y";
+        states = "y";
       }
 
       else
       {
-        a4 = "n";
+        states = "n";
       }
 
-      if (a3)
+      if (queue)
       {
         a2 = "y";
       }
@@ -26312,35 +26312,35 @@ void __56__SASamplePrinter_stacksForThread_task_taskSampleCount___block_invoke_2
       }
     }
 
-    *__error() = a1;
-    _SASetCrashLogMessage(10007, "aThread %s, aDispatchQueue %s, swiftTaskStates %s", v89, v90, v91, v92, v93, v94, a4);
+    *__error() = self;
+    _SASetCrashLogMessage(10007, "aThread %s, aDispatchQueue %s, swiftTaskStates %s", v89, v90, v91, v92, v93, v94, states);
     _os_crash();
     __break(1u);
     goto LABEL_131;
   }
 
   context = v16;
-  v8 = [*(a1 + 16) omitStacksOnAC];
-  v9 = [*(a1 + 16) omitStacksOnBattery];
-  v110 = [*(a1 + 16) omitStacksWithUserIdle];
-  v108 = [*(a1 + 16) omitStacksWithUserActive];
-  v104 = [*(a1 + 16) omitStacksWithPCore];
-  v103 = [*(a1 + 16) omitStacksWithECore];
-  v102 = [*(a1 + 16) omitStacksBelowBasePriority];
-  v101 = [*(a1 + 16) omitStacksAboveBasePriority];
-  if ([*(a1 + 16) swiftAsyncDisplayCRootCallstacks])
+  omitStacksOnAC = [*(self + 16) omitStacksOnAC];
+  omitStacksOnBattery = [*(self + 16) omitStacksOnBattery];
+  omitStacksWithUserIdle = [*(self + 16) omitStacksWithUserIdle];
+  omitStacksWithUserActive = [*(self + 16) omitStacksWithUserActive];
+  omitStacksWithPCore = [*(self + 16) omitStacksWithPCore];
+  omitStacksWithECore = [*(self + 16) omitStacksWithECore];
+  omitStacksBelowBasePriority = [*(self + 16) omitStacksBelowBasePriority];
+  omitStacksAboveBasePriority = [*(self + 16) omitStacksAboveBasePriority];
+  if ([*(self + 16) swiftAsyncDisplayCRootCallstacks])
   {
-    v100 = 1;
+    swiftAsyncPrintLeafyCCallstackOnTopOfCRootCallstacksAlways = 1;
   }
 
   else
   {
-    v100 = [*(a1 + 16) swiftAsyncPrintLeafyCCallstackOnTopOfCRootCallstacksAlways];
+    swiftAsyncPrintLeafyCCallstackOnTopOfCRootCallstacksAlways = [*(self + 16) swiftAsyncPrintLeafyCCallstackOnTopOfCRootCallstacksAlways];
   }
 
-  v18 = *(a1 + 16);
-  self = a6;
-  v96 = a8;
+  v18 = *(self + 16);
+  self = indexes;
+  taskCopy = task;
   if (!v18)
   {
 LABEL_131:
@@ -26396,21 +26396,21 @@ LABEL_22:
   v250 = __Block_byref_object_copy__4;
   v251 = __Block_byref_object_dispose__4;
   v252 = 0;
-  v115 = a1;
-  v106 = a3;
-  v112 = v9;
+  selfCopy = self;
+  queueCopy = queue;
+  v112 = omitStacksOnBattery;
   if (self)
   {
     v21 = objc_getProperty(self, v17, 40, 1);
     v99 = objc_getProperty(self, v22, 48, 1);
     Property = objc_getProperty(self, v23, 56, 1);
     v98 = v21;
-    v25 = v8;
+    v25 = omitStacksOnAC;
   }
 
   else
   {
-    v25 = v8;
+    v25 = omitStacksOnAC;
     v98 = 0;
     v99 = 0;
     Property = 0;
@@ -26481,7 +26481,7 @@ LABEL_22:
   v178[3] = __Block_byref_object_copy__4;
   v178[4] = __Block_byref_object_dispose__4;
   v179 = 0;
-  v27 = v176;
+  creationTimestamp2 = v176;
   v176[0] = 0;
   v176[1] = v176;
   v176[2] = 0x3032000000;
@@ -26506,24 +26506,24 @@ LABEL_22:
   v128[3] = &unk_1E86F7CB0;
   v132 = &v217;
   v133 = v166;
-  v157 = v101;
-  v158 = v102;
-  v159 = v108;
-  v160 = v110;
+  v157 = omitStacksAboveBasePriority;
+  v158 = omitStacksBelowBasePriority;
+  v159 = omitStacksWithUserActive;
+  v160 = omitStacksWithUserIdle;
   v161 = v25;
   v162 = v112;
-  v163 = v104;
-  v164 = v103;
-  v165 = v100;
+  v163 = omitStacksWithPCore;
+  v164 = omitStacksWithECore;
+  v165 = swiftAsyncPrintLeafyCCallstackOnTopOfCRootCallstacksAlways;
   v155 = v20;
   v156 = v19;
   v134 = &v235;
   v109 = a2;
   v128[4] = a2;
-  v128[5] = v115;
-  v128[6] = a7;
-  v128[7] = v106;
-  v128[8] = a4;
+  v128[5] = selfCopy;
+  v128[6] = stack;
+  v128[7] = queueCopy;
+  v128[8] = states;
   v105 = v26;
   v129 = v105;
   v113 = v98;
@@ -26554,79 +26554,79 @@ LABEL_22:
   v29 = v28;
   if (a2)
   {
-    v30 = *(v115 + 32);
-    v31 = *(v115 + 40);
-    v32 = *(v115 + 56);
-    v33 = *(v115 + 64);
+    v30 = *(selfCopy + 32);
+    v31 = *(selfCopy + 40);
+    v32 = *(selfCopy + 56);
+    v33 = *(selfCopy + 64);
     v126[0] = MEMORY[0x1E69E9820];
     v126[1] = 3221225472;
     v126[2] = __123__SASamplePrinter_addHeaderForDispatchQueue_orSwiftTaskStates_orThread_andThreadStateIndexes_toStack_task_taskSampleCount___block_invoke_2;
     v126[3] = &unk_1E86F8050;
     v127 = v28;
     [(SARecipe *)v109 enumerateStatesBetweenStartTime:v30 startSampleIndex:v32 endTime:v31 endSampleIndex:v33 reverseOrder:0 block:v126];
-    v34 = v127;
+    threadCopy = v127;
   }
 
-  else if (v106)
+  else if (queueCopy)
   {
     v124 = 0u;
     v125 = 0u;
     v122 = 0u;
     v123 = 0u;
-    v34 = v106;
-    v42 = [v34 countByEnumeratingWithState:&v122 objects:v248 count:16];
+    threadCopy = queueCopy;
+    v42 = [threadCopy countByEnumeratingWithState:&v122 objects:v248 count:16];
     if (v42)
     {
-      v27 = *v123;
+      creationTimestamp2 = *v123;
       do
       {
         for (i = 0; i != v42; ++i)
         {
-          if (*v123 != v27)
+          if (*v123 != creationTimestamp2)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(threadCopy);
           }
 
           v44 = *(*(&v122 + 1) + 8 * i);
-          v45 = [v44 thread];
-          v46 = [v44 threadState];
-          (v29)[2](v29, v45, v46, [v44 threadStateIndex]);
+          thread = [v44 thread];
+          threadState = [v44 threadState];
+          (v29)[2](v29, thread, threadState, [v44 threadStateIndex]);
         }
 
-        v42 = [v34 countByEnumeratingWithState:&v122 objects:v248 count:16];
+        v42 = [threadCopy countByEnumeratingWithState:&v122 objects:v248 count:16];
       }
 
       while (v42);
     }
   }
 
-  else if (a5)
+  else if (thread)
   {
     v120 = 0u;
     v121 = 0u;
     v118 = 0u;
     v119 = 0u;
-    v34 = a5;
-    v47 = [v34 countByEnumeratingWithState:&v118 objects:v247 count:16];
+    threadCopy = thread;
+    v47 = [threadCopy countByEnumeratingWithState:&v118 objects:v247 count:16];
     if (v47)
     {
-      v27 = *v119;
+      creationTimestamp2 = *v119;
       do
       {
         for (j = 0; j != v47; ++j)
         {
-          if (*v119 != v27)
+          if (*v119 != creationTimestamp2)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(threadCopy);
           }
 
-          v49 = [*(*(&v118 + 1) + 8 * j) unsignedLongValue];
-          v50 = [a4 threadStates];
-          v51 = [v50 objectAtIndexedSubscript:v49];
-          (v29)[2](v29, a4, v51, v49);
+          unsignedLongValue = [*(*(&v118 + 1) + 8 * j) unsignedLongValue];
+          threadStates = [states threadStates];
+          v51 = [threadStates objectAtIndexedSubscript:unsignedLongValue];
+          (v29)[2](v29, states, v51, unsignedLongValue);
         }
 
-        v47 = [v34 countByEnumeratingWithState:&v118 objects:v247 count:16];
+        v47 = [threadCopy countByEnumeratingWithState:&v118 objects:v247 count:16];
       }
 
       while (v47);
@@ -26635,26 +26635,26 @@ LABEL_22:
 
   else
   {
-    v76 = *(v115 + 32);
-    v77 = *(v115 + 40);
-    v78 = *(v115 + 56);
-    v79 = *(v115 + 64);
+    v76 = *(selfCopy + 32);
+    v77 = *(selfCopy + 40);
+    v78 = *(selfCopy + 56);
+    v79 = *(selfCopy + 64);
     v116[0] = MEMORY[0x1E69E9820];
     v116[1] = 3221225472;
     v116[2] = __123__SASamplePrinter_addHeaderForDispatchQueue_orSwiftTaskStates_orThread_andThreadStateIndexes_toStack_task_taskSampleCount___block_invoke_3;
     v116[3] = &unk_1E86F7CD8;
-    v116[4] = a4;
+    v116[4] = states;
     v117 = v28;
-    [a4 enumerateThreadStatesBetweenStartTime:v76 startSampleIndex:v78 endTime:v77 endSampleIndex:v79 reverseOrder:0 block:v116];
-    v34 = v117;
+    [states enumerateThreadStatesBetweenStartTime:v76 startSampleIndex:v78 endTime:v77 endSampleIndex:v79 reverseOrder:0 block:v116];
+    threadCopy = v117;
   }
 
   v35 = v244[3];
   if (v35 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v35 <= *(v115 + 56))
+    if (v35 <= *(selfCopy + 56))
     {
-      v35 = *(v115 + 56);
+      v35 = *(selfCopy + 56);
     }
 
     v244[3] = v35;
@@ -26663,7 +26663,7 @@ LABEL_22:
   v36 = v240[3];
   if (v36 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v37 = *(v115 + 64);
+    v37 = *(selfCopy + 64);
     if (v36 < v37)
     {
       v37 = v240[3];
@@ -26677,13 +26677,13 @@ LABEL_22:
     *(self + 4) = v222[3];
   }
 
-  if (a4 && [*(v115 + 168) targetThreadId])
+  if (states && [*(selfCopy + 168) targetThreadId])
   {
-    v38 = [a4 threadId];
-    v39 = [*(v115 + 168) targetThreadId];
-    if (!v109 || v38 == v39)
+    threadId = [states threadId];
+    targetThreadId = [*(selfCopy + 168) targetThreadId];
+    if (!v109 || threadId == targetThreadId)
     {
-      if (v38 == v39)
+      if (threadId == targetThreadId)
       {
         goto LABEL_77;
       }
@@ -26697,14 +26697,14 @@ LABEL_22:
     goto LABEL_65;
   }
 
-  if ([*(v115 + 168) targetDispatchQueueId])
+  if ([*(selfCopy + 168) targetDispatchQueueId])
   {
-    v40 = [*(v115 + 168) targetProcess];
-    v41 = v40;
-    if (v40 == a7)
+    targetProcess = [*(selfCopy + 168) targetProcess];
+    v41 = targetProcess;
+    if (targetProcess == stack)
     {
-      v52 = [v109 identifier];
-      v53 = v52 == [*(v115 + 168) targetDispatchQueueId];
+      identifier = [v109 identifier];
+      v53 = identifier == [*(selfCopy + 168) targetDispatchQueueId];
 
       if (v53)
       {
@@ -26718,35 +26718,35 @@ LABEL_22:
   }
 
 LABEL_65:
-  if (v222[3] || *(v218 + 24) == 1 && ([*(v115 + 16) displayCallTreesWithZeroCount] & 1) != 0)
+  if (v222[3] || *(v218 + 24) == 1 && ([*(selfCopy + 16) displayCallTreesWithZeroCount] & 1) != 0)
   {
-    if ([*(v115 + 16) omitStacksBelowSampleCount] < 1)
+    if ([*(selfCopy + 16) omitStacksBelowSampleCount] < 1)
     {
-      v54 = 0;
+      omitStacksBelowSampleCount = 0;
     }
 
     else
     {
-      v54 = [*(v115 + 16) omitStacksBelowSampleCount];
+      omitStacksBelowSampleCount = [*(selfCopy + 16) omitStacksBelowSampleCount];
     }
 
-    if ([*(v115 + 16) omitStacksBelowPercentOfTaskSamples] >= 1)
+    if ([*(selfCopy + 16) omitStacksBelowPercentOfTaskSamples] >= 1)
     {
-      v55 = [*(v115 + 16) omitStacksBelowPercentOfTaskSamples];
-      if (v54 <= v55 * v96 / 0x64uLL)
+      omitStacksBelowPercentOfTaskSamples = [*(selfCopy + 16) omitStacksBelowPercentOfTaskSamples];
+      if (omitStacksBelowSampleCount <= omitStacksBelowPercentOfTaskSamples * taskCopy / 0x64uLL)
       {
-        v54 = v55 * v96 / 0x64uLL;
+        omitStacksBelowSampleCount = omitStacksBelowPercentOfTaskSamples * taskCopy / 0x64uLL;
       }
     }
 
-    if (!v54 || v222[3] > v54)
+    if (!omitStacksBelowSampleCount || v222[3] > omitStacksBelowSampleCount)
     {
 LABEL_77:
       if ([v113 count] == 1)
       {
-        v56 = [v113 firstObject];
-        v57 = [MEMORY[0x1E695DFB0] null];
-        v58 = v56 == v57;
+        firstObject = [v113 firstObject];
+        null = [MEMORY[0x1E695DFB0] null];
+        v58 = firstObject == null;
 
         if (v58)
         {
@@ -26756,9 +26756,9 @@ LABEL_77:
 
       if ([v111 count] == 1)
       {
-        v60 = [v111 firstObject];
-        v61 = [MEMORY[0x1E695DFB0] null];
-        v62 = v60 == v61;
+        firstObject2 = [v111 firstObject];
+        null2 = [MEMORY[0x1E695DFB0] null];
+        v62 = firstObject2 == null2;
 
         if (v62)
         {
@@ -26766,25 +26766,25 @@ LABEL_77:
         }
       }
 
-      v63 = *(*&buf[8] + 40);
-      if (!v63)
+      startTimestamp = *(*&buf[8] + 40);
+      if (!startTimestamp)
       {
         goto LABEL_111;
       }
 
-      v64 = [*(v115 + 168) timeWhenTransitionedToSamplingAllThreads];
-      if (v64)
+      timeWhenTransitionedToSamplingAllThreads = [*(selfCopy + 168) timeWhenTransitionedToSamplingAllThreads];
+      if (timeWhenTransitionedToSamplingAllThreads)
       {
       }
 
       else
       {
-        v65 = [*(v115 + 168) timeWhenTransitionedToSamplingAllProcesses];
-        v66 = v65 == 0;
+        timeWhenTransitionedToSamplingAllProcesses = [*(selfCopy + 168) timeWhenTransitionedToSamplingAllProcesses];
+        v66 = timeWhenTransitionedToSamplingAllProcesses == 0;
 
         if (v66)
         {
-          v63 = 0;
+          startTimestamp = 0;
 LABEL_111:
           if (self)
           {
@@ -26794,7 +26794,7 @@ LABEL_111:
             *(self + 4) = v222[3];
             *(self + 9) = v244[3];
             *(self + 10) = v240[3];
-            objc_setProperty_atomic(self, v83, v63, 88);
+            objc_setProperty_atomic(self, v83, startTimestamp, 88);
             *(self + 4) = *(v214 + 6);
             *(self + 5) = *(v210 + 6);
             *(self + 6) = *(v206 + 6);
@@ -26804,16 +26804,16 @@ LABEL_111:
             *(self + 14) = v190[3];
           }
 
-          v84 = [a4 isProcessorIdleThread];
+          isProcessorIdleThread = [states isProcessorIdleThread];
           if (self)
           {
-            *(self + 13) = v84;
+            *(self + 13) = isProcessorIdleThread;
           }
 
-          v85 = [a4 isGlobalForcedIdle];
+          isGlobalForcedIdle = [states isGlobalForcedIdle];
           if (self)
           {
-            *(self + 14) = v85;
+            *(self + 14) = isGlobalForcedIdle;
             *(self + 17) = v186[3];
             *(self + 18) = v182[3];
             *(self + 19) = v173[3];
@@ -26824,7 +26824,7 @@ LABEL_111:
         }
       }
 
-      if (*(v115 + 48))
+      if (*(selfCopy + 48))
       {
         v67 = 0;
       }
@@ -26834,51 +26834,51 @@ LABEL_111:
         v67 = 0x7FFFFFFFFFFFFFFFLL;
       }
 
-      v68 = [v63 firstThreadStateOnOrAfterTime:0 sampleIndex:v67];
+      v68 = [startTimestamp firstThreadStateOnOrAfterTime:0 sampleIndex:v67];
       v69 = v68;
       if (!v68)
       {
         goto LABEL_107;
       }
 
-      if (*(v115 + 48) == 1)
+      if (*(selfCopy + 48) == 1)
       {
-        if ([v68 startSampleIndex] > *(v115 + 56))
+        if ([v68 startSampleIndex] > *(selfCopy + 56))
         {
 LABEL_97:
-          v72 = [v63 creationTimestamp];
-          if (!v72)
+          creationTimestamp = [startTimestamp creationTimestamp];
+          if (!creationTimestamp)
           {
 LABEL_109:
-            v63 = [v69 startTimestamp];
+            startTimestamp = [v69 startTimestamp];
             goto LABEL_110;
           }
 
-          v73 = *(v115 + 48);
+          v73 = *(selfCopy + 48);
           if (v73 != 1)
           {
             goto LABEL_105;
           }
 
-          v74 = *(v115 + 168);
-          v27 = [v63 creationTimestamp];
-          v75 = [v74 indexOfFirstSampleOnOrAfterTimestamp:v27];
+          v74 = *(selfCopy + 168);
+          creationTimestamp2 = [startTimestamp creationTimestamp];
+          v75 = [v74 indexOfFirstSampleOnOrAfterTimestamp:creationTimestamp2];
           if (v75 < [v69 startSampleIndex])
           {
 
             goto LABEL_109;
           }
 
-          if (*(v115 + 48))
+          if (*(selfCopy + 48))
           {
           }
 
           else
           {
 LABEL_105:
-            v80 = [v63 creationTimestamp];
-            v81 = [v69 startTimestamp];
-            v82 = [v80 lt:v81];
+            creationTimestamp3 = [startTimestamp creationTimestamp];
+            startTimestamp2 = [v69 startTimestamp];
+            v82 = [creationTimestamp3 lt:startTimestamp2];
 
             if (v73)
             {
@@ -26900,20 +26900,20 @@ LABEL_105:
           }
 
 LABEL_107:
-          v63 = 0;
+          startTimestamp = 0;
 LABEL_110:
 
           goto LABEL_111;
         }
 
-        if (*(v115 + 48))
+        if (*(selfCopy + 48))
         {
           goto LABEL_107;
         }
       }
 
-      v70 = [v69 startTimestamp];
-      v71 = [v70 gt:*(v115 + 32)];
+      startTimestamp3 = [v69 startTimestamp];
+      v71 = [startTimestamp3 gt:*(selfCopy + 32)];
 
       if (!v71)
       {
@@ -27422,75 +27422,75 @@ LABEL_152:
   v101 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_findIOBefore:(void *)a3 during:(void *)a4 after:(void *)a5 thread:(unint64_t)a6 stateIndex:(void *)a7 inIO:(void *)a8 nextIO:
+- (id)_findIOBefore:(void *)before during:(void *)during after:(void *)after thread:(unint64_t)thread stateIndex:(void *)index inIO:(void *)o nextIO:
 {
-  if (!a1)
+  if (!self)
   {
-    a8 = 0;
+    o = 0;
     goto LABEL_59;
   }
 
-  v16 = [a5 threadStates];
-  v17 = [v16 objectAtIndexedSubscript:a6];
+  threadStates = [after threadStates];
+  v17 = [threadStates objectAtIndexedSubscript:thread];
 
-  v57 = a5;
-  v58 = a6;
-  if (a6)
+  afterCopy = after;
+  threadCopy = thread;
+  if (thread)
   {
-    v18 = [a5 threadStates];
-    v19 = [v18 objectAtIndexedSubscript:a6 - 1];
+    threadStates2 = [after threadStates];
+    v19 = [threadStates2 objectAtIndexedSubscript:thread - 1];
 
-    v20 = [v19 endTimestamp];
+    endTimestamp = [v19 endTimestamp];
     if ([v19 isIdleWorkQueue])
     {
-      v21 = 0;
+      isIdleWorkQueue = 0;
     }
 
     else
     {
-      v21 = [v17 isIdleWorkQueue];
+      isIdleWorkQueue = [v17 isIdleWorkQueue];
     }
   }
 
   else
   {
-    v20 = [a5 creationTimestamp];
-    v21 = 0;
+    endTimestamp = [after creationTimestamp];
+    isIdleWorkQueue = 0;
   }
 
-  v61 = a3;
-  v62 = a4;
+  beforeCopy = before;
+  duringCopy = during;
   v60 = a2;
-  if (!v20 || *(a1 + 32) && ([v20 lt:?] & 1) != 0)
+  if (!endTimestamp || *(self + 32) && ([endTimestamp lt:?] & 1) != 0)
   {
-    v22 = *(a1 + 32);
+    nextObject = *(self + 32);
 
-    v23 = a8;
-    if (!v22)
+    oCopy = o;
+    if (!nextObject)
     {
-      v20 = 0;
+      endTimestamp = 0;
       v30 = 0;
       v31 = 0;
-      a8 = v23;
+      o = oCopy;
       goto LABEL_58;
     }
 
-    v56 = a1;
+    selfCopy2 = self;
     v24 = 0;
-    v20 = v22;
+    endTimestamp = nextObject;
   }
 
   else
   {
-    v56 = a1;
-    v25 = a8;
+    selfCopy2 = self;
+    oCopy2 = o;
     v24 = 1;
   }
 
   while (v24)
   {
-    v26 = [a8 startTimestamp];
-    v27 = [v26 lt:v20];
+    startTimestamp = [o startTimestamp];
+    v27 = [startTimestamp lt:endTimestamp];
 
     if ((v27 & 1) == 0)
     {
@@ -27498,10 +27498,10 @@ LABEL_152:
     }
 
 LABEL_18:
-    v22 = [a7 nextObject];
+    nextObject = [index nextObject];
 
-    a8 = v22;
-    if (!v22)
+    o = nextObject;
+    if (!nextObject)
     {
       v30 = 0;
       v31 = 0;
@@ -27509,8 +27509,8 @@ LABEL_18:
     }
   }
 
-  v28 = [a8 endTimestamp];
-  v29 = [v28 le:v20];
+  endTimestamp2 = [o endTimestamp];
+  v29 = [endTimestamp2 le:endTimestamp];
 
   if (v29)
   {
@@ -27519,72 +27519,72 @@ LABEL_18:
 
 LABEL_20:
   v31 = 0;
-  v22 = 0;
+  nextObject = 0;
   while (1)
   {
-    v32 = [a8 startTimestamp];
-    v33 = [v17 endTimestamp];
-    v34 = [v32 lt:v33];
+    startTimestamp2 = [o startTimestamp];
+    endTimestamp3 = [v17 endTimestamp];
+    v34 = [startTimestamp2 lt:endTimestamp3];
 
     if (!v34)
     {
       break;
     }
 
-    v35 = [a8 endTimestamp];
-    v36 = [v17 startTimestamp];
-    v37 = [v35 le:v36];
+    endTimestamp4 = [o endTimestamp];
+    startTimestamp3 = [v17 startTimestamp];
+    v37 = [endTimestamp4 le:startTimestamp3];
 
     if (!v37)
     {
-      if (!v22)
+      if (!nextObject)
       {
-        v22 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{a8, 0}];
+        nextObject = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{o, 0}];
         goto LABEL_31;
       }
 
-      v38 = v22;
+      v38 = nextObject;
       goto LABEL_28;
     }
 
-    if ((v21 & 1) == 0)
+    if ((isIdleWorkQueue & 1) == 0)
     {
       if (!v31)
       {
-        v31 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{a8, 0}];
+        v31 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{o, 0}];
         goto LABEL_31;
       }
 
       v38 = v31;
 LABEL_28:
-      [v38 addObject:a8];
+      [v38 addObject:o];
     }
 
 LABEL_31:
-    v39 = [a7 nextObject];
+    nextObject2 = [index nextObject];
 
-    a8 = v39;
-    if (!v39)
+    o = nextObject2;
+    if (!nextObject2)
     {
       v30 = 0;
       goto LABEL_58;
     }
   }
 
-  v40 = [v57 threadStates];
-  v41 = [v40 count] - 1;
+  threadStates3 = [afterCopy threadStates];
+  v41 = [threadStates3 count] - 1;
 
-  if (v41 <= v58)
+  if (v41 <= threadCopy)
   {
-    v44 = [v57 exitTimestamp];
+    exitTimestamp = [afterCopy exitTimestamp];
     goto LABEL_39;
   }
 
-  v42 = [v57 threadStates];
-  v43 = [v42 objectAtIndexedSubscript:v58 + 1];
+  threadStates4 = [afterCopy threadStates];
+  endTimestamp5 = [threadStates4 objectAtIndexedSubscript:threadCopy + 1];
 
-  v44 = [v43 startTimestamp];
-  if (([v17 isIdleWorkQueue] & 1) != 0 || (objc_msgSend(v43, "isIdleWorkQueue") & 1) == 0)
+  exitTimestamp = [endTimestamp5 startTimestamp];
+  if (([v17 isIdleWorkQueue] & 1) != 0 || (objc_msgSend(endTimestamp5, "isIdleWorkQueue") & 1) == 0)
   {
     v30 = 0;
 LABEL_44:
@@ -27596,27 +27596,27 @@ LABEL_57:
   {
 
 LABEL_39:
-    if (v44 && ![v44 gt:*(v56 + 40)])
+    if (exitTimestamp && ![exitTimestamp gt:*(selfCopy2 + 40)])
     {
       v59 = 1;
       goto LABEL_46;
     }
 
-    v30 = *(v56 + 40);
+    v30 = *(selfCopy2 + 40);
 
     if (v30)
     {
       v59 = 0;
-      v44 = v30;
+      exitTimestamp = v30;
 LABEL_46:
       v30 = 0;
-      v45 = v44;
+      v45 = exitTimestamp;
       while (1)
       {
         if (v59)
         {
-          v43 = [a8 endTimestamp];
-          if (![v43 le:v44])
+          endTimestamp5 = [o endTimestamp];
+          if (![endTimestamp5 le:exitTimestamp])
           {
             goto LABEL_44;
           }
@@ -27624,31 +27624,31 @@ LABEL_46:
 
         else
         {
-          v46 = [a8 startTimestamp];
-          v47 = [v46 lt:v44];
+          startTimestamp4 = [o startTimestamp];
+          v47 = [startTimestamp4 lt:exitTimestamp];
 
           if (!v47)
           {
-            v44 = v45;
+            exitTimestamp = v45;
             goto LABEL_57;
           }
         }
 
         if (v30)
         {
-          [v30 addObject:a8];
+          [v30 addObject:o];
         }
 
         else
         {
-          v30 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{a8, 0}];
+          v30 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{o, 0}];
         }
 
-        v44 = v45;
-        v48 = [a7 nextObject];
+        exitTimestamp = v45;
+        nextObject3 = [index nextObject];
 
-        a8 = v48;
-        if (!v48)
+        o = nextObject3;
+        if (!nextObject3)
         {
           goto LABEL_57;
         }
@@ -27661,17 +27661,17 @@ LABEL_58:
   *v60 = v31;
   v50 = v31;
 
-  v51 = *v61;
-  *v61 = v22;
-  v52 = v22;
+  v51 = *beforeCopy;
+  *beforeCopy = nextObject;
+  v52 = nextObject;
 
-  v53 = *v62;
-  *v62 = v30;
+  v53 = *duringCopy;
+  *duringCopy = v30;
   v54 = v30;
 
 LABEL_59:
 
-  return a8;
+  return o;
 }
 
 void __123__SASamplePrinter_addHeaderForDispatchQueue_orSwiftTaskStates_orThread_andThreadStateIndexes_toStack_task_taskSampleCount___block_invoke_2(uint64_t a1, void *a2)
@@ -27682,47 +27682,47 @@ void __123__SASamplePrinter_addHeaderForDispatchQueue_orSwiftTaskStates_orThread
   (*(v3 + 16))(v3, v5, v4, [a2 threadStateIndex]);
 }
 
-- (void)iterateDispatchQueue:(void *)a3 orSwiftTaskStates:(void *)a4 orThread:(void *)a5 threadStateIndexes:(unint64_t)a6 startingAtIndex:(uint64_t)a7 endingAfterTimestamp:(void *)a8 task:(char)a9 stopAtTimeJumps:(uint64_t)a10 callback:
+- (void)iterateDispatchQueue:(void *)queue orSwiftTaskStates:(void *)states orThread:(void *)thread threadStateIndexes:(unint64_t)indexes startingAtIndex:(uint64_t)index endingAfterTimestamp:(void *)timestamp task:(char)task stopAtTimeJumps:(uint64_t)self0 callback:
 {
-  v12 = a4;
+  statesCopy = states;
   v13 = a2;
   v143 = *MEMORY[0x1E69E9840];
-  if (a3 || a2 || !a4)
+  if (queue || a2 || !states)
   {
-    if (a3 || !a2 || a4)
+    if (queue || !a2 || states)
     {
-      if (a2 || a4 || !a3)
+      if (a2 || states || !queue)
       {
         goto LABEL_125;
       }
 
-      v15 = a3;
+      threadCopy = queue;
       goto LABEL_14;
     }
 
-    v16 = [a2 states];
+    states = [a2 states];
   }
 
   else
   {
-    if (a5)
+    if (thread)
     {
-      v15 = a5;
+      threadCopy = thread;
 LABEL_14:
-      v17 = [v15 count];
+      v17 = [threadCopy count];
       goto LABEL_17;
     }
 
-    v16 = [a4 threadStates];
+    states = [states threadStates];
   }
 
-  v18 = v16;
-  v17 = [v16 count];
+  v18 = states;
+  v17 = [states count];
 
 LABEL_17:
-  if (v17 > a6)
+  if (v17 > indexes)
   {
-    v121 = v12;
+    v121 = statesCopy;
     v19 = 0;
     v20 = 0;
     v123 = 0;
@@ -27740,91 +27740,91 @@ LABEL_17:
         break;
       }
 
-      if (a3)
+      if (queue)
       {
-        v24 = [a3 objectAtIndexedSubscript:a6];
-        v25 = [v24 thread];
+        v24 = [queue objectAtIndexedSubscript:indexes];
+        thread = [v24 thread];
 LABEL_27:
-        v27 = [v24 threadStateIndex];
+        threadStateIndex = [v24 threadStateIndex];
         goto LABEL_28;
       }
 
-      v25 = v121;
-      if (!a5)
+      thread = v121;
+      if (!thread)
       {
-        v28 = a6;
+        indexesCopy = indexes;
         goto LABEL_29;
       }
 
-      v24 = [a5 objectAtIndexedSubscript:a6];
-      v27 = [v24 unsignedLongValue];
+      v24 = [thread objectAtIndexedSubscript:indexes];
+      threadStateIndex = [v24 unsignedLongValue];
 LABEL_28:
-      v28 = v27;
+      indexesCopy = threadStateIndex;
 
 LABEL_29:
-      v133 = v25;
-      v29 = [v25 threadStates];
-      v30 = [v29 objectAtIndexedSubscript:v28];
+      v133 = thread;
+      threadStates = [thread threadStates];
+      v30 = [threadStates objectAtIndexedSubscript:indexesCopy];
 
-      v31 = [v30 startSampleIndex];
-      v32 = v31;
+      startSampleIndex = [v30 startSampleIndex];
+      v32 = startSampleIndex;
       v136 = v30;
       context = v22;
-      if (*(a1 + 48) == 1)
+      if (*(self + 48) == 1)
       {
-        if (v31 == 0x7FFFFFFFFFFFFFFFLL)
+        if (startSampleIndex == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v33 = 0;
+          startTimestamp = 0;
           v21 = v134;
           goto LABEL_116;
         }
 
-        if (v31 <= *(a1 + 56))
+        if (startSampleIndex <= *(self + 56))
         {
-          v32 = *(a1 + 56);
+          v32 = *(self + 56);
         }
 
-        v34 = [*(a1 + 168) sampleTimestamps];
-        v33 = [v34 objectAtIndexedSubscript:v32];
+        sampleTimestamps = [*(self + 168) sampleTimestamps];
+        startTimestamp = [sampleTimestamps objectAtIndexedSubscript:v32];
       }
 
       else
       {
-        v33 = [v30 startTimestamp];
+        startTimestamp = [v30 startTimestamp];
       }
 
-      v130 = a6;
-      v35 = [v30 endTimestamp];
-      if (![v33 le:v35])
+      indexesCopy2 = indexes;
+      endTimestamp = [v30 endTimestamp];
+      if (![startTimestamp le:endTimestamp])
       {
-        v81 = v33;
+        startTimestamp5 = startTimestamp;
         v82 = v132;
         goto LABEL_106;
       }
 
       do
       {
-        v36 = [v33 le:a7];
+        v36 = [startTimestamp le:index];
 
         if (!v36)
         {
           goto LABEL_107;
         }
 
-        a6 = v130;
-        if (a8)
+        indexes = indexesCopy2;
+        if (timestamp)
         {
-          v37 = [a8 taskStates];
-          v38 = [v37 count];
+          taskStates = [timestamp taskStates];
+          v38 = [taskStates count];
 
           if (v38)
           {
-            if (!v20 || ([v20 endTimestamp], v39 = objc_claimAutoreleasedReturnValue(), v40 = objc_msgSend(v39, "lt:", v33), v39, v40))
+            if (!v20 || ([v20 endTimestamp], v39 = objc_claimAutoreleasedReturnValue(), v40 = objc_msgSend(v39, "lt:", startTimestamp), v39, v40))
             {
 
               v41 = v19 + ((v125 & 1) == 0);
-              v42 = [a8 taskStates];
-              v43 = [v42 count];
+              taskStates2 = [timestamp taskStates];
+              v43 = [taskStates2 count];
 
               if (v41 >= v43)
               {
@@ -27835,13 +27835,13 @@ LABEL_29:
               {
                 while (1)
                 {
-                  v44 = [a8 taskStates];
-                  v20 = [v44 objectAtIndexedSubscript:v41];
+                  taskStates3 = [timestamp taskStates];
+                  v20 = [taskStates3 objectAtIndexedSubscript:v41];
 
-                  if (*(a1 + 48) != 1 || [v20 startSampleIndex] != 0x7FFFFFFFFFFFFFFFLL)
+                  if (*(self + 48) != 1 || [v20 startSampleIndex] != 0x7FFFFFFFFFFFFFFFLL)
                   {
-                    v45 = [v20 endTimestamp];
-                    v46 = [v45 ge:v33];
+                    endTimestamp2 = [v20 endTimestamp];
+                    v46 = [endTimestamp2 ge:startTimestamp];
 
                     if (v46)
                     {
@@ -27850,8 +27850,8 @@ LABEL_29:
                   }
 
                   ++v41;
-                  v47 = [a8 taskStates];
-                  v48 = [v47 count];
+                  taskStates4 = [timestamp taskStates];
+                  v48 = [taskStates4 count];
 
                   if (v41 >= v48)
                   {
@@ -27861,8 +27861,8 @@ LABEL_29:
                   }
                 }
 
-                v49 = [v20 startTimestamp];
-                v13 = [v49 le:v33];
+                startTimestamp2 = [v20 startTimestamp];
+                v13 = [startTimestamp2 le:startTimestamp];
 
                 if ((v13 & 1) == 0)
                 {
@@ -27870,25 +27870,25 @@ LABEL_29:
                   v95 = _sa_logt();
                   if (os_log_type_enabled(v95, OS_LOG_TYPE_ERROR))
                   {
-                    v96 = [v20 startTimestamp];
-                    v97 = [v96 debugDescription];
-                    v98 = [v97 UTF8String];
-                    v13 = [v33 debugDescription];
-                    v99 = [v13 UTF8String];
+                    startTimestamp3 = [v20 startTimestamp];
+                    v97 = [startTimestamp3 debugDescription];
+                    uTF8String = [v97 UTF8String];
+                    v13 = [startTimestamp debugDescription];
+                    uTF8String2 = [v13 UTF8String];
                     *buf = 136315394;
-                    v138 = v98;
+                    v138 = uTF8String;
                     v139 = 2080;
-                    v140 = v99;
+                    v140 = uTF8String2;
                     _os_log_error_impl(&dword_1E0E2F000, v95, OS_LOG_TYPE_ERROR, "tempTaskState.startTimestamp %s > timestamp %s", buf, 0x16u);
                   }
 
                   *__error() = v94;
-                  v100 = [v20 startTimestamp];
-                  v101 = [v100 debugDescription];
-                  v12 = [v101 UTF8String];
-                  v102 = [v33 debugDescription];
+                  startTimestamp4 = [v20 startTimestamp];
+                  v101 = [startTimestamp4 debugDescription];
+                  statesCopy = [v101 UTF8String];
+                  v102 = [startTimestamp debugDescription];
                   [v102 UTF8String];
-                  _SASetCrashLogMessage(10884, "tempTaskState.startTimestamp %s > timestamp %s", v103, v104, v105, v106, v107, v108, v12);
+                  _SASetCrashLogMessage(10884, "tempTaskState.startTimestamp %s > timestamp %s", v103, v104, v105, v106, v107, v108, statesCopy);
 
                   _os_crash();
                   __break(1u);
@@ -27897,7 +27897,7 @@ LABEL_125:
                   v110 = _sa_logt();
                   if (os_log_type_enabled(v110, OS_LOG_TYPE_ERROR))
                   {
-                    if (v12)
+                    if (statesCopy)
                     {
                       v111 = "y";
                     }
@@ -27921,7 +27921,7 @@ LABEL_125:
                     v138 = v111;
                     v139 = 2080;
                     v140 = v112;
-                    if (a3)
+                    if (queue)
                     {
                       v113 = "y";
                     }
@@ -27936,7 +27936,7 @@ LABEL_125:
                     _os_log_error_impl(&dword_1E0E2F000, v110, OS_LOG_TYPE_ERROR, "thread %s, dispatchQueue %s, swiftTaskStates %s", buf, 0x20u);
                   }
 
-                  else if (v12)
+                  else if (statesCopy)
                   {
                     v111 = "y";
                   }
@@ -27955,7 +27955,7 @@ LABEL_125:
                 v125 = 0;
                 v19 = v41;
 LABEL_51:
-                a6 = v130;
+                indexes = indexesCopy2;
               }
             }
           }
@@ -27967,21 +27967,21 @@ LABEL_51:
         v51 = v50;
         LOBYTE(v120) = v132;
         v52 = v136;
-        (*(a10 + 16))(a10, a6, v32, v20, v133, v28, v136, v51, v120, buf);
+        (*(jumps + 16))(jumps, indexes, v32, v20, v133, indexesCopy, v136, v51, v120, buf);
         if (buf[0] == 1)
         {
           goto LABEL_119;
         }
 
         v131 = v19;
-        if (a9)
+        if (task)
         {
-          v53 = *(a1 + 104);
+          v53 = *(self + 104);
           if (v53)
           {
             v54 = v134 != 0x7FFFFFFFFFFFFFFFLL && v134 > v32;
             v55 = v54;
-            if (*(a1 + 48) == 1 && !v55)
+            if (*(self + 48) == 1 && !v55)
             {
               v56 = [v53 count];
               v57 = v123;
@@ -27989,19 +27989,19 @@ LABEL_51:
               {
                 if (v134 == 0x7FFFFFFFFFFFFFFFLL)
                 {
-                  v58 = [*(a1 + 104) objectAtIndexedSubscript:?];
-                  v59 = [v58 unsignedLongValue];
+                  v58 = [*(self + 104) objectAtIndexedSubscript:?];
+                  unsignedLongValue = [v58 unsignedLongValue];
 
-                  v21 = v59;
+                  v21 = unsignedLongValue;
                   v57 = v123;
                 }
 
-                v135 = v28;
+                v135 = indexesCopy;
                 if (v21 <= v32)
                 {
                   v60 = v21;
                   v61 = v57 + 1;
-                  v62 = [*(a1 + 104) count];
+                  v62 = [*(self + 104) count];
                   v57 = v61;
                   v21 = v60;
                   if (v57 < v62)
@@ -28009,16 +28009,16 @@ LABEL_51:
                     while (1)
                     {
                       v63 = v57;
-                      v64 = [*(a1 + 104) objectAtIndexedSubscript:?];
-                      v65 = [v64 unsignedLongValue];
+                      v64 = [*(self + 104) objectAtIndexedSubscript:?];
+                      unsignedLongValue2 = [v64 unsignedLongValue];
 
-                      v21 = v65;
-                      if (v65 > v32)
+                      v21 = unsignedLongValue2;
+                      if (unsignedLongValue2 > v32)
                       {
                         break;
                       }
 
-                      v66 = [*(a1 + 104) count];
+                      v66 = [*(self + 104) count];
                       v57 = v63 + 1;
                       if (v63 + 1 >= v66)
                       {
@@ -28032,12 +28032,12 @@ LABEL_51:
 
 LABEL_78:
                 v123 = v57;
-                if (v57 >= [*(a1 + 104) count])
+                if (v57 >= [*(self + 104) count])
                 {
                   v21 = 0x7FFFFFFFFFFFFFFFLL;
                 }
 
-                v28 = v135;
+                indexesCopy = v135;
               }
             }
           }
@@ -28049,39 +28049,39 @@ LABEL_78:
           goto LABEL_86;
         }
 
-        if (*(a1 + 48) != 1)
+        if (*(self + 48) != 1)
         {
           goto LABEL_143;
         }
 
         v67 = v21;
-        v68 = [v20 endSampleIndex];
-        v69 = v68 >= [v136 endSampleIndex];
+        endSampleIndex = [v20 endSampleIndex];
+        v69 = endSampleIndex >= [v136 endSampleIndex];
         v21 = v67;
         if (v69)
         {
           goto LABEL_86;
         }
 
-        if ((*(a1 + 48) & 1) == 0)
+        if ((*(self + 48) & 1) == 0)
         {
 LABEL_143:
           [v20 endTimestamp];
-          v70 = v33;
-          v71 = a6;
-          v72 = a8;
-          v73 = a1;
-          v74 = v28;
+          v70 = startTimestamp;
+          indexesCopy3 = indexes;
+          timestampCopy = timestamp;
+          selfCopy = self;
+          v74 = indexesCopy;
           v76 = v75 = v21;
-          v77 = [v136 endTimestamp];
-          v78 = [v76 ge:v77];
+          endTimestamp3 = [v136 endTimestamp];
+          v78 = [v76 ge:endTimestamp3];
 
           v21 = v75;
-          v28 = v74;
-          a1 = v73;
-          a8 = v72;
-          a6 = v71;
-          v33 = v70;
+          indexesCopy = v74;
+          self = selfCopy;
+          timestamp = timestampCopy;
+          indexes = indexesCopy3;
+          startTimestamp = v70;
           if (v78)
           {
 LABEL_86:
@@ -28096,13 +28096,13 @@ LABEL_86:
             {
               v52 = v136;
               v19 = v131;
-              if (*(a1 + 48) == 1 && v21 < [v136 endSampleIndex] + 1)
+              if (*(self + 48) == 1 && v21 < [v136 endSampleIndex] + 1)
               {
-                v79 = [*(a1 + 168) sampleTimestamps];
-                [v79 objectAtIndexedSubscript:v21];
-                v81 = v80 = v21;
+                sampleTimestamps2 = [*(self + 168) sampleTimestamps];
+                [sampleTimestamps2 objectAtIndexedSubscript:v21];
+                startTimestamp5 = v80 = v21;
 
-                v33 = v79;
+                startTimestamp = sampleTimestamps2;
                 v32 = v80;
                 goto LABEL_90;
               }
@@ -28112,13 +28112,13 @@ LABEL_86:
           }
         }
 
-        if (v21 != 0x7FFFFFFFFFFFFFFFLL && *(a1 + 48) == 1 && v21 < [v20 endSampleIndex] + 1)
+        if (v21 != 0x7FFFFFFFFFFFFFFFLL && *(self + 48) == 1 && v21 < [v20 endSampleIndex] + 1)
         {
-          v83 = [*(a1 + 168) sampleTimestamps];
-          [v83 objectAtIndexedSubscript:v21];
-          v81 = v84 = v21;
+          sampleTimestamps3 = [*(self + 168) sampleTimestamps];
+          [sampleTimestamps3 objectAtIndexedSubscript:v21];
+          startTimestamp5 = v84 = v21;
 
-          v33 = v83;
+          startTimestamp = sampleTimestamps3;
           v32 = v84;
           v19 = v131;
           goto LABEL_90;
@@ -28128,8 +28128,8 @@ LABEL_86:
         do
         {
           v19 = v85;
-          v86 = [a8 taskStates];
-          v87 = [v86 count];
+          taskStates5 = [timestamp taskStates];
+          v87 = [taskStates5 count];
 
           if (v19 >= v87)
           {
@@ -28143,61 +28143,61 @@ LABEL_114:
             goto LABEL_115;
           }
 
-          v88 = [a8 taskStates];
-          v89 = [v88 objectAtIndexedSubscript:v19];
+          taskStates6 = [timestamp taskStates];
+          v89 = [taskStates6 objectAtIndexedSubscript:v19];
 
-          if (*(a1 + 48) != 1)
+          if (*(self + 48) != 1)
           {
             break;
           }
 
-          v90 = [v89 startSampleIndex];
+          startSampleIndex2 = [v89 startSampleIndex];
           v85 = v19 + 1;
           v20 = v89;
         }
 
-        while (v90 == 0x7FFFFFFFFFFFFFFFLL);
+        while (startSampleIndex2 == 0x7FFFFFFFFFFFFFFFLL);
         if (!v89)
         {
           goto LABEL_111;
         }
 
-        v91 = [v89 startSampleIndex];
-        if (v91 == 0x7FFFFFFFFFFFFFFFLL)
+        startSampleIndex3 = [v89 startSampleIndex];
+        if (startSampleIndex3 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v81 = [v89 startTimestamp];
+          startTimestamp5 = [v89 startTimestamp];
           v32 = 0x7FFFFFFFFFFFFFFFLL;
         }
 
         else
         {
-          v32 = v91;
-          v92 = [*(a1 + 168) sampleTimestamps];
-          v81 = [v92 objectAtIndexedSubscript:v32];
+          v32 = startSampleIndex3;
+          sampleTimestamps4 = [*(self + 168) sampleTimestamps];
+          startTimestamp5 = [sampleTimestamps4 objectAtIndexedSubscript:v32];
 
-          v33 = v92;
+          startTimestamp = sampleTimestamps4;
         }
 
         v20 = v89;
 LABEL_90:
 
-        v35 = [v136 endTimestamp];
+        endTimestamp = [v136 endTimestamp];
         v132 = 0;
         v82 = 0;
-        v33 = v81;
+        startTimestamp = startTimestamp5;
       }
 
-      while (([v81 le:v35] & 1) != 0);
+      while (([startTimestamp5 le:endTimestamp] & 1) != 0);
 LABEL_106:
 
-      v33 = v81;
+      startTimestamp = startTimestamp5;
       v132 = v82;
 LABEL_107:
-      a6 = v130;
+      indexes = indexesCopy2;
       v21 = v134;
       v52 = v136;
 LABEL_115:
-      if ([v33 gt:a7])
+      if ([startTimestamp gt:index])
       {
 LABEL_119:
 
@@ -28213,7 +28213,7 @@ LABEL_116:
 LABEL_117:
 
       objc_autoreleasePoolPop(v22);
-      if (++a6 == v17)
+      if (++indexes == v17)
       {
 LABEL_120:
 
@@ -28221,15 +28221,15 @@ LABEL_120:
       }
     }
 
-    v23 = [v13 states];
-    v24 = [v23 objectAtIndexedSubscript:a6];
+    states2 = [v13 states];
+    v24 = [states2 objectAtIndexedSubscript:indexes];
 
-    v25 = [v24 thread];
-    if (![*(a1 + 168) targetDispatchQueueId])
+    thread = [v24 thread];
+    if (![*(self + 168) targetDispatchQueueId])
     {
       v136 = v24;
-      v133 = v25;
-      if (([v25 isMainThread] & 1) != 0 || (v26 = objc_msgSend(v25, "threadId"), v50 = v26 == objc_msgSend(*(a1 + 168), "targetThreadId"), v25 = v133, v50))
+      v133 = thread;
+      if (([thread isMainThread] & 1) != 0 || (v26 = objc_msgSend(thread, "threadId"), v50 = v26 == objc_msgSend(*(self + 168), "targetThreadId"), thread = v133, v50))
       {
         v132 = 1;
         v21 = v134;
@@ -28244,11 +28244,11 @@ LABEL_121:
   v93 = *MEMORY[0x1E69E9840];
 }
 
-- (id)stateChangeStringForThreadState:(unint64_t)a3 serialDispatchQueue:(unint64_t)a4 swiftTaskStates:(void *)a5 thread:(void *)a6 threadStateIndexes:(void *)a7 taskState:(void *)a8 task:(uint64_t)a9 iteratorIndex:(char)a10 missingStateIsInAnotherStack:(uint64_t)a11 numSamplesOmittedSincePreviousDisplayedSample:(void *)a12 sampleTimestamp:(void *)a13 previousSampleTimestamp:(void *)a14 previousDisplayedTimestamp:(void *)a15 previousTaskState:(void *)a16 previousThread:(void *)a17 previousThreadState:(char)a18 dispatchQueueChanges:(char)a19 swiftTaskChanges:(char)a20 priorityChanges:(char)a21 nameChanges:(char)a22 threadChanges:(char)a23 isTimeJump:(void *)a24 ioEventsSincePreviousThreadState:
+- (id)stateChangeStringForThreadState:(unint64_t)state serialDispatchQueue:(unint64_t)queue swiftTaskStates:(void *)states thread:(void *)thread threadStateIndexes:(void *)indexes taskState:(void *)taskState task:(uint64_t)task iteratorIndex:(char)self0 missingStateIsInAnotherStack:(uint64_t)self1 numSamplesOmittedSincePreviousDisplayedSample:(void *)self2 sampleTimestamp:(void *)self3 previousSampleTimestamp:(void *)self4 previousDisplayedTimestamp:(void *)self5 previousTaskState:(void *)self6 previousThread:(void *)self7 previousThreadState:(char)self8 dispatchQueueChanges:(char)self9 swiftTaskChanges:(char)taskChanges priorityChanges:(char)priorityChanges nameChanges:(char)nameChanges threadChanges:(char)threadChanges isTimeJump:(void *)jump ioEventsSincePreviousThreadState:
 {
-  v24 = a16;
+  previousTaskStateCopy = previousTaskState;
   v420 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
 LABEL_529:
     v321 = 0;
@@ -28264,32 +28264,32 @@ LABEL_518:
   v412 = __Block_byref_object_copy__4;
   v413 = __Block_byref_object_dispose__4;
   v414 = 0;
-  if (a14 && a23)
+  if (sampleTimestamp && threadChanges)
   {
-    if (!a12 || !a13)
+    if (!sample || !timestamp)
     {
       v326 = *__error();
       v327 = _sa_logt();
       if (os_log_type_enabled(v327, OS_LOG_TYPE_ERROR))
       {
-        v328 = [a13 debugDescription];
+        v328 = [timestamp debugDescription];
         v329 = v328;
-        v330 = [v328 UTF8String];
-        v24 = [a12 debugDescription];
-        v331 = v24;
-        v332 = [v24 UTF8String];
+        uTF8String = [v328 UTF8String];
+        previousTaskStateCopy = [sample debugDescription];
+        v331 = previousTaskStateCopy;
+        uTF8String2 = [previousTaskStateCopy UTF8String];
         *buf = 136315394;
-        *&buf[4] = v330;
+        *&buf[4] = uTF8String;
         *&buf[12] = 2080;
-        *&buf[14] = v332;
+        *&buf[14] = uTF8String2;
         _os_log_error_impl(&dword_1E0E2F000, v327, OS_LOG_TYPE_ERROR, "timeJump, but previousSampleTimestamp %s and sampleTimestamp %s", buf, 0x16u);
       }
 
       *__error() = v326;
-      v48 = [a13 debugDescription];
+      v48 = [timestamp debugDescription];
       v333 = v48;
       a2 = [v48 UTF8String];
-      v50 = [a12 debugDescription];
+      v50 = [sample debugDescription];
       v334 = v50;
       [v50 UTF8String];
       _SASetCrashLogMessage(11025, "timeJump, but previousSampleTimestamp %s and sampleTimestamp %s", v335, v336, v337, v338, v339, v340, a2);
@@ -28301,41 +28301,41 @@ LABEL_526:
       v400 = _sa_logt();
       if (os_log_type_enabled(v400, OS_LOG_TYPE_ERROR))
       {
-        v341 = [v24 debugDescription];
+        v341 = [previousTaskStateCopy debugDescription];
         v342 = v341;
-        v399 = [v341 UTF8String];
-        v343 = [a17 debugDescription];
+        uTF8String3 = [v341 UTF8String];
+        v343 = [previousThread debugDescription];
         v344 = v343;
-        v345 = [v343 UTF8String];
-        v346 = [a5 debugDescription];
+        uTF8String4 = [v343 UTF8String];
+        v346 = [states debugDescription];
         v347 = v346;
-        v348 = [v346 UTF8String];
+        uTF8String5 = [v346 UTF8String];
         v349 = [a2 debugDescription];
         v350 = v349;
-        v351 = [v349 UTF8String];
+        uTF8String6 = [v349 UTF8String];
         *buf = 134219266;
         *&buf[4] = v48;
         *&buf[12] = 2048;
         *&buf[14] = v50;
         *&buf[22] = 2080;
-        v416 = v399;
+        v416 = uTF8String3;
         *v417 = 2080;
-        *&v417[2] = v345;
+        *&v417[2] = uTF8String4;
         *&v417[10] = 2080;
-        *&v417[12] = v348;
+        *&v417[12] = uTF8String5;
         v418 = 2080;
-        v419 = v351;
+        v419 = uTF8String6;
         _os_log_error_impl(&dword_1E0E2F000, v400, OS_LOG_TYPE_ERROR, "expected index %lu, actual is %lu, previousThread:%s previousThreadState:%s thread:%s threadState:%s", buf, 0x3Eu);
       }
 
       *__error() = v397;
-      v352 = [v24 debugDescription];
+      v352 = [previousTaskStateCopy debugDescription];
       v353 = v352;
       [v352 UTF8String];
-      v354 = [a17 debugDescription];
+      v354 = [previousThread debugDescription];
       v355 = v354;
       [v354 UTF8String];
-      v356 = [a5 debugDescription];
+      v356 = [states debugDescription];
       v357 = v356;
       [v356 UTF8String];
       v358 = [a2 debugDescription];
@@ -28348,7 +28348,7 @@ LABEL_526:
       goto LABEL_529;
     }
 
-    v27 = [(SASamplePrinter *)a1 timeSpentAsleepBetweenStartTimestamp:a14 endTimestamp:a12];
+    v27 = [(SASamplePrinter *)self timeSpentAsleepBetweenStartTimestamp:sampleTimestamp endTimestamp:sample];
     if (v27 > 0.0)
     {
       v28 = v410[5];
@@ -28367,12 +28367,12 @@ LABEL_526:
       [v410[5] appendFormat:@"machine asleep for %.0fs", *&v27];
     }
 
-    if (*(a1 + 96) > 0.0)
+    if (*(self + 96) > 0.0)
     {
-      [a12 machAbsTimeSeconds];
+      [sample machAbsTimeSeconds];
       v32 = v31;
-      [a13 machAbsTimeSeconds];
-      if (v32 - v33 >= *(a1 + 96) * 10.0)
+      [timestamp machAbsTimeSeconds];
+      if (v32 - v33 >= *(self + 96) * 10.0)
       {
         v34 = v410[5];
         if (v34)
@@ -28388,24 +28388,24 @@ LABEL_526:
         }
 
         v37 = v410[5];
-        [a12 machAbsTimeSeconds];
+        [sample machAbsTimeSeconds];
         v39 = v38;
-        [a13 machAbsTimeSeconds];
+        [timestamp machAbsTimeSeconds];
         [v37 appendFormat:@"%.0fms gap with no samples", (v39 - v40) * 1000.0];
       }
     }
   }
 
-  if (*(a1 + 48) != 1)
+  if (*(self + 48) != 1)
   {
     goto LABEL_75;
   }
 
-  if (a3)
+  if (state)
   {
     v41 = @"DispatchQueue";
 LABEL_20:
-    if (a11)
+    if (stack)
     {
       v42 = v410[5];
       if (v42)
@@ -28421,20 +28421,20 @@ LABEL_20:
       }
 
       v47 = @"s";
-      if (a11 == 1)
+      if (stack == 1)
       {
         v47 = &stru_1F5BBF440;
       }
 
-      [v410[5] appendFormat:@"%@ omitted via filtering for %lu sample%@", v41, a11, v47];
+      [v410[5] appendFormat:@"%@ omitted via filtering for %lu sample%@", v41, stack, v47];
     }
 
-    if (!a2 || a17 == a2)
+    if (!a2 || previousThread == a2)
     {
 LABEL_75:
-      if (a5)
+      if (states)
       {
-        v73 = a16 == a5;
+        v73 = previousTaskState == states;
       }
 
       else
@@ -28444,7 +28444,7 @@ LABEL_75:
 
       v74 = !v73;
       v391 = v74;
-      if (!v73 && a22)
+      if (!v73 && nameChanges)
       {
         v75 = v410[5];
         if (v75)
@@ -28459,12 +28459,12 @@ LABEL_75:
           v410[5] = v76;
         }
 
-        [v410[5] appendFormat:@"%@ 0x%llx", @"Thread", objc_msgSend(a5, "threadId")];
+        [v410[5] appendFormat:@"%@ 0x%llx", @"Thread", objc_msgSend(states, "threadId")];
       }
 
       if (a2)
       {
-        v78 = a17 == a2;
+        v78 = previousThread == a2;
       }
 
       else
@@ -28479,11 +28479,11 @@ LABEL_75:
         goto LABEL_144;
       }
 
-      if (a17)
+      if (previousThread)
       {
-        v80 = [a17 swiftTask];
-        v81 = [a2 swiftTask];
-        v82 = v80 == v81;
+        swiftTask = [previousThread swiftTask];
+        swiftTask2 = [a2 swiftTask];
+        v82 = swiftTask == swiftTask2;
 
         if (v82)
         {
@@ -28491,18 +28491,18 @@ LABEL_75:
         }
       }
 
-      else if (!a19)
+      else if (!changes)
       {
         goto LABEL_116;
       }
 
-      v83 = [a2 swiftTask];
-      v84 = v83;
-      if (v83)
+      swiftTask3 = [a2 swiftTask];
+      v84 = swiftTask3;
+      if (swiftTask3)
       {
-        v85 = [v83 identifier];
+        identifier = [swiftTask3 identifier];
         v86 = v410[5];
-        if (v85 == -1)
+        if (identifier == -1)
         {
           if (v86)
           {
@@ -28555,39 +28555,39 @@ LABEL_75:
         [v410[5] appendFormat:@"%@ none", @"Swift Task"];
       }
 
-      if (a17)
+      if (previousThread)
       {
 LABEL_113:
-        v94 = [a17 dispatchQueue];
-        v95 = [a2 dispatchQueue];
-        v96 = v94 == v95;
+        dispatchQueue = [previousThread dispatchQueue];
+        dispatchQueue2 = [a2 dispatchQueue];
+        v96 = dispatchQueue == dispatchQueue2;
 
         if (v96)
         {
-          if ((a21 & 1) == 0)
+          if ((priorityChanges & 1) == 0)
           {
             goto LABEL_144;
           }
 
 LABEL_122:
-          v103 = [a17 name];
-          v104 = [a2 name];
-          v105 = v103 == v104;
+          name = [previousThread name];
+          name2 = [a2 name];
+          v105 = name == name2;
 
           if (v105)
           {
             goto LABEL_144;
           }
 
-          v106 = [a17 name];
-          if (v106)
+          name3 = [previousThread name];
+          if (name3)
           {
-            v107 = [a2 name];
-            if (v107)
+            name4 = [a2 name];
+            if (name4)
             {
-              v108 = [a17 name];
-              v109 = [a2 name];
-              v110 = [v108 isEqualToString:v109];
+              name5 = [previousThread name];
+              name6 = [a2 name];
+              v110 = [name5 isEqualToString:name6];
 
               if (v110)
               {
@@ -28607,18 +28607,18 @@ LABEL_122:
       }
 
 LABEL_116:
-      if (!a18)
+      if (!threadState)
       {
-        if ((a21 & 1) == 0)
+        if ((priorityChanges & 1) == 0)
         {
           goto LABEL_144;
         }
 
 LABEL_130:
-        v111 = [a2 name];
+        name7 = [a2 name];
 
         v112 = v410[5];
-        if (v111)
+        if (name7)
         {
           if (v112)
           {
@@ -28633,14 +28633,14 @@ LABEL_130:
           }
 
           v116 = v410[5];
-          v117 = [a2 name];
-          v118 = SACopySanitizedString(v117, 1, 0);
+          name8 = [a2 name];
+          v118 = SACopySanitizedString(name8, 1, 0);
           [v116 appendFormat:@"Thread name %@", v118];
 
           goto LABEL_144;
         }
 
-        if (a17)
+        if (previousThread)
         {
           if (v112)
           {
@@ -28689,13 +28689,13 @@ LABEL_117:
       }
 
       v100 = v410[5];
-      v101 = [a2 dispatchQueue];
-      v102 = [SASamplePrinter displayNameForDispatchQueue:v101];
+      dispatchQueue3 = [a2 dispatchQueue];
+      v102 = [SASamplePrinter displayNameForDispatchQueue:dispatchQueue3];
       [v100 appendFormat:@"%@ %@", @"DispatchQueue", v102];
 
-      if (a21)
+      if (priorityChanges)
       {
-        if (!a17)
+        if (!previousThread)
         {
           goto LABEL_130;
         }
@@ -28704,9 +28704,9 @@ LABEL_117:
       }
 
 LABEL_144:
-      if (a7)
+      if (indexes)
       {
-        v121 = a15 == a7;
+        v121 = displayedTimestamp == indexes;
       }
 
       else
@@ -28724,34 +28724,34 @@ LABEL_164:
           goto LABEL_206;
         }
 
-        v129 = [*(a1 + 16) displayQoSTransitionsBetweenUnspecifiedAndUnavailable];
+        displayQoSTransitionsBetweenUnspecifiedAndUnavailable = [*(self + 16) displayQoSTransitionsBetweenUnspecifiedAndUnavailable];
         v407[0] = MEMORY[0x1E69E9820];
         v407[1] = 3221225472;
         v407[2] = __461__SASamplePrinter_stateChangeStringForThreadState_serialDispatchQueue_swiftTaskStates_thread_threadStateIndexes_taskState_task_iteratorIndex_missingStateIsInAnotherStack_numSamplesOmittedSincePreviousDisplayedSample_sampleTimestamp_previousSampleTimestamp_previousDisplayedTimestamp_previousTaskState_previousThread_previousThreadState_dispatchQueueChanges_swiftTaskChanges_priorityChanges_nameChanges_threadChanges_isTimeJump_ioEventsSincePreviousThreadState___block_invoke;
         v407[3] = &__block_descriptor_33_e8_B12__0C8l;
-        v408 = v129;
+        v408 = displayQoSTransitionsBetweenUnspecifiedAndUnavailable;
         v130 = MEMORY[0x1E12EBE50](v407);
         v405[0] = MEMORY[0x1E69E9820];
         v405[1] = 3221225472;
         v405[2] = __461__SASamplePrinter_stateChangeStringForThreadState_serialDispatchQueue_swiftTaskStates_thread_threadStateIndexes_taskState_task_iteratorIndex_missingStateIsInAnotherStack_numSamplesOmittedSincePreviousDisplayedSample_sampleTimestamp_previousSampleTimestamp_previousDisplayedTimestamp_previousTaskState_previousThread_previousThreadState_dispatchQueueChanges_swiftTaskChanges_priorityChanges_nameChanges_threadChanges_isTimeJump_ioEventsSincePreviousThreadState___block_invoke_2;
         v405[3] = &__block_descriptor_33_e11_B16__0C8C12l;
-        v406 = v129;
+        v406 = displayQoSTransitionsBetweenUnspecifiedAndUnavailable;
         v131 = MEMORY[0x1E12EBE50](v405);
-        if (a17)
+        if (previousThread)
         {
-          v132 = v131[2](v131, [a17 threadRequestedQos], objc_msgSend(a2, "threadRequestedQos"));
-          v133 = v131[2](v131, [a17 threadRequestedQosOverride], objc_msgSend(a2, "threadRequestedQosOverride"));
-          v134 = v131[2](v131, [a17 threadQosPromote], objc_msgSend(a2, "threadQosPromote"));
-          v387 = v131[2](v131, [a17 threadQosKEventOverride], objc_msgSend(a2, "threadQosKEventOverride"));
-          v385 = v131[2](v131, [a17 threadQosWorkQueueOverride], objc_msgSend(a2, "threadQosWorkQueueOverride"));
-          v384 = v131[2](v131, [a17 threadQosWorkloopServicerOverride], objc_msgSend(a2, "threadQosWorkloopServicerOverride"));
-          v135 = [a2 isPromotedAboveTask];
-          if (v135 == [a17 isPromotedAboveTask])
+          v132 = v131[2](v131, [previousThread threadRequestedQos], objc_msgSend(a2, "threadRequestedQos"));
+          v133 = v131[2](v131, [previousThread threadRequestedQosOverride], objc_msgSend(a2, "threadRequestedQosOverride"));
+          v134 = v131[2](v131, [previousThread threadQosPromote], objc_msgSend(a2, "threadQosPromote"));
+          v387 = v131[2](v131, [previousThread threadQosKEventOverride], objc_msgSend(a2, "threadQosKEventOverride"));
+          v385 = v131[2](v131, [previousThread threadQosWorkQueueOverride], objc_msgSend(a2, "threadQosWorkQueueOverride"));
+          v384 = v131[2](v131, [previousThread threadQosWorkloopServicerOverride], objc_msgSend(a2, "threadQosWorkloopServicerOverride"));
+          isPromotedAboveTask = [a2 isPromotedAboveTask];
+          if (isPromotedAboveTask == [previousThread isPromotedAboveTask])
           {
             if (((v132 | v133 | v134 | v387 | v385 | v384) & 1) == 0)
             {
-              v136 = [a2 threadQos];
-              if (v136 == [a17 threadQos])
+              threadQos = [a2 threadQos];
+              if (threadQos == [previousThread threadQos])
               {
                 goto LABEL_205;
               }
@@ -28823,9 +28823,9 @@ LABEL_198:
                         {
                           [v410[5] appendString:{@", "}];
 LABEL_200:
-                          v155 = [a2 isPromotedAboveTask];
+                          isPromotedAboveTask2 = [a2 isPromotedAboveTask];
                           v156 = v410[5];
-                          if (v155)
+                          if (isPromotedAboveTask2)
                           {
                             v157 = @"thread promoted above process clamp";
                           }
@@ -28941,15 +28941,15 @@ LABEL_206:
                   goto LABEL_331;
                 }
 
-                if (![a8 usesSuddenTermination])
+                if (![taskState usesSuddenTermination])
                 {
 LABEL_221:
-                  if (!a15)
+                  if (!displayedTimestamp)
                   {
-                    if (([a7 isBoosted] & 1) == 0)
+                    if (([indexes isBoosted] & 1) == 0)
                     {
 LABEL_235:
-                      if (([a7 isRunawayMitigated] & 1) == 0)
+                      if (([indexes isRunawayMitigated] & 1) == 0)
                       {
                         goto LABEL_248;
                       }
@@ -28963,17 +28963,17 @@ LABEL_235:
                   }
 
 LABEL_222:
-                  v164 = [a7 isBoosted];
-                  if (v164 == [a15 isBoosted])
+                  isBoosted = [indexes isBoosted];
+                  if (isBoosted == [displayedTimestamp isBoosted])
                   {
                     goto LABEL_237;
                   }
 
                   v165 = 0;
 LABEL_226:
-                  v166 = [a7 isBoosted];
+                  isBoosted2 = [indexes isBoosted];
                   v167 = v410[5];
-                  if (v166)
+                  if (isBoosted2)
                   {
                     if (v167)
                     {
@@ -29010,17 +29010,17 @@ LABEL_234:
                   }
 
 LABEL_237:
-                  v172 = [a7 isRunawayMitigated];
-                  if (v172 == [a15 isRunawayMitigated])
+                  isRunawayMitigated = [indexes isRunawayMitigated];
+                  if (isRunawayMitigated == [displayedTimestamp isRunawayMitigated])
                   {
                     goto LABEL_250;
                   }
 
                   v171 = 0;
 LABEL_239:
-                  v173 = [a7 isRunawayMitigated];
+                  isRunawayMitigated2 = [indexes isRunawayMitigated];
                   v174 = v410[5];
-                  if (v173)
+                  if (isRunawayMitigated2)
                   {
                     if (v174)
                     {
@@ -29055,30 +29055,30 @@ LABEL_247:
                   {
 LABEL_248:
                     v178 = 1;
-                    if (([a7 isTALEngaged] & 1) == 0)
+                    if (([indexes isTALEngaged] & 1) == 0)
                     {
 LABEL_260:
-                      if (![a8 isRunningBoardManaged])
+                      if (![taskState isRunningBoardManaged])
                       {
                         goto LABEL_282;
                       }
 
                       if ((v178 & 1) == 0)
                       {
-                        v185 = [a7 isRunningBoardActive];
-                        if (v185 == [a15 isRunningBoardActive])
+                        isRunningBoardActive = [indexes isRunningBoardActive];
+                        if (isRunningBoardActive == [displayedTimestamp isRunningBoardActive])
                         {
 LABEL_272:
-                          v191 = [a7 hasRunningBoardAssertion];
-                          if (v191 == [a15 hasRunningBoardAssertion])
+                          hasRunningBoardAssertion = [indexes hasRunningBoardAssertion];
+                          if (hasRunningBoardAssertion == [displayedTimestamp hasRunningBoardAssertion])
                           {
                             goto LABEL_286;
                           }
 
 LABEL_273:
-                          v192 = [a7 hasRunningBoardAssertion];
+                          hasRunningBoardAssertion2 = [indexes hasRunningBoardAssertion];
                           v193 = v410[5];
-                          if (v192)
+                          if (hasRunningBoardAssertion2)
                           {
                             if (v193)
                             {
@@ -29089,21 +29089,21 @@ LABEL_281:
 LABEL_282:
                               if (v178)
                               {
-                                v197 = [a7 effectiveJetsamPriority] != 0x80000000;
+                                v197 = [indexes effectiveJetsamPriority] != 0x80000000;
                                 v199 = 0;
-                                if ([a7 requestedJetsamPriority] != 0x80000000)
+                                if ([indexes requestedJetsamPriority] != 0x80000000)
                                 {
-                                  v198 = [a7 requestedJetsamPriority];
-                                  if (v198 != [a7 effectiveJetsamPriority])
+                                  requestedJetsamPriority = [indexes requestedJetsamPriority];
+                                  if (requestedJetsamPriority != [indexes effectiveJetsamPriority])
                                   {
                                     v199 = 1;
                                   }
                                 }
 
-                                if ([a7 assertionJetsamPriority] != 0x80000000)
+                                if ([indexes assertionJetsamPriority] != 0x80000000)
                                 {
-                                  v206 = [a7 assertionJetsamPriority];
-                                  v207 = [a7 effectiveJetsamPriority];
+                                  assertionJetsamPriority = [indexes assertionJetsamPriority];
+                                  effectiveJetsamPriority = [indexes effectiveJetsamPriority];
                                   goto LABEL_297;
                                 }
 
@@ -29111,32 +29111,32 @@ LABEL_282:
                               }
 
 LABEL_286:
-                              v200 = [a7 effectiveJetsamPriority];
-                              v197 = v200 != [a15 effectiveJetsamPriority];
-                              v201 = [a7 requestedJetsamPriority];
+                              effectiveJetsamPriority2 = [indexes effectiveJetsamPriority];
+                              v197 = effectiveJetsamPriority2 != [displayedTimestamp effectiveJetsamPriority];
+                              requestedJetsamPriority2 = [indexes requestedJetsamPriority];
                               v199 = 0;
-                              if (v201 != [a15 requestedJetsamPriority])
+                              if (requestedJetsamPriority2 != [displayedTimestamp requestedJetsamPriority])
                               {
-                                v202 = [a7 requestedJetsamPriority];
-                                if (v202 != [a7 effectiveJetsamPriority] || (v203 = objc_msgSend(a15, "requestedJetsamPriority"), v203 != objc_msgSend(a15, "effectiveJetsamPriority")))
+                                requestedJetsamPriority3 = [indexes requestedJetsamPriority];
+                                if (requestedJetsamPriority3 != [indexes effectiveJetsamPriority] || (v203 = objc_msgSend(displayedTimestamp, "requestedJetsamPriority"), v203 != objc_msgSend(displayedTimestamp, "effectiveJetsamPriority")))
                                 {
                                   v199 = 1;
                                 }
                               }
 
-                              v204 = [a7 assertionJetsamPriority];
-                              if (v204 != [a15 assertionJetsamPriority])
+                              assertionJetsamPriority2 = [indexes assertionJetsamPriority];
+                              if (assertionJetsamPriority2 != [displayedTimestamp assertionJetsamPriority])
                               {
-                                v205 = [a7 assertionJetsamPriority];
-                                if (v205 != [a7 effectiveJetsamPriority])
+                                assertionJetsamPriority3 = [indexes assertionJetsamPriority];
+                                if (assertionJetsamPriority3 != [indexes effectiveJetsamPriority])
                                 {
                                   goto LABEL_301;
                                 }
 
-                                v206 = [a15 assertionJetsamPriority];
-                                v207 = [a15 effectiveJetsamPriority];
+                                assertionJetsamPriority = [displayedTimestamp assertionJetsamPriority];
+                                effectiveJetsamPriority = [displayedTimestamp effectiveJetsamPriority];
 LABEL_297:
-                                if (v206 == v207)
+                                if (assertionJetsamPriority == effectiveJetsamPriority)
                                 {
                                   goto LABEL_298;
                                 }
@@ -29144,9 +29144,9 @@ LABEL_297:
 LABEL_301:
                                 v208 = 1;
 LABEL_302:
-                                v209 = [a7 effectiveJetsamPriority];
+                                effectiveJetsamPriority3 = [indexes effectiveJetsamPriority];
                                 v210 = v410[5];
-                                if (v209 == 0x80000000)
+                                if (effectiveJetsamPriority3 == 0x80000000)
                                 {
                                   if (v210)
                                   {
@@ -29177,31 +29177,31 @@ LABEL_302:
                                     v410[5] = v213;
                                   }
 
-                                  [v410[5] appendFormat:@"jetsam priority %d", objc_msgSend(a7, "effectiveJetsamPriority")];
+                                  [v410[5] appendFormat:@"jetsam priority %d", objc_msgSend(indexes, "effectiveJetsamPriority")];
                                 }
 
                                 if ((v208 | v199) == 1)
                                 {
                                   objc_msgSend(v410[5], "appendString:", @" (requested ");
-                                  if ([a7 requestedJetsamPriority] == 0x80000000)
+                                  if ([indexes requestedJetsamPriority] == 0x80000000)
                                   {
                                     [v410[5] appendString:@"unknown"];
                                   }
 
                                   else
                                   {
-                                    [v410[5] appendFormat:@"%d", objc_msgSend(a7, "requestedJetsamPriority")];
+                                    [v410[5] appendFormat:@"%d", objc_msgSend(indexes, "requestedJetsamPriority")];
                                   }
 
                                   [v410[5] appendString:{@", assertion "}];
-                                  if ([a7 assertionJetsamPriority] == 0x80000000)
+                                  if ([indexes assertionJetsamPriority] == 0x80000000)
                                   {
                                     [v410[5] appendString:@"unknown"];
                                   }
 
                                   else
                                   {
-                                    [v410[5] appendFormat:@"%d", objc_msgSend(a7, "assertionJetsamPriority")];
+                                    [v410[5] appendFormat:@"%d", objc_msgSend(indexes, "assertionJetsamPriority")];
                                   }
 
                                   [v410[5] appendString:@""]);
@@ -29210,7 +29210,7 @@ LABEL_302:
 LABEL_319:
                                 if (v178)
                                 {
-                                  if ([a7 memoryLimitMB] == 0x80000000)
+                                  if ([indexes memoryLimitMB] == 0x80000000)
                                   {
                                     goto LABEL_330;
                                   }
@@ -29218,21 +29218,21 @@ LABEL_319:
 
                                 else
                                 {
-                                  v215 = [a7 memoryLimitMB];
-                                  if (v215 == [a15 memoryLimitMB])
+                                  memoryLimitMB = [indexes memoryLimitMB];
+                                  if (memoryLimitMB == [displayedTimestamp memoryLimitMB])
                                   {
                                     goto LABEL_330;
                                   }
                                 }
 
-                                if ([a7 memoryLimitMB] == 0x80000000)
+                                if ([indexes memoryLimitMB] == 0x80000000)
                                 {
                                   v216 = @"unknown";
                                 }
 
                                 else
                                 {
-                                  v216 = SAFormattedBytesEx([a7 memoryLimitMB] << 20, 1, 0, 0, 0x100000uLL);
+                                  v216 = SAFormattedBytesEx([indexes memoryLimitMB] << 20, 1, 0, 0, 0x100000uLL);
                                 }
 
                                 v217 = v410[5];
@@ -29257,12 +29257,12 @@ LABEL_330:
                                 }
 
 LABEL_331:
-                                if (a17 != a2)
+                                if (previousThread != a2)
                                 {
-                                  if (a17)
+                                  if (previousThread)
                                   {
-                                    v220 = [a17 isDarwinBG];
-                                    if (v220 != [a2 isDarwinBG])
+                                    isDarwinBG = [previousThread isDarwinBG];
+                                    if (isDarwinBG != [a2 isDarwinBG])
                                     {
 LABEL_334:
                                       v221 = v410[5];
@@ -29279,10 +29279,10 @@ LABEL_334:
                                       }
 
                                       v225 = v410[5];
-                                      v226 = [a2 isDarwinBG];
+                                      isDarwinBG2 = [a2 isDarwinBG];
                                       v227 = @"not ";
                                       v222 = &stru_1F5BBF440;
-                                      if (v226)
+                                      if (isDarwinBG2)
                                       {
                                         v227 = &stru_1F5BBF440;
                                       }
@@ -29294,50 +29294,50 @@ LABEL_342:
                                         goto LABEL_364;
                                       }
 
-                                      if (a15)
+                                      if (displayedTimestamp)
                                       {
-                                        v228 = [a15 isDarwinBG];
-                                        if (v228 == [a7 isDarwinBG])
+                                        isDarwinBG3 = [displayedTimestamp isDarwinBG];
+                                        if (isDarwinBG3 == [indexes isDarwinBG])
                                         {
 LABEL_357:
-                                          v235 = [a15 donatingUniquePids];
-                                          v236 = [a7 donatingUniquePids];
-                                          v237 = v236;
-                                          if ((v235 != 0) != (v236 != 0) || v235 && v236 && ([v235 isEqualToSet:v236] & 1) == 0)
+                                          donatingUniquePids = [displayedTimestamp donatingUniquePids];
+                                          donatingUniquePids2 = [indexes donatingUniquePids];
+                                          v237 = donatingUniquePids2;
+                                          if ((donatingUniquePids != 0) != (donatingUniquePids2 != 0) || donatingUniquePids && donatingUniquePids2 && ([donatingUniquePids isEqualToSet:donatingUniquePids2] & 1) == 0)
                                           {
                                             v404[0] = MEMORY[0x1E69E9820];
                                             v404[1] = 3221225472;
                                             v404[2] = __461__SASamplePrinter_stateChangeStringForThreadState_serialDispatchQueue_swiftTaskStates_thread_threadStateIndexes_taskState_task_iteratorIndex_missingStateIsInAnotherStack_numSamplesOmittedSincePreviousDisplayedSample_sampleTimestamp_previousSampleTimestamp_previousDisplayedTimestamp_previousTaskState_previousThread_previousThreadState_dispatchQueueChanges_swiftTaskChanges_priorityChanges_nameChanges_threadChanges_isTimeJump_ioEventsSincePreviousThreadState___block_invoke_3;
                                             v404[3] = &unk_1E86F7D40;
-                                            v404[4] = a8;
-                                            v404[5] = a1;
+                                            v404[4] = taskState;
+                                            v404[5] = self;
                                             v404[6] = &v409;
                                             v238 = MEMORY[0x1E12EBE50](v404);
                                             v239 = v238;
-                                            if (a14 != 0 && v235 != 0)
+                                            if (sampleTimestamp != 0 && donatingUniquePids != 0)
                                             {
-                                              (*(v238 + 16))(v238, v235, v237, @"dropped", a14);
+                                              (*(v238 + 16))(v238, donatingUniquePids, v237, @"dropped", sampleTimestamp);
                                             }
 
-                                            v240 = [a7 startTimestamp];
-                                            if (v240)
+                                            startTimestamp = [indexes startTimestamp];
+                                            if (startTimestamp)
                                             {
-                                              (v239)[2](v239, v237, v235, @"received", v240);
+                                              (v239)[2](v239, v237, donatingUniquePids, @"received", startTimestamp);
                                             }
                                           }
 
 LABEL_364:
-                                          if (![*(a1 + 16) displayDifferentTypesOfSuspension])
+                                          if (![*(self + 16) displayDifferentTypesOfSuspension])
                                           {
                                             goto LABEL_437;
                                           }
 
                                           if ((v394 & 1) == 0)
                                           {
-                                            if (a17)
+                                            if (previousThread)
                                             {
-                                              v241 = [a2 isSuspended];
-                                              if (v241 != [a17 isSuspended])
+                                              isSuspended = [a2 isSuspended];
+                                              if (isSuspended != [previousThread isSuspended])
                                               {
 LABEL_368:
                                                 v242 = 1;
@@ -29358,12 +29358,12 @@ LABEL_375:
                                             goto LABEL_427;
                                           }
 
-                                          if (a15)
+                                          if (displayedTimestamp)
                                           {
-                                            v243 = [a7 suspendCount];
-                                            v244 = v243 != [a15 suspendCount];
-                                            v245 = [a7 isPidSuspended];
-                                            if (v245 != [a15 isPidSuspended])
+                                            suspendCount = [indexes suspendCount];
+                                            v244 = suspendCount != [displayedTimestamp suspendCount];
+                                            isPidSuspended = [indexes isPidSuspended];
+                                            if (isPidSuspended != [displayedTimestamp isPidSuspended])
                                             {
                                               goto LABEL_378;
                                             }
@@ -29371,11 +29371,11 @@ LABEL_375:
 
                                           else
                                           {
-                                            v244 = [a7 suspendCount] != 0;
-                                            if ([a7 isPidSuspended])
+                                            v244 = [indexes suspendCount] != 0;
+                                            if ([indexes isPidSuspended])
                                             {
 LABEL_378:
-                                              if ([a7 isPidSuspended])
+                                              if ([indexes isPidSuspended])
                                               {
                                                 v246 = v410[5];
                                                 if (v246)
@@ -29391,7 +29391,7 @@ LABEL_405:
 
                                                   v248 = 1;
 LABEL_407:
-                                                  if ([a7 suspendCount])
+                                                  if ([indexes suspendCount])
                                                   {
                                                     v259 = v410[5];
                                                     if (v259)
@@ -29407,14 +29407,14 @@ LABEL_407:
                                                     }
 
                                                     v255 = v410[5];
-                                                    v256 = [a7 suspendCount];
+                                                    suspendCount2 = [indexes suspendCount];
                                                     v257 = @"process suspend count %d";
 LABEL_420:
-                                                    [v255 appendFormat:v257, v256];
+                                                    [v255 appendFormat:v257, suspendCount2];
                                                     goto LABEL_427;
                                                   }
 
-                                                  if ((v248 & 1) != 0 || ![a7 isPidSuspended])
+                                                  if ((v248 & 1) != 0 || ![indexes isPidSuspended])
                                                   {
                                                     if ((v242 & 1) == 0 && [a2 isSuspended])
                                                     {
@@ -29462,9 +29462,9 @@ LABEL_427:
                                                         goto LABEL_437;
                                                       }
 
-                                                      v268 = [a2 isSuspended];
+                                                      isSuspended2 = [a2 isSuspended];
                                                       v269 = v410[5];
-                                                      if (v268)
+                                                      if (isSuspended2)
                                                       {
                                                         if (v269)
                                                         {
@@ -29479,14 +29479,14 @@ LABEL_437:
                                                           }
 
 LABEL_438:
-                                                          if (a15)
+                                                          if (displayedTimestamp)
                                                           {
-                                                            v273 = [a7 isSuppressed];
-                                                            if (v273 == [a15 isSuppressed])
+                                                            isSuppressed = [indexes isSuppressed];
+                                                            if (isSuppressed == [displayedTimestamp isSuppressed])
                                                             {
 LABEL_451:
-                                                              v279 = [a7 latencyQos];
-                                                              if (v279 == [a15 latencyQos])
+                                                              latencyQos = [indexes latencyQos];
+                                                              if (latencyQos == [displayedTimestamp latencyQos])
                                                               {
                                                                 goto LABEL_470;
                                                               }
@@ -29495,14 +29495,14 @@ LABEL_451:
                                                             }
                                                           }
 
-                                                          else if (([a7 isSuppressed] & 1) == 0)
+                                                          else if (([indexes isSuppressed] & 1) == 0)
                                                           {
                                                             goto LABEL_453;
                                                           }
 
-                                                          v274 = [a7 isSuppressed];
+                                                          isSuppressed2 = [indexes isSuppressed];
                                                           v275 = v410[5];
-                                                          if (v274)
+                                                          if (isSuppressed2)
                                                           {
                                                             if (v275)
                                                             {
@@ -29533,21 +29533,21 @@ LABEL_451:
 
 LABEL_450:
                                                           [v410[5] appendFormat:v276];
-                                                          if (a15)
+                                                          if (displayedTimestamp)
                                                           {
                                                             goto LABEL_451;
                                                           }
 
 LABEL_453:
-                                                          v280 = [a7 latencyQos];
-                                                          if (!v280 || v280 == 16711681)
+                                                          latencyQos2 = [indexes latencyQos];
+                                                          if (!latencyQos2 || latencyQos2 == 16711681)
                                                           {
 LABEL_470:
                                                             if ((v394 & 1) == 0)
                                                             {
-                                                              if (a17 && (v290 = [a2 ioTier], v290 == objc_msgSend(a17, "ioTier")) && (v291 = objc_msgSend(a2, "isIOPassive"), v291 == objc_msgSend(a17, "isIOPassive")))
+                                                              if (previousThread && (v290 = [a2 ioTier], v290 == objc_msgSend(previousThread, "ioTier")) && (v291 = objc_msgSend(a2, "isIOPassive"), v291 == objc_msgSend(previousThread, "isIOPassive")))
                                                               {
-                                                                if ((a20 & 1) == 0)
+                                                                if ((taskChanges & 1) == 0)
                                                                 {
                                                                   goto LABEL_498;
                                                                 }
@@ -29574,26 +29574,26 @@ LABEL_470:
                                                                   [v410[5] appendString:@" and passive"];
                                                                 }
 
-                                                                if ((a20 & 1) == 0)
+                                                                if ((taskChanges & 1) == 0)
                                                                 {
                                                                   goto LABEL_498;
                                                                 }
 
-                                                                if (!a17)
+                                                                if (!previousThread)
                                                                 {
                                                                   goto LABEL_485;
                                                                 }
                                                               }
 
-                                                              v295 = [a17 scheduledPriority];
-                                                              if (v295 != [a2 scheduledPriority] || (v296 = objc_msgSend(a17, "basePriority"), v296 != objc_msgSend(a2, "basePriority")))
+                                                              scheduledPriority = [previousThread scheduledPriority];
+                                                              if (scheduledPriority != [a2 scheduledPriority] || (v296 = objc_msgSend(previousThread, "basePriority"), v296 != objc_msgSend(a2, "basePriority")))
                                                               {
 LABEL_485:
                                                                 if (([a2 scheduledPriority] & 0x80000000) == 0)
                                                                 {
-                                                                  v297 = [a2 basePriority];
+                                                                  basePriority = [a2 basePriority];
                                                                   v298 = v410[5];
-                                                                  if (v297 < 0)
+                                                                  if (basePriority < 0)
                                                                   {
                                                                     if (v298)
                                                                     {
@@ -29631,7 +29631,7 @@ LABEL_485:
                                                             }
 
 LABEL_498:
-                                                            if ([a24 count])
+                                                            if ([jump count])
                                                             {
                                                               v304 = v410[5];
                                                               if (v304)
@@ -29647,25 +29647,25 @@ LABEL_498:
                                                               }
 
                                                               v307 = v410[5];
-                                                              v308 = [(SASamplePrinter *)a1 copyDescriptionForIOEvents:a24];
+                                                              v308 = [(SASamplePrinter *)self copyDescriptionForIOEvents:jump];
                                                               [v307 appendString:v308];
                                                             }
 
                                                             if (v391)
                                                             {
-                                                              v309 = [*(a1 + 168) mountStatusTracker];
-                                                              v310 = -[SAMountStatusTracker hasUnresponsiveMountsForThreadID:](v309, [a5 threadId]);
+                                                              mountStatusTracker = [*(self + 168) mountStatusTracker];
+                                                              v310 = -[SAMountStatusTracker hasUnresponsiveMountsForThreadID:](mountStatusTracker, [states threadId]);
 
                                                               if (v310)
                                                               {
-                                                                v311 = a14;
-                                                                if (!a14)
+                                                                sampleTimestampCopy = sampleTimestamp;
+                                                                if (!sampleTimestamp)
                                                                 {
-                                                                  v311 = *(a1 + 32);
+                                                                  sampleTimestampCopy = *(self + 32);
                                                                 }
 
-                                                                v312 = v311;
-                                                                if (a3 | a4)
+                                                                v312 = sampleTimestampCopy;
+                                                                if (state | queue)
                                                                 {
                                                                   *buf = 0;
                                                                   *&buf[8] = buf;
@@ -29673,37 +29673,37 @@ LABEL_498:
                                                                   v416 = __Block_byref_object_copy__4;
                                                                   *v417 = __Block_byref_object_dispose__4;
                                                                   *&v417[8] = a2;
-                                                                  v313 = *(a1 + 40);
+                                                                  v313 = *(self + 40);
                                                                   v403[0] = MEMORY[0x1E69E9820];
                                                                   v403[1] = 3221225472;
                                                                   v403[2] = __461__SASamplePrinter_stateChangeStringForThreadState_serialDispatchQueue_swiftTaskStates_thread_threadStateIndexes_taskState_task_iteratorIndex_missingStateIsInAnotherStack_numSamplesOmittedSincePreviousDisplayedSample_sampleTimestamp_previousSampleTimestamp_previousDisplayedTimestamp_previousTaskState_previousThread_previousThreadState_dispatchQueueChanges_swiftTaskChanges_priorityChanges_nameChanges_threadChanges_isTimeJump_ioEventsSincePreviousThreadState___block_invoke_4;
                                                                   v403[3] = &unk_1E86F7D68;
                                                                   v403[5] = *&v417[8];
                                                                   v403[6] = buf;
-                                                                  v403[4] = a5;
-                                                                  [(SASamplePrinter *)a1 iterateDispatchQueue:a3 orSwiftTaskStates:a4 orThread:0 threadStateIndexes:0 startingAtIndex:a9 + 1 endingAfterTimestamp:v313 task:0 stopAtTimeJumps:0 callback:v403];
-                                                                  v314 = [*(*&buf[8] + 40) endTimestamp];
+                                                                  v403[4] = states;
+                                                                  [(SASamplePrinter *)self iterateDispatchQueue:state orSwiftTaskStates:queue orThread:0 threadStateIndexes:0 startingAtIndex:task + 1 endingAfterTimestamp:v313 task:0 stopAtTimeJumps:0 callback:v403];
+                                                                  endTimestamp = [*(*&buf[8] + 40) endTimestamp];
                                                                   _Block_object_dispose(buf, 8);
                                                                 }
 
                                                                 else
                                                                 {
-                                                                  if (a6)
+                                                                  if (thread)
                                                                   {
-                                                                    v315 = [a5 threadStates];
-                                                                    v316 = [a6 lastObject];
-                                                                    v317 = [v315 objectAtIndexedSubscript:{objc_msgSend(v316, "unsignedLongValue")}];
-                                                                    v314 = [v317 endTimestamp];
+                                                                    threadStates = [states threadStates];
+                                                                    lastObject = [thread lastObject];
+                                                                    v317 = [threadStates objectAtIndexedSubscript:{objc_msgSend(lastObject, "unsignedLongValue")}];
+                                                                    endTimestamp = [v317 endTimestamp];
                                                                   }
 
                                                                   else
                                                                   {
-                                                                    v315 = [a5 lastThreadStateOnOrBeforeTime:*(a1 + 40) sampleIndex:*(a1 + 64)];
-                                                                    v314 = [v315 endTimestamp];
+                                                                    threadStates = [states lastThreadStateOnOrBeforeTime:*(self + 40) sampleIndex:*(self + 64)];
+                                                                    endTimestamp = [threadStates endTimestamp];
                                                                   }
                                                                 }
 
-                                                                if ([*(a1 + 168) sanitizePaths])
+                                                                if ([*(self + 168) sanitizePaths])
                                                                 {
                                                                   v318 = os_variant_has_internal_diagnostics() ^ 1;
                                                                 }
@@ -29713,15 +29713,15 @@ LABEL_498:
                                                                   v318 = 0;
                                                                 }
 
-                                                                v319 = [*(a1 + 168) mountStatusTracker];
-                                                                v320 = [a5 threadId];
+                                                                mountStatusTracker2 = [*(self + 168) mountStatusTracker];
+                                                                threadId = [states threadId];
                                                                 v401[0] = MEMORY[0x1E69E9820];
                                                                 v401[1] = 3221225472;
                                                                 v401[2] = __461__SASamplePrinter_stateChangeStringForThreadState_serialDispatchQueue_swiftTaskStates_thread_threadStateIndexes_taskState_task_iteratorIndex_missingStateIsInAnotherStack_numSamplesOmittedSincePreviousDisplayedSample_sampleTimestamp_previousSampleTimestamp_previousDisplayedTimestamp_previousTaskState_previousThread_previousThreadState_dispatchQueueChanges_swiftTaskChanges_priorityChanges_nameChanges_threadChanges_isTimeJump_ioEventsSincePreviousThreadState___block_invoke_5;
                                                                 v401[3] = &unk_1E86F7D90;
                                                                 v402 = v318;
                                                                 v401[4] = &v409;
-                                                                [(SAMountStatusTracker *)v319 enumerateMountsBlockingThread:v320 betweenStartTime:v312 endTime:v314 block:v401];
+                                                                [(SAMountStatusTracker *)mountStatusTracker2 enumerateMountsBlockingThread:threadId betweenStartTime:v312 endTime:endTimestamp block:v401];
                                                               }
                                                             }
 
@@ -29732,9 +29732,9 @@ LABEL_498:
                                                           }
 
 LABEL_455:
-                                                          v281 = [a7 latencyQos];
+                                                          latencyQos3 = [indexes latencyQos];
                                                           v282 = v410[5];
-                                                          if (v281)
+                                                          if (latencyQos3)
                                                           {
                                                             if (v282)
                                                             {
@@ -29748,7 +29748,7 @@ LABEL_455:
                                                               v410[5] = v283;
                                                             }
 
-                                                            [v410[5] appendFormat:@"timers tier %d", _TimerTier(objc_msgSend(a7, "latencyQos"))];
+                                                            [v410[5] appendFormat:@"timers tier %d", _TimerTier(objc_msgSend(indexes, "latencyQos"))];
                                                           }
 
                                                           else
@@ -29768,17 +29768,17 @@ LABEL_455:
                                                             [v410[5] appendFormat:@"timers tier unspecified"];
                                                           }
 
-                                                          v287 = [a7 latencyQos];
+                                                          latencyQos4 = [indexes latencyQos];
                                                           v288 = @" (normal)";
-                                                          if (v287 && v287 != 16711681)
+                                                          if (latencyQos4 && latencyQos4 != 16711681)
                                                           {
-                                                            if ([a7 latencyQos] - 16711682 >= 3)
+                                                            if ([indexes latencyQos] - 16711682 >= 3)
                                                             {
-                                                              v299 = [a7 latencyQos];
+                                                              latencyQos5 = [indexes latencyQos];
                                                               v289 = v410[5];
-                                                              if ((v299 - 16711685) >= 2)
+                                                              if ((latencyQos5 - 16711685) >= 2)
                                                               {
-                                                                [v289 appendFormat:@" (unknown: 0x%x)", objc_msgSend(a7, "latencyQos")];
+                                                                [v289 appendFormat:@" (unknown: 0x%x)", objc_msgSend(indexes, "latencyQos")];
                                                                 goto LABEL_470;
                                                               }
 
@@ -29834,7 +29834,7 @@ LABEL_469:
 
                                               else
                                               {
-                                                if (!v244 && [a7 suspendCount])
+                                                if (!v244 && [indexes suspendCount])
                                                 {
                                                   v249 = v410[5];
                                                   if (v249)
@@ -29850,7 +29850,7 @@ LABEL_469:
                                                   }
 
                                                   v255 = v410[5];
-                                                  v256 = [a7 suspendCount];
+                                                  suspendCount2 = [indexes suspendCount];
                                                   v257 = @"process unpidsuspended (process suspend count still %d)";
                                                   goto LABEL_420;
                                                 }
@@ -29901,7 +29901,7 @@ LABEL_469:
                                         }
                                       }
 
-                                      else if (([a7 isDarwinBG] & 1) == 0)
+                                      else if (([indexes isDarwinBG] & 1) == 0)
                                       {
                                         goto LABEL_357;
                                       }
@@ -29920,7 +29920,7 @@ LABEL_469:
                                       }
 
                                       v232 = v410[5];
-                                      if ([a7 isDarwinBG])
+                                      if ([indexes isDarwinBG])
                                       {
                                         v233 = &stru_1F5BBF440;
                                       }
@@ -29931,7 +29931,7 @@ LABEL_469:
                                       }
 
                                       v234 = &stru_1F5BBF440;
-                                      if (([a7 isDarwinBG] & 1) == 0 && objc_msgSend(a2, "isDarwinBG"))
+                                      if (([indexes isDarwinBG] & 1) == 0 && objc_msgSend(a2, "isDarwinBG"))
                                       {
                                         v234 = v222;
                                       }
@@ -29985,9 +29985,9 @@ LABEL_298:
                         }
                       }
 
-                      v186 = [a7 isRunningBoardActive];
+                      isRunningBoardActive2 = [indexes isRunningBoardActive];
                       v187 = v410[5];
-                      if (v186)
+                      if (isRunningBoardActive2)
                       {
                         if (v187)
                         {
@@ -30027,9 +30027,9 @@ LABEL_271:
                     }
 
 LABEL_251:
-                    v180 = [a7 isTALEngaged];
+                    isTALEngaged = [indexes isTALEngaged];
                     v181 = v410[5];
-                    if (v180)
+                    if (isTALEngaged)
                     {
                       if (v181)
                       {
@@ -30064,9 +30064,9 @@ LABEL_259:
                   }
 
 LABEL_250:
-                  v179 = [a7 isTALEngaged];
+                  isTALEngaged2 = [indexes isTALEngaged];
                   v178 = 0;
-                  if (v179 == [a15 isTALEngaged])
+                  if (isTALEngaged2 == [displayedTimestamp isTALEngaged])
                   {
                     goto LABEL_260;
                   }
@@ -30074,18 +30074,18 @@ LABEL_250:
                   goto LABEL_251;
                 }
 
-                if (a15)
+                if (displayedTimestamp)
                 {
-                  v158 = [a7 isDirty];
-                  if (v158 == [a15 isDirty])
+                  isDirty = [indexes isDirty];
+                  if (isDirty == [displayedTimestamp isDirty])
                   {
                     goto LABEL_222;
                   }
                 }
 
-                v159 = [a7 isDirty];
+                isDirty2 = [indexes isDirty];
                 v160 = v410[5];
-                if (v159)
+                if (isDirty2)
                 {
                   if (v160)
                   {
@@ -30134,23 +30134,23 @@ LABEL_173:
         goto LABEL_176;
       }
 
-      if (a15)
+      if (displayedTimestamp)
       {
-        v123 = [a7 isForeground];
-        if (v123 == [a15 isForeground])
+        isForeground = [indexes isForeground];
+        if (isForeground == [displayedTimestamp isForeground])
         {
           goto LABEL_164;
         }
       }
 
-      else if (([a7 isForeground] & 1) == 0)
+      else if (([indexes isForeground] & 1) == 0)
       {
         goto LABEL_164;
       }
 
-      v124 = [a7 isForeground];
+      isForeground2 = [indexes isForeground];
       v125 = v410[5];
-      if (v124)
+      if (isForeground2)
       {
         if (v125)
         {
@@ -30184,33 +30184,33 @@ LABEL_163:
       goto LABEL_163;
     }
 
-    if (a17)
+    if (previousThread)
     {
-      v48 = ([a17 endSampleIndex] + 1);
+      v48 = ([previousThread endSampleIndex] + 1);
     }
 
     else
     {
-      v48 = *(a1 + 56);
+      v48 = *(self + 56);
     }
 
-    v49 = [a2 startSampleIndex];
-    if (v49 <= *(a1 + 56))
+    startSampleIndex = [a2 startSampleIndex];
+    if (startSampleIndex <= *(self + 56))
     {
-      v50 = *(a1 + 56);
+      v50 = *(self + 56);
     }
 
     else
     {
-      v50 = v49;
+      v50 = startSampleIndex;
     }
 
     v51 = v50 - v48;
     if (v50 >= v48)
     {
-      if (&v48[a11] < v50)
+      if (&v48[stack] < v50)
       {
-        if (a10)
+        if (index)
         {
           v52 = @"in another call tree";
         }
@@ -30218,26 +30218,26 @@ LABEL_163:
         else
         {
           v52 = @"not seen";
-          if (!a3 && !a4 && a6)
+          if (!state && !queue && thread)
           {
-            v393 = [a5 threadStates];
-            v53 = [v393 firstObject];
-            if (v53 == a2)
+            threadStates2 = [states threadStates];
+            firstObject = [threadStates2 firstObject];
+            if (firstObject == a2)
             {
               v52 = @"not seen";
             }
 
             else
             {
-              v390 = [a5 threadStates];
-              v383 = [v390 firstObject];
+              threadStates3 = [states threadStates];
+              firstObject2 = [threadStates3 firstObject];
               v52 = @"in another call tree";
-              if ([v383 startSampleIndex] == 0x7FFFFFFFFFFFFFFFLL)
+              if ([firstObject2 startSampleIndex] == 0x7FFFFFFFFFFFFFFFLL)
               {
-                v380 = [a2 startSampleIndex];
-                v381 = [a5 threadStates];
-                v54 = [v381 firstObject];
-                if (v380 == [v54 endSampleIndex] + 1)
+                startSampleIndex2 = [a2 startSampleIndex];
+                threadStates4 = [states threadStates];
+                firstObject3 = [threadStates4 firstObject];
+                if (startSampleIndex2 == [firstObject3 endSampleIndex] + 1)
                 {
                   v55 = @"not seen";
                 }
@@ -30281,13 +30281,13 @@ LABEL_163:
     goto LABEL_526;
   }
 
-  if (!a4)
+  if (!queue)
   {
     v41 = @"Thread";
     goto LABEL_20;
   }
 
-  v43 = *(a1 + 16);
+  v43 = *(self + 16);
   if (v43)
   {
     v41 = 0;
@@ -30329,19 +30329,19 @@ LABEL_66:
         v56 = _sa_logt();
         if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
         {
-          v57 = [*(a1 + 16) debugDescription];
+          v57 = [*(self + 16) debugDescription];
           v58 = v57;
-          v59 = [v57 UTF8String];
+          uTF8String7 = [v57 UTF8String];
           *buf = 136315138;
-          *&buf[4] = v59;
+          *&buf[4] = uTF8String7;
           _os_log_error_impl(&dword_1E0E2F000, v56, OS_LOG_TYPE_ERROR, "state for swiftTaskStates, but kSAAggregateSwiftAsyncTogetherWithOtherCallTrees: %s", buf, 0xCu);
         }
 
         *__error() = a2;
-        v60 = [*(a1 + 16) debugDescription];
+        v60 = [*(self + 16) debugDescription];
         v61 = v60;
-        v62 = [v60 UTF8String];
-        _SASetCrashLogMessage(11048, "state for swiftTaskStates, but kSAAggregateSwiftAsyncTogetherWithOtherCallTrees: %s", v63, v64, v65, v66, v67, v68, v62);
+        uTF8String8 = [v60 UTF8String];
+        _SASetCrashLogMessage(11048, "state for swiftTaskStates, but kSAAggregateSwiftAsyncTogetherWithOtherCallTrees: %s", v63, v64, v65, v66, v67, v68, uTF8String8);
 
         _os_crash();
         __break(1u);
@@ -30362,19 +30362,19 @@ LABEL_66:
   v367 = _sa_logt();
   if (os_log_type_enabled(v367, OS_LOG_TYPE_ERROR))
   {
-    v368 = [*(a1 + 16) debugDescription];
+    v368 = [*(self + 16) debugDescription];
     v369 = v368;
-    v370 = [v368 UTF8String];
+    uTF8String9 = [v368 UTF8String];
     *buf = 136315138;
-    *&buf[4] = v370;
+    *&buf[4] = uTF8String9;
     _os_log_error_impl(&dword_1E0E2F000, v367, OS_LOG_TYPE_ERROR, "swiftAsyncCallTreeAggregationResolved returned default: %s", buf, 0xCu);
   }
 
   *__error() = v366;
-  v371 = [*(a1 + 16) debugDescription];
+  v371 = [*(self + 16) debugDescription];
   v372 = v371;
-  v373 = [v371 UTF8String];
-  _SASetCrashLogMessage(11068, "swiftAsyncCallTreeAggregationResolved returned default: %s", v374, v375, v376, v377, v378, v379, v373);
+  uTF8String10 = [v371 UTF8String];
+  _SASetCrashLogMessage(11068, "swiftAsyncCallTreeAggregationResolved returned default: %s", v374, v375, v376, v377, v378, v379, uTF8String10);
 
   result = _os_crash();
   __break(1u);
@@ -30510,20 +30510,20 @@ void __461__SASamplePrinter_stateChangeStringForThreadState_serialDispatchQueue_
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)copyDescriptionForIOEvents:(id *)a1
+- (uint64_t)copyDescriptionForIOEvents:(id *)events
 {
-  v2 = a1;
-  if (!a1)
+  eventsCopy = events;
+  if (!events)
   {
-    return v2;
+    return eventsCopy;
   }
 
   if ([a2 count])
   {
     if ([a2 count] == 1)
     {
-      v4 = [a2 firstObject];
-      v2 = [SASamplePrinter copyDescriptionForIOEvent:v4];
+      firstObject = [a2 firstObject];
+      eventsCopy = [SASamplePrinter copyDescriptionForIOEvent:firstObject];
     }
 
     else
@@ -30535,7 +30535,7 @@ void __461__SASamplePrinter_stateChangeStringForThreadState_serialDispatchQueue_
 
       else
       {
-        v5 = [v2[2] displayEachIndividualIOInCallTrees] ^ 1;
+        v5 = [eventsCopy[2] displayEachIndividualIOInCallTrees] ^ 1;
       }
 
       v6 = objc_alloc(MEMORY[0x1E696AD60]);
@@ -30546,7 +30546,7 @@ void __461__SASamplePrinter_stateChangeStringForThreadState_serialDispatchQueue_
         v8 = v7;
       }
 
-      v2 = [v6 initWithCapacity:16 * v8];
+      eventsCopy = [v6 initWithCapacity:16 * v8];
       if ([a2 count])
       {
         v9 = 0;
@@ -30574,11 +30574,11 @@ void __461__SASamplePrinter_stateChangeStringForThreadState_serialDispatchQueue_
           {
             if (v9)
             {
-              [v2 appendString:{@", "}];
+              [eventsCopy appendString:{@", "}];
             }
 
             v14 = [SASamplePrinter copyDescriptionForIOEvent:v12];
-            [v2 appendString:v14];
+            [eventsCopy appendString:v14];
           }
 
           ++v9;
@@ -30587,7 +30587,7 @@ void __461__SASamplePrinter_stateChangeStringForThreadState_serialDispatchQueue_
         while (v9 < [a2 count]);
         if ((v5 & 1) == 0)
         {
-          return v2;
+          return eventsCopy;
         }
       }
 
@@ -30596,16 +30596,16 @@ void __461__SASamplePrinter_stateChangeStringForThreadState_serialDispatchQueue_
         v10 = 0;
         if ((v5 & 1) == 0)
         {
-          return v2;
+          return eventsCopy;
         }
       }
 
       v15 = [a2 count] - 3;
-      v4 = SAFormattedBytesEx(v10, 1, 0, 0, 0x1000uLL);
-      [v2 appendFormat:@"... and %lu more I/Os totaling %@", v15, v4];
+      firstObject = SAFormattedBytesEx(v10, 1, 0, 0, 0x1000uLL);
+      [eventsCopy appendFormat:@"... and %lu more I/Os totaling %@", v15, firstObject];
     }
 
-    return v2;
+    return eventsCopy;
   }
 
   v17 = *__error();
@@ -30682,38 +30682,38 @@ void __461__SASamplePrinter_stateChangeStringForThreadState_serialDispatchQueue_
   }
 }
 
-- (BOOL)frame:(uint64_t)a3 matchesFrame:
+- (BOOL)frame:(uint64_t)frame matchesFrame:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (a2 != a3)
+  if (a2 != frame)
   {
-    if (a2 && *(a2 + 8) == *(a3 + 8))
+    if (a2 && *(a2 + 8) == *(frame + 8))
     {
-      if ([*(a1 + 16) aggregateFramesByOffsetIntoBinary])
+      if ([*(self + 16) aggregateFramesByOffsetIntoBinary])
       {
         WeakRetained = objc_loadWeakRetained((a2 + 24));
-        v6 = objc_loadWeakRetained((a3 + 24));
+        v6 = objc_loadWeakRetained((frame + 24));
         v7 = v6;
         if (WeakRetained && v6)
         {
-          v8 = [WeakRetained binary];
-          v9 = [v7 binary];
+          binary = [WeakRetained binary];
+          binary2 = [v7 binary];
 
-          if (v8 == v9)
+          if (binary == binary2)
           {
-            v10 = [WeakRetained segment];
-            v11 = [v7 segment];
+            segment = [WeakRetained segment];
+            segment2 = [v7 segment];
 
-            if (v10 == v11)
+            if (segment == segment2)
             {
-              v12 = [a2 address];
-              v13 = v12 - [WeakRetained loadAddress];
-              v14 = [a3 address];
-              v15 = v13 == v14 - [v7 loadAddress];
+              address = [a2 address];
+              v13 = address - [WeakRetained loadAddress];
+              address2 = [frame address];
+              v15 = v13 == address2 - [v7 loadAddress];
 LABEL_15:
 
               return v15;
@@ -30731,8 +30731,8 @@ LABEL_14:
         }
       }
 
-      v16 = [a2 address];
-      return v16 == [a3 address];
+      address3 = [a2 address];
+      return address3 == [frame address];
     }
 
     return 0;
@@ -35801,29 +35801,29 @@ void *__134__SASamplePrinter_addStack_toStream_sampleCount_binariesToDisplay_pri
   return result;
 }
 
-- (uint64_t)copyDescriptionForTruncatedLeafFrame:(uint64_t)a3 otherCallTreeDescription:(void *)a4 binariesToDisplay:(void *)a5 extraBinariesToDisplay:
+- (uint64_t)copyDescriptionForTruncatedLeafFrame:(uint64_t)frame otherCallTreeDescription:(void *)description binariesToDisplay:(void *)display extraBinariesToDisplay:
 {
   if (result)
   {
-    v6 = [(SASamplePrinter *)result copyDescriptionsForFrame:a2 binariesToDisplay:a4 extraBinariesToDisplay:a5];
+    v6 = [(SASamplePrinter *)result copyDescriptionsForFrame:a2 binariesToDisplay:description extraBinariesToDisplay:display];
     if ([v6 count])
     {
-      v7 = [v6 firstObject];
+      firstObject = [v6 firstObject];
     }
 
     else
     {
-      v7 = 0;
+      firstObject = 0;
     }
 
     v8 = objc_alloc(MEMORY[0x1E696AEC0]);
     v9 = @"???";
-    if (v7)
+    if (firstObject)
     {
-      v9 = v7;
+      v9 = firstObject;
     }
 
-    v10 = [v8 initWithFormat:@"<callstack in another call tree for %@: %@>", a3, v9];
+    v10 = [v8 initWithFormat:@"<callstack in another call tree for %@: %@>", frame, v9];
 
     return v10;
   }
@@ -35831,10 +35831,10 @@ void *__134__SASamplePrinter_addStack_toStream_sampleCount_binariesToDisplay_pri
   return result;
 }
 
-- (void)copyDescriptionsForFrame:(void *)a3 binariesToDisplay:(void *)a4 extraBinariesToDisplay:
+- (void)copyDescriptionsForFrame:(void *)frame binariesToDisplay:(void *)display extraBinariesToDisplay:
 {
   v82 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v15 = 0;
     goto LABEL_54;
@@ -35842,47 +35842,47 @@ void *__134__SASamplePrinter_addStack_toStream_sampleCount_binariesToDisplay_pri
 
   if (a2)
   {
-    v7 = a1;
+    selfCopy = self;
     if (![a2 isTruncatedBacktraceFrame])
     {
-      v16 = [a2 address];
+      address = [a2 address];
       WeakRetained = objc_loadWeakRetained(a2 + 3);
       v67 = WeakRetained;
       if (WeakRetained)
       {
         v18 = WeakRetained;
-        v65 = v7;
-        v19 = [WeakRetained binary];
-        v20 = [v18 segment];
-        v21 = [v18 loadAddress];
-        v22 = [a2 address];
-        v23 = v22 - [v67 loadAddress];
+        v65 = selfCopy;
+        binary = [WeakRetained binary];
+        segment = [v18 segment];
+        loadAddress = [v18 loadAddress];
+        address2 = [a2 address];
+        v23 = address2 - [v67 loadAddress];
         LOBYTE(v18) = [a2 isKernel];
-        v24 = [a2 exclave];
-        v25 = [SASamplePrinter displayedBinaryLoadInfoForBinary:v19 segment:v20 desiredLoadAddress:v21 offsetIntoLoadInfo:v23 isInKernelAddressSpace:v18 exclave:v24 binariesToDisplay:a3 extraBinariesToDisplay:a4];
-        v26 = [v25 loadAddress];
+        exclave = [a2 exclave];
+        v25 = [SASamplePrinter displayedBinaryLoadInfoForBinary:binary segment:segment desiredLoadAddress:loadAddress offsetIntoLoadInfo:v23 isInKernelAddressSpace:v18 exclave:exclave binariesToDisplay:frame extraBinariesToDisplay:display];
+        loadAddress2 = [v25 loadAddress];
 
-        if (v26 != [v67 loadAddress])
+        if (loadAddress2 != [v67 loadAddress])
         {
-          v16 = v26 + v16 - [v67 loadAddress];
+          address = loadAddress2 + address - [v67 loadAddress];
         }
 
-        v7 = v65;
+        selfCopy = v65;
       }
 
       if ([a2 isExclave])
       {
-        v27 = [a2 exclave];
-        v28 = v27;
-        if (v27)
+        exclave2 = [a2 exclave];
+        v28 = exclave2;
+        if (exclave2)
         {
-          v29 = [v27 name];
+          name = [exclave2 name];
 
           v30 = objc_alloc(MEMORY[0x1E696AEC0]);
-          if (v29)
+          if (name)
           {
-            v31 = [v28 name];
-            v32 = [v30 initWithFormat:@"exclave %@", v31];
+            name2 = [v28 name];
+            v32 = [v30 initWithFormat:@"exclave %@", name2];
           }
 
           else
@@ -35902,7 +35902,7 @@ void *__134__SASamplePrinter_addStack_toStream_sampleCount_binariesToDisplay_pri
         v32 = 0;
       }
 
-      v33 = [a2 instruction];
+      instruction = [a2 instruction];
       v34 = objc_loadWeakRetained(a2 + 3);
       if (v34)
       {
@@ -35916,42 +35916,42 @@ void *__134__SASamplePrinter_addStack_toStream_sampleCount_binariesToDisplay_pri
           v35 = &stru_1F5BBF440;
         }
 
-        v38 = [a2 address];
-        v39 = v38 - [v34 loadAddress];
-        v40 = [v34 binary];
-        v66 = v33;
-        if ([*(v7 + 16) displaySymbolInformation])
+        address3 = [a2 address];
+        v39 = address3 - [v34 loadAddress];
+        binary2 = [v34 binary];
+        v66 = instruction;
+        if ([*(selfCopy + 16) displaySymbolInformation])
         {
           v63 = v39;
           v64 = v35;
-          v41 = [v40 name];
+          name3 = [binary2 name];
 
-          if (v41)
+          if (name3)
           {
-            v42 = [v40 name];
-            v43 = SACopySanitizedString(v42, 1, 0);
+            name4 = [binary2 name];
+            v43 = SACopySanitizedString(name4, 1, 0);
           }
 
           else
           {
             v50 = objc_alloc(MEMORY[0x1E696AEC0]);
-            v42 = [v40 uuid];
-            [v42 UUIDString];
-            v52 = v51 = v7;
+            name4 = [binary2 uuid];
+            [name4 UUIDString];
+            v52 = v51 = selfCopy;
             v43 = [v50 initWithFormat:@"<%@>", v52];
 
-            v7 = v51;
+            selfCopy = v51;
           }
 
           v37 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
-          if (v33 && v33[1])
+          if (instruction && instruction[1])
           {
             v75[0] = MEMORY[0x1E69E9820];
             v75[1] = 3221225472;
             v75[2] = __45__SASamplePrinter_copySymbolStringsForFrame___block_invoke;
             v75[3] = &unk_1E86F7F40;
-            v75[4] = v7;
-            v76 = v33;
+            v75[4] = selfCopy;
+            v76 = instruction;
             v77 = a2;
             v43 = v43;
             v78 = v43;
@@ -35967,30 +35967,30 @@ void *__134__SASamplePrinter_addStack_toStream_sampleCount_binariesToDisplay_pri
           {
             v49 = v64;
             v53 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"??? (%@ + %llu%@)", v43, v63, v64];
-            v54 = v7;
+            v54 = selfCopy;
             v55 = [v53 copy];
             [v37 addObject:v55];
 
-            v7 = v54;
+            selfCopy = v54;
           }
         }
 
         else
         {
           v44 = objc_alloc(MEMORY[0x1E696AEC0]);
-          [v40 uuid];
+          [binary2 uuid];
           v43 = v45 = v39;
           [v43 UUIDString];
-          v47 = v46 = v7;
+          v47 = v46 = selfCopy;
           v48 = [v44 initWithFormat:@"%@ + %llu%@", v47, v45, v35];
           v75[0] = v48;
           [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:1];
           v37 = v49 = v35;
 
-          v7 = v46;
+          selfCopy = v46;
         }
 
-        v33 = v66;
+        instruction = v66;
       }
 
       else if (v32)
@@ -36006,10 +36006,10 @@ void *__134__SASamplePrinter_addStack_toStream_sampleCount_binariesToDisplay_pri
         v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:1];
       }
 
-      if (![*(v7 + 16) displayFrameAddresses])
+      if (![*(selfCopy + 16) displayFrameAddresses])
       {
-        v12 = v37;
-        v15 = v12;
+        name6 = v37;
+        v15 = name6;
         v9 = v67;
         goto LABEL_52;
       }
@@ -36019,8 +36019,8 @@ void *__134__SASamplePrinter_addStack_toStream_sampleCount_binariesToDisplay_pri
       v69 = 0u;
       v70 = 0u;
       v71 = 0u;
-      v12 = v37;
-      v56 = [v12 countByEnumeratingWithState:&v68 objects:v72 count:16];
+      name6 = v37;
+      v56 = [name6 countByEnumeratingWithState:&v68 objects:v72 count:16];
       v9 = v67;
       if (v56)
       {
@@ -36032,14 +36032,14 @@ void *__134__SASamplePrinter_addStack_toStream_sampleCount_binariesToDisplay_pri
           {
             if (*v69 != v58)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(name6);
             }
 
-            v60 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ [0x%llx]", *(*(&v68 + 1) + 8 * i), v16];
+            v60 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ [0x%llx]", *(*(&v68 + 1) + 8 * i), address];
             [v13 addObject:v60];
           }
 
-          v57 = [v12 countByEnumeratingWithState:&v68 objects:v72 count:16];
+          v57 = [name6 countByEnumeratingWithState:&v68 objects:v72 count:16];
         }
 
         while (v57);
@@ -36059,27 +36059,27 @@ LABEL_53:
     {
       if ([a2 isExclave])
       {
-        v8 = [a2 exclave];
-        v9 = v8;
-        if (!v8)
+        exclave3 = [a2 exclave];
+        v9 = exclave3;
+        if (!exclave3)
         {
           v15 = &unk_1F5BDCE50;
           goto LABEL_53;
         }
 
-        v10 = [v8 name];
+        name5 = [exclave3 name];
 
         v11 = objc_alloc(MEMORY[0x1E696AEC0]);
-        if (!v10)
+        if (!name5)
         {
-          v12 = [v11 initWithFormat:@"<exclave 0x%llx>", objc_msgSend(v9, "identifier")];
-          v73 = v12;
+          name6 = [v11 initWithFormat:@"<exclave 0x%llx>", objc_msgSend(v9, "identifier")];
+          v73 = name6;
           v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v73 count:1];
           goto LABEL_52;
         }
 
-        v12 = [v9 name];
-        v13 = [v11 initWithFormat:@"<exclave %@>", v12];
+        name6 = [v9 name];
+        v13 = [v11 initWithFormat:@"<exclave %@>", name6];
         v74 = v13;
         v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v74 count:1];
         goto LABEL_50;
@@ -36138,17 +36138,17 @@ id __134__SASamplePrinter_addStack_toStream_sampleCount_binariesToDisplay_primar
   return v10;
 }
 
-- (id)copyDescriptionForTimeRanges:(uint64_t)a1
+- (id)copyDescriptionForTimeRanges:(uint64_t)ranges
 {
   v64 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!ranges)
   {
 LABEL_24:
     v30 = 0;
     goto LABEL_20;
   }
 
-  if (![*(a1 + 16) callTreeTimestampsTimeDomain])
+  if (![*(ranges + 16) callTreeTimestampsTimeDomain])
   {
     v33 = *__error();
     v34 = _sa_logt();
@@ -36165,22 +36165,22 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v4 = [*(a1 + 16) callTreeTimestampsTimeDomain];
+  callTreeTimestampsTimeDomain = [*(ranges + 16) callTreeTimestampsTimeDomain];
   v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:{16 * objc_msgSend(a2, "count")}];
-  v6 = [(SASamplePrinter *)a1 eventStartTimeWithWallTime];
-  v7 = [(SASamplePrinter *)a1 eventEndTimeWithWallTime];
-  v8 = (v4 & (v4 - 1)) != 0;
+  eventStartTimeWithWallTime = [(SASamplePrinter *)ranges eventStartTimeWithWallTime];
+  eventEndTimeWithWallTime = [(SASamplePrinter *)ranges eventEndTimeWithWallTime];
+  v8 = (callTreeTimestampsTimeDomain & (callTreeTimestampsTimeDomain - 1)) != 0;
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
   v56[2] = __48__SASamplePrinter_copyDescriptionForTimeRanges___block_invoke;
   v56[3] = &unk_1E86F7EF0;
-  v60 = v4;
+  v60 = callTreeTimestampsTimeDomain;
   v9 = v5;
   v57 = v9;
   v61 = v8;
-  v10 = v6;
+  v10 = eventStartTimeWithWallTime;
   v58 = v10;
-  v59 = a1;
+  rangesCopy = ranges;
   v11 = MEMORY[0x1E12EBE50](v56);
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
@@ -36190,7 +36190,7 @@ LABEL_24:
   v51 = v12;
   v13 = v10;
   v52 = v13;
-  v14 = v7;
+  v14 = eventEndTimeWithWallTime;
   v53 = v14;
   v15 = v11;
   v54 = v15;
@@ -36228,14 +36228,14 @@ LABEL_24:
       v23 = *(*(&v46 + 1) + 8 * i);
       if (v20)
       {
-        v24 = [v20 endTime];
-        v25 = [v23 startTime];
-        v26 = [v24 eq:v25];
+        endTime = [v20 endTime];
+        startTime = [v23 startTime];
+        v26 = [endTime eq:startTime];
 
         if (v26)
         {
-          v27 = [v23 endTime];
-          objc_setProperty_atomic(v20, v28, v27, 16);
+          endTime2 = [v23 endTime];
+          objc_setProperty_atomic(v20, v28, endTime2, 16);
           goto LABEL_13;
         }
 
@@ -36243,7 +36243,7 @@ LABEL_24:
       }
 
       v29 = [v23 copy];
-      v27 = v20;
+      endTime2 = v20;
       v20 = v29;
 LABEL_13:
     }
@@ -36774,12 +36774,12 @@ void __48__SASamplePrinter_copyDescriptionForTimeRanges___block_invoke_2(uint64_
   }
 }
 
-- (uint64_t)copyDescriptionForIOEvent:(void *)a1
+- (uint64_t)copyDescriptionForIOEvent:(void *)event
 {
   v2 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v3 = SAFormattedBytesEx([a1 size], 1, 0, 0, 0x1000uLL);
-  v4 = [a1 type];
-  v5 = [v2 initWithFormat:@"%@ %@T%u", v3, v4, objc_msgSend(a1, "tier")];
+  v3 = SAFormattedBytesEx([event size], 1, 0, 0, 0x1000uLL);
+  type = [event type];
+  v5 = [v2 initWithFormat:@"%@ %@T%u", v3, type, objc_msgSend(event, "tier")];
 
   return v5;
 }
@@ -36859,21 +36859,21 @@ LABEL_5:
   [v18 addObject:v19];
 }
 
-- (id)displayNameForTask:(uint64_t)a3 threadId:
+- (id)displayNameForTask:(uint64_t)task threadId:
 {
-  v4 = [(SASamplePrinter *)a1 displayNameForTask:a2];
+  v4 = [(SASamplePrinter *)self displayNameForTask:a2];
   v5 = v4;
-  if (a3)
+  if (task)
   {
-    v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ thread 0x%llx", v4, a3];
+    task = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ thread 0x%llx", v4, task];
   }
 
   else
   {
-    v6 = v4;
+    task = v4;
   }
 
-  v7 = v6;
+  v7 = task;
 
   return v7;
 }
@@ -37182,19 +37182,19 @@ void __73__SASamplePrinter_addStackForDispatchQueue_andThread_task_toRootObjects
   }
 }
 
-- (void)addStackForSwiftTask:(unint64_t)a3 andThread:(uint64_t)a4 task:(void *)a5 toRootObjects:
+- (void)addStackForSwiftTask:(unint64_t)task andThread:(uint64_t)thread task:(void *)a5 toRootObjects:
 {
-  if (a1)
+  if (self)
   {
-    if (a2 | a3)
+    if (a2 | task)
     {
-      if (a3)
+      if (task)
       {
         v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-        v11 = a1[4];
-        v12 = a1[5];
-        v13 = a1[7];
-        v14 = a1[8];
+        v11 = self[4];
+        v12 = self[5];
+        v13 = self[7];
+        v14 = self[8];
         v26[0] = MEMORY[0x1E69E9820];
         v26[1] = 3221225472;
         v26[2] = __69__SASamplePrinter_addStackForSwiftTask_andThread_task_toRootObjects___block_invoke;
@@ -37202,14 +37202,14 @@ void __73__SASamplePrinter_addStackForDispatchQueue_andThread_task_toRootObjects
         v26[4] = a2;
         v27 = v10;
         v15 = v10;
-        [a3 enumerateThreadStatesBetweenStartTime:v11 startSampleIndex:v13 endTime:v12 endSampleIndex:v14 reverseOrder:0 block:v26];
-        [(SASamplePrinter *)a1 addStackForDispatchQueue:0 orSwiftTaskStates:a3 orThread:v15 andThreadStateIndexes:a4 task:a5 toRootObjects:0 nameChanges:0 dispatchQueueChanges:0 swiftTaskChanges:0 threadChanges:0 priorityChanges:0 microstackshotSummary:0 onlyHeaviestStack:0 includeState:?];
+        [task enumerateThreadStatesBetweenStartTime:v11 startSampleIndex:v13 endTime:v12 endSampleIndex:v14 reverseOrder:0 block:v26];
+        [(SASamplePrinter *)self addStackForDispatchQueue:0 orSwiftTaskStates:task orThread:v15 andThreadStateIndexes:thread task:a5 toRootObjects:0 nameChanges:0 dispatchQueueChanges:0 swiftTaskChanges:0 threadChanges:0 priorityChanges:0 microstackshotSummary:0 onlyHeaviestStack:0 includeState:?];
       }
 
       else
       {
-        v25 = [a2 states];
-        [(SASamplePrinter *)a1 addStackForDispatchQueue:v25 orSwiftTaskStates:0 orThread:0 andThreadStateIndexes:a4 task:a5 toRootObjects:0 nameChanges:0 dispatchQueueChanges:0 swiftTaskChanges:0 threadChanges:0 priorityChanges:0 microstackshotSummary:0 onlyHeaviestStack:0 includeState:?];
+        states = [a2 states];
+        [(SASamplePrinter *)self addStackForDispatchQueue:states orSwiftTaskStates:0 orThread:0 andThreadStateIndexes:thread task:a5 toRootObjects:0 nameChanges:0 dispatchQueueChanges:0 swiftTaskChanges:0 threadChanges:0 priorityChanges:0 microstackshotSummary:0 onlyHeaviestStack:0 includeState:?];
       }
     }
 
@@ -37995,7 +37995,7 @@ LABEL_8:
   [v8 sortUsingComparator:*(a1 + v5)];
 }
 
-- (id)callTreesForThreadsInTask:(id)a3
+- (id)callTreesForThreadsInTask:(id)task
 {
   v41 = *MEMORY[0x1E69E9840];
   if (([(SASamplePrinter *)self checkForBadOptions]& 1) != 0)
@@ -38006,16 +38006,16 @@ LABEL_8:
 
   if (self && self->_hasTimeIndexes)
   {
-    v6 = [a3 sampleCountInSampleIndexRangeStart:self->_reportStartSampleIndex end:self->_reportEndSampleIndex];
+    v6 = [task sampleCountInSampleIndexRangeStart:self->_reportStartSampleIndex end:self->_reportEndSampleIndex];
   }
 
   else
   {
-    v6 = [a3 sampleCountInTimestampRangeStart:self->_reportStartTime end:self->_reportEndTime];
+    v6 = [task sampleCountInTimestampRangeStart:self->_reportStartTime end:self->_reportEndTime];
   }
 
-  v35 = a3;
-  v7 = [(SASamplePrinter *)&self->super.isa stacksForTask:a3 taskSampleCount:v6];
+  taskCopy = task;
+  v7 = [(SASamplePrinter *)&self->super.isa stacksForTask:task taskSampleCount:v6];
   v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
   v36 = 0u;
   v37 = 0u;
@@ -38046,18 +38046,18 @@ LABEL_8:
             goto LABEL_17;
           }
 
-          v16 = [v35 threads];
+          threads = [taskCopy threads];
           Property = objc_getProperty(v14, v17, 56, 1);
         }
 
         else
         {
-          v16 = [v35 threads];
+          threads = [taskCopy threads];
           Property = 0;
         }
 
-        v19 = [Property firstObject];
-        v15 = [v16 objectForKeyedSubscript:v19];
+        firstObject = [Property firstObject];
+        v15 = [threads objectForKeyedSubscript:firstObject];
 
         if (!v14)
         {
@@ -38068,19 +38068,19 @@ LABEL_8:
 LABEL_17:
         if ([v14[5] count] > 1)
         {
-          v21 = 0;
+          firstObject2 = 0;
           goto LABEL_23;
         }
 
         v22 = objc_getProperty(v14, v20, 40, 1);
 LABEL_20:
-        v21 = [v22 firstObject];
-        v23 = [MEMORY[0x1E695DFB0] null];
+        firstObject2 = [v22 firstObject];
+        null = [MEMORY[0x1E695DFB0] null];
 
-        if (v21 == v23)
+        if (firstObject2 == null)
         {
 
-          v21 = 0;
+          firstObject2 = 0;
         }
 
         if (!v14)
@@ -38093,7 +38093,7 @@ LABEL_23:
         if ([v14[6] count] >= 2)
         {
           v26 = [SAThreadCallTree alloc];
-          v27 = 0;
+          firstObject3 = 0;
 LABEL_29:
           v30 = objc_getProperty(v14, v25, 120, 1);
           goto LABEL_30;
@@ -38101,13 +38101,13 @@ LABEL_29:
 
         v28 = objc_getProperty(v14, v24, 48, 1);
 LABEL_26:
-        v27 = [v28 firstObject];
-        v29 = [MEMORY[0x1E695DFB0] null];
+        firstObject3 = [v28 firstObject];
+        null2 = [MEMORY[0x1E695DFB0] null];
 
-        if (v27 == v29)
+        if (firstObject3 == null2)
         {
 
-          v27 = 0;
+          firstObject3 = 0;
         }
 
         v26 = [SAThreadCallTree alloc];
@@ -38118,7 +38118,7 @@ LABEL_26:
 
         v30 = 0;
 LABEL_30:
-        v31 = [(SAThreadCallTree *)v26 initWithThread:v15 dispatchQueue:v21 swiftTask:v27 rootObjects:v30];
+        v31 = [(SAThreadCallTree *)v26 initWithThread:v15 dispatchQueue:firstObject2 swiftTask:firstObject3 rootObjects:v30];
         [v8 addObject:v31];
 
         ++v13;
@@ -38132,14 +38132,14 @@ LABEL_30:
     while (v32);
   }
 
-  v5 = [[SATaskThreadCallTrees alloc] initWithTask:v35 threadCallTrees:v8];
+  v5 = [[SATaskThreadCallTrees alloc] initWithTask:taskCopy threadCallTrees:v8];
 LABEL_38:
   v33 = *MEMORY[0x1E69E9840];
 
   return v5;
 }
 
-- (id)callTreeForTask:(id)a3
+- (id)callTreeForTask:(id)task
 {
   if (([(SASamplePrinter *)self checkForBadOptions]& 1) != 0)
   {
@@ -38151,15 +38151,15 @@ LABEL_38:
     v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
     if (self)
     {
-      v7 = [a3 threads];
+      threads = [task threads];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __49__SASamplePrinter_addStackForTask_toRootObjects___block_invoke;
       v9[3] = &unk_1E86F80A0;
       v9[4] = self;
-      v9[5] = a3;
+      v9[5] = task;
       v9[6] = v6;
-      [v7 enumerateKeysAndObjectsUsingBlock:v9];
+      [threads enumerateKeysAndObjectsUsingBlock:v9];
     }
 
     if ([(SASamplePrintOptions *)self->_options printHeavyStacks])
@@ -38167,13 +38167,13 @@ LABEL_38:
       [(SASamplePrinter *)self sortHeavyCallTree:v6];
     }
 
-    v5 = [SATaskCallTree initWithTask:a3 rootObjects:?];
+    v5 = [SATaskCallTree initWithTask:task rootObjects:?];
   }
 
   return v5;
 }
 
-- (id)callTreeForDispatchQueue:(id)a3 andThread:(id)a4 inTask:(id)a5
+- (id)callTreeForDispatchQueue:(id)queue andThread:(id)thread inTask:(id)task
 {
   if (([(SASamplePrinter *)self checkForBadOptions]& 1) != 0)
   {
@@ -38192,14 +38192,14 @@ LABEL_8:
       [(SASamplePrinter *)self sortHeavyCallTree:v10];
     }
 
-    v9 = [[SAThreadCallTree alloc] initWithThread:a4 dispatchQueue:a3 swiftTask:0 rootObjects:v10];
+    v9 = [[SAThreadCallTree alloc] initWithThread:thread dispatchQueue:queue swiftTask:0 rootObjects:v10];
 
     goto LABEL_11;
   }
 
-  if (a3 | a4)
+  if (queue | thread)
   {
-    if (a4)
+    if (thread)
     {
       v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
       reportStartTime = self->_reportStartTime;
@@ -38210,16 +38210,16 @@ LABEL_8:
       v28 = 3221225472;
       v29 = __73__SASamplePrinter_addStackForDispatchQueue_andThread_task_toRootObjects___block_invoke;
       v30 = &unk_1E86F70B8;
-      v31 = a3;
+      queueCopy = queue;
       v32 = v11;
       v16 = v11;
-      [a4 enumerateThreadStatesBetweenStartTime:reportStartTime startSampleIndex:reportStartSampleIndex endTime:reportEndTime endSampleIndex:reportEndSampleIndex reverseOrder:0 block:buf];
-      [(SASamplePrinter *)self addStackForDispatchQueue:0 orSwiftTaskStates:a4 orThread:v16 andThreadStateIndexes:a5 task:v10 toRootObjects:0 nameChanges:0 dispatchQueueChanges:0 swiftTaskChanges:0 threadChanges:0 priorityChanges:0 microstackshotSummary:0 onlyHeaviestStack:0 includeState:?];
+      [thread enumerateThreadStatesBetweenStartTime:reportStartTime startSampleIndex:reportStartSampleIndex endTime:reportEndTime endSampleIndex:reportEndSampleIndex reverseOrder:0 block:buf];
+      [(SASamplePrinter *)self addStackForDispatchQueue:0 orSwiftTaskStates:thread orThread:v16 andThreadStateIndexes:task task:v10 toRootObjects:0 nameChanges:0 dispatchQueueChanges:0 swiftTaskChanges:0 threadChanges:0 priorityChanges:0 microstackshotSummary:0 onlyHeaviestStack:0 includeState:?];
     }
 
     else
     {
-      [(SASamplePrinter *)self addStackForDispatchQueue:a3 orSwiftTaskStates:0 orThread:0 andThreadStateIndexes:0 task:a5 toRootObjects:v10 nameChanges:0 dispatchQueueChanges:0 swiftTaskChanges:0 threadChanges:0 priorityChanges:0 microstackshotSummary:0 onlyHeaviestStack:0 includeState:0];
+      [(SASamplePrinter *)self addStackForDispatchQueue:queue orSwiftTaskStates:0 orThread:0 andThreadStateIndexes:0 task:task toRootObjects:v10 nameChanges:0 dispatchQueueChanges:0 swiftTaskChanges:0 threadChanges:0 priorityChanges:0 microstackshotSummary:0 onlyHeaviestStack:0 includeState:0];
     }
 
     goto LABEL_8;
@@ -38240,7 +38240,7 @@ LABEL_8:
   return result;
 }
 
-- (id)callTreeForSwiftTask:(id)a3 thread:(id)a4 inTask:(id)a5
+- (id)callTreeForSwiftTask:(id)task thread:(id)thread inTask:(id)inTask
 {
   if (([(SASamplePrinter *)self checkForBadOptions]& 1) != 0)
   {
@@ -38250,19 +38250,19 @@ LABEL_8:
   else
   {
     v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
-    [(SASamplePrinter *)self addStackForSwiftTask:a3 andThread:a4 task:a5 toRootObjects:v10];
+    [(SASamplePrinter *)self addStackForSwiftTask:task andThread:thread task:inTask toRootObjects:v10];
     if ([(SASamplePrintOptions *)self->_options printHeavyStacks])
     {
       [(SASamplePrinter *)self sortHeavyCallTree:v10];
     }
 
-    v9 = [[SAThreadCallTree alloc] initWithThread:a4 dispatchQueue:0 swiftTask:a3 rootObjects:v10];
+    v9 = [[SAThreadCallTree alloc] initWithThread:thread dispatchQueue:0 swiftTask:task rootObjects:v10];
   }
 
   return v9;
 }
 
-- (id)callTreeForDispatchQueue:(id)a3 swiftTask:(id)a4 thread:(id)a5 inTask:(id)a6
+- (id)callTreeForDispatchQueue:(id)queue swiftTask:(id)task thread:(id)thread inTask:(id)inTask
 {
   if (([(SASamplePrinter *)self checkForBadOptions]& 1) != 0)
   {
@@ -38272,19 +38272,19 @@ LABEL_8:
   else
   {
     v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
-    [(SASamplePrinter *)self addStackForSwiftTask:a4 andThread:a5 task:a6 toRootObjects:v12];
+    [(SASamplePrinter *)self addStackForSwiftTask:task andThread:thread task:inTask toRootObjects:v12];
     if ([(SASamplePrintOptions *)self->_options printHeavyStacks])
     {
       [(SASamplePrinter *)self sortHeavyCallTree:v12];
     }
 
-    v11 = [[SAThreadCallTree alloc] initWithThread:a5 dispatchQueue:a3 swiftTask:a4 rootObjects:v12];
+    v11 = [[SAThreadCallTree alloc] initWithThread:thread dispatchQueue:queue swiftTask:task rootObjects:v12];
   }
 
   return v11;
 }
 
-- (id)callTreeForThread:(id)a3 inTask:(id)a4
+- (id)callTreeForThread:(id)thread inTask:(id)task
 {
   if (([(SASamplePrinter *)self checkForBadOptions]& 1) != 0)
   {
@@ -38296,7 +38296,7 @@ LABEL_8:
     v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
     if (self)
     {
-      [(SASamplePrinter *)self addStackForDispatchQueue:0 orSwiftTaskStates:a3 orThread:0 andThreadStateIndexes:a4 task:v8 toRootObjects:0 nameChanges:0 dispatchQueueChanges:0 swiftTaskChanges:0 threadChanges:0 priorityChanges:0 microstackshotSummary:0 onlyHeaviestStack:0 includeState:?];
+      [(SASamplePrinter *)self addStackForDispatchQueue:0 orSwiftTaskStates:thread orThread:0 andThreadStateIndexes:task task:v8 toRootObjects:0 nameChanges:0 dispatchQueueChanges:0 swiftTaskChanges:0 threadChanges:0 priorityChanges:0 microstackshotSummary:0 onlyHeaviestStack:0 includeState:?];
     }
 
     if ([(SASamplePrintOptions *)self->_options printHeavyStacks])
@@ -38304,13 +38304,13 @@ LABEL_8:
       [(SASamplePrinter *)self sortHeavyCallTree:v8];
     }
 
-    v7 = [[SAThreadCallTree alloc] initWithThread:a3 dispatchQueue:0 swiftTask:0 rootObjects:v8];
+    v7 = [[SAThreadCallTree alloc] initWithThread:thread dispatchQueue:0 swiftTask:0 rootObjects:v8];
   }
 
   return v7;
 }
 
-- (id)callTreeForExecutable:(id)a3
+- (id)callTreeForExecutable:(id)executable
 {
   if (([(SASamplePrinter *)self checkForBadOptions]& 1) != 0)
   {
@@ -38328,9 +38328,9 @@ LABEL_8:
       v13 = 3221225472;
       v14 = __55__SASamplePrinter_addStackForExecutable_toRootObjects___block_invoke;
       v15 = &unk_1E86F7FE0;
-      v16 = a3;
+      executableCopy = executable;
       v17 = v7;
-      v18 = self;
+      selfCopy = self;
       v19 = v6;
       v9 = v7;
       [(SASampleStore *)sampleStore enumerateTasks:&v12];

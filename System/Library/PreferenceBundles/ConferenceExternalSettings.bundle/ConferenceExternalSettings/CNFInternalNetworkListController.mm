@@ -1,15 +1,15 @@
 @interface CNFInternalNetworkListController
-- (id)customNatType:(id)a3;
-- (id)enableRelay:(id)a3;
-- (id)forceIPv6:(id)a3;
-- (id)forceP2P:(id)a3;
-- (id)forceRelay:(id)a3;
+- (id)customNatType:(id)type;
+- (id)enableRelay:(id)relay;
+- (id)forceIPv6:(id)pv6;
+- (id)forceP2P:(id)p;
+- (id)forceRelay:(id)relay;
 - (id)specifiers;
-- (void)setCustomNatType:(id)a3 specifier:(id)a4;
-- (void)setEnableRelay:(id)a3 specifier:(id)a4;
-- (void)setForceIPv6:(id)a3 specifier:(id)a4;
-- (void)setForceP2P:(id)a3 specifier:(id)a4;
-- (void)setForceRelay:(id)a3 specifier:(id)a4;
+- (void)setCustomNatType:(id)type specifier:(id)specifier;
+- (void)setEnableRelay:(id)relay specifier:(id)specifier;
+- (void)setForceIPv6:(id)pv6 specifier:(id)specifier;
+- (void)setForceP2P:(id)p specifier:(id)specifier;
+- (void)setForceRelay:(id)relay specifier:(id)specifier;
 @end
 
 @implementation CNFInternalNetworkListController
@@ -30,9 +30,9 @@
   return v4;
 }
 
-- (void)setEnableRelay:(id)a3 specifier:(id)a4
+- (void)setEnableRelay:(id)relay specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([relay BOOLValue])
   {
     v4 = 0;
   }
@@ -47,7 +47,7 @@
   CFPreferencesAppSynchronize(@"com.apple.conference");
 }
 
-- (id)enableRelay:(id)a3
+- (id)enableRelay:(id)relay
 {
   keyExistsAndHasValidFormat = 0;
   AppIntegerValue = CFPreferencesGetAppIntegerValue(@"disableRelay", @"com.apple.conference", &keyExistsAndHasValidFormat);
@@ -67,9 +67,9 @@
   return v6;
 }
 
-- (void)setForceRelay:(id)a3 specifier:(id)a4
+- (void)setForceRelay:(id)relay specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([relay BOOLValue])
   {
     v4 = [NSNumber numberWithInt:1];
   }
@@ -84,7 +84,7 @@
   CFPreferencesAppSynchronize(@"com.apple.conference");
 }
 
-- (id)forceRelay:(id)a3
+- (id)forceRelay:(id)relay
 {
   keyExistsAndHasValidFormat = 0;
   AppIntegerValue = CFPreferencesGetAppIntegerValue(@"forceRelay", @"com.apple.conference", &keyExistsAndHasValidFormat);
@@ -104,11 +104,11 @@
   return v6;
 }
 
-- (void)setCustomNatType:(id)a3 specifier:(id)a4
+- (void)setCustomNatType:(id)type specifier:(id)specifier
 {
-  v6 = a3;
-  NSLog(@"Setting custom nat type to %@", v6);
-  if ([v6 integerValue] == -1)
+  typeCopy = type;
+  NSLog(@"Setting custom nat type to %@", typeCopy);
+  if ([typeCopy integerValue] == -1)
   {
     v4 = 0;
     v5 = 0;
@@ -117,7 +117,7 @@
   else
   {
     v4 = [NSNumber numberWithBool:1];
-    v5 = v6;
+    v5 = typeCopy;
   }
 
   CFPreferencesSetAppValue(@"UseCustomNatType", v4, @"com.apple.conference");
@@ -125,7 +125,7 @@
   CFPreferencesAppSynchronize(@"com.apple.conference");
 }
 
-- (id)customNatType:(id)a3
+- (id)customNatType:(id)type
 {
   keyExistsAndHasValidFormat = 0;
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"UseCustomNatType", @"com.apple.conference", &keyExistsAndHasValidFormat);
@@ -162,9 +162,9 @@
   return v8;
 }
 
-- (void)setForceP2P:(id)a3 specifier:(id)a4
+- (void)setForceP2P:(id)p specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([p BOOLValue])
   {
     v4 = [NSNumber numberWithInt:1];
   }
@@ -179,7 +179,7 @@
   CFPreferencesAppSynchronize(@"com.apple.VideoConference");
 }
 
-- (id)forceP2P:(id)a3
+- (id)forceP2P:(id)p
 {
   keyExistsAndHasValidFormat = 0;
   AppIntegerValue = CFPreferencesGetAppIntegerValue(@"forceP2P", @"com.apple.VideoConference", &keyExistsAndHasValidFormat);
@@ -199,9 +199,9 @@
   return v6;
 }
 
-- (void)setForceIPv6:(id)a3 specifier:(id)a4
+- (void)setForceIPv6:(id)pv6 specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([pv6 BOOLValue])
   {
     v4 = [NSNumber numberWithInt:1];
   }
@@ -216,7 +216,7 @@
   CFPreferencesAppSynchronize(@"com.apple.VideoConference");
 }
 
-- (id)forceIPv6:(id)a3
+- (id)forceIPv6:(id)pv6
 {
   keyExistsAndHasValidFormat = 0;
   AppIntegerValue = CFPreferencesGetAppIntegerValue(@"forceIPv6", @"com.apple.VideoConference", &keyExistsAndHasValidFormat);

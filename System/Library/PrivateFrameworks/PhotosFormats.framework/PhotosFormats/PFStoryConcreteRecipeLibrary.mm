@@ -1,26 +1,26 @@
 @interface PFStoryConcreteRecipeLibrary
-- (BOOL)isEqualToLibrary:(id)a3;
+- (BOOL)isEqualToLibrary:(id)library;
 - (NSString)diagnosticDescription;
-- (PFStoryConcreteRecipeLibrary)initWithKind:(int64_t)a3 url:(id)a4;
+- (PFStoryConcreteRecipeLibrary)initWithKind:(int64_t)kind url:(id)url;
 @end
 
 @implementation PFStoryConcreteRecipeLibrary
 
-- (BOOL)isEqualToLibrary:(id)a3
+- (BOOL)isEqualToLibrary:(id)library
 {
-  v4 = a3;
-  if (v4 == self)
+  libraryCopy = library;
+  if (libraryCopy == self)
   {
     v8 = 1;
   }
 
   else
   {
-    v5 = [(PFStoryConcreteRecipeLibrary *)self kind];
-    if (v5 == [(PFStoryConcreteRecipeLibrary *)v4 kind])
+    kind = [(PFStoryConcreteRecipeLibrary *)self kind];
+    if (kind == [(PFStoryConcreteRecipeLibrary *)libraryCopy kind])
     {
       v6 = [(PFStoryConcreteRecipeLibrary *)self url];
-      v7 = [(PFStoryConcreteRecipeLibrary *)v4 url];
+      v7 = [(PFStoryConcreteRecipeLibrary *)libraryCopy url];
       if (v6 == v7)
       {
         v8 = 1;
@@ -50,17 +50,17 @@
   return v5;
 }
 
-- (PFStoryConcreteRecipeLibrary)initWithKind:(int64_t)a3 url:(id)a4
+- (PFStoryConcreteRecipeLibrary)initWithKind:(int64_t)kind url:(id)url
 {
-  v6 = a4;
+  urlCopy = url;
   v12.receiver = self;
   v12.super_class = PFStoryConcreteRecipeLibrary;
   v7 = [(PFStoryConcreteRecipeLibrary *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_kind = a3;
-    v9 = [v6 copy];
+    v7->_kind = kind;
+    v9 = [urlCopy copy];
     url = v8->_url;
     v8->_url = v9;
   }

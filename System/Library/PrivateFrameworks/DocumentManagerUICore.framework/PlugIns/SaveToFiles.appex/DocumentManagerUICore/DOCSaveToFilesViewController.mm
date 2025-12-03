@@ -1,27 +1,27 @@
 @interface DOCSaveToFilesViewController
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)fileManager:(id)a3 shouldProceedAfterError:(id)a4 removingItemAtURL:(id)a5;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)fileManager:(id)manager shouldProceedAfterError:(id)error removingItemAtURL:(id)l;
 - (NSArray)keyCommands;
-- (id)loadItemProvider:(id)a3 error:(id *)a4;
-- (void)__completeRequestWithError:(id)a3 completion:(id)a4;
-- (void)_completeRequestWithError:(id)a3 completion:(id)a4;
+- (id)loadItemProvider:(id)provider error:(id *)error;
+- (void)__completeRequestWithError:(id)error completion:(id)completion;
+- (void)_completeRequestWithError:(id)error completion:(id)completion;
 - (void)_markOrphanedTemporaryItemsPurgeable;
-- (void)_markPurgeable:(id)a3;
-- (void)documentPickerDidCancel:(id)a3;
+- (void)_markPurgeable:(id)purgeable;
+- (void)documentPickerDidCancel:(id)cancel;
 - (void)loadAttachments;
-- (void)loadDataWithTypes:(id)a3 fromItemProvider:(id)a4 completionHandler:(id)a5;
-- (void)loadFileURLFromItemProvider:(id)a3 completionHandler:(id)a4;
-- (void)performDeselectAll:(id)a3;
-- (void)performGoToDesktop:(id)a3;
-- (void)performGoToDocuments:(id)a3;
-- (void)performGoToDownloads:(id)a3;
-- (void)performGoToEnclosingFolder:(id)a3;
-- (void)performGoToICloudDrive:(id)a3;
-- (void)performGoToOnMyDevice:(id)a3;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)presentDocumentPickerForURLs:(id)a3;
+- (void)loadDataWithTypes:(id)types fromItemProvider:(id)provider completionHandler:(id)handler;
+- (void)loadFileURLFromItemProvider:(id)provider completionHandler:(id)handler;
+- (void)performDeselectAll:(id)all;
+- (void)performGoToDesktop:(id)desktop;
+- (void)performGoToDocuments:(id)documents;
+- (void)performGoToDownloads:(id)downloads;
+- (void)performGoToEnclosingFolder:(id)folder;
+- (void)performGoToICloudDrive:(id)drive;
+- (void)performGoToOnMyDevice:(id)device;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)presentDocumentPickerForURLs:(id)ls;
 - (void)registerForIconUpdates;
-- (void)selectAll:(id)a3;
+- (void)selectAll:(id)all;
 - (void)viewDidLoad;
 @end
 
@@ -34,8 +34,8 @@
   v5.super_class = DOCSaveToFilesViewController;
   [(DOCSaveToFilesViewController *)&v5 viewDidLoad];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [(DOCSaveToFilesViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(DOCSaveToFilesViewController *)self view];
+  [view setBackgroundColor:v3];
 
   [(DOCSaveToFilesViewController *)self loadAttachments];
   self->_didLoadAttachments = 1;
@@ -51,31 +51,31 @@
     self->_urlsToRemoveOnCompletion = v3;
   }
 
-  v5 = [(DOCSaveToFilesViewController *)self extensionContext];
-  v6 = [v5 inputItems];
-  v7 = [v6 firstObject];
+  extensionContext = [(DOCSaveToFilesViewController *)self extensionContext];
+  inputItems = [extensionContext inputItems];
+  firstObject = [inputItems firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [v7 attachments];
-    v9 = [v8 firstObject];
+    attachments = [firstObject attachments];
+    firstObject2 = [attachments firstObject];
 
-    if (v9)
+    if (firstObject2)
     {
-      v36 = v9;
-      v10 = [v7 attachments];
-      v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v10 count]);
+      v36 = firstObject2;
+      attachments2 = [firstObject attachments];
+      v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [attachments2 count]);
 
-      v12 = [v7 attachments];
-      v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v12 count]);
+      attachments3 = [firstObject attachments];
+      v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [attachments3 count]);
 
       v49 = 0u;
       v50 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v38 = v7;
-      v14 = [v7 attachments];
-      v15 = [v14 countByEnumeratingWithState:&v47 objects:v52 count:16];
+      v38 = firstObject;
+      attachments4 = [firstObject attachments];
+      v15 = [attachments4 countByEnumeratingWithState:&v47 objects:v52 count:16];
       if (v15)
       {
         v16 = v15;
@@ -86,7 +86,7 @@
           {
             if (*v48 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(attachments4);
             }
 
             v19 = *(*(&v47 + 1) + 8 * i);
@@ -104,13 +104,13 @@
             }
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v47 objects:v52 count:16];
+          v16 = [attachments4 countByEnumeratingWithState:&v47 objects:v52 count:16];
         }
 
         while (v16);
       }
 
-      v37 = self;
+      selfCopy = self;
 
       v44 = 0u;
       v45 = 0u;
@@ -132,9 +132,9 @@
             }
 
             v26 = *(*(&v42 + 1) + 8 * j);
-            v27 = [v26 lastPathComponent];
+            lastPathComponent = [v26 lastPathComponent];
 
-            if (v27)
+            if (lastPathComponent)
             {
               v28 = v13;
               v40 = 0;
@@ -167,7 +167,7 @@
 
       if ([v11 count])
       {
-        [(DOCSaveToFilesViewController *)v37 presentDocumentPickerForURLs:v11];
+        [(DOCSaveToFilesViewController *)selfCopy presentDocumentPickerForURLs:v11];
       }
 
       else
@@ -183,12 +183,12 @@
           [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
         }
         v35 = ;
-        [(DOCSaveToFilesViewController *)v37 _completeRequestWithError:v35];
+        [(DOCSaveToFilesViewController *)selfCopy _completeRequestWithError:v35];
       }
 
-      v7 = v38;
+      firstObject = v38;
 
-      v9 = v36;
+      firstObject2 = v36;
     }
 
     else
@@ -207,9 +207,9 @@
   }
 }
 
-- (id)loadItemProvider:(id)a3 error:(id *)a4
+- (id)loadItemProvider:(id)provider error:(id *)error
 {
-  v6 = a3;
+  providerCopy = provider;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -238,18 +238,18 @@
   v19 = v9;
   v10 = v8;
   v16 = v10;
-  v11 = v6;
+  v11 = providerCopy;
   v17 = v11;
-  v18 = self;
+  selfCopy = self;
   v21 = &v23;
   [(DOCSaveToFilesViewController *)self loadFileURLFromItemProvider:v11 completionHandler:v15];
   dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4)
+  if (error)
   {
     v12 = v24[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -261,19 +261,19 @@
   return v13;
 }
 
-- (void)loadDataWithTypes:(id)a3 fromItemProvider:(id)a4 completionHandler:(id)a5
+- (void)loadDataWithTypes:(id)types fromItemProvider:(id)provider completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  typesCopy = types;
+  providerCopy = provider;
+  handlerCopy = handler;
+  if ([typesCopy count])
   {
     v20 = 0;
     v21 = &v20;
     v22 = 0x3032000000;
     v23 = sub_1000023EC;
     v24 = sub_1000023FC;
-    v25 = [v8 firstObject];
+    firstObject = [typesCopy firstObject];
     v11 = v21[5];
     v26 = NSItemProviderOptionsDispatchModeKey;
     v27 = NSItemProviderOptionsDispatchModeAsynchronous;
@@ -282,11 +282,11 @@
     v14[1] = 3221225472;
     v14[2] = sub_100002B30;
     v14[3] = &unk_10000C560;
-    v18 = v10;
+    v18 = handlerCopy;
     v19 = &v20;
-    v15 = v9;
-    v16 = self;
-    v17 = v8;
+    v15 = providerCopy;
+    selfCopy = self;
+    v17 = typesCopy;
     [v15 loadItemForTypeIdentifier:v11 options:v12 completionHandler:v14];
 
     _Block_object_dispose(&v20, 8);
@@ -295,15 +295,15 @@
   else
   {
     v13 = [NSError errorWithDomain:NSCocoaErrorDomain code:3328 userInfo:0];
-    (*(v10 + 2))(v10, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 }
 
-- (void)loadFileURLFromItemProvider:(id)a3 completionHandler:(id)a4
+- (void)loadFileURLFromItemProvider:(id)provider completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [UTTypeFileURL identifier];
+  handlerCopy = handler;
+  providerCopy = provider;
+  identifier = [UTTypeFileURL identifier];
   v12 = NSItemProviderOptionsDispatchModeKey;
   v13 = NSItemProviderOptionsDispatchModeAsynchronous;
   v8 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
@@ -311,43 +311,43 @@
   v10[1] = 3221225472;
   v10[2] = sub_100003198;
   v10[3] = &unk_10000C588;
-  v11 = v5;
-  v9 = v5;
-  [v6 loadItemForTypeIdentifier:v7 options:v8 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [providerCopy loadItemForTypeIdentifier:identifier options:v8 completionHandler:v10];
 }
 
-- (void)presentDocumentPickerForURLs:(id)a3
+- (void)presentDocumentPickerForURLs:(id)ls
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100003328;
   v4[3] = &unk_10000C5B0;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  lsCopy = ls;
+  v3 = lsCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v9.receiver = self;
   v9.super_class = DOCSaveToFilesViewController;
-  v4 = a3;
-  [(DOCSaveToFilesViewController *)&v9 preferredContentSizeDidChangeForChildContentContainer:v4];
-  [v4 preferredContentSize];
+  containerCopy = container;
+  [(DOCSaveToFilesViewController *)&v9 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
+  [containerCopy preferredContentSize];
   v6 = v5;
   v8 = v7;
 
   [(DOCSaveToFilesViewController *)self setPreferredContentSize:v6, v8];
 }
 
-- (void)_completeRequestWithError:(id)a3 completion:(id)a4
+- (void)_completeRequestWithError:(id)error completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  completionCopy = completion;
   if (self->_didLoadAttachments)
   {
-    [(DOCSaveToFilesViewController *)self __completeRequestWithError:v6 completion:v7];
+    [(DOCSaveToFilesViewController *)self __completeRequestWithError:errorCopy completion:completionCopy];
   }
 
   else
@@ -358,22 +358,22 @@
     block[2] = sub_100003C50;
     block[3] = &unk_10000C5D8;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = errorCopy;
+    v11 = completionCopy;
     dispatch_after(v8, &_dispatch_main_q, block);
   }
 }
 
-- (void)__completeRequestWithError:(id)a3 completion:(id)a4
+- (void)__completeRequestWithError:(id)error completion:(id)completion
 {
-  v6 = a3;
-  v21 = a4;
-  v22 = v6;
+  errorCopy = error;
+  completionCopy = completion;
+  v22 = errorCopy;
   v7 = @"with error: ";
   v8 = &stru_10000CB88;
-  if (v6)
+  if (errorCopy)
   {
-    v8 = v6;
+    v8 = errorCopy;
   }
 
   else
@@ -420,12 +420,12 @@
   }
 
   [(DOCSaveToFilesViewController *)self _markOrphanedTemporaryItemsPurgeable];
-  v18 = [(DOCSaveToFilesViewController *)self extensionContext];
-  v19 = v18;
+  extensionContext = [(DOCSaveToFilesViewController *)self extensionContext];
+  v19 = extensionContext;
   if (v22)
   {
-    [v18 cancelRequestWithError:v22];
-    v20 = v21;
+    [extensionContext cancelRequestWithError:v22];
+    v20 = completionCopy;
   }
 
   else
@@ -434,32 +434,32 @@
     v23[1] = 3221225472;
     v23[2] = sub_100003EA8;
     v23[3] = &unk_10000C600;
-    v20 = v21;
-    v24 = v21;
+    v20 = completionCopy;
+    v24 = completionCopy;
     [v19 completeRequestReturningItems:0 completionHandler:v23];
 
     v19 = v24;
   }
 }
 
-- (void)_markPurgeable:(id)a3
+- (void)_markPurgeable:(id)purgeable
 {
-  v3 = a3;
-  v4 = [v3 fileSystemRepresentation];
-  if (v4)
+  purgeableCopy = purgeable;
+  fileSystemRepresentation = [purgeableCopy fileSystemRepresentation];
+  if (fileSystemRepresentation)
   {
     v9 = xmmword_100007DC0;
     v10 = 0x40000;
     v11 = 0;
     v12 = 0;
     v13 = 0;
-    if (fsctl(v4, 0xC0304A6FuLL, &v9, 1u))
+    if (fsctl(fileSystemRepresentation, 0xC0304A6FuLL, &v9, 1u))
     {
-      v5 = [v3 path];
+      path = [purgeableCopy path];
       v6 = *__error();
       v7 = __error();
       v8 = strerror(*v7);
-      NSLog(@"Failed to mark '%@' as purgeable (error %d: %s)", v5, v6, v8);
+      NSLog(@"Failed to mark '%@' as purgeable (error %d: %s)", path, v6, v8);
     }
   }
 }
@@ -506,23 +506,23 @@
         if (v12)
         {
           v14 = [v12 objectForKeyedSubscript:NSURLIsPurgeableKey];
-          v15 = [v14 BOOLValue];
+          bOOLValue = [v14 BOOLValue];
 
           v16 = [v12 objectForKeyedSubscript:NSURLIsRegularFileKey];
-          v17 = [v16 BOOLValue];
+          bOOLValue2 = [v16 BOOLValue];
 
           v18 = [v12 objectForKeyedSubscript:NSURLIsDirectoryKey];
-          v19 = [v18 BOOLValue];
+          bOOLValue3 = [v18 BOOLValue];
 
-          if (v15)
+          if (bOOLValue)
           {
-            if (v19)
+            if (bOOLValue3)
             {
               [obj skipDescendants];
             }
           }
 
-          else if ((v17 | v19))
+          else if ((bOOLValue2 | bOOLValue3))
           {
             [(DOCSaveToFilesViewController *)self _markPurgeable:v10];
           }
@@ -530,8 +530,8 @@
 
         else
         {
-          v20 = [v10 path];
-          NSLog(@"Couldn't get resource values for %@ to mark purgeable. Error: %@", v20, v13);
+          path = [v10 path];
+          NSLog(@"Couldn't get resource values for %@ to mark purgeable. Error: %@", path, v13);
         }
 
         objc_autoreleasePoolPop(v11);
@@ -544,26 +544,26 @@
   }
 }
 
-- (BOOL)fileManager:(id)a3 shouldProceedAfterError:(id)a4 removingItemAtURL:(id)a5
+- (BOOL)fileManager:(id)manager shouldProceedAfterError:(id)error removingItemAtURL:(id)l
 {
-  v6 = a4;
-  v7 = [a5 path];
-  NSLog(@"Unable to clean up %@. Error: %@", v7, v6);
+  errorCopy = error;
+  path = [l path];
+  NSLog(@"Unable to clean up %@. Error: %@", path, errorCopy);
 
   return 1;
 }
 
-- (void)documentPickerDidCancel:(id)a3
+- (void)documentPickerDidCancel:(id)cancel
 {
   v4 = [NSError errorWithDomain:NSCocoaErrorDomain code:3072 userInfo:0];
   [(DOCSaveToFilesViewController *)self _completeRequestWithError:v4 completion:0];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1000066E8();
     swift_unknownObjectRelease();
@@ -572,10 +572,10 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = DOCSaveToFilesViewController.canPerformAction(_:withSender:)(a3, v10);
+  v8 = DOCSaveToFilesViewController.canPerformAction(_:withSender:)(action, v10);
 
   sub_100006240(v10, &qword_100010B60, &qword_100007DF0);
   return v8 & 1;
@@ -584,7 +584,7 @@
 - (NSArray)keyCommands
 {
   v2 = [objc_allocWithZone(DOCKeyCommandController) init];
-  v3 = [v2 allKeyCommands];
+  allKeyCommands = [v2 allKeyCommands];
   sub_100006450(0, &qword_100010B68, UIKeyCommand_ptr);
   sub_100006668();
 
@@ -593,12 +593,12 @@
   return v4.super.isa;
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (all)
   {
-    v4 = self;
+    selfCopy2 = self;
     swift_unknownObjectRetain();
     sub_1000066E8();
     swift_unknownObjectRelease();
@@ -608,28 +608,28 @@
   {
     v9 = 0u;
     v10 = 0u;
-    v5 = self;
+    selfCopy3 = self;
   }
 
-  v6 = [(DOCSaveToFilesViewController *)v3 documentPickerViewController:v9];
+  v6 = [(DOCSaveToFilesViewController *)selfCopy documentPickerViewController:v9];
   if (v6)
   {
     v7 = v6;
-    v8 = [(DOCDocumentPickerViewController *)v6 fullDocumentManagerViewController];
+    fullDocumentManagerViewController = [(DOCDocumentPickerViewController *)v6 fullDocumentManagerViewController];
 
     sub_1000066B8();
-    v3 = v8;
+    selfCopy = fullDocumentManagerViewController;
   }
 
   sub_100006240(&v9, &qword_100010B60, &qword_100007DF0);
 }
 
-- (void)performDeselectAll:(id)a3
+- (void)performDeselectAll:(id)all
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (all)
   {
-    v4 = self;
+    selfCopy2 = self;
     swift_unknownObjectRetain();
     sub_1000066E8();
     swift_unknownObjectRelease();
@@ -639,78 +639,78 @@
   {
     v10 = 0u;
     v11 = 0u;
-    v5 = self;
+    selfCopy3 = self;
   }
 
-  v6 = [(DOCSaveToFilesViewController *)v3 documentPickerViewController:v10];
+  v6 = [(DOCSaveToFilesViewController *)selfCopy documentPickerViewController:v10];
   if (v6)
   {
     v7 = v6;
-    v8 = [(DOCDocumentPickerViewController *)v6 fullDocumentManagerViewController];
+    fullDocumentManagerViewController = [(DOCDocumentPickerViewController *)v6 fullDocumentManagerViewController];
 
     v9 = sub_100006698();
     if (v9)
     {
       sub_1000065F8();
 
-      v3 = v9;
+      selfCopy = v9;
     }
   }
 
   sub_100006240(&v10, &qword_100010B60, &qword_100007DF0);
 }
 
-- (void)performGoToEnclosingFolder:(id)a3
+- (void)performGoToEnclosingFolder:(id)folder
 {
-  v5 = self;
-  v3 = [(DOCSaveToFilesViewController *)v5 documentPickerViewController];
-  if (v3)
+  selfCopy = self;
+  documentPickerViewController = [(DOCSaveToFilesViewController *)selfCopy documentPickerViewController];
+  if (documentPickerViewController)
   {
-    v4 = v3;
-    [(DOCDocumentPickerViewController *)v3 showSidebar];
+    v4 = documentPickerViewController;
+    [(DOCDocumentPickerViewController *)documentPickerViewController showSidebar];
   }
 }
 
-- (void)performGoToDocuments:(id)a3
+- (void)performGoToDocuments:(id)documents
 {
-  v4 = a3;
-  v5 = self;
+  documentsCopy = documents;
+  selfCopy = self;
   sub_100006070(&unk_10000C8A0, sub_1000064DC, &unk_10000C8B8, 0);
 }
 
-- (void)performGoToDesktop:(id)a3
+- (void)performGoToDesktop:(id)desktop
 {
-  v4 = a3;
-  v5 = self;
+  desktopCopy = desktop;
+  selfCopy = self;
   sub_100006070(&unk_10000C850, sub_1000064DC, &unk_10000C868, 1);
 }
 
-- (void)performGoToDownloads:(id)a3
+- (void)performGoToDownloads:(id)downloads
 {
-  v4 = a3;
-  v5 = self;
+  downloadsCopy = downloads;
+  selfCopy = self;
   sub_100006070(&unk_10000C800, sub_1000064DC, &unk_10000C818, 2);
 }
 
-- (void)performGoToICloudDrive:(id)a3
+- (void)performGoToICloudDrive:(id)drive
 {
-  v4 = a3;
-  v5 = self;
+  driveCopy = drive;
+  selfCopy = self;
   sub_100006070(&unk_10000C760, sub_100006220, &unk_10000C778, 3);
 }
 
-- (void)performGoToOnMyDevice:(id)a3
+- (void)performGoToOnMyDevice:(id)device
 {
   v4 = DOCDocumentSourceIdentifierLocal;
   v5 = objc_allocWithZone(DOCConcreteLocation);
-  v7 = self;
+  selfCopy = self;
   v6 = [v5 initWithSourceIdentifier:v4 node:0];
   sub_100004D64(v6);
 }
 
 - (void)registerForIconUpdates
 {
-  v2 = self;
+  selfCopy = self;
   sub_100006688();
 }
 

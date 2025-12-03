@@ -1,24 +1,24 @@
 @interface TextFieldAlert
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (_TtC9MusicCore14TextFieldAlert)initWithCoder:(id)a3;
-- (_TtC9MusicCore14TextFieldAlert)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (_TtC9MusicCore14TextFieldAlert)initWithCoder:(id)coder;
+- (_TtC9MusicCore14TextFieldAlert)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation TextFieldAlert
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   sub_1005728D8();
-  v9 = a3;
-  v10 = self;
-  sub_10018091C(v9, location, length);
+  fieldCopy = field;
+  selfCopy = self;
+  sub_10018091C(fieldCopy, location, length);
 
   return 1;
 }
 
-- (_TtC9MusicCore14TextFieldAlert)initWithCoder:(id)a3
+- (_TtC9MusicCore14TextFieldAlert)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9MusicCore14TextFieldAlert_submitAction) = 0;
   result = sub_1005740F8();
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (_TtC9MusicCore14TextFieldAlert)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9MusicCore14TextFieldAlert)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

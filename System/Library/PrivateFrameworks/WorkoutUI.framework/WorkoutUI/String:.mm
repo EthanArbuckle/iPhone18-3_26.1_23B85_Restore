@@ -7,7 +7,7 @@
 
 - (Class)NSObject
 {
-  v1 = *(a1 + 32);
+  v1 = *(self + 32);
 
   v3 = v1(v2);
 
@@ -27,13 +27,13 @@
 
 - (uint64_t)DemoTrainingLoadValues
 {
-  result = *a1;
+  result = *self;
   if (!result)
   {
     __swift_instantiateConcreteTypeFromMangledNameAbstractV2(&_sSDySS9WorkoutUI22DemoTrainingLoadValuesVGMd);
     a2();
     result = swift_getWitnessTable();
-    atomic_store(result, a1);
+    atomic_store(result, self);
   }
 
   return result;

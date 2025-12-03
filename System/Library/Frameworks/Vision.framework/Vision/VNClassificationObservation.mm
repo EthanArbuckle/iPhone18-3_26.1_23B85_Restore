@@ -1,14 +1,14 @@
 @interface VNClassificationObservation
 - (BOOL)hasMinimumPrecision:(float)minimumPrecision forRecall:(float)recall;
 - (BOOL)hasMinimumRecall:(float)minimumRecall forPrecision:(float)precision;
-- (BOOL)isEqual:(id)a3;
-- (VNClassificationObservation)initWithCoder:(id)a3;
-- (VNClassificationObservation)initWithOriginatingRequestSpecifier:(id)a3 identifier:(id)a4 confidence:(float)a5 classificationMetrics:(id)a6;
-- (VNClassificationObservation)initWithRequestRevision:(unint64_t)a3 identifier:(id)a4 confidence:(float)a5 classificationMetrics:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (VNClassificationObservation)initWithCoder:(id)coder;
+- (VNClassificationObservation)initWithOriginatingRequestSpecifier:(id)specifier identifier:(id)identifier confidence:(float)confidence classificationMetrics:(id)metrics;
+- (VNClassificationObservation)initWithRequestRevision:(unint64_t)revision identifier:(id)identifier confidence:(float)confidence classificationMetrics:(id)metrics;
 - (id)description;
 - (id)vn_cloneObject;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNClassificationObservation
@@ -38,10 +38,10 @@
 
       else
       {
-        v19 = [(VNClassificationObservation *)self identifier];
+        identifier = [(VNClassificationObservation *)self identifier];
         v24 = 0.0;
         *&v20 = recall;
-        if (([(VisionCoreClassificationMetrics *)v16 getConfidence:&v24 forClassificationIdentifier:v19 withRecall:0 error:v20]& 1) != 0 && v18 >= v24)
+        if (([(VisionCoreClassificationMetrics *)v16 getConfidence:&v24 forClassificationIdentifier:identifier withRecall:0 error:v20]& 1) != 0 && v18 >= v24)
         {
           if (minimumPrecision <= 0.0)
           {
@@ -51,7 +51,7 @@
           else
           {
             v23 = 0.0;
-            v22 = [(VisionCoreClassificationMetrics *)v16 getPrecision:&v23 forClassificationIdentifier:v19 confidence:0 error:?];
+            v22 = [(VisionCoreClassificationMetrics *)v16 getPrecision:&v23 forClassificationIdentifier:identifier confidence:0 error:?];
             if (v23 >= minimumPrecision)
             {
               v13 = v22;
@@ -117,10 +117,10 @@ LABEL_15:
 
       else
       {
-        v19 = [(VNClassificationObservation *)self identifier];
+        identifier = [(VNClassificationObservation *)self identifier];
         v24 = 0.0;
         *&v20 = precision;
-        if (([(VisionCoreClassificationMetrics *)v16 getConfidence:&v24 forClassificationIdentifier:v19 withPrecision:0 error:v20]& 1) != 0 && v18 >= v24)
+        if (([(VisionCoreClassificationMetrics *)v16 getConfidence:&v24 forClassificationIdentifier:identifier withPrecision:0 error:v20]& 1) != 0 && v18 >= v24)
         {
           if (minimumRecall <= 0.0)
           {
@@ -130,7 +130,7 @@ LABEL_15:
           else
           {
             v23 = 0.0;
-            v22 = [(VisionCoreClassificationMetrics *)v16 getRecall:&v23 forClassificationIdentifier:v19 confidence:0 error:?];
+            v22 = [(VisionCoreClassificationMetrics *)v16 getRecall:&v23 forClassificationIdentifier:identifier confidence:0 error:?];
             if (v23 >= minimumRecall)
             {
               v13 = v22;
@@ -179,11 +179,11 @@ LABEL_15:
   v4 = [(VNObservation *)&v8 description];
   [v3 appendString:v4];
 
-  v5 = [(VNClassificationObservation *)self identifier];
-  v6 = v5;
-  if (v5)
+  identifier = [(VNClassificationObservation *)self identifier];
+  v6 = identifier;
+  if (identifier)
   {
-    [v3 appendFormat:@" %@", v5];
+    [v3 appendFormat:@" %@", identifier];
   }
 
   if ([(VNClassificationObservation *)self hasPrecisionRecallCurve])
@@ -198,34 +198,34 @@ LABEL_15:
 {
   v9.receiver = self;
   v9.super_class = VNClassificationObservation;
-  v3 = [(VNObservation *)&v9 vn_cloneObject];
-  if (v3)
+  vn_cloneObject = [(VNObservation *)&v9 vn_cloneObject];
+  if (vn_cloneObject)
   {
     v4 = [(NSString *)self->_identifier copy];
-    v5 = *(v3 + 96);
-    *(v3 + 96) = v4;
+    v5 = *(vn_cloneObject + 96);
+    *(vn_cloneObject + 96) = v4;
 
     v6 = [(VisionCoreClassificationMetrics *)self->_classificationMetrics copy];
-    v7 = *(v3 + 104);
-    *(v3 + 104) = v6;
+    v7 = *(vn_cloneObject + 104);
+    *(vn_cloneObject + 104) = v6;
 
-    objc_storeStrong((v3 + 112), self->_historicallyEncodedOperationPointsProvider);
+    objc_storeStrong((vn_cloneObject + 112), self->_historicallyEncodedOperationPointsProvider);
   }
 
-  return v3;
+  return vn_cloneObject;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = VNClassificationObservation;
-  [(VNObservation *)&v10 encodeWithCoder:v4];
-  [v4 encodeObject:self->_identifier forKey:@"identifier"];
+  [(VNObservation *)&v10 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
   classificationMetrics = self->_classificationMetrics;
   if (classificationMetrics)
   {
-    [v4 encodeObject:classificationMetrics forKey:@"P/R"];
+    [coderCopy encodeObject:classificationMetrics forKey:@"P/R"];
   }
 
   else
@@ -238,38 +238,38 @@ LABEL_15:
       v8 = v9;
       if (v7)
       {
-        [v4 encodeObject:v7 forKey:@"operationPoints"];
+        [coderCopy encodeObject:v7 forKey:@"operationPoints"];
       }
 
       else
       {
-        [v4 failWithError:v8];
+        [coderCopy failWithError:v8];
       }
     }
   }
 }
 
-- (VNClassificationObservation)initWithCoder:(id)a3
+- (VNClassificationObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = VNClassificationObservation;
-  v5 = [(VNObservation *)&v15 initWithCoder:v4];
+  v5 = [(VNObservation *)&v15 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   v7 = [v6 copy];
   identifier = v5->_identifier;
   v5->_identifier = v7;
 
-  if (![v4 containsValueForKey:@"P/R"])
+  if (![coderCopy containsValueForKey:@"P/R"])
   {
-    if ([v4 containsValueForKey:@"operationPoints"])
+    if ([coderCopy containsValueForKey:@"operationPoints"])
     {
-      v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"operationPoints"];
+      v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"operationPoints"];
       if (!v11)
       {
         goto LABEL_9;
@@ -285,7 +285,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"P/R"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"P/R"];
   classificationMetrics = v5->_classificationMetrics;
   v5->_classificationMetrics = v9;
 
@@ -301,10 +301,10 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -313,12 +313,12 @@ LABEL_9:
   {
     v14.receiver = self;
     v14.super_class = VNClassificationObservation;
-    if ([(VNObservation *)&v14 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(VNObservation *)&v14 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
-      v6 = [(VNClassificationObservation *)self identifier];
-      v7 = [(VNClassificationObservation *)v5 identifier];
-      v8 = [v6 isEqualToString:v7];
+      v5 = equalCopy;
+      identifier = [(VNClassificationObservation *)self identifier];
+      identifier2 = [(VNClassificationObservation *)v5 identifier];
+      v8 = [identifier isEqualToString:identifier2];
 
       if ((v8 & 1) != 0 && (v9 = self->_classificationMetrics, v10 = VisionCoreEqualOrNilObjects(), v9, v10))
       {
@@ -346,55 +346,55 @@ LABEL_9:
   v7.receiver = self;
   v7.super_class = VNClassificationObservation;
   v3 = [(VNObservation *)&v7 hash];
-  v4 = [(VNClassificationObservation *)self identifier];
-  v5 = [v4 hash] ^ __ROR8__(v3, 51);
+  identifier = [(VNClassificationObservation *)self identifier];
+  v5 = [identifier hash] ^ __ROR8__(v3, 51);
 
   return v5;
 }
 
-- (VNClassificationObservation)initWithOriginatingRequestSpecifier:(id)a3 identifier:(id)a4 confidence:(float)a5 classificationMetrics:(id)a6
+- (VNClassificationObservation)initWithOriginatingRequestSpecifier:(id)specifier identifier:(id)identifier confidence:(float)confidence classificationMetrics:(id)metrics
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  specifierCopy = specifier;
+  identifierCopy = identifier;
+  metricsCopy = metrics;
   v20.receiver = self;
   v20.super_class = VNClassificationObservation;
-  v13 = [(VNObservation *)&v20 initWithOriginatingRequestSpecifier:v10];
+  v13 = [(VNObservation *)&v20 initWithOriginatingRequestSpecifier:specifierCopy];
   if (v13)
   {
-    v14 = [v11 copy];
+    v14 = [identifierCopy copy];
     identifier = v13->_identifier;
     v13->_identifier = v14;
 
-    v16 = [v12 copy];
+    v16 = [metricsCopy copy];
     classificationMetrics = v13->_classificationMetrics;
     v13->_classificationMetrics = v16;
 
-    *&v18 = a5;
+    *&v18 = confidence;
     [(VNObservation *)v13 setConfidence:v18];
   }
 
   return v13;
 }
 
-- (VNClassificationObservation)initWithRequestRevision:(unint64_t)a3 identifier:(id)a4 confidence:(float)a5 classificationMetrics:(id)a6
+- (VNClassificationObservation)initWithRequestRevision:(unint64_t)revision identifier:(id)identifier confidence:(float)confidence classificationMetrics:(id)metrics
 {
-  v10 = a4;
-  v11 = a6;
+  identifierCopy = identifier;
+  metricsCopy = metrics;
   v19.receiver = self;
   v19.super_class = VNClassificationObservation;
-  v12 = [(VNObservation *)&v19 initWithRequestRevision:a3];
+  v12 = [(VNObservation *)&v19 initWithRequestRevision:revision];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [identifierCopy copy];
     identifier = v12->_identifier;
     v12->_identifier = v13;
 
-    v15 = [v11 copy];
+    v15 = [metricsCopy copy];
     classificationMetrics = v12->_classificationMetrics;
     v12->_classificationMetrics = v15;
 
-    *&v17 = a5;
+    *&v17 = confidence;
     [(VNObservation *)v12 setConfidence:v17];
   }
 

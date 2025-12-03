@@ -1,28 +1,28 @@
 @interface RAPInstructionCorrectionQuestion
-- (RAPInstructionCorrectionQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 composedRouteStep:(id)a5 listItem:(id)a6;
+- (RAPInstructionCorrectionQuestion)initWithReport:(id)report parentQuestion:(id)question composedRouteStep:(id)step listItem:(id)item;
 - (id)_commentsPlaceholderText;
-- (void)_fillSubmissionParameters:(id)a3;
-- (void)fillIndexesForResponse:(id)a3 problemAticRouteIndex:(id)a4 correction:(id)a5;
-- (void)setCellScreenshotImageData:(id)a3;
+- (void)_fillSubmissionParameters:(id)parameters;
+- (void)fillIndexesForResponse:(id)response problemAticRouteIndex:(id)index correction:(id)correction;
+- (void)setCellScreenshotImageData:(id)data;
 @end
 
 @implementation RAPInstructionCorrectionQuestion
 
-- (RAPInstructionCorrectionQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 composedRouteStep:(id)a5 listItem:(id)a6
+- (RAPInstructionCorrectionQuestion)initWithReport:(id)report parentQuestion:(id)question composedRouteStep:(id)step listItem:(id)item
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(RAPInstructionCorrectionQuestion *)self _commentsPlaceholderText];
+  stepCopy = step;
+  itemCopy = item;
+  questionCopy = question;
+  reportCopy = report;
+  _commentsPlaceholderText = [(RAPInstructionCorrectionQuestion *)self _commentsPlaceholderText];
   v18.receiver = self;
   v18.super_class = RAPInstructionCorrectionQuestion;
-  v16 = [(RAPCommentQuestion *)&v18 initWithReport:v14 parentQuestion:v13 title:0 placeholderText:v15 emphasis:2];
+  v16 = [(RAPCommentQuestion *)&v18 initWithReport:reportCopy parentQuestion:questionCopy title:0 placeholderText:_commentsPlaceholderText emphasis:2];
 
   if (v16)
   {
-    objc_storeStrong(&v16->_listItem, a6);
-    objc_storeStrong(&v16->_composedRouteStep, a5);
+    objc_storeStrong(&v16->_listItem, item);
+    objc_storeStrong(&v16->_composedRouteStep, step);
   }
 
   return v16;
@@ -36,65 +36,65 @@
   return v3;
 }
 
-- (void)setCellScreenshotImageData:(id)a3
+- (void)setCellScreenshotImageData:(id)data
 {
-  if (self->_cellScreenshotImageData != a3)
+  if (self->_cellScreenshotImageData != data)
   {
-    v4 = [a3 copy];
+    v4 = [data copy];
     cellScreenshotImageData = self->_cellScreenshotImageData;
     self->_cellScreenshotImageData = v4;
   }
 }
 
-- (void)fillIndexesForResponse:(id)a3 problemAticRouteIndex:(id)a4 correction:(id)a5
+- (void)fillIndexesForResponse:(id)response problemAticRouteIndex:(id)index correction:(id)correction
 {
-  v34 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v34 suggestedRoutes];
-  if (v10 && (v11 = v10, v12 = [v8 directionsResponseSuggestedRoutesIndex], objc_msgSend(v34, "suggestedRoutes"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, v11, v14 > v12))
+  responseCopy = response;
+  indexCopy = index;
+  correctionCopy = correction;
+  suggestedRoutes = [responseCopy suggestedRoutes];
+  if (suggestedRoutes && (v11 = suggestedRoutes, v12 = [indexCopy directionsResponseSuggestedRoutesIndex], objc_msgSend(responseCopy, "suggestedRoutes"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, v11, v14 > v12))
   {
-    v15 = [v34 suggestedRoutes];
-    v16 = [v15 objectAtIndexedSubscript:{objc_msgSend(v8, "directionsResponseSuggestedRoutesIndex")}];
+    suggestedRoutes2 = [responseCopy suggestedRoutes];
+    composedRoute = [suggestedRoutes2 objectAtIndexedSubscript:{objc_msgSend(indexCopy, "directionsResponseSuggestedRoutesIndex")}];
 
-    v17 = [(TransitDirectionsListItem *)self->_listItem type];
-    v18 = [v16 steps];
-    v19 = v18;
-    if (!v17)
+    type = [(TransitDirectionsListItem *)self->_listItem type];
+    steps = [composedRoute steps];
+    v19 = steps;
+    if (!type)
     {
-      [v9 setRouteStepIndex:{objc_msgSend(v18, "indexOfObjectPassingTest:", &stru_101650548)}];
+      [correctionCopy setRouteStepIndex:{objc_msgSend(steps, "indexOfObjectPassingTest:", &stru_101650548)}];
 LABEL_15:
 
       goto LABEL_16;
     }
 
-    v20 = [(GEOComposedRouteStep *)self->_composedRouteStep transitStep];
-    v21 = [v19 indexOfObject:v20];
+    transitStep = [(GEOComposedRouteStep *)self->_composedRouteStep transitStep];
+    v21 = [v19 indexOfObject:transitStep];
 
     if (v21 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v9 setRouteStepIndex:v21];
-      v22 = [(GEOComposedRouteStep *)self->_composedRouteStep transitStep];
-      v23 = [v22 maneuverType];
+      [correctionCopy setRouteStepIndex:v21];
+      transitStep2 = [(GEOComposedRouteStep *)self->_composedRouteStep transitStep];
+      maneuverType = [transitStep2 maneuverType];
 
-      v24 = [(GEOComposedRouteStep *)self->_composedRouteStep transitStep];
-      v25 = [v24 hasWalkingIndex];
+      transitStep3 = [(GEOComposedRouteStep *)self->_composedRouteStep transitStep];
+      hasWalkingIndex = [transitStep3 hasWalkingIndex];
 
-      v26 = [(TransitDirectionsListItem *)self->_listItem parentItem];
+      parentItem = [(TransitDirectionsListItem *)self->_listItem parentItem];
 
-      if (v23 == 2 && v25 && (([v16 isWalkingOnlyRoute] & 1) != 0 || v26))
+      if (maneuverType == 2 && hasWalkingIndex && (([composedRoute isWalkingOnlyRoute] & 1) != 0 || parentItem))
       {
-        v27 = [v34 decoderData];
-        v28 = [(GEOComposedRouteStep *)self->_composedRouteStep transitStep];
-        v19 = [v27 walkingAtIndex:{objc_msgSend(v28, "walkingIndex")}];
+        decoderData = [responseCopy decoderData];
+        transitStep4 = [(GEOComposedRouteStep *)self->_composedRouteStep transitStep];
+        v19 = [decoderData walkingAtIndex:{objc_msgSend(transitStep4, "walkingIndex")}];
 
-        v29 = [v19 steps];
-        v30 = [(GEOComposedRouteStep *)self->_composedRouteStep geoStep];
-        v31 = [v29 indexOfObject:v30];
+        steps2 = [v19 steps];
+        geoStep = [(GEOComposedRouteStep *)self->_composedRouteStep geoStep];
+        v31 = [steps2 indexOfObject:geoStep];
 
         if (v31 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v9 setRouteStepSubstepIndex:v31];
+          [correctionCopy setRouteStepSubstepIndex:v31];
         }
 
         goto LABEL_15;
@@ -104,14 +104,14 @@ LABEL_15:
 
   else
   {
-    v16 = [(GEOComposedRouteStep *)self->_composedRouteStep composedRoute];
-    v32 = [v8 directionsResponseSuggestedRoutesIndex];
-    if ([v16 indexInResponse] == v32)
+    composedRoute = [(GEOComposedRouteStep *)self->_composedRouteStep composedRoute];
+    directionsResponseSuggestedRoutesIndex = [indexCopy directionsResponseSuggestedRoutesIndex];
+    if ([composedRoute indexInResponse] == directionsResponseSuggestedRoutesIndex)
     {
-      v33 = [(GEOComposedRouteStep *)self->_composedRouteStep stepIndex];
-      if (v33 != 0x7FFFFFFFFFFFFFFFLL)
+      stepIndex = [(GEOComposedRouteStep *)self->_composedRouteStep stepIndex];
+      if (stepIndex != 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v9 setRouteStepIndex:v33];
+        [correctionCopy setRouteStepIndex:stepIndex];
       }
     }
   }
@@ -119,109 +119,109 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)_fillSubmissionParameters:(id)a3
+- (void)_fillSubmissionParameters:(id)parameters
 {
-  v42 = a3;
-  v4 = [v42 details];
-  if (!v4)
+  parametersCopy = parameters;
+  details = [parametersCopy details];
+  if (!details)
   {
-    v4 = objc_alloc_init(GEORPFeedbackDetails);
-    [v42 setDetails:v4];
+    details = objc_alloc_init(GEORPFeedbackDetails);
+    [parametersCopy setDetails:details];
   }
 
-  v5 = [v4 directionsFeedback];
+  directionsFeedback = [details directionsFeedback];
 
-  if (!v5)
+  if (!directionsFeedback)
   {
     v6 = objc_alloc_init(GEORPDirectionsFeedback);
-    [v4 setDirectionsFeedback:v6];
+    [details setDirectionsFeedback:v6];
   }
 
-  v7 = [v4 directionsFeedback];
-  [v7 setCorrectionType:1];
+  directionsFeedback2 = [details directionsFeedback];
+  [directionsFeedback2 setCorrectionType:1];
 
-  v8 = [v4 directionsFeedback];
-  v9 = [v8 directionsCorrections];
+  directionsFeedback3 = [details directionsFeedback];
+  directionsCorrections = [directionsFeedback3 directionsCorrections];
 
-  if (!v9)
+  if (!directionsCorrections)
   {
-    v9 = objc_alloc_init(GEORPDirectionsCorrections);
-    v10 = [v4 directionsFeedback];
-    [v10 setDirectionsCorrections:v9];
+    directionsCorrections = objc_alloc_init(GEORPDirectionsCorrections);
+    directionsFeedback4 = [details directionsFeedback];
+    [directionsFeedback4 setDirectionsCorrections:directionsCorrections];
   }
 
-  v11 = [v9 instructionCorrections];
+  instructionCorrections = [directionsCorrections instructionCorrections];
 
-  if (!v11)
+  if (!instructionCorrections)
   {
     v12 = objc_alloc_init(NSMutableArray);
-    [v9 setInstructionCorrections:v12];
+    [directionsCorrections setInstructionCorrections:v12];
   }
 
   v13 = objc_alloc_init(GEORPInstructionCorrection);
-  if (v42)
+  if (parametersCopy)
   {
-    v14 = [v4 directionsFeedback];
-    v15 = [v14 directionsContext];
+    directionsFeedback5 = [details directionsFeedback];
+    directionsContext = [directionsFeedback5 directionsContext];
 
-    if (v15)
+    if (directionsContext)
     {
-      v16 = [v9 problematicRouteIndexs];
-      v17 = [v16 count];
+      problematicRouteIndexs = [directionsCorrections problematicRouteIndexs];
+      v17 = [problematicRouteIndexs count];
 
       if (v17 != 1)
       {
         goto LABEL_16;
       }
 
-      v18 = [v4 directionsFeedback];
-      v19 = [v18 directionsContext];
-      v20 = [v19 directionsResponses];
-      v21 = [v20 firstObject];
+      directionsFeedback6 = [details directionsFeedback];
+      directionsContext2 = [directionsFeedback6 directionsContext];
+      directionsResponses = [directionsContext2 directionsResponses];
+      firstObject = [directionsResponses firstObject];
 
-      v22 = [v9 problematicRouteIndexs];
-      v23 = [v22 firstObject];
+      problematicRouteIndexs2 = [directionsCorrections problematicRouteIndexs];
+      firstObject2 = [problematicRouteIndexs2 firstObject];
 
-      [(RAPInstructionCorrectionQuestion *)self fillIndexesForResponse:v21 problemAticRouteIndex:v23 correction:v13];
+      [(RAPInstructionCorrectionQuestion *)self fillIndexesForResponse:firstObject problemAticRouteIndex:firstObject2 correction:v13];
     }
   }
 
-  v24 = [(RAPCommentQuestion *)self comment];
-  [v13 setComments:v24];
+  comment = [(RAPCommentQuestion *)self comment];
+  [v13 setComments:comment];
 
-  v25 = [(RAPInstructionCorrectionQuestion *)self cellScreenshotImageData];
-  v26 = [UIImage imageWithData:v25];
+  cellScreenshotImageData = [(RAPInstructionCorrectionQuestion *)self cellScreenshotImageData];
+  v26 = [UIImage imageWithData:cellScreenshotImageData];
 
   v27 = [RAPPhoto alloc];
   v28 = +[NSDate date];
   v29 = [(RAPPhoto *)v27 initWithPhoto:v26 date:v28 location:0];
 
   v30 = [[RAPPhotoWithMetadata alloc] initWithRAPPhoto:v29 photoType:3];
-  v31 = [(RAPPhotoWithMetadata *)v30 photoMetadata];
-  v32 = [v31 clientImageUuid];
-  [v13 setRouteStepScreenshotImageId:v32];
+  photoMetadata = [(RAPPhotoWithMetadata *)v30 photoMetadata];
+  clientImageUuid = [photoMetadata clientImageUuid];
+  [v13 setRouteStepScreenshotImageId:clientImageUuid];
 
-  v33 = [(RAPQuestion *)self report];
-  [v33 addPhotoWithMetadata:v30];
+  report = [(RAPQuestion *)self report];
+  [report addPhotoWithMetadata:v30];
 
-  v34 = [(RAPCommentQuestion *)self photos];
-  v35 = [v34 count];
+  photos = [(RAPCommentQuestion *)self photos];
+  v35 = [photos count];
 
   if (v35)
   {
-    v36 = [(RAPCommentQuestion *)self photos];
-    v37 = [v36 firstObject];
+    photos2 = [(RAPCommentQuestion *)self photos];
+    firstObject3 = [photos2 firstObject];
 
-    v38 = [[RAPPhotoWithMetadata alloc] initWithRAPPhoto:v37 photoType:4];
-    v39 = [(RAPQuestion *)self report];
-    [v39 addPhotoWithMetadata:v38];
+    v38 = [[RAPPhotoWithMetadata alloc] initWithRAPPhoto:firstObject3 photoType:4];
+    report2 = [(RAPQuestion *)self report];
+    [report2 addPhotoWithMetadata:v38];
 
-    v40 = [(RAPPhotoWithMetadata *)v38 photoMetadata];
-    v41 = [v40 clientImageUuid];
-    [v13 setPhotoId:v41];
+    photoMetadata2 = [(RAPPhotoWithMetadata *)v38 photoMetadata];
+    clientImageUuid2 = [photoMetadata2 clientImageUuid];
+    [v13 setPhotoId:clientImageUuid2];
   }
 
-  [v9 addInstructionCorrection:v13];
+  [directionsCorrections addInstructionCorrection:v13];
 
 LABEL_16:
 }

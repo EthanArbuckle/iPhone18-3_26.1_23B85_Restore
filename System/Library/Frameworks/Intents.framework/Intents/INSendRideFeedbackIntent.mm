@@ -1,10 +1,10 @@
 @interface INSendRideFeedbackIntent
 + (id)intentDescription;
-- (INSendRideFeedbackIntent)initWithCoder:(id)a3;
+- (INSendRideFeedbackIntent)initWithCoder:(id)coder;
 - (INSendRideFeedbackIntent)initWithRideIdentifier:(NSString *)rideIdentifier;
 - (id)_dictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INSendRideFeedbackIntent
@@ -14,31 +14,31 @@
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"rideIdentifier";
   rideIdentifier = self->_rideIdentifier;
-  v4 = rideIdentifier;
+  null = rideIdentifier;
   if (!rideIdentifier)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"rating";
   rating = self->_rating;
-  v6 = rating;
+  null2 = rating;
   if (!rating)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"tip";
   tip = self->_tip;
-  v8 = tip;
+  null3 = tip;
   if (!tip)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
   if (tip)
   {
@@ -76,19 +76,19 @@ LABEL_10:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   rideIdentifier = self->_rideIdentifier;
-  v5 = a3;
-  [v5 encodeObject:rideIdentifier forKey:@"rideIdentifier"];
-  [v5 encodeObject:self->_rating forKey:@"rating"];
-  [v5 encodeObject:self->_tip forKey:@"tip"];
+  coderCopy = coder;
+  [coderCopy encodeObject:rideIdentifier forKey:@"rideIdentifier"];
+  [coderCopy encodeObject:self->_rating forKey:@"rating"];
+  [coderCopy encodeObject:self->_tip forKey:@"tip"];
 }
 
-- (INSendRideFeedbackIntent)initWithCoder:(id)a3
+- (INSendRideFeedbackIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rideIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rideIdentifier"];
   v6 = v5;
   if (v5)
   {
@@ -104,11 +104,11 @@ LABEL_10:
 
   if (v8)
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rating"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rating"];
     rating = v8->_rating;
     v8->_rating = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tip"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tip"];
     tip = v8->_tip;
     v8->_tip = v11;
   }
@@ -116,9 +116,9 @@ LABEL_10:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithRideIdentifier:", self->_rideIdentifier}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithRideIdentifier:", self->_rideIdentifier}];
   [v4 setRating:self->_rating];
   [v4 setTip:self->_tip];
   return v4;

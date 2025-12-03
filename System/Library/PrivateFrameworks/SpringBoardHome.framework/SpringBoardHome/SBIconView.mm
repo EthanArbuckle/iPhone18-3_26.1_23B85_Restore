@@ -1,103 +1,103 @@
 @interface SBIconView
 + (BOOL)_shouldAlwaysHaveContentContainerView;
-+ (BOOL)isIconTapGestureRecognizer:(id)a3;
++ (BOOL)isIconTapGestureRecognizer:(id)recognizer;
 + (BOOL)showsPopovers;
-+ (CGPoint)defaultIconImageCenterForIconImageSize:(CGSize)a3;
++ (CGPoint)defaultIconImageCenterForIconImageSize:(CGSize)size;
 + (CGSize)defaultIconImageSize;
 + (CGSize)defaultIconViewSize;
-+ (CGSize)defaultIconViewSizeForIconImageSize:(CGSize)a3 configurationOptions:(unint64_t)a4;
-+ (CGSize)maxLabelSizeForIconImageSize:(CGSize)a3;
-+ (CGSize)maxLabelSizeForIconImageSize:(CGSize)a3 contentSizeCategory:(id)a4 options:(unint64_t)a5;
-+ (CGSize)maxLabelSizeForListLayout:(id)a3 contentSizeCategory:(id)a4 options:(unint64_t)a5;
-+ (CGSize)maxLabelSizeForListLayout:(id)a3 iconImageSize:(CGSize)a4 contentSizeCategory:(id)a5 options:(unint64_t)a6;
-+ (Class)_closeBoxClassForType:(int64_t)a3;
-+ (Class)defaultViewClassForAccessoryType:(int64_t)a3;
-+ (Class)defaultViewClassForLabelAccessoryType:(int64_t)a3;
++ (CGSize)defaultIconViewSizeForIconImageSize:(CGSize)size configurationOptions:(unint64_t)options;
++ (CGSize)maxLabelSizeForIconImageSize:(CGSize)size;
++ (CGSize)maxLabelSizeForIconImageSize:(CGSize)size contentSizeCategory:(id)category options:(unint64_t)options;
++ (CGSize)maxLabelSizeForListLayout:(id)layout contentSizeCategory:(id)category options:(unint64_t)options;
++ (CGSize)maxLabelSizeForListLayout:(id)layout iconImageSize:(CGSize)size contentSizeCategory:(id)category options:(unint64_t)options;
++ (Class)_closeBoxClassForType:(int64_t)type;
++ (Class)defaultViewClassForAccessoryType:(int64_t)type;
++ (Class)defaultViewClassForLabelAccessoryType:(int64_t)type;
 + (UIEdgeInsets)defaultCursorHitTestPadding;
 + (double)_labelHeight;
 + (double)defaultMaxLabelHeight;
-+ (double)defaultMaxLabelWidthDeltaForContentSizeCategory:(id)a3;
-+ (double)labelAccessoryViewAdditionalRightMarginForType:(int64_t)a3;
-+ (double)labelMaximumHeightForContentSizeCategory:(id)a3;
-+ (id)_jitterRampDownAnimationWithAnimation:(id)a3;
-+ (id)_jitterRotationAnimationWithAmount:(double)a3;
-+ (id)_jitterXTranslationAnimationWithAmount:(double)a3;
-+ (id)_jitterYTranslationAnimationWithAmount:(double)a3;
++ (double)defaultMaxLabelWidthDeltaForContentSizeCategory:(id)category;
++ (double)labelAccessoryViewAdditionalRightMarginForType:(int64_t)type;
++ (double)labelMaximumHeightForContentSizeCategory:(id)category;
++ (id)_jitterRampDownAnimationWithAnimation:(id)animation;
++ (id)_jitterRotationAnimationWithAmount:(double)amount;
++ (id)_jitterXTranslationAnimationWithAmount:(double)amount;
++ (id)_jitterYTranslationAnimationWithAmount:(double)amount;
 + (id)applicationIconMultitaskingMenu;
 + (id)applicationIconMultitaskingMenus;
 + (id)applicationIconSplitViewMenu;
 + (id)applicationIconStageManagerMenu;
-+ (id)componentBackgroundViewOfType:(int64_t)a3;
-+ (id)componentBackgroundViewOfType:(int64_t)a3 compatibleWithTraitCollection:(id)a4 initialWeighting:(double)a5;
-+ (id)dragContextForDragItem:(id)a3;
-+ (id)draggedItemBundleIdentifiersInDrag:(id)a3;
-+ (id)groupNameBaseForComponentBackgroundViewOfType:(int64_t)a3;
++ (id)componentBackgroundViewOfType:(int64_t)type;
++ (id)componentBackgroundViewOfType:(int64_t)type compatibleWithTraitCollection:(id)collection initialWeighting:(double)weighting;
++ (id)dragContextForDragItem:(id)item;
++ (id)draggedItemBundleIdentifiersInDrag:(id)drag;
++ (id)groupNameBaseForComponentBackgroundViewOfType:(int64_t)type;
 + (id)homeScreenService;
-+ (id)labelConfigurationForListLayout:(id)a3 contentSizeCategory:(id)a4 options:(unint64_t)a5;
-+ (int64_t)closeBoxTypeForView:(id)a3;
-+ (void)setDebugContinuityItem:(id)a3;
++ (id)labelConfigurationForListLayout:(id)layout contentSizeCategory:(id)category options:(unint64_t)options;
++ (int64_t)closeBoxTypeForView:(id)view;
++ (void)setDebugContinuityItem:(id)item;
 - (APSubjectMonitorSubscription)appPrototectionSubjectMonitorSubscription;
 - (BOOL)_debugContinuity;
 - (BOOL)_delegateTapAllowed;
-- (BOOL)_dragInteraction:(id)a3 canExcludeCompetingGestureRecognizer:(id)a4;
-- (BOOL)_dragInteraction:(id)a3 competingGestureRecognizerShouldDelayLift:(id)a4;
+- (BOOL)_dragInteraction:(id)interaction canExcludeCompetingGestureRecognizer:(id)recognizer;
+- (BOOL)_dragInteraction:(id)interaction competingGestureRecognizerShouldDelayLift:(id)lift;
 - (BOOL)_hideIconLabelForContextMenu;
 - (BOOL)_hideIconLabelForCustomIconImageViewController;
 - (BOOL)_isGlassGroupingEnabled;
 - (BOOL)_selfOrCustomViewCanBecomeFocused;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (BOOL)_shouldHaveContentContainerView;
 - (BOOL)_shouldShowLabel;
 - (BOOL)_shouldShowTooltip;
 - (BOOL)allowsCustomIconImageViewController;
 - (BOOL)allowsLabelAccessoryView;
 - (BOOL)canBeginDrags;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)canReceiveGrabbedIcon:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)canReceiveGrabbedIcon:(id)icon;
 - (BOOL)canShowAccessoryView;
 - (BOOL)canShowCloseBox;
 - (BOOL)canShowResizeHandle;
-- (BOOL)closeBoxShouldTrack:(id)a3;
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)closeBoxShouldTrack:(id)track;
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isAnimatingScrolling;
 - (BOOL)isFolderIcon;
 - (BOOL)isIconImageViewBorrowed;
 - (BOOL)isShowingConfigurationCard;
 - (BOOL)isShowingStackConfigurationCard;
 - (BOOL)isTimedOut;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (BOOL)pointMostlyInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (BOOL)pointMostlyInside:(CGPoint)inside withEvent:(id)event;
 - (BOOL)shouldAnimateFrameOfIconImageView;
 - (BOOL)shouldShowCloseBox;
 - (BOOL)shouldShowResizeHandle;
 - (BOOL)shouldUpdateFrameOfIconImageView;
 - (BOOL)supportsConfigurationCard;
 - (BOOL)supportsStackConfigurationCard;
-- (CGAffineTransform)transformWhenHiddenForResizeHandle:(SEL)a3;
+- (CGAffineTransform)transformWhenHiddenForResizeHandle:(SEL)handle;
 - (CGPoint)_centerForAccessoryView;
 - (CGPoint)_centerForCloseBox;
 - (CGPoint)_centerForResizeHandle;
 - (CGPoint)_focusEffectCenter;
 - (CGPoint)iconImageCenter;
 - (CGRect)_focusEffectBounds;
-- (CGRect)_focusEffectBoundsForFocused:(BOOL)a3 withFocusOutset:(double)a4;
+- (CGRect)_focusEffectBoundsForFocused:(BOOL)focused withFocusOutset:(double)outset;
 - (CGRect)_frameForImageView;
 - (CGRect)_frameForLabel;
 - (CGRect)_frameForLabelAccessory;
-- (CGRect)_frameForLabelAccessoryViewWithLabelFrame:(CGRect)a3 metrics:(id)a4 labelImageParameters:(id)a5 imageFrame:(CGRect)a6;
+- (CGRect)_frameForLabelAccessoryViewWithLabelFrame:(CGRect)frame metrics:(id)metrics labelImageParameters:(id)parameters imageFrame:(CGRect)imageFrame;
 - (CGRect)_frameForLabelHighlight;
 - (CGRect)_frameForVisibleImage;
-- (CGRect)contentBoundingRectForConfigurationInteraction:(id)a3;
-- (CGRect)frameForMiniIconAtIndex:(unint64_t)a3;
+- (CGRect)contentBoundingRectForConfigurationInteraction:(id)interaction;
+- (CGRect)frameForMiniIconAtIndex:(unint64_t)index;
 - (CGRect)iconImageFrame;
 - (CGRect)iconImageVisibleFrame;
-- (CGRect)visibleImageRelativeFrameForMiniIconAtIndex:(unint64_t)a3;
+- (CGRect)visibleImageRelativeFrameForMiniIconAtIndex:(unint64_t)index;
 - (CGSize)accessorySize;
 - (CGSize)iconImageVisibleSize;
 - (CGSize)iconViewSize;
-- (CGSize)iconViewSizeForIconImageSize:(CGSize)a3;
+- (CGSize)iconViewSizeForIconImageSize:(CGSize)size;
 - (CGSize)maxLabelSize;
 - (Class)expectedIconImageViewClass;
 - (Class)iconViewClassForRepresentitiveModalInteractions;
@@ -112,7 +112,7 @@
 - (SBIconImageInfo)iconImageInfo;
 - (SBIconLabelViewFactory)iconLabelViewFactory;
 - (SBIconListLayout)listLayout;
-- (SBIconView)initWithConfigurationOptions:(unint64_t)a3 listLayoutProvider:(id)a4;
+- (SBIconView)initWithConfigurationOptions:(unint64_t)options listLayoutProvider:(id)provider;
 - (SBIconViewActionDelegate)overrideActionDelegate;
 - (SBIconViewAssertion)borrowedIconImageViewAssertion;
 - (SBIconViewDelegate)delegate;
@@ -131,7 +131,7 @@
 - (double)baselineOffsetFromBottom;
 - (double)dragInteractionLiftDelay;
 - (double)effectiveBrightness;
-- (double)effectiveBrightnessForControlState:(unint64_t)a3;
+- (double)effectiveBrightnessForControlState:(unint64_t)state;
 - (double)effectiveIconAccessoryAlpha;
 - (double)effectiveIconContentScale;
 - (double)effectiveIconImageAlpha;
@@ -139,12 +139,12 @@
 - (double)effectiveOverallAlpha;
 - (double)labelAccessoryTotalWidth;
 - (double)lastLineBaseline;
-- (double)verticalMarginPercentageForConfigurationInteraction:(id)a3;
-- (id)URLsForDropSession:(id)a3;
+- (double)verticalMarginPercentageForConfigurationInteraction:(id)interaction;
+- (id)URLsForDropSession:(id)session;
 - (id)_automationID;
-- (id)_contextMenuInteraction:(id)a3 previewForIconWithConfigurationOptions:(unint64_t)a4 highlighted:(BOOL)a5;
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4;
-- (id)_dragInteraction:(id)a3 sessionPropertiesForSession:(id)a4;
+- (id)_contextMenuInteraction:(id)interaction previewForIconWithConfigurationOptions:(unint64_t)options highlighted:(BOOL)highlighted;
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration;
+- (id)_dragInteraction:(id)interaction sessionPropertiesForSession:(id)session;
 - (id)_folderIconImageView;
 - (id)_labelHidingReason;
 - (id)_labelImageMetrics;
@@ -162,36 +162,36 @@
 - (id)badgeParallaxSettings;
 - (id)badgeString;
 - (id)behaviorDelegate;
-- (id)borrowIconImageViewWithOptions:(unint64_t)a3;
-- (id)claimBindingsForDropSession:(id)a3;
+- (id)borrowIconImageViewWithOptions:(unint64_t)options;
+- (id)claimBindingsForDropSession:(id)session;
 - (id)configurationUIDelegate;
-- (id)containerViewControllerForConfigurationInteraction:(id)a3;
-- (id)containerViewForConfigurationInteraction:(id)a3;
+- (id)containerViewControllerForConfigurationInteraction:(id)interaction;
+- (id)containerViewForConfigurationInteraction:(id)interaction;
 - (id)contentSizeCategory;
-- (id)contextMenuConfigurationAtLocation:(CGPoint)a3;
+- (id)contextMenuConfigurationAtLocation:(CGPoint)location;
 - (id)contextMenuDelegate;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 dismissalPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration dismissalPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (id)currentImageView;
 - (id)defaultDragPreview;
-- (id)defaultDragPreviewWithParameters:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)disableImageUpdatesForReason:(id)a3;
-- (id)disallowContextMenusForReason:(id)a3;
-- (id)disallowGlassGroupingForReason:(id)a3;
+- (id)defaultDragPreviewWithParameters:(id)parameters;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)disableImageUpdatesForReason:(id)reason;
+- (id)disallowContextMenusForReason:(id)reason;
+- (id)disallowGlassGroupingForReason:(id)reason;
 - (id)displayedLabelFont;
 - (id)dragDelegate;
-- (id)dragInteraction:(id)a3 itemsForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5;
+- (id)dragInteraction:(id)interaction itemsForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default;
 - (id)dragItems;
-- (id)dragPreviewForItem:(id)a3 session:(id)a4;
+- (id)dragPreviewForItem:(id)item session:(id)session;
 - (id)draggingLaunchActions;
 - (id)draggingLaunchURL;
 - (id)dropDelegate;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
 - (id)effectiveAccessoryIconImageAppearance;
 - (id)effectiveIconImageAppearance;
 - (id)effectiveIconImageStyleConfiguration;
@@ -200,39 +200,39 @@
 - (id)extendResizingFinish;
 - (id)folder;
 - (id)gridSizeClass;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)homeScreenContentViewForConfigurationInteraction:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)homeScreenContentViewForConfigurationInteraction:(id)interaction;
 - (id)iconGridSizeClassSizes;
 - (id)labelConfiguration;
-- (id)labelContentWithParameters:(id)a3;
-- (id)labelImageWithParameters:(id)a3;
+- (id)labelContentWithParameters:(id)parameters;
+- (id)labelImageWithParameters:(id)parameters;
 - (id)markAsDropping;
-- (id)matchingIconViewByAddingConfigurationOptions:(unint64_t)a3 removingConfigurationOptions:(unint64_t)a4;
-- (id)matchingIconViewWithConfigurationOptions:(unint64_t)a3;
+- (id)matchingIconViewByAddingConfigurationOptions:(unint64_t)options removingConfigurationOptions:(unint64_t)configurationOptions;
+- (id)matchingIconViewWithConfigurationOptions:(unint64_t)options;
 - (id)newCaptureOnlyBackgroundView;
-- (id)newComponentBackgroundViewOfType:(int64_t)a3;
+- (id)newComponentBackgroundViewOfType:(int64_t)type;
 - (id)nextLargerGridSizeClassForResize;
 - (id)nextSmallerGridSizeClassForResize;
 - (id)parentViewControllerForCustomIconImageViewController;
 - (id)pauseReasonsDescriptions;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (id)representativeIconViewForModalInteractions;
 - (id)reuseDelegate;
-- (id)startForbiddingAccessoryUpdatesWithReason:(id)a3 animated:(BOOL)a4;
+- (id)startForbiddingAccessoryUpdatesWithReason:(id)reason animated:(BOOL)animated;
 - (id)succinctDescription;
 - (id)supportedIconGridSizeClasses;
 - (id)supportedIconGridSizeClassesForResize;
 - (id)traitCollectionForIconImageAppearance;
 - (int64_t)_closeBoxType;
-- (int64_t)_dropInteraction:(id)a3 dataOwnerForSession:(id)a4;
+- (int64_t)_dropInteraction:(id)interaction dataOwnerForSession:(id)session;
 - (int64_t)_iconAdornmentMaterial;
-- (int64_t)_widgetBackgroundMaterialForDataSource:(id)a3;
+- (int64_t)_widgetBackgroundMaterialForDataSource:(id)source;
 - (int64_t)currentAccessoryType;
 - (int64_t)currentLabelAccessoryType;
 - (int64_t)draggingStartLocation;
 - (int64_t)progressState;
-- (int64_t)userInterfaceStyleForConfigurationInteraction:(id)a3;
+- (int64_t)userInterfaceStyleForConfigurationInteraction:(id)interaction;
 - (unint64_t)centerVisibleMiniIconIndex;
 - (unint64_t)configurationOptions;
 - (unint64_t)controlState;
@@ -241,273 +241,273 @@
 - (unint64_t)lastVisibleMiniIconIndex;
 - (unint64_t)visibleMiniIconCount;
 - (unint64_t)visibleMiniIconListIndex;
-- (void)_accessoryViewTapGestureChanged:(id)a3;
+- (void)_accessoryViewTapGestureChanged:(id)changed;
 - (void)_acquireHomeButtonPressConsumingAssertionIfNecessary;
-- (void)_addDefaultJitterAnimationsAnimated:(BOOL)a3;
-- (void)_addJitterAnimated:(BOOL)a3;
-- (void)_animateCloseBoxWithAnimation:(int64_t)a3 animationBlock:(id)a4;
-- (void)_applyEditingStateAnimated:(BOOL)a3;
+- (void)_addDefaultJitterAnimationsAnimated:(BOOL)animated;
+- (void)_addJitterAnimated:(BOOL)animated;
+- (void)_animateCloseBoxWithAnimation:(int64_t)animation animationBlock:(id)block;
+- (void)_applyEditingStateAnimated:(BOOL)animated;
 - (void)_applyGlassGroupingEnabledState;
-- (void)_applyIconAccessoryAlpha:(double)a3;
-- (void)_applyIconContentScale:(double)a3;
-- (void)_applyIconImageAlpha:(double)a3;
-- (void)_applyIconLabelAlpha:(double)a3;
-- (void)_applyOverallAlpha:(double)a3;
-- (void)_backgroundContrastDidChange:(id)a3;
-- (void)_boldTextStatusDidChange:(id)a3;
+- (void)_applyIconAccessoryAlpha:(double)alpha;
+- (void)_applyIconContentScale:(double)scale;
+- (void)_applyIconImageAlpha:(double)alpha;
+- (void)_applyIconLabelAlpha:(double)alpha;
+- (void)_applyOverallAlpha:(double)alpha;
+- (void)_backgroundContrastDidChange:(id)change;
+- (void)_boldTextStatusDidChange:(id)change;
 - (void)_checkAndRemoveCloseBoxAfterAnimation;
-- (void)_closeBoxTapGestureChanged:(id)a3;
-- (void)_configureIconImageView:(id)a3;
-- (void)_configureLabelAccessoryViewForType:(int64_t)a3;
-- (void)_configureViewAsFolderIconImageView:(id)a3;
-- (void)_contentSizeCategoryDidChange:(id)a3;
-- (void)_contextMenuConfigurationDidDismiss:(id)a3;
-- (void)_contextMenuConfigurationDidPresent:(id)a3;
-- (void)_contextMenuConfigurationWillDismiss:(id)a3;
-- (void)_contextMenuConfigurationWillPresent:(id)a3 forInteraction:(id)a4;
+- (void)_closeBoxTapGestureChanged:(id)changed;
+- (void)_configureIconImageView:(id)view;
+- (void)_configureLabelAccessoryViewForType:(int64_t)type;
+- (void)_configureViewAsFolderIconImageView:(id)view;
+- (void)_contentSizeCategoryDidChange:(id)change;
+- (void)_contextMenuConfigurationDidDismiss:(id)dismiss;
+- (void)_contextMenuConfigurationDidPresent:(id)present;
+- (void)_contextMenuConfigurationWillDismiss:(id)dismiss;
+- (void)_contextMenuConfigurationWillPresent:(id)present forInteraction:(id)interaction;
 - (void)_createAccessoryViewIfNecessary;
 - (void)_createCloseBoxIfNecessary;
-- (void)_delegateTouchEnded:(BOOL)a3;
+- (void)_delegateTouchEnded:(BOOL)ended;
 - (void)_destroyAccessoryView;
-- (void)_destroyAccessoryView:(id)a3;
+- (void)_destroyAccessoryView:(id)view;
 - (void)_destroyIconImageView;
 - (void)_disableContentContainerView;
-- (void)_dragInteraction:(id)a3 liftAnimationDidChangeDirection:(int64_t)a4;
+- (void)_dragInteraction:(id)interaction liftAnimationDidChangeDirection:(int64_t)direction;
 - (void)_enableContentContainerView;
-- (void)_handleActivateAppExposeKeyShortcut:(id)a3;
-- (void)_handleAddWindowToSetCommand:(id)a3;
-- (void)_handleMakeFullscreenKeyShortcut:(id)a3;
-- (void)_handleMakeSplitLeftKeyShortcut:(id)a3;
-- (void)_handleMakeSplitRightKeyShortcut:(id)a3;
-- (void)_handleTapWithModifierFlags:(int64_t)a3;
-- (void)_initiateResizeToSmallerSize:(BOOL)a3 completionHandler:(id)a4;
-- (void)_insertIconImageView:(id)a3;
+- (void)_handleActivateAppExposeKeyShortcut:(id)shortcut;
+- (void)_handleAddWindowToSetCommand:(id)command;
+- (void)_handleMakeFullscreenKeyShortcut:(id)shortcut;
+- (void)_handleMakeSplitLeftKeyShortcut:(id)shortcut;
+- (void)_handleMakeSplitRightKeyShortcut:(id)shortcut;
+- (void)_handleTapWithModifierFlags:(int64_t)flags;
+- (void)_initiateResizeToSmallerSize:(BOOL)size completionHandler:(id)handler;
+- (void)_insertIconImageView:(id)view;
 - (void)_invalidateHomeButtonPressConsumingAssertion;
-- (void)_notifyObserversDidDiscardCustomImageViewController:(id)a3;
+- (void)_notifyObserversDidDiscardCustomImageViewController:(id)controller;
 - (void)_notifyObserversSizeDidChange;
-- (void)_rampDownJitterAnimationForKey:(id)a3 rampKey:(id)a4 animated:(BOOL)a5;
-- (void)_rampUpJitterAnimation:(id)a3 animationKey:(id)a4 rampKey:(id)a5 animated:(BOOL)a6;
+- (void)_rampDownJitterAnimationForKey:(id)key rampKey:(id)rampKey animated:(BOOL)animated;
+- (void)_rampUpJitterAnimation:(id)animation animationKey:(id)key rampKey:(id)rampKey animated:(BOOL)animated;
 - (void)_reevaluateLogIdentifier;
-- (void)_removeDefaultJitterAnimationsAnimated:(BOOL)a3;
+- (void)_removeDefaultJitterAnimationsAnimated:(BOOL)animated;
 - (void)_removeUnknownSubviews;
-- (void)_setForcingIconContentScalingEnabled:(BOOL)a3;
-- (void)_setShowingAccessoryView:(BOOL)a3;
-- (void)_setShowingCloseBox:(BOOL)a3;
-- (void)_setTemporarySnapshotViewForDragPreview:(id)a3;
-- (void)_startTrackingSupportedMultitaskingShortcutActionsIfAppropriateWithOldIcon:(id)a3;
+- (void)_setForcingIconContentScalingEnabled:(BOOL)enabled;
+- (void)_setShowingAccessoryView:(BOOL)view;
+- (void)_setShowingCloseBox:(BOOL)box;
+- (void)_setTemporarySnapshotViewForDragPreview:(id)preview;
+- (void)_startTrackingSupportedMultitaskingShortcutActionsIfAppropriateWithOldIcon:(id)icon;
 - (void)_toggleContentContainerViewIfNecessary;
 - (void)_toggleGroupBlendingIfNecessary;
-- (void)_updateAccessoryViewAnimated:(BOOL)a3;
-- (void)_updateAfterManualIconImageInfoChangeInvalidatingLayout:(BOOL)a3;
-- (void)_updateAllComponentAlphasAnimated:(BOOL)a3;
+- (void)_updateAccessoryViewAnimated:(BOOL)animated;
+- (void)_updateAfterManualIconImageInfoChangeInvalidatingLayout:(BOOL)layout;
+- (void)_updateAllComponentAlphasAnimated:(BOOL)animated;
 - (void)_updateBrightness;
-- (void)_updateCloseBoxAnimated:(BOOL)a3;
-- (void)_updateCloseBoxWithAnimation:(int64_t)a3;
+- (void)_updateCloseBoxAnimated:(BOOL)animated;
+- (void)_updateCloseBoxWithAnimation:(int64_t)animation;
 - (void)_updateCursorInteractionsEnabled;
-- (void)_updateCustomIconImageViewController:(BOOL)a3;
+- (void)_updateCustomIconImageViewController:(BOOL)controller;
 - (void)_updateCustomIconImageViewControllerHitTesting;
 - (void)_updateDragInteractionLiftDelay;
 - (void)_updateFrameToIconViewSize;
 - (void)_updateIconContentScale;
-- (void)_updateIconImageAdornmentsAnimated:(BOOL)a3;
-- (void)_updateIconImageViewAnimated:(BOOL)a3;
-- (void)_updateJitter:(BOOL)a3 animated:(BOOL)a4;
+- (void)_updateIconImageAdornmentsAnimated:(BOOL)animated;
+- (void)_updateIconImageViewAnimated:(BOOL)animated;
+- (void)_updateJitter:(BOOL)jitter animated:(BOOL)animated;
 - (void)_updateLabelAccessoryView;
-- (void)_updateLabelAnimated:(BOOL)a3;
-- (void)_updateLabelAreaAnimated:(BOOL)a3;
+- (void)_updateLabelAnimated:(BOOL)animated;
+- (void)_updateLabelAreaAnimated:(BOOL)animated;
 - (void)_updateLaunchDisabled;
-- (void)_updatePresentationModeForReason:(id)a3;
-- (void)_updateProgressAnimated:(BOOL)a3;
-- (void)_updateResizeHandleAnimated:(BOOL)a3;
-- (void)_updateTooltipViewAnimated:(BOOL)a3;
+- (void)_updatePresentationModeForReason:(id)reason;
+- (void)_updateProgressAnimated:(BOOL)animated;
+- (void)_updateResizeHandleAnimated:(BOOL)animated;
+- (void)_updateTooltipViewAnimated:(BOOL)animated;
 - (void)addGesturesAndInteractionsIfNecessary;
-- (void)addObserver:(id)a3;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
-- (void)beginPrefetchingDisplayedIconLayerForReason:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
+- (void)beginPrefetchingDisplayedIconLayerForReason:(id)reason;
 - (void)cancelDrag;
 - (void)cancelDragLift;
 - (void)cleanUpAfterDropAnimation;
 - (void)cleanupAfterCrossfade;
 - (void)cleanupAfterFloatyFolderCrossfade;
 - (void)clearIconImageInfo;
-- (void)configurationInteractionDidBegin:(id)a3;
-- (void)configurationInteractionDidCommit:(id)a3;
-- (void)configurationInteractionDidEnd:(id)a3;
-- (void)configurationInteractionWillBegin:(id)a3;
-- (void)configurationInteractionWillEnd:(id)a3;
-- (void)configureBorrowingIconImageViewFromIconView:(id)a3;
-- (void)configureCustomIconImageViewController:(id)a3;
-- (void)configureForLabelAllowed:(BOOL)a3;
-- (void)configureLabelImageParametersBuilder:(id)a3;
-- (void)configureMatchingIconView:(id)a3;
-- (void)consumeSinglePressUpForButtonKind:(int64_t)a3;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
+- (void)configurationInteractionDidBegin:(id)begin;
+- (void)configurationInteractionDidCommit:(id)commit;
+- (void)configurationInteractionDidEnd:(id)end;
+- (void)configurationInteractionWillBegin:(id)begin;
+- (void)configurationInteractionWillEnd:(id)end;
+- (void)configureBorrowingIconImageViewFromIconView:(id)view;
+- (void)configureCustomIconImageViewController:(id)controller;
+- (void)configureForLabelAllowed:(BOOL)allowed;
+- (void)configureLabelImageParametersBuilder:(id)builder;
+- (void)configureMatchingIconView:(id)view;
+- (void)consumeSinglePressUpForButtonKind:(int64_t)kind;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
 - (void)dealloc;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)dismissConfigurationCard;
 - (void)dismissConfigurationCardImmediately;
-- (void)dismissContextMenuWithCompletion:(id)a3;
+- (void)dismissContextMenuWithCompletion:(id)completion;
 - (void)dismissStackConfigurationCard;
 - (void)dismissStackConfigurationCardImmediately;
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 willAddItems:(id)a5 forInteraction:(id)a6;
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5;
-- (void)dragSession:(id)a3 didEndWithOperation:(unint64_t)a4;
-- (void)dragSession:(id)a3 willEndWithOperation:(unint64_t)a4;
-- (void)dragSessionWillBegin:(id)a3;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4;
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator;
+- (void)dragInteraction:(id)interaction session:(id)session willAddItems:(id)items forInteraction:(id)forInteraction;
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session;
+- (void)dragSession:(id)session didEndWithOperation:(unint64_t)operation;
+- (void)dragSession:(id)session willEndWithOperation:(unint64_t)operation;
+- (void)dragSessionWillBegin:(id)begin;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end;
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter;
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit;
 - (void)earlyTerminateContextMenuDismissAnimation;
-- (void)editingModeGestureRecognizerDidFire:(id)a3;
-- (void)endForbiddingEditingModeWithReason:(id)a3;
+- (void)editingModeGestureRecognizerDidFire:(id)fire;
+- (void)endForbiddingEditingModeWithReason:(id)reason;
 - (void)endPrefetchingDisplayedIconLayerForAnyReason;
-- (void)endPrefetchingDisplayedIconLayerForReason:(id)a3;
-- (void)homeScreenService:(id)a3 homeScreenIconStyleConfigurationDidChange:(id)a4;
-- (void)hoverGestureDidChange:(id)a3;
-- (void)iconAccessoriesDidUpdate:(id)a3;
-- (void)iconImageDidUpdate:(id)a3;
+- (void)endPrefetchingDisplayedIconLayerForReason:(id)reason;
+- (void)homeScreenService:(id)service homeScreenIconStyleConfigurationDidChange:(id)change;
+- (void)hoverGestureDidChange:(id)change;
+- (void)iconAccessoriesDidUpdate:(id)update;
+- (void)iconImageDidUpdate:(id)update;
 - (void)iconInteractedWhenDisabled;
-- (void)iconLaunchEnabledDidChange:(id)a3;
-- (void)iconProgressDidChange:(id)a3;
+- (void)iconLaunchEnabledDidChange:(id)change;
+- (void)iconProgressDidChange:(id)change;
 - (void)layoutSubviews;
-- (void)performAfterContextMenusDismissUsingBlock:(id)a3;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5;
+- (void)performAfterContextMenusDismissUsingBlock:(id)block;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator;
 - (void)popConfigurationCard;
 - (void)popStackConfigurationCard;
 - (void)prepareForReuse;
-- (void)prepareToCrossfadeImageWithView:(id)a3 anchorPoint:(CGPoint)a4 options:(unint64_t)a5;
-- (void)prepareToCrossfadeWithFloatyFolderView:(id)a3 allowFolderInteraction:(BOOL)a4;
+- (void)prepareToCrossfadeImageWithView:(id)view anchorPoint:(CGPoint)point options:(unint64_t)options;
+- (void)prepareToCrossfadeWithFloatyFolderView:(id)view allowFolderInteraction:(BOOL)interaction;
 - (void)presentConfigurationCard;
 - (void)presentStackConfigurationCard;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesChanged:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesChanged:(id)changed withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
 - (void)purgeCachedEditingViewData;
 - (void)removeAllIconAnimations;
-- (void)removeAssertion:(id)a3;
-- (void)removeBorrowedIconImageViewAssertion:(id)a3;
-- (void)removeDisallowGlassGroupingAssertion:(id)a3;
-- (void)removeDroppingAssertion:(id)a3;
-- (void)removeExtendResizeFinishAssertion:(id)a3;
-- (void)removeForbidAccessoryUpdatesAssertion:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)resizeGestureRecognizerDidUpdate:(id)a3;
-- (void)scrollToFirstGapAnimated:(BOOL)a3;
-- (void)scrollToGapOrTopIfFullOfPage:(unint64_t)a3 animated:(BOOL)a4;
-- (void)scrollToTopOfFirstPageAnimated:(BOOL)a3;
-- (void)scrollToTopOfPage:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setAllIconElementsButLabelHidden:(BOOL)a3;
-- (void)setAllowsAccessoryView:(BOOL)a3;
-- (void)setAllowsAdornmentsOverIconImage:(BOOL)a3 animated:(BOOL)a4;
-- (void)setAllowsBlockedForScreenTimeExpiration:(BOOL)a3;
-- (void)setAllowsCloseBox:(BOOL)a3 withAnimation:(int64_t)a4;
-- (void)setAllowsCursorInteraction:(BOOL)a3;
-- (void)setAllowsEditingAnimation:(BOOL)a3;
-- (void)setAllowsIconImageView:(BOOL)a3;
-- (void)setAllowsLabelArea:(BOOL)a3;
-- (void)setAllowsPassthroughHitTesting:(BOOL)a3;
-- (void)setAllowsProgressState:(BOOL)a3;
-- (void)setAllowsResizeHandle:(BOOL)a3;
-- (void)setApproximateLayoutPosition:(SBIconApproximateLayoutPosition)a3;
-- (void)setBackgroundAndIconGridImageAlpha:(double)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setBoundsSizeFromIconImageSize:(CGSize)a3;
-- (void)setCancelingDrag:(BOOL)a3;
-- (void)setConfigurationOptions:(unint64_t)a3;
-- (void)setContentVisibility:(unint64_t)a3;
-- (void)setContinuityInfo:(id)a3 animated:(BOOL)a4;
-- (void)setCrossfadeFraction:(double)a3;
-- (void)setCustomIconImageViewController:(id)a3 clearingOwner:(BOOL)a4;
-- (void)setCustomIconImageViewHitTestingDisabled:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDidDelayInsertingCustomImageViewDueToParentController:(BOOL)a3;
-- (void)setDisplaysIconStatusInLabel:(BOOL)a3;
-- (void)setDragLifted:(BOOL)a3;
-- (void)setDragging:(BOOL)a3 updateImmediately:(BOOL)a4;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setEditingAnimationStrength:(double)a3;
-- (void)setFetchedApplicationShortcutItems:(id)a3;
-- (void)setFloatyFolderCrossfadeFraction:(double)a3;
-- (void)setFolderIconFrozen:(BOOL)a3;
-- (void)setFolderIconImageCache:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setGrabbed:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIcon:(id)a3 animated:(BOOL)a4;
-- (void)setIconAccessoryAlpha:(double)a3;
-- (void)setIconContentScale:(double)a3;
-- (void)setIconContentScalingEnabled:(BOOL)a3;
-- (void)setIconGridImageAlpha:(double)a3;
-- (void)setIconImageAllowsGlassGrouping:(BOOL)a3;
-- (void)setIconImageAlpha:(double)a3;
-- (void)setIconImageAndAccessoryAlpha:(double)a3;
-- (void)setIconImageBackdropGroupName:(id)a3;
-- (void)setIconImageCache:(id)a3;
-- (void)setIconImageGlassHidden:(BOOL)a3;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
-- (void)setIconLabelAlpha:(double)a3;
-- (void)setIconLabelViewFactory:(id)a3;
-- (void)setLabelAccessoryHidden:(BOOL)a3;
-- (void)setLabelHidden:(BOOL)a3;
-- (void)setLabelStyle:(int64_t)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setListLayoutProvider:(id)a3 animated:(BOOL)a4;
-- (void)setLocation:(id)a3 animated:(BOOL)a4;
-- (void)setMorphFraction:(double)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setOverlapping:(BOOL)a3;
-- (void)setOverrideAccessoryIconImageAppearance:(id)a3;
-- (void)setOverrideBadgeNumberOrString:(id)a3 animated:(BOOL)a4;
-- (void)setOverrideCustomIconImageViewController:(id)a3;
-- (void)setOverrideIconImageAppearance:(id)a3;
-- (void)setOverrideIconImageStyleConfiguration:(id)a3;
-- (void)setOverrideImage:(id)a3;
-- (void)setOverrideImageAppearance:(id)a3 onCustomIconImageViewController:(id)a4;
-- (void)setOverrideImageStyleConfiguration:(id)a3 onCustomIconImageViewController:(id)a4;
-- (void)setOverrideParentViewControllerForCustomIconImageViewController:(id)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)setPaused:(BOOL)a3 forReason:(unint64_t)a4;
-- (void)setPendingIcon:(id)a3;
-- (void)setPrefersFlatImageLayers:(BOOL)a3;
-- (void)setPresentationModeFolderContext:(id)a3;
-- (void)setRefusesRecipientStatus:(BOOL)a3;
-- (void)setResizing:(BOOL)a3;
-- (void)setSharesIconTintColorWithSpringBoard:(BOOL)a3;
-- (void)setShowsDropGlow:(BOOL)a3 animator:(id)a4;
-- (void)setShowsFocusEffect:(BOOL)a3;
-- (void)setShowsImageAndLabelDuringDrop:(BOOL)a3;
-- (void)setShowsSquareCorners:(BOOL)a3;
-- (void)setStartsDragMoreQuickly:(BOOL)a3;
-- (void)setSuppressesDefaultEditingAnimation:(BOOL)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
-- (void)setUserVisibilityStatus:(unint64_t)a3;
-- (void)setUsesSceneUserInterfaceStyleForImage:(BOOL)a3;
-- (void)setWantsFocusProxyView:(BOOL)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)removeAssertion:(id)assertion;
+- (void)removeBorrowedIconImageViewAssertion:(id)assertion;
+- (void)removeDisallowGlassGroupingAssertion:(id)assertion;
+- (void)removeDroppingAssertion:(id)assertion;
+- (void)removeExtendResizeFinishAssertion:(id)assertion;
+- (void)removeForbidAccessoryUpdatesAssertion:(id)assertion;
+- (void)removeObserver:(id)observer;
+- (void)resizeGestureRecognizerDidUpdate:(id)update;
+- (void)scrollToFirstGapAnimated:(BOOL)animated;
+- (void)scrollToGapOrTopIfFullOfPage:(unint64_t)page animated:(BOOL)animated;
+- (void)scrollToTopOfFirstPageAnimated:(BOOL)animated;
+- (void)scrollToTopOfPage:(unint64_t)page animated:(BOOL)animated;
+- (void)setAllIconElementsButLabelHidden:(BOOL)hidden;
+- (void)setAllowsAccessoryView:(BOOL)view;
+- (void)setAllowsAdornmentsOverIconImage:(BOOL)image animated:(BOOL)animated;
+- (void)setAllowsBlockedForScreenTimeExpiration:(BOOL)expiration;
+- (void)setAllowsCloseBox:(BOOL)box withAnimation:(int64_t)animation;
+- (void)setAllowsCursorInteraction:(BOOL)interaction;
+- (void)setAllowsEditingAnimation:(BOOL)animation;
+- (void)setAllowsIconImageView:(BOOL)view;
+- (void)setAllowsLabelArea:(BOOL)area;
+- (void)setAllowsPassthroughHitTesting:(BOOL)testing;
+- (void)setAllowsProgressState:(BOOL)state;
+- (void)setAllowsResizeHandle:(BOOL)handle;
+- (void)setApproximateLayoutPosition:(SBIconApproximateLayoutPosition)position;
+- (void)setBackgroundAndIconGridImageAlpha:(double)alpha;
+- (void)setBounds:(CGRect)bounds;
+- (void)setBoundsSizeFromIconImageSize:(CGSize)size;
+- (void)setCancelingDrag:(BOOL)drag;
+- (void)setConfigurationOptions:(unint64_t)options;
+- (void)setContentVisibility:(unint64_t)visibility;
+- (void)setContinuityInfo:(id)info animated:(BOOL)animated;
+- (void)setCrossfadeFraction:(double)fraction;
+- (void)setCustomIconImageViewController:(id)controller clearingOwner:(BOOL)owner;
+- (void)setCustomIconImageViewHitTestingDisabled:(BOOL)disabled;
+- (void)setDelegate:(id)delegate;
+- (void)setDidDelayInsertingCustomImageViewDueToParentController:(BOOL)controller;
+- (void)setDisplaysIconStatusInLabel:(BOOL)label;
+- (void)setDragLifted:(BOOL)lifted;
+- (void)setDragging:(BOOL)dragging updateImmediately:(BOOL)immediately;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setEditingAnimationStrength:(double)strength;
+- (void)setFetchedApplicationShortcutItems:(id)items;
+- (void)setFloatyFolderCrossfadeFraction:(double)fraction;
+- (void)setFolderIconFrozen:(BOOL)frozen;
+- (void)setFolderIconImageCache:(id)cache;
+- (void)setFrame:(CGRect)frame;
+- (void)setGrabbed:(BOOL)grabbed;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIcon:(id)icon animated:(BOOL)animated;
+- (void)setIconAccessoryAlpha:(double)alpha;
+- (void)setIconContentScale:(double)scale;
+- (void)setIconContentScalingEnabled:(BOOL)enabled;
+- (void)setIconGridImageAlpha:(double)alpha;
+- (void)setIconImageAllowsGlassGrouping:(BOOL)grouping;
+- (void)setIconImageAlpha:(double)alpha;
+- (void)setIconImageAndAccessoryAlpha:(double)alpha;
+- (void)setIconImageBackdropGroupName:(id)name;
+- (void)setIconImageCache:(id)cache;
+- (void)setIconImageGlassHidden:(BOOL)hidden;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
+- (void)setIconLabelAlpha:(double)alpha;
+- (void)setIconLabelViewFactory:(id)factory;
+- (void)setLabelAccessoryHidden:(BOOL)hidden;
+- (void)setLabelHidden:(BOOL)hidden;
+- (void)setLabelStyle:(int64_t)style;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setListLayoutProvider:(id)provider animated:(BOOL)animated;
+- (void)setLocation:(id)location animated:(BOOL)animated;
+- (void)setMorphFraction:(double)fraction;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setOverlapping:(BOOL)overlapping;
+- (void)setOverrideAccessoryIconImageAppearance:(id)appearance;
+- (void)setOverrideBadgeNumberOrString:(id)string animated:(BOOL)animated;
+- (void)setOverrideCustomIconImageViewController:(id)controller;
+- (void)setOverrideIconImageAppearance:(id)appearance;
+- (void)setOverrideIconImageStyleConfiguration:(id)configuration;
+- (void)setOverrideImage:(id)image;
+- (void)setOverrideImageAppearance:(id)appearance onCustomIconImageViewController:(id)controller;
+- (void)setOverrideImageStyleConfiguration:(id)configuration onCustomIconImageViewController:(id)controller;
+- (void)setOverrideParentViewControllerForCustomIconImageViewController:(id)controller;
+- (void)setPaused:(BOOL)paused;
+- (void)setPaused:(BOOL)paused forReason:(unint64_t)reason;
+- (void)setPendingIcon:(id)icon;
+- (void)setPrefersFlatImageLayers:(BOOL)layers;
+- (void)setPresentationModeFolderContext:(id)context;
+- (void)setRefusesRecipientStatus:(BOOL)status;
+- (void)setResizing:(BOOL)resizing;
+- (void)setSharesIconTintColorWithSpringBoard:(BOOL)board;
+- (void)setShowsDropGlow:(BOOL)glow animator:(id)animator;
+- (void)setShowsFocusEffect:(BOOL)effect;
+- (void)setShowsImageAndLabelDuringDrop:(BOOL)drop;
+- (void)setShowsSquareCorners:(BOOL)corners;
+- (void)setStartsDragMoreQuickly:(BOOL)quickly;
+- (void)setSuppressesDefaultEditingAnimation:(BOOL)animation;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
+- (void)setUserVisibilityStatus:(unint64_t)status;
+- (void)setUsesSceneUserInterfaceStyleForImage:(BOOL)image;
+- (void)setWantsFocusProxyView:(BOOL)view;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 - (void)setupFocusEffectPlatterView;
-- (void)startForbiddingEditingModeWithReason:(id)a3;
+- (void)startForbiddingEditingModeWithReason:(id)reason;
 - (void)stealIconImageView;
-- (void)tapGestureDidChange:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)tapGestureDidChange:(id)change;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 - (void)updateAccessoryViewContainerIfNecessary;
 - (void)updateAccessoryViewOverrideIconImageAppearance;
 - (void)updateContentVisibilityOnCurrentImageView;
 - (void)updateCustomIconImageViewController;
 - (void)updateImageContainerViewSubviewOrder;
 - (void)updateParallaxSettings;
-- (void)updateWindowSceneUserInterfaceStyleChangeRegistrationForWindow:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)updateWindowSceneUserInterfaceStyleChangeRegistrationForWindow:(id)window;
+- (void)willMoveToWindow:(id)window;
 - (void)windowSceneUserInterfaceStyleChanged;
 @end
 
@@ -517,7 +517,7 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(SBIconView *)self badgeParallaxSettings];
+    badgeParallaxSettings = [(SBIconView *)self badgeParallaxSettings];
     [(SBIconAccessoryView *)self->_accessoryView setParallaxSettings:?];
   }
 
@@ -528,7 +528,7 @@
       return;
     }
 
-    v3 = [(SBIconView *)self badgeParallaxSettings];
+    badgeParallaxSettings = [(SBIconView *)self badgeParallaxSettings];
   }
 
   if ((SBHPerformanceFlagEnabled(9) & 1) == 0)
@@ -546,10 +546,10 @@
 
   else
   {
-    v4 = [(SBIconView *)self behaviorDelegate];
+    behaviorDelegate = [(SBIconView *)self behaviorDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v3 = [v4 parallaxSettingsForComponentsOfIconView:self];
+      v3 = [behaviorDelegate parallaxSettingsForComponentsOfIconView:self];
     }
 
     else
@@ -582,9 +582,9 @@
 
 - (double)effectiveBrightness
 {
-  v3 = [(SBIconView *)self controlState];
+  controlState = [(SBIconView *)self controlState];
 
-  [(SBIconView *)self effectiveBrightnessForControlState:v3];
+  [(SBIconView *)self effectiveBrightnessForControlState:controlState];
   return result;
 }
 
@@ -619,24 +619,24 @@
 
 - (BOOL)isTimedOut
 {
-  v3 = [(SBIconView *)self icon];
-  if ([v3 isTimedOut])
+  icon = [(SBIconView *)self icon];
+  if ([icon isTimedOut])
   {
-    v4 = [(SBIconView *)self allowsBlockedForScreenTimeExpiration];
+    allowsBlockedForScreenTimeExpiration = [(SBIconView *)self allowsBlockedForScreenTimeExpiration];
   }
 
   else
   {
-    v4 = 0;
+    allowsBlockedForScreenTimeExpiration = 0;
   }
 
-  return v4;
+  return allowsBlockedForScreenTimeExpiration;
 }
 
 - (CGRect)iconImageFrame
 {
-  v2 = [(SBIconView *)self currentImageView];
-  [v2 frame];
+  currentImageView = [(SBIconView *)self currentImageView];
+  [currentImageView frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -655,38 +655,38 @@
 
 - (SBIconImageInfo)iconImageInfo
 {
-  v3 = self;
+  selfCopy = self;
   if ((BYTE5(self[17].size.height) & 8) == 0)
   {
-    v4 = [(SBIconImageInfo *)self listLayoutProvider];
-    v5 = [(SBIconImageInfo *)v3 iconImageCache];
-    v6 = [(SBIconImageInfo *)v3 listLayout];
-    v7 = [(SBIconImageInfo *)v3 gridSizeClass];
-    v8 = [(SBIconImageInfo *)v3 orientation];
-    if (v4 || !v5)
+    listLayoutProvider = [(SBIconImageInfo *)self listLayoutProvider];
+    iconImageCache = [(SBIconImageInfo *)selfCopy iconImageCache];
+    listLayout = [(SBIconImageInfo *)selfCopy listLayout];
+    gridSizeClass = [(SBIconImageInfo *)selfCopy gridSizeClass];
+    orientation = [(SBIconImageInfo *)selfCopy orientation];
+    if (listLayoutProvider || !iconImageCache)
     {
       goto LABEL_6;
     }
 
-    v9 = [objc_opt_class() defaultGridSizeClass];
-    v10 = v9;
-    if (v7 == v9)
+    defaultGridSizeClass = [objc_opt_class() defaultGridSizeClass];
+    v10 = defaultGridSizeClass;
+    if (gridSizeClass == defaultGridSizeClass)
     {
 
       goto LABEL_16;
     }
 
-    v11 = [objc_opt_class() defaultGridSizeClass];
-    v12 = [v7 isEqualToString:v11];
+    defaultGridSizeClass2 = [objc_opt_class() defaultGridSizeClass];
+    v12 = [gridSizeClass isEqualToString:defaultGridSizeClass2];
 
     if (!v12)
     {
 LABEL_6:
-      if (v7)
+      if (gridSizeClass)
       {
         if (objc_opt_respondsToSelector())
         {
-          [v6 iconImageInfoForGridSizeClass:v7 orientation:v8];
+          [listLayout iconImageInfoForGridSizeClass:gridSizeClass orientation:orientation];
 LABEL_18:
 
           return self;
@@ -694,20 +694,20 @@ LABEL_18:
 
         if (objc_opt_respondsToSelector())
         {
-          [v6 iconImageInfoForGridSizeClass:v7];
+          [listLayout iconImageInfoForGridSizeClass:gridSizeClass];
           goto LABEL_18;
         }
       }
 
-      if (v6)
+      if (listLayout)
       {
-        v13 = v6;
+        v13 = listLayout;
 LABEL_17:
         [v13 iconImageInfo];
         goto LABEL_18;
       }
 
-      if (!v5)
+      if (!iconImageCache)
       {
         [objc_opt_class() defaultIconImageSize];
         [objc_opt_class() defaultIconImageScale];
@@ -717,7 +717,7 @@ LABEL_17:
     }
 
 LABEL_16:
-    v13 = v5;
+    v13 = iconImageCache;
     goto LABEL_17;
   }
 
@@ -726,11 +726,11 @@ LABEL_16:
 
 - (SBIconListLayout)listLayout
 {
-  v3 = [(SBIconView *)self location];
-  if (v3)
+  location = [(SBIconView *)self location];
+  if (location)
   {
-    v4 = [(SBIconView *)self effectiveListLayoutProvider];
-    v5 = [v4 layoutForIconLocation:v3];
+    effectiveListLayoutProvider = [(SBIconView *)self effectiveListLayoutProvider];
+    v5 = [effectiveListLayoutProvider layoutForIconLocation:location];
   }
 
   else
@@ -743,14 +743,14 @@ LABEL_16:
 
 - (id)gridSizeClass
 {
-  v2 = [(SBIconView *)self icon];
-  v3 = [v2 gridSizeClass];
-  if (!v3)
+  icon = [(SBIconView *)self icon];
+  gridSizeClass = [icon gridSizeClass];
+  if (!gridSizeClass)
   {
-    v3 = [objc_opt_class() defaultGridSizeClass];
+    gridSizeClass = [objc_opt_class() defaultGridSizeClass];
   }
 
-  return v3;
+  return gridSizeClass;
 }
 
 - (unint64_t)configurationOptions
@@ -770,9 +770,9 @@ LABEL_16:
     v3 |= 2uLL;
   }
 
-  v4 = [(SBIconView *)self allowsPassthroughHitTesting];
+  allowsPassthroughHitTesting = [(SBIconView *)self allowsPassthroughHitTesting];
   v5 = v3 | 8;
-  if (!v4)
+  if (!allowsPassthroughHitTesting)
   {
     v5 = v3;
   }
@@ -861,8 +861,8 @@ LABEL_16:
 
 - (BOOL)_shouldShowLabel
 {
-  v2 = [(SBIconView *)self _labelHidingReason];
-  v3 = v2 == 0;
+  _labelHidingReason = [(SBIconView *)self _labelHidingReason];
+  v3 = _labelHidingReason == 0;
 
   return v3;
 }
@@ -879,25 +879,25 @@ LABEL_16:
     return @"label area";
   }
 
-  v3 = [(SBIconView *)self icon];
+  icon = [(SBIconView *)self icon];
 
-  if (!v3)
+  if (!icon)
   {
     return @"icon is nil";
   }
 
-  v4 = [(SBIconView *)self listLayout];
-  v5 = SBHIconListLayoutShowsLabels(v4);
+  listLayout = [(SBIconView *)self listLayout];
+  v5 = SBHIconListLayoutShowsLabels(listLayout);
 
   if (!v5)
   {
     return @"list layout";
   }
 
-  v6 = [(SBIconView *)self behaviorDelegate];
+  behaviorDelegate = [(SBIconView *)self behaviorDelegate];
   if (objc_opt_respondsToSelector())
   {
-    if ([v6 iconViewDisplaysLabel:self])
+    if ([behaviorDelegate iconViewDisplaysLabel:self])
     {
       v7 = 0;
     }
@@ -970,13 +970,13 @@ LABEL_16:
 
 - (BOOL)_hideIconLabelForContextMenu
 {
-  v3 = [(SBIconView *)self isShowingContextMenu];
-  if (v3)
+  isShowingContextMenu = [(SBIconView *)self isShowingContextMenu];
+  if (isShowingContextMenu)
   {
-    LOBYTE(v3) = ![(NSHashTable *)self->_contextMenuInteractionConfigurations isEqualToHashTable:self->_dismissingContextMenuInteractionConfigurations];
+    LOBYTE(isShowingContextMenu) = ![(NSHashTable *)self->_contextMenuInteractionConfigurations isEqualToHashTable:self->_dismissingContextMenuInteractionConfigurations];
   }
 
-  return v3;
+  return isShowingContextMenu;
 }
 
 - (void)_updateLabelAccessoryView
@@ -1030,16 +1030,16 @@ LABEL_16:
   [(SBIconView *)self iconViewSizeForIconImageSize:v4, v6];
   if (v11 <= 0.0 || (v13 = v12, v12 <= 0.0))
   {
-    v17 = [(SBIconView *)self layer];
-    [v17 setAnchorPoint:{0.5, 0.5}];
+    layer = [(SBIconView *)self layer];
+    [layer setAnchorPoint:{0.5, 0.5}];
   }
 
   else
   {
     v14 = v11;
     v15 = v8 / v11;
-    v16 = [(SBIconView *)self layer];
-    [v16 setAnchorPoint:{v15, v10 / v13}];
+    layer2 = [(SBIconView *)self layer];
+    [layer2 setAnchorPoint:{v15, v10 / v13}];
 
     [(SBIconView *)self setBounds:0.0, 0.0, v14, v13];
   }
@@ -1047,8 +1047,8 @@ LABEL_16:
 
 - (void)addGesturesAndInteractionsIfNecessary
 {
-  v19 = [(SBIconView *)self icon];
-  if ([(SBIconView *)self isUserInteractionEnabled]&& v19)
+  icon = [(SBIconView *)self icon];
+  if ([(SBIconView *)self isUserInteractionEnabled]&& icon)
   {
     if (!self->_dropInteraction)
     {
@@ -1139,29 +1139,29 @@ LABEL_16:
 {
   [(SBIconView *)self dragInteractionLiftDelay];
   v4 = v3;
-  v5 = [(SBIconView *)self dragInteraction];
-  [v5 _setLiftDelay:v4];
+  dragInteraction = [(SBIconView *)self dragInteraction];
+  [dragInteraction _setLiftDelay:v4];
 }
 
 - (BOOL)shouldShowResizeHandle
 {
-  v3 = [(SBIconView *)self isEditing];
-  if (v3)
+  isEditing = [(SBIconView *)self isEditing];
+  if (isEditing)
   {
 
-    LOBYTE(v3) = [(SBIconView *)self canShowResizeHandle];
+    LOBYTE(isEditing) = [(SBIconView *)self canShowResizeHandle];
   }
 
-  return v3;
+  return isEditing;
 }
 
 - (id)_folderIconImageView
 {
-  v2 = [(SBIconView *)self _iconImageView];
+  _iconImageView = [(SBIconView *)self _iconImageView];
   v3 = objc_opt_self();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v2;
+    v4 = _iconImageView;
   }
 
   else
@@ -1186,25 +1186,25 @@ LABEL_16:
   {
     crossfadeView = self->_iconImageView;
 LABEL_2:
-    v3 = crossfadeView;
+    view = crossfadeView;
     goto LABEL_5;
   }
 
-  v3 = [(SBIconViewCustomImageViewControlling *)self->_customIconImageViewController view];
+  view = [(SBIconViewCustomImageViewControlling *)self->_customIconImageViewController view];
 LABEL_5:
 
-  return v3;
+  return view;
 }
 
 - (id)effectiveListLayoutProvider
 {
-  v2 = [(SBIconView *)self listLayoutProvider];
-  if (!v2)
+  listLayoutProvider = [(SBIconView *)self listLayoutProvider];
+  if (!listLayoutProvider)
   {
-    v2 = +[SBHDefaultIconListLayoutProvider frameworkFallbackInstance];
+    listLayoutProvider = +[SBHDefaultIconListLayoutProvider frameworkFallbackInstance];
   }
 
-  return v2;
+  return listLayoutProvider;
 }
 
 + (CGSize)defaultIconImageSize
@@ -1238,9 +1238,9 @@ LABEL_5:
     }
   }
 
-  v7 = [(SBIconView *)self startsDragMoreQuickly];
+  startsDragMoreQuickly = [(SBIconView *)self startsDragMoreQuickly];
   result = 0.2;
-  if (!v7 || v4 <= 0.2)
+  if (!startsDragMoreQuickly || v4 <= 0.2)
   {
     return v4;
   }
@@ -1250,21 +1250,21 @@ LABEL_5:
 
 - (CGSize)maxLabelSize
 {
-  v3 = [(SBIconView *)self listLayout];
-  v4 = [(SBIconView *)self contentSizeCategory];
-  v5 = [(SBIconView *)self isLabelTextBold];
+  listLayout = [(SBIconView *)self listLayout];
+  contentSizeCategory = [(SBIconView *)self contentSizeCategory];
+  isLabelTextBold = [(SBIconView *)self isLabelTextBold];
   [(SBIconView *)self iconImageInfo];
   v7 = v6;
   v9 = v8;
   v10 = objc_opt_class();
-  if (v3)
+  if (listLayout)
   {
-    [v10 maxLabelSizeForListLayout:v3 iconImageSize:v4 contentSizeCategory:v5 options:{v7, v9}];
+    [v10 maxLabelSizeForListLayout:listLayout iconImageSize:contentSizeCategory contentSizeCategory:isLabelTextBold options:{v7, v9}];
   }
 
   else
   {
-    [v10 maxLabelSizeForIconImageSize:v4 contentSizeCategory:v5 options:{v7, v9}];
+    [v10 maxLabelSizeForIconImageSize:contentSizeCategory contentSizeCategory:isLabelTextBold options:{v7, v9}];
   }
 
   v13 = v11;
@@ -1279,40 +1279,40 @@ LABEL_5:
 
 - (id)contentSizeCategory
 {
-  v2 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  if (!v2)
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  if (!preferredContentSizeCategory)
   {
-    v2 = *MEMORY[0x1E69DDC90];
+    preferredContentSizeCategory = *MEMORY[0x1E69DDC90];
   }
 
-  return v2;
+  return preferredContentSizeCategory;
 }
 
 - (BOOL)shouldShowCloseBox
 {
-  v3 = [(SBIconView *)self isEditing];
-  if (v3)
+  isEditing = [(SBIconView *)self isEditing];
+  if (isEditing)
   {
 
-    LOBYTE(v3) = [(SBIconView *)self canShowCloseBox];
+    LOBYTE(isEditing) = [(SBIconView *)self canShowCloseBox];
   }
 
-  return v3;
+  return isEditing;
 }
 
 - (BOOL)canShowAccessoryView
 {
   if ([(SBIconView *)self allowsAdornmentsOverIconImage])
   {
-    v3 = [(SBIconView *)self currentAccessoryType];
-    v4 = [(SBIconView *)self behaviorDelegate];
+    currentAccessoryType = [(SBIconView *)self currentAccessoryType];
+    behaviorDelegate = [(SBIconView *)self behaviorDelegate];
     if (!self->_icon)
     {
       v5 = 0;
       goto LABEL_12;
     }
 
-    if ([objc_opt_class() _alwaysShowsAccessoryOfType:v3])
+    if ([objc_opt_class() _alwaysShowsAccessoryOfType:currentAccessoryType])
     {
 LABEL_4:
       v5 = 1;
@@ -1323,7 +1323,7 @@ LABEL_12:
 
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v4 iconViewDisplaysBadges:self];
+      v6 = [behaviorDelegate iconViewDisplaysBadges:self];
     }
 
     else
@@ -1333,7 +1333,7 @@ LABEL_12:
         goto LABEL_4;
       }
 
-      v6 = [v4 iconViewDisplaysAccessories:self];
+      v6 = [behaviorDelegate iconViewDisplaysAccessories:self];
     }
 
     v5 = v6;
@@ -1350,11 +1350,11 @@ LABEL_12:
     return 0;
   }
 
-  v3 = [(SBIconView *)self icon];
-  v4 = [(SBIconView *)self location];
-  v5 = [v3 accessoryTypeForLocation:v4];
-  v6 = [(SBIconView *)self overrideBadgeNumberOrString];
-  if (v6)
+  icon = [(SBIconView *)self icon];
+  location = [(SBIconView *)self location];
+  v5 = [icon accessoryTypeForLocation:location];
+  overrideBadgeNumberOrString = [(SBIconView *)self overrideBadgeNumberOrString];
+  if (overrideBadgeNumberOrString)
   {
     v7 = 1;
   }
@@ -1376,8 +1376,8 @@ LABEL_12:
 
   if (v8 <= 1)
   {
-    v9 = [(SBIconView *)self continuityInfo];
-    if (v9)
+    continuityInfo = [(SBIconView *)self continuityInfo];
+    if (continuityInfo)
     {
 
 LABEL_13:
@@ -1393,10 +1393,10 @@ LABEL_13:
   }
 
 LABEL_14:
-  v10 = [(SBIconView *)self behaviorDelegate];
+  behaviorDelegate = [(SBIconView *)self behaviorDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v10 iconView:self accessoryTypeWithProposedAccessoryType:v8];
+    v8 = [behaviorDelegate iconView:self accessoryTypeWithProposedAccessoryType:v8];
   }
 
   return v8;
@@ -1409,19 +1409,19 @@ LABEL_14:
     return 0;
   }
 
-  v2 = [objc_opt_class() debugContinuityItem];
-  v3 = v2 != 0;
+  debugContinuityItem = [objc_opt_class() debugContinuityItem];
+  v3 = debugContinuityItem != 0;
 
   return v3;
 }
 
 - (id)behaviorDelegate
 {
-  v3 = [(SBIconView *)self delegate];
-  v4 = v3;
+  delegate = [(SBIconView *)self delegate];
+  v4 = delegate;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 behaviorDelegateForIconView:self];
+    v4 = [delegate behaviorDelegateForIconView:self];
   }
 
   return v4;
@@ -1436,23 +1436,23 @@ LABEL_14:
 
 - (BOOL)_shouldShowTooltip
 {
-  v2 = [(SBIconView *)self _tooltipHidingReason];
-  v3 = v2 == 0;
+  _tooltipHidingReason = [(SBIconView *)self _tooltipHidingReason];
+  v3 = _tooltipHidingReason == 0;
 
   return v3;
 }
 
 - (id)_tooltipHidingReason
 {
-  v3 = [(SBIconView *)self icon];
+  icon = [(SBIconView *)self icon];
 
-  if (!v3)
+  if (!icon)
   {
     return @"icon is nil";
   }
 
-  v4 = [(SBIconView *)self listLayout];
-  v5 = SBHIconListLayoutShowsTooltipsOnHover(v4);
+  listLayout = [(SBIconView *)self listLayout];
+  v5 = SBHIconListLayoutShowsTooltipsOnHover(listLayout);
 
   if (v5)
   {
@@ -1477,11 +1477,11 @@ LABEL_14:
 
 - (id)reuseDelegate
 {
-  v3 = [(SBIconView *)self delegate];
-  v4 = v3;
+  delegate = [(SBIconView *)self delegate];
+  v4 = delegate;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 reuseDelegateForIconView:self];
+    v4 = [delegate reuseDelegateForIconView:self];
   }
 
   return v4;
@@ -1489,8 +1489,8 @@ LABEL_14:
 
 - (BOOL)isIconImageViewBorrowed
 {
-  v2 = [(SBIconView *)self borrowedIconImageViewAssertion];
-  v3 = v2 != 0;
+  borrowedIconImageViewAssertion = [(SBIconView *)self borrowedIconImageViewAssertion];
+  v3 = borrowedIconImageViewAssertion != 0;
 
   return v3;
 }
@@ -1504,15 +1504,15 @@ LABEL_14:
 
 - (void)updateCustomIconImageViewController
 {
-  v3 = [(SBIconView *)self overrideCustomIconImageViewController];
-  if (!v3)
+  overrideCustomIconImageViewController = [(SBIconView *)self overrideCustomIconImageViewController];
+  if (!overrideCustomIconImageViewController)
   {
     if ([(SBIconView *)self allowsCustomIconImageViewController])
     {
-      v4 = [(SBIconView *)self behaviorDelegate];
+      behaviorDelegate = [(SBIconView *)self behaviorDelegate];
       if (objc_opt_respondsToSelector())
       {
-        v7 = [v4 customImageViewControllerForIconView:self];
+        v7 = [behaviorDelegate customImageViewControllerForIconView:self];
       }
 
       else
@@ -1520,22 +1520,22 @@ LABEL_14:
         v7 = 0;
       }
 
-      v3 = v7;
+      overrideCustomIconImageViewController = v7;
     }
 
     else
     {
-      v3 = 0;
+      overrideCustomIconImageViewController = 0;
     }
   }
 
-  v8 = v3;
-  [(SBIconView *)self setCustomIconImageViewController:v3];
+  v8 = overrideCustomIconImageViewController;
+  [(SBIconView *)self setCustomIconImageViewController:overrideCustomIconImageViewController];
   if (![(SBIconView *)self isIconImageViewBorrowed])
   {
-    v5 = [v8 viewIfLoaded];
-    v6 = v5;
-    if (v5 && ([v5 isDescendantOfView:self] & 1) == 0)
+    viewIfLoaded = [v8 viewIfLoaded];
+    v6 = viewIfLoaded;
+    if (viewIfLoaded && ([viewIfLoaded isDescendantOfView:self] & 1) == 0)
     {
       [(SBIconView *)self _insertIconImageView:v6];
     }
@@ -1546,8 +1546,8 @@ LABEL_14:
 
 - (BOOL)allowsCustomIconImageViewController
 {
-  v2 = [(SBIconView *)self icon];
-  if (v2)
+  icon = [(SBIconView *)self icon];
+  if (icon)
   {
     v3 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -1568,9 +1568,9 @@ LABEL_14:
   iconLabelViewFactory = self->_iconLabelViewFactory;
   if (!iconLabelViewFactory)
   {
-    v4 = [(SBIconView *)self createNewIconLabelViewFactory];
+    createNewIconLabelViewFactory = [(SBIconView *)self createNewIconLabelViewFactory];
     v5 = self->_iconLabelViewFactory;
-    self->_iconLabelViewFactory = v4;
+    self->_iconLabelViewFactory = createNewIconLabelViewFactory;
 
     iconLabelViewFactory = self->_iconLabelViewFactory;
   }
@@ -1584,8 +1584,8 @@ LABEL_14:
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(SBIconView *)self effectiveOverrideAccessoryIconImageAppearance];
-    [(SBIconAccessoryView *)self->_accessoryView setOverrideIconImageAppearance:v3];
+    effectiveOverrideAccessoryIconImageAppearance = [(SBIconView *)self effectiveOverrideAccessoryIconImageAppearance];
+    [(SBIconAccessoryView *)self->_accessoryView setOverrideIconImageAppearance:effectiveOverrideAccessoryIconImageAppearance];
   }
 }
 
@@ -1606,10 +1606,10 @@ LABEL_14:
 
 - (id)_makeIconImageView
 {
-  v3 = [(SBIconView *)self reuseDelegate];
+  reuseDelegate = [(SBIconView *)self reuseDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 imageViewForIconView:self];
+    v4 = [reuseDelegate imageViewForIconView:self];
   }
 
   else
@@ -1632,14 +1632,14 @@ LABEL_14:
       [(SBIconAccessoryView *)self->_accessoryView removeFromSuperview];
     }
 
-    v6 = [(SBIconView *)self reuseDelegate];
+    reuseDelegate = [(SBIconView *)self reuseDelegate];
     if (self->_iconImageView)
     {
       v3 = objc_opt_respondsToSelector();
       iconImageView = self->_iconImageView;
       if (v3)
       {
-        [v6 iconView:self willRemoveIconImageView:iconImageView];
+        [reuseDelegate iconView:self willRemoveIconImageView:iconImageView];
         iconImageView = self->_iconImageView;
       }
     }
@@ -1664,13 +1664,13 @@ LABEL_14:
 - (UIFont)labelFont
 {
   v3 = self->_labelFont;
-  v4 = [(SBIconView *)self contentSizeCategory];
+  contentSizeCategory = [(SBIconView *)self contentSizeCategory];
   if (!v3)
   {
-    v5 = [(SBIconView *)self listLayout];
+    listLayout = [(SBIconView *)self listLayout];
     if (objc_opt_respondsToSelector())
     {
-      v3 = [v5 labelFontForContentSizeCategory:v4 options:{-[SBIconView isLabelTextBold](self, "isLabelTextBold")}];
+      v3 = [listLayout labelFontForContentSizeCategory:contentSizeCategory options:{-[SBIconView isLabelTextBold](self, "isLabelTextBold")}];
 
       if (v3)
       {
@@ -1682,7 +1682,7 @@ LABEL_14:
     {
     }
 
-    v3 = [SBIconLabelImageParametersBuilder defaultFontForContentSizeCategory:v4 languageInsets:0];
+    v3 = [SBIconLabelImageParametersBuilder defaultFontForContentSizeCategory:contentSizeCategory languageInsets:0];
   }
 
 LABEL_7:
@@ -1700,7 +1700,7 @@ LABEL_7:
   scalingContainer = self->_scalingContainer;
   UIRectGetCenter();
   [(UIView *)scalingContainer setCenter:?];
-  v4 = [(SBIconView *)self currentImageView];
+  currentImageView = [(SBIconView *)self currentImageView];
   [(SBIconView *)self _frameForImageView];
   v6 = v5;
   v8 = v7;
@@ -1709,7 +1709,7 @@ LABEL_7:
   [(UIView *)self->_imageContainerView sbf_setBoundsAndPositionFromFrame:?];
   if ([(SBIconView *)self shouldUpdateFrameOfIconImageView])
   {
-    [v4 sbf_setBoundsAndPositionFromFrame:{v6, v8, v10, v12}];
+    [currentImageView sbf_setBoundsAndPositionFromFrame:{v6, v8, v10, v12}];
   }
 
   crossfadeView = self->_crossfadeView;
@@ -1749,14 +1749,14 @@ LABEL_7:
 
   if (self->_tooltipView)
   {
-    v17 = [(SBIconView *)self icon];
+    icon = [(SBIconView *)self icon];
 
-    if (v17)
+    if (icon)
     {
       tooltipView = self->_tooltipView;
-      v19 = [(SBIconView *)self icon];
-      v20 = [v19 displayName];
-      [(SBHTooltipView *)tooltipView setText:v20];
+      icon2 = [(SBIconView *)self icon];
+      displayName = [icon2 displayName];
+      [(SBHTooltipView *)tooltipView setText:displayName];
 
       [(SBHTooltipView *)self->_tooltipView intrinsicContentSize];
       v22 = v21;
@@ -1807,15 +1807,15 @@ LABEL_7:
     return 0;
   }
 
-  v4 = [(SBIconView *)self currentImageView];
-  v5 = [v4 isDescendantOfView:self];
+  currentImageView = [(SBIconView *)self currentImageView];
+  v5 = [currentImageView isDescendantOfView:self];
 
   return v5;
 }
 
 - (CGRect)_frameForLabel
 {
-  v3 = [(SBIconView *)self _labelImageMetrics];
+  _labelImageMetrics = [(SBIconView *)self _labelImageMetrics];
   [(SBIconView *)self _frameForImageView];
   v41 = v5;
   v42 = v4;
@@ -1827,19 +1827,19 @@ LABEL_7:
   v38 = v8;
   v35 = v11;
   v36 = v10;
-  [v3 imageRect];
+  [_labelImageMetrics imageRect];
   v13 = v12;
   v15 = v14;
-  [v3 alignmentRectInsets];
+  [_labelImageMetrics alignmentRectInsets];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  [v3 baselineOffsetFromBottom];
+  [_labelImageMetrics baselineOffsetFromBottom];
   v24 = v13 - (v19 + v23);
   v25 = v15 - (v17 + v21);
-  v26 = [(SBIconView *)self traitCollection];
-  [v26 displayScale];
+  traitCollection = [(SBIconView *)self traitCollection];
+  [traitCollection displayScale];
 
   v43.origin.y = v37;
   v43.origin.x = v38;
@@ -1879,10 +1879,10 @@ LABEL_7:
 
 - (id)_labelImageMetrics
 {
-  v2 = [(SBIconLabelView *)self->_labelView imageParameters];
-  v3 = [v2 metrics];
+  imageParameters = [(SBIconLabelView *)self->_labelView imageParameters];
+  metrics = [imageParameters metrics];
 
-  return v3;
+  return metrics;
 }
 
 - (double)_labelBaselineOffsetFromImage
@@ -1890,8 +1890,8 @@ LABEL_7:
   v3 = [(SBIconView *)self methodForSelector:sel__labelVerticalOffset];
   if (v3 == [SBIconView instanceMethodForSelector:sel__labelVerticalOffset])
   {
-    v6 = [(SBIconView *)self labelConfiguration];
-    [v6 baselineOffsetFromImage];
+    labelConfiguration = [(SBIconView *)self labelConfiguration];
+    [labelConfiguration baselineOffsetFromImage];
     v8 = v7;
 
     return v8;
@@ -1906,9 +1906,9 @@ LABEL_7:
 
 - (id)labelConfiguration
 {
-  v3 = [(SBIconView *)self listLayout];
-  v4 = [(SBIconView *)self contentSizeCategory];
-  v5 = [objc_opt_class() labelConfigurationForListLayout:v3 contentSizeCategory:v4 options:{-[SBIconView isLabelTextBold](self, "isLabelTextBold")}];
+  listLayout = [(SBIconView *)self listLayout];
+  contentSizeCategory = [(SBIconView *)self contentSizeCategory];
+  v5 = [objc_opt_class() labelConfigurationForListLayout:listLayout contentSizeCategory:contentSizeCategory options:{-[SBIconView isLabelTextBold](self, "isLabelTextBold")}];
 
   return v5;
 }
@@ -1933,8 +1933,8 @@ LABEL_7:
   {
     if ([(SBIconView *)self isOverlapping])
     {
-      v4 = [(SBIconView *)self icon];
-      if ([v4 isFolderIcon])
+      icon = [(SBIconView *)self icon];
+      if ([icon isFolderIcon])
       {
       }
 
@@ -1993,17 +1993,17 @@ LABEL_7:
 
 - (double)effectiveOverallAlpha
 {
-  v3 = [(SBIconView *)self isDropping];
+  isDropping = [(SBIconView *)self isDropping];
   result = 1.0;
-  if (!v3)
+  if (!isDropping)
   {
-    v5 = [(SBIconView *)self isGrabbed];
+    isGrabbed = [(SBIconView *)self isGrabbed];
     result = 0.5;
-    if (!v5)
+    if (!isGrabbed)
     {
-      v6 = [(SBIconView *)self isDragging];
+      isDragging = [(SBIconView *)self isDragging];
       result = 1.0;
-      if (v6)
+      if (isDragging)
       {
         v7 = objc_opt_class();
 
@@ -2030,8 +2030,8 @@ LABEL_7:
   imageContainerView = self->_imageContainerView;
   if (!imageContainerView)
   {
-    v4 = [(SBIconView *)self contentContainerView];
-    [v4 bounds];
+    contentContainerView = [(SBIconView *)self contentContainerView];
+    [contentContainerView bounds];
     v9 = [[SBHTouchPassThroughView alloc] initWithFrame:v5, v6, v7, v8];
     v10 = self->_imageContainerView;
     self->_imageContainerView = &v9->super;
@@ -2039,12 +2039,12 @@ LABEL_7:
     v11 = self->_imageContainerView;
     if (self->_closeBox)
     {
-      [v4 insertSubview:v11 belowSubview:?];
+      [contentContainerView insertSubview:v11 belowSubview:?];
     }
 
     else
     {
-      [v4 addSubview:v11];
+      [contentContainerView addSubview:v11];
     }
 
     imageContainerView = self->_imageContainerView;
@@ -2057,53 +2057,53 @@ LABEL_7:
 {
   if (self->_accessoryView)
   {
-    v4 = [(SBIconView *)self accessoryViewContainerView];
-    v3 = [(SBIconAccessoryView *)self->_accessoryView superview];
+    accessoryViewContainerView = [(SBIconView *)self accessoryViewContainerView];
+    superview = [(SBIconAccessoryView *)self->_accessoryView superview];
 
-    if (v3 != v4)
+    if (superview != accessoryViewContainerView)
     {
-      [v4 addSubview:self->_accessoryView];
+      [accessoryViewContainerView addSubview:self->_accessoryView];
     }
 
-    [v4 bringSubviewToFront:self->_accessoryView];
+    [accessoryViewContainerView bringSubviewToFront:self->_accessoryView];
   }
 }
 
 - (id)effectiveIconImageAppearance
 {
-  v3 = [(SBIconView *)self overrideIconImageAppearance];
-  v4 = [(SBIconView *)self overrideIconImageStyleConfiguration];
-  v5 = [(SBIconView *)self traitCollectionForIconImageAppearance];
-  v6 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:v5 overrideIconImageAppearance:v3 overrideIconImageStyleConfiguration:v4];
+  overrideIconImageAppearance = [(SBIconView *)self overrideIconImageAppearance];
+  overrideIconImageStyleConfiguration = [(SBIconView *)self overrideIconImageStyleConfiguration];
+  traitCollectionForIconImageAppearance = [(SBIconView *)self traitCollectionForIconImageAppearance];
+  v6 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:traitCollectionForIconImageAppearance overrideIconImageAppearance:overrideIconImageAppearance overrideIconImageStyleConfiguration:overrideIconImageStyleConfiguration];
 
   return v6;
 }
 
 - (id)traitCollectionForIconImageAppearance
 {
-  v3 = [(SBIconView *)self traitCollection];
+  traitCollection = [(SBIconView *)self traitCollection];
   if ([(SBIconView *)self usesSceneUserInterfaceStyleForImage])
   {
-    v4 = [(SBIconView *)self window];
-    v5 = [v4 windowScene];
+    window = [(SBIconView *)self window];
+    windowScene = [window windowScene];
 
-    v6 = [v5 traitCollection];
-    v7 = v6;
-    if (v6)
+    traitCollection2 = [windowScene traitCollection];
+    v7 = traitCollection2;
+    if (traitCollection2)
     {
-      v8 = [v6 userInterfaceStyle];
+      userInterfaceStyle = [traitCollection2 userInterfaceStyle];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __51__SBIconView_traitCollectionForIconImageAppearance__block_invoke;
       v11[3] = &__block_descriptor_40_e27_v16__0___UIMutableTraits__8l;
-      v11[4] = v8;
-      v9 = [v3 traitCollectionByModifyingTraits:v11];
+      v11[4] = userInterfaceStyle;
+      v9 = [traitCollection traitCollectionByModifyingTraits:v11];
 
-      v3 = v9;
+      traitCollection = v9;
     }
   }
 
-  return v3;
+  return traitCollection;
 }
 
 - (int64_t)progressState
@@ -2120,10 +2120,10 @@ LABEL_7:
 
 - (BOOL)isFolderIcon
 {
-  v2 = [(SBIconView *)self icon];
-  v3 = [v2 isFolderIcon];
+  icon = [(SBIconView *)self icon];
+  isFolderIcon = [icon isFolderIcon];
 
-  return v3;
+  return isFolderIcon;
 }
 
 - (void)_createAccessoryViewIfNecessary
@@ -2131,13 +2131,13 @@ LABEL_7:
   v3 = [objc_opt_class() defaultViewClassForAccessoryType:{-[SBIconView currentAccessoryType](self, "currentAccessoryType")}];
   if (([(SBIconAccessoryView *)self->_accessoryView isMemberOfClass:v3]& 1) == 0)
   {
-    v4 = [(SBIconView *)self reuseDelegate];
+    reuseDelegate = [(SBIconView *)self reuseDelegate];
     [(SBIconView *)self _destroyAccessoryView];
     if (v3)
     {
       if (objc_opt_respondsToSelector())
       {
-        v5 = [v4 iconView:self iconAccessoryViewOfClass:v3];
+        v5 = [reuseDelegate iconView:self iconAccessoryViewOfClass:v3];
       }
 
       else
@@ -2173,8 +2173,8 @@ LABEL_7:
       [(SBIconView *)self updateParallaxSettings];
       if (objc_opt_respondsToSelector())
       {
-        v11 = [(SBIconView *)self listLayout];
-        [(SBIconAccessoryView *)self->_accessoryView setListLayout:v11];
+        listLayout = [(SBIconView *)self listLayout];
+        [(SBIconAccessoryView *)self->_accessoryView setListLayout:listLayout];
         [(SBIconAccessoryView *)self->_accessoryView sizeToFit];
       }
 
@@ -2215,12 +2215,12 @@ LABEL_7:
     v4 = 0;
   }
 
-  v5 = [(SBIcon *)icon isLaunchDisabledForObscuredReason];
+  isLaunchDisabledForObscuredReason = [(SBIcon *)icon isLaunchDisabledForObscuredReason];
   v6 = *(self + 553);
-  if ((v5 ^ (v6 >= 0)) & 1) != 0 || (v5 & *(self + 554))
+  if ((isLaunchDisabledForObscuredReason ^ (v6 >= 0)) & 1) != 0 || (isLaunchDisabledForObscuredReason & *(self + 554))
   {
     v7 = 1;
-    if (!v5)
+    if (!isLaunchDisabledForObscuredReason)
     {
 LABEL_7:
       *(self + 554) &= ~1u;
@@ -2230,7 +2230,7 @@ LABEL_7:
   else
   {
     v7 = 0;
-    if (v5)
+    if (isLaunchDisabledForObscuredReason)
     {
       v9 = 0x80;
     }
@@ -2241,7 +2241,7 @@ LABEL_7:
     }
 
     *(self + 553) = v9 & 0x80 | v6 & 0x7F;
-    if (!v5)
+    if (!isLaunchDisabledForObscuredReason)
     {
       goto LABEL_7;
     }
@@ -2262,11 +2262,11 @@ LABEL_7:
 
 - (id)contextMenuDelegate
 {
-  v3 = [(SBIconView *)self delegate];
-  v4 = v3;
+  delegate = [(SBIconView *)self delegate];
+  v4 = delegate;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 contextMenuDelegateForIconView:self];
+    v4 = [delegate contextMenuDelegateForIconView:self];
   }
 
   return v4;
@@ -2287,9 +2287,9 @@ LABEL_7:
     [(SBIconView *)self updateAccessoryViewContainerIfNecessary];
     if (!self->_customIconImageViewController)
     {
-      v4 = [(SBIconView *)self currentImageView];
-      [v4 setHidden:0];
-      [(SBIconView *)self _insertIconImageView:v4];
+      currentImageView = [(SBIconView *)self currentImageView];
+      [currentImageView setHidden:0];
+      [(SBIconView *)self _insertIconImageView:currentImageView];
     }
 
     [(SBIconView *)self _updateIconImageAdornmentsAnimated:0];
@@ -2304,9 +2304,9 @@ LABEL_7:
   v15.receiver = self;
   v15.super_class = SBIconView;
   [(SBIconView *)&v15 didMoveToWindow];
-  v3 = [(SBIconView *)self window];
+  window = [(SBIconView *)self window];
 
-  if ((*(self + 555) & 1) != 0 && !v3)
+  if ((*(self + 555) & 1) != 0 && !window)
   {
     v4 = [MEMORY[0x1E695DFD8] set];
     [(SBIconView *)self touchesCancelled:v4 withEvent:0];
@@ -2315,8 +2315,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  [(SBIconView *)self setPaused:v3 == 0 forReason:1];
-  if (!v3)
+  [(SBIconView *)self setPaused:window == 0 forReason:1];
+  if (!window)
   {
 LABEL_7:
     [(SBIconView *)self dismissContextMenuWithCompletion:0];
@@ -2326,8 +2326,8 @@ LABEL_7:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(NSHashTable *)self->_observers copy];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+    _iconImageView = [(NSHashTable *)self->_observers copy];
+    v6 = [_iconImageView countByEnumeratingWithState:&v11 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -2339,7 +2339,7 @@ LABEL_7:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_iconImageView);
           }
 
           v10 = *(*(&v11 + 1) + 8 * v9);
@@ -2352,7 +2352,7 @@ LABEL_7:
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v7 = [_iconImageView countByEnumeratingWithState:&v11 objects:v16 count:16];
       }
 
       while (v7);
@@ -2363,8 +2363,8 @@ LABEL_7:
 
   if ([(SBIconView *)self usesSceneUserInterfaceStyleForImage])
   {
-    v5 = [(SBIconView *)self _iconImageView];
-    [v5 updateImageAnimated:0];
+    _iconImageView = [(SBIconView *)self _iconImageView];
+    [_iconImageView updateImageAnimated:0];
 LABEL_16:
   }
 
@@ -2373,28 +2373,28 @@ LABEL_16:
 
 - (void)_updateCursorInteractionsEnabled
 {
-  v3 = [(SBIconView *)self _isCursorInteractionEnabled];
-  if (v3 != [(UIPointerInteraction *)self->_iconViewCursorInteraction isEnabled])
+  _isCursorInteractionEnabled = [(SBIconView *)self _isCursorInteractionEnabled];
+  if (_isCursorInteractionEnabled != [(UIPointerInteraction *)self->_iconViewCursorInteraction isEnabled])
   {
-    [(UIPointerInteraction *)self->_iconViewCursorInteraction setEnabled:v3];
+    [(UIPointerInteraction *)self->_iconViewCursorInteraction setEnabled:_isCursorInteractionEnabled];
     [(UIPointerInteraction *)self->_iconViewCursorInteraction invalidate];
   }
 
-  if (v3 != [(UIPointerInteraction *)self->_closeBoxCursorInteraction isEnabled])
+  if (_isCursorInteractionEnabled != [(UIPointerInteraction *)self->_closeBoxCursorInteraction isEnabled])
   {
-    [(UIPointerInteraction *)self->_closeBoxCursorInteraction setEnabled:v3];
+    [(UIPointerInteraction *)self->_closeBoxCursorInteraction setEnabled:_isCursorInteractionEnabled];
     [(UIPointerInteraction *)self->_closeBoxCursorInteraction invalidate];
   }
 
-  if (v3 != [(UIPointerInteraction *)self->_accessoryViewCursorInteraction isEnabled])
+  if (_isCursorInteractionEnabled != [(UIPointerInteraction *)self->_accessoryViewCursorInteraction isEnabled])
   {
-    [(UIPointerInteraction *)self->_accessoryViewCursorInteraction setEnabled:v3];
+    [(UIPointerInteraction *)self->_accessoryViewCursorInteraction setEnabled:_isCursorInteractionEnabled];
     [(UIPointerInteraction *)self->_accessoryViewCursorInteraction invalidate];
   }
 
-  if (v3 != [(UIPointerInteraction *)self->_resizeHandleCursorInteraction isEnabled])
+  if (_isCursorInteractionEnabled != [(UIPointerInteraction *)self->_resizeHandleCursorInteraction isEnabled])
   {
-    [(UIPointerInteraction *)self->_resizeHandleCursorInteraction setEnabled:v3];
+    [(UIPointerInteraction *)self->_resizeHandleCursorInteraction setEnabled:_isCursorInteractionEnabled];
     resizeHandleCursorInteraction = self->_resizeHandleCursorInteraction;
 
     [(UIPointerInteraction *)resizeHandleCursorInteraction invalidate];
@@ -2403,20 +2403,20 @@ LABEL_16:
 
 - (id)effectiveOverrideAccessoryIconImageAppearance
 {
-  v3 = [(SBIconView *)self overrideAccessoryIconImageAppearance];
-  if (v3 || ([(SBIconView *)self overrideIconImageAppearance], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  overrideAccessoryIconImageAppearance = [(SBIconView *)self overrideAccessoryIconImageAppearance];
+  if (overrideAccessoryIconImageAppearance || ([(SBIconView *)self overrideIconImageAppearance], (overrideAccessoryIconImageAppearance = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = v3;
+    v4 = overrideAccessoryIconImageAppearance;
   }
 
   else
   {
-    v6 = [(SBIconView *)self overrideIconImageStyleConfiguration];
-    if (v6)
+    overrideIconImageStyleConfiguration = [(SBIconView *)self overrideIconImageStyleConfiguration];
+    if (overrideIconImageStyleConfiguration)
     {
-      v7 = [(SBIconView *)self icon];
-      v8 = [(SBIconView *)self traitCollectionForIconImageAppearance];
-      v4 = [v6 appearanceForIcon:v7 userInterfaceStyle:{objc_msgSend(v8, "userInterfaceStyle")}];
+      icon = [(SBIconView *)self icon];
+      traitCollectionForIconImageAppearance = [(SBIconView *)self traitCollectionForIconImageAppearance];
+      v4 = [overrideIconImageStyleConfiguration appearanceForIcon:icon userInterfaceStyle:{objc_msgSend(traitCollectionForIconImageAppearance, "userInterfaceStyle")}];
     }
 
     else
@@ -2446,20 +2446,20 @@ LABEL_16:
 
 - (id)actionDelegate
 {
-  v3 = [(SBIconView *)self overrideActionDelegate];
-  v4 = v3;
-  if (v3)
+  overrideActionDelegate = [(SBIconView *)self overrideActionDelegate];
+  v4 = overrideActionDelegate;
+  if (overrideActionDelegate)
   {
-    v5 = v3;
+    v5 = overrideActionDelegate;
   }
 
   else
   {
-    v6 = [(SBIconView *)self delegate];
-    v5 = v6;
+    delegate = [(SBIconView *)self delegate];
+    v5 = delegate;
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v6 actionDelegateForIconView:self];
+      v5 = [delegate actionDelegateForIconView:self];
     }
   }
 
@@ -2477,14 +2477,14 @@ LABEL_16:
 {
   if (self->_accessoryView)
   {
-    v3 = [(SBIconView *)self currentImageView];
+    currentImageView = [(SBIconView *)self currentImageView];
     accessoryView = self->_accessoryView;
-    [v3 bounds];
+    [currentImageView bounds];
     [(SBIconAccessoryView *)accessoryView accessoryCenterForIconBounds:?];
     v6 = v5;
     v8 = v7;
-    v9 = [(SBIconView *)self contentContainerView];
-    [v9 convertPoint:v3 fromView:{v6, v8}];
+    contentContainerView = [(SBIconView *)self contentContainerView];
+    [contentContainerView convertPoint:currentImageView fromView:{v6, v8}];
     v11 = v10;
     v13 = v12;
   }
@@ -2504,22 +2504,22 @@ LABEL_16:
 
 - (void)dismissConfigurationCardImmediately
 {
-  v2 = [(SBIconView *)self currentConfigurationInteraction];
-  [v2 endConfigurationImmediately];
+  currentConfigurationInteraction = [(SBIconView *)self currentConfigurationInteraction];
+  [currentConfigurationInteraction endConfigurationImmediately];
 }
 
 - (void)dismissStackConfigurationCardImmediately
 {
-  v2 = [(SBIconView *)self currentStackConfigurationInteraction];
-  [v2 endConfigurationImmediately];
+  currentStackConfigurationInteraction = [(SBIconView *)self currentStackConfigurationInteraction];
+  [currentStackConfigurationInteraction endConfigurationImmediately];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DD920] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DD898] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DD920] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DD898] object:0];
   [(SBIconView *)self setIcon:0];
   [(SBIconView *)self _invalidateHomeButtonPressConsumingAssertion];
   [(PTSettings *)self->_iconEditingSettings removeKeyObserver:self];
@@ -2538,30 +2538,30 @@ LABEL_16:
 
 - (void)_invalidateHomeButtonPressConsumingAssertion
 {
-  v3 = [(SBIconView *)self homeButtonPressConsumingAssertion];
-  [v3 invalidate];
+  homeButtonPressConsumingAssertion = [(SBIconView *)self homeButtonPressConsumingAssertion];
+  [homeButtonPressConsumingAssertion invalidate];
 
   [(SBIconView *)self setHomeButtonPressConsumingAssertion:0];
 }
 
 - (BOOL)allowsLabelAccessoryView
 {
-  v3 = [objc_opt_class() allowsLabelAccessoryView];
-  if (v3)
+  allowsLabelAccessoryView = [objc_opt_class() allowsLabelAccessoryView];
+  if (allowsLabelAccessoryView)
   {
-    LOBYTE(v3) = ![(SBIconView *)self isFolderIcon];
+    LOBYTE(allowsLabelAccessoryView) = ![(SBIconView *)self isFolderIcon];
   }
 
-  return v3;
+  return allowsLabelAccessoryView;
 }
 
 - (id)_labelImageParameters
 {
   v3 = objc_alloc_init(SBIconLabelImageParametersBuilder);
   [(SBIconView *)self configureLabelImageParametersBuilder:v3];
-  v4 = [(SBIconLabelImageParametersBuilder *)v3 buildParameters];
+  buildParameters = [(SBIconLabelImageParametersBuilder *)v3 buildParameters];
 
-  return v4;
+  return buildParameters;
 }
 
 - (NSString)backgroundViewGroupNameBase
@@ -2571,16 +2571,16 @@ LABEL_16:
     goto LABEL_8;
   }
 
-  v3 = [(SBIconViewCustomImageViewControlling *)self->_customIconImageViewController backgroundViewProvider];
-  if (!v3 || (objc_opt_respondsToSelector() & 1) == 0)
+  backgroundViewProvider = [(SBIconViewCustomImageViewControlling *)self->_customIconImageViewController backgroundViewProvider];
+  if (!backgroundViewProvider || (objc_opt_respondsToSelector() & 1) == 0)
   {
     v5 = 0;
     goto LABEL_10;
   }
 
-  v4 = [(SBIconViewCustomImageViewControlling *)self->_customIconImageViewController wantsCaptureOnlyBackgroundView];
+  wantsCaptureOnlyBackgroundView = [(SBIconViewCustomImageViewControlling *)self->_customIconImageViewController wantsCaptureOnlyBackgroundView];
 
-  if (!v4)
+  if (!wantsCaptureOnlyBackgroundView)
   {
 LABEL_8:
     v5 = 0;
@@ -2593,7 +2593,7 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  v3 = [(SBIconViewCustomImageViewControlling *)self->_customIconImageViewController visiblyActiveDataSource];
+  backgroundViewProvider = [(SBIconViewCustomImageViewControlling *)self->_customIconImageViewController visiblyActiveDataSource];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2628,8 +2628,8 @@ LABEL_11:
 
   else
   {
-    v3 = [MEMORY[0x1E69DC938] currentDevice];
-    v2 = [v3 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v2 = [currentDevice userInterfaceIdiom] == 1;
   }
 
   result = 14.0;
@@ -2674,19 +2674,19 @@ LABEL_11:
     [(SBIconView *)self _destroyIconImageView];
   }
 
-  v5 = [(SBIconView *)self traitOverrides];
+  traitOverrides = [(SBIconView *)self traitOverrides];
   v6 = objc_opt_self();
-  [v5 removeTrait:v6];
+  [traitOverrides removeTrait:v6];
 
-  v7 = [(SBIconView *)self traitOverrides];
+  traitOverrides2 = [(SBIconView *)self traitOverrides];
   v8 = objc_opt_self();
-  [v7 removeTrait:v8];
+  [traitOverrides2 removeTrait:v8];
 
-  v9 = [(SBIconView *)self accessoryViewAnimator];
-  v10 = v9;
-  if (v9)
+  accessoryViewAnimator = [(SBIconView *)self accessoryViewAnimator];
+  v10 = accessoryViewAnimator;
+  if (accessoryViewAnimator)
   {
-    [v9 stopAnimation:0];
+    [accessoryViewAnimator stopAnimation:0];
     [v10 finishAnimationAtPosition:0];
     [(SBIconView *)self setAccessoryViewAnimator:0];
   }
@@ -2796,8 +2796,8 @@ LABEL_11:
   [(SBIconView *)self setAlpha:1.0];
   [(SBIconView *)self setHidden:0];
   [(SBIconView *)self setBackgroundColor:0];
-  v18 = [(SBIconView *)self layer];
-  [v18 setCornerRadius:0.0];
+  layer = [(SBIconView *)self layer];
+  [layer setCornerRadius:0.0];
 
   [(SBIconView *)self removeAllIconAnimations];
   [(SBIconImageView *)self->_iconImageView setProgressState:0 paused:0 percent:0 animated:0.0];
@@ -2806,11 +2806,11 @@ LABEL_11:
   [(SBIconView *)self setStartsDragMoreQuickly:0];
   [(SBIconView *)self setOverrideDraggingDelegate:0];
   [(SBIconView *)self setOverrideDroppingDelegate:0];
-  v19 = [(SBIconView *)self closeBoxAnimator];
-  if (v19)
+  closeBoxAnimator = [(SBIconView *)self closeBoxAnimator];
+  if (closeBoxAnimator)
   {
-    v20 = v19;
-    [v19 stopAnimation:{0, v19}];
+    v20 = closeBoxAnimator;
+    [closeBoxAnimator stopAnimation:{0, closeBoxAnimator}];
     [v20 finishAnimationAtPosition:0];
     [(SBCloseBoxView *)self->_closeBox removeFromSuperview];
     closeBox = self->_closeBox;
@@ -2843,7 +2843,7 @@ LABEL_11:
   v24 = [MEMORY[0x1E69DCA38] focusSystemForEnvironment:self];
   [v24 _focusEnvironmentWillDisappear:self];
 
-  v25 = [(SBIconView *)self behaviorDelegate];
+  behaviorDelegate = [(SBIconView *)self behaviorDelegate];
   v26 = [(NSHashTable *)self->_observers copy];
   observers = self->_observers;
   self->_observers = 0;
@@ -2868,7 +2868,7 @@ LABEL_11:
         }
 
         v33 = *(*(&v37 + 1) + 8 * i);
-        if (v33 != v25 && (objc_opt_respondsToSelector() & 1) != 0)
+        if (v33 != behaviorDelegate && (objc_opt_respondsToSelector() & 1) != 0)
         {
           [v33 iconViewWasRecycled:self];
         }
@@ -2885,7 +2885,7 @@ LABEL_11:
 
   if (objc_opt_respondsToSelector())
   {
-    [v25 iconViewWasRecycled:self];
+    [behaviorDelegate iconViewWasRecycled:self];
   }
 
   [(SBIconView *)self setDelegate:0];
@@ -2898,15 +2898,15 @@ LABEL_11:
   iconLayerPrefetchingReasons = self->_iconLayerPrefetchingReasons;
   self->_iconLayerPrefetchingReasons = 0;
 
-  v4 = [(SBIconView *)self iconLayerPrefetchingAssertion];
-  [v4 invalidate];
+  iconLayerPrefetchingAssertion = [(SBIconView *)self iconLayerPrefetchingAssertion];
+  [iconLayerPrefetchingAssertion invalidate];
   [(SBIconView *)self setIconLayerPrefetchingAssertion:0];
 }
 
 - (BOOL)isShowingConfigurationCard
 {
-  v2 = [(SBIconView *)self currentConfigurationInteraction];
-  v3 = v2 != 0;
+  currentConfigurationInteraction = [(SBIconView *)self currentConfigurationInteraction];
+  v3 = currentConfigurationInteraction != 0;
 
   return v3;
 }
@@ -2953,10 +2953,10 @@ uint64_t __31__SBIconView_homeScreenService__block_invoke()
 
 - (void)_toggleGroupBlendingIfNecessary
 {
-  v5 = [(SBIconView *)self contentContainerView];
-  v3 = [(SBIconView *)self _shouldEnableGroupBlending];
-  v4 = [v5 layer];
-  [v4 setAllowsGroupBlending:v3];
+  contentContainerView = [(SBIconView *)self contentContainerView];
+  _shouldEnableGroupBlending = [(SBIconView *)self _shouldEnableGroupBlending];
+  layer = [contentContainerView layer];
+  [layer setAllowsGroupBlending:_shouldEnableGroupBlending];
 }
 
 - (void)earlyTerminateContextMenuDismissAnimation
@@ -3004,10 +3004,10 @@ uint64_t __31__SBIconView_homeScreenService__block_invoke()
     contextMenuInteractionConfigurations = self->_contextMenuInteractionConfigurations;
     self->_contextMenuInteractionConfigurations = 0;
 
-    v11 = [(SBIconView *)self contextMenuDelegate];
+    contextMenuDelegate = [(SBIconView *)self contextMenuDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [v11 iconViewContextMenuPresentationDidCancel:self];
+      [contextMenuDelegate iconViewContextMenuPresentationDidCancel:self];
     }
   }
 }
@@ -3019,8 +3019,8 @@ uint64_t __31__SBIconView_homeScreenService__block_invoke()
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v3 = [(SBIconView *)self subviews];
-  v4 = [v3 countByEnumeratingWithState:&v28 objects:v39 count:16];
+  subviews = [(SBIconView *)self subviews];
+  v4 = [subviews countByEnumeratingWithState:&v28 objects:v39 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3033,7 +3033,7 @@ uint64_t __31__SBIconView_homeScreenService__block_invoke()
       {
         if (*v29 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v9 = *(*(&v28 + 1) + 8 * i);
@@ -3056,7 +3056,7 @@ uint64_t __31__SBIconView_homeScreenService__block_invoke()
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v28 objects:v39 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v28 objects:v39 count:16];
     }
 
     while (v5);
@@ -3114,19 +3114,19 @@ uint64_t __31__SBIconView_homeScreenService__block_invoke()
 
 - (id)effectiveIconImageStyleConfiguration
 {
-  v3 = [(SBIconView *)self overrideIconImageAppearance];
-  v4 = [(SBIconView *)self overrideIconImageStyleConfiguration];
-  v5 = [(SBIconView *)self traitCollectionForIconImageAppearance];
-  v6 = [MEMORY[0x1E69DD1B8] sbh_iconImageStyleConfigurationFromTraitCollection:v5 overrideIconImageAppearance:v3 overrideIconImageStyleConfiguration:v4];
+  overrideIconImageAppearance = [(SBIconView *)self overrideIconImageAppearance];
+  overrideIconImageStyleConfiguration = [(SBIconView *)self overrideIconImageStyleConfiguration];
+  traitCollectionForIconImageAppearance = [(SBIconView *)self traitCollectionForIconImageAppearance];
+  v6 = [MEMORY[0x1E69DD1B8] sbh_iconImageStyleConfigurationFromTraitCollection:traitCollectionForIconImageAppearance overrideIconImageAppearance:overrideIconImageAppearance overrideIconImageStyleConfiguration:overrideIconImageStyleConfiguration];
 
   return v6;
 }
 
 - (void)_updateCustomIconImageViewControllerHitTesting
 {
-  v4 = [(SBIconView *)self customIconImageViewController];
-  v3 = [v4 view];
-  [v3 bs_setHitTestingDisabled:{-[SBIconView isCustomIconImageViewHitTestingDisabled](self, "isCustomIconImageViewHitTestingDisabled")}];
+  customIconImageViewController = [(SBIconView *)self customIconImageViewController];
+  view = [customIconImageViewController view];
+  [view bs_setHitTestingDisabled:{-[SBIconView isCustomIconImageViewHitTestingDisabled](self, "isCustomIconImageViewHitTestingDisabled")}];
 }
 
 - (SBIconApproximateLayoutPosition)approximateLayoutPosition
@@ -3141,8 +3141,8 @@ uint64_t __31__SBIconView_homeScreenService__block_invoke()
 
 - (CGPoint)iconImageCenter
 {
-  v2 = [(SBIconView *)self currentImageView];
-  [v2 center];
+  currentImageView = [(SBIconView *)self currentImageView];
+  [currentImageView center];
   v4 = v3;
   v6 = v5;
 
@@ -3155,10 +3155,10 @@ uint64_t __31__SBIconView_homeScreenService__block_invoke()
 
 - (unint64_t)visibleMiniIconListIndex
 {
-  v2 = [(SBIconView *)self _folderIconImageView];
-  v3 = [v2 visibleMiniIconListIndex];
+  _folderIconImageView = [(SBIconView *)self _folderIconImageView];
+  visibleMiniIconListIndex = [_folderIconImageView visibleMiniIconListIndex];
 
-  return v3;
+  return visibleMiniIconListIndex;
 }
 
 - (CGSize)iconImageVisibleSize
@@ -3172,8 +3172,8 @@ uint64_t __31__SBIconView_homeScreenService__block_invoke()
 
   else
   {
-    v9 = [(SBIconView *)self currentImageView];
-    [v9 bounds];
+    currentImageView = [(SBIconView *)self currentImageView];
+    [currentImageView bounds];
     v17 = v11;
     v19 = v10;
 
@@ -3202,19 +3202,19 @@ uint64_t __31__SBIconView_homeScreenService__block_invoke()
 
 - (CGRect)_frameForLabelHighlight
 {
-  v3 = [(SBIconLabelView *)self->_labelView imageParameters];
-  v4 = [v3 metrics];
+  imageParameters = [(SBIconLabelView *)self->_labelView imageParameters];
+  metrics = [imageParameters metrics];
   [(SBIconView *)self _frameForLabel];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v3 textInsets];
+  [imageParameters textInsets];
   v14 = SBHEdgeInsetsInvert(v13);
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  [v4 alignmentRectInsets];
+  [metrics alignmentRectInsets];
   v25 = v16 + v6 + v21;
   v26 = v14 + v8 + v22;
   v27 = v10 - (v21 + v23) - (v16 + v20);
@@ -3250,10 +3250,10 @@ uint64_t __31__SBIconView_homeScreenService__block_invoke()
 
 - (SBFolderIcon)folderIcon
 {
-  v2 = [(SBIconView *)self icon];
-  if ([(SBFolderIcon *)v2 isFolderIcon])
+  icon = [(SBIconView *)self icon];
+  if ([(SBFolderIcon *)icon isFolderIcon])
   {
-    v3 = v2;
+    v3 = icon;
   }
 
   else
@@ -3268,10 +3268,10 @@ uint64_t __31__SBIconView_homeScreenService__block_invoke()
 
 - (id)folder
 {
-  v2 = [(SBIconView *)self folderIcon];
-  v3 = [v2 folder];
+  folderIcon = [(SBIconView *)self folderIcon];
+  folder = [folderIcon folder];
 
-  return v3;
+  return folder;
 }
 
 - (id)pauseReasonsDescriptions
@@ -3332,10 +3332,10 @@ LABEL_17:
 
 + (CGSize)defaultIconViewSize
 {
-  [a1 defaultIconImageSize];
+  [self defaultIconImageSize];
   v4 = v3;
   v6 = v5;
-  [a1 _labelHeight];
+  [self _labelHeight];
   v8 = v6 + v7;
   v9 = v4;
   result.height = v8;
@@ -3343,12 +3343,12 @@ LABEL_17:
   return result;
 }
 
-+ (double)labelMaximumHeightForContentSizeCategory:(id)a3
++ (double)labelMaximumHeightForContentSizeCategory:(id)category
 {
   v3 = *(MEMORY[0x1E69DDCE0] + 16);
   v10 = *MEMORY[0x1E69DDCE0];
   v11 = v3;
-  v4 = [SBIconLabelImageParametersBuilder defaultFontForContentSizeCategory:a3 languageInsets:&v10];
+  v4 = [SBIconLabelImageParametersBuilder defaultFontForContentSizeCategory:category languageInsets:&v10];
   [v4 ascender];
   v6 = v5;
   [v4 descender];
@@ -3358,14 +3358,14 @@ LABEL_17:
   return v8;
 }
 
-+ (void)setDebugContinuityItem:(id)a3
++ (void)setDebugContinuityItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&__debugContinuityItem, a3);
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 postNotificationName:@"SBIconViewRefreshAccessoryViewNotification" object:0];
+    objc_storeStrong(&__debugContinuityItem, item);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"SBIconViewRefreshAccessoryViewNotification" object:0];
   }
 }
 
@@ -3383,34 +3383,34 @@ LABEL_3:
 
   else
   {
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v5 != 1)
+    if (userInterfaceIdiom != 1)
     {
       goto LABEL_3;
     }
   }
 
-  v6 = [a1 applicationIconMultitaskingMenu];
-  v7 = [a1 applicationIconSplitViewMenu];
-  v8 = [a1 applicationIconStageManagerMenu];
+  applicationIconMultitaskingMenu = [self applicationIconMultitaskingMenu];
+  applicationIconSplitViewMenu = [self applicationIconSplitViewMenu];
+  applicationIconStageManagerMenu = [self applicationIconStageManagerMenu];
   __SBIconViewOwnerWantsMultitaskingKeyboardShortcuts = 1;
-  v9 = [MEMORY[0x1E695DF70] array];
-  v3 = v9;
-  if (v6)
+  array = [MEMORY[0x1E695DF70] array];
+  v3 = array;
+  if (applicationIconMultitaskingMenu)
   {
-    [v9 addObject:v6];
+    [array addObject:applicationIconMultitaskingMenu];
   }
 
-  if (v7)
+  if (applicationIconSplitViewMenu)
   {
-    [v3 addObject:v7];
+    [v3 addObject:applicationIconSplitViewMenu];
   }
 
-  if (v8)
+  if (applicationIconStageManagerMenu)
   {
-    [v3 addObject:v8];
+    [v3 addObject:applicationIconStageManagerMenu];
   }
 
 LABEL_12:
@@ -3433,10 +3433,10 @@ LABEL_3:
 
   else
   {
-    v3 = [MEMORY[0x1E69DC938] currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v4 != 1)
+    if (userInterfaceIdiom != 1)
     {
       goto LABEL_3;
     }
@@ -3444,20 +3444,20 @@ LABEL_3:
 
   __SBIconViewOwnerWantsMultitaskingKeyboardShortcuts = 1;
   v5 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:*MEMORY[0x1E69DDE90] modifierFlags:0x800000 action:sel__handleActivateAppExposeKeyShortcut_];
-  v6 = [v5 _allowGlobeModifierKeyCommand];
+  _allowGlobeModifierKeyCommand = [v5 _allowGlobeModifierKeyCommand];
 
-  [v6 setRepeatBehavior:2];
+  [_allowGlobeModifierKeyCommand setRepeatBehavior:2];
   v7 = SBHBundle();
   v8 = [v7 localizedStringForKey:@"APP_EXPOSE_DISCOVERABILITY" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-  [v6 setDiscoverabilityTitle:v8];
+  [_allowGlobeModifierKeyCommand setDiscoverabilityTitle:v8];
 
-  v9 = [MEMORY[0x1E69D4258] systemKeyCommandOverlayEnvironment];
-  [v6 _setEventDeferringEnvironment:v9];
+  systemKeyCommandOverlayEnvironment = [MEMORY[0x1E69D4258] systemKeyCommandOverlayEnvironment];
+  [_allowGlobeModifierKeyCommand _setEventDeferringEnvironment:systemKeyCommandOverlayEnvironment];
 
   v10 = MEMORY[0x1E69DCC60];
   v11 = SBHBundle();
   v12 = [v11 localizedStringForKey:@"MULTITASKING_MENU_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-  v15[0] = v6;
+  v15[0] = _allowGlobeModifierKeyCommand;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   v2 = [v10 menuWithTitle:v12 children:v13];
 
@@ -3481,50 +3481,50 @@ LABEL_3:
 
   else
   {
-    v3 = [MEMORY[0x1E69DC938] currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v4 != 1)
+    if (userInterfaceIdiom != 1)
     {
       goto LABEL_3;
     }
   }
 
   __SBIconViewOwnerWantsMultitaskingKeyboardShortcuts = 1;
-  v5 = [MEMORY[0x1E69D4258] systemKeyCommandOverlayEnvironment];
+  systemKeyCommandOverlayEnvironment = [MEMORY[0x1E69D4258] systemKeyCommandOverlayEnvironment];
   v6 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:@"f" modifierFlags:0x800000 action:sel__handleMakeFullscreenKeyShortcut_];
-  v7 = [v6 _allowGlobeModifierKeyCommand];
+  _allowGlobeModifierKeyCommand = [v6 _allowGlobeModifierKeyCommand];
 
-  [v7 setRepeatBehavior:2];
+  [_allowGlobeModifierKeyCommand setRepeatBehavior:2];
   v8 = SBHBundle();
   v9 = [v8 localizedStringForKey:@"MAKE_FULLSCREEN_DISCOVERABILITY" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-  [v7 setDiscoverabilityTitle:v9];
+  [_allowGlobeModifierKeyCommand setDiscoverabilityTitle:v9];
 
-  [v7 _setEventDeferringEnvironment:v5];
+  [_allowGlobeModifierKeyCommand _setEventDeferringEnvironment:systemKeyCommandOverlayEnvironment];
   v10 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:*MEMORY[0x1E69DDF10] modifierFlags:8650752 action:sel__handleMakeSplitLeftKeyShortcut_];
-  v11 = [v10 _allowGlobeModifierKeyCommand];
+  _allowGlobeModifierKeyCommand2 = [v10 _allowGlobeModifierKeyCommand];
 
-  [v11 setRepeatBehavior:2];
+  [_allowGlobeModifierKeyCommand2 setRepeatBehavior:2];
   v12 = SBHBundle();
   v13 = [v12 localizedStringForKey:@"MAKE_LEFT_SPLIT_DISCOVERABILITY" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-  [v11 setDiscoverabilityTitle:v13];
+  [_allowGlobeModifierKeyCommand2 setDiscoverabilityTitle:v13];
 
-  [v11 _setEventDeferringEnvironment:v5];
+  [_allowGlobeModifierKeyCommand2 _setEventDeferringEnvironment:systemKeyCommandOverlayEnvironment];
   v14 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:*MEMORY[0x1E69DDF28] modifierFlags:8650752 action:sel__handleMakeSplitRightKeyShortcut_];
-  v15 = [v14 _allowGlobeModifierKeyCommand];
+  _allowGlobeModifierKeyCommand3 = [v14 _allowGlobeModifierKeyCommand];
 
-  [v15 setRepeatBehavior:2];
+  [_allowGlobeModifierKeyCommand3 setRepeatBehavior:2];
   v16 = SBHBundle();
   v17 = [v16 localizedStringForKey:@"MAKE_RIGHT_SPLIT_DISCOVERABILITY" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-  [v15 setDiscoverabilityTitle:v17];
+  [_allowGlobeModifierKeyCommand3 setDiscoverabilityTitle:v17];
 
-  [v15 _setEventDeferringEnvironment:v5];
+  [_allowGlobeModifierKeyCommand3 _setEventDeferringEnvironment:systemKeyCommandOverlayEnvironment];
   v18 = MEMORY[0x1E69DCC60];
   v19 = SBHBundle();
   v20 = [v19 localizedStringForKey:@"SPLIT_VIEW_MENU_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-  v23[0] = v7;
-  v23[1] = v11;
-  v23[2] = v15;
+  v23[0] = _allowGlobeModifierKeyCommand;
+  v23[1] = _allowGlobeModifierKeyCommand2;
+  v23[2] = _allowGlobeModifierKeyCommand3;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:3];
   v2 = [v18 menuWithTitle:v20 children:v21];
 
@@ -3546,28 +3546,28 @@ LABEL_6:
 LABEL_7:
     __SBIconViewOwnerWantsMultitaskingKeyboardShortcuts = 1;
     v4 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:*MEMORY[0x1E69DDF30] modifierFlags:8650752 action:sel__handleAddWindowToSetCommand_];
-    v5 = [v4 _allowGlobeModifierKeyCommand];
+    _allowGlobeModifierKeyCommand = [v4 _allowGlobeModifierKeyCommand];
 
-    [v5 setRepeatBehavior:2];
+    [_allowGlobeModifierKeyCommand setRepeatBehavior:2];
     v6 = SBHBundle();
     v7 = [v6 localizedStringForKey:@"ADD_ANOTHER_WINDOW_DISCOVERABILITY" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-    [v5 setDiscoverabilityTitle:v7];
+    [_allowGlobeModifierKeyCommand setDiscoverabilityTitle:v7];
 
-    v8 = [MEMORY[0x1E69D4258] systemKeyCommandOverlayEnvironment];
-    [v5 _setEventDeferringEnvironment:v8];
+    systemKeyCommandOverlayEnvironment = [MEMORY[0x1E69D4258] systemKeyCommandOverlayEnvironment];
+    [_allowGlobeModifierKeyCommand _setEventDeferringEnvironment:systemKeyCommandOverlayEnvironment];
 
     v9 = MEMORY[0x1E69DCC60];
     v10 = SBHBundle();
     v11 = [v10 localizedStringForKey:@"STAGE_MANAGER_MENU_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-    v15[0] = v5;
+    v15[0] = _allowGlobeModifierKeyCommand;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
     v13 = [v9 menuWithTitle:v11 children:v12];
 
     goto LABEL_10;
   }
 
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v2 userInterfaceIdiom] == 1)
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
     v3 = _os_feature_enabled_impl();
 
@@ -3588,13 +3588,13 @@ LABEL_10:
   return v13;
 }
 
-- (SBIconView)initWithConfigurationOptions:(unint64_t)a3 listLayoutProvider:(id)a4
+- (SBIconView)initWithConfigurationOptions:(unint64_t)options listLayoutProvider:(id)provider
 {
-  v7 = a4;
-  v8 = [objc_opt_class() defaultIconLocation];
-  if (v8)
+  providerCopy = provider;
+  defaultIconLocation = [objc_opt_class() defaultIconLocation];
+  if (defaultIconLocation)
   {
-    v9 = [v7 layoutForIconLocation:v8];
+    v9 = [providerCopy layoutForIconLocation:defaultIconLocation];
     [v9 iconImageInfo];
     v13 = v12;
     v15 = v14;
@@ -3620,7 +3620,7 @@ LABEL_10:
   v17 = v22;
   v18 = 1;
 LABEL_6:
-  [objc_opt_class() defaultIconViewSizeForIconImageSize:a3 configurationOptions:{v16, v17}];
+  [objc_opt_class() defaultIconViewSizeForIconImageSize:options configurationOptions:{v16, v17}];
   v49.receiver = self;
   v49.super_class = SBIconView;
   v25 = [(SBIconView *)&v49 initWithFrame:0.0, 0.0, v23, v24];
@@ -3628,17 +3628,17 @@ LABEL_6:
   if (v25)
   {
     [(SBIconView *)v25 _reevaluateLogIdentifier];
-    objc_storeStrong(&v26->_listLayoutProvider, a4);
-    *(v26 + 557) = *(v26 + 557) & 0xDF | (2 * a3) & 0x20;
+    objc_storeStrong(&v26->_listLayoutProvider, provider);
+    *(v26 + 557) = *(v26 + 557) & 0xDF | (2 * options) & 0x20;
     v27 = *(v26 + 557) & 0xFE;
-    if ((a3 & 2) == 0)
+    if ((options & 2) == 0)
     {
       ++v27;
     }
 
     *(v26 + 557) = v27;
-    *(v26 + 557) = *(v26 + 557) & 0xFD | (a3 >> 2) & 2;
-    objc_storeStrong(&v26->_iconLocation, v8);
+    *(v26 + 557) = *(v26 + 557) & 0xFD | (options >> 2) & 2;
+    objc_storeStrong(&v26->_iconLocation, defaultIconLocation);
     v26->_iconLabelAlpha = 1.0;
     v26->_iconAccessoryAlpha = 1.0;
     v26->_iconImageAlpha = 1.0;
@@ -3659,7 +3659,7 @@ LABEL_6:
 
     v26->_iconImageInfo.continuousCornerRadius = v15;
     *(v26 + 557) = *(v26 + 557) & 0xFE7F | (([objc_opt_class() defaultImageLoadingBehavior] & 3) << 7);
-    *(v26 + 556) = (*(v26 + 556) & 0xDF | a3 & 0x20) ^ 0x20;
+    *(v26 + 556) = (*(v26 + 556) & 0xDF | options & 0x20) ^ 0x20;
     v26->_approximateLayoutPosition.horizontal = 0;
     v26->_approximateLayoutPosition.vertical = 0;
     [objc_opt_class() defaultCursorHitTestPadding];
@@ -3667,12 +3667,12 @@ LABEL_6:
     v26->_cursorHitTestPadding.left = v31;
     v26->_cursorHitTestPadding.bottom = v32;
     v26->_cursorHitTestPadding.right = v33;
-    *(v26 + 554) = (a3 & 0x80 | *(v26 + 554) & 0x7F) ^ 0x80;
-    *(v26 + 557) = *(v26 + 557) & 0xEF | (a3 >> 4) & 0x10;
+    *(v26 + 554) = (options & 0x80 | *(v26 + 554) & 0x7F) ^ 0x80;
+    *(v26 + 557) = *(v26 + 557) & 0xEF | (options >> 4) & 0x10;
     *(v26 + 559) &= 0xE7u;
-    v34 = [objc_opt_class() defaultLegibilitySettings];
+    defaultLegibilitySettings = [objc_opt_class() defaultLegibilitySettings];
     legibilitySettings = v26->_legibilitySettings;
-    v26->_legibilitySettings = v34;
+    v26->_legibilitySettings = defaultLegibilitySettings;
 
     v26->_displayedLabelAccessoryType = 0;
     v26->_enabled = 1;
@@ -3697,8 +3697,8 @@ LABEL_6:
       [(SBIconView *)v26 addSubview:v26->_scalingContainer];
     }
 
-    [(SBIconView *)v26 configureForLabelAllowed:(a3 & 2) == 0];
-    if ((a3 & 4) != 0)
+    [(SBIconView *)v26 configureForLabelAllowed:(options & 2) == 0];
+    if ((options & 4) != 0)
     {
       [(SBIconView *)v26 setUserInteractionEnabled:0];
     }
@@ -3711,28 +3711,28 @@ LABEL_6:
     if (SBHIsRunningInSpringBoard([(SBIconView *)v26 updateParallaxSettings]))
     {
       v39 = +[SBHHomeScreenDomain rootSettings];
-      v40 = [v39 iconEditingSettings];
+      iconEditingSettings = [v39 iconEditingSettings];
       iconEditingSettings = v26->_iconEditingSettings;
-      v26->_iconEditingSettings = v40;
+      v26->_iconEditingSettings = iconEditingSettings;
 
       [(PTSettings *)v26->_iconEditingSettings addKeyObserver:v26];
-      v42 = [v39 iconResizingSettings];
+      iconResizingSettings = [v39 iconResizingSettings];
       iconResizingSettings = v26->_iconResizingSettings;
-      v26->_iconResizingSettings = v42;
+      v26->_iconResizingSettings = iconResizingSettings;
     }
 
     if ((SBHIsRunningInSpringBoard([(SBIconView *)v26 _applyIconEditingSettings]) & 1) == 0)
     {
-      v44 = [MEMORY[0x1E698B0F0] subjectMonitorRegistry];
-      v45 = [v44 addMonitor:v26 subjectMask:1 subscriptionOptions:1];
+      subjectMonitorRegistry = [MEMORY[0x1E698B0F0] subjectMonitorRegistry];
+      v45 = [subjectMonitorRegistry addMonitor:v26 subjectMask:1 subscriptionOptions:1];
       objc_storeWeak(&v26->_appPrototectionSubjectMonitorSubscription, v45);
     }
 
-    v46 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v46 addObserver:v26 selector:sel__backgroundContrastDidChange_ name:*MEMORY[0x1E69DD920] object:0];
-    [v46 addObserver:v26 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
-    [v46 addObserver:v26 selector:sel__boldTextStatusDidChange_ name:*MEMORY[0x1E69DD898] object:0];
-    [v46 addObserver:v26 selector:sel__refreshAccessoryViewNotification_ name:@"SBIconViewRefreshAccessoryViewNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v26 selector:sel__backgroundContrastDidChange_ name:*MEMORY[0x1E69DD920] object:0];
+    [defaultCenter addObserver:v26 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    [defaultCenter addObserver:v26 selector:sel__boldTextStatusDidChange_ name:*MEMORY[0x1E69DD898] object:0];
+    [defaultCenter addObserver:v26 selector:sel__refreshAccessoryViewNotification_ name:@"SBIconViewRefreshAccessoryViewNotification" object:0];
     v47 = +[SBHIconViewContextMenuStateController sharedInstance];
     [v47 registerIconView:v26];
   }
@@ -3751,13 +3751,13 @@ LABEL_6:
     pendingIcon = self->_icon;
   }
 
-  v6 = [(SBIcon *)pendingIcon logIdentifier];
-  v7 = [v3 stringWithFormat:@"%@:%p [%@]", v9, self, v6];
+  logIdentifier = [(SBIcon *)pendingIcon logIdentifier];
+  v7 = [v3 stringWithFormat:@"%@:%p [%@]", v9, self, logIdentifier];
   logIdentifier = self->_logIdentifier;
   self->_logIdentifier = v7;
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
@@ -3797,17 +3797,17 @@ LABEL_2:
   [(SBIconView *)self _updateAfterManualIconImageInfoChangeInvalidatingLayout:v13];
 }
 
-- (void)_updateAfterManualIconImageInfoChangeInvalidatingLayout:(BOOL)a3
+- (void)_updateAfterManualIconImageInfoChangeInvalidatingLayout:(BOOL)layout
 {
-  v3 = a3;
-  v5 = [(SBIconView *)self customIconImageViewController];
-  if (v5)
+  layoutCopy = layout;
+  customIconImageViewController = [(SBIconView *)self customIconImageViewController];
+  if (customIconImageViewController)
   {
     [(SBIconView *)self iconImageInfo];
-    [v5 setIconImageInfo:?];
+    [customIconImageViewController setIconImageInfo:?];
   }
 
-  if (v3)
+  if (layoutCopy)
   {
     [(SBIconView *)self invalidateIntrinsicContentSize];
     [(SBIconView *)self _updateFrameToIconViewSize];
@@ -3815,10 +3815,10 @@ LABEL_2:
   }
 }
 
-- (CGSize)iconViewSizeForIconImageSize:(CGSize)a3
+- (CGSize)iconViewSizeForIconImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(SBIconView *)self allowsLabelArea])
   {
     [objc_opt_class() _labelHeight];
@@ -3832,19 +3832,19 @@ LABEL_2:
   return result;
 }
 
-- (void)setBoundsSizeFromIconImageSize:(CGSize)a3
+- (void)setBoundsSizeFromIconImageSize:(CGSize)size
 {
-  [(SBIconView *)self iconViewSizeForIconImageSize:a3.width, a3.height];
+  [(SBIconView *)self iconViewSizeForIconImageSize:size.width, size.height];
 
   [(SBIconView *)self setBounds:0.0, 0.0, v4, v5];
 }
 
-- (void)setAllowsAdornmentsOverIconImage:(BOOL)a3 animated:(BOOL)a4
+- (void)setAllowsAdornmentsOverIconImage:(BOOL)image animated:(BOOL)animated
 {
   v4 = *(self + 555);
-  if (((((v4 & 0x20) == 0) ^ a3) & 1) == 0)
+  if (((((v4 & 0x20) == 0) ^ image) & 1) == 0)
   {
-    if (a3)
+    if (image)
     {
       v5 = 32;
     }
@@ -3855,67 +3855,67 @@ LABEL_2:
     }
 
     *(self + 555) = v4 & 0xDF | v5;
-    [(SBIconView *)self _updateIconImageAdornmentsAnimated:a4];
+    [(SBIconView *)self _updateIconImageAdornmentsAnimated:animated];
   }
 }
 
-- (void)_updateIconImageAdornmentsAnimated:(BOOL)a3
+- (void)_updateIconImageAdornmentsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(SBIconView *)self _updateCloseBoxAnimated:?];
-  [(SBIconView *)self _updateAccessoryViewAnimated:v3];
+  [(SBIconView *)self _updateAccessoryViewAnimated:animatedCopy];
 
-  [(SBIconView *)self _updateResizeHandleAnimated:v3];
+  [(SBIconView *)self _updateResizeHandleAnimated:animatedCopy];
 }
 
-- (void)setOverrideIconImageAppearance:(id)a3
+- (void)setOverrideIconImageAppearance:(id)appearance
 {
-  v8 = a3;
+  appearanceCopy = appearance;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v8 copy];
+    v4 = [appearanceCopy copy];
     overrideIconImageAppearance = self->_overrideIconImageAppearance;
     self->_overrideIconImageAppearance = v4;
 
-    v6 = [(SBIconView *)self customIconImageViewController];
-    if (v6)
+    customIconImageViewController = [(SBIconView *)self customIconImageViewController];
+    if (customIconImageViewController)
     {
-      [(SBIconView *)self setOverrideImageAppearance:v8 onCustomIconImageViewController:v6];
+      [(SBIconView *)self setOverrideImageAppearance:appearanceCopy onCustomIconImageViewController:customIconImageViewController];
     }
 
-    v7 = [(SBIconView *)self _iconImageView];
-    [v7 setOverrideIconImageAppearance:v8];
+    _iconImageView = [(SBIconView *)self _iconImageView];
+    [_iconImageView setOverrideIconImageAppearance:appearanceCopy];
     [(SBIconView *)self updateAccessoryViewOverrideIconImageAppearance];
   }
 }
 
-- (void)setOverrideIconImageStyleConfiguration:(id)a3
+- (void)setOverrideIconImageStyleConfiguration:(id)configuration
 {
-  v8 = a3;
+  configurationCopy = configuration;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v8 copy];
+    v4 = [configurationCopy copy];
     overrideIconImageStyleConfiguration = self->_overrideIconImageStyleConfiguration;
     self->_overrideIconImageStyleConfiguration = v4;
 
-    v6 = [(SBIconView *)self customIconImageViewController];
-    if (v6)
+    customIconImageViewController = [(SBIconView *)self customIconImageViewController];
+    if (customIconImageViewController)
     {
-      [(SBIconView *)self setOverrideImageStyleConfiguration:v8 onCustomIconImageViewController:v6];
+      [(SBIconView *)self setOverrideImageStyleConfiguration:configurationCopy onCustomIconImageViewController:customIconImageViewController];
     }
 
-    v7 = [(SBIconView *)self _iconImageView];
-    [v7 setOverrideIconImageStyleConfiguration:v8];
+    _iconImageView = [(SBIconView *)self _iconImageView];
+    [_iconImageView setOverrideIconImageStyleConfiguration:configurationCopy];
     [(SBIconView *)self updateAccessoryViewOverrideIconImageAppearance];
   }
 }
 
-- (void)setUsesSceneUserInterfaceStyleForImage:(BOOL)a3
+- (void)setUsesSceneUserInterfaceStyleForImage:(BOOL)image
 {
   v4 = *(self + 559);
-  if ((((v4 >= 0) ^ a3) & 1) == 0)
+  if ((((v4 >= 0) ^ image) & 1) == 0)
   {
-    if (a3)
+    if (image)
     {
       v6 = 0x80;
     }
@@ -3926,24 +3926,24 @@ LABEL_2:
     }
 
     *(self + 559) = v6 & 0x80 | v4 & 0x7F;
-    v8 = [(SBIconView *)self _iconImageView];
-    [v8 updateImageAnimated:1];
-    v7 = [(SBIconView *)self window];
-    [(SBIconView *)self updateWindowSceneUserInterfaceStyleChangeRegistrationForWindow:v7];
+    _iconImageView = [(SBIconView *)self _iconImageView];
+    [_iconImageView updateImageAnimated:1];
+    window = [(SBIconView *)self window];
+    [(SBIconView *)self updateWindowSceneUserInterfaceStyleChangeRegistrationForWindow:window];
   }
 }
 
-- (void)updateWindowSceneUserInterfaceStyleChangeRegistrationForWindow:(id)a3
+- (void)updateWindowSceneUserInterfaceStyleChangeRegistrationForWindow:(id)window
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 windowScene];
-  v5 = [(SBIconView *)self windowSceneUserInterfaceStyleChangeRegistration];
-  v6 = [(SBIconView *)self usesSceneUserInterfaceStyleForImage];
-  if (!v6 || v5)
+  windowScene = [window windowScene];
+  windowSceneUserInterfaceStyleChangeRegistration = [(SBIconView *)self windowSceneUserInterfaceStyleChangeRegistration];
+  usesSceneUserInterfaceStyleForImage = [(SBIconView *)self usesSceneUserInterfaceStyleForImage];
+  if (!usesSceneUserInterfaceStyleForImage || windowSceneUserInterfaceStyleChangeRegistration)
   {
-    if (v5)
+    if (windowSceneUserInterfaceStyleChangeRegistration)
     {
-      v10 = v6;
+      v10 = usesSceneUserInterfaceStyleForImage;
     }
 
     else
@@ -3953,7 +3953,7 @@ LABEL_2:
 
     if ((v10 & 1) == 0)
     {
-      [v4 unregisterForTraitChanges:v5];
+      [windowScene unregisterForTraitChanges:windowSceneUserInterfaceStyleChangeRegistration];
       [(SBIconView *)self setWindowSceneUserInterfaceStyleChangeRegistration:0];
     }
   }
@@ -3963,7 +3963,7 @@ LABEL_2:
     v7 = objc_opt_self();
     v11[0] = v7;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-    v9 = [v4 registerForTraitChanges:v8 withTarget:self action:sel_windowSceneUserInterfaceStyleChanged];
+    v9 = [windowScene registerForTraitChanges:v8 withTarget:self action:sel_windowSceneUserInterfaceStyleChanged];
 
     [(SBIconView *)self setWindowSceneUserInterfaceStyleChangeRegistration:v9];
   }
@@ -3971,48 +3971,48 @@ LABEL_2:
 
 - (void)windowSceneUserInterfaceStyleChanged
 {
-  v2 = [(SBIconView *)self _iconImageView];
-  [v2 updateImageAnimated:1];
+  _iconImageView = [(SBIconView *)self _iconImageView];
+  [_iconImageView updateImageAnimated:1];
 }
 
-- (void)setOverrideImage:(id)a3
+- (void)setOverrideImage:(id)image
 {
-  v6 = a3;
+  imageCopy = image;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_overrideImage, a3);
-    v5 = [(SBIconView *)self _iconImageView];
-    [v5 updateImageAnimated:0];
+    objc_storeStrong(&self->_overrideImage, image);
+    _iconImageView = [(SBIconView *)self _iconImageView];
+    [_iconImageView updateImageAnimated:0];
   }
 }
 
-- (void)configureForLabelAllowed:(BOOL)a3
+- (void)configureForLabelAllowed:(BOOL)allowed
 {
-  v3 = a3;
-  [(SBIconView *)self setLabelHidden:!a3];
-  [(SBIconView *)self setLabelAccessoryHidden:!v3];
+  allowedCopy = allowed;
+  [(SBIconView *)self setLabelHidden:!allowed];
+  [(SBIconView *)self setLabelAccessoryHidden:!allowedCopy];
 
   [(SBIconView *)self _updateFrameToIconViewSize];
 }
 
-- (void)setAllowsLabelArea:(BOOL)a3
+- (void)setAllowsLabelArea:(BOOL)area
 {
   v4 = *(self + 557);
-  if ((v4 & 1) != a3)
+  if ((v4 & 1) != area)
   {
-    v5 = a3;
-    *(self + 557) = v4 & 0xFE | a3;
+    areaCopy = area;
+    *(self + 557) = v4 & 0xFE | area;
     [(SBIconView *)self iconImageSize];
     [(SBIconView *)self setBoundsSizeFromIconImageSize:?];
     [(SBIconView *)self invalidateIntrinsicContentSize];
 
-    [(SBIconView *)self configureForLabelAllowed:v5];
+    [(SBIconView *)self configureForLabelAllowed:areaCopy];
   }
 }
 
-- (void)setAllowsPassthroughHitTesting:(BOOL)a3
+- (void)setAllowsPassthroughHitTesting:(BOOL)testing
 {
-  if (a3)
+  if (testing)
   {
     v3 = 2;
   }
@@ -4025,12 +4025,12 @@ LABEL_2:
   *(self + 557) = *(self + 557) & 0xFD | v3;
 }
 
-- (void)setCustomIconImageViewHitTestingDisabled:(BOOL)a3
+- (void)setCustomIconImageViewHitTestingDisabled:(BOOL)disabled
 {
   v3 = *(self + 558);
-  if (((((v3 & 4) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 4) == 0) ^ disabled) & 1) == 0)
   {
-    if (a3)
+    if (disabled)
     {
       v4 = 4;
     }
@@ -4045,35 +4045,35 @@ LABEL_2:
   }
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = SBIconView;
   [(SBIconView *)&v6 setUserInteractionEnabled:?];
   [(SBIconView *)self addGesturesAndInteractionsIfNecessary];
-  v5 = [(SBIconView *)self customIconImageViewController];
+  customIconImageViewController = [(SBIconView *)self customIconImageViewController];
   if (objc_opt_respondsToSelector())
   {
-    [v5 setUserInteractionEnabled:v3];
+    [customIconImageViewController setUserInteractionEnabled:enabledCopy];
   }
 }
 
-+ (BOOL)isIconTapGestureRecognizer:(id)a3
++ (BOOL)isIconTapGestureRecognizer:(id)recognizer
 {
-  v3 = a3;
+  recognizerCopy = recognizer;
   v4 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)setStartsDragMoreQuickly:(BOOL)a3
+- (void)setStartsDragMoreQuickly:(BOOL)quickly
 {
   v3 = *(self + 555);
-  if (((((v3 & 0x40) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 0x40) == 0) ^ quickly) & 1) == 0)
   {
-    if (a3)
+    if (quickly)
     {
       v4 = 64;
     }
@@ -4088,9 +4088,9 @@ LABEL_2:
   }
 }
 
-- (void)setCancelingDrag:(BOOL)a3
+- (void)setCancelingDrag:(BOOL)drag
 {
-  if (a3)
+  if (drag)
   {
     v3 = 0x80;
   }
@@ -4103,12 +4103,12 @@ LABEL_2:
   *(self + 555) = v3 & 0x80 | *(self + 555) & 0x7F;
 }
 
-- (void)setAllowsCursorInteraction:(BOOL)a3
+- (void)setAllowsCursorInteraction:(BOOL)interaction
 {
   v3 = *(self + 558);
-  if (a3 == (v3 & 2) >> 1)
+  if (interaction == (v3 & 2) >> 1)
   {
-    if (a3)
+    if (interaction)
     {
       v4 = 0;
     }
@@ -4123,9 +4123,9 @@ LABEL_2:
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (a3)
+  if (paused)
   {
     v3 = 1;
     v4 = 0x40000000;
@@ -4140,16 +4140,16 @@ LABEL_2:
   [(SBIconView *)self setPaused:v3 forReason:v4];
 }
 
-- (void)setPaused:(BOOL)a3 forReason:(unint64_t)a4
+- (void)setPaused:(BOOL)paused forReason:(unint64_t)reason
 {
   v5 = *(self + 276);
   v6 = v5 >> 4;
   v7 = (v5 >> 4) & 0x1F;
   v8 = v5 & 0xFE0F;
-  v9 = 16 * ((v6 | a4) & 0x1F);
-  if (!a3)
+  v9 = 16 * ((v6 | reason) & 0x1F);
+  if (!paused)
   {
-    v9 = 16 * (v7 & ~a4);
+    v9 = 16 * (v7 & ~reason);
   }
 
   *(self + 276) = v9 | v8;
@@ -4172,22 +4172,22 @@ LABEL_2:
 
 - (unint64_t)effectiveContentVisibility
 {
-  v3 = [(SBIconView *)self contentVisibility];
-  if (SBHContentVisibilityIsVisible(v3) && [(SBIconView *)self isPaused])
+  contentVisibility = [(SBIconView *)self contentVisibility];
+  if (SBHContentVisibilityIsVisible(contentVisibility) && [(SBIconView *)self isPaused])
   {
     return 1;
   }
 
-  return v3;
+  return contentVisibility;
 }
 
-- (void)setContentVisibility:(unint64_t)a3
+- (void)setContentVisibility:(unint64_t)visibility
 {
   v3 = *(self + 559);
-  if (((v3 >> 3) & 3) != a3)
+  if (((v3 >> 3) & 3) != visibility)
   {
-    *(self + 559) = v3 & 0xE7 | (8 * (a3 & 3));
-    [(SBIconView *)self setPaused:!SBHContentVisibilityIsVisible(a3) forReason:16];
+    *(self + 559) = v3 & 0xE7 | (8 * (visibility & 3));
+    [(SBIconView *)self setPaused:!SBHContentVisibilityIsVisible(visibility) forReason:16];
     [(SBIconView *)self updateContentVisibilityOnCurrentImageView];
     v5 = SBLogIcon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -4203,60 +4203,60 @@ LABEL_2:
 {
   if (![(SBIconView *)self isIconImageViewBorrowed])
   {
-    v3 = [(SBIconView *)self effectiveContentVisibility];
-    [(SBIconImageView *)self->_iconImageView setContentVisibility:v3];
-    v4 = [(SBIconView *)self customIconImageViewController];
-    if (v4)
+    effectiveContentVisibility = [(SBIconView *)self effectiveContentVisibility];
+    [(SBIconImageView *)self->_iconImageView setContentVisibility:effectiveContentVisibility];
+    customIconImageViewController = [(SBIconView *)self customIconImageViewController];
+    if (customIconImageViewController)
     {
-      v5 = v4;
+      v5 = customIconImageViewController;
       if (objc_opt_respondsToSelector())
       {
-        [v5 setContentVisibility:v3];
+        [v5 setContentVisibility:effectiveContentVisibility];
       }
 
-      [objc_opt_class() updateAppearStateForViewController:v5 forContentVisibility:v3];
-      v4 = v5;
+      [objc_opt_class() updateAppearStateForViewController:v5 forContentVisibility:effectiveContentVisibility];
+      customIconImageViewController = v5;
     }
   }
 }
 
-- (void)setPendingIcon:(id)a3
+- (void)setPendingIcon:(id)icon
 {
-  v5 = a3;
-  if (self->_pendingIcon != v5)
+  iconCopy = icon;
+  if (self->_pendingIcon != iconCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_pendingIcon, a3);
+    v6 = iconCopy;
+    objc_storeStrong(&self->_pendingIcon, icon);
     [(SBIconView *)self _reevaluateLogIdentifier];
-    v5 = v6;
+    iconCopy = v6;
   }
 }
 
-- (void)setIcon:(id)a3 animated:(BOOL)a4
+- (void)setIcon:(id)icon animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  iconCopy = icon;
   icon = self->_icon;
-  if (icon != v7)
+  if (icon != iconCopy)
   {
     [(SBIcon *)icon removeObserver:self];
     v9 = self->_icon;
-    objc_storeStrong(&self->_icon, a3);
+    objc_storeStrong(&self->_icon, icon);
     [(SBIconView *)self setPendingIcon:0];
     [(SBIconView *)self _reevaluateLogIdentifier];
     v10 = SBLogIcon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       logIdentifier = self->_logIdentifier;
-      v14 = [(SBIcon *)v9 logIdentifier];
-      v15 = [(SBIcon *)v7 logIdentifier];
+      logIdentifier = [(SBIcon *)v9 logIdentifier];
+      logIdentifier2 = [(SBIcon *)iconCopy logIdentifier];
       v16 = 138543874;
       v17 = logIdentifier;
       v18 = 2114;
-      v19 = v14;
+      v19 = logIdentifier;
       v20 = 2114;
-      v21 = v15;
+      v21 = logIdentifier2;
       _os_log_debug_impl(&dword_1BEB18000, v10, OS_LOG_TYPE_DEBUG, "<%{public}@> Set new icon from %{public}@ to %{public}@", &v16, 0x20u);
     }
 
@@ -4265,14 +4265,14 @@ LABEL_2:
     {
       [(SBIcon *)v11 addObserver:self];
       [(SBIconView *)self setPaused:0 forReason:2];
-      [(SBIconView *)self _updateIconImageViewAnimated:v4];
-      [(SBIconView *)self _updateLabelAreaAnimated:v4];
-      [(SBIconView *)self _updateTooltipViewAnimated:v4];
-      [(SBIconView *)self _updateProgressAnimated:v4];
-      [(SBIconView *)self _updateCloseBoxAnimated:v4];
-      [(SBIconView *)self _updateResizeHandleAnimated:v4];
+      [(SBIconView *)self _updateIconImageViewAnimated:animatedCopy];
+      [(SBIconView *)self _updateLabelAreaAnimated:animatedCopy];
+      [(SBIconView *)self _updateTooltipViewAnimated:animatedCopy];
+      [(SBIconView *)self _updateProgressAnimated:animatedCopy];
+      [(SBIconView *)self _updateCloseBoxAnimated:animatedCopy];
+      [(SBIconView *)self _updateResizeHandleAnimated:animatedCopy];
       [(SBIconView *)self _updateBrightness];
-      [(SBIconView *)self _applyEditingStateAnimated:v4];
+      [(SBIconView *)self _applyEditingStateAnimated:animatedCopy];
       [(SBIconView *)self addGesturesAndInteractionsIfNecessary];
       [(SBIconView *)self _updateFrameToIconViewSize];
     }
@@ -4294,21 +4294,21 @@ LABEL_2:
       [(SBIconView *)self setPaused:1 forReason:2];
     }
 
-    [(SBIconView *)self _updateAccessoryViewAnimated:v4];
+    [(SBIconView *)self _updateAccessoryViewAnimated:animatedCopy];
     [(SBIconView *)self _updateLaunchDisabled];
-    v12 = [(SBIconView *)self contextMenuDelegate];
+    contextMenuDelegate = [(SBIconView *)self contextMenuDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [v12 refreshContextMenuForIconView:self];
+      [contextMenuDelegate refreshContextMenuForIconView:self];
     }
 
     [(SBIconView *)self _startTrackingSupportedMultitaskingShortcutActionsIfAppropriateWithOldIcon:v9];
   }
 }
 
-- (void)setShowsSquareCorners:(BOOL)a3
+- (void)setShowsSquareCorners:(BOOL)corners
 {
-  if (a3)
+  if (corners)
   {
     v3 = 16;
   }
@@ -4333,58 +4333,58 @@ LABEL_2:
   return result;
 }
 
-- (void)setLocation:(id)a3 animated:(BOOL)a4
+- (void)setLocation:(id)location animated:(BOOL)animated
 {
-  v4 = a4;
-  v9 = a3;
+  animatedCopy = animated;
+  locationCopy = location;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v6 = [v9 copy];
+    v6 = [locationCopy copy];
     iconLocation = self->_iconLocation;
     self->_iconLocation = v6;
 
     [(SBIconView *)self _updateFrameToIconViewSize];
-    [(SBIconView *)self _updateIconImageViewAnimated:v4];
-    [(SBIconView *)self _updateLabelAnimated:v4];
-    [(SBIconView *)self _updateTooltipViewAnimated:v4];
-    [(SBIconView *)self _updateIconImageAdornmentsAnimated:v4];
-    v8 = [(SBIconView *)self customIconImageViewController];
+    [(SBIconView *)self _updateIconImageViewAnimated:animatedCopy];
+    [(SBIconView *)self _updateLabelAnimated:animatedCopy];
+    [(SBIconView *)self _updateTooltipViewAnimated:animatedCopy];
+    [(SBIconView *)self _updateIconImageAdornmentsAnimated:animatedCopy];
+    customIconImageViewController = [(SBIconView *)self customIconImageViewController];
     [(SBIconView *)self iconImageInfo];
-    [v8 setIconImageInfo:?];
+    [customIconImageViewController setIconImageInfo:?];
   }
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
+    self->_orientation = orientation;
     [(SBIconView *)self _updateFrameToIconViewSize];
   }
 }
 
-- (void)setListLayoutProvider:(id)a3 animated:(BOOL)a4
+- (void)setListLayoutProvider:(id)provider animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  providerCopy = provider;
   listLayoutProvider = self->_listLayoutProvider;
-  if (listLayoutProvider != v7)
+  if (listLayoutProvider != providerCopy)
   {
     v9 = listLayoutProvider;
-    objc_storeStrong(&self->_listLayoutProvider, a3);
+    objc_storeStrong(&self->_listLayoutProvider, provider);
     v10 = self->_customIconImageViewController;
-    if (v4)
+    if (animatedCopy)
     {
       v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
       [(SBIconImageView *)self->_iconImageView willAnimateIconImageInfoChange];
-      [(SBIconImageView *)self->_iconImageView willAnimateListLayoutProviderChange:v7 context:v11];
+      [(SBIconImageView *)self->_iconImageView willAnimateListLayoutProviderChange:providerCopy context:v11];
       v12 = MEMORY[0x1E69DD250];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __45__SBIconView_setListLayoutProvider_animated___block_invoke;
       v19[3] = &unk_1E8088F18;
       v19[4] = self;
-      v20 = v7;
+      v20 = providerCopy;
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __45__SBIconView_setListLayoutProvider_animated___block_invoke_2;
@@ -4399,23 +4399,23 @@ LABEL_2:
     else
     {
       [(SBIconView *)self _updateFrameToIconViewSize];
-      [(SBIconImageView *)self->_iconImageView setListLayoutProvider:v7];
+      [(SBIconImageView *)self->_iconImageView setListLayoutProvider:providerCopy];
       [(SBIconImageView *)self->_iconImageView iconImageInfoDidChange];
     }
 
-    [(SBIconView *)self _updateLabelAnimated:v4];
-    [(SBIconView *)self _updateTooltipViewAnimated:v4];
+    [(SBIconView *)self _updateLabelAnimated:animatedCopy];
+    [(SBIconView *)self _updateTooltipViewAnimated:animatedCopy];
     [(SBIconView *)self _destroyAccessoryView];
     [(SBIconView *)self _updateAccessoryViewAnimated:0];
     closeBox = self->_closeBox;
-    v15 = [(SBIconView *)self listLayout];
-    [(SBCloseBoxView *)closeBox setListLayout:v15];
+    listLayout = [(SBIconView *)self listLayout];
+    [(SBCloseBoxView *)closeBox setListLayout:listLayout];
 
     [(SBIconView *)self iconImageInfo];
     [(SBIconViewCustomImageViewControlling *)v10 setIconImageInfo:?];
     if (objc_opt_respondsToSelector())
     {
-      [(SBIconViewCustomImageViewControlling *)v10 setListLayoutProvider:v7];
+      [(SBIconViewCustomImageViewControlling *)v10 setListLayoutProvider:providerCopy];
     }
   }
 }
@@ -4454,23 +4454,23 @@ uint64_t __45__SBIconView_setListLayoutProvider_animated___block_invoke_2(void *
   return [v3 didAnimateListLayoutProviderChange:v2 context:v4];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v6 = obj;
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_delegate, obj);
-    v7 = [(SBIconView *)self reuseDelegate];
+    reuseDelegate = [(SBIconView *)self reuseDelegate];
     if (objc_opt_respondsToSelector())
     {
       closeBox = self->_closeBox;
       if (closeBox)
       {
-        v9 = [(SBHomeScreenButton *)closeBox backgroundView];
-        v10 = [v7 iconView:self shouldContinueToUseBackgroundViewForComponents:v9];
+        backgroundView = [(SBHomeScreenButton *)closeBox backgroundView];
+        v10 = [reuseDelegate iconView:self shouldContinueToUseBackgroundViewForComponents:backgroundView];
 
         if ((v10 & 1) == 0)
         {
@@ -4491,14 +4491,14 @@ uint64_t __45__SBIconView_setListLayoutProvider_animated___block_invoke_2(void *
   MEMORY[0x1EEE66BB8](v5, v6);
 }
 
-- (void)setConfigurationOptions:(unint64_t)a3
+- (void)setConfigurationOptions:(unint64_t)options
 {
-  [(SBIconView *)self setUserInteractionEnabled:(a3 & 4) == 0];
-  [(SBIconView *)self setAllowsLabelArea:(a3 & 2) == 0];
-  [(SBIconView *)self setAllowsAccessoryView:(a3 & 0x20) == 0];
-  [(SBIconView *)self setAllowsPassthroughHitTesting:(a3 >> 3) & 1];
-  *(self + 557) = *(self + 557) & 0xDF | (2 * a3) & 0x20;
-  if ((a3 & 0x10) != 0)
+  [(SBIconView *)self setUserInteractionEnabled:(options & 4) == 0];
+  [(SBIconView *)self setAllowsLabelArea:(options & 2) == 0];
+  [(SBIconView *)self setAllowsAccessoryView:(options & 0x20) == 0];
+  [(SBIconView *)self setAllowsPassthroughHitTesting:(options >> 3) & 1];
+  *(self + 557) = *(self + 557) & 0xDF | (2 * options) & 0x20;
+  if ((options & 0x10) != 0)
   {
     if (self->_contextMenuInteraction)
     {
@@ -4513,41 +4513,41 @@ uint64_t __45__SBIconView_setListLayoutProvider_animated___block_invoke_2(void *
     [(SBIconView *)self addGesturesAndInteractionsIfNecessary];
   }
 
-  [(SBIconView *)self setAllowsCursorInteraction:(a3 & 0x40) == 0];
-  [(SBIconView *)self setAllowsIconImageView:(a3 & 0x80) == 0];
+  [(SBIconView *)self setAllowsCursorInteraction:(options & 0x40) == 0];
+  [(SBIconView *)self setAllowsIconImageView:(options & 0x80) == 0];
 
-  [(SBIconView *)self setShowsSquareCorners:(a3 >> 8) & 1];
+  [(SBIconView *)self setShowsSquareCorners:(options >> 8) & 1];
 }
 
-- (void)setContinuityInfo:(id)a3 animated:(BOOL)a4
+- (void)setContinuityInfo:(id)info animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_continuityInfo != v7)
+  animatedCopy = animated;
+  infoCopy = info;
+  if (self->_continuityInfo != infoCopy)
   {
-    v8 = v7;
-    objc_storeStrong(&self->_continuityInfo, a3);
-    [(SBIconView *)self _updateAccessoryViewAnimated:v4];
-    v7 = v8;
+    v8 = infoCopy;
+    objc_storeStrong(&self->_continuityInfo, info);
+    [(SBIconView *)self _updateAccessoryViewAnimated:animatedCopy];
+    infoCopy = v8;
   }
 }
 
-- (id)disallowContextMenusForReason:(id)a3
+- (id)disallowContextMenusForReason:(id)reason
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = [SBIconViewAssertion alloc];
   v12 = @"reason";
-  v13[0] = v4;
+  v13[0] = reasonCopy;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v7 = [(SBIconViewAssertion *)v5 initWithAssertionType:3 iconView:self extraInfo:v6];
 
   forbidContextMenusAssertions = self->_forbidContextMenusAssertions;
   if (!forbidContextMenusAssertions)
   {
-    v9 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v10 = self->_forbidContextMenusAssertions;
-    self->_forbidContextMenusAssertions = v9;
+    self->_forbidContextMenusAssertions = weakObjectsHashTable;
 
     forbidContextMenusAssertions = self->_forbidContextMenusAssertions;
   }
@@ -4561,42 +4561,42 @@ uint64_t __45__SBIconView_setListLayoutProvider_animated___block_invoke_2(void *
   return v7;
 }
 
-- (void)performAfterContextMenusDismissUsingBlock:(id)a3
+- (void)performAfterContextMenusDismissUsingBlock:(id)block
 {
-  v7 = a3;
+  blockCopy = block;
   if ([(SBIconView *)self isShowingContextMenu])
   {
     performAfterContextMenuBlocks = self->_performAfterContextMenuBlocks;
-    v5 = [v7 copy];
+    v5 = [blockCopy copy];
 
     v6 = _Block_copy(v5);
     [(NSMutableArray *)performAfterContextMenuBlocks addObject:v6];
 
-    v7 = v5;
+    blockCopy = v5;
   }
 
   else
   {
-    v7[2]();
+    blockCopy[2]();
   }
 }
 
-- (id)disallowGlassGroupingForReason:(id)a3
+- (id)disallowGlassGroupingForReason:(id)reason
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = [SBIconViewAssertion alloc];
   v12 = @"reason";
-  v13[0] = v4;
+  v13[0] = reasonCopy;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v7 = [(SBIconViewAssertion *)v5 initWithAssertionType:5 iconView:self extraInfo:v6];
 
   disallowGlassGroupingAssertions = self->_disallowGlassGroupingAssertions;
   if (!disallowGlassGroupingAssertions)
   {
-    v9 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v10 = self->_disallowGlassGroupingAssertions;
-    self->_disallowGlassGroupingAssertions = v9;
+    self->_disallowGlassGroupingAssertions = weakObjectsHashTable;
 
     disallowGlassGroupingAssertions = self->_disallowGlassGroupingAssertions;
   }
@@ -4607,22 +4607,22 @@ uint64_t __45__SBIconView_setListLayoutProvider_animated___block_invoke_2(void *
   return v7;
 }
 
-- (void)removeDisallowGlassGroupingAssertion:(id)a3
+- (void)removeDisallowGlassGroupingAssertion:(id)assertion
 {
-  [(NSHashTable *)self->_disallowGlassGroupingAssertions removeObject:a3];
+  [(NSHashTable *)self->_disallowGlassGroupingAssertions removeObject:assertion];
 
   [(SBIconView *)self _applyGlassGroupingEnabledState];
 }
 
 - (BOOL)_isGlassGroupingEnabled
 {
-  v3 = [(SBIconView *)self iconImageAllowsGlassGrouping];
-  if (v3)
+  iconImageAllowsGlassGrouping = [(SBIconView *)self iconImageAllowsGlassGrouping];
+  if (iconImageAllowsGlassGrouping)
   {
-    LOBYTE(v3) = [(NSHashTable *)self->_disallowGlassGroupingAssertions count]== 0;
+    LOBYTE(iconImageAllowsGlassGrouping) = [(NSHashTable *)self->_disallowGlassGroupingAssertions count]== 0;
   }
 
-  return v3;
+  return iconImageAllowsGlassGrouping;
 }
 
 - (void)_applyGlassGroupingEnabledState
@@ -4646,17 +4646,17 @@ uint64_t __45__SBIconView_setListLayoutProvider_animated___block_invoke_2(void *
     }
   }
 
-  v4 = [(SBIconView *)self _isGlassGroupingEnabled];
+  _isGlassGroupingEnabled = [(SBIconView *)self _isGlassGroupingEnabled];
 
-  [customIconImageViewController setAllowsGlassGrouping:v4];
+  [customIconImageViewController setAllowsGlassGrouping:_isGlassGroupingEnabled];
 }
 
-- (void)setIconImageAllowsGlassGrouping:(BOOL)a3
+- (void)setIconImageAllowsGlassGrouping:(BOOL)grouping
 {
   v3 = *(self + 560);
-  if (((v3 & 0x20) == 0) != a3)
+  if (((v3 & 0x20) == 0) != grouping)
   {
-    if (a3)
+    if (grouping)
     {
       v4 = 0;
     }
@@ -4671,12 +4671,12 @@ uint64_t __45__SBIconView_setListLayoutProvider_animated___block_invoke_2(void *
   }
 }
 
-- (void)setIconImageGlassHidden:(BOOL)a3
+- (void)setIconImageGlassHidden:(BOOL)hidden
 {
   v3 = *(self + 560);
-  if (((((v3 & 0x40) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 0x40) == 0) ^ hidden) & 1) == 0)
   {
-    if (a3)
+    if (hidden)
     {
       v4 = 64;
     }
@@ -4695,16 +4695,16 @@ uint64_t __45__SBIconView_setListLayoutProvider_animated___block_invoke_2(void *
 {
   if (os_variant_has_internal_content() && [(SBIconView *)self _debugContinuity])
   {
-    v3 = [objc_opt_class() debugContinuityItem];
+    debugContinuityItem = [objc_opt_class() debugContinuityItem];
   }
 
   else
   {
-    v4 = [(SBIconView *)self continuityInfo];
-    v3 = [SBIconContinuityItem itemForContinuityInfo:v4];
+    continuityInfo = [(SBIconView *)self continuityInfo];
+    debugContinuityItem = [SBIconContinuityItem itemForContinuityInfo:continuityInfo];
   }
 
-  return v3;
+  return debugContinuityItem;
 }
 
 - (UIView)iconImageSnapshotView
@@ -4712,42 +4712,42 @@ uint64_t __45__SBIconView_setListLayoutProvider_animated___block_invoke_2(void *
   crossfadeView = self->_crossfadeView;
   if (crossfadeView || (v4 = objc_opt_respondsToSelector(), crossfadeView = self->_customIconImageViewController, (v4 & 1) != 0))
   {
-    v5 = [crossfadeView snapshotView];
+    snapshotView = [crossfadeView snapshotView];
     goto LABEL_4;
   }
 
   if (crossfadeView)
   {
-    v7 = [crossfadeView view];
-    v8 = [v7 snapshotView];
+    view = [crossfadeView view];
+    snapshotView2 = [view snapshotView];
   }
 
   else
   {
-    v7 = [(SBIconImageView *)self->_iconImageView snapshot];
-    if (!v7)
+    view = [(SBIconImageView *)self->_iconImageView snapshot];
+    if (!view)
     {
-      v5 = 0;
+      snapshotView = 0;
       goto LABEL_12;
     }
 
-    v8 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v7];
+    snapshotView2 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:view];
   }
 
-  v5 = v8;
+  snapshotView = snapshotView2;
 LABEL_12:
 
 LABEL_4:
 
-  return v5;
+  return snapshotView;
 }
 
 - (CGRect)iconImageVisibleFrame
 {
   [(SBIconView *)self iconImageVisibleSize];
   [(SBIconView *)self iconImageFrame];
-  v3 = [(SBIconView *)self _screen];
-  [v3 scale];
+  _screen = [(SBIconView *)self _screen];
+  [_screen scale];
 
   UIRectCenteredIntegralRectScale();
   result.size.height = v7;
@@ -4757,93 +4757,93 @@ LABEL_4:
   return result;
 }
 
-- (void)setIconImageAndAccessoryAlpha:(double)a3
+- (void)setIconImageAndAccessoryAlpha:(double)alpha
 {
   [(SBIconView *)self setIconImageAlpha:?];
 
-  [(SBIconView *)self setIconAccessoryAlpha:a3];
+  [(SBIconView *)self setIconAccessoryAlpha:alpha];
 }
 
-- (void)setIconImageAlpha:(double)a3
+- (void)setIconImageAlpha:(double)alpha
 {
-  if (self->_iconImageAlpha != a3)
+  if (self->_iconImageAlpha != alpha)
   {
-    self->_iconImageAlpha = a3;
+    self->_iconImageAlpha = alpha;
     [(SBIconView *)self effectiveIconImageAlpha];
 
     [(SBIconView *)self _applyIconImageAlpha:?];
   }
 }
 
-- (void)_applyIconImageAlpha:(double)a3
+- (void)_applyIconImageAlpha:(double)alpha
 {
   if (![(SBIconView *)self isIconImageViewBorrowed])
   {
-    v5 = [(SBIconView *)self currentImageView];
-    [v5 setAlpha:a3];
+    currentImageView = [(SBIconView *)self currentImageView];
+    [currentImageView setAlpha:alpha];
   }
 }
 
-- (void)setIconAccessoryAlpha:(double)a3
+- (void)setIconAccessoryAlpha:(double)alpha
 {
-  if (self->_iconAccessoryAlpha != a3)
+  if (self->_iconAccessoryAlpha != alpha)
   {
-    self->_iconAccessoryAlpha = a3;
+    self->_iconAccessoryAlpha = alpha;
     [(SBIconView *)self effectiveIconAccessoryAlpha];
 
     [(SBIconView *)self _applyIconAccessoryAlpha:?];
   }
 }
 
-- (void)_applyIconAccessoryAlpha:(double)a3
+- (void)_applyIconAccessoryAlpha:(double)alpha
 {
   [(SBIconAccessoryView *)self->_accessoryView setAlpha:?];
   if ([(SBIconView *)self shouldShowCloseBox])
   {
-    [(SBCloseBoxView *)self->_closeBox setAlpha:a3];
+    [(SBCloseBoxView *)self->_closeBox setAlpha:alpha];
   }
 
   if ([(SBIconView *)self shouldShowResizeHandle])
   {
-    [(SBHIconResizeHandle *)self->_resizeHandle setAlpha:a3];
+    [(SBHIconResizeHandle *)self->_resizeHandle setAlpha:alpha];
   }
 
   iconImageView = self->_iconImageView;
 
-  [(SBIconImageView *)iconImageView setProgressAlpha:a3];
+  [(SBIconImageView *)iconImageView setProgressAlpha:alpha];
 }
 
-- (void)setIconLabelAlpha:(double)a3
+- (void)setIconLabelAlpha:(double)alpha
 {
-  if (self->_iconLabelAlpha != a3)
+  if (self->_iconLabelAlpha != alpha)
   {
-    self->_iconLabelAlpha = a3;
+    self->_iconLabelAlpha = alpha;
     [(SBIconView *)self effectiveIconLabelAlpha];
 
     [(SBIconView *)self _applyIconLabelAlpha:?];
   }
 }
 
-- (void)_applyIconLabelAlpha:(double)a3
+- (void)_applyIconLabelAlpha:(double)alpha
 {
   [(SBIconLabelView *)self->_labelView setAlpha:?];
   labelAccessoryView = self->_labelAccessoryView;
 
-  [(SBIconLabelAccessoryView *)labelAccessoryView setAlpha:a3];
+  [(SBIconLabelAccessoryView *)labelAccessoryView setAlpha:alpha];
 }
 
-- (void)_applyOverallAlpha:(double)a3
+- (void)_applyOverallAlpha:(double)alpha
 {
-  v5 = [(SBIconView *)self contentContainerView];
-  v4 = [v5 layer];
-  [v4 setAllowsGroupOpacity:a3 < 1.0];
+  contentContainerView = [(SBIconView *)self contentContainerView];
+  layer = [contentContainerView layer];
+  [layer setAllowsGroupOpacity:alpha < 1.0];
 
-  [v5 setAlpha:a3];
+  [contentContainerView setAlpha:alpha];
 }
 
-- (void)_updateAllComponentAlphasAnimated:(BOOL)a3
+- (void)_updateAllComponentAlphasAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __48__SBIconView__updateAllComponentAlphasAnimated___block_invoke;
@@ -4851,7 +4851,7 @@ LABEL_4:
   aBlock[4] = self;
   v4 = _Block_copy(aBlock);
   v5 = v4;
-  if (v3)
+  if (animatedCopy)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:v4 animations:0.3];
   }
@@ -4879,28 +4879,28 @@ uint64_t __48__SBIconView__updateAllComponentAlphasAnimated___block_invoke(uint6
   return [v5 _applyOverallAlpha:?];
 }
 
-- (void)_updateCustomIconImageViewController:(BOOL)a3
+- (void)_updateCustomIconImageViewController:(BOOL)controller
 {
-  v3 = a3;
-  v6 = [(SBIconView *)self customIconImageViewController];
-  if (v6)
+  controllerCopy = controller;
+  customIconImageViewController = [(SBIconView *)self customIconImageViewController];
+  if (customIconImageViewController)
   {
-    v5 = [(SBIconView *)self isEditing];
+    isEditing = [(SBIconView *)self isEditing];
     if (objc_opt_respondsToSelector())
     {
-      [v6 setEditing:v5 animated:v3];
+      [customIconImageViewController setEditing:isEditing animated:controllerCopy];
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      [v6 setEditing:v5];
+      [customIconImageViewController setEditing:isEditing];
     }
   }
 }
 
-- (void)setLabelHidden:(BOOL)a3
+- (void)setLabelHidden:(BOOL)hidden
 {
-  v4 = ![(SBIconView *)self allowsLabelArea]|| a3;
+  v4 = ![(SBIconView *)self allowsLabelArea]|| hidden;
   v5 = *(self + 555);
   if (((v4 ^ ((v5 & 2) == 0)) & 1) == 0)
   {
@@ -4920,9 +4920,9 @@ uint64_t __48__SBIconView__updateAllComponentAlphasAnimated___block_invoke(uint6
   }
 }
 
-- (void)setLabelAccessoryHidden:(BOOL)a3
+- (void)setLabelAccessoryHidden:(BOOL)hidden
 {
-  v4 = ![(SBIconView *)self allowsLabelArea]|| a3;
+  v4 = ![(SBIconView *)self allowsLabelArea]|| hidden;
   v5 = *(self + 555);
   if (((v4 ^ ((v5 & 4) == 0)) & 1) == 0)
   {
@@ -4942,23 +4942,23 @@ uint64_t __48__SBIconView__updateAllComponentAlphasAnimated___block_invoke(uint6
   }
 }
 
-- (void)setIconContentScale:(double)a3
+- (void)setIconContentScale:(double)scale
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_iconContentScale = a3;
+    self->_iconContentScale = scale;
 
     [(SBIconView *)self _updateIconContentScale];
   }
 }
 
-- (void)setIconContentScalingEnabled:(BOOL)a3
+- (void)setIconContentScalingEnabled:(BOOL)enabled
 {
   v7 = *(self + 555);
-  if (((((v7 & 8) == 0) ^ a3) & 1) == 0)
+  if (((((v7 & 8) == 0) ^ enabled) & 1) == 0)
   {
     v10 = v3;
-    if (a3)
+    if (enabled)
     {
       v9 = 8;
     }
@@ -4975,12 +4975,12 @@ uint64_t __48__SBIconView__updateAllComponentAlphasAnimated___block_invoke(uint6
   }
 }
 
-- (void)_setForcingIconContentScalingEnabled:(BOOL)a3
+- (void)_setForcingIconContentScalingEnabled:(BOOL)enabled
 {
   v3 = *(self + 555);
-  if (((((v3 & 0x10) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 0x10) == 0) ^ enabled) & 1) == 0)
   {
-    if (a3)
+    if (enabled)
     {
       v4 = 16;
     }
@@ -5015,7 +5015,7 @@ uint64_t __48__SBIconView__updateAllComponentAlphasAnimated___block_invoke(uint6
 
 - (void)_toggleContentContainerViewIfNecessary
 {
-  v3 = [(SBIconView *)self _shouldHaveContentContainerView];
+  _shouldHaveContentContainerView = [(SBIconView *)self _shouldHaveContentContainerView];
   scalingContainer = self->_scalingContainer;
   if (scalingContainer)
   {
@@ -5024,12 +5024,12 @@ uint64_t __48__SBIconView__updateAllComponentAlphasAnimated___block_invoke(uint6
 
   else
   {
-    v5 = !v3;
+    v5 = !_shouldHaveContentContainerView;
   }
 
   if (v5)
   {
-    if (scalingContainer != 0 && !v3)
+    if (scalingContainer != 0 && !_shouldHaveContentContainerView)
     {
 
       [(SBIconView *)self _disableContentContainerView];
@@ -5057,8 +5057,8 @@ uint64_t __48__SBIconView__updateAllComponentAlphasAnimated___block_invoke(uint6
     [MEMORY[0x1E69DD250] performWithoutAnimation:v6];
     [(SBIconView *)self iconContentScale];
     [(SBIconView *)self _applyIconContentScale:?];
-    v5 = [(SBIconView *)self layer];
-    [v5 setAllowsGroupBlending:1];
+    layer = [(SBIconView *)self layer];
+    [layer setAllowsGroupBlending:1];
 
     [(SBIconView *)self _toggleGroupBlendingIfNecessary];
   }
@@ -5117,8 +5117,8 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [(UIView *)scalingContainer subviews];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    subviews = [(UIView *)scalingContainer subviews];
+    v5 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -5130,14 +5130,14 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(subviews);
           }
 
           [(SBIconView *)self addSubview:*(*(&v10 + 1) + 8 * v8++)];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -5161,9 +5161,9 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
     v4 = v5;
   }
 
-  v6 = [(SBIconView *)self isDragLifted];
-  v7 = [(SBIconView *)self isShowingContextMenu];
-  if (v6 && !v7)
+  isDragLifted = [(SBIconView *)self isDragLifted];
+  isShowingContextMenu = [(SBIconView *)self isShowingContextMenu];
+  if (isDragLifted && !isShowingContextMenu)
   {
     [(SBIconView *)self _additionalLiftScale];
     v3 = v8;
@@ -5172,7 +5172,7 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
   [(SBIconView *)self _applyIconContentScale:v4 * v3];
 }
 
-- (void)_applyIconContentScale:(double)a3
+- (void)_applyIconContentScale:(double)scale
 {
   if ((BSFloatIsOne() & 1) != 0 || ![(SBIconView *)self isIconContentScalingEnabled])
   {
@@ -5187,7 +5187,7 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
   else
   {
     memset(&v10, 0, sizeof(v10));
-    CGAffineTransformMakeScale(&v10, a3, a3);
+    CGAffineTransformMakeScale(&v10, scale, scale);
     scalingContainer = self->_scalingContainer;
     v9 = v10;
     v6 = &v9;
@@ -5203,10 +5203,10 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
 
 - (double)_additionalLiftScale
 {
-  v3 = [(SBIconView *)self dragDelegate];
+  dragDelegate = [(SBIconView *)self dragDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 additionalDragLiftScaleForIconView:self];
+    [dragDelegate additionalDragLiftScaleForIconView:self];
     v5 = v4;
   }
 
@@ -5218,12 +5218,12 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)setDragLifted:(BOOL)a3
+- (void)setDragLifted:(BOOL)lifted
 {
   v3 = *(self + 556);
-  if (((((v3 & 4) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 4) == 0) ^ lifted) & 1) == 0)
   {
-    if (a3)
+    if (lifted)
     {
       v4 = 4;
     }
@@ -5241,12 +5241,12 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
 {
   if ((SBHIsRunningInSpringBoard(self) & 1) == 0)
   {
-    v3 = [(SBIconView *)self homeButtonPressConsumingAssertion];
+    homeButtonPressConsumingAssertion = [(SBIconView *)self homeButtonPressConsumingAssertion];
 
-    if (!v3)
+    if (!homeButtonPressConsumingAssertion)
     {
-      v4 = [MEMORY[0x1E69D4220] sharedInstance];
-      v5 = [v4 beginConsumingPressesForButtonKind:1 eventConsumer:self priority:0];
+      mEMORY[0x1E69D4220] = [MEMORY[0x1E69D4220] sharedInstance];
+      v5 = [mEMORY[0x1E69D4220] beginConsumingPressesForButtonKind:1 eventConsumer:self priority:0];
 
       [(SBIconView *)self setHomeButtonPressConsumingAssertion:v5];
     }
@@ -5255,36 +5255,36 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
 
 - (id)_visiblyActiveDataSource
 {
-  v3 = [(SBIconView *)self customIconImageViewController];
+  customIconImageViewController = [(SBIconView *)self customIconImageViewController];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 visiblyActiveDataSource];
+    visiblyActiveDataSource = [customIconImageViewController visiblyActiveDataSource];
   }
 
   else
   {
-    v5 = [(SBIconView *)self icon];
-    if ([v5 isLeafIcon])
+    icon = [(SBIconView *)self icon];
+    if ([icon isLeafIcon])
     {
-      v4 = [v5 activeDataSource];
+      visiblyActiveDataSource = [icon activeDataSource];
     }
 
     else
     {
-      v4 = 0;
+      visiblyActiveDataSource = 0;
     }
   }
 
-  return v4;
+  return visiblyActiveDataSource;
 }
 
 - (id)configurationUIDelegate
 {
-  v3 = [(SBIconView *)self delegate];
-  v4 = v3;
+  delegate = [(SBIconView *)self delegate];
+  v4 = delegate;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 configurationUIDelegateForIconView:self];
+    v4 = [delegate configurationUIDelegateForIconView:self];
   }
 
   return v4;
@@ -5292,13 +5292,13 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
 
 - (BOOL)supportsConfigurationCard
 {
-  v3 = [(SBIconView *)self configurationUIDelegate];
+  configurationUIDelegate = [(SBIconView *)self configurationUIDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(SBIconView *)self _visiblyActiveDataSource];
-    if (v4)
+    _visiblyActiveDataSource = [(SBIconView *)self _visiblyActiveDataSource];
+    if (_visiblyActiveDataSource)
     {
-      v5 = [v3 iconView:self supportsConfigurationForDataSource:v4];
+      v5 = [configurationUIDelegate iconView:self supportsConfigurationForDataSource:_visiblyActiveDataSource];
     }
 
     else
@@ -5317,32 +5317,32 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
 
 - (BOOL)supportsStackConfigurationCard
 {
-  v2 = [(SBIconView *)self icon];
-  v3 = [v2 supportsStackConfiguration];
+  icon = [(SBIconView *)self icon];
+  supportsStackConfiguration = [icon supportsStackConfiguration];
 
-  return v3;
+  return supportsStackConfiguration;
 }
 
 - (BOOL)isShowingStackConfigurationCard
 {
-  v2 = [(SBIconView *)self currentStackConfigurationInteraction];
-  v3 = v2 != 0;
+  currentStackConfigurationInteraction = [(SBIconView *)self currentStackConfigurationInteraction];
+  v3 = currentStackConfigurationInteraction != 0;
 
   return v3;
 }
 
 - (void)presentConfigurationCard
 {
-  v3 = [(SBIconView *)self currentConfigurationInteraction];
-  if (!v3)
+  currentConfigurationInteraction = [(SBIconView *)self currentConfigurationInteraction];
+  if (!currentConfigurationInteraction)
   {
-    v4 = [(SBIconView *)self configurationUIDelegate];
+    configurationUIDelegate = [(SBIconView *)self configurationUIDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(SBIconView *)self _visiblyActiveDataSource];
-      if (v5)
+      _visiblyActiveDataSource = [(SBIconView *)self _visiblyActiveDataSource];
+      if (_visiblyActiveDataSource)
       {
-        v7 = [v4 iconView:self configurationInteractionForDataSource:v5];
+        v7 = [configurationUIDelegate iconView:self configurationInteractionForDataSource:_visiblyActiveDataSource];
         [v7 setDelegate:self];
         [(SBIconView *)self setCurrentConfigurationInteraction:v7];
       }
@@ -5358,20 +5358,20 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
       v7 = 0;
     }
 
-    v3 = v7;
+    currentConfigurationInteraction = v7;
   }
 
-  v8 = v3;
-  [v3 beginConfiguration];
-  v6 = [MEMORY[0x1E69D3F90] sharedInstance];
-  [v6 emitEvent:56];
+  v8 = currentConfigurationInteraction;
+  [currentConfigurationInteraction beginConfiguration];
+  mEMORY[0x1E69D3F90] = [MEMORY[0x1E69D3F90] sharedInstance];
+  [mEMORY[0x1E69D3F90] emitEvent:56];
 }
 
 - (void)presentStackConfigurationCard
 {
-  v3 = [(SBIconView *)self currentStackConfigurationInteraction];
+  currentStackConfigurationInteraction = [(SBIconView *)self currentStackConfigurationInteraction];
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = currentStackConfigurationInteraction;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -5395,19 +5395,19 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
   v7 = v16;
   if (!v16)
   {
-    v8 = [(SBIconView *)self currentConfigurationInteraction];
+    currentConfigurationInteraction = [(SBIconView *)self currentConfigurationInteraction];
 
-    if (v8)
+    if (currentConfigurationInteraction)
     {
       v7 = 0;
     }
 
     else
     {
-      v9 = [(SBIconView *)self configurationUIDelegate];
+      configurationUIDelegate = [(SBIconView *)self configurationUIDelegate];
       if (objc_opt_respondsToSelector())
       {
-        v10 = [v9 stackConfigurationInteractionForIconView:self];
+        v10 = [configurationUIDelegate stackConfigurationInteractionForIconView:self];
         v11 = objc_opt_class();
         v12 = v10;
         if (v11)
@@ -5446,41 +5446,41 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
 
   v18 = v7;
   [v7 beginConfiguration];
-  v15 = [MEMORY[0x1E69D3F90] sharedInstance];
-  [v15 emitEvent:57];
+  mEMORY[0x1E69D3F90] = [MEMORY[0x1E69D3F90] sharedInstance];
+  [mEMORY[0x1E69D3F90] emitEvent:57];
 }
 
 - (void)popStackConfigurationCard
 {
-  v2 = [(SBIconView *)self currentStackConfigurationInteraction];
-  [v2 popConfiguration];
+  currentStackConfigurationInteraction = [(SBIconView *)self currentStackConfigurationInteraction];
+  [currentStackConfigurationInteraction popConfiguration];
 }
 
 - (void)dismissStackConfigurationCard
 {
-  v2 = [(SBIconView *)self currentStackConfigurationInteraction];
-  [v2 endConfiguration];
+  currentStackConfigurationInteraction = [(SBIconView *)self currentStackConfigurationInteraction];
+  [currentStackConfigurationInteraction endConfiguration];
 }
 
 - (void)popConfigurationCard
 {
-  v2 = [(SBIconView *)self currentConfigurationInteraction];
-  [v2 popConfiguration];
+  currentConfigurationInteraction = [(SBIconView *)self currentConfigurationInteraction];
+  [currentConfigurationInteraction popConfiguration];
 }
 
 - (void)dismissConfigurationCard
 {
-  v2 = [(SBIconView *)self currentConfigurationInteraction];
-  [v2 endConfiguration];
+  currentConfigurationInteraction = [(SBIconView *)self currentConfigurationInteraction];
+  [currentConfigurationInteraction endConfiguration];
 }
 
-- (id)containerViewControllerForConfigurationInteraction:(id)a3
+- (id)containerViewControllerForConfigurationInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = [(SBIconView *)self configurationUIDelegate];
+  interactionCopy = interaction;
+  configurationUIDelegate = [(SBIconView *)self configurationUIDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconView:self containerViewControllerForConfigurationInteraction:v4];
+    v6 = [configurationUIDelegate iconView:self containerViewControllerForConfigurationInteraction:interactionCopy];
   }
 
   else
@@ -5491,33 +5491,33 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (id)containerViewForConfigurationInteraction:(id)a3
+- (id)containerViewForConfigurationInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = [(SBIconView *)self configurationUIDelegate];
+  interactionCopy = interaction;
+  configurationUIDelegate = [(SBIconView *)self configurationUIDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconView:self containerViewForConfigurationInteraction:v4];
+    view = [configurationUIDelegate iconView:self containerViewForConfigurationInteraction:interactionCopy];
   }
 
   else
   {
-    v7 = [(SBIconView *)self containerViewControllerForConfigurationInteraction:v4];
+    v7 = [(SBIconView *)self containerViewControllerForConfigurationInteraction:interactionCopy];
 
-    v6 = [v7 view];
-    v4 = v7;
+    view = [v7 view];
+    interactionCopy = v7;
   }
 
-  return v6;
+  return view;
 }
 
-- (CGRect)contentBoundingRectForConfigurationInteraction:(id)a3
+- (CGRect)contentBoundingRectForConfigurationInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = [(SBIconView *)self configurationUIDelegate];
+  interactionCopy = interaction;
+  configurationUIDelegate = [(SBIconView *)self configurationUIDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 iconView:self contentBoundingRectForConfigurationInteraction:v4];
+    [configurationUIDelegate iconView:self contentBoundingRectForConfigurationInteraction:interactionCopy];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -5526,14 +5526,14 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
 
   else
   {
-    v14 = [(SBIconView *)self containerViewForConfigurationInteraction:v4];
+    v14 = [(SBIconView *)self containerViewForConfigurationInteraction:interactionCopy];
 
     [v14 bounds];
     v7 = v15;
     v9 = v16;
     v11 = v17;
     v13 = v18;
-    v4 = v14;
+    interactionCopy = v14;
   }
 
   v19 = v7;
@@ -5547,31 +5547,31 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
   return result;
 }
 
-- (int64_t)userInterfaceStyleForConfigurationInteraction:(id)a3
+- (int64_t)userInterfaceStyleForConfigurationInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = [(SBIconView *)self configurationUIDelegate];
+  interactionCopy = interaction;
+  configurationUIDelegate = [(SBIconView *)self configurationUIDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconView:self userInterfaceStyleForConfigurationInteraction:v4];
+    userInterfaceStyle = [configurationUIDelegate iconView:self userInterfaceStyleForConfigurationInteraction:interactionCopy];
   }
 
   else
   {
-    v7 = [(SBIconView *)self traitCollection];
-    v6 = [v7 userInterfaceStyle];
+    traitCollection = [(SBIconView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
   }
 
-  return v6;
+  return userInterfaceStyle;
 }
 
-- (id)homeScreenContentViewForConfigurationInteraction:(id)a3
+- (id)homeScreenContentViewForConfigurationInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = [(SBIconView *)self configurationUIDelegate];
+  interactionCopy = interaction;
+  configurationUIDelegate = [(SBIconView *)self configurationUIDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconView:self homeScreenContentViewForConfigurationInteraction:v4];
+    v6 = [configurationUIDelegate iconView:self homeScreenContentViewForConfigurationInteraction:interactionCopy];
   }
 
   else
@@ -5582,10 +5582,10 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)configurationInteractionWillBegin:(id)a3
+- (void)configurationInteractionWillBegin:(id)begin
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  beginCopy = begin;
   v5 = SBLogIcon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -5609,20 +5609,20 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
     [(SBIconView *)self setAllowsEditingAnimation:0];
   }
 
-  v7 = [(SBIconView *)self configurationUIDelegate];
+  configurationUIDelegate = [(SBIconView *)self configurationUIDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 iconView:self configurationWillBeginWithInteraction:v4];
+    [configurationUIDelegate iconView:self configurationWillBeginWithInteraction:beginCopy];
   }
 
   self->_inConfigurationTransition = 1;
   [(SBIconView *)self _updatePresentationModeForReason:@"configuration will begin"];
 }
 
-- (void)configurationInteractionDidBegin:(id)a3
+- (void)configurationInteractionDidBegin:(id)begin
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  beginCopy = begin;
   v5 = SBLogIcon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -5632,17 +5632,17 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
     _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_DEFAULT, "<%{public}@> Widget configuration did begin", &v8, 0xCu);
   }
 
-  v7 = [(SBIconView *)self configurationUIDelegate];
+  configurationUIDelegate = [(SBIconView *)self configurationUIDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 iconView:self configurationDidBeginWithInteraction:v4];
+    [configurationUIDelegate iconView:self configurationDidBeginWithInteraction:beginCopy];
   }
 }
 
-- (void)configurationInteractionDidCommit:(id)a3
+- (void)configurationInteractionDidCommit:(id)commit
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  commitCopy = commit;
   v5 = SBLogIcon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -5652,17 +5652,17 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
     _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_DEFAULT, "<%{public}@> Widget configuration did commit", &v8, 0xCu);
   }
 
-  v7 = [(SBIconView *)self configurationUIDelegate];
+  configurationUIDelegate = [(SBIconView *)self configurationUIDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 iconView:self configurationDidUpdateWithInteraction:v4];
+    [configurationUIDelegate iconView:self configurationDidUpdateWithInteraction:commitCopy];
   }
 }
 
-- (void)configurationInteractionWillEnd:(id)a3
+- (void)configurationInteractionWillEnd:(id)end
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  endCopy = end;
   v5 = SBLogIcon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -5672,20 +5672,20 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
     _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_DEFAULT, "<%{public}@> Widget configuration will end", &v8, 0xCu);
   }
 
-  v7 = [(SBIconView *)self configurationUIDelegate];
+  configurationUIDelegate = [(SBIconView *)self configurationUIDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 iconView:self configurationWillEndWithInteraction:v4];
+    [configurationUIDelegate iconView:self configurationWillEndWithInteraction:endCopy];
   }
 
   self->_inConfigurationTransition = 1;
   [(SBIconView *)self _updatePresentationModeForReason:@"configuration will end"];
 }
 
-- (void)configurationInteractionDidEnd:(id)a3
+- (void)configurationInteractionDidEnd:(id)end
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  endCopy = end;
   v5 = SBLogIcon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -5709,23 +5709,23 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
 
   [(SBIconView *)self _updateIconImageAdornmentsAnimated:1];
   [(SBIconView *)self setAllowsEditingAnimation:1];
-  v7 = [(SBIconView *)self configurationUIDelegate];
+  configurationUIDelegate = [(SBIconView *)self configurationUIDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 iconView:self configurationDidEndWithInteraction:v4];
+    [configurationUIDelegate iconView:self configurationDidEndWithInteraction:endCopy];
   }
 
   self->_inConfigurationTransition = 0;
   [(SBIconView *)self _updatePresentationModeForReason:@"configuration did end"];
 }
 
-- (double)verticalMarginPercentageForConfigurationInteraction:(id)a3
+- (double)verticalMarginPercentageForConfigurationInteraction:(id)interaction
 {
-  v4 = [(SBIconView *)self configurationUIDelegate];
+  configurationUIDelegate = [(SBIconView *)self configurationUIDelegate];
   v5 = -1.0;
   if (objc_opt_respondsToSelector())
   {
-    [v4 verticalMarginPercentageForConfigurationOfIconView:self];
+    [configurationUIDelegate verticalMarginPercentageForConfigurationOfIconView:self];
     v5 = v6;
   }
 
@@ -5734,27 +5734,27 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
 
 - (id)newCaptureOnlyBackgroundView
 {
-  v3 = [(SBIconViewCustomImageViewControlling *)self->_customIconImageViewController backgroundViewProvider];
-  v4 = v3[2]();
+  backgroundViewProvider = [(SBIconViewCustomImageViewControlling *)self->_customIconImageViewController backgroundViewProvider];
+  v4 = backgroundViewProvider[2]();
 
   if (objc_opt_respondsToSelector())
   {
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(SBIconViewCustomImageViewControlling *)self->_customIconImageViewController backgroundViewConfigurator];
-      if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+      backgroundViewConfigurator = [(SBIconViewCustomImageViewControlling *)self->_customIconImageViewController backgroundViewConfigurator];
+      if (backgroundViewConfigurator && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v6 = [(SBIconViewCustomImageViewControlling *)self->_customIconImageViewController visiblyActiveDataSource];
-        if (v6)
+        visiblyActiveDataSource = [(SBIconViewCustomImageViewControlling *)self->_customIconImageViewController visiblyActiveDataSource];
+        if (visiblyActiveDataSource)
         {
-          (v5)[2](v5, v4, v6);
+          (backgroundViewConfigurator)[2](backgroundViewConfigurator, v4, visiblyActiveDataSource);
         }
       }
     }
 
     else
     {
-      v5 = 0;
+      backgroundViewConfigurator = 0;
     }
 
     [v4 setCaptureOnly:1];
@@ -5842,37 +5842,37 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
   return ClassPair;
 }
 
-- (void)configureBorrowingIconImageViewFromIconView:(id)a3
+- (void)configureBorrowingIconImageViewFromIconView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = SBLogIcon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SBIconView configureBorrowingIconImageViewFromIconView:];
   }
 
-  v6 = [v4 borrowIconImageViewWithOptions:1];
+  v6 = [viewCopy borrowIconImageViewWithOptions:1];
   [(SBIconView *)self setBorrowingAssertion:v6];
-  v7 = [v4 customIconImageViewController];
-  v8 = [v7 parentViewController];
-  [v8 bs_removeChildViewController:v7];
+  customIconImageViewController = [viewCopy customIconImageViewController];
+  parentViewController = [customIconImageViewController parentViewController];
+  [parentViewController bs_removeChildViewController:customIconImageViewController];
 
-  [(SBIconView *)self setOverrideCustomIconImageViewController:v7];
-  [v4 configureMatchingIconView:self];
-  v9 = [v4 accessibilityTintColor];
-  [(SBIconView *)self setAccessibilityTintColor:v9];
+  [(SBIconView *)self setOverrideCustomIconImageViewController:customIconImageViewController];
+  [viewCopy configureMatchingIconView:self];
+  accessibilityTintColor = [viewCopy accessibilityTintColor];
+  [(SBIconView *)self setAccessibilityTintColor:accessibilityTintColor];
 }
 
-- (void)setSharesIconTintColorWithSpringBoard:(BOOL)a3
+- (void)setSharesIconTintColorWithSpringBoard:(BOOL)board
 {
   v4 = *(self + 559);
-  if ((((v4 & 4) == 0) ^ a3))
+  if ((((v4 & 4) == 0) ^ board))
   {
     return;
   }
 
-  v5 = a3;
-  if (a3)
+  boardCopy = board;
+  if (board)
   {
     v7 = 4;
   }
@@ -5883,17 +5883,17 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
   }
 
   *(self + 559) = v4 & 0xFB | v7;
-  v8 = [(SBIconView *)self springBoardIconStyleObservation];
-  v9 = v8;
-  v12 = v8;
-  if (v5)
+  springBoardIconStyleObservation = [(SBIconView *)self springBoardIconStyleObservation];
+  v9 = springBoardIconStyleObservation;
+  v12 = springBoardIconStyleObservation;
+  if (boardCopy)
   {
-    v8 = SBHIsRunningInSpringBoard(v8);
+    springBoardIconStyleObservation = SBHIsRunningInSpringBoard(springBoardIconStyleObservation);
     v9 = v12;
-    if ((v8 & 1) == 0)
+    if ((springBoardIconStyleObservation & 1) == 0)
     {
-      v10 = [objc_opt_class() homeScreenService];
-      v11 = [v10 addHomeScreenIconStyleObserver:self];
+      homeScreenService = [objc_opt_class() homeScreenService];
+      v11 = [homeScreenService addHomeScreenIconStyleObserver:self];
       [(SBIconView *)self setSpringBoardIconStyleObservation:v11];
 
       goto LABEL_10;
@@ -5903,18 +5903,18 @@ uint64_t __41__SBIconView__enableContentContainerView__block_invoke(uint64_t a1)
   if (v9)
   {
     [v9 invalidate];
-    v8 = [(SBIconView *)self setSpringBoardIconStyleObservation:0];
+    springBoardIconStyleObservation = [(SBIconView *)self setSpringBoardIconStyleObservation:0];
 LABEL_10:
     v9 = v12;
   }
 
-  MEMORY[0x1EEE66BB8](v8, v9);
+  MEMORY[0x1EEE66BB8](springBoardIconStyleObservation, v9);
 }
 
-- (void)homeScreenService:(id)a3 homeScreenIconStyleConfigurationDidChange:(id)a4
+- (void)homeScreenService:(id)service homeScreenIconStyleConfigurationDidChange:(id)change
 {
-  v5 = [a4 sbh_iconImageStyleConfiguration];
-  v4 = v5;
+  sbh_iconImageStyleConfiguration = [change sbh_iconImageStyleConfiguration];
+  v4 = sbh_iconImageStyleConfiguration;
   BSDispatchMain();
 }
 
@@ -5929,14 +5929,14 @@ void __74__SBIconView_homeScreenService_homeScreenIconStyleConfigurationDidChang
 + (BOOL)showsPopovers
 {
   v2 = +[SBHHomeScreenDomain rootSettings];
-  v3 = [v2 showPopOvers];
+  showPopOvers = [v2 showPopOvers];
 
-  return v3;
+  return showPopOvers;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = [(SBIconView *)self contextMenuConfigurationAtLocation:a3, a4.x, a4.y];
+  v5 = [(SBIconView *)self contextMenuConfigurationAtLocation:interaction, location.x, location.y];
   if (v5)
   {
     contextMenuInteractionConfigurations = self->_contextMenuInteractionConfigurations;
@@ -5961,14 +5961,14 @@ void __74__SBIconView_homeScreenService_homeScreenIconStyleConfigurationDidChang
   return v5;
 }
 
-- (id)contextMenuConfigurationAtLocation:(CGPoint)a3
+- (id)contextMenuConfigurationAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SBIconView *)self contextMenuDelegate];
+  y = location.y;
+  x = location.x;
+  contextMenuDelegate = [(SBIconView *)self contextMenuDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 contextMenuConfigurationForIconView:self atLocation:{x, y}];
+    v7 = [contextMenuDelegate contextMenuConfigurationForIconView:self atLocation:{x, y}];
   }
 
   else
@@ -5980,21 +5980,21 @@ void __74__SBIconView_homeScreenService_homeScreenIconStyleConfigurationDidChang
   return v7;
 }
 
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E69DD440] defaultStyle];
-  [v5 setHasInteractivePreview:1];
-  [v5 setPreferredLayout:1];
-  [v5 setPreventPreviewRasterization:1];
-  v6 = [(SBIconView *)self contextMenuDelegate];
+  defaultStyle = [MEMORY[0x1E69DD440] defaultStyle];
+  [defaultStyle setHasInteractivePreview:1];
+  [defaultStyle setPreferredLayout:1];
+  [defaultStyle setPreventPreviewRasterization:1];
+  contextMenuDelegate = [(SBIconView *)self contextMenuDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 setPreviewOverlapsMenu:{objc_msgSend(v6, "shouldPreviewOverlapMenuForIconView:", self)}];
+    [defaultStyle setPreviewOverlapsMenu:{objc_msgSend(contextMenuDelegate, "shouldPreviewOverlapMenuForIconView:", self)}];
   }
 
-  v7 = [(SBIconView *)self window];
-  [v7 safeAreaInsets];
+  window = [(SBIconView *)self window];
+  [window safeAreaInsets];
   v9 = v8;
   v11 = v10;
 
@@ -6023,21 +6023,21 @@ void __74__SBIconView_homeScreenService_homeScreenIconStyleConfigurationDidChang
     v13 = 8.0;
   }
 
-  [v5 setPreferredEdgeInsets:{v9, v13, v11, v12}];
+  [defaultStyle setPreferredEdgeInsets:{v9, v13, v11, v12}];
   if (objc_opt_respondsToSelector())
   {
-    v17 = [v6 containerViewForPresentingContextMenuForIconView:self];
-    v18 = 0;
+    v17 = [contextMenuDelegate containerViewForPresentingContextMenuForIconView:self];
+    view = 0;
   }
 
   else
   {
-    v19 = [(SBIconView *)self window];
-    v20 = [v19 rootViewController];
-    v18 = [v20 view];
+    window2 = [(SBIconView *)self window];
+    rootViewController = [window2 rootViewController];
+    view = [rootViewController view];
   }
 
-  [v5 setContainerView:v18];
+  [defaultStyle setContainerView:view];
   if (UIAccessibilityIsReduceTransparencyEnabled())
   {
     v21 = MEMORY[0x1E69DC898];
@@ -6045,26 +6045,26 @@ void __74__SBIconView_homeScreenService_homeScreenIconStyleConfigurationDidChang
     v23 = [v21 colorEffectColor:v22];
     v26[0] = v23;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-    [v5 setPreferredBackgroundEffects:v24];
+    [defaultStyle setPreferredBackgroundEffects:v24];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 iconView:self willUseContextMenuStyle:v5];
+    [contextMenuDelegate iconView:self willUseContextMenuStyle:defaultStyle];
   }
 
-  return v5;
+  return defaultStyle;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SBIconView *)self contextMenuDelegate];
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  contextMenuDelegate = [(SBIconView *)self contextMenuDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v11 contextMenuInteraction:v8 configuration:v9 highlightPreviewForItemWithIdentifier:v10 forIconView:self];
+    v12 = [contextMenuDelegate contextMenuInteraction:interactionCopy configuration:configurationCopy highlightPreviewForItemWithIdentifier:identifierCopy forIconView:self];
   }
 
   else
@@ -6075,15 +6075,15 @@ void __74__SBIconView_homeScreenService_homeScreenIconStyleConfigurationDidChang
   return v12;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 dismissalPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration dismissalPreviewForItemWithIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SBIconView *)self contextMenuDelegate];
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  contextMenuDelegate = [(SBIconView *)self contextMenuDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v11 contextMenuInteraction:v8 configuration:v9 dismissalPreviewForItemWithIdentifier:v10 forIconView:self];
+    v12 = [contextMenuDelegate contextMenuInteraction:interactionCopy configuration:configurationCopy dismissalPreviewForItemWithIdentifier:identifierCopy forIconView:self];
   }
 
   else
@@ -6094,13 +6094,13 @@ void __74__SBIconView_homeScreenService_homeScreenIconStyleConfigurationDidChang
   return v12;
 }
 
-- (id)_contextMenuInteraction:(id)a3 previewForIconWithConfigurationOptions:(unint64_t)a4 highlighted:(BOOL)a5
+- (id)_contextMenuInteraction:(id)interaction previewForIconWithConfigurationOptions:(unint64_t)options highlighted:(BOOL)highlighted
 {
-  v5 = a5;
+  highlightedCopy = highlighted;
   v28 = *MEMORY[0x1E69E9840];
-  v7 = [a3 view];
+  view = [interaction view];
 
-  if (v7 != self)
+  if (view != self)
   {
     v8 = SBLogIcon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -6113,9 +6113,9 @@ LABEL_4:
     goto LABEL_19;
   }
 
-  v10 = [(SBIconView *)self window];
+  window = [(SBIconView *)self window];
 
-  if (!v10)
+  if (!window)
   {
     v8 = SBLogIcon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -6126,41 +6126,41 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  [(SBIconView *)self setHighlighted:v5];
+  [(SBIconView *)self setHighlighted:highlightedCopy];
   v8 = objc_alloc_init(MEMORY[0x1E69DCE28]);
-  v11 = [MEMORY[0x1E69DC888] clearColor];
-  [v8 setBackgroundColor:v11];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v8 setBackgroundColor:clearColor];
 
   [(SBIconView *)self iconImageCenter];
   v13 = v12;
   v15 = v14;
-  v16 = self;
-  v17 = [(SBIconView *)v16 imageContainerView];
+  selfCopy = self;
+  imageContainerView = [(SBIconView *)selfCopy imageContainerView];
   v18 = SBLogIcon();
   v19 = v18;
-  if (v17)
+  if (imageContainerView)
   {
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      logIdentifier = v16->_logIdentifier;
-      icon = v16->_icon;
+      logIdentifier = selfCopy->_logIdentifier;
+      icon = selfCopy->_icon;
       LODWORD(v26[0]) = 138544130;
       *(v26 + 4) = logIdentifier;
       WORD2(v26[1]) = 2112;
       *(&v26[1] + 6) = icon;
       HIWORD(v26[2]) = 2112;
-      v26[3] = v17;
+      v26[3] = imageContainerView;
       LOWORD(v27) = 2112;
-      *(&v27 + 2) = v16;
+      *(&v27 + 2) = selfCopy;
       _os_log_impl(&dword_1BEB18000, v19, OS_LOG_TYPE_DEFAULT, "<%{public}@> Configuring preview for icon '%@' w/ currentImageView '%@' contentContainerView '%@'", v26, 0x2Au);
     }
 
     v22 = objc_alloc(MEMORY[0x1E69DCE38]);
-    v23 = [(SBIconView *)v16 contentContainerView];
-    v24 = v23;
-    if (v23)
+    contentContainerView = [(SBIconView *)selfCopy contentContainerView];
+    v24 = contentContainerView;
+    if (contentContainerView)
     {
-      [v23 transform];
+      [contentContainerView transform];
     }
 
     else
@@ -6169,9 +6169,9 @@ LABEL_4:
       memset(v26, 0, sizeof(v26));
     }
 
-    v19 = [v22 initWithContainer:v16 center:v26 transform:{v13, v15}];
+    v19 = [v22 initWithContainer:selfCopy center:v26 transform:{v13, v15}];
 
-    v9 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:v17 parameters:v8 target:v19];
+    v9 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:imageContainerView parameters:v8 target:v19];
     [v9 set_springboardPlatterStyle:1];
   }
 
@@ -6190,15 +6190,15 @@ LABEL_19:
   return v9;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SBIconView *)self contextMenuDelegate];
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
+  contextMenuDelegate = [(SBIconView *)self contextMenuDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v11 contextMenuInteraction:v8 willDisplayMenuForConfiguration:v9 animator:v10 forIconView:self];
+    [contextMenuDelegate contextMenuInteraction:interactionCopy willDisplayMenuForConfiguration:configurationCopy animator:animatorCopy forIconView:self];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -6207,35 +6207,35 @@ LABEL_19:
   aBlock[3] = &unk_1E8088C90;
   aBlock[4] = self;
   v12 = _Block_copy(aBlock);
-  [(SBIconView *)self _contextMenuConfigurationWillPresent:v9 forInteraction:v8];
-  if (v10)
+  [(SBIconView *)self _contextMenuConfigurationWillPresent:configurationCopy forInteraction:interactionCopy];
+  if (animatorCopy)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __78__SBIconView_contextMenuInteraction_willDisplayMenuForConfiguration_animator___block_invoke_2;
     v15[3] = &unk_1E8088DD8;
     v15[4] = self;
-    v16 = v8;
+    v16 = interactionCopy;
     v17 = v12;
-    [v10 addAnimations:v15];
+    [animatorCopy addAnimations:v15];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __78__SBIconView_contextMenuInteraction_willDisplayMenuForConfiguration_animator___block_invoke_3;
     v13[3] = &unk_1E8088F18;
     v13[4] = self;
-    v14 = v9;
-    [v10 addCompletion:v13];
+    v14 = configurationCopy;
+    [animatorCopy addCompletion:v13];
   }
 
   else
   {
     [(SBIconView *)self setHighlighted:0];
-    if ([v8 menuAppearance] != 2)
+    if ([interactionCopy menuAppearance] != 2)
     {
       v12[2](v12);
     }
 
-    [(SBIconView *)self _contextMenuConfigurationDidPresent:v9];
+    [(SBIconView *)self _contextMenuConfigurationDidPresent:configurationCopy];
   }
 }
 
@@ -6262,15 +6262,15 @@ uint64_t __78__SBIconView_contextMenuInteraction_willDisplayMenuForConfiguration
   return result;
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SBIconView *)self contextMenuDelegate];
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
+  contextMenuDelegate = [(SBIconView *)self contextMenuDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v11 contextMenuInteraction:v8 willEndForConfiguration:v9 animator:v10 forIconView:self];
+    [contextMenuDelegate contextMenuInteraction:interactionCopy willEndForConfiguration:configurationCopy animator:animatorCopy forIconView:self];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -6279,26 +6279,26 @@ uint64_t __78__SBIconView_contextMenuInteraction_willDisplayMenuForConfiguration
   aBlock[3] = &unk_1E8088C90;
   aBlock[4] = self;
   v12 = _Block_copy(aBlock);
-  [(SBIconView *)self _contextMenuConfigurationWillDismiss:v9];
-  if (v10)
+  [(SBIconView *)self _contextMenuConfigurationWillDismiss:configurationCopy];
+  if (animatorCopy)
   {
     objc_initWeak(&location, self);
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 postNotificationName:@"SBIconViewWillAnimateContextMenuNotification" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"SBIconViewWillAnimateContextMenuNotification" object:self userInfo:0];
 
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __70__SBIconView_contextMenuInteraction_willEndForConfiguration_animator___block_invoke_2;
     v17[3] = &unk_1E8089600;
     v18 = v12;
-    [v10 addAnimations:v17];
+    [animatorCopy addAnimations:v17];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __70__SBIconView_contextMenuInteraction_willEndForConfiguration_animator___block_invoke_3;
     v14[3] = &unk_1E808C628;
     objc_copyWeak(&v16, &location);
-    v15 = v9;
-    [v10 addCompletion:v14];
+    v15 = configurationCopy;
+    [animatorCopy addCompletion:v14];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -6307,7 +6307,7 @@ uint64_t __78__SBIconView_contextMenuInteraction_willDisplayMenuForConfiguration
   else
   {
     v12[2](v12);
-    [(SBIconView *)self _contextMenuConfigurationDidDismiss:v9];
+    [(SBIconView *)self _contextMenuConfigurationDidDismiss:configurationCopy];
   }
 }
 
@@ -6333,28 +6333,28 @@ void __70__SBIconView_contextMenuInteraction_willEndForConfiguration_animator___
   }
 }
 
-- (void)_contextMenuConfigurationWillPresent:(id)a3 forInteraction:(id)a4
+- (void)_contextMenuConfigurationWillPresent:(id)present forInteraction:(id)interaction
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
+  presentCopy = present;
+  interactionCopy = interaction;
+  identifier = [presentCopy identifier];
   v9 = SBLogIconContextMenu();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 identifier];
+    v8Identifier = [identifier identifier];
     v17 = 136315906;
     v18 = "[SBIconView _contextMenuConfigurationWillPresent:forInteraction:]";
     v19 = 1024;
     v20 = 2875;
     v21 = 2112;
-    v22 = v10;
+    v22 = v8Identifier;
     v23 = 2112;
-    v24 = v6;
+    v24 = presentCopy;
     _os_log_impl(&dword_1BEB18000, v9, OS_LOG_TYPE_DEFAULT, "%s:%d %@ (%@)", &v17, 0x26u);
   }
 
-  [v8 setContextMenuInteraction:v7];
+  [identifier setContextMenuInteraction:interactionCopy];
   [(SBIconView *)self _updateAllComponentAlphas];
   if (!self->_iconContextMenuActivity)
   {
@@ -6373,16 +6373,16 @@ void __70__SBIconView_contextMenuInteraction_willEndForConfiguration_animator___
     self->_performAfterContextMenuBlocks = v13;
   }
 
-  v15 = [(SBIconView *)self contextMenuDelegate];
+  contextMenuDelegate = [(SBIconView *)self contextMenuDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v15 iconViewContextMenuPresentationWillBegin:self];
+    [contextMenuDelegate iconViewContextMenuPresentationWillBegin:self];
   }
 
   [(SBIconView *)self _acquireHomeButtonPressConsumingAssertionIfNecessary];
   [(SBIconView *)self beginPrefetchingDisplayedIconLayerForReason:@"icon view context menu"];
-  v16 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v16 postNotificationName:@"SBIconViewWillPresentContextMenuNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"SBIconViewWillPresentContextMenuNotification" object:self];
 
   if (objc_opt_respondsToSelector())
   {
@@ -6390,47 +6390,47 @@ void __70__SBIconView_contextMenuInteraction_willEndForConfiguration_animator___
   }
 }
 
-- (void)_contextMenuConfigurationDidPresent:(id)a3
+- (void)_contextMenuConfigurationDidPresent:(id)present
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 identifier];
+  presentCopy = present;
+  identifier = [presentCopy identifier];
   v6 = SBLogIconContextMenu();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 identifier];
+    v5Identifier = [identifier identifier];
     v9 = 136315906;
     v10 = "[SBIconView _contextMenuConfigurationDidPresent:]";
     v11 = 1024;
     v12 = 2912;
     v13 = 2112;
-    v14 = v7;
+    v14 = v5Identifier;
     v15 = 2112;
-    v16 = v4;
+    v16 = presentCopy;
     _os_log_impl(&dword_1BEB18000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d %@ (%@)", &v9, 0x26u);
   }
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 postNotificationName:@"SBIconViewDidPresentContextMenuNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"SBIconViewDidPresentContextMenuNotification" object:self];
 }
 
-- (void)_contextMenuConfigurationWillDismiss:(id)a3
+- (void)_contextMenuConfigurationWillDismiss:(id)dismiss
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 identifier];
+  dismissCopy = dismiss;
+  identifier = [dismissCopy identifier];
   v6 = SBLogIconContextMenu();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 identifier];
+    v5Identifier = [identifier identifier];
     v14 = 136315906;
     v15 = "[SBIconView _contextMenuConfigurationWillDismiss:]";
     v16 = 1024;
     v17 = 2921;
     v18 = 2112;
-    v19 = v7;
+    v19 = v5Identifier;
     v20 = 2112;
-    v21 = v4;
+    v21 = dismissCopy;
     _os_log_impl(&dword_1BEB18000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d %@ (%@)", &v14, 0x26u);
   }
 
@@ -6444,17 +6444,17 @@ void __70__SBIconView_contextMenuInteraction_willEndForConfiguration_animator___
     dismissingContextMenuInteractionConfigurations = self->_dismissingContextMenuInteractionConfigurations;
   }
 
-  [(NSHashTable *)dismissingContextMenuInteractionConfigurations addObject:v4];
-  v11 = [(SBIconView *)self contextMenuDelegate];
+  [(NSHashTable *)dismissingContextMenuInteractionConfigurations addObject:dismissCopy];
+  contextMenuDelegate = [(SBIconView *)self contextMenuDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v11 iconViewContextMenuPresentationWillFinish:self];
+    [contextMenuDelegate iconViewContextMenuPresentationWillFinish:self];
   }
 
   [(SBIconView *)self _invalidateHomeButtonPressConsumingAssertion];
-  v12 = [v5 contextMenuNotificationUserInfo];
-  v13 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v13 postNotificationName:@"SBIconViewWillDismissContextMenuNotification" object:self userInfo:v12];
+  contextMenuNotificationUserInfo = [identifier contextMenuNotificationUserInfo];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"SBIconViewWillDismissContextMenuNotification" object:self userInfo:contextMenuNotificationUserInfo];
 
   if (objc_opt_respondsToSelector())
   {
@@ -6462,38 +6462,38 @@ void __70__SBIconView_contextMenuInteraction_willEndForConfiguration_animator___
   }
 }
 
-- (void)_contextMenuConfigurationDidDismiss:(id)a3
+- (void)_contextMenuConfigurationDidDismiss:(id)dismiss
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 identifier];
+  dismissCopy = dismiss;
+  identifier = [dismissCopy identifier];
   v6 = SBLogIconContextMenu();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 identifier];
+    v5Identifier = [identifier identifier];
     *buf = 136315906;
     v33 = "[SBIconView _contextMenuConfigurationDidDismiss:]";
     v34 = 1024;
     v35 = 2947;
     v36 = 2112;
-    v37 = v7;
+    v37 = v5Identifier;
     v38 = 2112;
-    v39 = v4;
+    v39 = dismissCopy;
     _os_log_impl(&dword_1BEB18000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d %@ (%@)", buf, 0x26u);
   }
 
-  v8 = [(SBIconView *)self contextMenuDelegate];
+  contextMenuDelegate = [(SBIconView *)self contextMenuDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 iconViewContextMenuPresentationDidFinish:self];
+    [contextMenuDelegate iconViewContextMenuPresentationDidFinish:self];
   }
 
-  v9 = [v5 contextMenuNotificationUserInfo];
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 postNotificationName:@"SBIconViewDidDismissContextMenuNotification" object:self userInfo:v9];
+  contextMenuNotificationUserInfo = [identifier contextMenuNotificationUserInfo];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"SBIconViewDidDismissContextMenuNotification" object:self userInfo:contextMenuNotificationUserInfo];
 
-  [(NSHashTable *)self->_contextMenuInteractionConfigurations removeObject:v4];
-  [(NSHashTable *)self->_dismissingContextMenuInteractionConfigurations removeObject:v4];
+  [(NSHashTable *)self->_contextMenuInteractionConfigurations removeObject:dismissCopy];
+  [(NSHashTable *)self->_dismissingContextMenuInteractionConfigurations removeObject:dismissCopy];
   [(SBIconView *)self _toggleContentContainerViewIfNecessary];
   [(SBIconView *)self _updateAllComponentAlphas];
   v30[0] = MEMORY[0x1E69E9820];
@@ -6508,15 +6508,15 @@ void __70__SBIconView_contextMenuInteraction_willEndForConfiguration_animator___
     v11 = SBLogIconContextMenu();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v5 identifier];
+      v5Identifier2 = [identifier identifier];
       *buf = 136315906;
       v33 = "[SBIconView _contextMenuConfigurationDidDismiss:]";
       v34 = 1024;
       v35 = 2971;
       v36 = 2112;
-      v37 = v12;
+      v37 = v5Identifier2;
       v38 = 2112;
-      v39 = v4;
+      v39 = dismissCopy;
       _os_log_impl(&dword_1BEB18000, v11, OS_LOG_TYPE_DEFAULT, "%s:%d %@ (%@) -- Flushing any performAfterContextMenuBlocks; resetting state.", buf, 0x26u);
     }
 
@@ -6580,18 +6580,18 @@ void __70__SBIconView_contextMenuInteraction_willEndForConfiguration_animator___
   }
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SBIconView *)self contextMenuDelegate];
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
+  contextMenuDelegate = [(SBIconView *)self contextMenuDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v11 contextMenuInteraction:v8 willPerformPreviewActionForMenuWithConfiguration:v9 animator:v10 forIconView:self];
+    [contextMenuDelegate contextMenuInteraction:interactionCopy willPerformPreviewActionForMenuWithConfiguration:configurationCopy animator:animatorCopy forIconView:self];
   }
 
-  [v10 setPreferredCommitStyle:0];
+  [animatorCopy setPreferredCommitStyle:0];
   if ([objc_opt_class() supportsTapGesture])
   {
     v12[0] = MEMORY[0x1E69E9820];
@@ -6599,104 +6599,104 @@ void __70__SBIconView_contextMenuInteraction_willEndForConfiguration_animator___
     v12[2] = __95__SBIconView_contextMenuInteraction_willPerformPreviewActionForMenuWithConfiguration_animator___block_invoke;
     v12[3] = &unk_1E8088C90;
     v12[4] = self;
-    [v10 addCompletion:v12];
+    [animatorCopy addCompletion:v12];
   }
 }
 
 - (NSURL)applicationBundleURLForShortcuts
 {
-  v3 = [(SBIconView *)self icon];
-  v4 = [(SBIconView *)self contextMenuDelegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v4 applicationBundleURLForContextMenuWithIconView:self], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  icon = [(SBIconView *)self icon];
+  contextMenuDelegate = [(SBIconView *)self contextMenuDelegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([contextMenuDelegate applicationBundleURLForContextMenuWithIconView:self], (bundleURL = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    if ([v3 isApplicationIcon] && (objc_msgSend(v3, "isTimedOut") & 1) == 0)
+    if ([icon isApplicationIcon] && (objc_msgSend(icon, "isTimedOut") & 1) == 0)
     {
-      v6 = [v3 application];
-      v5 = [v6 bundleURL];
+      application = [icon application];
+      bundleURL = [application bundleURL];
     }
 
     else
     {
-      v5 = 0;
+      bundleURL = 0;
     }
   }
 
-  return v5;
+  return bundleURL;
 }
 
 - (NSString)applicationBundleIdentifierForShortcuts
 {
-  v3 = [(SBIconView *)self applicationBundleURLForShortcuts];
+  applicationBundleURLForShortcuts = [(SBIconView *)self applicationBundleURLForShortcuts];
 
-  if (v3)
+  if (applicationBundleURLForShortcuts)
   {
-    v4 = [(SBIconView *)self icon];
+    icon = [(SBIconView *)self icon];
     v5 = objc_opt_self();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 applicationBundleID];
+      applicationBundleID = [icon applicationBundleID];
     }
 
     else
     {
-      v6 = 0;
+      applicationBundleID = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    applicationBundleID = 0;
   }
 
-  return v6;
+  return applicationBundleID;
 }
 
-- (void)dismissContextMenuWithCompletion:(id)a3
+- (void)dismissContextMenuWithCompletion:(id)completion
 {
-  v10 = a3;
-  v4 = [(SBIconView *)self isContextMenuInteractionActive];
-  if (!v4)
+  completionCopy = completion;
+  isContextMenuInteractionActive = [(SBIconView *)self isContextMenuInteractionActive];
+  if (!isContextMenuInteractionActive)
   {
-    v8 = v10;
-    if (!v10)
+    v8 = completionCopy;
+    if (!completionCopy)
     {
       goto LABEL_9;
     }
 
-    v4 = v10[2](v10);
+    isContextMenuInteractionActive = completionCopy[2](completionCopy);
     goto LABEL_8;
   }
 
-  if (v10)
+  if (completionCopy)
   {
     performAfterContextMenuBlocks = self->_performAfterContextMenuBlocks;
-    v6 = [v10 copy];
+    v6 = [completionCopy copy];
     v7 = _Block_copy(v6);
     [(NSMutableArray *)performAfterContextMenuBlocks addObject:v7];
   }
 
-  v4 = [(SBIconView *)self isDragging];
-  v8 = v10;
-  if ((v4 & 1) == 0)
+  isContextMenuInteractionActive = [(SBIconView *)self isDragging];
+  v8 = completionCopy;
+  if ((isContextMenuInteractionActive & 1) == 0)
   {
-    v9 = [(SBIconView *)self contextMenuInteraction];
-    [v9 dismissMenu];
+    contextMenuInteraction = [(SBIconView *)self contextMenuInteraction];
+    [contextMenuInteraction dismissMenu];
 
 LABEL_8:
-    v8 = v10;
+    v8 = completionCopy;
   }
 
 LABEL_9:
 
-  MEMORY[0x1EEE66BB8](v4, v8);
+  MEMORY[0x1EEE66BB8](isContextMenuInteractionActive, v8);
 }
 
-- (void)setFetchedApplicationShortcutItems:(id)a3
+- (void)setFetchedApplicationShortcutItems:(id)items
 {
-  v6 = a3;
+  itemsCopy = items;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [itemsCopy copy];
     fetchedApplicationShortcutItems = self->_fetchedApplicationShortcutItems;
     self->_fetchedApplicationShortcutItems = v4;
   }
@@ -6723,16 +6723,16 @@ uint64_t __45__SBIconView__multitaskingAppShortcutService__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)_startTrackingSupportedMultitaskingShortcutActionsIfAppropriateWithOldIcon:(id)a3
+- (void)_startTrackingSupportedMultitaskingShortcutActionsIfAppropriateWithOldIcon:(id)icon
 {
-  v13 = a3;
-  v5 = [(SBIconView *)self icon];
+  iconCopy = icon;
+  icon = [(SBIconView *)self icon];
   v6 = __sb__runningInSpringBoard();
   v7 = v6;
   if (v6)
   {
-    v8 = SBFEffectiveDeviceClass();
-    if (v8 != 2)
+    userInterfaceIdiom = SBFEffectiveDeviceClass();
+    if (userInterfaceIdiom != 2)
     {
       goto LABEL_14;
     }
@@ -6740,9 +6740,9 @@ uint64_t __45__SBIconView__multitaskingAppShortcutService__block_invoke()
 
   else
   {
-    v3 = [MEMORY[0x1E69DC938] currentDevice];
-    v8 = [v3 userInterfaceIdiom];
-    if (v8 != 1)
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
+    if (userInterfaceIdiom != 1)
     {
 LABEL_13:
 
@@ -6750,7 +6750,7 @@ LABEL_13:
     }
   }
 
-  v9 = (SBHIsRunningInSpringBoard(v8) ^ 1) & __SBIconViewOwnerWantsMultitaskingKeyboardShortcuts;
+  v9 = (SBHIsRunningInSpringBoard(userInterfaceIdiom) ^ 1) & __SBIconViewOwnerWantsMultitaskingKeyboardShortcuts;
   if (v7)
   {
     if (!v9)
@@ -6768,18 +6768,18 @@ LABEL_13:
     }
   }
 
-  if ([v5 isApplicationIcon])
+  if ([icon isApplicationIcon])
   {
-    v10 = [v5 applicationBundleID];
-    v11 = [(SBIconView *)self _multitaskingAppShortcutService];
-    [v11 startObservingSupportedShortcutsForBundleIdentifier:v10];
+    applicationBundleID = [icon applicationBundleID];
+    _multitaskingAppShortcutService = [(SBIconView *)self _multitaskingAppShortcutService];
+    [_multitaskingAppShortcutService startObservingSupportedShortcutsForBundleIdentifier:applicationBundleID];
   }
 
-  if ([v13 isApplicationIcon])
+  if ([iconCopy isApplicationIcon])
   {
-    v3 = [v13 applicationBundleID];
-    v12 = [(SBIconView *)self _multitaskingAppShortcutService];
-    [v12 stopObservingSupportedShortcutsForBundleIdentifier:v3];
+    currentDevice = [iconCopy applicationBundleID];
+    _multitaskingAppShortcutService2 = [(SBIconView *)self _multitaskingAppShortcutService];
+    [_multitaskingAppShortcutService2 stopObservingSupportedShortcutsForBundleIdentifier:currentDevice];
 
     goto LABEL_13;
   }
@@ -6787,9 +6787,9 @@ LABEL_13:
 LABEL_14:
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
+  senderCopy = sender;
   if (__sb__runningInSpringBoard())
   {
     if (SBFEffectiveDeviceClass() != 2 || __SBIconViewOwnerWantsMultitaskingKeyboardShortcuts != 1)
@@ -6800,8 +6800,8 @@ LABEL_14:
     goto LABEL_7;
   }
 
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v7 userInterfaceIdiom] != 1)
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom] != 1)
   {
 LABEL_19:
 
@@ -6813,13 +6813,13 @@ LABEL_19:
   if (v8)
   {
 LABEL_7:
-    v7 = [(SBIconView *)self icon];
-    if ((SBHIsRunningInSpringBoard(v7) & 1) != 0 || ![v7 isApplicationIcon] || (-[SBIconView _multitaskingAppShortcutService](self, "_multitaskingAppShortcutService"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "applicationBundleID"), v10 = objc_claimAutoreleasedReturnValue(), v11 = SBHMultitaskingApplicationSupportedShortcutActionMaskFromSBSMask(objc_msgSend(v9, "supportedShortcutActionsForBundleIdentifier:", v10)), v10, v9, !v11))
+    currentDevice = [(SBIconView *)self icon];
+    if ((SBHIsRunningInSpringBoard(currentDevice) & 1) != 0 || ![currentDevice isApplicationIcon] || (-[SBIconView _multitaskingAppShortcutService](self, "_multitaskingAppShortcutService"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(currentDevice, "applicationBundleID"), v10 = objc_claimAutoreleasedReturnValue(), v11 = SBHMultitaskingApplicationSupportedShortcutActionMaskFromSBSMask(objc_msgSend(v9, "supportedShortcutActionsForBundleIdentifier:", v10)), v10, v9, !v11))
     {
-      v12 = [(SBIconView *)self contextMenuDelegate];
+      contextMenuDelegate = [(SBIconView *)self contextMenuDelegate];
       if (objc_opt_respondsToSelector())
       {
-        v11 = [v12 supportedMultitaskingShortcutActionsForIconView:self];
+        v11 = [contextMenuDelegate supportedMultitaskingShortcutActionsForIconView:self];
       }
 
       else
@@ -6828,29 +6828,29 @@ LABEL_7:
       }
     }
 
-    if (sel__handleMakeFullscreenKeyShortcut_ == a3)
+    if (sel__handleMakeFullscreenKeyShortcut_ == action)
     {
       v14 = 1;
     }
 
-    else if (sel__handleMakeSplitLeftKeyShortcut_ == a3)
+    else if (sel__handleMakeSplitLeftKeyShortcut_ == action)
     {
       v14 = 2;
     }
 
-    else if (sel__handleMakeSplitRightKeyShortcut_ == a3)
+    else if (sel__handleMakeSplitRightKeyShortcut_ == action)
     {
       v14 = 4;
     }
 
-    else if (sel__handleActivateAppExposeKeyShortcut_ == a3)
+    else if (sel__handleActivateAppExposeKeyShortcut_ == action)
     {
       v14 = 8;
     }
 
     else
     {
-      if (sel__handleAddWindowToSetCommand_ != a3)
+      if (sel__handleAddWindowToSetCommand_ != action)
       {
         goto LABEL_19;
       }
@@ -6866,107 +6866,107 @@ LABEL_7:
 LABEL_20:
   v16.receiver = self;
   v16.super_class = SBIconView;
-  v13 = [(SBIconView *)&v16 canPerformAction:a3 withSender:v6];
+  v13 = [(SBIconView *)&v16 canPerformAction:action withSender:senderCopy];
 LABEL_27:
 
   return v13;
 }
 
-- (void)_handleMakeFullscreenKeyShortcut:(id)a3
+- (void)_handleMakeFullscreenKeyShortcut:(id)shortcut
 {
-  v6 = [(SBIconView *)self icon];
-  if ([v6 isApplicationIcon])
+  icon = [(SBIconView *)self icon];
+  if ([icon isApplicationIcon])
   {
-    v4 = [(SBIconView *)self _multitaskingAppShortcutService];
-    v5 = [v6 applicationBundleID];
-    [v4 performMultitaskingShortcutAction:0 forBundleIdentifier:v5];
+    _multitaskingAppShortcutService = [(SBIconView *)self _multitaskingAppShortcutService];
+    applicationBundleID = [icon applicationBundleID];
+    [_multitaskingAppShortcutService performMultitaskingShortcutAction:0 forBundleIdentifier:applicationBundleID];
   }
 }
 
-- (void)_handleMakeSplitLeftKeyShortcut:(id)a3
+- (void)_handleMakeSplitLeftKeyShortcut:(id)shortcut
 {
-  v6 = [(SBIconView *)self icon];
-  if ([v6 isApplicationIcon])
+  icon = [(SBIconView *)self icon];
+  if ([icon isApplicationIcon])
   {
-    v4 = [(SBIconView *)self _multitaskingAppShortcutService];
-    v5 = [v6 applicationBundleID];
-    [v4 performMultitaskingShortcutAction:1 forBundleIdentifier:v5];
+    _multitaskingAppShortcutService = [(SBIconView *)self _multitaskingAppShortcutService];
+    applicationBundleID = [icon applicationBundleID];
+    [_multitaskingAppShortcutService performMultitaskingShortcutAction:1 forBundleIdentifier:applicationBundleID];
   }
 }
 
-- (void)_handleMakeSplitRightKeyShortcut:(id)a3
+- (void)_handleMakeSplitRightKeyShortcut:(id)shortcut
 {
-  v6 = [(SBIconView *)self icon];
-  if ([v6 isApplicationIcon])
+  icon = [(SBIconView *)self icon];
+  if ([icon isApplicationIcon])
   {
-    v4 = [(SBIconView *)self _multitaskingAppShortcutService];
-    v5 = [v6 applicationBundleID];
-    [v4 performMultitaskingShortcutAction:2 forBundleIdentifier:v5];
+    _multitaskingAppShortcutService = [(SBIconView *)self _multitaskingAppShortcutService];
+    applicationBundleID = [icon applicationBundleID];
+    [_multitaskingAppShortcutService performMultitaskingShortcutAction:2 forBundleIdentifier:applicationBundleID];
   }
 }
 
-- (void)_handleActivateAppExposeKeyShortcut:(id)a3
+- (void)_handleActivateAppExposeKeyShortcut:(id)shortcut
 {
-  v6 = [(SBIconView *)self icon];
-  if ([v6 isApplicationIcon])
+  icon = [(SBIconView *)self icon];
+  if ([icon isApplicationIcon])
   {
-    v4 = [(SBIconView *)self _multitaskingAppShortcutService];
-    v5 = [v6 applicationBundleID];
-    [v4 performMultitaskingShortcutAction:3 forBundleIdentifier:v5];
+    _multitaskingAppShortcutService = [(SBIconView *)self _multitaskingAppShortcutService];
+    applicationBundleID = [icon applicationBundleID];
+    [_multitaskingAppShortcutService performMultitaskingShortcutAction:3 forBundleIdentifier:applicationBundleID];
   }
 }
 
-- (void)_handleAddWindowToSetCommand:(id)a3
+- (void)_handleAddWindowToSetCommand:(id)command
 {
-  v6 = [(SBIconView *)self icon];
-  if ([v6 isApplicationIcon])
+  icon = [(SBIconView *)self icon];
+  if ([icon isApplicationIcon])
   {
-    v4 = [(SBIconView *)self _multitaskingAppShortcutService];
-    v5 = [v6 applicationBundleID];
-    [v4 performMultitaskingShortcutAction:4 forBundleIdentifier:v5];
+    _multitaskingAppShortcutService = [(SBIconView *)self _multitaskingAppShortcutService];
+    applicationBundleID = [icon applicationBundleID];
+    [_multitaskingAppShortcutService performMultitaskingShortcutAction:4 forBundleIdentifier:applicationBundleID];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     observers = self->_observers;
     v9 = v5;
     if (!observers)
     {
-      v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       v8 = self->_observers;
-      self->_observers = v7;
+      self->_observers = weakObjectsHashTable;
 
       observers = self->_observers;
     }
 
-    v4 = [(NSHashTable *)observers addObject:v9];
+    observerCopy = [(NSHashTable *)observers addObject:v9];
     v5 = v9;
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](observerCopy, v5);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
 }
 
-+ (double)labelAccessoryViewAdditionalRightMarginForType:(int64_t)a3
++ (double)labelAccessoryViewAdditionalRightMarginForType:(int64_t)type
 {
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [v4 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-  if (v5)
+  if (preferredContentSizeCategory)
   {
-    v6 = UIContentSizeCategoryCompareToCategory(v5, *MEMORY[0x1E69DDC70]);
+    v6 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC70]);
     v7 = 2.5;
     if (v6 == NSOrderedDescending)
     {
@@ -6979,7 +6979,7 @@ LABEL_27:
     v7 = 2.5;
   }
 
-  if ((a3 - 1) >= 2)
+  if ((type - 1) >= 2)
   {
     v8 = 0.0;
   }
@@ -7000,9 +7000,9 @@ LABEL_27:
   return v3 + v4;
 }
 
-+ (Class)defaultViewClassForLabelAccessoryType:(int64_t)a3
++ (Class)defaultViewClassForLabelAccessoryType:(int64_t)type
 {
-  if ((a3 - 1) > 3)
+  if ((type - 1) > 3)
   {
     v4 = 0;
   }
@@ -7015,13 +7015,13 @@ LABEL_27:
   return v4;
 }
 
-+ (CGSize)defaultIconViewSizeForIconImageSize:(CGSize)a3 configurationOptions:(unint64_t)a4
++ (CGSize)defaultIconViewSizeForIconImageSize:(CGSize)size configurationOptions:(unint64_t)options
 {
-  height = a3.height;
-  width = a3.width;
-  if ((a4 & 2) == 0)
+  height = size.height;
+  width = size.width;
+  if ((options & 2) == 0)
   {
-    [a1 _labelHeight];
+    [self _labelHeight];
     height = height + v6;
   }
 
@@ -7032,7 +7032,7 @@ LABEL_27:
   return result;
 }
 
-+ (CGPoint)defaultIconImageCenterForIconImageSize:(CGSize)a3
++ (CGPoint)defaultIconImageCenterForIconImageSize:(CGSize)size
 {
   UIRectGetCenter();
   result.y = v4;
@@ -7055,15 +7055,15 @@ LABEL_27:
 
 - (CGRect)_frameForLabelAccessory
 {
-  v3 = [(SBIconLabelView *)self->_labelView imageParameters];
-  v4 = [(SBIconView *)self _labelImageMetrics];
+  imageParameters = [(SBIconLabelView *)self->_labelView imageParameters];
+  _labelImageMetrics = [(SBIconView *)self _labelImageMetrics];
   [(SBIconView *)self _frameForLabel];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
   [(SBIconView *)self _frameForImageView];
-  [(SBIconView *)self _frameForLabelAccessoryViewWithLabelFrame:v4 metrics:v3 labelImageParameters:v6 imageFrame:v8, v10, v12, v13, v14, v15, v16];
+  [(SBIconView *)self _frameForLabelAccessoryViewWithLabelFrame:_labelImageMetrics metrics:imageParameters labelImageParameters:v6 imageFrame:v8, v10, v12, v13, v14, v15, v16];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -7080,23 +7080,23 @@ LABEL_27:
   return result;
 }
 
-- (CGRect)_frameForLabelAccessoryViewWithLabelFrame:(CGRect)a3 metrics:(id)a4 labelImageParameters:(id)a5 imageFrame:(CGRect)a6
+- (CGRect)_frameForLabelAccessoryViewWithLabelFrame:(CGRect)frame metrics:(id)metrics labelImageParameters:(id)parameters imageFrame:(CGRect)imageFrame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a5;
-  v13 = a4;
-  v14 = [v13 hasBaseline];
-  [v13 baselineOffsetFromBottom];
-  [v13 alignmentRectInsets];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  parametersCopy = parameters;
+  metricsCopy = metrics;
+  hasBaseline = [metricsCopy hasBaseline];
+  [metricsCopy baselineOffsetFromBottom];
+  [metricsCopy alignmentRectInsets];
   v16 = v15;
   v18 = v17;
   v48 = v20;
   v49 = v19;
 
-  [v12 maxSize];
+  [parametersCopy maxSize];
   v22 = v21;
 
   v52 = x;
@@ -7118,15 +7118,15 @@ LABEL_27:
   v55 = v27;
   [objc_opt_class() labelAccessoryViewBaseRightMargin];
   [objc_opt_class() labelAccessoryViewAdditionalRightMarginForType:self->_displayedLabelAccessoryType];
-  v29 = [(SBIconLabelAccessoryView *)self->_labelAccessoryView hasBaseline];
-  if (v29)
+  hasBaseline2 = [(SBIconLabelAccessoryView *)self->_labelAccessoryView hasBaseline];
+  if (hasBaseline2)
   {
     [(SBIconLabelAccessoryView *)self->_labelAccessoryView baselineOffsetFromBottom];
     v23 = v30;
   }
 
-  v31 = [(SBIconView *)self traitCollection];
-  [v31 displayScale];
+  traitCollection = [(SBIconView *)self traitCollection];
+  [traitCollection displayScale];
 
   if ((*(self + 555) & 2) != 0)
   {
@@ -7136,7 +7136,7 @@ LABEL_27:
     UICeilToScale();
     v39 = v38;
     [(SBIconView *)self _labelBaselineOffsetFromImage];
-    CGRectGetMaxY(a6);
+    CGRectGetMaxY(imageFrame);
     v40 = v54;
     UICeilToScale();
   }
@@ -7144,12 +7144,12 @@ LABEL_27:
   else
   {
     v51 = y;
-    v32 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
     v33 = v52 + v18;
     v34 = y + v16;
     v35 = width - (v18 + v48);
     v36 = height - (v16 + v49);
-    if (v32 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       CGRectGetMaxX(*&v33);
     }
@@ -7163,7 +7163,7 @@ LABEL_27:
     UIFloorToScale();
     v39 = v42;
     v40 = v54;
-    if ((v14 & v29) != 1)
+    if ((hasBaseline & hasBaseline2) != 1)
     {
       UIFloorToScale();
       v43 = v51 + v44;
@@ -7190,7 +7190,7 @@ LABEL_14:
 {
   if (self->_closeBox)
   {
-    v3 = [(SBIconView *)self currentImageView];
+    currentImageView = [(SBIconView *)self currentImageView];
     customIconImageViewController = self->_customIconImageViewController;
     if (!customIconImageViewController)
     {
@@ -7203,8 +7203,8 @@ LABEL_14:
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(SBIconView *)self contentContainerView];
-    [v14 convertRect:v3 fromView:{v7, v9, v11, v13}];
+    contentContainerView = [(SBIconView *)self contentContainerView];
+    [contentContainerView convertRect:currentImageView fromView:{v7, v9, v11, v13}];
     v16 = v15;
     v18 = v17;
     v20 = v19;
@@ -7212,13 +7212,13 @@ LABEL_14:
 
     [(SBIconView *)self iconImageInfo];
     v24 = v23 + (v23 + 2.66666667) * -0.707106781;
-    v25 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
 
     v26 = v16;
     v27 = v18;
     v28 = v20;
     v29 = v22;
-    if (v25 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v30 = CGRectGetMaxX(*&v26) - v24;
     }
@@ -7248,13 +7248,13 @@ LABEL_14:
   return result;
 }
 
-- (void)setAllIconElementsButLabelHidden:(BOOL)a3
+- (void)setAllIconElementsButLabelHidden:(BOOL)hidden
 {
   v7 = *(self + 558);
-  if (((((v7 & 0x20) == 0) ^ a3) & 1) == 0)
+  if (((((v7 & 0x20) == 0) ^ hidden) & 1) == 0)
   {
     v10 = v3;
-    if (a3)
+    if (hidden)
     {
       v9 = 32;
     }
@@ -7271,42 +7271,42 @@ LABEL_14:
   }
 }
 
-- (void)setUserVisibilityStatus:(unint64_t)a3
+- (void)setUserVisibilityStatus:(unint64_t)status
 {
   v4 = *(self + 279);
-  if (((v4 >> 7) & 3) != a3)
+  if (((v4 >> 7) & 3) != status)
   {
-    *(self + 279) = v4 & 0xFE7F | ((a3 & 3) << 7);
-    v6 = [(SBIconView *)self customIconImageViewController];
+    *(self + 279) = v4 & 0xFE7F | ((status & 3) << 7);
+    customIconImageViewController = [(SBIconView *)self customIconImageViewController];
     if (objc_opt_respondsToSelector())
     {
-      [v6 setUserVisibilityStatus:a3];
+      [customIconImageViewController setUserVisibilityStatus:status];
     }
   }
 }
 
-- (void)setApproximateLayoutPosition:(SBIconApproximateLayoutPosition)a3
+- (void)setApproximateLayoutPosition:(SBIconApproximateLayoutPosition)position
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = position.vertical;
+  horizontal = position.horizontal;
   p_approximateLayoutPosition = &self->_approximateLayoutPosition;
-  if (!SBIconApproximateLayoutPositionEqualToApproximateLayoutPosition(self->_approximateLayoutPosition.horizontal, self->_approximateLayoutPosition.vertical, a3.horizontal, a3.vertical))
+  if (!SBIconApproximateLayoutPositionEqualToApproximateLayoutPosition(self->_approximateLayoutPosition.horizontal, self->_approximateLayoutPosition.vertical, position.horizontal, position.vertical))
   {
     p_approximateLayoutPosition->horizontal = horizontal;
     p_approximateLayoutPosition->vertical = vertical;
-    v7 = [(SBIconView *)self customIconImageViewController];
+    customIconImageViewController = [(SBIconView *)self customIconImageViewController];
     if (objc_opt_respondsToSelector())
     {
-      [v7 setApproximateLayoutPosition:{horizontal, vertical}];
+      [customIconImageViewController setApproximateLayoutPosition:{horizontal, vertical}];
     }
   }
 }
 
-+ (double)defaultMaxLabelWidthDeltaForContentSizeCategory:(id)a3
++ (double)defaultMaxLabelWidthDeltaForContentSizeCategory:(id)category
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && UIContentSizeCategoryIsAccessibilityCategory(v5))
+  categoryCopy = category;
+  v6 = categoryCopy;
+  if (categoryCopy && UIContentSizeCategoryIsAccessibilityCategory(categoryCopy))
   {
     v7 = __sb__runningInSpringBoard();
     v8 = v7;
@@ -7321,8 +7321,8 @@ LABEL_14:
 
     else
     {
-      v3 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v3 userInterfaceIdiom])
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice userInterfaceIdiom])
       {
         v9 = 27.5;
         goto LABEL_23;
@@ -7338,8 +7338,8 @@ LABEL_14:
 
     else
     {
-      v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v4 _referenceBounds];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -7362,9 +7362,9 @@ LABEL_14:
   v8 = v10;
   if (!v10)
   {
-    v3 = [MEMORY[0x1E69DC938] currentDevice];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
     v9 = 27.0;
-    if ([v3 userInterfaceIdiom])
+    if ([currentDevice userInterfaceIdiom])
     {
       goto LABEL_23;
     }
@@ -7379,8 +7379,8 @@ LABEL_15:
 
     else
     {
-      v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v4 _referenceBounds];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -7434,8 +7434,8 @@ LABEL_24:
 
   else
   {
-    v3 = [MEMORY[0x1E69DC938] currentDevice];
-    v2 = [v3 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v2 = [currentDevice userInterfaceIdiom] == 1;
   }
 
   result = 26.0;
@@ -7447,13 +7447,13 @@ LABEL_24:
   return result;
 }
 
-+ (CGSize)maxLabelSizeForIconImageSize:(CGSize)a3
++ (CGSize)maxLabelSizeForIconImageSize:(CGSize)size
 {
-  width = a3.width;
-  v5 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  [a1 defaultMaxLabelWidthDeltaForContentSizeCategory:v5];
+  width = size.width;
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  [self defaultMaxLabelWidthDeltaForContentSizeCategory:preferredContentSizeCategory];
   v7 = width + v6;
-  [a1 defaultMaxLabelHeight];
+  [self defaultMaxLabelHeight];
   v9 = v8;
 
   v10 = v7;
@@ -7463,12 +7463,12 @@ LABEL_24:
   return result;
 }
 
-+ (CGSize)maxLabelSizeForIconImageSize:(CGSize)a3 contentSizeCategory:(id)a4 options:(unint64_t)a5
++ (CGSize)maxLabelSizeForIconImageSize:(CGSize)size contentSizeCategory:(id)category options:(unint64_t)options
 {
-  width = a3.width;
-  [a1 defaultMaxLabelWidthDeltaForContentSizeCategory:{a4, a5, a3.width, a3.height}];
+  width = size.width;
+  [self defaultMaxLabelWidthDeltaForContentSizeCategory:{category, options, size.width, size.height}];
   v8 = width + v7;
-  [a1 defaultMaxLabelHeight];
+  [self defaultMaxLabelHeight];
   v10 = v9;
   v11 = v8;
   result.height = v10;
@@ -7476,33 +7476,33 @@ LABEL_24:
   return result;
 }
 
-+ (id)labelConfigurationForListLayout:(id)a3 contentSizeCategory:(id)a4 options:(unint64_t)a5
++ (id)labelConfigurationForListLayout:(id)layout contentSizeCategory:(id)category options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
+  layoutCopy = layout;
+  categoryCopy = category;
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v8 labelVisualConfigurationForContentSizeCategory:v9 options:a5];
+    v10 = [layoutCopy labelVisualConfigurationForContentSizeCategory:categoryCopy options:options];
   }
 
   else
   {
     v10 = objc_alloc_init(SBHIconLabelVisualConfiguration);
-    [a1 defaultMaxLabelHeight];
+    [self defaultMaxLabelHeight];
     [(SBHIconLabelVisualConfiguration *)v10 setHeight:?];
-    [a1 defaultMaxLabelWidthDeltaForContentSizeCategory:v9];
+    [self defaultMaxLabelWidthDeltaForContentSizeCategory:categoryCopy];
     [(SBHIconLabelVisualConfiguration *)v10 setExtraWidth:?];
   }
 
   return v10;
 }
 
-+ (CGSize)maxLabelSizeForListLayout:(id)a3 contentSizeCategory:(id)a4 options:(unint64_t)a5
++ (CGSize)maxLabelSizeForListLayout:(id)layout contentSizeCategory:(id)category options:(unint64_t)options
 {
-  v8 = a4;
-  v9 = a3;
-  [v9 iconImageInfo];
-  [a1 maxLabelSizeForListLayout:v9 iconImageSize:v8 contentSizeCategory:a5 options:?];
+  categoryCopy = category;
+  layoutCopy = layout;
+  [layoutCopy iconImageInfo];
+  [self maxLabelSizeForListLayout:layoutCopy iconImageSize:categoryCopy contentSizeCategory:options options:?];
   v11 = v10;
   v13 = v12;
 
@@ -7513,16 +7513,16 @@ LABEL_24:
   return result;
 }
 
-+ (CGSize)maxLabelSizeForListLayout:(id)a3 iconImageSize:(CGSize)a4 contentSizeCategory:(id)a5 options:(unint64_t)a6
++ (CGSize)maxLabelSizeForListLayout:(id)layout iconImageSize:(CGSize)size contentSizeCategory:(id)category options:(unint64_t)options
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  v12 = a5;
-  v13 = [a1 methodForSelector:sel_maxLabelSizeForIconImageSize_];
+  height = size.height;
+  width = size.width;
+  layoutCopy = layout;
+  categoryCopy = category;
+  v13 = [self methodForSelector:sel_maxLabelSizeForIconImageSize_];
   if (v13 == [SBIconView methodForSelector:sel_maxLabelSizeForIconImageSize_])
   {
-    v18 = [a1 labelConfigurationForListLayout:v11 contentSizeCategory:v12 options:a6];
+    v18 = [self labelConfigurationForListLayout:layoutCopy contentSizeCategory:categoryCopy options:options];
     [v18 extraWidth];
     v15 = width + v19;
     [v18 height];
@@ -7531,7 +7531,7 @@ LABEL_24:
 
   else
   {
-    [a1 maxLabelSizeForIconImageSize:{width, height}];
+    [self maxLabelSizeForIconImageSize:{width, height}];
     v15 = v14;
     v17 = v16;
   }
@@ -7545,54 +7545,54 @@ LABEL_24:
 
 - (id)displayedLabelFont
 {
-  v2 = [(SBIconLabelView *)self->_labelView imageParameters];
-  v3 = [v2 font];
+  imageParameters = [(SBIconLabelView *)self->_labelView imageParameters];
+  font = [imageParameters font];
 
-  return v3;
+  return font;
 }
 
-- (void)configureLabelImageParametersBuilder:(id)a3
+- (void)configureLabelImageParametersBuilder:(id)builder
 {
-  v11 = a3;
-  v4 = [(SBIconView *)self icon];
-  v5 = [(SBIconView *)self location];
-  [objc_opt_class() configureLabelImageParametersBuilder:v11 forIcon:v4 location:v5];
-  [v11 setIconView:self];
-  v6 = [(SBIconView *)self legibilitySettings];
-  [v11 setLegibilitySettings:v6];
+  builderCopy = builder;
+  icon = [(SBIconView *)self icon];
+  location = [(SBIconView *)self location];
+  [objc_opt_class() configureLabelImageParametersBuilder:builderCopy forIcon:icon location:location];
+  [builderCopy setIconView:self];
+  legibilitySettings = [(SBIconView *)self legibilitySettings];
+  [builderCopy setLegibilitySettings:legibilitySettings];
 
-  [v11 setLabelAccessoryType:{-[SBIconView currentLabelAccessoryType](self, "currentLabelAccessoryType")}];
-  v7 = [(SBIconView *)self contentSizeCategory];
-  [v11 setContentSizeCategory:v7];
-  v8 = [(SBIconView *)self labelFont];
-  if (v8)
+  [builderCopy setLabelAccessoryType:{-[SBIconView currentLabelAccessoryType](self, "currentLabelAccessoryType")}];
+  contentSizeCategory = [(SBIconView *)self contentSizeCategory];
+  [builderCopy setContentSizeCategory:contentSizeCategory];
+  labelFont = [(SBIconView *)self labelFont];
+  if (labelFont)
   {
-    [v11 setFont:v8];
+    [builderCopy setFont:labelFont];
   }
 
   if ((*(self + 553) & 0x40) != 0 && (*(self + 553) & 0x80000000) == 0)
   {
-    v9 = [v4 displayNameForObscuredDisabledLaunchForLocation:v5];
-    [v11 setOverrideText:v9];
+    v9 = [icon displayNameForObscuredDisabledLaunchForLocation:location];
+    [builderCopy setOverrideText:v9];
   }
 
-  v10 = [(SBIconView *)self iconLabelViewFactory];
-  [objc_opt_class() configureLabelImageParametersBuilder:v11];
+  iconLabelViewFactory = [(SBIconView *)self iconLabelViewFactory];
+  [objc_opt_class() configureLabelImageParametersBuilder:builderCopy];
 }
 
-- (void)_updateLabelAnimated:(BOOL)a3
+- (void)_updateLabelAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(SBIconView *)self _shouldShowLabel])
   {
-    v5 = [(SBIconView *)self _labelImageParameters];
-    v6 = [v5 text];
-    v7 = [v6 length] != 0;
+    _labelImageParameters = [(SBIconView *)self _labelImageParameters];
+    text = [_labelImageParameters text];
+    v7 = [text length] != 0;
   }
 
   else
   {
-    v5 = 0;
+    _labelImageParameters = 0;
     v7 = 0;
   }
 
@@ -7603,52 +7603,52 @@ LABEL_24:
   {
     v28 = v9;
     [(SBIconView *)self _updateLabelAccessoryView];
-    labelAccessoryView = [(SBIconView *)self _legibilitySettingsWithParameters:v5];
-    v12 = [(SBIconView *)self iconLabelViewFactory];
-    v13 = [(SBIconView *)self contentContainerView];
+    labelAccessoryView = [(SBIconView *)self _legibilitySettingsWithParameters:_labelImageParameters];
+    iconLabelViewFactory = [(SBIconView *)self iconLabelViewFactory];
+    contentContainerView = [(SBIconView *)self contentContainerView];
     labelView = self->_labelView;
     if (labelView)
     {
-      v15 = [v12 canUseIconLabelView:labelView toDisplayLabelWithSettings:labelAccessoryView imageParameters:v5 forIconView:self];
+      v15 = [iconLabelViewFactory canUseIconLabelView:labelView toDisplayLabelWithSettings:labelAccessoryView imageParameters:_labelImageParameters forIconView:self];
       v16 = self->_labelView;
       if (v15)
       {
-        [(SBIconLabelView *)v16 updateIconLabelWithSettings:labelAccessoryView imageParameters:v5];
+        [(SBIconLabelView *)v16 updateIconLabelWithSettings:labelAccessoryView imageParameters:_labelImageParameters];
 LABEL_17:
 
         v10 = v28;
         goto LABEL_18;
       }
 
-      if (v16 && !v3)
+      if (v16 && !animatedCopy)
       {
         [(SBIconLabelView *)v16 removeFromSuperview];
       }
     }
 
     v27 = v8;
-    v18 = [v12 iconLabelViewWithSettings:labelAccessoryView imageParameters:v5 forIconView:self];
+    v18 = [iconLabelViewFactory iconLabelViewWithSettings:labelAccessoryView imageParameters:_labelImageParameters forIconView:self];
     v19 = self->_labelView;
     self->_labelView = v18;
 
     [(SBIconLabelView *)self->_labelView setAccessibilityIdentifier:@"label-view"];
-    v20 = [(SBIconView *)self currentImageView];
+    currentImageView = [(SBIconView *)self currentImageView];
     v21 = self->_labelView;
-    if (v20)
+    if (currentImageView)
     {
-      [v13 insertSubview:v21 belowSubview:v20];
+      [contentContainerView insertSubview:v21 belowSubview:currentImageView];
     }
 
     else
     {
-      [v13 addSubview:v21];
+      [contentContainerView addSubview:v21];
     }
 
     v8 = v27;
     goto LABEL_17;
   }
 
-  if (!v3)
+  if (!animatedCopy)
   {
     goto LABEL_19;
   }
@@ -7664,7 +7664,7 @@ LABEL_19:
   [(SBIconLabelView *)self->_labelView setHidden:!v7];
   [(SBIconLabelAccessoryView *)self->_labelAccessoryView setHidden:!v7];
   [(SBIconView *)self effectiveIconLabelAlpha];
-  if (v3)
+  if (animatedCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -7716,60 +7716,60 @@ void __35__SBIconView__updateLabelAnimated___block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (id)labelImageWithParameters:(id)a3
+- (id)labelImageWithParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [(SBIconView *)self reuseDelegate];
+  parametersCopy = parameters;
+  reuseDelegate = [(SBIconView *)self reuseDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 iconView:self labelImageWithParameters:v4];
+    [reuseDelegate iconView:self labelImageWithParameters:parametersCopy];
   }
 
   else
   {
-    [SBIconLabelImage imageWithParameters:v4];
+    [SBIconLabelImage imageWithParameters:parametersCopy];
   }
   v6 = ;
 
   return v6;
 }
 
-- (id)labelContentWithParameters:(id)a3
+- (id)labelContentWithParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [(SBIconView *)self reuseDelegate];
+  parametersCopy = parameters;
+  reuseDelegate = [(SBIconView *)self reuseDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 iconView:self labelContentWithParameters:v4];
+    [reuseDelegate iconView:self labelContentWithParameters:parametersCopy];
   }
 
   else
   {
-    [SBIconLabelImage imageWithParameters:v4];
+    [SBIconLabelImage imageWithParameters:parametersCopy];
   }
   v6 = ;
 
   return v6;
 }
 
-- (void)setLabelStyle:(int64_t)a3
+- (void)setLabelStyle:(int64_t)style
 {
   v4 = *(self + 558);
-  if ((8 * v4) >> 6 != a3)
+  if ((8 * v4) >> 6 != style)
   {
-    *(self + 558) = v4 & 0xE7 | (8 * (a3 & 3));
+    *(self + 558) = v4 & 0xE7 | (8 * (style & 3));
     [(SBIconView *)self _toggleGroupBlendingIfNecessary];
 
     [(SBIconView *)self _updateLabel];
   }
 }
 
-- (void)setDisplaysIconStatusInLabel:(BOOL)a3
+- (void)setDisplaysIconStatusInLabel:(BOOL)label
 {
   v3 = *(self + 558);
-  if (((((v3 & 0x40) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 0x40) == 0) ^ label) & 1) == 0)
   {
-    if (a3)
+    if (label)
     {
       v4 = 64;
     }
@@ -7786,13 +7786,13 @@ void __35__SBIconView__updateLabelAnimated___block_invoke(uint64_t a1, void *a2,
 
 - (double)lastLineBaseline
 {
-  v3 = [(SBIconView *)self _labelImageMetrics];
+  _labelImageMetrics = [(SBIconView *)self _labelImageMetrics];
   [(SBIconView *)self _frameForLabel];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 baselineOffsetFromBottom];
+  [_labelImageMetrics baselineOffsetFromBottom];
   v13 = v12;
   v16.origin.x = v5;
   v16.origin.y = v7;
@@ -7819,26 +7819,26 @@ void __35__SBIconView__updateLabelAnimated___block_invoke(uint64_t a1, void *a2,
   return CGRectGetMaxY(v14) - v12;
 }
 
-- (void)setIconLabelViewFactory:(id)a3
+- (void)setIconLabelViewFactory:(id)factory
 {
-  v5 = a3;
-  if (self->_iconLabelViewFactory != v5)
+  factoryCopy = factory;
+  if (self->_iconLabelViewFactory != factoryCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_iconLabelViewFactory, a3);
+    v6 = factoryCopy;
+    objc_storeStrong(&self->_iconLabelViewFactory, factory);
     [(SBIconView *)self _updateLabel];
-    v5 = v6;
+    factoryCopy = v6;
   }
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v24 = a3;
-  if (![(SBHLegibilitySettings *)self->_legibilitySettings isEqual:v24])
+  settingsCopy = settings;
+  if (![(SBHLegibilitySettings *)self->_legibilitySettings isEqual:settingsCopy])
   {
-    if (v24)
+    if (settingsCopy)
     {
-      [SBHLegibilitySettings legibilitySettingsForLegibilitySettings:v24];
+      [SBHLegibilitySettings legibilitySettingsForLegibilitySettings:settingsCopy];
     }
 
     else
@@ -7853,40 +7853,40 @@ void __35__SBIconView__updateLabelAnimated___block_invoke(uint64_t a1, void *a2,
     v7 = v6;
     v9 = v8;
     v10 = objc_opt_class();
-    v11 = [(SBIconView *)self contentSizeCategory];
-    [v10 labelMaximumHeightForContentSizeCategory:v11];
+    contentSizeCategory = [(SBIconView *)self contentSizeCategory];
+    [v10 labelMaximumHeightForContentSizeCategory:contentSizeCategory];
     v13 = v12;
 
-    v14 = [(SBIconView *)self _screen];
+    _screen = [(SBIconView *)self _screen];
 
-    if (v14)
+    if (_screen)
     {
       if (v9 < v13)
       {
         v9 = v13;
       }
 
-      v15 = [(SBIconView *)self iconLabelViewFactory];
+      iconLabelViewFactory = [(SBIconView *)self iconLabelViewFactory];
       v16 = self->_legibilitySettings;
-      v17 = [(SBIconView *)self _screen];
-      [v17 scale];
-      [v15 prewarmForSettings:v16 maxSize:v7 minSize:v9 scale:{10.0, v9, v18}];
+      _screen2 = [(SBIconView *)self _screen];
+      [_screen2 scale];
+      [iconLabelViewFactory prewarmForSettings:v16 maxSize:v7 minSize:v9 scale:{10.0, v9, v18}];
     }
 
-    v19 = [(SBHLegibilitySettings *)self->_legibilitySettings style];
-    v20 = [(SBHomeScreenButton *)self->_closeBox materialView];
-    [v20 setLegibilityStyle:v19];
+    style = [(SBHLegibilitySettings *)self->_legibilitySettings style];
+    materialView = [(SBHomeScreenButton *)self->_closeBox materialView];
+    [materialView setLegibilityStyle:style];
 
     [(SBHomeScreenButton *)self->_closeBox setLegibilitySettings:self->_legibilitySettings];
-    [(SBHIconResizeHandle *)self->_resizeHandle setDarkStyle:v19 == 2];
+    [(SBHIconResizeHandle *)self->_resizeHandle setDarkStyle:style == 2];
     labelAccessoryView = self->_labelAccessoryView;
     v22 = self->_legibilitySettings;
-    v23 = [(SBIconView *)self labelFont];
-    [(SBIconLabelAccessoryView *)labelAccessoryView updateWithLegibilitySettings:v22 labelFont:v23];
+    labelFont = [(SBIconView *)self labelFont];
+    [(SBIconLabelAccessoryView *)labelAccessoryView updateWithLegibilitySettings:v22 labelFont:labelFont];
 
     if (objc_opt_respondsToSelector())
     {
-      [(SBIconAccessoryView *)self->_accessoryView setLegibilityStyle:v19];
+      [(SBIconAccessoryView *)self->_accessoryView setLegibilityStyle:style];
     }
 
     [(SBIconView *)self _updateLabel];
@@ -7901,23 +7901,23 @@ void __35__SBIconView__updateLabelAnimated___block_invoke(uint64_t a1, void *a2,
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)_configureLabelAccessoryViewForType:(int64_t)a3
+- (void)_configureLabelAccessoryViewForType:(int64_t)type
 {
-  if (self->_displayedLabelAccessoryType != a3)
+  if (self->_displayedLabelAccessoryType != type)
   {
-    self->_displayedLabelAccessoryType = a3;
-    v15 = [(SBIconView *)self reuseDelegate];
+    self->_displayedLabelAccessoryType = type;
+    reuseDelegate = [(SBIconView *)self reuseDelegate];
     if (self->_labelAccessoryView)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v15 iconView:self willRemoveIconLabelAccessoryView:self->_labelAccessoryView];
+        [reuseDelegate iconView:self willRemoveIconLabelAccessoryView:self->_labelAccessoryView];
       }
 
-      v6 = [(SBIconLabelAccessoryView *)self->_labelAccessoryView superview];
-      v7 = [(SBIconView *)self contentContainerView];
+      superview = [(SBIconLabelAccessoryView *)self->_labelAccessoryView superview];
+      contentContainerView = [(SBIconView *)self contentContainerView];
 
-      if (v6 == v7)
+      if (superview == contentContainerView)
       {
         [(SBIconLabelAccessoryView *)self->_labelAccessoryView removeFromSuperview];
       }
@@ -7926,16 +7926,16 @@ void __35__SBIconView__updateLabelAnimated___block_invoke(uint64_t a1, void *a2,
       self->_labelAccessoryView = 0;
     }
 
-    if (a3)
+    if (type)
     {
       if (objc_opt_respondsToSelector())
       {
-        v9 = [v15 iconView:self iconLabelAccessoryViewOfType:a3];
+        v9 = [reuseDelegate iconView:self iconLabelAccessoryViewOfType:type];
       }
 
       else
       {
-        v9 = objc_alloc_init([objc_opt_class() defaultViewClassForLabelAccessoryType:a3]);
+        v9 = objc_alloc_init([objc_opt_class() defaultViewClassForLabelAccessoryType:type]);
       }
 
       v10 = self->_labelAccessoryView;
@@ -7943,27 +7943,27 @@ void __35__SBIconView__updateLabelAnimated___block_invoke(uint64_t a1, void *a2,
 
       [(SBIconLabelAccessoryView *)self->_labelAccessoryView setAlpha:1.0];
       v11 = self->_labelAccessoryView;
-      v12 = [(SBIconView *)self legibilitySettings];
-      v13 = [(SBIconView *)self labelFont];
-      [(SBIconLabelAccessoryView *)v11 updateWithLegibilitySettings:v12 labelFont:v13];
+      legibilitySettings = [(SBIconView *)self legibilitySettings];
+      labelFont = [(SBIconView *)self labelFont];
+      [(SBIconLabelAccessoryView *)v11 updateWithLegibilitySettings:legibilitySettings labelFont:labelFont];
 
-      v14 = [(SBIconView *)self contentContainerView];
-      [v14 addSubview:self->_labelAccessoryView];
+      contentContainerView2 = [(SBIconView *)self contentContainerView];
+      [contentContainerView2 addSubview:self->_labelAccessoryView];
     }
 
     [(SBIconView *)self _updateBrightness];
   }
 }
 
-- (void)_updateLabelAreaAnimated:(BOOL)a3
+- (void)_updateLabelAreaAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(SBIconView *)self _updateLabelAccessoryView];
 
-  [(SBIconView *)self _updateLabelAnimated:v3];
+  [(SBIconView *)self _updateLabelAnimated:animatedCopy];
 }
 
-- (void)_updateTooltipViewAnimated:(BOOL)a3
+- (void)_updateTooltipViewAnimated:(BOOL)animated
 {
   if ([(SBIconView *)self _shouldShowTooltip])
   {
@@ -7971,14 +7971,14 @@ void __35__SBIconView__updateLabelAnimated___block_invoke(uint64_t a1, void *a2,
     tooltipView = self->_tooltipView;
     self->_tooltipView = v4;
 
-    v6 = [(SBIconView *)self icon];
+    icon = [(SBIconView *)self icon];
 
-    if (v6)
+    if (icon)
     {
       v7 = self->_tooltipView;
-      v8 = [(SBIconView *)self icon];
-      v9 = [v8 displayName];
-      [(SBHTooltipView *)v7 setText:v9];
+      icon2 = [(SBIconView *)self icon];
+      displayName = [icon2 displayName];
+      [(SBHTooltipView *)v7 setText:displayName];
     }
 
     [(SBHTooltipView *)self->_tooltipView setHidden:1];
@@ -7988,12 +7988,12 @@ void __35__SBIconView__updateLabelAnimated___block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (void)setAllowsIconImageView:(BOOL)a3
+- (void)setAllowsIconImageView:(BOOL)view
 {
   v3 = *(self + 554);
-  if ((((v3 >= 0) ^ a3) & 1) == 0)
+  if ((((v3 >= 0) ^ view) & 1) == 0)
   {
-    if (a3)
+    if (view)
     {
       v4 = 0x80;
     }
@@ -8008,14 +8008,14 @@ void __35__SBIconView__updateLabelAnimated___block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (void)_updateIconImageViewAnimated:(BOOL)a3
+- (void)_updateIconImageViewAnimated:(BOOL)animated
 {
   if (!self->_icon)
   {
     return;
   }
 
-  v3 = a3;
+  animatedCopy = animated;
   if ([(SBIconView *)self isIconImageViewBorrowed])
   {
     return;
@@ -8029,9 +8029,9 @@ void __35__SBIconView__updateLabelAnimated___block_invoke(uint64_t a1, void *a2,
       return;
     }
 
-    v5 = [(SBIconView *)self expectedIconImageViewClass];
+    expectedIconImageViewClass = [(SBIconView *)self expectedIconImageViewClass];
     v6 = *(self + 560);
-    if (([(SBIconImageView *)self->_iconImageView isMemberOfClass:v5]& 1) != 0)
+    if (([(SBIconImageView *)self->_iconImageView isMemberOfClass:expectedIconImageViewClass]& 1) != 0)
     {
       if ((v6 & 2) == 0)
       {
@@ -8042,9 +8042,9 @@ void __35__SBIconView__updateLabelAnimated___block_invoke(uint64_t a1, void *a2,
     else
     {
       [(SBIconView *)self _destroyIconImageView];
-      v7 = [(SBIconView *)self _makeIconImageView];
+      _makeIconImageView = [(SBIconView *)self _makeIconImageView];
       iconImageView = self->_iconImageView;
-      self->_iconImageView = v7;
+      self->_iconImageView = _makeIconImageView;
     }
 
     [(SBIconView *)self _updateBrightness];
@@ -8064,20 +8064,20 @@ LABEL_14:
     icon = self->_icon;
     iconLocation = self->_iconLocation;
 
-    [(SBIconImageView *)v9 setIcon:icon location:iconLocation animated:v3];
+    [(SBIconImageView *)v9 setIcon:icon location:iconLocation animated:animatedCopy];
     return;
   }
 
   [(SBIconView *)self _destroyIconImageView];
 }
 
-- (void)setPrefersFlatImageLayers:(BOOL)a3
+- (void)setPrefersFlatImageLayers:(BOOL)layers
 {
   v4 = *(self + 560);
-  if (((((v4 & 8) == 0) ^ a3) & 1) == 0)
+  if (((((v4 & 8) == 0) ^ layers) & 1) == 0)
   {
-    v5 = a3;
-    if (a3)
+    layersCopy = layers;
+    if (layers)
     {
       v7 = 8;
     }
@@ -8089,21 +8089,21 @@ LABEL_14:
 
     *(self + 560) = v4 & 0xF7 | v7;
     [(SBIconImageView *)self->_iconImageView setPrefersFlatImageLayers:?];
-    v8 = [(SBIconView *)self customIconImageViewController];
+    customIconImageViewController = [(SBIconView *)self customIconImageViewController];
     if (objc_opt_respondsToSelector())
     {
-      [v8 setPrefersFlatImageLayers:v5];
+      [customIconImageViewController setPrefersFlatImageLayers:layersCopy];
     }
   }
 }
 
 - (void)updateImageContainerViewSubviewOrder
 {
-  v3 = [(SBIconView *)self imageContainerView];
-  v6 = v3;
+  imageContainerView = [(SBIconView *)self imageContainerView];
+  v6 = imageContainerView;
   if (self->_focusEffectPlatterView)
   {
-    [v3 bringSubviewToFront:?];
+    [imageContainerView bringSubviewToFront:?];
   }
 
   if (self->_dropGlow)
@@ -8116,29 +8116,29 @@ LABEL_14:
     [v6 bringSubviewToFront:?];
   }
 
-  v4 = [(SBIconAccessoryView *)self->_accessoryView superview];
+  superview = [(SBIconAccessoryView *)self->_accessoryView superview];
 
   v5 = v6;
-  if (v4 == v6)
+  if (superview == v6)
   {
     [v6 bringSubviewToFront:self->_accessoryView];
     v5 = v6;
   }
 }
 
-- (void)_insertIconImageView:(id)a3
+- (void)_insertIconImageView:(id)view
 {
-  v8 = a3;
+  viewCopy = view;
   if (![(SBIconView *)self isIconImageViewBorrowed])
   {
-    v4 = [(SBIconView *)self customIconImageViewController];
-    v5 = [v4 viewIfLoaded];
+    customIconImageViewController = [(SBIconView *)self customIconImageViewController];
+    viewIfLoaded = [customIconImageViewController viewIfLoaded];
 
-    if (v5 == v8)
+    if (viewIfLoaded == viewCopy)
     {
-      v6 = [(SBIconView *)self parentViewControllerForCustomIconImageViewController];
-      v7 = [v6 view];
-      if (v7 && (-[SBIconView isDescendantOfView:](self, "isDescendantOfView:", v7) & 1) == 0 && [v6 shouldAutomaticallyForwardAppearanceMethods])
+      parentViewControllerForCustomIconImageViewController = [(SBIconView *)self parentViewControllerForCustomIconImageViewController];
+      view = [parentViewControllerForCustomIconImageViewController view];
+      if (view && (-[SBIconView isDescendantOfView:](self, "isDescendantOfView:", view) & 1) == 0 && [parentViewControllerForCustomIconImageViewController shouldAutomaticallyForwardAppearanceMethods])
       {
         [(SBIconView *)self setDidDelayInsertingCustomImageViewDueToParentController:1];
 
@@ -8147,18 +8147,18 @@ LABEL_13:
       }
     }
 
-    v6 = [(SBIconView *)self imageContainerView];
-    [v6 bounds];
-    [v8 setFrame:?];
-    [v6 addSubview:v8];
+    parentViewControllerForCustomIconImageViewController = [(SBIconView *)self imageContainerView];
+    [parentViewControllerForCustomIconImageViewController bounds];
+    [viewCopy setFrame:?];
+    [parentViewControllerForCustomIconImageViewController addSubview:viewCopy];
     if (self->_closeBox)
     {
-      [v6 insertSubview:v8 belowSubview:?];
+      [parentViewControllerForCustomIconImageViewController insertSubview:viewCopy belowSubview:?];
     }
 
     if (self->_resizeHandle)
     {
-      [v6 bringSubviewToFront:?];
+      [parentViewControllerForCustomIconImageViewController bringSubviewToFront:?];
     }
 
     [(SBIconView *)self updateAccessoryViewContainerIfNecessary];
@@ -8168,48 +8168,48 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)_configureIconImageView:(id)a3
+- (void)_configureIconImageView:(id)view
 {
-  v9 = a3;
-  v4 = [(SBIconView *)self listLayoutProvider];
-  [v9 setListLayoutProvider:v4];
+  viewCopy = view;
+  listLayoutProvider = [(SBIconView *)self listLayoutProvider];
+  [viewCopy setListLayoutProvider:listLayoutProvider];
 
-  [v9 setShowsSquareCorners:(*(self + 557) >> 4) & 1];
-  [v9 setJittering:(*(self + 554) >> 1) & 1];
-  [v9 setIconView:self];
-  v5 = [(SBIconView *)self iconImageCache];
-  [v9 setIconImageCache:v5];
+  [viewCopy setShowsSquareCorners:(*(self + 557) >> 4) & 1];
+  [viewCopy setJittering:(*(self + 554) >> 1) & 1];
+  [viewCopy setIconView:self];
+  iconImageCache = [(SBIconView *)self iconImageCache];
+  [viewCopy setIconImageCache:iconImageCache];
 
-  [v9 setPrefersFlatImageLayers:{-[SBIconView prefersFlatImageLayers](self, "prefersFlatImageLayers")}];
-  v6 = [(SBIconView *)self overrideIconImageAppearance];
-  [v9 setOverrideIconImageAppearance:v6];
+  [viewCopy setPrefersFlatImageLayers:{-[SBIconView prefersFlatImageLayers](self, "prefersFlatImageLayers")}];
+  overrideIconImageAppearance = [(SBIconView *)self overrideIconImageAppearance];
+  [viewCopy setOverrideIconImageAppearance:overrideIconImageAppearance];
 
-  v7 = [(SBIconView *)self overrideIconImageStyleConfiguration];
-  [v9 setOverrideIconImageStyleConfiguration:v7];
+  overrideIconImageStyleConfiguration = [(SBIconView *)self overrideIconImageStyleConfiguration];
+  [viewCopy setOverrideIconImageStyleConfiguration:overrideIconImageStyleConfiguration];
 
-  [v9 setAllowsGlassGrouping:{-[SBIconView _isGlassGroupingEnabled](self, "_isGlassGroupingEnabled")}];
-  v8 = [(SBIconView *)self iconImageBackdropGroupName];
-  [v9 setBackdropGroupName:v8];
+  [viewCopy setAllowsGlassGrouping:{-[SBIconView _isGlassGroupingEnabled](self, "_isGlassGroupingEnabled")}];
+  iconImageBackdropGroupName = [(SBIconView *)self iconImageBackdropGroupName];
+  [viewCopy setBackdropGroupName:iconImageBackdropGroupName];
 
-  [v9 setGlassHidden:{-[SBIconView isIconImageGlassHidden](self, "isIconImageGlassHidden")}];
+  [viewCopy setGlassHidden:{-[SBIconView isIconImageGlassHidden](self, "isIconImageGlassHidden")}];
 }
 
-- (void)setIconImageBackdropGroupName:(id)a3
+- (void)setIconImageBackdropGroupName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [nameCopy copy];
     iconImageBackdropGroupName = self->_iconImageBackdropGroupName;
     self->_iconImageBackdropGroupName = v4;
 
-    [(SBIconImageView *)self->_iconImageView setBackdropGroupName:v6];
+    [(SBIconImageView *)self->_iconImageView setBackdropGroupName:nameCopy];
   }
 }
 
-- (void)setDidDelayInsertingCustomImageViewDueToParentController:(BOOL)a3
+- (void)setDidDelayInsertingCustomImageViewDueToParentController:(BOOL)controller
 {
-  if (a3)
+  if (controller)
   {
     v3 = 16;
   }
@@ -8222,30 +8222,30 @@ LABEL_14:
   *(self + 560) = *(self + 560) & 0xEF | v3;
 }
 
-- (void)setOverrideCustomIconImageViewController:(id)a3
+- (void)setOverrideCustomIconImageViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_overrideCustomIconImageViewController != v5)
+  controllerCopy = controller;
+  if (self->_overrideCustomIconImageViewController != controllerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_overrideCustomIconImageViewController, a3);
+    v6 = controllerCopy;
+    objc_storeStrong(&self->_overrideCustomIconImageViewController, controller);
     [(SBIconView *)self _updateIconImageViewAnimated:0];
-    v5 = v6;
+    controllerCopy = v6;
   }
 }
 
 - (BOOL)shouldAnimateFrameOfIconImageView
 {
-  v3 = [(SBIconView *)self shouldUpdateFrameOfIconImageView];
-  if (v3)
+  shouldUpdateFrameOfIconImageView = [(SBIconView *)self shouldUpdateFrameOfIconImageView];
+  if (shouldUpdateFrameOfIconImageView)
   {
-    LOBYTE(v3) = self->_customIconImageViewController == 0;
+    LOBYTE(shouldUpdateFrameOfIconImageView) = self->_customIconImageViewController == 0;
   }
 
-  return v3;
+  return shouldUpdateFrameOfIconImageView;
 }
 
-- (id)borrowIconImageViewWithOptions:(unint64_t)a3
+- (id)borrowIconImageViewWithOptions:(unint64_t)options
 {
   v5 = SBLogIcon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -8254,17 +8254,17 @@ LABEL_14:
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:options];
   [v6 setObject:v7 forKey:@"options"];
 
-  v8 = [(SBIconView *)self customIconImageViewController];
-  if (v8)
+  customIconImageViewController = [(SBIconView *)self customIconImageViewController];
+  if (customIconImageViewController)
   {
-    [v6 setObject:v8 forKey:@"viewController"];
-    v9 = [v8 parentViewController];
-    if (v9)
+    [v6 setObject:customIconImageViewController forKey:@"viewController"];
+    parentViewController = [customIconImageViewController parentViewController];
+    if (parentViewController)
     {
-      [v6 setObject:v9 forKey:@"parentViewController"];
+      [v6 setObject:parentViewController forKey:@"parentViewController"];
     }
   }
 
@@ -8274,13 +8274,13 @@ LABEL_14:
   return v10;
 }
 
-- (void)removeBorrowedIconImageViewAssertion:(id)a3
+- (void)removeBorrowedIconImageViewAssertion:(id)assertion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBIconView *)self borrowedIconImageViewAssertion];
+  assertionCopy = assertion;
+  borrowedIconImageViewAssertion = [(SBIconView *)self borrowedIconImageViewAssertion];
 
-  if (v5 == v4)
+  if (borrowedIconImageViewAssertion == assertionCopy)
   {
     v6 = SBLogIcon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -8289,22 +8289,22 @@ LABEL_14:
     }
 
     [(SBIconView *)self setBorrowedIconImageViewAssertion:0];
-    v7 = [v4 extraInfo];
-    v8 = [(SBIconView *)self customIconImageViewController];
-    v9 = [(SBIconView *)self currentImageView];
-    if ([v9 isDescendantOfView:self])
+    extraInfo = [assertionCopy extraInfo];
+    customIconImageViewController = [(SBIconView *)self customIconImageViewController];
+    currentImageView = [(SBIconView *)self currentImageView];
+    if ([currentImageView isDescendantOfView:self])
     {
       v10 = 0;
     }
 
     else
     {
-      [v9 removeFromSuperview];
-      if (v8)
+      [currentImageView removeFromSuperview];
+      if (customIconImageViewController)
       {
-        v11 = [v7 objectForKeyedSubscript:@"parentViewController"];
-        v12 = [v8 parentViewController];
-        v10 = v11 != v12;
+        v11 = [extraInfo objectForKeyedSubscript:@"parentViewController"];
+        parentViewController = [customIconImageViewController parentViewController];
+        v10 = v11 != parentViewController;
       }
 
       else
@@ -8312,13 +8312,13 @@ LABEL_14:
         v10 = 0;
       }
 
-      [(SBIconView *)self _insertIconImageView:v9];
+      [(SBIconView *)self _insertIconImageView:currentImageView];
     }
 
     [(SBIconView *)self _updateIconImageViewAnimated:0];
-    if (v8)
+    if (customIconImageViewController)
     {
-      [(SBIconView *)self configureCustomIconImageViewController:v8];
+      [(SBIconView *)self configureCustomIconImageViewController:customIconImageViewController];
     }
 
     [(SBIconView *)self updateContentVisibilityOnCurrentImageView];
@@ -8329,11 +8329,11 @@ LABEL_14:
     v29[0] = *MEMORY[0x1E695EFD0];
     v29[1] = v13;
     v29[2] = *(MEMORY[0x1E695EFD0] + 32);
-    [v9 setTransform:v29];
+    [currentImageView setTransform:v29];
     [(SBIconView *)self setNeedsLayout];
     if (v10)
     {
-      v24 = v9;
+      v24 = currentImageView;
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
@@ -8366,18 +8366,18 @@ LABEL_14:
         while (v16);
       }
 
-      v9 = v24;
+      currentImageView = v24;
     }
 
-    v20 = [v7 objectForKey:@"viewController"];
+    v20 = [extraInfo objectForKey:@"viewController"];
     v21 = v20;
     if (v20)
     {
-      if (v20 != v8)
+      if (v20 != customIconImageViewController)
       {
-        v22 = [(SBIconView *)self customIconImageViewController];
+        customIconImageViewController2 = [(SBIconView *)self customIconImageViewController];
 
-        if (v21 != v22)
+        if (v21 != customIconImageViewController2)
         {
           v23 = [v21 sbh_removeOwningIconView:self];
           if (!v23)
@@ -8399,26 +8399,26 @@ LABEL_14:
   [(SBIconView *)self _updateIconImageViewAnimated:0];
 }
 
-- (id)disableImageUpdatesForReason:(id)a3
+- (id)disableImageUpdatesForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(SBIconViewCustomImageViewControlling *)self->_customIconImageViewController disableImageUpdatesForReason:v4];
+    v5 = [(SBIconViewCustomImageViewControlling *)self->_customIconImageViewController disableImageUpdatesForReason:reasonCopy];
   }
 
   else
   {
-    v6 = [(SBIconView *)self _iconImageView];
-    v5 = [v6 disableImageUpdatesForReason:v4];
+    _iconImageView = [(SBIconView *)self _iconImageView];
+    v5 = [_iconImageView disableImageUpdatesForReason:reasonCopy];
   }
 
   return v5;
 }
 
-- (int64_t)_widgetBackgroundMaterialForDataSource:(id)a3
+- (int64_t)_widgetBackgroundMaterialForDataSource:(id)source
 {
-  v3 = a3;
+  sourceCopy = source;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -8432,30 +8432,30 @@ LABEL_14:
   return [v6 defaultWidgetBackgroundRecipe];
 }
 
-- (void)setCustomIconImageViewController:(id)a3 clearingOwner:(BOOL)a4
+- (void)setCustomIconImageViewController:(id)controller clearingOwner:(BOOL)owner
 {
-  v4 = a4;
-  v5 = a3;
+  ownerCopy = owner;
+  controllerCopy = controller;
   v51 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  controllerCopy2 = controller;
   customIconImageViewController = self->_customIconImageViewController;
-  if (customIconImageViewController != v7)
+  if (customIconImageViewController != controllerCopy2)
   {
-    v36 = v4;
+    v36 = ownerCopy;
     v9 = customIconImageViewController;
-    v10 = [(SBIconView *)self isIconImageViewBorrowed];
+    isIconImageViewBorrowed = [(SBIconView *)self isIconImageViewBorrowed];
     if (objc_opt_respondsToSelector())
     {
-      [(SBIconViewCustomImageViewControlling *)v7 setHost:self];
+      [(SBIconViewCustomImageViewControlling *)controllerCopy2 setHost:self];
     }
 
-    if (v7)
+    if (controllerCopy2)
     {
-      v11 = [(SBIconViewCustomImageViewControlling *)v7 sbh_pushOwningIconView:self];
+      v11 = [(SBIconViewCustomImageViewControlling *)controllerCopy2 sbh_pushOwningIconView:self];
       v12 = v11;
       if (v11)
       {
-        v35 = v5;
+        v35 = controllerCopy;
         if (([v11 isIconImageViewBorrowed] & 1) == 0)
         {
           v13 = SBLogIcon();
@@ -8470,19 +8470,19 @@ LABEL_14:
           }
         }
 
-        v37 = v10;
-        v15 = [v12 borrowedIconImageViewAssertion];
-        v16 = [v15 extraInfo];
-        v17 = [v16 objectForKey:@"options"];
-        v18 = [v17 unsignedIntegerValue];
+        v37 = isIconImageViewBorrowed;
+        borrowedIconImageViewAssertion = [v12 borrowedIconImageViewAssertion];
+        extraInfo = [borrowedIconImageViewAssertion extraInfo];
+        v17 = [extraInfo objectForKey:@"options"];
+        unsignedIntegerValue = [v17 unsignedIntegerValue];
 
-        if ((v18 & 1) == 0)
+        if ((unsignedIntegerValue & 1) == 0)
         {
           [v12 setCustomIconImageViewController:0 clearingOwner:0];
         }
 
-        v10 = v37;
-        v5 = v35;
+        isIconImageViewBorrowed = v37;
+        controllerCopy = v35;
       }
     }
 
@@ -8491,7 +8491,7 @@ LABEL_14:
       [(SBIconViewCustomImageViewControlling *)v9 removeCustomImageViewControllerObserver:self];
     }
 
-    if (!v10)
+    if (!isIconImageViewBorrowed)
     {
       if (objc_opt_respondsToSelector())
       {
@@ -8511,28 +8511,28 @@ LABEL_14:
 
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
-      v19 = [(SBIconViewCustomImageViewControlling *)v9 host];
+      host = [(SBIconViewCustomImageViewControlling *)v9 host];
 
-      if (v19 == self)
+      if (host == self)
       {
         [(SBIconViewCustomImageViewControlling *)v9 setHost:0];
       }
     }
 
-    if (v7 && self->_iconImageView)
+    if (controllerCopy2 && self->_iconImageView)
     {
       [(SBIconView *)self _destroyIconImageView];
     }
 
-    v20 = [(SBIconViewCustomImageViewControlling *)self->_customIconImageViewController viewIfLoaded];
-    if ([v20 isDescendantOfView:self])
+    viewIfLoaded = [(SBIconViewCustomImageViewControlling *)self->_customIconImageViewController viewIfLoaded];
+    if ([viewIfLoaded isDescendantOfView:self])
     {
-      [v20 removeFromSuperview];
+      [viewIfLoaded removeFromSuperview];
     }
 
-    if (v20)
+    if (viewIfLoaded)
     {
-      v21 = v10;
+      v21 = isIconImageViewBorrowed;
     }
 
     else
@@ -8542,46 +8542,46 @@ LABEL_14:
 
     if ((v21 & 1) == 0)
     {
-      [v20 alpha];
+      [viewIfLoaded alpha];
       if (v22 < 1.0)
       {
-        [v20 setAlpha:1.0];
+        [viewIfLoaded setAlpha:1.0];
       }
     }
 
-    v38 = v20;
-    objc_storeStrong(&self->_customIconImageViewController, v5);
+    v38 = viewIfLoaded;
+    objc_storeStrong(&self->_customIconImageViewController, controllerCopy);
     v23 = SBLogIcon();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
       [SBIconView setCustomIconImageViewController:clearingOwner:];
     }
 
-    if (v7 != 0 && !v10)
+    if (controllerCopy2 != 0 && !isIconImageViewBorrowed)
     {
-      v24 = [(SBIconView *)self parentViewControllerForCustomIconImageViewController];
-      v25 = [(SBIconView *)self effectiveContentVisibility];
-      if (v24)
+      parentViewControllerForCustomIconImageViewController = [(SBIconView *)self parentViewControllerForCustomIconImageViewController];
+      effectiveContentVisibility = [(SBIconView *)self effectiveContentVisibility];
+      if (parentViewControllerForCustomIconImageViewController)
       {
-        [v24 addChildViewController:v7];
+        [parentViewControllerForCustomIconImageViewController addChildViewController:controllerCopy2];
       }
 
-      [(SBIconViewCustomImageViewControlling *)v7 bs_beginAppearanceTransition:v25 != 2 animated:0];
+      [(SBIconViewCustomImageViewControlling *)controllerCopy2 bs_beginAppearanceTransition:effectiveContentVisibility != 2 animated:0];
       v26 = MEMORY[0x1E69DD250];
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __61__SBIconView_setCustomIconImageViewController_clearingOwner___block_invoke;
       v43[3] = &unk_1E8088F18;
-      v27 = v7;
+      v27 = controllerCopy2;
       v44 = v27;
-      v45 = self;
+      selfCopy = self;
       [v26 performWithoutAnimation:v43];
-      if (v24)
+      if (parentViewControllerForCustomIconImageViewController)
       {
-        [(SBIconViewCustomImageViewControlling *)v27 didMoveToParentViewController:v24];
+        [(SBIconViewCustomImageViewControlling *)v27 didMoveToParentViewController:parentViewControllerForCustomIconImageViewController];
       }
 
-      [(SBIconViewCustomImageViewControlling *)v27 bs_endAppearanceTransition:v25 != 2];
+      [(SBIconViewCustomImageViewControlling *)v27 bs_endAppearanceTransition:effectiveContentVisibility != 2];
     }
 
     [(SBIconView *)self _updateJitter:1];
@@ -8638,54 +8638,54 @@ void __61__SBIconView_setCustomIconImageViewController_clearingOwner___block_inv
 
 - (id)parentViewControllerForCustomIconImageViewController
 {
-  v3 = [(SBIconView *)self overrideParentViewControllerForCustomIconImageViewController];
-  if (!v3)
+  overrideParentViewControllerForCustomIconImageViewController = [(SBIconView *)self overrideParentViewControllerForCustomIconImageViewController];
+  if (!overrideParentViewControllerForCustomIconImageViewController)
   {
-    v4 = [(SBIconView *)self behaviorDelegate];
+    behaviorDelegate = [(SBIconView *)self behaviorDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v3 = [v4 parentViewControllerForCustomIconImageViewControllerForIconView:self];
+      overrideParentViewControllerForCustomIconImageViewController = [behaviorDelegate parentViewControllerForCustomIconImageViewControllerForIconView:self];
     }
 
     else
     {
-      v3 = 0;
+      overrideParentViewControllerForCustomIconImageViewController = 0;
     }
   }
 
-  return v3;
+  return overrideParentViewControllerForCustomIconImageViewController;
 }
 
-- (void)configureCustomIconImageViewController:(id)a3
+- (void)configureCustomIconImageViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 view];
+  controllerCopy = controller;
+  view = [controllerCopy view];
   [(SBIconView *)self _frameForImageView];
-  [v5 setFrame:?];
+  [view setFrame:?];
   [(SBIconView *)self _updateCustomIconImageViewControllerHitTesting];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(SBIconView *)self overrideIconImageAppearance];
-    [v4 setOverrideIconImageAppearance:v6];
+    overrideIconImageAppearance = [(SBIconView *)self overrideIconImageAppearance];
+    [controllerCopy setOverrideIconImageAppearance:overrideIconImageAppearance];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(SBIconView *)self overrideIconImageStyleConfiguration];
-    [v4 setOverrideIconImageStyleConfiguration:v7];
+    overrideIconImageStyleConfiguration = [(SBIconView *)self overrideIconImageStyleConfiguration];
+    [controllerCopy setOverrideIconImageStyleConfiguration:overrideIconImageStyleConfiguration];
   }
 
-  v8 = [(SBIconView *)self effectiveContentVisibility];
+  effectiveContentVisibility = [(SBIconView *)self effectiveContentVisibility];
   if (objc_opt_respondsToSelector())
   {
-    [v4 setContentVisibility:v8];
+    [controllerCopy setContentVisibility:effectiveContentVisibility];
   }
 
   [(SBIconView *)self iconImageInfo];
-  [v4 setIconImageInfo:?];
+  [controllerCopy setIconImageInfo:?];
   if (objc_opt_respondsToSelector())
   {
-    [v4 setEditing:{-[SBIconView isEditing](self, "isEditing")}];
+    [controllerCopy setEditing:{-[SBIconView isEditing](self, "isEditing")}];
   }
 
   if (objc_opt_respondsToSelector())
@@ -8699,7 +8699,7 @@ void __61__SBIconView_setCustomIconImageViewController_clearingOwner___block_inv
       v13[2] = __53__SBIconView_configureCustomIconImageViewController___block_invoke;
       v13[3] = &unk_1E808EFB8;
       objc_copyWeak(&v14, &location);
-      [v4 setBackgroundViewProvider:v13];
+      [controllerCopy setBackgroundViewProvider:v13];
       objc_destroyWeak(&v14);
     }
 
@@ -8717,7 +8717,7 @@ void __61__SBIconView_setCustomIconImageViewController_clearingOwner___block_inv
       v11[2] = __53__SBIconView_configureCustomIconImageViewController___block_invoke_2;
       v11[3] = &unk_1E808EFE0;
       objc_copyWeak(&v12, &location);
-      [v4 setBackgroundViewConfigurator:v11];
+      [controllerCopy setBackgroundViewConfigurator:v11];
       objc_destroyWeak(&v12);
     }
 
@@ -8726,40 +8726,40 @@ void __61__SBIconView_setCustomIconImageViewController_clearingOwner___block_inv
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 setUserInteractionEnabled:{-[SBIconView isUserInteractionEnabled](self, "isUserInteractionEnabled")}];
+    [controllerCopy setUserInteractionEnabled:{-[SBIconView isUserInteractionEnabled](self, "isUserInteractionEnabled")}];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 setPauseReasons:(*(self + 276) >> 4) & 0x1F];
+    [controllerCopy setPauseReasons:(*(self + 276) >> 4) & 0x1F];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 setLegibilitySettings:self->_legibilitySettings];
+    [controllerCopy setLegibilitySettings:self->_legibilitySettings];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 addCustomImageViewControllerObserver:self];
+    [controllerCopy addCustomImageViewControllerObserver:self];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 setUserVisibilityStatus:(*(self + 279) >> 7) & 3];
+    [controllerCopy setUserVisibilityStatus:(*(self + 279) >> 7) & 3];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(SBIconView *)self approximateLayoutPosition];
-    [v4 setApproximateLayoutPosition:{v9, v10}];
+    approximateLayoutPosition = [(SBIconView *)self approximateLayoutPosition];
+    [controllerCopy setApproximateLayoutPosition:{approximateLayoutPosition, v10}];
   }
 
   [(SBIconView *)self _updatePresentationModeForReason:@"set custom icon image view controller"];
-  [objc_opt_class() updateAppearStateForViewController:v4 forContentVisibility:v8];
+  [objc_opt_class() updateAppearStateForViewController:controllerCopy forContentVisibility:effectiveContentVisibility];
   if (objc_opt_respondsToSelector())
   {
-    [v4 setPrefersFlatImageLayers:{-[SBIconView prefersFlatImageLayers](self, "prefersFlatImageLayers")}];
+    [controllerCopy setPrefersFlatImageLayers:{-[SBIconView prefersFlatImageLayers](self, "prefersFlatImageLayers")}];
   }
 
   [(SBIconView *)self _applyGlassGroupingEnabledState];
@@ -8821,24 +8821,24 @@ void __53__SBIconView_configureCustomIconImageViewController___block_invoke_2(ui
   }
 }
 
-- (void)setPresentationModeFolderContext:(id)a3
+- (void)setPresentationModeFolderContext:(id)context
 {
-  v4 = [a3 copy];
+  v4 = [context copy];
   presentationModeFolderContext = self->_presentationModeFolderContext;
   self->_presentationModeFolderContext = v4;
 
   [(SBIconView *)self _updatePresentationModeForReason:@"new folder context"];
 }
 
-- (void)_updatePresentationModeForReason:(id)a3
+- (void)_updatePresentationModeForReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(SBIconView *)self customIconImageViewController];
-  if ([v5 conformsToProtocol:&unk_1F3E70718])
+  reasonCopy = reason;
+  customIconImageViewController = [(SBIconView *)self customIconImageViewController];
+  if ([customIconImageViewController conformsToProtocol:&unk_1F3E70718])
   {
-    v6 = [v5 presentationMode];
+    presentationMode = [customIconImageViewController presentationMode];
     v7 = 1;
-    if (v6 >= 2)
+    if (presentationMode >= 2)
     {
       v7 = 2;
     }
@@ -8912,9 +8912,9 @@ LABEL_21:
 
   if ((*(self + 560) & 0x80000000) == 0)
   {
-    v13 = [(SBIconView *)self window];
+    window = [(SBIconView *)self window];
 
-    if (!v13)
+    if (!window)
     {
       v14 = SBLogIcon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -8936,7 +8936,7 @@ LABEL_21:
       [SBIconView _updatePresentationModeForReason:];
     }
 
-    [v5 setPresentationMode:v9];
+    [customIconImageViewController setPresentationMode:v9];
   }
 
   else
@@ -8948,81 +8948,81 @@ LABEL_21:
   }
 }
 
-- (void)setOverrideParentViewControllerForCustomIconImageViewController:(id)a3
+- (void)setOverrideParentViewControllerForCustomIconImageViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_overrideParentViewControllerForCustomIconImageViewController != v5)
+  controllerCopy = controller;
+  if (self->_overrideParentViewControllerForCustomIconImageViewController != controllerCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_overrideParentViewControllerForCustomIconImageViewController, a3);
-    v5 = v7;
+    v7 = controllerCopy;
+    objc_storeStrong(&self->_overrideParentViewControllerForCustomIconImageViewController, controller);
+    controllerCopy = v7;
     if (v7)
     {
-      v6 = [(SBIconView *)self customIconImageViewController];
-      [v6 removeFromParentViewController];
-      [(UIViewController *)v7 bs_addChildViewController:v6];
+      customIconImageViewController = [(SBIconView *)self customIconImageViewController];
+      [customIconImageViewController removeFromParentViewController];
+      [(UIViewController *)v7 bs_addChildViewController:customIconImageViewController];
 
-      v5 = v7;
+      controllerCopy = v7;
     }
   }
 }
 
-- (void)setOverrideImageAppearance:(id)a3 onCustomIconImageViewController:(id)a4
+- (void)setOverrideImageAppearance:(id)appearance onCustomIconImageViewController:(id)controller
 {
-  v8 = a3;
-  v5 = a4;
+  appearanceCopy = appearance;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    [v5 setOverrideIconImageAppearance:v8];
+    [controllerCopy setOverrideIconImageAppearance:appearanceCopy];
   }
 
   else
   {
-    v6 = [v5 traitOverrides];
+    traitOverrides = [controllerCopy traitOverrides];
     v7 = objc_opt_self();
-    if (v8)
+    if (appearanceCopy)
     {
-      [v6 setObject:v8 forTrait:v7];
+      [traitOverrides setObject:appearanceCopy forTrait:v7];
     }
 
     else
     {
-      [v6 removeTrait:v7];
+      [traitOverrides removeTrait:v7];
     }
   }
 }
 
-- (void)setOverrideImageStyleConfiguration:(id)a3 onCustomIconImageViewController:(id)a4
+- (void)setOverrideImageStyleConfiguration:(id)configuration onCustomIconImageViewController:(id)controller
 {
-  v8 = a3;
-  v5 = a4;
+  configurationCopy = configuration;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    [v5 setOverrideIconImageStyleConfiguration:v8];
+    [controllerCopy setOverrideIconImageStyleConfiguration:configurationCopy];
   }
 
   else
   {
-    v6 = [v5 traitOverrides];
+    traitOverrides = [controllerCopy traitOverrides];
     v7 = objc_opt_self();
-    if (v8)
+    if (configurationCopy)
     {
-      [v6 setObject:v8 forTrait:v7];
+      [traitOverrides setObject:configurationCopy forTrait:v7];
     }
 
     else
     {
-      [v6 removeTrait:v7];
+      [traitOverrides removeTrait:v7];
     }
   }
 }
 
-- (void)setAllowsAccessoryView:(BOOL)a3
+- (void)setAllowsAccessoryView:(BOOL)view
 {
   v3 = *(self + 556);
-  if (((((v3 & 0x20) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 0x20) == 0) ^ view) & 1) == 0)
   {
-    if (a3)
+    if (view)
     {
       v4 = 32;
     }
@@ -9037,9 +9037,9 @@ LABEL_21:
   }
 }
 
-- (void)_setShowingAccessoryView:(BOOL)a3
+- (void)_setShowingAccessoryView:(BOOL)view
 {
-  if (a3)
+  if (view)
   {
     v3 = 0x80;
   }
@@ -9052,9 +9052,9 @@ LABEL_21:
   *(self + 556) = v3 & 0x80 | *(self + 556) & 0x7F;
 }
 
-+ (Class)defaultViewClassForAccessoryType:(int64_t)a3
++ (Class)defaultViewClassForAccessoryType:(int64_t)type
 {
-  if ((a3 - 1) > 2)
+  if ((type - 1) > 2)
   {
     v4 = 0;
   }
@@ -9067,16 +9067,16 @@ LABEL_21:
   return v4;
 }
 
-- (void)_updateAccessoryViewAnimated:(BOOL)a3
+- (void)_updateAccessoryViewAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(NSHashTable *)self->_forbidAccessoryUpdatesAssertions count])
   {
-    v5 = [(SBIconView *)self accessoryViewAnimator];
-    v6 = v5;
-    if (v5)
+    accessoryViewAnimator = [(SBIconView *)self accessoryViewAnimator];
+    v6 = accessoryViewAnimator;
+    if (accessoryViewAnimator)
     {
-      if ([v5 state])
+      if ([accessoryViewAnimator state])
       {
         [v6 stopAnimation:0];
         [v6 fractionComplete];
@@ -9089,7 +9089,7 @@ LABEL_21:
     if (![(SBIconView *)self shouldShowAccessoryView])
     {
       [(SBIconView *)self _setShowingAccessoryView:0];
-      if (v3)
+      if (animatedCopy)
       {
         v30[0] = MEMORY[0x1E69E9820];
         v30[1] = 3221225472;
@@ -9112,9 +9112,9 @@ LABEL_21:
       goto LABEL_42;
     }
 
-    v8 = [(SBIconView *)self icon];
-    v9 = v8;
-    if (!v3)
+    icon = [(SBIconView *)self icon];
+    v9 = icon;
+    if (!animatedCopy)
     {
       v17 = MEMORY[0x1E69DD250];
       v31[0] = MEMORY[0x1E69E9820];
@@ -9122,7 +9122,7 @@ LABEL_21:
       v31[2] = __43__SBIconView__updateAccessoryViewAnimated___block_invoke_5;
       v31[3] = &unk_1E8088F18;
       v31[4] = self;
-      v32 = v8;
+      v32 = icon;
       [v17 performWithoutAnimation:v31];
 
 LABEL_41:
@@ -9135,7 +9135,7 @@ LABEL_42:
     v11 = [objc_alloc(MEMORY[0x1E69DCF88]) initWithDampingRatio:0.9];
     v12 = [v10 initWithDuration:v11 timingParameters:0.34071];
 
-    v13 = [(SBIconView *)self _isShowingAccessoryView];
+    _isShowingAccessoryView = [(SBIconView *)self _isShowingAccessoryView];
     v14 = [objc_opt_class() defaultViewClassForAccessoryType:{-[SBIconView currentAccessoryType](self, "currentAccessoryType")}];
     accessoryView = self->_accessoryView;
     if (accessoryView)
@@ -9155,29 +9155,29 @@ LABEL_21:
           [(SBIconAccessoryView *)v20 setCenter:?];
           if (objc_opt_respondsToSelector())
           {
-            v21 = [(SBIconView *)self badgeParallaxSettings];
-            [(SBIconAccessoryView *)v20 setParallaxSettings:v21];
+            badgeParallaxSettings = [(SBIconView *)self badgeParallaxSettings];
+            [(SBIconAccessoryView *)v20 setParallaxSettings:badgeParallaxSettings];
           }
 
           if (v18)
           {
-            v22 = 0;
+            displayingAccessory = 0;
           }
 
           else
           {
-            v22 = [(SBIconAccessoryView *)v20 displayingAccessory];
+            displayingAccessory = [(SBIconAccessoryView *)v20 displayingAccessory];
           }
 
-          if ((v22 & 1) == 0 && !v16)
+          if ((displayingAccessory & 1) == 0 && !v16)
           {
             v16 = v20;
             v23 = self->_accessoryView;
             self->_accessoryView = 0;
           }
 
-          v24 = !v13;
-          if (v22 && v24 && !v16)
+          v24 = !_isShowingAccessoryView;
+          if (displayingAccessory && v24 && !v16)
           {
             CGAffineTransformMakeScale(&v46, 0.01, 0.01);
             v25 = v20;
@@ -9185,16 +9185,16 @@ LABEL_21:
 
           else
           {
-            if ((v22 | v24))
+            if ((displayingAccessory | v24))
             {
 LABEL_36:
-              [(SBIconView *)self _setShowingAccessoryView:v22];
+              [(SBIconView *)self _setShowingAccessoryView:displayingAccessory];
               v41[0] = MEMORY[0x1E69E9820];
               v41[1] = 3221225472;
               v41[2] = __43__SBIconView__updateAccessoryViewAnimated___block_invoke;
               v41[3] = &unk_1E8089360;
-              v44 = v13;
-              v45 = v22;
+              v44 = _isShowingAccessoryView;
+              v45 = displayingAccessory;
               v27 = v20;
               v42 = v27;
               v28 = v16;
@@ -9202,7 +9202,7 @@ LABEL_36:
               [v12 addAnimations:v41];
               if (v16)
               {
-                if (v22)
+                if (displayingAccessory)
                 {
                   [(SBIconAccessoryView *)v27 setAlpha:0.0];
                   v38[0] = MEMORY[0x1E69E9820];
@@ -9228,7 +9228,7 @@ LABEL_36:
               v33[1] = 3221225472;
               v33[2] = __43__SBIconView__updateAccessoryViewAnimated___block_invoke_4;
               v33[3] = &unk_1E808F008;
-              v35 = v22;
+              v35 = displayingAccessory;
               v33[4] = self;
               objc_copyWeak(&v34, &v46);
               [v12 addCompletion:v33];
@@ -9370,40 +9370,40 @@ uint64_t __43__SBIconView__updateAccessoryViewAnimated___block_invoke_6(uint64_t
   return [v1 setTransform:&v3];
 }
 
-- (void)_destroyAccessoryView:(id)a3
+- (void)_destroyAccessoryView:(id)view
 {
-  v5 = a3;
-  v4 = [(SBIconView *)self reuseDelegate];
+  viewCopy = view;
+  reuseDelegate = [(SBIconView *)self reuseDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 iconView:self willRemoveIconAccessoryView:v5];
+    [reuseDelegate iconView:self willRemoveIconAccessoryView:viewCopy];
   }
 
-  if ([v5 isDescendantOfView:self])
+  if ([viewCopy isDescendantOfView:self])
   {
-    [v5 removeFromSuperview];
+    [viewCopy removeFromSuperview];
   }
 }
 
-- (void)setOverrideBadgeNumberOrString:(id)a3 animated:(BOOL)a4
+- (void)setOverrideBadgeNumberOrString:(id)string animated:(BOOL)animated
 {
-  if (self->_overrideBadgeNumberOrString != a3)
+  if (self->_overrideBadgeNumberOrString != string)
   {
-    v4 = a4;
-    v6 = [a3 copyWithZone:0];
+    animatedCopy = animated;
+    v6 = [string copyWithZone:0];
     overrideBadgeNumberOrString = self->_overrideBadgeNumberOrString;
     self->_overrideBadgeNumberOrString = v6;
 
-    [(SBIconView *)self _updateAccessoryViewAnimated:v4];
+    [(SBIconView *)self _updateAccessoryViewAnimated:animatedCopy];
   }
 }
 
-- (void)setOverrideAccessoryIconImageAppearance:(id)a3
+- (void)setOverrideAccessoryIconImageAppearance:(id)appearance
 {
-  v6 = a3;
+  appearanceCopy = appearance;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [appearanceCopy copy];
     overrideAccessoryIconImageAppearance = self->_overrideAccessoryIconImageAppearance;
     self->_overrideAccessoryIconImageAppearance = v4;
 
@@ -9413,19 +9413,19 @@ uint64_t __43__SBIconView__updateAccessoryViewAnimated___block_invoke_6(uint64_t
 
 - (id)effectiveAccessoryIconImageAppearance
 {
-  v3 = [(SBIconView *)self overrideAccessoryIconImageAppearance];
-  if (!v3)
+  overrideAccessoryIconImageAppearance = [(SBIconView *)self overrideAccessoryIconImageAppearance];
+  if (!overrideAccessoryIconImageAppearance)
   {
-    v3 = [(SBIconView *)self effectiveIconImageAppearance];
+    overrideAccessoryIconImageAppearance = [(SBIconView *)self effectiveIconImageAppearance];
   }
 
-  return v3;
+  return overrideAccessoryIconImageAppearance;
 }
 
 - (CGSize)accessorySize
 {
-  v2 = [(SBIconView *)self listLayout];
-  v3 = SBHIconListLayoutIconAccessorySize(v2);
+  listLayout = [(SBIconView *)self listLayout];
+  v3 = SBHIconListLayoutIconAccessorySize(listLayout);
   v5 = v4;
 
   v6 = v3;
@@ -9442,41 +9442,41 @@ uint64_t __43__SBIconView__updateAccessoryViewAnimated___block_invoke_6(uint64_t
 
   if (isKindOfClass)
   {
-    v5 = [(SBIconAccessoryView *)self->_accessoryView text];
+    text = [(SBIconAccessoryView *)self->_accessoryView text];
   }
 
   else
   {
-    v5 = 0;
+    text = 0;
   }
 
-  return v5;
+  return text;
 }
 
-- (void)_accessoryViewTapGestureChanged:(id)a3
+- (void)_accessoryViewTapGestureChanged:(id)changed
 {
-  if ([a3 state] == 3)
+  if ([changed state] == 3)
   {
-    v4 = [(SBIconView *)self actionDelegate];
+    actionDelegate = [(SBIconView *)self actionDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [v4 iconAccessoryViewTapped:self];
+      [actionDelegate iconAccessoryViewTapped:self];
     }
   }
 }
 
 - (id)_automationID
 {
-  v2 = [(SBIcon *)self->_icon automationID];
-  v3 = [@"BTN " stringByAppendingString:v2];
+  automationID = [(SBIcon *)self->_icon automationID];
+  v3 = [@"BTN " stringByAppendingString:automationID];
 
   return v3;
 }
 
-- (BOOL)pointMostlyInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointMostlyInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(SBIconView *)self bounds];
   v11 = CGRectInset(v10, -25.0, -25.0);
   v6 = x;
@@ -9485,12 +9485,12 @@ uint64_t __43__SBIconView__updateAccessoryViewAnimated___block_invoke_6(uint64_t
   return CGRectContainsPoint(v11, *&v6);
 }
 
-- (double)effectiveBrightnessForControlState:(unint64_t)a3
+- (double)effectiveBrightnessForControlState:(unint64_t)state
 {
   result = 0.5;
-  if ((a3 & 2) == 0)
+  if ((state & 2) == 0)
   {
-    if (a3)
+    if (state)
     {
       v6 = [(SBIconView *)self lastTouchWasPointer:0.5];
       result = 0.6;
@@ -9500,7 +9500,7 @@ uint64_t __43__SBIconView__updateAccessoryViewAnimated___block_invoke_6(uint64_t
       }
     }
 
-    else if ((a3 & 0x10000) == 0)
+    else if ((state & 0x10000) == 0)
     {
       return 1.0;
     }
@@ -9509,12 +9509,12 @@ uint64_t __43__SBIconView__updateAccessoryViewAnimated___block_invoke_6(uint64_t
   return result;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v3 = *(self + 553);
-  if (((((v3 & 0x20) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 0x20) == 0) ^ highlighted) & 1) == 0)
   {
-    if (a3)
+    if (highlighted)
     {
       v4 = 32;
     }
@@ -9529,18 +9529,18 @@ uint64_t __43__SBIconView__updateAccessoryViewAnimated___block_invoke_6(uint64_t
   }
 }
 
-- (void)setDragging:(BOOL)a3 updateImmediately:(BOOL)a4
+- (void)setDragging:(BOOL)dragging updateImmediately:(BOOL)immediately
 {
   v4 = *(self + 556);
-  if (((((v4 & 2) == 0) ^ a3) & 1) == 0)
+  if (((((v4 & 2) == 0) ^ dragging) & 1) == 0)
   {
-    v5 = a4;
-    v7 = a3 ? 2 : 0;
+    immediatelyCopy = immediately;
+    v7 = dragging ? 2 : 0;
     *(self + 556) = v4 & 0xFD | v7;
     [(SBIconView *)self _toggleContentContainerViewIfNecessary];
     [(SBIconView *)self _updateCursorInteractionsEnabled];
     [(SBIconView *)self _updateJitter];
-    if (v5)
+    if (immediatelyCopy)
     {
 
       [(SBIconView *)self _updateAllComponentAlphas];
@@ -9548,12 +9548,12 @@ uint64_t __43__SBIconView__updateAccessoryViewAnimated___block_invoke_6(uint64_t
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(SBIconView *)self bounds];
   v8.receiver = self;
   v8.super_class = SBIconView;
@@ -9565,11 +9565,11 @@ uint64_t __43__SBIconView__updateAccessoryViewAnimated___block_invoke_6(uint64_t
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(SBIconView *)self bounds:a3.origin.x];
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [(SBIconView *)self bounds:frame.origin.x];
   memset(&v16, 0, sizeof(v16));
   [(SBIconView *)self transform];
   t1 = v16;
@@ -9630,10 +9630,10 @@ uint64_t __23__SBIconView_setFrame___block_invoke_2(uint64_t a1)
   return [v1 setTransform:v4];
 }
 
-- (void)_notifyObserversDidDiscardCustomImageViewController:(id)a3
+- (void)_notifyObserversDidDiscardCustomImageViewController:(id)controller
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -9657,7 +9657,7 @@ uint64_t __23__SBIconView_setFrame___block_invoke_2(uint64_t a1)
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 iconView:self didDiscardCustomImageViewController:v4];
+          [v10 iconView:self didDiscardCustomImageViewController:controllerCopy];
         }
 
         ++v9;
@@ -9671,15 +9671,15 @@ uint64_t __23__SBIconView_setFrame___block_invoke_2(uint64_t a1)
   }
 }
 
-+ (id)_jitterXTranslationAnimationWithAmount:(double)a3
++ (id)_jitterXTranslationAnimationWithAmount:(double)amount
 {
   v5 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform.translation.x"];
   [v5 setDuration:0.134];
   [v5 setBeginTime:arc4random_uniform(0x64u) / 100.0];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:amount];
   [v5 setFromValue:v6];
 
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:-a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:-amount];
   [v5 setToValue:v7];
 
   LODWORD(v8) = 1052266988;
@@ -9692,22 +9692,22 @@ uint64_t __23__SBIconView_setFrame___block_invoke_2(uint64_t a1)
   [v5 setRepeatCount:v12];
   [v5 setAutoreverses:1];
   [v5 setRemovedOnCompletion:0];
-  [a1 _jitterAnimationFrameRateRange];
+  [self _jitterAnimationFrameRateRange];
   [v5 setPreferredFrameRateRange:?];
-  [v5 setHighFrameRateReason:{objc_msgSend(a1, "_jitterAnimationHighFrameRateReason")}];
+  [v5 setHighFrameRateReason:{objc_msgSend(self, "_jitterAnimationHighFrameRateReason")}];
 
   return v5;
 }
 
-+ (id)_jitterYTranslationAnimationWithAmount:(double)a3
++ (id)_jitterYTranslationAnimationWithAmount:(double)amount
 {
   v5 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform.translation.y"];
   [v5 setDuration:0.142];
   [v5 setBeginTime:arc4random_uniform(0x64u) / 100.0];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:amount];
   [v5 setFromValue:v6];
 
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:-a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:-amount];
   [v5 setToValue:v7];
 
   LODWORD(v8) = 1052266988;
@@ -9720,22 +9720,22 @@ uint64_t __23__SBIconView_setFrame___block_invoke_2(uint64_t a1)
   [v5 setRepeatCount:v12];
   [v5 setAutoreverses:1];
   [v5 setRemovedOnCompletion:0];
-  [a1 _jitterAnimationFrameRateRange];
+  [self _jitterAnimationFrameRateRange];
   [v5 setPreferredFrameRateRange:?];
-  [v5 setHighFrameRateReason:{objc_msgSend(a1, "_jitterAnimationHighFrameRateReason")}];
+  [v5 setHighFrameRateReason:{objc_msgSend(self, "_jitterAnimationHighFrameRateReason")}];
 
   return v5;
 }
 
-+ (id)_jitterRotationAnimationWithAmount:(double)a3
++ (id)_jitterRotationAnimationWithAmount:(double)amount
 {
   v5 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform.rotation"];
   [v5 setDuration:0.128];
   [v5 setBeginTime:arc4random_uniform(0x64u) / 100.0];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:-a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:-amount];
   [v5 setFromValue:v6];
 
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:amount];
   [v5 setToValue:v7];
 
   LODWORD(v8) = 1052266988;
@@ -9748,18 +9748,18 @@ uint64_t __23__SBIconView_setFrame___block_invoke_2(uint64_t a1)
   [v5 setRepeatCount:v12];
   [v5 setAutoreverses:1];
   [v5 setRemovedOnCompletion:0];
-  [a1 _jitterAnimationFrameRateRange];
+  [self _jitterAnimationFrameRateRange];
   [v5 setPreferredFrameRateRange:?];
-  [v5 setHighFrameRateReason:{objc_msgSend(a1, "_jitterAnimationHighFrameRateReason")}];
+  [v5 setHighFrameRateReason:{objc_msgSend(self, "_jitterAnimationHighFrameRateReason")}];
 
   return v5;
 }
 
-+ (id)_jitterRampDownAnimationWithAnimation:(id)a3
++ (id)_jitterRampDownAnimationWithAnimation:(id)animation
 {
   v3 = MEMORY[0x1E6979318];
-  v4 = [a3 keyPath];
-  v5 = [v3 animationWithKeyPath:v4];
+  keyPath = [animation keyPath];
+  v5 = [v3 animationWithKeyPath:keyPath];
 
   [v5 setDuration:0.3];
   v6 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED0]];
@@ -9773,10 +9773,10 @@ uint64_t __23__SBIconView_setFrame___block_invoke_2(uint64_t a1)
   return v5;
 }
 
-- (void)_updateJitter:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateJitter:(BOOL)jitter animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  jitterCopy = jitter;
   if (![(SBIconView *)self isEditing]|| (*(self + 554) & 8) == 0 || (*(self + 553) & 4) != 0 || [(SBIconView *)self isPaused]|| [(SBIconView *)self isDragging]&& ![(SBIconView *)self isGrabbed]|| self->_crossfadeView)
   {
     LODWORD(icon) = 0;
@@ -9791,118 +9791,118 @@ uint64_t __23__SBIconView_setFrame___block_invoke_2(uint64_t a1)
     }
   }
 
-  if (icon != (*(self + 554) & 2) >> 1 || v5)
+  if (icon != (*(self + 554) & 2) >> 1 || jitterCopy)
   {
     if (icon)
     {
-      [(SBIconView *)self _addJitterAnimated:v4];
+      [(SBIconView *)self _addJitterAnimated:animatedCopy];
     }
 
     else
     {
-      [(SBIconView *)self _removeJitterAnimated:v4];
+      [(SBIconView *)self _removeJitterAnimated:animatedCopy];
     }
 
-    v9 = [(SBIconView *)self _iconImageView];
-    [v9 setJittering:(*(self + 554) >> 1) & 1];
+    _iconImageView = [(SBIconView *)self _iconImageView];
+    [_iconImageView setJittering:(*(self + 554) >> 1) & 1];
 
-    v10 = [(SBIconView *)self customIconImageViewController];
+    customIconImageViewController = [(SBIconView *)self customIconImageViewController];
     if (objc_opt_respondsToSelector())
     {
-      [v10 setJittering:(*(self + 554) >> 1) & 1];
+      [customIconImageViewController setJittering:(*(self + 554) >> 1) & 1];
     }
   }
 }
 
-- (void)_addJitterAnimated:(BOOL)a3
+- (void)_addJitterAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = +[SBHHomeScreenDomain rootSettings];
-  v6 = [v5 iconSettings];
-  v7 = [v6 suppressJitter];
+  iconSettings = [v5 iconSettings];
+  suppressJitter = [iconSettings suppressJitter];
 
-  if ((v7 & 1) == 0)
+  if ((suppressJitter & 1) == 0)
   {
     *(self + 554) |= 2u;
     if ([(SBIconView *)self suppressesDefaultEditingAnimation])
     {
 
-      [(SBIconView *)self _removeDefaultJitterAnimationsAnimated:v3];
+      [(SBIconView *)self _removeDefaultJitterAnimationsAnimated:animatedCopy];
     }
 
     else
     {
-      v8 = [(SBIconView *)self _iconImageView];
+      _iconImageView = [(SBIconView *)self _iconImageView];
       if (([objc_opt_class() hasCustomJitter] & 1) == 0 && (*(self + 554) & 4) == 0)
       {
-        [(SBIconView *)self _addDefaultJitterAnimationsAnimated:v3];
+        [(SBIconView *)self _addDefaultJitterAnimationsAnimated:animatedCopy];
       }
     }
   }
 }
 
-- (void)_addDefaultJitterAnimationsAnimated:(BOOL)a3
+- (void)_addDefaultJitterAnimationsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   *(self + 554) |= 4u;
   [(SBIconView *)self editingAnimationStrength];
   v6 = v5;
   v13 = [SBIconView _jitterXTranslationAnimationWithStrength:?];
-  [(SBIconView *)self _rampUpJitterAnimation:v13 animationKey:@"SBIconXTranslation" rampKey:@"SBIconXTranslationRamp" animated:v3];
+  [(SBIconView *)self _rampUpJitterAnimation:v13 animationKey:@"SBIconXTranslation" rampKey:@"SBIconXTranslationRamp" animated:animatedCopy];
   v7 = [SBIconView _jitterYTranslationAnimationWithStrength:v6];
-  [(SBIconView *)self _rampUpJitterAnimation:v7 animationKey:@"SBIconYTranslation" rampKey:@"SBIconYTranslationRamp" animated:v3];
-  v8 = [(SBIconView *)self gridSizeClass];
-  v9 = [(SBIconView *)self listLayoutProvider];
-  v10 = [(SBIconView *)self location];
-  v11 = [v9 layoutForIconLocation:v10];
+  [(SBIconView *)self _rampUpJitterAnimation:v7 animationKey:@"SBIconYTranslation" rampKey:@"SBIconYTranslationRamp" animated:animatedCopy];
+  gridSizeClass = [(SBIconView *)self gridSizeClass];
+  listLayoutProvider = [(SBIconView *)self listLayoutProvider];
+  location = [(SBIconView *)self location];
+  v11 = [listLayoutProvider layoutForIconLocation:location];
 
-  v12 = [SBIconView _jitterRotationAnimationWithStrength:v6 * SBHIconListLayoutEditingAnimationStrengthForGridSizeClass(v11, v8)];
-  [(SBIconView *)self _rampUpJitterAnimation:v12 animationKey:@"SBIconRotation" rampKey:@"SBIconRotationRamp" animated:v3];
+  v12 = [SBIconView _jitterRotationAnimationWithStrength:v6 * SBHIconListLayoutEditingAnimationStrengthForGridSizeClass(v11, gridSizeClass)];
+  [(SBIconView *)self _rampUpJitterAnimation:v12 animationKey:@"SBIconRotation" rampKey:@"SBIconRotationRamp" animated:animatedCopy];
 }
 
-- (void)_removeDefaultJitterAnimationsAnimated:(BOOL)a3
+- (void)_removeDefaultJitterAnimationsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   *(self + 554) &= ~4u;
-  [(SBIconView *)self _rampDownJitterAnimationForKey:@"SBIconXTranslation" rampKey:@"SBIconXTranslationRamp" animated:a3];
-  [(SBIconView *)self _rampDownJitterAnimationForKey:@"SBIconYTranslation" rampKey:@"SBIconYTranslationRamp" animated:v3];
+  [(SBIconView *)self _rampDownJitterAnimationForKey:@"SBIconXTranslation" rampKey:@"SBIconXTranslationRamp" animated:animated];
+  [(SBIconView *)self _rampDownJitterAnimationForKey:@"SBIconYTranslation" rampKey:@"SBIconYTranslationRamp" animated:animatedCopy];
 
-  [(SBIconView *)self _rampDownJitterAnimationForKey:@"SBIconRotation" rampKey:@"SBIconRotationRamp" animated:v3];
+  [(SBIconView *)self _rampDownJitterAnimationForKey:@"SBIconRotation" rampKey:@"SBIconRotationRamp" animated:animatedCopy];
 }
 
-- (void)_rampUpJitterAnimation:(id)a3 animationKey:(id)a4 rampKey:(id)a5 animated:(BOOL)a6
+- (void)_rampUpJitterAnimation:(id)animation animationKey:(id)key rampKey:(id)rampKey animated:(BOOL)animated
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(SBIconView *)self layer];
-  [v10 addAnimation:v9 forKey:v8];
+  keyCopy = key;
+  animationCopy = animation;
+  layer = [(SBIconView *)self layer];
+  [layer addAnimation:animationCopy forKey:keyCopy];
 }
 
-- (void)_rampDownJitterAnimationForKey:(id)a3 rampKey:(id)a4 animated:(BOOL)a5
+- (void)_rampDownJitterAnimationForKey:(id)key rampKey:(id)rampKey animated:(BOOL)animated
 {
-  v5 = a5;
-  v12 = a3;
-  v8 = a4;
-  v9 = [(SBIconView *)self layer];
-  v10 = [v9 animationForKey:v12];
+  animatedCopy = animated;
+  keyCopy = key;
+  rampKeyCopy = rampKey;
+  layer = [(SBIconView *)self layer];
+  v10 = [layer animationForKey:keyCopy];
   if (v10)
   {
-    if (v5)
+    if (animatedCopy)
     {
       v11 = [SBIconView _jitterRampDownAnimationWithAnimation:v10];
-      [v9 addAnimation:v11 forKey:v8];
+      [layer addAnimation:v11 forKey:rampKeyCopy];
     }
 
-    [v9 removeAnimationForKey:v12];
+    [layer removeAnimationForKey:keyCopy];
   }
 }
 
-- (void)setAllowsEditingAnimation:(BOOL)a3
+- (void)setAllowsEditingAnimation:(BOOL)animation
 {
   v3 = *(self + 554);
-  if (((((v3 & 8) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 8) == 0) ^ animation) & 1) == 0)
   {
-    if (a3)
+    if (animation)
     {
       v4 = 8;
     }
@@ -9917,12 +9917,12 @@ uint64_t __23__SBIconView_setFrame___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setSuppressesDefaultEditingAnimation:(BOOL)a3
+- (void)setSuppressesDefaultEditingAnimation:(BOOL)animation
 {
   v3 = *(self + 554);
-  if (((((v3 & 0x10) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 0x10) == 0) ^ animation) & 1) == 0)
   {
-    if (a3)
+    if (animation)
     {
       v4 = 16;
     }
@@ -9937,11 +9937,11 @@ uint64_t __23__SBIconView_setFrame___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setEditingAnimationStrength:(double)a3
+- (void)setEditingAnimationStrength:(double)strength
 {
-  if (self->_editingAnimationStrength != a3)
+  if (self->_editingAnimationStrength != strength)
   {
-    self->_editingAnimationStrength = a3;
+    self->_editingAnimationStrength = strength;
     if ((*(self + 554) & 2) != 0)
     {
       [(SBIconView *)self _removeJitterAnimated:0];
@@ -9951,9 +9951,9 @@ uint64_t __23__SBIconView_setFrame___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setRefusesRecipientStatus:(BOOL)a3
+- (void)setRefusesRecipientStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 16;
   }
@@ -9966,32 +9966,32 @@ uint64_t __23__SBIconView_setFrame___block_invoke_2(uint64_t a1)
   *(self + 553) = *(self + 553) & 0xEF | v3;
 }
 
-- (BOOL)canReceiveGrabbedIcon:(id)a3
+- (BOOL)canReceiveGrabbedIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(SBIconView *)self behaviorDelegate];
-  if ((*(self + 553) & 0x10) != 0 || ([v4 isFolderIcon] & 1) != 0 || (objc_msgSend(v4, "isWidgetStackIcon") & 1) != 0 || v4 && !objc_msgSend(v4, "canBeReceivedByIcon") || !-[SBIcon canReceiveGrabbedIcon](self->_icon, "canReceiveGrabbedIcon"))
+  iconCopy = icon;
+  behaviorDelegate = [(SBIconView *)self behaviorDelegate];
+  if ((*(self + 553) & 0x10) != 0 || ([iconCopy isFolderIcon] & 1) != 0 || (objc_msgSend(iconCopy, "isWidgetStackIcon") & 1) != 0 || iconCopy && !objc_msgSend(iconCopy, "canBeReceivedByIcon") || !-[SBIcon canReceiveGrabbedIcon](self->_icon, "canReceiveGrabbedIcon"))
   {
     goto LABEL_16;
   }
 
-  if (v4)
+  if (iconCopy)
   {
     icon = self->_icon;
     if (icon)
     {
-      v7 = [(SBIcon *)icon gridSizeClass];
-      v8 = [v4 gridSizeClass];
-      v9 = v8;
-      if (v7 == v8)
+      gridSizeClass = [(SBIcon *)icon gridSizeClass];
+      gridSizeClass2 = [iconCopy gridSizeClass];
+      v9 = gridSizeClass2;
+      if (gridSizeClass == gridSizeClass2)
       {
       }
 
       else
       {
-        v10 = [(SBIcon *)self->_icon gridSizeClass];
-        v11 = [v4 gridSizeClass];
-        v12 = [v10 isEqualToString:v11];
+        gridSizeClass3 = [(SBIcon *)self->_icon gridSizeClass];
+        gridSizeClass4 = [iconCopy gridSizeClass];
+        v12 = [gridSizeClass3 isEqualToString:gridSizeClass4];
 
         if (!v12)
         {
@@ -10003,12 +10003,12 @@ LABEL_16:
     }
   }
 
-  if (v4)
+  if (iconCopy)
   {
     v13 = self->_icon;
     if (v13)
     {
-      if (([(SBIcon *)v13 isEqual:v4]& 1) != 0)
+      if (([(SBIcon *)v13 isEqual:iconCopy]& 1) != 0)
       {
         goto LABEL_16;
       }
@@ -10017,7 +10017,7 @@ LABEL_16:
 
   if (objc_opt_respondsToSelector())
   {
-    v14 = [v5 icon:self canReceiveGrabbedIcon:v4];
+    v14 = [behaviorDelegate icon:self canReceiveGrabbedIcon:iconCopy];
   }
 
   else
@@ -10030,13 +10030,13 @@ LABEL_17:
   return v14;
 }
 
-- (void)setGrabbed:(BOOL)a3
+- (void)setGrabbed:(BOOL)grabbed
 {
   v7 = *(self + 553);
-  if (((((v7 & 2) == 0) ^ a3) & 1) == 0)
+  if (((((v7 & 2) == 0) ^ grabbed) & 1) == 0)
   {
     v10 = v3;
-    if (a3)
+    if (grabbed)
     {
       v9 = 2;
     }
@@ -10061,9 +10061,9 @@ LABEL_17:
   droppingAssertions = self->_droppingAssertions;
   if (!droppingAssertions)
   {
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v6 = self->_droppingAssertions;
-    self->_droppingAssertions = v5;
+    self->_droppingAssertions = weakObjectsHashTable;
 
     droppingAssertions = self->_droppingAssertions;
   }
@@ -10086,10 +10086,10 @@ LABEL_17:
   return v3;
 }
 
-- (void)removeDroppingAssertion:(id)a3
+- (void)removeDroppingAssertion:(id)assertion
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assertionCopy = assertion;
   v5 = SBLogIcon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -10097,11 +10097,11 @@ LABEL_17:
     v8 = 138543618;
     v9 = logIdentifier;
     v10 = 2112;
-    v11 = v4;
+    v11 = assertionCopy;
     _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_INFO, "<%{public}@> Remove SBIconView isDropping assertion: %@", &v8, 0x16u);
   }
 
-  [(NSHashTable *)self->_droppingAssertions removeObject:v4];
+  [(NSHashTable *)self->_droppingAssertions removeObject:assertionCopy];
   if (![(NSHashTable *)self->_droppingAssertions count])
   {
     droppingAssertions = self->_droppingAssertions;
@@ -10112,21 +10112,21 @@ LABEL_17:
   [(SBIconView *)self _updateAllComponentAlphas];
 }
 
-- (void)setShowsImageAndLabelDuringDrop:(BOOL)a3
+- (void)setShowsImageAndLabelDuringDrop:(BOOL)drop
 {
-  if (self->_showsImageAndLabelDuringDrop != a3)
+  if (self->_showsImageAndLabelDuringDrop != drop)
   {
-    self->_showsImageAndLabelDuringDrop = a3;
+    self->_showsImageAndLabelDuringDrop = drop;
     [(SBIconView *)self _updateAllComponentAlphas];
   }
 }
 
-- (void)setOverlapping:(BOOL)a3
+- (void)setOverlapping:(BOOL)overlapping
 {
   v3 = *(self + 553);
-  if (((((v3 & 4) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 4) == 0) ^ overlapping) & 1) == 0)
   {
-    if (a3)
+    if (overlapping)
     {
       v5 = 4;
     }
@@ -10162,13 +10162,13 @@ LABEL_17:
   [(SBIconView *)self _updateLabel];
 }
 
-- (void)setShowsDropGlow:(BOOL)a3 animator:(id)a4
+- (void)setShowsDropGlow:(BOOL)glow animator:(id)animator
 {
-  v4 = a3;
-  v6 = a4;
+  glowCopy = glow;
+  animatorCopy = animator;
   if (self->_iconImageView)
   {
-    if (v4 && !self->_dropGlow)
+    if (glowCopy && !self->_dropGlow)
     {
       v7 = [(SBIconView *)self newComponentBackgroundViewOfType:3];
       dropGlow = self->_dropGlow;
@@ -10182,23 +10182,23 @@ LABEL_17:
       v26[2] = *(MEMORY[0x1E695EFD0] + 32);
       [(UIView *)v9 setTransform:v26];
       [(UIView *)self->_dropGlow setAlpha:0.0];
-      v11 = [(SBIconView *)self currentImageView];
+      currentImageView = [(SBIconView *)self currentImageView];
       v12 = self->_dropGlow;
-      [v11 center];
+      [currentImageView center];
       [(UIView *)v12 setCenter:?];
-      v13 = [(SBIconView *)self imageContainerView];
-      [v13 addSubview:self->_dropGlow];
+      imageContainerView = [(SBIconView *)self imageContainerView];
+      [imageContainerView addSubview:self->_dropGlow];
 
       [(SBIconView *)self updateImageContainerViewSubviewOrder];
     }
 
-    v14 = [(SBIconView *)self superview];
-    [v14 sendSubviewToBack:self];
+    superview = [(SBIconView *)self superview];
+    [superview sendSubviewToBack:self];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [(SBIconViewCustomImageViewControlling *)self->_customIconImageViewController setOverlapping:v4];
+    [(SBIconViewCustomImageViewControlling *)self->_customIconImageViewController setOverlapping:glowCopy];
   }
 
   v15 = self->_dropGlow;
@@ -10207,20 +10207,20 @@ LABEL_17:
   v23[2] = __40__SBIconView_setShowsDropGlow_animator___block_invoke;
   v23[3] = &unk_1E808D108;
   v23[4] = self;
-  v25 = v4;
+  v25 = glowCopy;
   v16 = v15;
   v24 = v16;
-  [v6 addAnimations:v23];
+  [animatorCopy addAnimations:v23];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __40__SBIconView_setShowsDropGlow_animator___block_invoke_2;
   v19[3] = &unk_1E808F030;
-  v22 = v4;
+  v22 = glowCopy;
   v20 = v16;
-  v21 = self;
+  selfCopy = self;
   v17 = v16;
-  [v6 addCompletion:v19];
-  if (v4)
+  [animatorCopy addCompletion:v19];
+  if (glowCopy)
   {
     v18 = 4;
   }
@@ -10274,13 +10274,13 @@ void __40__SBIconView_setShowsDropGlow_animator___block_invoke_2(uint64_t a1, ui
   }
 }
 
-- (void)setShowsFocusEffect:(BOOL)a3
+- (void)setShowsFocusEffect:(BOOL)effect
 {
-  v3 = a3;
+  effectCopy = effect;
   v5 = self->_focusEffectPlatterView;
   if (v5)
   {
-    if (v3)
+    if (effectCopy)
     {
 LABEL_3:
       v6 = objc_alloc(MEMORY[0x1E69DD278]);
@@ -10289,8 +10289,8 @@ LABEL_3:
       v10[2] = __34__SBIconView_setShowsFocusEffect___block_invoke;
       v10[3] = &unk_1E808D108;
       v11 = v5;
-      v12 = self;
-      v13 = v3;
+      selfCopy = self;
+      v13 = effectCopy;
       v7 = [v6 initWithDuration:2 curve:v10 animations:0.1333];
       [v7 startAnimation];
 
@@ -10303,7 +10303,7 @@ LABEL_3:
   {
     [(SBIconView *)self setupFocusEffectPlatterView];
     v5 = self->_focusEffectPlatterView;
-    if (v3)
+    if (effectCopy)
     {
       goto LABEL_3;
     }
@@ -10348,20 +10348,20 @@ uint64_t __34__SBIconView_setShowsFocusEffect___block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGRect)_focusEffectBoundsForFocused:(BOOL)a3 withFocusOutset:(double)a4
+- (CGRect)_focusEffectBoundsForFocused:(BOOL)focused withFocusOutset:(double)outset
 {
-  v4 = a3;
-  v6 = [(SBIconView *)self currentImageView];
-  [v6 bounds];
+  focusedCopy = focused;
+  currentImageView = [(SBIconView *)self currentImageView];
+  [currentImageView bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(SBIconView *)self customIconImageViewController];
-  if (v15 && (objc_opt_respondsToSelector() & 1) != 0)
+  customIconImageViewController = [(SBIconView *)self customIconImageViewController];
+  if (customIconImageViewController && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v15 focusEffectBounds];
+    [customIconImageViewController focusEffectBounds];
     v8 = v16;
     v10 = v17;
     v12 = v18;
@@ -10369,7 +10369,7 @@ uint64_t __34__SBIconView_setShowsFocusEffect___block_invoke(uint64_t a1)
   }
 
   UIRectInsetEdges();
-  if (v4)
+  if (focusedCopy)
   {
     v8 = v20;
     v10 = v21;
@@ -10390,18 +10390,18 @@ uint64_t __34__SBIconView_setShowsFocusEffect___block_invoke(uint64_t a1)
 
 - (CGPoint)_focusEffectCenter
 {
-  v3 = [(SBIconView *)self customIconImageViewController];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  customIconImageViewController = [(SBIconView *)self customIconImageViewController];
+  if (customIconImageViewController && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v3 focusEffectCenter];
+    [customIconImageViewController focusEffectCenter];
     v5 = v4;
     v7 = v6;
   }
 
   else
   {
-    v8 = [(SBIconView *)self currentImageView];
-    [v8 center];
+    currentImageView = [(SBIconView *)self currentImageView];
+    [currentImageView center];
     v5 = v9;
     v7 = v10;
   }
@@ -10413,17 +10413,17 @@ uint64_t __34__SBIconView_setShowsFocusEffect___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_configureViewAsFolderIconImageView:(id)a3
+- (void)_configureViewAsFolderIconImageView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = MEMORY[0x1E69DD250];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__SBIconView__configureViewAsFolderIconImageView___block_invoke;
   v7[3] = &unk_1E8088F18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = viewCopy;
+  selfCopy = self;
+  v6 = viewCopy;
   [v5 performWithoutAnimation:v7];
 }
 
@@ -10447,18 +10447,18 @@ uint64_t __50__SBIconView__configureViewAsFolderIconImageView___block_invoke(uin
   return [v8 layoutIfNeeded];
 }
 
-- (void)prepareToCrossfadeImageWithView:(id)a3 anchorPoint:(CGPoint)a4 options:(unint64_t)a5
+- (void)prepareToCrossfadeImageWithView:(id)view anchorPoint:(CGPoint)point options:(unint64_t)options
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   [(SBIconView *)self cleanupAfterCrossfade];
-  v21 = [(SBIconView *)self contentContainerView];
-  v10 = [(SBIconView *)self currentImageView];
-  v11 = [v21 subviews];
-  v12 = [v11 indexOfObject:v10];
+  contentContainerView = [(SBIconView *)self contentContainerView];
+  currentImageView = [(SBIconView *)self currentImageView];
+  subviews = [contentContainerView subviews];
+  v12 = [subviews indexOfObject:currentImageView];
 
-  [v10 removeFromSuperview];
+  [currentImageView removeFromSuperview];
   customIconImageViewController = self->_customIconImageViewController;
   if (!customIconImageViewController)
   {
@@ -10468,25 +10468,25 @@ uint64_t __50__SBIconView__configureViewAsFolderIconImageView___block_invoke(uin
   v14 = customIconImageViewController;
   v15 = objc_opt_self();
 
-  v16 = [[v15 alloc] initWithSource:v14 crossfadeView:v9];
+  v16 = [[v15 alloc] initWithSource:v14 crossfadeView:viewCopy];
   crossfadeView = self->_crossfadeView;
   self->_crossfadeView = v16;
 
   v18 = self->_crossfadeView;
   [(SBIconView *)self _frameForImageView];
   [(SBIconImageCrossfadeView *)v18 sbf_setBoundsAndPositionFromFrame:?];
-  [(SBIconImageCrossfadeView *)self->_crossfadeView setMasksCorners:a5 & 1];
-  [(SBIconImageCrossfadeView *)self->_crossfadeView setPerformsTrueCrossfade:(a5 >> 1) & 1];
+  [(SBIconImageCrossfadeView *)self->_crossfadeView setMasksCorners:options & 1];
+  [(SBIconImageCrossfadeView *)self->_crossfadeView setPerformsTrueCrossfade:(options >> 1) & 1];
   [(SBIconImageCrossfadeView *)self->_crossfadeView setStretchAnchorPoint:x, y];
-  [(SBIconImageCrossfadeView *)self->_crossfadeView setCrossfadeStyle:(a5 >> 3) & 1];
+  [(SBIconImageCrossfadeView *)self->_crossfadeView setCrossfadeStyle:(options >> 3) & 1];
   [(SBIconView *)self updateAccessoryViewContainerIfNecessary];
-  v19 = [v10 superview];
+  superview = [currentImageView superview];
 
-  v20 = v21;
-  if (v19 == v21)
+  v20 = contentContainerView;
+  if (superview == contentContainerView)
   {
-    [v10 setHidden:1];
-    v20 = v21;
+    [currentImageView setHidden:1];
+    v20 = contentContainerView;
   }
 
   [v20 insertSubview:self->_crossfadeView atIndex:v12];
@@ -10495,45 +10495,45 @@ uint64_t __50__SBIconView__configureViewAsFolderIconImageView___block_invoke(uin
   [(SBIconView *)self _updateJitter];
 }
 
-- (void)setCrossfadeFraction:(double)a3
+- (void)setCrossfadeFraction:(double)fraction
 {
   [(SBIconImageCrossfadeView *)self->_crossfadeView setCrossfadeFraction:?];
-  v5 = 1.0 - a3;
+  v5 = 1.0 - fraction;
   [(SBIconView *)self setIconAccessoryAlpha:v5];
 
   [(SBIconView *)self setIconLabelAlpha:v5];
 }
 
-- (void)setMorphFraction:(double)a3
+- (void)setMorphFraction:(double)fraction
 {
-  [(SBIconImageCrossfadeView *)self->_crossfadeView setMorphFraction:a3];
+  [(SBIconImageCrossfadeView *)self->_crossfadeView setMorphFraction:fraction];
   [(SBIconView *)self setNeedsLayout];
 
   [(SBIconView *)self layoutIfNeeded];
 }
 
-- (void)setFolderIconImageCache:(id)a3
+- (void)setFolderIconImageCache:(id)cache
 {
-  v5 = a3;
-  if (self->_folderIconImageCache != v5)
+  cacheCopy = cache;
+  if (self->_folderIconImageCache != cacheCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_folderIconImageCache, a3);
+    v6 = cacheCopy;
+    objc_storeStrong(&self->_folderIconImageCache, cache);
     [(SBIconImageView *)self->_iconImageView iconViewFolderIconImageCacheDidChange];
-    v5 = v6;
+    cacheCopy = v6;
   }
 }
 
-- (void)setIconImageCache:(id)a3
+- (void)setIconImageCache:(id)cache
 {
-  v5 = a3;
-  if (self->_iconImageCache != v5)
+  cacheCopy = cache;
+  if (self->_iconImageCache != cacheCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_iconImageCache, a3);
+    v6 = cacheCopy;
+    objc_storeStrong(&self->_iconImageCache, cache);
     [(SBIconImageView *)self->_iconImageView setIconImageCache:v6];
     [(SBIconView *)self _updateFrameToIconViewSize];
-    v5 = v6;
+    cacheCopy = v6;
   }
 }
 
@@ -10542,10 +10542,10 @@ uint64_t __50__SBIconView__configureViewAsFolderIconImageView___block_invoke(uin
   v3 = self->_accessibilityTintColor;
   if (!v3)
   {
-    v4 = [(SBIconView *)self behaviorDelegate];
+    behaviorDelegate = [(SBIconView *)self behaviorDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v3 = [v4 accessibilityTintColorForIconView:self];
+      v3 = [behaviorDelegate accessibilityTintColorForIconView:self];
     }
 
     else
@@ -10557,17 +10557,17 @@ uint64_t __50__SBIconView__configureViewAsFolderIconImageView___block_invoke(uin
   return v3;
 }
 
-+ (id)draggedItemBundleIdentifiersInDrag:(id)a3
++ (id)draggedItemBundleIdentifiersInDrag:(id)drag
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dragCopy = drag;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v3 items];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  items = [dragCopy items];
+  v6 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -10578,24 +10578,24 @@ uint64_t __50__SBIconView__configureViewAsFolderIconImageView___block_invoke(uin
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) localObject];
+        localObject = [*(*(&v15 + 1) + 8 * i) localObject];
         v11 = objc_opt_self();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v13 = [v10 uniqueIdentifier];
-          if (v13)
+          uniqueIdentifier = [localObject uniqueIdentifier];
+          if (uniqueIdentifier)
           {
-            [v4 addObject:v13];
+            [v4 addObject:uniqueIdentifier];
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -10606,33 +10606,33 @@ uint64_t __50__SBIconView__configureViewAsFolderIconImageView___block_invoke(uin
 
 - (int64_t)draggingStartLocation
 {
-  v3 = [(SBIconView *)self location];
-  if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupFloatingDock", v3))
+  location = [(SBIconView *)self location];
+  if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupFloatingDock", location))
   {
     v4 = 6;
   }
 
-  else if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupRoot", v3) & 1) != 0 || ([v3 isEqualToString:@"SBIconLocationFolder"] & 1) != 0 || (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupDock", v3))
+  else if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupRoot", location) & 1) != 0 || ([location isEqualToString:@"SBIconLocationFolder"] & 1) != 0 || (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupDock", location))
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SBIconLocationStackConfiguration"])
+  else if ([location isEqualToString:@"SBIconLocationStackConfiguration"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SBIconLocationAddWidgetSheet"])
+  else if ([location isEqualToString:@"SBIconLocationAddWidgetSheet"])
   {
     v4 = 3;
   }
 
-  else if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupAppLibrary", v3))
+  else if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupAppLibrary", location))
   {
     v4 = 4;
   }
 
-  else if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupTodayView", v3))
+  else if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupTodayView", location))
   {
     v4 = 10;
   }
@@ -10642,10 +10642,10 @@ uint64_t __50__SBIconView__configureViewAsFolderIconImageView___block_invoke(uin
     v4 = 0;
   }
 
-  v5 = [(SBIconView *)self dragDelegate];
+  dragDelegate = [(SBIconView *)self dragDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v5 iconView:self draggingStartLocationWithProposedStartLocation:v4];
+    v4 = [dragDelegate iconView:self draggingStartLocationWithProposedStartLocation:v4];
   }
 
   return v4;
@@ -10653,10 +10653,10 @@ uint64_t __50__SBIconView__configureViewAsFolderIconImageView___block_invoke(uin
 
 - (id)draggingLaunchActions
 {
-  v3 = [(SBIconView *)self dragDelegate];
+  dragDelegate = [(SBIconView *)self dragDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 launchActionsForIconView:self];
+    v4 = [dragDelegate launchActionsForIconView:self];
   }
 
   else
@@ -10669,10 +10669,10 @@ uint64_t __50__SBIconView__configureViewAsFolderIconImageView___block_invoke(uin
 
 - (id)draggingLaunchURL
 {
-  v3 = [(SBIconView *)self dragDelegate];
+  dragDelegate = [(SBIconView *)self dragDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 launchURLForIconView:self];
+    v4 = [dragDelegate launchURLForIconView:self];
   }
 
   else
@@ -10683,18 +10683,18 @@ uint64_t __50__SBIconView__configureViewAsFolderIconImageView___block_invoke(uin
   return v4;
 }
 
-- (id)dragPreviewForItem:(id)a3 session:(id)a4
+- (id)dragPreviewForItem:(id)item session:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  sessionCopy = session;
   v8 = objc_alloc_init(MEMORY[0x1E69DC9A0]);
-  v9 = [MEMORY[0x1E69DC888] clearColor];
-  [v8 setBackgroundColor:v9];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v8 setBackgroundColor:clearColor];
 
-  v10 = [(SBIconView *)self dragDelegate];
+  dragDelegate = [(SBIconView *)self dragDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v10 iconView:self dragPreviewForItem:v6 session:v7 previewParameters:v8];
+    [dragDelegate iconView:self dragPreviewForItem:itemCopy session:sessionCopy previewParameters:v8];
   }
 
   else
@@ -10709,44 +10709,44 @@ uint64_t __50__SBIconView__configureViewAsFolderIconImageView___block_invoke(uin
 - (id)defaultDragPreview
 {
   v3 = objc_alloc_init(MEMORY[0x1E69DC9A0]);
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v3 setBackgroundColor:clearColor];
 
   v5 = [(SBIconView *)self defaultDragPreviewWithParameters:v3];
 
   return v5;
 }
 
-- (id)defaultDragPreviewWithParameters:(id)a3
+- (id)defaultDragPreviewWithParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [(SBIconView *)self customIconImageViewController];
+  parametersCopy = parameters;
+  customIconImageViewController = [(SBIconView *)self customIconImageViewController];
   [(SBIconView *)self iconImageInfo];
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  if (v5)
+  if (customIconImageViewController)
   {
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v5 snapshotView];
-      [(SBIconView *)self _setTemporarySnapshotViewForDragPreview:v12];
-      [v12 _setContinuousCornerRadius:v11];
-      [v12 setClipsToBounds:1];
+      snapshotView = [customIconImageViewController snapshotView];
+      [(SBIconView *)self _setTemporarySnapshotViewForDragPreview:snapshotView];
+      [snapshotView _setContinuousCornerRadius:v11];
+      [snapshotView setClipsToBounds:1];
     }
 
     else
     {
-      v12 = [v5 view];
+      snapshotView = [customIconImageViewController view];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v5 snapshotViewCenter];
+      [customIconImageViewController snapshotViewCenter];
       v22 = v21;
       v24 = v23;
-      v25 = [v5 view];
-      [(SBIconView *)self convertPoint:v25 fromView:v22, v24];
+      view = [customIconImageViewController view];
+      [(SBIconView *)self convertPoint:view fromView:v22, v24];
       v16 = v26;
       v18 = v27;
     }
@@ -10762,29 +10762,29 @@ uint64_t __50__SBIconView__configureViewAsFolderIconImageView___block_invoke(uin
     v20 = 1.0;
     if (v30)
     {
-      [v5 snapshotViewScaleFactor];
+      [customIconImageViewController snapshotViewScaleFactor];
       v20 = v31;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v32 = [v5 snapshotViewVisiblePath];
+      snapshotViewVisiblePath = [customIconImageViewController snapshotViewVisiblePath];
     }
 
     else
     {
-      v32 = 0;
+      snapshotViewVisiblePath = 0;
     }
 
     v19 = v30 ^ 1;
     if (objc_opt_respondsToSelector())
     {
-      [v5 willUsePreviewParameters:v4];
+      [customIconImageViewController willUsePreviewParameters:parametersCopy];
     }
 
-    if (v32)
+    if (snapshotViewVisiblePath)
     {
-      v33 = v32;
+      v33 = snapshotViewVisiblePath;
       v34 = v33;
       goto LABEL_19;
     }
@@ -10792,11 +10792,11 @@ uint64_t __50__SBIconView__configureViewAsFolderIconImageView___block_invoke(uin
 
   else
   {
-    v12 = objc_alloc_init([(SBIconView *)self expectedIconImageViewClass]);
-    [(SBIconView *)self _configureIconImageView:v12];
-    v13 = [(SBIconView *)self icon];
-    v14 = [(SBIconView *)self location];
-    [v12 setIcon:v13 location:v14 animated:0];
+    snapshotView = objc_alloc_init([(SBIconView *)self expectedIconImageViewClass]);
+    [(SBIconView *)self _configureIconImageView:snapshotView];
+    icon = [(SBIconView *)self icon];
+    location = [(SBIconView *)self location];
+    [snapshotView setIcon:icon location:location animated:0];
 
     [(SBIconView *)self iconImageCenter];
     v16 = v15;
@@ -10808,7 +10808,7 @@ uint64_t __50__SBIconView__configureViewAsFolderIconImageView___block_invoke(uin
   v33 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:0.0 cornerRadius:{0.0, v7, v9, v11}];
   v34 = 0;
 LABEL_19:
-  [v4 setVisiblePath:v33];
+  [parametersCopy setVisiblePath:v33];
   memset(&v41, 0, sizeof(v41));
   CGAffineTransformMakeScale(&v41, v20, v20);
   if (v19)
@@ -10820,9 +10820,9 @@ LABEL_19:
   }
 
   v40 = v41;
-  [v12 setTransform:&v40];
+  [snapshotView setTransform:&v40];
   v36 = [objc_alloc(MEMORY[0x1E69DC9A8]) initWithContainer:self center:{v16, v18}];
-  v37 = [objc_alloc(MEMORY[0x1E69DD068]) initWithView:v12 parameters:v4 target:v36];
+  v37 = [objc_alloc(MEMORY[0x1E69DD068]) initWithView:snapshotView parameters:parametersCopy target:v36];
 
   return v37;
 }
@@ -10830,14 +10830,14 @@ LABEL_19:
 - (id)dragItems
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SBIconView *)self icon];
-  v4 = v3;
-  if (v3 && [v3 canParticipateInDrags] && !-[SBIconView isPaused](self, "isPaused"))
+  icon = [(SBIconView *)self icon];
+  v4 = icon;
+  if (icon && [icon canParticipateInDrags] && !-[SBIconView isPaused](self, "isPaused"))
   {
-    v7 = [(SBIconView *)self dragDelegate];
+    dragDelegate = [(SBIconView *)self dragDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v7 dragItemsForIconView:self];
+      v5 = [dragDelegate dragItemsForIconView:self];
     }
 
     else
@@ -10856,21 +10856,21 @@ LABEL_19:
   return v5;
 }
 
-+ (id)dragContextForDragItem:(id)a3
++ (id)dragContextForDragItem:(id)item
 {
-  v3 = [a3 itemProvider];
-  v4 = [v3 teamData];
-  if (v4 && (v5 = MEMORY[0x1E696ACD0], objc_opt_self(), v6 = objc_claimAutoreleasedReturnValue(), [v5 unarchivedObjectOfClass:v6 fromData:v4 error:0], v7 = objc_claimAutoreleasedReturnValue(), v6, v7))
+  itemProvider = [item itemProvider];
+  teamData = [itemProvider teamData];
+  if (teamData && (v5 = MEMORY[0x1E696ACD0], objc_opt_self(), v6 = objc_claimAutoreleasedReturnValue(), [v5 unarchivedObjectOfClass:v6 fromData:teamData error:0], v7 = objc_claimAutoreleasedReturnValue(), v6, v7))
   {
     v8 = objc_alloc(MEMORY[0x1E69D4190]);
-    v9 = [v7 uniqueIdentifier];
-    v10 = [v8 initWithUniqueIdentifier:v9 withLaunchActions:0 startLocation:{SBHAppDragLocalContextStartLocationToSBSLocation(objc_msgSend(v7, "startLocation"))}];
+    uniqueIdentifier = [v7 uniqueIdentifier];
+    v10 = [v8 initWithUniqueIdentifier:uniqueIdentifier withLaunchActions:0 startLocation:{SBHAppDragLocalContextStartLocationToSBSLocation(objc_msgSend(v7, "startLocation"))}];
 
-    v11 = [v7 applicationBundleIdentifier];
-    [v10 setApplicationBundleIdentifier:v11];
+    applicationBundleIdentifier = [v7 applicationBundleIdentifier];
+    [v10 setApplicationBundleIdentifier:applicationBundleIdentifier];
 
-    v12 = [v7 launchURL];
-    [v10 setLaunchURL:v12];
+    launchURL = [v7 launchURL];
+    [v10 setLaunchURL:launchURL];
   }
 
   else
@@ -10892,32 +10892,32 @@ LABEL_19:
 
 - (void)cancelDrag
 {
-  v2 = [(SBIconView *)self dragInteraction];
-  [v2 _cancelDrag];
+  dragInteraction = [(SBIconView *)self dragInteraction];
+  [dragInteraction _cancelDrag];
 }
 
 - (void)cancelDragLift
 {
-  v2 = [(SBIconView *)self dragInteraction];
-  [v2 _cancelLift];
+  dragInteraction = [(SBIconView *)self dragInteraction];
+  [dragInteraction _cancelLift];
 }
 
 - (id)dragDelegate
 {
-  v3 = [(SBIconView *)self overrideDraggingDelegate];
-  v4 = v3;
-  if (v3)
+  overrideDraggingDelegate = [(SBIconView *)self overrideDraggingDelegate];
+  v4 = overrideDraggingDelegate;
+  if (overrideDraggingDelegate)
   {
-    v5 = v3;
+    v5 = overrideDraggingDelegate;
   }
 
   else
   {
-    v6 = [(SBIconView *)self delegate];
-    v5 = v6;
+    delegate = [(SBIconView *)self delegate];
+    v5 = delegate;
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v6 draggingDelegateForIconView:self];
+      v5 = [delegate draggingDelegateForIconView:self];
     }
   }
 
@@ -10926,17 +10926,17 @@ LABEL_19:
 
 - (BOOL)canBeginDrags
 {
-  v3 = [(SBIconView *)self dragDelegate];
-  v4 = (objc_opt_respondsToSelector() & 1) == 0 || [v3 iconViewCanBeginDrags:self];
+  dragDelegate = [(SBIconView *)self dragDelegate];
+  v4 = (objc_opt_respondsToSelector() & 1) == 0 || [dragDelegate iconViewCanBeginDrags:self];
 
   return v4;
 }
 
-- (id)matchingIconViewWithConfigurationOptions:(unint64_t)a3
+- (id)matchingIconViewWithConfigurationOptions:(unint64_t)options
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(SBIconView *)self listLayoutProvider];
-  v7 = [v5 initWithConfigurationOptions:a3 listLayoutProvider:v6];
+  listLayoutProvider = [(SBIconView *)self listLayoutProvider];
+  v7 = [v5 initWithConfigurationOptions:options listLayoutProvider:listLayoutProvider];
 
   v8 = MEMORY[0x1E69DD250];
   v13[0] = MEMORY[0x1E69E9820];
@@ -10964,51 +10964,51 @@ uint64_t __55__SBIconView_matchingIconViewWithConfigurationOptions___block_invok
   return [v2 setFrame:{v3, v4}];
 }
 
-- (id)matchingIconViewByAddingConfigurationOptions:(unint64_t)a3 removingConfigurationOptions:(unint64_t)a4
+- (id)matchingIconViewByAddingConfigurationOptions:(unint64_t)options removingConfigurationOptions:(unint64_t)configurationOptions
 {
-  v5 = ([(SBIconView *)self configurationOptions]| a3) & ~a4;
+  v5 = ([(SBIconView *)self configurationOptions]| options) & ~configurationOptions;
 
   return [(SBIconView *)self matchingIconViewWithConfigurationOptions:v5];
 }
 
 - (id)supportedIconGridSizeClasses
 {
-  v3 = [(SBIconView *)self icon];
-  v4 = [v3 supportedGridSizeClasses];
+  icon = [(SBIconView *)self icon];
+  supportedGridSizeClasses = [icon supportedGridSizeClasses];
 
-  v5 = [(SBIconView *)self behaviorDelegate];
+  behaviorDelegate = [(SBIconView *)self behaviorDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 supportedGridSizeClassesForIconView:self];
-    v7 = [v4 gridSizeClassSetByIntersectingWithGridSizeClassSet:v6];
+    v6 = [behaviorDelegate supportedGridSizeClassesForIconView:self];
+    v7 = [supportedGridSizeClasses gridSizeClassSetByIntersectingWithGridSizeClassSet:v6];
 
-    v4 = v7;
+    supportedGridSizeClasses = v7;
   }
 
-  return v4;
+  return supportedGridSizeClasses;
 }
 
 - (id)supportedIconGridSizeClassesForResize
 {
-  v3 = [(SBIconView *)self icon];
-  v4 = [v3 supportedGridSizeClasses];
+  icon = [(SBIconView *)self icon];
+  supportedGridSizeClasses = [icon supportedGridSizeClasses];
 
-  v5 = [(SBIconView *)self behaviorDelegate];
+  behaviorDelegate = [(SBIconView *)self behaviorDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 supportedIconGridSizeClassesForResizeOfIconView:self];
-    v7 = [v4 gridSizeClassSetByUnioningWithGridSizeClassSet:v6];
+    v6 = [behaviorDelegate supportedIconGridSizeClassesForResizeOfIconView:self];
+    v7 = [supportedGridSizeClasses gridSizeClassSetByUnioningWithGridSizeClassSet:v6];
 
-    v4 = v7;
+    supportedGridSizeClasses = v7;
   }
 
-  return v4;
+  return supportedGridSizeClasses;
 }
 
 - (SBHIconGridSizeClassDomain)gridSizeClassDomain
 {
-  v3 = [(SBIconView *)self behaviorDelegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v3 gridSizeClassDomainForIconView:self], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  behaviorDelegate = [(SBIconView *)self behaviorDelegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([behaviorDelegate gridSizeClassDomainForIconView:self], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v4 = +[SBHIconGridSizeClassDomain globalDomain];
   }
@@ -11018,71 +11018,71 @@ uint64_t __55__SBIconView_matchingIconViewWithConfigurationOptions___block_invok
 
 - (id)iconGridSizeClassSizes
 {
-  v3 = [(SBIconView *)self listLayout];
-  v4 = SBHIconListLayoutIconGridSizeClassSizes(v3, [(SBIconView *)self orientation]);
+  listLayout = [(SBIconView *)self listLayout];
+  v4 = SBHIconListLayoutIconGridSizeClassSizes(listLayout, [(SBIconView *)self orientation]);
 
   return v4;
 }
 
-- (void)removeAssertion:(id)a3
+- (void)removeAssertion:(id)assertion
 {
-  v6 = a3;
-  v4 = [v6 assertionType];
-  if (v4 > 2)
+  assertionCopy = assertion;
+  assertionType = [assertionCopy assertionType];
+  if (assertionType > 2)
   {
-    if (v4 == 3)
+    if (assertionType == 3)
     {
-      v4 = [(SBIconView *)self removeForbidContextMenusAssertion:v6];
+      assertionType = [(SBIconView *)self removeForbidContextMenusAssertion:assertionCopy];
     }
 
     else
     {
-      v5 = v6;
-      if (v4 == 4)
+      v5 = assertionCopy;
+      if (assertionType == 4)
       {
-        v4 = [(SBIconView *)self removeExtendResizeFinishAssertion:v6];
+        assertionType = [(SBIconView *)self removeExtendResizeFinishAssertion:assertionCopy];
       }
 
       else
       {
-        if (v4 != 5)
+        if (assertionType != 5)
         {
           goto LABEL_15;
         }
 
-        v4 = [(SBIconView *)self removeDisallowGlassGroupingAssertion:v6];
+        assertionType = [(SBIconView *)self removeDisallowGlassGroupingAssertion:assertionCopy];
       }
     }
   }
 
-  else if (v4)
+  else if (assertionType)
   {
-    v5 = v6;
-    if (v4 == 1)
+    v5 = assertionCopy;
+    if (assertionType == 1)
     {
-      v4 = [(SBIconView *)self removeForbidAccessoryUpdatesAssertion:v6];
+      assertionType = [(SBIconView *)self removeForbidAccessoryUpdatesAssertion:assertionCopy];
     }
 
     else
     {
-      if (v4 != 2)
+      if (assertionType != 2)
       {
         goto LABEL_15;
       }
 
-      v4 = [(SBIconView *)self removeBorrowedIconImageViewAssertion:v6];
+      assertionType = [(SBIconView *)self removeBorrowedIconImageViewAssertion:assertionCopy];
     }
   }
 
   else
   {
-    v4 = [(SBIconView *)self removeDroppingAssertion:v6];
+    assertionType = [(SBIconView *)self removeDroppingAssertion:assertionCopy];
   }
 
-  v5 = v6;
+  v5 = assertionCopy;
 LABEL_15:
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](assertionType, v5);
 }
 
 - (void)purgeCachedEditingViewData
@@ -11107,24 +11107,24 @@ LABEL_15:
 
 - (id)dropDelegate
 {
-  v3 = [(SBIconView *)self delegate];
-  v4 = v3;
+  delegate = [(SBIconView *)self delegate];
+  v4 = delegate;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 droppingDelegateForIconView:self];
+    v4 = [delegate droppingDelegateForIconView:self];
   }
 
   return v4;
 }
 
-- (id)claimBindingsForDropSession:(id)a3
+- (id)claimBindingsForDropSession:(id)session
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [MEMORY[0x1E69DC9B0] sharedInstance];
-  v6 = [v5 sessionForDropSession:v3];
+  sessionCopy = session;
+  array = [MEMORY[0x1E695DF70] array];
+  mEMORY[0x1E69DC9B0] = [MEMORY[0x1E69DC9B0] sharedInstance];
+  v6 = [mEMORY[0x1E69DC9B0] sessionForDropSession:sessionCopy];
 
-  v7 = v3;
+  v7 = sessionCopy;
   v8 = [v7 _dataOwner] == 2 || objc_msgSend(v7, "_dataOwner") == 3;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -11132,7 +11132,7 @@ LABEL_15:
   aBlock[3] = &unk_1E808EF70;
   v16 = v7;
   v17 = v6;
-  v9 = v4;
+  v9 = array;
   v18 = v9;
   v10 = v6;
   v11 = v7;
@@ -11315,35 +11315,35 @@ LABEL_27:
   }
 }
 
-- (id)URLsForDropSession:(id)a3
+- (id)URLsForDropSession:(id)session
 {
   v75 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBIconView *)self icon];
+  sessionCopy = session;
+  icon = [(SBIconView *)self icon];
   v6 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v41 = v5;
-    v8 = v5;
-    v9 = [MEMORY[0x1E69DC9B0] sharedInstance];
-    v42 = v4;
-    v48 = [v9 sessionForDropSession:v4];
+    v41 = icon;
+    v8 = icon;
+    mEMORY[0x1E69DC9B0] = [MEMORY[0x1E69DC9B0] sharedInstance];
+    v42 = sessionCopy;
+    v48 = [mEMORY[0x1E69DC9B0] sessionForDropSession:sessionCopy];
 
     v10 = MEMORY[0x1E6963620];
     v40 = v8;
-    v11 = [v8 applicationBundleID];
-    v12 = [v10 bundleRecordWithBundleIdentifier:v11 allowPlaceholder:0 error:0];
+    applicationBundleID = [v8 applicationBundleID];
+    v12 = [v10 bundleRecordWithBundleIdentifier:applicationBundleID allowPlaceholder:0 error:0];
 
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
     v39 = v12;
-    v14 = [v12 claimRecords];
-    v15 = [v14 countByEnumeratingWithState:&v67 objects:v74 count:16];
+    claimRecords = [v12 claimRecords];
+    v15 = [claimRecords countByEnumeratingWithState:&v67 objects:v74 count:16];
     if (v15)
     {
       v16 = v15;
@@ -11354,7 +11354,7 @@ LABEL_27:
         {
           if (*v68 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(claimRecords);
           }
 
           v19 = *(*(&v67 + 1) + 8 * i);
@@ -11362,8 +11362,8 @@ LABEL_27:
           v64 = 0u;
           v65 = 0u;
           v66 = 0u;
-          v20 = [v19 URLSchemes];
-          v21 = [v20 countByEnumeratingWithState:&v63 objects:v73 count:16];
+          uRLSchemes = [v19 URLSchemes];
+          v21 = [uRLSchemes countByEnumeratingWithState:&v63 objects:v73 count:16];
           if (v21)
           {
             v22 = v21;
@@ -11374,27 +11374,27 @@ LABEL_27:
               {
                 if (*v64 != v23)
                 {
-                  objc_enumerationMutation(v20);
+                  objc_enumerationMutation(uRLSchemes);
                 }
 
-                [v13 addObject:*(*(&v63 + 1) + 8 * j)];
+                [array addObject:*(*(&v63 + 1) + 8 * j)];
               }
 
-              v22 = [v20 countByEnumeratingWithState:&v63 objects:v73 count:16];
+              v22 = [uRLSchemes countByEnumeratingWithState:&v63 objects:v73 count:16];
             }
 
             while (v22);
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v67 objects:v74 count:16];
+        v16 = [claimRecords countByEnumeratingWithState:&v67 objects:v74 count:16];
       }
 
       while (v16);
     }
 
-    v49 = [MEMORY[0x1E695DF70] array];
-    if ([v13 count])
+    array2 = [MEMORY[0x1E695DF70] array];
+    if ([array count])
     {
       v25 = dispatch_group_create();
       v26 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -11426,10 +11426,10 @@ LABEL_27:
             v56 = 0u;
             v57 = 0u;
             v58 = 0u;
-            v30 = [v29 itemProvider];
-            v31 = [v30 registeredTypeIdentifiers];
+            itemProvider = [v29 itemProvider];
+            registeredTypeIdentifiers = [itemProvider registeredTypeIdentifiers];
 
-            v32 = [v31 countByEnumeratingWithState:&v55 objects:v71 count:16];
+            v32 = [registeredTypeIdentifiers countByEnumeratingWithState:&v55 objects:v71 count:16];
             if (v32)
             {
               v33 = v32;
@@ -11440,7 +11440,7 @@ LABEL_27:
                 {
                   if (*v56 != v34)
                   {
-                    objc_enumerationMutation(v31);
+                    objc_enumerationMutation(registeredTypeIdentifiers);
                   }
 
                   v36 = [MEMORY[0x1E6982C40] typeWithIdentifier:*(*(&v55 + 1) + 8 * k)];
@@ -11451,15 +11451,15 @@ LABEL_27:
                     v50[1] = 3221225472;
                     v50[2] = __33__SBIconView_URLsForDropSession___block_invoke;
                     v50[3] = &unk_1E808F058;
-                    v51 = v13;
+                    v51 = array;
                     v52 = v47;
-                    v53 = v49;
+                    v53 = array2;
                     v54 = v25;
                     [v48 loadURLForItem:v29 completion:v50];
                   }
                 }
 
-                v33 = [v31 countByEnumeratingWithState:&v55 objects:v71 count:16];
+                v33 = [registeredTypeIdentifiers countByEnumeratingWithState:&v55 objects:v71 count:16];
               }
 
               while (v33);
@@ -11479,16 +11479,16 @@ LABEL_27:
       dispatch_group_wait(v25, v37);
     }
 
-    v5 = v41;
-    v4 = v42;
+    icon = v41;
+    sessionCopy = v42;
   }
 
   else
   {
-    v49 = MEMORY[0x1E695E0F0];
+    array2 = MEMORY[0x1E695E0F0];
   }
 
-  return v49;
+  return array2;
 }
 
 void __33__SBIconView_URLsForDropSession___block_invoke(uint64_t a1, void *a2)
@@ -11517,23 +11517,23 @@ void __33__SBIconView_URLsForDropSession___block_invoke(uint64_t a1, void *a2)
   dispatch_group_leave(*(a1 + 56));
 }
 
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(SBIconView *)self icon];
-  if ([v6 isFileStackIcon])
+  sessionCopy = session;
+  icon = [(SBIconView *)self icon];
+  if ([icon isFileStackIcon])
   {
     v7 = 1;
   }
 
-  else if ([v6 isLeafIcon])
+  else if ([icon isLeafIcon])
   {
-    v8 = [v6 applicationBundleID];
-    if ([v8 length])
+    applicationBundleID = [icon applicationBundleID];
+    if ([applicationBundleID length])
     {
-      v20 = v5;
-      [(SBIconView *)self claimBindingsForDropSession:v5];
+      v20 = sessionCopy;
+      [(SBIconView *)self claimBindingsForDropSession:sessionCopy];
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
@@ -11552,15 +11552,15 @@ void __33__SBIconView_URLsForDropSession___block_invoke(uint64_t a1, void *a2)
               objc_enumerationMutation(v9);
             }
 
-            v14 = [*(*(&v21 + 1) + 8 * i) bundleRecord];
-            v15 = [v14 bundleIdentifier];
-            v16 = [v8 isEqualToString:v15];
+            bundleRecord = [*(*(&v21 + 1) + 8 * i) bundleRecord];
+            bundleIdentifier = [bundleRecord bundleIdentifier];
+            v16 = [applicationBundleID isEqualToString:bundleIdentifier];
 
             if (v16)
             {
               v7 = 1;
               v17 = v9;
-              v5 = v20;
+              sessionCopy = v20;
               goto LABEL_17;
             }
           }
@@ -11575,7 +11575,7 @@ void __33__SBIconView_URLsForDropSession___block_invoke(uint64_t a1, void *a2)
         }
       }
 
-      v5 = v20;
+      sessionCopy = v20;
       v17 = [(SBIconView *)self URLsForDropSession:v20];
       if ([(NSArray *)v17 count])
       {
@@ -11607,51 +11607,51 @@ LABEL_17:
   return v7;
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
   v4 = [objc_alloc(MEMORY[0x1E69DC9C0]) initWithDropOperation:2];
 
   return v4;
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter
 {
-  v6 = a4;
+  enterCopy = enter;
   [(SBIconView *)self setHighlighted:1];
-  v5 = [(SBIconView *)self dropDelegate];
+  dropDelegate = [(SBIconView *)self dropDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 iconView:self dropSessionDidEnter:v6];
+    [dropDelegate iconView:self dropSessionDidEnter:enterCopy];
   }
 }
 
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit
 {
-  v7 = a4;
+  exitCopy = exit;
   [(SBIconView *)self setHighlighted:0];
   droppingURLs = self->_droppingURLs;
   self->_droppingURLs = 0;
 
-  v6 = [(SBIconView *)self dropDelegate];
+  dropDelegate = [(SBIconView *)self dropDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 iconView:self dropSessionDidExit:v7];
+    [dropDelegate iconView:self dropSessionDidExit:exitCopy];
   }
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(SBIconView *)self overrideDroppingDelegate];
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+  dropCopy = drop;
+  overrideDroppingDelegate = [(SBIconView *)self overrideDroppingDelegate];
+  if (overrideDroppingDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v6 iconView:self performDrop:v5];
+    [overrideDroppingDelegate iconView:self performDrop:dropCopy];
   }
 
   else if ([(NSArray *)self->_droppingURLs count])
   {
-    v19 = v5;
+    v19 = dropCopy;
     v7 = objc_alloc_init(SBHIconLaunchContext);
     v8 = [MEMORY[0x1E695DFA8] set];
     v21 = 0u;
@@ -11689,17 +11689,17 @@ LABEL_17:
 
     [(SBHIconLaunchContext *)v7 setActions:v8];
     [(SBHIconLaunchContext *)v7 setIconView:self];
-    v15 = [(SBIconView *)self icon];
-    v16 = [(SBIconView *)self location];
-    [v15 launchFromLocation:v16 context:v7];
+    icon = [(SBIconView *)self icon];
+    location = [(SBIconView *)self location];
+    [icon launchFromLocation:location context:v7];
 
-    v5 = v19;
+    dropCopy = v19;
   }
 
   else
   {
-    v17 = [MEMORY[0x1E69DC9B0] sharedInstance];
-    v18 = [v17 sessionForDropSession:v5];
+    mEMORY[0x1E69DC9B0] = [MEMORY[0x1E69DC9B0] sharedInstance];
+    v18 = [mEMORY[0x1E69DC9B0] sessionForDropSession:dropCopy];
 
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
@@ -11734,22 +11734,22 @@ void __42__SBIconView_dropInteraction_performDrop___block_invoke_2(uint64_t a1)
   [v4 launchFromLocation:v5 context:v6];
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end
 {
-  [(SBIconView *)self setHighlighted:0, a4];
+  [(SBIconView *)self setHighlighted:0, end];
   droppingURLs = self->_droppingURLs;
   self->_droppingURLs = 0;
 }
 
-- (int64_t)_dropInteraction:(id)a3 dataOwnerForSession:(id)a4
+- (int64_t)_dropInteraction:(id)interaction dataOwnerForSession:(id)session
 {
-  v5 = [(SBIconView *)self icon:a3];
+  v5 = [(SBIconView *)self icon:interaction];
   if ([v5 isLeafIcon])
   {
-    v6 = [(SBIconView *)self _visiblyActiveDataSource];
+    _visiblyActiveDataSource = [(SBIconView *)self _visiblyActiveDataSource];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v6 dataOwnershipRoleAsDragDropTargetForIcon:v5];
+      v7 = [_visiblyActiveDataSource dataOwnershipRoleAsDragDropTargetForIcon:v5];
     }
 
     else
@@ -11766,30 +11766,30 @@ void __42__SBIconView_dropInteraction_performDrop___block_invoke_2(uint64_t a1)
   return v7;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  if ([(SBIconView *)self canBeginDrags:a3])
+  if ([(SBIconView *)self canBeginDrags:interaction])
   {
-    v5 = [(SBIconView *)self dragItems];
+    dragItems = [(SBIconView *)self dragItems];
   }
 
   else
   {
-    v5 = MEMORY[0x1E695E0F0];
+    dragItems = MEMORY[0x1E695E0F0];
   }
 
-  return v5;
+  return dragItems;
 }
 
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session
 {
-  v7 = a4;
-  v8 = a5;
-  [(SBIconView *)self setLiftingDragSession:v8];
-  v9 = [(SBIconView *)self dragDelegate];
+  animatorCopy = animator;
+  sessionCopy = session;
+  [(SBIconView *)self setLiftingDragSession:sessionCopy];
+  dragDelegate = [(SBIconView *)self dragDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 iconView:self willAnimateDragLiftWithAnimator:v7 session:v8];
+    [dragDelegate iconView:self willAnimateDragLiftWithAnimator:animatorCopy session:sessionCopy];
   }
 
   v13[0] = MEMORY[0x1E69E9820];
@@ -11797,15 +11797,15 @@ void __42__SBIconView_dropInteraction_performDrop___block_invoke_2(uint64_t a1)
   v13[2] = __66__SBIconView_dragInteraction_willAnimateLiftWithAnimator_session___block_invoke;
   v13[3] = &unk_1E8088C90;
   v13[4] = self;
-  [v7 addAnimations:v13];
+  [animatorCopy addAnimations:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66__SBIconView_dragInteraction_willAnimateLiftWithAnimator_session___block_invoke_2;
   v11[3] = &unk_1E808A040;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
-  [v7 addCompletion:v11];
+  v12 = sessionCopy;
+  v10 = sessionCopy;
+  [animatorCopy addCompletion:v11];
 }
 
 uint64_t __66__SBIconView_dragInteraction_willAnimateLiftWithAnimator_session___block_invoke(uint64_t a1)
@@ -11844,73 +11844,73 @@ uint64_t __66__SBIconView_dragInteraction_willAnimateLiftWithAnimator_session___
   return [v4 _updateAllComponentAlphas];
 }
 
-- (void)_dragInteraction:(id)a3 liftAnimationDidChangeDirection:(int64_t)a4
+- (void)_dragInteraction:(id)interaction liftAnimationDidChangeDirection:(int64_t)direction
 {
-  v6 = a4 != 1;
+  v6 = direction != 1;
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __63__SBIconView__dragInteraction_liftAnimationDidChangeDirection___block_invoke;
   v11 = &unk_1E80897D8;
-  v12 = self;
-  v13 = a4 == 1;
+  selfCopy = self;
+  v13 = direction == 1;
   [MEMORY[0x1E69DD250] animateWithDuration:&v8 animations:0.225];
   [(SBIconView *)self setDragLifted:v6, v8, v9, v10, v11];
-  v7 = [(SBIconView *)self dragDelegate];
+  dragDelegate = [(SBIconView *)self dragDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 iconView:self dragLiftAnimationDidChangeDirection:a4];
+    [dragDelegate iconView:self dragLiftAnimationDidChangeDirection:direction];
   }
 }
 
-- (id)dragInteraction:(id)a3 itemsForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5
+- (id)dragInteraction:(id)interaction itemsForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point
 {
-  v7 = a3;
-  v8 = a4;
+  interactionCopy = interaction;
+  sessionCopy = session;
   icon = self->_icon;
   if (icon && ![(SBIcon *)icon canBeAddedToMultiItemDrag])
   {
-    v11 = MEMORY[0x1E695E0F0];
+    dragItems = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v10 = [(SBIconView *)self dragDelegate];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ![v10 iconView:self canAddDragItemsToSession:v8])
+    dragDelegate = [(SBIconView *)self dragDelegate];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ![dragDelegate iconView:self canAddDragItemsToSession:sessionCopy])
     {
-      v11 = MEMORY[0x1E695E0F0];
+      dragItems = MEMORY[0x1E695E0F0];
     }
 
     else
     {
-      v11 = [(SBIconView *)self dragItems];
+      dragItems = [(SBIconView *)self dragItems];
     }
   }
 
-  return v11;
+  return dragItems;
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 willAddItems:(id)a5 forInteraction:(id)a6
+- (void)dragInteraction:(id)interaction session:(id)session willAddItems:(id)items forInteraction:(id)forInteraction
 {
-  v13 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [(SBIconView *)self dragInteraction];
+  sessionCopy = session;
+  itemsCopy = items;
+  forInteractionCopy = forInteraction;
+  dragInteraction = [(SBIconView *)self dragInteraction];
 
-  if (v11 == v10)
+  if (dragInteraction == forInteractionCopy)
   {
     [(SBIconView *)self setAddedToDrag:1];
-    v12 = [(SBIconView *)self dragDelegate];
+    dragDelegate = [(SBIconView *)self dragDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [v12 iconView:self willAddDragItems:v9 toSession:v13];
+      [dragDelegate iconView:self willAddDragItems:itemsCopy toSession:sessionCopy];
     }
   }
 }
 
-- (void)dragSession:(id)a3 didEndWithOperation:(unint64_t)a4
+- (void)dragSession:(id)session didEndWithOperation:(unint64_t)operation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  sessionCopy = session;
   [(SBIconView *)self setDragging:0 updateImmediately:1];
   v16 = 0u;
   v17 = 0u;
@@ -11940,7 +11940,7 @@ uint64_t __66__SBIconView_dragInteraction_willAnimateLiftWithAnimator_session___
 
         if (objc_opt_respondsToSelector())
         {
-          [v12 iconView:self dragSession:v6 didEndWithOperation:a4];
+          [v12 iconView:self dragSession:sessionCopy didEndWithOperation:operation];
         }
 
         ++v11;
@@ -11953,19 +11953,19 @@ uint64_t __66__SBIconView_dragInteraction_willAnimateLiftWithAnimator_session___
     while (v9);
   }
 
-  v13 = [(SBIconView *)self dragDelegate];
+  dragDelegate = [(SBIconView *)self dragDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v13 iconView:self didEndDragSession:v6 withOperation:a4];
+    [dragDelegate iconView:self didEndDragSession:sessionCopy withOperation:operation];
   }
 
   [(SBIconView *)self endPrefetchingDisplayedIconLayerForReason:@"icon view drag"];
 }
 
-- (void)dragSession:(id)a3 willEndWithOperation:(unint64_t)a4
+- (void)dragSession:(id)session willEndWithOperation:(unint64_t)operation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  sessionCopy = session;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -11989,7 +11989,7 @@ uint64_t __66__SBIconView_dragInteraction_willAnimateLiftWithAnimator_session___
         v12 = *(*(&v14 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 iconView:self dragSession:v6 willEndWithOperation:a4];
+          [v12 iconView:self dragSession:sessionCopy willEndWithOperation:operation];
         }
 
         ++v11;
@@ -12002,17 +12002,17 @@ uint64_t __66__SBIconView_dragInteraction_willAnimateLiftWithAnimator_session___
     while (v9);
   }
 
-  v13 = [(SBIconView *)self dragDelegate];
+  dragDelegate = [(SBIconView *)self dragDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v13 iconView:self session:v6 willEndWithOperation:a4];
+    [dragDelegate iconView:self session:sessionCopy willEndWithOperation:operation];
   }
 }
 
-- (void)dragSessionWillBegin:(id)a3
+- (void)dragSessionWillBegin:(id)begin
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  beginCopy = begin;
   [(SBIconView *)self setDragging:1 updateImmediately:1];
   [(SBIconView *)self beginPrefetchingDisplayedIconLayerForReason:@"icon view drag"];
   v14 = 0u;
@@ -12051,32 +12051,32 @@ uint64_t __66__SBIconView_dragInteraction_willAnimateLiftWithAnimator_session___
     while (v7);
   }
 
-  v11 = [(SBIconView *)self dragDelegate];
+  dragDelegate = [(SBIconView *)self dragDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v11 iconViewWillBeginDrag:self session:v4];
+    [dragDelegate iconViewWillBeginDrag:self session:beginCopy];
   }
 }
 
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v28 = a5;
+  itemCopy = item;
+  defaultCopy = default;
   [(SBIconView *)self setCancelingDrag:1];
-  v8 = [(SBIconView *)self dragDelegate];
-  v9 = self;
-  v10 = v9;
+  dragDelegate = [(SBIconView *)self dragDelegate];
+  selfCopy = self;
+  v10 = selfCopy;
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v8 iconViewWillCancelDrag:v9];
+    v10 = [dragDelegate iconViewWillCancelDrag:selfCopy];
   }
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v11 = [(NSHashTable *)v9->_observers copy];
+  v11 = [(NSHashTable *)selfCopy->_observers copy];
   v12 = [v11 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v12)
   {
@@ -12094,7 +12094,7 @@ uint64_t __66__SBIconView_dragInteraction_willAnimateLiftWithAnimator_session___
         v16 = *(*(&v30 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v16 iconView:v9 willCancelDragForItem:v7];
+          [v16 iconView:selfCopy willCancelDragForItem:itemCopy];
         }
       }
 
@@ -12104,55 +12104,55 @@ uint64_t __66__SBIconView_dragInteraction_willAnimateLiftWithAnimator_session___
     while (v13);
   }
 
-  v17 = [v10 superview];
-  v18 = v17;
-  if (v10 && v17)
+  superview = [v10 superview];
+  v18 = superview;
+  if (v10 && superview)
   {
-    v19 = [v10 dropContainerView];
+    dropContainerView = [v10 dropContainerView];
     v20 = objc_alloc(MEMORY[0x1E69DC9A8]);
     [v10 center];
-    [v19 convertPoint:v18 fromView:?];
+    [dropContainerView convertPoint:v18 fromView:?];
     v21 = *(MEMORY[0x1E695EFD0] + 16);
     v29[0] = *MEMORY[0x1E695EFD0];
     v29[1] = v21;
     v29[2] = *(MEMORY[0x1E695EFD0] + 32);
-    v22 = [v20 initWithContainer:v19 center:v29 transform:?];
-    v23 = v28;
-    v24 = [v28 retargetedPreviewWithTarget:v22];
+    v22 = [v20 initWithContainer:dropContainerView center:v29 transform:?];
+    v23 = defaultCopy;
+    v24 = [defaultCopy retargetedPreviewWithTarget:v22];
     [v24 set_springboardPlatterStyle:1];
-    v25 = [(SBIconView *)v9 dragDelegate];
+    dragDelegate2 = [(SBIconView *)selfCopy dragDelegate];
 
     if (objc_opt_respondsToSelector())
     {
-      [v25 iconView:v9 willUsePreviewForCancelling:v24 targetIconView:v10];
+      [dragDelegate2 iconView:selfCopy willUsePreviewForCancelling:v24 targetIconView:v10];
     }
   }
 
   else
   {
-    v19 = [v7 localObject];
+    dropContainerView = [itemCopy localObject];
     objc_opt_class();
-    v23 = v28;
+    v23 = defaultCopy;
     if (objc_opt_isKindOfClass())
     {
-      [v19 setCancelsViaScaleAndFade:1];
+      [dropContainerView setCancelsViaScaleAndFade:1];
     }
 
     v24 = 0;
-    v25 = v27;
+    dragDelegate2 = v27;
   }
 
   return v24;
 }
 
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(SBIconView *)self dragDelegate];
+  itemCopy = item;
+  animatorCopy = animator;
+  dragDelegate = [(SBIconView *)self dragDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 iconView:self item:v7 willAnimateDragCancelWithAnimator:v8];
+    [dragDelegate iconView:self item:itemCopy willAnimateDragCancelWithAnimator:animatorCopy];
   }
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -12160,15 +12160,15 @@ uint64_t __66__SBIconView_dragInteraction_willAnimateLiftWithAnimator_session___
   v10[2] = __65__SBIconView_dragInteraction_item_willAnimateCancelWithAnimator___block_invoke;
   v10[3] = &unk_1E8089000;
   v10[4] = self;
-  [v8 addCompletion:v10];
+  [animatorCopy addCompletion:v10];
 }
 
-- (BOOL)_dragInteraction:(id)a3 canExcludeCompetingGestureRecognizer:(id)a4
+- (BOOL)_dragInteraction:(id)interaction canExcludeCompetingGestureRecognizer:(id)recognizer
 {
-  v5 = a4;
-  v6 = [(SBIconView *)self tapGestureRecognizer];
+  recognizerCopy = recognizer;
+  tapGestureRecognizer = [(SBIconView *)self tapGestureRecognizer];
 
-  if (v6 == v5)
+  if (tapGestureRecognizer == recognizerCopy)
   {
     v7 = ![(SBIconView *)self shouldTapGestureRecognizeAlongsideDragInteractionGestures];
   }
@@ -12181,11 +12181,11 @@ uint64_t __66__SBIconView_dragInteraction_willAnimateLiftWithAnimator_session___
   return v7;
 }
 
-- (BOOL)_dragInteraction:(id)a3 competingGestureRecognizerShouldDelayLift:(id)a4
+- (BOOL)_dragInteraction:(id)interaction competingGestureRecognizerShouldDelayLift:(id)lift
 {
-  v5 = a4;
-  v6 = [(SBCloseBoxView *)self->_closeBox actionTapGestureRecognizer];
-  if (v6 == v5)
+  liftCopy = lift;
+  actionTapGestureRecognizer = [(SBCloseBoxView *)self->_closeBox actionTapGestureRecognizer];
+  if (actionTapGestureRecognizer == liftCopy)
   {
     v8 = 1;
   }
@@ -12194,32 +12194,32 @@ uint64_t __66__SBIconView_dragInteraction_willAnimateLiftWithAnimator_session___
   {
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(SBIconAccessoryView *)self->_accessoryView actionTapGestureRecognizer];
+      actionTapGestureRecognizer2 = [(SBIconAccessoryView *)self->_accessoryView actionTapGestureRecognizer];
     }
 
     else
     {
-      v7 = 0;
+      actionTapGestureRecognizer2 = 0;
     }
 
-    if (v7 == v5)
+    if (actionTapGestureRecognizer2 == liftCopy)
     {
       v8 = 1;
     }
 
     else
     {
-      v9 = [(SBHIconResizeHandle *)self->_resizeHandle resizingGestureRecognizer];
-      v8 = v9 == v5;
+      resizingGestureRecognizer = [(SBHIconResizeHandle *)self->_resizeHandle resizingGestureRecognizer];
+      v8 = resizingGestureRecognizer == liftCopy;
     }
   }
 
   return v8;
 }
 
-- (id)_dragInteraction:(id)a3 sessionPropertiesForSession:(id)a4
+- (id)_dragInteraction:(id)interaction sessionPropertiesForSession:(id)session
 {
-  v5 = [(SBIconView *)self dragDelegate:a3];
+  v5 = [(SBIconView *)self dragDelegate:interaction];
   v6 = objc_alloc_init(MEMORY[0x1E69DD480]);
   if ([(SBIconView *)self dragsSupportSystemDragsByDefault])
   {
@@ -12253,44 +12253,44 @@ uint64_t __66__SBIconView_dragInteraction_willAnimateLiftWithAnimator_session___
   if ([(SBIconView *)self didDelayInsertingCustomImageViewDueToParentController])
   {
     [(SBIconView *)self setDidDelayInsertingCustomImageViewDueToParentController:0];
-    v3 = [(SBIconView *)self customIconImageViewController];
-    v4 = [v3 view];
-    if (v4)
+    customIconImageViewController = [(SBIconView *)self customIconImageViewController];
+    view = [customIconImageViewController view];
+    if (view)
     {
-      [(SBIconView *)self _insertIconImageView:v4];
+      [(SBIconView *)self _insertIconImageView:view];
     }
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v5.receiver = self;
   v5.super_class = SBIconView;
-  v4 = a3;
-  [(SBIconView *)&v5 willMoveToWindow:v4];
-  [(SBIconView *)self updateWindowSceneUserInterfaceStyleChangeRegistrationForWindow:v4, v5.receiver, v5.super_class];
+  windowCopy = window;
+  [(SBIconView *)&v5 willMoveToWindow:windowCopy];
+  [(SBIconView *)self updateWindowSceneUserInterfaceStyleChangeRegistrationForWindow:windowCopy, v5.receiver, v5.super_class];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   v14.receiver = self;
   v14.super_class = SBIconView;
-  [(SBIconView *)&v14 touchesBegan:v6 withEvent:v7];
-  if (_touchesContainNonIndirectTouch(v6))
+  [(SBIconView *)&v14 touchesBegan:beganCopy withEvent:eventCopy];
+  if (_touchesContainNonIndirectTouch(beganCopy))
   {
     *(self + 555) |= 1u;
-    v8 = [MEMORY[0x1E695DF00] date];
-    [(SBIconView *)self setLastTouchDownDate:v8];
+    date = [MEMORY[0x1E695DF00] date];
+    [(SBIconView *)self setLastTouchDownDate:date];
 
     if ((*(self + 553) & 0x40) != 0 && *(self + 553) < 0)
     {
       [(SBIconView *)self iconInteractedWhenDisabled];
     }
 
-    if ([v6 bs_containsObjectPassingTest:&__block_literal_global_856])
+    if ([beganCopy bs_containsObjectPassingTest:&__block_literal_global_856])
     {
       v9 = 4;
     }
@@ -12309,16 +12309,16 @@ uint64_t __66__SBIconView_dragInteraction_willAnimateLiftWithAnimator_session___
       *buf = 138543874;
       v16 = logIdentifier;
       v17 = 2114;
-      v18 = v7;
+      v18 = eventCopy;
       v19 = 2114;
       v20 = tapGestureRecognizer;
       _os_log_impl(&dword_1BEB18000, v10, OS_LOG_TYPE_DEFAULT, "<%{public}@> Touches began with event: %{public}@, tap gesture: %{public}@", buf, 0x20u);
     }
 
-    v13 = [(SBIconView *)self actionDelegate];
+    actionDelegate = [(SBIconView *)self actionDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [v13 iconTouchBegan:self];
+      [actionDelegate iconTouchBegan:self];
     }
 
     else if ([(SBIconView *)self isEnabled]&& [(SBIconView *)self _delegateTapAllowed])
@@ -12328,20 +12328,20 @@ uint64_t __66__SBIconView_dragInteraction_willAnimateLiftWithAnimator_session___
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  movedCopy = moved;
   v28.receiver = self;
   v28.super_class = SBIconView;
-  [(SBIconView *)&v28 touchesMoved:v6 withEvent:a4];
-  if (_touchesContainNonIndirectTouch(v6))
+  [(SBIconView *)&v28 touchesMoved:movedCopy withEvent:event];
+  if (_touchesContainNonIndirectTouch(movedCopy))
   {
-    v7 = [(SBIconView *)self actionDelegate];
+    actionDelegate = [(SBIconView *)self actionDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v6 anyObject];
-      [v7 icon:self touchMoved:v8];
+      anyObject = [movedCopy anyObject];
+      [actionDelegate icon:self touchMoved:anyObject];
     }
 
     else if ([(SBIconView *)self isEnabled]&& [(SBIconView *)self _delegateTapAllowed])
@@ -12357,7 +12357,7 @@ uint64_t __66__SBIconView_dragInteraction_willAnimateLiftWithAnimator_session___
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v17 = v6;
+        v17 = movedCopy;
         v18 = [v17 countByEnumeratingWithState:&v24 objects:v29 count:16];
         if (v18)
         {
@@ -12414,13 +12414,13 @@ LABEL_20:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
+  cancelledCopy = cancelled;
   v7.receiver = self;
   v7.super_class = SBIconView;
-  [(SBIconView *)&v7 touchesCancelled:v6 withEvent:a4];
-  if ((_touchesContainNonIndirectTouch(v6) & 1) != 0 || ![v6 count])
+  [(SBIconView *)&v7 touchesCancelled:cancelledCopy withEvent:event];
+  if ((_touchesContainNonIndirectTouch(cancelledCopy) & 1) != 0 || ![cancelledCopy count])
   {
     *(self + 555) &= ~1u;
     [(SBIconView *)self _delegateTouchEnded:1];
@@ -12431,15 +12431,15 @@ LABEL_20:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = SBIconView;
-  v6 = a3;
-  [(SBIconView *)&v7 touchesEnded:v6 withEvent:a4];
-  LODWORD(a4) = _touchesContainNonIndirectTouch(v6);
+  endedCopy = ended;
+  [(SBIconView *)&v7 touchesEnded:endedCopy withEvent:event];
+  LODWORD(event) = _touchesContainNonIndirectTouch(endedCopy);
 
-  if (a4)
+  if (event)
   {
     *(self + 555) &= ~1u;
     [(SBIconView *)self _delegateTouchEnded:0, v7.receiver, v7.super_class];
@@ -12447,21 +12447,21 @@ LABEL_20:
   }
 }
 
-- (void)tapGestureDidChange:(id)a3
+- (void)tapGestureDidChange:(id)change
 {
-  v4 = a3;
-  if ([v4 state] == 3)
+  changeCopy = change;
+  if ([changeCopy state] == 3)
   {
     kdebug_trace();
-    -[SBIconView _handleTapWithModifierFlags:](self, "_handleTapWithModifierFlags:", [v4 modifierFlags]);
+    -[SBIconView _handleTapWithModifierFlags:](self, "_handleTapWithModifierFlags:", [changeCopy modifierFlags]);
   }
 }
 
-- (void)_handleTapWithModifierFlags:(int64_t)a3
+- (void)_handleTapWithModifierFlags:(int64_t)flags
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = [(SBIconView *)self actionDelegate];
-  v6 = [(SBIconView *)self window];
+  actionDelegate = [(SBIconView *)self actionDelegate];
+  window = [(SBIconView *)self window];
   v7 = SBLogIcon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -12469,30 +12469,30 @@ LABEL_20:
     *buf = 138544130;
     v27 = logIdentifier;
     v28 = 2048;
-    v29 = a3;
+    flagsCopy = flags;
     v30 = 2048;
-    v31 = v5;
+    v31 = actionDelegate;
     v32 = 2048;
-    v33 = v6;
+    v33 = window;
     _os_log_impl(&dword_1BEB18000, v7, OS_LOG_TYPE_DEFAULT, "<%{public}@> Handle tap: modifiers: %lx, delegate: %p, window: %p", buf, 0x2Au);
   }
 
-  if (v6)
+  if (window)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v5 iconTapped:self modifierFlags:a3];
+      [actionDelegate iconTapped:self modifierFlags:flags];
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      [v5 iconTapped:self];
+      [actionDelegate iconTapped:self];
     }
 
     else
     {
-      v9 = [(SBIconView *)self icon];
-      v10 = [v9 isLaunchEnabled];
+      icon = [(SBIconView *)self icon];
+      isLaunchEnabled = [icon isLaunchEnabled];
       v11 = SBLogIcon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
@@ -12500,14 +12500,14 @@ LABEL_20:
         *buf = 138543618;
         v27 = v12;
         v28 = 1024;
-        LODWORD(v29) = v10;
+        LODWORD(flagsCopy) = isLaunchEnabled;
         _os_log_impl(&dword_1BEB18000, v11, OS_LOG_TYPE_DEFAULT, "<%{public}@> Delegate does not want to handle tap, going to icon. launch enabled: %{BOOL}u", buf, 0x12u);
       }
 
-      v13 = [(SBIconView *)self location];
+      location = [(SBIconView *)self location];
       v14 = objc_alloc_init(SBHIconLaunchContext);
       [(SBHIconLaunchContext *)v14 setIconView:self];
-      [v9 launchFromLocation:v13 context:v14];
+      [icon launchFromLocation:location context:v14];
     }
 
     v23 = 0u;
@@ -12548,21 +12548,21 @@ LABEL_20:
   }
 }
 
-- (void)editingModeGestureRecognizerDidFire:(id)a3
+- (void)editingModeGestureRecognizerDidFire:(id)fire
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  fireCopy = fire;
+  if ([fireCopy state] == 1)
   {
-    v5 = [(SBIconView *)self behaviorDelegate];
+    behaviorDelegate = [(SBIconView *)self behaviorDelegate];
     objc_initWeak(&location, self);
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __50__SBIconView_editingModeGestureRecognizerDidFire___block_invoke;
     v13 = &unk_1E808F0C8;
-    v6 = v5;
+    v6 = behaviorDelegate;
     v14 = v6;
     objc_copyWeak(&v16, &location);
-    v15 = v4;
+    v15 = fireCopy;
     v7 = _Block_copy(&v10);
     if ([(SBIconView *)self isContextMenuInteractionActive:v10])
     {
@@ -12571,9 +12571,9 @@ LABEL_20:
 
     else
     {
-      v8 = [(SBIconView *)self window];
-      v9 = [v8 rootViewController];
-      [v9 dismissViewControllerAnimated:1 completion:v7];
+      window = [(SBIconView *)self window];
+      rootViewController = [window rootViewController];
+      [rootViewController dismissViewControllerAnimated:1 completion:v7];
     }
 
     objc_destroyWeak(&v16);
@@ -12591,11 +12591,11 @@ void __50__SBIconView_editingModeGestureRecognizerDidFire___block_invoke(uint64_
   }
 }
 
-- (void)hoverGestureDidChange:(id)a3
+- (void)hoverGestureDidChange:(id)change
 {
-  v4 = [a3 state];
-  v5 = v4 - 1;
-  if (v4 - 1) <= 4 && ((0x1Du >> v5))
+  state = [change state];
+  v5 = state - 1;
+  if (state - 1) <= 4 && ((0x1Du >> v5))
   {
     tooltipView = self->_tooltipView;
 
@@ -12603,15 +12603,15 @@ void __50__SBIconView_editingModeGestureRecognizerDidFire___block_invoke(uint64_
   }
 }
 
-- (void)beginPrefetchingDisplayedIconLayerForReason:(id)a3
+- (void)beginPrefetchingDisplayedIconLayerForReason:(id)reason
 {
-  v10 = a3;
+  reasonCopy = reason;
   if (![(NSCountedSet *)self->_iconLayerPrefetchingReasons count])
   {
-    v4 = [(SBIconView *)self icon];
-    v5 = [(SBIconView *)self effectiveIconImageAppearance];
+    icon = [(SBIconView *)self icon];
+    effectiveIconImageAppearance = [(SBIconView *)self effectiveIconImageAppearance];
     [(SBIconView *)self iconImageInfo];
-    v6 = [v4 prefetchIconLayerWithInfo:v5 imageAppearance:1 imageOptions:1 priority:v10 reason:1 prefetchBehavior:?];
+    v6 = [icon prefetchIconLayerWithInfo:effectiveIconImageAppearance imageAppearance:1 imageOptions:1 priority:reasonCopy reason:1 prefetchBehavior:?];
     [(SBIconView *)self setIconLayerPrefetchingAssertion:v6];
   }
 
@@ -12625,41 +12625,41 @@ void __50__SBIconView_editingModeGestureRecognizerDidFire___block_invoke(uint64_
     iconLayerPrefetchingReasons = self->_iconLayerPrefetchingReasons;
   }
 
-  [(NSCountedSet *)iconLayerPrefetchingReasons addObject:v10];
+  [(NSCountedSet *)iconLayerPrefetchingReasons addObject:reasonCopy];
 }
 
-- (void)endPrefetchingDisplayedIconLayerForReason:(id)a3
+- (void)endPrefetchingDisplayedIconLayerForReason:(id)reason
 {
-  [(NSCountedSet *)self->_iconLayerPrefetchingReasons removeObject:a3];
+  [(NSCountedSet *)self->_iconLayerPrefetchingReasons removeObject:reason];
   if (![(NSCountedSet *)self->_iconLayerPrefetchingReasons count])
   {
-    v4 = [(SBIconView *)self iconLayerPrefetchingAssertion];
-    [v4 invalidate];
+    iconLayerPrefetchingAssertion = [(SBIconView *)self iconLayerPrefetchingAssertion];
+    [iconLayerPrefetchingAssertion invalidate];
     [(SBIconView *)self setIconLayerPrefetchingAssertion:0];
   }
 }
 
-- (void)consumeSinglePressUpForButtonKind:(int64_t)a3
+- (void)consumeSinglePressUpForButtonKind:(int64_t)kind
 {
-  if (a3 == 1)
+  if (kind == 1)
   {
     [(SBIconView *)self dismissContextMenuWithCompletion:0];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(SBIconView *)self tapGestureRecognizer];
+  recognizerCopy = recognizer;
+  tapGestureRecognizer = [(SBIconView *)self tapGestureRecognizer];
 
-  if (v6 != v5)
+  if (tapGestureRecognizer != recognizerCopy)
   {
     return 1;
   }
 
-  v8 = [(SBIconView *)self behaviorDelegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v8 iconShouldAllowTap:self] & 1) == 0)
+  behaviorDelegate = [(SBIconView *)self behaviorDelegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([behaviorDelegate iconShouldAllowTap:self] & 1) == 0)
   {
     v9 = SBLogIcon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -12685,16 +12685,16 @@ void __50__SBIconView_editingModeGestureRecognizerDidFire___block_invoke(uint64_
   return v7;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBIconView *)self tapGestureRecognizer];
+  beginCopy = begin;
+  tapGestureRecognizer = [(SBIconView *)self tapGestureRecognizer];
 
-  if (v5 == v4)
+  if (tapGestureRecognizer == beginCopy)
   {
-    v9 = [(SBIconView *)self behaviorDelegate];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ([v9 iconShouldAllowTap:self] & 1) == 0)
+    behaviorDelegate = [(SBIconView *)self behaviorDelegate];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ([behaviorDelegate iconShouldAllowTap:self] & 1) == 0)
     {
       v14 = MEMORY[0x1E696AEC0];
       v15 = objc_opt_class();
@@ -12735,12 +12735,12 @@ LABEL_30:
     goto LABEL_29;
   }
 
-  v6 = [(SBCloseBoxView *)self->_closeBox actionTapGestureRecognizer];
+  actionTapGestureRecognizer = [(SBCloseBoxView *)self->_closeBox actionTapGestureRecognizer];
 
-  if (v6 == v4)
+  if (actionTapGestureRecognizer == beginCopy)
   {
-    v9 = [(SBIconView *)self behaviorDelegate];
-    if (objc_opt_respondsToSelector() & 1) == 0 || ([v9 iconShouldAllowCloseBoxTap:self])
+    behaviorDelegate = [(SBIconView *)self behaviorDelegate];
+    if (objc_opt_respondsToSelector() & 1) == 0 || ([behaviorDelegate iconShouldAllowCloseBoxTap:self])
     {
       goto LABEL_24;
     }
@@ -12764,12 +12764,12 @@ LABEL_29:
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(SBIconAccessoryView *)self->_accessoryView actionTapGestureRecognizer];
+    actionTapGestureRecognizer2 = [(SBIconAccessoryView *)self->_accessoryView actionTapGestureRecognizer];
 
-    if (v7 == v4)
+    if (actionTapGestureRecognizer2 == beginCopy)
     {
-      v9 = [(SBIconView *)self behaviorDelegate];
-      if (objc_opt_respondsToSelector() & 1) == 0 || ([v9 iconShouldAllowAccessoryTap:self])
+      behaviorDelegate = [(SBIconView *)self behaviorDelegate];
+      if (objc_opt_respondsToSelector() & 1) == 0 || ([behaviorDelegate iconShouldAllowAccessoryTap:self])
       {
         goto LABEL_24;
       }
@@ -12794,15 +12794,15 @@ LABEL_31:
   return v8;
 }
 
-- (BOOL)closeBoxShouldTrack:(id)a3
+- (BOOL)closeBoxShouldTrack:(id)track
 {
-  v4 = a3;
-  v5 = [(SBIconView *)self behaviorDelegate];
+  trackCopy = track;
+  behaviorDelegate = [(SBIconView *)self behaviorDelegate];
   closeBox = self->_closeBox;
 
-  if (closeBox == v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (closeBox == trackCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v7 = [v5 iconShouldAllowCloseBoxTap:self];
+    v7 = [behaviorDelegate iconShouldAllowCloseBoxTap:self];
   }
 
   else
@@ -12813,16 +12813,16 @@ LABEL_31:
   return v7;
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (pressesContainSelect(v6))
+  beganCopy = began;
+  eventCopy = event;
+  if (pressesContainSelect(beganCopy))
   {
     [(SBIconView *)self setHighlighted:1];
   }
 
-  v8 = [v6 objectsPassingTest:&__block_literal_global_2740];
+  v8 = [beganCopy objectsPassingTest:&__block_literal_global_2740];
 
   if ((*(self + 553) & 0x40) != 0 && *(self + 553) < 0)
   {
@@ -12833,65 +12833,65 @@ LABEL_31:
   {
     v9.receiver = self;
     v9.super_class = SBIconView;
-    [(SBIconView *)&v9 pressesBegan:v8 withEvent:v7];
+    [(SBIconView *)&v9 pressesBegan:v8 withEvent:eventCopy];
   }
 }
 
-- (void)pressesChanged:(id)a3 withEvent:(id)a4
+- (void)pressesChanged:(id)changed withEvent:(id)event
 {
-  v6 = a4;
-  v7 = [a3 objectsPassingTest:&__block_literal_global_2740];
+  eventCopy = event;
+  v7 = [changed objectsPassingTest:&__block_literal_global_2740];
   if ([v7 count])
   {
     v8.receiver = self;
     v8.super_class = SBIconView;
-    [(SBIconView *)&v8 pressesChanged:v7 withEvent:v6];
+    [(SBIconView *)&v8 pressesChanged:v7 withEvent:eventCopy];
   }
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a4;
-  v7 = [a3 objectsPassingTest:&__block_literal_global_2740];
+  eventCopy = event;
+  v7 = [cancelled objectsPassingTest:&__block_literal_global_2740];
   if ([v7 count])
   {
     v8.receiver = self;
     v8.super_class = SBIconView;
-    [(SBIconView *)&v8 pressesCancelled:v7 withEvent:v6];
+    [(SBIconView *)&v8 pressesCancelled:v7 withEvent:eventCopy];
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (pressesContainSelect(v6))
+  endedCopy = ended;
+  eventCopy = event;
+  if (pressesContainSelect(endedCopy))
   {
     [(SBIconView *)self performTap];
     [(SBIconView *)self setHighlighted:0];
   }
 
-  v8 = [v6 objectsPassingTest:&__block_literal_global_2740];
+  v8 = [endedCopy objectsPassingTest:&__block_literal_global_2740];
 
   if ([v8 count])
   {
     v9.receiver = self;
     v9.super_class = SBIconView;
-    [(SBIconView *)&v9 pressesEnded:v8 withEvent:v7];
+    [(SBIconView *)&v9 pressesEnded:v8 withEvent:eventCopy];
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
   v4 = *(self + 552);
-  if ((((v4 & 2) == 0) ^ a3))
+  if ((((v4 & 2) == 0) ^ editing))
   {
-    [(SBIconView *)self _updateIconImageAdornmentsAnimated:a4];
+    [(SBIconView *)self _updateIconImageAdornmentsAnimated:animated];
   }
 
   else
   {
-    if (a3)
+    if (editing)
     {
       v5 = 2;
     }
@@ -12902,17 +12902,17 @@ LABEL_31:
     }
 
     *(self + 552) = v4 & 0xFD | v5;
-    [(SBIconView *)self _applyEditingStateAnimated:a4];
+    [(SBIconView *)self _applyEditingStateAnimated:animated];
   }
 }
 
-- (void)_applyEditingStateAnimated:(BOOL)a3
+- (void)_applyEditingStateAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(SBIconView *)self _updateCustomIconImageViewController:?];
-  [(SBIconView *)self _updateAllComponentAlphasAnimated:v3];
+  [(SBIconView *)self _updateAllComponentAlphasAnimated:animatedCopy];
   [(SBIconView *)self _updateJitter];
-  [(SBIconView *)self _updateIconImageAdornmentsAnimated:v3];
+  [(SBIconView *)self _updateIconImageAdornmentsAnimated:animatedCopy];
   [(SBIconView *)self _updateDragInteractionLiftDelay];
   [(UIPointerInteraction *)self->_iconViewCursorInteraction invalidate];
   [(UIPointerInteraction *)self->_closeBoxCursorInteraction invalidate];
@@ -12923,28 +12923,28 @@ LABEL_31:
     if ([(SBIconView *)self isEditing])
     {
 
-      [(SBIconView *)self scrollToFirstGapAnimated:v3];
+      [(SBIconView *)self scrollToFirstGapAnimated:animatedCopy];
     }
 
     else
     {
 
-      [(SBIconView *)self scrollToTopOfFirstPageAnimated:v3];
+      [(SBIconView *)self scrollToTopOfFirstPageAnimated:animatedCopy];
     }
   }
 }
 
-- (void)_setTemporarySnapshotViewForDragPreview:(id)a3
+- (void)_setTemporarySnapshotViewForDragPreview:(id)preview
 {
-  v4 = a3;
+  previewCopy = preview;
   temporarySnapshotContainerViewForDragPreview = self->_temporarySnapshotContainerViewForDragPreview;
-  v10 = v4;
-  if (v4)
+  v10 = previewCopy;
+  if (previewCopy)
   {
     if (temporarySnapshotContainerViewForDragPreview)
     {
-      v6 = [(UIView *)temporarySnapshotContainerViewForDragPreview subviews];
-      [v6 makeObjectsPerformSelector:sel_removeFromSuperview];
+      subviews = [(UIView *)temporarySnapshotContainerViewForDragPreview subviews];
+      [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
     }
 
     else
@@ -12968,19 +12968,19 @@ LABEL_31:
   }
 }
 
-- (id)newComponentBackgroundViewOfType:(int64_t)a3
+- (id)newComponentBackgroundViewOfType:(int64_t)type
 {
-  v5 = [(SBIconView *)self reuseDelegate];
+  reuseDelegate = [(SBIconView *)self reuseDelegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  v6 = [v5 iconView:self backgroundViewForComponentsOfType:a3];
+  v6 = [reuseDelegate iconView:self backgroundViewForComponentsOfType:type];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [objc_opt_class() groupNameBaseForComponentBackgroundViewOfType:a3];
+    v7 = [objc_opt_class() groupNameBaseForComponentBackgroundViewOfType:type];
     [v6 setGroupNameBase:v7];
   }
 
@@ -12988,55 +12988,55 @@ LABEL_31:
   {
 LABEL_5:
     v8 = objc_opt_class();
-    v9 = [(SBIconView *)self contentContainerView];
-    v10 = [v9 traitCollection];
-    v6 = [v8 componentBackgroundViewOfType:a3 compatibleWithTraitCollection:v10 initialWeighting:1.0];
+    contentContainerView = [(SBIconView *)self contentContainerView];
+    traitCollection = [contentContainerView traitCollection];
+    v6 = [v8 componentBackgroundViewOfType:type compatibleWithTraitCollection:traitCollection initialWeighting:1.0];
   }
 
   return v6;
 }
 
-+ (id)componentBackgroundViewOfType:(int64_t)a3
++ (id)componentBackgroundViewOfType:(int64_t)type
 {
   v5 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:0];
-  v6 = [a1 componentBackgroundViewOfType:a3 compatibleWithTraitCollection:v5 initialWeighting:1.0];
+  v6 = [self componentBackgroundViewOfType:type compatibleWithTraitCollection:v5 initialWeighting:1.0];
 
   return v6;
 }
 
-+ (id)groupNameBaseForComponentBackgroundViewOfType:(int64_t)a3
++ (id)groupNameBaseForComponentBackgroundViewOfType:(int64_t)type
 {
-  if (a3 > 6)
+  if (type > 6)
   {
     return 0;
   }
 
   else
   {
-    return off_1E808F1B8[a3];
+    return off_1E808F1B8[type];
   }
 }
 
-+ (id)componentBackgroundViewOfType:(int64_t)a3 compatibleWithTraitCollection:(id)a4 initialWeighting:(double)a5
++ (id)componentBackgroundViewOfType:(int64_t)type compatibleWithTraitCollection:(id)collection initialWeighting:(double)weighting
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = v8;
-  if (a3 == 7)
+  collectionCopy = collection;
+  v9 = collectionCopy;
+  if (type == 7)
   {
     v10 = 0;
   }
 
   else
   {
-    if (!v8)
+    if (!collectionCopy)
     {
       v9 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:0];
     }
 
-    if (a3 == 4)
+    if (type == 4)
     {
-      v10 = [MEMORY[0x1E69AE158] materialViewWithRecipe:{objc_msgSend(a1, "defaultWidgetBackgroundRecipe")}];
+      v10 = [MEMORY[0x1E69AE158] materialViewWithRecipe:{objc_msgSend(self, "defaultWidgetBackgroundRecipe")}];
     }
 
     else
@@ -13054,10 +13054,10 @@ LABEL_5:
 
       v15 = MEMORY[0x1E69AE158];
       v16 = SBHBundle();
-      v10 = [v15 materialViewWithRecipeNamesByTraitCollection:v14 inBundle:v16 options:0 initialWeighting:0 scaleAdjustment:v9 compatibleWithTraitCollection:a5];
+      v10 = [v15 materialViewWithRecipeNamesByTraitCollection:v14 inBundle:v16 options:0 initialWeighting:0 scaleAdjustment:v9 compatibleWithTraitCollection:weighting];
     }
 
-    v17 = [a1 groupNameBaseForComponentBackgroundViewOfType:a3];
+    v17 = [self groupNameBaseForComponentBackgroundViewOfType:type];
     [v10 setGroupNameBase:v17];
   }
 
@@ -13077,11 +13077,11 @@ LABEL_5:
   return result;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v7 = a3;
-  v8 = a5;
-  if ([(SBIconView *)self _isCursorInteractionEnabled]&& self->_iconViewCursorInteraction == v7)
+  interactionCopy = interaction;
+  regionCopy = region;
+  if ([(SBIconView *)self _isCursorInteractionEnabled]&& self->_iconViewCursorInteraction == interactionCopy)
   {
     [(SBIconView *)self iconImageFrame];
     top = self->_cursorHitTestPadding.top;
@@ -13091,8 +13091,8 @@ LABEL_5:
     v18 = v17 - (left + self->_cursorHitTestPadding.right);
     v20 = v19 - (top + self->_cursorHitTestPadding.bottom);
     v21 = MEMORY[0x1E69DCDC0];
-    v22 = [v8 identifier];
-    v9 = [v21 regionWithRect:v22 identifier:{v14, v16, v18, v20}];
+    identifier = [regionCopy identifier];
+    v9 = [v21 regionWithRect:identifier identifier:{v14, v16, v18, v20}];
   }
 
   else
@@ -13103,16 +13103,16 @@ LABEL_5:
   return v9;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  if (self->_iconViewCursorInteraction == a3)
+  if (self->_iconViewCursorInteraction == interaction)
   {
-    v8 = [(SBIconView *)self icon];
-    v9 = [v8 isWidgetIcon];
+    icon = [(SBIconView *)self icon];
+    isWidgetIcon = [icon isWidgetIcon];
 
-    if (v9)
+    if (isWidgetIcon)
     {
-      v5 = [(SBIconView *)self _pointerStyleForWidgetIcon];
+      _pointerStyleForWidgetIcon = [(SBIconView *)self _pointerStyleForWidgetIcon];
     }
 
     else
@@ -13120,29 +13120,29 @@ LABEL_5:
       iconImageView = self->_iconImageView;
       if (iconImageView && ![(SBIconImageView *)iconImageView hasOpaqueImage])
       {
-        v5 = [(SBIconView *)self _pointerStyleForLibraryAdditionalItemsIndicatorIcon];
+        _pointerStyleForWidgetIcon = [(SBIconView *)self _pointerStyleForLibraryAdditionalItemsIndicatorIcon];
       }
 
       else
       {
-        v5 = [(SBIconView *)self _pointerStyleForAppIcon];
+        _pointerStyleForWidgetIcon = [(SBIconView *)self _pointerStyleForAppIcon];
       }
     }
   }
 
   else
   {
-    v5 = 0;
+    _pointerStyleForWidgetIcon = 0;
   }
 
-  return v5;
+  return _pointerStyleForWidgetIcon;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
+  interactionCopy = interaction;
+  regionCopy = region;
+  animatorCopy = animator;
   activePointerRegions = self->_activePointerRegions;
   if (!activePointerRegions)
   {
@@ -13153,7 +13153,7 @@ LABEL_5:
     activePointerRegions = self->_activePointerRegions;
   }
 
-  [(NSCountedSet *)activePointerRegions addObject:v8];
+  [(NSCountedSet *)activePointerRegions addObject:regionCopy];
   if (!self->_disallowGlassGroupingForPointerInteractionAssertion)
   {
     v13 = [(SBIconView *)self disallowGlassGroupingForReason:@"pointer"];
@@ -13162,26 +13162,26 @@ LABEL_5:
   }
 }
 
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator
 {
-  v7 = a4;
-  v8 = v7;
-  if (a5)
+  regionCopy = region;
+  v8 = regionCopy;
+  if (animator)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __57__SBIconView_pointerInteraction_willExitRegion_animator___block_invoke;
     v10[3] = &unk_1E80893F0;
     v10[4] = self;
-    v11 = v7;
-    [a5 addCompletion:v10];
+    v11 = regionCopy;
+    [animator addCompletion:v10];
     disallowGlassGroupingForPointerInteractionAssertion = v11;
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  [(NSCountedSet *)self->_activePointerRegions removeObject:v7];
+  [(NSCountedSet *)self->_activePointerRegions removeObject:regionCopy];
   if (![(SBIconView *)self isCursorActive])
   {
     [(BSInvalidatable *)self->_disallowGlassGroupingForPointerInteractionAssertion invalidate];
@@ -13211,26 +13211,26 @@ void __57__SBIconView_pointerInteraction_willExitRegion_animator___block_invoke(
 - (id)_pointerStyleForAppIcon
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v3 = [(SBIconView *)self currentImageView];
-  v4 = [v3 window];
+  currentImageView = [(SBIconView *)self currentImageView];
+  window = [currentImageView window];
 
-  if (v4)
+  if (window)
   {
     [(SBIconView *)self iconImageInfo];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v11 = objc_alloc_init(MEMORY[0x1E69DCE28]);
-    v12 = [(SBIconView *)self icon];
-    v13 = [v12 isFileStackIcon];
+    icon = [(SBIconView *)self icon];
+    isFileStackIcon = [icon isFileStackIcon];
 
-    if ((v13 & 1) == 0)
+    if ((isFileStackIcon & 1) == 0)
     {
       v14 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:0.0 cornerRadius:{0.0, v6, v8, v10}];
       [v11 setVisiblePath:v14];
     }
 
-    v15 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:v3 parameters:v11];
+    v15 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:currentImageView parameters:v11];
     [v15 set_springboardPlatterStyle:1];
     accessoryView = self->_accessoryView;
     closeBox = self->_closeBox;
@@ -13295,10 +13295,10 @@ LABEL_17:
 
 - (id)_pointerStyleForWidgetIcon
 {
-  v2 = [(SBIconView *)self currentImageView];
-  if (v2)
+  currentImageView = [(SBIconView *)self currentImageView];
+  if (currentImageView)
   {
-    v3 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:v2];
+    v3 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:currentImageView];
     v4 = [MEMORY[0x1E69DCDA8] effectWithPreview:v3];
     [v4 setPrefersShadow:1];
     v5 = [MEMORY[0x1E69DCDD0] styleWithEffect:v4 shape:0];
@@ -13314,10 +13314,10 @@ LABEL_17:
 
 - (id)_pointerStyleForLibraryAdditionalItemsIndicatorIcon
 {
-  v2 = [(SBIconView *)self currentImageView];
-  if (v2)
+  currentImageView = [(SBIconView *)self currentImageView];
+  if (currentImageView)
   {
-    v3 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:v2];
+    v3 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:currentImageView];
     v4 = [MEMORY[0x1E69DCDB8] effectWithPreview:v3];
     v5 = [MEMORY[0x1E69DCDD0] styleWithEffect:v4 shape:0];
   }
@@ -13337,7 +13337,7 @@ LABEL_17:
     return 0;
   }
 
-  v3 = [(SBIconView *)self icon];
+  icon = [(SBIconView *)self icon];
   v4 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -13346,10 +13346,10 @@ LABEL_17:
     return 0;
   }
 
-  v6 = [(SBIconView *)self behaviorDelegate];
+  behaviorDelegate = [(SBIconView *)self behaviorDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 iconViewDisplaysCloseBox:self];
+    v7 = [behaviorDelegate iconViewDisplaysCloseBox:self];
   }
 
   else
@@ -13360,14 +13360,14 @@ LABEL_17:
   return v7;
 }
 
-- (void)setAllowsCloseBox:(BOOL)a3 withAnimation:(int64_t)a4
+- (void)setAllowsCloseBox:(BOOL)box withAnimation:(int64_t)animation
 {
   v10 = *(self + 554);
-  if (((((v10 & 0x20) == 0) ^ a3) & 1) == 0)
+  if (((((v10 & 0x20) == 0) ^ box) & 1) == 0)
   {
     v17 = v5;
     v18 = v4;
-    if (a3)
+    if (box)
     {
       v13 = 32;
     }
@@ -13381,16 +13381,16 @@ LABEL_17:
     v14 = [(SBIconView *)self window:v7];
     if (!v14 || (v15 = v14, [(SBIconView *)self icon], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, !v16))
     {
-      a4 = 2;
+      animation = 2;
     }
 
-    [(SBIconView *)self _updateCloseBoxWithAnimation:a4];
+    [(SBIconView *)self _updateCloseBoxWithAnimation:animation];
   }
 }
 
-+ (Class)_closeBoxClassForType:(int64_t)a3
++ (Class)_closeBoxClassForType:(int64_t)type
 {
-  if (a3 > 1)
+  if (type > 1)
   {
     v4 = 0;
   }
@@ -13403,9 +13403,9 @@ LABEL_17:
   return v4;
 }
 
-+ (int64_t)closeBoxTypeForView:(id)a3
++ (int64_t)closeBoxTypeForView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -13424,7 +13424,7 @@ LABEL_17:
       v9 = SBLogIcon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [(SBIconView *)v3 closeBoxTypeForView:v9, v10, v11, v12, v13, v14, v15];
+        [(SBIconView *)viewCopy closeBoxTypeForView:v9, v10, v11, v12, v13, v14, v15];
       }
     }
 
@@ -13436,10 +13436,10 @@ LABEL_17:
 
 - (int64_t)_closeBoxType
 {
-  v3 = [(SBIconView *)self behaviorDelegate];
+  behaviorDelegate = [(SBIconView *)self behaviorDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 closeBoxTypeForIconView:self];
+    v4 = [behaviorDelegate closeBoxTypeForIconView:self];
   }
 
   else
@@ -13452,16 +13452,16 @@ LABEL_17:
 
 - (void)_createCloseBoxIfNecessary
 {
-  v19 = [(SBIconView *)self icon];
-  if (v19)
+  icon = [(SBIconView *)self icon];
+  if (icon)
   {
-    v3 = [(SBIconView *)self _closeBoxType];
+    _closeBoxType = [(SBIconView *)self _closeBoxType];
     if (!self->_closeBox)
     {
       goto LABEL_6;
     }
 
-    if (v3 != [objc_opt_class() closeBoxTypeForView:self->_closeBox])
+    if (_closeBoxType != [objc_opt_class() closeBoxTypeForView:self->_closeBox])
     {
       [(SBCloseBoxView *)self->_closeBox removeFromSuperview];
       closeBox = self->_closeBox;
@@ -13471,10 +13471,10 @@ LABEL_17:
     if (!self->_closeBox)
     {
 LABEL_6:
-      v5 = [(SBIconView *)self _iconAdornmentMaterial];
-      v6 = objc_alloc([objc_opt_class() _closeBoxClassForType:v3]);
+      _iconAdornmentMaterial = [(SBIconView *)self _iconAdornmentMaterial];
+      v6 = objc_alloc([objc_opt_class() _closeBoxClassForType:_closeBoxType]);
       v7 = v6;
-      if (v5 == 4)
+      if (_iconAdornmentMaterial == 4)
       {
         v8 = [(SBIconView *)self newComponentBackgroundViewOfType:1];
         v9 = [v7 initWithFrame:v8 backgroundView:1 wantsRimHighlight:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -13484,28 +13484,28 @@ LABEL_6:
 
       else
       {
-        v11 = [v6 initWithFrame:v5 material:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+        v11 = [v6 initWithFrame:_iconAdornmentMaterial material:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
         v8 = self->_closeBox;
         self->_closeBox = v11;
       }
 
       [(SBCloseBoxView *)self->_closeBox setDelegate:self];
       v12 = self->_closeBox;
-      v13 = [(SBIconView *)self listLayout];
-      [(SBCloseBoxView *)v12 setListLayout:v13];
+      listLayout = [(SBIconView *)self listLayout];
+      [(SBCloseBoxView *)v12 setListLayout:listLayout];
 
       v14 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__closeBoxTapGestureChanged_];
       [v14 setDelegate:self];
       [(SBCloseBoxView *)self->_closeBox addGestureRecognizer:v14];
       [(SBCloseBoxView *)self->_closeBox setActionTapGestureRecognizer:v14];
       [(SBCloseBoxView *)self->_closeBox sizeToFit];
-      v15 = [(SBHomeScreenButton *)self->_closeBox materialView];
-      [v15 setLegibilityStyle:{-[SBHLegibilitySettings style](self->_legibilitySettings, "style")}];
+      materialView = [(SBHomeScreenButton *)self->_closeBox materialView];
+      [materialView setLegibilityStyle:{-[SBHLegibilitySettings style](self->_legibilitySettings, "style")}];
 
       [(SBHomeScreenButton *)self->_closeBox setLegibilitySettings:self->_legibilitySettings];
       if ((SBHPerformanceFlagEnabled(9) & 1) == 0)
       {
-        v16 = [(SBIconView *)self badgeParallaxSettings];
+        badgeParallaxSettings = [(SBIconView *)self badgeParallaxSettings];
         SBFApplyParallaxSettingsToView();
       }
 
@@ -13520,10 +13520,10 @@ LABEL_6:
 
 - (int64_t)_iconAdornmentMaterial
 {
-  v3 = [(SBIconView *)self behaviorDelegate];
+  behaviorDelegate = [(SBIconView *)self behaviorDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 adornmentMaterialForIconView:self];
+    v4 = [behaviorDelegate adornmentMaterialForIconView:self];
   }
 
   else
@@ -13534,9 +13534,9 @@ LABEL_6:
   return v4;
 }
 
-- (void)_updateCloseBoxAnimated:(BOOL)a3
+- (void)_updateCloseBoxAnimated:(BOOL)animated
 {
-  if (a3)
+  if (animated)
   {
     v3 = 0;
   }
@@ -13549,14 +13549,14 @@ LABEL_6:
   [(SBIconView *)self _updateCloseBoxWithAnimation:v3];
 }
 
-- (void)_updateCloseBoxWithAnimation:(int64_t)a3
+- (void)_updateCloseBoxWithAnimation:(int64_t)animation
 {
-  v5 = a3 != 2;
-  v6 = [(SBIconView *)self shouldShowCloseBox];
-  v7 = [(SBIconView *)self _isShowingCloseBox];
-  if (v6)
+  v5 = animation != 2;
+  shouldShowCloseBox = [(SBIconView *)self shouldShowCloseBox];
+  _isShowingCloseBox = [(SBIconView *)self _isShowingCloseBox];
+  if (shouldShowCloseBox)
   {
-    if (v7)
+    if (_isShowingCloseBox)
     {
       v5 = 0;
     }
@@ -13566,14 +13566,14 @@ LABEL_6:
       [(SBIconView *)self _setShowingCloseBox:1];
     }
 
-    v10 = [(SBIconView *)self contentContainerView];
-    v11 = [(SBIconView *)self closeBoxAnimator];
-    v12 = v11;
-    if (v11)
+    contentContainerView = [(SBIconView *)self contentContainerView];
+    closeBoxAnimator = [(SBIconView *)self closeBoxAnimator];
+    v12 = closeBoxAnimator;
+    if (closeBoxAnimator)
     {
       if (v5)
       {
-        [v11 setReversed:{objc_msgSend(v11, "isReversed") ^ 1}];
+        [closeBoxAnimator setReversed:{objc_msgSend(closeBoxAnimator, "isReversed") ^ 1}];
       }
     }
 
@@ -13585,7 +13585,7 @@ LABEL_6:
       v25[2] = __43__SBIconView__updateCloseBoxWithAnimation___block_invoke;
       v25[3] = &unk_1E8088F18;
       v25[4] = self;
-      v26 = v10;
+      v26 = contentContainerView;
       [v13 performWithoutAnimation:v25];
 
       if (v5)
@@ -13604,17 +13604,17 @@ LABEL_6:
         v23 = v14;
         v15 = v14;
         v16 = _Block_copy(aBlock);
-        [(SBIconView *)self _animateCloseBoxWithAnimation:a3 animationBlock:v16];
+        [(SBIconView *)self _animateCloseBoxWithAnimation:animation animationBlock:v16];
       }
     }
 
     [(SBIconView *)self _updateAccessoryViewAnimated:v5];
   }
 
-  else if (v7)
+  else if (_isShowingCloseBox)
   {
     [(SBIconView *)self _setShowingCloseBox:0];
-    if (a3 == 2)
+    if (animation == 2)
     {
       [(SBCloseBoxView *)self->_closeBox removeFromSuperview];
     }
@@ -13622,11 +13622,11 @@ LABEL_6:
     else
     {
       *(self + 552) = *(self + 552) & 0xF3 | 8;
-      v8 = [(SBIconView *)self closeBoxAnimator];
-      v9 = v8;
-      if (v8)
+      closeBoxAnimator2 = [(SBIconView *)self closeBoxAnimator];
+      v9 = closeBoxAnimator2;
+      if (closeBoxAnimator2)
       {
-        [v8 setReversed:{objc_msgSend(v8, "isReversed") ^ 1}];
+        [closeBoxAnimator2 setReversed:{objc_msgSend(closeBoxAnimator2, "isReversed") ^ 1}];
       }
 
       else
@@ -13639,11 +13639,11 @@ LABEL_6:
         v21 = v17;
         v18 = v17;
         v19 = _Block_copy(v20);
-        [(SBIconView *)self _animateCloseBoxWithAnimation:a3 animationBlock:v19];
+        [(SBIconView *)self _animateCloseBoxWithAnimation:animation animationBlock:v19];
       }
     }
 
-    [(SBIconView *)self _updateAccessoryViewAnimated:a3 != 2];
+    [(SBIconView *)self _updateAccessoryViewAnimated:animation != 2];
   }
 }
 
@@ -13691,10 +13691,10 @@ uint64_t __43__SBIconView__updateCloseBoxWithAnimation___block_invoke_4(uint64_t
   return [v1 setTransform:&v3];
 }
 
-- (void)_animateCloseBoxWithAnimation:(int64_t)a3 animationBlock:(id)a4
+- (void)_animateCloseBoxWithAnimation:(int64_t)animation animationBlock:(id)block
 {
-  v6 = a4;
-  if (a3 == 1)
+  blockCopy = block;
+  if (animation == 1)
   {
     v7 = objc_alloc(MEMORY[0x1E69DD278]);
     v8 = 1.73557;
@@ -13703,10 +13703,10 @@ uint64_t __43__SBIconView__updateCloseBoxWithAnimation___block_invoke_4(uint64_t
 
   else
   {
-    if (a3)
+    if (animation)
     {
 LABEL_7:
-      [MEMORY[0x1E69DD250] performWithoutAnimation:v6];
+      [MEMORY[0x1E69DD250] performWithoutAnimation:blockCopy];
       [(SBIconView *)self _checkAndRemoveCloseBoxAfterAnimation];
       [(SBIconView *)self setCloseBoxAnimator:0];
       goto LABEL_8;
@@ -13717,23 +13717,23 @@ LABEL_7:
     v9 = 0.9;
   }
 
-  v10 = [v7 initWithDuration:v6 dampingRatio:v8 animations:v9];
+  v10 = [v7 initWithDuration:blockCopy dampingRatio:v8 animations:v9];
   if (!v10)
   {
     goto LABEL_7;
   }
 
-  v11 = [(SBIconView *)self shouldShowCloseBox];
+  shouldShowCloseBox = [(SBIconView *)self shouldShowCloseBox];
   objc_initWeak(&location, v10);
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __59__SBIconView__animateCloseBoxWithAnimation_animationBlock___block_invoke;
   v15 = &unk_1E808F0F0;
-  v17[1] = v11;
-  v16 = self;
+  v17[1] = shouldShowCloseBox;
+  selfCopy = self;
   objc_copyWeak(v17, &location);
   [v10 addCompletion:&v12];
-  [(SBIconView *)self setCloseBoxAnimator:v10, v12, v13, v14, v15, v16];
+  [(SBIconView *)self setCloseBoxAnimator:v10, v12, v13, v14, v15, selfCopy];
   [v10 startAnimation];
   objc_destroyWeak(v17);
   objc_destroyWeak(&location);
@@ -13774,9 +13774,9 @@ void __59__SBIconView__animateCloseBoxWithAnimation_animationBlock___block_invok
   *(self + 552) &= 0xF3u;
 }
 
-- (void)_setShowingCloseBox:(BOOL)a3
+- (void)_setShowingCloseBox:(BOOL)box
 {
-  if (a3)
+  if (box)
   {
     v3 = 16;
   }
@@ -13789,25 +13789,25 @@ void __59__SBIconView__animateCloseBoxWithAnimation_animationBlock___block_invok
   *(self + 556) = *(self + 556) & 0xEF | v3;
 }
 
-- (void)_closeBoxTapGestureChanged:(id)a3
+- (void)_closeBoxTapGestureChanged:(id)changed
 {
-  if ([a3 state] == 3)
+  if ([changed state] == 3)
   {
-    v4 = [(SBIconView *)self actionDelegate];
+    actionDelegate = [(SBIconView *)self actionDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [v4 iconCloseBoxTapped:self];
+      [actionDelegate iconCloseBoxTapped:self];
     }
   }
 }
 
-- (void)setAllowsBlockedForScreenTimeExpiration:(BOOL)a3
+- (void)setAllowsBlockedForScreenTimeExpiration:(BOOL)expiration
 {
   v7 = *(self + 557);
-  if (a3 == (v7 & 0x40) >> 6)
+  if (expiration == (v7 & 0x40) >> 6)
   {
     v10 = v3;
-    if (a3)
+    if (expiration)
     {
       v9 = 0;
     }
@@ -13824,12 +13824,12 @@ void __59__SBIconView__animateCloseBoxWithAnimation_animationBlock___block_invok
   }
 }
 
-- (void)setAllowsResizeHandle:(BOOL)a3
+- (void)setAllowsResizeHandle:(BOOL)handle
 {
   v3 = *(self + 554);
-  if (((((v3 & 0x40) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 0x40) == 0) ^ handle) & 1) == 0)
   {
-    if (a3)
+    if (handle)
     {
       v4 = 64;
     }
@@ -13851,23 +13851,23 @@ void __59__SBIconView__animateCloseBoxWithAnimation_animationBlock___block_invok
     return 0;
   }
 
-  v3 = [(SBIconView *)self icon];
-  v4 = [v3 supportedGridSizeClasses];
-  if ([v4 count] < 2 || -[SBIconView isShowingConfigurationCard](self, "isShowingConfigurationCard") || -[SBIconView isShowingStackConfigurationCard](self, "isShowingStackConfigurationCard") || !-[SBIconView allowsAdornmentsOverIconImage](self, "allowsAdornmentsOverIconImage"))
+  icon = [(SBIconView *)self icon];
+  supportedGridSizeClasses = [icon supportedGridSizeClasses];
+  if ([supportedGridSizeClasses count] < 2 || -[SBIconView isShowingConfigurationCard](self, "isShowingConfigurationCard") || -[SBIconView isShowingStackConfigurationCard](self, "isShowingStackConfigurationCard") || !-[SBIconView allowsAdornmentsOverIconImage](self, "allowsAdornmentsOverIconImage"))
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [(SBIconView *)self behaviorDelegate];
-    v6 = (objc_opt_respondsToSelector() & 1) == 0 || [v5 iconViewDisplaysResizeHandle:self];
+    behaviorDelegate = [(SBIconView *)self behaviorDelegate];
+    v6 = (objc_opt_respondsToSelector() & 1) == 0 || [behaviorDelegate iconViewDisplaysResizeHandle:self];
   }
 
   return v6;
 }
 
-- (CGAffineTransform)transformWhenHiddenForResizeHandle:(SEL)a3
+- (CGAffineTransform)transformWhenHiddenForResizeHandle:(SEL)handle
 {
   v5 = 0uLL;
   v15 = 0u;
@@ -13903,32 +13903,32 @@ void __59__SBIconView__animateCloseBoxWithAnimation_animationBlock___block_invok
   return result;
 }
 
-- (void)_updateResizeHandleAnimated:(BOOL)a3
+- (void)_updateResizeHandleAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(SBIconView *)self shouldShowResizeHandle];
-  v6 = [(SBIconView *)self isShowingResizeHandle];
-  if (!v5 || v6)
+  animatedCopy = animated;
+  shouldShowResizeHandle = [(SBIconView *)self shouldShowResizeHandle];
+  isShowingResizeHandle = [(SBIconView *)self isShowingResizeHandle];
+  if (!shouldShowResizeHandle || isShowingResizeHandle)
   {
-    if (v5 || !v6)
+    if (shouldShowResizeHandle || !isShowingResizeHandle)
     {
       return;
     }
 
-    v14 = [(SBIconView *)self resizeHandle];
+    resizeHandle = [(SBIconView *)self resizeHandle];
     [(SBIconView *)self setResizeHandle:0];
-    if (v3)
+    if (animatedCopy)
     {
       v38 = 0u;
       v37 = 0u;
       v36 = 0u;
-      [(SBIconView *)self transformWhenHiddenForResizeHandle:v14];
+      [(SBIconView *)self transformWhenHiddenForResizeHandle:resizeHandle];
       v20 = MEMORY[0x1E69DD250];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __42__SBIconView__updateResizeHandleAnimated___block_invoke_4;
       v23[3] = &unk_1E808B4E0;
-      v24 = v14;
+      v24 = resizeHandle;
       v25 = v36;
       v26 = v37;
       v27 = v38;
@@ -13936,23 +13936,23 @@ void __59__SBIconView__animateCloseBoxWithAnimation_animationBlock___block_invok
       v21[1] = 3221225472;
       v21[2] = __42__SBIconView__updateResizeHandleAnimated___block_invoke_5;
       v21[3] = &unk_1E8088F40;
-      v14 = v24;
-      v22 = v14;
+      resizeHandle = v24;
+      v22 = resizeHandle;
       [v20 animateWithDuration:0 delay:v23 usingSpringWithDamping:v21 initialSpringVelocity:0.34071 options:0.0 animations:0.9 completion:0.0];
     }
 
     else
     {
-      [v14 removeFromSuperview];
+      [resizeHandle removeFromSuperview];
     }
   }
 
   else
   {
-    v7 = [(SBIconView *)self _makeResizeHandle];
-    [(SBIconView *)self setResizeHandle:v7];
-    v8 = [(SBIconView *)self contentContainerView];
-    [v8 addSubview:v7];
+    _makeResizeHandle = [(SBIconView *)self _makeResizeHandle];
+    [(SBIconView *)self setResizeHandle:_makeResizeHandle];
+    contentContainerView = [(SBIconView *)self contentContainerView];
+    [contentContainerView addSubview:_makeResizeHandle];
     [(SBIconView *)self _centerForResizeHandle];
     v10 = v9;
     v12 = v11;
@@ -13961,25 +13961,25 @@ void __59__SBIconView__animateCloseBoxWithAnimation_animationBlock___block_invok
     v39[1] = 3221225472;
     v39[2] = __42__SBIconView__updateResizeHandleAnimated___block_invoke;
     v39[3] = &unk_1E808BCE0;
-    v14 = v7;
-    v40 = v14;
+    resizeHandle = _makeResizeHandle;
+    v40 = resizeHandle;
     v41 = v10;
     v42 = v12;
     [v13 performWithoutAnimation:v39];
     [(SBIconView *)self effectiveIconAccessoryAlpha];
     v16 = v15;
-    if (v3)
+    if (animatedCopy)
     {
       v38 = 0u;
       v37 = 0u;
       v36 = 0u;
-      [(SBIconView *)self transformWhenHiddenForResizeHandle:v14];
+      [(SBIconView *)self transformWhenHiddenForResizeHandle:resizeHandle];
       v17 = MEMORY[0x1E69DD250];
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __42__SBIconView__updateResizeHandleAnimated___block_invoke_2;
       v31[3] = &unk_1E808B4E0;
-      v18 = v14;
+      v18 = resizeHandle;
       v32 = v18;
       v33 = v36;
       v34 = v37;
@@ -13997,7 +13997,7 @@ void __59__SBIconView__animateCloseBoxWithAnimation_animationBlock___block_invok
 
     else
     {
-      [v14 setAlpha:v15];
+      [resizeHandle setAlpha:v15];
     }
   }
 }
@@ -14048,12 +14048,12 @@ uint64_t __42__SBIconView__updateResizeHandleAnimated___block_invoke_4(uint64_t 
   v27 = 0u;
   v25 = 0u;
   SBIconResizeHandleMetricsForIconResizingSettings(self->_iconResizingSettings, &v25);
-  v11 = [(SBIconView *)self behaviorDelegate];
+  behaviorDelegate = [(SBIconView *)self behaviorDelegate];
   if (objc_opt_respondsToSelector())
   {
-    if (v11)
+    if (behaviorDelegate)
     {
-      [v11 resizeHandleMetricsForIconView:self];
+      [behaviorDelegate resizeHandleMetricsForIconView:self];
     }
 
     else
@@ -14074,18 +14074,18 @@ uint64_t __42__SBIconView__updateResizeHandleAnimated___block_invoke_4(uint64_t 
 
   else if (objc_opt_respondsToSelector())
   {
-    [v11 pathLengthForResizeHandleOfIconView:self];
+    [behaviorDelegate pathLengthForResizeHandleOfIconView:self];
     *(&v25 + 1) = v12;
   }
 
   v13 = [SBHIconResizeHandle alloc];
-  v14 = [(SBIconView *)self _iconAdornmentMaterial];
+  _iconAdornmentMaterial = [(SBIconView *)self _iconAdornmentMaterial];
   v22 = v27;
   v23 = v28;
   v24 = v29;
   v20 = v25;
   v21 = v26;
-  v15 = [(SBHIconResizeHandle *)v13 initWithMetrics:&v20 iconImageInfo:v14 material:v4, v6, v8, v10];
+  v15 = [(SBHIconResizeHandle *)v13 initWithMetrics:&v20 iconImageInfo:_iconAdornmentMaterial material:v4, v6, v8, v10];
   v16 = [objc_alloc(MEMORY[0x1E69DCD28]) initWithTarget:self action:sel_resizeGestureRecognizerDidUpdate_];
   [v16 _setHysteresis:0.0];
   [v16 setDelaysTouchesBegan:0];
@@ -14102,21 +14102,21 @@ uint64_t __42__SBIconView__updateResizeHandleAnimated___block_invoke_4(uint64_t 
 
 - (CGPoint)_centerForResizeHandle
 {
-  v3 = [(SBIconView *)self resizeHandle];
+  resizeHandle = [(SBIconView *)self resizeHandle];
   [(SBIconView *)self iconImageFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 sizeThatFits:{v8, v10}];
+  [resizeHandle sizeThatFits:{v8, v10}];
   v13 = v12;
   v15 = v14 * 0.5;
-  v16 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
   v17 = v5;
   v18 = v7;
   v19 = v9;
   v20 = v11;
-  if (v16 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v21 = v15 + CGRectGetMinX(*&v17);
   }
@@ -14139,12 +14139,12 @@ uint64_t __42__SBIconView__updateResizeHandleAnimated___block_invoke_4(uint64_t 
   return result;
 }
 
-- (void)setResizing:(BOOL)a3
+- (void)setResizing:(BOOL)resizing
 {
   v3 = *(self + 559);
-  if (((((v3 & 0x20) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 0x20) == 0) ^ resizing) & 1) == 0)
   {
-    if (a3)
+    if (resizing)
     {
       v4 = 32;
     }
@@ -14167,7 +14167,7 @@ uint64_t __42__SBIconView__updateResizeHandleAnimated___block_invoke_4(uint64_t 
   return v2;
 }
 
-- (void)removeExtendResizeFinishAssertion:(id)a3
+- (void)removeExtendResizeFinishAssertion:(id)assertion
 {
   *(self + 559) &= ~0x40u;
   [(SBIconView *)self setResizing:0];
@@ -14175,17 +14175,17 @@ uint64_t __42__SBIconView__updateResizeHandleAnimated___block_invoke_4(uint64_t 
   [(SBIconView *)self setResizeGestureHandler:0];
 }
 
-- (void)resizeGestureRecognizerDidUpdate:(id)a3
+- (void)resizeGestureRecognizerDidUpdate:(id)update
 {
   v69 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBIconView *)self resizeHandle];
-  v6 = [v4 state];
-  v7 = v6;
-  v8 = v6 - 3;
-  if ((v6 - 3) >= 3)
+  updateCopy = update;
+  resizeHandle = [(SBIconView *)self resizeHandle];
+  state = [updateCopy state];
+  v7 = state;
+  v8 = state - 3;
+  if ((state - 3) >= 3)
   {
-    if (v6 != 1)
+    if (state != 1)
     {
       goto LABEL_6;
     }
@@ -14199,14 +14199,14 @@ uint64_t __42__SBIconView__updateResizeHandleAnimated___block_invoke_4(uint64_t 
     v9 = 0;
   }
 
-  [v5 setHighlighted:v9];
-  [v5 setResizing:v9];
+  [resizeHandle setHighlighted:v9];
+  [resizeHandle setResizing:v9];
 LABEL_6:
-  v10 = [(SBIconView *)self resizeGestureHandler];
-  v11 = v10;
-  if (v10)
+  resizeGestureHandler = [(SBIconView *)self resizeGestureHandler];
+  v11 = resizeGestureHandler;
+  if (resizeGestureHandler)
   {
-    [v10 iconView:self resizeGestureRecognizerDidUpdate:v4];
+    [resizeGestureHandler iconView:self resizeGestureRecognizerDidUpdate:updateCopy];
   }
 
   if (v8 <= 2 && (*(self + 559) & 0x40) == 0)
@@ -14219,23 +14219,23 @@ LABEL_6:
   {
     if (v8 < 3)
     {
-      [v5 setHighlighted:0];
-      [v5 setResizing:0];
+      [resizeHandle setHighlighted:0];
+      [resizeHandle setResizing:0];
       [(SBIconView *)self setNeedsLayout];
-      v12 = [(SBIconView *)self currentImageView];
+      currentImageView = [(SBIconView *)self currentImageView];
       v13 = MEMORY[0x1E69DD250];
       v61[0] = MEMORY[0x1E69E9820];
       v61[1] = 3221225472;
       v61[2] = __47__SBIconView_resizeGestureRecognizerDidUpdate___block_invoke_969;
       v61[3] = &unk_1E8088F18;
-      v14 = v12;
-      v62 = v14;
-      v63 = self;
+      behaviorDelegate2 = currentImageView;
+      v62 = behaviorDelegate2;
+      selfCopy = self;
       [v13 animateWithDuration:0 delay:v61 usingSpringWithDamping:0 initialSpringVelocity:0.34071 options:0.0 animations:0.9 completion:0.0];
-      v15 = [(SBIconView *)self behaviorDelegate];
+      behaviorDelegate = [(SBIconView *)self behaviorDelegate];
       if (objc_opt_respondsToSelector())
       {
-        [v15 iconViewDidEndTrackingPossibleResize:self context:self->_resizeGestureContext];
+        [behaviorDelegate iconViewDidEndTrackingPossibleResize:self context:self->_resizeGestureContext];
       }
 
       resizeGestureContext = self->_resizeGestureContext;
@@ -14255,12 +14255,12 @@ LABEL_6:
           _os_log_impl(&dword_1BEB18000, v17, OS_LOG_TYPE_DEFAULT, "starting gesture for resize", &buf, 2u);
         }
 
-        [v5 setHighlighted:1];
-        [v5 setResizing:1];
-        v14 = [(SBIconView *)self behaviorDelegate];
+        [resizeHandle setHighlighted:1];
+        [resizeHandle setResizing:1];
+        behaviorDelegate2 = [(SBIconView *)self behaviorDelegate];
         if (objc_opt_respondsToSelector())
         {
-          v18 = [v14 resizeGestureHandlerForIconView:self];
+          v18 = [behaviorDelegate2 resizeGestureHandlerForIconView:self];
           if (v18)
           {
             v11 = v18;
@@ -14273,7 +14273,7 @@ LABEL_6:
             }
 
             [(SBIconView *)self setResizeGestureHandler:v11];
-            [v11 iconView:self resizeGestureRecognizerDidUpdate:v4];
+            [v11 iconView:self resizeGestureRecognizerDidUpdate:updateCopy];
             goto LABEL_17;
           }
         }
@@ -14286,14 +14286,14 @@ LABEL_6:
 
           v24 = self->_resizeGestureContext;
           v25 = MEMORY[0x1E696B098];
-          [v5 bounds];
+          [resizeHandle bounds];
           UIRectGetCenter();
           v67[0] = v26;
           v67[1] = v27;
           v28 = [v25 valueWithBytes:v67 objCType:"{CGPoint=dd}"];
           [(NSMutableDictionary *)v24 setObject:v28 forKey:@"SBIconViewGestureCenterPoint"];
 
-          [v14 iconViewDidBeginTrackingPossibleResize:self context:self->_resizeGestureContext];
+          [behaviorDelegate2 iconViewDidBeginTrackingPossibleResize:self context:self->_resizeGestureContext];
         }
 
 LABEL_16:
@@ -14309,20 +14309,20 @@ LABEL_28:
     }
 
     v20 = [(NSMutableDictionary *)self->_resizeGestureContext objectForKey:@"SBIconViewGestureResizing"];
-    v21 = [v20 BOOLValue];
+    bOOLValue = [v20 BOOLValue];
 
-    if (v21)
+    if (bOOLValue)
     {
       goto LABEL_28;
     }
 
-    v14 = [(NSMutableDictionary *)self->_resizeGestureContext objectForKey:@"SBIconViewGestureResizeFinishTime"];
-    [v4 locationInView:v5];
+    behaviorDelegate2 = [(NSMutableDictionary *)self->_resizeGestureContext objectForKey:@"SBIconViewGestureResizeFinishTime"];
+    [updateCopy locationInView:resizeHandle];
     v30 = v29;
     v32 = v31;
-    if (v14)
+    if (behaviorDelegate2)
     {
-      [v14 unsignedLongLongValue];
+      [behaviorDelegate2 unsignedLongLongValue];
       mach_continuous_time();
       BSTimeDifferenceFromMachTimeToMachTime();
       if (v33 < 0.2)
@@ -14339,9 +14339,9 @@ LABEL_28:
     }
 
     v36 = [(NSMutableDictionary *)self->_resizeGestureContext objectForKey:@"SBIconViewGestureHasResized"];
-    v37 = [v36 BOOLValue];
+    bOOLValue2 = [v36 BOOLValue];
 
-    if (v37)
+    if (bOOLValue2)
     {
       v38 = 10.0;
     }
@@ -14380,7 +14380,7 @@ LABEL_28:
 
     if (v50)
     {
-      if (v37)
+      if (bOOLValue2)
       {
         goto LABEL_16;
       }
@@ -14421,11 +14421,11 @@ LABEL_28:
         _os_log_debug_impl(&dword_1BEB18000, v57, OS_LOG_TYPE_DEBUG, "updating gesture resize scale to %f,%f (progress: %f,%f)", &buf, 0x2Au);
       }
 
-      v58 = [(SBIconView *)self currentImageView];
+      currentImageView2 = [(SBIconView *)self currentImageView];
       CGAffineTransformMakeScale(&buf, v55 + 1.0, v56 + 1.0);
-      [(NSMutableDictionary *)v58 setTransform:&buf];
+      [(NSMutableDictionary *)currentImageView2 setTransform:&buf];
       [(SBIconView *)self setNeedsLayout];
-      [v5 setHighlighted:1];
+      [resizeHandle setHighlighted:1];
 LABEL_66:
 
       goto LABEL_16;
@@ -14457,7 +14457,7 @@ LABEL_65:
     v64[2] = __47__SBIconView_resizeGestureRecognizerDidUpdate___block_invoke;
     v64[3] = &unk_1E8088C90;
     v65 = v59;
-    v58 = v59;
+    currentImageView2 = v59;
     [(SBIconView *)self _initiateResizeToSmallerSize:v52 completionHandler:v64];
 
     goto LABEL_66;
@@ -14494,32 +14494,32 @@ uint64_t __47__SBIconView_resizeGestureRecognizerDidUpdate___block_invoke_969(ui
 
 - (id)nextSmallerGridSizeClassForResize
 {
-  v3 = [(SBIconView *)self icon];
-  v4 = [(SBIconView *)self supportedIconGridSizeClassesForResize];
-  v5 = [(SBIconView *)self iconGridSizeClassSizes];
-  v6 = [v3 gridSizeClass];
-  v7 = [v5 gridSizeClassSmallerThanGridSizeClass:v6 allowedGridSizeClasses:v4];
+  icon = [(SBIconView *)self icon];
+  supportedIconGridSizeClassesForResize = [(SBIconView *)self supportedIconGridSizeClassesForResize];
+  iconGridSizeClassSizes = [(SBIconView *)self iconGridSizeClassSizes];
+  gridSizeClass = [icon gridSizeClass];
+  v7 = [iconGridSizeClassSizes gridSizeClassSmallerThanGridSizeClass:gridSizeClass allowedGridSizeClasses:supportedIconGridSizeClassesForResize];
 
   return v7;
 }
 
 - (id)nextLargerGridSizeClassForResize
 {
-  v3 = [(SBIconView *)self icon];
-  v4 = [(SBIconView *)self supportedIconGridSizeClassesForResize];
-  v5 = [(SBIconView *)self iconGridSizeClassSizes];
-  v6 = [v3 gridSizeClass];
-  v7 = [v5 gridSizeClassLargerThanGridSizeClass:v6 allowedGridSizeClasses:v4];
+  icon = [(SBIconView *)self icon];
+  supportedIconGridSizeClassesForResize = [(SBIconView *)self supportedIconGridSizeClassesForResize];
+  iconGridSizeClassSizes = [(SBIconView *)self iconGridSizeClassSizes];
+  gridSizeClass = [icon gridSizeClass];
+  v7 = [iconGridSizeClassSizes gridSizeClassLargerThanGridSizeClass:gridSizeClass allowedGridSizeClasses:supportedIconGridSizeClassesForResize];
 
   return v7;
 }
 
-- (void)_initiateResizeToSmallerSize:(BOOL)a3 completionHandler:(id)a4
+- (void)_initiateResizeToSmallerSize:(BOOL)size completionHandler:(id)handler
 {
-  v4 = a3;
+  sizeCopy = size;
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v4)
+  handlerCopy = handler;
+  if (sizeCopy)
   {
     [(SBIconView *)self nextSmallerGridSizeClassForResize];
   }
@@ -14539,13 +14539,13 @@ uint64_t __47__SBIconView_resizeGestureRecognizerDidUpdate___block_invoke_969(ui
       _os_log_impl(&dword_1BEB18000, v8, OS_LOG_TYPE_DEFAULT, "initiating gesture resize to grid size %{public}@", &v11, 0xCu);
     }
 
-    v9 = [(SBIconView *)self actionDelegate];
+    actionDelegate = [(SBIconView *)self actionDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [v9 iconView:self wantsResizeToGridSizeClass:v7 completionHandler:v6];
+      [actionDelegate iconView:self wantsResizeToGridSizeClass:v7 completionHandler:handlerCopy];
     }
 
-    else if (v6)
+    else if (handlerCopy)
     {
       v10 = SBLogWidgets();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -14555,29 +14555,29 @@ uint64_t __47__SBIconView_resizeGestureRecognizerDidUpdate___block_invoke_969(ui
         _os_log_impl(&dword_1BEB18000, v10, OS_LOG_TYPE_DEFAULT, "Can't initiate resize to %{public}@ because delegate doesn't implement", &v11, 0xCu);
       }
 
-      v6[2](v6);
+      handlerCopy[2](handlerCopy);
     }
   }
 
-  else if (v6)
+  else if (handlerCopy)
   {
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v42.receiver = self;
   v42.super_class = SBIconView;
-  v8 = [(SBIconView *)&v42 hitTest:v7 withEvent:x, y];
-  v9 = [(SBIconView *)self isIconContentScalingEnabled];
-  v10 = v9;
+  v8 = [(SBIconView *)&v42 hitTest:eventCopy withEvent:x, y];
+  isIconContentScalingEnabled = [(SBIconView *)self isIconContentScalingEnabled];
+  v10 = isIconContentScalingEnabled;
   if (v8)
   {
-    v11 = !v9;
+    v11 = !isIconContentScalingEnabled;
   }
 
   else
@@ -14594,8 +14594,8 @@ uint64_t __47__SBIconView_resizeGestureRecognizerDidUpdate___block_invoke_969(ui
   {
     if ([(SBIconView *)self isIconContentScalingEnabled])
     {
-      v12 = [(SBIconView *)self contentContainerView];
-      [v12 convertPoint:self fromView:{x, y}];
+      contentContainerView = [(SBIconView *)self contentContainerView];
+      [contentContainerView convertPoint:self fromView:{x, y}];
       v14 = v13;
       v16 = v15;
       [(SBCloseBoxView *)self->_closeBox frame];
@@ -14624,12 +14624,12 @@ uint64_t __47__SBIconView_resizeGestureRecognizerDidUpdate___block_invoke_969(ui
     else
     {
       [(SBCloseBoxView *)self->_closeBox convertPoint:self fromView:x, y];
-      if (![(SBCloseBoxView *)self->_closeBox pointInside:v7 withEvent:?])
+      if (![(SBCloseBoxView *)self->_closeBox pointInside:eventCopy withEvent:?])
       {
         goto LABEL_13;
       }
 
-      v12 = v8;
+      contentContainerView = v8;
       v8 = self->_closeBox;
     }
   }
@@ -14637,7 +14637,7 @@ uint64_t __47__SBIconView_resizeGestureRecognizerDidUpdate___block_invoke_969(ui
 LABEL_13:
   if (!v8)
   {
-    if (self->_resizeHandle && [(SBIconView *)self isShowingResizeHandle]&& ([(SBHIconResizeHandle *)self->_resizeHandle convertPoint:self fromView:x, y], [(SBHIconResizeHandle *)self->_resizeHandle pointInside:v7 withEvent:?]))
+    if (self->_resizeHandle && [(SBIconView *)self isShowingResizeHandle]&& ([(SBHIconResizeHandle *)self->_resizeHandle convertPoint:self fromView:x, y], [(SBHIconResizeHandle *)self->_resizeHandle pointInside:eventCopy withEvent:?]))
     {
       v8 = self->_resizeHandle;
     }
@@ -14651,11 +14651,11 @@ LABEL_13:
 LABEL_19:
   if (v8 == self && v10)
   {
-    v27 = [(SBIconView *)self contentContainerView];
-    [v27 convertPoint:self fromView:{x, y}];
+    contentContainerView2 = [(SBIconView *)self contentContainerView];
+    [contentContainerView2 convertPoint:self fromView:{x, y}];
     v29 = v28;
     v31 = v30;
-    [v27 bounds];
+    [contentContainerView2 bounds];
     v45.x = v29;
     v45.y = v31;
     if (!CGRectContainsPoint(v48, v45))
@@ -14675,7 +14675,7 @@ LABEL_19:
       *&v41.d = __Block_byref_object_copy__17;
       *&v41.tx = __Block_byref_object_dispose__17;
       v41.ty = 0.0;
-      v32 = [(SBIconView *)self subviews];
+      subviews = [(SBIconView *)self subviews];
       v35[0] = MEMORY[0x1E69E9820];
       v35[1] = 3221225472;
       v35[2] = __32__SBIconView_hitTest_withEvent___block_invoke;
@@ -14684,8 +14684,8 @@ LABEL_19:
       v39 = y;
       v37 = &v41;
       v35[4] = self;
-      v36 = v7;
-      [v32 enumerateObjectsWithOptions:2 usingBlock:v35];
+      v36 = eventCopy;
+      [subviews enumerateObjectsWithOptions:2 usingBlock:v35];
 
       v8 = *(*&v41.b + 40);
       if (v8)
@@ -14719,20 +14719,20 @@ void __32__SBIconView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, ui
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(SBIconView *)self currentImageView];
-  [v8 frame];
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  currentImageView = [(SBIconView *)self currentImageView];
+  [currentImageView frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [v7 type];
+  type = [eventCopy type];
 
-  if (v17 == 11)
+  if (type == 11)
   {
     top = self->_cursorHitTestPadding.top;
     left = self->_cursorHitTestPadding.left;
@@ -14753,22 +14753,22 @@ void __32__SBIconView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, ui
   return v20;
 }
 
-- (void)_delegateTouchEnded:(BOOL)a3
+- (void)_delegateTouchEnded:(BOOL)ended
 {
-  v3 = a3;
-  v5 = [(SBIconView *)self actionDelegate];
+  endedCopy = ended;
+  actionDelegate = [(SBIconView *)self actionDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 icon:self touchEnded:v3];
+    [actionDelegate icon:self touchEnded:endedCopy];
   }
 }
 
 - (BOOL)_delegateTapAllowed
 {
-  v3 = [(SBIconView *)self behaviorDelegate];
+  behaviorDelegate = [(SBIconView *)self behaviorDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 iconShouldAllowTap:self];
+    v4 = [behaviorDelegate iconShouldAllowTap:self];
   }
 
   else
@@ -14779,29 +14779,29 @@ void __32__SBIconView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, ui
   return v4;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (self->_iconEditingSettings == a3)
+  if (self->_iconEditingSettings == settings)
   {
     [(SBIconView *)self _applyIconEditingSettings];
   }
 }
 
-- (void)configureMatchingIconView:(id)a3
+- (void)configureMatchingIconView:(id)view
 {
-  v4 = a3;
-  v4[560] |= 0x80u;
-  v5 = [(SBIconView *)self icon];
+  viewCopy = view;
+  viewCopy[560] |= 0x80u;
+  icon = [(SBIconView *)self icon];
   v6 = SBLogIcon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [SBIconView configureMatchingIconView:];
   }
 
-  v7 = [(SBIconImageView *)self->_iconImageView displayedImage];
-  if (v7)
+  displayedImage = [(SBIconImageView *)self->_iconImageView displayedImage];
+  if (displayedImage)
   {
-    v8 = v5 == 0;
+    v8 = icon == 0;
   }
 
   else
@@ -14816,83 +14816,83 @@ void __32__SBIconView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, ui
 
   else
   {
-    v9 = [(SBIconImageView *)self->_iconImageView displayedImageAppearance];
+    displayedImageAppearance = [(SBIconImageView *)self->_iconImageView displayedImageAppearance];
     [(SBIconView *)self iconImageInfo];
     v14 = [(SBHIconImageCache *)[SBHIconViewNonPoolingImageCache alloc] initWithName:&stru_1F3D472A8 iconImageInfo:v10, v11, v12, v13];
-    [(SBHIconImageCache *)v14 cacheImage:v7 forIcon:v5 imageAppearance:v9];
+    [(SBHIconImageCache *)v14 cacheImage:displayedImage forIcon:icon imageAppearance:displayedImageAppearance];
   }
 
-  [v4 setPendingIcon:v5];
-  v15 = [(SBIconView *)self location];
-  [v4 setLocation:v15];
+  [viewCopy setPendingIcon:icon];
+  location = [(SBIconView *)self location];
+  [viewCopy setLocation:location];
 
-  v16 = [(SBIconView *)self listLayoutProvider];
-  [v4 setListLayoutProvider:v16];
+  listLayoutProvider = [(SBIconView *)self listLayoutProvider];
+  [viewCopy setListLayoutProvider:listLayoutProvider];
 
   if (v14)
   {
-    [v4 setIconImageCache:v14];
+    [viewCopy setIconImageCache:v14];
   }
 
   else
   {
-    v17 = [(SBIconView *)self iconImageCache];
-    [v4 setIconImageCache:v17];
+    iconImageCache = [(SBIconView *)self iconImageCache];
+    [viewCopy setIconImageCache:iconImageCache];
   }
 
-  v35 = v7;
-  v18 = [(SBIconView *)self folderIconImageCache];
-  [v4 setFolderIconImageCache:v18];
+  v35 = displayedImage;
+  folderIconImageCache = [(SBIconView *)self folderIconImageCache];
+  [viewCopy setFolderIconImageCache:folderIconImageCache];
 
-  [v4 setIconContentScalingEnabled:(*(self + 555) >> 3) & 1];
+  [viewCopy setIconContentScalingEnabled:(*(self + 555) >> 3) & 1];
   [(SBIconView *)self iconContentScale];
-  [v4 setIconContentScale:?];
-  [v4 setStartsDragMoreQuickly:{-[SBIconView startsDragMoreQuickly](self, "startsDragMoreQuickly")}];
-  [v4 setAllowsEditingAnimation:{-[SBIconView allowsEditingAnimation](self, "allowsEditingAnimation")}];
-  [v4 setAllowsCloseBox:{-[SBIconView allowsCloseBox](self, "allowsCloseBox")}];
-  [v4 setAllowsAccessoryView:{-[SBIconView allowsAccessoryView](self, "allowsAccessoryView")}];
-  [v4 setAllowsResizeHandle:{-[SBIconView allowsResizeHandle](self, "allowsResizeHandle")}];
-  [v4 setAllowsAdornmentsOverIconImage:{-[SBIconView allowsAdornmentsOverIconImage](self, "allowsAdornmentsOverIconImage")}];
-  v19 = [(SBIconView *)self continuityInfo];
-  [v4 setContinuityInfo:v19];
+  [viewCopy setIconContentScale:?];
+  [viewCopy setStartsDragMoreQuickly:{-[SBIconView startsDragMoreQuickly](self, "startsDragMoreQuickly")}];
+  [viewCopy setAllowsEditingAnimation:{-[SBIconView allowsEditingAnimation](self, "allowsEditingAnimation")}];
+  [viewCopy setAllowsCloseBox:{-[SBIconView allowsCloseBox](self, "allowsCloseBox")}];
+  [viewCopy setAllowsAccessoryView:{-[SBIconView allowsAccessoryView](self, "allowsAccessoryView")}];
+  [viewCopy setAllowsResizeHandle:{-[SBIconView allowsResizeHandle](self, "allowsResizeHandle")}];
+  [viewCopy setAllowsAdornmentsOverIconImage:{-[SBIconView allowsAdornmentsOverIconImage](self, "allowsAdornmentsOverIconImage")}];
+  continuityInfo = [(SBIconView *)self continuityInfo];
+  [viewCopy setContinuityInfo:continuityInfo];
 
-  v20 = [(SBIconView *)self legibilitySettings];
-  [v4 setLegibilitySettings:v20];
+  legibilitySettings = [(SBIconView *)self legibilitySettings];
+  [viewCopy setLegibilitySettings:legibilitySettings];
 
-  [v4 setImageLoadingBehavior:{-[SBIconView imageLoadingBehavior](self, "imageLoadingBehavior")}];
-  [v4 setContentVisibility:0];
-  [v4 setPaused:0];
+  [viewCopy setImageLoadingBehavior:{-[SBIconView imageLoadingBehavior](self, "imageLoadingBehavior")}];
+  [viewCopy setContentVisibility:0];
+  [viewCopy setPaused:0];
   if ((*(self + 557) & 8) != 0)
   {
     [(SBIconView *)self iconImageInfo];
-    [v4 setIconImageInfo:?];
+    [viewCopy setIconImageInfo:?];
   }
 
-  v21 = [(SBIconView *)self traitCollection];
-  v22 = [v21 sbh_iconImageStyleConfiguration];
-  if (v22)
+  traitCollection = [(SBIconView *)self traitCollection];
+  sbh_iconImageStyleConfiguration = [traitCollection sbh_iconImageStyleConfiguration];
+  if (sbh_iconImageStyleConfiguration)
   {
-    v23 = [v4 traitOverrides];
+    traitOverrides = [viewCopy traitOverrides];
     v24 = objc_opt_self();
-    [v23 setObject:v22 forTrait:v24];
+    [traitOverrides setObject:sbh_iconImageStyleConfiguration forTrait:v24];
 
-    [v4 setOverrideIconImageStyleConfiguration:v22];
+    [viewCopy setOverrideIconImageStyleConfiguration:sbh_iconImageStyleConfiguration];
   }
 
-  v25 = [v21 sbh_iconEffect];
-  if (v25)
+  sbh_iconEffect = [traitCollection sbh_iconEffect];
+  if (sbh_iconEffect)
   {
-    v26 = [v4 traitOverrides];
+    traitOverrides2 = [viewCopy traitOverrides];
     v27 = objc_opt_self();
-    [v26 setObject:v25 forTrait:v27];
+    [traitOverrides2 setObject:sbh_iconEffect forTrait:v27];
   }
 
-  v28 = [(SBIconView *)self delegate];
-  [v4 setDelegate:v28];
+  delegate = [(SBIconView *)self delegate];
+  [viewCopy setDelegate:delegate];
 
-  [v4 setIcon:v5];
-  v29 = [v4 customIconImageViewController];
-  if (v29)
+  [viewCopy setIcon:icon];
+  customIconImageViewController = [viewCopy customIconImageViewController];
+  if (customIconImageViewController)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -14903,26 +14903,26 @@ void __32__SBIconView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, ui
       v14 = v30;
       if (v32)
       {
-        v33 = [(SBIconView *)self customIconImageViewController];
-        [v29 setImageViewAlignment:{objc_msgSend(v33, "imageViewAlignment")}];
+        customIconImageViewController2 = [(SBIconView *)self customIconImageViewController];
+        [customIconImageViewController setImageViewAlignment:{objc_msgSend(customIconImageViewController2, "imageViewAlignment")}];
 
         v14 = v30;
       }
     }
   }
 
-  v34 = [(SBIconView *)self iconImageCache];
-  [v4 setIconImageCache:v34];
+  iconImageCache2 = [(SBIconView *)self iconImageCache];
+  [viewCopy setIconImageCache:iconImageCache2];
 
-  v4[560] &= ~0x80u;
+  viewCopy[560] &= ~0x80u;
 }
 
-- (void)setAllowsProgressState:(BOOL)a3
+- (void)setAllowsProgressState:(BOOL)state
 {
   v3 = *(self + 556);
-  if (((((v3 & 0x40) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 0x40) == 0) ^ state) & 1) == 0)
   {
-    if (a3)
+    if (state)
     {
       v5 = 64;
     }
@@ -14933,20 +14933,20 @@ void __32__SBIconView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, ui
     }
 
     *(self + 556) = v3 & 0xBF | v5;
-    if (a3)
+    if (state)
     {
-      v7 = [(SBIconView *)self window];
-      if (v7)
+      window = [(SBIconView *)self window];
+      if (window)
       {
-        v6 = [(SBIcon *)self->_icon shouldAnimateProgress];
+        shouldAnimateProgress = [(SBIcon *)self->_icon shouldAnimateProgress];
       }
 
       else
       {
-        v6 = 0;
+        shouldAnimateProgress = 0;
       }
 
-      [(SBIconView *)self _updateProgressAnimated:v6];
+      [(SBIconView *)self _updateProgressAnimated:shouldAnimateProgress];
     }
 
     else
@@ -14957,21 +14957,21 @@ void __32__SBIconView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, ui
   }
 }
 
-- (void)_updateProgressAnimated:(BOOL)a3
+- (void)_updateProgressAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   iconImageView = self->_iconImageView;
-  v6 = [(SBIconView *)self progressState];
-  v7 = [(SBIcon *)self->_icon isProgressPaused];
+  progressState = [(SBIconView *)self progressState];
+  isProgressPaused = [(SBIcon *)self->_icon isProgressPaused];
   [(SBIcon *)self->_icon progressPercent];
-  [(SBIconImageView *)iconImageView setProgressState:v6 paused:v7 percent:v3 animated:?];
+  [(SBIconImageView *)iconImageView setProgressState:progressState paused:isProgressPaused percent:animatedCopy animated:?];
   v8 = self->_iconImageView;
   iconAccessoryAlpha = self->_iconAccessoryAlpha;
 
   [(SBIconImageView *)v8 setProgressAlpha:iconAccessoryAlpha];
 }
 
-- (void)_backgroundContrastDidChange:(id)a3
+- (void)_backgroundContrastDidChange:(id)change
 {
   [(SBIconLabelView *)self->_labelView removeFromSuperview];
   labelView = self->_labelView;
@@ -14980,29 +14980,29 @@ void __32__SBIconView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, ui
   [(SBIconView *)self _updateLabel];
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
   [(SBIconView *)self _updateLabelArea];
 
   [(SBIconView *)self dismissContextMenuWithCompletion:0];
 }
 
-- (void)_boldTextStatusDidChange:(id)a3
+- (void)_boldTextStatusDidChange:(id)change
 {
   [(SBIconView *)self _updateLabelArea];
 
   [(SBIconView *)self _updateAccessoryViewAnimated:0];
 }
 
-- (void)setFolderIconFrozen:(BOOL)a3
+- (void)setFolderIconFrozen:(BOOL)frozen
 {
-  v3 = a3;
+  frozenCopy = frozen;
   if ([(SBIconView *)self _isFolderIconFreezingSupported])
   {
     v5 = *(self + 556);
-    if (((((v5 & 8) == 0) ^ v3) & 1) == 0)
+    if (((((v5 & 8) == 0) ^ frozenCopy) & 1) == 0)
     {
-      if (v3)
+      if (frozenCopy)
       {
         v6 = 8;
       }
@@ -15013,20 +15013,20 @@ void __32__SBIconView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, ui
       }
 
       *(self + 556) = v5 & 0xF7 | v6;
-      if (v3)
+      if (frozenCopy)
       {
-        v7 = [(SBIconView *)self reuseDelegate];
+        reuseDelegate = [(SBIconView *)self reuseDelegate];
         if (objc_opt_respondsToSelector())
         {
-          v8 = [v7 screenSnapshotProviderForComponentsOfIconView:self];
+          v8 = [reuseDelegate screenSnapshotProviderForComponentsOfIconView:self];
           snapshotProvider = self->_snapshotProvider;
           self->_snapshotProvider = v8;
 
           if (self->_snapshotProvider)
           {
-            v10 = [(SBIconView *)self _folderIconImageView];
+            _folderIconImageView = [(SBIconView *)self _folderIconImageView];
             v11 = objc_alloc(MEMORY[0x1E69DD250]);
-            [v10 frame];
+            [_folderIconImageView frame];
             v12 = [v11 initWithFrame:?];
             snapshotContainerView = self->_snapshotContainerView;
             self->_snapshotContainerView = v12;
@@ -15036,80 +15036,80 @@ void __32__SBIconView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, ui
             [(SBIconView *)self iconImageCornerRadius];
             [(UIView *)v14 _setContinuousCornerRadius:?];
             [(SBIconView *)self addSubview:self->_snapshotContainerView];
-            v15 = [(SBIconViewSnapshotProviding *)self->_snapshotProvider snapshotView];
-            [(UIView *)self->_snapshotContainerView addSubview:v15];
-            [v15 frame];
+            snapshotView = [(SBIconViewSnapshotProviding *)self->_snapshotProvider snapshotView];
+            [(UIView *)self->_snapshotContainerView addSubview:snapshotView];
+            [snapshotView frame];
             v17 = v16;
             v19 = v18;
             v21 = v20;
             v23 = v22;
-            v24 = [v10 superview];
-            v25 = [(SBIconView *)self window];
-            [v25 convertRect:0 fromWindow:{v17, v19, v21, v23}];
-            [v24 convertRect:0 fromView:?];
+            superview = [_folderIconImageView superview];
+            window = [(SBIconView *)self window];
+            [window convertRect:0 fromWindow:{v17, v19, v21, v23}];
+            [superview convertRect:0 fromView:?];
             v27 = v26;
             v29 = v28;
             v31 = v30;
             v33 = v32;
 
-            [v15 setFrame:{v27, v29, v31, v33}];
+            [snapshotView setFrame:{v27, v29, v31, v33}];
           }
         }
       }
 
       else
       {
-        v34 = [(SBIconViewSnapshotProviding *)self->_snapshotProvider snapshotView];
-        [v34 removeFromSuperview];
+        snapshotView2 = [(SBIconViewSnapshotProviding *)self->_snapshotProvider snapshotView];
+        [snapshotView2 removeFromSuperview];
 
         [(SBIconViewSnapshotProviding *)self->_snapshotProvider invalidate];
-        v7 = self->_snapshotProvider;
+        reuseDelegate = self->_snapshotProvider;
         self->_snapshotProvider = 0;
       }
 
-      v35 = [(SBIconView *)self _folderIconImageView];
-      [v35 setPageGridHidden:(*(self + 556) >> 3) & 1];
+      _folderIconImageView2 = [(SBIconView *)self _folderIconImageView];
+      [_folderIconImageView2 setPageGridHidden:(*(self + 556) >> 3) & 1];
     }
   }
 }
 
 - (unint64_t)visibleMiniIconCount
 {
-  v2 = [(SBIconView *)self _folderIconImageView];
-  v3 = [v2 visibleMiniIconCount];
+  _folderIconImageView = [(SBIconView *)self _folderIconImageView];
+  visibleMiniIconCount = [_folderIconImageView visibleMiniIconCount];
 
-  return v3;
+  return visibleMiniIconCount;
 }
 
 - (unint64_t)firstVisibleMiniIconIndex
 {
-  v2 = [(SBIconView *)self _folderIconImageView];
-  v3 = [v2 firstVisibleMiniIconIndex];
+  _folderIconImageView = [(SBIconView *)self _folderIconImageView];
+  firstVisibleMiniIconIndex = [_folderIconImageView firstVisibleMiniIconIndex];
 
-  return v3;
+  return firstVisibleMiniIconIndex;
 }
 
 - (unint64_t)centerVisibleMiniIconIndex
 {
-  v2 = [(SBIconView *)self _folderIconImageView];
-  v3 = [v2 centerVisibleMiniIconIndex];
+  _folderIconImageView = [(SBIconView *)self _folderIconImageView];
+  centerVisibleMiniIconIndex = [_folderIconImageView centerVisibleMiniIconIndex];
 
-  return v3;
+  return centerVisibleMiniIconIndex;
 }
 
 - (unint64_t)lastVisibleMiniIconIndex
 {
-  v2 = [(SBIconView *)self _folderIconImageView];
-  v3 = [v2 lastVisibleMiniIconIndex];
+  _folderIconImageView = [(SBIconView *)self _folderIconImageView];
+  lastVisibleMiniIconIndex = [_folderIconImageView lastVisibleMiniIconIndex];
 
-  return v3;
+  return lastVisibleMiniIconIndex;
 }
 
-- (CGRect)frameForMiniIconAtIndex:(unint64_t)a3
+- (CGRect)frameForMiniIconAtIndex:(unint64_t)index
 {
-  v5 = [(SBIconView *)self _folderIconImageView];
-  [v5 frameForMiniIconAtIndex:a3];
-  [(SBIconView *)self convertRect:v5 fromView:?];
+  _folderIconImageView = [(SBIconView *)self _folderIconImageView];
+  [_folderIconImageView frameForMiniIconAtIndex:index];
+  [(SBIconView *)self convertRect:_folderIconImageView fromView:?];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -15126,10 +15126,10 @@ void __32__SBIconView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, ui
   return result;
 }
 
-- (CGRect)visibleImageRelativeFrameForMiniIconAtIndex:(unint64_t)a3
+- (CGRect)visibleImageRelativeFrameForMiniIconAtIndex:(unint64_t)index
 {
-  v5 = [(SBIconView *)self _folderIconImageView];
-  [v5 visibleImageRelativeFrameForMiniIconAtIndex:a3];
+  _folderIconImageView = [(SBIconView *)self _folderIconImageView];
+  [_folderIconImageView visibleImageRelativeFrameForMiniIconAtIndex:index];
   x = v6;
   y = v8;
   width = v10;
@@ -15162,69 +15162,69 @@ void __32__SBIconView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, ui
   return result;
 }
 
-- (void)scrollToTopOfFirstPageAnimated:(BOOL)a3
+- (void)scrollToTopOfFirstPageAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(SBIconView *)self _folderIconImageView];
-  [v4 scrollToTopOfFirstPageAnimated:v3];
+  animatedCopy = animated;
+  _folderIconImageView = [(SBIconView *)self _folderIconImageView];
+  [_folderIconImageView scrollToTopOfFirstPageAnimated:animatedCopy];
 }
 
-- (void)scrollToFirstGapAnimated:(BOOL)a3
+- (void)scrollToFirstGapAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(SBIconView *)self _folderIconImageView];
-  [v4 scrollToFirstGapAnimated:v3];
+  animatedCopy = animated;
+  _folderIconImageView = [(SBIconView *)self _folderIconImageView];
+  [_folderIconImageView scrollToFirstGapAnimated:animatedCopy];
 }
 
-- (void)scrollToTopOfPage:(unint64_t)a3 animated:(BOOL)a4
+- (void)scrollToTopOfPage:(unint64_t)page animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(SBIconView *)self _folderIconImageView];
-  [v6 scrollToTopOfPage:a3 animated:v4];
+  animatedCopy = animated;
+  _folderIconImageView = [(SBIconView *)self _folderIconImageView];
+  [_folderIconImageView scrollToTopOfPage:page animated:animatedCopy];
 }
 
-- (void)scrollToGapOrTopIfFullOfPage:(unint64_t)a3 animated:(BOOL)a4
+- (void)scrollToGapOrTopIfFullOfPage:(unint64_t)page animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(SBIconView *)self _folderIconImageView];
-  [v6 scrollToGapOrTopIfFullOfPage:a3 animated:v4];
+  animatedCopy = animated;
+  _folderIconImageView = [(SBIconView *)self _folderIconImageView];
+  [_folderIconImageView scrollToGapOrTopIfFullOfPage:page animated:animatedCopy];
 }
 
 - (BOOL)isAnimatingScrolling
 {
-  v2 = [(SBIconView *)self _folderIconImageView];
-  v3 = [v2 isAnimating];
+  _folderIconImageView = [(SBIconView *)self _folderIconImageView];
+  isAnimating = [_folderIconImageView isAnimating];
 
-  return v3;
+  return isAnimating;
 }
 
-- (void)setIconGridImageAlpha:(double)a3
+- (void)setIconGridImageAlpha:(double)alpha
 {
-  v4 = [(SBIconView *)self _folderIconImageView];
-  [v4 setIconGridImageAlpha:a3];
+  _folderIconImageView = [(SBIconView *)self _folderIconImageView];
+  [_folderIconImageView setIconGridImageAlpha:alpha];
 }
 
-- (void)setBackgroundAndIconGridImageAlpha:(double)a3
+- (void)setBackgroundAndIconGridImageAlpha:(double)alpha
 {
-  v4 = [(SBIconView *)self _folderIconImageView];
-  [v4 setBackgroundAndIconGridImageAlpha:a3];
+  _folderIconImageView = [(SBIconView *)self _folderIconImageView];
+  [_folderIconImageView setBackgroundAndIconGridImageAlpha:alpha];
 }
 
-- (void)prepareToCrossfadeWithFloatyFolderView:(id)a3 allowFolderInteraction:(BOOL)a4
+- (void)prepareToCrossfadeWithFloatyFolderView:(id)view allowFolderInteraction:(BOOL)interaction
 {
-  v4 = a4;
-  v6 = a3;
+  interactionCopy = interaction;
+  viewCopy = view;
   [(SBIconView *)self setAllowsEditingAnimation:0];
-  v7 = [(SBIconView *)self _folderIconImageView];
-  [v7 prepareToCrossfadeWithFloatyFolderView:v6 allowFolderInteraction:v4];
+  _folderIconImageView = [(SBIconView *)self _folderIconImageView];
+  [_folderIconImageView prepareToCrossfadeWithFloatyFolderView:viewCopy allowFolderInteraction:interactionCopy];
 }
 
-- (void)setFloatyFolderCrossfadeFraction:(double)a3
+- (void)setFloatyFolderCrossfadeFraction:(double)fraction
 {
-  v5 = [(SBIconView *)self _folderIconImageView];
-  [v5 setFloatyFolderCrossfadeFraction:a3];
+  _folderIconImageView = [(SBIconView *)self _folderIconImageView];
+  [_folderIconImageView setFloatyFolderCrossfadeFraction:fraction];
 
-  v6 = 1.0 - a3;
+  v6 = 1.0 - fraction;
   [(SBIconView *)self setIconAccessoryAlpha:v6];
 
   [(SBIconView *)self setIconLabelAlpha:v6];
@@ -15234,14 +15234,14 @@ void __32__SBIconView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, ui
 {
   [(SBIconView *)self setAllowsEditingAnimation:1];
   [(SBIconView *)self setFloatyFolderCrossfadeFraction:0.0];
-  v3 = [(SBIconView *)self _folderIconImageView];
-  [v3 cleanupAfterFloatyFolderCrossfade];
+  _folderIconImageView = [(SBIconView *)self _folderIconImageView];
+  [_folderIconImageView cleanupAfterFloatyFolderCrossfade];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"zPosition"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"zPosition"])
   {
     v5 = 1;
   }
@@ -15250,42 +15250,42 @@ void __32__SBIconView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, ui
   {
     v7.receiver = self;
     v7.super_class = SBIconView;
-    v5 = [(SBIconView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(SBIconView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIconView *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIconView *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBIconView *)self icon];
-  v5 = [(SBIconView *)self location];
+  icon = [(SBIconView *)self icon];
+  location = [(SBIconView *)self location];
   v6 = [MEMORY[0x1E698E680] builderWithObject:self];
   [(SBIconView *)self frame];
   v7 = [v6 appendRect:@"frame" withName:?];
-  v8 = [v6 appendObject:v4 withName:@"icon"];
-  v9 = [v6 appendObject:v5 withName:@"location"];
-  v10 = [(SBIconView *)self folder];
-  v11 = [v6 appendObject:v10 withName:@"folder" skipIfNil:1];
+  v8 = [v6 appendObject:icon withName:@"icon"];
+  v9 = [v6 appendObject:location withName:@"location"];
+  folder = [(SBIconView *)self folder];
+  v11 = [v6 appendObject:folder withName:@"folder" skipIfNil:1];
 
-  v12 = [(SBIconView *)self currentAccessoryType];
-  if (v12 > 1)
+  currentAccessoryType = [(SBIconView *)self currentAccessoryType];
+  if (currentAccessoryType > 1)
   {
     v14 = @"add";
-    if (v12 != 3)
+    if (currentAccessoryType != 3)
     {
       v14 = 0;
     }
 
-    if (v12 == 2)
+    if (currentAccessoryType == 2)
     {
       v13 = @"continuity";
     }
@@ -15298,12 +15298,12 @@ void __32__SBIconView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, ui
 
   else
   {
-    if (!v12)
+    if (!currentAccessoryType)
     {
       goto LABEL_12;
     }
 
-    if (v12 == 1)
+    if (currentAccessoryType == 1)
     {
       v13 = @"badge";
     }
@@ -15316,15 +15316,15 @@ void __32__SBIconView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, ui
 
   v15 = [v6 appendObject:v13 withName:@"accessoryType"];
 LABEL_12:
-  v16 = [(SBIconView *)self currentLabelAccessoryType];
-  if (v16 <= 1)
+  currentLabelAccessoryType = [(SBIconView *)self currentLabelAccessoryType];
+  if (currentLabelAccessoryType <= 1)
   {
-    if (!v16)
+    if (!currentLabelAccessoryType)
     {
       goto LABEL_25;
     }
 
-    if (v16 == 1)
+    if (currentLabelAccessoryType == 1)
     {
       v19 = @"recently updated";
     }
@@ -15339,17 +15339,17 @@ LABEL_12:
   {
     v17 = @"cloud";
     v18 = @"beta";
-    if (v16 != 2)
+    if (currentLabelAccessoryType != 2)
     {
       v18 = 0;
     }
 
-    if (v16 != 3)
+    if (currentLabelAccessoryType != 3)
     {
       v17 = v18;
     }
 
-    if (v16 == 4)
+    if (currentLabelAccessoryType == 4)
     {
       v19 = @"screen time expiration";
     }
@@ -15413,36 +15413,36 @@ LABEL_25:
   v49 = [v6 appendBool:(*(self + 553) >> 6) & 1 withName:@"launchDisabled" ifEqualTo:1];
   v50 = [v6 appendBool:*(self + 553) >> 7 withName:@"suppressDisabledPresentation" ifEqualTo:1];
   v51 = [v6 appendBool:*(self + 554) & 1 withName:@"iconWasTappedWhenDisabled" ifEqualTo:1];
-  v52 = [(SBIconView *)self continuityInfo];
-  v53 = [v6 appendObject:v52 withName:@"continuityInfo" skipIfNil:1];
+  continuityInfo = [(SBIconView *)self continuityInfo];
+  v53 = [v6 appendObject:continuityInfo withName:@"continuityInfo" skipIfNil:1];
 
   v54 = [v6 appendBool:-[SBIconView isUserInteractionEnabled](self withName:"isUserInteractionEnabled") ifEqualTo:{@"isUserInteractionEnabled", 0}];
-  v55 = [(SBIconView *)self pauseReasonsDescriptions];
-  v56 = [v55 componentsJoinedByString:{@", "}];
+  pauseReasonsDescriptions = [(SBIconView *)self pauseReasonsDescriptions];
+  v56 = [pauseReasonsDescriptions componentsJoinedByString:{@", "}];
   [v6 appendString:v56 withName:@"pauseReasons" skipIfEmpty:1];
 
   v57 = [v6 appendBool:-[SBIconView isIconImageViewBorrowed](self withName:"isIconImageViewBorrowed") ifEqualTo:{@"isIconImageViewBorrowed", 1}];
-  v58 = [(SBIconView *)self overrideCustomIconImageViewController];
-  v59 = [v6 appendObject:v58 withName:@"overrideCustomIconImageViewController" skipIfNil:1];
+  overrideCustomIconImageViewController = [(SBIconView *)self overrideCustomIconImageViewController];
+  v59 = [v6 appendObject:overrideCustomIconImageViewController withName:@"overrideCustomIconImageViewController" skipIfNil:1];
 
   v60 = [v6 appendBool:-[SBIconView allowsIconImageView](self withName:"allowsIconImageView") ifEqualTo:{@"allowsIconImageView", 0}];
   v61 = [v6 appendBool:-[SBIconView isResizing](self withName:"isResizing") ifEqualTo:{@"isResizing", 1}];
-  v62 = [(SBIconView *)self overrideBadgeNumberOrString];
-  v63 = [v6 appendObject:v62 withName:@"overrideBadgeNumberOrString" skipIfNil:1];
+  overrideBadgeNumberOrString = [(SBIconView *)self overrideBadgeNumberOrString];
+  v63 = [v6 appendObject:overrideBadgeNumberOrString withName:@"overrideBadgeNumberOrString" skipIfNil:1];
 
-  v64 = [(SBIconView *)self overrideIconImageAppearance];
-  v65 = [v6 appendObject:v64 withName:@"overrideIconImageAppearance" skipIfNil:1];
+  overrideIconImageAppearance = [(SBIconView *)self overrideIconImageAppearance];
+  v65 = [v6 appendObject:overrideIconImageAppearance withName:@"overrideIconImageAppearance" skipIfNil:1];
 
-  v66 = [(SBIconView *)self overrideIconImageStyleConfiguration];
-  v67 = [v6 appendObject:v66 withName:@"overrideIconImageStyleConfiguration" skipIfNil:1];
+  overrideIconImageStyleConfiguration = [(SBIconView *)self overrideIconImageStyleConfiguration];
+  v67 = [v6 appendObject:overrideIconImageStyleConfiguration withName:@"overrideIconImageStyleConfiguration" skipIfNil:1];
 
-  v68 = [(SBIconView *)self overrideImage];
-  v69 = [v6 appendObject:v68 withName:@"overrideImage" skipIfNil:1];
+  overrideImage = [(SBIconView *)self overrideImage];
+  v69 = [v6 appendObject:overrideImage withName:@"overrideImage" skipIfNil:1];
 
-  v70 = [(SBIconView *)self contentVisibility];
-  if (v70)
+  contentVisibility = [(SBIconView *)self contentVisibility];
+  if (contentVisibility)
   {
-    v71 = SBHStringFromContentVisibility(v70);
+    v71 = SBHStringFromContentVisibility(contentVisibility);
     [v6 appendString:v71 withName:@"contentVisibility"];
   }
 
@@ -15451,71 +15451,71 @@ LABEL_25:
 
 - (id)succinctDescription
 {
-  v2 = [(SBIconView *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIconView *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (void)iconAccessoriesDidUpdate:(id)a3
+- (void)iconAccessoriesDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   BSDispatchQueueAssertMain();
   icon = self->_icon;
 
-  if (icon == v4)
+  if (icon == updateCopy)
   {
-    v6 = [(SBIconView *)self window];
+    window = [(SBIconView *)self window];
 
     [(SBIconView *)self _updateLabelArea];
-    if (v6)
+    if (window)
     {
-      v7 = [(SBIcon *)self->_icon shouldAnimateProgress];
+      shouldAnimateProgress = [(SBIcon *)self->_icon shouldAnimateProgress];
     }
 
     else
     {
-      v7 = 0;
+      shouldAnimateProgress = 0;
     }
 
-    [(SBIconView *)self _updateProgressAnimated:v7];
+    [(SBIconView *)self _updateProgressAnimated:shouldAnimateProgress];
 
-    [(SBIconView *)self _updateIconImageAdornmentsAnimated:v6 != 0];
+    [(SBIconView *)self _updateIconImageAdornmentsAnimated:window != 0];
   }
 }
 
-- (void)iconProgressDidChange:(id)a3
+- (void)iconProgressDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   BSDispatchQueueAssertMain();
   icon = self->_icon;
 
-  if (icon == v4)
+  if (icon == changeCopy)
   {
-    v6 = [(SBIconView *)self window];
+    window = [(SBIconView *)self window];
 
     [(SBIconView *)self _updateLabelArea];
-    if (v6)
+    if (window)
     {
-      v7 = [(SBIcon *)self->_icon shouldAnimateProgress];
+      shouldAnimateProgress = [(SBIcon *)self->_icon shouldAnimateProgress];
     }
 
     else
     {
-      v7 = 0;
+      shouldAnimateProgress = 0;
     }
 
-    [(SBIconView *)self _updateProgressAnimated:v7];
+    [(SBIconView *)self _updateProgressAnimated:shouldAnimateProgress];
   }
 }
 
-- (void)iconLaunchEnabledDidChange:(id)a3
+- (void)iconLaunchEnabledDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   BSDispatchQueueAssertMain();
   icon = self->_icon;
 
-  if (icon == v4)
+  if (icon == changeCopy)
   {
     [(SBIconView *)self _updateBrightness];
 
@@ -15523,13 +15523,13 @@ LABEL_25:
   }
 }
 
-- (void)iconImageDidUpdate:(id)a3
+- (void)iconImageDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   BSDispatchQueueAssertMain();
   icon = self->_icon;
 
-  if (icon == v4)
+  if (icon == updateCopy)
   {
     [(SBIconView *)self _updateIconImageViewAnimated:0];
 
@@ -15537,19 +15537,19 @@ LABEL_25:
   }
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
-  v5 = a3;
-  v6 = [(SBIconView *)self icon];
+  changedCopy = changed;
+  icon = [(SBIconView *)self icon];
   v7 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     v9 = MEMORY[0x1E698B0D0];
-    v10 = [v6 applicationBundleID];
-    v11 = [v9 applicationWithBundleIdentifier:v10];
-    v12 = [v5 containsObject:v11];
+    applicationBundleID = [icon applicationBundleID];
+    v11 = [v9 applicationWithBundleIdentifier:applicationBundleID];
+    v12 = [changedCopy containsObject:v11];
 
     if (v12)
     {
@@ -15572,34 +15572,34 @@ void __59__SBIconView_appProtectionSubjectsChanged_forSubscription___block_invok
   }
 }
 
-- (void)startForbiddingEditingModeWithReason:(id)a3
+- (void)startForbiddingEditingModeWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   forbidEditingModeReasons = self->_forbidEditingModeReasons;
-  v8 = v4;
+  v8 = reasonCopy;
   if (!forbidEditingModeReasons)
   {
     v6 = [MEMORY[0x1E696AB50] set];
     v7 = self->_forbidEditingModeReasons;
     self->_forbidEditingModeReasons = v6;
 
-    v4 = v8;
+    reasonCopy = v8;
     forbidEditingModeReasons = self->_forbidEditingModeReasons;
   }
 
-  [(NSCountedSet *)forbidEditingModeReasons addObject:v4];
+  [(NSCountedSet *)forbidEditingModeReasons addObject:reasonCopy];
   [(SBIconView *)self _applyEditingStateAnimated:1];
 }
 
-- (void)endForbiddingEditingModeWithReason:(id)a3
+- (void)endForbiddingEditingModeWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   forbidEditingModeReasons = self->_forbidEditingModeReasons;
   if (forbidEditingModeReasons)
   {
-    v7 = v4;
-    forbidEditingModeReasons = [(NSCountedSet *)forbidEditingModeReasons containsObject:v4];
-    v4 = v7;
+    v7 = reasonCopy;
+    forbidEditingModeReasons = [(NSCountedSet *)forbidEditingModeReasons containsObject:reasonCopy];
+    reasonCopy = v7;
     if (forbidEditingModeReasons)
     {
       [(NSCountedSet *)self->_forbidEditingModeReasons removeObject:v7];
@@ -15610,61 +15610,61 @@ void __59__SBIconView_appProtectionSubjectsChanged_forSubscription___block_invok
       }
 
       forbidEditingModeReasons = [(SBIconView *)self _applyEditingStateAnimated:1];
-      v4 = v7;
+      reasonCopy = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](forbidEditingModeReasons, v4);
+  MEMORY[0x1EEE66BB8](forbidEditingModeReasons, reasonCopy);
 }
 
-- (id)startForbiddingAccessoryUpdatesWithReason:(id)a3 animated:(BOOL)a4
+- (id)startForbiddingAccessoryUpdatesWithReason:(id)reason animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v15[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  reasonCopy = reason;
   if (!self->_forbidAccessoryUpdatesAssertions)
   {
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     forbidAccessoryUpdatesAssertions = self->_forbidAccessoryUpdatesAssertions;
-    self->_forbidAccessoryUpdatesAssertions = v7;
+    self->_forbidAccessoryUpdatesAssertions = weakObjectsHashTable;
   }
 
   v9 = [SBIconViewAssertion alloc];
   v14[0] = @"reason";
   v14[1] = @"animated";
-  v15[0] = v6;
-  v10 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v15[0] = reasonCopy;
+  v10 = [MEMORY[0x1E696AD98] numberWithBool:animatedCopy];
   v15[1] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
   v12 = [(SBIconViewAssertion *)v9 initWithAssertionType:1 iconView:self extraInfo:v11];
 
   [(NSHashTable *)self->_forbidAccessoryUpdatesAssertions addObject:v12];
-  [(SBIconView *)self _updateAccessoryViewAnimated:v4];
+  [(SBIconView *)self _updateAccessoryViewAnimated:animatedCopy];
 
   return v12;
 }
 
-- (void)removeForbidAccessoryUpdatesAssertion:(id)a3
+- (void)removeForbidAccessoryUpdatesAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = [v4 extraInfo];
-  v6 = [v5 objectForKey:@"animated"];
-  v7 = [v6 BOOLValue];
+  assertionCopy = assertion;
+  extraInfo = [assertionCopy extraInfo];
+  v6 = [extraInfo objectForKey:@"animated"];
+  bOOLValue = [v6 BOOLValue];
 
-  [(NSHashTable *)self->_forbidAccessoryUpdatesAssertions removeObject:v4];
+  [(NSHashTable *)self->_forbidAccessoryUpdatesAssertions removeObject:assertionCopy];
   if (![(NSHashTable *)self->_forbidAccessoryUpdatesAssertions count])
   {
     forbidAccessoryUpdatesAssertions = self->_forbidAccessoryUpdatesAssertions;
     self->_forbidAccessoryUpdatesAssertions = 0;
   }
 
-  [(SBIconView *)self _updateAccessoryViewAnimated:v7];
+  [(SBIconView *)self _updateAccessoryViewAnimated:bOOLValue];
 }
 
 - (BOOL)_selfOrCustomViewCanBecomeFocused
 {
-  v3 = [(SBIconView *)self behaviorDelegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v3 iconViewCanBecomeFocused:self])
+  behaviorDelegate = [(SBIconView *)self behaviorDelegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [behaviorDelegate iconViewCanBecomeFocused:self])
   {
     v4 = ![(NSString *)self->_iconLocation isEqualToString:@"SBIconLocationNone"];
   }
@@ -15677,9 +15677,9 @@ void __59__SBIconView_appProtectionSubjectsChanged_forSubscription___block_invok
   return v4;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v17 = a3;
+  contextCopy = context;
   focusProxyView = self->_focusProxyView;
   if (!focusProxyView)
   {
@@ -15687,14 +15687,14 @@ void __59__SBIconView_appProtectionSubjectsChanged_forSubscription___block_invok
   }
 
   v6 = focusProxyView;
-  v7 = [v17 nextFocusedItem];
+  nextFocusedItem = [contextCopy nextFocusedItem];
 
-  if (v7 == v6)
+  if (nextFocusedItem == v6)
   {
-    v9 = [(SBIconView *)self behaviorDelegate];
+    behaviorDelegate = [(SBIconView *)self behaviorDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v9 focusEffectTypeForIconView:self];
+      v10 = [behaviorDelegate focusEffectTypeForIconView:self];
       if (v10 == 1)
       {
         [(SBIconView *)self setFocusEffect:0];
@@ -15716,9 +15716,9 @@ void __59__SBIconView_appProtectionSubjectsChanged_forSubscription___block_invok
 
   else
   {
-    v8 = [v17 previouslyFocusedItem];
+    previouslyFocusedItem = [contextCopy previouslyFocusedItem];
 
-    if (v8 == v6 && self->_focusEffectPlatterView)
+    if (previouslyFocusedItem == v6 && self->_focusEffectPlatterView)
     {
       [(SBIconView *)self setShowsFocusEffect:0];
     }
@@ -15738,21 +15738,21 @@ void __59__SBIconView_appProtectionSubjectsChanged_forSubscription___block_invok
     [(SBIconView *)self iconImageCornerRadius];
     [(SBIconFocusEffectPlatterView *)v4 _setContinuousCornerRadius:v5 + 6.05];
     [(SBIconFocusEffectPlatterView *)v4 layoutIfNeeded];
-    v6 = [(SBIconView *)self imageContainerView];
-    v7 = [(SBIconView *)self currentImageView];
-    [v6 insertSubview:v4 belowSubview:v7];
+    imageContainerView = [(SBIconView *)self imageContainerView];
+    currentImageView = [(SBIconView *)self currentImageView];
+    [imageContainerView insertSubview:v4 belowSubview:currentImageView];
 
     focusEffectPlatterView = self->_focusEffectPlatterView;
     self->_focusEffectPlatterView = v4;
   }
 }
 
-- (void)setWantsFocusProxyView:(BOOL)a3
+- (void)setWantsFocusProxyView:(BOOL)view
 {
   v3 = *(self + 559);
-  if (((((v3 & 2) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 2) == 0) ^ view) & 1) == 0)
   {
-    if (a3)
+    if (view)
     {
       v5 = 2;
     }
@@ -15764,7 +15764,7 @@ void __59__SBIconView_appProtectionSubjectsChanged_forSubscription___block_invok
 
     *(self + 559) = v3 & 0xFD | v5;
     focusProxyView = self->_focusProxyView;
-    if (a3)
+    if (view)
     {
       if (focusProxyView)
       {
@@ -15775,9 +15775,9 @@ void __59__SBIconView_appProtectionSubjectsChanged_forSubscription___block_invok
       v8 = self->_focusProxyView;
       self->_focusProxyView = v7;
 
-      v10 = [(SBIconView *)self superview];
-      [v10 insertSubview:self->_focusProxyView belowSubview:self];
-      v9 = v10;
+      superview = [(SBIconView *)self superview];
+      [superview insertSubview:self->_focusProxyView belowSubview:self];
+      v9 = superview;
     }
 
     else

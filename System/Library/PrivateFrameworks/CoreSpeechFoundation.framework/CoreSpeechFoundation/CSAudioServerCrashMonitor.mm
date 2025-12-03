@@ -1,49 +1,49 @@
 @interface CSAudioServerCrashMonitor
 + (CSAudioServerCrashMonitor)sharedInstance;
 - (CSAudioServerCrashMonitor)init;
-- (void)_didReceiveMediaserverNotification:(unint64_t)a3;
-- (void)_notifyObserver:(id)a3 withMediaserverState:(unint64_t)a4;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_didReceiveMediaserverNotification:(unint64_t)notification;
+- (void)_notifyObserver:(id)observer withMediaserverState:(unint64_t)state;
+- (void)_startMonitoringWithQueue:(id)queue;
 @end
 
 @implementation CSAudioServerCrashMonitor
 
-- (void)_notifyObserver:(id)a3 withMediaserverState:(unint64_t)a4
+- (void)_notifyObserver:(id)observer withMediaserverState:(unint64_t)state
 {
-  v6 = a3;
+  observerCopy = observer;
   [(CSEventMonitor *)self notifyObserver:?];
-  if (a4 == 2)
+  if (state == 2)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v6 CSAudioServerCrashMonitorDidReceiveServerRestart:self];
+      [observerCopy CSAudioServerCrashMonitorDidReceiveServerRestart:self];
     }
   }
 
-  else if (a4 == 1 && (objc_opt_respondsToSelector() & 1) != 0)
+  else if (state == 1 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v6 CSAudioServerCrashMonitorDidReceiveServerCrash:self];
+    [observerCopy CSAudioServerCrashMonitorDidReceiveServerCrash:self];
   }
 
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)_didReceiveMediaserverNotification:(unint64_t)a3
+- (void)_didReceiveMediaserverNotification:(unint64_t)notification
 {
-  self->_serverState = a3;
+  self->_serverState = notification;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __64__CSAudioServerCrashMonitor__didReceiveMediaserverNotification___block_invoke;
   v3[3] = &unk_1E865CA68;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = notification;
   [(CSEventMonitor *)self enumerateObserversInQueue:v3];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queueCopy = queue;
   objc_initWeak(&location, self);
   v5 = +[CSAVVoiceTriggerClientManager sharedVoiceTriggerClient];
   v10[0] = MEMORY[0x1E69E9820];

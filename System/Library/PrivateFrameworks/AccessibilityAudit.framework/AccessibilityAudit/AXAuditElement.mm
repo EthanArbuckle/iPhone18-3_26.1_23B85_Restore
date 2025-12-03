@@ -1,19 +1,19 @@
 @interface AXAuditElement
-+ (id)auditElementWithElement:(id)a3 identifier:(id)a4;
-+ (void)registerTransportableObjectWithManager:(id)a3;
++ (id)auditElementWithElement:(id)element identifier:(id)identifier;
++ (void)registerTransportableObjectWithManager:(id)manager;
 - (AXElement)axElement;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (__AXUIElement)createAxElementRefForXCTest;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)setAxElement:(id)a3;
+- (void)setAxElement:(id)element;
 @end
 
 @implementation AXAuditElement
 
-+ (void)registerTransportableObjectWithManager:(id)a3
++ (void)registerTransportableObjectWithManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v6 = [[AXAuditObjectTransportInfoPropertyBased alloc] initWithClass:objc_opt_class() transportKey:@"AXAuditElement_v1"];
   v4 = objc_alloc_init(AXAuditObjectTransportPropertyEntry);
   [(AXAuditObjectTransportPropertyEntry *)v4 setTransportKey:@"PlatformElementValue_v1"];
@@ -25,7 +25,7 @@
   [(AXAuditObjectTransportPropertyEntry *)v5 setLocalValueToTransportValue:&__block_literal_global_16];
   [(AXAuditObjectTransportPropertyEntry *)v5 setPopulateLocalObjectWithTransportValue:&__block_literal_global_19];
   [(AXAuditObjectTransportInfoPropertyBased *)v6 addPropertyEntry:v5];
-  [v3 registerTransportInfoPropertyBased:v6];
+  [managerCopy registerTransportInfoPropertyBased:v6];
 }
 
 id __57__AXAuditElement_registerTransportableObjectWithManager___block_invoke(uint64_t a1, void *a2)
@@ -68,18 +68,18 @@ void __57__AXAuditElement_registerTransportableObjectWithManager___block_invoke_
 
 - (unint64_t)hash
 {
-  v3 = [(AXAuditElement *)self platformElementToken];
-  v4 = [v3 hash];
-  v5 = [(AXAuditElement *)self accessibilityIdentifier];
-  v6 = [v5 hash];
+  platformElementToken = [(AXAuditElement *)self platformElementToken];
+  v4 = [platformElementToken hash];
+  accessibilityIdentifier = [(AXAuditElement *)self accessibilityIdentifier];
+  v6 = [accessibilityIdentifier hash];
 
   return v6 + v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -89,19 +89,19 @@ void __57__AXAuditElement_registerTransportableObjectWithManager___block_invoke_
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AXAuditElement *)self platformElementToken];
-      v7 = [(AXAuditElement *)v5 platformElementToken];
-      if (v6 | v7 && ![v6 isEqual:v7])
+      v5 = equalCopy;
+      platformElementToken = [(AXAuditElement *)self platformElementToken];
+      platformElementToken2 = [(AXAuditElement *)v5 platformElementToken];
+      if (platformElementToken | platformElementToken2 && ![platformElementToken isEqual:platformElementToken2])
       {
         v10 = 0;
       }
 
       else
       {
-        v8 = [(AXAuditElement *)self accessibilityIdentifier];
-        v9 = [(AXAuditElement *)v5 accessibilityIdentifier];
-        v10 = !(v8 | v9) || [v8 isEqual:v9];
+        accessibilityIdentifier = [(AXAuditElement *)self accessibilityIdentifier];
+        accessibilityIdentifier2 = [(AXAuditElement *)v5 accessibilityIdentifier];
+        v10 = !(accessibilityIdentifier | accessibilityIdentifier2) || [accessibilityIdentifier isEqual:accessibilityIdentifier2];
       }
     }
 
@@ -114,52 +114,52 @@ void __57__AXAuditElement_registerTransportableObjectWithManager___block_invoke_
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(AXAuditElement *)self platformElementToken];
-  [v4 setPlatformElementToken:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  platformElementToken = [(AXAuditElement *)self platformElementToken];
+  [v4 setPlatformElementToken:platformElementToken];
 
-  v6 = [(AXAuditElement *)self accessibilityIdentifier];
-  [v4 setAccessibilityIdentifier:v6];
+  accessibilityIdentifier = [(AXAuditElement *)self accessibilityIdentifier];
+  [v4 setAccessibilityIdentifier:accessibilityIdentifier];
 
   return v4;
 }
 
 - (__AXUIElement)createAxElementRefForXCTest
 {
-  v2 = [(AXAuditElement *)self axElement];
-  v3 = [v2 elementRef];
-  v4 = v3;
-  if (v3)
+  axElement = [(AXAuditElement *)self axElement];
+  elementRef = [axElement elementRef];
+  v4 = elementRef;
+  if (elementRef)
   {
-    CFRetain(v3);
+    CFRetain(elementRef);
   }
 
   return v4;
 }
 
-+ (id)auditElementWithElement:(id)a3 identifier:(id)a4
++ (id)auditElementWithElement:(id)element identifier:(id)identifier
 {
-  v4 = a3;
-  if (a3)
+  elementCopy = element;
+  if (element)
   {
-    v5 = a4;
-    v6 = v4;
-    v4 = objc_opt_new();
-    [v4 setAxElement:v6];
+    identifierCopy = identifier;
+    v6 = elementCopy;
+    elementCopy = objc_opt_new();
+    [elementCopy setAxElement:v6];
 
-    [v4 setAccessibilityIdentifier:v5];
+    [elementCopy setAccessibilityIdentifier:identifierCopy];
   }
 
-  return v4;
+  return elementCopy;
 }
 
-- (void)setAxElement:(id)a3
+- (void)setAxElement:(id)element
 {
-  v4 = a3;
-  v10 = v4;
-  if (!v4 || ([v4 uiElement], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "axElement"), v5, !v6))
+  elementCopy = element;
+  v10 = elementCopy;
+  if (!elementCopy || ([elementCopy uiElement], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "axElement"), v5, !v6))
   {
     [(AXAuditElement *)self setPlatformElementToken:0];
     goto LABEL_10;
@@ -168,7 +168,7 @@ void __57__AXAuditElement_registerTransportableObjectWithManager___block_invoke_
   Data = _AXUIElementCreateData();
   if (!Data)
   {
-    v8 = self;
+    selfCopy2 = self;
     v9 = 0;
     goto LABEL_8;
   }
@@ -176,10 +176,10 @@ void __57__AXAuditElement_registerTransportableObjectWithManager___block_invoke_
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = self;
+    selfCopy2 = self;
     v9 = Data;
 LABEL_8:
-    [(AXAuditElement *)v8 setPlatformElementToken:v9];
+    [(AXAuditElement *)selfCopy2 setPlatformElementToken:v9];
   }
 
 LABEL_10:
@@ -187,16 +187,16 @@ LABEL_10:
 
 - (AXElement)axElement
 {
-  v2 = [(AXAuditElement *)self platformElementToken];
+  platformElementToken = [(AXAuditElement *)self platformElementToken];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 objectForKey:@"ElementData"];
+    v3 = [platformElementToken objectForKey:@"ElementData"];
 
-    v2 = v3;
+    platformElementToken = v3;
   }
 
-  if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v4 = _AXUIElementCreateWithData()) != 0)
+  if (platformElementToken && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v4 = _AXUIElementCreateWithData()) != 0)
   {
     v5 = v4;
     v6 = [MEMORY[0x277CE6BA0] elementWithAXUIElement:v4];

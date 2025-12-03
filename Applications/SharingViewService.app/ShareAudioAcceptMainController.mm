@@ -1,18 +1,18 @@
 @interface ShareAudioAcceptMainController
-- (void)dismiss:(int)a3 completion:(id)a4;
-- (void)dismissWithAction:(int)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)xpcStarted:(id)a3;
+- (void)dismiss:(int)dismiss completion:(id)completion;
+- (void)dismissWithAction:(int)action;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)xpcStarted:(id)started;
 @end
 
 @implementation ShareAudioAcceptMainController
 
-- (void)dismissWithAction:(int)a3
+- (void)dismissWithAction:(int)action
 {
   if (!self->_dismissed)
   {
-    v3 = *&a3;
+    v3 = *&action;
     self->_dismissed = 1;
     v5 = self->super._proxCardSessionServer;
     if (v5)
@@ -55,30 +55,30 @@
   }
 }
 
-- (void)xpcStarted:(id)a3
+- (void)xpcStarted:(id)started
 {
-  v3 = a3;
-  v4 = v3;
+  startedCopy = started;
+  v4 = startedCopy;
   if (dword_1001BEE38 <= 30)
   {
-    v5 = v3;
-    if (dword_1001BEE38 != -1 || (v3 = _LogCategory_Initialize(), v4 = v5, v3))
+    v5 = startedCopy;
+    if (dword_1001BEE38 != -1 || (startedCopy = _LogCategory_Initialize(), v4 = v5, startedCopy))
     {
-      v3 = LogPrintF();
+      startedCopy = LogPrintF();
       v4 = v5;
     }
   }
 
-  _objc_release_x1(v3, v4);
+  _objc_release_x1(startedCopy, v4);
 }
 
-- (void)dismiss:(int)a3 completion:(id)a4
+- (void)dismiss:(int)dismiss completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (!self->_dismissed)
   {
     self->_dismissed = 1;
-    v7 = [(ShareAudioAcceptMainController *)self _remoteViewControllerProxy];
+    _remoteViewControllerProxy = [(ShareAudioAcceptMainController *)self _remoteViewControllerProxy];
     vcAsk = self->_vcAsk;
     if (vcAsk)
     {
@@ -86,26 +86,26 @@
       v9[1] = 3221225472;
       v9[2] = sub_10011B40C;
       v9[3] = &unk_1001959D0;
-      v11 = v6;
-      v10 = v7;
-      [(ShareAudioAcceptAskViewController *)vcAsk dismissViewControllerAnimated:a3 != 19 completion:v9];
+      v11 = completionCopy;
+      v10 = _remoteViewControllerProxy;
+      [(ShareAudioAcceptAskViewController *)vcAsk dismissViewControllerAnimated:dismiss != 19 completion:v9];
     }
 
     else
     {
-      if (v6)
+      if (completionCopy)
       {
-        v6[2](v6);
+        completionCopy[2](completionCopy);
       }
 
-      [v7 dismiss];
+      [_remoteViewControllerProxy dismiss];
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BEE38 <= 30 && (dword_1001BEE38 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -134,12 +134,12 @@
 
   v8.receiver = self;
   v8.super_class = ShareAudioAcceptMainController;
-  [(SVSBaseMainController *)&v8 viewDidDisappear:v3];
+  [(SVSBaseMainController *)&v8 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BEE38 <= 30 && (dword_1001BEE38 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -147,7 +147,7 @@
 
   v12.receiver = self;
   v12.super_class = ShareAudioAcceptMainController;
-  [(ShareAudioAcceptMainController *)&v12 viewDidAppear:v3];
+  [(ShareAudioAcceptMainController *)&v12 viewDidAppear:appearCopy];
   v5 = objc_alloc_init(CUBluetoothClient);
   btClient = self->_btClient;
   self->_btClient = v5;

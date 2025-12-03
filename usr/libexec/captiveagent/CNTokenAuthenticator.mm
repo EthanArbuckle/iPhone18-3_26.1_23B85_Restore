@@ -1,23 +1,23 @@
 @interface CNTokenAuthenticator
 + (id)sessionConfiguration;
-- (BOOL)parseChallenge:(id)a3 outRealm:(id *)a4 outErrorCode:(id *)a5 outErrorDescription:(id *)a6;
-- (CNTokenAuthenticator)initWithURLString:(id)a3 token:(id)a4 queue:(id)a5 responseHandler:(id)a6;
-- (id)authResult:(id)a3;
-- (id)credentialForBearerChallenge:(id)a3;
-- (id)locationFromResponse:(id)a3;
-- (unsigned)resultCodeFromError:(id)a3;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
+- (BOOL)parseChallenge:(id)challenge outRealm:(id *)realm outErrorCode:(id *)code outErrorDescription:(id *)description;
+- (CNTokenAuthenticator)initWithURLString:(id)string token:(id)token queue:(id)queue responseHandler:(id)handler;
+- (id)authResult:(id)result;
+- (id)credentialForBearerChallenge:(id)challenge;
+- (id)locationFromResponse:(id)response;
+- (unsigned)resultCodeFromError:(id)error;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
 - (void)cancel;
 - (void)dealloc;
-- (void)handleAuthenticationChallenge:(id)a3 task:(id)a4 completionHandler:(id)a5;
-- (void)handleChallengeResponse:(id)a3;
-- (void)handleRedirectResponse:(id)a3;
-- (void)handleResponse:(unsigned int)a3 result:(id)a4;
+- (void)handleAuthenticationChallenge:(id)challenge task:(id)task completionHandler:(id)handler;
+- (void)handleChallengeResponse:(id)response;
+- (void)handleRedirectResponse:(id)response;
+- (void)handleResponse:(unsigned int)response result:(id)result;
 - (void)handleTaskCompletion;
 - (void)login;
 - (void)start;
@@ -25,12 +25,12 @@
 
 @implementation CNTokenAuthenticator
 
-- (CNTokenAuthenticator)initWithURLString:(id)a3 token:(id)a4 queue:(id)a5 responseHandler:(id)a6
+- (CNTokenAuthenticator)initWithURLString:(id)string token:(id)token queue:(id)queue responseHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  stringCopy = string;
+  tokenCopy = token;
+  queueCopy = queue;
+  handlerCopy = handler;
   v23.receiver = self;
   v23.super_class = CNTokenAuthenticator;
   v14 = [(CNTokenAuthenticator *)&v23 init];
@@ -39,17 +39,17 @@
     goto LABEL_4;
   }
 
-  if (!v10)
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
 
-  v15 = [NSURL URLWithString:v10];
+  v15 = [NSURL URLWithString:stringCopy];
   [(CNTokenAuthenticator *)v14 setUrl:v15];
 
   v16 = [(CNTokenAuthenticator *)v14 url];
-  v17 = [v16 scheme];
-  v18 = [v17 compare:@"https" options:1];
+  scheme = [v16 scheme];
+  v18 = [scheme compare:@"https" options:1];
 
   if (v18)
   {
@@ -60,14 +60,14 @@ LABEL_4:
   else
   {
 LABEL_5:
-    [(CNTokenAuthenticator *)v14 setToken:v11];
+    [(CNTokenAuthenticator *)v14 setToken:tokenCopy];
     v20 = objc_alloc_init(NSOperationQueue);
     [(CNTokenAuthenticator *)v14 setOpQueue:v20];
 
-    v21 = [(CNTokenAuthenticator *)v14 opQueue];
-    [v21 setUnderlyingQueue:v12];
+    opQueue = [(CNTokenAuthenticator *)v14 opQueue];
+    [opQueue setUnderlyingQueue:queueCopy];
 
-    [(CNTokenAuthenticator *)v14 setResponseHandler:v13];
+    [(CNTokenAuthenticator *)v14 setResponseHandler:handlerCopy];
     *&v14->_isAuthorized = 0;
     v19 = v14;
   }
@@ -95,8 +95,8 @@ LABEL_5:
   if (!self->_session)
   {
     v3 = +[CNTokenAuthenticator sessionConfiguration];
-    v4 = [(CNTokenAuthenticator *)self opQueue];
-    v5 = [NSURLSession sessionWithConfiguration:v3 delegate:self delegateQueue:v4];
+    opQueue = [(CNTokenAuthenticator *)self opQueue];
+    v5 = [NSURLSession sessionWithConfiguration:v3 delegate:self delegateQueue:opQueue];
     session = self->_session;
     self->_session = v5;
   }
@@ -104,21 +104,21 @@ LABEL_5:
   v7 = [(CNTokenAuthenticator *)self url];
   if ([(CNTokenAuthenticator *)self timeoutSeconds])
   {
-    v8 = [(CNTokenAuthenticator *)self timeoutSeconds];
+    timeoutSeconds = [(CNTokenAuthenticator *)self timeoutSeconds];
   }
 
   else
   {
-    v8 = 60.0;
+    timeoutSeconds = 60.0;
   }
 
-  v9 = [NSMutableURLRequest requestWithURL:v7 cachePolicy:4 timeoutInterval:v8];
+  v9 = [NSMutableURLRequest requestWithURL:v7 cachePolicy:4 timeoutInterval:timeoutSeconds];
 
-  v10 = [(CNTokenAuthenticator *)self userAgent];
-  [v9 setValue:v10 forHTTPHeaderField:@"User-Agent"];
+  userAgent = [(CNTokenAuthenticator *)self userAgent];
+  [v9 setValue:userAgent forHTTPHeaderField:@"User-Agent"];
 
-  v11 = [(CNTokenAuthenticator *)self interfaceName];
-  [v9 setBoundInterfaceIdentifier:v11];
+  interfaceName = [(CNTokenAuthenticator *)self interfaceName];
+  [v9 setBoundInterfaceIdentifier:interfaceName];
 
   v12 = [(NSURLSession *)self->_session dataTaskWithRequest:v9];
   loginDataTask = self->_loginDataTask;
@@ -130,11 +130,11 @@ LABEL_5:
   if (os_log_type_enabled(v16, v15))
   {
     v17 = [(CNTokenAuthenticator *)self url];
-    v18 = [v17 absoluteString];
+    absoluteString = [v17 absoluteString];
     v19 = 138412546;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    v22 = v18;
+    v22 = absoluteString;
     _os_log_impl(&_mh_execute_header, v16, v15, "%@ starting token based captive portal authentication with url: [%@]", &v19, 0x16u);
   }
 
@@ -186,17 +186,17 @@ LABEL_5:
   return v2;
 }
 
-- (id)locationFromResponse:(id)a3
+- (id)locationFromResponse:(id)response
 {
-  v3 = [a3 allHeaderFields];
-  v4 = [v3 objectForKey:@"Location"];
+  allHeaderFields = [response allHeaderFields];
+  v4 = [allHeaderFields objectForKey:@"Location"];
 
   return v4;
 }
 
-- (void)handleRedirectResponse:(id)a3
+- (void)handleRedirectResponse:(id)response
 {
-  v4 = [(CNTokenAuthenticator *)self locationFromResponse:a3];
+  v4 = [(CNTokenAuthenticator *)self locationFromResponse:response];
   v5 = sub_100002A8C();
   if (v4)
   {
@@ -204,15 +204,15 @@ LABEL_5:
     if (os_log_type_enabled(v5, v6))
     {
       v12 = 138412546;
-      v13 = self;
+      selfCopy3 = self;
       v14 = 2112;
       v15 = v4;
       _os_log_impl(&_mh_execute_header, v5, v6, "%@ task received HTTP Redirect with location header: [%@]", &v12, 0x16u);
     }
 
     v5 = [NSURL URLWithString:v4];
-    v7 = [v5 scheme];
-    v8 = [v7 compare:@"https" options:1];
+    scheme = [v5 scheme];
+    v8 = [scheme compare:@"https" options:1];
 
     if (v8)
     {
@@ -221,7 +221,7 @@ LABEL_5:
       if (os_log_type_enabled(v9, v10))
       {
         v12 = 138412290;
-        v13 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, v9, v10, "%@ task found location without https scheme", &v12, 0xCu);
       }
     }
@@ -233,39 +233,39 @@ LABEL_5:
     if (os_log_type_enabled(v5, v11))
     {
       v12 = 138412290;
-      v13 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v5, v11, "%@ task received HTTP Redirect without location header", &v12, 0xCu);
     }
   }
 }
 
-- (unsigned)resultCodeFromError:(id)a3
+- (unsigned)resultCodeFromError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (!errorCopy)
   {
     v8 = 0;
     goto LABEL_9;
   }
 
-  v5 = [v3 domain];
-  v6 = [v5 isEqualToString:NSURLErrorDomain];
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:NSURLErrorDomain];
 
   if (v6)
   {
-    v7 = [v4 code];
-    if (v7 > -1006)
+    code = [v4 code];
+    if (code > -1006)
     {
-      if (v7 != -1005)
+      if (code != -1005)
       {
-        if (v7 == -1001)
+        if (code == -1001)
         {
           v8 = 6;
           goto LABEL_9;
         }
 
-        if (v7 != -1003)
+        if (code != -1003)
         {
           goto LABEL_7;
         }
@@ -276,15 +276,15 @@ LABEL_5:
 
     else
     {
-      if (v7 == -1202)
+      if (code == -1202)
       {
         v8 = 15;
         goto LABEL_9;
       }
 
-      if (v7 != -1009)
+      if (code != -1009)
       {
-        if (v7 != -1006)
+        if (code != -1006)
         {
           goto LABEL_7;
         }
@@ -306,33 +306,33 @@ LABEL_9:
   return v8;
 }
 
-- (void)handleAuthenticationChallenge:(id)a3 task:(id)a4 completionHandler:(id)a5
+- (void)handleAuthenticationChallenge:(id)challenge task:(id)task completionHandler:(id)handler
 {
-  v8 = a3;
-  v42 = a4;
-  v9 = a5;
-  v41 = v8;
-  v43 = [v8 protectionSpace];
-  v10 = [v43 authenticationMethod];
+  challengeCopy = challenge;
+  taskCopy = task;
+  handlerCopy = handler;
+  v41 = challengeCopy;
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
   v11 = sub_100002A8C();
   v12 = _SC_syslog_os_log_mapping();
   v13 = v11;
   if (os_log_type_enabled(v13, v12))
   {
     *buf = 138412546;
-    v48 = objc_opt_class();
+    selfCopy4 = objc_opt_class();
     v49 = 2114;
-    v50 = v10;
-    v14 = v48;
+    v50 = authenticationMethod;
+    v14 = selfCopy4;
     _os_log_impl(&_mh_execute_header, v13, v12, "%@ received authentication challenege with %{public}@", buf, 0x16u);
   }
 
-  v15 = [v42 currentRequest];
-  v16 = [v15 URL];
-  v17 = [v16 scheme];
-  v18 = [v17 isEqualToString:@"https"];
+  currentRequest = [taskCopy currentRequest];
+  v16 = [currentRequest URL];
+  scheme = [v16 scheme];
+  v18 = [scheme isEqualToString:@"https"];
 
-  v19 = [v10 isEqualToString:NSURLAuthenticationMethodOAuthBearerToken];
+  v19 = [authenticationMethod isEqualToString:NSURLAuthenticationMethodOAuthBearerToken];
   v20 = v19 ^ 1;
   if (!self->_tokenAuthAttempted && (v20 & 1) == 0 && ((v18 ^ 1) & 1) == 0)
   {
@@ -340,10 +340,10 @@ LABEL_9:
     goto LABEL_7;
   }
 
-  v28 = [v10 isEqualToString:NSURLAuthenticationMethodServerTrust];
+  v28 = [authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
   if (!v28)
   {
-    if (![v10 isEqualToString:NSURLAuthenticationMethodClientCertificate])
+    if (![authenticationMethod isEqualToString:NSURLAuthenticationMethodClientCertificate])
     {
       v22 = 0;
       v35 = 17;
@@ -356,7 +356,7 @@ LABEL_9:
     if (os_log_type_enabled(v32, v36))
     {
       *buf = 138412290;
-      v48 = self;
+      selfCopy4 = self;
       _os_log_impl(&_mh_execute_header, v32, v36, "%@ received authentication challenge for certificate request", buf, 0xCu);
     }
 
@@ -369,7 +369,7 @@ LABEL_29:
     {
       if (!v28)
       {
-        v9[2](v9, 1, 0);
+        handlerCopy[2](handlerCopy, 1, 0);
         goto LABEL_36;
       }
     }
@@ -387,17 +387,17 @@ LABEL_29:
       v35 = 18;
     }
 
-    v9[2](v9, 2, 0);
+    handlerCopy[2](handlerCopy, 2, 0);
     objc_initWeak(buf, self);
-    v39 = [(CNTokenAuthenticator *)self opQueue];
-    v40 = [v39 underlyingQueue];
+    opQueue = [(CNTokenAuthenticator *)self opQueue];
+    underlyingQueue = [opQueue underlyingQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10000560C;
     block[3] = &unk_10001C838;
     objc_copyWeak(&v45, buf);
     v46 = v35;
-    dispatch_async(v40, block);
+    dispatch_async(underlyingQueue, block);
 
     objc_destroyWeak(&v45);
     objc_destroyWeak(buf);
@@ -409,11 +409,11 @@ LABEL_29:
   if (os_log_type_enabled(v29, v30))
   {
     *buf = 138412290;
-    v48 = self;
+    selfCopy4 = self;
     _os_log_impl(&_mh_execute_header, v29, v30, "%@ received authentication challenege to trust server certificate", buf, 0xCu);
   }
 
-  v31 = SecTrustEvaluateWithError([v43 serverTrust], 0);
+  v31 = SecTrustEvaluateWithError([protectionSpace serverTrust], 0);
   v32 = sub_100002A8C();
   v33 = _SC_syslog_os_log_mapping();
   v34 = os_log_type_enabled(v32, v33);
@@ -422,7 +422,7 @@ LABEL_29:
     if (v34)
     {
       *buf = 138412290;
-      v48 = self;
+      selfCopy4 = self;
       _os_log_impl(&_mh_execute_header, v32, v33, "%@ failed to trust server certificate", buf, 0xCu);
     }
 
@@ -433,11 +433,11 @@ LABEL_29:
   if (v34)
   {
     *buf = 138412290;
-    v48 = self;
+    selfCopy4 = self;
     _os_log_impl(&_mh_execute_header, v32, v33, "%@ server certificate is trusted", buf, 0xCu);
   }
 
-  v21 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [v43 serverTrust]);
+  v21 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [protectionSpace serverTrust]);
 LABEL_7:
   v22 = v21;
   if (((v21 != 0) & v18) != 1)
@@ -452,16 +452,16 @@ LABEL_7:
   if (os_log_type_enabled(v23, v24))
   {
     *buf = 138477827;
-    v48 = v22;
+    selfCopy4 = v22;
     _os_log_impl(&_mh_execute_header, v23, v24, "responding to challenge using credential %{private}@ for challenge", buf, 0xCu);
   }
 
-  (v9)[2](v9, 0, v22);
+  (handlerCopy)[2](handlerCopy, 0, v22);
   if (v19)
   {
     self->_tokenAuthAttempted = 1;
-    v25 = [v42 currentRequest];
-    v26 = [v25 URL];
+    currentRequest2 = [taskCopy currentRequest];
+    v26 = [currentRequest2 URL];
     url = self->_url;
     self->_url = v26;
   }
@@ -469,20 +469,20 @@ LABEL_7:
 LABEL_36:
 }
 
-- (id)credentialForBearerChallenge:(id)a3
+- (id)credentialForBearerChallenge:(id)challenge
 {
-  v4 = a3;
+  challengeCopy = challenge;
   if (![(NSData *)self->_token length])
   {
     goto LABEL_4;
   }
 
   v5 = [NSString alloc];
-  v6 = [(CNTokenAuthenticator *)self token];
-  v7 = [v5 initWithData:v6 encoding:4];
+  token = [(CNTokenAuthenticator *)self token];
+  v7 = [v5 initWithData:token encoding:4];
 
-  v8 = [v4 protectionSpace];
-  [v8 realm];
+  protectionSpace = [challengeCopy protectionSpace];
+  [protectionSpace realm];
   OAuth2 = _CFURLCredentialCreateOAuth2();
 
   if (OAuth2)
@@ -500,40 +500,40 @@ LABEL_4:
   return v10;
 }
 
-- (void)handleResponse:(unsigned int)a3 result:(id)a4
+- (void)handleResponse:(unsigned int)response result:(id)result
 {
-  v6 = a4;
+  resultCopy = result;
   objc_initWeak(&location, self);
-  v7 = [(CNTokenAuthenticator *)self opQueue];
-  v8 = [v7 underlyingQueue];
+  opQueue = [(CNTokenAuthenticator *)self opQueue];
+  underlyingQueue = [opQueue underlyingQueue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000585C;
   v10[3] = &unk_10001C860;
   objc_copyWeak(&v12, &location);
-  v13 = a3;
-  v11 = v6;
-  v9 = v6;
-  dispatch_async(v8, v10);
+  responseCopy = response;
+  v11 = resultCopy;
+  v9 = resultCopy;
+  dispatch_async(underlyingQueue, v10);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)parseChallenge:(id)a3 outRealm:(id *)a4 outErrorCode:(id *)a5 outErrorDescription:(id *)a6
+- (BOOL)parseChallenge:(id)challenge outRealm:(id *)realm outErrorCode:(id *)code outErrorDescription:(id *)description
 {
-  v9 = a3;
-  v10 = v9;
-  if (!v9 || [v9 length] < 0xE || objc_msgSend(v10, "rangeOfString:", @"Bearer") == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v10, "rangeOfString:", @"realm=") == 0x7FFFFFFFFFFFFFFFLL)
+  challengeCopy = challenge;
+  v10 = challengeCopy;
+  if (!challengeCopy || [challengeCopy length] < 0xE || objc_msgSend(v10, "rangeOfString:", @"Bearer") == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v10, "rangeOfString:", @"realm=") == 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = 0;
   }
 
   else
   {
-    *a6 = 0;
-    *a5 = 0;
-    *a4 = 0;
+    *description = 0;
+    *code = 0;
+    *realm = 0;
     v13 = [v10 rangeOfString:@"realm="];
     v15 = [v10 substringWithRange:{&v13[v14], objc_msgSend(v10, "length") - &v13[v14]}];
     if ([v15 length] >= 3)
@@ -550,7 +550,7 @@ LABEL_4:
         if ([v19 length] >= 3)
         {
           v20 = v19;
-          *a4 = v19;
+          *realm = v19;
           v21 = [v15 rangeOfString:@"error="];
           if (v21 == 0x7FFFFFFFFFFFFFFFLL)
           {
@@ -577,7 +577,7 @@ LABEL_4:
             if ([v19 length] >= 3)
             {
               v27 = v19;
-              *a5 = v19;
+              *code = v19;
               v28 = [v23 rangeOfString:@"error_description="];
               v30 = [v23 substringWithRange:{&v28[v29], objc_msgSend(v23, "length") - &v28[v29]}];
               if ([v30 length] < 3)
@@ -597,7 +597,7 @@ LABEL_4:
               if ([v19 length] >= 3)
               {
                 v34 = v19;
-                *a6 = v19;
+                *description = v19;
                 v11 = 1;
               }
 
@@ -637,17 +637,17 @@ LABEL_23:
   return v11;
 }
 
-- (void)handleChallengeResponse:(id)a3
+- (void)handleChallengeResponse:(id)response
 {
-  v4 = [a3 allHeaderFields];
-  if (![v4 count] || (objc_msgSend(v4, "objectForKey:", @"WWW-Authenticate"), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  allHeaderFields = [response allHeaderFields];
+  if (![allHeaderFields count] || (objc_msgSend(allHeaderFields, "objectForKey:", @"WWW-Authenticate"), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v11 = sub_100002A8C();
     v19 = _SC_syslog_os_log_mapping();
     if (os_log_type_enabled(v11, v19))
     {
       *buf = 138412546;
-      v25 = self;
+      selfCopy3 = self;
       v26 = 2112;
       v27 = @"WWW-Authenticate";
       _os_log_impl(&_mh_execute_header, v11, v19, "%@ login data task did not receive response with [%@] header", buf, 0x16u);
@@ -675,7 +675,7 @@ LABEL_23:
     if (os_log_type_enabled(v11, v20))
     {
       *buf = 138412546;
-      v25 = self;
+      selfCopy3 = self;
       v26 = 2112;
       v27 = @"WWW-Authenticate";
       v15 = "%@ login data task received response with invalid [%@] header";
@@ -709,7 +709,7 @@ LABEL_15:
       }
 
       *buf = 138412802;
-      v25 = self;
+      selfCopy3 = self;
       v26 = 2112;
       if (v10)
       {
@@ -732,16 +732,16 @@ LABEL_15:
 LABEL_16:
 }
 
-- (id)authResult:(id)a3
+- (id)authResult:(id)result
 {
-  v4 = a3;
-  if (v4 && self->_isAuthorized)
+  resultCopy = result;
+  if (resultCopy && self->_isAuthorized)
   {
     v5 = objc_alloc_init(NSMutableDictionary);
     v6 = [NSNumber numberWithBool:self->_tokenAuthAttempted];
     [v5 setObject:v6 forKeyedSubscript:off_100022540];
 
-    v7 = [v4 objectForKeyedSubscript:off_100022558];
+    v7 = [resultCopy objectForKeyedSubscript:off_100022558];
     v8 = v7;
     if (self->_tokenAuthAttempted && [v7 length])
     {
@@ -758,14 +758,14 @@ LABEL_16:
       [v5 setObject:v9 forKeyedSubscript:off_100022548];
     }
 
-    v11 = [v4 objectForKeyedSubscript:off_100022560];
+    v11 = [resultCopy objectForKeyedSubscript:off_100022560];
     [v5 setObject:v11 forKeyedSubscript:off_100022550];
 
     url = self->_url;
     if (url)
     {
-      v13 = [(NSURL *)url absoluteString];
-      [v5 setObject:v13 forKeyedSubscript:off_100022538];
+      absoluteString = [(NSURL *)url absoluteString];
+      [v5 setObject:absoluteString forKeyedSubscript:off_100022538];
     }
 
     v10 = v5;
@@ -790,7 +790,7 @@ LABEL_16:
     if (v6)
     {
       *buf = 138412290;
-      v18 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v4, v5, "%@ handleTaskCompletion: received non-zero data", buf, 0xCu);
     }
 
@@ -805,7 +805,7 @@ LABEL_16:
       if (os_log_type_enabled(v9, v10))
       {
         *buf = 138412290;
-        v18 = v4;
+        selfCopy2 = v4;
         _os_log_impl(&_mh_execute_header, v9, v10, "JSON parsing failed, error: %@", buf, 0xCu);
       }
 
@@ -826,7 +826,7 @@ LABEL_16:
       if (os_log_type_enabled(v13, v14))
       {
         *buf = 138543362;
-        v18 = v8;
+        selfCopy2 = v8;
         _os_log_impl(&_mh_execute_header, v13, v14, "Token Authentication server sent : %{public}@", buf, 0xCu);
       }
 
@@ -836,7 +836,7 @@ LABEL_16:
       if (os_log_type_enabled(v9, v15))
       {
         *buf = 138543362;
-        v18 = v11;
+        selfCopy2 = v11;
         _os_log_impl(&_mh_execute_header, v9, v15, "Token Authentication Result : %{public}@", buf, 0xCu);
       }
     }
@@ -848,7 +848,7 @@ LABEL_9:
   if (v6)
   {
     *buf = 138412290;
-    v18 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v4, v5, "%@ handleTaskCompletion: did not receive data", buf, 0xCu);
   }
 
@@ -868,66 +868,66 @@ LABEL_13:
   [(CNTokenAuthenticator *)self handleResponse:v12 result:v11];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sessionCopy = session;
+  taskCopy = task;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   v14 = sub_100002A8C();
   v15 = _SC_syslog_os_log_mapping();
   if (os_log_type_enabled(v14, v15))
   {
     *buf = 138412290;
-    v27 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v14, v15, "%@ didReceiveChallenge", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v16 = [(CNTokenAuthenticator *)self opQueue];
-  v17 = [v16 underlyingQueue];
+  opQueue = [(CNTokenAuthenticator *)self opQueue];
+  underlyingQueue = [opQueue underlyingQueue];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100006518;
   v21[3] = &unk_10001C888;
   objc_copyWeak(&v25, buf);
-  v22 = v12;
-  v23 = v11;
-  v24 = v13;
-  v18 = v13;
-  v19 = v11;
-  v20 = v12;
-  dispatch_async(v17, v21);
+  v22 = challengeCopy;
+  v23 = taskCopy;
+  v24 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = taskCopy;
+  v20 = challengeCopy;
+  dispatch_async(underlyingQueue, v21);
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(buf);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a6;
+  responseCopy = response;
+  handlerCopy = handler;
   v10 = sub_100002A8C();
   v11 = _SC_syslog_os_log_mapping();
   if (os_log_type_enabled(v10, v11))
   {
     v25 = 138412290;
-    v26 = self;
+    selfCopy6 = self;
     _os_log_impl(&_mh_execute_header, v10, v11, "%@ didReceiveResponse", &v25, 0xCu);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v8;
+    v12 = responseCopy;
     v13 = sub_100002A8C();
     v14 = _SC_syslog_os_log_mapping();
     v15 = v13;
     if (os_log_type_enabled(v15, v14))
     {
-      v16 = [v12 statusCode];
+      statusCode = [v12 statusCode];
       v25 = 134217984;
-      v26 = v16;
+      selfCopy6 = statusCode;
       _os_log_impl(&_mh_execute_header, v15, v14, "login data task received response with status code %lu", &v25, 0xCu);
     }
 
@@ -935,7 +935,7 @@ LABEL_13:
     {
       self->_isAuthorized = 1;
 LABEL_17:
-      v9[2](v9, 1);
+      handlerCopy[2](handlerCopy, 1);
 LABEL_22:
 
       goto LABEL_23;
@@ -948,14 +948,14 @@ LABEL_22:
       if (os_log_type_enabled(v19, v20))
       {
         v25 = 138412290;
-        v26 = self;
+        selfCopy6 = self;
         _os_log_impl(&_mh_execute_header, v19, v20, "%@ token authentication failed", &v25, 0xCu);
       }
 
       self->_isAuthorized = 0;
       [(CNTokenAuthenticator *)self handleChallengeResponse:v12];
-      v9[2](v9, 0);
-      v21 = self;
+      handlerCopy[2](handlerCopy, 0);
+      selfCopy5 = self;
       v22 = 19;
     }
 
@@ -971,16 +971,16 @@ LABEL_22:
       if (os_log_type_enabled(v23, v24))
       {
         v25 = 138412290;
-        v26 = self;
+        selfCopy6 = self;
         _os_log_impl(&_mh_execute_header, v23, v24, "%@ login data task received response with unexpected status code", &v25, 0xCu);
       }
 
-      v9[2](v9, 0);
-      v21 = self;
+      handlerCopy[2](handlerCopy, 0);
+      selfCopy5 = self;
       v22 = 1;
     }
 
-    [(CNTokenAuthenticator *)v21 handleResponse:v22 result:0];
+    [(CNTokenAuthenticator *)selfCopy5 handleResponse:v22 result:0];
     goto LABEL_22;
   }
 
@@ -989,38 +989,38 @@ LABEL_22:
   if (os_log_type_enabled(v17, v18))
   {
     v25 = 138412290;
-    v26 = self;
+    selfCopy6 = self;
     _os_log_impl(&_mh_execute_header, v17, v18, "%@ login data task received invalid response", &v25, 0xCu);
   }
 
-  v9[2](v9, 0);
+  handlerCopy[2](handlerCopy, 0);
   [(CNTokenAuthenticator *)self handleResponse:1 result:0];
 LABEL_23:
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a7;
-  v12 = a5;
+  requestCopy = request;
+  handlerCopy = handler;
+  redirectionCopy = redirection;
   v13 = sub_100002A8C();
   v14 = _SC_syslog_os_log_mapping();
   if (os_log_type_enabled(v13, v14))
   {
     v40 = 138412290;
-    v41 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, v13, v14, "%@ willPerformHTTPRedirection", &v40, 0xCu);
   }
 
-  [(CNTokenAuthenticator *)self handleRedirectResponse:v12];
-  v15 = v10;
+  [(CNTokenAuthenticator *)self handleRedirectResponse:redirectionCopy];
+  v15 = requestCopy;
   v16 = v15;
   if (!self->_tokenAuthAttempted)
   {
     v17 = [NSURLComponents alloc];
     v18 = [v15 URL];
-    v19 = [v18 absoluteString];
-    v20 = [v17 initWithString:v19];
+    absoluteString = [v18 absoluteString];
+    v20 = [v17 initWithString:absoluteString];
 
     v16 = v15;
     if (!v20)
@@ -1035,21 +1035,21 @@ LABEL_18:
     v23 = v21;
     if (os_log_type_enabled(v23, v22))
     {
-      v24 = [v20 string];
+      string = [v20 string];
       v40 = 138412546;
-      v41 = self;
+      selfCopy3 = self;
       v42 = 2112;
-      v43 = v24;
+      v43 = string;
       _os_log_impl(&_mh_execute_header, v23, v22, "%@ Current URL String: [%@]", &v40, 0x16u);
     }
 
-    v25 = [v20 queryItems];
-    v26 = [v25 count];
+    queryItems = [v20 queryItems];
+    v26 = [queryItems count];
 
     if (v26)
     {
-      v27 = [v20 queryItems];
-      v28 = [v27 mutableCopy];
+      queryItems2 = [v20 queryItems];
+      v28 = [queryItems2 mutableCopy];
 
       v16 = v15;
       if ([v28 indexOfObjectPassingTest:&stru_10001C8C8] != 0x7FFFFFFFFFFFFFFFLL)
@@ -1069,59 +1069,59 @@ LABEL_17:
     [v28 addObject:v29];
     [v20 setQueryItems:v28];
     v30 = [NSURL alloc];
-    v31 = [v20 string];
-    v32 = [v30 initWithString:v31];
+    string2 = [v20 string];
+    v32 = [v30 initWithString:string2];
 
     v33 = sub_100002A8C();
     v34 = _SC_syslog_os_log_mapping();
     v35 = v33;
     if (os_log_type_enabled(v35, v34))
     {
-      v36 = [v20 string];
+      string3 = [v20 string];
       v40 = 138412546;
-      v41 = self;
+      selfCopy3 = self;
       v42 = 2112;
-      v43 = v36;
+      v43 = string3;
       _os_log_impl(&_mh_execute_header, v35, v34, "%@ New URL String: [%@]", &v40, 0x16u);
     }
 
     if ([(CNTokenAuthenticator *)self timeoutSeconds])
     {
-      v37 = [(CNTokenAuthenticator *)self timeoutSeconds];
+      timeoutSeconds = [(CNTokenAuthenticator *)self timeoutSeconds];
     }
 
     else
     {
-      v37 = 60.0;
+      timeoutSeconds = 60.0;
     }
 
-    v16 = [NSMutableURLRequest requestWithURL:v32 cachePolicy:4 timeoutInterval:v37];
-    v38 = [(CNTokenAuthenticator *)self userAgent];
-    [v16 setValue:v38 forHTTPHeaderField:@"User-Agent"];
+    v16 = [NSMutableURLRequest requestWithURL:v32 cachePolicy:4 timeoutInterval:timeoutSeconds];
+    userAgent = [(CNTokenAuthenticator *)self userAgent];
+    [v16 setValue:userAgent forHTTPHeaderField:@"User-Agent"];
 
-    v39 = [(CNTokenAuthenticator *)self interfaceName];
-    [v16 setBoundInterfaceIdentifier:v39];
+    interfaceName = [(CNTokenAuthenticator *)self interfaceName];
+    [v16 setBoundInterfaceIdentifier:interfaceName];
 
     goto LABEL_17;
   }
 
 LABEL_19:
-  v11[2](v11, v16);
+  handlerCopy[2](handlerCopy, v16);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v6 = a5;
+  dataCopy = data;
   v7 = sub_100002A8C();
   v8 = _SC_syslog_os_log_mapping();
   if (os_log_type_enabled(v7, v8))
   {
     v12 = 138412290;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v7, v8, "%@ didReceiveData", &v12, 0xCu);
   }
 
-  if (self->_isAuthorized && [v6 length])
+  if (self->_isAuthorized && [dataCopy length])
   {
     receivedData = self->_receivedData;
     if (!receivedData)
@@ -1133,77 +1133,77 @@ LABEL_19:
       receivedData = self->_receivedData;
     }
 
-    [(NSMutableData *)receivedData appendData:v6];
+    [(NSMutableData *)receivedData appendData:dataCopy];
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   v7 = sub_100002A8C();
   v8 = _SC_syslog_os_log_mapping();
   if (os_log_type_enabled(v7, v8))
   {
     v16 = 138412290;
-    v17 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v7, v8, "%@ didCompleteWithError", &v16, 0xCu);
   }
 
-  if (v6 && ([v6 domain], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", NSURLErrorDomain), v9, v10))
+  if (errorCopy && ([errorCopy domain], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", NSURLErrorDomain), v9, v10))
   {
     v11 = sub_100002A8C();
     v12 = _SC_syslog_os_log_mapping();
     if (os_log_type_enabled(v11, v12))
     {
       v16 = 138412546;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2112;
-      v19 = v6;
+      v19 = errorCopy;
       _os_log_impl(&_mh_execute_header, v11, v12, "%@ session task completed with error %@", &v16, 0x16u);
     }
 
-    v13 = [v6 code];
-    if (v13 <= -1004)
+    code = [errorCopy code];
+    if (code <= -1004)
     {
-      if (v13 == -1009)
+      if (code == -1009)
       {
 LABEL_11:
-        v14 = self;
+        selfCopy6 = self;
         v15 = 8;
 LABEL_19:
-        [(CNTokenAuthenticator *)v14 handleResponse:v15 result:0];
+        [(CNTokenAuthenticator *)selfCopy6 handleResponse:v15 result:0];
         goto LABEL_20;
       }
 
-      if (v13 != -1006)
+      if (code != -1006)
       {
-        if (v13 == -1005)
+        if (code == -1005)
         {
           goto LABEL_11;
         }
 
 LABEL_17:
-        v14 = self;
+        selfCopy6 = self;
         v15 = 13;
         goto LABEL_19;
       }
 
 LABEL_16:
-      v14 = self;
+      selfCopy6 = self;
       v15 = 7;
       goto LABEL_19;
     }
 
-    if (v13 != -999)
+    if (code != -999)
     {
-      if (v13 == -1001)
+      if (code == -1001)
       {
-        v14 = self;
+        selfCopy6 = self;
         v15 = 6;
         goto LABEL_19;
       }
 
-      if (v13 != -1003)
+      if (code != -1003)
       {
         goto LABEL_17;
       }
@@ -1220,28 +1220,28 @@ LABEL_16:
 LABEL_20:
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = sub_100002A8C();
   v7 = _SC_syslog_os_log_mapping();
   if (os_log_type_enabled(v6, v7))
   {
     v10 = 138412290;
-    v11 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v6, v7, "%@ didBecomeInvalidWithError", &v10, 0xCu);
   }
 
-  if (v5)
+  if (errorCopy)
   {
     v8 = sub_100002A8C();
     v9 = _SC_syslog_os_log_mapping();
     if (os_log_type_enabled(v8, v9))
     {
       v10 = 138412546;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2112;
-      v13 = v5;
+      v13 = errorCopy;
       _os_log_impl(&_mh_execute_header, v8, v9, "%@ session invalidated with error %@", &v10, 0x16u);
     }
   }

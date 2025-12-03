@@ -1,36 +1,36 @@
 @interface MediaControlsMaterialViewInvertColorsAccessibility
-- (MediaControlsMaterialViewInvertColorsAccessibility)initWithFrame:(CGRect)a3;
+- (MediaControlsMaterialViewInvertColorsAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadInvertColors;
-- (void)_setContinuousCornerRadius:(double)a3;
+- (void)_setContinuousCornerRadius:(double)radius;
 @end
 
 @implementation MediaControlsMaterialViewInvertColorsAccessibility
 
-- (MediaControlsMaterialViewInvertColorsAccessibility)initWithFrame:(CGRect)a3
+- (MediaControlsMaterialViewInvertColorsAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = MediaControlsMaterialViewInvertColorsAccessibility;
-  v3 = [(MediaControlsMaterialViewInvertColorsAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MediaControlsMaterialViewInvertColorsAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(MediaControlsMaterialViewInvertColorsAccessibility *)v3 _accessibilityLoadInvertColors];
 
   return v3;
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v6.receiver = self;
   v6.super_class = MediaControlsMaterialViewInvertColorsAccessibility;
   [(MediaControlsMaterialViewInvertColorsAccessibility *)&v6 _setContinuousCornerRadius:?];
   v5 = [AXInvertColorsAppHelper backgroundView:self];
-  [v5 _setContinuousCornerRadius:a3];
+  [v5 _setContinuousCornerRadius:radius];
 }
 
 - (void)_accessibilityLoadInvertColors
 {
   v3 = [(MediaControlsMaterialViewInvertColorsAccessibility *)self safeUIViewForKey:@"_backgroundView"];
-  v6 = [v3 layer];
+  layer = [v3 layer];
 
-  if (v6)
+  if (layer)
   {
     if (UIAccessibilityIsInvertColorsEnabled())
     {

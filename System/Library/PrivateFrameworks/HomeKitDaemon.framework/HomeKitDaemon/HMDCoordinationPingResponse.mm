@@ -1,22 +1,22 @@
 @interface HMDCoordinationPingResponse
-- (HMDCoordinationPingResponse)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HMDCoordinationPingResponse)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDCoordinationPingResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = HMDCoordinationPingResponse;
-  [(COMeshResponse *)&v3 encodeWithCoder:a3];
+  [(COMeshResponse *)&v3 encodeWithCoder:coder];
 }
 
-- (HMDCoordinationPingResponse)initWithCoder:(id)a3
+- (HMDCoordinationPingResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = HMDCoordinationPingResponse;
-  return [(COMeshResponse *)&v4 initWithCoder:a3];
+  return [(COMeshResponse *)&v4 initWithCoder:coder];
 }
 
 @end

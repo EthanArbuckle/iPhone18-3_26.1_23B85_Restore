@@ -1,22 +1,22 @@
 @interface ICASAttachmentUTIItemData
-- (ICASAttachmentUTIItemData)initWithUti:(id)a3 countOfAttachments:(id)a4;
+- (ICASAttachmentUTIItemData)initWithUti:(id)uti countOfAttachments:(id)attachments;
 - (id)toDict;
 @end
 
 @implementation ICASAttachmentUTIItemData
 
-- (ICASAttachmentUTIItemData)initWithUti:(id)a3 countOfAttachments:(id)a4
+- (ICASAttachmentUTIItemData)initWithUti:(id)uti countOfAttachments:(id)attachments
 {
-  v7 = a3;
-  v8 = a4;
+  utiCopy = uti;
+  attachmentsCopy = attachments;
   v12.receiver = self;
   v12.super_class = ICASAttachmentUTIItemData;
   v9 = [(ICASAttachmentUTIItemData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_uti, a3);
-    objc_storeStrong(&v10->_countOfAttachments, a4);
+    objc_storeStrong(&v9->_uti, uti);
+    objc_storeStrong(&v10->_countOfAttachments, attachments);
   }
 
   return v10;
@@ -40,19 +40,19 @@
   v5 = v4;
   v12[1] = @"countOfAttachments";
   v13[0] = v4;
-  v6 = [(ICASAttachmentUTIItemData *)self countOfAttachments];
-  if (v6)
+  countOfAttachments = [(ICASAttachmentUTIItemData *)self countOfAttachments];
+  if (countOfAttachments)
   {
-    v7 = [(ICASAttachmentUTIItemData *)self countOfAttachments];
+    countOfAttachments2 = [(ICASAttachmentUTIItemData *)self countOfAttachments];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    countOfAttachments2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v13[1] = v7;
+  v8 = countOfAttachments2;
+  v13[1] = countOfAttachments2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v10 = *MEMORY[0x277D85DE8];

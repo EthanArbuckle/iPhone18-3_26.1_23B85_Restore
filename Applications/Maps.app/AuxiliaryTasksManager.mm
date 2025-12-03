@@ -1,11 +1,11 @@
 @interface AuxiliaryTasksManager
-- (AuxiliaryTasksManager)initWithPlatformController:(id)a3;
+- (AuxiliaryTasksManager)initWithPlatformController:(id)controller;
 - (NSArray)tasks;
 - (PlatformController)platformController;
 - (RoutePlanningSessionRouteLoadedNotifier)routePlanningSessionRouteLoadedNotifier;
 - (VehicleDisambiguationTask)vehicleDisambiguationTask;
-- (id)auxilaryTaskForClass:(Class)a3;
-- (void)addTasks:(id)a3;
+- (id)auxilaryTaskForClass:(Class)class;
+- (void)addTasks:(id)tasks;
 @end
 
 @implementation AuxiliaryTasksManager
@@ -31,16 +31,16 @@
   return [(AuxiliaryTasksManager *)self auxilaryTaskForClass:v3];
 }
 
-- (id)auxilaryTaskForClass:(Class)a3
+- (id)auxilaryTaskForClass:(Class)class
 {
-  v4 = [(AuxiliaryTasksManager *)self auxiliaryTasks];
-  objc_sync_enter(v4);
+  auxiliaryTasks = [(AuxiliaryTasksManager *)self auxiliaryTasks];
+  objc_sync_enter(auxiliaryTasks);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(AuxiliaryTasksManager *)self auxiliaryTasks];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  auxiliaryTasks2 = [(AuxiliaryTasksManager *)self auxiliaryTasks];
+  v6 = [auxiliaryTasks2 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -50,7 +50,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(auxiliaryTasks2);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -61,7 +61,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [auxiliaryTasks2 countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -74,25 +74,25 @@
   v10 = 0;
 LABEL_11:
 
-  objc_sync_exit(v4);
+  objc_sync_exit(auxiliaryTasks);
 
   return v10;
 }
 
-- (void)addTasks:(id)a3
+- (void)addTasks:(id)tasks
 {
-  v4 = a3;
-  v5 = [(AuxiliaryTasksManager *)self auxiliaryTasks];
-  objc_sync_enter(v5);
-  v6 = [(AuxiliaryTasksManager *)self auxiliaryTasks];
-  [v6 addObjectsFromArray:v4];
+  tasksCopy = tasks;
+  auxiliaryTasks = [(AuxiliaryTasksManager *)self auxiliaryTasks];
+  objc_sync_enter(auxiliaryTasks);
+  auxiliaryTasks2 = [(AuxiliaryTasksManager *)self auxiliaryTasks];
+  [auxiliaryTasks2 addObjectsFromArray:tasksCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(auxiliaryTasks);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v4;
+  v7 = tasksCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -108,8 +108,8 @@ LABEL_11:
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
-        v12 = [(AuxiliaryTasksManager *)self platformController];
-        [v12 registerObserver:v11];
+        platformController = [(AuxiliaryTasksManager *)self platformController];
+        [platformController registerObserver:v11];
 
         v10 = v10 + 1;
       }
@@ -127,26 +127,26 @@ LABEL_11:
 
 - (NSArray)tasks
 {
-  v3 = [(AuxiliaryTasksManager *)self auxiliaryTasks];
-  objc_sync_enter(v3);
-  v4 = [(AuxiliaryTasksManager *)self auxiliaryTasks];
-  v5 = [v4 copy];
+  auxiliaryTasks = [(AuxiliaryTasksManager *)self auxiliaryTasks];
+  objc_sync_enter(auxiliaryTasks);
+  auxiliaryTasks2 = [(AuxiliaryTasksManager *)self auxiliaryTasks];
+  v5 = [auxiliaryTasks2 copy];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(auxiliaryTasks);
 
   return v5;
 }
 
-- (AuxiliaryTasksManager)initWithPlatformController:(id)a3
+- (AuxiliaryTasksManager)initWithPlatformController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = AuxiliaryTasksManager;
   v5 = [(AuxiliaryTasksManager *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_platformController, v4);
+    objc_storeWeak(&v5->_platformController, controllerCopy);
     v7 = +[NSMutableArray array];
     auxiliaryTasks = v6->_auxiliaryTasks;
     v6->_auxiliaryTasks = v7;

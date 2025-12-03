@@ -1,50 +1,50 @@
 @interface PKPushableExternalOfferCredentialProvisioningViewController
 - (PKPushableCredentialProvisioningViewControllerCoordinator)coordinator;
-- (PKPushableExternalOfferCredentialProvisioningViewController)initWithContext:(int64_t)a3 credential:(id)a4 reporter:(id)a5;
-- (id)_provisioningErrorWithNumberOfPassesFailed:(int64_t)a3 error:(id)a4;
+- (PKPushableExternalOfferCredentialProvisioningViewController)initWithContext:(int64_t)context credential:(id)credential reporter:(id)reporter;
+- (id)_provisioningErrorWithNumberOfPassesFailed:(int64_t)failed error:(id)error;
 - (void)_loadPassThumbnail;
 - (void)_setContinueButtonText;
 - (void)_setTitleAndBodyText;
 - (void)_showExitingLostModeUI;
 - (void)_startProvisioning;
-- (void)_terminateSetupFlowWithPasses:(id)a3 error:(id)a4;
+- (void)_terminateSetupFlowWithPasses:(id)passes error:(id)error;
 - (void)cancelButtonPressed;
 - (void)continueButtonPressed;
-- (void)didTransitionTo:(int64_t)a3 loading:(BOOL)a4;
-- (void)setPassThumbnailImage:(id)a3;
+- (void)didTransitionTo:(int64_t)to loading:(BOOL)loading;
+- (void)setPassThumbnailImage:(id)image;
 - (void)showLoadingUI;
 - (void)showStartingUI;
 - (void)showSuccessUI;
-- (void)showWithProvisioningError:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)showWithProvisioningError:(id)error;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPushableExternalOfferCredentialProvisioningViewController
 
-- (PKPushableExternalOfferCredentialProvisioningViewController)initWithContext:(int64_t)a3 credential:(id)a4 reporter:(id)a5
+- (PKPushableExternalOfferCredentialProvisioningViewController)initWithContext:(int64_t)context credential:(id)credential reporter:(id)reporter
 {
-  v9 = a4;
-  v10 = a5;
+  credentialCopy = credential;
+  reporterCopy = reporter;
   v15.receiver = self;
   v15.super_class = PKPushableExternalOfferCredentialProvisioningViewController;
   v11 = [(PKPassShareRedemptionViewController *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    v11->_context = a3;
-    objc_storeStrong(&v11->_credential, a4);
-    objc_storeStrong(&v12->_reporter, a5);
+    v11->_context = context;
+    objc_storeStrong(&v11->_credential, credential);
+    objc_storeStrong(&v12->_reporter, reporter);
     v12->_isRunningInForeground = 1;
     v12->_autoProvision = 1;
-    v13 = [(PKPaymentExternalOfferCredential *)v12->_credential cardType];
-    if (v13 <= 4)
+    cardType = [(PKPaymentExternalOfferCredential *)v12->_credential cardType];
+    if (cardType <= 4)
     {
-      a5 = **(&unk_1E8015430 + v13);
+      reporter = **(&unk_1E8015430 + cardType);
     }
 
-    [(PKProvisioningAnalyticsSessionUIReporter *)v12->_reporter setProductType:a5 subtype:0];
+    [(PKProvisioningAnalyticsSessionUIReporter *)v12->_reporter setProductType:reporter subtype:0];
   }
 
   return v12;
@@ -68,11 +68,11 @@
   [(PKPushableExternalOfferCredentialProvisioningViewController *)self _loadPassThumbnail];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPushableExternalOfferCredentialProvisioningViewController;
-  [(PKPaymentSetupOptionsViewController *)&v4 viewDidAppear:a3];
+  [(PKPaymentSetupOptionsViewController *)&v4 viewDidAppear:appear];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
   if (self->_autoProvision)
   {
@@ -81,11 +81,11 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKPushableExternalOfferCredentialProvisioningViewController;
-  [(PKPushableExternalOfferCredentialProvisioningViewController *)&v4 viewDidDisappear:a3];
+  [(PKPushableExternalOfferCredentialProvisioningViewController *)&v4 viewDidDisappear:disappear];
   if ([(PKPushableExternalOfferCredentialProvisioningViewController *)self isMovingFromParentViewController])
   {
     [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter resetProductTypes];
@@ -129,11 +129,11 @@
 
 - (void)_loadPassThumbnail
 {
-  v3 = [(PKPassShareRedemptionViewController *)self cardHeaderView];
-  [v3 showLoadingContent];
-  v4 = [(PKPaymentExternalOfferCredential *)self->_credential passThumbnailImageURL];
+  cardHeaderView = [(PKPassShareRedemptionViewController *)self cardHeaderView];
+  [cardHeaderView showLoadingContent];
+  passThumbnailImageURL = [(PKPaymentExternalOfferCredential *)self->_credential passThumbnailImageURL];
   v5 = PKUIImageNamed(@"PlaceholderCardArt_Large");
-  if (v4)
+  if (passThumbnailImageURL)
   {
     objc_initWeak(&location, self);
     v6[0] = MEMORY[0x1E69E9820];
@@ -142,7 +142,7 @@
     v6[3] = &unk_1E8015410;
     objc_copyWeak(&v8, &location);
     v7 = v5;
-    PKCommonCachedImageFromURL(v4, v6);
+    PKCommonCachedImageFromURL(passThumbnailImageURL, v6);
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -168,14 +168,14 @@ void __81__PKPushableExternalOfferCredentialProvisioningViewController__loadPass
   [WeakRetained setPassThumbnailImage:v6];
 }
 
-- (void)setPassThumbnailImage:(id)a3
+- (void)setPassThumbnailImage:(id)image
 {
-  objc_storeStrong(&self->_passThumbnailImage, a3);
-  v5 = a3;
-  v6 = [(PKPassShareRedemptionViewController *)self cardHeaderView];
-  [v6 setCardImage:self->_passThumbnailImage];
+  objc_storeStrong(&self->_passThumbnailImage, image);
+  imageCopy = image;
+  cardHeaderView = [(PKPassShareRedemptionViewController *)self cardHeaderView];
+  [cardHeaderView setCardImage:self->_passThumbnailImage];
 
-  [v6 hideLoadingContent];
+  [cardHeaderView hideLoadingContent];
 }
 
 - (void)showStartingUI
@@ -229,21 +229,21 @@ void __81__PKPushableExternalOfferCredentialProvisioningViewController__loadPass
   [v3 subject:v4 sendEvent:v5];
 
   [(PKPaymentSetupOptionsViewController *)self setShowHeaderSpinner:0];
-  v6 = [(PKPaymentSetupOptionsViewController *)self headerView];
-  [v6 setShowCheckmark:1];
+  headerView = [(PKPaymentSetupOptionsViewController *)self headerView];
+  [headerView setShowCheckmark:1];
 
   v7 = PKLocalizedPaymentOffersString(&cfstr_ProvisionCardA.isa);
   [(PKPaymentSetupOptionsViewController *)self setTitleText:v7];
 }
 
-- (void)showWithProvisioningError:(id)a3
+- (void)showWithProvisioningError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (([v4 hasLocalizedTitleAndMessage] & 1) == 0)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (([errorCopy hasLocalizedTitleAndMessage] & 1) == 0)
   {
-    v6 = [v4 underlyingError];
-    v5 = [(PKPushableExternalOfferCredentialProvisioningViewController *)self _provisioningErrorWithNumberOfPassesFailed:1 error:v6];
+    underlyingError = [errorCopy underlyingError];
+    v5 = [(PKPushableExternalOfferCredentialProvisioningViewController *)self _provisioningErrorWithNumberOfPassesFailed:1 error:underlyingError];
   }
 
   v8[4] = self;
@@ -256,7 +256,7 @@ void __81__PKPushableExternalOfferCredentialProvisioningViewController__loadPass
   v8[1] = 3221225472;
   v8[2] = __89__PKPushableExternalOfferCredentialProvisioningViewController_showWithProvisioningError___block_invoke_3;
   v8[3] = &unk_1E8010970;
-  v7 = [MEMORY[0x1E69DC650] alertForErrorWithError:v4 acknowledgeButtonText:0 exitButtonText:0 onAcknowledge:&__block_literal_global_56 onExit:v9 onTryAgain:v8];
+  v7 = [MEMORY[0x1E69DC650] alertForErrorWithError:errorCopy acknowledgeButtonText:0 exitButtonText:0 onAcknowledge:&__block_literal_global_56 onExit:v9 onTryAgain:v8];
   [(PKPushableExternalOfferCredentialProvisioningViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
@@ -274,11 +274,11 @@ void __89__PKPushableExternalOfferCredentialProvisioningViewController_showWithP
   [WeakRetained cancel];
 }
 
-- (void)didTransitionTo:(int64_t)a3 loading:(BOOL)a4
+- (void)didTransitionTo:(int64_t)to loading:(BOOL)loading
 {
-  if (a4)
+  if (loading)
   {
-    if (a3 == 1)
+    if (to == 1)
     {
       [(PKPushableExternalOfferCredentialProvisioningViewController *)self _showExitingLostModeUI];
       return;
@@ -289,7 +289,7 @@ LABEL_7:
     return;
   }
 
-  if (a3 == 8)
+  if (to == 8)
   {
     [(PKPushableExternalOfferCredentialProvisioningViewController *)self showSuccessUI];
     return;
@@ -303,30 +303,30 @@ LABEL_7:
   [(PKPushableExternalOfferCredentialProvisioningViewController *)self showStartingUI];
 }
 
-- (void)_terminateSetupFlowWithPasses:(id)a3 error:(id)a4
+- (void)_terminateSetupFlowWithPasses:(id)passes error:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  passesCopy = passes;
+  errorCopy = error;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v17 = [v6 count];
+    v17 = [passesCopy count];
     v18 = 2112;
-    v19 = v7;
+    v19 = errorCopy;
     _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "Pushable External Offer Credential VC - Terminating setup flow with passes: %lu error: %@", buf, 0x16u);
   }
 
-  v9 = [(PKPassShareRedemptionViewController *)self analyticsReporter];
-  if (v7)
+  analyticsReporter = [(PKPassShareRedemptionViewController *)self analyticsReporter];
+  if (errorCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = v6 == 0;
+    v10 = passesCopy == 0;
   }
 
   v14 = *MEMORY[0x1E69BB5D0];
@@ -342,18 +342,18 @@ LABEL_7:
 
   v15 = *v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-  [v9 sendEventForPage:2 error:v7 specifics:{v12, v14}];
+  [analyticsReporter sendEventForPage:2 error:errorCopy specifics:{v12, v14}];
 
   WeakRetained = objc_loadWeakRetained(&self->_coordinator);
-  [WeakRetained pushableViewController:self didFailWithError:v7];
+  [WeakRetained pushableViewController:self didFailWithError:errorCopy];
 }
 
-- (id)_provisioningErrorWithNumberOfPassesFailed:(int64_t)a3 error:(id)a4
+- (id)_provisioningErrorWithNumberOfPassesFailed:(int64_t)failed error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v16 = 1;
-  v7 = [(PKPushableExternalOfferCredentialProvisioningViewController *)self _accessPassType];
-  v8 = PKAddSEPassDisplayableError(v6, a3, v7, &v16);
+  _accessPassType = [(PKPushableExternalOfferCredentialProvisioningViewController *)self _accessPassType];
+  v8 = PKAddSEPassDisplayableError(errorCopy, failed, _accessPassType, &v16);
   v9 = v8;
   if (v8)
   {
@@ -362,7 +362,7 @@ LABEL_7:
 
   else
   {
-    v10 = PKAddSEPassGenericDisplayableError(a3, v7);
+    v10 = PKAddSEPassGenericDisplayableError(failed, _accessPassType);
   }
 
   v11 = v10;
@@ -384,7 +384,7 @@ LABEL_7:
 
   else
   {
-    v13 = v6;
+    v13 = errorCopy;
   }
 
   v14 = [MEMORY[0x1E69B90E8] errorWithUnderlyingError:v13 defaultSeverity:v12];

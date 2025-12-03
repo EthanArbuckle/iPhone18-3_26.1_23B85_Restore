@@ -1,27 +1,27 @@
 @interface FPDKnownFolderAlertPresenter
 - (BOOL)presentAlertWithUserAprovalToContinue;
-- (FPDKnownFolderAlertPresenter)initWithProviderDomain:(id)a3;
+- (FPDKnownFolderAlertPresenter)initWithProviderDomain:(id)domain;
 @end
 
 @implementation FPDKnownFolderAlertPresenter
 
-- (FPDKnownFolderAlertPresenter)initWithProviderDomain:(id)a3
+- (FPDKnownFolderAlertPresenter)initWithProviderDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v11.receiver = self;
   v11.super_class = FPDKnownFolderAlertPresenter;
   v5 = [(FPDKnownFolderAlertPresenter *)&v11 init];
   if (v5)
   {
-    v6 = [v4 domainFullDisplayName];
+    domainFullDisplayName = [domainCopy domainFullDisplayName];
     providerDisplayName = v5->_providerDisplayName;
-    v5->_providerDisplayName = v6;
+    v5->_providerDisplayName = domainFullDisplayName;
 
-    v8 = [v4 topLevelBundleIdentifier];
+    topLevelBundleIdentifier = [domainCopy topLevelBundleIdentifier];
     providerBundleIdentifier = v5->_providerBundleIdentifier;
-    v5->_providerBundleIdentifier = v8;
+    v5->_providerBundleIdentifier = topLevelBundleIdentifier;
 
-    v5->_isiCloudDriveProvider = [v4 isiCloudDriveProvider];
+    v5->_isiCloudDriveProvider = [domainCopy isiCloudDriveProvider];
   }
 
   return v5;

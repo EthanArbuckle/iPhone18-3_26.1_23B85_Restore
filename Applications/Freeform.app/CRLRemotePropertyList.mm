@@ -1,21 +1,21 @@
 @interface CRLRemotePropertyList
 - (CRLRemotePropertyList)init;
-- (CRLRemotePropertyList)initWithRemoteURL:(id)a3 localURL:(id)a4;
+- (CRLRemotePropertyList)initWithRemoteURL:(id)l localURL:(id)rL;
 - (double)timeIntervalUntilNextUpdate;
-- (id)URLForKey:(id)a3;
+- (id)URLForKey:(id)key;
 - (id)URLRequest;
-- (id)arrayForKey:(id)a3;
-- (id)dictionaryForKey:(id)a3;
-- (id)objectForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (void)checkForUpdateWithCompletionHandler:(id)a3;
+- (id)arrayForKey:(id)key;
+- (id)dictionaryForKey:(id)key;
+- (id)objectForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (void)checkForUpdateWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)processDidResume:(id)a3;
-- (void)processPropertyList:(id)a3;
-- (void)processResponse:(id)a3 data:(id)a4 error:(id)a5;
-- (void)processWillSuspend:(id)a3;
+- (void)processDidResume:(id)resume;
+- (void)processPropertyList:(id)list;
+- (void)processResponse:(id)response data:(id)data error:(id)error;
+- (void)processWillSuspend:(id)suspend;
 - (void)startUpdateTimer;
-- (void)updateIfNeededWithCompletionHandler:(id)a3;
+- (void)updateIfNeededWithCompletionHandler:(id)handler;
 @end
 
 @implementation CRLRemotePropertyList
@@ -118,26 +118,26 @@
   objc_exception_throw(v10);
 }
 
-- (CRLRemotePropertyList)initWithRemoteURL:(id)a3 localURL:(id)a4
+- (CRLRemotePropertyList)initWithRemoteURL:(id)l localURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v30.receiver = self;
   v30.super_class = CRLRemotePropertyList;
   v8 = [(CRLRemotePropertyList *)&v30 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     remoteURL = v8->_remoteURL;
     v8->_remoteURL = v9;
 
-    v11 = [v7 copy];
+    v11 = [rLCopy copy];
     localURL = v8->_localURL;
     v8->_localURL = v11;
 
-    if (v7)
+    if (rLCopy)
     {
-      if (([v7 isFileURL] & 1) == 0)
+      if (([rLCopy isFileURL] & 1) == 0)
       {
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -166,7 +166,7 @@
         [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:52 isFatal:0 description:"Local URL should be a file URL."];
       }
 
-      v16 = [[NSDictionary alloc] initWithContentsOfURL:v7];
+      v16 = [[NSDictionary alloc] initWithContentsOfURL:rLCopy];
       propertyList = v8->_propertyList;
       v8->_propertyList = v16;
     }
@@ -212,7 +212,7 @@
   [(CRLRemotePropertyList *)&v5 dealloc];
 }
 
-- (void)processWillSuspend:(id)a3
+- (void)processWillSuspend:(id)suspend
 {
   updateTimer = self->_updateTimer;
   if (updateTimer)
@@ -223,7 +223,7 @@
   }
 }
 
-- (void)processDidResume:(id)a3
+- (void)processDidResume:(id)resume
 {
   if (!self->_updateTimer)
   {
@@ -231,23 +231,23 @@
   }
 }
 
-- (void)updateIfNeededWithCompletionHandler:(id)a3
+- (void)updateIfNeededWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   checkQueue = self->_checkQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100580A70;
   v7[3] = &unk_10183FC10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(checkQueue, v7);
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -259,10 +259,10 @@
   block[1] = 3221225472;
   block[2] = sub_100580BD0;
   block[3] = &unk_10183DE60;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[5];
 
@@ -271,20 +271,20 @@
   return v7;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v6 = [(CRLRemotePropertyList *)self objectForKey:v4];
+  v6 = [(CRLRemotePropertyList *)self objectForKey:keyCopy];
 
   v7 = sub_100014370(v5, v6);
 
   return v7;
 }
 
-- (id)URLForKey:(id)a3
+- (id)URLForKey:(id)key
 {
-  v3 = [(CRLRemotePropertyList *)self objectForKey:a3];
+  v3 = [(CRLRemotePropertyList *)self objectForKey:key];
   v4 = objc_opt_class();
   v5 = sub_100014370(v4, v3);
   if (v5)
@@ -315,32 +315,32 @@
   return v5;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v6 = [(CRLRemotePropertyList *)self objectForKey:v4];
+  v6 = [(CRLRemotePropertyList *)self objectForKey:keyCopy];
 
   v7 = sub_100014370(v5, v6);
 
   return v7;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v6 = [(CRLRemotePropertyList *)self objectForKey:v4];
+  v6 = [(CRLRemotePropertyList *)self objectForKey:keyCopy];
 
   v7 = sub_100014370(v5, v6);
 
   return v7;
 }
 
-- (void)checkForUpdateWithCompletionHandler:(id)a3
+- (void)checkForUpdateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CRLRemotePropertyList *)self URLRequest];
+  handlerCopy = handler;
+  uRLRequest = [(CRLRemotePropertyList *)self URLRequest];
   dispatch_suspend(self->_checkQueue);
   +[UIApplication sharedApplication];
   v11 = _NSConcreteStackBlock;
@@ -348,13 +348,13 @@
   v13 = sub_100580F9C;
   v14 = &unk_101870340;
   v16 = v15 = self;
-  v17 = v4;
+  v17 = handlerCopy;
   v18 = [v16 beginBackgroundTaskWithExpirationHandler:0];
-  v6 = v4;
+  v6 = handlerCopy;
   v7 = v16;
   v8 = objc_retainBlock(&v11);
   v9 = [NSURLSession sharedSession:v11];
-  v10 = [v9 dataTaskWithRequest:v5 completionHandler:v8];
+  v10 = [v9 dataTaskWithRequest:uRLRequest completionHandler:v8];
 
   [v10 resume];
 }
@@ -388,14 +388,14 @@
   return v11;
 }
 
-- (void)processResponse:(id)a3 data:(id)a4 error:(id)a5
+- (void)processResponse:(id)response data:(id)data error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 statusCode];
-  v12 = v11;
-  if (v11 == 304 || v11 == 200)
+  responseCopy = response;
+  dataCopy = data;
+  errorCopy = error;
+  statusCode = [responseCopy statusCode];
+  v12 = statusCode;
+  if (statusCode == 304 || statusCode == 200)
   {
     v13 = +[NSUserDefaults standardUserDefaults];
     v14 = [NSDate dateWithTimeIntervalSinceNow:86400.0];
@@ -404,17 +404,17 @@
     v17 = [v16 stringByAppendingString:@"NextUpdate"];
     [v13 setObject:v14 forKey:v17];
 
-    if (v12 == 200 && [v9 length])
+    if (v12 == 200 && [dataCopy length])
     {
       v26 = 0;
-      v18 = [(CRLRemotePropertyList *)self deserializePropertyListData:v9 error:&v26];
+      v18 = [(CRLRemotePropertyList *)self deserializePropertyListData:dataCopy error:&v26];
       v19 = v26;
 
       if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         [(CRLRemotePropertyList *)self processPropertyList:v18];
-        v20 = [v8 allHeaderFields];
-        v21 = [v20 objectForKey:@"Etag"];
+        allHeaderFields = [responseCopy allHeaderFields];
+        v21 = [allHeaderFields objectForKey:@"Etag"];
 
         v22 = objc_opt_class();
         v23 = NSStringFromClass(v22);
@@ -441,19 +441,19 @@
 
     else
     {
-      v19 = v10;
+      v19 = errorCopy;
     }
 
-    v10 = v19;
+    errorCopy = v19;
   }
 }
 
-- (void)processPropertyList:(id)a3
+- (void)processPropertyList:(id)list
 {
-  v4 = a3;
-  v5 = v4;
+  listCopy = list;
+  v5 = listCopy;
   localURL = self->_localURL;
-  if (localURL && ([v4 writeToURL:localURL atomically:0] & 1) == 0)
+  if (localURL && ([listCopy writeToURL:localURL atomically:0] & 1) == 0)
   {
     if (qword_101AD5A08 != -1)
     {

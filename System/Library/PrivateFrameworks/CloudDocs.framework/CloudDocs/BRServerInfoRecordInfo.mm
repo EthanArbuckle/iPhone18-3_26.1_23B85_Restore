@@ -1,12 +1,12 @@
 @interface BRServerInfoRecordInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BRServerInfoRecordInfo
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = BRServerInfoRecordInfo;
   v4 = [(BRServerInfoRecordInfo *)&v8 description];
-  v5 = [(BRServerInfoRecordInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BRServerInfoRecordInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   recordID = self->_recordID;
   if (recordID)
   {
-    [v3 setObject:recordID forKey:@"recordID"];
+    [dictionary setObject:recordID forKey:@"recordID"];
   }
 
   etag = self->_etag;
@@ -78,125 +78,125 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_recordID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_etag)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_encryptedBasename)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     bounceNo = self->_bounceNo;
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_extension)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_recordProtectionInfo)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_zoneName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_zoneProtectionInfo)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_recordID)
   {
-    [v4 setRecordID:?];
-    v4 = v5;
+    [toCopy setRecordID:?];
+    toCopy = v5;
   }
 
   if (self->_etag)
   {
     [v5 setEtag:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_encryptedBasename)
   {
     [v5 setEncryptedBasename:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_bounceNo;
-    *(v4 + 72) |= 1u;
+    *(toCopy + 1) = self->_bounceNo;
+    *(toCopy + 72) |= 1u;
   }
 
   if (self->_extension)
   {
     [v5 setExtension:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_recordProtectionInfo)
   {
     [v5 setRecordProtectionInfo:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_zoneName)
   {
     [v5 setZoneName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_zoneProtectionInfo)
   {
     [v5 setZoneProtectionInfo:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_recordID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_recordID copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
-  v8 = [(NSString *)self->_etag copyWithZone:a3];
+  v8 = [(NSString *)self->_etag copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSData *)self->_encryptedBasename copyWithZone:a3];
+  v10 = [(NSData *)self->_encryptedBasename copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
@@ -206,35 +206,35 @@
     *(v5 + 72) |= 1u;
   }
 
-  v12 = [(NSString *)self->_extension copyWithZone:a3];
+  v12 = [(NSString *)self->_extension copyWithZone:zone];
   v13 = *(v5 + 32);
   *(v5 + 32) = v12;
 
-  v14 = [(NSData *)self->_recordProtectionInfo copyWithZone:a3];
+  v14 = [(NSData *)self->_recordProtectionInfo copyWithZone:zone];
   v15 = *(v5 + 48);
   *(v5 + 48) = v14;
 
-  v16 = [(NSString *)self->_zoneName copyWithZone:a3];
+  v16 = [(NSString *)self->_zoneName copyWithZone:zone];
   v17 = *(v5 + 56);
   *(v5 + 56) = v16;
 
-  v18 = [(NSData *)self->_zoneProtectionInfo copyWithZone:a3];
+  v18 = [(NSData *)self->_zoneProtectionInfo copyWithZone:zone];
   v19 = *(v5 + 64);
   *(v5 + 64) = v18;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   recordID = self->_recordID;
-  if (recordID | *(v4 + 5))
+  if (recordID | *(equalCopy + 5))
   {
     if (![(NSString *)recordID isEqual:?])
     {
@@ -243,7 +243,7 @@
   }
 
   etag = self->_etag;
-  if (etag | *(v4 + 3))
+  if (etag | *(equalCopy + 3))
   {
     if (![(NSString *)etag isEqual:?])
     {
@@ -252,7 +252,7 @@
   }
 
   encryptedBasename = self->_encryptedBasename;
-  if (encryptedBasename | *(v4 + 2))
+  if (encryptedBasename | *(equalCopy + 2))
   {
     if (![(NSData *)encryptedBasename isEqual:?])
     {
@@ -260,16 +260,16 @@
     }
   }
 
-  v8 = *(v4 + 72);
+  v8 = *(equalCopy + 72);
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_bounceNo != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_bounceNo != *(equalCopy + 1))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
 LABEL_21:
     v13 = 0;
@@ -277,13 +277,13 @@ LABEL_21:
   }
 
   extension = self->_extension;
-  if (extension | *(v4 + 4) && ![(NSString *)extension isEqual:?])
+  if (extension | *(equalCopy + 4) && ![(NSString *)extension isEqual:?])
   {
     goto LABEL_21;
   }
 
   recordProtectionInfo = self->_recordProtectionInfo;
-  if (recordProtectionInfo | *(v4 + 6))
+  if (recordProtectionInfo | *(equalCopy + 6))
   {
     if (![(NSData *)recordProtectionInfo isEqual:?])
     {
@@ -292,7 +292,7 @@ LABEL_21:
   }
 
   zoneName = self->_zoneName;
-  if (zoneName | *(v4 + 7))
+  if (zoneName | *(equalCopy + 7))
   {
     if (![(NSString *)zoneName isEqual:?])
     {
@@ -301,7 +301,7 @@ LABEL_21:
   }
 
   zoneProtectionInfo = self->_zoneProtectionInfo;
-  if (zoneProtectionInfo | *(v4 + 8))
+  if (zoneProtectionInfo | *(equalCopy + 8))
   {
     v13 = [(NSData *)zoneProtectionInfo isEqual:?];
   }
@@ -338,56 +338,56 @@ LABEL_22:
   return v10 ^ [(NSData *)self->_zoneProtectionInfo hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[5])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[5])
   {
     [(BRServerInfoRecordInfo *)self setRecordID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(BRServerInfoRecordInfo *)self setEtag:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(BRServerInfoRecordInfo *)self setEncryptedBasename:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[9])
+  if (fromCopy[9])
   {
-    self->_bounceNo = v4[1];
+    self->_bounceNo = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(BRServerInfoRecordInfo *)self setExtension:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[6])
+  if (fromCopy[6])
   {
     [(BRServerInfoRecordInfo *)self setRecordProtectionInfo:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[7])
+  if (fromCopy[7])
   {
     [(BRServerInfoRecordInfo *)self setZoneName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[8])
+  if (fromCopy[8])
   {
     [(BRServerInfoRecordInfo *)self setZoneProtectionInfo:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

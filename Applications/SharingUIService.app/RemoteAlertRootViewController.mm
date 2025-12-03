@@ -1,11 +1,11 @@
 @interface RemoteAlertRootViewController
-- (_TtC16SharingUIServiceP33_65937B382845EE4CD6EFBB00702BD9F229RemoteAlertRootViewController)initWithCoder:(id)a3;
-- (_TtC16SharingUIServiceP33_65937B382845EE4CD6EFBB00702BD9F229RemoteAlertRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC16SharingUIServiceP33_65937B382845EE4CD6EFBB00702BD9F229RemoteAlertRootViewController)initWithCoder:(id)coder;
+- (_TtC16SharingUIServiceP33_65937B382845EE4CD6EFBB00702BD9F229RemoteAlertRootViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation RemoteAlertRootViewController
 
-- (_TtC16SharingUIServiceP33_65937B382845EE4CD6EFBB00702BD9F229RemoteAlertRootViewController)initWithCoder:(id)a3
+- (_TtC16SharingUIServiceP33_65937B382845EE4CD6EFBB00702BD9F229RemoteAlertRootViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -13,7 +13,7 @@
   return result;
 }
 
-- (_TtC16SharingUIServiceP33_65937B382845EE4CD6EFBB00702BD9F229RemoteAlertRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16SharingUIServiceP33_65937B382845EE4CD6EFBB00702BD9F229RemoteAlertRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

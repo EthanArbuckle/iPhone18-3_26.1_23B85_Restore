@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_CopyStickerConfidenceScoreToAssetTable
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_CopyStickerConfidenceScoreToAssetTable
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v107[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v68 = 0;
   v69 = &v68;
   v70 = 0x2020000000;
@@ -52,7 +52,7 @@
   v54[1] = 3221225472;
   v54[2] = __109__PLModelMigrationAction_CopyStickerConfidenceScoreToAssetTable_performActionWithManagedObjectContext_error___block_invoke;
   v54[3] = &unk_1E7575B30;
-  v21 = v6;
+  v21 = contextCopy;
   v55 = v21;
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
@@ -85,8 +85,8 @@
       goto LABEL_17;
     }
 
-    v26 = [(PLModelMigrationActionCore *)self logger];
-    v27 = v26 == 0;
+    logger = [(PLModelMigrationActionCore *)self logger];
+    v27 = logger == 0;
 
     if (!v27)
     {
@@ -164,8 +164,8 @@ LABEL_10:
       goto LABEL_17;
     }
 
-    v35 = [(PLModelMigrationActionCore *)self logger];
-    v36 = v35 == 0;
+    logger2 = [(PLModelMigrationActionCore *)self logger];
+    v36 = logger2 == 0;
 
     if (!v36)
     {
@@ -240,9 +240,9 @@ LABEL_10:
 
 LABEL_17:
   [(PLModelMigrationActionCore *)self finalizeProgress];
-  if (a4)
+  if (error)
   {
-    *a4 = v63[5];
+    *error = v63[5];
   }
 
   v48 = v69[3];

@@ -1,10 +1,10 @@
 @interface MessageToSuper_FILE_Frame
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8;
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation MessageToSuper_FILE_Frame
 
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
   v8 = IMCopyNormalizedAttributes();
   v61 = [v8 _stringForKey:@"name"];
@@ -19,9 +19,9 @@
     v13 = [objc_msgSend(v8 _stringForKey:{@"iris", "length"}];
     v62 = [v8 mutableCopy];
     [v62 removeObjectsForKeys:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", @"width", @"height", @"inline-file", @"datasize", 0)}];
-    v45 = [v9 integerValue];
-    v44 = [v10 integerValue];
-    v43 = [v12 integerValue];
+    integerValue = [v9 integerValue];
+    integerValue2 = [v10 integerValue];
+    integerValue3 = [v12 integerValue];
     v57 = v13;
     if (!v13)
     {
@@ -151,13 +151,13 @@ LABEL_18:
 
       if (!v57)
       {
-        [a4 appendInlineImageWithGUID:v36 filename:v61 width:v45 height:v44 isAnimoji:v43 isAdaptiveImageGlyph:v34 != 0];
+        [context appendInlineImageWithGUID:v36 filename:v61 width:integerValue height:integerValue2 isAnimoji:integerValue3 isAdaptiveImageGlyph:v34 != 0];
       }
 
       goto LABEL_51;
     }
 
-    v14 = [objc_msgSend(a4 "fileTransferGUIDs")];
+    v14 = [objc_msgSend(context "fileTransferGUIDs")];
     v15 = [+[IMDFileTransferCenter sharedInstance](IMDFileTransferCenter transferForGUID:"transferForGUID:", v14];
     if (v15)
     {

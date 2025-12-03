@@ -3,38 +3,38 @@
 + (void)load;
 - (CAFSymbolNotificationUserActions)symbolNotificationUserActionsValue;
 - (id)formattedValue;
-- (void)setSymbolNotificationUserActionsValue:(id)a3;
+- (void)setSymbolNotificationUserActionsValue:(id)value;
 @end
 
 @implementation CAFSymbolNotificationUserActionsCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFSymbolNotificationUserActionsCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (CAFSymbolNotificationUserActions)symbolNotificationUserActionsValue
 {
-  v2 = [(CAFArrayCharacteristic *)self arrayValue];
-  v3 = [CAFSymbolNotificationUserActions symbolNotificationUserActionsWithArray:v2];
+  arrayValue = [(CAFArrayCharacteristic *)self arrayValue];
+  v3 = [CAFSymbolNotificationUserActions symbolNotificationUserActionsWithArray:arrayValue];
 
   return v3;
 }
 
-- (void)setSymbolNotificationUserActionsValue:(id)a3
+- (void)setSymbolNotificationUserActionsValue:(id)value
 {
-  v4 = [a3 arrayRepresentation];
-  [(CAFArrayCharacteristic *)self setArrayValue:v4];
+  arrayRepresentation = [value arrayRepresentation];
+  [(CAFArrayCharacteristic *)self setArrayValue:arrayRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFSymbolNotificationUserActionsCharacteristic *)self symbolNotificationUserActionsValue];
-  v3 = [v2 formattedValue];
+  symbolNotificationUserActionsValue = [(CAFSymbolNotificationUserActionsCharacteristic *)self symbolNotificationUserActionsValue];
+  formattedValue = [symbolNotificationUserActionsValue formattedValue];
 
-  return v3;
+  return formattedValue;
 }
 
 + (id)secondaryCharacteristicFormats

@@ -1,27 +1,27 @@
 @interface TSCEFunction_GEOMEAN
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
-+ (id)geometricMeanOfVector:(id)a3 context:(id)a4 functionSpec:(id)a5 argumentIndex:(int)a6 criteria:(id)a7;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
++ (id)geometricMeanOfVector:(id)vector context:(id)context functionSpec:(id)spec argumentIndex:(int)index criteria:(id)criteria;
 @end
 
 @implementation TSCEFunction_GEOMEAN
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v7 = **a5;
+  v7 = **arguments;
   v23 = 0;
-  v8 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v7, a2, a3, a4, 0, 1, &v23);
+  v8 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v7, a2, context, spec, 0, 1, &v23);
   v12 = v23;
   if (v12)
   {
-    v13 = objc_msgSend_raiseErrorOrConvert_(a3, v9, v12, v10, v11);
+    v13 = objc_msgSend_raiseErrorOrConvert_(context, v9, v12, v10, v11);
   }
 
   else
   {
-    v13 = objc_msgSend_geometricMeanOfVector_context_functionSpec_argumentIndex_criteria_(TSCEFunction_GEOMEAN, v9, v8, a3, a4, 0, 0);
+    v13 = objc_msgSend_geometricMeanOfVector_context_functionSpec_argumentIndex_criteria_(TSCEFunction_GEOMEAN, v9, v8, context, spec, 0, 0);
     if (v8)
     {
-      objc_msgSend_formatWithContext_(v8, v14, a3, v15, v16);
+      objc_msgSend_formatWithContext_(v8, v14, context, v15, v16);
     }
 
     else
@@ -36,19 +36,19 @@
   return v13;
 }
 
-+ (id)geometricMeanOfVector:(id)a3 context:(id)a4 functionSpec:(id)a5 argumentIndex:(int)a6 criteria:(id)a7
++ (id)geometricMeanOfVector:(id)vector context:(id)context functionSpec:(id)spec argumentIndex:(int)index criteria:(id)criteria
 {
-  v161 = a3;
-  v11 = a4;
-  v12 = a7;
+  vectorCopy = vector;
+  contextCopy = context;
+  criteriaCopy = criteria;
   v17 = objc_msgSend_zero(TSCENumberValue, v13, v14, v15, v16);
   v160 = objc_msgSend_zero(TSCENumberValue, v18, v19, v20, v21);
-  v26 = objc_msgSend_count(v161, v22, v23, v24, v25);
-  v31 = v11;
+  v26 = objc_msgSend_count(vectorCopy, v22, v23, v24, v25);
+  v31 = contextCopy;
   v165[0] = v31;
-  v165[1] = a5;
+  v165[1] = spec;
   v166 = 0;
-  v167 = a6;
+  indexCopy = index;
   v168[0] = 0;
   *(v168 + 3) = 0;
   v169 = vdupq_n_s64(0x7FFF7FFFFFFFuLL);
@@ -63,18 +63,18 @@ LABEL_31:
     goto LABEL_39;
   }
 
-  v155 = a6;
-  v156 = a5;
-  v154 = v11;
+  indexCopy2 = index;
+  specCopy = spec;
+  v154 = contextCopy;
   v32 = 0;
   v159 = 0;
   while (1)
   {
-    v33 = objc_msgSend_valueAtIndexPassesCriteria_index_criteria_(TSCEGridValue, v27, v165, v32, v12, v154);
+    v33 = objc_msgSend_valueAtIndexPassesCriteria_index_criteria_(TSCEGridValue, v27, v165, v32, criteriaCopy, v154);
     v42 = objc_msgSend_nilValue(TSCENilValue, v34, v35, v36, v37);
     if (v33)
     {
-      v43 = objc_msgSend_valueAtIndex_accessContext_(v161, v38, v32, v165, v41);
+      v43 = objc_msgSend_valueAtIndex_accessContext_(vectorCopy, v38, v32, v165, v41);
 
       if (objc_msgSend_isError(v43, v44, v45, v46, v47))
       {
@@ -161,7 +161,7 @@ LABEL_24:
   }
 
   v164 = 0;
-  v55 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v42, v52, v31, v156, v155, &v164);
+  v55 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v42, v52, v31, specCopy, indexCopy2, &v164);
   v60 = v164;
   if (v60)
   {
@@ -173,7 +173,7 @@ LABEL_24:
   if ((objc_msgSend_isFinite(v55, v56, v57, v58, v59) & 1) == 0)
   {
     v158 = v17;
-    v138 = objc_msgSend_functionName(v156, v61, v62, v63, v64);
+    v138 = objc_msgSend_functionName(specCopy, v61, v62, v63, v64);
     v142 = objc_msgSend_numberErrorForFunctionName_(TSCEError, v139, v138, v140, v141);
     v146 = objc_msgSend_raiseErrorOrConvert_(v31, v143, v142, v144, v145);
     goto LABEL_37;
@@ -216,7 +216,7 @@ LABEL_23:
   }
 
   v158 = v17;
-  v138 = objc_msgSend_functionName(v156, v65, v66, v67, v68);
+  v138 = objc_msgSend_functionName(specCopy, v65, v66, v67, v68);
   v142 = objc_msgSend_mismatchedUnitsErrorForFunctionName_(TSCEError, v147, v138, v148, v149);
   v146 = objc_msgSend_raiseErrorOrConvert_(v31, v150, v142, v151, v152);
 LABEL_37:

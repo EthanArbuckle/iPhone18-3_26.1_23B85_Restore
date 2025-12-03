@@ -8,15 +8,15 @@
 - (void)clearPolicy;
 - (void)evaluateChargingPolicy;
 - (void)handleTestDefaultsChange;
-- (void)handleXPCEvent:(id)a3;
+- (void)handleXPCEvent:(id)event;
 - (void)logToPowerlog;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)recordMobileChargerAttach;
 - (void)registerForTestDefaultsChange;
 - (void)restoreFromDefaults;
 - (void)saveToDefaults;
 - (void)start;
-- (void)updateChargingPolicyWithTemperature:(unint64_t)a3 andPower:(unint64_t)a4;
+- (void)updateChargingPolicyWithTemperature:(unint64_t)temperature andPower:(unint64_t)power;
 @end
 
 @implementation MobileChargingController
@@ -35,25 +35,25 @@
 
 - (void)evaluateChargingPolicy
 {
-  v3 = [(MobileChargingController *)self queue];
+  queue = [(MobileChargingController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100014A64;
   block[3] = &unk_10002C738;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)recordMobileChargerAttach
 {
-  v3 = [(MobileChargingController *)self deviceContext];
-  v4 = [v3 objectForKeyedSubscript:@"kMobileChargerContext"];
-  v5 = [v4 BOOLValue];
+  deviceContext = [(MobileChargingController *)self deviceContext];
+  v4 = [deviceContext objectForKeyedSubscript:@"kMobileChargerContext"];
+  bOOLValue = [v4 BOOLValue];
 
-  v6 = [(MobileChargingController *)self mobileChargerAttached];
-  if (v5)
+  mobileChargerAttached = [(MobileChargingController *)self mobileChargerAttached];
+  if (bOOLValue)
   {
-    if ((v6 & 1) == 0)
+    if ((mobileChargerAttached & 1) == 0)
     {
       [(MobileChargingController *)self setMobileChargerAttached:1];
       v7 = +[NSDate now];
@@ -71,7 +71,7 @@ LABEL_8:
     }
   }
 
-  else if (v6)
+  else if (mobileChargerAttached)
   {
     [(MobileChargingController *)self setMobileChargerAttached:0];
     [(MobileChargingController *)self setAttachTime:0];
@@ -140,18 +140,18 @@ LABEL_8:
 
 - (void)start
 {
-  v3 = [(MobileChargingController *)self queue];
+  queue = [(MobileChargingController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000145BC;
   block[3] = &unk_10002C738;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = [(MobileChargingController *)self queue:a3];
+  v7 = [(MobileChargingController *)self queue:path];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000146CC;
@@ -162,36 +162,36 @@ LABEL_8:
 
 - (BOOL)inPocket
 {
-  v2 = [(MobileChargingController *)self deviceContext];
-  v3 = [v2 objectForKeyedSubscript:@"kInPocketContext"];
-  v4 = [v3 BOOLValue];
+  deviceContext = [(MobileChargingController *)self deviceContext];
+  v3 = [deviceContext objectForKeyedSubscript:@"kInPocketContext"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)emergencyCharge
 {
-  v2 = [(MobileChargingController *)self deviceContext];
-  v3 = [v2 objectForKeyedSubscript:@"kBatteryLevelContext"];
-  v4 = [v3 intValue];
+  deviceContext = [(MobileChargingController *)self deviceContext];
+  v3 = [deviceContext objectForKeyedSubscript:@"kBatteryLevelContext"];
+  intValue = [v3 intValue];
 
-  return v4 < 20;
+  return intValue < 20;
 }
 
 - (BOOL)boostMode
 {
-  v3 = [(MobileChargingController *)self deviceContext];
-  v4 = [v3 objectForKeyedSubscript:@"kBatteryLevelContext"];
-  v5 = [v4 intValue];
+  deviceContext = [(MobileChargingController *)self deviceContext];
+  v4 = [deviceContext objectForKeyedSubscript:@"kBatteryLevelContext"];
+  intValue = [v4 intValue];
 
-  if (v5 > 79)
+  if (intValue > 79)
   {
     return 0;
   }
 
   v6 = +[NSDate now];
-  v7 = [(MobileChargingController *)self attachTime];
-  [v6 timeIntervalSinceDate:v7];
+  attachTime = [(MobileChargingController *)self attachTime];
+  [v6 timeIntervalSinceDate:attachTime];
   v9 = v8;
 
   v10 = qword_100036C98;
@@ -210,44 +210,44 @@ LABEL_8:
 
 - (BOOL)activeUse
 {
-  v3 = [(MobileChargingController *)self deviceContext];
-  v4 = [v3 currentContext];
+  deviceContext = [(MobileChargingController *)self deviceContext];
+  currentContext = [deviceContext currentContext];
 
-  v5 = [(MobileChargingController *)self resourceManager];
-  v6 = [v5 resourceHints];
+  resourceManager = [(MobileChargingController *)self resourceManager];
+  resourceHints = [resourceManager resourceHints];
 
-  v7 = [v4 objectForKeyedSubscript:@"kLockStateContext"];
-  v8 = [v7 BOOLValue];
+  v7 = [currentContext objectForKeyedSubscript:@"kLockStateContext"];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [v6 objectForKeyedSubscript:@"Display"];
+  v9 = [resourceHints objectForKeyedSubscript:@"Display"];
   v10 = [v9 state] != 101;
-  v11 = [v6 objectForKeyedSubscript:@"CarPlay"];
+  v11 = [resourceHints objectForKeyedSubscript:@"CarPlay"];
 
-  v12 = [v11 state];
-  v13 = [v6 objectForKeyedSubscript:@"Camera"];
+  state = [v11 state];
+  v13 = [resourceHints objectForKeyedSubscript:@"Camera"];
 
-  v14 = [v13 state];
-  v15 = [v6 objectForKeyedSubscript:@"PersonalHotspot"];
+  state2 = [v13 state];
+  v15 = [resourceHints objectForKeyedSubscript:@"PersonalHotspot"];
 
-  v16 = [v15 state];
-  v18 = v14 == 1 || v16 == 1;
-  if (v12 == 1)
+  state3 = [v15 state];
+  v18 = state2 == 1 || state3 == 1;
+  if (state == 1)
   {
     v18 = 1;
   }
 
-  v19 = ((v10 | v8) & 1) == 0 || v18;
+  v19 = ((v10 | bOOLValue) & 1) == 0 || v18;
 
   return v19;
 }
 
-- (void)updateChargingPolicyWithTemperature:(unint64_t)a3 andPower:(unint64_t)a4
+- (void)updateChargingPolicyWithTemperature:(unint64_t)temperature andPower:(unint64_t)power
 {
-  v7 = [(MobileChargingController *)self smcHelper];
-  [v7 updateCLTMMobileChargingPolicy:a3];
+  smcHelper = [(MobileChargingController *)self smcHelper];
+  [smcHelper updateCLTMMobileChargingPolicy:temperature];
 
-  v8 = [(MobileChargingController *)self smcHelper];
-  [v8 updateInductiveChargingPowerPolicy:a4];
+  smcHelper2 = [(MobileChargingController *)self smcHelper];
+  [smcHelper2 updateInductiveChargingPowerPolicy:power];
 }
 
 - (void)clearPolicy
@@ -294,15 +294,15 @@ LABEL_8:
   v10 = [NSNumber numberWithUnsignedInteger:[(MobileChargingController *)self currentChargingOption]];
   v18[1] = v10;
   v17[2] = @"ChargingScenarioDescription";
-  v11 = [(MobileChargingController *)self chargingScenario];
-  if (v11 - 1 > 4)
+  chargingScenario = [(MobileChargingController *)self chargingScenario];
+  if (chargingScenario - 1 > 4)
   {
     v12 = @"MobileChargingScenarioNone";
   }
 
   else
   {
-    v12 = *(&off_10002CBC0 + v11 - 1);
+    v12 = *(&off_10002CBC0 + chargingScenario - 1);
   }
 
   v18[2] = v12;
@@ -314,14 +314,14 @@ LABEL_8:
   v18[4] = v14;
   v15 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:5];
 
-  v16 = [(MobileChargingController *)self defaults];
-  [v16 setValue:v15 forKey:@"MobileChargingMode"];
+  defaults = [(MobileChargingController *)self defaults];
+  [defaults setValue:v15 forKey:@"MobileChargingMode"];
 }
 
 - (void)restoreFromDefaults
 {
-  v3 = [(MobileChargingController *)self defaults];
-  v4 = [v3 objectForKey:@"MobileChargingMode"];
+  defaults = [(MobileChargingController *)self defaults];
+  v4 = [defaults objectForKey:@"MobileChargingMode"];
 
   if (v4)
   {
@@ -358,8 +358,8 @@ LABEL_8:
 
   if (self->_chargingScenario == 4)
   {
-    v9 = [(MobileChargingController *)self defaults];
-    v10 = [v9 objectForKey:@"timestamp"];
+    defaults2 = [(MobileChargingController *)self defaults];
+    v10 = [defaults2 objectForKey:@"timestamp"];
 
     [(MobileChargingController *)self setAttachTime:v10];
     [(MobileChargingController *)self boostModeMaxEngagement];
@@ -383,13 +383,13 @@ LABEL_8:
       }
 
       v16 = dispatch_time(0, (v13 * 1000000000.0));
-      v17 = [(MobileChargingController *)self queue];
+      queue = [(MobileChargingController *)self queue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1000155BC;
       block[3] = &unk_10002C738;
       block[4] = self;
-      dispatch_after(v16, v17, block);
+      dispatch_after(v16, queue, block);
     }
   }
 }
@@ -425,17 +425,17 @@ LABEL_8:
   }
 }
 
-- (void)handleXPCEvent:(id)a3
+- (void)handleXPCEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100015834;
   v7[3] = &unk_10002C698;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = eventCopy;
+  selfCopy = self;
+  v6 = eventCopy;
   dispatch_async(queue, v7);
 }
 
@@ -458,8 +458,8 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Test defaults have changed", v8, 2u);
   }
 
-  v4 = [(MobileChargingController *)self testDefaults];
-  v5 = [v4 objectForKey:@"testDefaults"];
+  testDefaults = [(MobileChargingController *)self testDefaults];
+  v5 = [testDefaults objectForKey:@"testDefaults"];
 
   v6 = [v5 objectForKeyedSubscript:@"boostModeEnagementDuration"];
 

@@ -6,10 +6,10 @@
 - (int64_t)immediateGain;
 - (void)enableOption;
 - (void)performAdditionalAction;
-- (void)setActivationPercent:(float)a3;
-- (void)setEventualGain:(int64_t)a3;
-- (void)setImmediateGain:(int64_t)a3;
-- (void)setValue:(id)a3 specifier:(id)a4;
+- (void)setActivationPercent:(float)percent;
+- (void)setEventualGain:(int64_t)gain;
+- (void)setImmediateGain:(int64_t)gain;
+- (void)setValue:(id)value specifier:(id)specifier;
 @end
 
 @implementation STStorageOptionTip
@@ -35,8 +35,8 @@
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained enableOptionForTip:self];
 
-  v4 = [MEMORY[0x277D69958] sharedNotifier];
-  [v4 postAppsStateChanged:0];
+  mEMORY[0x277D69958] = [MEMORY[0x277D69958] sharedNotifier];
+  [mEMORY[0x277D69958] postAppsStateChanged:0];
 }
 
 - (void)performAdditionalAction
@@ -51,24 +51,24 @@
   }
 }
 
-- (void)setValue:(id)a3 specifier:(id)a4
+- (void)setValue:(id)value specifier:(id)specifier
 {
-  v18 = [(STStorageOptionTip *)self confirmationText:a3];
+  v18 = [(STStorageOptionTip *)self confirmationText:value];
   if ([v18 length])
   {
-    v5 = [(STStorageOptionTip *)self confirmationButtonTitle];
-    v6 = v5;
-    if (v5)
+    confirmationButtonTitle = [(STStorageOptionTip *)self confirmationButtonTitle];
+    v6 = confirmationButtonTitle;
+    if (confirmationButtonTitle)
     {
-      v7 = v5;
+      title = confirmationButtonTitle;
     }
 
     else
     {
-      v7 = [(STStorageTip *)self title];
+      title = [(STStorageTip *)self title];
     }
 
-    v8 = v7;
+    v8 = title;
 
     v9 = STFrameworkLocStr(@"ST_CANCEL");
     v10 = objc_alloc_init(MEMORY[0x277D3F9C8]);
@@ -83,20 +83,20 @@
 
     objc_storeWeak(&v10[*MEMORY[0x277D3FCB8]], self);
     [v10 setConfirmationAction:sel_enableOption];
-    v13 = [(STStorageOptionTip *)self additionalButtonTitle];
-    v14 = [v13 length];
+    additionalButtonTitle = [(STStorageOptionTip *)self additionalButtonTitle];
+    v14 = [additionalButtonTitle length];
 
     if (v14)
     {
-      v15 = [(STStorageOptionTip *)self additionalButtonTitle];
-      [v10 setAlternateButton:v15];
+      additionalButtonTitle2 = [(STStorageOptionTip *)self additionalButtonTitle];
+      [v10 setAlternateButton:additionalButtonTitle2];
 
       [v10 setConfirmationAlternateAction:sel_performAdditionalAction];
     }
 
     v16 = [(STStorageTip *)self propertyForKey:@"_stController"];
-    v17 = [v16 pointerValue];
-    [v17 showConfirmationViewForSpecifier:v10];
+    pointerValue = [v16 pointerValue];
+    [pointerValue showConfirmationViewForSpecifier:v10];
   }
 
   else
@@ -105,12 +105,12 @@
   }
 }
 
-- (void)setActivationPercent:(float)a3
+- (void)setActivationPercent:(float)percent
 {
   [(STStorageOptionTip *)self activationPercent];
-  if (*&v5 != a3)
+  if (*&v5 != percent)
   {
-    *&v5 = a3;
+    *&v5 = percent;
     v6 = [MEMORY[0x277CCABB0] numberWithFloat:v5];
     [(STStorageTip *)self setProperty:v6 forKey:@"stPercent"];
   }
@@ -127,30 +127,30 @@
 
 - (int64_t)immediateGain
 {
-  v2 = [(STStorageTip *)self specifier];
-  v3 = [v2 propertyForKey:@"stImmediateGain"];
-  v4 = [v3 longLongValue];
+  specifier = [(STStorageTip *)self specifier];
+  v3 = [specifier propertyForKey:@"stImmediateGain"];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
-- (void)setImmediateGain:(int64_t)a3
+- (void)setImmediateGain:(int64_t)gain
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:gain];
   [(STStorageTip *)self setProperty:v4 forKey:@"stImmediateGain"];
 }
 
 - (int64_t)eventualGain
 {
   v2 = [(STStorageTip *)self propertyForKey:@"stEventualGain"];
-  v3 = [v2 longLongValue];
+  longLongValue = [v2 longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
-- (void)setEventualGain:(int64_t)a3
+- (void)setEventualGain:(int64_t)gain
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:gain];
   [(STStorageTip *)self setProperty:v4 forKey:@"stEventualGain"];
 }
 

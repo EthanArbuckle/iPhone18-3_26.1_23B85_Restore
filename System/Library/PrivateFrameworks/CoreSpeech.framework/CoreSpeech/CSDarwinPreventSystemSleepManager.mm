@@ -1,7 +1,7 @@
 @interface CSDarwinPreventSystemSleepManager
-- (CSDarwinPreventSystemSleepManager)initWithTimeout:(double)a3;
-- (CSDarwinPreventSystemSleepManager)initWithTimeout:(double)a3 preferences:(id)a4;
-- (void)_acquirePreventSystemSleepAssertionWithTimeout:(id)a3;
+- (CSDarwinPreventSystemSleepManager)initWithTimeout:(double)timeout;
+- (CSDarwinPreventSystemSleepManager)initWithTimeout:(double)timeout preferences:(id)preferences;
+- (void)_acquirePreventSystemSleepAssertionWithTimeout:(id)timeout;
 - (void)acquireAssertion;
 - (void)acquireAssertionForActiveUser;
 - (void)acquireAssertionForIdleUser;
@@ -29,13 +29,13 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s ", &v17, 0xCu);
   }
 
-  v4 = [(CSFPreferences *)self->_preferences getIdleUserPreventSleepAssertionAcquitionDate];
-  if (v4)
+  getIdleUserPreventSleepAssertionAcquitionDate = [(CSFPreferences *)self->_preferences getIdleUserPreventSleepAssertionAcquitionDate];
+  if (getIdleUserPreventSleepAssertionAcquitionDate)
   {
     v5 = +[NSDate date];
     [v5 timeIntervalSinceReferenceDate];
     v7 = v6;
-    [v4 timeIntervalSinceReferenceDate];
+    [getIdleUserPreventSleepAssertionAcquitionDate timeIntervalSinceReferenceDate];
     v9 = v7 - v8;
     v10 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -43,7 +43,7 @@
       v17 = 136315906;
       v18 = "[CSDarwinPreventSystemSleepManager acquireAssertionForIdleUser]";
       v19 = 2112;
-      v20 = v4;
+      v20 = getIdleUserPreventSleepAssertionAcquitionDate;
       v21 = 2112;
       v22 = v5;
       v23 = 2048;
@@ -118,13 +118,13 @@
   self->_preventSystemSleepPowerAssertion = 0;
 }
 
-- (void)_acquirePreventSystemSleepAssertionWithTimeout:(id)a3
+- (void)_acquirePreventSystemSleepAssertionWithTimeout:(id)timeout
 {
-  v4 = a3;
+  timeoutCopy = timeout;
   v5 = [CSPreventSystemSleepPowerAssertion alloc];
-  v6 = [v4 unsignedLongLongValue];
+  unsignedLongLongValue = [timeoutCopy unsignedLongLongValue];
 
-  v7 = [(CSPreventSystemSleepPowerAssertion *)v5 initWithTimeOut:v6];
+  v7 = [(CSPreventSystemSleepPowerAssertion *)v5 initWithTimeOut:unsignedLongLongValue];
   v8 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -138,25 +138,25 @@
   self->_preventSystemSleepPowerAssertion = v7;
 }
 
-- (CSDarwinPreventSystemSleepManager)initWithTimeout:(double)a3
+- (CSDarwinPreventSystemSleepManager)initWithTimeout:(double)timeout
 {
   v5 = +[CSFPreferences sharedPreferences];
-  v6 = [(CSDarwinPreventSystemSleepManager *)self initWithTimeout:v5 preferences:a3];
+  v6 = [(CSDarwinPreventSystemSleepManager *)self initWithTimeout:v5 preferences:timeout];
 
   return v6;
 }
 
-- (CSDarwinPreventSystemSleepManager)initWithTimeout:(double)a3 preferences:(id)a4
+- (CSDarwinPreventSystemSleepManager)initWithTimeout:(double)timeout preferences:(id)preferences
 {
-  v7 = a4;
+  preferencesCopy = preferences;
   v11.receiver = self;
   v11.super_class = CSDarwinPreventSystemSleepManager;
   v8 = [(CSDarwinPreventSystemSleepManager *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_assertionTimeoutInterval = a3;
-    objc_storeStrong(&v8->_preferences, a4);
+    v8->_assertionTimeoutInterval = timeout;
+    objc_storeStrong(&v8->_preferences, preferences);
   }
 
   return v9;

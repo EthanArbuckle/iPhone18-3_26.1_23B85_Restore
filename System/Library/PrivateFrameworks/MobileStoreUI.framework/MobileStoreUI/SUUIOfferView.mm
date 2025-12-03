@@ -1,34 +1,34 @@
 @interface SUUIOfferView
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4;
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)_shouldHideNoticesWithBuyButtonDescriptor:(id)a3 context:(id)a4;
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringForButton:(id)button context:(id)context;
++ (id)_attributedStringForLabel:(id)label context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)_shouldHideNoticesWithBuyButtonDescriptor:(id)descriptor context:(id)context;
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)offerViewStateDescription;
-- (SUUIOfferView)initWithFrame:(CGRect)a3;
+- (SUUIOfferView)initWithFrame:(CGRect)frame;
 - (SUUIOfferViewDelegate)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_buttonAction:(id)a3;
-- (void)_cancelConfirmationAction:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_buttonAction:(id)action;
+- (void)_cancelConfirmationAction:(id)action;
 - (void)_sendWillAnimate;
-- (void)_showConfirmationAction:(id)a3;
-- (void)itemOfferButtonDidAnimateTransition:(id)a3;
-- (void)itemOfferButtonWillAnimateTransition:(id)a3;
+- (void)_showConfirmationAction:(id)action;
+- (void)itemOfferButtonDidAnimateTransition:(id)transition;
+- (void)itemOfferButtonWillAnimateTransition:(id)transition;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
 @end
 
 @implementation SUUIOfferView
 
-- (SUUIOfferView)initWithFrame:(CGRect)a3
+- (SUUIOfferView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = SUUIOfferView;
-  v3 = [(SUUIViewReuseView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIViewReuseView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:517 valueOptions:0 capacity:0];
@@ -52,38 +52,38 @@
 
 - (NSString)offerViewStateDescription
 {
-  v3 = [(SUUIOfferView *)self offerButtonViews];
-  v4 = [v3 count];
+  offerButtonViews = [(SUUIOfferView *)self offerButtonViews];
+  v4 = [offerButtonViews count];
 
   if (v4 == 1)
   {
-    v5 = [(SUUIOfferView *)self offerButtonViews];
-    v6 = [v5 firstObject];
+    offerButtonViews2 = [(SUUIOfferView *)self offerButtonViews];
+    firstObject = [offerButtonViews2 firstObject];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 offerButtonStateDescription];
+      offerButtonStateDescription = [firstObject offerButtonStateDescription];
     }
 
     else
     {
-      v7 = &stru_286AECDE0;
+      offerButtonStateDescription = &stru_286AECDE0;
     }
   }
 
   else
   {
-    v7 = &stru_286AECDE0;
+    offerButtonStateDescription = &stru_286AECDE0;
   }
 
-  return v7;
+  return offerButtonStateDescription;
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -92,15 +92,15 @@
   v11[1] = 3221225472;
   v11[2] = __64__SUUIOfferView_prefetchResourcesForViewElement_reason_context___block_invoke;
   v11[3] = &unk_2798F5E50;
-  v9 = v8;
+  v9 = contextCopy;
   v13 = &v15;
-  v14 = a4;
+  reasonCopy = reason;
   v12 = v9;
-  [v7 enumerateChildrenUsingBlock:v11];
-  LOBYTE(a4) = *(v16 + 24);
+  [elementCopy enumerateChildrenUsingBlock:v11];
+  LOBYTE(reason) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return a4;
+  return reason;
 }
 
 uint64_t __64__SUUIOfferView_prefetchResourcesForViewElement_reason_context___block_invoke(uint64_t a1, uint64_t a2)
@@ -110,12 +110,12 @@ uint64_t __64__SUUIOfferView_prefetchResourcesForViewElement_reason_context___bl
   return result;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  contextCopy = context;
+  elementCopy = element;
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v9 = v8;
   v11 = v10;
 
@@ -126,27 +126,27 @@ uint64_t __64__SUUIOfferView_prefetchResourcesForViewElement_reason_context___bl
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x2020000000;
-  *&v19[3] = a4;
-  v10 = [v9 labelLayoutCache];
+  *&v19[3] = width;
+  labelLayoutCache = [contextCopy labelLayoutCache];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __59__SUUIOfferView_requestLayoutForViewElement_width_context___block_invoke;
   v13[3] = &unk_2798F7B10;
-  v17 = a1;
-  v11 = v9;
+  selfCopy = self;
+  v11 = contextCopy;
   v14 = v11;
-  v12 = v10;
-  v18 = a4;
+  v12 = labelLayoutCache;
+  widthCopy = width;
   v15 = v12;
   v16 = v19;
-  [v8 enumerateChildrenUsingBlock:v13];
+  [elementCopy enumerateChildrenUsingBlock:v13];
 
   _Block_object_dispose(v19, 8);
 }
@@ -204,10 +204,10 @@ LABEL_12:
 LABEL_13:
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v9 = MEMORY[0x277CBF3A8];
   v66 = 0;
   v67 = &v66;
@@ -218,7 +218,7 @@ LABEL_13:
   v65[0] = 0;
   v65[1] = v65;
   v65[2] = 0x2020000000;
-  *&v65[3] = a3;
+  *&v65[3] = width;
   v61 = 0;
   v62 = &v61;
   v63 = 0x2020000000;
@@ -245,15 +245,15 @@ LABEL_13:
   v32[1] = 3221225472;
   v32[2] = __55__SUUIOfferView_sizeThatFitsWidth_viewElement_context___block_invoke;
   v32[3] = &unk_2798F7B38;
-  v10 = v8;
-  v42 = a3;
+  v10 = contextCopy;
+  widthCopy = width;
   v33 = v10;
   v35 = &v47;
   v36 = &v52;
   v37 = &v56;
   v38 = v65;
   v39 = &v61;
-  v11 = v7;
+  v11 = elementCopy;
   v34 = v11;
   v40 = &v43;
   v41 = &v66;
@@ -267,9 +267,9 @@ LABEL_13:
 
   else
   {
-    v15 = [v11 isCompactModeEnabled];
+    isCompactModeEnabled = [v11 isCompactModeEnabled];
     v14 = v57;
-    if (v15)
+    if (isCompactModeEnabled)
     {
       v57[4] = v67[4] + 10.0 + v57[4];
     }
@@ -308,13 +308,13 @@ LABEL_13:
   }
 
   v20 = v18 + v14[4] + v48[4];
-  if (v20 < a3)
+  if (v20 < width)
   {
-    a3 = v20;
+    width = v20;
   }
 
-  v21 = [v11 attributes];
-  v22 = [v21 objectForKey:@"supportsPlayButton"];
+  attributes = [v11 attributes];
+  v22 = [attributes objectForKey:@"supportsPlayButton"];
   if ([v22 BOOLValue])
   {
     v23 = *(v44 + 24);
@@ -325,8 +325,8 @@ LABEL_13:
       v25 = *&sizeThatFitsWidth_viewElement_context__sPlayButtonSize_1;
       if (*&sizeThatFitsWidth_viewElement_context__sPlayButtonSize_0 == v13 && *&sizeThatFitsWidth_viewElement_context__sPlayButtonSize_1 == v12)
       {
-        v26 = [MEMORY[0x277D75348] blackColor];
-        v27 = [SUUIItemOfferButton playImageWithTintColor:v26];
+        blackColor = [MEMORY[0x277D75348] blackColor];
+        v27 = [SUUIItemOfferButton playImageWithTintColor:blackColor];
         [v27 size];
         sizeThatFitsWidth_viewElement_context__sPlayButtonSize_0 = v28;
         sizeThatFitsWidth_viewElement_context__sPlayButtonSize_1 = v29;
@@ -335,7 +335,7 @@ LABEL_13:
         v25 = *&sizeThatFitsWidth_viewElement_context__sPlayButtonSize_1;
       }
 
-      a3 = a3 + v24 + 20.0;
+      width = width + v24 + 20.0;
       if (v25 >= v16)
       {
         v16 = v25;
@@ -355,10 +355,10 @@ LABEL_13:
   _Block_object_dispose(v65, 8);
   _Block_object_dispose(&v66, 8);
 
-  v30 = a3;
+  widthCopy2 = width;
   v31 = v16;
   result.height = v31;
-  result.width = v30;
+  result.width = widthCopy2;
   return result;
 }
 
@@ -506,34 +506,34 @@ LABEL_13:
 LABEL_31:
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SUUIOfferView *)self buttonElements];
-  [v10 removeAllObjects];
+  elementCopy = element;
+  contextCopy = context;
+  buttonElements = [(SUUIOfferView *)self buttonElements];
+  [buttonElements removeAllObjects];
 
-  v11 = [(SUUIOfferView *)self buyButtonDescriptorToButton];
-  [v11 removeAllObjects];
+  buyButtonDescriptorToButton = [(SUUIOfferView *)self buyButtonDescriptorToButton];
+  [buyButtonDescriptorToButton removeAllObjects];
 
-  v12 = [(SUUIOfferView *)self metadataViews];
-  [v12 removeAllObjects];
+  metadataViews = [(SUUIOfferView *)self metadataViews];
+  [metadataViews removeAllObjects];
 
-  v13 = [(SUUIOfferView *)self offerButtonViews];
-  [v13 removeAllObjects];
+  offerButtonViews = [(SUUIOfferView *)self offerButtonViews];
+  [offerButtonViews removeAllObjects];
 
   [(SUUIOfferView *)self setHlsID:0];
-  v14 = [(SUUIOfferView *)self hlsPlayButton];
-  [v14 removeFromSuperview];
+  hlsPlayButton = [(SUUIOfferView *)self hlsPlayButton];
+  [hlsPlayButton removeFromSuperview];
 
   [(SUUIOfferView *)self setHlsPlayButton:0];
   [(SUUIOfferView *)self setShowingConfirmation:0];
   [(SUUIOfferView *)self setNotices:0];
-  -[SUUIOfferView setCompactModeEnabled:](self, "setCompactModeEnabled:", [v8 isCompactModeEnabled]);
-  v15 = [v8 style];
-  v16 = [v15 elementAlignment];
+  -[SUUIOfferView setCompactModeEnabled:](self, "setCompactModeEnabled:", [elementCopy isCompactModeEnabled]);
+  style = [elementCopy style];
+  elementAlignment = [style elementAlignment];
 
-  if (v16 == 3)
+  if (elementAlignment == 3)
   {
     v17 = 3;
   }
@@ -548,12 +548,12 @@ LABEL_31:
   v20[1] = 3221225472;
   v20[2] = __53__SUUIOfferView_reloadWithViewElement_width_context___block_invoke;
   v20[3] = &unk_2798F5EF0;
-  v24 = a4;
-  v21 = v8;
-  v22 = v9;
-  v23 = self;
-  v18 = v9;
-  v19 = v8;
+  widthCopy = width;
+  v21 = elementCopy;
+  v22 = contextCopy;
+  selfCopy = self;
+  v18 = contextCopy;
+  v19 = elementCopy;
   [(SUUIViewReuseView *)self modifyUsingBlock:v20];
 }
 
@@ -864,19 +864,19 @@ LABEL_45:
   }
 }
 
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated
 {
-  v23 = a5;
+  animatedCopy = animated;
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v22 = a4;
-  v24 = [v22 clientContext];
+  stateCopy = state;
+  contextCopy = context;
+  clientContext = [contextCopy clientContext];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = [(SUUIOfferView *)self buyButtonDescriptorToButton];
-  v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  buyButtonDescriptorToButton = [(SUUIOfferView *)self buyButtonDescriptorToButton];
+  v9 = [buyButtonDescriptorToButton countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (!v9)
   {
 
@@ -894,26 +894,26 @@ LABEL_17:
     {
       if (*v26 != v12)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(buyButtonDescriptorToButton);
       }
 
       v14 = *(*(&v25 + 1) + 8 * i);
-      if ([v14 canPersonalizeUsingItemState:v7])
+      if ([v14 canPersonalizeUsingItemState:stateCopy])
       {
-        v15 = [(SUUIOfferView *)self buyButtonDescriptorToButton];
-        v16 = [v15 objectForKey:v14];
+        buyButtonDescriptorToButton2 = [(SUUIOfferView *)self buyButtonDescriptorToButton];
+        v16 = [buyButtonDescriptorToButton2 objectForKey:v14];
 
-        [v16 setValuesUsingBuyButtonDescriptor:v14 itemState:v7 clientContext:v24 animated:v23];
-        v17 = [(SUUIOfferView *)self notices];
+        [v16 setValuesUsingBuyButtonDescriptor:v14 itemState:stateCopy clientContext:clientContext animated:animatedCopy];
+        notices = [(SUUIOfferView *)self notices];
 
-        if (v17)
+        if (notices)
         {
-          v18 = [(SUUIOfferView *)self notices];
-          v19 = [v18 objectForKey:v16];
+          notices2 = [(SUUIOfferView *)self notices];
+          v19 = [notices2 objectForKey:v16];
 
           if (v19)
           {
-            [v19 setHidden:{-[SUUIOfferView _shouldHideNoticesWithBuyButtonDescriptor:context:](self, "_shouldHideNoticesWithBuyButtonDescriptor:context:", v14, v22)}];
+            [v19 setHidden:{-[SUUIOfferView _shouldHideNoticesWithBuyButtonDescriptor:context:](self, "_shouldHideNoticesWithBuyButtonDescriptor:context:", v14, contextCopy)}];
           }
         }
 
@@ -921,7 +921,7 @@ LABEL_17:
       }
     }
 
-    v10 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    v10 = [buyButtonDescriptorToButton countByEnumeratingWithState:&v25 objects:v29 count:16];
   }
 
   while (v10);
@@ -958,8 +958,8 @@ LABEL_18:
     v14 = v12 - v4 - v6;
     v142 = 0u;
     v143 = 0u;
-    v15 = [(SUUIOfferView *)self offerButtonViews];
-    v16 = [v15 countByEnumeratingWithState:&v140 objects:v147 count:16];
+    offerButtonViews = [(SUUIOfferView *)self offerButtonViews];
+    v16 = [offerButtonViews countByEnumeratingWithState:&v140 objects:v147 count:16];
     v17 = MEMORY[0x277CBF3A0];
     v127 = v11;
     if (v16)
@@ -975,7 +975,7 @@ LABEL_18:
         {
           if (*v141 != v20)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(offerButtonViews);
           }
 
           v24 = *(*(&v140 + 1) + 8 * i);
@@ -989,7 +989,7 @@ LABEL_18:
           }
         }
 
-        v18 = [v15 countByEnumeratingWithState:&v140 objects:v147 count:16];
+        v18 = [offerButtonViews countByEnumeratingWithState:&v140 objects:v147 count:16];
       }
 
       while (v18);
@@ -1025,8 +1025,8 @@ LABEL_18:
     v118 = v29;
     v138 = 0uLL;
     v139 = 0uLL;
-    v30 = [(SUUIOfferView *)self metadataViews];
-    v31 = [v30 countByEnumeratingWithState:&v136 objects:v146 count:16];
+    metadataViews = [(SUUIOfferView *)self metadataViews];
+    v31 = [metadataViews countByEnumeratingWithState:&v136 objects:v146 count:16];
     v32 = v126;
     if (v31)
     {
@@ -1040,7 +1040,7 @@ LABEL_18:
         {
           if (*v137 != v34)
           {
-            objc_enumerationMutation(v30);
+            objc_enumerationMutation(metadataViews);
           }
 
           v38 = *(*(&v136 + 1) + 8 * j);
@@ -1060,7 +1060,7 @@ LABEL_18:
           v28 = v28 + v41;
         }
 
-        v33 = [v30 countByEnumeratingWithState:&v136 objects:v146 count:16];
+        v33 = [metadataViews countByEnumeratingWithState:&v136 objects:v146 count:16];
       }
 
       while (v33);
@@ -1078,8 +1078,8 @@ LABEL_18:
     v133 = 0u;
     v134 = 0u;
     v135 = 0u;
-    v45 = [(SUUIOfferView *)self offerButtonViews];
-    v46 = [v45 countByEnumeratingWithState:&v132 objects:v145 count:16];
+    offerButtonViews2 = [(SUUIOfferView *)self offerButtonViews];
+    v46 = [offerButtonViews2 countByEnumeratingWithState:&v132 objects:v145 count:16];
     v47 = v124;
     if (v46)
     {
@@ -1107,7 +1107,7 @@ LABEL_18:
         {
           if (*v133 != v50)
           {
-            objc_enumerationMutation(v45);
+            objc_enumerationMutation(offerButtonViews2);
           }
 
           v52 = *(*(&v132 + 1) + 8 * k);
@@ -1125,8 +1125,8 @@ LABEL_18:
             v57 = (v127 - v55) * 0.5;
             v58 = floorf(v57);
             [v52 setFrame:{SUUIRectByApplyingStoreUserInterfaceLayoutDirectionInRect(v49, v58, v53, v55, v47, v125, v126, v127)}];
-            v59 = [(SUUIOfferView *)self notices];
-            v60 = [v59 objectForKey:v52];
+            notices = [(SUUIOfferView *)self notices];
+            v60 = [notices objectForKey:v52];
 
             v121 = v56;
             v123 = v54;
@@ -1134,7 +1134,7 @@ LABEL_18:
             if (v60)
             {
               v61 = v49;
-              v62 = [(SUUIOfferView *)self isCompactModeEnabled];
+              isCompactModeEnabled = [(SUUIOfferView *)self isCompactModeEnabled];
               [v60 sizeThatFits:{v54 + 10.0, 1.79769313e308}];
               v65 = v64;
               if (v63 >= v54 + 10.0)
@@ -1149,7 +1149,7 @@ LABEL_18:
 
               v115 = v66;
               v120 = v64;
-              if (v62)
+              if (isCompactModeEnabled)
               {
                 v149.origin.x = v49;
                 v149.origin.y = v58;
@@ -1290,7 +1290,7 @@ LABEL_18:
           }
         }
 
-        v48 = [v45 countByEnumeratingWithState:&v132 objects:v145 count:16];
+        v48 = [offerButtonViews2 countByEnumeratingWithState:&v132 objects:v145 count:16];
       }
 
       while (v48);
@@ -1300,8 +1300,8 @@ LABEL_18:
     v131 = 0u;
     v128 = 0u;
     v129 = 0u;
-    v95 = [(SUUIOfferView *)self metadataViews];
-    v96 = [v95 countByEnumeratingWithState:&v128 objects:v144 count:16];
+    metadataViews2 = [(SUUIOfferView *)self metadataViews];
+    v96 = [metadataViews2 countByEnumeratingWithState:&v128 objects:v144 count:16];
     if (v96)
     {
       v97 = v96;
@@ -1314,7 +1314,7 @@ LABEL_18:
         {
           if (*v129 != v100)
           {
-            objc_enumerationMutation(v95);
+            objc_enumerationMutation(metadataViews2);
           }
 
           v102 = *(*(&v128 + 1) + 8 * m);
@@ -1339,7 +1339,7 @@ LABEL_18:
           v99 = CGRectGetMaxY(v160);
         }
 
-        v97 = [v95 countByEnumeratingWithState:&v128 objects:v144 count:16];
+        v97 = [metadataViews2 countByEnumeratingWithState:&v128 objects:v144 count:16];
       }
 
       while (v97);
@@ -1347,10 +1347,10 @@ LABEL_18:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v62 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CBF3A8];
   v6 = *(MEMORY[0x277CBF3A8] + 8);
@@ -1358,8 +1358,8 @@ LABEL_18:
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v7 = [(SUUIOfferView *)self metadataViews];
-  v8 = [v7 countByEnumeratingWithState:&v56 objects:v61 count:16];
+  metadataViews = [(SUUIOfferView *)self metadataViews];
+  v8 = [metadataViews countByEnumeratingWithState:&v56 objects:v61 count:16];
   v9 = v6;
   v10 = v5;
   if (v8)
@@ -1374,7 +1374,7 @@ LABEL_18:
       {
         if (*v57 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(metadataViews);
         }
 
         [*(*(&v56 + 1) + 8 * i) sizeThatFits:{width, height}];
@@ -1385,7 +1385,7 @@ LABEL_18:
         }
       }
 
-      v11 = [v7 countByEnumeratingWithState:&v56 objects:v61 count:16];
+      v11 = [metadataViews countByEnumeratingWithState:&v56 objects:v61 count:16];
     }
 
     while (v11);
@@ -1395,8 +1395,8 @@ LABEL_18:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v16 = [(SUUIOfferView *)self offerButtonViews];
-  v17 = [v16 countByEnumeratingWithState:&v52 objects:v60 count:16];
+  offerButtonViews = [(SUUIOfferView *)self offerButtonViews];
+  v17 = [offerButtonViews countByEnumeratingWithState:&v52 objects:v60 count:16];
   v18 = v6;
   v19 = v5;
   v49 = v6;
@@ -1413,7 +1413,7 @@ LABEL_18:
       {
         if (*v53 != v21)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(offerButtonViews);
         }
 
         v23 = *(*(&v52 + 1) + 8 * j);
@@ -1424,16 +1424,16 @@ LABEL_18:
           v18 = v24;
         }
 
-        v27 = [(SUUIOfferView *)self notices];
-        v28 = [v27 objectForKey:v23];
+        notices = [(SUUIOfferView *)self notices];
+        v28 = [notices objectForKey:v23];
 
         if (v28)
         {
-          v29 = [(SUUIOfferView *)self isCompactModeEnabled];
+          isCompactModeEnabled = [(SUUIOfferView *)self isCompactModeEnabled];
           [v28 sizeThatFits:{v26, 1.79769313e308}];
           v32 = v6 >= v31 ? v6 : v31;
-          v6 = v29 ? v31 : v32;
-          if (v29)
+          v6 = isCompactModeEnabled ? v31 : v32;
+          if (isCompactModeEnabled)
           {
             v5 = v30;
           }
@@ -1442,7 +1442,7 @@ LABEL_18:
         v19 = v19 + v26 + 10.0;
       }
 
-      v20 = [v16 countByEnumeratingWithState:&v52 objects:v60 count:16];
+      v20 = [offerButtonViews countByEnumeratingWithState:&v52 objects:v60 count:16];
     }
 
     while (v20);
@@ -1465,11 +1465,11 @@ LABEL_18:
     }
   }
 
-  v34 = [(SUUIOfferView *)self offerButtonViews];
-  v35 = [v34 count];
+  offerButtonViews2 = [(SUUIOfferView *)self offerButtonViews];
+  v35 = [offerButtonViews2 count];
 
-  v36 = [(SUUIOfferView *)self metadataViews];
-  v37 = [v36 count];
+  metadataViews2 = [(SUUIOfferView *)self metadataViews];
+  v37 = [metadataViews2 count];
 
   v38 = v35 <= 0 || v37 == 0;
   v39 = v10 + v19 + 10.0;
@@ -1507,64 +1507,64 @@ LABEL_18:
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(SUUIOfferView *)self hlsPlayButton];
-  if (v8 && (v9 = v8, -[SUUIOfferView hlsPlayButton](self, "hlsPlayButton"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isEnabled], v10, v9, v11) && (-[SUUIOfferView hlsPlayButton](self, "hlsPlayButton"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "frame"), v24 = CGRectInset(v23, -10.0, -11.0), v13 = v24.origin.x, v14 = v24.origin.y, width = v24.size.width, height = v24.size.height, v12, v25.origin.x = v13, v25.origin.y = v14, v25.size.width = width, v25.size.height = height, v22.x = x, v22.y = y, CGRectContainsPoint(v25, v22)))
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  hlsPlayButton = [(SUUIOfferView *)self hlsPlayButton];
+  if (hlsPlayButton && (v9 = hlsPlayButton, -[SUUIOfferView hlsPlayButton](self, "hlsPlayButton"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isEnabled], v10, v9, v11) && (-[SUUIOfferView hlsPlayButton](self, "hlsPlayButton"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "frame"), v24 = CGRectInset(v23, -10.0, -11.0), v13 = v24.origin.x, v14 = v24.origin.y, width = v24.size.width, height = v24.size.height, v12, v25.origin.x = v13, v25.origin.y = v14, v25.size.width = width, v25.size.height = height, v22.x = x, v22.y = y, CGRectContainsPoint(v25, v22)))
   {
-    v17 = [(SUUIOfferView *)self hlsPlayButton];
+    hlsPlayButton2 = [(SUUIOfferView *)self hlsPlayButton];
   }
 
   else
   {
     v20.receiver = self;
     v20.super_class = SUUIOfferView;
-    v17 = [(SUUIOfferView *)&v20 hitTest:v7 withEvent:x, y];
+    hlsPlayButton2 = [(SUUIOfferView *)&v20 hitTest:eventCopy withEvent:x, y];
   }
 
-  v18 = v17;
+  v18 = hlsPlayButton2;
 
   return v18;
 }
 
-- (void)itemOfferButtonDidAnimateTransition:(id)a3
+- (void)itemOfferButtonDidAnimateTransition:(id)transition
 {
-  v6 = a3;
+  transitionCopy = transition;
   if ([(SUUIOfferView *)self isShowingConfirmation])
   {
-    v4 = [v6 isShowingConfirmation];
+    isShowingConfirmation = [transitionCopy isShowingConfirmation];
   }
 
   else
   {
-    v4 = 0;
+    isShowingConfirmation = 0;
   }
 
-  [(SUUIOfferView *)self setShowingConfirmation:v4];
-  v5 = [(SUUIOfferView *)self delegate];
+  [(SUUIOfferView *)self setShowingConfirmation:isShowingConfirmation];
+  delegate = [(SUUIOfferView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 offerViewDidAnimateTransition:self];
+    [delegate offerViewDidAnimateTransition:self];
   }
 }
 
-- (void)itemOfferButtonWillAnimateTransition:(id)a3
+- (void)itemOfferButtonWillAnimateTransition:(id)transition
 {
   v69 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUUIOfferView *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || [v5 offerViewAnimateTransition:self])
+  transitionCopy = transition;
+  delegate = [(SUUIOfferView *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || [delegate offerViewAnimateTransition:self])
   {
-    [v4 frame];
+    [transitionCopy frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(SUUIOfferView *)self offerButtonViews];
-    v15 = [v14 indexOfObjectIdenticalTo:v4];
+    offerButtonViews = [(SUUIOfferView *)self offerButtonViews];
+    v15 = [offerButtonViews indexOfObjectIdenticalTo:transitionCopy];
 
     if (v15 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1574,7 +1574,7 @@ LABEL_18:
       v70.size.width = v11;
       v70.size.height = v13;
       MaxX = CGRectGetMaxX(v70);
-      [v4 sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
+      [transitionCopy sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
       v19 = v18;
       v21 = v20;
       ShouldReverseLayoutDirection = storeShouldReverseLayoutDirection();
@@ -1585,9 +1585,9 @@ LABEL_18:
           v7 = MaxX - v19;
         }
 
-        [v4 setFrame:{v7, v9, v19, v21}];
-        v23 = [(SUUIOfferView *)self offerButtonViews];
-        v24 = [v23 count];
+        [transitionCopy setFrame:{v7, v9, v19, v21}];
+        offerButtonViews2 = [(SUUIOfferView *)self offerButtonViews];
+        v24 = [offerButtonViews2 count];
 
         if (storeShouldReverseLayoutDirection())
         {
@@ -1608,8 +1608,8 @@ LABEL_18:
         {
           do
           {
-            v28 = [(SUUIOfferView *)self offerButtonViews];
-            v29 = [v28 objectAtIndex:v27];
+            offerButtonViews3 = [(SUUIOfferView *)self offerButtonViews];
+            v29 = [offerButtonViews3 objectAtIndex:v27];
 
             if (([v29 isHidden] & 1) == 0)
             {
@@ -1642,8 +1642,8 @@ LABEL_18:
           v67 = 0u;
           v64 = 0u;
           v65 = 0u;
-          v37 = [(SUUIOfferView *)self metadataViews];
-          v38 = [v37 countByEnumeratingWithState:&v64 objects:v68 count:16];
+          metadataViews = [(SUUIOfferView *)self metadataViews];
+          v38 = [metadataViews countByEnumeratingWithState:&v64 objects:v68 count:16];
           if (v38)
           {
             v39 = v38;
@@ -1654,7 +1654,7 @@ LABEL_18:
               {
                 if (*v65 != v40)
                 {
-                  objc_enumerationMutation(v37);
+                  objc_enumerationMutation(metadataViews);
                 }
 
                 v42 = *(*(&v64 + 1) + 8 * i);
@@ -1677,7 +1677,7 @@ LABEL_18:
                 [v42 setFrame:{v52 + 10.0, v46, v48, v50}];
               }
 
-              v39 = [v37 countByEnumeratingWithState:&v64 objects:v68 count:16];
+              v39 = [metadataViews countByEnumeratingWithState:&v64 objects:v68 count:16];
             }
 
             while (v39);
@@ -1692,7 +1692,7 @@ LABEL_18:
           v7 = MaxX - v19;
         }
 
-        [v4 setFrame:{v7, v9, v19, v21}];
+        [transitionCopy setFrame:{v7, v9, v19, v21}];
         if (storeShouldReverseLayoutDirection())
         {
           v71.origin.x = v7;
@@ -1712,8 +1712,8 @@ LABEL_18:
           v53 = v15 + 1;
           do
           {
-            v54 = [(SUUIOfferView *)self offerButtonViews];
-            v55 = [v54 objectAtIndex:v53 - 2];
+            offerButtonViews4 = [(SUUIOfferView *)self offerButtonViews];
+            v55 = [offerButtonViews4 objectAtIndex:v53 - 2];
 
             if (([v55 isHidden] & 1) == 0)
             {
@@ -1757,32 +1757,32 @@ LABEL_18:
     }
   }
 
-  -[SUUIOfferView setShowingConfirmation:](self, "setShowingConfirmation:", [v4 isShowingConfirmation]);
+  -[SUUIOfferView setShowingConfirmation:](self, "setShowingConfirmation:", [transitionCopy isShowingConfirmation]);
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUUIOfferView *)self buttonElements];
-  v6 = [v5 objectForKey:v4];
+  actionCopy = action;
+  buttonElements = [(SUUIOfferView *)self buttonElements];
+  v6 = [buttonElements objectForKey:actionCopy];
 
-  v7 = [(SUUIOfferView *)self hlsPlayButton];
+  hlsPlayButton = [(SUUIOfferView *)self hlsPlayButton];
 
-  if (v7 == v4 && v6)
+  if (hlsPlayButton == actionCopy && v6)
   {
     v8 = objc_alloc_init(MEMORY[0x277D69C68]);
-    v9 = [(SUUIOfferView *)self hlsID];
+    hlsID = [(SUUIOfferView *)self hlsID];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __31__SUUIOfferView__buttonAction___block_invoke;
     v16[3] = &unk_2798F7B88;
     v17 = v6;
-    v18 = v9;
-    v10 = v9;
+    v18 = hlsID;
+    v10 = hlsID;
     [v8 isRemovedSystemApplicationWithBundleIdentifier:@"com.apple.tv" completionBlock:v16];
 
-    v11 = v17;
+    delegate = v17;
 LABEL_12:
 
     goto LABEL_13;
@@ -1792,14 +1792,14 @@ LABEL_12:
   {
     v8 = SUUICollectionViewCellForView(self);
     v10 = SUUICollectionViewForView(v8);
-    v11 = [v10 delegate];
-    v12 = [(SUUIOfferView *)self offerViewStateDescription];
+    delegate = [v10 delegate];
+    offerViewStateDescription = [(SUUIOfferView *)self offerViewStateDescription];
 
-    if (v12)
+    if (offerViewStateDescription)
     {
       v19 = @"action";
-      v13 = [(SUUIOfferView *)self offerViewStateDescription];
-      v20[0] = v13;
+      offerViewStateDescription2 = [(SUUIOfferView *)self offerViewStateDescription];
+      v20[0] = offerViewStateDescription2;
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
     }
 
@@ -1811,7 +1811,7 @@ LABEL_12:
     if (objc_opt_respondsToSelector())
     {
       v15 = [v10 indexPathForCell:v8];
-      [v11 collectionView:v10 didConfirmButtonElement:v6 withClickInfo:v14 forItemAtIndexPath:v15];
+      [delegate collectionView:v10 didConfirmButtonElement:v6 withClickInfo:v14 forItemAtIndexPath:v15];
     }
 
     else
@@ -1861,53 +1861,53 @@ void __31__SUUIOfferView__buttonAction___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_cancelConfirmationAction:(id)a3
+- (void)_cancelConfirmationAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   [(SUUIOfferView *)self setShowingConfirmation:0];
-  [(SUUIOfferView *)self bringSubviewToFront:v4];
+  [(SUUIOfferView *)self bringSubviewToFront:actionCopy];
   [(SUUIOfferView *)self _sendWillAnimate];
-  [v4 setShowingConfirmation:0 animated:1];
+  [actionCopy setShowingConfirmation:0 animated:1];
 }
 
-- (void)_showConfirmationAction:(id)a3
+- (void)_showConfirmationAction:(id)action
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUUIOfferView *)self buttonElements];
-  v6 = [v5 objectForKey:v4];
+  actionCopy = action;
+  buttonElements = [(SUUIOfferView *)self buttonElements];
+  v6 = [buttonElements objectForKey:actionCopy];
 
   if (v6)
   {
     v9 = @"action";
-    v7 = [(SUUIOfferView *)self offerViewStateDescription];
-    v10[0] = v7;
+    offerViewStateDescription = [(SUUIOfferView *)self offerViewStateDescription];
+    v10[0] = offerViewStateDescription;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
     [v6 dispatchEvent:@"buyInitiate" eventAttribute:@"onbuyinitiate" canBubble:1 isCancelable:1 extraInfo:v8 completionBlock:0];
   }
 
-  [(SUUIOfferView *)self bringSubviewToFront:v4];
+  [(SUUIOfferView *)self bringSubviewToFront:actionCopy];
   [(SUUIOfferView *)self _sendWillAnimate];
-  [v4 setShowingConfirmation:1 animated:1];
+  [actionCopy setShowingConfirmation:1 animated:1];
 }
 
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4
++ (id)_attributedStringForButton:(id)button context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 buttonTitleStyle];
-  v8 = v7;
-  if (v7)
+  buttonCopy = button;
+  contextCopy = context;
+  buttonTitleStyle = [buttonCopy buttonTitleStyle];
+  v8 = buttonTitleStyle;
+  if (buttonTitleStyle)
   {
-    v9 = v7;
+    style = buttonTitleStyle;
   }
 
   else
   {
-    v9 = [v5 style];
+    style = [buttonCopy style];
   }
 
-  v10 = v9;
+  v10 = style;
 
   v11 = SUUIViewElementFontWithStyle(v10);
   if (!v11)
@@ -1915,38 +1915,38 @@ void __31__SUUIOfferView__buttonAction___block_invoke_2(uint64_t a1)
     v11 = [MEMORY[0x277D74300] systemFontOfSize:9.0];
   }
 
-  v12 = [v6 tintColor];
-  v13 = SUUIViewElementPlainColorWithStyle(v10, v12);
+  tintColor = [contextCopy tintColor];
+  v13 = SUUIViewElementPlainColorWithStyle(v10, tintColor);
 
   if (!v13)
   {
     v13 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
   }
 
-  v14 = [v5 buttonViewType] == 9;
-  v15 = [v5 buttonText];
-  v16 = [v15 attributedStringWithDefaultFont:v11 foregroundColor:v13 textAlignment:v14 style:v10];
+  v14 = [buttonCopy buttonViewType] == 9;
+  buttonText = [buttonCopy buttonText];
+  v16 = [buttonText attributedStringWithDefaultFont:v11 foregroundColor:v13 textAlignment:v14 style:v10];
 
   return v16;
 }
 
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SUUIViewElementFontWithStyle(v7);
-  v9 = [v6 tintColor];
+  labelCopy = label;
+  contextCopy = context;
+  style = [labelCopy style];
+  v8 = SUUIViewElementFontWithStyle(style);
+  tintColor = [contextCopy tintColor];
 
-  v10 = SUUIViewElementPlainColorWithStyle(v7, v9);
+  v10 = SUUIViewElementPlainColorWithStyle(style, tintColor);
 
-  v11 = [v5 labelViewStyle];
-  if (v11 > 5)
+  labelViewStyle = [labelCopy labelViewStyle];
+  if (labelViewStyle > 5)
   {
     goto LABEL_20;
   }
 
-  if (((1 << v11) & 0x13) != 0)
+  if (((1 << labelViewStyle) & 0x13) != 0)
   {
     if (v8)
     {
@@ -1962,9 +1962,9 @@ void __31__SUUIOfferView__buttonAction___block_invoke_2(uint64_t a1)
       if (!v10)
       {
 LABEL_11:
-        v12 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
+        blackColor = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
 LABEL_19:
-        v10 = v12;
+        v10 = blackColor;
       }
     }
 
@@ -1973,7 +1973,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (((1 << v11) & 0x24) != 0)
+  if (((1 << labelViewStyle) & 0x24) != 0)
   {
     if (v8)
     {
@@ -1992,7 +1992,7 @@ LABEL_20:
       }
     }
 
-    v12 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
     goto LABEL_19;
   }
 
@@ -2008,37 +2008,37 @@ LABEL_20:
 
   v13 = 1;
 LABEL_21:
-  v14 = [v5 text];
-  v15 = [v14 attributedStringWithDefaultFont:v8 foregroundColor:v10 textAlignment:v13 style:v7];
+  text = [labelCopy text];
+  v15 = [text attributedStringWithDefaultFont:v8 foregroundColor:v10 textAlignment:v13 style:style];
 
   return v15;
 }
 
 - (void)_sendWillAnimate
 {
-  v3 = [(SUUIOfferView *)self delegate];
+  delegate = [(SUUIOfferView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 offerViewWillAnimateTransition:self];
+    [delegate offerViewWillAnimateTransition:self];
   }
 }
 
-- (BOOL)_shouldHideNoticesWithBuyButtonDescriptor:(id)a3 context:(id)a4
+- (BOOL)_shouldHideNoticesWithBuyButtonDescriptor:(id)descriptor context:(id)context
 {
-  v4 = a3;
-  v5 = [v4 itemIdentifier];
-  v6 = [v4 storeIdentifier];
+  descriptorCopy = descriptor;
+  itemIdentifier = [descriptorCopy itemIdentifier];
+  storeIdentifier = [descriptorCopy storeIdentifier];
 
-  if (!v6 && v5)
+  if (!storeIdentifier && itemIdentifier)
   {
-    v6 = [[SUUIStoreIdentifier alloc] initWithLongLong:v5];
+    storeIdentifier = [[SUUIStoreIdentifier alloc] initWithLongLong:itemIdentifier];
   }
 
   v10 = 0;
-  if (v6)
+  if (storeIdentifier)
   {
     v7 = +[SUUIItemStateCenter defaultCenter];
-    v8 = [v7 stateForItemWithStoreIdentifier:v6];
+    v8 = [v7 stateForItemWithStoreIdentifier:storeIdentifier];
 
     v9 = [v8 state] & 0xF;
     if (v9)

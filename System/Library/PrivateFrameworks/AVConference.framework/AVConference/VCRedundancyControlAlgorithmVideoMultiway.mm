@@ -1,7 +1,7 @@
 @interface VCRedundancyControlAlgorithmVideoMultiway
 - (VCRedundancyControlAlgorithmVideoMultiway)init;
 - (void)updateRedundancyPercentage;
-- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)a3;
+- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)statistics;
 @end
 
 @implementation VCRedundancyControlAlgorithmVideoMultiway
@@ -21,14 +21,14 @@
   return result;
 }
 
-- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)a3
+- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)statistics
 {
-  if (a3->type == 3)
+  if (statistics->type == 3)
   {
-    if (a3->var0.network.statisticsID)
+    if (statistics->var0.network.statisticsID)
     {
-      self->_currentTime = a3->arrivalTime;
-      self->_packetLossPercentage = a3->var0.network.packetLossPercentage;
+      self->_currentTime = statistics->arrivalTime;
+      self->_packetLossPercentage = statistics->var0.network.packetLossPercentage;
 
       [(VCRedundancyControlAlgorithmVideoMultiway *)self updateRedundancyPercentage];
     }

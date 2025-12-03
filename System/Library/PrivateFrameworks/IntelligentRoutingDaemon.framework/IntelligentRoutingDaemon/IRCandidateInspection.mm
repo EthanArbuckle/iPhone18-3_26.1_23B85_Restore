@@ -1,6 +1,6 @@
 @interface IRCandidateInspection
-- (IRCandidateInspection)initWithInspectionGenerator:(id)a3;
-- (IRCandidateInspection)initWithInspectionServicePackage:(id)a3;
+- (IRCandidateInspection)initWithInspectionGenerator:(id)generator;
+- (IRCandidateInspection)initWithInspectionServicePackage:(id)package;
 - (id)exportCandidateInspectionAsDictionary;
 - (id)getCandidateIdentifier;
 - (id)getClassificationDescription;
@@ -9,31 +9,31 @@
 
 @implementation IRCandidateInspection
 
-- (IRCandidateInspection)initWithInspectionGenerator:(id)a3
+- (IRCandidateInspection)initWithInspectionGenerator:(id)generator
 {
-  v5 = a3;
+  generatorCopy = generator;
   v9.receiver = self;
   v9.super_class = IRCandidateInspection;
   v6 = [(IRCandidateInspection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_inspectionGenerator, a3);
+    objc_storeStrong(&v6->_inspectionGenerator, generator);
   }
 
   return v7;
 }
 
-- (IRCandidateInspection)initWithInspectionServicePackage:(id)a3
+- (IRCandidateInspection)initWithInspectionServicePackage:(id)package
 {
-  v5 = a3;
+  packageCopy = package;
   v9.receiver = self;
   v9.super_class = IRCandidateInspection;
   v6 = [(IRCandidateInspection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_inspectionServicePackage, a3);
+    objc_storeStrong(&v6->_inspectionServicePackage, package);
   }
 
   return v7;
@@ -44,22 +44,22 @@
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v3 setObject:&stru_286755D18 forKeyedSubscript:@"ServicePackageInspection"];
   [v3 setObject:&stru_286755D18 forKeyedSubscript:@"GeneratorInspection"];
-  v4 = [(IRCandidateInspection *)self inspectionServicePackage];
+  inspectionServicePackage = [(IRCandidateInspection *)self inspectionServicePackage];
 
-  if (v4)
+  if (inspectionServicePackage)
   {
-    v5 = [(IRCandidateInspection *)self inspectionServicePackage];
-    v6 = [v5 exportCandidateInspectionAsDictionary];
-    [v3 setObject:v6 forKeyedSubscript:@"ServicePackageInspection"];
+    inspectionServicePackage2 = [(IRCandidateInspection *)self inspectionServicePackage];
+    exportCandidateInspectionAsDictionary = [inspectionServicePackage2 exportCandidateInspectionAsDictionary];
+    [v3 setObject:exportCandidateInspectionAsDictionary forKeyedSubscript:@"ServicePackageInspection"];
   }
 
-  v7 = [(IRCandidateInspection *)self inspectionGenerator];
+  inspectionGenerator = [(IRCandidateInspection *)self inspectionGenerator];
 
-  if (v7)
+  if (inspectionGenerator)
   {
-    v8 = [(IRCandidateInspection *)self inspectionGenerator];
-    v9 = [v8 exportCandidateInspectionAsDictionary];
-    [v3 setObject:v9 forKeyedSubscript:@"GeneratorInspection"];
+    inspectionGenerator2 = [(IRCandidateInspection *)self inspectionGenerator];
+    exportCandidateInspectionAsDictionary2 = [inspectionGenerator2 exportCandidateInspectionAsDictionary];
+    [v3 setObject:exportCandidateInspectionAsDictionary2 forKeyedSubscript:@"GeneratorInspection"];
   }
 
   return v3;
@@ -67,23 +67,23 @@
 
 - (int64_t)getClassification
 {
-  v3 = [(IRCandidateInspection *)self inspectionServicePackage];
+  inspectionServicePackage = [(IRCandidateInspection *)self inspectionServicePackage];
 
-  if (v3)
+  if (inspectionServicePackage)
   {
-    v4 = [(IRCandidateInspection *)self inspectionServicePackage];
+    inspectionServicePackage2 = [(IRCandidateInspection *)self inspectionServicePackage];
 LABEL_5:
-    v6 = v4;
-    v7 = [v4 classification];
+    v6 = inspectionServicePackage2;
+    classification = [inspectionServicePackage2 classification];
 
-    return v7;
+    return classification;
   }
 
-  v5 = [(IRCandidateInspection *)self inspectionGenerator];
+  inspectionGenerator = [(IRCandidateInspection *)self inspectionGenerator];
 
-  if (v5)
+  if (inspectionGenerator)
   {
-    v4 = [(IRCandidateInspection *)self inspectionGenerator];
+    inspectionServicePackage2 = [(IRCandidateInspection *)self inspectionGenerator];
     goto LABEL_5;
   }
 
@@ -92,59 +92,59 @@ LABEL_5:
 
 - (id)getClassificationDescription
 {
-  v3 = [(IRCandidateInspection *)self inspectionServicePackage];
+  inspectionServicePackage = [(IRCandidateInspection *)self inspectionServicePackage];
 
-  if (v3)
+  if (inspectionServicePackage)
   {
-    v4 = [(IRCandidateInspection *)self inspectionServicePackage];
+    inspectionServicePackage2 = [(IRCandidateInspection *)self inspectionServicePackage];
 LABEL_5:
-    v6 = v4;
-    v7 = [v4 classificationDescription];
+    v6 = inspectionServicePackage2;
+    classificationDescription = [inspectionServicePackage2 classificationDescription];
 
     goto LABEL_6;
   }
 
-  v5 = [(IRCandidateInspection *)self inspectionGenerator];
+  inspectionGenerator = [(IRCandidateInspection *)self inspectionGenerator];
 
-  if (v5)
+  if (inspectionGenerator)
   {
-    v4 = [(IRCandidateInspection *)self inspectionGenerator];
+    inspectionServicePackage2 = [(IRCandidateInspection *)self inspectionGenerator];
     goto LABEL_5;
   }
 
-  v7 = &stru_286755D18;
+  classificationDescription = &stru_286755D18;
 LABEL_6:
 
-  return v7;
+  return classificationDescription;
 }
 
 - (id)getCandidateIdentifier
 {
-  v3 = [(IRCandidateInspection *)self inspectionServicePackage];
+  inspectionServicePackage = [(IRCandidateInspection *)self inspectionServicePackage];
 
-  if (v3)
+  if (inspectionServicePackage)
   {
-    v4 = [(IRCandidateInspection *)self inspectionServicePackage];
+    inspectionServicePackage2 = [(IRCandidateInspection *)self inspectionServicePackage];
 LABEL_5:
-    v6 = v4;
-    v7 = [v4 candidate];
-    v8 = [v7 candidateIdentifier];
+    v6 = inspectionServicePackage2;
+    candidate = [inspectionServicePackage2 candidate];
+    candidateIdentifier = [candidate candidateIdentifier];
 
     goto LABEL_6;
   }
 
-  v5 = [(IRCandidateInspection *)self inspectionGenerator];
+  inspectionGenerator = [(IRCandidateInspection *)self inspectionGenerator];
 
-  if (v5)
+  if (inspectionGenerator)
   {
-    v4 = [(IRCandidateInspection *)self inspectionGenerator];
+    inspectionServicePackage2 = [(IRCandidateInspection *)self inspectionGenerator];
     goto LABEL_5;
   }
 
-  v8 = &stru_286755D18;
+  candidateIdentifier = &stru_286755D18;
 LABEL_6:
 
-  return v8;
+  return candidateIdentifier;
 }
 
 @end

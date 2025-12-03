@@ -1,8 +1,8 @@
 @interface BankConnectInstitutionProvider
-+ (id)makeProviderAndReturnError:(id *)a3;
++ (id)makeProviderAndReturnError:(id *)error;
 - (FKBankConnectInstitutionsProviderDelegate)delegate;
 - (_TtC10FinanceKit30BankConnectInstitutionProvider)init;
-- (void)institutionFor:(id)a3 completion:(id)a4;
+- (void)institutionFor:(id)for completion:(id)completion;
 @end
 
 @implementation BankConnectInstitutionProvider
@@ -15,7 +15,7 @@
   return Strong;
 }
 
-+ (id)makeProviderAndReturnError:(id *)a3
++ (id)makeProviderAndReturnError:(id *)error
 {
   if (qword_1EDAF9E30 != -1)
   {
@@ -35,14 +35,14 @@
   return v6;
 }
 
-- (void)institutionFor:(id)a3 completion:(id)a4
+- (void)institutionFor:(id)for completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = sub_1B7800868();
   v8 = v7;
   v9 = swift_allocObject();
   *(v9 + 16) = v5;
-  v10 = self;
+  selfCopy = self;
   sub_1B77564C8(v6, v8, sub_1B7756AFC, v9);
 }
 

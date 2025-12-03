@@ -1,7 +1,7 @@
 @interface PXPhotoKitAssetCollectionBlacklistMemoryActionPerformer
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
 - (BOOL)_didUserConfirmDeleteOfMemory;
-- (BOOL)_doesUserActionRequireDisambiguation:(id)a3 outResolvedAction:(id *)a4 outAlertActionsForDisambiguation:(id *)a5 alertActionHandler:(id)a6;
+- (BOOL)_doesUserActionRequireDisambiguation:(id)disambiguation outResolvedAction:(id *)action outAlertActionsForDisambiguation:(id *)forDisambiguation alertActionHandler:(id)handler;
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
 @end
@@ -13,26 +13,26 @@
   v30 = *MEMORY[0x1E69E9840];
   if ([(PXPhotoKitAssetCollectionBlacklistMemoryActionPerformer *)self _didUserConfirmDeleteOfMemory])
   {
-    v4 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-    if (v4)
+    assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+    if (assetCollection)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_4:
         v5 = +[PXMemoriesRelatedSettings sharedInstance];
-        v6 = [v5 deleteBehavior];
+        deleteBehavior = [v5 deleteBehavior];
 
         v7 = PLMemoriesGetLog();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           v8 = @"delete";
-          if (v6 != 1)
+          if (deleteBehavior != 1)
           {
             v8 = 0;
           }
 
-          if (!v6)
+          if (!deleteBehavior)
           {
             v8 = @"reject";
           }
@@ -41,16 +41,16 @@ LABEL_4:
           *buf = 138412546;
           v27 = v9;
           v28 = 2112;
-          v29 = v4;
+          v29 = assetCollection;
           _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "Will %@ memory: %@", buf, 0x16u);
         }
 
-        if (v6 == 1)
+        if (deleteBehavior == 1)
         {
-          v12 = [[PXDeleteCollectionsAction alloc] initWithCollection:v4];
+          v12 = [[PXDeleteCollectionsAction alloc] initWithCollection:assetCollection];
         }
 
-        else if (v6)
+        else if (deleteBehavior)
         {
           v12 = 0;
         }
@@ -58,40 +58,40 @@ LABEL_4:
         else
         {
           v10 = [PXRejectMemoriesAction alloc];
-          v25 = v4;
+          v25 = assetCollection;
           v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
           v12 = [(PXMemoriesAction *)v10 initWithMemories:v11];
 
           [(PXDeleteCollectionsAction *)v12 setRejectReason:1];
         }
 
-        v13 = [(PXActionPerformer *)self undoManager];
+        undoManager = [(PXActionPerformer *)self undoManager];
         v21[0] = MEMORY[0x1E69E9820];
         v21[1] = 3221225472;
         v21[2] = __80__PXPhotoKitAssetCollectionBlacklistMemoryActionPerformer_performBackgroundTask__block_invoke;
         v21[3] = &unk_1E77411F0;
-        v22 = v4;
-        v23 = self;
-        v24 = v6;
-        v14 = v4;
-        [(PXAction *)v12 executeWithUndoManager:v13 completionHandler:v21];
+        v22 = assetCollection;
+        selfCopy = self;
+        v24 = deleteBehavior;
+        v14 = assetCollection;
+        [(PXAction *)v12 executeWithUndoManager:undoManager completionHandler:v21];
 
         return;
       }
 
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v18 = objc_opt_class();
       v17 = NSStringFromClass(v18);
-      v19 = [v4 px_descriptionForAssertionMessage];
-      [v15 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:1382 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetCollection", v17, v19}];
+      px_descriptionForAssertionMessage = [assetCollection px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:1382 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetCollection", v17, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
-      [v15 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:1382 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetCollection", v17}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:1382 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetCollection", v17}];
     }
 
     goto LABEL_4;
@@ -99,7 +99,7 @@ LABEL_4:
 
   if ([(PXPhotoKitAssetCollectionBlacklistMemoryFeatureActionPerformer *)self isBlockingMemoryFeature])
   {
-    v20 = [(PXPhotoKitAssetCollectionBlacklistMemoryFeatureActionPerformer *)self userResponse];
+    userResponse = [(PXPhotoKitAssetCollectionBlacklistMemoryFeatureActionPerformer *)self userResponse];
     [(PXPhotoKitAssetCollectionBlacklistMemoryFeatureActionPerformer *)self applyBlacklistFeatureWithActionType:?];
   }
 
@@ -217,30 +217,30 @@ LABEL_16:
 
 - (BOOL)_didUserConfirmDeleteOfMemory
 {
-  v2 = [(PXPhotoKitAssetCollectionBlacklistMemoryFeatureActionPerformer *)self userResponse];
-  v3 = [v2 isEqualToString:*off_1E7721C48];
+  userResponse = [(PXPhotoKitAssetCollectionBlacklistMemoryFeatureActionPerformer *)self userResponse];
+  v3 = [userResponse isEqualToString:*off_1E7721C48];
 
   return v3;
 }
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXAssetCollectionActionPerformer *)self assetCollection];
+  assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __85__PXPhotoKitAssetCollectionBlacklistMemoryActionPerformer_performUserInteractionTask__block_invoke;
   aBlock[3] = &unk_1E774C648;
   aBlock[4] = self;
   v4 = _Block_copy(aBlock);
-  v5 = [(PXActionPerformer *)self actionType];
+  actionType = [(PXActionPerformer *)self actionType];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __85__PXPhotoKitAssetCollectionBlacklistMemoryActionPerformer_performUserInteractionTask__block_invoke_2;
   v21[3] = &unk_1E77308D8;
   v21[4] = self;
-  v6 = v3;
+  v6 = assetCollection;
   v22 = v6;
-  v7 = v5;
+  v7 = actionType;
   v23 = v7;
   v8 = v4;
   v24 = v8;
@@ -296,10 +296,10 @@ void __85__PXPhotoKitAssetCollectionBlacklistMemoryActionPerformer_performUserIn
   }
 }
 
-- (BOOL)_doesUserActionRequireDisambiguation:(id)a3 outResolvedAction:(id *)a4 outAlertActionsForDisambiguation:(id *)a5 alertActionHandler:(id)a6
+- (BOOL)_doesUserActionRequireDisambiguation:(id)disambiguation outResolvedAction:(id *)action outAlertActionsForDisambiguation:(id *)forDisambiguation alertActionHandler:(id)handler
 {
   v21[5] = *MEMORY[0x1E69E9840];
-  v9 = a6;
+  handlerCopy = handler;
   v10 = *off_1E7721C70;
   v21[0] = *off_1E7721C68;
   v21[1] = v10;
@@ -308,9 +308,9 @@ void __85__PXPhotoKitAssetCollectionBlacklistMemoryActionPerformer_performUserIn
   v21[3] = v11;
   v21[4] = *off_1E7721C58;
   v12 = MEMORY[0x1E695DEC8];
-  v13 = a3;
+  disambiguationCopy = disambiguation;
   v14 = [v12 arrayWithObjects:v21 count:5];
-  LOBYTE(v12) = [v14 containsObject:v13];
+  LOBYTE(v12) = [v14 containsObject:disambiguationCopy];
 
   if (v12)
   {
@@ -319,18 +319,18 @@ void __85__PXPhotoKitAssetCollectionBlacklistMemoryActionPerformer_performUserIn
 
   else
   {
-    v16 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-    v17 = [v16 px_blockableFeatureActions];
-    v18 = [v17 count];
+    assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+    px_blockableFeatureActions = [assetCollection px_blockableFeatureActions];
+    v18 = [px_blockableFeatureActions count];
     v15 = v18 > 1;
     if (v18 >= 2)
     {
-      v9;
+      handlerCopy;
       PXMap();
     }
 
-    v19 = [v17 lastObject];
-    *a4 = [v19 actionType];
+    lastObject = [px_blockableFeatureActions lastObject];
+    *action = [lastObject actionType];
   }
 
   return v15;
@@ -361,22 +361,22 @@ void __166__PXPhotoKitAssetCollectionBlacklistMemoryActionPerformer__doesUserAct
   (*(v1 + 16))(v1, v2);
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v6 = [a3 assetCollection];
-  if (![v6 px_isMemory])
+  assetCollection = [reference assetCollection];
+  if (![assetCollection px_isMemory])
   {
-    v8 = 0;
+    px_canPerformFeatureLessAction = 0;
     goto LABEL_6;
   }
 
-  v7 = v6;
+  v7 = assetCollection;
   if (!v7)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:1276 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollection", v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:1276 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollection", v12}];
 LABEL_9:
 
     goto LABEL_4;
@@ -385,20 +385,20 @@ LABEL_9:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v12 = NSStringFromClass(v13);
-    v14 = [v7 px_descriptionForAssertionMessage];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:1276 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollection", v12, v14}];
+    px_descriptionForAssertionMessage = [v7 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:1276 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollection", v12, px_descriptionForAssertionMessage}];
 
     goto LABEL_9;
   }
 
 LABEL_4:
-  v8 = [v7 px_canPerformFeatureLessAction];
+  px_canPerformFeatureLessAction = [v7 px_canPerformFeatureLessAction];
 
 LABEL_6:
-  return v8;
+  return px_canPerformFeatureLessAction;
 }
 
 @end

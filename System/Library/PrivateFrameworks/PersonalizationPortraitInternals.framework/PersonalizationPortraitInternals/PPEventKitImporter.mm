@@ -1,17 +1,17 @@
 @interface PPEventKitImporter
-+ (id)_escapedDomainIdentifierForIdentifier:(uint64_t)a1;
++ (id)_escapedDomainIdentifierForIdentifier:(uint64_t)identifier;
 + (id)defaultInstance;
 + (uint64_t)_shouldImport;
 - (BOOL)deleteAndReimportAllData;
-- (PPEventKitImporter)initWithEventStore:(id)a3 namedEntityStore:(id)a4 locationStore:(id)a5 topicStore:(id)a6 urlStore:(id)a7 urlDissector:(id)a8 namedEntityDissector:(id)a9 dataDetectorMatchClass:(Class)a10 sqlDatabase:(id)a11;
+- (PPEventKitImporter)initWithEventStore:(id)store namedEntityStore:(id)entityStore locationStore:(id)locationStore topicStore:(id)topicStore urlStore:(id)urlStore urlDissector:(id)dissector namedEntityDissector:(id)entityDissector dataDetectorMatchClass:(Class)self0 sqlDatabase:(id)self1;
 - (id)_timeRangeForReimport;
-- (id)importEventDataWithShouldContinueBlock:(id)a3;
-- (void)_donateContainerContents:(uint64_t)a1;
+- (id)importEventDataWithShouldContinueBlock:(id)block;
+- (void)_donateContainerContents:(uint64_t)contents;
 - (void)_flush;
-- (void)_importEvent:(int)a3 isMostRelevantOccurrence:;
-- (void)_importEvents:(uint64_t)a1;
-- (void)importChangedEvents:(id)a3;
-- (void)importEvent:(id)a3;
+- (void)_importEvent:(int)event isMostRelevantOccurrence:;
+- (void)_importEvents:(uint64_t)events;
+- (void)importChangedEvents:(id)events;
+- (void)importEvent:(id)event;
 @end
 
 @implementation PPEventKitImporter
@@ -21,13 +21,13 @@
   v134 = *MEMORY[0x277D85DE8];
   v93 = os_transaction_create();
   v3 = MEMORY[0x277D3A5F0];
-  v99 = self;
+  selfCopy = self;
   if (self)
   {
-    v4 = [PPEventKitImporter _timeRangeForReimport];
-    v5 = [v4 startDate];
-    v91 = v4;
-    v6 = [v4 endDate];
+    _timeRangeForReimport = [PPEventKitImporter _timeRangeForReimport];
+    startDate = [_timeRangeForReimport startDate];
+    v91 = _timeRangeForReimport;
+    endDate = [_timeRangeForReimport endDate];
     v7 = objc_opt_new();
     v8 = objc_opt_new();
     v9 = objc_autoreleasePoolPush();
@@ -37,10 +37,10 @@
     objc_autoreleasePoolPop(v9);
     [v8 setMatchingSourceBundleIds:v12];
 
-    v96 = v5;
-    [v8 setFromDate:v5];
-    obj = v6;
-    [v8 setToDate:v6];
+    v96 = startDate;
+    [v8 setFromDate:startDate];
+    obj = endDate;
+    [v8 setToDate:endDate];
     [v8 setFilterByRelevanceDate:1];
     namedEntityStore = self->_namedEntityStore;
     *v120 = 0;
@@ -145,25 +145,25 @@
             objc_enumerationMutation(v32);
           }
 
-          v37 = [*(*(&v121 + 1) + 8 * i) groupIdentifier];
-          if (v37)
+          groupIdentifier = [*(*(&v121 + 1) + 8 * i) groupIdentifier];
+          if (groupIdentifier)
           {
             v38 = objc_autoreleasePoolPush();
-            v39 = [v37 stringByRemovingPercentEncoding];
-            if (!v39)
+            stringByRemovingPercentEncoding = [groupIdentifier stringByRemovingPercentEncoding];
+            if (!stringByRemovingPercentEncoding)
             {
               v40 = pp_default_log_handle();
               if (os_log_type_enabled(v40, OS_LOG_TYPE_FAULT))
               {
                 LODWORD(buf) = 138412290;
-                *(&buf + 4) = v37;
+                *(&buf + 4) = groupIdentifier;
                 _os_log_fault_impl(&dword_23224A000, v40, OS_LOG_TYPE_FAULT, "PPEventKitImporter: failed to remove percent encoding from %@", &buf, 0xCu);
               }
 
-              v39 = v37;
+              stringByRemovingPercentEncoding = groupIdentifier;
             }
 
-            [(PPEventKitImporter *)v28 addObject:v39];
+            [(PPEventKitImporter *)v28 addObject:stringByRemovingPercentEncoding];
 
             objc_autoreleasePoolPop(v38);
           }
@@ -201,9 +201,9 @@
     _os_log_debug_impl(&dword_23224A000, v45, OS_LOG_TYPE_DEBUG, "PPEventKitImporter: deleteAndReimportAllData will reimport %@", &block, 0xCu);
   }
 
-  if (v99)
+  if (selfCopy)
   {
-    v46 = v99->_namedEntityStore;
+    v46 = selfCopy->_namedEntityStore;
     v47 = *MEMORY[0x277D3A5F0];
     *&v121 = 0;
     v48 = [(PPLocalNamedEntityStore *)v46 deleteAllNamedEntitiesFromSourcesWithBundleId:v47 deletedCount:0 error:&v121];
@@ -212,21 +212,21 @@
     {
       if ([MEMORY[0x277D02528] deleteAllURLsWithBundleIdentifier:v47 entityStore:0])
       {
-        v50 = v99->_locationStore;
+        v50 = selfCopy->_locationStore;
         *&v116 = v49;
         v51 = [(PPLocalLocationStore *)v50 deleteAllLocationsFromSourcesWithBundleId:v47 deletedCount:0 error:&v116];
         v52 = v116;
 
         if (v51)
         {
-          v53 = v99->_topicStore;
+          v53 = selfCopy->_topicStore;
           v108 = v52;
           v54 = [(PPLocalTopicStore *)v53 deleteAllTopicsFromSourcesWithBundleId:v47 deletedCount:0 error:&v108];
           v55 = v108;
 
           if (v54)
           {
-            [(PPEventKitImporter *)v99 _flush];
+            [(PPEventKitImporter *)selfCopy _flush];
             v56 = pp_default_log_handle();
             if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
             {
@@ -303,8 +303,8 @@ LABEL_46:
   }
 
   v61 = objc_alloc(MEMORY[0x277CBEB98]);
-  v62 = [(PPEventKitImporter *)v99 importEventData];
-  v63 = [v61 initWithArray:v62];
+  importEventData = [(PPEventKitImporter *)selfCopy importEventData];
+  v63 = [v61 initWithArray:importEventData];
 
   v64 = pp_default_log_handle();
   if (os_log_type_enabled(v64, OS_LOG_TYPE_DEBUG))
@@ -321,13 +321,13 @@ LABEL_46:
   v101 = v63;
   v65 = v63;
   v66 = [v43 _pas_filteredSetWithTest:v100];
-  if (v99)
+  if (selfCopy)
   {
     if ((+[PPEventKitImporter _shouldImport]& 1) != 0)
     {
       v90 = v65;
       v92 = v43;
-      v97 = [PPEventKitImporter _timeRangeForReimport];
+      _timeRangeForReimport2 = [PPEventKitImporter _timeRangeForReimport];
       v98 = objc_opt_new();
       v116 = 0u;
       v117 = 0u;
@@ -351,17 +351,17 @@ LABEL_46:
 
             v71 = *(*(&v116 + 1) + 8 * j);
             v72 = objc_autoreleasePoolPush();
-            eventStore = v99->_eventStore;
+            eventStore = selfCopy->_eventStore;
             v108 = MEMORY[0x277D85DD0];
             v109 = 3221225472;
             v110 = __51__PPEventKitImporter__reimportEventsWithObjectIDs___block_invoke;
             v111 = &unk_2789799D0;
-            v112 = v99;
+            v112 = selfCopy;
             v113 = v71;
-            v114 = v97;
+            v114 = _timeRangeForReimport2;
             v115 = v98;
             [(PPLocalEventStore *)eventStore runBlockWithPurgerDisabled:&v108];
-            [(PPLocalEventStore *)v99->_eventStore attemptToPurgeImmediately];
+            [(PPLocalEventStore *)selfCopy->_eventStore attemptToPurgeImmediately];
 
             objc_autoreleasePoolPop(v72);
           }
@@ -419,12 +419,12 @@ LABEL_46:
         while (v81);
       }
 
-      [(PPEventKitImporter *)v99 _importEvents:v79];
+      [(PPEventKitImporter *)selfCopy _importEvents:v79];
       v43 = v92;
       v44 = v93;
       v66 = v89;
       v65 = v90;
-      v86 = v97;
+      v86 = _timeRangeForReimport2;
     }
 
     else
@@ -477,18 +477,18 @@ void __51__PPEventKitImporter__reimportEventsWithObjectIDs___block_invoke(uint64
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_importEvents:(uint64_t)a1
+- (void)_importEvents:(uint64_t)events
 {
   v58 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
-  if (!a1 || ![v3 count])
+  if (!events || ![v3 count])
   {
     goto LABEL_33;
   }
 
-  v38 = a1;
-  v5 = [MEMORY[0x277CBEAA8] date];
+  eventsCopy = events;
+  date = [MEMORY[0x277CBEAA8] date];
   v6 = objc_opt_new();
   v52 = 0u;
   v53 = 0u;
@@ -515,20 +515,20 @@ void __51__PPEventKitImporter__reimportEventsWithObjectIDs___block_invoke(uint64
 
       v12 = *(*(&v52 + 1) + 8 * i);
       v13 = objc_autoreleasePoolPush();
-      v14 = [v12 objectID];
-      v15 = [v6 objectForKeyedSubscript:v14];
+      objectID = [v12 objectID];
+      v15 = [v6 objectForKeyedSubscript:objectID];
 
       if (!v15)
       {
         goto LABEL_13;
       }
 
-      v16 = [v12 startDate];
-      [v16 timeIntervalSinceDate:v5];
+      startDate = [v12 startDate];
+      [startDate timeIntervalSinceDate:date];
       v18 = v17;
 
-      v19 = [v15 startDate];
-      [v19 timeIntervalSinceDate:v5];
+      startDate2 = [v15 startDate];
+      [startDate2 timeIntervalSinceDate:date];
       v21 = v20;
 
       if (v18 > 0.0 == v21 <= 0.0)
@@ -539,8 +539,8 @@ void __51__PPEventKitImporter__reimportEventsWithObjectIDs___block_invoke(uint64
         }
 
 LABEL_13:
-        v22 = [v12 objectID];
-        [v6 setObject:v12 forKeyedSubscript:v22];
+        objectID2 = [v12 objectID];
+        [v6 setObject:v12 forKeyedSubscript:objectID2];
 
         goto LABEL_14;
       }
@@ -566,11 +566,11 @@ LABEL_16:
   aBlock[2] = __36__PPEventKitImporter__importEvents___block_invoke;
   aBlock[3] = &unk_278979010;
   v23 = v6;
-  v50 = v38;
+  v50 = eventsCopy;
   v51 = sel__importEvents_;
   v49 = v23;
   v24 = _Block_copy(aBlock);
-  v25 = *(v38 + 48);
+  v25 = *(eventsCopy + 48);
   v26 = pp_default_log_handle();
   v27 = os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT);
   if (v25)
@@ -581,12 +581,12 @@ LABEL_16:
       _os_log_impl(&dword_23224A000, v26, OS_LOG_TYPE_DEFAULT, "PPEventKitImporter: _importEvents beginning SQL transaction", buf, 2u);
     }
 
-    v28 = *(v38 + 16);
+    v28 = *(eventsCopy + 16);
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __36__PPEventKitImporter__importEvents___block_invoke_126;
     v44[3] = &unk_278979060;
-    v44[4] = v38;
+    v44[4] = eventsCopy;
     v45 = v7;
     v46 = v24;
     [v28 runWithLockAcquired:v44];
@@ -641,7 +641,7 @@ LABEL_16:
     v4 = v39;
   }
 
-  [(PPEventKitImporter *)v38 _flush];
+  [(PPEventKitImporter *)eventsCopy _flush];
 
 LABEL_33:
   v37 = *MEMORY[0x277D85DE8];
@@ -679,9 +679,9 @@ void __36__PPEventKitImporter__importEvents___block_invoke_126(uint64_t a1)
 - (void)_flush
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 16);
+    v1 = *(self + 16);
     v6 = 0;
     v2 = [v1 flushDonationsWithError:&v6];
     v3 = v6;
@@ -741,24 +741,24 @@ void __36__PPEventKitImporter__importEvents___block_invoke_2(uint64_t a1, void *
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_importEvent:(int)a3 isMostRelevantOccurrence:
+- (void)_importEvent:(int)event isMostRelevantOccurrence:
 {
   v296 = *MEMORY[0x277D85DE8];
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
-    v7 = [v5 objectID];
-    v8 = [v7 URIRepresentation];
-    v9 = [v8 absoluteString];
+    objectID = [v5 objectID];
+    uRIRepresentation = [objectID URIRepresentation];
+    absoluteString = [uRIRepresentation absoluteString];
 
     v10 = pp_default_log_handle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = @"no";
       *buf = 138412803;
-      *&buf[4] = v9;
-      if (a3)
+      *&buf[4] = absoluteString;
+      if (event)
       {
         v11 = @"yes";
       }
@@ -770,20 +770,20 @@ void __36__PPEventKitImporter__importEvents___block_invoke_2(uint64_t a1, void *
       _os_log_impl(&dword_23224A000, v10, OS_LOG_TYPE_DEFAULT, "PPEventKitImporter: importing event %@ (isMostRelevantOccurrence=%@, %{sensitive}@)", buf, 0x20u);
     }
 
-    if (!v9)
+    if (!absoluteString)
     {
-      v12 = pp_default_log_handle();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      startDate = pp_default_log_handle();
+      if (os_log_type_enabled(startDate, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_23224A000, v12, OS_LOG_TYPE_DEFAULT, "PPEventKitImporter: suppressing import of event with nil objectID", buf, 2u);
+        _os_log_impl(&dword_23224A000, startDate, OS_LOG_TYPE_DEFAULT, "PPEventKitImporter: suppressing import of event with nil objectID", buf, 2u);
       }
 
       goto LABEL_148;
     }
 
-    v12 = [v6 startDate];
-    if (!v12)
+    startDate = [v6 startDate];
+    if (!startDate)
     {
       v80 = pp_default_log_handle();
       if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
@@ -798,32 +798,32 @@ LABEL_148:
       goto LABEL_149;
     }
 
-    v13 = [v6 organizerIsCurrentUser];
-    v14 = [v6 attendees];
-    v15 = [v14 _pas_mappedArrayWithTransform:&__block_literal_global_136_24982];
+    organizerIsCurrentUser = [v6 organizerIsCurrentUser];
+    attendees = [v6 attendees];
+    v15 = [attendees _pas_mappedArrayWithTransform:&__block_literal_global_136_24982];
 
-    v267 = a1;
-    v16 = [objc_alloc(MEMORY[0x277D3A4E0]) initWithDwellTimeSeconds:0 lengthSeconds:0 lengthCharacters:0 donationCount:0 contactHandleCount:-[NSObject count](v15 flags:{"count"), v13}];
+    selfCopy = self;
+    v16 = [objc_alloc(MEMORY[0x277D3A4E0]) initWithDwellTimeSeconds:0 lengthSeconds:0 lengthCharacters:0 donationCount:0 contactHandleCount:-[NSObject count](v15 flags:{"count"), organizerIsCurrentUser}];
     v17 = objc_alloc(MEMORY[0x277D3A4D8]);
-    v268 = a3;
+    eventCopy = event;
     v18 = v6;
     v19 = *MEMORY[0x277D3A5F0];
-    v20 = [v18 calendar];
-    v21 = [v20 calendarIdentifier];
+    calendar = [v18 calendar];
+    calendarIdentifier = [calendar calendarIdentifier];
     v22 = objc_opt_new();
     v259 = v19;
     v262 = v16;
     v249 = v16;
-    v23 = v267;
+    v23 = selfCopy;
     v24 = v19;
     v6 = v18;
-    v264 = v12;
-    v265 = v9;
+    v264 = startDate;
+    v265 = absoluteString;
     v263 = v15;
-    v25 = [v17 initWithBundleId:v24 groupId:v21 documentId:v9 date:v22 relevanceDate:v12 contactHandles:v15 language:0 metadata:v249];
+    v25 = [v17 initWithBundleId:v24 groupId:calendarIdentifier documentId:absoluteString date:v22 relevanceDate:startDate contactHandles:v15 language:0 metadata:v249];
 
     v266 = v18;
-    if (!v268)
+    if (!eventCopy)
     {
 LABEL_101:
       v177 = v6;
@@ -831,8 +831,8 @@ LABEL_101:
       memset(v286, 0, sizeof(v286));
       v287 = 0u;
       v288 = 0u;
-      v179 = [v177 attendees];
-      v180 = [v179 countByEnumeratingWithState:v286 objects:buf count:16];
+      attendees2 = [v177 attendees];
+      v180 = [attendees2 countByEnumeratingWithState:v286 objects:buf count:16];
       if (v180)
       {
         v181 = v180;
@@ -843,7 +843,7 @@ LABEL_103:
         {
           if (**&v286[16] != v182)
           {
-            objc_enumerationMutation(v179);
+            objc_enumerationMutation(attendees2);
           }
 
           v184 = *(*&v286[8] + 8 * v183);
@@ -854,7 +854,7 @@ LABEL_103:
 
           if (v181 == ++v183)
           {
-            v181 = [v179 countByEnumeratingWithState:v286 objects:buf count:16];
+            v181 = [attendees2 countByEnumeratingWithState:v286 objects:buf count:16];
             if (v181)
             {
               goto LABEL_103;
@@ -872,9 +872,9 @@ LABEL_103:
         v185 = pp_default_log_handle();
         if (os_log_type_enabled(v185, OS_LOG_TYPE_DEFAULT))
         {
-          v186 = [v177 eventIdentifier];
+          eventIdentifier = [v177 eventIdentifier];
           *v281 = 138412290;
-          *&v281[4] = v186;
+          *&v281[4] = eventIdentifier;
           _os_log_impl(&dword_23224A000, v185, OS_LOG_TYPE_DEFAULT, "PPEventKitImporter: _dissectAndDonateURLsFromEvent: ignoring declined event: %@", v281, 0xCu);
         }
 
@@ -886,15 +886,15 @@ LABEL_103:
       {
 LABEL_114:
 
-        v188 = [v177 startDate];
-        if (v188)
+        startDate2 = [v177 startDate];
+        if (startDate2)
         {
-          v189 = [v177 endDate];
-          if (v189)
+          endDate = [v177 endDate];
+          if (endDate)
           {
-            v190 = [v177 endDate];
-            v191 = [v177 startDate];
-            [v190 timeIntervalSinceDate:v191];
+            endDate2 = [v177 endDate];
+            startDate3 = [v177 startDate];
+            [endDate2 timeIntervalSinceDate:startDate3];
             v193 = v192;
           }
 
@@ -910,34 +910,34 @@ LABEL_114:
         }
 
         v194 = objc_alloc(MEMORY[0x277CCACA8]);
-        v195 = [v178 documentId];
-        v196 = [v177 startDate];
-        [v196 timeIntervalSinceReferenceDate];
-        v179 = [v194 initWithFormat:@"%@:%f", v195, v197];
+        documentId = [v178 documentId];
+        startDate4 = [v177 startDate];
+        [startDate4 timeIntervalSinceReferenceDate];
+        attendees2 = [v194 initWithFormat:@"%@:%f", documentId, v197];
 
-        v198 = [v177 objectID];
-        v199 = [v198 URIRepresentation];
-        v200 = [v199 absoluteString];
+        objectID2 = [v177 objectID];
+        uRIRepresentation2 = [objectID2 URIRepresentation];
+        absoluteString2 = [uRIRepresentation2 absoluteString];
 
-        if (v200)
+        if (absoluteString2)
         {
-          v272 = [PPEventKitImporter _escapedDomainIdentifierForIdentifier:v200];
+          v272 = [PPEventKitImporter _escapedDomainIdentifierForIdentifier:absoluteString2];
 
           v201 = [v177 url];
-          v202 = [v201 absoluteString];
-          v203 = [v202 length];
+          absoluteString3 = [v201 absoluteString];
+          v203 = [absoluteString3 length];
 
           if (v203)
           {
             v204 = pp_default_log_handle();
             if (os_log_type_enabled(v204, OS_LOG_TYPE_DEFAULT))
             {
-              v205 = [v177 eventIdentifier];
+              eventIdentifier2 = [v177 eventIdentifier];
               v206 = [v177 url];
-              v207 = [v206 absoluteString];
-              v208 = [v207 length];
+              absoluteString4 = [v206 absoluteString];
+              v208 = [absoluteString4 length];
               *v281 = 138412546;
-              *&v281[4] = v205;
+              *&v281[4] = eventIdentifier2;
               v282 = 2048;
               v283 = v208;
               _os_log_impl(&dword_23224A000, v204, OS_LOG_TYPE_DEFAULT, "PPEventKitImporter: _dissectAndDonateURLsFromEvent: event %@ has URL length: %tu", v281, 0x16u);
@@ -947,30 +947,30 @@ LABEL_114:
             v210 = [v177 url];
             *&v289 = v210;
             v211 = [MEMORY[0x277CBEA60] arrayWithObjects:&v289 count:1];
-            v212 = [v178 bundleId];
-            v213 = [v177 title];
+            bundleId = [v178 bundleId];
+            title = [v177 title];
             [v177 startDate];
             v215 = v214 = v178;
             v216 = objc_opt_new();
             LOBYTE(v250) = 0;
-            v217 = [v209 urlsFromURLs:v211 handle:0 bundleIdentifier:v212 domainIdentifier:v272 uniqueIdentifier:v179 documentTitle:v213 documentDate:v193 documentTimeInterval:v215 receivedAt:v216 isOutgoingDocument:v250];
+            v217 = [v209 urlsFromURLs:v211 handle:0 bundleIdentifier:bundleId domainIdentifier:v272 uniqueIdentifier:attendees2 documentTitle:title documentDate:v193 documentTimeInterval:v215 receivedAt:v216 isOutgoingDocument:v250];
 
             v178 = v214;
-            [v217 writeWithEntityStore:*(v267 + 40)];
+            [v217 writeWithEntityStore:*(selfCopy + 40)];
 
             v6 = v266;
           }
 
-          v218 = [v177 notes];
-          v219 = [v218 length];
+          notes = [v177 notes];
+          v219 = [notes length];
 
           if (v219)
           {
             v220 = objc_opt_new();
             v221 = objc_alloc(MEMORY[0x277CCACA8]);
-            v222 = [v177 notes];
-            v223 = [v221 initWithFormat:@"%@\n", v222];
-            [v220 appendString:v223];
+            notes2 = [v177 notes];
+            v222 = [v221 initWithFormat:@"%@\n", notes2];
+            [v220 appendString:v222];
           }
 
           else
@@ -979,8 +979,8 @@ LABEL_114:
           }
 
           v185 = v272;
-          v224 = [v177 location];
-          v225 = [v224 length];
+          location = [v177 location];
+          v225 = [location length];
 
           if (v225)
           {
@@ -990,9 +990,9 @@ LABEL_114:
             }
 
             v226 = objc_alloc(MEMORY[0x277CCACA8]);
-            v227 = [v177 location];
-            v228 = [v226 initWithFormat:@"%@\n", v227];
-            [v220 appendString:v228];
+            location2 = [v177 location];
+            v227 = [v226 initWithFormat:@"%@\n", location2];
+            [v220 appendString:v227];
           }
 
           if ([v220 length])
@@ -1000,44 +1000,44 @@ LABEL_114:
             v229 = pp_default_log_handle();
             if (os_log_type_enabled(v229, OS_LOG_TYPE_DEFAULT))
             {
-              v230 = [v177 eventIdentifier];
+              eventIdentifier3 = [v177 eventIdentifier];
               v231 = [v220 length];
               *v281 = 138412546;
-              *&v281[4] = v230;
+              *&v281[4] = eventIdentifier3;
               v282 = 2048;
               v283 = v231;
               _os_log_impl(&dword_23224A000, v229, OS_LOG_TYPE_DEFAULT, "PPEventKitImporter: _dissectAndDonateURLsFromEvent: event %@ has text length: %tu", v281, 0x16u);
             }
 
-            v232 = [*(v267 + 72) detectionsInPlainText:v220 baseDate:0];
+            v232 = [*(selfCopy + 72) detectionsInPlainText:v220 baseDate:0];
             if ([v232 count])
             {
               v233 = pp_default_log_handle();
               if (os_log_type_enabled(v233, OS_LOG_TYPE_DEFAULT))
               {
-                v234 = [v177 eventIdentifier];
+                eventIdentifier4 = [v177 eventIdentifier];
                 v235 = [v232 count];
                 *v281 = 138412546;
-                *&v281[4] = v234;
+                *&v281[4] = eventIdentifier4;
                 v282 = 2048;
                 v283 = v235;
                 _os_log_impl(&dword_23224A000, v233, OS_LOG_TYPE_DEFAULT, "PPEventKitImporter: _dissectAndDonateURLsFromEvent: event %@ has data detection count: %tu", v281, 0x16u);
               }
 
-              v236 = *(v267 + 56);
+              v236 = *(selfCopy + 56);
               [v178 bundleId];
               v237 = v261 = v232;
-              v238 = [v177 title];
-              v239 = [v177 startDate];
+              title2 = [v177 title];
+              startDate5 = [v177 startDate];
               v240 = v178;
               v241 = objc_opt_new();
               LOBYTE(v251) = 0;
               v185 = v272;
-              v242 = [v236 urlsFromText:v220 handle:0 dataDetectorMatches:v261 bundleIdentifier:v237 domainIdentifier:v272 uniqueIdentifier:v179 documentTitle:v193 documentDate:v238 documentTimeInterval:v239 receivedAt:v241 isOutgoingDocument:v251];
+              v242 = [v236 urlsFromText:v220 handle:0 dataDetectorMatches:v261 bundleIdentifier:v237 domainIdentifier:v272 uniqueIdentifier:attendees2 documentTitle:v193 documentDate:title2 documentTimeInterval:startDate5 receivedAt:v241 isOutgoingDocument:v251];
 
               v178 = v240;
               v232 = v261;
-              [v242 writeWithEntityStore:*(v267 + 40)];
+              [v242 writeWithEntityStore:*(selfCopy + 40)];
 
               v6 = v266;
             }
@@ -1054,16 +1054,16 @@ LABEL_114:
           v80 = v263;
           if (os_log_type_enabled(v185, OS_LOG_TYPE_FAULT))
           {
-            v245 = [v177 objectID];
+            objectID3 = [v177 objectID];
             *v281 = 138412290;
-            *&v281[4] = v245;
+            *&v281[4] = objectID3;
             _os_log_fault_impl(&dword_23224A000, v185, OS_LOG_TYPE_FAULT, "PPEventKitImporter: can't generate URL string from object id %@ (will ignore event)", v281, 0xCu);
           }
         }
       }
 
       v243 = pp_default_log_handle();
-      v9 = v265;
+      absoluteString = v265;
       if (os_log_type_enabled(v243, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
@@ -1071,7 +1071,7 @@ LABEL_114:
         _os_log_impl(&dword_23224A000, v243, OS_LOG_TYPE_DEFAULT, "PPEventKitImporter: completed import of event %@", buf, 0xCu);
       }
 
-      v12 = v264;
+      startDate = v264;
       goto LABEL_147;
     }
 
@@ -1079,9 +1079,9 @@ LABEL_114:
     v258 = v25;
     v27 = v25;
     v28 = +[PPConfiguration sharedInstance];
-    v29 = [v27 bundleId];
-    v30 = [v27 language];
-    v31 = [v28 extractionAlgorithmsForBundleId:v29 sourceLanguage:v30 conservative:0 domain:1];
+    bundleId2 = [v27 bundleId];
+    language = [v27 language];
+    v31 = [v28 extractionAlgorithmsForBundleId:bundleId2 sourceLanguage:language conservative:0 domain:1];
 
     if (![v31 containsObject:&unk_284785160])
     {
@@ -1089,10 +1089,10 @@ LABEL_41:
 
       v82 = v26;
       v83 = v27;
-      v84 = [v82 structuredLocationTitle];
+      structuredLocationTitle = [v82 structuredLocationTitle];
       if ((PPStringAllWhiteSpace() & 1) == 0)
       {
-        v85 = [v82 structuredLocationTitle];
+        structuredLocationTitle2 = [v82 structuredLocationTitle];
         v86 = PPStringLooksLikeNumber();
 
         if (v86)
@@ -1101,14 +1101,14 @@ LABEL_41:
         }
 
         v87 = +[PPConfiguration sharedInstance];
-        v84 = [v87 extractionAlgorithmsForBundleId:v259 sourceLanguage:0 conservative:0 domain:2];
+        structuredLocationTitle = [v87 extractionAlgorithmsForBundleId:v259 sourceLanguage:0 conservative:0 domain:2];
 
-        if ([v84 containsObject:&unk_284785178])
+        if ([structuredLocationTitle containsObject:&unk_284785178])
         {
           v88 = MEMORY[0x277D3A3F8];
-          v89 = [v82 structuredLocationTitle];
-          v90 = [v82 structuredLocationCoordinates];
-          v91 = [v88 placemarkWithName:v89 clLocation:v90];
+          structuredLocationTitle3 = [v82 structuredLocationTitle];
+          structuredLocationCoordinates = [v82 structuredLocationCoordinates];
+          v91 = [v88 placemarkWithName:structuredLocationTitle3 clLocation:structuredLocationCoordinates];
 
           if (v91)
           {
@@ -1118,18 +1118,18 @@ LABEL_41:
             v260 = v92;
             *v286 = v92;
             v94 = [MEMORY[0x277CBEA60] arrayWithObjects:v286 count:1];
-            v257 = [v82 title];
-            v95 = [v257 length];
+            title3 = [v82 title];
+            v95 = [title3 length];
             if (v95)
             {
               v255 = v93;
               v96 = objc_autoreleasePoolPush();
               v97 = v94;
               v98 = objc_alloc(MEMORY[0x277CBEB98]);
-              v99 = [v82 title];
+              title4 = [v82 title];
               v100 = v98;
               v94 = v97;
-              v101 = [v100 initWithObjects:{v99, 0}];
+              v101 = [v100 initWithObjects:{title4, 0}];
 
               v102 = v96;
               v93 = v255;
@@ -1152,7 +1152,7 @@ LABEL_41:
             v106 = v105;
             if (v103)
             {
-              v23 = v267;
+              v23 = selfCopy;
               if (os_log_type_enabled(v105, OS_LOG_TYPE_DEBUG))
               {
                 [v82 structuredLocationTitle];
@@ -1167,7 +1167,7 @@ LABEL_41:
 
             else
             {
-              v23 = v267;
+              v23 = selfCopy;
               if (os_log_type_enabled(v105, OS_LOG_TYPE_ERROR))
               {
                 [v82 structuredLocationTitle];
@@ -1199,26 +1199,26 @@ LABEL_60:
       v109 = v82;
       v110 = v83;
       v111 = +[PPConfiguration sharedInstance];
-      v112 = [v110 bundleId];
-      v113 = [v110 language];
-      v114 = [v111 extractionAlgorithmsForBundleId:v112 sourceLanguage:v113 conservative:1 domain:1];
+      bundleId3 = [v110 bundleId];
+      language2 = [v110 language];
+      v114 = [v111 extractionAlgorithmsForBundleId:bundleId3 sourceLanguage:language2 conservative:1 domain:1];
 
-      v115 = [v109 title];
-      if (v115 && (v116 = v115, [v109 title], v117 = objc_claimAutoreleasedReturnValue(), v118 = objc_msgSend(v117, "length"), v117, v116, v118))
+      title5 = [v109 title];
+      if (title5 && (v116 = title5, [v109 title], v117 = objc_claimAutoreleasedReturnValue(), v118 = objc_msgSend(v117, "length"), v117, v116, v118))
       {
         v119 = v23[8];
-        v120 = [v109 title];
-        v121 = [v119 entitiesInPlainText:v120 eligibleRegions:0 source:v110 cloudSync:1 algorithms:v114];
+        title6 = [v109 title];
+        v121 = [v119 entitiesInPlainText:title6 eligibleRegions:0 source:v110 cloudSync:1 algorithms:v114];
 
         v122 = pp_default_log_handle();
         if (os_log_type_enabled(v122, OS_LOG_TYPE_DEFAULT))
         {
-          v123 = [v109 eventIdentifier];
-          v124 = [v109 location];
-          v125 = [v124 length];
+          eventIdentifier5 = [v109 eventIdentifier];
+          location3 = [v109 location];
+          v125 = [location3 length];
           v126 = [v121 count];
           *buf = 138412802;
-          *&buf[4] = v123;
+          *&buf[4] = eventIdentifier5;
           *&buf[12] = 2048;
           *&buf[14] = v125;
           *&buf[22] = 2048;
@@ -1265,28 +1265,28 @@ LABEL_60:
         v127 = 0;
       }
 
-      v134 = [v109 location];
-      if (v134)
+      location4 = [v109 location];
+      if (location4)
       {
-        v135 = v134;
-        v136 = [v109 location];
-        v137 = [v136 length];
+        v135 = location4;
+        location5 = [v109 location];
+        v137 = [location5 length];
 
         if (v137)
         {
           v138 = v23[8];
-          v139 = [v109 location];
-          v140 = [v138 entitiesInPlainText:v139 eligibleRegions:0 source:v110 cloudSync:1 algorithms:v114];
+          location6 = [v109 location];
+          v140 = [v138 entitiesInPlainText:location6 eligibleRegions:0 source:v110 cloudSync:1 algorithms:v114];
 
           v141 = pp_default_log_handle();
           if (os_log_type_enabled(v141, OS_LOG_TYPE_DEFAULT))
           {
-            v142 = [v109 eventIdentifier];
-            v143 = [v109 location];
-            v144 = [v143 length];
+            eventIdentifier6 = [v109 eventIdentifier];
+            location7 = [v109 location];
+            v144 = [location7 length];
             v145 = [v140 count];
             *v286 = 138412802;
-            *&v286[4] = v142;
+            *&v286[4] = eventIdentifier6;
             *&v286[12] = 2048;
             *&v286[14] = v144;
             *&v286[22] = 2048;
@@ -1329,49 +1329,49 @@ LABEL_60:
         }
       }
 
-      v152 = [v109 notes];
+      notes3 = [v109 notes];
 
-      if (v152)
+      if (notes3)
       {
         v271 = v114;
-        v153 = [v109 notes];
-        v154 = [v153 length];
+        notes4 = [v109 notes];
+        v154 = [notes4 length];
 
         v155 = +[PPConfiguration sharedInstance];
-        v156 = [v110 bundleId];
-        v157 = [v110 language];
-        v158 = [v155 extractionAlgorithmsForBundleId:v156 sourceLanguage:v157 conservative:v154 < 0x40 domain:1];
+        bundleId4 = [v110 bundleId];
+        language3 = [v110 language];
+        v158 = [v155 extractionAlgorithmsForBundleId:bundleId4 sourceLanguage:language3 conservative:v154 < 0x40 domain:1];
 
-        v23 = v267;
+        v23 = selfCopy;
         if (v154 >= 0x40)
         {
           v159 = pp_default_log_handle();
           if (os_log_type_enabled(v159, OS_LOG_TYPE_DEFAULT))
           {
-            v160 = [v109 eventIdentifier];
-            v161 = [v109 notes];
-            v162 = [v161 length];
+            eventIdentifier7 = [v109 eventIdentifier];
+            notes5 = [v109 notes];
+            v162 = [notes5 length];
             *v281 = 138412546;
-            *&v281[4] = v160;
+            *&v281[4] = eventIdentifier7;
             v282 = 2048;
             v283 = v162;
             _os_log_impl(&dword_23224A000, v159, OS_LOG_TYPE_DEFAULT, "PPEventKitImporter: using all taggers since notes on %@ has length %tu", v281, 0x16u);
           }
         }
 
-        v163 = *(v267 + 64);
-        v164 = [v109 notes];
-        v165 = [v163 entitiesInPlainText:v164 eligibleRegions:0 source:v110 cloudSync:1 algorithms:v158];
+        v163 = *(selfCopy + 64);
+        notes6 = [v109 notes];
+        v165 = [v163 entitiesInPlainText:notes6 eligibleRegions:0 source:v110 cloudSync:1 algorithms:v158];
 
         v166 = pp_default_log_handle();
         if (os_log_type_enabled(v166, OS_LOG_TYPE_DEFAULT))
         {
-          v167 = [v109 eventIdentifier];
-          v168 = [v109 notes];
-          v169 = [v168 length];
+          eventIdentifier8 = [v109 eventIdentifier];
+          notes7 = [v109 notes];
+          v169 = [notes7 length];
           v170 = [v165 count];
           *v281 = 138412802;
-          *&v281[4] = v167;
+          *&v281[4] = eventIdentifier8;
           v282 = 2048;
           v283 = v169;
           v284 = 2048;
@@ -1400,7 +1400,7 @@ LABEL_60:
 
               v175 = *(*(&v273 + 1) + 8 * k);
               v176 = objc_autoreleasePoolPush();
-              [(PPEventKitImporter *)v267 _donateContainerContents:v175];
+              [(PPEventKitImporter *)selfCopy _donateContainerContents:v175];
               objc_autoreleasePoolPop(v176);
             }
 
@@ -1423,21 +1423,21 @@ LABEL_60:
     v256 = v26;
     v32 = v26;
     v269 = objc_opt_new();
-    v33 = [v32 title];
-    if (v33)
+    title7 = [v32 title];
+    if (title7)
     {
-      v34 = v33;
-      v35 = [v32 title];
-      v36 = [v35 length];
+      v34 = title7;
+      title8 = [v32 title];
+      v36 = [title8 length];
 
       if (v36)
       {
         v37 = objc_alloc(MEMORY[0x277D3A498]);
         v38 = objc_alloc(MEMORY[0x277D3A420]);
-        v39 = [v32 title];
-        v40 = [MEMORY[0x277CBEAF8] currentLocale];
-        v41 = [v40 languageCode];
-        v42 = [v38 initWithName:v39 category:14 language:v41];
+        title9 = [v32 title];
+        currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+        languageCode = [currentLocale languageCode];
+        v42 = [v38 initWithName:title9 category:14 language:languageCode];
         v43 = [v37 initWithItem:v42 score:0.5];
         [v269 addObject:v43];
       }
@@ -1447,8 +1447,8 @@ LABEL_60:
     v288 = 0u;
     memset(v286, 0, sizeof(v286));
     v252 = v32;
-    v44 = [v32 attendees];
-    v45 = [v44 countByEnumeratingWithState:v286 objects:buf count:16];
+    attendees3 = [v32 attendees];
+    v45 = [attendees3 countByEnumeratingWithState:v286 objects:buf count:16];
     if (v45)
     {
       v46 = v45;
@@ -1459,26 +1459,26 @@ LABEL_60:
         {
           if (**&v286[16] != v47)
           {
-            objc_enumerationMutation(v44);
+            objc_enumerationMutation(attendees3);
           }
 
           v49 = *(*&v286[8] + 8 * m);
           v50 = objc_autoreleasePoolPush();
-          v51 = [v49 name];
-          if (v51)
+          name = [v49 name];
+          if (name)
           {
-            v52 = v51;
-            v53 = [v49 name];
-            v54 = [v53 length];
+            v52 = name;
+            name2 = [v49 name];
+            v54 = [name2 length];
 
             if (v54)
             {
               v55 = objc_alloc(MEMORY[0x277D3A498]);
               v56 = objc_alloc(MEMORY[0x277D3A420]);
-              v57 = [v49 name];
-              v58 = [MEMORY[0x277CBEAF8] currentLocale];
-              v59 = [v58 languageCode];
-              v60 = [v56 initWithName:v57 category:1 language:v59];
+              name3 = [v49 name];
+              currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+              languageCode2 = [currentLocale2 languageCode];
+              v60 = [v56 initWithName:name3 category:1 language:languageCode2];
               v61 = [v55 initWithItem:v60 score:0.5];
               [v269 addObject:v61];
             }
@@ -1487,27 +1487,27 @@ LABEL_60:
           objc_autoreleasePoolPop(v50);
         }
 
-        v46 = [v44 countByEnumeratingWithState:v286 objects:buf count:16];
+        v46 = [attendees3 countByEnumeratingWithState:v286 objects:buf count:16];
       }
 
       while (v46);
     }
 
-    v62 = [v252 structuredLocationTitle];
-    v23 = v267;
+    structuredLocationTitle4 = [v252 structuredLocationTitle];
+    v23 = selfCopy;
     v27 = v254;
-    if (v62)
+    if (structuredLocationTitle4)
     {
-      v63 = v62;
-      v64 = [v252 structuredLocationTitle];
-      if (![v64 length])
+      structuredLocationTitle8 = structuredLocationTitle4;
+      structuredLocationTitle5 = [v252 structuredLocationTitle];
+      if (![structuredLocationTitle5 length])
       {
 LABEL_29:
 
         goto LABEL_30;
       }
 
-      v65 = [v252 structuredLocationTitle];
+      structuredLocationTitle6 = [v252 structuredLocationTitle];
       if (PPStringAllWhiteSpace())
       {
 LABEL_28:
@@ -1515,17 +1515,17 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      v66 = [v252 structuredLocationTitle];
+      structuredLocationTitle7 = [v252 structuredLocationTitle];
       v67 = PPStringLooksLikeNumber();
 
       if ((v67 & 1) == 0)
       {
         v68 = objc_alloc(MEMORY[0x277D3A498]);
         v69 = objc_alloc(MEMORY[0x277D3A420]);
-        v63 = [v252 structuredLocationTitle];
-        v64 = [MEMORY[0x277CBEAF8] currentLocale];
-        v65 = [v64 languageCode];
-        v70 = [v69 initWithName:v63 category:3 language:v65];
+        structuredLocationTitle8 = [v252 structuredLocationTitle];
+        structuredLocationTitle5 = [MEMORY[0x277CBEAF8] currentLocale];
+        structuredLocationTitle6 = [structuredLocationTitle5 languageCode];
+        v70 = [v69 initWithName:structuredLocationTitle8 category:3 language:structuredLocationTitle6];
         v71 = [v68 initWithItem:v70 score:0.5];
         [v269 addObject:v71];
 
@@ -1535,7 +1535,7 @@ LABEL_28:
 
 LABEL_30:
 
-    v72 = *(v267 + 16);
+    v72 = *(selfCopy + 16);
     *v286 = 0;
     v73 = [v72 donateNamedEntities:v269 source:v254 algorithm:10 cloudSync:0 sentimentScore:v286 error:0.0];
     v74 = *v286;
@@ -1547,14 +1547,14 @@ LABEL_30:
       if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
       {
         v77 = [v269 count];
-        v78 = [v254 groupId];
-        v79 = [v254 documentId];
+        groupId = [v254 groupId];
+        documentId2 = [v254 documentId];
         *buf = 134218498;
         *&buf[4] = v77;
         *&buf[12] = 2112;
-        *&buf[14] = v78;
+        *&buf[14] = groupId;
         *&buf[22] = 2112;
-        v294 = v79;
+        v294 = documentId2;
         _os_log_impl(&dword_23224A000, v76, OS_LOG_TYPE_DEFAULT, "PPEventKitImporter: donated %tu entities from %@ / %@", buf, 0x20u);
       }
     }
@@ -1564,9 +1564,9 @@ LABEL_30:
       v6 = v266;
       if (os_log_type_enabled(v75, OS_LOG_TYPE_ERROR))
       {
-        v246 = [v252 eventIdentifier];
+        eventIdentifier9 = [v252 eventIdentifier];
         *buf = 138412546;
-        *&buf[4] = v246;
+        *&buf[4] = eventIdentifier9;
         *&buf[12] = 2112;
         *&buf[14] = v74;
         _os_log_error_impl(&dword_23224A000, v76, OS_LOG_TYPE_ERROR, "PPEventKitImporter: failed to donate EventKit data for %@: %@", buf, 0x16u);
@@ -1593,16 +1593,16 @@ LABEL_149:
   v244 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_escapedDomainIdentifierForIdentifier:(uint64_t)a1
++ (id)_escapedDomainIdentifierForIdentifier:(uint64_t)identifier
 {
   v14 = *MEMORY[0x277D85DE8];
   v2 = a2;
   objc_opt_self();
   v3 = objc_autoreleasePoolPush();
   v4 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"%."];
-  v5 = [v4 invertedSet];
+  invertedSet = [v4 invertedSet];
 
-  v6 = [v2 stringByAddingPercentEncodingWithAllowedCharacters:v5];
+  v6 = [v2 stringByAddingPercentEncodingWithAllowedCharacters:invertedSet];
   if (!v6)
   {
     v7 = pp_default_log_handle();
@@ -1627,19 +1627,19 @@ LABEL_149:
   return v6;
 }
 
-- (void)_donateContainerContents:(uint64_t)a1
+- (void)_donateContainerContents:(uint64_t)contents
 {
   v63 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  v48 = a1;
-  v4 = *(a1 + 16);
-  v5 = [v3 entities];
-  v6 = [v3 source];
-  v7 = [v3 entityAlgorithm];
-  v8 = [v3 cloudSync];
+  contentsCopy = contents;
+  v4 = *(contents + 16);
+  entities = [v3 entities];
+  source = [v3 source];
+  entityAlgorithm = [v3 entityAlgorithm];
+  cloudSync = [v3 cloudSync];
   [v3 sentimentScore];
   v55 = 0;
-  LOBYTE(v4) = [v4 donateNamedEntities:v5 source:v6 algorithm:v7 cloudSync:v8 sentimentScore:&v55 error:?];
+  LOBYTE(v4) = [v4 donateNamedEntities:entities source:source algorithm:entityAlgorithm cloudSync:cloudSync sentimentScore:&v55 error:?];
   v9 = v55;
 
   if ((v4 & 1) == 0)
@@ -1647,41 +1647,41 @@ LABEL_149:
     v10 = pp_default_log_handle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v38 = [v3 entities];
-      v39 = [v38 count];
-      v40 = [v3 source];
+      entities2 = [v3 entities];
+      v39 = [entities2 count];
+      source2 = [v3 source];
       *buf = 134218498;
       v58 = v39;
       v59 = 2112;
-      v60 = v40;
+      v60 = source2;
       v61 = 2112;
       v62 = v9;
       _os_log_debug_impl(&dword_23224A000, v10, OS_LOG_TYPE_DEBUG, "PPEventKitImporter: failed to donate %tu named entities from container (%@): %@", buf, 0x20u);
     }
   }
 
-  v11 = *(v48 + 32);
-  v12 = [v3 topics];
-  v13 = [v3 source];
-  v14 = [v3 topicAlgorithm];
-  v15 = [v3 cloudSync];
+  v11 = *(contentsCopy + 32);
+  topics = [v3 topics];
+  source3 = [v3 source];
+  topicAlgorithm = [v3 topicAlgorithm];
+  cloudSync2 = [v3 cloudSync];
   [v3 sentimentScore];
   v54 = 0;
-  LOBYTE(v14) = [v11 donateTopics:v12 source:v13 algorithm:v14 cloudSync:v15 sentimentScore:0 exactMatchesInSourceText:&v54 error:?];
+  LOBYTE(topicAlgorithm) = [v11 donateTopics:topics source:source3 algorithm:topicAlgorithm cloudSync:cloudSync2 sentimentScore:0 exactMatchesInSourceText:&v54 error:?];
   v16 = v54;
 
-  if ((v14 & 1) == 0)
+  if ((topicAlgorithm & 1) == 0)
   {
     v17 = pp_default_log_handle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v41 = [v3 topics];
-      v42 = [v41 count];
-      v43 = [v3 source];
+      topics2 = [v3 topics];
+      v42 = [topics2 count];
+      source4 = [v3 source];
       *buf = 134218498;
       v58 = v42;
       v59 = 2112;
-      v60 = v43;
+      v60 = source4;
       v61 = 2112;
       v62 = v16;
       _os_log_debug_impl(&dword_23224A000, v17, OS_LOG_TYPE_DEBUG, "PPEventKitImporter: failed to donate %tu topics from container (%@): %@", buf, 0x20u);
@@ -1692,11 +1692,11 @@ LABEL_149:
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v18 = [v3 locations];
-  v19 = [v18 allKeys];
+  locations = [v3 locations];
+  allKeys = [locations allKeys];
 
-  obj = v19;
-  v20 = [v19 countByEnumeratingWithState:&v50 objects:v56 count:16];
+  obj = allKeys;
+  v20 = [allKeys countByEnumeratingWithState:&v50 objects:v56 count:16];
   if (v20)
   {
     v21 = v20;
@@ -1716,29 +1716,29 @@ LABEL_149:
         }
 
         v25 = *(*(&v50 + 1) + 8 * v23);
-        v26 = *(v48 + 24);
-        v27 = [v3 locations];
-        v28 = [v27 objectForKeyedSubscript:v25];
-        v29 = [v3 source];
-        v30 = [v25 unsignedIntegerValue];
-        v31 = [v3 cloudSync];
+        v26 = *(contentsCopy + 24);
+        locations2 = [v3 locations];
+        v28 = [locations2 objectForKeyedSubscript:v25];
+        source5 = [v3 source];
+        unsignedIntegerValue = [v25 unsignedIntegerValue];
+        cloudSync3 = [v3 cloudSync];
         v49 = v24;
-        LOBYTE(v30) = [v26 donateLocations:v28 source:v29 contextualNamedEntities:0 algorithm:v30 cloudSync:v31 error:&v49];
+        LOBYTE(unsignedIntegerValue) = [v26 donateLocations:v28 source:source5 contextualNamedEntities:0 algorithm:unsignedIntegerValue cloudSync:cloudSync3 error:&v49];
         v22 = v49;
 
-        if ((v30 & 1) == 0)
+        if ((unsignedIntegerValue & 1) == 0)
         {
           v32 = pp_default_log_handle();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
           {
-            v33 = [v3 locations];
-            v34 = [v33 objectForKeyedSubscript:v25];
+            locations3 = [v3 locations];
+            v34 = [locations3 objectForKeyedSubscript:v25];
             v35 = [v34 count];
-            v36 = [v3 source];
+            source6 = [v3 source];
             *buf = 134218498;
             v58 = v35;
             v59 = 2112;
-            v60 = v36;
+            v60 = source6;
             v61 = 2112;
             v62 = v22;
             _os_log_debug_impl(&dword_23224A000, v32, OS_LOG_TYPE_DEBUG, "PPEventKitImporter: failed to donate %tu locations from container (%@): %@", buf, 0x20u);
@@ -1856,13 +1856,13 @@ id __49__PPEventKitImporter__eventIdentifiersToReimport__block_invoke_183(uint64
   return v3;
 }
 
-- (void)importEvent:(id)a3
+- (void)importEvent:(id)event
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   if ((+[PPEventKitImporter _shouldImport]& 1) != 0)
   {
-    v8[0] = v4;
+    v8[0] = eventCopy;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
     [(PPEventKitImporter *)self _importEvents:v5];
   }
@@ -1880,23 +1880,23 @@ id __49__PPEventKitImporter__eventIdentifiersToReimport__block_invoke_183(uint64
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)importChangedEvents:(id)a3
+- (void)importChangedEvents:(id)events
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventsCopy = events;
   v5 = pp_default_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 first];
+    first = [eventsCopy first];
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = [v6 count];
+    *(&buf + 4) = [first count];
     _os_log_impl(&dword_23224A000, v5, OS_LOG_TYPE_DEFAULT, "PPEventKitImporter: importing %tu changed events", &buf, 0xCu);
   }
 
-  v7 = [v4 second];
-  v8 = [v7 allObjects];
-  v9 = v8;
-  if (self && [v8 count])
+  second = [eventsCopy second];
+  allObjects = [second allObjects];
+  v9 = allObjects;
+  if (self && [allObjects count])
   {
     v10 = [v9 _pas_mappedArrayWithTransform:&__block_literal_global_195_25080];
     v62 = 0;
@@ -1964,9 +1964,9 @@ id __49__PPEventKitImporter__eventIdentifiersToReimport__block_invoke_183(uint64
       if (v23)
       {
         v44 = v24;
-        v45 = v7;
-        v46 = self;
-        v47 = v4;
+        v45 = second;
+        selfCopy = self;
+        v47 = eventsCopy;
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
         {
           LODWORD(buf) = 134217984;
@@ -1996,12 +1996,12 @@ id __49__PPEventKitImporter__eventIdentifiersToReimport__block_invoke_183(uint64
 
               v31 = *(*(&v55 + 1) + 8 * i);
               v32 = objc_autoreleasePoolPush();
-              v33 = [v31 URIRepresentation];
-              v34 = [v33 absoluteString];
+              uRIRepresentation = [v31 URIRepresentation];
+              absoluteString = [uRIRepresentation absoluteString];
 
-              if (v34)
+              if (absoluteString)
               {
-                v35 = [PPEventKitImporter _escapedDomainIdentifierForIdentifier:v34];
+                v35 = [PPEventKitImporter _escapedDomainIdentifierForIdentifier:absoluteString];
                 [v21 addDomain:v35];
               }
 
@@ -2016,10 +2016,10 @@ id __49__PPEventKitImporter__eventIdentifiersToReimport__block_invoke_183(uint64
 
         if ([MEMORY[0x277D02528] deleteAllURLsWithBundleIdentifier:v49 domainSelection:v21 entityStore:0])
         {
-          self = v46;
-          [(PPEventKitImporter *)v46 _flush];
+          self = selfCopy;
+          [(PPEventKitImporter *)selfCopy _flush];
           v36 = pp_default_log_handle();
-          v4 = v47;
+          eventsCopy = v47;
           v10 = v48;
           v24 = v44;
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -2032,8 +2032,8 @@ id __49__PPEventKitImporter__eventIdentifiersToReimport__block_invoke_183(uint64
         else
         {
           v38 = pp_default_log_handle();
-          self = v46;
-          v4 = v47;
+          self = selfCopy;
+          eventsCopy = v47;
           v10 = v48;
           v24 = v44;
           if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -2053,7 +2053,7 @@ id __49__PPEventKitImporter__eventIdentifiersToReimport__block_invoke_183(uint64
           v36 = v54;
         }
 
-        v7 = v45;
+        second = v45;
 
         goto LABEL_39;
       }
@@ -2084,23 +2084,23 @@ LABEL_39:
 
   if ((+[PPEventKitImporter _shouldImport]& 1) == 0)
   {
-    v42 = pp_default_log_handle();
-    if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+    first3 = pp_default_log_handle();
+    if (os_log_type_enabled(first3, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(buf) = 0;
-      _os_log_impl(&dword_23224A000, v42, OS_LOG_TYPE_DEFAULT, "PPEventKitImporter: importEvent disabled due to settings", &buf, 2u);
+      _os_log_impl(&dword_23224A000, first3, OS_LOG_TYPE_DEFAULT, "PPEventKitImporter: importEvent disabled due to settings", &buf, 2u);
     }
 
     goto LABEL_45;
   }
 
-  v40 = [v4 first];
-  v41 = [v40 count];
+  first2 = [eventsCopy first];
+  v41 = [first2 count];
 
   if (v41)
   {
-    v42 = [v4 first];
-    [(PPEventKitImporter *)self _importEvents:v42];
+    first3 = [eventsCopy first];
+    [(PPEventKitImporter *)self _importEvents:first3];
 LABEL_45:
   }
 
@@ -2135,10 +2135,10 @@ id __53__PPEventKitImporter__deleteExtractionsForObjectIDs___block_invoke(uint64
   return v3;
 }
 
-- (id)importEventDataWithShouldContinueBlock:(id)a3
+- (id)importEventDataWithShouldContinueBlock:(id)block
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v5 = pp_default_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2204,7 +2204,7 @@ id __53__PPEventKitImporter__deleteExtractionsForObjectIDs___block_invoke(uint64
         }
       }
 
-      if (!v4[2](v4))
+      if (!blockCopy[2](blockCopy))
       {
         goto LABEL_42;
       }
@@ -2237,7 +2237,7 @@ id __53__PPEventKitImporter__deleteExtractionsForObjectIDs___block_invoke(uint64
         }
       }
 
-      if (!v4[2](v4))
+      if (!blockCopy[2](blockCopy))
       {
         goto LABEL_42;
       }
@@ -2270,7 +2270,7 @@ id __53__PPEventKitImporter__deleteExtractionsForObjectIDs___block_invoke(uint64
         }
       }
 
-      if (!v4[2](v4))
+      if (!blockCopy[2](blockCopy))
       {
 LABEL_42:
         v7 = MEMORY[0x277CBEBF8];
@@ -2337,15 +2337,15 @@ void __40__PPEventKitImporter__deleteOldEntities__block_invoke(uint64_t a1)
   [v2 trackScalarForMessage:v3];
 }
 
-- (PPEventKitImporter)initWithEventStore:(id)a3 namedEntityStore:(id)a4 locationStore:(id)a5 topicStore:(id)a6 urlStore:(id)a7 urlDissector:(id)a8 namedEntityDissector:(id)a9 dataDetectorMatchClass:(Class)a10 sqlDatabase:(id)a11
+- (PPEventKitImporter)initWithEventStore:(id)store namedEntityStore:(id)entityStore locationStore:(id)locationStore topicStore:(id)topicStore urlStore:(id)urlStore urlDissector:(id)dissector namedEntityDissector:(id)entityDissector dataDetectorMatchClass:(Class)self0 sqlDatabase:(id)self1
 {
   v55 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v42 = a5;
-  v41 = a6;
-  v40 = a7;
-  v19 = a11;
+  storeCopy = store;
+  entityStoreCopy = entityStore;
+  locationStoreCopy = locationStore;
+  topicStoreCopy = topicStore;
+  urlStoreCopy = urlStore;
+  databaseCopy = database;
   v43.receiver = self;
   v43.super_class = PPEventKitImporter;
   v20 = [(PPEventKitImporter *)&v43 init];
@@ -2355,16 +2355,16 @@ void __40__PPEventKitImporter__deleteOldEntities__block_invoke(uint64_t a1)
     goto LABEL_14;
   }
 
-  v38 = v18;
-  v39 = v17;
-  objc_storeStrong(&v20->_eventStore, a3);
-  objc_storeStrong(&v21->_namedEntityStore, a4);
-  objc_storeStrong(&v21->_locationStore, a5);
-  objc_storeStrong(&v21->_topicStore, a6);
-  objc_storeStrong(&v21->_urlStore, a7);
-  objc_storeStrong(&v21->_sqlDatabase, a11);
+  v38 = entityStoreCopy;
+  v39 = storeCopy;
+  objc_storeStrong(&v20->_eventStore, store);
+  objc_storeStrong(&v21->_namedEntityStore, entityStore);
+  objc_storeStrong(&v21->_locationStore, locationStore);
+  objc_storeStrong(&v21->_topicStore, topicStore);
+  objc_storeStrong(&v21->_urlStore, urlStore);
+  objc_storeStrong(&v21->_sqlDatabase, database);
   v21->_dataDetectorMatchClass = objc_opt_class();
-  v22 = [MEMORY[0x277D02508] fullPipeline];
+  fullPipeline = [MEMORY[0x277D02508] fullPipeline];
   v23 = +[PPNamedEntityDissector sharedInstance];
   neDissector = v21->_neDissector;
   v21->_neDissector = v23;
@@ -2373,8 +2373,8 @@ void __40__PPEventKitImporter__deleteOldEntities__block_invoke(uint64_t a1)
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v25 = [v22 dissectors];
-  v26 = [v25 countByEnumeratingWithState:&v44 objects:v54 count:16];
+  dissectors = [fullPipeline dissectors];
+  v26 = [dissectors countByEnumeratingWithState:&v44 objects:v54 count:16];
   if (v26)
   {
     v27 = v26;
@@ -2385,7 +2385,7 @@ void __40__PPEventKitImporter__deleteOldEntities__block_invoke(uint64_t a1)
       {
         if (*v45 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(dissectors);
         }
 
         v30 = *(*(&v44 + 1) + 8 * i);
@@ -2398,7 +2398,7 @@ void __40__PPEventKitImporter__deleteOldEntities__block_invoke(uint64_t a1)
         objc_autoreleasePoolPop(v31);
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v44 objects:v54 count:16];
+      v27 = [dissectors countByEnumeratingWithState:&v44 objects:v54 count:16];
     }
 
     while (v27);
@@ -2408,16 +2408,16 @@ void __40__PPEventKitImporter__deleteOldEntities__block_invoke(uint64_t a1)
   {
 
     atomic_store(0, &v21->_fullImportInProgress);
-    v18 = v38;
-    v17 = v39;
+    entityStoreCopy = v38;
+    storeCopy = v39;
 LABEL_14:
     v32 = v21;
     goto LABEL_18;
   }
 
   v33 = pp_default_log_handle();
-  v18 = v38;
-  v17 = v39;
+  entityStoreCopy = v38;
+  storeCopy = v39;
   if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
   {
     urlDissector = v21->_urlDissector;
@@ -2427,7 +2427,7 @@ LABEL_14:
     v50 = 2112;
     v51 = urlDissector;
     v52 = 2112;
-    v53 = v22;
+    v53 = fullPipeline;
     _os_log_fault_impl(&dword_23224A000, v33, OS_LOG_TYPE_FAULT, "PPEventKitImporter failed to get all dissectors (%@ && %@) out of the pipeline: %@", buf, 0x20u);
   }
 

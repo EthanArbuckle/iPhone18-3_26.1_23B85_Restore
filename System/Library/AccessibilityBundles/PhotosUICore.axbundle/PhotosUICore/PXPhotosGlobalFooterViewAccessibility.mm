@@ -1,5 +1,5 @@
 @interface PXPhotosGlobalFooterViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityInternalTextLinks;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)_axLabel;
@@ -8,31 +8,31 @@
 
 @implementation PXPhotosGlobalFooterViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXPhotosGlobalFooterView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"PXPhotosGlobalFooterView" hasInstanceVariable:@"_subtitle2Label" withType:"UILabel"];
-  [v3 validateClass:@"PXPhotosGlobalFooterView" hasInstanceVariable:@"_subtitle1TextView" withType:"UITextView"];
-  [v3 validateClass:@"PXPhotosGlobalFooterView" hasInstanceVariable:@"_progressView" withType:"UIProgressView"];
-  [v3 validateClass:@"PXPhotosGlobalFooterView" hasInstanceVariable:@"_filterView" withType:"UIView"];
-  [v3 validateClass:@"PXPhotosGlobalFooterView" hasInstanceVariable:@"_accessoryView" withType:"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXPhotosGlobalFooterView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PXPhotosGlobalFooterView" hasInstanceVariable:@"_subtitle2Label" withType:"UILabel"];
+  [validationsCopy validateClass:@"PXPhotosGlobalFooterView" hasInstanceVariable:@"_subtitle1TextView" withType:"UITextView"];
+  [validationsCopy validateClass:@"PXPhotosGlobalFooterView" hasInstanceVariable:@"_progressView" withType:"UIProgressView"];
+  [validationsCopy validateClass:@"PXPhotosGlobalFooterView" hasInstanceVariable:@"_filterView" withType:"UIView"];
+  [validationsCopy validateClass:@"PXPhotosGlobalFooterView" hasInstanceVariable:@"_accessoryView" withType:"UIView"];
 }
 
 - (id)accessibilityElements
 {
   v3 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
-  v4 = [(PXPhotosGlobalFooterViewAccessibility *)self _axAccessoryView];
-  v5 = v4;
-  if (v4 && ([v4 safeBoolForKey:@"isHidden"] & 1) == 0)
+  _axAccessoryView = [(PXPhotosGlobalFooterViewAccessibility *)self _axAccessoryView];
+  v5 = _axAccessoryView;
+  if (_axAccessoryView && ([_axAccessoryView safeBoolForKey:@"isHidden"] & 1) == 0)
   {
     v6 = [v5 _accessibilityFindSubviewDescendantsPassingTest:&__block_literal_global_3];
     [v3 addObjectsFromArray:v6];
   }
 
-  v7 = [(PXPhotosGlobalFooterViewAccessibility *)self _axFooterElement];
+  _axFooterElement = [(PXPhotosGlobalFooterViewAccessibility *)self _axFooterElement];
 
-  if (!v7)
+  if (!_axFooterElement)
   {
     v8 = [objc_alloc(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:self];
     [(PXPhotosGlobalFooterViewAccessibility *)self _accessibilityBounds];
@@ -49,8 +49,8 @@
     objc_destroyWeak(&location);
   }
 
-  v9 = [(PXPhotosGlobalFooterViewAccessibility *)self _axFooterElement];
-  [v3 axSafelyAddObject:v9];
+  _axFooterElement2 = [(PXPhotosGlobalFooterViewAccessibility *)self _axFooterElement];
+  [v3 axSafelyAddObject:_axFooterElement2];
 
   v10 = [v3 copy];
 
@@ -77,17 +77,17 @@ id __62__PXPhotosGlobalFooterViewAccessibility_accessibilityElements__block_invo
 
   else
   {
-    v7 = [v5 accessibilityLabel];
-    v15 = [v5 accessibilityValue];
+    accessibilityLabel = [v5 accessibilityLabel];
+    accessibilityValue = [v5 accessibilityValue];
     v16 = @"__AXStringForVariablesSentinel";
     v6 = __UIAXStringForVariables();
   }
 
-  v8 = [(PXPhotosGlobalFooterViewAccessibility *)self _axFilterView:v15];
-  v9 = [v3 accessibilityLabel];
-  v10 = [(PXPhotosGlobalFooterViewAccessibility *)self _axSubtitle1TextView];
-  v11 = [v10 accessibilityValue];
-  v12 = [v4 accessibilityLabel];
+  v8 = [(PXPhotosGlobalFooterViewAccessibility *)self _axFilterView:accessibilityValue];
+  accessibilityLabel2 = [v3 accessibilityLabel];
+  _axSubtitle1TextView = [(PXPhotosGlobalFooterViewAccessibility *)self _axSubtitle1TextView];
+  accessibilityValue2 = [_axSubtitle1TextView accessibilityValue];
+  accessibilityLabel3 = [v4 accessibilityLabel];
   if ([v8 safeBoolForKey:@"isHidden"])
   {
     v13 = __UIAXStringForVariables();
@@ -95,7 +95,7 @@ id __62__PXPhotosGlobalFooterViewAccessibility_accessibilityElements__block_invo
 
   else
   {
-    v17 = [v8 accessibilityLabel];
+    accessibilityLabel4 = [v8 accessibilityLabel];
     v13 = __UIAXStringForVariables();
   }
 
@@ -105,35 +105,35 @@ id __62__PXPhotosGlobalFooterViewAccessibility_accessibilityElements__block_invo
 - (id)_accessibilityInternalTextLinks
 {
   v3 = MEMORY[0x29EDB8DE8];
-  v4 = [(PXPhotosGlobalFooterViewAccessibility *)self _axSubtitle1TextView];
-  v5 = [v4 _accessibilityInternalTextLinks];
-  v6 = [v3 axArrayWithPossiblyNilArrays:{1, v5}];
+  _axSubtitle1TextView = [(PXPhotosGlobalFooterViewAccessibility *)self _axSubtitle1TextView];
+  _accessibilityInternalTextLinks = [_axSubtitle1TextView _accessibilityInternalTextLinks];
+  v6 = [v3 axArrayWithPossiblyNilArrays:{1, _accessibilityInternalTextLinks}];
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    array = v6;
   }
 
   else
   {
-    v8 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
-  v9 = v8;
+  v9 = array;
 
-  v10 = [(PXPhotosGlobalFooterViewAccessibility *)self _axAccessoryView];
-  v11 = [v10 _accessibilityInternalTextLinks];
-  [v9 axSafelyAddObjectsFromArray:v11];
+  _axAccessoryView = [(PXPhotosGlobalFooterViewAccessibility *)self _axAccessoryView];
+  _accessibilityInternalTextLinks2 = [_axAccessoryView _accessibilityInternalTextLinks];
+  [v9 axSafelyAddObjectsFromArray:_accessibilityInternalTextLinks2];
 
   return v9;
 }
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v2 = [(PXPhotosGlobalFooterViewAccessibility *)self _axFilterView];
-  v3 = [v2 _accessibilitySupplementaryFooterViews];
+  _axFilterView = [(PXPhotosGlobalFooterViewAccessibility *)self _axFilterView];
+  _accessibilitySupplementaryFooterViews = [_axFilterView _accessibilitySupplementaryFooterViews];
 
-  return v3;
+  return _accessibilitySupplementaryFooterViews;
 }
 
 @end

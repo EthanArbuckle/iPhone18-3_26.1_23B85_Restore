@@ -1,8 +1,8 @@
 @interface PSSGMessageRequestResourcesBase
 - ($995AEC83619B72959345773A9004CE00)serialize;
-- (BOOL)isEqual:(id)a3;
-- (PSSGMessageRequestResourcesBase)initWithRawMessage:(pssg_tx_s *)a3;
-- (PSSGMessageRequestResourcesBase)initWithType:(unint64_t)a3 sender:(id)a4 request:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (PSSGMessageRequestResourcesBase)initWithRawMessage:(pssg_tx_s *)message;
+- (PSSGMessageRequestResourcesBase)initWithType:(unint64_t)type sender:(id)sender request:(id)request;
 - (PSSGResourceRequest)request;
 - (id)description;
 - (unint64_t)hash;
@@ -10,21 +10,21 @@
 
 @implementation PSSGMessageRequestResourcesBase
 
-- (PSSGMessageRequestResourcesBase)initWithType:(unint64_t)a3 sender:(id)a4 request:(id)a5
+- (PSSGMessageRequestResourcesBase)initWithType:(unint64_t)type sender:(id)sender request:(id)request
 {
-  v8 = a5;
+  requestCopy = request;
   v16.receiver = self;
   v16.super_class = PSSGMessageRequestResourcesBase;
-  v9 = [(PSSGMessageBase *)&v16 initWithType:a3 string1:a4];
+  v9 = [(PSSGMessageBase *)&v16 initWithType:type string1:sender];
   if (v9)
   {
-    v10 = [v8 resourcesWantedWithStrides];
+    resourcesWantedWithStrides = [requestCopy resourcesWantedWithStrides];
     wantedResources = v9->_wantedResources;
-    v9->_wantedResources = v10;
+    v9->_wantedResources = resourcesWantedWithStrides;
 
-    v12 = [v8 resourcesNoLongerWantedWithStrides];
+    resourcesNoLongerWantedWithStrides = [requestCopy resourcesNoLongerWantedWithStrides];
     noLongerWantedResources = v9->_noLongerWantedResources;
-    v9->_noLongerWantedResources = v12;
+    v9->_noLongerWantedResources = resourcesNoLongerWantedWithStrides;
 
     v14 = v9;
   }
@@ -32,22 +32,22 @@
   return v9;
 }
 
-- (PSSGMessageRequestResourcesBase)initWithRawMessage:(pssg_tx_s *)a3
+- (PSSGMessageRequestResourcesBase)initWithRawMessage:(pssg_tx_s *)message
 {
-  type = a3->type;
-  v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3->string1];
+  type = message->type;
+  v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:message->string1];
   v7 = [(PSSGMessageBase *)self initWithType:type string1:v6];
 
   if (v7)
   {
-    if ((a3->header.header.msgh_bits & 0x80000000) != 0 && a3->header.body.msgh_descriptor_count == 1 && HIBYTE(a3->header.ool_port_data.guarded_port.context) == 1)
+    if ((message->header.header.msgh_bits & 0x80000000) != 0 && message->header.body.msgh_descriptor_count == 1 && HIBYTE(message->header.ool_port_data.guarded_port.context) == 1)
     {
-      countArray1 = a3->var0.var0.countArray1;
-      countArray2 = a3->var0.var0.countArray2;
-      v10 = *(&a3->header.body + 1);
+      countArray1 = message->var0.var0.countArray1;
+      countArray2 = message->var0.var0.countArray2;
+      v10 = *(&message->header.body + 1);
       if (countArray1)
       {
-        v29 = a3->var0.var0.countArray2;
+        v29 = message->var0.var0.countArray2;
         v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:countArray1];
         v30 = countArray1;
         v12 = (v10 + 260);
@@ -189,40 +189,40 @@ LABEL_26:
   *&self->super._serializedMessage.message.string1[200] = 0u;
   *&self->super._serializedMessage.message.string1[216] = 0u;
   self->super._serializedMessage.message.type = [(PSSGMessageBase *)self type];
-  v4 = [(PSSGMessageBase *)self string1];
-  [v4 UTF8String];
+  string1 = [(PSSGMessageBase *)self string1];
+  [string1 UTF8String];
   __strlcpy_chk();
 
-  v5 = [(PSSGMessageRequestResourcesBase *)self wantedResources];
-  self->super._serializedMessage.message.var0.var0.countArray1 = [v5 count];
+  wantedResources = [(PSSGMessageRequestResourcesBase *)self wantedResources];
+  self->super._serializedMessage.message.var0.var0.countArray1 = [wantedResources count];
 
-  v6 = [(PSSGMessageRequestResourcesBase *)self noLongerWantedResources];
-  self->super._serializedMessage.message.var0.var0.countArray2 = [v6 count];
+  noLongerWantedResources = [(PSSGMessageRequestResourcesBase *)self noLongerWantedResources];
+  self->super._serializedMessage.message.var0.var0.countArray2 = [noLongerWantedResources count];
 
-  v7 = [(PSSGMessageRequestResourcesBase *)self wantedResources];
-  v8 = [v7 count];
-  v9 = [(PSSGMessageRequestResourcesBase *)self noLongerWantedResources];
-  v10 = [v9 count] + v8;
+  wantedResources2 = [(PSSGMessageRequestResourcesBase *)self wantedResources];
+  v8 = [wantedResources2 count];
+  noLongerWantedResources2 = [(PSSGMessageRequestResourcesBase *)self noLongerWantedResources];
+  v10 = [noLongerWantedResources2 count] + v8;
 
   if (v10)
   {
     v11 = [MEMORY[0x277CBEB28] dataWithLength:516 * v10];
-    v12 = [v11 mutableBytes];
-    if (!v12)
+    mutableBytes = [v11 mutableBytes];
+    if (!mutableBytes)
     {
       [PSSGMessageBase serialize];
     }
 
-    v13 = v12;
+    v13 = mutableBytes;
     v43 = v11;
     v44 = p_serializedMessage;
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v46 = self;
-    v14 = [(PSSGMessageRequestResourcesBase *)self wantedResources];
-    v15 = [v14 countByEnumeratingWithState:&v51 objects:v56 count:16];
+    selfCopy = self;
+    wantedResources3 = [(PSSGMessageRequestResourcesBase *)self wantedResources];
+    v15 = [wantedResources3 countByEnumeratingWithState:&v51 objects:v56 count:16];
     v45 = v13;
     if (v15)
     {
@@ -239,19 +239,19 @@ LABEL_26:
         {
           if (*v52 != v18)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(wantedResources3);
           }
 
           v22 = *(*(&v51 + 1) + 8 * v20);
-          v23 = [v22 resourceKey];
-          [v23 UTF8String];
+          resourceKey = [v22 resourceKey];
+          [resourceKey UTF8String];
           __strlcpy_chk();
 
-          v24 = [v22 stride];
-          if (v24)
+          stride = [v22 stride];
+          if (stride)
           {
-            v25 = [v22 stride];
-            *v21 = [v25 unsignedIntValue];
+            stride2 = [v22 stride];
+            *v21 = [stride2 unsignedIntValue];
           }
 
           else
@@ -259,11 +259,11 @@ LABEL_26:
             *v21 = 0;
           }
 
-          v26 = [v22 graphName];
-          if (v26)
+          graphName = [v22 graphName];
+          if (graphName)
           {
-            v27 = [v22 graphName];
-            strlcpy((v21 + 4), [v27 UTF8String], 0x100uLL);
+            graphName2 = [v22 graphName];
+            strlcpy((v21 + 4), [graphName2 UTF8String], 0x100uLL);
           }
 
           else
@@ -276,7 +276,7 @@ LABEL_26:
         }
 
         while (v16 != v20);
-        v16 = [v14 countByEnumeratingWithState:&v51 objects:v56 count:16];
+        v16 = [wantedResources3 countByEnumeratingWithState:&v51 objects:v56 count:16];
       }
 
       while (v16);
@@ -291,8 +291,8 @@ LABEL_26:
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v28 = [(PSSGMessageRequestResourcesBase *)v46 noLongerWantedResources];
-    v29 = [v28 countByEnumeratingWithState:&v47 objects:v55 count:16];
+    noLongerWantedResources3 = [(PSSGMessageRequestResourcesBase *)selfCopy noLongerWantedResources];
+    v29 = [noLongerWantedResources3 countByEnumeratingWithState:&v47 objects:v55 count:16];
     if (v29)
     {
       v30 = v29;
@@ -306,19 +306,19 @@ LABEL_26:
         {
           if (*v48 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(noLongerWantedResources3);
           }
 
           v34 = *(*(&v47 + 1) + 8 * v32);
-          v35 = [v34 resourceKey];
-          [v35 UTF8String];
+          resourceKey2 = [v34 resourceKey];
+          [resourceKey2 UTF8String];
           __strlcpy_chk();
 
-          v36 = [v34 stride];
-          if (v36)
+          stride3 = [v34 stride];
+          if (stride3)
           {
-            v37 = [v34 stride];
-            *v33 = [v37 unsignedIntValue];
+            stride4 = [v34 stride];
+            *v33 = [stride4 unsignedIntValue];
           }
 
           else
@@ -326,11 +326,11 @@ LABEL_26:
             *v33 = 0;
           }
 
-          v38 = [v34 graphName];
-          if (v38)
+          graphName3 = [v34 graphName];
+          if (graphName3)
           {
-            v39 = [v34 graphName];
-            strlcpy((v33 + 4), [v39 UTF8String], 0x100uLL);
+            graphName4 = [v34 graphName];
+            strlcpy((v33 + 4), [graphName4 UTF8String], 0x100uLL);
           }
 
           else
@@ -343,18 +343,18 @@ LABEL_26:
         }
 
         while (v30 != v32);
-        v30 = [v28 countByEnumeratingWithState:&v47 objects:v55 count:16];
+        v30 = [noLongerWantedResources3 countByEnumeratingWithState:&v47 objects:v55 count:16];
       }
 
       while (v30);
     }
 
-    [(PSSGMessageBase *)v46 setData:v43];
-    v46->super._serializedMessage.var0.oolData = v45;
-    v40 = [(PSSGMessageBase *)v46 data];
-    v46->super._serializedMessage.oolDataLength = [v40 length];
+    [(PSSGMessageBase *)selfCopy setData:v43];
+    selfCopy->super._serializedMessage.var0.oolData = v45;
+    data = [(PSSGMessageBase *)selfCopy data];
+    selfCopy->super._serializedMessage.oolDataLength = [data length];
 
-    v46->super._serializedMessage.message.var0.var0.dataLength = v46->super._serializedMessage.oolDataLength;
+    selfCopy->super._serializedMessage.message.var0.var0.dataLength = selfCopy->super._serializedMessage.oolDataLength;
     p_serializedMessage = v44;
   }
 
@@ -367,28 +367,28 @@ LABEL_26:
   v3 = objc_alloc_init(PSSGResourceRequest);
   [(PSSGResourceRequest *)v3 setResourcesWanted:0];
   [(PSSGResourceRequest *)v3 setResourcesNoLongerWanted:0];
-  v4 = [(PSSGMessageRequestResourcesBase *)self wantedResources];
-  [(PSSGResourceRequest *)v3 setResourcesWantedWithStrides:v4];
+  wantedResources = [(PSSGMessageRequestResourcesBase *)self wantedResources];
+  [(PSSGResourceRequest *)v3 setResourcesWantedWithStrides:wantedResources];
 
-  v5 = [(PSSGMessageRequestResourcesBase *)self noLongerWantedResources];
-  [(PSSGResourceRequest *)v3 setResourcesNoLongerWantedWithStrides:v5];
+  noLongerWantedResources = [(PSSGMessageRequestResourcesBase *)self noLongerWantedResources];
+  [(PSSGResourceRequest *)v3 setResourcesNoLongerWantedWithStrides:noLongerWantedResources];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if ([v5 isEqual:objc_opt_class()] && (v6 = -[PSSGMessageBase type](self, "type"), v6 == objc_msgSend(v4, "type")))
+  if ([v5 isEqual:objc_opt_class()] && (v6 = -[PSSGMessageBase type](self, "type"), v6 == objc_msgSend(equalCopy, "type")))
   {
-    v7 = [(PSSGMessageBase *)self string1];
-    v8 = [v4 string1];
-    if ([v7 isEqual:v8])
+    string1 = [(PSSGMessageBase *)self string1];
+    string12 = [equalCopy string1];
+    if ([string1 isEqual:string12])
     {
-      v9 = [(PSSGMessageRequestResourcesBase *)self request];
-      v10 = [v4 request];
-      v11 = [v9 isEqual:v10];
+      request = [(PSSGMessageRequestResourcesBase *)self request];
+      request2 = [equalCopy request];
+      v11 = [request isEqual:request2];
     }
 
     else
@@ -407,11 +407,11 @@ LABEL_26:
 
 - (unint64_t)hash
 {
-  v3 = [(PSSGMessageBase *)self type];
-  v4 = [(PSSGMessageBase *)self string1];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(PSSGMessageRequestResourcesBase *)self request];
-  v7 = [v6 hash];
+  type = [(PSSGMessageBase *)self type];
+  string1 = [(PSSGMessageBase *)self string1];
+  v5 = [string1 hash] ^ type;
+  request = [(PSSGMessageRequestResourcesBase *)self request];
+  v7 = [request hash];
 
   return v5 ^ v7;
 }
@@ -421,9 +421,9 @@ LABEL_26:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PSSGMessageBase *)self string1];
-  v7 = [(PSSGMessageRequestResourcesBase *)self request];
-  v8 = [v3 stringWithFormat:@"<%@: %p, sender %@, request %@>", v5, self, v6, v7];
+  string1 = [(PSSGMessageBase *)self string1];
+  request = [(PSSGMessageRequestResourcesBase *)self request];
+  v8 = [v3 stringWithFormat:@"<%@: %p, sender %@, request %@>", v5, self, string1, request];
 
   return v8;
 }

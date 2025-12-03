@@ -5,26 +5,26 @@
 - (NSString)experimentID;
 - (NSString)treatmentID;
 - (id)sortedExperiments;
-- (void)loadAVAssetWithURL:(id)a3;
+- (void)loadAVAssetWithURL:(id)l;
 - (void)markCDNConnectionWarmed;
 - (void)warmCDNConnection;
 @end
 
 @implementation MPCPlaybackPerformanceController
 
-- (void)loadAVAssetWithURL:(id)a3
+- (void)loadAVAssetWithURL:(id)l
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v4 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v3;
+    v10 = lCopy;
     _os_log_impl(&dword_1C5C61000, v4, OS_LOG_TYPE_DEFAULT, "Warming asset CDN connection with URL: %@", buf, 0xCu);
   }
 
-  v5 = [MEMORY[0x1E6988168] assetWithURL:v3];
+  v5 = [MEMORY[0x1E6988168] assetWithURL:lCopy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__MPCPlaybackPerformanceController_loadAVAssetWithURL___block_invoke;
@@ -50,8 +50,8 @@ void __55__MPCPlaybackPerformanceController_loadAVAssetWithURL___block_invoke(ui
 - (void)markCDNConnectionWarmed
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [MEMORY[0x1E695DF00] date];
-  [(MPCPlaybackPerformanceController *)self setLastCDNWarming:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  [(MPCPlaybackPerformanceController *)self setLastCDNWarming:date];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -74,17 +74,17 @@ void __55__MPCPlaybackPerformanceController_loadAVAssetWithURL___block_invoke(ui
     {
       [v18 doubleForFactor:@"warmingInterval"];
       v11 = v10;
-      v12 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       os_unfair_lock_lock(&self->_lock);
-      v13 = [(MPCPlaybackPerformanceController *)self lastCDNWarming];
-      if (v13 && (v14 = v13, -[MPCPlaybackPerformanceController lastCDNWarming](self, "lastCDNWarming"), v15 = objc_claimAutoreleasedReturnValue(), [v12 timeIntervalSinceDate:v15], v17 = v16, v15, v14, v17 <= v11))
+      lastCDNWarming = [(MPCPlaybackPerformanceController *)self lastCDNWarming];
+      if (lastCDNWarming && (v14 = lastCDNWarming, -[MPCPlaybackPerformanceController lastCDNWarming](self, "lastCDNWarming"), v15 = objc_claimAutoreleasedReturnValue(), [date timeIntervalSinceDate:v15], v17 = v16, v15, v14, v17 <= v11))
       {
         os_unfair_lock_unlock(&self->_lock);
       }
 
       else
       {
-        [(MPCPlaybackPerformanceController *)self setLastCDNWarming:v12];
+        [(MPCPlaybackPerformanceController *)self setLastCDNWarming:date];
         os_unfair_lock_unlock(&self->_lock);
         if (v6)
         {
@@ -104,8 +104,8 @@ void __55__MPCPlaybackPerformanceController_loadAVAssetWithURL___block_invoke(ui
 
 - (NSString)deploymentID
 {
-  v2 = [(MPCPlaybackPerformanceController *)self sortedExperiments];
-  v3 = [v2 msv_compactMap:&__block_literal_global_16];
+  sortedExperiments = [(MPCPlaybackPerformanceController *)self sortedExperiments];
+  v3 = [sortedExperiments msv_compactMap:&__block_literal_global_16];
 
   if ([v3 count])
   {
@@ -122,8 +122,8 @@ void __55__MPCPlaybackPerformanceController_loadAVAssetWithURL___block_invoke(ui
 
 - (NSString)treatmentID
 {
-  v2 = [(MPCPlaybackPerformanceController *)self sortedExperiments];
-  v3 = [v2 msv_compactMap:&__block_literal_global_14];
+  sortedExperiments = [(MPCPlaybackPerformanceController *)self sortedExperiments];
+  v3 = [sortedExperiments msv_compactMap:&__block_literal_global_14];
 
   if ([v3 count])
   {
@@ -140,8 +140,8 @@ void __55__MPCPlaybackPerformanceController_loadAVAssetWithURL___block_invoke(ui
 
 - (NSString)experimentID
 {
-  v2 = [(MPCPlaybackPerformanceController *)self sortedExperiments];
-  v3 = [v2 msv_compactMap:&__block_literal_global_11_14085];
+  sortedExperiments = [(MPCPlaybackPerformanceController *)self sortedExperiments];
+  v3 = [sortedExperiments msv_compactMap:&__block_literal_global_11_14085];
 
   if ([v3 count])
   {
@@ -159,8 +159,8 @@ void __55__MPCPlaybackPerformanceController_loadAVAssetWithURL___block_invoke(ui
 - (id)sortedExperiments
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_trialExperiments allValues];
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_8];
+  allValues = [(NSMutableDictionary *)self->_trialExperiments allValues];
+  v4 = [allValues sortedArrayUsingComparator:&__block_literal_global_8];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -186,14 +186,14 @@ uint64_t __53__MPCPlaybackPerformanceController_sortedExperiments__block_invoke(
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     trialExperiments = v3->_trialExperiments;
-    v3->_trialExperiments = v4;
+    v3->_trialExperiments = dictionary;
 
     if ((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl() && (MSVDeviceIsAudioAccessory() & 1) == 0 && ICCurrentApplicationIsSystemApp())
     {
-      v6 = [MEMORY[0x1E6988108] defaultController];
-      [v6 permitReclamationWhileSuspended];
+      defaultController = [MEMORY[0x1E6988108] defaultController];
+      [defaultController permitReclamationWhileSuspended];
     }
   }
 

@@ -1,26 +1,26 @@
 @interface PUHideActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (id)_systemImageName;
 - (id)activityTitle;
-- (void)setItemSourceController:(id)a3;
+- (void)setItemSourceController:(id)controller;
 @end
 
 @implementation PUHideActivity
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v4 = [(PXActivity *)self itemSourceController];
-  if ([v4 isPreparingIndividualItems])
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  if ([itemSourceController isPreparingIndividualItems])
   {
     v5 = MEMORY[0x1E69C35E8];
-    v6 = [v4 assets];
-    LOBYTE(v5) = [v5 canPerformOnAllAssets:v6];
+    assets = [itemSourceController assets];
+    LOBYTE(v5) = [v5 canPerformOnAllAssets:assets];
 
     if (v5)
     {
       v7 = MEMORY[0x1E69C35E8];
-      v8 = [v4 assets];
-      self->_hiding = [v7 toggledValueForAssets:v8];
+      assets2 = [itemSourceController assets];
+      self->_hiding = [v7 toggledValueForAssets:assets2];
 
       v9 = 1;
     }
@@ -66,15 +66,15 @@
   }
 }
 
-- (void)setItemSourceController:(id)a3
+- (void)setItemSourceController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = PUHideActivity;
-  [(PXActivity *)&v7 setItemSourceController:a3];
-  v4 = [(PXActivity *)self itemSourceController];
+  [(PXActivity *)&v7 setItemSourceController:controller];
+  itemSourceController = [(PXActivity *)self itemSourceController];
   v5 = MEMORY[0x1E69C35E8];
-  v6 = [v4 assets];
-  self->_hiding = [v5 toggledValueForAssets:v6];
+  assets = [itemSourceController assets];
+  self->_hiding = [v5 toggledValueForAssets:assets];
 }
 
 @end

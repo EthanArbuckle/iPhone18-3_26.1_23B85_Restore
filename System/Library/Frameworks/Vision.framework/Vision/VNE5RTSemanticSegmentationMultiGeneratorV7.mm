@@ -1,5 +1,5 @@
 @interface VNE5RTSemanticSegmentationMultiGeneratorV7
-+ (id)createE5RTFunctionDescriptorForConfigurationOptions:(id)a3 error:(id *)a4;
++ (id)createE5RTFunctionDescriptorForConfigurationOptions:(id)options error:(id *)error;
 + (id)outputMaskBlobNameToFeatureName;
 + (id)outputMaskBlobNameToRequestKey;
 + (id)outputMaskBlobNames;
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __65__VNE5RTSemanticSegmentationMultiGeneratorV7_outputMaskBlobNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNE5RTSemanticSegmentationMultiGeneratorV7 outputMaskBlobNames]::onceToken != -1)
   {
     dispatch_once(&+[VNE5RTSemanticSegmentationMultiGeneratorV7 outputMaskBlobNames]::onceToken, block);
@@ -64,7 +64,7 @@ void __65__VNE5RTSemanticSegmentationMultiGeneratorV7_outputMaskBlobNames__block
   block[1] = 3221225472;
   block[2] = __76__VNE5RTSemanticSegmentationMultiGeneratorV7_outputMaskBlobNameToRequestKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNE5RTSemanticSegmentationMultiGeneratorV7 outputMaskBlobNameToRequestKey]::onceToken != -1)
   {
     dispatch_once(&+[VNE5RTSemanticSegmentationMultiGeneratorV7 outputMaskBlobNameToRequestKey]::onceToken, block);
@@ -144,7 +144,7 @@ void __76__VNE5RTSemanticSegmentationMultiGeneratorV7_outputMaskBlobNameToReques
   block[1] = 3221225472;
   block[2] = __77__VNE5RTSemanticSegmentationMultiGeneratorV7_outputMaskBlobNameToFeatureName__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNE5RTSemanticSegmentationMultiGeneratorV7 outputMaskBlobNameToFeatureName]::onceToken != -1)
   {
     dispatch_once(&+[VNE5RTSemanticSegmentationMultiGeneratorV7 outputMaskBlobNameToFeatureName]::onceToken, block);
@@ -183,10 +183,10 @@ void __77__VNE5RTSemanticSegmentationMultiGeneratorV7_outputMaskBlobNameToFeatur
   +[VNE5RTSemanticSegmentationMultiGeneratorV7 outputMaskBlobNameToFeatureName]::outputMaskBlobNameToFeatureName = v10;
 }
 
-+ (id)createE5RTFunctionDescriptorForConfigurationOptions:(id)a3 error:(id *)a4
++ (id)createE5RTFunctionDescriptorForConfigurationOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 E5RTVisionCoreComputeDeviceForConfigurationOptions:v6 error:a4];
+  optionsCopy = options;
+  v7 = [self E5RTVisionCoreComputeDeviceForConfigurationOptions:optionsCopy error:error];
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -210,9 +210,9 @@ void __77__VNE5RTSemanticSegmentationMultiGeneratorV7_outputMaskBlobNameToFeatur
     v9 = +[VNE5RTSemanticSegmentationMultiGeneratorV7 createE5RTFunctionDescriptorForConfigurationOptions:error:]::descriptor;
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = v13[5];
+    *error = v13[5];
   }
 
   _Block_object_dispose(&v12, 8);

@@ -6,56 +6,56 @@
 + (id)parameters;
 + (id)supportedFeatureAreas;
 - (BOOL)_chooseLibraryInteractively;
-- (BOOL)_libraryIdentifierMatchesLibraryFilterRegExp:(id)a3;
+- (BOOL)_libraryIdentifierMatchesLibraryFilterRegExp:(id)exp;
 - (BOOL)_lookForLibrary;
-- (BOOL)_path:(id)a3 existsInFileIdentifiersAddIfNot:(id)a4;
-- (BOOL)_url:(id)a3 existsInFileIdentifiersAddIfNot:(id)a4;
-- (BOOL)_wrapperStatusMatchesLibraryFilterRegExp:(id)a3;
+- (BOOL)_path:(id)_path existsInFileIdentifiersAddIfNot:(id)not;
+- (BOOL)_url:(id)_url existsInFileIdentifiersAddIfNot:(id)not;
+- (BOOL)_wrapperStatusMatchesLibraryFilterRegExp:(id)exp;
 - (BOOL)createBaseFolderAndLogFile;
-- (BOOL)parseCommandOptionsWithArgc:(int)a3 argv:(char *)a4;
-- (id)_abbreviatedPathForURL:(id)a3;
-- (id)_determineLibraryPathFromDiagnoseBundleIdentifier:(id)a3;
-- (id)_goodNameForLibraryIdentifier:(id)a3;
-- (id)_libraryURLFromWrapperStatus:(id)a3;
+- (BOOL)parseCommandOptionsWithArgc:(int)argc argv:(char *)argv;
+- (id)_abbreviatedPathForURL:(id)l;
+- (id)_determineLibraryPathFromDiagnoseBundleIdentifier:(id)identifier;
+- (id)_goodNameForLibraryIdentifier:(id)identifier;
+- (id)_libraryURLFromWrapperStatus:(id)status;
 - (id)_readAppPrivateData;
-- (id)_simplifiedPathForURL:(id)a3;
+- (id)_simplifiedPathForURL:(id)l;
 - (id)_syndicationLibrarySpotlightSearchAttributes;
-- (id)getEngineWrapperStatusesWithError:(id *)a3;
-- (id)interestingDatabasesForUBFLibraryPath:(id)a3 isSharingLibrary:(BOOL)a4;
-- (id)interestingFilesInDirectoryPath:(id)a3 withPredicate:(id)a4;
+- (id)getEngineWrapperStatusesWithError:(id *)error;
+- (id)interestingDatabasesForUBFLibraryPath:(id)path isSharingLibrary:(BOOL)library;
+- (id)interestingFilesInDirectoryPath:(id)path withPredicate:(id)predicate;
 - (id)mediaAnalysisSystemDatabasePath;
-- (id)prependPath:(id)a3 toStringsInArray:(id)a4;
+- (id)prependPath:(id)path toStringsInArray:(id)array;
 - (id)processes;
 - (int)execute;
 - (void)_collectMemoryCreationFeatureAvailabilityDiagnostics;
 - (void)_collectPhotosSearchDiagnostics;
 - (void)_collectSearchEntityDonationDiagnostics;
-- (void)_collectSharedAlbumFilesAtPath:(id)a3;
+- (void)_collectSharedAlbumFilesAtPath:(id)path;
 - (void)_collectUniversalSearchDiagnostics;
 - (void)_collectUniversalSearchFeatureAreaDiagnostics;
-- (void)_diagnoseLibraryIdentifier:(id)a3;
-- (void)_diagnoseLibraryWrapperStatus:(id)a3;
-- (void)_diagnoseWithCPLLibraryIdentifier:(id)a3;
-- (void)_printWrapperStatus:(id)a3;
-- (void)_removeResourceDataFromFaceCropChangeCPLSerializedRecords:(sqlite3 *)a3;
-- (void)_removeShareURLFromCPLScopes:(sqlite3 *)a3;
-- (void)_removeShareURLFromPhotosMomentShare:(sqlite3 *)a3;
-- (void)addFilesFromVisionCacheToDictionary:(id)a3;
+- (void)_diagnoseLibraryIdentifier:(id)identifier;
+- (void)_diagnoseLibraryWrapperStatus:(id)status;
+- (void)_diagnoseWithCPLLibraryIdentifier:(id)identifier;
+- (void)_printWrapperStatus:(id)status;
+- (void)_removeResourceDataFromFaceCropChangeCPLSerializedRecords:(sqlite3 *)records;
+- (void)_removeShareURLFromCPLScopes:(sqlite3 *)scopes;
+- (void)_removeShareURLFromPhotosMomentShare:(sqlite3 *)share;
+- (void)addFilesFromVisionCacheToDictionary:(id)dictionary;
 - (void)collectAccountStatus;
-- (void)collectAdditionalInformationForDatabaseAtPath:(id)a3 toDirectory:(id)a4;
+- (void)collectAdditionalInformationForDatabaseAtPath:(id)path toDirectory:(id)directory;
 - (void)collectAppLibraryIdentifiers;
 - (void)collectCloudPhotodGlobalStatus;
-- (void)collectCloudPhotodStatusWithLibraryIdentifier:(id)a3 subdirectory:(id)a4;
-- (void)collectDatabaseAtPath:(id)a3 libraryPath:(id)a4 subdirectory:(id)a5;
+- (void)collectCloudPhotodStatusWithLibraryIdentifier:(id)identifier subdirectory:(id)subdirectory;
+- (void)collectDatabaseAtPath:(id)path libraryPath:(id)libraryPath subdirectory:(id)subdirectory;
 - (void)collectDefaults;
-- (void)collectDiagnosticLog:(id)a3;
+- (void)collectDiagnosticLog:(id)log;
 - (void)collectDiagnosticLogs;
 - (void)collectDuetInfo;
 - (void)collectFeatureAreaDiagnostics;
-- (void)collectFileAtPath:(id)a3 suffix:(id)a4;
-- (void)collectFileAtURL:(id)a3 suffix:(id)a4 destinationDirectory:(id)a5;
-- (void)collectFileListingAtPath:(id)a3 label:(id)a4 filename:(id)a5 extendedDetail:(BOOL)a6;
-- (void)collectFilePaths:(id)a3 toSubdirectory:(id)a4;
+- (void)collectFileAtPath:(id)path suffix:(id)suffix;
+- (void)collectFileAtURL:(id)l suffix:(id)suffix destinationDirectory:(id)directory;
+- (void)collectFileListingAtPath:(id)path label:(id)label filename:(id)filename extendedDetail:(BOOL)detail;
+- (void)collectFilePaths:(id)paths toSubdirectory:(id)subdirectory;
 - (void)collectFiles;
 - (void)collectLOFetchRecordings;
 - (void)collectLocalLibraryMetadataInfo;
@@ -65,21 +65,21 @@
 - (void)collectSearchDiagnostics;
 - (void)collectSilentMover;
 - (void)collectStoryDiagnosticsFiles;
-- (void)collectSysdiagnose:(id)a3;
+- (void)collectSysdiagnose:(id)sysdiagnose;
 - (void)collectTaskInfo;
-- (void)copyDatabaseFromPath:(id)a3 toPath:(id)a4;
+- (void)copyDatabaseFromPath:(id)path toPath:(id)toPath;
 - (void)determineLibraryPaths;
 - (void)displayConsent;
-- (void)executeMemoryToolsOnProcess:(id)a3;
-- (void)executeTool:(id)a3 onProcess:(id)a4;
-- (void)markPurgeable:(id)a3;
+- (void)executeMemoryToolsOnProcess:(id)process;
+- (void)executeTool:(id)tool onProcess:(id)process;
+- (void)markPurgeable:(id)purgeable;
 - (void)prepareOutputURLs;
-- (void)printDiskCapacity:(id)a3;
-- (void)printFormat:(id)a3 arguments:(char *)a4;
-- (void)revertToRootMode:(BOOL)a3;
-- (void)sampleProcess:(id)a3;
+- (void)printDiskCapacity:(id)capacity;
+- (void)printFormat:(id)format arguments:(char *)arguments;
+- (void)revertToRootMode:(BOOL)mode;
+- (void)sampleProcess:(id)process;
 - (void)sampleProcesses;
-- (void)setUserMode:(BOOL)a3;
+- (void)setUserMode:(BOOL)mode;
 - (void)signalProcesses;
 - (void)startDiagnostic;
 @end
@@ -96,7 +96,7 @@
 
 + (NSString)diagnosticExtension
 {
-  if ([a1 useAppleArchive])
+  if ([self useAppleArchive])
   {
     v2 = PFAppleArchiveExtension;
   }
@@ -111,9 +111,9 @@
 
 + (id)parameters
 {
-  v2 = [a1 isAppleInternal];
+  isAppleInternal = [self isAppleInternal];
   v3 = @" [-c] [-m]";
-  if (!v2)
+  if (!isAppleInternal)
   {
     v3 = &stru_100035A18;
   }
@@ -148,13 +148,13 @@
   [v3 appendString:@"\n"];
   [v3 appendFormat:@"%@\n\t%@", @"-d/-D", @"skip database copying. (-d for databases bigger than 1200 MB, -D always)"];
   [v3 appendString:@"\n"];
-  v4 = [a1 supportedFeatureAreas];
-  v5 = [v4 componentsJoinedByString:@"\n\t"];
+  supportedFeatureAreas = [self supportedFeatureAreas];
+  v5 = [supportedFeatureAreas componentsJoinedByString:@"\n\t"];
   [v3 appendFormat:@"%@\n\t%@\n\t(supported values: %@)", @"-f <feature>", @"capture additional diagnostics for the specified feature area.", v5];
 
   [v3 appendString:@"\n"];
   [v3 appendFormat:@"%@\n\t%@", @"-a <annotation>", @"annotate output file name (e.g. downloader), ignored if -o used."];
-  if ([a1 isAppleInternal])
+  if ([self isAppleInternal])
   {
     [v3 appendString:@"\n"];
     [v3 appendFormat:@"%@\n\t%@", @"-c", @"do not display consent prompt."];
@@ -168,16 +168,16 @@
   return v3;
 }
 
-- (BOOL)parseCommandOptionsWithArgc:(int)a3 argv:(char *)a4
+- (BOOL)parseCommandOptionsWithArgc:(int)argc argv:(char *)argv
 {
-  v7 = [(CPLCTLCommand *)self defaultLibraryURL];
-  v8 = [v7 path];
+  defaultLibraryURL = [(CPLCTLCommand *)self defaultLibraryURL];
+  path = [defaultLibraryURL path];
   libraryPath = self->_libraryPath;
-  self->_libraryPath = v8;
+  self->_libraryPath = path;
 
-  v10 = [objc_opt_class() isAppleInternal];
-  self->_isAppleInternal = v10;
-  self->_hasFullShellCommands = v10;
+  isAppleInternal = [objc_opt_class() isAppleInternal];
+  self->_isAppleInternal = isAppleInternal;
+  self->_hasFullShellCommands = isAppleInternal;
   self->_isRoot = geteuid() == 0;
   self->_optionalTimeOut = 0;
   self->_skipDBCopy = 0;
@@ -216,7 +216,7 @@
 
   optreset = 1;
   optind = 1;
-  v19 = getopt(a3, a4, "o:l:tdDa:f:LcsSOmPir:nb:") << 24;
+  v19 = getopt(argc, argv, "o:l:tdDa:f:LcsSOmPir:nb:") << 24;
   if (v19 != -16777216)
   {
     v77 = v14;
@@ -245,14 +245,14 @@
           goto LABEL_41;
         case 'a':
           v25 = +[NSFileManager defaultManager];
-          v26 = [v25 stringWithFileSystemRepresentation:optarg length:strlen(optarg)];
+          lowercaseString = [v25 stringWithFileSystemRepresentation:optarg length:strlen(optarg)];
 
-          if (![v26 length])
+          if (![lowercaseString length])
           {
             goto LABEL_51;
           }
 
-          v27 = [v12[285] stringWithFormat:@"-%@", v26];
+          v27 = [v12[285] stringWithFormat:@"-%@", lowercaseString];
           annotation = self->_annotation;
           self->_annotation = v27;
 
@@ -260,7 +260,7 @@
         case 'b':
           if (self->_libraryPath)
           {
-            v23 = self;
+            selfCopy2 = self;
             v24 = @"-l cannot be used with -b";
             goto LABEL_23;
           }
@@ -287,22 +287,22 @@ LABEL_31:
           goto LABEL_41;
         case 'f':
           v33 = [v12[285] stringWithCString:optarg encoding:4];
-          v26 = [v33 lowercaseString];
+          lowercaseString = [v33 lowercaseString];
 
-          v34 = [objc_opt_class() supportedFeatureAreas];
-          v35 = [v34 containsObject:v26];
+          supportedFeatureAreas = [objc_opt_class() supportedFeatureAreas];
+          v35 = [supportedFeatureAreas containsObject:lowercaseString];
 
           if (v35)
           {
             featureAreas = self->_featureAreas;
             if (featureAreas)
             {
-              [(NSArray *)featureAreas arrayByAddingObject:v26];
+              [(NSArray *)featureAreas arrayByAddingObject:lowercaseString];
             }
 
             else
             {
-              v83 = v26;
+              v83 = lowercaseString;
               [NSArray arrayWithObjects:&v83 count:1];
             }
             v37 = ;
@@ -312,7 +312,7 @@ LABEL_31:
 
           else
           {
-            [(CPLCTLCommand *)self printFormat:@"Invalid feature area: %@", v26];
+            [(CPLCTLCommand *)self printFormat:@"Invalid feature area: %@", lowercaseString];
             v21 = 0;
           }
 
@@ -327,28 +327,28 @@ LABEL_31:
         case 'l':
           if (self->_libraryPath)
           {
-            v23 = self;
+            selfCopy2 = self;
             v24 = @"-l used twice";
 LABEL_23:
-            [(CPLCTLCommand *)v23 printFormat:v24];
+            [(CPLCTLCommand *)selfCopy2 printFormat:v24];
             v20 = 0;
           }
 
           else
           {
             v46 = +[NSFileManager defaultManager];
-            v26 = [v46 stringWithFileSystemRepresentation:optarg length:strlen(optarg)];
+            lowercaseString = [v46 stringWithFileSystemRepresentation:optarg length:strlen(optarg)];
 
-            if ([v26 length])
+            if ([lowercaseString length])
             {
               v80 = 0;
               v47 = +[NSFileManager defaultManager];
-              v48 = [v47 fileExistsAtPath:v26 isDirectory:&v80];
+              v48 = [v47 fileExistsAtPath:lowercaseString isDirectory:&v80];
               v49 = v80;
 
               if (v48 && (v49 & 1) != 0)
               {
-                objc_storeStrong(&self->_libraryPath, v26);
+                objc_storeStrong(&self->_libraryPath, lowercaseString);
               }
 
               v12 = &CPLAppBundleIdentifierForContainerIdentifier_ptr;
@@ -375,27 +375,27 @@ LABEL_60:
           goto LABEL_41;
         case 'o':
           v30 = +[NSFileManager defaultManager];
-          v26 = [v30 stringWithFileSystemRepresentation:optarg length:strlen(optarg)];
+          lowercaseString = [v30 stringWithFileSystemRepresentation:optarg length:strlen(optarg)];
 
-          if (![v26 length])
+          if (![lowercaseString length])
           {
             goto LABEL_51;
           }
 
-          v31 = [v26 lastPathComponent];
-          v75 = v31;
+          lastPathComponent = [lowercaseString lastPathComponent];
+          v75 = lastPathComponent;
           if (self->_noAutoSuffix)
           {
-            v32 = [v31 stringByDeletingPathExtension];
-            [v76 stringByAppendingString:v32];
+            stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+            [v76 stringByAppendingString:stringByDeletingPathExtension];
           }
 
           else
           {
-            v53 = [v31 stringByDeletingPathExtension];
-            v32 = [NSString stringWithFormat:@"%@%@-T%@", v76, v53, self->_timestamp];
+            stringByDeletingPathExtension2 = [lastPathComponent stringByDeletingPathExtension];
+            stringByDeletingPathExtension = [NSString stringWithFormat:@"%@%@-T%@", v76, stringByDeletingPathExtension2, self->_timestamp];
 
-            [v32 stringByAppendingPathExtension:@"cpldiagnostics"];
+            [stringByDeletingPathExtension stringByAppendingPathExtension:@"cpldiagnostics"];
           }
           v54 = ;
 
@@ -404,7 +404,7 @@ LABEL_60:
           outputFolder = self->_outputFolder;
           self->_outputFolder = v56;
 
-          v58 = [NSURL fileURLWithPath:v26 isDirectory:0];
+          v58 = [NSURL fileURLWithPath:lowercaseString isDirectory:0];
           outputFile = self->_outputFile;
           self->_outputFile = v58;
 
@@ -440,8 +440,8 @@ LABEL_42:
 
             else
             {
-              v60 = [v43 localizedDescription];
-              [(CPLCTLCommand *)self printFormat:@"Invalid pattern: %@", v60];
+              localizedDescription = [v43 localizedDescription];
+              [(CPLCTLCommand *)self printFormat:@"Invalid pattern: %@", localizedDescription];
 
               v20 = 0;
               v12 = &CPLAppBundleIdentifierForContainerIdentifier_ptr;
@@ -465,7 +465,7 @@ LABEL_42:
           break;
       }
 
-      v19 = getopt(a3, a4, "o:l:tdDa:f:LcsSOmPir:nb:") << 24;
+      v19 = getopt(argc, argv, "o:l:tdDa:f:LcsSOmPir:nb:") << 24;
     }
 
     while (v19 != -16777216);
@@ -515,8 +515,8 @@ LABEL_72:
   {
     [(CPLCTLCommand *)self printFormat:@"-l or -b are required if -n is specified"];
 LABEL_80:
-    v68 = [objc_opt_class() toolName];
-    [(CPLCTLCommand *)self printFormat:@"Invalid parameters for %@", v68];
+    toolName = [objc_opt_class() toolName];
+    [(CPLCTLCommand *)self printFormat:@"Invalid parameters for %@", toolName];
     v69 = 0;
     goto LABEL_81;
   }
@@ -539,18 +539,18 @@ LABEL_76:
     v72 = [NSDictionary dictionaryWithObjects:&v82 forKeys:&v81 count:1];
     v78 = 0;
     v73 = [v71 setAttributes:v72 ofItemAtPath:@"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/photos" error:&v78];
-    v68 = v78;
+    toolName = v78;
 
     if ((v73 & 1) == 0)
     {
-      v74 = [v68 localizedDescription];
-      [(CPLCTLCommand *)self printFormat:@"Failed to repair output folder ownership: %@", v74];
+      localizedDescription2 = [toolName localizedDescription];
+      [(CPLCTLCommand *)self printFormat:@"Failed to repair output folder ownership: %@", localizedDescription2];
     }
   }
 
   else
   {
-    v68 = 0;
+    toolName = 0;
   }
 
   v69 = 1;
@@ -559,9 +559,9 @@ LABEL_81:
   return v69;
 }
 
-- (id)_determineLibraryPathFromDiagnoseBundleIdentifier:(id)a3
+- (id)_determineLibraryPathFromDiagnoseBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v26 = 0;
   v5 = [(CPLCTLCommand *)self getLibraryIdentifiersWithDomain:3 error:&v26];
   v6 = v26;
@@ -572,8 +572,8 @@ LABEL_81:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = v5;
-    v9 = [v8 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    localizedDescription = v5;
+    v9 = [localizedDescription countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v9)
     {
       v10 = v9;
@@ -585,18 +585,18 @@ LABEL_81:
         {
           if (*v23 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(localizedDescription);
           }
 
           v13 = *(*(&v22 + 1) + 8 * i);
-          v14 = [v13 containerIdentifier];
-          v15 = [v14 caseInsensitiveCompare:v4];
+          containerIdentifier = [v13 containerIdentifier];
+          v15 = [containerIdentifier caseInsensitiveCompare:identifierCopy];
 
           if (v15)
           {
-            v16 = [v13 containerIdentifier];
+            containerIdentifier2 = [v13 containerIdentifier];
             v17 = CPLAppBundleIdentifierForContainerIdentifier();
-            v18 = [v17 isEqualToString:v4];
+            v18 = [v17 isEqualToString:identifierCopy];
 
             if ((v18 & 1) == 0)
             {
@@ -604,12 +604,12 @@ LABEL_81:
             }
           }
 
-          v19 = [v13 path];
+          path = [v13 path];
           v7 = v21;
           goto LABEL_15;
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v10 = [localizedDescription countByEnumeratingWithState:&v22 objects:v27 count:16];
         if (v10)
         {
           continue;
@@ -621,90 +621,90 @@ LABEL_81:
       v7 = v21;
     }
 
-    v19 = @"/var/mobile/Media";
+    path = @"/var/mobile/Media";
   }
 
   else
   {
-    v8 = [v6 localizedDescription];
-    [(CPLCTLCommand *)self printFormat:@"Failed to get the list of active libraries: %@", v8];
-    v19 = 0;
+    localizedDescription = [v6 localizedDescription];
+    [(CPLCTLCommand *)self printFormat:@"Failed to get the list of active libraries: %@", localizedDescription];
+    path = 0;
   }
 
 LABEL_15:
 
-  return v19;
+  return path;
 }
 
-- (id)_simplifiedPathForURL:(id)a3
+- (id)_simplifiedPathForURL:(id)l
 {
-  v3 = [a3 path];
-  if ([v3 hasPrefix:@"/var/mobile/Library/Logs/"])
+  path = [l path];
+  if ([path hasPrefix:@"/var/mobile/Library/Logs/"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"/var/mobile/Library/Logs/", "length")}];
+    v4 = [path substringFromIndex:{objc_msgSend(@"/var/mobile/Library/Logs/", "length")}];
     v5 = [NSString stringWithFormat:@".../%@", v4];
 
-    v3 = v5;
+    path = v5;
   }
 
-  return v3;
+  return path;
 }
 
-- (id)_abbreviatedPathForURL:(id)a3
+- (id)_abbreviatedPathForURL:(id)l
 {
-  v3 = [a3 path];
-  if ([v3 hasPrefix:@"/private/"])
+  path = [l path];
+  if ([path hasPrefix:@"/private/"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"/private", "length")}];
+    v4 = [path substringFromIndex:{objc_msgSend(@"/private", "length")}];
 
-    v3 = v4;
+    path = v4;
   }
 
-  if ([v3 hasPrefix:@"/var/mobile/"])
+  if ([path hasPrefix:@"/var/mobile/"])
   {
-    v5 = [v3 substringFromIndex:{objc_msgSend(@"/var/mobile/", "length")}];
+    v5 = [path substringFromIndex:{objc_msgSend(@"/var/mobile/", "length")}];
     v6 = [NSString stringWithFormat:@"~mobile/%@", v5];
 
-    v3 = v6;
+    path = v6;
   }
 
-  return v3;
+  return path;
 }
 
-- (id)_libraryURLFromWrapperStatus:(id)a3
+- (id)_libraryURLFromWrapperStatus:(id)status
 {
-  v3 = a3;
-  v4 = [v3 parameters];
-  v5 = [v4 libraryIdentifier];
-  v6 = [v5 isEqualToString:CPLLibraryIdentifierSystemLibrary];
+  statusCopy = status;
+  parameters = [statusCopy parameters];
+  libraryIdentifier = [parameters libraryIdentifier];
+  v6 = [libraryIdentifier isEqualToString:CPLLibraryIdentifierSystemLibrary];
 
   if (v6)
   {
 LABEL_6:
-    v8 = 0;
+    clientLibraryBaseURL = 0;
   }
 
   else
   {
-    v7 = [v3 parameters];
-    v8 = [v7 clientLibraryBaseURL];
+    parameters2 = [statusCopy parameters];
+    clientLibraryBaseURL = [parameters2 clientLibraryBaseURL];
 
     while (1)
     {
-      v9 = [v8 pathExtension];
-      v10 = [v9 isEqualToString:@"photoslibrary"];
+      pathExtension = [clientLibraryBaseURL pathExtension];
+      v10 = [pathExtension isEqualToString:@"photoslibrary"];
 
       if (v10)
       {
         break;
       }
 
-      v11 = [v8 URLByDeletingLastPathComponent];
+      uRLByDeletingLastPathComponent = [clientLibraryBaseURL URLByDeletingLastPathComponent];
 
-      v12 = [v11 path];
-      v13 = [v12 isEqualToString:@"/"];
+      path = [uRLByDeletingLastPathComponent path];
+      v13 = [path isEqualToString:@"/"];
 
-      v8 = v11;
+      clientLibraryBaseURL = uRLByDeletingLastPathComponent;
       if (v13)
       {
 
@@ -713,13 +713,13 @@ LABEL_6:
     }
   }
 
-  return v8;
+  return clientLibraryBaseURL;
 }
 
-- (void)_diagnoseWithCPLLibraryIdentifier:(id)a3
+- (void)_diagnoseWithCPLLibraryIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4 && ([v4 isEqualToString:CPLLibraryIdentifierSystemLibrary] & 1) == 0)
+  identifierCopy = identifier;
+  if (identifierCopy && ([identifierCopy isEqualToString:CPLLibraryIdentifierSystemLibrary] & 1) == 0)
   {
     v5 = CPLContainerIdentifierForLibraryIdentifier();
     annotation = self->_annotation;
@@ -741,22 +741,22 @@ LABEL_6:
   _objc_release_x1();
 }
 
-- (void)_diagnoseLibraryWrapperStatus:(id)a3
+- (void)_diagnoseLibraryWrapperStatus:(id)status
 {
-  v4 = a3;
-  v12 = [(CPLDiagnoseCommand *)self _libraryURLFromWrapperStatus:v4];
+  statusCopy = status;
+  v12 = [(CPLDiagnoseCommand *)self _libraryURLFromWrapperStatus:statusCopy];
   if (v12)
   {
-    v5 = [v4 parameters];
-    v6 = [v5 libraryIdentifier];
-    [(CPLCTLCommand *)self printFormat:@"Will diagnose library with CPL identifier %@", v6];
+    parameters = [statusCopy parameters];
+    libraryIdentifier = [parameters libraryIdentifier];
+    [(CPLCTLCommand *)self printFormat:@"Will diagnose library with CPL identifier %@", libraryIdentifier];
 
     v7 = [(CPLDiagnoseCommand *)self _abbreviatedPathForURL:v12];
     [(CPLCTLCommand *)self printFormat:@"  path: %@", v7];
 
-    v8 = [v12 path];
+    path = [v12 path];
     libraryPath = self->_libraryPath;
-    self->_libraryPath = v8;
+    self->_libraryPath = path;
   }
 
   else
@@ -764,34 +764,34 @@ LABEL_6:
     [(CPLCTLCommand *)self printFormat:@"Will diagnose the System library"];
   }
 
-  v10 = [v4 parameters];
+  parameters2 = [statusCopy parameters];
 
-  v11 = [v10 libraryIdentifier];
-  [(CPLDiagnoseCommand *)self _diagnoseWithCPLLibraryIdentifier:v11];
+  libraryIdentifier2 = [parameters2 libraryIdentifier];
+  [(CPLDiagnoseCommand *)self _diagnoseWithCPLLibraryIdentifier:libraryIdentifier2];
 
   [(CPLCTLCommand *)self printFormat:@"============================"];
 }
 
-- (id)_goodNameForLibraryIdentifier:(id)a3
+- (id)_goodNameForLibraryIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [v3 path];
+  identifierCopy = identifier;
+  path = [identifierCopy path];
 
-  if (v4)
+  if (path)
   {
-    v5 = [v3 name];
-    v6 = v5;
-    if (v5)
+    name = [identifierCopy name];
+    v6 = name;
+    if (name)
     {
-      v7 = v5;
+      containerIdentifier = name;
     }
 
     else
     {
-      v7 = [v3 containerIdentifier];
+      containerIdentifier = [identifierCopy containerIdentifier];
     }
 
-    v8 = v7;
+    v8 = containerIdentifier;
   }
 
   else
@@ -802,24 +802,24 @@ LABEL_6:
   return v8;
 }
 
-- (void)_diagnoseLibraryIdentifier:(id)a3
+- (void)_diagnoseLibraryIdentifier:(id)identifier
 {
-  v16 = a3;
-  v4 = [v16 path];
-  if (v4)
+  identifierCopy = identifier;
+  path = [identifierCopy path];
+  if (path)
   {
-    v5 = [[NSURL alloc] initFileURLWithPath:v4 isDirectory:1];
-    v6 = [(CPLDiagnoseCommand *)self _goodNameForLibraryIdentifier:v16];
+    v5 = [[NSURL alloc] initFileURLWithPath:path isDirectory:1];
+    v6 = [(CPLDiagnoseCommand *)self _goodNameForLibraryIdentifier:identifierCopy];
     if (v6)
     {
       v7 = v6;
-      v8 = [v16 uuid];
-      [(CPLCTLCommand *)self printFormat:@"Will diagnose library %@ (%@)", v7, v8];
+      uuid = [identifierCopy uuid];
+      [(CPLCTLCommand *)self printFormat:@"Will diagnose library %@ (%@)", v7, uuid];
 
       v9 = [(CPLDiagnoseCommand *)self _abbreviatedPathForURL:v5];
       [(CPLCTLCommand *)self printFormat:@"  path: %@", v9];
 
-      objc_storeStrong(&self->_libraryPath, v4);
+      objc_storeStrong(&self->_libraryPath, path);
       v5 = [v7 stringByReplacingOccurrencesOfString:@"/" withString:@":"];
 
       annotation = self->_annotation;
@@ -843,7 +843,7 @@ LABEL_6:
       v13 = [(CPLDiagnoseCommand *)self _abbreviatedPathForURL:v5];
       [(CPLCTLCommand *)self printFormat:@"Will diagnose library at %@", v13];
 
-      objc_storeStrong(&self->_libraryPath, v4);
+      objc_storeStrong(&self->_libraryPath, path);
     }
   }
 
@@ -855,11 +855,11 @@ LABEL_6:
   [(CPLCTLCommand *)self printFormat:@"============================"];
 }
 
-- (BOOL)_url:(id)a3 existsInFileIdentifiersAddIfNot:(id)a4
+- (BOOL)_url:(id)_url existsInFileIdentifiersAddIfNot:(id)not
 {
-  v5 = a4;
+  notCopy = not;
   v12 = 0;
-  v6 = [a3 getResourceValue:&v12 forKey:NSURLFileIdentifierKey error:0];
+  v6 = [_url getResourceValue:&v12 forKey:NSURLFileIdentifierKey error:0];
   v7 = v12;
   v8 = v7;
   if (v6)
@@ -877,9 +877,9 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  if (([v5 containsObject:v7] & 1) == 0)
+  if (([notCopy containsObject:v7] & 1) == 0)
   {
-    [v5 addObject:v8];
+    [notCopy addObject:v8];
 LABEL_8:
     v10 = 0;
     goto LABEL_9;
@@ -891,14 +891,14 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)_path:(id)a3 existsInFileIdentifiersAddIfNot:(id)a4
+- (BOOL)_path:(id)_path existsInFileIdentifiersAddIfNot:(id)not
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[NSURL alloc] initFileURLWithPath:v7];
+  notCopy = not;
+  _pathCopy = _path;
+  v8 = [[NSURL alloc] initFileURLWithPath:_pathCopy];
 
-  LOBYTE(v7) = [(CPLDiagnoseCommand *)self _url:v8 existsInFileIdentifiersAddIfNot:v6];
-  return v7;
+  LOBYTE(_pathCopy) = [(CPLDiagnoseCommand *)self _url:v8 existsInFileIdentifiersAddIfNot:notCopy];
+  return _pathCopy;
 }
 
 - (BOOL)_chooseLibraryInteractively
@@ -926,8 +926,8 @@ LABEL_9:
         v85 = 0u;
         v82 = 0u;
         v83 = 0u;
-        v8 = v6;
-        v9 = [v8 countByEnumeratingWithState:&v82 objects:v90 count:16];
+        localizedDescription = v6;
+        v9 = [localizedDescription countByEnumeratingWithState:&v82 objects:v90 count:16];
         if (v9)
         {
           v10 = v9;
@@ -938,16 +938,16 @@ LABEL_9:
             {
               if (*v83 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(localizedDescription);
               }
 
               v13 = *(*(&v82 + 1) + 8 * i);
-              v14 = [v13 path];
-              v15 = v14;
-              if (v14)
+              path = [v13 path];
+              v15 = path;
+              if (path)
               {
-                v16 = [v14 pathExtension];
-                if ([v16 isEqualToString:@"photoslibrary"])
+                pathExtension = [path pathExtension];
+                if ([pathExtension isEqualToString:@"photoslibrary"])
                 {
                   v17 = [(CPLDiagnoseCommand *)self _path:v15 existsInFileIdentifiersAddIfNot:v67];
 
@@ -963,7 +963,7 @@ LABEL_9:
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v82 objects:v90 count:16];
+            v10 = [localizedDescription countByEnumeratingWithState:&v82 objects:v90 count:16];
           }
 
           while (v10);
@@ -973,8 +973,8 @@ LABEL_9:
 
       else
       {
-        v8 = [v7 localizedDescription];
-        [(CPLCTLCommand *)self printFormat:@"WARNING: failed to get libraries from Photos daemon: %@", v8];
+        localizedDescription = [v7 localizedDescription];
+        [(CPLCTLCommand *)self printFormat:@"WARNING: failed to get libraries from Photos daemon: %@", localizedDescription];
       }
 
       v80 = 0u;
@@ -999,9 +999,9 @@ LABEL_9:
 
             v26 = *(*(&v78 + 1) + 8 * j);
             v27 = [(CPLDiagnoseCommand *)self _libraryURLFromWrapperStatus:v26];
-            v28 = [v26 parameters];
-            v29 = [v28 libraryIdentifier];
-            v30 = [v29 isEqualToString:v24];
+            parameters = [v26 parameters];
+            libraryIdentifier = [parameters libraryIdentifier];
+            v30 = [libraryIdentifier isEqualToString:v24];
 
             if (v30)
             {
@@ -1048,24 +1048,24 @@ LABEL_9:
             if (objc_opt_isKindOfClass())
             {
               v37 = v36;
-              v38 = [v37 path];
-              if (!v38)
+              path2 = [v37 path];
+              if (!path2)
               {
                 sub_10001EB64();
               }
 
-              v39 = v38;
-              v40 = [[NSURL alloc] initFileURLWithPath:v38 isDirectory:1];
+              parameters3 = path2;
+              v40 = [[NSURL alloc] initFileURLWithPath:path2 isDirectory:1];
               v68 = v40;
               obja = [(CPLDiagnoseCommand *)self _goodNameForLibraryIdentifier:v37];
-              v41 = [v37 uuid];
-              v42 = [v37 userDescription];
-              v43 = v42;
+              uuid = [v37 uuid];
+              userDescription = [v37 userDescription];
+              v43 = userDescription;
               v44 = v34;
               v45 = v33;
-              if (v42)
+              if (userDescription)
               {
-                v46 = v42;
+                v46 = userDescription;
               }
 
               else
@@ -1078,11 +1078,11 @@ LABEL_9:
               v61 = v46;
               v33 = v45;
               v34 = v44;
-              v49 = obja;
-              [(CPLCTLCommand *)self printFormat:@"%d %@ %@ %@ (from Photos)\n  in %@"], v33, obja, v41, v61, v48);
+              v50LibraryIdentifier = obja;
+              [(CPLCTLCommand *)self printFormat:@"%d %@ %@ %@ (from Photos)\n  in %@"], v33, obja, uuid, v61, v48);
 
               v32 = v47;
-              v50 = v68;
+              libraryIdentifier3 = v68;
             }
 
             else
@@ -1094,23 +1094,23 @@ LABEL_9:
               }
 
               v51 = v36;
-              v52 = [v51 parameters];
-              v53 = [v52 libraryIdentifier];
-              v54 = [v53 isEqualToString:v65];
+              parameters2 = [v51 parameters];
+              libraryIdentifier2 = [parameters2 libraryIdentifier];
+              v54 = [libraryIdentifier2 isEqualToString:v65];
 
               if (v54)
               {
-                v39 = [v51 parameters];
-                v50 = [v39 libraryIdentifier];
-                [(CPLCTLCommand *)self printFormat:@"%d %@ (from CPL)"], v33, v50);
+                parameters3 = [v51 parameters];
+                libraryIdentifier3 = [parameters3 libraryIdentifier];
+                [(CPLCTLCommand *)self printFormat:@"%d %@ (from CPL)"], v33, libraryIdentifier3);
                 goto LABEL_49;
               }
 
-              v39 = [(CPLDiagnoseCommand *)self _libraryURLFromWrapperStatus:v51];
-              v50 = [v51 parameters];
-              v49 = [v50 libraryIdentifier];
-              v55 = [(CPLDiagnoseCommand *)self _abbreviatedPathForURL:v39];
-              [(CPLCTLCommand *)self printFormat:@"%d %@ (from CPL)\n  in %@"], v33, v49, v55);
+              parameters3 = [(CPLDiagnoseCommand *)self _libraryURLFromWrapperStatus:v51];
+              libraryIdentifier3 = [v51 parameters];
+              v50LibraryIdentifier = [libraryIdentifier3 libraryIdentifier];
+              v55 = [(CPLDiagnoseCommand *)self _abbreviatedPathForURL:parameters3];
+              [(CPLCTLCommand *)self printFormat:@"%d %@ (from CPL)\n  in %@"], v33, v50LibraryIdentifier, v55);
             }
 
 LABEL_49:
@@ -1179,8 +1179,8 @@ LABEL_57:
 
   else
   {
-    v18 = [v4 localizedDescription];
-    [(CPLCTLCommand *)self printFormat:@"Failed to get the list of registered engines: %@", v18];
+    localizedDescription2 = [v4 localizedDescription];
+    [(CPLCTLCommand *)self printFormat:@"Failed to get the list of registered engines: %@", localizedDescription2];
   }
 
   v19 = 0;
@@ -1190,23 +1190,23 @@ LABEL_58:
   return v19;
 }
 
-- (BOOL)_wrapperStatusMatchesLibraryFilterRegExp:(id)a3
+- (BOOL)_wrapperStatusMatchesLibraryFilterRegExp:(id)exp
 {
-  v4 = [a3 parameters];
-  v5 = [v4 libraryIdentifier];
-  v6 = -[NSRegularExpression firstMatchInString:options:range:](self->_libraryFilterRegExp, "firstMatchInString:options:range:", v5, 0, 0, [v5 length]);
+  parameters = [exp parameters];
+  libraryIdentifier = [parameters libraryIdentifier];
+  v6 = -[NSRegularExpression firstMatchInString:options:range:](self->_libraryFilterRegExp, "firstMatchInString:options:range:", libraryIdentifier, 0, 0, [libraryIdentifier length]);
 
-  if (v6 || ([v4 mainScopeIdentifier], v7 = objc_claimAutoreleasedReturnValue(), -[NSRegularExpression firstMatchInString:options:range:](self->_libraryFilterRegExp, "firstMatchInString:options:range:", v7, 0, 0, objc_msgSend(v7, "length")), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
+  if (v6 || ([parameters mainScopeIdentifier], v7 = objc_claimAutoreleasedReturnValue(), -[NSRegularExpression firstMatchInString:options:range:](self->_libraryFilterRegExp, "firstMatchInString:options:range:", v7, 0, 0, objc_msgSend(v7, "length")), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
   {
     v9 = 1;
   }
 
   else
   {
-    v11 = [v4 clientLibraryBaseURL];
-    v12 = [v11 path];
+    clientLibraryBaseURL = [parameters clientLibraryBaseURL];
+    path = [clientLibraryBaseURL path];
 
-    v13 = -[NSRegularExpression firstMatchInString:options:range:](self->_libraryFilterRegExp, "firstMatchInString:options:range:", v12, 0, 0, [v12 length]);
+    v13 = -[NSRegularExpression firstMatchInString:options:range:](self->_libraryFilterRegExp, "firstMatchInString:options:range:", path, 0, 0, [path length]);
 
     v9 = v13 != 0;
   }
@@ -1214,21 +1214,21 @@ LABEL_58:
   return v9;
 }
 
-- (BOOL)_libraryIdentifierMatchesLibraryFilterRegExp:(id)a3
+- (BOOL)_libraryIdentifierMatchesLibraryFilterRegExp:(id)exp
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = -[NSRegularExpression firstMatchInString:options:range:](self->_libraryFilterRegExp, "firstMatchInString:options:range:", v5, 0, 0, [v5 length]);
+  expCopy = exp;
+  name = [expCopy name];
+  v6 = -[NSRegularExpression firstMatchInString:options:range:](self->_libraryFilterRegExp, "firstMatchInString:options:range:", name, 0, 0, [name length]);
 
   if (v6)
   {
     goto LABEL_4;
   }
 
-  v7 = [v4 containerIdentifier];
-  v8 = -[NSRegularExpression firstMatchInString:options:range:](self->_libraryFilterRegExp, "firstMatchInString:options:range:", v7, 0, 0, [v7 length]);
+  containerIdentifier = [expCopy containerIdentifier];
+  v8 = -[NSRegularExpression firstMatchInString:options:range:](self->_libraryFilterRegExp, "firstMatchInString:options:range:", containerIdentifier, 0, 0, [containerIdentifier length]);
 
-  if (v8 || ([v4 uuid], v9 = objc_claimAutoreleasedReturnValue(), -[NSRegularExpression firstMatchInString:options:range:](self->_libraryFilterRegExp, "firstMatchInString:options:range:", v9, 0, 0, objc_msgSend(v9, "length")), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
+  if (v8 || ([expCopy uuid], v9 = objc_claimAutoreleasedReturnValue(), -[NSRegularExpression firstMatchInString:options:range:](self->_libraryFilterRegExp, "firstMatchInString:options:range:", v9, 0, 0, objc_msgSend(v9, "length")), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
   {
 LABEL_4:
     v11 = 1;
@@ -1236,8 +1236,8 @@ LABEL_4:
 
   else
   {
-    v13 = [v4 path];
-    v14 = -[NSRegularExpression firstMatchInString:options:range:](self->_libraryFilterRegExp, "firstMatchInString:options:range:", v13, 0, 0, [v13 length]);
+    path = [expCopy path];
+    v14 = -[NSRegularExpression firstMatchInString:options:range:](self->_libraryFilterRegExp, "firstMatchInString:options:range:", path, 0, 0, [path length]);
 
     v11 = v14 != 0;
   }
@@ -1262,8 +1262,8 @@ LABEL_4:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v6 = v3;
-    v7 = [v6 countByEnumeratingWithState:&v32 objects:v38 count:16];
+    localizedDescription = v3;
+    v7 = [localizedDescription countByEnumeratingWithState:&v32 objects:v38 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1274,7 +1274,7 @@ LABEL_4:
         {
           if (*v33 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(localizedDescription);
           }
 
           v11 = *(*(&v32 + 1) + 8 * i);
@@ -1286,7 +1286,7 @@ LABEL_4:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v32 objects:v38 count:16];
+        v8 = [localizedDescription countByEnumeratingWithState:&v32 objects:v38 count:16];
         if (v8)
         {
           continue;
@@ -1297,10 +1297,10 @@ LABEL_4:
     }
 
     v31 = v5;
-    v6 = [(CPLCTLCommand *)self getLibraryIdentifiersWithDomain:3 error:&v31];
+    localizedDescription = [(CPLCTLCommand *)self getLibraryIdentifiersWithDomain:3 error:&v31];
     v12 = v31;
 
-    if (v6)
+    if (localizedDescription)
     {
       v25 = v12;
       v26 = v3;
@@ -1308,8 +1308,8 @@ LABEL_4:
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v13 = v6;
-      v14 = [v13 countByEnumeratingWithState:&v27 objects:v37 count:16];
+      pattern = localizedDescription;
+      v14 = [pattern countByEnumeratingWithState:&v27 objects:v37 count:16];
       if (v14)
       {
         v15 = v14;
@@ -1320,16 +1320,16 @@ LABEL_4:
           {
             if (*v28 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(pattern);
             }
 
             v18 = *(*(&v27 + 1) + 8 * j);
-            v19 = [v18 path];
-            v20 = v19;
-            if (v19)
+            path = [v18 path];
+            v20 = path;
+            if (path)
             {
-              v21 = [v19 pathExtension];
-              v22 = [v21 isEqualToString:@"photoslibrary"];
+              pathExtension = [path pathExtension];
+              v22 = [pathExtension isEqualToString:@"photoslibrary"];
 
               if (v22)
               {
@@ -1344,7 +1344,7 @@ LABEL_4:
             }
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v27 objects:v37 count:16];
+          v15 = [pattern countByEnumeratingWithState:&v27 objects:v37 count:16];
           if (v15)
           {
             continue;
@@ -1354,8 +1354,8 @@ LABEL_4:
         }
       }
 
-      v13 = [(NSRegularExpression *)self->_libraryFilterRegExp pattern];
-      [(CPLCTLCommand *)self printFormat:@"Found no libraries matching '%@'", v13];
+      pattern = [(NSRegularExpression *)self->_libraryFilterRegExp pattern];
+      [(CPLCTLCommand *)self printFormat:@"Found no libraries matching '%@'", pattern];
       v23 = 0;
 LABEL_28:
       v12 = v25;
@@ -1364,16 +1364,16 @@ LABEL_28:
 
     else
     {
-      v13 = [v12 localizedDescription];
-      [(CPLCTLCommand *)self printFormat:@"Failed to get the list of active libraries: %@", v13];
+      pattern = [v12 localizedDescription];
+      [(CPLCTLCommand *)self printFormat:@"Failed to get the list of active libraries: %@", pattern];
       v23 = 0;
     }
   }
 
   else
   {
-    v6 = [v4 localizedDescription];
-    [(CPLCTLCommand *)self printFormat:@"Failed to get the list of registered engines: %@", v6];
+    localizedDescription = [v4 localizedDescription];
+    [(CPLCTLCommand *)self printFormat:@"Failed to get the list of registered engines: %@", localizedDescription];
     v23 = 0;
 LABEL_25:
     v12 = v5;
@@ -1386,26 +1386,26 @@ LABEL_25:
 {
   if (self->_skipSysdiagnose || ![Libsysdiagnose isSysdiagnoseInProgressWithError:0])
   {
-    v4 = [(CPLCTLCommand *)self defaultLibraryURL];
+    defaultLibraryURL = [(CPLCTLCommand *)self defaultLibraryURL];
 
-    if (v4)
+    if (defaultLibraryURL)
     {
-      v5 = [(CPLCTLCommand *)self defaultLibraryIdentifier];
-      [(CPLCTLCommand *)self printFormat:@"Will diagnose library with CPL identifier %@", v5];
+      defaultLibraryIdentifier = [(CPLCTLCommand *)self defaultLibraryIdentifier];
+      [(CPLCTLCommand *)self printFormat:@"Will diagnose library with CPL identifier %@", defaultLibraryIdentifier];
 
-      v6 = [(CPLCTLCommand *)self defaultLibraryURL];
-      v7 = [(CPLDiagnoseCommand *)self _abbreviatedPathForURL:v6];
+      defaultLibraryURL2 = [(CPLCTLCommand *)self defaultLibraryURL];
+      v7 = [(CPLDiagnoseCommand *)self _abbreviatedPathForURL:defaultLibraryURL2];
       [(CPLCTLCommand *)self printFormat:@"  path: %@", v7];
 
-      v8 = [(CPLCTLCommand *)self defaultLibraryIdentifier];
-      [(CPLDiagnoseCommand *)self _diagnoseWithCPLLibraryIdentifier:v8];
+      defaultLibraryIdentifier2 = [(CPLCTLCommand *)self defaultLibraryIdentifier];
+      [(CPLDiagnoseCommand *)self _diagnoseWithCPLLibraryIdentifier:defaultLibraryIdentifier2];
     }
 
     else
     {
       if (self->_pickInteractively)
       {
-        v9 = [(CPLCTLCommand *)self daemonConnection];
+        daemonConnection = [(CPLCTLCommand *)self daemonConnection];
         if (![(CPLDiagnoseCommand *)self _chooseLibraryInteractively])
         {
           goto LABEL_35;
@@ -1416,7 +1416,7 @@ LABEL_25:
 
       if (self->_libraryFilterRegExp)
       {
-        v9 = [(CPLCTLCommand *)self daemonConnection];
+        daemonConnection = [(CPLCTLCommand *)self daemonConnection];
         if (![(CPLDiagnoseCommand *)self _lookForLibrary])
         {
           goto LABEL_35;
@@ -1426,7 +1426,7 @@ LABEL_25:
       }
     }
 
-    v9 = 0;
+    daemonConnection = 0;
 LABEL_7:
     if (self->_displayConsent && isatty(1))
     {
@@ -1477,8 +1477,8 @@ LABEL_64:
 
       v17 = [CPLDateFormatter stringFromDate:v10];
       v18 = +[NSTimeZone defaultTimeZone];
-      v19 = [v18 name];
-      [(CPLCTLCommand *)self printFormat:@"Date: %@ (%@)", v17, v19];
+      name = [v18 name];
+      [(CPLCTLCommand *)self printFormat:@"Date: %@ (%@)", v17, name];
 
       [(CPLDiagnoseCommand *)self startDiagnostic];
       [(CPLCTLCommand *)self printFormat:@"- Waiting for unfinished tasks if necessary"];
@@ -1534,7 +1534,7 @@ LABEL_64:
         v64 = 0;
         v31 = [(CPLDiagnoseArchive *)v30 openForWriting:&v64];
         v32 = v64;
-        v33 = v32;
+        localizedDescription = v32;
         if (v31)
         {
           outputFolder = self->_outputFolder;
@@ -1546,7 +1546,7 @@ LABEL_64:
           {
             v62 = v36;
             v37 = [(CPLDiagnoseArchive *)v30 close:&v62];
-            v33 = v62;
+            localizedDescription = v62;
 
             if (v37)
             {
@@ -1571,8 +1571,8 @@ LABEL_53:
                 goto LABEL_54;
               }
 
-              v33 = [(CPLDiagnoseArchive *)v30 localizedDescription];
-              [(CPLCTLCommand *)self printFormat:@"  Failed: %@", v33];
+              localizedDescription = [(CPLDiagnoseArchive *)v30 localizedDescription];
+              [(CPLCTLCommand *)self printFormat:@"  Failed: %@", localizedDescription];
 LABEL_52:
 
               goto LABEL_53;
@@ -1584,7 +1584,7 @@ LABEL_52:
           else
           {
             v50 = @"  Failed to write archive: %@";
-            v33 = v36;
+            localizedDescription = v36;
           }
         }
 
@@ -1593,8 +1593,8 @@ LABEL_52:
           v50 = @"  Failed to open archive for writing: %@";
         }
 
-        v51 = [v33 localizedDescription];
-        [(CPLCTLCommand *)self printFormat:v50, v51];
+        v33LocalizedDescription = [localizedDescription localizedDescription];
+        [(CPLCTLCommand *)self printFormat:v50, v33LocalizedDescription];
 
         goto LABEL_52;
       }
@@ -1602,8 +1602,8 @@ LABEL_52:
       +[NSDate timeIntervalSinceReferenceDate];
       v40 = v39;
       v41 = [CPLDiagnoseArchive alloc];
-      v42 = [(NSURL *)self->_outputFile path];
-      v30 = [(CPLDiagnoseArchive *)v41 initWithPath:v42 shouldCompress:1];
+      path = [(NSURL *)self->_outputFile path];
+      v30 = [(CPLDiagnoseArchive *)v41 initWithPath:path shouldCompress:1];
 
       if (!v30)
       {
@@ -1640,8 +1640,8 @@ LABEL_54:
         [(CPLDiagnoseCommand *)self printDiskCapacity:@"complete"];
         [(CPLCTLCommand *)self printFormat:@"- mark output file purgeable"];
         [(CPLDiagnoseCommand *)self markPurgeable:self->_outputFile];
-        v56 = [(NSURL *)self->_outputFile path];
-        [(CPLCTLCommand *)self printFormat:@"\nDiagnostic is available at %@", v56];
+        path2 = [(NSURL *)self->_outputFile path];
+        [(CPLCTLCommand *)self printFormat:@"\nDiagnostic is available at %@", path2];
 
         [(CPLCTLCommand *)self printFormat:@"\nEnjoy."];
         [v10 timeIntervalSinceNow];
@@ -1662,11 +1662,11 @@ LABEL_54:
         goto LABEL_64;
       }
 
-      v33 = [(NSURL *)self->_outputFolder path];
-      v43 = [v33 lastPathComponent];
-      v44 = [v43 substringFromIndex:{objc_msgSend(CPLDiagnosticsInProgressPrefix, "length")}];
+      localizedDescription = [(NSURL *)self->_outputFolder path];
+      lastPathComponent = [localizedDescription lastPathComponent];
+      v44 = [lastPathComponent substringFromIndex:{objc_msgSend(CPLDiagnosticsInProgressPrefix, "length")}];
 
-      [(CPLDiagnoseArchive *)v30 addDirectoryToArchive:v33 withDirName:v44];
+      [(CPLDiagnoseArchive *)v30 addDirectoryToArchive:localizedDescription withDirName:v44];
       [(CPLDiagnoseArchive *)v30 closeArchive];
       +[NSDate timeIntervalSinceReferenceDate];
       [(CPLCTLCommand *)self printFormat:@"  elapsed time: %.2fs", v45 - v40];
@@ -1690,40 +1690,40 @@ LABEL_65:
   return 1;
 }
 
-- (void)printFormat:(id)a3 arguments:(char *)a4
+- (void)printFormat:(id)format arguments:(char *)arguments
 {
-  v6 = a3;
-  v10 = [[NSString alloc] initWithFormat:v6 arguments:a4];
+  formatCopy = format;
+  v10 = [[NSString alloc] initWithFormat:formatCopy arguments:arguments];
 
   v7 = v10;
-  v8 = [v10 UTF8String];
+  uTF8String = [v10 UTF8String];
   diagnosticLog = self->_diagnosticLog;
   if (diagnosticLog)
   {
-    fprintf(diagnosticLog, "%s\n", v8);
+    fprintf(diagnosticLog, "%s\n", uTF8String);
     fflush(self->_diagnosticLog);
   }
 
-  fprintf(__stdoutp, "%s\n", v8);
+  fprintf(__stdoutp, "%s\n", uTF8String);
   fflush(__stdoutp);
 }
 
-- (void)printDiskCapacity:(id)a3
+- (void)printDiskCapacity:(id)capacity
 {
-  v4 = a3;
+  capacityCopy = capacity;
   v18[0] = NSURLVolumeAvailableCapacityKey;
   v18[1] = NSURLVolumeAvailableCapacityForImportantUsageKey;
   v5 = [NSArray arrayWithObjects:v18 count:2];
-  v6 = [(NSURL *)self->_outputFolder URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent = [(NSURL *)self->_outputFolder URLByDeletingLastPathComponent];
   v11 = 0;
-  v7 = [v6 resourceValuesForKeys:v5 error:&v11];
+  v7 = [uRLByDeletingLastPathComponent resourceValuesForKeys:v5 error:&v11];
   v8 = v11;
 
   if (v7)
   {
     v9 = [v7 objectForKeyedSubscript:NSURLVolumeAvailableCapacityKey];
     v10 = [v7 objectForKeyedSubscript:NSURLVolumeAvailableCapacityForImportantUsageKey];
-    [(CPLCTLCommand *)self printFormat:@"- diagnostic volume capacity=%@ importantCapacity=%@ (%@)", v9, v10, v4];
+    [(CPLCTLCommand *)self printFormat:@"- diagnostic volume capacity=%@ importantCapacity=%@ (%@)", v9, v10, capacityCopy];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
       *buf = 138543874;
@@ -1731,7 +1731,7 @@ LABEL_65:
       v14 = 2114;
       v15 = v10;
       v16 = 2114;
-      v17 = v4;
+      v17 = capacityCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "PhotosDiagnostic volume capacity=%{public}@ importantCapacity=%{public}@ (%{public}@)", buf, 0x20u);
     }
   }
@@ -1750,9 +1750,9 @@ LABEL_65:
   v24[0] = &off_10003B5C0;
   v24[1] = @"mobile";
   v4 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:2];
-  v5 = [(NSURL *)self->_outputFile URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent = [(NSURL *)self->_outputFile URLByDeletingLastPathComponent];
   v22 = 0;
-  v6 = [v3 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:v4 error:&v22];
+  v6 = [v3 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:v4 error:&v22];
   v7 = v22;
   v8 = v7;
   if (v6)
@@ -1786,8 +1786,8 @@ LABEL_65:
     else
     {
       v13 = [(CPLDiagnoseCommand *)self _simplifiedPathForURL:self->_outputFolder];
-      v17 = [v11 localizedDescription];
-      [(CPLCTLCommand *)self printFormat:@"Can't create %@: %@", v13, v17];
+      localizedDescription = [v11 localizedDescription];
+      [(CPLCTLCommand *)self printFormat:@"Can't create %@: %@", v13, localizedDescription];
 
       v16 = 0;
     }
@@ -1797,9 +1797,9 @@ LABEL_65:
 
   else
   {
-    v13 = [(CPLDiagnoseCommand *)self _simplifiedPathForURL:v5];
-    v15 = [v8 localizedDescription];
-    [(CPLCTLCommand *)self printFormat:@"Can't create %@: %@", v13, v15];
+    v13 = [(CPLDiagnoseCommand *)self _simplifiedPathForURL:uRLByDeletingLastPathComponent];
+    localizedDescription2 = [v8 localizedDescription];
+    [(CPLCTLCommand *)self printFormat:@"Can't create %@: %@", v13, localizedDescription2];
 
     v16 = 0;
   }
@@ -1829,7 +1829,7 @@ LABEL_65:
   while (v3 != 13 && v3 != 10);
 }
 
-- (id)getEngineWrapperStatusesWithError:(id *)a3
+- (id)getEngineWrapperStatusesWithError:(id *)error
 {
   cachedWrapperStatuses = self->_cachedWrapperStatuses;
   if (cachedWrapperStatuses)
@@ -1843,9 +1843,9 @@ LABEL_65:
     if (getWrapperStatusesError)
     {
       v4 = 0;
-      if (a3)
+      if (error)
       {
-        *a3 = getWrapperStatusesError;
+        *error = getWrapperStatusesError;
       }
     }
 
@@ -1933,17 +1933,17 @@ LABEL_10:
 
   v13 = [NSURL fileURLWithPath:@"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/photos" isDirectory:1];
 
-  v14 = [objc_opt_class() diagnosticExtension];
-  v15 = [v8 stringByAppendingPathExtension:v14];
+  diagnosticExtension = [objc_opt_class() diagnosticExtension];
+  v15 = [v8 stringByAppendingPathExtension:diagnosticExtension];
 
   v16 = [v13 URLByAppendingPathComponent:v15 isDirectory:0];
   outputFile = self->_outputFile;
   self->_outputFile = v16;
 }
 
-- (void)setUserMode:(BOOL)a3
+- (void)setUserMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = getpwnam("mobile");
     if (v3)
@@ -1960,9 +1960,9 @@ LABEL_10:
   }
 }
 
-- (void)revertToRootMode:(BOOL)a3
+- (void)revertToRootMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = getuid();
 
@@ -1970,11 +1970,11 @@ LABEL_10:
   }
 }
 
-- (void)markPurgeable:(id)a3
+- (void)markPurgeable:(id)purgeable
 {
   v7 = 66053;
-  v4 = [a3 path];
-  v5 = fsctl([v4 fileSystemRepresentation], 0xC0084A44uLL, &v7, 0);
+  path = [purgeable path];
+  v5 = fsctl([path fileSystemRepresentation], 0xC0084A44uLL, &v7, 0);
 
   if (v5 == -1)
   {
@@ -1983,34 +1983,34 @@ LABEL_10:
   }
 }
 
-- (void)collectFileListingAtPath:(id)a3 label:(id)a4 filename:(id)a5 extendedDetail:(BOOL)a6
+- (void)collectFileListingAtPath:(id)path label:(id)label filename:(id)filename extendedDetail:(BOOL)detail
 {
-  v9 = a3;
-  v10 = a5;
-  if (v9)
+  pathCopy = path;
+  filenameCopy = filename;
+  if (pathCopy)
   {
-    v11 = a4;
+    labelCopy = label;
     v12 = +[NSDate date];
-    [(CPLCTLCommand *)self printFormat:@"- %@", v11];
+    [(CPLCTLCommand *)self printFormat:@"- %@", labelCopy];
 
     diagnosticLog = self->_diagnosticLog;
     if (diagnosticLog)
     {
       isRoot = self->_isRoot;
-      v22 = [v9 UTF8String];
-      v23 = [v10 UTF8String];
+      uTF8String = [pathCopy UTF8String];
+      uTF8String2 = [filenameCopy UTF8String];
       v15 = 37;
       if (isRoot)
       {
         v15 = 35;
       }
 
-      fprintf(diagnosticLog, "  %c recursive file listing of %s into %s\n", v15, v22, v23);
+      fprintf(diagnosticLog, "  %c recursive file listing of %s into %s\n", v15, uTF8String, uTF8String2);
       fflush(self->_diagnosticLog);
     }
 
-    v16 = [(NSURL *)self->_outputFolder URLByAppendingPathComponent:v10];
-    v17 = [v16 path];
+    v16 = [(NSURL *)self->_outputFolder URLByAppendingPathComponent:filenameCopy];
+    path = [v16 path];
 
     LOBYTE(v16) = CPLDiagnoseRecursiveFileListing();
     v18 = 0;
@@ -2026,45 +2026,45 @@ LABEL_10:
   }
 }
 
-- (void)collectFileAtURL:(id)a3 suffix:(id)a4 destinationDirectory:(id)a5
+- (void)collectFileAtURL:(id)l suffix:(id)suffix destinationDirectory:(id)directory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  lCopy = l;
+  suffixCopy = suffix;
+  directoryCopy = directory;
+  if (lCopy)
   {
     v11 = +[NSDate date];
     v12 = +[NSFileManager defaultManager];
-    v13 = [v8 path];
-    v14 = [v12 fileExistsAtPath:v13];
+    path = [lCopy path];
+    v14 = [v12 fileExistsAtPath:path];
 
-    v15 = [(CPLDiagnoseCommand *)self _simplifiedPathForURL:v8];
+    v15 = [(CPLDiagnoseCommand *)self _simplifiedPathForURL:lCopy];
     v16 = v15;
     if (v14)
     {
       [(CPLCTLCommand *)self printFormat:@"- Collecting %@", v15];
 
-      v17 = [v8 lastPathComponent];
-      v16 = v17;
-      if (v9)
+      lastPathComponent = [lCopy lastPathComponent];
+      v16 = lastPathComponent;
+      if (suffixCopy)
       {
-        v18 = [v17 stringByAppendingString:v9];
+        v18 = [lastPathComponent stringByAppendingString:suffixCopy];
 
         v16 = v18;
       }
 
-      v19 = [v10 URLByAppendingPathComponent:v16];
+      v19 = [directoryCopy URLByAppendingPathComponent:v16];
       v28 = 0;
-      v20 = [v12 copyItemAtURL:v8 toURL:v19 error:&v28];
+      v20 = [v12 copyItemAtURL:lCopy toURL:v19 error:&v28];
       v21 = v28;
       v22 = v21;
       if ((v20 & 1) == 0)
       {
-        v23 = [v21 localizedDescription];
-        [(CPLCTLCommand *)self printFormat:@"  failed: %@", v23];
+        localizedDescription = [v21 localizedDescription];
+        [(CPLCTLCommand *)self printFormat:@"  failed: %@", localizedDescription];
 
         incompleteTasks = self->incompleteTasks;
-        [NSString stringWithFormat:@"Failed collecting %@.", v8];
+        [NSString stringWithFormat:@"Failed collecting %@.", lCopy];
         v25 = v24 = v11;
         [(NSMutableArray *)incompleteTasks addObject:v25];
 
@@ -2082,38 +2082,38 @@ LABEL_10:
   }
 }
 
-- (void)collectFileAtPath:(id)a3 suffix:(id)a4
+- (void)collectFileAtPath:(id)path suffix:(id)suffix
 {
-  if (a3)
+  if (path)
   {
-    v6 = a4;
-    v7 = [NSURL fileURLWithPath:a3];
-    [(CPLDiagnoseCommand *)self collectFileAtURL:v7 suffix:v6 destinationDirectory:self->_outputFolder];
+    suffixCopy = suffix;
+    v7 = [NSURL fileURLWithPath:path];
+    [(CPLDiagnoseCommand *)self collectFileAtURL:v7 suffix:suffixCopy destinationDirectory:self->_outputFolder];
   }
 }
 
-- (void)collectDiagnosticLog:(id)a3
+- (void)collectDiagnosticLog:(id)log
 {
-  if (a3)
+  if (log)
   {
     v4 = [@"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs" stringByAppendingPathComponent:?];
     [(CPLDiagnoseCommand *)self collectFileAtPath:v4];
   }
 }
 
-- (void)sampleProcess:(id)a3
+- (void)sampleProcess:(id)process
 {
-  v4 = a3;
-  v5 = [(CPLDiagnoseCommand *)self processDetailPath:v4];
+  processCopy = process;
+  v5 = [(CPLDiagnoseCommand *)self processDetailPath:processCopy];
   v10 = [NSString stringWithFormat:@"%@-sample.txt", v5];
 
   v6 = [(NSURL *)self->_outputFolder URLByAppendingPathComponent:v10];
-  v7 = [v6 path];
+  path = [v6 path];
 
-  v8 = [NSString stringWithFormat:@"/usr/bin/sample %@ 1 -f %@", v4, v7];
-  v9 = [NSString stringWithFormat:@"Sampling %@", v4];
+  v8 = [NSString stringWithFormat:@"/usr/bin/sample %@ 1 -f %@", processCopy, path];
+  processCopy = [NSString stringWithFormat:@"Sampling %@", processCopy];
 
-  [(CPLDiagnoseCommand *)self collectOutputOfCommand:v8 label:v9 filename:0];
+  [(CPLDiagnoseCommand *)self collectOutputOfCommand:v8 label:processCopy filename:0];
 }
 
 - (id)processes
@@ -2128,9 +2128,9 @@ LABEL_10:
   return v3;
 }
 
-- (void)executeMemoryToolsOnProcess:(id)a3
+- (void)executeMemoryToolsOnProcess:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   if (!qword_100040C30)
   {
     if (self->_isAppleInternal)
@@ -2165,7 +2165,7 @@ LABEL_10:
           objc_enumerationMutation(v6);
         }
 
-        [(CPLDiagnoseCommand *)self executeTool:*(*(&v11 + 1) + 8 * i) onProcess:v4, v11];
+        [(CPLDiagnoseCommand *)self executeTool:*(*(&v11 + 1) + 8 * i) onProcess:processCopy, v11];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -2175,12 +2175,12 @@ LABEL_10:
   }
 }
 
-- (void)executeTool:(id)a3 onProcess:(id)a4
+- (void)executeTool:(id)tool onProcess:(id)process
 {
-  v19 = a3;
-  v6 = a4;
-  v7 = [NSString stringWithFormat:@"Getting %@ for %@", v19, v6];
-  v8 = [v19 hasPrefix:@"/"];
+  toolCopy = tool;
+  processCopy = process;
+  processCopy = [NSString stringWithFormat:@"Getting %@ for %@", toolCopy, processCopy];
+  v8 = [toolCopy hasPrefix:@"/"];
   v9 = @"/usr/bin/";
   if (v8)
   {
@@ -2188,11 +2188,11 @@ LABEL_10:
   }
 
   v10 = v9;
-  if ([v19 isEqualToString:@"leaks"])
+  if ([toolCopy isEqualToString:@"leaks"])
   {
-    v11 = [(NSURL *)self->_outputFolder path];
-    v12 = [(CPLDiagnoseCommand *)self processDetailPath:v6];
-    v13 = [v11 stringByAppendingPathComponent:v12];
+    path = [(NSURL *)self->_outputFolder path];
+    v12 = [(CPLDiagnoseCommand *)self processDetailPath:processCopy];
+    v13 = [path stringByAppendingPathComponent:v12];
     v14 = [v13 stringByAppendingPathExtension:@"memgraph"];
 
     v15 = [[NSString alloc] initWithFormat:@" --forkCorpse --physFootprint --outputGraph=%@", v14];
@@ -2201,16 +2201,16 @@ LABEL_10:
 
   else
   {
-    v14 = [(CPLDiagnoseCommand *)self processDetailPath:v6];
-    v17 = [v19 lastPathComponent];
-    v16 = [NSString stringWithFormat:@"%@-%@.txt", v14, v17];
+    v14 = [(CPLDiagnoseCommand *)self processDetailPath:processCopy];
+    lastPathComponent = [toolCopy lastPathComponent];
+    v16 = [NSString stringWithFormat:@"%@-%@.txt", v14, lastPathComponent];
 
     v15 = &stru_100035A18;
   }
 
-  v18 = [NSString stringWithFormat:@"%@%@%@ %@", v10, v19, v15, v6];
+  processCopy2 = [NSString stringWithFormat:@"%@%@%@ %@", v10, toolCopy, v15, processCopy];
 
-  [(CPLDiagnoseCommand *)self collectOutputOfCommand:v18 label:v7 filename:v16];
+  [(CPLDiagnoseCommand *)self collectOutputOfCommand:processCopy2 label:processCopy filename:v16];
 }
 
 - (void)collectDiagnosticLogs
@@ -2238,63 +2238,63 @@ LABEL_10:
   [(CPLDiagnoseCommand *)self runAsUser:v2];
 }
 
-- (void)_removeResourceDataFromFaceCropChangeCPLSerializedRecords:(sqlite3 *)a3
+- (void)_removeResourceDataFromFaceCropChangeCPLSerializedRecords:(sqlite3 *)records
 {
-  if (sqlite3_create_function_v2(a3, "filterCPLSerializedRecord", 1, 2053, 0, sub_100012C80, 0, 0, 0))
+  if (sqlite3_create_function_v2(records, "filterCPLSerializedRecord", 1, 2053, 0, sub_100012C80, 0, 0, 0))
   {
     [(CPLCTLCommand *)self printFormat:@"error creating filterCPLSerializedRecord function to remove CPL storage: remove all CPLFaceCropChange records"];
-    sqlite3_exec(a3, "update clientCache set serializedRecord = '' where class='CPLFaceCropChange'", 0, 0, 0);
-    sqlite3_exec(a3, "update cloudCache set serializedRecord = null, stagedSerializedRecord = null where class='CPLFaceCropChange'", 0, 0, 0);
-    sqlite3_exec(a3, "update transientPullRepository set serializedRecord = '' where class='CPLFaceCropChange'", 0, 0, 0);
+    sqlite3_exec(records, "update clientCache set serializedRecord = '' where class='CPLFaceCropChange'", 0, 0, 0);
+    sqlite3_exec(records, "update cloudCache set serializedRecord = null, stagedSerializedRecord = null where class='CPLFaceCropChange'", 0, 0, 0);
+    sqlite3_exec(records, "update transientPullRepository set serializedRecord = '' where class='CPLFaceCropChange'", 0, 0, 0);
 
-    sqlite3_exec(a3, "update pullQueue set serializedRecord = '' where class='CPLFaceCropChange'", 0, 0, 0);
+    sqlite3_exec(records, "update pullQueue set serializedRecord = '' where class='CPLFaceCropChange'", 0, 0, 0);
   }
 
   else
   {
     v5 = objc_autoreleasePoolPush();
-    sqlite3_exec(a3, "update clientCache set serializedRecord = filterCPLSerializedRecord(serializedRecord) where class='CPLFaceCropChange'", 0, 0, 0);
-    sqlite3_exec(a3, "update pullQueue set serializedRecord = filterCPLSerializedRecord(serializedRecord) where class='CPLFaceCropChange'", 0, 0, 0);
-    sqlite3_exec(a3, "update transientPullRepository set serializedRecord = filterCPLSerializedRecord(serializedRecord) where class='CPLFaceCropChange'", 0, 0, 0);
-    sqlite3_exec(a3, "update cloudCache set serializedRecord = filterCPLSerializedRecord(serializedRecord), stagedSerializedRecord = filterCPLSerializedRecord(stagedSerializedRecord) where class='CPLFaceCropChange'", 0, 0, 0);
+    sqlite3_exec(records, "update clientCache set serializedRecord = filterCPLSerializedRecord(serializedRecord) where class='CPLFaceCropChange'", 0, 0, 0);
+    sqlite3_exec(records, "update pullQueue set serializedRecord = filterCPLSerializedRecord(serializedRecord) where class='CPLFaceCropChange'", 0, 0, 0);
+    sqlite3_exec(records, "update transientPullRepository set serializedRecord = filterCPLSerializedRecord(serializedRecord) where class='CPLFaceCropChange'", 0, 0, 0);
+    sqlite3_exec(records, "update cloudCache set serializedRecord = filterCPLSerializedRecord(serializedRecord), stagedSerializedRecord = filterCPLSerializedRecord(stagedSerializedRecord) where class='CPLFaceCropChange'", 0, 0, 0);
 
     objc_autoreleasePoolPop(v5);
   }
 }
 
-- (void)_removeShareURLFromCPLScopes:(sqlite3 *)a3
+- (void)_removeShareURLFromCPLScopes:(sqlite3 *)scopes
 {
-  if (sqlite3_create_function_v2(a3, "filterScopeChange", 1, 2053, 0, sub_100012FAC, 0, 0, 0))
+  if (sqlite3_create_function_v2(scopes, "filterScopeChange", 1, 2053, 0, sub_100012FAC, 0, 0, 0))
   {
     [(CPLCTLCommand *)self printFormat:@"error creating filterShareURL function to remove CPL storage: remove shareURL from scopes"];
 
-    sqlite3_exec(a3, "update scopes set scopeChange = null", 0, 0, 0);
+    sqlite3_exec(scopes, "update scopes set scopeChange = null", 0, 0, 0);
   }
 
   else
   {
     v5 = objc_autoreleasePoolPush();
-    sqlite3_exec(a3, "update scopes set scopeChange = filterScopeChange(scopeChange)", 0, 0, 0);
-    [(CPLCTLCommand *)self printFormat:@"  redacted %d scopes", sqlite3_changes(a3)];
+    sqlite3_exec(scopes, "update scopes set scopeChange = filterScopeChange(scopeChange)", 0, 0, 0);
+    [(CPLCTLCommand *)self printFormat:@"  redacted %d scopes", sqlite3_changes(scopes)];
 
     objc_autoreleasePoolPop(v5);
   }
 }
 
-- (void)_removeShareURLFromPhotosMomentShare:(sqlite3 *)a3
+- (void)_removeShareURLFromPhotosMomentShare:(sqlite3 *)share
 {
-  if (sqlite3_create_function_v2(a3, "filterMomentShareURL", 1, 2053, 0, sub_100013388, 0, 0, 0))
+  if (sqlite3_create_function_v2(share, "filterMomentShareURL", 1, 2053, 0, sub_100013388, 0, 0, 0))
   {
     [(CPLCTLCommand *)self printFormat:@"error creating filterMomentShare function to remove Photos storage: remove shareURL from MomentShare"];
 
-    sqlite3_exec(a3, "update ZSHARE set ZSHAREURL = null, ZPREVIEWDATA = null, ZTHUMBNAILIMAGEDATA = null, ZCKSHAREDATA = null", 0, 0, 0);
+    sqlite3_exec(share, "update ZSHARE set ZSHAREURL = null, ZPREVIEWDATA = null, ZTHUMBNAILIMAGEDATA = null, ZCKSHAREDATA = null", 0, 0, 0);
   }
 
   else
   {
     v5 = objc_autoreleasePoolPush();
-    sqlite3_exec(a3, "update ZSHARE set ZSHAREURL = filterMomentShareURL(ZSHAREURL), ZPREVIEWDATA = null, ZTHUMBNAILIMAGEDATA = null, ZCKSHAREDATA = null", 0, 0, 0);
-    [(CPLCTLCommand *)self printFormat:@"  redacted %d moment shares", sqlite3_changes(a3)];
+    sqlite3_exec(share, "update ZSHARE set ZSHAREURL = filterMomentShareURL(ZSHAREURL), ZPREVIEWDATA = null, ZTHUMBNAILIMAGEDATA = null, ZCKSHAREDATA = null", 0, 0, 0);
+    [(CPLCTLCommand *)self printFormat:@"  redacted %d moment shares", sqlite3_changes(share)];
 
     objc_autoreleasePoolPop(v5);
   }
@@ -2310,20 +2310,20 @@ LABEL_10:
   return v5;
 }
 
-- (void)copyDatabaseFromPath:(id)a3 toPath:(id)a4
+- (void)copyDatabaseFromPath:(id)path toPath:(id)toPath
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 lastPathComponent];
-  v9 = [(NSArray *)self->_databasesWithPIIData containsObject:v8];
-  v10 = [v6 pathExtension];
-  v11 = [&off_10003B7C0 containsObject:v10];
+  pathCopy = path;
+  toPathCopy = toPath;
+  lastPathComponent = [toPathCopy lastPathComponent];
+  v9 = [(NSArray *)self->_databasesWithPIIData containsObject:lastPathComponent];
+  pathExtension = [pathCopy pathExtension];
+  v11 = [&off_10003B7C0 containsObject:pathExtension];
 
   if (v11)
   {
     v22 = 0;
     ppDb = 0;
-    if (!sqlite3_open_v2([v6 UTF8String], &ppDb, 1, 0))
+    if (!sqlite3_open_v2([pathCopy UTF8String], &ppDb, 1, 0))
     {
       goto LABEL_13;
     }
@@ -2333,9 +2333,9 @@ LABEL_10:
       sqlite3_close(ppDb);
     }
 
-    v12 = [NSURL fileURLWithPath:v6];
-    v13 = [v12 absoluteString];
-    v14 = [v13 stringByAppendingString:@"?readonly_shm=1"];
+    v12 = [NSURL fileURLWithPath:pathCopy];
+    absoluteString = [v12 absoluteString];
+    v14 = [absoluteString stringByAppendingString:@"?readonly_shm=1"];
     v15 = sqlite3_open_v2([v14 UTF8String], &ppDb, 1, 0);
 
     if (!v15)
@@ -2349,7 +2349,7 @@ LABEL_10:
     }
 
     [(CPLCTLCommand *)self printFormat:@"couldn't open source database readonly, trying read/write mode"];
-    v16 = sqlite3_open_v2([v6 UTF8String], &ppDb, 2, 0);
+    v16 = sqlite3_open_v2([pathCopy UTF8String], &ppDb, 2, 0);
     if (v16)
     {
       v17 = v16;
@@ -2358,13 +2358,13 @@ LABEL_10:
         sqlite3_close(ppDb);
       }
 
-      [(CPLCTLCommand *)self printFormat:@"Failed to open src db %@: sqlite error %d\n", v6, v17];
+      [(CPLCTLCommand *)self printFormat:@"Failed to open src db %@: sqlite error %d\n", pathCopy, v17];
     }
 
     else
     {
 LABEL_13:
-      v19 = sqlite3_open_v2([v7 UTF8String], &v22, 6, 0);
+      v19 = sqlite3_open_v2([toPathCopy UTF8String], &v22, 6, 0);
       if (v19)
       {
         v20 = v19;
@@ -2378,7 +2378,7 @@ LABEL_13:
           sqlite3_close(v22);
         }
 
-        [(CPLCTLCommand *)self printFormat:@"Failed to open dst db %@: sqlite error %d\n", v7, v20];
+        [(CPLCTLCommand *)self printFormat:@"Failed to open dst db %@: sqlite error %d\n", toPathCopy, v20];
       }
 
       else
@@ -2386,7 +2386,7 @@ LABEL_13:
         v21 = sqlite3_file_control(v22, 0, 102, ppDb);
         if (v21)
         {
-          [(CPLCTLCommand *)self printFormat:@"Failed to replace %@ with %@: sqlite error %d\n", v7, v6, v21];
+          [(CPLCTLCommand *)self printFormat:@"Failed to replace %@ with %@: sqlite error %d\n", toPathCopy, pathCopy, v21];
         }
 
         else
@@ -2394,8 +2394,8 @@ LABEL_13:
           if (v9)
           {
             sqlite3_exec(v22, "pragma secure_delete=fast", 0, 0, 0);
-            [(CPLCTLCommand *)self printFormat:@"  remove PII image data and obfuscate share URLs from %@", v7];
-            if ([v8 hasPrefix:@"Photos.sqlite"])
+            [(CPLCTLCommand *)self printFormat:@"  remove PII image data and obfuscate share URLs from %@", toPathCopy];
+            if ([lastPathComponent hasPrefix:@"Photos.sqlite"])
             {
               [(CPLCTLCommand *)self printFormat:@"  removing ZFACECROP ZRESOURCEDATA and share URL scopes"];
               sqlite3_exec(v22, "update ZFACECROP set ZRESOURCEDATA = null", 0, 0, 0);
@@ -2409,26 +2409,26 @@ LABEL_13:
               }
             }
 
-            if ([v8 isEqualToString:@"photo.db"])
+            if ([lastPathComponent isEqualToString:@"photo.db"])
             {
               [(CPLCTLCommand *)self printFormat:@"  removing RKFaceCrop"];
               sqlite3_exec(v22, "update RKFaceCrop set resourceData = null", 0, 0, 0);
             }
 
-            if ([v8 isEqualToString:@"Faces.db"])
+            if ([lastPathComponent isEqualToString:@"Faces.db"])
             {
               [(CPLCTLCommand *)self printFormat:@"  removing RKDetectedFaceBlob"];
               sqlite3_exec(v22, "drop table RKDetectedFaceBlob", 0, 0, 0);
             }
 
-            if ([v8 isEqualToString:@"store.cloudphotodb"])
+            if ([lastPathComponent isEqualToString:@"store.cloudphotodb"])
             {
               [(CPLCTLCommand *)self printFormat:@"  removing resource data from serialized CPL records"];
               [(CPLDiagnoseCommand *)self _removeResourceDataFromFaceCropChangeCPLSerializedRecords:v22];
               [(CPLDiagnoseCommand *)self _removeShareURLFromCPLScopes:v22];
             }
 
-            if ([v8 isEqualToString:@"mediaanalysis.db"])
+            if ([lastPathComponent isEqualToString:@"mediaanalysis.db"])
             {
               [(CPLCTLCommand *)self printFormat:@"  removing embedding data from %@", @"mediaanalysis.db"];
               sqlite3_exec(v22, "UPDATE Results SET results=null WHERE resultsType=73", 0, 0, 0);
@@ -2440,7 +2440,7 @@ LABEL_13:
               sqlite3_exec(v22, "UPDATE Results SET results=null WHERE resultsType=46", 0, 0, 0);
             }
 
-            if ([v8 isEqualToString:@"MediaAnalysis.sqlite"])
+            if ([lastPathComponent isEqualToString:@"MediaAnalysis.sqlite"])
             {
               [(CPLCTLCommand *)self printFormat:@"  removing embedding data from %@", @"MediaAnalysis.sqlite"];
               sqlite3_exec(v22, "UPDATE ZRESULT SET ZRESULTS=null WHERE ZRESULTSTYPE=73", 0, 0, 0);
@@ -2474,118 +2474,118 @@ LABEL_13:
   else
   {
     v18 = +[NSFileManager defaultManager];
-    [v18 copyItemAtPath:v6 toPath:v7 error:0];
+    [v18 copyItemAtPath:pathCopy toPath:toPathCopy error:0];
   }
 }
 
-- (void)collectDatabaseAtPath:(id)a3 libraryPath:(id)a4 subdirectory:(id)a5
+- (void)collectDatabaseAtPath:(id)path libraryPath:(id)libraryPath subdirectory:(id)subdirectory
 {
-  v33 = a3;
-  v8 = a4;
-  v9 = a5;
+  pathCopy = path;
+  libraryPathCopy = libraryPath;
+  subdirectoryCopy = subdirectory;
   v10 = +[NSFileManager defaultManager];
-  if (![v10 fileExistsAtPath:v33])
+  if (![v10 fileExistsAtPath:pathCopy])
   {
-    [(CPLCTLCommand *)self printFormat:@"- %@ does not exist", v33];
+    [(CPLCTLCommand *)self printFormat:@"- %@ does not exist", pathCopy];
     goto LABEL_21;
   }
 
   if (!self->_skipDBCopy)
   {
-    v13 = [v10 attributesOfItemAtPath:v33 error:0];
-    v14 = [v13 fileSize];
+    v13 = [v10 attributesOfItemAtPath:pathCopy error:0];
+    fileSize = [v13 fileSize];
 
-    v12 = [NSByteCountFormatter stringFromByteCount:v14 countStyle:0];
-    if (v14 >= 0x4B000001 && self->_skipBigDBCopy)
+    pathCopy2 = [NSByteCountFormatter stringFromByteCount:fileSize countStyle:0];
+    if (fileSize >= 0x4B000001 && self->_skipBigDBCopy)
     {
       v15 = [NSByteCountFormatter stringFromByteCount:1258291200 countStyle:0];
-      [(CPLCTLCommand *)self printFormat:@"- Skipping: The size of the database at %@ is bigger than the maximum allowed in this mode (%@): (%@) ", v33, v15, v12];
+      [(CPLCTLCommand *)self printFormat:@"- Skipping: The size of the database at %@ is bigger than the maximum allowed in this mode (%@): (%@) ", pathCopy, v15, pathCopy2];
 
       incompleteTasks = self->incompleteTasks;
-      v17 = [NSString stringWithFormat:@"Skipped collecting %@.", v33];
-      [(NSMutableArray *)incompleteTasks addObject:v17];
+      pathCopy = [NSString stringWithFormat:@"Skipped collecting %@.", pathCopy];
+      [(NSMutableArray *)incompleteTasks addObject:pathCopy];
 LABEL_19:
 
       goto LABEL_20;
     }
 
-    v17 = +[NSDate date];
-    [(CPLCTLCommand *)self printFormat:@"- Collecting database (%@) %@", v12, v33];
-    v18 = [(CPLDiagnoseCommand *)self mediaAnalysisSystemDatabasePath];
-    v19 = [v33 isEqualToString:v18];
+    pathCopy = +[NSDate date];
+    [(CPLCTLCommand *)self printFormat:@"- Collecting database (%@) %@", pathCopy2, pathCopy];
+    mediaAnalysisSystemDatabasePath = [(CPLDiagnoseCommand *)self mediaAnalysisSystemDatabasePath];
+    v19 = [pathCopy isEqualToString:mediaAnalysisSystemDatabasePath];
 
     if (v19)
     {
-      v20 = [(NSURL *)self->_outputFolder URLByAppendingPathComponent:@"MediaAnalysisSystem.sqlite"];
-      v21 = [v20 path];
+      stringByDeletingLastPathComponent = [(NSURL *)self->_outputFolder URLByAppendingPathComponent:@"MediaAnalysisSystem.sqlite"];
+      path = [stringByDeletingLastPathComponent path];
     }
 
     else
     {
-      v22 = [v8 pathExtension];
-      v23 = [(CPLDiagnoseCommand *)self _isUBFExtension:v22];
+      pathExtension = [libraryPathCopy pathExtension];
+      v23 = [(CPLDiagnoseCommand *)self _isUBFExtension:pathExtension];
 
       if (v23)
       {
-        if (!v8)
+        if (!libraryPathCopy)
         {
           goto LABEL_18;
         }
 
-        v20 = [v8 stringByDeletingLastPathComponent];
-        v24 = [v33 stringByReplacingOccurrencesOfString:v20 withString:&stru_100035A18 options:8 range:{0, objc_msgSend(v33, "length")}];
-        if (v9)
+        stringByDeletingLastPathComponent = [libraryPathCopy stringByDeletingLastPathComponent];
+        v24 = [pathCopy stringByReplacingOccurrencesOfString:stringByDeletingLastPathComponent withString:&stru_100035A18 options:8 range:{0, objc_msgSend(pathCopy, "length")}];
+        if (subdirectoryCopy)
         {
-          v25 = [v9 stringByAppendingPathComponent:v24];
+          v25 = [subdirectoryCopy stringByAppendingPathComponent:v24];
 
           v24 = v25;
         }
 
         v32 = v24;
         v26 = [(NSURL *)self->_outputFolder URLByAppendingPathComponent:v24];
-        v21 = [v26 path];
+        path = [v26 path];
 
-        v27 = [v21 stringByDeletingLastPathComponent];
+        stringByDeletingLastPathComponent2 = [path stringByDeletingLastPathComponent];
         v28 = +[NSFileManager defaultManager];
-        [v28 createDirectoryAtPath:v27 withIntermediateDirectories:1 attributes:0 error:0];
+        [v28 createDirectoryAtPath:stringByDeletingLastPathComponent2 withIntermediateDirectories:1 attributes:0 error:0];
       }
 
       else
       {
-        v20 = [NSURL fileURLWithPath:v33];
-        v29 = [v20 lastPathComponent];
-        v30 = [(NSURL *)self->_outputFolder URLByAppendingPathComponent:v29];
-        v21 = [v30 path];
+        stringByDeletingLastPathComponent = [NSURL fileURLWithPath:pathCopy];
+        lastPathComponent = [stringByDeletingLastPathComponent lastPathComponent];
+        v30 = [(NSURL *)self->_outputFolder URLByAppendingPathComponent:lastPathComponent];
+        path = [v30 path];
       }
     }
 
-    if (v21)
+    if (path)
     {
-      [(CPLDiagnoseCommand *)self copyDatabaseFromPath:v33 toPath:v21];
-      [v17 timeIntervalSinceNow];
+      [(CPLDiagnoseCommand *)self copyDatabaseFromPath:pathCopy toPath:path];
+      [pathCopy timeIntervalSinceNow];
       [(CPLCTLCommand *)self printFormat:@"  elapsed time: %.2fs", fabs(v31)];
 
       goto LABEL_19;
     }
 
 LABEL_18:
-    [(CPLCTLCommand *)self printError:@"Unexpected nil destinationPath. libraryPath: %@, filepath: %@", v8, v33];
+    [(CPLCTLCommand *)self printError:@"Unexpected nil destinationPath. libraryPath: %@, filepath: %@", libraryPathCopy, pathCopy];
     goto LABEL_19;
   }
 
   v11 = self->incompleteTasks;
-  v12 = [NSString stringWithFormat:@"Skipped collecting %@.", v33];
-  [(NSMutableArray *)v11 addObject:v12];
+  pathCopy2 = [NSString stringWithFormat:@"Skipped collecting %@.", pathCopy];
+  [(NSMutableArray *)v11 addObject:pathCopy2];
 LABEL_20:
 
 LABEL_21:
 }
 
-- (id)interestingDatabasesForUBFLibraryPath:(id)a3 isSharingLibrary:(BOOL)a4
+- (id)interestingDatabasesForUBFLibraryPath:(id)path isSharingLibrary:(BOOL)library
 {
-  v5 = a3;
+  pathCopy = path;
   v6 = objc_alloc_init(NSMutableArray);
-  v7 = [v5 stringByAppendingPathComponent:@"Database"];
+  v7 = [pathCopy stringByAppendingPathComponent:@"Database"];
   v8 = [v7 stringByAppendingPathComponent:@"apdb"];
   v66 = 0;
   v9 = +[NSFileManager defaultManager];
@@ -2602,46 +2602,46 @@ LABEL_21:
     v12 = 1;
   }
 
-  v54 = a4;
+  libraryCopy = library;
   if (v12)
   {
-    v13 = [v5 stringByAppendingPathComponent:@"database"];
+    v13 = [pathCopy stringByAppendingPathComponent:@"database"];
 
     v8 = v13;
     v7 = v8;
   }
 
-  v53 = [v5 stringByAppendingPathComponent:@"resources/moments"];
+  v53 = [pathCopy stringByAppendingPathComponent:@"resources/moments"];
   v71[0] = v53;
-  v52 = [v5 stringByAppendingPathComponent:@"private/com.apple.Photos.Migration/appPrivateData.plist"];
+  v52 = [pathCopy stringByAppendingPathComponent:@"private/com.apple.Photos.Migration/appPrivateData.plist"];
   v71[1] = v52;
-  v51 = [v5 stringByAppendingPathComponent:@"private/com.apple.photolibraryd"];
+  v51 = [pathCopy stringByAppendingPathComponent:@"private/com.apple.photolibraryd"];
   v71[2] = v51;
-  v50 = [v5 stringByAppendingPathComponent:@"private/com.apple.assetsd"];
+  v50 = [pathCopy stringByAppendingPathComponent:@"private/com.apple.assetsd"];
   v71[3] = v50;
-  v49 = [v5 stringByAppendingPathComponent:@"private/com.apple.accountsd"];
+  v49 = [pathCopy stringByAppendingPathComponent:@"private/com.apple.accountsd"];
   v71[4] = v49;
-  v48 = [v5 stringByAppendingPathComponent:@"private/com.apple.mediaanalysisd/MediaAnalysis/mediaanalysis.db"];
+  v48 = [pathCopy stringByAppendingPathComponent:@"private/com.apple.mediaanalysisd/MediaAnalysis/mediaanalysis.db"];
   v71[5] = v48;
-  v47 = [v5 stringByAppendingPathComponent:@"private/com.apple.mediaanalysisd/MediaAnalysis/MediaAnalysis.sqlite"];
+  v47 = [pathCopy stringByAppendingPathComponent:@"private/com.apple.mediaanalysisd/MediaAnalysis/MediaAnalysis.sqlite"];
   v71[6] = v47;
-  v14 = [v5 stringByAppendingPathComponent:@"private/com.apple.mediaanalysisd/caches/vision/VUIndex.sqlite"];
+  v14 = [pathCopy stringByAppendingPathComponent:@"private/com.apple.mediaanalysisd/caches/vision/VUIndex.sqlite"];
   v71[7] = v14;
-  v15 = [v5 stringByAppendingPathComponent:@"private/com.apple.mediaanalysisd/caches/vision/PersonPromoter"];
+  v15 = [pathCopy stringByAppendingPathComponent:@"private/com.apple.mediaanalysisd/caches/vision/PersonPromoter"];
   v71[8] = v15;
   v16 = [v8 stringByAppendingPathComponent:@"search/spotlightProgress.plist"];
   v71[9] = v16;
   v57 = v8;
   v17 = [v8 stringByAppendingPathComponent:@"search/initialSuggestions.bplist"];
   v71[10] = v17;
-  v18 = [v5 stringByAppendingPathComponent:@"private/com.apple.mediaanalysisd/MediaAnalysis/.migration/migration_status.plist"];
+  v18 = [pathCopy stringByAppendingPathComponent:@"private/com.apple.mediaanalysisd/MediaAnalysis/.migration/migration_status.plist"];
   v71[11] = v18;
-  v19 = [v5 stringByAppendingPathComponent:@"private/com.apple.mediaanalysisd/MediaAnalysis/.restore/restore_status.plist"];
+  v19 = [pathCopy stringByAppendingPathComponent:@"private/com.apple.mediaanalysisd/MediaAnalysis/.restore/restore_status.plist"];
   v71[12] = v19;
   v20 = [NSArray arrayWithObjects:v71 count:13];
   [v6 addObjectsFromArray:v20];
 
-  if (!v54)
+  if (!libraryCopy)
   {
     v70[0] = @"resources/cpl/cloudsync.noindex/storage/store.cloudphotodb";
     v55 = [@"resources/cpl/cloudsync.noindex/" stringByAppendingPathComponent:@"mobileCPL.plist"];
@@ -2680,7 +2680,7 @@ LABEL_21:
             objc_enumerationMutation(v28);
           }
 
-          v33 = [v5 stringByAppendingPathComponent:*(*(&v62 + 1) + 8 * i)];
+          v33 = [pathCopy stringByAppendingPathComponent:*(*(&v62 + 1) + 8 * i)];
           [v6 addObject:v33];
         }
 
@@ -2690,13 +2690,13 @@ LABEL_21:
       while (v30);
     }
 
-    v34 = [v5 stringByAppendingPathComponent:@"resources/derivatives/thumbs/thumbnailConfiguration"];
+    v34 = [pathCopy stringByAppendingPathComponent:@"resources/derivatives/thumbs/thumbnailConfiguration"];
     v68[0] = v34;
-    v35 = [v5 stringByAppendingPathComponent:@"private/com.apple.photoanalysisd/vision"];
+    v35 = [pathCopy stringByAppendingPathComponent:@"private/com.apple.photoanalysisd/vision"];
     v68[1] = v35;
-    v36 = [v5 stringByAppendingPathComponent:@"private/com.apple.photoanalysisd/GraphService/PhotoAnalysisServicePreferences.plist"];
+    v36 = [pathCopy stringByAppendingPathComponent:@"private/com.apple.photoanalysisd/GraphService/PhotoAnalysisServicePreferences.plist"];
     v68[2] = v36;
-    v37 = [v5 stringByAppendingPathComponent:@"database/rebuildHistory"];
+    v37 = [pathCopy stringByAppendingPathComponent:@"database/rebuildHistory"];
     v68[3] = v37;
     v38 = [NSArray arrayWithObjects:v68 count:4];
     [v6 addObjectsFromArray:v38];
@@ -2735,29 +2735,29 @@ LABEL_21:
 
   if (self->_copyRecoverJournals)
   {
-    v44 = [v5 stringByAppendingPathComponent:@"resources/recovery"];
+    v44 = [pathCopy stringByAppendingPathComponent:@"resources/recovery"];
     [v6 addObject:v44];
 
-    v45 = [v5 stringByAppendingPathComponent:@"resources/journals"];
+    v45 = [pathCopy stringByAppendingPathComponent:@"resources/journals"];
     [v6 addObject:v45];
   }
 
   return v6;
 }
 
-- (id)prependPath:(id)a3 toStringsInArray:(id)a4
+- (id)prependPath:(id)path toStringsInArray:(id)array
 {
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  arrayCopy = array;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100014760;
   v12[3] = &unk_1000350D0;
   v7 = objc_alloc_init(NSMutableArray);
   v13 = v7;
-  v14 = v5;
-  v8 = v5;
-  [v6 enumerateObjectsUsingBlock:v12];
+  v14 = pathCopy;
+  v8 = pathCopy;
+  [arrayCopy enumerateObjectsUsingBlock:v12];
 
   v9 = v14;
   v10 = v7;
@@ -2769,21 +2769,21 @@ LABEL_21:
 {
   v3 = +[NSArray array];
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [(CPLDiagnoseCommand *)self includeSyndication];
+  includeSyndication = [(CPLDiagnoseCommand *)self includeSyndication];
   v6 = &__NSArray0__struct;
-  if (v5)
+  if (includeSyndication)
   {
     v6 = &off_10003B7F0;
   }
 
   context = v6;
-  v7 = [(CPLDiagnoseCommand *)self userLibraryDir];
+  userLibraryDir = [(CPLDiagnoseCommand *)self userLibraryDir];
   v89 = [&off_10003B808 arrayByAddingObjectsFromArray:&off_10003B820];
   v8 = [&off_10003B808 arrayByAddingObjectsFromArray:&off_10003B838];
   databasesWithPIIData = self->_databasesWithPIIData;
   self->_databasesWithPIIData = &off_10003B868;
 
-  v88 = v7;
+  v88 = userLibraryDir;
   v85 = v8;
   if ([(CPLDiagnoseCommand *)self includeSPL])
   {
@@ -2824,7 +2824,7 @@ LABEL_21:
     v19 = [NSArray arrayWithObjects:v138 count:23];
 
     v4 = v15;
-    v7 = v88;
+    userLibraryDir = v88;
 
     v20 = [@"/var/mobile/Media/PhotoData" stringByAppendingPathComponent:@"Caches/GraphService"];
     v21 = [(CPLDiagnoseCommand *)self prependPath:v20 toStringsInArray:&off_10003B850];
@@ -2843,8 +2843,8 @@ LABEL_21:
     v19 = 0;
   }
 
-  v24 = [(CPLDiagnoseCommand *)self mediaAnalysisSystemDatabasePath];
-  v25 = [v3 arrayByAddingObject:v24];
+  mediaAnalysisSystemDatabasePath = [(CPLDiagnoseCommand *)self mediaAnalysisSystemDatabasePath];
+  v25 = [v3 arrayByAddingObject:mediaAnalysisSystemDatabasePath];
 
   libraryPath = self->_libraryPath;
   if (!libraryPath || self->_targetLibraryIsSPL || self->_targetLibraryIsSyndication)
@@ -3013,15 +3013,15 @@ LABEL_21:
 
         v52 = *(*(&v110 + 1) + 8 * v51);
         contexta = objc_autoreleasePoolPush();
-        v53 = [v7 stringByAppendingPathComponent:v52];
-        v54 = [v49[274] defaultManager];
-        v55 = [v54 fileExistsAtPath:v53];
+        v53 = [userLibraryDir stringByAppendingPathComponent:v52];
+        defaultManager = [v49[274] defaultManager];
+        v55 = [defaultManager fileExistsAtPath:v53];
 
         if (v55)
         {
-          v56 = [v53 lastPathComponent];
-          v57 = [v56 stringByDeletingPathExtension];
-          v58 = [v57 stringByAppendingString:@"Library"];
+          lastPathComponent = [v53 lastPathComponent];
+          stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+          v58 = [stringByDeletingPathExtension stringByAppendingString:@"Library"];
 
           v59 = [v53 stringByAppendingPathComponent:@"database"];
           v106 = 0u;
@@ -3119,7 +3119,7 @@ LABEL_21:
           [(CPLDiagnoseCommand *)self collectAdditionalInformationForDatabaseAtPath:v53 toDirectory:v58];
 
           v50 = v87;
-          v7 = v88;
+          userLibraryDir = v88;
           v49 = &CPLAppBundleIdentifierForContainerIdentifier_ptr;
           v48 = v90;
         }
@@ -3141,13 +3141,13 @@ LABEL_21:
   }
 }
 
-- (void)collectAdditionalInformationForDatabaseAtPath:(id)a3 toDirectory:(id)a4
+- (void)collectAdditionalInformationForDatabaseAtPath:(id)path toDirectory:(id)directory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [NSString stringWithFormat:@"Getting %@ listing", v7];
-  v9 = [v7 stringByAppendingPathComponent:@"listing.txt"];
-  [(CPLDiagnoseCommand *)self collectFileListingAtPath:v6 label:v8 filename:v9 extendedDetail:1];
+  pathCopy = path;
+  directoryCopy = directory;
+  directoryCopy = [NSString stringWithFormat:@"Getting %@ listing", directoryCopy];
+  v9 = [directoryCopy stringByAppendingPathComponent:@"listing.txt"];
+  [(CPLDiagnoseCommand *)self collectFileListingAtPath:pathCopy label:directoryCopy filename:v9 extendedDetail:1];
 
   if (__PAIR64__(self->_isAppleInternal, self->_hasFullShellCommands) == 0x100000001 && !self->_skipLibraryPreprocessing)
   {
@@ -3156,8 +3156,8 @@ LABEL_21:
     v10[2] = sub_1000154CC;
     v10[3] = &unk_1000350F8;
     v10[4] = self;
-    v11 = v6;
-    v12 = v7;
+    v11 = pathCopy;
+    v12 = directoryCopy;
     [(CPLDiagnoseCommand *)self runAsUser:v10];
   }
 }
@@ -3248,8 +3248,8 @@ LABEL_21:
 
 - (id)_syndicationLibrarySpotlightSearchAttributes
 {
-  v2 = [(CPLDiagnoseCommand *)self _photosSpotlightSearchAttributes];
-  v3 = [v2 stringByAppendingFormat:@" -a photosSavedFromAppBundleIdentifier"];
+  _photosSpotlightSearchAttributes = [(CPLDiagnoseCommand *)self _photosSpotlightSearchAttributes];
+  v3 = [_photosSpotlightSearchAttributes stringByAppendingFormat:@" -a photosSavedFromAppBundleIdentifier"];
 
   return v3;
 }
@@ -3263,8 +3263,8 @@ LABEL_21:
   v3 = [NSArray arrayWithObjects:v7 count:4];
   [(CPLDiagnoseCommand *)self collectOutputOfCommandAndArguments:v3 label:@"Collecting Photos Search index status" filename:@"search_photos_index_status.txt" outputIsStderr:0 timeout:1];
 
-  v4 = [(CPLDiagnoseCommand *)self _photosSpotlightSearchAttributes];
-  v5 = [NSString stringWithFormat:@"/usr/local/bin/search -b com.apple.mobileslideshow %@", v4];
+  _photosSpotlightSearchAttributes = [(CPLDiagnoseCommand *)self _photosSpotlightSearchAttributes];
+  v5 = [NSString stringWithFormat:@"/usr/local/bin/search -b com.apple.mobileslideshow %@", _photosSpotlightSearchAttributes];
 
   [(CPLDiagnoseCommand *)self collectOutputOfCommand:v5 label:@"Collecting Photos Search Spotlight index state" filename:@"search_photos_spotlight_details.txt"];
   v6 = [NSString stringWithFormat:@"/usr/local/bin/searchutil -s"];
@@ -3288,12 +3288,12 @@ LABEL_21:
 
     [(CPLDiagnoseCommand *)self collectOutputOfCommand:@"/usr/local/bin/searchutil -s" label:@"Collecting Spotlight index status" filename:@"search_syndication_searchutil_status.txt"];
     [(CPLDiagnoseCommand *)self collectOutputOfCommand:@"/usr/local/bin/search -l '_kMDItemEligibleForPhotosProcessing>0'" label:@"Collecting Universal Search eligible CSSIDs" filename:@"search_syndication_eligible_items.txt"];
-    v4 = [(CPLDiagnoseCommand *)self _syndicationLibrarySpotlightSearchAttributes];
-    v5 = [NSString stringWithFormat:@"/usr/local/bin/search -l '_kMDItemEligibleForPhotosProcessing>0 && kMDItemPhotosDonationState>0' %@", v4];
+    _syndicationLibrarySpotlightSearchAttributes = [(CPLDiagnoseCommand *)self _syndicationLibrarySpotlightSearchAttributes];
+    v5 = [NSString stringWithFormat:@"/usr/local/bin/search -l '_kMDItemEligibleForPhotosProcessing>0 && kMDItemPhotosDonationState>0' %@", _syndicationLibrarySpotlightSearchAttributes];
 
     [(CPLDiagnoseCommand *)self collectOutputOfCommand:v5 label:@"Collecting Universal Search Spotlight index state" filename:@"search_syndication_spotlight_details.txt"];
-    v6 = [objc_opt_class() _syndicationLibraryPath];
-    v7 = [@"jujubectl photos analysisSummary --oneline --photo-library " stringByAppendingString:v6];
+    _syndicationLibraryPath = [objc_opt_class() _syndicationLibraryPath];
+    v7 = [@"jujubectl photos analysisSummary --oneline --photo-library " stringByAppendingString:_syndicationLibraryPath];
 
     [(CPLDiagnoseCommand *)self collectOutputOfCommand:v7 label:@"Collecting Universal Search Media Analysis Summary" filename:@"search_syndication_mediaanalysis_summary.txt"];
   }
@@ -3336,39 +3336,39 @@ LABEL_21:
   [(CPLDiagnoseCommand *)self collectOutputOfCommandAndArguments:v4 label:@"Getting story availability" filename:@"story_availability.txt" outputIsStderr:0 timeout:1];
 }
 
-- (void)_collectSharedAlbumFilesAtPath:(id)a3
+- (void)_collectSharedAlbumFilesAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = [(NSURL *)self->_outputFolder URLByAppendingPathComponent:@"SharedAlbums"];
   v6 = +[NSFileManager defaultManager];
   [v6 createDirectoryAtURL:v5 withIntermediateDirectories:0 attributes:0 error:0];
 
   v7 = +[NSFileManager defaultManager];
-  v8 = [v7 contentsOfDirectoryAtPath:v4 error:0];
+  v8 = [v7 contentsOfDirectoryAtPath:pathCopy error:0];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100016058;
   v11[3] = &unk_100035120;
-  v12 = v4;
-  v13 = self;
+  v12 = pathCopy;
+  selfCopy = self;
   v14 = v5;
   v9 = v5;
-  v10 = v4;
+  v10 = pathCopy;
   [v8 enumerateObjectsUsingBlock:v11];
 }
 
 - (void)signalProcesses
 {
   v3 = objc_alloc_init(NSMutableString);
-  v4 = [(CPLDiagnoseCommand *)self processes];
+  processes = [(CPLDiagnoseCommand *)self processes];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100016374;
   v8[3] = &unk_100035148;
   v5 = v3;
   v9 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [processes enumerateKeysAndObjectsUsingBlock:v8];
 
   if ([v5 length])
   {
@@ -3386,54 +3386,54 @@ LABEL_21:
   v6 = [(NSURL *)outputFolder URLByAppendingPathComponent:v5];
   [v3 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:0];
 
-  v7 = [(CPLDiagnoseCommand *)self processes];
+  processes = [(CPLDiagnoseCommand *)self processes];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100016520;
   v9[3] = &unk_100035148;
   v9[4] = self;
-  [v7 enumerateKeysAndObjectsUsingBlock:v9];
+  [processes enumerateKeysAndObjectsUsingBlock:v9];
 
   if (!self->_isRoot)
   {
-    v8 = [objc_opt_class() toolName];
-    [(CPLCTLCommand *)self printFormat:@"- Can't sample root processes as %@ is not run with root permissions", v8];
+    toolName = [objc_opt_class() toolName];
+    [(CPLCTLCommand *)self printFormat:@"- Can't sample root processes as %@ is not run with root permissions", toolName];
   }
 }
 
 - (void)collectDefaults
 {
-  v3 = [(CPLDiagnoseCommand *)self processes];
+  processes = [(CPLDiagnoseCommand *)self processes];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10001666C;
   v4[3] = &unk_100035148;
   v4[4] = self;
-  [v3 enumerateKeysAndObjectsUsingBlock:v4];
+  [processes enumerateKeysAndObjectsUsingBlock:v4];
 
   [(CPLDiagnoseCommand *)self collectOutputOfCommand:@"/usr/bin/defaults read /var/mobile/Library/Preferences/com.apple.mediaanalysis.plist" label:@"Getting defaults for com.apple.mediaanalysis" filename:@"com.apple.mediaanalysis-defaults.txt"];
 }
 
-- (void)_printWrapperStatus:(id)a3
+- (void)_printWrapperStatus:(id)status
 {
-  v3 = a3;
-  v4 = [v3 parameters];
-  v5 = [v4 libraryIdentifier];
-  if ([v3 isOpened])
+  statusCopy = status;
+  parameters = [statusCopy parameters];
+  libraryIdentifier = [parameters libraryIdentifier];
+  if ([statusCopy isOpened])
   {
 LABEL_7:
-    v10 = [[NSString alloc] initWithFormat:@" (%lu clients)", objc_msgSend(v3, "clientCount")];
+    v10 = [[NSString alloc] initWithFormat:@" (%lu clients)", objc_msgSend(statusCopy, "clientCount")];
     goto LABEL_8;
   }
 
-  v6 = [v3 openError];
+  openError = [statusCopy openError];
 
-  if (v6)
+  if (openError)
   {
     v7 = [NSString alloc];
-    v8 = [v3 openError];
-    v9 = [v8 localizedDescription];
-    v10 = [v7 initWithFormat:@" (%@)", v9];
+    openError2 = [statusCopy openError];
+    localizedDescription = [openError2 localizedDescription];
+    v10 = [v7 initWithFormat:@" (%@)", localizedDescription];
 
     if (v10)
     {
@@ -3443,9 +3443,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if ([v3 clientCount])
+  if ([statusCopy clientCount])
   {
-    v10 = [[NSString alloc] initWithFormat:@" (opening with %lu clients)", objc_msgSend(v3, "clientCount")];
+    v10 = [[NSString alloc] initWithFormat:@" (opening with %lu clients)", objc_msgSend(statusCopy, "clientCount")];
     if (v10)
     {
       goto LABEL_8;
@@ -3456,18 +3456,18 @@ LABEL_7:
 
   v10 = @" (opening)";
 LABEL_8:
-  v29 = v3;
+  v29 = statusCopy;
   v26 = v10;
-  v27 = v5;
-  [(CPLCTLCommand *)self printFormat:@"  * %@%@:", v5, v10];
-  v28 = v4;
-  v11 = [v4 asPlist];
+  v27 = libraryIdentifier;
+  [(CPLCTLCommand *)self printFormat:@"  * %@%@:", libraryIdentifier, v10];
+  v28 = parameters;
+  asPlist = [parameters asPlist];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v12 = [v11 allKeys];
-  v13 = [v12 sortedArrayUsingSelector:"compare:"];
+  allKeys = [asPlist allKeys];
+  v13 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   v14 = [v13 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v14)
@@ -3487,7 +3487,7 @@ LABEL_8:
         v19 = *(*(&v31 + 1) + 8 * i);
         if (([v19 isEqualToString:v16] & 1) == 0)
         {
-          v20 = [v11 objectForKeyedSubscript:v19];
+          v20 = [asPlist objectForKeyedSubscript:v19];
           if ([v19 isEqualToString:@"options"])
           {
             objc_opt_class();
@@ -3553,8 +3553,8 @@ LABEL_21:
     }
   }
 
-  v8 = [(CPLCTLCommand *)self daemonConnection];
-  [v8 queue];
+  daemonConnection = [(CPLCTLCommand *)self daemonConnection];
+  [daemonConnection queue];
   v60 = 0;
   v61 = &v60;
   v62 = 0x2020000000;
@@ -3583,10 +3583,10 @@ LABEL_21:
   v45[3] = &unk_1000351C0;
   v49 = v56;
   v50 = v58;
-  v28 = v8;
+  v28 = daemonConnection;
   v46 = v28;
   v11 = v10;
-  v47 = self;
+  selfCopy = self;
   v48 = v11;
   v51 = &v60;
   v29 = objc_retainBlock(v45);
@@ -3598,7 +3598,7 @@ LABEL_21:
   v12 = v9;
   v40 = v12;
   v13 = v11;
-  v41 = self;
+  selfCopy2 = self;
   v42 = v13;
   v44 = &v60;
   v14 = objc_retainBlock(v39);
@@ -3629,8 +3629,8 @@ LABEL_21:
   v18 = v17;
   if (!v16)
   {
-    v19 = [v17 localizedDescription];
-    [(CPLCTLCommand *)self printFormat:@"  failed: %@", v19];
+    localizedDescription = [v17 localizedDescription];
+    [(CPLCTLCommand *)self printFormat:@"  failed: %@", localizedDescription];
 LABEL_21:
 
     goto LABEL_23;
@@ -3644,8 +3644,8 @@ LABEL_21:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v19 = v16;
-    v20 = [v19 countByEnumeratingWithState:&v32 objects:v64 count:16];
+    localizedDescription = v16;
+    v20 = [localizedDescription countByEnumeratingWithState:&v32 objects:v64 count:16];
     if (v20)
     {
       v26 = v12;
@@ -3656,14 +3656,14 @@ LABEL_21:
         {
           if (*v33 != v21)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(localizedDescription);
           }
 
           [(CPLDiagnoseCommand *)self _printWrapperStatus:*(*(&v32 + 1) + 8 * i)];
           [(CPLCTLCommand *)self printFormat:&stru_100035A18];
         }
 
-        v20 = [v19 countByEnumeratingWithState:&v32 objects:v64 count:16];
+        v20 = [localizedDescription countByEnumeratingWithState:&v32 objects:v64 count:16];
       }
 
       while (v20);
@@ -3720,13 +3720,13 @@ LABEL_23:
   _Block_object_dispose(&v60, 8);
 }
 
-- (void)collectCloudPhotodStatusWithLibraryIdentifier:(id)a3 subdirectory:(id)a4
+- (void)collectCloudPhotodStatusWithLibraryIdentifier:(id)identifier subdirectory:(id)subdirectory
 {
-  v6 = a3;
-  v7 = a4;
-  [(CPLCTLCommand *)self printFormat:@"- Collecting %@ status for %@", @"cloudphotod", v6];
+  identifierCopy = identifier;
+  subdirectoryCopy = subdirectory;
+  [(CPLCTLCommand *)self printFormat:@"- Collecting %@ status for %@", @"cloudphotod", identifierCopy];
   v38 = 0;
-  v8 = [(CPLCTLCommand *)self openedLibraryManagerWithLibraryIdentifier:v6 timeout:1 withTargetUserIdentifier:0 error:&v38];
+  v8 = [(CPLCTLCommand *)self openedLibraryManagerWithLibraryIdentifier:identifierCopy timeout:1 withTargetUserIdentifier:0 error:&v38];
   v9 = v38;
   v10 = v9;
   if (v8)
@@ -3744,8 +3744,8 @@ LABEL_23:
     v29 = sub_1000171BC;
     v30 = sub_1000171CC;
     v31 = 0;
-    v12 = [(NSURL *)self->_outputFile lastPathComponent];
-    v13 = [NSString stringWithFormat:@"Collecting CPL diagnostics in %@", v12];
+    lastPathComponent = [(NSURL *)self->_outputFile lastPathComponent];
+    v13 = [NSString stringWithFormat:@"Collecting CPL diagnostics in %@", lastPathComponent];
     [v8 addInfoToLog:v13];
 
     v22[0] = _NSConcreteStackBlock;
@@ -3754,11 +3754,11 @@ LABEL_23:
     v22[3] = &unk_100035260;
     v24 = &v26;
     v25 = &v32;
-    v14 = v11;
-    v23 = v14;
+    localizedDescription2 = v11;
+    v23 = localizedDescription2;
     [v8 getStatusForComponents:0 completionHandler:v22];
     v15 = dispatch_time(0, 40000000000);
-    if (dispatch_semaphore_wait(v14, v15))
+    if (dispatch_semaphore_wait(localizedDescription2, v15))
     {
       [(CPLCTLCommand *)self printFormat:@"  took too long"];
     }
@@ -3768,16 +3768,16 @@ LABEL_23:
       v16 = v33[5];
       if (v16)
       {
-        v17 = [v16 localizedDescription];
-        [(CPLCTLCommand *)self printFormat:@"  failed: %@", v17];
+        localizedDescription = [v16 localizedDescription];
+        [(CPLCTLCommand *)self printFormat:@"  failed: %@", localizedDescription];
       }
 
       else
       {
         outputFolder = self->_outputFolder;
-        if (v7)
+        if (subdirectoryCopy)
         {
-          v19 = [(NSURL *)outputFolder URLByAppendingPathComponent:v7];
+          v19 = [(NSURL *)outputFolder URLByAppendingPathComponent:subdirectoryCopy];
         }
 
         else
@@ -3789,9 +3789,9 @@ LABEL_23:
         v21 = +[NSFileManager defaultManager];
         [v21 createDirectoryAtURL:v20 withIntermediateDirectories:1 attributes:0 error:0];
 
-        v17 = [(NSURL *)v20 URLByAppendingPathComponent:@"cplstatus.txt" isDirectory:0];
+        localizedDescription = [(NSURL *)v20 URLByAppendingPathComponent:@"cplstatus.txt" isDirectory:0];
 
-        [v27[5] writeToURL:v17 atomically:0 encoding:4 error:0];
+        [v27[5] writeToURL:localizedDescription atomically:0 encoding:4 error:0];
       }
     }
 
@@ -3803,27 +3803,27 @@ LABEL_23:
 
   else
   {
-    v14 = [v9 localizedDescription];
-    [(CPLCTLCommand *)self printFormat:@"  failed to contact %@: %@", @"cloudphotod", v14];
+    localizedDescription2 = [v9 localizedDescription];
+    [(CPLCTLCommand *)self printFormat:@"  failed to contact %@: %@", @"cloudphotod", localizedDescription2];
   }
 }
 
 - (void)collectAppLibraryIdentifiers
 {
-  v2 = self;
+  selfCopy = self;
   [(CPLCTLCommand *)self printFormat:@"- Collecting Registered App Libraries"];
   v36 = 0;
-  v3 = [(CPLCTLCommand *)v2 getLibraryIdentifiersWithDomain:3 error:&v36];
+  v3 = [(CPLCTLCommand *)selfCopy getLibraryIdentifiersWithDomain:3 error:&v36];
   v4 = v36;
   v5 = v4;
   if (v3)
   {
-    -[CPLCTLCommand printFormat:](v2, "printFormat:", @"  found %lu libraries", [v3 count]);
-    v6 = [(NSURL *)v2->_outputFolder URLByAppendingPathComponent:@"AppLibraries.txt" isDirectory:0];
+    -[CPLCTLCommand printFormat:](selfCopy, "printFormat:", @"  found %lu libraries", [v3 count]);
+    localizedDescription2 = [(NSURL *)selfCopy->_outputFolder URLByAppendingPathComponent:@"AppLibraries.txt" isDirectory:0];
     if ([v3 count])
     {
-      v26 = v6;
-      v27 = v2;
+      v26 = localizedDescription2;
+      v27 = selfCopy;
       v28 = v5;
       v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
       v32 = 0u;
@@ -3849,12 +3849,12 @@ LABEL_23:
 
             v12 = *(*(&v32 + 1) + 8 * v11);
             v13 = [NSString alloc];
-            v14 = [v12 name];
-            v15 = [v12 uuid];
-            v16 = [v12 containerIdentifier];
-            v17 = [v12 path];
-            v18 = [v17 stringByAbbreviatingWithTildeInPath];
-            v19 = [v13 initWithFormat:@"* %@ / %@ - %@\n    path: %@", v14, v15, v16, v18];
+            name = [v12 name];
+            uuid = [v12 uuid];
+            containerIdentifier = [v12 containerIdentifier];
+            path = [v12 path];
+            stringByAbbreviatingWithTildeInPath = [path stringByAbbreviatingWithTildeInPath];
+            v19 = [v13 initWithFormat:@"* %@ / %@ - %@\n    path: %@", name, uuid, containerIdentifier, stringByAbbreviatingWithTildeInPath];
             [v7 addObject:v19];
 
             v11 = v11 + 1;
@@ -3871,8 +3871,8 @@ LABEL_23:
 
       v5 = v28;
       v3 = v29;
-      v6 = v26;
-      v2 = v27;
+      localizedDescription2 = v26;
+      selfCopy = v27;
     }
 
     else
@@ -3880,24 +3880,24 @@ LABEL_23:
       v20 = @"* No App Libraries registered";
     }
 
-    [(CPLCTLCommand *)v2 printFormat:@"%@", v20];
+    [(CPLCTLCommand *)selfCopy printFormat:@"%@", v20];
     v21 = [[NSString alloc] initWithFormat:@"Registered App Libraries:\n%@\n", v20];
 
     v31 = 0;
-    v22 = [v21 writeToURL:v6 atomically:1 encoding:4 error:&v31];
+    v22 = [v21 writeToURL:localizedDescription2 atomically:1 encoding:4 error:&v31];
     v23 = v31;
     if ((v22 & 1) == 0)
     {
-      v24 = [v6 lastPathComponent];
-      v25 = [v23 localizedDescription];
-      [(CPLCTLCommand *)v2 printFormat:@"  failed to write to %@: %@", v24, v25];
+      lastPathComponent = [localizedDescription2 lastPathComponent];
+      localizedDescription = [v23 localizedDescription];
+      [(CPLCTLCommand *)selfCopy printFormat:@"  failed to write to %@: %@", lastPathComponent, localizedDescription];
     }
   }
 
   else
   {
-    v6 = [v4 localizedDescription];
-    [(CPLCTLCommand *)v2 printFormat:@"  failed: %@", v6];
+    localizedDescription2 = [v4 localizedDescription];
+    [(CPLCTLCommand *)selfCopy printFormat:@"  failed: %@", localizedDescription2];
   }
 }
 
@@ -3906,17 +3906,17 @@ LABEL_23:
   [(CPLCTLCommand *)self printFormat:@"- Collecting Account status"];
   v3 = objc_alloc_init(NSMutableString);
   v4 = objc_alloc_init(ACAccountStore);
-  v5 = [v4 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v4 aa_primaryAppleAccount];
 
-  if (v5)
+  if (aa_primaryAppleAccount)
   {
-    v6 = [v5 aa_personID];
-    [v3 appendFormat:@"DSID: %@\n", v6];
+    aa_personID = [aa_primaryAppleAccount aa_personID];
+    [v3 appendFormat:@"DSID: %@\n", aa_personID];
 
-    v7 = [v5 isEnabledForDataclass:ACAccountDataclassCloudPhotos];
-    v8 = [v5 isEnabledForDataclass:ACAccountDataclassMediaStream];
-    v9 = [v5 isEnabledForDataclass:ACAccountDataclassSharedStreams];
-    v10 = [v5 isEnabledForDataclass:ACAccountDataclassImagePlayground];
+    v7 = [aa_primaryAppleAccount isEnabledForDataclass:ACAccountDataclassCloudPhotos];
+    v8 = [aa_primaryAppleAccount isEnabledForDataclass:ACAccountDataclassMediaStream];
+    v9 = [aa_primaryAppleAccount isEnabledForDataclass:ACAccountDataclassSharedStreams];
+    v10 = [aa_primaryAppleAccount isEnabledForDataclass:ACAccountDataclassImagePlayground];
     v11 = objc_alloc_init(NSMutableArray);
     v12 = v11;
     if (v7)
@@ -4046,13 +4046,13 @@ LABEL_16:
 
 - (void)collectTaskInfo
 {
-  v3 = [(CPLDiagnoseCommand *)self processes];
+  processes = [(CPLDiagnoseCommand *)self processes];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000188D4;
   v4[3] = &unk_100035148;
   v4[4] = self;
-  [v3 enumerateKeysAndObjectsUsingBlock:v4];
+  [processes enumerateKeysAndObjectsUsingBlock:v4];
 }
 
 - (void)collectPreferences
@@ -4063,7 +4063,7 @@ LABEL_16:
 
   [(CPLDiagnoseCommand *)self writePreferenceInDomain:0 withKey:@"AppleLanguages" toDirectory:v3 currentUser:1];
   [(CPLDiagnoseCommand *)self writePreferenceInDomain:0 withKey:@"AppleLocale" toDirectory:v3 currentUser:1];
-  v5 = [(CPLDiagnoseCommand *)self processes];
+  processes = [(CPLDiagnoseCommand *)self processes];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100018B04;
@@ -4071,12 +4071,12 @@ LABEL_16:
   v7[4] = self;
   v8 = v3;
   v6 = v3;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  [processes enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (void)collectSysdiagnose:(id)a3
+- (void)collectSysdiagnose:(id)sysdiagnose
 {
-  v4 = a3;
+  sysdiagnoseCopy = sysdiagnose;
   if (!self->_skipSysdiagnose)
   {
     v5 = +[NSMutableDictionary dictionary];
@@ -4099,9 +4099,9 @@ LABEL_16:
     block[3] = &unk_1000352B0;
     v13 = v7;
     v11 = v5;
-    v12 = self;
+    selfCopy = self;
     v9 = v5;
-    dispatch_group_async(v4, v8, block);
+    dispatch_group_async(sysdiagnoseCopy, v8, block);
   }
 }
 
@@ -4114,28 +4114,28 @@ LABEL_16:
   v4 = [CPLPrivateEngineAlias privateEngineAliasWithName:@"per-device-silent-mover"];
   if (v3)
   {
-    v5 = [v3 cplDirectoryURL];
-    if ([v5 checkResourceIsReachableAndReturnError:0])
+    cplDirectoryURL = [v3 cplDirectoryURL];
+    if ([cplDirectoryURL checkResourceIsReachableAndReturnError:0])
     {
-      [(CPLDiagnoseCommand *)self collectFileAtURL:v5 suffix:0 destinationDirectory:self->_outputFolder];
+      [(CPLDiagnoseCommand *)self collectFileAtURL:cplDirectoryURL suffix:0 destinationDirectory:self->_outputFolder];
       v6 = [NSURL fileURLWithPath:@"/AppleInternal/Library/Photos/Backend/CPL/silent-mover.py" isDirectory:0];
       outputFolder = self->_outputFolder;
-      v8 = [v5 lastPathComponent];
-      v9 = [(NSURL *)outputFolder URLByAppendingPathComponent:v8];
+      lastPathComponent = [cplDirectoryURL lastPathComponent];
+      v9 = [(NSURL *)outputFolder URLByAppendingPathComponent:lastPathComponent];
       [(CPLDiagnoseCommand *)self collectFileAtURL:v6 suffix:0 destinationDirectory:v9];
     }
   }
 
   if (v4)
   {
-    v10 = [v4 cplDirectoryURL];
-    if ([v10 checkResourceIsReachableAndReturnError:0])
+    cplDirectoryURL2 = [v4 cplDirectoryURL];
+    if ([cplDirectoryURL2 checkResourceIsReachableAndReturnError:0])
     {
-      [(CPLDiagnoseCommand *)self collectFileAtURL:v10 suffix:0 destinationDirectory:self->_outputFolder];
+      [(CPLDiagnoseCommand *)self collectFileAtURL:cplDirectoryURL2 suffix:0 destinationDirectory:self->_outputFolder];
       v11 = [NSURL fileURLWithPath:@"/AppleInternal/Library/Photos/Backend/CPL/silent-mover.py" isDirectory:0];
       v12 = self->_outputFolder;
-      v13 = [v10 lastPathComponent];
-      v14 = [(NSURL *)v12 URLByAppendingPathComponent:v13];
+      lastPathComponent2 = [cplDirectoryURL2 lastPathComponent];
+      v14 = [(NSURL *)v12 URLByAppendingPathComponent:lastPathComponent2];
       [(CPLDiagnoseCommand *)self collectFileAtURL:v11 suffix:0 destinationDirectory:v14];
     }
   }
@@ -4153,8 +4153,8 @@ LABEL_16:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 sortedArrayUsingSelector:"compare:"];
+  allKeys = [v4 allKeys];
+  v6 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
@@ -4247,15 +4247,15 @@ LABEL_16:
   }
 }
 
-- (void)collectFilePaths:(id)a3 toSubdirectory:(id)a4
+- (void)collectFilePaths:(id)paths toSubdirectory:(id)subdirectory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSURL *)self->_outputFolder URLByAppendingPathComponent:v7 isDirectory:1];
+  pathsCopy = paths;
+  subdirectoryCopy = subdirectory;
+  v8 = [(NSURL *)self->_outputFolder URLByAppendingPathComponent:subdirectoryCopy isDirectory:1];
   v9 = +[NSFileManager defaultManager];
-  v10 = [v8 path];
+  path = [v8 path];
   v25 = 0;
-  v11 = [v9 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:&v25];
+  v11 = [v9 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v25];
   v12 = v25;
 
   if (v11)
@@ -4264,12 +4264,12 @@ LABEL_16:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v13 = v6;
-    v14 = [v13 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    pathsCopy = pathsCopy;
+    v14 = [pathsCopy countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v14)
     {
       v15 = v14;
-      v20 = v6;
+      v20 = pathsCopy;
       v16 = *v22;
       do
       {
@@ -4277,57 +4277,57 @@ LABEL_16:
         {
           if (*v22 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(pathsCopy);
           }
 
           v18 = [NSURL fileURLWithPath:*(*(&v21 + 1) + 8 * i)];
           [(CPLDiagnoseCommand *)self collectFileAtURL:v18 suffix:0 destinationDirectory:v8];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v15 = [pathsCopy countByEnumeratingWithState:&v21 objects:v26 count:16];
       }
 
       while (v15);
-      v6 = v20;
+      pathsCopy = v20;
     }
   }
 
   else
   {
-    [(CPLCTLCommand *)self printError:@"Failed to create subdirectory %@: %@", v7, v12];
+    [(CPLCTLCommand *)self printError:@"Failed to create subdirectory %@: %@", subdirectoryCopy, v12];
     incompleteTasks = self->incompleteTasks;
-    v13 = [NSString stringWithFormat:@"Failed collecting %@.", v6];
-    [(NSMutableArray *)incompleteTasks addObject:v13];
+    pathsCopy = [NSString stringWithFormat:@"Failed collecting %@.", pathsCopy];
+    [(NSMutableArray *)incompleteTasks addObject:pathsCopy];
   }
 }
 
-- (id)interestingFilesInDirectoryPath:(id)a3 withPredicate:(id)a4
+- (id)interestingFilesInDirectoryPath:(id)path withPredicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  predicateCopy = predicate;
   v8 = +[NSFileManager defaultManager];
   v14 = 0;
-  v9 = [v8 contentsOfDirectoryAtPath:v6 error:&v14];
+  v9 = [v8 contentsOfDirectoryAtPath:pathCopy error:&v14];
   v10 = v14;
 
   if (v9)
   {
-    v11 = [v9 filteredArrayUsingPredicate:v7];
-    v12 = [(CPLDiagnoseCommand *)self prependPath:v6 toStringsInArray:v11];
+    v11 = [v9 filteredArrayUsingPredicate:predicateCopy];
+    v12 = [(CPLDiagnoseCommand *)self prependPath:pathCopy toStringsInArray:v11];
   }
 
   else
   {
-    [(CPLCTLCommand *)self printError:@"Failed to get contents of %@: %@", v6, v10];
+    [(CPLCTLCommand *)self printError:@"Failed to get contents of %@: %@", pathCopy, v10];
     v12 = &__NSArray0__struct;
   }
 
   return v12;
 }
 
-- (void)addFilesFromVisionCacheToDictionary:(id)a3
+- (void)addFilesFromVisionCacheToDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [NSPredicate predicateWithFormat:@"SELF IN %@", &off_10003B898];
   v6 = [NSPredicate predicateWithFormat:@"SELF like %@", @"*.cmap"];
   v10[0] = v5;
@@ -4336,13 +4336,13 @@ LABEL_16:
   v8 = [NSCompoundPredicate orPredicateWithSubpredicates:v7];
 
   v9 = [(CPLDiagnoseCommand *)self interestingFilesInDirectoryPath:@"/var/mobile/Media/PhotoData/Caches/VisionService" withPredicate:v8];
-  [v4 setObject:v9 forKeyedSubscript:@"VisionService"];
+  [dictionaryCopy setObject:v9 forKeyedSubscript:@"VisionService"];
 }
 
 - (id)mediaAnalysisSystemDatabasePath
 {
-  v2 = [(CPLDiagnoseCommand *)self userLibraryDir];
-  v3 = [v2 stringByAppendingPathComponent:@"MediaAnalysis/MediaAnalysis.sqlite"];
+  userLibraryDir = [(CPLDiagnoseCommand *)self userLibraryDir];
+  v3 = [userLibraryDir stringByAppendingPathComponent:@"MediaAnalysis/MediaAnalysis.sqlite"];
 
   return v3;
 }
@@ -4422,8 +4422,8 @@ LABEL_16:
   }
 
   libraryPath = self->_libraryPath;
-  v4 = [objc_opt_class() _syndicationLibraryPath];
-  LODWORD(libraryPath) = sub_10001D1E8(self, libraryPath, v4);
+  _syndicationLibraryPath = [objc_opt_class() _syndicationLibraryPath];
+  LODWORD(libraryPath) = sub_10001D1E8(self, libraryPath, _syndicationLibraryPath);
 
   if (libraryPath)
   {

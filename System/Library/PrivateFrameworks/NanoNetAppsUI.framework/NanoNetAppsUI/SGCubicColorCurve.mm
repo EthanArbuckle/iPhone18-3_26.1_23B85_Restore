@@ -1,23 +1,23 @@
 @interface SGCubicColorCurve
-- (SGCubicColorCurve)initWithColorCurveElements:(id)a3;
-- (SGCubicColorCurve)initWithCubicColorCurveElements:(id)a3;
-- (id)colorForFraction:(float)a3;
+- (SGCubicColorCurve)initWithColorCurveElements:(id)elements;
+- (SGCubicColorCurve)initWithCubicColorCurveElements:(id)elements;
+- (id)colorForFraction:(float)fraction;
 - (uint64_t)rgbfColorForFraction:(uint64_t)result;
 - (void)dealloc;
 @end
 
 @implementation SGCubicColorCurve
 
-- (SGCubicColorCurve)initWithCubicColorCurveElements:(id)a3
+- (SGCubicColorCurve)initWithCubicColorCurveElements:(id)elements
 {
-  v4 = a3;
+  elementsCopy = elements;
   v19.receiver = self;
   v19.super_class = SGCubicColorCurve;
   v5 = [(SGCubicColorCurve *)&v19 init];
   if (v5)
   {
-    v6 = [v4 sortedArrayUsingComparator:&__block_literal_global_2];
-    v7 = [v4 count];
+    v6 = [elementsCopy sortedArrayUsingComparator:&__block_literal_global_2];
+    v7 = [elementsCopy count];
     v5->_count = v7;
     v5->_fractions = malloc_type_malloc(4 * v7, 0x100004052888210uLL);
     *v5->_colors = malloc_type_malloc(16 * v5->_count, 0x1000040451B5BE8uLL);
@@ -25,10 +25,10 @@
     spline = v5->_spline;
     v5->_spline = v8;
 
-    v10 = [(SGCubicSpline *)v5->_spline controlPointsBuffer];
+    controlPointsBuffer = [(SGCubicSpline *)v5->_spline controlPointsBuffer];
     if (v5->_count)
     {
-      v11 = v10;
+      v11 = controlPointsBuffer;
       v12 = 0;
       do
       {
@@ -71,16 +71,16 @@ uint64_t __53__SGCubicColorCurve_initWithCubicColorCurveElements___block_invoke(
   return v11;
 }
 
-- (SGCubicColorCurve)initWithColorCurveElements:(id)a3
+- (SGCubicColorCurve)initWithColorCurveElements:(id)elements
 {
-  v4 = a3;
+  elementsCopy = elements;
   v20.receiver = self;
   v20.super_class = SGCubicColorCurve;
   v5 = [(SGCubicColorCurve *)&v20 init];
   if (v5)
   {
-    v6 = [v4 sortedArrayUsingComparator:&__block_literal_global_19];
-    v7 = [v4 count];
+    v6 = [elementsCopy sortedArrayUsingComparator:&__block_literal_global_19];
+    v7 = [elementsCopy count];
     v5->_count = v7;
     v5->_fractions = malloc_type_malloc(4 * v7, 0x100004052888210uLL);
     *v5->_colors = malloc_type_malloc(16 * v5->_count, 0x1000040451B5BE8uLL);
@@ -88,10 +88,10 @@ uint64_t __53__SGCubicColorCurve_initWithCubicColorCurveElements___block_invoke(
     spline = v5->_spline;
     v5->_spline = v8;
 
-    v10 = [(SGCubicSpline *)v5->_spline controlPointsBuffer];
+    controlPointsBuffer = [(SGCubicSpline *)v5->_spline controlPointsBuffer];
     if (v5->_count)
     {
-      v11 = v10;
+      v11 = controlPointsBuffer;
       v12 = 0;
       do
       {
@@ -100,7 +100,7 @@ uint64_t __53__SGCubicColorCurve_initWithCubicColorCurveElements___block_invoke(
         *(*v11 + 8 * v12) = __PAIR64__(v14, v12);
         [v13 fraction];
         v5->_fractions[v12] = v15;
-        v16 = [v13 color];
+        color = [v13 color];
         CLKUIConvertToRGBfFromUIColor_fast();
         *(*v5->_colors + 16 * v12) = v17;
 
@@ -143,9 +143,9 @@ uint64_t __48__SGCubicColorCurve_initWithColorCurveElements___block_invoke(uint6
   [(SGCubicColorCurve *)&v3 dealloc];
 }
 
-- (id)colorForFraction:(float)a3
+- (id)colorForFraction:(float)fraction
 {
-  v3 = [(SGCubicColorCurve *)self rgbfColorForFraction:a3];
+  v3 = [(SGCubicColorCurve *)self rgbfColorForFraction:fraction];
 
   return MEMORY[0x28214CCB0](v3);
 }

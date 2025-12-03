@@ -1,14 +1,14 @@
 @interface AAUSBSupportedDeviceManager
 - (AAUSBSupportedDeviceManager)init;
-- (AAUSBSupportedDeviceManager)initWithCoder:(id)a3;
+- (AAUSBSupportedDeviceManager)initWithCoder:(id)coder;
 - (id)_ensureXPCStarted;
 - (id)description;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)_reportError:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_reportError:(id)error;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)proxCardUserActionOnHeadphone:(id)a3 withAction:(unsigned __int8)a4 completion:(id)a5;
+- (void)proxCardUserActionOnHeadphone:(id)headphone withAction:(unsigned __int8)action completion:(id)completion;
 @end
 
 @implementation AAUSBSupportedDeviceManager
@@ -28,9 +28,9 @@
   return v2;
 }
 
-- (AAUSBSupportedDeviceManager)initWithCoder:(id)a3
+- (AAUSBSupportedDeviceManager)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AAUSBSupportedDeviceManager *)self init];
   if (v5)
   {
@@ -45,30 +45,30 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   clientID = self->_clientID;
   if (clientID)
   {
-    [a3 encodeInt64:clientID forKey:@"cid"];
+    [coder encodeInt64:clientID forKey:@"cid"];
   }
 }
 
-- (void)proxCardUserActionOnHeadphone:(id)a3 withAction:(unsigned __int8)a4 completion:(id)a5
+- (void)proxCardUserActionOnHeadphone:(id)headphone withAction:(unsigned __int8)action completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  headphoneCopy = headphone;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __83__AAUSBSupportedDeviceManager_proxCardUserActionOnHeadphone_withAction_completion___block_invoke;
   v13[3] = &unk_278CDE3F0;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = headphoneCopy;
+  v15 = completionCopy;
+  actionCopy = action;
+  v11 = completionCopy;
+  v12 = headphoneCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
@@ -274,9 +274,9 @@ void __48__AAUSBSupportedDeviceManager__handleServerDied__block_invoke()
   }
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   if (gLogCategory_AAUSBSupportedDeviceManager <= 90 && (gLogCategory_AAUSBSupportedDeviceManager != -1 || _LogCategory_Initialize()))
   {
     [AAUSBSupportedDeviceManager _reportError:];
@@ -288,7 +288,7 @@ void __48__AAUSBSupportedDeviceManager__handleServerDied__block_invoke()
 
   if (v4)
   {
-    (v4)[2](v4, v6);
+    (v4)[2](v4, errorCopy);
   }
 }
 

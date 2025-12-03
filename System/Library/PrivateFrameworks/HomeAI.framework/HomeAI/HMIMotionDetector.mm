@@ -1,10 +1,10 @@
 @interface HMIMotionDetector
-- (BOOL)applyActivityZoneFilteringOnSourcePoint:(CGPoint)a3 destinationPoint:(CGPoint)a4 frameSize:(CGSize)a5 activityZones:(id)a6;
+- (BOOL)applyActivityZoneFilteringOnSourcePoint:(CGPoint)point destinationPoint:(CGPoint)destinationPoint frameSize:(CGSize)size activityZones:(id)zones;
 - (HMIMotionDetector)init;
-- (id)_computeOpticalFlow:(__CVBuffer *)a3 with:(__CVBuffer *)a4 globalMotionScore:(float *)a5 activityZones:(id)a6 operationMode:(unint64_t)a7;
-- (id)calculateMotionDetection:(vector<unsigned)char score:(std:()vector<float :(std:()vector<cv:(std:()vector<cv:(std:(id)a7 :(unint64_t)a8 allocator<cv:()vector<cv:(std:(CGSize)a10 :(float)a11 allocator<cv::Mat>> *)a9 :Mat :Point_<float>>> *)a6 :Point_<float> :allocator<cv::Point_<float>>> *)a5 :Point_<float> :allocator<float>> *)a4 allocator<unsigned char>> *)a3 srcFeatureCVPoints:dstFeatreCVPoints:activityZones:operationMode:srcPyramid:frameSize:brightnessChange:;
-- (id)detectWithGlobalMotionScore:(float *)a3 referencePixelBuffer:(__CVBuffer *)a4 targetPixelBuffer:(__CVBuffer *)a5 activityZones:(id)a6 detectorMode:(unint64_t)a7;
-- (id)visualizeMotionDetections:(id)a3 frameSize:(CGSize)a4 timeStamp:(id *)a5;
+- (id)_computeOpticalFlow:(__CVBuffer *)flow with:(__CVBuffer *)with globalMotionScore:(float *)score activityZones:(id)zones operationMode:(unint64_t)mode;
+- (id)calculateMotionDetection:(vector<unsigned)char score:(std:()vector<float :(std:()vector<cv:(std:()vector<cv:(std:(id)cv :(unint64_t)a8 allocator<cv:()vector<cv:(std:(CGSize)self0 :(float)self1 allocator<cv::Mat>> *)a9 :Mat :Point_<float>>> *)a6 :Point_<float> :allocator<cv::Point_<float>>> *)a5 :Point_<float> :allocator<float>> *)a4 allocator<unsigned char>> *)a3 srcFeatureCVPoints:dstFeatreCVPoints:activityZones:operationMode:srcPyramid:frameSize:brightnessChange:;
+- (id)detectWithGlobalMotionScore:(float *)score referencePixelBuffer:(__CVBuffer *)buffer targetPixelBuffer:(__CVBuffer *)pixelBuffer activityZones:(id)zones detectorMode:(unint64_t)mode;
+- (id)visualizeMotionDetections:(id)detections frameSize:(CGSize)size timeStamp:(id *)stamp;
 - (void)dealloc;
 @end
 
@@ -32,18 +32,18 @@
   [(HMIMotionDetector *)&v3 dealloc];
 }
 
-- (id)_computeOpticalFlow:(__CVBuffer *)a3 with:(__CVBuffer *)a4 globalMotionScore:(float *)a5 activityZones:(id)a6 operationMode:(unint64_t)a7
+- (id)_computeOpticalFlow:(__CVBuffer *)flow with:(__CVBuffer *)with globalMotionScore:(float *)score activityZones:(id)zones operationMode:(unint64_t)mode
 {
-  v10 = a6;
-  *a5 = 0.0;
-  Size = HMICVPixelBufferGetSize(a4);
+  zonesCopy = zones;
+  *score = 0.0;
+  Size = HMICVPixelBufferGetSize(with);
   v13 = v12;
-  if (Size == HMICVPixelBufferGetSize(a3) && v13 == v14)
+  if (Size == HMICVPixelBufferGetSize(flow) && v13 == v14)
   {
     v69[2] = [[HMISignpost alloc] initWithName:@"Sparse Optical Flow"];
-    CVPixelBufferLockBaseAddress(a4, 1uLL);
-    BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a4, 0);
-    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a4, 0);
+    CVPixelBufferLockBaseAddress(with, 1uLL);
+    BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(with, 0);
+    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(with, 0);
     v19 = v13;
     v20 = Size;
     v60[0] = v13;
@@ -95,9 +95,9 @@
     cv::_OutputArray::_OutputArray(v47, v58);
     v36[0] = 0xA0000000ALL;
     cv::buildOpticalFlowPyramid(v32, v47, v36, 2u, 1, 4, 0, 1);
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
-    v25 = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
-    v26 = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
+    CVPixelBufferLockBaseAddress(flow, 1uLL);
+    v25 = CVPixelBufferGetBaseAddressOfPlane(flow, 0);
+    v26 = CVPixelBufferGetBytesPerRowOfPlane(flow, 0);
     v48[0] = v13;
     v48[1] = Size;
     v49 = v25;
@@ -171,12 +171,12 @@
   return v16;
 }
 
-- (id)calculateMotionDetection:(vector<unsigned)char score:(std:()vector<float :(std:()vector<cv:(std:()vector<cv:(std:(id)a7 :(unint64_t)a8 allocator<cv:()vector<cv:(std:(CGSize)a10 :(float)a11 allocator<cv::Mat>> *)a9 :Mat :Point_<float>>> *)a6 :Point_<float> :allocator<cv::Point_<float>>> *)a5 :Point_<float> :allocator<float>> *)a4 allocator<unsigned char>> *)a3 srcFeatureCVPoints:dstFeatreCVPoints:activityZones:operationMode:srcPyramid:frameSize:brightnessChange:
+- (id)calculateMotionDetection:(vector<unsigned)char score:(std:()vector<float :(std:()vector<cv:(std:()vector<cv:(std:(id)cv :(unint64_t)a8 allocator<cv:()vector<cv:(std:(CGSize)self0 :(float)self1 allocator<cv::Mat>> *)a9 :Mat :Point_<float>>> *)a6 :Point_<float> :allocator<cv::Point_<float>>> *)a5 :Point_<float> :allocator<float>> *)a4 allocator<unsigned char>> *)a3 srcFeatureCVPoints:dstFeatreCVPoints:activityZones:operationMode:srcPyramid:frameSize:brightnessChange:
 {
   height = a10.height;
   width = a10.width;
   v20 = a9;
-  v21 = a7;
+  cvCopy = cv;
   v115 = 9999.0;
   v116 = 9999.0;
   v113 = 9999.0;
@@ -203,14 +203,14 @@
       }
 
       v28 = hypotf(*(a5->var0 + v27 - 4) - *(a6->var0 + v27 - 4), *(a5->var0 + v27) - *(a6->var0 + v27));
-      v29 = [v21 count];
-      v30 = 1;
+      v29 = [cvCopy count];
+      height = 1;
       if ((a8 & 1) != 0 && v29)
       {
-        v30 = [(HMIMotionDetector *)self applyActivityZoneFilteringOnSourcePoint:v21 destinationPoint:rint(*(a5->var0 + v27 - 4)) frameSize:rint(*(a5->var0 + v27)) activityZones:rint(*(a6->var0 + v27 - 4)), rint(*(a6->var0 + v27)), width, height];
+        height = [(HMIMotionDetector *)self applyActivityZoneFilteringOnSourcePoint:cvCopy destinationPoint:rint(*(a5->var0 + v27 - 4)) frameSize:rint(*(a5->var0 + v27)) activityZones:rint(*(a6->var0 + v27 - 4)), rint(*(a6->var0 + v27)), width, height];
       }
 
-      if (v28 <= 1.0 || !v30)
+      if (v28 <= 1.0 || !height)
       {
         goto LABEL_53;
       }
@@ -493,7 +493,7 @@ LABEL_56:
   v86 = v121.origin.y;
   v87 = v121.size.width;
   v99 = v121.size.height;
-  v88 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v98 = v87;
   if (v24 >= 1)
   {
@@ -505,7 +505,7 @@ LABEL_56:
       v105 = *v90;
       v106 = *(v90 - 1);
       v92 = [[HMIMotionVector alloc] initWithOrigin:v108.tx + v105 * v108.c + v108.a * v106 motion:v108.ty + v105 * v108.d + v108.b * v106, v108.tx + *v89 * v108.c + v108.a * *(v89 - 1) - (v108.tx + v105 * v108.c + v108.a * v106), v108.ty + *v89 * v108.d + v108.b * *(v89 - 1) - (v108.ty + v105 * v108.d + v108.b * v106)];
-      [v88 addObject:v92];
+      [array addObject:v92];
 
       v89 += 2;
       v90 += 2;
@@ -531,7 +531,7 @@ LABEL_56:
       *&v96 = 1000.0;
     }
 
-    v94 = [(HMIMotionDetection *)v95 initWithBoundingBox:v88 size:a8 motionVectors:v85 motionScore:v86 motionMode:v98, v99, v100, v101, v96, *&v98, *&v86, *&v85];
+    v94 = [(HMIMotionDetection *)v95 initWithBoundingBox:array size:a8 motionVectors:v85 motionScore:v86 motionMode:v98, v99, v100, v101, v96, *&v98, *&v86, *&v85];
   }
 
   else
@@ -542,18 +542,18 @@ LABEL_56:
   return v94;
 }
 
-- (BOOL)applyActivityZoneFilteringOnSourcePoint:(CGPoint)a3 destinationPoint:(CGPoint)a4 frameSize:(CGSize)a5 activityZones:(id)a6
+- (BOOL)applyActivityZoneFilteringOnSourcePoint:(CGPoint)point destinationPoint:(CGPoint)destinationPoint frameSize:(CGSize)size activityZones:(id)zones
 {
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
-  v10 = a3.y;
-  v11 = a3.x;
+  height = size.height;
+  width = size.width;
+  y = destinationPoint.y;
+  x = destinationPoint.x;
+  v10 = point.y;
+  v11 = point.x;
   v46 = *MEMORY[0x277D85DE8];
-  v12 = a6;
-  v13 = [v12 firstObject];
-  v14 = [v13 isInclusion];
+  zonesCopy = zones;
+  firstObject = [zonesCopy firstObject];
+  isInclusion = [firstObject isInclusion];
 
   v15 = HMICGPointClampWithSize(v11, v10, width);
   v17 = v16;
@@ -575,9 +575,9 @@ LABEL_56:
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v26 = v12;
+  v26 = zonesCopy;
   v27 = [v26 countByEnumeratingWithState:&v40 objects:v45 count:16];
-  v28 = v14 ^ 1;
+  isInclusion2 = isInclusion ^ 1;
   if (v27)
   {
     v29 = tx + v17 * c + a * v39;
@@ -597,7 +597,7 @@ LABEL_56:
         v35 = *(*(&v40 + 1) + 8 * i);
         if ([v35 containsVectorWithSource:v29 destination:{v30, v31, v32}])
         {
-          v28 = [v35 isInclusion];
+          isInclusion2 = [v35 isInclusion];
           goto LABEL_11;
         }
       }
@@ -614,27 +614,27 @@ LABEL_56:
 
 LABEL_11:
 
-  return v28;
+  return isInclusion2;
 }
 
-- (id)detectWithGlobalMotionScore:(float *)a3 referencePixelBuffer:(__CVBuffer *)a4 targetPixelBuffer:(__CVBuffer *)a5 activityZones:(id)a6 detectorMode:(unint64_t)a7
+- (id)detectWithGlobalMotionScore:(float *)score referencePixelBuffer:(__CVBuffer *)buffer targetPixelBuffer:(__CVBuffer *)pixelBuffer activityZones:(id)zones detectorMode:(unint64_t)mode
 {
-  v7 = [(HMIMotionDetector *)self _computeOpticalFlow:a4 with:a5 globalMotionScore:a3 activityZones:a6 operationMode:a7];
+  v7 = [(HMIMotionDetector *)self _computeOpticalFlow:buffer with:pixelBuffer globalMotionScore:score activityZones:zones operationMode:mode];
 
   return v7;
 }
 
-- (id)visualizeMotionDetections:(id)a3 frameSize:(CGSize)a4 timeStamp:(id *)a5
+- (id)visualizeMotionDetections:(id)detections frameSize:(CGSize)size timeStamp:(id *)stamp
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = [HMIMotionDetection firstMotionDetectionInArray:a3 withMode:2];
-  v9 = [HMIVisionUtilities createPixelBufferWithSize:875704422 pixelFormat:0 useIOSurface:width, height];
-  HMICVPixelBufferSetValue(v9, 0);
-  CVPixelBufferLockBaseAddress(v9, 0);
-  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(v9, 0);
-  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(v9, 0);
-  v12 = [v8 motionVectors];
+  height = size.height;
+  width = size.width;
+  v8 = [HMIMotionDetection firstMotionDetectionInArray:detections withMode:2];
+  height = [HMIVisionUtilities createPixelBufferWithSize:875704422 pixelFormat:0 useIOSurface:width, height];
+  HMICVPixelBufferSetValue(height, 0);
+  CVPixelBufferLockBaseAddress(height, 0);
+  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(height, 0);
+  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(height, 0);
+  motionVectors = [v8 motionVectors];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __67__HMIMotionDetector_visualizeMotionDetections_frameSize_timeStamp___block_invoke;
@@ -643,13 +643,13 @@ LABEL_11:
   *&v17[5] = height;
   v17[6] = BaseAddressOfPlane;
   v17[7] = BytesPerRowOfPlane;
-  [v12 na_each:v17];
+  [motionVectors na_each:v17];
 
-  CVPixelBufferUnlockBaseAddress(v9, 0);
+  CVPixelBufferUnlockBaseAddress(height, 0);
   v13 = [HMIVideoFrame alloc];
-  v16 = *a5;
-  v14 = [(HMIVideoFrame *)v13 initWithPixelBuffer:v9 presentationTimeStamp:&v16];
-  CVPixelBufferRelease(v9);
+  v16 = *stamp;
+  v14 = [(HMIVideoFrame *)v13 initWithPixelBuffer:height presentationTimeStamp:&v16];
+  CVPixelBufferRelease(height);
 
   return v14;
 }

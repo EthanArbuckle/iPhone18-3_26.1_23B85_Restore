@@ -5,9 +5,9 @@
 - (SUUIStatusBarAlertCenter)init;
 - (void)dismiss;
 - (void)scheduleDismiss;
-- (void)setVisible:(BOOL)a3;
-- (void)showMessage:(id)a3 withStyle:(int64_t)a4 forDuration:(double)a5 actionBlock:(id)a6;
-- (void)statusBarAlertViewControllerWasTapped:(id)a3;
+- (void)setVisible:(BOOL)visible;
+- (void)showMessage:(id)message withStyle:(int64_t)style forDuration:(double)duration actionBlock:(id)block;
+- (void)statusBarAlertViewControllerWasTapped:(id)tapped;
 @end
 
 @implementation SUUIStatusBarAlertCenter
@@ -46,8 +46,8 @@ uint64_t __40__SUUIStatusBarAlertCenter_sharedCenter__block_invoke()
 
     [(_SUUIStatusBarAlertViewController *)v2->_rootViewController setDelegate:v2];
     v5 = [_SUUIClickThroughWindow alloc];
-    v6 = [MEMORY[0x277D759A0] mainScreen];
-    [v6 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v7 = [(_SUUIClickThroughWindow *)v5 initWithFrame:?];
     window = v2->_window;
     v2->_window = v7;
@@ -61,44 +61,44 @@ uint64_t __40__SUUIStatusBarAlertCenter_sharedCenter__block_invoke()
   return v2;
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(SUUIStatusBarAlertCenter *)self window];
-  [v4 setHidden:!v3];
+  visibleCopy = visible;
+  window = [(SUUIStatusBarAlertCenter *)self window];
+  [window setHidden:!visibleCopy];
 }
 
 - (BOOL)isVisible
 {
-  v2 = [(SUUIStatusBarAlertCenter *)self window];
-  v3 = [v2 isHidden];
+  window = [(SUUIStatusBarAlertCenter *)self window];
+  isHidden = [window isHidden];
 
-  return v3 ^ 1;
+  return isHidden ^ 1;
 }
 
 - (NSString)message
 {
-  v2 = [(SUUIStatusBarAlertCenter *)self rootViewController];
-  v3 = [v2 message];
+  rootViewController = [(SUUIStatusBarAlertCenter *)self rootViewController];
+  message = [rootViewController message];
 
-  return v3;
+  return message;
 }
 
-- (void)showMessage:(id)a3 withStyle:(int64_t)a4 forDuration:(double)a5 actionBlock:(id)a6
+- (void)showMessage:(id)message withStyle:(int64_t)style forDuration:(double)duration actionBlock:(id)block
 {
-  v10 = a6;
-  if (a5 < 2.22044605e-16)
+  blockCopy = block;
+  if (duration < 2.22044605e-16)
   {
-    a5 = 3.0;
+    duration = 3.0;
   }
 
-  v11 = a3;
-  v12 = [(SUUIStatusBarAlertCenter *)self rootViewController];
-  [v12 setMessage:v11];
+  messageCopy = message;
+  rootViewController = [(SUUIStatusBarAlertCenter *)self rootViewController];
+  [rootViewController setMessage:messageCopy];
 
-  [(SUUIStatusBarAlertCenter *)self setDuration:a5];
-  v13 = [(SUUIStatusBarAlertCenter *)self rootViewController];
-  [v13 endAllAnimations];
+  [(SUUIStatusBarAlertCenter *)self setDuration:duration];
+  rootViewController2 = [(SUUIStatusBarAlertCenter *)self rootViewController];
+  [rootViewController2 endAllAnimations];
 
   if ([(SUUIStatusBarAlertCenter *)self isVisible])
   {
@@ -109,8 +109,8 @@ uint64_t __40__SUUIStatusBarAlertCenter_sharedCenter__block_invoke()
     v28[2] = __74__SUUIStatusBarAlertCenter_showMessage_withStyle_forDuration_actionBlock___block_invoke;
     v28[3] = &unk_2798FC178;
     v28[4] = self;
-    v30 = a4;
-    v29 = v10;
+    styleCopy = style;
+    v29 = blockCopy;
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __74__SUUIStatusBarAlertCenter_showMessage_withStyle_forDuration_actionBlock___block_invoke_2;
@@ -121,32 +121,32 @@ uint64_t __40__SUUIStatusBarAlertCenter_sharedCenter__block_invoke()
 
   else
   {
-    v15 = [MEMORY[0x277D75DA0] keyWindow];
-    v16 = v15;
-    if (v15)
+    keyWindow = [MEMORY[0x277D75DA0] keyWindow];
+    v16 = keyWindow;
+    if (keyWindow)
     {
-      v17 = [v15 rootViewController];
-      v18 = [v17 supportedInterfaceOrientations];
+      rootViewController3 = [keyWindow rootViewController];
+      supportedInterfaceOrientations = [rootViewController3 supportedInterfaceOrientations];
     }
 
     else
     {
-      v17 = [(SUUIStatusBarAlertCenter *)self rootViewController];
-      v18 = [v17 defaultInterfaceOrientations];
+      rootViewController3 = [(SUUIStatusBarAlertCenter *)self rootViewController];
+      supportedInterfaceOrientations = [rootViewController3 defaultInterfaceOrientations];
     }
 
-    v19 = v18;
-    v20 = [(SUUIStatusBarAlertCenter *)self rootViewController];
-    [v20 setSupportedInterfaceOrientations:v19];
+    v19 = supportedInterfaceOrientations;
+    rootViewController4 = [(SUUIStatusBarAlertCenter *)self rootViewController];
+    [rootViewController4 setSupportedInterfaceOrientations:v19];
 
-    v21 = [(SUUIStatusBarAlertCenter *)self rootViewController];
-    [v21 setStyle:a4];
+    rootViewController5 = [(SUUIStatusBarAlertCenter *)self rootViewController];
+    [rootViewController5 setStyle:style];
 
-    [(SUUIStatusBarAlertCenter *)self setActionBlock:v10];
-    v22 = [(SUUIStatusBarAlertCenter *)self rootViewController];
-    v23 = [v22 statusBarView];
-    v24 = [(SUUIStatusBarAlertCenter *)self window];
-    [v24 setInteractionView:v23];
+    [(SUUIStatusBarAlertCenter *)self setActionBlock:blockCopy];
+    rootViewController6 = [(SUUIStatusBarAlertCenter *)self rootViewController];
+    statusBarView = [rootViewController6 statusBarView];
+    window = [(SUUIStatusBarAlertCenter *)self window];
+    [window setInteractionView:statusBarView];
 
     [(SUUIStatusBarAlertCenter *)self setVisible:1];
     v26[0] = MEMORY[0x277D85DD0];
@@ -216,8 +216,8 @@ uint64_t __74__SUUIStatusBarAlertCenter_showMessage_withStyle_forDuration_action
   [(SUUIStatusBarAlertCenter *)self unscheduleDismiss];
   if ([(SUUIStatusBarAlertCenter *)self isVisible])
   {
-    v3 = [(SUUIStatusBarAlertCenter *)self rootViewController];
-    [v3 endAllAnimations];
+    rootViewController = [(SUUIStatusBarAlertCenter *)self rootViewController];
+    [rootViewController endAllAnimations];
 
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
@@ -256,15 +256,15 @@ uint64_t __35__SUUIStatusBarAlertCenter_dismiss__block_invoke_2(uint64_t result,
   return result;
 }
 
-- (void)statusBarAlertViewControllerWasTapped:(id)a3
+- (void)statusBarAlertViewControllerWasTapped:(id)tapped
 {
   [(SUUIStatusBarAlertCenter *)self dismiss];
-  v4 = [(SUUIStatusBarAlertCenter *)self actionBlock];
+  actionBlock = [(SUUIStatusBarAlertCenter *)self actionBlock];
 
-  if (v4)
+  if (actionBlock)
   {
-    v5 = [(SUUIStatusBarAlertCenter *)self actionBlock];
-    v5[2]();
+    actionBlock2 = [(SUUIStatusBarAlertCenter *)self actionBlock];
+    actionBlock2[2]();
   }
 }
 

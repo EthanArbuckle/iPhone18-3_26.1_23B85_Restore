@@ -6,7 +6,7 @@
 
 + (id)_childSettingsKeyPathsToTitles
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___SBSAElementContentTransitionSettings;
   v2 = objc_msgSendSuper2(&v5, sel__childSettingsKeyPathsToTitles);
   v3 = [v2 mutableCopy];

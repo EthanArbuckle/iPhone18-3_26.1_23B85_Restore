@@ -1,40 +1,40 @@
 @interface REMSettingsController
-+ (id)specifierForDefaultListWithTarget:(id)a3;
++ (id)specifierForDefaultListWithTarget:(id)target;
 - (BOOL)saveAppBadgeCountCriteriaIfNeeded;
 - (BOOL)saveTodayNotificationFireTimeIfNeeded;
 - (BOOL)shouldHideGrocerySectionIfNeeded;
 - (REMSettingsController)init;
 - (id)_accountSpecifiers;
-- (id)_appPolicySpecifiersShouldIncludeAccountSpecifier:(BOOL)a3;
+- (id)_appPolicySpecifiersShouldIncludeAccountSpecifier:(BOOL)specifier;
 - (id)clearCategorizationDetailText;
-- (id)datePickerForSpecifier:(id)a3;
-- (id)defaultListName:(id)a3;
-- (id)disableAssignmentNotifications:(id)a3;
-- (id)enableAutoCompleteReminders:(id)a3;
+- (id)datePickerForSpecifier:(id)specifier;
+- (id)defaultListName:(id)name;
+- (id)disableAssignmentNotifications:(id)notifications;
+- (id)enableAutoCompleteReminders:(id)reminders;
 - (id)localizedPlacardSubtitle;
 - (id)localizedPlacardTitle;
-- (id)placardSpecifiersWithTitle:(id)a3 subtitle:(id)a4 applicationIdentifier:(id)a5;
-- (id)shouldIncludeRemindersDueTodayInBadgeCount:(id)a3;
-- (id)showRemindersAsOverdue:(id)a3;
+- (id)placardSpecifiersWithTitle:(id)title subtitle:(id)subtitle applicationIdentifier:(id)identifier;
+- (id)shouldIncludeRemindersDueTodayInBadgeCount:(id)count;
+- (id)showRemindersAsOverdue:(id)overdue;
 - (id)specifiers;
-- (id)timeZoneOverrideState:(id)a3;
+- (id)timeZoneOverrideState:(id)state;
 - (id)todayNotificationFooterText;
-- (id)todayNotificationTimeSet:(id)a3;
+- (id)todayNotificationTimeSet:(id)set;
 - (id)todayNotificationTimeString;
-- (void)clearCategorizationButtonDidTapped:(id)a3;
-- (void)datePickerChanged:(id)a3;
-- (void)datePickerEditingDidEnd:(id)a3;
-- (void)decreaseMinuteIntervalIfNeededForDatePicker:(id)a3;
-- (void)didTapTodayNotificationTimeButton:(id)a3;
+- (void)clearCategorizationButtonDidTapped:(id)tapped;
+- (void)datePickerChanged:(id)changed;
+- (void)datePickerEditingDidEnd:(id)end;
+- (void)decreaseMinuteIntervalIfNeededForDatePicker:(id)picker;
+- (void)didTapTodayNotificationTimeButton:(id)button;
 - (void)performClearAction;
 - (void)queryTimeZoneOverrideName;
 - (void)refreshExternallyModifiableSpecifiers;
 - (void)saveAndWakeDaemon;
-- (void)setDisableAssignmentNotifications:(id)a3 specifier:(id)a4;
-- (void)setEnableAutoCompleteReminders:(id)a3 specifier:(id)a4;
-- (void)setShouldIncludeRemindersDueTodayInBadgeCount:(id)a3 specifier:(id)a4;
-- (void)setShowRemindersAsOverdue:(id)a3 specifier:(id)a4;
-- (void)setTodayNotificationTimeSet:(id)a3 specifier:(id)a4;
+- (void)setDisableAssignmentNotifications:(id)notifications specifier:(id)specifier;
+- (void)setEnableAutoCompleteReminders:(id)reminders specifier:(id)specifier;
+- (void)setShouldIncludeRemindersDueTodayInBadgeCount:(id)count specifier:(id)specifier;
+- (void)setShowRemindersAsOverdue:(id)overdue specifier:(id)specifier;
+- (void)setTodayNotificationTimeSet:(id)set specifier:(id)specifier;
 @end
 
 @implementation REMSettingsController
@@ -79,22 +79,22 @@
   v4 = +[REMUserDefaults daemonUserDefaults];
   [(REMSettingsController *)self setDaemonUserDefaults:v4];
 
-  v5 = [(REMSettingsController *)self daemonUserDefaults];
-  v6 = [v5 todayNotificationFireTime];
-  [(REMSettingsController *)self setUnsavedTodayNotificationFireTime:v6];
+  daemonUserDefaults = [(REMSettingsController *)self daemonUserDefaults];
+  todayNotificationFireTime = [daemonUserDefaults todayNotificationFireTime];
+  [(REMSettingsController *)self setUnsavedTodayNotificationFireTime:todayNotificationFireTime];
 
-  v7 = [(REMSettingsController *)self daemonUserDefaults];
-  -[REMSettingsController setInitialShouldIncludeRemindersDueTodayInBadgeCount:](self, "setInitialShouldIncludeRemindersDueTodayInBadgeCount:", [v7 shouldIncludeRemindersDueTodayInBadgeCount]);
+  daemonUserDefaults2 = [(REMSettingsController *)self daemonUserDefaults];
+  -[REMSettingsController setInitialShouldIncludeRemindersDueTodayInBadgeCount:](self, "setInitialShouldIncludeRemindersDueTodayInBadgeCount:", [daemonUserDefaults2 shouldIncludeRemindersDueTodayInBadgeCount]);
 
   [(REMSettingsController *)self setTitle:0];
   v8 = objc_opt_new();
-  v9 = [(REMSettingsController *)self traitCollection];
-  v10 = [v9 pe_isSettingsFeatureDescriptionCellSupported];
+  traitCollection = [(REMSettingsController *)self traitCollection];
+  pe_isSettingsFeatureDescriptionCellSupported = [traitCollection pe_isSettingsFeatureDescriptionCellSupported];
 
-  if (v10)
+  if (pe_isSettingsFeatureDescriptionCellSupported)
   {
-    v11 = [(REMSettingsController *)self _accountSpecifiers];
-    v12 = [v11 specifierForID:@"ACCOUNTS"];
+    _accountSpecifiers = [(REMSettingsController *)self _accountSpecifiers];
+    v12 = [_accountSpecifiers specifierForID:@"ACCOUNTS"];
     if (v12)
     {
       v13 = v12;
@@ -105,12 +105,12 @@
 
     else
     {
-      v13 = [v11 specifierForID:@"ADD_ACCOUNT"];
+      v13 = [_accountSpecifiers specifierForID:@"ADD_ACCOUNT"];
     }
 
-    v16 = [(REMSettingsController *)self localizedPlacardTitle];
-    v17 = [(REMSettingsController *)self localizedPlacardSubtitle];
-    v18 = [(REMSettingsController *)self placardSpecifiersWithTitle:v16 subtitle:v17 applicationIdentifier:@"com.apple.reminders"];
+    localizedPlacardTitle = [(REMSettingsController *)self localizedPlacardTitle];
+    localizedPlacardSubtitle = [(REMSettingsController *)self localizedPlacardSubtitle];
+    v18 = [(REMSettingsController *)self placardSpecifiersWithTitle:localizedPlacardTitle subtitle:localizedPlacardSubtitle applicationIdentifier:@"com.apple.reminders"];
     [v8 addObjectsFromArray:v18];
 
     [v8 addObject:v13];
@@ -123,10 +123,10 @@
 
   else
   {
-    v11 = [(REMSettingsController *)self _appPolicySpecifiersShouldIncludeAccountSpecifier:1];
-    if ([v11 count])
+    _accountSpecifiers = [(REMSettingsController *)self _appPolicySpecifiersShouldIncludeAccountSpecifier:1];
+    if ([_accountSpecifiers count])
     {
-      [v8 addObjectsFromArray:v11];
+      [v8 addObjectsFromArray:_accountSpecifiers];
     }
   }
 
@@ -144,8 +144,8 @@
 
   v25 = REMSettingsBundleGet();
   v26 = [v25 localizedStringForKey:@"All-Day Reminders" value:&stru_35EE8 table:0];
-  v27 = [(REMSettingsController *)self todayNotificationFooterText];
-  v28 = [REMSettingsUtilities groupSpecifierWithHeader:v26 footer:v27];
+  todayNotificationFooterText = [(REMSettingsController *)self todayNotificationFooterText];
+  v28 = [REMSettingsUtilities groupSpecifierWithHeader:v26 footer:todayNotificationFooterText];
   [(REMSettingsController *)self setTodayNotificationGroup:v28];
 
   v29 = REMSettingsBundleGet();
@@ -154,56 +154,56 @@
   [(REMSettingsController *)self setTodayNotificationEnabledSwitch:v31];
 
   v32 = REMSettingsTodayNotificationIdentifier;
-  v33 = [(REMSettingsController *)self todayNotificationEnabledSwitch];
-  [v33 setIdentifier:v32];
+  todayNotificationEnabledSwitch = [(REMSettingsController *)self todayNotificationEnabledSwitch];
+  [todayNotificationEnabledSwitch setIdentifier:v32];
 
   v34 = REMSettingsBundleGet();
   v35 = [v34 localizedStringForKey:@"Time" value:&stru_35EE8 table:0];
   v36 = [PSSpecifier preferenceSpecifierNamed:v35 target:self set:0 get:"todayNotificationTimeString" detail:0 cell:4 edit:0];
   [(REMSettingsController *)self setTodayNotificationTimeButton:v36];
 
-  v37 = [(REMSettingsController *)self todayNotificationTimeButton];
-  [v37 setButtonAction:"didTapTodayNotificationTimeButton:"];
+  todayNotificationTimeButton = [(REMSettingsController *)self todayNotificationTimeButton];
+  [todayNotificationTimeButton setButtonAction:"didTapTodayNotificationTimeButton:"];
 
   v38 = objc_opt_class();
-  v39 = [(REMSettingsController *)self todayNotificationTimeButton];
+  todayNotificationTimeButton2 = [(REMSettingsController *)self todayNotificationTimeButton];
   v40 = PSCellClassKey;
-  [v39 setObject:v38 forKeyedSubscript:PSCellClassKey];
+  [todayNotificationTimeButton2 setObject:v38 forKeyedSubscript:PSCellClassKey];
 
   v41 = [PSSpecifier preferenceSpecifierNamed:&stru_35EE8 target:self set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:4 edit:0];
   [(REMSettingsController *)self setTodayNotificationTimePicker:v41];
 
   v42 = objc_opt_class();
-  v43 = [(REMSettingsController *)self todayNotificationTimePicker];
+  todayNotificationTimePicker = [(REMSettingsController *)self todayNotificationTimePicker];
   v119 = v40;
-  [v43 setObject:v42 forKeyedSubscript:v40];
+  [todayNotificationTimePicker setObject:v42 forKeyedSubscript:v40];
 
   +[PSDateTimePickerCell preferredHeight];
   v44 = [NSNumber numberWithDouble:?];
-  v45 = [(REMSettingsController *)self todayNotificationTimePicker];
-  [v45 setObject:v44 forKeyedSubscript:PSTableCellHeightKey];
+  todayNotificationTimePicker2 = [(REMSettingsController *)self todayNotificationTimePicker];
+  [todayNotificationTimePicker2 setObject:v44 forKeyedSubscript:PSTableCellHeightKey];
 
-  v46 = [(REMSettingsController *)self todayNotificationTimePicker];
-  [v46 setTarget:self];
+  todayNotificationTimePicker3 = [(REMSettingsController *)self todayNotificationTimePicker];
+  [todayNotificationTimePicker3 setTarget:self];
 
-  v47 = [(REMSettingsController *)self todayNotificationGroup];
-  v127[0] = v47;
-  v48 = [(REMSettingsController *)self todayNotificationEnabledSwitch];
-  v127[1] = v48;
+  todayNotificationGroup = [(REMSettingsController *)self todayNotificationGroup];
+  v127[0] = todayNotificationGroup;
+  todayNotificationEnabledSwitch2 = [(REMSettingsController *)self todayNotificationEnabledSwitch];
+  v127[1] = todayNotificationEnabledSwitch2;
   v49 = [NSArray arrayWithObjects:v127 count:2];
   [v8 addObjectsFromArray:v49];
 
-  v50 = [(REMSettingsController *)self unsavedTodayNotificationFireTime];
-  if (v50)
+  unsavedTodayNotificationFireTime = [(REMSettingsController *)self unsavedTodayNotificationFireTime];
+  if (unsavedTodayNotificationFireTime)
   {
-    v51 = [(REMSettingsController *)self todayNotificationTimeButton];
-    [v8 addObject:v51];
+    todayNotificationTimeButton3 = [(REMSettingsController *)self todayNotificationTimeButton];
+    [v8 addObject:todayNotificationTimeButton3];
   }
 
   if ([(REMSettingsController *)self todayNotificationTimePickerVisible])
   {
-    v52 = [(REMSettingsController *)self todayNotificationTimePicker];
-    [v8 addObject:v52];
+    todayNotificationTimePicker4 = [(REMSettingsController *)self todayNotificationTimePicker];
+    [v8 addObject:todayNotificationTimePicker4];
   }
 
   v53 = REMSettingsBundleGet();
@@ -347,8 +347,8 @@ LABEL_24:
 
   if (![(REMSettingsController *)self shouldHideGrocerySectionIfNeeded]|| v92)
   {
-    v106 = [(REMSettingsController *)self clearCategorizationDetailText];
-    v107 = [REMSettingsUtilities groupSpecifierWithHeader:0 footer:v106];
+    clearCategorizationDetailText = [(REMSettingsController *)self clearCategorizationDetailText];
+    v107 = [REMSettingsUtilities groupSpecifierWithHeader:0 footer:clearCategorizationDetailText];
 
     if (v92)
     {
@@ -394,23 +394,23 @@ LABEL_36:
   return v3;
 }
 
-- (id)placardSpecifiersWithTitle:(id)a3 subtitle:(id)a4 applicationIdentifier:(id)a5
+- (id)placardSpecifiersWithTitle:(id)title subtitle:(id)subtitle applicationIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  identifierCopy = identifier;
+  subtitleCopy = subtitle;
+  titleCopy = title;
   v11 = +[NSMutableArray array];
   v12 = +[PSSpecifier emptyGroupSpecifier];
   v13 = PSIDKey;
   [v12 setProperty:@"PLACARD_GROUP" forKey:PSIDKey];
   [v11 addObject:v12];
-  v14 = [PSSpecifier preferenceSpecifierNamed:v10 target:self set:0 get:0 detail:0 cell:-1 edit:0];
+  v14 = [PSSpecifier preferenceSpecifierNamed:titleCopy target:self set:0 get:0 detail:0 cell:-1 edit:0];
 
   [v14 setProperty:@"PLACARD" forKey:v13];
   [v14 setProperty:objc_opt_class() forKey:PSCellClassKey];
-  [v14 setProperty:v9 forKey:PSTableCellSubtitleTextKey];
+  [v14 setProperty:subtitleCopy forKey:PSTableCellSubtitleTextKey];
 
-  [v14 setProperty:v8 forKey:PSLazyIconAppID];
+  [v14 setProperty:identifierCopy forKey:PSLazyIconAppID];
   [v11 addObject:v14];
   v15 = [v11 copy];
 
@@ -428,9 +428,9 @@ LABEL_36:
 - (id)localizedPlacardSubtitle
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
   v4 = @"helpkit://open?topic=f898416824ef";
-  if (v3 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     v4 = @"helpkit://open?topic=ipad3cd77052";
   }
@@ -444,20 +444,20 @@ LABEL_36:
   return v8;
 }
 
-+ (id)specifierForDefaultListWithTarget:(id)a3
++ (id)specifierForDefaultListWithTarget:(id)target
 {
-  v3 = a3;
+  targetCopy = target;
   v4 = REMSettingsBundleGet();
   v5 = [v4 localizedStringForKey:@"Default List" value:&stru_35EE8 table:0];
 
-  v6 = [REMSettingsUtilities linkListPreferenceSpecifierNamed:v5 target:v3 keyName:@"preferredDefaultListID" detail:objc_opt_class() scope:0 get:"defaultListName:"];
+  v6 = [REMSettingsUtilities linkListPreferenceSpecifierNamed:v5 target:targetCopy keyName:@"preferredDefaultListID" detail:objc_opt_class() scope:0 get:"defaultListName:"];
 
   return v6;
 }
 
-- (id)_appPolicySpecifiersShouldIncludeAccountSpecifier:(BOOL)a3
+- (id)_appPolicySpecifiersShouldIncludeAccountSpecifier:(BOOL)specifier
 {
-  if (a3)
+  if (specifier)
   {
     v3 = 176226305;
   }
@@ -467,41 +467,41 @@ LABEL_36:
     v3 = 42008577;
   }
 
-  v4 = [(REMSettingsController *)self appPolicy];
-  v5 = [v4 specifiersForPolicyOptions:v3 force:0];
+  appPolicy = [(REMSettingsController *)self appPolicy];
+  v5 = [appPolicy specifiersForPolicyOptions:v3 force:0];
 
   return v5;
 }
 
 - (id)_accountSpecifiers
 {
-  v2 = [(REMSettingsController *)self appPolicy];
-  v3 = [v2 specifiersForPolicyOptions:0x8000000 force:0];
+  appPolicy = [(REMSettingsController *)self appPolicy];
+  v3 = [appPolicy specifiersForPolicyOptions:0x8000000 force:0];
 
   return v3;
 }
 
 - (void)saveAndWakeDaemon
 {
-  v3 = [(REMSettingsController *)self saveTodayNotificationFireTimeIfNeeded];
-  v4 = [(REMSettingsController *)self saveAppBadgeCountCriteriaIfNeeded];
-  if ((v3 & 1) != 0 || v4)
+  saveTodayNotificationFireTimeIfNeeded = [(REMSettingsController *)self saveTodayNotificationFireTimeIfNeeded];
+  saveAppBadgeCountCriteriaIfNeeded = [(REMSettingsController *)self saveAppBadgeCountCriteriaIfNeeded];
+  if ((saveTodayNotificationFireTimeIfNeeded & 1) != 0 || saveAppBadgeCountCriteriaIfNeeded)
   {
     v6 = objc_alloc_init(REMStore);
     v5 = [v6 fetchDefaultListWithError:0];
   }
 }
 
-- (id)defaultListName:(id)a3
+- (id)defaultListName:(id)name
 {
   v3 = objc_alloc_init(REMStore);
   v10 = 0;
   v4 = [v3 fetchDefaultListWithError:&v10];
-  v5 = [v4 displayName];
-  v6 = v5;
-  if (v5)
+  displayName = [v4 displayName];
+  v6 = displayName;
+  if (displayName)
   {
-    v7 = v5;
+    v7 = displayName;
   }
 
   else
@@ -514,40 +514,40 @@ LABEL_36:
   return v7;
 }
 
-- (id)todayNotificationTimeSet:(id)a3
+- (id)todayNotificationTimeSet:(id)set
 {
-  v3 = [(REMSettingsController *)self unsavedTodayNotificationFireTime];
-  v4 = v3 != 0;
+  unsavedTodayNotificationFireTime = [(REMSettingsController *)self unsavedTodayNotificationFireTime];
+  v4 = unsavedTodayNotificationFireTime != 0;
 
   return [NSNumber numberWithBool:v4];
 }
 
-- (void)setTodayNotificationTimeSet:(id)a3 specifier:(id)a4
+- (void)setTodayNotificationTimeSet:(id)set specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(REMSettingsController *)self unsavedTodayNotificationFireTime];
-  v9 = [NSString stringWithFormat:@"%@#TODAY_NOTIFICATIONS", REMSettingsNavigationDeepLinkGeneralPath];
-  v10 = [NSURL URLWithString:v9];
+  specifierCopy = specifier;
+  setCopy = set;
+  unsavedTodayNotificationFireTime = [(REMSettingsController *)self unsavedTodayNotificationFireTime];
+  rEMSettingsNavigationDeepLinkGeneralPath = [NSString stringWithFormat:@"%@#TODAY_NOTIFICATIONS", REMSettingsNavigationDeepLinkGeneralPath];
+  v10 = [NSURL URLWithString:rEMSettingsNavigationDeepLinkGeneralPath];
 
   v11 = [_NSLocalizedStringResource alloc];
   v12 = +[NSLocale currentLocale];
   v13 = [NSBundle bundleForClass:objc_opt_class()];
-  v14 = [v13 bundleURL];
-  v15 = [v11 initWithKey:@"Toggle Today Notifications Settings" table:0 locale:v12 bundleURL:v14];
+  bundleURL = [v13 bundleURL];
+  v15 = [v11 initWithKey:@"Toggle Today Notifications Settings" table:0 locale:v12 bundleURL:bundleURL];
 
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_5560;
   v20[3] = &unk_352B0;
   v20[4] = self;
-  v16 = v8;
+  v16 = unsavedTodayNotificationFireTime;
   v21 = v16;
-  v17 = v6;
+  v17 = specifierCopy;
   v22 = v17;
   v18 = objc_retainBlock(v20);
   [(REMSettingsController *)self pe_registerUndoActionName:v15 associatedDeepLink:v10 undoAction:v18];
-  LODWORD(v13) = [v7 BOOLValue];
+  LODWORD(v13) = [setCopy BOOLValue];
 
   v19 = 0;
   if (v13)
@@ -560,25 +560,25 @@ LABEL_36:
   [(REMSettingsController *)self reloadTodayNotificationSpecifiers:1];
 }
 
-- (void)didTapTodayNotificationTimeButton:(id)a3
+- (void)didTapTodayNotificationTimeButton:(id)button
 {
   [(REMSettingsController *)self setTodayNotificationTimePickerVisible:[(REMSettingsController *)self todayNotificationTimePickerVisible]^ 1];
 
   [(REMSettingsController *)self reloadTodayNotificationSpecifiers:1];
 }
 
-- (id)datePickerForSpecifier:(id)a3
+- (id)datePickerForSpecifier:(id)specifier
 {
   v4 = objc_alloc_init(UIDatePicker);
   [v4 setDatePickerMode:0];
   [v4 setMinuteInterval:5];
   [v4 setPreferredDatePickerStyle:1];
   [v4 setRoundsToMinuteInterval:0];
-  v5 = [(REMSettingsController *)self unsavedTodayNotificationFireTime];
-  if (v5)
+  unsavedTodayNotificationFireTime = [(REMSettingsController *)self unsavedTodayNotificationFireTime];
+  if (unsavedTodayNotificationFireTime)
   {
     v6 = +[NSCalendar currentCalendar];
-    v7 = [v6 dateFromComponents:v5];
+    v7 = [v6 dateFromComponents:unsavedTodayNotificationFireTime];
 
     if (v7)
     {
@@ -592,72 +592,72 @@ LABEL_36:
   return v4;
 }
 
-- (void)datePickerChanged:(id)a3
+- (void)datePickerChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   objc_opt_class();
   v8 = REMCheckedDynamicCast();
 
-  v5 = [v8 date];
+  date = [v8 date];
   v6 = +[NSCalendar currentCalendar];
-  v7 = [v6 components:96 fromDate:v5];
+  v7 = [v6 components:96 fromDate:date];
 
   [(REMSettingsController *)self setUnsavedTodayNotificationFireTime:v7];
   [(REMSettingsController *)self reloadTodayNotificationSpecifiers:0];
 }
 
-- (void)datePickerEditingDidEnd:(id)a3
+- (void)datePickerEditingDidEnd:(id)end
 {
-  v4 = a3;
+  endCopy = end;
   objc_opt_class();
   v5 = REMCheckedDynamicCast();
 
   [(REMSettingsController *)self decreaseMinuteIntervalIfNeededForDatePicker:v5];
 }
 
-- (void)decreaseMinuteIntervalIfNeededForDatePicker:(id)a3
+- (void)decreaseMinuteIntervalIfNeededForDatePicker:(id)picker
 {
-  v6 = a3;
-  if ([v6 minuteInterval] != &dword_0 + 1)
+  pickerCopy = picker;
+  if ([pickerCopy minuteInterval] != &dword_0 + 1)
   {
-    v3 = [v6 date];
+    date = [pickerCopy date];
     v4 = +[NSCalendar currentCalendar];
-    v5 = [v4 component:64 fromDate:v3];
+    v5 = [v4 component:64 fromDate:date];
 
-    if (v5 % [v6 minuteInterval])
+    if (v5 % [pickerCopy minuteInterval])
     {
-      [v6 setMinuteInterval:1];
+      [pickerCopy setMinuteInterval:1];
     }
   }
 }
 
 - (BOOL)saveTodayNotificationFireTimeIfNeeded
 {
-  v3 = [(REMSettingsController *)self unsavedTodayNotificationFireTime];
-  v4 = [(REMSettingsController *)self daemonUserDefaults];
-  v5 = [v4 todayNotificationFireTime];
+  unsavedTodayNotificationFireTime = [(REMSettingsController *)self unsavedTodayNotificationFireTime];
+  daemonUserDefaults = [(REMSettingsController *)self daemonUserDefaults];
+  todayNotificationFireTime = [daemonUserDefaults todayNotificationFireTime];
 
-  if (v3 != v5)
+  if (unsavedTodayNotificationFireTime != todayNotificationFireTime)
   {
-    v6 = [(REMSettingsController *)self unsavedTodayNotificationFireTime];
-    v7 = [(REMSettingsController *)self daemonUserDefaults];
-    [v7 setTodayNotificationFireTime:v6];
+    unsavedTodayNotificationFireTime2 = [(REMSettingsController *)self unsavedTodayNotificationFireTime];
+    daemonUserDefaults2 = [(REMSettingsController *)self daemonUserDefaults];
+    [daemonUserDefaults2 setTodayNotificationFireTime:unsavedTodayNotificationFireTime2];
   }
 
-  return v3 != v5;
+  return unsavedTodayNotificationFireTime != todayNotificationFireTime;
 }
 
 - (id)todayNotificationTimeString
 {
-  v2 = [(REMSettingsController *)self unsavedTodayNotificationFireTime];
-  if (v2)
+  unsavedTodayNotificationFireTime = [(REMSettingsController *)self unsavedTodayNotificationFireTime];
+  if (unsavedTodayNotificationFireTime)
   {
     v3 = objc_alloc_init(NSDateFormatter);
     [v3 setTimeStyle:1];
     [v3 setDateStyle:0];
     v4 = +[NSCalendar currentCalendar];
     v5 = [NSDate dateWithTimeIntervalSinceReferenceDate:0.0];
-    v6 = [v4 dateBySettingHour:objc_msgSend(v2 minute:"hour") second:objc_msgSend(v2 ofDate:"minute") options:{0, v5, 0}];
+    v6 = [v4 dateBySettingHour:objc_msgSend(unsavedTodayNotificationFireTime minute:"hour") second:objc_msgSend(unsavedTodayNotificationFireTime ofDate:"minute") options:{0, v5, 0}];
     v7 = [v3 stringFromDate:v6];
   }
 
@@ -681,92 +681,92 @@ LABEL_36:
 {
   if (*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers])
   {
-    v3 = [(REMSettingsController *)self defaultListSpecifier];
-    [(REMSettingsController *)self reloadSpecifier:v3];
+    defaultListSpecifier = [(REMSettingsController *)self defaultListSpecifier];
+    [(REMSettingsController *)self reloadSpecifier:defaultListSpecifier];
   }
 }
 
-- (id)timeZoneOverrideState:(id)a3
+- (id)timeZoneOverrideState:(id)state
 {
-  v4 = [(REMSettingsController *)self daemonUserDefaults];
-  v5 = [v4 timeZoneOverrideEnabled];
+  daemonUserDefaults = [(REMSettingsController *)self daemonUserDefaults];
+  timeZoneOverrideEnabled = [daemonUserDefaults timeZoneOverrideEnabled];
 
   v6 = REMSettingsBundleGet();
   v7 = [v6 localizedStringForKey:@"Automatic" value:&stru_35EE8 table:0];
 
-  if (v5)
+  if (timeZoneOverrideEnabled)
   {
-    v8 = [(REMSettingsController *)self timeZoneOverrideName];
+    timeZoneOverrideName = [(REMSettingsController *)self timeZoneOverrideName];
   }
 
   else
   {
-    v8 = v7;
+    timeZoneOverrideName = v7;
   }
 
-  v9 = v8;
+  v9 = timeZoneOverrideName;
 
   return v9;
 }
 
 - (void)queryTimeZoneOverrideName
 {
-  v3 = [(REMSettingsController *)self daemonUserDefaults];
-  v4 = [v3 timeZoneOverride];
+  daemonUserDefaults = [(REMSettingsController *)self daemonUserDefaults];
+  timeZoneOverride = [daemonUserDefaults timeZoneOverride];
 
-  v5 = [NSTimeZone timeZoneWithName:v4];
+  v5 = [NSTimeZone timeZoneWithName:timeZoneOverride];
   v6 = [GEORegionStore alloc];
   v7 = +[NSLocale currentLocale];
   v8 = [v6 initWithLocale:v7];
 
   objc_initWeak(&location, self);
-  v9 = [v5 name];
+  name = [v5 name];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_5FA4;
   v10[3] = &unk_352D8;
   objc_copyWeak(&v11, &location);
-  [v8 regionsWithTimeZoneName:v9 types:8 sort:2 cursor:v10 finished:&stru_35318];
+  [v8 regionsWithTimeZoneName:name types:8 sort:2 cursor:v10 finished:&stru_35318];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (id)disableAssignmentNotifications:(id)a3
+- (id)disableAssignmentNotifications:(id)notifications
 {
-  v3 = [(REMSettingsController *)self daemonUserDefaults];
-  v4 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v3 enableAssignmentNotifications] ^ 1);
+  daemonUserDefaults = [(REMSettingsController *)self daemonUserDefaults];
+  v4 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [daemonUserDefaults enableAssignmentNotifications] ^ 1);
 
   return v4;
 }
 
-- (void)setDisableAssignmentNotifications:(id)a3 specifier:(id)a4
+- (void)setDisableAssignmentNotifications:(id)notifications specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(REMSettingsController *)self daemonUserDefaults];
-  v7 = [v6 enableAssignmentNotifications];
+  notificationsCopy = notifications;
+  daemonUserDefaults = [(REMSettingsController *)self daemonUserDefaults];
+  enableAssignmentNotifications = [daemonUserDefaults enableAssignmentNotifications];
 
-  v8 = [NSString stringWithFormat:@"%@#MUTE_NOTIFICATIONS", REMSettingsNavigationDeepLinkGeneralPath];
-  v9 = [NSURL URLWithString:v8];
+  rEMSettingsNavigationDeepLinkGeneralPath = [NSString stringWithFormat:@"%@#MUTE_NOTIFICATIONS", REMSettingsNavigationDeepLinkGeneralPath];
+  v9 = [NSURL URLWithString:rEMSettingsNavigationDeepLinkGeneralPath];
 
   v10 = [_NSLocalizedStringResource alloc];
   v11 = +[NSLocale currentLocale];
   v12 = [NSBundle bundleForClass:objc_opt_class()];
-  v13 = [v12 bundleURL];
-  v14 = [v10 initWithKey:@"Toggle Mute Notifications Settings" table:0 locale:v11 bundleURL:v13];
+  bundleURL = [v12 bundleURL];
+  v14 = [v10 initWithKey:@"Toggle Mute Notifications Settings" table:0 locale:v11 bundleURL:bundleURL];
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_62C4;
   v17[3] = &unk_35340;
   v17[4] = self;
-  v18 = v7;
+  v18 = enableAssignmentNotifications;
   v15 = objc_retainBlock(v17);
   [(REMSettingsController *)self pe_registerUndoActionName:v14 associatedDeepLink:v9 undoAction:v15];
-  LODWORD(v11) = [v5 BOOLValue];
+  LODWORD(v11) = [notificationsCopy BOOLValue];
 
-  v16 = [(REMSettingsController *)self daemonUserDefaults];
-  [v16 setEnableAssignmentNotifications:v11 ^ 1];
+  daemonUserDefaults2 = [(REMSettingsController *)self daemonUserDefaults];
+  [daemonUserDefaults2 setEnableAssignmentNotifications:v11 ^ 1];
 }
 
 - (id)clearCategorizationDetailText
@@ -799,20 +799,20 @@ LABEL_36:
   return v6;
 }
 
-- (void)clearCategorizationButtonDidTapped:(id)a3
+- (void)clearCategorizationButtonDidTapped:(id)tapped
 {
   v4 = +[UIDevice currentDevice];
   if ([v4 userInterfaceIdiom] == &dword_0 + 1)
   {
-    v5 = [(REMSettingsController *)self clearCategorizationDetailText];
+    clearCategorizationDetailText = [(REMSettingsController *)self clearCategorizationDetailText];
   }
 
   else
   {
-    v5 = 0;
+    clearCategorizationDetailText = 0;
   }
 
-  v6 = [UIAlertController alertControllerWithTitle:0 message:v5 preferredStyle:0];
+  v6 = [UIAlertController alertControllerWithTitle:0 message:clearCategorizationDetailText preferredStyle:0];
   if (rem_feature_enabled() && +[_TtC19ReminderKitInternal35REMModelsAvailabilityManagerWrapper supportsAutoCategorizationGenerativeModels])
   {
     v7 = REMSettingsBundleGet();
@@ -860,124 +860,124 @@ LABEL_36:
   [v2 clearAutoCategorizationLocalCorrectionsOfListsOwnedByCurrentUserWithCompletionHandler:&stru_353C8];
 }
 
-- (id)showRemindersAsOverdue:(id)a3
+- (id)showRemindersAsOverdue:(id)overdue
 {
-  v3 = [(REMSettingsController *)self daemonUserDefaults];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 showRemindersAsOverdue]);
+  daemonUserDefaults = [(REMSettingsController *)self daemonUserDefaults];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [daemonUserDefaults showRemindersAsOverdue]);
 
   return v4;
 }
 
-- (void)setShowRemindersAsOverdue:(id)a3 specifier:(id)a4
+- (void)setShowRemindersAsOverdue:(id)overdue specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(REMSettingsController *)self daemonUserDefaults];
-  v7 = [v6 showRemindersAsOverdue];
+  overdueCopy = overdue;
+  daemonUserDefaults = [(REMSettingsController *)self daemonUserDefaults];
+  showRemindersAsOverdue = [daemonUserDefaults showRemindersAsOverdue];
 
-  v8 = [NSString stringWithFormat:@"%@#SHOW_AS_OVERDUE", REMSettingsNavigationDeepLinkGeneralPath];
-  v9 = [NSURL URLWithString:v8];
+  rEMSettingsNavigationDeepLinkGeneralPath = [NSString stringWithFormat:@"%@#SHOW_AS_OVERDUE", REMSettingsNavigationDeepLinkGeneralPath];
+  v9 = [NSURL URLWithString:rEMSettingsNavigationDeepLinkGeneralPath];
 
   v10 = [_NSLocalizedStringResource alloc];
   v11 = +[NSLocale currentLocale];
   v12 = [NSBundle bundleForClass:objc_opt_class()];
-  v13 = [v12 bundleURL];
-  v14 = [v10 initWithKey:@"Toggle Show As Overdue Settings" table:0 locale:v11 bundleURL:v13];
+  bundleURL = [v12 bundleURL];
+  v14 = [v10 initWithKey:@"Toggle Show As Overdue Settings" table:0 locale:v11 bundleURL:bundleURL];
 
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_693C;
   v18[3] = &unk_35340;
   v18[4] = self;
-  v19 = v7;
+  v19 = showRemindersAsOverdue;
   v15 = objc_retainBlock(v18);
   [(REMSettingsController *)self pe_registerUndoActionName:v14 associatedDeepLink:v9 undoAction:v15];
-  v16 = [v5 BOOLValue];
+  bOOLValue = [overdueCopy BOOLValue];
 
-  v17 = [(REMSettingsController *)self daemonUserDefaults];
-  [v17 setShowRemindersAsOverdue:v16];
+  daemonUserDefaults2 = [(REMSettingsController *)self daemonUserDefaults];
+  [daemonUserDefaults2 setShowRemindersAsOverdue:bOOLValue];
 }
 
-- (id)enableAutoCompleteReminders:(id)a3
+- (id)enableAutoCompleteReminders:(id)reminders
 {
-  v3 = [(REMSettingsController *)self daemonUserDefaults];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 enableAutoCompleteReminders]);
+  daemonUserDefaults = [(REMSettingsController *)self daemonUserDefaults];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [daemonUserDefaults enableAutoCompleteReminders]);
 
   return v4;
 }
 
-- (void)setEnableAutoCompleteReminders:(id)a3 specifier:(id)a4
+- (void)setEnableAutoCompleteReminders:(id)reminders specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(REMSettingsController *)self daemonUserDefaults];
-  v7 = [v6 enableAutoCompleteReminders];
+  remindersCopy = reminders;
+  daemonUserDefaults = [(REMSettingsController *)self daemonUserDefaults];
+  enableAutoCompleteReminders = [daemonUserDefaults enableAutoCompleteReminders];
 
-  v8 = [NSString stringWithFormat:@"%@#SHOW_SUGGESTIONS", REMSettingsNavigationDeepLinkGeneralPath];
-  v9 = [NSURL URLWithString:v8];
+  rEMSettingsNavigationDeepLinkGeneralPath = [NSString stringWithFormat:@"%@#SHOW_SUGGESTIONS", REMSettingsNavigationDeepLinkGeneralPath];
+  v9 = [NSURL URLWithString:rEMSettingsNavigationDeepLinkGeneralPath];
 
   v10 = [_NSLocalizedStringResource alloc];
   v11 = +[NSLocale currentLocale];
   v12 = [NSBundle bundleForClass:objc_opt_class()];
-  v13 = [v12 bundleURL];
-  v14 = [v10 initWithKey:@"Toggle Show Suggestions Settings" table:0 locale:v11 bundleURL:v13];
+  bundleURL = [v12 bundleURL];
+  v14 = [v10 initWithKey:@"Toggle Show Suggestions Settings" table:0 locale:v11 bundleURL:bundleURL];
 
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_6BC4;
   v18[3] = &unk_35340;
   v18[4] = self;
-  v19 = v7;
+  v19 = enableAutoCompleteReminders;
   v15 = objc_retainBlock(v18);
   [(REMSettingsController *)self pe_registerUndoActionName:v14 associatedDeepLink:v9 undoAction:v15];
-  v16 = [v5 BOOLValue];
+  bOOLValue = [remindersCopy BOOLValue];
 
-  v17 = [(REMSettingsController *)self daemonUserDefaults];
-  [v17 setEnableAutoCompleteReminders:v16];
+  daemonUserDefaults2 = [(REMSettingsController *)self daemonUserDefaults];
+  [daemonUserDefaults2 setEnableAutoCompleteReminders:bOOLValue];
 }
 
 - (BOOL)saveAppBadgeCountCriteriaIfNeeded
 {
-  v3 = [(REMSettingsController *)self initialShouldIncludeRemindersDueTodayInBadgeCount];
-  v4 = [(REMSettingsController *)self daemonUserDefaults];
-  v5 = [v4 shouldIncludeRemindersDueTodayInBadgeCount];
+  initialShouldIncludeRemindersDueTodayInBadgeCount = [(REMSettingsController *)self initialShouldIncludeRemindersDueTodayInBadgeCount];
+  daemonUserDefaults = [(REMSettingsController *)self daemonUserDefaults];
+  shouldIncludeRemindersDueTodayInBadgeCount = [daemonUserDefaults shouldIncludeRemindersDueTodayInBadgeCount];
 
-  return v3 ^ v5;
+  return initialShouldIncludeRemindersDueTodayInBadgeCount ^ shouldIncludeRemindersDueTodayInBadgeCount;
 }
 
-- (id)shouldIncludeRemindersDueTodayInBadgeCount:(id)a3
+- (id)shouldIncludeRemindersDueTodayInBadgeCount:(id)count
 {
-  v3 = [(REMSettingsController *)self daemonUserDefaults];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 shouldIncludeRemindersDueTodayInBadgeCount]);
+  daemonUserDefaults = [(REMSettingsController *)self daemonUserDefaults];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [daemonUserDefaults shouldIncludeRemindersDueTodayInBadgeCount]);
 
   return v4;
 }
 
-- (void)setShouldIncludeRemindersDueTodayInBadgeCount:(id)a3 specifier:(id)a4
+- (void)setShouldIncludeRemindersDueTodayInBadgeCount:(id)count specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(REMSettingsController *)self daemonUserDefaults];
-  v7 = [v6 shouldIncludeRemindersDueTodayInBadgeCount];
+  countCopy = count;
+  daemonUserDefaults = [(REMSettingsController *)self daemonUserDefaults];
+  shouldIncludeRemindersDueTodayInBadgeCount = [daemonUserDefaults shouldIncludeRemindersDueTodayInBadgeCount];
 
-  v8 = [NSString stringWithFormat:@"%@#INCLUDE_DUE_TODAY", REMSettingsNavigationDeepLinkGeneralPath];
-  v9 = [NSURL URLWithString:v8];
+  rEMSettingsNavigationDeepLinkGeneralPath = [NSString stringWithFormat:@"%@#INCLUDE_DUE_TODAY", REMSettingsNavigationDeepLinkGeneralPath];
+  v9 = [NSURL URLWithString:rEMSettingsNavigationDeepLinkGeneralPath];
 
   v10 = [_NSLocalizedStringResource alloc];
   v11 = +[NSLocale currentLocale];
   v12 = [NSBundle bundleForClass:objc_opt_class()];
-  v13 = [v12 bundleURL];
-  v14 = [v10 initWithKey:@"Toggle Include Due Today Settings" table:0 locale:v11 bundleURL:v13];
+  bundleURL = [v12 bundleURL];
+  v14 = [v10 initWithKey:@"Toggle Include Due Today Settings" table:0 locale:v11 bundleURL:bundleURL];
 
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_6E9C;
   v18[3] = &unk_35340;
   v18[4] = self;
-  v19 = v7;
+  v19 = shouldIncludeRemindersDueTodayInBadgeCount;
   v15 = objc_retainBlock(v18);
   [(REMSettingsController *)self pe_registerUndoActionName:v14 associatedDeepLink:v9 undoAction:v15];
-  v16 = [v5 BOOLValue];
+  bOOLValue = [countCopy BOOLValue];
 
-  v17 = [(REMSettingsController *)self daemonUserDefaults];
-  [v17 setShouldIncludeRemindersDueTodayInBadgeCount:v16];
+  daemonUserDefaults2 = [(REMSettingsController *)self daemonUserDefaults];
+  [daemonUserDefaults2 setShouldIncludeRemindersDueTodayInBadgeCount:bOOLValue];
 }
 
 - (BOOL)shouldHideGrocerySectionIfNeeded
@@ -1008,21 +1008,21 @@ LABEL_4:
   }
 
   v8 = +[REMUserDefaults daemonUserDefaults];
-  v9 = [v8 preferredLocalizations];
-  v10 = [v9 firstObject];
-  v11 = v10;
-  if (v10)
+  preferredLocalizations = [v8 preferredLocalizations];
+  firstObject = [preferredLocalizations firstObject];
+  v11 = firstObject;
+  if (firstObject)
   {
-    v12 = v10;
+    localeIdentifier = firstObject;
   }
 
   else
   {
     v13 = +[NSLocale currentLocale];
-    v12 = [v13 localeIdentifier];
+    localeIdentifier = [v13 localeIdentifier];
   }
 
-  v6 = [_TtC19ReminderKitInternal20REMGroceryDummyModel isGrocerySupportedForLocaleWithIdentifier:v12]^ 1;
+  v6 = [_TtC19ReminderKitInternal20REMGroceryDummyModel isGrocerySupportedForLocaleWithIdentifier:localeIdentifier]^ 1;
 LABEL_10:
 
   return v6;

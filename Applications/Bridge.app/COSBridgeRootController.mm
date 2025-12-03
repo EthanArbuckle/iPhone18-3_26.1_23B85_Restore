@@ -1,21 +1,21 @@
 @interface COSBridgeRootController
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSBridgeRootController
 
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllersCopy = controllers;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [controllersCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -27,7 +27,7 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(controllersCopy);
         }
 
         [(COSBridgeRootController *)self setupControllerForToolbar:*(*(&v14 + 1) + 8 * v10)];
@@ -35,7 +35,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [controllersCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -43,25 +43,25 @@
 
   v13.receiver = self;
   v13.super_class = COSBridgeRootController;
-  [(COSBridgeRootController *)&v13 setViewControllers:v6 animated:v4];
-  v11 = [v6 firstObject];
-  if ([v11 conformsToProtocol:&OBJC_PROTOCOL___PSController])
+  [(COSBridgeRootController *)&v13 setViewControllers:controllersCopy animated:animatedCopy];
+  firstObject = [controllersCopy firstObject];
+  if ([firstObject conformsToProtocol:&OBJC_PROTOCOL___PSController])
   {
-    v12 = [(COSBridgeRootController *)self rootListController];
-    [v11 setParentController:v12];
+    rootListController = [(COSBridgeRootController *)self rootListController];
+    [firstObject setParentController:rootListController];
   }
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  [(COSBridgeRootController *)self setupControllerForToolbar:v6];
-  if (v4)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  [(COSBridgeRootController *)self setupControllerForToolbar:controllerCopy];
+  if (animatedCopy)
   {
     v10.receiver = self;
     v10.super_class = COSBridgeRootController;
-    [(COSBridgeRootController *)&v10 pushViewController:v6 animated:1];
+    [(COSBridgeRootController *)&v10 pushViewController:controllerCopy animated:1];
   }
 
   else
@@ -70,25 +70,25 @@
     v7[1] = 3221225472;
     v7[2] = sub_10009ACCC;
     v7[3] = &unk_100268358;
-    v8 = v6;
-    v9 = self;
+    v8 = controllerCopy;
+    selfCopy = self;
     [UIViewController _performWithoutDeferringTransitions:v7];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = COSBridgeRootController;
-  [(COSBridgeRootController *)&v4 viewWillAppear:a3];
+  [(COSBridgeRootController *)&v4 viewWillAppear:appear];
   [(COSBridgeRootController *)self setIsPresentedOnParentViewController:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = COSBridgeRootController;
-  [(COSBridgeRootController *)&v6 viewDidDisappear:a3];
+  [(COSBridgeRootController *)&v6 viewDidDisappear:disappear];
   if ([(COSBridgeRootController *)self isMovingFromParentViewController])
   {
     [(COSBridgeRootController *)self setIsPresentedOnParentViewController:0];

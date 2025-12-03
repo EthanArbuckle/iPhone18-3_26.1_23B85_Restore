@@ -1,111 +1,111 @@
 @interface _SFPBColor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (_SFPBAppColor)appColor;
 - (_SFPBCalendarColor)calendarColor;
-- (_SFPBColor)initWithDictionary:(id)a3;
-- (_SFPBColor)initWithFacade:(id)a3;
-- (_SFPBColor)initWithJSON:(id)a3;
+- (_SFPBColor)initWithDictionary:(id)dictionary;
+- (_SFPBColor)initWithFacade:(id)facade;
+- (_SFPBColor)initWithJSON:(id)n;
 - (_SFPBGradientColor)gradientColor;
 - (_SFPBImageDerivedColor)imageDerivedColor;
 - (_SFPBWeatherColor)weatherColor;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setAppColor:(id)a3;
-- (void)setCalendarColor:(id)a3;
-- (void)setGradientColor:(id)a3;
-- (void)setImageDerivedColor:(id)a3;
-- (void)setWeatherColor:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAppColor:(id)color;
+- (void)setCalendarColor:(id)color;
+- (void)setGradientColor:(id)color;
+- (void)setImageDerivedColor:(id)color;
+- (void)setWeatherColor:(id)color;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBColor
 
-- (_SFPBColor)initWithFacade:(id)a3
+- (_SFPBColor)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBColor *)self init];
   if (v5)
   {
-    if ([v4 hasRedComponent])
+    if ([facadeCopy hasRedComponent])
     {
       v6 = [_SFPBGraphicalFloat alloc];
-      [v4 redComponent];
+      [facadeCopy redComponent];
       v7 = [(_SFPBGraphicalFloat *)v6 initWithCGFloat:?];
       [(_SFPBColor *)v5 setRedComponent:v7];
     }
 
-    if ([v4 hasGreenComponent])
+    if ([facadeCopy hasGreenComponent])
     {
       v8 = [_SFPBGraphicalFloat alloc];
-      [v4 greenComponent];
+      [facadeCopy greenComponent];
       v9 = [(_SFPBGraphicalFloat *)v8 initWithCGFloat:?];
       [(_SFPBColor *)v5 setGreenComponent:v9];
     }
 
-    if ([v4 hasBlueComponent])
+    if ([facadeCopy hasBlueComponent])
     {
       v10 = [_SFPBGraphicalFloat alloc];
-      [v4 blueComponent];
+      [facadeCopy blueComponent];
       v11 = [(_SFPBGraphicalFloat *)v10 initWithCGFloat:?];
       [(_SFPBColor *)v5 setBlueComponent:v11];
     }
 
-    if ([v4 hasAlphaComponent])
+    if ([facadeCopy hasAlphaComponent])
     {
       v12 = [_SFPBGraphicalFloat alloc];
-      [v4 alphaComponent];
+      [facadeCopy alphaComponent];
       v13 = [(_SFPBGraphicalFloat *)v12 initWithCGFloat:?];
       [(_SFPBColor *)v5 setAlphaComponent:v13];
     }
 
-    if ([v4 hasColorTintStyle])
+    if ([facadeCopy hasColorTintStyle])
     {
-      -[_SFPBColor setColorTintStyle:](v5, "setColorTintStyle:", [v4 colorTintStyle]);
+      -[_SFPBColor setColorTintStyle:](v5, "setColorTintStyle:", [facadeCopy colorTintStyle]);
     }
 
-    v14 = [v4 darkModeColor];
+    darkModeColor = [facadeCopy darkModeColor];
 
-    if (v14)
+    if (darkModeColor)
     {
       v15 = [_SFPBColor alloc];
-      v16 = [v4 darkModeColor];
-      v17 = [(_SFPBColor *)v15 initWithFacade:v16];
+      darkModeColor2 = [facadeCopy darkModeColor];
+      v17 = [(_SFPBColor *)v15 initWithFacade:darkModeColor2];
       [(_SFPBColor *)v5 setDarkModeColor:v17];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [[_SFPBCalendarColor alloc] initWithFacade:v4];
+      v18 = [[_SFPBCalendarColor alloc] initWithFacade:facadeCopy];
       [(_SFPBColor *)v5 setCalendarColor:v18];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [[_SFPBAppColor alloc] initWithFacade:v4];
+      v19 = [[_SFPBAppColor alloc] initWithFacade:facadeCopy];
       [(_SFPBColor *)v5 setAppColor:v19];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = [[_SFPBImageDerivedColor alloc] initWithFacade:v4];
+      v20 = [[_SFPBImageDerivedColor alloc] initWithFacade:facadeCopy];
       [(_SFPBColor *)v5 setImageDerivedColor:v20];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = [[_SFPBGradientColor alloc] initWithFacade:v4];
+      v21 = [[_SFPBGradientColor alloc] initWithFacade:facadeCopy];
       [(_SFPBColor *)v5 setGradientColor:v21];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v22 = [[_SFPBWeatherColor alloc] initWithFacade:v4];
+      v22 = [[_SFPBWeatherColor alloc] initWithFacade:facadeCopy];
       [(_SFPBColor *)v5 setWeatherColor:v22];
     }
 
@@ -115,15 +115,15 @@
   return v5;
 }
 
-- (_SFPBColor)initWithDictionary:(id)a3
+- (_SFPBColor)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = _SFPBColor;
   v5 = [(_SFPBColor *)&v33 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"redComponent"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"redComponent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -131,7 +131,7 @@
       [(_SFPBColor *)v5 setRedComponent:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"greenComponent"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"greenComponent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -139,7 +139,7 @@
       [(_SFPBColor *)v5 setGreenComponent:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"blueComponent"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"blueComponent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -148,7 +148,7 @@
     }
 
     v31 = v8;
-    v12 = [v4 objectForKeyedSubscript:@"alphaComponent"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"alphaComponent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -157,14 +157,14 @@
     }
 
     v30 = v10;
-    v14 = [v4 objectForKeyedSubscript:{@"colorTintStyle", v12}];
+    v14 = [dictionaryCopy objectForKeyedSubscript:{@"colorTintStyle", v12}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBColor setColorTintStyle:](v5, "setColorTintStyle:", [v14 intValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"darkModeColor"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"darkModeColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -172,7 +172,7 @@
       [(_SFPBColor *)v5 setDarkModeColor:v16];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"calendarColor"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"calendarColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -180,7 +180,7 @@
       [(_SFPBColor *)v5 setCalendarColor:v18];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"appColor"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"appColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -189,7 +189,7 @@
     }
 
     v32 = v6;
-    v21 = [v4 objectForKeyedSubscript:@"imageDerivedColor"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"imageDerivedColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -197,7 +197,7 @@
       [(_SFPBColor *)v5 setImageDerivedColor:v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"gradientColor"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"gradientColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -205,7 +205,7 @@
       [(_SFPBColor *)v5 setGradientColor:v24];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"weatherColor"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"weatherColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -219,30 +219,30 @@
   return v5;
 }
 
-- (_SFPBColor)initWithJSON:(id)a3
+- (_SFPBColor)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBColor *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBColor *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBColor *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -255,184 +255,184 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_alphaComponent)
   {
-    v4 = [(_SFPBColor *)self alphaComponent];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    alphaComponent = [(_SFPBColor *)self alphaComponent];
+    dictionaryRepresentation = [alphaComponent dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"alphaComponent"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"alphaComponent"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"alphaComponent"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"alphaComponent"];
     }
   }
 
   if (self->_appColor)
   {
-    v7 = [(_SFPBColor *)self appColor];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    appColor = [(_SFPBColor *)self appColor];
+    dictionaryRepresentation2 = [appColor dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"appColor"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"appColor"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"appColor"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"appColor"];
     }
   }
 
   if (self->_blueComponent)
   {
-    v10 = [(_SFPBColor *)self blueComponent];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    blueComponent = [(_SFPBColor *)self blueComponent];
+    dictionaryRepresentation3 = [blueComponent dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"blueComponent"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"blueComponent"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"blueComponent"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"blueComponent"];
     }
   }
 
   if (self->_calendarColor)
   {
-    v13 = [(_SFPBColor *)self calendarColor];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    calendarColor = [(_SFPBColor *)self calendarColor];
+    dictionaryRepresentation4 = [calendarColor dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"calendarColor"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"calendarColor"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"calendarColor"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"calendarColor"];
     }
   }
 
   if (self->_colorTintStyle)
   {
-    v16 = [(_SFPBColor *)self colorTintStyle];
-    if (v16 >= 4)
+    colorTintStyle = [(_SFPBColor *)self colorTintStyle];
+    if (colorTintStyle >= 4)
     {
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v16];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", colorTintStyle];
     }
 
     else
     {
-      v17 = off_1E7ACE560[v16];
+      v17 = off_1E7ACE560[colorTintStyle];
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"colorTintStyle"];
+    [dictionary setObject:v17 forKeyedSubscript:@"colorTintStyle"];
   }
 
   if (self->_darkModeColor)
   {
-    v18 = [(_SFPBColor *)self darkModeColor];
-    v19 = [v18 dictionaryRepresentation];
-    if (v19)
+    darkModeColor = [(_SFPBColor *)self darkModeColor];
+    dictionaryRepresentation5 = [darkModeColor dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v19 forKeyedSubscript:@"darkModeColor"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"darkModeColor"];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v20 forKeyedSubscript:@"darkModeColor"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"darkModeColor"];
     }
   }
 
   if (self->_gradientColor)
   {
-    v21 = [(_SFPBColor *)self gradientColor];
-    v22 = [v21 dictionaryRepresentation];
-    if (v22)
+    gradientColor = [(_SFPBColor *)self gradientColor];
+    dictionaryRepresentation6 = [gradientColor dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v22 forKeyedSubscript:@"gradientColor"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"gradientColor"];
     }
 
     else
     {
-      v23 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v23 forKeyedSubscript:@"gradientColor"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"gradientColor"];
     }
   }
 
   if (self->_greenComponent)
   {
-    v24 = [(_SFPBColor *)self greenComponent];
-    v25 = [v24 dictionaryRepresentation];
-    if (v25)
+    greenComponent = [(_SFPBColor *)self greenComponent];
+    dictionaryRepresentation7 = [greenComponent dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v25 forKeyedSubscript:@"greenComponent"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"greenComponent"];
     }
 
     else
     {
-      v26 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v26 forKeyedSubscript:@"greenComponent"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"greenComponent"];
     }
   }
 
   if (self->_imageDerivedColor)
   {
-    v27 = [(_SFPBColor *)self imageDerivedColor];
-    v28 = [v27 dictionaryRepresentation];
-    if (v28)
+    imageDerivedColor = [(_SFPBColor *)self imageDerivedColor];
+    dictionaryRepresentation8 = [imageDerivedColor dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v28 forKeyedSubscript:@"imageDerivedColor"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"imageDerivedColor"];
     }
 
     else
     {
-      v29 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v29 forKeyedSubscript:@"imageDerivedColor"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"imageDerivedColor"];
     }
   }
 
   if (self->_redComponent)
   {
-    v30 = [(_SFPBColor *)self redComponent];
-    v31 = [v30 dictionaryRepresentation];
-    if (v31)
+    redComponent = [(_SFPBColor *)self redComponent];
+    dictionaryRepresentation9 = [redComponent dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v31 forKeyedSubscript:@"redComponent"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"redComponent"];
     }
 
     else
     {
-      v32 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v32 forKeyedSubscript:@"redComponent"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"redComponent"];
     }
   }
 
   if (self->_weatherColor)
   {
-    v33 = [(_SFPBColor *)self weatherColor];
-    v34 = [v33 dictionaryRepresentation];
-    if (v34)
+    weatherColor = [(_SFPBColor *)self weatherColor];
+    dictionaryRepresentation10 = [weatherColor dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v34 forKeyedSubscript:@"weatherColor"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"weatherColor"];
     }
 
     else
     {
-      v35 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v35 forKeyedSubscript:@"weatherColor"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"weatherColor"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -450,28 +450,28 @@
   return v9 ^ v12 ^ [(_SFPBWeatherColor *)self->_weatherColor hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_53;
   }
 
-  v5 = [(_SFPBColor *)self redComponent];
-  v6 = [v4 redComponent];
-  if ((v5 != 0) == (v6 == 0))
+  redComponent = [(_SFPBColor *)self redComponent];
+  redComponent2 = [equalCopy redComponent];
+  if ((redComponent != 0) == (redComponent2 == 0))
   {
     goto LABEL_52;
   }
 
-  v7 = [(_SFPBColor *)self redComponent];
-  if (v7)
+  redComponent3 = [(_SFPBColor *)self redComponent];
+  if (redComponent3)
   {
-    v8 = v7;
-    v9 = [(_SFPBColor *)self redComponent];
-    v10 = [v4 redComponent];
-    v11 = [v9 isEqual:v10];
+    v8 = redComponent3;
+    redComponent4 = [(_SFPBColor *)self redComponent];
+    redComponent5 = [equalCopy redComponent];
+    v11 = [redComponent4 isEqual:redComponent5];
 
     if (!v11)
     {
@@ -483,20 +483,20 @@
   {
   }
 
-  v5 = [(_SFPBColor *)self greenComponent];
-  v6 = [v4 greenComponent];
-  if ((v5 != 0) == (v6 == 0))
+  redComponent = [(_SFPBColor *)self greenComponent];
+  redComponent2 = [equalCopy greenComponent];
+  if ((redComponent != 0) == (redComponent2 == 0))
   {
     goto LABEL_52;
   }
 
-  v12 = [(_SFPBColor *)self greenComponent];
-  if (v12)
+  greenComponent = [(_SFPBColor *)self greenComponent];
+  if (greenComponent)
   {
-    v13 = v12;
-    v14 = [(_SFPBColor *)self greenComponent];
-    v15 = [v4 greenComponent];
-    v16 = [v14 isEqual:v15];
+    v13 = greenComponent;
+    greenComponent2 = [(_SFPBColor *)self greenComponent];
+    greenComponent3 = [equalCopy greenComponent];
+    v16 = [greenComponent2 isEqual:greenComponent3];
 
     if (!v16)
     {
@@ -508,20 +508,20 @@
   {
   }
 
-  v5 = [(_SFPBColor *)self blueComponent];
-  v6 = [v4 blueComponent];
-  if ((v5 != 0) == (v6 == 0))
+  redComponent = [(_SFPBColor *)self blueComponent];
+  redComponent2 = [equalCopy blueComponent];
+  if ((redComponent != 0) == (redComponent2 == 0))
   {
     goto LABEL_52;
   }
 
-  v17 = [(_SFPBColor *)self blueComponent];
-  if (v17)
+  blueComponent = [(_SFPBColor *)self blueComponent];
+  if (blueComponent)
   {
-    v18 = v17;
-    v19 = [(_SFPBColor *)self blueComponent];
-    v20 = [v4 blueComponent];
-    v21 = [v19 isEqual:v20];
+    v18 = blueComponent;
+    blueComponent2 = [(_SFPBColor *)self blueComponent];
+    blueComponent3 = [equalCopy blueComponent];
+    v21 = [blueComponent2 isEqual:blueComponent3];
 
     if (!v21)
     {
@@ -533,20 +533,20 @@
   {
   }
 
-  v5 = [(_SFPBColor *)self alphaComponent];
-  v6 = [v4 alphaComponent];
-  if ((v5 != 0) == (v6 == 0))
+  redComponent = [(_SFPBColor *)self alphaComponent];
+  redComponent2 = [equalCopy alphaComponent];
+  if ((redComponent != 0) == (redComponent2 == 0))
   {
     goto LABEL_52;
   }
 
-  v22 = [(_SFPBColor *)self alphaComponent];
-  if (v22)
+  alphaComponent = [(_SFPBColor *)self alphaComponent];
+  if (alphaComponent)
   {
-    v23 = v22;
-    v24 = [(_SFPBColor *)self alphaComponent];
-    v25 = [v4 alphaComponent];
-    v26 = [v24 isEqual:v25];
+    v23 = alphaComponent;
+    alphaComponent2 = [(_SFPBColor *)self alphaComponent];
+    alphaComponent3 = [equalCopy alphaComponent];
+    v26 = [alphaComponent2 isEqual:alphaComponent3];
 
     if (!v26)
     {
@@ -559,25 +559,25 @@
   }
 
   colorTintStyle = self->_colorTintStyle;
-  if (colorTintStyle != [v4 colorTintStyle])
+  if (colorTintStyle != [equalCopy colorTintStyle])
   {
     goto LABEL_53;
   }
 
-  v5 = [(_SFPBColor *)self darkModeColor];
-  v6 = [v4 darkModeColor];
-  if ((v5 != 0) == (v6 == 0))
+  redComponent = [(_SFPBColor *)self darkModeColor];
+  redComponent2 = [equalCopy darkModeColor];
+  if ((redComponent != 0) == (redComponent2 == 0))
   {
     goto LABEL_52;
   }
 
-  v28 = [(_SFPBColor *)self darkModeColor];
-  if (v28)
+  darkModeColor = [(_SFPBColor *)self darkModeColor];
+  if (darkModeColor)
   {
-    v29 = v28;
-    v30 = [(_SFPBColor *)self darkModeColor];
-    v31 = [v4 darkModeColor];
-    v32 = [v30 isEqual:v31];
+    v29 = darkModeColor;
+    darkModeColor2 = [(_SFPBColor *)self darkModeColor];
+    darkModeColor3 = [equalCopy darkModeColor];
+    v32 = [darkModeColor2 isEqual:darkModeColor3];
 
     if (!v32)
     {
@@ -589,20 +589,20 @@
   {
   }
 
-  v5 = [(_SFPBColor *)self calendarColor];
-  v6 = [v4 calendarColor];
-  if ((v5 != 0) == (v6 == 0))
+  redComponent = [(_SFPBColor *)self calendarColor];
+  redComponent2 = [equalCopy calendarColor];
+  if ((redComponent != 0) == (redComponent2 == 0))
   {
     goto LABEL_52;
   }
 
-  v33 = [(_SFPBColor *)self calendarColor];
-  if (v33)
+  calendarColor = [(_SFPBColor *)self calendarColor];
+  if (calendarColor)
   {
-    v34 = v33;
-    v35 = [(_SFPBColor *)self calendarColor];
-    v36 = [v4 calendarColor];
-    v37 = [v35 isEqual:v36];
+    v34 = calendarColor;
+    calendarColor2 = [(_SFPBColor *)self calendarColor];
+    calendarColor3 = [equalCopy calendarColor];
+    v37 = [calendarColor2 isEqual:calendarColor3];
 
     if (!v37)
     {
@@ -614,20 +614,20 @@
   {
   }
 
-  v5 = [(_SFPBColor *)self appColor];
-  v6 = [v4 appColor];
-  if ((v5 != 0) == (v6 == 0))
+  redComponent = [(_SFPBColor *)self appColor];
+  redComponent2 = [equalCopy appColor];
+  if ((redComponent != 0) == (redComponent2 == 0))
   {
     goto LABEL_52;
   }
 
-  v38 = [(_SFPBColor *)self appColor];
-  if (v38)
+  appColor = [(_SFPBColor *)self appColor];
+  if (appColor)
   {
-    v39 = v38;
-    v40 = [(_SFPBColor *)self appColor];
-    v41 = [v4 appColor];
-    v42 = [v40 isEqual:v41];
+    v39 = appColor;
+    appColor2 = [(_SFPBColor *)self appColor];
+    appColor3 = [equalCopy appColor];
+    v42 = [appColor2 isEqual:appColor3];
 
     if (!v42)
     {
@@ -639,20 +639,20 @@
   {
   }
 
-  v5 = [(_SFPBColor *)self imageDerivedColor];
-  v6 = [v4 imageDerivedColor];
-  if ((v5 != 0) == (v6 == 0))
+  redComponent = [(_SFPBColor *)self imageDerivedColor];
+  redComponent2 = [equalCopy imageDerivedColor];
+  if ((redComponent != 0) == (redComponent2 == 0))
   {
     goto LABEL_52;
   }
 
-  v43 = [(_SFPBColor *)self imageDerivedColor];
-  if (v43)
+  imageDerivedColor = [(_SFPBColor *)self imageDerivedColor];
+  if (imageDerivedColor)
   {
-    v44 = v43;
-    v45 = [(_SFPBColor *)self imageDerivedColor];
-    v46 = [v4 imageDerivedColor];
-    v47 = [v45 isEqual:v46];
+    v44 = imageDerivedColor;
+    imageDerivedColor2 = [(_SFPBColor *)self imageDerivedColor];
+    imageDerivedColor3 = [equalCopy imageDerivedColor];
+    v47 = [imageDerivedColor2 isEqual:imageDerivedColor3];
 
     if (!v47)
     {
@@ -664,20 +664,20 @@
   {
   }
 
-  v5 = [(_SFPBColor *)self gradientColor];
-  v6 = [v4 gradientColor];
-  if ((v5 != 0) == (v6 == 0))
+  redComponent = [(_SFPBColor *)self gradientColor];
+  redComponent2 = [equalCopy gradientColor];
+  if ((redComponent != 0) == (redComponent2 == 0))
   {
     goto LABEL_52;
   }
 
-  v48 = [(_SFPBColor *)self gradientColor];
-  if (v48)
+  gradientColor = [(_SFPBColor *)self gradientColor];
+  if (gradientColor)
   {
-    v49 = v48;
-    v50 = [(_SFPBColor *)self gradientColor];
-    v51 = [v4 gradientColor];
-    v52 = [v50 isEqual:v51];
+    v49 = gradientColor;
+    gradientColor2 = [(_SFPBColor *)self gradientColor];
+    gradientColor3 = [equalCopy gradientColor];
+    v52 = [gradientColor2 isEqual:gradientColor3];
 
     if (!v52)
     {
@@ -689,17 +689,17 @@
   {
   }
 
-  v5 = [(_SFPBColor *)self weatherColor];
-  v6 = [v4 weatherColor];
-  if ((v5 != 0) == (v6 == 0))
+  redComponent = [(_SFPBColor *)self weatherColor];
+  redComponent2 = [equalCopy weatherColor];
+  if ((redComponent != 0) == (redComponent2 == 0))
   {
 LABEL_52:
 
     goto LABEL_53;
   }
 
-  v53 = [(_SFPBColor *)self weatherColor];
-  if (!v53)
+  weatherColor = [(_SFPBColor *)self weatherColor];
+  if (!weatherColor)
   {
 
 LABEL_56:
@@ -707,10 +707,10 @@ LABEL_56:
     goto LABEL_54;
   }
 
-  v54 = v53;
-  v55 = [(_SFPBColor *)self weatherColor];
-  v56 = [v4 weatherColor];
-  v57 = [v55 isEqual:v56];
+  v54 = weatherColor;
+  weatherColor2 = [(_SFPBColor *)self weatherColor];
+  weatherColor3 = [equalCopy weatherColor];
+  v57 = [weatherColor2 isEqual:weatherColor3];
 
   if (v57)
   {
@@ -724,29 +724,29 @@ LABEL_54:
   return v58;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
-  v4 = [(_SFPBColor *)self redComponent];
-  if (v4)
+  toCopy = to;
+  redComponent = [(_SFPBColor *)self redComponent];
+  if (redComponent)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBColor *)self greenComponent];
-  if (v5)
+  greenComponent = [(_SFPBColor *)self greenComponent];
+  if (greenComponent)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBColor *)self blueComponent];
-  if (v6)
+  blueComponent = [(_SFPBColor *)self blueComponent];
+  if (blueComponent)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBColor *)self alphaComponent];
-  if (v7)
+  alphaComponent = [(_SFPBColor *)self alphaComponent];
+  if (alphaComponent)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -756,38 +756,38 @@ LABEL_54:
     PBDataWriterWriteInt32Field();
   }
 
-  v8 = [(_SFPBColor *)self darkModeColor];
-  if (v8)
+  darkModeColor = [(_SFPBColor *)self darkModeColor];
+  if (darkModeColor)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(_SFPBColor *)self calendarColor];
-  if (v9)
+  calendarColor = [(_SFPBColor *)self calendarColor];
+  if (calendarColor)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_SFPBColor *)self appColor];
-  if (v10)
+  appColor = [(_SFPBColor *)self appColor];
+  if (appColor)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(_SFPBColor *)self imageDerivedColor];
-  if (v11)
+  imageDerivedColor = [(_SFPBColor *)self imageDerivedColor];
+  if (imageDerivedColor)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(_SFPBColor *)self gradientColor];
-  if (v12)
+  gradientColor = [(_SFPBColor *)self gradientColor];
+  if (gradientColor)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(_SFPBColor *)self weatherColor];
-  if (v13)
+  weatherColor = [(_SFPBColor *)self weatherColor];
+  if (weatherColor)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -808,9 +808,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setWeatherColor:(id)a3
+- (void)setWeatherColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   calendarColor = self->_calendarColor;
   self->_calendarColor = 0;
 
@@ -824,14 +824,14 @@ LABEL_54:
   self->_gradientColor = 0;
 
   v9 = 5;
-  if (!v4)
+  if (!colorCopy)
   {
     v9 = 0;
   }
 
   self->_whichValue = v9;
   weatherColor = self->_weatherColor;
-  self->_weatherColor = v4;
+  self->_weatherColor = colorCopy;
 }
 
 - (_SFPBGradientColor)gradientColor
@@ -849,9 +849,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setGradientColor:(id)a3
+- (void)setGradientColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   calendarColor = self->_calendarColor;
   self->_calendarColor = 0;
 
@@ -864,9 +864,9 @@ LABEL_54:
   weatherColor = self->_weatherColor;
   self->_weatherColor = 0;
 
-  self->_whichValue = 4 * (v4 != 0);
+  self->_whichValue = 4 * (colorCopy != 0);
   gradientColor = self->_gradientColor;
-  self->_gradientColor = v4;
+  self->_gradientColor = colorCopy;
 }
 
 - (_SFPBImageDerivedColor)imageDerivedColor
@@ -884,9 +884,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setImageDerivedColor:(id)a3
+- (void)setImageDerivedColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   calendarColor = self->_calendarColor;
   self->_calendarColor = 0;
 
@@ -900,14 +900,14 @@ LABEL_54:
   self->_weatherColor = 0;
 
   v9 = 3;
-  if (!v4)
+  if (!colorCopy)
   {
     v9 = 0;
   }
 
   self->_whichValue = v9;
   imageDerivedColor = self->_imageDerivedColor;
-  self->_imageDerivedColor = v4;
+  self->_imageDerivedColor = colorCopy;
 }
 
 - (_SFPBAppColor)appColor
@@ -925,9 +925,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setAppColor:(id)a3
+- (void)setAppColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   calendarColor = self->_calendarColor;
   self->_calendarColor = 0;
 
@@ -940,9 +940,9 @@ LABEL_54:
   weatherColor = self->_weatherColor;
   self->_weatherColor = 0;
 
-  self->_whichValue = 2 * (v4 != 0);
+  self->_whichValue = 2 * (colorCopy != 0);
   appColor = self->_appColor;
-  self->_appColor = v4;
+  self->_appColor = colorCopy;
 }
 
 - (_SFPBCalendarColor)calendarColor
@@ -960,9 +960,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setCalendarColor:(id)a3
+- (void)setCalendarColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   appColor = self->_appColor;
   self->_appColor = 0;
 
@@ -975,9 +975,9 @@ LABEL_54:
   weatherColor = self->_weatherColor;
   self->_weatherColor = 0;
 
-  self->_whichValue = v4 != 0;
+  self->_whichValue = colorCopy != 0;
   calendarColor = self->_calendarColor;
-  self->_calendarColor = v4;
+  self->_calendarColor = colorCopy;
 }
 
 @end

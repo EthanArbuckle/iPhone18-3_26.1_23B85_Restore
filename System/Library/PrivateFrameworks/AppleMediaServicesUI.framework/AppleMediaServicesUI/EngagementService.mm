@@ -1,22 +1,22 @@
 @interface EngagementService
 + (_TtC14amsengagementd17EngagementService)shared;
-- (void)contentInfoForApp:(NSString *)a3 cacheKey:(NSString *)a4 version:(NSString *)a5 reply:(id)a6;
+- (void)contentInfoForApp:(NSString *)app cacheKey:(NSString *)key version:(NSString *)version reply:(id)reply;
 - (void)fetchMetricsIdentifiers;
 - (void)manualSyncMetricsIdentifiers;
-- (void)notifyBlockedMessages:(id)a3;
+- (void)notifyBlockedMessages:(id)messages;
 - (void)syncMetricsIdentifiers;
-- (void)treatmentStoreServiceWithReply:(id)a3;
+- (void)treatmentStoreServiceWithReply:(id)reply;
 @end
 
 @implementation EngagementService
 
-- (void)treatmentStoreServiceWithReply:(id)a3
+- (void)treatmentStoreServiceWithReply:(id)reply
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(reply);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_100009624(&unk_1001EBE28, v5);
 }
@@ -28,45 +28,45 @@
   return v2;
 }
 
-- (void)contentInfoForApp:(NSString *)a3 cacheKey:(NSString *)a4 version:(NSString *)a5 reply:(id)a6
+- (void)contentInfoForApp:(NSString *)app cacheKey:(NSString *)key version:(NSString *)version reply:(id)reply
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(reply);
   v11 = swift_allocObject();
-  v11[2] = a3;
-  v11[3] = a4;
-  v11[4] = a5;
+  v11[2] = app;
+  v11[3] = key;
+  v11[4] = version;
   v11[5] = v10;
   v11[6] = self;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = self;
+  appCopy = app;
+  keyCopy = key;
+  versionCopy = version;
+  selfCopy = self;
 
   sub_100009624(&unk_1001EBE50, v11);
 }
 
-- (void)notifyBlockedMessages:(id)a3
+- (void)notifyBlockedMessages:(id)messages
 {
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_1000EAE50(v4);
 }
 
 - (void)syncMetricsIdentifiers
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000ED094();
 }
 
 - (void)fetchMetricsIdentifiers
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000ED16C(0, sub_10016E220);
 }
 
 - (void)manualSyncMetricsIdentifiers
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000ED16C(1, sub_10016D838);
 }
 

@@ -1,30 +1,30 @@
 @interface AKStrongDeviceIdentitySigner
 + (id)sharedSigner;
-- (AKStrongDeviceIdentitySigner)initWithStrongDeviceIdentifying:(id)a3;
-- (BOOL)_chanceInOptionsCountUsingTenExponent:(int64_t)a3;
-- (BOOL)_doesHostVIPMatch:(id)a3 vipList:(id)a4;
-- (BOOL)_shouldPostAnalyticsWithSamplingRate:(int64_t)a3;
-- (id)_digestForSigningWithBody:(id)a3 header:(id)a4;
-- (id)_headersToSignFromRequestData:(id)a3;
+- (AKStrongDeviceIdentitySigner)initWithStrongDeviceIdentifying:(id)identifying;
+- (BOOL)_chanceInOptionsCountUsingTenExponent:(int64_t)exponent;
+- (BOOL)_doesHostVIPMatch:(id)match vipList:(id)list;
+- (BOOL)_shouldPostAnalyticsWithSamplingRate:(int64_t)rate;
+- (id)_digestForSigningWithBody:(id)body header:(id)header;
+- (id)_headersToSignFromRequestData:(id)data;
 - (id)_preExcludedProcesses;
-- (void)_baaV1HeadersForRequestData:(id)a3 completion:(id)a4;
-- (void)_handleAllowListLogicForProcess:(BOOL)a3 requestHost:(id)a4 processName:(id)a5 completion:(id)a6;
-- (void)_handleExclusionLogicForProcessName:(id)a3 requestHostName:(id)a4 completion:(id)a5;
-- (void)_hostSignData:(id)a3 signatureKey:(id)a4 completion:(id)a5;
-- (void)_hostSignDataList:(id)a3 completion:(id)a4;
-- (void)_isProcessAllowed:(id)a3 completion:(id)a4;
-- (void)_isProcessExcluded:(id)a3 completion:(id)a4;
-- (void)_isURLHostVIPAllowed:(id)a3 completion:(id)a4;
-- (void)_isURLHostVIPExcluded:(id)a3 completion:(id)a4;
-- (void)_machineSignDataList:(id)a3 useCacheOnly:(BOOL)a4 completion:(id)a5;
-- (void)_overrideInternalBAACert:(id)a3;
-- (void)_reportBAASigningForEvent:(id)a3;
-- (void)_shouldExcludeBAAForProcessName:(id)a3 requestHostName:(id)a4 completion:(id)a5;
-- (void)_updateAnalyticsEvent:(id)a3 withError:(id)a4;
-- (void)attestationDataForOSVersionWithContext:(id)a3 attestationNonce:(id)a4 completion:(id)a5;
-- (void)baaV1HeadersForRequestData:(id)a3 completion:(id)a4;
-- (void)resetDeviceIdentityWithCompletion:(id)a3;
-- (void)signData:(id)a3 useCacheOnly:(BOOL)a4 completion:(id)a5;
+- (void)_baaV1HeadersForRequestData:(id)data completion:(id)completion;
+- (void)_handleAllowListLogicForProcess:(BOOL)process requestHost:(id)host processName:(id)name completion:(id)completion;
+- (void)_handleExclusionLogicForProcessName:(id)name requestHostName:(id)hostName completion:(id)completion;
+- (void)_hostSignData:(id)data signatureKey:(id)key completion:(id)completion;
+- (void)_hostSignDataList:(id)list completion:(id)completion;
+- (void)_isProcessAllowed:(id)allowed completion:(id)completion;
+- (void)_isProcessExcluded:(id)excluded completion:(id)completion;
+- (void)_isURLHostVIPAllowed:(id)allowed completion:(id)completion;
+- (void)_isURLHostVIPExcluded:(id)excluded completion:(id)completion;
+- (void)_machineSignDataList:(id)list useCacheOnly:(BOOL)only completion:(id)completion;
+- (void)_overrideInternalBAACert:(id)cert;
+- (void)_reportBAASigningForEvent:(id)event;
+- (void)_shouldExcludeBAAForProcessName:(id)name requestHostName:(id)hostName completion:(id)completion;
+- (void)_updateAnalyticsEvent:(id)event withError:(id)error;
+- (void)attestationDataForOSVersionWithContext:(id)context attestationNonce:(id)nonce completion:(id)completion;
+- (void)baaV1HeadersForRequestData:(id)data completion:(id)completion;
+- (void)resetDeviceIdentityWithCompletion:(id)completion;
+- (void)signData:(id)data useCacheOnly:(BOOL)only completion:(id)completion;
 @end
 
 @implementation AKStrongDeviceIdentitySigner
@@ -45,52 +45,52 @@
   return v2;
 }
 
-- (AKStrongDeviceIdentitySigner)initWithStrongDeviceIdentifying:(id)a3
+- (AKStrongDeviceIdentitySigner)initWithStrongDeviceIdentifying:(id)identifying
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v14;
-  v14 = 0;
+  objc_storeStrong(location, identifying);
+  v3 = selfCopy;
+  selfCopy = 0;
   v12.receiver = v3;
   v12.super_class = AKStrongDeviceIdentitySigner;
-  v14 = [(AKStrongDeviceIdentitySigner *)&v12 init];
-  objc_storeStrong(&v14, v14);
-  if (v14)
+  selfCopy = [(AKStrongDeviceIdentitySigner *)&v12 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v14->_strongDeviceIdentifying, location[0]);
+    objc_storeStrong(&selfCopy->_strongDeviceIdentifying, location[0]);
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v4 = dispatch_queue_create("com.apple.authkit.AKStrongDeviceIdentitySigner", v10);
-    signingQueue = v14->_signingQueue;
-    v14->_signingQueue = v4;
+    signingQueue = selfCopy->_signingQueue;
+    selfCopy->_signingQueue = v4;
     _objc_release(signingQueue);
     _objc_release(v10);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v6 = dispatch_queue_create("com.apple.authkit.baa.reporting", v11);
-    reportingQueue = v14->_reportingQueue;
-    v14->_reportingQueue = v6;
+    reportingQueue = selfCopy->_reportingQueue;
+    selfCopy->_reportingQueue = v6;
     _objc_release(reportingQueue);
     _objc_release(v11);
   }
 
-  v9 = _objc_retain(v14);
+  v9 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
-- (id)_headersToSignFromRequestData:(id)a3
+- (id)_headersToSignFromRequestData:(id)data
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v26 = 0;
-  v25 = [location[0] headers];
-  if ([v25 count])
+  headers = [location[0] headers];
+  if ([headers count])
   {
-    v3 = [v25 mutableCopy];
+    v3 = [headers mutableCopy];
     v4 = v26;
     v26 = v3;
     _objc_release(v4);
@@ -113,9 +113,9 @@
 
         v23 = *(__b[1] + 8 * v16);
         v12 = v24;
-        v13 = [v23 lowercaseString];
+        lowercaseString = [v23 lowercaseString];
         [v12 addObject:?];
-        _objc_release(v13);
+        _objc_release(lowercaseString);
         ++v16;
         if (v14 + 1 >= v17)
         {
@@ -148,44 +148,44 @@
   }
 
   v8 = +[AKBAATimeProvider sharedInstance];
-  v20 = [(AKBAATimeProvider *)v8 adjustedDeviceTime];
+  adjustedDeviceTime = [(AKBAATimeProvider *)v8 adjustedDeviceTime];
   _objc_release(v8);
-  [v26 setObject:v20 forKey:AKRequestSigningHeaderClientTimeKey];
+  [v26 setObject:adjustedDeviceTime forKey:AKRequestSigningHeaderClientTimeKey];
   [v26 setObject:AKRequestSigningHeaderVersionValue forKey:AKRequestSigningHeaderVersionKey];
   v9 = _objc_retain(v26);
-  objc_storeStrong(&v20, 0);
-  objc_storeStrong(&v25, 0);
+  objc_storeStrong(&adjustedDeviceTime, 0);
+  objc_storeStrong(&headers, 0);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(location, 0);
 
   return v9;
 }
 
-- (void)baaV1HeadersForRequestData:(id)a3 completion:(id)a4
+- (void)baaV1HeadersForRequestData:(id)data completion:(id)completion
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
-  v5 = v19;
-  v9 = [location[0] client];
-  v8 = [v9 name];
-  v7 = [location[0] requestURL];
-  v6 = [v7 host];
+  objc_storeStrong(&v17, completion);
+  v5 = selfCopy;
+  client = [location[0] client];
+  name = [client name];
+  requestURL = [location[0] requestURL];
+  host = [requestURL host];
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_10004320C;
   v13 = &unk_10031FDD8;
   v14 = _objc_retain(location[0]);
   v16 = _objc_retain(v17);
-  v15 = _objc_retain(v19);
-  [(AKStrongDeviceIdentitySigner *)v5 _shouldExcludeBAAForProcessName:v8 requestHostName:v6 completion:?];
-  _objc_release(v6);
-  _objc_release(v7);
-  _objc_release(v8);
-  _objc_release(v9);
+  v15 = _objc_retain(selfCopy);
+  [(AKStrongDeviceIdentitySigner *)v5 _shouldExcludeBAAForProcessName:name requestHostName:host completion:?];
+  _objc_release(host);
+  _objc_release(requestURL);
+  _objc_release(name);
+  _objc_release(client);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v14, 0);
@@ -193,25 +193,25 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_baaV1HeadersForRequestData:(id)a3 completion:(id)a4
+- (void)_baaV1HeadersForRequestData:(id)data completion:(id)completion
 {
-  v100 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v98 = 0;
-  objc_storeStrong(&v98, a4);
-  v97 = [(AKStrongDeviceIdentitySigner *)v100 _headersToSignFromRequestData:location[0]];
+  objc_storeStrong(&v98, completion);
+  v97 = [(AKStrongDeviceIdentitySigner *)selfCopy _headersToSignFromRequestData:location[0]];
   _objc_release(0);
-  v34 = v100;
-  v33 = [location[0] signingDataHash];
+  v34 = selfCopy;
+  signingDataHash = [location[0] signingDataHash];
   v96 = [AKStrongDeviceIdentitySigner _digestForSigningWithBody:v34 header:"_digestForSigningWithBody:header:"];
-  _objc_release(v33);
-  v95 = [(AKStrongDeviceIdentitySigner *)v100 _digestForSigningWithBody:0 header:v97];
+  _objc_release(signingDataHash);
+  v95 = [(AKStrongDeviceIdentitySigner *)selfCopy _digestForSigningWithBody:0 header:v97];
   v31 = +[AKDevice currentDevice];
-  v32 = [v31 isInternalBuild];
+  isInternalBuild = [v31 isInternalBuild];
   _objc_release(v31);
-  if (v32)
+  if (isInternalBuild)
   {
     v30 = [v96 base64EncodedStringWithOptions:0];
     [v97 setValue:? forKey:?];
@@ -221,30 +221,30 @@
     _objc_release(v29);
     v28 = +[AKConfiguration sharedConfiguration];
     v27 = [v28 configurationValueForKey:@"_AKConfigKeyVMType"];
-    v94 = [v27 stringValue];
+    stringValue = [v27 stringValue];
     _objc_release(v27);
     _objc_release(v28);
-    if (v94)
+    if (stringValue)
     {
-      [v97 setValue:v94 forKey:AKVMTypeHeaderKey];
+      [v97 setValue:stringValue forKey:AKVMTypeHeaderKey];
     }
 
     v26 = +[AKBAATimeProvider sharedInstance];
-    v93 = [(AKBAATimeProvider *)v26 internalTimeInfo];
+    internalTimeInfo = [(AKBAATimeProvider *)v26 internalTimeInfo];
     _objc_release(v26);
-    if (v93)
+    if (internalTimeInfo)
     {
-      [v97 setObject:v93 forKey:@"x-apple-debug-time-info"];
+      [v97 setObject:internalTimeInfo forKey:@"x-apple-debug-time-info"];
     }
 
-    objc_storeStrong(&v93, 0);
-    objc_storeStrong(&v94, 0);
+    objc_storeStrong(&internalTimeInfo, 0);
+    objc_storeStrong(&stringValue, 0);
   }
 
   v24 = +[AKDevice currentDevice];
-  v25 = [v24 isVirtualMachine];
+  isVirtualMachine = [v24 isVirtualMachine];
   _objc_release(v24);
-  if (v25)
+  if (isVirtualMachine)
   {
     [v97 setValue:@"2" forKey:@"x-apple-i-device-type"];
   }
@@ -266,9 +266,9 @@
 
   objc_storeStrong(&v92, 0);
   v20 = +[AKDevice currentDevice];
-  v21 = [v20 isVirtualMachine];
+  isVirtualMachine2 = [v20 isVirtualMachine];
   _objc_release(v20);
-  if (v21 & 1) != 0 || (v18 = +[AKFeatureManager sharedManager](AKFeatureManager, "sharedManager"), v19 = [v18 isPhysicalDeviceBAAValidationEnabled], _objc_release(v18), (v19))
+  if (isVirtualMachine2 & 1) != 0 || (v18 = +[AKFeatureManager sharedManager](AKFeatureManager, "sharedManager"), v19 = [v18 isPhysicalDeviceBAAValidationEnabled], _objc_release(v18), (v19))
   {
     [v97 setValue:@"1" forKey:AKRequestSigningHeaderFeatureHeadersKey];
   }
@@ -332,7 +332,7 @@
   v62 = 0;
   group = dispatch_group_create();
   dispatch_group_enter(group);
-  v13 = v100;
+  v13 = selfCopy;
   v102[0] = v96;
   v102[1] = v95;
   v11 = [NSArray arrayWithObjects:v102 count:2];
@@ -348,12 +348,12 @@
   [(AKStrongDeviceIdentitySigner *)v13 _machineSignDataList:v11 useCacheOnly:v12 & 1 completion:&v50];
   _objc_release(v11);
   v9 = +[AKDevice currentDevice];
-  v10 = [v9 isVirtualMachine];
+  isVirtualMachine3 = [v9 isVirtualMachine];
   _objc_release(v9);
-  if (v10)
+  if (isVirtualMachine3)
   {
     dispatch_group_enter(group);
-    v8 = v100;
+    v8 = selfCopy;
     v101[0] = v96;
     v101[1] = v95;
     v7 = [NSArray arrayWithObjects:v101 count:2];
@@ -371,7 +371,7 @@
   }
 
   v6 = group;
-  queue = v100->_signingQueue;
+  queue = selfCopy->_signingQueue;
   v36 = _NSConcreteStackBlock;
   v37 = -1073741824;
   v38 = 0;
@@ -404,15 +404,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_machineSignDataList:(id)a3 useCacheOnly:(BOOL)a4 completion:(id)a5
+- (void)_machineSignDataList:(id)list useCacheOnly:(BOOL)only completion:(id)completion
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v26 = a4;
+  objc_storeStrong(location, list);
+  onlyCopy = only;
   v25 = 0;
-  objc_storeStrong(&v25, a5);
+  objc_storeStrong(&v25, completion);
   v19[0] = 0;
   v19[1] = v19;
   v20 = 838860800;
@@ -421,16 +421,16 @@
   v23 = sub_100011080;
   v24 = [AAFAnalyticsEvent ak_analyticsEventWithEventName:@"com.apple.authkit.baa.signing" error:0];
   v18 = +[NSMutableDictionary dictionary];
-  v7 = v28;
+  v7 = selfCopy;
   v5 = location[0];
-  v6 = v26;
+  v6 = onlyCopy;
   v10 = _NSConcreteStackBlock;
   v11 = -1073741824;
   v12 = 0;
   v13 = sub_1000448F4;
   v14 = &unk_10031FE50;
   v17[1] = v19;
-  v15 = _objc_retain(v28);
+  v15 = _objc_retain(selfCopy);
   v16 = _objc_retain(v18);
   v17[0] = _objc_retain(v25);
   [(AKStrongDeviceIdentitySigner *)v7 signData:v5 useCacheOnly:v6 completion:&v10];
@@ -444,16 +444,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_overrideInternalBAACert:(id)a3
+- (void)_overrideInternalBAACert:(id)cert
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, cert);
   v6 = +[AKDevice currentDevice];
-  v7 = [v6 isInternalBuild];
+  isInternalBuild = [v6 isInternalBuild];
   _objc_release(v6);
-  if (v7)
+  if (isInternalBuild)
   {
     v5 = +[AKConfiguration sharedConfiguration];
     v11 = [v5 configurationValueForKey:@"AKAltCertChainForBAA"];
@@ -480,14 +480,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_hostSignDataList:(id)a3 completion:(id)a4
+- (void)_hostSignDataList:(id)list completion:(id)completion
 {
-  v60 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, list);
   v58 = 0;
-  objc_storeStrong(&v58, a4);
+  objc_storeStrong(&v58, completion);
   if ([location[0] count] == 2)
   {
     v48[0] = 0;
@@ -509,7 +509,7 @@
     v39 = [location[0] objectAtIndexedSubscript:0];
     v38 = [location[0] objectAtIndexedSubscript:1];
     dispatch_group_enter(v40);
-    v11 = v60;
+    v11 = selfCopy;
     v9 = v38;
     v10 = AKRequestSigningHeaderHostAltSignatureKey;
     v31 = _NSConcreteStackBlock;
@@ -524,7 +524,7 @@
     if (![v38 isEqual:v39])
     {
       dispatch_group_enter(v40);
-      v8 = v60;
+      v8 = selfCopy;
       v6 = v39;
       v7 = AKRequestSigningHeaderHostSignatureKey;
       v24 = _NSConcreteStackBlock;
@@ -541,7 +541,7 @@
     }
 
     group = v40;
-    queue = v60->_signingQueue;
+    queue = selfCopy->_signingQueue;
     v15 = _NSConcreteStackBlock;
     v16 = -1073741824;
     v17 = 0;
@@ -592,20 +592,20 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_hostSignData:(id)a3 signatureKey:(id)a4 completion:(id)a5
+- (void)_hostSignData:(id)data signatureKey:(id)key completion:(id)completion
 {
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v39 = 0;
-  objc_storeStrong(&v39, a4);
+  objc_storeStrong(&v39, key);
   v38 = 0;
-  objc_storeStrong(&v38, a5);
+  objc_storeStrong(&v38, completion);
   v14 = +[AKDevice currentDevice];
-  v15 = [v14 isVirtualMachine];
+  isVirtualMachine = [v14 isVirtualMachine];
   _objc_release(v14);
-  if (v15)
+  if (isVirtualMachine)
   {
     v36 = _AKLogSystem();
     v35 = OS_LOG_TYPE_DEBUG;
@@ -645,7 +645,7 @@
 
     objc_storeStrong(&v27, 0);
     v33 = v32;
-    v7 = [(AKStrongDeviceIdentitySigner *)v41 strongDeviceIdentifying];
+    strongDeviceIdentifying = [(AKStrongDeviceIdentitySigner *)selfCopy strongDeviceIdentifying];
     v6 = location[0];
     v16 = _NSConcreteStackBlock;
     v17 = -1073741824;
@@ -653,12 +653,12 @@
     v19 = sub_100045F2C;
     v20 = &unk_10031FEC8;
     v21 = _objc_retain(v34);
-    v22 = _objc_retain(v41);
+    v22 = _objc_retain(selfCopy);
     v23 = _objc_retain(v39);
     v25 = v33;
     v24 = _objc_retain(v38);
-    [(AKStrongDeviceIdentifying *)v7 createHostSignatureForData:v6 completion:&v16];
-    _objc_release(v7);
+    [(AKStrongDeviceIdentifying *)strongDeviceIdentifying createHostSignatureForData:v6 completion:&v16];
+    _objc_release(strongDeviceIdentifying);
     objc_storeStrong(&v24, 0);
     objc_storeStrong(&v23, 0);
     objc_storeStrong(&v22, 0);
@@ -678,20 +678,20 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)signData:(id)a3 useCacheOnly:(BOOL)a4 completion:(id)a5
+- (void)signData:(id)data useCacheOnly:(BOOL)only completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = a4;
+  objc_storeStrong(location, data);
+  onlyCopy = only;
   v15 = 0;
-  objc_storeStrong(&v15, a5);
+  objc_storeStrong(&v15, completion);
   if ([location[0] count])
   {
-    v5 = [(AKStrongDeviceIdentitySigner *)v18 strongDeviceIdentifying];
-    [(AKStrongDeviceIdentifying *)v5 createBAASignatureForDataFields:location[0] useCacheOnly:v16 completion:v15];
-    _objc_release(v5);
+    strongDeviceIdentifying = [(AKStrongDeviceIdentitySigner *)selfCopy strongDeviceIdentifying];
+    [(AKStrongDeviceIdentifying *)strongDeviceIdentifying createBAASignatureForDataFields:location[0] useCacheOnly:onlyCopy completion:v15];
+    _objc_release(strongDeviceIdentifying);
   }
 
   else
@@ -720,42 +720,42 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)attestationDataForOSVersionWithContext:(id)a3 attestationNonce:(id)a4 completion:(id)a5
+- (void)attestationDataForOSVersionWithContext:(id)context attestationNonce:(id)nonce completion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, nonce);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
-  v7 = [(AKStrongDeviceIdentitySigner *)v11 strongDeviceIdentifying];
-  [(AKStrongDeviceIdentifying *)v7 createOSAttestationDataWithContext:location[0] attestationNonce:v9 completion:v8];
-  _objc_release(v7);
+  objc_storeStrong(&v8, completion);
+  strongDeviceIdentifying = [(AKStrongDeviceIdentitySigner *)selfCopy strongDeviceIdentifying];
+  [(AKStrongDeviceIdentifying *)strongDeviceIdentifying createOSAttestationDataWithContext:location[0] attestationNonce:v9 completion:v8];
+  _objc_release(strongDeviceIdentifying);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)_digestForSigningWithBody:(id)a3 header:(id)a4
+- (id)_digestForSigningWithBody:(id)body header:(id)header
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, body);
   v30 = 0;
-  objc_storeStrong(&v30, a4);
+  objc_storeStrong(&v30, header);
   if ([location[0] length] || objc_msgSend(v30, "count"))
   {
     v28 = +[NSMutableArray array];
     if (location[0])
     {
-      v17 = [location[0] aaf_toHexString];
-      v27 = [v17 lowercaseString];
-      _objc_release(v17);
-      [v28 addObject:v27];
-      objc_storeStrong(&v27, 0);
+      aaf_toHexString = [location[0] aaf_toHexString];
+      lowercaseString = [aaf_toHexString lowercaseString];
+      _objc_release(aaf_toHexString);
+      [v28 addObject:lowercaseString];
+      objc_storeStrong(&lowercaseString, 0);
     }
 
     else
@@ -764,11 +764,11 @@
     }
 
     v26 = [v30 mutableCopy];
-    v14 = [v26 allKeys];
-    v13 = [v14 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+    allKeys = [v26 allKeys];
+    v13 = [allKeys sortedArrayUsingSelector:"caseInsensitiveCompare:"];
     v25 = [v13 mutableCopy];
     _objc_release(v13);
-    _objc_release(v14);
+    _objc_release(allKeys);
     memset(__b, 0, sizeof(__b));
     v15 = _objc_retain(v25);
     v16 = [v15 countByEnumeratingWithState:__b objects:v33 count:16];
@@ -786,17 +786,17 @@
         }
 
         v24 = *(__b[1] + 8 * v11);
-        v22 = [v24 lowercaseString];
+        lowercaseString2 = [v24 lowercaseString];
         v8 = [v26 objectForKeyedSubscript:v24];
         v7 = +[NSCharacterSet whitespaceCharacterSet];
         v21 = [v8 stringByTrimmingCharactersInSet:?];
         _objc_release(v7);
         _objc_release(v8);
-        v20 = [NSString stringWithFormat:@"%@=%@", v22, v21];
+        v20 = [NSString stringWithFormat:@"%@=%@", lowercaseString2, v21];
         [v28 addObject:v20];
         objc_storeStrong(&v20, 0);
         objc_storeStrong(&v21, 0);
-        objc_storeStrong(&v22, 0);
+        objc_storeStrong(&lowercaseString2, 0);
         ++v11;
         if (v9 + 1 >= v12)
         {
@@ -813,7 +813,7 @@
     _objc_release(v15);
     v19 = [v28 componentsJoinedByString:@"|"];
     v6 = [v19 dataUsingEncoding:4];
-    v32 = [v6 ak_SHA256Data];
+    ak_SHA256Data = [v6 ak_SHA256Data];
     _objc_release(v6);
     v29 = 1;
     objc_storeStrong(&v19, 0);
@@ -824,30 +824,30 @@
 
   else
   {
-    v32 = 0;
+    ak_SHA256Data = 0;
     v29 = 1;
   }
 
   objc_storeStrong(&v30, 0);
   objc_storeStrong(location, 0);
-  v4 = v32;
+  v4 = ak_SHA256Data;
 
   return v4;
 }
 
-- (void)resetDeviceIdentityWithCompletion:(id)a3
+- (void)resetDeviceIdentityWithCompletion:(id)completion
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKStrongDeviceIdentitySigner *)v8 strongDeviceIdentifying];
-  [(AKStrongDeviceIdentifying *)v4 resetDeviceIdentityWithCompletion:location[0]];
-  _objc_release(v4);
+  objc_storeStrong(location, completion);
+  strongDeviceIdentifying = [(AKStrongDeviceIdentitySigner *)selfCopy strongDeviceIdentifying];
+  [(AKStrongDeviceIdentifying *)strongDeviceIdentifying resetDeviceIdentityWithCompletion:location[0]];
+  _objc_release(strongDeviceIdentifying);
   v5 = +[AKDevice currentDevice];
-  v6 = [v5 isInternalBuild];
+  isInternalBuild = [v5 isInternalBuild];
   _objc_release(v5);
-  if (v6)
+  if (isInternalBuild)
   {
     v3 = +[AKConfiguration sharedConfiguration];
     [v3 setConfigurationValue:0 forKey:@"AKAltCertChainForBAA"];
@@ -857,26 +857,26 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_shouldExcludeBAAForProcessName:(id)a3 requestHostName:(id)a4 completion:(id)a5
+- (void)_shouldExcludeBAAForProcessName:(id)name requestHostName:(id)hostName completion:(id)completion
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, hostName);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
+  objc_storeStrong(&v19, completion);
   if ([location[0] length] || objc_msgSend(v20, "length"))
   {
-    v6 = v22;
+    v6 = selfCopy;
     v5 = location[0];
     v9 = _NSConcreteStackBlock;
     v10 = -1073741824;
     v11 = 0;
     v12 = sub_100046EF8;
     v13 = &unk_10031FEF0;
-    v14 = _objc_retain(v22);
+    v14 = _objc_retain(selfCopy);
     v15 = _objc_retain(v20);
     v16 = _objc_retain(location[0]);
     v17 = _objc_retain(v19);
@@ -903,22 +903,22 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleAllowListLogicForProcess:(BOOL)a3 requestHost:(id)a4 processName:(id)a5 completion:(id)a6
+- (void)_handleAllowListLogicForProcess:(BOOL)process requestHost:(id)host processName:(id)name completion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   v23 = a2;
-  v22 = a3;
+  processCopy = process;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, host);
   v20 = 0;
-  objc_storeStrong(&v20, a5);
+  objc_storeStrong(&v20, name);
   v19 = 0;
-  objc_storeStrong(&v19, a6);
-  if (v22)
+  objc_storeStrong(&v19, completion);
+  if (processCopy)
   {
     if ([location length])
     {
-      v7 = v24;
+      v7 = selfCopy;
       v6 = location;
       v10 = _NSConcreteStackBlock;
       v11 = -1073741824;
@@ -961,24 +961,24 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)_handleExclusionLogicForProcessName:(id)a3 requestHostName:(id)a4 completion:(id)a5
+- (void)_handleExclusionLogicForProcessName:(id)name requestHostName:(id)hostName completion:(id)completion
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, hostName);
   v16 = 0;
-  objc_storeStrong(&v16, a5);
-  v8 = v19;
+  objc_storeStrong(&v16, completion);
+  v8 = selfCopy;
   v7 = location[0];
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_100047488;
   v12 = &unk_10031FF18;
   v15 = _objc_retain(v16);
-  v13 = _objc_retain(v19);
+  v13 = _objc_retain(selfCopy);
   v14 = _objc_retain(v17);
   [(AKStrongDeviceIdentitySigner *)v8 _isProcessExcluded:v7 completion:?];
   objc_storeStrong(&v14, 0);
@@ -989,14 +989,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_isProcessAllowed:(id)a3 completion:(id)a4
+- (void)_isProcessAllowed:(id)allowed completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, allowed);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, completion);
   if ([location[0] length])
   {
     v5 = +[AKURLBag sharedBag];
@@ -1029,14 +1029,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_isURLHostVIPAllowed:(id)a3 completion:(id)a4
+- (void)_isURLHostVIPAllowed:(id)allowed completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, allowed);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   if ([location[0] length])
   {
     v5 = +[AKURLBag sharedBag];
@@ -1047,7 +1047,7 @@
     v10 = sub_100047B14;
     v11 = &unk_10031FF68;
     v14 = _objc_retain(v16);
-    v12 = _objc_retain(v18);
+    v12 = _objc_retain(selfCopy);
     v13 = _objc_retain(location[0]);
     [v5 configurationValueForKey:v4 fromCache:1 completion:&v7];
     _objc_release(v5);
@@ -1071,14 +1071,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_isProcessExcluded:(id)a3 completion:(id)a4
+- (void)_isProcessExcluded:(id)excluded completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, excluded);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   if ([location[0] length])
   {
     v5 = +[AKURLBag sharedBag];
@@ -1088,7 +1088,7 @@
     v9 = 0;
     v10 = sub_100047EE0;
     v11 = &unk_10031FF90;
-    v12 = _objc_retain(v18);
+    v12 = _objc_retain(selfCopy);
     v13 = _objc_retain(location[0]);
     v14 = _objc_retain(v16);
     [v5 configurationValueForKey:v4 fromCache:1 completion:&v7];
@@ -1113,14 +1113,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_isURLHostVIPExcluded:(id)a3 completion:(id)a4
+- (void)_isURLHostVIPExcluded:(id)excluded completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, excluded);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, completion);
   if ([location[0] length])
   {
     v16 = _objc_retain(&off_100339710);
@@ -1132,7 +1132,7 @@
     v10 = sub_1000483B8;
     v11 = &unk_10031FFB8;
     v12 = _objc_retain(v16);
-    v13 = _objc_retain(v20);
+    v13 = _objc_retain(selfCopy);
     v14 = _objc_retain(location[0]);
     v15 = _objc_retain(v18);
     [v5 configurationValueForKey:v4 fromCache:1 completion:&v7];
@@ -1159,14 +1159,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_doesHostVIPMatch:(id)a3 vipList:(id)a4
+- (BOOL)_doesHostVIPMatch:(id)match vipList:(id)list
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, match);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, list);
   memset(__b, 0, sizeof(__b));
   v10 = _objc_retain(v15);
   v11 = [v10 countByEnumeratingWithState:__b objects:v18 count:16];
@@ -1238,19 +1238,19 @@ LABEL_9:
   return v2;
 }
 
-- (void)_reportBAASigningForEvent:(id)a3
+- (void)_reportBAASigningForEvent:(id)event
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, event);
   v3 = +[AKURLBag sharedBag];
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_100048AC8;
   v8 = &unk_100320028;
-  v9 = _objc_retain(v12);
+  v9 = _objc_retain(selfCopy);
   v10 = _objc_retain(location[0]);
   [v3 configurationValueForKey:@"baa-sign-sampling" fromCache:1 completion:?];
   _objc_release(v3);
@@ -1259,23 +1259,23 @@ LABEL_9:
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateAnalyticsEvent:(id)a3 withError:(id)a4
+- (void)_updateAnalyticsEvent:(id)event withError:(id)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, event);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, error);
   v14 = +[AKDevice currentDevice];
-  v15 = [v14 isInternalBuild];
+  isInternalBuild = [v14 isInternalBuild];
   _objc_release(v14);
-  if (v15)
+  if (isInternalBuild)
   {
-    v19 = [v20 ak_allUnderlyingErrors];
+    ak_allUnderlyingErrors = [v20 ak_allUnderlyingErrors];
     v18 = +[NSMutableArray array];
     memset(__b, 0, sizeof(__b));
-    v11 = _objc_retain(v19);
+    v11 = _objc_retain(ak_allUnderlyingErrors);
     v12 = [v11 countByEnumeratingWithState:__b objects:v22 count:16];
     if (v12)
     {
@@ -1292,9 +1292,9 @@ LABEL_9:
 
         v17 = *(__b[1] + 8 * v9);
         v5 = v18;
-        v6 = [v17 localizedDescription];
+        localizedDescription = [v17 localizedDescription];
         [v5 addObject:?];
-        _objc_release(v6);
+        _objc_release(localizedDescription);
         ++v9;
         if (v7 + 1 >= v10)
         {
@@ -1313,23 +1313,23 @@ LABEL_9:
     [location[0] setObject:? forKeyedSubscript:?];
     _objc_release(v4);
     objc_storeStrong(&v18, 0);
-    objc_storeStrong(&v19, 0);
+    objc_storeStrong(&ak_allUnderlyingErrors, 0);
   }
 
   objc_storeStrong(&v20, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_shouldPostAnalyticsWithSamplingRate:(int64_t)a3
+- (BOOL)_shouldPostAnalyticsWithSamplingRate:(int64_t)rate
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  rateCopy = rate;
   v7 = +[AKConfiguration sharedConfiguration];
-  v8 = [v7 lastKnownIDMSEnvironment];
+  lastKnownIDMSEnvironment = [v7 lastKnownIDMSEnvironment];
   _objc_release(v7);
-  location[1] = v8;
-  if (v8)
+  location[1] = lastKnownIDMSEnvironment;
+  if (lastKnownIDMSEnvironment)
   {
     location[0] = _AKLogSystem();
     if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEBUG))
@@ -1345,13 +1345,13 @@ LABEL_9:
   else
   {
     v5 = +[AKDevice currentDevice];
-    v6 = [v5 isInternalBuild];
+    isInternalBuild = [v5 isInternalBuild];
     _objc_release(v5);
-    if (v6)
+    if (isInternalBuild)
     {
-      if (v10 - 2 > 0)
+      if (rateCopy - 2 > 0)
       {
-        v4 = v10 - 2;
+        v4 = rateCopy - 2;
       }
 
       else
@@ -1359,21 +1359,21 @@ LABEL_9:
         v4 = 0;
       }
 
-      v10 = v4;
+      rateCopy = v4;
     }
 
-    return !v10 || [(AKStrongDeviceIdentitySigner *)v12 _chanceInOptionsCountUsingTenExponent:v10];
+    return !rateCopy || [(AKStrongDeviceIdentitySigner *)selfCopy _chanceInOptionsCountUsingTenExponent:rateCopy];
   }
 }
 
-- (BOOL)_chanceInOptionsCountUsingTenExponent:(int64_t)a3
+- (BOOL)_chanceInOptionsCountUsingTenExponent:(int64_t)exponent
 {
-  if (a3 < 1)
+  if (exponent < 1)
   {
     return 0;
   }
 
-  *__upper_bound = pow(10.0, a3);
+  *__upper_bound = pow(10.0, exponent);
   return arc4random_uniform(__upper_bound[0]) == 1;
 }
 

@@ -1,50 +1,50 @@
 @interface GDViewAccessInfo
-- (GDViewAccessInfo)initWithCoder:(id)a3;
-- (GDViewAccessInfo)initWithTableName:(id)a3 alwaysAvailable:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (GDViewAccessInfo)initWithCoder:(id)coder;
+- (GDViewAccessInfo)initWithTableName:(id)name alwaysAvailable:(BOOL)available;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GDViewAccessInfo
 
-- (GDViewAccessInfo)initWithCoder:(id)a3
+- (GDViewAccessInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = GDViewAccessInfo;
   v5 = [(GDViewAccessInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tableName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tableName"];
     tableName = v5->_tableName;
     v5->_tableName = v6;
 
-    v5->_alwaysAvailable = [v4 decodeBoolForKey:@"alwaysAvailable"];
+    v5->_alwaysAvailable = [coderCopy decodeBoolForKey:@"alwaysAvailable"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   tableName = self->_tableName;
-  v5 = a3;
-  [v5 encodeObject:tableName forKey:@"tableName"];
-  [v5 encodeBool:self->_alwaysAvailable forKey:@"alwaysAvailable"];
+  coderCopy = coder;
+  [coderCopy encodeObject:tableName forKey:@"tableName"];
+  [coderCopy encodeBool:self->_alwaysAvailable forKey:@"alwaysAvailable"];
 }
 
-- (GDViewAccessInfo)initWithTableName:(id)a3 alwaysAvailable:(BOOL)a4
+- (GDViewAccessInfo)initWithTableName:(id)name alwaysAvailable:(BOOL)available
 {
-  v6 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = GDViewAccessInfo;
   v7 = [(GDViewAccessInfo *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [nameCopy copy];
     tableName = v7->_tableName;
     v7->_tableName = v8;
 
-    v7->_alwaysAvailable = a4;
+    v7->_alwaysAvailable = available;
   }
 
   return v7;

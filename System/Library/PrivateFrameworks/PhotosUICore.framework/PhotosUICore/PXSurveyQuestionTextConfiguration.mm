@@ -1,7 +1,7 @@
 @interface PXSurveyQuestionTextConfiguration
 - (CGRect)contentRectForOneUp;
 - (PXSurveyQuestionTextConfiguration)init;
-- (PXSurveyQuestionTextConfiguration)initWithTitle:(id)a3 questionText:(id)a4 shouldScaleForLongText:(BOOL)a5;
+- (PXSurveyQuestionTextConfiguration)initWithTitle:(id)title questionText:(id)text shouldScaleForLongText:(BOOL)longText;
 - (UIView)contentView;
 @end
 
@@ -31,14 +31,14 @@
     self->_questionLabel = v5;
 
     [(UILabel *)self->_questionLabel setTextAlignment:1];
-    v7 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)self->_questionLabel setTextColor:v7];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)self->_questionLabel setTextColor:labelColor];
 
-    v8 = [(PXSurveyQuestionTextConfiguration *)self questionText];
-    [(UILabel *)self->_questionLabel setText:v8];
+    questionText = [(PXSurveyQuestionTextConfiguration *)self questionText];
+    [(UILabel *)self->_questionLabel setText:questionText];
 
-    v9 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)self->_questionLabel setBackgroundColor:v9];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)self->_questionLabel setBackgroundColor:clearColor];
 
     v10 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD58] addingSymbolicTraits:0 options:0];
     v11 = self->_questionLabel;
@@ -69,31 +69,31 @@
 
 - (PXSurveyQuestionTextConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionTextConfiguration.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXSurveyQuestionTextConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionTextConfiguration.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXSurveyQuestionTextConfiguration init]"}];
 
   abort();
 }
 
-- (PXSurveyQuestionTextConfiguration)initWithTitle:(id)a3 questionText:(id)a4 shouldScaleForLongText:(BOOL)a5
+- (PXSurveyQuestionTextConfiguration)initWithTitle:(id)title questionText:(id)text shouldScaleForLongText:(BOOL)longText
 {
-  v8 = a3;
-  v9 = a4;
+  titleCopy = title;
+  textCopy = text;
   v16.receiver = self;
   v16.super_class = PXSurveyQuestionTextConfiguration;
   v10 = [(PXSurveyQuestionTextConfiguration *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [titleCopy copy];
     title = v10->_title;
     v10->_title = v11;
 
-    v13 = [v9 copy];
+    v13 = [textCopy copy];
     questionText = v10->_questionText;
     v10->_questionText = v13;
 
     v10->_isStale = 0;
-    v10->_shouldScaleForLongText = a5;
+    v10->_shouldScaleForLongText = longText;
   }
 
   return v10;

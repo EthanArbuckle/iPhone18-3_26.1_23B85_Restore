@@ -1,27 +1,27 @@
 @interface RUIActionSignal
-+ (id)signalWithString:(id)a3;
-+ (id)signalWithType:(unint64_t)a3;
-+ (id)stringForActionSignal:(unint64_t)a3;
-+ (unint64_t)signalTypeForString:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)signalWithString:(id)string;
++ (id)signalWithType:(unint64_t)type;
++ (id)stringForActionSignal:(unint64_t)signal;
++ (unint64_t)signalTypeForString:(id)string;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation RUIActionSignal
 
-+ (id)signalWithType:(unint64_t)a3
++ (id)signalWithType:(unint64_t)type
 {
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setTopSignal:a3];
-  v5 = [MEMORY[0x277CBEB18] array];
-  [v4 setSubActions:v5];
+  [v4 setTopSignal:type];
+  array = [MEMORY[0x277CBEB18] array];
+  [v4 setSubActions:array];
 
   return v4;
 }
 
-+ (id)signalWithString:(id)a3
++ (id)signalWithString:(id)string
 {
-  v3 = [RUIActionSignal signalTypeForString:a3];
+  v3 = [RUIActionSignal signalTypeForString:string];
   if (v3)
   {
     v3 = [RUIActionSignal signalWithType:v3];
@@ -30,36 +30,36 @@
   return v3;
 }
 
-+ (id)stringForActionSignal:(unint64_t)a3
++ (id)stringForActionSignal:(unint64_t)signal
 {
-  if (a3 > 9)
+  if (signal > 9)
   {
     return @"unknown";
   }
 
   else
   {
-    return *(&off_2782E82B0 + a3);
+    return *(&off_2782E82B0 + signal);
   }
 }
 
-+ (unint64_t)signalTypeForString:(id)a3
++ (unint64_t)signalTypeForString:(id)string
 {
-  v3 = [&unk_282D7AC48 objectForKeyedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [&unk_282D7AC48 objectForKeyedSubscript:string];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [(RUIActionSignal *)self topSignal];
-    if (v7 != [v6 topSignal])
+    v6 = equalCopy;
+    topSignal = [(RUIActionSignal *)self topSignal];
+    if (topSignal != [v6 topSignal])
     {
       v11 = 0;
 LABEL_12:
@@ -67,14 +67,14 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v8 = [(RUIActionSignal *)self subActions];
-    if (v8 || ([v6 subActions], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    subActions = [(RUIActionSignal *)self subActions];
+    if (subActions || ([v6 subActions], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v9 = [(RUIActionSignal *)self subActions];
-      v10 = [v6 subActions];
-      v11 = [v9 isEqual:v10];
+      subActions2 = [(RUIActionSignal *)self subActions];
+      subActions3 = [v6 subActions];
+      v11 = [subActions2 isEqual:subActions3];
 
-      if (v8)
+      if (subActions)
       {
 LABEL_11:
 

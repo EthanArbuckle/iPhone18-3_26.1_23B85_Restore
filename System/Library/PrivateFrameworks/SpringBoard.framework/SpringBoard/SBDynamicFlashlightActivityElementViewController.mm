@@ -1,15 +1,15 @@
 @interface SBDynamicFlashlightActivityElementViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)isBeamOn;
-- (CGPoint)_beamStateForState:(id)a3 currentBeamState:(CGPoint)a4;
+- (CGPoint)_beamStateForState:(id)state currentBeamState:(CGPoint)beamState;
 - (CGRect)preferredContentRect;
 - (SBDynamicFlashlightActivityElementView)elementView;
-- (SBDynamicFlashlightActivityElementViewController)initWithOptionsProvider:(id)a3 state:(id)a4 fixedWidth:(BOOL)a5;
+- (SBDynamicFlashlightActivityElementViewController)initWithOptionsProvider:(id)provider state:(id)state fixedWidth:(BOOL)width;
 - (SBDynamicFlashlightActivityElementViewControllerDelegate)delegate;
-- (double)_overshootForNormalized:(double)a3;
+- (double)_overshootForNormalized:(double)normalized;
 - (double)currentWidth;
-- (void)_accessibilitySetTorchState:(CGPoint)a3;
-- (void)_dismissalTimerDidFire:(id)a3;
+- (void)_accessibilitySetTorchState:(CGPoint)state;
+- (void)_dismissalTimerDidFire:(id)fire;
 - (void)_invalidateDismissalTimer;
 - (void)_invalidatePersistenceTimer;
 - (void)_panGestureHandler;
@@ -18,15 +18,15 @@
 - (void)_startPersistenceTimer;
 - (void)_tapGestureHandler;
 - (void)_toggleBeamState;
-- (void)_updateDelegateStateAnimated:(BOOL)a3;
-- (void)_updatePreferredContentRectForUnconstrainedPoint:(CGPoint)a3;
+- (void)_updateDelegateStateAnimated:(BOOL)animated;
+- (void)_updatePreferredContentRectForUnconstrainedPoint:(CGPoint)point;
 - (void)dealloc;
 - (void)loadView;
-- (void)setElementOrientation:(int64_t)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setState:(id)a3;
+- (void)setElementOrientation:(int64_t)orientation;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setState:(id)state;
 - (void)updateOrientation;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation SBDynamicFlashlightActivityElementViewController
@@ -40,20 +40,20 @@
   [(SBDynamicFlashlightActivityElementViewController *)&v3 dealloc];
 }
 
-- (SBDynamicFlashlightActivityElementViewController)initWithOptionsProvider:(id)a3 state:(id)a4 fixedWidth:(BOOL)a5
+- (SBDynamicFlashlightActivityElementViewController)initWithOptionsProvider:(id)provider state:(id)state fixedWidth:(BOOL)width
 {
-  v9 = a3;
-  v10 = a4;
+  providerCopy = provider;
+  stateCopy = state;
   v20.receiver = self;
   v20.super_class = SBDynamicFlashlightActivityElementViewController;
   v11 = [(SBDynamicFlashlightActivityElementViewController *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    v11->_fixedWidth = a5;
-    objc_storeStrong(&v11->_optionsProvider, a3);
-    v13 = [v9 springAnimationSettings];
-    v14 = [v13 copy];
+    v11->_fixedWidth = width;
+    objc_storeStrong(&v11->_optionsProvider, provider);
+    springAnimationSettings = [providerCopy springAnimationSettings];
+    v14 = [springAnimationSettings copy];
     fluidBehaviorSettings = v12->_fluidBehaviorSettings;
     v12->_fluidBehaviorSettings = v14;
 
@@ -64,7 +64,7 @@
       [SBDynamicFlashlightActivityElementViewController initWithOptionsProvider:state:fixedWidth:];
     }
 
-    [(SBDynamicFlashlightActivityElementViewController *)v12 _beamStateForState:v10 currentBeamState:1.0, 1.0];
+    [(SBDynamicFlashlightActivityElementViewController *)v12 _beamStateForState:stateCopy currentBeamState:1.0, 1.0];
     v12->_torchState.x = v17;
     v12->_torchState.y = v18;
     v12->_persistedState = v12->_torchState;
@@ -96,19 +96,19 @@
   [(SBDynamicFlashlightActivityElementView *)elementView setSensorShadowHidden:v3];
 }
 
-- (void)setElementOrientation:(int64_t)a3
+- (void)setElementOrientation:(int64_t)orientation
 {
-  if (self->_elementOrientation != a3)
+  if (self->_elementOrientation != orientation)
   {
-    self->_elementOrientation = a3;
+    self->_elementOrientation = orientation;
     [(SBDynamicFlashlightActivityElementViewController *)self updateOrientation];
   }
 }
 
 - (void)loadView
 {
-  v3 = [(SBDynamicFlashlightActivityElementViewController *)self elementView];
-  [(SBDynamicFlashlightActivityElementViewController *)self setView:v3];
+  elementView = [(SBDynamicFlashlightActivityElementViewController *)self elementView];
+  [(SBDynamicFlashlightActivityElementViewController *)self setView:elementView];
 
   [(SBDynamicFlashlightActivityElementView *)self->_elementView sizeThatFits:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
   self->_preferredContentRect.origin.x = 0.0;
@@ -129,26 +129,26 @@
   self->_gestureScaling.y = v9;
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = SBDynamicFlashlightActivityElementViewController;
-  [(SBDynamicFlashlightActivityElementViewController *)&v4 viewIsAppearing:a3];
+  [(SBDynamicFlashlightActivityElementViewController *)&v4 viewIsAppearing:appearing];
   [(SBDynamicFlashlightActivityElementViewController *)self updateOrientation];
 }
 
-- (CGPoint)_beamStateForState:(id)a3 currentBeamState:(CGPoint)a4
+- (CGPoint)_beamStateForState:(id)state currentBeamState:(CGPoint)beamState
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = beamState.y;
+  x = beamState.x;
+  stateCopy = state;
   v8 = 0.0;
-  if ([v7 isOn])
+  if ([stateCopy isOn])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v7;
+      v9 = stateCopy;
       [v9 initialIntensity];
       v11 = v10;
       v12 = self->_optionsProvider;
@@ -193,9 +193,9 @@
   return result;
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (![(SBDynamicFlashlightActivityElementViewController *)self _hasActiveTouches])
   {
     v5 = SBLogFlashlightHUD();
@@ -205,7 +205,7 @@
     }
 
     p_torchState = &self->_torchState;
-    [(SBDynamicFlashlightActivityElementViewController *)self _beamStateForState:v4 currentBeamState:self->_torchState.x, self->_torchState.y];
+    [(SBDynamicFlashlightActivityElementViewController *)self _beamStateForState:stateCopy currentBeamState:self->_torchState.x, self->_torchState.y];
     v8 = v7;
     v10 = v9;
     [(SBDynamicFlashlightOptionsProvider *)self->_optionsProvider minimumIntensity];
@@ -235,14 +235,14 @@
 
 - (void)_toggleBeamState
 {
-  v3 = [(SBDynamicFlashlightActivityElementViewController *)self isBeamOn];
+  isBeamOn = [(SBDynamicFlashlightActivityElementViewController *)self isBeamOn];
   v4 = SBLogFlashlightHUD();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [SBDynamicFlashlightActivityElementViewController _toggleBeamState];
   }
 
-  if (v3)
+  if (isBeamOn)
   {
     [(SBDynamicFlashlightActivityElementViewController *)self _saveTorchState];
     self->_torchState.y = 0.0;
@@ -288,17 +288,17 @@ uint64_t __68__SBDynamicFlashlightActivityElementViewController__toggleBeamState
   }
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
-    v4 = a3;
-    self->_expanded = a3;
-    v9 = [(SBDynamicFlashlightActivityElementViewController *)self elementView];
+    expandedCopy = expanded;
+    self->_expanded = expanded;
+    elementView = [(SBDynamicFlashlightActivityElementViewController *)self elementView];
     [(SBDynamicFlashlightActivityElementViewController *)self currentIntensity];
     v7 = v6;
     [(SBDynamicFlashlightActivityElementViewController *)self currentWidth];
-    [v9 setExpanded:v4 intensity:v7 width:v8];
+    [elementView setExpanded:expandedCopy intensity:v7 width:v8];
   }
 }
 
@@ -312,7 +312,7 @@ uint64_t __68__SBDynamicFlashlightActivityElementViewController__toggleBeamState
 - (void)_saveTorchState
 {
   v7 = *MEMORY[0x277D85DE8];
-  v4 = NSStringFromCGPoint(*a1);
+  v4 = NSStringFromCGPoint(*self);
   v5 = 138412290;
   v6 = v4;
   _os_log_debug_impl(&dword_21ED4E000, a3, OS_LOG_TYPE_DEBUG, "_saveTorchState: %@", &v5, 0xCu);
@@ -378,17 +378,17 @@ void __72__SBDynamicFlashlightActivityElementViewController__startDismissalTimer
   [WeakRetained _dismissalTimerDidFire:v3];
 }
 
-- (void)_dismissalTimerDidFire:(id)a3
+- (void)_dismissalTimerDidFire:(id)fire
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   v5 = SBLogFlashlightHUD();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SBDynamicFlashlightActivityElementViewController _dismissalTimerDidFire:];
   }
 
-  if (self->_dismissalTimer == v4 && ![(SBDynamicFlashlightActivityElementViewController *)self isBeamOn])
+  if (self->_dismissalTimer == fireCopy && ![(SBDynamicFlashlightActivityElementViewController *)self isBeamOn])
   {
     self->_shouldDismissWhenOff = 1;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -403,7 +403,7 @@ void __72__SBDynamicFlashlightActivityElementViewController__startDismissalTimer
     p_super = SBLogFlashlightHUD();
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEBUG))
     {
-      v8 = self->_dismissalTimer == v4;
+      v8 = self->_dismissalTimer == fireCopy;
       v9[0] = 67109376;
       v9[1] = v8;
       v10 = 1024;
@@ -420,7 +420,7 @@ void __72__SBDynamicFlashlightActivityElementViewController__startDismissalTimer
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -471,9 +471,9 @@ uint64_t __70__SBDynamicFlashlightActivityElementViewController__panGestureHandl
   return [v2 _updatePreferredContentRectForUnconstrainedPoint:{v3, v4}];
 }
 
-- (void)_updateDelegateStateAnimated:(BOOL)a3
+- (void)_updateDelegateStateAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = 0.0;
   if ([(SBDynamicFlashlightActivityElementViewController *)self isBeamOn])
   {
@@ -496,22 +496,22 @@ uint64_t __70__SBDynamicFlashlightActivityElementViewController__panGestureHandl
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained dynamicFlashlightViewControllerDidChangeIntensity:v3 width:v5 animated:x];
+  [WeakRetained dynamicFlashlightViewControllerDidChangeIntensity:animatedCopy width:v5 animated:x];
 }
 
 - (void)_tapGestureHandler
 {
   [(SBDynamicFlashlightActivityElementViewController *)self _toggleBeamState];
-  v3 = [(SBDynamicFlashlightActivityElementViewController *)self delegate];
-  [v3 dynamicFlashlightViewControllerDidToggleFlashlight];
+  delegate = [(SBDynamicFlashlightActivityElementViewController *)self delegate];
+  [delegate dynamicFlashlightViewControllerDidToggleFlashlight];
 }
 
-- (void)_updatePreferredContentRectForUnconstrainedPoint:(CGPoint)a3
+- (void)_updatePreferredContentRectForUnconstrainedPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SBDynamicFlashlightActivityElementViewController *)self elementView];
-  [v6 sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+  y = point.y;
+  x = point.x;
+  elementView = [(SBDynamicFlashlightActivityElementViewController *)self elementView];
+  [elementView sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
 
   [(SBDynamicFlashlightOptionsProvider *)self->_optionsProvider overshootClampFactor];
   v8 = v7;
@@ -557,8 +557,8 @@ uint64_t __70__SBDynamicFlashlightActivityElementViewController__panGestureHandl
   {
     [(SBDynamicFlashlightOptionsProvider *)self->_optionsProvider heightStretchFactor];
     [(SBDynamicFlashlightOptionsProvider *)self->_optionsProvider widthStretchFactor];
-    v20 = [(SBDynamicFlashlightActivityElementViewController *)self traitCollection];
-    [v20 displayScale];
+    traitCollection = [(SBDynamicFlashlightActivityElementViewController *)self traitCollection];
+    [traitCollection displayScale];
     UIRectRoundToScale();
     v13 = v21;
     v15 = v22;
@@ -576,33 +576,33 @@ uint64_t __70__SBDynamicFlashlightActivityElementViewController__panGestureHandl
     self->_preferredContentRect.origin.y = v15;
     self->_preferredContentRect.size.width = v17;
     self->_preferredContentRect.size.height = v19;
-    v25 = [(SBDynamicFlashlightActivityElementViewController *)self delegate];
-    [v25 dynamicFlashlightViewControllerDidChangePreferredContentRect];
+    delegate = [(SBDynamicFlashlightActivityElementViewController *)self delegate];
+    [delegate dynamicFlashlightViewControllerDidChangePreferredContentRect];
   }
 }
 
-- (double)_overshootForNormalized:(double)a3
+- (double)_overshootForNormalized:(double)normalized
 {
-  if (a3 < 0.0)
+  if (normalized < 0.0)
   {
-    return a3;
+    return normalized;
   }
 
   v3 = 0.0;
-  if (a3 > 1.0)
+  if (normalized > 1.0)
   {
-    return a3 + -1.0;
+    return normalized + -1.0;
   }
 
   return v3;
 }
 
-- (void)_accessibilitySetTorchState:(CGPoint)a3
+- (void)_accessibilitySetTorchState:(CGPoint)state
 {
-  y = a3.y;
+  y = state.y;
   __asm { FMOV            V1.2D, #1.0 }
 
-  self->_torchState = vmaxnmq_f64(vminnmq_f64(a3, _Q1), 0);
+  self->_torchState = vmaxnmq_f64(vminnmq_f64(state, _Q1), 0);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __80__SBDynamicFlashlightActivityElementViewController__accessibilitySetTorchState___block_invoke;

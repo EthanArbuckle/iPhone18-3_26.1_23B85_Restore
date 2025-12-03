@@ -1,21 +1,21 @@
 @interface _CHSIntentReferenceBuf
-- (BOOL)enumerateIntentDataUsingBlock:(id)a3;
-- (BOOL)enumeratePartialIntentDataUsingBlock:(id)a3;
-- (BOOL)enumerateSchemaDataUsingBlock:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)enumerateIntentDataUsingBlock:(id)block;
+- (BOOL)enumeratePartialIntentDataUsingBlock:(id)block;
+- (BOOL)enumerateSchemaDataUsingBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)intentData;
 - (NSArray)partialIntentData;
 - (NSArray)schemaData;
 - (NSData)intentDataAsData;
 - (NSData)partialIntentDataAsData;
 - (NSData)schemaDataAsData;
-- (_CHSIntentReferenceBuf)initWithBufRef:(id)a3 cppPointer:(const IntentReferenceBuf *)a4;
-- (const)intentDataAsCArrayWithCount:(unint64_t *)a3;
-- (const)partialIntentDataAsCArrayWithCount:(unint64_t *)a3;
-- (const)schemaDataAsCArrayWithCount:(unint64_t *)a3;
-- (id)deepCopyUsingBufferBuilder:(id)a3;
-- (id)deepCopyUsingBufferBuilder:(id)a3 changes:(id)a4;
-- (id)initVerifiedRootObjectFromData:(id)a3 requireUTF8:(BOOL)a4 maxDepth:(unsigned int)a5 maxTables:(unsigned int)a6;
+- (_CHSIntentReferenceBuf)initWithBufRef:(id)ref cppPointer:(const IntentReferenceBuf *)pointer;
+- (const)intentDataAsCArrayWithCount:(unint64_t *)count;
+- (const)partialIntentDataAsCArrayWithCount:(unint64_t *)count;
+- (const)schemaDataAsCArrayWithCount:(unint64_t *)count;
+- (id)deepCopyUsingBufferBuilder:(id)builder;
+- (id)deepCopyUsingBufferBuilder:(id)builder changes:(id)changes;
+- (id)initVerifiedRootObjectFromData:(id)data requireUTF8:(BOOL)f8 maxDepth:(unsigned int)depth maxTables:(unsigned int)tables;
 - (int64_t)stableHash;
 - (unint64_t)hash;
 @end
@@ -72,8 +72,8 @@
     v8 = CFDataCreateWithBytesNoCopy(0, v7[4].var0, *v7->var0, [(AFBBufRef *)self->_br deallocator]);
     if (!v8)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:2092 description:@"Failed to create CFData"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:2092 description:@"Failed to create CFData"];
     }
   }
 
@@ -85,11 +85,11 @@
   return v8;
 }
 
-- (const)intentDataAsCArrayWithCount:(unint64_t *)a3
+- (const)intentDataAsCArrayWithCount:(unint64_t *)count
 {
-  if (a3)
+  if (count)
   {
-    *a3 = 0;
+    *count = 0;
   }
 
   ptr = self->_ptr;
@@ -107,9 +107,9 @@
 
   v6 = &ptr[v5 + *ptr[v5].var0];
   v7 = *v6->var0;
-  if (a3)
+  if (count)
   {
-    *a3 = v7;
+    *count = v7;
   }
 
   v8 = &v6[4];
@@ -124,9 +124,9 @@
   }
 }
 
-- (BOOL)enumerateIntentDataUsingBlock:(id)a3
+- (BOOL)enumerateIntentDataUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   ptr = self->_ptr;
   v6 = &ptr[-*ptr->var0];
   if (*v6->var0 >= 7u && (v7 = *v6[6].var0) != 0)
@@ -147,7 +147,7 @@
         }
 
         v13 = v12;
-        v4[2](v4, *(v11 + v10), v10, &v17);
+        blockCopy[2](blockCopy, *(v11 + v10), v10, &v17);
         v14 = v17;
         objc_autoreleasePoolPop(v13);
         if (v14)
@@ -207,8 +207,8 @@
     v8 = CFDataCreateWithBytesNoCopy(0, v7[4].var0, *v7->var0, [(AFBBufRef *)self->_br deallocator]);
     if (!v8)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:2138 description:@"Failed to create CFData"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:2138 description:@"Failed to create CFData"];
     }
   }
 
@@ -220,11 +220,11 @@
   return v8;
 }
 
-- (const)schemaDataAsCArrayWithCount:(unint64_t *)a3
+- (const)schemaDataAsCArrayWithCount:(unint64_t *)count
 {
-  if (a3)
+  if (count)
   {
-    *a3 = 0;
+    *count = 0;
   }
 
   ptr = self->_ptr;
@@ -242,9 +242,9 @@
 
   v6 = &ptr[v5 + *ptr[v5].var0];
   v7 = *v6->var0;
-  if (a3)
+  if (count)
   {
-    *a3 = v7;
+    *count = v7;
   }
 
   v8 = &v6[4];
@@ -259,9 +259,9 @@
   }
 }
 
-- (BOOL)enumerateSchemaDataUsingBlock:(id)a3
+- (BOOL)enumerateSchemaDataUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   ptr = self->_ptr;
   v6 = &ptr[-*ptr->var0];
   if (*v6->var0 >= 9u && (v7 = *v6[8].var0) != 0)
@@ -282,7 +282,7 @@
         }
 
         v13 = v12;
-        v4[2](v4, *(v11 + v10), v10, &v17);
+        blockCopy[2](blockCopy, *(v11 + v10), v10, &v17);
         v14 = v17;
         objc_autoreleasePoolPop(v13);
         if (v14)
@@ -342,8 +342,8 @@
     v8 = CFDataCreateWithBytesNoCopy(0, v7[4].var0, *v7->var0, [(AFBBufRef *)self->_br deallocator]);
     if (!v8)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:2184 description:@"Failed to create CFData"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:2184 description:@"Failed to create CFData"];
     }
   }
 
@@ -355,11 +355,11 @@
   return v8;
 }
 
-- (const)partialIntentDataAsCArrayWithCount:(unint64_t *)a3
+- (const)partialIntentDataAsCArrayWithCount:(unint64_t *)count
 {
-  if (a3)
+  if (count)
   {
-    *a3 = 0;
+    *count = 0;
   }
 
   ptr = self->_ptr;
@@ -377,9 +377,9 @@
 
   v6 = &ptr[v5 + *ptr[v5].var0];
   v7 = *v6->var0;
-  if (a3)
+  if (count)
   {
-    *a3 = v7;
+    *count = v7;
   }
 
   v8 = &v6[4];
@@ -394,9 +394,9 @@
   }
 }
 
-- (BOOL)enumeratePartialIntentDataUsingBlock:(id)a3
+- (BOOL)enumeratePartialIntentDataUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   ptr = self->_ptr;
   v6 = &ptr[-*ptr->var0];
   if (*v6->var0 >= 0xBu && (v7 = *v6[10].var0) != 0)
@@ -417,7 +417,7 @@
         }
 
         v13 = v12;
-        v4[2](v4, *(v11 + v10), v10, &v17);
+        blockCopy[2](blockCopy, *(v11 + v10), v10, &v17);
         v14 = v17;
         objc_autoreleasePoolPop(v13);
         if (v14)
@@ -442,31 +442,31 @@
   return v15;
 }
 
-- (id)deepCopyUsingBufferBuilder:(id)a3
+- (id)deepCopyUsingBufferBuilder:(id)builder
 {
-  v3 = [(_CHSIntentReferenceBuf *)self deepCopyUsingBufferBuilder:a3 changes:0];
+  v3 = [(_CHSIntentReferenceBuf *)self deepCopyUsingBufferBuilder:builder changes:0];
 
   return v3;
 }
 
-- (id)deepCopyUsingBufferBuilder:(id)a3 changes:(id)a4
+- (id)deepCopyUsingBufferBuilder:(id)builder changes:(id)changes
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  builderCopy = builder;
+  changesCopy = changes;
+  if (!builderCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:2219 description:{@"Invalid parameter not satisfying: %@", @"bufferBuilder"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:2219 description:{@"Invalid parameter not satisfying: %@", @"bufferBuilder"}];
   }
 
   v9 = objc_autoreleasePoolPush();
-  if (!v8)
+  if (!changesCopy)
   {
 LABEL_6:
-    v10 = [(_CHSIntentReferenceBuf *)self intentData];
-    if (v10)
+    intentData = [(_CHSIntentReferenceBuf *)self intentData];
+    if (intentData)
     {
-      v11 = [v7 createVectorOfUInt8WithArray:v10];
+      v11 = [builderCopy createVectorOfUInt8WithArray:intentData];
     }
 
     else
@@ -474,7 +474,7 @@ LABEL_6:
       v11 = 0;
     }
 
-    if (!v8)
+    if (!changesCopy)
     {
       goto LABEL_15;
     }
@@ -482,14 +482,14 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  if (v8[24] == 1)
+  if (changesCopy[24] == 1)
   {
-    v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(v8 + 7)];
+    v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(changesCopy + 7)];
   }
 
   else
   {
-    if (!v8[24])
+    if (!changesCopy[24])
     {
       goto LABEL_6;
     }
@@ -498,23 +498,23 @@ LABEL_6:
   }
 
 LABEL_13:
-  if (v8[32] == 1)
+  if (changesCopy[32] == 1)
   {
-    v13 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(v8 + 9)];
+    v13 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(changesCopy + 9)];
     goto LABEL_21;
   }
 
-  if (v8[32])
+  if (changesCopy[32])
   {
     v13 = 0;
     goto LABEL_21;
   }
 
 LABEL_15:
-  v12 = [(_CHSIntentReferenceBuf *)self schemaData];
-  if (v12)
+  schemaData = [(_CHSIntentReferenceBuf *)self schemaData];
+  if (schemaData)
   {
-    v13 = [v7 createVectorOfUInt8WithArray:v12];
+    v13 = [builderCopy createVectorOfUInt8WithArray:schemaData];
   }
 
   else
@@ -522,26 +522,26 @@ LABEL_15:
     v13 = 0;
   }
 
-  if (!v8)
+  if (!changesCopy)
   {
     goto LABEL_23;
   }
 
 LABEL_21:
-  if (v8[40] == 1)
+  if (changesCopy[40] == 1)
   {
-    v15 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(v8 + 11)];
+    v15 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(changesCopy + 11)];
   }
 
   else
   {
-    if (!v8[40])
+    if (!changesCopy[40])
     {
 LABEL_23:
-      v14 = [(_CHSIntentReferenceBuf *)self partialIntentData];
-      if (v14)
+      partialIntentData = [(_CHSIntentReferenceBuf *)self partialIntentData];
+      if (partialIntentData)
       {
-        v15 = [v7 createVectorOfUInt8WithArray:v14];
+        v15 = [builderCopy createVectorOfUInt8WithArray:partialIntentData];
       }
 
       else
@@ -560,46 +560,46 @@ LABEL_29:
   v23[1] = 3221225472;
   v23[2] = __61___CHSIntentReferenceBuf_deepCopyUsingBufferBuilder_changes___block_invoke;
   v23[3] = &unk_1E7454098;
-  v16 = v8;
+  v16 = changesCopy;
   v24 = v16;
-  v25 = self;
+  selfCopy = self;
   v17 = v11;
   v26 = v17;
   v18 = v13;
   v27 = v18;
   v28 = v15;
   v19 = v15;
-  v20 = [v7 _chsCreateIntentReferenceBufUsingBlock:v23];
+  v20 = [builderCopy _chsCreateIntentReferenceBufUsingBlock:v23];
 
   objc_autoreleasePoolPop(v9);
 
   return v20;
 }
 
-- (_CHSIntentReferenceBuf)initWithBufRef:(id)a3 cppPointer:(const IntentReferenceBuf *)a4
+- (_CHSIntentReferenceBuf)initWithBufRef:(id)ref cppPointer:(const IntentReferenceBuf *)pointer
 {
-  v7 = a3;
+  refCopy = ref;
   v11.receiver = self;
   v11.super_class = _CHSIntentReferenceBuf;
   v8 = [(_CHSIntentReferenceBuf *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_br, a3);
-    v9->_ptr = a4;
+    objc_storeStrong(&v8->_br, ref);
+    v9->_ptr = pointer;
   }
 
   return v9;
 }
 
-- (id)initVerifiedRootObjectFromData:(id)a3 requireUTF8:(BOOL)a4 maxDepth:(unsigned int)a5 maxTables:(unsigned int)a6
+- (id)initVerifiedRootObjectFromData:(id)data requireUTF8:(BOOL)f8 maxDepth:(unsigned int)depth maxTables:(unsigned int)tables
 {
-  v10 = a3;
+  dataCopy = data;
   v11 = objc_autoreleasePoolPush();
-  v12 = [v10 bytes];
-  if (v12)
+  bytes = [dataCopy bytes];
+  if (bytes)
   {
-    v13 = v12;
+    v13 = bytes;
   }
 
   else
@@ -608,11 +608,11 @@ LABEL_29:
   }
 
   v20 = v13;
-  v21 = [v10 length];
+  v21 = [dataCopy length];
   LODWORD(v22) = 0;
-  HIDWORD(v22) = a5;
+  HIDWORD(v22) = depth;
   LODWORD(v23) = 0;
-  HIDWORD(v23) = a6;
+  HIDWORD(v23) = tables;
   v24 = 0;
   LOBYTE(v25) = 1;
   if (v21 >= 0x7FFFFFFF)
@@ -624,24 +624,24 @@ LABEL_29:
   {
     v14 = *v13;
     v15 = objc_alloc(MEMORY[0x1E698C1D8]);
-    v16 = [v15 initWithData:{v10, v20, v21, v22, v23, v24, v25}];
+    v16 = [v15 initWithData:{dataCopy, v20, v21, v22, v23, v24, v25}];
     self = [(_CHSIntentReferenceBuf *)self initWithBufRef:v16 cppPointer:v13 + v14];
 
-    v17 = self;
-    if (a4)
+    selfCopy2 = self;
+    if (f8)
     {
       if ([(_CHSIntentReferenceBuf *)self verifyUTF8Fields])
       {
-        v17 = self;
+        selfCopy2 = self;
       }
 
       else
       {
-        v17 = 0;
+        selfCopy2 = 0;
       }
     }
 
-    v18 = v17;
+    v18 = selfCopy2;
   }
 
   else
@@ -657,42 +657,42 @@ LABEL_29:
 - (unint64_t)hash
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(_CHSIntentReferenceBuf *)self stableHash];
-  v5 = [(_CHSIntentReferenceBuf *)self intentData];
-  v6 = [v5 hash];
+  stableHash = [(_CHSIntentReferenceBuf *)self stableHash];
+  intentData = [(_CHSIntentReferenceBuf *)self intentData];
+  v6 = [intentData hash];
 
-  v7 = [(_CHSIntentReferenceBuf *)self schemaData];
-  v8 = [v7 hash];
+  schemaData = [(_CHSIntentReferenceBuf *)self schemaData];
+  v8 = [schemaData hash];
 
-  v9 = [(_CHSIntentReferenceBuf *)self partialIntentData];
-  v10 = [v9 hash] + 37 * (v8 + 37 * (v6 + 37 * v4));
+  partialIntentData = [(_CHSIntentReferenceBuf *)self partialIntentData];
+  v10 = [partialIntentData hash] + 37 * (v8 + 37 * (v6 + 37 * stableHash));
 
   objc_autoreleasePoolPop(v3);
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = [(_CHSIntentReferenceBuf *)self stableHash];
-      if (v8 != [v6 stableHash])
+      stableHash = [(_CHSIntentReferenceBuf *)self stableHash];
+      if (stableHash != [v6 stableHash])
       {
         goto LABEL_12;
       }
 
-      v9 = [(_CHSIntentReferenceBuf *)self intentData];
-      v10 = [v6 intentData];
-      if (v9 | v10)
+      intentData = [(_CHSIntentReferenceBuf *)self intentData];
+      intentData2 = [v6 intentData];
+      if (intentData | intentData2)
       {
-        v11 = [v9 isEqual:v10];
+        v11 = [intentData isEqual:intentData2];
 
         if (!v11)
         {
@@ -700,15 +700,15 @@ LABEL_29:
         }
       }
 
-      v12 = [(_CHSIntentReferenceBuf *)self schemaData];
-      v13 = [v6 schemaData];
-      if (!(v12 | v13) || (v14 = [v12 isEqual:v13], v13, v12, v14))
+      schemaData = [(_CHSIntentReferenceBuf *)self schemaData];
+      schemaData2 = [v6 schemaData];
+      if (!(schemaData | schemaData2) || (v14 = [schemaData isEqual:schemaData2], schemaData2, schemaData, v14))
       {
-        v15 = [(_CHSIntentReferenceBuf *)self partialIntentData];
-        v16 = [v6 partialIntentData];
-        if (v15 | v16)
+        partialIntentData = [(_CHSIntentReferenceBuf *)self partialIntentData];
+        partialIntentData2 = [v6 partialIntentData];
+        if (partialIntentData | partialIntentData2)
         {
-          v17 = [v15 isEqual:v16];
+          v17 = [partialIntentData isEqual:partialIntentData2];
         }
 
         else

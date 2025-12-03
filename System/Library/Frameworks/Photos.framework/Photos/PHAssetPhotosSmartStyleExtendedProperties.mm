@@ -1,7 +1,7 @@
 @interface PHAssetPhotosSmartStyleExtendedProperties
 + (id)propertiesToFetch;
 - (BOOL)isCurrentlySmartStyleable;
-- (PHAssetPhotosSmartStyleExtendedProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetPhotosSmartStyleExtendedProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetPhotosSmartStyleExtendedProperties
@@ -13,28 +13,28 @@
     return 0;
   }
 
-  v3 = [(PHAssetPropertySet *)self asset];
-  v4 = [v3 currentSmartStyleCast] > 0;
+  asset = [(PHAssetPropertySet *)self asset];
+  v4 = [asset currentSmartStyleCast] > 0;
 
   return v4;
 }
 
-- (PHAssetPhotosSmartStyleExtendedProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetPhotosSmartStyleExtendedProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7 && (v28.receiver = self, v28.super_class = PHAssetPhotosSmartStyleExtendedProperties, v9 = -[PHAssetPhotosSmartStyleExtendedProperties init](&v28, sel_init), (self = v9) != 0) && ((objc_storeWeak(&v9->super._asset, v8), [v7 objectForKeyedSubscript:@"extendedAttributes.sleetRenderingVersion"], v10 = objc_claimAutoreleasedReturnValue(), smartStyleRenderingVersion = self->_smartStyleRenderingVersion, self->_smartStyleRenderingVersion = v10, smartStyleRenderingVersion, v12 = self->_smartStyleRenderingVersion, objc_msgSend(v7, "objectForKeyedSubscript:", @"extendedAttributes.sleetIntensity"), v13 = objc_claimAutoreleasedReturnValue(), smartStyleIntensity = self->_smartStyleIntensity, self->_smartStyleIntensity = v13, smartStyleIntensity, v15 = self->_smartStyleIntensity, objc_msgSend(v7, "objectForKeyedSubscript:", @"extendedAttributes.sleetToneBias"), v16 = objc_claimAutoreleasedReturnValue(), smartStyleToneBias = self->_smartStyleToneBias, self->_smartStyleToneBias = v16, smartStyleToneBias, v18 = self->_smartStyleToneBias, objc_msgSend(v7, "objectForKeyedSubscript:", @"extendedAttributes.sleetColorBias"), v19 = objc_claimAutoreleasedReturnValue(), smartStyleColorBias = self->_smartStyleColorBias, self->_smartStyleColorBias = v19, smartStyleColorBias, v21 = self->_smartStyleColorBias, objc_msgSend(v7, "objectForKeyedSubscript:", @"extendedAttributes.sleetCast"), v22 = objc_claimAutoreleasedReturnValue(), originalSmartStyleCast = self->_originalSmartStyleCast, self->_originalSmartStyleCast = v22, originalSmartStyleCast, v24 = self->_originalSmartStyleCast, objc_msgSend(v7, "objectForKeyedSubscript:", @"additionalAttributes.sleetIsReversible"), v25 = objc_claimAutoreleasedReturnValue(), self->_smartStyleIsReversible = objc_msgSend(v25, "intValue"), v25, v12) || v15 || v18 || v21 || v24))
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
+  if (dictionaryCopy && (v28.receiver = self, v28.super_class = PHAssetPhotosSmartStyleExtendedProperties, v9 = -[PHAssetPhotosSmartStyleExtendedProperties init](&v28, sel_init), (self = v9) != 0) && ((objc_storeWeak(&v9->super._asset, assetCopy), [dictionaryCopy objectForKeyedSubscript:@"extendedAttributes.sleetRenderingVersion"], v10 = objc_claimAutoreleasedReturnValue(), smartStyleRenderingVersion = self->_smartStyleRenderingVersion, self->_smartStyleRenderingVersion = v10, smartStyleRenderingVersion, v12 = self->_smartStyleRenderingVersion, objc_msgSend(dictionaryCopy, "objectForKeyedSubscript:", @"extendedAttributes.sleetIntensity"), v13 = objc_claimAutoreleasedReturnValue(), smartStyleIntensity = self->_smartStyleIntensity, self->_smartStyleIntensity = v13, smartStyleIntensity, v15 = self->_smartStyleIntensity, objc_msgSend(dictionaryCopy, "objectForKeyedSubscript:", @"extendedAttributes.sleetToneBias"), v16 = objc_claimAutoreleasedReturnValue(), smartStyleToneBias = self->_smartStyleToneBias, self->_smartStyleToneBias = v16, smartStyleToneBias, v18 = self->_smartStyleToneBias, objc_msgSend(dictionaryCopy, "objectForKeyedSubscript:", @"extendedAttributes.sleetColorBias"), v19 = objc_claimAutoreleasedReturnValue(), smartStyleColorBias = self->_smartStyleColorBias, self->_smartStyleColorBias = v19, smartStyleColorBias, v21 = self->_smartStyleColorBias, objc_msgSend(dictionaryCopy, "objectForKeyedSubscript:", @"extendedAttributes.sleetCast"), v22 = objc_claimAutoreleasedReturnValue(), originalSmartStyleCast = self->_originalSmartStyleCast, self->_originalSmartStyleCast = v22, originalSmartStyleCast, v24 = self->_originalSmartStyleCast, objc_msgSend(dictionaryCopy, "objectForKeyedSubscript:", @"additionalAttributes.sleetIsReversible"), v25 = objc_claimAutoreleasedReturnValue(), self->_smartStyleIsReversible = objc_msgSend(v25, "intValue"), v25, v12) || v15 || v18 || v21 || v24))
   {
     self = self;
-    v26 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v26 = 0;
+    selfCopy = 0;
   }
 
-  return v26;
+  return selfCopy;
 }
 
 + (id)propertiesToFetch

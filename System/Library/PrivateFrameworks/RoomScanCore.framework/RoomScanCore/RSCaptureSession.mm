@@ -3,17 +3,17 @@
 - (RSCaptureSessionDelegate)delegate;
 - (id).cxx_construct;
 - (id)exportAsset;
-- (id)generateFloorPlanWithKeyframes:(id)a3 objects:(id)a4;
+- (id)generateFloorPlanWithKeyframes:(id)keyframes objects:(id)objects;
 - (id)getDebugInfo;
-- (id)standardizeFloorPlan:(id)a3;
-- (void)_processInfoThermalStateDidChangeNotification:(id)a3;
+- (id)standardizeFloorPlan:(id)plan;
+- (void)_processInfoThermalStateDidChangeNotification:(id)notification;
 - (void)dealloc;
-- (void)runWithConfiguration:(id)a3;
-- (void)setUpInternalDumpWithLogDir:(id)a3 enable:(BOOL)a4;
+- (void)runWithConfiguration:(id)configuration;
+- (void)setUpInternalDumpWithLogDir:(id)dir enable:(BOOL)enable;
 - (void)stop;
-- (void)updateWithFrame:(id)a3;
-- (void)updateWithKeyframes:(id)a3;
-- (void)updateWithObjects:(id)a3;
+- (void)updateWithFrame:(id)frame;
+- (void)updateWithKeyframes:(id)keyframes;
+- (void)updateWithObjects:(id)objects;
 @end
 
 @implementation RSCaptureSession
@@ -47,7 +47,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2621C3000, v3, OS_LOG_TYPE_INFO, "%{public}@: dealloc", buf, 0xCu);
   }
 
@@ -66,12 +66,12 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)standardizeFloorPlan:(id)a3
+- (id)standardizeFloorPlan:(id)plan
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  planCopy = plan;
   v5 = sub_26229CF80(v15);
-  v8 = objc_msgSend_copy(v4, v6, v7, v5);
+  v8 = objc_msgSend_copy(planCopy, v6, v7, v5);
   v9 = sub_2621CD3A4(*(*(self + 2) + 72));
   sub_262241864(v15, v8, v9, *(*(self + 2) + 56) + 1968);
 
@@ -102,16 +102,16 @@
   return v3;
 }
 
-- (id)generateFloorPlanWithKeyframes:(id)a3 objects:(id)a4
+- (id)generateFloorPlanWithKeyframes:(id)keyframes objects:(id)objects
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyframesCopy = keyframes;
+  objectsCopy = objects;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = v6;
+  v8 = keyframesCopy;
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v24, v28, 16);
   if (v12)
   {
@@ -137,10 +137,10 @@
     while (v12);
   }
 
-  objc_storeStrong(self + 13, a4);
+  objc_storeStrong(self + 13, objects);
   v19 = sub_2621EEA88(*(self + 2), *(self + 4), *(self + 13));
   sub_2621ECCF8(*(self + 19), v19);
-  if (v7)
+  if (objectsCopy)
   {
     v20 = sub_2621F6A6C(*(self + 2), *(self + 13), v19);
     objc_msgSend_updateObjects_(v19, v21, v20);
@@ -151,25 +151,25 @@
   return v19;
 }
 
-- (void)setUpInternalDumpWithLogDir:(id)a3 enable:(BOOL)a4
+- (void)setUpInternalDumpWithLogDir:(id)dir enable:(BOOL)enable
 {
-  v4 = a4;
-  v7 = a3;
+  enableCopy = enable;
+  dirCopy = dir;
   v8 = *(self + 2);
   if (v8)
   {
-    *(v8 + 184) = v4;
+    *(v8 + 184) = enableCopy;
   }
 
   v9 = *(self + 19);
-  v12 = v7;
+  v12 = dirCopy;
   if (v9)
   {
-    objc_storeStrong((v9 + 24), a3);
-    *(v9 + 177) = v4;
+    objc_storeStrong((v9 + 24), dir);
+    *(v9 + 177) = enableCopy;
     if (v12)
     {
-      if (v4)
+      if (enableCopy)
       {
         v11 = objc_msgSend_stringByAppendingPathComponent_(v12, v10, @"Live");
         sub_2621EB460(v9, v11);
@@ -288,11 +288,11 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithFrame:(id)a3
+- (void)updateWithFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   v5 = *(self + 19);
-  v35 = v4;
+  v35 = frameCopy;
   if (v5 && *(v5 + 177) == 1 && *(v5 + 72) == 0.0)
   {
     objc_msgSend_timestamp(v35, v6, v7);
@@ -392,9 +392,9 @@
   }
 }
 
-- (void)updateWithObjects:(id)a3
+- (void)updateWithObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   objc_initWeak(&location, self);
   v5 = *(self + 33);
   block[0] = MEMORY[0x277D85DD0];
@@ -402,17 +402,17 @@
   block[2] = sub_2622A7E1C;
   block[3] = &unk_279B30790;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = objectsCopy;
+  v6 = objectsCopy;
   dispatch_async(v5, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)updateWithKeyframes:(id)a3
+- (void)updateWithKeyframes:(id)keyframes
 {
-  v4 = a3;
+  keyframesCopy = keyframes;
   objc_initWeak(&location, self);
   v5 = *(self + 33);
   block[0] = MEMORY[0x277D85DD0];
@@ -420,7 +420,7 @@
   block[2] = sub_2622A81EC;
   block[3] = &unk_279B30790;
   objc_copyWeak(&v34, &location);
-  v6 = v4;
+  v6 = keyframesCopy;
   v33 = v6;
   dispatch_async(v5, block);
   if (objc_msgSend_isLiveResultEnabled(*(self + 1), v7, v8))
@@ -488,11 +488,11 @@
   objc_destroyWeak(&location);
 }
 
-- (void)runWithConfiguration:(id)a3
+- (void)runWithConfiguration:(id)configuration
 {
   v184 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_copy(v4, v5, v6);
+  configurationCopy = configuration;
+  v7 = objc_msgSend_copy(configurationCopy, v5, v6);
   v8 = *(self + 1);
   *(self + 1) = v7;
 
@@ -623,7 +623,7 @@ LABEL_11:
   *(self + 13) = v78;
 
   v80 = *(self + 8);
-  isOnboardingEnabled = objc_msgSend_isOnboardingEnabled(v4, v81, v82);
+  isOnboardingEnabled = objc_msgSend_isOnboardingEnabled(configurationCopy, v81, v82);
   if (v80)
   {
     *(v80 + 928) = isOnboardingEnabled;
@@ -967,17 +967,17 @@ LABEL_62:
   if (os_log_type_enabled(v180, OS_LOG_TYPE_INFO))
   {
     v182 = 138543362;
-    v183 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2621C3000, v180, OS_LOG_TYPE_INFO, "%{public}@: Listen to available memory start", &v182, 0xCu);
   }
 
   v181 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processInfoThermalStateDidChangeNotification:(id)a3
+- (void)_processInfoThermalStateDidChangeNotification:(id)notification
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = objc_msgSend_processInfo(MEMORY[0x277CCAC38], a2, a3);
+  v4 = objc_msgSend_processInfo(MEMORY[0x277CCAC38], a2, notification);
   v7 = objc_msgSend_thermalState(v4, v5, v6);
 
   if (qword_27FF0C0B0 != -1)

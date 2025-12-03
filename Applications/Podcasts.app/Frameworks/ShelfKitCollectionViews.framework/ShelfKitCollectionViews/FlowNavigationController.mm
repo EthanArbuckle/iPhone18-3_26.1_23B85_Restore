@@ -1,29 +1,29 @@
 @interface FlowNavigationController
 - (UIResponder)nextResponder;
 - (UIViewController)childViewControllerForStatusBarStyle;
-- (_TtC23ShelfKitCollectionViews24FlowNavigationController)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews24FlowNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC23ShelfKitCollectionViews24FlowNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC23ShelfKitCollectionViews24FlowNavigationController)initWithRootViewController:(id)a3;
-- (id)popToRootViewControllerAnimated:(BOOL)a3;
+- (_TtC23ShelfKitCollectionViews24FlowNavigationController)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews24FlowNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC23ShelfKitCollectionViews24FlowNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC23ShelfKitCollectionViews24FlowNavigationController)initWithRootViewController:(id)controller;
+- (id)popToRootViewControllerAnimated:(BOOL)animated;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation FlowNavigationController
 
 - (UIResponder)nextResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_243B24();
 
   return v3;
 }
 
-- (_TtC23ShelfKitCollectionViews24FlowNavigationController)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews24FlowNavigationController)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews24FlowNavigationController_macNavigationBar);
   *v3 = 0;
@@ -41,27 +41,27 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_243FE8();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = type metadata accessor for FlowNavigationController();
   v4 = v10.receiver;
-  v5 = a3;
-  [(FlowNavigationController *)&v10 traitCollectionDidChange:v5];
-  v6 = [v4 navigationBar];
-  v7 = [v4 view];
-  if (v7)
+  changeCopy = change;
+  [(FlowNavigationController *)&v10 traitCollectionDidChange:changeCopy];
+  navigationBar = [v4 navigationBar];
+  view = [v4 view];
+  if (view)
   {
-    v8 = v7;
-    [v7 bounds];
+    v8 = view;
+    [view bounds];
 
     sub_302BF8();
     sub_302C08();
-    [v6 setLayoutMargins:{0.0, v9, 0.0, v9}];
+    [navigationBar setLayoutMargins:{0.0, v9, 0.0, v9}];
   }
 
   else
@@ -70,38 +70,38 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = type metadata accessor for FlowNavigationController();
   swift_unknownObjectRetain();
   v7 = v10.receiver;
-  [(FlowNavigationController *)&v10 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
-  v8 = [v7 navigationBar];
+  [(FlowNavigationController *)&v10 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
+  navigationBar = [v7 navigationBar];
   sub_302BF8();
   sub_302C08();
-  [v8 setLayoutMargins:{0.0, v9, 0.0, v9}];
+  [navigationBar setLayoutMargins:{0.0, v9, 0.0, v9}];
 
   swift_unknownObjectRelease();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
-  v3 = [(FlowNavigationController *)v2 navigationBar];
-  v4 = [(FlowNavigationController *)v2 view];
-  if (v4)
+  selfCopy = self;
+  navigationBar = [(FlowNavigationController *)selfCopy navigationBar];
+  view = [(FlowNavigationController *)selfCopy view];
+  if (view)
   {
-    v5 = v4;
-    [v4 bounds];
+    v5 = view;
+    [view bounds];
 
     sub_302BF8();
     sub_302C08();
-    [v3 setLayoutMargins:{0.0, v6, 0.0, v6}];
+    [navigationBar setLayoutMargins:{0.0, v6, 0.0, v6}];
 
-    v7.receiver = v2;
+    v7.receiver = selfCopy;
     v7.super_class = type metadata accessor for FlowNavigationController();
     [(FlowNavigationController *)&v7 viewWillLayoutSubviews];
   }
@@ -114,37 +114,37 @@
 
 - (UIViewController)childViewControllerForStatusBarStyle
 {
-  v2 = [(FlowNavigationController *)self topViewController];
+  topViewController = [(FlowNavigationController *)self topViewController];
 
-  return v2;
+  return topViewController;
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
-  v3 = [(FlowNavigationController *)v2 topViewController];
-  if (v3)
+  selfCopy = self;
+  topViewController = [(FlowNavigationController *)selfCopy topViewController];
+  if (topViewController)
   {
-    v4 = v3;
-    v5 = [v3 supportedInterfaceOrientations];
+    v4 = topViewController;
+    supportedInterfaceOrientations = [topViewController supportedInterfaceOrientations];
 
-    return v5;
+    return supportedInterfaceOrientations;
   }
 
   else
   {
-    v8.receiver = v2;
+    v8.receiver = selfCopy;
     v8.super_class = type metadata accessor for FlowNavigationController();
-    v7 = [(FlowNavigationController *)&v8 supportedInterfaceOrientations];
+    supportedInterfaceOrientations2 = [(FlowNavigationController *)&v8 supportedInterfaceOrientations];
 
-    return v7;
+    return supportedInterfaceOrientations2;
   }
 }
 
-- (id)popToRootViewControllerAnimated:(BOOL)a3
+- (id)popToRootViewControllerAnimated:(BOOL)animated
 {
-  v4 = self;
-  v5 = sub_244A0C(a3);
+  selfCopy = self;
+  v5 = sub_244A0C(animated);
 
   if (v5)
   {
@@ -160,21 +160,21 @@
   return v6.super.isa;
 }
 
-- (_TtC23ShelfKitCollectionViews24FlowNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC23ShelfKitCollectionViews24FlowNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC23ShelfKitCollectionViews24FlowNavigationController)initWithRootViewController:(id)a3
+- (_TtC23ShelfKitCollectionViews24FlowNavigationController)initWithRootViewController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC23ShelfKitCollectionViews24FlowNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC23ShelfKitCollectionViews24FlowNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,7 +1,7 @@
 @interface PHGeneratedAssetDescription
 + (id)entityKeyMap;
-+ (id)fetchGeneratedAssetDescriptionsGroupedByAssetLocalIdentifierWithType:(int64_t)a3 forAssets:(id)a4;
-- (PHGeneratedAssetDescription)initWithNodeContainer:(id)a3 photoLibrary:(id)a4;
++ (id)fetchGeneratedAssetDescriptionsGroupedByAssetLocalIdentifierWithType:(int64_t)type forAssets:(id)assets;
+- (PHGeneratedAssetDescription)initWithNodeContainer:(id)container photoLibrary:(id)library;
 - (id)debugDescription;
 - (id)description;
 @end
@@ -10,56 +10,56 @@
 
 - (id)debugDescription
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(PHObject *)self uuid];
-  [v3 appendFormat:@"UUID: %@, ", v4];
+  string = [MEMORY[0x1E696AD60] string];
+  uuid = [(PHObject *)self uuid];
+  [string appendFormat:@"UUID: %@, ", uuid];
 
-  v5 = [(PHGeneratedAssetDescription *)self descriptionText];
-  [v3 appendFormat:@"descriptionText: %@, ", v5];
+  descriptionText = [(PHGeneratedAssetDescription *)self descriptionText];
+  [string appendFormat:@"descriptionText: %@, ", descriptionText];
 
-  [v3 appendFormat:@"analysisVersion: %d, ", -[PHGeneratedAssetDescription analysisVersion](self, "analysisVersion")];
-  [v3 appendFormat:@"sourceType: %ld, ", -[PHGeneratedAssetDescription analysisSourceType](self, "analysisSourceType")];
+  [string appendFormat:@"analysisVersion: %d, ", -[PHGeneratedAssetDescription analysisVersion](self, "analysisVersion")];
+  [string appendFormat:@"sourceType: %ld, ", -[PHGeneratedAssetDescription analysisSourceType](self, "analysisSourceType")];
 
-  return v3;
+  return string;
 }
 
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(PHObject *)self objectID];
-  v4 = [v2 stringWithFormat:@"<%@>", v3];
+  objectID = [(PHObject *)self objectID];
+  v4 = [v2 stringWithFormat:@"<%@>", objectID];
 
   return v4;
 }
 
-- (PHGeneratedAssetDescription)initWithNodeContainer:(id)a3 photoLibrary:(id)a4
+- (PHGeneratedAssetDescription)initWithNodeContainer:(id)container photoLibrary:(id)library
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  containerCopy = container;
   v18[0] = MEMORY[0x1E695E110];
   v17[0] = @"deleted";
   v17[1] = @"uuid";
-  v7 = a4;
-  v8 = [v6 uuid];
-  v18[1] = v8;
+  libraryCopy = library;
+  uuid = [containerCopy uuid];
+  v18[1] = uuid;
   v17[2] = @"objectID";
-  v9 = [v6 sourceNode];
-  v10 = [v9 objectID];
-  v18[2] = v10;
+  sourceNode = [containerCopy sourceNode];
+  objectID = [sourceNode objectID];
+  v18[2] = objectID;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:3];
 
   v16.receiver = self;
   v16.super_class = PHGeneratedAssetDescription;
-  v12 = [(PHObject *)&v16 initWithFetchDictionary:v11 propertyHint:2 photoLibrary:v7];
+  v12 = [(PHObject *)&v16 initWithFetchDictionary:v11 propertyHint:2 photoLibrary:libraryCopy];
 
   if (v12)
   {
-    v13 = [v6 descriptionText];
+    descriptionText = [containerCopy descriptionText];
     descriptionText = v12->_descriptionText;
-    v12->_descriptionText = v13;
+    v12->_descriptionText = descriptionText;
 
-    v12->_analysisVersion = [v6 analysisVersion];
-    v12->_analysisSourceType = [v6 analysisSourceType];
+    v12->_analysisVersion = [containerCopy analysisVersion];
+    v12->_analysisSourceType = [containerCopy analysisSourceType];
   }
 
   return v12;
@@ -91,37 +91,37 @@ void __43__PHGeneratedAssetDescription_entityKeyMap__block_invoke()
   entityKeyMap_pl_once_object_15_46665 = v4;
 }
 
-+ (id)fetchGeneratedAssetDescriptionsGroupedByAssetLocalIdentifierWithType:(int64_t)a3 forAssets:(id)a4
++ (id)fetchGeneratedAssetDescriptionsGroupedByAssetLocalIdentifierWithType:(int64_t)type forAssets:(id)assets
 {
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  if ([v5 count])
+  assetsCopy = assets;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if ([assetsCopy count])
   {
-    v7 = [v5 _pl_indexBy:&__block_literal_global_46673];
-    v8 = [v7 allKeys];
-    v9 = [v5 firstObject];
-    v10 = [v9 photoLibrary];
+    v7 = [assetsCopy _pl_indexBy:&__block_literal_global_46673];
+    allKeys = [v7 allKeys];
+    firstObject = [assetsCopy firstObject];
+    photoLibrary = [firstObject photoLibrary];
 
-    v11 = [v10 photoLibraryForCurrentQueueQoS];
-    v12 = [MEMORY[0x1E69BE450] fetchGeneratedAssetDescriptionsGroupedByAssetIdWithType:a3 forAssetsIDs:v8 inLibrary:v11];
+    photoLibraryForCurrentQueueQoS = [photoLibrary photoLibraryForCurrentQueueQoS];
+    v12 = [MEMORY[0x1E69BE450] fetchGeneratedAssetDescriptionsGroupedByAssetIdWithType:type forAssetsIDs:allKeys inLibrary:photoLibraryForCurrentQueueQoS];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __110__PHGeneratedAssetDescription_fetchGeneratedAssetDescriptionsGroupedByAssetLocalIdentifierWithType_forAssets___block_invoke_2;
     v20[3] = &unk_1E75A9E40;
     v21 = v12;
     v22 = v7;
-    v13 = v6;
+    v13 = dictionary;
     v23 = v13;
-    v24 = v10;
-    v14 = v10;
+    v24 = photoLibrary;
+    v14 = photoLibrary;
     v15 = v7;
     v16 = v12;
-    [v11 performBlockAndWait:v20];
+    [photoLibraryForCurrentQueueQoS performBlockAndWait:v20];
     v17 = v24;
     v18 = v13;
   }
 
-  return v6;
+  return dictionary;
 }
 
 void __110__PHGeneratedAssetDescription_fetchGeneratedAssetDescriptionsGroupedByAssetLocalIdentifierWithType_forAssets___block_invoke_2(uint64_t a1)

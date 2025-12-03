@@ -1,21 +1,21 @@
 @interface UITextEffectsWindowAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axHasModalView;
-- (CGRect)_axConvertRect:(CGRect)a3 toWindow:(id)a4;
-- (UITextEffectsWindowAccessibility)initWithFrame:(CGRect)a3;
+- (CGRect)_axConvertRect:(CGRect)rect toWindow:(id)window;
+- (UITextEffectsWindowAccessibility)initWithFrame:(CGRect)frame;
 - (id)_accessibilityAdditionalRemoteSubstituteChildren;
 @end
 
 @implementation UITextEffectsWindowAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UITextEffectsWindow";
   [location[0] validateClass:? isKindOfClass:?];
   v4 = "@";
@@ -24,14 +24,14 @@
   objc_storeStrong(v6, obj);
 }
 
-- (UITextEffectsWindowAccessibility)initWithFrame:(CGRect)a3
+- (UITextEffectsWindowAccessibility)initWithFrame:(CGRect)frame
 {
-  v11 = a3;
+  frameCopy = frame;
   v9 = a2;
   v10 = 0;
   v8.receiver = self;
   v8.super_class = UITextEffectsWindowAccessibility;
-  v10 = [(UITextEffectsWindowAccessibility *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v10 = [(UITextEffectsWindowAccessibility *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   objc_storeStrong(&v10, v10);
   if (v10)
   {
@@ -51,11 +51,11 @@
 
 - (BOOL)_axHasModalView
 {
-  v4 = [(UITextEffectsWindowAccessibility *)self subviews];
-  v3 = [v4 ax_filteredArrayUsingBlock:&__block_literal_global_46];
+  subviews = [(UITextEffectsWindowAccessibility *)self subviews];
+  v3 = [subviews ax_filteredArrayUsingBlock:&__block_literal_global_46];
   v5 = [v3 count] != 0;
   MEMORY[0x29EDC9740](v3);
-  MEMORY[0x29EDC9740](v4);
+  MEMORY[0x29EDC9740](subviews);
   return v5;
 }
 
@@ -69,21 +69,21 @@ uint64_t __51__UITextEffectsWindowAccessibility__axHasModalView__block_invoke(vo
   return v3;
 }
 
-- (CGRect)_axConvertRect:(CGRect)a3 toWindow:(id)a4
+- (CGRect)_axConvertRect:(CGRect)rect toWindow:(id)window
 {
-  v14 = a3;
-  v13 = self;
+  rectCopy = rect;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  if (([(UITextEffectsWindowAccessibility *)v13 safeBoolForKey:@"_isHostedInAnotherProcess"]& 1) != 0)
+  objc_storeStrong(location, window);
+  if (([(UITextEffectsWindowAccessibility *)selfCopy safeBoolForKey:@"_isHostedInAnotherProcess"]& 1) != 0)
   {
-    [(UITextEffectsWindowAccessibility *)v13 convertRect:v13 toWindow:v14.origin.x, v14.origin.y, v14.size.width, v14.size.height];
+    [(UITextEffectsWindowAccessibility *)selfCopy convertRect:selfCopy toWindow:rectCopy.origin.x, rectCopy.origin.y, rectCopy.size.width, rectCopy.size.height];
   }
 
   else
   {
-    [(UITextEffectsWindowAccessibility *)v13 convertRect:0 toWindow:v14.origin.x, v14.origin.y, v14.size.width, v14.size.height];
+    [(UITextEffectsWindowAccessibility *)selfCopy convertRect:0 toWindow:rectCopy.origin.x, rectCopy.origin.y, rectCopy.size.width, rectCopy.size.height];
   }
 
   v15 = v4;
@@ -106,11 +106,11 @@ uint64_t __51__UITextEffectsWindowAccessibility__axHasModalView__block_invoke(vo
 {
   v7[2] = self;
   v7[1] = a2;
-  v5 = [(UITextEffectsWindowAccessibility *)self windowScene];
-  v4 = [v5 keyboardSceneDelegate];
-  v7[0] = [v4 safeValueForKey:@"keyboardWindow"];
-  MEMORY[0x29EDC9740](v4);
-  *&v2 = MEMORY[0x29EDC9740](v5).n128_u64[0];
+  windowScene = [(UITextEffectsWindowAccessibility *)self windowScene];
+  keyboardSceneDelegate = [windowScene keyboardSceneDelegate];
+  v7[0] = [keyboardSceneDelegate safeValueForKey:@"keyboardWindow"];
+  MEMORY[0x29EDC9740](keyboardSceneDelegate);
+  *&v2 = MEMORY[0x29EDC9740](windowScene).n128_u64[0];
   v6 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{1, v2, v7[0]}];
   objc_storeStrong(v7, 0);
 

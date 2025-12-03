@@ -1,15 +1,15 @@
 @interface HMDSoftwareVersionStringDataTransformer
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4;
-+ (id)transformedValue:(id)a3 error:(id *)a4;
++ (id)reverseTransformedValue:(id)value error:(id *)error;
++ (id)transformedValue:(id)value error:(id *)error;
 @end
 
 @implementation HMDSoftwareVersionStringDataTransformer
 
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4
++ (id)reverseTransformedValue:(id)value error:(id *)error
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithData:v5 encoding:4];
+  valueCopy = value;
+  v6 = [[v4 alloc] initWithData:valueCopy encoding:4];
 
   if (v6)
   {
@@ -24,10 +24,10 @@
   return v7;
 }
 
-+ (id)transformedValue:(id)a3 error:(id *)a4
++ (id)transformedValue:(id)value error:(id *)error
 {
-  v4 = [a3 versionString];
-  v5 = [v4 dataUsingEncoding:4];
+  versionString = [value versionString];
+  v5 = [versionString dataUsingEncoding:4];
 
   return v5;
 }

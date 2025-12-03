@@ -1,34 +1,34 @@
 @interface PLAppPrivateData
-+ (BOOL)_validateBundleRootWithPathManager:(id)a3;
-+ (id)_appPrivateDataFolderURLWithPathManager:(id)a3 createIfNeeded:(BOOL)a4;
-+ (id)appPrivateDataContentsWithBundleID:(id)a3 pathManager:(id)a4;
-+ (id)appPrivateDataForLibraryURL:(id)a3;
-- (BOOL)_saveToFilesystemWithError:(id *)a3;
-- (BOOL)setValue:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)setValue:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-- (BOOL)setValuesForKeysWithDictionary:(id)a3 error:(id *)a4;
-- (PLAppPrivateData)initWithLibraryURL:(id)a3 alternateDictionaryStorageURL:(id)a4;
-- (id)_dictionaryStorageURLPreparedForWriting:(BOOL)a3;
++ (BOOL)_validateBundleRootWithPathManager:(id)manager;
++ (id)_appPrivateDataFolderURLWithPathManager:(id)manager createIfNeeded:(BOOL)needed;
++ (id)appPrivateDataContentsWithBundleID:(id)d pathManager:(id)manager;
++ (id)appPrivateDataForLibraryURL:(id)l;
+- (BOOL)_saveToFilesystemWithError:(id *)error;
+- (BOOL)setValue:(id)value forKey:(id)key error:(id *)error;
+- (BOOL)setValue:(id)value forKeyPath:(id)path error:(id *)error;
+- (BOOL)setValuesForKeysWithDictionary:(id)dictionary error:(id *)error;
+- (PLAppPrivateData)initWithLibraryURL:(id)l alternateDictionaryStorageURL:(id)rL;
+- (id)_dictionaryStorageURLPreparedForWriting:(BOOL)writing;
 - (id)allKeys;
 - (id)debugDescription;
-- (id)dictionaryWithValuesForKeys:(id)a3;
-- (id)valueForKey:(id)a3;
-- (id)valueForKeyPath:(id)a3;
-- (void)_readFromFilesystemWithDictionaryStorageURL:(id)a3;
-- (void)_recursiveCreateSubDictionariesIfMissing:(id)a3 index:(unint64_t)a4 parentDictionary:(id)a5;
-- (void)setValue:(id)a3 forKey:(id)a4;
-- (void)setValue:(id)a3 forKeyPath:(id)a4;
-- (void)setValuesForKeysWithDictionary:(id)a3;
+- (id)dictionaryWithValuesForKeys:(id)keys;
+- (id)valueForKey:(id)key;
+- (id)valueForKeyPath:(id)path;
+- (void)_readFromFilesystemWithDictionaryStorageURL:(id)l;
+- (void)_recursiveCreateSubDictionariesIfMissing:(id)missing index:(unint64_t)index parentDictionary:(id)dictionary;
+- (void)setValue:(id)value forKey:(id)key;
+- (void)setValue:(id)value forKeyPath:(id)path;
+- (void)setValuesForKeysWithDictionary:(id)dictionary;
 @end
 
 @implementation PLAppPrivateData
 
-- (void)setValuesForKeysWithDictionary:(id)a3
+- (void)setValuesForKeysWithDictionary:(id)dictionary
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8 = 0;
-  LOBYTE(self) = [(PLAppPrivateData *)self setValuesForKeysWithDictionary:v4 error:&v8];
+  LOBYTE(self) = [(PLAppPrivateData *)self setValuesForKeysWithDictionary:dictionaryCopy error:&v8];
   v5 = v8;
   if ((self & 1) == 0)
   {
@@ -49,52 +49,52 @@
   }
 }
 
-- (BOOL)setValuesForKeysWithDictionary:(id)a3 error:(id *)a4
+- (BOOL)setValuesForKeysWithDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(PLAppPrivateData *)v7 backingDictionary];
-  [v8 setValuesForKeysWithDictionary:v6];
+  dictionaryCopy = dictionary;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  backingDictionary = [(PLAppPrivateData *)selfCopy backingDictionary];
+  [backingDictionary setValuesForKeysWithDictionary:dictionaryCopy];
 
-  LOBYTE(a4) = [(PLAppPrivateData *)v7 _saveToFilesystemWithError:a4];
-  objc_sync_exit(v7);
+  LOBYTE(error) = [(PLAppPrivateData *)selfCopy _saveToFilesystemWithError:error];
+  objc_sync_exit(selfCopy);
 
-  return a4;
+  return error;
 }
 
-- (id)dictionaryWithValuesForKeys:(id)a3
+- (id)dictionaryWithValuesForKeys:(id)keys
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(PLAppPrivateData *)v5 backingDictionary];
-  v7 = [v6 dictionaryWithValuesForKeys:v4];
+  keysCopy = keys;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  backingDictionary = [(PLAppPrivateData *)selfCopy backingDictionary];
+  v7 = [backingDictionary dictionaryWithValuesForKeys:keysCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (id)allKeys
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(PLAppPrivateData *)v2 backingDictionary];
-  v4 = [v3 allKeys];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  backingDictionary = [(PLAppPrivateData *)selfCopy backingDictionary];
+  allKeys = [backingDictionary allKeys];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return allKeys;
 }
 
-- (void)setValue:(id)a3 forKeyPath:(id)a4
+- (void)setValue:(id)value forKeyPath:(id)path
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  pathCopy = path;
   v11 = 0;
-  LOBYTE(self) = [(PLAppPrivateData *)self setValue:v6 forKeyPath:v7 error:&v11];
+  LOBYTE(self) = [(PLAppPrivateData *)self setValue:valueCopy forKeyPath:pathCopy error:&v11];
   v8 = v11;
   if ((self & 1) == 0)
   {
@@ -115,68 +115,68 @@
   }
 }
 
-- (BOOL)setValue:(id)a3 forKeyPath:(id)a4 error:(id *)a5
+- (BOOL)setValue:(id)value forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  objc_sync_enter(v10);
-  v11 = [v9 componentsSeparatedByString:@"."];
-  v12 = [(PLAppPrivateData *)v10 backingDictionary];
-  [(PLAppPrivateData *)v10 _recursiveCreateSubDictionariesIfMissing:v11 index:0 parentDictionary:v12];
+  valueCopy = value;
+  pathCopy = path;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v11 = [pathCopy componentsSeparatedByString:@"."];
+  backingDictionary = [(PLAppPrivateData *)selfCopy backingDictionary];
+  [(PLAppPrivateData *)selfCopy _recursiveCreateSubDictionariesIfMissing:v11 index:0 parentDictionary:backingDictionary];
 
-  v13 = [(PLAppPrivateData *)v10 backingDictionary];
-  [v13 setValue:v8 forKeyPath:v9];
+  backingDictionary2 = [(PLAppPrivateData *)selfCopy backingDictionary];
+  [backingDictionary2 setValue:valueCopy forKeyPath:pathCopy];
 
-  LOBYTE(a5) = [(PLAppPrivateData *)v10 _saveToFilesystemWithError:a5];
-  objc_sync_exit(v10);
+  LOBYTE(error) = [(PLAppPrivateData *)selfCopy _saveToFilesystemWithError:error];
+  objc_sync_exit(selfCopy);
 
-  return a5;
+  return error;
 }
 
-- (void)_recursiveCreateSubDictionariesIfMissing:(id)a3 index:(unint64_t)a4 parentDictionary:(id)a5
+- (void)_recursiveCreateSubDictionariesIfMissing:(id)missing index:(unint64_t)index parentDictionary:(id)dictionary
 {
-  v14 = a3;
-  v8 = a5;
-  v9 = a4 + 1;
-  if ([v14 count] > a4 + 1)
+  missingCopy = missing;
+  dictionaryCopy = dictionary;
+  v9 = index + 1;
+  if ([missingCopy count] > index + 1)
   {
-    v10 = [v14 objectAtIndex:a4];
-    v11 = [v8 objectForKey:v10];
-    v12 = [v8 objectForKey:v10];
+    v10 = [missingCopy objectAtIndex:index];
+    v11 = [dictionaryCopy objectForKey:v10];
+    v12 = [dictionaryCopy objectForKey:v10];
 
     if (!v12)
     {
-      v13 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
 
-      [v8 setObject:v13 forKey:v10];
-      v11 = v13;
+      [dictionaryCopy setObject:dictionary forKey:v10];
+      v11 = dictionary;
     }
 
-    [(PLAppPrivateData *)self _recursiveCreateSubDictionariesIfMissing:v14 index:v9 parentDictionary:v11];
+    [(PLAppPrivateData *)self _recursiveCreateSubDictionariesIfMissing:missingCopy index:v9 parentDictionary:v11];
   }
 }
 
-- (id)valueForKeyPath:(id)a3
+- (id)valueForKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(PLAppPrivateData *)v5 backingDictionary];
-  v7 = [v6 valueForKeyPath:v4];
+  pathCopy = path;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  backingDictionary = [(PLAppPrivateData *)selfCopy backingDictionary];
+  v7 = [backingDictionary valueForKeyPath:pathCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v11 = 0;
-  LOBYTE(self) = [(PLAppPrivateData *)self setValue:v6 forKey:v7 error:&v11];
+  LOBYTE(self) = [(PLAppPrivateData *)self setValue:valueCopy forKey:keyCopy error:&v11];
   v8 = v11;
   if ((self & 1) == 0)
   {
@@ -197,39 +197,39 @@
   }
 }
 
-- (BOOL)setValue:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setValue:(id)value forKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  objc_sync_enter(v10);
-  v11 = [(PLAppPrivateData *)v10 backingDictionary];
-  [v11 setValue:v8 forKey:v9];
+  valueCopy = value;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  backingDictionary = [(PLAppPrivateData *)selfCopy backingDictionary];
+  [backingDictionary setValue:valueCopy forKey:keyCopy];
 
-  LOBYTE(a5) = [(PLAppPrivateData *)v10 _saveToFilesystemWithError:a5];
-  objc_sync_exit(v10);
+  LOBYTE(error) = [(PLAppPrivateData *)selfCopy _saveToFilesystemWithError:error];
+  objc_sync_exit(selfCopy);
 
-  return a5;
+  return error;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(PLAppPrivateData *)v5 backingDictionary];
-  v7 = [v6 valueForKey:v4];
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  backingDictionary = [(PLAppPrivateData *)selfCopy backingDictionary];
+  v7 = [backingDictionary valueForKey:keyCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)_readFromFilesystemWithDictionaryStorageURL:(id)a3
+- (void)_readFromFilesystemWithDictionaryStorageURL:(id)l
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF48] inputStreamWithURL:v4];
+  lCopy = l;
+  v5 = [MEMORY[0x1E695DF48] inputStreamWithURL:lCopy];
   v6 = v5;
   if (v5)
   {
@@ -251,11 +251,11 @@ LABEL_13:
 
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [v4 path];
+      path = [lCopy path];
       *buf = 138412546;
       v24 = v11;
       v25 = 2112;
-      v26 = v12;
+      v26 = path;
       v13 = "Successfully read %@ from file %@";
       v14 = v9;
       v15 = OS_LOG_TYPE_DEBUG;
@@ -264,15 +264,15 @@ LABEL_13:
 
     else
     {
-      v17 = [v8 userInfo];
-      v9 = [v17 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+      userInfo = [v8 userInfo];
+      v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
-      v18 = [v9 domain];
-      if ([v18 isEqualToString:*MEMORY[0x1E696A798]])
+      domain = [v9 domain];
+      if ([domain isEqualToString:*MEMORY[0x1E696A798]])
       {
-        v19 = [v9 code];
+        code = [v9 code];
 
-        if (v19 == 2)
+        if (code == 2)
         {
           goto LABEL_13;
         }
@@ -288,9 +288,9 @@ LABEL_13:
         goto LABEL_12;
       }
 
-      v12 = [v4 path];
+      path = [lCopy path];
       *buf = 138412290;
-      v24 = v12;
+      v24 = path;
       v13 = "Error reading property list from %@";
       v14 = v11;
       v15 = OS_LOG_TYPE_ERROR;
@@ -304,29 +304,29 @@ LABEL_12:
   }
 
 LABEL_14:
-  v20 = [(PLAppPrivateData *)self backingDictionary];
+  backingDictionary = [(PLAppPrivateData *)self backingDictionary];
 
-  if (!v20)
+  if (!backingDictionary)
   {
-    v21 = [MEMORY[0x1E695DF90] dictionary];
-    [(PLAppPrivateData *)self setBackingDictionary:v21];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(PLAppPrivateData *)self setBackingDictionary:dictionary];
   }
 }
 
-- (BOOL)_saveToFilesystemWithError:(id *)a3
+- (BOOL)_saveToFilesystemWithError:(id *)error
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = MEMORY[0x1E696AE40];
-  v6 = [(PLAppPrivateData *)v4 backingDictionary];
+  backingDictionary = [(PLAppPrivateData *)selfCopy backingDictionary];
   v33 = 0;
-  v7 = [v5 dataWithPropertyList:v6 format:100 options:0 error:&v33];
+  v7 = [v5 dataWithPropertyList:backingDictionary format:100 options:0 error:&v33];
   v8 = v33;
 
   if (v7)
   {
-    v9 = [(PLAppPrivateData *)v4 _dictionaryStorageURLPreparedForWriting:1];
+    v9 = [(PLAppPrivateData *)selfCopy _dictionaryStorageURLPreparedForWriting:1];
     v32 = v8;
     v10 = [v7 writeToURL:v9 options:1 error:&v32];
     v11 = v32;
@@ -338,11 +338,11 @@ LABEL_14:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
         v14 = [v7 length];
-        v15 = [v9 path];
+        path = [v9 path];
         *buf = 134218242;
         v35 = v14;
         v36 = 2112;
-        v37 = v15;
+        v37 = path;
         _os_log_impl(&dword_1AA9BD000, v13, OS_LOG_TYPE_DEBUG, "%ld bytes written to %@", buf, 0x16u);
       }
 
@@ -353,9 +353,9 @@ LABEL_14:
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v17 = [v9 path];
+        path2 = [v9 path];
         *buf = 138412546;
-        v35 = v17;
+        v35 = path2;
         v36 = 2112;
         v37 = v11;
         _os_log_impl(&dword_1AA9BD000, v13, OS_LOG_TYPE_ERROR, "Failed to write property list to %@. Error: %@", buf, 0x16u);
@@ -364,16 +364,16 @@ LABEL_14:
       if (PLIsErrorEqualToCode(v11, *MEMORY[0x1E696A250], 513))
       {
         v31 = 0;
-        v18 = [MEMORY[0x1E696AC08] defaultManager];
-        v19 = [v9 path];
-        v20 = [v18 fileExistsAtPath:v19 isDirectory:&v31];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        path3 = [v9 path];
+        v20 = [defaultManager fileExistsAtPath:path3 isDirectory:&v31];
 
         v42[0] = *MEMORY[0x1E695DBF0];
         v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:1];
         v22 = [v9 resourceValuesForKeys:v21 error:0];
 
-        v23 = [v9 path];
-        v24 = [PLSandboxHelper processCanWriteSandboxForPath:v23];
+        path4 = [v9 path];
+        v24 = [PLSandboxHelper processCanWriteSandboxForPath:path4];
 
         v25 = PLBackendGetLog();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -411,19 +411,19 @@ LABEL_14:
     v11 = v8;
   }
 
-  if (a3)
+  if (error)
   {
     v29 = v11;
-    *a3 = v11;
+    *error = v11;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   return v16;
 }
 
-- (id)_dictionaryStorageURLPreparedForWriting:(BOOL)a3
+- (id)_dictionaryStorageURLPreparedForWriting:(BOOL)writing
 {
-  v3 = [objc_opt_class() _appPrivateDataFolderURLWithPathManager:self->_pathManager createIfNeeded:a3];
+  v3 = [objc_opt_class() _appPrivateDataFolderURLWithPathManager:self->_pathManager createIfNeeded:writing];
   v4 = [v3 URLByAppendingPathComponent:@"appPrivateData.plist"];
 
   return v4;
@@ -434,39 +434,39 @@ LABEL_14:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PLAppPrivateData *)self _dictionaryStorageURL];
-  v7 = [v6 path];
-  v8 = [v3 stringWithFormat:@"%@<%p> (%@): %@", v5, self, v7, self->_backingDictionary];
+  _dictionaryStorageURL = [(PLAppPrivateData *)self _dictionaryStorageURL];
+  path = [_dictionaryStorageURL path];
+  v8 = [v3 stringWithFormat:@"%@<%p> (%@): %@", v5, self, path, self->_backingDictionary];
 
   return v8;
 }
 
-- (PLAppPrivateData)initWithLibraryURL:(id)a3 alternateDictionaryStorageURL:(id)a4
+- (PLAppPrivateData)initWithLibraryURL:(id)l alternateDictionaryStorageURL:(id)rL
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v15.receiver = self;
   v15.super_class = PLAppPrivateData;
   v9 = [(PLAppPrivateData *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_libraryURL, a3);
+    objc_storeStrong(&v9->_libraryURL, l);
     v11 = [[PLPhotoLibraryPathManager alloc] initWithLibraryURL:v10->_libraryURL];
     pathManager = v10->_pathManager;
     v10->_pathManager = v11;
 
     if ([objc_opt_class() _validateBundleRootWithPathManager:v10->_pathManager])
     {
-      if (v8)
+      if (rLCopy)
       {
-        [(PLAppPrivateData *)v10 _readFromFilesystemWithDictionaryStorageURL:v8];
+        [(PLAppPrivateData *)v10 _readFromFilesystemWithDictionaryStorageURL:rLCopy];
       }
 
       else
       {
-        v13 = [(PLAppPrivateData *)v10 _dictionaryStorageURL];
-        [(PLAppPrivateData *)v10 _readFromFilesystemWithDictionaryStorageURL:v13];
+        _dictionaryStorageURL = [(PLAppPrivateData *)v10 _dictionaryStorageURL];
+        [(PLAppPrivateData *)v10 _readFromFilesystemWithDictionaryStorageURL:_dictionaryStorageURL];
       }
     }
 
@@ -480,46 +480,46 @@ LABEL_14:
   return v10;
 }
 
-+ (id)appPrivateDataContentsWithBundleID:(id)a3 pathManager:(id)a4
++ (id)appPrivateDataContentsWithBundleID:(id)d pathManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  managerCopy = manager;
   pl_dispatch_once(&PLIsReallyAssetsd_didCheckReadOnly, &__block_literal_global_129_3947);
   if (PLIsReallyAssetsd_isAssetsd)
   {
-    if (v7)
+    if (dCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_11:
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"PLAppPrivateData.m" lineNumber:255 description:{@"Invalid parameter not satisfying: %@", @"bundleID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAppPrivateData.m" lineNumber:255 description:{@"Invalid parameter not satisfying: %@", @"bundleID"}];
 
-    if (v8)
+    if (managerCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_12:
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"PLAppPrivateData.m" lineNumber:256 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAppPrivateData.m" lineNumber:256 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
 
     pl_dispatch_once(&PLIsReallyAssetsd_didCheckReadOnly, &__block_literal_global_129_3947);
     v9 = 0;
     goto LABEL_7;
   }
 
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v19 handleFailureInMethod:a2 object:a1 file:@"PLAppPrivateData.m" lineNumber:254 description:{@"Invalid parameter not satisfying: %@", @"PLIsReallyAssetsd()"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLAppPrivateData.m" lineNumber:254 description:{@"Invalid parameter not satisfying: %@", @"PLIsReallyAssetsd()"}];
 
-  if (!v7)
+  if (!dCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_3:
-  if (!v8)
+  if (!managerCopy)
   {
     goto LABEL_12;
   }
@@ -527,19 +527,19 @@ LABEL_3:
 LABEL_4:
   pl_dispatch_once(&PLIsReallyAssetsd_didCheckReadOnly, &__block_literal_global_129_3947);
   v9 = 0;
-  if (v7 && ((PLIsReallyAssetsd_isAssetsd | __PLIsAssetsdProxyService) & 1) != 0)
+  if (dCopy && ((PLIsReallyAssetsd_isAssetsd | __PLIsAssetsdProxyService) & 1) != 0)
   {
-    v10 = [a1 _appPrivateDataFolderURLWithPathManager:v8 createIfNeeded:0];
-    v11 = [v10 URLByDeletingLastPathComponent];
-    v12 = [v11 URLByAppendingPathComponent:v7];
+    v10 = [self _appPrivateDataFolderURLWithPathManager:managerCopy createIfNeeded:0];
+    uRLByDeletingLastPathComponent = [v10 URLByDeletingLastPathComponent];
+    v12 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:dCopy];
 
     v13 = [v12 URLByAppendingPathComponent:@"appPrivateData.plist"];
     v14 = [PLAppPrivateData alloc];
-    v15 = [v8 libraryURL];
-    v16 = [(PLAppPrivateData *)v14 initWithLibraryURL:v15 alternateDictionaryStorageURL:v13];
+    libraryURL = [managerCopy libraryURL];
+    v16 = [(PLAppPrivateData *)v14 initWithLibraryURL:libraryURL alternateDictionaryStorageURL:v13];
 
-    v17 = [(PLAppPrivateData *)v16 allKeys];
-    v9 = [(PLAppPrivateData *)v16 dictionaryWithValuesForKeys:v17];
+    allKeys = [(PLAppPrivateData *)v16 allKeys];
+    v9 = [(PLAppPrivateData *)v16 dictionaryWithValuesForKeys:allKeys];
   }
 
 LABEL_7:
@@ -547,20 +547,20 @@ LABEL_7:
   return v9;
 }
 
-+ (id)_appPrivateDataFolderURLWithPathManager:(id)a3 createIfNeeded:(BOOL)a4
++ (id)_appPrivateDataFolderURLWithPathManager:(id)manager createIfNeeded:(BOOL)needed
 {
   v4 = MEMORY[0x1E695DFF8];
-  v5 = [a3 photoDirectoryWithType:5 createIfNeeded:a4 error:0];
+  v5 = [manager photoDirectoryWithType:5 createIfNeeded:needed error:0];
   v6 = [v4 fileURLWithPath:v5];
 
   return v6;
 }
 
-+ (BOOL)_validateBundleRootWithPathManager:(id)a3
++ (BOOL)_validateBundleRootWithPathManager:(id)manager
 {
   v10 = *MEMORY[0x1E69E9840];
   v7 = 0;
-  v3 = [a3 validateCreationRequestWithError:&v7];
+  v3 = [manager validateCreationRequestWithError:&v7];
   v4 = v7;
   if ((v3 & 1) == 0)
   {
@@ -576,30 +576,30 @@ LABEL_7:
   return v3;
 }
 
-+ (id)appPrivateDataForLibraryURL:(id)a3
++ (id)appPrivateDataForLibraryURL:(id)l
 {
-  v4 = a3;
-  v5 = a1;
-  objc_sync_enter(v5);
+  lCopy = l;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!sPathToObjectMap)
   {
-    v6 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     v7 = sPathToObjectMap;
-    sPathToObjectMap = v6;
+    sPathToObjectMap = strongToWeakObjectsMapTable;
   }
 
-  v8 = [v4 path];
-  v9 = [sPathToObjectMap objectForKey:v8];
+  path = [lCopy path];
+  v9 = [sPathToObjectMap objectForKey:path];
   if (!v9)
   {
-    v9 = [[PLAppPrivateData alloc] initWithLibraryURL:v4 alternateDictionaryStorageURL:0];
+    v9 = [[PLAppPrivateData alloc] initWithLibraryURL:lCopy alternateDictionaryStorageURL:0];
     if (v9)
     {
-      [sPathToObjectMap setObject:v9 forKey:v8];
+      [sPathToObjectMap setObject:v9 forKey:path];
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }

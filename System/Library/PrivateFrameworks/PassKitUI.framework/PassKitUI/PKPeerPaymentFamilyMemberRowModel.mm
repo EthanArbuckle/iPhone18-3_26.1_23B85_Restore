@@ -1,24 +1,24 @@
 @interface PKPeerPaymentFamilyMemberRowModel
-+ (id)sortedPeerPaymentFamilyMemberRowModelsForFamilyMembers:(id)a3 peerPaymentAccount:(id)a4;
++ (id)sortedPeerPaymentFamilyMemberRowModelsForFamilyMembers:(id)members peerPaymentAccount:(id)account;
 - (NSString)detailText;
-- (PKPeerPaymentFamilyMemberRowModel)initWithFamilyMember:(id)a3;
-- (int64_t)compare:(id)a3;
+- (PKPeerPaymentFamilyMemberRowModel)initWithFamilyMember:(id)member;
+- (int64_t)compare:(id)compare;
 - (unint64_t)state;
 @end
 
 @implementation PKPeerPaymentFamilyMemberRowModel
 
-+ (id)sortedPeerPaymentFamilyMemberRowModelsForFamilyMembers:(id)a3 peerPaymentAccount:(id)a4
++ (id)sortedPeerPaymentFamilyMemberRowModelsForFamilyMembers:(id)members peerPaymentAccount:(id)account
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  membersCopy = members;
+  accountCopy = account;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v5;
+  v8 = membersCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -36,9 +36,9 @@
         v13 = *(*(&v20 + 1) + 8 * i);
         if (([v13 isMe] & 1) == 0 && (objc_msgSend(v13, "isOrganizer") & 1) == 0)
         {
-          v14 = [v13 altDSID];
-          v15 = [v6 peerPaymentAccountWithAltDSID:v14];
-          v16 = [v6 accountInvitationWithAltDSID:v14];
+          altDSID = [v13 altDSID];
+          v15 = [accountCopy peerPaymentAccountWithAltDSID:altDSID];
+          v16 = [accountCopy accountInvitationWithAltDSID:altDSID];
           if (v16 | v15 || [v13 memberType] == 2 || objc_msgSend(v13, "memberType") == 1)
           {
             v17 = [[PKPeerPaymentFamilyMemberRowModel alloc] initWithFamilyMember:v13];
@@ -61,16 +61,16 @@
   return v18;
 }
 
-- (PKPeerPaymentFamilyMemberRowModel)initWithFamilyMember:(id)a3
+- (PKPeerPaymentFamilyMemberRowModel)initWithFamilyMember:(id)member
 {
-  v5 = a3;
+  memberCopy = member;
   v9.receiver = self;
   v9.super_class = PKPeerPaymentFamilyMemberRowModel;
   v6 = [(PKPeerPaymentFamilyMemberRowModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_familyMember, a3);
+    objc_storeStrong(&v6->_familyMember, member);
   }
 
   return v7;
@@ -103,37 +103,37 @@
   }
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(PKPeerPaymentFamilyMemberRowModel *)self state];
-  v6 = [v4 state];
-  if (v5 > 4)
+  compareCopy = compare;
+  state = [(PKPeerPaymentFamilyMemberRowModel *)self state];
+  state2 = [compareCopy state];
+  if (state > 4)
   {
     v7 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v7 = qword_1BE115878[v5];
+    v7 = qword_1BE115878[state];
   }
 
-  if (v6 > 4)
+  if (state2 > 4)
   {
     v8 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v8 = qword_1BE115878[v6];
+    v8 = qword_1BE115878[state2];
   }
 
   if (v7 == v8)
   {
-    v9 = [(PKFamilyMember *)self->_familyMember labelName];
-    v10 = [v4 familyMember];
-    v11 = [v10 labelName];
-    v12 = [v9 compare:v11];
+    labelName = [(PKFamilyMember *)self->_familyMember labelName];
+    familyMember = [compareCopy familyMember];
+    labelName2 = [familyMember labelName];
+    v12 = [labelName compare:labelName2];
   }
 
   else if (v7 < v8)

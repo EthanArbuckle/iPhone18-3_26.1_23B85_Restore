@@ -1,11 +1,11 @@
 @interface AXCaptionTextHighlightController
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)_videoOverridesStyle:(id)a3;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)_videoOverridesStyle:(id)style;
 - (id)specifiers;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (void)_setVideoOverridesStyle:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (void)_setVideoOverridesStyle:(id)style specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -16,15 +16,15 @@
   v6.receiver = self;
   v6.super_class = AXCaptionTextHighlightController;
   [(AXCaptionStyleChooserController *)&v6 viewDidLoad];
-  v3 = [(AXCaptionTextHighlightController *)self table];
+  table = [(AXCaptionTextHighlightController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXCaptionColorCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  if (a4 == 1)
+  if (section == 1)
   {
     v4 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     [v4 _scaledValueForValue:20.0];
@@ -37,28 +37,28 @@
   {
     v8.receiver = self;
     v8.super_class = AXCaptionTextHighlightController;
-    [(AXCaptionTextHighlightController *)&v8 tableView:a3 heightForHeaderInSection:?];
+    [(AXCaptionTextHighlightController *)&v8 tableView:view heightForHeaderInSection:?];
   }
 
   return result;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4 == 1)
+  if (section == 1)
   {
     v4 = settingsLocString(@"CAPTION_COLOR", @"CaptioningStyle");
-    v5 = [v4 uppercaseString];
+    uppercaseString = [v4 uppercaseString];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = AXCaptionTextHighlightController;
-    v5 = [(AXCaptionTextHighlightController *)&v7 tableView:a3 titleForHeaderInSection:?];
+    uppercaseString = [(AXCaptionTextHighlightController *)&v7 tableView:view titleForHeaderInSection:?];
   }
 
-  return v5;
+  return uppercaseString;
 }
 
 - (id)specifiers
@@ -68,15 +68,15 @@
   {
     v36 = OBJC_IVAR___PSListController__specifiers;
     v4 = objc_alloc_init(NSMutableArray);
-    v43 = self;
-    v5 = [(AXCaptionStyleChooserController *)self captionPreviewSpecifiers];
-    [v4 addObjectsFromArray:v5];
+    selfCopy = self;
+    captionPreviewSpecifiers = [(AXCaptionStyleChooserController *)self captionPreviewSpecifiers];
+    [v4 addObjectsFromArray:captionPreviewSpecifiers];
 
     v42 = v4;
-    v6 = [v4 lastObject];
+    lastObject = [v4 lastObject];
     v7 = settingsLocString(@"CAPTION_COLOR", @"CaptioningStyle");
-    v37 = v6;
-    [v6 setName:v7];
+    v37 = lastObject;
+    [lastObject setName:v7];
 
     v41 = AXCaptionColorDefault(2);
     v48 = 0u;
@@ -102,7 +102,7 @@
           v13 = *(*(&v48 + 1) + 8 * i);
           v14 = [v13 objectForKeyedSubscript:@"name"];
           v15 = settingsLocString(v14, @"CaptioningStyle");
-          v16 = [PSSpecifier preferenceSpecifierNamed:v15 target:v43 set:0 get:0 detail:0 cell:3 edit:0];
+          v16 = [PSSpecifier preferenceSpecifierNamed:v15 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
 
           [v16 setProperty:objc_opt_class() forKey:v11];
           v17 = [v13 objectForKeyedSubscript:@"rgb"];
@@ -128,7 +128,7 @@
     }
 
     v19 = settingsLocString(@"CAPTION_TRANSPARENCY", @"CaptioningStyle");
-    v20 = [PSSpecifier preferenceSpecifierNamed:v19 target:v43 set:0 get:0 detail:0 cell:0 edit:0];
+    v20 = [PSSpecifier preferenceSpecifierNamed:v19 target:selfCopy set:0 get:0 detail:0 cell:0 edit:0];
 
     v35 = v20;
     [v42 addObject:v20];
@@ -156,7 +156,7 @@
           v26 = *(*(&v44 + 1) + 8 * j);
           v27 = [v26 objectForKeyedSubscript:@"name"];
           v28 = settingsLocString(v27, @"CaptioningStyle");
-          v29 = [PSSpecifier preferenceSpecifierNamed:v28 target:v43 set:0 get:0 detail:0 cell:3 edit:0];
+          v29 = [PSSpecifier preferenceSpecifierNamed:v28 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
 
           [v29 setProperty:objc_opt_class() forKey:v24];
           v30 = [v26 objectForKeyedSubscript:@"alpha"];
@@ -181,50 +181,50 @@
       while (v22);
     }
 
-    v32 = [(AXCaptionStyleChooserController *)v43 videoOverrideSpecifiers];
-    [v42 addObjectsFromArray:v32];
+    videoOverrideSpecifiers = [(AXCaptionStyleChooserController *)selfCopy videoOverrideSpecifiers];
+    [v42 addObjectsFromArray:videoOverrideSpecifiers];
 
-    v33 = *&v43->super.AXUISettingsBaseListController_opaque[v36];
-    *&v43->super.AXUISettingsBaseListController_opaque[v36] = v42;
+    v33 = *&selfCopy->super.AXUISettingsBaseListController_opaque[v36];
+    *&selfCopy->super.AXUISettingsBaseListController_opaque[v36] = v42;
 
-    v3 = *&v43->super.AXUISettingsBaseListController_opaque[v36];
+    v3 = *&selfCopy->super.AXUISettingsBaseListController_opaque[v36];
   }
 
   return v3;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a4;
+  cellCopy = cell;
   v20.receiver = self;
   v20.super_class = AXCaptionTextHighlightController;
-  [(AXCaptionStyleChooserController *)&v20 tableView:a3 willDisplayCell:v8 forRowAtIndexPath:a5];
-  v9 = v8;
-  v10 = [v9 specifier];
-  v11 = [v10 propertyForKey:@"colorType"];
-  v12 = [v11 intValue];
+  [(AXCaptionStyleChooserController *)&v20 tableView:view willDisplayCell:cellCopy forRowAtIndexPath:path];
+  v9 = cellCopy;
+  specifier = [v9 specifier];
+  v11 = [specifier propertyForKey:@"colorType"];
+  intValue = [v11 intValue];
 
-  if (v12 == 2)
+  if (intValue == 2)
   {
-    v13 = [v9 specifier];
-    v14 = [v13 propertyForKey:@"rgb"];
+    specifier2 = [v9 specifier];
+    v14 = [specifier2 propertyForKey:@"rgb"];
     v15 = [(AXCaptionStyleChooserController *)self isStoredColorType:2 equalWithColors:v14];
   }
 
   else
   {
-    v16 = [v10 propertyForKey:@"transparencyType"];
-    v17 = [v16 intValue];
+    v16 = [specifier propertyForKey:@"transparencyType"];
+    intValue2 = [v16 intValue];
 
-    if (v17 != 2)
+    if (intValue2 != 2)
     {
 LABEL_7:
       v19 = 0;
       goto LABEL_8;
     }
 
-    v13 = [v9 specifier];
-    v14 = [v13 propertyForKey:@"alpha"];
+    specifier2 = [v9 specifier];
+    v14 = [specifier2 propertyForKey:@"alpha"];
     v15 = [(AXCaptionStyleChooserController *)self isStoredTransparencyType:2 equalWithTransparency:v14];
   }
 
@@ -240,23 +240,23 @@ LABEL_8:
   [v9 setChecked:v19];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v31.receiver = self;
   v31.super_class = AXCaptionTextHighlightController;
-  v7 = a3;
-  [(AXCaptionTextHighlightController *)&v31 tableView:v7 didSelectRowAtIndexPath:v6];
-  v8 = [v7 cellForRowAtIndexPath:v6];
+  viewCopy = view;
+  [(AXCaptionTextHighlightController *)&v31 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
-  v9 = [v8 specifier];
+  specifier = [v8 specifier];
 
-  v10 = [v9 propertyForKey:@"colorType"];
-  v11 = [v10 intValue];
+  v10 = [specifier propertyForKey:@"colorType"];
+  intValue = [v10 intValue];
 
-  if (v11 == 2)
+  if (intValue == 2)
   {
-    v12 = [v9 propertyForKey:@"rgb"];
+    v12 = [specifier propertyForKey:@"rgb"];
     v13 = [v12 objectAtIndexedSubscript:0];
     [v13 floatValue];
     v15 = v14;
@@ -274,12 +274,12 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v23 = [v9 propertyForKey:@"transparencyType"];
-  v24 = [v23 intValue];
+  v23 = [specifier propertyForKey:@"transparencyType"];
+  intValue2 = [v23 intValue];
 
-  if (v24 == 2)
+  if (intValue2 == 2)
   {
-    [v9 propertyForKey:@"alpha"];
+    [specifier propertyForKey:@"alpha"];
     v25 = _NSConcreteStackBlock;
     v26 = 3221225472;
     v27 = __70__AXCaptionTextHighlightController_tableView_didSelectRowAtIndexPath___block_invoke_2;
@@ -292,7 +292,7 @@ LABEL_5:
   }
 
 LABEL_6:
-  [(AXCaptionStyleChooserController *)self updateTableCheckedSelection:v6, v25, v26, v27, v28, v29];
+  [(AXCaptionStyleChooserController *)self updateTableCheckedSelection:pathCopy, v25, v26, v27, v28, v29];
 }
 
 uint64_t __70__AXCaptionTextHighlightController_tableView_didSelectRowAtIndexPath___block_invoke(uint64_t a1)
@@ -311,7 +311,7 @@ uint64_t __70__AXCaptionTextHighlightController_tableView_didSelectRowAtIndexPat
   return _MACaptionAppearancePrefSetBackgroundOpacity(v2, v3);
 }
 
-- (id)_videoOverridesStyle:(id)a3
+- (id)_videoOverridesStyle:(id)style
 {
   [(AXCaptionStyleChooserController *)self profileId];
   v4 = MACaptionAppearancePrefCopyVideoOverrideBackgroundColor();
@@ -319,27 +319,27 @@ uint64_t __70__AXCaptionTextHighlightController_tableView_didSelectRowAtIndexPat
   v5 = MACaptionAppearancePrefCopyVideoOverrideBackgroundOpacity();
   if ([v4 BOOLValue])
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  v7 = [NSNumber numberWithInt:v6];
+  v7 = [NSNumber numberWithInt:bOOLValue];
 
   return v7;
 }
 
-- (void)_setVideoOverridesStyle:(id)a3 specifier:(id)a4
+- (void)_setVideoOverridesStyle:(id)style specifier:(id)specifier
 {
-  v5 = a3;
+  styleCopy = style;
   [(AXCaptionStyleChooserController *)self profileId];
-  [v5 BOOLValue];
+  [styleCopy BOOLValue];
   MACaptionAppearancePrefSetVideoOverrideBackgroundColor();
   [(AXCaptionStyleChooserController *)self profileId];
-  [v5 BOOLValue];
+  [styleCopy BOOLValue];
 
   MACaptionAppearancePrefSetVideoOverrideBackgroundOpacity();
 }

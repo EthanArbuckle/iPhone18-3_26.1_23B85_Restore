@@ -1,12 +1,12 @@
 @interface SiriSharedUIFeedbackController
 - (BOOL)isProvidingFeedback;
-- (SiriSharedUIFeedbackController)initWithCoder:(id)a3;
-- (SiriSharedUIFeedbackController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setEvaluationResult:(id)a3;
-- (void)setFeedbackController:(id)a3;
-- (void)setIsProvidingFeedback:(BOOL)a3;
-- (void)userDidReportConcernForSuggestionsWithModel:(id)a3;
-- (void)userDidReportConcernWithModel:(id)a3;
+- (SiriSharedUIFeedbackController)initWithCoder:(id)coder;
+- (SiriSharedUIFeedbackController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setEvaluationResult:(id)result;
+- (void)setFeedbackController:(id)controller;
+- (void)setIsProvidingFeedback:(BOOL)feedback;
+- (void)userDidReportConcernForSuggestionsWithModel:(id)model;
+- (void)userDidReportConcernWithModel:(id)model;
 @end
 
 @implementation SiriSharedUIFeedbackController
@@ -18,30 +18,30 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setIsProvidingFeedback:(BOOL)a3
+- (void)setIsProvidingFeedback:(BOOL)feedback
 {
   v5 = OBJC_IVAR___SiriSharedUIFeedbackController_isProvidingFeedback;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = feedback;
 }
 
-- (void)setFeedbackController:(id)a3
+- (void)setFeedbackController:(id)controller
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___SiriSharedUIFeedbackController_feedbackController);
-  *(&self->super.super.super.isa + OBJC_IVAR___SiriSharedUIFeedbackController_feedbackController) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___SiriSharedUIFeedbackController_feedbackController) = controller;
+  controllerCopy = controller;
 }
 
-- (void)setEvaluationResult:(id)a3
+- (void)setEvaluationResult:(id)result
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___SiriSharedUIFeedbackController_evaluationResult);
-  *(&self->super.super.super.isa + OBJC_IVAR___SiriSharedUIFeedbackController_evaluationResult) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___SiriSharedUIFeedbackController_evaluationResult) = result;
+  resultCopy = result;
 }
 
-- (SiriSharedUIFeedbackController)initWithNibName:(id)a3 bundle:(id)a4
+- (SiriSharedUIFeedbackController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_21E4DCF78();
     v7 = v6;
@@ -53,11 +53,11 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return SiriSharedUIFeedbackController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return SiriSharedUIFeedbackController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
-- (SiriSharedUIFeedbackController)initWithCoder:(id)a3
+- (SiriSharedUIFeedbackController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___SiriSharedUIFeedbackController_isProvidingFeedback) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR___SiriSharedUIFeedbackController_feedbackController) = 0;
@@ -67,18 +67,18 @@
   return result;
 }
 
-- (void)userDidReportConcernForSuggestionsWithModel:(id)a3
+- (void)userDidReportConcernForSuggestionsWithModel:(id)model
 {
-  v4 = a3;
-  v5 = self;
-  SiriSharedUIFeedbackController.userDidReportConcernForSuggestions(with:)(v4);
+  modelCopy = model;
+  selfCopy = self;
+  SiriSharedUIFeedbackController.userDidReportConcernForSuggestions(with:)(modelCopy);
 }
 
-- (void)userDidReportConcernWithModel:(id)a3
+- (void)userDidReportConcernWithModel:(id)model
 {
-  v4 = a3;
-  v5 = self;
-  SiriSharedUIFeedbackController.userDidReportConcern(with:)(v4);
+  modelCopy = model;
+  selfCopy = self;
+  SiriSharedUIFeedbackController.userDidReportConcern(with:)(modelCopy);
 }
 
 @end

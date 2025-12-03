@@ -11,8 +11,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v1 = [a1 textLineFragments];
-  v2 = [v1 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  textLineFragments = [self textLineFragments];
+  v2 = [textLineFragments countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v2)
   {
     v3 = v2;
@@ -24,13 +24,13 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(textLineFragments);
         }
 
         v4 += [*(*(&v8 + 1) + 8 * i) animatingGlyphCount_emk];
       }
 
-      v3 = [v1 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [textLineFragments countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v3);

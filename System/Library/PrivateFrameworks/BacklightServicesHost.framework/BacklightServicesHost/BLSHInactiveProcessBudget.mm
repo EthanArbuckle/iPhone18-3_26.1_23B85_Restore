@@ -1,13 +1,13 @@
 @interface BLSHInactiveProcessBudget
-- (BLSHInactiveProcessBudget)initWithIdentifier:(id)a3 osTimerProvider:(id)a4;
-- (BOOL)stillTrackingAfterPurgingStaleDataForNowDate:(id)a3;
+- (BLSHInactiveProcessBudget)initWithIdentifier:(id)identifier osTimerProvider:(id)provider;
+- (BOOL)stillTrackingAfterPurgingStaleDataForNowDate:(id)date;
 - (NSString)debugDescription;
 - (NSString)description;
-- (id)validateAndChargeFutureSpecifier:(id)a3 nextSpecifier:(id)a4 expectedFidelity:(int64_t)a5;
-- (int64_t)allowedFidelityAtDate:(id)a3 expectedFidelity:(int64_t)a4;
-- (void)chargeRenderedSpecifier:(id)a3 expectedFidelity:(int64_t)a4;
+- (id)validateAndChargeFutureSpecifier:(id)specifier nextSpecifier:(id)nextSpecifier expectedFidelity:(int64_t)fidelity;
+- (int64_t)allowedFidelityAtDate:(id)date expectedFidelity:(int64_t)fidelity;
+- (void)chargeRenderedSpecifier:(id)specifier expectedFidelity:(int64_t)fidelity;
 - (void)dealloc;
-- (void)invalidateAtRequestDate:(id)a3 expectedFidelity:(int64_t)a4 invalidationBlock:(id)a5;
+- (void)invalidateAtRequestDate:(id)date expectedFidelity:(int64_t)fidelity invalidationBlock:(id)block;
 - (void)performInvalidation;
 - (void)resetFutureSpecifiers;
 @end
@@ -22,12 +22,12 @@
   v9 = __45__BLSHInactiveProcessBudget_debugDescription__block_invoke;
   v10 = &unk_27841E538;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v4 = v3;
   [v4 appendBodySectionWithName:0 multilinePrefix:&stru_283373E60 block:&v7];
-  v5 = [v4 build];
+  build = [v4 build];
 
-  return v5;
+  return build;
 }
 
 void __45__BLSHInactiveProcessBudget_debugDescription__block_invoke(uint64_t a1)
@@ -41,29 +41,29 @@ void __45__BLSHInactiveProcessBudget_debugDescription__block_invoke(uint64_t a1)
   v6 = [v5 appendObject:v7 withName:@"secondsBudget"];
 }
 
-- (BLSHInactiveProcessBudget)initWithIdentifier:(id)a3 osTimerProvider:(id)a4
+- (BLSHInactiveProcessBudget)initWithIdentifier:(id)identifier osTimerProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  providerCopy = provider;
   v19.receiver = self;
   v19.super_class = BLSHInactiveProcessBudget;
   v8 = [(BLSHInactiveProcessBudget *)&v19 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [[BLSHInactiveProcessSecondsBudget alloc] initWithIdentifier:v6 osTimerProvider:v7];
+    v11 = [[BLSHInactiveProcessSecondsBudget alloc] initWithIdentifier:identifierCopy osTimerProvider:providerCopy];
     secondsBudget = v8->_secondsBudget;
     v8->_secondsBudget = v11;
 
-    v13 = [[BLSHInactiveProcessMinutesBudget alloc] initWithIdentifier:v6 osTimerProvider:v7];
+    v13 = [[BLSHInactiveProcessMinutesBudget alloc] initWithIdentifier:identifierCopy osTimerProvider:providerCopy];
     minutesBudget = v8->_minutesBudget;
     v8->_minutesBudget = v13;
 
     objc_initWeak(&location, v8);
-    v16 = v6;
+    v16 = identifierCopy;
     objc_copyWeak(&v17, &location);
     v8->_stateHandler = os_state_add_handler();
     objc_destroyWeak(&v17);
@@ -104,65 +104,65 @@ uint64_t __64__BLSHInactiveProcessBudget_initWithIdentifier_osTimerProvider___bl
   v9 = __40__BLSHInactiveProcessBudget_description__block_invoke;
   v10 = &unk_27841E538;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v4 = v3;
   [v4 appendBodySectionWithName:0 multilinePrefix:&stru_283373E60 block:&v7];
-  v5 = [v4 build];
+  build = [v4 build];
 
-  return v5;
+  return build;
 }
 
-- (int64_t)allowedFidelityAtDate:(id)a3 expectedFidelity:(int64_t)a4
+- (int64_t)allowedFidelityAtDate:(id)date expectedFidelity:(int64_t)fidelity
 {
-  if (a4 == 1)
+  if (fidelity == 1)
   {
-    return [(BLSHInactiveProcessMinutesBudget *)self->_minutesBudget allowedFidelityAtDate:a3 expectedFidelity:?];
+    return [(BLSHInactiveProcessMinutesBudget *)self->_minutesBudget allowedFidelityAtDate:date expectedFidelity:?];
   }
 
   else
   {
-    return a4;
+    return fidelity;
   }
 }
 
-- (id)validateAndChargeFutureSpecifier:(id)a3 nextSpecifier:(id)a4 expectedFidelity:(int64_t)a5
+- (id)validateAndChargeFutureSpecifier:(id)specifier nextSpecifier:(id)nextSpecifier expectedFidelity:(int64_t)fidelity
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  specifierCopy = specifier;
+  nextSpecifierCopy = nextSpecifier;
+  if (fidelity)
   {
-    if (a5 == 2)
+    if (fidelity == 2)
     {
       secondsBudget = self->_secondsBudget;
-      v12 = v8;
-      v13 = v9;
-      v14 = 2;
+      v12 = specifierCopy;
+      v13 = nextSpecifierCopy;
+      fidelityCopy = 2;
     }
 
     else
     {
-      if (a5 == 3)
+      if (fidelity == 3)
       {
-        v10 = v8;
+        v10 = specifierCopy;
 LABEL_11:
         v16 = v10;
         goto LABEL_12;
       }
 
       secondsBudget = self->_minutesBudget;
-      v12 = v8;
-      v13 = v9;
-      v14 = a5;
+      v12 = specifierCopy;
+      v13 = nextSpecifierCopy;
+      fidelityCopy = fidelity;
     }
 
-    v10 = [secondsBudget validateAndChargeFutureSpecifier:v12 nextSpecifier:v13 expectedFidelity:v14];
+    v10 = [secondsBudget validateAndChargeFutureSpecifier:v12 nextSpecifier:v13 expectedFidelity:fidelityCopy];
     goto LABEL_11;
   }
 
   v15 = bls_budget_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    [BLSHInactiveProcessBudget validateAndChargeFutureSpecifier:v8 nextSpecifier:v15 expectedFidelity:?];
+    [BLSHInactiveProcessBudget validateAndChargeFutureSpecifier:specifierCopy nextSpecifier:v15 expectedFidelity:?];
   }
 
   v16 = 0;
@@ -179,18 +179,18 @@ LABEL_12:
   [(BLSHInactiveProcessMinutesBudget *)minutesBudget resetFutureSpecifiers];
 }
 
-- (void)chargeRenderedSpecifier:(id)a3 expectedFidelity:(int64_t)a4
+- (void)chargeRenderedSpecifier:(id)specifier expectedFidelity:(int64_t)fidelity
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 2)
+  specifierCopy = specifier;
+  v7 = specifierCopy;
+  if (fidelity == 2)
   {
     v8 = 16;
   }
 
   else
   {
-    if (a4 != 1)
+    if (fidelity != 1)
     {
       goto LABEL_6;
     }
@@ -198,36 +198,36 @@ LABEL_12:
     v8 = 24;
   }
 
-  v9 = v6;
-  v6 = [*(&self->super.isa + v8) chargeRenderedSpecifier:v6 expectedFidelity:a4];
+  v9 = specifierCopy;
+  specifierCopy = [*(&self->super.isa + v8) chargeRenderedSpecifier:specifierCopy expectedFidelity:fidelity];
   v7 = v9;
 LABEL_6:
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](specifierCopy, v7);
 }
 
-- (void)invalidateAtRequestDate:(id)a3 expectedFidelity:(int64_t)a4 invalidationBlock:(id)a5
+- (void)invalidateAtRequestDate:(id)date expectedFidelity:(int64_t)fidelity invalidationBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (a4 == 1)
+  dateCopy = date;
+  blockCopy = block;
+  v10 = blockCopy;
+  if (fidelity == 1)
   {
     minutesBudget = self->_minutesBudget;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __88__BLSHInactiveProcessBudget_invalidateAtRequestDate_expectedFidelity_invalidationBlock___block_invoke_2;
     v14[3] = &unk_27841E998;
-    v15 = v9;
-    [(BLSHInactiveProcessMinutesBudget *)minutesBudget invalidateAtRequestDate:v8 expectedFidelity:1 invalidationBlock:v14];
+    v15 = blockCopy;
+    [(BLSHInactiveProcessMinutesBudget *)minutesBudget invalidateAtRequestDate:dateCopy expectedFidelity:1 invalidationBlock:v14];
     v12 = v15;
   }
 
   else
   {
-    if (a4 != 2)
+    if (fidelity != 2)
     {
-      v9[2](v9);
+      blockCopy[2](blockCopy);
       goto LABEL_7;
     }
 
@@ -236,8 +236,8 @@ LABEL_6:
     v16[1] = 3221225472;
     v16[2] = __88__BLSHInactiveProcessBudget_invalidateAtRequestDate_expectedFidelity_invalidationBlock___block_invoke;
     v16[3] = &unk_27841E998;
-    v17 = v9;
-    [(BLSHInactiveProcessSecondsBudget *)secondsBudget invalidateAtRequestDate:v8 expectedFidelity:2 invalidationBlock:v16];
+    v17 = blockCopy;
+    [(BLSHInactiveProcessSecondsBudget *)secondsBudget invalidateAtRequestDate:dateCopy expectedFidelity:2 invalidationBlock:v16];
     v12 = v17;
   }
 
@@ -252,10 +252,10 @@ LABEL_7:
   [(BLSHInactiveProcessSecondsBudget *)secondsBudget performInvalidation];
 }
 
-- (BOOL)stillTrackingAfterPurgingStaleDataForNowDate:(id)a3
+- (BOOL)stillTrackingAfterPurgingStaleDataForNowDate:(id)date
 {
-  v4 = a3;
-  v5 = [(BLSHInactiveProcessSecondsBudget *)self->_secondsBudget stillTrackingAfterPurgingStaleDataForNowDate:v4]|| [(BLSHInactiveProcessMinutesBudget *)self->_minutesBudget stillTrackingAfterPurgingStaleDataForNowDate:v4];
+  dateCopy = date;
+  v5 = [(BLSHInactiveProcessSecondsBudget *)self->_secondsBudget stillTrackingAfterPurgingStaleDataForNowDate:dateCopy]|| [(BLSHInactiveProcessMinutesBudget *)self->_minutesBudget stillTrackingAfterPurgingStaleDataForNowDate:dateCopy];
 
   return v5;
 }

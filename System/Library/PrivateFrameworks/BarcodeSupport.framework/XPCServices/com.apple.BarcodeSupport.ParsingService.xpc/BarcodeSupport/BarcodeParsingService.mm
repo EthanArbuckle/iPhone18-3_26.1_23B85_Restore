@@ -1,12 +1,12 @@
 @interface BarcodeParsingService
-- (BOOL)_associatedDomainIsApprovedForURL:(id)a3 applicationIdentifier:(id)a4;
+- (BOOL)_associatedDomainIsApprovedForURL:(id)l applicationIdentifier:(id)identifier;
 - (BarcodeParsingService)init;
-- (id)_urlDecoderErrorWithCode:(int64_t)a3 description:(id)a4;
-- (id)_urlDecoderWithVersion:(unint64_t)a3 error:(id *)a4;
-- (void)decodeAppClipCodeURLWithEncodedData:(id)a3 codingVersion:(unint64_t)a4 requiresAuthorization:(BOOL)a5 withReply:(id)a6;
-- (void)parseQRCodeFeature:(id)a3 withReply:(id)a4;
-- (void)parseQRCodeMetadata:(id)a3 withReply:(id)a4;
-- (void)parseQRCodeString:(id)a3 withReply:(id)a4;
+- (id)_urlDecoderErrorWithCode:(int64_t)code description:(id)description;
+- (id)_urlDecoderWithVersion:(unint64_t)version error:(id *)error;
+- (void)decodeAppClipCodeURLWithEncodedData:(id)data codingVersion:(unint64_t)version requiresAuthorization:(BOOL)authorization withReply:(id)reply;
+- (void)parseQRCodeFeature:(id)feature withReply:(id)reply;
+- (void)parseQRCodeMetadata:(id)metadata withReply:(id)reply;
+- (void)parseQRCodeString:(id)string withReply:(id)reply;
 @end
 
 @implementation BarcodeParsingService
@@ -29,33 +29,33 @@
   return v2;
 }
 
-- (void)parseQRCodeString:(id)a3 withReply:(id)a4
+- (void)parseQRCodeString:(id)string withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  replyCopy = reply;
   v7 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG);
   if (v7)
   {
     sub_100001E5C(v7, v8, v9, v10, v11, v12, v13, v14);
   }
 
-  v15 = [BCSParser parseString:v5];
+  v15 = [BCSParser parseString:stringCopy];
   if (v15)
   {
-    v6[2](v6, v15, 0);
+    replyCopy[2](replyCopy, v15, 0);
   }
 
   else
   {
     v16 = [NSError errorWithDomain:BCSErrorDomain code:3 userInfo:0];
-    (v6)[2](v6, 0, v16);
+    (replyCopy)[2](replyCopy, 0, v16);
   }
 }
 
-- (void)parseQRCodeMetadata:(id)a3 withReply:(id)a4
+- (void)parseQRCodeMetadata:(id)metadata withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  replyCopy = reply;
   v8 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG);
   if (v8)
   {
@@ -74,30 +74,30 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v17 length])
   {
-    [(BarcodeParsingService *)self parseQRCodeString:v17 withReply:v7];
+    [(BarcodeParsingService *)self parseQRCodeString:v17 withReply:replyCopy];
   }
 
   else
   {
     v18 = [NSError errorWithDomain:BCSErrorDomain code:2 userInfo:0];
-    v7[2](v7, 0, v18);
+    replyCopy[2](replyCopy, 0, v18);
   }
 }
 
-- (void)parseQRCodeFeature:(id)a3 withReply:(id)a4
+- (void)parseQRCodeFeature:(id)feature withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  featureCopy = feature;
+  replyCopy = reply;
   v8 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG);
   if (v8)
   {
     sub_100001ED4(v8, v9, v10, v11, v12, v13, v14, v15);
   }
 
-  v16 = [v6 messageString];
-  if ([v16 length])
+  messageString = [featureCopy messageString];
+  if ([messageString length])
   {
-    [(BarcodeParsingService *)self parseQRCodeString:v16 withReply:v7];
+    [(BarcodeParsingService *)self parseQRCodeString:messageString withReply:replyCopy];
   }
 
   else
@@ -108,21 +108,21 @@
     }
 
     v17 = [NSError errorWithDomain:BCSErrorDomain code:2 userInfo:0];
-    v7[2](v7, 0, v17);
+    replyCopy[2](replyCopy, 0, v17);
   }
 }
 
-- (id)_urlDecoderWithVersion:(unint64_t)a3 error:(id *)a4
+- (id)_urlDecoderWithVersion:(unint64_t)version error:(id *)error
 {
   urlDecoder = self->_urlDecoder;
-  if (urlDecoder && [(UCAppClipCodeURLDecoding *)urlDecoder codingVersion]== a3)
+  if (urlDecoder && [(UCAppClipCodeURLDecoding *)urlDecoder codingVersion]== version)
   {
     goto LABEL_8;
   }
 
-  if (a3 < 4)
+  if (version < 4)
   {
-    v10 = [UCAppClipCodeURLDecoder decoderWithVersion:a3];
+    v10 = [UCAppClipCodeURLDecoder decoderWithVersion:version];
     v11 = self->_urlDecoder;
     self->_urlDecoder = v10;
 
@@ -131,10 +131,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (a4)
+  if (error)
   {
-    v8 = [NSString stringWithFormat:@"The version of encoded URL is not supported. current version:%ld, max supported:%ld", a3, 3];
-    *a4 = [(BarcodeParsingService *)self _urlDecoderErrorWithCode:1 description:v8];
+    v8 = [NSString stringWithFormat:@"The version of encoded URL is not supported. current version:%ld, max supported:%ld", version, 3];
+    *error = [(BarcodeParsingService *)self _urlDecoderErrorWithCode:1 description:v8];
   }
 
   v9 = 0;
@@ -143,16 +143,16 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)_associatedDomainIsApprovedForURL:(id)a3 applicationIdentifier:(id)a4
+- (BOOL)_associatedDomainIsApprovedForURL:(id)l applicationIdentifier:(id)identifier
 {
-  v5 = a4;
-  if (a3)
+  identifierCopy = identifier;
+  if (l)
   {
-    v6 = [NSURLComponents componentsWithURL:a3 resolvingAgainstBaseURL:1];
-    v7 = [v6 host];
-    if (v7)
+    v6 = [NSURLComponents componentsWithURL:l resolvingAgainstBaseURL:1];
+    host = [v6 host];
+    if (host)
     {
-      v8 = [[_SWCServiceSpecifier alloc] initWithServiceType:0 applicationIdentifier:v5 domain:0];
+      v8 = [[_SWCServiceSpecifier alloc] initWithServiceType:0 applicationIdentifier:identifierCopy domain:0];
       [_SWCServiceDetails serviceDetailsWithServiceSpecifier:v8 error:0];
       v17 = 0u;
       v18 = 0u;
@@ -174,8 +174,8 @@ LABEL_9:
             v13 = *(*(&v17 + 1) + 8 * i);
             if ([v13 isApproved])
             {
-              v14 = [v13 serviceSpecifier];
-              v15 = [v14 domainEncompassesDomain:v7];
+              serviceSpecifier = [v13 serviceSpecifier];
+              v15 = [serviceSpecifier domainEncompassesDomain:host];
 
               if (v15)
               {
@@ -212,14 +212,14 @@ LABEL_16:
   return v10;
 }
 
-- (id)_urlDecoderErrorWithCode:(int64_t)a3 description:(id)a4
+- (id)_urlDecoderErrorWithCode:(int64_t)code description:(id)description
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  descriptionCopy = description;
+  v6 = descriptionCopy;
+  if (descriptionCopy)
   {
     v10 = NSLocalizedDescriptionKey;
-    v11 = v5;
+    v11 = descriptionCopy;
     v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   }
 
@@ -228,15 +228,15 @@ LABEL_16:
     v7 = 0;
   }
 
-  v8 = [NSError errorWithDomain:BCSAppClipCodeURLDecoderErrorDomain code:a3 userInfo:v7];
+  v8 = [NSError errorWithDomain:BCSAppClipCodeURLDecoderErrorDomain code:code userInfo:v7];
 
   return v8;
 }
 
-- (void)decodeAppClipCodeURLWithEncodedData:(id)a3 codingVersion:(unint64_t)a4 requiresAuthorization:(BOOL)a5 withReply:(id)a6
+- (void)decodeAppClipCodeURLWithEncodedData:(id)data codingVersion:(unint64_t)version requiresAuthorization:(BOOL)authorization withReply:(id)reply
 {
-  v10 = a3;
-  v11 = a6;
+  dataCopy = data;
+  replyCopy = reply;
   v28 = 0u;
   v29 = 0u;
   v12 = +[NSXPCConnection currentConnection];
@@ -256,7 +256,7 @@ LABEL_16:
   v26 = v28;
   v27 = v29;
   HasEntitlement = WBSAuditTokenHasEntitlement();
-  if (a5 || (HasEntitlement & 1) != 0)
+  if (authorization || (HasEntitlement & 1) != 0)
   {
     decodingQueue = self->_decodingQueue;
     v18[0] = _NSConcreteStackBlock;
@@ -264,10 +264,10 @@ LABEL_16:
     v18[2] = sub_100001834;
     v18[3] = &unk_100004238;
     v18[4] = self;
-    v22 = a4;
-    v21 = v11;
-    v19 = v10;
-    v25 = a5;
+    versionCopy = version;
+    v21 = replyCopy;
+    v19 = dataCopy;
+    authorizationCopy = authorization;
     v23 = v28;
     v24 = v29;
     v20 = v14;
@@ -277,7 +277,7 @@ LABEL_16:
   else
   {
     v16 = [(BarcodeParsingService *)self _urlDecoderErrorWithCode:0 description:@"Process requires an entitlement for suppressing URL authorization check"];
-    (*(v11 + 2))(v11, 0, v16);
+    (*(replyCopy + 2))(replyCopy, 0, v16);
   }
 }
 

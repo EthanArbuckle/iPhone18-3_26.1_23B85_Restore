@@ -9,14 +9,14 @@
   v2 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  [a1 response];
+  [self response];
   v6 = v5;
-  [a1 dampingRatio];
+  [self dampingRatio];
   v8 = v7;
-  [a1 trackingResponse];
+  [self trackingResponse];
   v10 = v9;
-  [a1 trackingDampingRatio];
-  v12 = [v2 stringWithFormat:@"<%@:%p response: %0.3f\ndampingRatio: %0.3f\ntrackingResponse: %0.3f\ntrackingDampingRatio: %0.3f>", v4, a1, v6, v8, v10, v11];
+  [self trackingDampingRatio];
+  v12 = [v2 stringWithFormat:@"<%@:%p response: %0.3f\ndampingRatio: %0.3f\ntrackingResponse: %0.3f\ntrackingDampingRatio: %0.3f>", v4, self, v6, v8, v10, v11];
 
   return v12;
 }

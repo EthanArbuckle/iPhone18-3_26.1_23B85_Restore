@@ -1,18 +1,18 @@
 @interface SKUISplitViewTemplateElement
 + (id)supportedFeatures;
 - (BOOL)usesInlineSplitContent;
-- (SKUISplitViewTemplateElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)_splitElementForIndex:(int64_t)a3;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SKUISplitViewTemplateElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)_splitElementForIndex:(int64_t)index;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SKUISplitViewTemplateElement
 
-- (SKUISplitViewTemplateElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUISplitViewTemplateElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISplitViewTemplateElement initWithDOMElement:parent:elementFactory:];
@@ -20,7 +20,7 @@
 
   v20.receiver = self;
   v20.super_class = SKUISplitViewTemplateElement;
-  v11 = [(SKUIViewElement *)&v20 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v20 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   v12 = v11;
   if (v11)
   {
@@ -32,7 +32,7 @@
     rightNavigationDocument = v12->_rightNavigationDocument;
     v12->_rightNavigationDocument = v15;
 
-    v17 = [v8 getAttribute:@"displayMode"];
+    v17 = [elementCopy getAttribute:@"displayMode"];
     if ([v17 isEqualToString:@"all"])
     {
       v18 = 2;
@@ -63,18 +63,18 @@ LABEL_13:
 
 - (BOOL)usesInlineSplitContent
 {
-  v3 = [(SKUISplitViewTemplateElement *)self leftSplitElement];
-  v4 = [v3 children];
-  if ([v4 count])
+  leftSplitElement = [(SKUISplitViewTemplateElement *)self leftSplitElement];
+  children = [leftSplitElement children];
+  if ([children count])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(SKUISplitViewTemplateElement *)self rightSplitElement];
-    v7 = [v6 children];
-    v5 = [v7 count] != 0;
+    rightSplitElement = [(SKUISplitViewTemplateElement *)self rightSplitElement];
+    children2 = [rightSplitElement children];
+    v5 = [children2 count] != 0;
   }
 
   return v5;
@@ -90,22 +90,22 @@ LABEL_13:
   return v2;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = SKUISplitViewTemplateElement;
-  v5 = [(SKUIViewElement *)&v8 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v8 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self && v5 == self)
+  if (elementCopy != self && v5 == self)
   {
-    self->_preferredDisplayMode = [(SKUISplitViewTemplateElement *)v4 preferredDisplayMode];
+    self->_preferredDisplayMode = [(SKUISplitViewTemplateElement *)elementCopy preferredDisplayMode];
   }
 
   return v6;
 }
 
-- (id)_splitElementForIndex:(int64_t)a3
+- (id)_splitElementForIndex:(int64_t)index
 {
   v9 = 0;
   v10 = &v9;
@@ -117,15 +117,15 @@ LABEL_13:
   v8[1] = v8;
   v8[2] = 0x2020000000;
   v8[3] = 0;
-  v4 = [(SKUISplitViewTemplateElement *)self children];
+  children = [(SKUISplitViewTemplateElement *)self children];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__SKUISplitViewTemplateElement__splitElementForIndex___block_invoke;
   v7[3] = &unk_2781FC0A8;
   v7[5] = &v9;
-  v7[6] = a3;
+  v7[6] = index;
   v7[4] = v8;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [children enumerateObjectsUsingBlock:v7];
 
   v5 = v10[5];
   _Block_object_dispose(v8, 8);

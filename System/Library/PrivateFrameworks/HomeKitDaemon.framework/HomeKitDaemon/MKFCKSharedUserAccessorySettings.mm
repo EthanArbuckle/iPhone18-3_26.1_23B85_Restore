@@ -1,75 +1,75 @@
 @interface MKFCKSharedUserAccessorySettings
-+ (BOOL)exportDeleteWithObjectID:(id)a3 modelID:(id)a4 additionalUpdates:(id)a5 context:(id)a6;
-+ (BOOL)exportInsertWithObjectID:(id)a3 additionalUpdates:(id)a4 context:(id)a5;
-+ (BOOL)exportUpdateWithObjectID:(id)a3 updatedProperties:(id)a4 additionalUpdates:(id)a5 context:(id)a6;
-+ (BOOL)importInsertWithObjectID:(id)a3 additionalUpdates:(id)a4 context:(id)a5;
-+ (BOOL)importUpdateWithObjectID:(id)a3 updatedProperties:(id)a4 additionalUpdates:(id)a5 context:(id)a6;
-+ (id)createWithHomeModelID:(id)a3 accessoryModelID:(id)a4 persistentStore:(id)a5 context:(id)a6;
-- (BOOL)_importIntoLocalUserModel:(id)a3 context:(id)a4;
-- (BOOL)_importWithContext:(id)a3;
-- (BOOL)importIntoLocalUserModel:(id)a3 context:(id)a4;
++ (BOOL)exportDeleteWithObjectID:(id)d modelID:(id)iD additionalUpdates:(id)updates context:(id)context;
++ (BOOL)exportInsertWithObjectID:(id)d additionalUpdates:(id)updates context:(id)context;
++ (BOOL)exportUpdateWithObjectID:(id)d updatedProperties:(id)properties additionalUpdates:(id)updates context:(id)context;
++ (BOOL)importInsertWithObjectID:(id)d additionalUpdates:(id)updates context:(id)context;
++ (BOOL)importUpdateWithObjectID:(id)d updatedProperties:(id)properties additionalUpdates:(id)updates context:(id)context;
++ (id)createWithHomeModelID:(id)d accessoryModelID:(id)iD persistentStore:(id)store context:(id)context;
+- (BOOL)_importIntoLocalUserModel:(id)model context:(id)context;
+- (BOOL)_importWithContext:(id)context;
+- (BOOL)importIntoLocalUserModel:(id)model context:(id)context;
 @end
 
 @implementation MKFCKSharedUserAccessorySettings
 
-- (BOOL)_importIntoLocalUserModel:(id)a3 context:(id)a4
+- (BOOL)_importIntoLocalUserModel:(id)model context:(id)context
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MKFCKSharedUserAccessorySettings *)self accessoryModelID];
+  modelCopy = model;
+  contextCopy = context;
+  accessoryModelID = [(MKFCKSharedUserAccessorySettings *)self accessoryModelID];
   v18 = 0;
-  v9 = [(_MKFModel *)_MKFAccessory modelWithModelID:v8 context:v7 error:&v18];
+  v9 = [(_MKFModel *)_MKFAccessory modelWithModelID:accessoryModelID context:contextCopy error:&v18];
   v10 = v18;
 
   if (v9)
   {
     if ([(MKFCKSharedUserAccessorySettings *)self listeningHistoryEnabled])
     {
-      [v6 addAccessoriesWithListeningHistoryEnabled_Object:v9];
+      [modelCopy addAccessoriesWithListeningHistoryEnabled_Object:v9];
     }
 
     else
     {
-      [v6 removeAccessoriesWithListeningHistoryEnabled_Object:v9];
+      [modelCopy removeAccessoriesWithListeningHistoryEnabled_Object:v9];
     }
 
     if ([(MKFCKSharedUserAccessorySettings *)self mediaContentProfileEnabled])
     {
-      [v6 addAccessoriesWithMediaContentProfileEnabled_Object:v9];
+      [modelCopy addAccessoriesWithMediaContentProfileEnabled_Object:v9];
     }
 
     else
     {
-      [v6 removeAccessoriesWithMediaContentProfileEnabled_Object:v9];
+      [modelCopy removeAccessoriesWithMediaContentProfileEnabled_Object:v9];
     }
 
     if ([(MKFCKSharedUserAccessorySettings *)self personalRequestsEnabled])
     {
-      [v6 addAccessoriesWithPersonalRequestsEnabled_Object:v9];
+      [modelCopy addAccessoriesWithPersonalRequestsEnabled_Object:v9];
     }
 
     else
     {
-      [v6 removeAccessoriesWithPersonalRequestsEnabled_Object:v9];
+      [modelCopy removeAccessoriesWithPersonalRequestsEnabled_Object:v9];
     }
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [(MKFCKSharedUserAccessorySettings *)v12 accessoryModelID];
+      accessoryModelID2 = [(MKFCKSharedUserAccessorySettings *)selfCopy accessoryModelID];
       *buf = 138543874;
       v20 = v14;
       v21 = 2160;
       v22 = 1752392040;
       v23 = 2112;
-      v24 = v15;
+      v24 = accessoryModelID2;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_ERROR, "%{public}@Could not find accessory with modelID %{mask.hash}@, this could be settings for a stale accessory", buf, 0x20u);
     }
 
@@ -80,16 +80,16 @@
   return 1;
 }
 
-- (BOOL)_importWithContext:(id)a3
+- (BOOL)_importWithContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MKFCKSharedUserData *)self workingStoreHomeMember];
-  v6 = v5;
-  if (!v5)
+  contextCopy = context;
+  workingStoreHomeMember = [(MKFCKSharedUserData *)self workingStoreHomeMember];
+  v6 = workingStoreHomeMember;
+  if (!workingStoreHomeMember)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -103,38 +103,38 @@
     goto LABEL_7;
   }
 
-  v7 = [v5 castIfMemberIsGuest];
+  castIfMemberIsGuest = [workingStoreHomeMember castIfMemberIsGuest];
 
-  if (v7)
+  if (castIfMemberIsGuest)
   {
 LABEL_7:
     LOBYTE(v9) = 1;
     goto LABEL_8;
   }
 
-  v8 = [v6 castIfMemberIsUser];
-  v9 = [(MKFCKSharedUserAccessorySettings *)self _importIntoLocalUserModel:v8 context:v4];
+  castIfMemberIsUser = [v6 castIfMemberIsUser];
+  v9 = [(MKFCKSharedUserAccessorySettings *)self _importIntoLocalUserModel:castIfMemberIsUser context:contextCopy];
 
 LABEL_8:
   v14 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (BOOL)importIntoLocalUserModel:(id)a3 context:(id)a4
+- (BOOL)importIntoLocalUserModel:(id)model context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = ([v6 isOwner] & 1) != 0 || -[MKFCKSharedUserAccessorySettings _importIntoLocalUserModel:context:](self, "_importIntoLocalUserModel:context:", v6, v7);
+  modelCopy = model;
+  contextCopy = context;
+  v8 = ([modelCopy isOwner] & 1) != 0 || -[MKFCKSharedUserAccessorySettings _importIntoLocalUserModel:context:](self, "_importIntoLocalUserModel:context:", modelCopy, contextCopy);
 
   return v8;
 }
 
-+ (BOOL)exportDeleteWithObjectID:(id)a3 modelID:(id)a4 additionalUpdates:(id)a5 context:(id)a6
++ (BOOL)exportDeleteWithObjectID:(id)d modelID:(id)iD additionalUpdates:(id)updates context:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  updatesCopy = updates;
+  contextCopy = context;
   v14 = MEMORY[0x277CBEAD8];
   v15 = *MEMORY[0x277CBE658];
   v16 = MEMORY[0x277CCACA8];
@@ -146,12 +146,12 @@ LABEL_8:
   objc_exception_throw(v19);
 }
 
-+ (BOOL)exportUpdateWithObjectID:(id)a3 updatedProperties:(id)a4 additionalUpdates:(id)a5 context:(id)a6
++ (BOOL)exportUpdateWithObjectID:(id)d updatedProperties:(id)properties additionalUpdates:(id)updates context:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  propertiesCopy = properties;
+  updatesCopy = updates;
+  contextCopy = context;
   v14 = MEMORY[0x277CBEAD8];
   v15 = *MEMORY[0x277CBE658];
   v16 = MEMORY[0x277CCACA8];
@@ -163,11 +163,11 @@ LABEL_8:
   objc_exception_throw(v19);
 }
 
-+ (BOOL)exportInsertWithObjectID:(id)a3 additionalUpdates:(id)a4 context:(id)a5
++ (BOOL)exportInsertWithObjectID:(id)d additionalUpdates:(id)updates context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  updatesCopy = updates;
+  contextCopy = context;
   v11 = MEMORY[0x277CBEAD8];
   v12 = *MEMORY[0x277CBE658];
   v13 = MEMORY[0x277CCACA8];
@@ -179,41 +179,41 @@ LABEL_8:
   objc_exception_throw(v16);
 }
 
-+ (BOOL)importUpdateWithObjectID:(id)a3 updatedProperties:(id)a4 additionalUpdates:(id)a5 context:(id)a6
++ (BOOL)importUpdateWithObjectID:(id)d updatedProperties:(id)properties additionalUpdates:(id)updates context:(id)context
 {
   v11 = 0;
-  v7 = a6;
-  v8 = [(MKFCKModel *)MKFCKSharedUserAccessorySettings modelWithObjectID:a3 context:v7 error:&v11];
-  v9 = [v8 _importWithContext:v7];
+  contextCopy = context;
+  v8 = [(MKFCKModel *)MKFCKSharedUserAccessorySettings modelWithObjectID:d context:contextCopy error:&v11];
+  v9 = [v8 _importWithContext:contextCopy];
 
   return v9;
 }
 
-+ (BOOL)importInsertWithObjectID:(id)a3 additionalUpdates:(id)a4 context:(id)a5
++ (BOOL)importInsertWithObjectID:(id)d additionalUpdates:(id)updates context:(id)context
 {
   v10 = 0;
-  v6 = a5;
-  v7 = [(MKFCKModel *)MKFCKSharedUserAccessorySettings modelWithObjectID:a3 context:v6 error:&v10];
-  v8 = [v7 _importWithContext:v6];
+  contextCopy = context;
+  v7 = [(MKFCKModel *)MKFCKSharedUserAccessorySettings modelWithObjectID:d context:contextCopy error:&v10];
+  v8 = [v7 _importWithContext:contextCopy];
 
   return v8;
 }
 
-+ (id)createWithHomeModelID:(id)a3 accessoryModelID:(id)a4 persistentStore:(id)a5 context:(id)a6
++ (id)createWithHomeModelID:(id)d accessoryModelID:(id)iD persistentStore:(id)store context:(id)context
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  [v10 hmd_assertIsExecuting];
-  v14 = [[a1 alloc] initWithContext:v10];
-  [v10 assignObject:v14 toPersistentStore:v11];
+  contextCopy = context;
+  storeCopy = store;
+  iDCopy = iD;
+  dCopy = d;
+  [contextCopy hmd_assertIsExecuting];
+  v14 = [[self alloc] initWithContext:contextCopy];
+  [contextCopy assignObject:v14 toPersistentStore:storeCopy];
 
-  v15 = [MEMORY[0x277CCAD78] UUID];
-  [v14 setModelID:v15];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [v14 setModelID:uUID];
 
-  [v14 setHomeModelID:v13];
-  [v14 setAccessoryModelID:v12];
+  [v14 setHomeModelID:dCopy];
+  [v14 setAccessoryModelID:iDCopy];
 
   return v14;
 }

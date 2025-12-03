@@ -1,46 +1,46 @@
 @interface DMCActivityViewController
-- (DMCActivityViewController)initWithActivityTitle:(id)a3 activityText:(id)a4 showBottomView:(BOOL)a5;
+- (DMCActivityViewController)initWithActivityTitle:(id)title activityText:(id)text showBottomView:(BOOL)view;
 - (id)_clearImage;
 - (id)_textFont;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DMCActivityViewController
 
-- (DMCActivityViewController)initWithActivityTitle:(id)a3 activityText:(id)a4 showBottomView:(BOOL)a5
+- (DMCActivityViewController)initWithActivityTitle:(id)title activityText:(id)text showBottomView:(BOOL)view
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(DMCActivityViewController *)self _clearImage];
+  textCopy = text;
+  titleCopy = title;
+  _clearImage = [(DMCActivityViewController *)self _clearImage];
   v13.receiver = self;
   v13.super_class = DMCActivityViewController;
-  v11 = [(DMCEnrollmentTemplateTableViewController *)&v13 initWithIconName:0 iconImage:v10 title:v9 subTitle:v8 layoutStyle:0];
+  v11 = [(DMCEnrollmentTemplateTableViewController *)&v13 initWithIconName:0 iconImage:_clearImage title:titleCopy subTitle:textCopy layoutStyle:0];
 
   if (v11)
   {
-    v11->_showBottomView = a5;
+    v11->_showBottomView = view;
   }
 
   return v11;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = DMCActivityViewController;
-  [(DMCEnrollmentTemplateTableViewController *)&v13 viewWillAppear:a3];
+  [(DMCEnrollmentTemplateTableViewController *)&v13 viewWillAppear:appear];
   if (([(DMCActivityViewController *)self isBeingPresented]& 1) != 0 || [(DMCActivityViewController *)self isMovingToParentViewController])
   {
     v4 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
     [(DMCActivityViewController *)self setSpinnerView:v4];
 
-    v5 = [(DMCActivityViewController *)self spinnerView];
-    [v5 startAnimating];
+    spinnerView = [(DMCActivityViewController *)self spinnerView];
+    [spinnerView startAnimating];
 
-    v6 = [(DMCActivityViewController *)self view];
-    v7 = [(DMCActivityViewController *)self spinnerView];
-    [v6 addSubview:v7];
+    view = [(DMCActivityViewController *)self view];
+    spinnerView2 = [(DMCActivityViewController *)self spinnerView];
+    [view addSubview:spinnerView2];
 
     [(DMCActivityViewController *)self setModalInPresentation:1];
     if ([(DMCActivityViewController *)self showBottomView])
@@ -53,12 +53,12 @@
       [(DMCEnrollmentTemplateTableViewController *)self addBottomView:v10];
     }
 
-    v11 = [(DMCActivityViewController *)self view];
-    [v11 setNeedsDisplay];
+    view2 = [(DMCActivityViewController *)self view];
+    [view2 setNeedsDisplay];
   }
 
-  v12 = [(DMCActivityViewController *)self navigationItem];
-  [v12 setHidesBackButton:1];
+  navigationItem = [(DMCActivityViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 }
 
 - (void)viewDidLayoutSubviews
@@ -66,19 +66,19 @@
   v13.receiver = self;
   v13.super_class = DMCActivityViewController;
   [(DMCActivityViewController *)&v13 viewDidLayoutSubviews];
-  v3 = [(DMCActivityViewController *)self spinnerView];
-  [v3 frame];
+  spinnerView = [(DMCActivityViewController *)self spinnerView];
+  [spinnerView frame];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(DMCActivityViewController *)self view];
-  [v8 bounds];
+  view = [(DMCActivityViewController *)self view];
+  [view bounds];
   v9 = (CGRectGetWidth(v14) - v5) * 0.5;
-  v10 = [(DMCActivityViewController *)self view];
-  [v10 bounds];
+  view2 = [(DMCActivityViewController *)self view];
+  [view2 bounds];
   v11 = (CGRectGetHeight(v15) - v5) * 0.5;
-  v12 = [(DMCActivityViewController *)self spinnerView];
-  [v12 setFrame:{v9, v11, v5, v7}];
+  spinnerView2 = [(DMCActivityViewController *)self spinnerView];
+  [spinnerView2 setFrame:{v9, v11, v5, v7}];
 }
 
 - (id)_textFont

@@ -2,9 +2,9 @@
 + (BOOL)watchIsPaired;
 + (_DASComplicationManager)sharedInstance;
 + (id)obtainActiveComplications;
-- (BOOL)isActiveComplication:(id)a3;
-- (BOOL)isAnyActiveComplication:(id)a3;
-- (BOOL)isRecentlyAddedComplication:(id)a3;
+- (BOOL)isActiveComplication:(id)complication;
+- (BOOL)isAnyActiveComplication:(id)complication;
+- (BOOL)isRecentlyAddedComplication:(id)complication;
 - (_DASComplicationManager)init;
 - (void)registerForComplicationChangeNotifications;
 @end
@@ -36,7 +36,7 @@
   block[1] = 3221225472;
   block[2] = sub_100077560;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B4D8 != -1)
   {
     dispatch_once(&qword_10020B4D8, block);
@@ -59,9 +59,9 @@
 + (BOOL)watchIsPaired
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 getPairedDevices];
+  getPairedDevices = [v2 getPairedDevices];
 
-  LOBYTE(v2) = [v3 count] != 0;
+  LOBYTE(v2) = [getPairedDevices count] != 0;
   return v2;
 }
 
@@ -91,25 +91,25 @@
     dispatch_resume(self->_timer);
     out_token = 0;
     v11 = _CDDComplicationChangeOverCloudNotificationString();
-    v12 = [v11 UTF8String];
+    uTF8String = [v11 UTF8String];
     v13 = self->_queue;
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_100077A8C;
     v21[3] = &unk_1001B5B78;
     v21[4] = self;
-    notify_register_dispatch(v12, &out_token, v13, v21);
+    notify_register_dispatch(uTF8String, &out_token, v13, v21);
 
     v20 = 0;
     v14 = _CDDComplicationChangeNotificationString();
-    v15 = [v14 UTF8String];
+    uTF8String2 = [v14 UTF8String];
     v16 = self->_queue;
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100077AE4;
     v19[3] = &unk_1001B5B78;
     v19[4] = self;
-    notify_register_dispatch(v15, &v20, v16, v19);
+    notify_register_dispatch(uTF8String2, &v20, v16, v19);
 
     v17 = self->_queue;
     v18[0] = _NSConcreteStackBlock;
@@ -121,9 +121,9 @@
   }
 }
 
-- (BOOL)isActiveComplication:(id)a3
+- (BOOL)isActiveComplication:(id)complication
 {
-  v4 = a3;
+  complicationCopy = complication;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -133,10 +133,10 @@
   block[1] = 3221225472;
   block[2] = sub_100077CE4;
   block[3] = &unk_1001B5D98;
-  v9 = v4;
+  v9 = complicationCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = complicationCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -144,9 +144,9 @@
   return queue;
 }
 
-- (BOOL)isAnyActiveComplication:(id)a3
+- (BOOL)isAnyActiveComplication:(id)complication
 {
-  v4 = a3;
+  complicationCopy = complication;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -156,10 +156,10 @@
   block[1] = 3221225472;
   block[2] = sub_100077DE8;
   block[3] = &unk_1001B5AB8;
-  v9 = v4;
-  v10 = self;
+  v9 = complicationCopy;
+  selfCopy = self;
   v11 = &v12;
-  v6 = v4;
+  v6 = complicationCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v13 + 24);
 
@@ -167,9 +167,9 @@
   return queue;
 }
 
-- (BOOL)isRecentlyAddedComplication:(id)a3
+- (BOOL)isRecentlyAddedComplication:(id)complication
 {
-  v4 = a3;
+  complicationCopy = complication;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -179,10 +179,10 @@
   block[1] = 3221225472;
   block[2] = sub_100077FC8;
   block[3] = &unk_1001B69E0;
-  v9 = v4;
+  v9 = complicationCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = complicationCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 

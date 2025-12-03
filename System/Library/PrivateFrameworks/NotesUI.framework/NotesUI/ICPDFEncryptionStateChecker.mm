@@ -1,20 +1,20 @@
 @interface ICPDFEncryptionStateChecker
-- (ICPDFEncryptionStateChecker)initWithPDFURL:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ICPDFEncryptionStateChecker)initWithPDFURL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)encryptionState;
 @end
 
 @implementation ICPDFEncryptionStateChecker
 
-- (ICPDFEncryptionStateChecker)initWithPDFURL:(id)a3
+- (ICPDFEncryptionStateChecker)initWithPDFURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = ICPDFEncryptionStateChecker;
   v5 = [(ICPDFEncryptionStateChecker *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     pdfURL = v5->_pdfURL;
     v5->_pdfURL = v6;
   }
@@ -26,12 +26,12 @@
 {
   if (!self->_encryptionState)
   {
-    v4 = [(ICPDFEncryptionStateChecker *)self pdfURL];
+    pdfURL = [(ICPDFEncryptionStateChecker *)self pdfURL];
 
-    if (v4)
+    if (pdfURL)
     {
-      v5 = [(ICPDFEncryptionStateChecker *)self pdfURL];
-      v6 = CGPDFDocumentCreateWithURL(v5);
+      pdfURL2 = [(ICPDFEncryptionStateChecker *)self pdfURL];
+      v6 = CGPDFDocumentCreateWithURL(pdfURL2);
 
       if (v6)
       {
@@ -54,11 +54,11 @@
   return self->_encryptionState;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ICPDFEncryptionStateChecker allocWithZone:a3];
-  v5 = [(ICPDFEncryptionStateChecker *)self pdfURL];
-  v6 = [(ICPDFEncryptionStateChecker *)v4 initWithPDFURL:v5];
+  v4 = [ICPDFEncryptionStateChecker allocWithZone:zone];
+  pdfURL = [(ICPDFEncryptionStateChecker *)self pdfURL];
+  v6 = [(ICPDFEncryptionStateChecker *)v4 initWithPDFURL:pdfURL];
 
   [(ICPDFEncryptionStateChecker *)v6 setEncryptionState:self->_encryptionState];
   return v6;

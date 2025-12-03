@@ -1,23 +1,23 @@
 @interface _UILatencyEmitterViewEntry
 - (_TtC5UIKit26_UILatencyEmitterViewEntry)init;
-- (void)addEffectToView:(id)a3;
-- (void)removeEffectFromView:(id)a3;
+- (void)addEffectToView:(id)view;
+- (void)removeEffectFromView:(id)view;
 @end
 
 @implementation _UILatencyEmitterViewEntry
 
-- (void)addEffectToView:(id)a3
+- (void)addEffectToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_18908EE78(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_18908EE78(viewCopy);
 }
 
-- (void)removeEffectFromView:(id)a3
+- (void)removeEffectFromView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_18908F128(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_18908F128(viewCopy);
 }
 
 - (_TtC5UIKit26_UILatencyEmitterViewEntry)init

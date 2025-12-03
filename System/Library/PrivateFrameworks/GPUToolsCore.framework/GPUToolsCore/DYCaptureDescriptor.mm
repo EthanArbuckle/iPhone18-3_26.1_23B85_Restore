@@ -1,18 +1,18 @@
 @interface DYCaptureDescriptor
-- (DYCaptureDescriptor)initWithAPI:(unint64_t)a3;
+- (DYCaptureDescriptor)initWithAPI:(unint64_t)i;
 - (void)dealloc;
 @end
 
 @implementation DYCaptureDescriptor
 
-- (DYCaptureDescriptor)initWithAPI:(unint64_t)a3
+- (DYCaptureDescriptor)initWithAPI:(unint64_t)i
 {
   v5.receiver = self;
   v5.super_class = DYCaptureDescriptor;
   result = [(DYCaptureDescriptor *)&v5 init];
   if (result)
   {
-    result->_api = a3;
+    result->_api = i;
     *&result->_sessionId = xmmword_24D6A9380;
     result->_triggerFrame = 0xFFFFFFFFLL;
     *&result->_suspendAfterCapture = 257;

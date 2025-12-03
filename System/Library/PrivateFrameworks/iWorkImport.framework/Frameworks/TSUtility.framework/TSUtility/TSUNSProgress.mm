@@ -1,22 +1,22 @@
 @interface TSUNSProgress
 - (TSUNSProgress)init;
-- (TSUNSProgress)initWithNSProgress:(id)a3;
+- (TSUNSProgress)initWithNSProgress:(id)progress;
 - (id)initForSubclass;
 @end
 
 @implementation TSUNSProgress
 
-- (TSUNSProgress)initWithNSProgress:(id)a3
+- (TSUNSProgress)initWithNSProgress:(id)progress
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  progressCopy = progress;
   v15.receiver = self;
   v15.super_class = TSUNSProgress;
-  v6 = [(TSUProgress *)&v15 initForSubclass];
-  v7 = v6;
-  if (v6)
+  initForSubclass = [(TSUProgress *)&v15 initForSubclass];
+  v7 = initForSubclass;
+  if (initForSubclass)
   {
-    objc_storeStrong(v6 + 5, a3);
+    objc_storeStrong(initForSubclass + 5, progress);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = sub_2770927F0;

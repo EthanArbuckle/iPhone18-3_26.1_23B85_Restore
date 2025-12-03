@@ -1,36 +1,36 @@
 @interface HMSetupAccessoryDescription
 + (id)shortDescription;
 - (BOOL)hasAddRequest;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPaired;
 - (BOOL)supportsBTLE;
 - (BOOL)supportsIP;
 - (BOOL)supportsWAC;
 - (HMAccessory)accessoryBeingReplaced;
 - (HMAccessoryCategory)category;
-- (HMSetupAccessoryDescription)initWithAccessoryUUID:(id)a3 accessoryName:(id)a4 appID:(id)a5 homeUUID:(id)a6;
-- (HMSetupAccessoryDescription)initWithAddRequestIdentifier:(id)a3 accessoryName:(id)a4 accessoryCategory:(id)a5 setupAccessoryPayload:(id)a6 appID:(id)a7 ownershipToken:(id)a8;
-- (HMSetupAccessoryDescription)initWithAppIdentifier:(id)a3 homeUUID:(id)a4;
-- (HMSetupAccessoryDescription)initWithCoder:(id)a3;
-- (HMSetupAccessoryDescription)initWithDictionaryRepresentation:(id)a3;
-- (HMSetupAccessoryDescription)initWithSetupAccessoryPayload:(id)a3 appID:(id)a4 homeUUID:(id)a5 ownershipToken:(id)a6;
-- (HMSetupAccessoryDescription)initWithStagedCHIPAccessoryPairingIdentifier:(id)a3;
+- (HMSetupAccessoryDescription)initWithAccessoryUUID:(id)d accessoryName:(id)name appID:(id)iD homeUUID:(id)uID;
+- (HMSetupAccessoryDescription)initWithAddRequestIdentifier:(id)identifier accessoryName:(id)name accessoryCategory:(id)category setupAccessoryPayload:(id)payload appID:(id)d ownershipToken:(id)token;
+- (HMSetupAccessoryDescription)initWithAppIdentifier:(id)identifier homeUUID:(id)d;
+- (HMSetupAccessoryDescription)initWithCoder:(id)coder;
+- (HMSetupAccessoryDescription)initWithDictionaryRepresentation:(id)representation;
+- (HMSetupAccessoryDescription)initWithSetupAccessoryPayload:(id)payload appID:(id)d homeUUID:(id)iD ownershipToken:(id)token;
+- (HMSetupAccessoryDescription)initWithStagedCHIPAccessoryPairingIdentifier:(id)identifier;
 - (NSArray)attributeDescriptions;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)setupCode;
 - (NSString)setupID;
 - (NSString)shortDescription;
 - (NSUUID)suggestedRoomUniqueIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSetupCode:(id)a3;
-- (void)updateAccessoryCategory:(id)a3;
-- (void)updateAccessoryName:(id)a3;
-- (void)updateAppIdentifier:(id)a3;
-- (void)updateWithAccessory:(id)a3;
-- (void)updateWithAuthToken:(id)a3 uuid:(id)a4;
-- (void)updateWithSetupAccessoryPayload:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSetupCode:(id)code;
+- (void)updateAccessoryCategory:(id)category;
+- (void)updateAccessoryName:(id)name;
+- (void)updateAppIdentifier:(id)identifier;
+- (void)updateWithAccessory:(id)accessory;
+- (void)updateWithAuthToken:(id)token uuid:(id)uuid;
+- (void)updateWithSetupAccessoryPayload:(id)payload;
 @end
 
 @implementation HMSetupAccessoryDescription
@@ -44,85 +44,85 @@
 
 - (NSArray)attributeDescriptions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(HMSetupAccessoryDescription *)self accessoryName];
+  array = [MEMORY[0x1E695DF70] array];
+  accessoryName = [(HMSetupAccessoryDescription *)self accessoryName];
 
-  if (v4)
+  if (accessoryName)
   {
     v5 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v6 = [(HMSetupAccessoryDescription *)self accessoryName];
-    v7 = [v5 initWithName:@"Accessory Name" value:v6];
-    [v3 addObject:v7];
+    accessoryName2 = [(HMSetupAccessoryDescription *)self accessoryName];
+    v7 = [v5 initWithName:@"Accessory Name" value:accessoryName2];
+    [array addObject:v7];
   }
 
-  v8 = [(HMSetupAccessoryDescription *)self accessoryUUID];
+  accessoryUUID = [(HMSetupAccessoryDescription *)self accessoryUUID];
 
-  if (v8)
+  if (accessoryUUID)
   {
     v9 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v10 = [(HMSetupAccessoryDescription *)self accessoryUUID];
-    v11 = [v9 initWithName:@"Accessory UUID" value:v10];
-    [v3 addObject:v11];
+    accessoryUUID2 = [(HMSetupAccessoryDescription *)self accessoryUUID];
+    v11 = [v9 initWithName:@"Accessory UUID" value:accessoryUUID2];
+    [array addObject:v11];
   }
 
-  v12 = [(HMSetupAccessoryDescription *)self manufacturerName];
+  manufacturerName = [(HMSetupAccessoryDescription *)self manufacturerName];
 
-  if (v12)
+  if (manufacturerName)
   {
     v13 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v14 = [(HMSetupAccessoryDescription *)self manufacturerName];
-    v15 = [v13 initWithName:@"Manufacturer Name" value:v14];
-    [v3 addObject:v15];
+    manufacturerName2 = [(HMSetupAccessoryDescription *)self manufacturerName];
+    v15 = [v13 initWithName:@"Manufacturer Name" value:manufacturerName2];
+    [array addObject:v15];
   }
 
-  v16 = [(HMSetupAccessoryDescription *)self marketingName];
+  marketingName = [(HMSetupAccessoryDescription *)self marketingName];
 
-  if (v16)
+  if (marketingName)
   {
     v17 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v18 = [(HMSetupAccessoryDescription *)self marketingName];
-    v19 = [v17 initWithName:@"Marketing Name" value:v18];
-    [v3 addObject:v19];
+    marketingName2 = [(HMSetupAccessoryDescription *)self marketingName];
+    v19 = [v17 initWithName:@"Marketing Name" value:marketingName2];
+    [array addObject:v19];
   }
 
-  v20 = [(HMSetupAccessoryDescription *)self installationGuideURL];
+  installationGuideURL = [(HMSetupAccessoryDescription *)self installationGuideURL];
 
-  if (v20)
+  if (installationGuideURL)
   {
     v21 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v22 = [(HMSetupAccessoryDescription *)self installationGuideURL];
-    v23 = [v21 initWithName:@"Installation Guide URL" value:v22];
-    [v3 addObject:v23];
+    installationGuideURL2 = [(HMSetupAccessoryDescription *)self installationGuideURL];
+    v23 = [v21 initWithName:@"Installation Guide URL" value:installationGuideURL2];
+    [array addObject:v23];
   }
 
-  v24 = [(HMSetupAccessoryDescription *)self category];
+  category = [(HMSetupAccessoryDescription *)self category];
 
-  if (v24)
+  if (category)
   {
     v25 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v26 = [(HMSetupAccessoryDescription *)self category];
-    v27 = [v25 initWithName:@"Category" value:v26];
-    [v3 addObject:v27];
+    category2 = [(HMSetupAccessoryDescription *)self category];
+    v27 = [v25 initWithName:@"Category" value:category2];
+    [array addObject:v27];
   }
 
-  v28 = [(HMSetupAccessoryDescription *)self appIdentifier];
+  appIdentifier = [(HMSetupAccessoryDescription *)self appIdentifier];
 
-  if (v28)
+  if (appIdentifier)
   {
     v29 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v30 = [(HMSetupAccessoryDescription *)self appIdentifier];
-    v31 = [v29 initWithName:@"App Identifier" value:v30];
-    [v3 addObject:v31];
+    appIdentifier2 = [(HMSetupAccessoryDescription *)self appIdentifier];
+    v31 = [v29 initWithName:@"App Identifier" value:appIdentifier2];
+    [array addObject:v31];
   }
 
-  v32 = [(HMSetupAccessoryDescription *)self appBundleURL];
+  appBundleURL = [(HMSetupAccessoryDescription *)self appBundleURL];
 
-  if (v32)
+  if (appBundleURL)
   {
     v33 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v34 = [(HMSetupAccessoryDescription *)self appBundleURL];
-    v35 = [v33 initWithName:@"App Bundle URL" value:v34];
-    [v3 addObject:v35];
+    appBundleURL2 = [(HMSetupAccessoryDescription *)self appBundleURL];
+    v35 = [v33 initWithName:@"App Bundle URL" value:appBundleURL2];
+    [array addObject:v35];
   }
 
   if ([(HMSetupAccessoryDescription *)self addAndSetupAccessories])
@@ -131,57 +131,57 @@
     [(HMSetupAccessoryDescription *)self addAndSetupAccessories];
     v37 = HMFBooleanToString();
     v38 = [v36 initWithName:@"Add And Setup" value:v37];
-    [v3 addObject:v38];
+    [array addObject:v38];
   }
 
-  v39 = [(HMSetupAccessoryDescription *)self homeUUID];
+  homeUUID = [(HMSetupAccessoryDescription *)self homeUUID];
 
-  if (v39)
+  if (homeUUID)
   {
     v40 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v41 = [(HMSetupAccessoryDescription *)self homeUUID];
-    v42 = [v40 initWithName:@"Home UUID" value:v41];
-    [v3 addObject:v42];
+    homeUUID2 = [(HMSetupAccessoryDescription *)self homeUUID];
+    v42 = [v40 initWithName:@"Home UUID" value:homeUUID2];
+    [array addObject:v42];
   }
 
-  v43 = [(HMSetupAccessoryDescription *)self storeID];
+  storeID = [(HMSetupAccessoryDescription *)self storeID];
 
-  if (v43)
+  if (storeID)
   {
     v44 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v45 = [(HMSetupAccessoryDescription *)self storeID];
-    v46 = [v44 initWithName:@"Store ID" value:v45];
-    [v3 addObject:v46];
+    storeID2 = [(HMSetupAccessoryDescription *)self storeID];
+    v46 = [v44 initWithName:@"Store ID" value:storeID2];
+    [array addObject:v46];
   }
 
-  v47 = [(HMSetupAccessoryDescription *)self bundleID];
+  bundleID = [(HMSetupAccessoryDescription *)self bundleID];
 
-  if (v47)
+  if (bundleID)
   {
     v48 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v49 = [(HMSetupAccessoryDescription *)self bundleID];
-    v50 = [v48 initWithName:@"Bundle ID" value:v49];
-    [v3 addObject:v50];
+    bundleID2 = [(HMSetupAccessoryDescription *)self bundleID];
+    v50 = [v48 initWithName:@"Bundle ID" value:bundleID2];
+    [array addObject:v50];
   }
 
-  v51 = [(HMSetupAccessoryDescription *)self suggestedRoomUUID];
+  suggestedRoomUUID = [(HMSetupAccessoryDescription *)self suggestedRoomUUID];
 
-  if (v51)
+  if (suggestedRoomUUID)
   {
     v52 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v53 = [(HMSetupAccessoryDescription *)self suggestedRoomUUID];
-    v54 = [v52 initWithName:@"Suggested Room UUID" value:v53];
-    [v3 addObject:v54];
+    suggestedRoomUUID2 = [(HMSetupAccessoryDescription *)self suggestedRoomUUID];
+    v54 = [v52 initWithName:@"Suggested Room UUID" value:suggestedRoomUUID2];
+    [array addObject:v54];
   }
 
-  v55 = [(HMSetupAccessoryDescription *)self suggestedAccessoryName];
+  suggestedAccessoryName = [(HMSetupAccessoryDescription *)self suggestedAccessoryName];
 
-  if (v55)
+  if (suggestedAccessoryName)
   {
     v56 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v57 = [(HMSetupAccessoryDescription *)self suggestedAccessoryName];
-    v58 = [v56 initWithName:@"Suggested Accessory Name" value:v57];
-    [v3 addObject:v58];
+    suggestedAccessoryName2 = [(HMSetupAccessoryDescription *)self suggestedAccessoryName];
+    v58 = [v56 initWithName:@"Suggested Accessory Name" value:suggestedAccessoryName2];
+    [array addObject:v58];
   }
 
   if ([(HMSetupAccessoryDescription *)self isEntitledForHomeKitSPI])
@@ -190,7 +190,7 @@
     [(HMSetupAccessoryDescription *)self isEntitledForHomeKitSPI];
     v60 = HMFBooleanToString();
     v61 = [v59 initWithName:@"SPI Entitled" value:v60];
-    [v3 addObject:v61];
+    [array addObject:v61];
   }
 
   if ([(HMSetupAccessoryDescription *)self isEntitledForThirdPartySetupAccessoryPayload])
@@ -199,7 +199,7 @@
     [(HMSetupAccessoryDescription *)self isEntitledForThirdPartySetupAccessoryPayload];
     v63 = HMFBooleanToString();
     v64 = [v62 initWithName:@"Setup Accessory Payload Entitled" value:v63];
-    [v3 addObject:v64];
+    [array addObject:v64];
   }
 
   if ([(HMSetupAccessoryDescription *)self isEntitledForThirdPartyMatterSetupPayload])
@@ -208,7 +208,7 @@
     [(HMSetupAccessoryDescription *)self isEntitledForThirdPartyMatterSetupPayload];
     v66 = HMFBooleanToString();
     v67 = [v65 initWithName:@"Matter Setup Payload Entitled" value:v66];
-    [v3 addObject:v67];
+    [array addObject:v67];
   }
 
   if ([(HMSetupAccessoryDescription *)self isSetupInitiatedByOtherMatterEcosystem])
@@ -217,37 +217,37 @@
     [(HMSetupAccessoryDescription *)self isSetupInitiatedByOtherMatterEcosystem];
     v69 = HMFBooleanToString();
     v70 = [v68 initWithName:@"Setup Initiated By Other Matter Ecosystem" value:v69];
-    [v3 addObject:v70];
+    [array addObject:v70];
   }
 
-  v71 = [(HMSetupAccessoryDescription *)self setupAuthTokenUUID];
+  setupAuthTokenUUID = [(HMSetupAccessoryDescription *)self setupAuthTokenUUID];
 
-  if (v71)
+  if (setupAuthTokenUUID)
   {
     v72 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v73 = [(HMSetupAccessoryDescription *)self setupAuthTokenUUID];
-    v74 = [v72 initWithName:@"Setup Auth Token UUID" value:v73];
-    [v3 addObject:v74];
+    setupAuthTokenUUID2 = [(HMSetupAccessoryDescription *)self setupAuthTokenUUID];
+    v74 = [v72 initWithName:@"Setup Auth Token UUID" value:setupAuthTokenUUID2];
+    [array addObject:v74];
   }
 
-  v75 = [(HMSetupAccessoryDescription *)self setupAuthToken];
+  setupAuthToken = [(HMSetupAccessoryDescription *)self setupAuthToken];
 
-  if (v75)
+  if (setupAuthToken)
   {
     v76 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v77 = [(HMSetupAccessoryDescription *)self setupAuthToken];
-    v78 = [v76 initWithName:@"Setup Auth Token" value:v77];
-    [v3 addObject:v78];
+    setupAuthToken2 = [(HMSetupAccessoryDescription *)self setupAuthToken];
+    v78 = [v76 initWithName:@"Setup Auth Token" value:setupAuthToken2];
+    [array addObject:v78];
   }
 
-  v79 = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
+  setupAccessoryPayload = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
 
-  if (v79)
+  if (setupAccessoryPayload)
   {
     v80 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v81 = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
-    v82 = [v80 initWithName:@"Setup Accessory Payload" value:v81];
-    [v3 addObject:v82];
+    setupAccessoryPayload2 = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
+    v82 = [v80 initWithName:@"Setup Accessory Payload" value:setupAccessoryPayload2];
+    [array addObject:v82];
   }
 
   if ([(HMSetupAccessoryDescription *)self certificationStatus])
@@ -255,66 +255,66 @@
     v83 = objc_alloc(MEMORY[0x1E69A29C8]);
     v84 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[HMSetupAccessoryDescription certificationStatus](self, "certificationStatus")}];
     v85 = [v83 initWithName:@"Certification Status" value:v84];
-    [v3 addObject:v85];
+    [array addObject:v85];
   }
 
-  v86 = [(HMSetupAccessoryDescription *)self accessoryBeingReplaced];
-  if (v86)
+  accessoryBeingReplaced = [(HMSetupAccessoryDescription *)self accessoryBeingReplaced];
+  if (accessoryBeingReplaced)
   {
-    v87 = [objc_alloc(MEMORY[0x1E69A29C8]) initWithName:@"Accessory Being Replaced" value:v86];
-    [v3 addObject:v87];
+    v87 = [objc_alloc(MEMORY[0x1E69A29C8]) initWithName:@"Accessory Being Replaced" value:accessoryBeingReplaced];
+    [array addObject:v87];
   }
 
-  v88 = [(HMSetupAccessoryDescription *)self cancellationReason];
+  cancellationReason = [(HMSetupAccessoryDescription *)self cancellationReason];
 
-  if (v88)
+  if (cancellationReason)
   {
     v89 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v90 = [(HMSetupAccessoryDescription *)self cancellationReason];
-    v91 = [v89 initWithName:@"Cancellation Reason" value:v90];
-    [v3 addObject:v91];
+    cancellationReason2 = [(HMSetupAccessoryDescription *)self cancellationReason];
+    v91 = [v89 initWithName:@"Cancellation Reason" value:cancellationReason2];
+    [array addObject:v91];
   }
 
-  v92 = [(HMSetupAccessoryDescription *)self addRequestIdentifier];
+  addRequestIdentifier = [(HMSetupAccessoryDescription *)self addRequestIdentifier];
 
-  if (v92)
+  if (addRequestIdentifier)
   {
     v93 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v94 = [(HMSetupAccessoryDescription *)self addRequestIdentifier];
-    v95 = [v93 initWithName:@"Add Request Identifier" value:v94];
-    [v3 addObject:v95];
+    addRequestIdentifier2 = [(HMSetupAccessoryDescription *)self addRequestIdentifier];
+    v95 = [v93 initWithName:@"Add Request Identifier" value:addRequestIdentifier2];
+    [array addObject:v95];
   }
 
-  v96 = [(HMSetupAccessoryDescription *)self setupCode];
+  setupCode = [(HMSetupAccessoryDescription *)self setupCode];
 
-  if (v96)
+  if (setupCode)
   {
     v97 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v98 = [(HMSetupAccessoryDescription *)self setupCode];
+    setupCode2 = [(HMSetupAccessoryDescription *)self setupCode];
     v99 = HMFBooleanToString();
     v100 = [v97 initWithName:@"Has Setup Code" value:v99];
-    [v3 addObject:v100];
+    [array addObject:v100];
   }
 
-  v101 = [(HMSetupAccessoryDescription *)self ownershipToken];
+  ownershipToken = [(HMSetupAccessoryDescription *)self ownershipToken];
 
-  if (v101)
+  if (ownershipToken)
   {
     v102 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v103 = [(HMSetupAccessoryDescription *)self ownershipToken];
+    ownershipToken2 = [(HMSetupAccessoryDescription *)self ownershipToken];
     v104 = HMFBooleanToString();
     v105 = [v102 initWithName:@"Has Ownership Token" value:v104];
-    [v3 addObject:v105];
+    [array addObject:v105];
   }
 
-  v106 = [(HMSetupAccessoryDescription *)self accessoryServerIdentifier];
+  accessoryServerIdentifier = [(HMSetupAccessoryDescription *)self accessoryServerIdentifier];
 
-  if (v106)
+  if (accessoryServerIdentifier)
   {
     v107 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v108 = [(HMSetupAccessoryDescription *)self accessoryServerIdentifier];
-    v109 = [v107 initWithName:@"Accessory Server Identifier" value:v108];
-    [v3 addObject:v109];
+    accessoryServerIdentifier2 = [(HMSetupAccessoryDescription *)self accessoryServerIdentifier];
+    v109 = [v107 initWithName:@"Accessory Server Identifier" value:accessoryServerIdentifier2];
+    [array addObject:v109];
   }
 
   if ([(HMSetupAccessoryDescription *)self doNetworkScan])
@@ -323,10 +323,10 @@
     [(HMSetupAccessoryDescription *)self doNetworkScan];
     v111 = HMFBooleanToString();
     v112 = [v110 initWithName:@"Do Network Scan" value:v111];
-    [v3 addObject:v112];
+    [array addObject:v112];
   }
 
-  v113 = [v3 copy];
+  v113 = [array copy];
 
   return v113;
 }
@@ -340,25 +340,25 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMSetupAccessoryDescription *)self accessoryUUID];
-  v4 = [v3 hash];
+  accessoryUUID = [(HMSetupAccessoryDescription *)self accessoryUUID];
+  v4 = [accessoryUUID hash];
 
-  v5 = [(HMSetupAccessoryDescription *)self addRequestIdentifier];
-  v6 = [v5 hash] ^ v4;
+  addRequestIdentifier = [(HMSetupAccessoryDescription *)self addRequestIdentifier];
+  v6 = [addRequestIdentifier hash] ^ v4;
 
-  v7 = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
-  v8 = [v7 hash];
+  setupAccessoryPayload = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
+  v8 = [setupAccessoryPayload hash];
 
-  v9 = [(HMSetupAccessoryDescription *)self homeUUID];
-  v10 = v8 ^ [v9 hash];
+  homeUUID = [(HMSetupAccessoryDescription *)self homeUUID];
+  v10 = v8 ^ [homeUUID hash];
 
   return v6 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v71) = 1;
   }
@@ -368,7 +368,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -382,8 +382,8 @@
       goto LABEL_32;
     }
 
-    v7 = [(HMSetupAccessoryDescription *)self accessoryUUID];
-    v8 = [(HMSetupAccessoryDescription *)v6 accessoryUUID];
+    accessoryUUID = [(HMSetupAccessoryDescription *)self accessoryUUID];
+    accessoryUUID2 = [(HMSetupAccessoryDescription *)v6 accessoryUUID];
     v9 = HMFEqualObjects();
 
     if (!v9)
@@ -391,8 +391,8 @@
       goto LABEL_32;
     }
 
-    v10 = [(HMSetupAccessoryDescription *)self accessoryName];
-    v11 = [(HMSetupAccessoryDescription *)v6 accessoryName];
+    accessoryName = [(HMSetupAccessoryDescription *)self accessoryName];
+    accessoryName2 = [(HMSetupAccessoryDescription *)v6 accessoryName];
     v12 = HMFEqualObjects();
 
     if (!v12)
@@ -400,8 +400,8 @@
       goto LABEL_32;
     }
 
-    v13 = [(HMSetupAccessoryDescription *)self manufacturerName];
-    v14 = [(HMSetupAccessoryDescription *)v6 manufacturerName];
+    manufacturerName = [(HMSetupAccessoryDescription *)self manufacturerName];
+    manufacturerName2 = [(HMSetupAccessoryDescription *)v6 manufacturerName];
     v15 = HMFEqualObjects();
 
     if (!v15)
@@ -409,8 +409,8 @@
       goto LABEL_32;
     }
 
-    v16 = [(HMSetupAccessoryDescription *)self marketingName];
-    v17 = [(HMSetupAccessoryDescription *)v6 marketingName];
+    marketingName = [(HMSetupAccessoryDescription *)self marketingName];
+    marketingName2 = [(HMSetupAccessoryDescription *)v6 marketingName];
     v18 = HMFEqualObjects();
 
     if (!v18)
@@ -418,8 +418,8 @@
       goto LABEL_32;
     }
 
-    v19 = [(HMSetupAccessoryDescription *)self installationGuideURL];
-    v20 = [(HMSetupAccessoryDescription *)v6 installationGuideURL];
+    installationGuideURL = [(HMSetupAccessoryDescription *)self installationGuideURL];
+    installationGuideURL2 = [(HMSetupAccessoryDescription *)v6 installationGuideURL];
     v21 = HMFEqualObjects();
 
     if (!v21)
@@ -427,8 +427,8 @@
       goto LABEL_32;
     }
 
-    v22 = [(HMSetupAccessoryDescription *)self category];
-    v23 = [(HMSetupAccessoryDescription *)v6 category];
+    category = [(HMSetupAccessoryDescription *)self category];
+    category2 = [(HMSetupAccessoryDescription *)v6 category];
     v24 = HMFEqualObjects();
 
     if (!v24)
@@ -436,8 +436,8 @@
       goto LABEL_32;
     }
 
-    v25 = [(HMSetupAccessoryDescription *)self appIdentifier];
-    v26 = [(HMSetupAccessoryDescription *)v6 appIdentifier];
+    appIdentifier = [(HMSetupAccessoryDescription *)self appIdentifier];
+    appIdentifier2 = [(HMSetupAccessoryDescription *)v6 appIdentifier];
     v27 = HMFEqualObjects();
 
     if (!v27)
@@ -445,8 +445,8 @@
       goto LABEL_32;
     }
 
-    v28 = [(HMSetupAccessoryDescription *)self appBundleURL];
-    v29 = [(HMSetupAccessoryDescription *)v6 appBundleURL];
+    appBundleURL = [(HMSetupAccessoryDescription *)self appBundleURL];
+    appBundleURL2 = [(HMSetupAccessoryDescription *)v6 appBundleURL];
     v30 = HMFEqualObjects();
 
     if (!v30)
@@ -454,14 +454,14 @@
       goto LABEL_32;
     }
 
-    v31 = [(HMSetupAccessoryDescription *)self addAndSetupAccessories];
-    if (v31 != [(HMSetupAccessoryDescription *)v6 addAndSetupAccessories])
+    addAndSetupAccessories = [(HMSetupAccessoryDescription *)self addAndSetupAccessories];
+    if (addAndSetupAccessories != [(HMSetupAccessoryDescription *)v6 addAndSetupAccessories])
     {
       goto LABEL_32;
     }
 
-    v32 = [(HMSetupAccessoryDescription *)self homeUUID];
-    v33 = [(HMSetupAccessoryDescription *)v6 homeUUID];
+    homeUUID = [(HMSetupAccessoryDescription *)self homeUUID];
+    homeUUID2 = [(HMSetupAccessoryDescription *)v6 homeUUID];
     v34 = HMFEqualObjects();
 
     if (!v34)
@@ -469,8 +469,8 @@
       goto LABEL_32;
     }
 
-    v35 = [(HMSetupAccessoryDescription *)self storeID];
-    v36 = [(HMSetupAccessoryDescription *)v6 storeID];
+    storeID = [(HMSetupAccessoryDescription *)self storeID];
+    storeID2 = [(HMSetupAccessoryDescription *)v6 storeID];
     v37 = HMFEqualObjects();
 
     if (!v37)
@@ -478,8 +478,8 @@
       goto LABEL_32;
     }
 
-    v38 = [(HMSetupAccessoryDescription *)self bundleID];
-    v39 = [(HMSetupAccessoryDescription *)v6 bundleID];
+    bundleID = [(HMSetupAccessoryDescription *)self bundleID];
+    bundleID2 = [(HMSetupAccessoryDescription *)v6 bundleID];
     v40 = HMFEqualObjects();
 
     if (!v40)
@@ -487,8 +487,8 @@
       goto LABEL_32;
     }
 
-    v41 = [(HMSetupAccessoryDescription *)self suggestedRoomUUID];
-    v42 = [(HMSetupAccessoryDescription *)v6 suggestedRoomUUID];
+    suggestedRoomUUID = [(HMSetupAccessoryDescription *)self suggestedRoomUUID];
+    suggestedRoomUUID2 = [(HMSetupAccessoryDescription *)v6 suggestedRoomUUID];
     v43 = HMFEqualObjects();
 
     if (!v43)
@@ -496,8 +496,8 @@
       goto LABEL_32;
     }
 
-    v44 = [(HMSetupAccessoryDescription *)self suggestedAccessoryName];
-    v45 = [(HMSetupAccessoryDescription *)v6 suggestedAccessoryName];
+    suggestedAccessoryName = [(HMSetupAccessoryDescription *)self suggestedAccessoryName];
+    suggestedAccessoryName2 = [(HMSetupAccessoryDescription *)v6 suggestedAccessoryName];
     v46 = HMFEqualObjects();
 
     if (!v46)
@@ -505,20 +505,20 @@
       goto LABEL_32;
     }
 
-    v47 = [(HMSetupAccessoryDescription *)self isEntitledForHomeKitSPI];
-    if (v47 != [(HMSetupAccessoryDescription *)v6 isEntitledForHomeKitSPI])
+    isEntitledForHomeKitSPI = [(HMSetupAccessoryDescription *)self isEntitledForHomeKitSPI];
+    if (isEntitledForHomeKitSPI != [(HMSetupAccessoryDescription *)v6 isEntitledForHomeKitSPI])
     {
       goto LABEL_32;
     }
 
-    v48 = [(HMSetupAccessoryDescription *)self isEntitledForThirdPartySetupAccessoryPayload];
-    if (v48 != [(HMSetupAccessoryDescription *)v6 isEntitledForThirdPartySetupAccessoryPayload])
+    isEntitledForThirdPartySetupAccessoryPayload = [(HMSetupAccessoryDescription *)self isEntitledForThirdPartySetupAccessoryPayload];
+    if (isEntitledForThirdPartySetupAccessoryPayload != [(HMSetupAccessoryDescription *)v6 isEntitledForThirdPartySetupAccessoryPayload])
     {
       goto LABEL_32;
     }
 
-    v49 = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
-    v50 = [(HMSetupAccessoryDescription *)v6 setupAccessoryPayload];
+    setupAccessoryPayload = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
+    setupAccessoryPayload2 = [(HMSetupAccessoryDescription *)v6 setupAccessoryPayload];
     v51 = HMFEqualObjects();
 
     if (!v51)
@@ -526,26 +526,26 @@
       goto LABEL_32;
     }
 
-    v52 = [(HMSetupAccessoryDescription *)self isEntitledForThirdPartyMatterSetupPayload];
-    if (v52 != [(HMSetupAccessoryDescription *)v6 isEntitledForThirdPartyMatterSetupPayload])
+    isEntitledForThirdPartyMatterSetupPayload = [(HMSetupAccessoryDescription *)self isEntitledForThirdPartyMatterSetupPayload];
+    if (isEntitledForThirdPartyMatterSetupPayload != [(HMSetupAccessoryDescription *)v6 isEntitledForThirdPartyMatterSetupPayload])
     {
       goto LABEL_32;
     }
 
-    v53 = [(HMSetupAccessoryDescription *)self isSetupInitiatedByOtherMatterEcosystem];
-    if (v53 != [(HMSetupAccessoryDescription *)v6 isSetupInitiatedByOtherMatterEcosystem])
+    isSetupInitiatedByOtherMatterEcosystem = [(HMSetupAccessoryDescription *)self isSetupInitiatedByOtherMatterEcosystem];
+    if (isSetupInitiatedByOtherMatterEcosystem != [(HMSetupAccessoryDescription *)v6 isSetupInitiatedByOtherMatterEcosystem])
     {
       goto LABEL_32;
     }
 
-    v54 = [(HMSetupAccessoryDescription *)self certificationStatus];
-    if (v54 != [(HMSetupAccessoryDescription *)v6 certificationStatus])
+    certificationStatus = [(HMSetupAccessoryDescription *)self certificationStatus];
+    if (certificationStatus != [(HMSetupAccessoryDescription *)v6 certificationStatus])
     {
       goto LABEL_32;
     }
 
-    v55 = [(HMSetupAccessoryDescription *)self accessoryBeingReplaced];
-    v56 = [(HMSetupAccessoryDescription *)v6 accessoryBeingReplaced];
+    accessoryBeingReplaced = [(HMSetupAccessoryDescription *)self accessoryBeingReplaced];
+    accessoryBeingReplaced2 = [(HMSetupAccessoryDescription *)v6 accessoryBeingReplaced];
     v57 = HMFEqualObjects();
 
     if (!v57)
@@ -553,8 +553,8 @@
       goto LABEL_32;
     }
 
-    v58 = [(HMSetupAccessoryDescription *)self cancellationReason];
-    v59 = [(HMSetupAccessoryDescription *)v6 cancellationReason];
+    cancellationReason = [(HMSetupAccessoryDescription *)self cancellationReason];
+    cancellationReason2 = [(HMSetupAccessoryDescription *)v6 cancellationReason];
     v60 = HMFEqualObjects();
 
     if (!v60)
@@ -562,8 +562,8 @@
       goto LABEL_32;
     }
 
-    v61 = [(HMSetupAccessoryDescription *)self addRequestIdentifier];
-    v62 = [(HMSetupAccessoryDescription *)v6 addRequestIdentifier];
+    addRequestIdentifier = [(HMSetupAccessoryDescription *)self addRequestIdentifier];
+    addRequestIdentifier2 = [(HMSetupAccessoryDescription *)v6 addRequestIdentifier];
     v63 = HMFEqualObjects();
 
     if (!v63)
@@ -571,8 +571,8 @@
       goto LABEL_32;
     }
 
-    v64 = [(HMSetupAccessoryDescription *)self setupCode];
-    v65 = [(HMSetupAccessoryDescription *)v6 setupCode];
+    setupCode = [(HMSetupAccessoryDescription *)self setupCode];
+    setupCode2 = [(HMSetupAccessoryDescription *)v6 setupCode];
     v66 = HMFEqualObjects();
 
     if (!v66)
@@ -580,14 +580,14 @@
       goto LABEL_32;
     }
 
-    v67 = [(HMSetupAccessoryDescription *)self accessoryServerIdentifier];
-    v68 = [(HMSetupAccessoryDescription *)v6 accessoryServerIdentifier];
+    accessoryServerIdentifier = [(HMSetupAccessoryDescription *)self accessoryServerIdentifier];
+    accessoryServerIdentifier2 = [(HMSetupAccessoryDescription *)v6 accessoryServerIdentifier];
     v69 = HMFEqualObjects();
 
     if (v69)
     {
-      v70 = [(HMSetupAccessoryDescription *)self doNetworkScan];
-      v71 = v70 ^ [(HMSetupAccessoryDescription *)v6 doNetworkScan]^ 1;
+      doNetworkScan = [(HMSetupAccessoryDescription *)self doNetworkScan];
+      v71 = doNetworkScan ^ [(HMSetupAccessoryDescription *)v6 doNetworkScan]^ 1;
     }
 
     else
@@ -600,252 +600,252 @@ LABEL_32:
   return v71;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
+  setupAccessoryPayload = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
 
-  if (v4)
+  if (setupAccessoryPayload)
   {
     v5 = [HMSetupAccessoryDescription alloc];
-    v6 = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
-    v7 = [(HMSetupAccessoryDescription *)self appIdentifier];
-    v8 = [(HMSetupAccessoryDescription *)self homeUUID];
-    v9 = [(HMSetupAccessoryDescription *)self ownershipToken];
-    v10 = [(HMSetupAccessoryDescription *)v5 initWithSetupAccessoryPayload:v6 appID:v7 homeUUID:v8 ownershipToken:v9];
+    setupAccessoryPayload2 = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
+    appIdentifier = [(HMSetupAccessoryDescription *)self appIdentifier];
+    homeUUID = [(HMSetupAccessoryDescription *)self homeUUID];
+    ownershipToken = [(HMSetupAccessoryDescription *)self ownershipToken];
+    v10 = [(HMSetupAccessoryDescription *)v5 initWithSetupAccessoryPayload:setupAccessoryPayload2 appID:appIdentifier homeUUID:homeUUID ownershipToken:ownershipToken];
   }
 
   else
   {
-    v11 = [(HMSetupAccessoryDescription *)self accessoryUUID];
+    accessoryUUID = [(HMSetupAccessoryDescription *)self accessoryUUID];
 
     v12 = [HMSetupAccessoryDescription alloc];
-    if (!v11)
+    if (!accessoryUUID)
     {
-      v6 = [(HMSetupAccessoryDescription *)self appIdentifier];
-      v7 = [(HMSetupAccessoryDescription *)self homeUUID];
-      v13 = [(HMSetupAccessoryDescription *)v12 initWithAppIdentifier:v6 homeUUID:v7];
+      setupAccessoryPayload2 = [(HMSetupAccessoryDescription *)self appIdentifier];
+      appIdentifier = [(HMSetupAccessoryDescription *)self homeUUID];
+      v13 = [(HMSetupAccessoryDescription *)v12 initWithAppIdentifier:setupAccessoryPayload2 homeUUID:appIdentifier];
       goto LABEL_6;
     }
 
-    v6 = [(HMSetupAccessoryDescription *)self accessoryUUID];
-    v7 = [(HMSetupAccessoryDescription *)self accessoryName];
-    v8 = [(HMSetupAccessoryDescription *)self appIdentifier];
-    v9 = [(HMSetupAccessoryDescription *)self homeUUID];
-    v10 = [(HMSetupAccessoryDescription *)v12 initWithAccessoryUUID:v6 accessoryName:v7 appID:v8 homeUUID:v9];
+    setupAccessoryPayload2 = [(HMSetupAccessoryDescription *)self accessoryUUID];
+    appIdentifier = [(HMSetupAccessoryDescription *)self accessoryName];
+    homeUUID = [(HMSetupAccessoryDescription *)self appIdentifier];
+    ownershipToken = [(HMSetupAccessoryDescription *)self homeUUID];
+    v10 = [(HMSetupAccessoryDescription *)v12 initWithAccessoryUUID:setupAccessoryPayload2 accessoryName:appIdentifier appID:homeUUID homeUUID:ownershipToken];
   }
 
   v13 = v10;
 
 LABEL_6:
-  v14 = [(HMSetupAccessoryDescription *)self accessoryName];
-  [(HMSetupAccessoryDescription *)v13 setAccessoryName:v14];
+  accessoryName = [(HMSetupAccessoryDescription *)self accessoryName];
+  [(HMSetupAccessoryDescription *)v13 setAccessoryName:accessoryName];
 
-  v15 = [(HMSetupAccessoryDescription *)self accessoryUUID];
-  [(HMSetupAccessoryDescription *)v13 setAccessoryUUID:v15];
+  accessoryUUID2 = [(HMSetupAccessoryDescription *)self accessoryUUID];
+  [(HMSetupAccessoryDescription *)v13 setAccessoryUUID:accessoryUUID2];
 
-  v16 = [(HMSetupAccessoryDescription *)self appBundleURL];
-  [(HMSetupAccessoryDescription *)v13 setAppBundleURL:v16];
+  appBundleURL = [(HMSetupAccessoryDescription *)self appBundleURL];
+  [(HMSetupAccessoryDescription *)v13 setAppBundleURL:appBundleURL];
 
   [(HMSetupAccessoryDescription *)v13 setAddAndSetupAccessories:[(HMSetupAccessoryDescription *)self addAndSetupAccessories]];
   [(HMSetupAccessoryDescription *)v13 setCertificationStatus:[(HMSetupAccessoryDescription *)self certificationStatus]];
-  v17 = [(HMSetupAccessoryDescription *)self suggestedRoomUUID];
-  [(HMSetupAccessoryDescription *)v13 setSuggestedRoomUUID:v17];
+  suggestedRoomUUID = [(HMSetupAccessoryDescription *)self suggestedRoomUUID];
+  [(HMSetupAccessoryDescription *)v13 setSuggestedRoomUUID:suggestedRoomUUID];
 
-  v18 = [(HMSetupAccessoryDescription *)self suggestedAccessoryName];
-  [(HMSetupAccessoryDescription *)v13 setSuggestedAccessoryName:v18];
+  suggestedAccessoryName = [(HMSetupAccessoryDescription *)self suggestedAccessoryName];
+  [(HMSetupAccessoryDescription *)v13 setSuggestedAccessoryName:suggestedAccessoryName];
 
-  v19 = [(HMSetupAccessoryDescription *)self storeID];
-  [(HMSetupAccessoryDescription *)v13 setStoreID:v19];
+  storeID = [(HMSetupAccessoryDescription *)self storeID];
+  [(HMSetupAccessoryDescription *)v13 setStoreID:storeID];
 
-  v20 = [(HMSetupAccessoryDescription *)self bundleID];
-  [(HMSetupAccessoryDescription *)v13 setBundleID:v20];
+  bundleID = [(HMSetupAccessoryDescription *)self bundleID];
+  [(HMSetupAccessoryDescription *)v13 setBundleID:bundleID];
 
   [(HMSetupAccessoryDescription *)v13 setUserConsentedForReplace:[(HMSetupAccessoryDescription *)self userConsentedForReplace]];
-  v21 = [(HMSetupAccessoryDescription *)self category];
-  [(HMSetupAccessoryDescription *)v13 setCategory:v21];
+  category = [(HMSetupAccessoryDescription *)self category];
+  [(HMSetupAccessoryDescription *)v13 setCategory:category];
 
-  v22 = [(HMSetupAccessoryDescription *)self cancellationReason];
-  [(HMSetupAccessoryDescription *)v13 setCancellationReason:v22];
+  cancellationReason = [(HMSetupAccessoryDescription *)self cancellationReason];
+  [(HMSetupAccessoryDescription *)v13 setCancellationReason:cancellationReason];
 
   [(HMSetupAccessoryDescription *)v13 setEntitledForHomeKitSPI:[(HMSetupAccessoryDescription *)self isEntitledForHomeKitSPI]];
   [(HMSetupAccessoryDescription *)v13 setEntitledForThirdPartySetupAccessoryPayload:[(HMSetupAccessoryDescription *)self isEntitledForThirdPartySetupAccessoryPayload]];
   [(HMSetupAccessoryDescription *)v13 setEntitledForThirdPartyMatterSetupPayload:[(HMSetupAccessoryDescription *)self isEntitledForThirdPartyMatterSetupPayload]];
   [(HMSetupAccessoryDescription *)v13 setSetupInitiatedByOtherMatterEcosystem:[(HMSetupAccessoryDescription *)self isSetupInitiatedByOtherMatterEcosystem]];
-  v23 = [(HMSetupAccessoryDescription *)self accessoryServerIdentifier];
-  [(HMSetupAccessoryDescription *)v13 setAccessoryServerIdentifier:v23];
+  accessoryServerIdentifier = [(HMSetupAccessoryDescription *)self accessoryServerIdentifier];
+  [(HMSetupAccessoryDescription *)v13 setAccessoryServerIdentifier:accessoryServerIdentifier];
 
   [(HMSetupAccessoryDescription *)v13 setDoNetworkScan:[(HMSetupAccessoryDescription *)self doNetworkScan]];
-  v24 = [(HMSetupAccessoryDescription *)self matterCommissioneeInfo];
-  [(HMSetupAccessoryDescription *)v13 setMatterCommissioneeInfo:v24];
+  matterCommissioneeInfo = [(HMSetupAccessoryDescription *)self matterCommissioneeInfo];
+  [(HMSetupAccessoryDescription *)v13 setMatterCommissioneeInfo:matterCommissioneeInfo];
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMSetupAccessoryDescription *)self accessoryUUID];
-  [v4 encodeObject:v5 forKey:@"uuid"];
+  coderCopy = coder;
+  accessoryUUID = [(HMSetupAccessoryDescription *)self accessoryUUID];
+  [coderCopy encodeObject:accessoryUUID forKey:@"uuid"];
 
-  v6 = [(HMSetupAccessoryDescription *)self accessoryName];
-  [v4 encodeObject:v6 forKey:@"name"];
+  accessoryName = [(HMSetupAccessoryDescription *)self accessoryName];
+  [coderCopy encodeObject:accessoryName forKey:@"name"];
 
-  v7 = [(HMSetupAccessoryDescription *)self appIdentifier];
-  [v4 encodeObject:v7 forKey:@"appIdentifier"];
+  appIdentifier = [(HMSetupAccessoryDescription *)self appIdentifier];
+  [coderCopy encodeObject:appIdentifier forKey:@"appIdentifier"];
 
-  v8 = [(HMSetupAccessoryDescription *)self appBundleURL];
-  [v4 encodeObject:v8 forKey:@"appBundleURL"];
+  appBundleURL = [(HMSetupAccessoryDescription *)self appBundleURL];
+  [coderCopy encodeObject:appBundleURL forKey:@"appBundleURL"];
 
-  [v4 encodeBool:-[HMSetupAccessoryDescription addAndSetupAccessories](self forKey:{"addAndSetupAccessories"), @"addAndSetupAccessories"}];
-  v9 = [(HMSetupAccessoryDescription *)self homeUUID];
-  [v4 encodeObject:v9 forKey:@"homeUUID"];
+  [coderCopy encodeBool:-[HMSetupAccessoryDescription addAndSetupAccessories](self forKey:{"addAndSetupAccessories"), @"addAndSetupAccessories"}];
+  homeUUID = [(HMSetupAccessoryDescription *)self homeUUID];
+  [coderCopy encodeObject:homeUUID forKey:@"homeUUID"];
 
-  v10 = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
-  [v4 encodeObject:v10 forKey:@"setupAccessoryPayload"];
+  setupAccessoryPayload = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
+  [coderCopy encodeObject:setupAccessoryPayload forKey:@"setupAccessoryPayload"];
 
-  v11 = [(HMSetupAccessoryDescription *)self setupAuthTokenUUID];
-  [v4 encodeObject:v11 forKey:@"setupAuthTokenUUID"];
+  setupAuthTokenUUID = [(HMSetupAccessoryDescription *)self setupAuthTokenUUID];
+  [coderCopy encodeObject:setupAuthTokenUUID forKey:@"setupAuthTokenUUID"];
 
-  v12 = [(HMSetupAccessoryDescription *)self setupAuthToken];
-  [v4 encodeObject:v12 forKey:@"setupAuthToken"];
+  setupAuthToken = [(HMSetupAccessoryDescription *)self setupAuthToken];
+  [coderCopy encodeObject:setupAuthToken forKey:@"setupAuthToken"];
 
-  v13 = [(HMSetupAccessoryDescription *)self ownershipToken];
-  [v4 encodeObject:v13 forKey:@"ownershipToken"];
+  ownershipToken = [(HMSetupAccessoryDescription *)self ownershipToken];
+  [coderCopy encodeObject:ownershipToken forKey:@"ownershipToken"];
 
-  [v4 encodeInteger:-[HMSetupAccessoryDescription certificationStatus](self forKey:{"certificationStatus"), @"certificationStatus"}];
-  v14 = [(HMSetupAccessoryDescription *)self suggestedRoomUUID];
-  [v4 encodeObject:v14 forKey:@"suggestedRoomUUID"];
+  [coderCopy encodeInteger:-[HMSetupAccessoryDescription certificationStatus](self forKey:{"certificationStatus"), @"certificationStatus"}];
+  suggestedRoomUUID = [(HMSetupAccessoryDescription *)self suggestedRoomUUID];
+  [coderCopy encodeObject:suggestedRoomUUID forKey:@"suggestedRoomUUID"];
 
-  v15 = [(HMSetupAccessoryDescription *)self suggestedAccessoryName];
-  [v4 encodeObject:v15 forKey:@"suggestedAccessoryName"];
+  suggestedAccessoryName = [(HMSetupAccessoryDescription *)self suggestedAccessoryName];
+  [coderCopy encodeObject:suggestedAccessoryName forKey:@"suggestedAccessoryName"];
 
-  v16 = [(HMSetupAccessoryDescription *)self storeID];
-  [v4 encodeObject:v16 forKey:@"storeID"];
+  storeID = [(HMSetupAccessoryDescription *)self storeID];
+  [coderCopy encodeObject:storeID forKey:@"storeID"];
 
-  v17 = [(HMSetupAccessoryDescription *)self bundleID];
-  [v4 encodeObject:v17 forKey:@"bundleID"];
+  bundleID = [(HMSetupAccessoryDescription *)self bundleID];
+  [coderCopy encodeObject:bundleID forKey:@"bundleID"];
 
-  v18 = [(HMSetupAccessoryDescription *)self addRequestIdentifier];
-  [v4 encodeObject:v18 forKey:@"addRequestIdentifier"];
+  addRequestIdentifier = [(HMSetupAccessoryDescription *)self addRequestIdentifier];
+  [coderCopy encodeObject:addRequestIdentifier forKey:@"addRequestIdentifier"];
 
-  v19 = [(HMSetupAccessoryDescription *)self cancellationReason];
-  [v4 encodeObject:v19 forKey:@"cancelationReason"];
+  cancellationReason = [(HMSetupAccessoryDescription *)self cancellationReason];
+  [coderCopy encodeObject:cancellationReason forKey:@"cancelationReason"];
 
-  v20 = [(HMSetupAccessoryDescription *)self marketingName];
-  [v4 encodeObject:v20 forKey:@"marketingName"];
+  marketingName = [(HMSetupAccessoryDescription *)self marketingName];
+  [coderCopy encodeObject:marketingName forKey:@"marketingName"];
 
-  v21 = [(HMSetupAccessoryDescription *)self installationGuideURL];
-  [v4 encodeObject:v21 forKey:@"installationGuideURL"];
+  installationGuideURL = [(HMSetupAccessoryDescription *)self installationGuideURL];
+  [coderCopy encodeObject:installationGuideURL forKey:@"installationGuideURL"];
 
-  [v4 encodeBool:-[HMSetupAccessoryDescription isEntitledForHomeKitSPI](self forKey:{"isEntitledForHomeKitSPI"), @"isEntitledForHomeKitSPI"}];
-  [v4 encodeBool:-[HMSetupAccessoryDescription isEntitledForThirdPartySetupAccessoryPayload](self forKey:{"isEntitledForThirdPartySetupAccessoryPayload"), @"isEntitledForThirdPartySetupAccessoryPayload"}];
-  [v4 encodeBool:-[HMSetupAccessoryDescription isEntitledForThirdPartyMatterSetupPayload](self forKey:{"isEntitledForThirdPartyMatterSetupPayload"), @"isEntitledForThirdPartyMatterSetupPayload"}];
-  [v4 encodeBool:-[HMSetupAccessoryDescription isSetupInitiatedByOtherMatterEcosystem](self forKey:{"isSetupInitiatedByOtherMatterEcosystem"), @"isSetupInitiatedByOtherMatterEcosystem"}];
-  v22 = [(HMSetupAccessoryDescription *)self accessoryServerIdentifier];
-  [v4 encodeObject:v22 forKey:@"accessoryServerIdentifier"];
+  [coderCopy encodeBool:-[HMSetupAccessoryDescription isEntitledForHomeKitSPI](self forKey:{"isEntitledForHomeKitSPI"), @"isEntitledForHomeKitSPI"}];
+  [coderCopy encodeBool:-[HMSetupAccessoryDescription isEntitledForThirdPartySetupAccessoryPayload](self forKey:{"isEntitledForThirdPartySetupAccessoryPayload"), @"isEntitledForThirdPartySetupAccessoryPayload"}];
+  [coderCopy encodeBool:-[HMSetupAccessoryDescription isEntitledForThirdPartyMatterSetupPayload](self forKey:{"isEntitledForThirdPartyMatterSetupPayload"), @"isEntitledForThirdPartyMatterSetupPayload"}];
+  [coderCopy encodeBool:-[HMSetupAccessoryDescription isSetupInitiatedByOtherMatterEcosystem](self forKey:{"isSetupInitiatedByOtherMatterEcosystem"), @"isSetupInitiatedByOtherMatterEcosystem"}];
+  accessoryServerIdentifier = [(HMSetupAccessoryDescription *)self accessoryServerIdentifier];
+  [coderCopy encodeObject:accessoryServerIdentifier forKey:@"accessoryServerIdentifier"];
 
-  [v4 encodeBool:-[HMSetupAccessoryDescription doNetworkScan](self forKey:{"doNetworkScan"), @"networkScan"}];
-  v23 = [(HMSetupAccessoryDescription *)self matterCommissioneeInfo];
-  [v4 encodeObject:v23 forKey:@"matterCommissioneeInfo"];
+  [coderCopy encodeBool:-[HMSetupAccessoryDescription doNetworkScan](self forKey:{"doNetworkScan"), @"networkScan"}];
+  matterCommissioneeInfo = [(HMSetupAccessoryDescription *)self matterCommissioneeInfo];
+  [coderCopy encodeObject:matterCommissioneeInfo forKey:@"matterCommissioneeInfo"];
 }
 
-- (HMSetupAccessoryDescription)initWithCoder:(id)a3
+- (HMSetupAccessoryDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v53.receiver = self;
   v53.super_class = HMSetupAccessoryDescription;
   v5 = [(HMSetupAccessoryDescription *)&v53 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     v7 = [v6 copy];
     accessoryUUID = v5->_accessoryUUID;
     v5->_accessoryUUID = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     v10 = [v9 copy];
     accessoryName = v5->_accessoryName;
     v5->_accessoryName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appIdentifier"];
     v13 = [v12 copy];
     appIdentifier = v5->_appIdentifier;
     v5->_appIdentifier = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appBundleURL"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appBundleURL"];
     v16 = [v15 copy];
     appBundleURL = v5->_appBundleURL;
     v5->_appBundleURL = v16;
 
-    v5->_addAndSetupAccessories = [v4 decodeBoolForKey:@"addAndSetupAccessories"];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeUUID"];
+    v5->_addAndSetupAccessories = [coderCopy decodeBoolForKey:@"addAndSetupAccessories"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeUUID"];
     v19 = [v18 copy];
     homeUUID = v5->_homeUUID;
     v5->_homeUUID = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setupAccessoryPayload"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setupAccessoryPayload"];
     v22 = [v21 copy];
     setupAccessoryPayload = v5->_setupAccessoryPayload;
     v5->_setupAccessoryPayload = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setupAuthTokenUUID"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setupAuthTokenUUID"];
     v25 = [v24 copy];
     setupAuthTokenUUID = v5->_setupAuthTokenUUID;
     v5->_setupAuthTokenUUID = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setupAuthToken"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setupAuthToken"];
     v28 = [v27 copy];
     setupAuthToken = v5->_setupAuthToken;
     v5->_setupAuthToken = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ownershipToken"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ownershipToken"];
     ownershipToken = v5->_ownershipToken;
     v5->_ownershipToken = v30;
 
-    v5->_certificationStatus = [v4 decodeIntegerForKey:@"certificationStatus"];
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suggestedRoomUUID"];
+    v5->_certificationStatus = [coderCopy decodeIntegerForKey:@"certificationStatus"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suggestedRoomUUID"];
     suggestedRoomUUID = v5->_suggestedRoomUUID;
     v5->_suggestedRoomUUID = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suggestedAccessoryName"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suggestedAccessoryName"];
     suggestedAccessoryName = v5->_suggestedAccessoryName;
     v5->_suggestedAccessoryName = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"storeID"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"storeID"];
     storeID = v5->_storeID;
     v5->_storeID = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
     bundleID = v5->_bundleID;
     v5->_bundleID = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"addRequestIdentifier"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"addRequestIdentifier"];
     addRequestIdentifier = v5->_addRequestIdentifier;
     v5->_addRequestIdentifier = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cancelationReason"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cancelationReason"];
     cancellationReason = v5->_cancellationReason;
     v5->_cancellationReason = v42;
 
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"marketingName"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"marketingName"];
     marketingName = v5->_marketingName;
     v5->_marketingName = v44;
 
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installationGuideURL"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installationGuideURL"];
     installationGuideURL = v5->_installationGuideURL;
     v5->_installationGuideURL = v46;
 
-    v5->_entitledForHomeKitSPI = [v4 decodeBoolForKey:@"isEntitledForHomeKitSPI"];
-    v5->_entitledForThirdPartySetupAccessoryPayload = [v4 decodeBoolForKey:@"isEntitledForThirdPartySetupAccessoryPayload"];
-    v5->_entitledForThirdPartyMatterSetupPayload = [v4 decodeBoolForKey:@"isEntitledForThirdPartyMatterSetupPayload"];
-    v5->_setupInitiatedByOtherMatterEcosystem = [v4 decodeBoolForKey:@"isSetupInitiatedByOtherMatterEcosystem"];
+    v5->_entitledForHomeKitSPI = [coderCopy decodeBoolForKey:@"isEntitledForHomeKitSPI"];
+    v5->_entitledForThirdPartySetupAccessoryPayload = [coderCopy decodeBoolForKey:@"isEntitledForThirdPartySetupAccessoryPayload"];
+    v5->_entitledForThirdPartyMatterSetupPayload = [coderCopy decodeBoolForKey:@"isEntitledForThirdPartyMatterSetupPayload"];
+    v5->_setupInitiatedByOtherMatterEcosystem = [coderCopy decodeBoolForKey:@"isSetupInitiatedByOtherMatterEcosystem"];
     v5->_userConsentedForReplace = 0;
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryServerIdentifier"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryServerIdentifier"];
     accessoryServerIdentifier = v5->_accessoryServerIdentifier;
     v5->_accessoryServerIdentifier = v48;
 
-    v5->_doNetworkScan = [v4 decodeBoolForKey:@"networkScan"];
-    v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"matterCommissioneeInfo"];
+    v5->_doNetworkScan = [coderCopy decodeBoolForKey:@"networkScan"];
+    v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"matterCommissioneeInfo"];
     matterCommissioneeInfo = v5->_matterCommissioneeInfo;
     v5->_matterCommissioneeInfo = v50;
   }
@@ -855,12 +855,12 @@ LABEL_6:
 
 - (NSUUID)suggestedRoomUniqueIdentifier
 {
-  v3 = [(HMSetupAccessoryDescription *)self suggestedRoomUUID];
-  if (v3)
+  suggestedRoomUUID = [(HMSetupAccessoryDescription *)self suggestedRoomUUID];
+  if (suggestedRoomUUID)
   {
     v4 = MEMORY[0x1E696AFB0];
-    v5 = [(HMSetupAccessoryDescription *)self suggestedRoomUUID];
-    v6 = [v4 hm_deriveUUIDFromBaseUUID:v5];
+    suggestedRoomUUID2 = [(HMSetupAccessoryDescription *)self suggestedRoomUUID];
+    v6 = [v4 hm_deriveUUIDFromBaseUUID:suggestedRoomUUID2];
   }
 
   else
@@ -873,8 +873,8 @@ LABEL_6:
 
 - (BOOL)hasAddRequest
 {
-  v2 = [(HMSetupAccessoryDescription *)self addRequestIdentifier];
-  v3 = v2 != 0;
+  addRequestIdentifier = [(HMSetupAccessoryDescription *)self addRequestIdentifier];
+  v3 = addRequestIdentifier != 0;
 
   return v3;
 }
@@ -890,9 +890,9 @@ LABEL_6:
   else
   {
     v5 = +[HMHAPMetadata getSharedInstance];
-    v6 = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
-    v7 = [v6 categoryNumber];
-    v3 = [v5 categoryForIdentifier:v7];
+    setupAccessoryPayload = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
+    categoryNumber = [setupAccessoryPayload categoryNumber];
+    v3 = [v5 categoryForIdentifier:categoryNumber];
   }
 
   return v3;
@@ -900,10 +900,10 @@ LABEL_6:
 
 - (NSString)setupID
 {
-  v2 = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
-  v3 = [v2 setupID];
+  setupAccessoryPayload = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
+  setupID = [setupAccessoryPayload setupID];
 
-  return v3;
+  return setupID;
 }
 
 - (NSString)setupCode
@@ -911,59 +911,59 @@ LABEL_6:
   setupCode = self->_setupCode;
   if (setupCode)
   {
-    v3 = setupCode;
+    setupCode = setupCode;
   }
 
   else
   {
-    v4 = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
-    v3 = [v4 setupCode];
+    setupAccessoryPayload = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
+    setupCode = [setupAccessoryPayload setupCode];
   }
 
-  return v3;
+  return setupCode;
 }
 
-- (void)setSetupCode:(id)a3
+- (void)setSetupCode:(id)code
 {
-  v6 = a3;
-  v5 = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
+  codeCopy = code;
+  setupAccessoryPayload = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
 
-  if (!v5)
+  if (!setupAccessoryPayload)
   {
-    objc_storeStrong(&self->_setupCode, a3);
+    objc_storeStrong(&self->_setupCode, code);
   }
 }
 
 - (BOOL)isPaired
 {
-  v2 = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
-  v3 = [v2 isPaired];
+  setupAccessoryPayload = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
+  isPaired = [setupAccessoryPayload isPaired];
 
-  return v3;
+  return isPaired;
 }
 
 - (BOOL)supportsBTLE
 {
-  v2 = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
-  v3 = [v2 supportsBTLE];
+  setupAccessoryPayload = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
+  supportsBTLE = [setupAccessoryPayload supportsBTLE];
 
-  return v3;
+  return supportsBTLE;
 }
 
 - (BOOL)supportsWAC
 {
-  v2 = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
-  v3 = [v2 supportsWAC];
+  setupAccessoryPayload = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
+  supportsWAC = [setupAccessoryPayload supportsWAC];
 
-  return v3;
+  return supportsWAC;
 }
 
 - (BOOL)supportsIP
 {
-  v2 = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
-  v3 = [v2 supportsIP];
+  setupAccessoryPayload = [(HMSetupAccessoryDescription *)self setupAccessoryPayload];
+  supportsIP = [setupAccessoryPayload supportsIP];
 
-  return v3;
+  return supportsIP;
 }
 
 - (NSDictionary)dictionaryRepresentation
@@ -982,7 +982,7 @@ LABEL_6:
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -990,7 +990,7 @@ LABEL_6:
       *buf = 138543874;
       v16 = v9;
       v17 = 2112;
-      v18 = v7;
+      v18 = selfCopy;
       v19 = 2112;
       v20 = v4;
       _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_ERROR, "%{public}@Failed to serialize device setup request %@: %@", buf, 0x20u);
@@ -1005,14 +1005,14 @@ LABEL_6:
   return v5;
 }
 
-- (void)updateWithAuthToken:(id)a3 uuid:(id)a4
+- (void)updateWithAuthToken:(id)token uuid:(id)uuid
 {
-  v13 = a3;
-  v6 = a4;
-  if (v13)
+  tokenCopy = token;
+  uuidCopy = uuid;
+  if (tokenCopy)
   {
-    v7 = v6;
-    v8 = [v13 copy];
+    v7 = uuidCopy;
+    v8 = [tokenCopy copy];
     [(HMSetupAccessoryDescription *)self setSetupAuthToken:v8];
 
     v9 = [v7 copy];
@@ -1026,13 +1026,13 @@ LABEL_6:
   }
 }
 
-- (void)updateAccessoryName:(id)a3
+- (void)updateAccessoryName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v8 = v4;
-    [(HMSetupAccessoryDescription *)self setAccessoryName:v4];
+    v8 = nameCopy;
+    [(HMSetupAccessoryDescription *)self setAccessoryName:nameCopy];
   }
 
   else
@@ -1042,13 +1042,13 @@ LABEL_6:
   }
 }
 
-- (void)updateAccessoryCategory:(id)a3
+- (void)updateAccessoryCategory:(id)category
 {
-  v4 = a3;
-  if (v4)
+  categoryCopy = category;
+  if (categoryCopy)
   {
-    v8 = v4;
-    [(HMSetupAccessoryDescription *)self setCategory:v4];
+    v8 = categoryCopy;
+    [(HMSetupAccessoryDescription *)self setCategory:categoryCopy];
   }
 
   else
@@ -1058,13 +1058,13 @@ LABEL_6:
   }
 }
 
-- (void)updateAppIdentifier:(id)a3
+- (void)updateAppIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v8 = v4;
-    [(HMSetupAccessoryDescription *)self setAppIdentifier:v4];
+    v8 = identifierCopy;
+    [(HMSetupAccessoryDescription *)self setAppIdentifier:identifierCopy];
   }
 
   else
@@ -1074,23 +1074,23 @@ LABEL_6:
   }
 }
 
-- (void)updateWithAccessory:(id)a3
+- (void)updateWithAccessory:(id)accessory
 {
-  v4 = a3;
-  if (v4)
+  accessoryCopy = accessory;
+  if (accessoryCopy)
   {
-    v12 = v4;
-    v5 = [v4 uuid];
-    [(HMSetupAccessoryDescription *)self setAccessoryUUID:v5];
+    v12 = accessoryCopy;
+    uuid = [accessoryCopy uuid];
+    [(HMSetupAccessoryDescription *)self setAccessoryUUID:uuid];
 
-    v6 = [v12 name];
-    [(HMSetupAccessoryDescription *)self setAccessoryName:v6];
+    name = [v12 name];
+    [(HMSetupAccessoryDescription *)self setAccessoryName:name];
 
-    v7 = [v12 category];
-    [(HMSetupAccessoryDescription *)self setCategory:v7];
+    category = [v12 category];
+    [(HMSetupAccessoryDescription *)self setCategory:category];
 
-    v8 = [v12 manufacturer];
-    [(HMSetupAccessoryDescription *)self setManufacturerName:v8];
+    manufacturer = [v12 manufacturer];
+    [(HMSetupAccessoryDescription *)self setManufacturerName:manufacturer];
   }
 
   else
@@ -1100,13 +1100,13 @@ LABEL_6:
   }
 }
 
-- (void)updateWithSetupAccessoryPayload:(id)a3
+- (void)updateWithSetupAccessoryPayload:(id)payload
 {
-  v4 = a3;
-  if (v4)
+  payloadCopy = payload;
+  if (payloadCopy)
   {
-    v8 = v4;
-    [(HMSetupAccessoryDescription *)self setSetupAccessoryPayload:v4];
+    v8 = payloadCopy;
+    [(HMSetupAccessoryDescription *)self setSetupAccessoryPayload:payloadCopy];
   }
 
   else
@@ -1116,12 +1116,12 @@ LABEL_6:
   }
 }
 
-- (HMSetupAccessoryDescription)initWithDictionaryRepresentation:(id)a3
+- (HMSetupAccessoryDescription)initWithDictionaryRepresentation:(id)representation
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  representationCopy = representation;
   v5 = [(HMSetupAccessoryDescription *)self init];
-  v6 = [v4 hmf_dataForKey:@"HMSADDRK.data"];
+  v6 = [representationCopy hmf_dataForKey:@"HMSADDRK.data"];
   if (v6)
   {
     v19 = 0;
@@ -1145,7 +1145,7 @@ LABEL_6:
         v22 = 2112;
         v23 = v6;
         v24 = 2112;
-        v25 = v4;
+        v25 = representationCopy;
         _os_log_impl(&dword_19BB39000, v15, OS_LOG_TYPE_ERROR, "%{public}@Failed to create setup accessory description from dictionary representation; failed to deserialize data %@: %@", buf, 0x20u);
       }
 
@@ -1168,7 +1168,7 @@ LABEL_6:
       v22 = 2112;
       v23 = @"HMSADDRK.data";
       v24 = 2112;
-      v25 = v4;
+      v25 = representationCopy;
       _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_ERROR, "%{public}@Failed to create setup accessory description from dictionary representation: missing %@ key in dictionary: %@", buf, 0x20u);
     }
 
@@ -1180,12 +1180,12 @@ LABEL_6:
   return v13;
 }
 
-- (HMSetupAccessoryDescription)initWithStagedCHIPAccessoryPairingIdentifier:(id)a3
+- (HMSetupAccessoryDescription)initWithStagedCHIPAccessoryPairingIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v6 = v5;
+    v6 = identifierCopy;
     v18.receiver = self;
     v18.super_class = HMSetupAccessoryDescription;
     v7 = [(HMSetupAccessoryDescription *)&v18 init];
@@ -1193,7 +1193,7 @@ LABEL_6:
     if (v7)
     {
       v7->_addAndSetupAccessories = 1;
-      objc_storeStrong(&v7->_accessoryServerIdentifier, a3);
+      objc_storeStrong(&v7->_accessoryServerIdentifier, identifier);
     }
 
     return v8;
@@ -1206,14 +1206,14 @@ LABEL_6:
   }
 }
 
-- (HMSetupAccessoryDescription)initWithAddRequestIdentifier:(id)a3 accessoryName:(id)a4 accessoryCategory:(id)a5 setupAccessoryPayload:(id)a6 appID:(id)a7 ownershipToken:(id)a8
+- (HMSetupAccessoryDescription)initWithAddRequestIdentifier:(id)identifier accessoryName:(id)name accessoryCategory:(id)category setupAccessoryPayload:(id)payload appID:(id)d ownershipToken:(id)token
 {
-  v25 = a3;
-  v24 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  identifierCopy = identifier;
+  nameCopy = name;
+  categoryCopy = category;
+  payloadCopy = payload;
+  dCopy = d;
+  tokenCopy = token;
   v26.receiver = self;
   v26.super_class = HMSetupAccessoryDescription;
   v19 = [(HMSetupAccessoryDescription *)&v26 init];
@@ -1221,63 +1221,63 @@ LABEL_6:
   if (v19)
   {
     v19->_addAndSetupAccessories = 1;
-    objc_storeStrong(&v19->_addRequestIdentifier, a3);
-    objc_storeStrong(&v20->_accessoryName, a4);
-    objc_storeStrong(&v20->_category, a5);
-    objc_storeStrong(&v20->_setupAccessoryPayload, a6);
-    v21 = [v17 copy];
+    objc_storeStrong(&v19->_addRequestIdentifier, identifier);
+    objc_storeStrong(&v20->_accessoryName, name);
+    objc_storeStrong(&v20->_category, category);
+    objc_storeStrong(&v20->_setupAccessoryPayload, payload);
+    v21 = [dCopy copy];
     appIdentifier = v20->_appIdentifier;
     v20->_appIdentifier = v21;
 
-    objc_storeStrong(&v20->_ownershipToken, a8);
+    objc_storeStrong(&v20->_ownershipToken, token);
   }
 
   return v20;
 }
 
-- (HMSetupAccessoryDescription)initWithSetupAccessoryPayload:(id)a3 appID:(id)a4 homeUUID:(id)a5 ownershipToken:(id)a6
+- (HMSetupAccessoryDescription)initWithSetupAccessoryPayload:(id)payload appID:(id)d homeUUID:(id)iD ownershipToken:(id)token
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  payloadCopy = payload;
+  dCopy = d;
+  iDCopy = iD;
+  tokenCopy = token;
   v21.receiver = self;
   v21.super_class = HMSetupAccessoryDescription;
   v15 = [(HMSetupAccessoryDescription *)&v21 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [dCopy copy];
     appIdentifier = v15->_appIdentifier;
     v15->_appIdentifier = v16;
 
     v15->_addAndSetupAccessories = 1;
-    v18 = [v13 copy];
+    v18 = [iDCopy copy];
     homeUUID = v15->_homeUUID;
     v15->_homeUUID = v18;
 
-    objc_storeStrong(&v15->_setupAccessoryPayload, a3);
+    objc_storeStrong(&v15->_setupAccessoryPayload, payload);
     v15->_certificationStatus = 0;
-    objc_storeStrong(&v15->_ownershipToken, a6);
+    objc_storeStrong(&v15->_ownershipToken, token);
   }
 
   return v15;
 }
 
-- (HMSetupAccessoryDescription)initWithAppIdentifier:(id)a3 homeUUID:(id)a4
+- (HMSetupAccessoryDescription)initWithAppIdentifier:(id)identifier homeUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = HMSetupAccessoryDescription;
   v8 = [(HMSetupAccessoryDescription *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     appIdentifier = v8->_appIdentifier;
     v8->_appIdentifier = v9;
 
     v8->_addAndSetupAccessories = 1;
-    v11 = [v7 copy];
+    v11 = [dCopy copy];
     homeUUID = v8->_homeUUID;
     v8->_homeUUID = v11;
 
@@ -1287,31 +1287,31 @@ LABEL_6:
   return v8;
 }
 
-- (HMSetupAccessoryDescription)initWithAccessoryUUID:(id)a3 accessoryName:(id)a4 appID:(id)a5 homeUUID:(id)a6
+- (HMSetupAccessoryDescription)initWithAccessoryUUID:(id)d accessoryName:(id)name appID:(id)iD homeUUID:(id)uID
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  nameCopy = name;
+  iDCopy = iD;
+  uIDCopy = uID;
   v24.receiver = self;
   v24.super_class = HMSetupAccessoryDescription;
   v14 = [(HMSetupAccessoryDescription *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [dCopy copy];
     accessoryUUID = v14->_accessoryUUID;
     v14->_accessoryUUID = v15;
 
-    v17 = [v11 copy];
+    v17 = [nameCopy copy];
     accessoryName = v14->_accessoryName;
     v14->_accessoryName = v17;
 
-    v19 = [v12 copy];
+    v19 = [iDCopy copy];
     appIdentifier = v14->_appIdentifier;
     v14->_appIdentifier = v19;
 
     v14->_addAndSetupAccessories = 0;
-    v21 = [v13 copy];
+    v21 = [uIDCopy copy];
     homeUUID = v14->_homeUUID;
     v14->_homeUUID = v21;
 

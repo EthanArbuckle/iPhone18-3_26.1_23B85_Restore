@@ -1,10 +1,10 @@
 @interface PXPlaceholderView
 - (void)_updateSubviews;
 - (void)becomeReusable;
-- (void)didApplyGeometry:(PXTileGeometry *)a3 withUserData:(id)a4;
+- (void)didApplyGeometry:(PXTileGeometry *)geometry withUserData:(id)data;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setShouldShowIndicatorView:(BOOL)a3;
+- (void)setShouldShowIndicatorView:(BOOL)view;
 @end
 
 @implementation PXPlaceholderView
@@ -17,8 +17,8 @@
     indicator = self->_indicator;
     self->_indicator = v3;
 
-    v5 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIActivityIndicatorView *)self->_indicator setColor:v5];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIActivityIndicatorView *)self->_indicator setColor:whiteColor];
 
     [(PXPlaceholderView *)self addSubview:self->_indicator];
     v6 = self->_indicator;
@@ -34,10 +34,10 @@
   }
 }
 
-- (void)didApplyGeometry:(PXTileGeometry *)a3 withUserData:(id)a4
+- (void)didApplyGeometry:(PXTileGeometry *)geometry withUserData:(id)data
 {
-  v5 = [a4 viewSpec];
-  [(UIView *)self px_setSpec:v5];
+  viewSpec = [data viewSpec];
+  [(UIView *)self px_setSpec:viewSpec];
 }
 
 - (void)layoutSubviews
@@ -67,11 +67,11 @@
   [(UIActivityIndicatorView *)indicator setHidden:0];
 }
 
-- (void)setShouldShowIndicatorView:(BOOL)a3
+- (void)setShouldShowIndicatorView:(BOOL)view
 {
-  if (self->_shouldShowIndicatorView != a3)
+  if (self->_shouldShowIndicatorView != view)
   {
-    self->_shouldShowIndicatorView = a3;
+    self->_shouldShowIndicatorView = view;
     [(PXPlaceholderView *)self _updateSubviews];
   }
 }

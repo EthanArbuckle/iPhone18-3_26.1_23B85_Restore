@@ -6,8 +6,8 @@
 
 - (uint64_t)rq_containsLocal
 {
-  v2 = [MEMORY[0x277D27440] rq_predicateForLocal];
-  v3 = [a1 isEqual:v2];
+  rq_predicateForLocal = [MEMORY[0x277D27440] rq_predicateForLocal];
+  v3 = [self isEqual:rq_predicateForLocal];
 
   return v3;
 }

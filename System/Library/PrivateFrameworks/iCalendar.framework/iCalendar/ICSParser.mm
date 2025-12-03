@@ -1,41 +1,41 @@
 @interface ICSParser
-+ (id)entitiesFromNSData:(id)a3 options:(unint64_t)a4;
-- (BOOL)_parseComponent:(id)a3;
-- (BOOL)createPropertyType:(int)a3 component:(id)a4 withName:(id)a5 fatalError:(BOOL *)a6;
-- (BOOL)parseParameter:(id)a3 fatalError:(BOOL *)a4;
-- (BOOL)parseProperty:(id)a3 fatalError:(BOOL *)a4;
-- (ICSParser)initWithData:(id)a3 options:(unint64_t)a4;
-- (id)makeComponent:(const char *)a3;
++ (id)entitiesFromNSData:(id)data options:(unint64_t)options;
+- (BOOL)_parseComponent:(id)component;
+- (BOOL)createPropertyType:(int)type component:(id)component withName:(id)name fatalError:(BOOL *)error;
+- (BOOL)parseParameter:(id)parameter fatalError:(BOOL *)error;
+- (BOOL)parseProperty:(id)property fatalError:(BOOL *)error;
+- (ICSParser)initWithData:(id)data options:(unint64_t)options;
+- (id)makeComponent:(const char *)component;
 - (id)parseData;
-- (void)_parseComponent:(id)a3 depth:(unint64_t)a4 fatalError:(BOOL *)a5;
+- (void)_parseComponent:(id)component depth:(unint64_t)depth fatalError:(BOOL *)error;
 @end
 
 @implementation ICSParser
 
-- (ICSParser)initWithData:(id)a3 options:(unint64_t)a4
+- (ICSParser)initWithData:(id)data options:(unint64_t)options
 {
-  v6 = a3;
+  dataCopy = data;
   v15.receiver = self;
   v15.super_class = ICSParser;
   v7 = [(ICSParser *)&v15 init];
-  if ([v6 length] < 0x1400001)
+  if ([dataCopy length] < 0x1400001)
   {
-    v7->_options = a4;
+    v7->_options = options;
     v9 = [ICSTokenizer alloc];
-    if ((a4 & 0x80) != 0)
+    if ((options & 0x80) != 0)
     {
-      v10 = [(ICSTokenizer *)v9 initWithCompressedData:v6];
+      v10 = [(ICSTokenizer *)v9 initWithCompressedData:dataCopy];
     }
 
     else
     {
-      v10 = [(ICSTokenizer *)v9 initWithData:v6];
+      v10 = [(ICSTokenizer *)v9 initWithData:dataCopy];
     }
 
     lexer = v7->_lexer;
     v7->_lexer = v10;
 
-    v12 = [[ICSLazyDigestUIDGenerator alloc] initWithData:v6];
+    v12 = [[ICSLazyDigestUIDGenerator alloc] initWithData:dataCopy];
     uidGenerator = v7->_uidGenerator;
     v7->_uidGenerator = v12;
 
@@ -44,72 +44,72 @@
 
   else
   {
-    +[ICSLogger logAtLevel:forTokenizer:message:](ICSLogger, "logAtLevel:forTokenizer:message:", 3, 0, @"ICS file exceeds maximum supported size: %lu", [v6 length]);
+    +[ICSLogger logAtLevel:forTokenizer:message:](ICSLogger, "logAtLevel:forTokenizer:message:", 3, 0, @"ICS file exceeds maximum supported size: %lu", [dataCopy length]);
     v8 = 0;
   }
 
   return v8;
 }
 
-- (id)makeComponent:(const char *)a3
+- (id)makeComponent:(const char *)component
 {
-  if (!strcmp(a3, "VEVENT"))
+  if (!strcmp(component, "VEVENT"))
   {
     v6 = ICSEvent;
 LABEL_24:
-    v7 = objc_alloc_init(v6);
+    _init = objc_alloc_init(v6);
     goto LABEL_25;
   }
 
-  if (!strcmp(a3, "VTODO"))
+  if (!strcmp(component, "VTODO"))
   {
     v6 = ICSTodo;
     goto LABEL_24;
   }
 
-  if (strcmp(a3, "VCALENDAR"))
+  if (strcmp(component, "VCALENDAR"))
   {
-    if (!strcmp(a3, "VJOURNAL"))
+    if (!strcmp(component, "VJOURNAL"))
     {
       v6 = ICSJournal;
     }
 
-    else if (!strcmp(a3, "VALARM"))
+    else if (!strcmp(component, "VALARM"))
     {
       v6 = ICSAlarm;
     }
 
-    else if (!strcmp(a3, "VTIMEZONE"))
+    else if (!strcmp(component, "VTIMEZONE"))
     {
       v6 = ICSTimeZone;
     }
 
-    else if (!strcmp(a3, "DAYLIGHT"))
+    else if (!strcmp(component, "DAYLIGHT"))
     {
       v6 = ICSTimeZoneDaylightBlock;
     }
 
-    else if (!strcmp(a3, "STANDARD"))
+    else if (!strcmp(component, "STANDARD"))
     {
       v6 = ICSTimeZoneStandardBlock;
     }
 
-    else if (!strcmp(a3, "VAVAILABILITY"))
+    else if (!strcmp(component, "VAVAILABILITY"))
     {
       v6 = ICSAvailability;
     }
 
-    else if (!strcmp(a3, "AVAILABLE"))
+    else if (!strcmp(component, "AVAILABLE"))
     {
       v6 = ICSAvailable;
     }
 
     else
     {
-      if (strcmp(a3, "VFREEBUSY"))
+      if (strcmp(component, "VFREEBUSY"))
       {
         v4 = objc_alloc_init(ICSComponent);
-        v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3];
+        v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:component];
         [(ICSComponent *)v4 setUnrecognizedComponentName:v5];
 
         goto LABEL_26;
@@ -121,26 +121,26 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v7 = [[ICSCalendar alloc] _init];
+  _init = [[ICSCalendar alloc] _init];
 LABEL_25:
-  v4 = v7;
+  v4 = _init;
 LABEL_26:
 
   return v4;
 }
 
-- (BOOL)parseParameter:(id)a3 fatalError:(BOOL *)a4
+- (BOOL)parseParameter:(id)parameter fatalError:(BOOL *)error
 {
-  v6 = a3;
-  v7 = [(ICSTokenizer *)self->_lexer currentToken];
-  if ([v7 length] <= 0x80000)
+  parameterCopy = parameter;
+  currentToken = [(ICSTokenizer *)self->_lexer currentToken];
+  if ([currentToken length] <= 0x80000)
   {
-    v9 = [(ICSTokenizer *)self->_lexer nextToken];
-    if ([v9 length] <= 0x80000)
+    nextToken = [(ICSTokenizer *)self->_lexer nextToken];
+    if ([nextToken length] <= 0x80000)
     {
-      if (v9)
+      if (nextToken)
       {
-        [v6 addParameter:v7 withRawValue:v9 options:self->_options];
+        [parameterCopy addParameter:currentToken withRawValue:nextToken options:self->_options];
         v8 = 1;
         goto LABEL_10;
       }
@@ -148,11 +148,11 @@ LABEL_26:
 
     else
     {
-      +[ICSLogger logAtLevel:forTokenizer:message:](ICSLogger, "logAtLevel:forTokenizer:message:", 3, 0, @"ICS parameter value exceeds maximum supported length: %lu", [v9 length]);
-      if (a4)
+      +[ICSLogger logAtLevel:forTokenizer:message:](ICSLogger, "logAtLevel:forTokenizer:message:", 3, 0, @"ICS parameter value exceeds maximum supported length: %lu", [nextToken length]);
+      if (error)
       {
         v8 = 0;
-        *a4 = 1;
+        *error = 1;
 LABEL_10:
 
         goto LABEL_11;
@@ -163,11 +163,11 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  +[ICSLogger logAtLevel:forTokenizer:message:](ICSLogger, "logAtLevel:forTokenizer:message:", 3, 0, @"ICS parameter name exceeds maximum supported length: %lu", [v7 length]);
+  +[ICSLogger logAtLevel:forTokenizer:message:](ICSLogger, "logAtLevel:forTokenizer:message:", 3, 0, @"ICS parameter name exceeds maximum supported length: %lu", [currentToken length]);
   v8 = 0;
-  if (a4)
+  if (error)
   {
-    *a4 = 1;
+    *error = 1;
   }
 
 LABEL_11:
@@ -175,20 +175,20 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)createPropertyType:(int)a3 component:(id)a4 withName:(id)a5 fatalError:(BOOL *)a6
+- (BOOL)createPropertyType:(int)type component:(id)component withName:(id)name fatalError:(BOOL *)error
 {
   v97[1] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
+  componentCopy = component;
+  nameCopy = name;
+  v12 = nameCopy;
   v13 = 0;
-  if (a3 <= 7)
+  if (type <= 7)
   {
-    if (a3 > 3)
+    if (type > 3)
     {
-      if ((a3 - 4) < 2)
+      if ((type - 4) < 2)
       {
-        if (@"TRIGGER" == v11)
+        if (@"TRIGGER" == nameCopy)
         {
           v14 = off_27A64B6C0;
         }
@@ -201,21 +201,21 @@ LABEL_11:
         goto LABEL_31;
       }
 
-      if ((a3 - 6) >= 2)
+      if ((type - 6) >= 2)
       {
         goto LABEL_32;
       }
     }
 
-    else if (a3 >= 2)
+    else if (type >= 2)
     {
-      if (a3 == 2)
+      if (type == 2)
       {
         v14 = off_27A64B6D0;
         goto LABEL_31;
       }
 
-      if (a3 == 3)
+      if (type == 3)
       {
         v14 = off_27A64B500;
 LABEL_31:
@@ -231,11 +231,11 @@ LABEL_22:
     goto LABEL_31;
   }
 
-  if (a3 > 11)
+  if (type > 11)
   {
-    if (a3 <= 13)
+    if (type <= 13)
     {
-      if (a3 == 12)
+      if (type == 12)
       {
         v14 = off_27A64B6B8;
       }
@@ -248,11 +248,11 @@ LABEL_22:
       goto LABEL_31;
     }
 
-    if (a3 != 14)
+    if (type != 14)
     {
-      if (a3 == 15)
+      if (type == 15)
       {
-        if (([(__CFString *)v11 isEqualToString:@"TRIGGER"]& 1) != 0)
+        if (([(__CFString *)nameCopy isEqualToString:@"TRIGGER"]& 1) != 0)
         {
           v14 = off_27A64B6C0;
         }
@@ -276,32 +276,32 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if ((a3 - 10) < 2)
+  if ((type - 10) < 2)
   {
     goto LABEL_22;
   }
 
-  if (a3 == 8)
+  if (type == 8)
   {
     v14 = off_27A64B660;
     goto LABEL_31;
   }
 
-  if (a3 == 9)
+  if (type == 9)
   {
     v14 = off_27A64B560;
     goto LABEL_31;
   }
 
 LABEL_32:
-  v16 = [(ICSTokenizer *)self->_lexer nextToken];
-  if (!v16)
+  nextToken = [(ICSTokenizer *)self->_lexer nextToken];
+  if (!nextToken)
   {
-    LOBYTE(v18) = 0;
+    LOBYTE(nextToken2) = 0;
     goto LABEL_147;
   }
 
-  v17 = v16;
+  v17 = nextToken;
   while (1)
   {
     if (![v17 length] || -[ICSTokenizer tokenType](self->_lexer, "tokenType") != 2)
@@ -311,15 +311,15 @@ LABEL_32:
       if (([v76 containsObject:v12] & 1) == 0 && objc_msgSend(v17, "length") > 0x80000)
       {
         +[ICSLogger logAtLevel:forTokenizer:message:](ICSLogger, "logAtLevel:forTokenizer:message:", 3, 0, @"ICS property value exceeds maximum supported size (%@): %lu", v12, [v17 length]);
-        LOBYTE(v18) = 0;
-        *a6 = 1;
+        LOBYTE(nextToken2) = 0;
+        *error = 1;
 LABEL_145:
 
         goto LABEL_146;
       }
 
       v85 = v13;
-      switch(a3)
+      switch(type)
       {
         case 0:
           v94 = 0;
@@ -328,18 +328,18 @@ LABEL_145:
             goto LABEL_119;
           }
 
-          v18 = [MEMORY[0x277CCABB0] numberWithInt:v94];
+          nextToken2 = [MEMORY[0x277CCABB0] numberWithInt:v94];
           v19 = v13;
-          v20 = v18;
+          v20 = nextToken2;
           v21 = 5008;
           goto LABEL_142;
         case 1:
           goto LABEL_71;
         case 2:
-          v18 = [MEMORY[0x277CBEBC0] URLWithString:v17 encodingInvalidCharacters:0];
-          if (v18)
+          nextToken2 = [MEMORY[0x277CBEBC0] URLWithString:v17 encodingInvalidCharacters:0];
+          if (nextToken2)
           {
-            [v13 setValue:v18 type:5021];
+            [v13 setValue:nextToken2 type:5021];
             v38 = @"VALUE";
             v39 = v13;
             goto LABEL_92;
@@ -348,17 +348,17 @@ LABEL_145:
           [ICSLogger logAtLevel:3 forTokenizer:self->_lexer message:@"Invalid address property:%@", v17];
           goto LABEL_145;
         case 3:
-          v18 = v17;
-          if (![v18 length])
+          nextToken2 = v17;
+          if (![nextToken2 length])
           {
             goto LABEL_133;
           }
 
-          v30 = v18;
+          v30 = nextToken2;
           goto LABEL_131;
         case 4:
           v58 = [ICSDateValue dateFromICSString:v17];
-          v18 = v58;
+          nextToken2 = v58;
           if (v58)
           {
             [v13 setValue:v58 type:{objc_msgSend(v58, "dateType")}];
@@ -416,11 +416,11 @@ LABEL_131:
 
                 v65 = *(*(&v90 + 1) + 8 * i);
                 v66 = objc_alloc_init(ICSDate);
-                v67 = [v85 parameters];
-                [(ICSProperty *)v66 setParameters:v67];
+                parameters = [v85 parameters];
+                [(ICSProperty *)v66 setParameters:parameters];
 
                 v68 = +[ICSDateValue dateFromICSUTF8String:](ICSDateValue, "dateFromICSUTF8String:", [v65 UTF8String]);
-                v18 = v68;
+                nextToken2 = v68;
                 if (!v68)
                 {
                   v40 = v80;
@@ -443,13 +443,13 @@ LABEL_131:
                   }
                 }
 
-                [v10 addProperty:v84 withValue:v66];
+                [componentCopy addProperty:v84 withValue:v66];
               }
 
               v62 = [obja countByEnumeratingWithState:&v90 objects:v96 count:16];
               if (!v62)
               {
-                LOBYTE(v18) = 1;
+                LOBYTE(nextToken2) = 1;
                 v12 = v84;
                 v13 = v85;
                 v40 = v80;
@@ -458,7 +458,7 @@ LABEL_131:
             }
           }
 
-          LOBYTE(v18) = 1;
+          LOBYTE(nextToken2) = 1;
 LABEL_136:
 
 LABEL_137:
@@ -466,11 +466,11 @@ LABEL_137:
         case 6:
           v40 = v17;
           v41 = [v40 length];
-          LOBYTE(v18) = v41 != 0;
+          LOBYTE(nextToken2) = v41 != 0;
           if (v41)
           {
             v83 = v12;
-            v78 = v10;
+            v78 = componentCopy;
             v75 = v40;
             [v40 componentsSeparatedByString:{@", "}];
             v86 = 0u;
@@ -518,8 +518,8 @@ LABEL_137:
                     }
 
                     v56 = [[ICSFreeBusyTime alloc] initWithPeriod:v53];
-                    v57 = [v85 parameters];
-                    [(ICSProperty *)v56 setParameters:v57];
+                    parameters2 = [v85 parameters];
+                    [(ICSProperty *)v56 setParameters:parameters2];
 
                     [v78 addProperty:v83 withValue:v56];
                     v13 = v85;
@@ -538,9 +538,9 @@ LABEL_137:
               while (v43);
             }
 
-            v10 = v78;
+            componentCopy = v78;
             v12 = v83;
-            LOBYTE(v18) = 1;
+            LOBYTE(nextToken2) = 1;
             v40 = v75;
           }
 
@@ -563,9 +563,9 @@ LABEL_137:
           }
 
           v94 = v71;
-          v18 = [MEMORY[0x277CCABB0] numberWithInt:60 * v71];
+          nextToken2 = [MEMORY[0x277CCABB0] numberWithInt:60 * v71];
           v19 = v13;
-          v20 = v18;
+          v20 = nextToken2;
           v21 = 5018;
           goto LABEL_142;
         case 8:
@@ -579,8 +579,8 @@ LABEL_137:
 
           v34 = [v32 stringByReplacingOccurrencesOfString:@"\\"" withString:&stru_28841D818];
 
-          v18 = [MEMORY[0x277CBEBC0] URLWithString:v34 encodingInvalidCharacters:0];
-          if (v18)
+          nextToken2 = [MEMORY[0x277CBEBC0] URLWithString:v34 encodingInvalidCharacters:0];
+          if (nextToken2)
           {
             goto LABEL_113;
           }
@@ -596,11 +596,11 @@ LABEL_137:
             v34 = v70;
           }
 
-          v18 = [MEMORY[0x277CBEBC0] _lp_URLWithUserTypedString:v34 relativeToURL:0];
-          if (v18)
+          nextToken2 = [MEMORY[0x277CBEBC0] _lp_URLWithUserTypedString:v34 relativeToURL:0];
+          if (nextToken2)
           {
 LABEL_113:
-            [v13 setValue:v18 type:5013];
+            [v13 setValue:nextToken2 type:5013];
             [v13 removeParameterValueForName:@"VALUE"];
 
             goto LABEL_144;
@@ -611,8 +611,8 @@ LABEL_139:
 
           goto LABEL_145;
         case 10:
-          v18 = v17;
-          v25 = [MEMORY[0x277CBEBC0] URLWithString:v18 encodingInvalidCharacters:0];
+          nextToken2 = v17;
+          v25 = [MEMORY[0x277CBEBC0] URLWithString:nextToken2 encodingInvalidCharacters:0];
           if (v25)
           {
             v26 = v25;
@@ -622,14 +622,14 @@ LABEL_139:
             goto LABEL_56;
           }
 
-          [ICSLogger logAtLevel:3 forTokenizer:self->_lexer message:@"Invalid activity property:%@", v18];
+          [ICSLogger logAtLevel:3 forTokenizer:self->_lexer message:@"Invalid activity property:%@", nextToken2];
           goto LABEL_133;
         case 11:
-          v18 = v17;
-          v31 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v18 options:1];
+          nextToken2 = v17;
+          v31 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:nextToken2 options:1];
           if (!v31)
           {
-            [ICSLogger logAtLevel:3 forTokenizer:self->_lexer message:@"Invalid app link data property:%@", v18];
+            [ICSLogger logAtLevel:3 forTokenizer:self->_lexer message:@"Invalid app link data property:%@", nextToken2];
             goto LABEL_133;
           }
 
@@ -642,11 +642,11 @@ LABEL_56:
           [v13 removeParameterValueForName:@"VALUE"];
           goto LABEL_95;
         case 12:
-          v18 = v17;
-          v60 = [ICSDuration durationFromICSString:v18];
+          nextToken2 = v17;
+          v60 = [ICSDuration durationFromICSString:nextToken2];
           if (!v60)
           {
-            [ICSLogger logAtLevel:3 forTokenizer:self->_lexer message:@"Invalid travel duration property:%@", v18];
+            [ICSLogger logAtLevel:3 forTokenizer:self->_lexer message:@"Invalid travel duration property:%@", nextToken2];
             goto LABEL_133;
           }
 
@@ -672,27 +672,27 @@ LABEL_120:
         case 15:
           if (([(__CFString *)v12 isEqualToString:@"RRULE"]& 1) != 0 || [(__CFString *)v12 isEqualToString:@"EXRULE"])
           {
-            v18 = +[ICSRecurrenceRule recurrenceRuleFromICSCString:withTokenizer:](ICSRecurrenceRule, "recurrenceRuleFromICSCString:withTokenizer:", [v17 UTF8String], self->_lexer);
-            if ([v18 freq])
+            nextToken2 = +[ICSRecurrenceRule recurrenceRuleFromICSCString:withTokenizer:](ICSRecurrenceRule, "recurrenceRuleFromICSCString:withTokenizer:", [v17 UTF8String], self->_lexer);
+            if ([nextToken2 freq])
             {
-              if ([v18 freq] == 5)
+              if ([nextToken2 freq] == 5)
               {
-                [v18 setBymonthday:0];
+                [nextToken2 setBymonthday:0];
               }
 
-              v35 = [v10 dtstart];
+              dtstart = [componentCopy dtstart];
 
-              if (v35)
+              if (dtstart)
               {
-                v36 = [v10 dtstart];
-                v37 = [v36 value];
-                [v18 cleanUpForStartDate:v37];
+                dtstart2 = [componentCopy dtstart];
+                value = [dtstart2 value];
+                [nextToken2 cleanUpForStartDate:value];
 
                 v13 = v85;
               }
 
               v19 = v13;
-              v20 = v18;
+              v20 = nextToken2;
               v21 = 5029;
             }
 
@@ -703,7 +703,7 @@ LABEL_120:
 LABEL_133:
 
 LABEL_134:
-                LOBYTE(v18) = 0;
+                LOBYTE(nextToken2) = 0;
                 goto LABEL_145;
               }
 
@@ -724,8 +724,8 @@ LABEL_71:
           }
 
 LABEL_144:
-          [v10 addProperty:v12 withValue:v13];
-          LOBYTE(v18) = 1;
+          [componentCopy addProperty:v12 withValue:v13];
+          LOBYTE(nextToken2) = 1;
           goto LABEL_145;
         default:
           goto LABEL_144;
@@ -739,417 +739,417 @@ LABEL_144:
       break;
     }
 
-    v18 = [(ICSTokenizer *)self->_lexer nextToken];
+    nextToken2 = [(ICSTokenizer *)self->_lexer nextToken];
 
-    v17 = v18;
-    if (!v18)
+    v17 = nextToken2;
+    if (!nextToken2)
     {
       goto LABEL_147;
     }
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = 1;
+    *error = 1;
   }
 
-  LOBYTE(v18) = 0;
+  LOBYTE(nextToken2) = 0;
 LABEL_146:
 
 LABEL_147:
   v73 = *MEMORY[0x277D85DE8];
-  return v18;
+  return nextToken2;
 }
 
-- (BOOL)parseProperty:(id)a3 fatalError:(BOOL *)a4
+- (BOOL)parseProperty:(id)property fatalError:(BOOL *)error
 {
-  v6 = a3;
-  v7 = [(ICSTokenizer *)self->_lexer currentToken];
-  v8 = [(__CFString *)v7 UTF8String];
-  if (!strcmp(v8, "SEQUENCE"))
+  propertyCopy = property;
+  currentToken = [(ICSTokenizer *)self->_lexer currentToken];
+  uTF8String = [(__CFString *)currentToken UTF8String];
+  if (!strcmp(uTF8String, "SEQUENCE"))
   {
     v14 = kICSSTR_sequence_prop;
 LABEL_52:
     v13 = *v14;
-    v10 = self;
+    selfCopy18 = self;
     v11 = 0;
 LABEL_53:
-    v12 = v6;
+    v12 = propertyCopy;
     goto LABEL_54;
   }
 
-  if (!strcmp(v8, "PRIORITY"))
+  if (!strcmp(uTF8String, "PRIORITY"))
   {
     v14 = kICSSTR_priority_prop;
     goto LABEL_52;
   }
 
-  if (!strcmp(v8, "X-APPLE-SORT-ORDER"))
+  if (!strcmp(uTF8String, "X-APPLE-SORT-ORDER"))
   {
     v14 = kICSSTR_XAPPLE_sort_order_prop;
     goto LABEL_52;
   }
 
-  if (!strcmp(v8, "PERCENT-COMPLETE"))
+  if (!strcmp(uTF8String, "PERCENT-COMPLETE"))
   {
     v14 = kICSSTR_percentcomplete_prop;
     goto LABEL_52;
   }
 
-  if (!strcmp(v8, "DESCRIPTION"))
+  if (!strcmp(uTF8String, "DESCRIPTION"))
   {
     v17 = kICSSTR_description_prop;
 LABEL_65:
     v13 = *v17;
-    v10 = self;
+    selfCopy18 = self;
     v11 = 1;
     goto LABEL_53;
   }
 
-  if (!strcmp(v8, "SUMMARY"))
+  if (!strcmp(uTF8String, "SUMMARY"))
   {
     v17 = kICSSTR_summary_prop;
     goto LABEL_65;
   }
 
-  if (!strcmp(v8, "X-APPLE-CONTACT-IDENTIFIERS"))
+  if (!strcmp(uTF8String, "X-APPLE-CONTACT-IDENTIFIERS"))
   {
     v17 = kICSSTR_XAPPLE_contact_identifiers;
     goto LABEL_65;
   }
 
-  if (!strcmp(v8, "X-APPLE-EXTERNAL-REFERENCE-ID"))
+  if (!strcmp(uTF8String, "X-APPLE-EXTERNAL-REFERENCE-ID"))
   {
     v17 = kICSSTR_external_reference_id;
     goto LABEL_65;
   }
 
-  if (!strcmp(v8, "X-APPLE-UNIVERSAL-ID"))
+  if (!strcmp(uTF8String, "X-APPLE-UNIVERSAL-ID"))
   {
     v17 = kICSSTR_XAPPLE_universal_id;
     goto LABEL_65;
   }
 
-  if (!strcmp(v8, "X-APPLE-SPECIAL-DAY"))
+  if (!strcmp(uTF8String, "X-APPLE-SPECIAL-DAY"))
   {
     v17 = kICSSTR_XAPPLE_special_day_prop;
     goto LABEL_65;
   }
 
-  if (!strcmp(v8, "X-APPLE-CREATOR-IDENTITY"))
+  if (!strcmp(uTF8String, "X-APPLE-CREATOR-IDENTITY"))
   {
     v17 = kICSSTR_XAPPLE_creator_identity_prop;
     goto LABEL_65;
   }
 
-  if (!strcmp(v8, "X-APPLE-CREATOR-TEAM-IDENTITY"))
+  if (!strcmp(uTF8String, "X-APPLE-CREATOR-TEAM-IDENTITY"))
   {
     v17 = kICSSTR_XAPPLE_creator_team_identity_prop;
     goto LABEL_65;
   }
 
   v9 = @"X-APPLE-LANGUAGE";
-  if (!strcmp(v8, [@"X-APPLE-LANGUAGE" UTF8String]) || (v9 = @"X-APPLE-REGION", !strcmp(v8, objc_msgSend(@"X-APPLE-REGION", "UTF8String"))))
+  if (!strcmp(uTF8String, [@"X-APPLE-LANGUAGE" UTF8String]) || (v9 = @"X-APPLE-REGION", !strcmp(uTF8String, objc_msgSend(@"X-APPLE-REGION", "UTF8String"))))
   {
-    v10 = self;
+    selfCopy18 = self;
     v11 = 1;
 LABEL_63:
-    v12 = v6;
+    v12 = propertyCopy;
     v13 = v9;
     goto LABEL_54;
   }
 
-  if (!strcmp(v8, "DTSTART"))
+  if (!strcmp(uTF8String, "DTSTART"))
   {
     v18 = kICSSTR_dtstart_prop;
 LABEL_77:
     v13 = *v18;
-    v10 = self;
+    selfCopy18 = self;
     v11 = 4;
     goto LABEL_53;
   }
 
-  if (!strcmp(v8, "DTEND"))
+  if (!strcmp(uTF8String, "DTEND"))
   {
     v18 = kICSSTR_dtend_prop;
     goto LABEL_77;
   }
 
-  if (!strcmp(v8, "DTSTAMP"))
+  if (!strcmp(uTF8String, "DTSTAMP"))
   {
     v18 = kICSSTR_dtstamp_prop;
     goto LABEL_77;
   }
 
-  if (!strcmp(v8, "CREATED"))
+  if (!strcmp(uTF8String, "CREATED"))
   {
     v18 = kICSSTR_created_prop;
     goto LABEL_77;
   }
 
-  if (!strcmp(v8, "LAST-MODIFIED"))
+  if (!strcmp(uTF8String, "LAST-MODIFIED"))
   {
     v18 = kICSSTR_lastmodified_prop;
     goto LABEL_77;
   }
 
-  if (!strcmp(v8, "COMPLETED"))
+  if (!strcmp(uTF8String, "COMPLETED"))
   {
     v18 = kICSSTR_completed_prop;
     goto LABEL_77;
   }
 
-  if (!strcmp(v8, "DUE"))
+  if (!strcmp(uTF8String, "DUE"))
   {
     v18 = kICSSTR_due_prop;
     goto LABEL_77;
   }
 
-  if (!strcmp(v8, "RDATE"))
+  if (!strcmp(uTF8String, "RDATE"))
   {
     v18 = kICSSTR_rdate_prop;
     goto LABEL_77;
   }
 
-  if (!strcmp(v8, "RECURRENCE-ID"))
+  if (!strcmp(uTF8String, "RECURRENCE-ID"))
   {
     v18 = kICSSTR_recurrenceid_prop;
     goto LABEL_77;
   }
 
-  if (!strcmp(v8, "ACKNOWLEDGED"))
+  if (!strcmp(uTF8String, "ACKNOWLEDGED"))
   {
     v18 = kICSSTR_acknowledged_prop;
     goto LABEL_77;
   }
 
-  if (!strcmp(v8, "TRIGGER"))
+  if (!strcmp(uTF8String, "TRIGGER"))
   {
     v18 = kICSSTR_trigger_prop;
     goto LABEL_77;
   }
 
   v9 = @"X-APPLE-ALTERNATIVE-DUE-DATE-FOR-CALENDAR";
-  if (!strcmp(v8, [@"X-APPLE-ALTERNATIVE-DUE-DATE-FOR-CALENDAR" UTF8String]))
+  if (!strcmp(uTF8String, [@"X-APPLE-ALTERNATIVE-DUE-DATE-FOR-CALENDAR" UTF8String]))
   {
-    v10 = self;
+    selfCopy18 = self;
     v11 = 4;
     goto LABEL_63;
   }
 
-  if (!strcmp(v8, "EXDATE"))
+  if (!strcmp(uTF8String, "EXDATE"))
   {
     v13 = @"EXDATE";
-    v10 = self;
+    selfCopy18 = self;
     v11 = 5;
     goto LABEL_53;
   }
 
-  if (!strcmp(v8, "ORGANIZER"))
+  if (!strcmp(uTF8String, "ORGANIZER"))
   {
     v19 = kICSSTR_organizer_prop;
 LABEL_83:
     v13 = *v19;
-    v10 = self;
+    selfCopy18 = self;
     v11 = 2;
     goto LABEL_53;
   }
 
-  if (!strcmp(v8, "ATTENDEE"))
+  if (!strcmp(uTF8String, "ATTENDEE"))
   {
     v19 = kICSSTR_attendee_prop;
     goto LABEL_83;
   }
 
-  if (!strcmp(v8, "X-WR-ATTENDEE"))
+  if (!strcmp(uTF8String, "X-WR-ATTENDEE"))
   {
     v19 = kICSSTR_XWR_attendee_prop;
     goto LABEL_83;
   }
 
-  if (!strcmp(v8, "TZOFFSETFROM"))
+  if (!strcmp(uTF8String, "TZOFFSETFROM"))
   {
     v20 = kICSSTR_tzoffsetfrom_prop;
 LABEL_86:
     v13 = *v20;
-    v10 = self;
+    selfCopy18 = self;
     v11 = 7;
     goto LABEL_53;
   }
 
-  if (!strcmp(v8, "TZOFFSETTO"))
+  if (!strcmp(uTF8String, "TZOFFSETTO"))
   {
     v20 = kICSSTR_tzoffsetto_prop;
     goto LABEL_86;
   }
 
-  if (!strcmp(v8, "X-APPLE-STRUCTURED-LOCATION"))
+  if (!strcmp(uTF8String, "X-APPLE-STRUCTURED-LOCATION"))
   {
     v21 = kICSSTR_XAPPLE_structured_location_prop;
 LABEL_90:
     v13 = *v21;
-    v10 = self;
+    selfCopy18 = self;
     v11 = 8;
     goto LABEL_53;
   }
 
-  if (!strcmp(v8, "X-APPLE-TRAVEL-START"))
+  if (!strcmp(uTF8String, "X-APPLE-TRAVEL-START"))
   {
     v21 = kICSSTR_XAPPLE_travel_start;
     goto LABEL_90;
   }
 
-  if (!strcmp(v8, "X-APPLE-END-LOCATION"))
+  if (!strcmp(uTF8String, "X-APPLE-END-LOCATION"))
   {
     v21 = kICSSTR_XAPPLE_end_location;
     goto LABEL_90;
   }
 
-  if (!strcmp(v8, "X-APPLE-SUGGESTION-INFO-CHANGED-FIELDS"))
+  if (!strcmp(uTF8String, "X-APPLE-SUGGESTION-INFO-CHANGED-FIELDS"))
   {
     v14 = kICSSTR_XAPPLE_suggestion_info_changed_fields_prop;
     goto LABEL_52;
   }
 
-  if (!strcmp(v8, "X-APPLE-SUGGESTION-INFO-TIMESTAMP"))
+  if (!strcmp(uTF8String, "X-APPLE-SUGGESTION-INFO-TIMESTAMP"))
   {
     v18 = kICSSTR_XAPPLE_suggestion_info_timestamp_prop;
     goto LABEL_77;
   }
 
-  if (!strcmp(v8, "X-CALENDARSERVER-ATTENDEE-COMMENT"))
+  if (!strcmp(uTF8String, "X-CALENDARSERVER-ATTENDEE-COMMENT"))
   {
     v13 = @"X-CALENDARSERVER-ATTENDEE-COMMENT";
-    v10 = self;
+    selfCopy18 = self;
     v11 = 3;
     goto LABEL_53;
   }
 
-  if (!strcmp(v8, "FREEBUSY"))
+  if (!strcmp(uTF8String, "FREEBUSY"))
   {
     v13 = @"FREEBUSY";
-    v10 = self;
+    selfCopy18 = self;
     v11 = 6;
     goto LABEL_53;
   }
 
-  if (!strcmp(v8, "CONFERENCE"))
+  if (!strcmp(uTF8String, "CONFERENCE"))
   {
     v13 = @"CONFERENCE";
-    v10 = self;
+    selfCopy18 = self;
     v11 = 9;
     goto LABEL_53;
   }
 
-  if (!strcmp(v8, "X-APPLE-ACTIVITY"))
+  if (!strcmp(uTF8String, "X-APPLE-ACTIVITY"))
   {
     v13 = @"X-APPLE-ACTIVITY";
-    v10 = self;
+    selfCopy18 = self;
     v11 = 10;
     goto LABEL_53;
   }
 
-  if (!strcmp(v8, "X-APPLE-APP-LINK-DATA"))
+  if (!strcmp(uTF8String, "X-APPLE-APP-LINK-DATA"))
   {
     v22 = kICSSTR_XAPPLE_app_link_data_prop;
 LABEL_98:
     v13 = *v22;
-    v10 = self;
+    selfCopy18 = self;
     v11 = 11;
     goto LABEL_53;
   }
 
-  if (!strcmp(v8, "GEO"))
+  if (!strcmp(uTF8String, "GEO"))
   {
     v13 = @"GEO";
-    v10 = self;
+    selfCopy18 = self;
     v11 = 14;
     goto LABEL_53;
   }
 
-  if (!strcmp(v8, "X-APPLE-TRAVEL-DURATION"))
+  if (!strcmp(uTF8String, "X-APPLE-TRAVEL-DURATION"))
   {
     v13 = @"X-APPLE-TRAVEL-DURATION";
-    v10 = self;
+    selfCopy18 = self;
     v11 = 12;
     goto LABEL_53;
   }
 
-  if (!strcmp(v8, "X-APPLE-TRAVEL-ADVISORY-BEHAVIOR"))
+  if (!strcmp(uTF8String, "X-APPLE-TRAVEL-ADVISORY-BEHAVIOR"))
   {
     v13 = @"X-APPLE-TRAVEL-ADVISORY-BEHAVIOR";
-    v10 = self;
+    selfCopy18 = self;
     v11 = 13;
     goto LABEL_53;
   }
 
-  if (!strcmp(v8, "X-APPLE-STRUCTURED-DATA"))
+  if (!strcmp(uTF8String, "X-APPLE-STRUCTURED-DATA"))
   {
     v22 = kICSSTR_XAPPLE_structured_data_prop;
     goto LABEL_98;
   }
 
-  v10 = self;
+  selfCopy18 = self;
   v11 = 15;
-  v12 = v6;
-  v13 = v7;
+  v12 = propertyCopy;
+  v13 = currentToken;
 LABEL_54:
-  v15 = [(ICSParser *)v10 createPropertyType:v11 component:v12 withName:v13 fatalError:a4];
+  v15 = [(ICSParser *)selfCopy18 createPropertyType:v11 component:v12 withName:v13 fatalError:error];
 
   return v15;
 }
 
-- (BOOL)_parseComponent:(id)a3
+- (BOOL)_parseComponent:(id)component
 {
   v4 = 0;
-  [(ICSParser *)self _parseComponent:a3 depth:0 fatalError:&v4];
+  [(ICSParser *)self _parseComponent:component depth:0 fatalError:&v4];
   return (v4 & 1) == 0;
 }
 
-- (void)_parseComponent:(id)a3 depth:(unint64_t)a4 fatalError:(BOOL *)a5
+- (void)_parseComponent:(id)component depth:(unint64_t)depth fatalError:(BOOL *)error
 {
-  v8 = a3;
-  if (a4 >= 0x65)
+  componentCopy = component;
+  if (depth >= 0x65)
   {
     [ICSLogger logAtLevel:3 forTokenizer:self->_lexer message:@"Reached maximum component depth. Aborting parser."];
-    *a5 = 1;
+    *error = 1;
     goto LABEL_30;
   }
 
-  v9 = [(ICSTokenizer *)self->_lexer nextToken];
-  if (!v9)
+  nextToken = [(ICSTokenizer *)self->_lexer nextToken];
+  if (!nextToken)
   {
     [ICSLogger logAtLevel:3 forTokenizer:self->_lexer message:@"Expected component name but got NULL"];
     goto LABEL_30;
   }
 
-  v10 = v9;
-  v22 = v8;
-  v23 = -[ICSParser makeComponent:](self, "makeComponent:", [v9 UTF8String]);
-  v11 = [(ICSTokenizer *)self->_lexer nextToken];
+  v10 = nextToken;
+  v22 = componentCopy;
+  v23 = -[ICSParser makeComponent:](self, "makeComponent:", [nextToken UTF8String]);
+  nextToken2 = [(ICSTokenizer *)self->_lexer nextToken];
   do
   {
-    if (!v11)
+    if (!nextToken2)
     {
-      v8 = v22;
+      componentCopy = v22;
       goto LABEL_28;
     }
 
     v12 = objc_autoreleasePoolPush();
-    if (-[ICSTokenizer tokenType](self->_lexer, "tokenType") || ![v11 length])
+    if (-[ICSTokenizer tokenType](self->_lexer, "tokenType") || ![nextToken2 length])
     {
-      [ICSLogger logAtLevel:3 forTokenizer:self->_lexer message:@"Unexpected token %@ for PropertyName.", v11];
+      [ICSLogger logAtLevel:3 forTokenizer:self->_lexer message:@"Unexpected token %@ for PropertyName.", nextToken2];
 LABEL_8:
       [(ICSTokenizer *)self->_lexer nextToken];
       v13 = 0;
-      v11 = v14 = v11;
+      nextToken2 = v14 = nextToken2;
       goto LABEL_9;
     }
 
-    if ([v11 isEqualToString:@"BEGIN"])
+    if ([nextToken2 isEqualToString:@"BEGIN"])
     {
-      [(ICSParser *)self _parseComponent:v23 depth:a4 + 1 fatalError:a5];
-      if (*a5)
+      [(ICSParser *)self _parseComponent:v23 depth:depth + 1 fatalError:error];
+      if (*error)
       {
         goto LABEL_33;
       }
@@ -1157,20 +1157,20 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    if (![v11 isEqualToString:@"END"])
+    if (![nextToken2 isEqualToString:@"END"])
     {
       v24 = 0;
       [(ICSParser *)self parseProperty:v23 fatalError:&v24];
       if (v24 == 1)
       {
-        if (a5)
+        if (error)
         {
-          *a5 = 1;
+          *error = 1;
         }
 
 LABEL_33:
         objc_autoreleasePoolPop(v12);
-        v8 = v22;
+        componentCopy = v22;
 LABEL_25:
         v19 = v23;
         goto LABEL_29;
@@ -1179,11 +1179,11 @@ LABEL_25:
       goto LABEL_8;
     }
 
-    v15 = [(ICSTokenizer *)self->_lexer nextToken];
-    v14 = v15;
-    if (v15)
+    nextToken3 = [(ICSTokenizer *)self->_lexer nextToken];
+    v14 = nextToken3;
+    if (nextToken3)
     {
-      if ([v15 isEqualToString:v10])
+      if ([nextToken3 isEqualToString:v10])
       {
         v13 = 3;
         goto LABEL_9;
@@ -1210,7 +1210,7 @@ LABEL_9:
 
   while (!v13);
   v18 = v13 == 3;
-  v8 = v22;
+  componentCopy = v22;
   if (!v18)
   {
     goto LABEL_25;
@@ -1218,7 +1218,7 @@ LABEL_9:
 
 LABEL_28:
   v19 = v23;
-  [v8 addComponent:v23 withUIDGenerator:self->_uidGenerator];
+  [componentCopy addComponent:v23 withUIDGenerator:self->_uidGenerator];
 LABEL_29:
 
 LABEL_30:
@@ -1227,10 +1227,10 @@ LABEL_30:
 - (id)parseData
 {
   v3 = objc_alloc_init(ICSComponent);
-  v4 = [(ICSTokenizer *)self->_lexer nextToken];
-  if (v4)
+  nextToken = [(ICSTokenizer *)self->_lexer nextToken];
+  if (nextToken)
   {
-    v5 = v4;
+    v5 = nextToken;
     do
     {
       v6 = objc_autoreleasePoolPush();
@@ -1250,13 +1250,13 @@ LABEL_30:
         [ICSLogger logAtLevel:3 forTokenizer:self->_lexer message:@"Invalid ICS format, no VCALENDAR"];
       }
 
-      v7 = [(ICSTokenizer *)self->_lexer nextToken];
+      nextToken2 = [(ICSTokenizer *)self->_lexer nextToken];
 
       objc_autoreleasePoolPop(v6);
-      v5 = v7;
+      v5 = nextToken2;
     }
 
-    while (v7);
+    while (nextToken2);
   }
 
   v8 = v3;
@@ -1265,29 +1265,29 @@ LABEL_9:
   return v8;
 }
 
-+ (id)entitiesFromNSData:(id)a3 options:(unint64_t)a4
++ (id)entitiesFromNSData:(id)data options:(unint64_t)options
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [[ICSParser alloc] initWithData:v5 options:a4];
+  dataCopy = data;
+  v6 = [[ICSParser alloc] initWithData:dataCopy options:options];
   v7 = v6;
   if (v6)
   {
-    v8 = [(ICSParser *)v6 parseData];
-    v9 = [v8 components];
-    v10 = [v9 count];
+    parseData = [(ICSParser *)v6 parseData];
+    components = [parseData components];
+    v10 = [components count];
 
     if (v10)
     {
-      v35 = v5;
-      v36 = [MEMORY[0x277CBEB18] array];
+      v35 = dataCopy;
+      array = [MEMORY[0x277CBEB18] array];
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v34 = v8;
-      v11 = [v8 components];
-      v12 = [v11 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      v34 = parseData;
+      components2 = [parseData components];
+      v12 = [components2 countByEnumeratingWithState:&v37 objects:v41 count:16];
       if (!v12)
       {
         goto LABEL_20;
@@ -1303,7 +1303,7 @@ LABEL_9:
         {
           if (*v38 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(components2);
           }
 
           v17 = *(*(&v37 + 1) + 8 * v16);
@@ -1311,44 +1311,44 @@ LABEL_9:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v20 = [(ICSParser *)v7 lexer];
-            [ICSLogger logAtLevel:3 forTokenizer:v20 message:@"ICS: Cal not a ICSCalendar %@", v17];
+            lexer = [(ICSParser *)v7 lexer];
+            [ICSLogger logAtLevel:3 forTokenizer:lexer message:@"ICS: Cal not a ICSCalendar %@", v17];
             goto LABEL_16;
           }
 
           v19 = v17;
-          v20 = v19;
-          if (a4)
+          lexer = v19;
+          if (options)
           {
             [v19 fixPropertiesInheritance];
             goto LABEL_15;
           }
 
-          v21 = v11;
+          v21 = components2;
           v22 = v7;
-          v23 = a4;
-          v24 = [v19 version];
+          optionsCopy = options;
+          version = [v19 version];
 
-          if (!v24 || ([v20 version], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "isEqualToString:", @"2.0"), v25, (v26 & 1) != 0))
+          if (!version || ([lexer version], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "isEqualToString:", @"2.0"), v25, (v26 & 1) != 0))
           {
-            [v20 fixPropertiesInheritance];
-            [v20 fixEntities];
-            a4 = v23;
+            [lexer fixPropertiesInheritance];
+            [lexer fixEntities];
+            options = optionsCopy;
             v7 = v22;
-            v11 = v21;
+            components2 = v21;
             v15 = 0x27A64B000;
 LABEL_15:
-            [v36 addObject:v20];
+            [array addObject:lexer];
             goto LABEL_16;
           }
 
-          v27 = [(ICSParser *)v22 lexer];
-          v28 = [v20 version];
-          [ICSLogger logAtLevel:3 forTokenizer:v27 message:@"Bad version of iCalendar %@", v28];
+          lexer2 = [(ICSParser *)v22 lexer];
+          version2 = [lexer version];
+          [ICSLogger logAtLevel:3 forTokenizer:lexer2 message:@"Bad version of iCalendar %@", version2];
 
-          a4 = v23;
+          options = optionsCopy;
           v7 = v22;
-          v11 = v21;
+          components2 = v21;
           v15 = 0x27A64B000;
 LABEL_16:
 
@@ -1356,37 +1356,37 @@ LABEL_16:
         }
 
         while (v13 != v16);
-        v29 = [v11 countByEnumeratingWithState:&v37 objects:v41 count:16];
+        v29 = [components2 countByEnumeratingWithState:&v37 objects:v41 count:16];
         v13 = v29;
         if (!v29)
         {
 LABEL_20:
 
-          v8 = v34;
-          v5 = v35;
+          parseData = v34;
+          dataCopy = v35;
           goto LABEL_23;
         }
       }
     }
 
-    v31 = [(ICSParser *)v7 lexer];
-    [ICSLogger logAtLevel:3 forTokenizer:v31 message:@"No components found"];
+    lexer3 = [(ICSParser *)v7 lexer];
+    [ICSLogger logAtLevel:3 forTokenizer:lexer3 message:@"No components found"];
 
-    v36 = 0;
+    array = 0;
 LABEL_23:
   }
 
   else
   {
-    v30 = [0 lexer];
-    [ICSLogger logAtLevel:3 forTokenizer:v30 message:@"Failed to create ICSParser"];
+    lexer4 = [0 lexer];
+    [ICSLogger logAtLevel:3 forTokenizer:lexer4 message:@"Failed to create ICSParser"];
 
-    v36 = 0;
+    array = 0;
   }
 
   v32 = *MEMORY[0x277D85DE8];
 
-  return v36;
+  return array;
 }
 
 @end

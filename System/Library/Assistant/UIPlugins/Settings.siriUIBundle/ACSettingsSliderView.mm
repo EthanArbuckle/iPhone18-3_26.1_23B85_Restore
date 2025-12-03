@@ -1,15 +1,15 @@
 @interface ACSettingsSliderView
-- (ACSettingsSliderView)initWithFrame:(CGRect)a3;
+- (ACSettingsSliderView)initWithFrame:(CGRect)frame;
 - (CGSize)sizeThatFits:(CGSize)result;
 @end
 
 @implementation ACSettingsSliderView
 
-- (ACSettingsSliderView)initWithFrame:(CGRect)a3
+- (ACSettingsSliderView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = ACSettingsSliderView;
-  v3 = [(ACSettingsSnippetView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ACSettingsSnippetView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[UISlider alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -18,8 +18,8 @@
 
     [(UISlider *)v3->_slider setTranslatesAutoresizingMaskIntoConstraints:0];
     v6 = v3->_slider;
-    v7 = [(ACSettingsSliderView *)v3 tintColor];
-    [(UISlider *)v6 setTintColor:v7];
+    tintColor = [(ACSettingsSliderView *)v3 tintColor];
+    [(UISlider *)v6 setTintColor:tintColor];
 
     v8 = v3->_slider;
     v9 = +[UIColor siriui_keylineColor];

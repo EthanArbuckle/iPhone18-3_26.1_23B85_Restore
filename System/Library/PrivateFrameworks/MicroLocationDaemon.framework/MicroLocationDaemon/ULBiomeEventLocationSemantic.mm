@@ -1,7 +1,7 @@
 @interface ULBiomeEventLocationSemantic
 - (NSUUID)loiIdentifier;
 - (_TtC19MicroLocationDaemon28ULBiomeEventLocationSemantic)init;
-- (_TtC19MicroLocationDaemon28ULBiomeEventLocationSemantic)initWithTimestamp:(id)a3 starting:(BOOL)a4 locationType:(int)a5 loiIdentifier:(id)a6;
+- (_TtC19MicroLocationDaemon28ULBiomeEventLocationSemantic)initWithTimestamp:(id)timestamp starting:(BOOL)starting locationType:(int)type loiIdentifier:(id)identifier;
 @end
 
 @implementation ULBiomeEventLocationSemantic
@@ -27,7 +27,7 @@
   return v10;
 }
 
-- (_TtC19MicroLocationDaemon28ULBiomeEventLocationSemantic)initWithTimestamp:(id)a3 starting:(BOOL)a4 locationType:(int)a5 loiIdentifier:(id)a6
+- (_TtC19MicroLocationDaemon28ULBiomeEventLocationSemantic)initWithTimestamp:(id)timestamp starting:(BOOL)starting locationType:(int)type loiIdentifier:(id)identifier
 {
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27F99BB20, &qword_259226220);
   v11 = *(*(v10 - 8) + 64);
@@ -39,7 +39,7 @@
   MEMORY[0x28223BE20](v14);
   v18 = &v24 - ((v17 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_259212140();
-  if (a6)
+  if (identifier)
   {
     sub_259212190();
     v19 = 0;
@@ -53,8 +53,8 @@
   v20 = sub_2592121D0();
   (*(*(v20 - 8) + 56))(v13, v19, 1, v20);
   (*(v15 + 16))(self + OBJC_IVAR____TtC19MicroLocationDaemon28ULBiomeEventLocationSemantic_timestamp, v18, v14);
-  *(self + OBJC_IVAR____TtC19MicroLocationDaemon28ULBiomeEventLocationSemantic_starting) = a4;
-  *(self + OBJC_IVAR____TtC19MicroLocationDaemon28ULBiomeEventLocationSemantic_locationType) = a5;
+  *(self + OBJC_IVAR____TtC19MicroLocationDaemon28ULBiomeEventLocationSemantic_starting) = starting;
+  *(self + OBJC_IVAR____TtC19MicroLocationDaemon28ULBiomeEventLocationSemantic_locationType) = type;
   sub_2591F56BC(v13, self + OBJC_IVAR____TtC19MicroLocationDaemon28ULBiomeEventLocationSemantic_loiIdentifier);
   v21 = type metadata accessor for ULBiomeEventLocationSemantic(0);
   v24.receiver = self;

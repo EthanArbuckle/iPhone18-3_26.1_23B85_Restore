@@ -23,7 +23,7 @@
   v10[3] = &unk_278598808;
   v10[4] = &v12;
   v10[5] = a4;
-  [a1 prepAndRunQuery:v7 onPrep:0 onRow:v11 onError:v10];
+  [self prepAndRunQuery:v7 onPrep:0 onRow:v11 onError:v10];
   v8 = v13[3];
   _Block_object_dispose(&v12, 8);
 

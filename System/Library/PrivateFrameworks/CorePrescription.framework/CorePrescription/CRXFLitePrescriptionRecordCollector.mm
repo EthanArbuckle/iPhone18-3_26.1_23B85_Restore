@@ -1,28 +1,28 @@
 @interface CRXFLitePrescriptionRecordCollector
-- (CRXFLitePrescriptionRecordCollector)initWithDeviceModel:(id)a3 timeout:(double)a4;
-- (void)fetchPrescriptionRecordsWithCompletion:(id)a3;
+- (CRXFLitePrescriptionRecordCollector)initWithDeviceModel:(id)model timeout:(double)timeout;
+- (void)fetchPrescriptionRecordsWithCompletion:(id)completion;
 @end
 
 @implementation CRXFLitePrescriptionRecordCollector
 
-- (CRXFLitePrescriptionRecordCollector)initWithDeviceModel:(id)a3 timeout:(double)a4
+- (CRXFLitePrescriptionRecordCollector)initWithDeviceModel:(id)model timeout:(double)timeout
 {
   v5.receiver = self;
   v5.super_class = CRXFLitePrescriptionRecordCollector;
-  return [(CRXFPrescriptionRecordCollector *)&v5 initWithDeviceModel:a3 timeout:a4];
+  return [(CRXFPrescriptionRecordCollector *)&v5 initWithDeviceModel:model timeout:timeout];
 }
 
-- (void)fetchPrescriptionRecordsWithCompletion:(id)a3
+- (void)fetchPrescriptionRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__CRXFLitePrescriptionRecordCollector_fetchPrescriptionRecordsWithCompletion___block_invoke;
   v7[3] = &unk_278EA0798;
-  v8 = v4;
+  v8 = completionCopy;
   v6.receiver = self;
   v6.super_class = CRXFLitePrescriptionRecordCollector;
-  v5 = v4;
+  v5 = completionCopy;
   [(CRXFPrescriptionRecordCollector *)&v6 fetchPrescriptionRecordsWithCompletion:v7];
 }
 

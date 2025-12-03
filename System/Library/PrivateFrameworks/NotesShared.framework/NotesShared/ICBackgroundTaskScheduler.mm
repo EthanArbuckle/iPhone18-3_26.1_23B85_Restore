@@ -1,8 +1,8 @@
 @interface ICBackgroundTaskScheduler
 + (ICBackgroundTaskScheduler)sharedScheduler;
 - (ICBackgroundTaskScheduler)init;
-- (void)registerTask:(id)a3;
-- (void)scheduleTask:(Class)a3 completion:(id)a4;
+- (void)registerTask:(id)task;
+- (void)scheduleTask:(Class)task completion:(id)completion;
 @end
 
 @implementation ICBackgroundTaskScheduler
@@ -33,21 +33,21 @@ void __44__ICBackgroundTaskScheduler_sharedScheduler__block_invoke()
   return [(ICBackgroundTaskScheduler *)&v3 init];
 }
 
-- (void)registerTask:(id)a3
+- (void)registerTask:(id)task
 {
-  v3 = a3;
-  v4 = [objc_opt_class() makeTaskRequest];
-  v5 = [v4 identifier];
-  v6 = [MEMORY[0x277CBAAA8] sharedScheduler];
+  taskCopy = task;
+  makeTaskRequest = [objc_opt_class() makeTaskRequest];
+  identifier = [makeTaskRequest identifier];
+  mEMORY[0x277CBAAA8] = [MEMORY[0x277CBAAA8] sharedScheduler];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __42__ICBackgroundTaskScheduler_registerTask___block_invoke;
   v15 = &unk_278197FA8;
-  v7 = v5;
+  v7 = identifier;
   v16 = v7;
-  v8 = v3;
+  v8 = taskCopy;
   v17 = v8;
-  v9 = [v6 registerForTaskWithIdentifier:v7 usingQueue:0 launchHandler:&v12];
+  v9 = [mEMORY[0x277CBAAA8] registerForTaskWithIdentifier:v7 usingQueue:0 launchHandler:&v12];
 
   v10 = os_log_create("com.apple.notes", "BackgroundTask");
   v11 = v10;
@@ -138,20 +138,20 @@ void __42__ICBackgroundTaskScheduler_registerTask___block_invoke_11(uint64_t a1,
   [*(a1 + 40) setTaskCompletedWithSuccess:v3 == 0];
 }
 
-- (void)scheduleTask:(Class)a3 completion:(id)a4
+- (void)scheduleTask:(Class)task completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(objc_class *)a3 makeTaskRequest];
-  v7 = [MEMORY[0x277CBAAA8] sharedScheduler];
+  completionCopy = completion;
+  makeTaskRequest = [(objc_class *)task makeTaskRequest];
+  mEMORY[0x277CBAAA8] = [MEMORY[0x277CBAAA8] sharedScheduler];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __53__ICBackgroundTaskScheduler_scheduleTask_completion___block_invoke;
   v10[3] = &unk_278197FF8;
-  v11 = v6;
-  v12 = v5;
-  v8 = v5;
-  v9 = v6;
-  [v7 getPendingTaskRequestsWithCompletionHandler:v10];
+  v11 = makeTaskRequest;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = makeTaskRequest;
+  [mEMORY[0x277CBAAA8] getPendingTaskRequestsWithCompletionHandler:v10];
 }
 
 void __53__ICBackgroundTaskScheduler_scheduleTask_completion___block_invoke(uint64_t a1, void *a2)

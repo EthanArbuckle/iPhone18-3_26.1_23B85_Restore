@@ -1,13 +1,13 @@
 @interface SAListenerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation SAListenerDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
-  v5 = [v4 valueForEntitlement:@"com.apple.spaceattribution.private"];
+  connectionCopy = connection;
+  v5 = [connectionCopy valueForEntitlement:@"com.apple.spaceattribution.private"];
   v6 = v5;
   if (v5 && [v5 BOOLValue])
   {
@@ -24,11 +24,11 @@
     v13 = objc_opt_class();
     v14 = [NSSet setWithObjects:v13, objc_opt_class(), 0];
     [v7 setClasses:v14 forSelector:"addURLSizerHandler:withURLs:reply:" argumentIndex:1 ofReply:0];
-    [v4 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
     v15 = objc_opt_new();
-    [v4 setExportedObject:v15];
+    [connectionCopy setExportedObject:v15];
 
-    [v4 resume];
+    [connectionCopy resume];
     v16 = SALog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {

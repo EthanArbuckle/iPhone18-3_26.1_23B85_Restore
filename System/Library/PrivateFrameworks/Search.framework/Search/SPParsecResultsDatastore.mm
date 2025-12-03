@@ -1,12 +1,12 @@
 @interface SPParsecResultsDatastore
-- (id)performQuery:(id)a3;
+- (id)performQuery:(id)query;
 @end
 
 @implementation SPParsecResultsDatastore
 
-- (id)performQuery:(id)a3
+- (id)performQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = si_tracing_current_span();
   v6 = *(v5 + 16);
   v21 = *v5;
@@ -24,7 +24,7 @@
   si_tracing_log_span_begin();
   v20.receiver = self;
   v20.super_class = SPParsecResultsDatastore;
-  v11 = [(SPParsecDatastore *)&v20 performQuery:v4];
+  v11 = [(SPParsecDatastore *)&v20 performQuery:queryCopy];
   v12 = *v5;
   v13 = *(v5 + 8);
   v14 = *(v5 + 16);

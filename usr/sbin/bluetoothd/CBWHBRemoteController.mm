@@ -2,7 +2,7 @@
 - (id)description;
 - (void)activate;
 - (void)invalidate;
-- (void)setDiscoveryFlags:(unint64_t)a3;
+- (void)setDiscoveryFlags:(unint64_t)flags;
 @end
 
 @implementation CBWHBRemoteController
@@ -15,12 +15,12 @@
   return v2;
 }
 
-- (void)setDiscoveryFlags:(unint64_t)a3
+- (void)setDiscoveryFlags:(unint64_t)flags
 {
-  if (self->_discoveryFlags != a3)
+  if (self->_discoveryFlags != flags)
   {
-    self->_discoveryFlags = a3;
-    [(CBDiscovery *)self->_activatedDiscovery setDiscoveryFlags:a3 & 0xFFFFBFFFFFFFFFFFLL];
+    self->_discoveryFlags = flags;
+    [(CBDiscovery *)self->_activatedDiscovery setDiscoveryFlags:flags & 0xFFFFBFFFFFFFFFFFLL];
   }
 }
 
@@ -41,13 +41,13 @@
 
     [(CBDiscovery *)v3 setDiscoveryFlags:self->_discoveryFlags & 0xFFFFBFFFFFFFFFFFLL];
     [(CBDiscovery *)v3 setDispatchQueue:self->_dispatchQueue];
-    v5 = [(CBDaemonServer *)self->_daemonServer xpcListenerEndpoint];
-    if (v5)
+    xpcListenerEndpoint = [(CBDaemonServer *)self->_daemonServer xpcListenerEndpoint];
+    if (xpcListenerEndpoint)
     {
-      [(CBDiscovery *)v3 setTestListenerEndpoint:v5];
+      [(CBDiscovery *)v3 setTestListenerEndpoint:xpcListenerEndpoint];
       v6 = objc_alloc_init(CBDevice);
-      v7 = [(RPCompanionLinkDevice *)self->_remoteDevice idsDeviceIdentifier];
-      [v6 setIdentifier:v7];
+      idsDeviceIdentifier = [(RPCompanionLinkDevice *)self->_remoteDevice idsDeviceIdentifier];
+      [v6 setIdentifier:idsDeviceIdentifier];
 
       [(CBDiscovery *)v3 setRemoteDevice:v6];
       v16[0] = _NSConcreteStackBlock;
@@ -56,7 +56,7 @@
       v16[3] = &unk_100ADF718;
       v8 = v3;
       v17 = v8;
-      v18 = self;
+      selfCopy = self;
       [(CBDiscovery *)v8 setDeviceFoundHandler:v16];
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
@@ -64,14 +64,14 @@
       v13[3] = &unk_100ADF718;
       v9 = v8;
       v14 = v9;
-      v15 = self;
+      selfCopy2 = self;
       [(CBDiscovery *)v9 setDeviceLostHandler:v13];
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_1001198C8;
       v10[3] = &unk_100ADF740;
       v11 = v9;
-      v12 = self;
+      selfCopy3 = self;
       [(CBDiscovery *)v11 activateWithCompletion:v10];
     }
 

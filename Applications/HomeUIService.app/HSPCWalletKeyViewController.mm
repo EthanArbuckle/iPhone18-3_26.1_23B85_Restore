@@ -1,16 +1,16 @@
 @interface HSPCWalletKeyViewController
 + (id)_getBundleIDForWalletAppIcon;
-- (HSPCWalletKeyViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCWalletKeyViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)commitConfiguration;
 - (void)_setupWalletAppIconImageView;
 @end
 
 @implementation HSPCWalletKeyViewController
 
-- (HSPCWalletKeyViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCWalletKeyViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v46 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v8 = [PRXImageView imageViewWithStyle:0];
   [v8 setContentMode:1];
   v67.receiver = self;
@@ -19,25 +19,25 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_config, a4);
-    objc_storeStrong(&v10->_coordinator, a3);
+    objc_storeStrong(&v9->_config, config);
+    objc_storeStrong(&v10->_coordinator, coordinator);
     objc_storeStrong(&v10->_cardImageView, v8);
     v11 = objc_alloc_init(UIImageView);
     walletAppIconImageView = v10->_walletAppIconImageView;
     v10->_walletAppIconImageView = v11;
 
-    v47 = [objc_opt_class() _getBundleIDForWalletAppIcon];
+    _getBundleIDForWalletAppIcon = [objc_opt_class() _getBundleIDForWalletAppIcon];
     v13 = HFLogForCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       v69 = "[HSPCWalletKeyViewController initWithCoordinator:config:]";
       v70 = 2112;
-      v71 = v47;
+      v71 = _getBundleIDForWalletAppIcon;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "(%s) wallet app icon's bundleID = %@", buf, 0x16u);
     }
 
-    v45 = [[ISIcon alloc] initWithBundleIdentifier:v47];
+    v45 = [[ISIcon alloc] initWithBundleIdentifier:_getBundleIDForWalletAppIcon];
     v14 = +[UIScreen mainScreen];
     [v14 scale];
     v16 = v15;
@@ -58,28 +58,28 @@
     v18 = sub_100063A44(@"HSProximityCardWalletKeyTitle");
     [(HSPCWalletKeyViewController *)v10 setTitle:v18];
 
-    v19 = [v7 home];
-    v20 = [v19 hf_currentUserIsRestrictedGuest];
+    home = [configCopy home];
+    hf_currentUserIsRestrictedGuest = [home hf_currentUserIsRestrictedGuest];
 
-    [v7 home];
-    if (v20)
+    [configCopy home];
+    if (hf_currentUserIsRestrictedGuest)
       v21 = {;
-      v22 = [v21 hf_hasWalletKey];
+      hf_hasWalletKey = [v21 hf_hasWalletKey];
       v62[0] = _NSConcreteStackBlock;
       v62[1] = 3221225472;
       v62[2] = sub_10005FA10;
       v62[3] = &unk_1000C60C0;
       objc_copyWeak(&v64, buf);
-      v63 = v7;
-      v23 = [v22 flatMap:v62];
+      v63 = configCopy;
+      v23 = [hf_hasWalletKey flatMap:v62];
 
       objc_destroyWeak(&v64);
     }
 
     else
       v24 = {;
-      v25 = [v24 name];
-      v32 = sub_100063B5C(@"HSProximityCardWalletKeySubitle", @"%@", v26, v27, v28, v29, v30, v31, v25);
+      name = [v24 name];
+      v32 = sub_100063B5C(@"HSProximityCardWalletKeySubitle", @"%@", v26, v27, v28, v29, v30, v31, name);
       [(HSPCWalletKeyViewController *)v10 setSubtitle:v32];
     }
 
@@ -96,15 +96,15 @@
     v54[1] = 3221225472;
     v54[2] = sub_10005FD44;
     v54[3] = &unk_1000C7F68;
-    v36 = v7;
+    v36 = configCopy;
     v55 = v36;
     objc_copyWeak(&v58, buf);
     v37 = v35;
     v57 = v37;
     v56 = v34;
     v38 = objc_retainBlock(v54);
-    v39 = [v36 home];
-    v40 = [v39 hf_hasWalletKey];
+    home2 = [v36 home];
+    hf_hasWalletKey2 = [home2 hf_hasWalletKey];
     v49[0] = _NSConcreteStackBlock;
     v49[1] = 3221225472;
     v49[2] = sub_1000601FC;
@@ -115,7 +115,7 @@
     v52 = v41;
     v42 = v38;
     v53 = v42;
-    v43 = [v40 flatMap:v49];
+    v43 = [hf_hasWalletKey2 flatMap:v49];
 
     objc_destroyWeak(&v58);
     objc_destroyWeak(&v61);
@@ -128,21 +128,21 @@
 
 - (void)_setupWalletAppIconImageView
 {
-  v3 = [(HSPCWalletKeyViewController *)self cardImageView];
-  v4 = [v3 image];
+  cardImageView = [(HSPCWalletKeyViewController *)self cardImageView];
+  image = [cardImageView image];
 
-  if (v4)
+  if (image)
   {
-    v5 = [(HSPCWalletKeyViewController *)self cardImageView];
-    [v5 frame];
+    cardImageView2 = [(HSPCWalletKeyViewController *)self cardImageView];
+    [cardImageView2 frame];
     v7 = v6 * 0.5 + 84.5 + -64.0 + 16.0;
 
-    v8 = [(HSPCWalletKeyViewController *)self cardImageView];
-    [v8 frame];
+    cardImageView3 = [(HSPCWalletKeyViewController *)self cardImageView];
+    [cardImageView3 frame];
     v10 = v9 * 0.5 + 53.5 + -64.0;
 
-    v12 = [(HSPCWalletKeyViewController *)self walletAppIconImageView];
-    [v12 setFrame:{v7, v10, 64.0, 64.0}];
+    walletAppIconImageView = [(HSPCWalletKeyViewController *)self walletAppIconImageView];
+    [walletAppIconImageView setFrame:{v7, v10, 64.0, 64.0}];
   }
 
   else
@@ -181,15 +181,15 @@
   }
 
   objc_initWeak(buf, self);
-  v4 = [(HSPCWalletKeyViewController *)self config];
-  v5 = [v4 home];
-  v6 = [v5 hf_formattedErrorForWalletKeyDeviceStateForCurrentDevice];
+  config = [(HSPCWalletKeyViewController *)self config];
+  home = [config home];
+  hf_formattedErrorForWalletKeyDeviceStateForCurrentDevice = [home hf_formattedErrorForWalletKeyDeviceStateForCurrentDevice];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10006093C;
   v15[3] = &unk_1000C5830;
   objc_copyWeak(&v16, buf);
-  v7 = [v6 flatMap:v15];
+  v7 = [hf_formattedErrorForWalletKeyDeviceStateForCurrentDevice flatMap:v15];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100060EB0;

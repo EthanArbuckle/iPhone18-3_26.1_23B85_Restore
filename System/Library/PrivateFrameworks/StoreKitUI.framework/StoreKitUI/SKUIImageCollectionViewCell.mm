@@ -1,25 +1,25 @@
 @interface SKUIImageCollectionViewCell
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
 - (void)_reloadHighlightImageView;
 - (void)layoutSubviews;
-- (void)reloadWithCarouselItem:(id)a3 size:(CGSize)a4 context:(id)a5;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)reloadWithCarouselItem:(id)item size:(CGSize)size context:(id)context;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation SKUIImageCollectionViewCell
 
-- (void)reloadWithCarouselItem:(id)a3 size:(CGSize)a4 context:(id)a5
+- (void)reloadWithCarouselItem:(id)item size:(CGSize)size context:(id)context
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  itemCopy = item;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIImageCollectionViewCell reloadWithCarouselItem:size:context:];
@@ -31,11 +31,11 @@
   v13[3] = &unk_2781F8428;
   v17 = width;
   v18 = height;
-  v14 = v9;
-  v15 = v10;
-  v16 = self;
-  v11 = v10;
-  v12 = v9;
+  v14 = itemCopy;
+  v15 = contextCopy;
+  selfCopy = self;
+  v11 = contextCopy;
+  v12 = itemCopy;
   [(SKUIViewReuseCollectionViewCell *)self modifyUsingBlock:v13];
 }
 
@@ -112,10 +112,10 @@ LABEL_12:
   [v25 setContents:v21];
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -128,34 +128,34 @@ LABEL_12:
     }
   }
 
-  v17 = [v8 requestIdentifierForViewElement:v7];
+  v17 = [contextCopy requestIdentifierForViewElement:elementCopy];
 
   if (!v17)
   {
-    v18 = v7;
+    v18 = elementCopy;
     if ([v18 elementType] == 152)
     {
-      v19 = [v18 thumbnailImage];
+      thumbnailImage = [v18 thumbnailImage];
 
-      v18 = v19;
+      v18 = thumbnailImage;
     }
 
-    [v8 loadImageForImageElement:v18 reason:a4];
+    [contextCopy loadImageForImageElement:v18 reason:reason];
   }
 
   return v17 == 0;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     +[SKUIImageCollectionViewCell preferredSizeForViewElement:context:];
   }
 
-  [v6 sizeForViewElement:v5 width:1.79769313e308];
+  [contextCopy sizeForViewElement:elementCopy width:1.79769313e308];
   v8 = v7;
   v10 = v9;
 
@@ -166,10 +166,10 @@ LABEL_12:
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -182,13 +182,13 @@ LABEL_12:
     }
   }
 
-  [SKUIAdornedImageView requestLayoutForViewElement:v7 width:v8 context:a4];
+  [SKUIAdornedImageView requestLayoutForViewElement:elementCopy width:contextCopy context:width];
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -201,26 +201,26 @@ LABEL_12:
     }
   }
 
-  [v8 sizeForViewElement:v7 width:a3];
+  [contextCopy sizeForViewElement:elementCopy width:width];
   v19 = v18;
   if (v17 > 0.00000011920929)
   {
-    v20 = v18 * (a3 / v17);
+    v20 = v18 * (width / v17);
     v19 = floorf(v20);
   }
 
-  v21 = a3;
+  widthCopy = width;
   v22 = v19;
   result.height = v22;
-  result.width = v21;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v8 imageResourceCacheKeyForViewElement:v7];
+  elementCopy = element;
+  contextCopy = context;
+  v9 = [contextCopy imageResourceCacheKeyForViewElement:elementCopy];
   imageRequestCacheKey = self->_imageRequestCacheKey;
   self->_imageRequestCacheKey = v9;
 
@@ -228,11 +228,11 @@ LABEL_12:
   v13[1] = 3221225472;
   v13[2] = __67__SKUIImageCollectionViewCell_reloadWithViewElement_width_context___block_invoke;
   v13[3] = &unk_2781F8450;
-  v14 = v7;
-  v15 = v8;
-  v16 = self;
-  v11 = v8;
-  v12 = v7;
+  v14 = elementCopy;
+  v15 = contextCopy;
+  selfCopy = self;
+  v11 = contextCopy;
+  v12 = elementCopy;
   [(SKUIViewReuseCollectionViewCell *)self modifyUsingBlock:v13];
 }
 
@@ -261,21 +261,21 @@ void __67__SKUIImageCollectionViewCell_reloadWithViewElement_width_context___blo
   }
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [a5 requestIdentifierForResourceCacheKey:self->_imageRequestCacheKey];
+  imageCopy = image;
+  requestCopy = request;
+  v10 = [context requestIdentifierForResourceCacheKey:self->_imageRequestCacheKey];
   v11 = v10;
-  if (v10 && (v12 = [v10 unsignedIntegerValue], v12 == objc_msgSend(v9, "requestIdentifier")))
+  if (v10 && (v12 = [v10 unsignedIntegerValue], v12 == objc_msgSend(requestCopy, "requestIdentifier")))
   {
-    v13 = [(SKUIViewReuseCollectionViewCell *)self allExistingViews];
+    allExistingViews = [(SKUIViewReuseCollectionViewCell *)self allExistingViews];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v14 = [allExistingViews countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v14)
     {
       v15 = v14;
@@ -286,13 +286,13 @@ void __67__SKUIImageCollectionViewCell_reloadWithViewElement_width_context___blo
         {
           if (*v21 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(allExistingViews);
           }
 
-          [*(*(&v20 + 1) + 8 * i) setImage:v8];
+          [*(*(&v20 + 1) + 8 * i) setImage:imageCopy];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v15 = [allExistingViews countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v15);
@@ -314,16 +314,16 @@ void __67__SKUIImageCollectionViewCell_reloadWithViewElement_width_context___blo
   v22.receiver = self;
   v22.super_class = SKUIImageCollectionViewCell;
   [(SKUICollectionViewCell *)&v22 layoutSubviews];
-  v3 = [(SKUIImageCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SKUIImageCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(SKUIViewReuseCollectionViewCell *)self allExistingViews];
-  v13 = [v12 firstObject];
-  if (v13)
+  allExistingViews = [(SKUIViewReuseCollectionViewCell *)self allExistingViews];
+  firstObject = [allExistingViews firstObject];
+  if (firstObject)
   {
     [(SKUIViewReuseCollectionViewCell *)self contentInset];
     if (self->_showsReflectionImage)
@@ -332,16 +332,16 @@ void __67__SKUIImageCollectionViewCell_reloadWithViewElement_width_context___blo
       v14 = v14 + floorf(v18);
     }
 
-    [v13 setFrame:{v5 + v15, v7 + v14, v9 - (v15 + v17), v11 - (v16 + v14)}];
+    [firstObject setFrame:{v5 + v15, v7 + v14, v9 - (v15 + v17), v11 - (v16 + v14)}];
   }
 
-  if ([v12 count] == 2)
+  if ([allExistingViews count] == 2)
   {
-    v19 = [v12 objectAtIndex:1];
+    v19 = [allExistingViews objectAtIndex:1];
     v20 = v19;
     if (self->_showsReflectionImage)
     {
-      [v13 frame];
+      [firstObject frame];
       [v20 setFrame:?];
       [v20 setHidden:0];
       CGAffineTransformMakeScale(&v21, -1.0, -1.0);
@@ -355,19 +355,19 @@ void __67__SKUIImageCollectionViewCell_reloadWithViewElement_width_context___blo
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = SKUIImageCollectionViewCell;
-  [(SKUICollectionViewCell *)&v4 setHighlighted:a3];
+  [(SKUICollectionViewCell *)&v4 setHighlighted:highlighted];
   [(SKUIImageCollectionViewCell *)self _reloadHighlightImageView];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = SKUIImageCollectionViewCell;
-  [(SKUICollectionViewCell *)&v4 setSelected:a3];
+  [(SKUICollectionViewCell *)&v4 setSelected:selected];
   [(SKUIImageCollectionViewCell *)self _reloadHighlightImageView];
 }
 
@@ -392,18 +392,18 @@ void __67__SKUIImageCollectionViewCell_reloadWithViewElement_width_context___blo
     v21[2] = __56__SKUIImageCollectionViewCell__reloadHighlightImageView__block_invoke;
     v21[3] = &unk_2781F80F0;
     v22 = v18;
-    v4 = v18;
+    firstObject = v18;
     [v20 setCompletionBlock:v21];
-    [(SKUIImageView *)v4 setAlpha:0.0];
+    [(SKUIImageView *)firstObject setAlpha:0.0];
     [MEMORY[0x277CD9FF0] commit];
-    v16 = v22;
+    contentView = v22;
     goto LABEL_9;
   }
 
-  v3 = [(SKUIViewReuseCollectionViewCell *)self allExistingViews];
-  v4 = [v3 firstObject];
+  allExistingViews = [(SKUIViewReuseCollectionViewCell *)self allExistingViews];
+  firstObject = [allExistingViews firstObject];
 
-  if (v4)
+  if (firstObject)
   {
     v5 = self->_highlightImageView;
     if (!v5)
@@ -414,28 +414,28 @@ void __67__SKUIImageCollectionViewCell_reloadWithViewElement_width_context___blo
 
       [(SKUIImageView *)self->_highlightImageView setAlpha:0.300000012];
       v8 = self->_highlightImageView;
-      v9 = [MEMORY[0x277D75348] clearColor];
-      [(SKUIImageView *)v8 setBackgroundColor:v9];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(SKUIImageView *)v8 setBackgroundColor:clearColor];
 
       v5 = self->_highlightImageView;
     }
 
-    [(SKUIImageView *)v4 bounds];
+    [(SKUIImageView *)firstObject bounds];
     [(SKUIImageView *)v5 setBounds:?];
     v10 = self->_highlightImageView;
-    [(SKUIImageView *)v4 center];
+    [(SKUIImageView *)firstObject center];
     [(SKUIImageView *)v10 setCenter:?];
     v11 = self->_highlightImageView;
-    v12 = [(SKUIImageView *)v4 image];
-    v13 = [MEMORY[0x277D75348] blackColor];
-    v14 = [v12 _flatImageWithColor:v13];
+    image = [(SKUIImageView *)firstObject image];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v14 = [image _flatImageWithColor:blackColor];
     [(SKUIImageView *)v11 setImage:v14];
 
     v15 = self->_highlightImageView;
-    [(SKUIImageView *)v4 transform];
+    [(SKUIImageView *)firstObject transform];
     [(SKUIImageView *)v15 setTransform:v23];
-    v16 = [(SKUIImageCollectionViewCell *)self contentView];
-    [v16 insertSubview:self->_highlightImageView aboveSubview:v4];
+    contentView = [(SKUIImageCollectionViewCell *)self contentView];
+    [contentView insertSubview:self->_highlightImageView aboveSubview:firstObject];
 LABEL_9:
   }
 }

@@ -1,25 +1,25 @@
 @interface PBFPosterSnapshotCollection
-- (BOOL)shouldProceedFetchingSnapshotForContext:(id)a3 maxNumberOfRetryAfterErrors:(unint64_t)a4;
-- (PBFPosterSnapshotCollection)initWithUniqueIdentifier:(id)a3;
-- (id)invalidateAndRemoveInProgressRequestsNotMatchingDisplayContext:(id)a3;
-- (id)receivedSnapshotBundleForContext:(id)a3;
-- (id)snapshotFutureForContext:(id)a3 outStatus:(int64_t *)a4;
-- (id)trackRequestForContext:(id)a3 future:(id)a4;
+- (BOOL)shouldProceedFetchingSnapshotForContext:(id)context maxNumberOfRetryAfterErrors:(unint64_t)errors;
+- (PBFPosterSnapshotCollection)initWithUniqueIdentifier:(id)identifier;
+- (id)invalidateAndRemoveInProgressRequestsNotMatchingDisplayContext:(id)context;
+- (id)receivedSnapshotBundleForContext:(id)context;
+- (id)snapshotFutureForContext:(id)context outStatus:(int64_t *)status;
+- (id)trackRequestForContext:(id)context future:(id)future;
 - (unint64_t)hash;
-- (unint64_t)numberOfTimesSnapshotHasFailedToHydrateForContext:(id)a3;
-- (void)_snapshotRequestForContext:(void *)a3 completedWithError:;
+- (unint64_t)numberOfTimesSnapshotHasFailedToHydrateForContext:(id)context;
+- (void)_snapshotRequestForContext:(void *)context completedWithError:;
 - (void)cancel;
-- (void)enumerateInProgressRequests:(id)a3;
+- (void)enumerateInProgressRequests:(id)requests;
 - (void)invalidate;
 @end
 
 @implementation PBFPosterSnapshotCollection
 
-- (PBFPosterSnapshotCollection)initWithUniqueIdentifier:(id)a3
+- (PBFPosterSnapshotCollection)initWithUniqueIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v6)
+  if (!identifierCopy)
   {
     [PBFPosterSnapshotCollection initWithUniqueIdentifier:a2];
   }
@@ -35,9 +35,9 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_uniqueIdentifier, a3);
+    objc_storeStrong(&v7->_uniqueIdentifier, identifier);
     v9 = objc_alloc(MEMORY[0x277D3EB68]);
-    v10 = [@"SNAPSHOTCOLLECTION_" stringByAppendingString:v6];
+    v10 = [@"SNAPSHOTCOLLECTION_" stringByAppendingString:identifierCopy];
     v11 = [v9 initWithLockIdentifier:v10];
     lock = v8->_lock;
     v8->_lock = v11;
@@ -58,14 +58,14 @@
   return [(PBFPosterSnapshotCollection *)&v5 hash]^ v3;
 }
 
-- (id)snapshotFutureForContext:(id)a3 outStatus:(int64_t *)a4
+- (id)snapshotFutureForContext:(id)context outStatus:(int64_t *)status
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  contextCopy = context;
+  v7 = contextCopy;
+  if (contextCopy)
   {
-    v8 = [v6 definition];
-    v9 = [v7 displayContext];
+    definition = [contextCopy definition];
+    displayContext = [v7 displayContext];
     v25 = 0;
     v26 = &v25;
     v27 = 0x3032000000;
@@ -84,14 +84,14 @@
     v19 = &v21;
     v20 = &v25;
     v16[4] = self;
-    v11 = v8;
+    v11 = definition;
     v17 = v11;
-    v12 = v9;
+    v12 = displayContext;
     v18 = v12;
     [(PFOSUnfairLock *)lock performBlockWhileCapturingWeak:self performBlock:v16];
-    if (a4)
+    if (status)
     {
-      *a4 = v22[3];
+      *status = v22[3];
     }
 
     v13 = v26[5];
@@ -102,9 +102,9 @@
 
   else
   {
-    if (a4)
+    if (status)
     {
-      *a4 = 2;
+      *status = 2;
     }
 
     v14 = MEMORY[0x277D3EC50];
@@ -152,24 +152,24 @@ void __66__PBFPosterSnapshotCollection_snapshotFutureForContext_outStatus___bloc
 LABEL_6:
 }
 
-- (unint64_t)numberOfTimesSnapshotHasFailedToHydrateForContext:(id)a3
+- (unint64_t)numberOfTimesSnapshotHasFailedToHydrateForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0x7FFFFFFFFFFFFFFFLL;
-  v5 = [v4 definition];
-  v6 = [v4 displayContext];
+  definition = [contextCopy definition];
+  displayContext = [contextCopy displayContext];
   lock = self->_lock;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __81__PBFPosterSnapshotCollection_numberOfTimesSnapshotHasFailedToHydrateForContext___block_invoke;
   v12[3] = &unk_2782C7890;
-  v8 = v5;
+  v8 = definition;
   v13 = v8;
   v15 = &v16;
-  v9 = v6;
+  v9 = displayContext;
   v14 = v9;
   [(PFOSUnfairLock *)lock performBlockWhileCapturingWeak:self performBlock:v12];
   v10 = v17[3];
@@ -194,11 +194,11 @@ void __81__PBFPosterSnapshotCollection_numberOfTimesSnapshotHasFailedToHydrateFo
   }
 }
 
-- (id)receivedSnapshotBundleForContext:(id)a3
+- (id)receivedSnapshotBundleForContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v3 = [(PBFPosterSnapshotCollection *)self snapshotFutureForContext:a3 outStatus:0];
+    v3 = [(PBFPosterSnapshotCollection *)self snapshotFutureForContext:context outStatus:0];
     v4 = 0;
     if ([v3 isFinished])
     {
@@ -214,26 +214,26 @@ void __81__PBFPosterSnapshotCollection_numberOfTimesSnapshotHasFailedToHydrateFo
   return v4;
 }
 
-- (BOOL)shouldProceedFetchingSnapshotForContext:(id)a3 maxNumberOfRetryAfterErrors:(unint64_t)a4
+- (BOOL)shouldProceedFetchingSnapshotForContext:(id)context maxNumberOfRetryAfterErrors:(unint64_t)errors
 {
-  v6 = a3;
+  contextCopy = context;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v7 = [v6 definition];
-  v8 = [v6 displayContext];
+  definition = [contextCopy definition];
+  displayContext = [contextCopy displayContext];
   lock = self->_lock;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __99__PBFPosterSnapshotCollection_shouldProceedFetchingSnapshotForContext_maxNumberOfRetryAfterErrors___block_invoke;
   v13[3] = &unk_2782C78B8;
-  v10 = v7;
+  v10 = definition;
   v14 = v10;
-  v11 = v8;
+  v11 = displayContext;
   v15 = v11;
   v16 = &v18;
-  v17 = a4;
+  errorsCopy = errors;
   [(PFOSUnfairLock *)lock performBlockWhileCapturingWeak:self performBlock:v13];
   LOBYTE(self) = *(v19 + 24);
 
@@ -270,10 +270,10 @@ void __99__PBFPosterSnapshotCollection_shouldProceedFetchingSnapshotForContext_m
   }
 }
 
-- (void)enumerateInProgressRequests:(id)a3
+- (void)enumerateInProgressRequests:(id)requests
 {
-  v4 = a3;
-  if (v4)
+  requestsCopy = requests;
+  if (requestsCopy)
   {
     [(PFOSUnfairLock *)self->_lock lock];
     v5 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:self->_lock_definitionToCollection copyItems:1];
@@ -282,7 +282,7 @@ void __99__PBFPosterSnapshotCollection_shouldProceedFetchingSnapshotForContext_m
     v6[1] = 3221225472;
     v6[2] = __59__PBFPosterSnapshotCollection_enumerateInProgressRequests___block_invoke;
     v6[3] = &unk_2782C7908;
-    v7 = v4;
+    v7 = requestsCopy;
     [v5 enumerateKeysAndObjectsUsingBlock:v6];
   }
 }
@@ -320,10 +320,10 @@ void __59__PBFPosterSnapshotCollection_enumerateInProgressRequests___block_invok
   }
 }
 
-- (id)invalidateAndRemoveInProgressRequestsNotMatchingDisplayContext:(id)a3
+- (id)invalidateAndRemoveInProgressRequestsNotMatchingDisplayContext:(id)context
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   [(PFOSUnfairLock *)self->_lock lock];
@@ -338,7 +338,7 @@ void __59__PBFPosterSnapshotCollection_enumerateInProgressRequests___block_invok
     if (v26)
     {
       v24 = *v38;
-      v25 = self;
+      selfCopy = self;
       do
       {
         v7 = 0;
@@ -351,13 +351,13 @@ void __59__PBFPosterSnapshotCollection_enumerateInProgressRequests___block_invok
 
           v28 = v7;
           v27 = [(NSMutableDictionary *)self->_lock_definitionToCollection objectForKey:*(*(&v37 + 1) + 8 * v7)];
-          v8 = [v27 snapshotBundleFutureForDisplayContext];
+          snapshotBundleFutureForDisplayContext = [v27 snapshotBundleFutureForDisplayContext];
           v33 = 0u;
           v34 = 0u;
           v35 = 0u;
           v36 = 0u;
-          v9 = [v8 allKeys];
-          v10 = [v9 countByEnumeratingWithState:&v33 objects:v42 count:16];
+          allKeys = [snapshotBundleFutureForDisplayContext allKeys];
+          v10 = [allKeys countByEnumeratingWithState:&v33 objects:v42 count:16];
           if (v10)
           {
             v11 = v10;
@@ -368,30 +368,30 @@ void __59__PBFPosterSnapshotCollection_enumerateInProgressRequests___block_invok
               {
                 if (*v34 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v14 = *(*(&v33 + 1) + 8 * i);
                 if ((BSEqualObjects() & 1) == 0)
                 {
-                  v15 = [v8 objectForKey:v4];
+                  v15 = [snapshotBundleFutureForDisplayContext objectForKey:contextCopy];
                   if (v15)
                   {
                     [v5 addObject:v14];
                     [v6 addObject:v15];
-                    [v8 removeObjectForKey:v4];
+                    [snapshotBundleFutureForDisplayContext removeObjectForKey:contextCopy];
                   }
                 }
               }
 
-              v11 = [v9 countByEnumeratingWithState:&v33 objects:v42 count:16];
+              v11 = [allKeys countByEnumeratingWithState:&v33 objects:v42 count:16];
             }
 
             while (v11);
           }
 
           v7 = v28 + 1;
-          self = v25;
+          self = selfCopy;
         }
 
         while (v28 + 1 != v26);
@@ -431,17 +431,17 @@ void __59__PBFPosterSnapshotCollection_enumerateInProgressRequests___block_invok
     while (v18);
   }
 
-  v21 = [v5 allObjects];
+  allObjects = [v5 allObjects];
 
-  return v21;
+  return allObjects;
 }
 
-- (id)trackRequestForContext:(id)a3 future:(id)a4
+- (id)trackRequestForContext:(id)context future:(id)future
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  contextCopy = context;
+  futureCopy = future;
+  v8 = futureCopy;
+  if (contextCopy && futureCopy)
   {
     v34 = 0;
     v35 = &v34;
@@ -449,8 +449,8 @@ void __59__PBFPosterSnapshotCollection_enumerateInProgressRequests___block_invok
     v37 = __Block_byref_object_copy__3;
     v38 = __Block_byref_object_dispose__3;
     v39 = 0;
-    v9 = [v6 definition];
-    v10 = [v6 displayContext];
+    definition = [contextCopy definition];
+    displayContext = [contextCopy displayContext];
     v30 = 0;
     v31 = &v30;
     v32 = 0x2020000000;
@@ -462,9 +462,9 @@ void __59__PBFPosterSnapshotCollection_enumerateInProgressRequests___block_invok
     v25[3] = &unk_2782C7930;
     v28 = &v34;
     v25[4] = self;
-    v12 = v9;
+    v12 = definition;
     v26 = v12;
-    v13 = v10;
+    v13 = displayContext;
     v27 = v13;
     v29 = &v30;
     [(PFOSUnfairLock *)lock performBlockWhileCapturingWeak:self performBlock:v25];
@@ -476,10 +476,10 @@ void __59__PBFPosterSnapshotCollection_enumerateInProgressRequests___block_invok
       v20[2] = __61__PBFPosterSnapshotCollection_trackRequestForContext_future___block_invoke_2;
       v20[3] = &unk_2782C7958;
       objc_copyWeak(&v23, &location);
-      v21 = v6;
+      v21 = contextCopy;
       v22 = &v34;
-      v14 = [MEMORY[0x277D3EC60] offMainThreadScheduler];
-      [v8 addCompletionBlock:v20 scheduler:v14];
+      offMainThreadScheduler = [MEMORY[0x277D3EC60] offMainThreadScheduler];
+      [v8 addCompletionBlock:v20 scheduler:offMainThreadScheduler];
 
       objc_destroyWeak(&v23);
       objc_destroyWeak(&location);
@@ -559,26 +559,26 @@ void __61__PBFPosterSnapshotCollection_trackRequestForContext_future___block_inv
   [*(*(*(a1 + 40) + 8) + 40) finishWithResult:v7 error:v5];
 }
 
-- (void)_snapshotRequestForContext:(void *)a3 completedWithError:
+- (void)_snapshotRequestForContext:(void *)context completedWithError:
 {
-  v5 = a3;
-  if (a1 && a2)
+  contextCopy = context;
+  if (self && a2)
   {
     v6 = a2;
-    v7 = [v6 definition];
-    v8 = [v6 displayContext];
+    definition = [v6 definition];
+    displayContext = [v6 displayContext];
 
-    v9 = *(a1 + 8);
+    v9 = *(self + 8);
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __77__PBFPosterSnapshotCollection__snapshotRequestForContext_completedWithError___block_invoke;
     v12[3] = &unk_2782C7980;
-    v13 = v7;
-    v14 = v8;
-    v15 = v5;
-    v10 = v8;
-    v11 = v7;
-    [v9 performBlockWhileCapturingWeak:a1 performBlock:v12];
+    v13 = definition;
+    v14 = displayContext;
+    v15 = contextCopy;
+    v10 = displayContext;
+    v11 = definition;
+    [v9 performBlockWhileCapturingWeak:self performBlock:v12];
   }
 }
 
@@ -643,14 +643,14 @@ void __77__PBFPosterSnapshotCollection__snapshotRequestForContext_completedWithE
 {
   v14 = *MEMORY[0x277D85DE8];
   [(PFOSUnfairLock *)self->_lock lock];
-  v3 = [(NSMutableDictionary *)self->_lock_definitionToCollection allValues];
+  allValues = [(NSMutableDictionary *)self->_lock_definitionToCollection allValues];
   [(NSMutableDictionary *)self->_lock_definitionToCollection removeAllObjects];
   [(PFOSUnfairLock *)self->_lock unlock];
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = v3;
+  v4 = allValues;
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
@@ -690,8 +690,8 @@ void __77__PBFPosterSnapshotCollection__snapshotRequestForContext_completedWithE
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(NSMutableDictionary *)v3 objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  objectEnumerator = [(NSMutableDictionary *)v3 objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -703,14 +703,14 @@ void __77__PBFPosterSnapshotCollection__snapshotRequestForContext_completedWithE
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v10 + 1) + 8 * v9++) invalidate];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);

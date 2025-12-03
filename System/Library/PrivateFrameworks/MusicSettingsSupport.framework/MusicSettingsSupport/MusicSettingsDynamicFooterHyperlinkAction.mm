@@ -1,5 +1,5 @@
 @interface MusicSettingsDynamicFooterHyperlinkAction
-- (MusicSettingsDynamicFooterHyperlinkAction)initWithTarget:(id)a3 selectorString:(id)a4;
+- (MusicSettingsDynamicFooterHyperlinkAction)initWithTarget:(id)target selectorString:(id)string;
 - (id)target;
 @end
 
@@ -12,18 +12,18 @@
   return WeakRetained;
 }
 
-- (MusicSettingsDynamicFooterHyperlinkAction)initWithTarget:(id)a3 selectorString:(id)a4
+- (MusicSettingsDynamicFooterHyperlinkAction)initWithTarget:(id)target selectorString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  targetCopy = target;
+  stringCopy = string;
   v13.receiver = self;
   v13.super_class = MusicSettingsDynamicFooterHyperlinkAction;
   v8 = [(MusicSettingsDynamicFooterHyperlinkAction *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_target, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_target, targetCopy);
+    v10 = [stringCopy copy];
     selectorString = v9->_selectorString;
     v9->_selectorString = v10;
   }

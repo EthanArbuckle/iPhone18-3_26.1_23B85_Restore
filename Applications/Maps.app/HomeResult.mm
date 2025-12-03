@@ -1,9 +1,9 @@
 @interface HomeResult
 - (BOOL)isCuratedCollectionSectionValid;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isExpiredAtDate:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isExpiredAtDate:(id)date;
 - (GEOExploreGuides)exploreGuides;
-- (HomeResult)initWithResponseResult:(id)a3 responseDate:(id)a4;
+- (HomeResult)initWithResponseResult:(id)result responseDate:(id)date;
 - (NSArray)curatedCollections;
 - (NSDate)expirationDate;
 - (NSString)curatedCollectionSectionName;
@@ -31,47 +31,47 @@
 
 - (GEOExploreGuides)exploreGuides
 {
-  v2 = [(HomeResult *)self _successValue];
-  v3 = [v2 sections];
-  v4 = sub_100030774(v3, &stru_101654650);
+  _successValue = [(HomeResult *)self _successValue];
+  sections = [_successValue sections];
+  v4 = sub_100030774(sections, &stru_101654650);
 
-  v5 = [v4 collectionSuggestionResult];
-  v6 = [v5 exploreGuides];
+  collectionSuggestionResult = [v4 collectionSuggestionResult];
+  exploreGuides = [collectionSuggestionResult exploreGuides];
 
-  return v6;
+  return exploreGuides;
 }
 
 - (NSArray)curatedCollections
 {
-  v2 = [(HomeResult *)self _successValue];
-  v3 = [v2 sections];
-  v4 = sub_100030774(v3, &stru_1016545F0);
+  _successValue = [(HomeResult *)self _successValue];
+  sections = [_successValue sections];
+  v4 = sub_100030774(sections, &stru_1016545F0);
 
-  v5 = [v4 collectionSuggestionResult];
-  v6 = [v5 collections];
-  v7 = sub_100021DB0(v6, &stru_101654630);
+  collectionSuggestionResult = [v4 collectionSuggestionResult];
+  collections = [collectionSuggestionResult collections];
+  v7 = sub_100021DB0(collections, &stru_101654630);
 
   return v7;
 }
 
 - (NSString)curatedCollectionSectionName
 {
-  v2 = [(HomeResult *)self _successValue];
-  v3 = [v2 sections];
-  v4 = sub_100030774(v3, &stru_1016545D0);
+  _successValue = [(HomeResult *)self _successValue];
+  sections = [_successValue sections];
+  v4 = sub_100030774(sections, &stru_1016545D0);
 
-  v5 = [v4 name];
+  name = [v4 name];
 
-  return v5;
+  return name;
 }
 
 - (BOOL)isCuratedCollectionSectionValid
 {
-  v3 = [(HomeResult *)self curatedCollections];
-  if ([v3 count])
+  curatedCollections = [(HomeResult *)self curatedCollections];
+  if ([curatedCollections count])
   {
-    v4 = [(HomeResult *)self curatedCollectionSectionName];
-    v5 = [v4 length] != 0;
+    curatedCollectionSectionName = [(HomeResult *)self curatedCollectionSectionName];
+    v5 = [curatedCollectionSectionName length] != 0;
   }
 
   else
@@ -103,42 +103,42 @@
   return v3;
 }
 
-- (BOOL)isExpiredAtDate:(id)a3
+- (BOOL)isExpiredAtDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HomeResult *)self expirationDate];
-  [v5 timeIntervalSinceDate:v4];
+  dateCopy = date;
+  expirationDate = [(HomeResult *)self expirationDate];
+  [expirationDate timeIntervalSinceDate:dateCopy];
   v7 = v6;
 
   return v7 < 0.0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(HomeResult *)v6 responseResult];
-    v8 = v7;
-    if (v7 == self->_responseResult || [(Result *)v7 isEqual:?])
+    responseResult = [(HomeResult *)v6 responseResult];
+    v8 = responseResult;
+    if (responseResult == self->_responseResult || [(Result *)responseResult isEqual:?])
     {
-      v9 = [(HomeResult *)v6 responseDate];
-      v10 = v9;
-      if (v9 == self->_responseDate)
+      responseDate = [(HomeResult *)v6 responseDate];
+      v10 = responseDate;
+      if (responseDate == self->_responseDate)
       {
         v11 = 1;
       }
 
       else
       {
-        v11 = [(NSDate *)v9 isEqual:?];
+        v11 = [(NSDate *)responseDate isEqual:?];
       }
     }
 
@@ -156,18 +156,18 @@
   return v11;
 }
 
-- (HomeResult)initWithResponseResult:(id)a3 responseDate:(id)a4
+- (HomeResult)initWithResponseResult:(id)result responseDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  dateCopy = date;
   v12.receiver = self;
   v12.super_class = HomeResult;
   v9 = [(HomeResult *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_responseResult, a3);
-    objc_storeStrong(&v10->_responseDate, a4);
+    objc_storeStrong(&v9->_responseResult, result);
+    objc_storeStrong(&v10->_responseDate, date);
   }
 
   return v10;

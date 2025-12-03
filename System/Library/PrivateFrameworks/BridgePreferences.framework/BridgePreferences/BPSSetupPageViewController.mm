@@ -6,9 +6,9 @@
 - (id)_baseIdentifier;
 - (id)localizedInformativeText;
 - (id)localizedTitle;
-- (void)addFollowUpForPageAndDevice:(id)a3 withCompletion:(id)a4;
-- (void)addFollowUpForPageWithCompletion:(id)a3;
-- (void)removeFollowupForPageWithCompletion:(id)a3;
+- (void)addFollowUpForPageAndDevice:(id)device withCompletion:(id)completion;
+- (void)addFollowUpForPageWithCompletion:(id)completion;
+- (void)removeFollowupForPageWithCompletion:(id)completion;
 - (void)updateTitleLabel;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -43,40 +43,40 @@
 
   [(UILabel *)self->_titleLabel setTextAlignment:1];
   [(UILabel *)self->_titleLabel setNumberOfLines:0];
-  v10 = [(BPSSetupPageViewController *)self view];
-  [v10 addSubview:self->_titleLabel];
+  view = [(BPSSetupPageViewController *)self view];
+  [view addSubview:self->_titleLabel];
 
   [(BPSSetupPageViewController *)self updateTitleLabel];
 }
 
 - (void)updateTitleLabel
 {
-  v3 = [(BPSSetupPageViewController *)self titleString];
+  titleString = [(BPSSetupPageViewController *)self titleString];
 
-  if (v3)
+  if (titleString)
   {
     titleLabel = self->_titleLabel;
-    v5 = [(BPSSetupPageViewController *)self titleString];
-    [(UILabel *)titleLabel setText:v5];
+    titleString2 = [(BPSSetupPageViewController *)self titleString];
+    [(UILabel *)titleLabel setText:titleString2];
   }
 
   else
   {
-    v6 = [(BPSSetupPageViewController *)self titleAttributedString];
+    titleAttributedString = [(BPSSetupPageViewController *)self titleAttributedString];
 
-    if (!v6)
+    if (!titleAttributedString)
     {
       goto LABEL_6;
     }
 
     v7 = self->_titleLabel;
-    v5 = [(BPSSetupPageViewController *)self titleAttributedString];
-    [(UILabel *)v7 setAttributedText:v5];
+    titleString2 = [(BPSSetupPageViewController *)self titleAttributedString];
+    [(UILabel *)v7 setAttributedText:titleString2];
   }
 
 LABEL_6:
-  v8 = [(BPSSetupPageViewController *)self view];
-  [v8 setNeedsLayout];
+  view = [(BPSSetupPageViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (CGRect)computedTitleFrame
@@ -106,13 +106,13 @@ LABEL_6:
   v15.receiver = self;
   v15.super_class = BPSSetupPageViewController;
   [(BPSSetupPageViewController *)&v15 viewDidLayoutSubviews];
-  v3 = [(BPSSetupPageViewController *)self view];
-  [v3 bounds];
+  view = [(BPSSetupPageViewController *)self view];
+  [view bounds];
   v5 = v4;
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
 
-  LODWORD(v6) = [(BPSSetupPageViewController *)self contentViewIsInAdjustedScrollView];
+  LODWORD(mainScreen) = [(BPSSetupPageViewController *)self contentViewIsInAdjustedScrollView];
   [(UILabel *)self->_titleLabel sizeThatFits:v5 + -28.0, 1.79769313e308];
   titleLabel = self->_titleLabel;
   UIRectIntegralWithScale();
@@ -125,7 +125,7 @@ LABEL_6:
   v14 = v13;
   v10 = v9 + BPSScreenValueGetRelevantValue(v12);
   v11 = 64.0;
-  if (!v6)
+  if (!mainScreen)
   {
     v11 = 0.0;
   }
@@ -138,15 +138,15 @@ LABEL_6:
   contentView = self->_contentView;
   if (!contentView)
   {
-    v4 = [(BPSSetupPageViewController *)self view];
+    view = [(BPSSetupPageViewController *)self view];
     v5 = objc_alloc(MEMORY[0x277D75D18]);
-    [v4 bounds];
+    [view bounds];
     v6 = [v5 initWithFrame:?];
     v7 = self->_contentView;
     self->_contentView = v6;
 
     [(UIView *)self->_contentView addSubview:self->_titleLabel];
-    [v4 addSubview:self->_contentView];
+    [view addSubview:self->_contentView];
 
     contentView = self->_contentView;
   }
@@ -185,10 +185,10 @@ LABEL_6:
 - (id)_baseIdentifier
 {
   v3 = +[BPSFollowUpController baseDomainIdentifier];
-  v4 = [(BPSSetupPageViewController *)self followUpIdentifier];
-  if (v4)
+  followUpIdentifier = [(BPSSetupPageViewController *)self followUpIdentifier];
+  if (followUpIdentifier)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v3, v4];
+    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v3, followUpIdentifier];
   }
 
   else
@@ -199,17 +199,17 @@ LABEL_6:
   return v5;
 }
 
-- (void)addFollowUpForPageAndDevice:(id)a3 withCompletion:(id)a4
+- (void)addFollowUpForPageAndDevice:(id)device withCompletion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BPSSetupPageViewController *)self _baseIdentifier];
-  if (v8)
+  deviceCopy = device;
+  completionCopy = completion;
+  _baseIdentifier = [(BPSSetupPageViewController *)self _baseIdentifier];
+  if (_baseIdentifier)
   {
-    v18 = v7;
-    v9 = [v6 valueForProperty:*MEMORY[0x277D2BC30]];
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v8, v9];
+    v18 = completionCopy;
+    v9 = [deviceCopy valueForProperty:*MEMORY[0x277D2BC30]];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", _baseIdentifier, v9];
     v11 = bps_setup_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -222,19 +222,19 @@ LABEL_6:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v24 = v6;
+      v24 = deviceCopy;
       _os_log_impl(&dword_241E74000, v12, OS_LOG_TYPE_DEFAULT, "...for device: %{public}@", buf, 0xCu);
     }
 
     v21[0] = @"title";
-    v13 = [(BPSSetupPageViewController *)self localizedTitle];
-    v22[0] = v13;
+    localizedTitle = [(BPSSetupPageViewController *)self localizedTitle];
+    v22[0] = localizedTitle;
     v21[1] = @"description";
-    v14 = [(BPSSetupPageViewController *)self localizedInformativeText];
-    v22[1] = v14;
+    localizedInformativeText = [(BPSSetupPageViewController *)self localizedInformativeText];
+    v22[1] = localizedInformativeText;
     v21[2] = @"followUpActions";
-    v15 = [(BPSSetupPageViewController *)self followUpActions];
-    v22[2] = v15;
+    followUpActions = [(BPSSetupPageViewController *)self followUpActions];
+    v22[2] = followUpActions;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:3];
     v17 = [BPSFollowUpAttributes attributeWithOptions:v16];
 
@@ -242,7 +242,7 @@ LABEL_6:
     v19[1] = 3221225472;
     v19[2] = __73__BPSSetupPageViewController_addFollowUpForPageAndDevice_withCompletion___block_invoke;
     v19[3] = &unk_278D23430;
-    v7 = v18;
+    completionCopy = v18;
     v20 = v18;
     [BPSFollowUpController addFollowUpForIdentifier:v10 withAttributes:v17 withCompletion:v19];
   }
@@ -269,31 +269,31 @@ uint64_t __73__BPSSetupPageViewController_addFollowUpForPageAndDevice_withComple
   return result;
 }
 
-- (void)addFollowUpForPageWithCompletion:(id)a3
+- (void)addFollowUpForPageWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BPSSetupPageViewController *)self _baseIdentifier];
+  completionCopy = completion;
+  _baseIdentifier = [(BPSSetupPageViewController *)self _baseIdentifier];
   v6 = bps_setup_log();
   v7 = v6;
-  if (v5)
+  if (_baseIdentifier)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = v5;
+      v17 = _baseIdentifier;
       _os_log_impl(&dword_241E74000, v7, OS_LOG_TYPE_DEFAULT, "Add Global FollowUp for %{public}@", buf, 0xCu);
     }
 
     v14[0] = @"title";
-    v8 = [(BPSSetupPageViewController *)self localizedTitle];
-    v15[0] = v8;
+    localizedTitle = [(BPSSetupPageViewController *)self localizedTitle];
+    v15[0] = localizedTitle;
     v14[1] = @"description";
-    v9 = [(BPSSetupPageViewController *)self localizedInformativeText];
-    v15[1] = v9;
+    localizedInformativeText = [(BPSSetupPageViewController *)self localizedInformativeText];
+    v15[1] = localizedInformativeText;
     v14[2] = @"followUpActions";
-    v10 = [(BPSSetupPageViewController *)self followUpActions];
-    v15[2] = v10;
+    followUpActions = [(BPSSetupPageViewController *)self followUpActions];
+    v15[2] = followUpActions;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
     v7 = [BPSFollowUpAttributes attributeWithOptions:v11];
 
@@ -301,8 +301,8 @@ uint64_t __73__BPSSetupPageViewController_addFollowUpForPageAndDevice_withComple
     v12[1] = 3221225472;
     v12[2] = __63__BPSSetupPageViewController_addFollowUpForPageWithCompletion___block_invoke;
     v12[3] = &unk_278D23430;
-    v13 = v4;
-    [BPSFollowUpController addFollowUpForIdentifier:v5 withAttributes:v7 withCompletion:v12];
+    v13 = completionCopy;
+    [BPSFollowUpController addFollowUpForIdentifier:_baseIdentifier withAttributes:v7 withCompletion:v12];
   }
 
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -323,19 +323,19 @@ uint64_t __63__BPSSetupPageViewController_addFollowUpForPageWithCompletion___blo
   return result;
 }
 
-- (void)removeFollowupForPageWithCompletion:(id)a3
+- (void)removeFollowupForPageWithCompletion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BPSSetupPageViewController *)self followUpIdentifier];
+  completionCopy = completion;
+  followUpIdentifier = [(BPSSetupPageViewController *)self followUpIdentifier];
   v6 = bps_setup_log();
   v7 = v6;
-  if (v5)
+  if (followUpIdentifier)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v11 = v5;
+      v11 = followUpIdentifier;
       _os_log_impl(&dword_241E74000, v7, OS_LOG_TYPE_DEFAULT, "Remove identifier %{public}@", buf, 0xCu);
     }
 
@@ -343,8 +343,8 @@ uint64_t __63__BPSSetupPageViewController_addFollowUpForPageWithCompletion___blo
     v8[1] = 3221225472;
     v8[2] = __66__BPSSetupPageViewController_removeFollowupForPageWithCompletion___block_invoke;
     v8[3] = &unk_278D23430;
-    v9 = v4;
-    [BPSFollowUpController removeFollowUpForIdentifier:v5 withCompletion:v8];
+    v9 = completionCopy;
+    [BPSFollowUpController removeFollowUpForIdentifier:followUpIdentifier withCompletion:v8];
     v7 = v9;
   }
 

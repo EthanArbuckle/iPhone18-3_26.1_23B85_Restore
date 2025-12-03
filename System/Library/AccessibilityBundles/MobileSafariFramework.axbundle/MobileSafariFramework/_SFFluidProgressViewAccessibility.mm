@@ -1,32 +1,32 @@
 @interface _SFFluidProgressViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (CGRect)_progressBarBoundsForValue:(double)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (CGRect)_progressBarBoundsForValue:(double)value;
 - (void)_axCheckProgress;
 - (void)_axHandleProgressComplete;
-- (void)_axHandleProgressStart:(id)a3;
-- (void)_finishProgressBarWithDuration:(double)a3;
-- (void)fluidProgressController:(id)a3 setProgressToCurrentPosition:(id)a4;
-- (void)fluidProgressController:(id)a3 updateFluidProgressBar:(id)a4 completion:(id)a5;
+- (void)_axHandleProgressStart:(id)start;
+- (void)_finishProgressBarWithDuration:(double)duration;
+- (void)fluidProgressController:(id)controller setProgressToCurrentPosition:(id)position;
+- (void)fluidProgressController:(id)controller updateFluidProgressBar:(id)bar completion:(id)completion;
 @end
 
 @implementation _SFFluidProgressViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_SFFluidProgressView" hasInstanceMethod:@"fluidProgressController:setProgressToCurrentPosition:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"_SFFluidProgressView" hasInstanceMethod:@"fluidProgressControllerFinishProgressBar:animateFillFade:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"_SFFluidProgressView" hasInstanceMethod:@"fluidProgressController:startFluidProgressBar:animateFillFade:" withFullSignature:{"v", "@", "@", "B", 0}];
-  [v3 validateClass:@"_SFFluidProgressView" hasInstanceMethod:@"_finishProgressBarWithDuration:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"_SFFluidProgressView" hasInstanceMethod:@"fluidProgressController:updateFluidProgressBar:completion:" withFullSignature:{"v", "@", "@", "@?", 0}];
-  [v3 validateClass:@"WBSFluidProgressState"];
-  [v3 validateClass:@"_SFFluidProgressView" hasInstanceVariable:@"_clippingView" withType:"UIView"];
-  [v3 validateClass:@"WBSFluidProgressState" hasInstanceMethod:@"fluidProgressValue" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"WBSFluidProgressState" hasInstanceMethod:@"hasCompletedLoad" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"_SFFluidProgressView" hasInstanceMethod:@"_progressBarBoundsForValue:" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", "d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_SFFluidProgressView" hasInstanceMethod:@"fluidProgressController:setProgressToCurrentPosition:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"_SFFluidProgressView" hasInstanceMethod:@"fluidProgressControllerFinishProgressBar:animateFillFade:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"_SFFluidProgressView" hasInstanceMethod:@"fluidProgressController:startFluidProgressBar:animateFillFade:" withFullSignature:{"v", "@", "@", "B", 0}];
+  [validationsCopy validateClass:@"_SFFluidProgressView" hasInstanceMethod:@"_finishProgressBarWithDuration:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"_SFFluidProgressView" hasInstanceMethod:@"fluidProgressController:updateFluidProgressBar:completion:" withFullSignature:{"v", "@", "@", "@?", 0}];
+  [validationsCopy validateClass:@"WBSFluidProgressState"];
+  [validationsCopy validateClass:@"_SFFluidProgressView" hasInstanceVariable:@"_clippingView" withType:"UIView"];
+  [validationsCopy validateClass:@"WBSFluidProgressState" hasInstanceMethod:@"fluidProgressValue" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"WBSFluidProgressState" hasInstanceMethod:@"hasCompletedLoad" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"_SFFluidProgressView" hasInstanceMethod:@"_progressBarBoundsForValue:" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", "d", 0}];
 }
 
-- (CGRect)_progressBarBoundsForValue:(double)a3
+- (CGRect)_progressBarBoundsForValue:(double)value
 {
   v24 = *MEMORY[0x29EDCA608];
   v21.receiver = self;
@@ -36,21 +36,21 @@
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  if ([(_SFFluidProgressViewAccessibility *)self _accessibilityViewIsVisible]&& vabdd_f64(*&_progressBarBoundsForValue__LastProgressValue, a3) > 0.05)
+  if ([(_SFFluidProgressViewAccessibility *)self _accessibilityViewIsVisible]&& vabdd_f64(*&_progressBarBoundsForValue__LastProgressValue, value) > 0.05)
   {
     v13 = AXLogCommon();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v23 = a3;
+      valueCopy = value;
       _os_log_impl(&dword_29BFCD000, v13, OS_LOG_TYPE_INFO, "Sending fluid progress notification in progressBar: %f", buf, 0xCu);
     }
 
     v14 = *MEMORY[0x29EDC75E8];
-    v15 = [MEMORY[0x29EDBA070] numberWithDouble:a3];
+    v15 = [MEMORY[0x29EDBA070] numberWithDouble:value];
     UIAccessibilityPostNotification(v14, v15);
 
-    _progressBarBoundsForValue__LastProgressValue = *&a3;
+    _progressBarBoundsForValue__LastProgressValue = *&value;
   }
 
   v16 = *MEMORY[0x29EDCA608];
@@ -65,7 +65,7 @@
   return result;
 }
 
-- (void)_finishProgressBarWithDuration:(double)a3
+- (void)_finishProgressBarWithDuration:(double)duration
 {
   v13 = *MEMORY[0x29EDCA608];
   v8.receiver = self;
@@ -76,11 +76,11 @@
     v5 = AXLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [MEMORY[0x29EDBA070] numberWithDouble:a3];
+      v6 = [MEMORY[0x29EDBA070] numberWithDouble:duration];
       *buf = 138412546;
       v10 = v6;
       v11 = 2112;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_29BFCD000, v5, OS_LOG_TYPE_INFO, "Progress bar done after: %@ %@", buf, 0x16u);
     }
 
@@ -90,16 +90,16 @@
   v7 = *MEMORY[0x29EDCA608];
 }
 
-- (void)fluidProgressController:(id)a3 updateFluidProgressBar:(id)a4 completion:(id)a5
+- (void)fluidProgressController:(id)controller updateFluidProgressBar:(id)bar completion:(id)completion
 {
-  v8 = a4;
+  barCopy = bar;
   v13.receiver = self;
   v13.super_class = _SFFluidProgressViewAccessibility;
-  [(_SFFluidProgressViewAccessibility *)&v13 fluidProgressController:a3 updateFluidProgressBar:v8 completion:a5];
-  [v8 fluidProgressValue];
+  [(_SFFluidProgressViewAccessibility *)&v13 fluidProgressController:controller updateFluidProgressBar:barCopy completion:completion];
+  [barCopy fluidProgressValue];
   if (v9 > 0.0 && [(_SFFluidProgressViewAccessibility *)self _accessibilityViewIsVisible])
   {
-    [(_SFFluidProgressViewAccessibility *)self _axHandleProgressStart:v8];
+    [(_SFFluidProgressViewAccessibility *)self _axHandleProgressStart:barCopy];
     v10 = AXLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -108,7 +108,7 @@
     }
   }
 
-  else if ([v8 safeBoolForKey:@"hasCompletedLoad"])
+  else if ([barCopy safeBoolForKey:@"hasCompletedLoad"])
   {
     [(_SFFluidProgressViewAccessibility *)self _accessibilitySetBoolValue:1 forKey:@"StartedFluidProgress"];
     v11 = AXLogCommon();
@@ -154,9 +154,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v12 = [v4 hasCanceledLoad];
+  hasCanceledLoad = [v4 hasCanceledLoad];
 
-  if (v12)
+  if (hasCanceledLoad)
   {
     goto LABEL_8;
   }
@@ -176,13 +176,13 @@ LABEL_8:
     v15 = [MEMORY[0x29EDBA070] numberWithDouble:v8];
     UIAccessibilityPostNotification(v14, v15);
 
-    v16 = [(_SFFluidProgressViewAccessibility *)self _axProgressTimer];
+    _axProgressTimer = [(_SFFluidProgressViewAccessibility *)self _axProgressTimer];
     v17[0] = MEMORY[0x29EDCA5F8];
     v17[1] = 3221225472;
     v17[2] = __53___SFFluidProgressViewAccessibility__axCheckProgress__block_invoke;
     v17[3] = &unk_29F2D6938;
     v17[4] = self;
-    [v16 afterDelay:v17 processBlock:0.1];
+    [_axProgressTimer afterDelay:v17 processBlock:0.1];
   }
 
 LABEL_9:
@@ -190,25 +190,25 @@ LABEL_9:
   v11 = *MEMORY[0x29EDCA608];
 }
 
-- (void)_axHandleProgressStart:(id)a3
+- (void)_axHandleProgressStart:(id)start
 {
   v20[2] = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  startCopy = start;
   if ([(_SFFluidProgressViewAccessibility *)self _accessibilityViewIsVisible])
   {
     [(_SFFluidProgressViewAccessibility *)self _accessibilitySetBoolValue:1 forKey:@"StartedFluidProgress"];
     v19[0] = @"progress";
     v5 = MEMORY[0x29EDBA070];
-    [v4 fluidProgressValue];
+    [startCopy fluidProgressValue];
     v6 = [v5 numberWithDouble:?];
     v19[1] = @"url";
     v20[0] = v6;
-    v7 = [v4 loadURL];
-    v8 = v7;
+    loadURL = [startCopy loadURL];
+    v8 = loadURL;
     v9 = &stru_2A2220B98;
-    if (v7)
+    if (loadURL)
     {
-      v9 = v7;
+      v9 = loadURL;
     }
 
     v20[1] = v9;
@@ -217,14 +217,14 @@ LABEL_9:
 
     v11 = *MEMORY[0x29EDC75E8];
     v12 = MEMORY[0x29EDBA070];
-    [v4 fluidProgressValue];
+    [startCopy fluidProgressValue];
     v13 = [v12 numberWithDouble:?];
     UIAccessibilityPostNotification(v11, v13);
 
     v14 = AXLogCommon();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      [v4 fluidProgressValue];
+      [startCopy fluidProgressValue];
       v17 = 134217984;
       v18 = v15;
       _os_log_impl(&dword_29BFCD000, v14, OS_LOG_TYPE_INFO, "Marking fluid progress in start: %f", &v17, 0xCu);
@@ -250,14 +250,14 @@ LABEL_9:
   [(_SFFluidProgressViewAccessibility *)self _accessibilitySetBoolValue:0 forKey:@"StartedFluidProgress"];
 }
 
-- (void)fluidProgressController:(id)a3 setProgressToCurrentPosition:(id)a4
+- (void)fluidProgressController:(id)controller setProgressToCurrentPosition:(id)position
 {
   v17 = *MEMORY[0x29EDCA608];
   v14.receiver = self;
   v14.super_class = _SFFluidProgressViewAccessibility;
-  v6 = a4;
-  [(_SFFluidProgressViewAccessibility *)&v14 fluidProgressController:a3 setProgressToCurrentPosition:v6];
-  [v6 fluidProgressValue];
+  positionCopy = position;
+  [(_SFFluidProgressViewAccessibility *)&v14 fluidProgressController:controller setProgressToCurrentPosition:positionCopy];
+  [positionCopy fluidProgressValue];
   v8 = v7;
 
   v9 = AXLogCommon();

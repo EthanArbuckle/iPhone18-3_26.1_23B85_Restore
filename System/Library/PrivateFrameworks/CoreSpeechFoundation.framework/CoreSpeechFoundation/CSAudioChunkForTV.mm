@@ -1,5 +1,5 @@
 @interface CSAudioChunkForTV
-- (CSAudioChunkForTV)initWithXPCObject:(id)a3;
+- (CSAudioChunkForTV)initWithXPCObject:(id)object;
 - (id)xpcObject;
 @end
 
@@ -32,24 +32,24 @@
   return v3;
 }
 
-- (CSAudioChunkForTV)initWithXPCObject:(id)a3
+- (CSAudioChunkForTV)initWithXPCObject:(id)object
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = CSAudioChunkForTV;
   v5 = [(CSAudioChunkForTV *)&v15 init];
   if (v5)
   {
-    v6 = xpc_dictionary_get_double(v4, "avgPower");
+    v6 = xpc_dictionary_get_double(objectCopy, "avgPower");
     v5->_avgPower = v6;
-    v7 = xpc_dictionary_get_double(v4, "peakPower");
+    v7 = xpc_dictionary_get_double(objectCopy, "peakPower");
     v5->_peakPower = v7;
-    v5->_timeStamp = xpc_dictionary_get_uint64(v4, "timeStamp");
-    v5->_numChannels = xpc_dictionary_get_uint64(v4, "numChannels");
-    v5->_audioFormat = xpc_dictionary_get_uint64(v4, "audioFormat");
-    v5->_streamHandleID = xpc_dictionary_get_uint64(v4, "streamHandleID");
-    v8 = xpc_dictionary_get_array(v4, "packets");
+    v5->_timeStamp = xpc_dictionary_get_uint64(objectCopy, "timeStamp");
+    v5->_numChannels = xpc_dictionary_get_uint64(objectCopy, "numChannels");
+    v5->_audioFormat = xpc_dictionary_get_uint64(objectCopy, "audioFormat");
+    v5->_streamHandleID = xpc_dictionary_get_uint64(objectCopy, "streamHandleID");
+    v8 = xpc_dictionary_get_array(objectCopy, "packets");
     if (v8)
     {
       v9 = objc_alloc(MEMORY[0x1E695DEC8]);

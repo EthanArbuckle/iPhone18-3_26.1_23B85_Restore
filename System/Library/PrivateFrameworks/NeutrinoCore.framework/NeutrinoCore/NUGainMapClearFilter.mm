@@ -6,17 +6,17 @@
 
 - (id)outputImage
 {
-  v3 = [(NUGainMapClearFilter *)self inputGainMap];
-  if (v3)
+  inputGainMap = [(NUGainMapClearFilter *)self inputGainMap];
+  if (inputGainMap)
   {
-    v4 = [(NUGainMapClearFilter *)self inputMatte];
-    if (v4)
+    inputMatte = [(NUGainMapClearFilter *)self inputMatte];
+    if (inputMatte)
     {
-      v5 = v4;
-      v6 = [(NUGainMapClearFilter *)self inputInvertMatte];
-      v7 = [v6 BOOLValue];
+      v5 = inputMatte;
+      inputInvertMatte = [(NUGainMapClearFilter *)self inputInvertMatte];
+      bOOLValue = [inputInvertMatte BOOLValue];
 
-      if (v7)
+      if (bOOLValue)
       {
         __asm { FMOV            V3.4S, #1.0 }
 
@@ -33,33 +33,33 @@
       v17 = v16;
       v19 = v18;
       v21 = v20;
-      [v3 extent];
+      [inputGainMap extent];
       NUCGAffineTransformByMappingFromRectToRect(&v32, v15, v17, v19, v21, v22, v23, v24, v25);
       v31[0] = v32;
       v31[1] = v33;
       v31[2] = v34;
-      v26 = [v5 imageByApplyingTransform:v31];
+      blackImage = [v5 imageByApplyingTransform:v31];
 
-      v27 = [MEMORY[0x1E695F608] componentMultiply];
-      v28 = [v27 applyWithForeground:v26 background:v3];
+      componentMultiply = [MEMORY[0x1E695F608] componentMultiply];
+      v28 = [componentMultiply applyWithForeground:blackImage background:inputGainMap];
 
-      v29 = [v28 _imageByRenderingToIntermediate];
+      _imageByRenderingToIntermediate = [v28 _imageByRenderingToIntermediate];
     }
 
     else
     {
-      v26 = [MEMORY[0x1E695F658] blackImage];
-      [v3 extent];
-      v29 = [v26 imageByCroppingToRect:?];
+      blackImage = [MEMORY[0x1E695F658] blackImage];
+      [inputGainMap extent];
+      _imageByRenderingToIntermediate = [blackImage imageByCroppingToRect:?];
     }
   }
 
   else
   {
-    v29 = 0;
+    _imageByRenderingToIntermediate = 0;
   }
 
-  return v29;
+  return _imageByRenderingToIntermediate;
 }
 
 @end

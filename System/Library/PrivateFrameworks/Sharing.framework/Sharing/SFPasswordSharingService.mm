@@ -5,16 +5,16 @@
 - (BOOL)disabledViaConfig;
 - (SFPasswordSharingService)init;
 - (SFPasswordSharingServiceDelegate)delegate;
-- (id)messageForDisplayName:(id)a3 deviceName:(id)a4 info:(id)a5;
+- (id)messageForDisplayName:(id)name deviceName:(id)deviceName info:(id)info;
 - (int)_runServiceStart;
 - (uint64_t)_sendPasswordReceived;
 - (void)_cleanup;
-- (void)_handleReceivedPassword:(id)a3;
-- (void)_handleSessionStarted:(id)a3;
-- (void)_handleUserNotificationResponse:(int)a3;
-- (void)_passInfoToDelegate:(id)a3;
-- (void)_promptUserWithInfo:(id)a3 message:(id)a4;
-- (void)_receivedObject:(id)a3 flags:(unsigned int)a4;
+- (void)_handleReceivedPassword:(id)password;
+- (void)_handleSessionStarted:(id)started;
+- (void)_handleUserNotificationResponse:(int)response;
+- (void)_passInfoToDelegate:(id)delegate;
+- (void)_promptUserWithInfo:(id)info message:(id)message;
+- (void)_receivedObject:(id)object flags:(unsigned int)flags;
 - (void)_run;
 - (void)_sendPasswordReceived;
 - (void)activate;
@@ -415,10 +415,10 @@ LABEL_10:
   }
 }
 
-- (void)_handleReceivedPassword:(id)a3
+- (void)_handleReceivedPassword:(id)password
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  passwordCopy = password;
   if (gLogCategory_SFPasswordSharingService <= 50 && (gLogCategory_SFPasswordSharingService != -1 || _LogCategory_Initialize()))
   {
     [SFPasswordSharingService _handleReceivedPassword:?];
@@ -461,34 +461,34 @@ LABEL_10:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleSessionStarted:(id)a3
+- (void)_handleSessionStarted:(id)started
 {
-  v8 = a3;
+  startedCopy = started;
   if (gLogCategory_SFPasswordSharingService <= 30 && (gLogCategory_SFPasswordSharingService != -1 || _LogCategory_Initialize()))
   {
-    [SFPasswordSharingService _handleSessionStarted:v8];
+    [SFPasswordSharingService _handleSessionStarted:startedCopy];
   }
 
-  v4 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   shareClock = self->_shareClock;
-  self->_shareClock = v4;
+  self->_shareClock = date;
 
   if (!self->_peer)
   {
-    v6 = [v8 peer];
+    peer = [startedCopy peer];
     peer = self->_peer;
-    self->_peer = v6;
+    self->_peer = peer;
   }
 }
 
-- (void)_handleUserNotificationResponse:(int)a3
+- (void)_handleUserNotificationResponse:(int)response
 {
-  if (a3 == 2)
+  if (response == 2)
   {
     [(SFPasswordSharingService *)self _sendPasswordDeclinedWithError:4294960573];
   }
 
-  else if (a3 == 1)
+  else if (response == 1)
   {
     [(SFPasswordSharingService *)self _passInfoToDelegate:self->_promptedInfo];
     promptedInfo = self->_promptedInfo;
@@ -500,9 +500,9 @@ LABEL_10:
   self->_notification = 0;
 }
 
-- (void)_receivedObject:(id)a3 flags:(unsigned int)a4
+- (void)_receivedObject:(id)object flags:(unsigned int)flags
 {
-  v5 = a3;
+  objectCopy = object;
   v7 = 0;
   Int64Ranged = CFDictionaryGetInt64Ranged();
   if (gLogCategory_SFPasswordSharingService <= 50 && (gLogCategory_SFPasswordSharingService != -1 || _LogCategory_Initialize()))
@@ -512,7 +512,7 @@ LABEL_10:
 
   if (Int64Ranged == 5)
   {
-    [(SFPasswordSharingService *)self _handleReceivedPassword:v5];
+    [(SFPasswordSharingService *)self _handleReceivedPassword:objectCopy];
   }
 
   else if (gLogCategory_SFPasswordSharingService <= 60 && (gLogCategory_SFPasswordSharingService != -1 || _LogCategory_Initialize()))
@@ -529,9 +529,9 @@ LABEL_10:
   }
 }
 
-- (void)_passInfoToDelegate:(id)a3
+- (void)_passInfoToDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -540,14 +540,14 @@ LABEL_10:
       [SFPasswordSharingService _passInfoToDelegate:];
     }
 
-    [WeakRetained service:self receivedNetworkInfo:v5];
+    [WeakRetained service:self receivedNetworkInfo:delegateCopy];
   }
 }
 
-- (void)_promptUserWithInfo:(id)a3 message:(id)a4
+- (void)_promptUserWithInfo:(id)info message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  messageCopy = message;
   v8 = SFIsGreenTeaDevice();
   v9 = @"PASSWORD_ACCEPT_PROMPT_TITLE";
   if (v8)
@@ -573,7 +573,7 @@ LABEL_10:
   [(SFUserAlert *)self->_notification setDefaultButtonTitle:v14];
 
   [(SFUserAlert *)self->_notification setDispatchQueue:self->_dispatchQueue];
-  [(SFUserAlert *)self->_notification setMessage:v7];
+  [(SFUserAlert *)self->_notification setMessage:messageCopy];
 
   v15 = SFLocalizedStringForKey(v10);
   [(SFUserAlert *)self->_notification setTitle:v15];
@@ -585,8 +585,8 @@ LABEL_10:
   v18[4] = self;
   [(SFUserAlert *)self->_notification setResponseHandler:v18];
   promptedInfo = self->_promptedInfo;
-  self->_promptedInfo = v6;
-  v17 = v6;
+  self->_promptedInfo = infoCopy;
+  v17 = infoCopy;
 
   [(SFUserAlert *)self->_notification present];
 }
@@ -598,23 +598,23 @@ LABEL_10:
     [SFPasswordSharingService disabledViaConfig];
   }
 
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 isPasswordProximityAutoFillRequestingAllowed];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  isPasswordProximityAutoFillRequestingAllowed = [mEMORY[0x1E69ADFB8] isPasswordProximityAutoFillRequestingAllowed];
 
-  if ((v3 & 1) == 0 && gLogCategory_SFPasswordSharingService <= 30 && (gLogCategory_SFPasswordSharingService != -1 || _LogCategory_Initialize()))
+  if ((isPasswordProximityAutoFillRequestingAllowed & 1) == 0 && gLogCategory_SFPasswordSharingService <= 30 && (gLogCategory_SFPasswordSharingService != -1 || _LogCategory_Initialize()))
   {
     [SFPasswordSharingService disabledViaConfig];
   }
 
-  return v3 ^ 1;
+  return isPasswordProximityAutoFillRequestingAllowed ^ 1;
 }
 
-- (id)messageForDisplayName:(id)a3 deviceName:(id)a4 info:(id)a5
+- (id)messageForDisplayName:(id)name deviceName:(id)deviceName info:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  nameCopy = name;
+  deviceNameCopy = deviceName;
+  infoCopy = info;
+  if (nameCopy)
   {
     if (SFIsGreenTeaDevice())
     {
@@ -628,15 +628,15 @@ LABEL_10:
 
     v11 = MEMORY[0x1E696AEC0];
     v12 = SFLocalizedStringForKey(v10);
-    v13 = [v9 networkName];
-    [v11 stringWithFormat:v12, v7, v13];
+    networkName = [infoCopy networkName];
+    [v11 stringWithFormat:v12, nameCopy, networkName];
   }
 
   else
   {
     v14 = SFIsGreenTeaDevice();
     v15 = MEMORY[0x1E696AEC0];
-    if (v8)
+    if (deviceNameCopy)
     {
       if (v14)
       {
@@ -649,8 +649,8 @@ LABEL_10:
       }
 
       v12 = SFLocalizedStringForKey(v16);
-      v13 = [v9 networkName];
-      [v15 stringWithFormat:v12, v8, v13];
+      networkName = [infoCopy networkName];
+      [v15 stringWithFormat:v12, deviceNameCopy, networkName];
     }
 
     else
@@ -666,8 +666,8 @@ LABEL_10:
       }
 
       v12 = SFLocalizedStringForKey(v17);
-      v13 = [v9 networkName];
-      [v15 stringWithFormat:v12, v13, v20];
+      networkName = [infoCopy networkName];
+      [v15 stringWithFormat:v12, networkName, v20];
     }
   }
   v18 = ;

@@ -9,46 +9,46 @@
   getMPModelObjectClass();
   if (objc_opt_isKindOfClass())
   {
-    v2 = a1;
-    v3 = [v2 relativeModelObjectForStoreLibraryPersonalization];
+    selfCopy = self;
+    relativeModelObjectForStoreLibraryPersonalization = [selfCopy relativeModelObjectForStoreLibraryPersonalization];
     getMPModelGenericObjectClass();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v2;
+      v4 = selfCopy;
       if ([v4 type] == 5)
       {
-        v5 = [v4 playlistEntry];
+        playlistEntry = [v4 playlistEntry];
 
-        v3 = v5;
+        relativeModelObjectForStoreLibraryPersonalization = playlistEntry;
       }
 
-      if (!v3)
+      if (!relativeModelObjectForStoreLibraryPersonalization)
       {
-        v3 = [v4 anyObject];
+        relativeModelObjectForStoreLibraryPersonalization = [v4 anyObject];
       }
     }
 
     else
     {
       getMPModelLibraryPinClass();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && !v3)
+      if ((objc_opt_isKindOfClass() & 1) != 0 && !relativeModelObjectForStoreLibraryPersonalization)
       {
-        v3 = [v2 anyObject];
+        relativeModelObjectForStoreLibraryPersonalization = [selfCopy anyObject];
       }
     }
 
-    if (!v3)
+    if (!relativeModelObjectForStoreLibraryPersonalization)
     {
-      v3 = v2;
+      relativeModelObjectForStoreLibraryPersonalization = selfCopy;
     }
   }
 
   else
   {
-    v3 = 0;
+    relativeModelObjectForStoreLibraryPersonalization = 0;
   }
 
-  return v3;
+  return relativeModelObjectForStoreLibraryPersonalization;
 }
 
 @end

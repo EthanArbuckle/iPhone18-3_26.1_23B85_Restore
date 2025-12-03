@@ -1,5 +1,5 @@
 @interface NIServerRangingAuthSession
-- (NIServerRangingAuthSession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5;
+- (NIServerRangingAuthSession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error;
 - (id).cxx_construct;
 - (id)configure;
 - (id)disableAllServices;
@@ -7,17 +7,17 @@
 - (id)pause;
 - (id)run;
 - (void)invalidate;
-- (void)wifiRangingRangeError:(const int *)a3;
-- (void)wifiRangingRangeResults:(const void *)a3;
-- (void)wifiRangingReadiness:(const int *)a3;
+- (void)wifiRangingRangeError:(const int *)error;
+- (void)wifiRangingRangeResults:(const void *)results;
+- (void)wifiRangingReadiness:(const int *)readiness;
 @end
 
 @implementation NIServerRangingAuthSession
 
-- (NIServerRangingAuthSession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5
+- (NIServerRangingAuthSession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  managerCopy = manager;
+  configurationCopy = configuration;
   v11 = objc_opt_class();
   if (v11 != objc_opt_class())
   {
@@ -27,20 +27,20 @@
 
   v22.receiver = self;
   v22.super_class = NIServerRangingAuthSession;
-  v12 = [(NIServerBaseSession *)&v22 initWithResourcesManager:v9 configuration:v10 error:a5];
+  v12 = [(NIServerBaseSession *)&v22 initWithResourcesManager:managerCopy configuration:configurationCopy error:error];
   if (v12)
   {
-    v13 = [v9 clientConnectionQueue];
+    clientConnectionQueue = [managerCopy clientConnectionQueue];
     v14 = *(v12 + 8);
-    *(v12 + 8) = v13;
+    *(v12 + 8) = clientConnectionQueue;
 
-    v15 = [v10 copy];
+    v15 = [configurationCopy copy];
     v16 = *(v12 + 17);
     *(v12 + 17) = v15;
 
-    if (v9)
+    if (managerCopy)
     {
-      [v9 protobufLogger];
+      [managerCopy protobufLogger];
       v17 = v21;
     }
 
@@ -66,12 +66,12 @@
 {
   if (self->_wifiRangingSession.__ptr_)
   {
-    v3 = [(NIServerRangingAuthSession *)self disableAllServices];
+    disableAllServices = [(NIServerRangingAuthSession *)self disableAllServices];
     v4 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v7 = v3;
+      v7 = disableAllServices;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "#ses-secure-ranging,Invalidate. Error: %@", buf, 0xCu);
     }
   }
@@ -122,15 +122,15 @@
 
   v12.receiver = self;
   v12.super_class = NIServerRangingAuthSession;
-  v3 = [(NIServerBaseSession *)&v12 resourcesManager];
-  if ([v3 entitlementGranted:8])
+  resourcesManager = [(NIServerBaseSession *)&v12 resourcesManager];
+  if ([resourcesManager entitlementGranted:8])
   {
-    v4 = self;
-    v5 = [v3 serverSessionIdentifier];
-    v6 = [v5 UUIDString];
+    selfCopy = self;
+    serverSessionIdentifier = [resourcesManager serverSessionIdentifier];
+    uUIDString = [serverSessionIdentifier UUIDString];
 
-    v7 = v6;
-    sub_100004A08(&__p, [v6 UTF8String]);
+    v7 = uUIDString;
+    sub_100004A08(&__p, [uUIDString UTF8String]);
     operator new();
   }
 
@@ -151,16 +151,16 @@
 {
   v20.receiver = self;
   v20.super_class = NIServerRangingAuthSession;
-  v3 = [(NIServerBaseSession *)&v20 resourcesManager];
-  v4 = [v3 lifecycleSupervisor];
-  [v4 runWithConfigurationCalled];
+  resourcesManager = [(NIServerBaseSession *)&v20 resourcesManager];
+  lifecycleSupervisor = [resourcesManager lifecycleSupervisor];
+  [lifecycleSupervisor runWithConfigurationCalled];
 
   v5 = +[NSData data];
   secureRangingKey = self->_secureRangingKey;
   self->_secureRangingKey = v5;
 
-  v7 = [(NIRangingAuthConfiguration *)self->_configuration peerToken];
-  v8 = sub_1003005A0(v7);
+  peerToken = [(NIRangingAuthConfiguration *)self->_configuration peerToken];
+  v8 = sub_1003005A0(peerToken);
 
   if (v8)
   {
@@ -170,9 +170,9 @@
       v10 = [v8 objectForKeyedSubscript:&off_1009C3E18];
       if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v11 = [(NIRangingAuthConfiguration *)self->_configuration peerToken];
+        peerToken2 = [(NIRangingAuthConfiguration *)self->_configuration peerToken];
         peerToken = self->_peerToken;
-        self->_peerToken = v11;
+        self->_peerToken = peerToken2;
 
         objc_storeStrong(&self->_peerMacAddress, v9);
         objc_storeStrong(&self->_secureRangingKey, v10);
@@ -197,12 +197,12 @@
           sub_1004A4D44();
         }
 
-        v15 = [v3 remote];
+        remote = [resourcesManager remote];
         v21 = NSLocalizedDescriptionKey;
         v22 = @"Failed to start WiFi service. session is nil";
         v16 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
         v17 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:v16];
-        [v15 uwbSessionDidFailWithError:v17];
+        [remote uwbSessionDidFailWithError:v17];
 
         v14 = 0;
       }
@@ -239,25 +239,25 @@
 
 - (id)pause
 {
-  v3 = [(NIServerRangingAuthSession *)self disableAllServices];
+  disableAllServices = [(NIServerRangingAuthSession *)self disableAllServices];
   v7.receiver = self;
   v7.super_class = NIServerRangingAuthSession;
-  v4 = [(NIServerBaseSession *)&v7 resourcesManager];
-  v5 = [v4 lifecycleSupervisor];
-  [v5 pauseCalled];
+  resourcesManager = [(NIServerBaseSession *)&v7 resourcesManager];
+  lifecycleSupervisor = [resourcesManager lifecycleSupervisor];
+  [lifecycleSupervisor pauseCalled];
 
-  return v3;
+  return disableAllServices;
 }
 
-- (void)wifiRangingRangeResults:(const void *)a3
+- (void)wifiRangingRangeResults:(const void *)results
 {
   v5 = [[NINearbyObject alloc] initWithToken:self->_peerToken];
   __p = 0;
   v36 = 0;
   v37 = 0;
-  v7 = *a3;
+  v7 = *results;
   v32 = v5;
-  if (*a3 != *(a3 + 1))
+  if (*results != *(results + 1))
   {
     *&v6 = 136315138;
     v31 = v6;
@@ -421,9 +421,9 @@
   [(NIServerRangingAuthSession *)self invalidate];
   v33.receiver = self;
   v33.super_class = NIServerRangingAuthSession;
-  v29 = [(NIServerBaseSession *)&v33 invalidationHandler];
+  invalidationHandler = [(NIServerBaseSession *)&v33 invalidationHandler];
   v30 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10008 userInfo:0];
-  (v29)[2](v29, v30);
+  (invalidationHandler)[2](invalidationHandler, v30);
 
   if (__p)
   {
@@ -432,9 +432,9 @@
   }
 }
 
-- (void)wifiRangingRangeError:(const int *)a3
+- (void)wifiRangingRangeError:(const int *)error
 {
-  sub_100040B10(*a3, __p);
+  sub_100040B10(*error, __p);
   if (v16 >= 0)
   {
     v4 = __p;
@@ -479,12 +479,12 @@
   }
 }
 
-- (void)wifiRangingReadiness:(const int *)a3
+- (void)wifiRangingReadiness:(const int *)readiness
 {
   v4 = qword_1009F9820;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100040B4C(*a3, __p);
+    sub_100040B4C(*readiness, __p);
     if (v7 >= 0)
     {
       v5 = __p;

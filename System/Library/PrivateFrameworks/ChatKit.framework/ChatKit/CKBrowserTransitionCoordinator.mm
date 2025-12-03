@@ -1,9 +1,9 @@
 @interface CKBrowserTransitionCoordinator
-- (BOOL)_shouldRestrictToPortraitOrientationForPlugin:(id)a3;
+- (BOOL)_shouldRestrictToPortraitOrientationForPlugin:(id)plugin;
 - (BOOL)isHostingRemoteKeyboardView;
 - (BOOL)isPresentingFullScreenModal;
 - (BOOL)shouldAlwaysShowAppTitle;
-- (BOOL)updateBrowserSessionForPlugin:(id)a3 datasource:(id)a4;
+- (BOOL)updateBrowserSessionForPlugin:(id)plugin datasource:(id)datasource;
 - (BOOL)usePresentationWindowDuringTransition;
 - (BOOL)wasCurrentBrowserExpanded;
 - (CGRect)cachedCompactFrame;
@@ -16,24 +16,24 @@
 - (id)appIconOverride;
 - (id)appTitleOverride;
 - (id)modalPresentationViewController;
-- (id)requestOwnershipOfBrowserForConsumer:(int64_t)a3;
+- (id)requestOwnershipOfBrowserForConsumer:(int64_t)consumer;
 - (id)transitionViewController;
-- (void)dismissCurrentFullScreenModalAnimated:(BOOL)a3 completion:(id)a4;
-- (void)expandedAppViewControllerDidTransitionFromOrientation:(int64_t)a3 toOrientation:(int64_t)a4;
-- (void)presentPluginFullScreenModal:(id)a3 datasource:(id)a4 preferredContentSize:(CGSize)a5 animated:(BOOL)a6 completion:(id)a7;
-- (void)releaseOwnershipOfBrowserForConsumer:(int64_t)a3;
-- (void)setCurrentBrowser:(id)a3;
-- (void)setCurrentConsumer:(int64_t)a3;
-- (void)setExpanded:(BOOL)a3 withReason:(int64_t)a4;
-- (void)updateBrowser:(id)a3;
-- (void)updateSupportedInterfaceOrientationsOfAppWindow:(id)a3 forPlugin:(id)a4;
+- (void)dismissCurrentFullScreenModalAnimated:(BOOL)animated completion:(id)completion;
+- (void)expandedAppViewControllerDidTransitionFromOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation;
+- (void)presentPluginFullScreenModal:(id)modal datasource:(id)datasource preferredContentSize:(CGSize)size animated:(BOOL)animated completion:(id)completion;
+- (void)releaseOwnershipOfBrowserForConsumer:(int64_t)consumer;
+- (void)setCurrentBrowser:(id)browser;
+- (void)setCurrentConsumer:(int64_t)consumer;
+- (void)setExpanded:(BOOL)expanded withReason:(int64_t)reason;
+- (void)updateBrowser:(id)browser;
+- (void)updateSupportedInterfaceOrientationsOfAppWindow:(id)window forPlugin:(id)plugin;
 @end
 
 @implementation CKBrowserTransitionCoordinator
 
 - (BOOL)wasCurrentBrowserExpanded
 {
-  v3 = [(CKBrowserTransitionCoordinator *)self currentBrowser];
+  currentBrowser = [(CKBrowserTransitionCoordinator *)self currentBrowser];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -41,10 +41,10 @@
     return 1;
   }
 
-  v5 = [(CKBrowserTransitionCoordinator *)self currentBrowser];
-  v6 = [v5 wasExpandedPresentation];
+  currentBrowser2 = [(CKBrowserTransitionCoordinator *)self currentBrowser];
+  wasExpandedPresentation = [currentBrowser2 wasExpandedPresentation];
 
-  return v6;
+  return wasExpandedPresentation;
 }
 
 - (BOOL)isHostingRemoteKeyboardView
@@ -54,10 +54,10 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 windows];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  windows = [mEMORY[0x1E69DC668] windows];
 
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [windows countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -67,7 +67,7 @@
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(windows);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
@@ -79,7 +79,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [windows countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v4)
       {
         continue;
@@ -91,7 +91,7 @@
 
 LABEL_11:
 
-  v8 = [v4 firstResponder];
+  firstResponder = [v4 firstResponder];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -100,13 +100,13 @@ LABEL_11:
 
 - (BOOL)usePresentationWindowDuringTransition
 {
-  v2 = [(CKBrowserTransitionCoordinator *)self presentingViewController];
-  v3 = [v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  presentingViewController = [(CKBrowserTransitionCoordinator *)self presentingViewController];
+  traitCollection = [presentingViewController traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   v5 = CKIsRunningInMacCatalyst();
   result = 0;
-  if (!v5 && v4 != 6)
+  if (!v5 && userInterfaceIdiom != 6)
   {
     return !IMIsRunningIniMessageAppsViewService() && !IMIsRunningIniMessageAppExtension() && CKIsRunningInInCallService() == 0;
   }
@@ -116,10 +116,10 @@ LABEL_11:
 
 - (id)modalPresentationViewController
 {
-  v3 = [(CKBrowserTransitionCoordinator *)self transitionViewController];
+  transitionViewController = [(CKBrowserTransitionCoordinator *)self transitionViewController];
   if ([(CKBrowserTransitionCoordinator *)self shouldPresentModalFromPresentingViewController])
   {
-    v4 = [(CKBrowserTransitionCoordinator *)self presentingViewController];
+    presentingViewController = [(CKBrowserTransitionCoordinator *)self presentingViewController];
   }
 
   else
@@ -129,61 +129,61 @@ LABEL_11:
       goto LABEL_6;
     }
 
-    v5 = [(CKBrowserTransitionCoordinator *)self modalAppWindow];
-    v4 = [v5 rootViewController];
+    modalAppWindow = [(CKBrowserTransitionCoordinator *)self modalAppWindow];
+    presentingViewController = [modalAppWindow rootViewController];
 
-    v3 = v5;
+    transitionViewController = modalAppWindow;
   }
 
-  v3 = v4;
+  transitionViewController = presentingViewController;
 LABEL_6:
 
-  return v3;
+  return transitionViewController;
 }
 
 - (id)transitionViewController
 {
-  if (-[CKBrowserTransitionCoordinator usePresentationWindowDuringTransition](self, "usePresentationWindowDuringTransition") || (-[CKBrowserTransitionCoordinator delegate](self, "delegate"), v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_opt_respondsToSelector(), v3, (v4 & 1) == 0) || (-[CKBrowserTransitionCoordinator delegate](self, "delegate"), v5 = objc_claimAutoreleasedReturnValue(), [v5 transitionsPresentationViewController], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "__ck_topViewController"), v7 = objc_claimAutoreleasedReturnValue(), v6, v5, !v7))
+  if (-[CKBrowserTransitionCoordinator usePresentationWindowDuringTransition](self, "usePresentationWindowDuringTransition") || (-[CKBrowserTransitionCoordinator delegate](self, "delegate"), v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_opt_respondsToSelector(), v3, (v4 & 1) == 0) || (-[CKBrowserTransitionCoordinator delegate](self, "delegate"), v5 = objc_claimAutoreleasedReturnValue(), [v5 transitionsPresentationViewController], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "__ck_topViewController"), rootViewController = objc_claimAutoreleasedReturnValue(), v6, v5, !rootViewController))
   {
-    v8 = [(CKBrowserTransitionCoordinator *)self appWindow];
-    v7 = [v8 rootViewController];
+    appWindow = [(CKBrowserTransitionCoordinator *)self appWindow];
+    rootViewController = [appWindow rootViewController];
 
-    if (!v7)
+    if (!rootViewController)
     {
-      v9 = [MEMORY[0x1E69DD2E8] keyWindow];
-      v7 = [v9 rootViewController];
+      keyWindow = [MEMORY[0x1E69DD2E8] keyWindow];
+      rootViewController = [keyWindow rootViewController];
     }
   }
 
-  return v7;
+  return rootViewController;
 }
 
-- (BOOL)updateBrowserSessionForPlugin:(id)a3 datasource:(id)a4
+- (BOOL)updateBrowserSessionForPlugin:(id)plugin datasource:(id)datasource
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [v8 isEqualToString:*MEMORY[0x1E69A69A8]];
+  pluginCopy = plugin;
+  datasourceCopy = datasource;
+  identifier = [pluginCopy identifier];
+  v9 = [identifier isEqualToString:*MEMORY[0x1E69A69A8]];
 
-  v10 = [(CKBrowserTransitionCoordinator *)self appWindow];
-  [(CKBrowserTransitionCoordinator *)self updateSupportedInterfaceOrientationsOfAppWindow:v10 forPlugin:v6];
+  appWindow = [(CKBrowserTransitionCoordinator *)self appWindow];
+  [(CKBrowserTransitionCoordinator *)self updateSupportedInterfaceOrientationsOfAppWindow:appWindow forPlugin:pluginCopy];
 
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [v6 identifier];
+      identifier2 = [pluginCopy identifier];
       v25 = 138412290;
-      v26 = v12;
+      v26 = identifier2;
       _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "updateBrowserSessionForPlugin - %@", &v25, 0xCu);
     }
   }
 
-  v13 = [(CKBrowserTransitionCoordinator *)self conversation];
-  v14 = [v13 recipientStrings];
-  v15 = [v6 shouldShowForRecipients:v14];
+  conversation = [(CKBrowserTransitionCoordinator *)self conversation];
+  recipientStrings = [conversation recipientStrings];
+  v15 = [pluginCopy shouldShowForRecipients:recipientStrings];
 
   if (!v15)
   {
@@ -196,8 +196,8 @@ LABEL_6:
     {
       [(CKBrowserTransitionCoordinator *)self setCachedCompactFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
       v16 = +[CKBalloonPluginManager sharedInstance];
-      v22 = [v6 identifier];
-      v17 = [v16 viewControllerForPluginIdentifier:v22 dataSource:v7];
+      identifier3 = [pluginCopy identifier];
+      v17 = [v16 viewControllerForPluginIdentifier:identifier3 dataSource:datasourceCopy];
 
       goto LABEL_14;
     }
@@ -207,20 +207,20 @@ LABEL_6:
       v18 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [v6 identifier];
-        v20 = [(CKBrowserTransitionCoordinator *)self currentConsumer];
-        if (v20 > 3)
+        identifier4 = [pluginCopy identifier];
+        currentConsumer = [(CKBrowserTransitionCoordinator *)self currentConsumer];
+        if (currentConsumer > 3)
         {
           v21 = 0;
         }
 
         else
         {
-          v21 = off_1E72F6A10[v20];
+          v21 = off_1E72F6A10[currentConsumer];
         }
 
         v25 = 138412546;
-        v26 = v19;
+        v26 = identifier4;
         v27 = 2112;
         v28 = v21;
         _os_log_impl(&dword_19020E000, v18, OS_LOG_TYPE_INFO, "Request to update browser session for plugin %@ denied as %@ currently has lock on browser", &v25, 0x16u);
@@ -234,7 +234,7 @@ LABEL_18:
 
   [(CKBrowserTransitionCoordinator *)self setCachedCompactFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v16 = +[CKBalloonPluginManager sharedInstance];
-  v17 = [v16 digitalTouchViewControllerWithDataSource:v7];
+  v17 = [v16 digitalTouchViewControllerWithDataSource:datasourceCopy];
 LABEL_14:
 
   [(CKBrowserTransitionCoordinator *)self updateBrowser:v17];
@@ -244,46 +244,46 @@ LABEL_19:
   return v23;
 }
 
-- (void)updateBrowser:(id)a3
+- (void)updateBrowser:(id)browser
 {
-  v40 = a3;
-  v4 = [(CKBrowserTransitionCoordinator *)self sendDelegate];
-  [v40 setSendDelegate:v4];
+  browserCopy = browser;
+  sendDelegate = [(CKBrowserTransitionCoordinator *)self sendDelegate];
+  [browserCopy setSendDelegate:sendDelegate];
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(CKBrowserTransitionCoordinator *)self conversation];
-    v6 = [v5 senderIdentifier];
-    [v40 setSender:v6];
+    conversation = [(CKBrowserTransitionCoordinator *)self conversation];
+    senderIdentifier = [conversation senderIdentifier];
+    [browserCopy setSender:senderIdentifier];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(CKBrowserTransitionCoordinator *)self conversation];
-    v8 = [v7 recipientStrings];
+    conversation2 = [(CKBrowserTransitionCoordinator *)self conversation];
+    recipientStrings = [conversation2 recipientStrings];
 
-    [v40 setRecipients:v8];
+    [browserCopy setRecipients:recipientStrings];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(CKBrowserTransitionCoordinator *)self conversation];
-    v10 = [v9 chat];
-    v11 = [v10 guid];
-    [v40 setConversationID:v11];
+    conversation3 = [(CKBrowserTransitionCoordinator *)self conversation];
+    chat = [conversation3 chat];
+    guid = [chat guid];
+    [browserCopy setConversationID:guid];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v12 = [(CKBrowserTransitionCoordinator *)self conversation];
-    v13 = [v12 chat];
-    v14 = [v13 engramID];
-    [v40 setConversationEngramID:v14];
+    conversation4 = [(CKBrowserTransitionCoordinator *)self conversation];
+    chat2 = [conversation4 chat];
+    engramID = [chat2 engramID];
+    [browserCopy setConversationEngramID:engramID];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v40 isLoaded] ^ 1;
+    v15 = [browserCopy isLoaded] ^ 1;
   }
 
   else
@@ -291,39 +291,39 @@ LABEL_19:
     LOBYTE(v15) = 0;
   }
 
-  v16 = [(CKBrowserTransitionCoordinator *)self currentBrowser];
-  v17 = (v16 != v40) | v15;
+  currentBrowser = [(CKBrowserTransitionCoordinator *)self currentBrowser];
+  v17 = (currentBrowser != browserCopy) | v15;
 
-  v18 = [(CKBrowserTransitionCoordinator *)self currentBrowser];
+  currentBrowser2 = [(CKBrowserTransitionCoordinator *)self currentBrowser];
 
-  if (v18)
+  if (currentBrowser2)
   {
     if (v17)
     {
-      v19 = [(CKBrowserTransitionCoordinator *)self delegate];
+      delegate = [(CKBrowserTransitionCoordinator *)self delegate];
       v20 = objc_opt_respondsToSelector();
 
       if (v20)
       {
-        v21 = [(CKBrowserTransitionCoordinator *)self delegate];
-        v22 = [(CKBrowserTransitionCoordinator *)self currentBrowser];
-        [v21 browserTransitionCoordinator:self browserWillBecomeInactive:v22];
+        delegate2 = [(CKBrowserTransitionCoordinator *)self delegate];
+        currentBrowser3 = [(CKBrowserTransitionCoordinator *)self currentBrowser];
+        [delegate2 browserTransitionCoordinator:self browserWillBecomeInactive:currentBrowser3];
       }
     }
   }
 
-  v23 = [(CKBrowserTransitionCoordinator *)self delegate];
+  delegate3 = [(CKBrowserTransitionCoordinator *)self delegate];
   v24 = objc_opt_respondsToSelector();
 
   if (v24)
   {
-    v25 = [(CKBrowserTransitionCoordinator *)self delegate];
-    [v25 browserTransitionCoordinator:self preferredSizeForBrowser:v40];
+    delegate4 = [(CKBrowserTransitionCoordinator *)self delegate];
+    [delegate4 browserTransitionCoordinator:self preferredSizeForBrowser:browserCopy];
     v27 = v26;
     v29 = v28;
 
-    v30 = [v40 view];
-    [v30 frame];
+    view = [browserCopy view];
+    [view frame];
     v32 = v31;
     v34 = v33;
     v36 = v35;
@@ -331,53 +331,53 @@ LABEL_19:
 
     if ((v27 != *MEMORY[0x1E695F060] || v29 != *(MEMORY[0x1E695F060] + 8)) && (v27 != v36 || v29 != v38))
     {
-      v39 = [v40 view];
-      [v39 setFrame:{v32, v34, v27, v29}];
+      view2 = [browserCopy view];
+      [view2 setFrame:{v32, v34, v27, v29}];
     }
   }
 
   if ((v17 & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && ![(CKBrowserTransitionCoordinator *)self underTest])
   {
-    [v40 loadRemoteViewWithCompletion:0];
+    [browserCopy loadRemoteViewWithCompletion:0];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v40 prepareForDisplay];
+    [browserCopy prepareForDisplay];
   }
 
-  [(CKBrowserTransitionCoordinator *)self setCurrentBrowser:v40];
+  [(CKBrowserTransitionCoordinator *)self setCurrentBrowser:browserCopy];
 }
 
-- (id)requestOwnershipOfBrowserForConsumer:(int64_t)a3
+- (id)requestOwnershipOfBrowserForConsumer:(int64_t)consumer
 {
   v15 = *MEMORY[0x1E69E9840];
-  if ([(CKBrowserTransitionCoordinator *)self currentConsumer]&& [(CKBrowserTransitionCoordinator *)self currentConsumer]!= a3)
+  if ([(CKBrowserTransitionCoordinator *)self currentConsumer]&& [(CKBrowserTransitionCoordinator *)self currentConsumer]!= consumer)
   {
     if (IMOSLoggingEnabled())
     {
       v6 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        if (a3 > 3)
+        if (consumer > 3)
         {
           v7 = 0;
         }
 
         else
         {
-          v7 = off_1E72F6A10[a3];
+          v7 = off_1E72F6A10[consumer];
         }
 
-        v8 = [(CKBrowserTransitionCoordinator *)self currentConsumer];
-        if (v8 > 3)
+        currentConsumer = [(CKBrowserTransitionCoordinator *)self currentConsumer];
+        if (currentConsumer > 3)
         {
           v9 = 0;
         }
 
         else
         {
-          v9 = off_1E72F6A10[v8];
+          v9 = off_1E72F6A10[currentConsumer];
         }
 
         v11 = 138412546;
@@ -388,53 +388,53 @@ LABEL_19:
       }
     }
 
-    v5 = 0;
+    currentBrowser = 0;
   }
 
   else
   {
-    [(CKBrowserTransitionCoordinator *)self setCurrentConsumer:a3];
-    v5 = [(CKBrowserTransitionCoordinator *)self currentBrowser];
+    [(CKBrowserTransitionCoordinator *)self setCurrentConsumer:consumer];
+    currentBrowser = [(CKBrowserTransitionCoordinator *)self currentBrowser];
   }
 
-  return v5;
+  return currentBrowser;
 }
 
-- (void)releaseOwnershipOfBrowserForConsumer:(int64_t)a3
+- (void)releaseOwnershipOfBrowserForConsumer:(int64_t)consumer
 {
-  if ([(CKBrowserTransitionCoordinator *)self currentConsumer]== a3)
+  if ([(CKBrowserTransitionCoordinator *)self currentConsumer]== consumer)
   {
 
     [(CKBrowserTransitionCoordinator *)self setCurrentConsumer:0];
   }
 }
 
-- (BOOL)_shouldRestrictToPortraitOrientationForPlugin:(id)a3
+- (BOOL)_shouldRestrictToPortraitOrientationForPlugin:(id)plugin
 {
   v3 = MEMORY[0x1E69DC938];
-  v4 = a3;
-  v5 = [v3 currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  pluginCopy = plugin;
+  currentDevice = [v3 currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v7 = (v6 & 0xFFFFFFFFFFFFFFFBLL) != 1;
-  v8 = [v4 identifier];
-  LOBYTE(v6) = [v8 isEqualToString:*MEMORY[0x1E69A6988]];
+  v7 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1;
+  identifier = [pluginCopy identifier];
+  LOBYTE(userInterfaceIdiom) = [identifier isEqualToString:*MEMORY[0x1E69A6988]];
 
-  v9 = [v4 identifier];
+  identifier2 = [pluginCopy identifier];
 
-  LOBYTE(v4) = [v9 isEqualToString:*MEMORY[0x1E69A69A8]];
-  return v7 & (v6 | v4);
+  LOBYTE(pluginCopy) = [identifier2 isEqualToString:*MEMORY[0x1E69A69A8]];
+  return v7 & (userInterfaceIdiom | pluginCopy);
 }
 
-- (void)updateSupportedInterfaceOrientationsOfAppWindow:(id)a3 forPlugin:(id)a4
+- (void)updateSupportedInterfaceOrientationsOfAppWindow:(id)window forPlugin:(id)plugin
 {
-  v8 = a3;
-  v6 = a4;
+  windowCopy = window;
+  pluginCopy = plugin;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v8;
-    [v7 setRestrictedToPortraitOrientation:{-[CKBrowserTransitionCoordinator _shouldRestrictToPortraitOrientationForPlugin:](self, "_shouldRestrictToPortraitOrientationForPlugin:", v6)}];
+    v7 = windowCopy;
+    [v7 setRestrictedToPortraitOrientation:{-[CKBrowserTransitionCoordinator _shouldRestrictToPortraitOrientationForPlugin:](self, "_shouldRestrictToPortraitOrientationForPlugin:", pluginCopy)}];
   }
 }
 
@@ -453,15 +453,15 @@ LABEL_19:
   return result;
 }
 
-- (void)presentPluginFullScreenModal:(id)a3 datasource:(id)a4 preferredContentSize:(CGSize)a5 animated:(BOOL)a6 completion:(id)a7
+- (void)presentPluginFullScreenModal:(id)modal datasource:(id)datasource preferredContentSize:(CGSize)size animated:(BOOL)animated completion:(id)completion
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v81 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v70 = a4;
-  v69 = a7;
-  v14 = [(CKBrowserTransitionCoordinator *)self usePresentationWindowDuringTransition];
+  modalCopy = modal;
+  datasourceCopy = datasource;
+  completionCopy = completion;
+  usePresentationWindowDuringTransition = [(CKBrowserTransitionCoordinator *)self usePresentationWindowDuringTransition];
   if ([(CKBrowserTransitionCoordinator *)self isPresentingFullScreenModal])
   {
     if (IMOSLoggingEnabled())
@@ -477,17 +477,17 @@ LABEL_19:
     goto LABEL_51;
   }
 
-  if (v13)
+  if (modalCopy)
   {
-    v66 = a6;
-    v67 = v14;
-    v16 = [objc_alloc(objc_msgSend(v13 "browserClass"))];
+    animatedCopy = animated;
+    v67 = usePresentationWindowDuringTransition;
+    v16 = [objc_alloc(objc_msgSend(modalCopy "browserClass"))];
     v17 = CKIsRunningInMacCatalyst();
     if (v17)
     {
-      v18 = [v13 identifier];
+      identifier = [modalCopy identifier];
       v19 = IMBalloonExtensionIDWithSuffix();
-      v68 = [v18 isEqualToString:v19];
+      v68 = [identifier isEqualToString:v19];
     }
 
     else
@@ -497,9 +497,9 @@ LABEL_19:
 
     if (+[CKUtilities isIpad])
     {
-      v22 = [v13 identifier];
+      identifier2 = [modalCopy identifier];
       v23 = IMBalloonExtensionIDWithSuffix();
-      v24 = [v22 isEqualToString:v23] ^ 1;
+      v24 = [identifier2 isEqualToString:v23] ^ 1;
     }
 
     else
@@ -508,9 +508,9 @@ LABEL_19:
     }
 
     v25 = v17 != 0;
-    v26 = [v13 identifier];
+    identifier3 = [modalCopy identifier];
     v27 = IMBalloonExtensionIDWithSuffix();
-    v28 = [v26 isEqualToString:v27];
+    v28 = [identifier3 isEqualToString:v27];
 
     v65 = v28;
     if ((v25 & v28 & 1) == 0)
@@ -537,13 +537,13 @@ LABEL_19:
     v29 = [[CKFullscreenBrowserNavigationController alloc] initWithNavigationBarClass:objc_opt_class() toolbarClass:0];
     [(CKFullscreenBrowserNavigationController *)v29 setModalInPresentation:v24];
     v30 = [CKFullScreenCardAppViewController alloc];
-    v31 = [(CKBrowserTransitionCoordinator *)self conversation];
-    v32 = [(CKFullScreenCardAppViewController *)v30 initWithConversation:v31 plugin:v13];
+    conversation = [(CKBrowserTransitionCoordinator *)self conversation];
+    v32 = [(CKFullScreenCardAppViewController *)v30 initWithConversation:conversation plugin:modalCopy];
 
     [(CKFullScreenCardAppViewController *)v32 setContentViewController:v16];
     [(CKFullScreenCardAppViewController *)v32 setDelegate:self];
-    v33 = [(CKBrowserTransitionCoordinator *)self sendDelegate];
-    [(CKFullScreenCardAppViewController *)v32 setSendDelegate:v33];
+    sendDelegate = [(CKBrowserTransitionCoordinator *)self sendDelegate];
+    [(CKFullScreenCardAppViewController *)v32 setSendDelegate:sendDelegate];
 
     v78 = v32;
     v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v78 count:1];
@@ -551,8 +551,8 @@ LABEL_19:
 
     if ([(CKFullScreenCardAppViewController *)v32 conformsToProtocol:&unk_1F051F498])
     {
-      v35 = [(CKFullscreenBrowserNavigationController *)v29 presentationController];
-      [v35 setDelegate:v32];
+      presentationController = [(CKFullscreenBrowserNavigationController *)v29 presentationController];
+      [presentationController setDelegate:v32];
 
       if (v68)
       {
@@ -576,30 +576,30 @@ LABEL_19:
 
     if (objc_opt_respondsToSelector())
     {
-      v38 = [(CKFullScreenCardAppViewController *)v32 parentTransitioningDelegate];
-      [(CKFullscreenBrowserNavigationController *)v29 setTransitioningDelegate:v38];
+      parentTransitioningDelegate = [(CKFullScreenCardAppViewController *)v32 parentTransitioningDelegate];
+      [(CKFullscreenBrowserNavigationController *)v29 setTransitioningDelegate:parentTransitioningDelegate];
     }
 
-    v39 = [(CKBrowserTransitionCoordinator *)self modalAppWindow];
-    v40 = v39 == 0;
+    modalAppWindow = [(CKBrowserTransitionCoordinator *)self modalAppWindow];
+    v40 = modalAppWindow == 0;
 
     if (v40 && v67)
     {
-      v41 = [v16 balloonPlugin];
-      v42 = [(CKBrowserTransitionCoordinator *)self _shouldRestrictToPortraitOrientationForPlugin:v41];
+      balloonPlugin = [v16 balloonPlugin];
+      v42 = [(CKBrowserTransitionCoordinator *)self _shouldRestrictToPortraitOrientationForPlugin:balloonPlugin];
 
       v43 = IMSharedHelperDeviceIsiPad();
       v44 = [CKPresentationControllerWindow alloc];
-      v45 = [MEMORY[0x1E69DC668] sharedApplication];
-      v46 = [v45 keyWindow];
-      [v46 bounds];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      keyWindow = [mEMORY[0x1E69DC668] keyWindow];
+      [keyWindow bounds];
       v47 = [(CKPresentationControllerWindow *)v44 initWithFrame:0 allowsRotation:(v43 ^ 1) & v65 allowsStatusBarChanges:v42 restrictedToPortraitOrientation:?];
 
-      v48 = [(CKBrowserTransitionCoordinator *)self transitionViewController];
-      v49 = [v48 view];
-      v50 = [v49 window];
-      v51 = [v50 windowScene];
-      [(CKPresentationControllerWindow *)v47 setWindowScene:v51];
+      transitionViewController = [(CKBrowserTransitionCoordinator *)self transitionViewController];
+      view = [transitionViewController view];
+      window = [view window];
+      windowScene = [window windowScene];
+      [(CKPresentationControllerWindow *)v47 setWindowScene:windowScene];
 
       [(CKBrowserTransitionCoordinator *)self setModalAppWindow:v47];
     }
@@ -624,38 +624,38 @@ LABEL_19:
     }
 
     [(CKBrowserTransitionCoordinator *)self setPresentedModalBrowserNavigationController:v29];
-    v53 = [(CKBrowserTransitionCoordinator *)self modalAppWindow];
-    [v53 setWindowLevel:*MEMORY[0x1E69DE7E0]];
+    modalAppWindow2 = [(CKBrowserTransitionCoordinator *)self modalAppWindow];
+    [modalAppWindow2 setWindowLevel:*MEMORY[0x1E69DE7E0]];
 
-    v54 = [MEMORY[0x1E69DD2E8] keyWindow];
-    [(CKBrowserTransitionCoordinator *)self setPreModalKeyWindow:v54];
+    keyWindow2 = [MEMORY[0x1E69DD2E8] keyWindow];
+    [(CKBrowserTransitionCoordinator *)self setPreModalKeyWindow:keyWindow2];
 
-    v55 = [(CKBrowserTransitionCoordinator *)self modalAppWindow];
-    [v55 makeKeyAndVisible];
+    modalAppWindow3 = [(CKBrowserTransitionCoordinator *)self modalAppWindow];
+    [modalAppWindow3 makeKeyAndVisible];
 
 LABEL_44:
-    v56 = [(CKBrowserTransitionCoordinator *)self modalPresentationViewController];
+    modalPresentationViewController = [(CKBrowserTransitionCoordinator *)self modalPresentationViewController];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __115__CKBrowserTransitionCoordinator_presentPluginFullScreenModal_datasource_preferredContentSize_animated_completion___block_invoke;
     aBlock[3] = &unk_1E72F69F0;
-    v57 = v56;
+    v57 = modalPresentationViewController;
     v72 = v57;
     v58 = v29;
     v73 = v58;
-    v76 = v66;
+    v76 = animatedCopy;
     v77 = v68;
     v75 = xmmword_190DD18B0;
     v59 = v16;
     v74 = v59;
     v60 = _Block_copy(aBlock);
-    v61 = [(CKBrowserTransitionCoordinator *)self delegate];
+    delegate = [(CKBrowserTransitionCoordinator *)self delegate];
     v62 = objc_opt_respondsToSelector();
 
     if (v62)
     {
-      v63 = [(CKBrowserTransitionCoordinator *)self delegate];
-      [v63 browserTransitionCoordinator:self willPresentBrowserModally:v59];
+      delegate2 = [(CKBrowserTransitionCoordinator *)self delegate];
+      [delegate2 browserTransitionCoordinator:self willPresentBrowserModally:v59];
     }
 
     if (v67 || ([v57 presentedViewController], v64 = objc_claimAutoreleasedReturnValue(), v64, !v64))
@@ -729,43 +729,43 @@ void __115__CKBrowserTransitionCoordinator_presentPluginFullScreenModal_datasour
 
 - (BOOL)isPresentingFullScreenModal
 {
-  v2 = [(CKBrowserTransitionCoordinator *)self presentedModalBrowserNavigationController];
-  v3 = v2 != 0;
+  presentedModalBrowserNavigationController = [(CKBrowserTransitionCoordinator *)self presentedModalBrowserNavigationController];
+  v3 = presentedModalBrowserNavigationController != 0;
 
   return v3;
 }
 
-- (void)dismissCurrentFullScreenModalAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissCurrentFullScreenModalAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if ([(CKBrowserTransitionCoordinator *)self isPresentingFullScreenModal])
   {
-    v7 = [(CKBrowserTransitionCoordinator *)self currentModalBrowser];
+    currentModalBrowser = [(CKBrowserTransitionCoordinator *)self currentModalBrowser];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __83__CKBrowserTransitionCoordinator_dismissCurrentFullScreenModalAnimated_completion___block_invoke;
     aBlock[3] = &unk_1E72EDA68;
-    v8 = v7;
+    v8 = currentModalBrowser;
     v18 = v8;
-    v19 = self;
-    v20 = v6;
+    selfCopy = self;
+    v20 = completionCopy;
     v9 = _Block_copy(aBlock);
-    v10 = [(CKBrowserTransitionCoordinator *)self delegate];
+    delegate = [(CKBrowserTransitionCoordinator *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(CKBrowserTransitionCoordinator *)self delegate];
-      [v12 browserTransitionCoordinatorWillCollapseOrDismiss:self withReason:5];
+      delegate2 = [(CKBrowserTransitionCoordinator *)self delegate];
+      [delegate2 browserTransitionCoordinatorWillCollapseOrDismiss:self withReason:5];
     }
 
-    v13 = [(CKBrowserTransitionCoordinator *)self preModalKeyWindow];
-    [v13 makeKeyWindow];
+    preModalKeyWindow = [(CKBrowserTransitionCoordinator *)self preModalKeyWindow];
+    [preModalKeyWindow makeKeyWindow];
 
     [(CKBrowserTransitionCoordinator *)self setPreModalKeyWindow:0];
-    v14 = [(CKBrowserTransitionCoordinator *)self presentedModalBrowserNavigationController];
-    [v14 dismissViewControllerAnimated:v4 completion:v9];
+    presentedModalBrowserNavigationController = [(CKBrowserTransitionCoordinator *)self presentedModalBrowserNavigationController];
+    [presentedModalBrowserNavigationController dismissViewControllerAnimated:animatedCopy completion:v9];
   }
 
   else
@@ -780,9 +780,9 @@ void __115__CKBrowserTransitionCoordinator_presentPluginFullScreenModal_datasour
       }
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -830,70 +830,70 @@ uint64_t __83__CKBrowserTransitionCoordinator_dismissCurrentFullScreenModalAnima
   return result;
 }
 
-- (void)expandedAppViewControllerDidTransitionFromOrientation:(int64_t)a3 toOrientation:(int64_t)a4
+- (void)expandedAppViewControllerDidTransitionFromOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation
 {
-  v7 = [(CKBrowserTransitionCoordinator *)self delegate];
+  delegate = [(CKBrowserTransitionCoordinator *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CKBrowserTransitionCoordinator *)self delegate];
-    [v9 browserTransitionCoordinator:self didTransitionFromOrientation:a3 toOrientation:a4];
+    delegate2 = [(CKBrowserTransitionCoordinator *)self delegate];
+    [delegate2 browserTransitionCoordinator:self didTransitionFromOrientation:orientation toOrientation:toOrientation];
   }
 }
 
 - (BOOL)shouldAlwaysShowAppTitle
 {
-  v2 = [(CKBrowserTransitionCoordinator *)self delegate];
+  delegate = [(CKBrowserTransitionCoordinator *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 shouldAlwaysShowAppTitle];
+    shouldAlwaysShowAppTitle = [delegate shouldAlwaysShowAppTitle];
   }
 
   else
   {
-    v3 = 0;
+    shouldAlwaysShowAppTitle = 0;
   }
 
-  return v3;
+  return shouldAlwaysShowAppTitle;
 }
 
 - (id)appTitleOverride
 {
-  v2 = [(CKBrowserTransitionCoordinator *)self delegate];
+  delegate = [(CKBrowserTransitionCoordinator *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 appTitleOverride];
+    appTitleOverride = [delegate appTitleOverride];
   }
 
   else
   {
-    v3 = 0;
+    appTitleOverride = 0;
   }
 
-  return v3;
+  return appTitleOverride;
 }
 
 - (id)appIconOverride
 {
-  v2 = [(CKBrowserTransitionCoordinator *)self delegate];
+  delegate = [(CKBrowserTransitionCoordinator *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 appIconOverride];
+    appIconOverride = [delegate appIconOverride];
   }
 
   else
   {
-    v3 = 0;
+    appIconOverride = 0;
   }
 
-  return v3;
+  return appIconOverride;
 }
 
-- (void)setCurrentConsumer:(int64_t)a3
+- (void)setCurrentConsumer:(int64_t)consumer
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_currentConsumer != a3)
+  if (self->_currentConsumer != consumer)
   {
     if (IMOSLoggingEnabled())
     {
@@ -911,14 +911,14 @@ uint64_t __83__CKBrowserTransitionCoordinator_dismissCurrentFullScreenModalAnima
           v7 = off_1E72F6A10[currentConsumer];
         }
 
-        if (a3 > 3)
+        if (consumer > 3)
         {
           v8 = 0;
         }
 
         else
         {
-          v8 = off_1E72F6A10[a3];
+          v8 = off_1E72F6A10[consumer];
         }
 
         v10 = 138412546;
@@ -929,39 +929,39 @@ uint64_t __83__CKBrowserTransitionCoordinator_dismissCurrentFullScreenModalAnima
       }
     }
 
-    self->_currentConsumer = a3;
-    v9 = [(CKBrowserTransitionCoordinator *)self currentBrowser];
+    self->_currentConsumer = consumer;
+    currentBrowser = [(CKBrowserTransitionCoordinator *)self currentBrowser];
     if (objc_opt_respondsToSelector())
     {
-      [v9 setCurrentBrowserConsumer:self->_currentConsumer];
+      [currentBrowser setCurrentBrowserConsumer:self->_currentConsumer];
     }
   }
 }
 
-- (void)setCurrentBrowser:(id)a3
+- (void)setCurrentBrowser:(id)browser
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_currentBrowser != v5)
+  browserCopy = browser;
+  if (self->_currentBrowser != browserCopy)
   {
     if (IMOSLoggingEnabled())
     {
       v6 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [(CKBrowserViewControllerProtocol *)self->_currentBrowser balloonPlugin];
-        v8 = [v7 identifier];
-        v9 = [(CKBrowserViewControllerProtocol *)v5 balloonPlugin];
-        v10 = [v9 identifier];
+        balloonPlugin = [(CKBrowserViewControllerProtocol *)self->_currentBrowser balloonPlugin];
+        identifier = [balloonPlugin identifier];
+        balloonPlugin2 = [(CKBrowserViewControllerProtocol *)browserCopy balloonPlugin];
+        identifier2 = [balloonPlugin2 identifier];
         v11 = 138412546;
-        v12 = v8;
+        v12 = identifier;
         v13 = 2112;
-        v14 = v10;
+        v14 = identifier2;
         _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "Current browser session transitioning from %@ to %@", &v11, 0x16u);
       }
     }
 
-    objc_storeStrong(&self->_currentBrowser, a3);
+    objc_storeStrong(&self->_currentBrowser, browser);
     if (objc_opt_respondsToSelector())
     {
       [(CKBrowserViewControllerProtocol *)self->_currentBrowser setCurrentBrowserConsumer:[(CKBrowserTransitionCoordinator *)self currentConsumer]];
@@ -969,12 +969,12 @@ uint64_t __83__CKBrowserTransitionCoordinator_dismissCurrentFullScreenModalAnima
   }
 }
 
-- (void)setExpanded:(BOOL)a3 withReason:(int64_t)a4
+- (void)setExpanded:(BOOL)expanded withReason:(int64_t)reason
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
-    v5 = a3;
+    expandedCopy = expanded;
     if (IMOSLoggingEnabled())
     {
       v7 = OSLogHandleForIMFoundationCategory();
@@ -992,7 +992,7 @@ uint64_t __83__CKBrowserTransitionCoordinator_dismissCurrentFullScreenModalAnima
 
         *v13 = 138412802;
         *&v13[4] = v8;
-        if (v5)
+        if (expandedCopy)
         {
           v9 = @"YES";
         }
@@ -1005,20 +1005,20 @@ uint64_t __83__CKBrowserTransitionCoordinator_dismissCurrentFullScreenModalAnima
         *&v13[12] = 2112;
         *&v13[14] = v9;
         v14 = 2048;
-        v15 = a4;
+        reasonCopy = reason;
         _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Browser expanded transitioning from %@ to %@ with reason %lld ", v13, 0x20u);
       }
     }
 
-    [(CKBrowserTransitionCoordinator *)self setLastTransitionReason:a4, *v13];
-    self->_expanded = v5;
-    v10 = [(CKBrowserTransitionCoordinator *)self delegate];
+    [(CKBrowserTransitionCoordinator *)self setLastTransitionReason:reason, *v13];
+    self->_expanded = expandedCopy;
+    delegate = [(CKBrowserTransitionCoordinator *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(CKBrowserTransitionCoordinator *)self delegate];
-      [v12 browserTransitionCoordinator:self expandedStateDidChange:-[CKBrowserTransitionCoordinator isExpanded](self withReason:{"isExpanded"), a4}];
+      delegate2 = [(CKBrowserTransitionCoordinator *)self delegate];
+      [delegate2 browserTransitionCoordinator:self expandedStateDidChange:-[CKBrowserTransitionCoordinator isExpanded](self withReason:{"isExpanded"), reason}];
     }
   }
 }

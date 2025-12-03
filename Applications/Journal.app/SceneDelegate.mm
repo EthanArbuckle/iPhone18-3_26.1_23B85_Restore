@@ -1,78 +1,78 @@
 @interface SceneDelegate
-- (id)stateRestorationActivityForScene:(id)a3;
+- (id)stateRestorationActivityForScene:(id)scene;
 - (void)applicationDidUnlock;
 - (void)applicationWillUnlock;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)setWindow:(id)a3;
-- (void)showSystemAlertWithNotification:(id)a3;
-- (void)tapToRadarNotificationReceived:(id)a3;
-- (void)windowScene:(UIWindowScene *)a3 performActionForShortcutItem:(UIApplicationShortcutItem *)a4 completionHandler:(id)a5;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)setWindow:(id)window;
+- (void)showSystemAlertWithNotification:(id)notification;
+- (void)tapToRadarNotificationReceived:(id)received;
+- (void)windowScene:(UIWindowScene *)scene performActionForShortcutItem:(UIApplicationShortcutItem *)item completionHandler:(id)handler;
 @end
 
 @implementation SceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_100009144(v8, v9, v10);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_100009144(sceneCopy, sessionCopy, optionsCopy);
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = self;
+  foregroundCopy = foreground;
+  selfCopy = self;
   sub_100026FF8();
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
+  activeCopy = active;
+  selfCopy = self;
   sub_10004AFE0();
 }
 
 - (void)applicationWillUnlock
 {
-  v2 = self;
+  selfCopy = self;
   sub_10004F468();
 }
 
 - (void)applicationDidUnlock
 {
-  v2 = self;
+  selfCopy = self;
   sub_10005D2B8();
 }
 
-- (void)showSystemAlertWithNotification:(id)a3
+- (void)showSystemAlertWithNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_1004CD348(v7);
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC7Journal13SceneDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC7Journal13SceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC7Journal13SceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
   v3 = type metadata accessor for JournalFeatureFlags();
   v4 = *(v3 - 8);
@@ -92,48 +92,48 @@
   }
 }
 
-- (id)stateRestorationActivityForScene:(id)a3
+- (id)stateRestorationActivityForScene:(id)scene
 {
-  v3 = [a3 userActivity];
+  userActivity = [scene userActivity];
 
-  return v3;
+  return userActivity;
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   v4 = objc_opt_self();
-  v6 = self;
-  v5 = [v4 defaultCenter];
-  [v5 removeObserver:v6];
+  selfCopy = self;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
   sub_1000065A8(0, &qword_100AE9080);
   sub_10054CD00();
   v6 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  sceneCopy = scene;
+  selfCopy = self;
   sub_10054C18C(v6);
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10054C4F8(v7);
+  sceneCopy = scene;
+  activityCopy = activity;
+  selfCopy = self;
+  sub_10054C4F8(activityCopy);
 }
 
-- (void)windowScene:(UIWindowScene *)a3 performActionForShortcutItem:(UIApplicationShortcutItem *)a4 completionHandler:(id)a5
+- (void)windowScene:(UIWindowScene *)scene performActionForShortcutItem:(UIApplicationShortcutItem *)item completionHandler:(id)handler
 {
   v9 = sub_1000F24EC(&qword_100AD5170);
   __chkstk_darwin(v9 - 8);
   v11 = &v20 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = scene;
+  v13[3] = item;
   v13[4] = v12;
   v13[5] = self;
   v14 = type metadata accessor for TaskPriority();
@@ -148,20 +148,20 @@
   v16[3] = 0;
   v16[4] = &unk_1009439C0;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
-  v19 = self;
+  sceneCopy = scene;
+  itemCopy = item;
+  selfCopy = self;
   sub_100564F58(0, 0, v11, &unk_10095DB30, v16);
 }
 
-- (void)tapToRadarNotificationReceived:(id)a3
+- (void)tapToRadarNotificationReceived:(id)received
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_10054CEE4(v7);
 
   (*(v5 + 8))(v7, v4);

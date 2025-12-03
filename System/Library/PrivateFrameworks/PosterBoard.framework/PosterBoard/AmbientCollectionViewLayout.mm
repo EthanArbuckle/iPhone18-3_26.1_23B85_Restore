@@ -1,10 +1,10 @@
 @interface AmbientCollectionViewLayout
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset;
 - (CGSize)collectionViewContentSize;
 - (_TtC11PosterBoard27AmbientCollectionViewLayout)init;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 - (void)prepareLayout;
 @end
 
@@ -12,7 +12,7 @@
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_21B657D04();
 }
 
@@ -25,7 +25,7 @@
   return result;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   v5 = sub_21B6C8A04();
   v6 = *(v5 - 8);
@@ -34,7 +34,7 @@
   v9 = sub_21B6C8DA4();
   v11 = v10;
   sub_21B6C8994();
-  v12 = self;
+  selfCopy = self;
   v13 = sub_21B658884(v9, v11);
 
   (*(v6 + 8))(v8, v5);
@@ -42,14 +42,14 @@
   return v13;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v4 = sub_21B6C8A04();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21B6C8994();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_21B658B00(v7);
 
   (*(v5 + 8))(v7, v4);
@@ -57,13 +57,13 @@
   return v9;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v8 = sub_21B658F60(x, y, width, height);
 
   if (v8)
@@ -80,11 +80,11 @@
   return v9;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = offset.y;
+  x = offset.x;
+  selfCopy = self;
   sub_21B659A38(x, y);
   v7 = v6;
   v9 = v8;

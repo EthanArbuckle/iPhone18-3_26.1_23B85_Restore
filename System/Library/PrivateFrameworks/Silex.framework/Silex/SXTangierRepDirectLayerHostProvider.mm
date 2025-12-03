@@ -1,40 +1,40 @@
 @interface SXTangierRepDirectLayerHostProvider
-- (id)directLayerHostForRep:(id)a3;
-- (void)directLayerHostUpdateAdditionalLayersAboveRepLayers:(id)a3;
-- (void)directLayerHostUpdateAdditionalLayersUnderRepLayers:(id)a3;
-- (void)directLayerHostUpdateRepOverlayLayers:(id)a3;
+- (id)directLayerHostForRep:(id)rep;
+- (void)directLayerHostUpdateAdditionalLayersAboveRepLayers:(id)layers;
+- (void)directLayerHostUpdateAdditionalLayersUnderRepLayers:(id)layers;
+- (void)directLayerHostUpdateRepOverlayLayers:(id)layers;
 @end
 
 @implementation SXTangierRepDirectLayerHostProvider
 
-- (id)directLayerHostForRep:(id)a3
+- (id)directLayerHostForRep:(id)rep
 {
-  v3 = [a3 info];
+  info = [rep info];
   v4 = TSUProtocolCast();
 
-  v5 = [v4 directLayerHost];
+  directLayerHost = [v4 directLayerHost];
 
-  return v5;
+  return directLayerHost;
 }
 
-- (void)directLayerHostUpdateAdditionalLayersUnderRepLayers:(id)a3
+- (void)directLayerHostUpdateAdditionalLayersUnderRepLayers:(id)layers
 {
-  v4 = a3;
+  layersCopy = layers;
   underRepsLayerHost = self->_underRepsLayerHost;
   if (underRepsLayerHost)
   {
-    v9 = v4;
-    v6 = [(CALayer *)underRepsLayerHost sublayers];
-    if (v6 == v9)
+    v9 = layersCopy;
+    sublayers = [(CALayer *)underRepsLayerHost sublayers];
+    if (sublayers == v9)
     {
     }
 
     else
     {
-      v7 = [(CALayer *)self->_underRepsLayerHost sublayers];
-      v8 = [v7 isEqual:v9];
+      sublayers2 = [(CALayer *)self->_underRepsLayerHost sublayers];
+      v8 = [sublayers2 isEqual:v9];
 
-      v4 = v9;
+      layersCopy = v9;
       if (v8)
       {
         goto LABEL_7;
@@ -43,32 +43,32 @@
       underRepsLayerHost = [(CALayer *)self->_underRepsLayerHost setSublayers:v9];
     }
 
-    v4 = v9;
+    layersCopy = v9;
   }
 
 LABEL_7:
 
-  MEMORY[0x1EEE66BB8](underRepsLayerHost, v4);
+  MEMORY[0x1EEE66BB8](underRepsLayerHost, layersCopy);
 }
 
-- (void)directLayerHostUpdateAdditionalLayersAboveRepLayers:(id)a3
+- (void)directLayerHostUpdateAdditionalLayersAboveRepLayers:(id)layers
 {
-  v4 = a3;
+  layersCopy = layers;
   aboveRepsLayerHost = self->_aboveRepsLayerHost;
   if (aboveRepsLayerHost)
   {
-    v9 = v4;
-    v6 = [(CALayer *)aboveRepsLayerHost sublayers];
-    if (v6 == v9)
+    v9 = layersCopy;
+    sublayers = [(CALayer *)aboveRepsLayerHost sublayers];
+    if (sublayers == v9)
     {
     }
 
     else
     {
-      v7 = [(CALayer *)self->_aboveRepsLayerHost sublayers];
-      v8 = [v7 isEqual:v9];
+      sublayers2 = [(CALayer *)self->_aboveRepsLayerHost sublayers];
+      v8 = [sublayers2 isEqual:v9];
 
-      v4 = v9;
+      layersCopy = v9;
       if (v8)
       {
         goto LABEL_7;
@@ -77,32 +77,32 @@ LABEL_7:
       aboveRepsLayerHost = [(CALayer *)self->_aboveRepsLayerHost setSublayers:v9];
     }
 
-    v4 = v9;
+    layersCopy = v9;
   }
 
 LABEL_7:
 
-  MEMORY[0x1EEE66BB8](aboveRepsLayerHost, v4);
+  MEMORY[0x1EEE66BB8](aboveRepsLayerHost, layersCopy);
 }
 
-- (void)directLayerHostUpdateRepOverlayLayers:(id)a3
+- (void)directLayerHostUpdateRepOverlayLayers:(id)layers
 {
-  v4 = a3;
+  layersCopy = layers;
   overlayLayerHost = self->_overlayLayerHost;
   if (overlayLayerHost)
   {
-    v9 = v4;
-    v6 = [(CALayer *)overlayLayerHost sublayers];
-    if (v6 == v9)
+    v9 = layersCopy;
+    sublayers = [(CALayer *)overlayLayerHost sublayers];
+    if (sublayers == v9)
     {
     }
 
     else
     {
-      v7 = [(CALayer *)self->_overlayLayerHost sublayers];
-      v8 = [v7 isEqual:v9];
+      sublayers2 = [(CALayer *)self->_overlayLayerHost sublayers];
+      v8 = [sublayers2 isEqual:v9];
 
-      v4 = v9;
+      layersCopy = v9;
       if (v8)
       {
         goto LABEL_7;
@@ -111,12 +111,12 @@ LABEL_7:
       overlayLayerHost = [(CALayer *)self->_overlayLayerHost setSublayers:v9];
     }
 
-    v4 = v9;
+    layersCopy = v9;
   }
 
 LABEL_7:
 
-  MEMORY[0x1EEE66BB8](overlayLayerHost, v4);
+  MEMORY[0x1EEE66BB8](overlayLayerHost, layersCopy);
 }
 
 @end

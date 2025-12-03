@@ -1,15 +1,15 @@
 @interface WFHotspotProfile
-- (WFHotspotProfile)initWithProfile:(id)a3 anqpResponse:(id)a4;
+- (WFHotspotProfile)initWithProfile:(id)profile anqpResponse:(id)response;
 @end
 
 @implementation WFHotspotProfile
 
-- (WFHotspotProfile)initWithProfile:(id)a3 anqpResponse:(id)a4
+- (WFHotspotProfile)initWithProfile:(id)profile anqpResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  profileCopy = profile;
+  responseCopy = response;
+  v8 = responseCopy;
+  if (!profileCopy)
   {
     [WFHotspotProfile initWithProfile:? anqpResponse:?];
 LABEL_9:
@@ -18,18 +18,18 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  if (!v7)
+  if (!responseCopy)
   {
     [WFHotspotProfile initWithProfile:? anqpResponse:?];
     goto LABEL_9;
   }
 
   v9 = *MEMORY[0x277CBECE8];
-  [v6 scanAttributes];
+  [profileCopy scanAttributes];
   v10 = WiFiNetworkCreate();
   if (!v10)
   {
-    [WFHotspotProfile initWithProfile:v6 anqpResponse:&v14];
+    [WFHotspotProfile initWithProfile:profileCopy anqpResponse:&v14];
     goto LABEL_9;
   }
 

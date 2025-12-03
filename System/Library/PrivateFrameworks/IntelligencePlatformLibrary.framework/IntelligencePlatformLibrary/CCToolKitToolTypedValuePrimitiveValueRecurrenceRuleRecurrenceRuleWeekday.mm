@@ -1,36 +1,36 @@
 @interface CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleWeekday
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleWeekday)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleWeekday)initWithRecurrenceRuleWeekdayWeekday:(unsigned int)a3 RecurrenceRuleWeekdayEvery:(id)a4 RecurrenceRuleWeekdayNth:(id)a5 error:(id *)a6;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleWeekday)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleWeekday)initWithRecurrenceRuleWeekdayWeekday:(unsigned int)weekday RecurrenceRuleWeekdayEvery:(id)every RecurrenceRuleWeekdayNth:(id)nth error:(id *)error;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleWeekday
 
-- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleWeekday)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleWeekday)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"RecurrenceRuleWeekdayWeekday"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"RecurrenceRuleWeekdayWeekday"];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 unsignedIntegerValue];
+      unsignedIntegerValue = [v9 unsignedIntegerValue];
     }
 
     else
     {
-      v11 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"RecurrenceRuleWeekdayEvery"];
-    v14 = [v6 objectForKeyedSubscript:@"RecurrenceRuleWeekdayNth"];
-    v12 = [[CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleWeekday alloc] initWithRecurrenceRuleWeekdayWeekday:v11 RecurrenceRuleWeekdayEvery:v13 RecurrenceRuleWeekdayNth:v14 error:a4];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"RecurrenceRuleWeekdayEvery"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"RecurrenceRuleWeekdayNth"];
+    v12 = [[CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleWeekday alloc] initWithRecurrenceRuleWeekdayWeekday:unsignedIntegerValue RecurrenceRuleWeekdayEvery:v13 RecurrenceRuleWeekdayNth:v14 error:error];
   }
 
   else
@@ -65,31 +65,31 @@
   return v7;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v10 = a3;
+  blockCopy = block;
   v5 = objc_alloc(MEMORY[0x1E69939F0]);
   v6 = *MEMORY[0x1E69939A8];
   v7 = [v5 initWithFieldType:v6 enumValue:self->_RecurrenceRuleWeekdayWeekday];
-  v10[2](v10, v7);
+  blockCopy[2](blockCopy, v7);
 
   if (self->_hasRecurrenceRuleWeekdayEvery)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 BOOLValue:self->_RecurrenceRuleWeekdayEvery];
-    v10[2](v10, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_hasRecurrenceRuleWeekdayNth)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 int64Value:self->_RecurrenceRuleWeekdayNth];
-    v10[2](v10, v9);
+    blockCopy[2](blockCopy, v9);
   }
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   v10 = MEMORY[0x1E6993AA8];
@@ -100,7 +100,7 @@
 
   v11 = 0;
   v12 = MEMORY[0x1E6993AA0];
-  v59 = self;
+  selfCopy = self;
   while (2)
   {
     if (*&v7[*v10])
@@ -325,14 +325,14 @@ LABEL_63:
         {
           v49 = objc_opt_class();
           NSStringFromClass(v49);
-          v50 = a4;
-          v52 = v51 = v6;
+          errorCopy = error;
+          v52 = v51 = dataCopy;
           v53 = *&v7[*v10];
           v11 = CCSkipFieldErrorForMessage();
 
-          v6 = v51;
-          a4 = v50;
-          self = v59;
+          dataCopy = v51;
+          error = errorCopy;
+          self = selfCopy;
         }
       }
 
@@ -373,12 +373,12 @@ LABEL_72:
   return v57;
 }
 
-- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleWeekday)initWithRecurrenceRuleWeekdayWeekday:(unsigned int)a3 RecurrenceRuleWeekdayEvery:(id)a4 RecurrenceRuleWeekdayNth:(id)a5 error:(id *)a6
+- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleWeekday)initWithRecurrenceRuleWeekdayWeekday:(unsigned int)weekday RecurrenceRuleWeekdayEvery:(id)every RecurrenceRuleWeekdayNth:(id)nth error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  everyCopy = every;
+  nthCopy = nth;
   v12 = objc_opt_new();
-  if (a3)
+  if (weekday)
   {
     v13 = CCValidateEnumField();
     v14 = 0;
@@ -395,7 +395,7 @@ LABEL_72:
     v14 = 0;
   }
 
-  if (v10)
+  if (everyCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -404,14 +404,14 @@ LABEL_72:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v19 = 0;
+      selfCopy = 0;
       v14 = v16;
       goto LABEL_15;
     }
 
-    [v10 BOOLValue];
+    [everyCopy BOOLValue];
     CCPBDataWriterWriteBOOLField();
-    if (!v11)
+    if (!nthCopy)
     {
       goto LABEL_8;
     }
@@ -420,7 +420,7 @@ LABEL_72:
   }
 
   v16 = v14;
-  if (v11)
+  if (nthCopy)
   {
 LABEL_10:
     objc_opt_class();
@@ -429,27 +429,27 @@ LABEL_10:
 
     if (v17)
     {
-      [v11 longLongValue];
+      [nthCopy longLongValue];
       CCPBDataWriterWriteInt64Field();
       goto LABEL_12;
     }
 
 LABEL_13:
     CCSetError();
-    v19 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
 LABEL_8:
   v14 = v16;
 LABEL_12:
-  v18 = [v12 immutableData];
-  self = [(CCItemMessage *)self initWithData:v18 error:a6];
+  immutableData = [v12 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v19 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v19;
+  return selfCopy;
 }
 
 @end

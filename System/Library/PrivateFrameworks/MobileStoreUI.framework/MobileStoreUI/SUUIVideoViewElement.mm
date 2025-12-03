@@ -2,25 +2,25 @@
 - (BOOL)isEnabled;
 - (NSArray)assets;
 - (SUUIImageViewElement)thumbnailImage;
-- (SUUIVideoViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUIVideoViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUIVideoViewElement
 
-- (SUUIVideoViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIVideoViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  factoryCopy = factory;
   v36.receiver = self;
   v36.super_class = SUUIVideoViewElement;
-  v10 = [(SUUIViewElement *)&v36 initWithDOMElement:v8 parent:a4 elementFactory:v9];
+  v10 = [(SUUIViewElement *)&v36 initWithDOMElement:elementCopy parent:parent elementFactory:factoryCopy];
   if (!v10)
   {
     goto LABEL_31;
   }
 
-  v35 = [v8 getAttribute:@"playback"];
+  v35 = [elementCopy getAttribute:@"playback"];
   if ([v35 isEqualToString:@"inline"])
   {
     v10->_playbackStyle = 1;
@@ -31,7 +31,7 @@
   {
     v11 = objc_opt_class();
     [v11 registerClass:objc_opt_class() forElementName:@"video" elementType:49];
-    v12 = [[SUUIImageViewElement alloc] initWithDOMElement:v8 parent:v10 elementFactory:v9];
+    v12 = [[SUUIImageViewElement alloc] initWithDOMElement:elementCopy parent:v10 elementFactory:factoryCopy];
     thumbnailImage = v10->_thumbnailImage;
     v10->_thumbnailImage = v12;
 
@@ -47,7 +47,7 @@
     [v16 registerClass:objc_opt_class() forElementName:@"video" elementType:152];
   }
 
-  v17 = [v8 getAttribute:@"disabled"];
+  v17 = [elementCopy getAttribute:@"disabled"];
   if ([v17 length])
   {
     v18 = [v17 BOOLValue] ^ 1;
@@ -60,13 +60,13 @@
 
   v33 = v17;
   v10->_enabled = v18;
-  v19 = [v8 getAttribute:@"data-content-id"];
+  v19 = [elementCopy getAttribute:@"data-content-id"];
   if ([v19 length])
   {
     v10->_itemIdentifier = [v19 longLongValue];
   }
 
-  v20 = [v8 getAttribute:@"data-metrics"];
+  v20 = [elementCopy getAttribute:@"data-metrics"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -141,12 +141,12 @@ LABEL_31:
 
 - (NSArray)assets
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __30__SUUIVideoViewElement_assets__block_invoke;
   v6[3] = &unk_2798F5B20;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(SUUIViewElement *)self enumerateChildrenUsingBlock:v6];
 
@@ -178,19 +178,19 @@ void __30__SUUIVideoViewElement_assets__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = SUUIVideoViewElement;
-  v5 = [(SUUIViewElement *)&v8 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v8 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    self->_enabled = v4->_enabled;
-    self->_itemIdentifier = [(SUUIVideoViewElement *)v4 itemIdentifier];
-    self->_playbackStyle = [(SUUIVideoViewElement *)v4 playbackStyle];
-    objc_storeStrong(&self->_thumbnailImage, v4->_thumbnailImage);
+    self->_enabled = elementCopy->_enabled;
+    self->_itemIdentifier = [(SUUIVideoViewElement *)elementCopy itemIdentifier];
+    self->_playbackStyle = [(SUUIVideoViewElement *)elementCopy playbackStyle];
+    objc_storeStrong(&self->_thumbnailImage, elementCopy->_thumbnailImage);
   }
 
   return v6;

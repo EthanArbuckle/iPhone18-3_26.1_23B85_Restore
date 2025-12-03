@@ -1,21 +1,21 @@
 @interface CKLinkReplyContextPreviewBalloonView
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
-- (CKLinkReplyContextPreviewBalloonView)initWithFrame:(CGRect)a3;
-- (void)_linkViewMetadataDidBecomeComplete:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
+- (CKLinkReplyContextPreviewBalloonView)initWithFrame:(CGRect)frame;
+- (void)_linkViewMetadataDidBecomeComplete:(id)complete;
 - (void)layoutSubviews;
-- (void)linkViewNeedsResize:(id)a3;
+- (void)linkViewNeedsResize:(id)resize;
 - (void)prepareForDisplay;
 - (void)prepareForReuse;
-- (void)setLinkView:(id)a3;
+- (void)setLinkView:(id)view;
 @end
 
 @implementation CKLinkReplyContextPreviewBalloonView
 
-- (CKLinkReplyContextPreviewBalloonView)initWithFrame:(CGRect)a3
+- (CKLinkReplyContextPreviewBalloonView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = CKLinkReplyContextPreviewBalloonView;
-  v3 = [(CKColoredBalloonView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKColoredBalloonView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [_TtC7ChatKit18CKBalloonMaskLayer alloc];
@@ -28,44 +28,44 @@
   return v3;
 }
 
-- (void)setLinkView:(id)a3
+- (void)setLinkView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   linkView = self->_linkView;
-  if (linkView != v5)
+  if (linkView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     if (linkView)
     {
       [(LPLinkView *)linkView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_linkView, a3);
-    v5 = v9;
+    objc_storeStrong(&self->_linkView, view);
+    viewCopy = v9;
     if (v9)
     {
       [(LPLinkView *)v9 setDelegate:self];
       [(LPLinkView *)v9 _setDisableTapGesture:1];
       [(LPLinkView *)v9 _setApplyCornerRadius:0];
       [(CKLinkReplyContextPreviewBalloonView *)self addSubview:v9];
-      v7 = [(LPLinkView *)v9 layer];
-      v8 = [(CKLinkReplyContextPreviewBalloonView *)self linkViewMaskLayer];
-      [v7 setMask:v8];
+      layer = [(LPLinkView *)v9 layer];
+      linkViewMaskLayer = [(CKLinkReplyContextPreviewBalloonView *)self linkViewMaskLayer];
+      [layer setMask:linkViewMaskLayer];
 
-      v5 = v9;
+      viewCopy = v9;
     }
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   linkView = self->_linkView;
   if (linkView)
   {
 
-    [(LPLinkView *)linkView sizeThatFits:a4, a5];
+    [(LPLinkView *)linkView sizeThatFits:insets, tailInsets];
   }
 
   else
@@ -88,7 +88,7 @@
 
     v14.receiver = self;
     v14.super_class = CKLinkReplyContextPreviewBalloonView;
-    [(CKBalloonView *)&v14 sizeThatFits:a4 textAlignmentInsets:a5 tailInsets:width, height];
+    [(CKBalloonView *)&v14 sizeThatFits:insets textAlignmentInsets:tailInsets tailInsets:width, height];
   }
 
   result.height = v10;
@@ -120,21 +120,21 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKLinkReplyContextPreviewBalloonView *)self linkView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  linkView = [(CKLinkReplyContextPreviewBalloonView *)self linkView];
+  [linkView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(CKLinkReplyContextPreviewBalloonView *)self linkViewMaskLayer];
+  linkViewMaskLayer = [(CKLinkReplyContextPreviewBalloonView *)self linkViewMaskLayer];
   [(CKColoredBalloonView *)self balloonDescriptor];
-  [v12 updateDescriptor:&v23];
+  [linkViewMaskLayer updateDescriptor:&v23];
 
-  v13 = [(CKLinkReplyContextPreviewBalloonView *)self linkView];
-  [v13 bounds];
+  linkView2 = [(CKLinkReplyContextPreviewBalloonView *)self linkView];
+  [linkView2 bounds];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [(CKLinkReplyContextPreviewBalloonView *)self linkViewMaskLayer];
-  [v22 setFrame:{v15, v17, v19, v21}];
+  linkViewMaskLayer2 = [(CKLinkReplyContextPreviewBalloonView *)self linkViewMaskLayer];
+  [linkViewMaskLayer2 setFrame:{v15, v17, v19, v21}];
 }
 
 - (void)prepareForDisplay
@@ -149,16 +149,16 @@
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(CKLinkReplyContextPreviewBalloonView *)self linkView];
-  [v13 setContentInset:{v6, v8, v10, v12}];
+  linkView = [(CKLinkReplyContextPreviewBalloonView *)self linkView];
+  [linkView setContentInset:{v6, v8, v10, v12}];
 
   [(LPLinkView *)self->_linkView setNeedsLayout];
 }
 
-- (void)linkViewNeedsResize:(id)a3
+- (void)linkViewNeedsResize:(id)resize
 {
   linkView = self->_linkView;
-  if (linkView == a3)
+  if (linkView == resize)
   {
     [(LPLinkView *)linkView setNeedsLayout];
 
@@ -166,10 +166,10 @@
   }
 }
 
-- (void)_linkViewMetadataDidBecomeComplete:(id)a3
+- (void)_linkViewMetadataDidBecomeComplete:(id)complete
 {
   linkView = self->_linkView;
-  if (linkView == a3)
+  if (linkView == complete)
   {
     [(LPLinkView *)linkView setNeedsLayout];
 

@@ -1,21 +1,21 @@
 @interface _CLVLLocalizationResult
 - ($153C3A5BC4E016D58A1B9CA554FFC462)location;
 - ($4ED12C4C7630B45462BF021B0F75306B)covariance;
-- (_CLVLLocalizationResult)initWithCoder:(id)a3;
-- (_CLVLLocalizationResult)initWithTimestamp:(double)a3 localizationResult:(id)a4;
-- (__n128)setTransform:(__int128 *)a3;
+- (_CLVLLocalizationResult)initWithCoder:(id)coder;
+- (_CLVLLocalizationResult)initWithTimestamp:(double)timestamp localizationResult:(id)result;
+- (__n128)setTransform:(__int128 *)transform;
 - (__n128)transform;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithMemberIndent:(id)a3 endIndent:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithMemberIndent:(id)indent endIndent:(id)endIndent;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCovariance:(id *)a3;
-- (void)setLocation:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCovariance:(id *)covariance;
+- (void)setLocation:(id)location;
 @end
 
 @implementation _CLVLLocalizationResult
 
-- (_CLVLLocalizationResult)initWithTimestamp:(double)a3 localizationResult:(id)a4
+- (_CLVLLocalizationResult)initWithTimestamp:(double)timestamp localizationResult:(id)result
 {
   v31 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
@@ -24,16 +24,16 @@
   v7 = v6;
   if (v6)
   {
-    if (a4)
+    if (result)
     {
-      v6->_timestamp = a3;
-      [a4 location];
+      v6->_timestamp = timestamp;
+      [result location];
       v9 = v23;
       v8 = v24;
       *v7->_anon_20 = v22;
       *&v7->_anon_20[16] = v9;
       *&v7->_anon_20[32] = v8;
-      [a4 transform];
+      [result transform];
       v10 = v27;
       *&v7->_anon_50[64] = v26;
       *&v7->_anon_50[80] = v10;
@@ -46,9 +46,9 @@
       v13 = v25;
       *&v7->_anon_50[32] = v24;
       *&v7->_anon_50[48] = v13;
-      [a4 confidence];
+      [result confidence];
       v7->_confidence = v14;
-      [a4 covariance];
+      [result covariance];
       v15 = v29;
       *&v7->_covariance.v[4][0] = v28;
       *&v7->_covariance.v[4][4] = v15;
@@ -63,9 +63,9 @@
       *&v7->_covariance.v[0][0] = v22;
       *&v7->_covariance.v[0][4] = v18;
       v7->_debugInfo = 0;
-      if ([a4 debugInfo])
+      if ([result debugInfo])
       {
-        v7->_debugInfo = -[_CLVLLocalizationDebugInfo initWithVLLocalizationDebugInfo:]([_CLVLLocalizationDebugInfo alloc], "initWithVLLocalizationDebugInfo:", [a4 debugInfo]);
+        v7->_debugInfo = -[_CLVLLocalizationDebugInfo initWithVLLocalizationDebugInfo:]([_CLVLLocalizationDebugInfo alloc], "initWithVLLocalizationDebugInfo:", [result debugInfo]);
       }
     }
 
@@ -87,9 +87,9 @@
   [(_CLVLLocalizationResult *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 16) = self->_timestamp;
   v6 = *self->_anon_20;
   v7 = *&self->_anon_20[32];
@@ -126,28 +126,28 @@
   *(v5 + 288) = v19;
   *(v5 + 304) = v18;
   *(v5 + 8) = self->_confidence;
-  *(v5 + 24) = [(_CLVLLocalizationDebugInfo *)self->_debugInfo copyWithZone:a3];
+  *(v5 + 24) = [(_CLVLLocalizationDebugInfo *)self->_debugInfo copyWithZone:zone];
   return v5;
 }
 
-- (_CLVLLocalizationResult)initWithCoder:(id)a3
+- (_CLVLLocalizationResult)initWithCoder:(id)coder
 {
   v14.receiver = self;
   v14.super_class = _CLVLLocalizationResult;
   v4 = [(_CLVLLocalizationResult *)&v14 init];
   if (v4)
   {
-    [a3 decodeDoubleForKey:@"timestamp"];
+    [coder decodeDoubleForKey:@"timestamp"];
     v4->_timestamp = v5;
-    v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
-    if (v6 && (v7 = v6, [v6 length] == 48) && (objc_msgSend(v7, "getBytes:length:", v4->_anon_20, 48), (v8 = objc_msgSend(a3, "decodeObjectOfClass:forKey:", objc_opt_class(), @"transform")) != 0) && (v9 = v8, objc_msgSend(v8, "length") == 128) && (objc_msgSend(v9, "getBytes:length:", v4->_anon_50, 128), (v10 = objc_msgSend(a3, "decodeObjectOfClass:forKey:", objc_opt_class(), @"covariance")) != 0) && (v11 = v10, objc_msgSend(v10, "length") == 144))
+    v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+    if (v6 && (v7 = v6, [v6 length] == 48) && (objc_msgSend(v7, "getBytes:length:", v4->_anon_20, 48), (v8 = objc_msgSend(coder, "decodeObjectOfClass:forKey:", objc_opt_class(), @"transform")) != 0) && (v9 = v8, objc_msgSend(v8, "length") == 128) && (objc_msgSend(v9, "getBytes:length:", v4->_anon_50, 128), (v10 = objc_msgSend(coder, "decodeObjectOfClass:forKey:", objc_opt_class(), @"covariance")) != 0) && (v11 = v10, objc_msgSend(v10, "length") == 144))
     {
       [v11 getBytes:&v4->_covariance length:144];
-      [a3 decodeFloatForKey:@"confidence"];
+      [coder decodeFloatForKey:@"confidence"];
       v4->_confidence = v12;
-      if ([a3 containsValueForKey:@"debugInfo"])
+      if ([coder containsValueForKey:@"debugInfo"])
       {
-        v4->_debugInfo = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"debugInfo"];
+        v4->_debugInfo = [coder decodeObjectOfClass:objc_opt_class() forKey:@"debugInfo"];
       }
 
       else
@@ -166,24 +166,24 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeDouble:@"timestamp" forKey:self->_timestamp];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E695DEF0] forKey:{"dataWithBytes:length:", self->_anon_20, 48), @"location"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E695DEF0] forKey:{"dataWithBytes:length:", self->_anon_50, 128), @"transform"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E695DEF0] forKey:{"dataWithBytes:length:", &self->_covariance, 144), @"covariance"}];
+  [coder encodeDouble:@"timestamp" forKey:self->_timestamp];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E695DEF0] forKey:{"dataWithBytes:length:", self->_anon_20, 48), @"location"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E695DEF0] forKey:{"dataWithBytes:length:", self->_anon_50, 128), @"transform"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E695DEF0] forKey:{"dataWithBytes:length:", &self->_covariance, 144), @"covariance"}];
   *&v5 = self->_confidence;
-  [a3 encodeFloat:@"confidence" forKey:v5];
+  [coder encodeFloat:@"confidence" forKey:v5];
   debugInfo = self->_debugInfo;
 
-  [a3 encodeObject:debugInfo forKey:@"debugInfo"];
+  [coder encodeObject:debugInfo forKey:@"debugInfo"];
 }
 
-- (id)descriptionWithMemberIndent:(id)a3 endIndent:(id)a4
+- (id)descriptionWithMemberIndent:(id)indent endIndent:(id)endIndent
 {
   v102 = *MEMORY[0x1E69E9840];
-  v7 = [a3 stringByAppendingString:@"\t"];
-  v8 = [a4 stringByAppendingString:@"\t"];
+  v7 = [indent stringByAppendingString:@"\t"];
+  v8 = [endIndent stringByAppendingString:@"\t"];
   v9 = MEMORY[0x1E696AEC0];
   [(_CLVLLocalizationResult *)self timestamp];
   v11 = v10;
@@ -341,7 +341,7 @@
 
   [(_CLVLLocalizationResult *)self confidence];
   [(_CLVLLocalizationDebugInfo *)[(_CLVLLocalizationResult *)self debugInfo] descriptionWithMemberIndent:v7 endIndent:v8];
-  result = [v9 stringWithFormat:@"<_CLVLLocalizationResult: %p> {\n%@.timestamp = %f, \n%@.location = {\n%@.coordinate = [%f, %f, %f], \n%@.horizontalAccuracy = %f\n%@}, \n%@.transform = [%f, %f, %f, %f;\n%@%f, %f, %f, %f;\n%@%f, %f, %f, %f;\n%@%f, %f, %f, %f], \n%@.covariance = [%f, %f, %f, %f, %f, %f;\n%@%f, %f, %f, %f, %f, %f;\n%@%f, %f, %f, %f, %f, %f;\n%@%f, %f, %f, %f, %f, %f;\n%@%f, %f, %f, %f, %f, %f;\n%@%f, %f, %f, %f, %f, %f], \n%@.confidence = %f\n%@.debugInfo = %@\n%@}", self, a3, v11, a3, v7, v56, *(&v42 + 1), v55, v7, v54, v8, a3, vzip1q_s64(v53, v51), vzip1q_s64(v52, v49), v7, vzip2q_s64(v50, v48), vzip2q_s64(v44, v47), v7, vzip1q_s64(v40, v43), vzip1q_s64(v39, v46), v7, vzip2q_s64(v38, v45), vzip2q_s64(v57, v41), a3, *&v35, *&v33, *&v28, *&v32, *&v23, *&v31, v7, *&v24, *&v37, *&v25, *&v36, *&v26, *&v34, v7, *&v18, *&v22, *&v19, *&v21, *&v14, *&v20, v7, *&v13, *&v30, *&v12, *&v29, *&v17, *&v27, v7];
+  result = [v9 stringWithFormat:@"<_CLVLLocalizationResult: %p> {\n%@.timestamp = %f, \n%@.location = {\n%@.coordinate = [%f, %f, %f], \n%@.horizontalAccuracy = %f\n%@}, \n%@.transform = [%f, %f, %f, %f;\n%@%f, %f, %f, %f;\n%@%f, %f, %f, %f;\n%@%f, %f, %f, %f], \n%@.covariance = [%f, %f, %f, %f, %f, %f;\n%@%f, %f, %f, %f, %f, %f;\n%@%f, %f, %f, %f, %f, %f;\n%@%f, %f, %f, %f, %f, %f;\n%@%f, %f, %f, %f, %f, %f;\n%@%f, %f, %f, %f, %f, %f], \n%@.confidence = %f\n%@.debugInfo = %@\n%@}", self, indent, v11, indent, v7, v56, *(&v42 + 1), v55, v7, v54, v8, indent, vzip1q_s64(v53, v51), vzip1q_s64(v52, v49), v7, vzip2q_s64(v50, v48), vzip2q_s64(v44, v47), v7, vzip1q_s64(v40, v43), vzip1q_s64(v39, v46), v7, vzip2q_s64(v38, v45), vzip2q_s64(v57, v41), indent, *&v35, *&v33, *&v28, *&v32, *&v23, *&v31, v7, *&v24, *&v37, *&v25, *&v36, *&v26, *&v34, v7, *&v18, *&v22, *&v19, *&v21, *&v14, *&v20, v7, *&v13, *&v30, *&v12, *&v29, *&v17, *&v27, v7];
   v16 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -356,7 +356,7 @@
   return v4;
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
   v4 = *v3;
   v5 = v3[2];
@@ -367,38 +367,38 @@
 
 - (__n128)transform
 {
-  v2 = *(a1 + 160);
-  *(a2 + 64) = *(a1 + 144);
+  v2 = *(self + 160);
+  *(a2 + 64) = *(self + 144);
   *(a2 + 80) = v2;
-  v3 = *(a1 + 192);
-  *(a2 + 96) = *(a1 + 176);
+  v3 = *(self + 192);
+  *(a2 + 96) = *(self + 176);
   *(a2 + 112) = v3;
-  v4 = *(a1 + 96);
-  *a2 = *(a1 + 80);
+  v4 = *(self + 96);
+  *a2 = *(self + 80);
   *(a2 + 16) = v4;
-  result = *(a1 + 112);
-  v6 = *(a1 + 128);
+  result = *(self + 112);
+  v6 = *(self + 128);
   *(a2 + 32) = result;
   *(a2 + 48) = v6;
   return result;
 }
 
-- (__n128)setTransform:(__int128 *)a3
+- (__n128)setTransform:(__int128 *)transform
 {
-  v3 = *a3;
-  v4 = a3[1];
-  v5 = a3[3];
-  *(a1 + 112) = a3[2];
-  *(a1 + 128) = v5;
-  *(a1 + 80) = v3;
-  *(a1 + 96) = v4;
-  result = a3[4];
-  v7 = a3[5];
-  v8 = a3[7];
-  *(a1 + 176) = a3[6];
-  *(a1 + 192) = v8;
-  *(a1 + 144) = result;
-  *(a1 + 160) = v7;
+  v3 = *transform;
+  v4 = transform[1];
+  v5 = transform[3];
+  *(self + 112) = transform[2];
+  *(self + 128) = v5;
+  *(self + 80) = v3;
+  *(self + 96) = v4;
+  result = transform[4];
+  v7 = transform[5];
+  v8 = transform[7];
+  *(self + 176) = transform[6];
+  *(self + 192) = v8;
+  *(self + 144) = result;
+  *(self + 160) = v7;
   return result;
 }
 
@@ -420,20 +420,20 @@
   return self;
 }
 
-- (void)setCovariance:(id *)a3
+- (void)setCovariance:(id *)covariance
 {
-  *&self->_covariance.v[0][0] = *&a3->var0[0][0];
-  v3 = *&a3->var0[0][4];
-  v4 = *&a3->var0[1][2];
-  v5 = *&a3->var0[2][4];
-  *&self->_covariance.v[2][0] = *&a3->var0[2][0];
+  *&self->_covariance.v[0][0] = *&covariance->var0[0][0];
+  v3 = *&covariance->var0[0][4];
+  v4 = *&covariance->var0[1][2];
+  v5 = *&covariance->var0[2][4];
+  *&self->_covariance.v[2][0] = *&covariance->var0[2][0];
   *&self->_covariance.v[2][4] = v5;
   *&self->_covariance.v[0][4] = v3;
   *&self->_covariance.v[1][2] = v4;
-  v6 = *&a3->var0[3][2];
-  v7 = *&a3->var0[4][0];
-  v8 = *&a3->var0[5][2];
-  *&self->_covariance.v[4][4] = *&a3->var0[4][4];
+  v6 = *&covariance->var0[3][2];
+  v7 = *&covariance->var0[4][0];
+  v8 = *&covariance->var0[5][2];
+  *&self->_covariance.v[4][4] = *&covariance->var0[4][4];
   *&self->_covariance.v[5][2] = v8;
   *&self->_covariance.v[3][2] = v6;
   *&self->_covariance.v[4][0] = v7;

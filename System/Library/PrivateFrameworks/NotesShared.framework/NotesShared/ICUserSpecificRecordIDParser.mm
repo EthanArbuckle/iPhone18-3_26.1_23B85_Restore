@@ -1,41 +1,41 @@
 @interface ICUserSpecificRecordIDParser
-+ (BOOL)isUserSpecificRecordID:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)isUserSpecificRecordID:(id)d;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)validate;
-- (ICUserSpecificRecordIDParser)initWithRecordName:(id)a3;
-- (ICUserSpecificRecordIDParser)initWithSharedRecordType:(id)a3 sharedRecordID:(id)a4 userRecordName:(id)a5 ownerName:(id)a6;
+- (ICUserSpecificRecordIDParser)initWithRecordName:(id)name;
+- (ICUserSpecificRecordIDParser)initWithSharedRecordType:(id)type sharedRecordID:(id)d userRecordName:(id)name ownerName:(id)ownerName;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation ICUserSpecificRecordIDParser
 
-- (ICUserSpecificRecordIDParser)initWithSharedRecordType:(id)a3 sharedRecordID:(id)a4 userRecordName:(id)a5 ownerName:(id)a6
+- (ICUserSpecificRecordIDParser)initWithSharedRecordType:(id)type sharedRecordID:(id)d userRecordName:(id)name ownerName:(id)ownerName
 {
-  v10 = a3;
-  v11 = a4;
+  typeCopy = type;
+  dCopy = d;
   v12 = MEMORY[0x277CBEB18];
-  v13 = a6;
-  v14 = a5;
+  ownerNameCopy = ownerName;
+  nameCopy = name;
   v15 = [v12 arrayWithCapacity:2];
-  v38 = v10;
-  v16 = [objc_opt_class() userSpecificRecordTypeForSharedRecordType:v10];
+  v38 = typeCopy;
+  v16 = [objc_opt_class() userSpecificRecordTypeForSharedRecordType:typeCopy];
   [v15 setObject:v16 atIndexedSubscript:0];
 
-  [v15 setObject:v14 atIndexedSubscript:1];
+  [v15 setObject:nameCopy atIndexedSubscript:1];
   v17 = [MEMORY[0x277CBEB18] arrayWithCapacity:4];
-  v18 = [v11 zoneID];
-  [v18 databaseScope];
+  zoneID = [dCopy zoneID];
+  [zoneID databaseScope];
   v19 = CKDatabaseScopeString();
   [v17 setObject:v19 atIndexedSubscript:0];
 
-  v20 = [v11 zoneID];
-  v21 = [v20 zoneName];
-  [v17 setObject:v21 atIndexedSubscript:1];
+  zoneID2 = [dCopy zoneID];
+  zoneName = [zoneID2 zoneName];
+  [v17 setObject:zoneName atIndexedSubscript:1];
 
-  [v17 setObject:v13 atIndexedSubscript:2];
-  v22 = [v11 recordName];
-  [v17 setObject:v22 atIndexedSubscript:3];
+  [v17 setObject:ownerNameCopy atIndexedSubscript:2];
+  recordName = [dCopy recordName];
+  [v17 setObject:recordName atIndexedSubscript:3];
 
   v23 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
   v24 = [v15 componentsJoinedByString:@"::"];
@@ -47,19 +47,19 @@
   v26 = [v23 componentsJoinedByString:@"/"];
   if ([v26 length] < 0x100)
   {
-    v36 = a4;
+    dCopy2 = d;
     v29 = objc_alloc(MEMORY[0x277CBC5F8]);
-    v30 = [v11 zoneID];
-    v31 = [v30 zoneName];
-    v27 = [v29 initWithZoneName:v31 ownerName:*MEMORY[0x277CBBF28]];
+    zoneID3 = [dCopy zoneID];
+    zoneName2 = [zoneID3 zoneName];
+    v27 = [v29 initWithZoneName:zoneName2 ownerName:*MEMORY[0x277CBBF28]];
 
     v32 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v26 zoneID:v27];
     v39.receiver = self;
     v39.super_class = ICUserSpecificRecordIDParser;
     self = [(ICUserSpecificRecordIDParser *)&v39 init];
-    if (!self || ([v15 objectAtIndexedSubscript:0], v33 = objc_claimAutoreleasedReturnValue(), recordType = self->_recordType, self->_recordType = v33, recordType, objc_storeStrong(&self->_recordID, v32), objc_storeStrong(&self->_sharedRecordType, a3), objc_storeStrong(&self->_sharedRecordID, v36), v28 = 0, -[ICUserSpecificRecordIDParser validate](self, "validate")))
+    if (!self || ([v15 objectAtIndexedSubscript:0], v33 = objc_claimAutoreleasedReturnValue(), recordType = self->_recordType, self->_recordType = v33, recordType, objc_storeStrong(&self->_recordID, v32), objc_storeStrong(&self->_sharedRecordType, type), objc_storeStrong(&self->_sharedRecordID, dCopy2), selfCopy = 0, -[ICUserSpecificRecordIDParser validate](self, "validate")))
     {
-      v28 = self;
+      selfCopy = self;
     }
   }
 
@@ -71,16 +71,16 @@
       [ICUserSpecificRecordIDParser initWithSharedRecordType:sharedRecordID:userRecordName:ownerName:];
     }
 
-    v28 = 0;
+    selfCopy = 0;
   }
 
-  return v28;
+  return selfCopy;
 }
 
-- (ICUserSpecificRecordIDParser)initWithRecordName:(id)a3
+- (ICUserSpecificRecordIDParser)initWithRecordName:(id)name
 {
-  v4 = a3;
-  v5 = [v4 componentsSeparatedByString:@"/"];
+  nameCopy = name;
+  v5 = [nameCopy componentsSeparatedByString:@"/"];
   if ([v5 count] == 2)
   {
     v6 = [v5 objectAtIndexedSubscript:0];
@@ -93,11 +93,11 @@
       {
         v48 = v8;
         v10 = [v7 objectAtIndexedSubscript:0];
-        v11 = [v10 ic_nilWhenEmpty];
-        v12 = v11;
-        if (v11)
+        ic_nilWhenEmpty = [v10 ic_nilWhenEmpty];
+        v12 = ic_nilWhenEmpty;
+        if (ic_nilWhenEmpty)
         {
-          v13 = v11;
+          v13 = ic_nilWhenEmpty;
         }
 
         else
@@ -109,11 +109,11 @@
         v14 = v13;
 
         v15 = [v7 objectAtIndexedSubscript:1];
-        v16 = [v15 ic_nilWhenEmpty];
-        v17 = v16;
-        if (v16)
+        ic_nilWhenEmpty2 = [v15 ic_nilWhenEmpty];
+        v17 = ic_nilWhenEmpty2;
+        if (ic_nilWhenEmpty2)
         {
-          v18 = v16;
+          v18 = ic_nilWhenEmpty2;
         }
 
         else
@@ -124,11 +124,11 @@
         v54 = v18;
 
         v19 = [v9 objectAtIndexedSubscript:1];
-        v20 = [v19 ic_nilWhenEmpty];
-        v21 = v20;
-        if (v20)
+        ic_nilWhenEmpty3 = [v19 ic_nilWhenEmpty];
+        v21 = ic_nilWhenEmpty3;
+        if (ic_nilWhenEmpty3)
         {
-          v22 = v20;
+          v22 = ic_nilWhenEmpty3;
         }
 
         else
@@ -140,11 +140,11 @@
 
         v52 = v14;
         v23 = [objc_opt_class() sharedRecordTypeForUserSpecificRecordType:v14];
-        v24 = [v23 ic_nilWhenEmpty];
-        v25 = v24;
-        if (v24)
+        ic_nilWhenEmpty4 = [v23 ic_nilWhenEmpty];
+        v25 = ic_nilWhenEmpty4;
+        if (ic_nilWhenEmpty4)
         {
-          v26 = v24;
+          v26 = ic_nilWhenEmpty4;
         }
 
         else
@@ -156,11 +156,11 @@
         v50 = v26;
 
         v27 = [v9 objectAtIndexedSubscript:2];
-        v28 = [v27 ic_nilWhenEmpty];
-        v29 = v28;
-        if (v28)
+        ic_nilWhenEmpty5 = [v27 ic_nilWhenEmpty];
+        v29 = ic_nilWhenEmpty5;
+        if (ic_nilWhenEmpty5)
         {
-          v30 = v28;
+          v30 = ic_nilWhenEmpty5;
         }
 
         else
@@ -172,11 +172,11 @@
 
         v51 = v9;
         v32 = [v9 objectAtIndexedSubscript:3];
-        v33 = [v32 ic_nilWhenEmpty];
-        v34 = v33;
-        if (v33)
+        ic_nilWhenEmpty6 = [v32 ic_nilWhenEmpty];
+        v34 = ic_nilWhenEmpty6;
+        if (ic_nilWhenEmpty6)
         {
-          v35 = v33;
+          v35 = ic_nilWhenEmpty6;
         }
 
         else
@@ -187,7 +187,7 @@
         v36 = v35;
 
         v47 = [objc_alloc(MEMORY[0x277CBC5F8]) initWithZoneName:v53 ownerName:v54];
-        v37 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v4 zoneID:v47];
+        v37 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:nameCopy zoneID:v47];
         v38 = v37;
         v49 = v31;
         v39 = [objc_alloc(MEMORY[0x277CBC5F8]) initWithZoneName:v53 ownerName:v31];
@@ -198,12 +198,12 @@
         self = v41;
         if (v41 && (objc_storeStrong(&v41->_recordType, obj), objc_storeStrong(&self->_recordID, v37), objc_storeStrong(&self->_sharedRecordType, v45), objc_storeStrong(&self->_sharedRecordID, v40), ![(ICUserSpecificRecordIDParser *)self validate]))
         {
-          v42 = 0;
+          selfCopy = 0;
         }
 
         else
         {
-          v42 = self;
+          selfCopy = self;
         }
 
         v9 = v51;
@@ -219,7 +219,7 @@
           [ICUserSpecificRecordIDParser initWithRecordName:];
         }
 
-        v42 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -231,7 +231,7 @@
         [ICUserSpecificRecordIDParser initWithRecordName:];
       }
 
-      v42 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -243,16 +243,16 @@
       [ICUserSpecificRecordIDParser initWithRecordName:];
     }
 
-    v42 = 0;
+    selfCopy = 0;
   }
 
-  return v42;
+  return selfCopy;
 }
 
 - (BOOL)validate
 {
-  v3 = [(ICUserSpecificRecordIDParser *)self recordType];
-  if (![v3 length])
+  recordType = [(ICUserSpecificRecordIDParser *)self recordType];
+  if (![recordType length])
   {
 
 LABEL_15:
@@ -269,16 +269,16 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v4 = [(ICUserSpecificRecordIDParser *)self recordType];
-  v5 = [v4 isEqual:@"(null)"];
+  recordType2 = [(ICUserSpecificRecordIDParser *)self recordType];
+  v5 = [recordType2 isEqual:@"(null)"];
 
   if (v5)
   {
     goto LABEL_15;
   }
 
-  v6 = [(ICUserSpecificRecordIDParser *)self recordType];
-  v7 = [v6 hasSuffix:@"_UserSpecific"];
+  recordType3 = [(ICUserSpecificRecordIDParser *)self recordType];
+  v7 = [recordType3 hasSuffix:@"_UserSpecific"];
 
   if ((v7 & 1) == 0)
   {
@@ -291,11 +291,11 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v8 = [(ICUserSpecificRecordIDParser *)self recordID];
-  v9 = [v8 zoneID];
-  v10 = [v9 databaseScope];
+  recordID = [(ICUserSpecificRecordIDParser *)self recordID];
+  zoneID = [recordID zoneID];
+  databaseScope = [zoneID databaseScope];
 
-  if (!v10)
+  if (!databaseScope)
   {
     v33 = os_log_create("com.apple.notes", "Cloud");
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -306,10 +306,10 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v11 = [(ICUserSpecificRecordIDParser *)self recordID];
-  v12 = [v11 zoneID];
-  v13 = [v12 zoneName];
-  if (![v13 length])
+  recordID2 = [(ICUserSpecificRecordIDParser *)self recordID];
+  zoneID2 = [recordID2 zoneID];
+  zoneName = [zoneID2 zoneName];
+  if (![zoneName length])
   {
 
 LABEL_23:
@@ -322,20 +322,20 @@ LABEL_23:
     goto LABEL_17;
   }
 
-  v14 = [(ICUserSpecificRecordIDParser *)self recordID];
-  v15 = [v14 zoneID];
-  v16 = [v15 zoneName];
-  v17 = [v16 isEqual:@"(null)"];
+  recordID3 = [(ICUserSpecificRecordIDParser *)self recordID];
+  zoneID3 = [recordID3 zoneID];
+  zoneName2 = [zoneID3 zoneName];
+  v17 = [zoneName2 isEqual:@"(null)"];
 
   if (v17)
   {
     goto LABEL_23;
   }
 
-  v18 = [(ICUserSpecificRecordIDParser *)self recordID];
-  v19 = [v18 zoneID];
-  v20 = [v19 ownerName];
-  if (![v20 length])
+  recordID4 = [(ICUserSpecificRecordIDParser *)self recordID];
+  zoneID4 = [recordID4 zoneID];
+  ownerName = [zoneID4 ownerName];
+  if (![ownerName length])
   {
 
 LABEL_26:
@@ -348,19 +348,19 @@ LABEL_26:
     goto LABEL_17;
   }
 
-  v21 = [(ICUserSpecificRecordIDParser *)self recordID];
-  v22 = [v21 zoneID];
-  v23 = [v22 ownerName];
-  v24 = [v23 isEqual:@"(null)"];
+  recordID5 = [(ICUserSpecificRecordIDParser *)self recordID];
+  zoneID5 = [recordID5 zoneID];
+  ownerName2 = [zoneID5 ownerName];
+  v24 = [ownerName2 isEqual:@"(null)"];
 
   if (v24)
   {
     goto LABEL_26;
   }
 
-  v25 = [(ICUserSpecificRecordIDParser *)self recordID];
-  v26 = [v25 recordName];
-  if (![v26 length])
+  recordID6 = [(ICUserSpecificRecordIDParser *)self recordID];
+  recordName = [recordID6 recordName];
+  if (![recordName length])
   {
 
 LABEL_29:
@@ -373,18 +373,18 @@ LABEL_29:
     goto LABEL_17;
   }
 
-  v27 = [(ICUserSpecificRecordIDParser *)self recordID];
-  v28 = [v27 recordName];
-  v29 = [v28 isEqual:@"(null)"];
+  recordID7 = [(ICUserSpecificRecordIDParser *)self recordID];
+  recordName2 = [recordID7 recordName];
+  v29 = [recordName2 isEqual:@"(null)"];
 
   if (v29)
   {
     goto LABEL_29;
   }
 
-  v30 = [(ICUserSpecificRecordIDParser *)self recordID];
-  v31 = [v30 recordName];
-  v32 = [v31 containsString:*MEMORY[0x277CBBF28]];
+  recordID8 = [(ICUserSpecificRecordIDParser *)self recordID];
+  recordName3 = [recordID8 recordName];
+  v32 = [recordName3 containsString:*MEMORY[0x277CBBF28]];
 
   if (v32)
   {
@@ -397,8 +397,8 @@ LABEL_29:
     goto LABEL_17;
   }
 
-  v35 = [(ICUserSpecificRecordIDParser *)self sharedRecordType];
-  if (![v35 length])
+  sharedRecordType = [(ICUserSpecificRecordIDParser *)self sharedRecordType];
+  if (![sharedRecordType length])
   {
 
 LABEL_42:
@@ -411,19 +411,19 @@ LABEL_42:
     goto LABEL_16;
   }
 
-  v36 = [(ICUserSpecificRecordIDParser *)self sharedRecordType];
-  v37 = [v36 isEqual:@"(null)"];
+  sharedRecordType2 = [(ICUserSpecificRecordIDParser *)self sharedRecordType];
+  v37 = [sharedRecordType2 isEqual:@"(null)"];
 
   if (v37)
   {
     goto LABEL_42;
   }
 
-  v38 = [(ICUserSpecificRecordIDParser *)self sharedRecordID];
-  v39 = [v38 zoneID];
-  v40 = [v39 databaseScope];
+  sharedRecordID = [(ICUserSpecificRecordIDParser *)self sharedRecordID];
+  zoneID6 = [sharedRecordID zoneID];
+  databaseScope2 = [zoneID6 databaseScope];
 
-  if (!v40)
+  if (!databaseScope2)
   {
     v33 = os_log_create("com.apple.notes", "Cloud");
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -434,10 +434,10 @@ LABEL_42:
     goto LABEL_17;
   }
 
-  v41 = [(ICUserSpecificRecordIDParser *)self sharedRecordID];
-  v42 = [v41 zoneID];
-  v43 = [v42 zoneName];
-  if (![v43 length])
+  sharedRecordID2 = [(ICUserSpecificRecordIDParser *)self sharedRecordID];
+  zoneID7 = [sharedRecordID2 zoneID];
+  zoneName3 = [zoneID7 zoneName];
+  if (![zoneName3 length])
   {
 
 LABEL_47:
@@ -450,20 +450,20 @@ LABEL_47:
     goto LABEL_17;
   }
 
-  v44 = [(ICUserSpecificRecordIDParser *)self sharedRecordID];
-  v45 = [v44 zoneID];
-  v46 = [v45 zoneName];
-  v47 = [v46 isEqual:@"(null)"];
+  sharedRecordID3 = [(ICUserSpecificRecordIDParser *)self sharedRecordID];
+  zoneID8 = [sharedRecordID3 zoneID];
+  zoneName4 = [zoneID8 zoneName];
+  v47 = [zoneName4 isEqual:@"(null)"];
 
   if (v47)
   {
     goto LABEL_47;
   }
 
-  v48 = [(ICUserSpecificRecordIDParser *)self sharedRecordID];
-  v49 = [v48 zoneID];
-  v50 = [v49 ownerName];
-  if (![v50 length])
+  sharedRecordID4 = [(ICUserSpecificRecordIDParser *)self sharedRecordID];
+  zoneID9 = [sharedRecordID4 zoneID];
+  ownerName3 = [zoneID9 ownerName];
+  if (![ownerName3 length])
   {
 
 LABEL_50:
@@ -476,19 +476,19 @@ LABEL_50:
     goto LABEL_17;
   }
 
-  v51 = [(ICUserSpecificRecordIDParser *)self sharedRecordID];
-  v52 = [v51 zoneID];
-  v53 = [v52 ownerName];
-  v54 = [v53 isEqual:@"(null)"];
+  sharedRecordID5 = [(ICUserSpecificRecordIDParser *)self sharedRecordID];
+  zoneID10 = [sharedRecordID5 zoneID];
+  ownerName4 = [zoneID10 ownerName];
+  v54 = [ownerName4 isEqual:@"(null)"];
 
   if (v54)
   {
     goto LABEL_50;
   }
 
-  v55 = [(ICUserSpecificRecordIDParser *)self sharedRecordID];
-  v56 = [v55 recordName];
-  if (![v56 length])
+  sharedRecordID6 = [(ICUserSpecificRecordIDParser *)self sharedRecordID];
+  recordName4 = [sharedRecordID6 recordName];
+  if (![recordName4 length])
   {
 
 LABEL_53:
@@ -501,9 +501,9 @@ LABEL_53:
     goto LABEL_17;
   }
 
-  v57 = [(ICUserSpecificRecordIDParser *)self sharedRecordID];
-  v58 = [v57 recordName];
-  v59 = [v58 isEqual:@"(null)"];
+  sharedRecordID7 = [(ICUserSpecificRecordIDParser *)self sharedRecordID];
+  recordName5 = [sharedRecordID7 recordName];
+  v59 = [recordName5 isEqual:@"(null)"];
 
   if (v59)
   {
@@ -518,52 +518,52 @@ LABEL_53:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ICUserSpecificRecordIDParser *)self recordType];
-  v7 = [(ICUserSpecificRecordIDParser *)self recordID];
-  v8 = [(ICUserSpecificRecordIDParser *)self sharedRecordType];
-  v9 = [(ICUserSpecificRecordIDParser *)self sharedRecordID];
-  v10 = [v3 stringWithFormat:@"<%@: %p, recordType: %@, recordID: %@, sharedRecordType: %@, sharedRecordID: %@>", v5, self, v6, v7, v8, v9];
+  recordType = [(ICUserSpecificRecordIDParser *)self recordType];
+  recordID = [(ICUserSpecificRecordIDParser *)self recordID];
+  sharedRecordType = [(ICUserSpecificRecordIDParser *)self sharedRecordType];
+  sharedRecordID = [(ICUserSpecificRecordIDParser *)self sharedRecordID];
+  v10 = [v3 stringWithFormat:@"<%@: %p, recordType: %@, recordID: %@, sharedRecordType: %@, sharedRecordID: %@>", v5, self, recordType, recordID, sharedRecordType, sharedRecordID];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 != self)
+  if (equal != self)
   {
-    v4 = a3;
+    equalCopy = equal;
     objc_opt_class();
     v5 = ICDynamicCast();
 
-    v6 = [(ICUserSpecificRecordIDParser *)self recordType];
-    v7 = [v5 recordType];
+    recordType = [(ICUserSpecificRecordIDParser *)self recordType];
+    recordType2 = [v5 recordType];
     v8 = *MEMORY[0x277CBEEE8];
-    if (*MEMORY[0x277CBEEE8] == v6)
+    if (*MEMORY[0x277CBEEE8] == recordType)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = v6;
+      v9 = recordType;
     }
 
-    v10 = v9;
-    if (v8 == v7)
+    recordID = v9;
+    if (v8 == recordType2)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = v7;
+      v11 = recordType2;
     }
 
     v12 = v11;
-    if (v10 | v12)
+    if (recordID | v12)
     {
-      v13 = v12;
-      if (v10)
+      recordID2 = v12;
+      if (recordID)
       {
         v14 = v12 == 0;
       }
@@ -581,7 +581,7 @@ LABEL_58:
         goto LABEL_59;
       }
 
-      v16 = [v10 isEqual:v12];
+      v16 = [recordID isEqual:v12];
 
       if (!v16)
       {
@@ -592,35 +592,35 @@ LABEL_59:
       }
     }
 
-    v38 = v7;
-    v10 = [(ICUserSpecificRecordIDParser *)self recordID];
-    v13 = [v5 recordID];
-    if (v8 == v10)
+    v38 = recordType2;
+    recordID = [(ICUserSpecificRecordIDParser *)self recordID];
+    recordID2 = [v5 recordID];
+    if (v8 == recordID)
     {
       v17 = 0;
     }
 
     else
     {
-      v17 = v10;
+      v17 = recordID;
     }
 
-    v18 = v17;
-    if (v8 == v13)
+    sharedRecordType = v17;
+    if (v8 == recordID2)
     {
       v19 = 0;
     }
 
     else
     {
-      v19 = v13;
+      v19 = recordID2;
     }
 
     v20 = v19;
-    if (v18 | v20)
+    if (sharedRecordType | v20)
     {
-      v21 = v20;
-      if (v18)
+      sharedRecordType2 = v20;
+      if (sharedRecordType)
       {
         v22 = v20 == 0;
       }
@@ -636,11 +636,11 @@ LABEL_59:
 LABEL_56:
 
 LABEL_57:
-        v7 = v38;
+        recordType2 = v38;
         goto LABEL_58;
       }
 
-      v23 = [v18 isEqual:v20];
+      v23 = [sharedRecordType isEqual:v20];
 
       if (!v23)
       {
@@ -649,47 +649,47 @@ LABEL_57:
       }
     }
 
-    v36 = v6;
-    v18 = [(ICUserSpecificRecordIDParser *)self sharedRecordType];
+    v36 = recordType;
+    sharedRecordType = [(ICUserSpecificRecordIDParser *)self sharedRecordType];
     v37 = v5;
-    v21 = [v5 sharedRecordType];
-    if (v8 == v18)
+    sharedRecordType2 = [v5 sharedRecordType];
+    if (v8 == sharedRecordType)
     {
       v24 = 0;
     }
 
     else
     {
-      v24 = v18;
+      v24 = sharedRecordType;
     }
 
-    v25 = v24;
-    if (v8 == v21)
+    sharedRecordID = v24;
+    if (v8 == sharedRecordType2)
     {
       v26 = 0;
     }
 
     else
     {
-      v26 = v21;
+      v26 = sharedRecordType2;
     }
 
     v27 = v26;
-    if (v25 | v27)
+    if (sharedRecordID | v27)
     {
-      v28 = v27;
+      sharedRecordID2 = v27;
       v15 = 0;
-      if (!v25 || !v27)
+      if (!sharedRecordID || !v27)
       {
 LABEL_54:
 
 LABEL_55:
-        v6 = v36;
+        recordType = v36;
         v5 = v37;
         goto LABEL_56;
       }
 
-      v29 = [v25 isEqual:v27];
+      v29 = [sharedRecordID isEqual:v27];
 
       if (!v29)
       {
@@ -698,27 +698,27 @@ LABEL_55:
       }
     }
 
-    v25 = [(ICUserSpecificRecordIDParser *)self sharedRecordID];
-    v28 = [v37 sharedRecordID];
-    if (v8 == v25)
+    sharedRecordID = [(ICUserSpecificRecordIDParser *)self sharedRecordID];
+    sharedRecordID2 = [v37 sharedRecordID];
+    if (v8 == sharedRecordID)
     {
       v30 = 0;
     }
 
     else
     {
-      v30 = v25;
+      v30 = sharedRecordID;
     }
 
     v31 = v30;
-    if (v8 == v28)
+    if (v8 == sharedRecordID2)
     {
       v32 = 0;
     }
 
     else
     {
-      v32 = v28;
+      v32 = sharedRecordID2;
     }
 
     v33 = v32;
@@ -748,14 +748,14 @@ LABEL_55:
   result = self->_hash;
   if (!result)
   {
-    v4 = [(ICUserSpecificRecordIDParser *)self recordType];
-    v5 = [v4 hash];
-    v6 = [(ICUserSpecificRecordIDParser *)self recordID];
-    v7 = [v6 hash];
-    v8 = [(ICUserSpecificRecordIDParser *)self sharedRecordType];
-    [v8 hash];
-    v9 = [(ICUserSpecificRecordIDParser *)self sharedRecordID];
-    [v9 hash];
+    recordType = [(ICUserSpecificRecordIDParser *)self recordType];
+    v5 = [recordType hash];
+    recordID = [(ICUserSpecificRecordIDParser *)self recordID];
+    v7 = [recordID hash];
+    sharedRecordType = [(ICUserSpecificRecordIDParser *)self sharedRecordType];
+    [sharedRecordType hash];
+    sharedRecordID = [(ICUserSpecificRecordIDParser *)self sharedRecordID];
+    [sharedRecordID hash];
     self->_hash = ICHashWithHashKeys(v5, v10, v11, v12, v13, v14, v15, v16, v7);
 
     return self->_hash;
@@ -764,10 +764,10 @@ LABEL_55:
   return result;
 }
 
-+ (BOOL)isUserSpecificRecordID:(id)a3
++ (BOOL)isUserSpecificRecordID:(id)d
 {
-  v3 = [a3 recordName];
-  v4 = [v3 componentsSeparatedByString:@"/"];
+  recordName = [d recordName];
+  v4 = [recordName componentsSeparatedByString:@"/"];
 
   if ([v4 count] == 2)
   {

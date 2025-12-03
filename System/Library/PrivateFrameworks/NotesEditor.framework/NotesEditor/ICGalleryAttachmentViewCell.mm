@@ -3,8 +3,8 @@
 - (ICGalleryAttachmentViewCellDelegate)delegate;
 - (void)dealloc;
 - (void)prepareForReuse;
-- (void)setAttachment:(id)a3;
-- (void)updateFadeMask:(BOOL)a3;
+- (void)setAttachment:(id)attachment;
+- (void)updateFadeMask:(BOOL)mask;
 - (void)updateImage;
 @end
 
@@ -25,45 +25,45 @@
   [(ICGalleryAttachmentViewCell *)&v5 prepareForReuse];
   [(ICGalleryAttachmentViewCell *)self setDelegate:0];
   [(ICGalleryAttachmentViewCell *)self setAttachment:0];
-  v3 = [(ICGalleryAttachmentViewCell *)self imageView];
-  [v3 setImage:0];
+  imageView = [(ICGalleryAttachmentViewCell *)self imageView];
+  [imageView setImage:0];
 
   [(ICGalleryAttachmentViewCell *)self setFadeMaskLayer:0];
   [(ICGalleryAttachmentViewCell *)self setFadeImageLayer:0];
   [(ICGalleryAttachmentViewCell *)self setFadeWhiteLayer:0];
-  v4 = [(ICGalleryAttachmentViewCell *)self layer];
-  [v4 setMask:0];
+  layer = [(ICGalleryAttachmentViewCell *)self layer];
+  [layer setMask:0];
 }
 
-- (void)setAttachment:(id)a3
+- (void)setAttachment:(id)attachment
 {
-  v18 = a3;
-  v5 = [(ICGalleryAttachmentViewCell *)self imageView];
-  v6 = [v5 layer];
-  [v6 setCornerRadius:3.0];
+  attachmentCopy = attachment;
+  imageView = [(ICGalleryAttachmentViewCell *)self imageView];
+  layer = [imageView layer];
+  [layer setCornerRadius:3.0];
 
-  v7 = [(ICGalleryAttachmentViewCell *)self imageView];
-  v8 = [v7 layer];
-  [v8 setMasksToBounds:1];
+  imageView2 = [(ICGalleryAttachmentViewCell *)self imageView];
+  layer2 = [imageView2 layer];
+  [layer2 setMasksToBounds:1];
 
-  v9 = [(ICGalleryAttachmentViewCell *)self imageView];
-  [v9 setContentMode:0];
+  imageView3 = [(ICGalleryAttachmentViewCell *)self imageView];
+  [imageView3 setContentMode:0];
 
   v10 = [MEMORY[0x277D75348] colorWithWhite:*MEMORY[0x277D364F8] alpha:1.0];
-  v11 = [(ICGalleryAttachmentViewCell *)self imageView];
-  [v11 setBackgroundColor:v10];
+  imageView4 = [(ICGalleryAttachmentViewCell *)self imageView];
+  [imageView4 setBackgroundColor:v10];
 
-  v12 = v18;
-  if (self->_attachment != v18)
+  v12 = attachmentCopy;
+  if (self->_attachment != attachmentCopy)
   {
     [(ICGalleryAttachmentViewCell *)self setShouldFade:0];
-    objc_storeStrong(&self->_attachment, a3);
-    v12 = v18;
-    if (v18)
+    objc_storeStrong(&self->_attachment, attachment);
+    v12 = attachmentCopy;
+    if (attachmentCopy)
     {
-      [(ICAttachment *)v18 sizeWidth];
+      [(ICAttachment *)attachmentCopy sizeWidth];
       v14 = v13;
-      [(ICAttachment *)v18 sizeHeight];
+      [(ICAttachment *)attachmentCopy sizeHeight];
       if (v15 > 0.0)
       {
         v16 = v14 / v15;
@@ -72,7 +72,7 @@
       }
 
       [(ICGalleryAttachmentViewCell *)self updateImage];
-      v12 = v18;
+      v12 = attachmentCopy;
     }
   }
 }
@@ -80,10 +80,10 @@
 - (void)updateImage
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [a1 attachment];
-  v4 = [v3 identifier];
+  attachment = [self attachment];
+  identifier = [attachment identifier];
   v5 = 138412290;
-  v6 = v4;
+  v6 = identifier;
   _os_log_debug_impl(&dword_2151A1000, a2, OS_LOG_TYPE_DEBUG, "Using scan document image from cache for: %@", &v5, 0xCu);
 }
 
@@ -192,12 +192,12 @@ void __42__ICGalleryAttachmentViewCell_updateImage__block_invoke_2_20(uint64_t a
   return v4 > v5;
 }
 
-- (void)updateFadeMask:(BOOL)a3
+- (void)updateFadeMask:(BOOL)mask
 {
-  v3 = a3;
-  v5 = [(ICGalleryAttachmentViewCell *)self fadeMaskLayer];
+  maskCopy = mask;
+  fadeMaskLayer = [(ICGalleryAttachmentViewCell *)self fadeMaskLayer];
 
-  if (!v5 && v3)
+  if (!fadeMaskLayer && maskCopy)
   {
     v6 = objc_alloc_init(MEMORY[0x277CD9ED0]);
     [(ICGalleryAttachmentViewCell *)self setFadeMaskLayer:v6];
@@ -206,25 +206,25 @@ void __42__ICGalleryAttachmentViewCell_updateImage__block_invoke_2_20(uint64_t a
     v8 = objc_alloc_init(MEMORY[0x277CD9ED0]);
     [(ICGalleryAttachmentViewCell *)self setFadeImageLayer:v8];
 
-    v9 = [v7 ic_CGImage];
-    v10 = [(ICGalleryAttachmentViewCell *)self fadeImageLayer];
-    [v10 setContents:v9];
+    ic_CGImage = [v7 ic_CGImage];
+    fadeImageLayer = [(ICGalleryAttachmentViewCell *)self fadeImageLayer];
+    [fadeImageLayer setContents:ic_CGImage];
 
-    v11 = [MEMORY[0x277CD9ED0] layer];
-    [(ICGalleryAttachmentViewCell *)self setFadeWhiteLayer:v11];
+    layer = [MEMORY[0x277CD9ED0] layer];
+    [(ICGalleryAttachmentViewCell *)self setFadeWhiteLayer:layer];
 
-    v12 = [MEMORY[0x277D75348] whiteColor];
-    v13 = [v12 CGColor];
-    v14 = [(ICGalleryAttachmentViewCell *)self fadeWhiteLayer];
-    [v14 setBackgroundColor:v13];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    cGColor = [whiteColor CGColor];
+    fadeWhiteLayer = [(ICGalleryAttachmentViewCell *)self fadeWhiteLayer];
+    [fadeWhiteLayer setBackgroundColor:cGColor];
 
-    v15 = [(ICGalleryAttachmentViewCell *)self fadeMaskLayer];
-    v16 = [(ICGalleryAttachmentViewCell *)self fadeWhiteLayer];
-    [v15 addSublayer:v16];
+    fadeMaskLayer2 = [(ICGalleryAttachmentViewCell *)self fadeMaskLayer];
+    fadeWhiteLayer2 = [(ICGalleryAttachmentViewCell *)self fadeWhiteLayer];
+    [fadeMaskLayer2 addSublayer:fadeWhiteLayer2];
 
-    v17 = [(ICGalleryAttachmentViewCell *)self fadeMaskLayer];
-    v18 = [(ICGalleryAttachmentViewCell *)self fadeImageLayer];
-    [v17 addSublayer:v18];
+    fadeMaskLayer3 = [(ICGalleryAttachmentViewCell *)self fadeMaskLayer];
+    fadeImageLayer2 = [(ICGalleryAttachmentViewCell *)self fadeImageLayer];
+    [fadeMaskLayer3 addSublayer:fadeImageLayer2];
   }
 
   [(ICGalleryAttachmentViewCell *)self bounds];
@@ -232,15 +232,15 @@ void __42__ICGalleryAttachmentViewCell_updateImage__block_invoke_2_20(uint64_t a
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  v27 = [(ICGalleryAttachmentViewCell *)self fadeMaskLayer];
-  [v27 setFrame:{v20, v22, v24, v26}];
+  fadeMaskLayer4 = [(ICGalleryAttachmentViewCell *)self fadeMaskLayer];
+  [fadeMaskLayer4 setFrame:{v20, v22, v24, v26}];
 
-  if (v3)
+  if (maskCopy)
   {
-    v28 = [MEMORY[0x277D74248] ic_isRTL];
-    v29 = [(ICGalleryAttachmentViewCell *)self isPortrait];
-    v30 = [(ICGalleryAttachmentViewCell *)self fadeMaskLayer];
-    [v30 bounds];
+    ic_isRTL = [MEMORY[0x277D74248] ic_isRTL];
+    isPortrait = [(ICGalleryAttachmentViewCell *)self isPortrait];
+    fadeMaskLayer5 = [(ICGalleryAttachmentViewCell *)self fadeMaskLayer];
+    [fadeMaskLayer5 bounds];
     v32 = v31;
     v34 = v33;
     v36 = v35;
@@ -250,10 +250,10 @@ void __42__ICGalleryAttachmentViewCell_updateImage__block_invoke_2_20(uint64_t a
     *&v85.a = *MEMORY[0x277CBF2C0];
     *&v85.c = v39;
     *&v85.tx = *(MEMORY[0x277CBF2C0] + 32);
-    if (v29)
+    if (isPortrait)
     {
-      v40 = [(ICGalleryAttachmentViewCell *)self fadeMaskLayer];
-      [v40 frame];
+      fadeMaskLayer6 = [(ICGalleryAttachmentViewCell *)self fadeMaskLayer];
+      [fadeMaskLayer6 frame];
       TSDRectGetMaxPoint();
 
       TSDRectWithPoints();
@@ -274,7 +274,7 @@ void __42__ICGalleryAttachmentViewCell_updateImage__block_invoke_2_20(uint64_t a
       v58 = v34;
       v59 = v36;
       v60 = v38;
-      if (v28)
+      if (ic_isRTL)
       {
         CGRectGetMaxY(*&v57);
         TSDRectWithPoints();
@@ -283,8 +283,8 @@ void __42__ICGalleryAttachmentViewCell_updateImage__block_invoke_2_20(uint64_t a
         width = v87.size.width;
         height = v87.size.height;
         CGRectGetMinX(v87);
-        v61 = [(ICGalleryAttachmentViewCell *)self fadeMaskLayer];
-        [v61 frame];
+        fadeMaskLayer7 = [(ICGalleryAttachmentViewCell *)self fadeMaskLayer];
+        [fadeMaskLayer7 frame];
         TSDRectGetMaxPoint();
         TSDRectWithPoints();
         v42 = v62;
@@ -298,8 +298,8 @@ void __42__ICGalleryAttachmentViewCell_updateImage__block_invoke_2_20(uint64_t a
       else
       {
         CGRectGetMaxX(*&v57);
-        v67 = [(ICGalleryAttachmentViewCell *)self fadeMaskLayer];
-        [v67 frame];
+        fadeMaskLayer8 = [(ICGalleryAttachmentViewCell *)self fadeMaskLayer];
+        [fadeMaskLayer8 frame];
         TSDRectGetMaxPoint();
         TSDRectWithPoints();
         x = v68;
@@ -312,8 +312,8 @@ void __42__ICGalleryAttachmentViewCell_updateImage__block_invoke_2_20(uint64_t a
         v88.size.width = width;
         v88.size.height = height;
         CGRectGetMinX(v88);
-        v72 = [(ICGalleryAttachmentViewCell *)self fadeMaskLayer];
-        [v72 frame];
+        fadeMaskLayer9 = [(ICGalleryAttachmentViewCell *)self fadeMaskLayer];
+        [fadeMaskLayer9 frame];
         CGRectGetMaxY(v89);
         TSDRectWithPoints();
         v42 = v73;
@@ -328,25 +328,25 @@ void __42__ICGalleryAttachmentViewCell_updateImage__block_invoke_2_20(uint64_t a
     }
 
     v84 = v85;
-    v77 = [(ICGalleryAttachmentViewCell *)self fadeImageLayer];
+    fadeImageLayer3 = [(ICGalleryAttachmentViewCell *)self fadeImageLayer];
     v83 = v84;
-    [v77 setAffineTransform:&v83];
+    [fadeImageLayer3 setAffineTransform:&v83];
 
-    v78 = [(ICGalleryAttachmentViewCell *)self fadeWhiteLayer];
-    [v78 setFrame:{v42, v44, v46, v48}];
+    fadeWhiteLayer3 = [(ICGalleryAttachmentViewCell *)self fadeWhiteLayer];
+    [fadeWhiteLayer3 setFrame:{v42, v44, v46, v48}];
 
-    v79 = [(ICGalleryAttachmentViewCell *)self fadeImageLayer];
-    [v79 setFrame:{x, y, width, height}];
+    fadeImageLayer4 = [(ICGalleryAttachmentViewCell *)self fadeImageLayer];
+    [fadeImageLayer4 setFrame:{x, y, width, height}];
 
-    v80 = [(ICGalleryAttachmentViewCell *)self fadeMaskLayer];
-    v81 = [(ICGalleryAttachmentViewCell *)self layer];
-    [v81 setMask:v80];
+    fadeMaskLayer10 = [(ICGalleryAttachmentViewCell *)self fadeMaskLayer];
+    layer2 = [(ICGalleryAttachmentViewCell *)self layer];
+    [layer2 setMask:fadeMaskLayer10];
   }
 
   else
   {
-    v82 = [(ICGalleryAttachmentViewCell *)self layer];
-    [v82 setMask:0];
+    layer3 = [(ICGalleryAttachmentViewCell *)self layer];
+    [layer3 setMask:0];
   }
 }
 

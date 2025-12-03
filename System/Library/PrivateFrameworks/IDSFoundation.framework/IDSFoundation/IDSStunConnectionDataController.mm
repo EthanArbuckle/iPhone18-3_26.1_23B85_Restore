@@ -1,10 +1,10 @@
 @interface IDSStunConnectionDataController
 + (id)sharedInstance;
-- (id)candidatesFromData:(id)a3 token:(id)a4;
-- (id)dataFromCandidates:(id)a3 token:(id)a4 remoteDeviceVersion:(unsigned int)a5;
-- (unint64_t)deliveryStatus:(id)a3;
-- (void)removeData:(id)a3;
-- (void)setDeliveryStatus:(id)a3 status:(unint64_t)a4;
+- (id)candidatesFromData:(id)data token:(id)token;
+- (id)dataFromCandidates:(id)candidates token:(id)token remoteDeviceVersion:(unsigned int)version;
+- (unint64_t)deliveryStatus:(id)status;
+- (void)removeData:(id)data;
+- (void)setDeliveryStatus:(id)status status:(unint64_t)a4;
 @end
 
 @implementation IDSStunConnectionDataController
@@ -21,12 +21,12 @@
   return v3;
 }
 
-- (id)dataFromCandidates:(id)a3 token:(id)a4 remoteDeviceVersion:(unsigned int)a5
+- (id)dataFromCandidates:(id)candidates token:(id)token remoteDeviceVersion:(unsigned int)version
 {
   v87 = *MEMORY[0x1E69E9840];
-  v60 = a3;
-  key = a4;
-  v58 = self;
+  candidatesCopy = candidates;
+  key = token;
+  selfCopy = self;
   if (key)
   {
     tokenToConnectionData = self->_tokenToConnectionData;
@@ -113,7 +113,7 @@
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  obj = v60;
+  obj = candidatesCopy;
   v70 = [obj countByEnumeratingWithState:&v72 objects:v83 count:16];
   v71 = __src;
   v67 = v86;
@@ -139,11 +139,11 @@
 
     v68 = v11;
     v14 = *(*(&v72 + 1) + 8 * v11);
-    v15 = [v14 type];
-    if (v15)
+    type = [v14 type];
+    if (type)
     {
-      v16 = [v14 external];
-      if (v15 >= 3)
+      external = [v14 external];
+      if (type >= 3)
       {
         v17 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -173,9 +173,9 @@ LABEL_64:
         goto LABEL_65;
       }
 
-      v18 = v16;
-      v19 = *(v16 + 1);
-      if (v15 == 1 && !IsValidSA(v16))
+      address = external;
+      v19 = *(external + 1);
+      if (type == 1 && !IsValidSA(external))
       {
         v36 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -205,23 +205,23 @@ LABEL_64:
 
     else
     {
-      v18 = [v14 address];
-      v19 = *(v18 + 1);
+      address = [v14 address];
+      v19 = *(address + 1);
     }
 
     if (v19 == 2)
     {
-      v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(v18 + 4)];
+      v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(address + 4)];
       v63 = 0;
     }
 
     else
     {
-      v20 = [MEMORY[0x1E695DEF0] dataWithBytes:v18 + 8 length:16];
+      v20 = [MEMORY[0x1E695DEF0] dataWithBytes:address + 8 length:16];
       v63 = 0x8000;
     }
 
-    v21 = *(v18 + 2);
+    v21 = *(address + 2);
     if ([v14 active])
     {
       v22 = 0x4000;
@@ -232,9 +232,9 @@ LABEL_64:
       v22 = 0;
     }
 
-    v23 = [v14 radioAccessTechnology];
-    v24 = v23;
-    if (v23 == 9 && a5 < 3)
+    radioAccessTechnology = [v14 radioAccessTechnology];
+    v24 = radioAccessTechnology;
+    if (radioAccessTechnology == 9 && version < 3)
     {
       v26 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -258,7 +258,7 @@ LABEL_64:
       v24 = 0;
     }
 
-    v27 = [v14 linkFlags];
+    linkFlags = [v14 linkFlags];
     v28 = [(__CFArray *)theArray indexOfObject:v20];
     if (v28 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -320,7 +320,7 @@ LABEL_82:
       }
     }
 
-    *v71 = bswap32(v28 & 0x1F | (32 * ([v14 transport] & 7)) | (v15 << 12)) >> 16;
+    *v71 = bswap32(v28 & 0x1F | (32 * ([v14 transport] & 7)) | (type << 12)) >> 16;
     *(v71 + 1) = v21;
 
     v34 = (v69 + 1);
@@ -366,7 +366,7 @@ LABEL_65:
     }
 
     ++v61;
-    *v67 = ((v27 << 7) & 0x200 | ((v24 & 0xF) << 10) | v22 | v63) >> 8;
+    *v67 = ((linkFlags << 7) & 0x200 | ((v24 & 0xF) << 10) | v22 | v63) >> 8;
     v31 = v67 + 2;
     if (v19 == 2)
     {
@@ -548,14 +548,14 @@ LABEL_84:
       }
     }
 
-    v52 = v58;
-    if (!v58->_tokenToConnectionData)
+    v52 = selfCopy;
+    if (!selfCopy->_tokenToConnectionData)
     {
       Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-      v54 = v58->_tokenToConnectionData;
-      v58->_tokenToConnectionData = Mutable;
+      v54 = selfCopy->_tokenToConnectionData;
+      selfCopy->_tokenToConnectionData = Mutable;
 
-      v52 = v58;
+      v52 = selfCopy;
     }
 
     v55 = v50;
@@ -603,20 +603,20 @@ LABEL_121:
   return v9;
 }
 
-- (id)candidatesFromData:(id)a3 token:(id)a4
+- (id)candidatesFromData:(id)data token:(id)token
 {
   v81 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v65 = a4;
-  v6 = [v5 length];
-  v7 = [v5 bytes];
-  v66 = v5;
-  v8 = [v5 length];
+  dataCopy = data;
+  tokenCopy = token;
+  v6 = [dataCopy length];
+  bytes = [dataCopy bytes];
+  v66 = dataCopy;
+  v8 = [dataCopy length];
   if (v8 > 1)
   {
     v11 = v8;
-    v13 = *v7;
-    v12 = v7 + 1;
+    v13 = *bytes;
+    v12 = bytes + 1;
     v14 = bswap32(v13);
     v15 = v14 >> 29;
     v16 = HIWORD(v14) & 0x1000;
@@ -863,9 +863,9 @@ LABEL_34:
         else
         {
           v35 = v12[1];
-          v36 = [(__CFArray *)theArray objectAtIndex:v34 & 0x1F];
+          0x1F = [(__CFArray *)theArray objectAtIndex:v34 & 0x1F];
 
-          if (v36)
+          if (0x1F)
           {
             v37 = v34 >> 12;
             if (v34 < 0x4000)
@@ -873,15 +873,15 @@ LABEL_34:
               v41 = v34 >> 5;
               if (v41 < 5)
               {
-                v43 = [(__CFArray *)v68 objectAtIndex:v34 & 0x1F];
-                v44 = [v43 unsignedShortValue];
+                0x1F2 = [(__CFArray *)v68 objectAtIndex:v34 & 0x1F];
+                unsignedShortValue = [0x1F2 unsignedShortValue];
 
-                if (v44 < 0)
+                if (unsignedShortValue < 0)
                 {
                   memset(&buf[8], 0, 20);
                   *buf = 7708;
                   *&buf[2] = v35;
-                  if ([v36 length] <= 0xF)
+                  if ([0x1F length] <= 0xF)
                   {
                     v62 = OSLogHandleForTransportCategory();
                     if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
@@ -904,12 +904,12 @@ LABEL_34:
                     }
 
                     v10 = 0;
-                    v19 = v36;
+                    v19 = 0x1F;
                     goto LABEL_135;
                   }
 
-                  v46 = v36;
-                  *&buf[8] = *[v36 bytes];
+                  v46 = 0x1F;
+                  *&buf[8] = *[0x1F bytes];
                   v45 = 1280;
                 }
 
@@ -918,11 +918,11 @@ LABEL_34:
                   *&buf[8] = 0;
                   *buf = 528;
                   *&buf[2] = v35;
-                  *&buf[4] = [v36 unsignedLongValue];
+                  *&buf[4] = [0x1F unsignedLongValue];
                   v45 = 1450;
                 }
 
-                v47 = (v44 >> 10) & 0xF;
+                v47 = (unsignedShortValue >> 10) & 0xF;
                 if (v45 >= 0x578)
                 {
                   v48 = 1400;
@@ -963,7 +963,7 @@ LABEL_34:
                   v50 = 4;
                 }
 
-                if ((v44 & 0x8000u) == 0)
+                if ((unsignedShortValue & 0x8000u) == 0)
                 {
                   v51 = 1;
                 }
@@ -974,8 +974,8 @@ LABEL_34:
                 }
 
                 v52 = [IDSStunCandidate candidateWithType:v37 transport:v41 radioAccessTechnology:v47 mtu:(v49 - GLUtilGetLinkOverhead(v51 | v50)) index:0xFFFFFFFFLL address:buf external:buf];
-                [v52 setActive:(v44 >> 14) & 1];
-                if ((v44 & 0x200) != 0)
+                [v52 setActive:(unsignedShortValue >> 14) & 1];
+                if ((unsignedShortValue & 0x200) != 0)
                 {
                   [v52 setLinkFlags:4];
                 }
@@ -1053,7 +1053,7 @@ LABEL_34:
               }
             }
 
-            v19 = v36;
+            v19 = 0x1F;
           }
 
           else
@@ -1179,15 +1179,15 @@ LABEL_144:
   return v10;
 }
 
-- (unint64_t)deliveryStatus:(id)a3
+- (unint64_t)deliveryStatus:(id)status
 {
   Value = 0;
-  if (a3)
+  if (status)
   {
     tokenToDeliveryStatus = self->_tokenToDeliveryStatus;
     if (tokenToDeliveryStatus)
     {
-      Value = CFDictionaryGetValue(tokenToDeliveryStatus, a3);
+      Value = CFDictionaryGetValue(tokenToDeliveryStatus, status);
       v3 = vars8;
     }
   }
@@ -1195,22 +1195,22 @@ LABEL_144:
   return [Value unsignedIntegerValue];
 }
 
-- (void)setDeliveryStatus:(id)a3 status:(unint64_t)a4
+- (void)setDeliveryStatus:(id)status status:(unint64_t)a4
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  statusCopy = status;
+  if (statusCopy)
   {
     tokenToDeliveryStatus = self->_tokenToDeliveryStatus;
     if (tokenToDeliveryStatus)
     {
-      tokenToDeliveryStatus = CFDictionaryGetValue(tokenToDeliveryStatus, v6);
+      tokenToDeliveryStatus = CFDictionaryGetValue(tokenToDeliveryStatus, statusCopy);
     }
 
-    v8 = [(__CFDictionary *)tokenToDeliveryStatus unsignedIntegerValue];
-    if (v8 != a4)
+    unsignedIntegerValue = [(__CFDictionary *)tokenToDeliveryStatus unsignedIntegerValue];
+    if (unsignedIntegerValue != a4)
     {
-      v9 = v8;
+      v9 = unsignedIntegerValue;
       if (!self->_tokenToDeliveryStatus)
       {
         Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
@@ -1221,7 +1221,7 @@ LABEL_144:
       v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
       if (v12)
       {
-        CFDictionarySetValue(self->_tokenToDeliveryStatus, v6, v12);
+        CFDictionarySetValue(self->_tokenToDeliveryStatus, statusCopy, v12);
       }
 
       else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1233,7 +1233,7 @@ LABEL_144:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v16 = v6;
+        v16 = statusCopy;
         v17 = 2048;
         v18 = v9;
         v19 = 2048;
@@ -1278,29 +1278,29 @@ LABEL_144:
   }
 }
 
-- (void)removeData:(id)a3
+- (void)removeData:(id)data
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     tokenToConnectionData = self->_tokenToConnectionData;
     if (tokenToConnectionData)
     {
-      CFDictionaryRemoveValue(tokenToConnectionData, v4);
+      CFDictionaryRemoveValue(tokenToConnectionData, dataCopy);
     }
 
     tokenToDeliveryStatus = self->_tokenToDeliveryStatus;
     if (tokenToDeliveryStatus)
     {
-      CFDictionaryRemoveValue(tokenToDeliveryStatus, v4);
+      CFDictionaryRemoveValue(tokenToDeliveryStatus, dataCopy);
     }
 
     v7 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v10 = v4;
+      v10 = dataCopy;
       _os_log_impl(&dword_1A7AD9000, v7, OS_LOG_TYPE_DEFAULT, "removed connection data for %@.", buf, 0xCu);
     }
 

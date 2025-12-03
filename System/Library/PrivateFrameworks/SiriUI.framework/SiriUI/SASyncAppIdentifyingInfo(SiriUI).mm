@@ -7,25 +7,25 @@
 
 - (uint64_t)siriui_isSurfAppInfo
 {
-  v1 = [a1 bundleId];
-  v2 = [v1 isEqualToString:@"com.apple.ApplePayDisambiguationItem"];
+  bundleId = [self bundleId];
+  v2 = [bundleId isEqualToString:@"com.apple.ApplePayDisambiguationItem"];
 
   return v2;
 }
 
 - (__CFString)siriui_bundleId
 {
-  if ([a1 siriui_isSurfAppInfo])
+  if ([self siriui_isSurfAppInfo])
   {
-    v2 = @"com.apple.MobileSMS";
+    bundleId = @"com.apple.MobileSMS";
   }
 
   else
   {
-    v2 = [a1 bundleId];
+    bundleId = [self bundleId];
   }
 
-  return v2;
+  return bundleId;
 }
 
 @end

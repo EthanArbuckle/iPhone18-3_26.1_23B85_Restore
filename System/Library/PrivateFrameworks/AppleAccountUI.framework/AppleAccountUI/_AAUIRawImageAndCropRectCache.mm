@@ -1,7 +1,7 @@
 @interface _AAUIRawImageAndCropRectCache
 + (id)_cacheStore;
-+ (id)entryForPersonID:(id)a3;
-+ (void)setEntry:(id)a3 forPersonID:(id)a4;
++ (id)entryForPersonID:(id)d;
++ (void)setEntry:(id)entry forPersonID:(id)d;
 @end
 
 @implementation _AAUIRawImageAndCropRectCache
@@ -18,25 +18,25 @@
   return v3;
 }
 
-+ (id)entryForPersonID:(id)a3
++ (id)entryForPersonID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 _cacheStore];
-  objc_sync_enter(v5);
-  v6 = [v5 objectForKeyedSubscript:v4];
-  objc_sync_exit(v5);
+  dCopy = d;
+  _cacheStore = [self _cacheStore];
+  objc_sync_enter(_cacheStore);
+  v6 = [_cacheStore objectForKeyedSubscript:dCopy];
+  objc_sync_exit(_cacheStore);
 
   return v6;
 }
 
-+ (void)setEntry:(id)a3 forPersonID:(id)a4
++ (void)setEntry:(id)entry forPersonID:(id)d
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [a1 _cacheStore];
-  objc_sync_enter(v7);
-  [v7 setObject:v8 forKeyedSubscript:v6];
-  objc_sync_exit(v7);
+  entryCopy = entry;
+  dCopy = d;
+  _cacheStore = [self _cacheStore];
+  objc_sync_enter(_cacheStore);
+  [_cacheStore setObject:entryCopy forKeyedSubscript:dCopy];
+  objc_sync_exit(_cacheStore);
 }
 
 @end

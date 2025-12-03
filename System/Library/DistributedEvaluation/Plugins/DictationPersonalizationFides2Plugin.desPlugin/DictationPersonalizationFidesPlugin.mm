@@ -1,19 +1,19 @@
 @interface DictationPersonalizationFidesPlugin
 - (BOOL)_invalidated;
-- (BOOL)_redecodeWithSession:(id)a3 selectedRecordInfos:(id)a4 selectedRecordDatas:(id)a5 personalizedLMPath:(id)a6 personalizedLMTrainingAsset:(id)a7 optIn:(BOOL)a8 result:(id)a9 error:(id *)a10;
-- (BOOL)_selectRecordsWithSession:(id)a3 recordInfosOut:(id *)a4 recordDatasOut:(id *)a5 error:(id *)a6;
-- (BOOL)_trainPersonalizedLMWithSession:(id)a3 directory:(id)a4 trainingAssetOut:(id *)a5 resultOut:(id *)a6 error:(id *)a7;
-- (id)_modelVersionForLanguage:(id)a3;
+- (BOOL)_redecodeWithSession:(id)session selectedRecordInfos:(id)infos selectedRecordDatas:(id)datas personalizedLMPath:(id)path personalizedLMTrainingAsset:(id)asset optIn:(BOOL)in result:(id)result error:(id *)self0;
+- (BOOL)_selectRecordsWithSession:(id)session recordInfosOut:(id *)out recordDatasOut:(id *)datasOut error:(id *)error;
+- (BOOL)_trainPersonalizedLMWithSession:(id)session directory:(id)directory trainingAssetOut:(id *)out resultOut:(id *)resultOut error:(id *)error;
+- (id)_modelVersionForLanguage:(id)language;
 - (void)_invalidate;
-- (void)performEvaluation:(id)a3;
-- (void)performSystematicErrorEvaluation:(id)a3;
+- (void)performEvaluation:(id)evaluation;
+- (void)performSystematicErrorEvaluation:(id)evaluation;
 @end
 
 @implementation DictationPersonalizationFidesPlugin
 
-- (void)performEvaluation:(id)a3
+- (void)performEvaluation:(id)evaluation
 {
-  v3 = a3;
+  evaluationCopy = evaluation;
   v4 = AFSiriLogContextFides;
   if (os_log_type_enabled(AFSiriLogContextFides, OS_LOG_TYPE_INFO))
   {
@@ -26,12 +26,12 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = v4;
-    v6 = [v3 recipe];
-    v7 = [v6 attachments];
+    recipe = [evaluationCopy recipe];
+    attachments = [recipe attachments];
     *buf = 136315394;
     v122 = "[DictationPersonalizationFidesPlugin performEvaluation:]";
     v123 = 2112;
-    *v124 = v7;
+    *v124 = attachments;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "%s Attachments: %@", buf, 0x16u);
 
     v4 = AFSiriLogContextFides;
@@ -40,8 +40,8 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v8 = v4;
-    v9 = [v3 matchingRecordSet];
-    v10 = [v9 count];
+    matchingRecordSet = [evaluationCopy matchingRecordSet];
+    v10 = [matchingRecordSet count];
     *buf = 136315394;
     v122 = "[DictationPersonalizationFidesPlugin performEvaluation:]";
     v123 = 2048;
@@ -54,33 +54,33 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v11 = v4;
-    v12 = [v3 recipe];
-    v13 = [v12 recipeUserInfo];
+    recipe2 = [evaluationCopy recipe];
+    recipeUserInfo = [recipe2 recipeUserInfo];
     *buf = 136315394;
     v122 = "[DictationPersonalizationFidesPlugin performEvaluation:]";
     v123 = 2112;
-    *v124 = v13;
+    *v124 = recipeUserInfo;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "%s Fides recipe parameters: %@", buf, 0x16u);
   }
 
   v14 = +[AFPreferences sharedPreferences];
-  v15 = [v14 dictationIsEnabled];
+  dictationIsEnabled = [v14 dictationIsEnabled];
 
-  if (v15)
+  if (dictationIsEnabled)
   {
-    v16 = [v3 recipe];
-    v17 = [v16 recipeUserInfo];
+    recipe3 = [evaluationCopy recipe];
+    recipeUserInfo2 = [recipe3 recipeUserInfo];
 
     v18 = AFIsInternalInstall();
     v19 = +[AFPreferences sharedPreferences];
-    v20 = [v19 siriDataSharingOptInStatus];
+    siriDataSharingOptInStatus = [v19 siriDataSharingOptInStatus];
 
-    v21 = v20 == &dword_0 + 1;
-    v22 = [v17 objectForKeyedSubscript:@"reportWithFides"];
-    v23 = [v22 BOOLValue];
+    v21 = siriDataSharingOptInStatus == &dword_0 + 1;
+    v22 = [recipeUserInfo2 objectForKeyedSubscript:@"reportWithFides"];
+    bOOLValue = [v22 BOOLValue];
 
-    v24 = [v17 objectForKeyedSubscript:@"disableMTELogging"];
-    v25 = [v24 BOOLValue];
+    v24 = [recipeUserInfo2 objectForKeyedSubscript:@"disableMTELogging"];
+    bOOLValue2 = [v24 BOOLValue];
 
     v26 = AFSiriLogContextFides;
     if (os_log_type_enabled(AFSiriLogContextFides, OS_LOG_TYPE_INFO))
@@ -90,27 +90,27 @@
       v123 = 1024;
       *v124 = v18;
       *&v124[4] = 1024;
-      *&v124[6] = v20 == &dword_0 + 1;
+      *&v124[6] = siriDataSharingOptInStatus == &dword_0 + 1;
       v125 = 1024;
-      v126 = v23;
+      v126 = bOOLValue;
       _os_log_impl(&dword_0, v26, OS_LOG_TYPE_INFO, "%s internal %d optIn %d reportWithFides %d", buf, 0x1Eu);
     }
 
-    if (v20 != &dword_0 + 1)
+    if (siriDataSharingOptInStatus != &dword_0 + 1)
     {
       v119 = NSLocalizedDescriptionKey;
       v120 = @"User not opted-in";
       v32 = [NSDictionary dictionaryWithObjects:&v120 forKeys:&v119 count:1];
       v33 = [NSError errorWithDomain:kAFAssistantErrorDomain code:1502 userInfo:v32];
 
-      [v3 completeWithError:v33 completionHandler:0];
+      [evaluationCopy completeWithError:v33 completionHandler:0];
       goto LABEL_76;
     }
 
-    v27 = [v17 objectForKeyedSubscript:@"performSystematicErrorEvaluation"];
-    v28 = [v27 BOOLValue];
+    v27 = [recipeUserInfo2 objectForKeyedSubscript:@"performSystematicErrorEvaluation"];
+    bOOLValue3 = [v27 BOOLValue];
 
-    if (v28)
+    if (bOOLValue3)
     {
       v29 = AFSiriLogContextFides;
       if (os_log_type_enabled(AFSiriLogContextFides, OS_LOG_TYPE_INFO))
@@ -120,12 +120,12 @@
         _os_log_impl(&dword_0, v29, OS_LOG_TYPE_INFO, "%s Performing systematic error evaluation instead of dictation personalization", buf, 0xCu);
       }
 
-      [(DictationPersonalizationFidesPlugin *)self performSystematicErrorEvaluation:v3];
+      [(DictationPersonalizationFidesPlugin *)self performSystematicErrorEvaluation:evaluationCopy];
       goto LABEL_76;
     }
 
     v34 = [FidesSelfHelper alloc];
-    v35 = [v17 objectForKeyedSubscript:@"experimentId"];
+    v35 = [recipeUserInfo2 objectForKeyedSubscript:@"experimentId"];
     v36 = [(FidesSelfHelper *)v34 initWithExperimentId:v35];
 
     [(FidesSelfHelper *)v36 logDictationPersonalizationExperimentStartedOrChanged];
@@ -136,23 +136,23 @@
     v105[3] = &unk_105F0;
     v109 = v18;
     v110 = v21;
-    v111 = v23;
-    v38 = v3;
+    v111 = bOOLValue;
+    v38 = evaluationCopy;
     v106 = v38;
     v93 = v37;
     v107 = v93;
     v92 = v36;
     v108 = v92;
-    v112 = v25;
+    v112 = bOOLValue2;
     v91 = objc_retainBlock(v105);
-    v94 = [v17 objectForKeyedSubscript:@"language"];
+    v94 = [recipeUserInfo2 objectForKeyedSubscript:@"language"];
     [v93 setObject:v94 forKeyedSubscript:@"language"];
-    v39 = [v17 objectForKeyedSubscript:@"experimentId"];
+    v39 = [recipeUserInfo2 objectForKeyedSubscript:@"experimentId"];
     [v93 setObject:v39 forKeyedSubscript:@"experimentId"];
 
-    v40 = [v38 matchingRecordSet];
-    v41 = [v40 nativeRecordInfo];
-    v42 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v41 count]);
+    matchingRecordSet2 = [v38 matchingRecordSet];
+    nativeRecordInfo = [matchingRecordSet2 nativeRecordInfo];
+    v42 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [nativeRecordInfo count]);
     [v93 setObject:v42 forKeyedSubscript:@"numAudio"];
 
     v43 = [(DictationPersonalizationFidesPlugin *)self _modelVersionForLanguage:v94];
@@ -171,7 +171,7 @@
       goto LABEL_75;
     }
 
-    v90 = [v17 objectForKeyedSubscript:@"modelVersions"];
+    v90 = [recipeUserInfo2 objectForKeyedSubscript:@"modelVersions"];
     if (v90)
     {
       v44 = v94 != 0;
@@ -229,12 +229,12 @@ LABEL_75:
     queue = self->_queue;
     self->_queue = v51;
 
-    v53 = [v38 activity];
+    activity = [v38 activity];
 
-    if (v53)
+    if (activity)
     {
       objc_initWeak(&location, self);
-      v54 = [v38 activity];
+      activity2 = [v38 activity];
       v99[1] = _NSConcreteStackBlock;
       v99[2] = 3221225472;
       v99[3] = sub_5728;
@@ -242,8 +242,8 @@ LABEL_75:
       objc_copyWeak(&v100, &location);
       v86 = xpc_activity_add_eligibility_changed_handler();
 
-      v55 = [v38 activity];
-      should_defer = xpc_activity_should_defer(v55);
+      activity3 = [v38 activity];
+      should_defer = xpc_activity_should_defer(activity3);
 
       if (should_defer)
       {
@@ -276,11 +276,11 @@ LABEL_75:
       v86 = 0;
     }
 
-    v61 = [v17 objectForKeyedSubscript:@"personalizedLM"];
+    v61 = [recipeUserInfo2 objectForKeyedSubscript:@"personalizedLM"];
     v62 = [v61 objectForKeyedSubscript:@"train"];
-    v63 = [v62 BOOLValue];
+    bOOLValue4 = [v62 BOOLValue];
 
-    if (v63)
+    if (bOOLValue4)
     {
       v64 = sub_5810();
       v65 = [[CoreEmbeddedSpeechRecognizer alloc] initWithDelegate:0 instanceUUID:&CoreEmbeddedSpeechRecognizerInstanceUUIDBackground];
@@ -415,15 +415,15 @@ LABEL_69:
   v127 = NSLocalizedDescriptionKey;
   v128 = @"PLM: Dictation disabled";
   v31 = [NSDictionary dictionaryWithObjects:&v128 forKeys:&v127 count:1];
-  v17 = [NSError errorWithDomain:kAFAssistantErrorDomain code:34 userInfo:v31];
+  recipeUserInfo2 = [NSError errorWithDomain:kAFAssistantErrorDomain code:34 userInfo:v31];
 
-  [v3 completeWithError:v17 completionHandler:0];
+  [evaluationCopy completeWithError:recipeUserInfo2 completionHandler:0];
 LABEL_76:
 }
 
-- (void)performSystematicErrorEvaluation:(id)a3
+- (void)performSystematicErrorEvaluation:(id)evaluation
 {
-  v4 = a3;
+  evaluationCopy = evaluation;
   v5 = AFSiriLogContextFides;
   if (os_log_type_enabled(AFSiriLogContextFides, OS_LOG_TYPE_INFO))
   {
@@ -437,40 +437,40 @@ LABEL_76:
   val = self;
   self->_queue = v6;
 
-  v8 = [v4 recipe];
-  v93 = [v8 recipeUserInfo];
+  recipe = [evaluationCopy recipe];
+  recipeUserInfo = [recipe recipeUserInfo];
 
-  v9 = [v93 objectForKeyedSubscript:@"leftContextSize"];
-  v78 = [v9 integerValue];
+  v9 = [recipeUserInfo objectForKeyedSubscript:@"leftContextSize"];
+  integerValue = [v9 integerValue];
 
-  v10 = [v93 objectForKeyedSubscript:@"rightContextSize"];
-  v77 = [v10 integerValue];
+  v10 = [recipeUserInfo objectForKeyedSubscript:@"rightContextSize"];
+  integerValue2 = [v10 integerValue];
 
-  v11 = [v93 objectForKeyedSubscript:@"recordLimit"];
+  v11 = [recipeUserInfo objectForKeyedSubscript:@"recordLimit"];
   if ([v11 integerValue])
   {
-    v12 = [v93 objectForKeyedSubscript:@"recordLimit"];
-    v90 = [v12 integerValue];
+    v12 = [recipeUserInfo objectForKeyedSubscript:@"recordLimit"];
+    integerValue3 = [v12 integerValue];
   }
 
   else
   {
-    v90 = &dword_0 + 1;
+    integerValue3 = &dword_0 + 1;
   }
 
-  v13 = [v93 objectForKeyedSubscript:@"keepMTELogging"];
-  v14 = [v13 BOOLValue];
+  v13 = [recipeUserInfo objectForKeyedSubscript:@"keepMTELogging"];
+  bOOLValue = [v13 BOOLValue];
 
-  v15 = [v93 objectForKeyedSubscript:@"recognizedTTSASRShouldMatch"];
-  v76 = [v15 BOOLValue];
+  v15 = [recipeUserInfo objectForKeyedSubscript:@"recognizedTTSASRShouldMatch"];
+  bOOLValue2 = [v15 BOOLValue];
 
-  v16 = [v93 objectForKeyedSubscript:@"caseSensitive"];
-  v75 = [v16 BOOLValue];
+  v16 = [recipeUserInfo objectForKeyedSubscript:@"caseSensitive"];
+  bOOLValue3 = [v16 BOOLValue];
 
-  v17 = [v93 objectForKeyedSubscript:@"skipLME"];
+  v17 = [recipeUserInfo objectForKeyedSubscript:@"skipLME"];
   [v17 BOOLValue];
 
-  v85 = [v93 objectForKeyedSubscript:@"wordSenseAccessList"];
+  v85 = [recipeUserInfo objectForKeyedSubscript:@"wordSenseAccessList"];
   if (v85)
   {
     v79 = [NSSet setWithArray:?];
@@ -482,7 +482,7 @@ LABEL_76:
   }
 
   v18 = [FidesSelfHelper alloc];
-  v19 = [v93 objectForKeyedSubscript:@"experimentId"];
+  v19 = [recipeUserInfo objectForKeyedSubscript:@"experimentId"];
   v20 = [(FidesSelfHelper *)v18 initWithExperimentId:v19];
 
   [(FidesSelfHelper *)v20 logUserEditExperimentStartedOrChanged];
@@ -499,20 +499,20 @@ LABEL_76:
   v84 = v20;
   v119 = v84;
   p_buf = &buf;
-  v122 = v14;
-  v83 = v4;
+  v122 = bOOLValue;
+  v83 = evaluationCopy;
   v120 = v83;
   v82 = objc_retainBlock(v118);
-  v88 = [v93 objectForKeyedSubscript:@"language"];
+  v88 = [recipeUserInfo objectForKeyedSubscript:@"language"];
   [*(*(&buf + 1) + 40) setObject:v88 forKeyedSubscript:@"language"];
-  v21 = [v93 objectForKeyedSubscript:@"experimentId"];
+  v21 = [recipeUserInfo objectForKeyedSubscript:@"experimentId"];
   [*(*(&buf + 1) + 40) setObject:v21 forKeyedSubscript:@"experimentId"];
 
   v87 = [(DictationPersonalizationFidesPlugin *)self _modelVersionForLanguage:v88];
   [(FidesSelfHelper *)v84 setDatapackVersion:v87];
   if (!v88 || [v87 length])
   {
-    v81 = [v93 objectForKeyedSubscript:@"modelVersions"];
+    v81 = [recipeUserInfo objectForKeyedSubscript:@"modelVersions"];
     if (v88 && v81 && (!v87 || ([v81 containsObject:v87] & 1) == 0))
     {
       v24 = AFSiriLogContextFides;
@@ -550,14 +550,14 @@ LABEL_99:
       goto LABEL_98;
     }
 
-    v26 = [v94 allKeys];
+    allKeys = [v94 allKeys];
     v86 = objc_opt_new();
     v92 = objc_opt_new();
     v113 = 0u;
     v114 = 0u;
     v111 = 0u;
     v112 = 0u;
-    obj = v26;
+    obj = allKeys;
     v27 = [obj countByEnumeratingWithState:&v111 objects:v135 count:16];
     if (v27)
     {
@@ -590,26 +590,26 @@ LABEL_99:
             v35 = v34;
             if (v34)
             {
-              v36 = [v34 correctedText];
-              if ([v36 length])
+              correctedText = [v34 correctedText];
+              if ([correctedText length])
               {
-                v37 = [v35 samplingRate];
+                samplingRate = [v35 samplingRate];
                 v38 = AFSiriLogContextFides;
-                if (v37 == &loc_3E80)
+                if (samplingRate == &loc_3E80)
                 {
                   if (os_log_type_enabled(AFSiriLogContextFides, OS_LOG_TYPE_INFO))
                   {
                     *v129 = 136315394;
                     *&v129[4] = "[DictationPersonalizationFidesPlugin performSystematicErrorEvaluation:]";
                     *&v129[12] = 2112;
-                    *&v129[14] = v36;
+                    *&v129[14] = correctedText;
                     _os_log_impl(&dword_0, v38, OS_LOG_TYPE_INFO, "%s Retrieved corrected text: %@", v129, 0x16u);
                   }
 
-                  if ([v92 count] < v90)
+                  if ([v92 count] < integerValue3)
                   {
                     [v86 setObject:v33 forKeyedSubscript:v30];
-                    [v92 setObject:v36 forKeyedSubscript:v30];
+                    [v92 setObject:correctedText forKeyedSubscript:v30];
                   }
                 }
 
@@ -618,11 +618,11 @@ LABEL_99:
                   v42 = AFSiriLogContextFides;
                   if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
                   {
-                    v43 = [v35 samplingRate];
+                    samplingRate2 = [v35 samplingRate];
                     *v129 = 136315650;
                     *&v129[4] = "[DictationPersonalizationFidesPlugin performSystematicErrorEvaluation:]";
                     *&v129[12] = 2048;
-                    *&v129[14] = v43;
+                    *&v129[14] = samplingRate2;
                     *&v129[22] = 2048;
                     v130 = &loc_3E80;
                     _os_log_error_impl(&dword_0, v42, OS_LOG_TYPE_ERROR, "%s Sampling rate does not match, record sampling rate: %lu, downsampling rate: %lu", v129, 0x20u);
@@ -693,12 +693,12 @@ LABEL_99:
     block[3] = &unk_104B0;
     block[4] = val;
     dispatch_sync(v44, block);
-    v45 = [v83 activity];
+    activity = [v83 activity];
 
-    if (v45)
+    if (activity)
     {
       objc_initWeak(location, val);
-      v46 = [v83 activity];
+      activity2 = [v83 activity];
       v108[5] = _NSConcreteStackBlock;
       v108[6] = 3221225472;
       v108[7] = sub_6C80;
@@ -706,8 +706,8 @@ LABEL_99:
       objc_copyWeak(&v109, location);
       v91 = xpc_activity_add_eligibility_changed_handler();
 
-      v47 = [v83 activity];
-      should_defer = xpc_activity_should_defer(v47);
+      activity3 = [v83 activity];
+      should_defer = xpc_activity_should_defer(activity3);
 
       if (should_defer)
       {
@@ -841,11 +841,11 @@ LABEL_97:
         v97[3] = &unk_105C8;
         v99 = &buf;
         v58 = v60;
-        v102 = v76;
-        v103 = v75;
+        v102 = bOOLValue2;
+        v103 = bOOLValue3;
         v98 = v58;
-        v100 = v78;
-        v101 = v77;
+        v100 = integerValue;
+        v101 = integerValue2;
         [CoreEmbeddedSpeechRecognizer runCorrectedTextEvaluationWithAudioDatas:"runCorrectedTextEvaluationWithAudioDatas:recordDatas:language:samplingRate:caseSensitive:skipLME:wordSenseAccessListSet:completion:" recordDatas:v70 language:v61 samplingRate:v88 caseSensitive:16000 skipLME:v79 wordSenseAccessListSet:v97 completion:?];
         if ([(DictationPersonalizationFidesPlugin *)val _invalidated])
         {
@@ -905,25 +905,25 @@ LABEL_100:
   _Block_object_dispose(&buf, 8);
 }
 
-- (BOOL)_redecodeWithSession:(id)a3 selectedRecordInfos:(id)a4 selectedRecordDatas:(id)a5 personalizedLMPath:(id)a6 personalizedLMTrainingAsset:(id)a7 optIn:(BOOL)a8 result:(id)a9 error:(id *)a10
+- (BOOL)_redecodeWithSession:(id)session selectedRecordInfos:(id)infos selectedRecordDatas:(id)datas personalizedLMPath:(id)path personalizedLMTrainingAsset:(id)asset optIn:(BOOL)in result:(id)result error:(id *)self0
 {
-  v53 = a8;
-  v14 = a3;
-  v60 = a4;
-  v15 = a5;
-  v56 = a6;
-  v55 = a7;
-  v50 = a9;
-  v52 = v14;
-  v16 = [v14 recipe];
-  v57 = [v16 recipeUserInfo];
+  inCopy = in;
+  sessionCopy = session;
+  infosCopy = infos;
+  datasCopy = datas;
+  pathCopy = path;
+  assetCopy = asset;
+  resultCopy = result;
+  v52 = sessionCopy;
+  recipe = [sessionCopy recipe];
+  recipeUserInfo = [recipe recipeUserInfo];
 
   v17 = objc_alloc_init(NSMutableDictionary);
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
-  v18 = v15;
+  v18 = datasCopy;
   v19 = [v18 countByEnumeratingWithState:&v86 objects:v95 count:16];
   if (v19)
   {
@@ -938,7 +938,7 @@ LABEL_100:
         }
 
         v22 = *(*(&v86 + 1) + 8 * i);
-        v23 = [v60 objectForKeyedSubscript:v22];
+        v23 = [infosCopy objectForKeyedSubscript:v22];
         v24 = [v23 objectForKeyedSubscript:@"language"];
 
         v25 = [v17 objectForKeyedSubscript:v24];
@@ -989,7 +989,7 @@ LABEL_100:
   if (v31)
   {
     v58 = *v70;
-    v54 = !v53;
+    v54 = !inCopy;
     v32 = &FidesSelfHelper__metaData;
     v33 = &FidesSelfHelper__metaData;
 LABEL_12:
@@ -1041,7 +1041,7 @@ LABEL_12:
         v61[5] = &v63;
         v61[6] = &v80;
         v61[7] = &v74;
-        [(CoreEmbeddedSpeechRecognizer *)v45 runEvaluationWithDESRecordDatas:v41 language:v36 recipe:v57 fidesPersonalizedLMPath:v56 fidesPersonalizedLMTrainingAsset:v55 scrubResult:v54 completion:v61];
+        [(CoreEmbeddedSpeechRecognizer *)v45 runEvaluationWithDESRecordDatas:v41 language:v36 recipe:recipeUserInfo fidesPersonalizedLMPath:pathCopy fidesPersonalizedLMTrainingAsset:assetCopy scrubResult:v54 completion:v61];
         goto LABEL_21;
       }
 
@@ -1056,9 +1056,9 @@ LABEL_22:
           _os_log_impl(&dword_0, v47, OS_LOG_TYPE_INFO, "%s Evaluation failure", buf, 0xCu);
         }
 
-        if (a10)
+        if (error)
         {
-          *a10 = v64[5];
+          *error = v64[5];
         }
 
         _Block_object_dispose(&v63, 8);
@@ -1084,8 +1084,8 @@ LABEL_22:
     }
 
     v41 = [v30 objectForKeyedSubscript:v36];
-    v42 = [v52 recipe];
-    v43 = [v42 attachments];
+    recipe2 = [v52 recipe];
+    attachments = [recipe2 attachments];
     v62[0] = _NSConcreteStackBlock;
     v62[1] = 3221225472;
     v62[2] = sub_7D0C;
@@ -1095,7 +1095,7 @@ LABEL_22:
     v62[6] = &v80;
     v62[7] = &v74;
     LOBYTE(v49) = v54;
-    [(CoreEmbeddedSpeechRecognizer *)v40 runEvaluationWithDESRecordDatas:v41 language:v36 recipe:v57 attachments:v43 fidesPersonalizedLMPath:v56 fidesPersonalizedLMTrainingAsset:v55 scrubResult:v49 completion:v62];
+    [(CoreEmbeddedSpeechRecognizer *)v40 runEvaluationWithDESRecordDatas:v41 language:v36 recipe:recipeUserInfo attachments:attachments fidesPersonalizedLMPath:pathCopy fidesPersonalizedLMTrainingAsset:assetCopy scrubResult:v49 completion:v62];
 
 LABEL_21:
     goto LABEL_22;
@@ -1103,8 +1103,8 @@ LABEL_21:
 
 LABEL_25:
 
-  [v50 setObject:v81[5] forKeyedSubscript:@"audioResults"];
-  [v50 setObject:v75[5] forKeyedSubscript:@"languageMetadata"];
+  [resultCopy setObject:v81[5] forKeyedSubscript:@"audioResults"];
+  [resultCopy setObject:v75[5] forKeyedSubscript:@"languageMetadata"];
   v46 = 1;
 LABEL_31:
   _Block_object_dispose(&v74, 8);
@@ -1113,16 +1113,16 @@ LABEL_31:
   return v46;
 }
 
-- (BOOL)_trainPersonalizedLMWithSession:(id)a3 directory:(id)a4 trainingAssetOut:(id *)a5 resultOut:(id *)a6 error:(id *)a7
+- (BOOL)_trainPersonalizedLMWithSession:(id)session directory:(id)directory trainingAssetOut:(id *)out resultOut:(id *)resultOut error:(id *)error
 {
-  v63 = self;
-  v8 = a3;
-  v68 = a4;
-  v69 = v8;
-  v9 = [v8 recipe];
-  v70 = [v9 recipeUserInfo];
+  selfCopy = self;
+  sessionCopy = session;
+  directoryCopy = directory;
+  v69 = sessionCopy;
+  recipe = [sessionCopy recipe];
+  recipeUserInfo = [recipe recipeUserInfo];
 
-  v72 = [v70 objectForKeyedSubscript:@"language"];
+  v72 = [recipeUserInfo objectForKeyedSubscript:@"language"];
   v71 = objc_alloc_init(NSMutableDictionary);
   if ([v72 length])
   {
@@ -1166,7 +1166,7 @@ LABEL_31:
           }
 
           v20 = *(*(&v78 + 1) + 8 * i);
-          v21 = [v16 objectForKeyedSubscript:{v20, v63}];
+          v21 = [v16 objectForKeyedSubscript:{v20, selfCopy}];
           IsInstalled = AFOfflineDictationStatusStringIsInstalled();
 
           if (IsInstalled)
@@ -1193,14 +1193,14 @@ LABEL_31:
 
     if (![v15 count])
     {
-      v25 = 0;
+      firstObject = 0;
       goto LABEL_33;
     }
 
     if ([v15 count] == &dword_0 + 1)
     {
-      v24 = [v15 allObjects];
-      v25 = [v24 firstObject];
+      allObjects = [v15 allObjects];
+      firstObject = [allObjects firstObject];
 
       v26 = AFSiriLogContextSpeech;
       if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
@@ -1208,33 +1208,33 @@ LABEL_31:
         *buf = 136315394;
         v87 = "getPersonalizedLMUserLanguage";
         v88 = 2112;
-        v89 = v25;
+        v89 = firstObject;
         _os_log_impl(&dword_0, v26, OS_LOG_TYPE_INFO, "%s PLM: Found one dictation language %@", buf, 0x16u);
       }
 
 LABEL_33:
 
       _Block_object_dispose(v92, 8);
-      [v71 setObject:v25 forKeyedSubscript:@"userLanguage"];
+      [v71 setObject:firstObject forKeyedSubscript:@"userLanguage"];
       v37 = AFSiriLogContextFides;
       if (os_log_type_enabled(AFSiriLogContextFides, OS_LOG_TYPE_INFO))
       {
         *v96 = 136315394;
         *&v96[4] = "[DictationPersonalizationFidesPlugin _trainPersonalizedLMWithSession:directory:trainingAssetOut:resultOut:error:]";
         *&v96[12] = 2112;
-        *&v96[14] = v25;
+        *&v96[14] = firstObject;
         _os_log_impl(&dword_0, v37, OS_LOG_TYPE_INFO, "%s PLM: user language: %@", v96, 0x16u);
       }
 
-      if ([v25 isEqualToString:v72])
+      if ([firstObject isEqualToString:v72])
       {
-        v38 = [v69 recipe];
-        v39 = [v38 attachments];
+        recipe2 = [v69 recipe];
+        attachments = [recipe2 attachments];
         v78 = 0u;
         v79 = 0u;
         v80 = 0u;
         v81 = 0u;
-        v40 = [v39 countByEnumeratingWithState:&v78 objects:v96 count:16];
+        v40 = [attachments countByEnumeratingWithState:&v78 objects:v96 count:16];
         if (v40)
         {
           v41 = *v79;
@@ -1244,12 +1244,12 @@ LABEL_33:
             {
               if (*v79 != v41)
               {
-                objc_enumerationMutation(v39);
+                objc_enumerationMutation(attachments);
               }
 
               v43 = *(*(&v78 + 1) + 8 * j);
-              v44 = [v43 lastPathComponent];
-              v45 = [v44 isEqualToString:@"lm-personalize.json"];
+              lastPathComponent = [v43 lastPathComponent];
+              v45 = [lastPathComponent isEqualToString:@"lm-personalize.json"];
 
               if (v45)
               {
@@ -1258,7 +1258,7 @@ LABEL_33:
               }
             }
 
-            v40 = [v39 countByEnumeratingWithState:&v78 objects:v96 count:16];
+            v40 = [attachments countByEnumeratingWithState:&v78 objects:v96 count:16];
             if (v40)
             {
               continue;
@@ -1271,9 +1271,9 @@ LABEL_33:
         v46 = 0;
 LABEL_51:
 
-        v49 = [v46 path];
+        path = [v46 path];
 
-        v50 = [v49 length];
+        v50 = [path length];
         v28 = v50 != 0;
         if (v50)
         {
@@ -1311,7 +1311,7 @@ LABEL_51:
           v73[3] = &unk_10500;
           v73[4] = v96;
           v73[5] = &v78;
-          [v53 trainPersonalizedLMWithLanguage:v72 configuration:v49 asset:0 directory:v68 completion:v73];
+          [v53 trainPersonalizedLMWithLanguage:v72 configuration:path asset:0 directory:directoryCopy completion:v73];
           v54 = *(*(&v78 + 1) + 40);
           if (v54)
           {
@@ -1329,21 +1329,21 @@ LABEL_51:
             v56 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v54 code]);
             [v71 setObject:v56 forKeyedSubscript:@"trainErrorCode"];
 
-            v57 = [*(*(&v78 + 1) + 40) userInfo];
-            v58 = [v57 objectForKeyedSubscript:NSLocalizedDescriptionKey];
+            userInfo = [*(*(&v78 + 1) + 40) userInfo];
+            v58 = [userInfo objectForKeyedSubscript:NSLocalizedDescriptionKey];
             [v71 setObject:v58 forKeyedSubscript:@"trainErrorDescription"];
           }
 
           [v71 setObject:*(*&v96[8] + 40) forKeyedSubscript:@"train"];
-          if (a6)
+          if (resultOut)
           {
             v59 = v71;
-            *a6 = v71;
+            *resultOut = v71;
           }
 
-          if (a5)
+          if (out)
           {
-            *a5 = [*(*&v96[8] + 40) objectForKeyedSubscript:@"asset"];
+            *out = [*(*&v96[8] + 40) objectForKeyedSubscript:@"asset"];
           }
 
           _Block_object_dispose(&v78, 8);
@@ -1361,12 +1361,12 @@ LABEL_51:
             _os_log_impl(&dword_0, v60, OS_LOG_TYPE_INFO, "%s PLM: Recipe attachments missing configuration", v96, 0xCu);
           }
 
-          if (a7)
+          if (error)
           {
             v82 = NSLocalizedDescriptionKey;
             v83 = @"PLM: Recipe attachments missing configuration";
             v61 = [NSDictionary dictionaryWithObjects:&v83 forKeys:&v82 count:1];
-            *a7 = [NSError errorWithDomain:kAFAssistantErrorDomain code:1501 userInfo:v61];
+            *error = [NSError errorWithDomain:kAFAssistantErrorDomain code:1501 userInfo:v61];
           }
         }
       }
@@ -1379,16 +1379,16 @@ LABEL_51:
           *v96 = 136315650;
           *&v96[4] = "[DictationPersonalizationFidesPlugin _trainPersonalizedLMWithSession:directory:trainingAssetOut:resultOut:error:]";
           *&v96[12] = 2112;
-          *&v96[14] = v25;
+          *&v96[14] = firstObject;
           *&v96[22] = 2112;
           v97 = v72;
           _os_log_impl(&dword_0, v47, OS_LOG_TYPE_INFO, "%s PLM: User language (%@) does not match recipe language (%@)", v96, 0x20u);
         }
 
-        if (a6)
+        if (resultOut)
         {
           v48 = v71;
-          *a6 = v71;
+          *resultOut = v71;
         }
 
         v28 = 1;
@@ -1398,7 +1398,7 @@ LABEL_51:
     }
 
     v29 = +[AFPreferences sharedPreferences];
-    v30 = [v29 languageCode];
+    languageCode = [v29 languageCode];
 
     v31 = AFOfflineDictationLanguageForKeyboardLanguage();
     v32 = AFSiriLogContextSpeech;
@@ -1407,7 +1407,7 @@ LABEL_51:
       *buf = 136315650;
       v87 = "getPersonalizedLMUserLanguage";
       v88 = 2112;
-      v89 = v30;
+      v89 = languageCode;
       v90 = 2112;
       v91 = v31;
       _os_log_impl(&dword_0, v32, OS_LOG_TYPE_INFO, "%s PLM: Trying Siri language %@ result %@", buf, 0x20u);
@@ -1415,13 +1415,13 @@ LABEL_51:
 
     if ([v31 length])
     {
-      v33 = v30;
+      localeIdentifier = languageCode;
     }
 
     else
     {
       v34 = +[NSLocale currentLocale];
-      v33 = [v34 localeIdentifier];
+      localeIdentifier = [v34 localeIdentifier];
 
       v35 = AFOfflineDictationLanguageForKeyboardLanguage();
 
@@ -1431,7 +1431,7 @@ LABEL_51:
         *buf = 136315650;
         v87 = "getPersonalizedLMUserLanguage";
         v88 = 2112;
-        v89 = v33;
+        v89 = localeIdentifier;
         v90 = 2112;
         v91 = v35;
         _os_log_impl(&dword_0, v36, OS_LOG_TYPE_INFO, "%s PLM: Trying system language %@ result %@", buf, 0x20u);
@@ -1439,7 +1439,7 @@ LABEL_51:
 
       if (![v35 length])
       {
-        v25 = 0;
+        firstObject = 0;
         goto LABEL_32;
       }
 
@@ -1447,7 +1447,7 @@ LABEL_51:
     }
 
     v35 = v31;
-    v25 = v35;
+    firstObject = v35;
 LABEL_32:
 
     goto LABEL_33;
@@ -1461,13 +1461,13 @@ LABEL_32:
     _os_log_impl(&dword_0, v27, OS_LOG_TYPE_INFO, "%s PLM: Recipe missing language", v96, 0xCu);
   }
 
-  if (a7)
+  if (error)
   {
     v84 = NSLocalizedDescriptionKey;
     v85 = @"PLM: Recipe missing language";
-    v25 = [NSDictionary dictionaryWithObjects:&v85 forKeys:&v84 count:1];
-    [NSError errorWithDomain:kAFAssistantErrorDomain code:1501 userInfo:v25];
-    *a7 = v28 = 0;
+    firstObject = [NSDictionary dictionaryWithObjects:&v85 forKeys:&v84 count:1];
+    [NSError errorWithDomain:kAFAssistantErrorDomain code:1501 userInfo:firstObject];
+    *error = v28 = 0;
 LABEL_68:
 
     goto LABEL_69;
@@ -1479,27 +1479,27 @@ LABEL_69:
   return v28;
 }
 
-- (BOOL)_selectRecordsWithSession:(id)a3 recordInfosOut:(id *)a4 recordDatasOut:(id *)a5 error:(id *)a6
+- (BOOL)_selectRecordsWithSession:(id)session recordInfosOut:(id *)out recordDatasOut:(id *)datasOut error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 recipe];
-  v8 = [v7 recipeUserInfo];
+  sessionCopy = session;
+  recipe = [sessionCopy recipe];
+  recipeUserInfo = [recipe recipeUserInfo];
 
-  v9 = [v8 objectForKeyedSubscript:@"minAudio"];
-  v38 = [v9 unsignedIntegerValue];
+  v9 = [recipeUserInfo objectForKeyedSubscript:@"minAudio"];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-  v10 = [v8 objectForKeyedSubscript:@"maxAudio"];
-  v46 = [v10 unsignedIntegerValue];
+  v10 = [recipeUserInfo objectForKeyedSubscript:@"maxAudio"];
+  unsignedIntegerValue2 = [v10 unsignedIntegerValue];
 
-  v42 = v8;
-  v11 = [v8 objectForKeyedSubscript:@"language"];
-  v45 = v6;
-  v12 = [v6 matchingRecordSet];
-  v13 = [v12 nativeRecordInfo];
+  v42 = recipeUserInfo;
+  v11 = [recipeUserInfo objectForKeyedSubscript:@"language"];
+  v45 = sessionCopy;
+  matchingRecordSet = [sessionCopy matchingRecordSet];
+  nativeRecordInfo = [matchingRecordSet nativeRecordInfo];
 
-  v47 = v13;
-  v14 = [v13 allKeys];
-  v15 = [v14 mutableCopy];
+  v47 = nativeRecordInfo;
+  allKeys = [nativeRecordInfo allKeys];
+  v15 = [allKeys mutableCopy];
 
   v16 = [v15 count];
   if (v16 >= 2)
@@ -1536,7 +1536,7 @@ LABEL_5:
       }
 
       v23 = *(*(&v49 + 1) + 8 * v22);
-      if ([v18 count] >= v46)
+      if ([v18 count] >= unsignedIntegerValue2)
       {
         break;
       }
@@ -1545,16 +1545,16 @@ LABEL_5:
       v25 = v24;
       if (!v11 || ([v24 objectForKeyedSubscript:@"language"], v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v11, "isEqualToString:", v26), v26, v27))
       {
-        v28 = [v45 matchingRecordSet];
+        matchingRecordSet2 = [v45 matchingRecordSet];
         v48 = 0;
-        v29 = [v28 nativeRecordDataForRecordUUID:v23 error:&v48];
+        v29 = [matchingRecordSet2 nativeRecordDataForRecordUUID:v23 error:&v48];
         v30 = v48;
 
         if (v29)
         {
-          v31 = [v23 UUIDString];
-          [v18 setObject:v25 forKeyedSubscript:v31];
-          [v43 setObject:v29 forKeyedSubscript:v31];
+          uUIDString = [v23 UUIDString];
+          [v18 setObject:v25 forKeyedSubscript:uUIDString];
+          [v43 setObject:v29 forKeyedSubscript:uUIDString];
         }
 
         else
@@ -1584,16 +1584,16 @@ LABEL_5:
     }
   }
 
-  if (a4)
+  if (out)
   {
     v33 = v18;
-    *a4 = v18;
+    *out = v18;
   }
 
-  if (a5)
+  if (datasOut)
   {
     v34 = v43;
-    *a5 = v43;
+    *datasOut = v43;
   }
 
   v35 = [v18 count];
@@ -1602,13 +1602,13 @@ LABEL_5:
   return v36;
 }
 
-- (id)_modelVersionForLanguage:(id)a3
+- (id)_modelVersionForLanguage:(id)language
 {
-  v3 = a3;
-  if (v3)
+  languageCopy = language;
+  if (languageCopy)
   {
     v4 = [[CoreEmbeddedSpeechRecognizer alloc] initWithDelegate:0 instanceUUID:&CoreEmbeddedSpeechRecognizerInstanceUUIDBackground];
-    v5 = [[SFEntitledAssetConfig alloc] initWithLanguage:v3 assetType:3];
+    v5 = [[SFEntitledAssetConfig alloc] initWithLanguage:languageCopy assetType:3];
     v13 = 0;
     v6 = [v4 modelPropertiesForAssetConfig:v5 error:&v13];
     v7 = v13;
@@ -1617,27 +1617,27 @@ LABEL_5:
     if (os_log_type_enabled(AFSiriLogContextFides, OS_LOG_TYPE_INFO))
     {
       v9 = v8;
-      v10 = [v6 modelVersion];
+      modelVersion = [v6 modelVersion];
       *buf = 136315906;
       v15 = "[DictationPersonalizationFidesPlugin _modelVersionForLanguage:]";
       v16 = 2112;
-      v17 = v3;
+      v17 = languageCopy;
       v18 = 2112;
-      v19 = v10;
+      v19 = modelVersion;
       v20 = 2112;
       v21 = v7;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "%s language: %@ modelVersion: %@ error: %@", buf, 0x2Au);
     }
 
-    v11 = [v6 modelVersion];
+    modelVersion2 = [v6 modelVersion];
   }
 
   else
   {
-    v11 = 0;
+    modelVersion2 = 0;
   }
 
-  return v11;
+  return modelVersion2;
 }
 
 - (BOOL)_invalidated

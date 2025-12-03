@@ -7,48 +7,48 @@
 
 - (id)cd_groupName
 {
-  v1 = [a1 speakableGroupName];
-  v2 = [v1 spokenPhrase];
+  speakableGroupName = [self speakableGroupName];
+  spokenPhrase = [speakableGroupName spokenPhrase];
 
-  return v2;
+  return spokenPhrase;
 }
 
 - (id)cd_derivedIntentIdentifier
 {
   v53 = *MEMORY[0x1E69E9840];
-  v2 = [a1 notificationThreadIdentifier];
-  if (!v2 || (v3 = v2, [a1 notificationThreadIdentifier], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "length"), v4, v3, !v5))
+  notificationThreadIdentifier = [self notificationThreadIdentifier];
+  if (!notificationThreadIdentifier || (v3 = notificationThreadIdentifier, [self notificationThreadIdentifier], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "length"), v4, v3, !v5))
   {
-    v8 = [a1 conversationIdentifier];
-    if (v8)
+    conversationIdentifier = [self conversationIdentifier];
+    if (conversationIdentifier)
     {
-      v9 = v8;
-      v10 = [a1 conversationIdentifier];
-      v11 = [v10 length];
+      v9 = conversationIdentifier;
+      conversationIdentifier2 = [self conversationIdentifier];
+      v11 = [conversationIdentifier2 length];
 
       if (v11)
       {
-        v6 = NSStringFromSelector(sel_conversationIdentifier);
-        v7 = [a1 conversationIdentifier];
+        recipients = NSStringFromSelector(sel_conversationIdentifier);
+        conversationIdentifier3 = [self conversationIdentifier];
         goto LABEL_7;
       }
     }
 
-    v14 = [a1 speakableGroupName];
-    v15 = [v14 spokenPhrase];
-    if (v15)
+    speakableGroupName = [self speakableGroupName];
+    spokenPhrase = [speakableGroupName spokenPhrase];
+    if (spokenPhrase)
     {
-      v16 = v15;
-      v17 = [a1 speakableGroupName];
-      v18 = [v17 spokenPhrase];
-      v19 = [v18 length];
+      v16 = spokenPhrase;
+      speakableGroupName2 = [self speakableGroupName];
+      spokenPhrase2 = [speakableGroupName2 spokenPhrase];
+      v19 = [spokenPhrase2 length];
 
       if (v19)
       {
-        v6 = NSStringFromSelector(sel_speakableGroupName);
-        v12 = [a1 speakableGroupName];
-        v20 = [v12 spokenPhrase];
-        v13 = _CDNormalizeString(v20);
+        recipients = NSStringFromSelector(sel_speakableGroupName);
+        speakableGroupName3 = [self speakableGroupName];
+        spokenPhrase3 = [speakableGroupName3 spokenPhrase];
+        v13 = _CDNormalizeString(spokenPhrase3);
 LABEL_40:
 
         goto LABEL_41;
@@ -59,17 +59,17 @@ LABEL_40:
     {
     }
 
-    v6 = [a1 recipients];
-    if (v6)
+    recipients = [self recipients];
+    if (recipients)
     {
-      v21 = [a1 recipients];
-      v13 = [v21 count];
+      recipients2 = [self recipients];
+      v13 = [recipients2 count];
 
       if (v13)
       {
-        v6 = NSStringFromSelector(sel_recipients);
-        v12 = [a1 recipients];
-        v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
+        recipients = NSStringFromSelector(sel_recipients);
+        speakableGroupName3 = [self recipients];
+        spokenPhrase3 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v47 = 0u;
         v48 = 0u;
         v49 = 0u;
@@ -77,7 +77,7 @@ LABEL_40:
         v42 = [&unk_1F05EF710 countByEnumeratingWithState:&v47 objects:v52 count:16];
         if (v42)
         {
-          v40 = v6;
+          v40 = recipients;
           v41 = *v48;
 LABEL_16:
           v22 = 0;
@@ -93,7 +93,7 @@ LABEL_16:
             v44 = 0u;
             v45 = 0u;
             v46 = 0u;
-            v24 = [v12 valueForKey:v23];
+            v24 = [speakableGroupName3 valueForKey:v23];
             v25 = [v24 countByEnumeratingWithState:&v43 objects:v51 count:16];
             if (v25)
             {
@@ -116,7 +116,7 @@ LABEL_21:
                 }
 
                 v30 = _CDNormalizeString(v29);
-                [v20 addObject:v30];
+                [spokenPhrase3 addObject:v30];
 
                 if (v26 == ++v28)
                 {
@@ -131,13 +131,13 @@ LABEL_21:
               }
             }
 
-            v31 = [v20 count];
-            if (v31 == [v12 count])
+            v31 = [spokenPhrase3 count];
+            if (v31 == [speakableGroupName3 count])
             {
               break;
             }
 
-            [v20 removeAllObjects];
+            [spokenPhrase3 removeAllObjects];
             if (++v22 == v42)
             {
               v42 = [&unk_1F05EF710 countByEnumeratingWithState:&v47 objects:v52 count:16];
@@ -154,7 +154,7 @@ LABEL_21:
           if (v32)
           {
             v33 = v32;
-            v34 = [v20 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+            v34 = [spokenPhrase3 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
             v35 = MEMORY[0x1E696AEC0];
             v36 = [v34 componentsJoinedByString:@"-"];
             v13 = [v35 stringWithFormat:@"%@:%@", v33, v36];
@@ -165,7 +165,7 @@ LABEL_21:
 LABEL_38:
           v13 = 0;
 LABEL_39:
-          v6 = v40;
+          recipients = v40;
         }
 
         else
@@ -176,7 +176,7 @@ LABEL_39:
         goto LABEL_40;
       }
 
-      v6 = 0;
+      recipients = 0;
     }
 
     else
@@ -188,17 +188,17 @@ LABEL_39:
     goto LABEL_44;
   }
 
-  v6 = NSStringFromSelector(sel_notificationThreadIdentifier);
-  v7 = [a1 notificationThreadIdentifier];
+  recipients = NSStringFromSelector(sel_notificationThreadIdentifier);
+  conversationIdentifier3 = [self notificationThreadIdentifier];
 LABEL_7:
-  v12 = v7;
-  v13 = _CDNormalizeString(v7);
+  speakableGroupName3 = conversationIdentifier3;
+  v13 = _CDNormalizeString(conversationIdentifier3);
 LABEL_41:
 
   v37 = 0;
-  if (v13 && v6)
+  if (v13 && recipients)
   {
-    v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@(%@)", v6, v13];
+    v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@(%@)", recipients, v13];
   }
 
 LABEL_44:

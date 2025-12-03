@@ -1,13 +1,13 @@
 @interface MADAutoAssetHistory
 + (id)autoAssetHistory;
 + (void)loadPersistedState;
-+ (void)recordFailedOperation:(int64_t)a3 fromLayer:(int64_t)a4 forAssetID:(id)a5 withSelector:(id)a6 failingWithError:(id)a7 forTargetOSVersion:(id)a8 forTargetBuildVersion:(id)a9 withOptionalCount:(unint64_t)a10 withRequiredCount:(unint64_t)a11 isRequired:(BOOL)a12;
-+ (void)recordOperation:(int64_t)a3 toHistoryType:(int64_t)a4 fromClient:(id)a5 fromLayer:(int64_t)a6 forAssetID:(id)a7 withSelector:(id)a8 withSelectors:(id)a9 usageCount:(int64_t)a10 configuredCount:(int64_t)a11 requestedCount:(int64_t)a12 fromPallasCount:(int64_t)a13 vendingCount:(int64_t)a14 forClientDomainName:(id)a15 forAssetSetIdentifier:(id)a16 forAtomicInstance:(id)a17 withAddendumMessage:(id)a18 forPushChannelID:(id)a19 forPopulationType:(id)a20 forTargetOSVersion:(id)a21 forTargetBuildVersion:(id)a22 withOptionalCount:(unint64_t)a23 withRequiredCount:(unint64_t)a24 required:(id)a25 failingWithError:(id)a26;
-+ (void)recordOperation:(int64_t)a3 toHistoryType:(int64_t)a4 fromLayer:(int64_t)a5 forAssetID:(id)a6 withSelector:(id)a7 forTargetOSVersion:(id)a8 forTargetBuildVersion:(id)a9 withOptionalCount:(unint64_t)a10 withRequiredCount:(unint64_t)a11 isRequired:(BOOL)a12;
-+ (void)recordOperation:(int64_t)a3 toHistoryType:(int64_t)a4 fromLayer:(int64_t)a5 fromClient:(id)a6 forTargetOSVersion:(id)a7 forTargetBuildVersion:(id)a8 isRequired:(BOOL)a9;
-+ (void)recordOperation:(int64_t)a3 toHistoryType:(int64_t)a4 fromLayer:(int64_t)a5 withSelector:(id)a6 forTargetOSVersion:(id)a7 forTargetBuildVersion:(id)a8 isRequired:(BOOL)a9;
++ (void)recordFailedOperation:(int64_t)operation fromLayer:(int64_t)layer forAssetID:(id)d withSelector:(id)selector failingWithError:(id)error forTargetOSVersion:(id)version forTargetBuildVersion:(id)buildVersion withOptionalCount:(unint64_t)self0 withRequiredCount:(unint64_t)self1 isRequired:(BOOL)self2;
++ (void)recordOperation:(int64_t)operation toHistoryType:(int64_t)type fromClient:(id)client fromLayer:(int64_t)layer forAssetID:(id)d withSelector:(id)selector withSelectors:(id)selectors usageCount:(int64_t)self0 configuredCount:(int64_t)self1 requestedCount:(int64_t)self2 fromPallasCount:(int64_t)self3 vendingCount:(int64_t)self4 forClientDomainName:(id)self5 forAssetSetIdentifier:(id)self6 forAtomicInstance:(id)self7 withAddendumMessage:(id)self8 forPushChannelID:(id)self9 forPopulationType:(id)populationType forTargetOSVersion:(id)version forTargetBuildVersion:(id)buildVersion withOptionalCount:(unint64_t)optionalCount withRequiredCount:(unint64_t)requiredCount required:(id)required failingWithError:(id)error;
++ (void)recordOperation:(int64_t)operation toHistoryType:(int64_t)type fromLayer:(int64_t)layer forAssetID:(id)d withSelector:(id)selector forTargetOSVersion:(id)version forTargetBuildVersion:(id)buildVersion withOptionalCount:(unint64_t)self0 withRequiredCount:(unint64_t)self1 isRequired:(BOOL)self2;
++ (void)recordOperation:(int64_t)operation toHistoryType:(int64_t)type fromLayer:(int64_t)layer fromClient:(id)client forTargetOSVersion:(id)version forTargetBuildVersion:(id)buildVersion isRequired:(BOOL)required;
++ (void)recordOperation:(int64_t)operation toHistoryType:(int64_t)type fromLayer:(int64_t)layer withSelector:(id)selector forTargetOSVersion:(id)version forTargetBuildVersion:(id)buildVersion isRequired:(BOOL)required;
 - (MADAutoAssetHistory)init;
-- (id)_trackerForHistoryType:(int64_t)a3;
+- (id)_trackerForHistoryType:(int64_t)type;
 @end
 
 @implementation MADAutoAssetHistory
@@ -19,9 +19,9 @@
   v2 = [(MADAutoAssetHistory *)&v24 init];
   if (v2)
   {
-    v3 = [@"com.apple.MobileAsset.daemon.autoassethistory" UTF8String];
+    uTF8String = [@"com.apple.MobileAsset.daemon.autoassethistory" UTF8String];
     v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v5 = dispatch_queue_create(v3, v4);
+    v5 = dispatch_queue_create(uTF8String, v4);
     historyProtectionQueue = v2->_historyProtectionQueue;
     v2->_historyProtectionQueue = v5;
 
@@ -85,14 +85,14 @@ void __39__MADAutoAssetHistory_autoAssetHistory__block_invoke(id a1)
 + (void)loadPersistedState
 {
   v2 = +[MADAutoAssetHistory autoAssetHistory];
-  v3 = [v2 historyProtectionQueue];
+  historyProtectionQueue = [v2 historyProtectionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __41__MADAutoAssetHistory_loadPersistedState__block_invoke;
   block[3] = &unk_4B2AA0;
   v6 = v2;
   v4 = v2;
-  dispatch_async(v3, block);
+  dispatch_async(historyProtectionQueue, block);
 }
 
 id __41__MADAutoAssetHistory_loadPersistedState__block_invoke(uint64_t a1)
@@ -132,61 +132,61 @@ id __41__MADAutoAssetHistory_loadPersistedState__block_invoke(uint64_t a1)
   return result;
 }
 
-+ (void)recordOperation:(int64_t)a3 toHistoryType:(int64_t)a4 fromLayer:(int64_t)a5 fromClient:(id)a6 forTargetOSVersion:(id)a7 forTargetBuildVersion:(id)a8 isRequired:(BOOL)a9
++ (void)recordOperation:(int64_t)operation toHistoryType:(int64_t)type fromLayer:(int64_t)layer fromClient:(id)client forTargetOSVersion:(id)version forTargetBuildVersion:(id)buildVersion isRequired:(BOOL)required
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = [NSNumber numberWithBool:a9];
-  [MADAutoAssetHistory recordOperation:a3 toHistoryType:a4 fromClient:v16 fromLayer:a5 forAssetID:0 withSelector:0 withSelectors:0 usageCount:-1 configuredCount:-1 requestedCount:-1 fromPallasCount:-1 vendingCount:-1 forClientDomainName:0 forAssetSetIdentifier:0 forAtomicInstance:0 withAddendumMessage:0 forPushChannelID:0 forPopulationType:0 forTargetOSVersion:v15 forTargetBuildVersion:v14 withOptionalCount:0 withRequiredCount:0 required:v17 failingWithError:0];
+  buildVersionCopy = buildVersion;
+  versionCopy = version;
+  clientCopy = client;
+  v17 = [NSNumber numberWithBool:required];
+  [MADAutoAssetHistory recordOperation:operation toHistoryType:type fromClient:clientCopy fromLayer:layer forAssetID:0 withSelector:0 withSelectors:0 usageCount:-1 configuredCount:-1 requestedCount:-1 fromPallasCount:-1 vendingCount:-1 forClientDomainName:0 forAssetSetIdentifier:0 forAtomicInstance:0 withAddendumMessage:0 forPushChannelID:0 forPopulationType:0 forTargetOSVersion:versionCopy forTargetBuildVersion:buildVersionCopy withOptionalCount:0 withRequiredCount:0 required:v17 failingWithError:0];
 }
 
-+ (void)recordOperation:(int64_t)a3 toHistoryType:(int64_t)a4 fromLayer:(int64_t)a5 withSelector:(id)a6 forTargetOSVersion:(id)a7 forTargetBuildVersion:(id)a8 isRequired:(BOOL)a9
++ (void)recordOperation:(int64_t)operation toHistoryType:(int64_t)type fromLayer:(int64_t)layer withSelector:(id)selector forTargetOSVersion:(id)version forTargetBuildVersion:(id)buildVersion isRequired:(BOOL)required
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = [NSNumber numberWithBool:a9];
-  [MADAutoAssetHistory recordOperation:a3 toHistoryType:a4 fromClient:0 fromLayer:a5 forAssetID:0 withSelector:v16 withSelectors:0 usageCount:-1 configuredCount:-1 requestedCount:-1 fromPallasCount:-1 vendingCount:-1 forClientDomainName:0 forAssetSetIdentifier:0 forAtomicInstance:0 withAddendumMessage:0 forPushChannelID:0 forPopulationType:0 forTargetOSVersion:v15 forTargetBuildVersion:v14 withOptionalCount:0 withRequiredCount:0 required:v17 failingWithError:0];
+  buildVersionCopy = buildVersion;
+  versionCopy = version;
+  selectorCopy = selector;
+  v17 = [NSNumber numberWithBool:required];
+  [MADAutoAssetHistory recordOperation:operation toHistoryType:type fromClient:0 fromLayer:layer forAssetID:0 withSelector:selectorCopy withSelectors:0 usageCount:-1 configuredCount:-1 requestedCount:-1 fromPallasCount:-1 vendingCount:-1 forClientDomainName:0 forAssetSetIdentifier:0 forAtomicInstance:0 withAddendumMessage:0 forPushChannelID:0 forPopulationType:0 forTargetOSVersion:versionCopy forTargetBuildVersion:buildVersionCopy withOptionalCount:0 withRequiredCount:0 required:v17 failingWithError:0];
 }
 
-+ (void)recordOperation:(int64_t)a3 toHistoryType:(int64_t)a4 fromLayer:(int64_t)a5 forAssetID:(id)a6 withSelector:(id)a7 forTargetOSVersion:(id)a8 forTargetBuildVersion:(id)a9 withOptionalCount:(unint64_t)a10 withRequiredCount:(unint64_t)a11 isRequired:(BOOL)a12
++ (void)recordOperation:(int64_t)operation toHistoryType:(int64_t)type fromLayer:(int64_t)layer forAssetID:(id)d withSelector:(id)selector forTargetOSVersion:(id)version forTargetBuildVersion:(id)buildVersion withOptionalCount:(unint64_t)self0 withRequiredCount:(unint64_t)self1 isRequired:(BOOL)self2
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = [NSNumber numberWithBool:a12];
-  [MADAutoAssetHistory recordOperation:a3 toHistoryType:a4 fromClient:0 fromLayer:a5 forAssetID:v19 withSelector:v18 withSelectors:0 usageCount:-1 configuredCount:-1 requestedCount:-1 fromPallasCount:-1 vendingCount:-1 forClientDomainName:0 forAssetSetIdentifier:0 forAtomicInstance:0 withAddendumMessage:0 forPushChannelID:0 forPopulationType:0 forTargetOSVersion:v17 forTargetBuildVersion:v16 withOptionalCount:a10 withRequiredCount:a11 required:v20 failingWithError:0];
+  buildVersionCopy = buildVersion;
+  versionCopy = version;
+  selectorCopy = selector;
+  dCopy = d;
+  v20 = [NSNumber numberWithBool:required];
+  [MADAutoAssetHistory recordOperation:operation toHistoryType:type fromClient:0 fromLayer:layer forAssetID:dCopy withSelector:selectorCopy withSelectors:0 usageCount:-1 configuredCount:-1 requestedCount:-1 fromPallasCount:-1 vendingCount:-1 forClientDomainName:0 forAssetSetIdentifier:0 forAtomicInstance:0 withAddendumMessage:0 forPushChannelID:0 forPopulationType:0 forTargetOSVersion:versionCopy forTargetBuildVersion:buildVersionCopy withOptionalCount:count withRequiredCount:requiredCount required:v20 failingWithError:0];
 }
 
-+ (void)recordFailedOperation:(int64_t)a3 fromLayer:(int64_t)a4 forAssetID:(id)a5 withSelector:(id)a6 failingWithError:(id)a7 forTargetOSVersion:(id)a8 forTargetBuildVersion:(id)a9 withOptionalCount:(unint64_t)a10 withRequiredCount:(unint64_t)a11 isRequired:(BOOL)a12
++ (void)recordFailedOperation:(int64_t)operation fromLayer:(int64_t)layer forAssetID:(id)d withSelector:(id)selector failingWithError:(id)error forTargetOSVersion:(id)version forTargetBuildVersion:(id)buildVersion withOptionalCount:(unint64_t)self0 withRequiredCount:(unint64_t)self1 isRequired:(BOOL)self2
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = [NSNumber numberWithBool:a12];
-  [MADAutoAssetHistory recordOperation:a3 toHistoryType:3 fromClient:0 fromLayer:a4 forAssetID:v20 withSelector:v19 withSelectors:0 usageCount:-1 configuredCount:-1 requestedCount:-1 fromPallasCount:-1 vendingCount:-1 forClientDomainName:0 forAssetSetIdentifier:0 forAtomicInstance:0 withAddendumMessage:0 forPushChannelID:0 forPopulationType:0 forTargetOSVersion:v17 forTargetBuildVersion:v16 withOptionalCount:a10 withRequiredCount:a11 required:v21 failingWithError:v18];
+  buildVersionCopy = buildVersion;
+  versionCopy = version;
+  errorCopy = error;
+  selectorCopy = selector;
+  dCopy = d;
+  v21 = [NSNumber numberWithBool:required];
+  [MADAutoAssetHistory recordOperation:operation toHistoryType:3 fromClient:0 fromLayer:layer forAssetID:dCopy withSelector:selectorCopy withSelectors:0 usageCount:-1 configuredCount:-1 requestedCount:-1 fromPallasCount:-1 vendingCount:-1 forClientDomainName:0 forAssetSetIdentifier:0 forAtomicInstance:0 withAddendumMessage:0 forPushChannelID:0 forPopulationType:0 forTargetOSVersion:versionCopy forTargetBuildVersion:buildVersionCopy withOptionalCount:count withRequiredCount:requiredCount required:v21 failingWithError:errorCopy];
 }
 
-+ (void)recordOperation:(int64_t)a3 toHistoryType:(int64_t)a4 fromClient:(id)a5 fromLayer:(int64_t)a6 forAssetID:(id)a7 withSelector:(id)a8 withSelectors:(id)a9 usageCount:(int64_t)a10 configuredCount:(int64_t)a11 requestedCount:(int64_t)a12 fromPallasCount:(int64_t)a13 vendingCount:(int64_t)a14 forClientDomainName:(id)a15 forAssetSetIdentifier:(id)a16 forAtomicInstance:(id)a17 withAddendumMessage:(id)a18 forPushChannelID:(id)a19 forPopulationType:(id)a20 forTargetOSVersion:(id)a21 forTargetBuildVersion:(id)a22 withOptionalCount:(unint64_t)a23 withRequiredCount:(unint64_t)a24 required:(id)a25 failingWithError:(id)a26
++ (void)recordOperation:(int64_t)operation toHistoryType:(int64_t)type fromClient:(id)client fromLayer:(int64_t)layer forAssetID:(id)d withSelector:(id)selector withSelectors:(id)selectors usageCount:(int64_t)self0 configuredCount:(int64_t)self1 requestedCount:(int64_t)self2 fromPallasCount:(int64_t)self3 vendingCount:(int64_t)self4 forClientDomainName:(id)self5 forAssetSetIdentifier:(id)self6 forAtomicInstance:(id)self7 withAddendumMessage:(id)self8 forPushChannelID:(id)self9 forPopulationType:(id)populationType forTargetOSVersion:(id)version forTargetBuildVersion:(id)buildVersion withOptionalCount:(unint64_t)optionalCount withRequiredCount:(unint64_t)requiredCount required:(id)required failingWithError:(id)error
 {
-  v61 = a5;
-  v60 = a7;
-  v59 = a8;
-  v58 = a9;
-  v28 = a15;
-  v44 = a16;
-  v29 = a17;
-  v30 = a18;
-  v31 = a19;
-  v32 = a20;
-  v42 = a21;
-  v43 = a22;
-  v41 = a25;
-  v33 = a26;
+  clientCopy = client;
+  dCopy = d;
+  selectorCopy = selector;
+  selectorsCopy = selectors;
+  nameCopy = name;
+  identifierCopy = identifier;
+  instanceCopy = instance;
+  messageCopy = message;
+  iDCopy = iD;
+  populationTypeCopy = populationType;
+  versionCopy = version;
+  buildVersionCopy = buildVersion;
+  requiredCopy = required;
+  errorCopy = error;
   v45 = +[MADAutoAssetHistory autoAssetHistory];
   queue = [v45 historyProtectionQueue];
   block[0] = _NSConcreteStackBlock;
@@ -194,42 +194,42 @@ id __41__MADAutoAssetHistory_loadPersistedState__block_invoke(uint64_t a1)
   block[2] = __401__MADAutoAssetHistory_recordOperation_toHistoryType_fromClient_fromLayer_forAssetID_withSelector_withSelectors_usageCount_configuredCount_requestedCount_fromPallasCount_vendingCount_forClientDomainName_forAssetSetIdentifier_forAtomicInstance_withAddendumMessage_forPushChannelID_forPopulationType_forTargetOSVersion_forTargetBuildVersion_withOptionalCount_withRequiredCount_required_failingWithError___block_invoke;
   block[3] = &unk_4B3778;
   v63 = v45;
-  v64 = v61;
-  v79 = a3;
-  v80 = a6;
-  v65 = v60;
-  v66 = v59;
-  v81 = *&a10;
-  v82 = *&a12;
-  v67 = v58;
-  v68 = v28;
-  v69 = v44;
-  v70 = v29;
-  v71 = v30;
-  v72 = v31;
-  v73 = v32;
-  v74 = v42;
-  v83 = a14;
-  v84 = a23;
-  v85 = a24;
-  v75 = v43;
-  v76 = v41;
-  v77 = v33;
-  v78 = a4;
-  v57 = v33;
-  v55 = v41;
-  v54 = v43;
-  v53 = v42;
-  v51 = v32;
-  v50 = v31;
-  v48 = v30;
-  v47 = v29;
-  v34 = v44;
-  v35 = v28;
-  v36 = v58;
-  v37 = v59;
-  v38 = v60;
-  v39 = v61;
+  v64 = clientCopy;
+  operationCopy = operation;
+  layerCopy = layer;
+  v65 = dCopy;
+  v66 = selectorCopy;
+  v81 = *&count;
+  v82 = *&requestedCount;
+  v67 = selectorsCopy;
+  v68 = nameCopy;
+  v69 = identifierCopy;
+  v70 = instanceCopy;
+  v71 = messageCopy;
+  v72 = iDCopy;
+  v73 = populationTypeCopy;
+  v74 = versionCopy;
+  vendingCountCopy = vendingCount;
+  optionalCountCopy = optionalCount;
+  requiredCountCopy = requiredCount;
+  v75 = buildVersionCopy;
+  v76 = requiredCopy;
+  v77 = errorCopy;
+  typeCopy = type;
+  v57 = errorCopy;
+  v55 = requiredCopy;
+  v54 = buildVersionCopy;
+  v53 = versionCopy;
+  v51 = populationTypeCopy;
+  v50 = iDCopy;
+  v48 = messageCopy;
+  v47 = instanceCopy;
+  v34 = identifierCopy;
+  v35 = nameCopy;
+  v36 = selectorsCopy;
+  v37 = selectorCopy;
+  v38 = dCopy;
+  v39 = clientCopy;
   v40 = v45;
   dispatch_async(queue, block);
 }
@@ -248,31 +248,31 @@ void __401__MADAutoAssetHistory_recordOperation_toHistoryType_fromClient_fromLay
   }
 }
 
-- (id)_trackerForHistoryType:(int64_t)a3
+- (id)_trackerForHistoryType:(int64_t)type
 {
-  v5 = [(MADAutoAssetHistory *)self historyProtectionQueue];
-  dispatch_assert_queue_V2(v5);
+  historyProtectionQueue = [(MADAutoAssetHistory *)self historyProtectionQueue];
+  dispatch_assert_queue_V2(historyProtectionQueue);
 
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 <= 1)
+    if (type <= 1)
     {
-      if (!a3)
+      if (!type)
       {
-        v6 = [(MADAutoAssetHistory *)self trackerFilesystem];
+        trackerFilesystem = [(MADAutoAssetHistory *)self trackerFilesystem];
         goto LABEL_22;
       }
 
-      if (a3 == 1)
+      if (type == 1)
       {
-        v6 = [(MADAutoAssetHistory *)self trackerLocker];
+        trackerFilesystem = [(MADAutoAssetHistory *)self trackerLocker];
         goto LABEL_22;
       }
 
       goto LABEL_19;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       [(MADAutoAssetHistory *)self trackerAtomic];
     }
@@ -282,13 +282,13 @@ void __401__MADAutoAssetHistory_recordOperation_toHistoryType_fromClient_fromLay
       [(MADAutoAssetHistory *)self trackerError];
     }
 
-    v6 = LABEL_9:;
+    trackerFilesystem = LABEL_9:;
     goto LABEL_22;
   }
 
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
       [(MADAutoAssetHistory *)self trackerStager];
     }
@@ -301,15 +301,15 @@ void __401__MADAutoAssetHistory_recordOperation_toHistoryType_fromClient_fromLay
     goto LABEL_9;
   }
 
-  if (a3 == 6)
+  if (type == 6)
   {
-    v6 = [(MADAutoAssetHistory *)self trackerSecure];
+    trackerFilesystem = [(MADAutoAssetHistory *)self trackerSecure];
     goto LABEL_22;
   }
 
-  if (a3 == 7)
+  if (type == 7)
   {
-    v6 = [(MADAutoAssetHistory *)self trackerPushNotification];
+    trackerFilesystem = [(MADAutoAssetHistory *)self trackerPushNotification];
     goto LABEL_22;
   }
 
@@ -318,14 +318,14 @@ LABEL_19:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     v9 = 134217984;
-    v10 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "{AUTO-HISTORY:_trackerForHistoryType} | invalid history-type:%ld", &v9, 0xCu);
   }
 
-  v6 = 0;
+  trackerFilesystem = 0;
 LABEL_22:
 
-  return v6;
+  return trackerFilesystem;
 }
 
 @end

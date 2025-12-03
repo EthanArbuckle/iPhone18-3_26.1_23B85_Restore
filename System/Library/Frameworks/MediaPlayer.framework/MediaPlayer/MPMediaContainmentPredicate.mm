@@ -1,13 +1,13 @@
 @interface MPMediaContainmentPredicate
-+ (id)predicateWithProperty:(id)a3 values:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (MPMediaContainmentPredicate)initWithCoder:(id)a3;
++ (id)predicateWithProperty:(id)property values:(id)values;
+- (BOOL)isEqual:(id)equal;
+- (MPMediaContainmentPredicate)initWithCoder:(id)coder;
 - (id)ML3PredicateForContainer;
 - (id)ML3PredicateForTrack;
-- (id)_ML3PredicateForEntityClass:(Class)a3;
+- (id)_ML3PredicateForEntityClass:(Class)class;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPMediaContainmentPredicate
@@ -26,13 +26,13 @@
   return [(MPMediaContainmentPredicate *)self _ML3PredicateForEntityClass:v3];
 }
 
-- (id)_ML3PredicateForEntityClass:(Class)a3
+- (id)_ML3PredicateForEntityClass:(Class)class
 {
   v5 = MEMORY[0x1E69B34B0];
-  v6 = [(MPMediaContainmentPredicate *)self property];
-  v7 = [(objc_class *)a3 propertyForMPMediaEntityProperty:v6];
-  v8 = [(MPMediaContainmentPredicate *)self values];
-  v9 = [v5 predicateWithProperty:v7 values:v8];
+  property = [(MPMediaContainmentPredicate *)self property];
+  v7 = [(objc_class *)class propertyForMPMediaEntityProperty:property];
+  values = [(MPMediaContainmentPredicate *)self values];
+  v9 = [v5 predicateWithProperty:v7 values:values];
 
   return v9;
 }
@@ -46,15 +46,15 @@
   return v4 ^ [(NSSet *)self->_values hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = MPMediaContainmentPredicate;
-  if ([(MPMediaContainmentPredicate *)&v9 isEqual:v4]&& ((property = self->_property, property == v4[1]) || [(NSString *)property isEqualToString:?]))
+  if ([(MPMediaContainmentPredicate *)&v9 isEqual:equalCopy]&& ((property = self->_property, property == equalCopy[1]) || [(NSString *)property isEqualToString:?]))
   {
     values = self->_values;
-    if (values == v4[2])
+    if (values == equalCopy[2])
     {
       v7 = 1;
     }
@@ -83,23 +83,23 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   property = self->_property;
-  v5 = a3;
-  [v5 encodeObject:property forKey:@"containmentProperty"];
-  [v5 encodeObject:self->_values forKey:@"containmentValues"];
+  coderCopy = coder;
+  [coderCopy encodeObject:property forKey:@"containmentProperty"];
+  [coderCopy encodeObject:self->_values forKey:@"containmentValues"];
 }
 
-- (MPMediaContainmentPredicate)initWithCoder:(id)a3
+- (MPMediaContainmentPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MPMediaContainmentPredicate;
   v5 = [(MPMediaContainmentPredicate *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"containmentProperty"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"containmentProperty"];
     property = v5->_property;
     v5->_property = v6;
 
@@ -107,7 +107,7 @@
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v8 setWithObjects:{v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"containmentValues"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"containmentValues"];
     values = v5->_values;
     v5->_values = v12;
   }
@@ -115,18 +115,18 @@
   return v5;
 }
 
-+ (id)predicateWithProperty:(id)a3 values:(id)a4
++ (id)predicateWithProperty:(id)property values:(id)values
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
+  propertyCopy = property;
+  valuesCopy = values;
+  v8 = objc_alloc_init(self);
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [propertyCopy copy];
     v10 = v8[1];
     v8[1] = v9;
 
-    v11 = [v7 copy];
+    v11 = [valuesCopy copy];
     v12 = v8[2];
     v8[2] = v11;
   }

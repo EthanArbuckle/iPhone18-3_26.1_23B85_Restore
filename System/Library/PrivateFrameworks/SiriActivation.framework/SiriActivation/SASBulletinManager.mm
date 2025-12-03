@@ -1,20 +1,20 @@
 @interface SASBulletinManager
 - (SASBulletinManager)init;
 - (SASBulletinManagerDelegate)delegate;
-- (id)_displayNameForBulletin:(id)a3;
+- (id)_displayNameForBulletin:(id)bulletin;
 - (id)allBulletins;
-- (id)bulletinForIdentifier:(id)a3;
+- (id)bulletinForIdentifier:(id)identifier;
 - (void)_bulletinsDidChange;
 - (void)_setupObserver;
-- (void)addBulletinCompletionWithBulletin:(id)a3 forFeed:(unint64_t)a4;
+- (void)addBulletinCompletionWithBulletin:(id)bulletin forFeed:(unint64_t)feed;
 - (void)dealloc;
-- (void)modifyBulletinCompletionWithBulletin:(id)a3;
-- (void)observer:(id)a3 addBulletin:(id)a4 forFeed:(unint64_t)a5;
-- (void)observer:(id)a3 modifyBulletin:(id)a4;
-- (void)observer:(id)a3 noteInvalidatedBulletinIDs:(id)a4;
-- (void)observer:(id)a3 purgeReferencesToBulletinID:(id)a4;
-- (void)observer:(id)a3 removeBulletin:(id)a4;
-- (void)observer:(id)a3 removeBulletin:(id)a4 forFeed:(unint64_t)a5;
+- (void)modifyBulletinCompletionWithBulletin:(id)bulletin;
+- (void)observer:(id)observer addBulletin:(id)bulletin forFeed:(unint64_t)feed;
+- (void)observer:(id)observer modifyBulletin:(id)bulletin;
+- (void)observer:(id)observer noteInvalidatedBulletinIDs:(id)ds;
+- (void)observer:(id)observer purgeReferencesToBulletinID:(id)d;
+- (void)observer:(id)observer removeBulletin:(id)bulletin;
+- (void)observer:(id)observer removeBulletin:(id)bulletin forFeed:(unint64_t)feed;
 @end
 
 @implementation SASBulletinManager
@@ -72,32 +72,32 @@
 
 - (void)_bulletinsDidChange
 {
-  v3 = [(SASBulletinManager *)self delegate];
-  [v3 bulletinManagerDidChangeBulletins:self];
+  delegate = [(SASBulletinManager *)self delegate];
+  [delegate bulletinManagerDidChangeBulletins:self];
 }
 
-- (id)_displayNameForBulletin:(id)a3
+- (id)_displayNameForBulletin:(id)bulletin
 {
-  v3 = a3;
+  bulletinCopy = bulletin;
   v4 = MEMORY[0x1E69635E8];
-  v5 = [v3 sectionID];
-  v6 = [v4 applicationProxyForIdentifier:v5];
+  sectionID = [bulletinCopy sectionID];
+  v6 = [v4 applicationProxyForIdentifier:sectionID];
   v7 = [v6 localizedNameForContext:0];
 
   if ([v7 length])
   {
-    v8 = v7;
+    title = v7;
 LABEL_5:
-    v11 = v8;
+    v11 = title;
     goto LABEL_6;
   }
 
-  v9 = [v3 sectionID];
-  v10 = [v9 isEqualToString:@"com.apple.cmas"];
+  sectionID2 = [bulletinCopy sectionID];
+  v10 = [sectionID2 isEqualToString:@"com.apple.cmas"];
 
   if (v10)
   {
-    v8 = [v3 title];
+    title = [bulletinCopy title];
     goto LABEL_5;
   }
 
@@ -109,26 +109,26 @@ LABEL_6:
 
 - (id)allBulletins
 {
-  v2 = [(SASBulletinCache *)self->_bulletinCache allBulletins];
-  v3 = [v2 allValues];
+  allBulletins = [(SASBulletinCache *)self->_bulletinCache allBulletins];
+  allValues = [allBulletins allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (id)bulletinForIdentifier:(id)a3
+- (id)bulletinForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     bulletinCache = self->_bulletinCache;
     p_bulletinCache = &self->_bulletinCache;
-    v7 = [(SASBulletinCache *)bulletinCache cachedBulletinForID:v4];
+    v7 = [(SASBulletinCache *)bulletinCache cachedBulletinForID:identifierCopy];
     if (!v7)
     {
       v8 = *MEMORY[0x1E698D0A0];
       if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEBUG))
       {
-        [(SASBulletinManager *)v4 bulletinForIdentifier:v8];
+        [(SASBulletinManager *)identifierCopy bulletinForIdentifier:v8];
       }
     }
   }
@@ -141,12 +141,12 @@ LABEL_6:
   return v7;
 }
 
-- (void)observer:(id)a3 addBulletin:(id)a4 forFeed:(unint64_t)a5
+- (void)observer:(id)observer addBulletin:(id)bulletin forFeed:(unint64_t)feed
 {
-  v7 = a4;
+  bulletinCopy = bulletin;
   v8 = objc_alloc_init(MEMORY[0x1E698D0E8]);
   [v8 setRead:0];
-  [v8 setBulletin:v7];
+  [v8 setBulletin:bulletinCopy];
   objc_initWeak(&location, self);
   v9 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
@@ -155,9 +155,9 @@ LABEL_6:
   block[3] = &unk_1E82F3C00;
   objc_copyWeak(v15, &location);
   v13 = v8;
-  v14 = v7;
-  v15[1] = a5;
-  v10 = v7;
+  v14 = bulletinCopy;
+  v15[1] = feed;
+  v10 = bulletinCopy;
   v11 = v8;
   dispatch_async(v9, block);
 
@@ -188,49 +188,49 @@ void __51__SASBulletinManager_observer_addBulletin_forFeed___block_invoke(uint64
   }
 }
 
-- (void)addBulletinCompletionWithBulletin:(id)a3 forFeed:(unint64_t)a4
+- (void)addBulletinCompletionWithBulletin:(id)bulletin forFeed:(unint64_t)feed
 {
-  v6 = a3;
+  bulletinCopy = bulletin;
   bulletinsOnLockScreen = self->_bulletinsOnLockScreen;
-  v8 = [v6 bulletinID];
-  v9 = [(NSMutableDictionary *)bulletinsOnLockScreen objectForKey:v8];
+  bulletinID = [bulletinCopy bulletinID];
+  v9 = [(NSMutableDictionary *)bulletinsOnLockScreen objectForKey:bulletinID];
 
-  [v6 setAvailableOnLockScreen:{objc_msgSend(v9, "availableOnLockScreen")}];
-  if ((a4 & 8) != 0)
+  [bulletinCopy setAvailableOnLockScreen:{objc_msgSend(v9, "availableOnLockScreen")}];
+  if ((feed & 8) != 0)
   {
     v10 = *MEMORY[0x1E698D0A0];
     if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEBUG))
     {
-      [SASBulletinManager addBulletinCompletionWithBulletin:v10 forFeed:v6];
+      [SASBulletinManager addBulletinCompletionWithBulletin:v10 forFeed:bulletinCopy];
     }
 
-    [v6 setAvailableOnLockScreen:1];
+    [bulletinCopy setAvailableOnLockScreen:1];
     v11 = self->_bulletinsOnLockScreen;
-    v12 = [v6 bulletinID];
-    [(NSMutableDictionary *)v11 setObject:v6 forKey:v12];
+    bulletinID2 = [bulletinCopy bulletinID];
+    [(NSMutableDictionary *)v11 setObject:bulletinCopy forKey:bulletinID2];
   }
 
-  [(SASBulletinCache *)self->_bulletinCache insertBulletin:v6 fromFeed:a4];
+  [(SASBulletinCache *)self->_bulletinCache insertBulletin:bulletinCopy fromFeed:feed];
   [(SASBulletinManager *)self _bulletinsDidChange];
 }
 
-- (void)observer:(id)a3 modifyBulletin:(id)a4
+- (void)observer:(id)observer modifyBulletin:(id)bulletin
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  bulletinCopy = bulletin;
   bulletinCache = self->_bulletinCache;
-  v7 = [v5 bulletinID];
-  v8 = [(SASBulletinCache *)bulletinCache cachedBulletinForID:v7];
+  bulletinID = [bulletinCopy bulletinID];
+  v8 = [(SASBulletinCache *)bulletinCache cachedBulletinForID:bulletinID];
 
   if (v8)
   {
     v9 = self->_bulletinCache;
-    v10 = [v5 bulletinID];
-    [(SASBulletinCache *)v9 removeBulletinForID:v10];
+    bulletinID2 = [bulletinCopy bulletinID];
+    [(SASBulletinCache *)v9 removeBulletinForID:bulletinID2];
 
     v11 = objc_alloc_init(MEMORY[0x1E698D0E8]);
     [v11 setRead:0];
-    [v11 setBulletin:v5];
+    [v11 setBulletin:bulletinCopy];
     objc_initWeak(location, self);
     v12 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x1E69E9820];
@@ -239,7 +239,7 @@ void __51__SASBulletinManager_observer_addBulletin_forFeed___block_invoke(uint64
     block[3] = &unk_1E82F3C90;
     objc_copyWeak(&v21, location);
     v19 = v11;
-    v20 = v5;
+    v20 = bulletinCopy;
     v13 = v11;
     dispatch_async(v12, block);
 
@@ -253,11 +253,11 @@ void __51__SASBulletinManager_observer_addBulletin_forFeed___block_invoke(uint64
     if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [v5 bulletinID];
+      bulletinID3 = [bulletinCopy bulletinID];
       *location = 136315394;
       *&location[4] = "[SASBulletinManager observer:modifyBulletin:]";
       v23 = 2112;
-      v24 = v16;
+      v24 = bulletinID3;
       _os_log_impl(&dword_1C8137000, v15, OS_LOG_TYPE_DEFAULT, "%s ACAssistantBBObserver: Trying to modify a bulletin %@ that I don't already have.", location, 0x16u);
     }
   }
@@ -285,41 +285,41 @@ void __46__SASBulletinManager_observer_modifyBulletin___block_invoke(uint64_t a1
   }
 }
 
-- (void)modifyBulletinCompletionWithBulletin:(id)a3
+- (void)modifyBulletinCompletionWithBulletin:(id)bulletin
 {
-  v9 = a3;
-  [(SASBulletinCache *)self->_bulletinCache insertBulletin:v9 fromFeed:65023];
+  bulletinCopy = bulletin;
+  [(SASBulletinCache *)self->_bulletinCache insertBulletin:bulletinCopy fromFeed:65023];
   bulletinsOnLockScreen = self->_bulletinsOnLockScreen;
-  v5 = [v9 bulletinID];
-  v6 = [(NSMutableDictionary *)bulletinsOnLockScreen objectForKey:v5];
+  bulletinID = [bulletinCopy bulletinID];
+  v6 = [(NSMutableDictionary *)bulletinsOnLockScreen objectForKey:bulletinID];
 
   if (v6)
   {
     v7 = self->_bulletinsOnLockScreen;
-    v8 = [v9 bulletinID];
-    [(NSMutableDictionary *)v7 setObject:v9 forKey:v8];
+    bulletinID2 = [bulletinCopy bulletinID];
+    [(NSMutableDictionary *)v7 setObject:bulletinCopy forKey:bulletinID2];
   }
 
   [(SASBulletinManager *)self _bulletinsDidChange];
 }
 
-- (void)observer:(id)a3 removeBulletin:(id)a4
+- (void)observer:(id)observer removeBulletin:(id)bulletin
 {
-  v6 = a3;
-  v7 = [a4 bulletinID];
-  [(SASBulletinManager *)self observer:v6 purgeReferencesToBulletinID:v7];
+  observerCopy = observer;
+  bulletinID = [bulletin bulletinID];
+  [(SASBulletinManager *)self observer:observerCopy purgeReferencesToBulletinID:bulletinID];
 }
 
-- (void)observer:(id)a3 removeBulletin:(id)a4 forFeed:(unint64_t)a5
+- (void)observer:(id)observer removeBulletin:(id)bulletin forFeed:(unint64_t)feed
 {
-  v5 = a5;
+  feedCopy = feed;
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = v7;
-  if ((v5 & 8) != 0)
+  bulletinCopy = bulletin;
+  v8 = bulletinCopy;
+  if ((feedCopy & 8) != 0)
   {
-    v9 = [v7 bulletinID];
-    v10 = [(NSMutableDictionary *)self->_bulletinsOnLockScreen objectForKey:v9];
+    bulletinID = [bulletinCopy bulletinID];
+    v10 = [(NSMutableDictionary *)self->_bulletinsOnLockScreen objectForKey:bulletinID];
 
     v11 = *MEMORY[0x1E698D0A0];
     v12 = *MEMORY[0x1E698D0A0];
@@ -330,7 +330,7 @@ void __46__SASBulletinManager_observer_modifyBulletin___block_invoke(uint64_t a1
         [SASBulletinManager observer:removeBulletin:forFeed:];
       }
 
-      [(NSMutableDictionary *)self->_bulletinsOnLockScreen removeObjectForKey:v9];
+      [(NSMutableDictionary *)self->_bulletinsOnLockScreen removeObjectForKey:bulletinID];
       [(SASBulletinManager *)self _bulletinsDidChange];
     }
 
@@ -339,7 +339,7 @@ void __46__SASBulletinManager_observer_modifyBulletin___block_invoke(uint64_t a1
       v14 = 136315394;
       v15 = "[SASBulletinManager observer:removeBulletin:forFeed:]";
       v16 = 2112;
-      v17 = v9;
+      v17 = bulletinID;
       _os_log_impl(&dword_1C8137000, v11, OS_LOG_TYPE_DEFAULT, "%s ACAssistantBBObserver: Asked to remove a bulletin from lock screen %@ that I don't already have.", &v14, 0x16u);
     }
   }
@@ -347,16 +347,16 @@ void __46__SASBulletinManager_observer_modifyBulletin___block_invoke(uint64_t a1
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observer:(id)a3 purgeReferencesToBulletinID:(id)a4
+- (void)observer:(id)observer purgeReferencesToBulletinID:(id)d
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(SASBulletinCache *)self->_bulletinCache cachedBulletinForID:v5];
+  dCopy = d;
+  v6 = [(SASBulletinCache *)self->_bulletinCache cachedBulletinForID:dCopy];
 
   if (v6)
   {
-    [(SASBulletinCache *)self->_bulletinCache removeBulletinForID:v5];
-    [(NSMutableDictionary *)self->_bulletinsOnLockScreen removeObjectForKey:v5];
+    [(SASBulletinCache *)self->_bulletinCache removeBulletinForID:dCopy];
+    [(NSMutableDictionary *)self->_bulletinsOnLockScreen removeObjectForKey:dCopy];
     [(SASBulletinManager *)self _bulletinsDidChange];
   }
 
@@ -368,7 +368,7 @@ void __46__SASBulletinManager_observer_modifyBulletin___block_invoke(uint64_t a1
       v9 = 136315394;
       v10 = "[SASBulletinManager observer:purgeReferencesToBulletinID:]";
       v11 = 2112;
-      v12 = v5;
+      v12 = dCopy;
       _os_log_impl(&dword_1C8137000, v7, OS_LOG_TYPE_DEFAULT, "%s ACAssistantBBObserver: Asked to remove a bulletin %@ that I don't already have.", &v9, 0x16u);
     }
   }
@@ -376,16 +376,16 @@ void __46__SASBulletinManager_observer_modifyBulletin___block_invoke(uint64_t a1
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observer:(id)a3 noteInvalidatedBulletinIDs:(id)a4
+- (void)observer:(id)observer noteInvalidatedBulletinIDs:(id)ds
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  dsCopy = ds;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [dsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -397,14 +397,14 @@ void __46__SASBulletinManager_observer_modifyBulletin___block_invoke(uint64_t a1
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(dsCopy);
         }
 
-        [(SASBulletinManager *)self observer:v6 purgeReferencesToBulletinID:*(*(&v13 + 1) + 8 * v11++)];
+        [(SASBulletinManager *)self observer:observerCopy purgeReferencesToBulletinID:*(*(&v13 + 1) + 8 * v11++)];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [dsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);

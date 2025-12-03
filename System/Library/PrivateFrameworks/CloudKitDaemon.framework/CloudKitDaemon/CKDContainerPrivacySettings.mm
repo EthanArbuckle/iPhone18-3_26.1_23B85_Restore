@@ -1,30 +1,30 @@
 @interface CKDContainerPrivacySettings
-- (BOOL)isEqual:(id)a3;
-- (CKDContainerPrivacySettings)initWithContainerID:(id)a3 applicationBundleIDs:(id)a4 discoverable:(int64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (CKDContainerPrivacySettings)initWithContainerID:(id)d applicationBundleIDs:(id)ds discoverable:(int64_t)discoverable;
 - (id)CKPropertiesDescription;
 - (unint64_t)hash;
 @end
 
 @implementation CKDContainerPrivacySettings
 
-- (CKDContainerPrivacySettings)initWithContainerID:(id)a3 applicationBundleIDs:(id)a4 discoverable:(int64_t)a5
+- (CKDContainerPrivacySettings)initWithContainerID:(id)d applicationBundleIDs:(id)ds discoverable:(int64_t)discoverable
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  dsCopy = ds;
   v20.receiver = self;
   v20.super_class = CKDContainerPrivacySettings;
   v12 = [(CKDContainerPrivacySettings *)&v20 init];
   if (v12)
   {
-    v13 = objc_msgSend_copy(v8, v10, v11);
+    v13 = objc_msgSend_copy(dCopy, v10, v11);
     containerID = v12->_containerID;
     v12->_containerID = v13;
 
-    v17 = objc_msgSend_copy(v9, v15, v16);
+    v17 = objc_msgSend_copy(dsCopy, v15, v16);
     applicationBundleIDs = v12->_applicationBundleIDs;
     v12->_applicationBundleIDs = v17;
 
-    v12->_discoverable = a5;
+    v12->_discoverable = discoverable;
   }
 
   return v12;
@@ -41,10 +41,10 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v25 = 1;
   }
@@ -54,7 +54,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_containerID(self, v6, v7);
       v11 = objc_msgSend_containerID(v5, v9, v10);
       v12 = CKObjectsAreBothNilOrEqual();

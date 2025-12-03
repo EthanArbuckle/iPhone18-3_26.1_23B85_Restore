@@ -1,20 +1,20 @@
 @interface _NMRNowPlayingApplicationStateProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasProcessID:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasProcessID:(BOOL)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _NMRNowPlayingApplicationStateProtobuf
 
-- (void)setHasProcessID:(BOOL)a3
+- (void)setHasProcessID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 2;
   }
@@ -32,8 +32,8 @@
   v7.receiver = self;
   v7.super_class = _NMRNowPlayingApplicationStateProtobuf;
   v3 = [(_NMRNowPlayingApplicationStateProtobuf *)&v7 description];
-  v4 = [(_NMRNowPlayingApplicationStateProtobuf *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(_NMRNowPlayingApplicationStateProtobuf *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -81,98 +81,98 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_companionBundleIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_localizedDisplayName)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     playbackState = self->_playbackState;
     PBDataWriterWriteUint32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_watchBundleIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_iconDigest)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     processID = self->_processID;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_companionBundleIdentifier)
   {
-    [v4 setCompanionBundleIdentifier:?];
-    v4 = v5;
+    [toCopy setCompanionBundleIdentifier:?];
+    toCopy = v5;
   }
 
   if (self->_localizedDisplayName)
   {
     [v5 setLocalizedDisplayName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 8) = self->_playbackState;
-    *(v4 + 48) |= 1u;
+    *(toCopy + 8) = self->_playbackState;
+    *(toCopy + 48) |= 1u;
   }
 
   if (self->_watchBundleIdentifier)
   {
     [v5 setWatchBundleIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_iconDigest)
   {
     [v5 setIconDigest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 9) = self->_processID;
-    *(v4 + 48) |= 2u;
+    *(toCopy + 9) = self->_processID;
+    *(toCopy + 48) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_companionBundleIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_companionBundleIdentifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_localizedDisplayName copyWithZone:a3];
+  v8 = [(NSString *)self->_localizedDisplayName copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
@@ -182,11 +182,11 @@
     *(v5 + 48) |= 1u;
   }
 
-  v10 = [(NSString *)self->_watchBundleIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_watchBundleIdentifier copyWithZone:zone];
   v11 = v5[5];
   v5[5] = v10;
 
-  v12 = [(NSData *)self->_iconDigest copyWithZone:a3];
+  v12 = [(NSData *)self->_iconDigest copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
@@ -199,16 +199,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   companionBundleIdentifier = self->_companionBundleIdentifier;
-  if (companionBundleIdentifier | *(v4 + 1))
+  if (companionBundleIdentifier | *(equalCopy + 1))
   {
     if (![(NSString *)companionBundleIdentifier isEqual:?])
     {
@@ -217,7 +217,7 @@
   }
 
   localizedDisplayName = self->_localizedDisplayName;
-  if (localizedDisplayName | *(v4 + 3))
+  if (localizedDisplayName | *(equalCopy + 3))
   {
     if (![(NSString *)localizedDisplayName isEqual:?])
     {
@@ -225,16 +225,16 @@
     }
   }
 
-  v7 = *(v4 + 48);
+  v7 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_playbackState != *(v4 + 8))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_playbackState != *(equalCopy + 8))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_19:
     v10 = 0;
@@ -242,13 +242,13 @@ LABEL_19:
   }
 
   watchBundleIdentifier = self->_watchBundleIdentifier;
-  if (watchBundleIdentifier | *(v4 + 5) && ![(NSString *)watchBundleIdentifier isEqual:?])
+  if (watchBundleIdentifier | *(equalCopy + 5) && ![(NSString *)watchBundleIdentifier isEqual:?])
   {
     goto LABEL_19;
   }
 
   iconDigest = self->_iconDigest;
-  if (iconDigest | *(v4 + 2))
+  if (iconDigest | *(equalCopy + 2))
   {
     if (![(NSData *)iconDigest isEqual:?])
     {
@@ -256,10 +256,10 @@ LABEL_19:
     }
   }
 
-  v10 = (*(v4 + 48) & 2) == 0;
+  v10 = (*(equalCopy + 48) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_processID != *(v4 + 9))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_processID != *(equalCopy + 9))
     {
       goto LABEL_19;
     }
@@ -301,43 +301,43 @@ LABEL_20:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(_NMRNowPlayingApplicationStateProtobuf *)self setCompanionBundleIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(_NMRNowPlayingApplicationStateProtobuf *)self setLocalizedDisplayName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 48))
+  if (*(fromCopy + 48))
   {
-    self->_playbackState = *(v4 + 8);
+    self->_playbackState = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(_NMRNowPlayingApplicationStateProtobuf *)self setWatchBundleIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(_NMRNowPlayingApplicationStateProtobuf *)self setIconDigest:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 48) & 2) != 0)
+  if ((*(fromCopy + 48) & 2) != 0)
   {
-    self->_processID = *(v4 + 9);
+    self->_processID = *(fromCopy + 9);
     *&self->_has |= 2u;
   }
 }

@@ -1,43 +1,43 @@
 @interface LNParameter
-- (BOOL)isEqual:(id)a3;
-- (LNParameter)initWithCoder:(id)a3;
-- (LNParameter)initWithIdentifier:(id)a3 value:(id)a4 configuration:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNParameter)initWithCoder:(id)coder;
+- (LNParameter)initWithIdentifier:(id)identifier value:(id)value configuration:(id)configuration;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNParameter
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNProperty *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(LNProperty *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(LNProperty *)self value];
-  [v4 encodeObject:v6 forKey:@"value"];
+  value = [(LNProperty *)self value];
+  [coderCopy encodeObject:value forKey:@"value"];
 
-  v7 = [(LNParameter *)self configuration];
-  [v4 encodeObject:v7 forKey:@"configuration"];
+  configuration = [(LNParameter *)self configuration];
+  [coderCopy encodeObject:configuration forKey:@"configuration"];
 }
 
-- (LNParameter)initWithCoder:(id)a3
+- (LNParameter)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
 
   v8 = [(LNParameter *)self initWithIdentifier:v5 value:v6 configuration:v7];
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -46,10 +46,10 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(LNProperty *)self identifier];
-    v8 = [(LNProperty *)v6 identifier];
-    v9 = v7;
-    v10 = v8;
+    identifier = [(LNProperty *)self identifier];
+    identifier2 = [(LNProperty *)v6 identifier];
+    v9 = identifier;
+    v10 = identifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -76,10 +76,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(LNProperty *)self value];
-    v16 = [(LNProperty *)v6 value];
-    v14 = v15;
-    v17 = v16;
+    value = [(LNProperty *)self value];
+    value2 = [(LNProperty *)v6 value];
+    v14 = value;
+    v17 = value2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -104,15 +104,15 @@ LABEL_21:
   return v12;
 }
 
-- (LNParameter)initWithIdentifier:(id)a3 value:(id)a4 configuration:(id)a5
+- (LNParameter)initWithIdentifier:(id)identifier value:(id)value configuration:(id)configuration
 {
-  v8 = a5;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = LNParameter;
-  v9 = [(LNProperty *)&v14 initWithIdentifier:a3 value:a4];
+  v9 = [(LNProperty *)&v14 initWithIdentifier:identifier value:value];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [configurationCopy copy];
     configuration = v9->_configuration;
     v9->_configuration = v10;
 

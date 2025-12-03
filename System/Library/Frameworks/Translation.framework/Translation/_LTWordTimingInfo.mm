@@ -1,17 +1,17 @@
 @interface _LTWordTimingInfo
 - (NSString)unredactedDescription;
-- (_LTWordTimingInfo)initWithCoder:(id)a3;
+- (_LTWordTimingInfo)initWithCoder:(id)coder;
 - (_NSRange)textRange;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LTWordTimingInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_word forKey:@"word"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_word forKey:@"word"];
   sampleIndex = self->_sampleIndex;
   if ((sampleIndex & 0x80000000) != 0)
   {
@@ -24,7 +24,7 @@
     sampleIndex = self->_sampleIndex;
   }
 
-  [v4 encodeInt32:sampleIndex forKey:@"sampleIndex"];
+  [coderCopy encodeInt32:sampleIndex forKey:@"sampleIndex"];
   offset = self->_offset;
   if ((offset & 0x80000000) != 0)
   {
@@ -37,7 +37,7 @@
     offset = self->_offset;
   }
 
-  [v4 encodeInt32:offset forKey:@"offset"];
+  [coderCopy encodeInt32:offset forKey:@"offset"];
   length = self->_length;
   if ((length & 0x80000000) != 0)
   {
@@ -50,30 +50,30 @@
     length = self->_length;
   }
 
-  [v4 encodeInt32:length forKey:@"length"];
-  [v4 encodeDouble:@"startTime" forKey:self->_startTime];
+  [coderCopy encodeInt32:length forKey:@"length"];
+  [coderCopy encodeDouble:@"startTime" forKey:self->_startTime];
   v32 = [MEMORY[0x277CCAE60] valueWithRange:{self->_textRange.location, self->_textRange.length}];
-  [v4 encodeObject:v32 forKey:@"textRange"];
+  [coderCopy encodeObject:v32 forKey:@"textRange"];
 }
 
-- (_LTWordTimingInfo)initWithCoder:(id)a3
+- (_LTWordTimingInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = _LTWordTimingInfo;
   v5 = [(_LTWordTimingInfo *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"word"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"word"];
     word = v5->_word;
     v5->_word = v6;
 
-    v5->_sampleIndex = [v4 decodeInt32ForKey:@"sampleIndex"];
-    v5->_offset = [v4 decodeInt32ForKey:@"offset"];
-    v5->_length = [v4 decodeInt32ForKey:@"length"];
-    [v4 decodeDoubleForKey:@"startTime"];
+    v5->_sampleIndex = [coderCopy decodeInt32ForKey:@"sampleIndex"];
+    v5->_offset = [coderCopy decodeInt32ForKey:@"offset"];
+    v5->_length = [coderCopy decodeInt32ForKey:@"length"];
+    [coderCopy decodeDoubleForKey:@"startTime"];
     v5->_startTime = v8;
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textRange"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textRange"];
     v5->_textRange.location = [v9 rangeValue];
     v5->_textRange.length = v10;
 

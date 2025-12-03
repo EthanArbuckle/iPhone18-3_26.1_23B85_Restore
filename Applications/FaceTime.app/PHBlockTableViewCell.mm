@@ -1,8 +1,8 @@
 @interface PHBlockTableViewCell
 + (NSString)reuseIdentifier;
-- (PHBlockTableViewCell)initWithCoder:(id)a3;
-- (PHBlockTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)updateCellOfFlow:(int64_t)a3 isBlocked:(BOOL)a4 style:(int64_t)a5;
+- (PHBlockTableViewCell)initWithCoder:(id)coder;
+- (PHBlockTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)updateCellOfFlow:(int64_t)flow isBlocked:(BOOL)blocked style:(int64_t)style;
 @end
 
 @implementation PHBlockTableViewCell
@@ -22,7 +22,7 @@
   return v2;
 }
 
-- (PHBlockTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PHBlockTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -32,7 +32,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -42,7 +42,7 @@
   return v5;
 }
 
-- (PHBlockTableViewCell)initWithCoder:(id)a3
+- (PHBlockTableViewCell)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -62,9 +62,9 @@
   return result;
 }
 
-- (void)updateCellOfFlow:(int64_t)a3 isBlocked:(BOOL)a4 style:(int64_t)a5
+- (void)updateCellOfFlow:(int64_t)flow isBlocked:(BOOL)blocked style:(int64_t)style
 {
-  v6 = a4;
+  blockedCopy = blocked;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -73,8 +73,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = self;
-  sub_1000C0B48(a3, v6, a5);
+  selfCopy = self;
+  sub_1000C0B48(flow, blockedCopy, style);
 }
 
 @end

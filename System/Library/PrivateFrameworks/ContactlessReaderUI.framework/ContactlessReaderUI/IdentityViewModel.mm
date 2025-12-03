@@ -1,22 +1,22 @@
 @interface IdentityViewModel
 - (void)closeUI;
-- (void)displayIdentityInformation:(id)a3;
-- (void)updateUIState:(int64_t)a3;
+- (void)displayIdentityInformation:(id)information;
+- (void)updateUIState:(int64_t)state;
 @end
 
 @implementation IdentityViewModel
 
-- (void)updateUIState:(int64_t)a3
+- (void)updateUIState:(int64_t)state
 {
 
-  sub_24400D484(a3);
+  sub_24400D484(state);
 }
 
-- (void)displayIdentityInformation:(id)a3
+- (void)displayIdentityInformation:(id)information
 {
-  v3 = a3;
+  informationCopy = information;
 
-  sub_24400D9D8(v3);
+  sub_24400D9D8(informationCopy);
 }
 
 - (void)closeUI

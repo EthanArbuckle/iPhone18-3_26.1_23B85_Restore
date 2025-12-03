@@ -1,29 +1,29 @@
 @interface MCVPNPayload
-- (MCVPNPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCVPNPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 @end
 
 @implementation MCVPNPayload
 
-- (MCVPNPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCVPNPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = MCVPNPayload;
-  v9 = [(MCVPNPayloadBase *)&v15 initWithDictionary:v8 profile:a4 outError:a5];
+  v9 = [(MCVPNPayloadBase *)&v15 initWithDictionary:dictionaryCopy profile:profile outError:error];
   if (v9)
   {
-    if ([v8 count])
+    if ([dictionaryCopy count])
     {
       v10 = _MCLogObjects;
       if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
       {
         v11 = v10;
-        v12 = [(MCPayload *)v9 friendlyName];
+        friendlyName = [(MCPayload *)v9 friendlyName];
         *buf = 138543618;
-        v17 = v12;
+        v17 = friendlyName;
         v18 = 2114;
-        v19 = v8;
+        v19 = dictionaryCopy;
         _os_log_impl(&dword_1A795B000, v11, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
       }
     }

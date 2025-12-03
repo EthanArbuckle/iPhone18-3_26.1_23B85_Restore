@@ -1,16 +1,16 @@
 @interface CrossFadeNavigationBarCompressionAnimation
-- (double)minimumBarHeightForTraitCollection:(void *)a3;
+- (double)minimumBarHeightForTraitCollection:(void *)collection;
 - (void)attached;
 - (void)detached;
-- (void)scrollViewIsAtTop:(BOOL)a3 offset:(double)a4;
+- (void)scrollViewIsAtTop:(BOOL)top offset:(double)offset;
 @end
 
 @implementation CrossFadeNavigationBarCompressionAnimation
 
-- (double)minimumBarHeightForTraitCollection:(void *)a3
+- (double)minimumBarHeightForTraitCollection:(void *)collection
 {
-  v4 = a3;
-  v5 = a1;
+  collectionCopy = collection;
+  selfCopy = self;
   v6 = CrossFadeNavigationBarCompressionAnimation.maximumBarHeight(for:)();
 
   return v6;
@@ -18,19 +18,19 @@
 
 - (void)attached
 {
-  v2 = self;
+  selfCopy = self;
   CrossFadeNavigationBarCompressionAnimation.attached()();
 }
 
 - (void)detached
 {
-  v2 = self;
+  selfCopy = self;
   CrossFadeNavigationBarCompressionAnimation.detached()();
 }
 
-- (void)scrollViewIsAtTop:(BOOL)a3 offset:(double)a4
+- (void)scrollViewIsAtTop:(BOOL)top offset:(double)offset
 {
-  v4 = self;
+  selfCopy = self;
   CrossFadeNavigationBarCompressionAnimation.scrollViewIs(atTop:offset:)(0);
 }
 

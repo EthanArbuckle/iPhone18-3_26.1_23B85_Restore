@@ -1,21 +1,21 @@
 @interface CRKASMEasyMAIDSignInRosterProvider
 - (BOOL)isEasyStudentSignInDisabledByServer;
-- (CRKASMEasyMAIDSignInRosterProvider)initWithRosterProviderGenerator:(id)a3;
+- (CRKASMEasyMAIDSignInRosterProvider)initWithRosterProviderGenerator:(id)generator;
 - (CRKASMRosterProviding)instructorRosterProviderWithoutKeychain;
-- (void)fetchEligibilityForEasyMAIDSignInWithCompletion:(id)a3;
+- (void)fetchEligibilityForEasyMAIDSignInWithCompletion:(id)completion;
 @end
 
 @implementation CRKASMEasyMAIDSignInRosterProvider
 
-- (CRKASMEasyMAIDSignInRosterProvider)initWithRosterProviderGenerator:(id)a3
+- (CRKASMEasyMAIDSignInRosterProvider)initWithRosterProviderGenerator:(id)generator
 {
-  v4 = a3;
+  generatorCopy = generator;
   v11.receiver = self;
   v11.super_class = CRKASMEasyMAIDSignInRosterProvider;
   v5 = [(CRKASMEasyMAIDSignInRosterProvider *)&v11 init];
   if (v5)
   {
-    v6 = MEMORY[0x245D3AAD0](v4);
+    v6 = MEMORY[0x245D3AAD0](generatorCopy);
     providerGenerator = v5->_providerGenerator;
     v5->_providerGenerator = v6;
 
@@ -32,9 +32,9 @@
   instructorRosterProviderWithoutKeychain = self->_instructorRosterProviderWithoutKeychain;
   if (!instructorRosterProviderWithoutKeychain)
   {
-    v4 = [(CRKASMEasyMAIDSignInRosterProvider *)self providerGenerator];
-    v5 = [(CRKASMEasyMAIDSignInRosterProvider *)self configuration];
-    v6 = (v4)[2](v4, v5);
+    providerGenerator = [(CRKASMEasyMAIDSignInRosterProvider *)self providerGenerator];
+    configuration = [(CRKASMEasyMAIDSignInRosterProvider *)self configuration];
+    v6 = (providerGenerator)[2](providerGenerator, configuration);
     v7 = self->_instructorRosterProviderWithoutKeychain;
     self->_instructorRosterProviderWithoutKeychain = v6;
 
@@ -44,40 +44,40 @@
   return instructorRosterProviderWithoutKeychain;
 }
 
-- (void)fetchEligibilityForEasyMAIDSignInWithCompletion:(id)a3
+- (void)fetchEligibilityForEasyMAIDSignInWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_new();
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __86__CRKASMEasyMAIDSignInRosterProvider_fetchEligibilityForEasyMAIDSignInWithCompletion___block_invoke;
   v21[3] = &unk_278DC26A0;
-  v6 = v4;
+  v6 = completionCopy;
   v23 = v6;
   v7 = v5;
   v22 = v7;
   v8 = MEMORY[0x245D3AAD0](v21);
-  v9 = [(CRKASMEasyMAIDSignInRosterProvider *)self isEasyStudentSignInDisabledByServer];
-  v10 = [MEMORY[0x277CCABB0] numberWithBool:v9];
+  isEasyStudentSignInDisabledByServer = [(CRKASMEasyMAIDSignInRosterProvider *)self isEasyStudentSignInDisabledByServer];
+  v10 = [MEMORY[0x277CCABB0] numberWithBool:isEasyStudentSignInDisabledByServer];
   [v7 setObject:v10 forKeyedSubscript:@"isEasyStudentSignInDisabledByServer"];
 
-  if (v9 || (-[CRKASMEasyMAIDSignInRosterProvider configuration](self, "configuration"), v11 = objc_claimAutoreleasedReturnValue(), [v11 rosterRequirements], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "accountState"), v12, v11, objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", v13), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "setObject:forKeyedSubscript:", v14, @"accountState"), v14, v13 != 2))
+  if (isEasyStudentSignInDisabledByServer || (-[CRKASMEasyMAIDSignInRosterProvider configuration](self, "configuration"), v11 = objc_claimAutoreleasedReturnValue(), [v11 rosterRequirements], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "accountState"), v12, v11, objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", v13), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "setObject:forKeyedSubscript:", v14, @"accountState"), v14, v13 != 2))
   {
     v8[2](v8, 0, 0);
   }
 
   else
   {
-    v15 = [(CRKASMEasyMAIDSignInRosterProvider *)self configuration];
-    v16 = [v15 rosterRequirements];
+    configuration = [(CRKASMEasyMAIDSignInRosterProvider *)self configuration];
+    rosterRequirements = [configuration rosterRequirements];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __86__CRKASMEasyMAIDSignInRosterProvider_fetchEligibilityForEasyMAIDSignInWithCompletion___block_invoke_2;
     v17[3] = &unk_278DC2718;
     v20 = v8;
     v18 = v7;
-    v19 = self;
-    [v16 currentUserWithCompletion:v17];
+    selfCopy = self;
+    [rosterRequirements currentUserWithCompletion:v17];
   }
 }
 
@@ -219,10 +219,10 @@ uint64_t __86__CRKASMEasyMAIDSignInRosterProvider_fetchEligibilityForEasyMAIDSig
 
 - (BOOL)isEasyStudentSignInDisabledByServer
 {
-  v2 = [MEMORY[0x277CF02F0] sharedBag];
+  mEMORY[0x277CF02F0] = [MEMORY[0x277CF02F0] sharedBag];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 easyStudentSignInDisabled];
+    easyStudentSignInDisabled = [mEMORY[0x277CF02F0] easyStudentSignInDisabled];
   }
 
   else
@@ -233,10 +233,10 @@ uint64_t __86__CRKASMEasyMAIDSignInRosterProvider_fetchEligibilityForEasyMAIDSig
       goto LABEL_7;
     }
 
-    v3 = [v2 isEasyStudentSignInDisabled];
+    easyStudentSignInDisabled = [mEMORY[0x277CF02F0] isEasyStudentSignInDisabled];
   }
 
-  v4 = v3;
+  v4 = easyStudentSignInDisabled;
 LABEL_7:
 
   return v4;

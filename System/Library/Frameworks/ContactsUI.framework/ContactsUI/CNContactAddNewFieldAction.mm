@@ -1,6 +1,6 @@
 @interface CNContactAddNewFieldAction
 - (CNContactGroupPickerDelegate)groupPickerDelegate;
-- (void)performActionWithSender:(id)a3;
+- (void)performActionWithSender:(id)sender;
 @end
 
 @implementation CNContactAddNewFieldAction
@@ -12,29 +12,29 @@
   return WeakRetained;
 }
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   v13 = objc_alloc_init(CNContactPropertyGroupPickerViewController);
   v5 = CNContactsUIBundle();
   v6 = [v5 localizedStringForKey:@"ADD_MORE_PROPERTIES_NAV_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
   [(CNContactPropertyGroupPickerViewController *)v13 setTitle:v6];
 
-  v7 = [(CNContactAddNewFieldAction *)self prohibitedPropertyKeys];
-  [(CNContactPropertyGroupPickerViewController *)v13 setProhibitedPropertyKeys:v7];
+  prohibitedPropertyKeys = [(CNContactAddNewFieldAction *)self prohibitedPropertyKeys];
+  [(CNContactPropertyGroupPickerViewController *)v13 setProhibitedPropertyKeys:prohibitedPropertyKeys];
 
-  v8 = [(CNContactAddNewFieldAction *)self groupPickerDelegate];
-  [(CNContactPropertyGroupPickerViewController *)v13 setGroupPickerDelegate:v8];
+  groupPickerDelegate = [(CNContactAddNewFieldAction *)self groupPickerDelegate];
+  [(CNContactPropertyGroupPickerViewController *)v13 setGroupPickerDelegate:groupPickerDelegate];
 
-  v9 = [(CNContactAction *)self contact];
-  [(CNContactPropertyGroupPickerViewController *)v13 setContact:v9];
+  contact = [(CNContactAction *)self contact];
+  [(CNContactPropertyGroupPickerViewController *)v13 setContact:contact];
 
   v10 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v13];
-  v11 = [v10 navigationBar];
-  [v11 _cnui_applyContactStyle];
+  navigationBar = [v10 navigationBar];
+  [navigationBar _cnui_applyContactStyle];
 
-  v12 = [(CNContactAction *)self delegate];
-  [v12 action:self presentViewController:v10 sender:v4];
+  delegate = [(CNContactAction *)self delegate];
+  [delegate action:self presentViewController:v10 sender:senderCopy];
 }
 
 @end

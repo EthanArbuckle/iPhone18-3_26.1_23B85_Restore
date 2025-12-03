@@ -6,10 +6,10 @@
 
 - (uint64_t)_pu_routeAvailability
 {
-  result = [a1 discoveryMode];
+  result = [self discoveryMode];
   if (result)
   {
-    if ([a1 devicePresenceDetected])
+    if ([self devicePresenceDetected])
     {
       return 1;
     }

@@ -1,12 +1,12 @@
 @interface APClientInfo
 + (APClientInfo)activeClientInfo;
-+ (void)setActiveClientInfo:(id)a3;
-- (APClientInfo)initWithCoder:(id)a3;
++ (void)setActiveClientInfo:(id)info;
+- (APClientInfo)initWithCoder:(id)coder;
 - (id)description;
-- (id)jsonRepresentationWithOptions:(unint64_t)a3;
+- (id)jsonRepresentationWithOptions:(unint64_t)options;
 - (id)nonUICopy;
 - (id)redactedDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)updateActiveClientInfo;
 @end
 
@@ -14,8 +14,8 @@
 
 + (APClientInfo)activeClientInfo
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = qword_1EDBA4B98;
   v7 = objc_msgSend_sharedInstance(APLocationManager, v4, v5, v6);
   v11 = objc_msgSend_locationInfo(v7, v8, v9, v10);
@@ -26,7 +26,7 @@
   objc_msgSend_setIsLocationAvailableForAd_(v3, v22, v21, v23);
 
   v24 = qword_1EDBA4B98;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v24;
 }
@@ -60,13 +60,13 @@
   objc_msgSend_setActiveClientInfo_(APClientInfo, v4, v6, v5);
 }
 
-- (id)jsonRepresentationWithOptions:(unint64_t)a3
+- (id)jsonRepresentationWithOptions:(unint64_t)options
 {
   v61[7] = *MEMORY[0x1E69E9840];
   v60[0] = @"orientation";
   v5 = 0x1E696A000;
   v6 = MEMORY[0x1E696AD98];
-  v7 = objc_msgSend_orientation(self, a2, a3, v3);
+  v7 = objc_msgSend_orientation(self, a2, options, v3);
   v59 = objc_msgSend_numberWithInteger_(v6, v8, v7, v9);
   v61[0] = v59;
   v60[1] = @"interfaceIdiom";
@@ -107,7 +107,7 @@
   if (v49)
   {
     v5 = objc_msgSend_locationInfo(self, v46, v47, v48);
-    objc_msgSend_jsonRepresentationWithOptions_(v5, v50, a3, v51);
+    objc_msgSend_jsonRepresentationWithOptions_(v5, v50, options, v51);
   }
 
   else
@@ -136,42 +136,42 @@
   return v54;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v44 = a3;
+  coderCopy = coder;
   v7 = objc_msgSend_orientation(self, v4, v5, v6);
-  objc_msgSend_encodeInt_forKey_(v44, v8, v7, @"orientation");
+  objc_msgSend_encodeInt_forKey_(coderCopy, v8, v7, @"orientation");
   v12 = objc_msgSend_interfaceIdiom(self, v9, v10, v11);
-  objc_msgSend_encodeInt_forKey_(v44, v13, v12, @"interfaceIdiom");
+  objc_msgSend_encodeInt_forKey_(coderCopy, v13, v12, @"interfaceIdiom");
   v17 = objc_msgSend_screenHeight(self, v14, v15, v16);
-  objc_msgSend_encodeInteger_forKey_(v44, v18, v17, @"screenHeight");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v18, v17, @"screenHeight");
   v22 = objc_msgSend_screenWidth(self, v19, v20, v21);
-  objc_msgSend_encodeInteger_forKey_(v44, v23, v22, @"screenWidth");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v23, v22, @"screenWidth");
   v27 = objc_msgSend_scale(self, v24, v25, v26);
-  objc_msgSend_encodeObject_forKey_(v44, v28, v27, @"scale");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v28, v27, @"scale");
 
   v32 = objc_msgSend_keyboards(self, v29, v30, v31);
-  objc_msgSend_encodeObject_forKey_(v44, v33, v32, @"keyboards");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v33, v32, @"keyboards");
 
   v37 = objc_msgSend_locationInfo(self, v34, v35, v36);
-  objc_msgSend_encodeObject_forKey_(v44, v38, v37, @"locationInfo");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v38, v37, @"locationInfo");
 
   isLocationAvailableForAd = objc_msgSend_isLocationAvailableForAd(self, v39, v40, v41);
-  objc_msgSend_encodeBool_forKey_(v44, v43, isLocationAvailableForAd, @"locationAvailableForAd");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v43, isLocationAvailableForAd, @"locationAvailableForAd");
 }
 
-- (APClientInfo)initWithCoder:(id)a3
+- (APClientInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10 = objc_msgSend_init(self, v5, v6, v7);
   if (v10)
   {
-    v10->_orientation = objc_msgSend_decodeIntForKey_(v4, v8, @"orientation", v9);
-    v10->_interfaceIdiom = objc_msgSend_decodeIntForKey_(v4, v11, @"interfaceIdiom", v12);
-    v10->_screenHeight = objc_msgSend_decodeIntegerForKey_(v4, v13, @"screenHeight", v14);
-    v10->_screenWidth = objc_msgSend_decodeIntegerForKey_(v4, v15, @"screenWidth", v16);
+    v10->_orientation = objc_msgSend_decodeIntForKey_(coderCopy, v8, @"orientation", v9);
+    v10->_interfaceIdiom = objc_msgSend_decodeIntForKey_(coderCopy, v11, @"interfaceIdiom", v12);
+    v10->_screenHeight = objc_msgSend_decodeIntegerForKey_(coderCopy, v13, @"screenHeight", v14);
+    v10->_screenWidth = objc_msgSend_decodeIntegerForKey_(coderCopy, v15, @"screenWidth", v16);
     v17 = objc_opt_class();
-    v19 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v18, v17, @"scale");
+    v19 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v18, v17, @"scale");
     scale = v10->_scale;
     v10->_scale = v19;
 
@@ -179,16 +179,16 @@
     v22 = objc_opt_class();
     v23 = objc_opt_class();
     v26 = objc_msgSend_setWithObjects_(v21, v24, v22, v25, v23, 0);
-    v28 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v27, v26, @"keyboards");
+    v28 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v27, v26, @"keyboards");
     keyboards = v10->_keyboards;
     v10->_keyboards = v28;
 
     v30 = objc_opt_class();
-    v32 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v31, v30, @"locationInfo");
+    v32 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v31, v30, @"locationInfo");
     locationInfo = v10->_locationInfo;
     v10->_locationInfo = v32;
 
-    v10->_isLocationAvailableForAd = objc_msgSend_decodeBoolForKey_(v4, v34, @"locationAvailableForAd", v35);
+    v10->_isLocationAvailableForAd = objc_msgSend_decodeBoolForKey_(coderCopy, v34, @"locationAvailableForAd", v35);
   }
 
   return v10;
@@ -225,12 +225,12 @@
   return v33;
 }
 
-+ (void)setActiveClientInfo:(id)a3
++ (void)setActiveClientInfo:(id)info
 {
-  v8 = a3;
-  v5 = a1;
-  objc_sync_enter(v5);
-  objc_storeStrong(&qword_1EDBA4B98, a3);
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&qword_1EDBA4B98, info);
   if (qword_1EDBA4B98 && (byte_1EDBA4B90 & 1) == 0)
   {
     byte_1EDBA4B90 = 1;
@@ -238,10 +238,10 @@
 
   if (qword_1EDBA4900)
   {
-    objc_msgSend_activeClientInfoUpdated_(qword_1EDBA4900, v6, v8, v7);
+    objc_msgSend_activeClientInfoUpdated_(qword_1EDBA4900, v6, infoCopy, v7);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 @end

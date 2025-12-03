@@ -1,17 +1,17 @@
 @interface SXScrollPosition
 - (NSString)jsonRepresentation;
-- (SXScrollPosition)initWithCoder:(id)a3;
-- (SXScrollPosition)initWithJSONRepresentation:(id)a3;
+- (SXScrollPosition)initWithCoder:(id)coder;
+- (SXScrollPosition)initWithJSONRepresentation:(id)representation;
 - (void)jsonRepresentation;
 @end
 
 @implementation SXScrollPosition
 
-- (SXScrollPosition)initWithJSONRepresentation:(id)a3
+- (SXScrollPosition)initWithJSONRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = MEMORY[0x1E696ACB0];
-  v6 = [v4 dataUsingEncoding:4];
+  v6 = [representationCopy dataUsingEncoding:4];
   v14 = 0;
   v7 = [v5 JSONObjectWithData:v6 options:0 error:&v14];
   v8 = v14;
@@ -30,7 +30,7 @@
         v13 = SXDefaultLog;
         if (os_log_type_enabled(SXDefaultLog, OS_LOG_TYPE_ERROR))
         {
-          [(SXScrollPosition *)v4 initWithJSONRepresentation:v13];
+          [(SXScrollPosition *)representationCopy initWithJSONRepresentation:v13];
         }
 
         goto LABEL_4;
@@ -46,7 +46,7 @@
   v9 = SXDefaultLog;
   if (os_log_type_enabled(SXDefaultLog, OS_LOG_TYPE_ERROR))
   {
-    [(SXScrollPosition *)v4 initWithJSONRepresentation:v9];
+    [(SXScrollPosition *)representationCopy initWithJSONRepresentation:v9];
   }
 
 LABEL_4:
@@ -58,11 +58,11 @@ LABEL_10:
 
 - (NSString)jsonRepresentation
 {
-  v2 = [(SXScrollPosition *)self dictionaryRepresentation];
-  v3 = v2;
-  if (v2)
+  dictionaryRepresentation = [(SXScrollPosition *)self dictionaryRepresentation];
+  v3 = dictionaryRepresentation;
+  if (dictionaryRepresentation)
   {
-    v4 = v2;
+    v4 = dictionaryRepresentation;
     v10 = 0;
     v5 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v4 options:0 error:&v10];
     v6 = v10;
@@ -91,7 +91,7 @@ LABEL_10:
   return v7;
 }
 
-- (SXScrollPosition)initWithCoder:(id)a3
+- (SXScrollPosition)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SXScrollPosition;
@@ -118,7 +118,7 @@ LABEL_10:
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_1D825C000, a2, OS_LOG_TYPE_FAULT, "Failed to convert scroll position to JSON with error: %{public}@", &v2, 0xCu);
 }
 

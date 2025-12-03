@@ -1,44 +1,44 @@
 @interface UIAutocorrectInlinePromptAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (CGRect)accessibilityFrame;
 - (unint64_t)accessibilityTraits;
-- (void)setCorrection:(id)a3 typedText:(id)a4 inRect:(CGRect)a5 maxX:(double)a6;
+- (void)setCorrection:(id)correction typedText:(id)text inRect:(CGRect)rect maxX:(double)x;
 @end
 
 @implementation UIAutocorrectInlinePromptAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v5 = location;
   v4 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UIAutocorrectInlinePrompt";
   [location[0] validateClass:"@" hasInstanceMethod:"@" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", "d", 0}];
   [location[0] validateClass:v3 hasInstanceVariable:@"m_correctionView" withType:"UIView"];
   objc_storeStrong(v5, v4);
 }
 
-- (void)setCorrection:(id)a3 typedText:(id)a4 inRect:(CGRect)a5 maxX:(double)a6
+- (void)setCorrection:(id)correction typedText:(id)text inRect:(CGRect)rect maxX:(double)x
 {
-  v15 = a5;
-  v14 = self;
+  rectCopy = rect;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, correction);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v11 = a6;
-  v10.receiver = v14;
+  objc_storeStrong(&v12, text);
+  xCopy = x;
+  v10.receiver = selfCopy;
   v10.super_class = UIAutocorrectInlinePromptAccessibility;
-  [(UIAutocorrectInlinePromptAccessibility *)&v10 setCorrection:location[0] typedText:v12 inRect:v15.origin.x maxX:v15.origin.y, v15.size.width, v15.size.height, a6];
-  v8 = [(UIAutocorrectInlinePromptAccessibility *)v14 safeValueForKey:@"m_correctionView"];
-  v9 = [v8 _accessibilityViewIsVisible];
+  [(UIAutocorrectInlinePromptAccessibility *)&v10 setCorrection:location[0] typedText:v12 inRect:rectCopy.origin.x maxX:rectCopy.origin.y, rectCopy.size.width, rectCopy.size.height, x];
+  v8 = [(UIAutocorrectInlinePromptAccessibility *)selfCopy safeValueForKey:@"m_correctionView"];
+  _accessibilityViewIsVisible = [v8 _accessibilityViewIsVisible];
   MEMORY[0x29EDC9740](v8);
-  if (v9)
+  if (_accessibilityViewIsVisible)
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7390], 0);
   }
@@ -49,7 +49,7 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = UIAutocorrectInlinePromptAccessibility;
@@ -67,9 +67,9 @@
     return 0;
   }
 
-  v4 = [(UIAutocorrectInlinePromptAccessibility *)self accessibilityLabel];
-  v5 = [v4 length];
-  MEMORY[0x29EDC9740](v4);
+  accessibilityLabel = [(UIAutocorrectInlinePromptAccessibility *)self accessibilityLabel];
+  v5 = [accessibilityLabel length];
+  MEMORY[0x29EDC9740](accessibilityLabel);
   return v5 != 0;
 }
 

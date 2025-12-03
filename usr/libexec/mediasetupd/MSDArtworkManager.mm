@@ -1,20 +1,20 @@
 @interface MSDArtworkManager
 - (BOOL)removeCachedIconImage;
-- (MSDArtworkManager)initWithServiceID:(id)a3 remoteImageURL:(id)a4;
+- (MSDArtworkManager)initWithServiceID:(id)d remoteImageURL:(id)l;
 - (id)_fetchImageFromInternetURL;
 - (id)_returnGenericAppIcon;
-- (id)_saveDataInLocalCacheDir:(id)a3 withName:(id)a4;
-- (id)_saveISIconInLocalCacheDir:(id)a3 withName:(id)a4;
+- (id)_saveDataInLocalCacheDir:(id)dir withName:(id)name;
+- (id)_saveISIconInLocalCacheDir:(id)dir withName:(id)name;
 - (id)getLocalCachedImageURL;
-- (void)getDataFromURL:(id)a3 completionHandler:(id)a4;
+- (void)getDataFromURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation MSDArtworkManager
 
-- (MSDArtworkManager)initWithServiceID:(id)a3 remoteImageURL:(id)a4
+- (MSDArtworkManager)initWithServiceID:(id)d remoteImageURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  lCopy = l;
   v29.receiver = self;
   v29.super_class = MSDArtworkManager;
   v9 = [(MSDArtworkManager *)&v29 init];
@@ -26,10 +26,10 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  if (v7)
+  if (dCopy)
   {
-    objc_storeStrong(&v9->_serviceID, a3);
-    objc_storeStrong(&v10->_remoteImageURL, a4);
+    objc_storeStrong(&v9->_serviceID, d);
+    objc_storeStrong(&v10->_remoteImageURL, l);
     v11 = [NSString stringWithFormat:@"%@", v10->_serviceID];
     serviceIconImageName = v10->_serviceIconImageName;
     v10->_serviceIconImageName = v11;
@@ -91,15 +91,15 @@ LABEL_12:
   if ([(NSString *)self->_serviceID isEqualToString:kAppleMusicServiceIdentifier])
   {
     v4 = [ISIcon alloc];
-    v5 = [v4 initWithBundleIdentifier:kAppleMusicBundleIdentifier];
-    v6 = [(MSDArtworkManager *)self _saveISIconInLocalCacheDir:v5 withName:self->_serviceIconImageName];
+    _fetchImageFromInternetURL = [v4 initWithBundleIdentifier:kAppleMusicBundleIdentifier];
+    v6 = [(MSDArtworkManager *)self _saveISIconInLocalCacheDir:_fetchImageFromInternetURL withName:self->_serviceIconImageName];
   }
 
   else
   {
     v7 = +[NSFileManager defaultManager];
-    v8 = [v3 path];
-    v9 = [v7 fileExistsAtPath:v8];
+    path = [v3 path];
+    v9 = [v7 fileExistsAtPath:path];
 
     if (v9)
     {
@@ -107,10 +107,10 @@ LABEL_12:
       goto LABEL_10;
     }
 
-    v5 = [(MSDArtworkManager *)self _fetchImageFromInternetURL];
-    if (v5)
+    _fetchImageFromInternetURL = [(MSDArtworkManager *)self _fetchImageFromInternetURL];
+    if (_fetchImageFromInternetURL)
     {
-      [(MSDArtworkManager *)self _saveDataInLocalCacheDir:v5 withName:self->_serviceIconImageName];
+      [(MSDArtworkManager *)self _saveDataInLocalCacheDir:_fetchImageFromInternetURL withName:self->_serviceIconImageName];
     }
 
     else
@@ -135,12 +135,12 @@ LABEL_10:
   return v4;
 }
 
-- (id)_saveDataInLocalCacheDir:(id)a3 withName:(id)a4
+- (id)_saveDataInLocalCacheDir:(id)dir withName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  dirCopy = dir;
+  nameCopy = name;
+  v8 = nameCopy;
+  if (!dirCopy)
   {
     v20 = sub_100030FE4();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -151,7 +151,7 @@ LABEL_10:
     goto LABEL_17;
   }
 
-  if (!v7)
+  if (!nameCopy)
   {
     v20 = sub_100030FE4();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -169,17 +169,17 @@ LABEL_18:
   v9 = +[NSFileManager defaultManager];
   localCacheDirURL = self->_localCacheDirURL;
   p_localCacheDirURL = &self->_localCacheDirURL;
-  v12 = [(NSURL *)localCacheDirURL path];
-  v13 = [v9 fileExistsAtPath:v12];
+  path = [(NSURL *)localCacheDirURL path];
+  v13 = [v9 fileExistsAtPath:path];
 
   if ((v13 & 1) == 0)
   {
     v14 = sub_100030FE4();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(NSURL *)*p_localCacheDirURL path];
+      path2 = [(NSURL *)*p_localCacheDirURL path];
       *buf = 138477827;
-      v27 = v15;
+      v27 = path2;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Directory for icon file path (%{private}@) does not exist, will try to create now", buf, 0xCu);
     }
 
@@ -205,31 +205,31 @@ LABEL_18:
   v22 = sub_100030FE4();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v21 path];
+    path3 = [v21 path];
     *buf = 138478083;
-    v27 = v6;
+    v27 = dirCopy;
     v28 = 2113;
-    v29 = v23;
+    v29 = path3;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Saving image %{private}@ to path %{private}@", buf, 0x16u);
   }
 
-  [v6 writeToURL:v21 atomically:1];
+  [dirCopy writeToURL:v21 atomically:1];
 LABEL_19:
 
   return v21;
 }
 
-- (id)_saveISIconInLocalCacheDir:(id)a3 withName:(id)a4
+- (id)_saveISIconInLocalCacheDir:(id)dir withName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  dirCopy = dir;
   v8 = [[ISImageDescriptor alloc] initWithSize:self->_iconImageSize.width scale:{self->_iconImageSize.height, self->_iconImageScale}];
   [v8 setShouldApplyMask:0];
-  v9 = [v7 prepareImageForDescriptor:v8];
+  v9 = [dirCopy prepareImageForDescriptor:v8];
 
   v10 = +[UIImage imageWithCGImage:](UIImage, "imageWithCGImage:", [v9 CGImage]);
   v11 = UIImagePNGRepresentation(v10);
-  v12 = [(MSDArtworkManager *)self _saveDataInLocalCacheDir:v11 withName:v6];
+  v12 = [(MSDArtworkManager *)self _saveDataInLocalCacheDir:v11 withName:nameCopy];
 
   return v12;
 }
@@ -276,14 +276,14 @@ LABEL_19:
   return v7;
 }
 
-- (void)getDataFromURL:(id)a3 completionHandler:(id)a4
+- (void)getDataFromURL:(id)l completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  lCopy = l;
   v7 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
   v8 = [NSURLSession sessionWithConfiguration:v7];
 
-  v9 = [[NSURLRequest alloc] initWithURL:v6];
+  v9 = [[NSURLRequest alloc] initWithURL:lCopy];
   v10 = sub_100030FE4();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -299,8 +299,8 @@ LABEL_19:
   v14[1] = 3221225472;
   v14[2] = sub_10000425C;
   v14[3] = &unk_100050A10;
-  v15 = v5;
-  v12 = v5;
+  v15 = handlerCopy;
+  v12 = handlerCopy;
   v13 = [v8 dataTaskWithRequest:v9 completionHandler:v14];
   [v13 resume];
   [v8 finishTasksAndInvalidate];
@@ -310,8 +310,8 @@ LABEL_19:
 {
   v2 = [(NSURL *)self->_localCacheDirURL URLByAppendingPathComponent:self->_serviceIconImageName];
   v3 = +[NSFileManager defaultManager];
-  v4 = [v2 path];
-  v5 = [v3 fileExistsAtPath:v4];
+  path = [v2 path];
+  v5 = [v3 fileExistsAtPath:path];
 
   v6 = sub_100030FE4();
   v7 = v6;
@@ -319,9 +319,9 @@ LABEL_19:
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v2 path];
+      path2 = [v2 path];
       *buf = 138477827;
-      v15 = v8;
+      v15 = path2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Going to remove item at URL %{private}@", buf, 0xCu);
     }
 

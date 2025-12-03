@@ -1,25 +1,25 @@
 @interface CalDAVGetDelegatesTaskGroup
-- (CalDAVGetDelegatesTaskGroup)initWithAccountInfoProvider:(id)a3 principalURL:(id)a4 taskManager:(id)a5;
+- (CalDAVGetDelegatesTaskGroup)initWithAccountInfoProvider:(id)provider principalURL:(id)l taskManager:(id)manager;
 - (void)_expandProperties;
 - (void)_getChildProperties;
 - (void)startTaskGroup;
-- (void)task:(id)a3 didFinishWithError:(id)a4;
-- (void)taskGroup:(id)a3 didFinishWithError:(id)a4;
+- (void)task:(id)task didFinishWithError:(id)error;
+- (void)taskGroup:(id)group didFinishWithError:(id)error;
 @end
 
 @implementation CalDAVGetDelegatesTaskGroup
 
-- (CalDAVGetDelegatesTaskGroup)initWithAccountInfoProvider:(id)a3 principalURL:(id)a4 taskManager:(id)a5
+- (CalDAVGetDelegatesTaskGroup)initWithAccountInfoProvider:(id)provider principalURL:(id)l taskManager:(id)manager
 {
   v9.receiver = self;
   v9.super_class = CalDAVGetDelegatesTaskGroup;
-  v5 = [(CalDAVGetDelegatesBaseTaskGroup *)&v9 initWithAccountInfoProvider:a3 principalURL:a4 taskManager:a5];
+  v5 = [(CalDAVGetDelegatesBaseTaskGroup *)&v9 initWithAccountInfoProvider:provider principalURL:l taskManager:manager];
   v6 = v5;
   if (v5)
   {
     [(CalDAVGetDelegatesTaskGroup *)v5 setState:0];
-    v7 = [MEMORY[0x277CBEB18] array];
-    [(CalDAVGetDelegatesTaskGroup *)v6 setNestedGroupPrincipalURLs:v7];
+    array = [MEMORY[0x277CBEB18] array];
+    [(CalDAVGetDelegatesTaskGroup *)v6 setNestedGroupPrincipalURLs:array];
   }
 
   return v6;
@@ -28,28 +28,28 @@
 - (void)_expandProperties
 {
   [(CalDAVGetDelegatesTaskGroup *)self setState:1];
-  v10 = [(CalDAVGetDelegatesBaseTaskGroup *)self _mappingsForPrincipalDetails];
+  _mappingsForPrincipalDetails = [(CalDAVGetDelegatesBaseTaskGroup *)self _mappingsForPrincipalDetails];
   v3 = objc_alloc(MEMORY[0x277CFDBC0]);
-  v4 = [(CalDAVGetDelegatesBaseTaskGroup *)self principalURL];
+  principalURL = [(CalDAVGetDelegatesBaseTaskGroup *)self principalURL];
   v5 = *MEMORY[0x277CFDE90];
-  v6 = [v3 initWithPropertiesToFind:v10 atURL:v4 expandedName:@"calendar-proxy-read-for" expandedNameSpace:*MEMORY[0x277CFDE90]];
+  v6 = [v3 initWithPropertiesToFind:_mappingsForPrincipalDetails atURL:principalURL expandedName:@"calendar-proxy-read-for" expandedNameSpace:*MEMORY[0x277CFDE90]];
 
-  [v6 addPropertyToExpandWithPropertiesToFind:v10 expandedName:@"calendar-proxy-write-for" expandedNameSpace:v5];
-  v7 = [(CoreDAVTaskGroup *)self outstandingTasks];
-  [v7 addObject:v6];
+  [v6 addPropertyToExpandWithPropertiesToFind:_mappingsForPrincipalDetails expandedName:@"calendar-proxy-write-for" expandedNameSpace:v5];
+  outstandingTasks = [(CoreDAVTaskGroup *)self outstandingTasks];
+  [outstandingTasks addObject:v6];
 
-  v8 = [(CoreDAVTaskGroup *)self accountInfoProvider];
-  [v6 setAccountInfoProvider:v8];
+  accountInfoProvider = [(CoreDAVTaskGroup *)self accountInfoProvider];
+  [v6 setAccountInfoProvider:accountInfoProvider];
 
   [v6 setDelegate:self];
-  v9 = [(CoreDAVTaskGroup *)self taskManager];
-  [v9 submitQueuedCoreDAVTask:v6];
+  taskManager = [(CoreDAVTaskGroup *)self taskManager];
+  [taskManager submitQueuedCoreDAVTask:v6];
 }
 
 - (void)_getChildProperties
 {
-  v3 = [(CalDAVGetDelegatesTaskGroup *)self nestedGroupPrincipalURLs];
-  v8 = [(CalDAVGetDelegatesBaseTaskGroup *)self _popFromArray:v3];
+  nestedGroupPrincipalURLs = [(CalDAVGetDelegatesTaskGroup *)self nestedGroupPrincipalURLs];
+  v8 = [(CalDAVGetDelegatesBaseTaskGroup *)self _popFromArray:nestedGroupPrincipalURLs];
 
   if (v8)
   {
@@ -59,25 +59,25 @@ LABEL_8:
     return;
   }
 
-  v4 = [(CalDAVGetDelegatesBaseTaskGroup *)self readPrincipalURLs];
-  v8 = [(CalDAVGetDelegatesBaseTaskGroup *)self _popFromArray:v4];
+  readPrincipalURLs = [(CalDAVGetDelegatesBaseTaskGroup *)self readPrincipalURLs];
+  v8 = [(CalDAVGetDelegatesBaseTaskGroup *)self _popFromArray:readPrincipalURLs];
 
   if (v8)
   {
-    v5 = self;
+    selfCopy2 = self;
     v6 = 4;
 LABEL_7:
-    [(CalDAVGetDelegatesTaskGroup *)v5 setState:v6];
+    [(CalDAVGetDelegatesTaskGroup *)selfCopy2 setState:v6];
     [(CalDAVGetDelegatesBaseTaskGroup *)self _getPrincipalDetailsForURL:v8];
     goto LABEL_8;
   }
 
-  v7 = [(CalDAVGetDelegatesBaseTaskGroup *)self writePrincipalURLs];
-  v8 = [(CalDAVGetDelegatesBaseTaskGroup *)self _popFromArray:v7];
+  writePrincipalURLs = [(CalDAVGetDelegatesBaseTaskGroup *)self writePrincipalURLs];
+  v8 = [(CalDAVGetDelegatesBaseTaskGroup *)self _popFromArray:writePrincipalURLs];
 
   if (v8)
   {
-    v5 = self;
+    selfCopy2 = self;
     v6 = 5;
     goto LABEL_7;
   }
@@ -95,50 +95,50 @@ LABEL_7:
 
   else
   {
-    v3 = [(CalDAVGetDelegatesBaseTaskGroup *)self principalURL];
-    [(CalDAVGetDelegatesTaskGroup *)self _getGroupMembershipForURL:v3 state:2];
+    principalURL = [(CalDAVGetDelegatesBaseTaskGroup *)self principalURL];
+    [(CalDAVGetDelegatesTaskGroup *)self _getGroupMembershipForURL:principalURL state:2];
   }
 }
 
-- (void)task:(id)a3 didFinishWithError:(id)a4
+- (void)task:(id)task didFinishWithError:(id)error
 {
   v63 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  taskCopy = task;
+  errorCopy = error;
+  v8 = taskCopy;
   v9 = v8;
-  if (v7)
+  if (errorCopy)
   {
-    v10 = v7;
+    getTotalFailureError = errorCopy;
   }
 
   else
   {
-    v10 = [v8 getTotalFailureError];
+    getTotalFailureError = [v8 getTotalFailureError];
   }
 
-  v11 = v10;
+  v11 = getTotalFailureError;
   if ([(CalDAVGetDelegatesTaskGroup *)self state]!= 1)
   {
     if ([(CalDAVGetDelegatesTaskGroup *)self state]== 2)
     {
       if (v11)
       {
-        v12 = self;
+        selfCopy3 = self;
         v13 = v11;
         v14 = 7;
         goto LABEL_18;
       }
 
-      v48 = v7;
+      v48 = errorCopy;
       v47 = v9;
       [v9 successfulValueForNameSpace:*MEMORY[0x277CFDEF8] elementName:*MEMORY[0x277CFDF30]];
       v55 = 0u;
       v56 = 0u;
       v57 = 0u;
       v46 = v58 = 0u;
-      v23 = [v46 hrefs];
-      v24 = [v23 countByEnumeratingWithState:&v55 objects:v62 count:16];
+      hrefs = [v46 hrefs];
+      v24 = [hrefs countByEnumeratingWithState:&v55 objects:v62 count:16];
       if (!v24)
       {
         goto LABEL_37;
@@ -152,53 +152,53 @@ LABEL_22:
       {
         if (*v56 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(hrefs);
         }
 
         v28 = *(*(&v55 + 1) + 8 * v27);
-        v29 = [v28 payloadAsFullURL];
-        v30 = v29;
-        if (!v29)
+        payloadAsFullURL = [v28 payloadAsFullURL];
+        v30 = payloadAsFullURL;
+        if (!payloadAsFullURL)
         {
-          v31 = [MEMORY[0x277CFDC18] sharedLogging];
-          v33 = [v31 logHandleForAccountInfoProvider:0];
-          v34 = v33;
+          mEMORY[0x277CFDC18] = [MEMORY[0x277CFDC18] sharedLogging];
+          v33 = [mEMORY[0x277CFDC18] logHandleForAccountInfoProvider:0];
+          nestedGroupPrincipalURLs = v33;
           if (v33 && os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
             v61 = v28;
-            _os_log_impl(&dword_242742000, v34, OS_LOG_TYPE_ERROR, "Got a nil URL for delegate group membership with href = %@", buf, 0xCu);
+            _os_log_impl(&dword_242742000, nestedGroupPrincipalURLs, OS_LOG_TYPE_ERROR, "Got a nil URL for delegate group membership with href = %@", buf, 0xCu);
           }
 
           goto LABEL_35;
         }
 
-        v31 = [v29 CDVRawPath];
-        if ([v31 hasSuffix:@"calendar-proxy-read/"])
+        mEMORY[0x277CFDC18] = [payloadAsFullURL CDVRawPath];
+        if ([mEMORY[0x277CFDC18] hasSuffix:@"calendar-proxy-read/"])
         {
-          v32 = [(CalDAVGetDelegatesBaseTaskGroup *)self readPrincipalURLs];
+          readPrincipalURLs = [(CalDAVGetDelegatesBaseTaskGroup *)self readPrincipalURLs];
         }
 
         else
         {
-          if (![v31 hasSuffix:@"calendar-proxy-write/"])
+          if (![mEMORY[0x277CFDC18] hasSuffix:@"calendar-proxy-write/"])
           {
-            v34 = [(CalDAVGetDelegatesTaskGroup *)self nestedGroupPrincipalURLs];
-            [v34 addObject:v30];
+            nestedGroupPrincipalURLs = [(CalDAVGetDelegatesTaskGroup *)self nestedGroupPrincipalURLs];
+            [nestedGroupPrincipalURLs addObject:v30];
             goto LABEL_35;
           }
 
-          v32 = [(CalDAVGetDelegatesBaseTaskGroup *)self writePrincipalURLs];
+          readPrincipalURLs = [(CalDAVGetDelegatesBaseTaskGroup *)self writePrincipalURLs];
         }
 
-        v34 = v32;
-        v35 = [v30 CDVURLByDeletingLastPathComponent];
-        [v34 addObject:v35];
+        nestedGroupPrincipalURLs = readPrincipalURLs;
+        cDVURLByDeletingLastPathComponent = [v30 CDVURLByDeletingLastPathComponent];
+        [nestedGroupPrincipalURLs addObject:cDVURLByDeletingLastPathComponent];
 
 LABEL_35:
         if (v25 == ++v27)
         {
-          v25 = [v23 countByEnumeratingWithState:&v55 objects:v62 count:16];
+          v25 = [hrefs countByEnumeratingWithState:&v55 objects:v62 count:16];
           if (!v25)
           {
 LABEL_37:
@@ -215,7 +215,7 @@ LABEL_37:
 
     if ([(CalDAVGetDelegatesTaskGroup *)self state]!= 3)
     {
-      v12 = self;
+      selfCopy3 = self;
       v13 = v11;
       v14 = 10;
       goto LABEL_18;
@@ -223,8 +223,8 @@ LABEL_37:
 
     if (v11)
     {
-      v15 = [MEMORY[0x277CFDC18] sharedLogging];
-      v16 = [v15 logHandleForAccountInfoProvider:0];
+      mEMORY[0x277CFDC18]2 = [MEMORY[0x277CFDC18] sharedLogging];
+      v16 = [mEMORY[0x277CFDC18]2 logHandleForAccountInfoProvider:0];
       v17 = v16;
       if (v16 && os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
@@ -237,7 +237,7 @@ LABEL_37:
       goto LABEL_19;
     }
 
-    v48 = v7;
+    v48 = errorCopy;
     v47 = v9;
     [v9 successfulValueForNameSpace:*MEMORY[0x277CFDEF8] elementName:*MEMORY[0x277CFDF30]];
     v51 = 0u;
@@ -255,7 +255,7 @@ LABEL_50:
 LABEL_51:
 
       v9 = v47;
-      v7 = v48;
+      errorCopy = v48;
       v11 = 0;
       goto LABEL_19;
     }
@@ -271,16 +271,16 @@ LABEL_40:
         objc_enumerationMutation(obj);
       }
 
-      v41 = [*(*(&v51 + 1) + 8 * v40) payloadAsFullURL];
-      v42 = [v41 CDVRawPath];
-      if ([v42 hasSuffix:@"calendar-proxy-read/"])
+      payloadAsFullURL2 = [*(*(&v51 + 1) + 8 * v40) payloadAsFullURL];
+      cDVRawPath = [payloadAsFullURL2 CDVRawPath];
+      if ([cDVRawPath hasSuffix:@"calendar-proxy-read/"])
       {
         break;
       }
 
-      if ([v42 hasSuffix:@"calendar-proxy-write/"])
+      if ([cDVRawPath hasSuffix:@"calendar-proxy-write/"])
       {
-        v43 = [(CalDAVGetDelegatesBaseTaskGroup *)self writePrincipalURLs];
+        writePrincipalURLs = [(CalDAVGetDelegatesBaseTaskGroup *)self writePrincipalURLs];
         goto LABEL_47;
       }
 
@@ -298,22 +298,22 @@ LABEL_48:
       }
     }
 
-    v43 = [(CalDAVGetDelegatesBaseTaskGroup *)self readPrincipalURLs];
+    writePrincipalURLs = [(CalDAVGetDelegatesBaseTaskGroup *)self readPrincipalURLs];
 LABEL_47:
-    v44 = v43;
-    v45 = [v41 CDVURLByDeletingLastPathComponent];
-    [v44 addObject:v45];
+    v44 = writePrincipalURLs;
+    cDVURLByDeletingLastPathComponent2 = [payloadAsFullURL2 CDVURLByDeletingLastPathComponent];
+    [v44 addObject:cDVURLByDeletingLastPathComponent2];
 
     goto LABEL_48;
   }
 
   if (v11)
   {
-    v12 = self;
+    selfCopy3 = self;
     v13 = v11;
     v14 = 6;
 LABEL_18:
-    [(CalDAVGetDelegatesTaskGroup *)v12 _finishWithError:v13 state:v14];
+    [(CalDAVGetDelegatesTaskGroup *)selfCopy3 _finishWithError:v13 state:v14];
     goto LABEL_19;
   }
 
@@ -326,23 +326,23 @@ LABEL_18:
   [(CalDAVGetDelegatesTaskGroup *)self _finishWithError:0 state:11];
 
 LABEL_19:
-  v21 = [(CoreDAVTaskGroup *)self outstandingTasks];
-  [v21 removeObject:v9];
+  outstandingTasks = [(CoreDAVTaskGroup *)self outstandingTasks];
+  [outstandingTasks removeObject:v9];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)taskGroup:(id)a3 didFinishWithError:(id)a4
+- (void)taskGroup:(id)group didFinishWithError:(id)error
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(CalDAVGetDelegatesTaskGroup *)self state];
-  if (!v6 && ((v8 = v7, [(CalDAVGetDelegatesTaskGroup *)self state]== 4) || v8 == 5))
+  groupCopy = group;
+  errorCopy = error;
+  state = [(CalDAVGetDelegatesTaskGroup *)self state];
+  if (!errorCopy && ((v8 = state, [(CalDAVGetDelegatesTaskGroup *)self state]== 4) || v8 == 5))
   {
-    v9 = v13;
-    v10 = [v9 principalResult];
+    v9 = groupCopy;
+    principalResult = [v9 principalResult];
 
-    if (v10)
+    if (principalResult)
     {
       if (v8 == 5)
       {
@@ -354,8 +354,8 @@ LABEL_19:
         [(CalDAVGetDelegatesBaseTaskGroup *)self readDetails];
       }
       v11 = ;
-      v12 = [v9 principalResult];
-      [v11 addObject:v12];
+      principalResult2 = [v9 principalResult];
+      [v11 addObject:principalResult2];
     }
 
     [(CalDAVGetDelegatesTaskGroup *)self _getChildProperties];
@@ -363,7 +363,7 @@ LABEL_19:
 
   else
   {
-    [(CalDAVGetDelegatesTaskGroup *)self _finishWithError:v6 state:10];
+    [(CalDAVGetDelegatesTaskGroup *)self _finishWithError:errorCopy state:10];
   }
 }
 

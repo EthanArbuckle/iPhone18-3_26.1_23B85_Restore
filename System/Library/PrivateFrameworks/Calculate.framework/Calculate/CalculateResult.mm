@@ -1,53 +1,53 @@
 @interface CalculateResult
-+ (CalculateResult)resultWithResultTree:(TreeObject *)a3 parseTree:(TreeObject *)a4 locales:(id)a5 numberFormatter:(id)a6 unitsInfo:(id)a7 unitType:(int)a8 unitExponent:(int)a9 expression:(id)a10 isTrivial:(BOOL)a11 isPartialExpression:(BOOL)a12 variableLookups:(id)a13 variableResultTrees:(TreeObject *)a14 variableResultTreesCount:(int)a15 resolvedUnitFormats:(id *)a16 forceResult:(BOOL)a17 assumeDegrees:(BOOL)a18 localizeUnit:(BOOL)a19 unitFormat:(unint64_t)a20 matchLocale:(BOOL)a21 numberingSystem:(id)a22 autoScientificNotation:(BOOL)a23 scientificNotationFormat:(unint64_t)a24 flexibleFractionDigits:(BOOL)a25 isSimpleVerticalMath:(BOOL)a26 minimumFractionDigits:(int)a27 hasStaleCurrencyData:(BOOL)a28;
-+ (id)decimalNumberWithDecimal128:(id)a3;
-+ (id)defaultNumberFormatter:(id)a3;
-+ (void)preferMeasurementSystemsForLocale:(id)a3 preferred:(unint64_t *)a4 fallback:(unint64_t *)a5;
++ (CalculateResult)resultWithResultTree:(TreeObject *)tree parseTree:(TreeObject *)parseTree locales:(id)locales numberFormatter:(id)formatter unitsInfo:(id)info unitType:(int)type unitExponent:(int)exponent expression:(id)self0 isTrivial:(BOOL)self1 isPartialExpression:(BOOL)self2 variableLookups:(id)self3 variableResultTrees:(TreeObject *)self4 variableResultTreesCount:(int)self5 resolvedUnitFormats:(id *)self6 forceResult:(BOOL)self7 assumeDegrees:(BOOL)self8 localizeUnit:(BOOL)self9 unitFormat:(unint64_t)format matchLocale:(BOOL)locale numberingSystem:(id)system autoScientificNotation:(BOOL)notation scientificNotationFormat:(unint64_t)notationFormat flexibleFractionDigits:(BOOL)digits isSimpleVerticalMath:(BOOL)math minimumFractionDigits:(int)fractionDigits hasStaleCurrencyData:(BOOL)data;
++ (id)decimalNumberWithDecimal128:(id)decimal128;
++ (id)defaultNumberFormatter:(id)formatter;
++ (void)preferMeasurementSystemsForLocale:(id)locale preferred:(unint64_t *)preferred fallback:(unint64_t *)fallback;
 - ($786B50094F6E1A5F953E25B90648E2E3)resolvedUnitFormats;
-- (BOOL)isAcceptableConversion:(TreeObject *)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isAcceptableConversion:(TreeObject *)conversion;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNaN;
 - (CalculateResult)init;
-- (CalculateResult)initWithDouble:(double)a3;
+- (CalculateResult)initWithDouble:(double)double;
 - (CalculateResult)parent;
 - (NSString)formattedResult;
-- (TreeObject)convertedTree:(id)a3 from:(id)a4 needsUpdate:(BOOL *)a5;
+- (TreeObject)convertedTree:(id)tree from:(id)from needsUpdate:(BOOL *)update;
 - (id)availableConversions;
 - (id)bestConversion;
-- (id)conversionsForMetric:(BOOL)a3 US:(BOOL)a4 UK:(BOOL)a5;
-- (id)convertedTo:(id)a3 from:(id)a4;
+- (id)conversionsForMetric:(BOOL)metric US:(BOOL)s UK:(BOOL)k;
+- (id)convertedTo:(id)to from:(id)from;
 - (id)description;
-- (id)graphableFunction2DFor:(id)a3;
+- (id)graphableFunction2DFor:(id)for;
 - (id)graphableFunction3D;
 - (id)ignoringNaN;
 - (id)localizedConversions;
-- (id)newUnit:(id)a3;
-- (id)updateVariables:(id)a3;
-- (int64_t)compare:(id)a3;
-- (void)_setConversions:(id)a3;
-- (void)_setInputValueAndUnit:(id)a3;
-- (void)_setTerms:(id)a3;
+- (id)newUnit:(id)unit;
+- (id)updateVariables:(id)variables;
+- (int64_t)compare:(id)compare;
+- (void)_setConversions:(id)conversions;
+- (void)_setInputValueAndUnit:(id)unit;
+- (void)_setTerms:(id)terms;
 - (void)dealloc;
-- (void)enableMeasurementSystemsForLocale:(id)a3 metric:(BOOL *)a4 US:(BOOL *)a5 UK:(BOOL *)a6;
-- (void)setResolvedUnitFormats:(id *)a3;
+- (void)enableMeasurementSystemsForLocale:(id)locale metric:(BOOL *)metric US:(BOOL *)s UK:(BOOL *)k;
+- (void)setResolvedUnitFormats:(id *)formats;
 @end
 
 @implementation CalculateResult
 
-- (void)setResolvedUnitFormats:(id *)a3
+- (void)setResolvedUnitFormats:(id *)formats
 {
-  *self->_resolvedUnitFormats.formats = *a3->var0;
-  v3 = *&a3->var0[2];
-  v4 = *&a3->var0[4];
-  v5 = *&a3->var0[8];
-  *&self->_resolvedUnitFormats.formats[6] = *&a3->var0[6];
+  *self->_resolvedUnitFormats.formats = *formats->var0;
+  v3 = *&formats->var0[2];
+  v4 = *&formats->var0[4];
+  v5 = *&formats->var0[8];
+  *&self->_resolvedUnitFormats.formats[6] = *&formats->var0[6];
   *&self->_resolvedUnitFormats.formats[8] = v5;
   *&self->_resolvedUnitFormats.formats[2] = v3;
   *&self->_resolvedUnitFormats.formats[4] = v4;
-  v6 = *&a3->var0[10];
-  v7 = *&a3->var0[12];
-  v8 = *&a3->var0[14];
-  self->_resolvedUnitFormats.formats[16] = a3->var0[16];
+  v6 = *&formats->var0[10];
+  v7 = *&formats->var0[12];
+  v8 = *&formats->var0[14];
+  self->_resolvedUnitFormats.formats[16] = formats->var0[16];
   *&self->_resolvedUnitFormats.formats[12] = v7;
   *&self->_resolvedUnitFormats.formats[14] = v8;
   *&self->_resolvedUnitFormats.formats[10] = v6;
@@ -78,7 +78,7 @@
   return WeakRetained;
 }
 
-- (CalculateResult)initWithDouble:(double)a3
+- (CalculateResult)initWithDouble:(double)double
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
@@ -87,13 +87,13 @@
   if (v4)
   {
     v15 = 0;
-    v5 = __binary64_to_bid128(4, &v15, a3);
+    v5 = __binary64_to_bid128(4, &v15, double);
     v7 = v6;
     v4->_resultTree = newDecimalNode(v5, v6);
     expression = v4->_expression;
     v4->_expression = &stru_1F418FCD8;
 
-    v9 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v9 = [MEMORY[0x1E696AD98] numberWithDouble:double];
     v10 = [CalculateTerm termWithValue:v9 units:0 result:v4];
 
     [v10 setDecimalValue:{v5, v7}];
@@ -110,9 +110,9 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CalculateResult *)self formattedExpression];
-  v5 = [(CalculateResult *)self formattedResult];
-  v6 = [v3 stringWithFormat:@"%@ = %@", v4, v5];
+  formattedExpression = [(CalculateResult *)self formattedExpression];
+  formattedResult = [(CalculateResult *)self formattedResult];
+  v6 = [v3 stringWithFormat:@"%@ = %@", formattedExpression, formattedResult];
 
   return v6;
 }
@@ -123,15 +123,15 @@
   if ((~resultTree->var6 & 0x7C00000000000000) != 0)
   {
     var4 = resultTree->var4;
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (BOOL)isNaN
@@ -165,8 +165,8 @@
   {
     if (v3)
     {
-      v7 = [v3 integerValue];
-      if (!self->_variableResultTrees[v7])
+      integerValue = [v3 integerValue];
+      if (!self->_variableResultTrees[integerValue])
       {
         if (my_rnd_mode)
         {
@@ -179,7 +179,7 @@
         }
 
         v9 = __bid128_from_string("0", v8, my_fpsf);
-        self->_variableResultTrees[v7] = newDecimalNode(v9, v10);
+        self->_variableResultTrees[integerValue] = newDecimalNode(v9, v10);
       }
 
       v37[0] = MEMORY[0x1E69E9820];
@@ -187,14 +187,14 @@
       v37[2] = __38__CalculateResult_graphableFunction3D__block_invoke_2;
       v37[3] = &unk_1E815C408;
       v37[4] = self;
-      v38 = v7;
+      v38 = integerValue;
       v11 = v37;
     }
 
     else if (v4)
     {
-      v23 = [v4 integerValue];
-      if (!self->_variableResultTrees[v23])
+      integerValue2 = [v4 integerValue];
+      if (!self->_variableResultTrees[integerValue2])
       {
         if (my_rnd_mode)
         {
@@ -207,7 +207,7 @@
         }
 
         v25 = __bid128_from_string("0", v24, my_fpsf);
-        self->_variableResultTrees[v23] = newDecimalNode(v25, v26);
+        self->_variableResultTrees[integerValue2] = newDecimalNode(v25, v26);
       }
 
       v35[0] = MEMORY[0x1E69E9820];
@@ -215,7 +215,7 @@
       v35[2] = __38__CalculateResult_graphableFunction3D__block_invoke_3;
       v35[3] = &unk_1E815C408;
       v35[4] = self;
-      v36 = v23;
+      v36 = integerValue2;
       v11 = v35;
     }
 
@@ -270,9 +270,9 @@
 
   else
   {
-    v12 = [v3 integerValue];
-    v13 = v12;
-    if (!self->_variableResultTrees[v12])
+    integerValue3 = [v3 integerValue];
+    v13 = integerValue3;
+    if (!self->_variableResultTrees[integerValue3])
     {
       if (my_rnd_mode)
       {
@@ -288,8 +288,8 @@
       self->_variableResultTrees[v13] = newDecimalNode(v15, v16);
     }
 
-    v17 = [v5 integerValue];
-    if (!self->_variableResultTrees[v17])
+    integerValue4 = [v5 integerValue];
+    if (!self->_variableResultTrees[integerValue4])
     {
       if (my_rnd_mode)
       {
@@ -302,7 +302,7 @@
       }
 
       v19 = __bid128_from_string("1", v18, my_fpsf);
-      self->_variableResultTrees[v17] = newDecimalNode(v19, v20);
+      self->_variableResultTrees[integerValue4] = newDecimalNode(v19, v20);
     }
 
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -311,7 +311,7 @@
     aBlock[3] = &unk_1E815C3E0;
     aBlock[4] = self;
     v40 = v13;
-    v41 = v17;
+    v41 = integerValue4;
     v11 = aBlock;
   }
 
@@ -472,16 +472,16 @@ void __38__CalculateResult_graphableFunction3D__block_invoke_3(uint64_t a1, doub
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)graphableFunction2DFor:(id)a3
+- (id)graphableFunction2DFor:(id)for
 {
   variableLookups = self->_variableLookups;
-  v5 = [a3 lowercaseString];
-  v6 = [(NSMutableDictionary *)variableLookups objectForKeyedSubscript:v5];
+  lowercaseString = [for lowercaseString];
+  v6 = [(NSMutableDictionary *)variableLookups objectForKeyedSubscript:lowercaseString];
 
   if (v6)
   {
-    v7 = [v6 integerValue];
-    if (!self->_variableResultTrees[v7])
+    integerValue = [v6 integerValue];
+    if (!self->_variableResultTrees[integerValue])
     {
       if (my_rnd_mode)
       {
@@ -494,7 +494,7 @@ void __38__CalculateResult_graphableFunction3D__block_invoke_3(uint64_t a1, doub
       }
 
       v9 = __bid128_from_string("0", v8, my_fpsf);
-      self->_variableResultTrees[v7] = newDecimalNode(v9, v10);
+      self->_variableResultTrees[integerValue] = newDecimalNode(v9, v10);
     }
 
     v21[0] = MEMORY[0x1E69E9820];
@@ -502,7 +502,7 @@ void __38__CalculateResult_graphableFunction3D__block_invoke_3(uint64_t a1, doub
     v21[2] = __42__CalculateResult_graphableFunction2DFor___block_invoke_2;
     v21[3] = &unk_1E815C3B8;
     v21[4] = self;
-    v22 = v7;
+    v22 = integerValue;
     v11 = v21;
   }
 
@@ -608,18 +608,18 @@ void __42__CalculateResult_graphableFunction2DFor___block_invoke_2(uint64_t a1, 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)updateVariables:(id)a3
+- (id)updateVariables:(id)variables
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  variablesCopy = variables;
   if ([(NSArray *)self->_terms count]== 1)
   {
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v39 = v4;
-    v5 = v4;
+    v39 = variablesCopy;
+    v5 = variablesCopy;
     v6 = [v5 countByEnumeratingWithState:&v40 objects:v57 count:16];
     if (v6)
     {
@@ -639,20 +639,20 @@ void __42__CalculateResult_graphableFunction2DFor___block_invoke_2(uint64_t a1, 
           if (v11)
           {
             v12 = [v5 objectForKeyedSubscript:v10];
-            v13 = [MEMORY[0x1E695DFB0] null];
+            null = [MEMORY[0x1E695DFB0] null];
 
-            if (v12 == v13)
+            if (v12 == null)
             {
-              v15 = 0;
+              resultTree = 0;
             }
 
             else
             {
               v14 = [v5 objectForKeyedSubscript:v10];
-              v15 = [v14 resultTree];
+              resultTree = [v14 resultTree];
             }
 
-            v16 = copyTree(v15);
+            v16 = copyTree(resultTree);
             variableResultTrees = self->_variableResultTrees;
             variableResultTrees[[v11 integerValue]] = v16;
           }
@@ -677,17 +677,17 @@ void __42__CalculateResult_graphableFunction2DFor___block_invoke_2(uint64_t a1, 
     v45 = 0u;
     v46 = 0u;
     v44 = 0u;
-    v18 = self;
+    selfCopy = self;
     +[Calculate _lock];
-    g_variableResultTrees = v18->_variableResultTrees;
-    g_variableResultTreesCount = v18->_variableResultTreesCount;
+    g_variableResultTrees = selfCopy->_variableResultTrees;
+    g_variableResultTreesCount = selfCopy->_variableResultTreesCount;
     g_forceResult = 1;
-    g_assumeDegrees = v18->_assumeDegrees;
+    g_assumeDegrees = selfCopy->_assumeDegrees;
     g_PreferredType = 2;
     g_ErrorCode = 0;
     LODWORD(v44) = 2;
     HIDWORD(v56) = 0;
-    evaluateTree(v18->_parseTree, &v44);
+    evaluateTree(selfCopy->_parseTree, &v44);
     v19 = HIDWORD(v56);
     +[Calculate _unlock];
 
@@ -701,7 +701,7 @@ void __42__CalculateResult_graphableFunction2DFor___block_invoke_2(uint64_t a1, 
       v20 = 0;
     }
 
-    v4 = v39;
+    variablesCopy = v39;
     if (v44 == 1)
     {
       if (my_rnd_mode)
@@ -740,7 +740,7 @@ void __42__CalculateResult_graphableFunction2DFor___block_invoke_2(uint64_t a1, 
     }
 
     v25 = [CalculateResult decimalNumberWithDecimal128:v21, v22];
-    resultTree = v18->_resultTree;
+    resultTree = selfCopy->_resultTree;
     v27 = v45;
     v28 = v46;
     v29 = v48;
@@ -763,9 +763,9 @@ void __42__CalculateResult_graphableFunction2DFor___block_invoke_2(uint64_t a1, 
     *&resultTree->var7[10].unitID = v33;
     *&resultTree->var7[12].unitID = v34;
     *&resultTree->var0 = v44;
-    v36 = [(NSArray *)self->_terms firstObject];
-    [v36 setValue:v25];
-    [v36 setDecimalValue:{v21, v22}];
+    firstObject = [(NSArray *)self->_terms firstObject];
+    [firstObject setValue:v25];
+    [firstObject setDecimalValue:{v21, v22}];
   }
 
   else
@@ -778,11 +778,11 @@ void __42__CalculateResult_graphableFunction2DFor___block_invoke_2(uint64_t a1, 
   return v20;
 }
 
-- (id)convertedTo:(id)a3 from:(id)a4
+- (id)convertedTo:(id)to from:(id)from
 {
-  v6 = a3;
-  v7 = a4;
-  if (!-[CalculateResult resultTree](self, "resultTree") || ((v8 = -[CalculateResult unitType](self, "unitType"), !v7) ? (v9 = [v6 unitType]) : (v9 = 0), v8 != v9))
+  toCopy = to;
+  fromCopy = from;
+  if (!-[CalculateResult resultTree](self, "resultTree") || ((v8 = -[CalculateResult unitType](self, "unitType"), !fromCopy) ? (v9 = [toCopy unitType]) : (v9 = 0), v8 != v9))
   {
     v13 = 0;
     goto LABEL_23;
@@ -793,9 +793,9 @@ void __42__CalculateResult_graphableFunction2DFor___block_invoke_2(uint64_t a1, 
     if (+[_TtC9Calculate22StocksKitCurrencyCache isEnabled])
     {
       v10 = +[_TtC9Calculate22StocksKitCurrencyCache shared];
-      v11 = [v10 needsRefresh];
+      needsRefresh = [v10 needsRefresh];
 
-      if (!v11)
+      if (!needsRefresh)
       {
         goto LABEL_14;
       }
@@ -816,7 +816,7 @@ void __42__CalculateResult_graphableFunction2DFor___block_invoke_2(uint64_t a1, 
 
 LABEL_14:
   v88[0] = 0;
-  v15 = [(CalculateResult *)self convertedTree:v6 from:v7 needsUpdate:v88];
+  v15 = [(CalculateResult *)self convertedTree:toCopy from:fromCopy needsUpdate:v88];
   if (v15)
   {
     v16 = v15;
@@ -824,12 +824,12 @@ LABEL_14:
     if (v17)
     {
       v18 = v17;
-      v19 = [v6 unitInfo];
-      v20 = [v19 unitType];
+      unitInfo = [toCopy unitInfo];
+      unitType = [unitInfo unitType];
 
       numberFormatter = self->_numberFormatter;
       locales = self->_locales;
-      v23 = [(CalculateResult *)self unitsInfo];
+      unitsInfo = [(CalculateResult *)self unitsInfo];
       isPartialExpression = self->_isPartialExpression;
       assumeDegrees = self->_assumeDegrees;
       localizeUnit = self->_localizeUnit;
@@ -868,7 +868,7 @@ LABEL_14:
       BYTE1(v65) = isPartialExpression;
       LOBYTE(v65) = 0;
       LODWORD(v63) = unitExponent;
-      v13 = [CalculateResult resultWithResultTree:"resultWithResultTree:parseTree:locales:numberFormatter:unitsInfo:unitType:unitExponent:expression:isTrivial:isPartialExpression:variableLookups:variableResultTrees:variableResultTreesCount:resolvedUnitFormats:forceResult:assumeDegrees:localizeUnit:unitFormat:matchLocale:numberingSystem:autoScientificNotation:scientificNotationFormat:flexibleFractionDigits:isSimpleVerticalMath:minimumFractionDigits:hasStaleCurrencyData:" parseTree:v16 locales:0 numberFormatter:locales unitsInfo:numberFormatter unitType:v23 unitExponent:v20 expression:v63 isTrivial:&stru_1F418FCD8 isPartialExpression:v65 variableLookups:0 variableResultTrees:0 variableResultTreesCount:v67 resolvedUnitFormats:&v79 forceResult:v69 assumeDegrees:unitFormat localizeUnit:v71 unitFormat:numberingSystem matchLocale:v73 numberingSystem:scientificNotationFormat autoScientificNotation:v75 scientificNotationFormat:v77 flexibleFractionDigits:? isSimpleVerticalMath:? minimumFractionDigits:? hasStaleCurrencyData:?];
+      v13 = [CalculateResult resultWithResultTree:"resultWithResultTree:parseTree:locales:numberFormatter:unitsInfo:unitType:unitExponent:expression:isTrivial:isPartialExpression:variableLookups:variableResultTrees:variableResultTreesCount:resolvedUnitFormats:forceResult:assumeDegrees:localizeUnit:unitFormat:matchLocale:numberingSystem:autoScientificNotation:scientificNotationFormat:flexibleFractionDigits:isSimpleVerticalMath:minimumFractionDigits:hasStaleCurrencyData:" parseTree:v16 locales:0 numberFormatter:locales unitsInfo:numberFormatter unitType:unitsInfo unitExponent:unitType expression:v63 isTrivial:&stru_1F418FCD8 isPartialExpression:v65 variableLookups:0 variableResultTrees:0 variableResultTreesCount:v67 resolvedUnitFormats:&v79 forceResult:v69 assumeDegrees:unitFormat localizeUnit:v71 unitFormat:numberingSystem matchLocale:v73 numberingSystem:scientificNotationFormat autoScientificNotation:v75 scientificNotationFormat:v77 flexibleFractionDigits:? isSimpleVerticalMath:? minimumFractionDigits:? hasStaleCurrencyData:?];
 
       if (v13)
       {
@@ -912,15 +912,15 @@ LABEL_14:
         LODWORD(v68) = 0;
         LOWORD(v66) = v43;
         LODWORD(v64) = v53;
-        v59 = [CalculateResult resultWithResultTree:"resultWithResultTree:parseTree:locales:numberFormatter:unitsInfo:unitType:unitExponent:expression:isTrivial:isPartialExpression:variableLookups:variableResultTrees:variableResultTreesCount:resolvedUnitFormats:forceResult:assumeDegrees:localizeUnit:unitFormat:matchLocale:numberingSystem:autoScientificNotation:scientificNotationFormat:flexibleFractionDigits:isSimpleVerticalMath:minimumFractionDigits:hasStaleCurrencyData:" parseTree:v18 locales:0 numberFormatter:v40 unitsInfo:v41 unitType:unitsInfo unitExponent:v20 expression:v64 isTrivial:&stru_1F418FCD8 isPartialExpression:v66 variableLookups:0 variableResultTrees:0 variableResultTreesCount:v68 resolvedUnitFormats:&v79 forceResult:v70 assumeDegrees:v49 localizeUnit:v72 unitFormat:v47 matchLocale:v74 numberingSystem:v50 autoScientificNotation:v76 scientificNotationFormat:v78 flexibleFractionDigits:? isSimpleVerticalMath:? minimumFractionDigits:? hasStaleCurrencyData:?];
+        v59 = [CalculateResult resultWithResultTree:"resultWithResultTree:parseTree:locales:numberFormatter:unitsInfo:unitType:unitExponent:expression:isTrivial:isPartialExpression:variableLookups:variableResultTrees:variableResultTreesCount:resolvedUnitFormats:forceResult:assumeDegrees:localizeUnit:unitFormat:matchLocale:numberingSystem:autoScientificNotation:scientificNotationFormat:flexibleFractionDigits:isSimpleVerticalMath:minimumFractionDigits:hasStaleCurrencyData:" parseTree:v18 locales:0 numberFormatter:v40 unitsInfo:v41 unitType:unitsInfo unitExponent:unitType expression:v64 isTrivial:&stru_1F418FCD8 isPartialExpression:v66 variableLookups:0 variableResultTrees:0 variableResultTreesCount:v68 resolvedUnitFormats:&v79 forceResult:v70 assumeDegrees:v49 localizeUnit:v72 unitFormat:v47 matchLocale:v74 numberingSystem:v50 autoScientificNotation:v76 scientificNotationFormat:v78 flexibleFractionDigits:? isSimpleVerticalMath:? minimumFractionDigits:? hasStaleCurrencyData:?];
         v60 = v59;
         if (v59)
         {
           [v59 setParent:v13];
           [v13 _setInputValueAndUnit:v60];
           [v13 setParent:self];
-          v61 = [v60 formattedResult];
-          [v13 _setExpression:v61];
+          formattedResult = [v60 formattedResult];
+          [v13 _setExpression:formattedResult];
         }
 
         else
@@ -948,36 +948,36 @@ LABEL_23:
   return v13;
 }
 
-- (TreeObject)convertedTree:(id)a3 from:(id)a4 needsUpdate:(BOOL *)a5
+- (TreeObject)convertedTree:(id)tree from:(id)from needsUpdate:(BOOL *)update
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  treeCopy = tree;
+  fromCopy = from;
+  if (update)
   {
-    *a5 = 0;
+    *update = 0;
   }
 
   if ([(CalculateResult *)self resultTree])
   {
-    v10 = [(CalculateResult *)self unitType];
-    v11 = v9 ? 0 : [v8 unitType];
-    if (v10 == v11)
+    unitType = [(CalculateResult *)self unitType];
+    v11 = fromCopy ? 0 : [treeCopy unitType];
+    if (unitType == v11)
     {
       +[Calculate _lock];
-      v12 = [v8 unitInfo];
-      v13 = newUnitIDNode([v12 unitID]);
+      unitInfo = [treeCopy unitInfo];
+      v13 = newUnitIDNode([unitInfo unitID]);
 
       if (v13)
       {
-        if ([v8 exponent] == 1)
+        if ([treeCopy exponent] == 1)
         {
           v14 = v13;
         }
 
         else
         {
-          snprintf(__str, 0x28uLL, "%d", [v8 exponent]);
+          snprintf(__str, 0x28uLL, "%d", [treeCopy exponent]);
           if (my_rnd_mode)
           {
             v15 = 4;
@@ -1006,31 +1006,31 @@ LABEL_26:
           }
         }
 
-        v20 = [(CalculateResult *)self resultTree];
-        v21 = v20;
-        if (v9)
+        resultTree = [(CalculateResult *)self resultTree];
+        v21 = resultTree;
+        if (fromCopy)
         {
           v22 = 76;
-          while (!*(&v20->var0 + v22))
+          while (!*(&resultTree->var0 + v22))
           {
             v22 += 8;
             if (v22 == 204)
             {
-              v23 = [v9 unitInfo];
-              v24 = [v23 unitType];
+              unitInfo2 = [fromCopy unitInfo];
+              unitType2 = [unitInfo2 unitType];
 
-              if (v24 <= 0xF)
+              if (unitType2 <= 0xF)
               {
                 v25 = copyTree(v21);
                 if (v25)
                 {
                   v13 = v25;
                   *(v25 + 201) = 1;
-                  v26 = [v9 unitInfo];
-                  v27 = &v13[v24];
-                  *(v27 + 18) = [v26 unitID];
+                  unitInfo3 = [fromCopy unitInfo];
+                  v27 = &v13[unitType2];
+                  *(v27 + 18) = [unitInfo3 unitID];
 
-                  *(v27 + 19) = [v9 exponent];
+                  *(v27 + 19) = [fromCopy exponent];
                   v21 = v13;
                   goto LABEL_28;
                 }
@@ -1057,14 +1057,14 @@ LABEL_28:
             evaluateTree(v29, v30);
             v29[2] = 0;
             freeTree(v29);
-            if (a5 && g_currencyNeedsRefresh == 1)
+            if (update && g_currencyNeedsRefresh == 1)
             {
-              *a5 = g_currencyNeedsRefresh;
+              *update = g_currencyNeedsRefresh;
             }
 
             if (!*(v14 + 51))
             {
-              if (!v9)
+              if (!fromCopy)
               {
                 goto LABEL_40;
               }
@@ -1108,39 +1108,39 @@ LABEL_41:
 
 - (id)localizedConversions
 {
-  v2 = self;
+  selfCopy = self;
   v86 = *MEMORY[0x1E69E9840];
-  v3 = [(CalculateResult *)self typeInfo];
-  if (!v3)
+  typeInfo = [(CalculateResult *)self typeInfo];
+  if (!typeInfo)
   {
     goto LABEL_38;
   }
 
-  v4 = v3;
-  v5 = [(CalculateResult *)v2 typeInfo];
-  v6 = [v5 units];
+  v4 = typeInfo;
+  typeInfo2 = [(CalculateResult *)selfCopy typeInfo];
+  units = [typeInfo2 units];
 
-  if (v6)
+  if (units)
   {
-    v7 = [(CalculateResult *)v2 locales];
-    v8 = v7;
-    if (!v7 || ![v7 count])
+    locales = [(CalculateResult *)selfCopy locales];
+    v8 = locales;
+    if (!locales || ![locales count])
     {
       v9 = +[Localize systemLocales];
 
       v8 = v9;
     }
 
-    v10 = [(NSNumberFormatter *)v2->_numberFormatter locale];
-    v11 = [Localize locales:v8 withDefault:v10];
+    locale = [(NSNumberFormatter *)selfCopy->_numberFormatter locale];
+    v11 = [Localize locales:v8 withDefault:locale];
 
-    if ([(CalculateResult *)v2 unitType]== 16)
+    if ([(CalculateResult *)selfCopy unitType]== 16)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __39__CalculateResult_localizedConversions__block_invoke;
       block[3] = &unk_1E815C940;
-      block[4] = v2;
+      block[4] = selfCopy;
       if (localizedConversions_onceToken != -1)
       {
         dispatch_once(&localizedConversions_onceToken, block);
@@ -1178,14 +1178,14 @@ LABEL_41:
             }
 
             v19 = *(*(&v74 + 1) + 8 * i);
-            v20 = [(CalculateResult *)v2 unitsInfo];
-            v21 = [v19 currencyCode];
-            v22 = [v20 objectForKeyedSubscript:v21];
+            unitsInfo = [(CalculateResult *)selfCopy unitsInfo];
+            currencyCode = [v19 currencyCode];
+            v22 = [unitsInfo objectForKeyedSubscript:currencyCode];
 
             if (v22)
             {
-              v23 = [v19 currencyCode];
-              v14[2](v14, v23);
+              currencyCode2 = [v19 currencyCode];
+              v14[2](v14, currencyCode2);
             }
           }
 
@@ -1243,40 +1243,40 @@ LABEL_41:
             }
 
             v33 = *(*(&v66 + 1) + 8 * k);
-            v34 = [(CalculateResult *)v2 unitsInfo];
-            v35 = [v34 objectForKeyedSubscript:v33];
+            unitsInfo2 = [(CalculateResult *)selfCopy unitsInfo];
+            v35 = [unitsInfo2 objectForKeyedSubscript:v33];
 
             if (v35)
             {
-              v36 = [v35 unitID];
-              if (v36 != [(CalculateResult *)v2 singleUnitID])
+              unitID = [v35 unitID];
+              if (unitID != [(CalculateResult *)selfCopy singleUnitID])
               {
-                v37 = [(CalculateResult *)v2 inputValueAndUnit];
-                if (!v37)
+                inputValueAndUnit = [(CalculateResult *)selfCopy inputValueAndUnit];
+                if (!inputValueAndUnit)
                 {
                   goto LABEL_34;
                 }
 
-                v38 = v37;
+                v38 = inputValueAndUnit;
                 obja = [v35 unitID];
-                [(CalculateResult *)v2 inputValueAndUnit];
+                [(CalculateResult *)selfCopy inputValueAndUnit];
                 v39 = v14;
                 v40 = v30;
-                v41 = v2;
+                v41 = selfCopy;
                 v42 = v31;
                 v44 = v43 = v28;
-                v45 = [v44 singleUnitID];
+                singleUnitID = [v44 singleUnitID];
 
                 v28 = v43;
                 v31 = v42;
-                v2 = v41;
+                selfCopy = v41;
                 v30 = v40;
                 v14 = v39;
 
-                if (obja != v45)
+                if (obja != singleUnitID)
                 {
 LABEL_34:
-                  v46 = [(CalculateResult *)v2 newUnit:v35];
+                  v46 = [(CalculateResult *)selfCopy newUnit:v35];
                   [v58 addObject:v46];
                 }
               }
@@ -1314,7 +1314,7 @@ LABEL_34:
               objc_enumerationMutation(v47);
             }
 
-            [(CalculateResult *)v2 enableMeasurementSystemsForLocale:*(*(&v61 + 1) + 8 * m) metric:0 US:&v65 + 1 UK:&v65];
+            [(CalculateResult *)selfCopy enableMeasurementSystemsForLocale:*(*(&v61 + 1) + 8 * m) metric:0 US:&v65 + 1 UK:&v65];
           }
 
           v49 = [v47 countByEnumeratingWithState:&v61 objects:v82 count:16];
@@ -1323,7 +1323,7 @@ LABEL_34:
         while (v49);
       }
 
-      v52 = [(CalculateResult *)v2 conversionsForMetric:1 US:HIBYTE(v65) UK:v65];
+      v52 = [(CalculateResult *)selfCopy conversionsForMetric:1 US:HIBYTE(v65) UK:v65];
       v58 = [v52 copy];
     }
   }
@@ -1397,17 +1397,17 @@ void __39__CalculateResult_localizedConversions__block_invoke_2(uint64_t a1, voi
 
 - (id)availableConversions
 {
-  v3 = [(CalculateResult *)self typeInfo];
-  if (!v3)
+  typeInfo = [(CalculateResult *)self typeInfo];
+  if (!typeInfo)
   {
     goto LABEL_4;
   }
 
-  v4 = v3;
-  v5 = [(CalculateResult *)self typeInfo];
-  v6 = [v5 units];
+  v4 = typeInfo;
+  typeInfo2 = [(CalculateResult *)self typeInfo];
+  units = [typeInfo2 units];
 
-  if (v6)
+  if (units)
   {
     v7 = [(CalculateResult *)self conversionsForMetric:1 US:1 UK:1];
     v8 = [v7 copy];
@@ -1424,35 +1424,35 @@ LABEL_4:
 
 - (id)bestConversion
 {
-  v2 = self;
+  selfCopy = self;
   v165 = *MEMORY[0x1E69E9840];
-  if (!-[CalculateResult resultTree](self, "resultTree") || (-[CalculateResult typeInfo](v2, "typeInfo"), v3 = objc_claimAutoreleasedReturnValue(), [v3 units], v4 = objc_claimAutoreleasedReturnValue(), v4, v3, !v4))
+  if (!-[CalculateResult resultTree](self, "resultTree") || (-[CalculateResult typeInfo](selfCopy, "typeInfo"), v3 = objc_claimAutoreleasedReturnValue(), [v3 units], v4 = objc_claimAutoreleasedReturnValue(), v4, v3, !v4))
   {
     v6 = 0;
     goto LABEL_6;
   }
 
-  if ([(CalculateResult *)v2 unitType]== 16)
+  if ([(CalculateResult *)selfCopy unitType]== 16)
   {
-    v5 = [(CalculateResult *)v2 localizedConversions];
-    v6 = [v5 objectAtIndexedSubscript:0];
+    localizedConversions = [(CalculateResult *)selfCopy localizedConversions];
+    v6 = [localizedConversions objectAtIndexedSubscript:0];
 
     goto LABEL_6;
   }
 
-  if ([(CalculateResult *)v2 singleUnitID])
+  if ([(CalculateResult *)selfCopy singleUnitID])
   {
-    v9 = [(CalculateResult *)v2 unitsInfo];
-    v10 = [v9 objectAtIndexedSubscript:{-[CalculateResult singleUnitID](v2, "singleUnitID")}];
-    v11 = [v10 bestEquivalent];
+    unitsInfo = [(CalculateResult *)selfCopy unitsInfo];
+    v10 = [unitsInfo objectAtIndexedSubscript:{-[CalculateResult singleUnitID](selfCopy, "singleUnitID")}];
+    bestEquivalent = [v10 bestEquivalent];
 
-    if (v11)
+    if (bestEquivalent)
     {
       v159 = 0u;
       v160 = 0u;
       v157 = 0u;
       v158 = 0u;
-      obj = [(CalculateResult *)v2 localizedConversions];
+      obj = [(CalculateResult *)selfCopy localizedConversions];
       v12 = [obj countByEnumeratingWithState:&v157 objects:v164 count:16];
       if (v12)
       {
@@ -1468,11 +1468,11 @@ LABEL_4:
             }
 
             v16 = *(*(&v157 + 1) + 8 * i);
-            v17 = [v16 unitInfo];
-            v18 = [v17 unitID];
-            v19 = [v11 unitID];
+            unitInfo = [v16 unitInfo];
+            unitID = [unitInfo unitID];
+            unitID2 = [bestEquivalent unitID];
 
-            if (v18 == v19)
+            if (unitID == unitID2)
             {
               v6 = v16;
 
@@ -1488,17 +1488,17 @@ LABEL_4:
     }
   }
 
-  v20 = [(CalculateResult *)v2 locales];
-  v21 = v20;
-  if (!v20 || ![v20 count])
+  locales = [(CalculateResult *)selfCopy locales];
+  v21 = locales;
+  if (!locales || ![locales count])
   {
     v22 = +[Localize systemLocales];
 
     v21 = v22;
   }
 
-  v23 = [(NSNumberFormatter *)v2->_numberFormatter locale];
-  v24 = [Localize locales:v21 withDefault:v23];
+  locale = [(NSNumberFormatter *)selfCopy->_numberFormatter locale];
+  v24 = [Localize locales:v21 withDefault:locale];
 
   v156 = 0;
   v155 = 0;
@@ -1521,7 +1521,7 @@ LABEL_4:
           objc_enumerationMutation(v25);
         }
 
-        [(CalculateResult *)v2 enableMeasurementSystemsForLocale:*(*(&v151 + 1) + 8 * j) metric:&v156 + 1 US:&v156 UK:&v155];
+        [(CalculateResult *)selfCopy enableMeasurementSystemsForLocale:*(*(&v151 + 1) + 8 * j) metric:&v156 + 1 US:&v156 UK:&v155];
       }
 
       v27 = [v25 countByEnumeratingWithState:&v151 objects:v163 count:16];
@@ -1530,7 +1530,7 @@ LABEL_4:
     while (v27);
   }
 
-  [(CalculateResult *)v2 conversionsForMetric:HIBYTE(v156) US:v156 UK:v155];
+  [(CalculateResult *)selfCopy conversionsForMetric:HIBYTE(v156) US:v156 UK:v155];
   v147 = 0u;
   v148 = 0u;
   v149 = 0u;
@@ -1550,10 +1550,10 @@ LABEL_4:
           objc_enumerationMutation(v30);
         }
 
-        v36 = [*(*(&v147 + 1) + 8 * k) unitInfo];
-        v37 = [v36 doNotSuggest];
+        unitInfo2 = [*(*(&v147 + 1) + 8 * k) unitInfo];
+        doNotSuggest = [unitInfo2 doNotSuggest];
 
-        if (!v37)
+        if (!doNotSuggest)
         {
           v38 = 0;
           v25 = v35;
@@ -1576,11 +1576,11 @@ LABEL_4:
   v38 = 1;
 LABEL_41:
 
-  v39 = [(CalculateResult *)v2 resultTree];
-  v40 = *v39;
-  if (*v39 == 1)
+  resultTree = [(CalculateResult *)selfCopy resultTree];
+  v40 = *resultTree;
+  if (*resultTree == 1)
   {
-    v41 = *(v39 + 32);
+    v41 = *(resultTree + 32);
     if (my_rnd_mode)
     {
       v42 = 4;
@@ -1598,15 +1598,15 @@ LABEL_41:
 
   else if (v40 == 2)
   {
-    v134 = *(v39 + 56);
-    v135 = *(v39 + 48);
+    v134 = *(resultTree + 56);
+    v135 = *(resultTree + 48);
   }
 
   else
   {
     if (v40 == 4)
     {
-      v135 = *(v39 + 64);
+      v135 = *(resultTree + 64);
     }
 
     else
@@ -1619,31 +1619,31 @@ LABEL_41:
 
   v145 = 0;
   v146 = 0;
-  v45 = [v25 firstObject];
-  [CalculateResult preferMeasurementSystemsForLocale:v45 preferred:&v146 fallback:&v145];
+  firstObject = [v25 firstObject];
+  [CalculateResult preferMeasurementSystemsForLocale:firstObject preferred:&v146 fallback:&v145];
 
-  v46 = [(CalculateResult *)v2 inputValueAndUnit];
-  if (v46)
+  inputValueAndUnit = [(CalculateResult *)selfCopy inputValueAndUnit];
+  if (inputValueAndUnit)
   {
-    v47 = [(CalculateResult *)v2 inputValueAndUnit];
-    v48 = [v47 singleUnitID];
+    inputValueAndUnit2 = [(CalculateResult *)selfCopy inputValueAndUnit];
+    singleUnitID = [inputValueAndUnit2 singleUnitID];
   }
 
   else
   {
-    v48 = [(CalculateResult *)v2 singleUnitID];
+    singleUnitID = [(CalculateResult *)selfCopy singleUnitID];
   }
 
-  if (v48)
+  if (singleUnitID)
   {
-    v49 = [(CalculateResult *)v2 unitsInfo];
-    v50 = [v49 objectAtIndexedSubscript:v48];
-    v51 = [v50 measurementSystem];
+    unitsInfo2 = [(CalculateResult *)selfCopy unitsInfo];
+    v50 = [unitsInfo2 objectAtIndexedSubscript:singleUnitID];
+    measurementSystem = [v50 measurementSystem];
 
-    v137 = v146 != v51;
+    v137 = v146 != measurementSystem;
     if (v145)
     {
-      v52 = v145 == v51;
+      v52 = v145 == measurementSystem;
     }
 
     else
@@ -1715,15 +1715,15 @@ LABEL_41:
       v59 = *(*(&v141 + 1) + 8 * v58);
       if ((v38 & 1) != 0 || ([*(*(&v141 + 1) + 8 * v58) unitInfo], v60 = objc_claimAutoreleasedReturnValue(), v61 = objc_msgSend(v60, "doNotSuggest"), v60, (v61 & 1) == 0))
       {
-        v62 = [(CalculateResult *)v2 convertedTree:v59 needsUpdate:0, v109];
-        if (v62)
+        v109 = [(CalculateResult *)selfCopy convertedTree:v59 needsUpdate:0, v109];
+        if (v109)
         {
-          v63 = v62;
+          v63 = v109;
           v140 = 0;
-          v64 = *v62;
-          if (*v62 == 1)
+          v64 = *v109;
+          if (*v109 == 1)
           {
-            v67 = *(v62 + 32);
+            v67 = *(v109 + 32);
             if (my_rnd_mode)
             {
               v68 = 4;
@@ -1740,15 +1740,15 @@ LABEL_41:
 
           else if (v64 == 2)
           {
-            v65 = *(v62 + 48);
-            v66 = *(v62 + 56);
+            v65 = *(v109 + 48);
+            v66 = *(v109 + 56);
           }
 
           else
           {
             if (v64 == 4)
             {
-              v65 = *(v62 + 64);
+              v65 = *(v109 + 64);
             }
 
             else
@@ -1761,7 +1761,7 @@ LABEL_41:
 
           v70 = __bid128_sub(v135, v134, v65, v66, 4, &v140);
           v72 = v71 & 0x7FFFFFFFFFFFFFFFLL;
-          if ([(CalculateResult *)v2 isAcceptableConversion:v63])
+          if ([(CalculateResult *)selfCopy isAcceptableConversion:v63])
           {
             if ((v133 & 0x100000000) == 0 || __bid128_quiet_less(v70, v72, v127, v125, &v140))
             {
@@ -1774,11 +1774,11 @@ LABEL_41:
 
             if (v137)
             {
-              v74 = [v59 unitInfo];
-              v75 = [v74 measurementSystem];
+              unitInfo3 = [v59 unitInfo];
+              measurementSystem2 = [unitInfo3 measurementSystem];
               v76 = v146;
 
-              if (v75 == v76)
+              if (measurementSystem2 == v76)
               {
                 if ((v117 & 0x100000000) != 0 && !__bid128_quiet_less(v70, v72, v113, v111, &v140))
                 {
@@ -1842,7 +1842,7 @@ LABEL_41:
 
 LABEL_120:
               v123 = v83;
-              v98 = v2;
+              v98 = selfCopy;
               v99 = v86;
               v100 = v59;
 
@@ -1850,7 +1850,7 @@ LABEL_120:
               v121 = v85;
               v118 = v72;
               v119 = v99;
-              v2 = v98;
+              selfCopy = v98;
               v122 = v87;
             }
 
@@ -1873,11 +1873,11 @@ LABEL_120:
 
             if (v137)
             {
-              v89 = [v59 unitInfo];
-              v90 = [v89 measurementSystem];
+              unitInfo4 = [v59 unitInfo];
+              measurementSystem3 = [unitInfo4 measurementSystem];
               v91 = v146;
 
-              if (v90 == v91)
+              if (measurementSystem3 == v91)
               {
                 if ((v117 & 1) != 0 && !__bid128_quiet_less(v70, v72, v112, v110, &v140))
                 {
@@ -1908,11 +1908,11 @@ LABEL_120:
 
             if (v93 == 1)
             {
-              v94 = [v59 unitInfo];
-              v95 = [v94 measurementSystem];
+              unitInfo5 = [v59 unitInfo];
+              measurementSystem4 = [unitInfo5 measurementSystem];
               v96 = v145;
 
-              if (v95 == v96)
+              if (measurementSystem4 == v96)
               {
                 if (v116)
                 {
@@ -2041,7 +2041,7 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isAcceptableConversion:(TreeObject *)a3
+- (BOOL)isAcceptableConversion:(TreeObject *)conversion
 {
   if ([(CalculateResult *)self unitType]!= 12)
   {
@@ -2049,8 +2049,8 @@ LABEL_6:
     v6 = 0x3040000000000000;
     v7 = __bid128_div(5uLL, 0x3040000000000000uLL, 0x64uLL, 0x3040000000000000uLL, 4, &v18);
     v9 = v8;
-    var0 = a3->var0;
-    if (a3->var0 == 1)
+    var0 = conversion->var0;
+    if (conversion->var0 == 1)
     {
       if (my_rnd_mode)
       {
@@ -2062,20 +2062,20 @@ LABEL_6:
         v13 = 0;
       }
 
-      v11 = __binary64_to_bid128(v13, my_fpsf, a3->var4);
+      v11 = __binary64_to_bid128(v13, my_fpsf, conversion->var4);
       v6 = v14;
     }
 
     else if (var0 == 2)
     {
-      v12 = &a3->var5.var0[1];
-      v11 = a3->var5.var0[1];
+      v12 = &conversion->var5.var0[1];
+      v11 = conversion->var5.var0[1];
       v6 = v12[1];
     }
 
     else if (var0 == 4)
     {
-      v11 = a3->var7[0];
+      v11 = conversion->var7[0];
     }
 
     else
@@ -2108,9 +2108,9 @@ LABEL_6:
   return v5;
 }
 
-- (id)conversionsForMetric:(BOOL)a3 US:(BOOL)a4 UK:(BOOL)a5
+- (id)conversionsForMetric:(BOOL)metric US:(BOOL)s UK:(BOOL)k
 {
-  v26 = a3;
+  metricCopy = metric;
   v36 = *MEMORY[0x1E69E9840];
   v30 = objc_opt_new();
   v29 = objc_opt_new();
@@ -2118,10 +2118,10 @@ LABEL_6:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v6 = [(CalculateResult *)self typeInfo];
-  v7 = [v6 units];
+  typeInfo = [(CalculateResult *)self typeInfo];
+  units = [typeInfo units];
 
-  v8 = [v7 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  v8 = [units countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2133,24 +2133,24 @@ LABEL_6:
       {
         if (*v32 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(units);
         }
 
         v12 = *(*(&v31 + 1) + 8 * v11);
-        v13 = [v12 unitID];
-        if (v13 != [(CalculateResult *)self singleUnitID])
+        unitID = [v12 unitID];
+        if (unitID != [(CalculateResult *)self singleUnitID])
         {
-          v14 = [(CalculateResult *)self inputValueAndUnit];
-          if (!v14 || (v15 = v14, v16 = [v12 unitID], -[CalculateResult inputValueAndUnit](self, "inputValueAndUnit"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "singleUnitID"), v17, v15, v16 != v18))
+          inputValueAndUnit = [(CalculateResult *)self inputValueAndUnit];
+          if (!inputValueAndUnit || (v15 = inputValueAndUnit, v16 = [v12 unitID], -[CalculateResult inputValueAndUnit](self, "inputValueAndUnit"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "singleUnitID"), v17, v15, v16 != v18))
           {
-            v19 = [v12 typeInfo];
-            v20 = [v19 isTemperature];
+            typeInfo2 = [v12 typeInfo];
+            isTemperature = [typeInfo2 isTemperature];
 
-            if ((v20 & 1) == 0)
+            if ((isTemperature & 1) == 0)
             {
               if ([v12 measurementSystem] == 2)
               {
-                if (!a4)
+                if (!s)
                 {
                   goto LABEL_14;
                 }
@@ -2158,13 +2158,13 @@ LABEL_6:
 
               else if ([v12 measurementSystem] == 3)
               {
-                if (!a5)
+                if (!k)
                 {
                   goto LABEL_14;
                 }
               }
 
-              else if ([v12 measurementSystem] == 1 && !v26)
+              else if ([v12 measurementSystem] == 1 && !metricCopy)
               {
                 goto LABEL_14;
               }
@@ -2190,7 +2190,7 @@ LABEL_14:
       }
 
       while (v9 != v11);
-      v23 = [v7 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v23 = [units countByEnumeratingWithState:&v31 objects:v35 count:16];
       v9 = v23;
     }
 
@@ -2240,27 +2240,27 @@ uint64_t __46__CalculateResult_conversionsForMetric_US_UK___block_invoke(uint64_
   return v13;
 }
 
-- (id)newUnit:(id)a3
+- (id)newUnit:(id)unit
 {
-  v4 = [a3 unitID];
-  v5 = [(CalculateResult *)self unitsInfo];
-  v6 = [CalculateUnit unitWithID:v4 unitsInfo:v5 exponent:[(CalculateResult *)self unitExponent]];
+  unitID = [unit unitID];
+  unitsInfo = [(CalculateResult *)self unitsInfo];
+  v6 = [CalculateUnit unitWithID:unitID unitsInfo:unitsInfo exponent:[(CalculateResult *)self unitExponent]];
 
   return v6;
 }
 
-- (void)enableMeasurementSystemsForLocale:(id)a3 metric:(BOOL *)a4 US:(BOOL *)a5 UK:(BOOL *)a6
+- (void)enableMeasurementSystemsForLocale:(id)locale metric:(BOOL *)metric US:(BOOL *)s UK:(BOOL *)k
 {
-  v10 = [a3 objectForKey:*MEMORY[0x1E695D9B8]];
+  v10 = [locale objectForKey:*MEMORY[0x1E695D9B8]];
   if (v10)
   {
     v15 = v10;
     if ([v10 isEqualToString:*MEMORY[0x1E695D9D0]])
     {
       v10 = v15;
-      if (a5)
+      if (s)
       {
-        *a5 = 1;
+        *s = 1;
       }
 
       goto LABEL_13;
@@ -2268,30 +2268,30 @@ uint64_t __46__CalculateResult_conversionsForMetric_US_UK___block_invoke(uint64_
 
     if ([v15 isEqualToString:*MEMORY[0x1E695D9C8]])
     {
-      if (a6)
+      if (k)
       {
-        *a6 = 1;
+        *k = 1;
       }
 
-      if (a5)
+      if (s)
       {
         if ([(CalculateResult *)self singleUnitID])
         {
-          v11 = [(CalculateResult *)self unitsInfo];
-          v12 = [v11 objectAtIndexedSubscript:{-[CalculateResult singleUnitID](self, "singleUnitID")}];
-          v13 = [v12 typeInfo];
-          v14 = [v13 isVolume];
+          unitsInfo = [(CalculateResult *)self unitsInfo];
+          v12 = [unitsInfo objectAtIndexedSubscript:{-[CalculateResult singleUnitID](self, "singleUnitID")}];
+          typeInfo = [v12 typeInfo];
+          isVolume = [typeInfo isVolume];
 
-          if ((v14 & 1) == 0)
+          if ((isVolume & 1) == 0)
           {
-            *a5 = 1;
+            *s = 1;
           }
         }
       }
 
       v10 = v15;
 LABEL_13:
-      if (!a4)
+      if (!metric)
       {
         goto LABEL_15;
       }
@@ -2299,17 +2299,17 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    if (a4)
+    if (metric)
     {
-      *a4 = 1;
+      *metric = 1;
     }
 
-    a4 = a5;
+    metric = s;
     v10 = v15;
-    if (a5)
+    if (s)
     {
 LABEL_14:
-      *a4 = 1;
+      *metric = 1;
     }
   }
 
@@ -2324,8 +2324,8 @@ LABEL_15:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(CalculateResult *)self terms];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  terms = [(CalculateResult *)self terms];
+  v5 = [terms countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2336,14 +2336,14 @@ LABEL_15:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(terms);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) formattedResult];
-        [v3 addObject:v9];
+        formattedResult = [*(*(&v13 + 1) + 8 * i) formattedResult];
+        [v3 addObject:formattedResult];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [terms countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -2356,36 +2356,36 @@ LABEL_15:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CalculateResult *)self compare:v4]== 0;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CalculateResult *)self compare:equalCopy]== 0;
 
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(CalculateResult *)self terms];
-  v6 = [v5 objectAtIndexedSubscript:0];
-  v7 = [v4 terms];
-  v8 = [v7 objectAtIndexedSubscript:0];
+  compareCopy = compare;
+  terms = [(CalculateResult *)self terms];
+  v6 = [terms objectAtIndexedSubscript:0];
+  terms2 = [compareCopy terms];
+  v8 = [terms2 objectAtIndexedSubscript:0];
   v9 = [v6 compare:v8];
 
   if (!v9)
   {
-    v10 = [(CalculateResult *)self terms];
-    v11 = [v10 count];
-    v12 = [v4 terms];
-    v13 = [v12 count];
+    terms3 = [(CalculateResult *)self terms];
+    v11 = [terms3 count];
+    terms4 = [compareCopy terms];
+    v13 = [terms4 count];
     v9 = v11 < v13 ? -1 : v11 > v13;
 
     if (!v9)
     {
-      v14 = [(CalculateResult *)self terms];
-      v15 = [v14 count];
+      terms5 = [(CalculateResult *)self terms];
+      v15 = [terms5 count];
 
       if (v15 < 2)
       {
@@ -2398,10 +2398,10 @@ LABEL_10:
         v16 = 1;
         while (1)
         {
-          v17 = [(CalculateResult *)self terms];
-          v18 = [v17 objectAtIndexedSubscript:v16];
-          v19 = [v4 terms];
-          v20 = [v19 objectAtIndexedSubscript:v16];
+          terms6 = [(CalculateResult *)self terms];
+          v18 = [terms6 objectAtIndexedSubscript:v16];
+          terms7 = [compareCopy terms];
+          v20 = [terms7 objectAtIndexedSubscript:v16];
           v9 = [v18 compare:v20];
 
           if (v9)
@@ -2410,8 +2410,8 @@ LABEL_10:
           }
 
           ++v16;
-          v21 = [(CalculateResult *)self terms];
-          v22 = [v21 count];
+          terms8 = [(CalculateResult *)self terms];
+          v22 = [terms8 count];
 
           if (v16 >= v22)
           {
@@ -2482,17 +2482,17 @@ LABEL_10:
   return v3;
 }
 
-- (void)_setTerms:(id)a3
+- (void)_setTerms:(id)terms
 {
-  v12 = a3;
-  objc_storeStrong(&self->_terms, a3);
-  if ([v12 count] == 1 && (objc_msgSend(v12, "objectAtIndexedSubscript:", 0), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "units"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v5, v7 == 1))
+  termsCopy = terms;
+  objc_storeStrong(&self->_terms, terms);
+  if ([termsCopy count] == 1 && (objc_msgSend(termsCopy, "objectAtIndexedSubscript:", 0), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "units"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v5, v7 == 1))
   {
-    v8 = [v12 objectAtIndexedSubscript:0];
-    v9 = [v8 units];
-    v10 = [v9 objectAtIndexedSubscript:0];
-    v11 = [v10 unitInfo];
-    self->_singleUnitID = [v11 unitID];
+    v8 = [termsCopy objectAtIndexedSubscript:0];
+    units = [v8 units];
+    v10 = [units objectAtIndexedSubscript:0];
+    unitInfo = [v10 unitInfo];
+    self->_singleUnitID = [unitInfo unitID];
   }
 
   else
@@ -2501,26 +2501,26 @@ LABEL_10:
   }
 }
 
-- (void)_setInputValueAndUnit:(id)a3
+- (void)_setInputValueAndUnit:(id)unit
 {
-  v5 = a3;
-  objc_storeStrong(&self->_inputValueAndUnit, a3);
-  if (v5)
+  unitCopy = unit;
+  objc_storeStrong(&self->_inputValueAndUnit, unit);
+  if (unitCopy)
   {
-    self->_hasStaleCurrencyData |= v5[14];
+    self->_hasStaleCurrencyData |= unitCopy[14];
   }
 }
 
-- (void)_setConversions:(id)a3
+- (void)_setConversions:(id)conversions
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_conversions, a3);
+  conversionsCopy = conversions;
+  objc_storeStrong(&self->_conversions, conversions);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v5;
+  v6 = conversionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -2547,42 +2547,42 @@ LABEL_10:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)preferMeasurementSystemsForLocale:(id)a3 preferred:(unint64_t *)a4 fallback:(unint64_t *)a5
++ (void)preferMeasurementSystemsForLocale:(id)locale preferred:(unint64_t *)preferred fallback:(unint64_t *)fallback
 {
-  if (a4)
+  if (preferred)
   {
-    *a4 = 2;
+    *preferred = 2;
   }
 
-  if (a5)
+  if (fallback)
   {
-    *a5 = 1;
+    *fallback = 1;
   }
 
-  v8 = [a3 objectForKey:*MEMORY[0x1E695D9B8]];
+  v8 = [locale objectForKey:*MEMORY[0x1E695D9B8]];
   if ([v8 isEqualToString:*MEMORY[0x1E695D9C8]])
   {
-    if (a4)
+    if (preferred)
     {
-      *a4 = 3;
+      *preferred = 3;
     }
 
-    if (a5)
+    if (fallback)
     {
       v7 = 1;
 LABEL_15:
-      *a5 = v7;
+      *fallback = v7;
     }
   }
 
   else if ([v8 isEqualToString:*MEMORY[0x1E695D9C0]])
   {
-    if (a4)
+    if (preferred)
     {
-      *a4 = 1;
+      *preferred = 1;
     }
 
-    if (a5)
+    if (fallback)
     {
       v7 = 2;
       goto LABEL_15;
@@ -2592,18 +2592,18 @@ LABEL_15:
   MEMORY[0x1EEE66BB8]();
 }
 
-+ (CalculateResult)resultWithResultTree:(TreeObject *)a3 parseTree:(TreeObject *)a4 locales:(id)a5 numberFormatter:(id)a6 unitsInfo:(id)a7 unitType:(int)a8 unitExponent:(int)a9 expression:(id)a10 isTrivial:(BOOL)a11 isPartialExpression:(BOOL)a12 variableLookups:(id)a13 variableResultTrees:(TreeObject *)a14 variableResultTreesCount:(int)a15 resolvedUnitFormats:(id *)a16 forceResult:(BOOL)a17 assumeDegrees:(BOOL)a18 localizeUnit:(BOOL)a19 unitFormat:(unint64_t)a20 matchLocale:(BOOL)a21 numberingSystem:(id)a22 autoScientificNotation:(BOOL)a23 scientificNotationFormat:(unint64_t)a24 flexibleFractionDigits:(BOOL)a25 isSimpleVerticalMath:(BOOL)a26 minimumFractionDigits:(int)a27 hasStaleCurrencyData:(BOOL)a28
++ (CalculateResult)resultWithResultTree:(TreeObject *)tree parseTree:(TreeObject *)parseTree locales:(id)locales numberFormatter:(id)formatter unitsInfo:(id)info unitType:(int)type unitExponent:(int)exponent expression:(id)self0 isTrivial:(BOOL)self1 isPartialExpression:(BOOL)self2 variableLookups:(id)self3 variableResultTrees:(TreeObject *)self4 variableResultTreesCount:(int)self5 resolvedUnitFormats:(id *)self6 forceResult:(BOOL)self7 assumeDegrees:(BOOL)self8 localizeUnit:(BOOL)self9 unitFormat:(unint64_t)format matchLocale:(BOOL)locale numberingSystem:(id)system autoScientificNotation:(BOOL)notation scientificNotationFormat:(unint64_t)notationFormat flexibleFractionDigits:(BOOL)digits isSimpleVerticalMath:(BOOL)math minimumFractionDigits:(int)fractionDigits hasStaleCurrencyData:(BOOL)data
 {
   v81[1] = *MEMORY[0x1E69E9840];
-  v79 = a5;
-  v78 = a6;
-  obj = a7;
-  v32 = a7;
-  v77 = a10;
-  v76 = a13;
-  v75 = a22;
-  var0 = a3->var0;
-  if (a3->var0 == 1)
+  localesCopy = locales;
+  formatterCopy = formatter;
+  obj = info;
+  infoCopy = info;
+  expressionCopy = expression;
+  lookupsCopy = lookups;
+  systemCopy = system;
+  var0 = tree->var0;
+  if (tree->var0 == 1)
   {
     if (my_rnd_mode)
     {
@@ -2615,20 +2615,20 @@ LABEL_15:
       v36 = 0;
     }
 
-    v34 = __binary64_to_bid128(v36, my_fpsf, a3->var4);
+    v34 = __binary64_to_bid128(v36, my_fpsf, tree->var4);
   }
 
   else if (var0 == 2)
   {
-    v34 = a3->var5.var0[1];
-    var6 = a3->var6;
+    v34 = tree->var5.var0[1];
+    var6 = tree->var6;
   }
 
   else
   {
     if (var0 == 4)
     {
-      v34 = a3->var7[0];
+      v34 = tree->var7[0];
     }
 
     else
@@ -2641,50 +2641,50 @@ LABEL_15:
 
   v72 = var6;
   v73 = v34;
-  v80 = [CalculateResult decimalNumberWithDecimal128:v34, var6];
-  if (!a17)
+  var6 = [CalculateResult decimalNumberWithDecimal128:v34, var6];
+  if (!result)
   {
-    v37 = [MEMORY[0x1E696AB90] notANumber];
-    v38 = [v80 isEqual:v37];
+    notANumber = [MEMORY[0x1E696AB90] notANumber];
+    v38 = [var6 isEqual:notANumber];
 
     if (v38)
     {
       v39 = 0;
-      v40 = v80;
+      v40 = var6;
       goto LABEL_39;
     }
   }
 
   v39 = objc_opt_new();
-  objc_storeStrong((v39 + 56), a5);
-  objc_storeStrong((v39 + 48), a6);
-  *(v39 + 120) = a4;
-  *(v39 + 128) = a3;
-  objc_storeStrong((v39 + 40), a10);
-  *(v39 + 12) = a11;
-  *(v39 + 13) = a12;
-  *(v39 + 11) = a18;
-  *(v39 + 16) = a19;
-  *(v39 + 72) = a20;
-  *(v39 + 9) = a21;
-  objc_storeStrong((v39 + 168), a22);
-  *(v39 + 8) = a23;
-  *(v39 + 64) = a24;
-  *(v39 + 10) = a25;
-  *(v39 + 17) = a26;
-  *(v39 + 20) = a27;
-  *(v39 + 14) = a28;
+  objc_storeStrong((v39 + 56), locales);
+  objc_storeStrong((v39 + 48), formatter);
+  *(v39 + 120) = parseTree;
+  *(v39 + 128) = tree;
+  objc_storeStrong((v39 + 40), expression);
+  *(v39 + 12) = trivial;
+  *(v39 + 13) = partialExpression;
+  *(v39 + 11) = degrees;
+  *(v39 + 16) = unit;
+  *(v39 + 72) = format;
+  *(v39 + 9) = locale;
+  objc_storeStrong((v39 + 168), system);
+  *(v39 + 8) = notation;
+  *(v39 + 64) = notationFormat;
+  *(v39 + 10) = digits;
+  *(v39 + 17) = math;
+  *(v39 + 20) = fractionDigits;
+  *(v39 + 14) = data;
   objc_storeStrong((v39 + 136), obj);
-  if (v32)
+  if (infoCopy)
   {
-    v41 = a8;
-    v42 = [v32 infoForUnitType:a8];
+    typeCopy2 = type;
+    v42 = [infoCopy infoForUnitType:type];
   }
 
   else
   {
     v42 = 0;
-    v41 = a8;
+    typeCopy2 = type;
   }
 
   v43 = *(v39 + 144);
@@ -2693,7 +2693,7 @@ LABEL_15:
   v44 = 0;
   v45 = 0;
   v46 = 0;
-  p_exponent = &a3->var7[1].exponent;
+  p_exponent = &tree->var7[1].exponent;
   while (1)
   {
     v48 = *p_exponent;
@@ -2719,44 +2719,44 @@ LABEL_22:
 
   v45 = 0;
 LABEL_25:
-  if (v41 < 1)
+  if (typeCopy2 < 1)
   {
     unitID = 0;
   }
 
   else
   {
-    unitID = a3->var7[v45 + 1].unitID;
+    unitID = tree->var7[v45 + 1].unitID;
   }
 
   *(v39 + 28) = unitID;
-  objc_storeStrong((v39 + 152), a13);
-  *(v39 + 160) = a14;
-  *(v39 + 32) = a15;
-  *(v39 + 176) = *a16->var0;
-  v50 = *&a16->var0[2];
-  v51 = *&a16->var0[4];
-  v52 = *&a16->var0[8];
-  *(v39 + 224) = *&a16->var0[6];
+  objc_storeStrong((v39 + 152), lookups);
+  *(v39 + 160) = trees;
+  *(v39 + 32) = count;
+  *(v39 + 176) = *formats->var0;
+  v50 = *&formats->var0[2];
+  v51 = *&formats->var0[4];
+  v52 = *&formats->var0[8];
+  *(v39 + 224) = *&formats->var0[6];
   *(v39 + 240) = v52;
   *(v39 + 192) = v50;
   *(v39 + 208) = v51;
-  v53 = *&a16->var0[10];
-  v54 = *&a16->var0[12];
-  v55 = *&a16->var0[14];
-  *(v39 + 304) = a16->var0[16];
+  v53 = *&formats->var0[10];
+  v54 = *&formats->var0[12];
+  v55 = *&formats->var0[14];
+  *(v39 + 304) = formats->var0[16];
   *(v39 + 272) = v54;
   *(v39 + 288) = v55;
   *(v39 + 256) = v53;
   v56 = objc_opt_new();
-  v57 = &a3->var7[1].exponent;
+  v57 = &tree->var7[1].exponent;
   v58 = 16;
-  v40 = v80;
+  v40 = var6;
   do
   {
     if (*v57)
     {
-      v59 = [CalculateUnit unitWithID:*(v57 - 1) unitsInfo:v32 exponent:?];
+      v59 = [CalculateUnit unitWithID:*(v57 - 1) unitsInfo:infoCopy exponent:?];
       [v56 addObject:v59];
     }
 
@@ -2766,7 +2766,7 @@ LABEL_25:
 
   while (v58);
   v60 = [v56 copy];
-  v61 = [CalculateTerm termWithValue:v80 units:v60 result:v39];
+  v61 = [CalculateTerm termWithValue:var6 units:v60 result:v39];
 
   [v61 setDecimalValue:{v73, v72}];
   v81[0] = v61;
@@ -2776,22 +2776,22 @@ LABEL_25:
 
   if ([v56 count])
   {
-    v64 = [v32 infoForUnitType:v41];
-    v65 = [v64 name];
-    v66 = [&unk_1F419A730 objectForKeyedSubscript:v65];
+    v64 = [infoCopy infoForUnitType:typeCopy2];
+    name = [v64 name];
+    v66 = [&unk_1F419A730 objectForKeyedSubscript:name];
 
     if (v66)
     {
-      v67 = [v66 intValue];
+      intValue = [v66 intValue];
     }
 
     else
     {
-      v67 = 1;
+      intValue = 1;
     }
 
-    *(v39 + 80) = v67;
-    *(v39 + 24) = a9;
+    *(v39 + 80) = intValue;
+    *(v39 + 24) = exponent;
   }
 
   else
@@ -2806,10 +2806,10 @@ LABEL_39:
   return v39;
 }
 
-+ (id)decimalNumberWithDecimal128:(id)a3
++ (id)decimalNumberWithDecimal128:(id)decimal128
 {
   v9 = *MEMORY[0x1E69E9840];
-  __bid128_to_string(v8, a3.var0[0], a3.var0[1]);
+  __bid128_to_string(v8, decimal128.var0[0], decimal128.var0[1]);
   v3 = MEMORY[0x1E696AB90];
   v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v8];
   v5 = [v3 decimalNumberWithString:v4];
@@ -2819,19 +2819,19 @@ LABEL_39:
   return v5;
 }
 
-+ (id)defaultNumberFormatter:(id)a3
++ (id)defaultNumberFormatter:(id)formatter
 {
-  v3 = a3;
+  formatterCopy = formatter;
   if (defaultNumberFormatter__onceToken != -1)
   {
     dispatch_once(&defaultNumberFormatter__onceToken, &__block_literal_global_663);
   }
 
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [v3 localeIdentifier];
-  v6 = [v3 groupingSeparator];
-  v7 = [v3 decimalSeparator];
-  v8 = [v4 stringWithFormat:@"%@%@%@", v5, v6, v7];
+  localeIdentifier = [formatterCopy localeIdentifier];
+  groupingSeparator = [formatterCopy groupingSeparator];
+  decimalSeparator = [formatterCopy decimalSeparator];
+  v8 = [v4 stringWithFormat:@"%@%@%@", localeIdentifier, groupingSeparator, decimalSeparator];
 
   v9 = [defaultNumberFormatter__numberFormatters objectForKey:v8];
   if (!v9)
@@ -2842,7 +2842,7 @@ LABEL_39:
     [v9 setMaximumFractionDigits:3];
     [v9 setNumberStyle:1];
     [v9 setRoundingMode:6];
-    [v9 setLocale:v3];
+    [v9 setLocale:formatterCopy];
     [defaultNumberFormatter__numberFormatters setObject:v9 forKey:v8];
   }
 

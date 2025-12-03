@@ -1,5 +1,5 @@
 @interface UIButtonAccessibility__Sharing__UIKit
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityUserTestingIsCancelButton;
 - (BOOL)_axIsDismissButton;
 - (id)accessibilityLabel;
@@ -7,11 +7,11 @@
 
 @implementation UIButtonAccessibility__Sharing__UIKit
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AudioSoftwareUpdateViewController" hasInstanceMethod:@"handleDismissButton:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"ProximityPairingViewController" hasInstanceMethod:@"handleDismissButton:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AudioSoftwareUpdateViewController" hasInstanceMethod:@"handleDismissButton:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"ProximityPairingViewController" hasInstanceMethod:@"handleDismissButton:" withFullSignature:{"v", "@", 0}];
 }
 
 - (BOOL)_axIsDismissButton
@@ -19,20 +19,20 @@
   v40 = *MEMORY[0x29EDCA608];
   v36.receiver = self;
   v36.super_class = UIButtonAccessibility__Sharing__UIKit;
-  v3 = [(UIButtonAccessibility__Sharing__UIKit *)&v36 accessibilityLabel];
-  if ([v3 isEqualToString:@"x"])
+  accessibilityLabel = [(UIButtonAccessibility__Sharing__UIKit *)&v36 accessibilityLabel];
+  if ([accessibilityLabel isEqualToString:@"x"])
   {
     v4 = 1;
     goto LABEL_30;
   }
 
-  v5 = self;
+  selfCopy = self;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v6 = [(UIButtonAccessibility__Sharing__UIKit *)v5 allTargets];
-  v7 = [v6 countByEnumeratingWithState:&v32 objects:v39 count:16];
+  allTargets = [(UIButtonAccessibility__Sharing__UIKit *)selfCopy allTargets];
+  v7 = [allTargets countByEnumeratingWithState:&v32 objects:v39 count:16];
   if (!v7)
   {
     v4 = 0;
@@ -49,7 +49,7 @@
     {
       if (*v33 != v8)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(allTargets);
       }
 
       v10 = *(*(&v32 + 1) + 8 * v9);
@@ -57,7 +57,7 @@
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v11 = [(UIButtonAccessibility__Sharing__UIKit *)v5 actionsForTarget:v10 forControlEvent:0x2000, v22];
+      v11 = [(UIButtonAccessibility__Sharing__UIKit *)selfCopy actionsForTarget:v10 forControlEvent:0x2000, v22];
       v12 = [v11 countByEnumeratingWithState:&v28 objects:v38 count:16];
       if (v12)
       {
@@ -94,7 +94,7 @@ LABEL_10:
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v11 = [(UIButtonAccessibility__Sharing__UIKit *)v5 actionsForTarget:v10 forControlEvent:64];
+      v11 = [(UIButtonAccessibility__Sharing__UIKit *)selfCopy actionsForTarget:v10 forControlEvent:64];
       v16 = [v11 countByEnumeratingWithState:&v24 objects:v37 count:16];
       if (v16)
       {
@@ -139,7 +139,7 @@ LABEL_24:
     }
 
     while (v9 != v23);
-    v7 = [v6 countByEnumeratingWithState:&v32 objects:v39 count:16];
+    v7 = [allTargets countByEnumeratingWithState:&v32 objects:v39 count:16];
     v4 = 0;
     if (v7)
     {
@@ -174,10 +174,10 @@ LABEL_30:
   {
     v7.receiver = self;
     v7.super_class = UIButtonAccessibility__Sharing__UIKit;
-    v3 = [(UIButtonAccessibility__Sharing__UIKit *)&v7 accessibilityLabel];
-    if (![v3 length] || (objc_msgSend(v3, "isEqualToString:", @"x") & 1) != 0)
+    accessibilityLabel = [(UIButtonAccessibility__Sharing__UIKit *)&v7 accessibilityLabel];
+    if (![accessibilityLabel length] || (objc_msgSend(accessibilityLabel, "isEqualToString:", @"x") & 1) != 0)
     {
-      v4 = accessibilityLocalizedString(@"dismiss.button");
+      accessibilityLabel2 = accessibilityLocalizedString(@"dismiss.button");
 
       goto LABEL_7;
     }
@@ -185,10 +185,10 @@ LABEL_30:
 
   v6.receiver = self;
   v6.super_class = UIButtonAccessibility__Sharing__UIKit;
-  v4 = [(UIButtonAccessibility__Sharing__UIKit *)&v6 accessibilityLabel];
+  accessibilityLabel2 = [(UIButtonAccessibility__Sharing__UIKit *)&v6 accessibilityLabel];
 LABEL_7:
 
-  return v4;
+  return accessibilityLabel2;
 }
 
 @end

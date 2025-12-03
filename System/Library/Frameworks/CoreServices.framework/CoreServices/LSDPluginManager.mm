@@ -1,8 +1,8 @@
 @interface LSDPluginManager
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)endpointForServiceIdentifier:(id)a3 reply:(id)a4;
-- (void)loadPluginsAtURL:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)endpointForServiceIdentifier:(id)identifier reply:(id)reply;
+- (void)loadPluginsAtURL:(id)l;
 - (void)startPlugins;
 @end
 
@@ -27,16 +27,16 @@ void __34__LSDPluginManager_sharedInstance__block_invoke()
   sharedInstance_sharedInstance_1 = v0;
 }
 
-- (void)loadPluginsAtURL:(id)a3
+- (void)loadPluginsAtURL:(id)l
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   context = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v31 = v4;
-  v6 = [v5 enumeratorAtURL:v4 includingPropertiesForKeys:0 options:7 errorHandler:&__block_literal_global_5_0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v31 = lCopy;
+  v6 = [defaultManager enumeratorAtURL:lCopy includingPropertiesForKeys:0 options:7 errorHandler:&__block_literal_global_5_0];
 
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -60,12 +60,12 @@ void __34__LSDPluginManager_sharedInstance__block_invoke()
         }
 
         v13 = *(*(&v35 + 1) + 8 * v12);
-        v14 = [v13 pathExtension];
-        v15 = [v14 isEqualToString:v11];
+        pathExtension = [v13 pathExtension];
+        v15 = [pathExtension isEqualToString:v11];
 
         if (!v15)
         {
-          v20 = 0;
+          bundleIdentifier = 0;
           v17 = 0;
           goto LABEL_22;
         }
@@ -74,14 +74,14 @@ void __34__LSDPluginManager_sharedInstance__block_invoke()
         v17 = v16;
         if (!v16)
         {
-          v20 = 0;
+          bundleIdentifier = 0;
           goto LABEL_22;
         }
 
-        v18 = v7;
+        v18 = dictionary;
         v19 = v11;
-        v20 = [v16 bundleIdentifier];
-        if (!v20)
+        bundleIdentifier = [v16 bundleIdentifier];
+        if (!bundleIdentifier)
         {
           v22 = 0;
 LABEL_16:
@@ -91,7 +91,7 @@ LABEL_16:
             *buf = 138412802;
             v40 = v13;
             v41 = 2112;
-            v42 = v20;
+            v42 = bundleIdentifier;
             v43 = 2112;
             v44 = v22;
             _os_log_impl(&dword_18162D000, v25, OS_LOG_TYPE_DEFAULT, "Failed to load plugin with URL: %@ bundle identifier %@ error: %@", buf, 0x20u);
@@ -99,7 +99,7 @@ LABEL_16:
 
 LABEL_19:
           v11 = v19;
-          v7 = v18;
+          dictionary = v18;
           goto LABEL_20;
         }
 
@@ -111,30 +111,30 @@ LABEL_19:
           goto LABEL_16;
         }
 
-        v23 = [v17 principalClass];
-        if (![v23 conformsToProtocol:&unk_1EEFB2250])
+        principalClass = [v17 principalClass];
+        if (![principalClass conformsToProtocol:&unk_1EEFB2250])
         {
           goto LABEL_19;
         }
 
-        v24 = objc_alloc_init(v23);
+        v24 = objc_alloc_init(principalClass);
 
         v11 = v19;
         if (!v24)
         {
-          v7 = v18;
+          dictionary = v18;
           goto LABEL_21;
         }
 
-        v7 = v18;
-        [v18 setObject:v24 forKey:v20];
+        dictionary = v18;
+        [v18 setObject:v24 forKey:bundleIdentifier];
         v22 = v24;
 LABEL_20:
 
 LABEL_21:
         v10 = v32;
 LABEL_22:
-        v26 = [v7 copy];
+        v26 = [dictionary copy];
         pluginsByBundleIentifier = self->_pluginsByBundleIentifier;
         self->_pluginsByBundleIentifier = v26;
 
@@ -219,25 +219,25 @@ uint64_t __37__LSDPluginManager_loadPluginsAtURL___block_invoke(uint64_t a1, voi
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v5 = MEMORY[0x1E696B0D0];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = [v5 interfaceWithProtocol:&unk_1EEFA4CC8];
-  [v6 setExportedInterface:v7];
-  [v6 setExportedObject:self];
-  [v6 resume];
+  [connectionCopy setExportedInterface:v7];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)endpointForServiceIdentifier:(id)a3 reply:(id)a4
+- (void)endpointForServiceIdentifier:(id)identifier reply:(id)reply
 {
   pluginsByBundleIentifier = self->_pluginsByBundleIentifier;
-  v6 = a4;
-  v8 = [(NSDictionary *)pluginsByBundleIentifier objectForKey:a3];
-  v7 = [v8 XPCListenerEndpoint];
-  v6[2](v6, v7);
+  replyCopy = reply;
+  v8 = [(NSDictionary *)pluginsByBundleIentifier objectForKey:identifier];
+  xPCListenerEndpoint = [v8 XPCListenerEndpoint];
+  replyCopy[2](replyCopy, xPCListenerEndpoint);
 }
 
 @end

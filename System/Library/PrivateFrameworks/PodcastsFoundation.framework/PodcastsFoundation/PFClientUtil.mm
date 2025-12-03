@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = __29__PFClientUtil_isPodcastsApp__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isPodcastsApp_onceToken != -1)
   {
     dispatch_once(&isPodcastsApp_onceToken, block);
@@ -41,16 +41,16 @@ void __29__PFClientUtil_isPodcastsApp__block_invoke(uint64_t a1)
 
 + (id)clientIdentifier
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (!v3)
+  if (!bundleIdentifier)
   {
-    v4 = [MEMORY[0x1E696AE30] processInfo];
-    v3 = [v4 processName];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    bundleIdentifier = [processInfo processName];
   }
 
-  return v3;
+  return bundleIdentifier;
 }
 
 + (BOOL)supportsImageStore
@@ -59,7 +59,7 @@ void __29__PFClientUtil_isPodcastsApp__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __34__PFClientUtil_supportsImageStore__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (supportsImageStore_onceToken != -1)
   {
     dispatch_once(&supportsImageStore_onceToken, block);
@@ -108,7 +108,7 @@ uint64_t __34__PFClientUtil_isRunningOnHomepod__block_invoke()
   block[1] = 3221225472;
   block[2] = __29__PFClientUtil_isPodcastsKit__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isPodcastsKit_onceToken != -1)
   {
     dispatch_once(&isPodcastsKit_onceToken, block);
@@ -149,7 +149,7 @@ void __29__PFClientUtil_isPodcastsKit__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __35__PFClientUtil_isAppRemovalService__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isAppRemovalService_onceToken != -1)
   {
     dispatch_once(&isAppRemovalService_onceToken, block);
@@ -180,7 +180,7 @@ void __35__PFClientUtil_isAppRemovalService__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __33__PFClientUtil_supportsDownloads__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (supportsDownloads_onceToken != -1)
   {
     dispatch_once(&supportsDownloads_onceToken, block);
@@ -191,9 +191,9 @@ void __35__PFClientUtil_isAppRemovalService__block_invoke(uint64_t a1)
 
 + (id)clientBundleVersion
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 infoDictionary];
-  v4 = [v3 objectForKey:@"CFBundleShortVersionString"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
+  v4 = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
 
   return v4;
 }
@@ -283,7 +283,7 @@ uint64_t __35__PFClientUtil_isRunningOnVisionOS__block_invoke()
   block[1] = 3221225472;
   block[2] = __27__PFClientUtil_supportsGUI__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (supportsGUI_onceToken[0] != -1)
   {
     dispatch_once(supportsGUI_onceToken, block);

@@ -1,11 +1,11 @@
 @interface CSFDERecordFDEClientMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSFDERecordFDEClientMetadata
@@ -42,66 +42,66 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_icdp)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_keyRegistry)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   icdp = self->_icdp;
-  v8 = v4;
+  v8 = toCopy;
   if (icdp)
   {
-    objc_msgSend_setIcdp_(v4, v5, icdp);
-    v4 = v8;
+    objc_msgSend_setIcdp_(toCopy, v5, icdp);
+    toCopy = v8;
   }
 
   keyRegistry = self->_keyRegistry;
   if (keyRegistry)
   {
     objc_msgSend_setKeyRegistry_(v8, v5, keyRegistry);
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_icdp, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_icdp, v11, zone);
   v13 = v10[1];
   v10[1] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_keyRegistry, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_keyRegistry, v14, zone);
   v16 = v10[2];
   v10[2] = v15;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((icdp = self->_icdp, v9 = v4[1], !(icdp | v9)) || objc_msgSend_isEqual_(icdp, v7, v9)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((icdp = self->_icdp, v9 = equalCopy[1], !(icdp | v9)) || objc_msgSend_isEqual_(icdp, v7, v9)))
   {
     keyRegistry = self->_keyRegistry;
-    v11 = v4[2];
+    v11 = equalCopy[2];
     if (keyRegistry | v11)
     {
       isEqual = objc_msgSend_isEqual_(keyRegistry, v7, v11);
@@ -121,12 +121,12 @@
   return isEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   icdp = self->_icdp;
-  v6 = v4[1];
-  v9 = v4;
+  v6 = fromCopy[1];
+  v9 = fromCopy;
   if (icdp)
   {
     if (!v6)
@@ -134,7 +134,7 @@
       goto LABEL_7;
     }
 
-    objc_msgSend_mergeFrom_(icdp, v4, v6);
+    objc_msgSend_mergeFrom_(icdp, fromCopy, v6);
   }
 
   else
@@ -144,24 +144,24 @@
       goto LABEL_7;
     }
 
-    objc_msgSend_setIcdp_(self, v4, v6);
+    objc_msgSend_setIcdp_(self, fromCopy, v6);
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   keyRegistry = self->_keyRegistry;
-  v8 = v4[2];
+  v8 = fromCopy[2];
   if (keyRegistry)
   {
     if (v8)
     {
-      objc_msgSend_mergeFrom_(keyRegistry, v4, v8);
+      objc_msgSend_mergeFrom_(keyRegistry, fromCopy, v8);
     }
   }
 
   else if (v8)
   {
-    objc_msgSend_setKeyRegistry_(self, v4, v8);
+    objc_msgSend_setKeyRegistry_(self, fromCopy, v8);
   }
 
   MEMORY[0x2821F96F8]();

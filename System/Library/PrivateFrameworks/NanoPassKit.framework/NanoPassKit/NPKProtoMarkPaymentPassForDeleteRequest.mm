@@ -1,32 +1,32 @@
 @interface NPKProtoMarkPaymentPassForDeleteRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addPaymentApplicationAIDs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPaymentApplicationAIDs:(id)ds;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoMarkPaymentPassForDeleteRequest
 
-- (void)addPaymentApplicationAIDs:(id)a3
+- (void)addPaymentApplicationAIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   paymentApplicationAIDs = self->_paymentApplicationAIDs;
-  v8 = v4;
+  v8 = dsCopy;
   if (!paymentApplicationAIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_paymentApplicationAIDs;
     self->_paymentApplicationAIDs = v6;
 
-    v4 = v8;
+    dsCopy = v8;
     paymentApplicationAIDs = self->_paymentApplicationAIDs;
   }
 
-  [(NSMutableArray *)paymentApplicationAIDs addObject:v4];
+  [(NSMutableArray *)paymentApplicationAIDs addObject:dsCopy];
 }
 
 - (id)description
@@ -35,20 +35,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoMarkPaymentPassForDeleteRequest;
   v4 = [(NPKProtoMarkPaymentPassForDeleteRequest *)&v8 description];
-  v5 = [(NPKProtoMarkPaymentPassForDeleteRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoMarkPaymentPassForDeleteRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   passID = self->_passID;
   if (passID)
   {
-    [v3 setObject:passID forKey:@"passID"];
+    [dictionary setObject:passID forKey:@"passID"];
   }
 
   paymentApplicationAIDs = self->_paymentApplicationAIDs;
@@ -60,16 +60,16 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (!self->_passID)
   {
     [NPKProtoMarkPaymentPassForDeleteRequest writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   v15 = 0u;
   v16 = 0u;
@@ -106,31 +106,31 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setPassID:self->_passID];
+  toCopy = to;
+  [toCopy setPassID:self->_passID];
   if ([(NPKProtoMarkPaymentPassForDeleteRequest *)self paymentApplicationAIDsCount])
   {
-    [v8 clearPaymentApplicationAIDs];
-    v4 = [(NPKProtoMarkPaymentPassForDeleteRequest *)self paymentApplicationAIDsCount];
-    if (v4)
+    [toCopy clearPaymentApplicationAIDs];
+    paymentApplicationAIDsCount = [(NPKProtoMarkPaymentPassForDeleteRequest *)self paymentApplicationAIDsCount];
+    if (paymentApplicationAIDsCount)
     {
-      v5 = v4;
+      v5 = paymentApplicationAIDsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoMarkPaymentPassForDeleteRequest *)self paymentApplicationAIDsAtIndex:i];
-        [v8 addPaymentApplicationAIDs:v7];
+        [toCopy addPaymentApplicationAIDs:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_passID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_passID copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -154,7 +154,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addPaymentApplicationAIDs:v13];
 
         ++v12;
@@ -171,13 +171,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((passID = self->_passID, !(passID | v4[1])) || -[NSString isEqual:](passID, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((passID = self->_passID, !(passID | equalCopy[1])) || -[NSString isEqual:](passID, "isEqual:")))
   {
     paymentApplicationAIDs = self->_paymentApplicationAIDs;
-    if (paymentApplicationAIDs | v4[2])
+    if (paymentApplicationAIDs | equalCopy[2])
     {
       v7 = [(NSMutableArray *)paymentApplicationAIDs isEqual:?];
     }
@@ -196,11 +196,11 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(NPKProtoMarkPaymentPassForDeleteRequest *)self setPassID:?];
   }
@@ -209,7 +209,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

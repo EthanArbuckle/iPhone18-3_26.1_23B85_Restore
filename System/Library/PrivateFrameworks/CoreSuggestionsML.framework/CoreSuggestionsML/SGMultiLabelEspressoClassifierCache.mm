@@ -1,16 +1,16 @@
 @interface SGMultiLabelEspressoClassifierCache
 + (id)sharedInstance;
-- (BOOL)setCachedEspressoClassifierWithFile:(id)a3;
+- (BOOL)setCachedEspressoClassifierWithFile:(id)file;
 - (SGMultiLabelEspressoClassifierCache)init;
-- (id)predict:(id)a3 withFile:(id)a4;
-- (unint64_t)outputDimensionWithFile:(id)a3;
+- (id)predict:(id)predict withFile:(id)file;
+- (unint64_t)outputDimensionWithFile:(id)file;
 @end
 
 @implementation SGMultiLabelEspressoClassifierCache
 
-- (unint64_t)outputDimensionWithFile:(id)a3
+- (unint64_t)outputDimensionWithFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -21,7 +21,7 @@
   v9[2] = __63__SGMultiLabelEspressoClassifierCache_outputDimensionWithFile___block_invoke;
   v9[3] = &unk_278EB7550;
   v9[4] = self;
-  v6 = v4;
+  v6 = fileCopy;
   v10 = v6;
   v11 = &v12;
   [(_PASLock *)currentClassifier runWithLockAcquired:v9];
@@ -42,10 +42,10 @@ void __63__SGMultiLabelEspressoClassifierCache_outputDimensionWithFile___block_i
   }
 }
 
-- (id)predict:(id)a3 withFile:(id)a4
+- (id)predict:(id)predict withFile:(id)file
 {
-  v6 = a3;
-  v7 = a4;
+  predictCopy = predict;
+  fileCopy = file;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -58,10 +58,10 @@ void __63__SGMultiLabelEspressoClassifierCache_outputDimensionWithFile___block_i
   v13[2] = __56__SGMultiLabelEspressoClassifierCache_predict_withFile___block_invoke;
   v13[3] = &unk_278EB7528;
   v13[4] = self;
-  v9 = v7;
+  v9 = fileCopy;
   v14 = v9;
   v16 = &v17;
-  v10 = v6;
+  v10 = predictCopy;
   v15 = v10;
   [(_PASLock *)currentClassifier runWithLockAcquired:v13];
   v11 = v18[5];
@@ -85,9 +85,9 @@ void __56__SGMultiLabelEspressoClassifierCache_predict_withFile___block_invoke(u
   }
 }
 
-- (BOOL)setCachedEspressoClassifierWithFile:(id)a3
+- (BOOL)setCachedEspressoClassifierWithFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -97,7 +97,7 @@ void __56__SGMultiLabelEspressoClassifierCache_predict_withFile___block_invoke(u
   v8[1] = 3221225472;
   v8[2] = __75__SGMultiLabelEspressoClassifierCache_setCachedEspressoClassifierWithFile___block_invoke;
   v8[3] = &unk_278EB7500;
-  v6 = v4;
+  v6 = fileCopy;
   v9 = v6;
   v10 = &v11;
   [(_PASLock *)currentClassifier runWithLockAcquired:v8];

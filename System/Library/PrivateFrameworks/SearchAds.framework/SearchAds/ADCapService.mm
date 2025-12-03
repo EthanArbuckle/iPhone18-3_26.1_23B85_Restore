@@ -3,8 +3,8 @@
 - (id)clickCountByLine;
 - (id)impressionCountByLine;
 - (void)cleanDownloadData;
-- (void)updateCapData:(id)a3 forType:(int64_t)a4 completionHandler:(id)a5;
-- (void)updateDownloadData:(id)a3 identifier:(id)a4 forType:(int64_t)a5 completionHandler:(id)a6;
+- (void)updateCapData:(id)data forType:(int64_t)type completionHandler:(id)handler;
+- (void)updateDownloadData:(id)data identifier:(id)identifier forType:(int64_t)type completionHandler:(id)handler;
 @end
 
 @implementation ADCapService
@@ -24,11 +24,11 @@
   return v6;
 }
 
-- (void)updateCapData:(id)a3 forType:(int64_t)a4 completionHandler:(id)a5
+- (void)updateCapData:(id)data forType:(int64_t)type completionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  handlerCopy = handler;
   v10 = APLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -45,11 +45,11 @@
   v22[3] = &unk_279B888D0;
   objc_copyWeak(v25, buf);
   v22[4] = self;
-  v16 = v9;
+  v16 = handlerCopy;
   v24 = v16;
-  v17 = v8;
+  v17 = dataCopy;
   v23 = v17;
-  v25[1] = a4;
+  v25[1] = type;
   objc_msgSend_addOperationWithBlock_(v15, v18, v22, v19, v20);
 
   objc_destroyWeak(v25);
@@ -58,21 +58,21 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateDownloadData:(id)a3 identifier:(id)a4 forType:(int64_t)a5 completionHandler:(id)a6
+- (void)updateDownloadData:(id)data identifier:(id)identifier forType:(int64_t)type completionHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dataCopy = data;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v13 = APLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v30 = "[ADCapService updateDownloadData:identifier:forType:completionHandler:]";
     v31 = 2112;
-    v32 = v11;
+    v32 = identifierCopy;
     v33 = 2048;
-    v34 = a5;
+    typeCopy = type;
     _os_log_impl(&dword_264E42000, v13, OS_LOG_TYPE_DEFAULT, "%s (identifier: %@ type:%ld)", buf, 0x20u);
   }
 
@@ -83,11 +83,11 @@
   v25[2] = sub_264E46468;
   v25[3] = &unk_279B888F8;
   objc_copyWeak(v28, buf);
-  v28[1] = a5;
-  v19 = v12;
+  v28[1] = type;
+  v19 = handlerCopy;
   v27 = v19;
   v25[4] = self;
-  v20 = v11;
+  v20 = identifierCopy;
   v26 = v20;
   objc_msgSend_addOperationWithBlock_(v18, v21, v25, v22, v23);
 

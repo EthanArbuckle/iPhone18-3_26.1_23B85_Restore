@@ -21,9 +21,9 @@
 
 - (id)debugDescription
 {
-  v3 = [(ICHashtagsCheckResults *)self matchingHashtagSuggestions];
-  v4 = [v3 allObjects];
-  v5 = [v4 ic_map:&__block_literal_global_3];
+  matchingHashtagSuggestions = [(ICHashtagsCheckResults *)self matchingHashtagSuggestions];
+  allObjects = [matchingHashtagSuggestions allObjects];
+  v5 = [allObjects ic_map:&__block_literal_global_3];
 
   v6 = MEMORY[0x277CCACA8];
   v12.location = [(ICHashtagsCheckResults *)self rangeOfHashtag];

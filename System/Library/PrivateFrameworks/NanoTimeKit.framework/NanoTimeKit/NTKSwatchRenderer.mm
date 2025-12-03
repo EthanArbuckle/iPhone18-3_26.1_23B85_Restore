@@ -1,14 +1,14 @@
 @interface NTKSwatchRenderer
-+ (BOOL)containsSwatchForKey:(id)a3;
++ (BOOL)containsSwatchForKey:(id)key;
 + (id)_sharedRenderer;
-+ (id)cachedSwatchForKey:(id)a3;
-+ (id)renderSwatchForView:(id)a3 size:(CGSize)a4 device:(id)a5 key:(id)a6 method:(unint64_t)a7;
-+ (void)renderSwatchForView:(id)a3 size:(CGSize)a4 device:(id)a5 key:(id)a6 method:(unint64_t)a7 completion:(id)a8;
-- (id)_ca_renderSwatchUsingCARenderServer:(id)a3 size:(CGSize)a4 forDevice:(id)a5;
++ (id)cachedSwatchForKey:(id)key;
++ (id)renderSwatchForView:(id)view size:(CGSize)size device:(id)device key:(id)key method:(unint64_t)method;
++ (void)renderSwatchForView:(id)view size:(CGSize)size device:(id)device key:(id)key method:(unint64_t)method completion:(id)completion;
+- (id)_ca_renderSwatchUsingCARenderServer:(id)server size:(CGSize)size forDevice:(id)device;
 - (id)_init;
-- (id)_renderSwatchForView:(id)a3 size:(CGSize)a4 device:(id)a5 key:(id)a6 method:(unint64_t)a7;
-- (id)_ui_renderSwatchUsingUIGraphicsImageRenderer:(id)a3;
-- (void)_renderSwatchForView:(id)a3 size:(CGSize)a4 device:(id)a5 key:(id)a6 method:(unint64_t)a7 completion:(id)a8;
+- (id)_renderSwatchForView:(id)view size:(CGSize)size device:(id)device key:(id)key method:(unint64_t)method;
+- (id)_ui_renderSwatchUsingUIGraphicsImageRenderer:(id)renderer;
+- (void)_renderSwatchForView:(id)view size:(CGSize)size device:(id)device key:(id)key method:(unint64_t)method completion:(id)completion;
 @end
 
 @implementation NTKSwatchRenderer
@@ -62,96 +62,96 @@ void __26__NTKSwatchRenderer__init__block_invoke(uint64_t a1)
   *(v3 + 8) = v2;
 }
 
-+ (BOOL)containsSwatchForKey:(id)a3
++ (BOOL)containsSwatchForKey:(id)key
 {
-  v3 = [a1 cachedSwatchForKey:a3];
+  v3 = [self cachedSwatchForKey:key];
   v4 = v3 != 0;
 
   return v4;
 }
 
-+ (id)cachedSwatchForKey:(id)a3
++ (id)cachedSwatchForKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 _sharedRenderer];
-  v6 = [v5 _cachedSwatchImageForKey:v4];
+  keyCopy = key;
+  _sharedRenderer = [self _sharedRenderer];
+  v6 = [_sharedRenderer _cachedSwatchImageForKey:keyCopy];
 
   return v6;
 }
 
-+ (id)renderSwatchForView:(id)a3 size:(CGSize)a4 device:(id)a5 key:(id)a6 method:(unint64_t)a7
++ (id)renderSwatchForView:(id)view size:(CGSize)size device:(id)device key:(id)key method:(unint64_t)method
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
-  v16 = [a1 _sharedRenderer];
-  v17 = [v16 _renderSwatchForView:v15 size:v14 device:v13 key:a7 method:{width, height}];
+  height = size.height;
+  width = size.width;
+  keyCopy = key;
+  deviceCopy = device;
+  viewCopy = view;
+  _sharedRenderer = [self _sharedRenderer];
+  v17 = [_sharedRenderer _renderSwatchForView:viewCopy size:deviceCopy device:keyCopy key:method method:{width, height}];
 
   return v17;
 }
 
-+ (void)renderSwatchForView:(id)a3 size:(CGSize)a4 device:(id)a5 key:(id)a6 method:(unint64_t)a7 completion:(id)a8
++ (void)renderSwatchForView:(id)view size:(CGSize)size device:(id)device key:(id)key method:(unint64_t)method completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v15 = a8;
-  v16 = a6;
-  v17 = a5;
-  v18 = a3;
-  v19 = [a1 _sharedRenderer];
-  [v19 _renderSwatchForView:v18 size:v17 device:v16 key:a7 method:v15 completion:{width, height}];
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
+  keyCopy = key;
+  deviceCopy = device;
+  viewCopy = view;
+  _sharedRenderer = [self _sharedRenderer];
+  [_sharedRenderer _renderSwatchForView:viewCopy size:deviceCopy device:keyCopy key:method method:completionCopy completion:{width, height}];
 }
 
-- (void)_renderSwatchForView:(id)a3 size:(CGSize)a4 device:(id)a5 key:(id)a6 method:(unint64_t)a7 completion:(id)a8
+- (void)_renderSwatchForView:(id)view size:(CGSize)size device:(id)device key:(id)key method:(unint64_t)method completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v16 = a8;
-  v17 = [(NTKSwatchRenderer *)self _renderSwatchForView:a3 size:a5 device:a6 key:a7 method:width, height];
-  (*(a8 + 2))(v16, v17);
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
+  height = [(NTKSwatchRenderer *)self _renderSwatchForView:view size:device device:key key:method method:width, height];
+  (*(completion + 2))(completionCopy, height);
 }
 
-- (id)_renderSwatchForView:(id)a3 size:(CGSize)a4 device:(id)a5 key:(id)a6 method:(unint64_t)a7
+- (id)_renderSwatchForView:(id)view size:(CGSize)size device:(id)device key:(id)key method:(unint64_t)method
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v27 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  viewCopy = view;
+  deviceCopy = device;
+  keyCopy = key;
   v16 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v21 = 136315650;
     v22 = "[NTKSwatchRenderer _renderSwatchForView:size:device:key:method:]";
     v23 = 2112;
-    v24 = v15;
+    v24 = keyCopy;
     v25 = 2048;
-    v26 = a7;
+    methodCopy = method;
     _os_log_impl(&dword_22D9C5000, v16, OS_LOG_TYPE_INFO, "%s — rendering swatch for %@ using %ld", &v21, 0x20u);
   }
 
-  if (a7 == 1)
+  if (method == 1)
   {
-    v17 = [(NTKSwatchRenderer *)self _ui_renderSwatchUsingUIGraphicsImageRenderer:v13];
+    height = [(NTKSwatchRenderer *)self _ui_renderSwatchUsingUIGraphicsImageRenderer:viewCopy];
   }
 
   else
   {
-    if (a7)
+    if (method)
     {
       goto LABEL_9;
     }
 
-    v17 = [(NTKSwatchRenderer *)self _ca_renderSwatchUsingCARenderServer:v13 size:v14 forDevice:width, height];
+    height = [(NTKSwatchRenderer *)self _ca_renderSwatchUsingCARenderServer:viewCopy size:deviceCopy forDevice:width, height];
   }
 
-  v18 = v17;
-  if (v17)
+  v18 = height;
+  if (height)
   {
-    [(NTKSwatchRenderer *)self _setSwatchImage:v17 forKey:v15];
+    [(NTKSwatchRenderer *)self _setSwatchImage:height forKey:keyCopy];
     goto LABEL_12;
   }
 
@@ -159,7 +159,7 @@ LABEL_9:
   v19 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
-    [NTKSwatchRenderer _renderSwatchForView:v15 size:v19 device:? key:? method:?];
+    [NTKSwatchRenderer _renderSwatchForView:keyCopy size:v19 device:? key:? method:?];
   }
 
   v18 = 0;
@@ -168,11 +168,11 @@ LABEL_12:
   return v18;
 }
 
-- (id)_ui_renderSwatchUsingUIGraphicsImageRenderer:(id)a3
+- (id)_ui_renderSwatchUsingUIGraphicsImageRenderer:(id)renderer
 {
-  v4 = a3;
+  rendererCopy = renderer;
   v5 = objc_alloc(MEMORY[0x277D75560]);
-  [v4 bounds];
+  [rendererCopy bounds];
   v8 = [v5 initWithSize:{v6, v7}];
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
@@ -180,7 +180,7 @@ LABEL_12:
   v12[2] = __66__NTKSwatchRenderer__ui_renderSwatchUsingUIGraphicsImageRenderer___block_invoke;
   v12[3] = &unk_27877DB38;
   objc_copyWeak(&v14, &location);
-  v9 = v4;
+  v9 = rendererCopy;
   v13 = v9;
   v10 = [v8 imageWithActions:v12];
 
@@ -201,12 +201,12 @@ void __66__NTKSwatchRenderer__ui_renderSwatchUsingUIGraphicsImageRenderer___bloc
   }
 }
 
-- (id)_ca_renderSwatchUsingCARenderServer:(id)a3 size:(CGSize)a4 forDevice:(id)a5
+- (id)_ca_renderSwatchUsingCARenderServer:(id)server size:(CGSize)size forDevice:(id)device
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  serverCopy = server;
+  deviceCopy = device;
   if ([(NTKSwatchRenderer *)self _isCATransactionCommitting])
   {
     v11 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
@@ -221,24 +221,24 @@ void __66__NTKSwatchRenderer__ui_renderSwatchUsingUIGraphicsImageRenderer___bloc
   else
   {
     v13 = objc_autoreleasePoolPush();
-    [v9 bounds];
+    [serverCopy bounds];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v22 = [objc_alloc(MEMORY[0x277D75D28]) initWithNibName:0 bundle:0];
-    v23 = [v22 view];
-    [v23 setFrame:{v15, v17, v19, v21}];
+    view = [v22 view];
+    [view setFrame:{v15, v17, v19, v21}];
 
-    v24 = [v22 view];
-    [v24 addSubview:v9];
+    view2 = [v22 view];
+    [view2 addSubview:serverCopy];
 
     v25 = [NTKFaceSnapshottingWindow alloc];
     v26 = [(NTKFaceSnapshottingWindow *)v25 initWithFrame:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v19, v21];
-    [(NTKFaceSnapshottingWindow *)v26 updateForDevice:v10];
+    [(NTKFaceSnapshottingWindow *)v26 updateForDevice:deviceCopy];
     [(NTKFaceSnapshottingWindow *)v26 setHidden:0];
-    v27 = [MEMORY[0x277D75348] clearColor];
-    [(NTKFaceSnapshottingWindow *)v26 setBackgroundColor:v27];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(NTKFaceSnapshottingWindow *)v26 setBackgroundColor:clearColor];
 
     _UIAppSetStatusBarOrientation();
     _UIAppSetStatusBarHeight();
@@ -264,7 +264,7 @@ void __66__NTKSwatchRenderer__ui_renderSwatchUsingUIGraphicsImageRenderer___bloc
     v35 = width;
     v36 = height;
     v12 = [v29 imageWithActions:v31];
-    [v9 removeFromSuperview];
+    [serverCopy removeFromSuperview];
     [(NTKFaceSnapshottingWindow *)v26 setRootViewController:0];
     [(NTKFaceSnapshottingWindow *)v26 setHidden:1];
 

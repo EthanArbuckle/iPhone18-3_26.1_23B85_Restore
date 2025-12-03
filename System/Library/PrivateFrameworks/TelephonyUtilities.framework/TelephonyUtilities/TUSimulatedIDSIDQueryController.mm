@@ -1,50 +1,50 @@
 @interface TUSimulatedIDSIDQueryController
-- (BOOL)currentIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8;
-- (BOOL)currentRemoteDevicesForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8;
-- (BOOL)refreshIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8;
-- (BOOL)requiredIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8;
+- (BOOL)currentIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block;
+- (BOOL)currentRemoteDevicesForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block;
+- (BOOL)refreshIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block;
+- (BOOL)requiredIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block;
 @end
 
 @implementation TUSimulatedIDSIDQueryController
 
-- (BOOL)currentIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8
+- (BOOL)currentIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block
 {
-  v10 = a8;
-  v11 = _validDictionaryForDestinations(a3);
-  (*(a8 + 2))(v10, v11);
+  blockCopy = block;
+  v11 = _validDictionaryForDestinations(destinations);
+  (*(block + 2))(blockCopy, v11);
 
   return 1;
 }
 
-- (BOOL)refreshIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8
+- (BOOL)refreshIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block
 {
-  v10 = a8;
-  v11 = _validDictionaryForDestinations(a3);
-  (*(a8 + 2))(v10, v11);
+  blockCopy = block;
+  v11 = _validDictionaryForDestinations(destinations);
+  (*(block + 2))(blockCopy, v11);
 
   return 1;
 }
 
-- (BOOL)requiredIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8
+- (BOOL)requiredIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block
 {
-  v10 = a8;
-  v11 = _validDictionaryForDestinations(a3);
-  (*(a8 + 2))(v10, v11);
+  blockCopy = block;
+  v11 = _validDictionaryForDestinations(destinations);
+  (*(block + 2))(blockCopy, v11);
 
   return 1;
 }
 
-- (BOOL)currentRemoteDevicesForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8
+- (BOOL)currentRemoteDevicesForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block
 {
   v40 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v27 = a8;
-  v31 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v9, "count")}];
+  destinationsCopy = destinations;
+  blockCopy = block;
+  v31 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(destinationsCopy, "count")}];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v9;
+  obj = destinationsCopy;
   v10 = [obj countByEnumeratingWithState:&v32 objects:v39 count:16];
   if (v10)
   {
@@ -65,10 +65,10 @@
         v14 = [objc_alloc(MEMORY[0x1E69A5428]) initWithPrefixedURI:v13];
         v15 = objc_alloc(MEMORY[0x1E69A5248]);
         v16 = [@"push-token" dataUsingEncoding:4];
-        v17 = [MEMORY[0x1E695DEF0] data];
-        v18 = [MEMORY[0x1E695DF00] date];
-        v19 = [MEMORY[0x1E695DF00] date];
-        v20 = [v15 initWithURI:v14 clientData:MEMORY[0x1E695E0F8] pushToken:v16 sessionToken:v17 expireDate:v18 refreshDate:v19];
+        data = [MEMORY[0x1E695DEF0] data];
+        date = [MEMORY[0x1E695DF00] date];
+        date2 = [MEMORY[0x1E695DF00] date];
+        v20 = [v15 initWithURI:v14 clientData:MEMORY[0x1E695E0F8] pushToken:v16 sessionToken:data expireDate:date refreshDate:date2];
 
         v21 = objc_alloc(MEMORY[0x1E69A5250]);
         v37 = v29;
@@ -91,7 +91,7 @@
     while (v11);
   }
 
-  v27[2](v27, v31);
+  blockCopy[2](blockCopy, v31);
   v25 = *MEMORY[0x1E69E9840];
   return 1;
 }

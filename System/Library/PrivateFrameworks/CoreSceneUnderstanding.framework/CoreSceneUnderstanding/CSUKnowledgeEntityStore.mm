@@ -1,28 +1,28 @@
 @interface CSUKnowledgeEntityStore
-- (BOOL)commitWithError:(id *)a3;
-- (BOOL)loadWithError:(id *)a3;
-- (BOOL)purgeDatabaseWithVersion:(int)a3 error:(id *)a4;
-- (CSUKnowledgeEntityStore)initWithDatabasePath:(id)a3 error:(id *)a4;
-- (unsigned)storeEntity:(id)a3 error:(id *)a4;
-- (void)enumerateIdentifiersUsingBlock:(id)a3;
+- (BOOL)commitWithError:(id *)error;
+- (BOOL)loadWithError:(id *)error;
+- (BOOL)purgeDatabaseWithVersion:(int)version error:(id *)error;
+- (CSUKnowledgeEntityStore)initWithDatabasePath:(id)path error:(id *)error;
+- (unsigned)storeEntity:(id)entity error:(id *)error;
+- (void)enumerateIdentifiersUsingBlock:(id)block;
 @end
 
 @implementation CSUKnowledgeEntityStore
 
-- (CSUKnowledgeEntityStore)initWithDatabasePath:(id)a3 error:(id *)a4
+- (CSUKnowledgeEntityStore)initWithDatabasePath:(id)path error:(id *)error
 {
-  v7 = a3;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = CSUKnowledgeEntityStore;
   v8 = [(CSUKnowledgeEntityStore *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_databasePath, a3);
+    objc_storeStrong(&v8->_databasePath, path);
     data = v9->_data;
     v9->_data = 0;
 
-    if ((objc_msgSend_loadWithError_(v9, v11, a4, v12, v13) & 1) == 0)
+    if ((objc_msgSend_loadWithError_(v9, v11, error, v12, v13) & 1) == 0)
     {
 
       v9 = 0;
@@ -32,9 +32,9 @@
   return v9;
 }
 
-- (BOOL)commitWithError:(id *)a3
+- (BOOL)commitWithError:(id *)error
 {
-  v62 = a3;
+  errorCopy = error;
   v75 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc(MEMORY[0x1E695DF70]);
   v9 = objc_msgSend_count(self->_data, v5, v6, v7, v8);
@@ -61,7 +61,7 @@
         v72[0] = @"identifier";
         v72[1] = @"data";
         v73[0] = v21;
-        v22 = objc_msgSend_objectForKeyedSubscript_(self->_data, v15, v21, v16, v17, v62);
+        v22 = objc_msgSend_objectForKeyedSubscript_(self->_data, v15, v21, v16, v17, errorCopy);
         v27 = objc_msgSend_dictionary(v22, v23, v24, v25, v26);
         v73[1] = v27;
         v29 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v28, v73, v72, 2);
@@ -92,11 +92,11 @@
   v71[0] = v53;
   v71[1] = v63;
   v55 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v54, v71, v70, 2);
-  v57 = objc_msgSend_dataWithJSONObject_options_error_(v33, v56, v55, 0, v62);
+  v57 = objc_msgSend_dataWithJSONObject_options_error_(v33, v56, v55, 0, errorCopy);
 
   if (v57)
   {
-    v59 = objc_msgSend_writeToFile_options_error_(v57, v58, self->_databasePath, 0, v62);
+    v59 = objc_msgSend_writeToFile_options_error_(v57, v58, self->_databasePath, 0, errorCopy);
   }
 
   else
@@ -108,20 +108,20 @@
   return v59;
 }
 
-- (BOOL)loadWithError:(id *)a3
+- (BOOL)loadWithError:(id *)error
 {
   v91 = *MEMORY[0x1E69E9840];
-  v6 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], a2, a3, v3, v4);
+  v6 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], a2, error, v3, v4);
   v10 = objc_msgSend_fileExistsAtPath_(v6, v7, self->_databasePath, v8, v9);
 
   if (v10)
   {
-    v83 = objc_msgSend_dataWithContentsOfFile_options_error_(MEMORY[0x1E695DEF0], v11, self->_databasePath, 0, a3);
+    v83 = objc_msgSend_dataWithContentsOfFile_options_error_(MEMORY[0x1E695DEF0], v11, self->_databasePath, 0, error);
     if (v83)
     {
-      v13 = objc_msgSend_JSONObjectWithData_options_error_(MEMORY[0x1E696ACB0], v12, v83, 0, a3);
+      v13 = objc_msgSend_JSONObjectWithData_options_error_(MEMORY[0x1E696ACB0], v12, v83, 0, error);
       v82 = v13 != 0;
-      v17 = self;
+      selfCopy2 = self;
       if (v13)
       {
         v81 = v13;
@@ -173,11 +173,11 @@
               v54 = [CSUKnowledgeEntity alloc];
               v58 = objc_msgSend_objectForKeyedSubscript_(v53, v55, @"data", v56, v57);
               v62 = objc_msgSend_initWithDictionary_(v54, v59, v58, v60, v61);
-              v63 = v17->_data;
+              v63 = selfCopy2->_data;
               v67 = objc_msgSend_objectForKeyedSubscript_(v53, v64, @"identifier", v65, v66);
               objc_msgSend_setObject_forKeyedSubscript_(v63, v68, v62, v67, v69);
 
-              v17 = self;
+              selfCopy2 = self;
             }
 
             v50 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v70, &v86, v90, 16);
@@ -209,20 +209,20 @@
     self->_schemaVersion = 0;
     v76 = *MEMORY[0x1E69E9840];
 
-    return objc_msgSend_commitWithError_(self, v73, a3, v74, v75);
+    return objc_msgSend_commitWithError_(self, v73, error, v74, v75);
   }
 }
 
-- (unsigned)storeEntity:(id)a3 error:(id *)a4
+- (unsigned)storeEntity:(id)entity error:(id *)error
 {
-  v6 = a3;
-  v11 = objc_msgSend_QID(v6, v7, v8, v9, v10);
+  entityCopy = entity;
+  v11 = objc_msgSend_QID(entityCopy, v7, v8, v9, v10);
   v15 = objc_msgSend_substringFromIndex_(v11, v12, 1, v13, v14);
   v20 = objc_msgSend_integerValue(v15, v16, v17, v18, v19);
 
   if (!v20)
   {
-    if (!a4)
+    if (!error)
     {
 LABEL_7:
       LODWORD(v20) = 0;
@@ -230,9 +230,9 @@ LABEL_7:
     }
 
     v40 = MEMORY[0x1E696AEC0];
-    v36 = objc_msgSend_QID(v6, v21, v22, v23, v24);
+    v36 = objc_msgSend_QID(entityCopy, v21, v22, v23, v24);
     v44 = objc_msgSend_stringWithFormat_(v40, v41, @"Invalid QID: %@", v42, v43, v36);
-    *a4 = objc_msgSend_errorWithCode_message_(CSUError, v45, 8, v44, v46);
+    *error = objc_msgSend_errorWithCode_message_(CSUError, v45, 8, v44, v46);
 
 LABEL_6:
     goto LABEL_7;
@@ -240,9 +240,9 @@ LABEL_6:
 
   data = self->_data;
   v26 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v21, v20, v23, v24);
-  objc_msgSend_setObject_forKeyedSubscript_(data, v27, v6, v26, v28);
+  objc_msgSend_setObject_forKeyedSubscript_(data, v27, entityCopy, v26, v28);
 
-  if ((objc_msgSend_commitWithError_(self, v29, a4, v30, v31) & 1) == 0)
+  if ((objc_msgSend_commitWithError_(self, v29, error, v30, v31) & 1) == 0)
   {
     v35 = self->_data;
     v36 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v32, v20, v33, v34);
@@ -255,21 +255,21 @@ LABEL_8:
   return v20;
 }
 
-- (BOOL)purgeDatabaseWithVersion:(int)a3 error:(id *)a4
+- (BOOL)purgeDatabaseWithVersion:(int)version error:(id *)error
 {
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   data = self->_data;
   self->_data = v7;
 
-  self->_version = a3;
+  self->_version = version;
 
-  return objc_msgSend_commitWithError_(self, v9, a4, v10, v11);
+  return objc_msgSend_commitWithError_(self, v9, error, v10, v11);
 }
 
-- (void)enumerateIdentifiersUsingBlock:(id)a3
+- (void)enumerateIdentifiersUsingBlock:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v20 = 0;
   v16 = 0u;
   v17 = 0u;
@@ -290,7 +290,7 @@ LABEL_3:
       }
 
       v14 = objc_msgSend_integerValue(*(*(&v16 + 1) + 8 * v13), v7, v8, v9, v10, v16);
-      v4[2](v4, v14, &v20);
+      blockCopy[2](blockCopy, v14, &v20);
       if (v20)
       {
         break;

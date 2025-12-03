@@ -7,7 +7,7 @@
 
 - (double)SKUIStackedBarSplit
 {
-  v1 = objc_getAssociatedObject(a1, "com.apple.StoreKitUI.stackedBarSplit");
+  v1 = objc_getAssociatedObject(self, "com.apple.StoreKitUI.stackedBarSplit");
   [v1 floatValue];
   v3 = v2;
 
@@ -17,7 +17,7 @@
 - (void)setSKUIStackedBarSplit:()SKUIStackedBar
 {
   v2 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-  objc_setAssociatedObject(a1, "com.apple.StoreKitUI.stackedBarSplit", v2, 1);
+  objc_setAssociatedObject(self, "com.apple.StoreKitUI.stackedBarSplit", v2, 1);
 }
 
 @end

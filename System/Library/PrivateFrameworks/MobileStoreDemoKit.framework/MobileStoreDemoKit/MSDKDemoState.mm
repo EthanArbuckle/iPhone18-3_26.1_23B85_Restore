@@ -1,13 +1,13 @@
 @interface MSDKDemoState
 + (id)sharedInstance;
-- (BOOL)_isDeviceEnrolledWithDeKOTA:(id *)a3;
+- (BOOL)_isDeviceEnrolledWithDeKOTA:(id *)a;
 - (BOOL)_isMuseBuddyDemoModeEnabled;
 - (BOOL)_isPressDemoModeEnabled;
-- (BOOL)_isPressDemoModeEnabled:(id *)a3;
-- (BOOL)_isSecureDemoModeEnabled:(id *)a3;
-- (BOOL)_isStoreDemoModeEnabled:(id *)a3;
+- (BOOL)_isPressDemoModeEnabled:(id *)enabled;
+- (BOOL)_isSecureDemoModeEnabled:(id *)enabled;
+- (BOOL)_isStoreDemoModeEnabled:(id *)enabled;
 - (MSDKDemoState)init;
-- (int)_activationConfigurationFlags:(id *)a3;
+- (int)_activationConfigurationFlags:(id *)flags;
 @end
 
 @implementation MSDKDemoState
@@ -42,10 +42,10 @@ uint64_t __31__MSDKDemoState_sharedInstance__block_invoke()
     v3 = defaultLogHandle();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [MEMORY[0x277CCAC38] processInfo];
-      v5 = [v4 processName];
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
+      processName = [processInfo processName];
       *buf = 138543362;
-      v12 = v5;
+      v12 = processName;
       _os_log_impl(&dword_259B7D000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ started to use MobileStoreDemoKit/MSDKDemoState.", buf, 0xCu);
     }
 
@@ -59,32 +59,32 @@ uint64_t __31__MSDKDemoState_sharedInstance__block_invoke()
   return v2;
 }
 
-- (BOOL)_isSecureDemoModeEnabled:(id *)a3
+- (BOOL)_isSecureDemoModeEnabled:(id *)enabled
 {
   v5 = NSStringFromSelector(sel__isSecureDemoModeEnabled_);
-  v6 = [(MSDKDemoState *)self cache];
-  objc_sync_enter(v6);
+  cache = [(MSDKDemoState *)self cache];
+  objc_sync_enter(cache);
   if (v5)
   {
-    v7 = [(MSDKDemoState *)self cache];
-    v8 = [v7 objectForKey:v5];
+    cache2 = [(MSDKDemoState *)self cache];
+    v8 = [cache2 objectForKey:v5];
 
     if (v8)
     {
-      v9 = [(MSDKDemoState *)self cache];
-      v10 = [v9 objectForKey:v5];
-      v11 = [v10 BOOLValue];
+      cache3 = [(MSDKDemoState *)self cache];
+      v10 = [cache3 objectForKey:v5];
+      bOOLValue = [v10 BOOLValue];
 LABEL_9:
 
-      objc_sync_exit(v6);
+      objc_sync_exit(cache);
       goto LABEL_10;
     }
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(cache);
 
-  v12 = [(MSDKDemoState *)self _isDeviceEnrolledWithDeKOTA:a3];
-  v11 = v12;
+  v12 = [(MSDKDemoState *)self _isDeviceEnrolledWithDeKOTA:enabled];
+  bOOLValue = v12;
   if (v5)
   {
     v13 = !v12;
@@ -97,43 +97,43 @@ LABEL_9:
 
   if (!v13)
   {
-    v6 = [(MSDKDemoState *)self cache];
-    objc_sync_enter(v6);
-    v9 = [(MSDKDemoState *)self cache];
+    cache = [(MSDKDemoState *)self cache];
+    objc_sync_enter(cache);
+    cache3 = [(MSDKDemoState *)self cache];
     v10 = [MEMORY[0x277CCABB0] numberWithBool:1];
-    [v9 setObject:v10 forKey:v5];
-    v11 = 1;
+    [cache3 setObject:v10 forKey:v5];
+    bOOLValue = 1;
     goto LABEL_9;
   }
 
 LABEL_10:
 
-  return v11;
+  return bOOLValue;
 }
 
-- (BOOL)_isStoreDemoModeEnabled:(id *)a3
+- (BOOL)_isStoreDemoModeEnabled:(id *)enabled
 {
   v18 = *MEMORY[0x277D85DE8];
   v4 = NSStringFromSelector(sel__isStoreDemoModeEnabled_);
-  v5 = [(MSDKDemoState *)self cache];
-  objc_sync_enter(v5);
+  cache = [(MSDKDemoState *)self cache];
+  objc_sync_enter(cache);
   if (v4)
   {
-    v6 = [(MSDKDemoState *)self cache];
-    v7 = [v6 objectForKey:v4];
+    cache2 = [(MSDKDemoState *)self cache];
+    v7 = [cache2 objectForKey:v4];
 
     if (v7)
     {
-      v8 = [(MSDKDemoState *)self cache];
-      v9 = [v8 objectForKey:v4];
+      cache3 = [(MSDKDemoState *)self cache];
+      v9 = [cache3 objectForKey:v4];
       LOBYTE(v10) = [v9 BOOLValue];
 
-      objc_sync_exit(v5);
+      objc_sync_exit(cache);
       goto LABEL_12;
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(cache);
 
   if (geteuid())
   {
@@ -160,13 +160,13 @@ LABEL_10:
 LABEL_10:
     if (v10)
     {
-      v12 = [(MSDKDemoState *)self cache];
-      objc_sync_enter(v12);
-      v13 = [(MSDKDemoState *)self cache];
+      cache4 = [(MSDKDemoState *)self cache];
+      objc_sync_enter(cache4);
+      cache5 = [(MSDKDemoState *)self cache];
       v10 = [MEMORY[0x277CCABB0] numberWithBool:1];
-      [v13 setObject:v10 forKey:v4];
+      [cache5 setObject:v10 forKey:v4];
 
-      objc_sync_exit(v12);
+      objc_sync_exit(cache4);
       LOBYTE(v10) = 1;
     }
   }
@@ -177,38 +177,38 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)_isPressDemoModeEnabled:(id *)a3
+- (BOOL)_isPressDemoModeEnabled:(id *)enabled
 {
   v4 = NSStringFromSelector(sel__isPressDemoModeEnabled);
-  v5 = [(MSDKDemoState *)self cache];
-  objc_sync_enter(v5);
+  cache = [(MSDKDemoState *)self cache];
+  objc_sync_enter(cache);
   if (v4 && (-[MSDKDemoState cache](self, "cache"), v6 = objc_claimAutoreleasedReturnValue(), [v6 objectForKey:v4], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
-    v8 = [(MSDKDemoState *)self cache];
-    v9 = [v8 objectForKey:v4];
-    v10 = [v9 BOOLValue];
+    cache2 = [(MSDKDemoState *)self cache];
+    v9 = [cache2 objectForKey:v4];
+    bOOLValue = [v9 BOOLValue];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(cache);
   }
 
   else
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(cache);
 
     if (geteuid())
     {
       AppBooleanValue = CFPreferencesGetAppBooleanValue(@"PressDemoMode", @"com.apple.demo-settings", 0);
-      v10 = AppBooleanValue != 0;
+      bOOLValue = AppBooleanValue != 0;
       if (v4 && AppBooleanValue)
       {
-        v12 = [(MSDKDemoState *)self cache];
-        objc_sync_enter(v12);
-        v13 = [(MSDKDemoState *)self cache];
+        cache3 = [(MSDKDemoState *)self cache];
+        objc_sync_enter(cache3);
+        cache4 = [(MSDKDemoState *)self cache];
         v14 = [MEMORY[0x277CCABB0] numberWithBool:1];
-        [v13 setObject:v14 forKey:v4];
+        [cache4 setObject:v14 forKey:v4];
 
-        objc_sync_exit(v12);
-        v10 = 1;
+        objc_sync_exit(cache3);
+        bOOLValue = 1;
       }
     }
 
@@ -220,11 +220,11 @@ LABEL_12:
         [MSDKDemoState _isPressDemoModeEnabled:v15];
       }
 
-      v10 = 0;
+      bOOLValue = 0;
     }
   }
 
-  return v10;
+  return bOOLValue;
 }
 
 - (BOOL)_isPressDemoModeEnabled
@@ -243,29 +243,29 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)_isDeviceEnrolledWithDeKOTA:(id *)a3
+- (BOOL)_isDeviceEnrolledWithDeKOTA:(id *)a
 {
   v5 = NSStringFromSelector(sel_isDeviceEnrolledWithDeKOTA);
-  v6 = [(MSDKDemoState *)self cache];
-  objc_sync_enter(v6);
+  cache = [(MSDKDemoState *)self cache];
+  objc_sync_enter(cache);
   if (v5)
   {
-    v7 = [(MSDKDemoState *)self cache];
-    v8 = [v7 objectForKey:v5];
+    cache2 = [(MSDKDemoState *)self cache];
+    v8 = [cache2 objectForKey:v5];
 
     if (v8)
     {
-      v9 = [(MSDKDemoState *)self cache];
-      v10 = [v9 objectForKey:v5];
+      cache3 = [(MSDKDemoState *)self cache];
+      v10 = [cache3 objectForKey:v5];
       LOBYTE(v11) = [v10 BOOLValue];
 LABEL_11:
 
-      objc_sync_exit(v6);
+      objc_sync_exit(cache);
       goto LABEL_12;
     }
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(cache);
 
   if (os_variant_has_internal_content() && (+[MSDTestPreferences sharedInstance](MSDTestPreferences, "sharedInstance"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 fakeActivationDemoBit], v12, (v13 & 1) != 0))
   {
@@ -278,7 +278,7 @@ LABEL_11:
 
   else
   {
-    v11 = ([(MSDKDemoState *)self _activationConfigurationFlags:a3]>> 1) & 1;
+    v11 = ([(MSDKDemoState *)self _activationConfigurationFlags:a]>> 1) & 1;
     if (!v5)
     {
       goto LABEL_12;
@@ -287,11 +287,11 @@ LABEL_11:
 
   if (v11)
   {
-    v6 = [(MSDKDemoState *)self cache];
-    objc_sync_enter(v6);
-    v9 = [(MSDKDemoState *)self cache];
+    cache = [(MSDKDemoState *)self cache];
+    objc_sync_enter(cache);
+    cache3 = [(MSDKDemoState *)self cache];
     v10 = [MEMORY[0x277CCABB0] numberWithBool:1];
-    [v9 setObject:v10 forKey:v5];
+    [cache3 setObject:v10 forKey:v5];
     LOBYTE(v11) = 1;
     goto LABEL_11;
   }
@@ -301,7 +301,7 @@ LABEL_12:
   return v11;
 }
 
-- (int)_activationConfigurationFlags:(id *)a3
+- (int)_activationConfigurationFlags:(id *)flags
 {
   v20 = *MEMORY[0x277D85DE8];
   if (!os_variant_has_internal_content() || (+[MSDTestPreferences sharedInstance](MSDTestPreferences, "sharedInstance"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 deviceActivationFlag], v4, v5 < 0))
@@ -338,10 +338,10 @@ LABEL_12:
       LODWORD(v5) = 0;
     }
 
-    if (a3)
+    if (flags)
     {
       v11 = v10;
-      *a3 = v10;
+      *flags = v10;
     }
   }
 

@@ -1,6 +1,6 @@
 @interface FMPFSKNode
 - (_TtC11FMFindingUI10FMPFSKNode)init;
-- (_TtC11FMFindingUI10FMPFSKNode)initWithCoder:(id)a3;
+- (_TtC11FMFindingUI10FMPFSKNode)initWithCoder:(id)coder;
 @end
 
 @implementation FMPFSKNode
@@ -12,12 +12,12 @@
   return [(SKNode *)&v3 init];
 }
 
-- (_TtC11FMFindingUI10FMPFSKNode)initWithCoder:(id)a3
+- (_TtC11FMFindingUI10FMPFSKNode)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for FMPFSKNode();
-  v4 = a3;
-  v5 = [(SKNode *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SKNode *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,13 +1,13 @@
 @interface SBSLockScreenServiceConnection
 - (SBSLockScreenServiceConnection)init;
-- (id)preventPasscodeLockWithReason:(id)a3;
-- (id)preventSpuriousScreenUndimWithReason:(id)a3;
+- (id)preventPasscodeLockWithReason:(id)reason;
+- (id)preventSpuriousScreenUndimWithReason:(id)reason;
 - (void)dealloc;
-- (void)launchEmergencyDialerWithCompletion:(id)a3;
-- (void)lockDeviceAnimated:(BOOL)a3 withCompletion:(id)a4;
+- (void)launchEmergencyDialerWithCompletion:(id)completion;
+- (void)lockDeviceAnimated:(BOOL)animated withCompletion:(id)completion;
 - (void)migrateIncomingNotificationsToHistory;
-- (void)requestPasscodeCheckUIWithOptions:(id)a3 withCompletion:(id)a4;
-- (void)requestPasscodeUnlockUIWithOptions:(id)a3 withCompletion:(id)a4;
+- (void)requestPasscodeCheckUIWithOptions:(id)options withCompletion:(id)completion;
+- (void)requestPasscodeUnlockUIWithOptions:(id)options withCompletion:(id)completion;
 @end
 
 @implementation SBSLockScreenServiceConnection
@@ -20,9 +20,9 @@
   if (v2)
   {
     v3 = MEMORY[0x1E698F498];
-    v4 = [MEMORY[0x1E698F498] defaultShellMachName];
+    defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
     v5 = +[SBSLockScreenServiceSpecification identifier];
-    v6 = [v3 endpointForMachName:v4 service:v5 instance:0];
+    v6 = [v3 endpointForMachName:defaultShellMachName service:v5 instance:0];
 
     if (v6)
     {
@@ -111,18 +111,18 @@ void __38__SBSLockScreenServiceConnection_init__block_invoke_5()
   [(SBSLockScreenServiceConnection *)&v3 dealloc];
 }
 
-- (void)launchEmergencyDialerWithCompletion:(id)a3
+- (void)launchEmergencyDialerWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (v5)
+  completionCopy = completion;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (remoteTarget)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __70__SBSLockScreenServiceConnection_launchEmergencyDialerWithCompletion___block_invoke;
     v8[3] = &unk_1E735F0F8;
-    v9 = v4;
-    [v5 launchEmergencyDialerWithCompletion:v8];
+    v9 = completionCopy;
+    [remoteTarget launchEmergencyDialerWithCompletion:v8];
     v6 = v9;
 LABEL_7:
 
@@ -135,10 +135,10 @@ LABEL_7:
     [SBSLockScreenServiceConnection launchEmergencyDialerWithCompletion:];
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v6 = dispatch_get_global_queue(25, 0);
-    dispatch_async(v6, v4);
+    dispatch_async(v6, completionCopy);
     goto LABEL_7;
   }
 
@@ -165,20 +165,20 @@ void __70__SBSLockScreenServiceConnection_launchEmergencyDialerWithCompletion___
   }
 }
 
-- (void)requestPasscodeUnlockUIWithOptions:(id)a3 withCompletion:(id)a4
+- (void)requestPasscodeUnlockUIWithOptions:(id)options withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (v8)
+  optionsCopy = options;
+  completionCopy = completion;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (remoteTarget)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __84__SBSLockScreenServiceConnection_requestPasscodeUnlockUIWithOptions_withCompletion___block_invoke;
     v14[3] = &unk_1E735F0F8;
     v9 = &v15;
-    v15 = v7;
-    [v8 requestPasscodeUnlockUIWithOptions:v6 withCompletion:v14];
+    v15 = completionCopy;
+    [remoteTarget requestPasscodeUnlockUIWithOptions:optionsCopy withCompletion:v14];
 LABEL_7:
 
     goto LABEL_8;
@@ -190,7 +190,7 @@ LABEL_7:
     [SBSLockScreenServiceConnection requestPasscodeUnlockUIWithOptions:withCompletion:];
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v11 = dispatch_get_global_queue(25, 0);
     v12[0] = MEMORY[0x1E69E9820];
@@ -198,7 +198,7 @@ LABEL_7:
     v12[2] = __84__SBSLockScreenServiceConnection_requestPasscodeUnlockUIWithOptions_withCompletion___block_invoke_12;
     v12[3] = &unk_1E735F148;
     v9 = &v13;
-    v13 = v7;
+    v13 = completionCopy;
     dispatch_async(v11, v12);
 
     goto LABEL_7;
@@ -233,20 +233,20 @@ void __84__SBSLockScreenServiceConnection_requestPasscodeUnlockUIWithOptions_wit
   }
 }
 
-- (void)requestPasscodeCheckUIWithOptions:(id)a3 withCompletion:(id)a4
+- (void)requestPasscodeCheckUIWithOptions:(id)options withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (v8)
+  optionsCopy = options;
+  completionCopy = completion;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (remoteTarget)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __83__SBSLockScreenServiceConnection_requestPasscodeCheckUIWithOptions_withCompletion___block_invoke;
     v14[3] = &unk_1E735F0F8;
     v9 = &v15;
-    v15 = v7;
-    [v8 requestPasscodeCheckUIWithOptions:v6 withCompletion:v14];
+    v15 = completionCopy;
+    [remoteTarget requestPasscodeCheckUIWithOptions:optionsCopy withCompletion:v14];
 LABEL_7:
 
     goto LABEL_8;
@@ -258,7 +258,7 @@ LABEL_7:
     [SBSLockScreenServiceConnection requestPasscodeCheckUIWithOptions:withCompletion:];
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v11 = dispatch_get_global_queue(25, 0);
     v12[0] = MEMORY[0x1E69E9820];
@@ -266,7 +266,7 @@ LABEL_7:
     v12[2] = __83__SBSLockScreenServiceConnection_requestPasscodeCheckUIWithOptions_withCompletion___block_invoke_14;
     v12[3] = &unk_1E735F148;
     v9 = &v13;
-    v13 = v7;
+    v13 = completionCopy;
     dispatch_async(v11, v12);
 
     goto LABEL_7;
@@ -301,11 +301,11 @@ void __83__SBSLockScreenServiceConnection_requestPasscodeCheckUIWithOptions_with
   }
 }
 
-- (id)preventPasscodeLockWithReason:(id)a3
+- (id)preventPasscodeLockWithReason:(id)reason
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [SBSLockScreenServiceConnection preventPasscodeLockWithReason:];
   }
@@ -317,21 +317,21 @@ void __83__SBSLockScreenServiceConnection_requestPasscodeCheckUIWithOptions_with
   v17[3] = &unk_1E735F170;
   v17[4] = self;
   v17[5] = a2;
-  v7 = [v6 initWithIdentifier:@"com.apple.springboard.lockscreen.preventPasscodeLock" forReason:v5 invalidationBlock:v17];
+  v7 = [v6 initWithIdentifier:@"com.apple.springboard.lockscreen.preventPasscodeLock" forReason:reasonCopy invalidationBlock:v17];
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(BSServiceConnection *)self->_connection remoteTarget];
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
   lock_preventPasscodeLockReasons = self->_lock_preventPasscodeLockReasons;
   if (lock_preventPasscodeLockReasons)
   {
-    v10 = [v7 reason];
-    [(NSCountedSet *)lock_preventPasscodeLockReasons addObject:v10];
+    reason = [v7 reason];
+    [(NSCountedSet *)lock_preventPasscodeLockReasons addObject:reason];
   }
 
   else
   {
     v11 = MEMORY[0x1E696AB50];
-    v10 = [v7 reason];
-    v12 = [v11 setWithObject:v10];
+    reason = [v7 reason];
+    v12 = [v11 setWithObject:reason];
     v13 = self->_lock_preventPasscodeLockReasons;
     self->_lock_preventPasscodeLockReasons = v12;
   }
@@ -339,13 +339,13 @@ void __83__SBSLockScreenServiceConnection_requestPasscodeCheckUIWithOptions_with
   v14 = SBLogCommon();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v7 reason];
+    reason2 = [v7 reason];
     *buf = 138412290;
-    v19 = v15;
+    v19 = reason2;
     _os_log_impl(&dword_19169D000, v14, OS_LOG_TYPE_DEFAULT, "SBSLockScreenService: creating new preventPasscodeLock assertion (%@)", buf, 0xCu);
   }
 
-  [v8 setPreventPasscodeLock:MEMORY[0x1E695E118]];
+  [remoteTarget setPreventPasscodeLock:MEMORY[0x1E695E118]];
   os_unfair_lock_unlock(&self->_lock);
 
   return v7;
@@ -391,11 +391,11 @@ void __64__SBSLockScreenServiceConnection_preventPasscodeLockWithReason___block_
   os_unfair_lock_unlock(*v4 + 4);
 }
 
-- (id)preventSpuriousScreenUndimWithReason:(id)a3
+- (id)preventSpuriousScreenUndimWithReason:(id)reason
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [SBSLockScreenServiceConnection preventSpuriousScreenUndimWithReason:];
   }
@@ -407,21 +407,21 @@ void __64__SBSLockScreenServiceConnection_preventPasscodeLockWithReason___block_
   v17[3] = &unk_1E735F170;
   v17[4] = self;
   v17[5] = a2;
-  v7 = [v6 initWithIdentifier:@"com.apple.springboard.lockscreen.preventSpuriousScreenUndim" forReason:v5 invalidationBlock:v17];
+  v7 = [v6 initWithIdentifier:@"com.apple.springboard.lockscreen.preventSpuriousScreenUndim" forReason:reasonCopy invalidationBlock:v17];
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(BSServiceConnection *)self->_connection remoteTarget];
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
   lock_preventSpuriousScreenUndimReasons = self->_lock_preventSpuriousScreenUndimReasons;
   if (lock_preventSpuriousScreenUndimReasons)
   {
-    v10 = [v7 reason];
-    [(NSCountedSet *)lock_preventSpuriousScreenUndimReasons addObject:v10];
+    reason = [v7 reason];
+    [(NSCountedSet *)lock_preventSpuriousScreenUndimReasons addObject:reason];
   }
 
   else
   {
     v11 = MEMORY[0x1E696AB50];
-    v10 = [v7 reason];
-    v12 = [v11 setWithObject:v10];
+    reason = [v7 reason];
+    v12 = [v11 setWithObject:reason];
     v13 = self->_lock_preventSpuriousScreenUndimReasons;
     self->_lock_preventSpuriousScreenUndimReasons = v12;
   }
@@ -429,13 +429,13 @@ void __64__SBSLockScreenServiceConnection_preventPasscodeLockWithReason___block_
   v14 = SBLogCommon();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v7 reason];
+    reason2 = [v7 reason];
     *buf = 138412290;
-    v19 = v15;
+    v19 = reason2;
     _os_log_impl(&dword_19169D000, v14, OS_LOG_TYPE_DEFAULT, "SBSLockScreenService: creating new preventSpuriousScreenUndim assertion (%@)", buf, 0xCu);
   }
 
-  [v8 setPreventSpuriousScreenUndim:MEMORY[0x1E695E118]];
+  [remoteTarget setPreventSpuriousScreenUndim:MEMORY[0x1E695E118]];
   os_unfair_lock_unlock(&self->_lock);
 
   return v7;
@@ -481,21 +481,21 @@ void __71__SBSLockScreenServiceConnection_preventSpuriousScreenUndimWithReason__
   os_unfair_lock_unlock(*v4 + 4);
 }
 
-- (void)lockDeviceAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)lockDeviceAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (v7)
+  animatedCopy = animated;
+  completionCopy = completion;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (remoteTarget)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+    v8 = [MEMORY[0x1E696AD98] numberWithBool:animatedCopy];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __68__SBSLockScreenServiceConnection_lockDeviceAnimated_withCompletion___block_invoke;
     v13[3] = &unk_1E735F0F8;
     v9 = &v14;
-    v14 = v6;
-    [v7 lockDeviceAnimated:v8 withCompletion:v13];
+    v14 = completionCopy;
+    [remoteTarget lockDeviceAnimated:v8 withCompletion:v13];
 LABEL_7:
 
     goto LABEL_8;
@@ -507,7 +507,7 @@ LABEL_7:
     [SBSLockScreenServiceConnection lockDeviceAnimated:withCompletion:];
   }
 
-  if (v6)
+  if (completionCopy)
   {
     v8 = dispatch_get_global_queue(25, 0);
     v11[0] = MEMORY[0x1E69E9820];
@@ -515,7 +515,7 @@ LABEL_7:
     v11[2] = __68__SBSLockScreenServiceConnection_lockDeviceAnimated_withCompletion___block_invoke_36;
     v11[3] = &unk_1E735F148;
     v9 = &v12;
-    v12 = v6;
+    v12 = completionCopy;
     dispatch_async(v8, v11);
     goto LABEL_7;
   }

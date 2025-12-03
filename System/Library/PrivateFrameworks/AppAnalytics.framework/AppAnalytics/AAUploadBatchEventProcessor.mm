@@ -1,17 +1,17 @@
 @interface AAUploadBatchEventProcessor
 - (AAUploadBatchEventProcessor)init;
-- (AAUploadBatchEventProcessor)initWithClient:(id)a3 endpoint:(id)a4;
-- (AAUploadBatchEventProcessor)initWithClient:(id)a3 endpoint:(id)a4 config:(id)a5;
-- (AAUploadBatchEventProcessor)initWithClient:(id)a3 endpoint:(id)a4 contentType:(int64_t)a5 config:(id)a6;
+- (AAUploadBatchEventProcessor)initWithClient:(id)client endpoint:(id)endpoint;
+- (AAUploadBatchEventProcessor)initWithClient:(id)client endpoint:(id)endpoint config:(id)config;
+- (AAUploadBatchEventProcessor)initWithClient:(id)client endpoint:(id)endpoint contentType:(int64_t)type config:(id)config;
 @end
 
 @implementation AAUploadBatchEventProcessor
 
-- (AAUploadBatchEventProcessor)initWithClient:(id)a3 endpoint:(id)a4
+- (AAUploadBatchEventProcessor)initWithClient:(id)client endpoint:(id)endpoint
 {
   ObjectType = swift_getObjectType();
   v8 = qword_1EDBCB790;
-  v9 = a3;
+  clientCopy = client;
   swift_unknownObjectRetain();
   if (v8 != -1)
   {
@@ -19,7 +19,7 @@
   }
 
   v10 = qword_1EDBCB798;
-  v11 = sub_1B6986A58(v9, a4, 0, v10);
+  v11 = sub_1B6986A58(clientCopy, endpoint, 0, v10);
 
   v12 = (self + OBJC_IVAR___AAUploadBatchEventProcessor_proxyEventProcessor);
   *v12 = v11;
@@ -32,13 +32,13 @@
   return v13;
 }
 
-- (AAUploadBatchEventProcessor)initWithClient:(id)a3 endpoint:(id)a4 config:(id)a5
+- (AAUploadBatchEventProcessor)initWithClient:(id)client endpoint:(id)endpoint config:(id)config
 {
   ObjectType = swift_getObjectType();
-  v10 = a3;
+  clientCopy = client;
   swift_unknownObjectRetain();
-  v11 = a5;
-  v12 = sub_1B6986A58(v10, a4, 0, v11);
+  configCopy = config;
+  v12 = sub_1B6986A58(clientCopy, endpoint, 0, configCopy);
   v13 = (self + OBJC_IVAR___AAUploadBatchEventProcessor_proxyEventProcessor);
   *v13 = v12;
   v13[1] = &protocol witness table for UploadBatchEventProcessor;
@@ -50,13 +50,13 @@
   return v14;
 }
 
-- (AAUploadBatchEventProcessor)initWithClient:(id)a3 endpoint:(id)a4 contentType:(int64_t)a5 config:(id)a6
+- (AAUploadBatchEventProcessor)initWithClient:(id)client endpoint:(id)endpoint contentType:(int64_t)type config:(id)config
 {
   ObjectType = swift_getObjectType();
-  v12 = a3;
+  clientCopy = client;
   swift_unknownObjectRetain();
-  v13 = a6;
-  v14 = sub_1B6986A58(v12, a4, a5, v13);
+  configCopy = config;
+  v14 = sub_1B6986A58(clientCopy, endpoint, type, configCopy);
   v15 = (self + OBJC_IVAR___AAUploadBatchEventProcessor_proxyEventProcessor);
   *v15 = v14;
   v15[1] = &protocol witness table for UploadBatchEventProcessor;

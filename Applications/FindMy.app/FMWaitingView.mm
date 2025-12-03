@@ -1,7 +1,7 @@
 @interface FMWaitingView
 - (_TtC6FindMy13FMWaitingView)init;
-- (_TtC6FindMy13FMWaitingView)initWithCoder:(id)a3;
-- (_TtC6FindMy13FMWaitingView)initWithFrame:(CGRect)a3;
+- (_TtC6FindMy13FMWaitingView)initWithCoder:(id)coder;
+- (_TtC6FindMy13FMWaitingView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FMWaitingView
@@ -21,7 +21,7 @@
   return v5;
 }
 
-- (_TtC6FindMy13FMWaitingView)initWithCoder:(id)a3
+- (_TtC6FindMy13FMWaitingView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC6FindMy13FMWaitingView_title;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(UILabel) init];
@@ -32,7 +32,7 @@
   return result;
 }
 
-- (_TtC6FindMy13FMWaitingView)initWithFrame:(CGRect)a3
+- (_TtC6FindMy13FMWaitingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,43 +1,43 @@
 @interface MDMAccountUtilities
-+ (BOOL)updateOrganizationName:(id)a3 rmAccountIdentifier:(id)a4 personaID:(id)a5 error:(id *)a6;
++ (BOOL)updateOrganizationName:(id)name rmAccountIdentifier:(id)identifier personaID:(id)d error:(id *)error;
 + (id)_createMissingBearerTokenError;
 + (id)_createMissingRMAccountError;
-+ (id)_longLivedTokenFromRMAccount:(id)a3 inStore:(id)a4;
-+ (id)_shortLivedTokenFromRMAccount:(id)a3 inStore:(id)a4;
-+ (id)authenticatorForRMAccountID:(id)a3;
-+ (id)bearerTokenForRMAccountID:(id)a3 error:(id *)a4;
-+ (id)maidPropertiesForRMAccountID:(id)a3;
-+ (id)rmAccountWithIdentifier:(id)a3 fromStore:(id)a4 error:(id *)a5;
-+ (void)removeMAIDShortLivedTokenWithAccount:(id)a3;
-+ (void)stashMAIDShortLivedTokenWithAccount:(id)a3 authenticationResults:(id)a4;
++ (id)_longLivedTokenFromRMAccount:(id)account inStore:(id)store;
++ (id)_shortLivedTokenFromRMAccount:(id)account inStore:(id)store;
++ (id)authenticatorForRMAccountID:(id)d;
++ (id)bearerTokenForRMAccountID:(id)d error:(id *)error;
++ (id)maidPropertiesForRMAccountID:(id)d;
++ (id)rmAccountWithIdentifier:(id)identifier fromStore:(id)store error:(id *)error;
++ (void)removeMAIDShortLivedTokenWithAccount:(id)account;
++ (void)stashMAIDShortLivedTokenWithAccount:(id)account authenticationResults:(id)results;
 @end
 
 @implementation MDMAccountUtilities
 
-+ (id)rmAccountWithIdentifier:(id)a3 fromStore:(id)a4 error:(id *)a5
++ (id)rmAccountWithIdentifier:(id)identifier fromStore:(id)store error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  identifierCopy = identifier;
+  storeCopy = store;
+  if (!storeCopy)
   {
-    v9 = [MEMORY[0x277CB8F48] defaultStore];
+    storeCopy = [MEMORY[0x277CB8F48] defaultStore];
   }
 
-  v10 = [v9 dmc_remoteManagementAccountForIdentifier:v8];
+  v10 = [storeCopy dmc_remoteManagementAccountForIdentifier:identifierCopy];
   if (!v10)
   {
     v11 = *(DMCLogObjects() + 8);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v14 = 138543362;
-      v15 = v8;
+      v15 = identifierCopy;
       _os_log_impl(&dword_22E997000, v11, OS_LOG_TYPE_ERROR, "No RMAccount with ID: %{public}@", &v14, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = [a1 _createMissingRMAccountError];
+      *error = [self _createMissingRMAccountError];
     }
   }
 
@@ -46,13 +46,13 @@
   return v10;
 }
 
-+ (void)stashMAIDShortLivedTokenWithAccount:(id)a3 authenticationResults:(id)a4
++ (void)stashMAIDShortLivedTokenWithAccount:(id)account authenticationResults:(id)results
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  accountCopy = account;
+  resultsCopy = results;
   v7 = DMCAKAuthenticationIDMSTokenKey();
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [resultsCopy objectForKeyedSubscript:v7];
 
   v9 = [v8 objectForKeyedSubscript:@"com.apple.gs.mdm.auth"];
   v10 = *(DMCLogObjects() + 8);
@@ -62,59 +62,59 @@
     if (v11)
     {
       v12 = v10;
-      v13 = [v5 identifier];
+      identifier = [accountCopy identifier];
       v18 = 138543618;
       v19 = @"com.apple.gs.mdm.auth";
       v20 = 2114;
-      v21 = v13;
+      v21 = identifier;
       _os_log_impl(&dword_22E997000, v12, OS_LOG_TYPE_DEBUG, "Stashing %{public}@ token on RMAccount with ID: %{public}@", &v18, 0x16u);
     }
 
     v14 = [v8 objectForKeyedSubscript:@"com.apple.gs.mdm.auth"];
-    [v5 setObject:v14 forKeyedSubscript:@"MAIDShortLivedTokenField"];
+    [accountCopy setObject:v14 forKeyedSubscript:@"MAIDShortLivedTokenField"];
   }
 
   else if (v11)
   {
     v15 = v10;
-    v16 = [v5 identifier];
+    identifier2 = [accountCopy identifier];
     v18 = 138543618;
     v19 = @"com.apple.gs.mdm.auth";
     v20 = 2114;
-    v21 = v16;
+    v21 = identifier2;
     _os_log_impl(&dword_22E997000, v15, OS_LOG_TYPE_DEBUG, "No %{public}@ token to stash on RMAccount with ID: %{public}@", &v18, 0x16u);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)removeMAIDShortLivedTokenWithAccount:(id)a3
++ (void)removeMAIDShortLivedTokenWithAccount:(id)account
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  accountCopy = account;
   v4 = *(DMCLogObjects() + 8);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v5 = v4;
-    v6 = [v3 identifier];
+    identifier = [accountCopy identifier];
     v8 = 138543618;
     v9 = @"com.apple.gs.mdm.auth";
     v10 = 2114;
-    v11 = v6;
+    v11 = identifier;
     _os_log_impl(&dword_22E997000, v5, OS_LOG_TYPE_DEBUG, "Removing stashed %{public}@ token from RMAccount with ID: %{public}@", &v8, 0x16u);
   }
 
-  [v3 setObject:0 forKeyedSubscript:@"MAIDShortLivedTokenField"];
+  [accountCopy setObject:0 forKeyedSubscript:@"MAIDShortLivedTokenField"];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)authenticatorForRMAccountID:(id)a3
++ (id)authenticatorForRMAccountID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v14 = 0;
-  v5 = [a1 rmAccountWithIdentifier:v4 fromStore:0 error:&v14];
+  v5 = [self rmAccountWithIdentifier:dCopy fromStore:0 error:&v14];
   v6 = v14;
   if (!v5)
   {
@@ -127,23 +127,23 @@ LABEL_10:
     }
 
     *buf = 138543362;
-    v16 = v4;
+    v16 = dCopy;
     v11 = "Failed to find RM account: %{public}@";
 LABEL_9:
     _os_log_impl(&dword_22E997000, v10, OS_LOG_TYPE_ERROR, v11, buf, 0xCu);
     goto LABEL_10;
   }
 
-  v7 = [v5 dmc_enrollmentMethod];
+  dmc_enrollmentMethod = [v5 dmc_enrollmentMethod];
   v8 = 0;
-  if (v7 > 2)
+  if (dmc_enrollmentMethod > 2)
   {
-    if ((v7 - 3) < 2)
+    if ((dmc_enrollmentMethod - 3) < 2)
     {
       goto LABEL_18;
     }
 
-    if (v7 == 5)
+    if (dmc_enrollmentMethod == 5)
     {
       v9 = MDMOAuth2Authenticator;
       goto LABEL_17;
@@ -152,18 +152,18 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  if (!v7)
+  if (!dmc_enrollmentMethod)
   {
     goto LABEL_18;
   }
 
-  if (v7 == 1)
+  if (dmc_enrollmentMethod == 1)
   {
     v9 = MDMMAIDBearerTokenAuthenticator;
     goto LABEL_17;
   }
 
-  if (v7 != 2)
+  if (dmc_enrollmentMethod != 2)
   {
 LABEL_14:
     v10 = *(DMCLogObjects() + 8);
@@ -173,14 +173,14 @@ LABEL_14:
     }
 
     *buf = 138543362;
-    v16 = v4;
+    v16 = dCopy;
     v11 = "Failed to match RM account enrollment method: %{public}@";
     goto LABEL_9;
   }
 
   v9 = MDMBearerTokenAuthenticator;
 LABEL_17:
-  v8 = [[v9 alloc] initWithRMAccountID:v4];
+  v8 = [[v9 alloc] initWithRMAccountID:dCopy];
 LABEL_18:
 
   v12 = *MEMORY[0x277D85DE8];
@@ -188,63 +188,63 @@ LABEL_18:
   return v8;
 }
 
-+ (id)bearerTokenForRMAccountID:(id)a3 error:(id *)a4
++ (id)bearerTokenForRMAccountID:(id)d error:(id *)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a1 rmAccountWithIdentifier:v6 fromStore:0 error:a4];
+  dCopy = d;
+  v7 = [self rmAccountWithIdentifier:dCopy fromStore:0 error:error];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 dmc_bearerToken];
-    if (!v9)
+    dmc_bearerToken = [v7 dmc_bearerToken];
+    if (!dmc_bearerToken)
     {
       v10 = *(DMCLogObjects() + 8);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v13 = 138543362;
-        v14 = v6;
+        v14 = dCopy;
         _os_log_impl(&dword_22E997000, v10, OS_LOG_TYPE_ERROR, "No bearer token in RMAccount with ID: %{public}@", &v13, 0xCu);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = [a1 _createMissingBearerTokenError];
+        *error = [self _createMissingBearerTokenError];
       }
     }
   }
 
   else
   {
-    v9 = 0;
+    dmc_bearerToken = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return dmc_bearerToken;
 }
 
-+ (id)maidPropertiesForRMAccountID:(id)a3
++ (id)maidPropertiesForRMAccountID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CB8F48];
-  v5 = a3;
-  v6 = [v4 defaultStore];
-  v7 = [a1 rmAccountWithIdentifier:v5 fromStore:v6 error:0];
+  dCopy = d;
+  defaultStore = [v4 defaultStore];
+  v7 = [self rmAccountWithIdentifier:dCopy fromStore:defaultStore error:0];
 
   if (v7)
   {
     v8 = objc_opt_new();
-    v9 = [v7 username];
-    [v8 setObject:v9 forKeyedSubscript:*MEMORY[0x277D03390]];
+    username = [v7 username];
+    [v8 setObject:username forKeyedSubscript:*MEMORY[0x277D03390]];
 
-    v10 = [v7 dmc_altDSID];
-    [v8 setObject:v10 forKeyedSubscript:*MEMORY[0x277D03370]];
+    dmc_altDSID = [v7 dmc_altDSID];
+    [v8 setObject:dmc_altDSID forKeyedSubscript:*MEMORY[0x277D03370]];
 
-    v11 = [v7 dmc_DSID];
-    [v8 setObject:v11 forKeyedSubscript:*MEMORY[0x277D03378]];
+    dmc_DSID = [v7 dmc_DSID];
+    [v8 setObject:dmc_DSID forKeyedSubscript:*MEMORY[0x277D03378]];
 
-    v12 = [a1 _shortLivedTokenFromRMAccount:v7 inStore:v6];
+    v12 = [self _shortLivedTokenFromRMAccount:v7 inStore:defaultStore];
     if (v12)
     {
       [v8 setObject:v12 forKeyedSubscript:*MEMORY[0x277D03388]];
@@ -256,14 +256,14 @@ LABEL_18:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v14 = v13;
-        v15 = [v7 dmc_altDSID];
+        dmc_altDSID2 = [v7 dmc_altDSID];
         v22 = 138543362;
-        v23 = v15;
+        v23 = dmc_altDSID2;
         _os_log_impl(&dword_22E997000, v14, OS_LOG_TYPE_ERROR, "Unable to find short lived token for RM account: %{public}@", &v22, 0xCu);
       }
     }
 
-    v16 = [a1 _longLivedTokenFromRMAccount:v7 inStore:v6];
+    v16 = [self _longLivedTokenFromRMAccount:v7 inStore:defaultStore];
     if (v16)
     {
       [v8 setObject:v16 forKeyedSubscript:*MEMORY[0x277D03380]];
@@ -275,9 +275,9 @@ LABEL_18:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         v18 = v17;
-        v19 = [v7 dmc_altDSID];
+        dmc_altDSID3 = [v7 dmc_altDSID];
         v22 = 138543362;
-        v23 = v19;
+        v23 = dmc_altDSID3;
         _os_log_impl(&dword_22E997000, v18, OS_LOG_TYPE_ERROR, "Unable to find long lived token for RM account: %{public}@", &v22, 0xCu);
       }
     }
@@ -293,16 +293,16 @@ LABEL_18:
   return v8;
 }
 
-+ (id)_shortLivedTokenFromRMAccount:(id)a3 inStore:(id)a4
++ (id)_shortLivedTokenFromRMAccount:(id)account inStore:(id)store
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"MAIDShortLivedTokenField"];
+  accountCopy = account;
+  storeCopy = store;
+  v7 = [accountCopy objectForKeyedSubscript:@"MAIDShortLivedTokenField"];
   if (!v7)
   {
-    v13 = [v5 dmc_altDSID];
-    v14 = [v6 aida_accountForAltDSID:v13];
+    dmc_altDSID = [accountCopy dmc_altDSID];
+    v14 = [storeCopy aida_accountForAltDSID:dmc_altDSID];
 
     if (v14)
     {
@@ -319,11 +319,11 @@ LABEL_12:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
         v17 = v16;
-        v18 = [v5 dmc_altDSID];
+        dmc_altDSID2 = [accountCopy dmc_altDSID];
         v24 = 138543618;
         v25 = @"com.apple.gs.mdm.auth";
         v26 = 2114;
-        v27 = v18;
+        v27 = dmc_altDSID2;
         _os_log_impl(&dword_22E997000, v17, OS_LOG_TYPE_DEBUG, "Unable to find %{public}@ token on idms account for RM account: %{public}@", &v24, 0x16u);
       }
     }
@@ -334,9 +334,9 @@ LABEL_12:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
         v20 = v19;
-        v21 = [v5 dmc_altDSID];
+        dmc_altDSID3 = [accountCopy dmc_altDSID];
         v24 = 138543362;
-        v25 = v21;
+        v25 = dmc_altDSID3;
         _os_log_impl(&dword_22E997000, v20, OS_LOG_TYPE_DEBUG, "Unable to find idms account for RM account: %{public}@", &v24, 0xCu);
       }
     }
@@ -350,11 +350,11 @@ LABEL_12:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v10 = v9;
-    v11 = [v5 dmc_altDSID];
+    dmc_altDSID4 = [accountCopy dmc_altDSID];
     v24 = 138543618;
     v25 = @"com.apple.gs.mdm.auth";
     v26 = 2114;
-    v27 = v11;
+    v27 = dmc_altDSID4;
     _os_log_impl(&dword_22E997000, v10, OS_LOG_TYPE_DEBUG, "Using stashed %{public}@ token on RM account: %{public}@", &v24, 0x16u);
   }
 
@@ -366,13 +366,13 @@ LABEL_13:
   return v12;
 }
 
-+ (id)_longLivedTokenFromRMAccount:(id)a3 inStore:(id)a4
++ (id)_longLivedTokenFromRMAccount:(id)account inStore:(id)store
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 dmc_altDSID];
-  v8 = [v6 dmc_iCloudAccountForRemoteManagingAccountWithAltDSID:v7];
+  accountCopy = account;
+  storeCopy = store;
+  dmc_altDSID = [accountCopy dmc_altDSID];
+  v8 = [storeCopy dmc_iCloudAccountForRemoteManagingAccountWithAltDSID:dmc_altDSID];
 
   if (!v8)
   {
@@ -380,32 +380,32 @@ LABEL_13:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v10 = v9;
-      v11 = [v5 dmc_altDSID];
+      dmc_altDSID2 = [accountCopy dmc_altDSID];
       v15 = 138543362;
-      v16 = v11;
+      v16 = dmc_altDSID2;
       _os_log_impl(&dword_22E997000, v10, OS_LOG_TYPE_ERROR, "Unable to find iCloud account for RM account: %{public}@", &v15, 0xCu);
     }
   }
 
-  v12 = [v8 dmc_mdmServerToken];
+  dmc_mdmServerToken = [v8 dmc_mdmServerToken];
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return dmc_mdmServerToken;
 }
 
-+ (BOOL)updateOrganizationName:(id)a3 rmAccountIdentifier:(id)a4 personaID:(id)a5 error:(id *)a6
++ (BOOL)updateOrganizationName:(id)name rmAccountIdentifier:(id)identifier personaID:(id)d error:(id *)error
 {
   v81 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x277CB8F48] defaultStore];
+  nameCopy = name;
+  identifierCopy = identifier;
+  dCopy = d;
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
   v77[0] = MEMORY[0x277D85DD0];
   v77[1] = 3221225472;
   v77[2] = __82__MDMAccountUtilities_updateOrganizationName_rmAccountIdentifier_personaID_error___block_invoke;
   v77[3] = &unk_278856C58;
-  v14 = v10;
+  v14 = nameCopy;
   v78 = v14;
   v48 = MEMORY[0x2318F0080](v77);
   v71 = 0;
@@ -418,12 +418,12 @@ LABEL_13:
   v68 = &v67;
   v69 = 0x2020000000;
   v70 = 1;
-  v15 = [v13 dmc_remoteManagementAccountForIdentifier:v11];
+  v15 = [defaultStore dmc_remoteManagementAccountForIdentifier:identifierCopy];
   v16 = v15;
   if (v15)
   {
-    v17 = [v15 accountDescription];
-    v18 = [v17 isEqualToString:v14];
+    accountDescription = [v15 accountDescription];
+    v18 = [accountDescription isEqualToString:v14];
 
     if (v18)
     {
@@ -431,7 +431,7 @@ LABEL_13:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v80 = v11;
+        v80 = identifierCopy;
         _os_log_impl(&dword_22E997000, v19, OS_LOG_TYPE_DEFAULT, "RM account organization name does not need to be changed: %{public}@", buf, 0xCu);
       }
 
@@ -446,13 +446,13 @@ LABEL_13:
       v61[2] = __82__MDMAccountUtilities_updateOrganizationName_rmAccountIdentifier_personaID_error___block_invoke_7;
       v61[3] = &unk_278856C80;
       v65 = &v67;
-      v24 = v13;
+      v24 = defaultStore;
       v62 = v24;
-      v63 = v11;
+      v63 = identifierCopy;
       v66 = &v71;
       v25 = v48;
       v64 = v25;
-      v26 = [v23 performBlockUnderPersona:v12 block:v61];
+      v26 = [v23 performBlockUnderPersona:dCopy block:v61];
       if (v68[3])
       {
         v27 = *DMCLogObjects();
@@ -475,7 +475,7 @@ LABEL_13:
         v60 = &v71;
         v31 = v25;
         v58 = v31;
-        v32 = [v28 performBlockUnderPersona:v12 block:v55];
+        v32 = [v28 performBlockUnderPersona:dCopy block:v55];
         if (v68[3])
         {
           v33 = *DMCLogObjects();
@@ -495,7 +495,7 @@ LABEL_13:
           v51 = v30;
           v54 = &v71;
           v52 = v31;
-          v35 = [v34 performBlockUnderPersona:v12 block:v49];
+          v35 = [v34 performBlockUnderPersona:dCopy block:v49];
           v20 = *(v68 + 24);
           if (v20)
           {
@@ -518,12 +518,12 @@ LABEL_13:
               _os_log_impl(&dword_22E997000, v43, OS_LOG_TYPE_ERROR, "Error Updating iTunes Account: %{public}@", buf, 0xCu);
             }
 
-            if (a6)
+            if (error)
             {
               v45 = v72[5];
               if (v45)
               {
-                *a6 = v45;
+                *error = v45;
               }
             }
           }
@@ -540,10 +540,10 @@ LABEL_13:
             _os_log_impl(&dword_22E997000, v40, OS_LOG_TYPE_ERROR, "Error Updating iCloud Account: %{public}@", buf, 0xCu);
           }
 
-          if (a6 && (v42 = v72[5]) != 0)
+          if (error && (v42 = v72[5]) != 0)
           {
             v20 = 0;
-            *a6 = v42;
+            *error = v42;
           }
 
           else
@@ -564,10 +564,10 @@ LABEL_13:
           _os_log_impl(&dword_22E997000, v37, OS_LOG_TYPE_ERROR, "Error Updating RM Account: %{public}@", buf, 0xCu);
         }
 
-        if (a6 && (v39 = v72[5]) != 0)
+        if (error && (v39 = v72[5]) != 0)
         {
           v20 = 0;
-          *a6 = v39;
+          *error = v39;
         }
 
         else
@@ -584,17 +584,17 @@ LABEL_13:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v80 = v11;
+      v80 = identifierCopy;
       _os_log_impl(&dword_22E997000, v21, OS_LOG_TYPE_ERROR, "Unable to find RM account: %{public}@", buf, 0xCu);
     }
 
-    if (a6)
+    if (error)
     {
-      v22 = [a1 _createMissingRMAccountError];
-      if (v22)
+      _createMissingRMAccountError = [self _createMissingRMAccountError];
+      if (_createMissingRMAccountError)
       {
-        v22 = v22;
-        *a6 = v22;
+        _createMissingRMAccountError = _createMissingRMAccountError;
+        *error = _createMissingRMAccountError;
       }
     }
 

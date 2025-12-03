@@ -1,18 +1,18 @@
 @interface CHFriendInboxBadgeView
-- (CHFriendInboxBadgeView)initWithFrame:(CGRect)a3;
+- (CHFriendInboxBadgeView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setBadgeText:(id)a3;
-- (void)setTintColor:(id)a3;
+- (void)setBadgeText:(id)text;
+- (void)setTintColor:(id)color;
 - (void)sizeToFit;
 @end
 
 @implementation CHFriendInboxBadgeView
 
-- (CHFriendInboxBadgeView)initWithFrame:(CGRect)a3
+- (CHFriendInboxBadgeView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = CHFriendInboxBadgeView;
-  v3 = [(CHFriendInboxBadgeView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CHFriendInboxBadgeView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIImage imageNamed:@"ContactsBadgeBackground"];
@@ -60,8 +60,8 @@
 - (void)sizeToFit
 {
   [(UILabel *)self->_badgeTextLabel sizeToFit];
-  v3 = [(UIImageView *)self->_backgroundImageView image];
-  [v3 size];
+  image = [(UIImageView *)self->_backgroundImageView image];
+  [image size];
   v5 = v4;
 
   [(UILabel *)self->_badgeTextLabel bounds];
@@ -72,18 +72,18 @@
   [(CHFriendInboxBadgeView *)self setBounds:0.0, 0.0, v8, v5];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = CHFriendInboxBadgeView;
-  v4 = a3;
-  [(CHFriendInboxBadgeView *)&v5 setTintColor:v4];
-  [(UIImageView *)self->_backgroundImageView setTintColor:v4, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(CHFriendInboxBadgeView *)&v5 setTintColor:colorCopy];
+  [(UIImageView *)self->_backgroundImageView setTintColor:colorCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setBadgeText:(id)a3
+- (void)setBadgeText:(id)text
 {
-  [(UILabel *)self->_badgeTextLabel setText:a3];
+  [(UILabel *)self->_badgeTextLabel setText:text];
 
   [(CHFriendInboxBadgeView *)self setNeedsLayout];
 }

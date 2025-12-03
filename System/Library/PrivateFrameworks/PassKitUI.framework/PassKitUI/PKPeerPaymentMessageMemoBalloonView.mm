@@ -1,22 +1,22 @@
 @interface PKPeerPaymentMessageMemoBalloonView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPeerPaymentMessageMemoBalloonView)initWithMemo:(id)a3;
-- (double)_balloonMaxWidthForBoundsWidth:(double)a3;
-- (id)_memoBalloonViewWithText:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPeerPaymentMessageMemoBalloonView)initWithMemo:(id)memo;
+- (double)_balloonMaxWidthForBoundsWidth:(double)width;
+- (id)_memoBalloonViewWithText:(id)text;
 - (void)layoutSubviews;
 @end
 
 @implementation PKPeerPaymentMessageMemoBalloonView
 
-- (PKPeerPaymentMessageMemoBalloonView)initWithMemo:(id)a3
+- (PKPeerPaymentMessageMemoBalloonView)initWithMemo:(id)memo
 {
-  v4 = a3;
+  memoCopy = memo;
   v9.receiver = self;
   v9.super_class = PKPeerPaymentMessageMemoBalloonView;
   v5 = [(PKPeerPaymentMessageMemoBalloonView *)&v9 init];
-  if (v5 && [v4 length])
+  if (v5 && [memoCopy length])
   {
-    v6 = [(PKPeerPaymentMessageMemoBalloonView *)v5 _memoBalloonViewWithText:v4];
+    v6 = [(PKPeerPaymentMessageMemoBalloonView *)v5 _memoBalloonViewWithText:memoCopy];
     memoBalloonView = v5->_memoBalloonView;
     v5->_memoBalloonView = v6;
 
@@ -26,9 +26,9 @@
   return v5;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKPeerPaymentMessageMemoBalloonView *)self _balloonMaxWidthForBoundsWidth:a3.width];
+  [(PKPeerPaymentMessageMemoBalloonView *)self _balloonMaxWidthForBoundsWidth:fits.width];
   memoBalloonView = self->_memoBalloonView;
 
   [(CKTextBalloonView *)memoBalloonView sizeThatFits:?];
@@ -49,25 +49,25 @@
   [(CKTextBalloonView *)memoBalloonView setFrame:?];
 }
 
-- (id)_memoBalloonViewWithText:(id)a3
+- (id)_memoBalloonViewWithText:(id)text
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E6993C90] sharedBehaviors];
+  textCopy = text;
+  mEMORY[0x1E6993C90] = [MEMORY[0x1E6993C90] sharedBehaviors];
   objc_opt_class();
   v5 = CKBalloonViewForClass();
   [v5 setHasTail:1];
   [v5 setBalloonCorners:-1];
-  v6 = [MEMORY[0x1E6993C90] sharedBehaviors];
-  [v6 balloonCornerRadius];
+  mEMORY[0x1E6993C90]2 = [MEMORY[0x1E6993C90] sharedBehaviors];
+  [mEMORY[0x1E6993C90]2 balloonCornerRadius];
   [v5 setCornerRadius:?];
 
   [v5 setColor:5];
   [v5 setCanUseOpaqueMask:0];
-  v7 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v3];
-  if ([v4 hyphenatesTextContent])
+  v7 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:textCopy];
+  if ([mEMORY[0x1E6993C90] hyphenatesTextContent])
   {
-    v8 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v9 = [v8 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v9 = [defaultParagraphStyle mutableCopy];
 
     LODWORD(v10) = 1.0;
     [v9 setHyphenationFactor:v10];
@@ -75,21 +75,21 @@
   }
 
   v11 = [v7 length];
-  if ([v3 __ck_shouldUseBigEmoji])
+  if ([textCopy __ck_shouldUseBigEmoji])
   {
-    [v4 bigEmojiFont];
+    [mEMORY[0x1E6993C90] bigEmojiFont];
   }
 
   else
   {
-    [v4 balloonTextFont];
+    [mEMORY[0x1E6993C90] balloonTextFont];
   }
   v12 = ;
   [v7 addAttribute:*MEMORY[0x1E69DB648] value:v12 range:{0, v11}];
   v13 = *MEMORY[0x1E69DB650];
-  v14 = [MEMORY[0x1E6993C90] sharedBehaviors];
-  v15 = [v14 theme];
-  v16 = [v15 balloonTextColorForColorType:{objc_msgSend(v5, "color")}];
+  mEMORY[0x1E6993C90]3 = [MEMORY[0x1E6993C90] sharedBehaviors];
+  theme = [mEMORY[0x1E6993C90]3 theme];
+  v16 = [theme balloonTextColorForColorType:{objc_msgSend(v5, "color")}];
   [v7 addAttribute:v13 value:v16 range:{0, v11}];
 
   [v5 setAttributedText:v7];
@@ -98,14 +98,14 @@
   return v5;
 }
 
-- (double)_balloonMaxWidthForBoundsWidth:(double)a3
+- (double)_balloonMaxWidthForBoundsWidth:(double)width
 {
-  v4 = [MEMORY[0x1E6993C90] sharedBehaviors];
-  [v4 balloonMaxWidthForTranscriptWidth:0 marginInsets:0 shouldShowPluginButtons:0 shouldShowCharacterCount:a3 shouldCoverSendButton:{0.0, 10.0, 0.0, 10.0}];
+  mEMORY[0x1E6993C90] = [MEMORY[0x1E6993C90] sharedBehaviors];
+  [mEMORY[0x1E6993C90] balloonMaxWidthForTranscriptWidth:0 marginInsets:0 shouldShowPluginButtons:0 shouldShowCharacterCount:width shouldCoverSendButton:{0.0, 10.0, 0.0, 10.0}];
   v6 = v5;
 
-  result = a3 + -20.0;
-  if (v6 < a3 + -20.0)
+  result = width + -20.0;
+  if (v6 < width + -20.0)
   {
     return v6;
   }

@@ -1,29 +1,29 @@
 @interface _CircleView
-- (void)drawRect:(CGRect)a3;
-- (void)setUsesRoundedRectInsteadOfCircle:(BOOL)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setUsesRoundedRectInsteadOfCircle:(BOOL)circle;
 - (void)tintColorDidChange;
 @end
 
 @implementation _CircleView
 
-- (void)setUsesRoundedRectInsteadOfCircle:(BOOL)a3
+- (void)setUsesRoundedRectInsteadOfCircle:(BOOL)circle
 {
-  if (self->_usesRoundedRectInsteadOfCircle != a3)
+  if (self->_usesRoundedRectInsteadOfCircle != circle)
   {
-    self->_usesRoundedRectInsteadOfCircle = a3;
+    self->_usesRoundedRectInsteadOfCircle = circle;
     [(_CircleView *)self setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v4 = [(_CircleView *)self backgroundColor:a3.origin.x];
+  v4 = [(_CircleView *)self backgroundColor:rect.origin.x];
   [v4 setFill];
 
   [(_CircleView *)self bounds];
   UIRectFill(v13);
-  v5 = [(_CircleView *)self tintColor];
-  [v5 setFill];
+  tintColor = [(_CircleView *)self tintColor];
+  [tintColor setFill];
 
   if ([(_CircleView *)self usesRoundedRectInsteadOfCircle])
   {
@@ -46,8 +46,8 @@
   v4.receiver = self;
   v4.super_class = _CircleView;
   [(_CircleView *)&v4 tintColorDidChange];
-  v3 = [(_CircleView *)self layer];
-  [v3 setNeedsDisplay];
+  layer = [(_CircleView *)self layer];
+  [layer setNeedsDisplay];
 }
 
 @end

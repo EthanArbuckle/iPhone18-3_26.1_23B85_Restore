@@ -1,11 +1,11 @@
 @interface _UIFeedbackStateChangeConfiguration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _UIFeedbackStateChangeConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(_UIFeedbackDiscretePlayable *)self->_thresholdFeedback copy];
@@ -23,14 +23,14 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v16.receiver = self;
   v16.super_class = _UIFeedbackStateChangeConfiguration;
-  if ([(_UIFeedbackStateChangeConfiguration *)&v16 isEqual:v4])
+  if ([(_UIFeedbackStateChangeConfiguration *)&v16 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = *(v5 + 1);
     v7 = self->_thresholdFeedback;
     v8 = v6;

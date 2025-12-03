@@ -1,8 +1,8 @@
 @interface CAMPanoramaCaptureRequest
 - (CAMPanoramaCaptureRequest)init;
-- (CAMPanoramaCaptureRequest)initWithRequest:(id)a3 distinctPersistence:(BOOL)a4;
+- (CAMPanoramaCaptureRequest)initWithRequest:(id)request distinctPersistence:(BOOL)persistence;
 - (CAMPanoramaCaptureRequestDelegate)delegate;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CAMPanoramaCaptureRequest
@@ -21,17 +21,17 @@
   return v3;
 }
 
-- (CAMPanoramaCaptureRequest)initWithRequest:(id)a3 distinctPersistence:(BOOL)a4
+- (CAMPanoramaCaptureRequest)initWithRequest:(id)request distinctPersistence:(BOOL)persistence
 {
-  v4 = a4;
-  v6 = a3;
+  persistenceCopy = persistence;
+  requestCopy = request;
   v11.receiver = self;
   v11.super_class = CAMPanoramaCaptureRequest;
-  v7 = [(CAMCaptureRequest *)&v11 initWithRequest:v6 distinctPersistence:v4];
+  v7 = [(CAMCaptureRequest *)&v11 initWithRequest:requestCopy distinctPersistence:persistenceCopy];
   if (v7)
   {
-    v8 = [v6 delegate];
-    objc_storeWeak(&v7->_delegate, v8);
+    delegate = [requestCopy delegate];
+    objc_storeWeak(&v7->_delegate, delegate);
 
     v9 = v7;
   }
@@ -39,7 +39,7 @@
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CAMMutablePanoramaCaptureRequest alloc];
 

@@ -1,135 +1,135 @@
 @interface SFAppleIDAccount
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAccount:(id)a3;
-- (SFAppleIDAccount)initWithAppleID:(id)a3;
-- (SFAppleIDAccount)initWithCoder:(id)a3;
-- (SFAppleIDAccount)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAccount:(id)account;
+- (SFAppleIDAccount)initWithAppleID:(id)d;
+- (SFAppleIDAccount)initWithCoder:(id)coder;
+- (SFAppleIDAccount)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFAppleIDAccount
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   altDSID = self->_altDSID;
-  v14 = v4;
+  v14 = coderCopy;
   if (altDSID)
   {
-    [v4 encodeObject:altDSID forKey:@"AltDSID"];
-    v4 = v14;
+    [coderCopy encodeObject:altDSID forKey:@"AltDSID"];
+    coderCopy = v14;
   }
 
   appleID = self->_appleID;
   if (appleID)
   {
     [v14 encodeObject:appleID forKey:@"AppleID"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   certificateToken = self->_certificateToken;
   if (certificateToken)
   {
     [v14 encodeObject:certificateToken forKey:@"CertificateToken"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   certificateTokenCreationDate = self->_certificateTokenCreationDate;
   if (certificateTokenCreationDate)
   {
     [v14 encodeObject:certificateTokenCreationDate forKey:@"CertificateTokenCreationDate"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   contactInfo = self->_contactInfo;
   if (contactInfo)
   {
     [v14 encodeObject:contactInfo forKey:@"ContactInfo"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   creationDate = self->_creationDate;
   if (creationDate)
   {
     [v14 encodeObject:creationDate forKey:@"CreationDate"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   identity = self->_identity;
   if (identity)
   {
     [v14 encodeObject:identity forKey:@"Identity"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   privateKeyPersistentReference = self->_privateKeyPersistentReference;
   if (privateKeyPersistentReference)
   {
     [v14 encodeObject:privateKeyPersistentReference forKey:@"PrivateKeyPersistentReference"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   validationRecord = self->_validationRecord;
   if (validationRecord)
   {
     [v14 encodeObject:validationRecord forKey:@"ValidationRecord"];
-    v4 = v14;
+    coderCopy = v14;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SFAppleIDAccount *)self isEqualToAccount:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SFAppleIDAccount *)self isEqualToAccount:v5];
   }
 
   return v6;
 }
 
-- (SFAppleIDAccount)initWithAppleID:(id)a3
+- (SFAppleIDAccount)initWithAppleID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = SFAppleIDAccount;
   v6 = [(SFAppleIDAccount *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appleID, a3);
-    v8 = [MEMORY[0x1E695DF00] date];
+    objc_storeStrong(&v6->_appleID, d);
+    date = [MEMORY[0x1E695DF00] date];
     creationDate = v7->_creationDate;
-    v7->_creationDate = v8;
+    v7->_creationDate = date;
   }
 
   return v7;
 }
 
-- (SFAppleIDAccount)initWithDictionary:(id)a3
+- (SFAppleIDAccount)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v30.receiver = self;
   v30.super_class = SFAppleIDAccount;
   v5 = [(SFAppleIDAccount *)&v30 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"encDsId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"encDsId"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"AppleID"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"AppleID"];
     if (v8)
     {
-      v9 = [v4 objectForKeyedSubscript:@"AppleID"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"AppleID"];
     }
 
     else
@@ -140,57 +140,57 @@
     appleID = v5->_appleID;
     v5->_appleID = &v9->isa;
 
-    v11 = [v4 objectForKeyedSubscript:@"AppleID"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"AppleID"];
     certificateToken = v5->_certificateToken;
     v5->_certificateToken = v11;
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
-    v14 = [v4 objectForKeyedSubscript:@"FirstName"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"FirstName"];
 
     if (v14)
     {
-      v15 = [v4 objectForKeyedSubscript:@"FirstName"];
-      [v13 setObject:v15 forKeyedSubscript:@"FirstName"];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"FirstName"];
+      [dictionary setObject:v15 forKeyedSubscript:@"FirstName"];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"LastName"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"LastName"];
 
     if (v16)
     {
-      v17 = [v4 objectForKeyedSubscript:@"LastName"];
-      [v13 setObject:v17 forKeyedSubscript:@"LastName"];
+      v17 = [dictionaryCopy objectForKeyedSubscript:@"LastName"];
+      [dictionary setObject:v17 forKeyedSubscript:@"LastName"];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"ValidatedEmail"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"ValidatedEmail"];
 
     if (v18)
     {
-      v19 = [v4 objectForKeyedSubscript:@"ValidatedEmail"];
-      [v13 setObject:v19 forKeyedSubscript:@"ValidatedEmails"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"ValidatedEmail"];
+      [dictionary setObject:v19 forKeyedSubscript:@"ValidatedEmails"];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"ValidatedPhones"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"ValidatedPhones"];
 
     if (v20)
     {
-      v21 = [v4 objectForKeyedSubscript:@"ValidatedPhones"];
-      [v13 setObject:v21 forKeyedSubscript:@"ValidatedPhones"];
+      v21 = [dictionaryCopy objectForKeyedSubscript:@"ValidatedPhones"];
+      [dictionary setObject:v21 forKeyedSubscript:@"ValidatedPhones"];
     }
 
-    v22 = [[SFAppleIDContactInfo alloc] initWithDictionary:v13];
+    v22 = [[SFAppleIDContactInfo alloc] initWithDictionary:dictionary];
     contactInfo = v5->_contactInfo;
     v5->_contactInfo = v22;
 
-    v24 = [MEMORY[0x1E695DF90] dictionary];
-    v25 = [v4 objectForKeyedSubscript:@"AppleIDAccountValidationRecordData"];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"AppleIDAccountValidationRecordData"];
 
     if (v25)
     {
-      v26 = [v4 objectForKeyedSubscript:@"AppleIDAccountValidationRecordData"];
-      [v24 setObject:v26 forKeyedSubscript:@"ValidationRecordData"];
+      v26 = [dictionaryCopy objectForKeyedSubscript:@"AppleIDAccountValidationRecordData"];
+      [dictionary2 setObject:v26 forKeyedSubscript:@"ValidationRecordData"];
     }
 
-    v27 = [[SFAppleIDValidationRecord alloc] initWithDictionary:v24];
+    v27 = [[SFAppleIDValidationRecord alloc] initWithDictionary:dictionary2];
     validationRecord = v5->_validationRecord;
     v5->_validationRecord = v27;
   }
@@ -241,73 +241,73 @@
   return v10;
 }
 
-- (SFAppleIDAccount)initWithCoder:(id)a3
+- (SFAppleIDAccount)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = SFAppleIDAccount;
   v5 = [(SFAppleIDAccount *)&v26 init];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"AltDSID"])
+    if ([coderCopy containsValueForKey:@"AltDSID"])
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AltDSID"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AltDSID"];
       altDSID = v5->_altDSID;
       v5->_altDSID = v6;
     }
 
-    if ([v4 containsValueForKey:@"AppleID"])
+    if ([coderCopy containsValueForKey:@"AppleID"])
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AppleID"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AppleID"];
       appleID = v5->_appleID;
       v5->_appleID = v8;
     }
 
-    if ([v4 containsValueForKey:@"CertificateToken"])
+    if ([coderCopy containsValueForKey:@"CertificateToken"])
     {
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CertificateToken"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CertificateToken"];
       certificateToken = v5->_certificateToken;
       v5->_certificateToken = v10;
     }
 
-    if ([v4 containsValueForKey:@"CertificateTokenCreationDate"])
+    if ([coderCopy containsValueForKey:@"CertificateTokenCreationDate"])
     {
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CertificateTokenCreationDate"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CertificateTokenCreationDate"];
       certificateTokenCreationDate = v5->_certificateTokenCreationDate;
       v5->_certificateTokenCreationDate = v12;
     }
 
-    if ([v4 containsValueForKey:@"ContactInfo"])
+    if ([coderCopy containsValueForKey:@"ContactInfo"])
     {
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ContactInfo"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ContactInfo"];
       contactInfo = v5->_contactInfo;
       v5->_contactInfo = v14;
     }
 
-    if ([v4 containsValueForKey:@"CreationDate"])
+    if ([coderCopy containsValueForKey:@"CreationDate"])
     {
-      v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CreationDate"];
+      v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CreationDate"];
       creationDate = v5->_creationDate;
       v5->_creationDate = v16;
     }
 
-    if ([v4 containsValueForKey:@"Identity"])
+    if ([coderCopy containsValueForKey:@"Identity"])
     {
-      v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Identity"];
+      v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Identity"];
       identity = v5->_identity;
       v5->_identity = v18;
     }
 
-    if ([v4 containsValueForKey:@"PrivateKeyPersistentReference"])
+    if ([coderCopy containsValueForKey:@"PrivateKeyPersistentReference"])
     {
-      v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivateKeyPersistentReference"];
+      v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivateKeyPersistentReference"];
       privateKeyPersistentReference = v5->_privateKeyPersistentReference;
       v5->_privateKeyPersistentReference = v20;
     }
 
-    if ([v4 containsValueForKey:@"ValidationRecord"])
+    if ([coderCopy containsValueForKey:@"ValidationRecord"])
     {
-      v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ValidationRecord"];
+      v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ValidationRecord"];
       validationRecord = v5->_validationRecord;
       v5->_validationRecord = v22;
     }
@@ -318,9 +318,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -338,10 +338,10 @@
   return v5;
 }
 
-- (BOOL)isEqualToAccount:(id)a3
+- (BOOL)isEqualToAccount:(id)account
 {
-  v8 = a3;
-  if (self == v8)
+  accountCopy = account;
+  if (self == accountCopy)
   {
     v26 = 1;
     goto LABEL_33;
@@ -360,8 +360,8 @@
   {
     [(SFAppleIDAccount *)self altDSID];
     objc_claimAutoreleasedReturnValue();
-    v10 = [OUTLINED_FUNCTION_3_2() altDSID];
-    v11 = OUTLINED_FUNCTION_1(v10);
+    altDSID = [OUTLINED_FUNCTION_3_2() altDSID];
+    v11 = OUTLINED_FUNCTION_1(altDSID);
 
     if (!v11)
     {
@@ -382,8 +382,8 @@
   {
     [(SFAppleIDAccount *)self appleID];
     objc_claimAutoreleasedReturnValue();
-    v12 = [OUTLINED_FUNCTION_3_2() appleID];
-    v13 = OUTLINED_FUNCTION_1(v12);
+    appleID = [OUTLINED_FUNCTION_3_2() appleID];
+    v13 = OUTLINED_FUNCTION_1(appleID);
 
     if (!v13)
     {
@@ -404,8 +404,8 @@
   {
     [(SFAppleIDAccount *)self certificateToken];
     objc_claimAutoreleasedReturnValue();
-    v14 = [OUTLINED_FUNCTION_3_2() certificateToken];
-    v15 = OUTLINED_FUNCTION_1(v14);
+    certificateToken = [OUTLINED_FUNCTION_3_2() certificateToken];
+    v15 = OUTLINED_FUNCTION_1(certificateToken);
 
     if (!v15)
     {
@@ -426,8 +426,8 @@
   {
     [(SFAppleIDAccount *)self certificateTokenCreationDate];
     objc_claimAutoreleasedReturnValue();
-    v16 = [OUTLINED_FUNCTION_3_2() certificateTokenCreationDate];
-    v17 = OUTLINED_FUNCTION_1(v16);
+    certificateTokenCreationDate = [OUTLINED_FUNCTION_3_2() certificateTokenCreationDate];
+    v17 = OUTLINED_FUNCTION_1(certificateTokenCreationDate);
 
     if (!v17)
     {
@@ -448,8 +448,8 @@
   {
     [(SFAppleIDAccount *)self contactInfo];
     objc_claimAutoreleasedReturnValue();
-    v18 = [OUTLINED_FUNCTION_3_2() contactInfo];
-    v19 = OUTLINED_FUNCTION_1(v18);
+    contactInfo = [OUTLINED_FUNCTION_3_2() contactInfo];
+    v19 = OUTLINED_FUNCTION_1(contactInfo);
 
     if (!v19)
     {
@@ -470,8 +470,8 @@
   {
     [(SFAppleIDAccount *)self creationDate];
     objc_claimAutoreleasedReturnValue();
-    v20 = [OUTLINED_FUNCTION_3_2() creationDate];
-    v21 = OUTLINED_FUNCTION_1(v20);
+    creationDate = [OUTLINED_FUNCTION_3_2() creationDate];
+    v21 = OUTLINED_FUNCTION_1(creationDate);
 
     if (!v21)
     {
@@ -492,8 +492,8 @@
   {
     [(SFAppleIDAccount *)self identity];
     objc_claimAutoreleasedReturnValue();
-    v22 = [OUTLINED_FUNCTION_3_2() identity];
-    v23 = OUTLINED_FUNCTION_1(v22);
+    identity = [OUTLINED_FUNCTION_3_2() identity];
+    v23 = OUTLINED_FUNCTION_1(identity);
 
     if (!v23)
     {
@@ -514,8 +514,8 @@
   {
     [(SFAppleIDAccount *)self privateKeyPersistentReference];
     objc_claimAutoreleasedReturnValue();
-    v24 = [OUTLINED_FUNCTION_3_2() privateKeyPersistentReference];
-    v25 = OUTLINED_FUNCTION_1(v24);
+    privateKeyPersistentReference = [OUTLINED_FUNCTION_3_2() privateKeyPersistentReference];
+    v25 = OUTLINED_FUNCTION_1(privateKeyPersistentReference);
 
     if (!v25)
     {
@@ -539,8 +539,8 @@ LABEL_32:
   {
     [(SFAppleIDAccount *)self validationRecord];
     objc_claimAutoreleasedReturnValue();
-    v28 = [OUTLINED_FUNCTION_3_2() validationRecord];
-    v26 = OUTLINED_FUNCTION_1(v28);
+    validationRecord = [OUTLINED_FUNCTION_3_2() validationRecord];
+    v26 = OUTLINED_FUNCTION_1(validationRecord);
   }
 
 LABEL_33:

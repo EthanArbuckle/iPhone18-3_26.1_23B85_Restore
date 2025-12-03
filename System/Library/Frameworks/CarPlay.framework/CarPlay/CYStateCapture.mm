@@ -1,5 +1,5 @@
 @interface CYStateCapture
-- (CYStateCapture)initWithIdentifier:(id)a3 capture:(id)a4;
+- (CYStateCapture)initWithIdentifier:(id)identifier capture:(id)capture;
 - (id)description;
 - (os_state_data_s)stateCapture;
 - (void)dealloc;
@@ -8,21 +8,21 @@
 
 @implementation CYStateCapture
 
-- (CYStateCapture)initWithIdentifier:(id)a3 capture:(id)a4
+- (CYStateCapture)initWithIdentifier:(id)identifier capture:(id)capture
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  captureCopy = capture;
   v23.receiver = self;
   v23.super_class = CYStateCapture;
   v8 = [(CYStateCapture *)&v23 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = MEMORY[0x2383C2A40](v7);
+    v11 = MEMORY[0x2383C2A40](captureCopy);
     capture = v8->_capture;
     v8->_capture = v11;
 
@@ -37,9 +37,9 @@
     }
 
     v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.caraccessoryframework.StateCapture-%@-%p", v8->_identifier, v8];
-    v15 = [v14 UTF8String];
+    uTF8String = [v14 UTF8String];
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v17 = dispatch_queue_create(v15, v16);
+    v17 = dispatch_queue_create(uTF8String, v16);
     queue = v8->_queue;
     v8->_queue = v17;
 
@@ -88,7 +88,7 @@ uint64_t __45__CYStateCapture_initWithIdentifier_capture___block_invoke(uint64_t
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2080;
     v9 = "[CYStateCapture dealloc]";
     _os_log_impl(&dword_236ED4000, v3, OS_LOG_TYPE_DEFAULT, "%@ %s", buf, 0x16u);
@@ -110,8 +110,8 @@ uint64_t __45__CYStateCapture_initWithIdentifier_capture___block_invoke(uint64_t
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CYStateCapture *)self identifier];
-  v6 = [v3 stringWithFormat:@"<%@: %p identifier=%@>", v4, self, v5];
+  identifier = [(CYStateCapture *)self identifier];
+  v6 = [v3 stringWithFormat:@"<%@: %p identifier=%@>", v4, self, identifier];
 
   return v6;
 }
@@ -119,8 +119,8 @@ uint64_t __45__CYStateCapture_initWithIdentifier_capture___block_invoke(uint64_t
 - (os_state_data_s)stateCapture
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(CYStateCapture *)self capture];
-  v4 = v3[2]();
+  capture = [(CYStateCapture *)self capture];
+  v4 = capture[2]();
 
   v17 = 0;
   v5 = MEMORY[0x2383C2580](v4, 0, &v17);
@@ -170,8 +170,8 @@ LABEL_12:
   class_getName(v12);
   __strlcpy_chk();
   v11->var1.var1 = v8;
-  v13 = [(CYStateCapture *)self identifier];
-  [v13 UTF8String];
+  identifier = [(CYStateCapture *)self identifier];
+  [identifier UTF8String];
   __strlcpy_chk();
 
   memcpy(v11->var4, [v6 bytes], v9);
@@ -180,7 +180,7 @@ LABEL_12:
   {
     v14 = [v6 length];
     *buf = 138412546;
-    v19 = self;
+    selfCopy = self;
     v20 = 2048;
     v21 = v14;
     _os_log_impl(&dword_236ED4000, v7, OS_LOG_TYPE_DEFAULT, "%@ captured state data.length=%lu", buf, 0x16u);
@@ -196,7 +196,7 @@ LABEL_13:
 {
   v9 = *MEMORY[0x277D85DE8];
   v5 = 138412546;
-  v6 = a1;
+  selfCopy = self;
   v7 = 2048;
   v8 = [a2 length];
   _os_log_error_impl(&dword_236ED4000, a3, OS_LOG_TYPE_ERROR, "%@ over data limit, length=%lu", &v5, 0x16u);

@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __59___CLKTimeFormatSentinel_listenForLocaleChangesIfNecessary__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (listenForLocaleChangesIfNecessary_onceToken != -1)
   {
     dispatch_once(&listenForLocaleChangesIfNecessary_onceToken, block);
@@ -21,8 +21,8 @@
 + (void)_handleLocaleChange
 {
   +[_CLKTimeFormatData resetTimeFormatData];
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"CLKFormatTimeIntervalCacheInvalidateNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"CLKFormatTimeIntervalCacheInvalidateNotification" object:0];
 }
 
 @end

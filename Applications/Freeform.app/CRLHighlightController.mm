@@ -2,24 +2,24 @@
 - (CALayer)layerToAnimate;
 - (CGAffineTransform)transform;
 - (CGRect)rectToAnimate;
-- (void)buildLayersForPath:(CGPath *)a3 withImage:(id)a4;
-- (void)createLayerWithZOrder:(double)a3 contentsScaleForLayers:(double)a4;
+- (void)buildLayersForPath:(CGPath *)path withImage:(id)image;
+- (void)createLayerWithZOrder:(double)order contentsScaleForLayers:(double)layers;
 - (void)dealloc;
-- (void)p_buildLayersForPath:(CGPath *)a3 withImage:(id)a4;
-- (void)p_buildLayersWithBackgroundForPath:(CGPath *)a3 withImage:(id)a4;
+- (void)p_buildLayersForPath:(CGPath *)path withImage:(id)image;
+- (void)p_buildLayersWithBackgroundForPath:(CGPath *)path withImage:(id)image;
 - (void)reset;
-- (void)setBackgroundColor:(CGColor *)a3;
-- (void)setPath:(CGPath *)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setBackgroundColor:(CGColor *)color;
+- (void)setPath:(CGPath *)path;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation CRLHighlightController
 
 - (CALayer)layerToAnimate
 {
-  v3 = [(CRLHighlightController *)self shouldCreateBackground];
+  shouldCreateBackground = [(CRLHighlightController *)self shouldCreateBackground];
   v4 = 24;
-  if (v3)
+  if (shouldCreateBackground)
   {
     v4 = 56;
   }
@@ -29,31 +29,31 @@
   return v5;
 }
 
-- (void)setPath:(CGPath *)a3
+- (void)setPath:(CGPath *)path
 {
   path = self->_path;
-  if (path != a3)
+  if (path != path)
   {
     if (path)
     {
       CGPathRelease(path);
     }
 
-    self->_path = CGPathRetain(a3);
+    self->_path = CGPathRetain(path);
   }
 }
 
-- (void)setBackgroundColor:(CGColor *)a3
+- (void)setBackgroundColor:(CGColor *)color
 {
   backgroundColor = self->_backgroundColor;
-  if (backgroundColor != a3)
+  if (backgroundColor != color)
   {
     if (backgroundColor)
     {
       CGColorRelease(backgroundColor);
     }
 
-    self->_backgroundColor = CGColorRetain(a3);
+    self->_backgroundColor = CGColorRetain(color);
   }
 }
 
@@ -75,14 +75,14 @@
   [(CRLHighlightController *)self setImage:0];
   [(CRLHighlightController *)self setPath:0];
   [(CALayer *)self->_layer setDelegate:0];
-  v4 = [(CALayer *)self->_layer sublayers];
-  [v4 makeObjectsPerformSelector:"setDelegate:" withObject:0];
+  sublayers = [(CALayer *)self->_layer sublayers];
+  [sublayers makeObjectsPerformSelector:"setDelegate:" withObject:0];
 
   layer = self->_layer;
   self->_layer = 0;
 }
 
-- (void)createLayerWithZOrder:(double)a3 contentsScaleForLayers:(double)a4
+- (void)createLayerWithZOrder:(double)order contentsScaleForLayers:(double)layers
 {
   if (self->_layer)
   {
@@ -115,9 +115,9 @@
     [(CRLHighlightController *)self reset];
   }
 
-  if (a4 <= 0.0)
+  if (layers <= 0.0)
   {
-    a4 = 1.0;
+    layers = 1.0;
   }
 
   v10 = objc_alloc_init(CALayer);
@@ -127,8 +127,8 @@
   y = CGPointZero.y;
   [(CALayer *)self->_layer setAnchorPoint:CGPointZero.x, y];
   [(CALayer *)self->_layer setEdgeAntialiasingMask:0];
-  [(CALayer *)self->_layer setContentsScale:a4];
-  [(CALayer *)self->_layer setZPosition:a3];
+  [(CALayer *)self->_layer setContentsScale:layers];
+  [(CALayer *)self->_layer setZPosition:order];
   [(CALayer *)self->_layer setDelegate:self];
   v13 = objc_alloc_init(CALayer);
   imageLayer = self->_imageLayer;
@@ -136,23 +136,23 @@
 
   [(CALayer *)self->_imageLayer setAnchorPoint:CGPointZero.x, y];
   [(CALayer *)self->_imageLayer setEdgeAntialiasingMask:0];
-  [(CALayer *)self->_imageLayer setContentsScale:a4];
+  [(CALayer *)self->_imageLayer setContentsScale:layers];
   [(CALayer *)self->_layer addSublayer:self->_imageLayer];
   [(CALayer *)self->_imageLayer setDelegate:self];
   [(CALayer *)self->_imageLayer setZPosition:1.0];
 }
 
-- (void)p_buildLayersForPath:(CGPath *)a3 withImage:(id)a4
+- (void)p_buildLayersForPath:(CGPath *)path withImage:(id)image
 {
-  v6 = a4;
+  imageCopy = image;
   size = CGRectZero.size;
   self->_rectToAnimate.origin = CGRectZero.origin;
   self->_rectToAnimate.size = size;
-  [(CRLHighlightController *)self setImage:v6];
-  [(CRLHighlightController *)self setPath:a3];
-  if (a3)
+  [(CRLHighlightController *)self setImage:imageCopy];
+  [(CRLHighlightController *)self setPath:path];
+  if (path)
   {
-    BoundingBox = CGPathGetBoundingBox(a3);
+    BoundingBox = CGPathGetBoundingBox(path);
     v8 = *&self->_transform.c;
     *&v33.a = *&self->_transform.a;
     *&v33.c = v8;
@@ -192,7 +192,7 @@
       v18 = self->_rectToAnimate.origin.y;
       v19 = self->_rectToAnimate.size.width;
       v20 = self->_rectToAnimate.size.height;
-      [v6 size];
+      [imageCopy size];
       v22 = v21;
       v24 = v23;
       *&v21 = (v23 - v20) * 0.5;
@@ -223,12 +223,12 @@
   }
 }
 
-- (void)p_buildLayersWithBackgroundForPath:(CGPath *)a3 withImage:(id)a4
+- (void)p_buildLayersWithBackgroundForPath:(CGPath *)path withImage:(id)image
 {
-  v6 = a4;
-  [(CRLHighlightController *)self setImage:v6];
-  [(CRLHighlightController *)self setPath:a3];
-  if (a3)
+  imageCopy = image;
+  [(CRLHighlightController *)self setImage:imageCopy];
+  [(CRLHighlightController *)self setPath:path];
+  if (path)
   {
     v7 = objc_alloc_init(CAShapeLayer);
     backgroundLayer = self->_backgroundLayer;
@@ -245,10 +245,10 @@
     [(CAShapeLayer *)self->_backgroundLayer setShadowOpacity:v9];
     [(CAShapeLayer *)self->_backgroundLayer setShadowRadius:1.0];
     [(CAShapeLayer *)self->_backgroundLayer setShadowOffset:0.0, 0.0];
-    [(CRLHighlightController *)self p_buildLayersForPath:a3 withImage:v6];
+    [(CRLHighlightController *)self p_buildLayersForPath:path withImage:imageCopy];
     [(CALayer *)self->_imageLayer setShadowOpacity:0.0];
     [(CALayer *)self->_layer setFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-    BoundingBox = CGPathGetBoundingBox(a3);
+    BoundingBox = CGPathGetBoundingBox(path);
     v10 = *&self->_transform.c;
     *&transform.a = *&self->_transform.a;
     *&transform.c = v10;
@@ -313,7 +313,7 @@
     v35.size.width = width;
     v35.size.height = height;
     self->_rectToAnimate = CGRectIntegral(v35);
-    CopyByTransformingPath = CGPathCreateCopyByTransformingPath(a3, &self->_transform);
+    CopyByTransformingPath = CGPathCreateCopyByTransformingPath(path, &self->_transform);
     v24 = CGPathCreateCopyByTransformingPath(CopyByTransformingPath, &transform);
     [(CAShapeLayer *)self->_backgroundLayer setPath:v24];
     backgroundColor = self->_backgroundColor;
@@ -356,17 +356,17 @@
   }
 }
 
-- (void)buildLayersForPath:(CGPath *)a3 withImage:(id)a4
+- (void)buildLayersForPath:(CGPath *)path withImage:(id)image
 {
-  v6 = a4;
+  imageCopy = image;
   if ([(CRLHighlightController *)self shouldCreateBackground])
   {
-    [(CRLHighlightController *)self p_buildLayersWithBackgroundForPath:a3 withImage:v6];
+    [(CRLHighlightController *)self p_buildLayersWithBackgroundForPath:path withImage:imageCopy];
   }
 
   else
   {
-    [(CRLHighlightController *)self p_buildLayersForPath:a3 withImage:v6];
+    [(CRLHighlightController *)self p_buildLayersForPath:path withImage:imageCopy];
   }
 }
 
@@ -379,11 +379,11 @@
   return self;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_transform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_transform.tx = *&transform->tx;
   *&self->_transform.c = v4;
   *&self->_transform.a = v3;
 }

@@ -1,12 +1,12 @@
 @interface UIBackgroundExtensionView
 - (BOOL)automaticallyPlacesContentView;
-- (UIBackgroundExtensionView)initWithCoder:(id)a3;
+- (UIBackgroundExtensionView)initWithCoder:(id)coder;
 - (UIView)contentView;
 - (void)endContentViewObservation;
 - (void)layoutSubviews;
 - (void)observeContentViewIfNeeded;
-- (void)setAutomaticallyPlacesContentView:(BOOL)a3;
-- (void)setContentView:(id)a3;
+- (void)setAutomaticallyPlacesContentView:(BOOL)view;
+- (void)setContentView:(id)view;
 - (void)updateEffectsView;
 @end
 
@@ -19,14 +19,14 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
   v5 = OBJC_IVAR___UIBackgroundExtensionView_contentView;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.super.super.isa + v5) = view;
+  viewCopy = view;
+  selfCopy = self;
   sub_1890ED1E4(v6);
 }
 
@@ -37,20 +37,20 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setAutomaticallyPlacesContentView:(BOOL)a3
+- (void)setAutomaticallyPlacesContentView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   v5 = OBJC_IVAR___UIBackgroundExtensionView_automaticallyPlacesContentView;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = v3;
-  if (v6 != v3)
+  *(&self->super.super.super.isa + v5) = viewCopy;
+  if (v6 != viewCopy)
   {
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (UIBackgroundExtensionView)initWithCoder:(id)a3
+- (UIBackgroundExtensionView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___UIBackgroundExtensionView_isObservingContentViewGeometry) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR___UIBackgroundExtensionView_contentView) = 0;
@@ -64,13 +64,13 @@
 
 - (void)updateEffectsView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1890ED7B8();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   UIBackgroundExtensionView.layoutSubviews()();
 }
 
@@ -79,12 +79,12 @@
   v2 = OBJC_IVAR___UIBackgroundExtensionView_isObservingContentViewGeometry;
   if ((*(&self->super.super.super.isa + OBJC_IVAR___UIBackgroundExtensionView_isObservingContentViewGeometry) & 1) == 0)
   {
-    v6 = self;
-    v4 = [(UIBackgroundExtensionView *)v6 contentView];
-    if (v4)
+    selfCopy = self;
+    contentView = [(UIBackgroundExtensionView *)selfCopy contentView];
+    if (contentView)
     {
-      v5 = v4;
-      [(UIView *)v4 _addGeometryChangeObserver:v6];
+      v5 = contentView;
+      [(UIView *)contentView _addGeometryChangeObserver:selfCopy];
     }
 
     *(&self->super.super.super.isa + v2) = 1;
@@ -96,12 +96,12 @@
   v2 = OBJC_IVAR___UIBackgroundExtensionView_isObservingContentViewGeometry;
   if (*(&self->super.super.super.isa + OBJC_IVAR___UIBackgroundExtensionView_isObservingContentViewGeometry) == 1)
   {
-    v6 = self;
-    v4 = [(UIBackgroundExtensionView *)v6 contentView];
-    if (v4)
+    selfCopy = self;
+    contentView = [(UIBackgroundExtensionView *)selfCopy contentView];
+    if (contentView)
     {
-      v5 = v4;
-      [(UIView *)v4 _removeGeometryChangeObserver:v6];
+      v5 = contentView;
+      [(UIView *)contentView _removeGeometryChangeObserver:selfCopy];
     }
 
     *(&self->super.super.super.isa + v2) = 0;

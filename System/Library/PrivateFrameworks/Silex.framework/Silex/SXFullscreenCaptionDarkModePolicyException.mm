@@ -1,30 +1,30 @@
 @interface SXFullscreenCaptionDarkModePolicyException
-- (int64_t)shouldApplyAutoDarkModeForComponentClassification:(id)a3;
-- (int64_t)shouldApplyDarkModeToTextStyleBackgroundColorsForComponent:(id)a3 DOM:(id)a4;
-- (int64_t)shouldApplyDarkModeToTextStyleForegroundColorsForComponent:(id)a3 DOM:(id)a4;
+- (int64_t)shouldApplyAutoDarkModeForComponentClassification:(id)classification;
+- (int64_t)shouldApplyDarkModeToTextStyleBackgroundColorsForComponent:(id)component DOM:(id)m;
+- (int64_t)shouldApplyDarkModeToTextStyleForegroundColorsForComponent:(id)component DOM:(id)m;
 @end
 
 @implementation SXFullscreenCaptionDarkModePolicyException
 
-- (int64_t)shouldApplyDarkModeToTextStyleBackgroundColorsForComponent:(id)a3 DOM:(id)a4
+- (int64_t)shouldApplyDarkModeToTextStyleBackgroundColorsForComponent:(id)component DOM:(id)m
 {
-  v5 = [a3 classification];
-  v6 = [(SXFullscreenCaptionDarkModePolicyException *)self shouldApplyAutoDarkModeForComponentClassification:v5];
+  classification = [component classification];
+  v6 = [(SXFullscreenCaptionDarkModePolicyException *)self shouldApplyAutoDarkModeForComponentClassification:classification];
 
   return v6;
 }
 
-- (int64_t)shouldApplyDarkModeToTextStyleForegroundColorsForComponent:(id)a3 DOM:(id)a4
+- (int64_t)shouldApplyDarkModeToTextStyleForegroundColorsForComponent:(id)component DOM:(id)m
 {
-  v5 = [a3 classification];
-  v6 = [(SXFullscreenCaptionDarkModePolicyException *)self shouldApplyAutoDarkModeForComponentClassification:v5];
+  classification = [component classification];
+  v6 = [(SXFullscreenCaptionDarkModePolicyException *)self shouldApplyAutoDarkModeForComponentClassification:classification];
 
   return v6;
 }
 
-- (int64_t)shouldApplyAutoDarkModeForComponentClassification:(id)a3
+- (int64_t)shouldApplyAutoDarkModeForComponentClassification:(id)classification
 {
-  v3 = a3;
+  classificationCopy = classification;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {

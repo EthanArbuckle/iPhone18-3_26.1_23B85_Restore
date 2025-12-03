@@ -1,13 +1,13 @@
 @interface ArtworkProgressBarOverlay
-- (_TtC23ShelfKitCollectionViews25ArtworkProgressBarOverlay)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews25ArtworkProgressBarOverlay)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews25ArtworkProgressBarOverlay)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews25ArtworkProgressBarOverlay)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)updateProgressViewOpacity;
 @end
 
 @implementation ArtworkProgressBarOverlay
 
-- (_TtC23ShelfKitCollectionViews25ArtworkProgressBarOverlay)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews25ArtworkProgressBarOverlay)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews25ArtworkProgressBarOverlay_progressStyle) = 1;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews25ArtworkProgressBarOverlay_progress) = 0;
@@ -19,17 +19,17 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2BDE0();
 }
 
 - (void)updateProgressViewOpacity
 {
-  v2 = self;
+  selfCopy = self;
   sub_2C054();
 }
 
-- (_TtC23ShelfKitCollectionViews25ArtworkProgressBarOverlay)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews25ArtworkProgressBarOverlay)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

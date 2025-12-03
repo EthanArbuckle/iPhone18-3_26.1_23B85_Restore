@@ -1,13 +1,13 @@
 @interface FBSWorkspaceResponse
-- (FBSWorkspaceResponse)initWithXPCDictionary:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (FBSWorkspaceResponse)initWithXPCDictionary:(id)dictionary;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation FBSWorkspaceResponse
 
-- (FBSWorkspaceResponse)initWithXPCDictionary:(id)a3
+- (FBSWorkspaceResponse)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v6.receiver = self;
   v6.super_class = FBSWorkspaceResponse;
   if ([(FBSWorkspaceResponse *)&v6 init])
@@ -18,9 +18,9 @@
   return 0;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     BSSerializeBSXPCEncodableObjectToXPCDictionaryWithKey();
   }

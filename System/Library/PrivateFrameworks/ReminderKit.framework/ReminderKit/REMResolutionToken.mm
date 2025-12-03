@@ -1,32 +1,32 @@
 @interface REMResolutionToken
-+ (id)resolutionTokenWithJSONObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)resolutionTokenWithJSONObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (REMResolutionToken)init;
-- (REMResolutionToken)initWithCoder:(id)a3;
-- (REMResolutionToken)initWithCounter:(int64_t)a3 modificationTime:(double)a4 replicaID:(id)a5;
+- (REMResolutionToken)initWithCoder:(id)coder;
+- (REMResolutionToken)initWithCounter:(int64_t)counter modificationTime:(double)time replicaID:(id)d;
 - (REMResolutionToken)initWithDefaultValue;
 - (double)generateNonce;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 - (void)update;
 @end
 
 @implementation REMResolutionToken
 
-- (REMResolutionToken)initWithCounter:(int64_t)a3 modificationTime:(double)a4 replicaID:(id)a5
+- (REMResolutionToken)initWithCounter:(int64_t)counter modificationTime:(double)time replicaID:(id)d
 {
-  v8 = a5;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = REMResolutionToken;
   v9 = [(REMResolutionToken *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    [(REMResolutionToken *)v9 setCounter:a3];
-    [(REMResolutionToken *)v10 setModificationTime:a4];
-    [(REMResolutionToken *)v10 setReplicaID:v8];
+    [(REMResolutionToken *)v9 setCounter:counter];
+    [(REMResolutionToken *)v10 setModificationTime:time];
+    [(REMResolutionToken *)v10 setReplicaID:dCopy];
   }
 
   return v10;
@@ -35,8 +35,8 @@
 - (REMResolutionToken)init
 {
   Current = CFAbsoluteTimeGetCurrent();
-  v4 = [MEMORY[0x1E696AFB0] UUID];
-  v5 = [(REMResolutionToken *)self initWithCounter:0 modificationTime:v4 replicaID:Current];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v5 = [(REMResolutionToken *)self initWithCounter:0 modificationTime:uUID replicaID:Current];
 
   return v5;
 }
@@ -49,26 +49,26 @@
   return v4;
 }
 
-- (REMResolutionToken)initWithCoder:(id)a3
+- (REMResolutionToken)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"counter"];
-  [v4 decodeDoubleForKey:@"modificationTime"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"counter"];
+  [coderCopy decodeDoubleForKey:@"modificationTime"];
   v7 = v6;
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"replicaID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"replicaID"];
 
   v9 = [(REMResolutionToken *)self initWithCounter:v5 modificationTime:v8 replicaID:v7];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[REMResolutionToken counter](self forKey:{"counter"), @"counter"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[REMResolutionToken counter](self forKey:{"counter"), @"counter"}];
   [(REMResolutionToken *)self modificationTime];
-  [v4 encodeDouble:@"modificationTime" forKey:?];
-  v5 = [(REMResolutionToken *)self replicaID];
-  [v4 encodeObject:v5 forKey:@"replicaID"];
+  [coderCopy encodeDouble:@"modificationTime" forKey:?];
+  replicaID = [(REMResolutionToken *)self replicaID];
+  [coderCopy encodeObject:replicaID forKey:@"replicaID"];
 }
 
 - (void)update
@@ -79,22 +79,22 @@
   [(REMResolutionToken *)self setModificationTime:Current];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [REMResolutionToken alloc];
-  v5 = [(REMResolutionToken *)self counter];
+  counter = [(REMResolutionToken *)self counter];
   [(REMResolutionToken *)self modificationTime];
   v7 = v6;
-  v8 = [(REMResolutionToken *)self replicaID];
-  v9 = [(REMResolutionToken *)v4 initWithCounter:v5 modificationTime:v8 replicaID:v7];
+  replicaID = [(REMResolutionToken *)self replicaID];
+  v9 = [(REMResolutionToken *)v4 initWithCounter:counter modificationTime:replicaID replicaID:v7];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -102,26 +102,26 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(REMResolutionToken *)self compare:v4]== 0;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(REMResolutionToken *)self compare:equalCopy]== 0;
   }
 
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(REMResolutionToken *)self counter];
-  if (v5 == [v4 counter])
+  compareCopy = compare;
+  counter = [(REMResolutionToken *)self counter];
+  if (counter == [compareCopy counter])
   {
     [(REMResolutionToken *)self modificationTime];
     v7 = v6;
-    [v4 modificationTime];
+    [compareCopy modificationTime];
     if (vabdd_f64(v7, v8) <= 2.22044605e-16)
     {
-      v11 = [(REMResolutionToken *)self replicaID];
-      v12 = [v4 replicaID];
-      v9 = [v11 CR_compare:v12];
+      replicaID = [(REMResolutionToken *)self replicaID];
+      replicaID2 = [compareCopy replicaID];
+      v9 = [replicaID CR_compare:replicaID2];
     }
 
     else if (v7 - v8 > 0.0)
@@ -137,8 +137,8 @@
 
   else
   {
-    v10 = [(REMResolutionToken *)self counter];
-    if (v10 > [v4 counter])
+    counter2 = [(REMResolutionToken *)self counter];
+    if (counter2 > [compareCopy counter])
     {
       v9 = 1;
     }
@@ -155,29 +155,29 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(REMResolutionToken *)self counter];
+  counter = [(REMResolutionToken *)self counter];
   [(REMResolutionToken *)self modificationTime];
   v6 = v5;
-  v7 = [(REMResolutionToken *)self replicaID];
-  v8 = [v7 UUIDString];
-  v9 = [v3 stringWithFormat:@"<counter=%ld modificationTime=%lf replicaID=%@>", v4, v6, v8];
+  replicaID = [(REMResolutionToken *)self replicaID];
+  uUIDString = [replicaID UUIDString];
+  v9 = [v3 stringWithFormat:@"<counter=%ld modificationTime=%lf replicaID=%@>", counter, v6, uUIDString];
 
   return v9;
 }
 
-+ (id)resolutionTokenWithJSONObject:(id)a3
++ (id)resolutionTokenWithJSONObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_opt_class();
-  v5 = [v3 objectForKey:@"counter"];
+  v5 = [objectCopy objectForKey:@"counter"];
   v6 = REMDynamicCast(v4, v5);
 
   v7 = objc_opt_class();
-  v8 = [v3 objectForKey:@"modificationTime"];
+  v8 = [objectCopy objectForKey:@"modificationTime"];
   v9 = REMDynamicCast(v7, v8);
 
   v10 = objc_opt_class();
-  v11 = [v3 objectForKey:@"replicaID"];
+  v11 = [objectCopy objectForKey:@"replicaID"];
   v12 = REMDynamicCast(v10, v11);
 
   if (!v6 || !v9 || !v12 || (v13 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v12]) == 0 || (v14 = v13, v15 = [REMResolutionToken alloc], v16 = objc_msgSend(v6, "integerValue"), objc_msgSend(v9, "doubleValue"), v17 = -[REMResolutionToken initWithCounter:modificationTime:replicaID:](v15, "initWithCounter:modificationTime:replicaID:", v16, v14), v14, !v17))
@@ -185,7 +185,7 @@
     v18 = +[REMLogStore utility];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [(REMResolutionToken *)v3 resolutionTokenWithJSONObject:v18];
+      [(REMResolutionToken *)objectCopy resolutionTokenWithJSONObject:v18];
     }
 
     v17 = 0;
@@ -196,9 +196,9 @@
 
 - (double)generateNonce
 {
-  v3 = [(REMResolutionToken *)self counter];
+  counter = [(REMResolutionToken *)self counter];
   [(REMResolutionToken *)self modificationTime];
-  return v4 + v3 * 1.0e11;
+  return v4 + counter * 1.0e11;
 }
 
 + (void)resolutionTokenWithJSONObject:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

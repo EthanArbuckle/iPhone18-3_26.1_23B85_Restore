@@ -1,20 +1,20 @@
 @interface ICASFindInTranscriptData
-- (ICASFindInTranscriptData)initWithWasSearchQueryEntered:(id)a3;
+- (ICASFindInTranscriptData)initWithWasSearchQueryEntered:(id)entered;
 - (id)toDict;
 @end
 
 @implementation ICASFindInTranscriptData
 
-- (ICASFindInTranscriptData)initWithWasSearchQueryEntered:(id)a3
+- (ICASFindInTranscriptData)initWithWasSearchQueryEntered:(id)entered
 {
-  v5 = a3;
+  enteredCopy = entered;
   v9.receiver = self;
   v9.super_class = ICASFindInTranscriptData;
   v6 = [(ICASFindInTranscriptData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wasSearchQueryEntered, a3);
+    objc_storeStrong(&v6->_wasSearchQueryEntered, entered);
   }
 
   return v7;
@@ -24,19 +24,19 @@
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"wasSearchQueryEntered";
-  v3 = [(ICASFindInTranscriptData *)self wasSearchQueryEntered];
-  if (v3)
+  wasSearchQueryEntered = [(ICASFindInTranscriptData *)self wasSearchQueryEntered];
+  if (wasSearchQueryEntered)
   {
-    v4 = [(ICASFindInTranscriptData *)self wasSearchQueryEntered];
+    wasSearchQueryEntered2 = [(ICASFindInTranscriptData *)self wasSearchQueryEntered];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    wasSearchQueryEntered2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v10[0] = v4;
+  v5 = wasSearchQueryEntered2;
+  v10[0] = wasSearchQueryEntered2;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = *MEMORY[0x277D85DE8];

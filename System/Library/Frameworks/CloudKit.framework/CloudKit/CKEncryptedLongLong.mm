@@ -1,15 +1,15 @@
 @interface CKEncryptedLongLong
-- (CKEncryptedLongLong)initWithLongLong:(int64_t)a3;
+- (CKEncryptedLongLong)initWithLongLong:(int64_t)long;
 - (id)value;
 - (int64_t)longLongValue;
 @end
 
 @implementation CKEncryptedLongLong
 
-- (CKEncryptedLongLong)initWithLongLong:(int64_t)a3
+- (CKEncryptedLongLong)initWithLongLong:(int64_t)long
 {
   v5 = objc_alloc_init(CKDPRecordFieldValueEncryptedValue);
-  objc_msgSend_setSignedValue_(v5, v6, a3);
+  objc_msgSend_setSignedValue_(v5, v6, long);
   v9 = objc_msgSend_data(v5, v7, v8);
   v12.receiver = self;
   v12.super_class = CKEncryptedLongLong;

@@ -1,5 +1,5 @@
 @interface HAP2AccessoryServerTransportBaseOperationClose
-- (HAP2AccessoryServerTransportBaseOperationClose)initWithTransport:(id)a3 desiredError:(id)a4 completion:(id)a5;
+- (HAP2AccessoryServerTransportBaseOperationClose)initWithTransport:(id)transport desiredError:(id)error completion:(id)completion;
 - (void)main;
 @end
 
@@ -11,24 +11,24 @@
   if (self && (v3 = self->super._transport) != 0)
   {
     v13 = v3;
-    v4 = self;
-    v5 = [(HAP2AccessoryServerTransportBase *)v13 operationQueue];
-    [v5 assertCurrentQueue];
+    selfCopy = self;
+    operationQueue = [(HAP2AccessoryServerTransportBase *)v13 operationQueue];
+    [operationQueue assertCurrentQueue];
 
     v22 = 0;
     v23 = &v22;
     v24 = 0x2020000000;
     v25 = 0;
-    v6 = [(HAP2AccessoryServerTransportBase *)v13 propertyLock];
+    propertyLock = [(HAP2AccessoryServerTransportBase *)v13 propertyLock];
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __56__HAP2AccessoryServerTransportBase__closeWithOperation___block_invoke;
     v18 = &unk_2786D4F60;
-    v7 = v4;
+    v7 = selfCopy;
     v19 = v7;
     v20 = v13;
     v21 = &v22;
-    [v6 performWritingBlock:&v15];
+    [propertyLock performWritingBlock:&v15];
 
     if (v23[3])
     {
@@ -86,36 +86,36 @@
   }
 }
 
-- (HAP2AccessoryServerTransportBaseOperationClose)initWithTransport:(id)a3 desiredError:(id)a4 completion:(id)a5
+- (HAP2AccessoryServerTransportBaseOperationClose)initWithTransport:(id)transport desiredError:(id)error completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  transportCopy = transport;
+  errorCopy = error;
+  completionCopy = completion;
   v11 = MEMORY[0x277CCACA8];
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
   v14 = [v11 stringWithFormat:@"%@.close", v13];
   v26.receiver = self;
   v26.super_class = HAP2AccessoryServerTransportBaseOperationClose;
-  v15 = [(HAP2AccessoryServerTransportBaseOperation *)&v26 initWithName:v14 transport:v8];
+  v15 = [(HAP2AccessoryServerTransportBaseOperation *)&v26 initWithName:v14 transport:transportCopy];
 
   if (v15)
   {
-    objc_storeStrong(&v15->_desiredError, a4);
-    v16 = MEMORY[0x231885210](v10);
+    objc_storeStrong(&v15->_desiredError, error);
+    v16 = MEMORY[0x231885210](completionCopy);
     clientCompletion = v15->_clientCompletion;
     v15->_clientCompletion = v16;
 
-    v18 = [v8 delegateQueue];
+    delegateQueue = [transportCopy delegateQueue];
     objc_initWeak(&location, v15);
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __92__HAP2AccessoryServerTransportBaseOperationClose_initWithTransport_desiredError_completion___block_invoke;
     v21[3] = &unk_2786D6BE0;
     objc_copyWeak(&v24, &location);
-    v19 = v18;
+    v19 = delegateQueue;
     v22 = v19;
-    v23 = v10;
+    v23 = completionCopy;
     [(HAP2AccessoryServerTransportBaseOperationClose *)v15 setCompletionBlock:v21];
 
     objc_destroyWeak(&v24);

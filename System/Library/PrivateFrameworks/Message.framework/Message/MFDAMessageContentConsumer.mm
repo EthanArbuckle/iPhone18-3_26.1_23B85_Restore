@@ -1,24 +1,24 @@
 @interface MFDAMessageContentConsumer
-- (BOOL)shouldBeginStreamingForMailMessage:(id)a3 format:(int)a4;
-- (id)dataConsumerForPart:(id)a3;
-- (void)consumeData:(char *)a3 length:(int)a4 format:(int)a5 mailMessage:(id)a6;
-- (void)didEndStreamingForMailMessage:(id)a3;
+- (BOOL)shouldBeginStreamingForMailMessage:(id)message format:(int)format;
+- (id)dataConsumerForPart:(id)part;
+- (void)consumeData:(char *)data length:(int)length format:(int)format mailMessage:(id)message;
+- (void)didEndStreamingForMailMessage:(id)message;
 @end
 
 @implementation MFDAMessageContentConsumer
 
-- (BOOL)shouldBeginStreamingForMailMessage:(id)a3 format:(int)a4
+- (BOOL)shouldBeginStreamingForMailMessage:(id)message format:(int)format
 {
   self->_didBeginStreaming = 1;
   self->_timeOfLastActivity = CFAbsoluteTimeGetCurrent();
   return 1;
 }
 
-- (void)consumeData:(char *)a3 length:(int)a4 format:(int)a5 mailMessage:(id)a6
+- (void)consumeData:(char *)data length:(int)length format:(int)format mailMessage:(id)message
 {
-  v33 = a6;
+  messageCopy = message;
   self->_timeOfLastActivity = CFAbsoluteTimeGetCurrent();
-  if (a5)
+  if (format)
   {
     v10 = 0;
   }
@@ -28,36 +28,36 @@
     v10 = self->_requestedFormat == 1;
   }
 
-  v11 = malloc_type_malloc(a4, 0x100004077774924uLL);
+  v11 = malloc_type_malloc(length, 0x100004077774924uLL);
   v12 = 0;
-  v13 = a3;
+  dataCopy = data;
   v14 = v11;
   do
   {
-    v15 = a3 - v13 + a4;
-    v16 = memccpy(v14, v13, 13, v15);
+    v15 = data - dataCopy + length;
+    v16 = memccpy(v14, dataCopy, 13, v15);
     if (v16)
     {
-      v13 += v16 - v14;
+      dataCopy += v16 - v14;
       v14 = v16 - 1;
       ++v12;
-      v17 = v13 - a3;
+      lengthCopy = dataCopy - data;
     }
 
     else
     {
-      v13 = &a3[a4];
+      dataCopy = &data[length];
       v14 += v15;
-      v17 = a4;
+      lengthCopy = length;
     }
   }
 
-  while (v17 < a4);
+  while (lengthCopy < length);
   v18 = [objc_alloc(MEMORY[0x1E69AD6B0]) initWithBytesNoCopy:v11 length:v14 - v11];
-  if ([v18 length] != a4 - v12)
+  if ([v18 length] != length - v12)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"MFDAMessageContentConsumer.m" lineNumber:73 description:@"sanity check \r removal."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFDAMessageContentConsumer.m" lineNumber:73 description:@"sanity check \r removal."];
 
     if (v10)
     {
@@ -78,8 +78,8 @@ LABEL_18:
       self->_bodyData = v30;
     }
 
-    v27 = [(MFDAMessageContentConsumer *)self dataConsumer];
-    [v27 appendData:v18];
+    dataConsumer = [(MFDAMessageContentConsumer *)self dataConsumer];
+    [dataConsumer appendData:v18];
     goto LABEL_22;
   }
 
@@ -92,57 +92,57 @@ LABEL_11:
   if (!self->_triedCreatingAlternatePartConsumer)
   {
     self->_triedCreatingAlternatePartConsumer = 1;
-    v19 = [(MFDAMessageContentConsumer *)self consumerFactory];
-    v20 = [v19 dataConsumerForPart:@"1.1"];
+    consumerFactory = [(MFDAMessageContentConsumer *)self consumerFactory];
+    v20 = [consumerFactory dataConsumerForPart:@"1.1"];
     [(MFDAMessageContentConsumer *)self setAlternatePartConsumer:v20];
 
-    v21 = [(MFDAMessageContentConsumer *)self alternatePartConsumer];
+    alternatePartConsumer = [(MFDAMessageContentConsumer *)self alternatePartConsumer];
 
-    if (v21)
+    if (alternatePartConsumer)
     {
-      v22 = copyRFC822DataForPlainTextMessage(v33, 0, 1);
+      v22 = copyRFC822DataForPlainTextMessage(messageCopy, 0, 1);
       v23 = self->_bodyData;
       self->_bodyData = v22;
 
-      v24 = [(MFDAMessageContentConsumer *)self dataConsumer];
-      v25 = [(MFDAMessageContentConsumer *)self bodyData];
-      [v24 appendData:v25];
+      dataConsumer2 = [(MFDAMessageContentConsumer *)self dataConsumer];
+      bodyData = [(MFDAMessageContentConsumer *)self bodyData];
+      [dataConsumer2 appendData:bodyData];
     }
 
     else
     {
       v26 = [objc_alloc(MEMORY[0x1E69AD730]) initWithCapacity:0];
-      v24 = self->_bodyData;
+      dataConsumer2 = self->_bodyData;
       self->_bodyData = v26;
     }
   }
 
-  v27 = [(MFDAMessageContentConsumer *)self alternatePartConsumer];
-  [v27 appendData:v18];
+  dataConsumer = [(MFDAMessageContentConsumer *)self alternatePartConsumer];
+  [dataConsumer appendData:v18];
 LABEL_22:
 }
 
-- (void)didEndStreamingForMailMessage:(id)a3
+- (void)didEndStreamingForMailMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   self->_timeOfLastActivity = CFAbsoluteTimeGetCurrent();
-  v5 = [(MFDAMessageContentConsumer *)self alternatePartConsumer];
-  [v5 done];
+  alternatePartConsumer = [(MFDAMessageContentConsumer *)self alternatePartConsumer];
+  [alternatePartConsumer done];
 
-  v6 = [(MFDAMessageContentConsumer *)self dataConsumer];
-  [v6 done];
+  dataConsumer = [(MFDAMessageContentConsumer *)self dataConsumer];
+  [dataConsumer done];
 
   message = self->_message;
-  self->_message = v4;
+  self->_message = messageCopy;
 
   self->_succeeded = 1;
 }
 
-- (id)dataConsumerForPart:(id)a3
+- (id)dataConsumerForPart:(id)part
 {
-  v4 = a3;
-  v5 = [(MFDAMessageContentConsumer *)self consumerFactory];
-  v6 = [v5 dataConsumerForPart:v4];
+  partCopy = part;
+  consumerFactory = [(MFDAMessageContentConsumer *)self consumerFactory];
+  v6 = [consumerFactory dataConsumerForPart:partCopy];
 
   return v6;
 }

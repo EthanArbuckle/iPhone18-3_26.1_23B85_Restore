@@ -1,21 +1,21 @@
 @interface SXComponentAnchor
 - (NSString)description;
-- (SXComponentAnchor)initWithTargetComponentIdentifier:(id)a3;
+- (SXComponentAnchor)initWithTargetComponentIdentifier:(id)identifier;
 - (_NSRange)range;
 @end
 
 @implementation SXComponentAnchor
 
-- (SXComponentAnchor)initWithTargetComponentIdentifier:(id)a3
+- (SXComponentAnchor)initWithTargetComponentIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SXComponentAnchor;
   v6 = [(SXComponentAnchor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_targetComponentIdentifier, a3);
+    objc_storeStrong(&v6->_targetComponentIdentifier, identifier);
   }
 
   return v7;
@@ -24,8 +24,8 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p", objc_opt_class(), self];
-  v4 = [(SXComponentAnchor *)self targetComponentIdentifier];
-  [v3 appendFormat:@"; target component: %@", v4];
+  targetComponentIdentifier = [(SXComponentAnchor *)self targetComponentIdentifier];
+  [v3 appendFormat:@"; target component: %@", targetComponentIdentifier];
 
   v8.location = [(SXComponentAnchor *)self range];
   v5 = NSStringFromRange(v8);

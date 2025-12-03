@@ -1,23 +1,23 @@
 @interface PXMemoriesFeedWidgetLayoutGenerator
 - (CGSize)size;
-- (PXMemoriesFeedWidgetLayoutGenerator)initWithMetrics:(id)a3;
+- (PXMemoriesFeedWidgetLayoutGenerator)initWithMetrics:(id)metrics;
 - (id)geometryKinds;
-- (void)getGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4 withKind:(int64_t)a5;
+- (void)getGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range withKind:(int64_t)kind;
 @end
 
 @implementation PXMemoriesFeedWidgetLayoutGenerator
 
-- (void)getGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4 withKind:(int64_t)a5
+- (void)getGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range withKind:(int64_t)kind
 {
-  length = a4.length;
-  location = a4.location;
-  if (a5)
+  length = range.length;
+  location = range.location;
+  if (kind)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PXMemoriesFeedWidgetLayoutGenerator.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"PXMemoriesFeedLayoutItemKindContent == kind"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMemoriesFeedWidgetLayoutGenerator.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"PXMemoriesFeedLayoutItemKindContent == kind"}];
   }
 
-  if (location < location + length && location < [(PXMemoriesFeedWidgetLayoutGenerator *)self numberOfGeometriesWithKind:a5])
+  if (location < location + length && location < [(PXMemoriesFeedWidgetLayoutGenerator *)self numberOfGeometriesWithKind:kind])
   {
     top = self->_context.contentInsets.top;
     left = self->_context.contentInsets.left;
@@ -39,9 +39,9 @@
         v17 = location % numberOfRows;
         break;
       case 0:
-        v24 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"CGRect _ItemRectForItemAtIndex(NSUInteger, _LayoutContext)"}];
-        [v24 handleFailureInFunction:v25 file:@"PXMemoriesFeedWidgetLayoutGenerator.m" lineNumber:152 description:@"Can't determine rect for unknown axis"];
+        [currentHandler2 handleFailureInFunction:v25 file:@"PXMemoriesFeedWidgetLayoutGenerator.m" lineNumber:152 description:@"Can't determine rect for unknown axis"];
 
         abort();
       default:
@@ -85,44 +85,44 @@ void __52__PXMemoriesFeedWidgetLayoutGenerator_geometryKinds__block_invoke()
   return result;
 }
 
-- (PXMemoriesFeedWidgetLayoutGenerator)initWithMetrics:(id)a3
+- (PXMemoriesFeedWidgetLayoutGenerator)initWithMetrics:(id)metrics
 {
-  v5 = a3;
+  metricsCopy = metrics;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"PXMemoriesFeedWidgetLayoutGenerator.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"[metrics isKindOfClass:[PXMemoriesFeedWidgetLayoutMetrics class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMemoriesFeedWidgetLayoutGenerator.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"[metrics isKindOfClass:[PXMemoriesFeedWidgetLayoutMetrics class]]"}];
   }
 
   v41.receiver = self;
   v41.super_class = PXMemoriesFeedWidgetLayoutGenerator;
-  v6 = [(PXMemoriesFeedLayoutGenerator *)&v41 initWithMetrics:v5];
+  v6 = [(PXMemoriesFeedLayoutGenerator *)&v41 initWithMetrics:metricsCopy];
   v7 = v6;
   if (v6)
   {
     p_context = &v6->_context;
-    v9 = v5;
+    v9 = metricsCopy;
     [v9 contentInsets];
     v11 = v10;
     v13 = v12;
     [v9 interitemSpacing];
     v15 = v14;
     v17 = v16;
-    v18 = [v9 numberOfColumns];
-    v19 = [v9 numberOfRows];
-    v20 = [v9 layoutAxis];
+    numberOfColumns = [v9 numberOfColumns];
+    numberOfRows = [v9 numberOfRows];
+    layoutAxis = [v9 layoutAxis];
     [v9 referenceSize];
     v22 = v21;
     v24 = v23;
 
     v25 = *MEMORY[0x1E695F060];
     v26 = *(MEMORY[0x1E695F060] + 8);
-    if (v24 == v26 && v22 == v25 || v18 == 0)
+    if (v24 == v26 && v22 == v25 || numberOfColumns == 0)
     {
-      v18 = 0;
-      v19 = 0;
-      v20 = 1;
+      numberOfColumns = 0;
+      numberOfRows = 0;
+      layoutAxis = 1;
       v36 = *off_1E7721FA8;
       v37 = *(off_1E7721FA8 + 1);
       v15 = *MEMORY[0x1E695F060];
@@ -133,16 +133,16 @@ void __52__PXMemoriesFeedWidgetLayoutGenerator_geometryKinds__block_invoke()
 
     else
     {
-      v29 = v15 * (v18 - 1);
-      v25 = floor((v22 - (v11 + v13) - v29) / v18);
-      v30 = (v19 - 1);
-      v31.f64[0] = v24 - v25 * v19 - v17 * v30;
-      v31.f64[1] = v22 - (v29 + v18 * v25);
+      v29 = v15 * (numberOfColumns - 1);
+      v25 = floor((v22 - (v11 + v13) - v29) / numberOfColumns);
+      v30 = (numberOfRows - 1);
+      v31.f64[0] = v24 - v25 * numberOfRows - v17 * v30;
+      v31.f64[1] = v22 - (v29 + numberOfColumns * v25);
       __asm { FMOV            V1.2D, #0.5 }
 
       v36 = vrndmq_f64(vmulq_f64(v31, _Q1));
       v37 = vsubq_f64(v31, v36);
-      v38 = v37.f64[0] + v36.f64[0] + v19 * v25 + v30 * v17;
+      v38 = v37.f64[0] + v36.f64[0] + numberOfRows * v25 + v30 * v17;
       v26 = v25;
     }
 
@@ -154,9 +154,9 @@ void __52__PXMemoriesFeedWidgetLayoutGenerator_geometryKinds__block_invoke()
     v7->_context.interitemSpacing.height = v17;
     v7->_context.size.width = v22;
     v7->_context.size.height = v38;
-    v7->_context.numberOfColumns = v18;
-    v7->_context.numberOfRows = v19;
-    v7->_context.layoutAxis = v20;
+    v7->_context.numberOfColumns = numberOfColumns;
+    v7->_context.numberOfRows = numberOfRows;
+    v7->_context.layoutAxis = layoutAxis;
   }
 
   return v7;

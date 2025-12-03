@@ -1,11 +1,11 @@
 @interface RSKeyframeMeta
 - (RSKeyframeMeta)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RSKeyframeMeta
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   objc_storeStrong((v4 + 8), self->_identifier);

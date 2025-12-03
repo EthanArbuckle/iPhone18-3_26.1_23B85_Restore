@@ -1,39 +1,39 @@
 @interface VSIdentityProviderViewController
 - (BOOL)currentAuthenticationViewControllerSupportsPreAuth;
-- (BOOL)identityProviderRequestManager:(id)a3 requestsAlert:(id)a4;
+- (BOOL)identityProviderRequestManager:(id)manager requestsAlert:(id)alert;
 - (VSIdentityProviderViewController)init;
-- (VSIdentityProviderViewController)initWithCoder:(id)a3;
-- (VSIdentityProviderViewController)initWithIdentityProvider:(id)a3;
-- (VSIdentityProviderViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (VSIdentityProviderViewController)initWithCoder:(id)coder;
+- (VSIdentityProviderViewController)initWithIdentityProvider:(id)provider;
+- (VSIdentityProviderViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (VSIdentityProviderViewControllerDelegate)delegate;
-- (id)_logoLoadOperationForPreferredImageSize:(CGSize)a3;
+- (id)_logoLoadOperationForPreferredImageSize:(CGSize)size;
 - (void)_didCancel;
 - (void)_dismiss;
 - (void)_hideNavigationBarButtons;
 - (void)_showNavigationBarButtons;
-- (void)_showValidationAlertForError:(id)a3;
-- (void)_showViewController:(id)a3;
-- (void)_signInButtonPressed:(id)a3;
+- (void)_showValidationAlertForError:(id)error;
+- (void)_showViewController:(id)controller;
+- (void)_signInButtonPressed:(id)pressed;
 - (void)_startValidation;
-- (void)_stopValidationAndShowButtons:(BOOL)a3;
+- (void)_stopValidationAndShowButtons:(BOOL)buttons;
 - (void)dealloc;
-- (void)enqueueRequest:(id)a3;
-- (void)identityProviderRequestManager:(id)a3 didAuthenticateAccount:(id)a4 forRequest:(id)a5;
-- (void)identityProviderRequestManager:(id)a3 didUpdateLogoViewModel:(id)a4;
-- (void)identityProviderRequestManager:(id)a3 finishedRequest:(id)a4 withResult:(id)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)sendErrorMessage:(id)a3;
-- (void)setViewModel:(id)a3;
+- (void)enqueueRequest:(id)request;
+- (void)identityProviderRequestManager:(id)manager didAuthenticateAccount:(id)account forRequest:(id)request;
+- (void)identityProviderRequestManager:(id)manager didUpdateLogoViewModel:(id)model;
+- (void)identityProviderRequestManager:(id)manager finishedRequest:(id)request withResult:(id)result;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)sendErrorMessage:(id)message;
+- (void)setViewModel:(id)model;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation VSIdentityProviderViewController
 
-- (VSIdentityProviderViewController)initWithIdentityProvider:(id)a3
+- (VSIdentityProviderViewController)initWithIdentityProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   VSRequireMainThread();
-  if (!v5)
+  if (!providerCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The identityProvider parameter must not be nil."];
   }
@@ -44,13 +44,13 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identityProvider, a3);
+    objc_storeStrong(&v6->_identityProvider, provider);
     v8 = objc_alloc_init(MEMORY[0x277CCABD8]);
     privateQueue = v7->_privateQueue;
     v7->_privateQueue = v8;
 
     [(NSOperationQueue *)v7->_privateQueue setName:@"VSIdentityProviderViewController"];
-    v10 = [[VSIdentityProviderRequestManager alloc] initWithIdentityProvider:v5];
+    v10 = [[VSIdentityProviderRequestManager alloc] initWithIdentityProvider:providerCopy];
     requestManager = v7->_requestManager;
     v7->_requestManager = v10;
 
@@ -81,7 +81,7 @@
   return 0;
 }
 
-- (VSIdentityProviderViewController)initWithCoder:(id)a3
+- (VSIdentityProviderViewController)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE660];
@@ -91,7 +91,7 @@
   return 0;
 }
 
-- (VSIdentityProviderViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (VSIdentityProviderViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -110,30 +110,30 @@
     [(VSIdentityProviderViewController *)self _stopObservingViewModel:v3];
   }
 
-  v4 = [(VSIdentityProviderViewController *)self privateQueue];
-  [v4 cancelAllOperations];
+  privateQueue = [(VSIdentityProviderViewController *)self privateQueue];
+  [privateQueue cancelAllOperations];
 
   v5.receiver = self;
   v5.super_class = VSIdentityProviderViewController;
   [(VSIdentityProviderViewController *)&v5 dealloc];
 }
 
-- (void)_signInButtonPressed:(id)a3
+- (void)_signInButtonPressed:(id)pressed
 {
-  v3 = [(VSIdentityProviderViewController *)self viewModel];
-  [v3 setValidationState:1];
+  viewModel = [(VSIdentityProviderViewController *)self viewModel];
+  [viewModel setValidationState:1];
 }
 
-- (void)_showValidationAlertForError:(id)a3
+- (void)_showValidationAlertForError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = VSErrorLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(VSIdentityProviderViewController *)v4 _showValidationAlertForError:v5];
+    [(VSIdentityProviderViewController *)errorCopy _showValidationAlertForError:v5];
   }
 
-  v6 = VSAlertForError(v4, 0);
+  v6 = VSAlertForError(errorCopy, 0);
   [(VSIdentityProviderViewController *)self presentViewController:v6 animated:1 completion:0];
 }
 
@@ -141,24 +141,24 @@
 {
   [(VSIdentityProviderViewController *)self _hideNavigationBarButtons];
   v3 = [VSSpinnerTitleView alloc];
-  v4 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-  v5 = [v4 localizedStringForKey:@"CREDENTIAL_ENTRY_VERIFYING" value:0 table:0];
+  vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+  v5 = [vs_frameworkBundle localizedStringForKey:@"CREDENTIAL_ENTRY_VERIFYING" value:0 table:0];
   v7 = [(VSSpinnerTitleView *)v3 initWithTitle:v5];
 
-  v6 = [(VSIdentityProviderViewController *)self navigationItem];
-  [v6 setTitleView:v7];
+  navigationItem = [(VSIdentityProviderViewController *)self navigationItem];
+  [navigationItem setTitleView:v7];
 
   [(UIViewController *)self vs_beginIgnoringInteraction];
 }
 
-- (void)_stopValidationAndShowButtons:(BOOL)a3
+- (void)_stopValidationAndShowButtons:(BOOL)buttons
 {
-  v3 = a3;
-  v5 = [(VSIdentityProviderViewController *)self navigationItem];
-  [v5 setTitleView:0];
+  buttonsCopy = buttons;
+  navigationItem = [(VSIdentityProviderViewController *)self navigationItem];
+  [navigationItem setTitleView:0];
 
   [(UIViewController *)self vs_endIgnoringInteraction];
-  if (v3)
+  if (buttonsCopy)
   {
 
     [(VSIdentityProviderViewController *)self _showNavigationBarButtons];
@@ -167,18 +167,18 @@
 
 - (void)_showNavigationBarButtons
 {
-  v11 = [(VSIdentityProviderViewController *)self navigationItem];
-  v3 = [(VSIdentityProviderViewController *)self signInButtonItem];
-  [v11 setRightBarButtonItem:v3];
+  navigationItem = [(VSIdentityProviderViewController *)self navigationItem];
+  signInButtonItem = [(VSIdentityProviderViewController *)self signInButtonItem];
+  [navigationItem setRightBarButtonItem:signInButtonItem];
 
   if ([(VSIdentityProviderViewController *)self isCancellationAllowed])
   {
-    v4 = [(VSIdentityProviderViewController *)self viewModel];
-    v5 = [v4 isInAuthenticationShareFlow];
+    viewModel = [(VSIdentityProviderViewController *)self viewModel];
+    isInAuthenticationShareFlow = [viewModel isInAuthenticationShareFlow];
 
-    v6 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-    v7 = v6;
-    if (v5)
+    vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+    v7 = vs_frameworkBundle;
+    if (isInAuthenticationShareFlow)
     {
       v8 = @"NOT_NOW_BUTTON_TITLE";
     }
@@ -188,51 +188,51 @@
       v8 = @"CANCEL_TITLE";
     }
 
-    v9 = [v6 localizedStringForKey:v8 value:0 table:0];
+    v9 = [vs_frameworkBundle localizedStringForKey:v8 value:0 table:0];
 
     v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v9 style:0 target:self action:sel__cancelButtonPressed_];
-    [v11 setLeftBarButtonItem:v10];
-    [v11 setHidesBackButton:1];
+    [navigationItem setLeftBarButtonItem:v10];
+    [navigationItem setHidesBackButton:1];
   }
 
   else
   {
-    [v11 setLeftBarButtonItem:0];
-    [v11 setHidesBackButton:0];
+    [navigationItem setLeftBarButtonItem:0];
+    [navigationItem setHidesBackButton:0];
   }
 }
 
 - (void)_hideNavigationBarButtons
 {
-  v2 = [(VSIdentityProviderViewController *)self navigationItem];
-  [v2 setHidesBackButton:1];
-  [v2 setLeftBarButtonItem:0];
-  [v2 setRightBarButtonItem:0];
+  navigationItem = [(VSIdentityProviderViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
+  [navigationItem setLeftBarButtonItem:0];
+  [navigationItem setRightBarButtonItem:0];
 }
 
-- (id)_logoLoadOperationForPreferredImageSize:(CGSize)a3
+- (id)_logoLoadOperationForPreferredImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(VSIdentityProviderViewController *)self viewModel];
-  if ([v6 conformsToProtocol:&unk_2880E88E0])
+  height = size.height;
+  width = size.width;
+  viewModel = [(VSIdentityProviderViewController *)self viewModel];
+  if ([viewModel conformsToProtocol:&unk_2880E88E0])
   {
-    v7 = v6;
-    v8 = [v7 logoProvider];
-    v9 = v8;
-    if (v8)
+    v7 = viewModel;
+    logoProvider = [v7 logoProvider];
+    v9 = logoProvider;
+    if (logoProvider)
     {
-      v10 = v8;
+      v10 = logoProvider;
       objc_initWeak(&location, self);
-      v11 = [[VSImageLoadOperation alloc] initWithItemProvider:v10 preferredImageSize:width, height];
-      [(VSImageLoadOperation *)v11 setNonAppInitiated:1];
-      v12 = [(VSIdentityProviderViewController *)self auditToken];
-      [(VSImageLoadOperation *)v11 setAuditToken:v12];
+      height = [[VSImageLoadOperation alloc] initWithItemProvider:v10 preferredImageSize:width, height];
+      [(VSImageLoadOperation *)height setNonAppInitiated:1];
+      auditToken = [(VSIdentityProviderViewController *)self auditToken];
+      [(VSImageLoadOperation *)height setAuditToken:auditToken];
 
-      [(VSIdentityProviderViewController *)self setLogoLoadOperation:v11];
+      [(VSIdentityProviderViewController *)self setLogoLoadOperation:height];
       v16 = MEMORY[0x277D85DD0];
       objc_copyWeak(&v19, &location);
-      v17 = v11;
+      v17 = height;
       v18 = v7;
       v13 = VSMainThreadOperationWithBlock();
       [v13 addDependency:{v17, v16, 3221225472, __76__VSIdentityProviderViewController__logoLoadOperationForPreferredImageSize___block_invoke, &unk_279E196C0}];
@@ -274,17 +274,17 @@ void __76__VSIdentityProviderViewController__logoLoadOperationForPreferredImageS
   }
 }
 
-- (void)_showViewController:(id)a3
+- (void)_showViewController:(id)controller
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   [(VSIdentityProviderViewController *)self _stopValidationAndShowButtons:1];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(VSIdentityProviderViewController *)self childViewControllers];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  childViewControllers = [(VSIdentityProviderViewController *)self childViewControllers];
+  v6 = [childViewControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -295,31 +295,31 @@ void __76__VSIdentityProviderViewController__logoLoadOperationForPreferredImageS
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
         [v10 willMoveToParentViewController:0];
-        v11 = [v10 view];
-        [v11 removeFromSuperview];
+        view = [v10 view];
+        [view removeFromSuperview];
 
         [v10 removeFromParentViewController];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [childViewControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
   }
 
-  [(VSIdentityProviderViewController *)self addChildViewController:v4];
-  v12 = [v4 view];
-  [v12 setAutoresizingMask:18];
-  v13 = [(VSIdentityProviderViewController *)self view];
-  [v13 bounds];
-  [v12 setFrame:?];
-  [v13 addSubview:v12];
-  [v4 didMoveToParentViewController:self];
+  [(VSIdentityProviderViewController *)self addChildViewController:controllerCopy];
+  view2 = [controllerCopy view];
+  [view2 setAutoresizingMask:18];
+  view3 = [(VSIdentityProviderViewController *)self view];
+  [view3 bounds];
+  [view2 setFrame:?];
+  [view3 addSubview:view2];
+  [controllerCopy didMoveToParentViewController:self];
   [(UIViewController *)self vs_updateNavigationItemAndForceViewReloadWithSearchController:0];
 
   v14 = *MEMORY[0x277D85DE8];
@@ -327,30 +327,30 @@ void __76__VSIdentityProviderViewController__logoLoadOperationForPreferredImageS
 
 - (void)_dismiss
 {
-  v3 = [(VSIdentityProviderViewController *)self delegate];
-  [v3 dismissIdentityProviderViewController:self];
+  delegate = [(VSIdentityProviderViewController *)self delegate];
+  [delegate dismissIdentityProviderViewController:self];
 }
 
 - (void)_didCancel
 {
-  v3 = [(VSIdentityProviderViewController *)self delegate];
-  [v3 identityProviderViewControllerDidCancel:self];
+  delegate = [(VSIdentityProviderViewController *)self delegate];
+  [delegate identityProviderViewControllerDidCancel:self];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   viewModel = self->_viewModel;
   if (viewModel)
   {
     [(VSIdentityProviderViewController *)self _stopObservingViewModel:self->_viewModel];
   }
 
-  objc_storeStrong(&self->_viewModel, a3);
+  objc_storeStrong(&self->_viewModel, model);
   v7 = +[VSViewControllerFactory sharedFactory];
-  if (v5)
+  if (modelCopy)
   {
-    v8 = v5;
+    v8 = modelCopy;
     v9 = VSMainConcurrencyBindingOptions();
     [(VSIdentityProviderViewController *)self vs_bind:@"title" toObject:v8 withKeyPath:@"title" options:v9];
 
@@ -368,8 +368,8 @@ void __76__VSIdentityProviderViewController__logoLoadOperationForPreferredImageS
       }
 
       v14 = v8;
-      v15 = [v14 beginValidationButtonTitle];
-      v16 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v15 style:0 target:self action:sel__signInButtonPressed_];
+      beginValidationButtonTitle = [v14 beginValidationButtonTitle];
+      v16 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:beginValidationButtonTitle style:0 target:self action:sel__signInButtonPressed_];
       v17 = VSMainConcurrencyBindingOptions();
       [v16 vs_bind:@"enabled" toObject:v14 withKeyPath:@"beginValidationButtonEnabled" options:v17];
     }
@@ -382,15 +382,15 @@ void __76__VSIdentityProviderViewController__logoLoadOperationForPreferredImageS
     [(VSIdentityProviderViewController *)self setSignInButtonItem:v16];
     [(VSIdentityProviderViewController *)self _startObservingViewModel:v8];
     v18 = [v7 authenticationViewControllerForViewModel:v8];
-    v19 = [v18 forceUnwrapObject];
+    forceUnwrapObject = [v18 forceUnwrapObject];
 
-    [v19 setDelegate:self];
+    [forceUnwrapObject setDelegate:self];
     v20 = VSMainConcurrencyBindingOptions();
-    [v19 vs_bind:@"cancellationAllowed" toObject:self withKeyPath:@"cancellationAllowed" options:v20];
+    [forceUnwrapObject vs_bind:@"cancellationAllowed" toObject:self withKeyPath:@"cancellationAllowed" options:v20];
 
     objc_initWeak(&location, self);
     objc_copyWeak(&v30, &location);
-    v21 = v19;
+    v21 = forceUnwrapObject;
     v22 = VSMainThreadOperationWithBlock();
     if (objc_opt_respondsToSelector())
     {
@@ -401,8 +401,8 @@ void __76__VSIdentityProviderViewController__logoLoadOperationForPreferredImageS
       {
         v29 = v7;
         v25 = v23;
-        v26 = [(VSIdentityProviderViewController *)self privateQueue];
-        [v26 addOperation:v25];
+        privateQueue = [(VSIdentityProviderViewController *)self privateQueue];
+        [privateQueue addOperation:v25];
 
         [v22 addDependency:v25];
         v7 = v29;
@@ -425,10 +425,10 @@ void __76__VSIdentityProviderViewController__logoLoadOperationForPreferredImageS
 
     else
     {
-      v27 = [v7 loadingViewController];
-      v28 = [v27 forceUnwrapObject];
+      loadingViewController = [v7 loadingViewController];
+      forceUnwrapObject2 = [loadingViewController forceUnwrapObject];
 
-      [(VSIdentityProviderViewController *)self _showViewController:v28];
+      [(VSIdentityProviderViewController *)self _showViewController:forceUnwrapObject2];
     }
   }
 
@@ -452,28 +452,28 @@ void __49__VSIdentityProviderViewController_setViewModel___block_invoke(uint64_t
   }
 }
 
-- (void)enqueueRequest:(id)a3
+- (void)enqueueRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(VSIdentityProviderViewController *)self requestManager];
-  [v5 enqueueRequest:v4];
+  requestCopy = request;
+  requestManager = [(VSIdentityProviderViewController *)self requestManager];
+  [requestManager enqueueRequest:requestCopy];
 }
 
-- (void)sendErrorMessage:(id)a3
+- (void)sendErrorMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(VSIdentityProviderViewController *)self requestManager];
-  [v5 sendErrorMessage:v4];
+  messageCopy = message;
+  requestManager = [(VSIdentityProviderViewController *)self requestManager];
+  [requestManager sendErrorMessage:messageCopy];
 }
 
 - (BOOL)currentAuthenticationViewControllerSupportsPreAuth
 {
-  v2 = [(VSIdentityProviderViewController *)self childViewControllers];
-  v3 = [v2 firstObject];
+  childViewControllers = [(VSIdentityProviderViewController *)self childViewControllers];
+  firstObject = [childViewControllers firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    v4 = [v3 conformsToProtocol:&unk_2881197D0];
+    v4 = [firstObject conformsToProtocol:&unk_2881197D0];
   }
 
   else
@@ -484,44 +484,44 @@ void __49__VSIdentityProviderViewController_setViewModel___block_invoke(uint64_t
   return v4;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (kVSKeyValueObservingContext_ViewModelValidationState != a6)
+  if (kVSKeyValueObservingContext_ViewModelValidationState != context)
   {
     v26.receiver = self;
     v26.super_class = VSIdentityProviderViewController;
-    v10 = a5;
-    [(VSIdentityProviderViewController *)&v26 observeValueForKeyPath:a3 ofObject:a4 change:v10 context:a6];
+    changeCopy = change;
+    [(VSIdentityProviderViewController *)&v26 observeValueForKeyPath:path ofObject:object change:changeCopy context:context];
 
     return;
   }
 
   v11 = *MEMORY[0x277CCA300];
-  v12 = a5;
-  v13 = [v12 objectForKey:v11];
-  v14 = [v13 unsignedIntegerValue];
+  changeCopy2 = change;
+  v13 = [changeCopy2 objectForKey:v11];
+  unsignedIntegerValue = [v13 unsignedIntegerValue];
 
-  v15 = [v12 objectForKey:*MEMORY[0x277CCA2F0]];
+  v15 = [changeCopy2 objectForKey:*MEMORY[0x277CCA2F0]];
 
-  v16 = [v15 unsignedIntegerValue];
-  if (v16 <= 1)
+  unsignedIntegerValue2 = [v15 unsignedIntegerValue];
+  if (unsignedIntegerValue2 <= 1)
   {
-    if (!v16)
+    if (!unsignedIntegerValue2)
     {
-      if (v14 != 4 && v14 != 1)
+      if (unsignedIntegerValue != 4 && unsignedIntegerValue != 1)
       {
         return;
       }
 
-      v22 = self;
+      selfCopy2 = self;
       v23 = 1;
 LABEL_30:
 
-      [(VSIdentityProviderViewController *)v22 _stopValidationAndShowButtons:v23];
+      [(VSIdentityProviderViewController *)selfCopy2 _stopValidationAndShowButtons:v23];
       return;
     }
 
-    if (v16 != 1)
+    if (unsignedIntegerValue2 != 1)
     {
       return;
     }
@@ -529,36 +529,36 @@ LABEL_30:
 
   else
   {
-    if (v16 != 2)
+    if (unsignedIntegerValue2 != 2)
     {
-      if (v16 != 3)
+      if (unsignedIntegerValue2 != 3)
       {
-        if (v16 == 4 && v14 == 2)
+        if (unsignedIntegerValue2 == 4 && unsignedIntegerValue == 2)
         {
           [(VSIdentityProviderViewController *)self _stopValidationAndShowButtons:1];
           v18 = MEMORY[0x277CE2298];
-          v19 = [(VSIdentityProviderViewController *)self viewModel];
-          v20 = [v19 error];
-          v25 = [v18 optionalWithObject:v20];
+          viewModel = [(VSIdentityProviderViewController *)self viewModel];
+          error = [viewModel error];
+          v25 = [v18 optionalWithObject:error];
 
-          v21 = [v25 forceUnwrapObject];
-          [(VSIdentityProviderViewController *)self _showValidationAlertForError:v21];
+          forceUnwrapObject = [v25 forceUnwrapObject];
+          [(VSIdentityProviderViewController *)self _showValidationAlertForError:forceUnwrapObject];
         }
 
         return;
       }
 
-      if (v14 != 2)
+      if (unsignedIntegerValue != 2)
       {
         return;
       }
 
-      v22 = self;
+      selfCopy2 = self;
       v23 = 0;
       goto LABEL_30;
     }
 
-    if (v14)
+    if (unsignedIntegerValue)
     {
       return;
     }
@@ -567,66 +567,66 @@ LABEL_30:
   [(VSIdentityProviderViewController *)self _startValidation];
 }
 
-- (void)identityProviderRequestManager:(id)a3 finishedRequest:(id)a4 withResult:(id)a5
+- (void)identityProviderRequestManager:(id)manager finishedRequest:(id)request withResult:(id)result
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(VSIdentityProviderViewController *)self delegate];
-  [v9 identityProviderViewController:self didFinishRequest:v8 withResult:v7];
+  resultCopy = result;
+  requestCopy = request;
+  delegate = [(VSIdentityProviderViewController *)self delegate];
+  [delegate identityProviderViewController:self didFinishRequest:requestCopy withResult:resultCopy];
 }
 
-- (void)identityProviderRequestManager:(id)a3 didAuthenticateAccount:(id)a4 forRequest:(id)a5
+- (void)identityProviderRequestManager:(id)manager didAuthenticateAccount:(id)account forRequest:(id)request
 {
-  v9 = a4;
-  v7 = a5;
-  v8 = [(VSIdentityProviderViewController *)self delegate];
+  accountCopy = account;
+  requestCopy = request;
+  delegate = [(VSIdentityProviderViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 identityProviderViewController:self didAuthenticateAccount:v9 forRequest:v7];
+    [delegate identityProviderViewController:self didAuthenticateAccount:accountCopy forRequest:requestCopy];
   }
 }
 
-- (BOOL)identityProviderRequestManager:(id)a3 requestsAlert:(id)a4
+- (BOOL)identityProviderRequestManager:(id)manager requestsAlert:(id)alert
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v27 = a3;
-  v29 = self;
-  v30 = a4;
-  v6 = [(VSIdentityProviderViewController *)self currentlyPresentedIdentityProviderAlert];
-  v28 = v6;
-  if (v6)
+  managerCopy = manager;
+  selfCopy = self;
+  alertCopy = alert;
+  currentlyPresentedIdentityProviderAlert = [(VSIdentityProviderViewController *)self currentlyPresentedIdentityProviderAlert];
+  v28 = currentlyPresentedIdentityProviderAlert;
+  if (currentlyPresentedIdentityProviderAlert)
   {
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    [currentlyPresentedIdentityProviderAlert dismissViewControllerAnimated:1 completion:0];
     [(VSIdentityProviderViewController *)self setCurrentlyPresentedIdentityProviderAlert:0];
   }
 
   v7 = MEMORY[0x277D75110];
-  v8 = [v30 title];
-  v9 = [v30 message];
-  val = [v7 alertControllerWithTitle:v8 message:v9 preferredStyle:1];
+  title = [alertCopy title];
+  message = [alertCopy message];
+  val = [v7 alertControllerWithTitle:title message:message preferredStyle:1];
 
   objc_initWeak(&location, val);
   objc_initWeak(&from, self);
-  v10 = [v30 actions];
-  if (![v10 count])
+  actions = [alertCopy actions];
+  if (![actions count])
   {
     v11 = objc_alloc_init(VSIdentityProviderAlertAction);
-    v12 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-    v13 = [v12 localizedStringForKey:@"ERROR_DISMISS_BUTTON_TITLE" value:0 table:0];
+    vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+    v13 = [vs_frameworkBundle localizedStringForKey:@"ERROR_DISMISS_BUTTON_TITLE" value:0 table:0];
     [(VSIdentityProviderAlertAction *)v11 setTitle:v13];
 
     [(VSIdentityProviderAlertAction *)v11 setStyle:0];
     v45[0] = v11;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:1];
 
-    v10 = v14;
+    actions = v14;
   }
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v10;
+  obj = actions;
   v15 = [obj countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (v15)
   {
@@ -641,17 +641,17 @@ LABEL_30:
         }
 
         v18 = *(*(&v36 + 1) + 8 * i);
-        v19 = [v18 style];
+        style = [v18 style];
         v20 = MEMORY[0x277D750F8];
-        v21 = [v18 title];
-        if (v19 == 1)
+        title2 = [v18 title];
+        if (style == 1)
         {
           v22 = 1;
         }
 
         else
         {
-          v22 = 2 * (v19 == 2);
+          v22 = 2 * (style == 2);
         }
 
         v33[0] = MEMORY[0x277D85DD0];
@@ -661,7 +661,7 @@ LABEL_30:
         objc_copyWeak(&v34, &from);
         objc_copyWeak(&v35, &location);
         v33[4] = v18;
-        v23 = [v20 actionWithTitle:v21 style:v22 handler:v33];
+        v23 = [v20 actionWithTitle:title2 style:v22 handler:v33];
 
         [val addAction:v23];
         objc_destroyWeak(&v35);
@@ -678,12 +678,12 @@ LABEL_30:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v43 = v30;
+    v43 = alertCopy;
     _os_log_impl(&dword_270DD4000, v24, OS_LOG_TYPE_DEFAULT, "Presenting identity provider alert %@", buf, 0xCu);
   }
 
-  [(VSIdentityProviderViewController *)v29 setCurrentlyPresentedIdentityProviderAlert:val];
-  [(VSIdentityProviderViewController *)v29 presentViewController:val animated:1 completion:0];
+  [(VSIdentityProviderViewController *)selfCopy setCurrentlyPresentedIdentityProviderAlert:val];
+  [(VSIdentityProviderViewController *)selfCopy presentViewController:val animated:1 completion:0];
 
   objc_destroyWeak(&from);
   objc_destroyWeak(&location);
@@ -711,17 +711,17 @@ void __81__VSIdentityProviderViewController_identityProviderRequestManager_reque
   }
 }
 
-- (void)identityProviderRequestManager:(id)a3 didUpdateLogoViewModel:(id)a4
+- (void)identityProviderRequestManager:(id)manager didUpdateLogoViewModel:(id)model
 {
-  v7 = a4;
-  if ([v7 conformsToProtocol:&unk_2880E88E0])
+  modelCopy = model;
+  if ([modelCopy conformsToProtocol:&unk_2880E88E0])
   {
-    [v7 preferredLogoSize];
+    [modelCopy preferredLogoSize];
     v5 = [(VSIdentityProviderViewController *)self _logoLoadOperationForPreferredImageSize:?];
     if (v5)
     {
-      v6 = [(VSIdentityProviderViewController *)self privateQueue];
-      [v6 addOperation:v5];
+      privateQueue = [(VSIdentityProviderViewController *)self privateQueue];
+      [privateQueue addOperation:v5];
     }
   }
 

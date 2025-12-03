@@ -1,6 +1,6 @@
 @interface HMDCameraStreamSession
 + (id)logCategory;
-- (HMDCameraStreamSession)initWithSessionID:(id)a3 streamingTierType:(unint64_t)a4 remoteCapabilities:(id)a5 streamPreference:(id)a6;
+- (HMDCameraStreamSession)initWithSessionID:(id)d streamingTierType:(unint64_t)type remoteCapabilities:(id)capabilities streamPreference:(id)preference;
 - (id)logIdentifier;
 - (id)negotiatedParameters;
 @end
@@ -9,8 +9,8 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCameraStreamSession *)self sessionID];
-  v3 = [v2 description];
+  sessionID = [(HMDCameraStreamSession *)self sessionID];
+  v3 = [sessionID description];
 
   return v3;
 }
@@ -19,12 +19,12 @@
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAAB0];
-  v4 = [(HMDCameraStreamSession *)self protocolParameters];
-  v5 = [v3 archivedDataWithRootObject:v4 requiringSecureCoding:1 error:0];
+  protocolParameters = [(HMDCameraStreamSession *)self protocolParameters];
+  v5 = [v3 archivedDataWithRootObject:protocolParameters requiringSecureCoding:1 error:0];
 
   v6 = MEMORY[0x277CCAAB0];
-  v7 = [(HMDCameraStreamSession *)self videoTierParameters];
-  v8 = [v6 archivedDataWithRootObject:v7 requiringSecureCoding:1 error:0];
+  videoTierParameters = [(HMDCameraStreamSession *)self videoTierParameters];
+  v8 = [v6 archivedDataWithRootObject:videoTierParameters requiringSecureCoding:1 error:0];
 
   v9 = 0;
   if (v5)
@@ -51,29 +51,29 @@
   return v9;
 }
 
-- (HMDCameraStreamSession)initWithSessionID:(id)a3 streamingTierType:(unint64_t)a4 remoteCapabilities:(id)a5 streamPreference:(id)a6
+- (HMDCameraStreamSession)initWithSessionID:(id)d streamingTierType:(unint64_t)type remoteCapabilities:(id)capabilities streamPreference:(id)preference
 {
   v47 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  capabilitiesCopy = capabilities;
+  preferenceCopy = preference;
   v42.receiver = self;
   v42.super_class = HMDCameraStreamSession;
   v14 = [(HMDCameraStreamSession *)&v42 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_sessionID, a3);
+    objc_storeStrong(&v14->_sessionID, d);
     v16 = objc_alloc_init(HMDCameraProtocolParameters);
     protocolParameters = v15->_protocolParameters;
     v15->_protocolParameters = v16;
 
-    v18 = [[HMDStreamingCapabilities alloc] initWithStreamPreference:v13];
+    v18 = [[HMDStreamingCapabilities alloc] initWithStreamPreference:preferenceCopy];
     streamingCapabilities = v15->_streamingCapabilities;
     v15->_streamingCapabilities = v18;
 
-    [(HMDStreamingCapabilities *)v15->_streamingCapabilities setStreamingTierType:a4];
-    v20 = [v12 hmf_dataForKey:@"kRemoteStreamCapabilities"];
+    [(HMDStreamingCapabilities *)v15->_streamingCapabilities setStreamingTierType:type];
+    v20 = [capabilitiesCopy hmf_dataForKey:@"kRemoteStreamCapabilities"];
     if (v20)
     {
       v41 = 0;
@@ -86,7 +86,7 @@
 
       else
       {
-        v40 = v11;
+        v40 = dCopy;
         v23 = objc_autoreleasePoolPush();
         v24 = v15;
         v25 = HMFGetOSLogHandle();
@@ -104,24 +104,24 @@
         }
 
         objc_autoreleasePoolPop(v23);
-        v11 = v40;
+        dCopy = v40;
       }
     }
 
-    v27 = [v13 videoPreferences];
+    videoPreferences = [preferenceCopy videoPreferences];
 
-    if (v27)
+    if (videoPreferences)
     {
-      v28 = [v13 videoPreferences];
-      v29 = [v28 maximumQuality];
+      videoPreferences2 = [preferenceCopy videoPreferences];
+      maximumQuality = [videoPreferences2 maximumQuality];
     }
 
     else
     {
-      v29 = 5;
+      maximumQuality = 5;
     }
 
-    v30 = [[HMDCameraVideoTierParameters alloc] initWithSessionID:v11 streamingTierType:[(HMDStreamingCapabilities *)v15->_streamingCapabilities streamingTierType] maximumQuality:v29];
+    v30 = [[HMDCameraVideoTierParameters alloc] initWithSessionID:dCopy streamingTierType:[(HMDStreamingCapabilities *)v15->_streamingCapabilities streamingTierType] maximumQuality:maximumQuality];
     videoTierParameters = v15->_videoTierParameters;
     v15->_videoTierParameters = v30;
 

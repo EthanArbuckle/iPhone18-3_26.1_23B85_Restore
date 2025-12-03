@@ -1,66 +1,66 @@
 @interface ClientConnection
 + (id)poolManager;
-- (BOOL)_isPrimaryObjectTypeForAccessLogging:(id)a3;
-- (BOOL)addressIsAccountOwner:(id)a3;
-- (BOOL)addressURLIsAccountOwner:(id)a3;
-- (BOOL)cancelOperationsWithToken:(unsigned int)a3;
+- (BOOL)_isPrimaryObjectTypeForAccessLogging:(id)logging;
+- (BOOL)addressIsAccountOwner:(id)owner;
+- (BOOL)addressURLIsAccountOwner:(id)owner;
+- (BOOL)cancelOperationsWithToken:(unsigned int)token;
 - (BOOL)initializationOptionsSet;
-- (BOOL)isAlarmRestricted:(void *)a3 forAction:(unint64_t)a4;
-- (BOOL)isCalendarItemManaged:(void *)a3;
-- (BOOL)isCalendarItemRestricted:(void *)a3 forAction:(unint64_t)a4;
-- (BOOL)isCalendarManaged:(void *)a3;
-- (BOOL)isCalendarRestricted:(void *)a3 forAction:(unint64_t)a4;
-- (BOOL)isNotificationRestricted:(void *)a3 forAction:(unint64_t)a4;
-- (BOOL)isStoreManaged:(void *)a3;
-- (BOOL)isStoreRestricted:(void *)a3 forAction:(unint64_t)a4 strict:(BOOL)a5;
+- (BOOL)isAlarmRestricted:(void *)restricted forAction:(unint64_t)action;
+- (BOOL)isCalendarItemManaged:(void *)managed;
+- (BOOL)isCalendarItemRestricted:(void *)restricted forAction:(unint64_t)action;
+- (BOOL)isCalendarManaged:(void *)managed;
+- (BOOL)isCalendarRestricted:(void *)restricted forAction:(unint64_t)action;
+- (BOOL)isNotificationRestricted:(void *)restricted forAction:(unint64_t)action;
+- (BOOL)isStoreManaged:(void *)managed;
+- (BOOL)isStoreRestricted:(void *)restricted forAction:(unint64_t)action strict:(BOOL)strict;
 - (BOOL)reminderAccessGranted;
-- (BOOL)trySetDatabaseInitializationOptions:(id)a3;
-- (BOOL)withDatabaseForObject:(id)a3 perform:(id)a4;
-- (BOOL)withDatabaseForObjects:(id)a3 options:(unint64_t)a4 perform:(id)a5;
+- (BOOL)trySetDatabaseInitializationOptions:(id)options;
+- (BOOL)withDatabaseForObject:(id)object perform:(id)perform;
+- (BOOL)withDatabaseForObjects:(id)objects options:(unint64_t)options perform:(id)perform;
 - (CADAccountAccessHandler)accountAccessHandler;
 - (CADPermissionValidator)permissionValidator;
 - (CDBAccountInfo)localAccountInfo;
-- (ClientConnection)initWithXPCConnection:(id)a3 tccPermissionChecker:(id)a4;
+- (ClientConnection)initWithXPCConnection:(id)connection tccPermissionChecker:(id)checker;
 - (NSString)changeTrackingID;
 - (NSString)effectiveApplicationIdentifier;
 - (NSString)effectiveTeamIdentifier;
 - (id)_accountsProvider;
-- (id)_createManagedConfigAccountAccessHandlerWithValidator:(id)a3;
+- (id)_createManagedConfigAccountAccessHandlerWithValidator:(id)validator;
 - (id)_databaseProvider;
-- (id)_objectIDsResolvedAndLoggable:(id)a3;
-- (id)_objectIDsToBeResolved:(id)a3;
+- (id)_objectIDsResolvedAndLoggable:(id)loggable;
+- (id)_objectIDsToBeResolved:(id)resolved;
 - (id)_permissionValidator;
-- (id)_resolveObjectIDForLoggingAccessToEntity:(void *)a3;
-- (id)_resolveObjectIDsForLogging:(id)a3;
+- (id)_resolveObjectIDForLoggingAccessToEntity:(void *)entity;
+- (id)_resolveObjectIDsForLogging:(id)logging;
 - (id)accountsProvider;
-- (id)agentWithToken:(int)a3;
+- (id)agentWithToken:(int)token;
 - (id)blockList;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)removeAgentWithToken:(int)a3;
-- (id)restrictedCalendarRowIDsForAction:(unint64_t)a3 inDatabase:(CalDatabase *)a4;
-- (id)restrictedStoreRowIDsForAction:(unint64_t)a3 inDatabase:(CalDatabase *)a4;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)removeAgentWithToken:(int)token;
+- (id)restrictedCalendarRowIDsForAction:(unint64_t)action inDatabase:(CalDatabase *)database;
+- (id)restrictedStoreRowIDsForAction:(unint64_t)action inDatabase:(CalDatabase *)database;
 - (id)strictAccountAccessHandler;
 - (int)databaseRestoreGeneration;
 - (int)eventAccessLevel;
-- (int)managedConfigurationAccountAccessForStore:(void *)a3;
+- (int)managedConfigurationAccountAccessForStore:(void *)store;
 - (void)_closeDatabases;
 - (void)_initAccountAccessHandler;
-- (void)_logAccessToResolvedObjectIDs:(id)a3;
-- (void)addAgent:(id)a3;
-- (void)addCreatedAuxDatabase:(CalDatabase *)a3;
-- (void)addOperation:(id)a3;
+- (void)_logAccessToResolvedObjectIDs:(id)ds;
+- (void)addAgent:(id)agent;
+- (void)addCreatedAuxDatabase:(CalDatabase *)database;
+- (void)addOperation:(id)operation;
 - (void)clearCachedAuthorizationStatus;
 - (void)closeDatabases;
 - (void)dealloc;
 - (void)dumpState;
 - (void)handleDatabaseChanged;
 - (void)invalidateConnection;
-- (void)logAccessToEntities:(id)a3;
-- (void)logAccessToObject:(id)a3;
-- (void)logAccessToObjects:(id)a3;
-- (void)reportIntegrityErrors:(id)a3;
+- (void)logAccessToEntities:(id)entities;
+- (void)logAccessToObject:(id)object;
+- (void)logAccessToObjects:(id)objects;
+- (void)reportIntegrityErrors:(id)errors;
 - (void)restoreGenerationChangedExternally;
-- (void)withAllDatabasesPerform:(id)a3;
+- (void)withAllDatabasesPerform:(id)perform;
 @end
 
 @implementation ClientConnection
@@ -94,13 +94,13 @@
   if (!permissionValidator)
   {
     v4 = [CADDefaultPermissionValidator alloc];
-    v5 = [(ClientConnection *)self identity];
-    v6 = [(CADDefaultPermissionValidator *)v4 initWithClientIdentity:v5 tccPermissionChecker:self->_tccPermissionChecker];
+    identity = [(ClientConnection *)self identity];
+    v6 = [(CADDefaultPermissionValidator *)v4 initWithClientIdentity:identity tccPermissionChecker:self->_tccPermissionChecker];
 
-    v7 = [(CADDatabaseInitializationOptions *)self->_databaseInitializationOptions mockPermissions];
-    if (v7)
+    mockPermissions = [(CADDatabaseInitializationOptions *)self->_databaseInitializationOptions mockPermissions];
+    if (mockPermissions)
     {
-      v8 = [[CADCombinedPermissionValidator alloc] initWithPermissionValidator:v6 andValidator:v7];
+      v8 = [[CADCombinedPermissionValidator alloc] initWithPermissionValidator:v6 andValidator:mockPermissions];
     }
 
     else
@@ -147,12 +147,12 @@ uint64_t __39__ClientConnection_permissionValidator__block_invoke(uint64_t a1)
       self->_configuration = v7;
 
       [(CADPooledDatabaseConfiguration *)v7 setInMemoryChangeTrackingClientID:CalDatabaseNextInMemoryChangeTrackingClientID()];
-      v9 = [(ClientIdentity *)self->_identity clientName];
-      [(CADPooledDatabaseConfiguration *)v7 setClientName:v9];
+      clientName = [(ClientIdentity *)self->_identity clientName];
+      [(CADPooledDatabaseConfiguration *)v7 setClientName:clientName];
     }
 
-    v10 = [(ClientConnection *)self changeTrackingID];
-    [(CADPooledDatabaseConfiguration *)v7 setClientIdentifier:v10];
+    changeTrackingID = [(ClientConnection *)self changeTrackingID];
+    [(CADPooledDatabaseConfiguration *)v7 setClientIdentifier:changeTrackingID];
 
     [(CADPooledDatabaseConfiguration *)v7 setEnablePropertyModificationLogging:[(CADDatabaseInitializationOptions *)self->_databaseInitializationOptions enablePropertyModificationLogging]];
     databaseProvider = self->_databaseProvider;
@@ -182,10 +182,10 @@ uint64_t __39__ClientConnection_permissionValidator__block_invoke(uint64_t a1)
 
 - (int)eventAccessLevel
 {
-  v2 = [(ClientConnection *)self permissionValidator];
-  v3 = [v2 eventAccessLevel];
+  permissionValidator = [(ClientConnection *)self permissionValidator];
+  eventAccessLevel = [permissionValidator eventAccessLevel];
 
-  return v3;
+  return eventAccessLevel;
 }
 
 + (id)poolManager
@@ -227,23 +227,23 @@ void __45__ClientConnection_databaseRestoreGeneration__block_invoke(uint64_t a1)
 
 - (NSString)changeTrackingID
 {
-  v3 = [(ClientIdentity *)self->_identity applicationIdentifier];
+  applicationIdentifier = [(ClientIdentity *)self->_identity applicationIdentifier];
 
-  v4 = [(ClientConnection *)self databaseInitializationOptions];
-  v5 = [v4 changeTrackingClientId];
-  v6 = v5;
-  if (v3)
+  databaseInitializationOptions = [(ClientConnection *)self databaseInitializationOptions];
+  changeTrackingClientId = [databaseInitializationOptions changeTrackingClientId];
+  v6 = changeTrackingClientId;
+  if (applicationIdentifier)
   {
-    v7 = [(ClientIdentity *)self->_identity applicationIdentifier];
-    v8 = [v6 clientIdWithBundleId:v7];
+    applicationIdentifier2 = [(ClientIdentity *)self->_identity applicationIdentifier];
+    clientId = [v6 clientIdWithBundleId:applicationIdentifier2];
   }
 
   else
   {
-    v8 = [v5 clientId];
+    clientId = [changeTrackingClientId clientId];
   }
 
-  return v8;
+  return clientId;
 }
 
 - (CADAccountAccessHandler)accountAccessHandler
@@ -331,9 +331,9 @@ void __40__ClientConnection_accountAccessHandler__block_invoke(uint64_t a1)
   v46 = *MEMORY[0x277D85DE8];
   v3 = +[CADRealCalendarDatabaseDataProvider realDataProvider];
   v4 = [[CADGroupedAccountAccessHandler alloc] initWithDatabaseDataProvider:v3];
-  v5 = [(ClientConnection *)self _permissionValidator];
-  v39 = [v5 shouldTrustClientEnforcedManagedConfigurationAccess];
-  if (v39)
+  _permissionValidator = [(ClientConnection *)self _permissionValidator];
+  shouldTrustClientEnforcedManagedConfigurationAccess = [_permissionValidator shouldTrustClientEnforcedManagedConfigurationAccess];
+  if (shouldTrustClientEnforcedManagedConfigurationAccess)
   {
     v6 = [[CADGroupedAccountAccessHandler alloc] initWithDatabaseDataProvider:v3];
   }
@@ -343,19 +343,19 @@ void __40__ClientConnection_accountAccessHandler__block_invoke(uint64_t a1)
     v6 = 0;
   }
 
-  v7 = [(CADDatabaseInitializationOptions *)self->_databaseInitializationOptions allowDelegateSources];
-  if (!v7)
+  allowDelegateSources = [(CADDatabaseInitializationOptions *)self->_databaseInitializationOptions allowDelegateSources];
+  if (!allowDelegateSources)
   {
     v8 = CADLogHandle;
     if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_INFO))
     {
       v9 = v8;
-      v37 = [(ClientConnection *)self identity];
-      [v37 clientName];
+      identity = [(ClientConnection *)self identity];
+      [identity clientName];
       v11 = v10 = v6;
       v12 = MEMORY[0x277CCABB0];
-      v13 = [(ClientConnection *)self identity];
-      v14 = [v12 numberWithInt:{objc_msgSend(v13, "pid")}];
+      identity2 = [(ClientConnection *)self identity];
+      v14 = [v12 numberWithInt:{objc_msgSend(identity2, "pid")}];
       *buf = 138412546;
       v41 = v11;
       v42 = 2112;
@@ -372,7 +372,7 @@ void __40__ClientConnection_accountAccessHandler__block_invoke(uint64_t a1)
 
   if ([(CADDatabaseInitializationOptions *)self->_databaseInitializationOptions allowIntegrations])
   {
-    v16 = !v7;
+    v16 = !allowDelegateSources;
   }
 
   else
@@ -384,35 +384,35 @@ void __40__ClientConnection_accountAccessHandler__block_invoke(uint64_t a1)
     v16 = 1;
   }
 
-  v18 = [(CADDatabaseInitializationOptions *)self->_databaseInitializationOptions allowedSourceIdentifiers];
+  allowedSourceIdentifiers = [(CADDatabaseInitializationOptions *)self->_databaseInitializationOptions allowedSourceIdentifiers];
 
-  if (v18)
+  if (allowedSourceIdentifiers)
   {
     v19 = CADLogHandle;
     if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_INFO))
     {
       v20 = v19;
-      v21 = [(ClientConnection *)self identity];
-      v22 = [v21 clientName];
+      identity3 = [(ClientConnection *)self identity];
+      clientName = [identity3 clientName];
       v23 = MEMORY[0x277CCABB0];
       [(ClientConnection *)self identity];
       v24 = v38 = v6;
       v25 = [v23 numberWithInt:{objc_msgSend(v24, "pid")}];
-      v26 = [(CADDatabaseInitializationOptions *)self->_databaseInitializationOptions allowedSourceIdentifiers];
+      allowedSourceIdentifiers2 = [(CADDatabaseInitializationOptions *)self->_databaseInitializationOptions allowedSourceIdentifiers];
       *buf = 138543874;
-      v41 = v22;
+      v41 = clientName;
       v42 = 2114;
       v43 = v25;
       v44 = 2114;
-      v45 = v26;
+      v45 = allowedSourceIdentifiers2;
       _os_log_impl(&dword_22430B000, v20, OS_LOG_TYPE_INFO, "XPC Client [%{public}@] (PID: [%{public}@]). allowedSourceIdentifiers is not nil. Adding Allow Specified Accounts Access Handler for sources %{public}@", buf, 0x20u);
 
       v6 = v38;
     }
 
     v27 = [CADAllowSpecifiedAccountsAccessHandler alloc];
-    v28 = [(CADDatabaseInitializationOptions *)self->_databaseInitializationOptions allowedSourceIdentifiers];
-    v29 = [(CADAllowSpecifiedAccountsAccessHandler *)v27 initWithAllowedSourceIdentifiers:v28 databaseDataProvider:v3];
+    allowedSourceIdentifiers3 = [(CADDatabaseInitializationOptions *)self->_databaseInitializationOptions allowedSourceIdentifiers];
+    v29 = [(CADAllowSpecifiedAccountsAccessHandler *)v27 initWithAllowedSourceIdentifiers:allowedSourceIdentifiers3 databaseDataProvider:v3];
 
     [(CADGroupedAccountAccessHandler *)v4 addAccountAccessHandler:v29];
     [(CADGroupedAccountAccessHandler *)v6 addAccountAccessHandler:v29];
@@ -420,15 +420,15 @@ void __40__ClientConnection_accountAccessHandler__block_invoke(uint64_t a1)
     v16 = 1;
   }
 
-  v30 = [(ClientConnection *)self _createManagedConfigAccountAccessHandlerWithValidator:v5];
+  v30 = [(ClientConnection *)self _createManagedConfigAccountAccessHandlerWithValidator:_permissionValidator];
   if (v30)
   {
     [(CADGroupedAccountAccessHandler *)v4 addAccountAccessHandler:v30];
   }
 
-  v31 = [[CADFilterSuggestedCalendarsAccessHandler alloc] initWithDatabaseDataProvider:v3 permissionValidator:v5];
+  v31 = [[CADFilterSuggestedCalendarsAccessHandler alloc] initWithDatabaseDataProvider:v3 permissionValidator:_permissionValidator];
   [(CADGroupedAccountAccessHandler *)v4 addAccountAccessHandler:v31];
-  if (v39)
+  if (shouldTrustClientEnforcedManagedConfigurationAccess)
   {
     if (v16)
     {
@@ -484,8 +484,8 @@ void __40__ClientConnection_accountAccessHandler__block_invoke(uint64_t a1)
   block[3] = &unk_27851AAD8;
   block[4] = self;
   dispatch_sync(dbQueue, block);
-  v4 = [(ClientConnection *)self cadOperationProxy];
-  [v4 clearCachedAuthorizationStatus];
+  cadOperationProxy = [(ClientConnection *)self cadOperationProxy];
+  [cadOperationProxy clearCachedAuthorizationStatus];
 }
 
 void __50__ClientConnection_clearCachedAuthorizationStatus__block_invoke(uint64_t a1)
@@ -537,23 +537,23 @@ void __46__ClientConnection_strictAccountAccessHandler__block_invoke(uint64_t a1
   objc_storeStrong(v5, v4);
 }
 
-- (ClientConnection)initWithXPCConnection:(id)a3 tccPermissionChecker:(id)a4
+- (ClientConnection)initWithXPCConnection:(id)connection tccPermissionChecker:(id)checker
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  checkerCopy = checker;
   v33.receiver = self;
   v33.super_class = ClientConnection;
   v9 = [(ClientConnection *)&v33 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_xpcConnection, a3);
-    objc_storeStrong(&v10->_tccPermissionChecker, a4);
+    objc_storeStrong(&v9->_xpcConnection, connection);
+    objc_storeStrong(&v10->_tccPermissionChecker, checker);
     v11 = [ClientIdentity alloc];
-    if (v7)
+    if (connectionCopy)
     {
-      [v7 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -569,10 +569,10 @@ void __46__ClientConnection_strictAccountAccessHandler__block_invoke(uint64_t a1
     operations = v10->_operations;
     v10->_operations = v14;
 
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.calaccessd.clientconnection.async.%d", objc_msgSend(v7, "processIdentifier")];
-    v17 = [v16 UTF8String];
+    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.calaccessd.clientconnection.async.%d", objc_msgSend(connectionCopy, "processIdentifier")];
+    uTF8String = [v16 UTF8String];
     v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v19 = dispatch_queue_create(v17, v18);
+    v19 = dispatch_queue_create(uTF8String, v18);
     asynchronousOperationQueue = v10->_asynchronousOperationQueue;
     v10->_asynchronousOperationQueue = v19;
 
@@ -584,14 +584,14 @@ void __46__ClientConnection_strictAccountAccessHandler__block_invoke(uint64_t a1
     if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_INFO))
     {
       v24 = v23;
-      v25 = [(ClientConnection *)v10 identity];
-      v26 = [v25 pid];
-      v27 = [(ClientConnection *)v10 identity];
-      v28 = [v27 clientName];
+      identity = [(ClientConnection *)v10 identity];
+      v26 = [identity pid];
+      identity2 = [(ClientConnection *)v10 identity];
+      clientName = [identity2 clientName];
       *buf = 67109378;
       *&buf[4] = v26;
       *&buf[8] = 2112;
-      *&buf[10] = v28;
+      *&buf[10] = clientName;
       _os_log_impl(&dword_22430B000, v24, OS_LOG_TYPE_INFO, "Client connected: %i (%@)", buf, 0x12u);
     }
 
@@ -613,66 +613,66 @@ uint64_t __31__ClientConnection_poolManager__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_createManagedConfigAccountAccessHandlerWithValidator:(id)a3
+- (id)_createManagedConfigAccountAccessHandlerWithValidator:(id)validator
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  validatorCopy = validator;
   v5 = +[CADRealCalendarDatabaseDataProvider realDataProvider];
-  v6 = [v4 hasSyncClientEntitlement];
+  hasSyncClientEntitlement = [validatorCopy hasSyncClientEntitlement];
 
-  if (v6)
+  if (hasSyncClientEntitlement)
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [(CADDatabaseInitializationOptions *)self->_databaseInitializationOptions managementBundleIdentifier];
-    if (v8)
+    managementBundleIdentifier = [(CADDatabaseInitializationOptions *)self->_databaseInitializationOptions managementBundleIdentifier];
+    if (managementBundleIdentifier)
     {
-      v9 = v8;
+      bundleIdentifier = managementBundleIdentifier;
     }
 
     else
     {
-      v10 = [(CADDatabaseInitializationOptions *)self->_databaseInitializationOptions remoteClientIdentity];
-      v9 = [v10 bundleIdentifier];
+      remoteClientIdentity = [(CADDatabaseInitializationOptions *)self->_databaseInitializationOptions remoteClientIdentity];
+      bundleIdentifier = [remoteClientIdentity bundleIdentifier];
 
-      if (!v9)
+      if (!bundleIdentifier)
       {
-        v11 = [(ClientConnection *)self identity];
-        v9 = [v11 bundleIdentifier];
+        identity = [(ClientConnection *)self identity];
+        bundleIdentifier = [identity bundleIdentifier];
 
-        if (!v9)
+        if (!bundleIdentifier)
         {
           v12 = CADLogHandle;
           if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_DEBUG))
           {
             v13 = v12;
-            v14 = [(ClientConnection *)self identity];
-            v15 = [v14 clientName];
+            identity2 = [(ClientConnection *)self identity];
+            clientName = [identity2 clientName];
             v16 = MEMORY[0x277CCABB0];
-            v17 = [(ClientConnection *)self identity];
-            v18 = [v16 numberWithInt:{objc_msgSend(v17, "pid")}];
+            identity3 = [(ClientConnection *)self identity];
+            v18 = [v16 numberWithInt:{objc_msgSend(identity3, "pid")}];
             v27 = 138412546;
-            v28 = v15;
+            v28 = clientName;
             v29 = 2112;
             v30 = v18;
             _os_log_impl(&dword_22430B000, v13, OS_LOG_TYPE_DEBUG, "XPC Client [%@] (PID: [%@]) does not have a bundle identifier. Account access behavior via MDM API will be undefined.", &v27, 0x16u);
           }
 
-          v9 = 0;
+          bundleIdentifier = 0;
         }
       }
     }
 
     CADAccountManagementFromSource([(CADDatabaseInitializationOptions *)self->_databaseInitializationOptions management]);
     v20 = v19;
-    v21 = [MEMORY[0x277D262A0] sharedConnection];
-    v22 = [[CADMCProfileConnectionManagedConfigurationHandler alloc] initWithMCProfileConnection:v21];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v22 = [[CADMCProfileConnectionManagedConfigurationHandler alloc] initWithMCProfileConnection:mEMORY[0x277D262A0]];
     v23 = [CADMCAccountAccessHandler alloc];
-    v24 = [(ClientConnection *)self _accountsProvider];
-    v7 = [(CADMCAccountAccessHandler *)v23 initWithDatabaseDataProvider:v5 accountsProvider:v24 managedConfigHandler:v22 accountManagement:v20 bundleIdentifier:v9];
+    _accountsProvider = [(ClientConnection *)self _accountsProvider];
+    v7 = [(CADMCAccountAccessHandler *)v23 initWithDatabaseDataProvider:v5 accountsProvider:_accountsProvider managedConfigHandler:v22 accountManagement:v20 bundleIdentifier:bundleIdentifier];
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -714,41 +714,41 @@ uint64_t __36__ClientConnection_accountsProvider__block_invoke(uint64_t a1)
 
 - (void)handleDatabaseChanged
 {
-  v3 = [(ClientConnection *)self accountAccessHandler];
-  [v3 reset];
+  accountAccessHandler = [(ClientConnection *)self accountAccessHandler];
+  [accountAccessHandler reset];
 
-  v4 = [(ClientConnection *)self strictAccountAccessHandler];
-  [v4 reset];
+  strictAccountAccessHandler = [(ClientConnection *)self strictAccountAccessHandler];
+  [strictAccountAccessHandler reset];
 }
 
-- (BOOL)trySetDatabaseInitializationOptions:(id)a3
+- (BOOL)trySetDatabaseInitializationOptions:(id)options
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = CADLogHandle;
   if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    *&buf[4] = v4;
+    *&buf[4] = optionsCopy;
     _os_log_impl(&dword_22430B000, v5, OS_LOG_TYPE_DEFAULT, "ClientConnection trySetDatabaseInitializationOptions. clientProvidedOptions:%{public}@", buf, 0xCu);
   }
 
-  [v4 purifyOptions];
-  v6 = [v4 validOptionsForConnection:self];
-  v7 = [v4 isEqualToOptions:v6];
+  [optionsCopy purifyOptions];
+  v6 = [optionsCopy validOptionsForConnection:self];
+  v7 = [optionsCopy isEqualToOptions:v6];
   if (v7)
   {
     if (_os_feature_enabled_impl())
     {
-      v8 = [v6 privacyClientIdentity];
+      privacyClientIdentity = [v6 privacyClientIdentity];
 
-      if (!v8)
+      if (!privacyClientIdentity)
       {
-        v9 = [(ClientConnection *)self identity];
-        v10 = v9;
-        if (v9)
+        identity = [(ClientConnection *)self identity];
+        v10 = identity;
+        if (identity)
         {
-          [v9 auditToken];
+          [identity auditToken];
         }
 
         else
@@ -785,7 +785,7 @@ uint64_t __36__ClientConnection_accountsProvider__block_invoke(uint64_t a1)
     if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      *&buf[4] = v4;
+      *&buf[4] = optionsCopy;
       _os_log_impl(&dword_22430B000, v12, OS_LOG_TYPE_ERROR, "clientProvidedOptions:%{public}@", buf, 0xCu);
     }
 
@@ -842,7 +842,7 @@ void __56__ClientConnection_trySetDatabaseInitializationOptions___block_invoke(u
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addCreatedAuxDatabase:(CalDatabase *)a3
+- (void)addCreatedAuxDatabase:(CalDatabase *)database
 {
   dbQueue = self->_dbQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -850,13 +850,13 @@ void __56__ClientConnection_trySetDatabaseInitializationOptions___block_invoke(u
   v4[2] = __42__ClientConnection_addCreatedAuxDatabase___block_invoke;
   v4[3] = &unk_27851B0A0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = database;
   dispatch_sync(dbQueue, v4);
 }
 
-- (void)withAllDatabasesPerform:(id)a3
+- (void)withAllDatabasesPerform:(id)perform
 {
-  v4 = a3;
+  performCopy = perform;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -878,8 +878,8 @@ void __56__ClientConnection_trySetDatabaseInitializationOptions___block_invoke(u
   block[5] = &v14;
   block[6] = &v8;
   dispatch_sync(dbQueue, block);
-  v6 = [(ClientConnection *)self _currentPriority];
-  [v15[5] performWithAllDatabasesWithConfiguration:v9[5] priority:v6 block:v4];
+  _currentPriority = [(ClientConnection *)self _currentPriority];
+  [v15[5] performWithAllDatabasesWithConfiguration:v9[5] priority:_currentPriority block:performCopy];
   _Block_object_dispose(&v8, 8);
 
   _Block_object_dispose(&v14, 8);
@@ -898,18 +898,18 @@ void __44__ClientConnection_withAllDatabasesPerform___block_invoke(uint64_t a1)
   objc_storeStrong(v6, v5);
 }
 
-- (BOOL)withDatabaseForObjects:(id)a3 options:(unint64_t)a4 perform:(id)a5
+- (BOOL)withDatabaseForObjects:(id)objects options:(unint64_t)options perform:(id)perform
 {
-  v31 = a4;
+  optionsCopy = options;
   v64 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v32 = a5;
+  objectsCopy = objects;
+  performCopy = perform;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v8 = v6;
+  v8 = objectsCopy;
   v9 = [v8 countByEnumeratingWithState:&v56 objects:v63 count:16];
   if (v9)
   {
@@ -924,8 +924,8 @@ void __44__ClientConnection_withAllDatabasesPerform___block_invoke(uint64_t a1)
         }
 
         v12 = *(*(&v56 + 1) + 8 * i);
-        v13 = [v12 databaseID];
-        v14 = [MEMORY[0x277CCABB0] numberWithInt:v13];
+        databaseID = [v12 databaseID];
+        v14 = [MEMORY[0x277CCABB0] numberWithInt:databaseID];
         v15 = [v7 objectForKeyedSubscript:v14];
         if (!v15)
         {
@@ -963,7 +963,7 @@ void __44__ClientConnection_withAllDatabasesPerform___block_invoke(uint64_t a1)
   block[5] = &v50;
   block[6] = &v44;
   dispatch_sync(dbQueue, block);
-  v30 = [(ClientConnection *)self _currentPriority];
+  _currentPriority = [(ClientConnection *)self _currentPriority];
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
@@ -983,7 +983,7 @@ void __44__ClientConnection_withAllDatabasesPerform___block_invoke(uint64_t a1)
         }
 
         v20 = *(*(&v39 + 1) + 8 * j);
-        v21 = [v20 intValue];
+        intValue = [v20 intValue];
         v22 = [obja objectForKeyedSubscript:v20];
         v23 = v51[5];
         v24 = v45[5];
@@ -991,11 +991,11 @@ void __44__ClientConnection_withAllDatabasesPerform___block_invoke(uint64_t a1)
         v35[1] = 3221225472;
         v35[2] = __59__ClientConnection_withDatabaseForObjects_options_perform___block_invoke_2;
         v35[3] = &unk_27851B0F0;
-        v37 = v32;
-        v38 = v21;
+        v37 = performCopy;
+        v38 = intValue;
         v25 = v22;
         v36 = v25;
-        if (((v31 | [v23 performWithConfiguration:v24 priority:v30 databaseID:v21 block:v35]) & 1) == 0)
+        if (((optionsCopy | [v23 performWithConfiguration:v24 priority:_currentPriority databaseID:intValue block:v35]) & 1) == 0)
         {
           v27 = CADLogHandle;
           if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
@@ -1043,12 +1043,12 @@ void __59__ClientConnection_withDatabaseForObjects_options_perform___block_invok
   objc_storeStrong(v6, v5);
 }
 
-- (BOOL)withDatabaseForObject:(id)a3 perform:(id)a4
+- (BOOL)withDatabaseForObject:(id)object perform:(id)perform
 {
-  v6 = a4;
-  LOBYTE(a3) = -[ClientConnection withDatabaseID:perform:](self, "withDatabaseID:perform:", [a3 databaseID], v6);
+  performCopy = perform;
+  LOBYTE(object) = -[ClientConnection withDatabaseID:perform:](self, "withDatabaseID:perform:", [object databaseID], performCopy);
 
-  return a3;
+  return object;
 }
 
 void __43__ClientConnection_withDatabaseID_perform___block_invoke(uint64_t a1)
@@ -1102,19 +1102,19 @@ void __43__ClientConnection_withDatabaseID_perform___block_invoke(uint64_t a1)
   dispatch_sync(dbQueue, block);
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ClientConnection *)self xpcConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  xpcConnection = [(ClientConnection *)self xpcConnection];
+  v6 = [xpcConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
 - (void)invalidateConnection
 {
-  v2 = [(ClientConnection *)self xpcConnection];
-  [v2 invalidate];
+  xpcConnection = [(ClientConnection *)self xpcConnection];
+  [xpcConnection invalidate];
 }
 
 - (NSString)effectiveApplicationIdentifier
@@ -1126,9 +1126,9 @@ void __43__ClientConnection_withDatabaseID_perform___block_invoke(uint64_t a1)
     identity = self->_identity;
   }
 
-  v5 = [identity applicationIdentifier];
+  applicationIdentifier = [identity applicationIdentifier];
 
-  return v5;
+  return applicationIdentifier;
 }
 
 - (NSString)effectiveTeamIdentifier
@@ -1140,33 +1140,33 @@ void __43__ClientConnection_withDatabaseID_perform___block_invoke(uint64_t a1)
     identity = self->_identity;
   }
 
-  v5 = [identity teamIdentifier];
+  teamIdentifier = [identity teamIdentifier];
 
-  return v5;
+  return teamIdentifier;
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isAsynchronous])
+  operationCopy = operation;
+  if ([operationCopy isAsynchronous])
   {
     v5 = CADLogHandle;
     if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v16 = v4;
+      v16 = operationCopy;
       v6 = "Asynchronous operations are not supported: %@";
 LABEL_8:
       _os_log_impl(&dword_22430B000, v5, OS_LOG_TYPE_ERROR, v6, buf, 0xCu);
     }
   }
 
-  else if ([v4 isReady])
+  else if ([operationCopy isReady])
   {
     v7 = self->_operations;
     objc_sync_enter(v7);
-    [(NSMutableArray *)self->_operations addObject:v4];
+    [(NSMutableArray *)self->_operations addObject:operationCopy];
     objc_sync_exit(v7);
 
     v8 = self->_operations;
@@ -1175,7 +1175,7 @@ LABEL_8:
     v12[1] = 3221225472;
     v12[2] = __33__ClientConnection_addOperation___block_invoke;
     v12[3] = &unk_27851AB28;
-    v13 = v4;
+    v13 = operationCopy;
     v14 = v8;
     v10 = v8;
     dispatch_async(asynchronousOperationQueue, v12);
@@ -1187,7 +1187,7 @@ LABEL_8:
     if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v16 = v4;
+      v16 = operationCopy;
       v6 = "Operations that aren't ready are not supported: %@";
       goto LABEL_8;
     }
@@ -1205,7 +1205,7 @@ void __33__ClientConnection_addOperation___block_invoke(uint64_t a1)
   objc_sync_exit(obj);
 }
 
-- (BOOL)cancelOperationsWithToken:(unsigned int)a3
+- (BOOL)cancelOperationsWithToken:(unsigned int)token
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = self->_operations;
@@ -1231,7 +1231,7 @@ void __33__ClientConnection_addOperation___block_invoke(uint64_t a1)
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        if ([v12 token] == a3)
+        if ([v12 token] == token)
         {
           [v12 cancel];
           [v6 addIndex:v9];
@@ -1257,9 +1257,9 @@ void __33__ClientConnection_addOperation___block_invoke(uint64_t a1)
   return v13 != 0;
 }
 
-- (void)addAgent:(id)a3
+- (void)addAgent:(id)agent
 {
-  v7 = a3;
+  agentCopy = agent;
   os_unfair_lock_lock(&self->_agentLock);
   agents = self->_agents;
   if (!agents)
@@ -1271,11 +1271,11 @@ void __33__ClientConnection_addOperation___block_invoke(uint64_t a1)
     agents = self->_agents;
   }
 
-  [(NSMutableArray *)agents addObject:v7];
+  [(NSMutableArray *)agents addObject:agentCopy];
   os_unfair_lock_unlock(&self->_agentLock);
 }
 
-- (id)removeAgentWithToken:(int)a3
+- (id)removeAgentWithToken:(int)token
 {
   v21 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_agentLock);
@@ -1303,7 +1303,7 @@ void __33__ClientConnection_addOperation___block_invoke(uint64_t a1)
         }
 
         v12 = *(*(&v16 + 1) + 8 * v10);
-        if ([v12 token] == a3)
+        if ([v12 token] == token)
         {
           v13 = v12;
           [(NSMutableArray *)self->_agents removeObjectAtIndex:v11];
@@ -1334,7 +1334,7 @@ LABEL_11:
   return v13;
 }
 
-- (id)agentWithToken:(int)a3
+- (id)agentWithToken:(int)token
 {
   v19 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_agentLock);
@@ -1358,7 +1358,7 @@ LABEL_11:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        if ([v10 token] == a3)
+        if ([v10 token] == token)
         {
           v11 = v10;
           goto LABEL_11;
@@ -1386,16 +1386,16 @@ LABEL_11:
 
 - (void)dumpState
 {
-  v3 = [(ClientConnection *)self identity];
-  v2 = [v3 clientName];
-  NSLog(&cfstr_Connection_0.isa, v2);
+  identity = [(ClientConnection *)self identity];
+  clientName = [identity clientName];
+  NSLog(&cfstr_Connection_0.isa, clientName);
 }
 
 - (id)blockList
 {
-  v3 = [(ClientConnection *)self blockListOverride];
+  blockListOverride = [(ClientConnection *)self blockListOverride];
 
-  if (v3)
+  if (blockListOverride)
   {
     [(ClientConnection *)self blockListOverride];
   }
@@ -1411,20 +1411,20 @@ LABEL_11:
 
 - (BOOL)reminderAccessGranted
 {
-  v2 = [(ClientConnection *)self permissionValidator];
-  v3 = [v2 hasReminderAccess];
+  permissionValidator = [(ClientConnection *)self permissionValidator];
+  hasReminderAccess = [permissionValidator hasReminderAccess];
 
-  return v3;
+  return hasReminderAccess;
 }
 
-- (void)logAccessToObject:(id)a3
+- (void)logAccessToObject:(id)object
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v5 = _os_feature_enabled_impl();
-  if (v4 && v5)
+  if (objectCopy && v5)
   {
-    v8[0] = v4;
+    v8[0] = objectCopy;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
     [(ClientConnection *)self logAccessToObjects:v6];
   }
@@ -1432,20 +1432,20 @@ LABEL_11:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logAccessToObjects:(id)a3
+- (void)logAccessToObjects:(id)objects
 {
-  v9 = a3;
+  objectsCopy = objects;
   v4 = _os_feature_enabled_impl();
-  if (v9)
+  if (objectsCopy)
   {
     if (v4)
     {
-      v4 = [v9 count];
+      v4 = [objectsCopy count];
       if (v4)
       {
-        v5 = [(ClientConnection *)self _objectIDsToBeResolved:v9];
+        v5 = [(ClientConnection *)self _objectIDsToBeResolved:objectsCopy];
         v6 = [(ClientConnection *)self _resolveObjectIDsForLogging:v5];
-        v7 = [(ClientConnection *)self _objectIDsResolvedAndLoggable:v9];
+        v7 = [(ClientConnection *)self _objectIDsResolvedAndLoggable:objectsCopy];
         v8 = [v6 setByAddingObjectsFromSet:v7];
         [(ClientConnection *)self _logAccessToResolvedObjectIDs:v8];
       }
@@ -1455,19 +1455,19 @@ LABEL_11:
   MEMORY[0x2821F96F8](v4);
 }
 
-- (void)logAccessToEntities:(id)a3
+- (void)logAccessToEntities:(id)entities
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entitiesCopy = entities;
   v5 = _os_feature_enabled_impl();
-  if (v4 && v5 && [v4 count])
+  if (entitiesCopy && v5 && [entitiesCopy count])
   {
     v6 = objc_opt_new();
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = v4;
+    v7 = entitiesCopy;
     v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
@@ -1505,28 +1505,28 @@ LABEL_11:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isPrimaryObjectTypeForAccessLogging:(id)a3
+- (BOOL)_isPrimaryObjectTypeForAccessLogging:(id)logging
 {
-  v3 = [a3 entityType];
+  entityType = [logging entityType];
   result = 1;
-  if (v3 > 6 || ((1 << v3) & 0x46) == 0)
+  if (entityType > 6 || ((1 << entityType) & 0x46) == 0)
   {
-    return v3 == 101;
+    return entityType == 101;
   }
 
   return result;
 }
 
-- (id)_objectIDsToBeResolved:(id)a3
+- (id)_objectIDsToBeResolved:(id)resolved
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resolvedCopy = resolved;
   v5 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = resolvedCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -1559,16 +1559,16 @@ LABEL_11:
   return v5;
 }
 
-- (id)_objectIDsResolvedAndLoggable:(id)a3
+- (id)_objectIDsResolvedAndLoggable:(id)loggable
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  loggableCopy = loggable;
   v5 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = loggableCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -1601,9 +1601,9 @@ LABEL_11:
   return v5;
 }
 
-- (id)_resolveObjectIDsForLogging:(id)a3
+- (id)_resolveObjectIDsForLogging:(id)logging
 {
-  v4 = a3;
+  loggingCopy = logging;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -1616,7 +1616,7 @@ LABEL_11:
   v7[3] = &unk_27851B140;
   v7[4] = self;
   v7[5] = &v8;
-  [(ClientConnection *)self withDatabaseForObjects:v4 options:1 perform:v7];
+  [(ClientConnection *)self withDatabaseForObjects:loggingCopy options:1 perform:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
@@ -1672,9 +1672,9 @@ void __48__ClientConnection__resolveObjectIDsForLogging___block_invoke(uint64_t 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_resolveObjectIDForLoggingAccessToEntity:(void *)a3
+- (id)_resolveObjectIDForLoggingAccessToEntity:(void *)entity
 {
-  CADOwningEntity(a3);
+  CADOwningEntity(entity);
   v4 = CADEntityCopyObjectID();
   if ([(ClientConnection *)self _isPrimaryObjectTypeForAccessLogging:v4])
   {
@@ -1689,10 +1689,10 @@ void __48__ClientConnection__resolveObjectIDsForLogging___block_invoke(uint64_t 
   return v5;
 }
 
-- (void)_logAccessToResolvedObjectIDs:(id)a3
+- (void)_logAccessToResolvedObjectIDs:(id)ds
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   dbQueue = self->_dbQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1705,7 +1705,7 @@ void __48__ClientConnection__resolveObjectIDsForLogging___block_invoke(uint64_t 
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = v4;
+  v7 = dsCopy;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v8)
   {
@@ -1726,8 +1726,8 @@ void __48__ClientConnection__resolveObjectIDsForLogging___block_invoke(uint64_t 
         v14 = objc_alloc(MEMORY[0x277CCAAB0]);
         v15 = [v14 initRequiringSecureCoding:{1, v21}];
         [v15 encodeObject:v12];
-        v16 = [v15 encodedData];
-        [v6 addObject:v16];
+        encodedData = [v15 encodedData];
+        [v6 addObject:encodedData];
 
         objc_autoreleasePoolPop(v13);
         ++v11;
@@ -1742,8 +1742,8 @@ void __48__ClientConnection__resolveObjectIDsForLogging___block_invoke(uint64_t 
 
   v17 = objc_alloc(MEMORY[0x277D41288]);
   v18 = [v17 initWithAccessor:self->_privacyApplication forService:*MEMORY[0x277D6C118] assetIdentifiers:v6];
-  v19 = [MEMORY[0x277D41260] sharedInstance];
-  [v19 log:v18];
+  mEMORY[0x277D41260] = [MEMORY[0x277D41260] sharedInstance];
+  [mEMORY[0x277D41260] log:v18];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -1786,26 +1786,26 @@ void __50__ClientConnection__logAccessToResolvedObjectIDs___block_invoke(uint64_
   }
 }
 
-- (id)restrictedCalendarRowIDsForAction:(unint64_t)a3 inDatabase:(CalDatabase *)a4
+- (id)restrictedCalendarRowIDsForAction:(unint64_t)action inDatabase:(CalDatabase *)database
 {
-  v6 = [(ClientConnection *)self accountAccessHandler];
-  v7 = [v6 restrictedCalendarRowIDsForAction:a3 inDatabase:a4];
+  accountAccessHandler = [(ClientConnection *)self accountAccessHandler];
+  v7 = [accountAccessHandler restrictedCalendarRowIDsForAction:action inDatabase:database];
 
   return v7;
 }
 
-- (id)restrictedStoreRowIDsForAction:(unint64_t)a3 inDatabase:(CalDatabase *)a4
+- (id)restrictedStoreRowIDsForAction:(unint64_t)action inDatabase:(CalDatabase *)database
 {
-  v6 = [(ClientConnection *)self accountAccessHandler];
-  v7 = [v6 restrictedStoreRowIDsForAction:a3 inDatabase:a4];
+  accountAccessHandler = [(ClientConnection *)self accountAccessHandler];
+  v7 = [accountAccessHandler restrictedStoreRowIDsForAction:action inDatabase:database];
 
   return v7;
 }
 
-- (int)managedConfigurationAccountAccessForStore:(void *)a3
+- (int)managedConfigurationAccountAccessForStore:(void *)store
 {
-  v5 = [(ClientConnection *)self isStoreRestricted:a3 forAction:0 strict:1];
-  result = [(ClientConnection *)self isStoreRestricted:a3 forAction:1 strict:1];
+  v5 = [(ClientConnection *)self isStoreRestricted:store forAction:0 strict:1];
+  result = [(ClientConnection *)self isStoreRestricted:store forAction:1 strict:1];
   if (result)
   {
     v7 = 3;
@@ -1824,22 +1824,22 @@ void __50__ClientConnection__logAccessToResolvedObjectIDs___block_invoke(uint64_
   return result;
 }
 
-- (BOOL)isStoreRestricted:(void *)a3 forAction:(unint64_t)a4 strict:(BOOL)a5
+- (BOOL)isStoreRestricted:(void *)restricted forAction:(unint64_t)action strict:(BOOL)strict
 {
-  if (a3)
+  if (restricted)
   {
-    v5 = a5;
+    strictCopy = strict;
     DatabaseForRecord = CalGetDatabaseForRecord();
-    v10 = [(ClientConnection *)self accountAccessHandler];
-    v11 = [v10 isActionAllowed:a4 forStore:a3 inDatabase:DatabaseForRecord] ^ 1;
+    accountAccessHandler = [(ClientConnection *)self accountAccessHandler];
+    v11 = [accountAccessHandler isActionAllowed:action forStore:restricted inDatabase:DatabaseForRecord] ^ 1;
 
-    if ((v11 & 1) == 0 && v5)
+    if ((v11 & 1) == 0 && strictCopy)
     {
-      v12 = [(ClientConnection *)self strictAccountAccessHandler];
-      v13 = v12;
-      if (v12)
+      strictAccountAccessHandler = [(ClientConnection *)self strictAccountAccessHandler];
+      v13 = strictAccountAccessHandler;
+      if (strictAccountAccessHandler)
       {
-        v11 = [v12 isActionAllowed:a4 forStore:a3 inDatabase:DatabaseForRecord] ^ 1;
+        v11 = [strictAccountAccessHandler isActionAllowed:action forStore:restricted inDatabase:DatabaseForRecord] ^ 1;
       }
 
       else
@@ -1864,13 +1864,13 @@ void __50__ClientConnection__logAccessToResolvedObjectIDs___block_invoke(uint64_
   return v11;
 }
 
-- (BOOL)isCalendarRestricted:(void *)a3 forAction:(unint64_t)a4
+- (BOOL)isCalendarRestricted:(void *)restricted forAction:(unint64_t)action
 {
-  if (a3)
+  if (restricted)
   {
     DatabaseForRecord = CalGetDatabaseForRecord();
     v7 = [MEMORY[0x277CCABB0] numberWithInt:CalCalendarGetUID()];
-    v8 = [(ClientConnection *)self restrictedCalendarRowIDsForAction:a4 inDatabase:DatabaseForRecord];
+    v8 = [(ClientConnection *)self restrictedCalendarRowIDsForAction:action inDatabase:DatabaseForRecord];
     LOBYTE(self) = [v8 containsObject:v7];
 
     return self;
@@ -1889,9 +1889,9 @@ void __50__ClientConnection__logAccessToResolvedObjectIDs___block_invoke(uint64_
   }
 }
 
-- (BOOL)isCalendarItemRestricted:(void *)a3 forAction:(unint64_t)a4
+- (BOOL)isCalendarItemRestricted:(void *)restricted forAction:(unint64_t)action
 {
-  if (!a3)
+  if (!restricted)
   {
     return 0;
   }
@@ -1903,19 +1903,19 @@ void __50__ClientConnection__logAccessToResolvedObjectIDs___block_invoke(uint64_
   }
 
   v7 = v6;
-  v8 = [(ClientConnection *)self isCalendarRestricted:v6 forAction:a4];
+  v8 = [(ClientConnection *)self isCalendarRestricted:v6 forAction:action];
   CFRelease(v7);
   return v8;
 }
 
-- (BOOL)isNotificationRestricted:(void *)a3 forAction:(unint64_t)a4
+- (BOOL)isNotificationRestricted:(void *)restricted forAction:(unint64_t)action
 {
-  if (a3 && (v6 = CalNotificationCopyOwner()) != 0)
+  if (restricted && (v6 = CalNotificationCopyOwner()) != 0)
   {
     v7 = v6;
     if (CalEntityGetType() == 1)
     {
-      if ([(ClientConnection *)self isCalendarRestricted:v7 forAction:a4])
+      if ([(ClientConnection *)self isCalendarRestricted:v7 forAction:action])
       {
         LOBYTE(v8) = 1;
       }
@@ -1942,20 +1942,20 @@ void __50__ClientConnection__logAccessToResolvedObjectIDs___block_invoke(uint64_
   return v8;
 }
 
-- (BOOL)isAlarmRestricted:(void *)a3 forAction:(unint64_t)a4
+- (BOOL)isAlarmRestricted:(void *)restricted forAction:(unint64_t)action
 {
-  if (a3 && (v6 = CalAlarmCopyOwningEntity()) != 0)
+  if (restricted && (v6 = CalAlarmCopyOwningEntity()) != 0)
   {
     v7 = v6;
     Type = CalEntityGetType();
     if (Type == 101 || Type == 2)
     {
-      LOBYTE(a4) = [(ClientConnection *)self isCalendarItemRestricted:v7 forAction:a4];
+      LOBYTE(action) = [(ClientConnection *)self isCalendarItemRestricted:v7 forAction:action];
     }
 
     else
     {
-      LODWORD(a4) = !CalendarCanContainAnAllowedEntityType(v7, self);
+      LODWORD(action) = !CalendarCanContainAnAllowedEntityType(v7, self);
     }
 
     CFRelease(v7);
@@ -1963,30 +1963,30 @@ void __50__ClientConnection__logAccessToResolvedObjectIDs___block_invoke(uint64_
 
   else
   {
-    LOBYTE(a4) = 0;
+    LOBYTE(action) = 0;
   }
 
-  return a4;
+  return action;
 }
 
-- (BOOL)isStoreManaged:(void *)a3
+- (BOOL)isStoreManaged:(void *)managed
 {
-  if (!a3)
+  if (!managed)
   {
     return 0;
   }
 
   v4 = CalStoreCopyExternalID();
-  v5 = [(ClientConnection *)self accountsProvider];
-  v6 = [v5 accountWithIdentifier:v4];
-  v7 = [v6 MCIsManaged];
+  accountsProvider = [(ClientConnection *)self accountsProvider];
+  v6 = [accountsProvider accountWithIdentifier:v4];
+  mCIsManaged = [v6 MCIsManaged];
 
-  return v7;
+  return mCIsManaged;
 }
 
-- (BOOL)isCalendarManaged:(void *)a3
+- (BOOL)isCalendarManaged:(void *)managed
 {
-  if (!a3)
+  if (!managed)
   {
     return 0;
   }
@@ -2001,9 +2001,9 @@ void __50__ClientConnection__logAccessToResolvedObjectIDs___block_invoke(uint64_
   return v5;
 }
 
-- (BOOL)isCalendarItemManaged:(void *)a3
+- (BOOL)isCalendarItemManaged:(void *)managed
 {
-  if (!a3)
+  if (!managed)
   {
     return 0;
   }
@@ -2018,11 +2018,11 @@ void __50__ClientConnection__logAccessToResolvedObjectIDs___block_invoke(uint64_
   return v5;
 }
 
-- (void)reportIntegrityErrors:(id)a3
+- (void)reportIntegrityErrors:(id)errors
 {
-  v4 = a3;
+  errorsCopy = errors;
   v5 = [(ClientConnection *)self remoteObjectProxyWithErrorHandler:&__block_literal_global_64];
-  [v5 CADClientReceiveDatabaseIntegrityErrors:v4];
+  [v5 CADClientReceiveDatabaseIntegrityErrors:errorsCopy];
 }
 
 void __42__ClientConnection_reportIntegrityErrors___block_invoke(uint64_t a1, void *a2)
@@ -2042,34 +2042,34 @@ void __42__ClientConnection_reportIntegrityErrors___block_invoke(uint64_t a1, vo
 
 - (CDBAccountInfo)localAccountInfo
 {
-  v3 = [(ClientConnection *)self databaseInitializationOptions];
-  v4 = [v3 unitTesting];
+  databaseInitializationOptions = [(ClientConnection *)self databaseInitializationOptions];
+  unitTesting = [databaseInitializationOptions unitTesting];
 
-  if (v4)
+  if (unitTesting)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CF74F8] sharedInstance];
+    selfCopy = [MEMORY[0x277CF74F8] sharedInstance];
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (BOOL)addressIsAccountOwner:(id)a3
+- (BOOL)addressIsAccountOwner:(id)owner
 {
-  v3 = [a3 stringRemovingMailto];
-  v4 = [v3 isEqualToString:@"attendee@localattendee.apple.com"];
+  stringRemovingMailto = [owner stringRemovingMailto];
+  v4 = [stringRemovingMailto isEqualToString:@"attendee@localattendee.apple.com"];
 
   return v4;
 }
 
-- (BOOL)addressURLIsAccountOwner:(id)a3
+- (BOOL)addressURLIsAccountOwner:(id)owner
 {
-  v4 = [a3 absoluteString];
-  LOBYTE(self) = [(ClientConnection *)self addressIsAccountOwner:v4];
+  absoluteString = [owner absoluteString];
+  LOBYTE(self) = [(ClientConnection *)self addressIsAccountOwner:absoluteString];
 
   return self;
 }

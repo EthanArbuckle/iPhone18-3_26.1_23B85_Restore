@@ -1,30 +1,30 @@
 @interface UIPrintPageRangeOption
 - (BOOL)shouldShow;
-- (UIPrintPageRangeOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4;
+- (UIPrintPageRangeOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller;
 - (id)createPrintOptionTableViewCell;
 - (id)printOptionDetailView;
 - (id)summary;
 - (void)dealloc;
 - (void)didSelectPrintOption;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)updateFromPrintInfo;
 @end
 
 @implementation UIPrintPageRangeOption
 
-- (UIPrintPageRangeOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4
+- (UIPrintPageRangeOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller
 {
   v9.receiver = self;
   v9.super_class = UIPrintPageRangeOption;
-  v4 = [(UIPrintOption *)&v9 initWithPrintInfo:a3 printPanelViewController:a4];
+  v4 = [(UIPrintOption *)&v9 initWithPrintInfo:info printPanelViewController:controller];
   if (v4)
   {
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = [v5 localizedStringForKey:@"RANGE_SHEET_TITLE" value:@"Page Range" table:@"Localizable"];
     [(UIPrintOption *)v4 setTitle:v6];
 
-    v7 = [(UIPrintOption *)v4 printInfo];
-    [v7 addObserver:v4 forKeyPath:0x2871AF1B0 options:0 context:0];
+    printInfo = [(UIPrintOption *)v4 printInfo];
+    [printInfo addObserver:v4 forKeyPath:0x2871AF1B0 options:0 context:0];
   }
 
   return v4;
@@ -32,15 +32,15 @@
 
 - (void)dealloc
 {
-  v3 = [(UIPrintOption *)self printInfo];
-  [v3 removeObserver:self forKeyPath:0x2871AF1B0];
+  printInfo = [(UIPrintOption *)self printInfo];
+  [printInfo removeObserver:self forKeyPath:0x2871AF1B0];
 
   v4.receiver = self;
   v4.super_class = UIPrintPageRangeOption;
   [(UIPrintPageRangeOption *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -52,51 +52,51 @@
 
 - (BOOL)shouldShow
 {
-  v2 = [(UIPrintOption *)self printPanelViewController];
-  v3 = [v2 shouldShowPageRange];
+  printPanelViewController = [(UIPrintOption *)self printPanelViewController];
+  shouldShowPageRange = [printPanelViewController shouldShowPageRange];
 
-  return v3;
+  return shouldShowPageRange;
 }
 
 - (void)updateFromPrintInfo
 {
-  v3 = [(UIPrintOption *)self tableViewCell];
-  v9 = [v3 contentConfiguration];
+  tableViewCell = [(UIPrintOption *)self tableViewCell];
+  contentConfiguration = [tableViewCell contentConfiguration];
 
-  v4 = [(UIPrintPageRangeOption *)self summary];
-  [v9 setSecondaryText:v4];
+  summary = [(UIPrintPageRangeOption *)self summary];
+  [contentConfiguration setSecondaryText:summary];
 
-  v5 = [(UIPrintOption *)self tableViewCell];
-  [v5 setContentConfiguration:v9];
+  tableViewCell2 = [(UIPrintOption *)self tableViewCell];
+  [tableViewCell2 setContentConfiguration:contentConfiguration];
 
-  v6 = [(UIPrintOption *)self printInfo];
-  v7 = [v6 pageCount] > 1;
-  v8 = [(UIPrintOption *)self tableViewCell];
-  [v8 setEnabled:v7];
+  printInfo = [(UIPrintOption *)self printInfo];
+  v7 = [printInfo pageCount] > 1;
+  tableViewCell3 = [(UIPrintOption *)self tableViewCell];
+  [tableViewCell3 setEnabled:v7];
 }
 
 - (id)createPrintOptionTableViewCell
 {
-  v3 = [(UIPrintOption *)self printPanelViewController];
-  v4 = [v3 printOptionsTableView];
-  v5 = [v4 dequeueReusableCellWithIdentifier:@"UIPrintOptionViewCell"];
+  printPanelViewController = [(UIPrintOption *)self printPanelViewController];
+  printOptionsTableView = [printPanelViewController printOptionsTableView];
+  v5 = [printOptionsTableView dequeueReusableCellWithIdentifier:@"UIPrintOptionViewCell"];
 
   [(UIPrintOption *)self setTableViewCell:v5];
-  v6 = [MEMORY[0x277D756E0] valueCellConfiguration];
+  valueCellConfiguration = [MEMORY[0x277D756E0] valueCellConfiguration];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"Range" value:@"Range" table:@"Localizable"];
-  [v6 setText:v8];
+  [valueCellConfiguration setText:v8];
 
-  v9 = [(UIPrintPageRangeOption *)self summary];
-  [v6 setSecondaryText:v9];
+  summary = [(UIPrintPageRangeOption *)self summary];
+  [valueCellConfiguration setSecondaryText:summary];
 
-  v10 = [v6 secondaryTextProperties];
-  [v10 setNumberOfLines:0];
+  secondaryTextProperties = [valueCellConfiguration secondaryTextProperties];
+  [secondaryTextProperties setNumberOfLines:0];
 
-  [v5 setContentConfiguration:v6];
+  [v5 setContentConfiguration:valueCellConfiguration];
   [v5 setOptionViewDelegate:self];
-  v11 = [(UIPrintOption *)self printInfo];
-  [v5 setEnabled:{objc_msgSend(v11, "pageCount") > 1}];
+  printInfo = [(UIPrintOption *)self printInfo];
+  [v5 setEnabled:{objc_msgSend(printInfo, "pageCount") > 1}];
 
   return v5;
 }
@@ -104,8 +104,8 @@
 - (id)printOptionDetailView
 {
   v3 = [UIPrintRangeView alloc];
-  v4 = [(UIPrintOption *)self printInfo];
-  v5 = [(UIPrintRangeView *)v3 initWithFrame:v4 printInfo:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  printInfo = [(UIPrintOption *)self printInfo];
+  v5 = [(UIPrintRangeView *)v3 initWithFrame:printInfo printInfo:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   [(UIPrintPageRangeOption *)self setPageRangeView:v5];
 
   return [(UIPrintPageRangeOption *)self pageRangeView];
@@ -113,17 +113,17 @@
 
 - (id)summary
 {
-  v2 = [(UIPrintOption *)self printInfo];
-  v3 = [v2 pageRanges];
-  v4 = SummaryForRange(v3);
+  printInfo = [(UIPrintOption *)self printInfo];
+  pageRanges = [printInfo pageRanges];
+  v4 = SummaryForRange(pageRanges);
 
   return v4;
 }
 
 - (void)didSelectPrintOption
 {
-  v2 = [(UIPrintOption *)self tableViewCell];
-  [v2 printOptionCellTapped];
+  tableViewCell = [(UIPrintOption *)self tableViewCell];
+  [tableViewCell printOptionCellTapped];
 }
 
 @end

@@ -1,46 +1,46 @@
 @interface _UIDismissInteractionSettings
 + (id)settingsControllerModule;
 - (void)setDefaultValues;
-- (void)setEdgePan:(id)a3;
-- (void)setPinch:(id)a3;
-- (void)setScroll:(id)a3;
-- (void)setSwipeDown:(id)a3;
+- (void)setEdgePan:(id)pan;
+- (void)setPinch:(id)pinch;
+- (void)setScroll:(id)scroll;
+- (void)setSwipeDown:(id)down;
 @end
 
 @implementation _UIDismissInteractionSettings
 
 - (void)setDefaultValues
 {
-  v2 = self;
+  selfCopy = self;
   sub_188C8632C();
 }
 
-- (void)setEdgePan:(id)a3
+- (void)setEdgePan:(id)pan
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit29_UIDismissInteractionSettings_edgePan);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit29_UIDismissInteractionSettings_edgePan) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit29_UIDismissInteractionSettings_edgePan) = pan;
+  panCopy = pan;
 }
 
-- (void)setScroll:(id)a3
+- (void)setScroll:(id)scroll
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit29_UIDismissInteractionSettings_scroll);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit29_UIDismissInteractionSettings_scroll) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit29_UIDismissInteractionSettings_scroll) = scroll;
+  scrollCopy = scroll;
 }
 
-- (void)setSwipeDown:(id)a3
+- (void)setSwipeDown:(id)down
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit29_UIDismissInteractionSettings_swipeDown);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit29_UIDismissInteractionSettings_swipeDown) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit29_UIDismissInteractionSettings_swipeDown) = down;
+  downCopy = down;
 }
 
-- (void)setPinch:(id)a3
+- (void)setPinch:(id)pinch
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit29_UIDismissInteractionSettings_pinch);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit29_UIDismissInteractionSettings_pinch) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit29_UIDismissInteractionSettings_pinch) = pinch;
+  pinchCopy = pinch;
 }
 
 + (id)settingsControllerModule

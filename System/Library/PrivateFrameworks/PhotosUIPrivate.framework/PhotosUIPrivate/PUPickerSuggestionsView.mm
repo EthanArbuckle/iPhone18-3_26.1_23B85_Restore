@@ -5,9 +5,9 @@
 - (void)clearFilterableSuggestion;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)setNeedsRTLInitialOffsetCorrection;
-- (void)setSelectedSuggestion:(id)a3;
+- (void)setSelectedSuggestion:(id)suggestion;
 @end
 
 @implementation PUPickerSuggestionsView
@@ -19,10 +19,10 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1B377E324();
 }
 
@@ -33,29 +33,29 @@
   return v2;
 }
 
-- (void)setSelectedSuggestion:(id)a3
+- (void)setSelectedSuggestion:(id)suggestion
 {
   swift_getObjectType();
-  v5 = a3;
-  v6 = self;
-  sub_1B37807BC(v5, v6);
+  suggestionCopy = suggestion;
+  selfCopy = self;
+  sub_1B37807BC(suggestionCopy, selfCopy);
 }
 
 - (void)clearFilterableSuggestion
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B377E4B0();
 }
 
 - (void)setNeedsRTLInitialOffsetCorrection
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B377E59C();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B377EBAC();
   v4 = v3;
   v6 = v5;
@@ -69,13 +69,13 @@
 
 - (void)layoutMarginsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B377EBD8();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B377ECFC();
 }
 

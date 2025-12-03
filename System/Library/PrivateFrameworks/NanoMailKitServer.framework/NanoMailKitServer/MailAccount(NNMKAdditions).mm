@@ -10,26 +10,26 @@
 
 - (id)nano_accountId
 {
-  v1 = [a1 nano_account];
-  v2 = [v1 accountId];
+  nano_account = [self nano_account];
+  accountId = [nano_account accountId];
 
-  return v2;
+  return accountId;
 }
 
 - (NNMKAccount)nano_account
 {
   v2 = objc_alloc_init(NNMKAccount);
-  v3 = [a1 uniqueID];
-  [(NNMKAccount *)v2 setLocalId:v3];
+  uniqueID = [self uniqueID];
+  [(NNMKAccount *)v2 setLocalId:uniqueID];
 
-  v4 = [a1 parentAccountIdentifier];
-  [(NNMKAccount *)v2 setParentAccountIdentifier:v4];
+  parentAccountIdentifier = [self parentAccountIdentifier];
+  [(NNMKAccount *)v2 setParentAccountIdentifier:parentAccountIdentifier];
 
-  v5 = [a1 displayName];
-  v6 = v5;
-  if (v5)
+  displayName = [self displayName];
+  v6 = displayName;
+  if (displayName)
   {
-    v7 = v5;
+    v7 = displayName;
   }
 
   else
@@ -39,36 +39,36 @@
 
   [(NNMKAccount *)v2 setDisplayName:v7];
 
-  if ([a1 supportsArchiving])
+  if ([self supportsArchiving])
   {
-    v8 = [a1 shouldArchiveByDefault];
+    shouldArchiveByDefault = [self shouldArchiveByDefault];
   }
 
   else
   {
-    v8 = 0;
+    shouldArchiveByDefault = 0;
   }
 
-  [(NNMKAccount *)v2 setShouldArchive:v8];
-  v9 = [a1 nano_emailAddressesAndAliasesList];
-  [(NNMKAccount *)v2 setEmailAddresses:v9];
+  [(NNMKAccount *)v2 setShouldArchive:shouldArchiveByDefault];
+  nano_emailAddressesAndAliasesList = [self nano_emailAddressesAndAliasesList];
+  [(NNMKAccount *)v2 setEmailAddresses:nano_emailAddressesAndAliasesList];
 
   [(NNMKAccount *)v2 setSourceType:0];
-  v10 = [a1 persistentAccount];
-  v11 = [v10 username];
-  [(NNMKAccount *)v2 setUsername:v11];
+  persistentAccount = [self persistentAccount];
+  username = [persistentAccount username];
+  [(NNMKAccount *)v2 setUsername:username];
 
-  v12 = [objc_opt_class() accountTypeIdentifier];
-  [(NNMKAccount *)v2 setTypeIdentifier:v12];
+  accountTypeIdentifier = [objc_opt_class() accountTypeIdentifier];
+  [(NNMKAccount *)v2 setTypeIdentifier:accountTypeIdentifier];
 
-  v13 = [a1 accountPropertyForKey:@"NNMKEmailAddressTokenKey"];
+  v13 = [self accountPropertyForKey:@"NNMKEmailAddressTokenKey"];
   [(NNMKAccount *)v2 setEmailAddressToken:v13];
 
-  v14 = [a1 accountPropertyForKey:@"NNMKPCCEmailAddressKey"];
+  v14 = [self accountPropertyForKey:@"NNMKPCCEmailAddressKey"];
   [(NNMKAccount *)v2 setPccEmailAddress:v14];
 
-  v15 = [a1 defaultEmailAddress];
-  [(NNMKAccount *)v2 setDefaultEmailAddress:v15];
+  defaultEmailAddress = [self defaultEmailAddress];
+  [(NNMKAccount *)v2 setDefaultEmailAddress:defaultEmailAddress];
 
   v16 = [NNMKAccount generateAccountIdForAccount:v2];
   [(NNMKAccount *)v2 setAccountId:v16];
@@ -78,8 +78,8 @@
 
 - (id)nano_emailAddressesAndAliasesList
 {
-  v2 = [a1 emailAddressesAndAliasesList];
-  v3 = [a1 _emailAddressStringsFromObjects:v2];
+  emailAddressesAndAliasesList = [self emailAddressesAndAliasesList];
+  v3 = [self _emailAddressStringsFromObjects:emailAddressesAndAliasesList];
 
   return v3;
 }
@@ -108,8 +108,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) ea_uncommentedAddress];
-        [v4 addObject:v10];
+        ea_uncommentedAddress = [*(*(&v13 + 1) + 8 * i) ea_uncommentedAddress];
+        [v4 addObject:ea_uncommentedAddress];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];

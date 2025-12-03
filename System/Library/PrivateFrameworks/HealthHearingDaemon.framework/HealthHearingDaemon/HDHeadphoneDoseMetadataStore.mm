@@ -1,58 +1,58 @@
 @interface HDHeadphoneDoseMetadataStore
-- (BOOL)_clearPreviousSevenDayLocalNotificationFireDateWithError:(id *)a3;
-- (BOOL)_clearPreviousSevenDayRemoteNotificationFireDateWithError:(id *)a3;
-- (BOOL)_overrideDoseLimit:(id)a3 error:(id *)a4;
-- (BOOL)_rebuildCachedFireDateFromLocalHAENStoreWithNow:(id)a3 error:(id *)a4;
-- (BOOL)_shouldRebuildPreviousSevenDayNotificationWithError:(id *)a3;
-- (BOOL)_shouldRebuildSevenDayStatisticsWithError:(id *)a3;
-- (BOOL)_updateCacheWithFireDate:(id)a3 fromRemoteNotification:(BOOL)a4 changed:(BOOL *)a5 error:(id *)a6;
-- (BOOL)rebuildCachedFireDateFromLocalHAENStoreIfNeededWithError:(id *)a3;
-- (BOOL)rebuildCachedFireDateFromLocalHAENStoreWithError:(id *)a3;
-- (BOOL)shouldNotifyUserForAccumulatedDose:(double)a3;
-- (HDHeadphoneDoseMetadataStore)initWithProfile:(id)a3;
+- (BOOL)_clearPreviousSevenDayLocalNotificationFireDateWithError:(id *)error;
+- (BOOL)_clearPreviousSevenDayRemoteNotificationFireDateWithError:(id *)error;
+- (BOOL)_overrideDoseLimit:(id)limit error:(id *)error;
+- (BOOL)_rebuildCachedFireDateFromLocalHAENStoreWithNow:(id)now error:(id *)error;
+- (BOOL)_shouldRebuildPreviousSevenDayNotificationWithError:(id *)error;
+- (BOOL)_shouldRebuildSevenDayStatisticsWithError:(id *)error;
+- (BOOL)_updateCacheWithFireDate:(id)date fromRemoteNotification:(BOOL)notification changed:(BOOL *)changed error:(id *)error;
+- (BOOL)rebuildCachedFireDateFromLocalHAENStoreIfNeededWithError:(id *)error;
+- (BOOL)rebuildCachedFireDateFromLocalHAENStoreWithError:(id *)error;
+- (BOOL)shouldNotifyUserForAccumulatedDose:(double)dose;
+- (HDHeadphoneDoseMetadataStore)initWithProfile:(id)profile;
 - (HKProfileIdentifier)_profileIdentifier;
-- (id)_fetchDoseLimitInfoWithError:(id *)a3;
-- (id)_fetchPreviousSevenDayLocalNotificationFireDateWithError:(id *)a3;
-- (id)_fetchPreviousSevenDayLocalNotificationFireDateWithNow:(id)a3 error:(id *)a4;
-- (id)_fetchPreviousSevenDayRemoteNotificationFireDateWithError:(id *)a3;
-- (id)_fetchPreviousSevenDayRemoteNotificationFireDateWithNow:(id)a3 error:(id *)a4;
-- (id)_filterForValidateFireDate:(id)a3 now:(id)a4 error:(id *)a5;
+- (id)_fetchDoseLimitInfoWithError:(id *)error;
+- (id)_fetchPreviousSevenDayLocalNotificationFireDateWithError:(id *)error;
+- (id)_fetchPreviousSevenDayLocalNotificationFireDateWithNow:(id)now error:(id *)error;
+- (id)_fetchPreviousSevenDayRemoteNotificationFireDateWithError:(id *)error;
+- (id)_fetchPreviousSevenDayRemoteNotificationFireDateWithNow:(id)now error:(id *)error;
+- (id)_filterForValidateFireDate:(id)date now:(id)now error:(id *)error;
 - (id)_info;
 - (id)_infoDict;
-- (id)_infoForAccumulatedDoseAtFireDate:(id)a3;
-- (id)_infoForSevenDayDoseAtFireDate:(id)a3;
-- (id)_lock_fetchDoseLimitInfoWithError:(id *)a3;
-- (id)_mostRecentSevenDayLocalNotificationWithNow:(id)a3 error:(id *)a4;
-- (id)collectionIntervalForDoseAccumulated:(double)a3;
-- (int64_t)_updatePreviousSevenDayLocalNotificationFireDateWithSamplesInserted:(id)a3 now:(id)a4 error:(id *)a5;
-- (int64_t)updatePreviousSevenDayLocalNotificationFireDateWithSamplesInserted:(id)a3 error:(id *)a4;
-- (int64_t)updatePreviousSevenDayRemoteNotificationFireDateWith:(id)a3 error:(id *)a4;
+- (id)_infoForAccumulatedDoseAtFireDate:(id)date;
+- (id)_infoForSevenDayDoseAtFireDate:(id)date;
+- (id)_lock_fetchDoseLimitInfoWithError:(id *)error;
+- (id)_mostRecentSevenDayLocalNotificationWithNow:(id)now error:(id *)error;
+- (id)collectionIntervalForDoseAccumulated:(double)accumulated;
+- (int64_t)_updatePreviousSevenDayLocalNotificationFireDateWithSamplesInserted:(id)inserted now:(id)now error:(id *)error;
+- (int64_t)updatePreviousSevenDayLocalNotificationFireDateWithSamplesInserted:(id)inserted error:(id *)error;
+- (int64_t)updatePreviousSevenDayRemoteNotificationFireDateWith:(id)with error:(id *)error;
 - (void)_lock_loadDoseLimitOverride;
 - (void)_lock_loadDoseLimitOverrideIfNeeded;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)profileDidBecomeReady:(id)ready;
 @end
 
 @implementation HDHeadphoneDoseMetadataStore
 
-- (HDHeadphoneDoseMetadataStore)initWithProfile:(id)a3
+- (HDHeadphoneDoseMetadataStore)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v14.receiver = self;
   v14.super_class = HDHeadphoneDoseMetadataStore;
   v5 = [(HDHeadphoneDoseMetadataStore *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
-    v7 = [objc_alloc(MEMORY[0x277D10718]) initWithCategory:0 domainName:@"Hearing" profile:v4];
+    objc_storeWeak(&v5->_profile, profileCopy);
+    v7 = [objc_alloc(MEMORY[0x277D10718]) initWithCategory:0 domainName:@"Hearing" profile:profileCopy];
     domain = v6->_domain;
     v6->_domain = v7;
 
     v6->_lock._os_unfair_lock_opaque = 0;
     v6->_doseLimit = 1.0;
-    v9 = [MEMORY[0x277CCDD30] isAppleInternalInstall];
+    isAppleInternalInstall = [MEMORY[0x277CCDD30] isAppleInternalInstall];
     v10 = 0;
-    if (v9)
+    if (isAppleInternalInstall)
     {
       v10 = [MEMORY[0x277CCDD30] isTestingDevice] ^ 1;
     }
@@ -87,47 +87,47 @@
   v1 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldNotifyUserForAccumulatedDose:(double)a3
+- (BOOL)shouldNotifyUserForAccumulatedDose:(double)dose
 {
   os_unfair_lock_lock(&self->_lock);
   [(HDHeadphoneDoseMetadataStore *)self _lock_loadDoseLimitOverrideIfNeeded];
-  v5 = self->_doseLimit <= a3;
+  v5 = self->_doseLimit <= dose;
   os_unfair_lock_unlock(&self->_lock);
   return v5;
 }
 
-- (int64_t)updatePreviousSevenDayLocalNotificationFireDateWithSamplesInserted:(id)a3 error:(id *)a4
+- (int64_t)updatePreviousSevenDayLocalNotificationFireDateWithSamplesInserted:(id)inserted error:(id *)error
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a3;
+  insertedCopy = inserted;
   v8 = [v6 now];
-  v9 = [(HDHeadphoneDoseMetadataStore *)self _updatePreviousSevenDayLocalNotificationFireDateWithSamplesInserted:v7 now:v8 error:a4];
+  v9 = [(HDHeadphoneDoseMetadataStore *)self _updatePreviousSevenDayLocalNotificationFireDateWithSamplesInserted:insertedCopy now:v8 error:error];
 
   return v9;
 }
 
-- (int64_t)updatePreviousSevenDayRemoteNotificationFireDateWith:(id)a3 error:(id *)a4
+- (int64_t)updatePreviousSevenDayRemoteNotificationFireDateWith:(id)with error:(id *)error
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a3;
+  withCopy = with;
   v8 = [v6 now];
-  v9 = [(HDHeadphoneDoseMetadataStore *)self _updatePreviousSevenDayNotificationFireDateWith:v7 fromRemoteNotification:1 isLocalDevice:0 now:v8 error:a4];
+  v9 = [(HDHeadphoneDoseMetadataStore *)self _updatePreviousSevenDayNotificationFireDateWith:withCopy fromRemoteNotification:1 isLocalDevice:0 now:v8 error:error];
 
   return v9;
 }
 
-- (BOOL)rebuildCachedFireDateFromLocalHAENStoreIfNeededWithError:(id *)a3
+- (BOOL)rebuildCachedFireDateFromLocalHAENStoreIfNeededWithError:(id *)error
 {
   v12 = 0;
   v5 = [(HDHeadphoneDoseMetadataStore *)self _shouldRebuildPreviousSevenDayNotificationWithError:&v12];
   v6 = v12;
   if (v6)
   {
-    if (a3)
+    if (error)
     {
       v7 = v6;
       v8 = 0;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -139,7 +139,7 @@
 
   else if (v5)
   {
-    v8 = [(HDHeadphoneDoseMetadataStore *)self rebuildCachedFireDateFromLocalHAENStoreWithError:a3];
+    v8 = [(HDHeadphoneDoseMetadataStore *)self rebuildCachedFireDateFromLocalHAENStoreWithError:error];
   }
 
   else
@@ -158,15 +158,15 @@
   return v8;
 }
 
-- (BOOL)rebuildCachedFireDateFromLocalHAENStoreWithError:(id *)a3
+- (BOOL)rebuildCachedFireDateFromLocalHAENStoreWithError:(id *)error
 {
   v5 = [MEMORY[0x277CBEAA8] now];
-  LOBYTE(a3) = [(HDHeadphoneDoseMetadataStore *)self _rebuildCachedFireDateFromLocalHAENStoreWithNow:v5 error:a3];
+  LOBYTE(error) = [(HDHeadphoneDoseMetadataStore *)self _rebuildCachedFireDateFromLocalHAENStoreWithNow:v5 error:error];
 
-  return a3;
+  return error;
 }
 
-- (id)collectionIntervalForDoseAccumulated:(double)a3
+- (id)collectionIntervalForDoseAccumulated:(double)accumulated
 {
   if ([MEMORY[0x277D11268] unitTesting_forceDefaultHeadphoneDataCollectionInterval])
   {
@@ -176,8 +176,8 @@
   os_unfair_lock_lock(&self->_lock);
   doseLimit = self->_doseLimit;
   os_unfair_lock_unlock(&self->_lock);
-  v7 = doseLimit - a3;
-  if (doseLimit - a3 <= 0.01)
+  v7 = doseLimit - accumulated;
+  if (doseLimit - accumulated <= 0.01)
   {
     return &unk_2863A9AB8;
   }
@@ -210,7 +210,7 @@
   return &unk_2863A9D08;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   os_unfair_lock_lock(&self->_lock);
   [(HDHeadphoneDoseMetadataStore *)self _lock_loadDoseLimitOverrideIfNeeded];
@@ -218,10 +218,10 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)_rebuildCachedFireDateFromLocalHAENStoreWithNow:(id)a3 error:(id *)a4
+- (BOOL)_rebuildCachedFireDateFromLocalHAENStoreWithNow:(id)now error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  nowCopy = now;
   _HKInitializeLogging();
   v7 = MEMORY[0x277CCC2C8];
   v8 = *MEMORY[0x277CCC2C8];
@@ -234,16 +234,16 @@
   if ([MEMORY[0x277D11268] isHeadphoneExposureNotificationsEnabled])
   {
     v21 = 0;
-    v9 = [(HDHeadphoneDoseMetadataStore *)self _mostRecentSevenDayLocalNotificationWithNow:v6 error:&v21];
+    v9 = [(HDHeadphoneDoseMetadataStore *)self _mostRecentSevenDayLocalNotificationWithNow:nowCopy error:&v21];
     v10 = v21;
     v11 = v10;
     if (!v9 && v10)
     {
-      if (a4)
+      if (error)
       {
         v12 = v10;
         v13 = 0;
-        *a4 = v11;
+        *error = v11;
 LABEL_16:
 
         goto LABEL_17;
@@ -255,7 +255,7 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    if (![(HDHeadphoneDoseMetadataStore *)self _setPreviousSevenDayLocalNotificationFireDate:v9 error:a4]|| ![(HDHeadphoneDoseMetadataStore *)self _setShouldRebuildPreviousSevenDayNotification:0 error:a4])
+    if (![(HDHeadphoneDoseMetadataStore *)self _setPreviousSevenDayLocalNotificationFireDate:v9 error:error]|| ![(HDHeadphoneDoseMetadataStore *)self _setShouldRebuildPreviousSevenDayNotification:0 error:error])
     {
       goto LABEL_15;
     }
@@ -290,7 +290,7 @@ LABEL_20:
     goto LABEL_16;
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a4 code:111 description:@"Feature Disabled: 7-Day HAEN"];
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:111 description:@"Feature Disabled: 7-Day HAEN"];
   v13 = 0;
 LABEL_17:
 
@@ -298,10 +298,10 @@ LABEL_17:
   return v13;
 }
 
-- (id)_mostRecentSevenDayLocalNotificationWithNow:(id)a3 error:(id *)a4
+- (id)_mostRecentSevenDayLocalNotificationWithNow:(id)now error:(id *)error
 {
   v31[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  nowCopy = now;
   v7 = MEMORY[0x277D10B20];
   v8 = HKHeadphoneAudioExposureEventType();
   v9 = HDSampleEntityPredicateForDataType();
@@ -335,7 +335,7 @@ LABEL_17:
   v23[2] = __82__HDHeadphoneDoseMetadataStore__mostRecentSevenDayLocalNotificationWithNow_error___block_invoke;
   v23[3] = &unk_2796C6510;
   v23[4] = &v24;
-  if ([v16 enumerateWithError:a4 handler:v23])
+  if ([v16 enumerateWithError:error handler:v23])
   {
     v19 = v25[5];
   }
@@ -377,26 +377,26 @@ BOOL __82__HDHeadphoneDoseMetadataStore__mostRecentSevenDayLocalNotificationWith
 - (HKProfileIdentifier)_profileIdentifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v3 = [WeakRetained profileIdentifier];
+  profileIdentifier = [WeakRetained profileIdentifier];
 
-  return v3;
+  return profileIdentifier;
 }
 
-- (id)_fetchPreviousSevenDayLocalNotificationFireDateWithError:(id *)a3
+- (id)_fetchPreviousSevenDayLocalNotificationFireDateWithError:(id *)error
 {
   v5 = [MEMORY[0x277CBEAA8] now];
-  v6 = [(HDHeadphoneDoseMetadataStore *)self _fetchPreviousSevenDayLocalNotificationFireDateWithNow:v5 error:a3];
+  v6 = [(HDHeadphoneDoseMetadataStore *)self _fetchPreviousSevenDayLocalNotificationFireDateWithNow:v5 error:error];
 
   return v6;
 }
 
-- (id)_fetchPreviousSevenDayLocalNotificationFireDateWithNow:(id)a3 error:(id *)a4
+- (id)_fetchPreviousSevenDayLocalNotificationFireDateWithNow:(id)now error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDKeyValueDomain *)self->_domain dateForKey:@"_PreviousSevenDayHeadphoneExposureNotificationFireDate" error:a4];
+  nowCopy = now;
+  v7 = [(HDKeyValueDomain *)self->_domain dateForKey:@"_PreviousSevenDayHeadphoneExposureNotificationFireDate" error:error];
   if (v7)
   {
-    v8 = [(HDHeadphoneDoseMetadataStore *)self _filterForValidateFireDate:v7 now:v6 error:a4];
+    v8 = [(HDHeadphoneDoseMetadataStore *)self _filterForValidateFireDate:v7 now:nowCopy error:error];
   }
 
   else
@@ -407,30 +407,30 @@ BOOL __82__HDHeadphoneDoseMetadataStore__mostRecentSevenDayLocalNotificationWith
   return v8;
 }
 
-- (BOOL)_clearPreviousSevenDayLocalNotificationFireDateWithError:(id *)a3
+- (BOOL)_clearPreviousSevenDayLocalNotificationFireDateWithError:(id *)error
 {
   domain = self->_domain;
   v5 = [MEMORY[0x277CBEB98] setWithObject:@"_PreviousSevenDayHeadphoneExposureNotificationFireDate"];
-  LOBYTE(a3) = [(HDKeyValueDomain *)domain removeValuesForKeys:v5 error:a3];
+  LOBYTE(error) = [(HDKeyValueDomain *)domain removeValuesForKeys:v5 error:error];
 
-  return a3;
+  return error;
 }
 
-- (id)_fetchPreviousSevenDayRemoteNotificationFireDateWithError:(id *)a3
+- (id)_fetchPreviousSevenDayRemoteNotificationFireDateWithError:(id *)error
 {
   v5 = [MEMORY[0x277CBEAA8] now];
-  v6 = [(HDHeadphoneDoseMetadataStore *)self _fetchPreviousSevenDayRemoteNotificationFireDateWithNow:v5 error:a3];
+  v6 = [(HDHeadphoneDoseMetadataStore *)self _fetchPreviousSevenDayRemoteNotificationFireDateWithNow:v5 error:error];
 
   return v6;
 }
 
-- (id)_fetchPreviousSevenDayRemoteNotificationFireDateWithNow:(id)a3 error:(id *)a4
+- (id)_fetchPreviousSevenDayRemoteNotificationFireDateWithNow:(id)now error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDKeyValueDomain *)self->_domain dateForKey:@"_PreviousSevenDayHeadphoneExposureRemoteNotificationFireDate" error:a4];
+  nowCopy = now;
+  v7 = [(HDKeyValueDomain *)self->_domain dateForKey:@"_PreviousSevenDayHeadphoneExposureRemoteNotificationFireDate" error:error];
   if (v7)
   {
-    v8 = [(HDHeadphoneDoseMetadataStore *)self _filterForValidateFireDate:v7 now:v6 error:a4];
+    v8 = [(HDHeadphoneDoseMetadataStore *)self _filterForValidateFireDate:v7 now:nowCopy error:error];
   }
 
   else
@@ -441,16 +441,16 @@ BOOL __82__HDHeadphoneDoseMetadataStore__mostRecentSevenDayLocalNotificationWith
   return v8;
 }
 
-- (BOOL)_clearPreviousSevenDayRemoteNotificationFireDateWithError:(id *)a3
+- (BOOL)_clearPreviousSevenDayRemoteNotificationFireDateWithError:(id *)error
 {
   domain = self->_domain;
   v5 = [MEMORY[0x277CBEB98] setWithObject:@"_PreviousSevenDayHeadphoneExposureRemoteNotificationFireDate"];
-  LOBYTE(a3) = [(HDKeyValueDomain *)domain removeValuesForKeys:v5 error:a3];
+  LOBYTE(error) = [(HDKeyValueDomain *)domain removeValuesForKeys:v5 error:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)_shouldRebuildSevenDayStatisticsWithError:(id *)a3
+- (BOOL)_shouldRebuildSevenDayStatisticsWithError:(id *)error
 {
   domain = self->_domain;
   v10 = 0;
@@ -458,10 +458,10 @@ BOOL __82__HDHeadphoneDoseMetadataStore__mostRecentSevenDayLocalNotificationWith
   v6 = v10;
   if (v6)
   {
-    if (a3)
+    if (error)
     {
       v7 = v6;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -475,42 +475,42 @@ BOOL __82__HDHeadphoneDoseMetadataStore__mostRecentSevenDayLocalNotificationWith
   if (!v5)
   {
 LABEL_8:
-    v8 = 1;
+    bOOLValue = 1;
     goto LABEL_9;
   }
 
-  v8 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 LABEL_9:
 
-  return v8;
+  return bOOLValue;
 }
 
-- (BOOL)_shouldRebuildPreviousSevenDayNotificationWithError:(id *)a3
+- (BOOL)_shouldRebuildPreviousSevenDayNotificationWithError:(id *)error
 {
-  v3 = [(HDKeyValueDomain *)self->_domain numberForKey:@"_ShouldRebuildPreviousSevenDayHeadphoneExposureNotification" error:a3];
+  v3 = [(HDKeyValueDomain *)self->_domain numberForKey:@"_ShouldRebuildPreviousSevenDayHeadphoneExposureNotification" error:error];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)_info
 {
-  v2 = [(HDHeadphoneDoseMetadataStore *)self _infoDict];
-  v3 = [v2 objectForKeyedSubscript:@"recent_seven_day_haen_error"];
+  _infoDict = [(HDHeadphoneDoseMetadataStore *)self _infoDict];
+  v3 = [_infoDict objectForKeyedSubscript:@"recent_seven_day_haen_error"];
 
   if (v3)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [v2 objectForKeyedSubscript:@"recent_seven_day_haen_error"];
+    v5 = [_infoDict objectForKeyedSubscript:@"recent_seven_day_haen_error"];
     v6 = [v4 stringWithFormat:@"Recent 7-Day HAEN:\t Error (%@)", v5];
 LABEL_3:
     v7 = v6;
@@ -518,19 +518,19 @@ LABEL_3:
     goto LABEL_6;
   }
 
-  v8 = [v2 objectForKeyedSubscript:@"recent_seven_day_haen_nil"];
+  v8 = [_infoDict objectForKeyedSubscript:@"recent_seven_day_haen_nil"];
 
   if (!v8)
   {
     v5 = objc_alloc_init(MEMORY[0x277CCAB68]);
     [v5 appendString:@"Recent 7-Day HAEN:\n"];
-    v10 = [v2 objectForKeyedSubscript:@"previous_fire_date"];
+    v10 = [_infoDict objectForKeyedSubscript:@"previous_fire_date"];
     [v5 appendFormat:@"\tFireDate:\t  %@\n", v10];
 
-    v11 = [v2 objectForKeyedSubscript:@"seven_day_dose"];
+    v11 = [_infoDict objectForKeyedSubscript:@"seven_day_dose"];
     [v5 appendFormat:@"\t7-Day Dose:\t  %@\n", v11];
 
-    v12 = [v2 objectForKeyedSubscript:@"accumulated_dose_from_fire_date"];
+    v12 = [_infoDict objectForKeyedSubscript:@"accumulated_dose_from_fire_date"];
     [v5 appendFormat:@"\tAccumulated Dose: %@\n", v12];
 
     v6 = [v5 copy];
@@ -585,16 +585,16 @@ LABEL_6:
   return v12;
 }
 
-- (id)_fetchDoseLimitInfoWithError:(id *)a3
+- (id)_fetchDoseLimitInfoWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(HDHeadphoneDoseMetadataStore *)self _lock_fetchDoseLimitInfoWithError:a3];
+  v5 = [(HDHeadphoneDoseMetadataStore *)self _lock_fetchDoseLimitInfoWithError:error];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)_lock_fetchDoseLimitInfoWithError:(id *)a3
+- (id)_lock_fetchDoseLimitInfoWithError:(id *)error
 {
   os_unfair_lock_assert_owner(&self->_lock);
   domain = self->_domain;
@@ -627,7 +627,7 @@ LABEL_6:
       v13 = @"[Current] %.2f%%\n [After Reboot] %@";
       if (v12 <= 2.22044605e-16)
       {
-        v16 = 0;
+        0x4059000000000000 = 0;
       }
 
       else
@@ -638,7 +638,7 @@ LABEL_6:
           v13 = @"[Current] %.2f%%\n [Invalid] %@";
         }
 
-        v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.2f%% (Override)", v14 * 100.0];
+        0x4059000000000000 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.2f%% (Override)", v14 * 100.0];
       }
     }
 
@@ -652,20 +652,20 @@ LABEL_6:
 
       if (v19 <= 2.22044605e-16)
       {
-        v16 = 0;
+        0x4059000000000000 = 0;
       }
 
       else
       {
-        v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.2f%% (Default)", 0x4059000000000000];
+        0x4059000000000000 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.2f%% (Default)", 0x4059000000000000];
       }
 
       v13 = @"[Current] %.2f%%\n [After Reboot] %@";
     }
 
-    if ([v16 length])
+    if ([0x4059000000000000 length])
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:v13, self->_doseLimit * 100.0, v16];
+      [MEMORY[0x277CCACA8] stringWithFormat:v13, self->_doseLimit * 100.0, 0x4059000000000000];
     }
 
     else
@@ -681,11 +681,11 @@ LABEL_6:
     v18 = ;
   }
 
-  else if (a3)
+  else if (error)
   {
     v17 = v7;
     v18 = 0;
-    *a3 = v8;
+    *error = v8;
   }
 
   else
@@ -697,17 +697,17 @@ LABEL_6:
   return v18;
 }
 
-- (BOOL)_overrideDoseLimit:(id)a3 error:(id *)a4
+- (BOOL)_overrideDoseLimit:(id)limit error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && (([v6 doubleValue], v8 < 0.01) || v8 > 5.0) && (objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"Dose Limit %.2f%% is outside the range %.2f%% - %.2f%% (Default: %.2f%%)", v8 * 100.0, 0x3FF0000000000000, 0x407F400000000000, 0x4059000000000000), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277CCA9B8], "hk_error:description:", 3, v9), v10 = objc_claimAutoreleasedReturnValue(), v9, (v11 = v10) != 0))
+  limitCopy = limit;
+  v7 = limitCopy;
+  if (limitCopy && (([limitCopy doubleValue], v8 < 0.01) || v8 > 5.0) && (objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"Dose Limit %.2f%% is outside the range %.2f%% - %.2f%% (Default: %.2f%%)", v8 * 100.0, 0x3FF0000000000000, 0x407F400000000000, 0x4059000000000000), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277CCA9B8], "hk_error:description:", 3, v9), v10 = objc_claimAutoreleasedReturnValue(), v9, (v11 = v10) != 0))
   {
     v12 = v11;
-    if (a4)
+    if (error)
     {
       v13 = v11;
-      *a4 = v12;
+      *error = v12;
     }
 
     else
@@ -721,7 +721,7 @@ LABEL_6:
   else
   {
     os_unfair_lock_lock(&self->_lock);
-    v14 = [(HDKeyValueDomain *)self->_domain setNumber:v7 forKey:@"_SevenDayHeadphoneExposureDoseNotificationThreshold" error:a4];
+    v14 = [(HDKeyValueDomain *)self->_domain setNumber:v7 forKey:@"_SevenDayHeadphoneExposureDoseNotificationThreshold" error:error];
     if (v14)
     {
       [(HDHeadphoneDoseMetadataStore *)self _lock_loadDoseLimitOverride];
@@ -733,19 +733,19 @@ LABEL_6:
   return v14;
 }
 
-- (id)_infoForSevenDayDoseAtFireDate:(id)a3
+- (id)_infoForSevenDayDoseAtFireDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [HDHeadphoneAudioExposureStatisticsBucket _currentDoseStringForEndDate:v4 earliestStartDate:0 profile:WeakRetained];
+  v6 = [HDHeadphoneAudioExposureStatisticsBucket _currentDoseStringForEndDate:dateCopy earliestStartDate:0 profile:WeakRetained];
 
   return v6;
 }
 
-- (id)_infoForAccumulatedDoseAtFireDate:(id)a3
+- (id)_infoForAccumulatedDoseAtFireDate:(id)date
 {
-  v4 = a3;
-  v5 = [v4 dateByAddingTimeInterval:-1.0];
+  dateCopy = date;
+  v5 = [dateCopy dateByAddingTimeInterval:-1.0];
   v14 = 0;
   v6 = [(HDHeadphoneDoseMetadataStore *)self _mostRecentSevenDayLocalNotificationWithNow:v5 error:&v14];
   v7 = v14;
@@ -763,34 +763,34 @@ LABEL_6:
   if (v9)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v11 = [HDHeadphoneAudioExposureStatisticsBucket _currentDoseStringForEndDate:v4 earliestStartDate:v6 profile:WeakRetained];
+    v11 = [HDHeadphoneAudioExposureStatisticsBucket _currentDoseStringForEndDate:dateCopy earliestStartDate:v6 profile:WeakRetained];
   }
 
   else
   {
-    v12 = [v7 hk_isDatabaseAccessibilityError];
-    if (v12)
+    hk_isDatabaseAccessibilityError = [v7 hk_isDatabaseAccessibilityError];
+    if (hk_isDatabaseAccessibilityError)
     {
       v11 = @"Locked (Data Inaccessible)";
     }
 
     else
     {
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"fetch previous HAEN before %@ failed: %@", v4, v8];
+      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"fetch previous HAEN before %@ failed: %@", dateCopy, v8];
     }
   }
 
   return v11;
 }
 
-- (BOOL)_updateCacheWithFireDate:(id)a3 fromRemoteNotification:(BOOL)a4 changed:(BOOL *)a5 error:(id *)a6
+- (BOOL)_updateCacheWithFireDate:(id)date fromRemoteNotification:(BOOL)notification changed:(BOOL *)changed error:(id *)error
 {
-  v8 = a4;
-  v11 = a3;
-  if (!v11)
+  notificationCopy = notification;
+  dateCopy = date;
+  if (!dateCopy)
   {
     [HDHeadphoneDoseMetadataStore _updateCacheWithFireDate:a2 fromRemoteNotification:self changed:? error:?];
-    if (v8)
+    if (notificationCopy)
     {
       goto LABEL_3;
     }
@@ -802,7 +802,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!v8)
+  if (!notificationCopy)
   {
     goto LABEL_5;
   }
@@ -817,11 +817,11 @@ LABEL_6:
   v16 = v15;
   if (v14 || !v15)
   {
-    if (v14 && ([v14 hk_isBeforeDate:v11] & 1) == 0)
+    if (v14 && ([v14 hk_isBeforeDate:dateCopy] & 1) == 0)
     {
-      if (a5)
+      if (changed)
       {
-        *a5 = 0;
+        *changed = 0;
       }
 
       v18 = 1;
@@ -829,36 +829,36 @@ LABEL_6:
 
     else
     {
-      if (v8)
+      if (notificationCopy)
       {
-        v19 = [(HDHeadphoneDoseMetadataStore *)self _setPreviousSevenDayRemoteNotificationFireDate:v11 error:a6];
+        v19 = [(HDHeadphoneDoseMetadataStore *)self _setPreviousSevenDayRemoteNotificationFireDate:dateCopy error:error];
       }
 
       else
       {
-        v19 = [(HDHeadphoneDoseMetadataStore *)self _setPreviousSevenDayLocalNotificationFireDate:v11 error:a6];
+        v19 = [(HDHeadphoneDoseMetadataStore *)self _setPreviousSevenDayLocalNotificationFireDate:dateCopy error:error];
       }
 
       v18 = v19;
-      if (a5)
+      if (changed)
       {
-        *a5 = v19;
+        *changed = v19;
       }
     }
   }
 
   else
   {
-    if (a5)
+    if (changed)
     {
-      *a5 = 0;
+      *changed = 0;
     }
 
-    if (a6)
+    if (error)
     {
       v17 = v15;
       v18 = 0;
-      *a6 = v16;
+      *error = v16;
     }
 
     else
@@ -871,25 +871,25 @@ LABEL_6:
   return v18;
 }
 
-- (int64_t)_updatePreviousSevenDayLocalNotificationFireDateWithSamplesInserted:(id)a3 now:(id)a4 error:(id *)a5
+- (int64_t)_updatePreviousSevenDayLocalNotificationFireDateWithSamplesInserted:(id)inserted now:(id)now error:(id *)error
 {
   v58 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  insertedCopy = inserted;
+  nowCopy = now;
   if ([MEMORY[0x277D11268] isHeadphoneExposureNotificationsEnabled])
   {
-    v45 = [objc_opt_class() _earliestFireDateAllowedWithNow:v9];
+    v45 = [objc_opt_class() _earliestFireDateAllowedWithNow:nowCopy];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v10 = v8;
+    v10 = insertedCopy;
     v46 = [v10 countByEnumeratingWithState:&v47 objects:v57 count:16];
     if (v46)
     {
-      v42 = self;
-      v43 = v8;
-      v44 = 0;
+      selfCopy = self;
+      v43 = insertedCopy;
+      _isLocalDevice = 0;
       v11 = 0;
       v12 = *v48;
       v13 = @"sample";
@@ -915,11 +915,11 @@ LABEL_6:
           v17 = v16;
           if ([v16 hk_isHearingSevenDayDoseNotification])
           {
-            v18 = a5;
+            errorCopy = error;
             v19 = v10;
             v20 = v13;
-            v21 = [v17 endDate];
-            v22 = [v21 hk_isAfterDate:v9];
+            endDate = [v17 endDate];
+            v22 = [endDate hk_isAfterDate:nowCopy];
 
             if (v22)
             {
@@ -928,13 +928,13 @@ LABEL_6:
               if (os_log_type_enabled(*MEMORY[0x277CCC2C8], OS_LOG_TYPE_ERROR))
               {
                 log = v23;
-                v41 = [v17 endDate];
-                [v41 timeIntervalSinceDate:v9];
+                endDate2 = [v17 endDate];
+                [endDate2 timeIntervalSinceDate:nowCopy];
                 v25 = v24;
-                v39 = [v17 endDate];
-                [v39 timeIntervalSince1970];
+                endDate3 = [v17 endDate];
+                [endDate3 timeIntervalSince1970];
                 v27 = v26;
-                [v9 timeIntervalSince1970];
+                [nowCopy timeIntervalSince1970];
                 *buf = 134218496;
                 v52 = v25;
                 v53 = 2048;
@@ -947,27 +947,27 @@ LABEL_6:
 
             else
             {
-              v29 = [v17 endDate];
-              v30 = [v29 hk_isAfterOrEqualToDate:v45];
+              endDate4 = [v17 endDate];
+              v30 = [endDate4 hk_isAfterOrEqualToDate:v45];
 
               if (v30)
               {
                 if (!v11 || ([v17 endDate], v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v11, "hk_isBeforeDate:", v31), v31, v32))
                 {
-                  v33 = [v17 endDate];
+                  endDate5 = [v17 endDate];
 
-                  v34 = [v17 sourceRevision];
-                  v35 = [v34 source];
-                  v44 = [v35 _isLocalDevice];
+                  sourceRevision = [v17 sourceRevision];
+                  source = [sourceRevision source];
+                  _isLocalDevice = [source _isLocalDevice];
 
-                  v11 = v33;
+                  v11 = endDate5;
                 }
               }
             }
 
             v13 = v20;
             v10 = v19;
-            a5 = v18;
+            error = errorCopy;
           }
         }
 
@@ -982,14 +982,14 @@ LABEL_6:
 
       if (v11)
       {
-        v36 = [(HDHeadphoneDoseMetadataStore *)v42 _updatePreviousSevenDayNotificationFireDateWith:v11 fromRemoteNotification:0 isLocalDevice:v44 & 1 now:v9 error:a5];
-        v8 = v43;
+        v36 = [(HDHeadphoneDoseMetadataStore *)selfCopy _updatePreviousSevenDayNotificationFireDateWith:v11 fromRemoteNotification:0 isLocalDevice:_isLocalDevice & 1 now:nowCopy error:error];
+        insertedCopy = v43;
         goto LABEL_25;
       }
 
       v36 = 1;
 LABEL_23:
-      v8 = v43;
+      insertedCopy = v43;
     }
 
     else
@@ -1004,7 +1004,7 @@ LABEL_25:
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:111 description:@"Feature Disabled: 7-Day HAEN"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:111 description:@"Feature Disabled: 7-Day HAEN"];
     v36 = 0;
   }
 
@@ -1012,17 +1012,17 @@ LABEL_25:
   return v36;
 }
 
-- (id)_filterForValidateFireDate:(id)a3 now:(id)a4 error:(id *)a5
+- (id)_filterForValidateFireDate:(id)date now:(id)now error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hk_isAfterDate:v7])
+  dateCopy = date;
+  nowCopy = now;
+  if ([dateCopy hk_isAfterDate:nowCopy])
   {
     _HKInitializeLogging();
     v8 = *MEMORY[0x277CCC2C8];
     if (os_log_type_enabled(*MEMORY[0x277CCC2C8], OS_LOG_TYPE_FAULT))
     {
-      [HDHeadphoneDoseMetadataStore _filterForValidateFireDate:v8 now:v6 error:v7];
+      [HDHeadphoneDoseMetadataStore _filterForValidateFireDate:v8 now:dateCopy error:nowCopy];
     }
 
     v9 = 0;
@@ -1030,10 +1030,10 @@ LABEL_25:
 
   else
   {
-    v10 = [objc_opt_class() _earliestFireDateAllowedWithNow:v7];
-    if ([v6 hk_isAfterOrEqualToDate:v10])
+    v10 = [objc_opt_class() _earliestFireDateAllowedWithNow:nowCopy];
+    if ([dateCopy hk_isAfterOrEqualToDate:v10])
     {
-      v9 = v6;
+      v9 = dateCopy;
     }
 
     else

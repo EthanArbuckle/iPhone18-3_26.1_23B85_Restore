@@ -1,16 +1,16 @@
 @interface PXMagazineRectArray
-- (PXMagazineRect)rectAtIndex:(SEL)a3;
-- (PXMagazineRectArray)initWithSize:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PXMagazineRect)rectAtIndex:(SEL)index;
+- (PXMagazineRectArray)initWithSize:(unint64_t)size;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)rowsUsed;
-- (void)addRect:(PXMagazineRect *)a3;
+- (void)addRect:(PXMagazineRect *)rect;
 - (void)dealloc;
 - (void)removeLastRect;
 @end
 
 @implementation PXMagazineRectArray
 
-- (PXMagazineRect)rectAtIndex:(SEL)a3
+- (PXMagazineRect)rectAtIndex:(SEL)index
 {
   v4 = self->var0.var1 + 32 * a4;
   v5 = *(v4 + 16);
@@ -32,7 +32,7 @@
   }
 }
 
-- (void)addRect:(PXMagazineRect *)a3
+- (void)addRect:(PXMagazineRect *)rect
 {
   currentIndex = self->_currentIndex;
   size = self->_size;
@@ -51,8 +51,8 @@
   }
 
   v9 = &rects[currentIndex];
-  var1 = a3->var1;
-  v9->var0 = a3->var0;
+  var1 = rect->var1;
+  v9->var0 = rect->var0;
   v9->var1 = var1;
   ++self->_currentIndex;
 }
@@ -82,7 +82,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PXMagazineRectArray alloc] initWithSize:self->_size];
   memcpy(v4->_rects, self->_rects, 32 * v4->_size);
@@ -104,7 +104,7 @@
   [(PXMagazineRectArray *)&v4 dealloc];
 }
 
-- (PXMagazineRectArray)initWithSize:(unint64_t)a3
+- (PXMagazineRectArray)initWithSize:(unint64_t)size
 {
   v7.receiver = self;
   v7.super_class = PXMagazineRectArray;
@@ -112,8 +112,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_size = a3;
-    v4->_rects = malloc_type_calloc(a3, 0x20uLL, 0x1000040E0EAB150uLL);
+    v4->_size = size;
+    v4->_rects = malloc_type_calloc(size, 0x20uLL, 0x1000040E0EAB150uLL);
   }
 
   return v5;

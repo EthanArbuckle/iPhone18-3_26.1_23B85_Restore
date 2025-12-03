@@ -1,29 +1,29 @@
 @interface WBSPasswordWarningStore
 + (WBSPasswordWarningStore)sharedStore;
-- (id)_initWithBackingStoreURL:(id)a3;
+- (id)_initWithBackingStoreURL:(id)l;
 - (id)_initWithDefaultBackingStore;
-- (void)_addPersistentIdentifier:(id)a3 withLastWarningDate:(id)a4;
+- (void)_addPersistentIdentifier:(id)identifier withLastWarningDate:(id)date;
 - (void)_loadStoreIfNecessary;
 - (void)_saveStoreNow;
 - (void)_saveStoreSoon;
-- (void)addPersistentIdentifier:(id)a3;
+- (void)addPersistentIdentifier:(id)identifier;
 - (void)clearStoreSynchronously;
-- (void)getContainsPersistentIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)getContainsPersistentIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)saveStoreSynchronously;
-- (void)synchronousyClearIdentifiersAddedAfterDate:(id)a3;
+- (void)synchronousyClearIdentifiersAddedAfterDate:(id)date;
 @end
 
 @implementation WBSPasswordWarningStore
 
-- (id)_initWithBackingStoreURL:(id)a3
+- (id)_initWithBackingStoreURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = WBSPasswordWarningStore;
   v5 = [(WBSPasswordWarningStore *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     backingStoreURL = v5->_backingStoreURL;
     v5->_backingStoreURL = v6;
 
@@ -39,9 +39,9 @@
 
 - (id)_initWithDefaultBackingStore
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v3 safari_settingsDirectoryURL];
-  v5 = [v4 URLByAppendingPathComponent:@"PasswordAuditing.plist" isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  safari_settingsDirectoryURL = [defaultManager safari_settingsDirectoryURL];
+  v5 = [safari_settingsDirectoryURL URLByAppendingPathComponent:@"PasswordAuditing.plist" isDirectory:0];
 
   v6 = [(WBSPasswordWarningStore *)self _initWithBackingStoreURL:v5];
   return v6;
@@ -75,7 +75,7 @@ void __38__WBSPasswordWarningStore_sharedStore__block_invoke()
     lastWarningDatesByPersistentIdentifier = self->_lastWarningDatesByPersistentIdentifier;
     self->_lastWarningDatesByPersistentIdentifier = v3;
 
-    v21 = self;
+    selfCopy = self;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:self->_backingStoreURL];
     v20 = v5;
     if (v5)
@@ -83,7 +83,7 @@ void __38__WBSPasswordWarningStore_sharedStore__block_invoke()
       v19 = [v5 safari_arrayForKey:@"PasswordAuditWarnings"];
       if (v19)
       {
-        v6 = [MEMORY[0x1E695DF00] date];
+        date = [MEMORY[0x1E695DF00] date];
         v24 = 0u;
         v25 = 0u;
         v22 = 0u;
@@ -117,14 +117,14 @@ void __38__WBSPasswordWarningStore_sharedStore__block_invoke()
                 v16 = 1;
               }
 
-              if (v16 || ([v6 timeIntervalSinceDate:v14], v17 > 7776000.0))
+              if (v16 || ([date timeIntervalSinceDate:v14], v17 > 7776000.0))
               {
                 v9 = 1;
               }
 
               else
               {
-                [(NSMutableDictionary *)v21->_lastWarningDatesByPersistentIdentifier setObject:v15 forKeyedSubscript:v13];
+                [(NSMutableDictionary *)selfCopy->_lastWarningDatesByPersistentIdentifier setObject:v15 forKeyedSubscript:v13];
               }
             }
 
@@ -135,7 +135,7 @@ void __38__WBSPasswordWarningStore_sharedStore__block_invoke()
 
           if (v9)
           {
-            [(WBSPasswordWarningStore *)v21 _saveStoreSoon];
+            [(WBSPasswordWarningStore *)selfCopy _saveStoreSoon];
           }
         }
 
@@ -166,7 +166,7 @@ void __38__WBSPasswordWarningStore_sharedStore__block_invoke()
 - (void)_saveStoreNow
 {
   *buf = 138543362;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_1B8447000, log, OS_LOG_TYPE_ERROR, "Failed to encode PasswordWarning store: %{public}@", buf, 0xCu);
 }
 
@@ -196,20 +196,20 @@ void __40__WBSPasswordWarningStore__saveStoreNow__block_invoke(uint64_t a1, void
   dispatch_sync(queue, block);
 }
 
-- (void)getContainsPersistentIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getContainsPersistentIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__WBSPasswordWarningStore_getContainsPersistentIdentifier_completionHandler___block_invoke;
   block[3] = &unk_1E7CF3B68;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -239,20 +239,20 @@ void __77__WBSPasswordWarningStore_getContainsPersistentIdentifier_completionHan
   }
 }
 
-- (void)_addPersistentIdentifier:(id)a3 withLastWarningDate:(id)a4
+- (void)_addPersistentIdentifier:(id)identifier withLastWarningDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dateCopy = date;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__WBSPasswordWarningStore__addPersistentIdentifier_withLastWarningDate___block_invoke;
   block[3] = &unk_1E7CF0A38;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = dateCopy;
+  v9 = dateCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
@@ -265,11 +265,11 @@ uint64_t __72__WBSPasswordWarningStore__addPersistentIdentifier_withLastWarningD
   return [v2 _saveStoreSoon];
 }
 
-- (void)addPersistentIdentifier:(id)a3
+- (void)addPersistentIdentifier:(id)identifier
 {
-  v5 = a3;
-  v4 = [MEMORY[0x1E695DF00] date];
-  [(WBSPasswordWarningStore *)self _addPersistentIdentifier:v5 withLastWarningDate:v4];
+  identifierCopy = identifier;
+  date = [MEMORY[0x1E695DF00] date];
+  [(WBSPasswordWarningStore *)self _addPersistentIdentifier:identifierCopy withLastWarningDate:date];
 }
 
 - (void)clearStoreSynchronously
@@ -296,12 +296,12 @@ uint64_t __50__WBSPasswordWarningStore_clearStoreSynchronously__block_invoke(uin
   return [v5 _saveStoreNow];
 }
 
-- (void)synchronousyClearIdentifiersAddedAfterDate:(id)a3
+- (void)synchronousyClearIdentifiersAddedAfterDate:(id)date
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF00] distantPast];
+  dateCopy = date;
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
 
-  if (v5 == v4)
+  if (distantPast == dateCopy)
   {
     [(WBSPasswordWarningStore *)self clearStoreSynchronously];
   }
@@ -314,7 +314,7 @@ uint64_t __50__WBSPasswordWarningStore_clearStoreSynchronously__block_invoke(uin
     v7[2] = __70__WBSPasswordWarningStore_synchronousyClearIdentifiersAddedAfterDate___block_invoke;
     v7[3] = &unk_1E7CF0908;
     v7[4] = self;
-    v8 = v4;
+    v8 = dateCopy;
     dispatch_sync(queue, v7);
   }
 }

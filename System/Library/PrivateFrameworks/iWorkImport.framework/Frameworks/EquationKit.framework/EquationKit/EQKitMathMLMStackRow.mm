@@ -1,17 +1,17 @@
 @interface EQKitMathMLMStackRow
 - (BOOL)isBaseFontNameUsed;
-- (EQKitMathMLMStackRow)initWithChildren:(id)a3;
+- (EQKitMathMLMStackRow)initWithChildren:(id)children;
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (id)layoutSchemata;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLMStackRow
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
-  v6 = objc_msgSend_parseChildrenAsArrayFromXMLNode_(a4, a2, a3, a4);
+  v6 = objc_msgSend_parseChildrenAsArrayFromXMLNode_(parser, a2, node, parser);
 
   return objc_msgSend_initWithChildren_(self, v5, v6, v7);
 }
@@ -27,7 +27,7 @@
   return qword_280A38988;
 }
 
-- (EQKitMathMLMStackRow)initWithChildren:(id)a3
+- (EQKitMathMLMStackRow)initWithChildren:(id)children
 {
   v20 = *MEMORY[0x277D85DE8];
   v18.receiver = self;
@@ -35,13 +35,13 @@
   v4 = [(EQKitMathMLMStackRow *)&v18 init];
   if (v4)
   {
-    v5 = a3;
-    v4->mChildren = v5;
+    childrenCopy = children;
+    v4->mChildren = childrenCopy;
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v14, v19, 16);
+    v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(childrenCopy, v6, &v14, v19, 16);
     if (v7)
     {
       v10 = v7;
@@ -53,14 +53,14 @@
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(childrenCopy);
           }
 
           objc_msgSend_setParent_(*(*(&v14 + 1) + 8 * v12++), v8, v4, v9);
         }
 
         while (v10 != v12);
-        v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v8, &v14, v19, 16);
+        v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(childrenCopy, v8, &v14, v19, 16);
       }
 
       while (v10);
@@ -128,7 +128,7 @@
 {
   *a2 = &unk_2884CB990;
   *(a2 + 8) = 14;
-  result = a1;
+  result = self;
   *(a2 + 16) = result;
   *(a2 + 24) = 0;
   return result;

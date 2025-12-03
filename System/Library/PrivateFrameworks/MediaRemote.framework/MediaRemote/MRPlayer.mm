@@ -3,18 +3,18 @@
 + (MRPlayer)defaultPlayer;
 - (BOOL)hasAuxiliaryProperties;
 - (BOOL)isDefaultPlayer;
-- (BOOL)isEqual:(id)a3;
-- (MRPlayer)initWithData:(id)a3;
-- (MRPlayer)initWithIdentifier:(id)a3 displayName:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (MRPlayer)initWithData:(id)data;
+- (MRPlayer)initWithIdentifier:(id)identifier displayName:(id)name;
 - (MRPlayer)skeleton;
 - (NSData)data;
 - (_MRNowPlayingPlayerProtobuf)protobuf;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (id)initWithProtobuf:(id)a1;
+- (id)initWithProtobuf:(id)protobuf;
 - (unint64_t)hash;
-- (void)mergeFrom:(id)a3;
+- (void)mergeFrom:(id)from;
 @end
 
 @implementation MRPlayer
@@ -47,12 +47,12 @@ void __25__MRPlayer_defaultPlayer__block_invoke()
 
   else
   {
-    v4 = [(MRPlayer *)self identifier];
-    v5 = v4;
+    identifier = [(MRPlayer *)self identifier];
+    v5 = identifier;
     v6 = @"null";
-    if (v4)
+    if (identifier)
     {
-      v6 = v4;
+      v6 = identifier;
     }
 
     v7 = v6;
@@ -84,7 +84,7 @@ void __25__MRPlayer_defaultPlayer__block_invoke()
   v8 = v5 ^ 0x7465646279746573;
   v56 = v5 ^ 0x7465646279746573;
   v9 = self->_identifier;
-  v10 = [(NSString *)v9 UTF8String];
+  uTF8String = [(NSString *)v9 UTF8String];
   v11 = [(NSString *)v9 length];
   if (v11 < 8)
   {
@@ -96,8 +96,8 @@ void __25__MRPlayer_defaultPlayer__block_invoke()
     v12 = ((v11 - 8) & 0xFFFFFFFFFFFFFFF8) + 8;
     do
     {
-      v13 = *v10;
-      v10 += 8;
+      v13 = *uTF8String;
+      uTF8String += 8;
       v14 = (v4 + v6) ^ __ROR8__(v6, 51);
       v15 = v7 + (v8 ^ v13);
       v16 = __ROR8__(v8 ^ v13, 48);
@@ -123,7 +123,7 @@ void __25__MRPlayer_defaultPlayer__block_invoke()
     v20 = v11;
     do
     {
-      v21 = *v10++;
+      v21 = *uTF8String++;
       v19 |= v21 << v18;
       v18 += 8;
       --v20;
@@ -175,38 +175,38 @@ void __25__MRPlayer_defaultPlayer__block_invoke()
 - (_MRNowPlayingPlayerProtobuf)protobuf
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(_MRNowPlayingPlayerProtobuf);
-    v3 = [a1 identifier];
+    identifier = [self identifier];
     [OUTLINED_FUNCTION_0_24() setIdentifier:?];
 
-    v4 = [a1 displayName];
+    displayName = [self displayName];
     [OUTLINED_FUNCTION_0_24() setDisplayName:?];
 
-    v5 = [a1 appIcon];
-    v6 = [v5 absoluteString];
-    [(_MRNowPlayingPlayerProtobuf *)v2 setIconURL:v6];
+    appIcon = [self appIcon];
+    absoluteString = [appIcon absoluteString];
+    [(_MRNowPlayingPlayerProtobuf *)v2 setIconURL:absoluteString];
 
-    v7 = [a1 audioSessionType];
-    if (v7 == 1)
+    audioSessionType = [self audioSessionType];
+    if (audioSessionType == 1)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = 2 * (v7 == 2);
+      v8 = 2 * (audioSessionType == 2);
     }
 
     [(_MRNowPlayingPlayerProtobuf *)v2 setAudioSessionType:v8];
-    -[_MRNowPlayingPlayerProtobuf setHasAudioSessionType:](v2, "setHasAudioSessionType:", [a1 audioSessionType] != 0);
+    -[_MRNowPlayingPlayerProtobuf setHasAudioSessionType:](v2, "setHasAudioSessionType:", [self audioSessionType] != 0);
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = [a1 mxSessionIDs];
-    v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    mxSessionIDs = [self mxSessionIDs];
+    v10 = [mxSessionIDs countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
       v11 = v10;
@@ -217,19 +217,19 @@ void __25__MRPlayer_defaultPlayer__block_invoke()
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(mxSessionIDs);
           }
 
           -[_MRNowPlayingPlayerProtobuf addMxSessionID:](v2, "addMxSessionID:", [*(*(&v16 + 1) + 8 * i) integerValue]);
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v11 = [mxSessionIDs countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v11);
     }
 
-    [(_MRNowPlayingPlayerProtobuf *)v2 setAudioSessionID:a1[2]];
+    [(_MRNowPlayingPlayerProtobuf *)v2 setAudioSessionID:self[2]];
   }
 
   else
@@ -244,25 +244,25 @@ void __25__MRPlayer_defaultPlayer__block_invoke()
 
 + (MRPlayer)anyPlayer
 {
-  v2 = [[a1 alloc] initWithIdentifier:@"any" displayName:@"any"];
+  v2 = [[self alloc] initWithIdentifier:@"any" displayName:@"any"];
 
   return v2;
 }
 
-- (MRPlayer)initWithIdentifier:(id)a3 displayName:(id)a4
+- (MRPlayer)initWithIdentifier:(id)identifier displayName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = MRPlayer;
   v8 = [(MRPlayer *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [nameCopy copy];
     displayName = v8->_displayName;
     v8->_displayName = v11;
   }
@@ -270,13 +270,13 @@ void __25__MRPlayer_defaultPlayer__block_invoke()
   return v8;
 }
 
-- (MRPlayer)initWithData:(id)a3
+- (MRPlayer)initWithData:(id)data
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (data)
   {
-    [(MRPlayer *)a3 initWithData:&v6];
-    v3 = v6;
+    [(MRPlayer *)data initWithData:&v6];
+    selfCopy = v6;
     v4 = v6;
   }
 
@@ -291,9 +291,9 @@ void __25__MRPlayer_defaultPlayer__block_invoke()
 - (MRPlayer)skeleton
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(MRPlayer *)self identifier];
-  v5 = [(MRPlayer *)self displayName];
-  v6 = [v3 initWithIdentifier:v4 displayName:v5];
+  identifier = [(MRPlayer *)self identifier];
+  displayName = [(MRPlayer *)self displayName];
+  v6 = [v3 initWithIdentifier:identifier displayName:displayName];
 
   return v6;
 }
@@ -305,16 +305,16 @@ void __25__MRPlayer_defaultPlayer__block_invoke()
     return 1;
   }
 
-  v5 = [(MRPlayer *)self appIcon];
-  v3 = v5 != 0;
+  appIcon = [(MRPlayer *)self appIcon];
+  v3 = appIcon != 0;
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -324,9 +324,9 @@ void __25__MRPlayer_defaultPlayer__block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(MRPlayer *)v4 identifier];
-      v6 = [(MRPlayer *)self identifier];
-      v7 = [v5 isEqualToString:v6];
+      identifier = [(MRPlayer *)equalCopy identifier];
+      identifier2 = [(MRPlayer *)self identifier];
+      v7 = [identifier isEqualToString:identifier2];
     }
 
     else
@@ -338,106 +338,106 @@ void __25__MRPlayer_defaultPlayer__block_invoke()
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(MRPlayer *)self identifier];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  identifier = [(MRPlayer *)self identifier];
+  v7 = [identifier copyWithZone:zone];
   [v5 setIdentifier:v7];
 
-  v8 = [(MRPlayer *)self displayName];
-  v9 = [v8 copyWithZone:a3];
+  displayName = [(MRPlayer *)self displayName];
+  v9 = [displayName copyWithZone:zone];
   [v5 setDisplayName:v9];
 
-  v10 = [(MRPlayer *)self appIcon];
-  v11 = [v10 copyWithZone:a3];
+  appIcon = [(MRPlayer *)self appIcon];
+  v11 = [appIcon copyWithZone:zone];
   [v5 setAppIcon:v11];
 
   [v5 setAudioSessionType:{-[MRPlayer audioSessionType](self, "audioSessionType")}];
-  v12 = [(MRPlayer *)self mxSessionIDs];
-  v13 = [v12 copyWithZone:a3];
+  mxSessionIDs = [(MRPlayer *)self mxSessionIDs];
+  v13 = [mxSessionIDs copyWithZone:zone];
   [v5 setMxSessionIDs:v13];
 
   [v5 setAudioSessionID:{-[MRPlayer audioSessionID](self, "audioSessionID")}];
   return v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v12 = a3;
-  v4 = [v12 identifier];
+  fromCopy = from;
+  identifier = [fromCopy identifier];
 
-  if (v4)
+  if (identifier)
   {
-    v5 = [v12 identifier];
-    [(MRPlayer *)self setIdentifier:v5];
+    identifier2 = [fromCopy identifier];
+    [(MRPlayer *)self setIdentifier:identifier2];
   }
 
-  v6 = [v12 displayName];
+  displayName = [fromCopy displayName];
 
-  if (v6)
+  if (displayName)
   {
-    v7 = [v12 displayName];
-    [(MRPlayer *)self setDisplayName:v7];
+    displayName2 = [fromCopy displayName];
+    [(MRPlayer *)self setDisplayName:displayName2];
   }
 
-  v8 = [v12 appIcon];
+  appIcon = [fromCopy appIcon];
 
-  if (v8)
+  if (appIcon)
   {
-    v9 = [v12 appIcon];
-    [(MRPlayer *)self setAppIcon:v9];
+    appIcon2 = [fromCopy appIcon];
+    [(MRPlayer *)self setAppIcon:appIcon2];
   }
 
-  if ([v12 audioSessionType])
+  if ([fromCopy audioSessionType])
   {
-    -[MRPlayer setAudioSessionType:](self, "setAudioSessionType:", [v12 audioSessionType]);
+    -[MRPlayer setAudioSessionType:](self, "setAudioSessionType:", [fromCopy audioSessionType]);
   }
 
-  v10 = [v12 mxSessionIDs];
+  mxSessionIDs = [fromCopy mxSessionIDs];
 
-  if (v10)
+  if (mxSessionIDs)
   {
-    v11 = [v12 mxSessionIDs];
-    [(MRPlayer *)self setMxSessionIDs:v11];
+    mxSessionIDs2 = [fromCopy mxSessionIDs];
+    [(MRPlayer *)self setMxSessionIDs:mxSessionIDs2];
   }
 
-  if ([v12 audioSessionID])
+  if ([fromCopy audioSessionID])
   {
-    -[MRPlayer setAudioSessionID:](self, "setAudioSessionID:", [v12 audioSessionID]);
+    -[MRPlayer setAudioSessionID:](self, "setAudioSessionID:", [fromCopy audioSessionID]);
   }
 }
 
-- (id)initWithProtobuf:(id)a1
+- (id)initWithProtobuf:(id)protobuf
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && v3)
+  if (protobuf && v3)
   {
-    v5 = [v3 identifier];
-    v6 = [v4 displayName];
-    v7 = [a1 initWithIdentifier:v5 displayName:v6];
+    identifier = [v3 identifier];
+    displayName = [v4 displayName];
+    v7 = [protobuf initWithIdentifier:identifier displayName:displayName];
 
     if (v7)
     {
       if ([v4 hasIconURL])
       {
         v8 = objc_alloc(MEMORY[0x1E695DFF8]);
-        v9 = [v4 iconURL];
-        v10 = [v8 initWithString:v9];
+        iconURL = [v4 iconURL];
+        v10 = [v8 initWithString:iconURL];
         v11 = *(v7 + 32);
         *(v7 + 32) = v10;
       }
 
       else
       {
-        v9 = *(v7 + 32);
+        iconURL = *(v7 + 32);
         *(v7 + 32) = 0;
       }
 
-      v13 = [v4 audioSessionType];
-      v14 = 2 * (v13 == 2);
-      if (v13 == 1)
+      audioSessionType = [v4 audioSessionType];
+      v14 = 2 * (audioSessionType == 2);
+      if (audioSessionType == 1)
       {
         v14 = 1;
       }
@@ -465,31 +465,31 @@ void __25__MRPlayer_defaultPlayer__block_invoke()
       *(v7 + 8) = [v4 audioSessionID];
     }
 
-    a1 = v7;
-    v12 = a1;
+    protobuf = v7;
+    protobufCopy = protobuf;
   }
 
   else
   {
-    v12 = 0;
+    protobufCopy = 0;
   }
 
-  return v12;
+  return protobufCopy;
 }
 
 - (NSData)data
 {
-  v2 = [(MRPlayer *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(MRPlayer *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
 - (id)debugDescription
 {
-  v2 = [(MRPlayer *)self protobuf];
-  v3 = [v2 dictionaryRepresentation];
-  v4 = [v3 description];
+  protobuf = [(MRPlayer *)self protobuf];
+  dictionaryRepresentation = [protobuf dictionaryRepresentation];
+  v4 = [dictionaryRepresentation description];
 
   return v4;
 }

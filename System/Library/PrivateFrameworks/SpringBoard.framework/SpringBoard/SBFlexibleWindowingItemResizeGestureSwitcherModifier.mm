@@ -1,46 +1,46 @@
 @interface SBFlexibleWindowingItemResizeGestureSwitcherModifier
 - (BOOL)_isStripVisibleForCurrentAppLayout;
-- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)a3;
-- (BOOL)isItemResizingAllowedForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)index;
+- (BOOL)isItemResizingAllowedForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (BOOL)shouldConfigureInAppDockHiddenAssertion;
 - (BOOL)wantsDockBehaviorAssertion;
-- (BOOL)wantsSceneResizesHostedContextForAppLayout:(id)a3;
-- (CGRect)_convertToSpaceRectFromScreenRect:(CGRect)a3;
-- (CGRect)_initialScaledFrameInScreenCoordinatesForSelectedDisplayItemInAppLayout:(id)a3;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (SBFlexibleWindowingItemResizeGestureSwitcherModifier)initWithGestureID:(id)a3;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withCornerRadii:(UIRectCornerRadii)a5;
+- (BOOL)wantsSceneResizesHostedContextForAppLayout:(id)layout;
+- (CGRect)_convertToSpaceRectFromScreenRect:(CGRect)rect;
+- (CGRect)_initialScaledFrameInScreenCoordinatesForSelectedDisplayItemInAppLayout:(id)layout;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (SBFlexibleWindowingItemResizeGestureSwitcherModifier)initWithGestureID:(id)d;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)role inAppLayout:(id)layout withCornerRadii:(UIRectCornerRadii)radii;
 - (double)_dockProgressForResizingWindow;
 - (double)dockProgress;
 - (double)homeScreenDimmingAlpha;
 - (id)_animationSettingsForLayout;
-- (id)_responseForGestureUpdateAtGestureEnd:(BOOL)a3;
-- (id)_responseForSceneSizeUpdateToSize:(CGSize)a3 center:(CGPoint)a4 sceneUpdatesOnly:(BOOL)a5 animated:(BOOL)a6;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleGestureEvent:(id)a3;
-- (id)handleSceneReadyEvent:(id)a3;
-- (id)handleTimerEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
-- (id)layoutRestrictionInfoForItem:(id)a3;
+- (id)_responseForGestureUpdateAtGestureEnd:(BOOL)end;
+- (id)_responseForSceneSizeUpdateToSize:(CGSize)size center:(CGPoint)center sceneUpdatesOnly:(BOOL)only animated:(BOOL)animated;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleGestureEvent:(id)event;
+- (id)handleSceneReadyEvent:(id)event;
+- (id)handleTimerEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
+- (id)layoutRestrictionInfoForItem:(id)item;
 - (id)topMostLayoutElements;
-- (id)topMostLayoutRolesForAppLayout:(id)a3;
+- (id)topMostLayoutRolesForAppLayout:(id)layout;
 - (id)visibleSplitViewHandleDimmingViews;
 - (id)visibleSplitViewHandleNubViews;
-- (int64_t)occlusionStateForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (unint64_t)activeCornersForTouchResizeForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (unint64_t)hiddenContentStatusBarPartsForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (unint64_t)maskedCornersForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withMaskedCorners:(unint64_t)a5;
-- (unint64_t)visibleCornersForTouchResizeForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (int64_t)occlusionStateForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (unint64_t)activeCornersForTouchResizeForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (unint64_t)hiddenContentStatusBarPartsForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (unint64_t)maskedCornersForLayoutRole:(int64_t)role inAppLayout:(id)layout withMaskedCorners:(unint64_t)corners;
+- (unint64_t)visibleCornersForTouchResizeForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 @end
 
 @implementation SBFlexibleWindowingItemResizeGestureSwitcherModifier
 
-- (SBFlexibleWindowingItemResizeGestureSwitcherModifier)initWithGestureID:(id)a3
+- (SBFlexibleWindowingItemResizeGestureSwitcherModifier)initWithGestureID:(id)d
 {
   v9.receiver = self;
   v9.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-  v3 = [(SBGestureSwitcherModifier *)&v9 initWithGestureID:a3];
+  v3 = [(SBGestureSwitcherModifier *)&v9 initWithGestureID:d];
   if (v3)
   {
     v4 = objc_alloc_init(SBDisplayItemLayoutGrid);
@@ -57,28 +57,28 @@
   return v3;
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v97.receiver = self;
   v97.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-  v6 = [(SBGestureSwitcherModifier *)&v97 handleGestureEvent:v5];
+  v6 = [(SBGestureSwitcherModifier *)&v97 handleGestureEvent:eventCopy];
   p_location = &self->_location;
-  [(SBGestureSwitcherModifierEvent *)v5 locationInContainerView];
+  [(SBGestureSwitcherModifierEvent *)eventCopy locationInContainerView];
   self->_location.x = v8;
   self->_location.y = v9;
-  if ([(SBGestureSwitcherModifierEvent *)v5 phase]== 1)
+  if ([(SBGestureSwitcherModifierEvent *)eventCopy phase]== 1)
   {
     v89 = v6;
     v10 = objc_opt_class();
-    v11 = SBSafeCast(v10, v5);
-    v12 = [v11 selectedAppLayout];
-    if (!v12)
+    v11 = SBSafeCast(v10, eventCopy);
+    selectedAppLayout = [v11 selectedAppLayout];
+    if (!selectedAppLayout)
     {
       [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)a2 handleGestureEvent:?];
     }
 
-    objc_storeStrong(&self->_currentAppLayout, v12);
+    objc_storeStrong(&self->_currentAppLayout, selectedAppLayout);
     self->_selectedLayoutRole = [v11 selectedLayoutRole];
     v88 = v11;
     self->_selectedEdge = [v11 selectedEdge];
@@ -97,9 +97,9 @@
     }
 
     v86 = v17;
-    v87 = v12;
+    v87 = selectedAppLayout;
     p_initialFrameInScreenCoordinates = &self->_initialFrameInScreenCoordinates;
-    [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self _initialScaledFrameInScreenCoordinatesForSelectedDisplayItemInAppLayout:v12];
+    [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self _initialScaledFrameInScreenCoordinatesForSelectedDisplayItemInAppLayout:selectedAppLayout];
     self->_initialFrameInScreenCoordinates.origin.x = v19;
     self->_initialFrameInScreenCoordinates.origin.y = v20;
     self->_initialFrameInScreenCoordinates.size.width = v21;
@@ -114,9 +114,9 @@
     v28 = v27;
     v30 = v29;
     v32 = v31;
-    v90 = [(SBSwitcherModifier *)self windowingConfiguration];
+    windowingConfiguration = [(SBSwitcherModifier *)self windowingConfiguration];
     self->_selectedItemWasInitiallyInDefaultPosition = [v24 positionIsSystemManaged];
-    v33 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self displayItemInSlideOver];
+    displayItemInSlideOver = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self displayItemInSlideOver];
     self->_selectedItemIsInSlideOver = BSEqualObjects();
 
     if (self->_selectedItemIsInSlideOver)
@@ -131,8 +131,8 @@
     self->_dockAwareIfCenterAnchored = 0;
     if (([(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self prefersDockHidden]& 1) == 0)
     {
-      v36 = [(SBAppLayout *)self->_currentAppLayout allItems];
-      v37 = [v36 count];
+      allItems = [(SBAppLayout *)self->_currentAppLayout allItems];
+      v37 = [allItems count];
 
       if (v37 == 1)
       {
@@ -148,14 +148,14 @@
         v95[3] = &unk_2783A8C90;
         v95[4] = self;
         v39 = [(SBAppLayout *)currentAppLayout appLayoutWithItemsPassingTest:v95];
-        v40 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self displayItemLayoutAttributesCalculator];
-        v84 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self switcherInterfaceOrientation];
+        displayItemLayoutAttributesCalculator = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self displayItemLayoutAttributesCalculator];
+        switcherInterfaceOrientation = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self switcherInterfaceOrientation];
         [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self floatingDockHeight];
         v83 = v41;
         [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self screenScale];
         v81 = v42;
-        v82 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self isDisplayEmbedded];
-        v43 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self prefersStripHidden];
+        isDisplayEmbedded = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self isDisplayEmbedded];
+        prefersStripHidden = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self prefersStripHidden];
         [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self leftStatusBarPartIntersectionRegion];
         v45 = v44;
         v47 = v46;
@@ -163,11 +163,11 @@
         v50 = v28;
         v52 = v51;
         [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self rightStatusBarPartIntersectionRegion];
-        v57 = [v40 flexibleWindowingAutoLayoutSpaceForAppLayout:v39 containerOrientation:v84 floatingDockHeight:v82 screenScale:v43 bounds:0 isEmbeddedDisplay:v83 prefersStripHidden:v81 prefersDockHidden:v26 leftStatusBarPartIntersectionRegion:v50 rightStatusBarPartIntersectionRegion:{v30, v32, v45, v47, v49, v52, v53, v54, v55, v56}];
+        v57 = [displayItemLayoutAttributesCalculator flexibleWindowingAutoLayoutSpaceForAppLayout:v39 containerOrientation:switcherInterfaceOrientation floatingDockHeight:isDisplayEmbedded screenScale:prefersStripHidden bounds:0 isEmbeddedDisplay:v83 prefersStripHidden:v81 prefersDockHidden:v26 leftStatusBarPartIntersectionRegion:v50 rightStatusBarPartIntersectionRegion:{v30, v32, v45, v47, v49, v52, v53, v54, v55, v56}];
 
         [v57 boundingBox];
         v60 = v58 + v59;
-        [v90 floatingDockHeightWithTopAndBottomPadding];
+        [windowingConfiguration floatingDockHeightWithTopAndBottomPadding];
         self->_dockAwareIfCenterAnchored = v60 <= v32 - v61;
       }
     }
@@ -202,9 +202,9 @@
     }
 
     self->_resizeAnchor = 0;
-    v68 = [(SBGestureSwitcherModifierEvent *)v5 modifierFlags];
-    self->_needsCenterAnchoringPerOptionModifier = (v68 & 0x80000) != 0;
-    if ((v68 & 0x80000) == 0 && !self->_selectedItemWasInitiallyInDefaultPosition)
+    modifierFlags = [(SBGestureSwitcherModifierEvent *)eventCopy modifierFlags];
+    self->_needsCenterAnchoringPerOptionModifier = (modifierFlags & 0x80000) != 0;
+    if ((modifierFlags & 0x80000) == 0 && !self->_selectedItemWasInitiallyInDefaultPosition)
     {
       v69 = self->_selectedEdge - 3;
       if (v69 <= 5)
@@ -284,18 +284,18 @@ LABEL_38:
   v74 = vmaxnmq_f64(*p_location, 0);
   v76.f64[1] = v75;
   *p_location = vbslq_s8(vcgtq_f64(v76, v74), v74, v76);
-  v77 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self _responseForGestureUpdateAtGestureEnd:[(SBGestureSwitcherModifierEvent *)v5 phase]== 3];
+  v77 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self _responseForGestureUpdateAtGestureEnd:[(SBGestureSwitcherModifierEvent *)eventCopy phase]== 3];
   v78 = SBAppendSwitcherModifierResponse(v77, v6);
 
   lastGestureEvent = self->_lastGestureEvent;
-  self->_lastGestureEvent = v5;
+  self->_lastGestureEvent = eventCopy;
 
   return v78;
 }
 
-- (id)_responseForGestureUpdateAtGestureEnd:(BOOL)a3
+- (id)_responseForGestureUpdateAtGestureEnd:(BOOL)end
 {
-  v205 = a3;
+  endCopy = end;
   v225.receiver = self;
   v225.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
   [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v225 containerViewBounds];
@@ -303,9 +303,9 @@ LABEL_38:
   v7 = v6;
   v207 = v8;
   v208 = v9;
-  v10 = [(SBSwitcherModifier *)self windowingConfiguration];
-  v11 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self switcherSettings];
-  v204 = [v11 windowingSettings];
+  windowingConfiguration = [(SBSwitcherModifier *)self windowingConfiguration];
+  switcherSettings = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self switcherSettings];
+  windowingSettings = [switcherSettings windowingSettings];
 
   width = self->_initialFrameInScreenCoordinates.size.width;
   height = self->_initialFrameInScreenCoordinates.size.height;
@@ -328,12 +328,12 @@ LABEL_38:
   v28 = v5;
   v29 = v5;
   v30 = v7;
-  v195 = v10;
-  v202 = [(SBContinuousExposeAutoLayoutConfiguration *)v14 initWithContainerBounds:v10 screenScale:v29 dockHeightWithBottomEdgePadding:v7 leftStatusBarPartIntersectionRegion:v207 rightStatusBarPartIntersectionRegion:v208 windowingConfiguration:v16, v18, v20, v22, v24, v191, v192, v31, v32, v33];
+  v195 = windowingConfiguration;
+  v202 = [(SBContinuousExposeAutoLayoutConfiguration *)v14 initWithContainerBounds:windowingConfiguration screenScale:v29 dockHeightWithBottomEdgePadding:v7 leftStatusBarPartIntersectionRegion:v207 rightStatusBarPartIntersectionRegion:v208 windowingConfiguration:v16, v18, v20, v22, v24, v191, v192, v31, v32, v33];
   v201 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:self->_currentAppLayout];
   v206 = [v201 flexibleAutoLayoutItemForDisplayItem:self->_selectedDisplayItem];
   v34 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self layoutAttributesForDisplayItem:self->_selectedDisplayItem inAppLayout:self->_currentAppLayout];
-  v35 = [(SBHomeScreenConfigurationServer *)v34 authenticator];
+  authenticator = [(SBHomeScreenConfigurationServer *)v34 authenticator];
 
   resizeAnchor = self->_resizeAnchor;
   v37 = resizeAnchor == 2;
@@ -415,7 +415,7 @@ LABEL_16:
   }
 
 LABEL_17:
-  v193 = v35;
+  v193 = authenticator;
   v49 = 0;
   if (selectedEdge - 5 > 0xFFFFFFFFFFFFFFFDLL)
   {
@@ -437,9 +437,9 @@ LABEL_28:
     v61 = y;
     if (self->_selectedItemIsInSlideOver)
     {
-      [v10 statusBarHeight];
+      [windowingConfiguration statusBarHeight];
       v63 = v62;
-      [v10 slideOverBorderWidth];
+      [windowingConfiguration slideOverBorderWidth];
       v61 = v63 + v64;
       v43 = height;
       if (y >= v61)
@@ -566,8 +566,8 @@ LABEL_56:
   layoutRestrictionInfoForSelectedItem = self->_layoutRestrictionInfoForSelectedItem;
   [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self screenScale];
   v75 = v74;
-  v76 = [(SBSwitcherModifier *)self windowingConfiguration];
-  [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self minSizeForDisplayItem:selectedDisplayItem inContainerBounds:layoutGrid layoutGrid:layoutRestrictionInfoForSelectedItem layoutRestrictionInfo:v193 contentOrientation:v76 screenScale:v42 windowingConfiguration:v30, v207, v208, v75];
+  windowingConfiguration2 = [(SBSwitcherModifier *)self windowingConfiguration];
+  [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self minSizeForDisplayItem:selectedDisplayItem inContainerBounds:layoutGrid layoutGrid:layoutRestrictionInfoForSelectedItem layoutRestrictionInfo:v193 contentOrientation:windowingConfiguration2 screenScale:v42 windowingConfiguration:v30, v207, v208, v75];
   v78 = v77;
   v80 = v79;
 
@@ -653,8 +653,8 @@ LABEL_56:
     v100 = [MEMORY[0x277CBEB98] setWithObject:self->_selectedDisplayItem];
     v101 = [(SBFlexibleWindowingAutoLayoutController *)autoLayoutController spaceByPerformingFlexibleAutoLayoutWithSpace:v97 configuration:v202 options:0 itemsNeedingPositionSnapping:0 itemsNeedingSizeSnapping:v100];
 
-    v102 = [v206 displayItem];
-    v103 = [v101 flexibleAutoLayoutItemForDisplayItem:v102];
+    displayItem = [v206 displayItem];
+    v103 = [v101 flexibleAutoLayoutItemForDisplayItem:displayItem];
 
     [v103 size];
     v88 = v104;
@@ -674,7 +674,7 @@ LABEL_56:
   self->_currentFrameForDrawingInScreenCoordinates.origin.y = v112;
   self->_currentFrameForDrawingInScreenCoordinates.size.width = v113;
   self->_currentFrameForDrawingInScreenCoordinates.size.height = v114;
-  [v204 liveResizeSceneUpdateDistanceThreshold];
+  [windowingSettings liveResizeSceneUpdateDistanceThreshold];
   v116 = v115;
   if (self->_resizeAnchor)
   {
@@ -725,7 +725,7 @@ LABEL_56:
 
   else
   {
-    v129 = (resizedDisplayItemIntersectsHomeAffordanceArea != v125) | v128 | self->_needsSceneSizeUpdate | v205;
+    v129 = (resizedDisplayItemIntersectsHomeAffordanceArea != v125) | v128 | self->_needsSceneSizeUpdate | endCopy;
   }
 
   if (SBFIsFullScreenLetterboxingAvailable() && ([(SBDisplayItemGridLayoutRestrictionInfo *)self->_layoutRestrictionInfoForSelectedItem layoutRestrictions]& 0x10) != 0)
@@ -779,7 +779,7 @@ LABEL_107:
     v142 = 0;
 LABEL_111:
     v196 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self layoutAttributesForDisplayItem:self->_selectedDisplayItem inAppLayout:self->_currentAppLayout];
-    if (v137 && v205 && !v142)
+    if (v137 && endCopy && !v142)
     {
       v146.f64[0] = v207;
       v146.f64[1] = v208;
@@ -828,12 +828,12 @@ LABEL_111:
     self->_currentSceneSize.height = v87;
     v155 = (v106[2])(v106, v88, v87);
     v157 = v156;
-    if (v205)
+    if (endCopy)
     {
       v199 = v128;
       v158 = [v201 mutableCopy];
-      v159 = [v206 displayItem];
-      v160 = [v158 flexibleAutoLayoutItemForDisplayItem:v159];
+      displayItem2 = [v206 displayItem];
+      v160 = [v158 flexibleAutoLayoutItemForDisplayItem:displayItem2];
 
       [v160 setPosition:{v155, v157}];
       [v160 setSize:{v88, v87}];
@@ -849,8 +849,8 @@ LABEL_111:
         v162 = [(SBFlexibleWindowingAutoLayoutController *)v161 spaceByPerformingFlexibleAutoLayoutWithSpace:v158 configuration:v202 options:0 itemsNeedingPositionSnapping:0 itemsNeedingSizeSnapping:v165];
       }
 
-      v166 = [v206 displayItem];
-      v167 = [v162 flexibleAutoLayoutItemForDisplayItem:v166];
+      displayItem3 = [v206 displayItem];
+      v167 = [v162 flexibleAutoLayoutItemForDisplayItem:displayItem3];
 
       [v167 size];
       v88 = v168;
@@ -878,8 +878,8 @@ LABEL_111:
       v176 = 1;
     }
 
-    v177 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self _responseForSceneSizeUpdateToSize:!v205 center:v176 sceneUpdatesOnly:v88 animated:v87, v155, v157];
-    v164 = SBAppendSwitcherModifierResponse(v177, 0);
+    v157 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self _responseForSceneSizeUpdateToSize:!endCopy center:v176 sceneUpdatesOnly:v88 animated:v87, v155, v157];
+    v164 = SBAppendSwitcherModifierResponse(v157, 0);
 
     ++self->_delayedSceneSizeUpdateGeneration;
     delayedSceneSizeUpdateReason = self->_delayedSceneSizeUpdateReason;
@@ -904,13 +904,13 @@ LABEL_111:
     self->_delayedSceneSizeUpdateReason = v188;
 
     v190 = [SBTimerEventSwitcherEventResponse alloc];
-    [v204 liveResizeSceneUpdateTimeThreshold];
+    [windowingSettings liveResizeSceneUpdateTimeThreshold];
     delayedSceneSizeUpdateReason = [(SBTimerEventSwitcherEventResponse *)v190 initWithDelay:0 validator:self->_delayedSceneSizeUpdateReason reason:?];
     v164 = SBAppendSwitcherModifierResponse(delayedSceneSizeUpdateReason, 0);
   }
 
 LABEL_132:
-  if (v205)
+  if (endCopy)
   {
     v179 = [SBUpdateLayoutSwitcherEventResponse alloc];
     if ([(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self _shouldUseSprings])
@@ -942,20 +942,20 @@ LABEL_132:
   return v164;
 }
 
-- (id)_responseForSceneSizeUpdateToSize:(CGSize)a3 center:(CGPoint)a4 sceneUpdatesOnly:(BOOL)a5 animated:(BOOL)a6
+- (id)_responseForSceneSizeUpdateToSize:(CGSize)size center:(CGPoint)center sceneUpdatesOnly:(BOOL)only animated:(BOOL)animated
 {
-  v57 = a5;
-  y = a4.y;
-  x = a4.x;
-  height = a3.height;
-  width = a3.width;
+  onlyCopy = only;
+  y = center.y;
+  x = center.x;
+  height = size.height;
+  width = size.width;
   [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self containerViewBounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v18 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self layoutAttributesForDisplayItem:self->_selectedDisplayItem inAppLayout:self->_currentAppLayout];
-  v19 = [(SBSwitcherModifier *)self windowingConfiguration];
+  windowingConfiguration = [(SBSwitcherModifier *)self windowingConfiguration];
   v20 = self->_selectedItemWasInitiallyInDefaultPosition && self->_resizeAnchor == 0;
   v21 = [(SBDisplayItemLayoutAttributes *)v18 attributesByModifyingPositionIsSystemManaged:v20];
 
@@ -979,8 +979,8 @@ LABEL_132:
   v72 = 0;
   v73 = 0u;
   v71 = 0u;
-  [v19 defaultWindowSize];
-  [v19 screenEdgePadding];
+  [windowingConfiguration defaultWindowSize];
+  [windowingConfiguration screenEdgePadding];
   v55 = v24;
   SBDisplayItemAttributedSizeInfer(&v71, width, height, v11, v13, v15, v17);
   v70 = 0;
@@ -992,14 +992,14 @@ LABEL_132:
   *&v66 = v70;
   if (SBDisplayItemSlideOverConfigurationIsValid(&v64))
   {
-    v25 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self displayItemLayoutAttributesCalculator];
-    v26 = v25;
-    if (v25)
+    displayItemLayoutAttributesCalculator = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self displayItemLayoutAttributesCalculator];
+    v26 = displayItemLayoutAttributesCalculator;
+    if (displayItemLayoutAttributesCalculator)
     {
       v62[0] = v68;
       v62[1] = v69;
       v63 = v70;
-      [v25 updatedSlideOverConfigurationForItemWithSize:v62 center:v19 slideOverConfiguration:width windowingConfiguration:{height, x, y}];
+      [displayItemLayoutAttributesCalculator updatedSlideOverConfigurationForItemWithSize:v62 center:windowingConfiguration slideOverConfiguration:width windowingConfiguration:{height, x, y}];
     }
 
     else
@@ -1024,8 +1024,8 @@ LABEL_132:
     v29 = [SBDisplayItemLayoutAttributes attributesByModifyingAttributedSize:v26];
   }
 
-  v30 = [(SBAppLayout *)self->_currentAppLayout allItems];
-  v31 = [v30 count];
+  allItems = [(SBAppLayout *)self->_currentAppLayout allItems];
+  v31 = [allItems count];
 
   if (v31 < 2)
   {
@@ -1047,8 +1047,8 @@ LABEL_132:
   SBDisplayItemSizingPolicyAllowingSmallestSize(v33);
   if (v34 == 1)
   {
-    v35 = [(SBSwitcherModifier *)self windowingConfiguration];
-    [v35 screenEdgePadding];
+    windowingConfiguration2 = [(SBSwitcherModifier *)self windowingConfiguration];
+    [windowingConfiguration2 screenEdgePadding];
     v37 = v36;
 
     v76.origin.x = v11;
@@ -1067,7 +1067,7 @@ LABEL_132:
     [(SBDisplayItemLayoutAttributes *)v32 attributedSize];
   }
 
-  v56 = v19;
+  v56 = windowingConfiguration;
   v38 = [SBDisplayItemLayoutAttributes attributesByModifyingSizingPolicy:v32];
 
   [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self updateLayoutAttributes:v38 ofDisplayItem:self->_selectedDisplayItem];
@@ -1092,7 +1092,7 @@ LABEL_132:
     v43 = v72;
     *&self->_currentWindowControlsLayout.style = v71;
     self->_currentWindowControlsLayout.margin = v43;
-    a6 = 1;
+    animated = 1;
   }
 
   v44 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:self->_currentAppLayout, v55];
@@ -1100,11 +1100,11 @@ LABEL_132:
   v46 = [(SBSwitcherModifier *)self autoLayoutItemIntersectsHomeAffordanceArea:v45];
   resizedDisplayItemIntersectsHomeAffordanceArea = self->_resizedDisplayItemIntersectsHomeAffordanceArea;
   v48 = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForActivatingAppLayout:self->_currentAppLayout];
-  [v48 setSceneUpdatesOnly:v57];
-  if (a6 || resizedDisplayItemIntersectsHomeAffordanceArea != v46)
+  [v48 setSceneUpdatesOnly:onlyCopy];
+  if (animated || resizedDisplayItemIntersectsHomeAffordanceArea != v46)
   {
-    v49 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self _animationSettingsForLayout];
-    [v48 setAnimationSettings:v49];
+    _animationSettingsForLayout = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self _animationSettingsForLayout];
+    [v48 setAnimationSettings:_animationSettingsForLayout];
   }
 
   v50 = [[SBPerformTransitionSwitcherEventResponse alloc] initWithTransitionRequest:v48 gestureInitiated:1];
@@ -1129,28 +1129,28 @@ LABEL_132:
   return v50;
 }
 
-- (id)handleSceneReadyEvent:(id)a3
+- (id)handleSceneReadyEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v16.receiver = self;
   v16.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v16 handleSceneReadyEvent:v4];
+  v5 = [(SBSwitcherModifier *)&v16 handleSceneReadyEvent:eventCopy];
   currentAppLayout = self->_currentAppLayout;
-  v7 = [v4 appLayout];
-  LODWORD(currentAppLayout) = [(SBAppLayout *)currentAppLayout isOrContainsAppLayout:v7];
+  appLayout = [eventCopy appLayout];
+  LODWORD(currentAppLayout) = [(SBAppLayout *)currentAppLayout isOrContainsAppLayout:appLayout];
 
   if (currentAppLayout)
   {
     v8 = self->_currentAppLayout;
-    v9 = [v4 appLayout];
-    v10 = [v9 itemForLayoutRole:1];
+    appLayout2 = [eventCopy appLayout];
+    v10 = [appLayout2 itemForLayoutRole:1];
     v11 = [(SBAppLayout *)v8 layoutRoleForItem:v10];
 
-    LODWORD(v9) = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self isLayoutRoleContentReady:v11 inAppLayout:self->_currentAppLayout];
+    LODWORD(appLayout2) = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self isLayoutRoleContentReady:v11 inAppLayout:self->_currentAppLayout];
     v12 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:64 updateMode:0];
     v13 = SBAppendSwitcherModifierResponse(v12, v5);
 
-    if (v9 && self->_lastGestureEvent && [(SBGestureSwitcherModifier *)self gesturePhase]== 2)
+    if (appLayout2 && self->_lastGestureEvent && [(SBGestureSwitcherModifier *)self gesturePhase]== 2)
     {
       v14 = [(SBSwitcherModifier *)self _handleEvent:self->_lastGestureEvent];
       v5 = SBAppendSwitcherModifierResponse(v14, v13);
@@ -1165,13 +1165,13 @@ LABEL_132:
   return v5;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v7.receiver = self;
   v7.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-  v5 = [(SBGestureSwitcherModifier *)&v7 handleTransitionEvent:v4];
-  if ([v4 isGestureInitiated] && objc_msgSend(v4, "phase") >= 2)
+  v5 = [(SBGestureSwitcherModifier *)&v7 handleTransitionEvent:eventCopy];
+  if ([eventCopy isGestureInitiated] && objc_msgSend(eventCopy, "phase") >= 2)
   {
     [(SBChainableModifier *)self setState:1];
   }
@@ -1179,17 +1179,17 @@ LABEL_132:
   return v5;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v13.receiver = self;
   v13.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v13 handleTimerEvent:v4];
+  v5 = [(SBSwitcherModifier *)&v13 handleTimerEvent:eventCopy];
   delayedSceneSizeUpdateReason = self->_delayedSceneSizeUpdateReason;
   if (delayedSceneSizeUpdateReason)
   {
-    v7 = [v4 reason];
-    v8 = [(NSString *)delayedSceneSizeUpdateReason isEqual:v7];
+    reason = [eventCopy reason];
+    v8 = [(NSString *)delayedSceneSizeUpdateReason isEqual:reason];
 
     if (v8)
     {
@@ -1208,14 +1208,14 @@ LABEL_132:
   return v5;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  if ([v11 isEqual:self->_currentAppLayout] && self->_selectedLayoutRole == a3 && -[SBGestureSwitcherModifier gesturePhase](self, "gesturePhase") >= 2)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
+  if ([layoutCopy isEqual:self->_currentAppLayout] && self->_selectedLayoutRole == role && -[SBGestureSwitcherModifier gesturePhase](self, "gesturePhase") >= 2)
   {
     [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self _convertToSpaceRectFromScreenRect:self->_currentFrameForDrawingInScreenCoordinates.origin.x, self->_currentFrameForDrawingInScreenCoordinates.origin.y, self->_currentFrameForDrawingInScreenCoordinates.size.width, self->_currentFrameForDrawingInScreenCoordinates.size.height];
   }
@@ -1224,7 +1224,7 @@ LABEL_132:
   {
     v24.receiver = self;
     v24.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-    [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v24 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+    [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v24 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
   }
 
   v16 = v12;
@@ -1243,43 +1243,43 @@ LABEL_132:
   return result;
 }
 
-- (unint64_t)maskedCornersForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withMaskedCorners:(unint64_t)a5
+- (unint64_t)maskedCornersForLayoutRole:(int64_t)role inAppLayout:(id)layout withMaskedCorners:(unint64_t)corners
 {
-  v8 = a4;
+  layoutCopy = layout;
   v19.receiver = self;
   v19.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-  v9 = [(SBGestureSwitcherModifier *)&v19 maskedCornersForLayoutRole:a3 inAppLayout:v8 withMaskedCorners:a5];
-  v10 = [v8 itemForLayoutRole:a3];
+  v9 = [(SBGestureSwitcherModifier *)&v19 maskedCornersForLayoutRole:role inAppLayout:layoutCopy withMaskedCorners:corners];
+  v10 = [layoutCopy itemForLayoutRole:role];
   v11 = v10;
   if (v10)
   {
     if (([(SBDisplayItem *)v10 isEqualToItem:?]& 1) == 0)
     {
-      v12 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self appLayoutOnStage];
-      v13 = [v12 isOrContainsAppLayout:v8];
+      appLayoutOnStage = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self appLayoutOnStage];
+      v13 = [appLayoutOnStage isOrContainsAppLayout:layoutCopy];
 
       if (v13)
       {
-        v14 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:v8];
+        v14 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:layoutCopy];
         v15 = [v14 flexibleAutoLayoutItemForDisplayItem:v11];
-        v16 = [v15 intersectedDisplayRectCorners];
+        intersectedDisplayRectCorners = [v15 intersectedDisplayRectCorners];
         v17 = v9 & 0xFFFFFFFFFFFFFFFELL;
-        if ((v16 & 1) == 0)
+        if ((intersectedDisplayRectCorners & 1) == 0)
         {
           v17 = v9;
         }
 
-        if ((v16 & 2) != 0)
+        if ((intersectedDisplayRectCorners & 2) != 0)
         {
           v17 &= ~2uLL;
         }
 
-        if ((v16 & 4) != 0)
+        if ((intersectedDisplayRectCorners & 4) != 0)
         {
           v17 &= ~4uLL;
         }
 
-        if ((v16 & 8) != 0)
+        if ((intersectedDisplayRectCorners & 8) != 0)
         {
           v9 = v17 & 0xFFFFFFFFFFFFFFF7;
         }
@@ -1295,46 +1295,46 @@ LABEL_132:
   return v9;
 }
 
-- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withCornerRadii:(UIRectCornerRadii)a5
+- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)role inAppLayout:(id)layout withCornerRadii:(UIRectCornerRadii)radii
 {
-  topRight = a5.topRight;
-  bottomRight = a5.bottomRight;
-  bottomLeft = a5.bottomLeft;
-  topLeft = a5.topLeft;
-  v11 = a4;
-  v12 = [v11 itemForLayoutRole:a3];
+  topRight = radii.topRight;
+  bottomRight = radii.bottomRight;
+  bottomLeft = radii.bottomLeft;
+  topLeft = radii.topLeft;
+  layoutCopy = layout;
+  v12 = [layoutCopy itemForLayoutRole:role];
   v13 = [(SBDisplayItem *)v12 isEqualToItem:?];
 
   if (v13)
   {
     [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self displayCornerRadius];
     v15 = v14;
-    [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self bestSupportedDefaultCornerRadiusForAppLayout:v11];
+    [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self bestSupportedDefaultCornerRadiusForAppLayout:layoutCopy];
     SBRectCornerRadiiForRadius();
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:v11];
+    v24 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:layoutCopy];
     v25 = [v24 flexibleAutoLayoutItemForDisplayItem:self->_selectedDisplayItem];
-    v26 = [v25 intersectedDisplayRectCorners];
+    intersectedDisplayRectCorners = [v25 intersectedDisplayRectCorners];
 
-    if (v26)
+    if (intersectedDisplayRectCorners)
     {
       v17 = v15;
     }
 
-    if ((v26 & 2) != 0)
+    if ((intersectedDisplayRectCorners & 2) != 0)
     {
       v23 = v15;
     }
 
-    if ((v26 & 4) != 0)
+    if ((intersectedDisplayRectCorners & 4) != 0)
     {
       v19 = v15;
     }
 
-    if ((v26 & 8) == 0)
+    if ((intersectedDisplayRectCorners & 8) == 0)
     {
       v15 = v21;
     }
@@ -1344,7 +1344,7 @@ LABEL_132:
   {
     v35.receiver = self;
     v35.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-    [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v35 cornerRadiiForLayoutRole:a3 inAppLayout:v11 withCornerRadii:topLeft, bottomLeft, bottomRight, topRight];
+    [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v35 cornerRadiiForLayoutRole:role inAppLayout:layoutCopy withCornerRadii:topLeft, bottomLeft, bottomRight, topRight];
     v17 = v27;
     v19 = v28;
     v15 = v29;
@@ -1362,15 +1362,15 @@ LABEL_132:
   return result;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
-  v5 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([v6 isEqual:self->_currentAppLayout])
   {
     [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self bestSupportedDefaultCornerRadiusForAppLayout:v6];
-    [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self scaleForIndex:a3];
+    [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self scaleForIndex:index];
     SBRectCornerRadiiForRadius();
   }
 
@@ -1378,7 +1378,7 @@ LABEL_132:
   {
     v19.receiver = self;
     v19.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-    [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v19 cornerRadiiForIndex:a3];
+    [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v19 cornerRadiiForIndex:index];
   }
 
   v11 = v7;
@@ -1397,10 +1397,10 @@ LABEL_132:
   return result;
 }
 
-- (unint64_t)activeCornersForTouchResizeForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (unint64_t)activeCornersForTouchResizeForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  if ([v6 isOrContainsAppLayout:self->_currentAppLayout] && self->_selectedLayoutRole == a3)
+  layoutCopy = layout;
+  if ([layoutCopy isOrContainsAppLayout:self->_currentAppLayout] && self->_selectedLayoutRole == role)
   {
     currentActiveResizeCorner = self->_currentActiveResizeCorner;
   }
@@ -1409,16 +1409,16 @@ LABEL_132:
   {
     v9.receiver = self;
     v9.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-    currentActiveResizeCorner = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v9 activeCornersForTouchResizeForLayoutRole:a3 inAppLayout:v6];
+    currentActiveResizeCorner = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v9 activeCornersForTouchResizeForLayoutRole:role inAppLayout:layoutCopy];
   }
 
   return currentActiveResizeCorner;
 }
 
-- (unint64_t)visibleCornersForTouchResizeForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (unint64_t)visibleCornersForTouchResizeForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  if ([v6 isOrContainsAppLayout:self->_currentAppLayout] && self->_selectedLayoutRole == a3)
+  layoutCopy = layout;
+  if ([layoutCopy isOrContainsAppLayout:self->_currentAppLayout] && self->_selectedLayoutRole == role)
   {
     if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
     {
@@ -1432,7 +1432,7 @@ LABEL_132:
 
     if (self->_selectedItemIsInSlideOver)
     {
-      v8 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self layoutAttributesForDisplayItem:self->_selectedDisplayItem inAppLayout:v6];
+      v8 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self layoutAttributesForDisplayItem:self->_selectedDisplayItem inAppLayout:layoutCopy];
       [(SBDisplayItemLayoutAttributes *)v8 slideOverConfiguration];
       v9 = v17[0];
 
@@ -1449,8 +1449,8 @@ LABEL_132:
 
     else
     {
-      v11 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:v6];
-      v12 = [v6 itemForLayoutRole:a3];
+      v11 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:layoutCopy];
+      v12 = [layoutCopy itemForLayoutRole:role];
       v13 = [v11 flexibleAutoLayoutItemForDisplayItem:v12];
 
       v10 = [v13 ownedDisplayRectCorners] & 0xC;
@@ -1466,22 +1466,22 @@ LABEL_132:
   {
     v16.receiver = self;
     v16.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-    v10 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v16 visibleCornersForTouchResizeForLayoutRole:a3 inAppLayout:v6];
+    v10 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v16 visibleCornersForTouchResizeForLayoutRole:role inAppLayout:layoutCopy];
   }
 
   return v10;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v15.receiver = self;
   v15.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-  v5 = [(SBGestureSwitcherModifier *)&v15 animationAttributesForLayoutElement:v4];
+  v5 = [(SBGestureSwitcherModifier *)&v15 animationAttributesForLayoutElement:elementCopy];
   v6 = [v5 mutableCopy];
 
-  v7 = [v4 switcherLayoutElementType];
-  if ((v7 - 10) < 2 || !v7 && [v4 isOrContainsAppLayout:self->_currentAppLayout])
+  switcherLayoutElementType = [elementCopy switcherLayoutElementType];
+  if ((switcherLayoutElementType - 10) < 2 || !switcherLayoutElementType && [elementCopy isOrContainsAppLayout:self->_currentAppLayout])
   {
     if ([(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self _shouldUseSprings])
     {
@@ -1505,13 +1505,13 @@ LABEL_132:
     }
 
     [v6 setScaleUpdateMode:v9];
-    v10 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self _animationSettingsForLayout];
-    [v6 setLayoutSettings:v10];
+    _animationSettingsForLayout = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self _animationSettingsForLayout];
+    [v6 setLayoutSettings:_animationSettingsForLayout];
 
-    v11 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self switcherSettings];
-    v12 = [v11 windowingSettings];
-    v13 = [v12 stageCornerRadiusSettings];
-    [v6 setCornerRadiusSettings:v13];
+    switcherSettings = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self switcherSettings];
+    windowingSettings = [switcherSettings windowingSettings];
+    stageCornerRadiusSettings = [windowingSettings stageCornerRadiusSettings];
+    [v6 setCornerRadiusSettings:stageCornerRadiusSettings];
 
     [v6 setCornerRadiusUpdateMode:3];
   }
@@ -1530,9 +1530,9 @@ LABEL_132:
   v10.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
   [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v10 homeScreenDimmingAlpha];
   v4 = v3;
-  v5 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self switcherSettings];
-  v6 = [v5 windowingSettings];
-  [v6 maxHomeScreenDimmingAlphaForNonFullscreen];
+  switcherSettings = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self switcherSettings];
+  windowingSettings = [switcherSettings windowingSettings];
+  [windowingSettings maxHomeScreenDimmingAlphaForNonFullscreen];
   v8 = v7;
 
   if (v4 <= v8)
@@ -1546,17 +1546,17 @@ LABEL_132:
   }
 }
 
-- (id)layoutRestrictionInfoForItem:(id)a3
+- (id)layoutRestrictionInfoForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-  v5 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v11 layoutRestrictionInfoForItem:v4];
-  v6 = [v5 layoutRestrictions];
-  if ((v6 & 0xA) != 0)
+  v5 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v11 layoutRestrictionInfoForItem:itemCopy];
+  layoutRestrictions = [v5 layoutRestrictions];
+  if ((layoutRestrictions & 0xA) != 0)
   {
-    v7 = v6;
-    v8 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self supportedContentInterfaceOrientationsForItem:v4];
+    v7 = layoutRestrictions;
+    v8 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self supportedContentInterfaceOrientationsForItem:itemCopy];
     if ((v8 & 6) != 0 && (v8 & 0x18) != 0)
     {
       [v5 restrictedSize];
@@ -1571,19 +1571,19 @@ LABEL_132:
 
 - (id)_animationSettingsForLayout
 {
-  v2 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self switcherSettings];
-  v3 = [v2 windowingSettings];
-  v4 = [v3 liveResizeDuringDragLayoutAnimationSettings];
+  switcherSettings = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self switcherSettings];
+  windowingSettings = [switcherSettings windowingSettings];
+  liveResizeDuringDragLayoutAnimationSettings = [windowingSettings liveResizeDuringDragLayoutAnimationSettings];
 
-  return v4;
+  return liveResizeDuringDragLayoutAnimationSettings;
 }
 
-- (BOOL)isItemResizingAllowedForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isItemResizingAllowedForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  if ([v6 isOrContainsAppLayout:self->_currentAppLayout] && self->_selectedLayoutRole == a3)
+  layoutCopy = layout;
+  if ([layoutCopy isOrContainsAppLayout:self->_currentAppLayout] && self->_selectedLayoutRole == role)
   {
-    v7 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self appLayoutContainsOnlyResizableApps:v6];
+    v7 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self appLayoutContainsOnlyResizableApps:layoutCopy];
   }
 
   else
@@ -1594,10 +1594,10 @@ LABEL_132:
   return v7;
 }
 
-- (BOOL)wantsSceneResizesHostedContextForAppLayout:(id)a3
+- (BOOL)wantsSceneResizesHostedContextForAppLayout:(id)layout
 {
-  v4 = a3;
-  if ([v4 isOrContainsAppLayout:self->_currentAppLayout])
+  layoutCopy = layout;
+  if ([layoutCopy isOrContainsAppLayout:self->_currentAppLayout])
   {
     v5 = 1;
   }
@@ -1606,7 +1606,7 @@ LABEL_132:
   {
     v7.receiver = self;
     v7.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-    v5 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v7 wantsSceneResizesHostedContextForAppLayout:v4];
+    v5 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v7 wantsSceneResizesHostedContextForAppLayout:layoutCopy];
   }
 
   return v5;
@@ -1616,16 +1616,16 @@ LABEL_132:
 {
   v14.receiver = self;
   v14.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-  v3 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v14 visibleSplitViewHandleNubViews];
-  v4 = [v3 mutableCopy];
+  visibleSplitViewHandleNubViews = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v14 visibleSplitViewHandleNubViews];
+  v4 = [visibleSplitViewHandleNubViews mutableCopy];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __86__SBFlexibleWindowingItemResizeGestureSwitcherModifier_visibleSplitViewHandleNubViews__block_invoke;
   v11 = &unk_2783C09F0;
-  v12 = self;
+  selfCopy = self;
   v13 = v4;
   v5 = v4;
-  [v3 enumerateObjectsUsingBlock:&v8];
+  [visibleSplitViewHandleNubViews enumerateObjectsUsingBlock:&v8];
   v6 = [v5 copy];
 
   return v6;
@@ -1671,8 +1671,8 @@ LABEL_7:
 
 - (id)visibleSplitViewHandleDimmingViews
 {
-  v2 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self visibleSplitViewHandleNubViews];
-  v3 = [v2 bs_map:&__block_literal_global_372];
+  visibleSplitViewHandleNubViews = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self visibleSplitViewHandleNubViews];
+  v3 = [visibleSplitViewHandleNubViews bs_map:&__block_literal_global_372];
 
   return v3;
 }
@@ -1688,13 +1688,13 @@ SBSwitcherSplitViewHandleDimmingElement *__90__SBFlexibleWindowingItemResizeGest
   return v5;
 }
 
-- (id)topMostLayoutRolesForAppLayout:(id)a3
+- (id)topMostLayoutRolesForAppLayout:(id)layout
 {
   v15.receiver = self;
   v15.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v15 topMostLayoutRolesForAppLayout:v4];
-  v6 = [v4 isEqual:{self->_currentAppLayout, v15.receiver, v15.super_class}];
+  layoutCopy = layout;
+  v5 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v15 topMostLayoutRolesForAppLayout:layoutCopy];
+  v6 = [layoutCopy isEqual:{self->_currentAppLayout, v15.receiver, v15.super_class}];
 
   if (v6)
   {
@@ -1705,10 +1705,10 @@ SBSwitcherSplitViewHandleDimmingElement *__90__SBFlexibleWindowingItemResizeGest
     v9 = [MEMORY[0x277CCABB0] numberWithInteger:self->_selectedLayoutRole];
     [v7 insertObject:v9 atIndex:0];
 
-    v10 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self displayItemInSlideOver];
-    if (v10 && [(SBAppLayout *)self->_currentAppLayout containsItem:v10])
+    displayItemInSlideOver = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self displayItemInSlideOver];
+    if (displayItemInSlideOver && [(SBAppLayout *)self->_currentAppLayout containsItem:displayItemInSlideOver])
     {
-      v11 = [(SBAppLayout *)self->_currentAppLayout layoutRoleForItem:v10];
+      v11 = [(SBAppLayout *)self->_currentAppLayout layoutRoleForItem:displayItemInSlideOver];
       v12 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
       [v7 removeObject:v12];
 
@@ -1731,7 +1731,7 @@ SBSwitcherSplitViewHandleDimmingElement *__90__SBFlexibleWindowingItemResizeGest
   {
     v7.receiver = self;
     v7.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-    v3 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v7 topMostLayoutElements];
+    topMostLayoutElements = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v7 topMostLayoutElements];
   }
 
   else
@@ -1739,24 +1739,24 @@ SBSwitcherSplitViewHandleDimmingElement *__90__SBFlexibleWindowingItemResizeGest
     currentAppLayout = self->_currentAppLayout;
     v8.receiver = self;
     v8.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-    v5 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v8 topMostLayoutElements];
-    v3 = [(SBSwitcherModifier *)self topMostLayoutElementsByAddingAppLayoutAndAccessories:currentAppLayout toTopMostLayoutElements:v5 orderFront:1];
+    topMostLayoutElements2 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v8 topMostLayoutElements];
+    topMostLayoutElements = [(SBSwitcherModifier *)self topMostLayoutElementsByAddingAppLayoutAndAccessories:currentAppLayout toTopMostLayoutElements:topMostLayoutElements2 orderFront:1];
   }
 
-  return v3;
+  return topMostLayoutElements;
 }
 
-- (int64_t)occlusionStateForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (int64_t)occlusionStateForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [(SBGestureSwitcherModifier *)self gesturePhase];
-  v8 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self appLayoutOnStage];
-  v9 = v8;
-  if (v7 != 3)
+  layoutCopy = layout;
+  gesturePhase = [(SBGestureSwitcherModifier *)self gesturePhase];
+  appLayoutOnStage = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self appLayoutOnStage];
+  v9 = appLayoutOnStage;
+  if (gesturePhase != 3)
   {
-    if ([v8 isOrContainsAppLayout:v6] && !self->_autoLayoutSpaceWithDraggedItemExcluded)
+    if ([appLayoutOnStage isOrContainsAppLayout:layoutCopy] && !self->_autoLayoutSpaceWithDraggedItemExcluded)
     {
-      v10 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self appLayoutContainingAppLayout:v6];
+      v10 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self appLayoutContainingAppLayout:layoutCopy];
       v50[0] = MEMORY[0x277D85DD0];
       v50[1] = 3221225472;
       v50[2] = __96__SBFlexibleWindowingItemResizeGestureSwitcherModifier_occlusionStateForLayoutRole_inAppLayout___block_invoke;
@@ -1766,13 +1766,13 @@ SBSwitcherSplitViewHandleDimmingElement *__90__SBFlexibleWindowingItemResizeGest
 
       if (v11)
       {
-        v12 = [v11 allItems];
-        v13 = [v12 count];
+        allItems = [v11 allItems];
+        v13 = [allItems count];
 
         if (v13)
         {
-          v14 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self displayItemLayoutAttributesCalculator];
-          v48 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self switcherInterfaceOrientation];
+          displayItemLayoutAttributesCalculator = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self displayItemLayoutAttributesCalculator];
+          switcherInterfaceOrientation = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self switcherInterfaceOrientation];
           [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self floatingDockHeight];
           v47 = v15;
           [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self screenScale];
@@ -1782,16 +1782,16 @@ SBSwitcherSplitViewHandleDimmingElement *__90__SBFlexibleWindowingItemResizeGest
           v20 = v19;
           v22 = v21;
           v24 = v23;
-          v25 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self isDisplayEmbedded];
-          v26 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self prefersStripHidden];
-          v27 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self prefersDockHidden];
+          isDisplayEmbedded = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self isDisplayEmbedded];
+          prefersStripHidden = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self prefersStripHidden];
+          prefersDockHidden = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self prefersDockHidden];
           [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self leftStatusBarPartIntersectionRegion];
           v29 = v28;
           v31 = v30;
           v33 = v32;
           v35 = v34;
           [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self rightStatusBarPartIntersectionRegion];
-          v40 = [v14 flexibleWindowingAutoLayoutSpaceForAppLayout:v11 containerOrientation:v48 floatingDockHeight:v25 screenScale:v26 bounds:v27 isEmbeddedDisplay:v47 prefersStripHidden:v46 prefersDockHidden:v18 leftStatusBarPartIntersectionRegion:v20 rightStatusBarPartIntersectionRegion:{v22, v24, v29, v31, v33, v35, v36, v37, v38, v39}];
+          v40 = [displayItemLayoutAttributesCalculator flexibleWindowingAutoLayoutSpaceForAppLayout:v11 containerOrientation:switcherInterfaceOrientation floatingDockHeight:isDisplayEmbedded screenScale:prefersStripHidden bounds:prefersDockHidden isEmbeddedDisplay:v47 prefersStripHidden:v46 prefersDockHidden:v18 leftStatusBarPartIntersectionRegion:v20 rightStatusBarPartIntersectionRegion:{v22, v24, v29, v31, v33, v35, v36, v37, v38, v39}];
           autoLayoutSpaceWithDraggedItemExcluded = self->_autoLayoutSpaceWithDraggedItemExcluded;
           self->_autoLayoutSpaceWithDraggedItemExcluded = v40;
         }
@@ -1800,7 +1800,7 @@ SBSwitcherSplitViewHandleDimmingElement *__90__SBFlexibleWindowingItemResizeGest
 
     if (self->_autoLayoutSpaceWithDraggedItemExcluded)
     {
-      v42 = [v6 itemForLayoutRole:a3];
+      v42 = [layoutCopy itemForLayoutRole:role];
       if (([(SBDisplayItem *)v42 isEqualToItem:?]& 1) != 0)
       {
         v43 = 1;
@@ -1834,13 +1834,13 @@ LABEL_20:
 
   v49.receiver = self;
   v49.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-  v43 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v49 occlusionStateForLayoutRole:a3 inAppLayout:v6];
+  v43 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v49 occlusionStateForLayoutRole:role inAppLayout:layoutCopy];
 LABEL_21:
 
   return v43;
 }
 
-- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)a3
+- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)index
 {
   p_currentSceneSize = &self->_currentSceneSize;
   [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self containerViewBounds];
@@ -1853,15 +1853,15 @@ LABEL_21:
 
   v12.receiver = self;
   v12.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-  return [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v12 isContentStatusBarVisibleForIndex:a3, width, height];
+  return [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v12 isContentStatusBarVisibleForIndex:index, width, height];
 }
 
-- (unint64_t)hiddenContentStatusBarPartsForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (unint64_t)hiddenContentStatusBarPartsForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v17.receiver = self;
   v17.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-  v7 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v17 hiddenContentStatusBarPartsForLayoutRole:a3 inAppLayout:v6];
+  v7 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v17 hiddenContentStatusBarPartsForLayoutRole:role inAppLayout:layoutCopy];
   [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self containerViewBounds];
   width = self->_currentSceneSize.width;
   height = self->_currentSceneSize.height;
@@ -1869,16 +1869,16 @@ LABEL_21:
   {
     v16.receiver = self;
     v16.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-    v13 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v16 hiddenContentStatusBarPartsForLayoutRole:a3 inAppLayout:v6, width, height];
+    height = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v16 hiddenContentStatusBarPartsForLayoutRole:role inAppLayout:layoutCopy, width, height];
   }
 
   else
   {
-    v13 = 10;
+    height = 10;
   }
 
-  v14 = v13 | v7;
-  if ([v6 containsItem:{self->_selectedDisplayItem, width, height}] && self->_currentWindowControlsLayout.style == 1)
+  v14 = height | v7;
+  if ([layoutCopy containsItem:{self->_selectedDisplayItem, width, height}] && self->_currentWindowControlsLayout.style == 1)
   {
     v14 |= 4uLL;
   }
@@ -1922,15 +1922,15 @@ LABEL_21:
     v5 = v4;
     [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self floatingDockHeight];
     v7 = v6;
-    v8 = [(SBSwitcherModifier *)self windowingConfiguration];
-    [v8 dockTopMargin];
+    windowingConfiguration = [(SBSwitcherModifier *)self windowingConfiguration];
+    [windowingConfiguration dockTopMargin];
     v10 = v7 - v9;
 
     v11 = self->_currentFrameForDrawingInScreenCoordinates.origin.y + self->_currentFrameForDrawingInScreenCoordinates.size.height;
     if (self->_selectedItemIsInSlideOver)
     {
-      v12 = [(SBSwitcherModifier *)self windowingConfiguration];
-      [v12 slideOverBorderWidth];
+      windowingConfiguration2 = [(SBSwitcherModifier *)self windowingConfiguration];
+      [windowingConfiguration2 slideOverBorderWidth];
       v11 = v11 + v13;
     }
 
@@ -1948,10 +1948,10 @@ LABEL_21:
 
 - (BOOL)shouldConfigureInAppDockHiddenAssertion
 {
-  v3 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self windowManagementContext];
-  v4 = [v3 isFlexibleWindowingEnabled];
+  windowManagementContext = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self windowManagementContext];
+  isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-  if (v4)
+  if (isFlexibleWindowingEnabled)
   {
     if ([(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self isSoftwareKeyboardVisible]&& ([(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self isMedusaHostedKeyboardVisible]& 1) != 0)
     {
@@ -1969,18 +1969,18 @@ LABEL_21:
       return 1;
     }
 
-    v6 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self appLayoutOnStage];
+    appLayoutOnStage = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self appLayoutOnStage];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __95__SBFlexibleWindowingItemResizeGestureSwitcherModifier_shouldConfigureInAppDockHiddenAssertion__block_invoke;
     v45[3] = &unk_2783A8C90;
     v45[4] = self;
-    v7 = [v6 appLayoutWithItemsPassingTest:v45];
+    v7 = [appLayoutOnStage appLayoutWithItemsPassingTest:v45];
 
     if (v7)
     {
-      v8 = [v7 allItems];
-      v9 = [v8 count];
+      allItems = [v7 allItems];
+      v9 = [allItems count];
 
       if (v9)
       {
@@ -1991,24 +1991,24 @@ LABEL_21:
         v15 = v14;
         [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self floatingDockHeight];
         v17 = v16;
-        v18 = [(SBSwitcherModifier *)self windowingConfiguration];
-        v19 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self displayItemLayoutAttributesCalculator];
-        v20 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self switcherInterfaceOrientation];
+        windowingConfiguration = [(SBSwitcherModifier *)self windowingConfiguration];
+        displayItemLayoutAttributesCalculator = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self displayItemLayoutAttributesCalculator];
+        switcherInterfaceOrientation = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self switcherInterfaceOrientation];
         [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self screenScale];
         v22 = v21;
-        v23 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self isDisplayEmbedded];
-        v24 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self prefersStripHidden];
+        isDisplayEmbedded = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self isDisplayEmbedded];
+        prefersStripHidden = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self prefersStripHidden];
         [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self leftStatusBarPartIntersectionRegion];
         v26 = v25;
         v28 = v27;
         v30 = v29;
         v32 = v31;
         [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self rightStatusBarPartIntersectionRegion];
-        v37 = [v19 flexibleWindowingAutoLayoutSpaceForAppLayout:v7 containerOrientation:v20 floatingDockHeight:v23 screenScale:v24 bounds:0 isEmbeddedDisplay:v17 prefersStripHidden:v22 prefersDockHidden:v44 leftStatusBarPartIntersectionRegion:v43 rightStatusBarPartIntersectionRegion:{v13, v15, v26, v28, v30, v32, v33, v34, v35, v36}];
+        v37 = [displayItemLayoutAttributesCalculator flexibleWindowingAutoLayoutSpaceForAppLayout:v7 containerOrientation:switcherInterfaceOrientation floatingDockHeight:isDisplayEmbedded screenScale:prefersStripHidden bounds:0 isEmbeddedDisplay:v17 prefersStripHidden:v22 prefersDockHidden:v44 leftStatusBarPartIntersectionRegion:v43 rightStatusBarPartIntersectionRegion:{v13, v15, v26, v28, v30, v32, v33, v34, v35, v36}];
 
         [v37 boundingBox];
         v40 = v38 + v39;
-        [v18 dockTopMargin];
+        [windowingConfiguration dockTopMargin];
         v42 = v15 - v17 - v41;
 
         if (v40 > v42)
@@ -2030,11 +2030,11 @@ LABEL_21:
   }
 }
 
-- (CGRect)_initialScaledFrameInScreenCoordinatesForSelectedDisplayItemInAppLayout:(id)a3
+- (CGRect)_initialScaledFrameInScreenCoordinatesForSelectedDisplayItemInAppLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self appLayouts];
-  v6 = [v5 indexOfObject:v4];
+  layoutCopy = layout;
+  appLayouts = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts indexOfObject:layoutCopy];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self containerViewBounds];
@@ -2051,7 +2051,7 @@ LABEL_21:
   SBRectWithSize();
   v25.receiver = self;
   v25.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-  [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v25 frameForLayoutRole:selectedLayoutRole inAppLayout:v4 withBounds:?];
+  [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v25 frameForLayoutRole:selectedLayoutRole inAppLayout:layoutCopy withBounds:?];
   v9 = v8;
   v11 = v10;
   UIRectGetCenter();
@@ -2060,7 +2060,7 @@ LABEL_21:
   v16 = self->_selectedLayoutRole;
   v24.receiver = self;
   v24.super_class = SBFlexibleWindowingItemResizeGestureSwitcherModifier;
-  [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v24 scaleForLayoutRole:v16 inAppLayout:v4];
+  [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)&v24 scaleForLayoutRole:v16 inAppLayout:layoutCopy];
   v18 = v9 * v17;
   v19 = v11 * v17;
 
@@ -2075,10 +2075,10 @@ LABEL_21:
   return result;
 }
 
-- (CGRect)_convertToSpaceRectFromScreenRect:(CGRect)a3
+- (CGRect)_convertToSpaceRectFromScreenRect:(CGRect)rect
 {
-  v4 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self appLayouts];
-  v5 = [v4 indexOfObject:self->_currentAppLayout];
+  appLayouts = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self appLayouts];
+  v5 = [appLayouts indexOfObject:self->_currentAppLayout];
 
   [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self frameForIndex:v5];
   [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)self screenScale];
@@ -2094,9 +2094,9 @@ LABEL_21:
 - (BOOL)_isStripVisibleForCurrentAppLayout
 {
   v2 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:self->_currentAppLayout];
-  v3 = [v2 isStripVisible];
+  isStripVisible = [v2 isStripVisible];
 
-  return v3 ^ 1;
+  return isStripVisible ^ 1;
 }
 
 - (void)handleGestureEvent:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

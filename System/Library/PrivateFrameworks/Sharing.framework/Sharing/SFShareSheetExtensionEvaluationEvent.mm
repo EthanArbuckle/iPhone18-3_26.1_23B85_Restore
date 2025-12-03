@@ -9,11 +9,11 @@
 {
   v14[3] = *MEMORY[0x1E69E9840];
   v13[0] = @"activityType";
-  v3 = [(SFShareSheetExtensionEvaluationEvent *)self activityType];
-  v4 = v3;
-  if (v3)
+  activityType = [(SFShareSheetExtensionEvaluationEvent *)self activityType];
+  v4 = activityType;
+  if (activityType)
   {
-    v5 = v3;
+    v5 = activityType;
   }
 
   else
@@ -23,11 +23,11 @@
 
   v14[0] = v5;
   v13[1] = @"cacheKey";
-  v6 = [(SFShareSheetExtensionEvaluationEvent *)self cacheKey];
-  v7 = v6;
-  if (v6)
+  cacheKey = [(SFShareSheetExtensionEvaluationEvent *)self cacheKey];
+  v7 = cacheKey;
+  if (cacheKey)
   {
-    v8 = v6;
+    v8 = cacheKey;
   }
 
   else
@@ -49,8 +49,8 @@
 - (void)submitEvent
 {
   v4 = +[SFShareSheetExtensionEvaluationEvent eventName];
-  v3 = [(SFShareSheetExtensionEvaluationEvent *)self eventPayload];
-  SFMetricsLog(v4, v3);
+  eventPayload = [(SFShareSheetExtensionEvaluationEvent *)self eventPayload];
+  SFMetricsLog(v4, eventPayload);
 }
 
 @end

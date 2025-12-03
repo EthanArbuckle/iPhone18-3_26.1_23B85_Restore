@@ -1,84 +1,84 @@
 @interface CKTestRequestProperties
-- (CKTestRequestProperties)initWithCoder:(id)a3;
-- (CKTestRequestProperties)initWithEquivalencyProperties:(id)a3;
+- (CKTestRequestProperties)initWithCoder:(id)coder;
+- (CKTestRequestProperties)initWithEquivalencyProperties:(id)properties;
 - (NSArray)allRecordIDs;
 - (NSArray)allRecordZoneIDs;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKTestRequestProperties
 
-- (CKTestRequestProperties)initWithEquivalencyProperties:(id)a3
+- (CKTestRequestProperties)initWithEquivalencyProperties:(id)properties
 {
-  v5 = a3;
+  propertiesCopy = properties;
   v9.receiver = self;
   v9.super_class = CKTestRequestProperties;
   v6 = [(CKTestRequestProperties *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_equivalencyProperties, a3);
+    objc_storeStrong(&v6->_equivalencyProperties, properties);
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   equivalencyProperties = self->_equivalencyProperties;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_equivalencyProperties);
-  objc_msgSend_encodeObject_forKey_(v5, v7, equivalencyProperties, v6);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, equivalencyProperties, v6);
 
   modifyRecordIDs = self->_modifyRecordIDs;
   v9 = NSStringFromSelector(sel_modifyRecordIDs);
-  objc_msgSend_encodeObject_forKey_(v5, v10, modifyRecordIDs, v9);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v10, modifyRecordIDs, v9);
 
   deleteRecordIDs = self->_deleteRecordIDs;
   v12 = NSStringFromSelector(sel_deleteRecordIDs);
-  objc_msgSend_encodeObject_forKey_(v5, v13, deleteRecordIDs, v12);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v13, deleteRecordIDs, v12);
 
   fetchRecordIDs = self->_fetchRecordIDs;
   v15 = NSStringFromSelector(sel_fetchRecordIDs);
-  objc_msgSend_encodeObject_forKey_(v5, v16, fetchRecordIDs, v15);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, fetchRecordIDs, v15);
 
   modifyRecordZoneIDs = self->_modifyRecordZoneIDs;
   v18 = NSStringFromSelector(sel_modifyRecordZoneIDs);
-  objc_msgSend_encodeObject_forKey_(v5, v19, modifyRecordZoneIDs, v18);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v19, modifyRecordZoneIDs, v18);
 
   deleteRecordZoneIDs = self->_deleteRecordZoneIDs;
   v21 = NSStringFromSelector(sel_deleteRecordZoneIDs);
-  objc_msgSend_encodeObject_forKey_(v5, v22, deleteRecordZoneIDs, v21);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v22, deleteRecordZoneIDs, v21);
 
   fetchRecordZoneIDs = self->_fetchRecordZoneIDs;
   v24 = NSStringFromSelector(sel_fetchRecordZoneIDs);
-  objc_msgSend_encodeObject_forKey_(v5, v25, fetchRecordZoneIDs, v24);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v25, fetchRecordZoneIDs, v24);
 
   modifyMergeableValueIDs = self->_modifyMergeableValueIDs;
   v27 = NSStringFromSelector(sel_modifyMergeableValueIDs);
-  objc_msgSend_encodeObject_forKey_(v5, v28, modifyMergeableValueIDs, v27);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v28, modifyMergeableValueIDs, v27);
 
   deleteMergeableValueIDs = self->_deleteMergeableValueIDs;
   v30 = NSStringFromSelector(sel_deleteMergeableValueIDs);
-  objc_msgSend_encodeObject_forKey_(v5, v31, deleteMergeableValueIDs, v30);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v31, deleteMergeableValueIDs, v30);
 
   fetchMergeableValueIDs = self->_fetchMergeableValueIDs;
   v33 = NSStringFromSelector(sel_fetchMergeableValueIDs);
-  objc_msgSend_encodeObject_forKey_(v5, v34, fetchMergeableValueIDs, v33);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v34, fetchMergeableValueIDs, v33);
 
   modifySubscriptionRecordZoneIDs = self->_modifySubscriptionRecordZoneIDs;
   v36 = NSStringFromSelector(sel_modifySubscriptionRecordZoneIDs);
-  objc_msgSend_encodeObject_forKey_(v5, v37, modifySubscriptionRecordZoneIDs, v36);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v37, modifySubscriptionRecordZoneIDs, v36);
 
   databaseScope = self->_databaseScope;
   v40 = NSStringFromSelector(sel_databaseScope);
-  objc_msgSend_encodeInteger_forKey_(v5, v39, databaseScope, v40);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v39, databaseScope, v40);
 }
 
-- (CKTestRequestProperties)initWithCoder:(id)a3
+- (CKTestRequestProperties)initWithCoder:(id)coder
 {
   v115[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v105.receiver = self;
   v105.super_class = CKTestRequestProperties;
   v5 = [(CKTestRequestProperties *)&v105 init];
@@ -86,7 +86,7 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_equivalencyProperties);
-    v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v6, v7);
+    v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v6, v7);
     equivalencyProperties = v5->_equivalencyProperties;
     v5->_equivalencyProperties = v9;
 
@@ -96,7 +96,7 @@
     v13 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v12, v115, 2);
     v15 = objc_msgSend_setWithArray_(v11, v14, v13);
     v16 = NSStringFromSelector(sel_modifyRecordIDs);
-    v18 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v17, v15, v16);
+    v18 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v17, v15, v16);
     modifyRecordIDs = v5->_modifyRecordIDs;
     v5->_modifyRecordIDs = v18;
 
@@ -106,7 +106,7 @@
     v22 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v21, v114, 2);
     v24 = objc_msgSend_setWithArray_(v20, v23, v22);
     v25 = NSStringFromSelector(sel_deleteRecordIDs);
-    v27 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v26, v24, v25);
+    v27 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v26, v24, v25);
     deleteRecordIDs = v5->_deleteRecordIDs;
     v5->_deleteRecordIDs = v27;
 
@@ -116,7 +116,7 @@
     v31 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v30, v113, 2);
     v33 = objc_msgSend_setWithArray_(v29, v32, v31);
     v34 = NSStringFromSelector(sel_fetchRecordIDs);
-    v36 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v35, v33, v34);
+    v36 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v35, v33, v34);
     fetchRecordIDs = v5->_fetchRecordIDs;
     v5->_fetchRecordIDs = v36;
 
@@ -126,7 +126,7 @@
     v40 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v39, v112, 2);
     v42 = objc_msgSend_setWithArray_(v38, v41, v40);
     v43 = NSStringFromSelector(sel_modifyRecordZoneIDs);
-    v45 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v44, v42, v43);
+    v45 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v44, v42, v43);
     modifyRecordZoneIDs = v5->_modifyRecordZoneIDs;
     v5->_modifyRecordZoneIDs = v45;
 
@@ -136,7 +136,7 @@
     v49 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v48, v111, 2);
     v51 = objc_msgSend_setWithArray_(v47, v50, v49);
     v52 = NSStringFromSelector(sel_deleteRecordZoneIDs);
-    v54 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v53, v51, v52);
+    v54 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v53, v51, v52);
     deleteRecordZoneIDs = v5->_deleteRecordZoneIDs;
     v5->_deleteRecordZoneIDs = v54;
 
@@ -146,7 +146,7 @@
     v58 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v57, v110, 2);
     v60 = objc_msgSend_setWithArray_(v56, v59, v58);
     v61 = NSStringFromSelector(sel_fetchRecordZoneIDs);
-    v63 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v62, v60, v61);
+    v63 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v62, v60, v61);
     fetchRecordZoneIDs = v5->_fetchRecordZoneIDs;
     v5->_fetchRecordZoneIDs = v63;
 
@@ -156,7 +156,7 @@
     v67 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v66, v109, 2);
     v69 = objc_msgSend_setWithArray_(v65, v68, v67);
     v70 = NSStringFromSelector(sel_modifyMergeableValueIDs);
-    v72 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v71, v69, v70);
+    v72 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v71, v69, v70);
     modifyMergeableValueIDs = v5->_modifyMergeableValueIDs;
     v5->_modifyMergeableValueIDs = v72;
 
@@ -166,7 +166,7 @@
     v76 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v75, v108, 2);
     v78 = objc_msgSend_setWithArray_(v74, v77, v76);
     v79 = NSStringFromSelector(sel_deleteMergeableValueIDs);
-    v81 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v80, v78, v79);
+    v81 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v80, v78, v79);
     deleteMergeableValueIDs = v5->_deleteMergeableValueIDs;
     v5->_deleteMergeableValueIDs = v81;
 
@@ -176,7 +176,7 @@
     v85 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v84, v107, 2);
     v87 = objc_msgSend_setWithArray_(v83, v86, v85);
     v88 = NSStringFromSelector(sel_fetchMergeableValueIDs);
-    v90 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v89, v87, v88);
+    v90 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v89, v87, v88);
     fetchMergeableValueIDs = v5->_fetchMergeableValueIDs;
     v5->_fetchMergeableValueIDs = v90;
 
@@ -186,12 +186,12 @@
     v94 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v93, v106, 2);
     v96 = objc_msgSend_setWithArray_(v92, v95, v94);
     v97 = NSStringFromSelector(sel_modifySubscriptionRecordZoneIDs);
-    v99 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v98, v96, v97);
+    v99 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v98, v96, v97);
     modifySubscriptionRecordZoneIDs = v5->_modifySubscriptionRecordZoneIDs;
     v5->_modifySubscriptionRecordZoneIDs = v99;
 
     v101 = NSStringFromSelector(sel_databaseScope);
-    v5->_databaseScope = objc_msgSend_decodeIntegerForKey_(v4, v102, v101);
+    v5->_databaseScope = objc_msgSend_decodeIntegerForKey_(coderCopy, v102, v101);
   }
 
   v103 = *MEMORY[0x1E69E9840];

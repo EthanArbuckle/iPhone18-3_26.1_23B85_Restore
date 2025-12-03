@@ -1,28 +1,28 @@
 @interface STGenericIntentDateRange
-- (STGenericIntentDateRange)initWithCoder:(id)a3;
-- (STGenericIntentDateRange)initWithStartDate:(id)a3 endDate:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (STGenericIntentDateRange)initWithCoder:(id)coder;
+- (STGenericIntentDateRange)initWithStartDate:(id)date endDate:(id)endDate;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STGenericIntentDateRange
 
-- (STGenericIntentDateRange)initWithCoder:(id)a3
+- (STGenericIntentDateRange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = STGenericIntentDateRange;
   v5 = [(STGenericIntentDateRange *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_startDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_startDate"];
     startDate = v5->_startDate;
     v5->_startDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_endDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_endDate"];
     endDate = v5->_endDate;
     v5->_endDate = v10;
 
@@ -32,22 +32,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"_name"];
-  [v5 encodeObject:self->_startDate forKey:@"_startDate"];
-  [v5 encodeObject:self->_endDate forKey:@"_endDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"_name"];
+  [coderCopy encodeObject:self->_startDate forKey:@"_startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"_endDate"];
 }
 
-- (STGenericIntentDateRange)initWithStartDate:(id)a3 endDate:(id)a4
+- (STGenericIntentDateRange)initWithStartDate:(id)date endDate:(id)endDate
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 compare:v8] == 1)
+  dateCopy = date;
+  endDateCopy = endDate;
+  if ([dateCopy compare:endDateCopy] == 1)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -58,10 +58,10 @@
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_startDate, a3);
-      if (v8 && ![v7 isEqualToDate:v8])
+      objc_storeStrong(&v10->_startDate, date);
+      if (endDateCopy && ![dateCopy isEqualToDate:endDateCopy])
       {
-        v16 = v8;
+        v16 = endDateCopy;
         endDate = v11->_endDate;
         v11->_endDate = v16;
       }
@@ -78,10 +78,10 @@
     }
 
     self = v11;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

@@ -12,94 +12,94 @@
 - (NSUUID)parentObjectID;
 - (NSUUID)parentUuid;
 - (NSUUID)uuid;
-- (id)_initWithObjectChange:(id)a3 cloudObjectRecord:(id)a4;
+- (id)_initWithObjectChange:(id)change cloudObjectRecord:(id)record;
 - (id)shortDescription;
 - (void)forceChangeToDelete;
-- (void)replayChange:(id)a3 stagedChange:(id)a4;
+- (void)replayChange:(id)change stagedChange:(id)stagedChange;
 - (void)resetRecord;
-- (void)updateChangeWithRecord:(id)a3;
-- (void)updateCloudRecord:(id)a3;
-- (void)updateDeletedCloudRecord:(id)a3;
-- (void)updateWithObjectChange:(id)a3;
+- (void)updateChangeWithRecord:(id)record;
+- (void)updateCloudRecord:(id)record;
+- (void)updateDeletedCloudRecord:(id)record;
+- (void)updateWithObjectChange:(id)change;
 @end
 
 @implementation HMDCloudChange
 
-- (void)replayChange:(id)a3 stagedChange:(id)a4
+- (void)replayChange:(id)change stagedChange:(id)stagedChange
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  changeCopy = change;
+  stagedChangeCopy = stagedChange;
+  if (stagedChangeCopy)
   {
-    v8 = [(HMDCloudChange *)self objectChange];
-    v9 = [v8 isReplayable];
+    objectChange = [(HMDCloudChange *)self objectChange];
+    isReplayable = [objectChange isReplayable];
 
-    if (v9)
+    if (isReplayable)
     {
       if ([(HMDCloudChange *)self isAdded]|| [(HMDCloudChange *)self isUpdated])
       {
-        if ([v7 isDeleted])
+        if ([stagedChangeCopy isDeleted])
         {
           if ([(HMDCloudChange *)self isDeleted])
           {
-            v10 = self;
+            selfCopy5 = self;
             v11 = 2;
           }
 
           else
           {
-            v10 = self;
+            selfCopy5 = self;
             v11 = 1;
           }
 
           goto LABEL_9;
         }
 
-        v12 = [(HMDCloudChange *)self objectChange];
-        if (v6)
+        objectChange2 = [(HMDCloudChange *)self objectChange];
+        if (changeCopy)
         {
-          v13 = [v6 objectChange];
+          objectChange3 = [changeCopy objectChange];
           v42 = 0;
-          [v12 diff:v13 differingFields:&v42];
+          [objectChange2 diff:objectChange3 differingFields:&v42];
           v14 = v42;
 
           if ([v14 count])
           {
             v15 = objc_autoreleasePoolPush();
-            v16 = self;
+            selfCopy3 = self;
             v17 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
             {
               v18 = HMFGetLogIdentifier();
-              v19 = [v6 objectChange];
+              objectChange4 = [changeCopy objectChange];
               *buf = 138543874;
               v44 = v18;
               v45 = 2112;
-              v46 = v19;
+              v46 = objectChange4;
               v47 = 2112;
               v48 = v14;
               _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@Must replay change from cloud: object %@ has diff %@", buf, 0x20u);
             }
 
             objc_autoreleasePoolPop(v15);
-            v20 = [(HMDCloudChange *)v16 objectChange];
-            v21 = [v6 objectChange];
-            v22 = [v20 merge:v21];
+            objectChange5 = [(HMDCloudChange *)selfCopy3 objectChange];
+            objectChange6 = [changeCopy objectChange];
+            v22 = [objectChange5 merge:objectChange6];
 
             if (v22)
             {
               v23 = objc_autoreleasePoolPush();
-              v24 = v16;
+              v24 = selfCopy3;
               v25 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
               {
                 v26 = HMFGetLogIdentifier();
-                v27 = [v6 objectChange];
+                objectChange7 = [changeCopy objectChange];
                 *buf = 138543874;
                 v44 = v26;
                 v45 = 2112;
-                v46 = v27;
+                v46 = objectChange7;
                 v47 = 2112;
                 v48 = v22;
                 _os_log_impl(&dword_2531F8000, v25, OS_LOG_TYPE_ERROR, "%{public}@Failed to replay: object %@ with error %@", buf, 0x20u);
@@ -107,14 +107,14 @@
 
               objc_autoreleasePoolPop(v23);
               [(HMDCloudChange *)v24 setApplyType:2];
-              v28 = [(HMDCloudChange *)v24 rowIDsSet];
-              v29 = [v7 rowIDs];
-              [v28 addObjectsFromArray:v29];
+              rowIDsSet = [(HMDCloudChange *)v24 rowIDsSet];
+              rowIDs = [stagedChangeCopy rowIDs];
+              [rowIDsSet addObjectsFromArray:rowIDs];
             }
 
             else
             {
-              [(HMDCloudChange *)v16 setApplyType:3];
+              [(HMDCloudChange *)selfCopy3 setApplyType:3];
             }
 
             goto LABEL_30;
@@ -123,15 +123,15 @@
 
         else
         {
-          v35 = [v7 objectChange];
+          objectChange8 = [stagedChangeCopy objectChange];
           v41 = 0;
-          [v12 diff:v35 differingFields:&v41];
+          [objectChange2 diff:objectChange8 differingFields:&v41];
           v14 = v41;
 
           if ([v14 count])
           {
             v36 = objc_autoreleasePoolPush();
-            v37 = self;
+            selfCopy4 = self;
             v38 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
             {
@@ -139,7 +139,7 @@
               *buf = 138543874;
               v44 = v39;
               v45 = 2112;
-              v46 = v7;
+              v46 = stagedChangeCopy;
               v47 = 2112;
               v48 = v14;
               _os_log_impl(&dword_2531F8000, v38, OS_LOG_TYPE_INFO, "%{public}@Change from cloud: object %@ has diff %@", buf, 0x20u);
@@ -164,7 +164,7 @@ LABEL_30:
         *buf = 138543618;
         v44 = v32;
         v45 = 2112;
-        v46 = v7;
+        v46 = stagedChangeCopy;
         _os_log_impl(&dword_2531F8000, v31, OS_LOG_TYPE_ERROR, "%{public}@Change cannot be process further, dropping changes %@", buf, 0x16u);
       }
 
@@ -172,17 +172,17 @@ LABEL_30:
     }
 
     [(HMDCloudChange *)self setApplyType:2];
-    v33 = [(HMDCloudChange *)self rowIDsSet];
-    v34 = [v7 rowIDs];
-    [v33 addObjectsFromArray:v34];
+    rowIDsSet2 = [(HMDCloudChange *)self rowIDsSet];
+    rowIDs2 = [stagedChangeCopy rowIDs];
+    [rowIDsSet2 addObjectsFromArray:rowIDs2];
 
     goto LABEL_31;
   }
 
-  v10 = self;
+  selfCopy5 = self;
   v11 = 0;
 LABEL_9:
-  [(HMDCloudChange *)v10 setApplyType:v11];
+  [(HMDCloudChange *)selfCopy5 setApplyType:v11];
 LABEL_31:
 
   v40 = *MEMORY[0x277D85DE8];
@@ -190,75 +190,75 @@ LABEL_31:
 
 - (void)resetRecord
 {
-  v2 = [(HMDCloudChange *)self cloudRecord];
-  [v2 setRecord:0];
+  cloudRecord = [(HMDCloudChange *)self cloudRecord];
+  [cloudRecord setRecord:0];
 }
 
-- (void)updateChangeWithRecord:(id)a3
+- (void)updateChangeWithRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(HMDCloudChange *)self cloudRecord];
-  [v5 setRecord:v4];
+  recordCopy = record;
+  cloudRecord = [(HMDCloudChange *)self cloudRecord];
+  [cloudRecord setRecord:recordCopy];
 }
 
 - (CKRecordID)recordID
 {
-  v2 = [(HMDCloudChange *)self cloudRecord];
-  v3 = [v2 recordID];
+  cloudRecord = [(HMDCloudChange *)self cloudRecord];
+  recordID = [cloudRecord recordID];
 
-  return v3;
+  return recordID;
 }
 
 - (NSString)type
 {
-  v2 = [(HMDCloudChange *)self objectChange];
-  v3 = [v2 bsoType];
+  objectChange = [(HMDCloudChange *)self objectChange];
+  bsoType = [objectChange bsoType];
 
-  return v3;
+  return bsoType;
 }
 
 - (NSString)recordName
 {
-  v2 = [(HMDCloudChange *)self cloudRecord];
-  v3 = [v2 recordName];
+  cloudRecord = [(HMDCloudChange *)self cloudRecord];
+  recordName = [cloudRecord recordName];
 
-  return v3;
+  return recordName;
 }
 
 - (CKRecord)record
 {
-  v3 = [(HMDCloudChange *)self cloudRecord];
+  cloudRecord = [(HMDCloudChange *)self cloudRecord];
 
-  if (v3 && (-[HMDCloudChange cloudRecord](self, "cloudRecord"), v4 = objc_claimAutoreleasedReturnValue(), -[HMDCloudChange objectChange](self, "objectChange"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 encodeObjectChange:v5], v5, v4, v6))
+  if (cloudRecord && (-[HMDCloudChange cloudRecord](self, "cloudRecord"), v4 = objc_claimAutoreleasedReturnValue(), -[HMDCloudChange objectChange](self, "objectChange"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 encodeObjectChange:v5], v5, v4, v6))
   {
-    v7 = [(HMDCloudChange *)self cloudRecord];
-    v8 = [v7 record];
+    cloudRecord2 = [(HMDCloudChange *)self cloudRecord];
+    record = [cloudRecord2 record];
   }
 
   else
   {
-    v8 = 0;
+    record = 0;
   }
 
-  return v8;
+  return record;
 }
 
-- (void)updateWithObjectChange:(id)a3
+- (void)updateWithObjectChange:(id)change
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectChangeType];
-  v6 = v5;
-  if (v5 > 1)
+  changeCopy = change;
+  objectChangeType = [changeCopy objectChangeType];
+  v6 = objectChangeType;
+  if (objectChangeType > 1)
   {
-    if (v5 == 3)
+    if (objectChangeType == 3)
     {
       v8 = 0;
       v7 = 1;
       goto LABEL_11;
     }
 
-    if (v5 == 2)
+    if (objectChangeType == 2)
     {
       v8 = 0;
       v7 = 0;
@@ -272,7 +272,7 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (!v5)
+  if (!objectChangeType)
   {
     v8 = 0;
     v7 = 0;
@@ -280,7 +280,7 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (v5 != 1)
+  if (objectChangeType != 1)
   {
     goto LABEL_8;
   }
@@ -296,13 +296,13 @@ LABEL_11:
       {
         if (v6)
         {
-          v12 = self;
+          selfCopy6 = self;
           v13 = 1;
           goto LABEL_19;
         }
 
         v14 = objc_autoreleasePoolPush();
-        v15 = self;
+        selfCopy7 = self;
         v16 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
@@ -315,7 +315,7 @@ LABEL_11:
       if (v6 == 2)
       {
         v18 = objc_autoreleasePoolPush();
-        v19 = self;
+        selfCopy10 = self;
         v20 = HMFGetOSLogHandle();
         if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
@@ -326,14 +326,14 @@ LABEL_11:
         *v36 = 138543618;
         *&v36[4] = v21;
         *&v36[12] = 2112;
-        *&v36[14] = v4;
+        *&v36[14] = changeCopy;
         v22 = "%{public}@Retaining 'delete' change, cannot convert a delete to an update, %@";
       }
 
       else
       {
         v18 = objc_autoreleasePoolPush();
-        v19 = self;
+        selfCopy10 = self;
         v20 = HMFGetOSLogHandle();
         if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
@@ -344,7 +344,7 @@ LABEL_11:
         *v36 = 138543618;
         *&v36[4] = v21;
         *&v36[12] = 2112;
-        *&v36[14] = v4;
+        *&v36[14] = changeCopy;
         v22 = "%{public}@Object is already deleted, dropping delete %@";
       }
     }
@@ -352,7 +352,7 @@ LABEL_11:
     else
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = self;
+      selfCopy10 = self;
       v20 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
@@ -363,7 +363,7 @@ LABEL_11:
       *v36 = 138543618;
       *&v36[4] = v21;
       *&v36[12] = 2112;
-      *&v36[14] = v4;
+      *&v36[14] = changeCopy;
       v22 = "%{public}@Change has already be invalidated, dropping further changes %@";
     }
 
@@ -377,16 +377,16 @@ LABEL_42:
   {
     if (v7)
     {
-      v12 = self;
+      selfCopy6 = self;
       v13 = 3;
 LABEL_19:
-      [(HMDCloudChange *)v12 setChangeType:v13];
-      [(HMDCloudChange *)self setObjectChange:v4];
+      [(HMDCloudChange *)selfCopy6 setChangeType:v13];
+      [(HMDCloudChange *)self setObjectChange:changeCopy];
       goto LABEL_44;
     }
 
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy7 = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -395,23 +395,23 @@ LABEL_26:
       *v36 = 138543618;
       *&v36[4] = v17;
       *&v36[12] = 2112;
-      *&v36[14] = v4;
+      *&v36[14] = changeCopy;
       _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_ERROR, "%{public}@Invalidating change because object change in unknown type, %@", v36, 0x16u);
     }
 
 LABEL_27:
 
     objc_autoreleasePoolPop(v14);
-    [(HMDCloudChange *)v15 setChangeType:0];
+    [(HMDCloudChange *)selfCopy7 setChangeType:0];
     goto LABEL_44;
   }
 
-  v9 = [(HMDCloudChange *)self objectChange];
+  objectChange = [(HMDCloudChange *)self objectChange];
 
-  if (v9)
+  if (objectChange)
   {
-    v10 = [(HMDCloudChange *)self objectChange];
-    v11 = [v10 merge:v4];
+    objectChange2 = [(HMDCloudChange *)self objectChange];
+    v11 = [objectChange2 merge:changeCopy];
 
     if (!v11)
     {
@@ -420,7 +420,7 @@ LABEL_27:
 
 LABEL_36:
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy8 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -433,19 +433,19 @@ LABEL_36:
     }
 
     objc_autoreleasePoolPop(v27);
-    [(HMDCloudChange *)v28 setChangeType:0];
+    [(HMDCloudChange *)selfCopy8 setChangeType:0];
 
     goto LABEL_44;
   }
 
   if (v8)
   {
-    [(HMDCloudChange *)self setObjectChange:v4];
+    [(HMDCloudChange *)self setObjectChange:changeCopy];
     goto LABEL_39;
   }
 
   v23 = objc_autoreleasePoolPush();
-  v24 = self;
+  selfCopy9 = self;
   v25 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
@@ -465,21 +465,21 @@ LABEL_36:
 LABEL_39:
   if ((v8 & [(HMDCloudChange *)self isUpdated]) == 1)
   {
-    v31 = [(HMDCloudChange *)self objectChange];
-    [v31 setObjectChangeType:1];
+    objectChange3 = [(HMDCloudChange *)self objectChange];
+    [objectChange3 setObjectChangeType:1];
 
     [(HMDCloudChange *)self setChangeType:1];
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy10 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       v21 = HMFGetLogIdentifier();
-      v32 = [(HMDCloudChange *)v19 objectChange];
+      objectChange4 = [(HMDCloudChange *)selfCopy10 objectChange];
       *v36 = 138543618;
       *&v36[4] = v21;
       *&v36[12] = 2112;
-      *&v36[14] = v32;
+      *&v36[14] = objectChange4;
       _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_INFO, "%{public}@Changing update change back to an add %@", v36, 0x16u);
 
       goto LABEL_42;
@@ -492,25 +492,25 @@ LABEL_43:
 
 LABEL_44:
   v33 = [(HMDCloudChange *)self rowIDsSet:*v36];
-  v34 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "bsoLogRowID")}];
+  v34 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(changeCopy, "bsoLogRowID")}];
   [v33 addObject:v34];
 
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateDeletedCloudRecord:(id)a3
+- (void)updateDeletedCloudRecord:(id)record
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  recordCopy = record;
+  if (recordCopy)
   {
-    objc_storeStrong(&self->_deletedCloudRecord, a3);
+    objc_storeStrong(&self->_deletedCloudRecord, record);
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -526,30 +526,30 @@ LABEL_44:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateCloudRecord:(id)a3
+- (void)updateCloudRecord:(id)record
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  recordCopy = record;
+  if (recordCopy)
   {
-    objc_storeStrong(&self->_cloudRecord, a3);
+    objc_storeStrong(&self->_cloudRecord, record);
     if (![(HMDCloudChange *)self isDeleted])
     {
-      v6 = [v5 extractObjectChange];
-      if (v6)
+      extractObjectChange = [recordCopy extractObjectChange];
+      if (extractObjectChange)
       {
-        v7 = [(HMDCloudChange *)self objectChange];
-        v8 = [(HMDCloudChange *)v6 diff:v7 differingFields:0];
+        objectChange = [(HMDCloudChange *)self objectChange];
+        v8 = [(HMDCloudChange *)extractObjectChange diff:objectChange differingFields:0];
 
         if (v8)
         {
-          v9 = [(HMDCloudChange *)self objectChange];
-          v10 = [(HMDCloudChange *)v6 merge:v9];
+          objectChange2 = [(HMDCloudChange *)self objectChange];
+          v10 = [(HMDCloudChange *)extractObjectChange merge:objectChange2];
 
           if (v10)
           {
             v11 = objc_autoreleasePoolPush();
-            v12 = self;
+            selfCopy = self;
             v13 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
             {
@@ -562,26 +562,26 @@ LABEL_44:
             }
 
             objc_autoreleasePoolPop(v11);
-            v15 = [(HMDCloudChange *)v12 objectChange];
-            -[HMDCloudChange setObjectChangeType:](v6, "setObjectChangeType:", [v15 objectChangeType]);
+            objectChange3 = [(HMDCloudChange *)selfCopy objectChange];
+            -[HMDCloudChange setObjectChangeType:](extractObjectChange, "setObjectChangeType:", [objectChange3 objectChangeType]);
 
-            [(HMDCloudChange *)v12 setObjectChange:v6];
-            [(HMDCloudChange *)v12 setChangeType:0];
+            [(HMDCloudChange *)selfCopy setObjectChange:extractObjectChange];
+            [(HMDCloudChange *)selfCopy setChangeType:0];
           }
 
           else
           {
-            v30 = [(HMDCloudChange *)self objectChange];
-            -[HMDCloudChange setObjectChangeType:](v6, "setObjectChangeType:", [v30 objectChangeType]);
+            objectChange4 = [(HMDCloudChange *)self objectChange];
+            -[HMDCloudChange setObjectChangeType:](extractObjectChange, "setObjectChangeType:", [objectChange4 objectChangeType]);
 
-            [(HMDCloudChange *)self setObjectChange:v6];
+            [(HMDCloudChange *)self setObjectChange:extractObjectChange];
           }
 
           goto LABEL_22;
         }
 
         v25 = objc_autoreleasePoolPush();
-        v26 = self;
+        selfCopy2 = self;
         v27 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
         {
@@ -589,16 +589,16 @@ LABEL_44:
           v32 = 138543618;
           v33 = v28;
           v34 = 2112;
-          v35 = v6;
+          v35 = extractObjectChange;
           _os_log_impl(&dword_2531F8000, v27, OS_LOG_TYPE_INFO, "%{public}@Local changes will not modify cloud record, dropping local changes: %@", &v32, 0x16u);
         }
 
         objc_autoreleasePoolPop(v25);
-        v29 = [(HMDCloudChange *)v26 objectChange];
-        -[HMDCloudChange setObjectChangeType:](v6, "setObjectChangeType:", [v29 objectChangeType]);
+        objectChange5 = [(HMDCloudChange *)selfCopy2 objectChange];
+        -[HMDCloudChange setObjectChangeType:](extractObjectChange, "setObjectChangeType:", [objectChange5 objectChangeType]);
 
-        [(HMDCloudChange *)v26 setObjectChange:v6];
-        v24 = v26;
+        [(HMDCloudChange *)selfCopy2 setObjectChange:extractObjectChange];
+        v24 = selfCopy2;
       }
 
       else
@@ -611,7 +611,7 @@ LABEL_22:
         }
 
         v20 = objc_autoreleasePoolPush();
-        v21 = self;
+        selfCopy3 = self;
         v22 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
@@ -619,12 +619,12 @@ LABEL_22:
           v32 = 138543618;
           v33 = v23;
           v34 = 2112;
-          v35 = v21;
+          v35 = selfCopy3;
           _os_log_impl(&dword_2531F8000, v22, OS_LOG_TYPE_ERROR, "%{public}@Invalidating change, cannot add a new record unless the change type is added, %@", &v32, 0x16u);
         }
 
         objc_autoreleasePoolPop(v20);
-        v24 = v21;
+        v24 = selfCopy3;
       }
 
       [(HMDCloudChange *)v24 setChangeType:0];
@@ -635,7 +635,7 @@ LABEL_22:
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy4 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -656,73 +656,73 @@ LABEL_23:
 - (void)forceChangeToDelete
 {
   [(HMDCloudChange *)self setChangeType:3];
-  v3 = [(HMDCloudChange *)self objectChange];
-  if (v3)
+  objectChange = [(HMDCloudChange *)self objectChange];
+  if (objectChange)
   {
-    v8 = v3;
+    v8 = objectChange;
     v4 = objc_alloc(objc_opt_class());
-    v5 = [v8 uuid];
-    v6 = [v8 parentUUID];
-    v7 = [v4 initWithObjectChangeType:3 uuid:v5 parentUUID:v6];
+    uuid = [v8 uuid];
+    parentUUID = [v8 parentUUID];
+    v7 = [v4 initWithObjectChangeType:3 uuid:uuid parentUUID:parentUUID];
 
     [(HMDCloudChange *)self setObjectChange:v7];
-    v3 = v8;
+    objectChange = v8;
   }
 }
 
 - (NSArray)rowIDs
 {
-  v2 = [(HMDCloudChange *)self rowIDsSet];
-  v3 = [v2 allObjects];
+  rowIDsSet = [(HMDCloudChange *)self rowIDsSet];
+  allObjects = [rowIDsSet allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSUUID)uuid
 {
-  v2 = [(HMDCloudChange *)self objectChange];
-  v3 = [v2 uuid];
+  objectChange = [(HMDCloudChange *)self objectChange];
+  uuid = [objectChange uuid];
 
-  return v3;
+  return uuid;
 }
 
 - (NSUUID)objectID
 {
-  v2 = [(HMDCloudChange *)self objectChange];
-  v3 = [v2 uuid];
+  objectChange = [(HMDCloudChange *)self objectChange];
+  uuid = [objectChange uuid];
 
-  return v3;
+  return uuid;
 }
 
 - (NSUUID)parentUuid
 {
-  v2 = [(HMDCloudChange *)self objectChange];
-  v3 = [v2 parentUUID];
+  objectChange = [(HMDCloudChange *)self objectChange];
+  parentUUID = [objectChange parentUUID];
 
-  return v3;
+  return parentUUID;
 }
 
 - (NSUUID)parentObjectID
 {
-  v2 = [(HMDCloudChange *)self objectChange];
-  v3 = [v2 parentUUID];
+  objectChange = [(HMDCloudChange *)self objectChange];
+  parentUUID = [objectChange parentUUID];
 
-  return v3;
+  return parentUUID;
 }
 
 - (NSSet)dependentUUIDs
 {
-  v2 = [(HMDCloudChange *)self objectChange];
-  v3 = [v2 dependentUUIDs];
+  objectChange = [(HMDCloudChange *)self objectChange];
+  dependentUUIDs = [objectChange dependentUUIDs];
 
-  return v3;
+  return dependentUUIDs;
 }
 
 - (NSString)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDCloudChange *)self shortDescription];
-  v4 = [v2 stringWithFormat:@"<%@>", v3];
+  shortDescription = [(HMDCloudChange *)self shortDescription];
+  v4 = [v2 stringWithFormat:@"<%@>", shortDescription];
 
   return v4;
 }
@@ -730,34 +730,34 @@ LABEL_23:
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMDCloudChange *)self changeType];
-  if (v5 > 3)
+  shortDescription = [objc_opt_class() shortDescription];
+  changeType = [(HMDCloudChange *)self changeType];
+  if (changeType > 3)
   {
     v6 = @"unknown";
   }
 
   else
   {
-    v6 = off_27972C0A0[v5];
+    v6 = off_27972C0A0[changeType];
   }
 
-  v7 = [(HMDCloudChange *)self cloudRecord];
-  v8 = [v3 stringWithFormat:@"%@, Type = %@, Cloud Record = %@", v4, v6, v7];
+  cloudRecord = [(HMDCloudChange *)self cloudRecord];
+  v8 = [v3 stringWithFormat:@"%@, Type = %@, Cloud Record = %@", shortDescription, v6, cloudRecord];
 
   return v8;
 }
 
-- (id)_initWithObjectChange:(id)a3 cloudObjectRecord:(id)a4
+- (id)_initWithObjectChange:(id)change cloudObjectRecord:(id)record
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if ((v6 == 0) != (v7 != 0))
+  changeCopy = change;
+  recordCopy = record;
+  v8 = recordCopy;
+  if ((changeCopy == 0) != (recordCopy != 0))
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -773,17 +773,17 @@ LABEL_13:
     goto LABEL_19;
   }
 
-  if (v7)
+  if (recordCopy)
   {
-    v13 = [v7 extractObjectChange];
+    extractObjectChange = [recordCopy extractObjectChange];
 
-    v6 = v13;
+    changeCopy = extractObjectChange;
   }
 
-  if (!v6)
+  if (!changeCopy)
   {
     v16 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -797,15 +797,15 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v14 = [v6 objectChangeType];
-  if (v14 > 3)
+  objectChangeType = [changeCopy objectChangeType];
+  if (objectChangeType > 3)
   {
     v15 = 0;
   }
 
   else
   {
-    v15 = qword_253D4BF28[v14];
+    v15 = qword_253D4BF28[objectChangeType];
   }
 
   v28.receiver = self;
@@ -815,23 +815,23 @@ LABEL_13:
   if (v20)
   {
     v20->_changeType = v15;
-    objc_storeStrong(&v20->_cloudRecord, a4);
+    objc_storeStrong(&v20->_cloudRecord, record);
     v22 = [MEMORY[0x277CBEB58] set];
     rowIDsSet = v21->_rowIDsSet;
     v21->_rowIDsSet = v22;
 
-    objc_storeStrong(&v21->_objectChange, v6);
+    objc_storeStrong(&v21->_objectChange, changeCopy);
     if (!v8)
     {
-      v24 = [(HMDCloudChange *)v21 rowIDsSet];
-      v25 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v6, "bsoLogRowID")}];
-      [v24 addObject:v25];
+      rowIDsSet = [(HMDCloudChange *)v21 rowIDsSet];
+      v25 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(changeCopy, "bsoLogRowID")}];
+      [rowIDsSet addObject:v25];
     }
   }
 
-  v10 = v21;
+  selfCopy2 = v21;
 
-  v19 = v10;
+  v19 = selfCopy2;
 LABEL_19:
 
   v26 = *MEMORY[0x277D85DE8];

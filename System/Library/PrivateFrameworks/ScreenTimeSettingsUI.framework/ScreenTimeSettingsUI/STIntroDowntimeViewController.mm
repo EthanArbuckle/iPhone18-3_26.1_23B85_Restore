@@ -1,18 +1,18 @@
 @interface STIntroDowntimeViewController
 - (STIntroDowntimeTableViewController)tableViewController;
-- (STIntroDowntimeViewController)initWithIntroductionModel:(id)a3 continueHandler:(id)a4;
-- (void)_notNow:(id)a3;
-- (void)_setDowntime:(id)a3;
+- (STIntroDowntimeViewController)initWithIntroductionModel:(id)model continueHandler:(id)handler;
+- (void)_notNow:(id)now;
+- (void)_setDowntime:(id)downtime;
 - (void)loadView;
-- (void)setTableViewController:(id)a3;
+- (void)setTableViewController:(id)controller;
 @end
 
 @implementation STIntroDowntimeViewController
 
-- (STIntroDowntimeViewController)initWithIntroductionModel:(id)a3 continueHandler:(id)a4
+- (STIntroDowntimeViewController)initWithIntroductionModel:(id)model continueHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  handlerCopy = handler;
   v8 = +[STScreenTimeSettingsUIBundle bundle];
   v9 = [v8 localizedStringForKey:@"IntroDowntimeTitle" value:&stru_28766E5A8 table:0];
   v10 = [v8 localizedStringForKey:@"IntroDowntimeDetail" value:&stru_28766E5A8 table:0];
@@ -20,10 +20,10 @@
   v17.super_class = STIntroDowntimeViewController;
   v11 = [(OBTableWelcomeController *)&v17 initWithTitle:v9 detailText:v10 symbolName:@"downtime"];
   model = v11->_model;
-  v11->_model = v6;
-  v13 = v6;
+  v11->_model = modelCopy;
+  v13 = modelCopy;
 
-  v14 = [v7 copy];
+  v14 = [handlerCopy copy];
   continueHandler = v11->_continueHandler;
   v11->_continueHandler = v14;
 
@@ -34,15 +34,15 @@
 {
   v4.receiver = self;
   v4.super_class = STIntroDowntimeViewController;
-  v2 = [(STTableWelcomeController *)&v4 tableViewController];
+  tableViewController = [(STTableWelcomeController *)&v4 tableViewController];
 
-  return v2;
+  return tableViewController;
 }
 
-- (void)setTableViewController:(id)a3
+- (void)setTableViewController:(id)controller
 {
-  v5 = a3;
-  if (v5)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -53,7 +53,7 @@
 
   v6.receiver = self;
   v6.super_class = STIntroDowntimeViewController;
-  [(STTableWelcomeController *)&v6 setTableViewController:v5];
+  [(STTableWelcomeController *)&v6 setTableViewController:controllerCopy];
 }
 
 - (void)loadView
@@ -62,11 +62,11 @@
   v17.super_class = STIntroDowntimeViewController;
   [(OBTableWelcomeController *)&v17 loadView];
   v3 = +[STScreenTimeSettingsUIBundle bundle];
-  v4 = [(STIntroDowntimeViewController *)self buttonTray];
-  v5 = [(STIntroductionViewModel *)self->_model bedtime];
-  v6 = [v5 deviceBedtimeEnabled];
+  buttonTray = [(STIntroDowntimeViewController *)self buttonTray];
+  bedtime = [(STIntroductionViewModel *)self->_model bedtime];
+  deviceBedtimeEnabled = [bedtime deviceBedtimeEnabled];
 
-  if (v6)
+  if (deviceBedtimeEnabled)
   {
     v7 = @"IntroDowntimeContinueButton";
   }
@@ -76,7 +76,7 @@
     v7 = @"IntroDowntimeTurnOnDowntimeButton";
   }
 
-  if (v6)
+  if (deviceBedtimeEnabled)
   {
     v8 = @"IntroDowntimeTurnOffDowntimeButton";
   }
@@ -88,41 +88,41 @@
 
   v9 = [v3 localizedStringForKey:v7 value:&stru_28766E5A8 table:0];
   v10 = [v3 localizedStringForKey:v8 value:&stru_28766E5A8 table:0];
-  v11 = [MEMORY[0x277D37618] boldButton];
-  [v11 setAccessibilityIdentifier:@"IntroDowntimeTurnOnDowntimeButton"];
-  [v11 setTitle:v9 forState:0];
-  [v11 addTarget:self action:sel__setDowntime_ forControlEvents:0x2000];
-  [v4 addButton:v11];
-  v12 = [MEMORY[0x277D37650] linkButton];
-  [v12 setAccessibilityIdentifier:@"IntroDowntimeSetUpLaterButton"];
-  [v12 setTitle:v10 forState:0];
-  [v12 addTarget:self action:sel__notNow_ forControlEvents:0x2000];
-  [v4 addButton:v12];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [boldButton setAccessibilityIdentifier:@"IntroDowntimeTurnOnDowntimeButton"];
+  [boldButton setTitle:v9 forState:0];
+  [boldButton addTarget:self action:sel__setDowntime_ forControlEvents:0x2000];
+  [buttonTray addButton:boldButton];
+  linkButton = [MEMORY[0x277D37650] linkButton];
+  [linkButton setAccessibilityIdentifier:@"IntroDowntimeSetUpLaterButton"];
+  [linkButton setTitle:v10 forState:0];
+  [linkButton addTarget:self action:sel__notNow_ forControlEvents:0x2000];
+  [buttonTray addButton:linkButton];
   v13 = MEMORY[0x277D75AC8];
   v14 = +[STScreenTimeSettingsUIBundle bundle];
   v15 = [v13 storyboardWithName:@"STIntroDowntimeTableViewController" bundle:v14];
 
-  v16 = [v15 instantiateInitialViewController];
-  [(STIntroDowntimeViewController *)self setTableViewController:v16];
+  instantiateInitialViewController = [v15 instantiateInitialViewController];
+  [(STIntroDowntimeViewController *)self setTableViewController:instantiateInitialViewController];
 }
 
-- (void)_setDowntime:(id)a3
+- (void)_setDowntime:(id)downtime
 {
-  v4 = [(STIntroDowntimeViewController *)self tableViewController];
-  v7 = [v4 bedtime];
+  tableViewController = [(STIntroDowntimeViewController *)self tableViewController];
+  bedtime = [tableViewController bedtime];
 
-  [v7 setDeviceBedtimeEnabled:1];
-  v5 = [(STIntroDowntimeViewController *)self model];
-  [v5 setBedtime:v7];
+  [bedtime setDeviceBedtimeEnabled:1];
+  model = [(STIntroDowntimeViewController *)self model];
+  [model setBedtime:bedtime];
 
-  v6 = [(STIntroDowntimeViewController *)self continueHandler];
-  v6[2]();
+  continueHandler = [(STIntroDowntimeViewController *)self continueHandler];
+  continueHandler[2]();
 }
 
-- (void)_notNow:(id)a3
+- (void)_notNow:(id)now
 {
-  v3 = [(STIntroDowntimeViewController *)self continueHandler];
-  v3[2]();
+  continueHandler = [(STIntroDowntimeViewController *)self continueHandler];
+  continueHandler[2]();
 }
 
 - (void)setTableViewController:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

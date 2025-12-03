@@ -1,22 +1,22 @@
 @interface ICCloudSyncingObjectCryptoStrategyV1
-+ (id)decryptWithMainKeyOfObject:(id)a3 encryptedData:(id)a4 fallbackAttemptSuccessCleanupHandler:(id)a5;
-+ (id)decryptWithMainKeyOfObject:(id)a3 encryptedDataPreparationBlock:(id)a4 fallbackAttemptSuccessCleanupHandler:(id)a5;
-+ (void)encryptWithMainKeyOfObject:(id)a3 dataPreparationBlock:(id)a4 failureHandler:(id)a5 successHandler:(id)a6;
-+ (void)encryptWithMainKeyOfObject:(id)a3 dataToEncrypt:(id)a4 failureHandler:(id)a5 successHandler:(id)a6;
-- (BOOL)authenticateWithPassphrase:(id)a3;
-- (BOOL)canMainKey:(id)a3 decryptObject:(id)a4;
-- (BOOL)encryptFileFromURL:(id)a3 toURL:(id)a4;
-- (BOOL)encryptFileFromURL:(id)a3 toURL:(id)a4 setTagAndIVHandler:(id)a5;
-- (BOOL)encryptSidecarFileFromURL:(id)a3 toURL:(id)a4;
++ (id)decryptWithMainKeyOfObject:(id)object encryptedData:(id)data fallbackAttemptSuccessCleanupHandler:(id)handler;
++ (id)decryptWithMainKeyOfObject:(id)object encryptedDataPreparationBlock:(id)block fallbackAttemptSuccessCleanupHandler:(id)handler;
++ (void)encryptWithMainKeyOfObject:(id)object dataPreparationBlock:(id)block failureHandler:(id)handler successHandler:(id)successHandler;
++ (void)encryptWithMainKeyOfObject:(id)object dataToEncrypt:(id)encrypt failureHandler:(id)handler successHandler:(id)successHandler;
+- (BOOL)authenticateWithPassphrase:(id)passphrase;
+- (BOOL)canMainKey:(id)key decryptObject:(id)object;
+- (BOOL)encryptFileFromURL:(id)l toURL:(id)rL;
+- (BOOL)encryptFileFromURL:(id)l toURL:(id)rL setTagAndIVHandler:(id)handler;
+- (BOOL)encryptSidecarFileFromURL:(id)l toURL:(id)rL;
 - (BOOL)hasPassphraseSet;
-- (BOOL)hasSameKeyAsObject:(id)a3;
+- (BOOL)hasSameKeyAsObject:(id)object;
 - (BOOL)isAuthenticated;
-- (BOOL)isPassphraseCorrect:(id)a3;
+- (BOOL)isPassphraseCorrect:(id)correct;
 - (BOOL)loadDecryptedValuesIfNecessary;
-- (BOOL)mainKeyDecryptsPrimaryData:(id)a3;
-- (BOOL)mergeEncryptedDataFromRecord:(id)a3;
-- (BOOL)recordHasChangedPassphrase:(id)a3;
-- (BOOL)rewrapWithMainKey:(id)a3;
+- (BOOL)mainKeyDecryptsPrimaryData:(id)data;
+- (BOOL)mergeEncryptedDataFromRecord:(id)record;
+- (BOOL)recordHasChangedPassphrase:(id)passphrase;
+- (BOOL)rewrapWithMainKey:(id)key;
 - (BOOL)saveEncryptedJSON;
 - (ICEncryptionKey)primaryWrappedKey;
 - (ICEncryptionMetadata)primaryMetadata;
@@ -24,38 +24,38 @@
 - (NSData)fileURLEncryptionCryptoInitialzationVector;
 - (NSData)fileURLEncryptionCryptoTag;
 - (NSString)passphraseHint;
-- (id)decryptData:(id)a3;
-- (id)decryptSidecarData:(id)a3;
-- (id)decryptedDataFromFileURL:(id)a3;
-- (id)encryptData:(id)a3;
-- (id)encryptSidecarData:(id)a3;
-- (id)encryptedData:(id)a3 rewrappedWithMainKey:(id)a4;
-- (id)encryptionObjectWithData:(id)a3;
-- (id)mainKeyForPassphrase:(id)a3;
+- (id)decryptData:(id)data;
+- (id)decryptSidecarData:(id)data;
+- (id)decryptedDataFromFileURL:(id)l;
+- (id)encryptData:(id)data;
+- (id)encryptSidecarData:(id)data;
+- (id)encryptedData:(id)data rewrappedWithMainKey:(id)key;
+- (id)encryptionObjectWithData:(id)data;
+- (id)mainKeyForPassphrase:(id)passphrase;
 - (id)unwrappedKey;
-- (void)decryptAndMergeEncryptedJSON:(id)a3;
-- (void)initializeCryptoPropertiesFromObject:(id)a3;
-- (void)rewrapAndDivergeKeyUsingPassphrase:(id)a3;
-- (void)rewrapKeyWithNewMainKey:(id)a3 salt:(id)a4 iterationCount:(unint64_t)a5 hint:(id)a6;
+- (void)decryptAndMergeEncryptedJSON:(id)n;
+- (void)initializeCryptoPropertiesFromObject:(id)object;
+- (void)rewrapAndDivergeKeyUsingPassphrase:(id)passphrase;
+- (void)rewrapKeyWithNewMainKey:(id)key salt:(id)salt iterationCount:(unint64_t)count hint:(id)hint;
 - (void)saveEncryptedJSON;
 @end
 
 @implementation ICCloudSyncingObjectCryptoStrategyV1
 
-- (void)initializeCryptoPropertiesFromObject:(id)a3
+- (void)initializeCryptoPropertiesFromObject:(id)object
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v5 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(ICCryptoStrategyBase *)self object];
-    v7 = [v6 shortLoggingDescription];
-    v8 = [v4 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
+    shortLoggingDescription2 = [objectCopy shortLoggingDescription];
     *buf = 138412546;
-    v17 = v7;
+    v17 = shortLoggingDescription;
     v18 = 2112;
-    v19 = v8;
+    v19 = shortLoggingDescription2;
     _os_log_impl(&dword_214D51000, v5, OS_LOG_TYPE_INFO, "Initializing crypto properties from original object… {object: %@, originalObject: %@}", buf, 0x16u);
   }
 
@@ -63,19 +63,19 @@
   v14[1] = 3221225472;
   v14[2] = __77__ICCloudSyncingObjectCryptoStrategyV1_initializeCryptoPropertiesFromObject___block_invoke;
   v14[3] = &unk_278195B40;
-  v9 = v4;
+  v9 = objectCopy;
   v15 = v9;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v14];
   v10 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [(ICCryptoStrategyBase *)self object];
-    v12 = [v11 shortLoggingDescription];
-    v13 = [v9 shortLoggingDescription];
+    object2 = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription3 = [object2 shortLoggingDescription];
+    shortLoggingDescription4 = [v9 shortLoggingDescription];
     *buf = 138412546;
-    v17 = v12;
+    v17 = shortLoggingDescription3;
     v18 = 2112;
-    v19 = v13;
+    v19 = shortLoggingDescription4;
     _os_log_impl(&dword_214D51000, v10, OS_LOG_TYPE_INFO, "Initialized crypto properties from original object {object: %@, originalObject: %@}", buf, 0x16u);
   }
 }
@@ -339,9 +339,9 @@ void __63__ICCloudSyncingObjectCryptoStrategyV1_primaryEncryptionObject__block_i
 LABEL_5:
 }
 
-- (id)encryptionObjectWithData:(id)a3
+- (id)encryptionObjectWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -354,7 +354,7 @@ LABEL_5:
   v8[3] = &unk_278195A28;
   v8[4] = self;
   v10 = &v11;
-  v5 = v4;
+  v5 = dataCopy;
   v9 = v5;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v8];
   v6 = v12[5];
@@ -434,11 +434,11 @@ LABEL_12:
   v4 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(ICCryptoStrategyBase *)self object];
-    v8 = [v7 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     v9 = [MEMORY[0x277CCABB0] numberWithBool:*(v12 + 24)];
     *buf = 138413058;
-    v16 = v8;
+    v16 = shortLoggingDescription;
     v17 = 2112;
     v19 = 2080;
     v18 = v9;
@@ -534,9 +534,9 @@ void __57__ICCloudSyncingObjectCryptoStrategyV1_saveEncryptedJSON__block_invoke_
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (id)encryptData:(id)a3
+- (id)encryptData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -548,7 +548,7 @@ void __57__ICCloudSyncingObjectCryptoStrategyV1_saveEncryptedJSON__block_invoke_
   v8[2] = __52__ICCloudSyncingObjectCryptoStrategyV1_encryptData___block_invoke;
   v8[3] = &unk_2781959B0;
   v8[4] = self;
-  v5 = v4;
+  v5 = dataCopy;
   v9 = v5;
   v10 = &v11;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v8];
@@ -604,10 +604,10 @@ void __52__ICCloudSyncingObjectCryptoStrategyV1_encryptData___block_invoke_16(ui
   [*(a1 + 40) setCryptoTag:v12];
 }
 
-- (BOOL)encryptFileFromURL:(id)a3 toURL:(id)a4
+- (BOOL)encryptFileFromURL:(id)l toURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -618,9 +618,9 @@ void __52__ICCloudSyncingObjectCryptoStrategyV1_encryptData___block_invoke_16(ui
   v11[3] = &unk_27819A4C8;
   v14 = &v15;
   v11[4] = self;
-  v8 = v6;
+  v8 = lCopy;
   v12 = v8;
-  v9 = v7;
+  v9 = rLCopy;
   v13 = v9;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v11];
   LOBYTE(self) = *(v16 + 24);
@@ -652,11 +652,11 @@ void __65__ICCloudSyncingObjectCryptoStrategyV1_encryptFileFromURL_toURL___block
   [*(a1 + 32) setCryptoInitializationVector:v6];
 }
 
-- (BOOL)encryptFileFromURL:(id)a3 toURL:(id)a4 setTagAndIVHandler:(id)a5
+- (BOOL)encryptFileFromURL:(id)l toURL:(id)rL setTagAndIVHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  handlerCopy = handler;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -665,12 +665,12 @@ void __65__ICCloudSyncingObjectCryptoStrategyV1_encryptFileFromURL_toURL___block
   v15[1] = 3221225472;
   v15[2] = __84__ICCloudSyncingObjectCryptoStrategyV1_encryptFileFromURL_toURL_setTagAndIVHandler___block_invoke;
   v15[3] = &unk_27819A518;
-  v11 = v8;
+  v11 = lCopy;
   v16 = v11;
-  v17 = self;
-  v12 = v9;
+  selfCopy = self;
+  v12 = rLCopy;
   v18 = v12;
-  v13 = v10;
+  v13 = handlerCopy;
   v19 = v13;
   v20 = &v21;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v15];
@@ -875,9 +875,9 @@ void __70__ICCloudSyncingObjectCryptoStrategyV1_loadDecryptedValuesIfNecessary__
   }
 }
 
-- (id)decryptData:(id)a3
+- (id)decryptData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -888,8 +888,8 @@ void __70__ICCloudSyncingObjectCryptoStrategyV1_loadDecryptedValuesIfNecessary__
   v8[1] = 3221225472;
   v8[2] = __52__ICCloudSyncingObjectCryptoStrategyV1_decryptData___block_invoke;
   v8[3] = &unk_278195A28;
-  v5 = v4;
-  v10 = self;
+  v5 = dataCopy;
+  selfCopy = self;
   v11 = &v12;
   v9 = v5;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v8];
@@ -940,9 +940,9 @@ void __52__ICCloudSyncingObjectCryptoStrategyV1_decryptData___block_invoke_2(uin
   *(v6 + 40) = v5;
 }
 
-- (id)decryptedDataFromFileURL:(id)a3
+- (id)decryptedDataFromFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -955,7 +955,7 @@ void __52__ICCloudSyncingObjectCryptoStrategyV1_decryptData___block_invoke_2(uin
   v8[3] = &unk_2781985D0;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = lCopy;
   v9 = v5;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v8];
   v6 = v12[5];
@@ -1078,26 +1078,26 @@ void __65__ICCloudSyncingObjectCryptoStrategyV1_decryptedDataFromFileURL___block
   *(v9 + 40) = v8;
 }
 
-+ (id)decryptWithMainKeyOfObject:(id)a3 encryptedData:(id)a4 fallbackAttemptSuccessCleanupHandler:(id)a5
++ (id)decryptWithMainKeyOfObject:(id)object encryptedData:(id)data fallbackAttemptSuccessCleanupHandler:(id)handler
 {
-  v8 = a4;
+  dataCopy = data;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __118__ICCloudSyncingObjectCryptoStrategyV1_decryptWithMainKeyOfObject_encryptedData_fallbackAttemptSuccessCleanupHandler___block_invoke;
   v12[3] = &unk_27819A568;
-  v13 = v8;
-  v9 = v8;
-  v10 = [a1 decryptWithMainKeyOfObject:a3 encryptedDataPreparationBlock:v12 fallbackAttemptSuccessCleanupHandler:a5];
+  v13 = dataCopy;
+  v9 = dataCopy;
+  v10 = [self decryptWithMainKeyOfObject:object encryptedDataPreparationBlock:v12 fallbackAttemptSuccessCleanupHandler:handler];
 
   return v10;
 }
 
-+ (id)decryptWithMainKeyOfObject:(id)a3 encryptedDataPreparationBlock:(id)a4 fallbackAttemptSuccessCleanupHandler:(id)a5
++ (id)decryptWithMainKeyOfObject:(id)object encryptedDataPreparationBlock:(id)block fallbackAttemptSuccessCleanupHandler:(id)handler
 {
   v122 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  objectCopy = object;
+  blockCopy = block;
+  handlerCopy = handler;
   v104 = 0;
   v105 = &v104;
   v106 = 0x3032000000;
@@ -1114,17 +1114,17 @@ void __65__ICCloudSyncingObjectCryptoStrategyV1_decryptedDataFromFileURL___block
   v95 = &v94;
   v96 = 0x2020000000;
   v97 = 0;
-  v10 = [v7 managedObjectContext];
+  managedObjectContext = [objectCopy managedObjectContext];
   v89[0] = MEMORY[0x277D85DD0];
   v89[1] = 3221225472;
   v89[2] = __134__ICCloudSyncingObjectCryptoStrategyV1_decryptWithMainKeyOfObject_encryptedDataPreparationBlock_fallbackAttemptSuccessCleanupHandler___block_invoke;
   v89[3] = &unk_278198478;
   v91 = &v98;
-  v11 = v7;
+  v11 = objectCopy;
   v90 = v11;
   v92 = &v104;
   v93 = &v94;
-  [v10 performBlockAndWait:v89];
+  [managedObjectContext performBlockAndWait:v89];
 
   if (*(v95 + 24) == 1)
   {
@@ -1154,7 +1154,7 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  v13 = v8[2](v8);
+  v13 = blockCopy[2](blockCopy);
   if (![v13 isValid])
   {
     if (v13)
@@ -1162,7 +1162,7 @@ LABEL_37:
       if ([v13 isValid])
       {
 LABEL_5:
-        v14 = 0;
+        fallbackTag = 0;
         goto LABEL_40;
       }
 
@@ -1187,14 +1187,14 @@ LABEL_5:
   v15 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v81 = v9;
+    v81 = handlerCopy;
     v16 = v105[5];
     v17 = [v13 tag];
     v18 = [v17 hash];
-    v19 = [v13 initializationVector];
-    v20 = [v19 hash];
-    v21 = [v13 data];
-    v22 = [v21 hash];
+    initializationVector = [v13 initializationVector];
+    v20 = [initializationVector hash];
+    data = [v13 data];
+    v22 = [data hash];
     *buf = 138413058;
     v111 = v16;
     v112 = 2048;
@@ -1205,32 +1205,32 @@ LABEL_5:
     v117 = v22;
     _os_log_impl(&dword_214D51000, v15, OS_LOG_TYPE_INFO, "Decrypting %@ tag.hash=%lu initializationVector.hash=%lu encryptedData.hash=%lu", buf, 0x2Au);
 
-    v9 = v81;
+    handlerCopy = v81;
   }
 
-  v23 = [v13 data];
+  data2 = [v13 data];
   v24 = v99[5];
   v25 = [v13 tag];
-  v26 = [v13 initializationVector];
+  initializationVector2 = [v13 initializationVector];
   v88 = 0;
-  v14 = [ICCipherV1 decryptData:v23 withKey:v24 tag:v25 initializationVector:v26 error:&v88];
+  fallbackTag = [ICCipherV1 decryptData:data2 withKey:v24 tag:v25 initializationVector:initializationVector2 error:&v88];
   v27 = v88;
 
-  if (v14 && !v27)
+  if (fallbackTag && !v27)
   {
     v27 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
-      v28 = v9;
+      v28 = handlerCopy;
       v74 = v105[5];
       v82 = [v13 tag];
       v72 = [v82 hash];
-      v76 = [v13 initializationVector];
-      v29 = [v76 hash];
-      v30 = [v13 data];
-      v31 = [v30 length];
-      v32 = [v14 length];
-      v33 = [v14 hash];
+      initializationVector3 = [v13 initializationVector];
+      v29 = [initializationVector3 hash];
+      data3 = [v13 data];
+      v31 = [data3 length];
+      v32 = [fallbackTag length];
+      v33 = [fallbackTag hash];
       *buf = 138413570;
       v111 = v74;
       v112 = 2048;
@@ -1245,7 +1245,7 @@ LABEL_5:
       v121 = v33;
       _os_log_impl(&dword_214D51000, v27, OS_LOG_TYPE_INFO, "Decrypted %@ tag.hash=%lu initializationVector.hash=%lu. encryptedData.length=%lu decryptedData.length=%lu decryptedData.hash=%lu", buf, 0x3Eu);
 
-      v9 = v28;
+      handlerCopy = v28;
     }
 
     goto LABEL_39;
@@ -1254,14 +1254,14 @@ LABEL_5:
   v34 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
   {
-    v85 = v9;
+    v85 = handlerCopy;
     v60 = v105[5];
     v79 = [v13 tag];
     v61 = [v79 hash];
-    v62 = [v13 initializationVector];
-    v63 = [v62 hash];
-    v64 = [v13 data];
-    v65 = [v64 length];
+    initializationVector4 = [v13 initializationVector];
+    v63 = [initializationVector4 hash];
+    data4 = [v13 data];
+    v65 = [data4 length];
     *buf = 138413314;
     v111 = v60;
     v112 = 2048;
@@ -1274,22 +1274,22 @@ LABEL_5:
     v119 = v27;
     _os_log_error_impl(&dword_214D51000, v34, OS_LOG_TYPE_ERROR, "Failed to decrypt %@ with tag.hash=%lu initializationVector.hash=%lu. encryptedData.length=%lu error=%@", buf, 0x34u);
 
-    v9 = v85;
+    handlerCopy = v85;
   }
 
-  v14 = [v13 fallbackTag];
-  if (!v14)
+  fallbackTag = [v13 fallbackTag];
+  if (!fallbackTag)
   {
     goto LABEL_39;
   }
 
-  v35 = [v13 fallbackInitializationVector];
-  v36 = v35 == 0;
+  fallbackInitializationVector = [v13 fallbackInitializationVector];
+  v36 = fallbackInitializationVector == 0;
 
   if (v36)
   {
 LABEL_38:
-    v14 = 0;
+    fallbackTag = 0;
 LABEL_39:
 
     goto LABEL_40;
@@ -1304,14 +1304,14 @@ LABEL_39:
   v38 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
   {
-    v83 = v9;
+    v83 = handlerCopy;
     v39 = v105[5];
-    v77 = [v13 fallbackTag];
-    v40 = [v77 hash];
-    v41 = [v13 fallbackInitializationVector];
-    v42 = [v41 hash];
-    v43 = [v13 data];
-    v44 = [v43 hash];
+    fallbackTag2 = [v13 fallbackTag];
+    v40 = [fallbackTag2 hash];
+    fallbackInitializationVector2 = [v13 fallbackInitializationVector];
+    v42 = [fallbackInitializationVector2 hash];
+    data5 = [v13 data];
+    v44 = [data5 hash];
     *buf = 138413058;
     v111 = v39;
     v112 = 2048;
@@ -1322,31 +1322,31 @@ LABEL_39:
     v117 = v44;
     _os_log_impl(&dword_214D51000, v38, OS_LOG_TYPE_INFO, "Decrypting %@ fallbackTag.hash=%lu fallbackInitializationVector.hash=%lu encryptedData.hash=%lu", buf, 0x2Au);
 
-    v9 = v83;
+    handlerCopy = v83;
   }
 
-  v45 = [v13 data];
+  data6 = [v13 data];
   v46 = v99[5];
-  v47 = [v13 fallbackTag];
-  v48 = [v13 fallbackInitializationVector];
+  fallbackTag3 = [v13 fallbackTag];
+  fallbackInitializationVector3 = [v13 fallbackInitializationVector];
   v87 = 0;
-  v14 = [ICCipherV1 decryptData:v45 withKey:v46 tag:v47 initializationVector:v48 error:&v87];
+  fallbackTag = [ICCipherV1 decryptData:data6 withKey:v46 tag:fallbackTag3 initializationVector:fallbackInitializationVector3 error:&v87];
   v27 = v87;
 
-  if (!v14 || v27)
+  if (!fallbackTag || v27)
   {
 
     v59 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
     {
-      v86 = v9;
+      v86 = handlerCopy;
       v66 = v105[5];
       v80 = [v13 tag];
       v67 = [v80 hash];
-      v68 = [v13 initializationVector];
-      v69 = [v68 hash];
-      v70 = [v13 data];
-      v71 = [v70 length];
+      initializationVector5 = [v13 initializationVector];
+      v69 = [initializationVector5 hash];
+      data7 = [v13 data];
+      v71 = [data7 length];
       *buf = 138413314;
       v111 = v66;
       v112 = 2048;
@@ -1359,7 +1359,7 @@ LABEL_39:
       v119 = v27;
       _os_log_error_impl(&dword_214D51000, v59, OS_LOG_TYPE_ERROR, "Failed to decrypt %@ with fallbackTag.hash=%lu fallbackInitializationVector.hash=%lu. encryptedData.length=%lu error=%@", buf, 0x34u);
 
-      v9 = v86;
+      handlerCopy = v86;
     }
 
     goto LABEL_38;
@@ -1368,16 +1368,16 @@ LABEL_39:
   v49 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
   {
-    v50 = v9;
+    v50 = handlerCopy;
     v75 = v105[5];
-    v84 = [v13 fallbackTag];
-    v73 = [v84 hash];
-    v78 = [v13 fallbackInitializationVector];
-    v51 = [v78 hash];
-    v52 = [v13 data];
-    v53 = [v52 length];
-    v54 = [v14 length];
-    v55 = [v14 hash];
+    fallbackTag4 = [v13 fallbackTag];
+    v73 = [fallbackTag4 hash];
+    fallbackInitializationVector4 = [v13 fallbackInitializationVector];
+    v51 = [fallbackInitializationVector4 hash];
+    data8 = [v13 data];
+    v53 = [data8 length];
+    v54 = [fallbackTag length];
+    v55 = [fallbackTag hash];
     *buf = 138413570;
     v111 = v75;
     v112 = 2048;
@@ -1392,17 +1392,17 @@ LABEL_39:
     v121 = v55;
     _os_log_impl(&dword_214D51000, v49, OS_LOG_TYPE_INFO, "Decrypted %@ fallbackTag.hash=%lu fallbackInitializationVector.hash=%lu. encryptedData.length=%lu decryptedData.length=%lu decryptedData.hash=%lu", buf, 0x3Eu);
 
-    v9 = v50;
+    handlerCopy = v50;
   }
 
-  if (v9)
+  if (handlerCopy)
   {
-    v9[2](v9);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_40:
   v56 = v90;
-  v57 = v14;
+  v57 = fallbackTag;
 
   _Block_object_dispose(&v94, 8);
   _Block_object_dispose(&v98, 8);
@@ -1432,9 +1432,9 @@ uint64_t __134__ICCloudSyncingObjectCryptoStrategyV1_decryptWithMainKeyOfObject_
   return result;
 }
 
-- (id)encryptSidecarData:(id)a3
+- (id)encryptSidecarData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -1446,7 +1446,7 @@ uint64_t __134__ICCloudSyncingObjectCryptoStrategyV1_decryptWithMainKeyOfObject_
   v8[2] = __59__ICCloudSyncingObjectCryptoStrategyV1_encryptSidecarData___block_invoke;
   v8[3] = &unk_2781959B0;
   v8[4] = self;
-  v5 = v4;
+  v5 = dataCopy;
   v9 = v5;
   v10 = &v11;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v8];
@@ -1517,9 +1517,9 @@ void __59__ICCloudSyncingObjectCryptoStrategyV1_encryptSidecarData___block_invok
   *(v12 + 40) = v11;
 }
 
-- (id)decryptSidecarData:(id)a3
+- (id)decryptSidecarData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -1531,7 +1531,7 @@ void __59__ICCloudSyncingObjectCryptoStrategyV1_encryptSidecarData___block_invok
   v8[2] = __59__ICCloudSyncingObjectCryptoStrategyV1_decryptSidecarData___block_invoke;
   v8[3] = &unk_2781959B0;
   v8[4] = self;
-  v5 = v4;
+  v5 = dataCopy;
   v9 = v5;
   v10 = &v11;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v8];
@@ -1594,10 +1594,10 @@ ICEncryptedData *__59__ICCloudSyncingObjectCryptoStrategyV1_decryptSidecarData__
   return v5;
 }
 
-- (BOOL)encryptSidecarFileFromURL:(id)a3 toURL:(id)a4
+- (BOOL)encryptSidecarFileFromURL:(id)l toURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -1609,10 +1609,10 @@ ICEncryptedData *__59__ICCloudSyncingObjectCryptoStrategyV1_decryptSidecarData__
   v13[3] = &unk_27819A608;
   v9 = v8;
   v14 = v9;
-  v10 = v6;
+  v10 = lCopy;
   v15 = v10;
-  v16 = self;
-  v11 = v7;
+  selfCopy = self;
+  v11 = rLCopy;
   v17 = v11;
   v18 = &v19;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v13];
@@ -1760,25 +1760,25 @@ void __82__ICCloudSyncingObjectCryptoStrategyV1_fileURLEncryptionCryptoInitialza
   *(v4 + 40) = v3;
 }
 
-+ (void)encryptWithMainKeyOfObject:(id)a3 dataToEncrypt:(id)a4 failureHandler:(id)a5 successHandler:(id)a6
++ (void)encryptWithMainKeyOfObject:(id)object dataToEncrypt:(id)encrypt failureHandler:(id)handler successHandler:(id)successHandler
 {
-  v10 = a4;
+  encryptCopy = encrypt;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __111__ICCloudSyncingObjectCryptoStrategyV1_encryptWithMainKeyOfObject_dataToEncrypt_failureHandler_successHandler___block_invoke;
   v12[3] = &unk_27819A630;
-  v13 = v10;
-  v11 = v10;
-  [a1 encryptWithMainKeyOfObject:a3 dataPreparationBlock:v12 failureHandler:a5 successHandler:a6];
+  v13 = encryptCopy;
+  v11 = encryptCopy;
+  [self encryptWithMainKeyOfObject:object dataPreparationBlock:v12 failureHandler:handler successHandler:successHandler];
 }
 
-+ (void)encryptWithMainKeyOfObject:(id)a3 dataPreparationBlock:(id)a4 failureHandler:(id)a5 successHandler:(id)a6
++ (void)encryptWithMainKeyOfObject:(id)object dataPreparationBlock:(id)block failureHandler:(id)handler successHandler:(id)successHandler
 {
   v57 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  objectCopy = object;
+  blockCopy = block;
+  handlerCopy = handler;
+  successHandlerCopy = successHandler;
   v45 = 0;
   v46 = &v45;
   v47 = 0x3032000000;
@@ -1795,17 +1795,17 @@ void __82__ICCloudSyncingObjectCryptoStrategyV1_fileURLEncryptionCryptoInitialza
   v36 = &v35;
   v37 = 0x2020000000;
   v38 = 0;
-  v13 = [v9 managedObjectContext];
+  managedObjectContext = [objectCopy managedObjectContext];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __118__ICCloudSyncingObjectCryptoStrategyV1_encryptWithMainKeyOfObject_dataPreparationBlock_failureHandler_successHandler___block_invoke;
   v30[3] = &unk_278198478;
   v32 = &v39;
-  v14 = v9;
+  v14 = objectCopy;
   v31 = v14;
   v33 = &v45;
   v34 = &v35;
-  [v13 performBlockAndWait:v30];
+  [managedObjectContext performBlockAndWait:v30];
 
   if (*(v36 + 24) == 1)
   {
@@ -1835,7 +1835,7 @@ void __82__ICCloudSyncingObjectCryptoStrategyV1_fileURLEncryptionCryptoInitialza
     goto LABEL_21;
   }
 
-  v16 = v10[2](v10);
+  v16 = blockCopy[2](blockCopy);
   if (!v16)
   {
     v20 = os_log_create("com.apple.notes", "Crypto");
@@ -1864,15 +1864,15 @@ void __82__ICCloudSyncingObjectCryptoStrategyV1_fileURLEncryptionCryptoInitialza
     v23 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v14 className];
+      className = [v14 className];
       v25 = v46[5];
       *buf = 138412802;
-      v52 = v24;
+      v52 = className;
       v53 = 2112;
       v54 = v25;
       v55 = 2112;
       v56 = v22;
-      v26 = v24;
+      v26 = className;
       _os_log_error_impl(&dword_214D51000, v23, OS_LOG_TYPE_ERROR, "Error encrypting data for %@ %@: %@", buf, 0x20u);
     }
 
@@ -1880,9 +1880,9 @@ LABEL_20:
 LABEL_21:
 
 LABEL_22:
-    if (v11)
+    if (handlerCopy)
     {
-      v11[2](v11);
+      handlerCopy[2](handlerCopy);
     }
 
     v18 = 0;
@@ -1891,9 +1891,9 @@ LABEL_22:
     goto LABEL_25;
   }
 
-  if (v12)
+  if (successHandlerCopy)
   {
-    v12[2](v12, v18, v19, v20);
+    successHandlerCopy[2](successHandlerCopy, v18, v19, v20);
   }
 
 LABEL_25:
@@ -1924,9 +1924,9 @@ uint64_t __118__ICCloudSyncingObjectCryptoStrategyV1_encryptWithMainKeyOfObject_
   return result;
 }
 
-- (BOOL)mergeEncryptedDataFromRecord:(id)a3
+- (BOOL)mergeEncryptedDataFromRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -1936,7 +1936,7 @@ uint64_t __118__ICCloudSyncingObjectCryptoStrategyV1_encryptWithMainKeyOfObject_
   v7[2] = __69__ICCloudSyncingObjectCryptoStrategyV1_mergeEncryptedDataFromRecord___block_invoke;
   v7[3] = &unk_2781959B0;
   v7[4] = self;
-  v5 = v4;
+  v5 = recordCopy;
   v8 = v5;
   v9 = &v10;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v7];
@@ -1988,16 +1988,16 @@ LABEL_6:
   }
 }
 
-- (void)decryptAndMergeEncryptedJSON:(id)a3
+- (void)decryptAndMergeEncryptedJSON:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__ICCloudSyncingObjectCryptoStrategyV1_decryptAndMergeEncryptedJSON___block_invoke;
   v6[3] = &unk_278195A50;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = nCopy;
+  v5 = nCopy;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v6];
 }
 
@@ -2035,9 +2035,9 @@ void __69__ICCloudSyncingObjectCryptoStrategyV1_decryptAndMergeEncryptedJSON___b
   }
 }
 
-- (BOOL)recordHasChangedPassphrase:(id)a3
+- (BOOL)recordHasChangedPassphrase:(id)passphrase
 {
-  v4 = a3;
+  passphraseCopy = passphrase;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -2046,7 +2046,7 @@ void __69__ICCloudSyncingObjectCryptoStrategyV1_decryptAndMergeEncryptedJSON___b
   v7[1] = 3221225472;
   v7[2] = __67__ICCloudSyncingObjectCryptoStrategyV1_recordHasChangedPassphrase___block_invoke;
   v7[3] = &unk_2781959D8;
-  v5 = v4;
+  v5 = passphraseCopy;
   v8 = v5;
   v9 = &v10;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v7];
@@ -2186,9 +2186,9 @@ LABEL_9:
   }
 }
 
-- (BOOL)mainKeyDecryptsPrimaryData:(id)a3
+- (BOOL)mainKeyDecryptsPrimaryData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -2199,7 +2199,7 @@ LABEL_9:
   v7[3] = &unk_2781985D0;
   v9 = &v10;
   v7[4] = self;
-  v5 = v4;
+  v5 = dataCopy;
   v8 = v5;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v7];
   LOBYTE(self) = *(v11 + 24);
@@ -2215,14 +2215,14 @@ uint64_t __67__ICCloudSyncingObjectCryptoStrategyV1_mainKeyDecryptsPrimaryData__
   return result;
 }
 
-- (BOOL)canMainKey:(id)a3 decryptObject:(id)a4
+- (BOOL)canMainKey:(id)key decryptObject:(id)object
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 metadata];
-  v8 = [v7 cipherVersion];
+  keyCopy = key;
+  objectCopy = object;
+  metadata = [keyCopy metadata];
+  cipherVersion = [metadata cipherVersion];
 
-  if (v8)
+  if (cipherVersion)
   {
     v9 = 0;
   }
@@ -2231,26 +2231,26 @@ uint64_t __67__ICCloudSyncingObjectCryptoStrategyV1_mainKeyDecryptsPrimaryData__
   {
     objc_opt_class();
     v10 = ICDynamicCast();
-    v11 = [v10 cryptoVerifier];
-    if (v11)
+    cryptoVerifier = [v10 cryptoVerifier];
+    if (cryptoVerifier)
     {
-      v12 = v11;
+      cryptoWrappedKey = cryptoVerifier;
     }
 
     else
     {
-      v12 = [v6 cryptoWrappedKey];
+      cryptoWrappedKey = [objectCopy cryptoWrappedKey];
 
-      if (!v12)
+      if (!cryptoWrappedKey)
       {
         v9 = 1;
         goto LABEL_18;
       }
     }
 
-    v13 = [v5 keyData];
+    keyData = [keyCopy keyData];
     v19 = 0;
-    v14 = [ICCipherV1 unwrapKey:v12 withWrapper:v13 error:&v19];
+    v14 = [ICCipherV1 unwrapKey:cryptoWrappedKey withWrapper:keyData error:&v19];
     v15 = v19;
 
     if (v15)
@@ -2279,23 +2279,23 @@ LABEL_18:
   return v9;
 }
 
-- (void)rewrapKeyWithNewMainKey:(id)a3 salt:(id)a4 iterationCount:(unint64_t)a5 hint:(id)a6
+- (void)rewrapKeyWithNewMainKey:(id)key salt:(id)salt iterationCount:(unint64_t)count hint:(id)hint
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  keyCopy = key;
+  saltCopy = salt;
+  hintCopy = hint;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __89__ICCloudSyncingObjectCryptoStrategyV1_rewrapKeyWithNewMainKey_salt_iterationCount_hint___block_invoke;
   v16[3] = &unk_27819A658;
   v16[4] = self;
-  v17 = v10;
-  v19 = v12;
-  v20 = a5;
-  v18 = v11;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v17 = keyCopy;
+  v19 = hintCopy;
+  countCopy = count;
+  v18 = saltCopy;
+  v13 = hintCopy;
+  v14 = saltCopy;
+  v15 = keyCopy;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v16];
 }
 
@@ -2377,12 +2377,12 @@ void __89__ICCloudSyncingObjectCryptoStrategyV1_rewrapKeyWithNewMainKey_salt_ite
   }
 }
 
-- (id)encryptedData:(id)a3 rewrappedWithMainKey:(id)a4
+- (id)encryptedData:(id)data rewrappedWithMainKey:(id)key
 {
-  v5 = a3;
+  dataCopy = data;
   if ([(ICCloudSyncingObjectCryptoStrategyV1 *)self isAuthenticated])
   {
-    v6 = v5;
+    v6 = dataCopy;
   }
 
   else
@@ -2395,10 +2395,10 @@ void __89__ICCloudSyncingObjectCryptoStrategyV1_rewrapKeyWithNewMainKey_salt_ite
   return v6;
 }
 
-- (BOOL)rewrapWithMainKey:(id)a3
+- (BOOL)rewrapWithMainKey:(id)key
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -2414,18 +2414,18 @@ void __89__ICCloudSyncingObjectCryptoStrategyV1_rewrapKeyWithNewMainKey_salt_ite
   v13[2] = __58__ICCloudSyncingObjectCryptoStrategyV1_rewrapWithMainKey___block_invoke;
   v13[3] = &unk_2781959B0;
   v13[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   v14 = v6;
   v15 = &v16;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v13];
   v7 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(ICCryptoStrategyBase *)self object];
-    v11 = [v10 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     v12 = [MEMORY[0x277CCABB0] numberWithBool:*(v17 + 24)];
     *buf = 138413058;
-    v21 = v11;
+    v21 = shortLoggingDescription;
     v22 = 2112;
     v24 = 2080;
     v23 = v12;
@@ -2544,9 +2544,9 @@ LABEL_14:
 LABEL_15:
 }
 
-- (BOOL)hasSameKeyAsObject:(id)a3
+- (BOOL)hasSameKeyAsObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -2556,7 +2556,7 @@ LABEL_15:
   v7[2] = __59__ICCloudSyncingObjectCryptoStrategyV1_hasSameKeyAsObject___block_invoke;
   v7[3] = &unk_278195960;
   v9 = &v10;
-  v5 = v4;
+  v5 = objectCopy;
   v8 = v5;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v7];
   LOBYTE(self) = *(v11 + 24);
@@ -2584,16 +2584,16 @@ void __59__ICCloudSyncingObjectCryptoStrategyV1_hasSameKeyAsObject___block_invok
   *(*(*(a1 + 40) + 8) + 24) = v6;
 }
 
-- (void)rewrapAndDivergeKeyUsingPassphrase:(id)a3
+- (void)rewrapAndDivergeKeyUsingPassphrase:(id)passphrase
 {
-  v4 = a3;
+  passphraseCopy = passphrase;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __75__ICCloudSyncingObjectCryptoStrategyV1_rewrapAndDivergeKeyUsingPassphrase___block_invoke;
   v6[3] = &unk_278195A50;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = passphraseCopy;
+  selfCopy = self;
+  v5 = passphraseCopy;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v6];
 }
 
@@ -2797,9 +2797,9 @@ void __55__ICCloudSyncingObjectCryptoStrategyV1_isAuthenticated__block_invoke(ui
   }
 }
 
-- (id)mainKeyForPassphrase:(id)a3
+- (id)mainKeyForPassphrase:(id)passphrase
 {
-  v4 = a3;
+  passphraseCopy = passphrase;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -2810,7 +2810,7 @@ void __55__ICCloudSyncingObjectCryptoStrategyV1_isAuthenticated__block_invoke(ui
   v8[1] = 3221225472;
   v8[2] = __61__ICCloudSyncingObjectCryptoStrategyV1_mainKeyForPassphrase___block_invoke;
   v8[3] = &unk_2781959D8;
-  v5 = v4;
+  v5 = passphraseCopy;
   v9 = v5;
   v10 = &v11;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v8];
@@ -2899,9 +2899,9 @@ LABEL_16:
 LABEL_17:
 }
 
-- (BOOL)authenticateWithPassphrase:(id)a3
+- (BOOL)authenticateWithPassphrase:(id)passphrase
 {
-  v4 = a3;
+  passphraseCopy = passphrase;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -2911,7 +2911,7 @@ LABEL_17:
   v7[2] = __67__ICCloudSyncingObjectCryptoStrategyV1_authenticateWithPassphrase___block_invoke;
   v7[3] = &unk_2781959B0;
   v7[4] = self;
-  v5 = v4;
+  v5 = passphraseCopy;
   v8 = v5;
   v9 = &v10;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v7];
@@ -2950,9 +2950,9 @@ void __67__ICCloudSyncingObjectCryptoStrategyV1_authenticateWithPassphrase___blo
   }
 }
 
-- (BOOL)isPassphraseCorrect:(id)a3
+- (BOOL)isPassphraseCorrect:(id)correct
 {
-  v4 = a3;
+  correctCopy = correct;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -2962,7 +2962,7 @@ void __67__ICCloudSyncingObjectCryptoStrategyV1_authenticateWithPassphrase___blo
   v7[2] = __60__ICCloudSyncingObjectCryptoStrategyV1_isPassphraseCorrect___block_invoke;
   v7[3] = &unk_2781959B0;
   v7[4] = self;
-  v5 = v4;
+  v5 = correctCopy;
   v8 = v5;
   v9 = &v10;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v7];
@@ -3080,7 +3080,7 @@ void __65__ICCloudSyncingObjectCryptoStrategyV1_encryptionObjectWithData___block
 
 - (void)saveEncryptedJSON
 {
-  v1 = [a1 object];
+  object = [self object];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_0_1();
   OUTLINED_FUNCTION_1_1();

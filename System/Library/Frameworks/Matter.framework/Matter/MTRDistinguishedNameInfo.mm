@@ -1,32 +1,32 @@
 @interface MTRDistinguishedNameInfo
-- (BOOL)isEqual:(id)a3;
-- (MTRDistinguishedNameInfo)initWithDN:(const void *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTRDistinguishedNameInfo)initWithDN:(const void *)n;
 - (NSSet)caseAuthenticatedTags;
 @end
 
 @implementation MTRDistinguishedNameInfo
 
-- (MTRDistinguishedNameInfo)initWithDN:(const void *)a3
+- (MTRDistinguishedNameInfo)initWithDN:(const void *)n
 {
   v12.receiver = self;
   v12.super_class = MTRDistinguishedNameInfo;
   result = [(MTRDistinguishedNameInfo *)&v12 init];
   if (result)
   {
-    v5 = *a3;
-    *&result->_dn.rdn[0].mChipVal = *(a3 + 1);
+    v5 = *n;
+    *&result->_dn.rdn[0].mChipVal = *(n + 1);
     result->_dn.rdn[0].mString = v5;
-    v6 = *(a3 + 2);
-    v7 = *(a3 + 3);
-    v8 = *(a3 + 4);
-    *&result->_dn.rdn[2].mChipVal = *(a3 + 5);
+    v6 = *(n + 2);
+    v7 = *(n + 3);
+    v8 = *(n + 4);
+    *&result->_dn.rdn[2].mChipVal = *(n + 5);
     result->_dn.rdn[2].mString = v8;
     *&result->_dn.rdn[1].mChipVal = v7;
     result->_dn.rdn[1].mString = v6;
-    v9 = *(a3 + 6);
-    v10 = *(a3 + 7);
-    v11 = *(a3 + 8);
-    *&result->_dn.rdn[4].mChipVal = *(a3 + 9);
+    v9 = *(n + 6);
+    v10 = *(n + 7);
+    v11 = *(n + 8);
+    *&result->_dn.rdn[4].mChipVal = *(n + 9);
     result->_dn.rdn[4].mString = v11;
     *&result->_dn.rdn[3].mChipVal = v10;
     result->_dn.rdn[3].mString = v9;
@@ -81,10 +81,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -92,7 +92,7 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = v5 == objc_opt_class() && sub_23949EB88(&self->_dn, &v4->_dn);
+    v6 = v5 == objc_opt_class() && sub_23949EB88(&self->_dn, &equalCopy->_dn);
   }
 
   return v6;

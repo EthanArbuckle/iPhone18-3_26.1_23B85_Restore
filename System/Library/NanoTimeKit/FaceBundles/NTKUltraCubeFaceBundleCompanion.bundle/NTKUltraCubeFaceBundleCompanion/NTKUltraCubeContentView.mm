@@ -1,44 +1,44 @@
 @interface NTKUltraCubeContentView
-+ (id)timeLabelFontForDevice:(id)a3 size:(double)a4 typeface:(unint64_t)a5 role:(unint64_t)a6;
-+ (id)timeLabelStyleForDevice:(id)a3 font:(id)a4 baseline:(double)a5 faceBounds:(CGRect)a6;
-- (NTKUltraCubeContentView)initWithFrame:(CGRect)a3 role:(unint64_t)a4 typeface:(unint64_t)a5 device:(id)a6;
++ (id)timeLabelFontForDevice:(id)device size:(double)size typeface:(unint64_t)typeface role:(unint64_t)role;
++ (id)timeLabelStyleForDevice:(id)device font:(id)font baseline:(double)baseline faceBounds:(CGRect)bounds;
+- (NTKUltraCubeContentView)initWithFrame:(CGRect)frame role:(unint64_t)role typeface:(unint64_t)typeface device:(id)device;
 - (id)_digitalTimeLabelStyle;
-- (void)_applyColorRampTo:(id)a3 colorMatrix:(id)a4 fromPalette:(id)a5 toPalette:(id)a6 fraction:(double)a7;
+- (void)_applyColorRampTo:(id)to colorMatrix:(id)matrix fromPalette:(id)palette toPalette:(id)toPalette fraction:(double)fraction;
 - (void)_applyContentEffect;
 - (void)_hideShadowsAndGradients;
 - (void)_reorderViewsForPhoto;
 - (void)_showShadowsAndGradients;
-- (void)applyColorTransitionFraction:(double)a3 fromPalette:(id)a4 toPalette:(id)a5;
+- (void)applyColorTransitionFraction:(double)fraction fromPalette:(id)palette toPalette:(id)toPalette;
 - (void)applyCornerRadiusMask;
-- (void)copyFiltersFromContentView:(id)a3;
+- (void)copyFiltersFromContentView:(id)view;
 - (void)invalidateDigitalTimeLabelStyle;
 - (void)layoutSubviews;
-- (void)setContentAlpha:(double)a3;
-- (void)setContentEffect:(id)a3;
-- (void)setContentsMultiplyByWhite:(double)a3;
-- (void)setMidgroundView:(id)a3;
-- (void)setTypeface:(unint64_t)a3;
-- (void)updateForegroundImage:(id)a3 backgroundImage:(id)a4 timeElementShadowColor:(id)a5 topGradientView:(id)a6 bottomGradientView:(id)a7 isTimeElementFront:(BOOL)a8;
+- (void)setContentAlpha:(double)alpha;
+- (void)setContentEffect:(id)effect;
+- (void)setContentsMultiplyByWhite:(double)white;
+- (void)setMidgroundView:(id)view;
+- (void)setTypeface:(unint64_t)typeface;
+- (void)updateForegroundImage:(id)image backgroundImage:(id)backgroundImage timeElementShadowColor:(id)color topGradientView:(id)view bottomGradientView:(id)gradientView isTimeElementFront:(BOOL)front;
 @end
 
 @implementation NTKUltraCubeContentView
 
-- (NTKUltraCubeContentView)initWithFrame:(CGRect)a3 role:(unint64_t)a4 typeface:(unint64_t)a5 device:(id)a6
+- (NTKUltraCubeContentView)initWithFrame:(CGRect)frame role:(unint64_t)role typeface:(unint64_t)typeface device:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v14 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v36.receiver = self;
   v36.super_class = NTKUltraCubeContentView;
-  v15 = [(NTKUltraCubeContentView *)&v36 initWithFrame:x, y, width, height];
-  v16 = v15;
-  if (v15)
+  height = [(NTKUltraCubeContentView *)&v36 initWithFrame:x, y, width, height];
+  v16 = height;
+  if (height)
   {
-    objc_storeStrong(&v15->_device, a6);
-    v16->_role = a4;
-    v16->_typeface = a5;
+    objc_storeStrong(&height->_device, device);
+    v16->_role = role;
+    v16->_typeface = typeface;
     v16->_isTimeElementFront = 1;
     v16->_timeElementUnitBaseline = 0.328125;
     v16->_timeElementUnitHeight = 0.241116751;
@@ -46,7 +46,7 @@
     timeLabel = v16->_timeLabel;
     v16->_timeLabel = v17;
 
-    [(NTKDigitalTimeLabel *)v16->_timeLabel setUsesLegibility:a4 == 0];
+    [(NTKDigitalTimeLabel *)v16->_timeLabel setUsesLegibility:role == 0];
     v19 = v16->_timeLabel;
     v20 = +[UIColor whiteColor];
     [(NTKDigitalTimeLabel *)v19 setTextColor:v20];
@@ -57,14 +57,14 @@
     [(NTKDigitalTimeLabel *)v21 setTimeOffset:?];
 
     [(NTKUltraCubeContentView *)v16 invalidateDigitalTimeLabelStyle];
-    v23 = [[NTKUltraCubeImageContainerView alloc] initWithFrame:x, y, width, height];
+    height2 = [[NTKUltraCubeImageContainerView alloc] initWithFrame:x, y, width, height];
     foregroundContainerView = v16->_foregroundContainerView;
-    v16->_foregroundContainerView = v23;
+    v16->_foregroundContainerView = height2;
 
     [(NTKUltraCubeImageContainerView *)v16->_foregroundContainerView setOpaque:0];
-    v25 = [[NTKUltraCubeImageContainerView alloc] initWithFrame:x, y, width, height];
+    height3 = [[NTKUltraCubeImageContainerView alloc] initWithFrame:x, y, width, height];
     backgroundContainerView = v16->_backgroundContainerView;
-    v16->_backgroundContainerView = v25;
+    v16->_backgroundContainerView = height3;
 
     [(NTKUltraCubeImageContainerView *)v16->_backgroundContainerView setOpaque:1];
     v27 = [[UIView alloc] initWithFrame:{x, y, width, height}];
@@ -72,7 +72,7 @@
     v16->_containerView = v27;
 
     [(NTKUltraCubeContentView *)v16 addSubview:v16->_containerView];
-    v29 = [[NTKRoundedCornerOverlayView alloc] initWithFrame:v14 forDeviceCornerRadius:{x, y, width, height}];
+    v29 = [[NTKRoundedCornerOverlayView alloc] initWithFrame:deviceCopy forDeviceCornerRadius:{x, y, width, height}];
     cornerView = v16->_cornerView;
     v16->_cornerView = v29;
 
@@ -97,38 +97,38 @@
   [(NTKDigitalTimeLabel *)self->_timeLabel setFrameUsingCurrentStyle];
 }
 
-- (void)updateForegroundImage:(id)a3 backgroundImage:(id)a4 timeElementShadowColor:(id)a5 topGradientView:(id)a6 bottomGradientView:(id)a7 isTimeElementFront:(BOOL)a8
+- (void)updateForegroundImage:(id)image backgroundImage:(id)backgroundImage timeElementShadowColor:(id)color topGradientView:(id)view bottomGradientView:(id)gradientView isTimeElementFront:(BOOL)front
 {
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  colorCopy = color;
+  viewCopy = view;
+  gradientViewCopy = gradientView;
   topGradientView = self->_topGradientView;
-  v18 = a4;
-  v19 = a3;
+  backgroundImageCopy = backgroundImage;
+  imageCopy = image;
   [(UIView *)topGradientView removeFromSuperview];
   [(UIView *)self->_bottomGradientView removeFromSuperview];
   v20 = self->_topGradientView;
-  self->_topGradientView = v15;
-  v21 = v15;
+  self->_topGradientView = viewCopy;
+  v21 = viewCopy;
 
   bottomGradientView = self->_bottomGradientView;
-  self->_bottomGradientView = v16;
-  v23 = v16;
+  self->_bottomGradientView = gradientViewCopy;
+  v23 = gradientViewCopy;
 
-  self->_isTimeElementFront = a8;
+  self->_isTimeElementFront = front;
   timeElementShadowColor = self->_timeElementShadowColor;
-  self->_timeElementShadowColor = v14;
-  v25 = v14;
+  self->_timeElementShadowColor = colorCopy;
+  v25 = colorCopy;
 
-  [(NTKUltraCubeImageContainerView *)self->_foregroundContainerView setHidden:v19 == 0];
-  [(NTKUltraCubeImageContainerView *)self->_foregroundContainerView setImage:v19];
+  [(NTKUltraCubeImageContainerView *)self->_foregroundContainerView setHidden:imageCopy == 0];
+  [(NTKUltraCubeImageContainerView *)self->_foregroundContainerView setImage:imageCopy];
   v26 = NTKGenerateMonochromeColorMatrixFromImage();
 
   foregroundMonochromeColorMatrix = self->_foregroundMonochromeColorMatrix;
   self->_foregroundMonochromeColorMatrix = v26;
 
-  [(NTKUltraCubeImageContainerView *)self->_backgroundContainerView setHidden:v18 == 0];
-  [(NTKUltraCubeImageContainerView *)self->_backgroundContainerView setImage:v18];
+  [(NTKUltraCubeImageContainerView *)self->_backgroundContainerView setHidden:backgroundImageCopy == 0];
+  [(NTKUltraCubeImageContainerView *)self->_backgroundContainerView setImage:backgroundImageCopy];
   v28 = NTKGenerateMonochromeColorMatrixFromImage();
 
   backgroundMonochromeColorMatrix = self->_backgroundMonochromeColorMatrix;
@@ -139,26 +139,26 @@
   [(NTKUltraCubeContentView *)self _reorderViewsForPhoto];
 }
 
-- (void)copyFiltersFromContentView:(id)a3
+- (void)copyFiltersFromContentView:(id)view
 {
   foregroundContainerView = self->_foregroundContainerView;
-  v5 = a3;
-  v6 = [v5 foregroundContainerView];
-  v7 = [v6 imageFilters];
-  [(NTKUltraCubeImageContainerView *)foregroundContainerView setImageFilters:v7];
+  viewCopy = view;
+  foregroundContainerView = [viewCopy foregroundContainerView];
+  imageFilters = [foregroundContainerView imageFilters];
+  [(NTKUltraCubeImageContainerView *)foregroundContainerView setImageFilters:imageFilters];
 
   backgroundContainerView = self->_backgroundContainerView;
-  v10 = [v5 backgroundContainerView];
+  backgroundContainerView = [viewCopy backgroundContainerView];
 
-  v9 = [v10 imageFilters];
-  [(NTKUltraCubeImageContainerView *)backgroundContainerView setImageFilters:v9];
+  imageFilters2 = [backgroundContainerView imageFilters];
+  [(NTKUltraCubeImageContainerView *)backgroundContainerView setImageFilters:imageFilters2];
 }
 
-- (void)setContentsMultiplyByWhite:(double)a3
+- (void)setContentsMultiplyByWhite:(double)white
 {
-  [(NTKUltraCubeContentView *)self setForegroundContentsMultiplyByWhite:a3 alpha:1.0];
+  [(NTKUltraCubeContentView *)self setForegroundContentsMultiplyByWhite:white alpha:1.0];
 
-  [(NTKUltraCubeContentView *)self setBackgroundContentsMultiplyByWhite:a3];
+  [(NTKUltraCubeContentView *)self setBackgroundContentsMultiplyByWhite:white];
 }
 
 - (void)_reorderViewsForPhoto
@@ -248,26 +248,26 @@ LABEL_11:
   }
 }
 
-- (void)setContentAlpha:(double)a3
+- (void)setContentAlpha:(double)alpha
 {
   [(NTKUltraCubeImageContainerView *)self->_backgroundContainerView setContentAlpha:?];
   foregroundContainerView = self->_foregroundContainerView;
 
-  [(NTKUltraCubeImageContainerView *)foregroundContainerView setContentAlpha:a3];
+  [(NTKUltraCubeImageContainerView *)foregroundContainerView setContentAlpha:alpha];
 }
 
-- (void)setMidgroundView:(id)a3
+- (void)setMidgroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   midgroundView = self->_midgroundView;
-  if (midgroundView != v5)
+  if (midgroundView != viewCopy)
   {
-    if (!v5 || midgroundView)
+    if (!viewCopy || midgroundView)
     {
       [(UIView *)midgroundView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_midgroundView, a3);
+    objc_storeStrong(&self->_midgroundView, view);
     v7 = self->_midgroundView;
     if (v7)
     {
@@ -294,42 +294,42 @@ LABEL_11:
   v6 = [UIBezierPath bezierPathWithRoundedRect:"bezierPathWithRoundedRect:cornerRadius:" cornerRadius:?];
   -[CAShapeLayer setPath:](self->_maskingLayer, "setPath:", [v6 CGPath]);
 
-  v7 = [(UIView *)self->_containerView layer];
-  [v7 setMask:self->_maskingLayer];
+  layer = [(UIView *)self->_containerView layer];
+  [layer setMask:self->_maskingLayer];
 }
 
-- (void)setContentEffect:(id)a3
+- (void)setContentEffect:(id)effect
 {
-  objc_storeStrong(&self->_contentEffect, a3);
+  objc_storeStrong(&self->_contentEffect, effect);
 
   [(NTKUltraCubeContentView *)self _applyContentEffect];
 }
 
 - (void)_applyContentEffect
 {
-  v3 = [(NTKUltraCubeContentEffect *)self->_contentEffect palette];
-  v4 = [v3 isOriginalColor];
+  palette = [(NTKUltraCubeContentEffect *)self->_contentEffect palette];
+  isOriginalColor = [palette isOriginalColor];
 
   contentEffect = self->_contentEffect;
-  if (!contentEffect || (v4 & 1) != 0)
+  if (!contentEffect || (isOriginalColor & 1) != 0)
   {
     goto LABEL_6;
   }
 
-  v6 = [(NTKUltraCubeContentEffect *)contentEffect colorEffect];
-  if (v6 != &dword_0 + 2)
+  colorEffect = [(NTKUltraCubeContentEffect *)contentEffect colorEffect];
+  if (colorEffect != &dword_0 + 2)
   {
-    if (v6 == &dword_0 + 1)
+    if (colorEffect == &dword_0 + 1)
     {
       [(NTKUltraCubeContentView *)self _hideShadowsAndGradients];
-      v9 = [(NTKUltraCubeContentEffect *)self->_contentEffect palette];
-      [(NTKUltraCubeContentView *)self _applyBackgroundColorRampFromPalette:0 toPalette:v9 fraction:1.0];
+      palette2 = [(NTKUltraCubeContentEffect *)self->_contentEffect palette];
+      [(NTKUltraCubeContentView *)self _applyBackgroundColorRampFromPalette:0 toPalette:palette2 fraction:1.0];
 
       v7 = 144;
       goto LABEL_7;
     }
 
-    if (v6)
+    if (colorEffect)
     {
       return;
     }
@@ -346,37 +346,37 @@ LABEL_7:
   }
 
   [(NTKUltraCubeContentView *)self _hideShadowsAndGradients];
-  v10 = [(NTKUltraCubeContentEffect *)self->_contentEffect palette];
-  [(NTKUltraCubeContentView *)self _applyBackgroundColorRampFromPalette:0 toPalette:v10 fraction:1.0];
+  palette3 = [(NTKUltraCubeContentEffect *)self->_contentEffect palette];
+  [(NTKUltraCubeContentView *)self _applyBackgroundColorRampFromPalette:0 toPalette:palette3 fraction:1.0];
 
-  v11 = [(NTKUltraCubeContentEffect *)self->_contentEffect palette];
-  [(NTKUltraCubeContentView *)self _applyForegroundColorRampFromPalette:0 toPalette:v11 fraction:1.0];
+  palette4 = [(NTKUltraCubeContentEffect *)self->_contentEffect palette];
+  [(NTKUltraCubeContentView *)self _applyForegroundColorRampFromPalette:0 toPalette:palette4 fraction:1.0];
 }
 
-- (void)_applyColorRampTo:(id)a3 colorMatrix:(id)a4 fromPalette:(id)a5 toPalette:(id)a6 fraction:(double)a7
+- (void)_applyColorRampTo:(id)to colorMatrix:(id)matrix fromPalette:(id)palette toPalette:(id)toPalette fraction:(double)fraction
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_22814;
   v12[3] = &unk_49470;
-  v13 = a3;
-  v11 = v13;
-  [NTKPhotosColorPalette colorRampForMonochromeColorMatrix:a4 fromPalette:a5 toPalette:a6 transitionFraction:v12 completion:a7];
+  toCopy = to;
+  v11 = toCopy;
+  [NTKPhotosColorPalette colorRampForMonochromeColorMatrix:matrix fromPalette:palette toPalette:toPalette transitionFraction:v12 completion:fraction];
 }
 
-- (void)applyColorTransitionFraction:(double)a3 fromPalette:(id)a4 toPalette:(id)a5
+- (void)applyColorTransitionFraction:(double)fraction fromPalette:(id)palette toPalette:(id)toPalette
 {
-  v10 = a4;
-  v8 = a5;
+  paletteCopy = palette;
+  toPaletteCopy = toPalette;
   contentEffect = self->_contentEffect;
   if (contentEffect)
   {
     if ([(NTKUltraCubeContentEffect *)contentEffect colorEffect])
     {
-      [(NTKUltraCubeContentView *)self _applyBackgroundColorRampFromPalette:v10 toPalette:v8 fraction:a3];
+      [(NTKUltraCubeContentView *)self _applyBackgroundColorRampFromPalette:paletteCopy toPalette:toPaletteCopy fraction:fraction];
       if ([(NTKUltraCubeContentEffect *)self->_contentEffect colorEffect]== &dword_0 + 2)
       {
-        [(NTKUltraCubeContentView *)self _applyForegroundColorRampFromPalette:v10 toPalette:v8 fraction:a3];
+        [(NTKUltraCubeContentView *)self _applyForegroundColorRampFromPalette:paletteCopy toPalette:toPaletteCopy fraction:fraction];
       }
     }
   }
@@ -403,11 +403,11 @@ LABEL_7:
   [(UIView *)bottomGradientView setHidden:0];
 }
 
-- (void)setTypeface:(unint64_t)a3
+- (void)setTypeface:(unint64_t)typeface
 {
-  if (self->_typeface != a3)
+  if (self->_typeface != typeface)
   {
-    self->_typeface = a3;
+    self->_typeface = typeface;
     [(NTKUltraCubeContentView *)self invalidateDigitalTimeLabelStyle];
   }
 }
@@ -415,8 +415,8 @@ LABEL_7:
 - (void)invalidateDigitalTimeLabelStyle
 {
   timeLabel = self->_timeLabel;
-  v4 = [(NTKUltraCubeContentView *)self _digitalTimeLabelStyle];
-  [(NTKDigitalTimeLabel *)timeLabel setStyle:v4];
+  _digitalTimeLabelStyle = [(NTKUltraCubeContentView *)self _digitalTimeLabelStyle];
+  [(NTKDigitalTimeLabel *)timeLabel setStyle:_digitalTimeLabelStyle];
 
   [(NTKUltraCubeContentView *)self setNeedsLayout];
 }
@@ -434,28 +434,28 @@ LABEL_7:
   return v12;
 }
 
-+ (id)timeLabelStyleForDevice:(id)a3 font:(id)a4 baseline:(double)a5 faceBounds:(CGRect)a6
++ (id)timeLabelStyleForDevice:(id)device font:(id)font baseline:(double)baseline faceBounds:(CGRect)bounds
 {
-  width = a6.size.width;
-  v7 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:0 withRightSideMargin:a4 applyAdvanceFudge:a3 withBaselineY:a6.origin.x withFont:a6.origin.y forDevice:a6.size.width, a6.size.height, 0.0, round(a6.size.height * a5)];
-  v8 = [v7 layoutRule];
-  [v8 referenceFrame];
+  width = bounds.size.width;
+  v7 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:0 withRightSideMargin:font applyAdvanceFudge:device withBaselineY:bounds.origin.x withFont:bounds.origin.y forDevice:bounds.size.width, bounds.size.height, 0.0, round(bounds.size.height * baseline)];
+  layoutRule = [v7 layoutRule];
+  [layoutRule referenceFrame];
   v10 = v9;
   v12 = v11;
 
-  v13 = [v7 layoutRule];
-  [v13 setReferenceFrame:{0.0, v10, width, v12}];
+  layoutRule2 = [v7 layoutRule];
+  [layoutRule2 setReferenceFrame:{0.0, v10, width, v12}];
 
-  v14 = [v7 layoutRule];
-  [v14 setHorizontalLayout:1];
+  layoutRule3 = [v7 layoutRule];
+  [layoutRule3 setHorizontalLayout:1];
 
   return v7;
 }
 
-+ (id)timeLabelFontForDevice:(id)a3 size:(double)a4 typeface:(unint64_t)a5 role:(unint64_t)a6
++ (id)timeLabelFontForDevice:(id)device size:(double)size typeface:(unint64_t)typeface role:(unint64_t)role
 {
   v9 = NTKEnableAODVibrancy() ^ 1;
-  if (a6 == 1)
+  if (role == 1)
   {
     v10 = v9;
   }
@@ -465,17 +465,17 @@ LABEL_7:
     v10 = 0;
   }
 
-  if (a5)
+  if (typeface)
   {
-    if (a5 == 2)
+    if (typeface == 2)
     {
-      v11 = round(a4 * 0.9);
+      v11 = round(size * 0.9);
       [NTKUltraCubeFontLoader tokyoFontDescriptorOutlined:v10];
     }
 
     else
     {
-      v11 = round(a4 * 0.95);
+      v11 = round(size * 0.95);
       [NTKUltraCubeFontLoader sfNumeralsFontDescriptorOutlined:v10];
     }
     v12 = ;
@@ -483,7 +483,7 @@ LABEL_7:
 
   else
   {
-    v11 = round(a4 * 0.9);
+    v11 = round(size * 0.9);
     v12 = [NTKUltraCubeFontLoader nyNumeralsFontDescriptorOutlined:v10];
   }
 

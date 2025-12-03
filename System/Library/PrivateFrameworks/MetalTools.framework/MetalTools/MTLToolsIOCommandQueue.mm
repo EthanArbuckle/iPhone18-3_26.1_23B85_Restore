@@ -1,5 +1,5 @@
 @interface MTLToolsIOCommandQueue
-- (MTLToolsIOCommandQueue)initWithBaseObject:(id)a3 parent:(id)a4;
+- (MTLToolsIOCommandQueue)initWithBaseObject:(id)object parent:(id)parent;
 - (NSString)label;
 - (id)commandBuffer;
 - (id)commandBufferWithUnretainedReferences;
@@ -7,30 +7,30 @@
 - (void)barrier;
 - (void)dealloc;
 - (void)enqueueBarrier;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation MTLToolsIOCommandQueue
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setLabel:a3];
+  [baseObject setLabel:label];
 }
 
-- (MTLToolsIOCommandQueue)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTLToolsIOCommandQueue)initWithBaseObject:(id)object parent:(id)parent
 {
   v5.receiver = self;
   v5.super_class = MTLToolsIOCommandQueue;
-  return [(MTLToolsObject *)&v5 initWithBaseObject:a3 parent:a4];
+  return [(MTLToolsObject *)&v5 initWithBaseObject:object parent:parent];
 }
 
 - (void)dealloc
@@ -60,23 +60,23 @@
 
 - (void)barrier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 enqueueBarrier];
+  [baseObject enqueueBarrier];
 }
 
 - (void)enqueueBarrier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 enqueueBarrier];
+  [baseObject enqueueBarrier];
 }
 
 - (unint64_t)globalTraceObjectID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 globalTraceObjectID];
+  return [baseObject globalTraceObjectID];
 }
 
 @end

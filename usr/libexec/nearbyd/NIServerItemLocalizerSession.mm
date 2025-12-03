@@ -3,54 +3,54 @@
 - (BOOL)_isSessionRunning;
 - (BOOL)_setCompanionDeviceRoseMacAddress;
 - (BOOL)_shouldRange;
-- (BOOL)_stopRangingMangagerAndCompanion:(id *)a3 shouldReconfigureLocalRangingSession:(BOOL)a4;
-- (BOOL)_updateNBAMMSCompanionConfigurationCommandWithRequest:(const void *)a3 rangeConfig:(RangeConfigNBAMMS *)a4;
+- (BOOL)_stopRangingMangagerAndCompanion:(id *)companion shouldReconfigureLocalRangingSession:(BOOL)session;
+- (BOOL)_updateNBAMMSCompanionConfigurationCommandWithRequest:(const void *)request rangeConfig:(RangeConfigNBAMMS *)config;
 - (BOOL)isExtendedDistanceMeasurementEnabled;
-- (BOOL)updateConfiguration:(id)a3;
-- (NIServerItemLocalizerSession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5;
+- (BOOL)updateConfiguration:(id)configuration;
+- (NIServerItemLocalizerSession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error;
 - (RoseDeviceDescriptor)_getCompanionDescriptor;
 - (RoseStartRangingOptions)_populateP2PRoseStartRangingOptions;
 - (basic_string<char,)uniqueIdentifierForEngine:(std::allocator<char>> *__return_ptr)retstr;
-- (float)_adjustDutyCycleForInterfaceDelays:(float)a3 schedulingInterval:(unsigned int)a4;
+- (float)_adjustDutyCycleForInterfaceDelays:(float)delays schedulingInterval:(unsigned int)interval;
 - (id).cxx_construct;
 - (id)_bringUpUpdatesEngine;
-- (id)_buildRoseSession:(const void *)a3;
+- (id)_buildRoseSession:(const void *)session;
 - (id)_configureRangingSession;
-- (id)_getDictFromRangeConfigNBAMMS:(RangeConfigNBAMMS *)a3;
+- (id)_getDictFromRangeConfigNBAMMS:(RangeConfigNBAMMS *)s;
 - (id)_populateRoseStartOptionsAndStartRanging;
 - (id)_reconfigureRangingSession;
 - (id)_resetToPrewarmedState;
 - (id)configure;
-- (id)discoveryTokenFromIdentifier:(unint64_t)a3;
+- (id)discoveryTokenFromIdentifier:(unint64_t)identifier;
 - (id)getResourcesManager;
-- (id)objectFromIdentifier:(unint64_t)a3;
-- (id)pauseWithSource:(int64_t)a3;
+- (id)objectFromIdentifier:(unint64_t)identifier;
+- (id)pauseWithSource:(int64_t)source;
 - (id)run;
 - (optional<rose::RoseServiceRequest>)_prepareNBAMMSServiceRequest;
 - (optional<rose::RoseServiceRequest>)_prepareP2PServiceRequest;
-- (optional<unsigned)_getDitherConst:(BOOL)a3;
+- (optional<unsigned)_getDitherConst:(BOOL)const;
 - (optional<unsigned)_getRoseServiceRequestTicketId;
-- (optional<unsigned)identifierFromDiscoveryToken:(id)a3;
-- (unint64_t)macAddressForIRK:(id)a3;
+- (optional<unsigned)identifierFromDiscoveryToken:(id)token;
+- (unint64_t)macAddressForIRK:(id)k;
 - (unint64_t)requiresNarrowbandToRun;
-- (unsigned)_pickRandomNbUwbAcquisitionChannelWithUUID:(id)a3;
+- (unsigned)_pickRandomNbUwbAcquisitionChannelWithUUID:(id)d;
 - (void)_cbBluetoothStateChangedHandler;
-- (void)_cbErrorHandler:(id)a3;
+- (void)_cbErrorHandler:(id)handler;
 - (void)_cbInterruptionHandler;
 - (void)_checkForNearbyObjectRemovalUponLosingDistanceUpdates;
-- (void)_cleanupRangingManagerAndCompanionAfterError:(id)a3;
+- (void)_cleanupRangingManagerAndCompanionAfterError:(id)error;
 - (void)_combineAndReportLocalAndCompanionRangingRequestStatus;
 - (void)_configureCompanionForRanging;
 - (void)_deinitCompanion;
-- (void)_handleError:(id)a3;
+- (void)_handleError:(id)error;
 - (void)_informClientOfNearbyObjectRemoval;
-- (void)_initCompanion:(id)a3;
+- (void)_initCompanion:(id)companion;
 - (void)_invalidateRangingSession;
 - (void)_populateRangingSessionMacMode;
 - (void)_printState;
-- (void)_processXPCEvent:(id)a3;
+- (void)_processXPCEvent:(id)event;
 - (void)_selectNBAMMSMode;
-- (void)_sendRangingStartOrEndXPCmessageToWRM:(BOOL)a3;
+- (void)_sendRangingStartOrEndXPCmessageToWRM:(BOOL)m;
 - (void)_sendRegistrationMessageToWRM;
 - (void)_startAltitudeUpdates;
 - (void)_startDeviceMotionUpdates;
@@ -65,34 +65,34 @@
 - (void)_updateNearbyObjectStatusWithDisconnect;
 - (void)_updateNearbyObjectStatusWithSuccessfulConfiguration;
 - (void)didInvalidateUWBSession;
-- (void)didReceiveNewSolution:(const void *)a3;
-- (void)didReceiveSessionStartNotification:(const void *)a3;
-- (void)didReceiveUnsuccessfulSolution:(const void *)a3;
-- (void)didServiceRequestUpdateStatus:(ServiceRequestStatusUpdate)a3;
-- (void)findMyAccessoryManager:(id)a3 didCompleteRangingOnDevice:(id)a4 withStatus:(unsigned int)a5 endReason:(unsigned __int8)a6 error:(id)a7;
-- (void)findMyAccessoryManager:(id)a3 didConfigureRangingOnDevice:(id)a4 withStatus:(unsigned int)a5 error:(id)a6;
-- (void)findMyAccessoryManager:(id)a3 didConnectDevice:(id)a4 error:(id)a5;
-- (void)findMyAccessoryManager:(id)a3 didDeinitRangingOnDevice:(id)a4 withStatus:(unsigned int)a5 error:(id)a6;
-- (void)findMyAccessoryManager:(id)a3 didDisconnectDevice:(id)a4;
-- (void)findMyAccessoryManager:(id)a3 didFailWithError:(id)a4 forDevice:(id)a5;
-- (void)findMyAccessoryManager:(id)a3 didFetchAccessoryInformationForDevice:(id)a4 ownershipType:(unint64_t)a5 communicationProtocol:(unint64_t)a6 accessoryTypeName:(id)a7 error:(id)a8;
-- (void)findMyAccessoryManager:(id)a3 didFetchFindingCapabilitiesOnDevice:(id)a4 withFindingCapabilities:(id)a5 error:(id)a6;
-- (void)findMyAccessoryManager:(id)a3 didHaveRangingMovementOnDevice:(id)a4;
-- (void)findMyAccessoryManager:(id)a3 didInitRangingOnDevice:(id)a4 withStatus:(unsigned int)a5 error:(id)a6;
-- (void)findMyAccessoryManager:(id)a3 didPrepareRangingOnDevice:(id)a4 withConnInterval:(id)a5 error:(id)a6;
-- (void)findMyAccessoryManager:(id)a3 didStartRangingOnDevice:(id)a4 error:(id)a5;
+- (void)didReceiveNewSolution:(const void *)solution;
+- (void)didReceiveSessionStartNotification:(const void *)notification;
+- (void)didReceiveUnsuccessfulSolution:(const void *)solution;
+- (void)didServiceRequestUpdateStatus:(ServiceRequestStatusUpdate)status;
+- (void)findMyAccessoryManager:(id)manager didCompleteRangingOnDevice:(id)device withStatus:(unsigned int)status endReason:(unsigned __int8)reason error:(id)error;
+- (void)findMyAccessoryManager:(id)manager didConfigureRangingOnDevice:(id)device withStatus:(unsigned int)status error:(id)error;
+- (void)findMyAccessoryManager:(id)manager didConnectDevice:(id)device error:(id)error;
+- (void)findMyAccessoryManager:(id)manager didDeinitRangingOnDevice:(id)device withStatus:(unsigned int)status error:(id)error;
+- (void)findMyAccessoryManager:(id)manager didDisconnectDevice:(id)device;
+- (void)findMyAccessoryManager:(id)manager didFailWithError:(id)error forDevice:(id)device;
+- (void)findMyAccessoryManager:(id)manager didFetchAccessoryInformationForDevice:(id)device ownershipType:(unint64_t)type communicationProtocol:(unint64_t)protocol accessoryTypeName:(id)name error:(id)error;
+- (void)findMyAccessoryManager:(id)manager didFetchFindingCapabilitiesOnDevice:(id)device withFindingCapabilities:(id)capabilities error:(id)error;
+- (void)findMyAccessoryManager:(id)manager didHaveRangingMovementOnDevice:(id)device;
+- (void)findMyAccessoryManager:(id)manager didInitRangingOnDevice:(id)device withStatus:(unsigned int)status error:(id)error;
+- (void)findMyAccessoryManager:(id)manager didPrepareRangingOnDevice:(id)device withConnInterval:(id)interval error:(id)error;
+- (void)findMyAccessoryManager:(id)manager didStartRangingOnDevice:(id)device error:(id)error;
 - (void)invalidate;
-- (void)processVisionInput:(id)a3;
-- (void)updatesEngine:(id)a3 didUpdateAlgorithmConvergenceState:(id)a4 forObject:(id)a5;
-- (void)updatesEngine:(id)a3 didUpdateNearbyObjects:(id)a4;
+- (void)processVisionInput:(id)input;
+- (void)updatesEngine:(id)engine didUpdateAlgorithmConvergenceState:(id)state forObject:(id)object;
+- (void)updatesEngine:(id)engine didUpdateNearbyObjects:(id)objects;
 @end
 
 @implementation NIServerItemLocalizerSession
 
-- (NIServerItemLocalizerSession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5
+- (NIServerItemLocalizerSession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  managerCopy = manager;
+  configurationCopy = configuration;
   v11 = objc_opt_class();
   if (v11 != objc_opt_class())
   {
@@ -100,9 +100,9 @@
     [v66 handleFailureInMethod:a2 object:self file:@"NIServerItemLocalizerSession.mm" lineNumber:460 description:@"NIServerItemLocalizerSession given invalid configuration."];
   }
 
-  v12 = [v9 serverSessionIdentifier];
+  serverSessionIdentifier = [managerCopy serverSessionIdentifier];
 
-  if (!v12)
+  if (!serverSessionIdentifier)
   {
     v67 = +[NSAssertionHandler currentHandler];
     [v67 handleFailureInMethod:a2 object:self file:@"NIServerItemLocalizerSession.mm" lineNumber:461 description:{@"Invalid parameter not satisfying: %@", @"resourcesManager.serverSessionIdentifier"}];
@@ -116,63 +116,63 @@
       sub_1004BDE10();
     }
 
-    v14 = 0;
+    selfCopy2 = 0;
     goto LABEL_50;
   }
 
   v83.receiver = self;
   v83.super_class = NIServerItemLocalizerSession;
-  v14 = [(NIServerBaseSession *)&v83 initWithResourcesManager:v9 configuration:v10 error:a5];
-  if (v14)
+  selfCopy2 = [(NIServerBaseSession *)&v83 initWithResourcesManager:managerCopy configuration:configurationCopy error:error];
+  if (selfCopy2)
   {
-    v15 = [v9 clientConnectionQueue];
-    clientQueue = v14->_clientQueue;
-    v14->_clientQueue = v15;
+    clientConnectionQueue = [managerCopy clientConnectionQueue];
+    clientQueue = selfCopy2->_clientQueue;
+    selfCopy2->_clientQueue = clientConnectionQueue;
 
-    v17 = [v10 copy];
-    machContinuousTimeSec = v14->_machTimeConverter.fStartTimes.machContinuousTimeSec;
-    *&v14->_machTimeConverter.fStartTimes.machContinuousTimeSec = v17;
+    v17 = [configurationCopy copy];
+    machContinuousTimeSec = selfCopy2->_machTimeConverter.fStartTimes.machContinuousTimeSec;
+    *&selfCopy2->_machTimeConverter.fStartTimes.machContinuousTimeSec = v17;
 
-    v19 = [*&v14->_machTimeConverter.fStartTimes.machContinuousTimeSec sessionDiscoveryToken];
-    v20 = v19 == 0;
+    sessionDiscoveryToken = [*&selfCopy2->_machTimeConverter.fStartTimes.machContinuousTimeSec sessionDiscoveryToken];
+    v20 = sessionDiscoveryToken == 0;
 
     if (v20)
     {
       v68 = +[NSAssertionHandler currentHandler];
-      [v68 handleFailureInMethod:a2 object:v14 file:@"NIServerItemLocalizerSession.mm" lineNumber:475 description:@"NIServerItemLocalizerSession given invalid configuration without discovery token."];
+      [v68 handleFailureInMethod:a2 object:selfCopy2 file:@"NIServerItemLocalizerSession.mm" lineNumber:475 description:@"NIServerItemLocalizerSession given invalid configuration without discovery token."];
     }
 
     v21 = qword_1009F9820;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [*&v14->_machTimeConverter.fStartTimes.machContinuousTimeSec descriptionInternal];
+      descriptionInternal = [*&selfCopy2->_machTimeConverter.fStartTimes.machContinuousTimeSec descriptionInternal];
       *buf = 138412290;
-      *&buf[4] = v22;
+      *&buf[4] = descriptionInternal;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,NI item localizer configuration %@", buf, 0xCu);
     }
 
-    v23 = [v9 serverSessionIdentifier];
-    v24 = [v23 UUIDString];
-    containerUniqueIdentifier = v14->_containerUniqueIdentifier;
-    v14->_containerUniqueIdentifier = v24;
+    serverSessionIdentifier2 = [managerCopy serverSessionIdentifier];
+    uUIDString = [serverSessionIdentifier2 UUIDString];
+    containerUniqueIdentifier = selfCopy2->_containerUniqueIdentifier;
+    selfCopy2->_containerUniqueIdentifier = uUIDString;
 
-    [*&v14->_machTimeConverter.fStartTimes.machContinuousTimeSec setSupportsCameraAssistance:{+[NIPlatformInfo supportsSyntheticAperture](NIPlatformInfo, "supportsSyntheticAperture")}];
-    v14->_hasFetchedFindingCapability = 0;
-    v14->_accessorySupportsFC1ND = 1;
-    v14->_accessorySupportsNBAMMS = 0;
-    *&v14->_roseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_slot_sz_250us.var0.__null_state_ = 0;
-    v14->_companionRoseState = 0;
-    v14->_companionConnectionState = 0;
-    v14->_companionRangingState = 0;
-    v14->_localRangingState = 1;
-    v14->_clientRequestState = 0;
-    v14->_nearbyObjectStatus = 0;
-    v14->_didHaveDistanceInlastUpdatesEngineObject = 0;
-    v14->_didSuspendSessionAccessoryInUse = 0;
-    v14->_cleaningUponDidFail = 0;
-    if (v9)
+    [*&selfCopy2->_machTimeConverter.fStartTimes.machContinuousTimeSec setSupportsCameraAssistance:{+[NIPlatformInfo supportsSyntheticAperture](NIPlatformInfo, "supportsSyntheticAperture")}];
+    selfCopy2->_hasFetchedFindingCapability = 0;
+    selfCopy2->_accessorySupportsFC1ND = 1;
+    selfCopy2->_accessorySupportsNBAMMS = 0;
+    *&selfCopy2->_roseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_slot_sz_250us.var0.__null_state_ = 0;
+    selfCopy2->_companionRoseState = 0;
+    selfCopy2->_companionConnectionState = 0;
+    selfCopy2->_companionRangingState = 0;
+    selfCopy2->_localRangingState = 1;
+    selfCopy2->_clientRequestState = 0;
+    selfCopy2->_nearbyObjectStatus = 0;
+    selfCopy2->_didHaveDistanceInlastUpdatesEngineObject = 0;
+    selfCopy2->_didSuspendSessionAccessoryInUse = 0;
+    selfCopy2->_cleaningUponDidFail = 0;
+    if (managerCopy)
     {
-      [v9 protobufLogger];
+      [managerCopy protobufLogger];
       v26 = *buf;
     }
 
@@ -183,8 +183,8 @@
 
     *buf = 0;
     *&buf[8] = 0;
-    cntrl = v14->_pbLogger.__cntrl_;
-    v14->_pbLogger = v26;
+    cntrl = selfCopy2->_pbLogger.__cntrl_;
+    selfCopy2->_pbLogger = v26;
     if (cntrl)
     {
       sub_10000AD84(cntrl);
@@ -195,17 +195,17 @@
       sub_10000AD84(*&buf[8]);
     }
 
-    if (v14->_roseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_pkt_type.__engaged_)
+    if (selfCopy2->_roseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_pkt_type.__engaged_)
     {
-      v14->_roseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_pkt_type.__engaged_ = 0;
+      selfCopy2->_roseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_pkt_type.__engaged_ = 0;
     }
 
-    v14->_roseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_bch.var0.__null_state_ = 0;
-    v14->_accessoryInformationRequestState = 0;
-    v14->_ownershipType = 0;
-    v14->_communicationProtocol = 0;
-    v28 = [*&v14->_machTimeConverter.fStartTimes.machContinuousTimeSec sessionDiscoveryToken];
-    v71 = sub_1003005A0(v28);
+    selfCopy2->_roseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_bch.var0.__null_state_ = 0;
+    selfCopy2->_accessoryInformationRequestState = 0;
+    selfCopy2->_ownershipType = 0;
+    selfCopy2->_communicationProtocol = 0;
+    sessionDiscoveryToken2 = [*&selfCopy2->_machTimeConverter.fStartTimes.machContinuousTimeSec sessionDiscoveryToken];
+    v71 = sub_1003005A0(sessionDiscoveryToken2);
 
     v29 = [NSString alloc];
     v30 = [v71 objectForKeyedSubscript:&off_1009C4100];
@@ -213,21 +213,21 @@
 
     v69 = [[NSUUID alloc] initWithUUIDString:v70];
     v31 = [[CompanionDevice alloc] initWithCompanionUUID:v69];
-    companionDevice = v14->_companionDevice;
-    v14->_companionDevice = v31;
+    companionDevice = selfCopy2->_companionDevice;
+    selfCopy2->_companionDevice = v31;
 
     v33 = qword_1009F9820;
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [(CompanionDevice *)v14->_companionDevice UUID];
+      uUID = [(CompanionDevice *)selfCopy2->_companionDevice UUID];
       *buf = 138412290;
-      *&buf[4] = v34;
+      *&buf[4] = uUID;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,Session initialized for %@", buf, 0xCu);
     }
 
-    v14->_useMixedMMSForNBARanging = 0;
-    v14->_useTimeDitheringForNBARanging = 1;
-    v14->_usePreambleRandomizationForNBARanging = 1;
+    selfCopy2->_useMixedMMSForNBARanging = 0;
+    selfCopy2->_useTimeDitheringForNBARanging = 1;
+    selfCopy2->_usePreambleRandomizationForNBARanging = 1;
     v35 = +[NSUserDefaults standardUserDefaults];
     v36 = [v35 objectForKey:@"NBTimeDitheringForItemFinding"];
     v37 = v36 == 0;
@@ -249,7 +249,7 @@
         _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,NBTimeDitheringForItemFinding defaults set to %s", buf, 0xCu);
       }
 
-      v14->_useTimeDitheringForNBARanging = v38;
+      selfCopy2->_useTimeDitheringForNBARanging = v38;
     }
 
     v41 = [v35 objectForKey:@"NBPreambleRandomizationForItemFinding"];
@@ -272,15 +272,15 @@
         _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,NBPreambleRandomizationForItemFinding defaults set to %s", buf, 0xCu);
       }
 
-      v14->_usePreambleRandomizationForNBARanging = v43;
+      selfCopy2->_usePreambleRandomizationForNBARanging = v43;
     }
 
-    v14->_noAvailableSlotForNBARanging = 0;
+    selfCopy2->_noAvailableSlotForNBARanging = 0;
     v46 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       v47 = "NO";
-      if (v14->_useTimeDitheringForNBARanging)
+      if (selfCopy2->_useTimeDitheringForNBARanging)
       {
         v48 = "YES";
       }
@@ -290,7 +290,7 @@
         v48 = "NO";
       }
 
-      if (v14->_usePreambleRandomizationForNBARanging)
+      if (selfCopy2->_usePreambleRandomizationForNBARanging)
       {
         v47 = "YES";
       }
@@ -302,23 +302,23 @@
       _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,_useTimeDitheringForNBARanging set to %s, _usePreambleRandomizationForNBARanging set to %s", buf, 0x16u);
     }
 
-    mach_service = xpc_connection_create_mach_service("com.apple.WirelessCoexManager", v14->_clientQueue, 0);
-    coexConnection = v14->_coexConnection;
-    v14->_coexConnection = mach_service;
+    mach_service = xpc_connection_create_mach_service("com.apple.WirelessCoexManager", selfCopy2->_clientQueue, 0);
+    coexConnection = selfCopy2->_coexConnection;
+    selfCopy2->_coexConnection = mach_service;
 
-    v51 = v14->_coexConnection;
+    v51 = selfCopy2->_coexConnection;
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100317C54;
     handler[3] = &unk_1009A4A48;
-    self = v14;
-    v82 = self;
+    self = selfCopy2;
+    selfCopy = self;
     xpc_connection_set_event_handler(v51, handler);
-    xpc_connection_resume(v14->_coexConnection);
+    xpc_connection_resume(selfCopy2->_coexConnection);
     [(NIServerItemLocalizerSession *)self _sendRegistrationMessageToWRM];
     if ([(NIServerItemLocalizerSession *)self _setCompanionDeviceRoseMacAddress])
     {
-      v52 = [[CLFindMyAccessoryManager alloc] initWithDelegate:self delegateQueue:v14->_clientQueue];
+      v52 = [[CLFindMyAccessoryManager alloc] initWithDelegate:self delegateQueue:selfCopy2->_clientQueue];
       companionRangingManager = self->_companionRangingManager;
       self->_companionRangingManager = v52;
 
@@ -326,12 +326,12 @@
       v55 = *&self->_roseServiceRequest.var0.__val_.range_enable_params.nbamms.nb_channel_selection_mask.var0.__null_state_;
       *&self->_roseServiceRequest.var0.__val_.range_enable_params.nbamms.nb_channel_selection_mask.var0.__null_state_ = v54;
 
-      [*&self->_roseServiceRequest.var0.__val_.range_enable_params.nbamms.nb_channel_selection_mask.var0.__null_state_ setUnderlyingQueue:v14->_clientQueue];
+      [*&self->_roseServiceRequest.var0.__val_.range_enable_params.nbamms.nb_channel_selection_mask.var0.__null_state_ setUnderlyingQueue:selfCopy2->_clientQueue];
       v56 = objc_opt_new();
       v57 = *&self->_machTimeConverter.fStartTimes.valid;
       *&self->_machTimeConverter.fStartTimes.valid = v56;
 
-      [*&self->_machTimeConverter.fStartTimes.valid setDispatchQueue:v14->_clientQueue];
+      [*&self->_machTimeConverter.fStartTimes.valid setDispatchQueue:selfCopy2->_clientQueue];
       v58 = [NSString stringWithFormat:@"nearbyd-itemLocalizer"];
       [*&self->_machTimeConverter.fStartTimes.valid setLabel:v58];
 
@@ -370,12 +370,12 @@
       v73[1] = *&v60;
       objc_copyWeak(v73, buf);
       [v61 activateWithCompletion:v72];
-      v62 = [(NIServerItemLocalizerSession *)self getResourcesManager];
-      v63 = [v62 analytics];
+      getResourcesManager = [(NIServerItemLocalizerSession *)self getResourcesManager];
+      analytics = [getResourcesManager analytics];
       machAbsoluteTimeSec = self->_machTimeConverter.fStartTimes.machAbsoluteTimeSec;
-      *&self->_machTimeConverter.fStartTimes.machAbsoluteTimeSec = v63;
+      *&self->_machTimeConverter.fStartTimes.machAbsoluteTimeSec = analytics;
 
-      v14 = self;
+      selfCopy2 = self;
       objc_destroyWeak(v73);
       objc_destroyWeak(&v76);
       objc_destroyWeak(&v78);
@@ -385,13 +385,13 @@
 
     else
     {
-      v14 = 0;
+      selfCopy2 = 0;
     }
 
 LABEL_50:
   }
 
-  return v14;
+  return selfCopy2;
 }
 
 - (id)configure
@@ -405,16 +405,16 @@ LABEL_50:
   v3 = qword_1009F9820;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CompanionDevice *)self->_companionDevice UUID];
+    uUID = [(CompanionDevice *)self->_companionDevice UUID];
     v24 = 138412290;
-    v25 = v4;
+    v25 = uUID;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,configure for device %@", &v24, 0xCu);
   }
 
   if ([(NIServerItemLocalizerSession *)self _shouldRange])
   {
-    v5 = [(NIServerItemLocalizerSession *)self _bringUpUpdatesEngine];
-    if (v5)
+    _bringUpUpdatesEngine = [(NIServerItemLocalizerSession *)self _bringUpUpdatesEngine];
+    if (_bringUpUpdatesEngine)
     {
       v6 = qword_1009F9820;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -466,21 +466,21 @@ LABEL_50:
     }
 
     companionRangingManager = self->_companionRangingManager;
-    v12 = [(CompanionDevice *)self->_companionDevice UUID];
-    [(CLFindMyAccessoryManager *)companionRangingManager fetchAccessoryInformationForDevice:v12];
+    uUID2 = [(CompanionDevice *)self->_companionDevice UUID];
+    [(CLFindMyAccessoryManager *)companionRangingManager fetchAccessoryInformationForDevice:uUID2];
 
-    v5 = 0;
+    _bringUpUpdatesEngine = 0;
     self->_accessoryInformationRequestState = 1;
     goto LABEL_44;
   }
 
   if ([*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec preferredUpdateRate] == 3 && -[NIServerItemLocalizerSession _isSessionRunning](self, "_isSessionRunning"))
   {
-    v13 = [(NIServerItemLocalizerSession *)self _resetToPrewarmedState];
-    v5 = v13;
-    if (v13)
+    _resetToPrewarmedState = [(NIServerItemLocalizerSession *)self _resetToPrewarmedState];
+    _bringUpUpdatesEngine = _resetToPrewarmedState;
+    if (_resetToPrewarmedState)
     {
-      v14 = v13;
+      v14 = _resetToPrewarmedState;
     }
 
     else
@@ -508,10 +508,10 @@ LABEL_50:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,Prewarming Stage", &v24, 2u);
   }
 
-  if (!self->_hasFetchedFindingCapability || ([(NIServerItemLocalizerSession *)self _configureRangingSession], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!self->_hasFetchedFindingCapability || ([(NIServerItemLocalizerSession *)self _configureRangingSession], (_bringUpUpdatesEngine = objc_claimAutoreleasedReturnValue()) == 0))
   {
     [(NIServerItemLocalizerSession *)self _combineAndReportLocalAndCompanionRangingRequestStatus];
-    v5 = 0;
+    _bringUpUpdatesEngine = 0;
     companionConnectionState = self->_companionConnectionState;
     if (companionConnectionState > 2)
     {
@@ -548,8 +548,8 @@ LABEL_50:
         }
 
         v18 = self->_companionRangingManager;
-        v19 = [(CompanionDevice *)self->_companionDevice UUID];
-        [(CLFindMyAccessoryManager *)v18 connectDevice:v19];
+        uUID3 = [(CompanionDevice *)self->_companionDevice UUID];
+        [(CLFindMyAccessoryManager *)v18 connectDevice:uUID3];
 
         goto LABEL_43;
       }
@@ -570,12 +570,12 @@ LABEL_42:
     }
 
 LABEL_43:
-    v5 = 0;
+    _bringUpUpdatesEngine = 0;
   }
 
 LABEL_44:
 
-  return v5;
+  return _bringUpUpdatesEngine;
 }
 
 - (id)run
@@ -584,9 +584,9 @@ LABEL_44:
   v3 = qword_1009F9820;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CompanionDevice *)self->_companionDevice UUID];
+    uUID = [(CompanionDevice *)self->_companionDevice UUID];
     *buf = 138412290;
-    v33 = v4;
+    v33 = uUID;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,run for device %@", buf, 0xCu);
   }
 
@@ -624,8 +624,8 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v5 = [(CompanionDevice *)self->_companionDevice UUID];
-  v6 = v5 == 0;
+  uUID2 = [(CompanionDevice *)self->_companionDevice UUID];
+  v6 = uUID2 == 0;
 
   if (v6)
   {
@@ -666,8 +666,8 @@ LABEL_15:
           }
 
           companionRangingManager = self->_companionRangingManager;
-          v23 = [(CompanionDevice *)self->_companionDevice UUID];
-          [(CLFindMyAccessoryManager *)companionRangingManager startNBRangingOnDevice:v23 withIRK:v19];
+          uUID3 = [(CompanionDevice *)self->_companionDevice UUID];
+          [(CLFindMyAccessoryManager *)companionRangingManager startNBRangingOnDevice:uUID3 withIRK:v19];
 
           self->_companionRangingState = 4;
           [(NIServerItemLocalizerSession *)self _startRanging];
@@ -683,8 +683,8 @@ LABEL_15:
           }
 
           v15 = self->_companionRangingManager;
-          v16 = [(CompanionDevice *)self->_companionDevice UUID];
-          [(CLFindMyAccessoryManager *)v15 prepareRangingOnDevice:v16];
+          uUID4 = [(CompanionDevice *)self->_companionDevice UUID];
+          [(CLFindMyAccessoryManager *)v15 prepareRangingOnDevice:uUID4];
 
           self->_companionRangingState = 2;
         }
@@ -724,14 +724,14 @@ LABEL_16:
   return v8;
 }
 
-- (void)_sendRangingStartOrEndXPCmessageToWRM:(BOOL)a3
+- (void)_sendRangingStartOrEndXPCmessageToWRM:(BOOL)m
 {
-  v3 = a3;
+  mCopy = m;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     v6 = "FALSE";
-    if (v3)
+    if (mCopy)
     {
       v6 = "TRUE";
     }
@@ -741,7 +741,7 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,_sendRangingStartOrEndXPCmessageToWRM, WCMR1NBRangingActive = %s", &buf, 0xCu);
   }
 
-  v7 = xpc_BOOL_create(v3);
+  v7 = xpc_BOOL_create(mCopy);
   *&buf = "kMessageId";
   *(&buf + 1) = "kMessageArgs";
   v11[0] = xpc_uint64_create(0x322uLL);
@@ -755,10 +755,10 @@ LABEL_16:
   }
 }
 
-- (void)_processXPCEvent:(id)a3
+- (void)_processXPCEvent:(id)event
 {
-  v4 = a3;
-  type = xpc_get_type(v4);
+  eventCopy = event;
+  type = xpc_get_type(eventCopy);
   if (type == &_xpc_type_dictionary)
   {
     v7 = qword_1009F9820;
@@ -771,7 +771,7 @@ LABEL_16:
 
   else if (type == &_xpc_type_error)
   {
-    if (v4 == &_xpc_error_connection_interrupted)
+    if (eventCopy == &_xpc_error_connection_interrupted)
     {
       [(NIServerItemLocalizerSession *)self _sendRegistrationMessageToWRM];
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -785,7 +785,7 @@ LABEL_16:
       v8 = qword_1009F9820;
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        string = xpc_dictionary_get_string(v4, _xpc_error_key_description);
+        string = xpc_dictionary_get_string(eventCopy, _xpc_error_key_description);
         sub_1004BDFC0(string, v10);
       }
     }
@@ -793,7 +793,7 @@ LABEL_16:
 
   else
   {
-    v6 = xpc_copy_description(v4);
+    v6 = xpc_copy_description(eventCopy);
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
       sub_1004BDF50();
@@ -825,7 +825,7 @@ LABEL_16:
   }
 }
 
-- (id)pauseWithSource:(int64_t)a3
+- (id)pauseWithSource:(int64_t)source
 {
   v4 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -835,8 +835,8 @@ LABEL_16:
   }
 
   dispatch_assert_queue_V2(self->_clientQueue);
-  v5 = [(CompanionDevice *)self->_companionDevice UUID];
-  v6 = v5 == 0;
+  uUID = [(CompanionDevice *)self->_companionDevice UUID];
+  v6 = uUID == 0;
 
   if (v6)
   {
@@ -915,13 +915,13 @@ LABEL_16:
   [(NIServerBaseSession *)&v10 invalidate];
 }
 
-- (BOOL)updateConfiguration:(id)a3
+- (BOOL)updateConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   dispatch_assert_queue_V2(self->_clientQueue);
-  if (v4 && *&self->_machTimeConverter.fStartTimes.machContinuousTimeSec && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (configurationCopy && *&self->_machTimeConverter.fStartTimes.machContinuousTimeSec && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4 copy];
+    v5 = [configurationCopy copy];
     v6 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec canUpdateToConfiguration:v5];
     v7 = qword_1009F9820;
     v8 = os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT);
@@ -970,7 +970,7 @@ LABEL_16:
       v19 = 2112;
       v20 = v13;
       v21 = 2112;
-      v22 = v4;
+      v22 = configurationCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,Can't update configuration, one is nil or wrong type [%@]\nOld: %@\nNew: %@", &v17, 0x20u);
       v6 = 0;
     }
@@ -998,9 +998,9 @@ LABEL_16:
 {
   v4.receiver = self;
   v4.super_class = NIServerItemLocalizerSession;
-  v2 = [(NIServerBaseSession *)&v4 resourcesManager];
+  resourcesManager = [(NIServerBaseSession *)&v4 resourcesManager];
 
-  return v2;
+  return resourcesManager;
 }
 
 - (BOOL)_isExtendedDistanceMeasurementLocallySupported
@@ -1053,7 +1053,7 @@ LABEL_10:
 
 - (BOOL)isExtendedDistanceMeasurementEnabled
 {
-  v3 = [(NIServerItemLocalizerSession *)self _isExtendedDistanceMeasurementLocallySupported];
+  _isExtendedDistanceMeasurementLocallySupported = [(NIServerItemLocalizerSession *)self _isExtendedDistanceMeasurementLocallySupported];
   accessorySupportsNBAMMS = self->_accessorySupportsNBAMMS;
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = [v5 objectForKey:@"ItemSupportsEDM"];
@@ -1091,16 +1091,16 @@ LABEL_9:
   }
 
 LABEL_7:
-  v10 = v3 & !self->_noAvailableSlotForNBARanging;
+  v10 = _isExtendedDistanceMeasurementLocallySupported & !self->_noAvailableSlotForNBARanging;
 LABEL_10:
 
   return v10;
 }
 
-- (void)didReceiveNewSolution:(const void *)a3
+- (void)didReceiveNewSolution:(const void *)solution
 {
-  v4 = (a3 + 32);
-  v3 = *(a3 + 8);
+  v4 = (solution + 32);
+  v3 = *(solution + 8);
   v5 = v3 > 4;
   v6 = (1 << v3) & 0x1A;
   if (v5 || v6 == 0)
@@ -1111,9 +1111,9 @@ LABEL_10:
     }
   }
 
-  else if (*(a3 + 24))
+  else if (*(solution + 24))
   {
-    self->_cachedSolutionMacAddr = *(a3 + 5);
+    self->_cachedSolutionMacAddr = *(solution + 5);
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
     {
       sub_1004BE0A8(&self->_cachedSolutionMacAddr);
@@ -1122,7 +1122,7 @@ LABEL_10:
     v10 = [(NIServerItemLocalizerSession *)self discoveryTokenFromIdentifier:self->_cachedSolutionMacAddr];
     if (v10)
     {
-      [(NINearbyUpdatesEngine *)self->_updatesEngine acceptRoseSolution:a3];
+      [(NINearbyUpdatesEngine *)self->_updatesEngine acceptRoseSolution:solution];
     }
 
     else if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -1137,14 +1137,14 @@ LABEL_10:
   }
 }
 
-- (void)didReceiveUnsuccessfulSolution:(const void *)a3
+- (void)didReceiveUnsuccessfulSolution:(const void *)solution
 {
-  if (*(a3 + 24) == 1)
+  if (*(solution + 24) == 1)
   {
-    v5 = [(NIServerItemLocalizerSession *)self discoveryTokenFromIdentifier:*(a3 + 5)];
+    v5 = [(NIServerItemLocalizerSession *)self discoveryTokenFromIdentifier:*(solution + 5)];
     if (v5)
     {
-      [(NINearbyUpdatesEngine *)self->_updatesEngine acceptUnsuccessfulRoseSolution:a3];
+      [(NINearbyUpdatesEngine *)self->_updatesEngine acceptUnsuccessfulRoseSolution:solution];
     }
 
     else if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -1154,10 +1154,10 @@ LABEL_10:
   }
 }
 
-- (void)didServiceRequestUpdateStatus:(ServiceRequestStatusUpdate)a3
+- (void)didServiceRequestUpdateStatus:(ServiceRequestStatusUpdate)status
 {
-  var2 = a3.var2;
-  v4 = *&a3.var0;
+  var2 = status.var2;
+  v4 = *&status.var0;
   v6 = qword_1009F9820;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1293,7 +1293,7 @@ LABEL_10:
   }
 }
 
-- (void)didReceiveSessionStartNotification:(const void *)a3
+- (void)didReceiveSessionStartNotification:(const void *)notification
 {
   if (*&self->_roseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_slot_sz_250us.var0.__null_state_)
   {
@@ -1332,8 +1332,8 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  v4 = *(a3 + 16);
-  if (*a3)
+  v4 = *(notification + 16);
+  if (*notification)
   {
     self->_localRangingState = 3;
     if ((v4 & 1) == 0)
@@ -1344,7 +1344,7 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  if ((*(a3 + 16) & 1) == 0)
+  if ((*(notification + 16) & 1) == 0)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -1364,7 +1364,7 @@ LABEL_13:
 
   self->_localRangingState = 3;
 LABEL_16:
-  v8 = [NSNumber numberWithUnsignedLongLong:*(a3 + 1)];
+  v8 = [NSNumber numberWithUnsignedLongLong:*(notification + 1)];
   v9 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
@@ -1373,7 +1373,7 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,[CL cb] didReceiveSessionStartNotification: futureEventCounterValue = %@ ", &v15, 0xCu);
   }
 
-  v10 = [v8 intValue];
+  intValue = [v8 intValue];
   v11 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
@@ -1382,8 +1382,8 @@ LABEL_16:
   }
 
   companionRangingManager = self->_companionRangingManager;
-  v13 = [(CompanionDevice *)self->_companionDevice UUID];
-  [(CLFindMyAccessoryManager *)companionRangingManager startRangingOnDevice:v13 targetEventCounter:v10];
+  uUID = [(CompanionDevice *)self->_companionDevice UUID];
+  [(CLFindMyAccessoryManager *)companionRangingManager startRangingOnDevice:uUID targetEventCounter:intValue];
 
   self->_companionRangingState = 4;
 LABEL_21:
@@ -1401,18 +1401,18 @@ LABEL_21:
   [(NIServerItemLocalizerSession *)self invalidate];
   v6.receiver = self;
   v6.super_class = NIServerItemLocalizerSession;
-  v4 = [(NIServerBaseSession *)&v6 invalidationHandler];
+  invalidationHandler = [(NIServerBaseSession *)&v6 invalidationHandler];
   v5 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:0];
-  (v4)[2](v4, v5);
+  (invalidationHandler)[2](invalidationHandler, v5);
 }
 
-- (id)objectFromIdentifier:(unint64_t)a3
+- (id)objectFromIdentifier:(unint64_t)identifier
 {
   if (*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec)
   {
     v4 = [NINearbyObject alloc];
-    v5 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec sessionDiscoveryToken];
-    v6 = [(NINearbyObject *)v4 initWithToken:v5];
+    sessionDiscoveryToken = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec sessionDiscoveryToken];
+    v6 = [(NINearbyObject *)v4 initWithToken:sessionDiscoveryToken];
   }
 
   else
@@ -1423,7 +1423,7 @@ LABEL_21:
   return v6;
 }
 
-- (id)discoveryTokenFromIdentifier:(unint64_t)a3
+- (id)discoveryTokenFromIdentifier:(unint64_t)identifier
 {
   machContinuousTimeSec = self->_machTimeConverter.fStartTimes.machContinuousTimeSec;
   if (machContinuousTimeSec != 0.0)
@@ -1436,7 +1436,7 @@ LABEL_21:
   return *&machContinuousTimeSec;
 }
 
-- (optional<unsigned)identifierFromDiscoveryToken:(id)a3
+- (optional<unsigned)identifierFromDiscoveryToken:(id)token
 {
   cachedSolutionMacAddr = self->_cachedSolutionMacAddr;
   v4 = 1;
@@ -1455,30 +1455,30 @@ LABEL_21:
     __assert_rtn("[NIServerItemLocalizerSession uniqueIdentifierForEngine:]", "NIServerItemLocalizerSession.mm", 1218, "_algorithmsIdentifier != nil");
   }
 
-  v6 = [v5 UUIDString];
-  sub_100004A08(retstr, [v6 UTF8String]);
+  uUIDString = [v5 UUIDString];
+  sub_100004A08(retstr, [uUIDString UTF8String]);
 
   return result;
 }
 
-- (void)processVisionInput:(id)a3
+- (void)processVisionInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   dispatch_assert_queue_V2(self->_clientQueue);
-  [(NINearbyUpdatesEngine *)self->_updatesEngine acceptVisionInput:v4];
+  [(NINearbyUpdatesEngine *)self->_updatesEngine acceptVisionInput:inputCopy];
 }
 
-- (void)updatesEngine:(id)a3 didUpdateNearbyObjects:(id)a4
+- (void)updatesEngine:(id)engine didUpdateNearbyObjects:(id)objects
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_updatesEngine != v6)
+  engineCopy = engine;
+  objectsCopy = objects;
+  v8 = objectsCopy;
+  if (self->_updatesEngine != engineCopy)
   {
     __assert_rtn("[NIServerItemLocalizerSession updatesEngine:didUpdateNearbyObjects:]", "NIServerItemLocalizerSession.mm", 1233, "engine == _updatesEngine");
   }
 
-  if ([v7 count])
+  if ([objectsCopy count])
   {
     didHaveDistanceInlastUpdatesEngineObject = self->_didHaveDistanceInlastUpdatesEngineObject;
     v10 = [v8 objectAtIndexedSubscript:0];
@@ -1532,12 +1532,12 @@ LABEL_13:
   dispatch_async(clientQueue, v16);
 }
 
-- (void)updatesEngine:(id)a3 didUpdateAlgorithmConvergenceState:(id)a4 forObject:(id)a5
+- (void)updatesEngine:(id)engine didUpdateAlgorithmConvergenceState:(id)state forObject:(id)object
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (self->_updatesEngine != v8)
+  engineCopy = engine;
+  stateCopy = state;
+  objectCopy = object;
+  if (self->_updatesEngine != engineCopy)
   {
     __assert_rtn("[NIServerItemLocalizerSession updatesEngine:didUpdateAlgorithmConvergenceState:forObject:]", "NIServerItemLocalizerSession.mm", 1255, "engine == _updatesEngine");
   }
@@ -1548,10 +1548,10 @@ LABEL_13:
   block[2] = sub_10031A9AC;
   block[3] = &unk_10099BB28;
   block[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
+  v15 = stateCopy;
+  v16 = objectCopy;
+  v12 = objectCopy;
+  v13 = stateCopy;
   dispatch_async(clientQueue, block);
 }
 
@@ -1561,18 +1561,18 @@ LABEL_13:
   v3 = *&self->_machTimeConverter.fStartTimes.valid;
   if (v3)
   {
-    v4 = [v3 bluetoothState];
+    bluetoothState = [v3 bluetoothState];
     v5 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
-      if (v4 > 0xA)
+      if (bluetoothState > 0xA)
       {
         v6 = "?";
       }
 
       else
       {
-        v6 = off_1009A50F8[v4];
+        v6 = off_1009A50F8[bluetoothState];
       }
 
       v10 = 136315138;
@@ -1580,25 +1580,25 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,CBController: State changed: %s", &v10, 0xCu);
     }
 
-    if (v4 - 2 < 2)
+    if (bluetoothState - 2 < 2)
     {
       v8 = qword_1009F9820;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
       {
-        sub_1004BE3EC(v4, v8);
+        sub_1004BE3EC(bluetoothState, v8);
       }
     }
 
-    else if (v4 == 5)
+    else if (bluetoothState == 5)
     {
-      v9 = [(NIServerItemLocalizerSession *)self getResourcesManager];
-      [v9 interruptionReasonEnded:9 monotonicTimeSeconds:sub_100005288()];
+      getResourcesManager = [(NIServerItemLocalizerSession *)self getResourcesManager];
+      [getResourcesManager interruptionReasonEnded:9 monotonicTimeSeconds:sub_100005288()];
     }
 
-    else if (v4 == 4)
+    else if (bluetoothState == 4)
     {
-      v7 = [(NIServerItemLocalizerSession *)self getResourcesManager];
-      [v7 interruptSessionWithReason:9 monotonicTimeSeconds:sub_100005288()];
+      getResourcesManager2 = [(NIServerItemLocalizerSession *)self getResourcesManager];
+      [getResourcesManager2 interruptSessionWithReason:9 monotonicTimeSeconds:sub_100005288()];
     }
   }
 
@@ -1628,9 +1628,9 @@ LABEL_13:
   }
 }
 
-- (void)_cbErrorHandler:(id)a3
+- (void)_cbErrorHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
   {
     sub_1004BE4DC();
@@ -1648,20 +1648,20 @@ LABEL_13:
   return [*&machContinuousTimeSec preferredUpdateRate] == 2;
 }
 
-- (void)_handleError:(id)a3
+- (void)_handleError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
   {
     sub_1004BE578();
   }
 
-  v5 = [v4 domain];
-  if ([v5 isEqualToString:kCLErrorDomainPrivate])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:kCLErrorDomainPrivate])
   {
-    v6 = [v4 code];
+    code = [errorCopy code];
 
-    if (v6 == 12 && !self->_didSuspendSessionAccessoryInUse)
+    if (code == 12 && !self->_didSuspendSessionAccessoryInUse)
     {
       v7 = qword_1009F9820;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -1685,15 +1685,15 @@ LABEL_13:
   {
   }
 
-  [(NIServerItemLocalizerSession *)self _cleanupRangingManagerAndCompanionAfterError:v4];
-  v9 = [(NIServerItemLocalizerSession *)self getResourcesManager];
-  v10 = [v9 remote];
-  [v10 uwbSessionDidFailWithError:v4];
+  [(NIServerItemLocalizerSession *)self _cleanupRangingManagerAndCompanionAfterError:errorCopy];
+  getResourcesManager = [(NIServerItemLocalizerSession *)self getResourcesManager];
+  remote = [getResourcesManager remote];
+  [remote uwbSessionDidFailWithError:errorCopy];
 }
 
-- (void)_cleanupRangingManagerAndCompanionAfterError:(id)a3
+- (void)_cleanupRangingManagerAndCompanionAfterError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   cleaningUponDidFail = self->_cleaningUponDidFail;
   v6 = qword_1009F9820;
   v7 = os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT);
@@ -1702,7 +1702,7 @@ LABEL_13:
     if (v7)
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = errorCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,Received an error while cleaning up: %@", buf, 0xCu);
     }
   }
@@ -1721,13 +1721,13 @@ LABEL_13:
     v8 = v12;
     if (([(NIServerItemLocalizerSession *)self _getRoseServiceRequestTicketId]& 0x10000) != 0)
     {
-      v9 = [(NIServerItemLocalizerSession *)self _getRoseServiceRequestTicketId];
-      if ((v9 & 0x10000) == 0)
+      _getRoseServiceRequestTicketId = [(NIServerItemLocalizerSession *)self _getRoseServiceRequestTicketId];
+      if ((_getRoseServiceRequestTicketId & 0x10000) == 0)
       {
         sub_1000195BC();
       }
 
-      if (v9)
+      if (_getRoseServiceRequestTicketId)
       {
         [(NIServerItemLocalizerSession *)self _invalidateRangingSession];
       }
@@ -1776,14 +1776,14 @@ LABEL_13:
     }
 
     companionRangingManager = self->_companionRangingManager;
-    v5 = [(CompanionDevice *)self->_companionDevice UUID];
-    [(CLFindMyAccessoryManager *)companionRangingManager startEventCounterForDevice:v5];
+    uUID = [(CompanionDevice *)self->_companionDevice UUID];
+    [(CLFindMyAccessoryManager *)companionRangingManager startEventCounterForDevice:uUID];
   }
 
-  v6 = [(NIServerItemLocalizerSession *)self _populateRoseStartOptionsAndStartRanging];
-  if (v6)
+  _populateRoseStartOptionsAndStartRanging = [(NIServerItemLocalizerSession *)self _populateRoseStartOptionsAndStartRanging];
+  if (_populateRoseStartOptionsAndStartRanging)
   {
-    [(NIServerItemLocalizerSession *)self _handleError:v6];
+    [(NIServerItemLocalizerSession *)self _handleError:_populateRoseStartOptionsAndStartRanging];
   }
 
   v7 = *&self->_roseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_slot_sz_250us.var0.__null_state_;
@@ -1801,9 +1801,9 @@ LABEL_11:
   }
 }
 
-- (BOOL)_stopRangingMangagerAndCompanion:(id *)a3 shouldReconfigureLocalRangingSession:(BOOL)a4
+- (BOOL)_stopRangingMangagerAndCompanion:(id *)companion shouldReconfigureLocalRangingSession:(BOOL)session
 {
-  v4 = a4;
+  sessionCopy = session;
   v7 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
@@ -1829,12 +1829,12 @@ LABEL_11:
   localRangingState = self->_localRangingState;
   if ((localRangingState - 2) < 2)
   {
-    if (a3)
+    if (companion)
     {
       v31 = NSLocalizedDescriptionKey;
       v32 = @"Received stopCompanionRanging while Local ranging is starting.";
-      v12 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
-      v13 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:v12];
+      uUID = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
+      v13 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:uUID];
       goto LABEL_13;
     }
 
@@ -1846,23 +1846,23 @@ LABEL_11:
     if (([(NIServerItemLocalizerSession *)self _getRoseServiceRequestTicketId]& 0x10000) != 0)
     {
       self->_localRangingState = 5;
-      if (v4)
+      if (sessionCopy)
       {
-        v21 = [(NIServerItemLocalizerSession *)self _reconfigureRangingSession];
-        v12 = v21;
-        if (v21)
+        _reconfigureRangingSession = [(NIServerItemLocalizerSession *)self _reconfigureRangingSession];
+        uUID = _reconfigureRangingSession;
+        if (_reconfigureRangingSession)
         {
-          if (!a3)
+          if (!companion)
           {
             v14 = 0;
             goto LABEL_14;
           }
 
-          v22 = v21;
-          v13 = v12;
+          v22 = _reconfigureRangingSession;
+          v13 = uUID;
 LABEL_13:
           v14 = 0;
-          *a3 = v13;
+          *companion = v13;
 LABEL_14:
 
           goto LABEL_20;
@@ -1886,8 +1886,8 @@ LABEL_14:
         }
 
         companionRangingManager = self->_companionRangingManager;
-        v12 = [(CompanionDevice *)self->_companionDevice UUID];
-        [(CLFindMyAccessoryManager *)companionRangingManager stopEventCounterForDevice:v12];
+        uUID = [(CompanionDevice *)self->_companionDevice UUID];
+        [(CLFindMyAccessoryManager *)companionRangingManager stopEventCounterForDevice:uUID];
         v14 = 1;
         goto LABEL_14;
       }
@@ -1895,14 +1895,14 @@ LABEL_14:
       goto LABEL_20;
     }
 
-    if (a3)
+    if (companion)
     {
       v29[0] = NSLocalizedDescriptionKey;
       v29[1] = NSLocalizedFailureReasonErrorKey;
       v30[0] = @"Failed to stop ranging";
       v30[1] = @"No service request.";
-      v12 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:2];
-      v13 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:v12];
+      uUID = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:2];
+      v13 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:uUID];
       goto LABEL_13;
     }
 
@@ -1913,12 +1913,12 @@ LABEL_18:
 
   if (!localRangingState)
   {
-    if (a3)
+    if (companion)
     {
       v33 = NSLocalizedDescriptionKey;
       v34 = @"Local ranging state is not valid, cannot stop.";
-      v12 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-      v13 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:v12];
+      uUID = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
+      v13 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:uUID];
       goto LABEL_13;
     }
 
@@ -1930,15 +1930,15 @@ LABEL_20:
   companionRangingState = self->_companionRangingState;
   if ((companionRangingState - 2) < 3)
   {
-    if (a3)
+    if (companion)
     {
       v25 = NSLocalizedDescriptionKey;
       v26 = @"Received stopCompanionRanging while Companion ranging is starting.  ";
-      v16 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-      v17 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:v16];
+      uUID2 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
+      v17 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:uUID2];
 LABEL_27:
       v14 = 0;
-      *a3 = v17;
+      *companion = v17;
 LABEL_32:
 
       return v14;
@@ -1958,19 +1958,19 @@ LABEL_32:
 
     self->_companionRangingState = 6;
     v19 = self->_companionRangingManager;
-    v16 = [(CompanionDevice *)self->_companionDevice UUID];
-    [(CLFindMyAccessoryManager *)v19 stopRangingOnDevice:v16];
+    uUID2 = [(CompanionDevice *)self->_companionDevice UUID];
+    [(CLFindMyAccessoryManager *)v19 stopRangingOnDevice:uUID2];
     goto LABEL_32;
   }
 
   if (!companionRangingState)
   {
-    if (a3)
+    if (companion)
     {
       v27 = NSLocalizedDescriptionKey;
       v28 = @"Companion ranging state is not valid, cannot stop.  ";
-      v16 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-      v17 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:v16];
+      uUID2 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
+      v17 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:uUID2];
       goto LABEL_27;
     }
 
@@ -2154,18 +2154,18 @@ LABEL_11:
   }
 }
 
-- (void)_initCompanion:(id)a3
+- (void)_initCompanion:(id)companion
 {
-  v4 = a3;
+  companionCopy = companion;
   if (self->_companionRoseState)
   {
-    v5 = qword_1009F9820;
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    uUID3 = qword_1009F9820;
+    if (os_log_type_enabled(uUID3, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 UUID];
+      uUID = [companionCopy UUID];
       v11 = 138412290;
-      v12 = v6;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,Skipping init companion. UUID: %@", &v11, 0xCu);
+      v12 = uUID;
+      _os_log_impl(&_mh_execute_header, uUID3, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,Skipping init companion. UUID: %@", &v11, 0xCu);
     }
   }
 
@@ -2175,16 +2175,16 @@ LABEL_11:
     v7 = qword_1009F9820;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 UUID];
+      uUID2 = [companionCopy UUID];
       v11 = 138412290;
-      v12 = v8;
+      v12 = uUID2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,[CL] Init companion. UUID: %@", &v11, 0xCu);
     }
 
     companionRangingManager = self->_companionRangingManager;
-    v5 = [v4 UUID];
-    v10 = [v4 roseMACAddress];
-    [(CLFindMyAccessoryManager *)companionRangingManager initRangingOnDevice:v5 macAddress:v10];
+    uUID3 = [companionCopy UUID];
+    roseMACAddress = [companionCopy roseMACAddress];
+    [(CLFindMyAccessoryManager *)companionRangingManager initRangingOnDevice:uUID3 macAddress:roseMACAddress];
   }
 }
 
@@ -2197,15 +2197,15 @@ LABEL_11:
     v3 = qword_1009F9820;
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(CompanionDevice *)self->_companionDevice UUID];
+      uUID = [(CompanionDevice *)self->_companionDevice UUID];
       v7 = 138412290;
-      v8 = v4;
+      v8 = uUID;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,[CL] Deinit companion. UUID: %@", &v7, 0xCu);
     }
 
     companionRangingManager = self->_companionRangingManager;
-    v6 = [(CompanionDevice *)self->_companionDevice UUID];
-    [(CLFindMyAccessoryManager *)companionRangingManager deinitRangingOnDevice:v6];
+    uUID2 = [(CompanionDevice *)self->_companionDevice UUID];
+    [(CLFindMyAccessoryManager *)companionRangingManager deinitRangingOnDevice:uUID2];
   }
 
   else if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
@@ -2219,9 +2219,9 @@ LABEL_11:
   v3 = qword_1009F9820;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CompanionDevice *)self->_companionDevice UUID];
+    uUID = [(CompanionDevice *)self->_companionDevice UUID];
     *buf = 138412290;
-    *&buf[4] = v4;
+    *&buf[4] = uUID;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,Configure companion for ranging. UUID: %@", buf, 0xCu);
   }
 
@@ -2246,7 +2246,7 @@ LABEL_11:
         if ([(NIServerItemLocalizerSession *)self _updateNBAMMSCompanionConfigurationCommandWithRequest:&self->_roseServiceRequest rangeConfig:buf])
         {
           self->_companionRoseState = 2;
-          v24 = [(NIServerItemLocalizerSession *)self _getDictFromRangeConfigNBAMMS:buf];
+          uUID3 = [(NIServerItemLocalizerSession *)self _getDictFromRangeConfigNBAMMS:buf];
           v30 = qword_1009F9820;
           if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
           {
@@ -2255,8 +2255,8 @@ LABEL_11:
           }
 
           companionRangingManager = self->_companionRangingManager;
-          v32 = [(CompanionDevice *)self->_companionDevice UUID];
-          [(CLFindMyAccessoryManager *)companionRangingManager configureNBRangingOnDevice:v32 withParams:v24];
+          uUID2 = [(CompanionDevice *)self->_companionDevice UUID];
+          [(CLFindMyAccessoryManager *)companionRangingManager configureNBRangingOnDevice:uUID2 withParams:uUID3];
         }
 
         else
@@ -2264,9 +2264,9 @@ LABEL_11:
           v37 = NSLocalizedDescriptionKey;
           v38 = @"Failed to construct companion range config command.";
           v34 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-          v24 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:v34];
+          uUID3 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:v34];
 
-          [(NIServerItemLocalizerSession *)self _handleError:v24];
+          [(NIServerItemLocalizerSession *)self _handleError:uUID3];
         }
       }
 
@@ -2350,10 +2350,10 @@ LABEL_11:
           }
 
           v23 = self->_companionRangingManager;
-          v24 = [(CompanionDevice *)self->_companionDevice UUID];
-          v25 = [(CompanionDevice *)self->_companionDevice roseMACAddress];
+          uUID3 = [(CompanionDevice *)self->_companionDevice UUID];
+          roseMACAddress = [(CompanionDevice *)self->_companionDevice roseMACAddress];
           LOWORD(v35) = *&v36[2];
-          [(CLFindMyAccessoryManager *)v23 configureRangingOnDevice:v24 macAddress:v25 countryCode:v36[0] uwbChannel:v36[1] & 3 acqPreamble:(v36[1] >> 2) & 3 trackingPreamble:(v36[1] >> 4) & 3 interval:v35];
+          [(CLFindMyAccessoryManager *)v23 configureRangingOnDevice:uUID3 macAddress:roseMACAddress countryCode:v36[0] uwbChannel:v36[1] & 3 acqPreamble:(v36[1] >> 2) & 3 trackingPreamble:(v36[1] >> 4) & 3 interval:v35];
         }
 
         else
@@ -2361,9 +2361,9 @@ LABEL_11:
           v40 = NSLocalizedDescriptionKey;
           v41 = @"Failed to construct companion range config command.";
           v33 = [NSDictionary dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-          v24 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:v33];
+          uUID3 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:v33];
 
-          [(NIServerItemLocalizerSession *)self _handleError:v24];
+          [(NIServerItemLocalizerSession *)self _handleError:uUID3];
         }
       }
     }
@@ -2412,9 +2412,9 @@ LABEL_38:
 
 - (id)_resetToPrewarmedState
 {
-  v3 = [(CompanionDevice *)self->_companionDevice UUID];
+  uUID = [(CompanionDevice *)self->_companionDevice UUID];
 
-  if (!v3)
+  if (!uUID)
   {
     v13 = NSLocalizedDescriptionKey;
     v14 = @"Remote device must have a valid UUID.";
@@ -2454,11 +2454,11 @@ LABEL_9:
 - (RoseDeviceDescriptor)_getCompanionDescriptor
 {
   v9 = 0;
-  v5 = [(CompanionDevice *)self->_companionDevice roseMACAddress];
-  [v5 getBytes:&v9 range:{0, 8}];
+  roseMACAddress = [(CompanionDevice *)self->_companionDevice roseMACAddress];
+  [roseMACAddress getBytes:&v9 range:{0, 8}];
 
-  v6 = [(CompanionDevice *)self->_companionDevice UUID];
-  [v6 getUUIDBytes:&v8];
+  uUID = [(CompanionDevice *)self->_companionDevice UUID];
+  [uUID getUUIDBytes:&v8];
 
   retstr->type = 3;
   retstr->uuid.var0 = v8;
@@ -2508,20 +2508,20 @@ LABEL_9:
 
 - (BOOL)_setCompanionDeviceRoseMacAddress
 {
-  v3 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
-  if (!v3)
+  debugParameters = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
+  if (!debugParameters)
   {
     goto LABEL_6;
   }
 
-  v4 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
+  debugParameters2 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
   v5 = PRP2PBaseAddress;
-  v6 = [v4 objectForKey:PRP2PBaseAddress];
+  v6 = [debugParameters2 objectForKey:PRP2PBaseAddress];
 
   if (v6)
   {
-    v7 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
-    v8 = [v7 objectForKey:v5];
+    debugParameters3 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
+    v8 = [debugParameters3 objectForKey:v5];
 
     v9 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -2668,10 +2668,10 @@ LABEL_10:
   return v3;
 }
 
-- (id)_buildRoseSession:(const void *)a3
+- (id)_buildRoseSession:(const void *)session
 {
   dispatch_assert_queue_V2(self->_clientQueue);
-  v4 = self;
+  selfCopy = self;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
@@ -2679,16 +2679,16 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,Registering for UWB service.", buf, 2u);
   }
 
-  v6 = *&v4->_roseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_slot_sz_250us.var0.__null_state_;
+  v6 = *&selfCopy->_roseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_slot_sz_250us.var0.__null_state_;
   if (v6 == 1)
   {
-    sub_100004A08(__p, [(NSString *)v4->_containerUniqueIdentifier UTF8String]);
+    sub_100004A08(__p, [(NSString *)selfCopy->_containerUniqueIdentifier UTF8String]);
     operator new();
   }
 
   if (!v6)
   {
-    sub_100004A08(__p, [(NSString *)v4->_containerUniqueIdentifier UTF8String]);
+    sub_100004A08(__p, [(NSString *)selfCopy->_containerUniqueIdentifier UTF8String]);
     operator new();
   }
 
@@ -2935,11 +2935,11 @@ LABEL_20:
     machContinuousTimeSec = self->_machTimeConverter.fStartTimes.machContinuousTimeSec;
     clientQueue = self->_clientQueue;
     machAbsoluteTimeSec = self->_machTimeConverter.fStartTimes.machAbsoluteTimeSec;
-    v11 = [(NIServerItemLocalizerSession *)self getResourcesManager];
-    v12 = v11;
-    if (v11)
+    getResourcesManager = [(NIServerItemLocalizerSession *)self getResourcesManager];
+    v12 = getResourcesManager;
+    if (getResourcesManager)
     {
-      [v11 protobufLogger];
+      [getResourcesManager protobufLogger];
     }
 
     else
@@ -2972,9 +2972,9 @@ LABEL_20:
       v15 = qword_1009F9820;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(NSUUID *)self->_algorithmsIdentifier UUIDString];
+        uUIDString = [(NSUUID *)self->_algorithmsIdentifier UUIDString];
         *buf = 138412290;
-        v21 = v16;
+        v21 = uUIDString;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,NIItemLocalizer instantiated a new updates engine with identifier: %@", buf, 0xCu);
       }
     }
@@ -3220,8 +3220,8 @@ LABEL_20:
       }
 
       v7 = [NINearbyObject alloc];
-      v8 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec sessionDiscoveryToken];
-      v9 = [(NINearbyObject *)v7 initWithToken:v8];
+      sessionDiscoveryToken = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec sessionDiscoveryToken];
+      v9 = [(NINearbyObject *)v7 initWithToken:sessionDiscoveryToken];
 
       clientQueue = self->_clientQueue;
       v12[0] = _NSConcreteStackBlock;
@@ -3323,8 +3323,8 @@ LABEL_20:
   }
 
   v4 = [NINearbyObject alloc];
-  v5 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec sessionDiscoveryToken];
-  v6 = [(NINearbyObject *)v4 initWithToken:v5];
+  sessionDiscoveryToken = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec sessionDiscoveryToken];
+  v6 = [(NINearbyObject *)v4 initWithToken:sessionDiscoveryToken];
 
   clientQueue = self->_clientQueue;
   v9[0] = _NSConcreteStackBlock;
@@ -3391,17 +3391,17 @@ LABEL_20:
     v46 = [v6 BOOLForKey:@"GattRanging"];
   }
 
-  v11 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
-  if (v11)
+  debugParameters = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
+  if (debugParameters)
   {
-    v12 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
-    v13 = [v12 objectForKey:@"CompanionFeature1Disable"];
+    debugParameters2 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
+    v13 = [debugParameters2 objectForKey:@"CompanionFeature1Disable"];
     v14 = v13 == 0;
 
     if (!v14)
     {
-      v15 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
-      v16 = [v15 objectForKey:@"CompanionFeature1Disable"];
+      debugParameters3 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
+      v16 = [debugParameters3 objectForKey:@"CompanionFeature1Disable"];
       v45 = [v16 BOOLValue] ^ 1;
     }
   }
@@ -3488,42 +3488,42 @@ LABEL_36:
   }
 
   sub_10019B9DC(&v42, buf);
-  v25 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
-  if (v25)
+  debugParameters4 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
+  if (debugParameters4)
   {
-    v26 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
-    v27 = [v26 objectForKey:@"R1Preamble"];
+    debugParameters5 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
+    v27 = [debugParameters5 objectForKey:@"R1Preamble"];
     v28 = v27 == 0;
 
     if (!v28)
     {
-      v29 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
-      v30 = [v29 objectForKey:@"R1Preamble"];
-      v31 = [v30 integerValue];
+      debugParameters6 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
+      v30 = [debugParameters6 objectForKey:@"R1Preamble"];
+      integerValue = [v30 integerValue];
 
       v32 = qword_1009F9820;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
       {
         *v47 = 134217984;
-        v48 = v31;
+        v48 = integerValue;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,Setting special R1 preamble %lli", v47, 0xCu);
       }
 
-      v33 = [NSNumber numberWithInteger:v31];
+      v33 = [NSNumber numberWithInteger:integerValue];
       [0 setObject:v33 forKeyedSubscript:PRP2PArgsTxPreamble];
 
-      v34 = [NSNumber numberWithInteger:v31];
+      v34 = [NSNumber numberWithInteger:integerValue];
       [0 setObject:v34 forKeyedSubscript:PRP2PArgsRxPreamble];
     }
   }
 
-  v35 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
-  v36 = v35 == 0;
+  debugParameters7 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
+  v36 = debugParameters7 == 0;
 
   if (!v36)
   {
-    v37 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
-    [0 addEntriesFromDictionary:v37];
+    debugParameters8 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
+    [0 addEntriesFromDictionary:debugParameters8];
   }
 
   memcpy(retstr, buf, 0x240uLL);
@@ -3564,60 +3564,60 @@ LABEL_37:
   v9 = v8;
   if (v8)
   {
-    v10 = 1000 * [v8 intValue];
+    intValue2 = 1000 * [v8 intValue];
     v11 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      *&buf[4] = v10;
+      *&buf[4] = intValue2;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,listeningWindowSizeUsec overridden by defaults writes to %u", buf, 8u);
     }
   }
 
   else
   {
-    v10 = 3000;
+    intValue2 = 3000;
   }
 
-  v12 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
-  v13 = v12 == 0;
+  debugParameters = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
+  v13 = debugParameters == 0;
 
   if (!v13)
   {
-    v14 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
-    v15 = [v14 objectForKey:PRP2PArgsStartTimeOffsetUsec];
+    debugParameters2 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
+    v15 = [debugParameters2 objectForKey:PRP2PArgsStartTimeOffsetUsec];
 
     if (v15)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = [v15 intValue];
+        intValue = [v15 intValue];
         v17 = qword_1009F9820;
-        v27 = v16;
+        v27 = intValue;
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          *&buf[4] = v16;
+          *&buf[4] = intValue;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,Client override startTimeOffsetUsec: %llu", buf, 0xCu);
         }
       }
     }
 
-    v18 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
-    v19 = [v18 objectForKey:PRP2PArgsListeningWindowSizeUsec];
+    debugParameters3 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
+    v19 = [debugParameters3 objectForKey:PRP2PArgsListeningWindowSizeUsec];
 
     if (v19)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [v19 intValue];
+        intValue2 = [v19 intValue];
         v20 = qword_1009F9820;
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109120;
-          *&buf[4] = v10;
+          *&buf[4] = intValue2;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,Client override listeningWindowSizeUsec: %u", buf, 8u);
         }
       }
@@ -3656,7 +3656,7 @@ LABEL_37:
   retstr->peer.__engaged_ = 1;
   retstr->start_time_or_offset_usec = val * vcvtad_u64_f64(v27 / val);
   retstr->start_time_type = 2;
-  retstr->listening_window_usec = v10;
+  retstr->listening_window_usec = intValue2;
   *&retstr->scheduling_interval_usec = 0;
   retstr->conn_evt_trigger_desc = (&_mh_execute_header & 0xFFFFFFFF00000000 | val);
   *&retstr->dither_constant_msec.var0.__null_state_ = 0u;
@@ -3697,8 +3697,8 @@ LABEL_37:
   LOBYTE(v43) = 0;
   v44 = 0;
   v45 = 0uLL;
-  v5 = [(CompanionDevice *)self->_companionDevice UUID];
-  v6 = [(NIServerItemLocalizerSession *)self _pickRandomNbUwbAcquisitionChannelWithUUID:v5];
+  uUID = [(CompanionDevice *)self->_companionDevice UUID];
+  v6 = [(NIServerItemLocalizerSession *)self _pickRandomNbUwbAcquisitionChannelWithUUID:uUID];
 
   v19[0] = 6;
   LOBYTE(v19[1]) = 0;
@@ -3770,48 +3770,48 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)_updateNBAMMSCompanionConfigurationCommandWithRequest:(const void *)a3 rangeConfig:(RangeConfigNBAMMS *)a4
+- (BOOL)_updateNBAMMSCompanionConfigurationCommandWithRequest:(const void *)request rangeConfig:(RangeConfigNBAMMS *)config
 {
-  *&a4->var0 = 0;
-  *&a4->var8 = 0;
-  *&a4->var13 = 0;
-  if (*(a3 + 546) != 1)
+  *&config->var0 = 0;
+  *&config->var8 = 0;
+  *&config->var13 = 0;
+  if (*(request + 546) != 1)
   {
     goto LABEL_14;
   }
 
-  a4->var9 = *(a3 + 272);
-  if (*(a3 + 531) != 1)
+  config->var9 = *(request + 272);
+  if (*(request + 531) != 1)
   {
     goto LABEL_14;
   }
 
-  a4->var10 = *(a3 + 530);
-  if (*(a3 + 533) != 1)
+  config->var10 = *(request + 530);
+  if (*(request + 533) != 1)
   {
     goto LABEL_14;
   }
 
-  a4->var11 = *(a3 + 532);
-  if (*(a3 + 535) != 1)
+  config->var11 = *(request + 532);
+  if (*(request + 535) != 1)
   {
     goto LABEL_14;
   }
 
-  a4->var12 = *(a3 + 534);
-  if (*(a3 + 541) != 1)
+  config->var12 = *(request + 534);
+  if (*(request + 541) != 1)
   {
     goto LABEL_14;
   }
 
-  a4->var13 = *(a3 + 540);
-  if (*(a3 + 174) != 1)
+  config->var13 = *(request + 540);
+  if (*(request + 174) != 1)
   {
     goto LABEL_14;
   }
 
-  a4->var14 = *(a3 + 86);
-  a4->var0 = 0;
+  config->var14 = *(request + 86);
+  config->var0 = 0;
   v7 = sub_10035D02C();
   v8 = *(v7 + 406);
   v9 = *(v7 + 407);
@@ -3828,13 +3828,13 @@ LABEL_13:
 
   if ((v10 & 0x1000000) != 0)
   {
-    a4->var1 = (16 * self->_useMixedMMSForNBARanging) | (2 * (v10 & 7));
-    a4->var2 = BYTE1(v10) & 0xF;
-    a4->var3 = BYTE2(v10) & 0xF;
-    a4->var15 = self->_useTimeDitheringForNBARanging | (2 * self->_usePreambleRandomizationForNBARanging);
-    a4->var4 = 60;
+    config->var1 = (16 * self->_useMixedMMSForNBARanging) | (2 * (v10 & 7));
+    config->var2 = BYTE1(v10) & 0xF;
+    config->var3 = BYTE2(v10) & 0xF;
+    config->var15 = self->_useTimeDitheringForNBARanging | (2 * self->_usePreambleRandomizationForNBARanging);
+    config->var4 = 60;
     [(NIServerItemLocalizerSession *)self _populateNBAMMSRoseStartRangingOptions:!self->_isInitiator];
-    a4->var5 = v19 / 0x3E8;
+    config->var5 = v19 / 0x3E8;
     if (v21)
     {
       v12 = v20;
@@ -3845,19 +3845,19 @@ LABEL_13:
       v12 = 0;
     }
 
-    a4->var6 = v12;
-    a4->var7 = 2;
-    if ((*(a3 + 522) & 1) == 0)
+    config->var6 = v12;
+    config->var7 = 2;
+    if ((*(request + 522) & 1) == 0)
     {
       sub_1004BEB88();
     }
 
-    v13 = *(a3 + 260);
+    v13 = *(request + 260);
     v15 = 6;
     v16 = 0;
     v17 = v13;
     v18 = 1;
-    a4->var8 = sub_100428478(&v15);
+    config->var8 = sub_100428478(&v15);
     LOBYTE(v11) = 1;
   }
 
@@ -3875,13 +3875,13 @@ LABEL_14:
   return v11;
 }
 
-- (float)_adjustDutyCycleForInterfaceDelays:(float)a3 schedulingInterval:(unsigned int)a4
+- (float)_adjustDutyCycleForInterfaceDelays:(float)delays schedulingInterval:(unsigned int)interval
 {
-  v5 = ((a4 - 17000) - 2000);
-  if ((a4 * a3) > v5)
+  v5 = ((interval - 17000) - 2000);
+  if ((interval * delays) > v5)
   {
     v6 = qword_1009F9820;
-    a3 = v5 / a4;
+    delays = v5 / interval;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       *v8 = 0;
@@ -3889,34 +3889,34 @@ LABEL_14:
     }
   }
 
-  return a3;
+  return delays;
 }
 
-- (optional<unsigned)_getDitherConst:(BOOL)a3
+- (optional<unsigned)_getDitherConst:(BOOL)const
 {
-  if (a3)
+  if (const)
   {
-    v4 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
+    debugParameters = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
 
-    if (v4)
+    if (debugParameters)
     {
-      v5 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
-      v6 = [v5 objectForKey:@"ditherConst"];
+      debugParameters2 = [*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec debugParameters];
+      v6 = [debugParameters2 objectForKey:@"ditherConst"];
 
       if (v6)
       {
-        v7 = [v6 intValue];
+        intValue = [v6 intValue];
       }
 
       else
       {
-        v7 = 2;
+        intValue = 2;
       }
     }
 
     else
     {
-      v7 = 2;
+      intValue = 2;
     }
 
     v10 = 1;
@@ -3927,68 +3927,68 @@ LABEL_14:
     v8 = qword_1009F9820;
     v9 = os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT);
     v10 = 0;
-    v7 = 0;
+    intValue = 0;
     if (v9)
     {
       *v12 = 0;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,Dithered duty cycled acquisition not valid for responder", v12, 2u);
       v10 = 0;
-      v7 = 0;
+      intValue = 0;
     }
   }
 
-  return (v7 | (v10 << 8));
+  return (intValue | (v10 << 8));
 }
 
-- (id)_getDictFromRangeConfigNBAMMS:(RangeConfigNBAMMS *)a3
+- (id)_getDictFromRangeConfigNBAMMS:(RangeConfigNBAMMS *)s
 {
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [NSNumber numberWithUnsignedInt:a3->var0];
+  v5 = [NSNumber numberWithUnsignedInt:s->var0];
   [v4 setValue:v5 forKey:CLDurianNBRangingVersionKey];
 
-  v6 = [NSNumber numberWithUnsignedInt:a3->var1];
+  v6 = [NSNumber numberWithUnsignedInt:s->var1];
   [v4 setValue:v6 forKey:CLDurianNBRangingMMSFragCountryCodeKey];
 
-  v7 = [NSNumber numberWithUnsignedInt:a3->var2];
+  v7 = [NSNumber numberWithUnsignedInt:s->var2];
   [v4 setValue:v7 forKey:CLDurianNBRangingNBCountryCodesKey];
 
-  v8 = [NSNumber numberWithUnsignedInt:a3->var3];
+  v8 = [NSNumber numberWithUnsignedInt:s->var3];
   [v4 setValue:v8 forKey:CLDurianNBRangingSarCountryCodesKey];
 
-  v9 = [NSNumber numberWithUnsignedInt:a3->var4];
+  v9 = [NSNumber numberWithUnsignedInt:s->var4];
   [v4 setValue:v9 forKey:CLDurianNBRangingAcqTimeoutKey];
 
-  v10 = [NSNumber numberWithUnsignedInt:a3->var5];
+  v10 = [NSNumber numberWithUnsignedInt:s->var5];
   [v4 setValue:v10 forKey:CLDurianNBRangingAcqRetryIntervalKey];
 
-  v11 = [NSNumber numberWithUnsignedInt:a3->var6];
+  v11 = [NSNumber numberWithUnsignedInt:s->var6];
   [v4 setValue:v11 forKey:CLDurianNBRangingAcqDitherMaxKey];
 
-  v12 = [NSNumber numberWithUnsignedInt:a3->var7];
+  v12 = [NSNumber numberWithUnsignedInt:s->var7];
   [v4 setValue:v12 forKey:CLDurianNBRangingRangingTimeoutKey];
 
-  v13 = [NSNumber numberWithUnsignedInt:a3->var8];
+  v13 = [NSNumber numberWithUnsignedInt:s->var8];
   [v4 setValue:v13 forKey:CLDurianNBRangingNBMaskNapChannelKey];
 
-  v14 = [NSNumber numberWithUnsignedInt:a3->var9];
+  v14 = [NSNumber numberWithUnsignedInt:s->var9];
   [v4 setValue:v14 forKey:CLDurianNBRangingNBChannelSelectMaskKey];
 
-  v15 = [NSNumber numberWithUnsignedInt:a3->var10 - 1];
+  v15 = [NSNumber numberWithUnsignedInt:s->var10 - 1];
   [v4 setValue:v15 forKey:CLDurianNBRangingMMSPSRKey];
 
-  v16 = [NSNumber numberWithUnsignedInt:a3->var11];
+  v16 = [NSNumber numberWithUnsignedInt:s->var11];
   [v4 setValue:v16 forKey:CLDurianNBRangingMMSGapKey];
 
-  v17 = [NSNumber numberWithUnsignedInt:a3->var12];
+  v17 = [NSNumber numberWithUnsignedInt:s->var12];
   [v4 setValue:v17 forKey:CLDurianNBRangingMMSSequenceIdxKey];
 
-  v18 = [NSNumber numberWithUnsignedInt:a3->var13];
+  v18 = [NSNumber numberWithUnsignedInt:s->var13];
   [v4 setValue:v18 forKey:CLDurianNBRangingMMSSlotSizeKey];
 
-  v19 = [NSNumber numberWithUnsignedInt:a3->var14];
+  v19 = [NSNumber numberWithUnsignedInt:s->var14];
   [v4 setValue:v19 forKey:CLDurianNBRangingIntervalKey];
 
-  v20 = [NSNumber numberWithUnsignedInt:a3->var15];
+  v20 = [NSNumber numberWithUnsignedInt:s->var15];
   [v4 setValue:v20 forKey:CLDurianNBRangingDebugFlagsKey];
 
   v21 = [v4 mutableCopy];
@@ -4004,9 +4004,9 @@ LABEL_14:
   return v21;
 }
 
-- (unsigned)_pickRandomNbUwbAcquisitionChannelWithUUID:(id)a3
+- (unsigned)_pickRandomNbUwbAcquisitionChannelWithUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 objectForKey:@"FindingNapChannel"];
 
@@ -4026,7 +4026,7 @@ LABEL_14:
   {
     v13[0] = 0;
     v13[1] = 0;
-    [v3 getUUIDBytes:v13];
+    [dCopy getUUIDBytes:v13];
     v8 = [NSData dataWithBytes:v13 length:16];
     v9 = v8;
     [v8 bytes];
@@ -4039,10 +4039,10 @@ LABEL_14:
   return v6;
 }
 
-- (unint64_t)macAddressForIRK:(id)a3
+- (unint64_t)macAddressForIRK:(id)k
 {
-  v3 = a3;
-  [v3 bytes];
+  kCopy = k;
+  [kCopy bytes];
   v4 = SipHash();
 
   return v4;
@@ -4093,21 +4093,21 @@ LABEL_14:
   }
 }
 
-- (void)findMyAccessoryManager:(id)a3 didFailWithError:(id)a4 forDevice:(id)a5
+- (void)findMyAccessoryManager:(id)manager didFailWithError:(id)error forDevice:(id)device
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  managerCopy = manager;
+  errorCopy = error;
+  deviceCopy = device;
+  v11 = deviceCopy;
   if (*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec)
   {
-    if (!v10 || self->_companionRangingManager == v8 && (-[CompanionDevice UUID](self->_companionDevice, "UUID"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v11 isEqual:v12], v12, (v13 & 1) != 0))
+    if (!deviceCopy || self->_companionRangingManager == managerCopy && (-[CompanionDevice UUID](self->_companionDevice, "UUID"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v11 isEqual:v12], v12, (v13 & 1) != 0))
     {
       v14 = qword_1009F9820;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v20 = v9;
+        v20 = errorCopy;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,[CL cb] didFailWithError error:%@", buf, 0xCu);
       }
 
@@ -4131,21 +4131,21 @@ LABEL_14:
   }
 }
 
-- (void)findMyAccessoryManager:(id)a3 didConnectDevice:(id)a4 error:(id)a5
+- (void)findMyAccessoryManager:(id)manager didConnectDevice:(id)device error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  deviceCopy = device;
+  errorCopy = error;
   if (*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec)
   {
-    if (self->_companionRangingManager == v8)
+    if (self->_companionRangingManager == managerCopy)
     {
-      v11 = [(CompanionDevice *)self->_companionDevice UUID];
-      v12 = [v9 isEqual:v11];
+      uUID = [(CompanionDevice *)self->_companionDevice UUID];
+      v12 = [deviceCopy isEqual:uUID];
 
       if (v12)
       {
-        if (v10)
+        if (errorCopy)
         {
           self->_companionConnectionState = 0;
           v18 = NSLocalizedDescriptionKey;
@@ -4167,7 +4167,7 @@ LABEL_14:
           if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v21 = v9;
+            v21 = deviceCopy;
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,[CL cb] New Connection: %@", buf, 0xCu);
           }
 
@@ -4194,16 +4194,16 @@ LABEL_14:
   }
 }
 
-- (void)findMyAccessoryManager:(id)a3 didDisconnectDevice:(id)a4
+- (void)findMyAccessoryManager:(id)manager didDisconnectDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  deviceCopy = device;
   if (*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec)
   {
-    if (self->_companionRangingManager == v6)
+    if (self->_companionRangingManager == managerCopy)
     {
-      v8 = [(CompanionDevice *)self->_companionDevice UUID];
-      v9 = [v7 isEqual:v8];
+      uUID = [(CompanionDevice *)self->_companionDevice UUID];
+      v9 = [deviceCopy isEqual:uUID];
 
       if (v9)
       {
@@ -4272,17 +4272,17 @@ LABEL_14:
   }
 }
 
-- (void)findMyAccessoryManager:(id)a3 didConfigureRangingOnDevice:(id)a4 withStatus:(unsigned int)a5 error:(id)a6
+- (void)findMyAccessoryManager:(id)manager didConfigureRangingOnDevice:(id)device withStatus:(unsigned int)status error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  managerCopy = manager;
+  deviceCopy = device;
+  errorCopy = error;
   if (*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec)
   {
-    if (self->_companionRangingManager == v10)
+    if (self->_companionRangingManager == managerCopy)
     {
-      v13 = [(CompanionDevice *)self->_companionDevice UUID];
-      v14 = [v11 isEqual:v13];
+      uUID = [(CompanionDevice *)self->_companionDevice UUID];
+      v14 = [deviceCopy isEqual:uUID];
 
       if (v14)
       {
@@ -4290,15 +4290,15 @@ LABEL_14:
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v29 = v12;
+          v29 = errorCopy;
           v30 = 1024;
-          v31 = a5;
+          statusCopy = status;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,[CL cb] didConfigureRangingOnDevice error:%@, status:%d", buf, 0x12u);
         }
 
         if (self->_companionRoseState == 2)
         {
-          if (v12)
+          if (errorCopy)
           {
             v24 = NSLocalizedDescriptionKey;
             v25 = @"Error configuring ranging parameters on peer.";
@@ -4369,20 +4369,20 @@ LABEL_14:
   }
 }
 
-- (void)findMyAccessoryManager:(id)a3 didInitRangingOnDevice:(id)a4 withStatus:(unsigned int)a5 error:(id)a6
+- (void)findMyAccessoryManager:(id)manager didInitRangingOnDevice:(id)device withStatus:(unsigned int)status error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  managerCopy = manager;
+  deviceCopy = device;
+  errorCopy = error;
   if (*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec)
   {
-    if (self->_companionRangingManager != v10)
+    if (self->_companionRangingManager != managerCopy)
     {
       goto LABEL_30;
     }
 
-    v13 = [(CompanionDevice *)self->_companionDevice UUID];
-    v14 = [v11 isEqual:v13];
+    uUID = [(CompanionDevice *)self->_companionDevice UUID];
+    v14 = [deviceCopy isEqual:uUID];
 
     if ((v14 & 1) == 0)
     {
@@ -4393,30 +4393,30 @@ LABEL_14:
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v36 = v12;
+      v36 = errorCopy;
       v37 = 1024;
-      v38 = a5;
+      statusCopy = status;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,[CL cb] didInitRoseOnDevice error:%@, status:%d", buf, 0x12u);
     }
 
     if (self->_companionRoseState == 1)
     {
       v16 = qword_1009F9820;
-      if (v12)
+      if (errorCopy)
       {
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
         {
           sub_1004BEED8();
         }
 
-        [(NIServerItemLocalizerSession *)self _handleError:v12];
+        [(NIServerItemLocalizerSession *)self _handleError:errorCopy];
         goto LABEL_30;
       }
 
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        LODWORD(v36) = a5;
+        LODWORD(v36) = status;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,Remote Device Ready with ROSE_STATUS: 0x%x", buf, 8u);
       }
 
@@ -4440,7 +4440,7 @@ LABEL_14:
       }
 
       v21 = +[NSUserDefaults standardUserDefaults];
-      if ((a5 == 1) | [v21 BOOLForKey:@"B389_SimulateLowPower"] & 1)
+      if ((status == 1) | [v21 BOOLForKey:@"B389_SimulateLowPower"] & 1)
       {
         v31 = NSLocalizedDescriptionKey;
         v32 = @"Failed to initialize ranging on tag";
@@ -4458,7 +4458,7 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      if (a5)
+      if (status)
       {
         v29 = NSLocalizedDescriptionKey;
         v30 = @"Error from R1 while initializing";
@@ -4488,8 +4488,8 @@ LABEL_29:
         }
 
         companionRangingManager = self->_companionRangingManager;
-        v27 = [(CompanionDevice *)self->_companionDevice UUID];
-        [(CLFindMyAccessoryManager *)companionRangingManager fetchFindingCapabilities:v27];
+        uUID2 = [(CompanionDevice *)self->_companionDevice UUID];
+        [(CLFindMyAccessoryManager *)companionRangingManager fetchFindingCapabilities:uUID2];
       }
     }
 
@@ -4517,20 +4517,20 @@ LABEL_29:
 LABEL_30:
 }
 
-- (void)findMyAccessoryManager:(id)a3 didDeinitRangingOnDevice:(id)a4 withStatus:(unsigned int)a5 error:(id)a6
+- (void)findMyAccessoryManager:(id)manager didDeinitRangingOnDevice:(id)device withStatus:(unsigned int)status error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  managerCopy = manager;
+  deviceCopy = device;
+  errorCopy = error;
   if (*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec)
   {
-    if (self->_companionRangingManager != v9)
+    if (self->_companionRangingManager != managerCopy)
     {
       goto LABEL_23;
     }
 
-    v12 = [(CompanionDevice *)self->_companionDevice UUID];
-    v13 = [v10 isEqual:v12];
+    uUID = [(CompanionDevice *)self->_companionDevice UUID];
+    v13 = [deviceCopy isEqual:uUID];
 
     if ((v13 & 1) == 0)
     {
@@ -4541,13 +4541,13 @@ LABEL_30:
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v32 = v11;
+      v32 = errorCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,[CL cb] didDeinitRangingOnDevice error:%@", buf, 0xCu);
     }
 
     if (self->_companionRoseState == 4)
     {
-      if (v11)
+      if (errorCopy)
       {
         v25 = NSLocalizedDescriptionKey;
         v26 = @"Error deiniting R1 on companion";
@@ -4597,8 +4597,8 @@ LABEL_19:
       }
 
       companionRangingManager = self->_companionRangingManager;
-      v24 = [(CompanionDevice *)self->_companionDevice UUID];
-      [(CLFindMyAccessoryManager *)companionRangingManager disconnectDevice:v24];
+      uUID2 = [(CompanionDevice *)self->_companionDevice UUID];
+      [(CLFindMyAccessoryManager *)companionRangingManager disconnectDevice:uUID2];
     }
 
     else
@@ -4625,17 +4625,17 @@ LABEL_19:
 LABEL_23:
 }
 
-- (void)findMyAccessoryManager:(id)a3 didStartRangingOnDevice:(id)a4 error:(id)a5
+- (void)findMyAccessoryManager:(id)manager didStartRangingOnDevice:(id)device error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  deviceCopy = device;
+  errorCopy = error;
   if (*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec)
   {
-    if (self->_companionRangingManager == v8)
+    if (self->_companionRangingManager == managerCopy)
     {
-      v11 = [(CompanionDevice *)self->_companionDevice UUID];
-      v12 = [v9 isEqual:v11];
+      uUID = [(CompanionDevice *)self->_companionDevice UUID];
+      v12 = [deviceCopy isEqual:uUID];
 
       if (v12)
       {
@@ -4643,13 +4643,13 @@ LABEL_23:
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v23 = v10;
+          v23 = errorCopy;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,[CL cb] didStartRangingOnDevice error:%@", buf, 0xCu);
         }
 
         if (self->_companionRangingState == 4)
         {
-          if (v10)
+          if (errorCopy)
           {
             v18 = NSLocalizedDescriptionKey;
             v19 = @"Error starting ranging on companion";
@@ -4695,21 +4695,21 @@ LABEL_23:
   }
 }
 
-- (void)findMyAccessoryManager:(id)a3 didCompleteRangingOnDevice:(id)a4 withStatus:(unsigned int)a5 endReason:(unsigned __int8)a6 error:(id)a7
+- (void)findMyAccessoryManager:(id)manager didCompleteRangingOnDevice:(id)device withStatus:(unsigned int)status endReason:(unsigned __int8)reason error:(id)error
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  reasonCopy = reason;
+  managerCopy = manager;
+  deviceCopy = device;
+  errorCopy = error;
   if (*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec)
   {
-    if (self->_companionRangingManager != v12)
+    if (self->_companionRangingManager != managerCopy)
     {
       goto LABEL_16;
     }
 
-    v15 = [(CompanionDevice *)self->_companionDevice UUID];
-    v16 = [v13 isEqual:v15];
+    uUID = [(CompanionDevice *)self->_companionDevice UUID];
+    v16 = [deviceCopy isEqual:uUID];
 
     if ((v16 & 1) == 0)
     {
@@ -4720,13 +4720,13 @@ LABEL_23:
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
       *buf = 138413058;
-      v36 = v13;
+      v36 = deviceCopy;
       v37 = 2112;
-      v38 = v14;
+      v38 = errorCopy;
       v39 = 1024;
-      v40 = v8;
+      v40 = reasonCopy;
       v41 = 1024;
-      v42 = a5;
+      statusCopy2 = status;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "#ses-item-loc,[CL cb] didCompleteRoseRangingOnDevice device: %@, error: %@, endReason: %d, status: %d", buf, 0x22u);
     }
 
@@ -4747,7 +4747,7 @@ LABEL_23:
 
     else
     {
-      if (v14)
+      if (errorCopy)
       {
         v31 = NSLocalizedDescriptionKey;
         v32 = @"Error reported upon ranging complete";
@@ -4758,13 +4758,13 @@ LABEL_23:
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
         {
           *buf = 138413058;
-          v36 = v13;
+          v36 = deviceCopy;
           v37 = 2112;
-          v38 = v14;
+          v38 = errorCopy;
           v39 = 1024;
-          v40 = v8;
+          v40 = reasonCopy;
           v41 = 1024;
-          v42 = a5;
+          statusCopy2 = status;
           _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "#ses-item-loc,failed to complete Rose ranging on device: %@, error: %@, endReason: %d, status: %d", buf, 0x22u);
         }
 
@@ -4778,11 +4778,11 @@ LABEL_23:
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        LODWORD(v36) = a5;
+        LODWORD(v36) = status;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,Range Complete Event ROSE_STATUS: 0x%x", buf, 8u);
       }
 
-      if (a5 == 7)
+      if (status == 7)
       {
         self->_roseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_bch.var0.__null_state_ = 1;
 LABEL_26:
@@ -4802,7 +4802,7 @@ LABEL_26:
       }
 
       self->_roseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_bch.var0.__null_state_ = 0;
-      if (a5 != 14 && a5)
+      if (status != 14 && status)
       {
         goto LABEL_26;
       }
@@ -4828,16 +4828,16 @@ LABEL_26:
 LABEL_16:
 }
 
-- (void)findMyAccessoryManager:(id)a3 didHaveRangingMovementOnDevice:(id)a4
+- (void)findMyAccessoryManager:(id)manager didHaveRangingMovementOnDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  deviceCopy = device;
   if (*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec)
   {
-    if (self->_companionRangingManager == v6)
+    if (self->_companionRangingManager == managerCopy)
     {
-      v8 = [(CompanionDevice *)self->_companionDevice UUID];
-      v9 = [v7 isEqual:v8];
+      uUID = [(CompanionDevice *)self->_companionDevice UUID];
+      v9 = [deviceCopy isEqual:uUID];
 
       if (v9)
       {
@@ -4859,30 +4859,30 @@ LABEL_16:
   }
 }
 
-- (void)findMyAccessoryManager:(id)a3 didPrepareRangingOnDevice:(id)a4 withConnInterval:(id)a5 error:(id)a6
+- (void)findMyAccessoryManager:(id)manager didPrepareRangingOnDevice:(id)device withConnInterval:(id)interval error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  managerCopy = manager;
+  deviceCopy = device;
+  intervalCopy = interval;
+  errorCopy = error;
   if (*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec)
   {
-    if (self->_companionRangingManager == v10)
+    if (self->_companionRangingManager == managerCopy)
     {
-      v14 = [(CompanionDevice *)self->_companionDevice UUID];
-      v15 = [v11 isEqual:v14];
+      uUID = [(CompanionDevice *)self->_companionDevice UUID];
+      v15 = [deviceCopy isEqual:uUID];
 
       if (v15)
       {
         v16 = qword_1009F9820;
-        if (v13)
+        if (errorCopy)
         {
           if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
           {
             sub_1004BF34C();
           }
 
-          [(NIServerItemLocalizerSession *)self _handleError:v13];
+          [(NIServerItemLocalizerSession *)self _handleError:errorCopy];
         }
 
         else
@@ -4909,7 +4909,7 @@ LABEL_16:
           }
 
           self->_companionRangingState = 3;
-          self->_connectionIntervalUs.var0.__val_ = [v12 unsignedLongLongValue];
+          self->_connectionIntervalUs.var0.__val_ = [intervalCopy unsignedLongLongValue];
           self->_connectionIntervalUs.__engaged_ = 1;
           v19 = qword_1009F9820;
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -4937,22 +4937,22 @@ LABEL_16:
   }
 }
 
-- (void)findMyAccessoryManager:(id)a3 didFetchAccessoryInformationForDevice:(id)a4 ownershipType:(unint64_t)a5 communicationProtocol:(unint64_t)a6 accessoryTypeName:(id)a7 error:(id)a8
+- (void)findMyAccessoryManager:(id)manager didFetchAccessoryInformationForDevice:(id)device ownershipType:(unint64_t)type communicationProtocol:(unint64_t)protocol accessoryTypeName:(id)name error:(id)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
+  managerCopy = manager;
+  deviceCopy = device;
+  nameCopy = name;
+  errorCopy = error;
   if (*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec)
   {
-    if (self->_companionRangingManager == v14)
+    if (self->_companionRangingManager == managerCopy)
     {
-      v18 = [(CompanionDevice *)self->_companionDevice UUID];
-      v19 = [v15 isEqual:v18];
+      uUID = [(CompanionDevice *)self->_companionDevice UUID];
+      v19 = [deviceCopy isEqual:uUID];
 
       if (v19)
       {
-        if (v17)
+        if (errorCopy)
         {
           self->_accessoryInformationRequestState = 0;
           if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -4960,7 +4960,7 @@ LABEL_16:
             sub_1004BF3E8();
           }
 
-          [(NIServerItemLocalizerSession *)self _handleError:v17];
+          [(NIServerItemLocalizerSession *)self _handleError:errorCopy];
         }
 
         else
@@ -4969,26 +4969,26 @@ LABEL_16:
           v20 = qword_1009F9820;
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            v21 = [v16 UTF8String];
+            uTF8String = [nameCopy UTF8String];
             v22 = "Unknown";
             v23 = "CL";
-            if (a6 != 1)
+            if (protocol != 1)
             {
               v23 = "Unknown";
             }
 
-            if (a5 == 1)
+            if (type == 1)
             {
               v22 = "Owner";
             }
 
-            if (a6 == 2)
+            if (protocol == 2)
             {
               v23 = "GATT";
             }
 
             *v26 = 136315650;
-            if (a5 == 2)
+            if (type == 2)
             {
               v22 = "NonOwner";
             }
@@ -4997,20 +4997,20 @@ LABEL_16:
             v27 = 2080;
             v28 = v23;
             v29 = 2080;
-            v30 = v21;
+            v30 = uTF8String;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,[CL cb] didFetchAccessoryInformationForDevice, ownership: %s, communicationProtocol: %s, accessoryTypeName: %s", v26, 0x20u);
           }
 
-          self->_ownershipType = a5;
-          self->_communicationProtocol = a6;
-          objc_storeStrong(&self->_accessoryTypeName, a7);
+          self->_ownershipType = type;
+          self->_communicationProtocol = protocol;
+          objc_storeStrong(&self->_accessoryTypeName, name);
           machAbsoluteTimeSec = self->_machTimeConverter.fStartTimes.machAbsoluteTimeSec;
           if (machAbsoluteTimeSec != 0.0)
           {
             [*&machAbsoluteTimeSec updateWithOwnership:self->_ownershipType == 1 accessoryTypeName:{self->_accessoryTypeName, *v26}];
           }
 
-          v25 = [(NIServerItemLocalizerSession *)self configure];
+          configure = [(NIServerItemLocalizerSession *)self configure];
         }
       }
     }
@@ -5022,42 +5022,42 @@ LABEL_16:
   }
 }
 
-- (void)findMyAccessoryManager:(id)a3 didFetchFindingCapabilitiesOnDevice:(id)a4 withFindingCapabilities:(id)a5 error:(id)a6
+- (void)findMyAccessoryManager:(id)manager didFetchFindingCapabilitiesOnDevice:(id)device withFindingCapabilities:(id)capabilities error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  managerCopy = manager;
+  deviceCopy = device;
+  capabilitiesCopy = capabilities;
+  errorCopy = error;
   if (*&self->_machTimeConverter.fStartTimes.machContinuousTimeSec)
   {
-    if (self->_companionRangingManager != v10)
+    if (self->_companionRangingManager != managerCopy)
     {
       goto LABEL_31;
     }
 
-    v14 = [(CompanionDevice *)self->_companionDevice UUID];
-    v15 = [v11 isEqual:v14];
+    uUID = [(CompanionDevice *)self->_companionDevice UUID];
+    v15 = [deviceCopy isEqual:uUID];
 
     if ((v15 & 1) == 0)
     {
       goto LABEL_31;
     }
 
-    if (!v13)
+    if (!errorCopy)
     {
       v21 = qword_1009F9820;
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(v25) = 67109376;
-        HIDWORD(v25) = [v12 supportsFC1ND];
+        HIDWORD(v25) = [capabilitiesCopy supportsFC1ND];
         v26 = 1024;
-        v27 = [v12 supportsNBAMMS];
+        supportsNBAMMS = [capabilitiesCopy supportsNBAMMS];
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "#ses-item-loc,[CL cb] didFetchFindingCapabilitiesOnDevice, supportsFC1ND: %d, supportsNBAMMS: %d", &v25, 0xEu);
       }
 
       self->_hasFetchedFindingCapability = 1;
-      self->_accessorySupportsFC1ND = [v12 supportsFC1ND];
-      self->_accessorySupportsNBAMMS = [v12 supportsNBAMMS];
+      self->_accessorySupportsFC1ND = [capabilitiesCopy supportsFC1ND];
+      self->_accessorySupportsNBAMMS = [capabilitiesCopy supportsNBAMMS];
       goto LABEL_27;
     }
 
@@ -5066,11 +5066,11 @@ LABEL_16:
       sub_1004BF450();
     }
 
-    v16 = [v13 domain];
+    domain = [errorCopy domain];
     v17 = kCLErrorDomainPrivate;
-    if ([v16 isEqualToString:kCLErrorDomainPrivate])
+    if ([domain isEqualToString:kCLErrorDomainPrivate])
     {
-      v18 = [v13 code] == 38;
+      v18 = [errorCopy code] == 38;
 
       if (v18)
       {
@@ -5092,16 +5092,16 @@ LABEL_25:
     {
     }
 
-    v22 = [v13 domain];
-    if ([v22 isEqualToString:v17])
+    domain2 = [errorCopy domain];
+    if ([domain2 isEqualToString:v17])
     {
-      if ([v13 code] == 1)
+      if ([errorCopy code] == 1)
       {
 
         goto LABEL_23;
       }
 
-      v23 = [v13 code] == 31;
+      v23 = [errorCopy code] == 31;
 
       if (v23)
       {
@@ -5120,10 +5120,10 @@ LABEL_26:
         self->_accessorySupportsNBAMMS = 0;
 LABEL_27:
         [(NIServerItemLocalizerSession *)self _populateRangingSessionMacMode];
-        v24 = [(NIServerItemLocalizerSession *)self _configureRangingSession];
-        if (v24)
+        _configureRangingSession = [(NIServerItemLocalizerSession *)self _configureRangingSession];
+        if (_configureRangingSession)
         {
-          [(NIServerItemLocalizerSession *)self _handleError:v24];
+          [(NIServerItemLocalizerSession *)self _handleError:_configureRangingSession];
         }
 
         else
@@ -5139,7 +5139,7 @@ LABEL_27:
     {
     }
 
-    [(NIServerItemLocalizerSession *)self _handleError:v13];
+    [(NIServerItemLocalizerSession *)self _handleError:errorCopy];
     goto LABEL_31;
   }
 

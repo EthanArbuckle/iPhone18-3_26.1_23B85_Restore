@@ -1,22 +1,22 @@
 @interface CRLCursorPlatformObject
-+ (id)cursorPlatformObjectWithPointerRegionRequest:(id)a3;
-- (CRLCursorPlatformObject)initWithPointerRegionRequest:(id)a3;
++ (id)cursorPlatformObjectWithPointerRegionRequest:(id)request;
+- (CRLCursorPlatformObject)initWithPointerRegionRequest:(id)request;
 @end
 
 @implementation CRLCursorPlatformObject
 
-+ (id)cursorPlatformObjectWithPointerRegionRequest:(id)a3
++ (id)cursorPlatformObjectWithPointerRegionRequest:(id)request
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPointerRegionRequest:v4];
+  requestCopy = request;
+  v5 = [[self alloc] initWithPointerRegionRequest:requestCopy];
 
   return v5;
 }
 
-- (CRLCursorPlatformObject)initWithPointerRegionRequest:(id)a3
+- (CRLCursorPlatformObject)initWithPointerRegionRequest:(id)request
 {
-  v5 = a3;
-  if (!v5)
+  requestCopy = request;
+  if (!requestCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -51,7 +51,7 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_pointerRequest, a3);
+    objc_storeStrong(&v9->_pointerRequest, request);
   }
 
   return v10;

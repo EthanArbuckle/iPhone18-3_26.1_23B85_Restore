@@ -1,15 +1,15 @@
 @interface CNObservableContractTerminationContext
 + (id)currentContext;
 + (unint64_t)currentThreadId;
-- (CNObservableContractTerminationContext)initWithCallStack:(id)a3 threadId:(unint64_t)a4;
+- (CNObservableContractTerminationContext)initWithCallStack:(id)stack threadId:(unint64_t)id;
 @end
 
 @implementation CNObservableContractTerminationContext
 
 + (id)currentContext
 {
-  v3 = [MEMORY[0x1E696AF00] callStackSymbols];
-  v4 = [[a1 alloc] initWithCallStack:v3 threadId:{objc_msgSend(a1, "currentThreadId")}];
+  callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+  v4 = [[self alloc] initWithCallStack:callStackSymbols threadId:{objc_msgSend(self, "currentThreadId")}];
 
   return v4;
 }
@@ -26,19 +26,19 @@
   return pthread_mach_thread_np(v2);
 }
 
-- (CNObservableContractTerminationContext)initWithCallStack:(id)a3 threadId:(unint64_t)a4
+- (CNObservableContractTerminationContext)initWithCallStack:(id)stack threadId:(unint64_t)id
 {
-  v6 = a3;
+  stackCopy = stack;
   v12.receiver = self;
   v12.super_class = CNObservableContractTerminationContext;
   v7 = [(CNObservableContractTerminationContext *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [stackCopy copy];
     callStack = v7->_callStack;
     v7->_callStack = v8;
 
-    v7->_threadId = a4;
+    v7->_threadId = id;
     v10 = v7;
   }
 

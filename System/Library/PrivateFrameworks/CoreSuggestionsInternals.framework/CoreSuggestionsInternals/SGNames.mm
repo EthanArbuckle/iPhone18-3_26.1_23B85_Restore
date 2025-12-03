@@ -1,51 +1,51 @@
 @interface SGNames
-+ ($D369DFA4738CCB2DC34F10FA2F14702B)namePayload:(id)a3;
-+ (BOOL)isCapitalized:(id)a3;
-+ (BOOL)isCommonVietnameseSurname:(id)a3;
-+ (BOOL)isDifficultName:(id)a3;
-+ (BOOL)isLowercaseStringCommonNameWord:(id)a3;
-+ (BOOL)isProbablyShortCJKName:(id)a3;
-+ (BOOL)isSalientNameByChars:(id)a3;
-+ (BOOL)namesApproximatelyMatch:(id)a3 and:(id)a4 threshold:(double)a5;
-+ (BOOL)shouldInvertOrderOfFirst:(id)a3 last:(id)a4;
-+ (double)nameSimilarity:(id)a3 and:(id)a4;
-+ (double)unnormalizedNameSimilarity:(id)a3 and:(id)a4;
-+ (id)bestName:(id)a3;
++ ($D369DFA4738CCB2DC34F10FA2F14702B)namePayload:(id)payload;
++ (BOOL)isCapitalized:(id)capitalized;
++ (BOOL)isCommonVietnameseSurname:(id)surname;
++ (BOOL)isDifficultName:(id)name;
++ (BOOL)isLowercaseStringCommonNameWord:(id)word;
++ (BOOL)isProbablyShortCJKName:(id)name;
++ (BOOL)isSalientNameByChars:(id)chars;
++ (BOOL)namesApproximatelyMatch:(id)match and:(id)and threshold:(double)threshold;
++ (BOOL)shouldInvertOrderOfFirst:(id)first last:(id)last;
++ (double)nameSimilarity:(id)similarity and:(id)and;
++ (double)unnormalizedNameSimilarity:(id)similarity and:(id)and;
++ (id)bestName:(id)name;
 + (id)cjkSpacerCharacters;
-+ (id)cjkSpacersToWhiteSpace:(id)a3;
-+ (id)cleanName:(id)a3;
-+ (id)handleLastNameFirstOrder:(id)a3;
-+ (id)nameFromEmail:(id)a3;
-+ (id)nameStringFromEmailAddress:(id)a3;
-+ (id)possibleNameStringFromEmailAddress:(id)a3;
-+ (id)sgNameFromString:(id)a3 origin:(id)a4 recordId:(id)a5 extractionInfo:(id)a6;
-+ (id)sketchesForName:(id)a3;
-+ (id)stripAndReturnHonorifics:(id)a3;
-+ (id)stripHonorifics:(id)a3;
-+ (id)surnameFromName:(id)a3;
-+ (id)universalCleanName:(id)a3;
++ (id)cjkSpacersToWhiteSpace:(id)space;
++ (id)cleanName:(id)name;
++ (id)handleLastNameFirstOrder:(id)order;
++ (id)nameFromEmail:(id)email;
++ (id)nameStringFromEmailAddress:(id)address;
++ (id)possibleNameStringFromEmailAddress:(id)address;
++ (id)sgNameFromString:(id)string origin:(id)origin recordId:(id)id extractionInfo:(id)info;
++ (id)sketchesForName:(id)name;
++ (id)stripAndReturnHonorifics:(id)honorifics;
++ (id)stripHonorifics:(id)honorifics;
++ (id)surnameFromName:(id)name;
++ (id)universalCleanName:(id)name;
 @end
 
 @implementation SGNames
 
-+ (BOOL)shouldInvertOrderOfFirst:(id)a3 last:(id)a4
++ (BOOL)shouldInvertOrderOfFirst:(id)first last:(id)last
 {
-  v5 = a3;
-  v6 = a4;
+  firstCopy = first;
+  lastCopy = last;
   v7 = _PASIsAllUppercase();
   if (v7 == _PASIsAllUppercase())
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = [v5 lowercaseString];
+    lowercaseString = [firstCopy lowercaseString];
     objc_autoreleasePoolPop(v9);
 
     v11 = objc_autoreleasePoolPush();
-    v12 = [v6 lowercaseString];
+    lowercaseString2 = [lastCopy lowercaseString];
     objc_autoreleasePoolPop(v11);
 
-    v8 = [SGNameInversionPredictor shouldInvertFirst:v10 last:v12];
-    v6 = v12;
-    v5 = v10;
+    v8 = [SGNameInversionPredictor shouldInvertFirst:lowercaseString last:lowercaseString2];
+    lastCopy = lowercaseString2;
+    firstCopy = lowercaseString;
   }
 
   else
@@ -56,12 +56,12 @@
   return v8;
 }
 
-+ (id)cjkSpacersToWhiteSpace:(id)a3
++ (id)cjkSpacersToWhiteSpace:(id)space
 {
   v50 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  spaceCopy = space;
   v4 = +[SGNames cjkSpacerCharacters];
-  v5 = [v3 length];
+  v5 = [spaceCopy length];
   if (!v5)
   {
     v31 = &stru_284703F00;
@@ -91,7 +91,7 @@
     bzero(v8, v7);
   }
 
-  v9 = v3;
+  v9 = spaceCopy;
   v10 = objc_opt_self();
 
   if (!v10)
@@ -124,7 +124,7 @@ LABEL_36:
   }
 
   v38 = v6;
-  v39 = v3;
+  v39 = spaceCopy;
   v14 = 0;
   v15 = 0;
 LABEL_9:
@@ -205,7 +205,7 @@ LABEL_18:
         goto LABEL_9;
       }
 
-      v3 = v39;
+      spaceCopy = v39;
       goto LABEL_39;
     }
 
@@ -217,7 +217,7 @@ LABEL_18:
 
   while (Length != v23);
 
-  v3 = v39;
+  spaceCopy = v39;
   if (v41)
   {
 LABEL_39:
@@ -267,11 +267,11 @@ void __30__SGNames_cjkSpacerCharacters__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-+ (id)nameStringFromEmailAddress:(id)a3
++ (id)nameStringFromEmailAddress:(id)address
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 possibleNameStringFromEmailAddress:v4];
+  addressCopy = address;
+  v5 = [self possibleNameStringFromEmailAddress:addressCopy];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -294,7 +294,7 @@ void __30__SGNames_cjkSpacerCharacters__block_invoke()
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        if ([v12 length] != 1 && !objc_msgSend(a1, "isCommonNameWord:", v12))
+        if ([v12 length] != 1 && !objc_msgSend(self, "isCommonNameWord:", v12))
         {
 
           v13 = 0;
@@ -320,22 +320,22 @@ LABEL_12:
   return v13;
 }
 
-+ (id)possibleNameStringFromEmailAddress:(id)a3
++ (id)possibleNameStringFromEmailAddress:(id)address
 {
   v49 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([SGInhumans isInhumanEmailAddress:v3])
+  addressCopy = address;
+  if ([SGInhumans isInhumanEmailAddress:addressCopy])
   {
     v4 = 0;
     goto LABEL_53;
   }
 
-  v5 = [v3 length];
+  v5 = [addressCopy length];
   buffer[0] = 0uLL;
   v38 = (2 * v5) | 1;
   if (v38 > 0x200)
   {
-    v35 = malloc_type_posix_memalign(buffer, 8uLL, 2 * [v3 length], 0x1000040BDFB0063uLL);
+    v35 = malloc_type_posix_memalign(buffer, 8uLL, 2 * [addressCopy length], 0x1000040BDFB0063uLL);
     BYTE8(buffer[0]) = 0;
     if (v35)
     {
@@ -359,14 +359,14 @@ LABEL_12:
   }
 
   v7 = possibleNameStringFromEmailAddress___pasExprOnceResult;
-  v39 = v3;
+  v39 = addressCopy;
   v8 = objc_opt_self();
 
   if (v8)
   {
     memset(buffer, 0, sizeof(buffer));
     v9 = v39;
-    v37 = v3;
+    v37 = addressCopy;
     Length = CFStringGetLength(v39);
     v42 = v9;
     v45 = 0;
@@ -463,7 +463,7 @@ LABEL_23:
             v33 = 0;
           }
 
-          v3 = v37;
+          addressCopy = v37;
           v34 = objc_alloc(MEMORY[0x277CCACA8]);
           v4 = [v34 initWithCharacters:v40 length:v33];
           v30 = v39;
@@ -517,7 +517,7 @@ LABEL_19:
     }
 
 LABEL_45:
-    v3 = v37;
+    addressCopy = v37;
   }
 
   v29 = sgLogHandle();
@@ -560,16 +560,16 @@ void __46__SGNames_possibleNameStringFromEmailAddress___block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-+ (id)sgNameFromString:(id)a3 origin:(id)a4 recordId:(id)a5 extractionInfo:(id)a6
++ (id)sgNameFromString:(id)string origin:(id)origin recordId:(id)id extractionInfo:(id)info
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v9 length])
+  stringCopy = string;
+  originCopy = origin;
+  idCopy = id;
+  infoCopy = info;
+  if ([stringCopy length])
   {
-    v13 = [SGIdentityName nameWithString:v9];
-    v14 = [v13 toSGNameWithOrigin:v10 recordId:v11 extractionInfo:v12];
+    v13 = [SGIdentityName nameWithString:stringCopy];
+    v14 = [v13 toSGNameWithOrigin:originCopy recordId:idCopy extractionInfo:infoCopy];
   }
 
   else
@@ -580,16 +580,16 @@ void __46__SGNames_possibleNameStringFromEmailAddress___block_invoke()
   return v14;
 }
 
-+ (id)bestName:(id)a3
++ (id)bestName:(id)name
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_opt_new();
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v3;
+  obj = nameCopy;
   v5 = [obj countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (v5)
   {
@@ -619,7 +619,7 @@ void __46__SGNames_possibleNameStringFromEmailAddress___block_invoke()
 
           v18 = v14;
           v19 = [v14 objectForKeyedSubscript:v10];
-          v20 = [v19 unsignedIntegerValue];
+          unsignedIntegerValue = [v19 unsignedIntegerValue];
 
           if (v17 <= 3)
           {
@@ -632,7 +632,7 @@ void __46__SGNames_possibleNameStringFromEmailAddress___block_invoke()
           }
 
           v6 = v11;
-          v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v21 + v20];
+          v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v21 + unsignedIntegerValue];
           v4 = v18;
           [v18 setObject:v22 forKeyedSubscript:v10];
 
@@ -676,14 +676,14 @@ void __46__SGNames_possibleNameStringFromEmailAddress___block_invoke()
 
         v30 = *(*(&v42 + 1) + 8 * j);
         v31 = [v23 objectForKeyedSubscript:v30];
-        v32 = [v31 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v31 unsignedIntegerValue];
 
-        if (v32 > v27)
+        if (unsignedIntegerValue2 > v27)
         {
           v33 = v30;
 
           v26 = v33;
-          v27 = v32;
+          v27 = unsignedIntegerValue2;
         }
       }
 
@@ -703,34 +703,34 @@ void __46__SGNames_possibleNameStringFromEmailAddress___block_invoke()
   return v26;
 }
 
-+ (id)surnameFromName:(id)a3
++ (id)surnameFromName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = [SGIdentityName nameWithString:?];
-    v4 = [v3 surname];
+    surname = [v3 surname];
   }
 
   else
   {
-    v4 = 0;
+    surname = 0;
   }
 
-  return v4;
+  return surname;
 }
 
-+ (id)sketchesForName:(id)a3
++ (id)sketchesForName:(id)name
 {
   v101[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  [(__CFString *)v3 rangeOfString:@"@" options:2];
-  if (v4 || ![(__CFString *)v3 length])
+  nameCopy = name;
+  [(__CFString *)nameCopy rangeOfString:@"@" options:2];
+  if (v4 || ![(__CFString *)nameCopy length])
   {
     v5 = MEMORY[0x277CBEBF8];
     goto LABEL_3;
   }
 
-  v3 = v3;
+  nameCopy = nameCopy;
   v8 = objc_opt_self();
 
   if (!v8)
@@ -739,16 +739,16 @@ void __46__SGNames_possibleNameStringFromEmailAddress___block_invoke()
   }
 
   memset(v87, 0, sizeof(v87));
-  Length = CFStringGetLength(v3);
-  v88 = v3;
+  Length = CFStringGetLength(nameCopy);
+  v88 = nameCopy;
   v91 = 0;
   v92 = Length;
-  CharactersPtr = CFStringGetCharactersPtr(v3);
+  CharactersPtr = CFStringGetCharactersPtr(nameCopy);
   CStringPtr = 0;
   v89 = CharactersPtr;
   if (!CharactersPtr)
   {
-    CStringPtr = CFStringGetCStringPtr(v3, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(nameCopy, 0x600u);
   }
 
   v93 = 0;
@@ -760,8 +760,8 @@ LABEL_42:
 
 LABEL_43:
     v27 = objc_autoreleasePoolPush();
-    v28 = [(__CFString *)v3 lowercaseString];
-    v101[0] = v28;
+    lowercaseString = [(__CFString *)nameCopy lowercaseString];
+    v101[0] = lowercaseString;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v101 count:1];
 
     goto LABEL_44;
@@ -856,11 +856,11 @@ LABEL_22:
     {
 LABEL_45:
 
-      if (v3)
+      if (nameCopy)
       {
-        v29 = SGNamesAsciify(v3);
+        v29 = SGNamesAsciify(nameCopy);
 
-        v3 = _PASRemoveSomePunctuation();
+        nameCopy = _PASRemoveSomePunctuation();
       }
 
       v30 = objc_opt_new();
@@ -869,8 +869,8 @@ LABEL_45:
       v85 = 0u;
       v86 = 0u;
       v31 = objc_autoreleasePoolPush();
-      v32 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      v33 = [(__CFString *)v3 componentsSeparatedByCharactersInSet:v32];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      v33 = [(__CFString *)nameCopy componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
       objc_autoreleasePoolPop(v31);
       v34 = [v33 countByEnumeratingWithState:&v83 objects:v99 count:16];
@@ -965,12 +965,12 @@ LABEL_94:
       v55 = [v30 _pas_componentsJoinedByString:@" "];
       v56 = [SGIdentityName nameWithString:v55];
 
-      v57 = [v56 firstname];
-      v58 = [v56 middlename];
-      v59 = [v56 surname];
-      if (v57)
+      firstname = [v56 firstname];
+      middlename = [v56 middlename];
+      surname = [v56 surname];
+      if (firstname)
       {
-        v60 = v59 == 0;
+        v60 = surname == 0;
       }
 
       else
@@ -985,22 +985,22 @@ LABEL_94:
 
       else
       {
-        v43 = v57;
+        v43 = firstname;
       }
 
       if (v60)
       {
-        v61 = v57;
+        v61 = firstname;
       }
 
       else
       {
-        v61 = v59;
+        v61 = surname;
       }
 
       v78 = v61;
-      v62 = v58;
-      [(__CFString *)v58 rangeOfString:@" " options:2];
+      v62 = middlename;
+      [(__CFString *)middlename rangeOfString:@" " options:2];
       if (v63)
       {
 
@@ -1055,9 +1055,9 @@ LABEL_93:
 
 LABEL_61:
   v27 = objc_autoreleasePoolPush();
-  v44 = [(__CFString *)v3 rangeOfString:@" " options:2];
-  v45 = [(__CFString *)v3 characterAtIndex:0];
-  v46 = [(__CFString *)v3 length];
+  v44 = [(__CFString *)nameCopy rangeOfString:@" " options:2];
+  v45 = [(__CFString *)nameCopy characterAtIndex:0];
+  v46 = [(__CFString *)nameCopy length];
   v47 = v46 - v44 + 3;
   v87[0] = 0uLL;
   if (v47 > 0x200)
@@ -1080,7 +1080,7 @@ LABEL_61:
     bzero(v48, v47);
   }
 
-  snprintf(v48, v47, "%c.%s", v45, ([(__CFString *)v3 UTF8String]+ v44 + 1));
+  snprintf(v48, v47, "%c.%s", v45, ([(__CFString *)nameCopy UTF8String]+ v44 + 1));
   if (v47)
   {
     v49 = v48;
@@ -1118,17 +1118,17 @@ LABEL_3:
   return v5;
 }
 
-+ (id)nameFromEmail:(id)a3
++ (id)nameFromEmail:(id)email
 {
-  v3 = a3;
-  if (![v3 length])
+  emailCopy = email;
+  if (![emailCopy length])
   {
     v30 = 0;
     goto LABEL_57;
   }
 
   v4 = objc_opt_new();
-  v5 = v3;
+  v5 = emailCopy;
   v6 = objc_opt_self();
 
   if (!v6)
@@ -1538,23 +1538,23 @@ LABEL_57:
   return v30;
 }
 
-+ (BOOL)namesApproximatelyMatch:(id)a3 and:(id)a4 threshold:(double)a5
++ (BOOL)namesApproximatelyMatch:(id)match and:(id)and threshold:(double)threshold
 {
-  v7 = a4;
-  v8 = SGNormalizeName(a3);
-  v9 = SGNormalizeName(v7);
+  andCopy = and;
+  v8 = SGNormalizeName(match);
+  v9 = SGNormalizeName(andCopy);
 
   [SGNames nameSimilarity:v8 and:v9];
-  v11 = v10 >= a5;
+  v11 = v10 >= threshold;
 
   return v11;
 }
 
-+ (double)unnormalizedNameSimilarity:(id)a3 and:(id)a4
++ (double)unnormalizedNameSimilarity:(id)similarity and:(id)and
 {
-  v5 = a4;
-  v6 = SGNormalizeName(a3);
-  v7 = SGNormalizeName(v5);
+  andCopy = and;
+  v6 = SGNormalizeName(similarity);
+  v7 = SGNormalizeName(andCopy);
 
   [SGNames nameSimilarity:v6 and:v7];
   v9 = v8;
@@ -1562,19 +1562,19 @@ LABEL_57:
   return v9;
 }
 
-+ (double)nameSimilarity:(id)a3 and:(id)a4
++ (double)nameSimilarity:(id)similarity and:(id)and
 {
   v92[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  similarityCopy = similarity;
+  andCopy = and;
   v7 = objc_autoreleasePoolPush();
   v8 = 0.0;
-  if (![v5 length] || !objc_msgSend(v6, "length"))
+  if (![similarityCopy length] || !objc_msgSend(andCopy, "length"))
   {
     goto LABEL_79;
   }
 
-  v9 = v5;
+  v9 = similarityCopy;
   v10 = objc_opt_self();
 
   if (!v10)
@@ -1690,22 +1690,22 @@ LABEL_18:
   }
 
   v8 = 10.0;
-  if (([(__CFString *)v9 isEqualToString:v6]& 1) != 0)
+  if (([(__CFString *)v9 isEqualToString:andCopy]& 1) != 0)
   {
     goto LABEL_79;
   }
 
 LABEL_31:
-  v27 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  [(__CFString *)v9 rangeOfCharacterFromSet:v27];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  [(__CFString *)v9 rangeOfCharacterFromSet:whitespaceAndNewlineCharacterSet];
   v29 = v28;
-  [v6 rangeOfCharacterFromSet:v27];
+  [andCopy rangeOfCharacterFromSet:whitespaceAndNewlineCharacterSet];
   v8 = 0.0;
   if (v29 | v30)
   {
     v31 = v30;
     v8 = 10.0;
-    if (([(__CFString *)v9 isEqualToString:v6]& 1) == 0)
+    if (([(__CFString *)v9 isEqualToString:andCopy]& 1) == 0)
     {
       if (v29 && v31)
       {
@@ -1713,7 +1713,7 @@ LABEL_31:
       }
 
       v32 = SGNamesOnlyNameChars(v9);
-      v33 = SGNamesOnlyNameChars(v6);
+      v33 = SGNamesOnlyNameChars(andCopy);
       v34 = [v32 isEqualToString:v33];
 
       v8 = 8.0;
@@ -1721,7 +1721,7 @@ LABEL_31:
       {
 LABEL_36:
         v35 = tokenizeName(v9);
-        v36 = tokenizeName(v6);
+        v36 = tokenizeName(andCopy);
         v8 = 0.0;
         if ([v35 count] && objc_msgSend(v36, "count"))
         {
@@ -1876,11 +1876,11 @@ LABEL_79:
   return v8;
 }
 
-+ (id)handleLastNameFirstOrder:(id)a3
++ (id)handleLastNameFirstOrder:(id)order
 {
-  v5 = a3;
-  v6 = [v5 length];
-  v7 = v5;
+  orderCopy = order;
+  v6 = [orderCopy length];
+  v7 = orderCopy;
   v8 = v7;
   if (v6)
   {
@@ -2009,14 +2009,14 @@ LABEL_31:
       block[2] = __36__SGNames_handleLastNameFirstOrder___block_invoke;
       block[3] = &__block_descriptor_48_e5_v8__0l;
       block[4] = a2;
-      block[5] = a1;
+      block[5] = self;
       if (handleLastNameFirstOrder___pasOnceToken24 != -1)
       {
         dispatch_once(&handleLastNameFirstOrder___pasOnceToken24, block);
       }
 
       v29 = handleLastNameFirstOrder___pasExprOnceResult;
-      v30 = [v29 result];
+      result = [v29 result];
 
       v31 = [(__CFString *)v27 length];
       v33[0] = MEMORY[0x277D85DD0];
@@ -2025,7 +2025,7 @@ LABEL_31:
       v33[3] = &unk_27894E480;
       v34 = v27;
       v35 = buffer;
-      [v30 enumerateMatchesInString:v34 options:0 range:0 usingBlock:{v31, v33}];
+      [result enumerateMatchesInString:v34 options:0 range:0 usingBlock:{v31, v33}];
 
       objc_autoreleasePoolPop(v28);
       v27 = *(*&buffer[4] + 40);
@@ -2134,19 +2134,19 @@ id __36__SGNames_handleLastNameFirstOrder___block_invoke_2(uint64_t a1)
   return v4;
 }
 
-+ (id)cleanName:(id)a3
++ (id)cleanName:(id)name
 {
   v113 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (![v3 length])
+  nameCopy = name;
+  if (![nameCopy length])
   {
-    v5 = v3;
+    v5 = nameCopy;
 LABEL_50:
     v31 = v5;
     goto LABEL_104;
   }
 
-  v4 = [v3 characterAtIndex:0];
+  v4 = [nameCopy characterAtIndex:0];
   if (v4 > 0x7F)
   {
     if (!__maskrune(v4, 0x4000uLL))
@@ -2158,7 +2158,7 @@ LABEL_50:
   else if ((*(MEMORY[0x277D85DE0] + 4 * v4 + 60) & 0x4000) == 0)
   {
 LABEL_7:
-    v6 = [v3 characterAtIndex:{objc_msgSend(v3, "length") - 1}];
+    v6 = [nameCopy characterAtIndex:{objc_msgSend(nameCopy, "length") - 1}];
     if (v6 > 0x7F)
     {
       if (__maskrune(v6, 0x4000uLL))
@@ -2172,7 +2172,7 @@ LABEL_7:
       goto LABEL_9;
     }
 
-    v7 = [v3 hasSuffix:@" via LinkedIn"] ^ 1;
+    v7 = [nameCopy hasSuffix:@" via LinkedIn"] ^ 1;
     goto LABEL_10;
   }
 
@@ -2196,8 +2196,8 @@ LABEL_10:
     }
   }
 
-  v85 = v3;
-  theString = v3;
+  v85 = nameCopy;
+  theString = nameCopy;
   v8 = objc_opt_self();
 
   v9 = theString;
@@ -2233,7 +2233,7 @@ LABEL_10:
   {
 LABEL_47:
 
-    v3 = v85;
+    nameCopy = v85;
     goto LABEL_49;
   }
 
@@ -2348,7 +2348,7 @@ LABEL_35:
 
   while (Length != v15);
 
-  v3 = v85;
+  nameCopy = v85;
   v9 = theString;
   if (v16)
   {
@@ -2363,8 +2363,8 @@ LABEL_54:
   v90 = 0x3032000000;
   v91 = __Block_byref_object_copy__17345;
   v92 = __Block_byref_object_dispose__17346;
-  v32 = v3;
-  v93 = removeParens(v3);
+  v32 = nameCopy;
+  v93 = removeParens(nameCopy);
   v33 = v89[5];
   v34 = _PASCollapseWhitespaceAndStrip();
   v35 = v89[5];
@@ -2581,13 +2581,13 @@ LABEL_86:
 LABEL_103:
   v80 = objc_autoreleasePoolPush();
   v81 = v89[5];
-  v82 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v31 = [v81 stringByTrimmingCharactersInSet:v82];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v31 = [v81 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   objc_autoreleasePoolPop(v80);
   _Block_object_dispose(&v88, 8);
 
-  v3 = v32;
+  nameCopy = v32;
 LABEL_104:
 
   v83 = *MEMORY[0x277D85DE8];
@@ -2625,9 +2625,9 @@ void __21__SGNames_cleanName___block_invoke()
   CFRelease(Mutable);
 }
 
-+ (id)universalCleanName:(id)a3
++ (id)universalCleanName:(id)name
 {
-  MutableCopy = CFStringCreateMutableCopy(0, 0, a3);
+  MutableCopy = CFStringCreateMutableCopy(0, 0, name);
   CFStringNormalize(MutableCopy, kCFStringNormalizationFormC);
   CFStringTrimWhitespace(MutableCopy);
   Length = CFStringGetLength(MutableCopy);
@@ -2653,25 +2653,25 @@ void __21__SGNames_cleanName___block_invoke()
   return MutableCopy;
 }
 
-+ (id)stripAndReturnHonorifics:(id)a3
++ (id)stripAndReturnHonorifics:(id)honorifics
 {
   v33[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  honorificsCopy = honorifics;
+  if (honorificsCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __36__SGNames_stripAndReturnHonorifics___block_invoke;
     block[3] = &__block_descriptor_48_e5_v8__0l;
     block[4] = a2;
-    block[5] = a1;
+    block[5] = self;
     if (stripAndReturnHonorifics__onceToken != -1)
     {
       dispatch_once(&stripAndReturnHonorifics__onceToken, block);
     }
 
     os_unfair_lock_lock(&stripAndReturnHonorifics__cacheLock);
-    v6 = [stripAndReturnHonorifics__cache objectForKeyedSubscript:v5];
+    v6 = [stripAndReturnHonorifics__cache objectForKeyedSubscript:honorificsCopy];
     os_unfair_lock_unlock(&stripAndReturnHonorifics__cacheLock);
     if (!v6)
     {
@@ -2693,7 +2693,7 @@ void __21__SGNames_cleanName___block_invoke()
       v16 = 0x3032000000;
       v17 = __Block_byref_object_copy__17345;
       v18 = __Block_byref_object_dispose__17346;
-      v8 = v5;
+      v8 = honorificsCopy;
       v19 = v8;
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
@@ -2857,19 +2857,19 @@ uint64_t __36__SGNames_stripAndReturnHonorifics___block_invoke_3(uint64_t a1, ui
   return 0;
 }
 
-+ (id)stripHonorifics:(id)a3
++ (id)stripHonorifics:(id)honorifics
 {
-  v3 = [a1 stripAndReturnHonorifics:a3];
+  v3 = [self stripAndReturnHonorifics:honorifics];
   v4 = [v3 objectAtIndexedSubscript:1];
 
   return v4;
 }
 
-+ (BOOL)isCapitalized:(id)a3
++ (BOOL)isCapitalized:(id)capitalized
 {
-  v3 = a3;
+  capitalizedCopy = capitalized;
   Predefined = CFCharacterSetGetPredefined(kCFCharacterSetUppercaseLetter);
-  v5 = v3;
+  v5 = capitalizedCopy;
   v6 = objc_opt_self();
 
   if (v6)
@@ -3000,27 +3000,27 @@ LABEL_35:
   return v26;
 }
 
-+ (BOOL)isDifficultName:(id)a3
++ (BOOL)isDifficultName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_autoreleasePoolPush();
-  v5 = SGGuessNamingTradition(v3);
+  v5 = SGGuessNamingTradition(nameCopy);
   objc_autoreleasePoolPop(v4);
   v7 = v5 == 5 || (v5 & 0xFFFFFFFD) == 4;
 
   return v7;
 }
 
-+ (BOOL)isCommonVietnameseSurname:(id)a3
++ (BOOL)isCommonVietnameseSurname:(id)surname
 {
-  v3 = a3;
+  surnameCopy = surname;
   if (isCommonVietnameseSurname___pasOnceToken13 != -1)
   {
     dispatch_once(&isCommonVietnameseSurname___pasOnceToken13, &__block_literal_global_63);
   }
 
   v4 = isCommonVietnameseSurname___pasExprOnceResult;
-  if ([(__CFString *)v3 length]&& (MutableCopy = CFStringCreateMutableCopy(0, 0, v3)) != 0)
+  if ([(__CFString *)surnameCopy length]&& (MutableCopy = CFStringCreateMutableCopy(0, 0, surnameCopy)) != 0)
   {
     v6 = MutableCopy;
     CFStringNormalize(MutableCopy, kCFStringNormalizationFormKC);
@@ -3060,10 +3060,10 @@ void __37__SGNames_isCommonVietnameseSurname___block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-+ (BOOL)isProbablyShortCJKName:(id)a3
++ (BOOL)isProbablyShortCJKName:(id)name
 {
-  v3 = a3;
-  if ([v3 length] > 5)
+  nameCopy = name;
+  if ([nameCopy length] > 5)
   {
     v4 = 0;
     goto LABEL_35;
@@ -3074,7 +3074,7 @@ void __37__SGNames_isCommonVietnameseSurname___block_invoke()
     dispatch_once(&isProbablyShortCJKName__onceToken, &__block_literal_global_61);
   }
 
-  v5 = v3;
+  v5 = nameCopy;
   v6 = objc_opt_self();
 
   if (v6)
@@ -3210,18 +3210,18 @@ void __34__SGNames_isProbablyShortCJKName___block_invoke()
   isProbablyShortCJKName__commonCJKCharsets = v3;
 }
 
-+ (BOOL)isLowercaseStringCommonNameWord:(id)a3
++ (BOOL)isLowercaseStringCommonNameWord:(id)word
 {
-  v3 = [SGWords normalizeLowercaseWord:a3];
+  v3 = [SGWords normalizeLowercaseWord:word];
   v4 = nameData(v3);
 
   return v4 & 1;
 }
 
-+ (BOOL)isSalientNameByChars:(id)a3
++ (BOOL)isSalientNameByChars:(id)chars
 {
-  v4 = a3;
-  if ([v4 length] < 2)
+  charsCopy = chars;
+  if ([charsCopy length] < 2)
   {
     LOBYTE(v11) = 0;
   }
@@ -3233,14 +3233,14 @@ void __34__SGNames_isProbablyShortCJKName___block_invoke()
     do
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = [v4 substringWithRange:{0, v6}];
+      v8 = [charsCopy substringWithRange:{0, v6}];
       objc_autoreleasePoolPop(v7);
-      if ([a1 isFamilyName:v8])
+      if ([self isFamilyName:v8])
       {
         v9 = objc_autoreleasePoolPush();
-        v10 = [v4 substringWithRange:{v6, objc_msgSend(v4, "length") + v5}];
+        v10 = [charsCopy substringWithRange:{v6, objc_msgSend(charsCopy, "length") + v5}];
         objc_autoreleasePoolPop(v9);
-        v11 = [a1 isSalientName:v10];
+        v11 = [self isSalientName:v10];
       }
 
       else
@@ -3263,17 +3263,17 @@ void __34__SGNames_isProbablyShortCJKName___block_invoke()
   return v11;
 }
 
-+ ($D369DFA4738CCB2DC34F10FA2F14702B)namePayload:(id)a3
++ ($D369DFA4738CCB2DC34F10FA2F14702B)namePayload:(id)payload
 {
-  v4 = a3;
-  if ([a1 isProbablyShortCJKName:v4])
+  payloadCopy = payload;
+  if ([self isProbablyShortCJKName:payloadCopy])
   {
-    v5 = v4;
+    v5 = payloadCopy;
   }
 
   else
   {
-    v5 = [SGWords normalizeWord:v4];
+    v5 = [SGWords normalizeWord:payloadCopy];
   }
 
   v6 = v5;

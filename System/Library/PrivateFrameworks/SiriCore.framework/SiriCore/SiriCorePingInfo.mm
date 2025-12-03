@@ -1,12 +1,12 @@
 @interface SiriCorePingInfo
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)markPingSentWithIndex:(int64_t)a3;
-- (void)markPongReceivedWithIndex:(int64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)markPingSentWithIndex:(int64_t)index;
+- (void)markPongReceivedWithIndex:(int64_t)index;
 @end
 
 @implementation SiriCorePingInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(SiriCorePingInfo);
   *(result + 2) = self->_pingAcknowledgedCount;
@@ -14,18 +14,18 @@
   return result;
 }
 
-- (void)markPongReceivedWithIndex:(int64_t)a3
+- (void)markPongReceivedWithIndex:(int64_t)index
 {
   outstandingPings = self->_outstandingPings;
   if (outstandingPings)
   {
-    v6 = NSMapGet(outstandingPings, a3);
+    v6 = NSMapGet(outstandingPings, index);
     if (v6)
     {
       v13 = v6;
-      NSMapRemove(self->_outstandingPings, a3);
-      v7 = [MEMORY[0x277CCAC38] processInfo];
-      [v7 systemUptime];
+      NSMapRemove(self->_outstandingPings, index);
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
+      [processInfo systemUptime];
       v9 = v8;
       [v13 doubleValue];
       v11 = v9 - v10;
@@ -37,7 +37,7 @@
   }
 }
 
-- (void)markPingSentWithIndex:(int64_t)a3
+- (void)markPingSentWithIndex:(int64_t)index
 {
   outstandingPings = self->_outstandingPings;
   if (!outstandingPings)
@@ -50,9 +50,9 @@
   }
 
   v8 = MEMORY[0x277CCABB0];
-  v9 = [MEMORY[0x277CCAC38] processInfo];
-  [v9 systemUptime];
-  NSMapInsert(outstandingPings, a3, [v8 numberWithDouble:?]);
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  [processInfo systemUptime];
+  NSMapInsert(outstandingPings, index, [v8 numberWithDouble:?]);
 }
 
 @end

@@ -1,33 +1,33 @@
 @interface TRIRequiredMAAsset
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAsset:(id)a3;
-- (TRIRequiredMAAsset)initWithFactorName:(id)a3 isInstalled:(BOOL)a4 isOnDemand:(BOOL)a5 metadata:(id)a6 fullAssetId:(id)a7;
-- (id)copyWithReplacementFactorName:(id)a3;
-- (id)copyWithReplacementFullAssetId:(id)a3;
-- (id)copyWithReplacementMetadata:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAsset:(id)asset;
+- (TRIRequiredMAAsset)initWithFactorName:(id)name isInstalled:(BOOL)installed isOnDemand:(BOOL)demand metadata:(id)metadata fullAssetId:(id)id;
+- (id)copyWithReplacementFactorName:(id)name;
+- (id)copyWithReplacementFullAssetId:(id)id;
+- (id)copyWithReplacementMetadata:(id)metadata;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation TRIRequiredMAAsset
 
-- (TRIRequiredMAAsset)initWithFactorName:(id)a3 isInstalled:(BOOL)a4 isOnDemand:(BOOL)a5 metadata:(id)a6 fullAssetId:(id)a7
+- (TRIRequiredMAAsset)initWithFactorName:(id)name isInstalled:(BOOL)installed isOnDemand:(BOOL)demand metadata:(id)metadata fullAssetId:(id)id
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  if (v14)
+  nameCopy = name;
+  metadataCopy = metadata;
+  idCopy = id;
+  if (nameCopy)
   {
-    if (v15)
+    if (metadataCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:3029 description:{@"Invalid parameter not satisfying: %@", @"metadata != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:3029 description:{@"Invalid parameter not satisfying: %@", @"metadata != nil"}];
 
-    if (v16)
+    if (idCopy)
     {
       goto LABEL_4;
     }
@@ -35,23 +35,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v20 = [MEMORY[0x277CCA890] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:3028 description:{@"Invalid parameter not satisfying: %@", @"factorName != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:3028 description:{@"Invalid parameter not satisfying: %@", @"factorName != nil"}];
 
-  if (!v15)
+  if (!metadataCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v16)
+  if (idCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v22 = [MEMORY[0x277CCA890] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:3030 description:{@"Invalid parameter not satisfying: %@", @"fullAssetId != nil"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:3030 description:{@"Invalid parameter not satisfying: %@", @"fullAssetId != nil"}];
 
 LABEL_4:
   v23.receiver = self;
@@ -60,52 +60,52 @@ LABEL_4:
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_factorName, a3);
-    v18->_isInstalled = a4;
-    v18->_isOnDemand = a5;
-    objc_storeStrong(&v18->_metadata, a6);
-    objc_storeStrong(&v18->_fullAssetId, a7);
+    objc_storeStrong(&v17->_factorName, name);
+    v18->_isInstalled = installed;
+    v18->_isOnDemand = demand;
+    objc_storeStrong(&v18->_metadata, metadata);
+    objc_storeStrong(&v18->_fullAssetId, id);
   }
 
   return v18;
 }
 
-- (id)copyWithReplacementFactorName:(id)a3
+- (id)copyWithReplacementFactorName:(id)name
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithFactorName:v4 isInstalled:self->_isInstalled isOnDemand:self->_isOnDemand metadata:self->_metadata fullAssetId:self->_fullAssetId];
+  nameCopy = name;
+  v5 = [objc_alloc(objc_opt_class()) initWithFactorName:nameCopy isInstalled:self->_isInstalled isOnDemand:self->_isOnDemand metadata:self->_metadata fullAssetId:self->_fullAssetId];
 
   return v5;
 }
 
-- (id)copyWithReplacementMetadata:(id)a3
+- (id)copyWithReplacementMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithFactorName:self->_factorName isInstalled:self->_isInstalled isOnDemand:self->_isOnDemand metadata:v4 fullAssetId:self->_fullAssetId];
+  metadataCopy = metadata;
+  v5 = [objc_alloc(objc_opt_class()) initWithFactorName:self->_factorName isInstalled:self->_isInstalled isOnDemand:self->_isOnDemand metadata:metadataCopy fullAssetId:self->_fullAssetId];
 
   return v5;
 }
 
-- (id)copyWithReplacementFullAssetId:(id)a3
+- (id)copyWithReplacementFullAssetId:(id)id
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithFactorName:self->_factorName isInstalled:self->_isInstalled isOnDemand:self->_isOnDemand metadata:self->_metadata fullAssetId:v4];
+  idCopy = id;
+  v5 = [objc_alloc(objc_opt_class()) initWithFactorName:self->_factorName isInstalled:self->_isInstalled isOnDemand:self->_isOnDemand metadata:self->_metadata fullAssetId:idCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToAsset:(id)a3
+- (BOOL)isEqualToAsset:(id)asset
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  assetCopy = asset;
+  v5 = assetCopy;
+  if (!assetCopy)
   {
     goto LABEL_13;
   }
 
   v6 = self->_factorName == 0;
-  v7 = [v4 factorName];
-  v8 = v7 != 0;
+  factorName = [assetCopy factorName];
+  v8 = factorName != 0;
 
   if (v6 == v8)
   {
@@ -115,8 +115,8 @@ LABEL_4:
   factorName = self->_factorName;
   if (factorName)
   {
-    v10 = [v5 factorName];
-    v11 = [(NSString *)factorName isEqual:v10];
+    factorName2 = [v5 factorName];
+    v11 = [(NSString *)factorName isEqual:factorName2];
 
     if (!v11)
     {
@@ -137,8 +137,8 @@ LABEL_4:
   }
 
   v14 = self->_metadata == 0;
-  v15 = [v5 metadata];
-  v16 = v15 != 0;
+  metadata = [v5 metadata];
+  v16 = metadata != 0;
 
   if (v14 == v16)
   {
@@ -148,8 +148,8 @@ LABEL_4:
   metadata = self->_metadata;
   if (metadata)
   {
-    v18 = [v5 metadata];
-    v19 = [(TRIMAAssetMetadata *)metadata isEqual:v18];
+    metadata2 = [v5 metadata];
+    v19 = [(TRIMAAssetMetadata *)metadata isEqual:metadata2];
 
     if (!v19)
     {
@@ -158,8 +158,8 @@ LABEL_4:
   }
 
   v20 = self->_fullAssetId == 0;
-  v21 = [v5 fullAssetId];
-  v22 = v21 != 0;
+  fullAssetId = [v5 fullAssetId];
+  v22 = fullAssetId != 0;
 
   if (v20 == v22)
   {
@@ -172,8 +172,8 @@ LABEL_13:
     fullAssetId = self->_fullAssetId;
     if (fullAssetId)
     {
-      v24 = [v5 fullAssetId];
-      v25 = [(TRIFullMAAssetId *)fullAssetId isEqual:v24];
+      fullAssetId2 = [v5 fullAssetId];
+      v25 = [(TRIFullMAAssetId *)fullAssetId isEqual:fullAssetId2];
     }
 
     else
@@ -185,18 +185,18 @@ LABEL_13:
   return v25 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIRequiredMAAsset *)self isEqualToAsset:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIRequiredMAAsset *)self isEqualToAsset:v5];
   }
 
   return v6;

@@ -1,19 +1,19 @@
 @interface NSPPrivateAccessTokenChallenge
-- (NSPPrivateAccessTokenChallenge)initWithData:(id)a3;
-- (id)initARCChallengeWithIssuerName:(id)a3;
-- (id)initARCChallengeWithIssuerName:(id)a3 redemptionContext:(id)a4 originNames:(id)a5 credentialContext:(id)a6;
-- (id)initATHMChallengeWithIssuerName:(id)a3;
-- (id)initRSABlindSignatureChallengeWithIssuerName:(id)a3 redemptionNonce:(id)a4 originNames:(id)a5;
-- (id)initRateLimitedRSABlindSignatureChallengeWithIssuerName:(id)a3 redemptionNonce:(id)a4 originNames:(id)a5;
+- (NSPPrivateAccessTokenChallenge)initWithData:(id)data;
+- (id)initARCChallengeWithIssuerName:(id)name;
+- (id)initARCChallengeWithIssuerName:(id)name redemptionContext:(id)context originNames:(id)names credentialContext:(id)credentialContext;
+- (id)initATHMChallengeWithIssuerName:(id)name;
+- (id)initRSABlindSignatureChallengeWithIssuerName:(id)name redemptionNonce:(id)nonce originNames:(id)names;
+- (id)initRateLimitedRSABlindSignatureChallengeWithIssuerName:(id)name redemptionNonce:(id)nonce originNames:(id)names;
 @end
 
 @implementation NSPPrivateAccessTokenChallenge
 
-- (NSPPrivateAccessTokenChallenge)initWithData:(id)a3
+- (NSPPrivateAccessTokenChallenge)initWithData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (!dataCopy)
   {
     v37 = nplog_obj();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_FAULT))
@@ -29,8 +29,8 @@ LABEL_64:
     goto LABEL_15;
   }
 
-  v6 = [v4 length];
-  v7 = [v5 bytes];
+  v6 = [dataCopy length];
+  bytes = [v5 bytes];
   if (!v6)
   {
     v37 = nplog_obj();
@@ -45,8 +45,8 @@ LABEL_64:
     goto LABEL_64;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = bytes;
+  if (!bytes)
   {
     v37 = nplog_obj();
     if (!os_log_type_enabled(v37, OS_LOG_TYPE_FAULT))
@@ -105,9 +105,9 @@ LABEL_31:
       goto LABEL_14;
     }
 
-    v24 = [(NSPPrivateAccessTokenChallenge *)v10 tokenType];
+    tokenType = [(NSPPrivateAccessTokenChallenge *)v10 tokenType];
     *buf = 67109120;
-    LODWORD(v67[0]) = v24;
+    LODWORD(v67[0]) = tokenType;
     v12 = "Unsupported token type %u";
     goto LABEL_30;
   }
@@ -170,9 +170,9 @@ LABEL_16:
   objc_setProperty_atomic(v10, v22, v21, 24);
 
   free(v19);
-  v23 = [(NSPPrivateAccessTokenChallenge *)v10 issuerName];
+  issuerName = [(NSPPrivateAccessTokenChallenge *)v10 issuerName];
 
-  if (!v23)
+  if (!issuerName)
   {
     v11 = nplog_obj();
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -240,9 +240,9 @@ LABEL_16:
     v32 = [NSData dataWithBytes:v27 length:v28];
     objc_setProperty_atomic(v10, v33, v32, 32);
 
-    v34 = [(NSPPrivateAccessTokenChallenge *)v10 redemptionContext];
+    redemptionContext = [(NSPPrivateAccessTokenChallenge *)v10 redemptionContext];
 
-    if (!v34)
+    if (!redemptionContext)
     {
       v11 = nplog_obj();
       if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -261,9 +261,9 @@ LABEL_16:
 
   if ([(NSPPrivateAccessTokenChallenge *)v10 typeRequiresRedemptionNonce])
   {
-    v35 = [(NSPPrivateAccessTokenChallenge *)v10 redemptionNonce];
+    redemptionNonce = [(NSPPrivateAccessTokenChallenge *)v10 redemptionNonce];
 
-    if (!v35)
+    if (!redemptionNonce)
     {
       v11 = nplog_obj();
       if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -347,9 +347,9 @@ LABEL_16:
     v44 = [objc_getProperty(v10 v43];
     objc_setProperty_atomic(v10, v45, v44, 48);
 
-    v46 = [(NSPPrivateAccessTokenChallenge *)v10 originNames];
-    v47 = [v46 firstObject];
-    objc_setProperty_atomic(v10, v48, v47, 40);
+    originNames = [(NSPPrivateAccessTokenChallenge *)v10 originNames];
+    firstObject = [originNames firstObject];
+    objc_setProperty_atomic(v10, v48, firstObject, 40);
   }
 
   if ([(NSPPrivateAccessTokenChallenge *)v10 typeRequiresOriginName]&& !objc_getProperty(v10, v49, 64, 1))
@@ -407,9 +407,9 @@ LABEL_37:
         v52 = [NSData dataWithBytes:v27 + 3 length:v51];
         objc_setProperty_atomic(v10, v53, v52, 56);
 
-        v54 = [(NSPPrivateAccessTokenChallenge *)v10 credentialContext];
+        credentialContext = [(NSPPrivateAccessTokenChallenge *)v10 credentialContext];
 
-        if (!v54)
+        if (!credentialContext)
         {
           v11 = nplog_obj();
           if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -445,20 +445,20 @@ LABEL_86:
   objc_setProperty_atomic(v10, v50, v5, 16);
   if (os_variant_allows_internal_security_policies())
   {
-    v55 = [(NSPPrivateAccessTokenChallenge *)v10 issuerName];
-    v56 = [v55 containsString:@";"];
+    issuerName2 = [(NSPPrivateAccessTokenChallenge *)v10 issuerName];
+    v56 = [issuerName2 containsString:@";"];
 
     if (v56)
     {
-      v57 = [(NSPPrivateAccessTokenChallenge *)v10 issuerName];
-      v58 = [v57 componentsSeparatedByString:@""];;
+      issuerName3 = [(NSPPrivateAccessTokenChallenge *)v10 issuerName];
+      v58 = [issuerName3 componentsSeparatedByString:@""];;
       self = [v58 firstObject];
 
       LODWORD(v58) = [(NSPPrivateAccessTokenChallenge *)v10 tokenType];
-      v59 = [(NSPPrivateAccessTokenChallenge *)v10 redemptionContext];
+      redemptionContext2 = [(NSPPrivateAccessTokenChallenge *)v10 redemptionContext];
       v61 = objc_getProperty(v10, v60, 64, 1);
-      v62 = [(NSPPrivateAccessTokenChallenge *)v10 credentialContext];
-      v63 = sub_1000B1F10(v10, v58, self, v59, v61, v62);
+      credentialContext2 = [(NSPPrivateAccessTokenChallenge *)v10 credentialContext];
+      v63 = sub_1000B1F10(v10, v58, self, redemptionContext2, v61, credentialContext2);
 
       objc_setProperty_atomic(v10, v64, v63, 16);
       goto LABEL_16;
@@ -470,13 +470,13 @@ LABEL_17:
   return v10;
 }
 
-- (id)initRSABlindSignatureChallengeWithIssuerName:(id)a3 redemptionNonce:(id)a4 originNames:(id)a5
+- (id)initRSABlindSignatureChallengeWithIssuerName:(id)name redemptionNonce:(id)nonce originNames:(id)names
 {
-  v5 = self;
-  if (a3)
+  selfCopy = self;
+  if (name)
   {
-    v5 = sub_1000B2DEC(&self->super, 2u, a3, a4, a5, 0);
-    v6 = v5;
+    selfCopy = sub_1000B2DEC(&self->super, 2u, name, nonce, names, 0);
+    v6 = selfCopy;
   }
 
   else
@@ -495,13 +495,13 @@ LABEL_17:
   return v6;
 }
 
-- (id)initRateLimitedRSABlindSignatureChallengeWithIssuerName:(id)a3 redemptionNonce:(id)a4 originNames:(id)a5
+- (id)initRateLimitedRSABlindSignatureChallengeWithIssuerName:(id)name redemptionNonce:(id)nonce originNames:(id)names
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8)
+  nameCopy = name;
+  nonceCopy = nonce;
+  namesCopy = names;
+  v11 = namesCopy;
+  if (!nameCopy)
   {
     v14 = nplog_obj();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -514,11 +514,11 @@ LABEL_17:
 
 LABEL_11:
 
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_5;
   }
 
-  if (!v9)
+  if (!nonceCopy)
   {
     v14 = nplog_obj();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -532,7 +532,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (![v10 count])
+  if (![namesCopy count])
   {
     v14 = nplog_obj();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -548,20 +548,20 @@ LABEL_13:
     goto LABEL_11;
   }
 
-  self = sub_1000B2DEC(&self->super, 3u, v8, v9, v11, 0);
-  v12 = self;
+  self = sub_1000B2DEC(&self->super, 3u, nameCopy, nonceCopy, v11, 0);
+  selfCopy = self;
 LABEL_5:
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)initARCChallengeWithIssuerName:(id)a3 redemptionContext:(id)a4 originNames:(id)a5 credentialContext:(id)a6
+- (id)initARCChallengeWithIssuerName:(id)name redemptionContext:(id)context originNames:(id)names credentialContext:(id)credentialContext
 {
-  v6 = self;
-  if (a3)
+  selfCopy = self;
+  if (name)
   {
-    v6 = sub_1000B2DEC(&self->super, 0xE5ACu, a3, a4, a5, a6);
-    v7 = v6;
+    selfCopy = sub_1000B2DEC(&self->super, 0xE5ACu, name, context, names, credentialContext);
+    v7 = selfCopy;
   }
 
   else
@@ -580,13 +580,13 @@ LABEL_5:
   return v7;
 }
 
-- (id)initATHMChallengeWithIssuerName:(id)a3
+- (id)initATHMChallengeWithIssuerName:(id)name
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (name)
   {
-    v3 = sub_1000B2DEC(&self->super, 0xC07Eu, a3, 0, 0, 0);
-    v4 = v3;
+    selfCopy = sub_1000B2DEC(&self->super, 0xC07Eu, name, 0, 0, 0);
+    v4 = selfCopy;
   }
 
   else
@@ -605,13 +605,13 @@ LABEL_5:
   return v4;
 }
 
-- (id)initARCChallengeWithIssuerName:(id)a3
+- (id)initARCChallengeWithIssuerName:(id)name
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (name)
   {
-    v3 = sub_1000B2DEC(&self->super, 0xE5ACu, a3, 0, 0, 0);
-    v4 = v3;
+    selfCopy = sub_1000B2DEC(&self->super, 0xE5ACu, name, 0, 0, 0);
+    v4 = selfCopy;
   }
 
   else

@@ -1,20 +1,20 @@
 @interface MFMessageStoreObjectCache
-- (MFMessageStoreObjectCache)initWithCapacity:(unint64_t)a3;
-- (id)addObject:(id)a3 forMessage:(id)a4 kind:(int64_t)a5;
+- (MFMessageStoreObjectCache)initWithCapacity:(unint64_t)capacity;
+- (id)addObject:(id)object forMessage:(id)message kind:(int64_t)kind;
 - (id)debugDescription;
 - (id)description;
-- (id)objectForMessage:(id)a3 kind:(int64_t)a4;
+- (id)objectForMessage:(id)message kind:(int64_t)kind;
 - (void)_nts_evictObject;
-- (void)_nts_setObject:(id)a3 forKey:(id)a4;
+- (void)_nts_setObject:(id)object forKey:(id)key;
 - (void)flush;
-- (void)removeAllObjectsForMessage:(id)a3;
-- (void)removeObjectForMessage:(id)a3 kind:(int64_t)a4;
-- (void)setObject:(id)a3 forMessage:(id)a4 kind:(int64_t)a5;
+- (void)removeAllObjectsForMessage:(id)message;
+- (void)removeObjectForMessage:(id)message kind:(int64_t)kind;
+- (void)setObject:(id)object forMessage:(id)message kind:(int64_t)kind;
 @end
 
 @implementation MFMessageStoreObjectCache
 
-- (MFMessageStoreObjectCache)initWithCapacity:(unint64_t)a3
+- (MFMessageStoreObjectCache)initWithCapacity:(unint64_t)capacity
 {
   v11.receiver = self;
   v11.super_class = MFMessageStoreObjectCache;
@@ -25,7 +25,7 @@
     lock = v4->_lock;
     v4->_lock = v5;
 
-    v4->_capacity = 4 * a3;
+    v4->_capacity = 4 * capacity;
     v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v4->_capacity];
     cache = v4->_cache;
     v4->_cache = v7;
@@ -49,14 +49,14 @@
 {
   v27 = *MEMORY[0x1E69E9840];
   v3 = [(NSMutableDictionary *)self->_cache count];
-  v19 = self;
-  v20 = [(NSMutableDictionary *)self->_cache allValues];
+  selfCopy = self;
+  allValues = [(NSMutableDictionary *)self->_cache allValues];
   v21 = [MEMORY[0x1E696AB50] set];
   if (v3)
   {
     for (i = 0; i != v3; ++i)
     {
-      v5 = [v20 objectAtIndexedSubscript:i];
+      v5 = [allValues objectAtIndexedSubscript:i];
       [v21 addObject:v5];
     }
   }
@@ -92,9 +92,9 @@
 
   v12 = MEMORY[0x1E696AEC0];
   v13 = objc_opt_class();
-  capacity = v19->_capacity;
+  capacity = selfCopy->_capacity;
   v15 = [v6 componentsJoinedByString:{@", "}];
-  v16 = [v12 stringWithFormat:@"<%@: %p> capacity %lu, size %lu, distribution (%@)", v13, v19, capacity, v3, v15];
+  v16 = [v12 stringWithFormat:@"<%@: %p> capacity %lu, size %lu, distribution (%@)", v13, selfCopy, capacity, v3, v15];
 
   v17 = *MEMORY[0x1E69E9840];
 
@@ -110,51 +110,51 @@
 
   v3 = [(NSMutableDictionary *)self->_cache count];
   v4 = arc4random() % v3;
-  v5 = [(NSMutableDictionary *)self->_cache allKeys];
+  allKeys = [(NSMutableDictionary *)self->_cache allKeys];
   cache = self->_cache;
-  v8 = v5;
-  v7 = [v5 objectAtIndexedSubscript:v4];
+  v8 = allKeys;
+  v7 = [allKeys objectAtIndexedSubscript:v4];
   [(NSMutableDictionary *)cache removeObjectForKey:v7];
 }
 
-- (void)_nts_setObject:(id)a3 forKey:(id)a4
+- (void)_nts_setObject:(id)object forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   capacity = self->_capacity;
   if (capacity <= [(NSMutableDictionary *)self->_cache count])
   {
     [(MFMessageStoreObjectCache *)self _nts_evictObject];
   }
 
-  [(NSMutableDictionary *)self->_cache setObject:v8 forKey:v6];
+  [(NSMutableDictionary *)self->_cache setObject:objectCopy forKey:keyCopy];
 }
 
-- (void)setObject:(id)a3 forMessage:(id)a4 kind:(int64_t)a5
+- (void)setObject:(id)object forMessage:(id)message kind:(int64_t)kind
 {
-  v9 = a3;
-  v7 = a4;
+  objectCopy = object;
+  messageCopy = message;
   [(NSLock *)self->_lock lock];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:(*(self->_keyGenerator + 2))()];
-  [(MFMessageStoreObjectCache *)self _nts_setObject:v9 forKey:v8];
+  [(MFMessageStoreObjectCache *)self _nts_setObject:objectCopy forKey:v8];
 
   [(NSLock *)self->_lock unlock];
 }
 
-- (id)addObject:(id)a3 forMessage:(id)a4 kind:(int64_t)a5
+- (id)addObject:(id)object forMessage:(id)message kind:(int64_t)kind
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  messageCopy = message;
   [(NSLock *)self->_lock lock];
   v9 = (*(self->_keyGenerator + 2))();
   cache = self->_cache;
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v9];
   v12 = [(NSMutableDictionary *)cache objectForKeyedSubscript:v11];
 
-  if (v7 && v12)
+  if (objectCopy && v12)
   {
     comparator = self->_comparator;
-    if (!comparator || comparator[2](comparator, v12, v7) != -1)
+    if (!comparator || comparator[2](comparator, v12, objectCopy) != -1)
     {
       goto LABEL_9;
     }
@@ -166,12 +166,12 @@
     v12 = 0;
   }
 
-  if (v7 && !v12)
+  if (objectCopy && !v12)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v9];
-    [(MFMessageStoreObjectCache *)self _nts_setObject:v7 forKey:v16];
+    [(MFMessageStoreObjectCache *)self _nts_setObject:objectCopy forKey:v16];
 
-    v12 = v7;
+    v12 = objectCopy;
   }
 
 LABEL_9:
@@ -180,9 +180,9 @@ LABEL_9:
   return v12;
 }
 
-- (void)removeObjectForMessage:(id)a3 kind:(int64_t)a4
+- (void)removeObjectForMessage:(id)message kind:(int64_t)kind
 {
-  v8 = a3;
+  messageCopy = message;
   [(NSLock *)self->_lock lock];
   v5 = (*(self->_keyGenerator + 2))();
   cache = self->_cache;
@@ -192,10 +192,10 @@ LABEL_9:
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)removeAllObjectsForMessage:(id)a3
+- (void)removeAllObjectsForMessage:(id)message
 {
   v12 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  messageCopy = message;
   [(NSLock *)self->_lock lock];
   v4 = 0;
   v11[0] = xmmword_1D36EFE90;
@@ -216,9 +216,9 @@ LABEL_9:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)objectForMessage:(id)a3 kind:(int64_t)a4
+- (id)objectForMessage:(id)message kind:(int64_t)kind
 {
-  v5 = a3;
+  messageCopy = message;
   [(NSLock *)self->_lock lock];
   v6 = (*(self->_keyGenerator + 2))();
   cache = self->_cache;

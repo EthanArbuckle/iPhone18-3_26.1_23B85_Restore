@@ -1,30 +1,30 @@
 @interface SKUINavigationDocumentController
-- (SKUINavigationDocumentController)initWithNavigationController:(id)a3;
+- (SKUINavigationDocumentController)initWithNavigationController:(id)controller;
 - (SKUINavigationDocumentDelegate)delegate;
 - (id)_activeNavigationController;
 - (id)documents;
-- (void)_applyDocumentReplacementForOldStackItem:(id)a3 atOldIndex:(int64_t)a4 withStackItem:(id)a5;
-- (void)_ensureStackConsistencyForNavigationControllerOperation:(int64_t)a3 operationDidComplete:(BOOL)a4;
+- (void)_applyDocumentReplacementForOldStackItem:(id)item atOldIndex:(int64_t)index withStackItem:(id)stackItem;
+- (void)_ensureStackConsistencyForNavigationControllerOperation:(int64_t)operation operationDidComplete:(BOOL)complete;
 - (void)_handleStackDidChange;
-- (void)_scheduleFlushingPendingNavigationStackEnsureConsistencyRequestsWithTransitionCoordinator:(id)a3;
+- (void)_scheduleFlushingPendingNavigationStackEnsureConsistencyRequestsWithTransitionCoordinator:(id)coordinator;
 - (void)_unloadAllStackItems;
-- (void)ensureStackConsistencyForNavigationControllerOperation:(int64_t)a3 operationDidComplete:(BOOL)a4;
-- (void)insertDocument:(id)a3 beforeDocument:(id)a4 options:(id)a5;
+- (void)ensureStackConsistencyForNavigationControllerOperation:(int64_t)operation operationDidComplete:(BOOL)complete;
+- (void)insertDocument:(id)document beforeDocument:(id)beforeDocument options:(id)options;
 - (void)popAllDocuments;
 - (void)popDocument;
-- (void)popToDocument:(id)a3;
+- (void)popToDocument:(id)document;
 - (void)popToRootDocument;
-- (void)pushDocument:(id)a3 options:(id)a4;
-- (void)removeDocument:(id)a3;
-- (void)replaceDocument:(id)a3 withDocument:(id)a4 options:(id)a5;
-- (void)setStackItems:(id)a3 animated:(BOOL)a4;
+- (void)pushDocument:(id)document options:(id)options;
+- (void)removeDocument:(id)document;
+- (void)replaceDocument:(id)document withDocument:(id)withDocument options:(id)options;
+- (void)setStackItems:(id)items animated:(BOOL)animated;
 @end
 
 @implementation SKUINavigationDocumentController
 
-- (SKUINavigationDocumentController)initWithNavigationController:(id)a3
+- (SKUINavigationDocumentController)initWithNavigationController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUINavigationDocumentController initWithNavigationController:];
@@ -36,13 +36,13 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_navigationController, a3);
+    objc_storeStrong(&v6->_navigationController, controller);
     v8 = storeSemanticContentAttribute();
-    v9 = [(UINavigationController *)v7->_navigationController view];
-    [v9 setSemanticContentAttribute:v8];
+    view = [(UINavigationController *)v7->_navigationController view];
+    [view setSemanticContentAttribute:v8];
 
-    v10 = [(UINavigationController *)v7->_navigationController navigationBar];
-    [v10 setSemanticContentAttribute:v8];
+    navigationBar = [(UINavigationController *)v7->_navigationController navigationBar];
+    [navigationBar setSemanticContentAttribute:v8];
 
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     stackItems = v7->_stackItems;
@@ -52,34 +52,34 @@
   return v7;
 }
 
-- (void)ensureStackConsistencyForNavigationControllerOperation:(int64_t)a3 operationDidComplete:(BOOL)a4
+- (void)ensureStackConsistencyForNavigationControllerOperation:(int64_t)operation operationDidComplete:(BOOL)complete
 {
-  v4 = a4;
+  completeCopy = complete;
   if ([(NSMutableArray *)self->_pendingNavigationStackEnsureConsistencyRequests count])
   {
-    v11 = [[SKUINavigationStackEnsureConsistencyRequest alloc] initWithNavigationControllerOperation:a3 operationDidComplete:v4];
+    v11 = [[SKUINavigationStackEnsureConsistencyRequest alloc] initWithNavigationControllerOperation:operation operationDidComplete:completeCopy];
     [(NSMutableArray *)self->_pendingNavigationStackEnsureConsistencyRequests addObject:v11];
 LABEL_5:
 
     return;
   }
 
-  v7 = [(UINavigationController *)self->_navigationController transitionCoordinator];
-  if (v7)
+  transitionCoordinator = [(UINavigationController *)self->_navigationController transitionCoordinator];
+  if (transitionCoordinator)
   {
-    v11 = v7;
+    v11 = transitionCoordinator;
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     pendingNavigationStackEnsureConsistencyRequests = self->_pendingNavigationStackEnsureConsistencyRequests;
     self->_pendingNavigationStackEnsureConsistencyRequests = v8;
 
-    v10 = [[SKUINavigationStackEnsureConsistencyRequest alloc] initWithNavigationControllerOperation:a3 operationDidComplete:v4];
+    v10 = [[SKUINavigationStackEnsureConsistencyRequest alloc] initWithNavigationControllerOperation:operation operationDidComplete:completeCopy];
     [(NSMutableArray *)self->_pendingNavigationStackEnsureConsistencyRequests addObject:v10];
     [(SKUINavigationDocumentController *)self _scheduleFlushingPendingNavigationStackEnsureConsistencyRequestsWithTransitionCoordinator:v11];
 
     goto LABEL_5;
   }
 
-  [(SKUINavigationDocumentController *)self _ensureStackConsistencyForNavigationControllerOperation:a3 operationDidComplete:v4];
+  [(SKUINavigationDocumentController *)self _ensureStackConsistencyForNavigationControllerOperation:operation operationDidComplete:completeCopy];
 }
 
 - (void)popAllDocuments
@@ -99,19 +99,19 @@ LABEL_5:
   [(SKUINavigationDocumentController *)self _handleStackDidChange];
 }
 
-- (void)setStackItems:(id)a3 animated:(BOOL)a4
+- (void)setStackItems:(id)items animated:(BOOL)animated
 {
-  v24 = a4;
+  animatedCopy = animated;
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemsCopy = items;
   [(SKUINavigationDocumentController *)self _unloadAllStackItems];
-  v25 = [(SKUINavigationDocumentController *)self clientContext];
+  clientContext = [(SKUINavigationDocumentController *)self clientContext];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = v5;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v8)
   {
@@ -127,18 +127,18 @@ LABEL_5:
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
-        v13 = [v12 viewController];
-        if (v13)
+        viewController = [v12 viewController];
+        if (viewController)
         {
-          v14 = v13;
+          v14 = viewController;
         }
 
         else
         {
           v15 = [SKUIDocumentContainerViewController alloc];
-          v16 = [v12 document];
-          v17 = [v12 presentationOptions];
-          v14 = [(SKUIDocumentContainerViewController *)v15 initWithDocument:v16 options:v17 clientContext:v25];
+          document = [v12 document];
+          presentationOptions = [v12 presentationOptions];
+          v14 = [(SKUIDocumentContainerViewController *)v15 initWithDocument:document options:presentationOptions clientContext:clientContext];
 
           [v12 setViewController:v14];
           if (!v14)
@@ -160,24 +160,24 @@ LABEL_5:
   moreNavigationController = self->_moreNavigationController;
   if (moreNavigationController || (moreNavigationController = self->_overrideNavigationController) != 0)
   {
-    v19 = [(UINavigationController *)moreNavigationController viewControllers];
-    v20 = [v19 firstObject];
+    viewControllers = [(UINavigationController *)moreNavigationController viewControllers];
+    firstObject = [viewControllers firstObject];
 
-    if (v20)
+    if (firstObject)
     {
-      [v6 insertObject:v20 atIndex:0];
+      [v6 insertObject:firstObject atIndex:0];
     }
   }
 
-  v21 = [(SKUINavigationDocumentController *)self _activeNavigationController];
-  v22 = [v6 firstObject];
-  if ([v22 conformsToProtocol:&unk_28293AF68])
+  _activeNavigationController = [(SKUINavigationDocumentController *)self _activeNavigationController];
+  firstObject2 = [v6 firstObject];
+  if ([firstObject2 conformsToProtocol:&unk_28293AF68])
   {
-    [v21 setTransitioningDelegate:v22];
+    [_activeNavigationController setTransitioningDelegate:firstObject2];
   }
 
-  v23 = [(SKUINavigationDocumentController *)self _activeNavigationController];
-  [v23 setViewControllers:v6 animated:v24];
+  _activeNavigationController2 = [(SKUINavigationDocumentController *)self _activeNavigationController];
+  [_activeNavigationController2 setViewControllers:v6 animated:animatedCopy];
 
   [(SKUINavigationDocumentController *)self _handleStackDidChange];
 }
@@ -185,7 +185,7 @@ LABEL_5:
 - (id)documents
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -205,10 +205,10 @@ LABEL_5:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) document];
-        if (v9)
+        document = [*(*(&v11 + 1) + 8 * i) document];
+        if (document)
         {
-          [v3 addObject:v9];
+          [array addObject:document];
         }
       }
 
@@ -218,46 +218,46 @@ LABEL_5:
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (void)insertDocument:(id)a3 beforeDocument:(id)a4 options:(id)a5
+- (void)insertDocument:(id)document beforeDocument:(id)beforeDocument options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9 && (v11 = self->_stackItems, v25[0] = MEMORY[0x277D85DD0], v25[1] = 3221225472, v25[2] = __74__SKUINavigationDocumentController_insertDocument_beforeDocument_options___block_invoke, v25[3] = &unk_2781FD120, v26 = v9, v12 = [(NSMutableArray *)v11 indexOfObjectPassingTest:v25], v26, v12 != 0x7FFFFFFFFFFFFFFFLL))
+  documentCopy = document;
+  beforeDocumentCopy = beforeDocument;
+  optionsCopy = options;
+  if (beforeDocumentCopy && (v11 = self->_stackItems, v25[0] = MEMORY[0x277D85DD0], v25[1] = 3221225472, v25[2] = __74__SKUINavigationDocumentController_insertDocument_beforeDocument_options___block_invoke, v25[3] = &unk_2781FD120, v26 = beforeDocumentCopy, v12 = [(NSMutableArray *)v11 indexOfObjectPassingTest:v25], v26, v12 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v13 = [SKUIDocumentContainerViewController alloc];
-    v14 = [(SKUINavigationDocumentController *)self clientContext];
-    v15 = [(SKUIDocumentContainerViewController *)v13 initWithDocument:v8 options:v10 clientContext:v14];
+    clientContext = [(SKUINavigationDocumentController *)self clientContext];
+    v15 = [(SKUIDocumentContainerViewController *)v13 initWithDocument:documentCopy options:optionsCopy clientContext:clientContext];
 
     if (v15)
     {
-      v16 = [[SKUIDocumentStackItem alloc] initWithDocument:v8 presentationOptions:v10];
+      v16 = [[SKUIDocumentStackItem alloc] initWithDocument:documentCopy presentationOptions:optionsCopy];
       [(SKUIDocumentStackItem *)v16 setViewController:v15];
-      v24 = [(SKUINavigationDocumentController *)self _activeNavigationController];
-      v17 = [v24 viewControllers];
-      v18 = [v17 mutableCopy];
+      _activeNavigationController = [(SKUINavigationDocumentController *)self _activeNavigationController];
+      viewControllers = [_activeNavigationController viewControllers];
+      v18 = [viewControllers mutableCopy];
 
       v23 = [(NSMutableArray *)self->_stackItems objectAtIndex:v12];
-      v19 = [v23 viewController];
-      v20 = [v18 indexOfObjectIdenticalTo:v19];
+      viewController = [v23 viewController];
+      v20 = [v18 indexOfObjectIdenticalTo:viewController];
 
       stackItems = self->_stackItems;
       if (v20 == 0x7FFFFFFFFFFFFFFFLL)
       {
         [(NSMutableArray *)stackItems addObject:v16];
-        v22 = v24;
-        [v24 pushViewController:v15 animated:{-[SKUIDocumentStackItem isAnimated](v16, "isAnimated")}];
+        v22 = _activeNavigationController;
+        [_activeNavigationController pushViewController:v15 animated:{-[SKUIDocumentStackItem isAnimated](v16, "isAnimated")}];
       }
 
       else
       {
         [(NSMutableArray *)stackItems insertObject:v16 atIndex:v12];
         [v18 insertObject:v15 atIndex:v20];
-        v22 = v24;
-        [v24 setViewControllers:v18 animated:{-[SKUIDocumentStackItem isAnimated](v16, "isAnimated")}];
+        v22 = _activeNavigationController;
+        [_activeNavigationController setViewControllers:v18 animated:{-[SKUIDocumentStackItem isAnimated](v16, "isAnimated")}];
       }
 
       [(SKUINavigationDocumentController *)self _handleStackDidChange];
@@ -265,13 +265,13 @@ LABEL_5:
 
     else
     {
-      NSLog(&cfstr_NoViewControll.isa, v8, v10);
+      NSLog(&cfstr_NoViewControll.isa, documentCopy, optionsCopy);
     }
   }
 
   else
   {
-    [(SKUINavigationDocumentController *)self pushDocument:v8 options:v10];
+    [(SKUINavigationDocumentController *)self pushDocument:documentCopy options:optionsCopy];
   }
 }
 
@@ -287,14 +287,14 @@ BOOL __74__SKUINavigationDocumentController_insertDocument_beforeDocument_option
 {
   if ([(NSMutableArray *)self->_stackItems count])
   {
-    v7 = [(NSMutableArray *)self->_stackItems lastObject];
-    v3 = [v7 isAnimated];
-    v4 = [v7 document];
-    [v4 onUnload];
+    lastObject = [(NSMutableArray *)self->_stackItems lastObject];
+    isAnimated = [lastObject isAnimated];
+    document = [lastObject document];
+    [document onUnload];
 
     [(NSMutableArray *)self->_stackItems removeLastObject];
-    v5 = [(SKUINavigationDocumentController *)self _activeNavigationController];
-    v6 = [v5 popViewControllerAnimated:v3];
+    _activeNavigationController = [(SKUINavigationDocumentController *)self _activeNavigationController];
+    v6 = [_activeNavigationController popViewControllerAnimated:isAnimated];
 
     [(SKUINavigationDocumentController *)self _handleStackDidChange];
   }
@@ -309,8 +309,8 @@ BOOL __74__SKUINavigationDocumentController_insertDocument_beforeDocument_option
     do
     {
       v5 = [(NSMutableArray *)self->_stackItems objectAtIndex:v4 - 2];
-      v6 = [v5 document];
-      [v6 onUnload];
+      document = [v5 document];
+      [document onUnload];
 
       [(NSMutableArray *)self->_stackItems removeObjectAtIndex:v4 - 2];
       --v4;
@@ -321,24 +321,24 @@ BOOL __74__SKUINavigationDocumentController_insertDocument_beforeDocument_option
 
   if ([(NSMutableArray *)self->_stackItems count])
   {
-    v7 = [(NSMutableArray *)self->_stackItems firstObject];
-    v8 = [(SKUINavigationDocumentController *)self _activeNavigationController];
-    v9 = [v7 viewController];
-    v10 = [v8 popToViewController:v9 animated:1];
+    firstObject = [(NSMutableArray *)self->_stackItems firstObject];
+    _activeNavigationController = [(SKUINavigationDocumentController *)self _activeNavigationController];
+    viewController = [firstObject viewController];
+    v10 = [_activeNavigationController popToViewController:viewController animated:1];
   }
 
   [(SKUINavigationDocumentController *)self _handleStackDidChange];
 }
 
-- (void)popToDocument:(id)a3
+- (void)popToDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   stackItems = self->_stackItems;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __50__SKUINavigationDocumentController_popToDocument___block_invoke;
   v16[3] = &unk_2781FD120;
-  v6 = v4;
+  v6 = documentCopy;
   v17 = v6;
   v7 = [(NSMutableArray *)stackItems indexOfObjectPassingTest:v16];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
@@ -347,16 +347,16 @@ BOOL __74__SKUINavigationDocumentController_insertDocument_beforeDocument_option
     for (i = [(NSMutableArray *)self->_stackItems count]- 1; i > v8; --i)
     {
       v10 = [(NSMutableArray *)self->_stackItems objectAtIndex:i];
-      v11 = [v10 document];
-      [v11 onUnload];
+      document = [v10 document];
+      [document onUnload];
 
       [(NSMutableArray *)self->_stackItems removeObjectAtIndex:i];
     }
 
     v12 = [(NSMutableArray *)self->_stackItems objectAtIndex:v8];
-    v13 = [(SKUINavigationDocumentController *)self _activeNavigationController];
-    v14 = [v12 viewController];
-    v15 = [v13 popToViewController:v14 animated:{objc_msgSend(v12, "isAnimated")}];
+    _activeNavigationController = [(SKUINavigationDocumentController *)self _activeNavigationController];
+    viewController = [v12 viewController];
+    v15 = [_activeNavigationController popToViewController:viewController animated:{objc_msgSend(v12, "isAnimated")}];
 
     [(SKUINavigationDocumentController *)self _handleStackDidChange];
   }
@@ -370,50 +370,50 @@ BOOL __50__SKUINavigationDocumentController_popToDocument___block_invoke(uint64_
   return v4;
 }
 
-- (void)pushDocument:(id)a3 options:(id)a4
+- (void)pushDocument:(id)document options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  documentCopy = document;
+  optionsCopy = options;
   v8 = [SKUIDocumentContainerViewController alloc];
-  v9 = [(SKUINavigationDocumentController *)self clientContext];
-  v10 = [(SKUIDocumentContainerViewController *)v8 initWithDocument:v6 options:v7 clientContext:v9];
+  clientContext = [(SKUINavigationDocumentController *)self clientContext];
+  v10 = [(SKUIDocumentContainerViewController *)v8 initWithDocument:documentCopy options:optionsCopy clientContext:clientContext];
 
   if (v10)
   {
-    v11 = [[SKUIDocumentStackItem alloc] initWithDocument:v6 presentationOptions:v7];
+    v11 = [[SKUIDocumentStackItem alloc] initWithDocument:documentCopy presentationOptions:optionsCopy];
     [(SKUIDocumentStackItem *)v11 setViewController:v10];
     [(NSMutableArray *)self->_stackItems addObject:v11];
-    v12 = [(SKUINavigationDocumentController *)self _activeNavigationController];
+    _activeNavigationController = [(SKUINavigationDocumentController *)self _activeNavigationController];
     [(SKUIDocumentContainerViewController *)v10 preferredContentSize];
     if (*MEMORY[0x277CBF3A8] == v14 && *(MEMORY[0x277CBF3A8] + 8) == v13)
     {
-      [v12 preferredContentSize];
+      [_activeNavigationController preferredContentSize];
       [(SKUIDocumentContainerViewController *)v10 setPreferredContentSize:?];
     }
 
-    v16 = [v12 viewControllers];
-    v17 = [v16 count];
+    viewControllers = [_activeNavigationController viewControllers];
+    v17 = [viewControllers count];
 
-    v18 = [v12 transitionCoordinator];
-    [v12 pushViewController:v10 animated:{-[SKUIDocumentStackItem isAnimated](v11, "isAnimated")}];
+    transitionCoordinator = [_activeNavigationController transitionCoordinator];
+    [_activeNavigationController pushViewController:v10 animated:{-[SKUIDocumentStackItem isAnimated](v11, "isAnimated")}];
     if (!v17)
     {
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __57__SKUINavigationDocumentController_pushDocument_options___block_invoke;
       aBlock[3] = &unk_2781F80C8;
-      v24 = v12;
+      v24 = _activeNavigationController;
       v25 = v10;
       v19 = _Block_copy(aBlock);
       v20 = v19;
-      if (v18)
+      if (transitionCoordinator)
       {
         v21[0] = MEMORY[0x277D85DD0];
         v21[1] = 3221225472;
         v21[2] = __57__SKUINavigationDocumentController_pushDocument_options___block_invoke_4;
         v21[3] = &unk_2781FD148;
         v22 = v19;
-        [v18 animateAlongsideTransition:0 completion:v21];
+        [transitionCoordinator animateAlongsideTransition:0 completion:v21];
       }
 
       else
@@ -427,7 +427,7 @@ BOOL __50__SKUINavigationDocumentController_popToDocument___block_invoke(uint64_
 
   else
   {
-    NSLog(&cfstr_NoViewControll.isa, v6, v7);
+    NSLog(&cfstr_NoViewControll.isa, documentCopy, optionsCopy);
   }
 }
 
@@ -465,33 +465,33 @@ uint64_t __57__SKUINavigationDocumentController_pushDocument_options___block_inv
   return [v3 reloadData];
 }
 
-- (void)removeDocument:(id)a3
+- (void)removeDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   stackItems = self->_stackItems;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __51__SKUINavigationDocumentController_removeDocument___block_invoke;
   v15[3] = &unk_2781FD120;
-  v6 = v4;
+  v6 = documentCopy;
   v16 = v6;
   v7 = [(NSMutableArray *)stackItems indexOfObjectPassingTest:v15];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = v7;
     v9 = [(NSMutableArray *)self->_stackItems objectAtIndex:v7];
-    v10 = [(SKUINavigationDocumentController *)self _activeNavigationController];
-    v11 = [v10 viewControllers];
-    v12 = [v11 mutableCopy];
+    _activeNavigationController = [(SKUINavigationDocumentController *)self _activeNavigationController];
+    viewControllers = [_activeNavigationController viewControllers];
+    v12 = [viewControllers mutableCopy];
 
-    v13 = [v9 viewController];
-    [v12 removeObjectIdenticalTo:v13];
+    viewController = [v9 viewController];
+    [v12 removeObjectIdenticalTo:viewController];
 
-    v14 = [v9 document];
-    [v14 onUnload];
+    document = [v9 document];
+    [document onUnload];
 
     [(NSMutableArray *)self->_stackItems removeObjectAtIndex:v8];
-    [v10 setViewControllers:v12 animated:0];
+    [_activeNavigationController setViewControllers:v12 animated:0];
     [(SKUINavigationDocumentController *)self _handleStackDidChange];
   }
 }
@@ -504,29 +504,29 @@ BOOL __51__SKUINavigationDocumentController_removeDocument___block_invoke(uint64
   return v4;
 }
 
-- (void)replaceDocument:(id)a3 withDocument:(id)a4 options:(id)a5
+- (void)replaceDocument:(id)document withDocument:(id)withDocument options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && (stackItems = self->_stackItems, v31[0] = MEMORY[0x277D85DD0], v31[1] = 3221225472, v31[2] = __73__SKUINavigationDocumentController_replaceDocument_withDocument_options___block_invoke, v31[3] = &unk_2781FD120, v32 = v8, v12 = [(NSMutableArray *)stackItems indexOfObjectPassingTest:v31], v32, v12 != 0x7FFFFFFFFFFFFFFFLL))
+  documentCopy = document;
+  withDocumentCopy = withDocument;
+  optionsCopy = options;
+  if (documentCopy && (stackItems = self->_stackItems, v31[0] = MEMORY[0x277D85DD0], v31[1] = 3221225472, v31[2] = __73__SKUINavigationDocumentController_replaceDocument_withDocument_options___block_invoke, v31[3] = &unk_2781FD120, v32 = documentCopy, v12 = [(NSMutableArray *)stackItems indexOfObjectPassingTest:v31], v32, v12 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v13 = [SKUIDocumentContainerViewController alloc];
-    v14 = [(SKUINavigationDocumentController *)self clientContext];
-    v15 = [(SKUIDocumentContainerViewController *)v13 initWithDocument:v9 options:v10 clientContext:v14];
+    clientContext = [(SKUINavigationDocumentController *)self clientContext];
+    v15 = [(SKUIDocumentContainerViewController *)v13 initWithDocument:withDocumentCopy options:optionsCopy clientContext:clientContext];
 
     if (v15)
     {
-      v26 = [[SKUIDocumentStackItem alloc] initWithDocument:v9 presentationOptions:v10];
+      v26 = [[SKUIDocumentStackItem alloc] initWithDocument:withDocumentCopy presentationOptions:optionsCopy];
       [(SKUIDocumentStackItem *)v26 setViewController:v15];
       v16 = [(NSMutableArray *)self->_stackItems objectAtIndex:v12];
-      v17 = [(SKUINavigationDocumentController *)self _activeNavigationController];
-      v18 = [v17 viewControllers];
-      v19 = [v16 viewController];
-      v25 = v18;
-      v20 = [v18 indexOfObjectIdenticalTo:v19];
+      _activeNavigationController = [(SKUINavigationDocumentController *)self _activeNavigationController];
+      viewControllers = [_activeNavigationController viewControllers];
+      viewController = [v16 viewController];
+      v25 = viewControllers;
+      v20 = [viewControllers indexOfObjectIdenticalTo:viewController];
 
-      if (v20 == 0x7FFFFFFFFFFFFFFFLL && ([v17 transitionCoordinator], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
+      if (v20 == 0x7FFFFFFFFFFFFFFFLL && ([_activeNavigationController transitionCoordinator], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v22 = v21;
         v27[0] = MEMORY[0x277D85DD0];
@@ -543,21 +543,21 @@ BOOL __51__SKUINavigationDocumentController_removeDocument___block_invoke(uint64
 
       else
       {
-        v24 = self;
+        selfCopy = self;
         v23 = v26;
-        [(SKUINavigationDocumentController *)v24 _applyDocumentReplacementForOldStackItem:v16 atOldIndex:v12 withStackItem:v26];
+        [(SKUINavigationDocumentController *)selfCopy _applyDocumentReplacementForOldStackItem:v16 atOldIndex:v12 withStackItem:v26];
       }
     }
 
     else
     {
-      NSLog(&cfstr_NoViewControll.isa, v9, v10);
+      NSLog(&cfstr_NoViewControll.isa, withDocumentCopy, optionsCopy);
     }
   }
 
   else
   {
-    [(SKUINavigationDocumentController *)self pushDocument:v9 options:v10];
+    [(SKUINavigationDocumentController *)self pushDocument:withDocumentCopy options:optionsCopy];
   }
 }
 
@@ -589,49 +589,49 @@ BOOL __73__SKUINavigationDocumentController_replaceDocument_withDocument_options
   }
 }
 
-- (void)_applyDocumentReplacementForOldStackItem:(id)a3 atOldIndex:(int64_t)a4 withStackItem:(id)a5
+- (void)_applyDocumentReplacementForOldStackItem:(id)item atOldIndex:(int64_t)index withStackItem:(id)stackItem
 {
-  v16 = a3;
-  v8 = a5;
-  v9 = [(SKUINavigationDocumentController *)self _activeNavigationController];
-  v10 = [v9 viewControllers];
-  v11 = [v10 mutableCopy];
+  itemCopy = item;
+  stackItemCopy = stackItem;
+  _activeNavigationController = [(SKUINavigationDocumentController *)self _activeNavigationController];
+  viewControllers = [_activeNavigationController viewControllers];
+  v11 = [viewControllers mutableCopy];
 
-  v12 = [v16 viewController];
-  v13 = [v11 indexOfObjectIdenticalTo:v12];
+  viewController = [itemCopy viewController];
+  v13 = [v11 indexOfObjectIdenticalTo:viewController];
 
-  v14 = [v8 viewController];
+  viewController2 = [stackItemCopy viewController];
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(NSMutableArray *)self->_stackItems addObject:v8];
-    [v9 pushViewController:v14 animated:{objc_msgSend(v8, "isAnimated")}];
+    [(NSMutableArray *)self->_stackItems addObject:stackItemCopy];
+    [_activeNavigationController pushViewController:viewController2 animated:{objc_msgSend(stackItemCopy, "isAnimated")}];
   }
 
   else
   {
-    v15 = [v16 document];
-    [v15 onUnload];
+    document = [itemCopy document];
+    [document onUnload];
 
-    [(NSMutableArray *)self->_stackItems replaceObjectAtIndex:a4 withObject:v8];
-    [v11 replaceObjectAtIndex:v13 withObject:v14];
-    [v9 setViewControllers:v11 animated:{objc_msgSend(v8, "isAnimated")}];
+    [(NSMutableArray *)self->_stackItems replaceObjectAtIndex:index withObject:stackItemCopy];
+    [v11 replaceObjectAtIndex:v13 withObject:viewController2];
+    [_activeNavigationController setViewControllers:v11 animated:{objc_msgSend(stackItemCopy, "isAnimated")}];
   }
 
   [(SKUINavigationDocumentController *)self _handleStackDidChange];
 }
 
-- (void)_ensureStackConsistencyForNavigationControllerOperation:(int64_t)a3 operationDidComplete:(BOOL)a4
+- (void)_ensureStackConsistencyForNavigationControllerOperation:(int64_t)operation operationDidComplete:(BOOL)complete
 {
   v35[2] = *MEMORY[0x277D85DE8];
-  v4 = (a3 & 0xFFFFFFFFFFFFFFFDLL) == 1 && !a4;
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 1 || a4)
+  v4 = (operation & 0xFFFFFFFFFFFFFFFDLL) == 1 && !complete;
+  if ((operation & 0xFFFFFFFFFFFFFFFDLL) == 1 || complete)
   {
-    v6 = a4;
-    v8 = [(SKUINavigationDocumentController *)self _activeNavigationController];
-    v9 = [v8 viewControllers];
+    completeCopy = complete;
+    _activeNavigationController = [(SKUINavigationDocumentController *)self _activeNavigationController];
+    viewControllers = [_activeNavigationController viewControllers];
 
-    v28 = v6;
-    if (v6)
+    v28 = completeCopy;
+    if (completeCopy)
     {
       v10 = [(NSMutableArray *)self->_stackItems count];
       if (v10)
@@ -640,13 +640,13 @@ BOOL __73__SKUINavigationDocumentController_replaceDocument_withDocument_options
         do
         {
           v12 = [(NSMutableArray *)self->_stackItems objectAtIndex:v11];
-          v13 = [v12 viewController];
-          v14 = [v9 indexOfObjectIdenticalTo:v13];
+          viewController = [v12 viewController];
+          v14 = [viewControllers indexOfObjectIdenticalTo:viewController];
 
           if (v14 == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v15 = [v12 document];
-            [v15 onUnload];
+            document = [v12 document];
+            [document onUnload];
 
             [(NSMutableArray *)self->_stackItems removeObjectAtIndex:v11];
           }
@@ -660,17 +660,17 @@ BOOL __73__SKUINavigationDocumentController_replaceDocument_withDocument_options
 
     if (v4)
     {
-      v16 = [(SKUINavigationDocumentController *)self delegate];
+      delegate = [(SKUINavigationDocumentController *)self delegate];
       if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
       {
-        v27 = v16;
-        v29 = [v9 count];
+        v27 = delegate;
+        v29 = [viewControllers count];
         v17 = 0;
         if (v29)
         {
           for (i = 0; i != v29; ++i)
           {
-            v19 = [v9 objectAtIndex:i];
+            v19 = [viewControllers objectAtIndex:i];
             if (i >= [(NSMutableArray *)self->_stackItems count])
             {
               v20 = 0;
@@ -681,9 +681,9 @@ BOOL __73__SKUINavigationDocumentController_replaceDocument_withDocument_options
               v20 = [(NSMutableArray *)self->_stackItems objectAtIndex:i];
             }
 
-            v21 = [v20 viewController];
+            viewController2 = [v20 viewController];
 
-            if (v19 != v21)
+            if (v19 != viewController2)
             {
               v22 = [[SKUIDocumentStackItem alloc] initWithDocument:0 presentationOptions:0];
               [(SKUIDocumentStackItem *)v22 setViewController:v19];
@@ -706,7 +706,7 @@ BOOL __73__SKUINavigationDocumentController_replaceDocument_withDocument_options
           }
         }
 
-        v16 = v27;
+        delegate = v27;
         if ([v17 count])
         {
           v30[0] = MEMORY[0x277D85DD0];
@@ -714,7 +714,7 @@ BOOL __73__SKUINavigationDocumentController_replaceDocument_withDocument_options
           v30[2] = __113__SKUINavigationDocumentController__ensureStackConsistencyForNavigationControllerOperation_operationDidComplete___block_invoke;
           v30[3] = &unk_2781FCA48;
           v31 = v27;
-          v32 = self;
+          selfCopy = self;
           v33 = v17;
           [v31 navigationDocumentController:self requestsAccessToAppContextUsingBlock:v30];
         }
@@ -833,26 +833,26 @@ void __113__SKUINavigationDocumentController__ensureStackConsistencyForNavigatio
 
 - (void)_handleStackDidChange
 {
-  v6 = [(NSMutableArray *)self->_stackItems firstObject];
-  v3 = [v6 viewController];
-  v4 = [(UINavigationController *)self->_navigationController tabBarItem];
-  [v3 setTabBarItem:v4];
+  firstObject = [(NSMutableArray *)self->_stackItems firstObject];
+  viewController = [firstObject viewController];
+  tabBarItem = [(UINavigationController *)self->_navigationController tabBarItem];
+  [viewController setTabBarItem:tabBarItem];
 
-  v5 = [(SKUINavigationDocumentController *)self delegate];
+  delegate = [(SKUINavigationDocumentController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 navigationDocumentStackDidChange:self];
+    [delegate navigationDocumentStackDidChange:self];
   }
 }
 
-- (void)_scheduleFlushingPendingNavigationStackEnsureConsistencyRequestsWithTransitionCoordinator:(id)a3
+- (void)_scheduleFlushingPendingNavigationStackEnsureConsistencyRequestsWithTransitionCoordinator:(id)coordinator
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __126__SKUINavigationDocumentController__scheduleFlushingPendingNavigationStackEnsureConsistencyRequestsWithTransitionCoordinator___block_invoke;
   v3[3] = &unk_2781F8348;
   v3[4] = self;
-  [a3 animateAlongsideTransition:0 completion:v3];
+  [coordinator animateAlongsideTransition:0 completion:v3];
 }
 
 void __126__SKUINavigationDocumentController__scheduleFlushingPendingNavigationStackEnsureConsistencyRequestsWithTransitionCoordinator___block_invoke(uint64_t a1)
@@ -900,8 +900,8 @@ void __126__SKUINavigationDocumentController__scheduleFlushingPendingNavigationS
     do
     {
       v5 = [(NSMutableArray *)self->_stackItems objectAtIndex:v4 - 2];
-      v6 = [v5 document];
-      [v6 onUnload];
+      document = [v5 document];
+      [document onUnload];
 
       --v4;
     }

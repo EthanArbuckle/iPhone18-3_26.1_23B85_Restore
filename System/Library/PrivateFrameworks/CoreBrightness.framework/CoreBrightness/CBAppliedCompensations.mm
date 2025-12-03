@@ -1,70 +1,70 @@
 @interface CBAppliedCompensations
-- (CBAppliedCompensations)initWithRampManager:(id)a3 maxHarmony:(double)a4 maxBLR:(double)a5;
-- (double)compensationFor:(double)a3 andMax:(double)a4;
+- (CBAppliedCompensations)initWithRampManager:(id)manager maxHarmony:(double)harmony maxBLR:(double)r;
+- (double)compensationFor:(double)for andMax:(double)max;
 - (id)copyStatusInfo;
 - (void)dealloc;
-- (void)setBlrEnabled:(BOOL)a3;
-- (void)setHarmonyEnabled:(BOOL)a3;
+- (void)setBlrEnabled:(BOOL)enabled;
+- (void)setHarmonyEnabled:(BOOL)enabled;
 @end
 
 @implementation CBAppliedCompensations
 
-- (CBAppliedCompensations)initWithRampManager:(id)a3 maxHarmony:(double)a4 maxBLR:(double)a5
+- (CBAppliedCompensations)initWithRampManager:(id)manager maxHarmony:(double)harmony maxBLR:(double)r
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
-  v9 = a4;
-  v8 = a5;
+  managerCopy = manager;
+  harmonyCopy = harmony;
+  rCopy = r;
   v7.receiver = self;
   v7.super_class = CBAppliedCompensations;
-  v12 = [(CBAppliedCompensations *)&v7 init];
-  v5 = MEMORY[0x1E69E5928](v10);
-  v12->_rampManager = v5;
-  v12->_blrComp = 1.0;
-  v12->_harmonyComp = 1.0;
-  v12->_maxHarmony = v9;
-  v12->_maxBLR = v8;
-  return v12;
+  selfCopy = [(CBAppliedCompensations *)&v7 init];
+  v5 = MEMORY[0x1E69E5928](managerCopy);
+  selfCopy->_rampManager = v5;
+  selfCopy->_blrComp = 1.0;
+  selfCopy->_harmonyComp = 1.0;
+  selfCopy->_maxHarmony = harmonyCopy;
+  selfCopy->_maxBLR = rCopy;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   *&v2 = MEMORY[0x1E69E5920](self->_rampManager).n128_u64[0];
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = CBAppliedCompensations;
   [(CBAppliedCompensations *)&v3 dealloc];
 }
 
-- (double)compensationFor:(double)a3 andMax:(double)a4
+- (double)compensationFor:(double)for andMax:(double)max
 {
   blrComp = self->_blrComp;
   harmonyComp = self->_harmonyComp;
   v8 = fmaxf(blrComp, harmonyComp);
-  if (a3 <= 0.0 || a4 <= 0.0)
+  if (for <= 0.0 || max <= 0.0)
   {
     return 1.0;
   }
 
-  v6 = a4 / a3;
+  v6 = max / for;
   return clamp(v6, 1.0, v8);
 }
 
-- (void)setHarmonyEnabled:(BOOL)a3
+- (void)setHarmonyEnabled:(BOOL)enabled
 {
-  v23 = self;
+  selfCopy = self;
   v22 = a2;
-  v21 = a3;
-  if (a3 != self->_harmonyEnabled)
+  enabledCopy = enabled;
+  if (enabled != self->_harmonyEnabled)
   {
-    v23->_harmonyEnabled = v21;
-    harmonyComp = v23->_harmonyComp;
+    selfCopy->_harmonyEnabled = enabledCopy;
+    harmonyComp = selfCopy->_harmonyComp;
     v20 = harmonyComp;
-    if (v23->_harmonyEnabled)
+    if (selfCopy->_harmonyEnabled)
     {
-      maxHarmony = v23->_maxHarmony;
+      maxHarmony = selfCopy->_maxHarmony;
     }
 
     else
@@ -85,28 +85,28 @@
     v12 = 0;
     v13 = __44__CBAppliedCompensations_setHarmonyEnabled___block_invoke;
     v14 = &unk_1E867BAA8;
-    v15 = v23;
+    v15 = selfCopy;
     v16 = v20;
     v17 = v19;
     [v18 setRampProgressCallback:?];
-    [(CBRampManagerI *)v23->_rampManager insertRamp:v18];
+    [(CBRampManagerI *)selfCopy->_rampManager insertRamp:v18];
     MEMORY[0x1E69E5920](v18);
   }
 }
 
-- (void)setBlrEnabled:(BOOL)a3
+- (void)setBlrEnabled:(BOOL)enabled
 {
-  v23 = self;
+  selfCopy = self;
   v22 = a2;
-  v21 = a3;
-  if (a3 != self->_blrEnabled)
+  enabledCopy = enabled;
+  if (enabled != self->_blrEnabled)
   {
-    v23->_blrEnabled = v21;
-    blrComp = v23->_blrComp;
+    selfCopy->_blrEnabled = enabledCopy;
+    blrComp = selfCopy->_blrComp;
     v20 = blrComp;
-    if (v23->_blrEnabled)
+    if (selfCopy->_blrEnabled)
     {
-      maxBLR = v23->_maxBLR;
+      maxBLR = selfCopy->_maxBLR;
     }
 
     else
@@ -127,11 +127,11 @@
     v12 = 0;
     v13 = __40__CBAppliedCompensations_setBlrEnabled___block_invoke;
     v14 = &unk_1E867BAA8;
-    v15 = v23;
+    v15 = selfCopy;
     v16 = v20;
     v17 = v19;
     [v18 setRampProgressCallback:?];
-    [(CBRampManagerI *)v23->_rampManager insertRamp:v18];
+    [(CBRampManagerI *)selfCopy->_rampManager insertRamp:v18];
     MEMORY[0x1E69E5920](v18);
   }
 }

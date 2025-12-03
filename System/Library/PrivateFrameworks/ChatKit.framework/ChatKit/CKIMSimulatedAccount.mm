@@ -1,14 +1,14 @@
 @interface CKIMSimulatedAccount
-- (void)setLoginHandle:(id)a3;
+- (void)setLoginHandle:(id)handle;
 @end
 
 @implementation CKIMSimulatedAccount
 
-- (void)setLoginHandle:(id)a3
+- (void)setLoginHandle:(id)handle
 {
-  objc_storeStrong(&self->_loginHandle, a3);
-  v5 = a3;
-  v6 = [v5 ID];
+  objc_storeStrong(&self->_loginHandle, handle);
+  handleCopy = handle;
+  v6 = [handleCopy ID];
 
   [(CKIMSimulatedAccount *)self setLogin:v6];
 }

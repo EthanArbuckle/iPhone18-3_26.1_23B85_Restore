@@ -1,5 +1,5 @@
 @interface ExtensionTask
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_TtC10ChronoCore13ExtensionTask)init;
 - (int64_t)hash;
@@ -9,10 +9,10 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_224A40C80();
   MEMORY[0x22AA5D210](46, 0xE100000000000000);
-  MEMORY[0x22AA5D210](*(&v2->super.isa + OBJC_IVAR____TtC10ChronoCore13ExtensionTask_logDigest), *&v2->_anon_0[OBJC_IVAR____TtC10ChronoCore13ExtensionTask_logDigest]);
+  MEMORY[0x22AA5D210](*(&selfCopy->super.isa + OBJC_IVAR____TtC10ChronoCore13ExtensionTask_logDigest), *&selfCopy->_anon_0[OBJC_IVAR____TtC10ChronoCore13ExtensionTask_logDigest]);
 
   v3 = sub_224DAEDE8();
 
@@ -21,17 +21,17 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_224DA98E8();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_224DAF758();
     swift_unknownObjectRelease();
@@ -40,7 +40,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_224A4B790(v8);

@@ -1,19 +1,19 @@
 @interface SKUIFamilySettingDescriptionView
-+ (BOOL)prefetchResourcesForSettingDescription:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForSettingDescription:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingDescription:(id)a4 context:(id)a5;
-+ (void)requestLayoutForSettingDescription:(id)a3 width:(double)a4 context:(id)a5;
-- (id)_attributedStringForKey:(id)a3;
++ (BOOL)prefetchResourcesForSettingDescription:(id)description reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForSettingDescription:(id)description context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width settingDescription:(id)description context:(id)context;
++ (void)requestLayoutForSettingDescription:(id)description width:(double)width context:(id)context;
+- (id)_attributedStringForKey:(id)key;
 - (id)_attributedStringForViewState;
 - (void)_layoutWithActivityIndicator;
 - (void)_layoutWithLockup;
 - (void)layoutSubviews;
-- (void)reloadWithSettingDescription:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithSettingDescription:(id)description width:(double)width context:(id)context;
 @end
 
 @implementation SKUIFamilySettingDescriptionView
 
-+ (BOOL)prefetchResourcesForSettingDescription:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForSettingDescription:(id)description reason:(int64_t)reason context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -30,7 +30,7 @@
   return 0;
 }
 
-+ (CGSize)preferredSizeForSettingDescription:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForSettingDescription:(id)description context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -51,7 +51,7 @@
   return result;
 }
 
-+ (void)requestLayoutForSettingDescription:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForSettingDescription:(id)description width:(double)width context:(id)context
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {
@@ -63,7 +63,7 @@
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingDescription:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width settingDescription:(id)description context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -81,20 +81,20 @@
   [v14 _scaledValueForValue:48.0];
   v16 = v15;
 
-  v17 = a3;
+  widthCopy = width;
   v18 = v16;
   result.height = v18;
-  result.width = v17;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)reloadWithSettingDescription:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithSettingDescription:(id)description width:(double)width context:(id)context
 {
-  objc_storeStrong(&self->_layoutContext, a5);
-  v7 = a3;
-  v8 = [v7 viewState];
+  objc_storeStrong(&self->_layoutContext, context);
+  descriptionCopy = description;
+  viewState = [descriptionCopy viewState];
 
-  [(SKUIFamilySettingDescriptionView *)self _setViewState:v8];
+  [(SKUIFamilySettingDescriptionView *)self _setViewState:viewState];
 }
 
 - (void)layoutSubviews
@@ -117,35 +117,35 @@
   }
 }
 
-- (id)_attributedStringForKey:(id)a3
+- (id)_attributedStringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SKUISettingsFamilyViewElement *)self->_viewElement style];
-  v6 = [(SKUIViewElementLayoutContext *)self->_layoutContext clientContext];
-  v7 = v6;
-  if (v6)
+  keyCopy = key;
+  style = [(SKUISettingsFamilyViewElement *)self->_viewElement style];
+  clientContext = [(SKUIViewElementLayoutContext *)self->_layoutContext clientContext];
+  v7 = clientContext;
+  if (clientContext)
   {
-    [v6 localizedStringForKey:v4 inTable:@"Settings"];
+    [clientContext localizedStringForKey:keyCopy inTable:@"Settings"];
   }
 
   else
   {
-    [SKUIClientContext localizedStringForKey:v4 inBundles:0 inTable:@"Settings"];
+    [SKUIClientContext localizedStringForKey:keyCopy inBundles:0 inTable:@"Settings"];
   }
   v8 = ;
 
-  v9 = [v5 textShadow];
-  v10 = [(SKUIFamilySettingDescriptionView *)self tintColor];
-  v11 = SKUIViewElementPlainColorWithStyle(v5, v10);
+  textShadow = [style textShadow];
+  tintColor = [(SKUIFamilySettingDescriptionView *)self tintColor];
+  blackColor = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
-  if (!v11)
+  if (!blackColor)
   {
-    v11 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  v12 = SKUIViewElementFontWithStyle(v5);
+  v12 = SKUIViewElementFontWithStyle(style);
   v13 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v14 = [v13 initWithObjectsAndKeys:{v11, *MEMORY[0x277D740C0], v12, *MEMORY[0x277D740A8], v9, *MEMORY[0x277D74138], 0}];
+  v14 = [v13 initWithObjectsAndKeys:{blackColor, *MEMORY[0x277D740C0], v12, *MEMORY[0x277D740A8], textShadow, *MEMORY[0x277D74138], 0}];
   v15 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v8 attributes:v14];
 
   return v15;
@@ -233,8 +233,8 @@
     iconImageView = self->_iconImageView;
   }
 
-  v19 = [(UIImageView *)iconImageView image];
-  [v19 size];
+  image = [(UIImageView *)iconImageView image];
+  [image size];
   v21 = v20;
   v23 = v22;
 
@@ -256,8 +256,8 @@
     labelView = self->_labelView;
   }
 
-  v28 = [(SKUIFamilySettingDescriptionView *)self _attributedStringForViewState];
-  [(UILabel *)labelView setAttributedText:v28];
+  _attributedStringForViewState = [(SKUIFamilySettingDescriptionView *)self _attributedStringForViewState];
+  [(UILabel *)labelView setAttributedText:_attributedStringForViewState];
 
   v37 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
   v40.origin.x = v4;

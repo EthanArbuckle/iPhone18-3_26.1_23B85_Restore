@@ -1,17 +1,17 @@
 @interface CISparseRendererPreFiltering
-- (id)_kernel:(BOOL)a3;
+- (id)_kernel:(BOOL)_kernel;
 - (id)outputImage;
-- (id)outputImage:(id)a3 horizontal:(BOOL)a4 width:(double)a5;
-- (void)dumpImage:(id)a3 extent:(CGRect)a4 prefixFilename:(id)a5;
+- (id)outputImage:(id)image horizontal:(BOOL)horizontal width:(double)width;
+- (void)dumpImage:(id)image extent:(CGRect)extent prefixFilename:(id)filename;
 @end
 
 @implementation CISparseRendererPreFiltering
 
-- (id)_kernel:(BOOL)a3
+- (id)_kernel:(BOOL)_kernel
 {
-  v3 = a3;
+  _kernelCopy = _kernel;
   v4 = SDOFV2MetalLibURL();
-  if (v3)
+  if (_kernelCopy)
   {
     v5 = @"_sparserendering_prefilter_x";
   }
@@ -24,10 +24,10 @@
   return [CIKernel cachedKernelWithFunctionName:v5 fromMetalLibrary:v4 error:0];
 }
 
-- (id)outputImage:(id)a3 horizontal:(BOOL)a4 width:(double)a5
+- (id)outputImage:(id)image horizontal:(BOOL)horizontal width:(double)width
 {
   v44[3] = *MEMORY[0x1E69E9840];
-  if (a3 && (v9 = [(CISparseRendererPreFiltering *)self _kernel:a4]) != 0)
+  if (image && (v9 = [(CISparseRendererPreFiltering *)self _kernel:horizontal]) != 0)
   {
     v10 = v9;
     v40[0] = 0;
@@ -50,7 +50,7 @@
     SDOFHighlightRecoveryValue(&cfstr_Prefiltergain.isa, self->inputTuningParameters);
     v25 = [CIVector vectorWithX:v19 Y:v21 Z:v23 W:v24];
     [(NSNumber *)self->inputScale floatValue];
-    v27 = [CIVector vectorWithX:(1.0 / ((v13 * v15) - (v13 * v17))) Y:-((1.0 / ((v13 * v15) - (v13 * v17))) * (v13 * v17)) Z:a5 W:v26];
+    v27 = [CIVector vectorWithX:(1.0 / ((v13 * v15) - (v13 * v17))) Y:-((1.0 / ((v13 * v15) - (v13 * v17))) * (v13 * v17)) Z:width W:v26];
     v38[0] = 0;
     v38[1] = v38;
     v38[2] = 0x2020000000;
@@ -64,10 +64,10 @@
     v36[1] = 3221225472;
     v36[2] = __61__CISparseRendererPreFiltering_outputImage_horizontal_width___block_invoke;
     v36[3] = &unk_1E75C3888;
-    v37 = a4;
+    horizontalCopy = horizontal;
     v36[4] = v40;
     v36[5] = v38;
-    v44[0] = a3;
+    v44[0] = image;
     v44[1] = v25;
     v44[2] = v27;
     v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:3];
@@ -109,12 +109,12 @@ double __61__CISparseRendererPreFiltering_outputImage_horizontal_width___block_i
   return result;
 }
 
-- (void)dumpImage:(id)a3 extent:(CGRect)a4 prefixFilename:(id)a5
+- (void)dumpImage:(id)image extent:(CGRect)extent prefixFilename:(id)filename
 {
-  height = a4.size.height;
-  width = a4.size.width;
+  height = extent.size.height;
+  width = extent.size.width;
   v15[2] = *MEMORY[0x1E69E9840];
-  v8 = [a3 imageByCroppingToRect:{a4.origin.x, a4.origin.y}];
+  v8 = [image imageByCroppingToRect:{extent.origin.x, extent.origin.y}];
   v9 = malloc_type_malloc((height * (width * 8.0)), 0x1000040BDFB0063uLL);
   if (v9)
   {
@@ -127,7 +127,7 @@ double __61__CISparseRendererPreFiltering_outputImage_horizontal_width___block_i
     [v8 extent];
     [(CIContext *)v11 render:v8 toBitmap:v10 rowBytes:(width * 8.0) bounds:2056 format:0 colorSpace:?];
     v12 = [MEMORY[0x1E695DEF0] dataWithBytes:v10 length:(height * (width * 8.0))];
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@%gx%g.f16", NSTemporaryDirectory(), a5, *&width, *&height];
+    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@%gx%g.f16", NSTemporaryDirectory(), filename, *&width, *&height];
     [v12 writeToFile:v13 atomically:1];
     NSLog(&cfstr_Filename_0.isa, v13);
     free(v10);

@@ -1,36 +1,36 @@
 @interface STDefaultUserPolicyApplicator
-- (BOOL)_needToApplyDefaultUserPolicy:(int64_t)a3 user:(id)a4 organizationSettings:(id)a5;
-- (int64_t)_applyDefaultUserPolicy:(int64_t)a3 user:(id)a4 organizationSettings:(id)a5 error:(id *)a6;
-- (int64_t)applyDefaultUserPoliciesToUser:(id)a3 error:(id *)a4;
-- (int64_t)applyDefaultUserPoliciesWithError:(id *)a3;
+- (BOOL)_needToApplyDefaultUserPolicy:(int64_t)policy user:(id)user organizationSettings:(id)settings;
+- (int64_t)_applyDefaultUserPolicy:(int64_t)policy user:(id)user organizationSettings:(id)settings error:(id *)error;
+- (int64_t)applyDefaultUserPoliciesToUser:(id)user error:(id *)error;
+- (int64_t)applyDefaultUserPoliciesWithError:(id *)error;
 @end
 
 @implementation STDefaultUserPolicyApplicator
 
-- (int64_t)applyDefaultUserPoliciesWithError:(id *)a3
+- (int64_t)applyDefaultUserPoliciesWithError:(id *)error
 {
   v5 = +[STCoreUser fetchRequestMatchingLocalUser];
-  v6 = [v5 execute:a3];
-  v7 = [v6 firstObject];
+  v6 = [v5 execute:error];
+  firstObject = [v6 firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [(STDefaultUserPolicyApplicator *)self applyDefaultUserPoliciesToUser:v7 error:a3];
+    v8 = [(STDefaultUserPolicyApplicator *)self applyDefaultUserPoliciesToUser:firstObject error:error];
   }
 
-  else if (a3)
+  else if (error)
   {
-    if (*a3)
+    if (*error)
     {
       v9 = +[STLog defaultUserPolicyApplicator];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        sub_10011D1A8(a3, v9);
+        sub_10011D1A8(error, v9);
       }
     }
 
     [NSError errorWithDomain:STErrorDomain code:10 userInfo:0];
-    *a3 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else
@@ -41,33 +41,33 @@
   return v8;
 }
 
-- (int64_t)applyDefaultUserPoliciesToUser:(id)a3 error:(id *)a4
+- (int64_t)applyDefaultUserPoliciesToUser:(id)user error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 managedObjectContext];
+  userCopy = user;
+  managedObjectContext = [userCopy managedObjectContext];
 
-  if (!v7)
+  if (!managedObjectContext)
   {
     sub_10011D224(a2, self);
   }
 
-  v8 = [v6 unmodeledManagingOrganizationSettings];
-  v9 = v8;
-  if (v8)
+  unmodeledManagingOrganizationSettings = [userCopy unmodeledManagingOrganizationSettings];
+  v9 = unmodeledManagingOrganizationSettings;
+  if (unmodeledManagingOrganizationSettings)
   {
-    v10 = v8;
+    localSettings = unmodeledManagingOrganizationSettings;
   }
 
   else
   {
-    v10 = [v6 localSettings];
+    localSettings = [userCopy localSettings];
   }
 
-  v11 = v10;
+  v11 = localSettings;
 
-  v12 = [v6 managingOrganization];
+  managingOrganization = [userCopy managingOrganization];
 
-  if (!v12)
+  if (!managingOrganization)
   {
     v13 = +[STLog defaultUserPolicyApplicator];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -80,17 +80,17 @@
   v14 = +[STLog defaultUserPolicyApplicator];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v6 familyMemberType];
-    v16 = [v6 managingOrganization];
-    v17 = [v16 entity];
-    v18 = [v17 managedObjectClassName];
-    v19 = [v6 dsid];
+    familyMemberType = [userCopy familyMemberType];
+    managingOrganization2 = [userCopy managingOrganization];
+    entity = [managingOrganization2 entity];
+    managedObjectClassName = [entity managedObjectClassName];
+    dsid = [userCopy dsid];
     *buf = 138543874;
-    v46 = v15;
+    v46 = familyMemberType;
     v47 = 2112;
-    v48 = v18;
+    v48 = managedObjectClassName;
     v49 = 2114;
-    v50 = v19;
+    v50 = dsid;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Applying default user policies to %{public}@'s %@ (%{public}@)", buf, 0x20u);
   }
 
@@ -116,9 +116,9 @@
         }
 
         v26 = *(*(&v38 + 1) + 8 * i);
-        if (-[STDefaultUserPolicyApplicator _needToApplyDefaultUserPolicy:user:organizationSettings:](self, "_needToApplyDefaultUserPolicy:user:organizationSettings:", [v26 unsignedIntValue], v6, v11))
+        if (-[STDefaultUserPolicyApplicator _needToApplyDefaultUserPolicy:user:organizationSettings:](self, "_needToApplyDefaultUserPolicy:user:organizationSettings:", [v26 unsignedIntValue], userCopy, v11))
         {
-          v24 = -[STDefaultUserPolicyApplicator _applyDefaultUserPolicy:user:organizationSettings:error:](self, "_applyDefaultUserPolicy:user:organizationSettings:error:", [v26 unsignedIntValue], v6, v11, a4);
+          v24 = -[STDefaultUserPolicyApplicator _applyDefaultUserPolicy:user:organizationSettings:error:](self, "_applyDefaultUserPolicy:user:organizationSettings:error:", [v26 unsignedIntValue], userCopy, v11, error);
           v27 = +[STLog defaultUserPolicyApplicator];
           v28 = v27;
           if (v24 == 2)
@@ -158,13 +158,13 @@
     v24 = 1;
   }
 
-  v31 = [v6 managedObjectContext];
-  v32 = [v31 hasChanges];
+  managedObjectContext2 = [userCopy managedObjectContext];
+  hasChanges = [managedObjectContext2 hasChanges];
 
-  if (v32)
+  if (hasChanges)
   {
-    v33 = [v6 managedObjectContext];
-    v34 = [v33 save:a4];
+    managedObjectContext3 = [userCopy managedObjectContext];
+    v34 = [managedObjectContext3 save:error];
 
     if (!v34)
     {
@@ -175,22 +175,22 @@
   return v24;
 }
 
-- (BOOL)_needToApplyDefaultUserPolicy:(int64_t)a3 user:(id)a4 organizationSettings:(id)a5
+- (BOOL)_needToApplyDefaultUserPolicy:(int64_t)policy user:(id)user organizationSettings:(id)settings
 {
-  v7 = a4;
-  if (([a5 defaultUserPolicies] & a3) != 0)
+  userCopy = user;
+  if (([settings defaultUserPolicies] & policy) != 0)
   {
     v8 = +[STLog defaultUserPolicyApplicator];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      if ((a3 - 1) > 3)
+      if ((policy - 1) > 3)
       {
         v9 = @"STDefaultUserPolicyNone";
       }
 
       else
       {
-        v9 = off_1001A5858[a3 - 1];
+        v9 = off_1001A5858[policy - 1];
       }
 
       v14 = 138543362;
@@ -201,19 +201,19 @@
     goto LABEL_11;
   }
 
-  if (a3 == 4)
+  if (policy == 4)
   {
-    v10 = [v7 unmodeledManagingOrganizationSettings];
-    v12 = [v7 cloudSettings];
-    v11 = v10 == v12;
+    unmodeledManagingOrganizationSettings = [userCopy unmodeledManagingOrganizationSettings];
+    cloudSettings = [userCopy cloudSettings];
+    v11 = unmodeledManagingOrganizationSettings == cloudSettings;
 
     goto LABEL_13;
   }
 
-  if (a3 == 1)
+  if (policy == 1)
   {
-    v10 = [v7 familyMemberType];
-    v11 = [v10 isEqualToString:STFamilyMemberTypeChild];
+    unmodeledManagingOrganizationSettings = [userCopy familyMemberType];
+    v11 = [unmodeledManagingOrganizationSettings isEqualToString:STFamilyMemberTypeChild];
 LABEL_13:
 
     goto LABEL_14;
@@ -226,46 +226,46 @@ LABEL_14:
   return v11;
 }
 
-- (int64_t)_applyDefaultUserPolicy:(int64_t)a3 user:(id)a4 organizationSettings:(id)a5 error:(id *)a6
+- (int64_t)_applyDefaultUserPolicy:(int64_t)policy user:(id)user organizationSettings:(id)settings error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 valueForKey:@"organization"];
+  userCopy = user;
+  settingsCopy = settings;
+  v11 = [settingsCopy valueForKey:@"organization"];
   v12 = v11;
   if (v11)
   {
-    v13 = v11;
+    managingOrganization = v11;
   }
 
   else
   {
-    v13 = [v9 managingOrganization];
+    managingOrganization = [userCopy managingOrganization];
   }
 
-  v14 = v13;
+  v14 = managingOrganization;
 
-  if (a3 == 4)
+  if (policy == 4)
   {
-    v23 = [v9 screenTimeEnabled];
-    v24 = [v9 cloudSettings];
-    [v24 setIsAppAndWebsiteActivityEnabled:v23];
+    screenTimeEnabled = [userCopy screenTimeEnabled];
+    cloudSettings = [userCopy cloudSettings];
+    [cloudSettings setIsAppAndWebsiteActivityEnabled:screenTimeEnabled];
   }
 
-  else if (a3 == 1)
+  else if (policy == 1)
   {
-    v15 = [v9 dsid];
+    dsid = [userCopy dsid];
     v16 = STBlueprintTypeRestrictions;
-    v17 = [STBlueprint fetchRequestMatchingBlueprintsForUserWithDSID:v15 ofType:STBlueprintTypeRestrictions fromOrganization:v14];
+    v17 = [STBlueprint fetchRequestMatchingBlueprintsForUserWithDSID:dsid ofType:STBlueprintTypeRestrictions fromOrganization:v14];
     v72 = 0;
     v18 = [v17 execute:&v72];
-    v19 = v72;
+    familySettings2 = v72;
 
-    if (v19)
+    if (familySettings2)
     {
-      if (a6)
+      if (error)
       {
-        v20 = v19;
-        *a6 = v19;
+        v20 = familySettings2;
+        *error = familySettings2;
       }
 
       v21 = +[STLog defaultUserPolicyApplicator];
@@ -279,9 +279,9 @@ LABEL_14:
     }
 
     v25 = &_sSo17OS_dispatch_queueC8DispatchE10AttributesVMa_ptr;
-    [v10 setIsCommunicationSafetySendingRestricted:1];
-    [v10 setIsCommunicationSafetyReceivingRestricted:1];
-    [v10 setIsEyeReliefEnabled:1];
+    [settingsCopy setIsCommunicationSafetySendingRestricted:1];
+    [settingsCopy setIsCommunicationSafetyReceivingRestricted:1];
+    [settingsCopy setIsEyeReliefEnabled:1];
     v70 = 0u;
     v71 = 0u;
     v68 = 0u;
@@ -313,8 +313,8 @@ LABEL_14:
           v65 = 0u;
           v66 = 0u;
           v67 = 0u;
-          v32 = [v31 configurations];
-          v33 = [v32 countByEnumeratingWithState:&v64 objects:v73 count:16];
+          configurations = [v31 configurations];
+          v33 = [configurations countByEnumeratingWithState:&v64 objects:v73 count:16];
           if (v33)
           {
             v34 = v33;
@@ -325,12 +325,12 @@ LABEL_20:
             {
               if (*v65 != v35)
               {
-                objc_enumerationMutation(v32);
+                objc_enumerationMutation(configurations);
               }
 
               v37 = *(*(&v64 + 1) + 8 * v36);
-              v38 = [v37 type];
-              v39 = [v38 isEqualToString:v28];
+              type = [v37 type];
+              v39 = [type isEqualToString:v28];
 
               if (v39)
               {
@@ -339,7 +339,7 @@ LABEL_20:
 
               if (v34 == ++v36)
               {
-                v34 = [v32 countByEnumeratingWithState:&v64 objects:v73 count:16];
+                v34 = [configurations countByEnumeratingWithState:&v64 objects:v73 count:16];
                 if (v34)
                 {
                   goto LABEL_20;
@@ -353,14 +353,14 @@ LABEL_20:
 
             v26 = v63;
             v16 = v61;
-            a3 = 1;
+            policy = 1;
             v25 = &_sSo17OS_dispatch_queueC8DispatchE10AttributesVMa_ptr;
             if (!v40)
             {
               goto LABEL_31;
             }
 
-            v41 = [v40 cemConfiguration];
+            cemConfiguration = [v40 cemConfiguration];
             goto LABEL_34;
           }
 
@@ -368,7 +368,7 @@ LABEL_26:
 
           v30 = v60 + 1;
           v16 = v61;
-          a3 = 1;
+          policy = 1;
           v26 = v63;
           v29 = v58;
         }
@@ -386,58 +386,58 @@ LABEL_26:
     }
 
 LABEL_31:
-    v42 = [STBlueprintConfiguration cemConfigurationIdentifierWithType:v28 forUser:v9];
-    v41 = [CEMSystemBasicWebContentFilterDeclaration buildRequiredOnlyWithIdentifier:v42 withRestrictWeb:&__kCFBooleanTrue];
-    v43 = [v26 firstObject];
-    if (!v43)
+    v42 = [STBlueprintConfiguration cemConfigurationIdentifierWithType:v28 forUser:userCopy];
+    cemConfiguration = [CEMSystemBasicWebContentFilterDeclaration buildRequiredOnlyWithIdentifier:v42 withRestrictWeb:&__kCFBooleanTrue];
+    firstObject = [v26 firstObject];
+    if (!firstObject)
     {
-      v43 = [v25[325] createBlueprintWithType:v16 user:v9];
-      [v43 setOrganization:v62];
+      firstObject = [v25[325] createBlueprintWithType:v16 user:userCopy];
+      [firstObject setOrganization:v62];
     }
 
     v44 = [STBlueprintConfiguration alloc];
-    v45 = [v9 managedObjectContext];
-    v40 = [v44 initWithContext:v45];
+    managedObjectContext = [userCopy managedObjectContext];
+    v40 = [v44 initWithContext:managedObjectContext];
 
     [v40 setType:v28];
-    v46 = [v9 contentPrivacyConfigurationIdentifierForType:v28];
+    v46 = [userCopy contentPrivacyConfigurationIdentifierForType:v28];
     [v40 setIdentifier:v46];
 
-    [v40 setBlueprint:v43];
+    [v40 setBlueprint:firstObject];
 LABEL_34:
-    v47 = [v40 cemConfiguration];
+    cemConfiguration2 = [v40 cemConfiguration];
     v14 = v62;
-    if (!v47 || (v48 = v47, [v41 payloadRestrictWeb], v49 = objc_claimAutoreleasedReturnValue(), v50 = objc_msgSend(v49, "BOOLValue"), v49, v48, (v50 & 1) == 0))
+    if (!cemConfiguration2 || (v48 = cemConfiguration2, [cemConfiguration payloadRestrictWeb], v49 = objc_claimAutoreleasedReturnValue(), v50 = objc_msgSend(v49, "BOOLValue"), v49, v48, (v50 & 1) == 0))
     {
-      [v41 setPayloadUseContentFilter:&__kCFBooleanTrue];
-      [v41 setPayloadRestrictWeb:&__kCFBooleanTrue];
-      [v41 setPayloadWhiteListEnabled:&__kCFBooleanFalse];
-      [v41 updateServerHash];
-      [v40 setCemConfiguration:v41];
-      v51 = [v40 blueprint];
-      [v51 setIsDirty:1];
+      [cemConfiguration setPayloadUseContentFilter:&__kCFBooleanTrue];
+      [cemConfiguration setPayloadRestrictWeb:&__kCFBooleanTrue];
+      [cemConfiguration setPayloadWhiteListEnabled:&__kCFBooleanFalse];
+      [cemConfiguration updateServerHash];
+      [v40 setCemConfiguration:cemConfiguration];
+      blueprint = [v40 blueprint];
+      [blueprint setIsDirty:1];
     }
 
-    v52 = [v40 blueprint];
-    v53 = [v52 enabled];
+    blueprint2 = [v40 blueprint];
+    enabled = [blueprint2 enabled];
 
-    if ((v53 & 1) == 0)
+    if ((enabled & 1) == 0)
     {
-      v54 = [v40 blueprint];
-      [v54 setEnabled:1];
+      blueprint3 = [v40 blueprint];
+      [blueprint3 setEnabled:1];
 
-      v55 = [v40 blueprint];
-      [v55 setIsDirty:1];
+      blueprint4 = [v40 blueprint];
+      [blueprint4 setIsDirty:1];
     }
   }
 
-  [v10 setDefaultUserPolicies:{objc_msgSend(v10, "defaultUserPolicies") | a3}];
-  v56 = [v9 familySettings];
+  [settingsCopy setDefaultUserPolicies:{objc_msgSend(settingsCopy, "defaultUserPolicies") | policy}];
+  familySettings = [userCopy familySettings];
 
-  if (v56 == v10)
+  if (familySettings == settingsCopy)
   {
-    v19 = [v9 familySettings];
-    [v19 setIsDirty:1];
+    familySettings2 = [userCopy familySettings];
+    [familySettings2 setIsDirty:1];
     v22 = 2;
 LABEL_43:
 

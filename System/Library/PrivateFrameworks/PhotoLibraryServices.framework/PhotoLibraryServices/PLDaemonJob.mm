@@ -1,18 +1,18 @@
 @interface PLDaemonJob
-+ (void)runDaemonSideWithXPCEvent:(id)a3 libraryServicesManager:(id)a4;
-- (PLDaemonJob)initWithAssetsdClient:(id)a3;
-- (PLDaemonJob)initWithCoder:(id)a3;
++ (void)runDaemonSideWithXPCEvent:(id)event libraryServicesManager:(id)manager;
+- (PLDaemonJob)initWithAssetsdClient:(id)client;
+- (PLDaemonJob)initWithCoder:(id)coder;
 - (PLLibraryServicesManager)libraryServicesManager;
 - (id)description;
-- (id)initFromXPCObject:(id)a3 libraryServicesManager:(id)a4;
-- (id)newDictionaryReplyForObject:(id)a3;
+- (id)initFromXPCObject:(id)object libraryServicesManager:(id)manager;
+- (id)newDictionaryReplyForObject:(id)object;
 - (id)replyHandler;
-- (void)encodeToXPCObject:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeToXPCObject:(id)object;
+- (void)encodeWithCoder:(id)coder;
 - (void)runDaemonSide;
 - (void)sendToAssetsd;
-- (void)sendToAssetsdWithCompletionHandler:(id)a3;
-- (void)setReplyHandler:(id)a3;
+- (void)sendToAssetsdWithCompletionHandler:(id)handler;
+- (void)setReplyHandler:(id)handler;
 @end
 
 @implementation PLDaemonJob
@@ -21,35 +21,35 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PLDaemonJob *)self daemonOperation];
-  v6 = [(PLDaemonJob *)self daemonOperation];
-  if (v6 > 0x12)
+  daemonOperation = [(PLDaemonJob *)self daemonOperation];
+  daemonOperation2 = [(PLDaemonJob *)self daemonOperation];
+  if (daemonOperation2 > 0x12)
   {
     v7 = @"ERR";
   }
 
   else
   {
-    v7 = off_1E7570A40[v6];
+    v7 = off_1E7570A40[daemonOperation2];
   }
 
   v8 = v7;
-  v9 = [v3 stringWithFormat:@"%@[%ld:%@]", v4, v5, v8];
+  v9 = [v3 stringWithFormat:@"%@[%ld:%@]", v4, daemonOperation, v8];
 
   return v9;
 }
 
-- (PLDaemonJob)initWithAssetsdClient:(id)a3
+- (PLDaemonJob)initWithAssetsdClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v11.receiver = self;
   v11.super_class = PLDaemonJob;
   v5 = [(PLDaemonJob *)&v11 init];
   if (v5 && (PLIsAssetsd() & 1) == 0)
   {
-    if (v4)
+    if (clientCopy)
     {
-      v6 = v4;
+      v6 = clientCopy;
       assetsdClient = v5->_assetsdClient;
       v5->_assetsdClient = v6;
     }
@@ -66,9 +66,9 @@
   return v5;
 }
 
-- (void)setReplyHandler:(id)a3
+- (void)setReplyHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   replyHandler = self->_replyHandler;
   self->_replyHandler = v4;
 }
@@ -80,14 +80,14 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   objc_opt_isKindOfClass();
   v5 = xpc_dictionary_create(0, 0, 0);
   [(PLDaemonJob *)self encodeToXPCObject:v5];
-  [v4 encodeXPCObject:v5 forKey:@"PL.job"];
+  [coderCopy encodeXPCObject:v5 forKey:@"PL.job"];
 
   if ([(PLDaemonJob *)self shouldArchiveXPCToDisk])
   {
@@ -95,20 +95,20 @@
   }
 }
 
-- (PLDaemonJob)initWithCoder:(id)a3
+- (PLDaemonJob)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   objc_opt_isKindOfClass();
-  v5 = v4;
+  v5 = coderCopy;
   v6 = [v5 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"PL.job"];
   v7 = PLStringFromXPCDictionary();
   v8 = v7;
   if (v7 && (v9 = NSClassFromString(v7), [(objc_class *)v9 isSubclassOfClass:objc_opt_class()]))
   {
-    v10 = [v5 userInfo];
-    v11 = [v10 libraryServicesManager];
-    v12 = [[v9 alloc] initFromXPCObject:v6 libraryServicesManager:v11];
+    userInfo = [v5 userInfo];
+    libraryServicesManager = [userInfo libraryServicesManager];
+    v12 = [[v9 alloc] initFromXPCObject:v6 libraryServicesManager:libraryServicesManager];
   }
 
   else
@@ -119,9 +119,9 @@
   return v12;
 }
 
-- (id)newDictionaryReplyForObject:(id)a3
+- (id)newDictionaryReplyForObject:(id)object
 {
-  result = xpc_dictionary_create_reply(a3);
+  result = xpc_dictionary_create_reply(object);
   if (!result)
   {
 
@@ -131,23 +131,23 @@
   return result;
 }
 
-- (void)encodeToXPCObject:(id)a3
+- (void)encodeToXPCObject:(id)object
 {
-  v4 = a3;
-  xpc_dictionary_set_int64(v4, "operation", [(PLDaemonJob *)self daemonOperation]);
+  objectCopy = object;
+  xpc_dictionary_set_int64(objectCopy, "operation", [(PLDaemonJob *)self daemonOperation]);
   v5 = objc_opt_class();
   v7 = NSStringFromClass(v5);
   v6 = v7;
-  xpc_dictionary_set_string(v4, "daemonJobClass", [v7 UTF8String]);
+  xpc_dictionary_set_string(objectCopy, "daemonJobClass", [v7 UTF8String]);
 }
 
-- (id)initFromXPCObject:(id)a3 libraryServicesManager:(id)a4
+- (id)initFromXPCObject:(id)object libraryServicesManager:(id)manager
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || !v7)
+  objectCopy = object;
+  managerCopy = manager;
+  v8 = managerCopy;
+  if (!objectCopy || !managerCopy)
   {
 LABEL_12:
 
@@ -164,8 +164,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  objc_storeStrong(&v9->_libraryServicesManager, a4);
-  int64 = xpc_dictionary_get_int64(v6, "operation");
+  objc_storeStrong(&v9->_libraryServicesManager, manager);
+  int64 = xpc_dictionary_get_int64(objectCopy, "operation");
   if (int64 != [(PLDaemonJob *)self daemonOperation])
   {
     v19 = PLBackendGetLog();
@@ -173,11 +173,11 @@ LABEL_12:
     {
       v20 = objc_opt_class();
       v21 = v20;
-      v22 = [(PLDaemonJob *)self daemonOperation];
+      daemonOperation = [(PLDaemonJob *)self daemonOperation];
       *buf = 138412802;
       v26 = v20;
       v27 = 2048;
-      v28 = v22;
+      v28 = daemonOperation;
       v29 = 2048;
       v30 = int64;
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "Daemon operation invalid for %@. Expected %lld, got %lld", buf, 0x20u);
@@ -213,19 +213,19 @@ LABEL_13:
 - (void)runDaemonSide
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PLDaemonJob *)self xpcReply];
+  xpcReply = [(PLDaemonJob *)self xpcReply];
   v4 = PLDaemonJobsGetLog();
   v5 = v4;
-  if (v3)
+  if (xpcReply)
   {
-    v6 = [(PLDaemonJob *)self replyHandler];
-    if (v6)
+    replyHandler = [(PLDaemonJob *)self replyHandler];
+    if (replyHandler)
     {
-      v7 = [(PLDaemonJob *)self xpcReply];
-      if (v7)
+      xpcReply2 = [(PLDaemonJob *)self xpcReply];
+      if (xpcReply2)
       {
-        v8 = [[PLDaemonJobReply alloc] initWithReply:v7];
-        (*(v6 + 16))(v6, 0, v8);
+        v8 = [[PLDaemonJobReply alloc] initWithReply:xpcReply2];
+        (*(replyHandler + 16))(replyHandler, 0, v8);
       }
 
       else
@@ -236,7 +236,7 @@ LABEL_13:
         v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
         v8 = [v11 errorWithDomain:@"PLDaemonJob" code:-1 userInfo:v12];
 
-        (*(v6 + 16))(v6, v8, 0);
+        (*(replyHandler + 16))(replyHandler, v8, 0);
       }
     }
 
@@ -245,7 +245,7 @@ LABEL_13:
     signpostId = self->_signpostId;
     if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
     {
-      v16 = [v3 description];
+      v16 = [xpcReply description];
       v17 = 138412290;
       v18 = v16;
       _os_signpost_emit_with_name_impl(&dword_19BF1F000, v14, OS_SIGNPOST_INTERVAL_END, signpostId, "DaemonJob", "reply: %@", &v17, 0xCu);
@@ -255,28 +255,28 @@ LABEL_13:
   else
   {
     v9 = v4;
-    v6 = v9;
+    replyHandler = v9;
     v10 = self->_signpostId;
     if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
     {
       LOWORD(v17) = 0;
-      _os_signpost_emit_with_name_impl(&dword_19BF1F000, v6, OS_SIGNPOST_INTERVAL_END, v10, "DaemonJob", "", &v17, 2u);
+      _os_signpost_emit_with_name_impl(&dword_19BF1F000, replyHandler, OS_SIGNPOST_INTERVAL_END, v10, "DaemonJob", "", &v17, 2u);
     }
   }
 }
 
-- (void)sendToAssetsdWithCompletionHandler:(id)a3
+- (void)sendToAssetsdWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PLDaemonJob *)self assetsdClient];
-  v6 = [(PLDaemonJob *)self shouldRunOnDaemonSerialQueue];
+  handlerCopy = handler;
+  assetsdClient = [(PLDaemonJob *)self assetsdClient];
+  shouldRunOnDaemonSerialQueue = [(PLDaemonJob *)self shouldRunOnDaemonSerialQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __71__PLDaemonJob_DaemonCommunication__sendToAssetsdWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7570A20;
-  v9 = v4;
-  v7 = v4;
-  [v5 sendDaemonJob:self shouldRunSerially:v6 replyHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [assetsdClient sendDaemonJob:self shouldRunSerially:shouldRunOnDaemonSerialQueue replyHandler:v8];
 }
 
 uint64_t __71__PLDaemonJob_DaemonCommunication__sendToAssetsdWithCompletionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -292,8 +292,8 @@ uint64_t __71__PLDaemonJob_DaemonCommunication__sendToAssetsdWithCompletionHandl
 
 - (void)sendToAssetsd
 {
-  v3 = [(PLDaemonJob *)self assetsdClient];
-  [v3 sendDaemonJob:self shouldRunSerially:-[PLDaemonJob shouldRunOnDaemonSerialQueue](self replyHandler:{"shouldRunOnDaemonSerialQueue"), 0}];
+  assetsdClient = [(PLDaemonJob *)self assetsdClient];
+  [assetsdClient sendDaemonJob:self shouldRunSerially:-[PLDaemonJob shouldRunOnDaemonSerialQueue](self replyHandler:{"shouldRunOnDaemonSerialQueue"), 0}];
 }
 
 - (PLLibraryServicesManager)libraryServicesManager
@@ -301,8 +301,8 @@ uint64_t __71__PLDaemonJob_DaemonCommunication__sendToAssetsdWithCompletionHandl
   libraryServicesManager = self->_libraryServicesManager;
   if (!libraryServicesManager)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PLDaemonJob.m" lineNumber:116 description:{@"Invalid parameter not satisfying: %@", @"_libraryServicesManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDaemonJob.m" lineNumber:116 description:{@"Invalid parameter not satisfying: %@", @"_libraryServicesManager"}];
 
     libraryServicesManager = self->_libraryServicesManager;
   }
@@ -310,15 +310,15 @@ uint64_t __71__PLDaemonJob_DaemonCommunication__sendToAssetsdWithCompletionHandl
   return libraryServicesManager;
 }
 
-+ (void)runDaemonSideWithXPCEvent:(id)a3 libraryServicesManager:(id)a4
++ (void)runDaemonSideWithXPCEvent:(id)event libraryServicesManager:(id)manager
 {
-  v10 = a3;
-  v5 = a4;
+  eventCopy = event;
+  managerCopy = manager;
   v6 = PLStringFromXPCDictionary();
   v7 = v6;
   if (v6 && (v8 = NSClassFromString(v6), [(objc_class *)v8 isSubclassOfClass:objc_opt_class()]))
   {
-    v9 = [[v8 alloc] initFromXPCObject:v10 libraryServicesManager:v5];
+    v9 = [[v8 alloc] initFromXPCObject:eventCopy libraryServicesManager:managerCopy];
   }
 
   else

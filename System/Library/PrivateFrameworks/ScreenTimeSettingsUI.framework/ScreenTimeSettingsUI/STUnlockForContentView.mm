@@ -1,25 +1,25 @@
 @interface STUnlockForContentView
-- (STUnlockForContentView)initWithCoder:(id)a3;
-- (STUnlockForContentView)initWithFrame:(CGRect)a3;
+- (STUnlockForContentView)initWithCoder:(id)coder;
+- (STUnlockForContentView)initWithFrame:(CGRect)frame;
 - (void)_stUnlockForContentViewCommonInit;
 @end
 
 @implementation STUnlockForContentView
 
-- (STUnlockForContentView)initWithFrame:(CGRect)a3
+- (STUnlockForContentView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = STUnlockForContentView;
-  v3 = [(STUnlockForContentView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(STUnlockForContentView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(STUnlockForContentView *)v3 _stUnlockForContentViewCommonInit];
   return v3;
 }
 
-- (STUnlockForContentView)initWithCoder:(id)a3
+- (STUnlockForContentView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = STUnlockForContentView;
-  v3 = [(STUnlockForContentView *)&v6 initWithCoder:a3];
+  v3 = [(STUnlockForContentView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -40,8 +40,8 @@
   v5 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
   [(UILabel *)self->_unlockToViewContentLabel setFont:v5];
 
-  v6 = [MEMORY[0x277D75348] systemGrayColor];
-  [(UILabel *)self->_unlockToViewContentLabel setTextColor:v6];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [(UILabel *)self->_unlockToViewContentLabel setTextColor:systemGrayColor];
 
   [(UILabel *)self->_unlockToViewContentLabel setLineBreakMode:0];
   [(UILabel *)self->_unlockToViewContentLabel setTextAlignment:1];
@@ -55,36 +55,36 @@
   v10 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v35];
   [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(STUnlockForContentView *)self addSubview:v10];
-  v34 = [v10 contentView];
-  [v34 addSubview:self->_unlockToViewContentLabel];
+  contentView = [v10 contentView];
+  [contentView addSubview:self->_unlockToViewContentLabel];
   v24 = MEMORY[0x277CCAAD0];
-  v33 = [(UILabel *)self->_unlockToViewContentLabel topAnchor];
-  v32 = [v10 topAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  topAnchor = [(UILabel *)self->_unlockToViewContentLabel topAnchor];
+  topAnchor2 = [v10 topAnchor];
+  v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v36[0] = v31;
-  v30 = [(UILabel *)self->_unlockToViewContentLabel leadingAnchor];
-  v29 = [v10 leadingAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  leadingAnchor = [(UILabel *)self->_unlockToViewContentLabel leadingAnchor];
+  leadingAnchor2 = [v10 leadingAnchor];
+  v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v36[1] = v28;
-  v27 = [(UILabel *)self->_unlockToViewContentLabel bottomAnchor];
-  v26 = [v10 bottomAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  bottomAnchor = [(UILabel *)self->_unlockToViewContentLabel bottomAnchor];
+  bottomAnchor2 = [v10 bottomAnchor];
+  v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v36[2] = v25;
-  v23 = [(UILabel *)self->_unlockToViewContentLabel trailingAnchor];
-  v22 = [v10 trailingAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  trailingAnchor = [(UILabel *)self->_unlockToViewContentLabel trailingAnchor];
+  trailingAnchor2 = [v10 trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v36[3] = v21;
-  v20 = [v10 leadingAnchor];
-  v11 = [(STUnlockForContentView *)self leadingAnchor];
-  v12 = [v20 constraintEqualToAnchor:v11];
+  leadingAnchor3 = [v10 leadingAnchor];
+  leadingAnchor4 = [(STUnlockForContentView *)self leadingAnchor];
+  v12 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v36[4] = v12;
-  v13 = [v10 trailingAnchor];
-  v14 = [(STUnlockForContentView *)self trailingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  trailingAnchor3 = [v10 trailingAnchor];
+  trailingAnchor4 = [(STUnlockForContentView *)self trailingAnchor];
+  v15 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v36[5] = v15;
-  v16 = [v10 centerYAnchor];
-  v17 = [(STUnlockForContentView *)self centerYAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  centerYAnchor = [v10 centerYAnchor];
+  centerYAnchor2 = [(STUnlockForContentView *)self centerYAnchor];
+  v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v36[6] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:7];
   [v24 activateConstraints:v19];

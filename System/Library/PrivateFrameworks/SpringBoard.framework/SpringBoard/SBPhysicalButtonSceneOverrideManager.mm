@@ -1,35 +1,35 @@
 @interface SBPhysicalButtonSceneOverrideManager
-- (BOOL)_canSendActionButtonEventsToScene:(id)a3 withConfiguration:(id)a4;
-- (BOOL)_canSendCameraCaptureFullPressEventsToScene:(id)a3 withConfiguration:(id)a4;
-- (BOOL)_canSendCameraShutterButtonEventsForRequestAuditToken:(id)a3;
-- (BOOL)_canSendVolumeButtonEventsToScene:(id)a3 withConfiguration:(id)a4 activeVolumeCategoryName:(id)a5 isAudioSessionPlaying:(BOOL)a6;
-- (BOOL)_sendsActionsForButtonType:(unint64_t)a3;
-- (BOOL)isTargetingButton:(uint64_t)a3 withConfigurationIdentifier:;
-- (char)sendVolumeButtonDownForIncrease:(_BYTE *)a3 shouldAlsoChangeVolume:;
-- (id)_activeRequestForButton:(unint64_t)a3;
-- (id)_applicationBundleIdentifierForClientBundleIdentifier:(id)a3;
-- (id)_sceneForSceneTarget:(id)a3;
-- (id)_sendButtonDownForButtonType:(unint64_t)a3 request:(id)a4 scene:(id)a5;
-- (id)addObserver:(uint64_t)a3 forReason:;
+- (BOOL)_canSendActionButtonEventsToScene:(id)scene withConfiguration:(id)configuration;
+- (BOOL)_canSendCameraCaptureFullPressEventsToScene:(id)scene withConfiguration:(id)configuration;
+- (BOOL)_canSendCameraShutterButtonEventsForRequestAuditToken:(id)token;
+- (BOOL)_canSendVolumeButtonEventsToScene:(id)scene withConfiguration:(id)configuration activeVolumeCategoryName:(id)name isAudioSessionPlaying:(BOOL)playing;
+- (BOOL)_sendsActionsForButtonType:(unint64_t)type;
+- (BOOL)isTargetingButton:(uint64_t)button withConfigurationIdentifier:;
+- (char)sendVolumeButtonDownForIncrease:(_BYTE *)increase shouldAlsoChangeVolume:;
+- (id)_activeRequestForButton:(unint64_t)button;
+- (id)_applicationBundleIdentifierForClientBundleIdentifier:(id)identifier;
+- (id)_sceneForSceneTarget:(id)target;
+- (id)_sendButtonDownForButtonType:(unint64_t)type request:(id)request scene:(id)scene;
+- (id)addObserver:(uint64_t)observer forReason:;
 - (id)auditTokenForRequestingProcessOfCameraBehaviorScene;
 - (id)cameraBehaviorScene;
-- (id)initWithSceneManager:(id *)a1;
+- (id)initWithSceneManager:(id *)manager;
 - (id)reasonCameraBehaviorSceneIsNotEligibleForSupplementalUI;
 - (id)sendActionButtonDown;
 - (id)sendCameraCaptureButtonDown;
 - (id)setWindowScene:(id *)result;
 - (uint64_t)captureApplicationProvider;
-- (unint64_t)sendHeadphoneButtonClicked:(void *)a1;
-- (void)_addButtonActionCompletionHandler:(id)a3;
+- (unint64_t)sendHeadphoneButtonClicked:(void *)clicked;
+- (void)_addButtonActionCompletionHandler:(id)handler;
 - (void)_notifyObserversSomethingDidChange;
-- (void)_processZStackParticipantSettings:(id)a3;
+- (void)_processZStackParticipantSettings:(id)settings;
 - (void)_reevaluateOverrides;
-- (void)_sendActionForButtonType:(unint64_t)a3 buttonState:(unint64_t)a4 request:(id)a5;
-- (void)cache:(id)a3 didUpdateActiveCategoryName:(id)a4;
-- (void)cache:(id)a3 didUpdateAudioSessionPlaying:(BOOL)a4;
+- (void)_sendActionForButtonType:(unint64_t)type buttonState:(unint64_t)state request:(id)request;
+- (void)cache:(id)cache didUpdateActiveCategoryName:(id)name;
+- (void)cache:(id)cache didUpdateAudioSessionPlaying:(BOOL)playing;
 - (void)dealloc;
-- (void)setCaptureApplicationProvider:(uint64_t)a1;
-- (void)windowSceneDidConnect:(id *)a1;
+- (void)setCaptureApplicationProvider:(uint64_t)provider;
+- (void)windowSceneDidConnect:(id *)connect;
 @end
 
 @implementation SBPhysicalButtonSceneOverrideManager
@@ -37,10 +37,10 @@
 - (void)_reevaluateOverrides
 {
   v133 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
+    selfCopy = self;
+    WeakRetained = objc_loadWeakRetained((self + 16));
     if (!WeakRetained)
     {
 LABEL_133:
@@ -49,7 +49,7 @@ LABEL_133:
     }
 
     v104 = WeakRetained;
-    v4 = v2[1]._physicalButtonBehavior;
+    v4 = selfCopy[1]._physicalButtonBehavior;
     v5 = SBLogButtonsInteraction();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -62,29 +62,29 @@ LABEL_133:
     v128 = 0u;
     v125 = 0u;
     v126 = 0u;
-    v109 = v2;
-    v6 = [v2[1]._generation allObjects];
-    v7 = [v6 countByEnumeratingWithState:&v125 objects:v130 count:16];
+    v109 = selfCopy;
+    allObjects = [selfCopy[1]._generation allObjects];
+    v7 = [allObjects countByEnumeratingWithState:&v125 objects:v130 count:16];
     if (v7)
     {
       v8 = v7;
-      v2 = *v126;
+      selfCopy = *v126;
       do
       {
         for (i = 0; i != v8; ++i)
         {
-          if (*v126 != v2)
+          if (*v126 != selfCopy)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allObjects);
           }
 
           v1 = *(*(&v125 + 1) + 8 * i);
-          v10 = [(SBHomeScreenConfigurationServer *)v1 queue];
+          queue = [(SBHomeScreenConfigurationServer *)v1 queue];
           v123[0] = MEMORY[0x277D85DD0];
           v123[1] = 3221225472;
           v123[2] = __60__SBPhysicalButtonSceneOverrideManager__reevaluateOverrides__block_invoke;
           v123[3] = &unk_2783BE5B8;
-          v11 = v10;
+          v11 = queue;
           v124 = v11;
           if (([v4 bs_containsObjectPassingTest:v123] & 1) == 0)
           {
@@ -92,14 +92,14 @@ LABEL_133:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v125 objects:v130 count:16];
+        v8 = [allObjects countByEnumeratingWithState:&v125 objects:v130 count:16];
       }
 
       while (v8);
     }
 
     p_isa = &v109->super.isa;
-    v105 = [(BSAuditToken *)v109->_requestingProcessAuditToken activeCategoryName];
+    activeCategoryName = [(BSAuditToken *)v109->_requestingProcessAuditToken activeCategoryName];
     [(BSAuditToken *)v109->_requestingProcessAuditToken isAudioSessionPlaying];
     v119 = 0u;
     v120 = 0u;
@@ -125,7 +125,7 @@ LABEL_16:
         }
 
         v17 = *(*(&v119 + 1) + 8 * v16);
-        if (v116 && v2 && v115 && v117 && v114 && v1 && v113)
+        if (v116 && selfCopy && v115 && v117 && v114 && v1 && v113)
         {
           goto LABEL_100;
         }
@@ -146,10 +146,10 @@ LABEL_16:
         }
 
         v112 = v1;
-        v20 = [v18 clientSettings];
-        v21 = [v20 physicalButtonConfigurations];
+        clientSettings = [v18 clientSettings];
+        physicalButtonConfigurations = [clientSettings physicalButtonConfigurations];
 
-        v118 = v21;
+        v118 = physicalButtonConfigurations;
         if (v116)
         {
           v22 = 0;
@@ -161,13 +161,13 @@ LABEL_16:
           v24 = [v17 buttonTargetForButton:1];
           if (v24)
           {
-            [v21 _configurationForButton:1];
+            [physicalButtonConfigurations _configurationForButton:1];
             objc_claimAutoreleasedReturnValue();
             v25 = [OUTLINED_FUNCTION_0_44() _canSendVolumeButtonEventsToScene:? withConfiguration:? activeVolumeCategoryName:? isAudioSessionPlaying:?];
             v26 = 0;
-            if (v21 && v25)
+            if (physicalButtonConfigurations && v25)
             {
-              v26 = -[SBPhysicalButtonBehaviorRequest initWithPhysicalButtonConfiguration:generation:identifier:scene:]([SBPhysicalButtonBehaviorRequest alloc], "initWithPhysicalButtonConfiguration:generation:identifier:scene:", v21, -[NSObject _generation](v21, "_generation"), [v24 identifier], v19);
+              v26 = -[SBPhysicalButtonBehaviorRequest initWithPhysicalButtonConfiguration:generation:identifier:scene:]([SBPhysicalButtonBehaviorRequest alloc], "initWithPhysicalButtonConfiguration:generation:identifier:scene:", physicalButtonConfigurations, -[NSObject _generation](physicalButtonConfigurations, "_generation"), [v24 identifier], v19);
             }
 
             v27 = v26;
@@ -186,7 +186,7 @@ LABEL_16:
         }
 
         v111 = v22;
-        if (v2)
+        if (selfCopy)
         {
           v28 = 0;
         }
@@ -196,18 +196,18 @@ LABEL_16:
           v29 = [v17 buttonTargetForButton:2];
           if (v29)
           {
-            [v21 _configurationForButton:2];
+            [physicalButtonConfigurations _configurationForButton:2];
             objc_claimAutoreleasedReturnValue();
             v30 = [OUTLINED_FUNCTION_0_44() _canSendVolumeButtonEventsToScene:? withConfiguration:? activeVolumeCategoryName:? isAudioSessionPlaying:?];
             v28 = 0;
-            if (v21 && v30)
+            if (physicalButtonConfigurations && v30)
             {
               v31 = [SBPhysicalButtonBehaviorRequest alloc];
-              v32 = [v21 _generation];
-              v33 = [v29 identifier];
+              _generation = [physicalButtonConfigurations _generation];
+              identifier = [v29 identifier];
               v34 = v31;
               v14 = v106;
-              v28 = [(SBPhysicalButtonBehaviorRequest *)v34 initWithPhysicalButtonConfiguration:v21 generation:v32 identifier:v33 scene:v19];
+              v28 = [(SBPhysicalButtonBehaviorRequest *)v34 initWithPhysicalButtonConfiguration:physicalButtonConfigurations generation:_generation identifier:identifier scene:v19];
             }
           }
 
@@ -220,11 +220,11 @@ LABEL_16:
         }
 
         v35 = v22;
-        v36 = [(SBPhysicalButtonBehaviorRequest *)v22 scene];
+        scene = [(SBPhysicalButtonBehaviorRequest *)v22 scene];
         v110 = v28;
-        v37 = [(SBPhysicalButtonBehaviorRequest *)v28 scene];
+        scene2 = [(SBPhysicalButtonBehaviorRequest *)v28 scene];
 
-        if (v36 != v37)
+        if (scene != scene2)
         {
           break;
         }
@@ -233,8 +233,8 @@ LABEL_16:
         {
           v39 = v35;
 
-          p_super = &v2->super;
-          v2 = v110;
+          p_super = &selfCopy->super;
+          selfCopy = v110;
           v116 = v39;
 LABEL_53:
           p_isa = &v109->super.isa;
@@ -254,15 +254,15 @@ LABEL_54:
             if (v41)
             {
               v42 = [SBPhysicalButtonBehaviorRequest alloc];
-              v43 = v2;
-              v44 = [v41 _generation];
-              v45 = [v40 identifier];
+              v43 = selfCopy;
+              _generation2 = [v41 _generation];
+              identifier2 = [v40 identifier];
               v46 = v42;
               p_isa = &v109->super.isa;
-              v47 = v44;
-              v2 = v43;
+              v47 = _generation2;
+              selfCopy = v43;
               v1 = v112;
-              v115 = [(SBPhysicalButtonBehaviorRequest *)v46 initWithPhysicalButtonConfiguration:v41 generation:v47 identifier:v45 scene:v19];
+              v115 = [(SBPhysicalButtonBehaviorRequest *)v46 initWithPhysicalButtonConfiguration:v41 generation:v47 identifier:identifier2 scene:v19];
             }
 
             else
@@ -290,8 +290,8 @@ LABEL_54:
             v117 = 0;
             if (v23 && v49)
             {
-              v1 = v2;
-              v2 = [SBPhysicalButtonBehaviorRequest alloc];
+              v1 = selfCopy;
+              selfCopy = [SBPhysicalButtonBehaviorRequest alloc];
               p_isa = [v23 _generation];
               v117 = OUTLINED_FUNCTION_3_28([v48 identifier]);
             }
@@ -316,8 +316,8 @@ LABEL_54:
             v114 = 0;
             if (v23 && v51)
             {
-              v1 = v2;
-              v2 = [SBPhysicalButtonBehaviorRequest alloc];
+              v1 = selfCopy;
+              selfCopy = [SBPhysicalButtonBehaviorRequest alloc];
               p_isa = [v23 _generation];
               v114 = OUTLINED_FUNCTION_3_28([v50 identifier]);
             }
@@ -340,14 +340,14 @@ LABEL_81:
           v53 = [v17 buttonTargetForButton:6];
           if (v53)
           {
-            v54 = v2;
-            v55 = [v52 _auditToken];
-            v56 = [p_isa _canSendCameraShutterButtonEventsForRequestAuditToken:v55];
+            v54 = selfCopy;
+            _auditToken = [v52 _auditToken];
+            v56 = [p_isa _canSendCameraShutterButtonEventsForRequestAuditToken:_auditToken];
 
             if (v56)
             {
               p_isa = &v109->super.isa;
-              v2 = v54;
+              selfCopy = v54;
               v1 = -[SBPhysicalButtonBehaviorRequest initWithPhysicalButtonConfiguration:generation:identifier:scene:]([SBPhysicalButtonBehaviorRequest alloc], "initWithPhysicalButtonConfiguration:generation:identifier:scene:", v52, [v52 _generation], objc_msgSend(v53, "identifier"), v19);
 LABEL_86:
 
@@ -356,7 +356,7 @@ LABEL_86:
             }
 
             p_isa = &v109->super.isa;
-            v2 = v54;
+            selfCopy = v54;
           }
 
           v1 = 0;
@@ -376,9 +376,9 @@ LABEL_87:
           if (v58)
           {
             v59 = v1;
-            v60 = v2;
-            v61 = [v57 _auditToken];
-            v62 = [p_isa _canSendCameraShutterButtonEventsForRequestAuditToken:v61];
+            v60 = selfCopy;
+            _auditToken2 = [v57 _auditToken];
+            v62 = [p_isa _canSendCameraShutterButtonEventsForRequestAuditToken:_auditToken2];
 
             if (v62)
             {
@@ -390,7 +390,7 @@ LABEL_87:
               v113 = 0;
             }
 
-            v2 = v60;
+            selfCopy = v60;
             v1 = v59;
             v14 = v106;
             v23 = v118;
@@ -433,36 +433,36 @@ LABEL_100:
     if ((v64 & 1) == 0)
     {
       objc_storeStrong(p_isa + 11, v116);
-      v65 = [(SBPhysicalButtonBehaviorRequest *)v116 scene];
+      scene3 = [(SBPhysicalButtonBehaviorRequest *)v116 scene];
       v66 = SBLogButtonsVolume();
       if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
       {
-        [v65 identifier];
-        v68 = v67 = v2;
+        [scene3 identifier];
+        v68 = v67 = selfCopy;
         OUTLINED_FUNCTION_2_29(v68, 5.8381e-34);
         _os_log_impl(&dword_21ED4E000, v66, OS_LOG_TYPE_DEFAULT, "volume up button scene override: %{public}@", buf, 0xCu);
 
-        v2 = v67;
+        selfCopy = v67;
       }
     }
 
     v69 = p_isa + 12;
     if (BSEqualObjects())
     {
-      v70 = v2;
+      v70 = selfCopy;
       v71 = v64 ^ 1;
     }
 
     else
     {
-      objc_storeStrong(p_isa + 12, v2);
-      v70 = v2;
-      v72 = [(SBPhysicalButtonBehaviorRequest *)v2 scene];
+      objc_storeStrong(p_isa + 12, selfCopy);
+      v70 = selfCopy;
+      scene4 = [(SBPhysicalButtonBehaviorRequest *)selfCopy scene];
       v73 = SBLogButtonsVolume();
       if (OUTLINED_FUNCTION_6_9(v73))
       {
-        v74 = [v72 identifier];
-        OUTLINED_FUNCTION_2_29(v74, 5.8381e-34);
+        identifier3 = [scene4 identifier];
+        OUTLINED_FUNCTION_2_29(identifier3, 5.8381e-34);
         OUTLINED_FUNCTION_1_26(&dword_21ED4E000, v75, v76, "volume down button scene override: %{public}@");
       }
 
@@ -472,12 +472,12 @@ LABEL_100:
     if ((BSEqualObjects() & 1) == 0)
     {
       objc_storeStrong(p_isa + 15, v115);
-      v77 = [(SBPhysicalButtonBehaviorRequest *)v115 scene];
+      scene5 = [(SBPhysicalButtonBehaviorRequest *)v115 scene];
       v78 = SBLogButtonsLock();
       if (OUTLINED_FUNCTION_6_9(v78))
       {
-        v79 = [v77 identifier];
-        OUTLINED_FUNCTION_2_29(v79, 5.8381e-34);
+        identifier4 = [scene5 identifier];
+        OUTLINED_FUNCTION_2_29(identifier4, 5.8381e-34);
         OUTLINED_FUNCTION_1_26(&dword_21ED4E000, v80, v81, "lock button scene override: %{public}@");
       }
 
@@ -487,12 +487,12 @@ LABEL_100:
     if ((BSEqualObjects() & 1) == 0)
     {
       objc_storeStrong(p_isa + 16, v117);
-      v82 = [v117 scene];
+      scene6 = [v117 scene];
       v83 = SBLogButtonsAction();
       if (OUTLINED_FUNCTION_6_9(v83))
       {
-        v84 = [v82 identifier];
-        OUTLINED_FUNCTION_2_29(v84, 5.8381e-34);
+        identifier5 = [scene6 identifier];
+        OUTLINED_FUNCTION_2_29(identifier5, 5.8381e-34);
         OUTLINED_FUNCTION_1_26(&dword_21ED4E000, v85, v86, "action button scene override: %{public}@");
       }
 
@@ -502,12 +502,12 @@ LABEL_100:
     if ((BSEqualObjects() & 1) == 0)
     {
       objc_storeStrong(p_isa + 17, v114);
-      v87 = [v114 scene];
+      scene7 = [v114 scene];
       v88 = SBLogButtonsCapture();
       if (OUTLINED_FUNCTION_6_9(v88))
       {
-        v89 = [v87 identifier];
-        OUTLINED_FUNCTION_2_29(v89, 5.8381e-34);
+        identifier6 = [scene7 identifier];
+        OUTLINED_FUNCTION_2_29(identifier6, 5.8381e-34);
         OUTLINED_FUNCTION_1_26(&dword_21ED4E000, v90, v91, "camera capture button scene override: %{public}@");
       }
 
@@ -531,12 +531,12 @@ LABEL_100:
     else
     {
       objc_storeStrong(p_isa + 13, v63);
-      v93 = [(SBPhysicalButtonBehaviorRequest *)v63 scene];
+      scene8 = [(SBPhysicalButtonBehaviorRequest *)v63 scene];
       v94 = SBLogButtonsInteraction();
       if (OUTLINED_FUNCTION_6_9(v94))
       {
-        v95 = [v93 identifier];
-        OUTLINED_FUNCTION_2_29(v95, 5.8381e-34);
+        identifier7 = [scene8 identifier];
+        OUTLINED_FUNCTION_2_29(identifier7, 5.8381e-34);
         OUTLINED_FUNCTION_1_26(&dword_21ED4E000, v96, v97, "headphone left button scene override: %{public}@");
       }
 
@@ -548,12 +548,12 @@ LABEL_100:
     }
 
     objc_storeStrong(v92, v113);
-    v98 = [(SBPhysicalButtonBehaviorRequest *)v113 scene];
+    scene9 = [(SBPhysicalButtonBehaviorRequest *)v113 scene];
     v99 = SBLogButtonsInteraction();
     if (OUTLINED_FUNCTION_6_9(v99))
     {
-      v100 = [v98 identifier];
-      OUTLINED_FUNCTION_2_29(v100, 5.8381e-34);
+      identifier8 = [scene9 identifier];
+      OUTLINED_FUNCTION_2_29(identifier8, 5.8381e-34);
       OUTLINED_FUNCTION_1_26(&dword_21ED4E000, v101, v102, "headphone right button scene override: %{public}@");
     }
 
@@ -569,12 +569,12 @@ LABEL_132:
 - (void)_notifyObserversSomethingDidChange
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(BSCompoundAssertion *)self->_observers orderedContext];
+  orderedContext = [(BSCompoundAssertion *)self->_observers orderedContext];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [orderedContext countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -585,13 +585,13 @@ LABEL_132:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(orderedContext);
         }
 
         [*(*(&v9 + 1) + 8 * i) physicalButtonSceneOverridesDidChange:self];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [orderedContext countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -626,15 +626,15 @@ LABEL_132:
       {
         volumeDownButtonRequest = self->_volumeDownButtonRequest;
         p_volumeDownButtonRequest = &self->_volumeDownButtonRequest;
-        v7 = volumeDownButtonRequest;
+        scene = volumeDownButtonRequest;
         if (!volumeDownButtonRequest)
         {
           goto LABEL_12;
         }
 
-        if ([v7 physicalButtonBehavior])
+        if ([scene physicalButtonBehavior])
         {
-          v7 = 0;
+          scene = 0;
           goto LABEL_12;
         }
 
@@ -643,18 +643,18 @@ LABEL_132:
     }
   }
 
-  v7 = [(SBPhysicalButtonBehaviorRequest *)*p_cameraCaptureButtonRequest scene];
+  scene = [(SBPhysicalButtonBehaviorRequest *)*p_cameraCaptureButtonRequest scene];
 LABEL_12:
 
-  return v7;
+  return scene;
 }
 
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v4 = [WeakRetained zStackResolver];
+  zStackResolver = [WeakRetained zStackResolver];
 
-  [v4 removeObserver:self ofParticipantWithIdentifier:29];
+  [zStackResolver removeObserver:self ofParticipantWithIdentifier:29];
   [(SBCameraViewfinderMonitoring *)self->_cameraViewfinderMonitorToken cancel];
   cameraViewfinderMonitorToken = self->_cameraViewfinderMonitorToken;
   self->_cameraViewfinderMonitorToken = 0;
@@ -664,34 +664,34 @@ LABEL_12:
   [(SBPhysicalButtonSceneOverrideManager *)&v6 dealloc];
 }
 
-- (void)windowSceneDidConnect:(id *)a1
+- (void)windowSceneDidConnect:(id *)connect
 {
   v4 = a2;
-  if (a1)
+  if (connect)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 3);
+    WeakRetained = objc_loadWeakRetained(connect + 3);
 
     if (WeakRetained)
     {
       [SBPhysicalButtonSceneOverrideManager windowSceneDidConnect:?];
     }
 
-    [(SBPhysicalButtonSceneOverrideManager *)a1 + 3 windowSceneDidConnect:v4, a1];
+    [(SBPhysicalButtonSceneOverrideManager *)connect + 3 windowSceneDidConnect:v4, connect];
   }
 }
 
-- (unint64_t)sendHeadphoneButtonClicked:(void *)a1
+- (unint64_t)sendHeadphoneButtonClicked:(void *)clicked
 {
-  v2 = a1;
+  clickedCopy = clicked;
   v18 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (clicked)
   {
     if ((a2 & 0xFFFFFFFFFFFFFFFELL) != 6)
     {
-      [(SBPhysicalButtonSceneOverrideManager *)sel_sendHeadphoneButtonClicked_ sendHeadphoneButtonClicked:a1];
+      [(SBPhysicalButtonSceneOverrideManager *)sel_sendHeadphoneButtonClicked_ sendHeadphoneButtonClicked:clicked];
     }
 
-    if ([a1 _sendsActionsForButtonType:a2])
+    if ([clicked _sendsActionsForButtonType:a2])
     {
       v4 = 112;
       if (a2 == 6)
@@ -699,55 +699,55 @@ LABEL_12:
         v4 = 104;
       }
 
-      v5 = *(v2 + v4);
-      v6 = [v5 scene];
-      if (v6)
+      v5 = *(clickedCopy + v4);
+      scene = [v5 scene];
+      if (scene)
       {
-        v7 = [v2 _sendButtonDownForButtonType:a2 request:v5 scene:v6];
-        v2 = v7 != 0;
+        v7 = [clickedCopy _sendButtonDownForButtonType:a2 request:v5 scene:scene];
+        clickedCopy = v7 != 0;
         [v7 completeWithResult:0];
       }
 
       else
       {
-        v2 = 0;
+        clickedCopy = 0;
       }
     }
 
     else
     {
-      v6 = 0;
-      v2 = 0;
+      scene = 0;
+      clickedCopy = 0;
     }
 
     v8 = SBLogButtonsInteraction();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = _NSStringFromUIPhysicalButton();
-      v10 = [v6 identifier];
+      identifier = [scene identifier];
       v12 = 138543874;
       v13 = v9;
       v14 = 1024;
-      v15 = v2;
+      v15 = clickedCopy;
       v16 = 2114;
-      v17 = v10;
+      v17 = identifier;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Sending %{public}@ %{BOOL}u to %{public}@", &v12, 0x1Cu);
     }
   }
 
-  return v2;
+  return clickedCopy;
 }
 
-- (id)_sendButtonDownForButtonType:(unint64_t)a3 request:(id)a4 scene:(id)a5
+- (id)_sendButtonDownForButtonType:(unint64_t)type request:(id)request scene:(id)scene
 {
-  v8 = a4;
-  v9 = a5;
-  [(SBPhysicalButtonSceneOverrideManager *)self _sendActionForButtonType:a3 buttonState:0 request:v8];
+  requestCopy = request;
+  sceneCopy = scene;
+  [(SBPhysicalButtonSceneOverrideManager *)self _sendActionForButtonType:type buttonState:0 request:requestCopy];
   v10 = MEMORY[0x277CCACA8];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
-  v13 = [v9 identifier];
-  v14 = [v10 stringWithFormat:@"%@ (%@)", v12, v13];
+  identifier = [sceneCopy identifier];
+  v14 = [v10 stringWithFormat:@"%@ (%@)", v12, identifier];
 
   v15 = [SBPhysicalButtonCompletionHandler alloc];
   v20[0] = MEMORY[0x277D85DD0];
@@ -755,12 +755,12 @@ LABEL_12:
   v20[2] = __83__SBPhysicalButtonSceneOverrideManager__sendButtonDownForButtonType_request_scene___block_invoke;
   v20[3] = &unk_2783BE590;
   v20[4] = self;
-  v21 = v9;
-  v22 = v8;
-  v23 = a3;
-  v16 = v8;
-  v17 = v9;
-  v18 = [(SBPhysicalButtonCompletionHandler *)v15 initWithIdentifier:v14 button:a3 block:v20];
+  v21 = sceneCopy;
+  v22 = requestCopy;
+  typeCopy = type;
+  v16 = requestCopy;
+  v17 = sceneCopy;
+  v18 = [(SBPhysicalButtonCompletionHandler *)v15 initWithIdentifier:v14 button:type block:v20];
   [(SBCameraHardwareButton *)v18 setDeferringRuleAssertion:v16];
   [(SBPhysicalButtonSceneOverrideManager *)self _addButtonActionCompletionHandler:v18];
 
@@ -774,15 +774,15 @@ void __83__SBPhysicalButtonSceneOverrideManager__sendButtonDownForButtonType_req
   [*(a1 + 32) _sendActionForButtonType:*(a1 + 56) buttonState:_UIPhysicalButtonStateFromSBPhysicalButtonResult(a3) request:*(a1 + 48)];
 }
 
-- (void)cache:(id)a3 didUpdateActiveCategoryName:(id)a4
+- (void)cache:(id)cache didUpdateActiveCategoryName:(id)name
 {
   v9 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  nameCopy = name;
   v6 = SBLogButtonsInteraction();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v5;
+    v8 = nameCopy;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Re-evaluating overrides with new active volume category: %{public}@", &v7, 0xCu);
   }
 
@@ -793,15 +793,15 @@ void __83__SBPhysicalButtonSceneOverrideManager__sendButtonDownForButtonType_req
 {
   if ([(SBPhysicalButtonBehaviorRequest *)self->_cameraCaptureButtonRequest physicalButtonBehavior])
   {
-    v3 = 0;
+    requestingProcessAuditToken = 0;
   }
 
   else
   {
-    v3 = [(SBPhysicalButtonBehaviorRequest *)self->_cameraCaptureButtonRequest requestingProcessAuditToken];
+    requestingProcessAuditToken = [(SBPhysicalButtonBehaviorRequest *)self->_cameraCaptureButtonRequest requestingProcessAuditToken];
   }
 
-  return v3;
+  return requestingProcessAuditToken;
 }
 
 - (id)reasonCameraBehaviorSceneIsNotEligibleForSupplementalUI
@@ -813,12 +813,12 @@ void __83__SBPhysicalButtonSceneOverrideManager__sendButtonDownForButtonType_req
 
   else
   {
-    v4 = [(SBPhysicalButtonBehaviorRequest *)self->_cameraCaptureButtonRequest scene];
-    v5 = [(SBPhysicalButtonSceneOverrideManager *)self cameraBehaviorScene];
+    scene = [(SBPhysicalButtonBehaviorRequest *)self->_cameraCaptureButtonRequest scene];
+    cameraBehaviorScene = [(SBPhysicalButtonSceneOverrideManager *)self cameraBehaviorScene];
     if (BSEqualObjects())
     {
-      v6 = [(SBPhysicalButtonBehaviorRequest *)self->_cameraCaptureButtonRequest requestingProcessAuditToken];
-      v7 = [(SBPhysicalButtonSceneOverrideManager *)self _canSendCameraShutterButtonEventsForRequestAuditToken:v6];
+      requestingProcessAuditToken = [(SBPhysicalButtonBehaviorRequest *)self->_cameraCaptureButtonRequest requestingProcessAuditToken];
+      v7 = [(SBPhysicalButtonSceneOverrideManager *)self _canSendCameraShutterButtonEventsForRequestAuditToken:requestingProcessAuditToken];
 
       if (v7)
       {
@@ -833,44 +833,44 @@ void __83__SBPhysicalButtonSceneOverrideManager__sendButtonDownForButtonType_req
 
     else
     {
-      v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ does not match %@", v5, v4];
+      v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ does not match %@", cameraBehaviorScene, scene];
     }
   }
 
   return v3;
 }
 
-- (id)_applicationBundleIdentifierForClientBundleIdentifier:(id)a3
+- (id)_applicationBundleIdentifierForClientBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBFCaptureApplicationProviding *)self->_captureApplicationProvider captureApplicationForExtensionIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(SBFCaptureApplicationProviding *)self->_captureApplicationProvider captureApplicationForExtensionIdentifier:identifierCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 bundleIdentifier];
+    bundleIdentifier = [v5 bundleIdentifier];
   }
 
   else
   {
-    v7 = v4;
+    bundleIdentifier = identifierCopy;
   }
 
-  v8 = v7;
+  v8 = bundleIdentifier;
 
   return v8;
 }
 
-- (void)_processZStackParticipantSettings:(id)a3
+- (void)_processZStackParticipantSettings:(id)settings
 {
-  v7 = a3;
-  v4 = [v7 physicalButtonSceneTargets];
+  settingsCopy = settings;
+  physicalButtonSceneTargets = [settingsCopy physicalButtonSceneTargets];
   v5 = BSEqualArrays();
   if ((v5 & 1) == 0)
   {
-    objc_storeStrong(&self->_lastPhysicalButtonSceneTargets, v4);
+    objc_storeStrong(&self->_lastPhysicalButtonSceneTargets, physicalButtonSceneTargets);
   }
 
-  v6 = [v7 captureButtonFullFidelityEventRequestingScenes];
+  captureButtonFullFidelityEventRequestingScenes = [settingsCopy captureButtonFullFidelityEventRequestingScenes];
   if (BSEqualArrays())
   {
     if (v5)
@@ -881,7 +881,7 @@ void __83__SBPhysicalButtonSceneOverrideManager__sendButtonDownForButtonType_req
 
   else
   {
-    objc_storeStrong(&self->_lastScenesRequestingFullFidelityCaptureButtonEvents, v6);
+    objc_storeStrong(&self->_lastScenesRequestingFullFidelityCaptureButtonEvents, captureButtonFullFidelityEventRequestingScenes);
   }
 
   [(SBPhysicalButtonSceneOverrideManager *)self _reevaluateOverrides];
@@ -900,19 +900,19 @@ uint64_t __60__SBPhysicalButtonSceneOverrideManager__reevaluateOverrides__block_
   return v7;
 }
 
-- (id)_sceneForSceneTarget:(id)a3
+- (id)_sceneForSceneTarget:(id)target
 {
-  v4 = a3;
-  v5 = [v4 scene];
-  v6 = v5;
-  if (v5)
+  targetCopy = target;
+  scene = [targetCopy scene];
+  v6 = scene;
+  if (scene)
   {
-    v7 = v5;
+    v7 = scene;
   }
 
   else
   {
-    [(SBPhysicalButtonSceneOverrideManager *)self _sceneForSceneTarget:v4, &v9, &v10];
+    [(SBPhysicalButtonSceneOverrideManager *)self _sceneForSceneTarget:targetCopy, &v9, &v10];
     v7 = v10;
   }
 
@@ -927,37 +927,37 @@ uint64_t __61__SBPhysicalButtonSceneOverrideManager__sceneForSceneTarget___block
   return v4;
 }
 
-- (BOOL)_canSendVolumeButtonEventsToScene:(id)a3 withConfiguration:(id)a4 activeVolumeCategoryName:(id)a5 isAudioSessionPlaying:(BOOL)a6
+- (BOOL)_canSendVolumeButtonEventsToScene:(id)scene withConfiguration:(id)configuration activeVolumeCategoryName:(id)name isAudioSessionPlaying:(BOOL)playing
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  playingCopy = playing;
+  sceneCopy = scene;
+  configurationCopy = configuration;
+  nameCopy = name;
   v13 = 0;
-  if (v10 && v11)
+  if (sceneCopy && configurationCopy)
   {
-    if (![v11 _behavior])
+    if (![configurationCopy _behavior])
     {
-      v17 = [(SBPhysicalButtonSceneOverrideManager *)self _canSendCameraCaptureFullPressEventsToScene:v10 withConfiguration:v11];
+      v17 = [(SBPhysicalButtonSceneOverrideManager *)self _canSendCameraCaptureFullPressEventsToScene:sceneCopy withConfiguration:configurationCopy];
 LABEL_10:
       v13 = v17;
       goto LABEL_11;
     }
 
-    if ([v11 _behavior] == 2)
+    if ([configurationCopy _behavior] == 2)
     {
-      v14 = [v10 definition];
-      v15 = [v14 clientIdentity];
-      v16 = [v15 isLocal];
+      definition = [sceneCopy definition];
+      clientIdentity = [definition clientIdentity];
+      isLocal = [clientIdentity isLocal];
 
-      if (v16)
+      if (isLocal)
       {
-        v17 = [(SBVolumeControl *)self->_volumeControl canChangeVolumeForActiveCategory:v12 isAudioSessionPlaying:v6];
+        v17 = [(SBVolumeControl *)self->_volumeControl canChangeVolumeForActiveCategory:nameCopy isAudioSessionPlaying:playingCopy];
       }
 
       else
       {
-        v17 = [v12 isEqualToString:@"Audio/Video"];
+        v17 = [nameCopy isEqualToString:@"Audio/Video"];
       }
 
       goto LABEL_10;
@@ -971,30 +971,30 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)_canSendActionButtonEventsToScene:(id)a3 withConfiguration:(id)a4
+- (BOOL)_canSendActionButtonEventsToScene:(id)scene withConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  sceneCopy = scene;
+  configurationCopy = configuration;
+  v8 = configurationCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (sceneCopy && configurationCopy)
   {
-    v10 = [SBApp systemActionControl];
-    v11 = [v6 clientHandle];
-    v12 = [v11 bundleIdentifier];
-    v13 = [(SBPhysicalButtonSceneOverrideManager *)self _applicationBundleIdentifierForClientBundleIdentifier:v12];
+    systemActionControl = [SBApp systemActionControl];
+    clientHandle = [sceneCopy clientHandle];
+    bundleIdentifier = [clientHandle bundleIdentifier];
+    v13 = [(SBPhysicalButtonSceneOverrideManager *)self _applicationBundleIdentifierForClientBundleIdentifier:bundleIdentifier];
 
-    if (([(SBSystemActionControl *)v10 isSelectedActionHostedByApplicationWithBundleIdentifier:v13]& 1) == 0)
+    if (([(SBSystemActionControl *)systemActionControl isSelectedActionHostedByApplicationWithBundleIdentifier:v13]& 1) == 0)
     {
-      v14 = [v8 _auditToken];
-      if ([v14 hasEntitlement:@"com.apple.springboard.private.action-button-events"])
+      _auditToken = [v8 _auditToken];
+      if ([_auditToken hasEntitlement:@"com.apple.springboard.private.action-button-events"])
       {
       }
 
       else
       {
-        v15 = [v8 _auditToken];
-        v16 = [v15 hasEntitlement:@"com.apple.springboard.private.ringer-button-events"];
+        _auditToken2 = [v8 _auditToken];
+        v16 = [_auditToken2 hasEntitlement:@"com.apple.springboard.private.ringer-button-events"];
 
         if (!v16)
         {
@@ -1013,7 +1013,7 @@ LABEL_11:
 
     else
     {
-      v9 = [(SBPhysicalButtonSceneOverrideManager *)self _canSendCameraCaptureFullPressEventsToScene:v6 withConfiguration:v8];
+      v9 = [(SBPhysicalButtonSceneOverrideManager *)self _canSendCameraCaptureFullPressEventsToScene:sceneCopy withConfiguration:v8];
     }
 
     goto LABEL_11;
@@ -1024,72 +1024,72 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)_canSendCameraCaptureFullPressEventsToScene:(id)a3 withConfiguration:(id)a4
+- (BOOL)_canSendCameraCaptureFullPressEventsToScene:(id)scene withConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = v6;
+  configurationCopy = configuration;
+  v7 = configurationCopy;
   v8 = 0;
-  if (a3 && v6)
+  if (scene && configurationCopy)
   {
-    v9 = [v6 _auditToken];
-    if ([(SBPhysicalButtonSceneOverrideManager *)self _canSendCameraShutterButtonEventsForRequestAuditToken:v9])
+    _auditToken = [configurationCopy _auditToken];
+    if ([(SBPhysicalButtonSceneOverrideManager *)self _canSendCameraShutterButtonEventsForRequestAuditToken:_auditToken])
     {
       v8 = 1;
     }
 
     else
     {
-      v10 = [v7 _auditToken];
-      v8 = ([v10 hasEntitlement:@"com.apple.springboard.private.capture-button-events"] & 1) != 0 || objc_msgSend(v10, "hasEntitlement:", @"com.apple.springboard.private.9403EBFD-90B8-4676-84BF-9F38143337E3");
+      _auditToken2 = [v7 _auditToken];
+      v8 = ([_auditToken2 hasEntitlement:@"com.apple.springboard.private.capture-button-events"] & 1) != 0 || objc_msgSend(_auditToken2, "hasEntitlement:", @"com.apple.springboard.private.9403EBFD-90B8-4676-84BF-9F38143337E3");
     }
   }
 
   return v8;
 }
 
-- (id)_activeRequestForButton:(unint64_t)a3
+- (id)_activeRequestForButton:(unint64_t)button
 {
-  if (a3 - 1 > 4)
+  if (button - 1 > 4)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.isa + qword_21F8A7E08[a3 - 1]);
+    v4 = *(&self->super.isa + qword_21F8A7E08[button - 1]);
   }
 
   return v4;
 }
 
-- (void)_addButtonActionCompletionHandler:(id)a3
+- (void)_addButtonActionCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   buttonActionCompletionHandlers = self->_buttonActionCompletionHandlers;
-  v8 = v4;
+  v8 = handlerCopy;
   if (!buttonActionCompletionHandlers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_buttonActionCompletionHandlers;
-    self->_buttonActionCompletionHandlers = v6;
+    self->_buttonActionCompletionHandlers = weakObjectsHashTable;
 
-    v4 = v8;
+    handlerCopy = v8;
     buttonActionCompletionHandlers = self->_buttonActionCompletionHandlers;
   }
 
-  [(NSHashTable *)buttonActionCompletionHandlers addObject:v4];
+  [(NSHashTable *)buttonActionCompletionHandlers addObject:handlerCopy];
 }
 
-- (void)_sendActionForButtonType:(unint64_t)a3 buttonState:(unint64_t)a4 request:(id)a5
+- (void)_sendActionForButtonType:(unint64_t)type buttonState:(unint64_t)state request:(id)request
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [v8 physicalButtonBehavior];
-  v10 = [v8 scene];
-  v11 = v10;
-  if (a4)
+  requestCopy = request;
+  physicalButtonBehavior = [requestCopy physicalButtonBehavior];
+  scene = [requestCopy scene];
+  v11 = scene;
+  if (state)
   {
-    if (([v10 isValid] & 1) == 0)
+    if (([scene isValid] & 1) == 0)
     {
       v12 = SBLogButtonsInteraction();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1109,12 +1109,12 @@ LABEL_12:
     }
   }
 
-  else if (!v10)
+  else if (!scene)
   {
     [SBPhysicalButtonSceneOverrideManager _sendActionForButtonType:a2 buttonState:? request:?];
   }
 
-  v12 = [objc_alloc(MEMORY[0x277D76158]) initWithPhysicalButton:a3 behavior:v9 state:a4 generation:objc_msgSend(v8 completion:{"generation"), 0}];
+  v12 = [objc_alloc(MEMORY[0x277D76158]) initWithPhysicalButton:type behavior:physicalButtonBehavior state:state generation:objc_msgSend(requestCopy completion:{"generation"), 0}];
   v15 = SBLogButtonsInteraction();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -1135,73 +1135,73 @@ LABEL_12:
 LABEL_9:
 }
 
-- (id)initWithSceneManager:(id *)a1
+- (id)initWithSceneManager:(id *)manager
 {
   v3 = a2;
-  if (a1)
+  if (manager)
   {
-    v19.receiver = a1;
+    v19.receiver = manager;
     v19.super_class = SBPhysicalButtonSceneOverrideManager;
     v4 = objc_msgSendSuper2(&v19, sel_init);
-    a1 = v4;
+    manager = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 2, v3);
-      v5 = [SBApp volumeControl];
-      v6 = a1[4];
-      a1[4] = v5;
+      volumeControl = [SBApp volumeControl];
+      v6 = manager[4];
+      manager[4] = volumeControl;
 
       v7 = +[SBAVSystemControllerCache sharedInstance];
-      v8 = a1[5];
-      a1[5] = v7;
+      v8 = manager[5];
+      manager[5] = v7;
 
-      [a1[5] addObserver:a1];
+      [manager[5] addObserver:manager];
       v9 = +[SBCaptureApplicationCenter sharedInstance];
-      v10 = a1[18];
-      a1[18] = v9;
+      v10 = manager[18];
+      manager[18] = v9;
 
       v11 = +[SBCameraViewfinderMonitor sharedInstance];
-      v12 = [v11 addObserver:a1];
-      v13 = a1[6];
-      a1[6] = v12;
+      v12 = [v11 addObserver:manager];
+      v13 = manager[6];
+      manager[6] = v12;
 
       v14 = [MEMORY[0x277CF0BD0] assertionWithIdentifier:@"SBPhysicalButtonSceneOverrideManager observers"];
-      v15 = a1[10];
-      a1[10] = v14;
+      v15 = manager[10];
+      manager[10] = v14;
 
-      *(a1 + 4) = 257;
+      *(manager + 4) = 257;
       v16 = objc_alloc_init(MEMORY[0x277D66B90]);
-      v17 = a1[19];
-      a1[19] = v16;
+      v17 = manager[19];
+      manager[19] = v16;
     }
   }
 
-  return a1;
+  return manager;
 }
 
-- (id)addObserver:(uint64_t)a3 forReason:
+- (id)addObserver:(uint64_t)observer forReason:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[10] acquireForReason:a3 withContext:a2];
+    self = [self[10] acquireForReason:observer withContext:a2];
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)isTargetingButton:(uint64_t)a3 withConfigurationIdentifier:
+- (BOOL)isTargetingButton:(uint64_t)button withConfigurationIdentifier:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v4 = [a1 _activeRequestForButton:a2];
+  v4 = [self _activeRequestForButton:a2];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 identifier] == a3;
+    v6 = [v4 identifier] == button;
   }
 
   else
@@ -1212,10 +1212,10 @@ LABEL_9:
   return v6;
 }
 
-- (char)sendVolumeButtonDownForIncrease:(_BYTE *)a3 shouldAlsoChangeVolume:
+- (char)sendVolumeButtonDownForIncrease:(_BYTE *)increase shouldAlsoChangeVolume:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     if (a2)
     {
@@ -1227,7 +1227,7 @@ LABEL_9:
       v6 = 2;
     }
 
-    if ([a1 _sendsActionsForButtonType:v6])
+    if ([self _sendsActionsForButtonType:v6])
     {
       v7 = 96;
       if (a2)
@@ -1235,93 +1235,93 @@ LABEL_9:
         v7 = 88;
       }
 
-      v8 = *&v3[v7];
-      v9 = [v8 scene];
-      if (v9)
+      v8 = *&selfCopy[v7];
+      scene = [v8 scene];
+      if (scene)
       {
-        if (a3)
+        if (increase)
         {
           if ([v8 physicalButtonBehavior] == 2)
           {
-            v10 = [v9 definition];
-            v11 = [v10 clientIdentity];
-            *a3 = [v11 isLocal] ^ 1;
+            definition = [scene definition];
+            clientIdentity = [definition clientIdentity];
+            *increase = [clientIdentity isLocal] ^ 1;
           }
 
           else
           {
-            *a3 = 0;
+            *increase = 0;
           }
         }
 
-        v3 = [v3 _sendButtonDownForButtonType:v6 request:v8 scene:v9];
+        selfCopy = [selfCopy _sendButtonDownForButtonType:v6 request:v8 scene:scene];
       }
 
       else
       {
-        v3 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v3 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)sendActionButtonDown
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if ([a1 _sendsActionsForButtonType:3])
+    if ([self _sendsActionsForButtonType:3])
     {
-      v2 = v1[16];
-      v3 = [v2 scene];
-      if (v3)
+      v2 = selfCopy[16];
+      scene = [v2 scene];
+      if (scene)
       {
-        v1 = [v1 _sendButtonDownForButtonType:3 request:v2 scene:v3];
+        selfCopy = [selfCopy _sendButtonDownForButtonType:3 request:v2 scene:scene];
       }
 
       else
       {
-        v1 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)sendCameraCaptureButtonDown
 {
-  v1 = a1;
+  selfCopy = self;
   v16 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    if ([a1 _sendsActionsForButtonType:5])
+    if ([self _sendsActionsForButtonType:5])
     {
-      v2 = v1[17];
-      v3 = [v2 scene];
-      if (v3)
+      v2 = selfCopy[17];
+      scene = [v2 scene];
+      if (scene)
       {
-        if ([v1[8] containsObject:v3])
+        if ([selfCopy[8] containsObject:scene])
         {
           v4 = MEMORY[0x277CCACA8];
           v5 = objc_opt_class();
           v6 = NSStringFromClass(v5);
-          v7 = [v3 identifier];
-          v8 = [v4 stringWithFormat:@"%@ (%@)", v6, v7];
+          identifier = [scene identifier];
+          v8 = [v4 stringWithFormat:@"%@ (%@)", v6, identifier];
 
-          v1 = [[SBPhysicalButtonCompletionHandler alloc] initWithIdentifier:v8 button:5 block:&__block_literal_global_298];
+          selfCopy = [[SBPhysicalButtonCompletionHandler alloc] initWithIdentifier:v8 button:5 block:&__block_literal_global_298];
           v9 = SBLogButtonsInteraction();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
           {
@@ -1329,48 +1329,48 @@ LABEL_9:
             *buf = 138543618;
             v13 = v10;
             v14 = 2114;
-            v15 = v3;
+            v15 = scene;
             _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "NOT sending button %{public}@ BSAction to scene %{public}@ since it is already receiving full-fidelity events", buf, 0x16u);
           }
         }
 
         else
         {
-          v1 = [v1 _sendButtonDownForButtonType:5 request:v2 scene:v3];
+          selfCopy = [selfCopy _sendButtonDownForButtonType:5 request:v2 scene:scene];
         }
       }
 
       else
       {
-        v1 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)cache:(id)a3 didUpdateAudioSessionPlaying:(BOOL)a4
+- (void)cache:(id)cache didUpdateAudioSessionPlaying:(BOOL)playing
 {
-  v4 = a4;
+  playingCopy = playing;
   v8 = *MEMORY[0x277D85DE8];
   v6 = SBLogButtonsInteraction();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v4;
+    v7[1] = playingCopy;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Re-evaluating overrides with audioSessionPlaying: %{BOOL}u", v7, 8u);
   }
 
   [(SBPhysicalButtonSceneOverrideManager *)self _reevaluateOverrides];
 }
 
-- (BOOL)_canSendCameraShutterButtonEventsForRequestAuditToken:(id)a3
+- (BOOL)_canSendCameraShutterButtonEventsForRequestAuditToken:(id)token
 {
   if (self)
   {
@@ -1382,26 +1382,26 @@ LABEL_9:
     cameraViewfinderMonitorToken = 0;
   }
 
-  v4 = a3;
-  v5 = [(SBCameraViewfinderMonitoring *)cameraViewfinderMonitorToken auditTokenForProcessWithActiveOrImminentViewfinderSession];
-  v6 = [v4 hasSameProcessAsAuditToken:v5];
+  tokenCopy = token;
+  auditTokenForProcessWithActiveOrImminentViewfinderSession = [(SBCameraViewfinderMonitoring *)cameraViewfinderMonitorToken auditTokenForProcessWithActiveOrImminentViewfinderSession];
+  v6 = [tokenCopy hasSameProcessAsAuditToken:auditTokenForProcessWithActiveOrImminentViewfinderSession];
 
   return v6;
 }
 
-- (BOOL)_sendsActionsForButtonType:(unint64_t)a3
+- (BOOL)_sendsActionsForButtonType:(unint64_t)type
 {
-  if (a3 > 7)
+  if (type > 7)
   {
     return OUTLINED_FUNCTION_0_9(0);
   }
 
-  if (((1 << a3) & 0xE8) != 0)
+  if (((1 << type) & 0xE8) != 0)
   {
     return OUTLINED_FUNCTION_0_9(1);
   }
 
-  if (((1 << a3) & 6) != 0 && self)
+  if (((1 << type) & 6) != 0 && self)
   {
     return OUTLINED_FUNCTION_0_9(self->_sendsPhysicalVolumeButtonActions);
   }
@@ -1432,11 +1432,11 @@ LABEL_9:
   return result;
 }
 
-- (void)setCaptureApplicationProvider:(uint64_t)a1
+- (void)setCaptureApplicationProvider:(uint64_t)provider
 {
-  if (a1)
+  if (provider)
   {
-    objc_storeStrong((a1 + 144), a2);
+    objc_storeStrong((provider + 144), a2);
   }
 }
 

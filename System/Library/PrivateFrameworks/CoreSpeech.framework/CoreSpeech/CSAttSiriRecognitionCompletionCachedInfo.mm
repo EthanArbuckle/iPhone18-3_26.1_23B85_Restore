@@ -1,5 +1,5 @@
 @interface CSAttSiriRecognitionCompletionCachedInfo
-- (CSAttSiriRecognitionCompletionCachedInfo)initWithRequestId:(id)a3 completionStatistics:(id)a4 endpointMode:(int64_t)a5 completionError:(id)a6;
+- (CSAttSiriRecognitionCompletionCachedInfo)initWithRequestId:(id)id completionStatistics:(id)statistics endpointMode:(int64_t)mode completionError:(id)error;
 - (id)description;
 @end
 
@@ -16,24 +16,24 @@
   return v3;
 }
 
-- (CSAttSiriRecognitionCompletionCachedInfo)initWithRequestId:(id)a3 completionStatistics:(id)a4 endpointMode:(int64_t)a5 completionError:(id)a6
+- (CSAttSiriRecognitionCompletionCachedInfo)initWithRequestId:(id)id completionStatistics:(id)statistics endpointMode:(int64_t)mode completionError:(id)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  idCopy = id;
+  statisticsCopy = statistics;
+  errorCopy = error;
   v19.receiver = self;
   v19.super_class = CSAttSiriRecognitionCompletionCachedInfo;
   v14 = [(CSAttSiriRecognitionCompletionCachedInfo *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_requestId, a3);
-    v16 = [[NSDictionary alloc] initWithDictionary:v12];
+    objc_storeStrong(&v14->_requestId, id);
+    v16 = [[NSDictionary alloc] initWithDictionary:statisticsCopy];
     statistics = v15->_statistics;
     v15->_statistics = v16;
 
-    v15->_endpointMode = a5;
-    objc_storeStrong(&v15->_completionError, a6);
+    v15->_endpointMode = mode;
+    objc_storeStrong(&v15->_completionError, error);
   }
 
   return v15;

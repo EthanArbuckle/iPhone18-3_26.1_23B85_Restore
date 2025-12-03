@@ -1,22 +1,22 @@
 @interface IXApplicationIdentity
-+ (id)identitiesForBundleIdentifiers:(id)a3;
-- (BOOL)resolvePersonaRespectingSandboxingWithError:(id *)a3;
-- (BOOL)resolvePersonaWithError:(id *)a3;
-- (IXApplicationIdentity)initWithBundleID:(id)a3 personaUniqueString:(id)a4 location:(id)a5;
-- (IXApplicationIdentity)initWithBundleIdentifier:(id)a3 personaUniqueString:(id)a4;
-- (IXApplicationIdentity)initWithBundleIdentifier:(id)a3 personaUniqueString:(id)a4 location:(id)a5;
-- (IXApplicationIdentity)initWithCoder:(id)a3;
-- (IXApplicationIdentity)initWithPlistKeySerialization:(id)a3;
++ (id)identitiesForBundleIdentifiers:(id)identifiers;
+- (BOOL)resolvePersonaRespectingSandboxingWithError:(id *)error;
+- (BOOL)resolvePersonaWithError:(id *)error;
+- (IXApplicationIdentity)initWithBundleID:(id)d personaUniqueString:(id)string location:(id)location;
+- (IXApplicationIdentity)initWithBundleIdentifier:(id)identifier personaUniqueString:(id)string;
+- (IXApplicationIdentity)initWithBundleIdentifier:(id)identifier personaUniqueString:(id)string location:(id)location;
+- (IXApplicationIdentity)initWithCoder:(id)coder;
+- (IXApplicationIdentity)initWithPlistKeySerialization:(id)serialization;
 - (MIAppIdentity)miAppIdentity;
 - (NSString)uniqueIdentifier;
 - (id)canonicalSerializationForPlistKey;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initFromDelimitedString:(id)a3;
-- (id)initFromPlistDictionary:(id)a3;
-- (id)initUsingPersonaFromCurrentThreadAndBundleIdentifier:(id)a3;
+- (id)initFromDelimitedString:(id)string;
+- (id)initFromPlistDictionary:(id)dictionary;
+- (id)initUsingPersonaFromCurrentThreadAndBundleIdentifier:(id)identifier;
 - (id)possibleSerializationsForPlistKey;
-- (id)resolvePersonaUsingModuleSpecificLogicWithError:(id *)a3;
+- (id)resolvePersonaUsingModuleSpecificLogicWithError:(id *)error;
 @end
 
 @implementation IXApplicationIdentity
@@ -25,10 +25,10 @@
 {
   v10[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DFD8];
-  v4 = [(IXApplicationIdentity *)self canonicalSerializationForPlistKey];
-  v10[0] = v4;
-  v5 = [(MIAppIdentity *)self bundleID];
-  v10[1] = v5;
+  canonicalSerializationForPlistKey = [(IXApplicationIdentity *)self canonicalSerializationForPlistKey];
+  v10[0] = canonicalSerializationForPlistKey;
+  bundleID = [(MIAppIdentity *)self bundleID];
+  v10[1] = bundleID;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
   v7 = [v3 setWithArray:v6];
 
@@ -39,19 +39,19 @@
 
 - (id)canonicalSerializationForPlistKey
 {
-  v3 = [(IXApplicationIdentity *)self isPersonalPersonaPlaceholder];
+  isPersonalPersonaPlaceholder = [(IXApplicationIdentity *)self isPersonalPersonaPlaceholder];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(MIAppIdentity *)self bundleID];
-  v6 = v5;
-  if (v3)
+  bundleID = [(MIAppIdentity *)self bundleID];
+  v6 = bundleID;
+  if (isPersonalPersonaPlaceholder)
   {
-    v7 = [v4 stringWithFormat:@"%@", v5];
+    v7 = [v4 stringWithFormat:@"%@", bundleID];
   }
 
   else
   {
-    v8 = [(MIAppIdentity *)self personaUniqueString];
-    v7 = [v4 stringWithFormat:@"%@%@%@", v6, @"/", v8];
+    personaUniqueString = [(MIAppIdentity *)self personaUniqueString];
+    v7 = [v4 stringWithFormat:@"%@%@%@", v6, @"/", personaUniqueString];
   }
 
   return v7;
@@ -61,29 +61,29 @@
 {
   if ([(IXApplicationIdentity *)self isPersonalPersonaPlaceholder])
   {
-    v3 = @"P";
+    personaUniqueString = @"P";
   }
 
   else
   {
-    v3 = [(MIAppIdentity *)self personaUniqueString];
+    personaUniqueString = [(MIAppIdentity *)self personaUniqueString];
   }
 
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(MIAppIdentity *)self bundleID];
-  v6 = [(MIAppIdentity *)self location];
-  v7 = [v4 stringWithFormat:@"[%@/%@/%@]", v5, v3, v6];
+  bundleID = [(MIAppIdentity *)self bundleID];
+  location = [(MIAppIdentity *)self location];
+  v7 = [v4 stringWithFormat:@"[%@/%@/%@]", bundleID, personaUniqueString, location];
 
   return v7;
 }
 
-- (id)resolvePersonaUsingModuleSpecificLogicWithError:(id *)a3
+- (id)resolvePersonaUsingModuleSpecificLogicWithError:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E69A8DC8] sharedInstance];
-  v6 = [(MIAppIdentity *)self bundleID];
+  mEMORY[0x1E69A8DC8] = [MEMORY[0x1E69A8DC8] sharedInstance];
+  bundleID = [(MIAppIdentity *)self bundleID];
   v25 = 0;
-  v7 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v6 allowPlaceholder:1 error:&v25];
+  v7 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:bundleID allowPlaceholder:1 error:&v25];
   v8 = v25;
   if (!v7)
   {
@@ -93,13 +93,13 @@
       [IXApplicationIdentity(IXUtilities) resolvePersonaUsingModuleSpecificLogicWithError:];
     }
 
-    v18 = _CreateError("[IXApplicationIdentity(IXUtilities) resolvePersonaUsingModuleSpecificLogicWithError:]", 48, @"IXErrorDomain", 1uLL, v8, 0, @"Failed to retrieve application record for bundleID: %@", v17, v6);
-    v9 = 0;
+    v18 = _CreateError("[IXApplicationIdentity(IXUtilities) resolvePersonaUsingModuleSpecificLogicWithError:]", 48, @"IXErrorDomain", 1uLL, v8, 0, @"Failed to retrieve application record for bundleID: %@", v17, bundleID);
+    identities = 0;
     goto LABEL_13;
   }
 
-  v9 = [v7 identities];
-  if ([v9 count] != 1)
+  identities = [v7 identities];
+  if ([identities count] != 1)
   {
     v19 = IXGetLoggingHandle(kIXLoggingSubsystem);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -107,33 +107,33 @@
       *buf = 136315906;
       v27 = "[IXApplicationIdentity(IXUtilities) resolvePersonaUsingModuleSpecificLogicWithError:]";
       v28 = 2112;
-      v29 = v6;
+      v29 = bundleID;
       v30 = 2112;
-      v31 = v9;
+      v31 = identities;
       v32 = 2112;
       v33 = v8;
       _os_log_error_impl(&dword_1DA47A000, v19, OS_LOG_TYPE_ERROR, "%s: Discovered multiple personas for app %@, so persona resolution is ambiguous. Found identities: %@ : %@", buf, 0x2Au);
     }
 
-    v18 = _CreateError("[IXApplicationIdentity(IXUtilities) resolvePersonaUsingModuleSpecificLogicWithError:]", 58, @"IXErrorDomain", 1uLL, v8, 0, @"Discovered multiple personas for app %@, so persona resolution is ambiguous. Found identities: %@", v20, v6);
+    v18 = _CreateError("[IXApplicationIdentity(IXUtilities) resolvePersonaUsingModuleSpecificLogicWithError:]", 58, @"IXErrorDomain", 1uLL, v8, 0, @"Discovered multiple personas for app %@, so persona resolution is ambiguous. Found identities: %@", v20, bundleID);
 LABEL_13:
-    v11 = 0;
+    personaUniqueString = 0;
     v15 = v8;
     v8 = v18;
     goto LABEL_14;
   }
 
-  v10 = [v9 objectAtIndexedSubscript:0];
-  v11 = [v10 personaUniqueString];
+  v10 = [identities objectAtIndexedSubscript:0];
+  personaUniqueString = [v10 personaUniqueString];
 
-  v12 = [v5 systemPersonaUniqueString];
-  v13 = [v11 isEqualToString:v12];
+  systemPersonaUniqueString = [mEMORY[0x1E69A8DC8] systemPersonaUniqueString];
+  v13 = [personaUniqueString isEqualToString:systemPersonaUniqueString];
 
   if (v13)
   {
-    v14 = [v5 primaryPersonaUniqueString];
+    primaryPersonaUniqueString = [mEMORY[0x1E69A8DC8] primaryPersonaUniqueString];
 
-    v11 = v14;
+    personaUniqueString = primaryPersonaUniqueString;
   }
 
   v15 = IXGetLoggingHandle(kIXLoggingSubsystem);
@@ -144,28 +144,28 @@ LABEL_13:
 
 LABEL_14:
 
-  if (a3 && !v11)
+  if (error && !personaUniqueString)
   {
     v21 = v8;
-    *a3 = v8;
+    *error = v8;
   }
 
-  v22 = v11;
+  v22 = personaUniqueString;
 
   v23 = *MEMORY[0x1E69E9840];
-  return v11;
+  return personaUniqueString;
 }
 
-+ (id)identitiesForBundleIdentifiers:(id)a3
++ (id)identitiesForBundleIdentifiers:(id)identifiers
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = identifiersCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -198,50 +198,50 @@ LABEL_14:
   return v13;
 }
 
-- (IXApplicationIdentity)initWithBundleIdentifier:(id)a3 personaUniqueString:(id)a4 location:(id)a5
+- (IXApplicationIdentity)initWithBundleIdentifier:(id)identifier personaUniqueString:(id)string location:(id)location
 {
   v11.receiver = self;
   v11.super_class = IXApplicationIdentity;
-  v7 = a4;
-  v8 = [(MIAppIdentity *)&v11 initWithBundleIdentifier:a3 personaUniqueString:v7 location:a5];
-  v9 = [v7 isEqualToString:{@"PersonalPersonaPlaceholderString", v11.receiver, v11.super_class}];
+  stringCopy = string;
+  v8 = [(MIAppIdentity *)&v11 initWithBundleIdentifier:identifier personaUniqueString:stringCopy location:location];
+  v9 = [stringCopy isEqualToString:{@"PersonalPersonaPlaceholderString", v11.receiver, v11.super_class}];
 
   [(IXApplicationIdentity *)v8 setIsPersonalPersonaPlaceholder:v9];
   return v8;
 }
 
-- (IXApplicationIdentity)initWithBundleID:(id)a3 personaUniqueString:(id)a4 location:(id)a5
+- (IXApplicationIdentity)initWithBundleID:(id)d personaUniqueString:(id)string location:(id)location
 {
   v11.receiver = self;
   v11.super_class = IXApplicationIdentity;
-  v7 = a4;
-  v8 = [(MIAppIdentity *)&v11 initWithBundleIdentifier:a3 personaUniqueString:v7 location:a5];
-  v9 = [v7 isEqualToString:{@"PersonalPersonaPlaceholderString", v11.receiver, v11.super_class}];
+  stringCopy = string;
+  v8 = [(MIAppIdentity *)&v11 initWithBundleIdentifier:d personaUniqueString:stringCopy location:location];
+  v9 = [stringCopy isEqualToString:{@"PersonalPersonaPlaceholderString", v11.receiver, v11.super_class}];
 
   [(IXApplicationIdentity *)v8 setIsPersonalPersonaPlaceholder:v9];
   return v8;
 }
 
-- (IXApplicationIdentity)initWithBundleIdentifier:(id)a3 personaUniqueString:(id)a4
+- (IXApplicationIdentity)initWithBundleIdentifier:(id)identifier personaUniqueString:(id)string
 {
-  v6 = a4;
-  v7 = a3;
+  stringCopy = string;
+  identifierCopy = identifier;
   v8 = objc_opt_new();
-  v9 = [(IXApplicationIdentity *)self initWithBundleIdentifier:v7 personaUniqueString:v6 location:v8];
+  v9 = [(IXApplicationIdentity *)self initWithBundleIdentifier:identifierCopy personaUniqueString:stringCopy location:v8];
 
   return v9;
 }
 
-- (id)initUsingPersonaFromCurrentThreadAndBundleIdentifier:(id)a3
+- (id)initUsingPersonaFromCurrentThreadAndBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69DF078] currentPersona];
-  v6 = [v5 userPersonaUniqueString];
+  identifierCopy = identifier;
+  currentPersona = [MEMORY[0x1E69DF078] currentPersona];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
 
-  if (v6)
+  if (userPersonaUniqueString)
   {
-    self = [(IXApplicationIdentity *)self initWithBundleIdentifier:v4 personaUniqueString:v6];
-    v7 = self;
+    self = [(IXApplicationIdentity *)self initWithBundleIdentifier:identifierCopy personaUniqueString:userPersonaUniqueString];
+    selfCopy = self;
   }
 
   else
@@ -252,29 +252,29 @@ LABEL_14:
       [IXApplicationIdentity initUsingPersonaFromCurrentThreadAndBundleIdentifier:v8];
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (IXApplicationIdentity)initWithPlistKeySerialization:(id)a3
+- (IXApplicationIdentity)initWithPlistKeySerialization:(id)serialization
 {
-  v4 = a3;
+  serializationCopy = serialization;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(IXApplicationIdentity *)self initFromDelimitedString:v4];
+    v5 = [(IXApplicationIdentity *)self initFromDelimitedString:serializationCopy];
 LABEL_5:
     self = v5;
-    v6 = self;
+    selfCopy = self;
     goto LABEL_9;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(IXApplicationIdentity *)self initFromPlistDictionary:v4];
+    v5 = [(IXApplicationIdentity *)self initFromPlistDictionary:serializationCopy];
     goto LABEL_5;
   }
 
@@ -284,17 +284,17 @@ LABEL_5:
     [IXApplicationIdentity initWithPlistKeySerialization:];
   }
 
-  v6 = 0;
+  selfCopy = 0;
 LABEL_9:
 
-  return v6;
+  return selfCopy;
 }
 
-- (id)initFromDelimitedString:(id)a3
+- (id)initFromDelimitedString:(id)string
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 componentsSeparatedByString:@"/"];
+  stringCopy = string;
+  v5 = [stringCopy componentsSeparatedByString:@"/"];
   if ([v5 count])
   {
     if ([v5 count] == 1)
@@ -309,10 +309,10 @@ LABEL_9:
         v6 = IXGetLoggingHandle(kIXLoggingSubsystem);
         if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
         {
-          [(IXApplicationIdentity *)v4 initFromDelimitedString:v5];
+          [(IXApplicationIdentity *)stringCopy initFromDelimitedString:v5];
         }
 
-        v11 = 0;
+        selfCopy = 0;
         v7 = @"PersonalPersonaPlaceholderString";
         goto LABEL_18;
       }
@@ -339,7 +339,7 @@ LABEL_5:
     if (v9)
     {
       [(IXApplicationIdentity *)self setIsPersonalPersonaPlaceholder:[(__CFString *)v7 isEqualToString:@"PersonalPersonaPlaceholderString"]];
-      v11 = self;
+      selfCopy = self;
     }
 
     else
@@ -358,25 +358,25 @@ LABEL_5:
         _os_log_fault_impl(&dword_1DA47A000, v14, OS_LOG_TYPE_FAULT, "%s: Failed to resolve persona %@ for %@ : %@", buf, 0x2Au);
       }
 
-      v11 = 0;
+      selfCopy = 0;
     }
 
 LABEL_18:
     goto LABEL_19;
   }
 
-  v11 = 0;
+  selfCopy = 0;
 LABEL_19:
 
   v15 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
-- (id)initFromPlistDictionary:(id)a3
+- (id)initFromPlistDictionary:(id)dictionary
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"bundleID"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"bundleID"];
   objc_opt_class();
   v6 = v5;
   if (objc_opt_isKindOfClass())
@@ -391,7 +391,7 @@ LABEL_19:
 
   if (v7)
   {
-    v8 = [v4 objectForKeyedSubscript:@"personaString"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"personaString"];
     objc_opt_class();
     v9 = v8;
     if (objc_opt_isKindOfClass())
@@ -409,15 +409,15 @@ LABEL_19:
       v15 = IXGetLoggingHandle(kIXLoggingSubsystem);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
       {
-        [IXApplicationIdentity initFromPlistDictionary:v4];
+        [IXApplicationIdentity initFromPlistDictionary:dictionaryCopy];
       }
 
       v11 = 0;
-      v12 = 0;
+      selfCopy = 0;
       goto LABEL_33;
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"location"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"location"];
     objc_opt_class();
     v14 = v13;
     if (objc_opt_isKindOfClass())
@@ -430,7 +430,7 @@ LABEL_19:
       v15 = 0;
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"locationType"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"locationType"];
     objc_opt_class();
     v17 = v16;
     if (objc_opt_isKindOfClass())
@@ -462,7 +462,7 @@ LABEL_19:
             [(IXApplicationIdentity *)self setIsPersonalPersonaPlaceholder:[v10 isEqualToString:@"PersonalPersonaPlaceholderString"]];
             self = self;
             v11 = v21;
-            v12 = self;
+            selfCopy = self;
           }
 
           else
@@ -481,7 +481,7 @@ LABEL_19:
               _os_log_fault_impl(&dword_1DA47A000, v25, OS_LOG_TYPE_FAULT, "%s: Failed to resolve persona %@ for %@ : %@", buf, 0x2Au);
             }
 
-            v12 = 0;
+            selfCopy = 0;
             v11 = v21;
           }
 
@@ -495,7 +495,7 @@ LABEL_19:
         }
 
 LABEL_31:
-        v12 = 0;
+        selfCopy = 0;
 LABEL_32:
 
 LABEL_33:
@@ -505,7 +505,7 @@ LABEL_33:
       v19 = IXGetLoggingHandle(kIXLoggingSubsystem);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
       {
-        [IXApplicationIdentity initFromPlistDictionary:v4];
+        [IXApplicationIdentity initFromPlistDictionary:dictionaryCopy];
       }
     }
 
@@ -514,7 +514,7 @@ LABEL_33:
       v19 = IXGetLoggingHandle(kIXLoggingSubsystem);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
       {
-        [IXApplicationIdentity initFromPlistDictionary:v4];
+        [IXApplicationIdentity initFromPlistDictionary:dictionaryCopy];
       }
     }
 
@@ -525,24 +525,24 @@ LABEL_33:
   v10 = IXGetLoggingHandle(kIXLoggingSubsystem);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
   {
-    [IXApplicationIdentity initFromPlistDictionary:v4];
+    [IXApplicationIdentity initFromPlistDictionary:dictionaryCopy];
   }
 
   v11 = 0;
-  v12 = 0;
+  selfCopy = 0;
 LABEL_34:
 
   v22 = *MEMORY[0x1E69E9840];
-  return v12;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = IXApplicationIdentity;
-  v3 = [(MIAppIdentity *)&v6 copyWithZone:a3];
-  v4 = [v3 personaUniqueString];
-  [v3 setIsPersonalPersonaPlaceholder:{objc_msgSend(v4, "isEqualToString:", @"PersonalPersonaPlaceholderString"}];
+  v3 = [(MIAppIdentity *)&v6 copyWithZone:zone];
+  personaUniqueString = [v3 personaUniqueString];
+  [v3 setIsPersonalPersonaPlaceholder:{objc_msgSend(personaUniqueString, "isEqualToString:", @"PersonalPersonaPlaceholderString"}];
 
   return v3;
 }
@@ -551,33 +551,33 @@ LABEL_34:
 {
   if ([(IXApplicationIdentity *)self isPersonalPersonaPlaceholder])
   {
-    v3 = @"P";
+    personaUniqueString = @"P";
   }
 
   else
   {
-    v3 = [(MIAppIdentity *)self personaUniqueString];
+    personaUniqueString = [(MIAppIdentity *)self personaUniqueString];
   }
 
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(MIAppIdentity *)self bundleID];
-  v6 = [v4 stringWithFormat:@"%@_%@", v5, v3];
+  bundleID = [(MIAppIdentity *)self bundleID];
+  v6 = [v4 stringWithFormat:@"%@_%@", bundleID, personaUniqueString];
 
   return v6;
 }
 
-- (IXApplicationIdentity)initWithCoder:(id)a3
+- (IXApplicationIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = IXApplicationIdentity;
-  v5 = [(MIAppIdentity *)&v16 initWithCoder:v4];
-  v6 = [(MIAppIdentity *)v5 bundleID];
-  v7 = [(MIAppIdentity *)v5 personaUniqueString];
-  v8 = v7;
-  if (v6)
+  v5 = [(MIAppIdentity *)&v16 initWithCoder:coderCopy];
+  bundleID = [(MIAppIdentity *)v5 bundleID];
+  personaUniqueString = [(MIAppIdentity *)v5 personaUniqueString];
+  v8 = personaUniqueString;
+  if (bundleID)
   {
-    v9 = v7 == 0;
+    v9 = personaUniqueString == 0;
   }
 
   else
@@ -593,11 +593,11 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (v6 || ([v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (bundleID || ([coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"], (bundleID = objc_claimAutoreleasedReturnValue()) != 0))
   {
     if (!v8)
     {
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"personaUniqueString"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personaUniqueString"];
       if (v10)
       {
         v8 = v10;
@@ -610,17 +610,17 @@ LABEL_13:
     }
 
     v11 = [IXApplicationIdentity alloc];
-    v12 = [(MIAppIdentity *)v5 location];
-    v13 = [(IXApplicationIdentity *)v11 initWithBundleIdentifier:v6 personaUniqueString:v8 location:v12];
+    location = [(MIAppIdentity *)v5 location];
+    v13 = [(IXApplicationIdentity *)v11 initWithBundleIdentifier:bundleID personaUniqueString:v8 location:location];
 
     v5 = v13;
     goto LABEL_13;
   }
 
-  v6 = IXGetLoggingHandle(kIXLoggingSubsystem);
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
+  bundleID = IXGetLoggingHandle(kIXLoggingSubsystem);
+  if (os_log_type_enabled(bundleID, OS_LOG_TYPE_FAULT))
   {
-    [IXApplicationIdentity initWithCoder:v6];
+    [IXApplicationIdentity initWithCoder:bundleID];
   }
 
   v14 = 0;
@@ -629,7 +629,7 @@ LABEL_14:
   return v14;
 }
 
-- (BOOL)resolvePersonaWithError:(id *)a3
+- (BOOL)resolvePersonaWithError:(id *)error
 {
   v14.receiver = self;
   v14.super_class = IXApplicationIdentity;
@@ -644,13 +644,13 @@ LABEL_14:
       [(IXApplicationIdentity *)self resolvePersonaWithError:v6, v7];
     }
 
-    v8 = [(MIAppIdentity *)self bundleID];
-    v10 = _CreateError("[IXApplicationIdentity resolvePersonaWithError:]", 323, @"IXErrorDomain", 0x38uLL, v6, 0, @"Client provided invalid persona for %@", v9, v8);
+    bundleID = [(MIAppIdentity *)self bundleID];
+    v10 = _CreateError("[IXApplicationIdentity resolvePersonaWithError:]", 323, @"IXErrorDomain", 0x38uLL, v6, 0, @"Client provided invalid persona for %@", v9, bundleID);
 
-    if (a3)
+    if (error)
     {
       v11 = v10;
-      *a3 = v10;
+      *error = v10;
     }
 
     v6 = v10;
@@ -663,8 +663,8 @@ LABEL_14:
 
   else
   {
-    v12 = [(MIAppIdentity *)self personaUniqueString];
-    -[IXApplicationIdentity setIsPersonalPersonaPlaceholder:](self, "setIsPersonalPersonaPlaceholder:", [v12 isEqualToString:@"PersonalPersonaPlaceholderString"]);
+    personaUniqueString = [(MIAppIdentity *)self personaUniqueString];
+    -[IXApplicationIdentity setIsPersonalPersonaPlaceholder:](self, "setIsPersonalPersonaPlaceholder:", [personaUniqueString isEqualToString:@"PersonalPersonaPlaceholderString"]);
   }
 
   return v5;
@@ -673,17 +673,17 @@ LABEL_14:
 - (MIAppIdentity)miAppIdentity
 {
   v3 = objc_alloc(MEMORY[0x1E69A8D68]);
-  v4 = [(MIAppIdentity *)self bundleID];
-  v5 = [(MIAppIdentity *)self personaUniqueString];
-  v6 = [(MIAppIdentity *)self location];
-  v7 = [v3 initWithBundleIdentifier:v4 personaUniqueString:v5 location:v6];
+  bundleID = [(MIAppIdentity *)self bundleID];
+  personaUniqueString = [(MIAppIdentity *)self personaUniqueString];
+  location = [(MIAppIdentity *)self location];
+  v7 = [v3 initWithBundleIdentifier:bundleID personaUniqueString:personaUniqueString location:location];
 
   [v7 setIsResolved:{-[MIAppIdentity isResolved](self, "isResolved")}];
 
   return v7;
 }
 
-- (BOOL)resolvePersonaRespectingSandboxingWithError:(id *)a3
+- (BOOL)resolvePersonaRespectingSandboxingWithError:(id *)error
 {
   if (![(IXApplicationIdentity *)self isPersonalPersonaPlaceholder])
   {
@@ -710,7 +710,7 @@ LABEL_14:
     if ((v8 & 1) == 0)
     {
       v6 = 0;
-      if (!a3)
+      if (!error)
       {
         goto LABEL_13;
       }
@@ -724,7 +724,7 @@ LABEL_14:
   v9 = v12;
 
   v5 = v9;
-  if (!a3)
+  if (!error)
   {
     goto LABEL_13;
   }
@@ -734,7 +734,7 @@ LABEL_11:
   {
     v10 = v5;
     v6 = 0;
-    *a3 = v5;
+    *error = v5;
   }
 
 LABEL_13:

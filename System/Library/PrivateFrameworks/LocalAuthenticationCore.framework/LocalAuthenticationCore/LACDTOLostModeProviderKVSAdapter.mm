@@ -1,34 +1,34 @@
 @interface LACDTOLostModeProviderKVSAdapter
-- (LACDTOLostModeProviderKVSAdapter)initWithKVStore:(id)a3;
-- (void)lostModeStateWithCompletion:(id)a3;
+- (LACDTOLostModeProviderKVSAdapter)initWithKVStore:(id)store;
+- (void)lostModeStateWithCompletion:(id)completion;
 @end
 
 @implementation LACDTOLostModeProviderKVSAdapter
 
-- (LACDTOLostModeProviderKVSAdapter)initWithKVStore:(id)a3
+- (LACDTOLostModeProviderKVSAdapter)initWithKVStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = LACDTOLostModeProviderKVSAdapter;
   v6 = [(LACDTOLostModeProviderKVSAdapter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_kvStore, a3);
+    objc_storeStrong(&v6->_kvStore, store);
   }
 
   return v7;
 }
 
-- (void)lostModeStateWithCompletion:(id)a3
+- (void)lostModeStateWithCompletion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = LACLogDTOLostMode();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B0233000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ will start query", buf, 0xCu);
   }
 
@@ -39,7 +39,7 @@
   v9[2] = __64__LACDTOLostModeProviderKVSAdapter_lostModeStateWithCompletion___block_invoke;
   v9[3] = &unk_1E7A959C0;
   objc_copyWeak(&v11, buf);
-  v7 = v4;
+  v7 = completionCopy;
   v10 = v7;
   [(LACDTOKVStore *)kvStore valueForKey:2 completion:v9];
 

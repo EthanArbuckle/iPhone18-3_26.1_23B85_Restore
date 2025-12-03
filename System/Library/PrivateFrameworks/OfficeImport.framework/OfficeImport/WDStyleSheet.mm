@@ -1,21 +1,21 @@
 @interface WDStyleSheet
 - (WDDocument)document;
-- (WDStyleSheet)initWithDocument:(id)a3;
-- (id)allAliasesForStyleId:(id)a3 name:(id)a4;
-- (id)createStyleWithId:(id)a3 type:(int)a4;
-- (id)createStyleWithName:(id)a3 type:(int)a4;
+- (WDStyleSheet)initWithDocument:(id)document;
+- (id)allAliasesForStyleId:(id)id name:(id)name;
+- (id)createStyleWithId:(id)id type:(int)type;
+- (id)createStyleWithName:(id)name type:(int)type;
 - (id)description;
-- (id)paragraphStyleWithStartingName:(id)a3;
-- (id)styleIdForName:(id)a3;
-- (id)styleIdToName:(id)a3;
-- (id)styleNameToUniqueId:(id)a3;
-- (id)styleWithId:(id)a3;
-- (id)styleWithName:(id)a3;
-- (void)addStyle:(id)a3 name:(id)a4;
+- (id)paragraphStyleWithStartingName:(id)name;
+- (id)styleIdForName:(id)name;
+- (id)styleIdToName:(id)name;
+- (id)styleNameToUniqueId:(id)id;
+- (id)styleWithId:(id)id;
+- (id)styleWithName:(id)name;
+- (void)addStyle:(id)style name:(id)name;
 - (void)createDefaultStyles;
 - (void)initializeDefaultProperties;
-- (void)removeStyleWithId:(id)a3;
-- (void)setName:(id)a3 forId:(id)a4;
+- (void)removeStyleWithId:(id)id;
+- (void)setName:(id)name forId:(id)id;
 @end
 
 @implementation WDStyleSheet
@@ -23,20 +23,20 @@
 - (void)initializeDefaultProperties
 {
   WeakRetained = objc_loadWeakRetained(&self->mDocument);
-  v4 = [WeakRetained fontTable];
-  v31 = [v4 fontWithName:@"Times New Roman" create:1];
+  fontTable = [WeakRetained fontTable];
+  v31 = [fontTable fontWithName:@"Times New Roman" create:1];
 
   v5 = objc_loadWeakRetained(&self->mDocument);
-  v6 = [v5 fontTable];
-  v7 = [v6 fontWithName:@"Times New Roman" create:1];
+  fontTable2 = [v5 fontTable];
+  v7 = [fontTable2 fontWithName:@"Times New Roman" create:1];
 
   v8 = objc_loadWeakRetained(&self->mDocument);
-  v9 = [v8 fontTable];
-  v10 = [v9 fontWithName:@"Arial Unicode MS" create:1];
+  fontTable3 = [v8 fontTable];
+  v10 = [fontTable3 fontWithName:@"Arial Unicode MS" create:1];
 
   v11 = [WDCharacterProperties alloc];
-  v12 = [(WDStyleSheet *)self document];
-  v13 = [(WDCharacterProperties *)v11 initWithDocument:v12];
+  document = [(WDStyleSheet *)self document];
+  v13 = [(WDCharacterProperties *)v11 initWithDocument:document];
   mDefaultCharacterProperties = self->mDefaultCharacterProperties;
   self->mDefaultCharacterProperties = v13;
 
@@ -56,7 +56,7 @@
 
   [(WDCharacterProperties *)self->mDefaultCharacterProperties setStrikeThrough:0];
   [(WDCharacterProperties *)self->mDefaultCharacterProperties setDoubleStrikeThrough:0];
-  v17 = [(WDCharacterProperties *)self->mDefaultCharacterProperties mutableBorder];
+  mutableBorder = [(WDCharacterProperties *)self->mDefaultCharacterProperties mutableBorder];
   v18 = self->mDefaultCharacterProperties;
   v19 = +[OITSUColor clearColor];
   [(WDCharacterProperties *)v18 setColor:v19];
@@ -86,8 +86,8 @@
   [(WDCharacterProperties *)self->mDefaultCharacterProperties setFormattingChanged:0];
   [(WDCharacterProperties *)self->mDefaultCharacterProperties setResolveMode:2];
   v20 = [WDParagraphProperties alloc];
-  v21 = [(WDStyleSheet *)self document];
-  v22 = [(WDParagraphProperties *)v20 initWithDocument:v21];
+  document2 = [(WDStyleSheet *)self document];
+  v22 = [(WDParagraphProperties *)v20 initWithDocument:document2];
   mDefaultParagraphProperties = self->mDefaultParagraphProperties;
   self->mDefaultParagraphProperties = v22;
 
@@ -106,12 +106,12 @@
   [(WDParagraphProperties *)self->mDefaultParagraphProperties setHorizontalPosition:0];
   [(WDParagraphProperties *)self->mDefaultParagraphProperties setVerticalPosition:0];
   [(WDParagraphProperties *)self->mDefaultParagraphProperties setAnchorLock:0];
-  v24 = [(WDParagraphProperties *)self->mDefaultParagraphProperties mutableTopBorder];
-  v25 = [(WDParagraphProperties *)self->mDefaultParagraphProperties mutableLeftBorder];
-  v26 = [(WDParagraphProperties *)self->mDefaultParagraphProperties mutableBottomBorder];
-  v27 = [(WDParagraphProperties *)self->mDefaultParagraphProperties mutableRightBorder];
-  v28 = [(WDParagraphProperties *)self->mDefaultParagraphProperties mutableBetweenBorder];
-  v29 = [(WDParagraphProperties *)self->mDefaultParagraphProperties mutableBarBorder];
+  mutableTopBorder = [(WDParagraphProperties *)self->mDefaultParagraphProperties mutableTopBorder];
+  mutableLeftBorder = [(WDParagraphProperties *)self->mDefaultParagraphProperties mutableLeftBorder];
+  mutableBottomBorder = [(WDParagraphProperties *)self->mDefaultParagraphProperties mutableBottomBorder];
+  mutableRightBorder = [(WDParagraphProperties *)self->mDefaultParagraphProperties mutableRightBorder];
+  mutableBetweenBorder = [(WDParagraphProperties *)self->mDefaultParagraphProperties mutableBetweenBorder];
+  mutableBarBorder = [(WDParagraphProperties *)self->mDefaultParagraphProperties mutableBarBorder];
   [(WDParagraphProperties *)self->mDefaultParagraphProperties setSpaceBefore:0];
   [(WDParagraphProperties *)self->mDefaultParagraphProperties setSpaceBeforeAuto:0];
   [(WDParagraphProperties *)self->mDefaultParagraphProperties setSpaceAfter:0];
@@ -128,7 +128,7 @@
   [(WDParagraphProperties *)self->mDefaultParagraphProperties setWidowControl:1];
   [(WDParagraphProperties *)self->mDefaultParagraphProperties setKeepLinesTogether:0];
   [(WDParagraphProperties *)self->mDefaultParagraphProperties setKeepNextParagraphTogether:0];
-  v30 = [(WDParagraphProperties *)self->mDefaultParagraphProperties mutableShading];
+  mutableShading = [(WDParagraphProperties *)self->mDefaultParagraphProperties mutableShading];
   [(WDParagraphProperties *)self->mDefaultParagraphProperties setTabStopAddedCount:0];
   [(WDParagraphProperties *)self->mDefaultParagraphProperties setTabStopDeletedPositionCount:0];
 }
@@ -140,16 +140,16 @@
   return WeakRetained;
 }
 
-- (WDStyleSheet)initWithDocument:(id)a3
+- (WDStyleSheet)initWithDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v14.receiver = self;
   v14.super_class = WDStyleSheet;
   v5 = [(WDStyleSheet *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mDocument, v4);
+    objc_storeWeak(&v5->mDocument, documentCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     mStyleDictionary = v6->mStyleDictionary;
     v6->mStyleDictionary = v7;
@@ -168,37 +168,37 @@
   return v6;
 }
 
-- (id)styleWithId:(id)a3
+- (id)styleWithId:(id)id
 {
-  v3 = [(NSMutableDictionary *)self->mStyleDictionary objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->mStyleDictionary objectForKey:id];
 
   return v3;
 }
 
-- (id)styleWithName:(id)a3
+- (id)styleWithName:(id)name
 {
-  v4 = [(WDStyleSheet *)self styleIdForName:a3];
+  v4 = [(WDStyleSheet *)self styleIdForName:name];
   v5 = [(WDStyleSheet *)self styleWithId:v4];
 
   return v5;
 }
 
-- (id)paragraphStyleWithStartingName:(id)a3
+- (id)paragraphStyleWithStartingName:(id)name
 {
-  v4 = a3;
-  v5 = [v4 lowercaseString];
-  v6 = [(NSMutableDictionary *)self->mIdDictionaryForName keyEnumerator];
+  nameCopy = name;
+  lowercaseString = [nameCopy lowercaseString];
+  keyEnumerator = [(NSMutableDictionary *)self->mIdDictionaryForName keyEnumerator];
   while (1)
   {
-    v7 = [v6 nextObject];
-    v8 = v7;
-    if (!v7)
+    nextObject = [keyEnumerator nextObject];
+    v8 = nextObject;
+    if (!nextObject)
     {
       v9 = 0;
       goto LABEL_10;
     }
 
-    if ([v7 tc_startsWithString:v5])
+    if ([nextObject tc_startsWithString:lowercaseString])
     {
       break;
     }
@@ -218,33 +218,33 @@ LABEL_10:
   return v9;
 }
 
-- (id)createStyleWithId:(id)a3 type:(int)a4
+- (id)createStyleWithId:(id)id type:(int)type
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [[WDStyle alloc] initWithStyleSheet:self id:v6 type:v4];
-  [(NSMutableDictionary *)self->mStyleDictionary setObject:v7 forKey:v6];
+  v4 = *&type;
+  idCopy = id;
+  v7 = [[WDStyle alloc] initWithStyleSheet:self id:idCopy type:v4];
+  [(NSMutableDictionary *)self->mStyleDictionary setObject:v7 forKey:idCopy];
   [(NSMutableArray *)self->mStylesInOrder addObject:v7];
 
   return v7;
 }
 
-- (id)createStyleWithName:(id)a3 type:(int)a4
+- (id)createStyleWithName:(id)name type:(int)type
 {
-  v4 = *&a4;
-  v6 = [(WDStyleSheet *)self styleNameToUniqueId:a3];
+  v4 = *&type;
+  v6 = [(WDStyleSheet *)self styleNameToUniqueId:name];
   v7 = [(WDStyleSheet *)self createStyleWithId:v6 type:v4];
 
   return v7;
 }
 
-- (void)addStyle:(id)a3 name:(id)a4
+- (void)addStyle:(id)style name:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 id];
-  [(NSMutableDictionary *)self->mIdDictionaryForName setObject:v7 forKey:v6];
-  [v6 componentsSeparatedByString:{@", "}];
+  nameCopy = name;
+  v7 = [style id];
+  [(NSMutableDictionary *)self->mIdDictionaryForName setObject:v7 forKey:nameCopy];
+  [nameCopy componentsSeparatedByString:{@", "}];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -264,8 +264,8 @@ LABEL_10:
         }
 
         mIdDictionaryForName = self->mIdDictionaryForName;
-        v13 = [*(*(&v14 + 1) + 8 * v11) lowercaseString];
-        [(NSMutableDictionary *)mIdDictionaryForName setObject:v7 forKey:v13];
+        lowercaseString = [*(*(&v14 + 1) + 8 * v11) lowercaseString];
+        [(NSMutableDictionary *)mIdDictionaryForName setObject:v7 forKey:lowercaseString];
 
         ++v11;
       }
@@ -278,19 +278,19 @@ LABEL_10:
   }
 }
 
-- (void)setName:(id)a3 forId:(id)a4
+- (void)setName:(id)name forId:(id)id
 {
-  v8 = a4;
+  idCopy = id;
   mIdDictionaryForName = self->mIdDictionaryForName;
-  v7 = [a3 lowercaseString];
-  [(NSMutableDictionary *)mIdDictionaryForName setObject:v8 forKey:v7];
+  lowercaseString = [name lowercaseString];
+  [(NSMutableDictionary *)mIdDictionaryForName setObject:idCopy forKey:lowercaseString];
 }
 
-- (void)removeStyleWithId:(id)a3
+- (void)removeStyleWithId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   mStylesInOrder = self->mStylesInOrder;
-  v8 = v4;
+  v8 = idCopy;
   v6 = [(NSMutableDictionary *)self->mStyleDictionary objectForKey:?];
   [(NSMutableArray *)mStylesInOrder removeObject:v6];
 
@@ -304,22 +304,22 @@ LABEL_10:
   v20 = [(WDStyleSheet *)self createStyleWithName:@"Normal" type:1];
   [v20 setNextStyle:v20];
   [v20 setName:@"Normal"];
-  v3 = [v20 paragraphProperties];
-  [v3 setResolveMode:0];
+  paragraphProperties = [v20 paragraphProperties];
+  [paragraphProperties setResolveMode:0];
 
-  v4 = [v20 paragraphProperties];
-  [v4 setBaseStyle:v20];
+  paragraphProperties2 = [v20 paragraphProperties];
+  [paragraphProperties2 setBaseStyle:v20];
 
-  v5 = [v20 paragraphProperties];
-  [v5 setResolveMode:2];
+  paragraphProperties3 = [v20 paragraphProperties];
+  [paragraphProperties3 setResolveMode:2];
 
-  v6 = [v20 characterProperties];
-  [v6 setResolveMode:0];
-  [v6 setFontSize:24];
-  [v6 setLanguageForDefaultText:1033];
-  [v6 setLanguageForFarEast:1033];
-  [v6 setLanguageForBiText:1025];
-  [v6 setFontSizeForBiText:24];
+  characterProperties = [v20 characterProperties];
+  [characterProperties setResolveMode:0];
+  [characterProperties setFontSize:24];
+  [characterProperties setLanguageForDefaultText:1033];
+  [characterProperties setLanguageForFarEast:1033];
+  [characterProperties setLanguageForBiText:1025];
+  [characterProperties setFontSizeForBiText:24];
   [(WDStyleSheet *)self setDefaultParagraphStyle:v20];
   v7 = [(WDStyleSheet *)self styleNameToUniqueId:@"Default Paragraph Font"];
   v8 = [(WDStyleSheet *)self createStyleWithId:v7 type:2];
@@ -331,61 +331,61 @@ LABEL_10:
   v9 = [(WDStyleSheet *)self createStyleWithName:@"Hyperlink" type:2];
 
   [v9 setName:@"Hyperlink"];
-  v10 = [v9 characterProperties];
-  [v10 setUnderline:1];
+  characterProperties2 = [v9 characterProperties];
+  [characterProperties2 setUnderline:1];
 
   v11 = [(WDStyleSheet *)self createStyleWithName:@"Table Normal" type:3];
 
   [v11 setNextStyle:v11];
   [v11 setHidden:1];
   [v11 setName:@"Table Normal"];
-  v12 = [v11 paragraphProperties];
-  [v12 setResolveMode:0];
+  paragraphProperties4 = [v11 paragraphProperties];
+  [paragraphProperties4 setResolveMode:0];
 
-  v13 = [v11 paragraphProperties];
-  [v13 setBaseStyle:v11];
+  paragraphProperties5 = [v11 paragraphProperties];
+  [paragraphProperties5 setBaseStyle:v11];
 
-  v14 = [v11 paragraphProperties];
-  [v14 setResolveMode:2];
+  paragraphProperties6 = [v11 paragraphProperties];
+  [paragraphProperties6 setResolveMode:2];
 
-  v15 = [v11 tableProperties];
-  [v15 setResolveMode:0];
-  [v15 setIndentType:3];
-  [v15 setIndent:0];
-  [v15 setResolveMode:2];
+  tableProperties = [v11 tableProperties];
+  [tableProperties setResolveMode:0];
+  [tableProperties setIndentType:3];
+  [tableProperties setIndent:0];
+  [tableProperties setResolveMode:2];
   [(WDStyleSheet *)self setDefaultTableStyle:v11];
   v21 = [(WDStyleSheet *)self createStyleWithName:@"No List" type:4];
 
   [v21 setNextStyle:v21];
   [v21 setHidden:1];
   [v21 setName:@"No List"];
-  v16 = [v21 paragraphProperties];
-  [v16 setResolveMode:0];
+  paragraphProperties7 = [v21 paragraphProperties];
+  [paragraphProperties7 setResolveMode:0];
 
-  v17 = [v21 paragraphProperties];
-  v18 = [(WDStyleSheet *)self defaultParagraphStyle];
-  [v17 setBaseStyle:v18];
+  paragraphProperties8 = [v21 paragraphProperties];
+  defaultParagraphStyle = [(WDStyleSheet *)self defaultParagraphStyle];
+  [paragraphProperties8 setBaseStyle:defaultParagraphStyle];
 
-  v19 = [v21 paragraphProperties];
-  [v19 setResolveMode:2];
+  paragraphProperties9 = [v21 paragraphProperties];
+  [paragraphProperties9 setResolveMode:2];
 
   [(WDStyleSheet *)self setDefaultListStyle:?];
 }
 
-- (id)styleIdForName:(id)a3
+- (id)styleIdForName:(id)name
 {
   mIdDictionaryForName = self->mIdDictionaryForName;
-  v4 = [a3 lowercaseString];
-  v5 = [(NSMutableDictionary *)mIdDictionaryForName objectForKey:v4];
+  lowercaseString = [name lowercaseString];
+  v5 = [(NSMutableDictionary *)mIdDictionaryForName objectForKey:lowercaseString];
 
   return v5;
 }
 
-- (id)styleNameToUniqueId:(id)a3
+- (id)styleNameToUniqueId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = 0;
-  for (i = v4; ; i = v8)
+  for (i = idCopy; ; i = v8)
   {
     v7 = [(WDStyleSheet *)self styleIdForName:i];
 
@@ -394,7 +394,7 @@ LABEL_10:
       break;
     }
 
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%d", v4, v5];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%d", idCopy, v5];
 
     v5 = (v5 + 1);
   }
@@ -402,26 +402,26 @@ LABEL_10:
   return i;
 }
 
-- (id)styleIdToName:(id)a3
+- (id)styleIdToName:(id)name
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"." options:4];
+  nameCopy = name;
+  v4 = [nameCopy rangeOfString:@"." options:4];
   if (v5)
   {
-    v6 = [v3 substringToIndex:v4];
+    v6 = [nameCopy substringToIndex:v4];
 
-    v3 = v6;
+    nameCopy = v6;
   }
 
-  return v3;
+  return nameCopy;
 }
 
-- (id)allAliasesForStyleId:(id)a3 name:(id)a4
+- (id)allAliasesForStyleId:(id)id name:(id)name
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v16 = [MEMORY[0x277CBEB18] array];
+  idCopy = id;
+  nameCopy = name;
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
@@ -442,13 +442,13 @@ LABEL_10:
 
         v12 = *(*(&v17 + 1) + 8 * i);
         v13 = [(NSMutableDictionary *)self->mIdDictionaryForName objectForKey:v12];
-        if ([v13 isEqualToString:v6])
+        if ([v13 isEqualToString:idCopy])
         {
-          v14 = [v12 isEqualToString:v7];
+          v14 = [v12 isEqualToString:nameCopy];
 
           if ((v14 & 1) == 0)
           {
-            [v16 addObject:v12];
+            [array addObject:v12];
           }
         }
 
@@ -463,7 +463,7 @@ LABEL_10:
     while (v9);
   }
 
-  return v16;
+  return array;
 }
 
 - (id)description

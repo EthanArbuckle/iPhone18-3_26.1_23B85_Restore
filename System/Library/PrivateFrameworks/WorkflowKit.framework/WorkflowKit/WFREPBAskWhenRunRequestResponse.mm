@@ -1,22 +1,22 @@
 @interface WFREPBAskWhenRunRequestResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addInputtedStates:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addInputtedStates:(id)states;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFREPBAskWhenRunRequestResponse
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(WFREPBAskWhenRunRequestResponse *)self setOriginatingRequestIdentifier:?];
   }
@@ -25,7 +25,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -50,7 +50,7 @@
   }
 
   error = self->_error;
-  v11 = *(v4 + 1);
+  v11 = *(fromCopy + 1);
   if (error)
   {
     if (v11)
@@ -74,13 +74,13 @@
   return v4 ^ [(WFREPBError *)self->_error hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((originatingRequestIdentifier = self->_originatingRequestIdentifier, !(originatingRequestIdentifier | v4[3])) || -[NSString isEqual:](originatingRequestIdentifier, "isEqual:")) && ((inputtedStates = self->_inputtedStates, !(inputtedStates | v4[2])) || -[NSMutableArray isEqual:](inputtedStates, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((originatingRequestIdentifier = self->_originatingRequestIdentifier, !(originatingRequestIdentifier | equalCopy[3])) || -[NSString isEqual:](originatingRequestIdentifier, "isEqual:")) && ((inputtedStates = self->_inputtedStates, !(inputtedStates | equalCopy[2])) || -[NSMutableArray isEqual:](inputtedStates, "isEqual:")))
   {
     error = self->_error;
-    if (error | v4[1])
+    if (error | equalCopy[1])
     {
       v8 = [(WFREPBError *)error isEqual:?];
     }
@@ -99,11 +99,11 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_originatingRequestIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_originatingRequestIdentifier copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -127,7 +127,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * v12) copyWithZone:{a3, v18}];
+        v13 = [*(*(&v18 + 1) + 8 * v12) copyWithZone:{zone, v18}];
         [v5 addInputtedStates:v13];
 
         ++v12;
@@ -140,7 +140,7 @@
     while (v10);
   }
 
-  v14 = [(WFREPBError *)self->_error copyWithZone:a3];
+  v14 = [(WFREPBError *)self->_error copyWithZone:zone];
   v15 = v5[1];
   v5[1] = v14;
 
@@ -148,41 +148,41 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setOriginatingRequestIdentifier:self->_originatingRequestIdentifier];
+  toCopy = to;
+  [toCopy setOriginatingRequestIdentifier:self->_originatingRequestIdentifier];
   if ([(WFREPBAskWhenRunRequestResponse *)self inputtedStatesCount])
   {
-    [v8 clearInputtedStates];
-    v4 = [(WFREPBAskWhenRunRequestResponse *)self inputtedStatesCount];
-    if (v4)
+    [toCopy clearInputtedStates];
+    inputtedStatesCount = [(WFREPBAskWhenRunRequestResponse *)self inputtedStatesCount];
+    if (inputtedStatesCount)
     {
-      v5 = v4;
+      v5 = inputtedStatesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(WFREPBAskWhenRunRequestResponse *)self inputtedStatesAtIndex:i];
-        [v8 addInputtedStates:v7];
+        [toCopy addInputtedStates:v7];
       }
     }
   }
 
   if (self->_error)
   {
-    [v8 setError:?];
+    [toCopy setError:?];
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (!self->_originatingRequestIdentifier)
   {
     __assert_rtn("[WFREPBAskWhenRunRequestResponse writeTo:]", "WFREPBAskWhenRunRequestResponse.m", 154, "nil != self->_originatingRequestIdentifier");
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   v15 = 0u;
   v16 = 0u;
@@ -227,12 +227,12 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   originatingRequestIdentifier = self->_originatingRequestIdentifier;
   if (originatingRequestIdentifier)
   {
-    [v3 setObject:originatingRequestIdentifier forKey:@"originatingRequestIdentifier"];
+    [dictionary setObject:originatingRequestIdentifier forKey:@"originatingRequestIdentifier"];
   }
 
   if ([(NSMutableArray *)self->_inputtedStates count])
@@ -257,8 +257,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -273,8 +273,8 @@
   error = self->_error;
   if (error)
   {
-    v14 = [(WFREPBError *)error dictionaryRepresentation];
-    [v4 setObject:v14 forKey:@"error"];
+    dictionaryRepresentation2 = [(WFREPBError *)error dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"error"];
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -288,28 +288,28 @@
   v8.receiver = self;
   v8.super_class = WFREPBAskWhenRunRequestResponse;
   v4 = [(WFREPBAskWhenRunRequestResponse *)&v8 description];
-  v5 = [(WFREPBAskWhenRunRequestResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFREPBAskWhenRunRequestResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addInputtedStates:(id)a3
+- (void)addInputtedStates:(id)states
 {
-  v4 = a3;
+  statesCopy = states;
   inputtedStates = self->_inputtedStates;
-  v8 = v4;
+  v8 = statesCopy;
   if (!inputtedStates)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_inputtedStates;
     self->_inputtedStates = v6;
 
-    v4 = v8;
+    statesCopy = v8;
     inputtedStates = self->_inputtedStates;
   }
 
-  [(NSMutableArray *)inputtedStates addObject:v4];
+  [(NSMutableArray *)inputtedStates addObject:statesCopy];
 }
 
 @end

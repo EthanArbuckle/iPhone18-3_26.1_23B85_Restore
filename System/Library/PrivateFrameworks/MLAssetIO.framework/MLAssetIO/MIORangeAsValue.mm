@@ -1,15 +1,15 @@
 @interface MIORangeAsValue
-+ (id)valueWithMIORange:(_MIORange)a3;
++ (id)valueWithMIORange:(_MIORange)range;
 - (_MIORange)MIORangeValue;
 @end
 
 @implementation MIORangeAsValue
 
-+ (id)valueWithMIORange:(_MIORange)a3
++ (id)valueWithMIORange:(_MIORange)range
 {
-  upperBound = a3.upperBound;
-  lowerBound = a3.lowerBound;
-  v5 = [objc_allocWithZone(a1) init];
+  upperBound = range.upperBound;
+  lowerBound = range.lowerBound;
+  v5 = [objc_allocWithZone(self) init];
   v5[1] = lowerBound;
   v5[2] = upperBound;
 

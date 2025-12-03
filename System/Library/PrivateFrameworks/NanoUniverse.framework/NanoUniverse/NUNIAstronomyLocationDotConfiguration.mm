@@ -1,5 +1,5 @@
 @interface NUNIAstronomyLocationDotConfiguration
-+ (CGSize)_defaultSizeForDevice:(id)a3;
++ (CGSize)_defaultSizeForDevice:(id)device;
 - (CGSize)defaultSize;
 - (NUNIAstronomyLocationDotConfiguration)init;
 @end
@@ -13,26 +13,26 @@
   v2 = [(NUNIAstronomyLocationDotConfiguration *)&v11 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBBB68] sharedRenderingContext];
-    v4 = [v3 device];
+    mEMORY[0x277CBBB68] = [MEMORY[0x277CBBB68] sharedRenderingContext];
+    device = [mEMORY[0x277CBBB68] device];
 
-    [v4 screenScale];
+    [device screenScale];
     v2->_screenScale = v5;
-    [objc_opt_class() _defaultSizeForDevice:v4];
+    [objc_opt_class() _defaultSizeForDevice:device];
     v2->_defaultSize.width = v6;
     v2->_defaultSize.height = v7;
-    [objc_opt_class() _defaultOuterDotDiameterForDevice:v4];
+    [objc_opt_class() _defaultOuterDotDiameterForDevice:device];
     v2->_defaultOuterDotDiameter = v8;
-    [objc_opt_class() _defaultInnerDotDiameterForDevice:v4];
+    [objc_opt_class() _defaultInnerDotDiameterForDevice:device];
     v2->_defaultInnerDotDiameter = v9;
   }
 
   return v2;
 }
 
-+ (CGSize)_defaultSizeForDevice:(id)a3
++ (CGSize)_defaultSizeForDevice:(id)device
 {
-  ___LayoutConstants_block_invoke(a1, a3);
+  ___LayoutConstants_block_invoke(self, device);
   v3 = *&_LayoutConstants_constants_0;
   v4 = *&_LayoutConstants_constants_1;
   result.height = v4;

@@ -1,30 +1,30 @@
 @interface PRSettingsProvider
-+ (BOOL)getAlwaysPlaySoundForBundleID:(id)a3;
-+ (BOOL)getEnableDiagnosticsForBundleID:(id)a3;
-+ (BOOL)getPINPrivacyLockForBundleID:(id)a3;
-+ (BOOL)hasEntitlement:(id)a3;
-+ (BOOL)isProximityReaderSupported:(id)a3;
-+ (BOOL)shouldDisablePINPrivacyLockForBundleID:(id)a3;
-+ (BOOL)shouldShowPINPrivacyLockForBundleID:(id)a3;
-+ (void)removeMDMAppAttribute:(int64_t)a3 forBundleID:(id)a4;
++ (BOOL)getAlwaysPlaySoundForBundleID:(id)d;
++ (BOOL)getEnableDiagnosticsForBundleID:(id)d;
++ (BOOL)getPINPrivacyLockForBundleID:(id)d;
++ (BOOL)hasEntitlement:(id)entitlement;
++ (BOOL)isProximityReaderSupported:(id)supported;
++ (BOOL)shouldDisablePINPrivacyLockForBundleID:(id)d;
++ (BOOL)shouldShowPINPrivacyLockForBundleID:(id)d;
++ (void)removeMDMAppAttribute:(int64_t)attribute forBundleID:(id)d;
 @end
 
 @implementation PRSettingsProvider
 
-+ (BOOL)shouldShowPINPrivacyLockForBundleID:(id)a3
++ (BOOL)shouldShowPINPrivacyLockForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   NSLog(&cfstr_Prsettingsprov.isa);
-  v4 = [PRSettingsProvider isProximityReaderSupported:v3];
+  v4 = [PRSettingsProvider isProximityReaderSupported:dCopy];
 
   return v4;
 }
 
-+ (BOOL)isProximityReaderSupported:(id)a3
++ (BOOL)isProximityReaderSupported:(id)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   NSLog(&cfstr_Prsettingsprov_0.isa);
-  if ([v3 length])
+  if ([supportedCopy length])
   {
     v4 = MGCopyAnswer();
     NSLog(&cfstr_Prsettingsprov_2.isa, v4);
@@ -41,7 +41,7 @@
 
           NSLog(&cfstr_Prsettingsprov_3.isa, 1);
 LABEL_7:
-          v9 = [PRSettingsProvider hasEntitlement:v3];
+          v9 = [PRSettingsProvider hasEntitlement:supportedCopy];
 LABEL_16:
           NSLog(&cfstr_Prsettingsprov_4.isa, v9);
 
@@ -50,10 +50,10 @@ LABEL_16:
 
         if ([v7 intValue] == 11)
         {
-          v10 = [v8 intValue];
+          intValue = [v8 intValue];
 
-          NSLog(&cfstr_Prsettingsprov_3.isa, v10 > 1);
-          if (v10 > 1)
+          NSLog(&cfstr_Prsettingsprov_3.isa, intValue > 1);
+          if (intValue > 1)
           {
             goto LABEL_7;
           }
@@ -76,109 +76,109 @@ LABEL_17:
   return v9;
 }
 
-+ (BOOL)hasEntitlement:(id)a3
++ (BOOL)hasEntitlement:(id)entitlement
 {
-  v3 = a3;
+  entitlementCopy = entitlement;
   v10 = 0;
-  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v3 allowPlaceholder:1 error:&v10];
+  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:entitlementCopy allowPlaceholder:1 error:&v10];
   v5 = v10;
   v6 = v5;
   if (!v4)
   {
-    NSLog(&cfstr_Prsettingsprov_5.isa, v3, v5);
+    NSLog(&cfstr_Prsettingsprov_5.isa, entitlementCopy, v5);
   }
 
-  v7 = [v4 entitlements];
-  v8 = [v7 objectForKey:@"com.apple.developer.proximity-reader.payment.acceptance" ofClass:objc_opt_class()];
+  entitlements = [v4 entitlements];
+  v8 = [entitlements objectForKey:@"com.apple.developer.proximity-reader.payment.acceptance" ofClass:objc_opt_class()];
 
-  LOBYTE(v7) = [v8 BOOLValue];
-  return v7;
+  LOBYTE(entitlements) = [v8 BOOLValue];
+  return entitlements;
 }
 
-+ (BOOL)shouldDisablePINPrivacyLockForBundleID:(id)a3
++ (BOOL)shouldDisablePINPrivacyLockForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   NSLog(&cfstr_Prsettingsprov_6.isa);
-  if ([v3 length])
+  if ([dCopy length])
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"PRMDMAttrPrivacyLock", v3];
-    v5 = CFPreferencesCopyAppValue(v4, @"com.apple.merchantd");
+    dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"PRMDMAttrPrivacyLock", dCopy];
+    v5 = CFPreferencesCopyAppValue(dCopy, @"com.apple.merchantd");
     v6 = v5;
     if (v5)
     {
       NSLog(&cfstr_Prsettingsprov_9.isa, [v5 BOOLValue]);
-      v7 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
     }
 
     else
     {
       NSLog(&cfstr_Prsettingsprov_8.isa);
-      v7 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
     NSLog(&cfstr_Prsettingsprov_7.isa);
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-+ (BOOL)getPINPrivacyLockForBundleID:(id)a3
++ (BOOL)getPINPrivacyLockForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   NSLog(&cfstr_Prsettingsprov_10.isa);
-  if ([v3 length])
+  if ([dCopy length])
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"PREnablePrivacyLockKey", v3];
-    v5 = CFPreferencesCopyAppValue(v4, @"com.apple.merchantd");
+    dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"PREnablePrivacyLockKey", dCopy];
+    v5 = CFPreferencesCopyAppValue(dCopy, @"com.apple.merchantd");
     v6 = v5;
     if (v5)
     {
       NSLog(&cfstr_Prsettingsprov_13.isa, [v5 BOOLValue]);
-      v7 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
     }
 
     else
     {
       NSLog(&cfstr_Prsettingsprov_12.isa);
-      v7 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
     NSLog(&cfstr_Prsettingsprov_11.isa);
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-+ (void)removeMDMAppAttribute:(int64_t)a3 forBundleID:(id)a4
++ (void)removeMDMAppAttribute:(int64_t)attribute forBundleID:(id)d
 {
-  v10 = a4;
-  if ([v10 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    if (a3)
+    if (attribute)
     {
       NSLog(&cfstr_Prsettingsprov_24.isa);
     }
 
     else
     {
-      NSLog(&cfstr_Prsettingsprov_23.isa, v10);
-      v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"PRMDMAttrPrivacyLock", v10];
-      v6 = CFPreferencesCopyAppValue(v5, @"com.apple.merchantd");
+      NSLog(&cfstr_Prsettingsprov_23.isa, dCopy);
+      dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"PRMDMAttrPrivacyLock", dCopy];
+      v6 = CFPreferencesCopyAppValue(dCopy, @"com.apple.merchantd");
       v7 = *MEMORY[0x277CBF040];
       v8 = *MEMORY[0x277CBF010];
-      CFPreferencesSetValue(v5, 0, @"com.apple.merchantd", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
+      CFPreferencesSetValue(dCopy, 0, @"com.apple.merchantd", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
       if (v6 && [v6 BOOLValue])
       {
-        v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"PREnablePrivacyLockKey", v10];
-        CFPreferencesSetValue(v9, 0, @"com.apple.merchantd", v7, v8);
+        dCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"PREnablePrivacyLockKey", dCopy];
+        CFPreferencesSetValue(dCopy2, 0, @"com.apple.merchantd", v7, v8);
       }
 
       CFPreferencesSynchronize(@"com.apple.merchantd", v7, v8);
@@ -191,66 +191,66 @@ LABEL_17:
   }
 }
 
-+ (BOOL)getAlwaysPlaySoundForBundleID:(id)a3
++ (BOOL)getAlwaysPlaySoundForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   NSLog(&cfstr_Prsettingsprov_25.isa);
-  if ([v3 length])
+  if ([dCopy length])
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"PREnableAlwaysPlaySound", v3];
-    v5 = CFPreferencesCopyAppValue(v4, @"com.apple.merchantd");
+    dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"PREnableAlwaysPlaySound", dCopy];
+    v5 = CFPreferencesCopyAppValue(dCopy, @"com.apple.merchantd");
     v6 = v5;
     if (v5)
     {
       NSLog(&cfstr_Prsettingsprov_27.isa, [v5 BOOLValue]);
-      v7 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
     }
 
     else
     {
       NSLog(&cfstr_Prsettingsprov_26.isa);
-      v7 = 1;
+      bOOLValue = 1;
     }
   }
 
   else
   {
     NSLog(&cfstr_Prsettingsprov_11.isa);
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-+ (BOOL)getEnableDiagnosticsForBundleID:(id)a3
++ (BOOL)getEnableDiagnosticsForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   NSLog(&cfstr_Prsettingsprov_30.isa);
-  if ([v3 length])
+  if ([dCopy length])
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"PREnableDiagnostics", v3];
-    v5 = CFPreferencesCopyAppValue(v4, @"com.apple.merchantd");
+    dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"PREnableDiagnostics", dCopy];
+    v5 = CFPreferencesCopyAppValue(dCopy, @"com.apple.merchantd");
     v6 = v5;
     if (v5)
     {
       NSLog(&cfstr_Prsettingsprov_31.isa, [v5 BOOLValue]);
-      v7 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
     }
 
     else
     {
       NSLog(&cfstr_Prsettingsprov_12.isa);
-      v7 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
     NSLog(&cfstr_Prsettingsprov_11.isa);
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 @end

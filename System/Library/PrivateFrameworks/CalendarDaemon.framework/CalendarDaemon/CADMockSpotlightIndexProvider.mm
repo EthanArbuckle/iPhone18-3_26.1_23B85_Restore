@@ -1,15 +1,15 @@
 @interface CADMockSpotlightIndexProvider
-- (CADMockSpotlightIndexProvider)initWithMinArtificialDelay:(double)a3 maxArtificialDelay:(double)a4 failureMode:(unint64_t)a5;
+- (CADMockSpotlightIndexProvider)initWithMinArtificialDelay:(double)delay maxArtificialDelay:(double)artificialDelay failureMode:(unint64_t)mode;
 - (id)itemsInIndex;
-- (id)newSpotlightIndexForBundleID:(id)a3;
-- (void)deleteAllSearchableItemsForBundleID:(id)a3;
-- (void)deleteSearchableItemsWithDomainIdentifiers:(id)a3;
-- (void)indexSearchableItems:(id)a3;
+- (id)newSpotlightIndexForBundleID:(id)d;
+- (void)deleteAllSearchableItemsForBundleID:(id)d;
+- (void)deleteSearchableItemsWithDomainIdentifiers:(id)identifiers;
+- (void)indexSearchableItems:(id)items;
 @end
 
 @implementation CADMockSpotlightIndexProvider
 
-- (CADMockSpotlightIndexProvider)initWithMinArtificialDelay:(double)a3 maxArtificialDelay:(double)a4 failureMode:(unint64_t)a5
+- (CADMockSpotlightIndexProvider)initWithMinArtificialDelay:(double)delay maxArtificialDelay:(double)artificialDelay failureMode:(unint64_t)mode
 {
   v13.receiver = self;
   v13.super_class = CADMockSpotlightIndexProvider;
@@ -17,28 +17,28 @@
   v9 = v8;
   if (v8)
   {
-    v8->_minArtificialDelay = a3;
-    v8->_maxArtificialDelay = a4;
-    v8->_failureMode = a5;
+    v8->_minArtificialDelay = delay;
+    v8->_maxArtificialDelay = artificialDelay;
+    v8->_failureMode = mode;
     v8->_lock._os_unfair_lock_opaque = 0;
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     store = v9->_store;
-    v9->_store = v10;
+    v9->_store = array;
   }
 
   return v9;
 }
 
-- (id)newSpotlightIndexForBundleID:(id)a3
+- (id)newSpotlightIndexForBundleID:(id)d
 {
   v4 = [CADMockSpotlightIndex alloc];
 
   return [(CADMockSpotlightIndex *)v4 initWithProvider:self];
 }
 
-- (void)deleteSearchableItemsWithDomainIdentifiers:(id)a3
+- (void)deleteSearchableItemsWithDomainIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   os_unfair_lock_lock(&self->_lock);
   store = self->_store;
   v6 = MEMORY[0x277CCAC30];
@@ -46,8 +46,8 @@
   v9[1] = 3221225472;
   v9[2] = __76__CADMockSpotlightIndexProvider_deleteSearchableItemsWithDomainIdentifiers___block_invoke;
   v9[3] = &unk_27851ADD0;
-  v10 = v4;
-  v7 = v4;
+  v10 = identifiersCopy;
+  v7 = identifiersCopy;
   v8 = [v6 predicateWithBlock:v9];
   [(NSMutableArray *)store filterUsingPredicate:v8];
 
@@ -109,15 +109,15 @@ LABEL_11:
   return v11;
 }
 
-- (void)indexSearchableItems:(id)a3
+- (void)indexSearchableItems:(id)items
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [itemsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -129,7 +129,7 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
@@ -152,7 +152,7 @@ LABEL_11:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [itemsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -170,15 +170,15 @@ uint64_t __54__CADMockSpotlightIndexProvider_indexSearchableItems___block_invoke
   return v5;
 }
 
-- (void)deleteAllSearchableItemsForBundleID:(id)a3
+- (void)deleteAllSearchableItemsForBundleID:(id)d
 {
   v9 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  dCopy = d;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  dCopy2 = d;
+  v6 = [v4 arrayWithObjects:&dCopy count:1];
 
-  [(CADMockSpotlightIndexProvider *)self deleteSearchableItemsWithDomainIdentifiers:v6, v8, v9];
+  [(CADMockSpotlightIndexProvider *)self deleteSearchableItemsWithDomainIdentifiers:v6, dCopy, v9];
   v7 = *MEMORY[0x277D85DE8];
 }
 

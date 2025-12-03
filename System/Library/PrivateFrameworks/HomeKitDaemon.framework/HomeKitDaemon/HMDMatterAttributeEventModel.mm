@@ -1,23 +1,23 @@
 @interface HMDMatterAttributeEventModel
-+ (id)eventModelWithDictionary:(id)a3 home:(id)a4 eventTriggerUUID:(id)a5 message:(id)a6 error:(id *)a7;
++ (id)eventModelWithDictionary:(id)dictionary home:(id)home eventTriggerUUID:(id)d message:(id)message error:(id *)error;
 + (id)properties;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
 @end
 
 @implementation HMDMatterAttributeEventModel
 
-+ (id)eventModelWithDictionary:(id)a3 home:(id)a4 eventTriggerUUID:(id)a5 message:(id)a6 error:(id *)a7
++ (id)eventModelWithDictionary:(id)dictionary home:(id)home eventTriggerUUID:(id)d message:(id)message error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [HMDMatterAttributeEventBaseModel eventModelWithDictionary:v12 home:v13 eventTriggerUUID:v14 className:objc_opt_class() message:v15];
+  dictionaryCopy = dictionary;
+  homeCopy = home;
+  dCopy = d;
+  messageCopy = message;
+  v16 = [HMDMatterAttributeEventBaseModel eventModelWithDictionary:dictionaryCopy home:homeCopy eventTriggerUUID:dCopy className:objc_opt_class() message:messageCopy];
   if (v16)
   {
-    v17 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCF2E8]];
+    v17 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CCF2E8]];
     [v16 setEventValue:v17];
 
     v18 = v16;
@@ -26,7 +26,7 @@
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = a1;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -34,14 +34,14 @@
       v25 = 138543618;
       v26 = v22;
       v27 = 2112;
-      v28 = v12;
+      v28 = dictionaryCopy;
       _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_ERROR, "%{public}@Unable to create HMDMatterAttributeEventBaseModel from dictionary %@", &v25, 0x16u);
     }
 
     objc_autoreleasePoolPop(v19);
-    if (a7)
+    if (error)
     {
-      *a7 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
+      *error = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
     }
   }
 
@@ -56,7 +56,7 @@
   block[1] = 3221225472;
   block[2] = __42__HMDMatterAttributeEventModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_105345 != -1)
   {
     dispatch_once(&properties_onceToken_105345, block);
@@ -88,21 +88,21 @@ void __42__HMDMatterAttributeEventModel_properties__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"matterPath"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if ([fieldCopy isEqualToString:@"matterPath"])
   {
-    v11 = [(HMDMatterAttributeEventModel *)self matterPathUUID];
+    matterPathUUID = [(HMDMatterAttributeEventModel *)self matterPathUUID];
 
-    if (v11)
+    if (matterPathUUID)
     {
-      v12 = [(HMDMatterAttributeEventModel *)self matterPathUUID];
+      matterPathUUID2 = [(HMDMatterAttributeEventModel *)self matterPathUUID];
       v29 = 0;
-      v13 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:v12 ofManagedObjectType:objc_opt_class() error:&v29];
+      v13 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:matterPathUUID2 ofManagedObjectType:objc_opt_class() error:&v29];
       v14 = v29;
 
       v15 = v13;
@@ -128,12 +128,12 @@ void __42__HMDMatterAttributeEventModel_properties__block_invoke(uint64_t a1)
       else
       {
         v20 = objc_autoreleasePoolPush();
-        v21 = self;
+        selfCopy = self;
         v22 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
           v23 = HMFGetLogIdentifier();
-          [(HMDMatterAttributeEventModel *)v21 matterPathUUID];
+          [(HMDMatterAttributeEventModel *)selfCopy matterPathUUID];
           v24 = v27 = v20;
           *buf = 138543874;
           v31 = v23;
@@ -161,7 +161,7 @@ void __42__HMDMatterAttributeEventModel_properties__block_invoke(uint64_t a1)
   {
     v28.receiver = self;
     v28.super_class = HMDMatterAttributeEventModel;
-    v19 = [(HMDBackingStoreModelObject *)&v28 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+    v19 = [(HMDBackingStoreModelObject *)&v28 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -169,19 +169,19 @@ void __42__HMDMatterAttributeEventModel_properties__block_invoke(uint64_t a1)
   return v19;
 }
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"matterPathUUID"])
+  objectCopy = object;
+  fieldCopy = field;
+  infoCopy = info;
+  if ([fieldCopy isEqualToString:@"matterPathUUID"])
   {
-    v11 = [v8 matterPath];
+    matterPath = [objectCopy matterPath];
 
-    if (v11)
+    if (matterPath)
     {
-      v12 = [v8 matterPath];
-      v11 = [v12 modelID];
+      matterPath2 = [objectCopy matterPath];
+      matterPath = [matterPath2 modelID];
     }
   }
 
@@ -189,10 +189,10 @@ void __42__HMDMatterAttributeEventModel_properties__block_invoke(uint64_t a1)
   {
     v14.receiver = self;
     v14.super_class = HMDMatterAttributeEventModel;
-    v11 = [(HMDBackingStoreModelObject *)&v14 cd_generateValueForModelObjectFromManagedObject:v8 modelObjectField:v9 modelFieldInfo:v10];
+    matterPath = [(HMDBackingStoreModelObject *)&v14 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
   }
 
-  return v11;
+  return matterPath;
 }
 
 @end

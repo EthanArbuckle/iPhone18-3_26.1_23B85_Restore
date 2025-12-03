@@ -1,38 +1,38 @@
 @interface LRSchemaLRRedactionSummaryReported
-- (BOOL)isEqual:(id)a3;
-- (LRSchemaLRRedactionSummaryReported)initWithDictionary:(id)a3;
-- (LRSchemaLRRedactionSummaryReported)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LRSchemaLRRedactionSummaryReported)initWithDictionary:(id)dictionary;
+- (LRSchemaLRRedactionSummaryReported)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addRedactionSignals:(id)a3;
-- (void)addRedactionWindows:(id)a3;
-- (void)setHasMessageCreationTimeSince1970:(BOOL)a3;
-- (void)setHasSummaryCreationTimeSince1970:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addRedactionSignals:(id)signals;
+- (void)addRedactionWindows:(id)windows;
+- (void)setHasMessageCreationTimeSince1970:(BOOL)since1970;
+- (void)setHasSummaryCreationTimeSince1970:(BOOL)since1970;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LRSchemaLRRedactionSummaryReported
 
-- (LRSchemaLRRedactionSummaryReported)initWithDictionary:(id)a3
+- (LRSchemaLRRedactionSummaryReported)initWithDictionary:(id)dictionary
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v40.receiver = self;
   v40.super_class = LRSchemaLRRedactionSummaryReported;
   v5 = [(LRSchemaLRRedactionSummaryReported *)&v40 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"hasRedactedEvents"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"hasRedactedEvents"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LRSchemaLRRedactionSummaryReported setHasRedactedEvents:](v5, "setHasRedactedEvents:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"redactionWindows"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"redactionWindows"];
     objc_opt_class();
     v29 = v7;
     if (objc_opt_isKindOfClass())
@@ -74,7 +74,7 @@
       v7 = v29;
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"redactionSignals", v29, v6}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"redactionSignals", v29, v6}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -116,14 +116,14 @@
       v6 = v31;
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"summaryCreationTimeSince1970"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"summaryCreationTimeSince1970"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LRSchemaLRRedactionSummaryReported setSummaryCreationTimeSince1970:](v5, "setSummaryCreationTimeSince1970:", [v23 unsignedLongLongValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"preProcessorInfo"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"preProcessorInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -131,7 +131,7 @@
       [(LRSchemaLRRedactionSummaryReported *)v5 setPreProcessorInfo:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"messageCreationTimeSince1970"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"messageCreationTimeSince1970"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -145,30 +145,30 @@
   return v5;
 }
 
-- (LRSchemaLRRedactionSummaryReported)initWithJSON:(id)a3
+- (LRSchemaLRRedactionSummaryReported)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LRSchemaLRRedactionSummaryReported *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(LRSchemaLRRedactionSummaryReported *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(LRSchemaLRRedactionSummaryReported *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -182,12 +182,12 @@
 - (id)dictionaryRepresentation
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[LRSchemaLRRedactionSummaryReported hasRedactedEvents](self, "hasRedactedEvents")}];
-    [v3 setObject:v5 forKeyedSubscript:@"hasRedactedEvents"];
+    [dictionary setObject:v5 forKeyedSubscript:@"hasRedactedEvents"];
 
     has = self->_has;
   }
@@ -197,28 +197,28 @@
     v6 = MEMORY[0x1E696AD98];
     [(LRSchemaLRRedactionSummaryReported *)self messageCreationTimeSince1970];
     v7 = [v6 numberWithDouble:?];
-    [v3 setObject:v7 forKeyedSubscript:@"messageCreationTimeSince1970"];
+    [dictionary setObject:v7 forKeyedSubscript:@"messageCreationTimeSince1970"];
   }
 
   if (self->_preProcessorInfo)
   {
-    v8 = [(LRSchemaLRRedactionSummaryReported *)self preProcessorInfo];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    preProcessorInfo = [(LRSchemaLRRedactionSummaryReported *)self preProcessorInfo];
+    dictionaryRepresentation = [preProcessorInfo dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"preProcessorInfo"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"preProcessorInfo"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"preProcessorInfo"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"preProcessorInfo"];
     }
   }
 
   if ([(NSArray *)self->_redactionSignals count])
   {
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
@@ -238,16 +238,16 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v33 + 1) + 8 * i) dictionaryRepresentation];
-          if (v17)
+          dictionaryRepresentation2 = [*(*(&v33 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v11 addObject:v17];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v18 = [MEMORY[0x1E695DFB0] null];
-            [v11 addObject:v18];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -257,12 +257,12 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"redactionSignals"];
+    [dictionary setObject:array forKeyedSubscript:@"redactionSignals"];
   }
 
   if ([(NSArray *)self->_redactionWindows count])
   {
-    v19 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -282,16 +282,16 @@
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v29 + 1) + 8 * j) dictionaryRepresentation];
-          if (v25)
+          dictionaryRepresentation3 = [*(*(&v29 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v19 addObject:v25];
+            [array2 addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v26 = [MEMORY[0x1E695DFB0] null];
-            [v19 addObject:v26];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null3];
           }
         }
 
@@ -301,18 +301,18 @@
       while (v22);
     }
 
-    [v3 setObject:v19 forKeyedSubscript:@"redactionWindows"];
+    [dictionary setObject:array2 forKeyedSubscript:@"redactionWindows"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v27 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[LRSchemaLRRedactionSummaryReported summaryCreationTimeSince1970](self, "summaryCreationTimeSince1970")}];
-    [v3 setObject:v27 forKeyedSubscript:@"summaryCreationTimeSince1970"];
+    [dictionary setObject:v27 forKeyedSubscript:@"summaryCreationTimeSince1970"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -376,15 +376,15 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
-  if ((*&self->_has & 1) != (v4[56] & 1))
+  if ((*&self->_has & 1) != (equalCopy[56] & 1))
   {
     goto LABEL_23;
   }
@@ -392,26 +392,26 @@
   if (*&self->_has)
   {
     hasRedactedEvents = self->_hasRedactedEvents;
-    if (hasRedactedEvents != [v4 hasRedactedEvents])
+    if (hasRedactedEvents != [equalCopy hasRedactedEvents])
     {
       goto LABEL_23;
     }
   }
 
-  v6 = [(LRSchemaLRRedactionSummaryReported *)self redactionWindows];
-  v7 = [v4 redactionWindows];
-  if ((v6 != 0) == (v7 == 0))
+  redactionWindows = [(LRSchemaLRRedactionSummaryReported *)self redactionWindows];
+  redactionWindows2 = [equalCopy redactionWindows];
+  if ((redactionWindows != 0) == (redactionWindows2 == 0))
   {
     goto LABEL_22;
   }
 
-  v8 = [(LRSchemaLRRedactionSummaryReported *)self redactionWindows];
-  if (v8)
+  redactionWindows3 = [(LRSchemaLRRedactionSummaryReported *)self redactionWindows];
+  if (redactionWindows3)
   {
-    v9 = v8;
-    v10 = [(LRSchemaLRRedactionSummaryReported *)self redactionWindows];
-    v11 = [v4 redactionWindows];
-    v12 = [v10 isEqual:v11];
+    v9 = redactionWindows3;
+    redactionWindows4 = [(LRSchemaLRRedactionSummaryReported *)self redactionWindows];
+    redactionWindows5 = [equalCopy redactionWindows];
+    v12 = [redactionWindows4 isEqual:redactionWindows5];
 
     if (!v12)
     {
@@ -423,20 +423,20 @@
   {
   }
 
-  v6 = [(LRSchemaLRRedactionSummaryReported *)self redactionSignals];
-  v7 = [v4 redactionSignals];
-  if ((v6 != 0) == (v7 == 0))
+  redactionWindows = [(LRSchemaLRRedactionSummaryReported *)self redactionSignals];
+  redactionWindows2 = [equalCopy redactionSignals];
+  if ((redactionWindows != 0) == (redactionWindows2 == 0))
   {
     goto LABEL_22;
   }
 
-  v13 = [(LRSchemaLRRedactionSummaryReported *)self redactionSignals];
-  if (v13)
+  redactionSignals = [(LRSchemaLRRedactionSummaryReported *)self redactionSignals];
+  if (redactionSignals)
   {
-    v14 = v13;
-    v15 = [(LRSchemaLRRedactionSummaryReported *)self redactionSignals];
-    v16 = [v4 redactionSignals];
-    v17 = [v15 isEqual:v16];
+    v14 = redactionSignals;
+    redactionSignals2 = [(LRSchemaLRRedactionSummaryReported *)self redactionSignals];
+    redactionSignals3 = [equalCopy redactionSignals];
+    v17 = [redactionSignals2 isEqual:redactionSignals3];
 
     if (!v17)
     {
@@ -449,7 +449,7 @@
   }
 
   v18 = (*&self->_has >> 1) & 1;
-  if (v18 != ((v4[56] >> 1) & 1))
+  if (v18 != ((equalCopy[56] >> 1) & 1))
   {
     goto LABEL_23;
   }
@@ -457,28 +457,28 @@
   if (v18)
   {
     summaryCreationTimeSince1970 = self->_summaryCreationTimeSince1970;
-    if (summaryCreationTimeSince1970 != [v4 summaryCreationTimeSince1970])
+    if (summaryCreationTimeSince1970 != [equalCopy summaryCreationTimeSince1970])
     {
       goto LABEL_23;
     }
   }
 
-  v6 = [(LRSchemaLRRedactionSummaryReported *)self preProcessorInfo];
-  v7 = [v4 preProcessorInfo];
-  if ((v6 != 0) == (v7 == 0))
+  redactionWindows = [(LRSchemaLRRedactionSummaryReported *)self preProcessorInfo];
+  redactionWindows2 = [equalCopy preProcessorInfo];
+  if ((redactionWindows != 0) == (redactionWindows2 == 0))
   {
 LABEL_22:
 
     goto LABEL_23;
   }
 
-  v20 = [(LRSchemaLRRedactionSummaryReported *)self preProcessorInfo];
-  if (v20)
+  preProcessorInfo = [(LRSchemaLRRedactionSummaryReported *)self preProcessorInfo];
+  if (preProcessorInfo)
   {
-    v21 = v20;
-    v22 = [(LRSchemaLRRedactionSummaryReported *)self preProcessorInfo];
-    v23 = [v4 preProcessorInfo];
-    v24 = [v22 isEqual:v23];
+    v21 = preProcessorInfo;
+    preProcessorInfo2 = [(LRSchemaLRRedactionSummaryReported *)self preProcessorInfo];
+    preProcessorInfo3 = [equalCopy preProcessorInfo];
+    v24 = [preProcessorInfo2 isEqual:preProcessorInfo3];
 
     if (!v24)
     {
@@ -491,9 +491,9 @@ LABEL_22:
   }
 
   v27 = (*&self->_has >> 2) & 1;
-  if (v27 == ((v4[56] >> 2) & 1))
+  if (v27 == ((equalCopy[56] >> 2) & 1))
   {
-    if (!v27 || (messageCreationTimeSince1970 = self->_messageCreationTimeSince1970, [v4 messageCreationTimeSince1970], messageCreationTimeSince1970 == v29))
+    if (!v27 || (messageCreationTimeSince1970 = self->_messageCreationTimeSince1970, [equalCopy messageCreationTimeSince1970], messageCreationTimeSince1970 == v29))
     {
       v25 = 1;
       goto LABEL_24;
@@ -507,10 +507,10 @@ LABEL_24:
   return v25;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
@@ -583,11 +583,11 @@ LABEL_24:
     PBDataWriterWriteUint64Field();
   }
 
-  v15 = [(LRSchemaLRRedactionSummaryReported *)self preProcessorInfo];
+  preProcessorInfo = [(LRSchemaLRRedactionSummaryReported *)self preProcessorInfo];
 
-  if (v15)
+  if (preProcessorInfo)
   {
-    v16 = [(LRSchemaLRRedactionSummaryReported *)self preProcessorInfo];
+    preProcessorInfo2 = [(LRSchemaLRRedactionSummaryReported *)self preProcessorInfo];
     PBDataWriterWriteSubmessage();
   }
 
@@ -597,9 +597,9 @@ LABEL_24:
   }
 }
 
-- (void)setHasMessageCreationTimeSince1970:(BOOL)a3
+- (void)setHasMessageCreationTimeSince1970:(BOOL)since1970
 {
-  if (a3)
+  if (since1970)
   {
     v3 = 4;
   }
@@ -612,9 +612,9 @@ LABEL_24:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSummaryCreationTimeSince1970:(BOOL)a3
+- (void)setHasSummaryCreationTimeSince1970:(BOOL)since1970
 {
-  if (a3)
+  if (since1970)
   {
     v3 = 2;
   }
@@ -627,61 +627,61 @@ LABEL_24:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addRedactionSignals:(id)a3
+- (void)addRedactionSignals:(id)signals
 {
-  v4 = a3;
+  signalsCopy = signals;
   redactionSignals = self->_redactionSignals;
-  v8 = v4;
+  v8 = signalsCopy;
   if (!redactionSignals)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_redactionSignals;
-    self->_redactionSignals = v6;
+    self->_redactionSignals = array;
 
-    v4 = v8;
+    signalsCopy = v8;
     redactionSignals = self->_redactionSignals;
   }
 
-  [(NSArray *)redactionSignals addObject:v4];
+  [(NSArray *)redactionSignals addObject:signalsCopy];
 }
 
-- (void)addRedactionWindows:(id)a3
+- (void)addRedactionWindows:(id)windows
 {
-  v4 = a3;
+  windowsCopy = windows;
   redactionWindows = self->_redactionWindows;
-  v8 = v4;
+  v8 = windowsCopy;
   if (!redactionWindows)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_redactionWindows;
-    self->_redactionWindows = v6;
+    self->_redactionWindows = array;
 
-    v4 = v8;
+    windowsCopy = v8;
     redactionWindows = self->_redactionWindows;
   }
 
-  [(NSArray *)redactionWindows addObject:v4];
+  [(NSArray *)redactionWindows addObject:windowsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v13.receiver = self;
   v13.super_class = LRSchemaLRRedactionSummaryReported;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(LRSchemaLRRedactionSummaryReported *)self redactionWindows:v13.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(LRSchemaLRRedactionSummaryReported *)self setRedactionWindows:v7];
 
-  v8 = [(LRSchemaLRRedactionSummaryReported *)self redactionSignals];
-  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v8 underConditions:v4];
+  redactionSignals = [(LRSchemaLRRedactionSummaryReported *)self redactionSignals];
+  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:redactionSignals underConditions:policyCopy];
   [(LRSchemaLRRedactionSummaryReported *)self setRedactionSignals:v9];
 
-  v10 = [(LRSchemaLRRedactionSummaryReported *)self preProcessorInfo];
-  v11 = [v10 applySensitiveConditionsPolicy:v4];
+  preProcessorInfo = [(LRSchemaLRRedactionSummaryReported *)self preProcessorInfo];
+  v11 = [preProcessorInfo applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v11 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v11 suppressMessage];
+  if (policyCopy)
   {
     [(LRSchemaLRRedactionSummaryReported *)self deletePreProcessorInfo];
   }

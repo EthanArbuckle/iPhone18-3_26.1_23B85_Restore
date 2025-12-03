@@ -1,108 +1,108 @@
 @interface TLToneManager
-+ (BOOL)_ensureTCCAccessPreflightAndCheckForFileExistenceAtPath:(id)a3;
++ (BOOL)_ensureTCCAccessPreflightAndCheckForFileExistenceAtPath:(id)path;
 + (BOOL)_migrateLegacyToneSettings;
 + (TLToneManager)sharedToneManager;
-+ (id)_abbreviatedDescriptionOfMediaPlaybackArchive:(id)a3;
-+ (id)_abbreviatedDescriptionOfToneIdentifierWithUnderlyingMediaPlaybackArchiveForLogging:(id)a3;
-+ (id)_currentOverridePolicyPreferenceKeyForAlertType:(int64_t)a3;
-+ (id)_defaultToneIdentifierForAlertType:(int64_t)a3 topic:(id)a4;
-+ (id)_defaultWatchToneIdentifierForAlertType:(int64_t)a3 topic:(id)a4;
-+ (id)_systemWideTonePreferenceKeyForAlertType:(int64_t)a3;
++ (id)_abbreviatedDescriptionOfMediaPlaybackArchive:(id)archive;
++ (id)_abbreviatedDescriptionOfToneIdentifierWithUnderlyingMediaPlaybackArchiveForLogging:(id)logging;
++ (id)_currentOverridePolicyPreferenceKeyForAlertType:(int64_t)type;
++ (id)_defaultToneIdentifierForAlertType:(int64_t)type topic:(id)topic;
++ (id)_defaultWatchToneIdentifierForAlertType:(int64_t)type topic:(id)topic;
++ (id)_systemWideTonePreferenceKeyForAlertType:(int64_t)type;
 + (void)_migrateLegacyToneSettings;
-- (BOOL)_ensureDirectoryExistsAtPath:(id)a3;
-- (BOOL)_hasUnderlyingPlaybackArchiveForToneIdentifier:(id)a3;
-- (BOOL)_importSyncedToneWithMetadata:(id)a3 fileName:(id)a4;
-- (BOOL)_loadITunesRingtoneInfoPlistAtPath:(id)a3;
+- (BOOL)_ensureDirectoryExistsAtPath:(id)path;
+- (BOOL)_hasUnderlyingPlaybackArchiveForToneIdentifier:(id)identifier;
+- (BOOL)_importSyncedToneWithMetadata:(id)metadata fileName:(id)name;
+- (BOOL)_loadITunesRingtoneInfoPlistAtPath:(id)path;
 - (BOOL)_removeAllTones;
-- (BOOL)_removeToneFromManifestAtPath:(id)a3 fileName:(id)a4;
-- (BOOL)_removeToneWithIdentifier:(id)a3 orSyncIdentifier:(id)a4;
-- (BOOL)_removeToneWithSyncIdentifier:(id)a3;
-- (BOOL)_removeTonesFromManifestAtPath:(id)a3 fileNames:(id)a4 shouldSkipReload:(BOOL)a5 alreadyLockedManifest:(BOOL)a6 removedEntries:(id *)a7;
-- (BOOL)_setToneIdentifierUsingService:(id)a3 keyedByTopic:(id)a4 forPreferenceKey:(id)a5;
-- (BOOL)_toneWithIdentifierIsDefaultRingtone:(id)a3;
-- (BOOL)_toneWithIdentifierIsMediaPlaybackArchive:(id)a3;
-- (BOOL)_toneWithIdentifierIsNonDefaultAndNonEmbeddedSystemRingtone:(id)a3;
-- (BOOL)_toneWithIdentifierIsSystemTone:(id)a3;
-- (BOOL)_toneWithIdentifierIsValid:(id)a3;
+- (BOOL)_removeToneFromManifestAtPath:(id)path fileName:(id)name;
+- (BOOL)_removeToneWithIdentifier:(id)identifier orSyncIdentifier:(id)syncIdentifier;
+- (BOOL)_removeToneWithSyncIdentifier:(id)identifier;
+- (BOOL)_removeTonesFromManifestAtPath:(id)path fileNames:(id)names shouldSkipReload:(BOOL)reload alreadyLockedManifest:(BOOL)manifest removedEntries:(id *)entries;
+- (BOOL)_setToneIdentifierUsingService:(id)service keyedByTopic:(id)topic forPreferenceKey:(id)key;
+- (BOOL)_toneWithIdentifierIsDefaultRingtone:(id)ringtone;
+- (BOOL)_toneWithIdentifierIsMediaPlaybackArchive:(id)archive;
+- (BOOL)_toneWithIdentifierIsNonDefaultAndNonEmbeddedSystemRingtone:(id)ringtone;
+- (BOOL)_toneWithIdentifierIsSystemTone:(id)tone;
+- (BOOL)_toneWithIdentifierIsValid:(id)valid;
 - (BOOL)_wasAffectedByAccidentalToneDeletion;
 - (BOOL)_watchPrefersSalientNotifications;
-- (BOOL)hasSpecificDefaultToneIdentifierForAlertType:(int64_t)a3 topic:(id)a4;
-- (BOOL)toneWithIdentifierIsValid:(id)a3;
+- (BOOL)hasSpecificDefaultToneIdentifierForAlertType:(int64_t)type topic:(id)topic;
+- (BOOL)toneWithIdentifierIsValid:(id)valid;
 - (NSString)_deviceITunesRingtoneDirectory;
 - (NSString)_deviceITunesRingtoneInformationPlist;
 - (NSString)_iTunesRingtoneDirectory;
 - (NSString)_iTunesRingtoneInformationPlist;
 - (NSString)_systemRingtoneDirectory;
-- (TLToneManager)initWithITunesRingtonePlistAtPath:(id)a3;
-- (double)_unduckTimeForToneIdentifier:(id)a3;
-- (id)_addToneEntries:(id)a3 toManifestAtPath:(id)a4 mediaDirectory:(id)a5 shouldSkipReload:(BOOL)a6;
-- (id)_addToneToManifestAtPath:(id)a3 metadata:(id)a4 fileName:(id)a5 mediaDirectory:(id)a6;
+- (TLToneManager)initWithITunesRingtonePlistAtPath:(id)path;
+- (double)_unduckTimeForToneIdentifier:(id)identifier;
+- (id)_addToneEntries:(id)entries toManifestAtPath:(id)path mediaDirectory:(id)directory shouldSkipReload:(BOOL)reload;
+- (id)_addToneToManifestAtPath:(id)path metadata:(id)metadata fileName:(id)name mediaDirectory:(id)directory;
 - (id)_alarmWakeUpRingtoneDirectory;
-- (id)_aliasForToneIdentifier:(id)a3;
+- (id)_aliasForToneIdentifier:(id)identifier;
 - (id)_allSyncedTones;
-- (id)_currentToneIdentifierForAlertType:(int64_t)a3 topic:(id)a4 allowsFallbackToDefaultPreferablyNonSilentToneForInvalidPersistedValue:(BOOL)a5;
-- (id)_currentToneWatchAlertPolicyPreferenceKeyForAlertType:(int64_t)a3 topic:(id)a4;
-- (id)_currentWatchToneIdentifierForAlertType:(int64_t)a3 topic:(id)a4 didFindPersistedWatchToneIdentifier:(BOOL *)a5;
-- (id)_currentWatchToneIdentifierPreferenceKeyForAlertType:(int64_t)a3 topic:(id)a4;
-- (id)_defaultPreferablyNonSilentToneIdentifierForAlertType:(int64_t)a3 topic:(id)a4;
+- (id)_currentToneIdentifierForAlertType:(int64_t)type topic:(id)topic allowsFallbackToDefaultPreferablyNonSilentToneForInvalidPersistedValue:(BOOL)value;
+- (id)_currentToneWatchAlertPolicyPreferenceKeyForAlertType:(int64_t)type topic:(id)topic;
+- (id)_currentWatchToneIdentifierForAlertType:(int64_t)type topic:(id)topic didFindPersistedWatchToneIdentifier:(BOOL *)identifier;
+- (id)_currentWatchToneIdentifierPreferenceKeyForAlertType:(int64_t)type topic:(id)topic;
+- (id)_defaultPreferablyNonSilentToneIdentifierForAlertType:(int64_t)type topic:(id)topic;
 - (id)_defaultRingtoneName;
 - (id)_defaultRingtonePath;
-- (id)_fileNameFromToneIdentifier:(id)a3 withPrefix:(id)a4;
-- (id)_filePathForToneIdentifier:(id)a3 isValid:(BOOL *)a4;
-- (id)_importPurchasedToneWithMetadata:(id)a3 fileName:(id)a4;
+- (id)_fileNameFromToneIdentifier:(id)identifier withPrefix:(id)prefix;
+- (id)_filePathForToneIdentifier:(id)identifier isValid:(BOOL *)valid;
+- (id)_importPurchasedToneWithMetadata:(id)metadata fileName:(id)name;
 - (id)_installedTones;
-- (id)_localizedNameOfToneWithIdentifier:(id)a3;
-- (id)_nameForToneIdentifier:(id)a3 isValid:(BOOL *)a4;
+- (id)_localizedNameOfToneWithIdentifier:(id)identifier;
+- (id)_nameForToneIdentifier:(id)identifier isValid:(BOOL *)valid;
 - (id)_newServiceConnection;
-- (id)_previewSoundForToneIdentifier:(id)a3;
-- (id)_removeOrphanedPlistEntriesInManifestAtPath:(id)a3 mediaDirectory:(id)a4;
-- (id)_soundForToneIdentifier:(id)a3;
+- (id)_previewSoundForToneIdentifier:(id)identifier;
+- (id)_removeOrphanedPlistEntriesInManifestAtPath:(id)path mediaDirectory:(id)directory;
+- (id)_soundForToneIdentifier:(id)identifier;
 - (id)_systemEmbeddedClassicSoundDirectory;
 - (id)_systemEmbeddedEncoreInfinitumSoundDirectory;
 - (id)_systemEmbeddedEncoreRemixSoundDirectory;
 - (id)_systemEmbeddedModernSoundDirectory;
 - (id)_systemEmbeddedSoundDirectory;
 - (id)_systemWatchSoundDirectory;
-- (id)_toneForSyncIdentifier:(id)a3;
-- (id)_toneIdentifierForFileAtPath:(id)a3 isValid:(BOOL *)a4;
-- (id)_toneIdentifierForMediaLibraryItemIdentifier:(unint64_t)a3;
-- (id)_toneIdentifierWithUnderlyingPlaybackArchive:(id)a3;
+- (id)_toneForSyncIdentifier:(id)identifier;
+- (id)_toneIdentifierForFileAtPath:(id)path isValid:(BOOL *)valid;
+- (id)_toneIdentifierForMediaLibraryItemIdentifier:(unint64_t)identifier;
+- (id)_toneIdentifierWithUnderlyingPlaybackArchive:(id)archive;
 - (id)_tonePreferencesFromService;
-- (id)_toneWithIdentifier:(id)a3;
-- (id)_tonesFromManifestPath:(id)a3 mediaDirectoryPath:(id)a4;
-- (id)_underlyingPlaybackArchiveForToneIdentifier:(id)a3;
-- (id)_unduckTimeNumberForToneIdentifier:(id)a3 fromResourceNamed:(id)a4;
-- (id)currentToneIdentifierForAlertType:(int64_t)a3 topic:(id)a4;
-- (id)currentToneNameForAlertType:(int64_t)a3;
-- (id)currentWatchToneIdentifierForAlertType:(int64_t)a3 topic:(id)a4;
-- (id)defaultToneIdentifierForAlertType:(int64_t)a3 topic:(id)a4;
-- (id)defaultWatchToneIdentifierForAlertType:(int64_t)a3 topic:(id)a4;
-- (id)subtitleForToneIdentifier:(id)a3;
-- (int)_lockManifestAtPath:(id)a3;
-- (int64_t)_currentOverridePolicyForAlertType:(int64_t)a3 didFindAlertOverridePolicy:(BOOL *)a4;
-- (int64_t)_currentToneWatchAlertPolicyForAlertType:(int64_t)a3 topic:(id)a4 didFindPersistedWatchAlertPolicy:(BOOL *)a5;
-- (int64_t)_evaluateOrphanEntriesCleanupStatusForcingReevaluationIfPreviouslyDone:(BOOL)a3 returningFilePathsForFoundOrphans:(id *)a4 wasAffectedByAccidentalToneDeletion:(BOOL *)a5;
+- (id)_toneWithIdentifier:(id)identifier;
+- (id)_tonesFromManifestPath:(id)path mediaDirectoryPath:(id)directoryPath;
+- (id)_underlyingPlaybackArchiveForToneIdentifier:(id)identifier;
+- (id)_unduckTimeNumberForToneIdentifier:(id)identifier fromResourceNamed:(id)named;
+- (id)currentToneIdentifierForAlertType:(int64_t)type topic:(id)topic;
+- (id)currentToneNameForAlertType:(int64_t)type;
+- (id)currentWatchToneIdentifierForAlertType:(int64_t)type topic:(id)topic;
+- (id)defaultToneIdentifierForAlertType:(int64_t)type topic:(id)topic;
+- (id)defaultWatchToneIdentifierForAlertType:(int64_t)type topic:(id)topic;
+- (id)subtitleForToneIdentifier:(id)identifier;
+- (int)_lockManifestAtPath:(id)path;
+- (int64_t)_currentOverridePolicyForAlertType:(int64_t)type didFindAlertOverridePolicy:(BOOL *)policy;
+- (int64_t)_currentToneWatchAlertPolicyForAlertType:(int64_t)type topic:(id)topic didFindPersistedWatchAlertPolicy:(BOOL *)policy;
+- (int64_t)_evaluateOrphanEntriesCleanupStatusForcingReevaluationIfPreviouslyDone:(BOOL)done returningFilePathsForFoundOrphans:(id *)orphans wasAffectedByAccidentalToneDeletion:(BOOL *)deletion;
 - (unint64_t)_installedTonesSize;
-- (unsigned)currentToneSoundIDForAlertType:(int64_t)a3 topic:(id)a4;
-- (void)_didSetTonePreferenceSuccessfullyWithKey:(id)a3 inDomain:(id)a4 usingPreferencesOfKind:(unint64_t)a5;
+- (unsigned)currentToneSoundIDForAlertType:(int64_t)type topic:(id)topic;
+- (void)_didSetTonePreferenceSuccessfullyWithKey:(id)key inDomain:(id)domain usingPreferencesOfKind:(unint64_t)kind;
 - (void)_handleProtectionContentUnlockedEvent;
-- (void)_handleTonePreferencesChangedNotificationForPreferencesKinds:(unint64_t)a3;
+- (void)_handleTonePreferencesChangedNotificationForPreferencesKinds:(unint64_t)kinds;
 - (void)_handleWatchPrefersSalientNotificationDidChange;
-- (void)_importTone:(id)a3 metadata:(id)a4 completionBlock:(id)a5;
+- (void)_importTone:(id)tone metadata:(id)metadata completionBlock:(id)block;
 - (void)_loadSystemTones;
 - (void)_loadToneIdentifierAliasMap;
 - (void)_registerDidRequestResetSyncPostAccidentalToneDeletion;
 - (void)_reloadTones;
 - (void)_reloadTonesAfterExternalChange;
 - (void)_removeAllSyncedData;
-- (void)_setCurrentOverridePolicy:(int64_t)a3 forAlertType:(int64_t)a4;
-- (void)_setCurrentToneWatchAlertPolicy:(int64_t)a3 forAlertType:(int64_t)a4 topic:(id)a5;
-- (void)_setWatchPrefersSalientNotifications:(BOOL)a3;
+- (void)_setCurrentOverridePolicy:(int64_t)policy forAlertType:(int64_t)type;
+- (void)_setCurrentToneWatchAlertPolicy:(int64_t)policy forAlertType:(int64_t)type topic:(id)topic;
+- (void)_setWatchPrefersSalientNotifications:(BOOL)notifications;
 - (void)dealloc;
-- (void)importTone:(id)a3 metadata:(id)a4 completionBlock:(id)a5;
-- (void)removeImportedToneWithIdentifier:(id)a3;
-- (void)setCurrentToneIdentifier:(id)a3 forAlertType:(int64_t)a4 topic:(id)a5;
-- (void)setCurrentWatchToneIdentifier:(id)a3 forAlertType:(int64_t)a4 topic:(id)a5;
+- (void)importTone:(id)tone metadata:(id)metadata completionBlock:(id)block;
+- (void)removeImportedToneWithIdentifier:(id)identifier;
+- (void)setCurrentToneIdentifier:(id)identifier forAlertType:(int64_t)type topic:(id)topic;
+- (void)setCurrentWatchToneIdentifier:(id)identifier forAlertType:(int64_t)type topic:(id)topic;
 @end
 
 @implementation TLToneManager
@@ -126,10 +126,10 @@ uint64_t __34__TLToneManager_sharedToneManager__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (TLToneManager)initWithITunesRingtonePlistAtPath:(id)a3
+- (TLToneManager)initWithITunesRingtonePlistAtPath:(id)path
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v33.receiver = self;
   v33.super_class = TLToneManager;
   v5 = [(TLToneManager *)&v33 init];
@@ -168,7 +168,7 @@ uint64_t __34__TLToneManager_sharedToneManager__block_invoke()
           _os_log_impl(&dword_1D9356000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: -init…: Instantiated domain accessor %{public}@.", buf, 0x16u);
         }
 
-        v15 = [v13 synchronize];
+        synchronize = [v13 synchronize];
         v16 = TLLogToneManagement();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
@@ -187,7 +187,7 @@ uint64_t __34__TLToneManager_sharedToneManager__block_invoke()
     v30[3] = &unk_1E8578900;
     v17 = v5;
     v31 = v17;
-    v18 = v4;
+    v18 = pathCopy;
     v32 = v18;
     [(TLToneManager *)v17 _performBlockInAccessQueue:v30];
     if (!v18)
@@ -316,32 +316,32 @@ void __24__TLToneManager_dealloc__block_invoke(uint64_t a1)
 
 - (NSString)_deviceITunesRingtoneDirectory
 {
-  v2 = [(TLToneManager *)self _rootDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"Media/Purchases"];
+  _rootDirectory = [(TLToneManager *)self _rootDirectory];
+  v3 = [_rootDirectory stringByAppendingPathComponent:@"Media/Purchases"];
 
   return v3;
 }
 
 - (NSString)_deviceITunesRingtoneInformationPlist
 {
-  v2 = [(TLToneManager *)self _rootDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"Media/Purchases/Ringtones.plist"];
+  _rootDirectory = [(TLToneManager *)self _rootDirectory];
+  v3 = [_rootDirectory stringByAppendingPathComponent:@"Media/Purchases/Ringtones.plist"];
 
   return v3;
 }
 
 - (NSString)_iTunesRingtoneDirectory
 {
-  v2 = [(TLToneManager *)self _rootDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"Media/iTunes_Control/Ringtones"];
+  _rootDirectory = [(TLToneManager *)self _rootDirectory];
+  v3 = [_rootDirectory stringByAppendingPathComponent:@"Media/iTunes_Control/Ringtones"];
 
   return v3;
 }
 
 - (NSString)_iTunesRingtoneInformationPlist
 {
-  v2 = [(TLToneManager *)self _rootDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"Media/iTunes_Control/iTunes/Ringtones.plist"];
+  _rootDirectory = [(TLToneManager *)self _rootDirectory];
+  v3 = [_rootDirectory stringByAppendingPathComponent:@"Media/iTunes_Control/iTunes/Ringtones.plist"];
 
   return v3;
 }
@@ -353,31 +353,31 @@ void __24__TLToneManager_dealloc__block_invoke(uint64_t a1)
   return [v2 stringByAppendingPathComponent:@"/Library/Ringtones"];
 }
 
-- (BOOL)_loadITunesRingtoneInfoPlistAtPath:(id)a3
+- (BOOL)_loadITunesRingtoneInfoPlistAtPath:(id)path
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v5 = [(TLToneManager *)self _iTunesRingtoneDirectory];
-    v6 = [(TLToneManager *)self _tonesFromManifestPath:v4 mediaDirectoryPath:v5];
+    _iTunesRingtoneDirectory = [(TLToneManager *)self _iTunesRingtoneDirectory];
+    v6 = [(TLToneManager *)self _tonesFromManifestPath:pathCopy mediaDirectoryPath:_iTunesRingtoneDirectory];
   }
 
   else
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v7 = [(TLToneManager *)self _iTunesRingtoneInformationPlist];
-    v8 = [(TLToneManager *)self _iTunesRingtoneDirectory];
-    v5 = [(TLToneManager *)self _tonesFromManifestPath:v7 mediaDirectoryPath:v8];
+    _iTunesRingtoneInformationPlist = [(TLToneManager *)self _iTunesRingtoneInformationPlist];
+    _iTunesRingtoneDirectory2 = [(TLToneManager *)self _iTunesRingtoneDirectory];
+    _iTunesRingtoneDirectory = [(TLToneManager *)self _tonesFromManifestPath:_iTunesRingtoneInformationPlist mediaDirectoryPath:_iTunesRingtoneDirectory2];
 
-    if (v5)
+    if (_iTunesRingtoneDirectory)
     {
-      [v6 addObjectsFromArray:v5];
+      [v6 addObjectsFromArray:_iTunesRingtoneDirectory];
     }
 
-    v9 = [(TLToneManager *)self _deviceITunesRingtoneInformationPlist];
-    v10 = [(TLToneManager *)self _deviceITunesRingtoneDirectory];
-    v11 = [(TLToneManager *)self _tonesFromManifestPath:v9 mediaDirectoryPath:v10];
+    _deviceITunesRingtoneInformationPlist = [(TLToneManager *)self _deviceITunesRingtoneInformationPlist];
+    _deviceITunesRingtoneDirectory = [(TLToneManager *)self _deviceITunesRingtoneDirectory];
+    v11 = [(TLToneManager *)self _tonesFromManifestPath:_deviceITunesRingtoneInformationPlist mediaDirectoryPath:_deviceITunesRingtoneDirectory];
 
     if (v11)
     {
@@ -416,12 +416,12 @@ void __24__TLToneManager_dealloc__block_invoke(uint64_t a1)
         }
 
         v19 = *(*(&v31 + 1) + 8 * i);
-        v20 = [v19 identifier];
-        [v13 setObject:v19 forKey:v20];
-        v21 = [v19 syncIdentifier];
-        if (v21)
+        identifier = [v19 identifier];
+        [v13 setObject:v19 forKey:identifier];
+        syncIdentifier = [v19 syncIdentifier];
+        if (syncIdentifier)
         {
-          [v14 setObject:v20 forKey:v21];
+          [v14 setObject:identifier forKey:syncIdentifier];
         }
       }
 
@@ -476,13 +476,13 @@ void __52__TLToneManager__loadITunesRingtoneInfoPlistAtPath___block_invoke(uint6
   }
 }
 
-- (id)_tonesFromManifestPath:(id)a3 mediaDirectoryPath:(id)a4
+- (id)_tonesFromManifestPath:(id)path mediaDirectoryPath:(id)directoryPath
 {
   v64 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v7 fileExistsAtPath:v5];
+  pathCopy = path;
+  directoryPathCopy = directoryPath;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v8 = [defaultManager fileExistsAtPath:pathCopy];
 
   v9 = TLLogToneManagement();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -491,16 +491,16 @@ void __52__TLToneManager__loadITunesRingtoneInfoPlistAtPath___block_invoke(uint6
     if (v10)
     {
       *buf = 138543874;
-      v54 = self;
+      selfCopy7 = self;
       v55 = 2114;
-      v56 = v5;
+      v56 = pathCopy;
       v57 = 2114;
-      v58 = v6;
+      v58 = directoryPathCopy;
       _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: _tonesFromManifestPath:(%{public}@) mediaDirectoryPath:(%{public}@): About to load tones.", buf, 0x20u);
     }
 
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [MEMORY[0x1E695DFF8] fileURLWithPath:v5 isDirectory:0];
+    [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
     v43 = v52 = 0;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:? error:?];
     v12 = 0;
@@ -511,11 +511,11 @@ void __52__TLToneManager__loadITunesRingtoneInfoPlistAtPath___block_invoke(uint6
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138544130;
-        v54 = self;
+        selfCopy7 = self;
         v55 = 2114;
-        v56 = v5;
+        v56 = pathCopy;
         v57 = 2114;
-        v58 = v6;
+        v58 = directoryPathCopy;
         v59 = 2114;
         v60 = v13;
         _os_log_error_impl(&dword_1D9356000, v14, OS_LOG_TYPE_ERROR, "%{public}@: _tonesFromManifestPath:(%{public}@) mediaDirectoryPath:(%{public}@): Couldn't load manifest: %{public}@", buf, 0x2Au);
@@ -530,11 +530,11 @@ void __52__TLToneManager__loadITunesRingtoneInfoPlistAtPath___block_invoke(uint6
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138544130;
-        v54 = self;
+        selfCopy7 = self;
         v55 = 2114;
-        v56 = v5;
+        v56 = pathCopy;
         v57 = 2114;
-        v58 = v6;
+        v58 = directoryPathCopy;
         v59 = 2114;
         v60 = v11;
         _os_log_impl(&dword_1D9356000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: _tonesFromManifestPath:(%{public}@) mediaDirectoryPath:(%{public}@): Couldn't find any tone entries in the manifest: %{public}@", buf, 0x2Au);
@@ -543,7 +543,7 @@ void __52__TLToneManager__loadITunesRingtoneInfoPlistAtPath___block_invoke(uint6
 
     v41 = v11;
     v42 = v13;
-    v44 = v5;
+    v44 = pathCopy;
     [v15 allKeys];
     v48 = 0u;
     v49 = 0u;
@@ -566,7 +566,7 @@ void __52__TLToneManager__loadITunesRingtoneInfoPlistAtPath___block_invoke(uint6
           }
 
           v22 = *(*(&v48 + 1) + 8 * i);
-          v23 = [v6 stringByAppendingPathComponent:v22];
+          v23 = [directoryPathCopy stringByAppendingPathComponent:v22];
           v24 = objc_alloc(*(v20 + 528));
           v25 = [v15 objectForKey:v22];
           v26 = [v24 initWithPropertyListRepresentation:v25 filePath:v23];
@@ -582,16 +582,16 @@ void __52__TLToneManager__loadITunesRingtoneInfoPlistAtPath___block_invoke(uint6
               v31 = v30 = v15;
               [v26 filePath];
               v32 = v18;
-              v34 = v33 = v6;
+              v34 = v33 = directoryPathCopy;
               *buf = 138543874;
-              v54 = self;
+              selfCopy7 = self;
               v55 = 2114;
               v56 = v31;
               v57 = 2114;
               v58 = v34;
               _os_log_impl(&dword_1D9356000, v28, OS_LOG_TYPE_DEFAULT, "%{public}@: _tonesFromManifestPath: Appending tone with identifier %{public}@ and file path: %{public}@.", buf, 0x20u);
 
-              v6 = v33;
+              directoryPathCopy = v33;
               v18 = v32;
 
               v15 = v30;
@@ -613,7 +613,7 @@ void __52__TLToneManager__loadITunesRingtoneInfoPlistAtPath___block_invoke(uint6
             if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543618;
-              v54 = self;
+              selfCopy7 = self;
               v55 = 2114;
               v56 = v23;
               _os_log_error_impl(&dword_1D9356000, v28, OS_LOG_TYPE_ERROR, "%{public}@: _tonesFromManifestPath: Skipping inclusion of tone for file path: %{public}@.", buf, 0x16u);
@@ -629,16 +629,16 @@ void __52__TLToneManager__loadITunesRingtoneInfoPlistAtPath___block_invoke(uint6
 
     v35 = [v9 copy];
     v36 = TLLogToneManagement();
-    v5 = v44;
+    pathCopy = v44;
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
       v37 = [v35 count];
       *buf = 138544386;
-      v54 = self;
+      selfCopy7 = self;
       v55 = 2114;
       v56 = v44;
       v57 = 2114;
-      v58 = v6;
+      v58 = directoryPathCopy;
       v59 = 2048;
       v60 = v37;
       v61 = 2048;
@@ -652,11 +652,11 @@ void __52__TLToneManager__loadITunesRingtoneInfoPlistAtPath___block_invoke(uint6
     if (v10)
     {
       *buf = 138543874;
-      v54 = self;
+      selfCopy7 = self;
       v55 = 2114;
-      v56 = v5;
+      v56 = pathCopy;
       v57 = 2114;
-      v58 = v6;
+      v58 = directoryPathCopy;
       _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: _tonesFromManifestPath:(%{public}@) mediaDirectoryPath:(%{public}@): Manifest file does not exist. Not loading any tones.", buf, 0x20u);
     }
 
@@ -706,9 +706,9 @@ void __48__TLToneManager__reloadTonesAfterExternalChange__block_invoke_2(uint64_
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.itunesstored.RingtoneAdded", 0, 0, 1u);
 }
 
-- (id)_toneWithIdentifier:(id)a3
+- (id)_toneWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -721,7 +721,7 @@ void __48__TLToneManager__reloadTonesAfterExternalChange__block_invoke_2(uint64_
   v8[3] = &unk_1E85789C8;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = identifierCopy;
   v9 = v5;
   [(TLToneManager *)self _performBlockInAccessQueue:v8];
   v6 = v12[5];
@@ -775,8 +775,8 @@ void __32__TLToneManager__installedTones__block_invoke(uint64_t a1)
 {
   v27 = *MEMORY[0x1E69E9840];
   memset(&v26, 0, 512);
-  v3 = [(TLToneManager *)self _deviceITunesRingtoneDirectory];
-  v4 = statfs([v3 UTF8String], &v26);
+  _deviceITunesRingtoneDirectory = [(TLToneManager *)self _deviceITunesRingtoneDirectory];
+  v4 = statfs([_deviceITunesRingtoneDirectory UTF8String], &v26);
 
   if (v4)
   {
@@ -788,7 +788,7 @@ void __32__TLToneManager__installedTones__block_invoke(uint64_t a1)
     v5 = v26.f_bsize - 1;
   }
 
-  v20 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   [(TLToneManager *)self _installedTones];
   v21 = 0u;
   v22 = 0u;
@@ -810,12 +810,12 @@ void __32__TLToneManager__installedTones__block_invoke(uint64_t a1)
           objc_enumerationMutation(obj);
         }
 
-        v12 = [*(*(&v21 + 1) + 8 * i) filePath];
-        v13 = [v20 attributesOfItemAtPath:v12 error:0];
+        filePath = [*(*(&v21 + 1) + 8 * i) filePath];
+        v13 = [defaultManager attributesOfItemAtPath:filePath error:0];
         v14 = [v13 objectForKey:v9];
-        v15 = [v14 longLongValue];
+        longLongValue = [v14 longLongValue];
 
-        v10 = v10 + ((v15 + v5) & ~v5);
+        v10 = v10 + ((longLongValue + v5) & ~v5);
       }
 
       v7 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -834,29 +834,29 @@ void __32__TLToneManager__installedTones__block_invoke(uint64_t a1)
   return v16;
 }
 
-- (id)_addToneToManifestAtPath:(id)a3 metadata:(id)a4 fileName:(id)a5 mediaDirectory:(id)a6
+- (id)_addToneToManifestAtPath:(id)path metadata:(id)metadata fileName:(id)name mediaDirectory:(id)directory
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v12)
+  pathCopy = path;
+  metadataCopy = metadata;
+  nameCopy = name;
+  directoryCopy = directory;
+  if (!nameCopy)
   {
     goto LABEL_5;
   }
 
-  v14 = v11;
+  v14 = metadataCopy;
   if (!v14)
   {
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v20 = v12;
+  v20 = nameCopy;
   v21[0] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-  v16 = [(TLToneManager *)self _addToneEntries:v15 toManifestAtPath:v10 mediaDirectory:v13 shouldSkipReload:0];
-  v17 = [v16 objectForKey:v12];
+  v16 = [(TLToneManager *)self _addToneEntries:v15 toManifestAtPath:pathCopy mediaDirectory:directoryCopy shouldSkipReload:0];
+  v17 = [v16 objectForKey:nameCopy];
 
   if (!v17)
   {
@@ -869,19 +869,19 @@ LABEL_5:
   return v17;
 }
 
-- (id)_addToneEntries:(id)a3 toManifestAtPath:(id)a4 mediaDirectory:(id)a5 shouldSkipReload:(BOOL)a6
+- (id)_addToneEntries:(id)entries toManifestAtPath:(id)path mediaDirectory:(id)directory shouldSkipReload:(BOOL)reload
 {
-  LODWORD(v50) = a6;
+  LODWORD(v50) = reload;
   v104 = *MEMORY[0x1E69E9840];
-  v52 = a3;
-  v8 = a4;
-  v68 = a5;
+  entriesCopy = entries;
+  pathCopy = path;
+  directoryCopy = directory;
   v69 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v53 = v8;
-  v9 = [v8 stringByDeletingLastPathComponent];
-  [(TLToneManager *)self _ensureDirectoryExistsAtPath:v9];
+  v53 = pathCopy;
+  stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
+  [(TLToneManager *)self _ensureDirectoryExistsAtPath:stringByDeletingLastPathComponent];
 
-  HIDWORD(v50) = [(TLToneManager *)self _lockManifestAtPath:v8];
+  HIDWORD(v50) = [(TLToneManager *)self _lockManifestAtPath:pathCopy];
   if (HIDWORD(v50) == -1)
   {
 LABEL_50:
@@ -890,7 +890,7 @@ LABEL_50:
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v44 = v52;
+    v44 = entriesCopy;
     v45 = [v44 countByEnumeratingWithState:&v72 objects:v93 count:16];
     if (v45)
     {
@@ -929,7 +929,7 @@ LABEL_50:
   v86[4] = self;
   v86[5] = &v87;
   [(TLToneManager *)self _performBlockInAccessQueue:v86];
-  v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithContentsOfFile:v8];
+  v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithContentsOfFile:pathCopy];
   if (!v10)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -943,14 +943,14 @@ LABEL_50:
     [v51 setObject:v11 forKey:@"Ringtones"];
   }
 
-  v55 = [(TLToneManager *)self _deviceITunesRingtoneDirectory];
+  _deviceITunesRingtoneDirectory = [(TLToneManager *)self _deviceITunesRingtoneDirectory];
   v54 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v57 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v84 = 0u;
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
-  obj = v52;
+  obj = entriesCopy;
   v63 = v11;
   v60 = [obj countByEnumeratingWithState:&v82 objects:v103 count:16];
   if (v60)
@@ -968,19 +968,19 @@ LABEL_50:
 
         v12 = *(*(&v82 + 1) + 8 * j);
         v70 = [obj objectForKey:v12];
-        v67 = [v68 stringByAppendingPathComponent:v12];
+        v67 = [directoryCopy stringByAppendingPathComponent:v12];
         v66 = [MEMORY[0x1E695DFF8] fileURLWithPath:? isDirectory:?];
         v65 = [MEMORY[0x1E6987E28] assetWithURL:?];
-        v13 = [v65 hasProtectedContent];
+        hasProtectedContent = [v65 hasProtectedContent];
         v14 = [v70 mutableCopy];
-        v15 = [MEMORY[0x1E696AD98] numberWithBool:v13];
+        v15 = [MEMORY[0x1E696AD98] numberWithBool:hasProtectedContent];
         [v14 setObject:v15 forKey:@"Protected Content"];
 
         v16 = [TLITunesTone alloc];
-        v17 = [v68 stringByAppendingPathComponent:v12];
+        v17 = [directoryCopy stringByAppendingPathComponent:v12];
         v18 = [(TLITunesTone *)v16 initWithPropertyListRepresentation:v14 filePath:v17];
 
-        v19 = [(TLITunesTone *)v18 identifier];
+        identifier = [(TLITunesTone *)v18 identifier];
         v80 = 0u;
         v81 = 0u;
         v78 = 0u;
@@ -1017,10 +1017,10 @@ LABEL_13:
             }
           }
 
-          v27 = [v24 filePath];
-          if ([v57 fileExistsAtPath:v27])
+          filePath = [v24 filePath];
+          if ([defaultManager fileExistsAtPath:filePath])
           {
-            v26 = [v24 identifier];
+            identifier2 = [v24 identifier];
 
             v28 = TLLogToneManagement();
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -1040,20 +1040,20 @@ LABEL_13:
             goto LABEL_34;
           }
 
-          v58 = [v27 lastPathComponent];
+          lastPathComponent = [filePath lastPathComponent];
           v32 = [v63 objectForKey:?];
           v62 = [v32 mutableCopy];
 
           if (v62)
           {
-            [v63 removeObjectForKey:v58];
+            [v63 removeObjectForKey:lastPathComponent];
             v25 = v62;
 
-            v26 = [v24 identifier];
+            identifier2 = [v24 identifier];
 
-            if ([v27 hasPrefix:v55])
+            if ([filePath hasPrefix:_deviceITunesRingtoneDirectory])
             {
-              [v54 addObject:v27];
+              [v54 addObject:filePath];
             }
 
             v33 = TLLogToneManagement();
@@ -1067,7 +1067,7 @@ LABEL_13:
               v98 = 2114;
               v99 = v24;
               v100 = 2114;
-              v101 = v27;
+              v101 = filePath;
               v35 = v34;
               _os_log_impl(&dword_1D9356000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@: Connected newly imported tone %{public}@ to old duplicate's metadata %{public}@ because its asset is missing at %{public}@.", buf, 0x2Au);
             }
@@ -1089,7 +1089,7 @@ LABEL_13:
               _os_log_impl(&dword_1D9356000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@: Proceeding to import tone %{public}@ despite finding duplicate %{public}@ because they don't appear to be listed in the same manifest.", buf, 0x20u);
             }
 
-            v26 = v19;
+            identifier2 = identifier;
             v25 = v14;
           }
         }
@@ -1098,7 +1098,7 @@ LABEL_13:
         {
 LABEL_19:
           v25 = v14;
-          v26 = v19;
+          identifier2 = identifier;
         }
 
         [v63 setObject:v25 forKey:v12];
@@ -1106,7 +1106,7 @@ LABEL_19:
         v61 = 1;
         v14 = v25;
 LABEL_34:
-        v38 = [[TLToneImportResponse alloc] initWithStatusCode:v31 toneIdentifier:v26];
+        v38 = [[TLToneImportResponse alloc] initWithStatusCode:v31 toneIdentifier:identifier2];
         [v69 setObject:v38 forKey:v12];
       }
 
@@ -1218,10 +1218,10 @@ void __82__TLToneManager__addToneEntries_toManifestAtPath_mediaDirectory_shouldS
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_removeToneWithIdentifier:(id)a3 orSyncIdentifier:(id)a4
+- (BOOL)_removeToneWithIdentifier:(id)identifier orSyncIdentifier:(id)syncIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  syncIdentifierCopy = syncIdentifier;
   [(TLAccessQueue *)self->_accessQueue assertNotRunningInAccessQueue];
   v24 = 0;
   v25 = &v24;
@@ -1235,18 +1235,18 @@ void __82__TLToneManager__addToneEntries_toManifestAtPath_mediaDirectory_shouldS
   v14[1] = 3221225472;
   v14[2] = __60__TLToneManager__removeToneWithIdentifier_orSyncIdentifier___block_invoke;
   v14[3] = &unk_1E8578A40;
-  v8 = v6;
+  v8 = identifierCopy;
   v15 = v8;
-  v9 = v7;
+  v9 = syncIdentifierCopy;
   v16 = v9;
-  v17 = self;
+  selfCopy = self;
   v18 = &v20;
   v19 = &v24;
   [(TLToneManager *)self _performBlockInAccessQueue:v14];
   if (*(v21 + 24) == 1)
   {
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 postNotificationName:@"_TLToneManagerContentsChangedNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"_TLToneManagerContentsChangedNotification" object:self];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.itunesstored.RingtoneAdded", 0, 0, 1u);
@@ -1470,42 +1470,42 @@ void __60__TLToneManager__removeToneWithIdentifier_orSyncIdentifier___block_invo
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_removeToneFromManifestAtPath:(id)a3 fileName:(id)a4
+- (BOOL)_removeToneFromManifestAtPath:(id)path fileName:(id)name
 {
-  if (!a4)
+  if (!name)
   {
     return 0;
   }
 
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a3;
-  v8 = [v6 setWithObjects:{a4, 0}];
-  LOBYTE(self) = [(TLToneManager *)self _removeTonesFromManifestAtPath:v7 fileNames:v8 shouldSkipReload:0 alreadyLockedManifest:0 removedEntries:0];
+  pathCopy = path;
+  v8 = [v6 setWithObjects:{name, 0}];
+  LOBYTE(self) = [(TLToneManager *)self _removeTonesFromManifestAtPath:pathCopy fileNames:v8 shouldSkipReload:0 alreadyLockedManifest:0 removedEntries:0];
 
   return self;
 }
 
-- (BOOL)_removeTonesFromManifestAtPath:(id)a3 fileNames:(id)a4 shouldSkipReload:(BOOL)a5 alreadyLockedManifest:(BOOL)a6 removedEntries:(id *)a7
+- (BOOL)_removeTonesFromManifestAtPath:(id)path fileNames:(id)names shouldSkipReload:(BOOL)reload alreadyLockedManifest:(BOOL)manifest removedEntries:(id *)entries
 {
   v45 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = [v12 stringByDeletingLastPathComponent];
-  [(TLToneManager *)self _ensureDirectoryExistsAtPath:v14];
+  pathCopy = path;
+  namesCopy = names;
+  stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
+  [(TLToneManager *)self _ensureDirectoryExistsAtPath:stringByDeletingLastPathComponent];
 
-  if (a6)
+  if (manifest)
   {
     v15 = -1;
   }
 
   else
   {
-    v15 = [(TLToneManager *)self _lockManifestAtPath:v12];
+    v15 = [(TLToneManager *)self _lockManifestAtPath:pathCopy];
     if (v15 == -1)
     {
       v22 = 0;
       v27 = 0;
-      if (!a7)
+      if (!entries)
       {
         goto LABEL_33;
       }
@@ -1514,23 +1514,23 @@ void __60__TLToneManager__removeToneWithIdentifier_orSyncIdentifier___block_invo
     }
   }
 
-  v16 = [objc_alloc(MEMORY[0x1E695DF90]) initWithContentsOfFile:v12];
+  v16 = [objc_alloc(MEMORY[0x1E695DF90]) initWithContentsOfFile:pathCopy];
   v17 = v16;
   if (v16)
   {
-    v34 = a5;
+    reloadCopy = reload;
     v35 = v15;
-    v33 = self;
-    v36 = a6;
-    v38 = v12;
+    selfCopy = self;
+    manifestCopy = manifest;
+    v38 = pathCopy;
     v39 = v16;
     v18 = [v16 objectForKey:@"Ringtones"];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v37 = v13;
-    v19 = v13;
+    v37 = namesCopy;
+    v19 = namesCopy;
     v20 = [v19 countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v20)
     {
@@ -1547,7 +1547,7 @@ void __60__TLToneManager__removeToneWithIdentifier_orSyncIdentifier___block_invo
           }
 
           v25 = *(*(&v40 + 1) + 8 * i);
-          if (a7)
+          if (entries)
           {
             v26 = [v18 objectForKey:*(*(&v40 + 1) + 8 * i)];
             if (v26)
@@ -1576,23 +1576,23 @@ void __60__TLToneManager__removeToneWithIdentifier_orSyncIdentifier___block_invo
     }
 
     v28 = [MEMORY[0x1E696AE40] dataWithPropertyList:v39 format:200 options:0 error:0];
-    v12 = v38;
+    pathCopy = v38;
     v27 = [v28 writeToFile:v38 options:1 error:0];
     if (v27)
     {
-      v13 = v37;
-      v29 = v36;
-      if (!v34)
+      namesCopy = v37;
+      v29 = manifestCopy;
+      if (!reloadCopy)
       {
-        [(TLToneManager *)v33 _reloadTones];
+        [(TLToneManager *)selfCopy _reloadTones];
       }
     }
 
     else
     {
       v30 = TLLogToneManagement();
-      v13 = v37;
-      v29 = v36;
+      namesCopy = v37;
+      v29 = manifestCopy;
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
         [TLToneManager _removeTonesFromManifestAtPath:fileNames:shouldSkipReload:alreadyLockedManifest:removedEntries:];
@@ -1618,17 +1618,17 @@ void __60__TLToneManager__removeToneWithIdentifier_orSyncIdentifier___block_invo
   {
     v22 = 0;
     v27 = 0;
-    if (!a6)
+    if (!manifest)
     {
 LABEL_30:
       close(v15);
     }
   }
 
-  if (a7)
+  if (entries)
   {
 LABEL_32:
-    *a7 = [v22 copy];
+    *entries = [v22 copy];
   }
 
 LABEL_33:
@@ -1637,10 +1637,10 @@ LABEL_33:
   return v27;
 }
 
-- (int)_lockManifestAtPath:(id)a3
+- (int)_lockManifestAtPath:(id)path
 {
-  v3 = [a3 stringByDeletingLastPathComponent];
-  v4 = [v3 stringByAppendingPathComponent:@"com.apple.ToneLibrary.lock"];
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
+  v4 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:@"com.apple.ToneLibrary.lock"];
 
   v5 = open([v4 fileSystemRepresentation], 512, 438);
   if (v5 == -1)
@@ -1979,8 +1979,8 @@ intptr_t __32__TLToneManager__removeAllTones__block_invoke_298(void *a1, char a2
 - (id)_alarmWakeUpRingtoneDirectory
 {
   v2 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v3 = [v2 resourcePath];
-  v4 = [v3 stringByAppendingPathComponent:@"AlarmWakeUpRingtones"];
+  resourcePath = [v2 resourcePath];
+  v4 = [resourcePath stringByAppendingPathComponent:@"AlarmWakeUpRingtones"];
 
   return v4;
 }
@@ -1988,32 +1988,32 @@ intptr_t __32__TLToneManager__removeAllTones__block_invoke_298(void *a1, char a2
 - (id)_systemEmbeddedSoundDirectory
 {
   v2 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v3 = [v2 resourcePath];
-  v4 = [v3 stringByAppendingPathComponent:@"AlertTones"];
+  resourcePath = [v2 resourcePath];
+  v4 = [resourcePath stringByAppendingPathComponent:@"AlertTones"];
 
   return v4;
 }
 
 - (id)_systemEmbeddedClassicSoundDirectory
 {
-  v2 = [(TLToneManager *)self _systemEmbeddedSoundDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"Classic"];
+  _systemEmbeddedSoundDirectory = [(TLToneManager *)self _systemEmbeddedSoundDirectory];
+  v3 = [_systemEmbeddedSoundDirectory stringByAppendingPathComponent:@"Classic"];
 
   return v3;
 }
 
 - (id)_systemEmbeddedModernSoundDirectory
 {
-  v2 = [(TLToneManager *)self _systemEmbeddedSoundDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"Modern"];
+  _systemEmbeddedSoundDirectory = [(TLToneManager *)self _systemEmbeddedSoundDirectory];
+  v3 = [_systemEmbeddedSoundDirectory stringByAppendingPathComponent:@"Modern"];
 
   return v3;
 }
 
 - (id)_systemEmbeddedEncoreInfinitumSoundDirectory
 {
-  v2 = [(TLToneManager *)self _systemEmbeddedSoundDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"EncoreInfinitum"];
+  _systemEmbeddedSoundDirectory = [(TLToneManager *)self _systemEmbeddedSoundDirectory];
+  v3 = [_systemEmbeddedSoundDirectory stringByAppendingPathComponent:@"EncoreInfinitum"];
 
   return v3;
 }
@@ -2021,12 +2021,12 @@ intptr_t __32__TLToneManager__removeAllTones__block_invoke_298(void *a1, char a2
 - (id)_systemEmbeddedEncoreRemixSoundDirectory
 {
   v3 = +[TLCapabilitiesManager sharedCapabilitiesManager];
-  v4 = [v3 supportsReflectionRemixes];
+  supportsReflectionRemixes = [v3 supportsReflectionRemixes];
 
-  if (v4)
+  if (supportsReflectionRemixes)
   {
-    v5 = [(TLToneManager *)self _systemEmbeddedSoundDirectory];
-    v6 = [v5 stringByAppendingPathComponent:@"EncoreRemix"];
+    _systemEmbeddedSoundDirectory = [(TLToneManager *)self _systemEmbeddedSoundDirectory];
+    v6 = [_systemEmbeddedSoundDirectory stringByAppendingPathComponent:@"EncoreRemix"];
   }
 
   else
@@ -2039,8 +2039,8 @@ intptr_t __32__TLToneManager__removeAllTones__block_invoke_298(void *a1, char a2
 
 - (id)_systemWatchSoundDirectory
 {
-  v2 = [(TLToneManager *)self _baseDirectoryForAlertToneSoundFiles];
-  v3 = [v2 stringByAppendingPathComponent:@"nano"];
+  _baseDirectoryForAlertToneSoundFiles = [(TLToneManager *)self _baseDirectoryForAlertToneSoundFiles];
+  v3 = [_baseDirectoryForAlertToneSoundFiles stringByAppendingPathComponent:@"nano"];
 
   return v3;
 }
@@ -2048,9 +2048,9 @@ intptr_t __32__TLToneManager__removeAllTones__block_invoke_298(void *a1, char a2
 - (void)_loadSystemTones
 {
   v122 = *MEMORY[0x1E69E9840];
-  v33 = [(TLToneManager *)self _systemSoundDirectory];
-  v34 = self;
-  v3 = [(TLToneManager *)self _systemWatchSoundDirectory];
+  _systemSoundDirectory = [(TLToneManager *)self _systemSoundDirectory];
+  selfCopy = self;
+  _systemWatchSoundDirectory = [(TLToneManager *)self _systemWatchSoundDirectory];
   v104 = @"<none>";
   v105 = kSystemSoundID_NoneTone;
   v106 = kSystemSoundID_NoneTone;
@@ -2058,46 +2058,46 @@ intptr_t __32__TLToneManager__removeAllTones__block_invoke_298(void *a1, char a2
   v107 = 0;
   v108[1] = @"texttone:App Notification";
   v108[2] = 0x3F700000523;
-  v108[3] = v33;
+  v108[3] = _systemSoundDirectory;
   v108[4] = @"sms-received1.caf";
   v108[5] = @"texttone:Text-Message-Alert-In-Conversation";
   v108[6] = 0x3EB00000515;
-  v108[7] = v33;
+  v108[7] = _systemSoundDirectory;
   v108[8] = @"ReceivedMessage.caf";
   v108[9] = @"texttone:FaceTime-Group-Invitation";
   v108[10] = vdup_n_s32(0x4F1u);
-  v108[11] = v3;
+  v108[11] = _systemWatchSoundDirectory;
   v108[12] = @"MultiwayInvitation.caf";
   v108[13] = @"texttone:FaceTime-Participant-Joined";
   v108[14] = vdup_n_s32(0x4EFu);
-  v108[15] = v3;
+  v108[15] = _systemWatchSoundDirectory;
   v108[16] = @"MultiwayJoin.caf";
   v108[17] = @"texttone:Go-To-Sleep";
-  v108[19] = v33;
+  v108[19] = _systemSoundDirectory;
   v108[20] = @"go_to_sleep_alert.caf";
   v108[18] = vdup_n_s32(0x486u);
   v108[21] = @"texttone:App-Notification-Critical-Alert";
   v108[22] = vdup_n_s32(0x48Du);
-  v108[23] = v33;
+  v108[23] = _systemSoundDirectory;
   v108[24] = @"3rd_party_critical.caf";
   v108[25] = @"texttone:Passbook-NFC-Scan-Complete";
   v108[26] = vdup_n_s32(0x488u);
-  v108[27] = v33;
+  v108[27] = _systemSoundDirectory;
   v108[28] = @"nfc_scan_complete.caf";
   v108[29] = @"texttone:Health";
   v109 = kSystemSoundID_NoneTone;
   v110 = 1262;
-  v111 = v33;
+  v111 = _systemSoundDirectory;
   v112 = @"health_notification.caf";
   v113 = @"texttone:Health-Urgent";
   v114 = kSystemSoundID_NoneTone;
   v115 = 1363;
-  v116 = v3;
+  v116 = _systemWatchSoundDirectory;
   v117 = @"HealthNotificationUrgent.caf";
   v118 = @"texttone:Headphone-Audio-Exposure-Limit-Exceeded";
   v119 = vdup_n_s32(0x552u);
-  v32 = v3;
-  v120 = v3;
+  v32 = _systemWatchSoundDirectory;
+  v120 = _systemWatchSoundDirectory;
   v121 = @"HeadphoneAudioExposureLimitExceeded.caf";
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   for (i = 0; i != 44; i += 4)
@@ -2135,124 +2135,124 @@ intptr_t __32__TLToneManager__removeAllTones__block_invoke_298(void *a1, char a2
     }
   }
 
-  v14 = [(TLToneManager *)v34 _systemEmbeddedSoundDirectory];
-  v15 = [(TLToneManager *)v34 _systemEmbeddedClassicSoundDirectory];
-  v16 = [(TLToneManager *)v34 _systemEmbeddedModernSoundDirectory];
-  [(TLToneManager *)v34 _systemEmbeddedEncoreInfinitumSoundDirectory];
+  _systemEmbeddedSoundDirectory = [(TLToneManager *)selfCopy _systemEmbeddedSoundDirectory];
+  _systemEmbeddedClassicSoundDirectory = [(TLToneManager *)selfCopy _systemEmbeddedClassicSoundDirectory];
+  _systemEmbeddedModernSoundDirectory = [(TLToneManager *)selfCopy _systemEmbeddedModernSoundDirectory];
+  [(TLToneManager *)selfCopy _systemEmbeddedEncoreInfinitumSoundDirectory];
   v17 = 0;
   v35[0] = @"texttone:Alert";
-  v35[1] = v15;
+  v35[1] = _systemEmbeddedClassicSoundDirectory;
   v35[2] = @"Alert.m4r";
   v35[3] = @"texttone:Anticipate";
-  v35[4] = v15;
+  v35[4] = _systemEmbeddedClassicSoundDirectory;
   v35[5] = @"Anticipate.m4r";
   v35[6] = @"texttone:Bell";
-  v35[7] = v15;
+  v35[7] = _systemEmbeddedClassicSoundDirectory;
   v35[8] = @"Bell.m4r";
   v35[9] = @"texttone:Bloom";
-  v35[10] = v15;
+  v35[10] = _systemEmbeddedClassicSoundDirectory;
   v35[11] = @"Bloom.m4r";
   v35[12] = @"texttone:Calypso";
-  v35[13] = v15;
+  v35[13] = _systemEmbeddedClassicSoundDirectory;
   v35[14] = @"Calypso.m4r";
   v35[15] = @"texttone:Chime";
-  v35[16] = v15;
+  v35[16] = _systemEmbeddedClassicSoundDirectory;
   v35[17] = @"Chime.m4r";
   v35[18] = @"texttone:Choo Choo";
-  v35[19] = v15;
+  v35[19] = _systemEmbeddedClassicSoundDirectory;
   v35[20] = @"Choo Choo.m4r";
   v35[21] = @"texttone:Descent";
-  v35[22] = v15;
+  v35[22] = _systemEmbeddedClassicSoundDirectory;
   v35[23] = @"Descent.m4r";
   v35[24] = @"texttone:New Mail";
-  v35[25] = v15;
+  v35[25] = _systemEmbeddedClassicSoundDirectory;
   v35[26] = @"Ding.m4r";
   v35[27] = @"texttone:Electronic";
-  v35[28] = v15;
+  v35[28] = _systemEmbeddedClassicSoundDirectory;
   v35[29] = @"Electronic.m4r";
   v35[30] = @"texttone:Fanfare";
-  v35[31] = v15;
+  v35[31] = _systemEmbeddedClassicSoundDirectory;
   v35[32] = @"Fanfare.m4r";
   v35[33] = @"texttone:Glass";
-  v35[34] = v15;
+  v35[34] = _systemEmbeddedClassicSoundDirectory;
   v35[35] = @"Glass.m4r";
   v35[36] = @"texttone:Horn";
-  v35[37] = v15;
+  v35[37] = _systemEmbeddedClassicSoundDirectory;
   v35[38] = @"Horn.m4r";
   v35[39] = @"texttone:Ladder";
-  v35[40] = v15;
+  v35[40] = _systemEmbeddedClassicSoundDirectory;
   v35[41] = @"Ladder.m4r";
   v35[42] = @"texttone:Minuet";
-  v35[43] = v15;
+  v35[43] = _systemEmbeddedClassicSoundDirectory;
   v35[44] = @"Minuet.m4r";
   v35[45] = @"texttone:News Flash";
-  v35[46] = v15;
+  v35[46] = _systemEmbeddedClassicSoundDirectory;
   v35[47] = @"News Flash.m4r";
   v35[48] = @"texttone:Noir";
-  v35[49] = v15;
+  v35[49] = _systemEmbeddedClassicSoundDirectory;
   v35[50] = @"Noir.m4r";
   v35[51] = @"texttone:Sherwood Forest";
-  v35[52] = v15;
+  v35[52] = _systemEmbeddedClassicSoundDirectory;
   v35[53] = @"Sherwood Forest.m4r";
   v35[54] = @"texttone:Spell";
-  v35[55] = v15;
+  v35[55] = _systemEmbeddedClassicSoundDirectory;
   v35[56] = @"Spell.m4r";
   v35[57] = @"texttone:Suspense";
-  v35[58] = v15;
+  v35[58] = _systemEmbeddedClassicSoundDirectory;
   v35[59] = @"Suspense.m4r";
   v35[60] = @"texttone:Sharing Post";
-  v35[61] = v15;
+  v35[61] = _systemEmbeddedClassicSoundDirectory;
   v35[62] = @"Swish.m4r";
   v35[63] = @"texttone:Sent Mail";
-  v35[64] = v15;
+  v35[64] = _systemEmbeddedClassicSoundDirectory;
   v35[65] = @"Swoosh.m4r";
   v35[66] = @"texttone:Telegraph";
-  v35[67] = v15;
+  v35[67] = _systemEmbeddedClassicSoundDirectory;
   v35[68] = @"Telegraph.m4r";
   v35[69] = @"texttone:Tiptoes";
-  v35[70] = v15;
+  v35[70] = _systemEmbeddedClassicSoundDirectory;
   v35[71] = @"Tiptoes.m4r";
   v35[72] = @"texttone:Tri-tone";
-  v35[73] = v15;
+  v35[73] = _systemEmbeddedClassicSoundDirectory;
   v35[74] = @"Tri-Tone.m4r";
   v35[75] = @"texttone:Sent Tweet";
-  v35[76] = v15;
+  v35[76] = _systemEmbeddedClassicSoundDirectory;
   v35[77] = @"Tweet.m4r";
   v35[78] = @"texttone:Typewriters";
-  v35[79] = v15;
+  v35[79] = _systemEmbeddedClassicSoundDirectory;
   v35[80] = @"Typewriters.m4r";
   v35[81] = @"texttone:Update";
-  v35[82] = v15;
+  v35[82] = _systemEmbeddedClassicSoundDirectory;
   v35[83] = @"Update.m4r";
   v35[84] = @"texttone:Note";
-  v35[85] = v16;
+  v35[85] = _systemEmbeddedModernSoundDirectory;
   v35[86] = @"Note.m4r";
   v35[87] = @"texttone:Bamboo";
-  v35[88] = v16;
+  v35[88] = _systemEmbeddedModernSoundDirectory;
   v35[89] = @"Bamboo.m4r";
   v35[90] = @"texttone:Complete";
-  v35[91] = v16;
+  v35[91] = _systemEmbeddedModernSoundDirectory;
   v35[92] = @"Complete.m4r";
   v35[93] = @"texttone:Hello";
-  v35[94] = v16;
+  v35[94] = _systemEmbeddedModernSoundDirectory;
   v35[95] = @"Hello.m4r";
   v35[96] = @"texttone:Popcorn";
-  v35[97] = v16;
+  v35[97] = _systemEmbeddedModernSoundDirectory;
   v35[98] = @"Popcorn.m4r";
   v35[99] = @"texttone:Synth";
-  v35[100] = v16;
+  v35[100] = _systemEmbeddedModernSoundDirectory;
   v35[101] = @"Synth.m4r";
   v35[102] = @"texttone:Aurora";
-  v35[103] = v16;
+  v35[103] = _systemEmbeddedModernSoundDirectory;
   v35[104] = @"Aurora.m4r";
   v35[105] = @"texttone:Keys";
-  v35[106] = v16;
+  v35[106] = _systemEmbeddedModernSoundDirectory;
   v35[107] = @"Keys.m4r";
   v35[108] = @"texttone:Circles";
-  v35[109] = v16;
+  v35[109] = _systemEmbeddedModernSoundDirectory;
   v35[110] = @"Circles.m4r";
   v35[111] = @"texttone:Input";
-  v35[112] = v16;
+  v35[112] = _systemEmbeddedModernSoundDirectory;
   v35[113] = @"Input.m4r";
   v36 = v35[114] = @"texttone:Antic";
   v37 = @"Antic-EncoreInfinitum.caf";
@@ -2288,42 +2288,42 @@ intptr_t __32__TLToneManager__removeAllTones__block_invoke_298(void *a1, char a2
   v66 = v36;
   v67 = @"Welcome-EncoreInfinitum.caf";
   v68 = @"texttone:Calendar Alert";
-  v69 = v16;
+  v69 = _systemEmbeddedModernSoundDirectory;
   v70 = @"Chord.m4r";
   v71 = @"texttone:Air Drop Invitation";
-  v72 = v16;
+  v72 = _systemEmbeddedModernSoundDirectory;
   v73 = @"Pulse.m4r";
   v74 = @"texttone:Photos Sharing Post";
-  v75 = v14;
+  v75 = _systemEmbeddedSoundDirectory;
   v76 = @"PhotosSharingPostTone.caf";
   v77 = @"texttone:Photos Memory";
-  v78 = v14;
+  v78 = _systemEmbeddedSoundDirectory;
   v79 = @"PhotosMemoriesNotification.caf";
   v80 = @"texttone:System Background Mic Usage";
-  v81 = v14;
+  v81 = _systemEmbeddedSoundDirectory;
   v82 = @"Background-Mic-Usage.wav";
   v83 = @"texttone:SOS-Countdown-Tick";
-  v84 = v14;
+  v84 = _systemEmbeddedSoundDirectory;
   v85 = @"SOS-Countdown-Tick.caf";
   v86 = @"texttone:Text-Message-Acknowledgment-Heart";
-  v87 = v14;
+  v87 = _systemEmbeddedSoundDirectory;
   v88 = @"Text-Message-Acknowledgement-Heart.caf";
   v89 = @"texttone:Text-Message-Acknowledgment-Thumbs-Up";
-  v90 = v14;
+  v90 = _systemEmbeddedSoundDirectory;
   v91 = @"Text-Message-Acknowledgement-ThumbsUp.caf";
   v92 = @"texttone:Text-Message-Acknowledgment-Thumbs-Down";
-  v93 = v14;
+  v93 = _systemEmbeddedSoundDirectory;
   v94 = @"Text-Message-Acknowledgement-ThumbsDown.caf";
   v95 = @"texttone:Text-Message-Acknowledgment-HaHa";
-  v96 = v14;
+  v96 = _systemEmbeddedSoundDirectory;
   v97 = @"Text-Message-Acknowledgement-HaHa.caf";
   v98 = @"texttone:Text-Message-Acknowledgment-Exclamation";
-  v99 = v14;
+  v99 = _systemEmbeddedSoundDirectory;
   v100 = @"Text-Message-Acknowledgement-Exclamation.caf";
   v101 = @"texttone:Text-Message-Acknowledgment-Question-Mark";
   v103 = @"Text-Message-Acknowledgement-QuestionMark.caf";
-  v31 = v14;
-  v102 = v14;
+  v31 = _systemEmbeddedSoundDirectory;
+  v102 = _systemEmbeddedSoundDirectory;
   do
   {
     v18 = v35[v17 + 1];
@@ -2371,8 +2371,8 @@ intptr_t __32__TLToneManager__removeAllTones__block_invoke_298(void *a1, char a2
 
   while (v17 != 183);
   v27 = [v4 copy];
-  systemTonesByIdentifier = v34->_systemTonesByIdentifier;
-  v34->_systemTonesByIdentifier = v27;
+  systemTonesByIdentifier = selfCopy->_systemTonesByIdentifier;
+  selfCopy->_systemTonesByIdentifier = v27;
 
   v29 = *MEMORY[0x1E69E9840];
 }
@@ -2384,17 +2384,17 @@ intptr_t __32__TLToneManager__removeAllTones__block_invoke_298(void *a1, char a2
   MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_aliasForToneIdentifier:(id)a3
+- (id)_aliasForToneIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
+  identifierCopy = identifier;
+  v5 = identifierCopy;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  if (v4)
+  if (identifierCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -2402,7 +2402,7 @@ intptr_t __32__TLToneManager__removeAllTones__block_invoke_298(void *a1, char a2
     v9[3] = &unk_1E85789C8;
     v11 = &v12;
     v9[4] = self;
-    v10 = v4;
+    v10 = identifierCopy;
     [(TLToneManager *)self _performBlockInAccessQueue:v9];
 
     v6 = v13[5];
@@ -2438,30 +2438,30 @@ void __41__TLToneManager__aliasForToneIdentifier___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_toneWithIdentifierIsDefaultRingtone:(id)a3
+- (BOOL)_toneWithIdentifierIsDefaultRingtone:(id)ringtone
 {
-  v4 = a3;
-  v5 = [(TLToneManager *)self defaultRingtoneIdentifier];
-  v6 = [v4 isEqualToString:v5];
+  ringtoneCopy = ringtone;
+  defaultRingtoneIdentifier = [(TLToneManager *)self defaultRingtoneIdentifier];
+  v6 = [ringtoneCopy isEqualToString:defaultRingtoneIdentifier];
 
   return v6;
 }
 
-- (BOOL)_toneWithIdentifierIsNonDefaultAndNonEmbeddedSystemRingtone:(id)a3
+- (BOOL)_toneWithIdentifierIsNonDefaultAndNonEmbeddedSystemRingtone:(id)ringtone
 {
-  v4 = a3;
-  v5 = ![(TLToneManager *)self _toneWithIdentifierIsSystemTone:v4]&& [(TLToneManager *)self _toneWithIdentifierIsNonDefaultSystemRingtone:v4];
+  ringtoneCopy = ringtone;
+  v5 = ![(TLToneManager *)self _toneWithIdentifierIsSystemTone:ringtoneCopy]&& [(TLToneManager *)self _toneWithIdentifierIsNonDefaultSystemRingtone:ringtoneCopy];
 
   return v5;
 }
 
-- (BOOL)_toneWithIdentifierIsSystemTone:(id)a3
+- (BOOL)_toneWithIdentifierIsSystemTone:(id)tone
 {
-  v4 = a3;
+  toneCopy = tone;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
-  v13 = [v4 hasPrefix:@"texttone:"];
+  v13 = [toneCopy hasPrefix:@"texttone:"];
   if (v11[3])
   {
     v5 = 1;
@@ -2474,7 +2474,7 @@ void __41__TLToneManager__aliasForToneIdentifier___block_invoke(uint64_t a1)
     v7[2] = __49__TLToneManager__toneWithIdentifierIsSystemTone___block_invoke;
     v7[3] = &unk_1E8578AE0;
     v7[4] = self;
-    v8 = v4;
+    v8 = toneCopy;
     v9 = &v10;
     [(TLToneManager *)self _performBlockInAccessQueue:v7];
 
@@ -2493,17 +2493,17 @@ void __49__TLToneManager__toneWithIdentifierIsSystemTone___block_invoke(uint64_t
   *(*(*(a1 + 48) + 8) + 24) = v2 != 0;
 }
 
-- (BOOL)_toneWithIdentifierIsMediaPlaybackArchive:(id)a3
+- (BOOL)_toneWithIdentifierIsMediaPlaybackArchive:(id)archive
 {
-  v4 = a3;
-  if ([v4 hasPrefix:@"mediaPlaybackArchive:"])
+  archiveCopy = archive;
+  if ([archiveCopy hasPrefix:@"mediaPlaybackArchive:"])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(TLToneManager *)self _underlyingPlaybackArchiveForToneIdentifier:v4];
+    v6 = [(TLToneManager *)self _underlyingPlaybackArchiveForToneIdentifier:archiveCopy];
     v5 = v6 != 0;
   }
 
@@ -2538,7 +2538,7 @@ void __49__TLToneManager__toneWithIdentifierIsSystemTone___block_invoke(uint64_t
   v3 = v19[5];
   if (!v3)
   {
-    v4 = [(TLToneManager *)self _newServiceConnection];
+    _newServiceConnection = [(TLToneManager *)self _newServiceConnection];
     v5 = dispatch_semaphore_create(0);
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
@@ -2546,7 +2546,7 @@ void __49__TLToneManager__toneWithIdentifierIsSystemTone___block_invoke(uint64_t
     v15[3] = &unk_1E8578B08;
     v6 = v5;
     v16 = v6;
-    v7 = [v4 remoteObjectProxyWithErrorHandler:v15];
+    v7 = [_newServiceConnection remoteObjectProxyWithErrorHandler:v15];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __44__TLToneManager__tonePreferencesFromService__block_invoke_775;
@@ -2557,7 +2557,7 @@ void __49__TLToneManager__toneWithIdentifierIsSystemTone___block_invoke(uint64_t
     [v7 retrieveCurrentTonePreferencesWithCompletionHandler:v12];
 
     dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
-    [v4 invalidate];
+    [_newServiceConnection invalidate];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __44__TLToneManager__tonePreferencesFromService__block_invoke_777;
@@ -2609,16 +2609,16 @@ void __44__TLToneManager__tonePreferencesFromService__block_invoke_775(uint64_t 
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_setToneIdentifierUsingService:(id)a3 keyedByTopic:(id)a4 forPreferenceKey:(id)a5
+- (BOOL)_setToneIdentifierUsingService:(id)service keyedByTopic:(id)topic forPreferenceKey:(id)key
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  topicCopy = topic;
+  keyCopy = key;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v11 = [(TLToneManager *)self _newServiceConnection];
+  _newServiceConnection = [(TLToneManager *)self _newServiceConnection];
   v12 = dispatch_semaphore_create(0);
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -2626,7 +2626,7 @@ void __44__TLToneManager__tonePreferencesFromService__block_invoke_775(uint64_t 
   v20[3] = &unk_1E8578B08;
   v13 = v12;
   v21 = v13;
-  v14 = [v11 remoteObjectProxyWithErrorHandler:v20];
+  v14 = [_newServiceConnection remoteObjectProxyWithErrorHandler:v20];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __78__TLToneManager__setToneIdentifierUsingService_keyedByTopic_forPreferenceKey___block_invoke_778;
@@ -2634,10 +2634,10 @@ void __44__TLToneManager__tonePreferencesFromService__block_invoke_775(uint64_t 
   v19 = &v22;
   v15 = v13;
   v18 = v15;
-  [v14 setCurrentToneIdentifier:v8 keyedByTopic:v9 forPreferenceKey:v10 completionHandler:v17];
+  [v14 setCurrentToneIdentifier:serviceCopy keyedByTopic:topicCopy forPreferenceKey:keyCopy completionHandler:v17];
 
   dispatch_semaphore_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
-  [v11 invalidate];
+  [_newServiceConnection invalidate];
   LOBYTE(v14) = *(v23 + 24);
 
   _Block_object_dispose(&v22, 8);
@@ -2677,43 +2677,43 @@ void __78__TLToneManager__setToneIdentifierUsingService_keyedByTopic_forPreferen
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (id)_systemWideTonePreferenceKeyForAlertType:(int64_t)a3
++ (id)_systemWideTonePreferenceKeyForAlertType:(int64_t)type
 {
-  if ((a3 - 1) > 0x1C)
+  if ((type - 1) > 0x1C)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = _TLToneManagerSystemWideTonePreferenceKeys[a3 - 1];
+    v4 = _TLToneManagerSystemWideTonePreferenceKeys[type - 1];
   }
 
   return v4;
 }
 
-- (id)_currentToneIdentifierForAlertType:(int64_t)a3 topic:(id)a4 allowsFallbackToDefaultPreferablyNonSilentToneForInvalidPersistedValue:(BOOL)a5
+- (id)_currentToneIdentifierForAlertType:(int64_t)type topic:(id)topic allowsFallbackToDefaultPreferablyNonSilentToneForInvalidPersistedValue:(BOOL)value
 {
-  v5 = a5;
+  valueCopy = value;
   v59 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  topicCopy = topic;
   v9 = TLLogToneManagement();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = NSStringFromTLAlertType(a3);
+    v10 = NSStringFromTLAlertType(type);
     *buf = 138544130;
-    v52 = self;
+    selfCopy14 = self;
     v53 = 2114;
     v54 = v10;
     v55 = 2114;
-    v56 = v8;
+    v56 = topicCopy;
     v57 = 1024;
-    *v58 = v5;
+    *v58 = valueCopy;
     _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: -_currentToneIdentifierForAlertType:(%{public}@) topic:(%{public}@) allowsFallbackToDefaultPreferablyNonSilentToneForInvalidPersistedValue:(%{BOOL}u).", buf, 0x26u);
   }
 
-  v11 = [v8 length];
-  v12 = [objc_opt_class() _systemWideTonePreferenceKeyForAlertType:a3];
+  v11 = [topicCopy length];
+  v12 = [objc_opt_class() _systemWideTonePreferenceKeyForAlertType:type];
   v13 = v12;
   if (v12 && v11)
   {
@@ -2728,15 +2728,15 @@ void __78__TLToneManager__setToneIdentifierUsingService_keyedByTopic_forPreferen
   {
     if (self->_shouldUseServiceToAccessTonePreferences)
     {
-      v17 = [(TLToneManager *)self _tonePreferencesFromService];
-      v18 = [v17 objectForKey:v13];
+      _tonePreferencesFromService = [(TLToneManager *)self _tonePreferencesFromService];
+      v18 = [_tonePreferencesFromService objectForKey:v13];
 
       v19 = TLLogToneManagement();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = NSStringFromTLAlertType(a3);
+        v20 = NSStringFromTLAlertType(type);
         *buf = 138544130;
-        v52 = self;
+        selfCopy14 = self;
         v53 = 2114;
         v54 = v20;
         v55 = 2114;
@@ -2748,13 +2748,13 @@ void __78__TLToneManager__setToneIdentifierUsingService_keyedByTopic_forPreferen
 
       if (v11)
       {
-        v15 = [v18 objectForKey:v8];
+        v15 = [v18 objectForKey:topicCopy];
         v16 = TLLogToneManagement();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = NSStringFromTLAlertType(a3);
+          v21 = NSStringFromTLAlertType(type);
           *buf = 138543874;
-          v52 = self;
+          selfCopy14 = self;
           v53 = 2114;
           v54 = v21;
           v55 = 2114;
@@ -2771,9 +2771,9 @@ LABEL_23:
         v16 = TLLogToneManagement();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = NSStringFromTLAlertType(a3);
+          v21 = NSStringFromTLAlertType(type);
           *buf = 138543874;
-          v52 = self;
+          selfCopy14 = self;
           v53 = 2114;
           v54 = v21;
           v55 = 2114;
@@ -2800,9 +2800,9 @@ LABEL_23:
     v25 = TLLogToneManagement();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = NSStringFromTLAlertType(a3);
+      v26 = NSStringFromTLAlertType(type);
       *buf = 138544386;
-      v52 = self;
+      selfCopy14 = self;
       v53 = 2114;
       v54 = v26;
       v55 = 2114;
@@ -2824,14 +2824,14 @@ LABEL_40:
 
     if (v11)
     {
-      v27 = [v16 objectForKey:v8];
+      v27 = [v16 objectForKey:topicCopy];
       v28 = TLLogToneManagement();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        NSStringFromTLAlertType(a3);
+        NSStringFromTLAlertType(type);
         v29 = v49 = v27;
         *buf = 138543874;
-        v52 = self;
+        selfCopy14 = self;
         v53 = 2114;
         v54 = v29;
         v55 = 2114;
@@ -2850,10 +2850,10 @@ LABEL_29:
       v28 = TLLogToneManagement();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        NSStringFromTLAlertType(a3);
+        NSStringFromTLAlertType(type);
         v29 = v49 = v27;
         *buf = 138543874;
-        v52 = self;
+        selfCopy14 = self;
         v53 = 2114;
         v54 = v29;
         v55 = 2114;
@@ -2874,9 +2874,9 @@ LABEL_29:
         v31 = TLLogToneManagement();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
-          v32 = NSStringFromTLAlertType(a3);
+          v32 = NSStringFromTLAlertType(type);
           *buf = 138543874;
-          v52 = self;
+          selfCopy14 = self;
           v53 = 2114;
           v54 = v32;
           v55 = 2114;
@@ -2890,9 +2890,9 @@ LABEL_29:
         v31 = TLLogToneManagement();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
-          v33 = NSStringFromTLAlertType(a3);
+          v33 = NSStringFromTLAlertType(type);
           *buf = 138543618;
-          v52 = self;
+          selfCopy14 = self;
           v53 = 2114;
           v54 = v33;
           _os_log_impl(&dword_1D9356000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@: -_currentToneIdentifierForAlertType:(%{public}@) […]. persistedToneIdentifierWasInvalid = YES.", buf, 0x16u);
@@ -2928,14 +2928,14 @@ LABEL_41:
 
   else
   {
-    v34 = [(TLToneManager *)self _currentToneIdentifierForAlertType:a3 topic:0];
+    v34 = [(TLToneManager *)self _currentToneIdentifierForAlertType:type topic:0];
 
     v35 = TLLogToneManagement();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = NSStringFromTLAlertType(a3);
+      v36 = NSStringFromTLAlertType(type);
       *buf = 138543874;
-      v52 = self;
+      selfCopy14 = self;
       v53 = 2114;
       v54 = v36;
       v55 = 2114;
@@ -2955,9 +2955,9 @@ LABEL_41:
       v37 = TLLogToneManagement();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
-        v38 = NSStringFromTLAlertType(a3);
+        v38 = NSStringFromTLAlertType(type);
         *buf = 138543874;
-        v52 = self;
+        selfCopy14 = self;
         v53 = 2114;
         v54 = v38;
         v55 = 2114;
@@ -2976,16 +2976,16 @@ LABEL_41:
 
   if (![v15 length])
   {
-    if (v5)
+    if (valueCopy)
     {
-      v39 = [(TLToneManager *)self _defaultPreferablyNonSilentToneIdentifierForAlertType:a3 topic:v8];
+      v39 = [(TLToneManager *)self _defaultPreferablyNonSilentToneIdentifierForAlertType:type topic:topicCopy];
 
       v40 = TLLogToneManagement();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
       {
-        v41 = NSStringFromTLAlertType(a3);
+        v41 = NSStringFromTLAlertType(type);
         *buf = 138543874;
-        v52 = self;
+        selfCopy14 = self;
         v53 = 2114;
         v54 = v41;
         v55 = 2114;
@@ -2999,9 +2999,9 @@ LABEL_41:
       v40 = TLLogVibrationManagement();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
       {
-        v42 = NSStringFromTLAlertType(a3);
+        v42 = NSStringFromTLAlertType(type);
         *buf = 138543874;
-        v52 = self;
+        selfCopy14 = self;
         v53 = 2114;
         v54 = v42;
         v55 = 2114;
@@ -3019,15 +3019,15 @@ LABEL_62:
   v43 = TLLogToneManagement();
   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
   {
-    v44 = NSStringFromTLAlertType(a3);
+    v44 = NSStringFromTLAlertType(type);
     *buf = 138544386;
-    v52 = self;
+    selfCopy14 = self;
     v53 = 2114;
     v54 = v44;
     v55 = 2114;
-    v56 = v8;
+    v56 = topicCopy;
     v57 = 1024;
-    *v58 = v5;
+    *v58 = valueCopy;
     *&v58[4] = 2114;
     *&v58[6] = v15;
     _os_log_impl(&dword_1D9356000, v43, OS_LOG_TYPE_DEFAULT, "%{public}@: -_currentToneIdentifierForAlertType:(%{public}@) topic:(%{public}@) allowsFallbackToDefaultPreferablyNonSilentToneForInvalidPersistedValue:(%{BOOL}u). Returning: %{public}@.", buf, 0x30u);
@@ -3038,24 +3038,24 @@ LABEL_62:
   return v15;
 }
 
-- (id)currentToneIdentifierForAlertType:(int64_t)a3 topic:(id)a4
+- (id)currentToneIdentifierForAlertType:(int64_t)type topic:(id)topic
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  topicCopy = topic;
   v7 = TLLogToneManagement();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = NSStringFromTLAlertType(a3);
+    v8 = NSStringFromTLAlertType(type);
     v29 = 138543874;
-    v30 = self;
+    selfCopy10 = self;
     v31 = 2114;
     v32 = v8;
     v33 = 2114;
-    v34 = v6;
+    v34 = topicCopy;
     _os_log_impl(&dword_1D9356000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: -currentToneIdentifierForAlertType:(%{public}@) topic:(%{public}@).", &v29, 0x20u);
   }
 
-  if ([TLAlert _currentOverridePolicyForType:a3]!= 1)
+  if ([TLAlert _currentOverridePolicyForType:type]!= 1)
   {
     goto LABEL_7;
   }
@@ -3064,9 +3064,9 @@ LABEL_62:
   v10 = TLLogToneManagement();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = NSStringFromTLAlertType(a3);
+    v11 = NSStringFromTLAlertType(type);
     v29 = 138543874;
-    v30 = self;
+    selfCopy10 = self;
     v31 = 2114;
     v32 = v11;
     v33 = 2114;
@@ -3077,11 +3077,11 @@ LABEL_62:
   if (!v9)
   {
 LABEL_7:
-    if (v6)
+    if (topicCopy)
     {
-      if (a3 == 13)
+      if (type == 13)
       {
-        if ([(__CFString *)v6 isEqualToString:@"TLAlertTopicAlarmGoToSleep"])
+        if ([(__CFString *)topicCopy isEqualToString:@"TLAlertTopicAlarmGoToSleep"])
         {
           v9 = TLLogToneManagement();
           if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -3089,13 +3089,13 @@ LABEL_7:
 LABEL_29:
 
 LABEL_30:
-            v9 = [(TLToneManager *)self defaultToneIdentifierForAlertType:a3 topic:v6];
+            v9 = [(TLToneManager *)self defaultToneIdentifierForAlertType:type topic:topicCopy];
             v17 = TLLogToneManagement();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
             {
-              v18 = NSStringFromTLAlertType(a3);
+              v18 = NSStringFromTLAlertType(type);
               v29 = 138543874;
-              v30 = self;
+              selfCopy10 = self;
               v31 = 2114;
               v32 = v18;
               v33 = 2114;
@@ -3108,11 +3108,11 @@ LABEL_30:
 
           v13 = NSStringFromTLAlertType(0xDuLL);
           v29 = 138543874;
-          v30 = self;
+          selfCopy10 = self;
           v31 = 2114;
           v32 = v13;
           v33 = 2114;
-          v34 = v6;
+          v34 = topicCopy;
           _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: -currentToneIdentifierForAlertType:(%{public}@) […]: Skipping Preferences lookup for topic %{public}@.", &v29, 0x20u);
 LABEL_28:
 
@@ -3120,16 +3120,16 @@ LABEL_28:
         }
       }
 
-      else if (a3 == 2)
+      else if (type == 2)
       {
-        if (([(__CFString *)v6 isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentHeart"]& 1) != 0 || ([(__CFString *)v6 isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentThumbsUp"]& 1) != 0 || ([(__CFString *)v6 isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentThumbsDown"]& 1) != 0 || ([(__CFString *)v6 isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentHaHa"]& 1) != 0 || ([(__CFString *)v6 isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentExclamation"]& 1) != 0)
+        if (([(__CFString *)topicCopy isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentHeart"]& 1) != 0 || ([(__CFString *)topicCopy isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentThumbsUp"]& 1) != 0 || ([(__CFString *)topicCopy isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentThumbsDown"]& 1) != 0 || ([(__CFString *)topicCopy isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentHaHa"]& 1) != 0 || ([(__CFString *)topicCopy isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentExclamation"]& 1) != 0)
         {
           v12 = 1;
         }
 
         else
         {
-          v12 = [(__CFString *)v6 isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentQuestionMark"];
+          v12 = [(__CFString *)topicCopy isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentQuestionMark"];
         }
 
         goto LABEL_20;
@@ -3138,13 +3138,13 @@ LABEL_28:
 
     v12 = 0;
 LABEL_20:
-    v9 = [(TLToneManager *)self _currentToneIdentifierForAlertType:a3 topic:v6];
+    v9 = [(TLToneManager *)self _currentToneIdentifierForAlertType:type topic:topicCopy];
     v14 = TLLogToneManagement();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = NSStringFromTLAlertType(a3);
+      v15 = NSStringFromTLAlertType(type);
       v29 = 138543874;
-      v30 = self;
+      selfCopy10 = self;
       v31 = 2114;
       v32 = v15;
       v33 = 2114;
@@ -3165,9 +3165,9 @@ LABEL_20:
     v13 = TLLogToneManagement();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = NSStringFromTLAlertType(a3);
+      v16 = NSStringFromTLAlertType(type);
       v29 = 138543874;
-      v30 = self;
+      selfCopy10 = self;
       v31 = 2114;
       v32 = v16;
       v33 = 2114;
@@ -3179,16 +3179,16 @@ LABEL_20:
   }
 
 LABEL_33:
-  if (a3 == 18)
+  if (type == 18)
   {
-    v19 = [(TLToneManager *)self currentToneIdentifierForAlertType:2 topic:v6];
+    v19 = [(TLToneManager *)self currentToneIdentifierForAlertType:2 topic:topicCopy];
 
     v23 = TLLogToneManagement();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       v24 = NSStringFromTLAlertType(0x12uLL);
       v29 = 138543874;
-      v30 = self;
+      selfCopy10 = self;
       v31 = 2114;
       v32 = v24;
       v33 = 2114;
@@ -3200,9 +3200,9 @@ LABEL_33:
     goto LABEL_48;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
-    v19 = [(TLToneManager *)self currentToneIdentifierForAlertType:2 topic:v6];
+    v19 = [(TLToneManager *)self currentToneIdentifierForAlertType:2 topic:topicCopy];
     if (![v19 isEqualToString:@"<none>"])
     {
       v20 = v9;
@@ -3216,7 +3216,7 @@ LABEL_33:
     {
       v22 = NSStringFromTLAlertType(3uLL);
       v29 = 138543874;
-      v30 = self;
+      selfCopy10 = self;
       v31 = 2114;
       v32 = v22;
       v33 = 2114;
@@ -3227,7 +3227,7 @@ LABEL_33:
     goto LABEL_43;
   }
 
-  if (a3 == 2 && [(__CFString *)v6 isEqualToString:@"TLAlertTopicTextMessageInConversation"]&& ([(__CFString *)v9 isEqualToString:@"<none>"]& 1) == 0)
+  if (type == 2 && [(__CFString *)topicCopy isEqualToString:@"TLAlertTopicTextMessageInConversation"]&& ([(__CFString *)v9 isEqualToString:@"<none>"]& 1) == 0)
   {
 
     v19 = TLLogToneManagement();
@@ -3242,7 +3242,7 @@ LABEL_48:
 
     v21 = NSStringFromTLAlertType(2uLL);
     v29 = 138543874;
-    v30 = self;
+    selfCopy10 = self;
     v31 = 2114;
     v32 = v21;
     v33 = 2114;
@@ -3257,13 +3257,13 @@ LABEL_49:
   v25 = TLLogToneManagement();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
-    v26 = NSStringFromTLAlertType(a3);
+    v26 = NSStringFromTLAlertType(type);
     v29 = 138544130;
-    v30 = self;
+    selfCopy10 = self;
     v31 = 2114;
     v32 = v26;
     v33 = 2114;
-    v34 = v6;
+    v34 = topicCopy;
     v35 = 2114;
     v36 = v9;
     _os_log_impl(&dword_1D9356000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@: -currentToneIdentifierForAlertType:(%{public}@) topic:(%{public}@). Returning: %{public}@.", &v29, 0x2Au);
@@ -3274,25 +3274,25 @@ LABEL_49:
   return v9;
 }
 
-- (void)setCurrentToneIdentifier:(id)a3 forAlertType:(int64_t)a4 topic:(id)a5
+- (void)setCurrentToneIdentifier:(id)identifier forAlertType:(int64_t)type topic:(id)topic
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v9 length];
+  identifierCopy = identifier;
+  topicCopy = topic;
+  v10 = [topicCopy length];
   v11 = TLLogToneManagement();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
   if (v10)
   {
     if (v12)
     {
-      v13 = NSStringFromTLAlertType(a4);
+      v13 = NSStringFromTLAlertType(type);
       *v26 = 138543874;
-      *&v26[4] = v8;
+      *&v26[4] = identifierCopy;
       *&v26[12] = 2114;
       *&v26[14] = v13;
       *&v26[22] = 2114;
-      v27 = v9;
+      v27 = topicCopy;
       v14 = "setCurrentToneIdentifier:@%{public}@ forAlertType:%{public}@ topic:@%{public}@";
       v15 = v11;
       v16 = 32;
@@ -3303,9 +3303,9 @@ LABEL_6:
 
   else if (v12)
   {
-    v13 = NSStringFromTLAlertType(a4);
+    v13 = NSStringFromTLAlertType(type);
     *v26 = 138543618;
-    *&v26[4] = v8;
+    *&v26[4] = identifierCopy;
     *&v26[12] = 2114;
     *&v26[14] = v13;
     v14 = "setCurrentToneIdentifier:@%{public}@ forAlertType:%{public}@";
@@ -3314,7 +3314,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v17 = [objc_opt_class() _systemWideTonePreferenceKeyForAlertType:a4];
+  v17 = [objc_opt_class() _systemWideTonePreferenceKeyForAlertType:type];
   v18 = v17;
   if (v10 && v17)
   {
@@ -3327,7 +3327,7 @@ LABEL_6:
   {
     if (self->_shouldUseServiceToAccessTonePreferences)
     {
-      if (![(TLToneManager *)self _setToneIdentifierUsingService:v8 keyedByTopic:v9 forPreferenceKey:v18])
+      if (![(TLToneManager *)self _setToneIdentifierUsingService:identifierCopy keyedByTopic:topicCopy forPreferenceKey:v18])
       {
         goto LABEL_32;
       }
@@ -3352,7 +3352,7 @@ LABEL_6:
           CFRelease(v23);
         }
 
-        else if ([v8 length])
+        else if ([identifierCopy length])
         {
           v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
         }
@@ -3362,14 +3362,14 @@ LABEL_6:
           v24 = 0;
         }
 
-        if ([v8 length])
+        if ([identifierCopy length])
         {
-          [v24 setObject:v8 forKey:v9];
+          [v24 setObject:identifierCopy forKey:topicCopy];
         }
 
         else
         {
-          [v24 removeObjectForKey:v9];
+          [v24 removeObjectForKey:topicCopy];
           if (![v24 count])
           {
 
@@ -3382,16 +3382,16 @@ LABEL_6:
 
       else
       {
-        CFPreferencesSetAppValue(v18, v8, v20);
+        CFPreferencesSetAppValue(v18, identifierCopy, v20);
       }
 
       CFRelease(v21);
     }
 
     [(TLToneManager *)self _didSetTonePreferenceSuccessfullyWithKey:v18 inDomain:+[TLPreferencesUtilities usingPreferencesOfKind:"preferencesDomain"], 1];
-    if ((!v8 || ([v8 isEqualToString:@"<none>"] & 1) == 0) && +[TLAlert _currentOverridePolicyForType:](TLAlert, "_currentOverridePolicyForType:", a4) == 1)
+    if ((!identifierCopy || ([identifierCopy isEqualToString:@"<none>"] & 1) == 0) && +[TLAlert _currentOverridePolicyForType:](TLAlert, "_currentOverridePolicyForType:", type) == 1)
     {
-      [TLAlert _setCurrentOverridePolicy:0 forType:a4];
+      [TLAlert _setCurrentOverridePolicy:0 forType:type];
     }
   }
 
@@ -3400,42 +3400,42 @@ LABEL_32:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (id)currentToneNameForAlertType:(int64_t)a3
+- (id)currentToneNameForAlertType:(int64_t)type
 {
-  v4 = [(TLToneManager *)self currentToneIdentifierForAlertType:a3];
+  v4 = [(TLToneManager *)self currentToneIdentifierForAlertType:type];
   v5 = [(TLToneManager *)self nameForToneIdentifier:v4];
 
   return v5;
 }
 
-- (unsigned)currentToneSoundIDForAlertType:(int64_t)a3 topic:(id)a4
+- (unsigned)currentToneSoundIDForAlertType:(int64_t)type topic:(id)topic
 {
-  v6 = a4;
-  v7 = [(TLToneManager *)self currentToneIdentifierForAlertType:a3 topic:v6];
+  topicCopy = topic;
+  v7 = [(TLToneManager *)self currentToneIdentifierForAlertType:type topic:topicCopy];
   v8 = [(TLToneManager *)self _soundForToneIdentifier:v7];
   if (!v8)
   {
-    v9 = [(TLToneManager *)self defaultToneIdentifierForAlertType:a3 topic:v6];
+    v9 = [(TLToneManager *)self defaultToneIdentifierForAlertType:type topic:topicCopy];
     v8 = [(TLToneManager *)self _soundForToneIdentifier:v9];
   }
 
-  v10 = [v8 soundID];
+  soundID = [v8 soundID];
 
-  return v10;
+  return soundID;
 }
 
-+ (id)_defaultToneIdentifierForAlertType:(int64_t)a3 topic:(id)a4
++ (id)_defaultToneIdentifierForAlertType:(int64_t)type topic:(id)topic
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if ((a3 - 1) > 0x1C)
+  topicCopy = topic;
+  if ((type - 1) > 0x1C)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = _TLToneManagerDefaultIdentifiers[a3 - 1];
+    v7 = _TLToneManagerDefaultIdentifiers[type - 1];
     if (![(__CFString *)v7 length])
     {
       v8 = @"<none>";
@@ -3443,16 +3443,16 @@ LABEL_32:
       v7 = v8;
     }
 
-    switch(a3)
+    switch(type)
     {
       case 1:
-        if ([v6 isEqualToString:@"TLAlertTopicIncomingCallFaceTimeGroupInvitation"])
+        if ([topicCopy isEqualToString:@"TLAlertTopicIncomingCallFaceTimeGroupInvitation"])
         {
           v9 = @"texttone:FaceTime-Group-Invitation";
           goto LABEL_48;
         }
 
-        if ([v6 isEqualToString:@"TLAlertTopicIncomingCallFaceTimeParticipantJoined"])
+        if ([topicCopy isEqualToString:@"TLAlertTopicIncomingCallFaceTimeParticipantJoined"])
         {
           v9 = @"texttone:FaceTime-Participant-Joined";
           goto LABEL_48;
@@ -3460,37 +3460,37 @@ LABEL_32:
 
         break;
       case 2:
-        if ([v6 isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentHeart"])
+        if ([topicCopy isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentHeart"])
         {
           v9 = @"texttone:Text-Message-Acknowledgment-Heart";
           goto LABEL_48;
         }
 
-        if ([v6 isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentThumbsUp"])
+        if ([topicCopy isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentThumbsUp"])
         {
           v9 = @"texttone:Text-Message-Acknowledgment-Thumbs-Up";
           goto LABEL_48;
         }
 
-        if ([v6 isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentThumbsDown"])
+        if ([topicCopy isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentThumbsDown"])
         {
           v9 = @"texttone:Text-Message-Acknowledgment-Thumbs-Down";
           goto LABEL_48;
         }
 
-        if ([v6 isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentHaHa"])
+        if ([topicCopy isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentHaHa"])
         {
           v9 = @"texttone:Text-Message-Acknowledgment-HaHa";
           goto LABEL_48;
         }
 
-        if ([v6 isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentExclamation"])
+        if ([topicCopy isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentExclamation"])
         {
           v9 = @"texttone:Text-Message-Acknowledgment-Exclamation";
           goto LABEL_48;
         }
 
-        if ([v6 isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentQuestionMark"])
+        if ([topicCopy isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentQuestionMark"])
         {
           v9 = @"texttone:Text-Message-Acknowledgment-Question-Mark";
           goto LABEL_48;
@@ -3506,7 +3506,7 @@ LABEL_32:
 
         break;
       case 5:
-        if ([v6 isEqualToString:@"com.apple.mobilemail.bulletin-subsection.VIP"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"com.apple.mobilemail.bulletin-subsection.ThreadNotify"))
+        if ([topicCopy isEqualToString:@"com.apple.mobilemail.bulletin-subsection.VIP"] & 1) != 0 || (objc_msgSend(topicCopy, "isEqualToString:", @"com.apple.mobilemail.bulletin-subsection.ThreadNotify"))
         {
           v9 = @"texttone:New Mail";
           goto LABEL_48;
@@ -3514,13 +3514,13 @@ LABEL_32:
 
         break;
       case 9:
-        if ([v6 isEqualToString:@"TLAlertTopicPhotosNotificationSharingPost"])
+        if ([topicCopy isEqualToString:@"TLAlertTopicPhotosNotificationSharingPost"])
         {
           v9 = @"texttone:Photos Sharing Post";
           goto LABEL_48;
         }
 
-        if ([v6 isEqualToString:@"TLAlertTopicPhotosNotificationMemory"])
+        if ([topicCopy isEqualToString:@"TLAlertTopicPhotosNotificationMemory"])
         {
           v9 = @"texttone:Photos Memory";
           goto LABEL_48;
@@ -3528,13 +3528,13 @@ LABEL_32:
 
         break;
       case 13:
-        if ([v6 isEqualToString:@"TLAlertTopicAlarmGoToSleep"])
+        if ([topicCopy isEqualToString:@"TLAlertTopicAlarmGoToSleep"])
         {
           v9 = @"texttone:Go-To-Sleep";
           goto LABEL_48;
         }
 
-        if (([v6 isEqualToString:@"TLAlertTopicAlarmWakeUp"] & 1) == 0)
+        if (([topicCopy isEqualToString:@"TLAlertTopicAlarmWakeUp"] & 1) == 0)
         {
           goto LABEL_41;
         }
@@ -3551,25 +3551,25 @@ LABEL_41:
         v9 = @"system:Radial";
         goto LABEL_48;
       case 16:
-        if ([v6 isEqualToString:@"TLAlertTopicSystemNotificationBackgroundMicUsage"])
+        if ([topicCopy isEqualToString:@"TLAlertTopicSystemNotificationBackgroundMicUsage"])
         {
           v9 = @"texttone:System Background Mic Usage";
           goto LABEL_48;
         }
 
-        if ([v6 isEqualToString:@"TLAlertTopicSystemNotificationDoorbell"])
+        if ([topicCopy isEqualToString:@"TLAlertTopicSystemNotificationDoorbell"])
         {
           v9 = @"system:Doorbell";
           goto LABEL_48;
         }
 
-        if ([v6 isEqualToString:@"TLAlertTopicSystemNotificationElevationAlert"])
+        if ([topicCopy isEqualToString:@"TLAlertTopicSystemNotificationElevationAlert"])
         {
           v9 = @"texttone:Elevation Alert";
           goto LABEL_48;
         }
 
-        if (([v6 isEqualToString:@"TLAlertTopicSystemNotificationHeadphoneAudioExposure"] & 1) == 0)
+        if (([topicCopy isEqualToString:@"TLAlertTopicSystemNotificationHeadphoneAudioExposure"] & 1) == 0)
         {
           break;
         }
@@ -3577,13 +3577,13 @@ LABEL_41:
         v9 = @"texttone:Headphone-Audio-Exposure-Limit-Exceeded";
         goto LABEL_48;
       case 17:
-        if ([v6 isEqualToString:@"TLAlertTopicAppNotificationCriticalAlert"])
+        if ([topicCopy isEqualToString:@"TLAlertTopicAppNotificationCriticalAlert"])
         {
           v9 = @"texttone:App-Notification-Critical-Alert";
           goto LABEL_48;
         }
 
-        if ([v6 isEqualToString:@"TLAlertTopicAppNotificationFirstParty"])
+        if ([topicCopy isEqualToString:@"TLAlertTopicAppNotificationFirstParty"])
         {
           break;
         }
@@ -3597,7 +3597,7 @@ LABEL_46:
         v9 = @"texttone:Rebound";
         goto LABEL_48;
       case 20:
-        if (([v6 isEqualToString:@"TLAlertTopicPassbookNFCScanComplete"] & 1) == 0)
+        if (([topicCopy isEqualToString:@"TLAlertTopicPassbookNFCScanComplete"] & 1) == 0)
         {
           break;
         }
@@ -3605,7 +3605,7 @@ LABEL_46:
         v9 = @"texttone:Passbook-NFC-Scan-Complete";
         goto LABEL_48;
       case 22:
-        if ([v6 isEqualToString:@"TLAlertTopicSOSCountdownTick"])
+        if ([topicCopy isEqualToString:@"TLAlertTopicSOSCountdownTick"])
         {
           v9 = @"texttone:SOS-Countdown-Tick";
 LABEL_48:
@@ -3614,7 +3614,7 @@ LABEL_48:
           break;
         }
 
-        if ([v6 isEqualToString:@"TLAlertTopicSOSDialStart"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"TLAlertTopicSOSButtonChordingTimeout") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"TLAlertTopicSOSCountdownPreannounce"))
+        if ([topicCopy isEqualToString:@"TLAlertTopicSOSDialStart"] & 1) != 0 || (objc_msgSend(topicCopy, "isEqualToString:", @"TLAlertTopicSOSButtonChordingTimeout") & 1) != 0 || (objc_msgSend(topicCopy, "isEqualToString:", @"TLAlertTopicSOSCountdownPreannounce"))
         {
           v9 = @"<none>";
           goto LABEL_48;
@@ -3622,7 +3622,7 @@ LABEL_48:
 
         break;
       case 25:
-        if (([v6 isEqualToString:@"TLAlertTopicHealthUrgent"] & 1) == 0)
+        if (([topicCopy isEqualToString:@"TLAlertTopicHealthUrgent"] & 1) == 0)
         {
           break;
         }
@@ -3639,13 +3639,13 @@ LABEL_48:
   v10 = TLLogToneManagement();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = NSStringFromTLAlertType(a3);
+    v11 = NSStringFromTLAlertType(type);
     v14 = 138544130;
-    v15 = a1;
+    selfCopy = self;
     v16 = 2114;
     v17 = v11;
     v18 = 2114;
-    v19 = v6;
+    v19 = topicCopy;
     v20 = 2114;
     v21 = v7;
     _os_log_impl(&dword_1D9356000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: +_defaultToneIdentifierForAlertType:(%{public}@) topic:(%{public}@). Returning: %{public}@.", &v14, 0x2Au);
@@ -3656,18 +3656,18 @@ LABEL_48:
   return v7;
 }
 
-+ (id)_defaultWatchToneIdentifierForAlertType:(int64_t)a3 topic:(id)a4
++ (id)_defaultWatchToneIdentifierForAlertType:(int64_t)type topic:(id)topic
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if ((a3 - 1) > 0x1C)
+  topicCopy = topic;
+  if ((type - 1) > 0x1C)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = _TLToneManagerDefaultWatchIdentifiers[a3 - 1];
+    v7 = _TLToneManagerDefaultWatchIdentifiers[type - 1];
     if (![(__CFString *)v7 length])
     {
       v8 = @"<none>";
@@ -3676,15 +3676,15 @@ LABEL_48:
     }
   }
 
-  if (a3 == 28 || a3 == 1)
+  if (type == 28 || type == 1)
   {
-    v9 = [MEMORY[0x1E695DF58] currentLocale];
-    v10 = [v9 objectForKey:*MEMORY[0x1E695D978]];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    v10 = [currentLocale objectForKey:*MEMORY[0x1E695D978]];
 
     v11 = [v10 caseInsensitiveCompare:@"us"];
-    if (a3 == 1)
+    if (type == 1)
     {
-      if (([v6 isEqualToString:@"_TLAlertTopicIncomingCallDeemphasized"] & 1) == 0)
+      if (([topicCopy isEqualToString:@"_TLAlertTopicIncomingCallDeemphasized"] & 1) == 0)
       {
 LABEL_14:
         if (v11)
@@ -3697,7 +3697,7 @@ LABEL_14:
       }
     }
 
-    else if (![v6 isEqualToString:@"_TLAlertTopicClassroomDeemphasized"])
+    else if (![topicCopy isEqualToString:@"_TLAlertTopicClassroomDeemphasized"])
     {
       goto LABEL_14;
     }
@@ -3716,13 +3716,13 @@ LABEL_16:
   }
 
   v12 = +[TLCapabilitiesManager sharedCapabilitiesManager];
-  v13 = [v12 supportsNanoEncore];
+  supportsNanoEncore = [v12 supportsNanoEncore];
 
-  if (v13)
+  if (supportsNanoEncore)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      v14 = [v6 isEqualToString:@"_TLAlertTopicIncomingCallDeemphasized"];
+      v14 = [topicCopy isEqualToString:@"_TLAlertTopicIncomingCallDeemphasized"];
 
       if (v14)
       {
@@ -3735,14 +3735,14 @@ LABEL_16:
       }
 
 LABEL_53:
-      if ([v6 isEqualToString:@"TLAlertTopicIncomingCallFaceTimeGroupInvitation"])
+      if ([topicCopy isEqualToString:@"TLAlertTopicIncomingCallFaceTimeGroupInvitation"])
       {
         v15 = @"texttone:FaceTime-Group-Invitation";
       }
 
       else
       {
-        if (([v6 isEqualToString:@"TLAlertTopicIncomingCallFaceTimeParticipantJoined"] & 1) == 0)
+        if (([topicCopy isEqualToString:@"TLAlertTopicIncomingCallFaceTimeParticipantJoined"] & 1) == 0)
         {
           goto LABEL_128;
         }
@@ -3753,25 +3753,25 @@ LABEL_53:
       goto LABEL_127;
     }
 
-    if (a3 > 10)
+    if (type > 10)
     {
-      if (a3 > 18)
+      if (type > 18)
       {
-        if (a3 != 19)
+        if (type != 19)
         {
-          if (a3 != 20)
+          if (type != 20)
           {
-            if (a3 == 24)
+            if (type == 24)
             {
 LABEL_34:
-              if ([v6 isEqualToString:@"TLAlertTopicWalkieTalkieActiveStart"])
+              if ([topicCopy isEqualToString:@"TLAlertTopicWalkieTalkieActiveStart"])
               {
                 v15 = @"texttone:Walkie-Talkie-Active-Start-Haptic";
               }
 
               else
               {
-                if (([v6 isEqualToString:@"TLAlertTopicWalkieTalkieActiveEnd"] & 1) == 0)
+                if (([topicCopy isEqualToString:@"TLAlertTopicWalkieTalkieActiveEnd"] & 1) == 0)
                 {
                   goto LABEL_128;
                 }
@@ -3786,13 +3786,13 @@ LABEL_34:
           }
 
 LABEL_25:
-          if ([v6 isEqualToString:@"TLAlertTopicPassbookGeofence"])
+          if ([topicCopy isEqualToString:@"TLAlertTopicPassbookGeofence"])
           {
 
             v7 = @"texttone:Passbook-Geofence-Haptic";
           }
 
-          if (([v6 isEqualToString:@"TLAlertTopicPassbookNFCScanComplete"] & 1) == 0)
+          if (([topicCopy isEqualToString:@"TLAlertTopicPassbookNFCScanComplete"] & 1) == 0)
           {
             goto LABEL_128;
           }
@@ -3805,19 +3805,19 @@ LABEL_127:
         }
 
 LABEL_36:
-        if ([v6 isEqualToString:@"TLAlertTopicActivityGoalAttained"])
+        if ([topicCopy isEqualToString:@"TLAlertTopicActivityGoalAttained"])
         {
           v15 = @"texttone:Activity-Goal-Attained-Haptic";
         }
 
-        else if ([v6 isEqualToString:@"TLAlertTopicActivityGoalBehind"])
+        else if ([topicCopy isEqualToString:@"TLAlertTopicActivityGoalBehind"])
         {
           v15 = @"texttone:Activity-Goal-Behind-Haptic";
         }
 
         else
         {
-          if (([v6 isEqualToString:@"TLAlertTopicActivityFriendsGoalAttained"] & 1) == 0)
+          if (([topicCopy isEqualToString:@"TLAlertTopicActivityFriendsGoalAttained"] & 1) == 0)
           {
             goto LABEL_128;
           }
@@ -3828,21 +3828,21 @@ LABEL_36:
         goto LABEL_127;
       }
 
-      if (a3 != 11)
+      if (type != 11)
       {
-        if (a3 == 17)
+        if (type == 17)
         {
 
           v7 = @"texttone:Globe";
 LABEL_84:
-          if ([v6 isEqualToString:@"TLAlertTopicAppNotificationCriticalAlert"])
+          if ([topicCopy isEqualToString:@"TLAlertTopicAppNotificationCriticalAlert"])
           {
             v15 = @"texttone:App-Notification-Critical-Alert";
           }
 
           else
           {
-            if (([v6 isEqualToString:@"TLAlertTopicAppNotificationFirstParty"] & 1) == 0)
+            if (([topicCopy isEqualToString:@"TLAlertTopicAppNotificationFirstParty"] & 1) == 0)
             {
               goto LABEL_128;
             }
@@ -3861,14 +3861,14 @@ LABEL_64:
       goto LABEL_127;
     }
 
-    if (a3 > 4)
+    if (type > 4)
     {
-      if (a3 == 5)
+      if (type == 5)
       {
 
         v7 = @"texttone:Resonate";
 LABEL_75:
-        if (([v6 isEqualToString:@"com.apple.mobilemail.bulletin-subsection.VIP"] & 1) == 0 && (objc_msgSend(v6, "isEqualToString:", @"com.apple.mobilemail.bulletin-subsection.ThreadNotify") & 1) == 0)
+        if (([topicCopy isEqualToString:@"com.apple.mobilemail.bulletin-subsection.VIP"] & 1) == 0 && (objc_msgSend(topicCopy, "isEqualToString:", @"com.apple.mobilemail.bulletin-subsection.ThreadNotify") & 1) == 0)
         {
           goto LABEL_128;
         }
@@ -3877,7 +3877,7 @@ LABEL_75:
         goto LABEL_127;
       }
 
-      if (a3 == 10)
+      if (type == 10)
       {
         goto LABEL_64;
       }
@@ -3885,14 +3885,14 @@ LABEL_75:
 
     else
     {
-      if (a3 == 2)
+      if (type == 2)
       {
 
         v7 = @"texttone:Resonate";
         goto LABEL_72;
       }
 
-      if (a3 == 4)
+      if (type == 4)
       {
         v15 = @"texttone:Resonate";
         goto LABEL_127;
@@ -3902,7 +3902,7 @@ LABEL_75:
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 19:
         goto LABEL_36;
@@ -3914,18 +3914,18 @@ LABEL_75:
   }
 
 LABEL_52:
-  if (a3 == 1)
+  if (type == 1)
   {
     goto LABEL_53;
   }
 
-  if (a3 <= 15)
+  if (type <= 15)
   {
-    if (a3 <= 8)
+    if (type <= 8)
     {
-      if (a3 != 2)
+      if (type != 2)
       {
-        if (a3 != 5)
+        if (type != 5)
         {
           goto LABEL_128;
         }
@@ -3934,34 +3934,34 @@ LABEL_52:
       }
 
 LABEL_72:
-      if ([v6 isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentHeart"])
+      if ([topicCopy isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentHeart"])
       {
         v15 = @"texttone:Text-Message-Acknowledgment-Heart";
       }
 
-      else if ([v6 isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentThumbsUp"])
+      else if ([topicCopy isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentThumbsUp"])
       {
         v15 = @"texttone:Text-Message-Acknowledgment-Thumbs-Up";
       }
 
-      else if ([v6 isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentThumbsDown"])
+      else if ([topicCopy isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentThumbsDown"])
       {
         v15 = @"texttone:Text-Message-Acknowledgment-Thumbs-Down";
       }
 
-      else if ([v6 isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentHaHa"])
+      else if ([topicCopy isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentHaHa"])
       {
         v15 = @"texttone:Text-Message-Acknowledgment-HaHa";
       }
 
-      else if ([v6 isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentExclamation"])
+      else if ([topicCopy isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentExclamation"])
       {
         v15 = @"texttone:Text-Message-Acknowledgment-Exclamation";
       }
 
       else
       {
-        if (([v6 isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentQuestionMark"] & 1) == 0)
+        if (([topicCopy isEqualToString:@"TLAlertTopicTextMessageAcknowledgmentQuestionMark"] & 1) == 0)
         {
           goto LABEL_128;
         }
@@ -3972,16 +3972,16 @@ LABEL_72:
       goto LABEL_127;
     }
 
-    if (a3 == 9)
+    if (type == 9)
     {
-      if ([v6 isEqualToString:@"TLAlertTopicPhotosNotificationSharingPost"])
+      if ([topicCopy isEqualToString:@"TLAlertTopicPhotosNotificationSharingPost"])
       {
         v15 = @"texttone:Photos Sharing Post";
       }
 
       else
       {
-        if (([v6 isEqualToString:@"TLAlertTopicPhotosNotificationMemory"] & 1) == 0)
+        if (([topicCopy isEqualToString:@"TLAlertTopicPhotosNotificationMemory"] & 1) == 0)
         {
           goto LABEL_128;
         }
@@ -3992,22 +3992,22 @@ LABEL_72:
       goto LABEL_127;
     }
 
-    if (a3 != 13)
+    if (type != 13)
     {
       goto LABEL_128;
     }
 
-    if ([v6 isEqualToString:@"TLAlertTopicAlarmGoToSleep"])
+    if ([topicCopy isEqualToString:@"TLAlertTopicAlarmGoToSleep"])
     {
       v16 = @"texttone:Go-To-Sleep";
     }
 
     else
     {
-      if (![v6 isEqualToString:@"TLAlertTopicAlarmWakeUp"])
+      if (![topicCopy isEqualToString:@"TLAlertTopicAlarmWakeUp"])
       {
 LABEL_105:
-        if (([v6 isEqualToString:@"TLAlertTopicAlarmNightstand"] & 1) == 0)
+        if (([topicCopy isEqualToString:@"TLAlertTopicAlarmNightstand"] & 1) == 0)
         {
           goto LABEL_128;
         }
@@ -4023,28 +4023,28 @@ LABEL_105:
     goto LABEL_105;
   }
 
-  if (a3 <= 21)
+  if (type <= 21)
   {
-    if (a3 == 16)
+    if (type == 16)
     {
-      if ([v6 isEqualToString:@"TLAlertTopicSystemNotificationBackgroundMicUsage"])
+      if ([topicCopy isEqualToString:@"TLAlertTopicSystemNotificationBackgroundMicUsage"])
       {
         v15 = @"texttone:System Background Mic Usage";
       }
 
-      else if ([v6 isEqualToString:@"TLAlertTopicSystemNotificationDoorbell"])
+      else if ([topicCopy isEqualToString:@"TLAlertTopicSystemNotificationDoorbell"])
       {
         v15 = @"system:Doorbell";
       }
 
-      else if ([v6 isEqualToString:@"TLAlertTopicSystemNotificationElevationAlert"])
+      else if ([topicCopy isEqualToString:@"TLAlertTopicSystemNotificationElevationAlert"])
       {
         v15 = @"texttone:Elevation Alert";
       }
 
       else
       {
-        if (([v6 isEqualToString:@"TLAlertTopicSystemNotificationHeadphoneAudioExposure"] & 1) == 0)
+        if (([topicCopy isEqualToString:@"TLAlertTopicSystemNotificationHeadphoneAudioExposure"] & 1) == 0)
         {
           goto LABEL_128;
         }
@@ -4055,7 +4055,7 @@ LABEL_105:
       goto LABEL_127;
     }
 
-    if (a3 != 17)
+    if (type != 17)
     {
       goto LABEL_128;
     }
@@ -4063,11 +4063,11 @@ LABEL_105:
     goto LABEL_84;
   }
 
-  if (a3 != 22)
+  if (type != 22)
   {
-    if (a3 == 25)
+    if (type == 25)
     {
-      if (([v6 isEqualToString:@"TLAlertTopicHealthUrgent"] & 1) == 0)
+      if (([topicCopy isEqualToString:@"TLAlertTopicHealthUrgent"] & 1) == 0)
       {
         goto LABEL_128;
       }
@@ -4077,24 +4077,24 @@ LABEL_105:
 
     else
     {
-      if (a3 != 27)
+      if (type != 27)
       {
         goto LABEL_128;
       }
 
-      if ([v6 isEqualToString:@"TLAlertTopicHandwashingReminder"])
+      if ([topicCopy isEqualToString:@"TLAlertTopicHandwashingReminder"])
       {
         v15 = @"texttone:Handwashing-Reminder";
       }
 
-      else if ([v6 isEqualToString:@"TLAlertTopicHandwashingSessionStart"])
+      else if ([topicCopy isEqualToString:@"TLAlertTopicHandwashingSessionStart"])
       {
         v15 = @"texttone:Handwashing-Session-Start";
       }
 
       else
       {
-        if (![v6 isEqualToString:@"TLAlertTopicHandwashingSessionEnd"])
+        if (![topicCopy isEqualToString:@"TLAlertTopicHandwashingSessionEnd"])
         {
           goto LABEL_128;
         }
@@ -4106,13 +4106,13 @@ LABEL_105:
     goto LABEL_127;
   }
 
-  if ([v6 isEqualToString:@"TLAlertTopicSOSCountdownTick"])
+  if ([topicCopy isEqualToString:@"TLAlertTopicSOSCountdownTick"])
   {
     v15 = @"texttone:SOS-Countdown-Tick";
     goto LABEL_127;
   }
 
-  if ([v6 isEqualToString:@"TLAlertTopicSOSDialStart"] || objc_msgSend(v6, "isEqualToString:", @"TLAlertTopicSOSButtonChordingTimeout") || objc_msgSend(v6, "isEqualToString:", @"TLAlertTopicSOSCountdownPreannounce"))
+  if ([topicCopy isEqualToString:@"TLAlertTopicSOSDialStart"] || objc_msgSend(topicCopy, "isEqualToString:", @"TLAlertTopicSOSButtonChordingTimeout") || objc_msgSend(topicCopy, "isEqualToString:", @"TLAlertTopicSOSCountdownPreannounce"))
   {
     v15 = @"<none>";
     goto LABEL_127;
@@ -4122,13 +4122,13 @@ LABEL_128:
   v17 = TLLogToneManagement();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = NSStringFromTLAlertType(a3);
+    v18 = NSStringFromTLAlertType(type);
     v21 = 138544130;
-    v22 = a1;
+    selfCopy = self;
     v23 = 2114;
     v24 = v18;
     v25 = 2114;
-    v26 = v6;
+    v26 = topicCopy;
     v27 = 2114;
     v28 = v7;
     _os_log_impl(&dword_1D9356000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: +_defaultWatchToneIdentifierForAlertType:(%{public}@) topic:(%{public}@). Returning: %{public}@.", &v21, 0x2Au);
@@ -4139,18 +4139,18 @@ LABEL_128:
   return v7;
 }
 
-- (id)defaultToneIdentifierForAlertType:(int64_t)a3 topic:(id)a4
+- (id)defaultToneIdentifierForAlertType:(int64_t)type topic:(id)topic
 {
-  v5 = a4;
-  v6 = [objc_opt_class() _defaultToneIdentifierForAlertType:a3 topic:v5];
+  topicCopy = topic;
+  v6 = [objc_opt_class() _defaultToneIdentifierForAlertType:type topic:topicCopy];
 
   return v6;
 }
 
-- (id)defaultWatchToneIdentifierForAlertType:(int64_t)a3 topic:(id)a4
+- (id)defaultWatchToneIdentifierForAlertType:(int64_t)type topic:(id)topic
 {
-  v5 = a4;
-  v6 = [objc_opt_class() _defaultWatchToneIdentifierForAlertType:a3 topic:v5];
+  topicCopy = topic;
+  v6 = [objc_opt_class() _defaultWatchToneIdentifierForAlertType:type topic:topicCopy];
 
   return v6;
 }
@@ -4158,9 +4158,9 @@ LABEL_128:
 - (id)_defaultRingtoneName
 {
   v2 = +[TLCapabilitiesManager sharedCapabilitiesManager];
-  v3 = [v2 wantsModernDefaultRingtone];
+  wantsModernDefaultRingtone = [v2 wantsModernDefaultRingtone];
 
-  if (!v3 || (TLLocalizedString(@"RINGTONE_PICKER_DEFAULT_MODERN_RINGTONE_NAME"), (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!wantsModernDefaultRingtone || (TLLocalizedString(@"RINGTONE_PICKER_DEFAULT_MODERN_RINGTONE_NAME"), (v4 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v4 = TLLocalizedString(@"RINGTONE_PICKER_DEFAULT_RINGTONE_NAME");
   }
@@ -4170,17 +4170,17 @@ LABEL_128:
 
 - (id)_defaultRingtonePath
 {
-  v3 = [(TLToneManager *)self defaultRingtoneIdentifier];
-  v4 = [(TLToneManager *)self filePathForToneIdentifier:v3];
+  defaultRingtoneIdentifier = [(TLToneManager *)self defaultRingtoneIdentifier];
+  v4 = [(TLToneManager *)self filePathForToneIdentifier:defaultRingtoneIdentifier];
 
   return v4;
 }
 
-- (id)_defaultPreferablyNonSilentToneIdentifierForAlertType:(int64_t)a3 topic:(id)a4
+- (id)_defaultPreferablyNonSilentToneIdentifierForAlertType:(int64_t)type topic:(id)topic
 {
-  v6 = [(TLToneManager *)self defaultToneIdentifierForAlertType:a3 topic:a4];
+  v6 = [(TLToneManager *)self defaultToneIdentifierForAlertType:type topic:topic];
   v7 = [v6 isEqualToString:@"<none>"];
-  if (a3 == 5 && v7)
+  if (type == 5 && v7)
   {
     v8 = [(TLToneManager *)self defaultToneIdentifierForAlertType:5 topic:@"com.apple.mobilemail.bulletin-subsection.VIP"];
 
@@ -4190,13 +4190,13 @@ LABEL_128:
   return v6;
 }
 
-- (BOOL)hasSpecificDefaultToneIdentifierForAlertType:(int64_t)a3 topic:(id)a4
+- (BOOL)hasSpecificDefaultToneIdentifierForAlertType:(int64_t)type topic:(id)topic
 {
-  v6 = a4;
-  if ([v6 length])
+  topicCopy = topic;
+  if ([topicCopy length])
   {
-    v7 = [(TLToneManager *)self defaultToneIdentifierForAlertType:a3];
-    v8 = [(TLToneManager *)self defaultToneIdentifierForAlertType:a3 topic:v6];
+    v7 = [(TLToneManager *)self defaultToneIdentifierForAlertType:type];
+    v8 = [(TLToneManager *)self defaultToneIdentifierForAlertType:type topic:topicCopy];
     v9 = [v8 isEqualToString:v7] ^ 1;
   }
 
@@ -4208,17 +4208,17 @@ LABEL_128:
   return v9;
 }
 
-- (id)_soundForToneIdentifier:(id)a3
+- (id)_soundForToneIdentifier:(id)identifier
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy_;
   v23 = __Block_byref_object_dispose_;
   v24 = 0;
-  v5 = [(TLToneManager *)self _aliasForToneIdentifier:v4];
+  v5 = [(TLToneManager *)self _aliasForToneIdentifier:identifierCopy];
   if (-[TLToneManager _toneWithIdentifierIsSystemTone:](self, "_toneWithIdentifierIsSystemTone:", v5) || [v5 isEqualToString:@"<none>"])
   {
     v16[0] = MEMORY[0x1E69E9820];
@@ -4247,7 +4247,7 @@ LABEL_128:
       v12[3] = &unk_1E85789C8;
       v15 = &v19;
       v13 = v5;
-      v14 = self;
+      selfCopy = self;
       dispatch_sync(v11, v12);
     }
   }
@@ -4257,7 +4257,7 @@ LABEL_128:
   {
     v7 = v20[5];
     *buf = 138543618;
-    v26 = v4;
+    v26 = identifierCopy;
     v27 = 2114;
     v28 = v7;
     _os_log_impl(&dword_1D9356000, v6, OS_LOG_TYPE_DEFAULT, "_soundForToneIdentifier %{public}@ ==> %{public}@", buf, 0x16u);
@@ -4329,10 +4329,10 @@ void __41__TLToneManager__soundForToneIdentifier___block_invoke_3(uint64_t a1)
   }
 }
 
-- (id)_filePathForToneIdentifier:(id)a3 isValid:(BOOL *)a4
+- (id)_filePathForToneIdentifier:(id)identifier isValid:(BOOL *)valid
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -4347,15 +4347,15 @@ void __41__TLToneManager__soundForToneIdentifier___block_invoke_3(uint64_t a1)
   v13[1] = 3221225472;
   v13[2] = __52__TLToneManager__filePathForToneIdentifier_isValid___block_invoke;
   v13[3] = &unk_1E8578B80;
-  v7 = v6;
+  v7 = identifierCopy;
   v14 = v7;
-  v15 = self;
+  selfCopy = self;
   v16 = &v24;
   v17 = &v18;
   [(TLToneManager *)self _performBlockInAccessQueue:v13];
-  if (a4)
+  if (valid)
   {
-    *a4 = *(v25 + 24);
+    *valid = *(v25 + 24);
   }
 
   v8 = TLLogToneManagement();
@@ -4550,9 +4550,9 @@ LABEL_27:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_previewSoundForToneIdentifier:(id)a3
+- (id)_previewSoundForToneIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -4563,31 +4563,31 @@ LABEL_27:
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = kSystemSoundID_InvalidTone;
-  if (-[TLToneManager _toneWithIdentifierIsSystemTone:](self, "_toneWithIdentifierIsSystemTone:", v4) || [v4 isEqualToString:@"<none>"])
+  if (-[TLToneManager _toneWithIdentifierIsSystemTone:](self, "_toneWithIdentifierIsSystemTone:", identifierCopy) || [identifierCopy isEqualToString:@"<none>"])
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __48__TLToneManager__previewSoundForToneIdentifier___block_invoke;
     v15[3] = &unk_1E8578B80;
     v15[4] = self;
-    v16 = v4;
+    v16 = identifierCopy;
     v17 = &v23;
     v18 = &v19;
     [(TLToneManager *)self _performBlockInAccessQueue:v15];
   }
 
-  else if ([(TLToneManager *)self _toneWithIdentifierIsITunesRingtone:v4]|| [(TLToneManager *)self _toneWithIdentifierIsNonDefaultAndNonEmbeddedSystemRingtone:v4]|| [(TLToneManager *)self _toneWithIdentifierIsDefaultRingtone:v4]|| [(TLToneManager *)self _toneWithIdentifierIsAlarmWakeUp:v4])
+  else if ([(TLToneManager *)self _toneWithIdentifierIsITunesRingtone:identifierCopy]|| [(TLToneManager *)self _toneWithIdentifierIsNonDefaultAndNonEmbeddedSystemRingtone:identifierCopy]|| [(TLToneManager *)self _toneWithIdentifierIsDefaultRingtone:identifierCopy]|| [(TLToneManager *)self _toneWithIdentifierIsAlarmWakeUp:identifierCopy])
   {
-    v5 = [(TLToneManager *)self filePathForToneIdentifier:v4];
+    v5 = [(TLToneManager *)self filePathForToneIdentifier:identifierCopy];
     v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:v5 isDirectory:0];
-    v7 = [(TLToneManager *)self _toneWithIdentifierIsAlarmWakeUp:v4];
+    v7 = [(TLToneManager *)self _toneWithIdentifierIsAlarmWakeUp:identifierCopy];
     v8 = [TLSystemSound alloc];
     v9 = [(TLSystemSound *)v8 initWithSoundFileURL:v6 soundID:kSystemSoundID_InvalidTone requiresLongFormPlayback:v7];
     v10 = v24[5];
     v24[5] = v9;
 
-    v11 = [v24[5] soundID];
-    *(v20 + 6) = v11;
+    soundID = [v24[5] soundID];
+    *(v20 + 6) = soundID;
   }
 
   if (*(v20 + 6) == kSystemSoundID_NoneTone)
@@ -4619,9 +4619,9 @@ void __48__TLToneManager__previewSoundForToneIdentifier___block_invoke(uint64_t 
   }
 }
 
-- (id)_nameForToneIdentifier:(id)a3 isValid:(BOOL *)a4
+- (id)_nameForToneIdentifier:(id)identifier isValid:(BOOL *)valid
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -4633,9 +4633,9 @@ void __48__TLToneManager__previewSoundForToneIdentifier___block_invoke(uint64_t 
   v10[2] = __48__TLToneManager__nameForToneIdentifier_isValid___block_invoke;
   v10[3] = &unk_1E8578BA8;
   v10[4] = self;
-  v7 = v6;
+  v7 = identifierCopy;
   v12 = &v14;
-  v13 = a4;
+  validCopy = valid;
   v11 = v7;
   [(TLToneManager *)self _performBlockInAccessQueue:v10];
   v8 = v15[5];
@@ -4830,18 +4830,18 @@ LABEL_40:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (id)subtitleForToneIdentifier:(id)a3
+- (id)subtitleForToneIdentifier:(id)identifier
 {
-  v3 = [(TLToneManager *)self _underlyingPlaybackArchiveForToneIdentifier:a3];
-  v4 = [v3 displayProperties];
-  v5 = [v4 subtitle];
+  v3 = [(TLToneManager *)self _underlyingPlaybackArchiveForToneIdentifier:identifier];
+  displayProperties = [v3 displayProperties];
+  subtitle = [displayProperties subtitle];
 
-  return v5;
+  return subtitle;
 }
 
-- (id)_toneIdentifierForFileAtPath:(id)a3 isValid:(BOOL *)a4
+- (id)_toneIdentifierForFileAtPath:(id)path isValid:(BOOL *)valid
 {
-  v6 = a3;
+  pathCopy = path;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -4852,22 +4852,22 @@ LABEL_40:
   v15[1] = 3221225472;
   v15[2] = __54__TLToneManager__toneIdentifierForFileAtPath_isValid___block_invoke;
   v15[3] = &unk_1E8578AE0;
-  v7 = v6;
+  v7 = pathCopy;
   v16 = v7;
-  v17 = self;
+  selfCopy = self;
   v18 = &v19;
   [(TLToneManager *)self _performBlockInAccessQueue:v15];
   v8 = v20;
-  if (a4)
+  if (valid)
   {
-    *a4 = v20[5] != 0;
+    *valid = v20[5] != 0;
   }
 
   v9 = v8[5];
   if (!v9)
   {
-    v10 = [(TLToneManager *)self defaultRingtoneIdentifier];
-    v11 = [v10 copy];
+    defaultRingtoneIdentifier = [(TLToneManager *)self defaultRingtoneIdentifier];
+    v11 = [defaultRingtoneIdentifier copy];
     v12 = v20[5];
     v20[5] = v11;
 
@@ -5009,17 +5009,17 @@ void __54__TLToneManager__toneIdentifierForFileAtPath_isValid___block_invoke_3(u
   }
 }
 
-- (BOOL)_toneWithIdentifierIsValid:(id)a3
+- (BOOL)_toneWithIdentifierIsValid:(id)valid
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  validCopy = valid;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
   v40 = 0;
-  if ([v4 length])
+  if ([validCopy length])
   {
-    v5 = [(TLToneManager *)self _aliasForToneIdentifier:v4];
+    v5 = [(TLToneManager *)self _aliasForToneIdentifier:validCopy];
     if ([(TLToneManager *)self _toneWithIdentifierIsDefaultRingtone:v5])
     {
       *(v38 + 24) = 1;
@@ -5028,13 +5028,13 @@ void __54__TLToneManager__toneIdentifierForFileAtPath_isValid___block_invoke_3(u
     else if ([(TLToneManager *)self _toneWithIdentifierIsNonDefaultAndNonEmbeddedSystemRingtone:v5])
     {
       v6 = [(TLToneManager *)self _fileNameFromToneIdentifier:v5 withPrefix:@"system:"];
-      v7 = [(TLToneManager *)self _systemRingtoneDirectory];
-      v8 = [v7 stringByAppendingPathComponent:v6];
+      _systemRingtoneDirectory = [(TLToneManager *)self _systemRingtoneDirectory];
+      v8 = [_systemRingtoneDirectory stringByAppendingPathComponent:v6];
 
       v9 = [v8 stringByAppendingPathExtension:@"m4r"];
 
-      v10 = [MEMORY[0x1E696AC08] defaultManager];
-      v11 = [v10 fileExistsAtPath:v9];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v11 = [defaultManager fileExistsAtPath:v9];
 
       if (v11)
       {
@@ -5046,13 +5046,13 @@ void __54__TLToneManager__toneIdentifierForFileAtPath_isValid___block_invoke_3(u
         v18 = v6;
         v6 = [v18 stringByAppendingString:@"-EncoreInfinitum"];
 
-        v19 = [(TLToneManager *)self _systemRingtoneDirectory];
-        v20 = [v19 stringByAppendingPathComponent:v6];
+        _systemRingtoneDirectory2 = [(TLToneManager *)self _systemRingtoneDirectory];
+        v20 = [_systemRingtoneDirectory2 stringByAppendingPathComponent:v6];
 
         v9 = [v20 stringByAppendingPathExtension:@"m4r"];
 
-        v21 = [MEMORY[0x1E696AC08] defaultManager];
-        v12 = [v21 fileExistsAtPath:v9];
+        defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+        v12 = [defaultManager2 fileExistsAtPath:v9];
 
         if ((v12 & 1) == 0)
         {
@@ -5063,9 +5063,9 @@ void __54__TLToneManager__toneIdentifierForFileAtPath_isValid___block_invoke_3(u
       }
 
       v23 = +[TLCapabilitiesManager sharedCapabilitiesManager];
-      v24 = [v23 supportsReflectionRemixes];
+      supportsReflectionRemixes = [v23 supportsReflectionRemixes];
 
-      if (v12 & 1 | ((v24 & 1) == 0))
+      if (v12 & 1 | ((supportsReflectionRemixes & 1) == 0))
       {
         v25 = v6;
       }
@@ -5074,13 +5074,13 @@ void __54__TLToneManager__toneIdentifierForFileAtPath_isValid___block_invoke_3(u
       {
         v25 = [v6 stringByAppendingString:@"-EncoreRemix"];
 
-        v26 = [(TLToneManager *)self _systemRingtoneDirectory];
-        v27 = [v26 stringByAppendingPathComponent:v25];
+        _systemRingtoneDirectory3 = [(TLToneManager *)self _systemRingtoneDirectory];
+        v27 = [_systemRingtoneDirectory3 stringByAppendingPathComponent:v25];
 
         v9 = [v27 stringByAppendingPathExtension:@"m4r"];
 
-        v28 = [MEMORY[0x1E696AC08] defaultManager];
-        v12 = [v28 fileExistsAtPath:v9];
+        defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+        v12 = [defaultManager3 fileExistsAtPath:v9];
       }
 
       *(v38 + 24) = v12;
@@ -5089,15 +5089,15 @@ void __54__TLToneManager__toneIdentifierForFileAtPath_isValid___block_invoke_3(u
     else if ([(TLToneManager *)self _toneWithIdentifierIsAlarmWakeUp:v5])
     {
       v13 = [(TLToneManager *)self _fileNameFromToneIdentifier:v5 withPrefix:@"alarmWakeUp:"];
-      v14 = [(TLToneManager *)self _alarmWakeUpRingtoneDirectory];
-      v15 = [v14 stringByAppendingPathComponent:v13];
+      _alarmWakeUpRingtoneDirectory = [(TLToneManager *)self _alarmWakeUpRingtoneDirectory];
+      v15 = [_alarmWakeUpRingtoneDirectory stringByAppendingPathComponent:v13];
 
       v16 = [v15 stringByAppendingPathExtension:@"m4r"];
 
-      v17 = [MEMORY[0x1E696AC08] defaultManager];
-      LOBYTE(v14) = [v17 fileExistsAtPath:v16];
+      defaultManager4 = [MEMORY[0x1E696AC08] defaultManager];
+      LOBYTE(_alarmWakeUpRingtoneDirectory) = [defaultManager4 fileExistsAtPath:v16];
 
-      *(v38 + 24) = v14;
+      *(v38 + 24) = _alarmWakeUpRingtoneDirectory;
     }
 
     else
@@ -5118,9 +5118,9 @@ void __54__TLToneManager__toneIdentifierForFileAtPath_isValid___block_invoke_3(u
   {
     v30 = *(v38 + 24);
     *buf = 138543874;
-    v42 = self;
+    selfCopy = self;
     v43 = 2114;
-    v44 = v4;
+    v44 = validCopy;
     v45 = 1024;
     v46 = v30;
     _os_log_impl(&dword_1D9356000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@: Performed basic check for validity of tone with identifier '%{public}@': %{BOOL}u.", buf, 0x1Cu);
@@ -5168,10 +5168,10 @@ void __44__TLToneManager__toneWithIdentifierIsValid___block_invoke(void *a1)
   }
 }
 
-- (BOOL)toneWithIdentifierIsValid:(id)a3
+- (BOOL)toneWithIdentifierIsValid:(id)valid
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  validCopy = valid;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -5181,7 +5181,7 @@ void __44__TLToneManager__toneWithIdentifierIsValid___block_invoke(void *a1)
   v11[2] = __43__TLToneManager_toneWithIdentifierIsValid___block_invoke;
   v11[3] = &unk_1E8578AE0;
   v11[4] = self;
-  v5 = v4;
+  v5 = validCopy;
   v12 = v5;
   v13 = &v14;
   [(TLToneManager *)self _performBlockInAccessQueue:v11];
@@ -5190,7 +5190,7 @@ void __44__TLToneManager__toneWithIdentifierIsValid___block_invoke(void *a1)
   {
     v7 = *(v15 + 24);
     *buf = 138543874;
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
     v21 = v5;
     v22 = 1024;
@@ -5295,18 +5295,18 @@ void __43__TLToneManager_toneWithIdentifierIsValid___block_invoke_2()
   }
 }
 
-- (id)_unduckTimeNumberForToneIdentifier:(id)a3 fromResourceNamed:(id)a4
+- (id)_unduckTimeNumberForToneIdentifier:(id)identifier fromResourceNamed:(id)named
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = MEMORY[0x1E696AAE8];
-  v8 = a4;
+  namedCopy = named;
   v9 = [v7 bundleForClass:objc_opt_class()];
-  v10 = [v9 URLForResource:v8 withExtension:@"plist"];
+  v10 = [v9 URLForResource:namedCopy withExtension:@"plist"];
 
   if (v10)
   {
     v11 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v10];
-    v12 = [(TLToneManager *)self _aliasForToneIdentifier:v6];
+    v12 = [(TLToneManager *)self _aliasForToneIdentifier:identifierCopy];
     v13 = [v11 objectForKey:v12];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -5328,11 +5328,11 @@ void __43__TLToneManager_toneWithIdentifierIsValid___block_invoke_2()
   return v14;
 }
 
-- (double)_unduckTimeForToneIdentifier:(id)a3
+- (double)_unduckTimeForToneIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = @"ToneEarlyUnduckTimes";
-  v6 = [(TLToneManager *)self _unduckTimeNumberForToneIdentifier:v4 fromResourceNamed:@"ToneEarlyUnduckTimes"];
+  v6 = [(TLToneManager *)self _unduckTimeNumberForToneIdentifier:identifierCopy fromResourceNamed:@"ToneEarlyUnduckTimes"];
   if (v6)
   {
     v7 = v6;
@@ -5347,7 +5347,7 @@ LABEL_3:
   if (_os_feature_enabled_impl())
   {
     v5 = [@"ToneEarlyUnduckTimes" stringByAppendingString:@"-EncoreInfinitum"];
-    v7 = [(TLToneManager *)self _unduckTimeNumberForToneIdentifier:v4 fromResourceNamed:v5];
+    v7 = [(TLToneManager *)self _unduckTimeNumberForToneIdentifier:identifierCopy fromResourceNamed:v5];
     if (v7)
     {
       goto LABEL_3;
@@ -5359,16 +5359,16 @@ LABEL_6:
   return v9;
 }
 
-- (void)importTone:(id)a3 metadata:(id)a4 completionBlock:(id)a5
+- (void)importTone:(id)tone metadata:(id)metadata completionBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __53__TLToneManager_importTone_metadata_completionBlock___block_invoke;
   v10[3] = &unk_1E8578C20;
-  v11 = v8;
-  v9 = v8;
-  [(TLToneManager *)self _importTone:a3 metadata:a4 completionBlock:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [(TLToneManager *)self _importTone:tone metadata:metadata completionBlock:v10];
 }
 
 void __53__TLToneManager_importTone_metadata_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -5387,23 +5387,23 @@ void __53__TLToneManager_importTone_metadata_completionBlock___block_invoke(uint
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_importTone:(id)a3 metadata:(id)a4 completionBlock:(id)a5
+- (void)_importTone:(id)tone metadata:(id)metadata completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  toneCopy = tone;
+  metadataCopy = metadata;
+  blockCopy = block;
   v11 = dispatch_get_global_queue(0, 0);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __54__TLToneManager__importTone_metadata_completionBlock___block_invoke;
   v15[3] = &unk_1E8578C48;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = metadataCopy;
+  v17 = toneCopy;
+  v18 = blockCopy;
+  v12 = blockCopy;
+  v13 = toneCopy;
+  v14 = metadataCopy;
   dispatch_async(v11, v15);
 }
 
@@ -5485,23 +5485,23 @@ LABEL_11:
 LABEL_13:
 }
 
-- (void)removeImportedToneWithIdentifier:(id)a3
+- (void)removeImportedToneWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v5 = [(TLToneManager *)self _toneWithIdentifier:v4];
-    v6 = [v5 filePath];
-    v7 = [v6 lastPathComponent];
-    if (![v7 hasPrefix:@"import_"])
+    v5 = [(TLToneManager *)self _toneWithIdentifier:identifierCopy];
+    filePath = [v5 filePath];
+    lastPathComponent = [filePath lastPathComponent];
+    if (![lastPathComponent hasPrefix:@"import_"])
     {
 LABEL_9:
 
       goto LABEL_10;
     }
 
-    v8 = [(TLToneManager *)self _removeToneWithIdentifier:v4];
+    v8 = [(TLToneManager *)self _removeToneWithIdentifier:identifierCopy];
     v9 = TLLogToneManagement();
     v10 = v9;
     if (v8)
@@ -5516,9 +5516,9 @@ LABEL_8:
       v13 = 138543874;
       v14 = objc_opt_class();
       v15 = 2114;
-      v16 = v4;
+      v16 = identifierCopy;
       v17 = 2114;
-      v18 = v6;
+      v18 = filePath;
       v11 = v14;
       _os_log_impl(&dword_1D9356000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: removeImportedToneWithIdentifier:(%{public}@): Successfully deleted tone at file path '%{public}@'.", &v13, 0x20u);
     }
@@ -5533,9 +5533,9 @@ LABEL_8:
       v13 = 138543874;
       v14 = objc_opt_class();
       v15 = 2114;
-      v16 = v4;
+      v16 = identifierCopy;
       v17 = 2114;
-      v18 = v6;
+      v18 = filePath;
       v11 = v14;
       _os_log_error_impl(&dword_1D9356000, v10, OS_LOG_TYPE_ERROR, "%{public}@: removeImportedToneWithIdentifier:(%{public}@): Failed to delete tone at file path '%{public}@'.", &v13, 0x20u);
     }
@@ -5548,13 +5548,13 @@ LABEL_10:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_importPurchasedToneWithMetadata:(id)a3 fileName:(id)a4
+- (id)_importPurchasedToneWithMetadata:(id)metadata fileName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TLToneManager *)self _deviceITunesRingtoneInformationPlist];
-  v9 = [(TLToneManager *)self _deviceITunesRingtoneDirectory];
-  v10 = [(TLToneManager *)self _addToneToManifestAtPath:v8 metadata:v7 fileName:v6 mediaDirectory:v9];
+  nameCopy = name;
+  metadataCopy = metadata;
+  _deviceITunesRingtoneInformationPlist = [(TLToneManager *)self _deviceITunesRingtoneInformationPlist];
+  _deviceITunesRingtoneDirectory = [(TLToneManager *)self _deviceITunesRingtoneDirectory];
+  v10 = [(TLToneManager *)self _addToneToManifestAtPath:_deviceITunesRingtoneInformationPlist metadata:metadataCopy fileName:nameCopy mediaDirectory:_deviceITunesRingtoneDirectory];
 
   return v10;
 }
@@ -5569,17 +5569,17 @@ LABEL_10:
 - (id)_allSyncedTones
 {
   v2 = MEMORY[0x1E695DF90];
-  v3 = [(TLToneManager *)self _iTunesRingtoneInformationPlist];
-  v4 = [v2 dictionaryWithContentsOfFile:v3];
+  _iTunesRingtoneInformationPlist = [(TLToneManager *)self _iTunesRingtoneInformationPlist];
+  v4 = [v2 dictionaryWithContentsOfFile:_iTunesRingtoneInformationPlist];
 
   v5 = [v4 objectForKey:@"Ringtones"];
 
   return v5;
 }
 
-- (id)_toneForSyncIdentifier:(id)a3
+- (id)_toneForSyncIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -5591,7 +5591,7 @@ LABEL_10:
   v8[2] = __40__TLToneManager__toneForSyncIdentifier___block_invoke;
   v8[3] = &unk_1E8578AE0;
   v8[4] = self;
-  v5 = v4;
+  v5 = identifierCopy;
   v9 = v5;
   v10 = &v11;
   [(TLToneManager *)self _performBlockInAccessQueue:v8];
@@ -5616,23 +5616,23 @@ uint64_t __40__TLToneManager__toneForSyncIdentifier___block_invoke(void *a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)_importSyncedToneWithMetadata:(id)a3 fileName:(id)a4
+- (BOOL)_importSyncedToneWithMetadata:(id)metadata fileName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TLToneManager *)self _iTunesRingtoneInformationPlist];
-  v9 = [(TLToneManager *)self _iTunesRingtoneDirectory];
-  v10 = [(TLToneManager *)self _addToneToManifestAtPath:v8 metadata:v7 fileName:v6 mediaDirectory:v9];
+  nameCopy = name;
+  metadataCopy = metadata;
+  _iTunesRingtoneInformationPlist = [(TLToneManager *)self _iTunesRingtoneInformationPlist];
+  _iTunesRingtoneDirectory = [(TLToneManager *)self _iTunesRingtoneDirectory];
+  v10 = [(TLToneManager *)self _addToneToManifestAtPath:_iTunesRingtoneInformationPlist metadata:metadataCopy fileName:nameCopy mediaDirectory:_iTunesRingtoneDirectory];
 
-  LOBYTE(v7) = [v10 statusCode] == 0;
-  return v7;
+  LOBYTE(metadataCopy) = [v10 statusCode] == 0;
+  return metadataCopy;
 }
 
-- (BOOL)_removeToneWithSyncIdentifier:(id)a3
+- (BOOL)_removeToneWithSyncIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TLToneManager *)self _removeToneWithIdentifier:0 orSyncIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(TLToneManager *)self _removeToneWithIdentifier:0 orSyncIdentifier:identifierCopy];
   v6 = TLLogToneManagement();
   v7 = v6;
   if (v5)
@@ -5642,7 +5642,7 @@ uint64_t __40__TLToneManager__toneForSyncIdentifier___block_invoke(void *a1)
       v11 = 138543618;
       v12 = objc_opt_class();
       v13 = 2114;
-      v14 = v4;
+      v14 = identifierCopy;
       v8 = v12;
       _os_log_impl(&dword_1D9356000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: _removeToneWithSyncIdentifier:(%{public}@): Successfully deleted tone.", &v11, 0x16u);
     }
@@ -5660,21 +5660,21 @@ uint64_t __40__TLToneManager__toneForSyncIdentifier___block_invoke(void *a1)
 - (void)_removeAllSyncedData
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(TLToneManager *)self _iTunesRingtoneDirectory];
-  v5 = [(TLToneManager *)self _iTunesRingtoneInformationPlist];
-  v30 = self;
-  v6 = [(TLToneManager *)self _lockManifestAtPath:v5];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  _iTunesRingtoneDirectory = [(TLToneManager *)self _iTunesRingtoneDirectory];
+  _iTunesRingtoneInformationPlist = [(TLToneManager *)self _iTunesRingtoneInformationPlist];
+  selfCopy = self;
+  v6 = [(TLToneManager *)self _lockManifestAtPath:_iTunesRingtoneInformationPlist];
   if (v6 != -1)
   {
     v27 = v6;
-    v26 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfFile:v5];
+    v26 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfFile:_iTunesRingtoneInformationPlist];
     v25 = [v26 objectForKey:@"Ringtones"];
-    v7 = [v25 allKeys];
-    v8 = [v7 copy];
+    allKeys = [v25 allKeys];
+    v8 = [allKeys copy];
 
-    v28 = v5;
-    [v3 removeItemAtPath:v5 error:0];
+    v28 = _iTunesRingtoneInformationPlist;
+    [defaultManager removeItemAtPath:_iTunesRingtoneInformationPlist error:0];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
@@ -5695,9 +5695,9 @@ uint64_t __40__TLToneManager__toneForSyncIdentifier___block_invoke(void *a1)
             objc_enumerationMutation(v9);
           }
 
-          v14 = [v4 stringByAppendingPathComponent:*(*(&v32 + 1) + 8 * v13)];
+          v14 = [_iTunesRingtoneDirectory stringByAppendingPathComponent:*(*(&v32 + 1) + 8 * v13)];
           v31 = 0;
-          v15 = [v3 removeItemAtPath:v14 error:&v31];
+          v15 = [defaultManager removeItemAtPath:v14 error:&v31];
           v16 = v31;
           v17 = TLLogToneManagement();
           v18 = v17;
@@ -5719,14 +5719,14 @@ uint64_t __40__TLToneManager__toneForSyncIdentifier___block_invoke(void *a1)
           {
             v21 = objc_opt_class();
             v29 = v21;
-            v22 = [v16 tl_nonRedundantDescription];
+            tl_nonRedundantDescription = [v16 tl_nonRedundantDescription];
             *buf = 138543874;
             v37 = v21;
             v38 = 2114;
             v39 = v14;
             v40 = 2114;
-            v41 = v22;
-            v23 = v22;
+            v41 = tl_nonRedundantDescription;
+            v23 = tl_nonRedundantDescription;
             _os_log_error_impl(&dword_1D9356000, v18, OS_LOG_TYPE_ERROR, "%{public}@: _removeAllSyncedData: Failed to delete tone at file path '%{public}@'; error = %{public}@.", buf, 0x20u);
           }
 
@@ -5741,20 +5741,20 @@ uint64_t __40__TLToneManager__toneForSyncIdentifier___block_invoke(void *a1)
     }
 
     close(v27);
-    [(TLToneManager *)v30 _reloadTones];
+    [(TLToneManager *)selfCopy _reloadTones];
 
-    v5 = v28;
+    _iTunesRingtoneInformationPlist = v28;
   }
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_removeOrphanedPlistEntriesInManifestAtPath:(id)a3 mediaDirectory:(id)a4
+- (id)_removeOrphanedPlistEntriesInManifestAtPath:(id)path mediaDirectory:(id)directory
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TLToneManager *)self _lockManifestAtPath:v6];
+  pathCopy = path;
+  directoryCopy = directory;
+  v8 = [(TLToneManager *)self _lockManifestAtPath:pathCopy];
   if (v8 == -1)
   {
     v14 = 0;
@@ -5763,12 +5763,12 @@ uint64_t __40__TLToneManager__toneForSyncIdentifier___block_invoke(void *a1)
   else
   {
     v9 = v8;
-    v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithContentsOfFile:v6];
+    v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithContentsOfFile:pathCopy];
     v11 = v10;
     if (v10)
     {
       v25 = v9;
-      v26 = v6;
+      v26 = pathCopy;
       v24 = v10;
       v12 = [v10 objectForKey:@"Ringtones"];
       v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -5793,7 +5793,7 @@ uint64_t __40__TLToneManager__toneForSyncIdentifier___block_invoke(void *a1)
             }
 
             v20 = *(*(&v27 + 1) + 8 * i);
-            v21 = [v7 stringByAppendingPathComponent:v20];
+            v21 = [directoryCopy stringByAppendingPathComponent:v20];
             if (([objc_opt_class() _ensureTCCAccessPreflightAndCheckForFileExistenceAtPath:v21] & 1) == 0)
             {
               [v13 addObject:v20];
@@ -5807,7 +5807,7 @@ uint64_t __40__TLToneManager__toneForSyncIdentifier___block_invoke(void *a1)
         while (v17);
       }
 
-      v6 = v26;
+      pathCopy = v26;
       if (![v13 count] || !-[TLToneManager _removeTonesFromManifestAtPath:fileNames:shouldSkipReload:alreadyLockedManifest:removedEntries:](self, "_removeTonesFromManifestAtPath:fileNames:shouldSkipReload:alreadyLockedManifest:removedEntries:", v26, v13, 1, 1, 0))
       {
 
@@ -5831,9 +5831,9 @@ uint64_t __40__TLToneManager__toneForSyncIdentifier___block_invoke(void *a1)
   return v14;
 }
 
-- (int64_t)_evaluateOrphanEntriesCleanupStatusForcingReevaluationIfPreviouslyDone:(BOOL)a3 returningFilePathsForFoundOrphans:(id *)a4 wasAffectedByAccidentalToneDeletion:(BOOL *)a5
+- (int64_t)_evaluateOrphanEntriesCleanupStatusForcingReevaluationIfPreviouslyDone:(BOOL)done returningFilePathsForFoundOrphans:(id *)orphans wasAffectedByAccidentalToneDeletion:(BOOL *)deletion
 {
-  v7 = a3;
+  doneCopy = done;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -5867,11 +5867,11 @@ uint64_t __40__TLToneManager__toneForSyncIdentifier___block_invoke(void *a1)
     else
     {
       LOBYTE(v19) = 0;
-      v7 = 1;
+      doneCopy = 1;
     }
 
     CFRelease(v14);
-    if (!v7)
+    if (!doneCopy)
     {
       goto LABEL_22;
     }
@@ -5958,14 +5958,14 @@ LABEL_22:
 LABEL_28:
   CFRelease(v10);
 LABEL_29:
-  if (a4)
+  if (orphans)
   {
-    *a4 = [v29[5] copy];
+    *orphans = [v29[5] copy];
   }
 
-  if (a5)
+  if (deletion)
   {
-    *a5 = v19;
+    *deletion = v19;
   }
 
   _Block_object_dispose(&v28, 8);
@@ -6033,7 +6033,7 @@ void __158__TLToneManager__evaluateOrphanEntriesCleanupStatusForcingReevaluation
   v71 = 0;
   v72 = 4;
   v46 = v3;
-  v47 = a1;
+  selfCopy = self;
   do
   {
     v5 = (&v59)[v4 / 8];
@@ -6052,7 +6052,7 @@ void __158__TLToneManager__evaluateOrphanEntriesCleanupStatusForcingReevaluation
       if (v7 == 1 && ![v9 length])
       {
 LABEL_8:
-        v11 = [a1 _systemWideTonePreferenceKeyForAlertType:v8];
+        v11 = [self _systemWideTonePreferenceKeyForAlertType:v8];
         if (!v11)
         {
           v12 = TLLogGeneral();
@@ -6064,17 +6064,17 @@ LABEL_8:
             v15 = TLLogGeneral();
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
             {
-              v43 = [v14 lastPathComponent];
-              v16 = [MEMORY[0x1E696AF00] callStackSymbols];
+              lastPathComponent = [v14 lastPathComponent];
+              callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
               *buf = 136381443;
               v52 = "+[TLToneManager _migrateLegacyToneSettings]";
               v53 = 2113;
-              v54 = v43;
+              v54 = lastPathComponent;
               v55 = 2049;
               v56 = 3403;
               v57 = 2113;
-              v58 = v16;
-              v17 = v16;
+              v58 = callStackSymbols;
+              v17 = callStackSymbols;
               _os_log_impl(&dword_1D9356000, v15, OS_LOG_TYPE_DEFAULT, "*** Assertion failure in %{private}s, %{private}@:%{private}lu.\n%{private}@", buf, 0x2Au);
             }
           }
@@ -6100,7 +6100,7 @@ LABEL_8:
           }
 
           v3 = v46;
-          a1 = v47;
+          self = selfCopy;
         }
 
         CFPreferencesSetAppValue(v11, @"<none>", v3);
@@ -6133,7 +6133,7 @@ LABEL_20:
   }
 
   v23 = AppIntegerValue;
-  v24 = [v47 _defaultToneIdentifierForAlertType:2 topic:0];
+  v24 = [selfCopy _defaultToneIdentifierForAlertType:2 topic:0];
   if (v23 <= 2)
   {
     if (v23)
@@ -6198,7 +6198,7 @@ LABEL_38:
   }
 
 LABEL_39:
-  v26 = [v47 _systemWideTonePreferenceKeyForAlertType:2];
+  v26 = [selfCopy _systemWideTonePreferenceKeyForAlertType:2];
   if (!v26)
   {
     v27 = TLLogGeneral();
@@ -6210,16 +6210,16 @@ LABEL_39:
       v30 = TLLogGeneral();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
-        v31 = [v29 lastPathComponent];
-        v32 = [MEMORY[0x1E696AF00] callStackSymbols];
+        lastPathComponent2 = [v29 lastPathComponent];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
         *buf = 136381443;
         v52 = "+[TLToneManager _migrateLegacyToneSettings]";
         v53 = 2113;
-        v54 = v31;
+        v54 = lastPathComponent2;
         v55 = 2049;
         v56 = 3433;
         v57 = 2113;
-        v58 = v32;
+        v58 = callStackSymbols2;
         _os_log_impl(&dword_1D9356000, v30, OS_LOG_TYPE_DEFAULT, "*** Assertion failure in %{private}s, %{private}@:%{private}lu.\n%{private}@", buf, 0x2Au);
       }
     }
@@ -6253,13 +6253,13 @@ LABEL_50:
   return 1;
 }
 
-- (id)_currentWatchToneIdentifierPreferenceKeyForAlertType:(int64_t)a3 topic:(id)a4
+- (id)_currentWatchToneIdentifierPreferenceKeyForAlertType:(int64_t)type topic:(id)topic
 {
-  v5 = a4;
-  v6 = [objc_opt_class() _systemWideTonePreferenceKeyForAlertType:a3];
+  topicCopy = topic;
+  v6 = [objc_opt_class() _systemWideTonePreferenceKeyForAlertType:type];
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"watch-", v6];
 
-  v8 = [v5 length];
+  v8 = [topicCopy length];
   if (v8)
   {
     v9 = [v7 stringByAppendingString:@"-per-account"];
@@ -6270,30 +6270,30 @@ LABEL_50:
   return v7;
 }
 
-- (id)currentWatchToneIdentifierForAlertType:(int64_t)a3 topic:(id)a4
+- (id)currentWatchToneIdentifierForAlertType:(int64_t)type topic:(id)topic
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  topicCopy = topic;
   v7 = TLLogToneManagement();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = NSStringFromTLAlertType(a3);
+    v8 = NSStringFromTLAlertType(type);
     v16 = 138543874;
-    v17 = self;
+    selfCopy3 = self;
     v18 = 2114;
     v19 = v8;
     v20 = 2114;
-    v21 = v6;
+    v21 = topicCopy;
     _os_log_impl(&dword_1D9356000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: -currentWatchToneIdentifierForAlertType:(%{public}@) topic:(%{public}@).", &v16, 0x20u);
   }
 
-  v9 = [(TLToneManager *)self _currentWatchToneIdentifierForAlertType:a3 topic:v6 didFindPersistedWatchToneIdentifier:0];
+  v9 = [(TLToneManager *)self _currentWatchToneIdentifierForAlertType:type topic:topicCopy didFindPersistedWatchToneIdentifier:0];
   v10 = TLLogToneManagement();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = NSStringFromTLAlertType(a3);
+    v11 = NSStringFromTLAlertType(type);
     v16 = 138543874;
-    v17 = self;
+    selfCopy3 = self;
     v18 = 2114;
     v19 = v11;
     v20 = 2114;
@@ -6303,13 +6303,13 @@ LABEL_50:
 
   if (!v9)
   {
-    v9 = [(TLToneManager *)self defaultWatchToneIdentifierForAlertType:a3 topic:v6];
+    v9 = [(TLToneManager *)self defaultWatchToneIdentifierForAlertType:type topic:topicCopy];
     v12 = TLLogToneManagement();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = NSStringFromTLAlertType(a3);
+      v13 = NSStringFromTLAlertType(type);
       v16 = 138543874;
-      v17 = self;
+      selfCopy3 = self;
       v18 = 2114;
       v19 = v13;
       v20 = 2114;
@@ -6323,13 +6323,13 @@ LABEL_50:
   return v9;
 }
 
-- (id)_currentWatchToneIdentifierForAlertType:(int64_t)a3 topic:(id)a4 didFindPersistedWatchToneIdentifier:(BOOL *)a5
+- (id)_currentWatchToneIdentifierForAlertType:(int64_t)type topic:(id)topic didFindPersistedWatchToneIdentifier:(BOOL *)identifier
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [v8 length];
+  topicCopy = topic;
+  v9 = [topicCopy length];
   v10 = +[TLPreferencesUtilities perWatchPreferencesDomain];
-  v11 = [(TLToneManager *)self _currentWatchToneIdentifierPreferenceKeyForAlertType:a3 topic:v8];
+  v11 = [(TLToneManager *)self _currentWatchToneIdentifierPreferenceKeyForAlertType:type topic:topicCopy];
   if (!v11 || (NPSDomainAccessorClass = getNPSDomainAccessorClass()) == 0)
   {
     isKindOfClass = 0;
@@ -6337,7 +6337,7 @@ LABEL_50:
 LABEL_18:
     if (v9)
     {
-      v23 = [(TLToneManager *)self _currentWatchToneIdentifierForAlertType:a3 topic:0 didFindPersistedWatchToneIdentifier:0];
+      v23 = [(TLToneManager *)self _currentWatchToneIdentifierForAlertType:type topic:0 didFindPersistedWatchToneIdentifier:0];
 
       v20 = v23;
     }
@@ -6350,7 +6350,7 @@ LABEL_18:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v28 = self;
+    selfCopy2 = self;
     v29 = 2114;
     v30 = v13;
     _os_log_impl(&dword_1D9356000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: -_currentWatchToneIdentifier…: Instantiated domain accessor %{public}@.", buf, 0x16u);
@@ -6361,7 +6361,7 @@ LABEL_18:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544130;
-    v28 = self;
+    selfCopy2 = self;
     v29 = 2114;
     v30 = v11;
     v31 = 2114;
@@ -6371,14 +6371,14 @@ LABEL_18:
     _os_log_impl(&dword_1D9356000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: -_currentWatchToneIdentifier…: Retrieved object for key %{public}@ from %{public}@: %{public}@.", buf, 0x2Au);
   }
 
-  v26 = a5;
+  identifierCopy = identifier;
   if (v9)
   {
     objc_opt_class();
     v17 = v10;
     if (objc_opt_isKindOfClass())
     {
-      v18 = [v15 objectForKey:v8];
+      v18 = [v15 objectForKey:topicCopy];
     }
 
     else
@@ -6412,16 +6412,16 @@ LABEL_18:
 
   v9 = v21;
   v10 = v17;
-  a5 = v26;
+  identifier = identifierCopy;
   if ((isKindOfClass & 1) == 0)
   {
     goto LABEL_18;
   }
 
 LABEL_20:
-  if (a5)
+  if (identifier)
   {
-    *a5 = isKindOfClass & 1;
+    *identifier = isKindOfClass & 1;
   }
 
   v24 = *MEMORY[0x1E69E9840];
@@ -6429,28 +6429,28 @@ LABEL_20:
   return v20;
 }
 
-- (void)setCurrentWatchToneIdentifier:(id)a3 forAlertType:(int64_t)a4 topic:(id)a5
+- (void)setCurrentWatchToneIdentifier:(id)identifier forAlertType:(int64_t)type topic:(id)topic
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  topicCopy = topic;
   v10 = TLLogToneManagement();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = NSStringFromTLAlertType(a4);
+    v11 = NSStringFromTLAlertType(type);
     *buf = 138544130;
-    v26 = self;
+    selfCopy = self;
     v27 = 2114;
-    v28 = v8;
+    v28 = identifierCopy;
     v29 = 2114;
     v30 = v11;
     v31 = 2114;
-    v32 = v9;
+    v32 = topicCopy;
     _os_log_impl(&dword_1D9356000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: -setCurrentWatchToneIdentifier:(%{public}@) forAlertType:(%{public}@) topic:(%{public}@)", buf, 0x2Au);
   }
 
   buf[0] = 0;
-  v12 = [(TLToneManager *)self _currentWatchToneIdentifierForAlertType:a4 topic:v9 didFindPersistedWatchToneIdentifier:buf];
+  v12 = [(TLToneManager *)self _currentWatchToneIdentifierForAlertType:type topic:topicCopy didFindPersistedWatchToneIdentifier:buf];
   v13 = v12;
   if (buf[0] != 1)
   {
@@ -6458,7 +6458,7 @@ LABEL_20:
   }
 
   v14 = v12;
-  v15 = v8;
+  v15 = identifierCopy;
   v16 = v15;
   if (!(v15 | v14))
   {
@@ -6470,7 +6470,7 @@ LABEL_20:
 
 LABEL_11:
     v14 = +[TLPreferencesUtilities perWatchPreferencesDomain];
-    v16 = [(TLToneManager *)self _currentWatchToneIdentifierPreferenceKeyForAlertType:a4 topic:v9];
+    v16 = [(TLToneManager *)self _currentWatchToneIdentifierPreferenceKeyForAlertType:type topic:topicCopy];
     if (v16)
     {
       v20[0] = MEMORY[0x1E69E9820];
@@ -6480,10 +6480,10 @@ LABEL_11:
       v20[4] = self;
       v14 = v14;
       v21 = v14;
-      v22 = v9;
+      v22 = topicCopy;
       v16 = v16;
       v23 = v16;
-      v24 = v8;
+      v24 = identifierCopy;
       [(TLToneManager *)self _performBlockInAccessQueue:v20];
     }
 
@@ -6492,7 +6492,7 @@ LABEL_11:
       v18 = TLLogToneManagement();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        [TLToneManager setCurrentWatchToneIdentifier:a4 forAlertType:? topic:?];
+        [TLToneManager setCurrentWatchToneIdentifier:type forAlertType:? topic:?];
       }
     }
 
@@ -6643,15 +6643,15 @@ LABEL_8:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_currentToneWatchAlertPolicyPreferenceKeyForAlertType:(int64_t)a3 topic:(id)a4
+- (id)_currentToneWatchAlertPolicyPreferenceKeyForAlertType:(int64_t)type topic:(id)topic
 {
-  v5 = a4;
-  v6 = [objc_opt_class() _systemWideTonePreferenceKeyForAlertType:a3];
+  topicCopy = topic;
+  v6 = [objc_opt_class() _systemWideTonePreferenceKeyForAlertType:type];
   v7 = [v6 stringByReplacingOccurrencesOfString:@"sound-identifier" withString:@"sound"];
 
   v8 = [v7 stringByAppendingString:@"-watch-alert-policy"];
 
-  v9 = [v5 length];
+  v9 = [topicCopy length];
   if (v9)
   {
     v10 = [v8 stringByAppendingString:@"-per-account"];
@@ -6662,18 +6662,18 @@ LABEL_8:
   return v8;
 }
 
-- (int64_t)_currentToneWatchAlertPolicyForAlertType:(int64_t)a3 topic:(id)a4 didFindPersistedWatchAlertPolicy:(BOOL *)a5
+- (int64_t)_currentToneWatchAlertPolicyForAlertType:(int64_t)type topic:(id)topic didFindPersistedWatchAlertPolicy:(BOOL *)policy
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if ((a3 - 13) >= 2)
+  topicCopy = topic;
+  if ((type - 13) >= 2)
   {
-    if (a3 == 17)
+    if (type == 17)
     {
       v10 = +[TLCapabilitiesManager sharedCapabilitiesManager];
-      v11 = [v10 supportsNanoEncore];
+      supportsNanoEncore = [v10 supportsNanoEncore];
 
-      v9 = v11 ^ 1u;
+      v9 = supportsNanoEncore ^ 1u;
     }
 
     else
@@ -6687,16 +6687,16 @@ LABEL_8:
     v9 = 1;
   }
 
-  v12 = [v8 length];
+  v12 = [topicCopy length];
   v13 = +[TLPreferencesUtilities perWatchPreferencesDomain];
-  v14 = [(TLToneManager *)self _currentToneWatchAlertPolicyPreferenceKeyForAlertType:a3 topic:v8];
+  v14 = [(TLToneManager *)self _currentToneWatchAlertPolicyPreferenceKeyForAlertType:type topic:topicCopy];
   if (!v14 || (NPSDomainAccessorClass = getNPSDomainAccessorClass()) == 0)
   {
     isKindOfClass = 0;
 LABEL_21:
     if (v12)
     {
-      v9 = [(TLToneManager *)self _currentToneWatchAlertPolicyForAlertType:a3 topic:0 didFindPersistedWatchAlertPolicy:0];
+      v9 = [(TLToneManager *)self _currentToneWatchAlertPolicyForAlertType:type topic:0 didFindPersistedWatchAlertPolicy:0];
     }
 
     goto LABEL_23;
@@ -6707,7 +6707,7 @@ LABEL_21:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v26 = self;
+    selfCopy2 = self;
     v27 = 2114;
     v28 = v16;
     _os_log_impl(&dword_1D9356000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: -_currentToneWatchAlertPolicy…: Instantiated domain accessor %{public}@.", buf, 0x16u);
@@ -6719,7 +6719,7 @@ LABEL_21:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544130;
-    v26 = self;
+    selfCopy2 = self;
     v27 = 2114;
     v28 = v14;
     v29 = 2114;
@@ -6734,7 +6734,7 @@ LABEL_21:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = [v18 objectForKey:v8];
+      v20 = [v18 objectForKey:topicCopy];
     }
 
     else
@@ -6758,65 +6758,65 @@ LABEL_21:
   }
 
 LABEL_23:
-  if (a5)
+  if (policy)
   {
-    *a5 = isKindOfClass & 1;
+    *policy = isKindOfClass & 1;
   }
 
   v22 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-- (void)_setCurrentToneWatchAlertPolicy:(int64_t)a3 forAlertType:(int64_t)a4 topic:(id)a5
+- (void)_setCurrentToneWatchAlertPolicy:(int64_t)policy forAlertType:(int64_t)type topic:(id)topic
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  topicCopy = topic;
   v9 = TLLogToneManagement();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = NSStringFromTLWatchAlertPolicy(a3);
-    v11 = NSStringFromTLAlertType(a4);
+    v10 = NSStringFromTLWatchAlertPolicy(policy);
+    v11 = NSStringFromTLAlertType(type);
     *buf = 138544130;
-    v25 = self;
+    selfCopy = self;
     v26 = 2114;
     v27 = v10;
     v28 = 2114;
     v29 = v11;
     v30 = 2114;
-    v31 = v8;
+    v31 = topicCopy;
     _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: -_setCurrentToneWatchAlertPolicy:(%{public}@) forAlertType:(%{public}@) topic:(%{public}@)", buf, 0x2Au);
   }
 
-  if (a3 == 3)
+  if (policy == 3)
   {
-    v12 = [(TLToneManager *)self currentToneIdentifierForAlertType:a4 topic:v8];
+    v12 = [(TLToneManager *)self currentToneIdentifierForAlertType:type topic:topicCopy];
     if ([v12 isEqualToString:@"<none>"])
     {
-      a3 = 2;
+      policy = 2;
     }
 
     else
     {
-      a3 = 1;
+      policy = 1;
     }
   }
 
   buf[0] = 0;
-  v13 = [(TLToneManager *)self _currentToneWatchAlertPolicyForAlertType:a4 topic:v8 didFindPersistedWatchAlertPolicy:buf];
-  if (buf[0] != 1 || v13 != a3)
+  v13 = [(TLToneManager *)self _currentToneWatchAlertPolicyForAlertType:type topic:topicCopy didFindPersistedWatchAlertPolicy:buf];
+  if (buf[0] != 1 || v13 != policy)
   {
     v14 = +[TLPreferencesUtilities perWatchPreferencesDomain];
-    v15 = [(TLToneManager *)self _currentToneWatchAlertPolicyPreferenceKeyForAlertType:a4 topic:v8];
+    v15 = [(TLToneManager *)self _currentToneWatchAlertPolicyPreferenceKeyForAlertType:type topic:topicCopy];
     if (v15)
     {
-      v16 = NSStringFromTLWatchAlertPolicy(a3);
+      v16 = NSStringFromTLWatchAlertPolicy(policy);
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __68__TLToneManager__setCurrentToneWatchAlertPolicy_forAlertType_topic___block_invoke;
       v19[3] = &unk_1E8578C70;
       v19[4] = self;
       v20 = v14;
-      v21 = v8;
+      v21 = topicCopy;
       v22 = v15;
       v23 = v16;
       v17 = v16;
@@ -6828,7 +6828,7 @@ LABEL_23:
       v17 = TLLogToneManagement();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        [TLToneManager _setCurrentToneWatchAlertPolicy:a4 forAlertType:? topic:?];
+        [TLToneManager _setCurrentToneWatchAlertPolicy:type forAlertType:? topic:?];
       }
     }
   }
@@ -7035,7 +7035,7 @@ LABEL_11:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setWatchPrefersSalientNotifications:(BOOL)a3
+- (void)_setWatchPrefersSalientNotifications:(BOOL)notifications
 {
   v5 = +[TLPreferencesUtilities perWatchPreferencesDomain];
   v7[0] = MEMORY[0x1E69E9820];
@@ -7044,7 +7044,7 @@ LABEL_11:
   v7[3] = &unk_1E8578C98;
   v7[4] = self;
   v8 = v5;
-  v9 = a3;
+  notificationsCopy = notifications;
   v6 = v5;
   [(TLToneManager *)self _performBlockInAccessQueue:v7];
 }
@@ -7173,9 +7173,9 @@ void __64__TLToneManager__handleWatchPrefersSalientNotificationDidChange__block_
   [v0 postNotificationName:@"_TLAlertWatchPrefersSalientToneAndVibrationDidChangeNotification" object:0];
 }
 
-+ (id)_currentOverridePolicyPreferenceKeyForAlertType:(int64_t)a3
++ (id)_currentOverridePolicyPreferenceKeyForAlertType:(int64_t)type
 {
-  v3 = [a1 _systemWideTonePreferenceKeyForAlertType:a3];
+  v3 = [self _systemWideTonePreferenceKeyForAlertType:type];
   v4 = [v3 stringByReplacingOccurrencesOfString:@"-sound-identifier" withString:&stru_1F54CFF40];
 
   v5 = [v4 stringByAppendingString:@"-alert-override-policy"];
@@ -7183,20 +7183,20 @@ void __64__TLToneManager__handleWatchPrefersSalientNotificationDidChange__block_
   return v5;
 }
 
-- (int64_t)_currentOverridePolicyForAlertType:(int64_t)a3 didFindAlertOverridePolicy:(BOOL *)a4
+- (int64_t)_currentOverridePolicyForAlertType:(int64_t)type didFindAlertOverridePolicy:(BOOL *)policy
 {
-  v5 = [objc_opt_class() _currentOverridePolicyPreferenceKeyForAlertType:a3];
+  v5 = [objc_opt_class() _currentOverridePolicyPreferenceKeyForAlertType:type];
   if (!v5 || (v6 = +[TLPreferencesUtilities copySharedResourcesPreferencesDomain]) == 0)
   {
     v12 = 0;
     v14 = 0;
-    if (!a4)
+    if (!policy)
     {
       goto LABEL_9;
     }
 
 LABEL_8:
-    *a4 = v12;
+    *policy = v12;
     goto LABEL_9;
   }
 
@@ -7228,7 +7228,7 @@ LABEL_8:
   }
 
   CFRelease(v7);
-  if (a4)
+  if (policy)
   {
     goto LABEL_8;
   }
@@ -7238,20 +7238,20 @@ LABEL_9:
   return v14;
 }
 
-- (void)_setCurrentOverridePolicy:(int64_t)a3 forAlertType:(int64_t)a4
+- (void)_setCurrentOverridePolicy:(int64_t)policy forAlertType:(int64_t)type
 {
   v14 = 0;
-  v7 = [(TLToneManager *)self _currentOverridePolicyForAlertType:a4 didFindAlertOverridePolicy:&v14];
-  if (v14 != 1 || v7 != a3)
+  v7 = [(TLToneManager *)self _currentOverridePolicyForAlertType:type didFindAlertOverridePolicy:&v14];
+  if (v14 != 1 || v7 != policy)
   {
-    v9 = [objc_opt_class() _currentOverridePolicyPreferenceKeyForAlertType:a4];
+    v9 = [objc_opt_class() _currentOverridePolicyPreferenceKeyForAlertType:type];
     if (v9)
     {
       v10 = +[TLPreferencesUtilities copySharedResourcesPreferencesDomain];
       if (v10)
       {
         v11 = v10;
-        v12 = NSStringFromTLAlertOverridePolicy(a3);
+        v12 = NSStringFromTLAlertOverridePolicy(policy);
         CFPreferencesSetAppValue(v9, v12, v11);
         CFRelease(v11);
 
@@ -7264,67 +7264,67 @@ LABEL_9:
       v13 = TLLogToneManagement();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [TLToneManager _setCurrentOverridePolicy:a4 forAlertType:?];
+        [TLToneManager _setCurrentOverridePolicy:type forAlertType:?];
       }
     }
   }
 }
 
-+ (id)_abbreviatedDescriptionOfToneIdentifierWithUnderlyingMediaPlaybackArchiveForLogging:(id)a3
++ (id)_abbreviatedDescriptionOfToneIdentifierWithUnderlyingMediaPlaybackArchiveForLogging:(id)logging
 {
-  v3 = a3;
+  loggingCopy = logging;
   v4 = [@"mediaPlaybackArchive:" length];
-  if ([v3 length] <= (2 * v4))
+  if ([loggingCopy length] <= (2 * v4))
   {
-    v6 = v3;
+    v6 = loggingCopy;
   }
 
   else
   {
-    v5 = [v3 substringToIndex:2 * v4];
+    v5 = [loggingCopy substringToIndex:2 * v4];
     v6 = [v5 stringByAppendingString:@"…"];
   }
 
   return v6;
 }
 
-+ (id)_abbreviatedDescriptionOfMediaPlaybackArchive:(id)a3
++ (id)_abbreviatedDescriptionOfMediaPlaybackArchive:(id)archive
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = a3;
+  archiveCopy = archive;
   v5 = [v3 alloc];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 initWithFormat:@"<%@: %p", v7, v4];
+  archiveCopy = [v5 initWithFormat:@"<%@: %p", v7, archiveCopy];
 
-  v9 = [v4 displayProperties];
+  displayProperties = [archiveCopy displayProperties];
 
-  v10 = [v9 title];
-  v11 = v10;
-  if (v10)
+  title = [displayProperties title];
+  v11 = title;
+  if (title)
   {
-    [v8 appendFormat:@"; title = %@", v10];
+    [archiveCopy appendFormat:@"; title = %@", title];
   }
 
-  v12 = [v9 subtitle];
-  v13 = v12;
-  if (v12)
+  subtitle = [displayProperties subtitle];
+  v13 = subtitle;
+  if (subtitle)
   {
-    [v8 appendFormat:@"; subtitle = %@", v12];
+    [archiveCopy appendFormat:@"; subtitle = %@", subtitle];
   }
 
-  [v8 appendString:@">"];
+  [archiveCopy appendString:@">"];
 
-  return v8;
+  return archiveCopy;
 }
 
-- (id)_toneIdentifierWithUnderlyingPlaybackArchive:(id)a3
+- (id)_toneIdentifierWithUnderlyingPlaybackArchive:(id)archive
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_opt_class() _abbreviatedDescriptionOfMediaPlaybackArchive:v4];
+  archiveCopy = archive;
+  v5 = [objc_opt_class() _abbreviatedDescriptionOfMediaPlaybackArchive:archiveCopy];
   v15 = 0;
-  v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v15];
+  v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:archiveCopy requiringSecureCoding:1 error:&v15];
 
   v7 = v15;
   if ([v6 length])
@@ -7338,7 +7338,7 @@ LABEL_9:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v17 = self;
+        selfCopy2 = self;
         v18 = 2114;
         v19 = v5;
         v20 = 2114;
@@ -7364,13 +7364,13 @@ LABEL_9:
     v8 = TLLogToneManagement();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v7 tl_nonRedundantDescription];
+      tl_nonRedundantDescription = [v7 tl_nonRedundantDescription];
       *buf = 138543874;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2114;
       v19 = v5;
       v20 = 2114;
-      v21 = v14;
+      v21 = tl_nonRedundantDescription;
       _os_log_error_impl(&dword_1D9356000, v8, OS_LOG_TYPE_ERROR, "%{public}@: _toneIdentifierWithUnderlyingPlaybackArchive:(%{public}@): Failed to serialize playback archive with error: %{public}@.", buf, 0x20u);
     }
 
@@ -7382,19 +7382,19 @@ LABEL_9:
   return v9;
 }
 
-- (id)_underlyingPlaybackArchiveForToneIdentifier:(id)a3
+- (id)_underlyingPlaybackArchiveForToneIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_opt_class() _abbreviatedDescriptionOfToneIdentifierWithUnderlyingMediaPlaybackArchiveForLogging:v4];
-  if ([v4 hasPrefix:@"mediaPlaybackArchive:"])
+  identifierCopy = identifier;
+  v5 = [objc_opt_class() _abbreviatedDescriptionOfToneIdentifierWithUnderlyingMediaPlaybackArchiveForLogging:identifierCopy];
+  if ([identifierCopy hasPrefix:@"mediaPlaybackArchive:"])
   {
-    v6 = [v4 substringFromIndex:{objc_msgSend(@"mediaPlaybackArchive:", "length")}];
+    v6 = [identifierCopy substringFromIndex:{objc_msgSend(@"mediaPlaybackArchive:", "length")}];
   }
 
   else
   {
-    v6 = v4;
+    v6 = identifierCopy;
   }
 
   v7 = v6;
@@ -7465,51 +7465,51 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)_hasUnderlyingPlaybackArchiveForToneIdentifier:(id)a3
+- (BOOL)_hasUnderlyingPlaybackArchiveForToneIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = ![(TLToneManager *)self _toneWithIdentifierIsDefaultRingtone:v4]&& ![(TLToneManager *)self _toneWithIdentifierIsNonDefaultAndNonEmbeddedSystemRingtone:v4]&& ![(TLToneManager *)self _toneWithIdentifierIsITunesRingtone:v4]&& ![(TLToneManager *)self _toneWithIdentifierIsSystemTone:v4]&& ![(TLToneManager *)self _toneWithIdentifierIsAlarmWakeUp:v4]&& [(TLToneManager *)self _toneWithIdentifierIsMediaPlaybackArchive:v4];
+  identifierCopy = identifier;
+  v5 = ![(TLToneManager *)self _toneWithIdentifierIsDefaultRingtone:identifierCopy]&& ![(TLToneManager *)self _toneWithIdentifierIsNonDefaultAndNonEmbeddedSystemRingtone:identifierCopy]&& ![(TLToneManager *)self _toneWithIdentifierIsITunesRingtone:identifierCopy]&& ![(TLToneManager *)self _toneWithIdentifierIsSystemTone:identifierCopy]&& ![(TLToneManager *)self _toneWithIdentifierIsAlarmWakeUp:identifierCopy]&& [(TLToneManager *)self _toneWithIdentifierIsMediaPlaybackArchive:identifierCopy];
 
   return v5;
 }
 
-- (id)_fileNameFromToneIdentifier:(id)a3 withPrefix:(id)a4
+- (id)_fileNameFromToneIdentifier:(id)identifier withPrefix:(id)prefix
 {
-  v5 = a3;
-  if ([v5 rangeOfString:a4] || (v7 = v6, v6 >= objc_msgSend(v5, "length")))
+  identifierCopy = identifier;
+  if ([identifierCopy rangeOfString:prefix] || (v7 = v6, v6 >= objc_msgSend(identifierCopy, "length")))
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [v5 substringFromIndex:v7];
+    v8 = [identifierCopy substringFromIndex:v7];
   }
 
   return v8;
 }
 
-- (id)_localizedNameOfToneWithIdentifier:(id)a3
+- (id)_localizedNameOfToneWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[TLCapabilitiesManager sharedCapabilitiesManager];
   if ([v4 wantsModernDefaultRingtone])
   {
-    v5 = [(__CFString *)v3 isEqualToString:@"system:Opening"];
+    v5 = [(__CFString *)identifierCopy isEqualToString:@"system:Opening"];
 
-    v6 = v3;
+    v6 = identifierCopy;
     if (!v5)
     {
       goto LABEL_6;
     }
 
     v6 = @"RINGTONE_PICKER_DEFAULT_RINGTONE_NAME";
-    v4 = v3;
+    v4 = identifierCopy;
   }
 
   else
   {
-    v6 = v3;
+    v6 = identifierCopy;
   }
 
 LABEL_6:
@@ -7523,13 +7523,13 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)_ensureDirectoryExistsAtPath:(id)a3
+- (BOOL)_ensureDirectoryExistsAtPath:(id)path
 {
-  v3 = a3;
-  if (v3)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    if ([v4 fileExistsAtPath:v3])
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    if ([defaultManager fileExistsAtPath:pathCopy])
     {
       v5 = 1;
     }
@@ -7537,7 +7537,7 @@ LABEL_6:
     else
     {
       v9 = 0;
-      v5 = [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v9];
+      v5 = [defaultManager createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:0 error:&v9];
       v6 = v9;
       if ((v5 & 1) == 0)
       {
@@ -7558,20 +7558,20 @@ LABEL_6:
   return v5;
 }
 
-- (void)_didSetTonePreferenceSuccessfullyWithKey:(id)a3 inDomain:(id)a4 usingPreferencesOfKind:(unint64_t)a5
+- (void)_didSetTonePreferenceSuccessfullyWithKey:(id)key inDomain:(id)domain usingPreferencesOfKind:(unint64_t)kind
 {
   v27[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  keyCopy = key;
+  domainCopy = domain;
   v10 = TLLogToneManagement();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v8;
+    *&buf[14] = keyCopy;
     *&buf[22] = 2114;
-    v26 = v9;
+    v26 = domainCopy;
     _os_log_impl(&dword_1D9356000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: -_didSetTonePreferenceSuccessfullyWithKey:(%{public}@) inDomain:(%{public}@)…", buf, 0x20u);
   }
 
@@ -7580,11 +7580,11 @@ LABEL_6:
   v20[2] = __90__TLToneManager__didSetTonePreferenceSuccessfullyWithKey_inDomain_usingPreferencesOfKind___block_invoke;
   v20[3] = &unk_1E8578CC0;
   v20[4] = self;
-  v20[5] = a5;
+  v20[5] = kind;
   [(TLToneManager *)self _performBlockInAccessQueue:v20];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"_TLTonePreferencesDidChangeNotification", 0, 0, 1u);
-  if (a5)
+  if (kind)
   {
     v21 = 0;
     v22 = &v21;
@@ -7617,17 +7617,17 @@ LABEL_6:
         _os_log_impl(&dword_1D9356000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: -_didSetTonePreferenceSuccessfully…: Instantiated preferences sync manager %{public}@.", buf, 0x16u);
       }
 
-      v16 = [MEMORY[0x1E695DFD8] setWithObjects:{v8, 0}];
-      if (a5)
+      v16 = [MEMORY[0x1E695DFD8] setWithObjects:{keyCopy, 0}];
+      if (kind)
       {
-        [v14 synchronizeUserDefaultsDomain:v9 keys:v16];
+        [v14 synchronizeUserDefaultsDomain:domainCopy keys:v16];
         v17 = TLLogToneManagement();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138544130;
           *&buf[4] = self;
           *&buf[12] = 2114;
-          *&buf[14] = v9;
+          *&buf[14] = domainCopy;
           *&buf[22] = 2114;
           v26 = v14;
           LOWORD(v27[0]) = 2114;
@@ -7636,16 +7636,16 @@ LABEL_6:
         }
       }
 
-      if ((a5 & 2) != 0)
+      if ((kind & 2) != 0)
       {
-        [v14 synchronizeNanoDomain:v9 keys:v16];
+        [v14 synchronizeNanoDomain:domainCopy keys:v16];
         v18 = TLLogToneManagement();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138544130;
           *&buf[4] = self;
           *&buf[12] = 2114;
-          *&buf[14] = v9;
+          *&buf[14] = domainCopy;
           *&buf[22] = 2114;
           v26 = v14;
           LOWORD(v27[0]) = 2114;
@@ -7668,22 +7668,22 @@ uint64_t __90__TLToneManager__didSetTonePreferenceSuccessfullyWithKey_inDomain_u
   return result;
 }
 
-+ (BOOL)_ensureTCCAccessPreflightAndCheckForFileExistenceAtPath:(id)a3
++ (BOOL)_ensureTCCAccessPreflightAndCheckForFileExistenceAtPath:(id)path
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__TLToneManager__ensureTCCAccessPreflightAndCheckForFileExistenceAtPath___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_ensureTCCAccessPreflightAndCheckForFileExistenceAtPath___TLToneManagerTCCPreflightOnceToken != -1)
   {
     dispatch_once(&_ensureTCCAccessPreflightAndCheckForFileExistenceAtPath___TLToneManagerTCCPreflightOnceToken, block);
   }
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:pathCopy];
 
   v7 = off_1E8578DB0[_ensureTCCAccessPreflightAndCheckForFileExistenceAtPath___TLToneManagerTCCAccessPreflightStatus + 1];
   v8 = TLLogToneManagement();
@@ -7693,9 +7693,9 @@ uint64_t __90__TLToneManager__didSetTonePreferenceSuccessfullyWithKey_inDomain_u
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v14 = a1;
+      selfCopy2 = self;
       v15 = 2114;
-      v16 = v4;
+      v16 = pathCopy;
       v17 = 2114;
       v18 = v7;
       _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: File exists at path %{public}@. TCCAccessPreflight status: %{public}@.", buf, 0x20u);
@@ -7705,9 +7705,9 @@ uint64_t __90__TLToneManager__didSetTonePreferenceSuccessfullyWithKey_inDomain_u
   else if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543874;
-    v14 = a1;
+    selfCopy2 = self;
     v15 = 2114;
-    v16 = v4;
+    v16 = pathCopy;
     v17 = 2114;
     v18 = v7;
     _os_log_error_impl(&dword_1D9356000, v9, OS_LOG_TYPE_ERROR, "%{public}@: File DOES NOT exists at path %{public}@. TCCAccessPreflight status: %{public}@.", buf, 0x20u);
@@ -7825,17 +7825,17 @@ LABEL_18:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_toneIdentifierForMediaLibraryItemIdentifier:(unint64_t)a3
+- (id)_toneIdentifierForMediaLibraryItemIdentifier:(unint64_t)identifier
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v6 = [v5 UUIDString];
-  v7 = [v4 stringWithFormat:@"mediaLibrary:%llu-%@", a3, v6];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v7 = [v4 stringWithFormat:@"mediaLibrary:%llu-%@", identifier, uUIDString];
 
   return v7;
 }
 
-- (void)_handleTonePreferencesChangedNotificationForPreferencesKinds:(unint64_t)a3
+- (void)_handleTonePreferencesChangedNotificationForPreferencesKinds:(unint64_t)kinds
 {
   v41 = *MEMORY[0x1E69E9840];
   if (self->_shouldIgnoreNextToneDidChangeNotification)
@@ -7874,7 +7874,7 @@ LABEL_18:
 
   else
   {
-    v8 = a3;
+    kindsCopy = kinds;
     v9 = TLLogToneManagement();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -7883,7 +7883,7 @@ LABEL_18:
       _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: -_handleTonePreferencesChangedNotification…", buf, 0xCu);
     }
 
-    if ((v8 & 1) != 0 && (v10 = +[TLPreferencesUtilities copySharedResourcesPreferencesDomain], (v11 = v10) != 0))
+    if ((kindsCopy & 1) != 0 && (v10 = +[TLPreferencesUtilities copySharedResourcesPreferencesDomain], (v11 = v10) != 0))
     {
       CFPreferencesSynchronize(v10, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
       v12 = TLLogToneManagement();
@@ -7905,7 +7905,7 @@ LABEL_18:
       v13 = 0;
     }
 
-    if ((v8 & 2) != 0)
+    if ((kindsCopy & 2) != 0)
     {
       if (+[TLPreferencesUtilities canAccessNanoRegistry]&& (NPSDomainAccessorClass = getNPSDomainAccessorClass()) != 0)
       {
@@ -7936,7 +7936,7 @@ LABEL_18:
           {
             v21 = *(*&buf[8] + 40);
             *v33 = 138543618;
-            v34 = self;
+            selfCopy2 = self;
             v35 = 2114;
             v36 = v21;
             _os_log_impl(&dword_1D9356000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@: -_handleTonePreferencesChangedNotification…: Instantiated domain accessor %{public}@.", v33, 0x16u);
@@ -7945,13 +7945,13 @@ LABEL_18:
           v15 = *(*&buf[8] + 40);
         }
 
-        v22 = [v15 synchronize];
+        synchronize = [v15 synchronize];
         v23 = TLLogToneManagement();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           v24 = *(*&buf[8] + 40);
           *v33 = 138543618;
-          v34 = self;
+          selfCopy2 = self;
           v35 = 2114;
           v36 = v24;
           _os_log_impl(&dword_1D9356000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@: -_handleTonePreferencesChangedNotification…: Synchronized domain accessor %{public}@.", v33, 0x16u);

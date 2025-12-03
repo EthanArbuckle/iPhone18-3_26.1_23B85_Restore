@@ -1,15 +1,15 @@
 @interface BloodPressureCurrentValueViewDataSource
 - (_TtC15HealthRecordsUI39BloodPressureCurrentValueViewDataSource)init;
-- (_TtC15HealthRecordsUI39BloodPressureCurrentValueViewDataSource)initWithDateCache:(id)a3 healthStore:(id)a4 selectedRangeFormatter:(id)a5;
+- (_TtC15HealthRecordsUI39BloodPressureCurrentValueViewDataSource)initWithDateCache:(id)cache healthStore:(id)store selectedRangeFormatter:(id)formatter;
 @end
 
 @implementation BloodPressureCurrentValueViewDataSource
 
-- (_TtC15HealthRecordsUI39BloodPressureCurrentValueViewDataSource)initWithDateCache:(id)a3 healthStore:(id)a4 selectedRangeFormatter:(id)a5
+- (_TtC15HealthRecordsUI39BloodPressureCurrentValueViewDataSource)initWithDateCache:(id)cache healthStore:(id)store selectedRangeFormatter:(id)formatter
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for BloodPressureCurrentValueViewDataSource();
-  return [(HKCurrentValueViewDataSource *)&v9 initWithDateCache:a3 healthStore:a4 selectedRangeFormatter:a5];
+  return [(HKCurrentValueViewDataSource *)&v9 initWithDateCache:cache healthStore:store selectedRangeFormatter:formatter];
 }
 
 - (_TtC15HealthRecordsUI39BloodPressureCurrentValueViewDataSource)init

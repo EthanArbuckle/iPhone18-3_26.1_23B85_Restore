@@ -1,5 +1,5 @@
 @interface WFPHAssetCollectionPredicate
-- (id)initForAssetsInCollection:(id)a3;
+- (id)initForAssetsInCollection:(id)collection;
 - (id)wf_photoLibraryFilteringPredicate;
 @end
 
@@ -8,20 +8,20 @@
 - (id)wf_photoLibraryFilteringPredicate
 {
   v3 = MEMORY[0x277CCA9C0];
-  v4 = [(WFPHAssetCollectionPredicate *)self rightExpression];
-  v5 = [v4 expressionValueWithObject:0 context:0];
+  rightExpression = [(WFPHAssetCollectionPredicate *)self rightExpression];
+  v5 = [rightExpression expressionValueWithObject:0 context:0];
   v6 = [v3 expressionForConstantValue:v5];
 
   v7 = MEMORY[0x277CCA918];
-  v8 = [(WFPHAssetCollectionPredicate *)self leftExpression];
-  v9 = [v7 predicateWithLeftExpression:v8 rightExpression:v6 modifier:-[WFPHAssetCollectionPredicate comparisonPredicateModifier](self type:"comparisonPredicateModifier") options:{-[WFPHAssetCollectionPredicate predicateOperatorType](self, "predicateOperatorType"), -[WFPHAssetCollectionPredicate options](self, "options")}];
+  leftExpression = [(WFPHAssetCollectionPredicate *)self leftExpression];
+  v9 = [v7 predicateWithLeftExpression:leftExpression rightExpression:v6 modifier:-[WFPHAssetCollectionPredicate comparisonPredicateModifier](self type:"comparisonPredicateModifier") options:{-[WFPHAssetCollectionPredicate predicateOperatorType](self, "predicateOperatorType"), -[WFPHAssetCollectionPredicate options](self, "options")}];
 
   return v9;
 }
 
-- (id)initForAssetsInCollection:(id)a3
+- (id)initForAssetsInCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v6 = [MEMORY[0x277CCA9C0] expressionForKeyPath:@"localIdentifier"];
   v18[0] = 0;
   v18[1] = v18;
@@ -35,7 +35,7 @@
   v15[2] = __58__WFPHAssetCollectionPredicate_initForAssetsInCollection___block_invoke;
   v15[3] = &unk_278347068;
   v17 = v18;
-  v8 = v5;
+  v8 = collectionCopy;
   v16 = v8;
   v9 = [v7 expressionForBlock:v15 arguments:0];
   v14.receiver = self;
@@ -44,7 +44,7 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_assetCollection, a3);
+    objc_storeStrong(&v10->_assetCollection, collection);
     v12 = v11;
   }
 

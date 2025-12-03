@@ -1,13 +1,13 @@
 @interface WBSLeadImageCacheRequest
-+ (id)requestWithURL:(id)a3;
++ (id)requestWithURL:(id)l;
 @end
 
 @implementation WBSLeadImageCacheRequest
 
-+ (id)requestWithURL:(id)a3
++ (id)requestWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithURL:v4 extraInfo:0];
+  lCopy = l;
+  v5 = [[self alloc] initWithURL:lCopy extraInfo:0];
 
   return v5;
 }

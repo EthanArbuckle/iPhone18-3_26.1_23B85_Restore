@@ -1,17 +1,17 @@
 @interface MTEpisodeArtworkView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MTEpisodeArtworkView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MTEpisodeArtworkView)initWithFrame:(CGRect)frame;
 - (MTNowPlayingIndicatorView)barsView;
 - (MTVibrantImageView)vibrantImageView;
 - (UIImage)artwork;
 - (UIImageView)imageView;
 - (UIView)dimmingView;
-- (id)_blurredArtworkForArtwork:(id)a3;
-- (void)_updateBarMetricsForArtworkSize:(CGSize)a3;
+- (id)_blurredArtworkForArtwork:(id)artwork;
+- (void)_updateBarMetricsForArtworkSize:(CGSize)size;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setArtwork:(id)a3;
-- (void)setCurrentPlayerItem:(BOOL)a3;
+- (void)setArtwork:(id)artwork;
+- (void)setCurrentPlayerItem:(BOOL)item;
 - (void)startObservingPlaybackState;
 - (void)stopObservingPlaybackState;
 - (void)updatePlaybackState;
@@ -19,16 +19,16 @@
 
 @implementation MTEpisodeArtworkView
 
-- (MTEpisodeArtworkView)initWithFrame:(CGRect)a3
+- (MTEpisodeArtworkView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = MTEpisodeArtworkView;
-  v3 = [(MTEpisodeArtworkView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTEpisodeArtworkView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(MTEpisodeArtworkView *)v3 imageView];
-    [(MTEpisodeArtworkView *)v4 addSubview:v5];
+    imageView = [(MTEpisodeArtworkView *)v3 imageView];
+    [(MTEpisodeArtworkView *)v4 addSubview:imageView];
 
     [(MTEpisodeArtworkView *)v4 setUserInteractionEnabled:0];
   }
@@ -48,22 +48,22 @@
 
 - (UIImage)artwork
 {
-  v2 = [(MTEpisodeArtworkView *)self imageView];
-  v3 = [v2 image];
+  imageView = [(MTEpisodeArtworkView *)self imageView];
+  image = [imageView image];
 
-  return v3;
+  return image;
 }
 
-- (void)setArtwork:(id)a3
+- (void)setArtwork:(id)artwork
 {
-  v8 = a3;
-  v4 = [(MTEpisodeArtworkView *)self imageView];
-  [v4 setImage:v8];
+  artworkCopy = artwork;
+  imageView = [(MTEpisodeArtworkView *)self imageView];
+  [imageView setImage:artworkCopy];
 
-  v5 = [(MTEpisodeArtworkView *)self isCurrentPlayerItem];
-  if (v5)
+  isCurrentPlayerItem = [(MTEpisodeArtworkView *)self isCurrentPlayerItem];
+  if (isCurrentPlayerItem)
   {
-    v6 = [(MTEpisodeArtworkView *)self _blurredArtworkForArtwork:v8];
+    v6 = [(MTEpisodeArtworkView *)self _blurredArtworkForArtwork:artworkCopy];
   }
 
   else
@@ -71,10 +71,10 @@
     v6 = 0;
   }
 
-  v7 = [(MTEpisodeArtworkView *)self vibrantImageView];
-  [v7 setImage:v6];
+  vibrantImageView = [(MTEpisodeArtworkView *)self vibrantImageView];
+  [vibrantImageView setImage:v6];
 
-  if (v5)
+  if (isCurrentPlayerItem)
   {
   }
 }
@@ -88,8 +88,8 @@
     v5 = self->_vibrantImageView;
     self->_vibrantImageView = v4;
 
-    v6 = [(MTEpisodeArtworkView *)self barsView];
-    [(MTVibrantImageView *)self->_vibrantImageView setMaskView:v6];
+    barsView = [(MTEpisodeArtworkView *)self barsView];
+    [(MTVibrantImageView *)self->_vibrantImageView setMaskView:barsView];
 
     vibrantImageView = self->_vibrantImageView;
   }
@@ -97,29 +97,29 @@
   return vibrantImageView;
 }
 
-- (void)setCurrentPlayerItem:(BOOL)a3
+- (void)setCurrentPlayerItem:(BOOL)item
 {
-  if (self->_currentPlayerItem != a3)
+  if (self->_currentPlayerItem != item)
   {
     v17 = v6;
     v18 = v5;
     v19 = v4;
     v20 = v3;
-    self->_currentPlayerItem = a3;
-    if (a3)
+    self->_currentPlayerItem = item;
+    if (item)
     {
-      v10 = [(MTEpisodeArtworkView *)self dimmingView];
-      [(MTEpisodeArtworkView *)self addSubview:v10];
+      dimmingView = [(MTEpisodeArtworkView *)self dimmingView];
+      [(MTEpisodeArtworkView *)self addSubview:dimmingView];
 
-      v11 = [(MTEpisodeArtworkView *)self vibrantImageView];
-      v12 = [v11 image];
+      vibrantImageView = [(MTEpisodeArtworkView *)self vibrantImageView];
+      image = [vibrantImageView image];
 
-      if (!v12)
+      if (!image)
       {
-        v13 = [(MTEpisodeArtworkView *)self artwork];
-        v14 = [(MTEpisodeArtworkView *)self _blurredArtworkForArtwork:v13];
-        v15 = [(MTEpisodeArtworkView *)self vibrantImageView];
-        [v15 setImage:v14];
+        artwork = [(MTEpisodeArtworkView *)self artwork];
+        v14 = [(MTEpisodeArtworkView *)self _blurredArtworkForArtwork:artwork];
+        vibrantImageView2 = [(MTEpisodeArtworkView *)self vibrantImageView];
+        [vibrantImageView2 setImage:v14];
       }
 
       v16 = [(MTEpisodeArtworkView *)self vibrantImageView:v17];
@@ -156,9 +156,9 @@
   if ([(MTEpisodeArtworkView *)self isCurrentPlayerItem])
   {
     v3 = +[MTPlayerController defaultInstance];
-    v4 = [v3 isTargetPlaying];
+    isTargetPlaying = [v3 isTargetPlaying];
 
-    if (v4)
+    if (isTargetPlaying)
     {
       v5 = 1;
     }
@@ -186,20 +186,20 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MTEpisodeArtworkView *)self imageView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  imageView = [(MTEpisodeArtworkView *)self imageView];
+  [imageView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(UIView *)self->_dimmingView superview];
+  superview = [(UIView *)self->_dimmingView superview];
 
-  if (v12)
+  if (superview)
   {
-    v13 = [(MTEpisodeArtworkView *)self dimmingView];
-    [v13 setFrame:{v4, v6, v8, v10}];
+    dimmingView = [(MTEpisodeArtworkView *)self dimmingView];
+    [dimmingView setFrame:{v4, v6, v8, v10}];
   }
 
-  v14 = [(MTVibrantImageView *)self->_vibrantImageView superview];
+  superview2 = [(MTVibrantImageView *)self->_vibrantImageView superview];
 
-  if (v14)
+  if (superview2)
   {
     [(MTVibrantImageView *)self->_vibrantImageView setFrame:v4, v6, v8, v10];
 
@@ -207,12 +207,12 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(MTEpisodeArtworkView *)self imageView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  imageView = [(MTEpisodeArtworkView *)self imageView];
+  [imageView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -233,16 +233,16 @@
     self->_imageView = v4;
 
     v6 = +[UIColor artworkBorderColor];
-    v7 = [v6 CGColor];
-    v8 = [(UIImageView *)self->_imageView layer];
-    [v8 setBorderColor:v7];
+    cGColor = [v6 CGColor];
+    layer = [(UIImageView *)self->_imageView layer];
+    [layer setBorderColor:cGColor];
 
     v9 = +[UIScreen mainScreen];
     [v9 scale];
     v11 = v10;
 
-    v12 = [(UIImageView *)self->_imageView layer];
-    [v12 setBorderWidth:1.0 / v11];
+    layer2 = [(UIImageView *)self->_imageView layer];
+    [layer2 setBorderWidth:1.0 / v11];
 
     imageView = self->_imageView;
   }
@@ -298,21 +298,21 @@
   return barsView;
 }
 
-- (id)_blurredArtworkForArtwork:(id)a3
+- (id)_blurredArtworkForArtwork:(id)artwork
 {
-  v3 = a3;
+  artworkCopy = artwork;
   v4 = [_UIBackdropViewSettings settingsForPrivateStyle:2020];
   v5 = +[UIScreen mainScreen];
   [v5 scale];
   v7 = v6;
 
   [v4 setBlurRadius:1.0 / v7 * 8.0];
-  v8 = [v3 _applyBackdropViewSettings:v4 includeTints:1 includeBlur:1];
+  v8 = [artworkCopy _applyBackdropViewSettings:v4 includeTints:1 includeBlur:1];
 
   return v8;
 }
 
-- (void)_updateBarMetricsForArtworkSize:(CGSize)a3
+- (void)_updateBarMetricsForArtworkSize:(CGSize)size
 {
   if (self->_barsView)
   {

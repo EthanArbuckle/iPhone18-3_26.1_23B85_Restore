@@ -1,35 +1,35 @@
 @interface FHTripEvent
-- (FHTripEvent)initWithPPTripEvent:(id)a3;
+- (FHTripEvent)initWithPPTripEvent:(id)event;
 - (id)description;
 @end
 
 @implementation FHTripEvent
 
-- (FHTripEvent)initWithPPTripEvent:(id)a3
+- (FHTripEvent)initWithPPTripEvent:(id)event
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v23.receiver = self;
   v23.super_class = FHTripEvent;
   v5 = [(FHTripEvent *)&v23 init];
   if (v5)
   {
-    v6 = [v4 title];
-    [(FHTripEvent *)v5 setTitle:v6];
+    title = [eventCopy title];
+    [(FHTripEvent *)v5 setTitle:title];
 
-    v7 = [v4 startDate];
-    [(FHTripEvent *)v5 setStartDate:v7];
+    startDate = [eventCopy startDate];
+    [(FHTripEvent *)v5 setStartDate:startDate];
 
-    v8 = [v4 endDate];
-    [(FHTripEvent *)v5 setEndDate:v8];
+    endDate = [eventCopy endDate];
+    [(FHTripEvent *)v5 setEndDate:endDate];
 
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v10 = [v4 tripParts];
-    v11 = [v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    tripParts = [eventCopy tripParts];
+    v11 = [tripParts countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v11)
     {
       v12 = v11;
@@ -41,7 +41,7 @@
         {
           if (*v20 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(tripParts);
           }
 
           v15 = [[FHTripPart alloc] initWithPPTripPart:*(*(&v19 + 1) + 8 * v14)];
@@ -51,7 +51,7 @@
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v12 = [tripParts countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v12);

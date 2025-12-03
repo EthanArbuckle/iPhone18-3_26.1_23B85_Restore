@@ -1,21 +1,21 @@
 @interface NIServerFindingAdvertisement
-+ (array<unsigned)convertCBAddressToRoseAddress:(id)a3;
-+ (id)advertisementFromByteRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (array<unsigned)convertCBAddressToRoseAddress:(id)address;
++ (id)advertisementFromByteRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
 - (NSData)byteRepresentation;
 - (NSData)extraOOBData;
 - (NSData)payload;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initForFinder:(BOOL)a3 address:(const void *)a4;
+- (id)initForFinder:(BOOL)finder address:(const void *)address;
 - (int)selectedTechnology;
 - (unsigned)statusFlags;
 @end
 
 @implementation NIServerFindingAdvertisement
 
-- (id)initForFinder:(BOOL)a3 address:(const void *)a4
+- (id)initForFinder:(BOOL)finder address:(const void *)address
 {
   v14.receiver = self;
   v14.super_class = NIServerFindingAdvertisement;
@@ -23,9 +23,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->_isFinder = a3;
-    v8 = *a4;
-    *&v6->_address.__elems_[4] = *(a4 + 2);
+    v6->_isFinder = finder;
+    v8 = *address;
+    *&v6->_address.__elems_[4] = *(address + 2);
     v6->_canRange = 1;
     v6->_useCase = 0;
     *v6->_address.__elems_ = v8;
@@ -48,10 +48,10 @@
   return v7;
 }
 
-+ (id)advertisementFromByteRepresentation:(id)a3
++ (id)advertisementFromByteRepresentation:(id)representation
 {
-  v3 = a3;
-  if ([v3 length] < 0x65)
+  representationCopy = representation;
+  if ([representationCopy length] < 0x65)
   {
     v17 = 0;
     v5 = OPACKDecodeData();
@@ -170,9 +170,9 @@ LABEL_32:
 - (NSData)byteRepresentation
 {
   v3 = [NSData dataWithBytes:&self->_address length:6];
-  v4 = [(NIServerFindingAdvertisement *)self statusFlags];
-  v5 = [(NIServerFindingAdvertisement *)self payload];
-  v6 = [(NIServerFindingAdvertisement *)self extraOOBData];
+  statusFlags = [(NIServerFindingAdvertisement *)self statusFlags];
+  payload = [(NIServerFindingAdvertisement *)self payload];
+  extraOOBData = [(NIServerFindingAdvertisement *)self extraOOBData];
   v7 = NSRandomData();
   v15[0] = &off_1009C4208;
   v8 = [NSNumber numberWithBool:self->_isFinder];
@@ -180,11 +180,11 @@ LABEL_32:
   v16[1] = v3;
   v15[1] = &off_1009C4220;
   v15[2] = &off_1009C4238;
-  v9 = [NSNumber numberWithUnsignedChar:v4];
+  v9 = [NSNumber numberWithUnsignedChar:statusFlags];
   v16[2] = v9;
   v15[3] = &off_1009C4250;
-  v10 = v5;
-  if (!v5)
+  v10 = payload;
+  if (!payload)
   {
     v10 = +[NSNull null];
   }
@@ -193,19 +193,19 @@ LABEL_32:
   v16[4] = v7;
   v15[4] = &off_1009C4268;
   v15[5] = &off_1009C4280;
-  v11 = v6;
-  if (!v6)
+  v11 = extraOOBData;
+  if (!extraOOBData)
   {
     v11 = +[NSNull null];
   }
 
   v16[5] = v11;
   v12 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:6];
-  if (!v6)
+  if (!extraOOBData)
   {
   }
 
-  if (!v5)
+  if (!payload)
   {
   }
 
@@ -214,18 +214,18 @@ LABEL_32:
   return Data;
 }
 
-+ (array<unsigned)convertCBAddressToRoseAddress:(id)a3
++ (array<unsigned)convertCBAddressToRoseAddress:(id)address
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  addressCopy = address;
+  v4 = addressCopy;
+  if (!addressCopy)
   {
     v9 = "cbAddress";
     v10 = 2266;
     goto LABEL_8;
   }
 
-  if ([v3 length] <= 5)
+  if ([addressCopy length] <= 5)
   {
     v9 = "cbAddress.length >= rose::kBtAdvAddressByteLength";
     v10 = 2267;
@@ -283,8 +283,8 @@ LABEL_8:
   nbUwbAcquisitionChannelIdx = self->_nbUwbAcquisitionChannelIdx;
   if (nbUwbAcquisitionChannelIdx)
   {
-    v10 = [(NSNumber *)nbUwbAcquisitionChannelIdx intValue];
-    sub_1001FE4D0(&__p, &v10);
+    intValue = [(NSNumber *)nbUwbAcquisitionChannelIdx intValue];
+    sub_1001FE4D0(&__p, &intValue);
   }
 
   protocolVersion = self->_protocolVersion;
@@ -307,7 +307,7 @@ LABEL_8:
     }
   }
 
-  v10 = self->_protocolVersion;
+  intValue = self->_protocolVersion;
   if (narrowBandMask)
   {
     if (narrowBandMask >= 4)
@@ -316,7 +316,7 @@ LABEL_8:
     }
 
     LOBYTE(protocolVersion) = protocolVersion | (8 * narrowBandMask);
-    v10 = protocolVersion;
+    intValue = protocolVersion;
   }
 
   mmsNumFragmentsOOB = self->_mmsNumFragmentsOOB;
@@ -327,10 +327,10 @@ LABEL_8:
       __assert_rtn("[NIServerFindingAdvertisement payload]", "NIServerFindingDiscovery.mm", 2339, "(_mmsNumFragmentsOOB & mmsNumFragmentsOOBValueMask) == _mmsNumFragmentsOOB");
     }
 
-    v10 = protocolVersion | (32 * mmsNumFragmentsOOB);
+    intValue = protocolVersion | (32 * mmsNumFragmentsOOB);
   }
 
-  sub_1001FE4D0(&__p, &v10);
+  sub_1001FE4D0(&__p, &intValue);
 LABEL_15:
   v7 = __p;
   if (v12 != __p)
@@ -367,9 +367,9 @@ LABEL_18:
   {
     v10 = 0;
     sub_100250E48(&__p, 1uLL, &v10);
-    v3 = [(NSNumber *)self->_nbUwbAcquisitionUseLowPriorityDutyCycle BOOLValue];
+    bOOLValue = [(NSNumber *)self->_nbUwbAcquisitionUseLowPriorityDutyCycle BOOLValue];
     v4 = __p;
-    if (v3)
+    if (bOOLValue)
     {
       *__p |= 1u;
       v4 = __p;
@@ -391,15 +391,15 @@ LABEL_18:
       oobRefreshPeriodSeconds = self->_oobRefreshPeriodSeconds;
     }
 
-    v6 = [(NSNumber *)oobRefreshPeriodSeconds unsignedIntValue];
-    if (v6 >= 0x3F)
+    unsignedIntValue = [(NSNumber *)oobRefreshPeriodSeconds unsignedIntValue];
+    if (unsignedIntValue >= 0x3F)
     {
       v7 = 63;
     }
 
     else
     {
-      v7 = v6;
+      v7 = unsignedIntValue;
     }
 
     *__p |= 2 * v7;
@@ -445,7 +445,7 @@ LABEL_15:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NIServerFindingAdvertisement alloc] initForFinder:self->_isFinder address:&self->_address];
   v5 = v4;
@@ -477,13 +477,13 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5 == self)
     {
@@ -500,31 +500,31 @@ LABEL_63:
 
     if ([(NIServerFindingAdvertisement *)v5 isFinder])
     {
-      v7 = 0;
+      isFinder = 0;
       goto LABEL_11;
     }
 
     if (self->_isFinder)
     {
-      v7 = 1;
+      isFinder = 1;
     }
 
     else
     {
 LABEL_10:
-      v7 = [(NIServerFindingAdvertisement *)v6 isFinder];
+      isFinder = [(NIServerFindingAdvertisement *)v6 isFinder];
     }
 
 LABEL_11:
-    v9 = [(NIServerFindingAdvertisement *)v6 address];
-    WORD2(v62) = WORD2(v9);
+    address = [(NIServerFindingAdvertisement *)v6 address];
+    WORD2(v62) = WORD2(address);
     v10 = *self->_address.__elems_;
     v11 = *&self->_address.__elems_[4];
-    v61 = WORD2(v9);
+    v61 = WORD2(address);
     canRange = self->_canRange;
-    v13 = [(NIServerFindingAdvertisement *)v6 canRange];
+    canRange = [(NIServerFindingAdvertisement *)v6 canRange];
     useCase = self->_useCase;
-    v59 = [(NIServerFindingAdvertisement *)v6 useCase];
+    useCase = [(NIServerFindingAdvertisement *)v6 useCase];
     if (v6)
     {
       [(NIServerFindingAdvertisement *)v6 supportedTechnologies];
@@ -540,7 +540,7 @@ LABEL_11:
 
     begin = self->_supportedTechnologies.__begin_;
     end = self->_supportedTechnologies.__end_;
-    v58 = v9;
+    v58 = address;
     v57 = canRange;
     if (end - begin == v15 - v14)
     {
@@ -551,7 +551,7 @@ LABEL_11:
         {
 LABEL_26:
           v56 = __PAIR64__(v10, v11);
-          v55 = v13;
+          v55 = canRange;
           if (self->_nbUwbAcquisitionChannelIdx)
           {
             v24 = 0;
@@ -559,8 +559,8 @@ LABEL_26:
 
           else
           {
-            v25 = [(NIServerFindingAdvertisement *)v6 nbUwbAcquisitionChannelIdx];
-            v24 = v25 == 0;
+            nbUwbAcquisitionChannelIdx = [(NIServerFindingAdvertisement *)v6 nbUwbAcquisitionChannelIdx];
+            v24 = nbUwbAcquisitionChannelIdx == 0;
 
             if (!self->_nbUwbAcquisitionChannelIdx)
             {
@@ -568,12 +568,12 @@ LABEL_26:
             }
           }
 
-          v26 = [(NIServerFindingAdvertisement *)v6 nbUwbAcquisitionChannelIdx];
-          if (v26)
+          nbUwbAcquisitionChannelIdx2 = [(NIServerFindingAdvertisement *)v6 nbUwbAcquisitionChannelIdx];
+          if (nbUwbAcquisitionChannelIdx2)
           {
             nbUwbAcquisitionChannelIdx = self->_nbUwbAcquisitionChannelIdx;
-            v28 = [(NIServerFindingAdvertisement *)v6 nbUwbAcquisitionChannelIdx];
-            v29 = [(NSNumber *)nbUwbAcquisitionChannelIdx isEqualToNumber:v28];
+            nbUwbAcquisitionChannelIdx3 = [(NIServerFindingAdvertisement *)v6 nbUwbAcquisitionChannelIdx];
+            v29 = [(NSNumber *)nbUwbAcquisitionChannelIdx isEqualToNumber:nbUwbAcquisitionChannelIdx3];
           }
 
           else
@@ -591,20 +591,20 @@ LABEL_33:
 
           else
           {
-            v31 = [(NIServerFindingAdvertisement *)v6 uniqueIdentifier];
-            v53 = v31 == 0;
+            uniqueIdentifier = [(NIServerFindingAdvertisement *)v6 uniqueIdentifier];
+            v53 = uniqueIdentifier == 0;
 
             uniqueIdentifier = self->_uniqueIdentifier;
           }
 
-          v32 = [(NIServerFindingAdvertisement *)v6 uniqueIdentifier];
-          v54 = v7;
-          v33 = [(NSData *)uniqueIdentifier isEqualToData:v32];
+          uniqueIdentifier2 = [(NIServerFindingAdvertisement *)v6 uniqueIdentifier];
+          v54 = isFinder;
+          v33 = [(NSData *)uniqueIdentifier isEqualToData:uniqueIdentifier2];
 
           protocolVersion = self->_protocolVersion;
-          v51 = [(NIServerFindingAdvertisement *)v6 protocolVersion];
+          protocolVersion = [(NIServerFindingAdvertisement *)v6 protocolVersion];
           narrowBandMask = self->_narrowBandMask;
-          v49 = [(NIServerFindingAdvertisement *)v6 narrowBandMask];
+          narrowBandMask = [(NIServerFindingAdvertisement *)v6 narrowBandMask];
           HIDWORD(v48) = self->_mmsNumFragmentsOOB;
           LODWORD(v48) = [(NIServerFindingAdvertisement *)v6 mmsNumFragmentsOOB];
           if (self->_nbUwbAcquisitionUseLowPriorityDutyCycle)
@@ -614,8 +614,8 @@ LABEL_33:
 
           else
           {
-            v35 = [(NIServerFindingAdvertisement *)v6 nbUwbAcquisitionUseLowPriorityDutyCycle];
-            v34 = v35 == 0;
+            nbUwbAcquisitionUseLowPriorityDutyCycle = [(NIServerFindingAdvertisement *)v6 nbUwbAcquisitionUseLowPriorityDutyCycle];
+            v34 = nbUwbAcquisitionUseLowPriorityDutyCycle == 0;
 
             if (!self->_nbUwbAcquisitionUseLowPriorityDutyCycle)
             {
@@ -623,12 +623,12 @@ LABEL_33:
             }
           }
 
-          v36 = [(NIServerFindingAdvertisement *)v6 nbUwbAcquisitionUseLowPriorityDutyCycle];
-          if (v36)
+          nbUwbAcquisitionUseLowPriorityDutyCycle2 = [(NIServerFindingAdvertisement *)v6 nbUwbAcquisitionUseLowPriorityDutyCycle];
+          if (nbUwbAcquisitionUseLowPriorityDutyCycle2)
           {
             nbUwbAcquisitionUseLowPriorityDutyCycle = self->_nbUwbAcquisitionUseLowPriorityDutyCycle;
-            v38 = [(NIServerFindingAdvertisement *)v6 nbUwbAcquisitionUseLowPriorityDutyCycle];
-            v39 = [(NSNumber *)nbUwbAcquisitionUseLowPriorityDutyCycle isEqualToNumber:v38];
+            nbUwbAcquisitionUseLowPriorityDutyCycle3 = [(NIServerFindingAdvertisement *)v6 nbUwbAcquisitionUseLowPriorityDutyCycle];
+            v39 = [(NSNumber *)nbUwbAcquisitionUseLowPriorityDutyCycle isEqualToNumber:nbUwbAcquisitionUseLowPriorityDutyCycle3];
           }
 
           else
@@ -645,8 +645,8 @@ LABEL_43:
 
           else
           {
-            v41 = [(NIServerFindingAdvertisement *)v6 oobRefreshPeriodSeconds];
-            v40 = v41 == 0;
+            oobRefreshPeriodSeconds = [(NIServerFindingAdvertisement *)v6 oobRefreshPeriodSeconds];
+            v40 = oobRefreshPeriodSeconds == 0;
 
             if (!self->_oobRefreshPeriodSeconds)
             {
@@ -663,12 +663,12 @@ LABEL_50:
                 v46 = 1;
               }
 
-              if (useCase != v59)
+              if (useCase != useCase)
               {
                 v46 = 1;
               }
 
-              if (((v46 | v22) & 1) == 0 && ((v24 ^ 1) & 1) == 0 && (((v53 | v33) ^ 1) & 1) == 0 && protocolVersion == v51 && narrowBandMask == v49 && ((v34 ^ 1) & 1) == 0)
+              if (((v46 | v22) & 1) == 0 && ((v24 ^ 1) & 1) == 0 && (((v53 | v33) ^ 1) & 1) == 0 && protocolVersion == protocolVersion && narrowBandMask == narrowBandMask && ((v34 ^ 1) & 1) == 0)
               {
                 v8 = v40 & (BYTE4(v48) == v48);
               }
@@ -677,12 +677,12 @@ LABEL_50:
             }
           }
 
-          v42 = [(NIServerFindingAdvertisement *)v6 oobRefreshPeriodSeconds];
-          if (v42)
+          oobRefreshPeriodSeconds2 = [(NIServerFindingAdvertisement *)v6 oobRefreshPeriodSeconds];
+          if (oobRefreshPeriodSeconds2)
           {
             oobRefreshPeriodSeconds = self->_oobRefreshPeriodSeconds;
-            v44 = [(NIServerFindingAdvertisement *)v6 oobRefreshPeriodSeconds];
-            v45 = [(NSNumber *)oobRefreshPeriodSeconds isEqualToNumber:v44];
+            oobRefreshPeriodSeconds3 = [(NIServerFindingAdvertisement *)v6 oobRefreshPeriodSeconds];
+            v45 = [(NSNumber *)oobRefreshPeriodSeconds isEqualToNumber:oobRefreshPeriodSeconds3];
           }
 
           else

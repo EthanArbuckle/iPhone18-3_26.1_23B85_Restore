@@ -1,31 +1,31 @@
 @interface TRIActiveLaunchdDeliveredExperimentsReader
-- (TRIActiveLaunchdDeliveredExperimentsReader)initWithNamespacesProvider:(id)a3 factorLevelsRetriever:(id)a4;
-- (id)_factorLevelStringsForNamespace:(id)a3;
+- (TRIActiveLaunchdDeliveredExperimentsReader)initWithNamespacesProvider:(id)provider factorLevelsRetriever:(id)retriever;
+- (id)_factorLevelStringsForNamespace:(id)namespace;
 - (id)allActiveExperiments;
 @end
 
 @implementation TRIActiveLaunchdDeliveredExperimentsReader
 
-- (TRIActiveLaunchdDeliveredExperimentsReader)initWithNamespacesProvider:(id)a3 factorLevelsRetriever:(id)a4
+- (TRIActiveLaunchdDeliveredExperimentsReader)initWithNamespacesProvider:(id)provider factorLevelsRetriever:(id)retriever
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  retrieverCopy = retriever;
   v12.receiver = self;
   v12.super_class = TRIActiveLaunchdDeliveredExperimentsReader;
   v9 = [(TRIActiveLaunchdDeliveredExperimentsReader *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_namespacesProvider, a3);
-    objc_storeStrong(&v10->_factorLevelsRetriever, a4);
+    objc_storeStrong(&v9->_namespacesProvider, provider);
+    objc_storeStrong(&v10->_factorLevelsRetriever, retriever);
   }
 
   return v10;
 }
 
-- (id)_factorLevelStringsForNamespace:(id)a3
+- (id)_factorLevelStringsForNamespace:(id)namespace
 {
-  v3 = [(TRINamespaceFactorLevelsRetrieving *)self->_factorLevelsRetriever factorLevelsForNamespaceName:a3];
+  v3 = [(TRINamespaceFactorLevelsRetrieving *)self->_factorLevelsRetriever factorLevelsForNamespaceName:namespace];
   v4 = [v3 _pas_mappedArrayWithTransform:&__block_literal_global_22];
 
   return v4;
@@ -34,7 +34,7 @@
 - (id)allActiveExperiments
 {
   v3 = objc_opt_new();
-  v4 = [(TRIActiveEnvVarNamespacesProviding *)self->_namespacesProvider activeEnvVarNamespaces];
+  activeEnvVarNamespaces = [(TRIActiveEnvVarNamespacesProviding *)self->_namespacesProvider activeEnvVarNamespaces];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__TRIActiveLaunchdDeliveredExperimentsReader_allActiveExperiments__block_invoke;
@@ -42,7 +42,7 @@
   v9[4] = self;
   v5 = v3;
   v10 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  [activeEnvVarNamespaces enumerateKeysAndObjectsUsingBlock:v9];
   v6 = v10;
   v7 = v5;
 

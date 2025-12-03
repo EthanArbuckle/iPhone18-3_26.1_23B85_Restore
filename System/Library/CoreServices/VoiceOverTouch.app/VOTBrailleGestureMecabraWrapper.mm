@@ -1,15 +1,15 @@
 @interface VOTBrailleGestureMecabraWrapper
 - (BOOL)_moveToNextRawCandidate;
 - (BOOL)moveToNextCandidate;
-- (VOTBrailleGestureMecabraWrapper)initWithLanguage:(id)a3;
-- (void)anlayzeString:(id)a3;
+- (VOTBrailleGestureMecabraWrapper)initWithLanguage:(id)language;
+- (void)anlayzeString:(id)string;
 - (void)dealloc;
-- (void)didSelectCandidateWithSurfaceString:(id)a3;
+- (void)didSelectCandidateWithSurfaceString:(id)string;
 @end
 
 @implementation VOTBrailleGestureMecabraWrapper
 
-- (VOTBrailleGestureMecabraWrapper)initWithLanguage:(id)a3
+- (VOTBrailleGestureMecabraWrapper)initWithLanguage:(id)language
 {
   v14.receiver = self;
   v14.super_class = VOTBrailleGestureMecabraWrapper;
@@ -63,22 +63,22 @@
   [(VOTBrailleGestureMecabraWrapper *)&v3 dealloc];
 }
 
-- (void)anlayzeString:(id)a3
+- (void)anlayzeString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   if (self->_mecabra)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_string, a3);
+    v8 = stringCopy;
+    objc_storeStrong(&self->_string, string);
     v6 = objc_opt_new();
     candidateRefForSurface = self->_candidateRefForSurface;
     self->_candidateRefForSurface = v6;
 
     self->_reachedEnd = 0;
-    objc_storeStrong(&self->_currentAnalysis, a3);
-    objc_storeStrong(&self->_currentSurface, a3);
+    objc_storeStrong(&self->_currentAnalysis, string);
+    objc_storeStrong(&self->_currentSurface, string);
     MecabraAnalyzeStringWithContext();
-    v5 = v8;
+    stringCopy = v8;
   }
 }
 
@@ -136,9 +136,9 @@
   return NextCandidate;
 }
 
-- (void)didSelectCandidateWithSurfaceString:(id)a3
+- (void)didSelectCandidateWithSurfaceString:(id)string
 {
-  if ([(NSMutableDictionary *)self->_candidateRefForSurface objectForKey:a3])
+  if ([(NSMutableDictionary *)self->_candidateRefForSurface objectForKey:string])
   {
     MecabraContextAddInlineCandidate();
   }

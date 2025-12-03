@@ -1,36 +1,36 @@
 @interface ASGizmoBulletinPostingManager
 - (ASBulletinPostingManagerDelegate)delegate;
-- (ASGizmoBulletinPostingManager)initWithDatabaseClient:(id)a3;
+- (ASGizmoBulletinPostingManager)initWithDatabaseClient:(id)client;
 - (BOOL)_isPostingAllowed;
-- (id)_batchedNotificationRequestsFromCodableBulletins:(id)a3 withAdditions:(id)a4;
-- (id)_notificationRequestFromCodableBulletin:(id)a3 withAdditions:(id)a4;
-- (void)_postNotificationRequest:(id)a3;
+- (id)_batchedNotificationRequestsFromCodableBulletins:(id)bulletins withAdditions:(id)additions;
+- (id)_notificationRequestFromCodableBulletin:(id)bulletin withAdditions:(id)additions;
+- (void)_postNotificationRequest:(id)request;
 - (void)_postQueuedNotificationRequestsIfPossible;
-- (void)_queue_postNotificationRequests:(id)a3;
-- (void)activitySharingManagerReady:(id)a3;
+- (void)_queue_postNotificationRequests:(id)requests;
+- (void)activitySharingManagerReady:(id)ready;
 - (void)dealloc;
-- (void)enqueueBulletins:(id)a3 withPostingSyle:(int64_t)a4;
-- (void)handleNotificationResponse:(id)a3 completion:(id)a4;
-- (void)postFakeBulletins:(id)a3;
-- (void)postNotificationRequest:(id)a3;
-- (void)registerNotificationCategories:(id)a3;
-- (void)removeCompetitionNotificationsForFriendUUID:(id)a3;
-- (void)removeNotificationWithIdentifier:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)enqueueBulletins:(id)bulletins withPostingSyle:(int64_t)syle;
+- (void)handleNotificationResponse:(id)response completion:(id)completion;
+- (void)postFakeBulletins:(id)bulletins;
+- (void)postNotificationRequest:(id)request;
+- (void)registerNotificationCategories:(id)categories;
+- (void)removeCompetitionNotificationsForFriendUUID:(id)d;
+- (void)removeNotificationWithIdentifier:(id)identifier;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation ASGizmoBulletinPostingManager
 
-- (ASGizmoBulletinPostingManager)initWithDatabaseClient:(id)a3
+- (ASGizmoBulletinPostingManager)initWithDatabaseClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v22.receiver = self;
   v22.super_class = ASGizmoBulletinPostingManager;
   v6 = [(ASGizmoBulletinPostingManager *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_databaseClient, a3);
+    objc_storeStrong(&v6->_databaseClient, client);
     v8 = HKCreateSerialDispatchQueue();
     notificationQueue = v7->_notificationQueue;
     v7->_notificationQueue = v8;
@@ -72,7 +72,7 @@ uint64_t __56__ASGizmoBulletinPostingManager_initWithDatabaseClient___block_invo
   return [v2 removeBulletinsOlderThanInterval:864000.0];
 }
 
-- (void)activitySharingManagerReady:(id)a3
+- (void)activitySharingManagerReady:(id)ready
 {
   [(ASDatabaseClient *)self->_databaseClient addNanoAlertSuppressionObserver:self];
   [(ASDatabaseClient *)self->_databaseClient addProtectedDataObserver:self];
@@ -100,49 +100,49 @@ uint64_t __56__ASGizmoBulletinPostingManager_initWithDatabaseClient___block_invo
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (id)_batchedNotificationRequestsFromCodableBulletins:(id)a3 withAdditions:(id)a4
+- (id)_batchedNotificationRequestsFromCodableBulletins:(id)bulletins withAdditions:(id)additions
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  bulletinsCopy = bulletins;
+  additionsCopy = additions;
   ASLoggingInitialize();
   v8 = *MEMORY[0x277CE8FF8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FF8], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
     *buf = 134217984;
-    v27 = [v6 count];
+    v27 = [bulletinsCopy count];
     _os_log_impl(&dword_23E5E3000, v9, OS_LOG_TYPE_DEFAULT, "Batching %ld notifications", buf, 0xCu);
   }
 
-  v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
-  v11 = [MEMORY[0x277CCAD78] UUID];
-  v12 = [v11 UUIDString];
+  v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(bulletinsCopy, "count")}];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __96__ASGizmoBulletinPostingManager__batchedNotificationRequestsFromCodableBulletins_withAdditions___block_invoke;
   v20[3] = &unk_278C4D008;
-  v21 = v7;
-  v22 = v12;
-  v23 = v6;
+  v21 = additionsCopy;
+  v22 = uUIDString;
+  v23 = bulletinsCopy;
   v13 = v10;
   v24 = v13;
-  v25 = self;
-  v14 = v6;
-  v15 = v12;
-  v16 = v7;
+  selfCopy = self;
+  v14 = bulletinsCopy;
+  v15 = uUIDString;
+  v16 = additionsCopy;
   [v14 enumerateObjectsUsingBlock:v20];
   v17 = v13;
 
@@ -170,50 +170,50 @@ void __96__ASGizmoBulletinPostingManager__batchedNotificationRequestsFromCodable
   [v10 addObject:v11];
 }
 
-- (id)_notificationRequestFromCodableBulletin:(id)a3 withAdditions:(id)a4
+- (id)_notificationRequestFromCodableBulletin:(id)bulletin withAdditions:(id)additions
 {
-  v5 = a3;
-  v6 = a4;
+  bulletinCopy = bulletin;
+  additionsCopy = additions;
   v7 = objc_alloc_init(MEMORY[0x277CE1F60]);
   [v7 setCategoryIdentifier:*MEMORY[0x277CE9198]];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [v5 type];
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:v9];
-  [v8 setObject:v10 forKeyedSubscript:*MEMORY[0x277CE9280]];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  type = [bulletinCopy type];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+  [dictionary setObject:v10 forKeyedSubscript:*MEMORY[0x277CE9280]];
 
-  v11 = [v5 friendListData];
-  [v8 setObject:v11 forKeyedSubscript:*MEMORY[0x277CE9260]];
+  friendListData = [bulletinCopy friendListData];
+  [dictionary setObject:friendListData forKeyedSubscript:*MEMORY[0x277CE9260]];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v5, "competitionStage")}];
-  [v8 setObject:v12 forKeyedSubscript:*MEMORY[0x277CE9258]];
+  v12 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(bulletinCopy, "competitionStage")}];
+  [dictionary setObject:v12 forKeyedSubscript:*MEMORY[0x277CE9258]];
 
-  v13 = [v5 achievementData];
+  achievementData = [bulletinCopy achievementData];
 
-  if (v13)
+  if (achievementData)
   {
-    v14 = [v5 achievementData];
-    [v8 setObject:v14 forKeyedSubscript:*MEMORY[0x277CE9248]];
+    achievementData2 = [bulletinCopy achievementData];
+    [dictionary setObject:achievementData2 forKeyedSubscript:*MEMORY[0x277CE9248]];
   }
 
-  v15 = [v5 workoutData];
+  workoutData = [bulletinCopy workoutData];
 
-  if (v15)
+  if (workoutData)
   {
-    v16 = [v5 workoutData];
-    [v8 setObject:v16 forKeyedSubscript:*MEMORY[0x277CE9288]];
+    workoutData2 = [bulletinCopy workoutData];
+    [dictionary setObject:workoutData2 forKeyedSubscript:*MEMORY[0x277CE9288]];
   }
 
-  v17 = [v5 snapshotData];
+  snapshotData = [bulletinCopy snapshotData];
 
-  if (v17)
+  if (snapshotData)
   {
-    v18 = [v5 snapshotData];
-    [v8 setObject:v18 forKeyedSubscript:*MEMORY[0x277CE9250]];
+    snapshotData2 = [bulletinCopy snapshotData];
+    [dictionary setObject:snapshotData2 forKeyedSubscript:*MEMORY[0x277CE9250]];
   }
 
-  [v8 addEntriesFromDictionary:v6];
-  v19 = [MEMORY[0x277CBEAA8] date];
-  v20 = ExpirationDateForBulletinTypeAndPublishDate(v9, v19);
+  [dictionary addEntriesFromDictionary:additionsCopy];
+  date = [MEMORY[0x277CBEAA8] date];
+  v20 = ExpirationDateForBulletinTypeAndPublishDate(type, date);
 
   if (v20)
   {
@@ -223,51 +223,51 @@ void __96__ASGizmoBulletinPostingManager__batchedNotificationRequestsFromCodable
   v21 = [MEMORY[0x277CE1F70] soundWithAlertType:19];
   [v21 setAlertTopic:*MEMORY[0x277D71F98]];
   [v7 setSound:v21];
-  v22 = [v5 title];
-  [v7 setTitle:v22];
+  title = [bulletinCopy title];
+  [v7 setTitle:title];
 
-  v23 = ThreadIdentifierForBulletinType(v9);
+  v23 = ThreadIdentifierForBulletinType(type);
   [v7 setThreadIdentifier:v23];
 
-  [v7 setUserInfo:v8];
+  [v7 setUserInfo:dictionary];
   v24 = MEMORY[0x277CE1FC0];
-  v25 = [MEMORY[0x277CCAD78] UUID];
-  v26 = [v25 UUIDString];
-  v27 = [v24 requestWithIdentifier:v26 content:v7 trigger:0];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v27 = [v24 requestWithIdentifier:uUIDString content:v7 trigger:0];
 
-  v28 = [v5 friendUUID];
-  v29 = [ASFriendNotificationContainer containerWithNotificationRequest:v27 friendUUID:v28 bulletinType:v9];
+  friendUUID = [bulletinCopy friendUUID];
+  v29 = [ASFriendNotificationContainer containerWithNotificationRequest:v27 friendUUID:friendUUID bulletinType:type];
 
   return v29;
 }
 
-- (void)postNotificationRequest:(id)a3
+- (void)postNotificationRequest:(id)request
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   ASLoggingInitialize();
   v5 = *MEMORY[0x277CE8FF8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FF8], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 identifier];
+    identifier = [requestCopy identifier];
     v9 = 138412290;
-    v10 = v7;
+    v10 = identifier;
     _os_log_impl(&dword_23E5E3000, v6, OS_LOG_TYPE_DEFAULT, "Adding notification request with identifier %@", &v9, 0xCu);
   }
 
-  [(ASGizmoBulletinPostingManager *)self _postNotificationRequest:v4];
+  [(ASGizmoBulletinPostingManager *)self _postNotificationRequest:requestCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enqueueBulletins:(id)a3 withPostingSyle:(int64_t)a4
+- (void)enqueueBulletins:(id)bulletins withPostingSyle:(int64_t)syle
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  bulletinsCopy = bulletins;
+  v7 = bulletinsCopy;
+  if (syle)
   {
-    [(ASGizmoBulletinPostingManager *)self postFakeBulletins:v6];
+    [(ASGizmoBulletinPostingManager *)self postFakeBulletins:bulletinsCopy];
   }
 
   else
@@ -278,7 +278,7 @@ void __96__ASGizmoBulletinPostingManager__batchedNotificationRequestsFromCodable
     v9[2] = __66__ASGizmoBulletinPostingManager_enqueueBulletins_withPostingSyle___block_invoke;
     v9[3] = &unk_278C4B250;
     v9[4] = self;
-    v10 = v6;
+    v10 = bulletinsCopy;
     dispatch_async(notificationQueue, v9);
   }
 }
@@ -295,12 +295,12 @@ uint64_t __66__ASGizmoBulletinPostingManager_enqueueBulletins_withPostingSyle___
   return [v4 _postQueuedNotificationRequestsIfPossible];
 }
 
-- (void)removeCompetitionNotificationsForFriendUUID:(id)a3
+- (void)removeCompetitionNotificationsForFriendUUID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 UUIDString];
-  v6 = [(ASGizmoBulletinPostingManager *)self recordIDForFriendUUID:v5];
+  dCopy = d;
+  uUIDString = [dCopy UUIDString];
+  v6 = [(ASGizmoBulletinPostingManager *)self recordIDForFriendUUID:uUIDString];
   if (v6)
   {
     ASLoggingInitialize();
@@ -308,7 +308,7 @@ uint64_t __66__ASGizmoBulletinPostingManager_enqueueBulletins_withPostingSyle___
     if (os_log_type_enabled(*MEMORY[0x277CE8FF8], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = v4;
+      v15 = dCopy;
       _os_log_impl(&dword_23E5E3000, v7, OS_LOG_TYPE_DEFAULT, "Found competition request bulletin record to withdraw for friend: %{public}@", buf, 0xCu);
     }
 
@@ -316,7 +316,7 @@ uint64_t __66__ASGizmoBulletinPostingManager_enqueueBulletins_withPostingSyle___
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v13 count:1];
     [(ASGizmoBulletinPostingManager *)self _withdrawNotificationRequestsWithIdentifiers:v8];
 
-    [(ASGizmoBulletinPostingManager *)self removeRecordIDForFriendUUID:v5];
+    [(ASGizmoBulletinPostingManager *)self removeRecordIDForFriendUUID:uUIDString];
   }
 
   else
@@ -327,7 +327,7 @@ uint64_t __66__ASGizmoBulletinPostingManager_enqueueBulletins_withPostingSyle___
     block[2] = __77__ASGizmoBulletinPostingManager_removeCompetitionNotificationsForFriendUUID___block_invoke;
     block[3] = &unk_278C4B250;
     block[4] = self;
-    v12 = v5;
+    v12 = uUIDString;
     dispatch_async(notificationQueue, block);
   }
 
@@ -362,37 +362,37 @@ uint64_t __77__ASGizmoBulletinPostingManager_removeCompetitionNotificationsForFr
   return v5;
 }
 
-- (void)removeNotificationWithIdentifier:(id)a3
+- (void)removeNotificationWithIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   ASLoggingInitialize();
   v5 = *MEMORY[0x277CE8FF8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FF8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_23E5E3000, v5, OS_LOG_TYPE_DEFAULT, "Withdrawing bulletin with identifier %@", buf, 0xCu);
   }
 
-  v8 = v4;
+  v8 = identifierCopy;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:&v8 count:1];
   [(ASGizmoBulletinPostingManager *)self _withdrawNotificationRequestsWithIdentifiers:v6];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerNotificationCategories:(id)a3
+- (void)registerNotificationCategories:(id)categories
 {
-  v4 = a3;
+  categoriesCopy = categories;
   userNotificationCenter = self->_userNotificationCenter;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__ASGizmoBulletinPostingManager_registerNotificationCategories___block_invoke;
   v7[3] = &unk_278C4C410;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = categoriesCopy;
+  selfCopy = self;
+  v6 = categoriesCopy;
   [(UNUserNotificationCenter *)userNotificationCenter getNotificationCategoriesWithCompletionHandler:v7];
 }
 
@@ -707,10 +707,10 @@ uint64_t __74__ASGizmoBulletinPostingManager__postQueuedNotificationRequestsIfPo
   return [*(a1 + 32) _postQueuedNotificationRequestsIfPossible];
 }
 
-- (void)_queue_postNotificationRequests:(id)a3
+- (void)_queue_postNotificationRequests:(id)requests
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestsCopy = requests;
   ASLoggingInitialize();
   v5 = *MEMORY[0x277CE8FF8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FF8], OS_LOG_TYPE_DEFAULT))
@@ -724,7 +724,7 @@ uint64_t __74__ASGizmoBulletinPostingManager__postQueuedNotificationRequestsIfPo
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = requestsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v7)
   {
@@ -757,9 +757,9 @@ uint64_t __74__ASGizmoBulletinPostingManager__postQueuedNotificationRequestsIfPo
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postNotificationRequest:(id)a3
+- (void)_postNotificationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_initWeak(&location, self);
   if ([(ASGizmoBulletinPostingManager *)self _isPostingAllowed])
   {
@@ -769,7 +769,7 @@ uint64_t __74__ASGizmoBulletinPostingManager__postQueuedNotificationRequestsIfPo
     v7[2] = __58__ASGizmoBulletinPostingManager__postNotificationRequest___block_invoke;
     v7[3] = &unk_278C4C438;
     objc_copyWeak(&v8, &location);
-    [(UNUserNotificationCenter *)userNotificationCenter addNotificationRequest:v4 withCompletionHandler:v7];
+    [(UNUserNotificationCenter *)userNotificationCenter addNotificationRequest:requestCopy withCompletionHandler:v7];
     objc_destroyWeak(&v8);
   }
 
@@ -801,10 +801,10 @@ void __58__ASGizmoBulletinPostingManager__postNotificationRequest___block_invoke
   }
 }
 
-- (void)postFakeBulletins:(id)a3
+- (void)postFakeBulletins:(id)bulletins
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  bulletinsCopy = bulletins;
   ASLoggingInitialize();
   v5 = *MEMORY[0x277CE8FF8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FF8], OS_LOG_TYPE_DEFAULT))
@@ -813,12 +813,12 @@ void __58__ASGizmoBulletinPostingManager__postNotificationRequest___block_invoke
     _os_log_impl(&dword_23E5E3000, v5, OS_LOG_TYPE_DEFAULT, "GizmoBulletinPostingManager post fake notification requests", buf, 2u);
   }
 
-  v6 = [v4 allObjects];
+  allObjects = [bulletinsCopy allObjects];
 
   v15 = *MEMORY[0x277CE9270];
   v16[0] = MEMORY[0x277CBEC38];
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-  v8 = [(ASGizmoBulletinPostingManager *)self _batchedNotificationRequestsFromCodableBulletins:v6 withAdditions:v7];
+  v8 = [(ASGizmoBulletinPostingManager *)self _batchedNotificationRequestsFromCodableBulletins:allObjects withAdditions:v7];
 
   notificationQueue = self->_notificationQueue;
   v12[0] = MEMORY[0x277D85DD0];
@@ -840,46 +840,46 @@ void __51__ASGizmoBulletinPostingManager_postFakeBulletins___block_invoke(uint64
   [v1 _queue_postNotificationRequests:v2];
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  responseCopy = response;
+  handlerCopy = handler;
   ASLoggingInitialize();
   v9 = *MEMORY[0x277CE8FF8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FF8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = v7;
+    v21 = responseCopy;
     _os_log_impl(&dword_23E5E3000, v9, OS_LOG_TYPE_DEFAULT, "GizmoBulletinPostingManager received notification response: %{public}@", buf, 0xCu);
   }
 
-  v10 = [v7 actionIdentifier];
-  v11 = [v7 notification];
-  v12 = [v11 request];
-  v13 = [v12 content];
-  v14 = [v13 userInfo];
+  actionIdentifier = [responseCopy actionIdentifier];
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
+  userInfo = [content userInfo];
 
-  v15 = [objc_alloc(MEMORY[0x277CE9138]) initWithActionIdentifier:v10 userInfo:v14];
+  v15 = [objc_alloc(MEMORY[0x277CE9138]) initWithActionIdentifier:actionIdentifier userInfo:userInfo];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __109__ASGizmoBulletinPostingManager_userNotificationCenter_didReceiveNotificationResponse_withCompletionHandler___block_invoke;
   v18[3] = &unk_278C4C178;
-  v19 = v8;
-  v16 = v8;
+  v19 = handlerCopy;
+  v16 = handlerCopy;
   [(ASGizmoBulletinPostingManager *)self handleNotificationResponse:v15 completion:v18];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleNotificationResponse:(id)a3 completion:(id)a4
+- (void)handleNotificationResponse:(id)response completion:(id)completion
 {
-  v8 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  responseCopy = response;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained bulletinPostingManager:self didReceiveNotificationResponse:v6];
+  [WeakRetained bulletinPostingManager:self didReceiveNotificationResponse:responseCopy];
 
-  v8[2](v8, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 }
 
 - (ASBulletinPostingManagerDelegate)delegate

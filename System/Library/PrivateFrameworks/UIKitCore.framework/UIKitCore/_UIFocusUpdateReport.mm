@@ -2,26 +2,26 @@
 - (BOOL)shouldLog;
 - (UIFocusSystem)focusSystem;
 - (_UIFocusUpdateReport)init;
-- (_UIFocusUpdateReport)initWithFocusSystem:(id)a3;
+- (_UIFocusUpdateReport)initWithFocusSystem:(id)system;
 @end
 
 @implementation _UIFocusUpdateReport
 
 - (_UIFocusUpdateReport)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateReport.m" lineNumber:19 description:@"-init is not a valid initializer for this class."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateReport.m" lineNumber:19 description:@"-init is not a valid initializer for this class."];
 
   return 0;
 }
 
-- (_UIFocusUpdateReport)initWithFocusSystem:(id)a3
+- (_UIFocusUpdateReport)initWithFocusSystem:(id)system
 {
-  v5 = a3;
-  if (!v5)
+  systemCopy = system;
+  if (!systemCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateReport.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"focusSystem"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateReport.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"focusSystem"}];
   }
 
   v10.receiver = self;
@@ -30,7 +30,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_focusSystem, v5);
+    objc_storeWeak(&v6->_focusSystem, systemCopy);
   }
 
   return v7;
@@ -43,25 +43,25 @@
   {
     v5 = context;
     v6 = [(UIFocusUpdateContext *)v5 _isValidInFocusSystem:WeakRetained];
-    v7 = [(UIFocusUpdateContext *)v5 _validationReport];
-    v8 = [(UIFocusUpdateContext *)v5 _preferredFocusReport];
+    _validationReport = [(UIFocusUpdateContext *)v5 _validationReport];
+    _preferredFocusReport = [(UIFocusUpdateContext *)v5 _preferredFocusReport];
 
     if (v6)
     {
       v9 = 0;
     }
 
-    else if (v7)
+    else if (_validationReport)
     {
-      v11 = [v7 issues];
-      if ([v11 count])
+      issues = [_validationReport issues];
+      if ([issues count])
       {
         v9 = 0;
       }
 
-      else if (v8)
+      else if (_preferredFocusReport)
       {
-        v9 = [v8 messageCount] == 0;
+        v9 = [_preferredFocusReport messageCount] == 0;
       }
 
       else
@@ -70,9 +70,9 @@
       }
     }
 
-    else if (v8)
+    else if (_preferredFocusReport)
     {
-      v9 = [v8 messageCount] == 0;
+      v9 = [_preferredFocusReport messageCount] == 0;
     }
 
     else

@@ -1,39 +1,39 @@
 @interface BTVCConnectionManager
 + (BTVCConnectionManager)sharedConnectionManager;
-- (BOOL)isInConnectionList:(id)a3;
+- (BOOL)isInConnectionList:(id)list;
 - (BTVCConnectionManager)init;
 - (id)description;
-- (int)startConnectionToDevice:(id)a3 peerAddress:(id)a4 localAddress:(id)a5 owner:(id)a6 connected:(BOOL *)a7;
+- (int)startConnectionToDevice:(id)device peerAddress:(id)address localAddress:(id)localAddress owner:(id)owner connected:(BOOL *)connected;
 - (int64_t)_getAvaliableConnectionHandle;
 - (unsigned)leCreateConnectionCancel;
-- (unsigned)leExtendedCreateConnection:(id)a3;
-- (unsigned)leSetPublicAddress:(id)a3;
-- (unsigned)leSetRandomAddress:(id)a3;
-- (unsigned)sendDataToPeer:(char *)a3 dataLength:(unsigned __int16)a4;
+- (unsigned)leExtendedCreateConnection:(id)connection;
+- (unsigned)leSetPublicAddress:(id)address;
+- (unsigned)leSetRandomAddress:(id)address;
+- (unsigned)sendDataToPeer:(char *)peer dataLength:(unsigned __int16)length;
 - (void)_activate;
-- (void)_btvcLinkReceivedData:(id)a3 packetBoundaryFlag:(unsigned __int16)a4 connection:(id)a5;
-- (void)_handleCommandStatus:(unsigned __int8)a3 numHciCommandPackets:(unsigned __int8)a4 opcode:(unsigned __int16)a5;
-- (void)_handleDisconnectionComplete:(id)a3 status:(unsigned __int8)a4 reason:(unsigned __int8)a5;
-- (void)_handleHciEvent:(unsigned __int8)a3 parameters:(char *)a4 length:(unsigned __int8)a5;
-- (void)_handleLeConnectionComplete:(id)a3 status:(unsigned __int8)a4;
-- (void)_handleLeMetaEvent:(unsigned __int8)a3 parameters:(char *)a4 length:(unsigned __int8)a5;
-- (void)_handleLmpEvent:(id)a3;
+- (void)_btvcLinkReceivedData:(id)data packetBoundaryFlag:(unsigned __int16)flag connection:(id)connection;
+- (void)_handleCommandStatus:(unsigned __int8)status numHciCommandPackets:(unsigned __int8)packets opcode:(unsigned __int16)opcode;
+- (void)_handleDisconnectionComplete:(id)complete status:(unsigned __int8)status reason:(unsigned __int8)reason;
+- (void)_handleHciEvent:(unsigned __int8)event parameters:(char *)parameters length:(unsigned __int8)length;
+- (void)_handleLeConnectionComplete:(id)complete status:(unsigned __int8)status;
+- (void)_handleLeMetaEvent:(unsigned __int8)event parameters:(char *)parameters length:(unsigned __int8)length;
+- (void)_handleLmpEvent:(id)event;
 - (void)_invalidate;
-- (void)_registerCallbacks:(id)a3;
+- (void)_registerCallbacks:(id)callbacks;
 - (void)_reset;
-- (void)_setConnectionHandle:(int64_t)a3 allocated:(BOOL)a4;
+- (void)_setConnectionHandle:(int64_t)handle allocated:(BOOL)allocated;
 - (void)_systemHasPoweredOn;
 - (void)_systemWillSleep;
 - (void)_update;
 - (void)activate;
-- (void)btvcBonjourLink:(id)a3 didDisconnectFromPeer:(id)a4 address:(id)a5 error:(id)a6;
-- (void)forEachConnection:(id)a3;
-- (void)handleConnection:(id)a3 peerAddress:(id)a4 parameters:(id)a5;
-- (void)handleHciCommandsForConnection:(unsigned __int16)a3 params:(id)a4;
+- (void)btvcBonjourLink:(id)link didDisconnectFromPeer:(id)peer address:(id)address error:(id)error;
+- (void)forEachConnection:(id)connection;
+- (void)handleConnection:(id)connection peerAddress:(id)address parameters:(id)parameters;
+- (void)handleHciCommandsForConnection:(unsigned __int16)connection params:(id)params;
 - (void)invalidate;
 - (void)prefsChanged;
 - (void)reset;
-- (void)stopConnectionToDevice:(id)a3 owner:(id)a4;
+- (void)stopConnectionToDevice:(id)device owner:(id)owner;
 - (void)update;
 @end
 
@@ -229,9 +229,9 @@
   }
 }
 
-- (BOOL)isInConnectionList:(id)a3
+- (BOOL)isInConnectionList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -241,18 +241,18 @@
     v23 = 2112;
     v24 = connections;
     v25 = 2112;
-    v26 = v4;
+    v26 = listCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s connections %@ device %@", buf, 0x20u);
   }
 
-  v7 = [(NSMutableDictionary *)self->_connections objectEnumerator];
+  objectEnumerator = [(NSMutableDictionary *)self->_connections objectEnumerator];
   *&v8 = 136315650;
   v20 = v8;
   while (1)
   {
-    v9 = [v7 nextObject];
+    nextObject = [objectEnumerator nextObject];
     v10 = qword_100BCEA70;
-    if (!v9)
+    if (!nextObject)
     {
       break;
     }
@@ -260,21 +260,21 @@
     v11 = qword_100BCEA70;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v9 peerDevice];
-      v13 = [v12 bluetoothAddress];
+      peerDevice = [nextObject peerDevice];
+      bluetoothAddress = [peerDevice bluetoothAddress];
       *buf = v20;
       v22 = "[BTVCConnectionManager isInConnectionList:]";
       v23 = 2112;
-      v24 = v13;
+      v24 = bluetoothAddress;
       v25 = 2112;
-      v26 = v4;
+      v26 = listCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "ztest %s connected device %@ device %@", buf, 0x20u);
     }
 
-    v14 = [v9 peerDevice];
-    v15 = [v14 bluetoothAddress];
-    v16 = [v15 addressData];
-    v17 = [v16 isEqual:v4];
+    peerDevice2 = [nextObject peerDevice];
+    bluetoothAddress2 = [peerDevice2 bluetoothAddress];
+    addressData = [bluetoothAddress2 addressData];
+    v17 = [addressData isEqual:listCopy];
 
     if (v17)
     {
@@ -299,89 +299,89 @@
 
 LABEL_14:
 
-  return v9 != 0;
+  return nextObject != 0;
 }
 
-- (void)forEachConnection:(id)a3
+- (void)forEachConnection:(id)connection
 {
-  v7 = a3;
-  v4 = [(NSMutableDictionary *)self->_connections objectEnumerator];
+  connectionCopy = connection;
+  objectEnumerator = [(NSMutableDictionary *)self->_connections objectEnumerator];
   v5 = 0;
   while (1)
   {
-    v6 = [v4 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v6)
+    if (!nextObject)
     {
       break;
     }
 
-    v5 = v6;
-    v7[2](v7, v6);
+    v5 = nextObject;
+    connectionCopy[2](connectionCopy, nextObject);
   }
 }
 
-- (unsigned)leSetPublicAddress:(id)a3
+- (unsigned)leSetPublicAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[BTVCConnectionManager leSetPublicAddress:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = addressCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s address %@", &v8, 0x16u);
   }
 
   publicAddress = self->_publicAddress;
-  self->_publicAddress = v4;
+  self->_publicAddress = addressCopy;
 
   return 0;
 }
 
-- (unsigned)leSetRandomAddress:(id)a3
+- (unsigned)leSetRandomAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[BTVCConnectionManager leSetRandomAddress:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = addressCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s address %@", &v8, 0x16u);
   }
 
   randomAddress = self->_randomAddress;
-  self->_randomAddress = v4;
+  self->_randomAddress = addressCopy;
 
   return 0;
 }
 
-- (void)handleHciCommandsForConnection:(unsigned __int16)a3 params:(id)a4
+- (void)handleHciCommandsForConnection:(unsigned __int16)connection params:(id)params
 {
-  v4 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  paramsCopy = params;
   v7 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136315650;
     v13 = "[BTVCConnectionManager handleHciCommandsForConnection:params:]";
     v14 = 1024;
-    v15 = v4;
+    v15 = connectionCopy;
     v16 = 2112;
-    v17 = v6;
+    v17 = paramsCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s handleHciCommands opCpde 0x%04X params %@", &v12, 0x1Cu);
   }
 
-  v8 = v6;
-  v9 = [[NSNumber alloc] initWithInt:{*objc_msgSend(v6, "bytes")}];
+  v8 = paramsCopy;
+  v9 = [[NSNumber alloc] initWithInt:{*objc_msgSend(paramsCopy, "bytes")}];
   v10 = [(NSMutableDictionary *)self->_connections objectForKeyedSubscript:v9];
   v11 = v10;
   if (v10)
   {
-    [v10 handleHciCommands:v4 params:v6];
+    [v10 handleHciCommands:connectionCopy params:paramsCopy];
   }
 
   else
@@ -391,7 +391,7 @@ LABEL_14:
       sub_1008211F4();
     }
 
-    [(BTVCConnectionManager *)self _handleCommandStatus:2 numHciCommandPackets:1 opcode:v4];
+    [(BTVCConnectionManager *)self _handleCommandStatus:2 numHciCommandPackets:1 opcode:connectionCopy];
   }
 }
 
@@ -410,16 +410,16 @@ LABEL_14:
   return 0;
 }
 
-- (unsigned)leExtendedCreateConnection:(id)a3
+- (unsigned)leExtendedCreateConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     *v14 = 136315394;
     *&v14[4] = "[BTVCConnectionManager leExtendedCreateConnection:]";
     v15 = 2112;
-    v16 = v4;
+    v16 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "BTVCConnectionManager:%s connect parameters:%@", v14, 0x16u);
   }
 
@@ -455,11 +455,11 @@ LABEL_14:
   return 0;
 }
 
-- (int)startConnectionToDevice:(id)a3 peerAddress:(id)a4 localAddress:(id)a5 owner:(id)a6 connected:(BOOL *)a7
+- (int)startConnectionToDevice:(id)device peerAddress:(id)address localAddress:(id)localAddress owner:(id)owner connected:(BOOL *)connected
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  deviceCopy = device;
+  addressCopy = address;
+  localAddressCopy = localAddress;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   leConnectionEnabled = self->_leConnectionEnabled;
   v14 = qword_100BCEA70;
@@ -469,15 +469,15 @@ LABEL_14:
     if (v15)
     {
       *buf = 138412546;
-      v33 = v11;
+      v33 = addressCopy;
       v34 = 2112;
-      v35 = v10;
+      v35 = deviceCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Creating BLE connection for device %@ endpoint %@\n", buf, 0x16u);
     }
 
-    if (v12)
+    if (localAddressCopy)
     {
-      v16 = [[BTVCBluetoothAddress alloc] initWithDeviceAddres:v12];
+      v16 = [[BTVCBluetoothAddress alloc] initWithDeviceAddres:localAddressCopy];
     }
 
     else
@@ -498,19 +498,19 @@ LABEL_14:
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v33 = v11;
+      v33 = addressCopy;
       v34 = 2112;
-      v35 = v10;
+      v35 = deviceCopy;
       v36 = 2112;
       v37 = v16;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Creating BLE connection for device %@ endpoint %@ with local address %@\n", buf, 0x20u);
     }
 
     v22 = [[NSNumber alloc] initWithInteger:{-[BTVCConnectionManager _getAvaliableConnectionHandle](self, "_getAvaliableConnectionHandle")}];
-    v23 = [[BTVCDevice alloc] initWithDeviceAddres:v11];
-    [(BTVCDevice *)v23 setIdentifier:v10];
+    v23 = [[BTVCDevice alloc] initWithDeviceAddres:addressCopy];
+    [(BTVCDevice *)v23 setIdentifier:deviceCopy];
     v24 = objc_alloc_init(BTVCConnection);
-    [(BTVCConnection *)v24 setIdentifier:v10];
+    [(BTVCConnection *)v24 setIdentifier:deviceCopy];
     [(BTVCConnection *)v24 setPeerDevice:v23];
     [(BTVCConnection *)v24 setDispatchQueue:self->_dispatchQueue];
     v25 = [[BTVCBluetoothAddress alloc] initWithDeviceAddres:v16];
@@ -544,9 +544,9 @@ LABEL_14:
 
     [(NSMutableDictionary *)connections setObject:v24 forKeyedSubscript:v22];
     [(BTVCConnection *)v24 activateDirect];
-    if (a7)
+    if (connected)
     {
-      *a7 = 0;
+      *connected = 0;
     }
 
     -[BTVCConnectionManager _setConnectionHandle:allocated:](self, "_setConnectionHandle:allocated:", [v22 intValue], 1);
@@ -561,14 +561,14 @@ LABEL_14:
   return 0;
 }
 
-- (void)stopConnectionToDevice:(id)a3 owner:(id)a4
+- (void)stopConnectionToDevice:(id)device owner:(id)owner
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  ownerCopy = owner;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v8 = [(NSMutableDictionary *)self->_connections objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_connections objectForKeyedSubscript:deviceCopy];
   v9 = v8;
-  if (v8 && ([v8 removeClient:v7] & 1) == 0)
+  if (v8 && ([v8 removeClient:ownerCopy] & 1) == 0)
   {
     v10 = qword_100BCEA70;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -580,52 +580,52 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Invalidating BLE connection for %@\n", &v13, 0xCu);
     }
 
-    [(NSMutableDictionary *)self->_connections removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_connections removeObjectForKey:deviceCopy];
     [v9 invalidate];
-    -[BTVCConnectionManager _setConnectionHandle:allocated:](self, "_setConnectionHandle:allocated:", [v6 intValue], 0);
+    -[BTVCConnectionManager _setConnectionHandle:allocated:](self, "_setConnectionHandle:allocated:", [deviceCopy intValue], 0);
   }
 }
 
-- (void)_registerCallbacks:(id)a3
+- (void)_registerCallbacks:(id)callbacks
 {
-  v4 = a3;
+  callbacksCopy = callbacks;
   objc_initWeak(&location, self);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100380E48;
   v15[3] = &unk_100AEE5C8;
   objc_copyWeak(&v16, &location);
-  [v4 setHciEventHandler:v15];
+  [callbacksCopy setHciEventHandler:v15];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100380ECC;
   v13[3] = &unk_100AEE5C8;
   objc_copyWeak(&v14, &location);
-  [v4 setLeMetaEventHandler:v13];
+  [callbacksCopy setLeMetaEventHandler:v13];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100380F50;
   v11[3] = &unk_100AEE5F0;
   objc_copyWeak(&v12, &location);
-  [v4 setLmpEventHandler:v11];
+  [callbacksCopy setLmpEventHandler:v11];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100380FCC;
   v9[3] = &unk_100AEE618;
   objc_copyWeak(&v10, &location);
-  [v4 setDataHandler:v9];
+  [callbacksCopy setDataHandler:v9];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1003810E8;
   v7[3] = &unk_100AEE640;
   objc_copyWeak(&v8, &location);
-  [v4 setConnectionCompletedHandler:v7];
+  [callbacksCopy setConnectionCompletedHandler:v7];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100381368;
   v5[3] = &unk_100AEE668;
   objc_copyWeak(&v6, &location);
-  [v4 setDisconnectionCompletedHandler:v5];
+  [callbacksCopy setDisconnectionCompletedHandler:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v10);
@@ -635,22 +635,22 @@ LABEL_14:
   objc_destroyWeak(&location);
 }
 
-- (void)_handleHciEvent:(unsigned __int8)a3 parameters:(char *)a4 length:(unsigned __int8)a5
+- (void)_handleHciEvent:(unsigned __int8)event parameters:(char *)parameters length:(unsigned __int8)length
 {
-  v5 = a5;
-  v7 = a3;
+  lengthCopy = length;
+  eventCopy = event;
   v9 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136315394;
     v14 = "[BTVCConnectionManager _handleHciEvent:parameters:length:]";
     v15 = 1024;
-    v16 = v5;
+    v16 = lengthCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s length %d\n", &v13, 0x12u);
   }
 
-  v10 = [(BTVCConnectionManager *)self hciEventHandler];
-  v11 = v10 == 0;
+  hciEventHandler = [(BTVCConnectionManager *)self hciEventHandler];
+  v11 = hciEventHandler == 0;
 
   if (v11)
   {
@@ -662,27 +662,27 @@ LABEL_14:
 
   else
   {
-    v12 = [(BTVCConnectionManager *)self hciEventHandler];
-    (v12)[2](v12, v7, a4, v5);
+    hciEventHandler2 = [(BTVCConnectionManager *)self hciEventHandler];
+    (hciEventHandler2)[2](hciEventHandler2, eventCopy, parameters, lengthCopy);
   }
 }
 
-- (void)_handleLeMetaEvent:(unsigned __int8)a3 parameters:(char *)a4 length:(unsigned __int8)a5
+- (void)_handleLeMetaEvent:(unsigned __int8)event parameters:(char *)parameters length:(unsigned __int8)length
 {
-  v5 = a5;
-  v7 = a3;
+  lengthCopy = length;
+  eventCopy = event;
   v9 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136315394;
     v14 = "[BTVCConnectionManager _handleLeMetaEvent:parameters:length:]";
     v15 = 1024;
-    v16 = v5;
+    v16 = lengthCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s length %d\n", &v13, 0x12u);
   }
 
-  v10 = [(BTVCConnectionManager *)self leMetaEventHandler];
-  v11 = v10 == 0;
+  leMetaEventHandler = [(BTVCConnectionManager *)self leMetaEventHandler];
+  v11 = leMetaEventHandler == 0;
 
   if (v11)
   {
@@ -694,32 +694,32 @@ LABEL_14:
 
   else
   {
-    v12 = [(BTVCConnectionManager *)self leMetaEventHandler];
-    (v12)[2](v12, v7, a4, v5);
+    leMetaEventHandler2 = [(BTVCConnectionManager *)self leMetaEventHandler];
+    (leMetaEventHandler2)[2](leMetaEventHandler2, eventCopy, parameters, lengthCopy);
   }
 }
 
-- (void)_handleLeConnectionComplete:(id)a3 status:(unsigned __int8)a4
+- (void)_handleLeConnectionComplete:(id)complete status:(unsigned __int8)status
 {
-  v4 = a4;
-  v6 = a3;
+  statusCopy = status;
+  completeCopy = complete;
   v7 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v51 = "[BTVCConnectionManager _handleLeConnectionComplete:status:]";
     v52 = 2112;
-    *v53 = v6;
+    *v53 = completeCopy;
     *&v53[8] = 1024;
-    v54[0] = v4;
+    v54[0] = statusCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s %@ %d\n", buf, 0x1Cu);
   }
 
   v48 = 0;
   v47 = 0;
   memset(v49, 0, sizeof(v49));
-  v46 = v4;
-  if (!v6 || v4)
+  v46 = statusCopy;
+  if (!completeCopy || statusCopy)
   {
     v45 = 0;
     v44 = 0;
@@ -731,11 +731,11 @@ LABEL_14:
     v35 = qword_100BCEA70;
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = [v6 acceptor];
+      acceptor = [completeCopy acceptor];
       *buf = 136315394;
       v51 = "[BTVCConnectionManager _handleLeConnectionComplete:status:]";
       v52 = 1024;
-      *v53 = v36;
+      *v53 = acceptor;
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "%s: acceptor 0x%04X", buf, 0x12u);
     }
 
@@ -750,15 +750,15 @@ LABEL_14:
 
   else
   {
-    v8 = [v6 peerDevice];
-    v9 = [v8 bluetoothAddress];
-    v10 = [v9 addressData];
-    v11 = v10;
-    v12 = *[v10 bytes];
+    peerDevice = [completeCopy peerDevice];
+    bluetoothAddress = [peerDevice bluetoothAddress];
+    addressData = [bluetoothAddress addressData];
+    v11 = addressData;
+    v12 = *[addressData bytes];
 
-    v13 = [v6 peerDevice];
-    v14 = [v13 bluetoothAddress];
-    v15 = [v14 addressType];
+    peerDevice2 = [completeCopy peerDevice];
+    bluetoothAddress2 = [peerDevice2 bluetoothAddress];
+    addressType = [bluetoothAddress2 addressType];
 
     v43 = 0;
     v42 = 0;
@@ -766,31 +766,31 @@ LABEL_14:
     v40 = 0;
     v44 = v12;
     v45 = WORD2(v12);
-    v16 = [v6 peerDevice];
-    v17 = [v16 bluetoothAddress];
-    v18 = [v17 rpaData];
-    LOBYTE(v12) = v18 == 0;
+    peerDevice3 = [completeCopy peerDevice];
+    bluetoothAddress3 = [peerDevice3 bluetoothAddress];
+    rpaData = [bluetoothAddress3 rpaData];
+    LOBYTE(v12) = rpaData == 0;
 
     if ((v12 & 1) == 0)
     {
-      v19 = [v6 peerDevice];
-      v20 = [v19 bluetoothAddress];
-      v21 = [v20 rpaData];
-      v22 = v21;
-      v23 = [v21 bytes];
+      peerDevice4 = [completeCopy peerDevice];
+      bluetoothAddress4 = [peerDevice4 bluetoothAddress];
+      rpaData2 = [bluetoothAddress4 rpaData];
+      v22 = rpaData2;
+      bytes = [rpaData2 bytes];
 
-      v24 = *v23;
-      v41 = v23[2];
+      v24 = *bytes;
+      v41 = bytes[2];
       v40 = v24;
-      v15 |= 2u;
+      addressType |= 2u;
     }
 
     v25 = qword_100BCEA70;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [v6 peerDevice];
-      v27 = [v26 bluetoothAddress];
-      v28 = [v27 addressData];
+      peerDevice5 = [completeCopy peerDevice];
+      bluetoothAddress5 = [peerDevice5 bluetoothAddress];
+      addressData2 = [bluetoothAddress5 addressData];
       *buf = 136315906;
       v51 = "[BTVCConnectionManager _handleLeConnectionComplete:status:]";
       v52 = 1024;
@@ -798,49 +798,49 @@ LABEL_14:
       *&v53[4] = 1024;
       *&v53[6] = 0;
       LOWORD(v54[0]) = 2112;
-      *(v54 + 2) = v28;
+      *(v54 + 2) = addressData2;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%s: eventCode 0x%04X, status %d address %@", buf, 0x22u);
     }
 
     v29 = qword_100BCEA70;
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [v6 connectionHandle];
-      v31 = [v30 intValue];
+      connectionHandle = [completeCopy connectionHandle];
+      intValue = [connectionHandle intValue];
       *buf = 136315394;
       v51 = "[BTVCConnectionManager _handleLeConnectionComplete:status:]";
       v52 = 1024;
-      *v53 = v31;
+      *v53 = intValue;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%s: connectionHandle 0x%04X", buf, 0x12u);
     }
 
-    v32 = [v6 connectionHandle];
-    LOWORD(v47) = [v32 intValue];
+    connectionHandle2 = [completeCopy connectionHandle];
+    LOWORD(v47) = [connectionHandle2 intValue];
 
     v33 = qword_100BCEA70;
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [v6 acceptor];
+      acceptor2 = [completeCopy acceptor];
       *buf = 136315394;
       v51 = "[BTVCConnectionManager _handleLeConnectionComplete:status:]";
       v52 = 1024;
-      *v53 = v34;
+      *v53 = acceptor2;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "%s: acceptor 0x%04X", buf, 0x12u);
     }
 
-    BYTE2(v47) = [v6 acceptor];
-    BYTE3(v47) = v15;
+    BYTE2(v47) = [completeCopy acceptor];
+    BYTE3(v47) = addressType;
     sub_1000075EC(&v47 + 4, &v44, 6uLL);
     sub_1000075EC(&v48 + 2, &v42, 6uLL);
     sub_1000075EC(v49, &v40, 6uLL);
-    *&v49[6] = [v6 connInterval];
-    *&v49[8] = [v6 connPeripheralLatency];
-    *&v49[10] = [v6 connSupervisionTimeout];
-    v49[12] = [v6 centralSCA];
+    *&v49[6] = [completeCopy connInterval];
+    *&v49[8] = [completeCopy connPeripheralLatency];
+    *&v49[10] = [completeCopy connSupervisionTimeout];
+    v49[12] = [completeCopy centralSCA];
   }
 
-  v37 = [(BTVCConnectionManager *)self leMetaEventHandler];
-  v38 = v37 == 0;
+  leMetaEventHandler = [(BTVCConnectionManager *)self leMetaEventHandler];
+  v38 = leMetaEventHandler == 0;
 
   if (v38)
   {
@@ -852,31 +852,31 @@ LABEL_14:
 
   else
   {
-    v39 = [(BTVCConnectionManager *)self leMetaEventHandler];
-    (v39)[2](v39, 10, &v46, 30);
+    leMetaEventHandler2 = [(BTVCConnectionManager *)self leMetaEventHandler];
+    (leMetaEventHandler2)[2](leMetaEventHandler2, 10, &v46, 30);
   }
 }
 
-- (void)_handleDisconnectionComplete:(id)a3 status:(unsigned __int8)a4 reason:(unsigned __int8)a5
+- (void)_handleDisconnectionComplete:(id)complete status:(unsigned __int8)status reason:(unsigned __int8)reason
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  reasonCopy = reason;
+  statusCopy = status;
+  completeCopy = complete;
   v9 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 136315906;
     v16 = "[BTVCConnectionManager _handleDisconnectionComplete:status:reason:]";
     v17 = 2112;
-    v18 = v8;
+    v18 = completeCopy;
     v19 = 1024;
-    LODWORD(v20[0]) = v6;
+    LODWORD(v20[0]) = statusCopy;
     WORD2(v20[0]) = 1024;
-    *(v20 + 6) = v5;
+    *(v20 + 6) = reasonCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s connection ID %@, status %d, reason 0x%04X \n", &v15, 0x22u);
   }
 
-  v10 = [(NSMutableDictionary *)self->_connections objectForKeyedSubscript:v8];
+  v10 = [(NSMutableDictionary *)self->_connections objectForKeyedSubscript:completeCopy];
   v11 = qword_100BCEA70;
   if (v10)
   {
@@ -886,15 +886,15 @@ LABEL_14:
       v15 = 136315650;
       v16 = "[BTVCConnectionManager _handleDisconnectionComplete:status:reason:]";
       v17 = 2112;
-      v18 = v8;
+      v18 = completeCopy;
       v19 = 2112;
       v20[0] = connections;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s device %@ will be removed from connect list %@ \n", &v15, 0x20u);
     }
 
-    [(NSMutableDictionary *)self->_connections removeObjectForKey:v8];
+    [(NSMutableDictionary *)self->_connections removeObjectForKey:completeCopy];
     [v10 invalidate];
-    -[BTVCConnectionManager _setConnectionHandle:allocated:](self, "_setConnectionHandle:allocated:", [v8 intValue], 0);
+    -[BTVCConnectionManager _setConnectionHandle:allocated:](self, "_setConnectionHandle:allocated:", [completeCopy intValue], 0);
     v13 = qword_100BCEA70;
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
     {
@@ -902,7 +902,7 @@ LABEL_14:
       v15 = 136315650;
       v16 = "[BTVCConnectionManager _handleDisconnectionComplete:status:reason:]";
       v17 = 2112;
-      v18 = v8;
+      v18 = completeCopy;
       v19 = 2112;
       v20[0] = v14;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s device %@ is removed from connect list %@ \n", &v15, 0x20u);
@@ -911,25 +911,25 @@ LABEL_14:
 
   else
   {
-    sub_1008214B8(qword_100BCEA70, v8);
+    sub_1008214B8(qword_100BCEA70, completeCopy);
   }
 }
 
-- (void)_handleLmpEvent:(id)a3
+- (void)_handleLmpEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[BTVCConnectionManager _handleLmpEvent:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = eventCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s params %@\n", &v9, 0x16u);
   }
 
-  v6 = [(BTVCConnectionManager *)self lmpEventHandler];
-  v7 = v6 == 0;
+  lmpEventHandler = [(BTVCConnectionManager *)self lmpEventHandler];
+  v7 = lmpEventHandler == 0;
 
   if (v7)
   {
@@ -941,18 +941,18 @@ LABEL_14:
 
   else
   {
-    v8 = [(BTVCConnectionManager *)self lmpEventHandler];
-    (v8)[2](v8, v4);
+    lmpEventHandler2 = [(BTVCConnectionManager *)self lmpEventHandler];
+    (lmpEventHandler2)[2](lmpEventHandler2, eventCopy);
   }
 }
 
-- (unsigned)sendDataToPeer:(char *)a3 dataLength:(unsigned __int16)a4
+- (unsigned)sendDataToPeer:(char *)peer dataLength:(unsigned __int16)length
 {
   v6 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = *a3;
-    v8 = *(a3 + 1);
+    v7 = *peer;
+    v8 = *(peer + 1);
     v17 = 136315650;
     v18 = "[BTVCConnectionManager sendDataToPeer:dataLength:]";
     v19 = 1024;
@@ -962,12 +962,12 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s connectionHandle 0x%04X, dataLength %d", &v17, 0x18u);
   }
 
-  v9 = [[NSNumber alloc] initWithInt:*a3 & 0xFFF];
-  v10 = *a3;
-  v11 = [(NSMutableDictionary *)self->_connections objectForKeyedSubscript:v9];
+  0xFFF = [[NSNumber alloc] initWithInt:*peer & 0xFFF];
+  v10 = *peer;
+  v11 = [(NSMutableDictionary *)self->_connections objectForKeyedSubscript:0xFFF];
   if (v11)
   {
-    v12 = [[NSData alloc] initWithBytes:a3 + 4 length:*(a3 + 1)];
+    v12 = [[NSData alloc] initWithBytes:peer + 4 length:*(peer + 1)];
     if (v12)
     {
       v13 = objc_alloc_init(NSMutableDictionary);
@@ -1034,19 +1034,19 @@ LABEL_14:
   return -v3;
 }
 
-- (void)_setConnectionHandle:(int64_t)a3 allocated:(BOOL)a4
+- (void)_setConnectionHandle:(int64_t)handle allocated:(BOOL)allocated
 {
-  if ((a3 - 1025) <= 0x63)
+  if ((handle - 1025) <= 0x63)
   {
-    *(&self[-3] + a3 - 233) = a4;
+    *(&self[-3] + handle - 233) = allocated;
   }
 }
 
-- (void)_handleCommandStatus:(unsigned __int8)a3 numHciCommandPackets:(unsigned __int8)a4 opcode:(unsigned __int16)a5
+- (void)_handleCommandStatus:(unsigned __int8)status numHciCommandPackets:(unsigned __int8)packets opcode:(unsigned __int16)opcode
 {
-  v6[0] = a3;
-  v6[1] = a4;
-  v7 = a5;
+  v6[0] = status;
+  v6[1] = packets;
+  opcodeCopy = opcode;
   hciEventHandler = self->_hciEventHandler;
   if (hciEventHandler)
   {
@@ -1054,25 +1054,25 @@ LABEL_14:
   }
 }
 
-- (void)handleConnection:(id)a3 peerAddress:(id)a4 parameters:(id)a5
+- (void)handleConnection:(id)connection peerAddress:(id)address parameters:(id)parameters
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  addressCopy = address;
+  parametersCopy = parameters;
   v11 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 136315650;
     v24 = "[BTVCConnectionManager handleConnection:peerAddress:parameters:]";
     v25 = 2112;
-    v26 = v8;
+    v26 = connectionCopy;
     v27 = 2112;
-    v28 = v10;
+    v28 = parametersCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s peer device: %@ parameters: %@\n", &v23, 0x20u);
   }
 
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (!v8)
+  if (!connectionCopy)
   {
     v20 = qword_100BCEA70;
     if (!os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -1106,9 +1106,9 @@ LABEL_13:
   }
 
   v12 = [[NSNumber alloc] initWithInteger:{-[BTVCConnectionManager _getAvaliableConnectionHandle](self, "_getAvaliableConnectionHandle")}];
-  v13 = [[BTVCDevice alloc] initWithDeviceAddres:v9];
-  [(BTVCDevice *)v13 setIdentifier:v8];
-  v14 = [[BTVCConnection alloc] initConnectionWithParams:v13 parameters:v10];
+  v13 = [[BTVCDevice alloc] initWithDeviceAddres:addressCopy];
+  [(BTVCDevice *)v13 setIdentifier:connectionCopy];
+  v14 = [[BTVCConnection alloc] initConnectionWithParams:v13 parameters:parametersCopy];
   if (!v14)
   {
     v22 = qword_100BCEA70;
@@ -1122,7 +1122,7 @@ LABEL_13:
   }
 
   v15 = v14;
-  [v14 setIdentifier:v8];
+  [v14 setIdentifier:connectionCopy];
   [v15 setDispatchQueue:self->_dispatchQueue];
   [v15 setConnectionHandle:v12];
   [(BTVCConnectionManager *)self _registerCallbacks:v15];
@@ -1150,44 +1150,44 @@ LABEL_13:
 LABEL_16:
 }
 
-- (void)_btvcLinkReceivedData:(id)a3 packetBoundaryFlag:(unsigned __int16)a4 connection:(id)a5
+- (void)_btvcLinkReceivedData:(id)data packetBoundaryFlag:(unsigned __int16)flag connection:(id)connection
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  connectionCopy = connection;
   v10 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136315650;
     v14 = "[BTVCConnectionManager _btvcLinkReceivedData:packetBoundaryFlag:connection:]";
     v15 = 2112;
-    v16 = v8;
+    v16 = dataCopy;
     v17 = 2112;
-    v18 = v9;
+    v18 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s data %@ from connection:%@\n", &v13, 0x20u);
   }
 
   receiveDataPacketHandler = self->_receiveDataPacketHandler;
   if (receiveDataPacketHandler)
   {
-    v12 = [v9 connectionHandle];
-    receiveDataPacketHandler[2](receiveDataPacketHandler, ((a4 << 12) | [v12 intValue]), v8);
+    connectionHandle = [connectionCopy connectionHandle];
+    receiveDataPacketHandler[2](receiveDataPacketHandler, ((flag << 12) | [connectionHandle intValue]), dataCopy);
   }
 }
 
-- (void)btvcBonjourLink:(id)a3 didDisconnectFromPeer:(id)a4 address:(id)a5 error:(id)a6
+- (void)btvcBonjourLink:(id)link didDisconnectFromPeer:(id)peer address:(id)address error:(id)error
 {
-  v8 = a4;
-  v9 = a6;
+  peerCopy = peer;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v10 = qword_100BCEA70;
-  if (v9)
+  if (errorCopy)
   {
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v20 = v8;
+      v20 = peerCopy;
       v21 = 2112;
-      v22 = v9;
+      v22 = errorCopy;
       v11 = "### Disconnect from %@, error %@\n";
       v12 = v10;
       v13 = OS_LOG_TYPE_DEFAULT;
@@ -1200,7 +1200,7 @@ LABEL_6:
   else if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v20 = v8;
+    v20 = peerCopy;
     v11 = "Disconnect from %@ success\n";
     v12 = v10;
     v13 = OS_LOG_TYPE_INFO;
@@ -1212,9 +1212,9 @@ LABEL_6:
   v16[1] = 3221225472;
   v16[2] = sub_100382BA0;
   v16[3] = &unk_100AEE690;
-  v15 = v8;
+  v15 = peerCopy;
   v17 = v15;
-  v18 = self;
+  selfCopy = self;
   [(BTVCConnectionManager *)self forEachConnection:v16];
 }
 

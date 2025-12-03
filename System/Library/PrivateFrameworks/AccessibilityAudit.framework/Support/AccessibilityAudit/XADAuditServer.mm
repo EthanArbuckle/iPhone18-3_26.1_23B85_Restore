@@ -1,51 +1,51 @@
 @interface XADAuditServer
 - (BOOL)updateRunningApplications;
-- (XADAuditServer)initWithTransport:(id)a3;
+- (XADAuditServer)initWithTransport:(id)transport;
 - (id)_currentMedusaApplications;
 - (id)_deviceCaptureScreenshot;
-- (id)_runningAXAuditAppForPid:(int)a3;
+- (id)_runningAXAuditAppForPid:(int)pid;
 - (id)deviceCaptureScreenshot;
-- (id)deviceElement:(id)a3 performAction:(id)a4 withValue:(id)a5;
-- (id)deviceElement:(id)a3 valueForAttribute:(id)a4;
-- (id)deviceElement:(id)a3 valueForParameterizedAttribute:(id)a4 withObject:(id)a5;
-- (id)deviceFetchElementAtNormalizedDeviceCoordinate:(id)a3;
+- (id)deviceElement:(id)element performAction:(id)action withValue:(id)value;
+- (id)deviceElement:(id)element valueForAttribute:(id)attribute;
+- (id)deviceElement:(id)element valueForParameterizedAttribute:(id)attribute withObject:(id)object;
+- (id)deviceFetchElementAtNormalizedDeviceCoordinate:(id)coordinate;
 - (id)deviceFetchResolvesElementsOnSimulator;
-- (id)deviceFetchSpecialElement:(id)a3;
+- (id)deviceFetchSpecialElement:(id)element;
 - (id)deviceRunningApplications;
-- (void)_appStateChanged:(id)a3;
+- (void)_appStateChanged:(id)changed;
 - (void)_checkFrontmostAppPidChanged;
 - (void)_handleLayoutChangedNotification;
 - (void)_handleScreenChangedNotification;
 - (void)connectionInterrupted;
 - (void)deviceDidGetTargeted;
-- (void)deviceInspectorFocusOnElement:(id)a3;
+- (void)deviceInspectorFocusOnElement:(id)element;
 - (void)deviceInspectorLockOnCurrentElement;
-- (void)deviceInspectorMoveWithOptions:(id)a3;
-- (void)deviceInspectorPreviewOnElement:(id)a3;
-- (void)deviceInspectorSetMonitoredEventType:(id)a3;
-- (void)deviceInspectorShowVisuals:(id)a3;
-- (void)deviceSetAuditTargetPid:(id)a3;
-- (void)didReceiveAccessibilityNotification:(int)a3;
-- (void)eventManager:(id)a3 eventToHighlightElement:(id)a4;
-- (void)eventManager:(id)a3 eventToHighlightPoint:(CGPoint)a4;
-- (void)eventManager:(id)a3 systemFocusDidMoveToElement:(id)a4;
+- (void)deviceInspectorMoveWithOptions:(id)options;
+- (void)deviceInspectorPreviewOnElement:(id)element;
+- (void)deviceInspectorSetMonitoredEventType:(id)type;
+- (void)deviceInspectorShowVisuals:(id)visuals;
+- (void)deviceSetAuditTargetPid:(id)pid;
+- (void)didReceiveAccessibilityNotification:(int)notification;
+- (void)eventManager:(id)manager eventToHighlightElement:(id)element;
+- (void)eventManager:(id)manager eventToHighlightPoint:(CGPoint)point;
+- (void)eventManager:(id)manager systemFocusDidMoveToElement:(id)element;
 - (void)frontmostApplicationsDidChange;
-- (void)highlightElement:(id)a3;
-- (void)highlightElements:(id)a3;
-- (void)inspectorManager:(id)a3 inspectorElementPropertiesChanged:(id)a4;
-- (void)inspectorManager:(id)a3 inspectorFocusDidChange:(id)a4;
-- (void)inspectorManager:(id)a3 inspectorMonitoredEventTypeChanged:(unint64_t)a4;
+- (void)highlightElement:(id)element;
+- (void)highlightElements:(id)elements;
+- (void)inspectorManager:(id)manager inspectorElementPropertiesChanged:(id)changed;
+- (void)inspectorManager:(id)manager inspectorFocusDidChange:(id)change;
+- (void)inspectorManager:(id)manager inspectorMonitoredEventTypeChanged:(unint64_t)changed;
 - (void)resume;
 @end
 
 @implementation XADAuditServer
 
-- (XADAuditServer)initWithTransport:(id)a3
+- (XADAuditServer)initWithTransport:(id)transport
 {
-  v4 = a3;
+  transportCopy = transport;
   v16.receiver = self;
   v16.super_class = XADAuditServer;
-  v5 = [(XADAuditServer *)&v16 initWithTransport:v4];
+  v5 = [(XADAuditServer *)&v16 initWithTransport:transportCopy];
   if (v5)
   {
     v6 = +[XADEventManager sharedManager];
@@ -75,11 +75,11 @@
   return v5;
 }
 
-- (void)_appStateChanged:(id)a3
+- (void)_appStateChanged:(id)changed
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:SBApplicationStateDisplayIDKey];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:SBApplicationStateDisplayIDKey];
   v6 = v5;
   if (v5)
   {
@@ -110,7 +110,7 @@
   v13 = v12;
 
   v14 = SBApplicationStateProcessIDKey;
-  v15 = [v4 objectForKeyedSubscript:SBApplicationStateProcessIDKey];
+  v15 = [userInfo objectForKeyedSubscript:SBApplicationStateProcessIDKey];
   [v15 intValue];
   v16 = SBSCopyBundleInfoValueForKeyAndProcessID();
   v17 = v16;
@@ -127,12 +127,12 @@
   v44 = v18;
 
   v47[0] = @"name";
-  v19 = [v3 name];
+  name = [changedCopy name];
 
-  v45 = v19;
-  if (v19)
+  v45 = name;
+  if (name)
   {
-    v20 = v19;
+    v20 = name;
   }
 
   else
@@ -142,7 +142,7 @@
 
   v48[0] = v20;
   v47[1] = @"pid";
-  v21 = [v4 objectForKeyedSubscript:v14];
+  v21 = [userInfo objectForKeyedSubscript:v14];
   v22 = v21;
   if (v21)
   {
@@ -157,7 +157,7 @@
   v48[1] = v23;
   v47[2] = @"state";
   v24 = SBApplicationStateKey;
-  v25 = [v4 objectForKeyedSubscript:SBApplicationStateKey];
+  v25 = [userInfo objectForKeyedSubscript:SBApplicationStateKey];
   v26 = v25;
   if (v25)
   {
@@ -171,7 +171,7 @@
 
   v48[2] = v27;
   v47[3] = @"state_description";
-  v42 = [v4 objectForKeyedSubscript:v24];
+  v42 = [userInfo objectForKeyedSubscript:v24];
   [v42 intValue];
   Description = SBApplicationStateGetDescription();
   if (Description)
@@ -187,7 +187,7 @@
   v48[3] = v29;
   v47[4] = @"elevated_state";
   v30 = SBApplicationMostElevatedStateForProcessIDKey;
-  v31 = [v4 objectForKeyedSubscript:SBApplicationMostElevatedStateForProcessIDKey];
+  v31 = [userInfo objectForKeyedSubscript:SBApplicationMostElevatedStateForProcessIDKey];
   v32 = v31;
   if (v31)
   {
@@ -201,7 +201,7 @@
 
   v48[4] = v33;
   v47[5] = @"elevated_state_description";
-  v34 = [v4 objectForKeyedSubscript:v30];
+  v34 = [userInfo objectForKeyedSubscript:v30];
   [v34 intValue];
   v35 = SBApplicationStateGetDescription();
   if (v35)
@@ -231,8 +231,8 @@
 
   v40 = [DTXMessage messageWithSelector:"hostAppStateChanged:" objectArguments:v39, 0];
 
-  v41 = [(XADAuditServer *)self connection];
-  [v41 sendControlAsync:v40 replyHandler:0];
+  connection = [(XADAuditServer *)self connection];
+  [connection sendControlAsync:v40 replyHandler:0];
 }
 
 - (id)deviceCaptureScreenshot
@@ -243,7 +243,7 @@
   v6[3] = &unk_100018B30;
   v3 = objc_opt_new();
   v7 = v3;
-  v8 = self;
+  selfCopy = self;
   dispatch_async(&_dispatch_main_q, v6);
   v4 = v3;
 
@@ -277,31 +277,31 @@
   [v2 hideVisualsSynchronously];
 
   v3 = +[AXAuditPluginManager sharedManager];
-  v4 = [v3 platformPlugin];
-  v5 = [v4 screenshotInfoForTransportWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+  platformPlugin = [v3 platformPlugin];
+  v5 = [platformPlugin screenshotInfoForTransportWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
 
   return v5;
 }
 
-- (void)highlightElement:(id)a3
+- (void)highlightElement:(id)element
 {
-  v4 = [a3 axElement];
-  if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  axElement = [element axElement];
+  if (!axElement || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v3 = +[XADDisplayManager sharedManager];
     [v3 setCursorStyle:4];
-    [v3 setCursorFrameForElement:v4];
+    [v3 setCursorFrameForElement:axElement];
   }
 }
 
-- (void)highlightElements:(id)a3
+- (void)highlightElements:(id)elements
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  elementsCopy = elements;
+  v4 = [elementsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -312,11 +312,11 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(elementsCopy);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) axElement];
-        if (v8)
+        axElement = [*(*(&v10 + 1) + 8 * i) axElement];
+        if (axElement)
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -328,10 +328,10 @@
 
         v9 = +[XADDisplayManager sharedManager];
         [v9 setCursorStyle:4];
-        [v9 setCursorFrameForElement:v8];
+        [v9 setCursorFrameForElement:axElement];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [elementsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -344,70 +344,70 @@
 LABEL_12:
 }
 
-- (void)deviceInspectorFocusOnElement:(id)a3
+- (void)deviceInspectorFocusOnElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = XADAuditServer;
-  [(XADAuditServer *)&v9 deviceInspectorFocusOnElement:v4];
+  [(XADAuditServer *)&v9 deviceInspectorFocusOnElement:elementCopy];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100009630;
   v6[3] = &unk_100018B30;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = elementCopy;
+  selfCopy = self;
+  v5 = elementCopy;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)deviceInspectorMoveWithOptions:(id)a3
+- (void)deviceInspectorMoveWithOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = +[AXAuditObjectTransportManager sharedManager];
-  v5 = [v4 objectForTransportDictionary:v3 expectedClass:objc_opt_class()];
+  v5 = [v4 objectForTransportDictionary:optionsCopy expectedClass:objc_opt_class()];
 
   v6 = [v5 objectForKey:kAXAuditInspectorMoveDirectionKey];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
   v8 = [v5 objectForKey:kAXAuditInspectorMoveIncludeContainersKey];
-  v9 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 
   v10 = [v5 objectForKey:kAXAuditInspectorMoveAllowNonAXKey];
-  v11 = [v10 BOOLValue];
+  bOOLValue2 = [v10 BOOLValue];
 
   v12 = +[XADInspectorManager sharedManager];
-  v13 = [v12 dispatchQueue];
+  dispatchQueue = [v12 dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100009878;
   block[3] = &unk_100018B58;
   v16 = v12;
-  v17 = v7;
-  v18 = v9;
-  v19 = v11;
+  v17 = integerValue;
+  v18 = bOOLValue;
+  v19 = bOOLValue2;
   v14 = v12;
-  dispatch_async(v13, block);
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)deviceInspectorPreviewOnElement:(id)a3
+- (void)deviceInspectorPreviewOnElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = XADAuditServer;
-  [(XADAuditServer *)&v9 deviceInspectorPreviewOnElement:v4];
+  [(XADAuditServer *)&v9 deviceInspectorPreviewOnElement:elementCopy];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100009948;
   v6[3] = &unk_100018B30;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = elementCopy;
+  selfCopy = self;
+  v5 = elementCopy;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)deviceInspectorSetMonitoredEventType:(id)a3
+- (void)deviceInspectorSetMonitoredEventType:(id)type
 {
-  if (a3)
+  if (type)
   {
     v5.receiver = self;
     v5.super_class = XADAuditServer;
@@ -422,24 +422,24 @@ LABEL_12:
   }
 }
 
-- (void)deviceInspectorShowVisuals:(id)a3
+- (void)deviceInspectorShowVisuals:(id)visuals
 {
-  v4 = a3;
+  visualsCopy = visuals;
   v13.receiver = self;
   v13.super_class = XADAuditServer;
-  [(XADAuditServer *)&v13 deviceInspectorShowVisuals:v4];
+  [(XADAuditServer *)&v13 deviceInspectorShowVisuals:visualsCopy];
   v5 = +[XADInspectorManager sharedManager];
-  v6 = [v5 dispatchQueue];
+  dispatchQueue = [v5 dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100009C04;
   block[3] = &unk_100018BA8;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = visualsCopy;
+  v7 = visualsCopy;
   v8 = v5;
-  dispatch_async(v6, block);
+  dispatch_async(dispatchQueue, block);
 }
 
 - (void)deviceInspectorLockOnCurrentElement
@@ -455,20 +455,20 @@ LABEL_12:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)inspectorManager:(id)a3 inspectorMonitoredEventTypeChanged:(unint64_t)a4
+- (void)inspectorManager:(id)manager inspectorMonitoredEventTypeChanged:(unint64_t)changed
 {
-  v5 = [NSNumber numberWithUnsignedLongLong:a4];
+  v5 = [NSNumber numberWithUnsignedLongLong:changed];
   v7 = [DTXMessage messageWithSelector:"hostInspectorMonitoredEventTypeChanged:" objectArguments:v5, 0];
 
-  v6 = [(XADAuditServer *)self connection];
-  [v6 sendControlAsync:v7 replyHandler:0];
+  connection = [(XADAuditServer *)self connection];
+  [connection sendControlAsync:v7 replyHandler:0];
 }
 
-- (void)inspectorManager:(id)a3 inspectorElementPropertiesChanged:(id)a4
+- (void)inspectorManager:(id)manager inspectorElementPropertiesChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v10 = +[AXAuditObjectTransportManager sharedManager];
-  v6 = [v10 transportDictionaryForObject:v5];
+  v6 = [v10 transportDictionaryForObject:changedCopy];
 
   if (v6)
   {
@@ -481,15 +481,15 @@ LABEL_12:
     v7 = [DTXMessage messageWithSelector:"hostInspectorCurrentElementPropertiesChanged:" objectArguments:v8, 0];
   }
 
-  v9 = [(XADAuditServer *)self connection];
-  [v9 sendControlAsync:v7 replyHandler:0];
+  connection = [(XADAuditServer *)self connection];
+  [connection sendControlAsync:v7 replyHandler:0];
 }
 
-- (void)inspectorManager:(id)a3 inspectorFocusDidChange:(id)a4
+- (void)inspectorManager:(id)manager inspectorFocusDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   v10 = +[AXAuditObjectTransportManager sharedManager];
-  v6 = [v10 transportDictionaryForObject:v5];
+  v6 = [v10 transportDictionaryForObject:changeCopy];
 
   if (v6)
   {
@@ -502,31 +502,31 @@ LABEL_12:
     v7 = [DTXMessage messageWithSelector:"hostInspectorCurrentElementChanged:" objectArguments:v8, 0];
   }
 
-  v9 = [(XADAuditServer *)self connection];
-  [v9 sendControlAsync:v7 replyHandler:0];
+  connection = [(XADAuditServer *)self connection];
+  [connection sendControlAsync:v7 replyHandler:0];
 }
 
-- (id)deviceElement:(id)a3 performAction:(id)a4 withValue:(id)a5
+- (id)deviceElement:(id)element performAction:(id)action withValue:(id)value
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  elementCopy = element;
+  actionCopy = action;
+  if (actionCopy)
   {
     v9 = objc_opt_new();
     v10 = +[XADInspectorManager sharedManager];
     [v10 setDelegate:self];
-    v11 = [v10 dispatchQueue];
+    dispatchQueue = [v10 dispatchQueue];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10000A184;
     v17[3] = &unk_100018BD0;
-    v18 = v7;
-    v19 = v8;
+    v18 = elementCopy;
+    v19 = actionCopy;
     v20 = v10;
     v12 = v9;
     v21 = v12;
     v13 = v10;
-    dispatch_async(v11, v17);
+    dispatch_async(dispatchQueue, v17);
 
     v14 = v21;
     v15 = v12;
@@ -540,27 +540,27 @@ LABEL_12:
   return v15;
 }
 
-- (id)deviceElement:(id)a3 valueForAttribute:(id)a4
+- (id)deviceElement:(id)element valueForAttribute:(id)attribute
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  elementCopy = element;
+  attributeCopy = attribute;
+  if (attributeCopy)
   {
     v8 = objc_opt_new();
     v9 = +[XADInspectorManager sharedManager];
     [v9 setDelegate:self];
-    v10 = [v9 dispatchQueue];
+    dispatchQueue = [v9 dispatchQueue];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10000A404;
     v16[3] = &unk_100018BD0;
-    v17 = v6;
-    v18 = v7;
+    v17 = elementCopy;
+    v18 = attributeCopy;
     v19 = v9;
     v11 = v8;
     v20 = v11;
     v12 = v9;
-    dispatch_async(v10, v16);
+    dispatch_async(dispatchQueue, v16);
 
     v13 = v20;
     v14 = v11;
@@ -574,29 +574,29 @@ LABEL_12:
   return v14;
 }
 
-- (id)deviceElement:(id)a3 valueForParameterizedAttribute:(id)a4 withObject:(id)a5
+- (id)deviceElement:(id)element valueForParameterizedAttribute:(id)attribute withObject:(id)object
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  elementCopy = element;
+  attributeCopy = attribute;
+  objectCopy = object;
+  if (attributeCopy)
   {
     v11 = objc_opt_new();
     v12 = +[XADInspectorManager sharedManager];
     [v12 setDelegate:self];
-    v13 = [v12 dispatchQueue];
+    dispatchQueue = [v12 dispatchQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10000A71C;
     block[3] = &unk_100018C20;
-    v20 = v8;
-    v21 = v9;
+    v20 = elementCopy;
+    v21 = attributeCopy;
     v22 = v12;
-    v23 = v10;
+    v23 = objectCopy;
     v14 = v11;
     v24 = v14;
     v15 = v12;
-    dispatch_async(v13, block);
+    dispatch_async(dispatchQueue, block);
 
     v16 = v24;
     v17 = v14;
@@ -610,42 +610,42 @@ LABEL_12:
   return v17;
 }
 
-- (void)eventManager:(id)a3 systemFocusDidMoveToElement:(id)a4
+- (void)eventManager:(id)manager systemFocusDidMoveToElement:(id)element
 {
-  v5 = a4;
+  elementCopy = element;
   v6 = +[XADInspectorManager sharedManager];
-  v7 = [v6 dispatchQueue];
+  dispatchQueue = [v6 dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000A9A4;
   block[3] = &unk_100018BA8;
   v11 = v6;
-  v12 = self;
-  v13 = v5;
-  v8 = v5;
+  selfCopy = self;
+  v13 = elementCopy;
+  v8 = elementCopy;
   v9 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(dispatchQueue, block);
 }
 
-- (id)deviceFetchSpecialElement:(id)a3
+- (id)deviceFetchSpecialElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v5 = objc_opt_new();
   v6 = +[XADInspectorManager sharedManager];
-  v7 = [v4 integerValue];
+  integerValue = [elementCopy integerValue];
 
   [v6 setDelegate:self];
-  v8 = [v6 dispatchQueue];
+  dispatchQueue = [v6 dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000AB10;
   block[3] = &unk_100018C48;
   v15 = v6;
-  v17 = v7;
+  v17 = integerValue;
   v9 = v5;
   v16 = v9;
   v10 = v6;
-  dispatch_async(v8, block);
+  dispatch_async(dispatchQueue, block);
 
   v11 = v16;
   v12 = v9;
@@ -658,29 +658,29 @@ LABEL_12:
   v3 = +[XADInspectorManager sharedManager];
   [v3 setDelegate:self];
   v4 = objc_opt_new();
-  v5 = [v3 dispatchQueue];
+  dispatchQueue = [v3 dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000AC90;
   block[3] = &unk_1000188A0;
   v6 = v4;
   v9 = v6;
-  dispatch_async(v5, block);
+  dispatch_async(dispatchQueue, block);
 
   return v6;
 }
 
-- (id)deviceFetchElementAtNormalizedDeviceCoordinate:(id)a3
+- (id)deviceFetchElementAtNormalizedDeviceCoordinate:(id)coordinate
 {
-  v4 = a3;
+  coordinateCopy = coordinate;
   v5 = +[XADInspectorManager sharedManager];
   [v5 setDelegate:self];
   v6 = objc_opt_new();
-  [v4 CGPointValue];
+  [coordinateCopy CGPointValue];
   v8 = v7;
   v10 = v9;
 
-  v11 = [v5 dispatchQueue];
+  dispatchQueue = [v5 dispatchQueue];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10000AE24;
@@ -691,7 +691,7 @@ LABEL_12:
   v12 = v6;
   v19 = v12;
   v13 = v5;
-  dispatch_async(v11, v17);
+  dispatch_async(dispatchQueue, v17);
 
   v14 = v19;
   v15 = v12;
@@ -711,8 +711,8 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%s", buf, 0xCu);
   }
 
-  v3 = [(XADAuditServer *)self _frontmostAppUpdateCoalescer];
-  [v3 notifyUpdateElementVisualsEventDidOccur];
+  _frontmostAppUpdateCoalescer = [(XADAuditServer *)self _frontmostAppUpdateCoalescer];
+  [_frontmostAppUpdateCoalescer notifyUpdateElementVisualsEventDidOccur];
 }
 
 - (void)deviceDidGetTargeted
@@ -741,15 +741,15 @@ LABEL_12:
   }
 
   v3 = +[XADInspectorManager sharedManager];
-  v4 = [v3 dispatchQueue];
+  dispatchQueue = [v3 dispatchQueue];
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_10000B184;
   v10 = &unk_100018B30;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v5 = v3;
-  dispatch_async(v4, &v7);
+  dispatch_async(dispatchQueue, &v7);
 
   v6 = [XADEventManager sharedManager:v7];
   [v6 deviceDidGetTargeted];
@@ -757,53 +757,53 @@ LABEL_12:
   [(XADAuditServer *)self set_deviceActivelyTargeted:1];
 }
 
-- (void)eventManager:(id)a3 eventToHighlightElement:(id)a4
+- (void)eventManager:(id)manager eventToHighlightElement:(id)element
 {
-  v5 = a4;
+  elementCopy = element;
   v6 = +[XADInspectorManager sharedManager];
-  v7 = [v6 dispatchQueue];
+  dispatchQueue = [v6 dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000B39C;
   block[3] = &unk_100018BA8;
   v11 = v6;
-  v12 = self;
-  v13 = v5;
-  v8 = v5;
+  selfCopy = self;
+  v13 = elementCopy;
+  v8 = elementCopy;
   v9 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)eventManager:(id)a3 eventToHighlightPoint:(CGPoint)a4
+- (void)eventManager:(id)manager eventToHighlightPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v7 = +[XADInspectorManager sharedManager];
-  v8 = [v7 dispatchQueue];
+  dispatchQueue = [v7 dispatchQueue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000B4DC;
   v10[3] = &unk_100018C70;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   v13 = x;
   v14 = y;
   v9 = v7;
-  dispatch_async(v8, v10);
+  dispatch_async(dispatchQueue, v10);
 }
 
 - (void)frontmostApplicationsDidChange
 {
   v4 = [DTXMessage messageWithSelector:"hostDeviceRunningApplicationsDidChange" objectArguments:0];
-  v3 = [(XADAuditServer *)self connection];
-  [v3 sendControlAsync:v4 replyHandler:0];
+  connection = [(XADAuditServer *)self connection];
+  [connection sendControlAsync:v4 replyHandler:0];
 }
 
 - (BOOL)updateRunningApplications
 {
   v3 = AXAuditCurrentApplications();
   v4 = +[NSMutableDictionary dictionary];
-  v33 = [(XADAuditServer *)self runningApplications];
+  runningApplications = [(XADAuditServer *)self runningApplications];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
@@ -835,7 +835,7 @@ LABEL_12:
   }
 
   v12 = [v4 count];
-  if (v12 == [v33 count])
+  if (v12 == [runningApplications count])
   {
     v49 = 0u;
     v50 = 0u;
@@ -867,7 +867,7 @@ LABEL_12:
         v44 = 0u;
         v45 = 0u;
         v46 = 0u;
-        v42 = v33;
+        v42 = runningApplications;
         v40 = [v42 countByEnumeratingWithState:&v43 objects:v55 count:16];
         if (!v40)
         {
@@ -892,16 +892,16 @@ LABEL_36:
             v15 = *(*(&v43 + 1) + 8 * j);
             v16 = [obj objectForKeyedSubscript:{v41, v31}];
             [v16 updateCache:2001];
-            v17 = [v41 intValue];
-            v18 = [v15 intValue];
+            intValue = [v41 intValue];
+            intValue2 = [v15 intValue];
             v19 = [obj objectForKeyedSubscript:v41];
-            v20 = [v19 label];
+            label = [v19 label];
 
             v21 = [v42 objectForKeyedSubscript:v15];
-            v22 = [v21 label];
+            label2 = [v21 label];
 
-            v23 = [v20 isEqualToString:v22];
-            v24 = [(XADAuditServer *)self _runningAXAuditAppForPid:v17];
+            v23 = [label isEqualToString:label2];
+            v24 = [(XADAuditServer *)self _runningAXAuditAppForPid:intValue];
             v25 = v24;
             if (v24)
             {
@@ -912,13 +912,13 @@ LABEL_36:
 
               [v24 displayName];
               v27 = v26 = self;
-              LOBYTE(v23) = [v27 isEqualToString:v20];
+              LOBYTE(v23) = [v27 isEqualToString:label];
 
               self = v26;
               v4 = v35;
             }
 
-            if (v17 == v18 && (v23 & 1) != 0)
+            if (intValue == intValue2 && (v23 & 1) != 0)
             {
               v28 = 0;
               v36 = 1;
@@ -969,7 +969,7 @@ LABEL_38:
   return v29;
 }
 
-- (id)_runningAXAuditAppForPid:(int)a3
+- (id)_runningAXAuditAppForPid:(int)pid
 {
   v9 = 0;
   v10 = &v9;
@@ -977,14 +977,14 @@ LABEL_38:
   v12 = sub_10000BAD8;
   v13 = sub_10000BAE8;
   v14 = 0;
-  v4 = [(XADAuditServer *)self runningAXAuditApplications];
+  runningAXAuditApplications = [(XADAuditServer *)self runningAXAuditApplications];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000BAF0;
   v7[3] = &unk_100018C98;
-  v8 = a3;
+  pidCopy = pid;
   v7[4] = &v9;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [runningAXAuditApplications enumerateObjectsUsingBlock:v7];
 
   v5 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -1011,8 +1011,8 @@ LABEL_38:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v2 = [(XADAuditServer *)self _currentMedusaApplications];
-  v3 = [v2 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  _currentMedusaApplications = [(XADAuditServer *)self _currentMedusaApplications];
+  v3 = [_currentMedusaApplications countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v3)
   {
     v4 = *v24;
@@ -1022,12 +1022,12 @@ LABEL_38:
       {
         if (*v24 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_currentMedusaApplications);
         }
 
         v6 = *(*(&v23 + 1) + 8 * i);
-        v7 = [v6 bundleId];
-        v8 = [v7 isEqualToString:@"com.apple.springboard"];
+        bundleId = [v6 bundleId];
+        v8 = [bundleId isEqualToString:@"com.apple.springboard"];
 
         if ((v8 & 1) == 0)
         {
@@ -1035,19 +1035,19 @@ LABEL_38:
           v10 = objc_opt_new();
           [v10 setPid:v9];
           [v10 setPsnObj:0];
-          v11 = [v6 bundleId];
-          [v10 setBundleIdentifier:v11];
+          bundleId2 = [v6 bundleId];
+          [v10 setBundleIdentifier:bundleId2];
 
-          v12 = [v6 label];
-          [v10 setDisplayName:v12];
+          label = [v6 label];
+          [v10 setDisplayName:label];
 
-          v13 = [v10 bundleIdentifier];
-          LOBYTE(v11) = [v13 length] == 0;
+          bundleIdentifier = [v10 bundleIdentifier];
+          LOBYTE(bundleId2) = [bundleIdentifier length] == 0;
 
-          if ((v11 & 1) == 0)
+          if ((bundleId2 & 1) == 0)
           {
-            v14 = [v10 bundleIdentifier];
-            v15 = [UIImage _applicationIconImageForBundleIdentifier:v14 format:0];
+            bundleIdentifier2 = [v10 bundleIdentifier];
+            v15 = [UIImage _applicationIconImageForBundleIdentifier:bundleIdentifier2 format:0];
 
             if (v15)
             {
@@ -1065,7 +1065,7 @@ LABEL_38:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v3 = [_currentMedusaApplications countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v3);
@@ -1088,31 +1088,31 @@ LABEL_38:
 
 - (id)_currentMedusaApplications
 {
-  v2 = [(XADAuditServer *)self runningApplications];
-  v3 = [v2 allValues];
-  v4 = [v3 ax_filteredArrayUsingBlock:&stru_100018D00];
+  runningApplications = [(XADAuditServer *)self runningApplications];
+  allValues = [runningApplications allValues];
+  v4 = [allValues ax_filteredArrayUsingBlock:&stru_100018D00];
 
   return v4;
 }
 
-- (void)deviceSetAuditTargetPid:(id)a3
+- (void)deviceSetAuditTargetPid:(id)pid
 {
   v10.receiver = self;
   v10.super_class = XADAuditServer;
-  v3 = a3;
-  [(XADAuditServer *)&v10 deviceSetAuditTargetPid:v3];
+  pidCopy = pid;
+  [(XADAuditServer *)&v10 deviceSetAuditTargetPid:pidCopy];
   v4 = [XADInspectorManager sharedManager:v10.receiver];
-  v5 = [v3 integerValue];
+  integerValue = [pidCopy integerValue];
 
-  [v4 setTargetPid:v5];
-  v6 = [v4 frontmostAppForTargetPid];
-  v7 = sub_10000C240(v6);
+  [v4 setTargetPid:integerValue];
+  frontmostAppForTargetPid = [v4 frontmostAppForTargetPid];
+  v7 = sub_10000C240(frontmostAppForTargetPid);
   if (v7)
   {
     v8 = +[XADEventManager sharedManager];
-    v9 = [v8 snarfingEvents];
+    snarfingEvents = [v8 snarfingEvents];
 
-    if ((v9 & 1) == 0)
+    if ((snarfingEvents & 1) == 0)
     {
       if ([v4 showVisuals])
       {
@@ -1124,8 +1124,8 @@ LABEL_38:
 
 - (void)_checkFrontmostAppPidChanged
 {
-  v3 = [(XADAuditServer *)self connection];
-  if (v3 && (v4 = v3, v5 = [(XADAuditServer *)self hostAPIVersion], v4, v5))
+  connection = [(XADAuditServer *)self connection];
+  if (connection && (v4 = connection, v5 = [(XADAuditServer *)self hostAPIVersion], v4, v5))
   {
     if ([(XADAuditServer *)self updateRunningApplications]&& [(XADAuditServer *)self hostAPIVersion]>= 4)
     {
@@ -1139,13 +1139,13 @@ LABEL_38:
       [(XADAuditServer *)self frontmostApplicationsDidChange];
     }
 
-    v6 = [(XADAuditServer *)self _currentMedusaApplications];
-    v7 = [v6 count];
+    _currentMedusaApplications = [(XADAuditServer *)self _currentMedusaApplications];
+    v7 = [_currentMedusaApplications count];
 
     if (v7 == 1)
     {
-      v8 = [(XADAuditServer *)self _currentMedusaApplications];
-      v9 = [v8 firstObject];
+      _currentMedusaApplications2 = [(XADAuditServer *)self _currentMedusaApplications];
+      firstObject = [_currentMedusaApplications2 firstObject];
 
       v10 = [NSNumber numberWithInt:AXAuditPidForElement()];
     }
@@ -1156,8 +1156,8 @@ LABEL_38:
     }
 
     v11 = [DTXMessage messageWithSelector:"hostDeviceFrontmostAppPidDidChange:" objectArguments:v10, 0];
-    v12 = [(XADAuditServer *)self connection];
-    [v12 sendControlAsync:v11 replyHandler:0];
+    connection2 = [(XADAuditServer *)self connection];
+    [connection2 sendControlAsync:v11 replyHandler:0];
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -1168,36 +1168,36 @@ LABEL_38:
 
 - (void)_handleLayoutChangedNotification
 {
-  v2 = [(XADAuditServer *)self _frontmostAppUpdateCoalescer];
-  [v2 notifyUpdateElementVisualsEventDidOccur];
+  _frontmostAppUpdateCoalescer = [(XADAuditServer *)self _frontmostAppUpdateCoalescer];
+  [_frontmostAppUpdateCoalescer notifyUpdateElementVisualsEventDidOccur];
 
   v3 = +[XADInspectorManager sharedManager];
-  v4 = [v3 dispatchQueue];
+  dispatchQueue = [v3 dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000C54C;
   block[3] = &unk_1000188A0;
   v7 = v3;
   v5 = v3;
-  dispatch_async(v4, block);
+  dispatch_async(dispatchQueue, block);
 }
 
 - (void)_handleScreenChangedNotification
 {
-  v3 = [(XADAuditServer *)self _frontmostAppUpdateCoalescer];
-  [v3 notifyUpdateElementVisualsEventDidOccur];
+  _frontmostAppUpdateCoalescer = [(XADAuditServer *)self _frontmostAppUpdateCoalescer];
+  [_frontmostAppUpdateCoalescer notifyUpdateElementVisualsEventDidOccur];
 
   if ([(XADAuditServer *)self _screenChangeHandleAttempts]<= 9)
   {
     v4 = +[XADInspectorManager sharedManager];
-    v5 = [v4 frontmostAppForTargetPid];
-    v6 = sub_10000C240(v5);
+    frontmostAppForTargetPid = [v4 frontmostAppForTargetPid];
+    v6 = sub_10000C240(frontmostAppForTargetPid);
     if (v6)
     {
       v7 = +[XADEventManager sharedManager];
-      v8 = [v7 snarfingEvents];
+      snarfingEvents = [v7 snarfingEvents];
 
-      if ((v8 & 1) == 0)
+      if ((snarfingEvents & 1) == 0)
       {
         if ([v4 showVisuals])
         {
@@ -1221,26 +1221,26 @@ LABEL_38:
   }
 }
 
-- (void)didReceiveAccessibilityNotification:(int)a3
+- (void)didReceiveAccessibilityNotification:(int)notification
 {
-  if (a3 == 3031)
+  if (notification == 3031)
   {
-    v7 = [(XADAuditServer *)self _frontmostAppUpdateCoalescer];
-    [v7 notifyUpdateElementVisualsEventDidOccur];
+    _frontmostAppUpdateCoalescer = [(XADAuditServer *)self _frontmostAppUpdateCoalescer];
+    [_frontmostAppUpdateCoalescer notifyUpdateElementVisualsEventDidOccur];
   }
 
-  else if (a3 == 1001)
+  else if (notification == 1001)
   {
 
     [(XADAuditServer *)self _handleLayoutChangedNotification];
   }
 
-  else if (a3 == 1000 && ![(XADAuditServer *)self _handlingScreenChanged])
+  else if (notification == 1000 && ![(XADAuditServer *)self _handlingScreenChanged])
   {
     v4 = +[XADEventManager sharedManager];
-    v5 = [v4 snarfingEvents];
+    snarfingEvents = [v4 snarfingEvents];
 
-    if ((v5 & 1) == 0)
+    if ((snarfingEvents & 1) == 0)
     {
       [(XADAuditServer *)self set_handlingScreenChanged:1];
       [(XADAuditServer *)self set_screenChangeHandleAttempts:0];

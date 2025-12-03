@@ -1,44 +1,44 @@
 @interface AVTAvatarActionsMenuController
 - (AVTAvatarActionsControllerDelegate)delegate;
-- (AVTAvatarActionsMenuController)initWithDataSource:(id)a3 avtViewProvider:(id)a4 environment:(id)a5;
+- (AVTAvatarActionsMenuController)initWithDataSource:(id)source avtViewProvider:(id)provider environment:(id)environment;
 - (UIMenu)actionsMenu;
-- (void)avatarEditorViewController:(id)a3 didFinishWithAvatarRecord:(id)a4;
-- (void)avatarEditorViewControllerDidCancel:(id)a3;
-- (void)confirmShouldDeleteRecord:(id)a3 resultBlock:(id)a4;
-- (void)performCreateForActionsModel:(id)a3;
-- (void)performDeleteForActionsModel:(id)a3;
-- (void)performDuplicateForActionsModel:(id)a3;
-- (void)performEditForActionsModel:(id)a3;
-- (void)presentEditor:(id)a3 forCreating:(BOOL)a4;
-- (void)updateWithActionsModel:(id)a3;
+- (void)avatarEditorViewController:(id)controller didFinishWithAvatarRecord:(id)record;
+- (void)avatarEditorViewControllerDidCancel:(id)cancel;
+- (void)confirmShouldDeleteRecord:(id)record resultBlock:(id)block;
+- (void)performCreateForActionsModel:(id)model;
+- (void)performDeleteForActionsModel:(id)model;
+- (void)performDuplicateForActionsModel:(id)model;
+- (void)performEditForActionsModel:(id)model;
+- (void)presentEditor:(id)editor forCreating:(BOOL)creating;
+- (void)updateWithActionsModel:(id)model;
 @end
 
 @implementation AVTAvatarActionsMenuController
 
-- (AVTAvatarActionsMenuController)initWithDataSource:(id)a3 avtViewProvider:(id)a4 environment:(id)a5
+- (AVTAvatarActionsMenuController)initWithDataSource:(id)source avtViewProvider:(id)provider environment:(id)environment
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sourceCopy = source;
+  providerCopy = provider;
+  environmentCopy = environment;
   v15.receiver = self;
   v15.super_class = AVTAvatarActionsMenuController;
   v12 = [(AVTAvatarActionsMenuController *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dataSource, a3);
-    objc_storeStrong(&v13->_environment, a5);
-    objc_storeStrong(&v13->_avtViewSessionProvider, a4);
+    objc_storeStrong(&v12->_dataSource, source);
+    objc_storeStrong(&v13->_environment, environment);
+    objc_storeStrong(&v13->_avtViewSessionProvider, provider);
   }
 
   return v13;
 }
 
-- (void)updateWithActionsModel:(id)a3
+- (void)updateWithActionsModel:(id)model
 {
-  [(AVTAvatarActionsMenuController *)self setActionsModel:a3];
-  v4 = [(AVTAvatarActionsMenuController *)self actionsModel];
-  [v4 setDelegate:self];
+  [(AVTAvatarActionsMenuController *)self setActionsModel:model];
+  actionsModel = [(AVTAvatarActionsMenuController *)self actionsModel];
+  [actionsModel setDelegate:self];
 
   actionsMenu = self->_actionsMenu;
   self->_actionsMenu = 0;
@@ -56,47 +56,47 @@
   else
   {
     v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:3];
-    v6 = [(AVTAvatarActionsMenuController *)self actionsModel];
-    v7 = [v6 editAction];
+    actionsModel = [(AVTAvatarActionsMenuController *)self actionsModel];
+    editAction = [actionsModel editAction];
 
-    if (v7)
+    if (editAction)
     {
-      v8 = [(AVTAvatarActionsMenuController *)self actionsModel];
-      v9 = [v8 editAction];
-      [v5 addObject:v9];
+      actionsModel2 = [(AVTAvatarActionsMenuController *)self actionsModel];
+      editAction2 = [actionsModel2 editAction];
+      [v5 addObject:editAction2];
     }
 
-    v10 = [(AVTAvatarActionsMenuController *)self actionsModel];
-    v11 = [v10 duplicateAction];
+    actionsModel3 = [(AVTAvatarActionsMenuController *)self actionsModel];
+    duplicateAction = [actionsModel3 duplicateAction];
 
-    if (v11)
+    if (duplicateAction)
     {
-      v12 = [(AVTAvatarActionsMenuController *)self actionsModel];
-      v13 = [v12 duplicateAction];
-      [v5 addObject:v13];
+      actionsModel4 = [(AVTAvatarActionsMenuController *)self actionsModel];
+      duplicateAction2 = [actionsModel4 duplicateAction];
+      [v5 addObject:duplicateAction2];
     }
 
-    v14 = [(AVTAvatarActionsMenuController *)self actionsModel];
-    v15 = [v14 deleteAction];
+    actionsModel5 = [(AVTAvatarActionsMenuController *)self actionsModel];
+    deleteAction = [actionsModel5 deleteAction];
 
-    if (v15)
+    if (deleteAction)
     {
-      v16 = [(AVTAvatarActionsMenuController *)self actionsModel];
-      v17 = [v16 deleteAction];
-      [v5 addObject:v17];
+      actionsModel6 = [(AVTAvatarActionsMenuController *)self actionsModel];
+      deleteAction2 = [actionsModel6 deleteAction];
+      [v5 addObject:deleteAction2];
     }
 
     v18 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F39618F0 image:0 identifier:0 options:1 children:v5];
     v19 = [MEMORY[0x1E695DF70] arrayWithObject:v18];
-    v20 = [(AVTAvatarActionsMenuController *)self actionsModel];
-    v21 = [v20 createAction];
+    actionsModel7 = [(AVTAvatarActionsMenuController *)self actionsModel];
+    createAction = [actionsModel7 createAction];
 
-    if (v21)
+    if (createAction)
     {
       v22 = MEMORY[0x1E69DCC60];
-      v23 = [(AVTAvatarActionsMenuController *)self actionsModel];
-      v24 = [v23 createAction];
-      v30[0] = v24;
+      actionsModel8 = [(AVTAvatarActionsMenuController *)self actionsModel];
+      createAction2 = [actionsModel8 createAction];
+      v30[0] = createAction2;
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
       v26 = [v22 menuWithTitle:&stru_1F39618F0 image:0 identifier:0 options:1 children:v25];
 
@@ -113,59 +113,59 @@
   return v3;
 }
 
-- (void)performCreateForActionsModel:(id)a3
+- (void)performCreateForActionsModel:(id)model
 {
-  v4 = [(AVTAvatarActionsMenuController *)self dataSource];
-  v7 = [v4 internalRecordStore];
+  dataSource = [(AVTAvatarActionsMenuController *)self dataSource];
+  internalRecordStore = [dataSource internalRecordStore];
 
-  v5 = [(AVTAvatarActionsMenuController *)self avtViewSessionProvider];
-  v6 = [AVTAvatarEditorViewController viewControllerForCreatingAvatarInStore:v7 avtViewSessionProvider:v5];
+  avtViewSessionProvider = [(AVTAvatarActionsMenuController *)self avtViewSessionProvider];
+  v6 = [AVTAvatarEditorViewController viewControllerForCreatingAvatarInStore:internalRecordStore avtViewSessionProvider:avtViewSessionProvider];
 
   [(AVTAvatarActionsMenuController *)self presentEditor:v6 forCreating:1];
 }
 
-- (void)performEditForActionsModel:(id)a3
+- (void)performEditForActionsModel:(id)model
 {
-  v4 = [(AVTAvatarActionsMenuController *)self dataSource];
-  v9 = [v4 internalRecordStore];
+  dataSource = [(AVTAvatarActionsMenuController *)self dataSource];
+  internalRecordStore = [dataSource internalRecordStore];
 
-  v5 = [(AVTAvatarActionsMenuController *)self actionsModel];
-  v6 = [v5 avatarRecord];
-  v7 = [(AVTAvatarActionsMenuController *)self avtViewSessionProvider];
-  v8 = [AVTAvatarEditorViewController viewControllerForEditingAvatar:v6 avtViewSessionProvider:v7 store:v9];
+  actionsModel = [(AVTAvatarActionsMenuController *)self actionsModel];
+  avatarRecord = [actionsModel avatarRecord];
+  avtViewSessionProvider = [(AVTAvatarActionsMenuController *)self avtViewSessionProvider];
+  v8 = [AVTAvatarEditorViewController viewControllerForEditingAvatar:avatarRecord avtViewSessionProvider:avtViewSessionProvider store:internalRecordStore];
 
   [(AVTAvatarActionsMenuController *)self presentEditor:v8 forCreating:0];
 }
 
-- (void)presentEditor:(id)a3 forCreating:(BOOL)a4
+- (void)presentEditor:(id)editor forCreating:(BOOL)creating
 {
-  v4 = a4;
-  v6 = a3;
-  [(AVTAvatarActionsMenuController *)self setIsCreatingAvatar:v4];
-  [(AVTAvatarActionsMenuController *)self setEditorViewController:v6];
-  [v6 setDelegate:self];
-  v7 = [(AVTAvatarActionsMenuController *)self delegate];
-  [v7 presentEditorViewController:v6 forActionsController:self isCreate:v4];
+  creatingCopy = creating;
+  editorCopy = editor;
+  [(AVTAvatarActionsMenuController *)self setIsCreatingAvatar:creatingCopy];
+  [(AVTAvatarActionsMenuController *)self setEditorViewController:editorCopy];
+  [editorCopy setDelegate:self];
+  delegate = [(AVTAvatarActionsMenuController *)self delegate];
+  [delegate presentEditorViewController:editorCopy forActionsController:self isCreate:creatingCopy];
 }
 
-- (void)performDuplicateForActionsModel:(id)a3
+- (void)performDuplicateForActionsModel:(id)model
 {
-  v4 = [(AVTAvatarActionsMenuController *)self environment];
-  v5 = [v4 usageTrackingSession];
-  v6 = [(AVTAvatarActionsMenuController *)self actionsModel];
-  v7 = [v6 avatarRecord];
-  [v5 didDuplicateAvatar:v7];
+  environment = [(AVTAvatarActionsMenuController *)self environment];
+  usageTrackingSession = [environment usageTrackingSession];
+  actionsModel = [(AVTAvatarActionsMenuController *)self actionsModel];
+  avatarRecord = [actionsModel avatarRecord];
+  [usageTrackingSession didDuplicateAvatar:avatarRecord];
 
-  v8 = [(AVTAvatarActionsMenuController *)self dataSource];
-  v9 = [v8 internalRecordStore];
-  v10 = [(AVTAvatarActionsMenuController *)self actionsModel];
-  v11 = [v10 avatarRecord];
+  dataSource = [(AVTAvatarActionsMenuController *)self dataSource];
+  internalRecordStore = [dataSource internalRecordStore];
+  actionsModel2 = [(AVTAvatarActionsMenuController *)self actionsModel];
+  avatarRecord2 = [actionsModel2 avatarRecord];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __66__AVTAvatarActionsMenuController_performDuplicateForActionsModel___block_invoke;
   v12[3] = &unk_1E7F3AD88;
   v12[4] = self;
-  [v9 duplicateAvatar:v11 completionBlock:v12];
+  [internalRecordStore duplicateAvatar:avatarRecord2 completionBlock:v12];
 }
 
 void __66__AVTAvatarActionsMenuController_performDuplicateForActionsModel___block_invoke(uint64_t a1, int a2, void *a3)
@@ -190,18 +190,18 @@ void __66__AVTAvatarActionsMenuController_performDuplicateForActionsModel___bloc
   [v2 actionsController:*(a1 + 32) didDuplicateToRecord:*(a1 + 40) completionBlock:0];
 }
 
-- (void)performDeleteForActionsModel:(id)a3
+- (void)performDeleteForActionsModel:(id)model
 {
-  v4 = [(AVTAvatarActionsMenuController *)self actionsModel];
-  v5 = [v4 avatarRecord];
+  actionsModel = [(AVTAvatarActionsMenuController *)self actionsModel];
+  avatarRecord = [actionsModel avatarRecord];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__AVTAvatarActionsMenuController_performDeleteForActionsModel___block_invoke;
   v7[3] = &unk_1E7F3AA58;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = avatarRecord;
+  v6 = avatarRecord;
   [(AVTAvatarActionsMenuController *)self confirmShouldDeleteRecord:v6 resultBlock:v7];
 }
 
@@ -254,46 +254,46 @@ void __63__AVTAvatarActionsMenuController_performDeleteForActionsModel___block_i
   [v2 actionsController:*(a1 + 32) didDeleteRecord:*(a1 + 40) withRecordUpdate:*(a1 + 48) completionBlock:0];
 }
 
-- (void)avatarEditorViewController:(id)a3 didFinishWithAvatarRecord:(id)a4
+- (void)avatarEditorViewController:(id)controller didFinishWithAvatarRecord:(id)record
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AVTAvatarActionsMenuController *)self isCreatingAvatar];
+  recordCopy = record;
+  controllerCopy = controller;
+  isCreatingAvatar = [(AVTAvatarActionsMenuController *)self isCreatingAvatar];
   if ([(AVTAvatarActionsMenuController *)self isCreatingAvatar])
   {
     [(AVTAvatarActionsMenuController *)self setIsCreatingAvatar:0];
-    v9 = [(AVTAvatarActionsMenuController *)self delegate];
-    [v9 actionsController:self didAddRecord:v6];
+    delegate = [(AVTAvatarActionsMenuController *)self delegate];
+    [delegate actionsController:self didAddRecord:recordCopy];
   }
 
   else
   {
-    v9 = [(AVTAvatarActionsMenuController *)self delegate];
-    [v9 actionsController:self didEditRecord:v6];
+    delegate = [(AVTAvatarActionsMenuController *)self delegate];
+    [delegate actionsController:self didEditRecord:recordCopy];
   }
 
-  v10 = [(AVTAvatarActionsMenuController *)self delegate];
+  delegate2 = [(AVTAvatarActionsMenuController *)self delegate];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __87__AVTAvatarActionsMenuController_avatarEditorViewController_didFinishWithAvatarRecord___block_invoke;
   v11[3] = &unk_1E7F3A9B8;
   v11[4] = self;
-  [v10 dismissEditorViewController:v7 forActionsController:self wasCreate:v8 didEdit:1 animated:1 completion:v11];
+  [delegate2 dismissEditorViewController:controllerCopy forActionsController:self wasCreate:isCreatingAvatar didEdit:1 animated:1 completion:v11];
 }
 
-- (void)avatarEditorViewControllerDidCancel:(id)a3
+- (void)avatarEditorViewControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = [(AVTAvatarActionsMenuController *)self isCreatingAvatar];
+  cancelCopy = cancel;
+  isCreatingAvatar = [(AVTAvatarActionsMenuController *)self isCreatingAvatar];
   [(AVTAvatarActionsMenuController *)self setIsCreatingAvatar:0];
-  [v4 setDisableAvatarSnapshotting:1];
-  v6 = [(AVTAvatarActionsMenuController *)self delegate];
+  [cancelCopy setDisableAvatarSnapshotting:1];
+  delegate = [(AVTAvatarActionsMenuController *)self delegate];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__AVTAvatarActionsMenuController_avatarEditorViewControllerDidCancel___block_invoke;
   v7[3] = &unk_1E7F3A9B8;
   v7[4] = self;
-  [v6 dismissEditorViewController:v4 forActionsController:self wasCreate:v5 didEdit:0 animated:1 completion:v7];
+  [delegate dismissEditorViewController:cancelCopy forActionsController:self wasCreate:isCreatingAvatar didEdit:0 animated:1 completion:v7];
 }
 
 uint64_t __70__AVTAvatarActionsMenuController_avatarEditorViewControllerDidCancel___block_invoke(uint64_t a1)
@@ -309,12 +309,12 @@ uint64_t __70__AVTAvatarActionsMenuController_avatarEditorViewControllerDidCance
   return [v6 setEditorViewController:0];
 }
 
-- (void)confirmShouldDeleteRecord:(id)a3 resultBlock:(id)a4
+- (void)confirmShouldDeleteRecord:(id)record resultBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   if (AVTUIDisableDeleteConfirmation_once())
   {
-    v5[2](v5, 1);
+    blockCopy[2](blockCopy, 1);
   }
 
   else
@@ -330,7 +330,7 @@ uint64_t __70__AVTAvatarActionsMenuController_avatarEditorViewControllerDidCance
     v24[1] = 3221225472;
     v24[2] = __72__AVTAvatarActionsMenuController_confirmShouldDeleteRecord_resultBlock___block_invoke;
     v24[3] = &unk_1E7F3AE00;
-    v12 = v5;
+    v12 = blockCopy;
     v25 = v12;
     v13 = [v9 actionWithTitle:v11 style:1 handler:v24];
     [v8 addAction:v13];
@@ -346,8 +346,8 @@ uint64_t __70__AVTAvatarActionsMenuController_avatarEditorViewControllerDidCance
     v17 = [v14 actionWithTitle:v16 style:2 handler:&v19];
     [v8 addAction:{v17, v19, v20, v21, v22}];
 
-    v18 = [(AVTAvatarActionsMenuController *)self delegate];
-    [v18 actionsController:self presentAlertController:v8];
+    delegate = [(AVTAvatarActionsMenuController *)self delegate];
+    [delegate actionsController:self presentAlertController:v8];
   }
 }
 

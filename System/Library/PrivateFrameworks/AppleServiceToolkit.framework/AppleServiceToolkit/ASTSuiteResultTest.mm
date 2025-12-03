@@ -1,38 +1,38 @@
 @interface ASTSuiteResultTest
-- (ASTSuiteResultTest)initWithDictionary:(id)a3 error:(id *)a4;
-- (ASTSuiteResultTest)initWithTestID:(id)a3 name:(id)a4 value:(id)a5 status:(id)a6 result:(id)a7 description:(id)a8;
+- (ASTSuiteResultTest)initWithDictionary:(id)dictionary error:(id *)error;
+- (ASTSuiteResultTest)initWithTestID:(id)d name:(id)name value:(id)value status:(id)status result:(id)result description:(id)description;
 @end
 
 @implementation ASTSuiteResultTest
 
-- (ASTSuiteResultTest)initWithTestID:(id)a3 name:(id)a4 value:(id)a5 status:(id)a6 result:(id)a7 description:(id)a8
+- (ASTSuiteResultTest)initWithTestID:(id)d name:(id)name value:(id)value status:(id)status result:(id)result description:(id)description
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  dCopy = d;
+  nameCopy = name;
+  valueCopy = value;
+  statusCopy = status;
+  resultCopy = result;
+  descriptionCopy = description;
   v24.receiver = self;
   v24.super_class = ASTSuiteResultTest;
   v18 = [(ASTSuiteResultTest *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_testID, a3);
-    objc_storeStrong(&v19->_name, a4);
-    objc_storeStrong(&v19->_value, a5);
-    objc_storeStrong(&v19->_status, a6);
-    objc_storeStrong(&v19->_result, a7);
-    objc_storeStrong(&v19->_testDescription, a8);
+    objc_storeStrong(&v18->_testID, d);
+    objc_storeStrong(&v19->_name, name);
+    objc_storeStrong(&v19->_value, value);
+    objc_storeStrong(&v19->_status, status);
+    objc_storeStrong(&v19->_result, result);
+    objc_storeStrong(&v19->_testDescription, description);
   }
 
   return v19;
 }
 
-- (ASTSuiteResultTest)initWithDictionary:(id)a3 error:(id *)a4
+- (ASTSuiteResultTest)initWithDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = ASTSuiteResultTest;
   v7 = [(ASTSuiteResultTest *)&v29 init];
@@ -41,9 +41,9 @@
     goto LABEL_15;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"testID"];
-  v28 = [v6 objectForKeyedSubscript:@"name"];
-  v9 = [v6 objectForKeyedSubscript:@"value"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"testID"];
+  v28 = [dictionaryCopy objectForKeyedSubscript:@"name"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"value"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -51,7 +51,7 @@
     v9 = 0;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"status"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"status"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -67,10 +67,10 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v11 = [[ASTSuiteResultStatus alloc] initWithDictionary:v10 error:a4];
+  v11 = [[ASTSuiteResultStatus alloc] initWithDictionary:v10 error:error];
 LABEL_9:
-  v12 = [v6 objectForKeyedSubscript:@"summary"];
-  v13 = [v6 objectForKeyedSubscript:@"testDescription"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"summary"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"testDescription"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -123,9 +123,9 @@ LABEL_15:
     [ASTSuiteResult initWithDictionary:v7 error:v25];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-7000 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-7000 userInfo:0];
   }
 
   v24 = 0;

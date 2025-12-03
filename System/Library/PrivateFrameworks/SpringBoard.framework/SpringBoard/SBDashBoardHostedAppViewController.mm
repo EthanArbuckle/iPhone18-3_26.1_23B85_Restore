@@ -1,13 +1,13 @@
 @interface SBDashBoardHostedAppViewController
 - (BOOL)_shouldDelayDeactivationUntilAfterDisappearance;
 - (BOOL)_shouldInvalidateUponDeactivation;
-- (BOOL)appViewControllerIsInNonRotatingWindow:(id)a3;
-- (BOOL)appViewControllerShouldBackgroundApplicationOnDeactivate:(id)a3;
-- (BOOL)appViewControllerShouldHideHomeGrabberView:(id)a3;
-- (BOOL)appViewControllerShouldReactivateApplicationOnDestruction:(id)a3;
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)appViewControllerIsInNonRotatingWindow:(id)window;
+- (BOOL)appViewControllerShouldBackgroundApplicationOnDeactivate:(id)deactivate;
+- (BOOL)appViewControllerShouldHideHomeGrabberView:(id)view;
+- (BOOL)appViewControllerShouldReactivateApplicationOnDestruction:(id)destruction;
+- (BOOL)handleEvent:(id)event;
 - (CSAppHostContextProviding)hostContextProvider;
-- (SBDashBoardHostedAppViewController)initWithApplicationSceneEntity:(id)a3;
+- (SBDashBoardHostedAppViewController)initWithApplicationSceneEntity:(id)entity;
 - (SBDashBoardHostedAppViewControllerDelegate)delegate;
 - (id)_deviceApplicationSceneHandle;
 - (id)_newDisplayLayoutElement;
@@ -16,33 +16,33 @@
 - (int64_t)containerInterfaceOrientation;
 - (void)_addStatusBarViewIfNeeded;
 - (void)_beginShowingStatusBarView;
-- (void)_deactivateIfAppropriateForReason:(id)a3;
-- (void)_setMode:(int64_t)a3 fromClient:(BOOL)a4 forReason:(id)a5;
-- (void)_setResignActiveAssertionEnabled:(BOOL)a3;
-- (void)_updateDisplayLayoutElementForActivation:(id)a3;
+- (void)_deactivateIfAppropriateForReason:(id)reason;
+- (void)_setMode:(int64_t)mode fromClient:(BOOL)client forReason:(id)reason;
+- (void)_setResignActiveAssertionEnabled:(BOOL)enabled;
+- (void)_updateDisplayLayoutElementForActivation:(id)activation;
 - (void)_updateStatusBarContainerOrientation;
-- (void)aggregateAppearance:(id)a3;
-- (void)aggregateBehavior:(id)a3;
-- (void)appViewController:(id)a3 didTransitionFromMode:(int64_t)a4 toMode:(int64_t)a5;
-- (void)appViewControllerDidDeactivateApplication:(id)a3;
-- (void)appViewControllerDidFailToActivateApplication:(id)a3;
-- (void)appViewControllerWillActivateApplication:(id)a3;
-- (void)applicationSceneHandle:(id)a3 appendToSceneSettings:(id)a4 fromRequestContext:(id)a5 entity:(id)a6;
+- (void)aggregateAppearance:(id)appearance;
+- (void)aggregateBehavior:(id)behavior;
+- (void)appViewController:(id)controller didTransitionFromMode:(int64_t)mode toMode:(int64_t)toMode;
+- (void)appViewControllerDidDeactivateApplication:(id)application;
+- (void)appViewControllerDidFailToActivateApplication:(id)application;
+- (void)appViewControllerWillActivateApplication:(id)application;
+- (void)applicationSceneHandle:(id)handle appendToSceneSettings:(id)settings fromRequestContext:(id)context entity:(id)entity;
 - (void)dealloc;
 - (void)invalidate;
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)sceneWithIdentifier:(id)a3 didChangeSceneInterfaceOrientationTo:(int64_t)a4;
-- (void)setInterfaceOrientationLocked:(BOOL)a3;
-- (void)setOverrideIdleWarnMode:(int64_t)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings;
+- (void)sceneWithIdentifier:(id)identifier didChangeSceneInterfaceOrientationTo:(int64_t)to;
+- (void)setInterfaceOrientationLocked:(BOOL)locked;
+- (void)setOverrideIdleWarnMode:(int64_t)mode;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation SBDashBoardHostedAppViewController
@@ -63,12 +63,12 @@
   return v2;
 }
 
-- (SBDashBoardHostedAppViewController)initWithApplicationSceneEntity:(id)a3
+- (SBDashBoardHostedAppViewController)initWithApplicationSceneEntity:(id)entity
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  entityCopy = entity;
   NSClassFromString(&cfstr_Sbapplications_8.isa);
-  if (!v5)
+  if (!entityCopy)
   {
     [SBDashBoardHostedAppViewController initWithApplicationSceneEntity:a2];
   }
@@ -94,20 +94,20 @@
       v24 = __69__SBDashBoardHostedAppViewController_initWithApplicationSceneEntity___block_invoke;
       v25 = &unk_2783A92D8;
       v26 = v7;
-      v27 = v5;
+      v27 = entityCopy;
       v10 = [v26 modifyProem:&v22];
     }
 
-    v11 = [v5 sceneHandle];
-    [v11 addSceneUpdateContributer:v6];
+    sceneHandle = [entityCopy sceneHandle];
+    [sceneHandle addSceneUpdateContributer:v6];
 
-    v12 = [v7 build];
+    build = [v7 build];
     cachedBasicPublicDescription = v6->_cachedBasicPublicDescription;
-    v6->_cachedBasicPublicDescription = v12;
+    v6->_cachedBasicPublicDescription = build;
 
     v14 = [SBAppViewController alloc];
-    v15 = [(SBDashBoardHostedAppViewController *)v6 appearanceIdentifier];
-    v16 = [(SBAppViewController *)v14 initWithIdentifier:v15 andApplicationSceneEntity:v5];
+    appearanceIdentifier = [(SBDashBoardHostedAppViewController *)v6 appearanceIdentifier];
+    v16 = [(SBAppViewController *)v14 initWithIdentifier:appearanceIdentifier andApplicationSceneEntity:entityCopy];
     appViewController = v6->_appViewController;
     v6->_appViewController = v16;
 
@@ -115,8 +115,8 @@
     [(SBAppViewController *)v6->_appViewController setIgnoresOcclusions:1];
     [(SBAppViewController *)v6->_appViewController setDelegate:v6];
     [(SBAppViewController *)v6->_appViewController setApplicationSceneStatusBarDelegate:v6];
-    v18 = [(SBDashBoardHostedAppViewController *)v6 applicationSceneHandle];
-    [v18 addObserver:v6];
+    applicationSceneHandle = [(SBDashBoardHostedAppViewController *)v6 applicationSceneHandle];
+    [applicationSceneHandle addObserver:v6];
 
     v6->_providesIdleTimerDuration = 1;
     v19 = SBLogDashBoardHostedAppViewController();
@@ -153,8 +153,8 @@ void __69__SBDashBoardHostedAppViewController_initWithApplicationSceneEntity___b
   }
 
   [(UIApplicationSceneClientSettingsDiffInspector *)self->_appClientSettingsDiffInspector removeAllObservers];
-  v5 = [(SBDashBoardHostedAppViewController *)self applicationSceneHandle];
-  [v5 removeObserver:self];
+  applicationSceneHandle = [(SBDashBoardHostedAppViewController *)self applicationSceneHandle];
+  [applicationSceneHandle removeObserver:self];
 
   [(SBDashBoardHostedAppViewController *)self invalidate];
   v6.receiver = self;
@@ -162,12 +162,12 @@ void __69__SBDashBoardHostedAppViewController_initWithApplicationSceneEntity___b
   [(CSCoverSheetViewControllerBase *)&v6 dealloc];
 }
 
-- (void)setInterfaceOrientationLocked:(BOOL)a3
+- (void)setInterfaceOrientationLocked:(BOOL)locked
 {
-  v3 = a3;
-  if ((SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleSecureApp") & 1) == 0 && (SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleCoverSheetCamera") & 1) == 0 && self->_interfaceOrientationLocked != v3)
+  lockedCopy = locked;
+  if ((SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleSecureApp") & 1) == 0 && (SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleCoverSheetCamera") & 1) == 0 && self->_interfaceOrientationLocked != lockedCopy)
   {
-    self->_interfaceOrientationLocked = v3;
+    self->_interfaceOrientationLocked = lockedCopy;
     if ([(SBDashBoardHostedAppViewController *)self _appearState]== 2)
     {
       if (self->_interfaceOrientationLocked)
@@ -187,11 +187,11 @@ void __69__SBDashBoardHostedAppViewController_initWithApplicationSceneEntity___b
   }
 }
 
-- (void)setOverrideIdleWarnMode:(int64_t)a3
+- (void)setOverrideIdleWarnMode:(int64_t)mode
 {
-  if (self->_overrideIdleWarnMode != a3)
+  if (self->_overrideIdleWarnMode != mode)
   {
-    self->_overrideIdleWarnMode = a3;
+    self->_overrideIdleWarnMode = mode;
     [(CSCoverSheetViewControllerBase *)self rebuildBehavior];
   }
 }
@@ -200,29 +200,29 @@ void __69__SBDashBoardHostedAppViewController_initWithApplicationSceneEntity___b
 {
   if (!self->_invalidated)
   {
-    v12 = [MEMORY[0x277D0AAD8] sharedInstance];
+    mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
     v3 = +[SBSceneManagerCoordinator secureMainDisplaySceneManager];
-    v4 = [(SBDashBoardHostedAppViewController *)self appView];
-    v5 = [v4 application];
-    v6 = [v3 sceneIdentityForApplication:v5];
-    v7 = [v6 identifier];
+    appView = [(SBDashBoardHostedAppViewController *)self appView];
+    application = [appView application];
+    v6 = [v3 sceneIdentityForApplication:application];
+    identifier = [v6 identifier];
 
     [(SBFAuthenticationAssertion *)self->_authenticationAssertion invalidate];
     [(SBAppViewController *)self->_appViewController invalidate];
     [(SBDashBoardHostedAppViewController *)self _setResignActiveAssertionEnabled:0];
     self->_invalidated = 1;
-    v8 = [v12 sceneWithIdentifier:v7];
+    v8 = [mEMORY[0x277D0AAD8] sceneWithIdentifier:identifier];
     v9 = v8;
     if (v8)
     {
       [v8 invalidate:0];
     }
 
-    v10 = [(SBDashBoardHostedAppViewController *)self invalidationHandler];
-    v11 = v10;
-    if (v10)
+    invalidationHandler = [(SBDashBoardHostedAppViewController *)self invalidationHandler];
+    v11 = invalidationHandler;
+    if (invalidationHandler)
     {
-      (*(v10 + 16))(v10);
+      (*(invalidationHandler + 16))(invalidationHandler);
     }
   }
 }
@@ -255,12 +255,12 @@ void __49__SBDashBoardHostedAppViewController_viewDidLoad__block_invoke(uint64_t
   v4[2](v4);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v15 = *MEMORY[0x277D85DE8];
   v12.receiver = self;
   v12.super_class = SBDashBoardHostedAppViewController;
-  [(CSCoverSheetViewControllerBase *)&v12 viewWillAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v12 viewWillAppear:appear];
   v4 = SBLogDashBoardHostedAppViewController();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -272,9 +272,9 @@ void __49__SBDashBoardHostedAppViewController_viewDidLoad__block_invoke(uint64_t
 
   if (!self->_authenticationAssertion)
   {
-    v6 = [SBApp authenticationController];
-    v7 = [(SBDashBoardHostedAppViewController *)self appearanceIdentifier];
-    v8 = [v6 createKeybagUnlockAssertionWithReason:v7];
+    authenticationController = [SBApp authenticationController];
+    appearanceIdentifier = [(SBDashBoardHostedAppViewController *)self appearanceIdentifier];
+    v8 = [authenticationController createKeybagUnlockAssertionWithReason:appearanceIdentifier];
     authenticationAssertion = self->_authenticationAssertion;
     self->_authenticationAssertion = v8;
 
@@ -289,12 +289,12 @@ void __49__SBDashBoardHostedAppViewController_viewDidLoad__block_invoke(uint64_t
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v9 = *MEMORY[0x277D85DE8];
   v6.receiver = self;
   v6.super_class = SBDashBoardHostedAppViewController;
-  [(SBDashBoardHostedAppViewController *)&v6 viewIsAppearing:a3];
+  [(SBDashBoardHostedAppViewController *)&v6 viewIsAppearing:appearing];
   v4 = SBLogDashBoardHostedAppViewController();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -307,12 +307,12 @@ void __49__SBDashBoardHostedAppViewController_viewDidLoad__block_invoke(uint64_t
   [(SBDashBoardHostedAppViewController *)self _setMode:2 fromClient:0 forReason:@"viewIsAppearing"];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v17 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = SBDashBoardHostedAppViewController;
-  [(CSCoverSheetExternalViewControllerBase *)&v14 viewDidAppear:a3];
+  [(CSCoverSheetExternalViewControllerBase *)&v14 viewDidAppear:appear];
   v4 = SBLogDashBoardHostedAppViewController();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -322,35 +322,35 @@ void __49__SBDashBoardHostedAppViewController_viewDidLoad__block_invoke(uint64_t
     _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_INFO, "<%{public}@> viewDidAppear", buf, 0xCu);
   }
 
-  v6 = [(SBDashBoardHostedAppViewController *)self hostedAppSceneHandle];
-  v7 = [v6 sceneIfExists];
+  hostedAppSceneHandle = [(SBDashBoardHostedAppViewController *)self hostedAppSceneHandle];
+  sceneIfExists = [hostedAppSceneHandle sceneIfExists];
 
-  if (v7)
+  if (sceneIfExists)
   {
-    v8 = [v7 uiClientSettings];
-    v9 = [v8 idleTimerDisabled];
+    uiClientSettings = [sceneIfExists uiClientSettings];
+    idleTimerDisabled = [uiClientSettings idleTimerDisabled];
 
-    if (self->_wantsIdleTimerDisabled != v9)
+    if (self->_wantsIdleTimerDisabled != idleTimerDisabled)
     {
-      self->_wantsIdleTimerDisabled = v9;
+      self->_wantsIdleTimerDisabled = idleTimerDisabled;
       [(CSCoverSheetViewControllerBase *)self rebuildBehavior];
     }
   }
 
   [(SBDashBoardHostedAppViewController *)self _setMode:2 fromClient:0 forReason:@"viewDidAppear"];
   v10 = +[SBKeyboardFocusCoordinator sharedInstance];
-  v11 = [(SBDashBoardHostedAppViewController *)self _appViewController];
-  v12 = [v11 _sbWindowScene];
+  _appViewController = [(SBDashBoardHostedAppViewController *)self _appViewController];
+  _sbWindowScene = [_appViewController _sbWindowScene];
   v13 = +[SBKeyboardFocusArbitrationReason dsahBoardAppViewControllerDidAppear];
-  [v10 requestArbitrationForSBWindowScene:v12 forReason:v13];
+  [v10 requestArbitrationForSBWindowScene:_sbWindowScene forReason:v13];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v9 = *MEMORY[0x277D85DE8];
   v6.receiver = self;
   v6.super_class = SBDashBoardHostedAppViewController;
-  [(CSCoverSheetExternalViewControllerBase *)&v6 viewWillDisappear:a3];
+  [(CSCoverSheetExternalViewControllerBase *)&v6 viewWillDisappear:disappear];
   v4 = SBLogDashBoardHostedAppViewController();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -361,12 +361,12 @@ void __49__SBDashBoardHostedAppViewController_viewDidLoad__block_invoke(uint64_t
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v17 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = SBDashBoardHostedAppViewController;
-  [(CSCoverSheetViewControllerBase *)&v14 viewDidDisappear:a3];
+  [(CSCoverSheetViewControllerBase *)&v14 viewDidDisappear:disappear];
   v4 = SBLogDashBoardHostedAppViewController();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -383,9 +383,9 @@ void __49__SBDashBoardHostedAppViewController_viewDidLoad__block_invoke(uint64_t
     self->_deferOrientationUpdatesAssertion = 0;
   }
 
-  v7 = [(SBDashBoardHostedAppViewController *)self _shouldDelayDeactivationUntilAfterDisappearance];
-  self->_waitingToDeactivateAfterDisappearance = v7;
-  if (v7)
+  _shouldDelayDeactivationUntilAfterDisappearance = [(SBDashBoardHostedAppViewController *)self _shouldDelayDeactivationUntilAfterDisappearance];
+  self->_waitingToDeactivateAfterDisappearance = _shouldDelayDeactivationUntilAfterDisappearance;
+  if (_shouldDelayDeactivationUntilAfterDisappearance)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -405,10 +405,10 @@ void __49__SBDashBoardHostedAppViewController_viewDidLoad__block_invoke(uint64_t
   self->_authenticationAssertion = 0;
 
   v9 = +[SBKeyboardFocusCoordinator sharedInstance];
-  v10 = [(SBDashBoardHostedAppViewController *)self _appViewController];
-  v11 = [v10 _sbWindowScene];
+  _appViewController = [(SBDashBoardHostedAppViewController *)self _appViewController];
+  _sbWindowScene = [_appViewController _sbWindowScene];
   v12 = +[SBKeyboardFocusArbitrationReason dsahBoardAppViewControllerDidDisappear];
-  [v9 requestArbitrationForSBWindowScene:v11 forReason:v12];
+  [v9 requestArbitrationForSBWindowScene:_sbWindowScene forReason:v12];
 }
 
 void __55__SBDashBoardHostedAppViewController_viewDidDisappear___block_invoke(uint64_t a1)
@@ -438,81 +438,81 @@ uint64_t __55__SBDashBoardHostedAppViewController_viewDidDisappear___block_invok
   return [v4 _deactivateIfAppropriateForReason:@"after viewDidDisappear"];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = SBDashBoardHostedAppViewController;
-  [(SBDashBoardHostedAppViewController *)&v6 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
-  if (!a3)
+  [(SBDashBoardHostedAppViewController *)&v6 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
+  if (!window)
   {
     [(SBDashBoardHostedAppViewController *)self _setResignActiveAssertionEnabled:0];
   }
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = SBDashBoardHostedAppViewController;
   [(SBDashBoardHostedAppViewController *)&v5 willMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     [(SBDashBoardHostedAppViewController *)self _setResignActiveAssertionEnabled:0];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v15.receiver = self;
   v15.super_class = SBDashBoardHostedAppViewController;
-  [(CSCoverSheetViewControllerBase *)&v15 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(SBDashBoardHostedAppViewController *)self view];
-  v9 = [v8 window];
-  v10 = [v9 _roleHint];
-  v11 = SBTraitsArbiterOrientationActuationEnabledForRole(v10);
+  [(CSCoverSheetViewControllerBase *)&v15 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  view = [(SBDashBoardHostedAppViewController *)self view];
+  window = [view window];
+  _roleHint = [window _roleHint];
+  v11 = SBTraitsArbiterOrientationActuationEnabledForRole(_roleHint);
 
   if ((v11 & 1) == 0)
   {
-    v12 = [(SBDashBoardHostedAppViewController *)self hostedAppSceneHandle];
-    v13 = [v12 wantsDeviceOrientationEventsEnabled];
+    hostedAppSceneHandle = [(SBDashBoardHostedAppViewController *)self hostedAppSceneHandle];
+    wantsDeviceOrientationEventsEnabled = [hostedAppSceneHandle wantsDeviceOrientationEventsEnabled];
 
-    if (v13)
+    if (wantsDeviceOrientationEventsEnabled)
     {
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __89__SBDashBoardHostedAppViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
       v14[3] = &unk_2783A9488;
       v14[4] = self;
-      [v7 animateAlongsideTransition:v14 completion:0];
+      [coordinatorCopy animateAlongsideTransition:v14 completion:0];
     }
   }
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
   v7.receiver = self;
   v7.super_class = SBDashBoardHostedAppViewController;
-  v3 = a3;
-  [(CSCoverSheetViewControllerBase *)&v7 aggregateAppearance:v3];
+  appearanceCopy = appearance;
+  [(CSCoverSheetViewControllerBase *)&v7 aggregateAppearance:appearanceCopy];
   v4 = objc_opt_new();
   v5 = [v4 priority:{10, v7.receiver, v7.super_class}];
   v6 = [v5 fakeStatusBar:1];
-  [v3 addComponent:v6];
+  [appearanceCopy addComponent:v6];
 }
 
-- (void)aggregateBehavior:(id)a3
+- (void)aggregateBehavior:(id)behavior
 {
-  v4 = a3;
+  behaviorCopy = behavior;
   v13.receiver = self;
   v13.super_class = SBDashBoardHostedAppViewController;
-  [(CSCoverSheetViewControllerBase *)&v13 aggregateBehavior:v4];
+  [(CSCoverSheetViewControllerBase *)&v13 aggregateBehavior:behaviorCopy];
   v5 = +[SBSecureAppManager sharedInstance];
-  v6 = [v5 secureAppAction];
-  v7 = [v6 isInProcessAction];
+  secureAppAction = [v5 secureAppAction];
+  isInProcessAction = [secureAppAction isInProcessAction];
 
-  if ((v7 & 1) != 0 || (+[SBThermalController sharedInstance](SBThermalController, "sharedInstance"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 level], v8, (v9 & 0xFFFFFFFFFFFFFFFELL) != 2))
+  if ((isInProcessAction & 1) != 0 || (+[SBThermalController sharedInstance](SBThermalController, "sharedInstance"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 level], v8, (v9 & 0xFFFFFFFFFFFFFFFELL) != 2))
   {
     if (self->_wantsIdleTimerDisabled)
     {
@@ -541,31 +541,31 @@ uint64_t __55__SBDashBoardHostedAppViewController_viewDidDisappear___block_invok
     v12 = 1;
   }
 
-  [v4 setIdleTimerMode:v11];
-  [v4 setIdleTimerDuration:v10];
-  [v4 setIdleWarnMode:v12];
+  [behaviorCopy setIdleTimerMode:v11];
+  [behaviorCopy setIdleTimerDuration:v10];
+  [behaviorCopy setIdleWarnMode:v12];
 LABEL_9:
   if (self->_overrideIdleWarnMode)
   {
-    [v4 setIdleWarnMode:?];
+    [behaviorCopy setIdleWarnMode:?];
   }
 
-  [v4 setNotificationBehavior:2];
+  [behaviorCopy setNotificationBehavior:2];
 }
 
 - (id)_newDisplayLayoutElement
 {
-  v2 = [(SBDashBoardHostedAppViewController *)self applicationSceneHandle];
-  v3 = [v2 application];
-  v4 = [v3 bundleIdentifier];
+  applicationSceneHandle = [(SBDashBoardHostedAppViewController *)self applicationSceneHandle];
+  application = [applicationSceneHandle application];
+  bundleIdentifier = [application bundleIdentifier];
 
-  if (v4)
+  if (bundleIdentifier)
   {
-    v5 = [objc_alloc(MEMORY[0x277D66A50]) initWithIdentifier:v4];
+    v5 = [objc_alloc(MEMORY[0x277D66A50]) initWithIdentifier:bundleIdentifier];
     [v5 setFillsDisplayBounds:1];
     [v5 setLayoutRole:6];
     [v5 setUIApplicationElement:1];
-    [v5 setBundleIdentifier:v4];
+    [v5 setBundleIdentifier:bundleIdentifier];
   }
 
   else
@@ -576,40 +576,40 @@ LABEL_9:
   return v5;
 }
 
-- (void)_updateDisplayLayoutElementForActivation:(id)a3
+- (void)_updateDisplayLayoutElementForActivation:(id)activation
 {
   v5.receiver = self;
   v5.super_class = SBDashBoardHostedAppViewController;
-  v4 = a3;
-  [(CSCoverSheetViewControllerBase *)&v5 _updateDisplayLayoutElementForActivation:v4];
-  [v4 sb_setTransitioning:{(-[SBDashBoardHostedAppViewController _appearState](self, "_appearState", v5.receiver, v5.super_class) & 0xFFFFFFFD) == 1}];
+  activationCopy = activation;
+  [(CSCoverSheetViewControllerBase *)&v5 _updateDisplayLayoutElementForActivation:activationCopy];
+  [activationCopy sb_setTransitioning:{(-[SBDashBoardHostedAppViewController _appearState](self, "_appearState", v5.receiver, v5.super_class) & 0xFFFFFFFD) == 1}];
 }
 
 - (id)appearanceIdentifier
 {
   v6.receiver = self;
   v6.super_class = SBDashBoardHostedAppViewController;
-  v3 = [(CSCoverSheetViewControllerBase *)&v6 appearanceIdentifier];
+  appearanceIdentifier = [(CSCoverSheetViewControllerBase *)&v6 appearanceIdentifier];
   cachedBasicPublicDescription = self->_cachedBasicPublicDescription;
 
   return cachedBasicPublicDescription;
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v16.receiver = self;
   v16.super_class = SBDashBoardHostedAppViewController;
-  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v16, sel_handleEvent_, v4) || ([v4 isConsumable] & 1) == 0)
+  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v16, sel_handleEvent_, eventCopy) || ([eventCopy isConsumable] & 1) == 0)
   {
-    v6 = [v4 type];
-    if (v6 == 11)
+    type = [eventCopy type];
+    if (type == 11)
     {
       if ([(CSCoverSheetExternalViewControllerBase *)self isExternalToDashBoard])
       {
 LABEL_21:
-        v5 = 0;
+        isConsumable = 0;
         goto LABEL_22;
       }
 
@@ -622,15 +622,15 @@ LABEL_21:
         _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_INFO, "<%{public}@> didBecomeActive", buf, 0xCu);
       }
 
-      v11 = self;
+      selfCopy2 = self;
       v12 = 0;
     }
 
     else
     {
-      if (v6 != 10)
+      if (type != 10)
       {
-        if (v6 == 9 && ![(CSCoverSheetExternalViewControllerBase *)self isExternalToDashBoard])
+        if (type == 9 && ![(CSCoverSheetExternalViewControllerBase *)self isExternalToDashBoard])
         {
           v7 = SBLogDashBoardHostedAppViewController();
           if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -667,21 +667,21 @@ LABEL_21:
         goto LABEL_21;
       }
 
-      v11 = self;
+      selfCopy2 = self;
       v12 = 1;
     }
 
-    [(SBDashBoardHostedAppViewController *)v11 _setResignActiveAssertionEnabled:v12];
+    [(SBDashBoardHostedAppViewController *)selfCopy2 _setResignActiveAssertionEnabled:v12];
     goto LABEL_21;
   }
 
-  v5 = [v4 isConsumable];
+  isConsumable = [eventCopy isConsumable];
 LABEL_22:
 
-  return v5;
+  return isConsumable;
 }
 
-- (void)appViewControllerWillActivateApplication:(id)a3
+- (void)appViewControllerWillActivateApplication:(id)application
 {
   v14 = *MEMORY[0x277D85DE8];
   v4 = SBLogDashBoardHostedAppViewController();
@@ -704,9 +704,9 @@ LABEL_22:
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, "<%{public}@> taking authentication sustain assertion", &v12, 0xCu);
     }
 
-    v8 = [SBApp authenticationController];
-    v9 = [(SBDashBoardHostedAppViewController *)self appearanceIdentifier];
-    v10 = [v8 createKeybagUnlockAssertionWithReason:v9];
+    authenticationController = [SBApp authenticationController];
+    appearanceIdentifier = [(SBDashBoardHostedAppViewController *)self appearanceIdentifier];
+    v10 = [authenticationController createKeybagUnlockAssertionWithReason:appearanceIdentifier];
     authenticationAssertion = self->_authenticationAssertion;
     self->_authenticationAssertion = v10;
 
@@ -717,7 +717,7 @@ LABEL_22:
   [(SBDashBoardHostedAppViewController *)self _beginShowingStatusBarView];
 }
 
-- (void)appViewControllerDidDeactivateApplication:(id)a3
+- (void)appViewControllerDidDeactivateApplication:(id)application
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = SBLogDashBoardHostedAppViewController();
@@ -748,30 +748,30 @@ LABEL_22:
   [(SBDashBoardHostedAppViewController *)self _endShowingStatusBarView];
 }
 
-- (void)appViewController:(id)a3 didTransitionFromMode:(int64_t)a4 toMode:(int64_t)a5
+- (void)appViewController:(id)controller didTransitionFromMode:(int64_t)mode toMode:(int64_t)toMode
 {
-  [(CSCoverSheetViewControllerBase *)self rebuildBehavior:a3];
+  [(CSCoverSheetViewControllerBase *)self rebuildBehavior:controller];
 
   [(CSCoverSheetViewControllerBase *)self rebuildAppearance];
 }
 
-- (BOOL)appViewControllerShouldBackgroundApplicationOnDeactivate:(id)a3
+- (BOOL)appViewControllerShouldBackgroundApplicationOnDeactivate:(id)deactivate
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deactivateCopy = deactivate;
   v5 = +[SBWorkspace mainWorkspace];
   v6 = [v5 createRequestWithOptions:0];
 
   [v6 finalize];
-  v7 = [v6 applicationContext];
-  v8 = [v7 applicationSceneEntities];
+  applicationContext = [v6 applicationContext];
+  applicationSceneEntities = [applicationContext applicationSceneEntities];
 
-  v9 = [v4 sceneHandle];
+  sceneHandle = [deactivateCopy sceneHandle];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v8;
+  v10 = applicationSceneEntities;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -786,8 +786,8 @@ LABEL_22:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v19 + 1) + 8 * i) sceneHandle];
-        v16 = SBDashBoardSceneHandleEqualToSceneHandle(v9, v15);
+        sceneHandle2 = [*(*(&v19 + 1) + 8 * i) sceneHandle];
+        v16 = SBDashBoardSceneHandleEqualToSceneHandle(sceneHandle, sceneHandle2);
 
         if (v16)
         {
@@ -809,7 +809,7 @@ LABEL_22:
   v17 = 1;
 LABEL_11:
 
-  if ([v9 isSecure])
+  if ([sceneHandle isSecure])
   {
     v17 &= !self->_intentToTransitionFromSecureAppToFull;
   }
@@ -817,31 +817,31 @@ LABEL_11:
   return v17;
 }
 
-- (BOOL)appViewControllerShouldReactivateApplicationOnDestruction:(id)a3
+- (BOOL)appViewControllerShouldReactivateApplicationOnDestruction:(id)destruction
 {
-  v3 = [(SBDashBoardHostedAppViewController *)self hostContextProvider];
+  hostContextProvider = [(SBDashBoardHostedAppViewController *)self hostContextProvider];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 hostedAppShouldReactivateUponDestruction];
+    hostedAppShouldReactivateUponDestruction = [hostContextProvider hostedAppShouldReactivateUponDestruction];
   }
 
   else
   {
-    v4 = 1;
+    hostedAppShouldReactivateUponDestruction = 1;
   }
 
-  return v4;
+  return hostedAppShouldReactivateUponDestruction;
 }
 
-- (BOOL)appViewControllerShouldHideHomeGrabberView:(id)a3
+- (BOOL)appViewControllerShouldHideHomeGrabberView:(id)view
 {
-  v3 = [(SBDashBoardHostedAppViewController *)self hostContextProvider];
-  v4 = [v3 hostedAppShouldHideHomeGrabberView];
+  hostContextProvider = [(SBDashBoardHostedAppViewController *)self hostContextProvider];
+  hostedAppShouldHideHomeGrabberView = [hostContextProvider hostedAppShouldHideHomeGrabberView];
 
-  return v4;
+  return hostedAppShouldHideHomeGrabberView;
 }
 
-- (BOOL)appViewControllerIsInNonRotatingWindow:(id)a3
+- (BOOL)appViewControllerIsInNonRotatingWindow:(id)window
 {
   if (__sb__runningInSpringBoard())
   {
@@ -850,14 +850,14 @@ LABEL_11:
 
   else
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v3 = [v4 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v3 = [currentDevice userInterfaceIdiom] == 1;
   }
 
   return !v3;
 }
 
-- (void)appViewControllerDidFailToActivateApplication:(id)a3
+- (void)appViewControllerDidFailToActivateApplication:(id)application
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -866,23 +866,23 @@ LABEL_11:
   }
 }
 
-- (void)applicationSceneHandle:(id)a3 appendToSceneSettings:(id)a4 fromRequestContext:(id)a5 entity:(id)a6
+- (void)applicationSceneHandle:(id)handle appendToSceneSettings:(id)settings fromRequestContext:(id)context entity:(id)entity
 {
-  v8 = a4;
-  v7 = [(SBDashBoardHostedAppViewController *)self hostContextProvider];
+  settingsCopy = settings;
+  hostContextProvider = [(SBDashBoardHostedAppViewController *)self hostContextProvider];
   if (objc_opt_respondsToSelector())
   {
-    [v7 appendToHostedAppSceneSettings:v8];
+    [hostContextProvider appendToHostedAppSceneSettings:settingsCopy];
   }
 }
 
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 settingsDiff];
-  v9 = [v7 transitionContext];
-  if (v8)
+  handleCopy = handle;
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  transitionContext = [settingsCopy transitionContext];
+  if (settingsDiff)
   {
     appClientSettingsDiffInspector = self->_appClientSettingsDiffInspector;
     if (!appClientSettingsDiffInspector)
@@ -904,7 +904,7 @@ LABEL_11:
       appClientSettingsDiffInspector = self->_appClientSettingsDiffInspector;
     }
 
-    [v8 evaluateWithInspector:appClientSettingsDiffInspector context:{v9, v14, v15, v16, v17}];
+    [settingsDiff evaluateWithInspector:appClientSettingsDiffInspector context:{transitionContext, v14, v15, v16, v17}];
   }
 }
 
@@ -924,11 +924,11 @@ void __74__SBDashBoardHostedAppViewController_sceneHandle_didUpdateClientSetting
   }
 }
 
-- (void)_setMode:(int64_t)a3 fromClient:(BOOL)a4 forReason:(id)a5
+- (void)_setMode:(int64_t)mode fromClient:(BOOL)client forReason:(id)reason
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  if ([(SBDashBoardHostedAppViewController *)self mode]== a3)
+  reasonCopy = reason;
+  if ([(SBDashBoardHostedAppViewController *)self mode]== mode)
   {
     goto LABEL_15;
   }
@@ -937,7 +937,7 @@ void __74__SBDashBoardHostedAppViewController_sceneHandle_didUpdateClientSetting
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     cachedBasicPublicDescription = self->_cachedBasicPublicDescription;
-    v11 = NSStringFromSBAppViewControllerMode(a3);
+    v11 = NSStringFromSBAppViewControllerMode(mode);
     v12 = NSStringFromBOOL();
     v20 = 138544130;
     v21 = cachedBasicPublicDescription;
@@ -946,16 +946,16 @@ void __74__SBDashBoardHostedAppViewController_sceneHandle_didUpdateClientSetting
     v24 = 2114;
     v25 = v12;
     v26 = 2112;
-    v27 = v8;
+    v27 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_INFO, "<%{public}@> mode change request to %{public}@ (fromClient: %{public}@) for reason: %@", &v20, 0x2Au);
   }
 
-  if (!a4)
+  if (!client)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      v14 = [WeakRetained dashBoardHostedAppViewController:self shouldTransitionToMode:a3];
+      v14 = [WeakRetained dashBoardHostedAppViewController:self shouldTransitionToMode:mode];
 
       if ((v14 & 1) == 0)
       {
@@ -981,7 +981,7 @@ void __74__SBDashBoardHostedAppViewController_sceneHandle_didUpdateClientSetting
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     v18 = self->_cachedBasicPublicDescription;
-    v19 = NSStringFromSBAppViewControllerMode(a3);
+    v19 = NSStringFromSBAppViewControllerMode(mode);
     v20 = 138543618;
     v21 = v18;
     v22 = 2114;
@@ -989,8 +989,8 @@ void __74__SBDashBoardHostedAppViewController_sceneHandle_didUpdateClientSetting
     _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_INFO, "<%{public}@> mode changed to %{public}@", &v20, 0x16u);
   }
 
-  [(SBAppViewController *)self->_appViewController setRequestedMode:a3];
-  if (a3 == 2)
+  [(SBAppViewController *)self->_appViewController setRequestedMode:mode];
+  if (mode == 2)
   {
     [(CSCoverSheetViewControllerBase *)self _setDisplayLayoutElementActive:1 immediately:1];
   }
@@ -998,11 +998,11 @@ void __74__SBDashBoardHostedAppViewController_sceneHandle_didUpdateClientSetting
 LABEL_15:
 }
 
-- (void)_setResignActiveAssertionEnabled:(BOOL)a3
+- (void)_setResignActiveAssertionEnabled:(BOOL)enabled
 {
   v19 = *MEMORY[0x277D85DE8];
   resignActiveAssertion = self->_resignActiveAssertion;
-  if (a3)
+  if (enabled)
   {
     if (!resignActiveAssertion)
     {
@@ -1016,8 +1016,8 @@ LABEL_15:
       }
 
       v7 = +[SBSceneManagerCoordinator sharedInstance];
-      v8 = [v7 sceneDeactivationManager];
-      v9 = [v8 newAssertionWithReason:7];
+      sceneDeactivationManager = [v7 sceneDeactivationManager];
+      v9 = [sceneDeactivationManager newAssertionWithReason:7];
       v10 = self->_resignActiveAssertion;
       self->_resignActiveAssertion = v9;
 
@@ -1065,14 +1065,14 @@ uint64_t __71__SBDashBoardHostedAppViewController__setResignActiveAssertionEnabl
   return v8;
 }
 
-- (void)_deactivateIfAppropriateForReason:(id)a3
+- (void)_deactivateIfAppropriateForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if ([(CSCoverSheetViewControllerBase *)self isDisappeared]&& !self->_resignActiveAssertion && !self->_waitingToDeactivateAfterDisappearance)
   {
     if ([(SBDashBoardHostedAppViewController *)self mode])
     {
-      [(SBDashBoardHostedAppViewController *)self _setMode:1 fromClient:0 forReason:v4];
+      [(SBDashBoardHostedAppViewController *)self _setMode:1 fromClient:0 forReason:reasonCopy];
     }
 
     if ([(SBDashBoardHostedAppViewController *)self _shouldInvalidateUponDeactivation]&& [(SBDashBoardHostedAppViewController *)self mode]!= 2)
@@ -1084,42 +1084,42 @@ uint64_t __71__SBDashBoardHostedAppViewController__setResignActiveAssertionEnabl
 
 - (BOOL)_shouldDelayDeactivationUntilAfterDisappearance
 {
-  v2 = [(SBDashBoardHostedAppViewController *)self hostContextProvider];
+  hostContextProvider = [(SBDashBoardHostedAppViewController *)self hostContextProvider];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 hostedAppShouldDeactivateAfterDisappearance];
+    hostedAppShouldDeactivateAfterDisappearance = [hostContextProvider hostedAppShouldDeactivateAfterDisappearance];
   }
 
   else
   {
-    v3 = 0;
+    hostedAppShouldDeactivateAfterDisappearance = 0;
   }
 
-  return v3;
+  return hostedAppShouldDeactivateAfterDisappearance;
 }
 
 - (BOOL)_shouldInvalidateUponDeactivation
 {
-  v2 = [(SBDashBoardHostedAppViewController *)self hostContextProvider];
+  hostContextProvider = [(SBDashBoardHostedAppViewController *)self hostContextProvider];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 hostedAppShouldInvalidateUponDeactivation];
+    hostedAppShouldInvalidateUponDeactivation = [hostContextProvider hostedAppShouldInvalidateUponDeactivation];
   }
 
   else
   {
-    v3 = 0;
+    hostedAppShouldInvalidateUponDeactivation = 0;
   }
 
-  return v3;
+  return hostedAppShouldInvalidateUponDeactivation;
 }
 
-- (void)sceneWithIdentifier:(id)a3 didChangeSceneInterfaceOrientationTo:(int64_t)a4
+- (void)sceneWithIdentifier:(id)identifier didChangeSceneInterfaceOrientationTo:(int64_t)to
 {
-  v5 = [(SBDashBoardHostedAppViewController *)self view:a3];
-  v6 = [v5 window];
-  v7 = [v6 _roleHint];
-  v8 = SBTraitsArbiterOrientationActuationEnabledForRole(v7);
+  v5 = [(SBDashBoardHostedAppViewController *)self view:identifier];
+  window = [v5 window];
+  _roleHint = [window _roleHint];
+  v8 = SBTraitsArbiterOrientationActuationEnabledForRole(_roleHint);
 
   if ((v8 & 1) == 0)
   {
@@ -1127,18 +1127,18 @@ uint64_t __71__SBDashBoardHostedAppViewController__setResignActiveAssertionEnabl
     if (v9)
     {
       v13 = v9;
-      v10 = [(SBDeviceApplicationSceneStatusBarStateProvider_Base *)v9 statusBarOrientation];
+      statusBarOrientation = [(SBDeviceApplicationSceneStatusBarStateProvider_Base *)v9 statusBarOrientation];
       v9 = v13;
-      if (v10)
+      if (statusBarOrientation)
       {
-        v11 = [(SBDashBoardHostedAppViewController *)self _deviceApplicationSceneHandle];
-        v12 = [v11 wantsDeviceOrientationEventsEnabled];
+        _deviceApplicationSceneHandle = [(SBDashBoardHostedAppViewController *)self _deviceApplicationSceneHandle];
+        wantsDeviceOrientationEventsEnabled = [_deviceApplicationSceneHandle wantsDeviceOrientationEventsEnabled];
 
         v9 = v13;
-        if (v12)
+        if (wantsDeviceOrientationEventsEnabled)
         {
           [(SBDashBoardHostedAppViewController *)self _updateStatusBarContainerOrientation];
-          [(SBMainDisplaySceneLayoutStatusBarView *)self->_statusBarView layoutStatusBarForSpringBoardRotationToOrientation:v10];
+          [(SBMainDisplaySceneLayoutStatusBarView *)self->_statusBarView layoutStatusBarForSpringBoardRotationToOrientation:statusBarOrientation];
           v9 = v13;
         }
       }
@@ -1149,8 +1149,8 @@ uint64_t __71__SBDashBoardHostedAppViewController__setResignActiveAssertionEnabl
 - (id)_deviceApplicationSceneHandle
 {
   v3 = objc_opt_class();
-  v4 = [(SBDashBoardHostedAppViewController *)self applicationSceneHandle];
-  v5 = SBSafeCast(v3, v4);
+  applicationSceneHandle = [(SBDashBoardHostedAppViewController *)self applicationSceneHandle];
+  v5 = SBSafeCast(v3, applicationSceneHandle);
 
   return v5;
 }
@@ -1158,26 +1158,26 @@ uint64_t __71__SBDashBoardHostedAppViewController__setResignActiveAssertionEnabl
 - (int64_t)containerInterfaceOrientation
 {
   v3 = +[SBLockScreenManager sharedInstance];
-  v4 = [v3 lockScreenEnvironment];
-  v5 = [v4 rootViewController];
-  if ([v5 shouldAutorotate])
+  lockScreenEnvironment = [v3 lockScreenEnvironment];
+  rootViewController = [lockScreenEnvironment rootViewController];
+  if ([rootViewController shouldAutorotate])
   {
-    v6 = [(SBDashBoardHostedAppViewController *)self statusBarOrientation];
+    statusBarOrientation = [(SBDashBoardHostedAppViewController *)self statusBarOrientation];
   }
 
   else
   {
-    v6 = [SBApp activeInterfaceOrientation];
+    statusBarOrientation = [SBApp activeInterfaceOrientation];
   }
 
-  v7 = v6;
+  v7 = statusBarOrientation;
 
   return v7;
 }
 
 - (void)_addStatusBarViewIfNeeded
 {
-  v3 = [(SBDashBoardHostedAppViewController *)self _deviceApplicationSceneHandle];
+  _deviceApplicationSceneHandle = [(SBDashBoardHostedAppViewController *)self _deviceApplicationSceneHandle];
   if (self->_statusBarView)
   {
     v4 = 1;
@@ -1185,22 +1185,22 @@ uint64_t __71__SBDashBoardHostedAppViewController__setResignActiveAssertionEnabl
 
   else
   {
-    v4 = v3 == 0;
+    v4 = _deviceApplicationSceneHandle == 0;
   }
 
   if (!v4)
   {
-    v26 = v3;
-    v5 = [(SBDashBoardHostedAppViewController *)self view];
+    v26 = _deviceApplicationSceneHandle;
+    view = [(SBDashBoardHostedAppViewController *)self view];
     v6 = [SBMainDisplaySceneLayoutStatusBarView alloc];
-    [v5 bounds];
+    [view bounds];
     v7 = [(SBMainDisplaySceneLayoutStatusBarView *)v6 initWithFrame:?];
     statusBarView = self->_statusBarView;
     self->_statusBarView = v7;
 
     v9 = self->_statusBarView;
-    v10 = [MEMORY[0x277D75348] redColor];
-    v11 = [v10 colorWithAlphaComponent:0.4];
+    redColor = [MEMORY[0x277D75348] redColor];
+    v11 = [redColor colorWithAlphaComponent:0.4];
     [(SBMainDisplaySceneLayoutStatusBarView *)v9 _setDebugBackgroundColor:v11];
 
     [(SBMainDisplaySceneLayoutStatusBarView *)self->_statusBarView setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -1212,44 +1212,44 @@ uint64_t __71__SBDashBoardHostedAppViewController__setResignActiveAssertionEnabl
     [(SBDeviceApplicationSceneStatusBarStateProvider_Base *)self->_statusBarObserverProxy addStatusBarObserver:self->_statusBarView];
     [(SBDeviceApplicationSceneStatusBarStateProvider_Base *)self->_statusBarObserverProxy addStatusBarObserver:self];
     [(_SBDashBoardHostedAppStatusBarStateProxy *)self->_statusBarObserverProxy setHostedAppVCBackReference:self];
-    [v5 addSubview:self->_statusBarView];
-    v14 = [(SBMainDisplaySceneLayoutStatusBarView *)self->_statusBarView leftAnchor];
-    v15 = [v5 leftAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    [view addSubview:self->_statusBarView];
+    leftAnchor = [(SBMainDisplaySceneLayoutStatusBarView *)self->_statusBarView leftAnchor];
+    leftAnchor2 = [view leftAnchor];
+    v16 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     [v16 setActive:1];
 
-    v17 = [(SBMainDisplaySceneLayoutStatusBarView *)self->_statusBarView rightAnchor];
-    v18 = [v5 rightAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    rightAnchor = [(SBMainDisplaySceneLayoutStatusBarView *)self->_statusBarView rightAnchor];
+    rightAnchor2 = [view rightAnchor];
+    v19 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     [v19 setActive:1];
 
-    v20 = [(SBMainDisplaySceneLayoutStatusBarView *)self->_statusBarView topAnchor];
-    v21 = [v5 topAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    topAnchor = [(SBMainDisplaySceneLayoutStatusBarView *)self->_statusBarView topAnchor];
+    topAnchor2 = [view topAnchor];
+    v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v22 setActive:1];
 
-    v23 = [(SBMainDisplaySceneLayoutStatusBarView *)self->_statusBarView bottomAnchor];
-    v24 = [v5 bottomAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    bottomAnchor = [(SBMainDisplaySceneLayoutStatusBarView *)self->_statusBarView bottomAnchor];
+    bottomAnchor2 = [view bottomAnchor];
+    v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v25 setActive:1];
 
-    v3 = v26;
+    _deviceApplicationSceneHandle = v26;
   }
 }
 
 - (void)_updateStatusBarContainerOrientation
 {
-  v3 = [(SBDashBoardHostedAppViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 _roleHint];
-  v6 = SBTraitsArbiterOrientationActuationEnabledForRole(v5);
+  view = [(SBDashBoardHostedAppViewController *)self view];
+  window = [view window];
+  _roleHint = [window _roleHint];
+  v6 = SBTraitsArbiterOrientationActuationEnabledForRole(_roleHint);
 
   if ((v6 & 1) == 0)
   {
     statusBarView = self->_statusBarView;
-    v8 = [(SBDashBoardHostedAppViewController *)self containerInterfaceOrientation];
+    containerInterfaceOrientation = [(SBDashBoardHostedAppViewController *)self containerInterfaceOrientation];
 
-    [(SBMainDisplaySceneLayoutStatusBarView *)statusBarView setContainerOrientation:v8];
+    [(SBMainDisplaySceneLayoutStatusBarView *)statusBarView setContainerOrientation:containerInterfaceOrientation];
   }
 }
 
@@ -1258,9 +1258,9 @@ uint64_t __71__SBDashBoardHostedAppViewController__setResignActiveAssertionEnabl
   [(SBMainDisplaySceneLayoutStatusBarView *)self->_statusBarView beginRequiringStatusBarForReason:@"SBDashBoardHostedApp"];
   [(SBMainDisplaySceneLayoutStatusBarView *)self->_statusBarView applyStatusBarStylesForDescriber:self->_statusBarObserverProxy];
   statusBarView = self->_statusBarView;
-  v4 = [(SBDashBoardHostedAppViewController *)self containerInterfaceOrientation];
+  containerInterfaceOrientation = [(SBDashBoardHostedAppViewController *)self containerInterfaceOrientation];
 
-  [(SBMainDisplaySceneLayoutStatusBarView *)statusBarView setContainerOrientation:v4];
+  [(SBMainDisplaySceneLayoutStatusBarView *)statusBarView setContainerOrientation:containerInterfaceOrientation];
 }
 
 - (SBDashBoardHostedAppViewControllerDelegate)delegate

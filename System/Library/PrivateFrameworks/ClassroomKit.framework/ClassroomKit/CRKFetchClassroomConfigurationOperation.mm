@@ -1,19 +1,19 @@
 @interface CRKFetchClassroomConfigurationOperation
-+ (id)defaultSourcesByTypeWithStudentDaemonProxy:(id)a3;
-- (CRKFetchClassroomConfigurationOperation)initWithStudentDaemonProxy:(id)a3 sourcesByType:(id)a4;
++ (id)defaultSourcesByTypeWithStudentDaemonProxy:(id)proxy;
+- (CRKFetchClassroomConfigurationOperation)initWithStudentDaemonProxy:(id)proxy sourcesByType:(id)type;
 - (void)cancel;
 - (void)fetchConfiguration;
 @end
 
 @implementation CRKFetchClassroomConfigurationOperation
 
-+ (id)defaultSourcesByTypeWithStudentDaemonProxy:(id)a3
++ (id)defaultSourcesByTypeWithStudentDaemonProxy:(id)proxy
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v8 = &unk_285672880;
-  v3 = a3;
+  proxyCopy = proxy;
   v4 = [CRKCurrentPlatformProfileConfigurationSource alloc];
-  v5 = [(CRKCurrentPlatformProfileConfigurationSource *)v4 initWithStudentDaemonProxy:v3 callbackQueue:MEMORY[0x277D85CD0]];
+  v5 = [(CRKCurrentPlatformProfileConfigurationSource *)v4 initWithStudentDaemonProxy:proxyCopy callbackQueue:MEMORY[0x277D85CD0]];
 
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
@@ -21,32 +21,32 @@
   return v6;
 }
 
-- (CRKFetchClassroomConfigurationOperation)initWithStudentDaemonProxy:(id)a3 sourcesByType:(id)a4
+- (CRKFetchClassroomConfigurationOperation)initWithStudentDaemonProxy:(id)proxy sourcesByType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  proxyCopy = proxy;
+  typeCopy = type;
   v16.receiver = self;
   v16.super_class = CRKFetchClassroomConfigurationOperation;
   v8 = [(CRKFetchClassroomConfigurationOperation *)&v16 init];
   if (v8)
   {
-    v9 = v6;
-    if (!v6)
+    v9 = proxyCopy;
+    if (!proxyCopy)
     {
       v9 = objc_opt_new();
     }
 
     objc_storeStrong(&v8->mStudentDaemonProxy, v9);
-    if (!v6)
+    if (!proxyCopy)
     {
     }
 
     v10 = objc_opt_new();
-    v11 = [v10 makeFeatureFlags];
+    makeFeatureFlags = [v10 makeFeatureFlags];
     featureFlags = v8->_featureFlags;
-    v8->_featureFlags = v11;
+    v8->_featureFlags = makeFeatureFlags;
 
-    v13 = [v7 copy];
+    v13 = [typeCopy copy];
     v14 = v13;
     if (!v13)
     {

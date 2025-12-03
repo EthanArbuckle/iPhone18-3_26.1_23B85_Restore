@@ -1,15 +1,15 @@
 @interface MKMarkerContentView
-- (MKMarkerContentView)initWithFrame:(CGRect)a3;
+- (MKMarkerContentView)initWithFrame:(CGRect)frame;
 - (void)_updateTintColor;
 - (void)clear;
 - (void)clearCustomContentView;
 - (void)clearGlyphImage;
 - (void)clearGlyphText;
-- (void)setCustomContentView:(id)a3;
-- (void)setGlyphFontSize:(double)a3;
-- (void)setGlyphImage:(id)a3;
-- (void)setGlyphText:(id)a3;
-- (void)setGlyphTintColor:(id)a3;
+- (void)setCustomContentView:(id)view;
+- (void)setGlyphFontSize:(double)size;
+- (void)setGlyphImage:(id)image;
+- (void)setGlyphText:(id)text;
+- (void)setGlyphTintColor:(id)color;
 - (void)setupGlypLabel;
 - (void)setupImageView;
 @end
@@ -26,15 +26,15 @@
   self->_contentMaskView = 0;
 }
 
-- (void)setCustomContentView:(id)a3
+- (void)setCustomContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   customContentView = self->_customContentView;
-  if (customContentView != v5)
+  if (customContentView != viewCopy)
   {
-    v15 = v5;
+    v15 = viewCopy;
     [(UIView *)customContentView removeFromSuperview];
-    objc_storeStrong(&self->_customContentView, a3);
+    objc_storeStrong(&self->_customContentView, view);
     if (self->_customContentView)
     {
       [(MKMarkerContentView *)self clearGlyphText];
@@ -49,13 +49,13 @@
 
         [(UIView *)self->_contentMaskView setAutoresizingMask:18];
         [(UIView *)self->_contentMaskView _setHostsLayoutEngine:1];
-        v10 = [(UIView *)self->_contentMaskView layer];
-        [v10 setMasksToBounds:1];
+        layer = [(UIView *)self->_contentMaskView layer];
+        [layer setMasksToBounds:1];
 
         [(MKMarkerContentView *)self bounds];
         v12 = v11 * 0.5;
-        v13 = [(UIView *)self->_contentMaskView layer];
-        [v13 setCornerRadius:v12];
+        layer2 = [(UIView *)self->_contentMaskView layer];
+        [layer2 setCornerRadius:v12];
 
         [(MKMarkerContentView *)self addSubview:self->_contentMaskView];
       }
@@ -74,7 +74,7 @@
       self->_contentMaskView = 0;
     }
 
-    v5 = v15;
+    viewCopy = v15;
   }
 }
 
@@ -87,15 +87,15 @@
   [(_MKUILabel *)label setTextColor:glyphTintColor];
 }
 
-- (void)setGlyphTintColor:(id)a3
+- (void)setGlyphTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_glyphTintColor != v5)
+  colorCopy = color;
+  if (self->_glyphTintColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_glyphTintColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_glyphTintColor, color);
     [(MKMarkerContentView *)self _updateTintColor];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
@@ -136,13 +136,13 @@
   [(MKMarkerContentView *)self addSubview:v17];
 }
 
-- (void)setGlyphImage:(id)a3
+- (void)setGlyphImage:(id)image
 {
-  v5 = a3;
-  if (self->_glyphImage != v5)
+  imageCopy = image;
+  if (self->_glyphImage != imageCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_glyphImage, a3);
+    v7 = imageCopy;
+    objc_storeStrong(&self->_glyphImage, image);
     if (self->_glyphImage)
     {
       [(MKMarkerContentView *)self clearGlyphText];
@@ -162,7 +162,7 @@
       [(MKMarkerContentView *)self clearGlyphImage];
     }
 
-    v5 = v7;
+    imageCopy = v7;
   }
 }
 
@@ -208,13 +208,13 @@
   [(MKMarkerContentView *)self addSubview:v18];
 }
 
-- (void)setGlyphText:(id)a3
+- (void)setGlyphText:(id)text
 {
-  v4 = a3;
-  if (self->_glyphText != v4)
+  textCopy = text;
+  if (self->_glyphText != textCopy)
   {
-    v8 = v4;
-    v5 = [(NSString *)v4 copy];
+    v8 = textCopy;
+    v5 = [(NSString *)textCopy copy];
     glyphText = self->_glyphText;
     self->_glyphText = v5;
 
@@ -237,13 +237,13 @@
       [(MKMarkerContentView *)self clearGlyphText];
     }
 
-    v4 = v8;
+    textCopy = v8;
   }
 }
 
-- (void)setGlyphFontSize:(double)a3
+- (void)setGlyphFontSize:(double)size
 {
-  self->_glyphFontSize = a3;
+  self->_glyphFontSize = size;
   if (self->_label)
   {
     v4 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:?];
@@ -262,11 +262,11 @@
   [(MKMarkerContentView *)self clearCustomContentView];
 }
 
-- (MKMarkerContentView)initWithFrame:(CGRect)a3
+- (MKMarkerContentView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = MKMarkerContentView;
-  result = [(MKMarkerContentView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(MKMarkerContentView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_glyphFontSize = 16.0;

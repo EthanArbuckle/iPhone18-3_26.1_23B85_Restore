@@ -1,13 +1,13 @@
 @interface AEAPolicyStore.ReadingScratchpad
-- (BOOL)removeWithError:(id *)a3;
-- (id)arrayForKey:(id)a3;
-- (id)numberForKey:(id)a3;
-- (id)stringForKey:(id)a3;
+- (BOOL)removeWithError:(id *)error;
+- (id)arrayForKey:(id)key;
+- (id)numberForKey:(id)key;
+- (id)stringForKey:(id)key;
 @end
 
 @implementation AEAPolicyStore.ReadingScratchpad
 
-- (id)numberForKey:(id)a3
+- (id)numberForKey:(id)key
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;
@@ -17,7 +17,7 @@
   return v6;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;
@@ -38,7 +38,7 @@
   return v8;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;
@@ -58,7 +58,7 @@
   return v7.super.isa;
 }
 
-- (BOOL)removeWithError:(id *)a3
+- (BOOL)removeWithError:(id *)error
 {
   v4 = type metadata accessor for URL();
   v5 = *(v4 - 8);

@@ -2,33 +2,33 @@
 - (CGRect)frame;
 - (CGRect)targetFrame;
 - (UIViewController)viewController;
-- (_UIViewControllerAnimatedTransitionViewControllerHandoffData)initWithViewController:(id)a3 containerView:(id)a4 snapshot:(id)a5 frame:(CGRect)a6 targetFrame:(CGRect)a7 dimmingAmount:(double)a8 targetDimmingAmount:(double)a9;
+- (_UIViewControllerAnimatedTransitionViewControllerHandoffData)initWithViewController:(id)controller containerView:(id)view snapshot:(id)snapshot frame:(CGRect)frame targetFrame:(CGRect)targetFrame dimmingAmount:(double)amount targetDimmingAmount:(double)dimmingAmount;
 @end
 
 @implementation _UIViewControllerAnimatedTransitionViewControllerHandoffData
 
-- (_UIViewControllerAnimatedTransitionViewControllerHandoffData)initWithViewController:(id)a3 containerView:(id)a4 snapshot:(id)a5 frame:(CGRect)a6 targetFrame:(CGRect)a7 dimmingAmount:(double)a8 targetDimmingAmount:(double)a9
+- (_UIViewControllerAnimatedTransitionViewControllerHandoffData)initWithViewController:(id)controller containerView:(id)view snapshot:(id)snapshot frame:(CGRect)frame targetFrame:(CGRect)targetFrame dimmingAmount:(double)amount targetDimmingAmount:(double)dimmingAmount
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v13 = a6.size.height;
-  v14 = a6.size.width;
-  v15 = a6.origin.y;
-  v16 = a6.origin.x;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
+  height = targetFrame.size.height;
+  width = targetFrame.size.width;
+  y = targetFrame.origin.y;
+  x = targetFrame.origin.x;
+  v13 = frame.size.height;
+  v14 = frame.size.width;
+  v15 = frame.origin.y;
+  v16 = frame.origin.x;
+  controllerCopy = controller;
+  viewCopy = view;
+  snapshotCopy = snapshot;
   v26.receiver = self;
   v26.super_class = _UIViewControllerAnimatedTransitionViewControllerHandoffData;
   v23 = [(_UIViewControllerAnimatedTransitionViewControllerHandoffData *)&v26 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeWeak(&v23->_viewController, v20);
-    objc_storeStrong(&v24->_containerView, a4);
-    objc_storeStrong(&v24->_snapshot, a5);
+    objc_storeWeak(&v23->_viewController, controllerCopy);
+    objc_storeStrong(&v24->_containerView, view);
+    objc_storeStrong(&v24->_snapshot, snapshot);
     v24->_frame.origin.x = v16;
     v24->_frame.origin.y = v15;
     v24->_frame.size.width = v14;
@@ -37,8 +37,8 @@
     v24->_targetFrame.origin.y = y;
     v24->_targetFrame.size.width = width;
     v24->_targetFrame.size.height = height;
-    v24->_dimmingAmount = a8;
-    v24->_targetDimmingAmount = a9;
+    v24->_dimmingAmount = amount;
+    v24->_targetDimmingAmount = dimmingAmount;
   }
 
   return v24;

@@ -1,5 +1,5 @@
 @interface PassportMRZCameraPreviewView
-- (_TtC9CoreIDVUI28PassportMRZCameraPreviewView)initWithFrame:(CGRect)a3;
+- (_TtC9CoreIDVUI28PassportMRZCameraPreviewView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2457E7F4C();
 }
 
-- (_TtC9CoreIDVUI28PassportMRZCameraPreviewView)initWithFrame:(CGRect)a3
+- (_TtC9CoreIDVUI28PassportMRZCameraPreviewView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

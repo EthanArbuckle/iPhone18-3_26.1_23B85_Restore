@@ -1,37 +1,37 @@
 @interface SXAnimatedImageController
-- (id)initWithImageComponentView:(void *)a3 viewport:(void *)a4 imageView:;
+- (id)initWithImageComponentView:(void *)view viewport:(void *)viewport imageView:;
 - (void)registerForViewportChanges;
 - (void)unregisterForViewportChanges;
-- (void)viewport:(id)a3 dynamicBoundsDidChangeFromBounds:(CGRect)a4;
+- (void)viewport:(id)viewport dynamicBoundsDidChangeFromBounds:(CGRect)bounds;
 @end
 
 @implementation SXAnimatedImageController
 
-- (id)initWithImageComponentView:(void *)a3 viewport:(void *)a4 imageView:
+- (id)initWithImageComponentView:(void *)view viewport:(void *)viewport imageView:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  viewCopy = view;
+  viewportCopy = viewport;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = SXAnimatedImageController;
     v10 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       objc_storeWeak(v10 + 5, v7);
-      objc_storeWeak(a1 + 2, v8);
-      objc_storeStrong(a1 + 3, a4);
+      objc_storeWeak(self + 2, viewCopy);
+      objc_storeStrong(self + 3, viewport);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)viewport:(id)a3 dynamicBoundsDidChangeFromBounds:(CGRect)a4
+- (void)viewport:(id)viewport dynamicBoundsDidChangeFromBounds:(CGRect)bounds
 {
-  v26 = a3;
+  viewportCopy = viewport;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_componentView);
@@ -42,9 +42,9 @@
     WeakRetained = 0;
   }
 
-  v6 = [WeakRetained visibilityState];
+  visibilityState = [WeakRetained visibilityState];
 
-  if (v6 != 1)
+  if (visibilityState != 1)
   {
     goto LABEL_35;
   }
@@ -62,7 +62,7 @@
   [v7 dynamicBounds];
   v9 = v8;
 
-  [v26 bounds];
+  [viewportCopy bounds];
   Height = CGRectGetHeight(v28);
   if (self)
   {
@@ -86,8 +86,8 @@
     imageView = 0;
   }
 
-  v14 = [(SXImageView *)imageView animatedImage];
-  v15 = v12 / [v14 numberOfFrames];
+  animatedImage = [(SXImageView *)imageView animatedImage];
+  v15 = v12 / [animatedImage numberOfFrames];
 
   if (self)
   {
@@ -100,8 +100,8 @@
   }
 
   v17 = fmin(v15, 15.0);
-  v18 = [(SXImageView *)v16 frameIndex];
-  v19 = v18;
+  frameIndex = [(SXImageView *)v16 frameIndex];
+  v19 = frameIndex;
   if (self)
   {
     previousYOffset = self->_previousYOffset;
@@ -114,14 +114,14 @@
 LABEL_25:
     if (v9 < previousYOffset - v17)
     {
-      if (v18 <= 1)
+      if (frameIndex <= 1)
       {
         v24 = 1;
       }
 
       else
       {
-        v24 = v18;
+        v24 = frameIndex;
       }
 
       v19 = v24 - 1;
@@ -138,8 +138,8 @@ LABEL_25:
 
   v21 = 0;
 LABEL_15:
-  v22 = [(SXImageView *)v21 animatedImage];
-  v23 = [v22 numberOfFrames] - 1;
+  animatedImage2 = [(SXImageView *)v21 animatedImage];
+  v23 = [animatedImage2 numberOfFrames] - 1;
 
   if (v19 + 1 < v23)
   {
@@ -181,29 +181,29 @@ LABEL_35:
 
 - (void)registerForViewportChanges
 {
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 8) & 1) == 0)
+    if ((*(self + 8) & 1) == 0)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 16));
-      [WeakRetained addViewportChangeListener:a1 forOptions:2];
+      WeakRetained = objc_loadWeakRetained((self + 16));
+      [WeakRetained addViewportChangeListener:self forOptions:2];
     }
 
-    *(a1 + 8) = 1;
+    *(self + 8) = 1;
   }
 }
 
 - (void)unregisterForViewportChanges
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 8) == 1)
+    if (*(self + 8) == 1)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 16));
-      [WeakRetained removeViewportChangeListener:a1 forOptions:2];
+      WeakRetained = objc_loadWeakRetained((self + 16));
+      [WeakRetained removeViewportChangeListener:self forOptions:2];
     }
 
-    *(a1 + 8) = 0;
+    *(self + 8) = 0;
   }
 }
 

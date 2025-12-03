@@ -1,100 +1,100 @@
 @interface ASDaemonAccount
-+ (int64_t)_convertCalendarAvailabilityType:(char)a3;
-- (ASDaemonAccount)initWithBackingAccountInfo:(id)a3;
-- (BOOL)_clearOutInviteWithDeliveryFolderId:(id)a3 deliveryServerId:(id)a4 wasSoftDelete:(BOOL)a5 considerInvitedToInvitations:(BOOL)a6;
-- (BOOL)_handleNameCollisionOnAddedFolder:(id)a3 consumer:(id)a4 completionBlock:(id)a5;
-- (BOOL)_handleSuccessfulFolderChangeForFolders:(id)a3 previousSyncKey:(id)a4;
-- (BOOL)_setLocalDisplayName:(id)a3 forFolder:(id)a4;
-- (BOOL)addStringsToEmailForEventIAmAttending:(id)a3 recipient:(id)a4 stringsToEmail:(id)a5 eventUUIDsToEmail:(id)a6 externalIDs:(id)a7 messageIDsToEmail:(id)a8 eventsDroppedDueToAge:(id)a9 checkEventForNeedingInvite:(BOOL)a10;
-- (BOOL)clearFolderIdsForPersistentPushWithClientID:(id)a3;
++ (int64_t)_convertCalendarAvailabilityType:(char)type;
+- (ASDaemonAccount)initWithBackingAccountInfo:(id)info;
+- (BOOL)_clearOutInviteWithDeliveryFolderId:(id)id deliveryServerId:(id)serverId wasSoftDelete:(BOOL)delete considerInvitedToInvitations:(BOOL)invitations;
+- (BOOL)_handleNameCollisionOnAddedFolder:(id)folder consumer:(id)consumer completionBlock:(id)block;
+- (BOOL)_handleSuccessfulFolderChangeForFolders:(id)folders previousSyncKey:(id)key;
+- (BOOL)_setLocalDisplayName:(id)name forFolder:(id)folder;
+- (BOOL)addStringsToEmailForEventIAmAttending:(id)attending recipient:(id)recipient stringsToEmail:(id)email eventUUIDsToEmail:(id)toEmail externalIDs:(id)ds messageIDsToEmail:(id)dsToEmail eventsDroppedDueToAge:(id)age checkEventForNeedingInvite:(BOOL)self0;
+- (BOOL)clearFolderIdsForPersistentPushWithClientID:(id)d;
 - (BOOL)isOofSupported;
-- (BOOL)monitorFoldersWithIDs:(id)a3;
-- (BOOL)sendEmailsForCalEvents:(id)a3 consumer:(id)a4;
-- (BOOL)setFolderIdsForPersistentPushAdded:(id)a3 deleted:(id)a4 clientID:(id)a5;
-- (BOOL)setFolderIdsThatExternalClientsCareAboutAdded:(id)a3 deleted:(id)a4 foldersTag:(id)a5;
+- (BOOL)monitorFoldersWithIDs:(id)ds;
+- (BOOL)sendEmailsForCalEvents:(id)events consumer:(id)consumer;
+- (BOOL)setFolderIdsForPersistentPushAdded:(id)added deleted:(id)deleted clientID:(id)d;
+- (BOOL)setFolderIdsThatExternalClientsCareAboutAdded:(id)added deleted:(id)deleted foldersTag:(id)tag;
 - (BOOL)shouldCancelTaskDueToOnPowerFetchMode;
 - (__CFString)_pingPowerAssertionIdentifier;
-- (id)_ASSyncTaskAndMeetingResponseCommandsFromDAEventActions:(id)a3 meetingResponseActions:(id)a4 emailEvents:(id)a5;
-- (id)_copyICSDateFromDate:(id)a3 timeZone:(id)a4;
-- (id)_foldersToSyncGivenResults:(id)a3;
-- (id)_localizedStringForResponse:(int)a3;
+- (id)_ASSyncTaskAndMeetingResponseCommandsFromDAEventActions:(id)actions meetingResponseActions:(id)responseActions emailEvents:(id)events;
+- (id)_copyICSDateFromDate:(id)date timeZone:(id)zone;
+- (id)_foldersToSyncGivenResults:(id)results;
+- (id)_localizedStringForResponse:(int)response;
 - (id)_newPolicyManager;
-- (id)_parentIdFromEventId:(id)a3;
-- (id)_stringWithRFC822DataFromEvent:(id)a3 icsMethod:(int)a4 recipients:(id)a5 recipientBareEmails:(id)a6 exceptionDate:(id)a7 outMessageID:(id *)a8;
-- (id)beginDownloadingAttachmentWithUUID:(id)a3 consumer:(id)a4;
-- (id)copyMessageStringWithPlainTextString:(id)a3 vCalMethod:(int)a4 vCalAttachmentData:(id)a5 fromAddress:(id)a6 toAddresses:(id)a7 date:(id)a8 subject:(id)a9 outMessageID:(id *)a10;
-- (id)requestCalendarAvailabilityForStartDate:(id)a3 endDate:(id)a4 ignoredEventID:(id)a5 addresses:(id)a6 consumer:(id)a7;
+- (id)_parentIdFromEventId:(id)id;
+- (id)_stringWithRFC822DataFromEvent:(id)event icsMethod:(int)method recipients:(id)recipients recipientBareEmails:(id)emails exceptionDate:(id)date outMessageID:(id *)d;
+- (id)beginDownloadingAttachmentWithUUID:(id)d consumer:(id)consumer;
+- (id)copyMessageStringWithPlainTextString:(id)string vCalMethod:(int)method vCalAttachmentData:(id)data fromAddress:(id)address toAddresses:(id)addresses date:(id)date subject:(id)subject outMessageID:(id *)self0;
+- (id)requestCalendarAvailabilityForStartDate:(id)date endDate:(id)endDate ignoredEventID:(id)d addresses:(id)addresses consumer:(id)consumer;
 - (id)stateString;
-- (int)forwardMeeting:(id)a3 withServerId:(id)a4 withInstanceId:(id)a5 withFolderId:(id)a6 toEmailAddresses:(id)a7 withAttendeeUUIDs:(id)a8 consumer:(id)a9;
-- (int)performMoveRequests:(id)a3 consumer:(id)a4;
+- (int)forwardMeeting:(id)meeting withServerId:(id)id withInstanceId:(id)instanceId withFolderId:(id)folderId toEmailAddresses:(id)addresses withAttendeeUUIDs:(id)ds consumer:(id)consumer;
+- (int)performMoveRequests:(id)requests consumer:(id)consumer;
 - (void)_cancelPingTask;
-- (void)_enqueueNotificationWithName:(id)a3 sourceRunLoop:(id)a4 userInfo:(id)a5;
+- (void)_enqueueNotificationWithName:(id)name sourceRunLoop:(id)loop userInfo:(id)info;
 - (void)_handlePolicyUpdate;
 - (void)_pollFolders;
 - (void)_pruneFoldersToMonitorOfOrphanedFolders;
-- (void)_reallyAttemptInvitationLinkageForMetaDatas:(id)a3 deliveryIdsToClear:(id)a4 deliveryIdsToSoftClear:(id)a5 inFolderWithId:(id)a6 callback:(id)a7;
-- (void)_reallySyncLocallyChangedFolder:(id)a3 consumer:(id)a4 dataclasses:(int64_t)a5 completionBlock:(id)a6;
-- (void)_refirePingWithXPCActivityDelay:(int64_t)a3 withGrowthAction:(int)a4;
-- (void)_reissuePingFromXPCActivityWithGrowthAction:(int)a3;
-- (void)_reissuePingTaskWithGrowthAction:(int)a3;
-- (void)_reportFolderHierarchySyncSuccessWithCount:(unint64_t)a3;
-- (void)_reportFolderItemSyncSuccess:(BOOL)a3 forFolderWithID:(id)a4 withItemsCount:(unint64_t)a5;
-- (void)_respondToMeetingsForActions:(id)a3 inFolderWithId:(id)a4 consumer:(id)a5;
-- (void)_setFolderHierarchyNeedsUpdate:(BOOL)a3;
-- (void)_stopMonitoringFoldersWithIds:(id)a3;
+- (void)_reallyAttemptInvitationLinkageForMetaDatas:(id)datas deliveryIdsToClear:(id)clear deliveryIdsToSoftClear:(id)softClear inFolderWithId:(id)id callback:(id)callback;
+- (void)_reallySyncLocallyChangedFolder:(id)folder consumer:(id)consumer dataclasses:(int64_t)dataclasses completionBlock:(id)block;
+- (void)_refirePingWithXPCActivityDelay:(int64_t)delay withGrowthAction:(int)action;
+- (void)_reissuePingFromXPCActivityWithGrowthAction:(int)action;
+- (void)_reissuePingTaskWithGrowthAction:(int)action;
+- (void)_reportFolderHierarchySyncSuccessWithCount:(unint64_t)count;
+- (void)_reportFolderItemSyncSuccess:(BOOL)success forFolderWithID:(id)d withItemsCount:(unint64_t)count;
+- (void)_respondToMeetingsForActions:(id)actions inFolderWithId:(id)id consumer:(id)consumer;
+- (void)_setFolderHierarchyNeedsUpdate:(BOOL)update;
+- (void)_stopMonitoringFoldersWithIds:(id)ids;
 - (void)accountDidUpdateProtocolVersion;
-- (void)addFolderIDToPingBlacklist:(id)a3;
-- (void)addFolderIDToPingHistoryBlacklist:(id)a3;
-- (void)addStringsToEmailForEventIOriginated:(id)a3 deletedExceptionOccurrenceDate:(id)a4 stringsToEmail:(id)a5 eventUUIDsToEmail:(id)a6 externalIDs:(id)a7 messageIDsToEmail:(id)a8 eventsDroppedDueToAge:(id)a9 checkEventForNeedingInvite:(BOOL)a10;
-- (void)attemptInvitationLinkageForMetaDatas:(id)a3 deliveryIdsToClear:(id)a4 deliveryIdsToSoftClear:(id)a5 inFolderWithId:(id)a6 callback:(id)a7;
-- (void)cancelCalendarAvailabilityRequestWithID:(id)a3;
-- (void)cancelDownloadingInstance:(id)a3 error:(id)a4;
-- (void)connectionManager:(id)a3 handleEvent:(int)a4;
-- (void)consumerFinishedInvitationActionsForEventWithUID:(id)a3;
+- (void)addFolderIDToPingBlacklist:(id)blacklist;
+- (void)addFolderIDToPingHistoryBlacklist:(id)blacklist;
+- (void)addStringsToEmailForEventIOriginated:(id)originated deletedExceptionOccurrenceDate:(id)date stringsToEmail:(id)email eventUUIDsToEmail:(id)toEmail externalIDs:(id)ds messageIDsToEmail:(id)dsToEmail eventsDroppedDueToAge:(id)age checkEventForNeedingInvite:(BOOL)self0;
+- (void)attemptInvitationLinkageForMetaDatas:(id)datas deliveryIdsToClear:(id)clear deliveryIdsToSoftClear:(id)softClear inFolderWithId:(id)id callback:(id)callback;
+- (void)cancelCalendarAvailabilityRequestWithID:(id)d;
+- (void)cancelDownloadingInstance:(id)instance error:(id)error;
+- (void)connectionManager:(id)manager handleEvent:(int)event;
+- (void)consumerFinishedInvitationActionsForEventWithUID:(id)d;
 - (void)dealloc;
-- (void)fetchAttachmentTask:(id)a3 completedWithStatus:(int64_t)a4 dataWasBase64:(BOOL)a5 error:(id)a6;
-- (void)fetchAttachmentTask:(id)a3 receivedData:(id)a4 ofContentType:(id)a5;
-- (void)folderLocalUpdateTask:(id)a3 completedWithStatus:(int64_t)a4 error:(id)a5 updatedFolder:(id)a6 newSyncKey:(id)a7 completionBlock:(id)a8;
-- (void)folderSyncTask:(id)a3 completedWithStatus:(int64_t)a4 error:(id)a5 foldersChanged:(id)a6 newSyncKey:(id)a7;
-- (void)meetingResponseTask:(id)a3 completedWithStatus:(int64_t)a4 error:(id)a5;
-- (void)messageWriter:(id)a3 willEncodeHeaders:(id)a4 forMimePart:(id)a5;
-- (void)messageWriter:(id)a3 willGenerateHeadersForMimePart:(id)a4;
-- (void)monitorFolder:(id)a3;
-- (void)pingTask:(id)a3 completedWithStatus:(int64_t)a4 error:(id)a5 resultFolders:(id)a6 resultMaxFolders:(int)a7 resultHBInterval:(int)a8;
-- (void)reissuePingFromTimer:(id)a3;
-- (void)removeFolderIDFromPingBlacklist:(id)a3;
-- (void)removeFromAllPingHistoryBlacklistForFolderID:(id)a3;
-- (void)removeFromPingHierarchyAndHistoryBlacklistForFolderID:(id)a3;
-- (void)resolveRecipientsTask:(id)a3 completedWithStatus:(int64_t)a4 error:(id)a5 queriedEmailAddressToRecpient:(id)a6;
-- (void)resumeMonitoringFolderID:(id)a3;
-- (void)resumeMonitoringFoldersWithIDs:(id)a3;
-- (void)retrieveOofSettingsForConsumer:(id)a3;
-- (void)sendMailTask:(id)a3 completedWithStatus:(int64_t)a4 error:(id)a5;
-- (void)setSafeToPing:(BOOL)a3;
-- (void)settingsTask:(id)a3 completedWithStatus:(int64_t)a4 error:(id)a5 response:(id)a6;
-- (void)stopMonitoringFolderWithID:(id)a3;
-- (void)stopMonitoringFoldersWithIDs:(id)a3;
-- (void)suspendMonitoringFoldersWithIDs:(id)a3;
-- (void)syncLocallyChangedFolder:(id)a3 consumer:(id)a4 completionBlock:(id)a5;
-- (void)synchronizeNotesFolder:(id)a3 noteContext:(id)a4 previousTag:(id)a5 actions:(id)a6 changeSet:(id)a7 notesToDeleteAfterSync:(id)a8 isInitialUberSync:(BOOL)a9 isResyncAfterConnectionFailed:(BOOL)a10 moreLocalChangesAvailable:(BOOL)a11 consumer:(id)a12;
+- (void)fetchAttachmentTask:(id)task completedWithStatus:(int64_t)status dataWasBase64:(BOOL)base64 error:(id)error;
+- (void)fetchAttachmentTask:(id)task receivedData:(id)data ofContentType:(id)type;
+- (void)folderLocalUpdateTask:(id)task completedWithStatus:(int64_t)status error:(id)error updatedFolder:(id)folder newSyncKey:(id)key completionBlock:(id)block;
+- (void)folderSyncTask:(id)task completedWithStatus:(int64_t)status error:(id)error foldersChanged:(id)changed newSyncKey:(id)key;
+- (void)meetingResponseTask:(id)task completedWithStatus:(int64_t)status error:(id)error;
+- (void)messageWriter:(id)writer willEncodeHeaders:(id)headers forMimePart:(id)part;
+- (void)messageWriter:(id)writer willGenerateHeadersForMimePart:(id)part;
+- (void)monitorFolder:(id)folder;
+- (void)pingTask:(id)task completedWithStatus:(int64_t)status error:(id)error resultFolders:(id)folders resultMaxFolders:(int)maxFolders resultHBInterval:(int)interval;
+- (void)reissuePingFromTimer:(id)timer;
+- (void)removeFolderIDFromPingBlacklist:(id)blacklist;
+- (void)removeFromAllPingHistoryBlacklistForFolderID:(id)d;
+- (void)removeFromPingHierarchyAndHistoryBlacklistForFolderID:(id)d;
+- (void)resolveRecipientsTask:(id)task completedWithStatus:(int64_t)status error:(id)error queriedEmailAddressToRecpient:(id)recpient;
+- (void)resumeMonitoringFolderID:(id)d;
+- (void)resumeMonitoringFoldersWithIDs:(id)ds;
+- (void)retrieveOofSettingsForConsumer:(id)consumer;
+- (void)sendMailTask:(id)task completedWithStatus:(int64_t)status error:(id)error;
+- (void)setSafeToPing:(BOOL)ping;
+- (void)settingsTask:(id)task completedWithStatus:(int64_t)status error:(id)error response:(id)response;
+- (void)stopMonitoringFolderWithID:(id)d;
+- (void)stopMonitoringFoldersWithIDs:(id)ds;
+- (void)suspendMonitoringFoldersWithIDs:(id)ds;
+- (void)syncLocallyChangedFolder:(id)folder consumer:(id)consumer completionBlock:(id)block;
+- (void)synchronizeNotesFolder:(id)folder noteContext:(id)context previousTag:(id)tag actions:(id)actions changeSet:(id)set notesToDeleteAfterSync:(id)sync isInitialUberSync:(BOOL)uberSync isResyncAfterConnectionFailed:(BOOL)self0 moreLocalChangesAvailable:(BOOL)self1 consumer:(id)self2;
 - (void)tearDown;
-- (void)updateOofSettingsWithParams:(id)a3 consumer:(id)a4;
+- (void)updateOofSettingsWithParams:(id)params consumer:(id)consumer;
 @end
 
 @implementation ASDaemonAccount
 
-- (ASDaemonAccount)initWithBackingAccountInfo:(id)a3
+- (ASDaemonAccount)initWithBackingAccountInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v32.receiver = self;
   v32.super_class = ASDaemonAccount;
-  v5 = [(ASDaemonAccount *)&v32 initWithBackingAccountInfo:v4];
+  v5 = [(ASDaemonAccount *)&v32 initWithBackingAccountInfo:infoCopy];
   if (v5)
   {
     v6 = [PCConnectionManager alloc];
     v7 = dataaccess_get_global_queue();
-    v8 = [(ASDaemonAccount *)v5 scheduleIdentifier];
-    v9 = [v6 initWithConnectionClass:1 delegate:v5 delegateQueue:v7 serviceIdentifier:v8];
+    scheduleIdentifier = [(ASDaemonAccount *)v5 scheduleIdentifier];
+    v9 = [v6 initWithConnectionClass:1 delegate:v5 delegateQueue:v7 serviceIdentifier:scheduleIdentifier];
     pcManager = v5->_pcManager;
     v5->_pcManager = v9;
 
@@ -151,13 +151,13 @@
 
     objc_initWeak(buf, v5);
     v25 = +[NSNotificationCenter defaultCenter];
-    v26 = [(ASDaemonAccount *)v5 accountID];
+    accountID = [(ASDaemonAccount *)v5 accountID];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_1A7C8;
     v30[3] = &unk_6D050;
     objc_copyWeak(&v31, buf);
-    v27 = [v25 addObserverForName:ASPolicyKeyChangedNotification object:v26 queue:0 usingBlock:v30];
+    v27 = [v25 addObserverForName:ASPolicyKeyChangedNotification object:accountID queue:0 usingBlock:v30];
 
     noteObserver = v5->_noteObserver;
     v5->_noteObserver = v27;
@@ -187,31 +187,31 @@
 {
   self->_isTearingDown = 1;
   [*&self->ASAccount_opaque[OBJC_IVAR___DAAccount__taskManager] shutdown];
-  v3 = self;
-  objc_sync_enter(v3);
-  WeakRetained = objc_loadWeakRetained(&v3->_delayedPingTimer);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delayedPingTimer);
   [WeakRetained invalidate];
 
-  objc_storeWeak(&v3->_delayedPingTimer, 0);
-  v5 = [(NSMutableDictionary *)v3->_foldersToMonitorById allKeys];
-  v6 = [NSArray arrayWithArray:v5];
+  objc_storeWeak(&selfCopy->_delayedPingTimer, 0);
+  allKeys = [(NSMutableDictionary *)selfCopy->_foldersToMonitorById allKeys];
+  v6 = [NSArray arrayWithArray:allKeys];
 
-  objc_sync_exit(v3);
-  [(ASDaemonAccount *)v3 _stopMonitoringFoldersWithIds:v6];
+  objc_sync_exit(selfCopy);
+  [(ASDaemonAccount *)selfCopy _stopMonitoringFoldersWithIds:v6];
   v7 = DALoggingwithCategory();
   v8 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v7, v8))
   {
     v11 = 138412290;
-    v12 = [(ASDaemonAccount *)v3 _pingPowerAssertionIdentifier];
+    _pingPowerAssertionIdentifier = [(ASDaemonAccount *)selfCopy _pingPowerAssertionIdentifier];
     _os_log_impl(&dword_0, v7, v8, "Release power assertion %@", &v11, 0xCu);
   }
 
-  [(ASDaemonAccount *)v3 _pingPowerAssertionIdentifier];
+  [(ASDaemonAccount *)selfCopy _pingPowerAssertionIdentifier];
   CPSetPowerAssertionWithIdentifier();
-  [(ASDaemonAccount *)v3 setPingPowerAssertionUUID:0];
-  [(ASDaemonAccount *)v3 _cancelPingTask];
-  v9 = v3;
+  [(ASDaemonAccount *)selfCopy setPingPowerAssertionUUID:0];
+  [(ASDaemonAccount *)selfCopy _cancelPingTask];
+  v9 = selfCopy;
   objc_sync_enter(v9);
   if (v9->_hasScheduledPingXPCActivity)
   {
@@ -248,9 +248,9 @@
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_pingTask);
-    v10 = [v9 askedToCancelWhileModal];
+    askedToCancelWhileModal = [v9 askedToCancelWhileModal];
 
-    if ((v10 & 1) == 0)
+    if ((askedToCancelWhileModal & 1) == 0)
     {
       sub_481A4();
     }
@@ -295,11 +295,11 @@
 - (void)_handlePolicyUpdate
 {
   v3 = [ASPerAccountPolicyData alloc];
-  v4 = [(ASDaemonAccount *)self persistentUUID];
-  v7 = [v3 initWithAccountPersistentUUID:v4];
+  persistentUUID = [(ASDaemonAccount *)self persistentUUID];
+  v7 = [v3 initWithAccountPersistentUUID:persistentUUID];
 
-  v5 = [v7 policyValues];
-  v6 = [v5 objectForKeyedSubscript:RequireManualSyncWhenRoaming];
+  policyValues = [v7 policyValues];
+  v6 = [policyValues objectForKeyedSubscript:RequireManualSyncWhenRoaming];
   [v6 BOOLValue];
 
   [(ASDaemonAccount *)self scheduleIdentifier];
@@ -317,91 +317,91 @@
 {
   v10.receiver = self;
   v10.super_class = ASDaemonAccount;
-  v3 = [(ASDaemonAccount *)&v10 stateString];
-  v4 = [v3 mutableCopy];
+  stateString = [(ASDaemonAccount *)&v10 stateString];
+  v4 = [stateString mutableCopy];
 
-  v5 = self;
-  objc_sync_enter(v5);
-  [v4 appendFormat:@"Last ping HBI %d\n", v5->_lastPingHeartBeat];
-  v6 = sub_1B010(v5->_foldersToMonitorById);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [v4 appendFormat:@"Last ping HBI %d\n", selfCopy->_lastPingHeartBeat];
+  v6 = sub_1B010(selfCopy->_foldersToMonitorById);
   [v4 appendFormat:@"_foldersToMonitorById: %@\n", v6];
 
-  v7 = [(NSMutableSet *)v5->_folderIdsWithUnacknowledgedPings allObjects];
-  v8 = [v7 componentsJoinedByString:{@", "}];
+  allObjects = [(NSMutableSet *)selfCopy->_folderIdsWithUnacknowledgedPings allObjects];
+  v8 = [allObjects componentsJoinedByString:{@", "}];
   [v4 appendFormat:@"_folderIdsWithUnacknowledgedPings: %@\n", v8];
 
-  [v4 appendFormat:@"_busyFolderIds: %@\n", v5->_busyFolderIds];
-  [v4 appendFormat:@"_pingBlacklistFolderIds: %@\n", v5->_pingBlacklistFolderIds];
-  [v4 appendFormat:@"_pingHistoryBlacklistFolderIds: %@\n", v5->_pingHistoryBlacklistFolderIds];
-  objc_sync_exit(v5);
+  [v4 appendFormat:@"_busyFolderIds: %@\n", selfCopy->_busyFolderIds];
+  [v4 appendFormat:@"_pingBlacklistFolderIds: %@\n", selfCopy->_pingBlacklistFolderIds];
+  [v4 appendFormat:@"_pingHistoryBlacklistFolderIds: %@\n", selfCopy->_pingHistoryBlacklistFolderIds];
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (void)addFolderIDToPingBlacklist:(id)a3
+- (void)addFolderIDToPingBlacklist:(id)blacklist
 {
-  v4 = a3;
+  blacklistCopy = blacklist;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v5, v6))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = blacklistCopy;
     _os_log_impl(&dword_0, v5, v6, "Folder %@ added to the ping blacklist", &v8, 0xCu);
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  [(NSMutableSet *)v7->_pingBlacklistFolderIds addObject:v4];
-  objc_sync_exit(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_pingBlacklistFolderIds addObject:blacklistCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addFolderIDToPingHistoryBlacklist:(id)a3
+- (void)addFolderIDToPingHistoryBlacklist:(id)blacklist
 {
-  v4 = a3;
+  blacklistCopy = blacklist;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[3];
   if (os_log_type_enabled(v5, v6))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = blacklistCopy;
     _os_log_impl(&dword_0, v5, v6, "Folder %@ added to the ping history blacklist", &v8, 0xCu);
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  [(NSMutableSet *)v7->_pingHistoryBlacklistFolderIds addObject:v4];
-  objc_sync_exit(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_pingHistoryBlacklistFolderIds addObject:blacklistCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeFolderIDFromPingBlacklist:(id)a3
+- (void)removeFolderIDFromPingBlacklist:(id)blacklist
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(NSMutableSet *)v5->_pingBlacklistFolderIds containsObject:v4])
+  blacklistCopy = blacklist;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSMutableSet *)selfCopy->_pingBlacklistFolderIds containsObject:blacklistCopy])
   {
     v6 = DALoggingwithCategory();
     v7 = _CPLog_to_os_log_type[6];
     if (os_log_type_enabled(v6, v7))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = blacklistCopy;
       _os_log_impl(&dword_0, v6, v7, "Folder %@ removed from the ping blacklist", &v8, 0xCu);
     }
 
-    [(NSMutableSet *)v5->_pingBlacklistFolderIds removeObject:v4];
+    [(NSMutableSet *)selfCopy->_pingBlacklistFolderIds removeObject:blacklistCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeFromAllPingHistoryBlacklistForFolderID:(id)a3
+- (void)removeFromAllPingHistoryBlacklistForFolderID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_isHierarchyChangeBlackListed)
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_isHierarchyChangeBlackListed)
   {
     v6 = DALoggingwithCategory();
     v7 = _CPLog_to_os_log_type[6];
@@ -411,10 +411,10 @@
       _os_log_impl(&dword_0, v6, v7, "Remove folder hierarchy from ping history blacklist", &v20, 2u);
     }
 
-    v5->_isHierarchyChangeBlackListed = 0;
+    selfCopy->_isHierarchyChangeBlackListed = 0;
   }
 
-  if (v5->_hierarchyChangeHistory)
+  if (selfCopy->_hierarchyChangeHistory)
   {
     v8 = DALoggingwithCategory();
     v9 = _CPLog_to_os_log_type[7];
@@ -424,11 +424,11 @@
       _os_log_impl(&dword_0, v8, v9, "Clearing folder hierarchy ping history, after a successful sync", &v20, 2u);
     }
 
-    hierarchyChangeHistory = v5->_hierarchyChangeHistory;
-    v5->_hierarchyChangeHistory = 0;
+    hierarchyChangeHistory = selfCopy->_hierarchyChangeHistory;
+    selfCopy->_hierarchyChangeHistory = 0;
   }
 
-  if (v5->_isNoChangeBlackListed)
+  if (selfCopy->_isNoChangeBlackListed)
   {
     v11 = DALoggingwithCategory();
     v12 = _CPLog_to_os_log_type[6];
@@ -438,10 +438,10 @@
       _os_log_impl(&dword_0, v11, v12, "Remove from ping no change blacklist", &v20, 2u);
     }
 
-    v5->_isNoChangeBlackListed = 0;
+    selfCopy->_isNoChangeBlackListed = 0;
   }
 
-  if (v5->_noChangeHistory)
+  if (selfCopy->_noChangeHistory)
   {
     v13 = DALoggingwithCategory();
     v14 = _CPLog_to_os_log_type[7];
@@ -451,24 +451,24 @@
       _os_log_impl(&dword_0, v13, v14, "Clearing ping no change history, after a successful sync", &v20, 2u);
     }
 
-    noChangeHistory = v5->_noChangeHistory;
-    v5->_noChangeHistory = 0;
+    noChangeHistory = selfCopy->_noChangeHistory;
+    selfCopy->_noChangeHistory = 0;
   }
 
-  if (v4)
+  if (dCopy)
   {
-    if ([(NSMutableSet *)v5->_pingHistoryBlacklistFolderIds containsObject:v4])
+    if ([(NSMutableSet *)selfCopy->_pingHistoryBlacklistFolderIds containsObject:dCopy])
     {
       v16 = DALoggingwithCategory();
       v17 = _CPLog_to_os_log_type[6];
       if (os_log_type_enabled(v16, v17))
       {
         v20 = 138412290;
-        v21 = v4;
+        v21 = dCopy;
         _os_log_impl(&dword_0, v16, v17, "Folder %@ removed from the ping history blacklist", &v20, 0xCu);
       }
 
-      [(NSMutableSet *)v5->_pingHistoryBlacklistFolderIds removeObject:v4];
+      [(NSMutableSet *)selfCopy->_pingHistoryBlacklistFolderIds removeObject:dCopy];
     }
 
     v18 = DALoggingwithCategory();
@@ -476,22 +476,22 @@
     if (os_log_type_enabled(v18, v19))
     {
       v20 = 138412290;
-      v21 = v4;
+      v21 = dCopy;
       _os_log_impl(&dword_0, v18, v19, "Clearing folder %@ from ping history, after it has a successful sync", &v20, 0xCu);
     }
 
-    [(NSMutableDictionary *)v5->_folderChangeHistory removeObjectForKey:v4];
+    [(NSMutableDictionary *)selfCopy->_folderChangeHistory removeObjectForKey:dCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeFromPingHierarchyAndHistoryBlacklistForFolderID:(id)a3
+- (void)removeFromPingHierarchyAndHistoryBlacklistForFolderID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_isHierarchyChangeBlackListed)
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_isHierarchyChangeBlackListed)
   {
     v6 = DALoggingwithCategory();
     v7 = _CPLog_to_os_log_type[6];
@@ -501,10 +501,10 @@
       _os_log_impl(&dword_0, v6, v7, "Remove folder hierarchy from ping history blacklist", &v15, 2u);
     }
 
-    v5->_isHierarchyChangeBlackListed = 0;
+    selfCopy->_isHierarchyChangeBlackListed = 0;
   }
 
-  if (v5->_hierarchyChangeHistory)
+  if (selfCopy->_hierarchyChangeHistory)
   {
     v8 = DALoggingwithCategory();
     v9 = _CPLog_to_os_log_type[7];
@@ -514,24 +514,24 @@
       _os_log_impl(&dword_0, v8, v9, "Clearing folder hierarchy ping history, after a successful sync", &v15, 2u);
     }
 
-    hierarchyChangeHistory = v5->_hierarchyChangeHistory;
-    v5->_hierarchyChangeHistory = 0;
+    hierarchyChangeHistory = selfCopy->_hierarchyChangeHistory;
+    selfCopy->_hierarchyChangeHistory = 0;
   }
 
-  if (v4)
+  if (dCopy)
   {
-    if ([(NSMutableSet *)v5->_pingHistoryBlacklistFolderIds containsObject:v4])
+    if ([(NSMutableSet *)selfCopy->_pingHistoryBlacklistFolderIds containsObject:dCopy])
     {
       v11 = DALoggingwithCategory();
       v12 = _CPLog_to_os_log_type[6];
       if (os_log_type_enabled(v11, v12))
       {
         v15 = 138412290;
-        v16 = v4;
+        v16 = dCopy;
         _os_log_impl(&dword_0, v11, v12, "Folder %@ removed from the ping history blacklist", &v15, 0xCu);
       }
 
-      [(NSMutableSet *)v5->_pingHistoryBlacklistFolderIds removeObject:v4];
+      [(NSMutableSet *)selfCopy->_pingHistoryBlacklistFolderIds removeObject:dCopy];
     }
 
     v13 = DALoggingwithCategory();
@@ -539,63 +539,63 @@
     if (os_log_type_enabled(v13, v14))
     {
       v15 = 138412290;
-      v16 = v4;
+      v16 = dCopy;
       _os_log_impl(&dword_0, v13, v14, "Clearing folder %@ from ping history, after it has a successful sync", &v15, 0xCu);
     }
 
-    [(NSMutableDictionary *)v5->_folderChangeHistory removeObjectForKey:v4];
+    [(NSMutableDictionary *)selfCopy->_folderChangeHistory removeObjectForKey:dCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)_foldersToSyncGivenResults:(id)a3
+- (id)_foldersToSyncGivenResults:(id)results
 {
-  v4 = a3;
-  v5 = [[NSMutableSet alloc] initWithArray:v4];
+  resultsCopy = results;
+  v5 = [[NSMutableSet alloc] initWithArray:resultsCopy];
   v6 = OBJC_IVAR___DAAccount__taskManager;
-  v7 = [*&self->ASAccount_opaque[OBJC_IVAR___DAAccount__taskManager] queuedTasks];
-  v8 = [v7 objectEnumerator];
+  queuedTasks = [*&self->ASAccount_opaque[OBJC_IVAR___DAAccount__taskManager] queuedTasks];
+  objectEnumerator = [queuedTasks objectEnumerator];
 
-  v9 = [v8 nextObject];
-  if (v9)
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v10 = v9;
+    v10 = nextObject;
     do
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v10 folderID];
-        [v5 removeObject:v11];
+        folderID = [v10 folderID];
+        [v5 removeObject:folderID];
       }
 
-      v12 = [v8 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v10 = v12;
+      v10 = nextObject2;
     }
 
-    while (v12);
+    while (nextObject2);
   }
 
-  v13 = [*&self->ASAccount_opaque[v6] activeQueuedTask];
+  activeQueuedTask = [*&self->ASAccount_opaque[v6] activeQueuedTask];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v13 folderID];
-    [v5 removeObject:v14];
+    folderID2 = [activeQueuedTask folderID];
+    [v5 removeObject:folderID2];
   }
 
-  v15 = [v5 allObjects];
+  allObjects = [v5 allObjects];
 
-  return v15;
+  return allObjects;
 }
 
-- (void)_setFolderHierarchyNeedsUpdate:(BOOL)a3
+- (void)_setFolderHierarchyNeedsUpdate:(BOOL)update
 {
-  v3 = a3;
+  updateCopy = update;
   v7 = DAAccountFolderHierarchyNeedsUpdateNotification;
-  if (v3)
+  if (updateCopy)
   {
     v5 = DAAccountFolderHierarchyNeedsUpdateRequireChangedFoldersNotification;
 
@@ -606,16 +606,16 @@
   [(ASDaemonAccount *)self _enqueueNotificationWithName:v7 sourceRunLoop:v6 userInfo:0];
 }
 
-- (BOOL)_handleSuccessfulFolderChangeForFolders:(id)a3 previousSyncKey:(id)a4
+- (BOOL)_handleSuccessfulFolderChangeForFolders:(id)folders previousSyncKey:(id)key
 {
-  v5 = a3;
-  v88 = a4;
+  foldersCopy = folders;
+  keyCopy = key;
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
   v121 = 0u;
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v118 objects:v133 count:16];
+  obj = foldersCopy;
+  v6 = [foldersCopy countByEnumeratingWithState:&v118 objects:v133 count:16];
   if (v6)
   {
     v7 = v6;
@@ -634,11 +634,11 @@
         v12 = DALoggingwithCategory();
         if (os_log_type_enabled(v12, v9))
         {
-          v13 = [v11 changeType];
+          changeType = [v11 changeType];
           *buf = 138412546;
           v123 = v11;
           v124 = 2048;
-          v125 = v13;
+          v125 = changeType;
           _os_log_impl(&dword_0, v12, v9, "reacting to changed folder %@ with change type %lu", buf, 0x16u);
         }
       }
@@ -649,17 +649,17 @@
     while (v7);
   }
 
-  v14 = v88;
-  if (v88)
+  v14 = keyCopy;
+  if (keyCopy)
   {
-    v15 = [(ASDaemonAccount *)self folderHierarchy];
-    v16 = [v15 foldersTag];
-    if (v16)
+    folderHierarchy = [(ASDaemonAccount *)self folderHierarchy];
+    foldersTag = [folderHierarchy foldersTag];
+    if (foldersTag)
     {
-      v17 = v16;
-      v18 = [(ASDaemonAccount *)self folderHierarchy];
-      v19 = [v18 foldersTag];
-      v20 = [v88 isEqualToString:v19];
+      v17 = foldersTag;
+      folderHierarchy2 = [(ASDaemonAccount *)self folderHierarchy];
+      foldersTag2 = [folderHierarchy2 foldersTag];
+      v20 = [keyCopy isEqualToString:foldersTag2];
 
       if (v20)
       {
@@ -695,13 +695,13 @@
         }
 
         v27 = *(*(&v114 + 1) + 8 * j);
-        v28 = [v27 serverID];
+        serverID = [v27 serverID];
 
-        if (v28 && ([v27 changeType] == &dword_0 + 2 || objc_msgSend(v27, "changeType") == &dword_4 + 3))
+        if (serverID && ([v27 changeType] == &dword_0 + 2 || objc_msgSend(v27, "changeType") == &dword_4 + 3))
         {
-          v29 = [(ASDaemonAccount *)self folderHierarchy];
-          v30 = [v27 serverID];
-          v31 = [v29 foldersUnderFolderWithID:v30];
+          folderHierarchy3 = [(ASDaemonAccount *)self folderHierarchy];
+          serverID2 = [v27 serverID];
+          v31 = [folderHierarchy3 foldersUnderFolderWithID:serverID2];
           [v22 addObjectsFromArray:v31];
         }
       }
@@ -751,9 +751,9 @@
                 objc_enumerationMutation(v36);
               }
 
-              v41 = [*(*(&v106 + 1) + 8 * m) serverID];
-              v42 = [v35 serverID];
-              v43 = [v41 isEqualToString:v42];
+              serverID3 = [*(*(&v106 + 1) + 8 * m) serverID];
+              serverID4 = [v35 serverID];
+              v43 = [serverID3 isEqualToString:serverID4];
 
               if (v43)
               {
@@ -784,9 +784,9 @@ LABEL_41:
     while (v33);
   }
 
-  v44 = [(ASDaemonAccount *)self folderHierarchy];
-  v45 = [v44 folderCache];
-  v46 = [v45 mutableCopy];
+  folderHierarchy4 = [(ASDaemonAccount *)self folderHierarchy];
+  folderCache = [folderHierarchy4 folderCache];
+  v46 = [folderCache mutableCopy];
 
   if (!v46)
   {
@@ -827,12 +827,12 @@ LABEL_41:
         }
 
         v57 = *(*(&v102 + 1) + 8 * n);
-        v58 = [v57 serverID];
-        [v50 setValue:v57 forKey:v58];
+        serverID5 = [v57 serverID];
+        [v50 setValue:v57 forKey:serverID5];
 
-        v59 = [v57 serverID];
-        v60 = [v57 displayName];
-        [v51 setValue:v59 forKey:v60];
+        serverID6 = [v57 serverID];
+        displayName = [v57 displayName];
+        [v51 setValue:serverID6 forKey:displayName];
       }
 
       v54 = [v52 countByEnumeratingWithState:&v102 objects:v129 count:16];
@@ -865,97 +865,97 @@ LABEL_41:
         }
 
         v65 = *(*(&v98 + 1) + 8 * ii);
-        v66 = [v65 serverID];
-        if (v66)
+        serverID7 = [v65 serverID];
+        if (serverID7)
         {
-          v67 = v66;
-          v68 = [v65 serverID];
-          v69 = [v65 parentID];
-          v70 = [v68 isEqualToString:v69];
+          v67 = serverID7;
+          serverID8 = [v65 serverID];
+          parentID = [v65 parentID];
+          v70 = [serverID8 isEqualToString:parentID];
 
           if (v70)
           {
-            v71 = DALoggingwithCategory();
-            if (os_log_type_enabled(v71, typea))
+            serverID11 = DALoggingwithCategory();
+            if (os_log_type_enabled(serverID11, typea))
             {
-              v72 = [v65 displayName];
-              v73 = [v65 serverID];
-              v74 = [v65 parentID];
+              displayName2 = [v65 displayName];
+              serverID9 = [v65 serverID];
+              parentID2 = [v65 parentID];
               *buf = 138412802;
-              v123 = v72;
+              v123 = displayName2;
               v124 = 2112;
-              v125 = v73;
+              v125 = serverID9;
               v126 = 2112;
-              v127 = v74;
-              _os_log_impl(&dword_0, v71, typea, "Discarding folder [%@] with the same server ID [%@] and parent ID [%@]", buf, 0x20u);
+              v127 = parentID2;
+              _os_log_impl(&dword_0, serverID11, typea, "Discarding folder [%@] with the same server ID [%@] and parent ID [%@]", buf, 0x20u);
             }
 
             goto LABEL_78;
           }
         }
 
-        v75 = [v65 serverID];
+        serverID10 = [v65 serverID];
 
-        if (!v75)
+        if (!serverID10)
         {
           continue;
         }
 
-        v76 = [v65 changeType];
-        if (v76 <= 1)
+        changeType2 = [v65 changeType];
+        if (changeType2 <= 1)
         {
-          if (v76)
+          if (changeType2)
           {
-            if (v76 != &dword_0 + 1)
+            if (changeType2 != &dword_0 + 1)
             {
               goto LABEL_77;
             }
 
-            v71 = [v65 serverID];
-            v77 = [v50 objectForKeyedSubscript:v71];
+            serverID11 = [v65 serverID];
+            v77 = [v50 objectForKeyedSubscript:serverID11];
 
             if (!v77)
             {
-              v78 = [v65 displayName];
-              v79 = [v51 objectForKeyedSubscript:v78];
+              displayName3 = [v65 displayName];
+              v79 = [v51 objectForKeyedSubscript:displayName3];
 
               if (v79)
               {
                 v80 = v79;
 
-                v71 = v80;
+                serverID11 = v80;
               }
             }
           }
 
           else
           {
-            v71 = [v65 serverID];
+            serverID11 = [v65 serverID];
           }
 
-          [v50 setObject:v65 forKeyedSubscript:v71];
+          [v50 setObject:v65 forKeyedSubscript:serverID11];
         }
 
         else
         {
-          if (v76 != &dword_0 + 2)
+          if (changeType2 != &dword_0 + 2)
           {
-            if (v76 == &dword_0 + 3)
+            if (changeType2 == &dword_0 + 3)
             {
               continue;
             }
 
-            if (v76 != &dword_4 + 3)
+            if (changeType2 != &dword_4 + 3)
             {
 LABEL_77:
-              v71 = +[NSAssertionHandler currentHandler];
-              -[NSObject handleFailureInMethod:object:file:lineNumber:description:](v71, "handleFailureInMethod:object:file:lineNumber:description:", a2, self, @"ASDaemonAccount.m", 467, @"Got unexpected change type %ld", [v65 changeType]);
+              serverID11 = +[NSAssertionHandler currentHandler];
+              -[NSObject handleFailureInMethod:object:file:lineNumber:description:](serverID11, "handleFailureInMethod:object:file:lineNumber:description:", a2, self, @"ASDaemonAccount.m", 467, @"Got unexpected change type %ld", [v65 changeType]);
               goto LABEL_78;
             }
           }
 
-          v71 = [v65 serverID];
-          [v50 removeObjectForKey:v71];
+          serverID11 = [v65 serverID];
+          [v50 removeObjectForKey:serverID11];
         }
 
 LABEL_78:
@@ -967,11 +967,11 @@ LABEL_78:
     while (v62);
   }
 
-  v81 = [v50 allValues];
-  v21 = [v81 count] != 0;
-  v14 = v88;
-  [v87 setValue:v88 forKey:@"ASFoldersSyncKey"];
-  [v87 setValue:v81 forKey:@"ASFolders"];
+  allValues = [v50 allValues];
+  v21 = [allValues count] != 0;
+  v14 = keyCopy;
+  [v87 setValue:keyCopy forKey:@"ASFoldersSyncKey"];
+  [v87 setValue:allValues forKey:@"ASFolders"];
   v82 = DALoggingwithCategory();
   if (os_log_type_enabled(v82, v86))
   {
@@ -980,43 +980,43 @@ LABEL_78:
     _os_log_impl(&dword_0, v82, v86, "Resulting folderCache %@", buf, 0xCu);
   }
 
-  v83 = [(ASDaemonAccount *)self folderHierarchy];
-  [v83 setFolderCache:v87];
+  folderHierarchy5 = [(ASDaemonAccount *)self folderHierarchy];
+  [folderHierarchy5 setFolderCache:v87];
 
 LABEL_84:
   return v21;
 }
 
-- (BOOL)_setLocalDisplayName:(id)a3 forFolder:(id)a4
+- (BOOL)_setLocalDisplayName:(id)name forFolder:(id)folder
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 dataclass];
-  [v7 localID];
-  if (v8 == (&dword_0 + 1))
+  nameCopy = name;
+  folderCopy = folder;
+  dataclass = [folderCopy dataclass];
+  [folderCopy localID];
+  if (dataclass == (&dword_0 + 1))
   {
     LOBYTE(v19) = 1;
   }
 
   else
   {
-    if (v8 == &dword_10 || v8 == &dword_4)
+    if (dataclass == &dword_10 || dataclass == &dword_4)
     {
       v9 = +[ASLocalDBHelper sharedInstance];
-      v10 = [(ASDaemonAccount *)self accountID];
-      v11 = [(ASDaemonAccount *)self changeTrackingID];
-      [v9 calOpenDatabaseForAccountID:v10 clientID:v11];
+      accountID = [(ASDaemonAccount *)self accountID];
+      changeTrackingID = [(ASDaemonAccount *)self changeTrackingID];
+      [v9 calOpenDatabaseForAccountID:accountID clientID:changeTrackingID];
 
-      v12 = [(ASDaemonAccount *)self accountID];
-      v13 = [v9 calDatabaseForAccountID:v12];
+      accountID2 = [(ASDaemonAccount *)self accountID];
+      displayName = [v9 calDatabaseForAccountID:accountID2];
 
       v14 = CalDatabaseCopyCalendarWithUID();
       if (!v14)
       {
         v19 = 0;
 LABEL_18:
-        v22 = [(ASDaemonAccount *)self accountID];
-        [v9 calCloseDatabaseForAccountID:v22 save:v19];
+        accountID3 = [(ASDaemonAccount *)self accountID];
+        [v9 calCloseDatabaseForAccountID:accountID3 save:v19];
 
         goto LABEL_19;
       }
@@ -1025,15 +1025,15 @@ LABEL_18:
       v16 = CalCalendarCopyTitle();
       if (!v16)
       {
-        v13 = [v7 displayName];
-        if (!v13)
+        displayName = [folderCopy displayName];
+        if (!displayName)
         {
           goto LABEL_9;
         }
       }
 
-      v17 = [v7 displayName];
-      v18 = [v16 isEqualToString:v17];
+      displayName2 = [folderCopy displayName];
+      v18 = [v16 isEqualToString:displayName2];
 
       if (v16)
       {
@@ -1067,7 +1067,7 @@ LABEL_17:
     if (os_log_type_enabled(v20, v21))
     {
       v24 = 134217984;
-      v25 = v8;
+      v25 = dataclass;
       _os_log_impl(&dword_0, v20, v21, "No support for locally modifying containers of dataclass %lx", &v24, 0xCu);
     }
 
@@ -1081,10 +1081,10 @@ LABEL_19:
 
 - (void)_pruneFoldersToMonitorOfOrphanedFolders
 {
-  v3 = [(ASDaemonAccount *)self folderHierarchy];
-  v4 = [v3 folderCache];
+  folderHierarchy = [(ASDaemonAccount *)self folderHierarchy];
+  folderCache = [folderHierarchy folderCache];
 
-  v5 = [v4 objectForKeyedSubscript:@"ASFolders"];
+  v5 = [folderCache objectForKeyedSubscript:@"ASFolders"];
   v6 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
   v24 = 0u;
   v25 = 0u;
@@ -1105,10 +1105,10 @@ LABEL_19:
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v24 + 1) + 8 * v10) serverID];
-        if (v11)
+        serverID = [*(*(&v24 + 1) + 8 * v10) serverID];
+        if (serverID)
         {
-          [v6 addObject:v11];
+          [v6 addObject:serverID];
         }
 
         v10 = v10 + 1;
@@ -1121,12 +1121,12 @@ LABEL_19:
     while (v8);
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  v13 = [(NSMutableDictionary *)v12->_foldersToMonitorById allKeys];
-  v14 = [NSArray arrayWithArray:v13];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allKeys = [(NSMutableDictionary *)selfCopy->_foldersToMonitorById allKeys];
+  v14 = [NSArray arrayWithArray:allKeys];
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -1149,7 +1149,7 @@ LABEL_19:
         v19 = *(*(&v20 + 1) + 8 * v18);
         if (!v19 || ([v6 containsObject:{*(*(&v20 + 1) + 8 * v18), v20}] & 1) == 0)
         {
-          [(ASDaemonAccount *)v12 stopMonitoringFolderWithID:v19, v20];
+          [(ASDaemonAccount *)selfCopy stopMonitoringFolderWithID:v19, v20];
         }
 
         v18 = v18 + 1;
@@ -1163,21 +1163,21 @@ LABEL_19:
   }
 }
 
-- (void)folderSyncTask:(id)a3 completedWithStatus:(int64_t)a4 error:(id)a5 foldersChanged:(id)a6 newSyncKey:(id)a7
+- (void)folderSyncTask:(id)task completedWithStatus:(int64_t)status error:(id)error foldersChanged:(id)changed newSyncKey:(id)key
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  taskCopy = task;
+  errorCopy = error;
+  changedCopy = changed;
+  keyCopy = key;
   if ([(ASDaemonAccount *)self isGoogleAccount])
   {
-    v17 = [v14 domain];
-    if ([v17 isEqualToString:ASHTTPConnectionErrorDomain] && objc_msgSend(v14, "code") == &stru_158.reloff + 3)
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:ASHTTPConnectionErrorDomain] && objc_msgSend(errorCopy, "code") == &stru_158.reloff + 3)
     {
-      v18 = [(ASDaemonAccount *)self backingAccountInfo];
-      v19 = [v18 mcBackingPayload];
+      backingAccountInfo = [(ASDaemonAccount *)self backingAccountInfo];
+      mcBackingPayload = [backingAccountInfo mcBackingPayload];
 
-      if (!v19)
+      if (!mcBackingPayload)
       {
         v20 = DALoggingwithCategory();
         v21 = _CPLog_to_os_log_type[3];
@@ -1194,48 +1194,48 @@ LABEL_19:
     }
   }
 
-  v22 = [(ASDaemonAccount *)self consumerForTask:v13];
+  v22 = [(ASDaemonAccount *)self consumerForTask:taskCopy];
   ADClientAddValueForScalarKey();
-  if (a4 <= 0x21)
+  if (status <= 0x21)
   {
-    if (((1 << a4) & 0x2000002E0) != 0)
+    if (((1 << status) & 0x2000002E0) != 0)
     {
 LABEL_16:
       [(ASDaemonAccount *)self _pruneFoldersToMonitorOfOrphanedFolders];
-      v27 = [v13 context];
-      [v22 folderHierarchyFailedToUpdate:v27 withStatus:a4 andError:v14];
+      context = [taskCopy context];
+      [v22 folderHierarchyFailedToUpdate:context withStatus:status andError:errorCopy];
 
       goto LABEL_17;
     }
 
-    if (((1 << a4) & 0x500) != 0)
+    if (((1 << status) & 0x500) != 0)
     {
-      v23 = [(ASDaemonAccount *)self folderHierarchy];
-      [v23 blowAwayFolderCache];
+      folderHierarchy = [(ASDaemonAccount *)self folderHierarchy];
+      [folderHierarchy blowAwayFolderCache];
 
-      v24 = [v13 context];
-      [(ASDaemonAccount *)self syncFolderHierarchyWithConsumer:v22 requireChangedFolders:0 context:v24];
+      context2 = [taskCopy context];
+      [(ASDaemonAccount *)self syncFolderHierarchyWithConsumer:v22 requireChangedFolders:0 context:context2];
 
       v25 = 0;
       goto LABEL_24;
     }
 
-    if (a4 == 3)
+    if (status == 3)
     {
       v26 = +[NSAssertionHandler currentHandler];
-      [v26 handleFailureInMethod:a2 object:self file:@"ASDaemonAccount.m" lineNumber:622 description:{@"We should not get an ObjectAlreadyExists error for anything but a FolderCreate task.  Task was %@", v13}];
+      [v26 handleFailureInMethod:a2 object:self file:@"ASDaemonAccount.m" lineNumber:622 description:{@"We should not get an ObjectAlreadyExists error for anything but a FolderCreate task.  Task was %@", taskCopy}];
 
       [(ASDaemonAccount *)self _pruneFoldersToMonitorOfOrphanedFolders];
       goto LABEL_17;
     }
   }
 
-  if ((a4 + 1) < 2)
+  if ((status + 1) < 2)
   {
     goto LABEL_16;
   }
 
-  if (a4 != 2)
+  if (status != 2)
   {
     v37 = DALoggingwithCategory();
     v38 = _CPLog_to_os_log_type[3];
@@ -1246,7 +1246,7 @@ LABEL_16:
       *buf = 138412546;
       v42 = v40;
       v43 = 2048;
-      v44 = a4;
+      statusCopy = status;
       _os_log_impl(&dword_0, v37, v38, "%@ Unrecoverable error %ld", buf, 0x16u);
     }
 
@@ -1254,18 +1254,18 @@ LABEL_16:
   }
 
   ADClientAddValueForScalarKey();
-  if (![(ASDaemonAccount *)self _handleSuccessfulFolderChangeForFolders:v15 previousSyncKey:v16])
+  if (![(ASDaemonAccount *)self _handleSuccessfulFolderChangeForFolders:changedCopy previousSyncKey:keyCopy])
   {
     v25 = 1;
 LABEL_24:
     [(ASDaemonAccount *)self setSafeToPing:0];
-    v30 = self;
-    objc_sync_enter(v30);
-    v31 = [(NSMutableDictionary *)v30->_foldersToMonitorById allKeys];
-    v32 = [NSArray arrayWithArray:v31];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    allKeys = [(NSMutableDictionary *)selfCopy->_foldersToMonitorById allKeys];
+    v32 = [NSArray arrayWithArray:allKeys];
 
-    objc_sync_exit(v30);
-    [(ASDaemonAccount *)v30 _stopMonitoringFoldersWithIds:v32];
+    objc_sync_exit(selfCopy);
+    [(ASDaemonAccount *)selfCopy _stopMonitoringFoldersWithIds:v32];
 
     if (!v25)
     {
@@ -1277,94 +1277,94 @@ LABEL_24:
 
   [(ASDaemonAccount *)self _pruneFoldersToMonitorOfOrphanedFolders];
 LABEL_25:
-  v33 = [v13 context];
-  [v22 folderHierarchySuccessfullyUpdated:v33 withNumChangedFolders:{objc_msgSend(v15, "count")}];
+  context3 = [taskCopy context];
+  [v22 folderHierarchySuccessfullyUpdated:context3 withNumChangedFolders:{objc_msgSend(changedCopy, "count")}];
 
   v34 = DALoggingwithCategory();
   v35 = _CPLog_to_os_log_type[7];
   if (os_log_type_enabled(v34, v35))
   {
-    v36 = [v15 count];
+    v36 = [changedCopy count];
     *buf = 134217984;
     v42 = v36;
     _os_log_impl(&dword_0, v34, v35, "Folder change count: %lu", buf, 0xCu);
   }
 
-  -[ASDaemonAccount _reportFolderHierarchySyncSuccessWithCount:](self, "_reportFolderHierarchySyncSuccessWithCount:", [v15 count]);
+  -[ASDaemonAccount _reportFolderHierarchySyncSuccessWithCount:](self, "_reportFolderHierarchySyncSuccessWithCount:", [changedCopy count]);
 LABEL_17:
-  [(ASDaemonAccount *)self removeConsumerForTask:v13];
-  v28 = [v13 dataclasses];
-  if (v28)
+  [(ASDaemonAccount *)self removeConsumerForTask:taskCopy];
+  dataclasses = [taskCopy dataclasses];
+  if (dataclasses)
   {
     v29 = +[DALocalDBGateKeeper sharedGateKeeper];
-    [v29 relinquishLocksForWaiter:self dataclasses:v28 moreComing:0];
+    [v29 relinquishLocksForWaiter:self dataclasses:dataclasses moreComing:0];
   }
 }
 
-- (BOOL)_handleNameCollisionOnAddedFolder:(id)a3 consumer:(id)a4 completionBlock:(id)a5
+- (BOOL)_handleNameCollisionOnAddedFolder:(id)folder consumer:(id)consumer completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 displayName];
-  v12 = [v11 rangeOfString:@" " options:4];
-  if (v12 == 0x7FFFFFFFFFFFFFFFLL || (v14 = v12, v15 = &v12[v13], &v12[v13] >= [v11 length]) || (objc_msgSend(v11, "substringFromIndex:", v15), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "intValue"), v16, !v17))
+  folderCopy = folder;
+  consumerCopy = consumer;
+  blockCopy = block;
+  displayName = [folderCopy displayName];
+  v12 = [displayName rangeOfString:@" " options:4];
+  if (v12 == 0x7FFFFFFFFFFFFFFFLL || (v14 = v12, v15 = &v12[v13], &v12[v13] >= [displayName length]) || (objc_msgSend(displayName, "substringFromIndex:", v15), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "intValue"), v16, !v17))
   {
-    v20 = [v11 stringByAppendingFormat:@" 1"];
+    v20 = [displayName stringByAppendingFormat:@" 1"];
   }
 
   else
   {
     v18 = v17;
-    v19 = [v11 substringToIndex:v14];
+    v19 = [displayName substringToIndex:v14];
     v20 = [v19 stringByAppendingFormat:@" %lu", v18 + 1];
   }
 
-  v21 = [(ASDaemonAccount *)self _setLocalDisplayName:v20 forFolder:v8];
+  v21 = [(ASDaemonAccount *)self _setLocalDisplayName:v20 forFolder:folderCopy];
   if (v21)
   {
     v22 = [ASFolder alloc];
-    v32 = self;
-    v23 = v10;
-    v24 = v9;
-    v25 = [v8 folderType];
-    v26 = [v8 serverID];
-    v27 = [v8 parentID];
-    v28 = [v8 localID];
-    v29 = v25;
-    v9 = v24;
-    v10 = v23;
-    v30 = [v22 initWithFolderType:v29 serverID:v26 parentID:v27 displayName:v20 localID:v28];
+    selfCopy = self;
+    v23 = blockCopy;
+    v24 = consumerCopy;
+    folderType = [folderCopy folderType];
+    serverID = [folderCopy serverID];
+    parentID = [folderCopy parentID];
+    localID = [folderCopy localID];
+    v29 = folderType;
+    consumerCopy = v24;
+    blockCopy = v23;
+    v30 = [v22 initWithFolderType:v29 serverID:serverID parentID:parentID displayName:v20 localID:localID];
 
-    [v30 setChangeType:{objc_msgSend(v8, "changeType")}];
+    [v30 setChangeType:{objc_msgSend(folderCopy, "changeType")}];
     [v30 setRenameOnCollision:{objc_msgSend(v30, "renameOnCollision")}];
-    [(ASDaemonAccount *)v32 syncLocallyChangedFolder:v30 consumer:v9 completionBlock:v23];
+    [(ASDaemonAccount *)selfCopy syncLocallyChangedFolder:v30 consumer:consumerCopy completionBlock:v23];
   }
 
   return v21;
 }
 
-- (void)folderLocalUpdateTask:(id)a3 completedWithStatus:(int64_t)a4 error:(id)a5 updatedFolder:(id)a6 newSyncKey:(id)a7 completionBlock:(id)a8
+- (void)folderLocalUpdateTask:(id)task completedWithStatus:(int64_t)status error:(id)error updatedFolder:(id)folder newSyncKey:(id)key completionBlock:(id)block
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v37 = a7;
-  v17 = a8;
-  v18 = [(ASDaemonAccount *)self consumerForTask:v14];
-  if (a4 <= 0x21)
+  taskCopy = task;
+  errorCopy = error;
+  folderCopy = folder;
+  keyCopy = key;
+  blockCopy = block;
+  v18 = [(ASDaemonAccount *)self consumerForTask:taskCopy];
+  if (status <= 0x21)
   {
-    if (((1 << a4) & 0x200001AD0) != 0)
+    if (((1 << status) & 0x200001AD0) != 0)
     {
 LABEL_13:
       [(ASDaemonAccount *)self _pruneFoldersToMonitorOfOrphanedFolders];
       goto LABEL_14;
     }
 
-    if (((1 << a4) & 0x520) != 0)
+    if (((1 << status) & 0x520) != 0)
     {
-      v19 = [(ASDaemonAccount *)self folderHierarchy];
-      [v19 blowAwayFolderCache];
+      folderHierarchy = [(ASDaemonAccount *)self folderHierarchy];
+      [folderHierarchy blowAwayFolderCache];
 
       [(ASDaemonAccount *)self _setFolderHierarchyNeedsUpdate:0];
       v34 = 0;
@@ -1372,9 +1372,9 @@ LABEL_13:
       goto LABEL_5;
     }
 
-    if (a4 == 3)
+    if (status == 3)
     {
-      if ([v16 renameOnCollision] && -[ASDaemonAccount _handleNameCollisionOnAddedFolder:consumer:completionBlock:](self, "_handleNameCollisionOnAddedFolder:consumer:completionBlock:", v16, v18, v17))
+      if ([folderCopy renameOnCollision] && -[ASDaemonAccount _handleNameCollisionOnAddedFolder:consumer:completionBlock:](self, "_handleNameCollisionOnAddedFolder:consumer:completionBlock:", folderCopy, v18, blockCopy))
       {
         [(ASDaemonAccount *)self _pruneFoldersToMonitorOfOrphanedFolders];
         goto LABEL_15;
@@ -1384,12 +1384,12 @@ LABEL_13:
     }
   }
 
-  if ((a4 + 1) < 2)
+  if ((status + 1) < 2)
   {
     goto LABEL_13;
   }
 
-  if (a4 != 2)
+  if (status != 2)
   {
     v30 = DALoggingwithCategory();
     v31 = _CPLog_to_os_log_type[3];
@@ -1400,16 +1400,16 @@ LABEL_13:
       *buf = 138412546;
       v39 = v33;
       v40 = 2048;
-      v41 = a4;
+      statusCopy = status;
       _os_log_impl(&dword_0, v30, v31, "%@ Unrecoverable error %ld", buf, 0x16u);
     }
 
     exit(-1);
   }
 
-  v42 = v16;
+  v42 = folderCopy;
   v25 = [NSArray arrayWithObjects:&v42 count:1];
-  v26 = [(ASDaemonAccount *)self _handleSuccessfulFolderChangeForFolders:v25 previousSyncKey:v37];
+  v26 = [(ASDaemonAccount *)self _handleSuccessfulFolderChangeForFolders:v25 previousSyncKey:keyCopy];
 
   if (v26)
   {
@@ -1422,13 +1422,13 @@ LABEL_13:
   v34 = 1;
 LABEL_5:
   [(ASDaemonAccount *)self setSafeToPing:0];
-  v20 = self;
-  objc_sync_enter(v20);
-  v21 = [(NSMutableDictionary *)v20->_foldersToMonitorById allKeys];
-  v22 = [NSArray arrayWithArray:v21];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allKeys = [(NSMutableDictionary *)selfCopy->_foldersToMonitorById allKeys];
+  v22 = [NSArray arrayWithArray:allKeys];
 
-  objc_sync_exit(v20);
-  [(ASDaemonAccount *)v20 _stopMonitoringFoldersWithIds:v22];
+  objc_sync_exit(selfCopy);
+  [(ASDaemonAccount *)selfCopy _stopMonitoringFoldersWithIds:v22];
 
   if (!v34)
   {
@@ -1438,7 +1438,7 @@ LABEL_5:
     }
 
 LABEL_14:
-    [v18 localChangeForFolder:v16 finishedWithStatus:a4 andError:v15 completionBlock:v17];
+    [v18 localChangeForFolder:folderCopy finishedWithStatus:status andError:errorCopy completionBlock:blockCopy];
     goto LABEL_15;
   }
 
@@ -1447,48 +1447,48 @@ LABEL_21:
   v28 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v27, v28))
   {
-    v29 = [(ASDaemonAccount *)self folderHierarchy];
-    [v29 folderCache];
+    folderHierarchy2 = [(ASDaemonAccount *)self folderHierarchy];
+    [folderHierarchy2 folderCache];
     v39 = *buf = 138412290;
     v35 = v39;
     _os_log_impl(&dword_0, v27, v28, "New folder cache due to local update: %@", buf, 0xCu);
   }
 
-  [v18 localChangeForFolder:v16 finishedWithStatus:2 andError:0 completionBlock:v17];
+  [v18 localChangeForFolder:folderCopy finishedWithStatus:2 andError:0 completionBlock:blockCopy];
   if (v36)
   {
     goto LABEL_14;
   }
 
 LABEL_15:
-  [(ASDaemonAccount *)self removeConsumerForTask:v14];
-  v23 = [v14 dataclasses];
-  if (v23)
+  [(ASDaemonAccount *)self removeConsumerForTask:taskCopy];
+  dataclasses = [taskCopy dataclasses];
+  if (dataclasses)
   {
     v24 = +[DALocalDBGateKeeper sharedGateKeeper];
-    [v24 relinquishLocksForWaiter:self dataclasses:v23 moreComing:0];
+    [v24 relinquishLocksForWaiter:self dataclasses:dataclasses moreComing:0];
   }
 }
 
-- (void)_reallySyncLocallyChangedFolder:(id)a3 consumer:(id)a4 dataclasses:(int64_t)a5 completionBlock:(id)a6
+- (void)_reallySyncLocallyChangedFolder:(id)folder consumer:(id)consumer dataclasses:(int64_t)dataclasses completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(ASDaemonAccount *)self folderHierarchy];
-  v14 = [v13 foldersTag];
-  v15 = [ASFolderLocalUpdateTask taskWithFolder:v10 previousSyncKey:v14 completionBlock:v12];
+  folderCopy = folder;
+  consumerCopy = consumer;
+  blockCopy = block;
+  folderHierarchy = [(ASDaemonAccount *)self folderHierarchy];
+  foldersTag = [folderHierarchy foldersTag];
+  v15 = [ASFolderLocalUpdateTask taskWithFolder:folderCopy previousSyncKey:foldersTag completionBlock:blockCopy];
 
-  v16 = [v10 dataclass];
-  if (v16 > 15)
+  dataclass = [folderCopy dataclass];
+  if (dataclass > 15)
   {
-    if (v16 == &dword_10)
+    if (dataclass == &dword_10)
     {
       v17 = @"com.apple.reminder";
       goto LABEL_13;
     }
 
-    if (v16 == &stru_20)
+    if (dataclass == &stru_20)
     {
       v17 = @"com.apple.mobilenotes";
       goto LABEL_13;
@@ -1497,13 +1497,13 @@ LABEL_15:
 
   else
   {
-    if (v16 == (&dword_0 + 2))
+    if (dataclass == (&dword_0 + 2))
     {
       v17 = @"com.apple.MobileAddressBook";
       goto LABEL_13;
     }
 
-    if (v16 == &dword_4)
+    if (dataclass == &dword_4)
     {
       v17 = @"com.apple.mobilecal";
 LABEL_13:
@@ -1517,32 +1517,32 @@ LABEL_13:
   if (os_log_type_enabled(v18, v19))
   {
     v21 = 134217984;
-    v22 = [v10 dataclass];
+    dataclass2 = [folderCopy dataclass];
     _os_log_impl(&dword_0, v18, v19, "Unrecognized folder dataclass: %ld", &v21, 0xCu);
   }
 
 LABEL_14:
-  [v15 setDataclasses:a5];
+  [v15 setDataclasses:dataclasses];
   [v15 setDelegate:self];
-  if (v11)
+  if (consumerCopy)
   {
-    [(ASDaemonAccount *)self setConsumer:v11 forTask:v15];
-    v20 = [(ASDaemonAccount *)self taskManager];
-    [v20 submitExclusiveTask:v15];
+    [(ASDaemonAccount *)self setConsumer:consumerCopy forTask:v15];
+    taskManager = [(ASDaemonAccount *)self taskManager];
+    [taskManager submitExclusiveTask:v15];
   }
 
   else
   {
-    v20 = [(ASDaemonAccount *)self taskManager];
-    [v20 submitIndependentTask:v15];
+    taskManager = [(ASDaemonAccount *)self taskManager];
+    [taskManager submitIndependentTask:v15];
   }
 }
 
-- (void)syncLocallyChangedFolder:(id)a3 consumer:(id)a4 completionBlock:(id)a5
+- (void)syncLocallyChangedFolder:(id)folder consumer:(id)consumer completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  folderCopy = folder;
+  consumerCopy = consumer;
+  blockCopy = block;
   v11 = 2;
   if (![(ASDaemonAccount *)self enabledForDADataclass:2])
   {
@@ -1572,40 +1572,40 @@ LABEL_14:
     v13[2] = sub_1DCC8;
     v13[3] = &unk_6D0E0;
     v13[4] = self;
-    v14 = v8;
-    v15 = v9;
+    v14 = folderCopy;
+    v15 = consumerCopy;
     v17 = v11;
-    v16 = v10;
+    v16 = blockCopy;
     [v12 registerWaiter:self forDataclassLocks:v11 completionHandler:v13];
   }
 
   else
   {
-    [(ASDaemonAccount *)self _reallySyncLocallyChangedFolder:v8 consumer:v9 dataclasses:0 completionBlock:v10];
+    [(ASDaemonAccount *)self _reallySyncLocallyChangedFolder:folderCopy consumer:consumerCopy dataclasses:0 completionBlock:blockCopy];
   }
 }
 
-- (void)_refirePingWithXPCActivityDelay:(int64_t)a3 withGrowthAction:(int)a4
+- (void)_refirePingWithXPCActivityDelay:(int64_t)delay withGrowthAction:(int)action
 {
   v7 = +[NSThread currentThread];
-  v8 = [v7 isMainThread];
+  isMainThread = [v7 isMainThread];
 
-  if ((v8 & 1) == 0)
+  if ((isMainThread & 1) == 0)
   {
     sub_4828C();
   }
 
   v9 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_int64(v9, XPC_ACTIVITY_DELAY, a3);
+  xpc_dictionary_set_int64(v9, XPC_ACTIVITY_DELAY, delay);
   xpc_dictionary_set_BOOL(v9, XPC_ACTIVITY_ALLOW_BATTERY, 1);
   xpc_dictionary_set_string(v9, XPC_ACTIVITY_PRIORITY, XPC_ACTIVITY_PRIORITY_UTILITY);
   xpc_dictionary_set_BOOL(v9, XPC_ACTIVITY_REPEATING, 0);
-  v10 = self;
-  objc_sync_enter(v10);
-  if (!v10->_hasScheduledPingXPCActivity)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_hasScheduledPingXPCActivity)
   {
-    v10->_hasScheduledPingXPCActivity = 1;
-    objc_initWeak(&location, v10);
+    selfCopy->_hasScheduledPingXPCActivity = 1;
+    objc_initWeak(&location, selfCopy);
     v11 = dataaccess_get_global_queue();
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
@@ -1613,17 +1613,17 @@ LABEL_14:
     v12[3] = &unk_6D130;
     v13 = v9;
     objc_copyWeak(&v14, &location);
-    v15 = a4;
+    actionCopy = action;
     dispatch_async(v11, v12);
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setSafeToPing:(BOOL)a3
+- (void)setSafeToPing:(BOOL)ping
 {
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
@@ -1633,41 +1633,41 @@ LABEL_14:
     _os_log_impl(&dword_0, v5, v6, "Invoking setSafeToPing", v8, 2u);
   }
 
-  self->_safeToPing = a3;
+  self->_safeToPing = ping;
   [(ASDaemonAccount *)self _cancelPingTask];
   LODWORD(v7) = 2.0;
   [(ASDaemonAccount *)self _refirePingAfterDelay:2 withGrowthAction:v7];
 }
 
-- (void)pingTask:(id)a3 completedWithStatus:(int64_t)a4 error:(id)a5 resultFolders:(id)a6 resultMaxFolders:(int)a7 resultHBInterval:(int)a8
+- (void)pingTask:(id)task completedWithStatus:(int64_t)status error:(id)error resultFolders:(id)folders resultMaxFolders:(int)maxFolders resultHBInterval:(int)interval
 {
-  v132 = a3;
-  v129 = a5;
-  v130 = a6;
+  taskCopy = task;
+  errorCopy = error;
+  foldersCopy = folders;
   v12 = DALoggingwithCategory();
   type = _CPLog_to_os_log_type[7];
   if (os_log_type_enabled(v12, type))
   {
     WeakRetained = objc_loadWeakRetained(&self->_pingTask);
     *buf = 138412546;
-    v160 = v132;
+    statusCopy4 = taskCopy;
     v161 = 2112;
     v162 = WeakRetained;
     _os_log_impl(&dword_0, v12, type, "ping task is %@, and _pingTask task is %@. They should be the same.", buf, 0x16u);
   }
 
   v14 = objc_loadWeakRetained(&self->_pingTask);
-  v15 = v14 == v132;
+  v15 = v14 == taskCopy;
 
   v16 = DALoggingwithCategory();
-  v17 = v16;
+  folders2 = v16;
   if (!v15)
   {
     if (os_log_type_enabled(v16, type))
     {
       *buf = 138412290;
-      v160 = v132;
-      _os_log_impl(&dword_0, &v17->super, type, "Ignoring response for old ping task %@", buf, 0xCu);
+      statusCopy4 = taskCopy;
+      _os_log_impl(&dword_0, &folders2->super, type, "Ignoring response for old ping task %@", buf, 0xCu);
     }
 
     goto LABEL_191;
@@ -1677,10 +1677,10 @@ LABEL_14:
   if (os_log_type_enabled(v16, v18))
   {
     *buf = 134218240;
-    v160 = a4;
+    statusCopy4 = status;
     v161 = 1024;
-    LODWORD(v162) = a8;
-    _os_log_impl(&dword_0, &v17->super, v18, "Ping task status %ld, resultHBInterval: %d", buf, 0x12u);
+    LODWORD(v162) = interval;
+    _os_log_impl(&dword_0, &folders2->super, v18, "Ping task status %ld, resultHBInterval: %d", buf, 0x12u);
   }
 
   v128 = v18;
@@ -1695,11 +1695,11 @@ LABEL_14:
 
   objc_storeWeak(&self->_pingTask, 0);
   ADClientAddValueForScalarKey();
-  if (a4 <= 11)
+  if (status <= 11)
   {
-    if (a4 <= 0)
+    if (status <= 0)
     {
-      if (a4 == -2)
+      if (status == -2)
       {
         v93 = DALoggingwithCategory();
         if (os_log_type_enabled(v93, v128))
@@ -1715,7 +1715,7 @@ LABEL_14:
 
       else
       {
-        if (a4 == -1)
+        if (status == -1)
         {
           v94 = DALoggingwithCategory();
           if (os_log_type_enabled(v94, v128))
@@ -1727,7 +1727,7 @@ LABEL_14:
 
         else
         {
-          if (a4)
+          if (status)
           {
             goto LABEL_117;
           }
@@ -1754,7 +1754,7 @@ LABEL_141:
       goto LABEL_159;
     }
 
-    if (a4 == 1 || a4 == 5 || a4 == 9)
+    if (status == 1 || status == 5 || status == 9)
     {
 LABEL_120:
       [(PCConnectionManager *)self->_pcManager resumeManagerWithAction:5];
@@ -1771,16 +1771,16 @@ LABEL_117:
     if (os_log_type_enabled(v95, v96))
     {
       *buf = 134217984;
-      v160 = a4;
+      statusCopy4 = status;
       _os_log_impl(&dword_0, v95, v96, "PingTask: unhandled status of %ld", buf, 0xCu);
     }
 
     goto LABEL_120;
   }
 
-  if (a4 <= 50)
+  if (status <= 50)
   {
-    if (a4 == 12)
+    if (status == 12)
     {
       v74 = DALoggingwithCategory();
       if (os_log_type_enabled(v74, v128))
@@ -1791,13 +1791,13 @@ LABEL_117:
 
       [(ASDaemonAccount *)self setSafeToPing:0];
       [(ASDaemonAccount *)self _setFolderHierarchyNeedsUpdate:0];
-      v75 = self;
-      objc_sync_enter(v75);
-      if (v75->_hierarchyChangeHistory)
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      if (selfCopy->_hierarchyChangeHistory)
       {
         hierarchyChangeHistory = +[NSDate date];
-        v77 = [(ASFolderChangedHistory *)v75->_hierarchyChangeHistory startTime];
-        [hierarchyChangeHistory timeIntervalSinceDate:v77];
+        startTime = [(ASFolderChangedHistory *)selfCopy->_hierarchyChangeHistory startTime];
+        [hierarchyChangeHistory timeIntervalSinceDate:startTime];
         v79 = v78 > 600.0;
 
         if (v79)
@@ -1809,35 +1809,35 @@ LABEL_117:
             _os_log_impl(&dword_0, v80, type, "Refresh ping history for folder hierarchy. Discard old data.", buf, 2u);
           }
 
-          [(ASFolderChangedHistory *)v75->_hierarchyChangeHistory setCount:1];
-          [(ASFolderChangedHistory *)v75->_hierarchyChangeHistory setStartTime:hierarchyChangeHistory];
+          [(ASFolderChangedHistory *)selfCopy->_hierarchyChangeHistory setCount:1];
+          [(ASFolderChangedHistory *)selfCopy->_hierarchyChangeHistory setStartTime:hierarchyChangeHistory];
         }
 
         else
         {
-          [(ASFolderChangedHistory *)v75->_hierarchyChangeHistory setCount:[(ASFolderChangedHistory *)v75->_hierarchyChangeHistory count]+ 1];
+          [(ASFolderChangedHistory *)selfCopy->_hierarchyChangeHistory setCount:[(ASFolderChangedHistory *)selfCopy->_hierarchyChangeHistory count]+ 1];
           v101 = DALoggingwithCategory();
           if (os_log_type_enabled(v101, type))
           {
-            v102 = [(ASFolderChangedHistory *)v75->_hierarchyChangeHistory count];
+            v102 = [(ASFolderChangedHistory *)selfCopy->_hierarchyChangeHistory count];
             *buf = 67109120;
-            LODWORD(v160) = v102;
+            LODWORD(statusCopy4) = v102;
             _os_log_impl(&dword_0, v101, type, "Update ping history for folder hierarchy to count %d", buf, 8u);
           }
 
-          if ([(ASFolderChangedHistory *)v75->_hierarchyChangeHistory count]>= 11)
+          if ([(ASFolderChangedHistory *)selfCopy->_hierarchyChangeHistory count]>= 11)
           {
             v103 = DALoggingwithCategory();
             v104 = _CPLog_to_os_log_type[3];
             if (os_log_type_enabled(v103, v104))
             {
-              v105 = [(ASFolderChangedHistory *)v75->_hierarchyChangeHistory startTime];
+              startTime2 = [(ASFolderChangedHistory *)selfCopy->_hierarchyChangeHistory startTime];
               *buf = 138412290;
-              v160 = v105;
+              statusCopy4 = startTime2;
               _os_log_impl(&dword_0, v103, v104, "Folder hierarchy has more than 10 changes since %@ in ping history. Adding it to black list. User must manually refresh to get it to push again.", buf, 0xCu);
             }
 
-            v75->_isHierarchyChangeBlackListed = 1;
+            selfCopy->_isHierarchyChangeBlackListed = 1;
           }
         }
       }
@@ -1852,31 +1852,31 @@ LABEL_117:
         }
 
         v98 = [[ASFolderChangedHistory alloc] initWithCount:1];
-        hierarchyChangeHistory = v75->_hierarchyChangeHistory;
-        v75->_hierarchyChangeHistory = v98;
+        hierarchyChangeHistory = selfCopy->_hierarchyChangeHistory;
+        selfCopy->_hierarchyChangeHistory = v98;
       }
 
-      objc_sync_exit(v75);
+      objc_sync_exit(selfCopy);
       goto LABEL_139;
     }
 
-    if (a4 != 49)
+    if (status != 49)
     {
-      if (a4 == 50)
+      if (status == 50)
       {
         ADClientAddValueForScalarKey();
-        v126 = v130;
+        v126 = foldersCopy;
         if (!v126 || (v23 = v126, ![v126 count]))
         {
           v23 = objc_opt_new();
-          v24 = [v132 folders];
-          v25 = [v24 allObjects];
+          folders = [taskCopy folders];
+          allObjects = [folders allObjects];
 
           v147 = 0u;
           v148 = 0u;
           v145 = 0u;
           v146 = 0u;
-          v26 = v25;
+          v26 = allObjects;
           v27 = [v26 countByEnumeratingWithState:&v145 objects:v157 count:16];
           if (v27)
           {
@@ -1890,8 +1890,8 @@ LABEL_117:
                   objc_enumerationMutation(v26);
                 }
 
-                v30 = [*(*(&v145 + 1) + 8 * i) serverID];
-                [v23 addObject:v30];
+                serverID = [*(*(&v145 + 1) + 8 * i) serverID];
+                [v23 addObject:serverID];
               }
 
               v27 = [v26 countByEnumeratingWithState:&v145 objects:v157 count:16];
@@ -1901,8 +1901,8 @@ LABEL_117:
           }
         }
 
-        v31 = self;
-        objc_sync_enter(v31);
+        selfCopy2 = self;
+        objc_sync_enter(selfCopy2);
         v141 = 0u;
         v142 = 0u;
         v143 = 0u;
@@ -1923,7 +1923,7 @@ LABEL_117:
               }
 
               v37 = *(*(&v141 + 1) + 8 * j);
-              v38 = [(NSMutableDictionary *)v31->_folderChangeHistory objectForKey:v37];
+              v38 = [(NSMutableDictionary *)selfCopy2->_folderChangeHistory objectForKey:v37];
               v39 = v38;
               if (v38)
               {
@@ -1933,7 +1933,7 @@ LABEL_117:
                 {
                   v41 = [(ASFolderChangedHistory *)v39 count];
                   *buf = 138412546;
-                  v160 = v37;
+                  statusCopy4 = v37;
                   v161 = 1024;
                   LODWORD(v162) = v41;
                   _os_log_impl(&dword_0, v40, type, "Update ping history for folder %@. New count is %d.", buf, 0x12u);
@@ -1945,11 +1945,11 @@ LABEL_117:
                   if (os_log_type_enabled(v42, v35))
                   {
                     *buf = 138412290;
-                    v160 = v37;
+                    statusCopy4 = v37;
                     _os_log_impl(&dword_0, v42, v35, "Folder %@ has more than 5 changes in ping history, without a successful sync. Adding it to black list. User must manually refresh to get it to push again.", buf, 0xCu);
                   }
 
-                  [(ASDaemonAccount *)v31 addFolderIDToPingHistoryBlacklist:v37];
+                  [(ASDaemonAccount *)selfCopy2 addFolderIDToPingHistoryBlacklist:v37];
                 }
               }
 
@@ -1959,12 +1959,12 @@ LABEL_117:
                 if (os_log_type_enabled(v43, type))
                 {
                   *buf = 138412290;
-                  v160 = v37;
+                  statusCopy4 = v37;
                   _os_log_impl(&dword_0, v43, type, "Create ping history for folder %@.", buf, 0xCu);
                 }
 
                 v39 = [[ASFolderChangedHistory alloc] initWithCount:1];
-                [(NSMutableDictionary *)v31->_folderChangeHistory setObject:v39 forKey:v37];
+                [(NSMutableDictionary *)selfCopy2->_folderChangeHistory setObject:v39 forKey:v37];
               }
             }
 
@@ -1974,17 +1974,17 @@ LABEL_117:
           while (v33);
         }
 
-        objc_sync_exit(v31);
-        v44 = [(ASDaemonAccount *)v31 _foldersToSyncGivenResults:v126];
+        objc_sync_exit(selfCopy2);
+        v44 = [(ASDaemonAccount *)selfCopy2 _foldersToSyncGivenResults:v126];
         if ([v44 count])
         {
-          [(NSMutableSet *)v31->_folderIdsWithUnacknowledgedPings addObjectsFromArray:v44];
-          [(ASDaemonAccount *)v31 setShouldUseOpportunisticSockets:0];
+          [(NSMutableSet *)selfCopy2->_folderIdsWithUnacknowledgedPings addObjectsFromArray:v44];
+          [(ASDaemonAccount *)selfCopy2 setShouldUseOpportunisticSockets:0];
           v45 = +[DARunLoopRegistry sharedRunLoop];
           v154 = DAChangedFolderIDs;
           v155 = v44;
           v46 = [NSDictionary dictionaryWithObjects:&v155 forKeys:&v154 count:1];
-          [(ASDaemonAccount *)v31 _enqueueNotificationWithName:DAAccountFolderContentsChangedNotification sourceRunLoop:v45 userInfo:v46];
+          [(ASDaemonAccount *)selfCopy2 _enqueueNotificationWithName:DAAccountFolderContentsChangedNotification sourceRunLoop:v45 userInfo:v46];
         }
 
         v48 = 0;
@@ -1995,13 +1995,13 @@ LABEL_117:
       goto LABEL_117;
     }
 
-    v81 = self;
-    objc_sync_enter(v81);
+    selfCopy3 = self;
+    objc_sync_enter(selfCopy3);
     v149 = 0u;
     v150 = 0u;
     v151 = 0u;
     v152 = 0u;
-    v82 = v81->_lastPingFolders;
+    v82 = selfCopy3->_lastPingFolders;
     v83 = [(NSSet *)v82 countByEnumeratingWithState:&v149 objects:v158 count:16];
     if (v83)
     {
@@ -2015,7 +2015,7 @@ LABEL_117:
             objc_enumerationMutation(v82);
           }
 
-          [(ASDaemonAccount *)v81 removeFromPingHierarchyAndHistoryBlacklistForFolderID:*(*(&v149 + 1) + 8 * k)];
+          [(ASDaemonAccount *)selfCopy3 removeFromPingHierarchyAndHistoryBlacklistForFolderID:*(*(&v149 + 1) + 8 * k)];
         }
 
         v83 = [(NSSet *)v82 countByEnumeratingWithState:&v149 objects:v158 count:16];
@@ -2024,10 +2024,10 @@ LABEL_117:
       while (v83);
     }
 
-    objc_sync_exit(v81);
+    objc_sync_exit(selfCopy3);
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, DAAccountFolderUpdatedWithNoChangesNotification, 0, 0, 0);
-    v87 = v81;
+    v87 = selfCopy3;
     objc_sync_enter(v87);
     if (!v87->_noChangeHistory)
     {
@@ -2046,8 +2046,8 @@ LABEL_117:
     }
 
     noChangeHistory = +[NSDate date];
-    v89 = [(ASFolderChangedHistory *)v87->_noChangeHistory startTime];
-    [noChangeHistory timeIntervalSinceDate:v89];
+    startTime3 = [(ASFolderChangedHistory *)v87->_noChangeHistory startTime];
+    [noChangeHistory timeIntervalSinceDate:startTime3];
     v91 = v90 > 120.0;
 
     if (v91)
@@ -2071,7 +2071,7 @@ LABEL_117:
       {
         v107 = [(ASFolderChangedHistory *)v87->_noChangeHistory count];
         *buf = 67109120;
-        LODWORD(v160) = v107;
+        LODWORD(statusCopy4) = v107;
         _os_log_impl(&dword_0, v106, type, "Update no change ping count to %d", buf, 8u);
       }
 
@@ -2081,9 +2081,9 @@ LABEL_117:
         v109 = _CPLog_to_os_log_type[3];
         if (os_log_type_enabled(v108, v109))
         {
-          v110 = [(ASFolderChangedHistory *)v87->_noChangeHistory startTime];
+          startTime4 = [(ASFolderChangedHistory *)v87->_noChangeHistory startTime];
           *buf = 138412290;
-          v160 = v110;
+          statusCopy4 = startTime4;
           _os_log_impl(&dword_0, v108, v109, "Ping request has more than 10 no change responses since %@. Adding it to black list. User must manually refresh to get it to push again.", buf, 0xCu);
         }
 
@@ -2116,21 +2116,21 @@ LABEL_153:
     goto LABEL_154;
   }
 
-  if (a4 <= 52)
+  if (status <= 52)
   {
-    if (a4 != 51)
+    if (status != 51)
     {
-      v20 = [v132 heartbeat];
+      heartbeat = [taskCopy heartbeat];
       pcManager = self->_pcManager;
-      v22 = a8;
-      if (v20 >= a8)
+      intervalCopy = interval;
+      if (heartbeat >= interval)
       {
-        [(PCConnectionManager *)pcManager setMaximumKeepAliveInterval:v22];
+        [(PCConnectionManager *)pcManager setMaximumKeepAliveInterval:intervalCopy];
       }
 
       else
       {
-        [(PCConnectionManager *)pcManager setMinimumKeepAliveInterval:v22];
+        [(PCConnectionManager *)pcManager setMinimumKeepAliveInterval:intervalCopy];
       }
 
 LABEL_139:
@@ -2155,9 +2155,9 @@ LABEL_140:
     goto LABEL_141;
   }
 
-  if (a4 != 53)
+  if (status != 53)
   {
-    if (a4 == 80)
+    if (status == 80)
     {
       v50 = DALoggingwithCategory();
       if (os_log_type_enabled(v50, v128))
@@ -2180,36 +2180,36 @@ LABEL_140:
     _os_log_impl(&dword_0, v52, v53, "Trimming folder list for Ping request", buf, 2u);
   }
 
-  v54 = self;
-  objc_sync_enter(v54);
-  v55 = [(NSMutableDictionary *)v54->_foldersToMonitorById count];
-  objc_sync_exit(v54);
+  selfCopy4 = self;
+  objc_sync_enter(selfCopy4);
+  v55 = [(NSMutableDictionary *)selfCopy4->_foldersToMonitorById count];
+  objc_sync_exit(selfCopy4);
 
-  v56 = v55 - a7;
-  if (((v55 - a7) & 0x80000000) != 0)
+  v56 = v55 - maxFolders;
+  if (((v55 - maxFolders) & 0x80000000) != 0)
   {
     goto LABEL_139;
   }
 
-  v57 = [(ASDaemonAccount *)v54 inboxFolder];
-  v58 = [v57 folderID];
+  inboxFolder = [(ASDaemonAccount *)selfCopy4 inboxFolder];
+  folderID = [inboxFolder folderID];
 
-  v59 = [(ASDaemonAccount *)v54 defaultContactsFolder];
-  v135 = [v59 folderID];
+  defaultContactsFolder = [(ASDaemonAccount *)selfCopy4 defaultContactsFolder];
+  folderID2 = [defaultContactsFolder folderID];
 
-  v60 = [(ASDaemonAccount *)v54 defaultEventsFolder];
-  v133 = [v60 folderID];
+  defaultEventsFolder = [(ASDaemonAccount *)selfCopy4 defaultEventsFolder];
+  folderID3 = [defaultEventsFolder folderID];
 
-  v61 = [(ASDaemonAccount *)v54 defaultToDosFolder];
-  v127 = [v61 folderID];
+  defaultToDosFolder = [(ASDaemonAccount *)selfCopy4 defaultToDosFolder];
+  folderID4 = [defaultToDosFolder folderID];
 
-  v62 = [(ASDaemonAccount *)v54 defaultNotesFolder];
-  v125 = [v62 folderID];
+  defaultNotesFolder = [(ASDaemonAccount *)selfCopy4 defaultNotesFolder];
+  folderID5 = [defaultNotesFolder folderID];
 
-  obj = v54;
+  obj = selfCopy4;
   objc_sync_enter(obj);
-  v63 = [(NSMutableDictionary *)v54->_foldersToMonitorById allValues];
-  v64 = [v63 copy];
+  allValues = [(NSMutableDictionary *)selfCopy4->_foldersToMonitorById allValues];
+  v64 = [allValues copy];
 
   v139 = 0u;
   v140 = 0u;
@@ -2229,10 +2229,10 @@ LABEL_140:
           objc_enumerationMutation(v65);
         }
 
-        v69 = [*(*(&v137 + 1) + 8 * m) serverID];
-        if (([v69 isEqualToString:v58] & 1) == 0 && (objc_msgSend(v69, "isEqualToString:", v135) & 1) == 0 && (objc_msgSend(v69, "isEqualToString:", v133) & 1) == 0 && (objc_msgSend(v69, "isEqualToString:", v127) & 1) == 0 && (objc_msgSend(v69, "isEqualToString:", v125) & 1) == 0)
+        serverID2 = [*(*(&v137 + 1) + 8 * m) serverID];
+        if (([serverID2 isEqualToString:folderID] & 1) == 0 && (objc_msgSend(serverID2, "isEqualToString:", folderID2) & 1) == 0 && (objc_msgSend(serverID2, "isEqualToString:", folderID3) & 1) == 0 && (objc_msgSend(serverID2, "isEqualToString:", folderID4) & 1) == 0 && (objc_msgSend(serverID2, "isEqualToString:", folderID5) & 1) == 0)
         {
-          [(NSMutableDictionary *)v54->_foldersToMonitorById removeObjectForKey:v69];
+          [(NSMutableDictionary *)selfCopy4->_foldersToMonitorById removeObjectForKey:serverID2];
           --v56;
         }
 
@@ -2267,7 +2267,7 @@ LABEL_140:
     if (os_log_type_enabled(v70, v71))
     {
       *buf = 67109120;
-      LODWORD(v160) = a7;
+      LODWORD(statusCopy4) = maxFolders;
       _os_log_impl(&dword_0, v72, v71, "Not going to ping because max folder count is %d", buf, 8u);
     }
 
@@ -2285,12 +2285,12 @@ LABEL_124:
 LABEL_154:
   v51 = 1;
 LABEL_155:
-  if (a4 != 49)
+  if (status != 49)
   {
 LABEL_159:
-    v113 = self;
-    objc_sync_enter(v113);
-    if (v113->_isNoChangeBlackListed)
+    selfCopy5 = self;
+    objc_sync_enter(selfCopy5);
+    if (selfCopy5->_isNoChangeBlackListed)
     {
       v114 = DALoggingwithCategory();
       if (os_log_type_enabled(v114, v128))
@@ -2299,10 +2299,10 @@ LABEL_159:
         _os_log_impl(&dword_0, v114, v128, "Remove from ping no change blacklist, after a ping response with status other than DAStatusNoChanges", buf, 2u);
       }
 
-      v113->_isNoChangeBlackListed = 0;
+      selfCopy5->_isNoChangeBlackListed = 0;
     }
 
-    if (v113->_noChangeHistory)
+    if (selfCopy5->_noChangeHistory)
     {
       v115 = DALoggingwithCategory();
       if (os_log_type_enabled(v115, type))
@@ -2311,11 +2311,11 @@ LABEL_159:
         _os_log_impl(&dword_0, v115, type, "Clearing ping no change history, after a ping response with status other than DAStatusNoChanges", buf, 2u);
       }
 
-      v116 = v113->_noChangeHistory;
-      v113->_noChangeHistory = 0;
+      v116 = selfCopy5->_noChangeHistory;
+      selfCopy5->_noChangeHistory = 0;
     }
 
-    objc_sync_exit(v113);
+    objc_sync_exit(selfCopy5);
 
     if (v48)
     {
@@ -2325,31 +2325,31 @@ LABEL_159:
 LABEL_157:
     if (v51)
     {
-      v17 = [v132 folders];
-      v112 = [v132 heartbeat];
+      folders2 = [taskCopy folders];
+      heartbeat2 = [taskCopy heartbeat];
     }
 
     else
     {
       lastPingHeartBeat = self->_lastPingHeartBeat;
-      if (lastPingHeartBeat == [v132 heartbeat])
+      if (lastPingHeartBeat == [taskCopy heartbeat])
       {
-        v112 = [v132 heartbeat];
+        heartbeat2 = [taskCopy heartbeat];
       }
 
       else
       {
-        v112 = 0;
+        heartbeat2 = 0;
       }
 
-      if (self->_lastPingFolders && ([v132 folders], v118 = objc_claimAutoreleasedReturnValue(), v119 = objc_msgSend(v118, "isEqualToSet:", self->_lastPingFolders), v118, v119))
+      if (self->_lastPingFolders && ([taskCopy folders], v118 = objc_claimAutoreleasedReturnValue(), v119 = objc_msgSend(v118, "isEqualToSet:", self->_lastPingFolders), v118, v119))
       {
-        v17 = [v132 folders];
+        folders2 = [taskCopy folders];
       }
 
       else
       {
-        v17 = 0;
+        folders2 = 0;
       }
     }
 
@@ -2362,26 +2362,26 @@ LABEL_157:
   }
 
 LABEL_168:
-  v17 = 0;
-  v112 = 0;
+  folders2 = 0;
+  heartbeat2 = 0;
 LABEL_176:
-  if (self->_lastPingFolders != v17)
+  if (self->_lastPingFolders != folders2)
   {
-    v120 = [(NSSet *)v17 copy];
+    v120 = [(NSSet *)folders2 copy];
     lastPingFolders = self->_lastPingFolders;
     self->_lastPingFolders = v120;
   }
 
-  self->_lastPingHeartBeat = v112;
+  self->_lastPingHeartBeat = heartbeat2;
   if (v73)
   {
-    if (!a4 || a4 == 51 || a4 == 80)
+    if (!status || status == 51 || status == 80)
     {
       v122 = DALoggingwithCategory();
       if (os_log_type_enabled(v122, v128))
       {
         *buf = 134217984;
-        v160 = a4;
+        statusCopy4 = status;
         _os_log_impl(&dword_0, v122, v128, "Reissuing Ping request after 60 second delay with status %ld", buf, 0xCu);
       }
 
@@ -2395,13 +2395,13 @@ LABEL_176:
     }
   }
 
-  else if (a4 != -1 && a4 != 53)
+  else if (status != -1 && status != 53)
   {
     v123 = DALoggingwithCategory();
     if (os_log_type_enabled(v123, v128))
     {
       *buf = 134217984;
-      v160 = a4;
+      statusCopy4 = status;
       _os_log_impl(&dword_0, v123, v128, "Create an XPC activity to fire the Ping task in case PCConnectionManager does not do it. Status %ld", buf, 0xCu);
     }
 
@@ -2411,7 +2411,7 @@ LABEL_176:
 LABEL_191:
 }
 
-- (void)_reissuePingFromXPCActivityWithGrowthAction:(int)a3
+- (void)_reissuePingFromXPCActivityWithGrowthAction:(int)action
 {
   v5 = dataaccess_get_global_queue();
   v6[0] = _NSConcreteStackBlock;
@@ -2419,46 +2419,46 @@ LABEL_191:
   v6[2] = sub_1FD24;
   v6[3] = &unk_6D158;
   v6[4] = self;
-  v7 = a3;
+  actionCopy = action;
   dispatch_async(v5, v6);
 }
 
-- (void)reissuePingFromTimer:(id)a3
+- (void)reissuePingFromTimer:(id)timer
 {
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  WeakRetained = objc_loadWeakRetained(&v6->_pingTask);
+  timerCopy = timer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_pingTask);
 
   if (WeakRetained)
   {
     v12 = +[NSAssertionHandler currentHandler];
-    [v12 handleFailureInMethod:a2 object:v6 file:@"ASDaemonAccount.m" lineNumber:1362 description:@"this timer shouldn't fire if we've got a ping task."];
+    [v12 handleFailureInMethod:a2 object:selfCopy file:@"ASDaemonAccount.m" lineNumber:1362 description:@"this timer shouldn't fire if we've got a ping task."];
   }
 
-  objc_storeWeak(&v6->_delayedPingTimer, 0);
+  objc_storeWeak(&selfCopy->_delayedPingTimer, 0);
   v8 = DALoggingwithCategory();
   v9 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v8, v9))
   {
     v13 = 138412290;
-    v14 = [(ASDaemonAccount *)v6 _pingPowerAssertionIdentifier];
+    _pingPowerAssertionIdentifier = [(ASDaemonAccount *)selfCopy _pingPowerAssertionIdentifier];
     _os_log_impl(&dword_0, v8, v9, "Release power assertion %@", &v13, 0xCu);
   }
 
-  [(ASDaemonAccount *)v6 _pingPowerAssertionIdentifier];
+  [(ASDaemonAccount *)selfCopy _pingPowerAssertionIdentifier];
   CPSetPowerAssertionWithIdentifier();
-  if (v6->_hasScheduledPingXPCActivity)
+  if (selfCopy->_hasScheduledPingXPCActivity)
   {
-    v6->_hasScheduledPingXPCActivity = 0;
+    selfCopy->_hasScheduledPingXPCActivity = 0;
     v10 = dataaccess_get_global_queue();
     dispatch_async(v10, &stru_6D178);
   }
 
-  v11 = [v5 userInfo];
-  -[ASDaemonAccount _reissuePingTaskWithGrowthAction:](v6, "_reissuePingTaskWithGrowthAction:", [v11 intValue]);
+  userInfo = [timerCopy userInfo];
+  -[ASDaemonAccount _reissuePingTaskWithGrowthAction:](selfCopy, "_reissuePingTaskWithGrowthAction:", [userInfo intValue]);
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_pollFolders
@@ -2466,48 +2466,48 @@ LABEL_191:
   v3 = objc_opt_new();
   if ([(ASDaemonAccount *)self enabledForDADataclass:2])
   {
-    v4 = [(ASDaemonAccount *)self contactsFolders];
-    if (v4)
+    contactsFolders = [(ASDaemonAccount *)self contactsFolders];
+    if (contactsFolders)
     {
-      [v3 addObjectsFromArray:v4];
+      [v3 addObjectsFromArray:contactsFolders];
     }
   }
 
   if ([(ASDaemonAccount *)self enabledForDADataclass:4])
   {
-    v5 = [(ASDaemonAccount *)self eventsFolders];
-    if (v5)
+    eventsFolders = [(ASDaemonAccount *)self eventsFolders];
+    if (eventsFolders)
     {
-      [v3 addObjectsFromArray:v5];
+      [v3 addObjectsFromArray:eventsFolders];
     }
   }
 
   if ([(ASDaemonAccount *)self enabledForDADataclass:16])
   {
-    v6 = [(ASDaemonAccount *)self toDosFolders];
-    if (v6)
+    toDosFolders = [(ASDaemonAccount *)self toDosFolders];
+    if (toDosFolders)
     {
-      [v3 addObjectsFromArray:v6];
+      [v3 addObjectsFromArray:toDosFolders];
     }
   }
 
   if ([(ASDaemonAccount *)self enabledForDADataclass:32])
   {
-    v7 = [(ASDaemonAccount *)self notesFolders];
-    if (v7)
+    notesFolders = [(ASDaemonAccount *)self notesFolders];
+    if (notesFolders)
     {
-      [v3 addObjectsFromArray:v7];
+      [v3 addObjectsFromArray:notesFolders];
     }
   }
 
   if (self->_foldersToMonitorById)
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    v9 = [(NSMutableDictionary *)self->_foldersToMonitorById allValues];
-    v10 = [NSArray arrayWithArray:v9];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    allValues = [(NSMutableDictionary *)self->_foldersToMonitorById allValues];
+    v10 = [NSArray arrayWithArray:allValues];
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
@@ -2544,8 +2544,8 @@ LABEL_191:
     }
   }
 
-  v16 = [v3 allObjects];
-  v17 = [v16 valueForKey:@"folderID"];
+  allObjects = [v3 allObjects];
+  v17 = [allObjects valueForKey:@"folderID"];
 
   v18 = [(ASDaemonAccount *)self _foldersToSyncGivenResults:v17];
   if ([v18 count])
@@ -2559,39 +2559,39 @@ LABEL_191:
   }
 }
 
-- (void)_enqueueNotificationWithName:(id)a3 sourceRunLoop:(id)a4 userInfo:(id)a5
+- (void)_enqueueNotificationWithName:(id)name sourceRunLoop:(id)loop userInfo:(id)info
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v10 currentMode];
-  v12 = v11;
+  nameCopy = name;
+  infoCopy = info;
+  loopCopy = loop;
+  currentMode = [loopCopy currentMode];
+  v12 = currentMode;
   v13 = NSDefaultRunLoopMode;
-  if (v11)
+  if (currentMode)
   {
-    v13 = v11;
+    v13 = currentMode;
   }
 
   v14 = v13;
 
-  v15 = [v10 getCFRunLoop];
+  getCFRunLoop = [loopCopy getCFRunLoop];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_20444;
   v19[3] = &unk_6D1A0;
-  v20 = v8;
-  v21 = self;
-  v22 = v9;
+  v20 = nameCopy;
+  selfCopy = self;
+  v22 = infoCopy;
   v23 = v14;
   v16 = v14;
-  v17 = v9;
-  v18 = v8;
-  CFRunLoopPerformBlock(v15, v16, v19);
+  v17 = infoCopy;
+  v18 = nameCopy;
+  CFRunLoopPerformBlock(getCFRunLoop, v16, v19);
 }
 
-- (void)connectionManager:(id)a3 handleEvent:(int)a4
+- (void)connectionManager:(id)manager handleEvent:(int)event
 {
-  v6 = a3;
+  managerCopy = manager;
   v7 = DALoggingwithCategory();
   v8 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v7, v8))
@@ -2599,19 +2599,19 @@ LABEL_191:
     v37 = 136315650;
     v38 = "[ASDaemonAccount connectionManager:handleEvent:]";
     v39 = 2112;
-    v40 = v6;
+    v40 = managerCopy;
     v41 = 1024;
-    v42 = a4;
+    eventCopy = event;
     _os_log_impl(&dword_0, v7, v8, "%s invoked: mgr: %@, reason:%d", &v37, 0x1Cu);
   }
 
-  if (a4 <= 4)
+  if (event <= 4)
   {
-    if (a4 != 2)
+    if (event != 2)
     {
-      if (a4 != 3)
+      if (event != 3)
       {
-        if (a4 == 4)
+        if (event == 4)
         {
           v9 = DALoggingwithCategory();
           v10 = _CPLog_to_os_log_type[7];
@@ -2626,18 +2626,18 @@ LABEL_191:
 
           [(ASDaemonAccount *)self _cancelPingTask];
           LODWORD(v11) = 0.5;
-          v12 = self;
+          selfCopy3 = self;
           v13 = 6;
 LABEL_47:
-          [(ASDaemonAccount *)v12 _refirePingAfterDelay:v13 withGrowthAction:v11];
+          [(ASDaemonAccount *)selfCopy3 _refirePingAfterDelay:v13 withGrowthAction:v11];
           goto LABEL_48;
         }
 
         goto LABEL_22;
       }
 
-      v25 = [v6 currentStyle];
-      switch(v25)
+      currentStyle = [managerCopy currentStyle];
+      switch(currentStyle)
       {
         case 0u:
           v29 = DALoggingwithCategory();
@@ -2668,9 +2668,9 @@ LABEL_47:
             v28 = _CPLog_to_os_log_type[7];
             if (os_log_type_enabled(v32, v28))
             {
-              v33 = [(ASDaemonAccount *)self accountDescription];
+              accountDescription = [(ASDaemonAccount *)self accountDescription];
               v37 = 138412290;
-              v38 = v33;
+              v38 = accountDescription;
               _os_log_impl(&dword_0, v32, v28, "Start fetching in automatically mode for account %@. Set automatic fetching state", &v37, 0xCu);
             }
 
@@ -2714,12 +2714,12 @@ LABEL_43:
 
     [(ASDaemonAccount *)self _cancelPingTask];
     LODWORD(v11) = 0.5;
-    v12 = self;
+    selfCopy3 = self;
     v13 = 1;
     goto LABEL_47;
   }
 
-  if ((a4 - 7) < 2)
+  if ((event - 7) < 2)
   {
     v14 = DALoggingwithCategory();
     v15 = _CPLog_to_os_log_type[7];
@@ -2728,35 +2728,35 @@ LABEL_43:
       v37 = 136315394;
       v38 = "[ASDaemonAccount connectionManager:handleEvent:]";
       v39 = 1024;
-      LODWORD(v40) = a4;
+      LODWORD(v40) = event;
       _os_log_impl(&dword_0, v14, v15, "%s cancelling ping task and reissuing with maintain, PC event was %d", &v37, 0x12u);
     }
 
     [(ASDaemonAccount *)self _cancelPingTask];
     LODWORD(v11) = 0.5;
-    v12 = self;
+    selfCopy3 = self;
     v13 = 2;
     goto LABEL_47;
   }
 
-  if (a4 == 5)
+  if (event == 5)
   {
     v16 = DALoggingwithCategory();
     v17 = _CPLog_to_os_log_type[7];
     if (os_log_type_enabled(v16, v17))
     {
-      v18 = [v6 currentStyle];
+      currentStyle2 = [managerCopy currentStyle];
       v37 = 136315394;
       v38 = "[ASDaemonAccount connectionManager:handleEvent:]";
       v39 = 1024;
-      LODWORD(v40) = v18;
+      LODWORD(v40) = currentStyle2;
       _os_log_impl(&dword_0, v16, v17, "%s style changed to %d.", &v37, 0x12u);
     }
 
     [(ASDaemonAccount *)self _cancelPingTask];
     LODWORD(v19) = 0.5;
     [(ASDaemonAccount *)self _refirePingAfterDelay:2 withGrowthAction:v19];
-    if ([v6 currentStyle] == 1)
+    if ([managerCopy currentStyle] == 1)
     {
       v20 = +[NSUserDefaults standardUserDefaults];
       dword_74988 = [v20 integerForKey:@"ForcedHBI"];
@@ -2768,10 +2768,10 @@ LABEL_43:
       }
     }
 
-    v21 = [v6 currentStyle];
+    currentStyle3 = [managerCopy currentStyle];
     v22 = +[ESWifiAssertionManager sharedWifiAssertionManager];
     v23 = v22;
-    if (v21)
+    if (currentStyle3)
     {
       [v22 releaseWifiAssertion];
     }
@@ -2792,7 +2792,7 @@ LABEL_22:
     v37 = 136315394;
     v38 = "[ASDaemonAccount connectionManager:handleEvent:]";
     v39 = 1024;
-    LODWORD(v40) = a4;
+    LODWORD(v40) = event;
     _os_log_impl(&dword_0, v23, v24, "%s pcManager callback out to lunch, event is: %d", &v37, 0x12u);
   }
 
@@ -2803,8 +2803,8 @@ LABEL_48:
 
 - (BOOL)shouldCancelTaskDueToOnPowerFetchMode
 {
-  v3 = [(ASDaemonAccount *)self getFetchingAutomaticallyState];
-  if (v3)
+  getFetchingAutomaticallyState = [(ASDaemonAccount *)self getFetchingAutomaticallyState];
+  if (getFetchingAutomaticallyState)
   {
     if (([(ASDaemonAccount *)self wasUserInitiated]& 1) != 0)
     {
@@ -2824,18 +2824,18 @@ LABEL_48:
     }
 
     v4 = +[MFNetworkController sharedInstance];
-    v5 = [v4 isFatPipe];
+    isFatPipe = [v4 isFatPipe];
 
-    if (v5)
+    if (isFatPipe)
     {
       v6 = +[MFPowerController sharedInstance];
-      v7 = [v6 isPluggedIn];
+      isPluggedIn = [v6 isPluggedIn];
 
-      if (v7)
+      if (isPluggedIn)
       {
 LABEL_5:
-        LOBYTE(v3) = 0;
-        return v3;
+        LOBYTE(getFetchingAutomaticallyState) = 0;
+        return getFetchingAutomaticallyState;
       }
 
       v8 = DALoggingwithCategory();
@@ -2858,8 +2858,8 @@ LABEL_5:
       {
 LABEL_14:
 
-        LOBYTE(v3) = 1;
-        return v3;
+        LOBYTE(getFetchingAutomaticallyState) = 1;
+        return getFetchingAutomaticallyState;
       }
 
       *buf = 0;
@@ -2871,10 +2871,10 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  return v3;
+  return getFetchingAutomaticallyState;
 }
 
-- (void)_reissuePingTaskWithGrowthAction:(int)a3
+- (void)_reissuePingTaskWithGrowthAction:(int)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_pingTask);
 
@@ -2923,12 +2923,12 @@ LABEL_13:
     }
 
     v47 = +[NSMutableSet set];
-    v10 = self;
-    objc_sync_enter(v10);
-    v11 = [(NSMutableDictionary *)v10->_foldersToMonitorById allValues];
-    v12 = [NSArray arrayWithArray:v11];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    allValues = [(NSMutableDictionary *)selfCopy->_foldersToMonitorById allValues];
+    v12 = [NSArray arrayWithArray:allValues];
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
@@ -2948,18 +2948,18 @@ LABEL_13:
           }
 
           v17 = *(*(&v48 + 1) + 8 * i);
-          pingBlacklistFolderIds = v10->_pingBlacklistFolderIds;
-          v19 = [v17 serverID];
-          LODWORD(pingBlacklistFolderIds) = [(NSMutableSet *)pingBlacklistFolderIds containsObject:v19];
+          pingBlacklistFolderIds = selfCopy->_pingBlacklistFolderIds;
+          serverID = [v17 serverID];
+          LODWORD(pingBlacklistFolderIds) = [(NSMutableSet *)pingBlacklistFolderIds containsObject:serverID];
 
           if (pingBlacklistFolderIds)
           {
             v20 = DALoggingwithCategory();
             if (os_log_type_enabled(v20, v5))
             {
-              v21 = [v17 serverID];
+              serverID2 = [v17 serverID];
               *buf = 138412290;
-              v54 = v21;
+              v54 = serverID2;
               _os_log_impl(&dword_0, v20, v5, "Not including folder %@ to ping task because it is black listed", buf, 0xCu);
             }
 
@@ -2968,50 +2968,50 @@ LABEL_40:
             continue;
           }
 
-          pingHistoryBlacklistFolderIds = v10->_pingHistoryBlacklistFolderIds;
-          v23 = [v17 serverID];
-          LODWORD(pingHistoryBlacklistFolderIds) = [(NSMutableSet *)pingHistoryBlacklistFolderIds containsObject:v23];
+          pingHistoryBlacklistFolderIds = selfCopy->_pingHistoryBlacklistFolderIds;
+          serverID3 = [v17 serverID];
+          LODWORD(pingHistoryBlacklistFolderIds) = [(NSMutableSet *)pingHistoryBlacklistFolderIds containsObject:serverID3];
 
           if (pingHistoryBlacklistFolderIds)
           {
             v20 = DALoggingwithCategory();
             if (os_log_type_enabled(v20, v5))
             {
-              v24 = [v17 serverID];
+              serverID4 = [v17 serverID];
               *buf = 138412290;
-              v54 = v24;
+              v54 = serverID4;
               _os_log_impl(&dword_0, v20, v5, "Not including folder %@ to ping task because it is history black listed", buf, 0xCu);
             }
 
             goto LABEL_40;
           }
 
-          folderIdsWithUnacknowledgedPings = v10->_folderIdsWithUnacknowledgedPings;
-          v26 = [v17 serverID];
-          LODWORD(folderIdsWithUnacknowledgedPings) = [(NSMutableSet *)folderIdsWithUnacknowledgedPings containsObject:v26];
+          folderIdsWithUnacknowledgedPings = selfCopy->_folderIdsWithUnacknowledgedPings;
+          serverID5 = [v17 serverID];
+          LODWORD(folderIdsWithUnacknowledgedPings) = [(NSMutableSet *)folderIdsWithUnacknowledgedPings containsObject:serverID5];
 
           if (folderIdsWithUnacknowledgedPings)
           {
             v20 = DALoggingwithCategory();
             if (os_log_type_enabled(v20, v5))
             {
-              v27 = [v17 serverID];
+              serverID6 = [v17 serverID];
               *buf = 138412290;
-              v54 = v27;
+              v54 = serverID6;
               _os_log_impl(&dword_0, v20, v5, "Not including folder %@ to ping task because it is with unacknowledged ping", buf, 0xCu);
             }
 
             goto LABEL_40;
           }
 
-          if (-[ASDaemonAccount reminderAccountMissing](v10, "reminderAccountMissing") && ([v17 folderType] == 7 || objc_msgSend(v17, "folderType") == 15))
+          if (-[ASDaemonAccount reminderAccountMissing](selfCopy, "reminderAccountMissing") && ([v17 folderType] == 7 || objc_msgSend(v17, "folderType") == 15))
           {
             v20 = DALoggingwithCategory();
             if (os_log_type_enabled(v20, v5))
             {
-              v28 = [v17 serverID];
+              serverID7 = [v17 serverID];
               *buf = 138412290;
-              v54 = v28;
+              v54 = serverID7;
               _os_log_impl(&dword_0, v20, v5, "Not including Reminder folder %@ to ping task because REMAccount is not ready yet", buf, 0xCu);
             }
 
@@ -3021,9 +3021,9 @@ LABEL_40:
           v29 = DALoggingwithCategory();
           if (os_log_type_enabled(v29, v5))
           {
-            v30 = [v17 serverID];
+            serverID8 = [v17 serverID];
             *buf = 138412290;
-            v54 = v30;
+            v54 = serverID8;
             _os_log_impl(&dword_0, v29, v5, "Adding folder %@ to ping task", buf, 0xCu);
           }
 
@@ -3036,14 +3036,14 @@ LABEL_40:
       while (v14);
     }
 
-    if (![v47 count] || !v10->_safeToPing || -[NSCountedSet count](v10->_busyFolderIds, "count"))
+    if (![v47 count] || !selfCopy->_safeToPing || -[NSCountedSet count](selfCopy->_busyFolderIds, "count"))
     {
 LABEL_64:
 
       return;
     }
 
-    [(PCConnectionManager *)self->_pcManager resumeManagerWithAction:a3];
+    [(PCConnectionManager *)self->_pcManager resumeManagerWithAction:action];
     v31 = self->_pcManager;
     if (v31)
     {
@@ -3071,9 +3071,9 @@ LABEL_56:
           _os_log_impl(&dword_0, v37, v5, "Creating _pingTask with %lu ping folders", buf, 0xCu);
         }
 
-        v39 = [[ASPingTask alloc] initWithHeartbeat:v33 folders:v47 oldHeartbeat:v10->_lastPingHeartBeat oldFolders:v10->_lastPingFolders];
+        v39 = [[ASPingTask alloc] initWithHeartbeat:v33 folders:v47 oldHeartbeat:selfCopy->_lastPingHeartBeat oldFolders:selfCopy->_lastPingFolders];
         v40 = objc_storeWeak(&self->_pingTask, v39);
-        [v39 setDelegate:v10];
+        [v39 setDelegate:selfCopy];
 
         v41 = DALoggingwithCategory();
         v42 = _CPLog_to_os_log_type[7];
@@ -3083,10 +3083,10 @@ LABEL_56:
           _os_log_impl(&dword_0, v41, v42, "ping issued", buf, 2u);
         }
 
-        [(ASDaemonAccount *)v10 setShouldUseOpportunisticSockets:0];
-        v43 = [(ASDaemonAccount *)v10 taskManager];
+        [(ASDaemonAccount *)selfCopy setShouldUseOpportunisticSockets:0];
+        taskManager = [(ASDaemonAccount *)selfCopy taskManager];
         v44 = objc_loadWeakRetained(&self->_pingTask);
-        [v43 submitIndependentTask:v44];
+        [taskManager submitIndependentTask:v44];
 
         goto LABEL_64;
       }
@@ -3119,22 +3119,22 @@ LABEL_56:
   [(PCConnectionManager *)self->_pcManager resumeManagerWithAction:4];
 }
 
-- (void)monitorFolder:(id)a3
+- (void)monitorFolder:(id)folder
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = sub_1B010(v5->_foldersToMonitorById);
-  objc_sync_exit(v5);
+  folderCopy = folder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = sub_1B010(selfCopy->_foldersToMonitorById);
+  objc_sync_exit(selfCopy);
 
   v7 = DALoggingwithCategory();
   v8 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v7, v8))
   {
-    v9 = [v4 conciseDescription];
-    busyFolderIds = v5->_busyFolderIds;
+    conciseDescription = [folderCopy conciseDescription];
+    busyFolderIds = selfCopy->_busyFolderIds;
     v17 = 138412802;
-    v18 = v9;
+    v18 = conciseDescription;
     v19 = 2112;
     v20 = v6;
     v21 = 2112;
@@ -3142,20 +3142,20 @@ LABEL_56:
     _os_log_impl(&dword_0, v7, v8, "monitoring folder %@, _foldersToMonitorById = %@, _busyFolderIds = %@", &v17, 0x20u);
   }
 
-  v11 = v5;
+  v11 = selfCopy;
   objc_sync_enter(v11);
-  foldersToMonitorById = v5->_foldersToMonitorById;
+  foldersToMonitorById = selfCopy->_foldersToMonitorById;
   if (!foldersToMonitorById)
   {
     v13 = objc_opt_new();
-    v14 = v5->_foldersToMonitorById;
-    v5->_foldersToMonitorById = v13;
+    v14 = selfCopy->_foldersToMonitorById;
+    selfCopy->_foldersToMonitorById = v13;
 
-    foldersToMonitorById = v5->_foldersToMonitorById;
+    foldersToMonitorById = selfCopy->_foldersToMonitorById;
   }
 
-  v15 = [v4 serverID];
-  [(NSMutableDictionary *)foldersToMonitorById setObject:v4 forKeyedSubscript:v15];
+  serverID = [folderCopy serverID];
+  [(NSMutableDictionary *)foldersToMonitorById setObject:folderCopy forKeyedSubscript:serverID];
 
   objc_sync_exit(v11);
   [(ASDaemonAccount *)v11 _cancelPingTask];
@@ -3163,45 +3163,45 @@ LABEL_56:
   [(ASDaemonAccount *)v11 _refirePingAfterDelay:2 withGrowthAction:v16];
 }
 
-- (void)stopMonitoringFolderWithID:(id)a3
+- (void)stopMonitoringFolderWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v5, v6))
   {
-    v7 = [(ASDaemonAccount *)self folderHierarchy];
-    v8 = [v7 folderForID:v4];
+    folderHierarchy = [(ASDaemonAccount *)self folderHierarchy];
+    v8 = [folderHierarchy folderForID:dCopy];
     v11 = 138412546;
-    v12 = v4;
+    v12 = dCopy;
     v13 = 2112;
     v14 = v8;
     _os_log_impl(&dword_0, v5, v6, "unmonitoring folder %@ - %@", &v11, 0x16u);
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
-  [(NSMutableDictionary *)v9->_foldersToMonitorById removeObjectForKey:v4];
-  [(NSMutableSet *)v9->_folderIdsWithUnacknowledgedPings removeObject:v4];
-  objc_sync_exit(v9);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_foldersToMonitorById removeObjectForKey:dCopy];
+  [(NSMutableSet *)selfCopy->_folderIdsWithUnacknowledgedPings removeObject:dCopy];
+  objc_sync_exit(selfCopy);
 
-  [(ASDaemonAccount *)v9 _cancelPingTask];
-  if (!v9->_isTearingDown)
+  [(ASDaemonAccount *)selfCopy _cancelPingTask];
+  if (!selfCopy->_isTearingDown)
   {
     LODWORD(v10) = 0.5;
-    [(ASDaemonAccount *)v9 _refirePingAfterDelay:2 withGrowthAction:v10];
+    [(ASDaemonAccount *)selfCopy _refirePingAfterDelay:2 withGrowthAction:v10];
   }
 }
 
-- (BOOL)monitorFoldersWithIDs:(id)a3
+- (BOOL)monitorFoldersWithIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = +[NSMutableArray array];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v28 objects:v37 count:16];
   if (v7)
   {
@@ -3217,8 +3217,8 @@ LABEL_56:
         }
 
         v11 = *(*(&v28 + 1) + 8 * i);
-        v12 = [(ASDaemonAccount *)self folderHierarchy];
-        v13 = [v12 folderForID:v11];
+        folderHierarchy = [(ASDaemonAccount *)self folderHierarchy];
+        v13 = [folderHierarchy folderForID:v11];
 
         if (!v13)
         {
@@ -3226,11 +3226,11 @@ LABEL_56:
           v21 = _CPLog_to_os_log_type[3];
           if (os_log_type_enabled(v20, _CPLog_to_os_log_type[3]))
           {
-            v22 = [(ASDaemonAccount *)self folderHierarchy];
+            folderHierarchy2 = [(ASDaemonAccount *)self folderHierarchy];
             *buf = 138412546;
             v34 = v11;
             v35 = 2112;
-            v36 = v22;
+            v36 = folderHierarchy2;
             _os_log_impl(&dword_0, v20, v21, "Can't monitor folder with id %@, I don't know about that one.  Folders %@", buf, 0x16u);
           }
 
@@ -3286,14 +3286,14 @@ LABEL_20:
   return v19;
 }
 
-- (void)_stopMonitoringFoldersWithIds:(id)a3
+- (void)_stopMonitoringFoldersWithIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [idsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3305,7 +3305,7 @@ LABEL_20:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(idsCopy);
         }
 
         [(ASDaemonAccount *)self stopMonitoringFolderWithID:*(*(&v9 + 1) + 8 * v8)];
@@ -3313,36 +3313,36 @@ LABEL_20:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [idsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)stopMonitoringFoldersWithIDs:(id)a3
+- (void)stopMonitoringFoldersWithIDs:(id)ds
 {
-  v8 = a3;
-  if ([v8 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     v4 = 0;
     v5 = 1;
     do
     {
-      v6 = [v8 objectAtIndexedSubscript:v4];
+      v6 = [dsCopy objectAtIndexedSubscript:v4];
       [(ASDaemonAccount *)self stopMonitoringFolderWithID:v6];
 
       v4 = v5;
     }
 
-    while ([v8 count] > v5++);
+    while ([dsCopy count] > v5++);
   }
 }
 
-- (void)suspendMonitoringFoldersWithIDs:(id)a3
+- (void)suspendMonitoringFoldersWithIDs:(id)ds
 {
-  v19 = a3;
-  if ([v19 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     if (!self->_busyFolderIds)
     {
@@ -3351,17 +3351,17 @@ LABEL_20:
       self->_busyFolderIds = v4;
     }
 
-    v6 = self;
-    objc_sync_enter(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    obj = v19;
+    obj = dsCopy;
     v7 = [obj countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v7)
     {
-      v22 = self;
+      selfCopy2 = self;
       v8 = 0;
       v9 = *v24;
       v10 = _CPLog_to_os_log_type[6];
@@ -3376,21 +3376,21 @@ LABEL_20:
           }
 
           v12 = *(*(&v23 + 1) + 8 * i);
-          v13 = [(ASDaemonAccount *)v6 folderHierarchy];
-          v14 = [v13 folderForID:v12];
+          folderHierarchy = [(ASDaemonAccount *)selfCopy folderHierarchy];
+          v14 = [folderHierarchy folderForID:v12];
 
           if (v14)
           {
             v15 = DALoggingwithCategory();
             if (os_log_type_enabled(v15, v10))
             {
-              v16 = [v14 conciseDescription];
+              conciseDescription = [v14 conciseDescription];
               *buf = 138412290;
-              v28 = v16;
+              v28 = conciseDescription;
               _os_log_impl(&dword_0, v15, v10, "marking folder as busy: %@", buf, 0xCu);
             }
 
-            [(NSCountedSet *)v22->_busyFolderIds addObject:v12];
+            [(NSCountedSet *)selfCopy2->_busyFolderIds addObject:v12];
             v8 = 1;
           }
 
@@ -3413,36 +3413,36 @@ LABEL_20:
 
       while (v7);
 
-      objc_sync_exit(v6);
+      objc_sync_exit(selfCopy);
       if (v8)
       {
-        [(ASDaemonAccount *)v6 _cancelPingTask];
+        [(ASDaemonAccount *)selfCopy _cancelPingTask];
         LODWORD(v18) = 2.0;
-        [(ASDaemonAccount *)v6 _refirePingAfterDelay:2 withGrowthAction:v18];
+        [(ASDaemonAccount *)selfCopy _refirePingAfterDelay:2 withGrowthAction:v18];
       }
     }
 
     else
     {
 
-      objc_sync_exit(v6);
+      objc_sync_exit(selfCopy);
     }
   }
 }
 
-- (void)resumeMonitoringFolderID:(id)a3
+- (void)resumeMonitoringFolderID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(NSCountedSet *)self->_busyFolderIds allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v30 count:16];
+  allObjects = [(NSCountedSet *)self->_busyFolderIds allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v20 objects:v30 count:16];
   if (!v6)
   {
 
-    [(NSMutableSet *)self->_folderIdsWithUnacknowledgedPings removeObject:v4];
+    [(NSMutableSet *)self->_folderIdsWithUnacknowledgedPings removeObject:dCopy];
 LABEL_15:
     v15 = DALoggingwithCategory();
     v16 = _CPLog_to_os_log_type[4];
@@ -3452,7 +3452,7 @@ LABEL_15:
       *buf = 136315650;
       v25 = "[ASDaemonAccount resumeMonitoringFolderID:]";
       v26 = 2112;
-      v27 = v4;
+      v27 = dCopy;
       v28 = 2112;
       v29 = busyFolderIds;
       _os_log_impl(&dword_0, v15, v16, "%s: warning, unable to find busy folder for id %@.  _busyFolderIds is (%@)", buf, 0x20u);
@@ -3473,33 +3473,33 @@ LABEL_15:
     {
       if (*v21 != v10)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allObjects);
       }
 
-      if ([*(*(&v20 + 1) + 8 * i) isEqualToString:{v4, v19}])
+      if ([*(*(&v20 + 1) + 8 * i) isEqualToString:{dCopy, v19}])
       {
         v13 = DALoggingwithCategory();
         if (os_log_type_enabled(v13, v11))
         {
           v14 = self->_busyFolderIds;
           *buf = v19;
-          v25 = v4;
+          v25 = dCopy;
           v26 = 2112;
           v27 = v14;
           _os_log_impl(&dword_0, v13, v11, "marking folder with id %@ as not busy, _busyFolderIds (%@)", buf, 0x16u);
         }
 
-        [(NSCountedSet *)self->_busyFolderIds removeObject:v4];
+        [(NSCountedSet *)self->_busyFolderIds removeObject:dCopy];
         v9 = 1;
       }
     }
 
-    v8 = [v5 countByEnumeratingWithState:&v20 objects:v30 count:16];
+    v8 = [allObjects countByEnumeratingWithState:&v20 objects:v30 count:16];
   }
 
   while (v8);
 
-  [(NSMutableSet *)self->_folderIdsWithUnacknowledgedPings removeObject:v4];
+  [(NSMutableSet *)self->_folderIdsWithUnacknowledgedPings removeObject:dCopy];
   if ((v9 & 1) == 0)
   {
     goto LABEL_15;
@@ -3511,14 +3511,14 @@ LABEL_18:
   [(ASDaemonAccount *)self _refirePingAfterDelay:2 withGrowthAction:v18];
 }
 
-- (void)resumeMonitoringFoldersWithIDs:(id)a3
+- (void)resumeMonitoringFoldersWithIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [dsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3530,7 +3530,7 @@ LABEL_18:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dsCopy);
         }
 
         [(ASDaemonAccount *)self resumeMonitoringFolderID:*(*(&v9 + 1) + 8 * v8)];
@@ -3538,59 +3538,59 @@ LABEL_18:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [dsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (BOOL)setFolderIdsThatExternalClientsCareAboutAdded:(id)a3 deleted:(id)a4 foldersTag:(id)a5
+- (BOOL)setFolderIdsThatExternalClientsCareAboutAdded:(id)added deleted:(id)deleted foldersTag:(id)tag
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  addedCopy = added;
+  deletedCopy = deleted;
+  tagCopy = tag;
   v11 = DALoggingwithCategory();
   v12 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v11, v12))
   {
     *buf = 138412802;
-    v39 = v8;
+    v39 = addedCopy;
     v40 = 2112;
-    v41 = v9;
+    v41 = deletedCopy;
     v42 = 2112;
-    v43 = v10;
+    v43 = tagCopy;
     _os_log_impl(&dword_0, v11, v12, "Daemon setting folder ids to be monitored added:%@\ndeleted:%@\ntag:%@", buf, 0x20u);
   }
 
-  v13 = [(ASDaemonAccount *)self foldersTag];
-  v14 = [v10 isEqualToString:v13];
+  foldersTag = [(ASDaemonAccount *)self foldersTag];
+  v14 = [tagCopy isEqualToString:foldersTag];
 
   if (v14)
   {
-    v15 = [(ASDaemonAccount *)self folderHierarchy];
-    v16 = [v15 folderIdsThatExternalClientsCareAbout];
-    v17 = [v16 mutableCopy];
+    folderHierarchy = [(ASDaemonAccount *)self folderHierarchy];
+    folderIdsThatExternalClientsCareAbout = [folderHierarchy folderIdsThatExternalClientsCareAbout];
+    v17 = [folderIdsThatExternalClientsCareAbout mutableCopy];
 
-    if (v8 && !v17)
+    if (addedCopy && !v17)
     {
-      v17 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
+      v17 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(addedCopy, "count")}];
     }
 
-    if (v9)
+    if (deletedCopy)
     {
-      [v17 minusSet:v9];
+      [v17 minusSet:deletedCopy];
     }
 
-    if (v8)
+    if (addedCopy)
     {
-      v31 = v10;
-      v32 = v9;
+      v31 = tagCopy;
+      v32 = deletedCopy;
       v35 = 0u;
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v18 = v8;
+      v18 = addedCopy;
       v19 = [v18 countByEnumeratingWithState:&v33 objects:v37 count:16];
       if (v19)
       {
@@ -3606,7 +3606,7 @@ LABEL_18:
             }
 
             v23 = *(*(&v33 + 1) + 8 * i);
-            v24 = [v15 folderForID:v23, v31, v32, v33];
+            v24 = [folderHierarchy folderForID:v23, v31, v32, v33];
 
             if (!v24)
             {
@@ -3620,8 +3620,8 @@ LABEL_18:
               }
 
               v25 = 0;
-              v10 = v31;
-              v9 = v32;
+              tagCopy = v31;
+              deletedCopy = v32;
               goto LABEL_26;
             }
           }
@@ -3637,8 +3637,8 @@ LABEL_18:
       }
 
       [v17 unionSet:v18];
-      v10 = v31;
-      v9 = v32;
+      tagCopy = v31;
+      deletedCopy = v32;
     }
 
     v18 = [(ASDaemonAccount *)self folderHierarchy:v31];
@@ -3649,16 +3649,16 @@ LABEL_26:
 
   else
   {
-    v15 = DALoggingwithCategory();
+    folderHierarchy = DALoggingwithCategory();
     v26 = _CPLog_to_os_log_type[3];
-    if (os_log_type_enabled(v15, v26))
+    if (os_log_type_enabled(folderHierarchy, v26))
     {
-      v27 = [(ASDaemonAccount *)self foldersTag];
+      foldersTag2 = [(ASDaemonAccount *)self foldersTag];
       *buf = 138412546;
-      v39 = v10;
+      v39 = tagCopy;
       v40 = 2112;
-      v41 = v27;
-      _os_log_impl(&dword_0, v15, v26, "Dropping request to add folder that external clients care about.  Client's folder tag (%@) doesn't match daemon's: (%@)", buf, 0x16u);
+      v41 = foldersTag2;
+      _os_log_impl(&dword_0, folderHierarchy, v26, "Dropping request to add folder that external clients care about.  Client's folder tag (%@) doesn't match daemon's: (%@)", buf, 0x16u);
     }
 
     v25 = 0;
@@ -3667,46 +3667,46 @@ LABEL_26:
   return v25;
 }
 
-- (BOOL)setFolderIdsForPersistentPushAdded:(id)a3 deleted:(id)a4 clientID:(id)a5
+- (BOOL)setFolderIdsForPersistentPushAdded:(id)added deleted:(id)deleted clientID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  addedCopy = added;
+  deletedCopy = deleted;
+  dCopy = d;
   v11 = DALoggingwithCategory();
   v12 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v11, v12))
   {
     *buf = 138412546;
-    v35 = v8;
+    v35 = addedCopy;
     v36 = 2112;
-    v37 = v9;
+    v37 = deletedCopy;
     _os_log_impl(&dword_0, v11, v12, "Daemon setting folder ids to be persistently monitored added:%@\ndeleted:%@", buf, 0x16u);
   }
 
-  v13 = [(ASDaemonAccount *)self folderHierarchy];
-  v14 = [v13 folderIdsForPersistentPushForClientID:v10];
+  folderHierarchy = [(ASDaemonAccount *)self folderHierarchy];
+  v14 = [folderHierarchy folderIdsForPersistentPushForClientID:dCopy];
   v15 = [v14 mutableCopy];
 
-  if (v8 && !v15)
+  if (addedCopy && !v15)
   {
-    v15 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
+    v15 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(addedCopy, "count")}];
   }
 
-  if (v9)
+  if (deletedCopy)
   {
-    [v15 minusSet:v9];
+    [v15 minusSet:deletedCopy];
   }
 
-  if (v8)
+  if (addedCopy)
   {
-    v27 = self;
-    v28 = v10;
+    selfCopy = self;
+    v28 = dCopy;
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v16 = v8;
-    v17 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    folderHierarchy2 = addedCopy;
+    v17 = [folderHierarchy2 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v17)
     {
       v18 = v17;
@@ -3717,11 +3717,11 @@ LABEL_26:
         {
           if (*v30 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(folderHierarchy2);
           }
 
           v21 = *(*(&v29 + 1) + 8 * i);
-          v22 = [v13 folderForID:{v21, v27}];
+          v22 = [folderHierarchy folderForID:{v21, selfCopy}];
 
           if (!v22)
           {
@@ -3735,12 +3735,12 @@ LABEL_26:
             }
 
             v23 = 0;
-            v10 = v28;
+            dCopy = v28;
             goto LABEL_22;
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v18 = [folderHierarchy2 countByEnumeratingWithState:&v29 objects:v33 count:16];
         if (v18)
         {
           continue;
@@ -3750,22 +3750,22 @@ LABEL_26:
       }
     }
 
-    [v15 unionSet:v16];
-    self = v27;
-    v10 = v28;
+    [v15 unionSet:folderHierarchy2];
+    self = selfCopy;
+    dCopy = v28;
   }
 
-  v16 = [(ASDaemonAccount *)self folderHierarchy];
-  [v16 setFolderIdsForPersistentPush:v15 clientID:v10];
+  folderHierarchy2 = [(ASDaemonAccount *)self folderHierarchy];
+  [folderHierarchy2 setFolderIdsForPersistentPush:v15 clientID:dCopy];
   v23 = 1;
 LABEL_22:
 
   return v23;
 }
 
-- (BOOL)clearFolderIdsForPersistentPushWithClientID:(id)a3
+- (BOOL)clearFolderIdsForPersistentPushWithClientID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v5, v6))
@@ -3774,57 +3774,57 @@ LABEL_22:
     _os_log_impl(&dword_0, v5, v6, "Daemon clearing folder ids to be persistently monitored", v12, 2u);
   }
 
-  v7 = [(ASDaemonAccount *)self folderHierarchy];
-  v8 = [v7 folderIdsForPersistentPushForClientID:v4];
+  folderHierarchy = [(ASDaemonAccount *)self folderHierarchy];
+  v8 = [folderHierarchy folderIdsForPersistentPushForClientID:dCopy];
   v9 = [v8 mutableCopy];
 
   if (v9)
   {
-    v10 = [(ASDaemonAccount *)self folderHierarchy];
-    [v10 setFolderIdsForPersistentPush:0 clientID:v4];
+    folderHierarchy2 = [(ASDaemonAccount *)self folderHierarchy];
+    [folderHierarchy2 setFolderIdsForPersistentPush:0 clientID:dCopy];
   }
 
   return 1;
 }
 
-- (void)sendMailTask:(id)a3 completedWithStatus:(int64_t)a4 error:(id)a5
+- (void)sendMailTask:(id)task completedWithStatus:(int64_t)status error:(id)error
 {
-  v14 = a3;
-  v8 = a5;
-  v9 = [v14 context];
-  v10 = [v9 eventUID];
-  v11 = [v9 isMyInvite];
-  v12 = [(ASDaemonAccount *)self consumerForTask:v14];
+  taskCopy = task;
+  errorCopy = error;
+  context = [taskCopy context];
+  eventUID = [context eventUID];
+  isMyInvite = [context isMyInvite];
+  v12 = [(ASDaemonAccount *)self consumerForTask:taskCopy];
   v13 = v12;
-  if (a4 == 2)
+  if (status == 2)
   {
-    [v12 messageDidSendWithContext:v9];
+    [v12 messageDidSendWithContext:context];
   }
 
   else
   {
-    if (!((v10 == 0) | v11 & 1))
+    if (!((eventUID == 0) | isMyInvite & 1))
     {
-      [(NSMutableSet *)self->_invitationActionsInFlight removeObject:v10];
+      [(NSMutableSet *)self->_invitationActionsInFlight removeObject:eventUID];
     }
 
-    [v13 actionFailed:a4 forTask:v14 error:v8];
+    [v13 actionFailed:status forTask:taskCopy error:errorCopy];
   }
 
-  [(ASDaemonAccount *)self removeConsumerForTask:v14];
+  [(ASDaemonAccount *)self removeConsumerForTask:taskCopy];
 }
 
-- (id)_ASSyncTaskAndMeetingResponseCommandsFromDAEventActions:(id)a3 meetingResponseActions:(id)a4 emailEvents:(id)a5
+- (id)_ASSyncTaskAndMeetingResponseCommandsFromDAEventActions:(id)actions meetingResponseActions:(id)responseActions emailEvents:(id)events
 {
-  v8 = a3;
-  v9 = a4;
-  v112 = a5;
+  actionsCopy = actions;
+  responseActionsCopy = responseActions;
+  eventsCopy = events;
   v10 = DALoggingwithCategory();
   v11 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v10, v11))
   {
     *buf = 138412290;
-    *v131 = v8;
+    *v131 = actionsCopy;
     _os_log_impl(&dword_0, v10, v11, "_ASSyncTaskAndMeetingResponseCommandsFromDAEventActions, actions is %@", buf, 0xCu);
   }
 
@@ -3838,14 +3838,14 @@ LABEL_22:
     _os_log_impl(&dword_0, v12, type, "_invitationActionsInFlight is currently %@", buf, 0xCu);
   }
 
-  v109 = self;
+  selfCopy = self;
 
   v14 = objc_opt_new();
   v126 = 0u;
   v127 = 0u;
   v128 = 0u;
   v129 = 0u;
-  v15 = v8;
+  v15 = actionsCopy;
   v16 = [v15 countByEnumeratingWithState:&v126 objects:v138 count:16];
   if (v16)
   {
@@ -3863,8 +3863,8 @@ LABEL_22:
         v20 = *(*(&v126 + 1) + 8 * i);
         if ([v20 itemChangeType] == &dword_4 + 2)
         {
-          v21 = [v20 serverId];
-          [v14 setObject:v20 forKeyedSubscript:v21];
+          serverId = [v20 serverId];
+          [v14 setObject:v20 forKeyedSubscript:serverId];
         }
       }
 
@@ -3874,7 +3874,7 @@ LABEL_22:
     while (v17);
   }
 
-  v106 = v9;
+  v106 = responseActionsCopy;
   v107 = v14;
 
   v108 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v15, "count")}];
@@ -3886,43 +3886,43 @@ LABEL_22:
     {
       v24 = v15;
       v25 = [v15 objectAtIndexedSubscript:j - 2];
-      v26 = [v25 itemChangeType];
-      if (v26 > 5)
+      itemChangeType = [v25 itemChangeType];
+      if (itemChangeType > 5)
       {
-        if (v26 == (&dword_4 + 2))
+        if (itemChangeType == (&dword_4 + 2))
         {
           goto LABEL_64;
         }
 
-        if (v26 != &dword_8)
+        if (itemChangeType != &dword_8)
         {
 LABEL_24:
-          v27 = [v25 event];
-          v28 = [v27 calAttendeeStatus];
-          v29 = [v27 calAttendeePendingStatus];
-          if ([v27 calEvent])
+          event = [v25 event];
+          calAttendeeStatus = [event calAttendeeStatus];
+          calAttendeePendingStatus = [event calAttendeePendingStatus];
+          if ([event calEvent])
           {
             Status = CalCalendarItemGetStatus();
             v31 = DALoggingwithCategory();
             if (os_log_type_enabled(v31, type))
             {
-              v32 = [v27 meetingResponseForAccount:v109];
+              v32 = [event meetingResponseForAccount:selfCopy];
               *buf = 67109632;
-              *v131 = v28;
+              *v131 = calAttendeeStatus;
               *&v131[4] = 1024;
-              *&v131[6] = v29;
+              *&v131[6] = calAttendeePendingStatus;
               LOWORD(v132) = 1024;
               *(&v132 + 2) = v32;
               _os_log_impl(&dword_0, v31, type, "Event has status %d, pending status %d, meeting response %d", buf, 0x14u);
             }
 
-            if ((Status - 1) <= 1 && !v28 && [v25 itemChangeType] != &dword_0 + 1)
+            if ((Status - 1) <= 1 && !calAttendeeStatus && [v25 itemChangeType] != &dword_0 + 1)
             {
               v33 = DALoggingwithCategory();
               if (os_log_type_enabled(v33, type))
               {
                 *buf = 138412290;
-                *v131 = v27;
+                *v131 = event;
                 _os_log_impl(&dword_0, v33, type, "Dropping request to sync %@, as it's a un-acted-upon invitation and we're trying to do something other than modify it", buf, 0xCu);
               }
 
@@ -3935,11 +3935,11 @@ LABEL_24:
             Status = 0;
           }
 
-          v34 = v28;
+          v34 = calAttendeeStatus;
           if ([v25 itemChangeType] == &dword_0 + 1)
           {
-            v35 = [v27 serverID];
-            v36 = [v107 objectForKeyedSubscript:v35];
+            serverID = [event serverID];
+            v36 = [v107 objectForKeyedSubscript:serverID];
 
             if (v36)
             {
@@ -3947,9 +3947,9 @@ LABEL_24:
               v11 = v113;
               if (os_log_type_enabled(v37, v113))
               {
-                v38 = [v27 serverID];
+                serverID2 = [event serverID];
                 *buf = 138412290;
-                *v131 = v38;
+                *v131 = serverID2;
                 v39 = v37;
                 v40 = v113;
                 v41 = "Have a modify action nixed by a belay action for server id %@.  Dropping the modify";
@@ -3960,16 +3960,16 @@ LABEL_24:
             }
           }
 
-          v42 = [v25 itemChangeType];
-          if (Status == 3 && v42 == &dword_0 + 1 && ([v27 cachedOrganizerIsSelfWithAccount:v109] & 1) == 0)
+          itemChangeType2 = [v25 itemChangeType];
+          if (Status == 3 && itemChangeType2 == &dword_0 + 1 && ([event cachedOrganizerIsSelfWithAccount:selfCopy] & 1) == 0)
           {
             v37 = DALoggingwithCategory();
             v11 = v113;
             if (os_log_type_enabled(v37, v113))
             {
-              v38 = [v27 serverID];
+              serverID2 = [event serverID];
               *buf = 138412290;
-              *v131 = v38;
+              *v131 = serverID2;
               v39 = v37;
               v40 = v113;
               v41 = "Do not respond to a canceled meeting for server id %@. Dropping the modify";
@@ -3985,32 +3985,32 @@ LABEL_63:
             goto LABEL_64;
           }
 
-          v43 = [v25 itemChangeType];
-          if (Status == 3 && !v43 && [v27 cachedOrganizerIsSelfWithAccount:v109])
+          itemChangeType3 = [v25 itemChangeType];
+          if (Status == 3 && !itemChangeType3 && [event cachedOrganizerIsSelfWithAccount:selfCopy])
           {
             v44 = DALoggingwithCategory();
             if (os_log_type_enabled(v44, type))
             {
               *buf = 138412290;
-              *v131 = v27;
+              *v131 = event;
               _os_log_impl(&dword_0, v44, type, "Not syncing add of cancelled event that's not back by an exchange event.  Event %@", buf, 0xCu);
             }
 
-            [v112 addObject:v27];
+            [eventsCopy addObject:event];
 LABEL_47:
             v11 = v113;
             goto LABEL_63;
           }
 
-          v45 = [v27 meetingResponseForAccount:v109];
+          v45 = [event meetingResponseForAccount:selfCopy];
           v11 = v113;
           if (v45)
           {
             if (v45 == 4)
             {
-              v46 = v109->_invitationActionsInFlight;
-              v47 = [v27 uidForCalFramework];
-              LODWORD(v46) = [(NSMutableSet *)v46 containsObject:v47];
+              v46 = selfCopy->_invitationActionsInFlight;
+              uidForCalFramework = [event uidForCalFramework];
+              LODWORD(v46) = [(NSMutableSet *)v46 containsObject:uidForCalFramework];
 
               if (v46)
               {
@@ -4018,14 +4018,14 @@ LABEL_47:
                 if (os_log_type_enabled(v48, v113))
                 {
                   *buf = 138412290;
-                  *v131 = v27;
+                  *v131 = event;
                   _os_log_impl(&dword_0, v48, v113, "Dropping request to email about %@, as I currently have an invitation action in flight for it", buf, 0xCu);
                 }
 
                 goto LABEL_54;
               }
 
-              [v112 addObject:v27];
+              [eventsCopy addObject:event];
               v59 = CalEventCopyOriginalEvent();
               if (v59)
               {
@@ -4038,26 +4038,26 @@ LABEL_47:
                 goto LABEL_54;
               }
 
-              v65 = [v27 serverID];
-              if (!v65)
+              serverID3 = [event serverID];
+              if (!serverID3)
               {
                 goto LABEL_54;
               }
 
-              v66 = v65;
-              v56 = [[ASAction alloc] initWithItemChangeType:2 changedItem:0 serverId:v65];
+              v66 = serverID3;
+              v56 = [[ASAction alloc] initWithItemChangeType:2 changedItem:0 serverId:serverID3];
             }
 
             else
             {
-              v57 = [v27 uidForCalFramework];
-              if ([(NSMutableSet *)v109->_invitationActionsInFlight containsObject:v57])
+              uidForCalFramework2 = [event uidForCalFramework];
+              if ([(NSMutableSet *)selfCopy->_invitationActionsInFlight containsObject:uidForCalFramework2])
               {
                 v58 = DALoggingwithCategory();
                 if (os_log_type_enabled(v58, v113))
                 {
                   *buf = 138412290;
-                  *v131 = v27;
+                  *v131 = event;
                   _os_log_impl(&dword_0, v58, v113, "Dropping request to do a MeetingResponse for %@, as I currently have an invitation action in flight for it", buf, 0xCu);
                 }
               }
@@ -4065,7 +4065,7 @@ LABEL_47:
               else
               {
                 [v106 addObject:v25];
-                [(NSMutableSet *)v109->_invitationActionsInFlight addObject:v57];
+                [(NSMutableSet *)selfCopy->_invitationActionsInFlight addObject:uidForCalFramework2];
               }
 
               [v24 removeObjectAtIndex:j - 2];
@@ -4078,12 +4078,12 @@ LABEL_76:
           else
           {
 LABEL_54:
-            v49 = [v27 calEvent];
+            calEvent = [event calEvent];
             v50 = CalEventCopyOriginalEvent();
             v51 = v50;
-            if (!v50 || v50 == v49)
+            if (!v50 || v50 == calEvent)
             {
-              v56 = [[ASAction alloc] initWithItemChangeType:objc_msgSend(v25 changedItem:"itemChangeType") != 0 serverId:{v27, 0}];
+              v56 = [[ASAction alloc] initWithItemChangeType:objc_msgSend(v25 changedItem:"itemChangeType") != 0 serverId:{event, 0}];
               if (!v51)
               {
                 goto LABEL_86;
@@ -4096,31 +4096,31 @@ LABEL_54:
               if (v52)
               {
                 v53 = v52;
-                v54 = [(ASDaemonAccount *)v109 protocol];
-                v55 = [v54 includeExceptionsInParent];
+                protocol = [(ASDaemonAccount *)selfCopy protocol];
+                includeExceptionsInParent = [protocol includeExceptionsInParent];
 
-                if (v55)
+                if (includeExceptionsInParent)
                 {
                   v56 = 0;
                 }
 
                 else
                 {
-                  v60 = [v25 itemChangeType];
+                  itemChangeType4 = [v25 itemChangeType];
                   v61 = [ASAction alloc];
                   v62 = v61;
-                  if (v60)
+                  if (itemChangeType4)
                   {
-                    v63 = [v25 serverId];
-                    v64 = [v25 instanceId];
-                    v56 = [v62 initWithItemChangeType:1 changedItem:v27 serverId:v63 instanceId:v64];
+                    serverId2 = [v25 serverId];
+                    instanceId = [v25 instanceId];
+                    v56 = [v62 initWithItemChangeType:1 changedItem:event serverId:serverId2 instanceId:instanceId];
 
                     v11 = v113;
                   }
 
                   else
                   {
-                    v56 = [v61 initWithItemChangeType:0 changedItem:v27 serverId:0];
+                    v56 = [v61 initWithItemChangeType:0 changedItem:event serverId:0];
                   }
                 }
 
@@ -4138,21 +4138,21 @@ LABEL_54:
 
 LABEL_86:
 
-          v27 = v56;
+          event = v56;
           if (!v56)
           {
             goto LABEL_64;
           }
 
 LABEL_23:
-          [v108 addObject:v27];
+          [v108 addObject:event];
           goto LABEL_63;
         }
       }
 
-      else if (v26 != (&dword_0 + 2))
+      else if (itemChangeType != (&dword_0 + 2))
       {
-        if (v26 != &dword_4)
+        if (itemChangeType != &dword_4)
         {
           goto LABEL_24;
         }
@@ -4160,8 +4160,8 @@ LABEL_23:
         goto LABEL_64;
       }
 
-      v27 = v25;
-      if (v27)
+      event = v25;
+      if (event)
       {
         goto LABEL_23;
       }
@@ -4196,8 +4196,8 @@ LABEL_64:
             objc_enumerationMutation(v69);
           }
 
-          v74 = [*(*(&v122 + 1) + 8 * k) changedItem];
-          [v74 calEvent];
+          changedItem = [*(*(&v122 + 1) + 8 * k) changedItem];
+          [changedItem calEvent];
           v75 = CalEventCopyOriginalEvent();
           if (v75)
           {
@@ -4220,7 +4220,7 @@ LABEL_64:
     v119 = 0u;
     v120 = 0u;
     v121 = 0u;
-    typea = [v112 copy];
+    typea = [eventsCopy copy];
     v78 = [typea countByEnumeratingWithState:&v118 objects:v136 count:16];
     if (v78)
     {
@@ -4236,8 +4236,8 @@ LABEL_64:
           }
 
           v82 = *(*(&v118 + 1) + 8 * m);
-          v83 = [v82 clientID];
-          if (v83 && [v68 containsObject:v83])
+          clientID = [v82 clientID];
+          if (clientID && [v68 containsObject:clientID])
           {
             v84 = DALoggingwithCategory();
             if (os_log_type_enabled(v84, v11))
@@ -4247,11 +4247,11 @@ LABEL_64:
               _os_log_impl(&dword_0, v84, v11, "Not emailing about event %@, as I'm sending a meeting response for someone in their chain", buf, 0xCu);
             }
 
-            [v112 removeObject:v82];
+            [eventsCopy removeObject:v82];
           }
 
-          v85 = [v82 responseRequested];
-          if (![v85 intValue])
+          responseRequested = [v82 responseRequested];
+          if (![responseRequested intValue])
           {
             v86 = DALoggingwithCategory();
             if (os_log_type_enabled(v86, v11))
@@ -4261,7 +4261,7 @@ LABEL_64:
               _os_log_impl(&dword_0, v86, v11, "Not emailing about event %@, as the originator requested no responses", buf, 0xCu);
             }
 
-            [v112 removeObject:v82];
+            [eventsCopy removeObject:v82];
           }
         }
 
@@ -4295,13 +4295,13 @@ LABEL_64:
           v94 = *(*(&v114 + 1) + 8 * n);
           if ([v94 itemChangeType] != &dword_0 + 2)
           {
-            v95 = [v94 event];
+            event2 = [v94 event];
             v96 = v92[380];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v97 = [v95 clientID];
-              if (v97 && [v68 containsObject:v97])
+              clientID2 = [event2 clientID];
+              if (clientID2 && [v68 containsObject:clientID2])
               {
                 v98 = DALoggingwithCategory();
                 if (os_log_type_enabled(v98, v113))
@@ -4319,19 +4319,19 @@ LABEL_128:
 
             else
             {
-              v97 = DALoggingwithCategory();
-              if (os_log_type_enabled(v97, v91))
+              clientID2 = DALoggingwithCategory();
+              if (os_log_type_enabled(clientID2, v91))
               {
-                v99 = [v94 itemChangeType];
+                itemChangeType5 = [v94 itemChangeType];
                 v100 = objc_opt_class();
                 *buf = 134218498;
-                *v131 = v99;
+                *v131 = itemChangeType5;
                 *&v131[8] = 2112;
                 v132 = v100;
                 v133 = 2112;
-                v134 = v95;
+                v134 = event2;
                 v101 = v100;
-                _os_log_impl(&dword_0, v97, v91, "Alarm! We have a command of type %lu, but the event isn't an ASEvent, rather it has class %@, and is %@", buf, 0x20u);
+                _os_log_impl(&dword_0, clientID2, v91, "Alarm! We have a command of type %lu, but the event isn't an ASEvent, rather it has class %@, and is %@", buf, 0x20u);
 
                 goto LABEL_128;
               }
@@ -4352,67 +4352,67 @@ LABEL_128:
     v15 = v105;
   }
 
-  v102 = [v108 allObjects];
+  allObjects = [v108 allObjects];
   v103 = DALoggingwithCategory();
   if (os_log_type_enabled(v103, v11))
   {
     *buf = 138412802;
-    *v131 = v102;
+    *v131 = allObjects;
     *&v131[8] = 2112;
     v132 = v67;
     v133 = 2112;
-    v134 = v112;
+    v134 = eventsCopy;
     _os_log_impl(&dword_0, v103, v11, "_ASSyncTaskAndMeetingResponseCommandsFromDAEventActions, commands are %@, meetingResponseActions are %@ emails are %@", buf, 0x20u);
   }
 
-  return v102;
+  return allObjects;
 }
 
-- (void)consumerFinishedInvitationActionsForEventWithUID:(id)a3
+- (void)consumerFinishedInvitationActionsForEventWithUID:(id)d
 {
-  if (a3)
+  if (d)
   {
     [(NSMutableSet *)self->_invitationActionsInFlight removeObject:?];
   }
 }
 
-- (void)meetingResponseTask:(id)a3 completedWithStatus:(int64_t)a4 error:(id)a5
+- (void)meetingResponseTask:(id)task completedWithStatus:(int64_t)status error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  taskCopy = task;
+  errorCopy = error;
   v10 = DALoggingwithCategory();
   v11 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v10, v11))
   {
-    v12 = [v8 responseItems];
+    responseItems = [taskCopy responseItems];
     *buf = 138413058;
-    v61 = v8;
+    v61 = taskCopy;
     v62 = 2048;
-    v63 = a4;
+    statusCopy = status;
     v64 = 2112;
-    v65 = v9;
+    v65 = errorCopy;
     v66 = 2112;
-    v67 = v12;
+    v67 = responseItems;
     _os_log_impl(&dword_0, v10, v11, "Meeting response task %@ completed with status %ld error %@ results %@", buf, 0x2Au);
   }
 
-  v13 = [(ASDaemonAccount *)self consumerForTask:v8];
+  v13 = [(ASDaemonAccount *)self consumerForTask:taskCopy];
   v44 = objc_opt_new();
   v14 = objc_opt_new();
   v43 = v13;
-  if (a4 == 2)
+  if (status == 2)
   {
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v15 = [v8 responseItems];
-    v16 = [v15 countByEnumeratingWithState:&v53 objects:v59 count:16];
+    responseItems2 = [taskCopy responseItems];
+    v16 = [responseItems2 countByEnumeratingWithState:&v53 objects:v59 count:16];
     if (v16)
     {
       v17 = v16;
-      v18 = v9;
-      v19 = v8;
+      v18 = errorCopy;
+      v19 = taskCopy;
       v20 = *v54;
       do
       {
@@ -4420,7 +4420,7 @@ LABEL_128:
         {
           if (*v54 != v20)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(responseItems2);
           }
 
           v22 = *(*(&v53 + 1) + 8 * i);
@@ -4437,39 +4437,39 @@ LABEL_128:
           [v23 addObject:v22];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v53 objects:v59 count:16];
+        v17 = [responseItems2 countByEnumeratingWithState:&v53 objects:v59 count:16];
       }
 
       while (v17);
-      v8 = v19;
-      v9 = v18;
+      taskCopy = v19;
+      errorCopy = v18;
       v13 = v43;
     }
   }
 
   else
   {
-    v15 = [v8 responseItems];
-    [v14 addObjectsFromArray:v15];
+    responseItems2 = [taskCopy responseItems];
+    [v14 addObjectsFromArray:responseItems2];
   }
 
-  [v13 meetingResponseFinishedWithStatus:a4 error:v9 successfulResponses:v44 failedResponses:v14];
-  v24 = [(ASDaemonAccount *)self protocol];
-  v25 = [v24 sendEmailForMeetingInvitationAndResponse];
+  [v13 meetingResponseFinishedWithStatus:status error:errorCopy successfulResponses:v44 failedResponses:v14];
+  protocol = [(ASDaemonAccount *)self protocol];
+  sendEmailForMeetingInvitationAndResponse = [protocol sendEmailForMeetingInvitationAndResponse];
 
-  if (v25)
+  if (sendEmailForMeetingInvitationAndResponse)
   {
     v47 = 0uLL;
     v48 = 0uLL;
     v45 = 0uLL;
     v46 = 0uLL;
-    v26 = v14;
-    v27 = [v26 countByEnumeratingWithState:&v45 objects:v57 count:16];
+    responseItems3 = v14;
+    v27 = [responseItems3 countByEnumeratingWithState:&v45 objects:v57 count:16];
     if (v27)
     {
       v28 = v27;
-      v41 = v9;
-      v42 = v8;
+      v41 = errorCopy;
+      v42 = taskCopy;
       v29 = *v46;
       do
       {
@@ -4477,22 +4477,22 @@ LABEL_128:
         {
           if (*v46 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(responseItems3);
           }
 
           invitationActionsInFlight = self->_invitationActionsInFlight;
-          v32 = [*(*(&v45 + 1) + 8 * j) eventUID];
-          v33 = [v32 uidForCalFramework];
-          [(NSMutableSet *)invitationActionsInFlight removeObject:v33];
+          eventUID = [*(*(&v45 + 1) + 8 * j) eventUID];
+          uidForCalFramework = [eventUID uidForCalFramework];
+          [(NSMutableSet *)invitationActionsInFlight removeObject:uidForCalFramework];
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v45 objects:v57 count:16];
+        v28 = [responseItems3 countByEnumeratingWithState:&v45 objects:v57 count:16];
       }
 
       while (v28);
 LABEL_32:
-      v9 = v41;
-      v8 = v42;
+      errorCopy = v41;
+      taskCopy = v42;
       v13 = v43;
     }
   }
@@ -4503,13 +4503,13 @@ LABEL_32:
     v52 = 0uLL;
     v49 = 0uLL;
     v50 = 0uLL;
-    v26 = [v8 responseItems];
-    v34 = [v26 countByEnumeratingWithState:&v49 objects:v58 count:16];
+    responseItems3 = [taskCopy responseItems];
+    v34 = [responseItems3 countByEnumeratingWithState:&v49 objects:v58 count:16];
     if (v34)
     {
       v35 = v34;
-      v41 = v9;
-      v42 = v8;
+      v41 = errorCopy;
+      v42 = taskCopy;
       v36 = *v50;
       do
       {
@@ -4517,16 +4517,16 @@ LABEL_32:
         {
           if (*v50 != v36)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(responseItems3);
           }
 
           v38 = self->_invitationActionsInFlight;
-          v39 = [*(*(&v49 + 1) + 8 * k) eventUID];
-          v40 = [v39 uidForCalFramework];
-          [(NSMutableSet *)v38 removeObject:v40];
+          eventUID2 = [*(*(&v49 + 1) + 8 * k) eventUID];
+          uidForCalFramework2 = [eventUID2 uidForCalFramework];
+          [(NSMutableSet *)v38 removeObject:uidForCalFramework2];
         }
 
-        v35 = [v26 countByEnumeratingWithState:&v49 objects:v58 count:16];
+        v35 = [responseItems3 countByEnumeratingWithState:&v49 objects:v58 count:16];
       }
 
       while (v35);
@@ -4534,16 +4534,16 @@ LABEL_32:
     }
   }
 
-  [(ASDaemonAccount *)self removeConsumerForTask:v8];
+  [(ASDaemonAccount *)self removeConsumerForTask:taskCopy];
 }
 
-- (id)_parentIdFromEventId:(id)a3
+- (id)_parentIdFromEventId:(id)id
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"<!ExceptionDate!>"];
+  idCopy = id;
+  v4 = [idCopy rangeOfString:@"<!ExceptionDate!>"];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = v3;
+    v5 = idCopy;
   }
 
   else
@@ -4554,11 +4554,11 @@ LABEL_32:
     if (os_log_type_enabled(v7, v8))
     {
       v11 = 138412290;
-      v12 = v3;
+      v12 = idCopy;
       _os_log_impl(&dword_0, v7, v8, "Stripping exception id from eventId: %@", &v11, 0xCu);
     }
 
-    v5 = [v3 substringToIndex:v6];
+    v5 = [idCopy substringToIndex:v6];
   }
 
   v9 = v5;
@@ -4566,21 +4566,21 @@ LABEL_32:
   return v9;
 }
 
-- (void)_respondToMeetingsForActions:(id)a3 inFolderWithId:(id)a4 consumer:(id)a5
+- (void)_respondToMeetingsForActions:(id)actions inFolderWithId:(id)id consumer:(id)consumer
 {
-  v8 = a3;
-  v78 = a4;
-  v9 = a5;
-  if ([v8 count])
+  actionsCopy = actions;
+  idCopy = id;
+  consumerCopy = consumer;
+  if ([actionsCopy count])
   {
-    v77 = v9;
+    v77 = consumerCopy;
     v10 = objc_opt_new();
     v100 = 0u;
     v101 = 0u;
     v102 = 0u;
     v103 = 0u;
-    v76 = v8;
-    v11 = v8;
+    v76 = actionsCopy;
+    v11 = actionsCopy;
     v12 = [v11 countByEnumeratingWithState:&v100 objects:v110 count:16];
     if (v12)
     {
@@ -4596,10 +4596,10 @@ LABEL_32:
           }
 
           v16 = *(*(&v100 + 1) + 8 * i);
-          v17 = [v16 changedItem];
-          v18 = [v17 recurrence];
+          changedItem = [v16 changedItem];
+          recurrence = [changedItem recurrence];
 
-          if (v18)
+          if (recurrence)
           {
             [v10 addObject:v16];
           }
@@ -4631,10 +4631,10 @@ LABEL_32:
           }
 
           v24 = *(*(&v96 + 1) + 8 * j);
-          v25 = [v24 changedItem];
-          v26 = [v25 recurrence];
+          changedItem2 = [v24 changedItem];
+          recurrence2 = [changedItem2 recurrence];
 
-          if (!v26)
+          if (!recurrence2)
           {
             [v10 addObject:v24];
           }
@@ -4671,11 +4671,11 @@ LABEL_32:
           }
 
           v30 = *(*(&v92 + 1) + 8 * v29);
-          v31 = [v30 changedItem];
-          v32 = [v31 calEvent];
-          if (v32)
+          changedItem3 = [v30 changedItem];
+          calEvent = [changedItem3 calEvent];
+          if (calEvent)
           {
-            v33 = v32;
+            v33 = calEvent;
             v86 = v30;
             v34 = CalEventCopyOriginalEvent();
             v35 = v34;
@@ -4691,17 +4691,17 @@ LABEL_32:
 
             v37 = v36;
             v89 = v34;
-            v90 = v31;
+            v90 = changedItem3;
             if (v36)
             {
-              v91 = 0;
+              exceptionStartTime = 0;
             }
 
             else
             {
               v39 = [[ASEvent alloc] initWithCalEvent:v34 serverID:0 account:self];
               v40 = [[ASEventException alloc] initWithCalEvent:v33 originalEvent:v39 account:self];
-              v91 = [v40 exceptionStartTime];
+              exceptionStartTime = [v40 exceptionStartTime];
 
               v35 = v89;
             }
@@ -4722,10 +4722,10 @@ LABEL_32:
                 _os_log_impl(&dword_0, v44, type, "Retrieved delivery item id from eventAction, id: %@", buf, 0xCu);
               }
 
-              v45 = [(ASDaemonAccount *)self protocol];
-              v46 = [v45 useInstanceIdForException];
+              protocol = [(ASDaemonAccount *)self protocol];
+              useInstanceIdForException = [protocol useInstanceIdForException];
 
-              if (v46)
+              if (useInstanceIdForException)
               {
                 v47 = [(ASDaemonAccount *)self _parentIdFromEventId:v43];
 
@@ -4741,25 +4741,25 @@ LABEL_32:
               v42 = 0;
             }
 
-            v48 = [(ASDaemonAccount *)self protocol];
-            if ([v48 useEventIdsInMeetingResponse])
+            protocol2 = [(ASDaemonAccount *)self protocol];
+            if ([protocol2 useEventIdsInMeetingResponse])
             {
 
               if (!v42 || !v43)
               {
-                v49 = v78;
+                v49 = idCopy;
 
                 v50 = v90;
                 if (v37)
                 {
-                  v51 = [v90 serverID];
+                  serverID = [v90 serverID];
 
                   v52 = DALoggingwithCategory();
                   if (os_log_type_enabled(v52, type))
                   {
                     *buf = 138412290;
-                    v53 = v51;
-                    v105 = v51;
+                    v53 = serverID;
+                    v105 = serverID;
                     v54 = v52;
                     v55 = type;
                     v56 = "Retrieved delivery item id from event, id: %@";
@@ -4767,12 +4767,12 @@ LABEL_32:
                   }
 
 LABEL_67:
-                  v53 = v51;
+                  v53 = serverID;
                 }
 
                 else
                 {
-                  v51 = CalCalendarItemCopyExternalID();
+                  serverID = CalCalendarItemCopyExternalID();
 
                   v52 = DALoggingwithCategory();
                   if (!os_log_type_enabled(v52, type))
@@ -4781,8 +4781,8 @@ LABEL_67:
                   }
 
                   *buf = 138412290;
-                  v53 = v51;
-                  v105 = v51;
+                  v53 = serverID;
+                  v105 = serverID;
                   v54 = v52;
                   v55 = type;
                   v56 = "Retrieved delivery item id from parent event, id: %@";
@@ -4792,10 +4792,10 @@ LABEL_66:
 
                 v59 = v49;
 
-                v70 = [(ASDaemonAccount *)self protocol];
-                v71 = [v70 useInstanceIdForException];
+                protocol3 = [(ASDaemonAccount *)self protocol];
+                useInstanceIdForException2 = [protocol3 useInstanceIdForException];
 
-                if (v71)
+                if (useInstanceIdForException2)
                 {
                   v57 = v53;
                   v43 = [(ASDaemonAccount *)self _parentIdFromEventId:v53];
@@ -4811,22 +4811,22 @@ LABEL_52:
                   v58 = v53;
                 }
 
-                v60 = [v50 responseRequested];
-                v61 = [v60 intValue];
+                responseRequested = [v50 responseRequested];
+                intValue = [responseRequested intValue];
 
                 if (v59 && v58)
                 {
-                  v83 = v61 != 0;
+                  v83 = intValue != 0;
                   v82 = [ASMeetingResponseItem alloc];
                   v62 = [v50 meetingResponseForAccount:self];
-                  v63 = [v50 eventUID];
-                  v64 = [v50 responseComment];
+                  eventUID = [v50 eventUID];
+                  responseComment = [v50 responseComment];
                   [v50 proposedStartTime];
                   v66 = v65 = self;
-                  v67 = [v50 proposedEndTime];
+                  proposedEndTime = [v50 proposedEndTime];
                   LOBYTE(v75) = v83;
                   v68 = v58;
-                  v69 = [v82 initWithDeliveryItemFolderId:v59 deliveryItemServerId:v58 instanceDate:v91 meetingResponse:v62 eventUID:v63 responseComment:v64 responseRequested:v75 proposedStartTime:v66 proposedEndTime:v67];
+                  v69 = [v82 initWithDeliveryItemFolderId:v59 deliveryItemServerId:v58 instanceDate:exceptionStartTime meetingResponse:v62 eventUID:eventUID responseComment:responseComment responseRequested:v75 proposedStartTime:v66 proposedEndTime:proposedEndTime];
 
                   self = v65;
                   v27 = v79;
@@ -4862,7 +4862,7 @@ LABEL_52:
                   CFRelease(v35);
                 }
 
-                v31 = v90;
+                changedItem3 = v90;
                 v38 = v59;
                 goto LABEL_62;
               }
@@ -4873,8 +4873,8 @@ LABEL_52:
             }
 
             v50 = v90;
-            v57 = v91;
-            v91 = 0;
+            v57 = exceptionStartTime;
+            exceptionStartTime = 0;
             goto LABEL_52;
           }
 
@@ -4882,7 +4882,7 @@ LABEL_52:
           if (os_log_type_enabled(v38, v28))
           {
             *buf = 138412290;
-            v105 = v31;
+            v105 = changedItem3;
             _os_log_impl(&dword_0, v38, v28, "Asked to respond to a meeting request.  But the DAEvent has no local event? DAEvent: %@", buf, 0xCu);
           }
 
@@ -4899,90 +4899,90 @@ LABEL_62:
       while (v72);
     }
 
-    v8 = v76;
+    actionsCopy = v76;
     if ([v80 count])
     {
       v73 = [[ASMeetingResponseTask alloc] initWithResponseItems:v80];
       [v73 setSourceApplicationBundleIdentifier:@"com.apple.mobilecal"];
       [v73 setDelegate:self];
       [(ASDaemonAccount *)self setConsumer:v77 forTask:v73];
-      v74 = [(ASDaemonAccount *)self taskManager];
-      [v74 submitQueuedTask:v73];
+      taskManager = [(ASDaemonAccount *)self taskManager];
+      [taskManager submitQueuedTask:v73];
     }
 
-    v9 = v77;
+    consumerCopy = v77;
   }
 }
 
-- (void)synchronizeNotesFolder:(id)a3 noteContext:(id)a4 previousTag:(id)a5 actions:(id)a6 changeSet:(id)a7 notesToDeleteAfterSync:(id)a8 isInitialUberSync:(BOOL)a9 isResyncAfterConnectionFailed:(BOOL)a10 moreLocalChangesAvailable:(BOOL)a11 consumer:(id)a12
+- (void)synchronizeNotesFolder:(id)folder noteContext:(id)context previousTag:(id)tag actions:(id)actions changeSet:(id)set notesToDeleteAfterSync:(id)sync isInitialUberSync:(BOOL)uberSync isResyncAfterConnectionFailed:(BOOL)self0 moreLocalChangesAvailable:(BOOL)self1 consumer:(id)self2
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a12;
-  v20 = a7;
+  folderCopy = folder;
+  tagCopy = tag;
+  actionsCopy = actions;
+  consumerCopy = consumer;
+  setCopy = set;
   v21 = DALoggingwithCategory();
   v22 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v21, v22))
   {
     v23 = &stru_6D4A8;
     *buf = 138412802;
-    v32 = v16;
+    v32 = folderCopy;
     v33 = 2112;
-    if (a10)
+    if (failed)
     {
       v23 = @" resync after connection failure";
     }
 
-    v34 = v17;
+    v34 = tagCopy;
     v35 = 2112;
     v36 = v23;
     _os_log_impl(&dword_0, v21, v22, "Syncing Notes folder with id %@, previous key %@%@", buf, 0x20u);
   }
 
-  v24 = [[ASFolderItemsSyncTask alloc] initWithFolderID:v16];
+  v24 = [[ASFolderItemsSyncTask alloc] initWithFolderID:folderCopy];
   [v24 setSourceApplicationBundleIdentifier:@"com.apple.mobilenotes"];
-  [v24 setPreviousSyncKey:v17];
+  [v24 setPreviousSyncKey:tagCopy];
   [v24 setWillUpdate:1];
   [v24 setDelegate:self];
-  [v24 setIsInitialSync:a9];
+  [v24 setIsInitialSync:uberSync];
   [v24 setMIMESupport:3];
   [v24 setDataclass:32];
-  [v24 setContext:v20];
+  [v24 setContext:setCopy];
 
-  [v24 setIsResyncAfterConnectionFailed:a10];
-  [v24 setMoreLocalChangesAvailable:a11];
-  v25 = [v18 mutableCopy];
-  v26 = _DASyncableActionsFromDAActions(v18, v25);
+  [v24 setIsResyncAfterConnectionFailed:failed];
+  [v24 setMoreLocalChangesAvailable:available];
+  v25 = [actionsCopy mutableCopy];
+  v26 = _DASyncableActionsFromDAActions(actionsCopy, v25);
   if (v26)
   {
     [v24 setActions:v26];
   }
 
   [v24 setPushedActions:v25];
-  v27 = _ASSyncTaskPreservedActionsFromActions(v18);
+  v27 = _ASSyncTaskPreservedActionsFromActions(actionsCopy);
   [v24 setPreservedActions:v27];
-  [(ASDaemonAccount *)self setConsumer:v19 forTask:v24];
+  [(ASDaemonAccount *)self setConsumer:consumerCopy forTask:v24];
 
-  v30 = v16;
+  v30 = folderCopy;
   v28 = [NSArray arrayWithObjects:&v30 count:1];
   [(ASDaemonAccount *)self suspendMonitoringFoldersWithIDs:v28];
 
-  v29 = [(ASDaemonAccount *)self taskManager];
-  [v29 submitQueuedTask:v24];
+  taskManager = [(ASDaemonAccount *)self taskManager];
+  [taskManager submitQueuedTask:v24];
 }
 
-- (int)performMoveRequests:(id)a3 consumer:(id)a4
+- (int)performMoveRequests:(id)requests consumer:(id)consumer
 {
-  v5 = a3;
-  v29 = a4;
+  requestsCopy = requests;
+  consumerCopy = consumer;
   v6 = objc_opt_new();
-  [v6 setPushedMoveRequests:v5];
+  [v6 setPushedMoveRequests:requestsCopy];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = v5;
+  v7 = requestsCopy;
   v8 = [v7 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (!v8)
   {
@@ -5004,16 +5004,16 @@ LABEL_62:
       }
 
       v13 = *(*(&v31 + 1) + 8 * v12);
-      v14 = [v13 message];
-      v15 = [v13 fromFolder];
-      v16 = [v13 toFolder];
-      [v6 addSourceID:v14 sourceFolder:v15 destinatonFolder:v16];
+      message = [v13 message];
+      fromFolder = [v13 fromFolder];
+      toFolder = [v13 toFolder];
+      [v6 addSourceID:message sourceFolder:fromFolder destinatonFolder:toFolder];
 
-      v17 = [v13 context];
-      v18 = [v17 changedItem];
-      v19 = [v18 dataclass];
+      context = [v13 context];
+      changedItem = [context changedItem];
+      dataclass = [changedItem dataclass];
 
-      if (v19 == &dword_4)
+      if (dataclass == &dword_4)
       {
         if ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 0)
         {
@@ -5027,11 +5027,11 @@ LABEL_62:
 
       else
       {
-        v20 = [v13 context];
-        v21 = [v20 changedItem];
-        v22 = [v21 dataclass];
+        context2 = [v13 context];
+        changedItem2 = [context2 changedItem];
+        dataclass2 = [changedItem2 dataclass];
 
-        if (v22 != &dword_10)
+        if (dataclass2 != &dword_10)
         {
           goto LABEL_12;
         }
@@ -5060,38 +5060,38 @@ LABEL_12:
 LABEL_20:
 
   [v6 setDelegate:self];
-  v25 = [v6 taskID];
+  taskID = [v6 taskID];
   if (!v10)
   {
     sub_483FC();
   }
 
   [v6 setDataclass:v10];
-  [(ASDaemonAccount *)self setConsumer:v29 forTask:v6];
-  v26 = [(ASDaemonAccount *)self taskManager];
-  [v26 submitQueuedTask:v6];
+  [(ASDaemonAccount *)self setConsumer:consumerCopy forTask:v6];
+  taskManager = [(ASDaemonAccount *)self taskManager];
+  [taskManager submitQueuedTask:v6];
 
-  return v25;
+  return taskID;
 }
 
-- (int)forwardMeeting:(id)a3 withServerId:(id)a4 withInstanceId:(id)a5 withFolderId:(id)a6 toEmailAddresses:(id)a7 withAttendeeUUIDs:(id)a8 consumer:(id)a9
+- (int)forwardMeeting:(id)meeting withServerId:(id)id withInstanceId:(id)instanceId withFolderId:(id)folderId toEmailAddresses:(id)addresses withAttendeeUUIDs:(id)ds consumer:(id)consumer
 {
-  v15 = a3;
-  v39 = a9;
-  v38 = a8;
-  v16 = a7;
-  v37 = a6;
-  v17 = a4;
-  v18 = [(ASDaemonAccount *)self emailAddress];
-  if (a5)
+  meetingCopy = meeting;
+  consumerCopy = consumer;
+  dsCopy = ds;
+  addressesCopy = addresses;
+  folderIdCopy = folderId;
+  idCopy = id;
+  emailAddress = [(ASDaemonAccount *)self emailAddress];
+  if (instanceId)
   {
-    v19 = [v15 exceptionDate];
-    v40 = [v19 activeSyncString];
+    exceptionDate = [meetingCopy exceptionDate];
+    activeSyncString = [exceptionDate activeSyncString];
   }
 
   else
   {
-    v40 = 0;
+    activeSyncString = 0;
   }
 
   v20 = +[NSDate date];
@@ -5099,47 +5099,47 @@ LABEL_20:
   v22 = [v20 dateWithCalendarFormat:@"%a timeZone:%d %b %Y %H:%M:%S %z", v21];
   v36 = [v22 description];
 
-  v35 = [v15 subject];
+  subject = [meetingCopy subject];
   v23 = objc_opt_new();
-  v41 = v18;
+  v41 = emailAddress;
   v24 = [NSArray arrayWithObjects:&v41 count:1];
   [v23 setAddressListForSender:v24];
 
-  [v23 setAddressListForTo:v16];
+  [v23 setAddressListForTo:addressesCopy];
   [v23 setHeader:v36 forKey:H_DATE];
-  [v23 setHeader:v35 forKey:H_SUBJECT];
+  [v23 setHeader:subject forKey:H_SUBJECT];
   v25 = objc_opt_new();
   [v25 setDelegate:self];
   v26 = [v25 createMessageWithString:0 headers:v23];
-  v27 = [v26 messageData];
+  messageData = [v26 messageData];
   v28 = +[NSString da_newGUID];
   LOBYTE(v33) = 0;
-  v34 = v18;
-  v29 = [[ASSmartMailTask alloc] initWithMessage:v27 messageID:v28 messageType:2 originalMessageID:v17 instanceId:v40 originalFolderID:v37 originalLongID:0 replaceMime:v33];
+  v34 = emailAddress;
+  v29 = [[ASSmartMailTask alloc] initWithMessage:messageData messageID:v28 messageType:2 originalMessageID:idCopy instanceId:activeSyncString originalFolderID:folderIdCopy originalLongID:0 replaceMime:v33];
 
   [v29 setShouldNotRetry:1];
   [v29 setSourceApplicationBundleIdentifier:@"com.apple.mobilecal"];
   [v29 setDelegate:self];
   v30 = objc_opt_new();
-  [v30 setAttendeeUUIDs:v38];
+  [v30 setAttendeeUUIDs:dsCopy];
 
   [v29 setContext:v30];
-  [(ASDaemonAccount *)self setConsumer:v39 forTask:v29];
+  [(ASDaemonAccount *)self setConsumer:consumerCopy forTask:v29];
 
-  v31 = [(ASDaemonAccount *)self taskManager];
-  [v31 submitQueuedTask:v29];
+  taskManager = [(ASDaemonAccount *)self taskManager];
+  [taskManager submitQueuedTask:v29];
 
-  LODWORD(v31) = [v29 taskID];
-  return v31;
+  LODWORD(taskManager) = [v29 taskID];
+  return taskManager;
 }
 
-- (id)requestCalendarAvailabilityForStartDate:(id)a3 endDate:(id)a4 ignoredEventID:(id)a5 addresses:(id)a6 consumer:(id)a7
+- (id)requestCalendarAvailabilityForStartDate:(id)date endDate:(id)endDate ignoredEventID:(id)d addresses:(id)addresses consumer:(id)consumer
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (a5)
+  dateCopy = date;
+  endDateCopy = endDate;
+  addressesCopy = addresses;
+  consumerCopy = consumer;
+  if (d)
   {
     v16 = DALoggingwithCategory();
     v17 = _CPLog_to_os_log_type[7];
@@ -5150,66 +5150,66 @@ LABEL_20:
     }
   }
 
-  v18 = [[ASResolveRecipientsTask alloc] initFreeBusyQueryWithStartDate:v12 endDate:v13 emailAddresses:v14];
+  v18 = [[ASResolveRecipientsTask alloc] initFreeBusyQueryWithStartDate:dateCopy endDate:endDateCopy emailAddresses:addressesCopy];
   [v18 setSourceApplicationBundleIdentifier:@"com.apple.mobilecal"];
   [v18 setDelegate:self];
-  [(ASDaemonAccount *)self setConsumer:v15 forTask:v18];
-  v19 = [(ASDaemonAccount *)self taskManager];
-  [v19 submitQueuedTask:v18];
+  [(ASDaemonAccount *)self setConsumer:consumerCopy forTask:v18];
+  taskManager = [(ASDaemonAccount *)self taskManager];
+  [taskManager submitQueuedTask:v18];
 
   v20 = [[NSNumber alloc] initWithInteger:{objc_msgSend(v18, "taskID")}];
 
   return v20;
 }
 
-- (void)cancelCalendarAvailabilityRequestWithID:(id)a3
+- (void)cancelCalendarAvailabilityRequestWithID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
-    v6 = [v4 integerValue];
-    v7 = [(ASDaemonAccount *)self taskManager];
-    [v7 cancelTaskWithID:v6];
+    integerValue = [dCopy integerValue];
+    taskManager = [(ASDaemonAccount *)self taskManager];
+    [taskManager cancelTaskWithID:integerValue];
   }
 
   else
   {
-    v7 = DALoggingwithCategory();
+    taskManager = DALoggingwithCategory();
     v8 = _CPLog_to_os_log_type[7];
-    if (os_log_type_enabled(v7, v8))
+    if (os_log_type_enabled(taskManager, v8))
     {
       *v9 = 0;
-      _os_log_impl(&dword_0, v7, v8, "'nil 'requestID' given.  Will not cancel any calendar avilability requests.", v9, 2u);
+      _os_log_impl(&dword_0, taskManager, v8, "'nil 'requestID' given.  Will not cancel any calendar avilability requests.", v9, 2u);
     }
   }
 }
 
-+ (int64_t)_convertCalendarAvailabilityType:(char)a3
++ (int64_t)_convertCalendarAvailabilityType:(char)type
 {
-  if ((a3 - 48) > 4)
+  if ((type - 48) > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_53990[(a3 - 48)];
+    return qword_53990[(type - 48)];
   }
 }
 
-- (void)resolveRecipientsTask:(id)a3 completedWithStatus:(int64_t)a4 error:(id)a5 queriedEmailAddressToRecpient:(id)a6
+- (void)resolveRecipientsTask:(id)task completedWithStatus:(int64_t)status error:(id)error queriedEmailAddressToRecpient:(id)recpient
 {
-  v10 = a3;
-  v41 = a5;
-  v11 = a6;
-  if (([v10 retrieveAvailability] & 1) == 0)
+  taskCopy = task;
+  errorCopy = error;
+  recpientCopy = recpient;
+  if (([taskCopy retrieveAvailability] & 1) == 0)
   {
     sub_48458();
   }
 
-  v43 = [(ASDaemonAccount *)self consumerForTask:v10, v41];
-  if (a4 != 2)
+  errorCopy = [(ASDaemonAccount *)self consumerForTask:taskCopy, errorCopy];
+  if (status != 2)
   {
     v40 = [NSError errorWithDomain:DAErrorDomain code:10 userInfo:0];
     v14 = 0;
@@ -5218,8 +5218,8 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v12 = [v11 allKeys];
-  v13 = [v12 count];
+  allKeys = [recpientCopy allKeys];
+  v13 = [allKeys count];
 
   if (!v13)
   {
@@ -5233,15 +5233,15 @@ LABEL_29:
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = [v11 allKeys];
+  obj = [recpientCopy allKeys];
   v15 = [obj countByEnumeratingWithState:&v54 objects:v58 count:16];
   if (v15)
   {
     v16 = v15;
     v17 = *v55;
     v18 = &PLLogRegisteredEvent_ptr;
-    v46 = v11;
-    v47 = v10;
+    v46 = recpientCopy;
+    v47 = taskCopy;
     v44 = *v55;
     v45 = v14;
     do
@@ -5257,10 +5257,10 @@ LABEL_29:
 
         v50 = *(*(&v54 + 1) + 8 * v19);
         v51 = v19;
-        v52 = [v11 objectForKeyedSubscript:?];
+        v52 = [recpientCopy objectForKeyedSubscript:?];
         v53 = objc_alloc_init(v18[357]);
-        v20 = [v52 mergedFreeBusy];
-        v21 = [v20 length];
+        mergedFreeBusy = [v52 mergedFreeBusy];
+        v21 = [mergedFreeBusy length];
 
         if (v21)
         {
@@ -5268,12 +5268,12 @@ LABEL_29:
           if (v22)
           {
             v23 = v22;
-            v24 = [v52 mergedFreeBusy];
-            strncpy(v23, [v24 UTF8String], (v21 + 1));
+            mergedFreeBusy2 = [v52 mergedFreeBusy];
+            strncpy(v23, [mergedFreeBusy2 UTF8String], (v21 + 1));
 
             v25 = *v23;
-            v26 = [v10 startTime];
-            v27 = [v26 dateByAddingTimeInterval:1800.0];
+            startTime = [taskCopy startTime];
+            v27 = [startTime dateByAddingTimeInterval:1800.0];
             v28 = [objc_opt_class() _convertCalendarAvailabilityType:v25];
             if (v21 == &dword_0 + 1)
             {
@@ -5295,17 +5295,17 @@ LABEL_29:
                 else
                 {
                   v33 = v32;
-                  v34 = [[DAECalendarAvailabilitySpan alloc] initWithStartDate:v26 endDate:v27 type:v28];
+                  v34 = [[DAECalendarAvailabilitySpan alloc] initWithStartDate:startTime endDate:v27 type:v28];
                   [v53 addObject:v34];
-                  v35 = self;
+                  selfCopy = self;
                   v36 = v27;
 
                   v29 = [v36 dateByAddingTimeInterval:1800.0];
 
                   v27 = v34;
                   v28 = v33;
-                  v26 = v36;
-                  self = v35;
+                  startTime = v36;
+                  self = selfCopy;
                 }
 
                 v31 = v30;
@@ -5316,12 +5316,12 @@ LABEL_29:
               while (v37);
             }
 
-            v38 = [[DAECalendarAvailabilitySpan alloc] initWithStartDate:v26 endDate:v29 type:v28];
+            v38 = [[DAECalendarAvailabilitySpan alloc] initWithStartDate:startTime endDate:v29 type:v28];
             [v53 addObject:v38];
             free(v23);
 
-            v11 = v46;
-            v10 = v47;
+            recpientCopy = v46;
+            taskCopy = v47;
             v17 = v44;
             v14 = v45;
             v18 = &PLLogRegisteredEvent_ptr;
@@ -5347,20 +5347,20 @@ LABEL_29:
   v39 = v42;
   if (v14)
   {
-    [v43 calendarAvailabilityRequestReturnedResults:v14];
+    [errorCopy calendarAvailabilityRequestReturnedResults:v14];
   }
 
   v40 = 0;
 LABEL_30:
-  [v43 calendarAvailabilityRequestFinishedWithError:v40];
-  [(ASDaemonAccount *)self removeConsumerForTask:v10];
+  [errorCopy calendarAvailabilityRequestFinishedWithError:v40];
+  [(ASDaemonAccount *)self removeConsumerForTask:taskCopy];
 }
 
-- (id)_localizedStringForResponse:(int)a3
+- (id)_localizedStringForResponse:(int)response
 {
-  if (a3 > 2)
+  if (response > 2)
   {
-    if (a3 == 3)
+    if (response == 3)
     {
       v4 = [NSBundle bundleForClass:objc_opt_class()];
       v5 = v4;
@@ -5368,7 +5368,7 @@ LABEL_30:
       goto LABEL_13;
     }
 
-    if (a3 == 4)
+    if (response == 4)
     {
       v4 = [NSBundle bundleForClass:objc_opt_class()];
       v5 = v4;
@@ -5379,7 +5379,7 @@ LABEL_30:
 
   else
   {
-    if (a3 == 1)
+    if (response == 1)
     {
       v4 = [NSBundle bundleForClass:objc_opt_class()];
       v5 = v4;
@@ -5387,7 +5387,7 @@ LABEL_30:
       goto LABEL_13;
     }
 
-    if (a3 == 2)
+    if (response == 2)
     {
       v4 = [NSBundle bundleForClass:objc_opt_class()];
       v5 = v4;
@@ -5404,7 +5404,7 @@ LABEL_13:
   if (os_log_type_enabled(v7, v8))
   {
     v11[0] = 67109120;
-    v11[1] = a3;
+    v11[1] = response;
     _os_log_impl(&dword_0, v7, v8, "\n\nWe are sending an email for an invitation with response %d.  That's not right.  Dropping it.\n\n", v11, 8u);
   }
 
@@ -5414,18 +5414,18 @@ LABEL_14:
   return v9;
 }
 
-- (void)messageWriter:(id)a3 willGenerateHeadersForMimePart:(id)a4
+- (void)messageWriter:(id)writer willGenerateHeadersForMimePart:(id)part
 {
-  v12 = a4;
-  v5 = [v12 type];
-  if ([v5 isEqualToString:@"multipart"])
+  partCopy = part;
+  type = [partCopy type];
+  if ([type isEqualToString:@"multipart"])
   {
-    v6 = [v12 subtype];
-    v7 = [v6 isEqualToString:@"mixed"];
+    subtype = [partCopy subtype];
+    v7 = [subtype isEqualToString:@"mixed"];
 
     if (v7)
     {
-      [v12 setSubtype:@"alternative"];
+      [partCopy setSubtype:@"alternative"];
       goto LABEL_11;
     }
   }
@@ -5434,19 +5434,19 @@ LABEL_14:
   {
   }
 
-  v8 = [v12 type];
-  if ([v8 isEqualToString:@"text"])
+  type2 = [partCopy type];
+  if ([type2 isEqualToString:@"text"])
   {
-    v9 = [v12 subtype];
-    v10 = [v9 isEqualToString:@"calendar"];
+    subtype2 = [partCopy subtype];
+    v10 = [subtype2 isEqualToString:@"calendar"];
 
     if (v10)
     {
-      [v12 setBodyParameter:@"utf-8" forKey:@"charset"];
+      [partCopy setBodyParameter:@"utf-8" forKey:@"charset"];
       v11 = [ICSCalendar ICSStringFromMethod:self->_curReplyMethod];
       if (v11)
       {
-        [v12 setBodyParameter:v11 forKey:@"METHOD"];
+        [partCopy setBodyParameter:v11 forKey:@"METHOD"];
       }
     }
   }
@@ -5458,19 +5458,19 @@ LABEL_14:
 LABEL_11:
 }
 
-- (void)messageWriter:(id)a3 willEncodeHeaders:(id)a4 forMimePart:(id)a5
+- (void)messageWriter:(id)writer willEncodeHeaders:(id)headers forMimePart:(id)part
 {
-  v10 = a4;
-  v6 = a5;
-  v7 = [v6 type];
-  if ([v7 isEqualToString:@"text"])
+  headersCopy = headers;
+  partCopy = part;
+  type = [partCopy type];
+  if ([type isEqualToString:@"text"])
   {
-    v8 = [v6 subtype];
-    v9 = [v8 isEqualToString:@"calendar"];
+    subtype = [partCopy subtype];
+    v9 = [subtype isEqualToString:@"calendar"];
 
     if (v9)
     {
-      [v10 removeHeaderForKey:H_CONTENT_DISPOSITION];
+      [headersCopy removeHeaderForKey:H_CONTENT_DISPOSITION];
     }
   }
 
@@ -5479,24 +5479,24 @@ LABEL_11:
   }
 }
 
-- (id)copyMessageStringWithPlainTextString:(id)a3 vCalMethod:(int)a4 vCalAttachmentData:(id)a5 fromAddress:(id)a6 toAddresses:(id)a7 date:(id)a8 subject:(id)a9 outMessageID:(id *)a10
+- (id)copyMessageStringWithPlainTextString:(id)string vCalMethod:(int)method vCalAttachmentData:(id)data fromAddress:(id)address toAddresses:(id)addresses date:(id)date subject:(id)subject outMessageID:(id *)self0
 {
-  v15 = a5;
-  v16 = a6;
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a3;
+  dataCopy = data;
+  addressCopy = address;
+  subjectCopy = subject;
+  dateCopy = date;
+  addressesCopy = addresses;
+  stringCopy = string;
   v21 = objc_opt_new();
-  v38 = v16;
-  v40 = v16;
+  v38 = addressCopy;
+  v40 = addressCopy;
   v22 = [NSArray arrayWithObjects:&v40 count:1];
   [v21 setAddressListForSender:v22];
 
-  [v21 setAddressListForTo:v19];
-  [v21 setHeader:v18 forKey:H_DATE];
+  [v21 setAddressListForTo:addressesCopy];
+  [v21 setHeader:dateCopy forKey:H_DATE];
 
-  [v21 setHeader:v17 forKey:H_SUBJECT];
+  [v21 setHeader:subjectCopy forKey:H_SUBJECT];
   attachmentManager = self->_attachmentManager;
   if (!attachmentManager)
   {
@@ -5507,11 +5507,11 @@ LABEL_11:
     attachmentManager = self->_attachmentManager;
   }
 
-  v26 = v15;
-  v27 = [(MFAttachmentComposeManager *)attachmentManager attachmentForData:v15 mimeType:@"text/calendar" fileName:@"meeting.ics" contentID:0 context:@"DataAccess"];
-  self->_curReplyMethod = a4;
+  v26 = dataCopy;
+  v27 = [(MFAttachmentComposeManager *)attachmentManager attachmentForData:dataCopy mimeType:@"text/calendar" fileName:@"meeting.ics" contentID:0 context:@"DataAccess"];
+  self->_curReplyMethod = method;
   v28 = objc_opt_new();
-  [v28 appendString:v20 withQuoteLevel:0];
+  [v28 appendString:stringCopy withQuoteLevel:0];
 
   v29 = objc_opt_new();
   [v29 setDelegate:self];
@@ -5520,9 +5520,9 @@ LABEL_11:
   v30 = [NSArray arrayWithObjects:v39 count:2];
   v31 = [v29 createMessageWithPlainTextDocumentsAndAttachments:v30 headers:v21];
 
-  *a10 = [v31 messageIDHeaderInFortyBytesOrLess];
-  v32 = [v31 messageData];
-  v33 = [[NSMutableString alloc] initWithData:v32 encoding:4];
+  *d = [v31 messageIDHeaderInFortyBytesOrLess];
+  messageData = [v31 messageData];
+  v33 = [[NSMutableString alloc] initWithData:messageData encoding:4];
   [v33 convertLineEndingsTo:@"\r\n"];
   [v31 setMessageBody:0];
   v34 = self->_attachmentManager;
@@ -5532,44 +5532,44 @@ LABEL_11:
   return v33;
 }
 
-- (id)_copyICSDateFromDate:(id)a3 timeZone:(id)a4
+- (id)_copyICSDateFromDate:(id)date timeZone:(id)zone
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  dateCopy = date;
+  zoneCopy = zone;
+  if (!zoneCopy)
   {
-    v6 = +[NSTimeZone gmt];
+    zoneCopy = +[NSTimeZone gmt];
   }
 
-  v7 = [v5 dateWithCalendarFormat:0 timeZone:v6];
-  v8 = [[ICSDate alloc] initWithYear:objc_msgSend(v7 month:"yearOfCommonEra") day:objc_msgSend(v7 hour:"monthOfYear") minute:objc_msgSend(v7 second:"dayOfMonth") timeZone:{objc_msgSend(v7, "hourOfDay"), objc_msgSend(v7, "minuteOfHour"), objc_msgSend(v7, "secondOfMinute"), v6}];
+  v7 = [dateCopy dateWithCalendarFormat:0 timeZone:zoneCopy];
+  v8 = [[ICSDate alloc] initWithYear:objc_msgSend(v7 month:"yearOfCommonEra") day:objc_msgSend(v7 hour:"monthOfYear") minute:objc_msgSend(v7 second:"dayOfMonth") timeZone:{objc_msgSend(v7, "hourOfDay"), objc_msgSend(v7, "minuteOfHour"), objc_msgSend(v7, "secondOfMinute"), zoneCopy}];
 
   return v8;
 }
 
-- (id)_stringWithRFC822DataFromEvent:(id)a3 icsMethod:(int)a4 recipients:(id)a5 recipientBareEmails:(id)a6 exceptionDate:(id)a7 outMessageID:(id *)a8
+- (id)_stringWithRFC822DataFromEvent:(id)event icsMethod:(int)method recipients:(id)recipients recipientBareEmails:(id)emails exceptionDate:(id)date outMessageID:(id *)d
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v147 = self;
-  v144 = [(ASDaemonAccount *)self emailAddress];
-  v16 = [v12 allDayEvent];
-  LODWORD(a5) = [v16 BOOLValue];
+  eventCopy = event;
+  recipientsCopy = recipients;
+  emailsCopy = emails;
+  dateCopy = date;
+  selfCopy = self;
+  emailAddress = [(ASDaemonAccount *)self emailAddress];
+  allDayEvent = [eventCopy allDayEvent];
+  LODWORD(recipients) = [allDayEvent BOOLValue];
 
-  [v12 calEvent];
+  [eventCopy calEvent];
   v148 = ICSEventFromCalEventFixUpCalEvent();
-  if (a5)
+  if (recipients)
   {
-    v17 = [v12 startTime];
-    v18 = [v12 endTime];
-    v19 = [v12 timeZone];
-    v20 = [(ASDaemonAccount *)self _copyICSDateFromDate:v17 timeZone:v19];
+    startTime = [eventCopy startTime];
+    endTime = [eventCopy endTime];
+    timeZone = [eventCopy timeZone];
+    v20 = [(ASDaemonAccount *)self _copyICSDateFromDate:startTime timeZone:timeZone];
 
-    v21 = [v12 timeZone];
-    v22 = v13;
-    v23 = [(ASDaemonAccount *)self _copyICSDateFromDate:v18 timeZone:v21];
+    timeZone2 = [eventCopy timeZone];
+    v22 = recipientsCopy;
+    v23 = [(ASDaemonAccount *)self _copyICSDateFromDate:endTime timeZone:timeZone2];
 
     [v148 setDtstart:v20];
     [v148 setDtend:v23];
@@ -5577,20 +5577,20 @@ LABEL_11:
     v24 = [[ICSProperty alloc] initWithValue:&__kCFBooleanTrue type:5012];
     [v148 setProperty:v24 forName:@"X-MICROSOFT-CDO-ALLDAYEVENT"];
 
-    v13 = v22;
+    recipientsCopy = v22;
   }
 
-  v25 = [v12 eventUID];
-  v26 = [v12 timeZone];
-  v138 = v25;
-  v27 = [v25 uidForResponseEmailWithTimeZone:v26];
+  eventUID = [eventCopy eventUID];
+  timeZone3 = [eventCopy timeZone];
+  v138 = eventUID;
+  v27 = [eventUID uidForResponseEmailWithTimeZone:timeZone3];
 
-  v28 = [v12 recurrence];
-  v136 = v28;
-  if (v28)
+  recurrence = [eventCopy recurrence];
+  v136 = recurrence;
+  if (recurrence)
   {
-    v29 = [v28 until];
-    v141 = [(ASDaemonAccount *)self _copyICSDateFromDate:v29 timeZone:0];
+    until = [recurrence until];
+    v141 = [(ASDaemonAccount *)self _copyICSDateFromDate:until timeZone:0];
   }
 
   else
@@ -5606,8 +5606,8 @@ LABEL_11:
     ModifiedDate = CalCalendarItemCopyLastModifiedDate();
     if (ModifiedDate)
     {
-      v33 = [v12 dTStamp];
-      v34 = [ModifiedDate compare:v33];
+      dTStamp = [eventCopy dTStamp];
+      v34 = [ModifiedDate compare:dTStamp];
 
       if (v34 == &dword_0 + 1)
       {
@@ -5623,44 +5623,44 @@ LABEL_11:
     CFRelease(v31);
   }
 
-  v36 = [v12 dTStamp];
-  ModifiedDate = [(ASDaemonAccount *)self _copyICSDateFromDate:v36 timeZone:0];
+  dTStamp2 = [eventCopy dTStamp];
+  ModifiedDate = [(ASDaemonAccount *)self _copyICSDateFromDate:dTStamp2 timeZone:0];
 
   [v148 setDtstamp:ModifiedDate];
   [v148 setLast_modified:ModifiedDate];
 LABEL_12:
 
-  v37 = [v148 location];
+  location = [v148 location];
 
-  if (!v37)
+  if (!location)
   {
     [v148 setLocation:&stru_6D4A8];
   }
 
-  v142 = [v148 rrule];
-  if ([v142 count] == &dword_0 + 1)
+  rrule = [v148 rrule];
+  if ([rrule count] == &dword_0 + 1)
   {
-    v38 = [v142 objectAtIndexedSubscript:0];
-    v39 = [v38 until];
+    v38 = [rrule objectAtIndexedSubscript:0];
+    until2 = [v38 until];
 
-    if (v39)
+    if (until2)
     {
-      v40 = [v141 value];
-      [v38 setUntil:v40];
+      value = [v141 value];
+      [v38 setUntil:value];
     }
   }
 
-  v140 = v13;
-  v143 = v15;
+  v140 = recipientsCopy;
+  v143 = dateCopy;
   v137 = v27;
-  if (a4 != 3)
+  if (method != 3)
   {
     v41 = [NSMutableSet alloc];
-    v42 = [v12 attendees];
-    v43 = [v41 initWithArray:v42];
+    attendees = [eventCopy attendees];
+    v43 = [v41 initWithArray:attendees];
 
-    v44 = [v12 attendeesPendingDeletion];
-    [v43 addObjectsFromArray:v44];
+    attendeesPendingDeletion = [eventCopy attendeesPendingDeletion];
+    [v43 addObjectsFromArray:attendeesPendingDeletion];
 
     v45 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v43, "count")}];
     v157 = 0u;
@@ -5683,13 +5683,13 @@ LABEL_12:
           }
 
           v51 = *(*(&v157 + 1) + 8 * i);
-          v52 = [v51 email];
-          if (v52 && [v14 containsObject:v52])
+          email = [v51 email];
+          if (email && [emailsCopy containsObject:email])
           {
-            v53 = [v51 icsUserAddress];
-            if (v53)
+            icsUserAddress = [v51 icsUserAddress];
+            if (icsUserAddress)
             {
-              [v45 addObject:v53];
+              [v45 addObject:icsUserAddress];
             }
           }
         }
@@ -5701,67 +5701,67 @@ LABEL_12:
     }
 
     [v148 setAttendee:v45];
-    v13 = v140;
-    v15 = v143;
+    recipientsCopy = v140;
+    dateCopy = v143;
   }
 
-  if (v15)
+  if (dateCopy)
   {
-    v54 = [v12 startTime];
-    v55 = [v12 timeZone];
-    v56 = [NSCalendarDate combinedDateWithYMDFrom:v15 HMSFrom:v54 componentDatesTimezone:v55];
+    startTime2 = [eventCopy startTime];
+    timeZone4 = [eventCopy timeZone];
+    v56 = [NSCalendarDate combinedDateWithYMDFrom:dateCopy HMSFrom:startTime2 componentDatesTimezone:timeZone4];
 
-    v57 = [v12 endTime];
-    v58 = [v12 startTime];
-    [v57 timeIntervalSinceDate:v58];
+    endTime2 = [eventCopy endTime];
+    startTime3 = [eventCopy startTime];
+    [endTime2 timeIntervalSinceDate:startTime3];
     v60 = v59;
 
     v61 = [v56 dateByAddingTimeInterval:v60];
-    v62 = [v12 timeZone];
-    v63 = v13;
-    v64 = [(ASDaemonAccount *)self _copyICSDateFromDate:v56 timeZone:v62];
+    timeZone5 = [eventCopy timeZone];
+    v63 = recipientsCopy;
+    v64 = [(ASDaemonAccount *)self _copyICSDateFromDate:v56 timeZone:timeZone5];
 
-    v65 = [v12 timeZone];
-    v66 = [(ASDaemonAccount *)self _copyICSDateFromDate:v61 timeZone:v65];
+    timeZone6 = [eventCopy timeZone];
+    v66 = [(ASDaemonAccount *)self _copyICSDateFromDate:v61 timeZone:timeZone6];
 
     [v148 setDtstart:v64];
     [v148 setDtend:v66];
     [v148 setRecurrence_id:v64];
     [v148 setExdate:0];
 
-    v13 = v63;
+    recipientsCopy = v63;
   }
 
-  if (a4 == 3)
+  if (method == 3)
   {
-    v67 = -[ASDaemonAccount _localizedStringForResponse:](self, "_localizedStringForResponse:", [v12 meetingResponseForEmail]);
+    v67 = -[ASDaemonAccount _localizedStringForResponse:](self, "_localizedStringForResponse:", [eventCopy meetingResponseForEmail]);
     if (v67)
     {
       v68 = v67;
-      v69 = [v12 subject];
-      v70 = v69;
+      subject = [eventCopy subject];
+      v70 = subject;
       v71 = &stru_6D4A8;
-      if (v69)
+      if (subject)
       {
-        v71 = v69;
+        v71 = subject;
       }
 
       v72 = [NSString stringWithFormat:@"%@ %@", v68, v71];
 
-      v73 = [v148 attendee];
-      v74 = [v12 meetingResponseForEmail];
-      if (v74 > 2)
+      attendee = [v148 attendee];
+      meetingResponseForEmail = [eventCopy meetingResponseForEmail];
+      if (meetingResponseForEmail > 2)
       {
-        if (v74 == 3)
+        if (meetingResponseForEmail == 3)
         {
           v135 = v72;
           v75 = 3;
           goto LABEL_72;
         }
 
-        if (v74 == 4)
+        if (meetingResponseForEmail == 4)
         {
-          v99 = [v12 selfAttendeeMeetingResponse] - 1;
+          v99 = [eventCopy selfAttendeeMeetingResponse] - 1;
           v135 = v72;
           if (v99 >= 3)
           {
@@ -5779,14 +5779,14 @@ LABEL_12:
 
       else
       {
-        if (v74 == 1)
+        if (meetingResponseForEmail == 1)
         {
           v135 = v72;
           v75 = 2;
           goto LABEL_72;
         }
 
-        if (v74 == 2)
+        if (meetingResponseForEmail == 2)
         {
           v135 = v72;
           v75 = 4;
@@ -5795,7 +5795,7 @@ LABEL_72:
           v156 = 0u;
           v153 = 0u;
           v154 = 0u;
-          v80 = v73;
+          v80 = attendee;
           v104 = [v80 countByEnumeratingWithState:&v153 objects:v167 count:16];
           if (v104)
           {
@@ -5811,15 +5811,15 @@ LABEL_72:
                 }
 
                 v108 = *(*(&v153 + 1) + 8 * j);
-                v109 = [v108 emailAddress];
-                if ([(ASDaemonAccount *)v147 accountContainsEmailAddress:v109])
+                emailAddress2 = [v108 emailAddress];
+                if ([(ASDaemonAccount *)selfCopy accountContainsEmailAddress:emailAddress2])
                 {
                   [v108 setPartstat:v75];
 
                   v166 = v108;
                   v112 = &v166;
                   v87 = v80;
-                  v90 = v109;
+                  v90 = emailAddress2;
                   goto LABEL_82;
                 }
               }
@@ -5835,14 +5835,14 @@ LABEL_72:
           }
 
           v110 = [ICSUserAddress alloc];
-          v111 = [(ASDaemonAccount *)v147 emailAddress];
-          v87 = [v110 initWithEmailAddress:v111];
+          emailAddress3 = [(ASDaemonAccount *)selfCopy emailAddress];
+          v87 = [v110 initWithEmailAddress:emailAddress3];
 
           [v87 setPartstat:v75];
           [v87 setCutype:1];
           v165 = v87;
           v112 = &v165;
-          v90 = v144;
+          v90 = emailAddress;
 LABEL_82:
           v98 = [NSArray arrayWithObjects:v112 count:1];
           [v148 setAttendee:v98];
@@ -5854,15 +5854,15 @@ LABEL_82:
       v101 = _CPLog_to_os_log_type[3];
       if (os_log_type_enabled(v100, v101))
       {
-        v102 = [v12 meetingResponseForEmail];
+        meetingResponseForEmail2 = [eventCopy meetingResponseForEmail];
         *buf = 67109378;
-        *v162 = v102;
+        *v162 = meetingResponseForEmail2;
         *&v162[4] = 2112;
-        *&v162[6] = v12;
+        *&v162[6] = eventCopy;
         _os_log_impl(&dword_0, v100, v101, "We are sending an email for an invitation with response %d.  That's not right.  Dropping this email on the floor.  Event %@", buf, 0x12u);
       }
 
-      *a8 = 0;
+      *d = 0;
       v95 = 0;
     }
 
@@ -5872,39 +5872,39 @@ LABEL_82:
       v93 = _CPLog_to_os_log_type[3];
       if (os_log_type_enabled(v92, v93))
       {
-        v94 = [v12 meetingResponseForEmail];
+        meetingResponseForEmail3 = [eventCopy meetingResponseForEmail];
         *buf = 67109378;
-        *v162 = v94;
+        *v162 = meetingResponseForEmail3;
         *&v162[4] = 2112;
-        *&v162[6] = v12;
+        *&v162[6] = eventCopy;
         _os_log_impl(&dword_0, v92, v93, "We are sending an email for an invitation with response %d.  That's not right.  Dropping this email on the floor.  Event %@", buf, 0x12u);
       }
 
       v95 = 0;
-      *a8 = 0;
+      *d = 0;
     }
 
-    v103 = v144;
+    v103 = emailAddress;
     goto LABEL_102;
   }
 
-  v76 = [v12 subject];
-  v77 = v76;
+  subject2 = [eventCopy subject];
+  v77 = subject2;
   v78 = &stru_6D4A8;
-  if (v76)
+  if (subject2)
   {
-    v78 = v76;
+    v78 = subject2;
   }
 
   v135 = v78;
 
-  v79 = [v148 attendee];
-  v80 = [v79 mutableCopy];
+  attendee2 = [v148 attendee];
+  v80 = [attendee2 mutableCopy];
   v149 = 0u;
   v150 = 0u;
   v151 = 0u;
   v152 = 0u;
-  v68 = v79;
+  v68 = attendee2;
   v81 = [v68 countByEnumeratingWithState:&v149 objects:v164 count:16];
   if (v81)
   {
@@ -5930,16 +5930,16 @@ LABEL_82:
     while (v82);
   }
 
-  v86 = [v148 organizer];
-  v87 = v86;
-  if (v86)
+  organizer = [v148 organizer];
+  v87 = organizer;
+  if (organizer)
   {
-    v88 = [v86 emailAddress];
-    v89 = v88;
-    v90 = v144;
-    if (v88)
+    emailAddress4 = [organizer emailAddress];
+    v89 = emailAddress4;
+    v90 = emailAddress;
+    if (emailAddress4)
     {
-      v91 = v88;
+      v91 = emailAddress4;
 
       v90 = v91;
     }
@@ -5947,19 +5947,19 @@ LABEL_82:
 
   else
   {
-    v90 = v144;
+    v90 = emailAddress;
   }
 
   [v148 setAttendee:v80];
-  v96 = [v12 busyStatus];
-  v97 = [v96 intValue];
+  busyStatus = [eventCopy busyStatus];
+  intValue = [busyStatus intValue];
 
-  if (v97 > 3)
+  if (intValue > 3)
   {
     goto LABEL_84;
   }
 
-  v98 = [[ICSProperty alloc] initWithValue:off_6D210[v97] type:5007];
+  v98 = [[ICSProperty alloc] initWithValue:off_6D210[intValue] type:5007];
   [v148 setProperty:v98 forName:@"X-MICROSOFT-CDO-INTENDEDSTATUS"];
 LABEL_83:
 
@@ -5983,7 +5983,7 @@ LABEL_84:
   [v114 setComponents:v115 options:1];
 
   [v114 setProdid:@"-//Apple Inc.//iPhone 3.0//EN"];
-  [v114 setMethod:a4];
+  [v114 setMethod:method];
   v116 = CalCreateiCalendarDataFromICSCalendar();
   v117 = [[NSMutableString alloc] initWithData:v116 encoding:4];
   v118 = DALoggingwithCategory();
@@ -5991,7 +5991,7 @@ LABEL_84:
   if (os_log_type_enabled(v118, v119))
   {
     *buf = 138412546;
-    *v162 = v12;
+    *v162 = eventCopy;
     *&v162[8] = 2112;
     *&v162[10] = v117;
     _os_log_impl(&dword_0, v118, v119, "Sending .ics attachment for event %@.  Attachment body\n%@", buf, 0x16u);
@@ -6012,11 +6012,11 @@ LABEL_84:
 
   v122 = +[NSDate date];
   v123 = +[NSTimeZone systemTimeZone];
-  v124 = [v122 dateWithCalendarFormat:@"%a timeZone:%d %b %Y %H:%M:%S %z", v123];
-  v125 = [v124 description];
+  v123 = [v122 dateWithCalendarFormat:@"%a timeZone:%d %b %Y %H:%M:%S %z", v123];
+  v125 = [v123 description];
 
-  v134 = v12;
-  if (a4 == 3)
+  v134 = eventCopy;
+  if (method == 3)
   {
     v126 = CalEventCopyResponseComment();
   }
@@ -6031,17 +6031,17 @@ LABEL_84:
   v128 = v121;
   if (v126)
   {
-    v129 = [NSString stringWithFormat:@"%@\n", v126];
+    v126 = [NSString stringWithFormat:@"%@\n", v126];
   }
 
   else
   {
-    v129 = 0;
+    v126 = 0;
   }
 
-  if (v129)
+  if (v126)
   {
-    v130 = v129;
+    v130 = v126;
   }
 
   else
@@ -6051,31 +6051,31 @@ LABEL_84:
 
   v131 = v128;
   v132 = v128;
-  v13 = v140;
-  v95 = [(ASDaemonAccount *)v147 copyMessageStringWithPlainTextString:v130 vCalMethod:a4 vCalAttachmentData:v132 fromAddress:v145 toAddresses:v140 date:v125 subject:v135 outMessageID:a8];
+  recipientsCopy = v140;
+  v95 = [(ASDaemonAccount *)selfCopy copyMessageStringWithPlainTextString:v130 vCalMethod:method vCalAttachmentData:v132 fromAddress:v145 toAddresses:v140 date:v125 subject:v135 outMessageID:d];
 
-  v12 = v134;
+  eventCopy = v134;
 LABEL_102:
 
   return v95;
 }
 
-- (void)addStringsToEmailForEventIOriginated:(id)a3 deletedExceptionOccurrenceDate:(id)a4 stringsToEmail:(id)a5 eventUUIDsToEmail:(id)a6 externalIDs:(id)a7 messageIDsToEmail:(id)a8 eventsDroppedDueToAge:(id)a9 checkEventForNeedingInvite:(BOOL)a10
+- (void)addStringsToEmailForEventIOriginated:(id)originated deletedExceptionOccurrenceDate:(id)date stringsToEmail:(id)email eventUUIDsToEmail:(id)toEmail externalIDs:(id)ds messageIDsToEmail:(id)dsToEmail eventsDroppedDueToAge:(id)age checkEventForNeedingInvite:(BOOL)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = v16;
-  v144 = v17;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v145 = a9;
-  v22 = [v15 hasOccurrenceInTheFuture];
-  v23 = [v15 isTombstoneEndTimeInFuture];
-  if (v18 && v22)
+  originatedCopy = originated;
+  dateCopy = date;
+  emailCopy = email;
+  v18 = dateCopy;
+  v144 = emailCopy;
+  toEmailCopy = toEmail;
+  dsCopy = ds;
+  dsToEmailCopy = dsToEmail;
+  ageCopy = age;
+  hasOccurrenceInTheFuture = [originatedCopy hasOccurrenceInTheFuture];
+  isTombstoneEndTimeInFuture = [originatedCopy isTombstoneEndTimeInFuture];
+  if (v18 && hasOccurrenceInTheFuture)
   {
-    if ([v15 calEvent])
+    if ([originatedCopy calEvent])
     {
       Duration = CalEventGetDuration();
     }
@@ -6087,51 +6087,51 @@ LABEL_102:
 
     v25 = [v18 dateByAddingTimeInterval:Duration];
     [v25 timeIntervalSinceNow];
-    v22 = v26 >= 0.0;
+    hasOccurrenceInTheFuture = v26 >= 0.0;
   }
 
   v136 = v18;
-  if (((v22 | v23) & 1) == 0)
+  if (((hasOccurrenceInTheFuture | isTombstoneEndTimeInFuture) & 1) == 0)
   {
     if (!v18)
     {
-      [v145 addObject:v15];
+      [ageCopy addObject:originatedCopy];
     }
 
     goto LABEL_123;
   }
 
-  if ([v15 calEvent])
+  if ([originatedCopy calEvent])
   {
     ExternalTrackingStatus = CalEventGetExternalTrackingStatus();
     v28 = (ExternalTrackingStatus & 6) == 0;
-    if (a10)
+    if (invite)
     {
       v28 = ExternalTrackingStatus;
     }
 
     if (v28)
     {
-      v29 = [v15 CalCalendarItemStatus];
-      if (v18 || v29 == 3 || (v30 = CalEventCopyOriginalEvent()) != 0 && (v31 = v30, Status = CalCalendarItemGetStatus(), CFRelease(v31), Status == 3))
+      calCalendarItemStatus = [originatedCopy CalCalendarItemStatus];
+      if (v18 || calCalendarItemStatus == 3 || (v30 = CalEventCopyOriginalEvent()) != 0 && (v31 = v30, Status = CalCalendarItemGetStatus(), CFRelease(v31), Status == 3))
       {
-        v33 = [v15 attendees];
-        if (![v33 count])
+        attendees = [originatedCopy attendees];
+        if (![attendees count])
         {
           v49 = 1;
           v141 = 1;
           goto LABEL_108;
         }
 
-        v134 = v20;
-        v137 = v21;
-        v34 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v33, "count")}];
-        v35 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v33, "count")}];
+        v134 = dsCopy;
+        v137 = dsToEmailCopy;
+        v34 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(attendees, "count")}];
+        v35 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(attendees, "count")}];
         v157 = 0u;
         v158 = 0u;
         v159 = 0u;
         v160 = 0u;
-        v36 = v33;
+        v36 = attendees;
         v37 = [v36 countByEnumeratingWithState:&v157 objects:v165 count:16];
         if (v37)
         {
@@ -6147,12 +6147,12 @@ LABEL_102:
               }
 
               v41 = *(*(&v157 + 1) + 8 * i);
-              v42 = [v41 fullEmailString];
-              v43 = [v41 email];
-              v44 = v43;
-              if (v42)
+              fullEmailString = [v41 fullEmailString];
+              email = [v41 email];
+              v44 = email;
+              if (fullEmailString)
               {
-                v45 = v43 == 0;
+                v45 = email == 0;
               }
 
               else
@@ -6162,7 +6162,7 @@ LABEL_102:
 
               if (!v45)
               {
-                [v34 addObject:v42];
+                [v34 addObject:fullEmailString];
                 [v35 addObject:v44];
               }
             }
@@ -6173,14 +6173,14 @@ LABEL_102:
           while (v38);
         }
 
-        v33 = v36;
+        attendees = v36;
 
         if (![v34 count])
         {
           v49 = 1;
           v141 = 1;
-          v21 = v137;
-          v20 = v134;
+          dsToEmailCopy = v137;
+          dsCopy = v134;
 LABEL_107:
           v18 = v136;
 
@@ -6195,17 +6195,17 @@ LABEL_108:
 
         v140 = v36;
         v156 = 0;
-        [(ASDaemonAccount *)self _stringWithRFC822DataFromEvent:v15 icsMethod:5 recipients:v34 recipientBareEmails:v35 exceptionDate:v136 outMessageID:&v156];
-        v47 = v46 = v15;
+        [(ASDaemonAccount *)self _stringWithRFC822DataFromEvent:originatedCopy icsMethod:5 recipients:v34 recipientBareEmails:v35 exceptionDate:v136 outMessageID:&v156];
+        v47 = v46 = originatedCopy;
         v48 = v156;
         v49 = v47 == 0;
-        v20 = v134;
+        dsCopy = v134;
         v131 = v47;
         v133 = v46;
         if (v47)
         {
-          v50 = [v46 eventUID];
-          v51 = [v50 copy];
+          eventUID = [v46 eventUID];
+          v51 = [eventUID copy];
 
           if (v136)
           {
@@ -6214,8 +6214,8 @@ LABEL_108:
 
           else
           {
-            v74 = [v46 exceptionDate];
-            [v51 setExceptionDate:v74];
+            exceptionDate = [v46 exceptionDate];
+            [v51 setExceptionDate:exceptionDate];
           }
 
           v75 = v46;
@@ -6223,13 +6223,13 @@ LABEL_108:
           v73 = v131;
           [v144 addObject:v131];
           v129 = v76;
-          v77 = [v76 uidForCalFramework];
-          [v19 addObject:v77];
+          uidForCalFramework = [v76 uidForCalFramework];
+          [toEmailCopy addObject:uidForCalFramework];
 
-          v78 = [v75 serverID];
+          serverID = [v75 serverID];
 
-          v33 = v140;
-          if (v78)
+          attendees = v140;
+          if (serverID)
           {
             [v75 serverID];
           }
@@ -6246,7 +6246,7 @@ LABEL_108:
             v48 = +[NSString da_newGUID];
           }
 
-          v21 = v137;
+          dsToEmailCopy = v137;
           [v137 addObject:v48];
         }
 
@@ -6262,8 +6262,8 @@ LABEL_108:
             _os_log_impl(&dword_0, v71, v72, "Couldn't cons up a cancel-all email for event %@", buf, 0xCu);
           }
 
-          v21 = v137;
-          v33 = v140;
+          dsToEmailCopy = v137;
+          attendees = v140;
           v73 = 0;
         }
 
@@ -6272,19 +6272,19 @@ LABEL_108:
 
       else
       {
-        v52 = [v15 attendeesPendingDeletion];
-        v34 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v52, "count")}];
-        v35 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v52, "count")}];
-        v135 = v20;
-        v138 = v21;
-        v142 = v52;
-        if ([v52 count])
+        attendeesPendingDeletion = [originatedCopy attendeesPendingDeletion];
+        v34 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(attendeesPendingDeletion, "count")}];
+        v35 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(attendeesPendingDeletion, "count")}];
+        v135 = dsCopy;
+        v138 = dsToEmailCopy;
+        v142 = attendeesPendingDeletion;
+        if ([attendeesPendingDeletion count])
         {
           v155 = 0u;
           v153 = 0u;
           v154 = 0u;
           v152 = 0u;
-          v53 = v52;
+          v53 = attendeesPendingDeletion;
           v54 = [v53 countByEnumeratingWithState:&v152 objects:v162 count:16];
           if (v54)
           {
@@ -6300,12 +6300,12 @@ LABEL_108:
                 }
 
                 v58 = *(*(&v152 + 1) + 8 * j);
-                v59 = [v58 fullEmailString];
-                v60 = [v58 email];
-                v61 = v60;
-                if (v59)
+                fullEmailString2 = [v58 fullEmailString];
+                email2 = [v58 email];
+                v61 = email2;
+                if (fullEmailString2)
                 {
-                  v62 = v60 == 0;
+                  v62 = email2 == 0;
                 }
 
                 else
@@ -6315,7 +6315,7 @@ LABEL_108:
 
                 if (!v62)
                 {
-                  [v34 addObject:v59];
+                  [v34 addObject:fullEmailString2];
                   [v35 addObject:v61];
                 }
               }
@@ -6329,26 +6329,26 @@ LABEL_108:
           if ([v34 count])
           {
             v151 = 0;
-            v63 = [(ASDaemonAccount *)self _stringWithRFC822DataFromEvent:v15 icsMethod:5 recipients:v34 recipientBareEmails:v35 exceptionDate:0 outMessageID:&v151];
+            v63 = [(ASDaemonAccount *)self _stringWithRFC822DataFromEvent:originatedCopy icsMethod:5 recipients:v34 recipientBareEmails:v35 exceptionDate:0 outMessageID:&v151];
             v64 = v151;
-            v20 = v135;
+            dsCopy = v135;
             if (v63)
             {
-              v65 = [v15 eventUID];
-              v66 = [v65 copy];
+              eventUID2 = [originatedCopy eventUID];
+              v66 = [eventUID2 copy];
 
-              v67 = [v15 exceptionDate];
-              [v66 setExceptionDate:v67];
+              exceptionDate2 = [originatedCopy exceptionDate];
+              [v66 setExceptionDate:exceptionDate2];
 
               [v144 addObject:v63];
-              v68 = [v66 uidForCalFramework];
-              [v19 addObject:v68];
+              uidForCalFramework2 = [v66 uidForCalFramework];
+              [toEmailCopy addObject:uidForCalFramework2];
 
-              v69 = [v15 serverID];
+              serverID2 = [originatedCopy serverID];
 
-              if (v69)
+              if (serverID2)
               {
-                [v15 serverID];
+                [originatedCopy serverID];
               }
 
               else
@@ -6363,7 +6363,7 @@ LABEL_108:
                 v64 = +[NSString da_newGUID];
               }
 
-              v21 = v138;
+              dsToEmailCopy = v138;
               [v138 addObject:v64];
             }
 
@@ -6374,11 +6374,11 @@ LABEL_108:
               if (os_log_type_enabled(v66, v80))
               {
                 *buf = 138412290;
-                v164 = v15;
+                v164 = originatedCopy;
                 _os_log_impl(&dword_0, v66, v80, "Couldn't cons up a cancel-some email for event %@", buf, 0xCu);
               }
 
-              v21 = v138;
+              dsToEmailCopy = v138;
             }
 
             v70 = v63 != 0;
@@ -6387,8 +6387,8 @@ LABEL_108:
           else
           {
             v70 = 0;
-            v20 = v135;
-            v21 = v138;
+            dsCopy = v135;
+            dsToEmailCopy = v138;
           }
         }
 
@@ -6397,10 +6397,10 @@ LABEL_108:
           v70 = 0;
         }
 
-        v82 = [v15 attendees];
-        v48 = [v82 mutableCopy];
+        attendees2 = [originatedCopy attendees];
+        v48 = [attendees2 mutableCopy];
 
-        v33 = v142;
+        attendees = v142;
         [v48 removeObjectsInArray:v142];
         if (![v48 count])
         {
@@ -6412,8 +6412,8 @@ LABEL_106:
         }
 
         v132 = v70;
-        v133 = v15;
-        v127 = v19;
+        v133 = originatedCopy;
+        v127 = toEmailCopy;
         v73 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v48, "count")}];
         v83 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v48, "count")}];
         v147 = 0u;
@@ -6436,12 +6436,12 @@ LABEL_106:
               }
 
               v88 = *(*(&v147 + 1) + 8 * k);
-              v89 = [v88 fullEmailString];
-              v90 = [v88 email];
-              v91 = v90;
-              if (v89)
+              fullEmailString3 = [v88 fullEmailString];
+              email3 = [v88 email];
+              v91 = email3;
+              if (fullEmailString3)
               {
-                v92 = v90 == 0;
+                v92 = email3 == 0;
               }
 
               else
@@ -6451,7 +6451,7 @@ LABEL_106:
 
               if (!v92)
               {
-                [v73 addObject:v89];
+                [v73 addObject:fullEmailString3];
                 [v83 addObject:v91];
               }
             }
@@ -6467,25 +6467,25 @@ LABEL_106:
           v146 = 0;
           v93 = [(ASDaemonAccount *)self _stringWithRFC822DataFromEvent:v133 icsMethod:2 recipients:v73 recipientBareEmails:v83 exceptionDate:0 outMessageID:&v146];
           v130 = v146;
-          v19 = v127;
-          v20 = v135;
-          v33 = v142;
+          toEmailCopy = v127;
+          dsCopy = v135;
+          attendees = v142;
           v126 = v93;
           if (v93)
           {
-            v94 = [v133 eventUID];
-            v128 = [v94 copy];
+            eventUID3 = [v133 eventUID];
+            v128 = [eventUID3 copy];
 
-            v95 = [v133 exceptionDate];
-            [v128 setExceptionDate:v95];
+            exceptionDate3 = [v133 exceptionDate];
+            [v128 setExceptionDate:exceptionDate3];
 
             [v144 addObject:v93];
-            v96 = [v128 uidForCalFramework];
-            [v127 addObject:v96];
+            uidForCalFramework3 = [v128 uidForCalFramework];
+            [v127 addObject:uidForCalFramework3];
 
-            v97 = [v133 serverID];
+            serverID3 = [v133 serverID];
 
-            if (v97)
+            if (serverID3)
             {
               [v133 serverID];
             }
@@ -6503,7 +6503,7 @@ LABEL_106:
               v101 = +[NSString da_newGUID];
             }
 
-            v21 = v138;
+            dsToEmailCopy = v138;
             v130 = v101;
             [v138 addObject:v101];
             v132 = 1;
@@ -6521,23 +6521,23 @@ LABEL_106:
               _os_log_impl(&dword_0, v98, v99, "Couldn't cons up a request email for event %@", buf, 0xCu);
             }
 
-            v21 = v138;
+            dsToEmailCopy = v138;
           }
         }
 
         else
         {
-          v19 = v127;
-          v20 = v135;
-          v21 = v138;
-          v33 = v142;
+          toEmailCopy = v127;
+          dsCopy = v135;
+          dsToEmailCopy = v138;
+          attendees = v142;
         }
 
         v49 = 1;
         v70 = v132;
       }
 
-      v15 = v133;
+      originatedCopy = v133;
       goto LABEL_106;
     }
   }
@@ -6552,45 +6552,45 @@ LABEL_106:
 LABEL_109:
   if (v49)
   {
-    v102 = [v15 exceptions];
-    v103 = [v102 count];
+    exceptions = [originatedCopy exceptions];
+    v103 = [exceptions count];
 
     if (v103)
     {
       v104 = 0;
-      v139 = v21;
+      v139 = dsToEmailCopy;
       do
       {
-        v105 = [v15 exceptions];
-        v106 = [v105 objectAtIndexedSubscript:v104];
+        exceptions2 = [originatedCopy exceptions];
+        v106 = [exceptions2 objectAtIndexedSubscript:v104];
 
-        v107 = [v106 isDeleted];
-        v108 = [v107 BOOLValue];
+        isDeleted = [v106 isDeleted];
+        bOOLValue = [isDeleted BOOLValue];
 
-        if (v108)
+        if (bOOLValue)
         {
-          v109 = v20;
-          v110 = v19;
-          v111 = [v106 eventUID];
-          v112 = [v111 uidForCalFramework];
+          v109 = dsCopy;
+          v110 = toEmailCopy;
+          eventUID4 = [v106 eventUID];
+          uidForCalFramework4 = [eventUID4 uidForCalFramework];
 
           if (v104)
           {
             v113 = 0;
             while (1)
             {
-              v114 = [v15 exceptions];
-              v115 = [v114 objectAtIndexedSubscript:v113];
+              exceptions3 = [originatedCopy exceptions];
+              v115 = [exceptions3 objectAtIndexedSubscript:v113];
 
-              v116 = [v115 isDeleted];
-              v117 = [v116 BOOLValue];
+              isDeleted2 = [v115 isDeleted];
+              bOOLValue2 = [isDeleted2 BOOLValue];
 
-              if (v117)
+              if (bOOLValue2)
               {
-                v118 = [v115 eventUID];
-                v119 = [v118 uidForCalFramework];
+                eventUID5 = [v115 eventUID];
+                uidForCalFramework5 = [eventUID5 uidForCalFramework];
 
-                v120 = [v112 compare:v119];
+                v120 = [uidForCalFramework4 compare:uidForCalFramework5];
                 if (!v120)
                 {
                   break;
@@ -6603,33 +6603,33 @@ LABEL_109:
               }
             }
 
-            v19 = v110;
-            v20 = v109;
-            v21 = v139;
+            toEmailCopy = v110;
+            dsCopy = v109;
+            dsToEmailCopy = v139;
           }
 
           else
           {
 LABEL_118:
-            v121 = [v106 exceptionDate];
+            exceptionDate4 = [v106 exceptionDate];
             LOBYTE(v125) = v141;
-            v19 = v110;
+            toEmailCopy = v110;
             v122 = v110;
-            v20 = v109;
-            v21 = v139;
-            [(ASDaemonAccount *)self addStringsToEmailForEventIOriginated:v15 deletedExceptionOccurrenceDate:v121 stringsToEmail:v144 eventUUIDsToEmail:v122 externalIDs:v109 messageIDsToEmail:v139 eventsDroppedDueToAge:v145 checkEventForNeedingInvite:v125];
+            dsCopy = v109;
+            dsToEmailCopy = v139;
+            [(ASDaemonAccount *)self addStringsToEmailForEventIOriginated:originatedCopy deletedExceptionOccurrenceDate:exceptionDate4 stringsToEmail:v144 eventUUIDsToEmail:v122 externalIDs:v109 messageIDsToEmail:v139 eventsDroppedDueToAge:ageCopy checkEventForNeedingInvite:v125];
           }
         }
 
         else
         {
           LOBYTE(v125) = v141;
-          [(ASDaemonAccount *)self addStringsToEmailForEventIOriginated:v106 deletedExceptionOccurrenceDate:0 stringsToEmail:v144 eventUUIDsToEmail:v19 externalIDs:v20 messageIDsToEmail:v21 eventsDroppedDueToAge:v145 checkEventForNeedingInvite:v125];
+          [(ASDaemonAccount *)self addStringsToEmailForEventIOriginated:v106 deletedExceptionOccurrenceDate:0 stringsToEmail:v144 eventUUIDsToEmail:toEmailCopy externalIDs:dsCopy messageIDsToEmail:dsToEmailCopy eventsDroppedDueToAge:ageCopy checkEventForNeedingInvite:v125];
         }
 
         ++v104;
-        v123 = [v15 exceptions];
-        v124 = [v123 count];
+        exceptions4 = [originatedCopy exceptions];
+        v124 = [exceptions4 count];
       }
 
       while (v104 < v124);
@@ -6639,48 +6639,48 @@ LABEL_118:
 LABEL_123:
 }
 
-- (BOOL)addStringsToEmailForEventIAmAttending:(id)a3 recipient:(id)a4 stringsToEmail:(id)a5 eventUUIDsToEmail:(id)a6 externalIDs:(id)a7 messageIDsToEmail:(id)a8 eventsDroppedDueToAge:(id)a9 checkEventForNeedingInvite:(BOOL)a10
+- (BOOL)addStringsToEmailForEventIAmAttending:(id)attending recipient:(id)recipient stringsToEmail:(id)email eventUUIDsToEmail:(id)toEmail externalIDs:(id)ds messageIDsToEmail:(id)dsToEmail eventsDroppedDueToAge:(id)age checkEventForNeedingInvite:(BOOL)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  if (([v16 hasOccurrenceInTheFuture] & 1) == 0)
+  attendingCopy = attending;
+  recipientCopy = recipient;
+  emailCopy = email;
+  toEmailCopy = toEmail;
+  dsCopy = ds;
+  dsToEmailCopy = dsToEmail;
+  ageCopy = age;
+  if (([attendingCopy hasOccurrenceInTheFuture] & 1) == 0)
   {
-    [v22 addObject:v16];
+    [ageCopy addObject:attendingCopy];
     goto LABEL_7;
   }
 
-  if (![v16 calEvent])
+  if (![attendingCopy calEvent])
   {
 LABEL_7:
     v25 = 0;
     goto LABEL_18;
   }
 
-  v37 = v18;
-  v41 = v17;
+  v37 = emailCopy;
+  v41 = recipientCopy;
   v23 = [NSArray arrayWithObjects:&v41 count:1];
   v38 = 0;
-  v24 = [(ASDaemonAccount *)self _stringWithRFC822DataFromEvent:v16 icsMethod:3 recipients:v23 recipientBareEmails:0 exceptionDate:0 outMessageID:&v38];
+  v24 = [(ASDaemonAccount *)self _stringWithRFC822DataFromEvent:attendingCopy icsMethod:3 recipients:v23 recipientBareEmails:0 exceptionDate:0 outMessageID:&v38];
   v36 = v38;
 
   v25 = v24 == 0;
   if (v24)
   {
     [v37 addObject:v24];
-    v26 = [v16 eventUID];
-    v27 = [v26 uidForCalFramework];
-    [v19 addObject:v27];
+    eventUID = [attendingCopy eventUID];
+    uidForCalFramework = [eventUID uidForCalFramework];
+    [toEmailCopy addObject:uidForCalFramework];
 
-    v28 = [v16 serverID];
+    serverID = [attendingCopy serverID];
 
-    if (v28)
+    if (serverID)
     {
-      [v16 serverID];
+      [attendingCopy serverID];
     }
 
     else
@@ -6688,7 +6688,7 @@ LABEL_7:
       +[NSNull null];
     }
     v33 = ;
-    [v20 addObject:v33];
+    [dsCopy addObject:v33];
 
     v32 = v36;
     if (!v36)
@@ -6696,7 +6696,7 @@ LABEL_7:
       v32 = +[NSString da_newGUID];
     }
 
-    [v21 addObject:v32];
+    [dsToEmailCopy addObject:v32];
   }
 
   else
@@ -6706,7 +6706,7 @@ LABEL_7:
     if (os_log_type_enabled(v29, type))
     {
       *buf = 138412290;
-      v40 = v16;
+      v40 = attendingCopy;
       _os_log_impl(&dword_0, v29, type, "Couldn't cons up a response email for event %@, not going to reply", buf, 0xCu);
     }
 
@@ -6723,22 +6723,22 @@ LABEL_7:
     v32 = v36;
   }
 
-  v18 = v37;
+  emailCopy = v37;
 LABEL_18:
 
   return v25;
 }
 
-- (BOOL)sendEmailsForCalEvents:(id)a3 consumer:(id)a4
+- (BOOL)sendEmailsForCalEvents:(id)events consumer:(id)consumer
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+  eventsCopy = events;
+  consumerCopy = consumer;
+  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(eventsCopy, "count")}];
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v8 = v5;
+  v8 = eventsCopy;
   v9 = [v8 countByEnumeratingWithState:&v90 objects:v99 count:16];
   if (v9)
   {
@@ -6754,9 +6754,9 @@ LABEL_18:
         }
 
         v13 = *(*(&v90 + 1) + 8 * i);
-        v14 = [v13 recurrence];
+        recurrence = [v13 recurrence];
 
-        if (v14)
+        if (recurrence)
         {
           [v7 addObject:v13];
         }
@@ -6788,9 +6788,9 @@ LABEL_18:
         }
 
         v19 = *(*(&v86 + 1) + 8 * j);
-        v20 = [v19 recurrence];
+        recurrence2 = [v19 recurrence];
 
-        if (!v20)
+        if (!recurrence2)
         {
           [v7 addObject:v19];
         }
@@ -6803,17 +6803,17 @@ LABEL_18:
   }
 
   v63 = v7;
-  v73 = v6;
+  v73 = consumerCopy;
 
   v76 = objc_opt_new();
   v21 = objc_opt_new();
   v22 = objc_opt_new();
   v75 = objc_opt_new();
   v23 = objc_opt_new();
-  v24 = [(ASDaemonAccount *)self protocol];
-  v25 = [v24 sendEmailForMeetingInvitationAndResponse];
+  protocol = [(ASDaemonAccount *)self protocol];
+  sendEmailForMeetingInvitationAndResponse = [protocol sendEmailForMeetingInvitationAndResponse];
 
-  if (v25)
+  if (sendEmailForMeetingInvitationAndResponse)
   {
     v84 = 0u;
     v85 = 0u;
@@ -6850,8 +6850,8 @@ LABEL_18:
         [v75 removeAllObjects];
         if ([v27 cachedOrganizerIsSelfWithAccount:self])
         {
-          v28 = [v27 attendees];
-          v29 = [v28 count] != 0;
+          attendees = [v27 attendees];
+          v29 = [attendees count] != 0;
         }
 
         else
@@ -6879,19 +6879,19 @@ LABEL_18:
           v30 = 1;
         }
 
-        v32 = [v27 hasOccurrenceInTheFuture];
+        hasOccurrenceInTheFuture = [v27 hasOccurrenceInTheFuture];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v33 = [v27 isTombstoneEndTimeInFuture];
+          isTombstoneEndTimeInFuture = [v27 isTombstoneEndTimeInFuture];
         }
 
         else
         {
-          v33 = 0;
+          isTombstoneEndTimeInFuture = 0;
         }
 
-        if ((v32 | v33))
+        if ((hasOccurrenceInTheFuture | isTombstoneEndTimeInFuture))
         {
           if (v30)
           {
@@ -6903,11 +6903,11 @@ LABEL_18:
 
             else
             {
-              v44 = [v27 fullOrganizerString];
-              if (v44)
+              fullOrganizerString = [v27 fullOrganizerString];
+              if (fullOrganizerString)
               {
                 LOBYTE(v62) = 1;
-                v66 |= [(ASDaemonAccount *)self addStringsToEmailForEventIAmAttending:v27 recipient:v44 stringsToEmail:v76 eventUUIDsToEmail:v21 externalIDs:v22 messageIDsToEmail:v75 eventsDroppedDueToAge:v23 checkEventForNeedingInvite:v62];
+                v66 |= [(ASDaemonAccount *)self addStringsToEmailForEventIAmAttending:v27 recipient:fullOrganizerString stringsToEmail:v76 eventUUIDsToEmail:v21 externalIDs:v22 messageIDsToEmail:v75 eventsDroppedDueToAge:v23 checkEventForNeedingInvite:v62];
               }
             }
 
@@ -6974,8 +6974,8 @@ LABEL_18:
         v81 = 0u;
         v78 = 0u;
         v79 = 0u;
-        v36 = [v27 exceptions];
-        v37 = [v36 countByEnumeratingWithState:&v78 objects:v94 count:16];
+        exceptions = [v27 exceptions];
+        v37 = [exceptions countByEnumeratingWithState:&v78 objects:v94 count:16];
         if (v37)
         {
           v38 = v37;
@@ -6986,20 +6986,20 @@ LABEL_18:
             {
               if (*v79 != v39)
               {
-                objc_enumerationMutation(v36);
+                objc_enumerationMutation(exceptions);
               }
 
               v41 = *(*(&v78 + 1) + 8 * k);
-              v42 = [v41 isDeleted];
-              v43 = [v42 BOOLValue];
+              isDeleted = [v41 isDeleted];
+              bOOLValue = [isDeleted BOOLValue];
 
-              if ((v43 & 1) == 0)
+              if ((bOOLValue & 1) == 0)
               {
                 [v23 addObject:v41];
               }
             }
 
-            v38 = [v36 countByEnumeratingWithState:&v78 objects:v94 count:16];
+            v38 = [exceptions countByEnumeratingWithState:&v78 objects:v94 count:16];
           }
 
           while (v38);
@@ -7027,10 +7027,10 @@ LABEL_72:
   v58 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v57, _CPLog_to_os_log_type[6]))
   {
-    v59 = [(ASDaemonAccount *)self protocol];
-    v60 = [v59 protocolVersion];
+    protocol2 = [(ASDaemonAccount *)self protocol];
+    protocolVersion = [protocol2 protocolVersion];
     *buf = 138412290;
-    v96 = v60;
+    v96 = protocolVersion;
     _os_log_impl(&dword_0, v57, v58, "Not sending emails about events. Protocol version %@", buf, 0xCu);
   }
 
@@ -7045,13 +7045,13 @@ LABEL_73:
   return v66 & 1;
 }
 
-- (void)_reallyAttemptInvitationLinkageForMetaDatas:(id)a3 deliveryIdsToClear:(id)a4 deliveryIdsToSoftClear:(id)a5 inFolderWithId:(id)a6 callback:(id)a7
+- (void)_reallyAttemptInvitationLinkageForMetaDatas:(id)datas deliveryIdsToClear:(id)clear deliveryIdsToSoftClear:(id)softClear inFolderWithId:(id)id callback:(id)callback
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  datasCopy = datas;
+  clearCopy = clear;
+  softClearCopy = softClear;
+  idCopy = id;
+  callbackCopy = callback;
   v17 = DALoggingwithCategory();
   v18 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v17, v18))
@@ -7060,24 +7060,24 @@ LABEL_73:
     _os_log_impl(&dword_0, v17, v18, "ProcessMeetingRequests: attempting invitation linkage", buf, 2u);
   }
 
-  v19 = [(ASDaemonAccount *)self folderWithId:v15];
+  v19 = [(ASDaemonAccount *)self folderWithId:idCopy];
   if (v19)
   {
     v89 = [(ASDaemonAccount *)self sniffableTypeForFolder:v19];
     if (v89)
     {
       v85 = v19;
-      v87 = v16;
+      v87 = callbackCopy;
       type = v18;
-      v90 = v14;
-      v91 = v13;
-      v95 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v12, "count")}];
+      v90 = softClearCopy;
+      v91 = clearCopy;
+      v95 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(datasCopy, "count")}];
       v121 = 0u;
       v122 = 0u;
       v123 = 0u;
       v124 = 0u;
-      v88 = v12;
-      obj = v12;
+      v88 = datasCopy;
+      obj = datasCopy;
       v20 = [obj countByEnumeratingWithState:&v121 objects:v133 count:16];
       if (v20)
       {
@@ -7128,8 +7128,8 @@ LABEL_73:
       v117 = 0u;
       v118 = 0u;
       v119 = 0u;
-      v32 = [v95 reverseObjectEnumerator];
-      v33 = [v32 countByEnumeratingWithState:&v116 objects:v130 count:16];
+      reverseObjectEnumerator = [v95 reverseObjectEnumerator];
+      v33 = [reverseObjectEnumerator countByEnumeratingWithState:&v116 objects:v130 count:16];
       obja = v30;
       if (v33)
       {
@@ -7141,14 +7141,14 @@ LABEL_73:
           {
             if (*v117 != v35)
             {
-              objc_enumerationMutation(v32);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v37 = *(*(&v116 + 1) + 8 * j);
-            v38 = [v37 uidForCalFramework];
-            if (v38)
+            uidForCalFramework = [v37 uidForCalFramework];
+            if (uidForCalFramework)
             {
-              if ([v30 containsObject:v38])
+              if ([v30 containsObject:uidForCalFramework])
               {
                 v39 = DALoggingwithCategory();
                 if (os_log_type_enabled(v39, type))
@@ -7163,22 +7163,22 @@ LABEL_73:
 
               else
               {
-                [v30 addObject:v38];
+                [v30 addObject:uidForCalFramework];
                 [v31 addObject:v37];
               }
             }
           }
 
-          v34 = [v32 countByEnumeratingWithState:&v116 objects:v130 count:16];
+          v34 = [reverseObjectEnumerator countByEnumeratingWithState:&v116 objects:v130 count:16];
         }
 
         while (v34);
       }
 
       v40 = +[ASLocalDBHelper sharedInstance];
-      v41 = [(ASDaemonAccount *)self accountID];
-      v42 = [(ASDaemonAccount *)self changeTrackingID];
-      [v40 calOpenDatabaseForAccountID:v41 clientID:v42];
+      accountID = [(ASDaemonAccount *)self accountID];
+      changeTrackingID = [(ASDaemonAccount *)self changeTrackingID];
+      [v40 calOpenDatabaseForAccountID:accountID clientID:changeTrackingID];
 
       v43 = [(ASDaemonAccount *)self _copyDefaultExchangeEventsCalendar:1];
       v112 = 0u;
@@ -7221,12 +7221,12 @@ LABEL_73:
       }
 
       v50 = +[ASLocalDBHelper sharedInstance];
-      v51 = [(ASDaemonAccount *)self accountID];
-      [v50 calCloseDatabaseForAccountID:v51 save:v47 & 1];
+      accountID2 = [(ASDaemonAccount *)self accountID];
+      [v50 calCloseDatabaseForAccountID:accountID2 save:v47 & 1];
 
       v52 = +[ASLocalDBHelper sharedInstance];
-      v53 = [(ASDaemonAccount *)self accountID];
-      [v52 calOpenDatabaseAsGenericClientForAccountID:v53];
+      accountID3 = [(ASDaemonAccount *)self accountID];
+      [v52 calOpenDatabaseAsGenericClientForAccountID:accountID3];
 
       v110 = 0u;
       v111 = 0u;
@@ -7248,7 +7248,7 @@ LABEL_73:
               objc_enumerationMutation(v54);
             }
 
-            v57 |= [(ASDaemonAccount *)self _clearOutInviteWithDeliveryFolderId:v15 deliveryServerId:*(*(&v108 + 1) + 8 * m) wasSoftDelete:0 considerInvitedToInvitations:1];
+            v57 |= [(ASDaemonAccount *)self _clearOutInviteWithDeliveryFolderId:idCopy deliveryServerId:*(*(&v108 + 1) + 8 * m) wasSoftDelete:0 considerInvitedToInvitations:1];
           }
 
           v56 = [v54 countByEnumeratingWithState:&v108 objects:v128 count:16];
@@ -7281,7 +7281,7 @@ LABEL_73:
               objc_enumerationMutation(v60);
             }
 
-            v57 |= [(ASDaemonAccount *)self _clearOutInviteWithDeliveryFolderId:v15 deliveryServerId:*(*(&v104 + 1) + 8 * n) wasSoftDelete:1 considerInvitedToInvitations:1];
+            v57 |= [(ASDaemonAccount *)self _clearOutInviteWithDeliveryFolderId:idCopy deliveryServerId:*(*(&v104 + 1) + 8 * n) wasSoftDelete:1 considerInvitedToInvitations:1];
           }
 
           v62 = [v60 countByEnumeratingWithState:&v104 objects:v127 count:16];
@@ -7291,13 +7291,13 @@ LABEL_73:
       }
 
       v65 = +[ASLocalDBHelper sharedInstance];
-      v66 = [(ASDaemonAccount *)self accountID];
-      [v65 calCloseDatabaseForAccountID:v66 save:v57 & 1];
+      accountID4 = [(ASDaemonAccount *)self accountID];
+      [v65 calCloseDatabaseForAccountID:accountID4 save:v57 & 1];
 
       v67 = +[ASLocalDBHelper sharedInstance];
-      v68 = [(ASDaemonAccount *)self accountID];
-      v69 = [(ASDaemonAccount *)self changeTrackingID];
-      [v67 calOpenDatabaseForAccountID:v68 clientID:v69];
+      accountID5 = [(ASDaemonAccount *)self accountID];
+      changeTrackingID2 = [(ASDaemonAccount *)self changeTrackingID];
+      [v67 calOpenDatabaseForAccountID:accountID5 clientID:changeTrackingID2];
 
       v102 = 0u;
       v103 = 0u;
@@ -7319,7 +7319,7 @@ LABEL_73:
               objc_enumerationMutation(v70);
             }
 
-            v73 |= [(ASDaemonAccount *)self _clearOutInviteWithDeliveryFolderId:v15 deliveryServerId:*(*(&v100 + 1) + 8 * ii) wasSoftDelete:0 considerInvitedToInvitations:0];
+            v73 |= [(ASDaemonAccount *)self _clearOutInviteWithDeliveryFolderId:idCopy deliveryServerId:*(*(&v100 + 1) + 8 * ii) wasSoftDelete:0 considerInvitedToInvitations:0];
           }
 
           v72 = [v70 countByEnumeratingWithState:&v100 objects:v126 count:16];
@@ -7353,7 +7353,7 @@ LABEL_73:
               objc_enumerationMutation(v76);
             }
 
-            v73 |= [(ASDaemonAccount *)self _clearOutInviteWithDeliveryFolderId:v15 deliveryServerId:*(*(&v96 + 1) + 8 * jj) wasSoftDelete:1 considerInvitedToInvitations:0];
+            v73 |= [(ASDaemonAccount *)self _clearOutInviteWithDeliveryFolderId:idCopy deliveryServerId:*(*(&v96 + 1) + 8 * jj) wasSoftDelete:1 considerInvitedToInvitations:0];
           }
 
           v78 = [v76 countByEnumeratingWithState:&v96 objects:v125 count:16];
@@ -7368,13 +7368,13 @@ LABEL_73:
       }
 
       v81 = +[ASLocalDBHelper sharedInstance];
-      v82 = [(ASDaemonAccount *)self accountID];
-      [v81 calCloseDatabaseForAccountID:v82 save:v73 & 1];
+      accountID6 = [(ASDaemonAccount *)self accountID];
+      [v81 calCloseDatabaseForAccountID:accountID6 save:v73 & 1];
 
-      v16 = v87;
-      v12 = v88;
-      v14 = v90;
-      v13 = v91;
+      callbackCopy = v87;
+      datasCopy = v88;
+      softClearCopy = v90;
+      clearCopy = v91;
       v18 = type;
     }
   }
@@ -7386,18 +7386,18 @@ LABEL_73:
     _os_log_impl(&dword_0, v83, v18, "ProcessMeetingRequests: calling back with invitation linkage success", buf, 2u);
   }
 
-  v16[2](v16, 1);
+  callbackCopy[2](callbackCopy, 1);
   v84 = +[DALocalDBGateKeeper sharedGateKeeper];
   [v84 relinquishLocksForWaiter:self dataclasses:4 moreComing:0];
 }
 
-- (void)attemptInvitationLinkageForMetaDatas:(id)a3 deliveryIdsToClear:(id)a4 deliveryIdsToSoftClear:(id)a5 inFolderWithId:(id)a6 callback:(id)a7
+- (void)attemptInvitationLinkageForMetaDatas:(id)datas deliveryIdsToClear:(id)clear deliveryIdsToSoftClear:(id)softClear inFolderWithId:(id)id callback:(id)callback
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  datasCopy = datas;
+  clearCopy = clear;
+  softClearCopy = softClear;
+  idCopy = id;
+  callbackCopy = callback;
   v17 = DALoggingwithCategory();
   v18 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v17, v18))
@@ -7412,46 +7412,46 @@ LABEL_73:
   v25[2] = sub_2A070;
   v25[3] = &unk_6D1C8;
   v25[4] = self;
-  v26 = v12;
-  v27 = v13;
-  v28 = v14;
-  v29 = v15;
-  v30 = v16;
-  v20 = v15;
-  v21 = v14;
-  v22 = v13;
-  v23 = v12;
-  v24 = v16;
+  v26 = datasCopy;
+  v27 = clearCopy;
+  v28 = softClearCopy;
+  v29 = idCopy;
+  v30 = callbackCopy;
+  v20 = idCopy;
+  v21 = softClearCopy;
+  v22 = clearCopy;
+  v23 = datasCopy;
+  v24 = callbackCopy;
   [v19 registerPreemptiveWaiter:self forDataclassLocks:4 completionHandler:v25];
 }
 
-- (BOOL)_clearOutInviteWithDeliveryFolderId:(id)a3 deliveryServerId:(id)a4 wasSoftDelete:(BOOL)a5 considerInvitedToInvitations:(BOOL)a6
+- (BOOL)_clearOutInviteWithDeliveryFolderId:(id)id deliveryServerId:(id)serverId wasSoftDelete:(BOOL)delete considerInvitedToInvitations:(BOOL)invitations
 {
-  v6 = a6;
-  v7 = a5;
-  v11 = a3;
-  v12 = a4;
+  invitationsCopy = invitations;
+  deleteCopy = delete;
+  idCopy = id;
+  serverIdCopy = serverId;
   v13 = DALoggingwithCategory();
   v14 = _CPLog_to_os_log_type[7];
   if (os_log_type_enabled(v13, v14))
   {
     *buf = 138412802;
-    *v33 = v11;
+    *v33 = idCopy;
     *&v33[8] = 2112;
-    v34 = v12;
+    v34 = serverIdCopy;
     v35 = 1024;
-    v36 = v7;
+    v36 = deleteCopy;
     _os_log_impl(&dword_0, v13, v14, "Clearing out invite with folder id %@ server id %@, wasSoftDelete = %d", buf, 0x1Cu);
   }
 
-  if (!v11 || !v12)
+  if (!idCopy || !serverIdCopy)
   {
-    sub_484C4(a2, self, v11, v12);
+    sub_484C4(a2, self, idCopy, serverIdCopy);
   }
 
   v15 = +[ASLocalDBHelper sharedInstance];
-  v16 = [(ASDaemonAccount *)self accountID];
-  [v15 calDatabaseForAccountID:v16];
+  accountID = [(ASDaemonAccount *)self accountID];
+  [v15 calDatabaseForAccountID:accountID];
   v17 = CalDatabaseCopyEventActionWithFolderIDAndExternalID();
 
   if (v17)
@@ -7460,8 +7460,8 @@ LABEL_73:
     if (v18)
     {
       v19 = v18;
-      v20 = [[ASEvent alloc] initWithCalEvent:v18 serverID:v12 account:self];
-      v21 = [v20 cachedOrganizerIsSelfWithAccount:self] ^ v6;
+      v20 = [[ASEvent alloc] initWithCalEvent:v18 serverID:serverIdCopy account:self];
+      v21 = [v20 cachedOrganizerIsSelfWithAccount:self] ^ invitationsCopy;
       if (v21 == 1)
       {
         v22 = CalCalendarItemCopyExternalID();
@@ -7469,18 +7469,18 @@ LABEL_73:
         {
           cf = v22;
           Status = CalCalendarItemGetStatus();
-          v30 = [v20 calAttendeeStatus];
+          calAttendeeStatus = [v20 calAttendeeStatus];
           v23 = DALoggingwithCategory();
           if (os_log_type_enabled(v23, v14))
           {
             *buf = 67109376;
             *v33 = Status;
             *&v33[4] = 1024;
-            *&v33[6] = v30;
+            *&v33[6] = calAttendeeStatus;
             _os_log_impl(&dword_0, v23, v14, "While clearing out invite, I found an invite with event status %d, attendee status %d", buf, 0xEu);
           }
 
-          if (Status == 3 && v30 == 2)
+          if (Status == 3 && calAttendeeStatus == 2)
           {
             CalRemoveEvent();
           }
@@ -7488,12 +7488,12 @@ LABEL_73:
           else
           {
             CalEventRemoveEventAction();
-            if (!v7 && Status == 1)
+            if (!deleteCopy && Status == 1)
             {
-              v24 = [(ASDaemonAccount *)self protocol];
-              v25 = [v24 serverUpdatesAttendeeStatusOnEvents];
+              protocol = [(ASDaemonAccount *)self protocol];
+              serverUpdatesAttendeeStatusOnEvents = [protocol serverUpdatesAttendeeStatusOnEvents];
 
-              if ((v25 & 1) == 0)
+              if ((serverUpdatesAttendeeStatusOnEvents & 1) == 0)
               {
                 [v20 calAttendeePendingStatus];
                 v26 = [v20 copySelfAttendeeGeneratedIfNecessaryWithLocalEvent:v19 forAccount:self];
@@ -7540,10 +7540,10 @@ LABEL_73:
 
 - (void)accountDidUpdateProtocolVersion
 {
-  v3 = [(ASDaemonAccount *)self protocol];
-  v4 = [v3 supportsSettingsCommand];
+  protocol = [(ASDaemonAccount *)self protocol];
+  supportsSettingsCommand = [protocol supportsSettingsCommand];
 
-  if (v4)
+  if (supportsSettingsCommand)
   {
     v5 = objc_opt_new();
     if (([(ASDaemonAccount *)self isGoogleAccount]& 1) == 0 && ([(ASDaemonAccount *)self isHotmailAccount]& 1) == 0)
@@ -7557,8 +7557,8 @@ LABEL_73:
 
     [v5 setDelegate:self];
     [v5 setGetters:&off_6E620];
-    v8 = [(ASDaemonAccount *)self taskManager];
-    [v8 submitIndependentTask:v5];
+    taskManager = [(ASDaemonAccount *)self taskManager];
+    [taskManager submitIndependentTask:v5];
 
     v9 = DALoggingwithCategory();
     v10 = _CPLog_to_os_log_type[6];
@@ -7574,56 +7574,56 @@ LABEL_73:
   [(ASDaemonAccount *)&v11 accountDidUpdateProtocolVersion];
 }
 
-- (void)settingsTask:(id)a3 completedWithStatus:(int64_t)a4 error:(id)a5 response:(id)a6
+- (void)settingsTask:(id)task completedWithStatus:(int64_t)status error:(id)error response:(id)response
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  taskCopy = task;
+  errorCopy = error;
+  responseCopy = response;
   v13 = DALoggingwithCategory();
   v14 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v13, v14))
   {
     *buf = 138413314;
-    v54 = self;
+    selfCopy = self;
     v55 = 2112;
-    *v56 = v10;
+    *v56 = taskCopy;
     *&v56[8] = 2048;
-    *&v56[10] = a4;
+    *&v56[10] = status;
     v57 = 2112;
-    v58 = v11;
+    v58 = errorCopy;
     v59 = 2112;
-    v60 = v12;
+    v60 = responseCopy;
     _os_log_impl(&dword_0, v13, v14, "%@:Settings task %@ completed with status %ld, error %@, response: %@", buf, 0x34u);
   }
 
-  v15 = [(ASDaemonAccount *)self consumerForTask:v10];
+  v15 = [(ASDaemonAccount *)self consumerForTask:taskCopy];
   v16 = v15;
   if (v15)
   {
-    [v15 settingsRequestFinishedWithResults:v12 status:a4 error:v11];
+    [v15 settingsRequestFinishedWithResults:responseCopy status:status error:errorCopy];
 LABEL_31:
-    [(ASDaemonAccount *)self removeConsumerForTask:v10, v43];
+    [(ASDaemonAccount *)self removeConsumerForTask:taskCopy, v43];
     goto LABEL_32;
   }
 
-  if (a4 == 2)
+  if (status == 2)
   {
     v17 = objc_opt_new();
-    v18 = [v12 userInformation];
-    v19 = v18;
-    v47 = self;
+    userInformation = [responseCopy userInformation];
+    v19 = userInformation;
+    selfCopy2 = self;
     v43 = 0;
-    if (v18)
+    if (userInformation)
     {
-      v20 = [v18 status];
-      v21 = [v10 taskStatusForExchangeStatus:{objc_msgSend(v20, "intValue")}];
+      status = [userInformation status];
+      v21 = [taskCopy taskStatusForExchangeStatus:{objc_msgSend(status, "intValue")}];
 
       if (v21 == &dword_0 + 2)
       {
-        v22 = [v19 getResponse];
-        if (v22)
+        getResponse = [v19 getResponse];
+        if (getResponse)
         {
-          v23 = [[ASSettingsTaskGetterResult alloc] initWithKey:3 status:2 result:v22];
+          v23 = [[ASSettingsTaskGetterResult alloc] initWithKey:3 status:2 result:getResponse];
           [v17 addObject:v23];
         }
       }
@@ -7635,22 +7635,22 @@ LABEL_31:
         if (os_log_type_enabled(v24, v25))
         {
           *buf = 138412546;
-          v54 = v47;
+          selfCopy = selfCopy2;
           v55 = 2048;
           *v56 = v21;
           _os_log_impl(&dword_0, v24, v25, "Settings task %@ UserInformation Get returned failure status %ld", buf, 0x16u);
         }
 
-        v22 = [[ASSettingsTaskGetterResult alloc] initWithKey:3 status:v21 result:0];
-        [v17 addObject:v22];
+        getResponse = [[ASSettingsTaskGetterResult alloc] initWithKey:3 status:v21 result:0];
+        [v17 addObject:getResponse];
       }
 
-      self = v47;
+      self = selfCopy2;
     }
 
-    v44 = v12;
-    v45 = v11;
-    v46 = v10;
+    v44 = responseCopy;
+    v45 = errorCopy;
+    v46 = taskCopy;
 
     v50 = 0u;
     v51 = 0u;
@@ -7677,60 +7677,60 @@ LABEL_31:
           {
             if ([(ASDaemonAccount *)v32 key]== 3)
             {
-              v33 = [(ASDaemonAccount *)v32 result];
+              result = [(ASDaemonAccount *)v32 result];
               v34 = DALoggingwithCategory();
               if (os_log_type_enabled(v34, v14))
               {
-                v35 = [v33 primarySMTPAddress];
-                v36 = [v33 emailAddresses];
+                primarySMTPAddress = [result primarySMTPAddress];
+                emailAddresses = [result emailAddresses];
                 *buf = 138412546;
-                v54 = v35;
+                selfCopy = primarySMTPAddress;
                 v55 = 2112;
-                *v56 = v36;
+                *v56 = emailAddresses;
                 _os_log_impl(&dword_0, v34, v14, "User's email address set to primary SMTP address %@, or collection %@", buf, 0x16u);
 
-                self = v47;
+                self = selfCopy2;
               }
 
-              v37 = [v33 primarySMTPAddress];
-              v38 = [v33 emailAddresses];
-              [(ASDaemonAccount *)self setPrimarySMTPAddress:v37 emailAddresses:v38];
+              primarySMTPAddress2 = [result primarySMTPAddress];
+              emailAddresses2 = [result emailAddresses];
+              [(ASDaemonAccount *)self setPrimarySMTPAddress:primarySMTPAddress2 emailAddresses:emailAddresses2];
             }
 
             else
             {
-              v33 = DALoggingwithCategory();
-              if (os_log_type_enabled(v33, v14))
+              result = DALoggingwithCategory();
+              if (os_log_type_enabled(result, v14))
               {
                 v41 = [(ASDaemonAccount *)v32 key];
-                v42 = [(ASDaemonAccount *)v32 result];
+                result2 = [(ASDaemonAccount *)v32 result];
                 *buf = 138412802;
-                v54 = v32;
+                selfCopy = v32;
                 v55 = 1024;
                 *v56 = v41;
                 *&v56[4] = 2112;
-                *&v56[6] = v42;
-                _os_log_impl(&dword_0, v33, v14, "Ignored getter item: %@, key: %d, result: %@", buf, 0x1Cu);
+                *&v56[6] = result2;
+                _os_log_impl(&dword_0, result, v14, "Ignored getter item: %@, key: %d, result: %@", buf, 0x1Cu);
 
-                self = v47;
+                self = selfCopy2;
               }
             }
           }
 
           else
           {
-            v33 = DALoggingwithCategory();
-            if (os_log_type_enabled(v33, v30))
+            result = DALoggingwithCategory();
+            if (os_log_type_enabled(result, v30))
             {
               v39 = [(ASDaemonAccount *)v32 key];
-              v40 = [(ASDaemonAccount *)v32 status];
+              status2 = [(ASDaemonAccount *)v32 status];
               *buf = 138412802;
-              v54 = v32;
+              selfCopy = v32;
               v55 = 1024;
               *v56 = v39;
               *&v56[4] = 2048;
-              *&v56[6] = v40;
-              _os_log_impl(&dword_0, v33, v30, "Getter item %@, key %d, returned unsuccessful status %ld", buf, 0x1Cu);
+              *&v56[6] = status2;
+              _os_log_impl(&dword_0, result, v30, "Getter item %@, key %d, returned unsuccessful status %ld", buf, 0x1Cu);
             }
           }
         }
@@ -7741,37 +7741,37 @@ LABEL_31:
       while (v28);
     }
 
-    v11 = v45;
-    v10 = v46;
+    errorCopy = v45;
+    taskCopy = v46;
     v16 = v43;
-    v12 = v44;
+    responseCopy = v44;
     goto LABEL_31;
   }
 
 LABEL_32:
 }
 
-- (void)updateOofSettingsWithParams:(id)a3 consumer:(id)a4
+- (void)updateOofSettingsWithParams:(id)params consumer:(id)consumer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ASDaemonAccount *)self protocol];
-  v9 = [v8 supportsSettingsCommand];
+  paramsCopy = params;
+  consumerCopy = consumer;
+  protocol = [(ASDaemonAccount *)self protocol];
+  supportsSettingsCommand = [protocol supportsSettingsCommand];
 
-  if (v9)
+  if (supportsSettingsCommand)
   {
     v10 = objc_opt_new();
     [v10 setSourceApplicationBundleIdentifier:@"com.apple.mobilemail"];
     v11 = objc_opt_new();
-    v12 = [v6 dictionaryRepresentationForASSettingTask];
-    [v11 setObject:v12 forKeyedSubscript:kDASettingsOofKey];
+    dictionaryRepresentationForASSettingTask = [paramsCopy dictionaryRepresentationForASSettingTask];
+    [v11 setObject:dictionaryRepresentationForASSettingTask forKeyedSubscript:kDASettingsOofKey];
 
     [v10 setSetters:v11];
     [v10 setDelegate:self];
-    [(ASDaemonAccount *)self setConsumer:v7 forTask:v10];
+    [(ASDaemonAccount *)self setConsumer:consumerCopy forTask:v10];
 
-    v13 = [(ASDaemonAccount *)self taskManager];
-    [v13 submitQueuedTask:v10];
+    taskManager = [(ASDaemonAccount *)self taskManager];
+    [taskManager submitQueuedTask:v10];
   }
 
   else
@@ -7780,25 +7780,25 @@ LABEL_32:
     v15 = _CPLog_to_os_log_type[6];
     if (os_log_type_enabled(v14, _CPLog_to_os_log_type[6]))
     {
-      v16 = [(ASDaemonAccount *)self protocol];
-      v17 = [v16 protocolVersion];
+      protocol2 = [(ASDaemonAccount *)self protocol];
+      protocolVersion = [protocol2 protocolVersion];
       v19 = 138412290;
-      v20 = v17;
+      v20 = protocolVersion;
       _os_log_impl(&dword_0, v14, v15, "Exchange server does not support updating OOF settings. Protocol version %@", &v19, 0xCu);
     }
 
     v18 = [NSError errorWithDomain:DAErrorDomain code:10 userInfo:0];
-    [v7 settingsRequestFinishedWithResults:0 status:10 error:v18];
+    [consumerCopy settingsRequestFinishedWithResults:0 status:10 error:v18];
   }
 }
 
-- (void)retrieveOofSettingsForConsumer:(id)a3
+- (void)retrieveOofSettingsForConsumer:(id)consumer
 {
-  v4 = a3;
-  v5 = [(ASDaemonAccount *)self protocol];
-  v6 = [v5 supportsSettingsCommand];
+  consumerCopy = consumer;
+  protocol = [(ASDaemonAccount *)self protocol];
+  supportsSettingsCommand = [protocol supportsSettingsCommand];
 
-  if (v6)
+  if (supportsSettingsCommand)
   {
     v14 = objc_opt_new();
     [v14 setSourceApplicationBundleIdentifier:@"com.apple.mobilemail"];
@@ -7806,10 +7806,10 @@ LABEL_32:
     [v7 addObject:&off_6E4B0];
     [v14 setGetters:v7];
     [v14 setDelegate:self];
-    [(ASDaemonAccount *)self setConsumer:v4 forTask:v14];
+    [(ASDaemonAccount *)self setConsumer:consumerCopy forTask:v14];
 
-    v8 = [(ASDaemonAccount *)self taskManager];
-    [v8 submitQueuedTask:v14];
+    taskManager = [(ASDaemonAccount *)self taskManager];
+    [taskManager submitQueuedTask:v14];
   }
 
   else
@@ -7818,15 +7818,15 @@ LABEL_32:
     v10 = _CPLog_to_os_log_type[6];
     if (os_log_type_enabled(v9, _CPLog_to_os_log_type[6]))
     {
-      v11 = [(ASDaemonAccount *)self protocol];
-      v12 = [v11 protocolVersion];
+      protocol2 = [(ASDaemonAccount *)self protocol];
+      protocolVersion = [protocol2 protocolVersion];
       *buf = 138412290;
-      v16 = v12;
+      v16 = protocolVersion;
       _os_log_impl(&dword_0, v9, v10, "Exchange server does not support retrieving OOF settings. Protocol version %@", buf, 0xCu);
     }
 
     v13 = [NSError errorWithDomain:DAErrorDomain code:10 userInfo:0];
-    [v4 settingsRequestFinishedWithResults:0 status:10 error:v13];
+    [consumerCopy settingsRequestFinishedWithResults:0 status:10 error:v13];
   }
 }
 
@@ -7839,48 +7839,48 @@ LABEL_32:
     if (os_log_type_enabled(v3, v4))
     {
       v10 = 138412290;
-      v11 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_0, v3, v4, "Account %@ is a hotmail account and does not support OOF", &v10, 0xCu);
     }
 
-    LOBYTE(v5) = 0;
+    LOBYTE(supportsSettingsCommand) = 0;
   }
 
   else
   {
-    v6 = [(ASDaemonAccount *)self protocol];
-    v5 = [v6 supportsSettingsCommand];
+    protocol = [(ASDaemonAccount *)self protocol];
+    supportsSettingsCommand = [protocol supportsSettingsCommand];
 
     v3 = DALoggingwithCategory();
     v7 = _CPLog_to_os_log_type[7];
     if (os_log_type_enabled(v3, v7))
     {
       v8 = @"NO";
-      if (v5)
+      if (supportsSettingsCommand)
       {
         v8 = @"YES";
       }
 
       v10 = 138412546;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2112;
       v13 = v8;
       _os_log_impl(&dword_0, v3, v7, "Account %@ supports OOF: %@", &v10, 0x16u);
     }
   }
 
-  return v5;
+  return supportsSettingsCommand;
 }
 
-- (void)_reportFolderItemSyncSuccess:(BOOL)a3 forFolderWithID:(id)a4 withItemsCount:(unint64_t)a5
+- (void)_reportFolderItemSyncSuccess:(BOOL)success forFolderWithID:(id)d withItemsCount:(unint64_t)count
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v6)
+  successCopy = success;
+  dCopy = d;
+  v9 = dCopy;
+  if (successCopy)
   {
-    [(ASDaemonAccount *)self removeFolderIDFromPingBlacklist:v8];
-    if (a5)
+    [(ASDaemonAccount *)self removeFolderIDFromPingBlacklist:dCopy];
+    if (count)
     {
       [(ASDaemonAccount *)self removeFromAllPingHistoryBlacklistForFolderID:v9];
     }
@@ -7888,13 +7888,13 @@ LABEL_32:
 
   else
   {
-    [(ASDaemonAccount *)self addFolderIDToPingBlacklist:v8];
+    [(ASDaemonAccount *)self addFolderIDToPingBlacklist:dCopy];
   }
 }
 
-- (void)_reportFolderHierarchySyncSuccessWithCount:(unint64_t)a3
+- (void)_reportFolderHierarchySyncSuccessWithCount:(unint64_t)count
 {
-  if (a3)
+  if (count)
   {
     if (self->_isHierarchyChangeBlackListed)
     {
@@ -7925,25 +7925,25 @@ LABEL_32:
   }
 }
 
-- (id)beginDownloadingAttachmentWithUUID:(id)a3 consumer:(id)a4
+- (id)beginDownloadingAttachmentWithUUID:(id)d consumer:(id)consumer
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dCopy = d;
+  consumerCopy = consumer;
+  if (!dCopy)
   {
     sub_48544();
   }
 
-  v8 = [(ASDaemonAccount *)self protocol];
-  v9 = [v8 fetchAttachmentsWithItemOperations];
+  protocol = [(ASDaemonAccount *)self protocol];
+  fetchAttachmentsWithItemOperations = [protocol fetchAttachmentsWithItemOperations];
 
   v10 = ASItemOperationsFetchAttachmentTask_ptr;
-  if (!v9)
+  if (!fetchAttachmentsWithItemOperations)
   {
     v10 = ASFetchAttachmentTask_ptr;
   }
 
-  v11 = [objc_alloc(*v10) initForMessageUUID:v6];
+  v11 = [objc_alloc(*v10) initForMessageUUID:dCopy];
   [v11 setSourceApplicationBundleIdentifier:@"com.apple.mobilecal"];
   v12 = NSTemporaryDirectory();
   v13 = [v12 stringByAppendingPathComponent:@"DAAttachmentXXXXXX"];
@@ -7972,14 +7972,14 @@ LABEL_32:
       v22 = [[NSFileHandle alloc] initWithFileDescriptor:v18 closeOnDealloc:1];
       [v11 setLocalFileHandle:v22];
       v23 = +[ESDAgentManager sharedManager];
-      v24 = [(ASDaemonAccount *)self accountID];
-      v25 = [v23 agentWithAccountID:v24];
+      accountID = [(ASDaemonAccount *)self accountID];
+      v25 = [v23 agentWithAccountID:accountID];
 
       [v25 prepareFetchAttachmentTask:v11];
       [v11 setDelegate:self];
-      [(ASDaemonAccount *)self setConsumer:v7 forTask:v11];
-      v26 = [(ASDaemonAccount *)self taskManager];
-      [v26 submitQueuedTask:v11];
+      [(ASDaemonAccount *)self setConsumer:consumerCopy forTask:v11];
+      taskManager = [(ASDaemonAccount *)self taskManager];
+      [taskManager submitQueuedTask:v11];
 
       v27 = [[NSNumber alloc] initWithInteger:{objc_msgSend(v11, "taskID")}];
       goto LABEL_14;
@@ -8001,58 +8001,58 @@ LABEL_32:
   }
 
   v22 = [NSError errorWithDomain:DAErrorDomain code:10 userInfo:0];
-  [v7 downloadFinishedError:v22];
+  [consumerCopy downloadFinishedError:v22];
   v27 = 0;
 LABEL_14:
 
   return v27;
 }
 
-- (void)cancelDownloadingInstance:(id)a3 error:(id)a4
+- (void)cancelDownloadingInstance:(id)instance error:(id)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  instanceCopy = instance;
+  v6 = instanceCopy;
+  if (instanceCopy)
   {
-    v7 = [v5 integerValue];
-    v8 = [(ASDaemonAccount *)self taskManager];
-    [v8 cancelTaskWithID:v7];
+    integerValue = [instanceCopy integerValue];
+    taskManager = [(ASDaemonAccount *)self taskManager];
+    [taskManager cancelTaskWithID:integerValue];
   }
 
   else
   {
-    v8 = DALoggingwithCategory();
+    taskManager = DALoggingwithCategory();
     v9 = _CPLog_to_os_log_type[7];
-    if (os_log_type_enabled(v8, v9))
+    if (os_log_type_enabled(taskManager, v9))
     {
       *v10 = 0;
-      _os_log_impl(&dword_0, v8, v9, "'nil 'requestID' given.  Will not cancel any attachment downloading requests.", v10, 2u);
+      _os_log_impl(&dword_0, taskManager, v9, "'nil 'requestID' given.  Will not cancel any attachment downloading requests.", v10, 2u);
     }
   }
 }
 
-- (void)fetchAttachmentTask:(id)a3 receivedData:(id)a4 ofContentType:(id)a5
+- (void)fetchAttachmentTask:(id)task receivedData:(id)data ofContentType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 localFileHandle];
-  [v11 seekToEndOfFile];
-  [v11 writeData:v9];
+  taskCopy = task;
+  dataCopy = data;
+  typeCopy = type;
+  localFileHandle = [taskCopy localFileHandle];
+  [localFileHandle seekToEndOfFile];
+  [localFileHandle writeData:dataCopy];
 
-  [v8 setLocalFileLength:{objc_msgSend(v9, "length") + objc_msgSend(v8, "localFileLength")}];
-  [v8 setAttachmentContentType:v10];
-  v12 = [(ASDaemonAccount *)self consumerForTask:v8];
-  [v12 downloadProgressDownloadedByteCount:objc_msgSend(v9 totalByteCount:{"length"), objc_msgSend(v8, "localFileLength")}];
+  [taskCopy setLocalFileLength:{objc_msgSend(dataCopy, "length") + objc_msgSend(taskCopy, "localFileLength")}];
+  [taskCopy setAttachmentContentType:typeCopy];
+  v12 = [(ASDaemonAccount *)self consumerForTask:taskCopy];
+  [v12 downloadProgressDownloadedByteCount:objc_msgSend(dataCopy totalByteCount:{"length"), objc_msgSend(taskCopy, "localFileLength")}];
 }
 
-- (void)fetchAttachmentTask:(id)a3 completedWithStatus:(int64_t)a4 dataWasBase64:(BOOL)a5 error:(id)a6
+- (void)fetchAttachmentTask:(id)task completedWithStatus:(int64_t)status dataWasBase64:(BOOL)base64 error:(id)error
 {
-  v10 = a3;
-  v11 = a6;
+  taskCopy = task;
+  errorCopy = error;
   v12 = +[ESDAgentManager sharedManager];
-  v13 = [(ASDaemonAccount *)self accountID];
-  v14 = [v12 agentWithAccountID:v13];
+  accountID = [(ASDaemonAccount *)self accountID];
+  v14 = [v12 agentWithAccountID:accountID];
 
   v15 = dataaccess_get_global_queue();
   block[0] = _NSConcreteStackBlock;
@@ -8060,12 +8060,12 @@ LABEL_14:
   block[2] = sub_2BB4C;
   block[3] = &unk_6D1F0;
   v20 = v14;
-  v21 = v10;
-  v24 = a5;
-  v22 = v11;
-  v23 = a4;
-  v16 = v11;
-  v17 = v10;
+  v21 = taskCopy;
+  base64Copy = base64;
+  v22 = errorCopy;
+  statusCopy = status;
+  v16 = errorCopy;
+  v17 = taskCopy;
   v18 = v14;
   dispatch_async(v15, block);
 }

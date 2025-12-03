@@ -1,29 +1,29 @@
 @interface WOHeartRatePrecisionStartAccumulator
 - (BOOL)disabledForSession;
 - (WOHeartRatePrecisionStartAccumulator)init;
-- (WOHeartRatePrecisionStartAccumulator)initWithHealthStore:(id)a3;
-- (WOHeartRatePrecisionStartAccumulator)initWithHealthStore:(id)a3 staleTimeout:(double)a4 delegate:(id)a5 heartRateSupported:(BOOL)a6;
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4;
+- (WOHeartRatePrecisionStartAccumulator)initWithHealthStore:(id)store;
+- (WOHeartRatePrecisionStartAccumulator)initWithHealthStore:(id)store staleTimeout:(double)timeout delegate:(id)delegate heartRateSupported:(BOOL)supported;
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler;
 - (void)accumulatorDidStop;
-- (void)setDisabledForSession:(BOOL)a3;
-- (void)setHeartRateData:(id *)a3;
+- (void)setDisabledForSession:(BOOL)session;
+- (void)setHeartRateData:(id *)data;
 @end
 
 @implementation WOHeartRatePrecisionStartAccumulator
 
-- (void)setHeartRateData:(id *)a3
+- (void)setHeartRateData:(id *)data
 {
-  var0 = a3->var0;
-  var1 = a3->var1;
+  var0 = data->var0;
+  var1 = data->var1;
   v6 = self + OBJC_IVAR___WOHeartRatePrecisionStartAccumulator_heartRateData;
-  v8 = *&a3->var4;
-  v9 = *&a3->var2;
+  v8 = *&data->var4;
+  v9 = *&data->var2;
   swift_beginAccess();
   *v6 = var0;
   *(v6 + 1) = var1;
   *(v6 + 1) = v9;
   *(v6 + 2) = v8;
-  v7 = self;
+  selfCopy = self;
   HeartRatePrecisionStartAccumulator.heartRateData.didset();
 }
 
@@ -34,9 +34,9 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setDisabledForSession:(BOOL)a3
+- (void)setDisabledForSession:(BOOL)session
 {
-  v3 = a3;
+  sessionCopy = session;
   v5 = type metadata accessor for Date();
   v6 = *(v5 - 8);
   v7 = *(v6 + 64);
@@ -45,11 +45,11 @@
   v10 = OBJC_IVAR___WOHeartRatePrecisionStartAccumulator_disabledForSession;
   swift_beginAccess();
   v11 = *(&self->super.super.super.isa + v10);
-  *(&self->super.super.super.isa + v10) = v3;
-  if (v11 != v3)
+  *(&self->super.super.super.isa + v10) = sessionCopy;
+  if (v11 != sessionCopy)
   {
-    v12 = self;
-    if (v3)
+    selfCopy = self;
+    if (sessionCopy)
     {
       HeartRatePrecisionStartAccumulator.stopQuery()();
     }
@@ -64,17 +64,17 @@
   }
 }
 
-- (WOHeartRatePrecisionStartAccumulator)initWithHealthStore:(id)a3 staleTimeout:(double)a4 delegate:(id)a5 heartRateSupported:(BOOL)a6
+- (WOHeartRatePrecisionStartAccumulator)initWithHealthStore:(id)store staleTimeout:(double)timeout delegate:(id)delegate heartRateSupported:(BOOL)supported
 {
-  v9 = a3;
+  storeCopy = store;
   swift_unknownObjectRetain();
-  v10 = specialized HeartRatePrecisionStartAccumulator.init(healthStore:staleTimeout:delegate:heartRateSupported:)(v9, a4, a5, a6);
+  v10 = specialized HeartRatePrecisionStartAccumulator.init(healthStore:staleTimeout:delegate:heartRateSupported:)(storeCopy, timeout, delegate, supported);
 
   swift_unknownObjectRelease();
   return v10;
 }
 
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4DateVSgMd, &_s10Foundation4DateVSgMR);
   v7 = *(*(v6 - 8) + 64);
@@ -82,7 +82,7 @@
   v10 = &v16 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v8);
   v12 = &v16 - v11;
-  if (a3)
+  if (date)
   {
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = type metadata accessor for Date();
@@ -105,7 +105,7 @@
 
   else
   {
-    v15 = self;
+    selfCopy = self;
     HeartRatePrecisionStartAccumulator.startQuery(startDate:)();
 
     outlined destroy of Date?(v12);
@@ -117,7 +117,7 @@
 {
   v3 = OBJC_IVAR___WOHeartRatePrecisionStartAccumulator_staleDataTimer;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___WOHeartRatePrecisionStartAccumulator_staleDataTimer);
-  v6 = self;
+  selfCopy = self;
   [v4 invalidate];
   v5 = *(&self->super.super.super.isa + v3);
   *(&self->super.super.super.isa + v3) = 0;
@@ -125,7 +125,7 @@
   HeartRatePrecisionStartAccumulator.stopQuery()();
 }
 
-- (WOHeartRatePrecisionStartAccumulator)initWithHealthStore:(id)a3
+- (WOHeartRatePrecisionStartAccumulator)initWithHealthStore:(id)store
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

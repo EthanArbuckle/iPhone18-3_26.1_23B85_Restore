@@ -1,7 +1,7 @@
 @interface Defaults.Observation
 - (_TtCC11MobilePhone8Defaults11Observation)init;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation Defaults.Observation
@@ -9,35 +9,35 @@
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtCC11MobilePhone8Defaults11Observation_userDefault);
-  v3 = self;
+  selfCopy = self;
   v4 = v2;
 
   v5 = String._bridgeToObjectiveC()();
 
-  [v4 removeObserver:v3 forKeyPath:v5];
+  [v4 removeObserver:selfCopy forKeyPath:v5];
 
-  v6.receiver = v3;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for Defaults.Observation();
   [(Defaults.Observation *)&v6 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a4)
+  if (object)
   {
-    v7 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
-    v8 = swift_unknownObjectRelease();
+    selfCopy2 = swift_unknownObjectRelease();
   }
 
   else
   {
     memset(v9, 0, sizeof(v9));
-    v8 = self;
+    selfCopy2 = self;
   }
 
-  (*(&self->super.isa + OBJC_IVAR____TtCC11MobilePhone8Defaults11Observation_onChange))(v8);
+  (*(&self->super.isa + OBJC_IVAR____TtCC11MobilePhone8Defaults11Observation_onChange))(selfCopy2);
   outlined destroy of Any?(v9);
 }
 

@@ -2,24 +2,24 @@
 + (NSCompoundPredicate)andPredicateWithSubpredicates:(NSArray *)subpredicates;
 + (NSCompoundPredicate)notPredicateWithSubpredicate:(NSPredicate *)predicate;
 + (NSCompoundPredicate)orPredicateWithSubpredicates:(NSArray *)subpredicates;
-+ (id)_operatorForType:(unint64_t)a3;
-- (BOOL)evaluateWithObject:(id)a3 substitutionVariables:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)_operatorForType:(unint64_t)type;
+- (BOOL)evaluateWithObject:(id)object substitutionVariables:(id)variables;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)subpredicates;
 - (NSCompoundPredicate)initWithCoder:(NSCoder *)coder;
 - (NSCompoundPredicate)initWithType:(NSCompoundPredicateType)type subpredicates:(NSArray *)subpredicates;
-- (NSCompoundPredicate)predicateWithSubstitutionVariables:(id)a3;
-- (id)_copySubpredicateDescription:(id)a3;
+- (NSCompoundPredicate)predicateWithSubstitutionVariables:(id)variables;
+- (id)_copySubpredicateDescription:(id)description;
 - (id)_predicateOperator;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)generateMetadataDescription;
 - (id)predicateFormat;
 - (unint64_t)hash;
-- (void)_acceptSubpredicates:(id)a3 flags:(unint64_t)a4;
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4;
+- (void)_acceptSubpredicates:(id)subpredicates flags:(unint64_t)flags;
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags;
 - (void)allowEvaluation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSCompoundPredicate
@@ -70,9 +70,9 @@
 - (id)_predicateOperator
 {
   v3 = objc_opt_class();
-  v4 = [(NSCompoundPredicate *)self compoundPredicateType];
+  compoundPredicateType = [(NSCompoundPredicate *)self compoundPredicateType];
 
-  return [v3 _operatorForType:v4];
+  return [v3 _operatorForType:compoundPredicateType];
 }
 
 - (void)dealloc
@@ -89,10 +89,10 @@
 {
   v3 = objc_autoreleasePoolPush();
   v4 = [-[NSCompoundPredicate _predicateOperator](self "_predicateOperator")];
-  v5 = [(NSCompoundPredicate *)self subpredicates];
-  v6 = [(NSArray *)v5 count];
-  v7 = [(NSCompoundPredicate *)self compoundPredicateType];
-  v8 = v7;
+  subpredicates = [(NSCompoundPredicate *)self subpredicates];
+  v6 = [(NSArray *)subpredicates count];
+  compoundPredicateType = [(NSCompoundPredicate *)self compoundPredicateType];
+  v8 = compoundPredicateType;
   if (v6 != 1)
   {
     if (v6)
@@ -112,7 +112,7 @@
         v15 = 0;
         do
         {
-          v16 = [(NSArray *)v5 objectAtIndex:v15];
+          v16 = [(NSArray *)subpredicates objectAtIndex:v15];
           v17 = objc_autoreleasePoolPush();
           v18 = [(NSCompoundPredicate *)self _copySubpredicateDescription:v16];
           objc_autoreleasePoolPop(v17);
@@ -125,22 +125,22 @@
         while (v14 != v15);
       }
 
-      v22 = [(NSCompoundPredicate *)self _copySubpredicateDescription:[(NSArray *)v5 objectAtIndex:v14]];
-      v23 = [(NSCompoundPredicate *)self _copySubpredicateDescription:[(NSArray *)v5 objectAtIndex:v25]];
-      v20 = [[NSString alloc] initWithFormat:@"%@%@ %@ %@", v19, v22, v4, v23];
+      v22 = [(NSCompoundPredicate *)self _copySubpredicateDescription:[(NSArray *)subpredicates objectAtIndex:v14]];
+      v23 = [(NSCompoundPredicate *)self _copySubpredicateDescription:[(NSArray *)subpredicates objectAtIndex:v25]];
+      predicateFormat = [[NSString alloc] initWithFormat:@"%@%@ %@ %@", v19, v22, v4, v23];
 
       v3 = v26;
       goto LABEL_18;
     }
 
-    if (v7 == NSAndPredicateType)
+    if (compoundPredicateType == NSAndPredicateType)
     {
       v9 = NSTruePredicate;
     }
 
     else
     {
-      if (v7 == NSNotPredicateType)
+      if (compoundPredicateType == NSNotPredicateType)
       {
         objc_autoreleasePoolPop(v3);
         objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Can't have a NOT predicate with no subpredicate." userInfo:0]);
@@ -149,70 +149,70 @@
       v9 = NSFalsePredicate;
     }
 
-    v10 = [(__objc2_class *)v9 defaultInstance];
+    defaultInstance = [(__objc2_class *)v9 defaultInstance];
     goto LABEL_14;
   }
 
-  v10 = [(NSArray *)v5 objectAtIndex:0];
-  v11 = v10;
+  defaultInstance = [(NSArray *)subpredicates objectAtIndex:0];
+  v11 = defaultInstance;
   if (v8)
   {
 LABEL_14:
-    v20 = [(__objc2_class *)v10 predicateFormat];
+    predicateFormat = [(__objc2_class *)defaultInstance predicateFormat];
     goto LABEL_18;
   }
 
-  v21 = [(NSCompoundPredicate *)self _copySubpredicateDescription:v10];
-  v20 = [[NSString alloc] initWithFormat:@"%@ %@", v4, v21];
+  v21 = [(NSCompoundPredicate *)self _copySubpredicateDescription:defaultInstance];
+  predicateFormat = [[NSString alloc] initWithFormat:@"%@ %@", v4, v21];
 
 LABEL_18:
   objc_autoreleasePoolPop(v3);
 
-  return v20;
+  return predicateFormat;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(NSCompoundPredicate *)self subpredicates];
+  subpredicates = [(NSCompoundPredicate *)self subpredicates];
 
-  return [(NSArray *)v2 hash];
+  return [(NSArray *)subpredicates hash];
 }
 
 + (NSCompoundPredicate)andPredicateWithSubpredicates:(NSArray *)subpredicates
 {
-  v3 = [[a1 alloc] initWithType:1 subpredicates:subpredicates];
+  v3 = [[self alloc] initWithType:1 subpredicates:subpredicates];
 
   return v3;
 }
 
 + (NSCompoundPredicate)orPredicateWithSubpredicates:(NSArray *)subpredicates
 {
-  v3 = [[a1 alloc] initWithType:2 subpredicates:subpredicates];
+  v3 = [[self alloc] initWithType:2 subpredicates:subpredicates];
 
   return v3;
 }
 
 + (NSCompoundPredicate)notPredicateWithSubpredicate:(NSPredicate *)predicate
 {
-  v4 = [a1 alloc];
+  v4 = [self alloc];
   v5 = [v4 initWithType:0 subpredicates:{objc_msgSend(MEMORY[0x1E695DF70], "arrayWithObject:", predicate)}];
 
   return v5;
 }
 
-+ (id)_operatorForType:(unint64_t)a3
++ (id)_operatorForType:(unint64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return +[NSCompoundPredicateOperator orPredicateOperator];
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return +[NSCompoundPredicateOperator andPredicateOperator];
   }
 
-  if (a3)
+  if (type)
   {
     return 0;
   }
@@ -241,19 +241,19 @@ LABEL_18:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   v5.receiver = self;
   v5.super_class = NSCompoundPredicate;
-  [(NSPredicate *)&v5 encodeWithCoder:a3];
-  [a3 encodeObject:-[NSCompoundPredicate subpredicates](self forKey:{"subpredicates"), @"NSSubpredicates"}];
-  [a3 encodeInteger:-[NSCompoundPredicate compoundPredicateType](self forKey:{"compoundPredicateType"), @"NSCompoundPredicateType"}];
+  [(NSPredicate *)&v5 encodeWithCoder:coder];
+  [coder encodeObject:-[NSCompoundPredicate subpredicates](self forKey:{"subpredicates"), @"NSSubpredicates"}];
+  [coder encodeInteger:-[NSCompoundPredicate compoundPredicateType](self forKey:{"compoundPredicateType"), @"NSCompoundPredicateType"}];
 }
 
 - (NSCompoundPredicate)initWithCoder:(NSCoder *)coder
@@ -270,11 +270,11 @@ LABEL_18:
   v5 = [(NSPredicate *)&v16 initWithCoder:coder];
   if (v5)
   {
-    v6 = [(NSCoder *)coder allowedClasses];
-    v7 = [(NSSet *)v6 count];
+    allowedClasses = [(NSCoder *)coder allowedClasses];
+    v7 = [(NSSet *)allowedClasses count];
     if (v7)
     {
-      v8 = [(NSSet *)v6 mutableCopy];
+      v8 = [(NSSet *)allowedClasses mutableCopy];
       [v8 unionSet:{+[_NSPredicateUtilities _compoundPredicateClassesForSecureCoding](_NSPredicateUtilities, "_compoundPredicateClassesForSecureCoding")}];
     }
 
@@ -352,16 +352,16 @@ LABEL_21:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [(NSCompoundPredicate *)self subpredicates];
+  subpredicates = [(NSCompoundPredicate *)self subpredicates];
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(NSArray *)v4 countByEnumeratingWithState:&v14 objects:v13 count:16];
+  v6 = [(NSArray *)subpredicates countByEnumeratingWithState:&v14 objects:v13 count:16];
   if (v6)
   {
     v7 = v6;
@@ -373,7 +373,7 @@ LABEL_21:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subpredicates);
         }
 
         v10 = [*(*(&v14 + 1) + 8 * v9) copy];
@@ -383,7 +383,7 @@ LABEL_21:
       }
 
       while (v7 != v9);
-      v7 = [(NSArray *)v4 countByEnumeratingWithState:&v14 objects:v13 count:16];
+      v7 = [(NSArray *)subpredicates countByEnumeratingWithState:&v14 objects:v13 count:16];
     }
 
     while (v7);
@@ -394,38 +394,38 @@ LABEL_21:
   return v11;
 }
 
-- (id)_copySubpredicateDescription:(id)a3
+- (id)_copySubpredicateDescription:(id)description
 {
   if (objc_opt_isKindOfClass())
   {
-    return -[NSString initWithFormat:]([NSString alloc], "initWithFormat:", @"(%@)", [a3 description]);
+    return -[NSString initWithFormat:]([NSString alloc], "initWithFormat:", @"(%@)", [description description]);
   }
 
-  v5 = [a3 description];
+  v5 = [description description];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v5 = [(NSCompoundPredicate *)self compoundPredicateType];
-  if (v5 != [a3 compoundPredicateType])
+  compoundPredicateType = [(NSCompoundPredicate *)self compoundPredicateType];
+  if (compoundPredicateType != [equal compoundPredicateType])
   {
     return 0;
   }
 
-  v6 = [(NSCompoundPredicate *)self subpredicates];
-  v7 = [a3 subpredicates];
+  subpredicates = [(NSCompoundPredicate *)self subpredicates];
+  subpredicates2 = [equal subpredicates];
 
-  return [(NSArray *)v6 isEqual:v7];
+  return [(NSArray *)subpredicates isEqual:subpredicates2];
 }
 
-- (BOOL)evaluateWithObject:(id)a3 substitutionVariables:(id)a4
+- (BOOL)evaluateWithObject:(id)object substitutionVariables:(id)variables
 {
   v21 = *MEMORY[0x1E69E9840];
   if (![(NSPredicate *)self _allowsEvaluation])
@@ -435,7 +435,7 @@ LABEL_21:
 
   v7 = objc_autoreleasePoolPush();
   v8 = [[_NSPerformanceMeter alloc] initWithTarget:self, 0];
-  if (!a4 || (v9 = a4, object_getClass(a4) != _NSNestedDictionary))
+  if (!variables || (v9 = variables, object_getClass(variables) != _NSNestedDictionary))
   {
     v19 = 0u;
     v20 = 0u;
@@ -446,18 +446,18 @@ LABEL_21:
     v10 = objc_opt_class();
     v9 = &v15;
     object_setClass(&v15, v10);
-    *&v16 = a4;
+    *&v16 = variables;
   }
 
-  v11 = [(NSCompoundPredicate *)self _predicateOperator];
-  v12 = [(NSCompoundPredicate *)self subpredicates];
+  _predicateOperator = [(NSCompoundPredicate *)self _predicateOperator];
+  subpredicates = [(NSCompoundPredicate *)self subpredicates];
   v13 = 0;
-  if (v11 && v12)
+  if (_predicateOperator && subpredicates)
   {
-    v13 = [v11 evaluatePredicates:v12 withObject:a3 substitutionVariables:v9];
+    v13 = [_predicateOperator evaluatePredicates:subpredicates withObject:object substitutionVariables:v9];
   }
 
-  if (v9 != a4)
+  if (v9 != variables)
   {
   }
 
@@ -470,15 +470,15 @@ LABEL_21:
   return v13;
 }
 
-- (void)_acceptSubpredicates:(id)a3 flags:(unint64_t)a4
+- (void)_acceptSubpredicates:(id)subpredicates flags:(unint64_t)flags
 {
   v16 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(NSCompoundPredicate *)self subpredicates];
-  v7 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  subpredicates = [(NSCompoundPredicate *)self subpredicates];
+  v7 = [(NSArray *)subpredicates countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (v7)
   {
     v8 = v7;
@@ -490,54 +490,54 @@ LABEL_21:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subpredicates);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) acceptVisitor:a3 flags:a4];
+        [*(*(&v12 + 1) + 8 * v10++) acceptVisitor:subpredicates flags:flags];
       }
 
       while (v8 != v10);
-      v8 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v11 count:16];
+      v8 = [(NSArray *)subpredicates countByEnumeratingWithState:&v12 objects:v11 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags
 {
   v7 = objc_autoreleasePoolPush();
-  if ((a4 & 4) != 0)
+  if ((flags & 4) != 0)
   {
-    [a3 visitPredicate:self];
-    [(NSCompoundPredicate *)self _acceptSubpredicates:a3 flags:a4];
+    [visitor visitPredicate:self];
+    [(NSCompoundPredicate *)self _acceptSubpredicates:visitor flags:flags];
   }
 
   else
   {
-    [(NSCompoundPredicate *)self _acceptSubpredicates:a3 flags:a4];
-    [a3 visitPredicate:self];
+    [(NSCompoundPredicate *)self _acceptSubpredicates:visitor flags:flags];
+    [visitor visitPredicate:self];
   }
 
   objc_autoreleasePoolPop(v7);
 }
 
-- (NSCompoundPredicate)predicateWithSubstitutionVariables:(id)a3
+- (NSCompoundPredicate)predicateWithSubstitutionVariables:(id)variables
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!variables)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot substitute a nil substitution dictionary." userInfo:0]);
   }
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = objc_autoreleasePoolPush();
-  v7 = [(NSCompoundPredicate *)self subpredicates];
+  subpredicates = [(NSCompoundPredicate *)self subpredicates];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(NSArray *)v7 countByEnumeratingWithState:&v15 objects:v14 count:16];
+  v8 = [(NSArray *)subpredicates countByEnumeratingWithState:&v15 objects:v14 count:16];
   if (v8)
   {
     v9 = v8;
@@ -549,14 +549,14 @@ LABEL_21:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subpredicates);
         }
 
-        [v5 addObject:{objc_msgSend(*(*(&v15 + 1) + 8 * v11++), "predicateWithSubstitutionVariables:", a3)}];
+        [v5 addObject:{objc_msgSend(*(*(&v15 + 1) + 8 * v11++), "predicateWithSubstitutionVariables:", variables)}];
       }
 
       while (v9 != v11);
-      v9 = [(NSArray *)v7 countByEnumeratingWithState:&v15 objects:v14 count:16];
+      v9 = [(NSArray *)subpredicates countByEnumeratingWithState:&v15 objects:v14 count:16];
     }
 
     while (v9);
@@ -571,12 +571,12 @@ LABEL_21:
 - (id)generateMetadataDescription
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [(NSCompoundPredicate *)self compoundPredicateType];
-  v4 = [(NSCompoundPredicate *)self subpredicates];
-  v5 = v4;
-  if (v3 == NSOrPredicateType)
+  compoundPredicateType = [(NSCompoundPredicate *)self compoundPredicateType];
+  subpredicates = [(NSCompoundPredicate *)self subpredicates];
+  v5 = subpredicates;
+  if (compoundPredicateType == NSOrPredicateType)
   {
-    if ([(NSArray *)v4 count]<= 1)
+    if ([(NSArray *)subpredicates count]<= 1)
     {
       v20 = [NSString stringWithFormat:@"NSOrPredicateType NSCompoundPredicate with wrong number (%ld) of subpredicates given to NSMetadataQuery (%@)", [(NSArray *)v5 count], self];
       goto LABEL_32;
@@ -621,16 +621,16 @@ LABEL_21:
 
   else
   {
-    if (v3 != NSAndPredicateType)
+    if (compoundPredicateType != NSAndPredicateType)
     {
-      if (v3)
+      if (compoundPredicateType)
       {
         v20 = [NSString stringWithFormat:@"Unknown type of NSCompoundPredicate given to NSMetadataQuery (%@)", self, v21];
       }
 
       else
       {
-        if ([(NSArray *)v4 count]== 1)
+        if ([(NSArray *)subpredicates count]== 1)
         {
           return +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"! (%@)", [-[NSArray objectAtIndex:](v5 objectAtIndex:{0), "generateMetadataDescription"}]);
         }
@@ -642,7 +642,7 @@ LABEL_32:
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v20 userInfo:0]);
     }
 
-    if ([(NSArray *)v4 count]<= 1)
+    if ([(NSArray *)subpredicates count]<= 1)
     {
       v20 = [NSString stringWithFormat:@"NSAndPredicateType NSCompoundPredicate with wrong number (%ld) of subpredicates given to NSMetadataQuery (%@)", [(NSArray *)v5 count], self];
       goto LABEL_32;

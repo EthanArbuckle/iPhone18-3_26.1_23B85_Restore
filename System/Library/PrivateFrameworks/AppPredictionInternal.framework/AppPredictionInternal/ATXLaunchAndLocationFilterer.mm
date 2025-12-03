@@ -1,26 +1,26 @@
 @interface ATXLaunchAndLocationFilterer
-+ (BOOL)appBundleIdIsBlacklisted:(id)a3 blacklist:(id)a4;
-+ (BOOL)genreIdIsBlacklistedGivenAppBundleId:(id)a3 blacklist:(id)a4;
-+ (BOOL)locationIsStaleOrNotAccurateEnough:(id)a3 now:(id)a4;
-+ (BOOL)shouldSampleWithCounterKey:(id)a3 date:(id)a4 samplingRate:(double)a5 maxSamples:(unint64_t)a6;
-+ (id)_formattedStringForDate:(id)a3;
-+ (void)incrementOnDeviceDailySamplesWithCounterKey:(id)a3 date:(id)a4;
++ (BOOL)appBundleIdIsBlacklisted:(id)blacklisted blacklist:(id)blacklist;
++ (BOOL)genreIdIsBlacklistedGivenAppBundleId:(id)id blacklist:(id)blacklist;
++ (BOOL)locationIsStaleOrNotAccurateEnough:(id)enough now:(id)now;
++ (BOOL)shouldSampleWithCounterKey:(id)key date:(id)date samplingRate:(double)rate maxSamples:(unint64_t)samples;
++ (id)_formattedStringForDate:(id)date;
++ (void)incrementOnDeviceDailySamplesWithCounterKey:(id)key date:(id)date;
 @end
 
 @implementation ATXLaunchAndLocationFilterer
 
-+ (BOOL)locationIsStaleOrNotAccurateEnough:(id)a3 now:(id)a4
++ (BOOL)locationIsStaleOrNotAccurateEnough:(id)enough now:(id)now
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 timestamp];
-  [v6 timeIntervalSinceDate:v7];
+  enoughCopy = enough;
+  nowCopy = now;
+  timestamp = [enoughCopy timestamp];
+  [nowCopy timeIntervalSinceDate:timestamp];
   v9 = v8;
 
   if (v9 <= 100.0)
   {
-    [v5 horizontalAccuracy];
+    [enoughCopy horizontalAccuracy];
     if (v12 <= 100.0)
     {
       v14 = 0;
@@ -30,7 +30,7 @@
     v10 = __atxlog_handle_hero();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      [v5 horizontalAccuracy];
+      [enoughCopy horizontalAccuracy];
       v17 = 134217984;
       v18 = v13;
       v11 = ": Location uncertainty too large, horizontalAccuracy, %f. Ignoring.";
@@ -58,18 +58,18 @@ LABEL_10:
   return v14;
 }
 
-+ (BOOL)appBundleIdIsBlacklisted:(id)a3 blacklist:(id)a4
++ (BOOL)appBundleIdIsBlacklisted:(id)blacklisted blacklist:(id)blacklist
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [a4 containsObject:v5];
+  blacklistedCopy = blacklisted;
+  v6 = [blacklist containsObject:blacklistedCopy];
   if (v6)
   {
     v7 = __atxlog_handle_hero();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v5;
+      v11 = blacklistedCopy;
       _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, ": Bundle Id is blacklisted. Bundle Id: %@. Ignoring.", &v10, 0xCu);
     }
   }
@@ -78,13 +78,13 @@ LABEL_10:
   return v6;
 }
 
-+ (BOOL)genreIdIsBlacklistedGivenAppBundleId:(id)a3 blacklist:(id)a4
++ (BOOL)genreIdIsBlacklistedGivenAppBundleId:(id)id blacklist:(id)blacklist
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  idCopy = id;
+  blacklistCopy = blacklist;
   v7 = +[_ATXAppInfoManager sharedInstance];
-  v8 = [v7 genreIdForBundleId:v5];
+  v8 = [v7 genreIdForBundleId:idCopy];
 
   v9 = __atxlog_handle_hero();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -92,11 +92,11 @@ LABEL_10:
     v14 = 138412546;
     v15 = v8;
     v16 = 2112;
-    v17 = v5;
+    v17 = idCopy;
     _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_DEFAULT, "GenreId: %@, BundleId: %@.", &v14, 0x16u);
   }
 
-  if (v8 && ![v6 containsObject:v8])
+  if (v8 && ![blacklistCopy containsObject:v8])
   {
     v11 = 0;
   }
@@ -118,16 +118,16 @@ LABEL_10:
   return v11;
 }
 
-+ (BOOL)shouldSampleWithCounterKey:(id)a3 date:(id)a4 samplingRate:(double)a5 maxSamples:(unint64_t)a6
++ (BOOL)shouldSampleWithCounterKey:(id)key date:(id)date samplingRate:(double)rate maxSamples:(unint64_t)samples
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a4;
+  dateCopy = date;
   v11 = MEMORY[0x277CBEBD0];
-  v12 = a3;
+  keyCopy = key;
   v13 = [v11 alloc];
   v14 = [v13 initWithSuiteName:*MEMORY[0x277CEBD00]];
-  v15 = [v12 stringByAppendingString:@".date"];
-  v16 = [v12 stringByAppendingString:@".dailySamplesCount"];
+  v15 = [keyCopy stringByAppendingString:@".date"];
+  v16 = [keyCopy stringByAppendingString:@".dailySamplesCount"];
 
   v17 = [v14 integerForKey:v16];
   v18 = [v14 stringForKey:v15];
@@ -143,15 +143,15 @@ LABEL_10:
 
   if (v19)
   {
-    v20 = [a1 _formattedStringForDate:v10];
+    v20 = [self _formattedStringForDate:dateCopy];
     v21 = v20;
     if (v18)
     {
       v22 = [v20 isEqualToString:v18];
-      v23 = [_ATXAggregateLogger yesWithProbability:a5];
+      v23 = [_ATXAggregateLogger yesWithProbability:rate];
       if (v22)
       {
-        v24 = v17 >= a6;
+        v24 = v17 >= samples;
       }
 
       else
@@ -165,7 +165,7 @@ LABEL_10:
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
           v32 = 134217984;
-          v33 = *&v17;
+          rateCopy = *&v17;
           v26 = ": Already reached per device max daily samples: %lu. Ignoring.";
           goto LABEL_21;
         }
@@ -183,7 +183,7 @@ LABEL_12:
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
           v32 = 134217984;
-          v33 = a5;
+          rateCopy = rate;
           v26 = ": Did not pass sampling. Sampling rate: %f. Ignoring.";
 LABEL_21:
           _os_log_impl(&dword_2263AA000, v25, OS_LOG_TYPE_DEFAULT, v26, &v32, 0xCu);
@@ -194,7 +194,7 @@ LABEL_21:
       }
     }
 
-    else if (![_ATXAggregateLogger yesWithProbability:a5])
+    else if (![_ATXAggregateLogger yesWithProbability:rate])
     {
       goto LABEL_12;
     }
@@ -219,19 +219,19 @@ LABEL_24:
   return v29;
 }
 
-+ (void)incrementOnDeviceDailySamplesWithCounterKey:(id)a3 date:(id)a4
++ (void)incrementOnDeviceDailySamplesWithCounterKey:(id)key date:(id)date
 {
   v23 = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CBEBD0];
-  v7 = a4;
-  v8 = a3;
+  dateCopy = date;
+  keyCopy = key;
   v9 = [v6 alloc];
   v10 = [v9 initWithSuiteName:*MEMORY[0x277CEBD00]];
-  v11 = [v8 stringByAppendingString:@".date"];
-  v12 = [v8 stringByAppendingString:@".dailySamplesCount"];
+  v11 = [keyCopy stringByAppendingString:@".date"];
+  v12 = [keyCopy stringByAppendingString:@".dailySamplesCount"];
 
   v13 = [v10 stringForKey:v11];
-  v14 = [a1 _formattedStringForDate:v7];
+  v14 = [self _formattedStringForDate:dateCopy];
 
   if (v13 && [v14 isEqualToString:v13])
   {
@@ -268,13 +268,13 @@ LABEL_7:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_formattedStringForDate:(id)a3
++ (id)_formattedStringForDate:(id)date
 {
   v3 = MEMORY[0x277CCA968];
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_alloc_init(v3);
   [v5 setDateFormat:@"yyyy-MM-dd"];
-  v6 = [v5 stringFromDate:v4];
+  v6 = [v5 stringFromDate:dateCopy];
 
   return v6;
 }

@@ -4,9 +4,9 @@
 - (BOOL)isPaused;
 - (BOOL)isReady;
 - (CKTranscriptTextEffectsState)init;
-- (void)setHasAttention:(BOOL)a3;
-- (void)setInTransition:(BOOL)a3;
-- (void)setIsReady:(BOOL)a3;
+- (void)setHasAttention:(BOOL)attention;
+- (void)setInTransition:(BOOL)transition;
+- (void)setIsReady:(BOOL)ready;
 @end
 
 @implementation CKTranscriptTextEffectsState
@@ -28,11 +28,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setInTransition:(BOOL)a3
+- (void)setInTransition:(BOOL)transition
 {
   v5 = OBJC_IVAR___CKTranscriptTextEffectsState_inTransition;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = transition;
 }
 
 - (BOOL)isReady
@@ -42,11 +42,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsReady:(BOOL)a3
+- (void)setIsReady:(BOOL)ready
 {
   v5 = OBJC_IVAR___CKTranscriptTextEffectsState_isReady;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = ready;
 }
 
 - (BOOL)hasAttention
@@ -56,11 +56,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setHasAttention:(BOOL)a3
+- (void)setHasAttention:(BOOL)attention
 {
   v5 = OBJC_IVAR___CKTranscriptTextEffectsState_hasAttention;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = attention;
 }
 
 - (BOOL)isPaused

@@ -1,24 +1,24 @@
 @interface LoadRentalInformationOperation
-- (LoadRentalInformationOperation)initWithAccountIdentifier:(id)a3 rentalKeyIdentifier:(id)a4;
+- (LoadRentalInformationOperation)initWithAccountIdentifier:(id)identifier rentalKeyIdentifier:(id)keyIdentifier;
 - (void)run;
 @end
 
 @implementation LoadRentalInformationOperation
 
-- (LoadRentalInformationOperation)initWithAccountIdentifier:(id)a3 rentalKeyIdentifier:(id)a4
+- (LoadRentalInformationOperation)initWithAccountIdentifier:(id)identifier rentalKeyIdentifier:(id)keyIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  keyIdentifierCopy = keyIdentifier;
   v14.receiver = self;
   v14.super_class = LoadRentalInformationOperation;
   v8 = [(LoadRentalInformationOperation *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     accountIdentifier = v8->_accountIdentifier;
     v8->_accountIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [keyIdentifierCopy copy];
     rentalKeyIdentifier = v8->_rentalKeyIdentifier;
     v8->_rentalKeyIdentifier = v11;
   }
@@ -28,18 +28,18 @@
 
 - (void)run
 {
-  v3 = [(LoadRentalInformationOperation *)self rentalKeyIdentifier];
-  if (v3)
+  rentalKeyIdentifier = [(LoadRentalInformationOperation *)self rentalKeyIdentifier];
+  if (rentalKeyIdentifier)
   {
-    v4 = v3;
-    v5 = [(LoadRentalInformationOperation *)self accountIdentifier];
+    v4 = rentalKeyIdentifier;
+    accountIdentifier = [(LoadRentalInformationOperation *)self accountIdentifier];
 
-    if (v5)
+    if (accountIdentifier)
     {
-      v6 = [(LoadRentalInformationOperation *)self accountIdentifier];
-      v7 = [v6 unsignedLongLongValue];
-      v8 = [(LoadRentalInformationOperation *)self rentalKeyIdentifier];
-      v9 = sub_1000B23FC(v7, [v8 unsignedLongLongValue]);
+      accountIdentifier2 = [(LoadRentalInformationOperation *)self accountIdentifier];
+      unsignedLongLongValue = [accountIdentifier2 unsignedLongLongValue];
+      rentalKeyIdentifier2 = [(LoadRentalInformationOperation *)self rentalKeyIdentifier];
+      v9 = sub_1000B23FC(unsignedLongLongValue, [rentalKeyIdentifier2 unsignedLongLongValue]);
 
       if (v9)
       {
@@ -75,17 +75,17 @@
         v21 = 0;
       }
 
-      v3 = v21;
+      rentalKeyIdentifier = v21;
     }
 
     else
     {
-      v3 = 0;
+      rentalKeyIdentifier = 0;
     }
   }
 
-  v22 = v3;
-  v19 = [v3 copy];
+  v22 = rentalKeyIdentifier;
+  v19 = [rentalKeyIdentifier copy];
   rentalInformation = self->_rentalInformation;
   self->_rentalInformation = v19;
 }

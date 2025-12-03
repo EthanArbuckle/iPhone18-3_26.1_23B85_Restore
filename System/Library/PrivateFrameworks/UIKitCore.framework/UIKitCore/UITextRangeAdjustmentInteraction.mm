@@ -1,12 +1,12 @@
 @interface UITextRangeAdjustmentInteraction
-- (BOOL)_gestureTuningEnabledForTouches:(id)a3;
-- (BOOL)_pointCloserToEnd:(CGPoint)a3;
-- (BOOL)_shouldApplyOffsetForTouchType:(int64_t)a3;
-- (BOOL)_shouldDisplayLoupeForTouchType:(int64_t)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGPoint)_convertPointToViewCoordinateSpace:(CGPoint)a3;
+- (BOOL)_gestureTuningEnabledForTouches:(id)touches;
+- (BOOL)_pointCloserToEnd:(CGPoint)end;
+- (BOOL)_shouldApplyOffsetForTouchType:(int64_t)type;
+- (BOOL)_shouldDisplayLoupeForTouchType:(int64_t)type;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGPoint)_convertPointToViewCoordinateSpace:(CGPoint)space;
 - (CGPoint)basePoint;
 - (CGPoint)extentPoint;
 - (CGPoint)initialBasePoint;
@@ -15,22 +15,22 @@
 - (CGRect)_activeAdjustmentEdgeRect;
 - (CGRect)initialEndCaretRect;
 - (CGRect)initialStartCaretRect;
-- (UITextRangeAdjustmentInteraction)initWithAdjustmentDelegate:(id)a3 gestureHostView:(id)a4;
+- (UITextRangeAdjustmentInteraction)initWithAdjustmentDelegate:(id)delegate gestureHostView:(id)view;
 - (UITextRangeAdjustmentInteractionDelegate)adjustmentDelegate;
 - (id)_gestureView;
 - (id)gestureRecognizerHostView;
-- (id)selectionWidgetForPoint:(CGPoint)a3;
+- (id)selectionWidgetForPoint:(CGPoint)point;
 - (void)_activeTouchEnded;
-- (void)_adjustmentInteractionBeganWithLocation:(CGPoint)a3 startPoint:(CGPoint)a4 forTouchType:(int64_t)a5;
+- (void)_adjustmentInteractionBeganWithLocation:(CGPoint)location startPoint:(CGPoint)point forTouchType:(int64_t)type;
 - (void)_adjustmentInteractionCancelled;
-- (void)_adjustmentInteractionChangedWithLocation:(CGPoint)a3 forTouchType:(int64_t)a4;
-- (void)_adjustmentInteractionEndedAtLocation:(CGPoint)a3 forTouchType:(int64_t)a4;
+- (void)_adjustmentInteractionChangedWithLocation:(CGPoint)location forTouchType:(int64_t)type;
+- (void)_adjustmentInteractionEndedAtLocation:(CGPoint)location forTouchType:(int64_t)type;
 - (void)_createGestureTuningIfNecessary;
-- (void)_didRecognizeAdjustmentGesture:(id)a3;
-- (void)_loupeSessionDidInvalidate:(id)a3;
-- (void)_updateAdjustmentInteractionWithState:(int64_t)a3 location:(CGPoint)a4 locationOfFirstTouch:(CGPoint)a5 forTouchType:(int64_t)a6;
-- (void)manuallyUpdateInteractionWithGestureState:(int64_t)a3 location:(CGPoint)a4 locationOfFirstTouch:(CGPoint)a5 forTouchType:(int64_t)a6;
-- (void)setModelPosition:(CGPoint)a3;
+- (void)_didRecognizeAdjustmentGesture:(id)gesture;
+- (void)_loupeSessionDidInvalidate:(id)invalidate;
+- (void)_updateAdjustmentInteractionWithState:(int64_t)state location:(CGPoint)location locationOfFirstTouch:(CGPoint)touch forTouchType:(int64_t)type;
+- (void)manuallyUpdateInteractionWithGestureState:(int64_t)state location:(CGPoint)location locationOfFirstTouch:(CGPoint)touch forTouchType:(int64_t)type;
+- (void)setModelPosition:(CGPoint)position;
 - (void)updateBaseAndExtentPointsFromEdges;
 @end
 
@@ -43,18 +43,18 @@
   return WeakRetained;
 }
 
-- (UITextRangeAdjustmentInteraction)initWithAdjustmentDelegate:(id)a3 gestureHostView:(id)a4
+- (UITextRangeAdjustmentInteraction)initWithAdjustmentDelegate:(id)delegate gestureHostView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = UITextRangeAdjustmentInteraction;
   v8 = [(UITextInteraction *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_adjustmentDelegate, v6);
-    objc_storeWeak(&v9->_gestureHostView, v7);
+    objc_storeWeak(&v8->_adjustmentDelegate, delegateCopy);
+    objc_storeWeak(&v9->_gestureHostView, viewCopy);
     v10 = [(UIPanGestureRecognizer *)[UITextRangeAdjustmentGestureRecognizer alloc] initWithTarget:v9 action:sel__didRecognizeAdjustmentGesture_];
     adjustmentGestureRecognizer = v9->_adjustmentGestureRecognizer;
     v9->_adjustmentGestureRecognizer = v10;
@@ -68,58 +68,58 @@
   return v9;
 }
 
-- (void)_didRecognizeAdjustmentGesture:(id)a3
+- (void)_didRecognizeAdjustmentGesture:(id)gesture
 {
-  v25 = a3;
-  v4 = [v25 _allActiveTouches];
+  gestureCopy = gesture;
+  _allActiveTouches = [gestureCopy _allActiveTouches];
   [(UITextRangeAdjustmentInteraction *)self _createGestureTuningIfNecessary];
-  if ([(UITextRangeAdjustmentInteraction *)self _gestureTuningEnabledForTouches:v4])
+  if ([(UITextRangeAdjustmentInteraction *)self _gestureTuningEnabledForTouches:_allActiveTouches])
   {
-    -[UITextGestureTuning updateWithTouches:gestureState:](self->_gestureTuning, "updateWithTouches:gestureState:", v4, [v25 state]);
+    -[UITextGestureTuning updateWithTouches:gestureState:](self->_gestureTuning, "updateWithTouches:gestureState:", _allActiveTouches, [gestureCopy state]);
   }
 
-  if ([v25 state] == 1)
+  if ([gestureCopy state] == 1)
   {
-    v5 = [v4 anyObject];
-    [(UITextRangeAdjustmentInteraction *)self setActiveTouch:v5];
+    anyObject = [_allActiveTouches anyObject];
+    [(UITextRangeAdjustmentInteraction *)self setActiveTouch:anyObject];
   }
 
-  [v25 startPoint];
+  [gestureCopy startPoint];
   [(UITextRangeAdjustmentInteraction *)self _convertPointToViewCoordinateSpace:?];
   v7 = v6;
   v9 = v8;
-  v10 = [(UITextRangeAdjustmentInteraction *)self activeTouch];
-  v11 = [(UITextRangeAdjustmentInteraction *)self _gestureView];
-  [v10 locationInView:v11];
+  activeTouch = [(UITextRangeAdjustmentInteraction *)self activeTouch];
+  _gestureView = [(UITextRangeAdjustmentInteraction *)self _gestureView];
+  [activeTouch locationInView:_gestureView];
   v13 = v12;
   v15 = v14;
 
   [(UITextRangeAdjustmentInteraction *)self _convertPointToViewCoordinateSpace:v13, v15];
   v17 = v16;
   v19 = v18;
-  v20 = [(UITextRangeAdjustmentInteraction *)self activeTouch];
-  v21 = [v20 type];
+  activeTouch2 = [(UITextRangeAdjustmentInteraction *)self activeTouch];
+  type = [activeTouch2 type];
 
-  v22 = [(UITextRangeAdjustmentInteraction *)self activeTouch];
-  v23 = [v22 _isPointerTouch];
+  activeTouch3 = [(UITextRangeAdjustmentInteraction *)self activeTouch];
+  _isPointerTouch = [activeTouch3 _isPointerTouch];
 
-  if (v23)
+  if (_isPointerTouch)
   {
     v24 = 3;
   }
 
   else
   {
-    v24 = v21;
+    v24 = type;
   }
 
-  -[UITextRangeAdjustmentInteraction _updateAdjustmentInteractionWithState:location:locationOfFirstTouch:forTouchType:](self, "_updateAdjustmentInteractionWithState:location:locationOfFirstTouch:forTouchType:", [v25 state], v24, v17, v19, v7, v9);
+  -[UITextRangeAdjustmentInteraction _updateAdjustmentInteractionWithState:location:locationOfFirstTouch:forTouchType:](self, "_updateAdjustmentInteractionWithState:location:locationOfFirstTouch:forTouchType:", [gestureCopy state], v24, v17, v19, v7, v9);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v4 = a4;
-  if ([v4 _isGestureType:10] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  gestureRecognizerCopy = gestureRecognizer;
+  if ([gestureRecognizerCopy _isGestureType:10] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     isKindOfClass = 1;
   }
@@ -143,54 +143,54 @@
 
     [(UITextGestureTuning *)self->_gestureTuning setShouldUseLineThreshold:1];
     [(UITextGestureTuning *)self->_gestureTuning setStrongerBiasAgainstUp:1];
-    v5 = [(UITextInteraction *)self view];
-    [(UITextGestureTuning *)self->_gestureTuning setGestureCoordinateSpace:v5];
+    view = [(UITextInteraction *)self view];
+    [(UITextGestureTuning *)self->_gestureTuning setGestureCoordinateSpace:view];
 
-    v7 = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
-    v6 = [v7 containerCoordinateSpaceForTextRangeAdjustmentInteraction:self];
+    adjustmentDelegate = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
+    v6 = [adjustmentDelegate containerCoordinateSpaceForTextRangeAdjustmentInteraction:self];
     [(UITextGestureTuning *)self->_gestureTuning setContainerCoordinateSpace:v6];
   }
 }
 
-- (BOOL)_gestureTuningEnabledForTouches:(id)a3
+- (BOOL)_gestureTuningEnabledForTouches:(id)touches
 {
   if (!self->_gestureTuning)
   {
     return 0;
   }
 
-  v3 = self;
-  v4 = [a3 anyObject];
-  LOBYTE(v3) = -[UITextRangeAdjustmentInteraction _shouldApplyOffsetForTouchType:](v3, "_shouldApplyOffsetForTouchType:", [v4 type]);
+  selfCopy = self;
+  anyObject = [touches anyObject];
+  LOBYTE(selfCopy) = -[UITextRangeAdjustmentInteraction _shouldApplyOffsetForTouchType:](selfCopy, "_shouldApplyOffsetForTouchType:", [anyObject type]);
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)_gestureView
 {
-  v2 = [(UITextInteraction *)self view];
-  v3 = [v2 textInputView];
+  view = [(UITextInteraction *)self view];
+  textInputView = [view textInputView];
 
-  return v3;
+  return textInputView;
 }
 
-- (CGPoint)_convertPointToViewCoordinateSpace:(CGPoint)a3
+- (CGPoint)_convertPointToViewCoordinateSpace:(CGPoint)space
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(UITextRangeAdjustmentInteraction *)self _gestureView];
+  y = space.y;
+  x = space.x;
+  _gestureView = [(UITextRangeAdjustmentInteraction *)self _gestureView];
   if ([UIApp _isSpringBoard])
   {
-    v7 = [v6 window];
-    v8 = [v7 _hostingWindow];
+    window = [_gestureView window];
+    _hostingWindow = [window _hostingWindow];
 
-    if (v8)
+    if (_hostingWindow)
     {
-      v9 = [(UITextRangeAdjustmentInteraction *)self activeTouch];
-      v10 = v9;
-      if (v9)
+      activeTouch = [(UITextRangeAdjustmentInteraction *)self activeTouch];
+      v10 = activeTouch;
+      if (activeTouch)
       {
-        v11 = *(v9 + 360);
+        v11 = *(activeTouch + 360);
       }
 
       else
@@ -199,12 +199,12 @@
       }
 
       v12 = v11;
-      [v6 convertPoint:v12 toView:{x, y}];
+      [_gestureView convertPoint:v12 toView:{x, y}];
       v14 = v13;
       v16 = v15;
 
-      v17 = [v6 window];
-      [v17 convertPoint:v6 toView:{v14, v16}];
+      window2 = [_gestureView window];
+      [window2 convertPoint:_gestureView toView:{v14, v16}];
       x = v18;
       y = v19;
     }
@@ -217,10 +217,10 @@
   return result;
 }
 
-- (BOOL)_pointCloserToEnd:(CGPoint)a3
+- (BOOL)_pointCloserToEnd:(CGPoint)end
 {
-  v41 = a3;
-  v42 = *&a3.y;
+  endCopy = end;
+  v42 = *&end.y;
   WeakRetained = objc_loadWeakRetained(&self->_adjustmentDelegate);
   [WeakRetained paddedTextRangeAdjustmentHitRegionForEdge:0 precision:0];
   v51 = v5;
@@ -242,7 +242,7 @@
   if (CGRectIsNull(v55) || (v56.size.width = v43, v56.origin.x = v44, v56.size.height = v45, v56.origin.y = v46, CGRectIsNull(v56)))
   {
     v14 = objc_loadWeakRetained(&self->_adjustmentDelegate);
-    [v14 textRangeAdjustmentRectForEdge:{0, v41, v42}];
+    [v14 textRangeAdjustmentRectForEdge:{0, endCopy, v42}];
     v52 = v15;
     v54 = v16;
     recta = v17;
@@ -280,7 +280,7 @@
   v29.f64[0] = v46;
   v36.f64[1] = v26;
   v29.f64[1] = v27;
-  v37 = vsubq_f64(v35, vdupq_lane_s64(*&v41.x, 0));
+  v37 = vsubq_f64(v35, vdupq_lane_s64(*&endCopy.x, 0));
   v38 = vsubq_f64(vaddq_f64(v29, vmulq_f64(v36, _Q0)), vdupq_lane_s64(v42, 0));
   v39 = vsqrtq_f64(vaddq_f64(vmulq_f64(v37, v37), vmulq_f64(v38, v38)));
   return vmovn_s64(vcgtq_f64(vdupq_laneq_s64(v39, 1), v39)).u8[0] & 1;
@@ -288,15 +288,15 @@
 
 - (void)updateBaseAndExtentPointsFromEdges
 {
-  v3 = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
-  [v3 textRangeAdjustmentRectForEdge:0];
+  adjustmentDelegate = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
+  [adjustmentDelegate textRangeAdjustmentRectForEdge:0];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
-  [v12 textRangeAdjustmentRectForEdge:1];
+  adjustmentDelegate2 = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
+  [adjustmentDelegate2 textRangeAdjustmentRectForEdge:1];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -304,8 +304,8 @@
 
   [(UITextRangeAdjustmentInteraction *)self setInitialStartCaretRect:v5, v7, v9, v11];
   [(UITextRangeAdjustmentInteraction *)self setInitialEndCaretRect:v14, v16, v18, v20];
-  v21 = [(UITextRangeAdjustmentInteraction *)self baseIsStart];
-  if (v21)
+  baseIsStart = [(UITextRangeAdjustmentInteraction *)self baseIsStart];
+  if (baseIsStart)
   {
     v22 = v7;
   }
@@ -315,7 +315,7 @@
     v22 = v16;
   }
 
-  if (v21)
+  if (baseIsStart)
   {
     v23 = v11;
   }
@@ -325,7 +325,7 @@
     v23 = v20;
   }
 
-  if (v21)
+  if (baseIsStart)
   {
     v24 = v5;
   }
@@ -335,7 +335,7 @@
     v24 = v14;
   }
 
-  if (v21)
+  if (baseIsStart)
   {
     v25 = v9;
   }
@@ -345,7 +345,7 @@
     v25 = v18;
   }
 
-  if (v21)
+  if (baseIsStart)
   {
     v7 = v16;
     v11 = v20;
@@ -358,12 +358,12 @@
   [(UITextRangeAdjustmentInteraction *)self setExtentPoint:v5 + v9 * 0.5, v7 + v11 * 0.5];
 }
 
-- (BOOL)_shouldApplyOffsetForTouchType:(int64_t)a3
+- (BOOL)_shouldApplyOffsetForTouchType:(int64_t)type
 {
   WeakRetained = objc_loadWeakRetained(&self->_adjustmentDelegate);
   v6 = [WeakRetained textRangeAdjustmentInteractionShouldApplyTouchOffset:self];
 
-  if (a3 == 3)
+  if (type == 3)
   {
     return 0;
   }
@@ -374,36 +374,36 @@
   }
 }
 
-- (BOOL)_shouldDisplayLoupeForTouchType:(int64_t)a3
+- (BOOL)_shouldDisplayLoupeForTouchType:(int64_t)type
 {
   WeakRetained = objc_loadWeakRetained(&self->_adjustmentDelegate);
-  LOBYTE(a3) = [WeakRetained textRangeAdjustmentInteraction:self shouldDisplayLoupeForTouchType:a3];
+  LOBYTE(type) = [WeakRetained textRangeAdjustmentInteraction:self shouldDisplayLoupeForTouchType:type];
 
-  return a3;
+  return type;
 }
 
-- (void)_updateAdjustmentInteractionWithState:(int64_t)a3 location:(CGPoint)a4 locationOfFirstTouch:(CGPoint)a5 forTouchType:(int64_t)a6
+- (void)_updateAdjustmentInteractionWithState:(int64_t)state location:(CGPoint)location locationOfFirstTouch:(CGPoint)touch forTouchType:(int64_t)type
 {
-  if (a3 > 3)
+  if (state > 3)
   {
-    if ((a3 - 4) < 2)
+    if ((state - 4) < 2)
     {
-      [(UITextRangeAdjustmentInteraction *)self _adjustmentInteractionCancelled:a4.x];
+      [(UITextRangeAdjustmentInteraction *)self _adjustmentInteractionCancelled:location.x];
     }
   }
 
   else
   {
-    switch(a3)
+    switch(state)
     {
       case 1:
-        [(UITextRangeAdjustmentInteraction *)self _adjustmentInteractionBeganWithLocation:a6 startPoint:a4.x forTouchType:a4.y, a5.x, a5.y];
+        [(UITextRangeAdjustmentInteraction *)self _adjustmentInteractionBeganWithLocation:type startPoint:location.x forTouchType:location.y, touch.x, touch.y];
         break;
       case 2:
-        [(UITextRangeAdjustmentInteraction *)self _adjustmentInteractionChangedWithLocation:a6 forTouchType:a4.x, a4.y, a5.x, a5.y];
+        [(UITextRangeAdjustmentInteraction *)self _adjustmentInteractionChangedWithLocation:type forTouchType:location.x, location.y, touch.x, touch.y];
         break;
       case 3:
-        [(UITextRangeAdjustmentInteraction *)self _adjustmentInteractionEndedAtLocation:a6 forTouchType:a4.x, a4.y, a5.x, a5.y];
+        [(UITextRangeAdjustmentInteraction *)self _adjustmentInteractionEndedAtLocation:type forTouchType:location.x, location.y, touch.x, touch.y];
         break;
     }
   }
@@ -478,12 +478,12 @@
   return result;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a4;
-  if (a3)
+  touchCopy = touch;
+  if (recognizer)
   {
-    v7 = *(a3 + 24);
+    v7 = *(recognizer + 24);
   }
 
   else
@@ -494,7 +494,7 @@
   WeakRetained = objc_loadWeakRetained(&self->_adjustmentDelegate);
   v9 = [WeakRetained containerCoordinateSpaceForTextRangeAdjustmentInteraction:self];
 
-  [v6 locationInView:v9];
+  [touchCopy locationInView:v9];
   v11 = v10;
   v13 = v12;
 
@@ -537,11 +537,11 @@
   return v23;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(UITextRangeAdjustmentInteraction *)self _gestureView];
-  [v4 locationInView:v5];
+  beginCopy = begin;
+  _gestureView = [(UITextRangeAdjustmentInteraction *)self _gestureView];
+  [beginCopy locationInView:_gestureView];
   v7 = v6;
   v9 = v8;
 
@@ -551,16 +551,16 @@
   return self;
 }
 
-- (void)_adjustmentInteractionBeganWithLocation:(CGPoint)a3 startPoint:(CGPoint)a4 forTouchType:(int64_t)a5
+- (void)_adjustmentInteractionBeganWithLocation:(CGPoint)location startPoint:(CGPoint)point forTouchType:(int64_t)type
 {
-  y = a4.y;
-  x = a4.x;
-  [(UITextRangeAdjustmentInteraction *)self setInitialPoint:a4.x, a4.y];
-  v9 = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
-  v40 = [v9 containerCoordinateSpaceForTextRangeAdjustmentInteraction:self];
+  y = point.y;
+  x = point.x;
+  [(UITextRangeAdjustmentInteraction *)self setInitialPoint:point.x, point.y];
+  adjustmentDelegate = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
+  v40 = [adjustmentDelegate containerCoordinateSpaceForTextRangeAdjustmentInteraction:self];
 
-  v10 = [(UITextRangeAdjustmentInteraction *)self _gestureView];
-  [v40 convertPoint:v10 fromCoordinateSpace:{x, y}];
+  _gestureView = [(UITextRangeAdjustmentInteraction *)self _gestureView];
+  [v40 convertPoint:_gestureView fromCoordinateSpace:{x, y}];
   v12 = v11;
   v14 = v13;
 
@@ -578,22 +578,22 @@
   [(UITextRangeAdjustmentInteraction *)self setInitialDistance:sqrt((v21 - v18) * (v21 - v18) + (v22 - v20) * (v22 - v20))];
   [(UITextRangeAdjustmentInteraction *)self setFirstMovedTime:-1.0];
   [(UITextRangeAdjustmentInteraction *)self setExtentPoint:x, y];
-  v23 = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
-  [v23 textRangeAdjustmentInteraction:self didBeginAtPoint:{x, y}];
+  adjustmentDelegate2 = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
+  [adjustmentDelegate2 textRangeAdjustmentInteraction:self didBeginAtPoint:{x, y}];
 
   [(UITextRangeAdjustmentInteraction *)self _activeAdjustmentEdgeRect];
   [(UITextGestureTuning *)self->_gestureTuning assertInitialPositionFromTopOfCaret:y - v27 distanceFromCaret:x - (v25 + v24 * 0.5), y - (v27 + v26 * 0.5)];
-  if ([(UITextRangeAdjustmentInteraction *)self _shouldDisplayLoupeForTouchType:a5])
+  if ([(UITextRangeAdjustmentInteraction *)self _shouldDisplayLoupeForTouchType:type])
   {
-    v28 = [(UITextRangeAdjustmentInteraction *)self _gestureView];
+    _gestureView2 = [(UITextRangeAdjustmentInteraction *)self _gestureView];
     if (objc_opt_respondsToSelector())
     {
-      v29 = [v28 _rangeAdjustmentGestureView];
+      _rangeAdjustmentGestureView = [_gestureView2 _rangeAdjustmentGestureView];
 
-      v28 = v29;
+      _gestureView2 = _rangeAdjustmentGestureView;
     }
 
-    if ([(UITextRangeAdjustmentInteraction *)self _shouldApplyOffsetForTouchType:a5])
+    if ([(UITextRangeAdjustmentInteraction *)self _shouldApplyOffsetForTouchType:type])
     {
       gestureTuning = self->_gestureTuning;
       [(UITextRangeAdjustmentInteraction *)self initialPoint];
@@ -602,11 +602,11 @@
       y = v34;
     }
 
-    v35 = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
-    v36 = [v35 loupeOrientationForTextRangeAdjustmentInteraction:self];
+    adjustmentDelegate3 = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
+    v36 = [adjustmentDelegate3 loupeOrientationForTextRangeAdjustmentInteraction:self];
 
     v37 = [(UITextRangeAdjustmentInteraction *)self selectionWidgetForPoint:x, y];
-    v38 = [UITextLoupeSession _beginLoupeSessionAtPoint:v37 fromSelectionWidgetView:v28 inView:v36 orientation:x, y];
+    v38 = [UITextLoupeSession _beginLoupeSessionAtPoint:v37 fromSelectionWidgetView:_gestureView2 inView:v36 orientation:x, y];
     loupeSession = self->_loupeSession;
     self->_loupeSession = v38;
 
@@ -615,13 +615,13 @@
   }
 }
 
-- (void)setModelPosition:(CGPoint)a3
+- (void)setModelPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(UITextLoupeSession *)self->_loupeSession delegate];
+  y = position.y;
+  x = position.x;
+  delegate = [(UITextLoupeSession *)self->_loupeSession delegate];
 
-  if (!v6)
+  if (!delegate)
   {
     [(UITextLoupeSession *)self->_loupeSession setDelegate:self];
   }
@@ -631,40 +631,40 @@
   [(UITextLoupeSession *)loupeSession setModelPosition:x, y];
 }
 
-- (void)_loupeSessionDidInvalidate:(id)a3
+- (void)_loupeSessionDidInvalidate:(id)invalidate
 {
   loupeSession = self->_loupeSession;
-  if (loupeSession == a3)
+  if (loupeSession == invalidate)
   {
     self->_loupeSession = 0;
   }
 }
 
-- (id)selectionWidgetForPoint:(CGPoint)a3
+- (id)selectionWidgetForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
-  v7 = [v6 containerCoordinateSpaceForTextRangeAdjustmentInteraction:self];
+  y = point.y;
+  x = point.x;
+  adjustmentDelegate = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
+  v7 = [adjustmentDelegate containerCoordinateSpaceForTextRangeAdjustmentInteraction:self];
 
-  v8 = [(UITextRangeAdjustmentInteraction *)self _gestureView];
-  [v7 convertPoint:v8 fromCoordinateSpace:{x, y}];
+  _gestureView = [(UITextRangeAdjustmentInteraction *)self _gestureView];
+  [v7 convertPoint:_gestureView fromCoordinateSpace:{x, y}];
   v10 = v9;
   v12 = v11;
 
-  LODWORD(v8) = [(UITextRangeAdjustmentInteraction *)self _pointCloserToEnd:v10, v12];
-  v13 = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
+  LODWORD(_gestureView) = [(UITextRangeAdjustmentInteraction *)self _pointCloserToEnd:v10, v12];
+  adjustmentDelegate2 = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
   WeakRetained = objc_loadWeakRetained(&self->_adjustmentDelegate);
-  v15 = [WeakRetained textRangeAdjustmentViewForEdge:v8];
+  v15 = [WeakRetained textRangeAdjustmentViewForEdge:_gestureView];
 
   return v15;
 }
 
-- (void)_adjustmentInteractionChangedWithLocation:(CGPoint)a3 forTouchType:(int64_t)a4
+- (void)_adjustmentInteractionChangedWithLocation:(CGPoint)location forTouchType:(int64_t)type
 {
-  y = a3.y;
-  x = a3.x;
-  if ([(UITextRangeAdjustmentInteraction *)self _shouldApplyOffsetForTouchType:a4])
+  y = location.y;
+  x = location.x;
+  if ([(UITextRangeAdjustmentInteraction *)self _shouldApplyOffsetForTouchType:type])
   {
     gestureTuning = self->_gestureTuning;
     [(UITextRangeAdjustmentInteraction *)self initialPoint];
@@ -678,16 +678,16 @@
   [(UITextRangeAdjustmentInteraction *)self _activeAdjustmentEdgeRect];
   [(UITextLoupeSession *)loupeSession _moveToPoint:v18 withCaretRect:1 selectionWidget:x trackingCaret:y, v13, v14, v15, v16];
   [(UITextRangeAdjustmentInteraction *)self setExtentPoint:x, y];
-  v17 = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
+  adjustmentDelegate = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
   [(UITextRangeAdjustmentInteraction *)self extentPoint];
-  [v17 textRangeAdjustmentInteraction:self selectionMoved:? withTouchPoint:?];
+  [adjustmentDelegate textRangeAdjustmentInteraction:self selectionMoved:? withTouchPoint:?];
 }
 
-- (void)_adjustmentInteractionEndedAtLocation:(CGPoint)a3 forTouchType:(int64_t)a4
+- (void)_adjustmentInteractionEndedAtLocation:(CGPoint)location forTouchType:(int64_t)type
 {
-  y = a3.y;
-  x = a3.x;
-  if ([(UITextRangeAdjustmentInteraction *)self _shouldApplyOffsetForTouchType:a4])
+  y = location.y;
+  x = location.x;
+  if ([(UITextRangeAdjustmentInteraction *)self _shouldApplyOffsetForTouchType:type])
   {
     [(UITextGestureTuning *)self->_gestureTuning pointIfPlacedCarefully:x, y];
     v8 = v7;
@@ -699,16 +699,16 @@
     y = v15;
   }
 
-  v16 = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
-  [v16 textRangeAdjustmentInteraction:self didEndAtPoint:{x, y}];
+  adjustmentDelegate = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
+  [adjustmentDelegate textRangeAdjustmentInteraction:self didEndAtPoint:{x, y}];
 
   [(UITextRangeAdjustmentInteraction *)self _activeTouchEnded];
 }
 
 - (void)_adjustmentInteractionCancelled
 {
-  v3 = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
-  [v3 textRangeAdjustmentInteractionWasCancelled:self];
+  adjustmentDelegate = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
+  [adjustmentDelegate textRangeAdjustmentInteractionWasCancelled:self];
 
   [(UITextRangeAdjustmentInteraction *)self _activeTouchEnded];
 }
@@ -717,7 +717,7 @@
 {
   objc_initWeak(&location, self);
   objc_initWeak(&from, self->_loupeSession);
-  v3 = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
+  adjustmentDelegate = [(UITextRangeAdjustmentInteraction *)self adjustmentDelegate];
   v4 = [_UIBurnableBlock alloc];
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
@@ -726,7 +726,7 @@
   objc_copyWeak(&v11, &from);
   objc_copyWeak(&v12, &location);
   v5 = [(_UIBurnableBlock *)v4 initWithTimeout:&v7 block:0 defaultInputProvider:0.3];
-  [v3 textRangeAdjustmentInteraction:self prepareForInvalidation:{v5, v7, v8, v9, v10}];
+  [adjustmentDelegate textRangeAdjustmentInteraction:self prepareForInvalidation:{v5, v7, v8, v9, v10}];
 
   activeTouch = self->_activeTouch;
   self->_activeTouch = 0;
@@ -771,19 +771,19 @@ LABEL_3:
 LABEL_5:
 }
 
-- (void)manuallyUpdateInteractionWithGestureState:(int64_t)a3 location:(CGPoint)a4 locationOfFirstTouch:(CGPoint)a5 forTouchType:(int64_t)a6
+- (void)manuallyUpdateInteractionWithGestureState:(int64_t)state location:(CGPoint)location locationOfFirstTouch:(CGPoint)touch forTouchType:(int64_t)type
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
+  y = touch.y;
+  x = touch.x;
+  v9 = location.y;
+  v10 = location.x;
   [(UITextRangeAdjustmentInteraction *)self _createGestureTuningIfNecessary];
-  if ([(UITextRangeAdjustmentInteraction *)self _shouldApplyOffsetForTouchType:a6])
+  if ([(UITextRangeAdjustmentInteraction *)self _shouldApplyOffsetForTouchType:type])
   {
-    [(UITextGestureTuning *)self->_gestureTuning updateVisibilityOffsetForGestureState:a3 touchType:0 locationInSceneReferenceSpace:v10 majorRadius:v9, 1.0];
+    [(UITextGestureTuning *)self->_gestureTuning updateVisibilityOffsetForGestureState:state touchType:0 locationInSceneReferenceSpace:v10 majorRadius:v9, 1.0];
   }
 
-  [(UITextRangeAdjustmentInteraction *)self _updateAdjustmentInteractionWithState:a3 location:a6 locationOfFirstTouch:v10 forTouchType:v9, x, y];
+  [(UITextRangeAdjustmentInteraction *)self _updateAdjustmentInteractionWithState:state location:type locationOfFirstTouch:v10 forTouchType:v9, x, y];
 }
 
 - (CGPoint)initialExtentPoint

@@ -1,12 +1,12 @@
 @interface GKSKNodeComponent
 + (GKSKNodeComponent)componentWithNode:(SKNode *)node;
-- (GKSKNodeComponent)initWithCoder:(id)a3;
+- (GKSKNodeComponent)initWithCoder:(id)coder;
 - (GKSKNodeComponent)initWithNode:(SKNode *)node;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)agentDidUpdate:(id)a3;
-- (void)agentWillUpdate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEntity:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)agentDidUpdate:(id)update;
+- (void)agentWillUpdate:(id)update;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEntity:(id)entity;
 - (void)setNode:(SKNode *)node;
 @end
 
@@ -35,13 +35,13 @@
   return v6;
 }
 
-- (GKSKNodeComponent)initWithCoder:(id)a3
+- (GKSKNodeComponent)initWithCoder:(id)coder
 {
   v15[12] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = GKSKNodeComponent;
-  v5 = [(GKComponent *)&v14 initWithCoder:v4];
+  v5 = [(GKComponent *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -60,16 +60,16 @@
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:12];
     [v6 addObjectsFromArray:v7];
 
-    v8 = [v4 allowedClasses];
-    [v6 unionSet:v8];
+    allowedClasses = [coderCopy allowedClasses];
+    [v6 unionSet:allowedClasses];
 
-    v9 = [v4 decodeObjectOfClasses:v6 forKey:@"_serializableNodeIndexPath"];
+    v9 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_serializableNodeIndexPath"];
     serializableNodeIndexPath = v5->_serializableNodeIndexPath;
     v5->_serializableNodeIndexPath = v9;
 
     if (!v5->_serializableNodeIndexPath)
     {
-      v11 = [v4 decodeObjectOfClasses:v6 forKey:@"_node"];
+      v11 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_node"];
       [(GKSKNodeComponent *)v5 setNode:v11];
     }
   }
@@ -78,12 +78,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = GKSKNodeComponent;
-  v4 = a3;
-  [(GKComponent *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(GKComponent *)&v7 encodeWithCoder:coderCopy];
   serializableNodeIndexPath = self->_serializableNodeIndexPath;
   if (serializableNodeIndexPath)
   {
@@ -96,14 +96,14 @@
     v6 = @"_node";
   }
 
-  [v4 encodeObject:serializableNodeIndexPath forKey:{v6, v7.receiver, v7.super_class}];
+  [coderCopy encodeObject:serializableNodeIndexPath forKey:{v6, v7.receiver, v7.super_class}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = GKSKNodeComponent;
-  v4 = [(GKComponent *)&v9 copyWithZone:a3];
+  v4 = [(GKComponent *)&v9 copyWithZone:zone];
   v5 = [(NSIndexPath *)self->_serializableNodeIndexPath copy];
   v6 = v4[5];
   v4[5] = v5;
@@ -114,13 +114,13 @@
   return v4;
 }
 
-- (void)setEntity:(id)a3
+- (void)setEntity:(id)entity
 {
   v5.receiver = self;
   v5.super_class = GKSKNodeComponent;
-  v4 = a3;
-  [(GKComponent *)&v5 setEntity:v4];
-  [(SKNode *)self->_node setEntity:v4, v5.receiver, v5.super_class];
+  entityCopy = entity;
+  [(GKComponent *)&v5 setEntity:entityCopy];
+  [(SKNode *)self->_node setEntity:entityCopy, v5.receiver, v5.super_class];
 }
 
 - (void)setNode:(SKNode *)node
@@ -131,33 +131,33 @@
   self->_node = v4;
   v6 = v4;
 
-  v7 = [(GKComponent *)self entity];
-  [(SKNode *)self->_node setEntity:v7];
+  entity = [(GKComponent *)self entity];
+  [(SKNode *)self->_node setEntity:entity];
 }
 
-- (void)agentWillUpdate:(id)a3
+- (void)agentWillUpdate:(id)update
 {
   node = self->_node;
-  v10 = a3;
+  updateCopy = update;
   [(SKNode *)node position];
   v9 = v5;
   [(SKNode *)self->_node position];
   v6.f64[0] = v9;
   v6.f64[1] = v7;
-  [v10 setPosition:COERCE_DOUBLE(vcvt_f32_f64(v6))];
+  [updateCopy setPosition:COERCE_DOUBLE(vcvt_f32_f64(v6))];
   [(SKNode *)self->_node zRotation];
   *&v8 = v8;
-  [v10 setRotation:v8];
+  [updateCopy setRotation:v8];
 }
 
-- (void)agentDidUpdate:(id)a3
+- (void)agentDidUpdate:(id)update
 {
-  v4 = a3;
-  [v4 position];
+  updateCopy = update;
+  [updateCopy position];
   v6 = v5;
-  [v4 position];
+  [updateCopy position];
   [(SKNode *)self->_node setPosition:v6, v7];
-  [v4 rotation];
+  [updateCopy rotation];
   v9 = v8;
 
   node = self->_node;

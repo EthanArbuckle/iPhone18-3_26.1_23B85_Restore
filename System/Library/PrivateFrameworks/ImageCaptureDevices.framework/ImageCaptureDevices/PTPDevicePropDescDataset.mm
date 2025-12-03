@@ -1,16 +1,16 @@
 @interface PTPDevicePropDescDataset
 - (NSMutableData)content;
 - (PTPDevicePropDescDataset)init;
-- (PTPDevicePropDescDataset)initWithData:(id)a3;
-- (PTPDevicePropDescDataset)initWithMutableData:(id)a3;
+- (PTPDevicePropDescDataset)initWithData:(id)data;
+- (PTPDevicePropDescDataset)initWithMutableData:(id)data;
 - (id)description;
-- (void)setContent:(id)a3;
-- (void)setCurrentValue:(id)a3;
-- (void)setFactoryDefaultValue:(id)a3;
-- (void)setMaximumValue:(id)a3;
-- (void)setMinimumValue:(id)a3;
-- (void)setStepSize:(id)a3;
-- (void)setSupportedValues:(id)a3;
+- (void)setContent:(id)content;
+- (void)setCurrentValue:(id)value;
+- (void)setFactoryDefaultValue:(id)value;
+- (void)setMaximumValue:(id)value;
+- (void)setMinimumValue:(id)value;
+- (void)setStepSize:(id)size;
+- (void)setSupportedValues:(id)values;
 - (void)updateContent;
 @end
 
@@ -33,15 +33,15 @@
   return v2;
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  v5 = a3;
-  objc_storeStrong(&self->_content, a3);
-  v6 = [(NSMutableData *)self->_content bytes];
+  contentCopy = content;
+  objc_storeStrong(&self->_content, content);
+  bytes = [(NSMutableData *)self->_content bytes];
   v7 = [(NSMutableData *)self->_content length];
-  v181 = v6;
-  self->_devicePropertyCode = ReadUInt16MaxSize(&v181, &v6[v7]);
-  UInt16MaxSize = ReadUInt16MaxSize(&v181, &v6[v7]);
+  v181 = bytes;
+  self->_devicePropertyCode = ReadUInt16MaxSize(&v181, &bytes[v7]);
+  UInt16MaxSize = ReadUInt16MaxSize(&v181, &bytes[v7]);
   self->_dataTypeCode = UInt16MaxSize;
   v9 = v181 + 1;
   self->_readWriteAttribute = *v181;
@@ -69,7 +69,7 @@
         v181 = v61 + 2;
         if (v62 == 2)
         {
-          v131 = ReadUInt16MaxSize(&v181, &v6[v7]);
+          v131 = ReadUInt16MaxSize(&v181, &bytes[v7]);
           self->_numberOfValues = v131;
           if (v131)
           {
@@ -136,7 +136,7 @@
         v181 = v46 + 2;
         if (v47 == 2)
         {
-          v136 = ReadUInt16MaxSize(&v181, &v6[v7]);
+          v136 = ReadUInt16MaxSize(&v181, &bytes[v7]);
           self->_numberOfValues = v136;
           if (v136)
           {
@@ -184,11 +184,11 @@
     {
       if (UInt16MaxSize == 3)
       {
-        v100 = [objc_alloc(MEMORY[0x29EDBA070]) initWithShort:{ReadSInt16MaxSize(&v181, &v6[v7])}];
+        v100 = [objc_alloc(MEMORY[0x29EDBA070]) initWithShort:{ReadSInt16MaxSize(&v181, &bytes[v7])}];
         v101 = self->_factoryDefaultValue;
         self->_factoryDefaultValue = v100;
 
-        v102 = [objc_alloc(MEMORY[0x29EDBA070]) initWithShort:{ReadSInt16MaxSize(&v181, &v6[v7])}];
+        v102 = [objc_alloc(MEMORY[0x29EDBA070]) initWithShort:{ReadSInt16MaxSize(&v181, &bytes[v7])}];
         v103 = self->_currentValue;
         self->_currentValue = v102;
 
@@ -198,14 +198,14 @@
         v181 = v105;
         if (v104 == 2)
         {
-          v161 = ReadUInt16MaxSize(&v181, &v6[v7]);
+          v161 = ReadUInt16MaxSize(&v181, &bytes[v7]);
           self->_numberOfValues = v161;
           if (v161)
           {
             v162 = 0;
             do
             {
-              SInt16MaxSize = ReadSInt16MaxSize(&v181, &v6[v7]);
+              SInt16MaxSize = ReadSInt16MaxSize(&v181, &bytes[v7]);
               v164 = self->_supportedValues;
               v165 = [MEMORY[0x29EDBA070] numberWithShort:SInt16MaxSize];
               [(NSMutableArray *)v164 addObject:v165];
@@ -219,15 +219,15 @@
 
         else if (v104 == 1)
         {
-          v106 = [objc_alloc(MEMORY[0x29EDBA070]) initWithShort:{ReadSInt16MaxSize(&v181, &v6[v7])}];
+          v106 = [objc_alloc(MEMORY[0x29EDBA070]) initWithShort:{ReadSInt16MaxSize(&v181, &bytes[v7])}];
           v107 = self->_minimumValue;
           self->_minimumValue = v106;
 
-          v108 = [objc_alloc(MEMORY[0x29EDBA070]) initWithShort:{ReadSInt16MaxSize(&v181, &v6[v7])}];
+          v108 = [objc_alloc(MEMORY[0x29EDBA070]) initWithShort:{ReadSInt16MaxSize(&v181, &bytes[v7])}];
           v109 = self->_maximumValue;
           self->_maximumValue = v108;
 
-          v30 = [objc_alloc(MEMORY[0x29EDBA070]) initWithShort:{ReadSInt16MaxSize(&v181, &v6[v7])}];
+          v30 = [objc_alloc(MEMORY[0x29EDBA070]) initWithShort:{ReadSInt16MaxSize(&v181, &bytes[v7])}];
           goto LABEL_50;
         }
 
@@ -236,11 +236,11 @@
 
       if (UInt16MaxSize == 4)
       {
-        v70 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedShort:{ReadUInt16MaxSize(&v181, &v6[v7])}];
+        v70 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedShort:{ReadUInt16MaxSize(&v181, &bytes[v7])}];
         v71 = self->_factoryDefaultValue;
         self->_factoryDefaultValue = v70;
 
-        v72 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedShort:{ReadUInt16MaxSize(&v181, &v6[v7])}];
+        v72 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedShort:{ReadUInt16MaxSize(&v181, &bytes[v7])}];
         v73 = self->_currentValue;
         self->_currentValue = v72;
 
@@ -250,14 +250,14 @@
         v181 = v75;
         if (v74 == 2)
         {
-          v141 = ReadUInt16MaxSize(&v181, &v6[v7]);
+          v141 = ReadUInt16MaxSize(&v181, &bytes[v7]);
           self->_numberOfValues = v141;
           if (v141)
           {
             v142 = 0;
             do
             {
-              v143 = ReadUInt16MaxSize(&v181, &v6[v7]);
+              v143 = ReadUInt16MaxSize(&v181, &bytes[v7]);
               v144 = self->_supportedValues;
               v145 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:v143];
               [(NSMutableArray *)v144 addObject:v145];
@@ -276,24 +276,24 @@
           goto LABEL_51;
         }
 
-        v76 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedShort:{ReadUInt16MaxSize(&v181, &v6[v7])}];
+        v76 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedShort:{ReadUInt16MaxSize(&v181, &bytes[v7])}];
         v77 = self->_minimumValue;
         self->_minimumValue = v76;
 
-        v78 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedShort:{ReadUInt16MaxSize(&v181, &v6[v7])}];
+        v78 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedShort:{ReadUInt16MaxSize(&v181, &bytes[v7])}];
         v79 = self->_maximumValue;
         self->_maximumValue = v78;
 
-        v30 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedShort:{ReadUInt16MaxSize(&v181, &v6[v7])}];
+        v30 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedShort:{ReadUInt16MaxSize(&v181, &bytes[v7])}];
       }
 
       else
       {
-        v20 = [objc_alloc(MEMORY[0x29EDBA070]) initWithInt:{ReadSInt32MaxSize(&v181, &v6[v7])}];
+        v20 = [objc_alloc(MEMORY[0x29EDBA070]) initWithInt:{ReadSInt32MaxSize(&v181, &bytes[v7])}];
         v21 = self->_factoryDefaultValue;
         self->_factoryDefaultValue = v20;
 
-        v22 = [objc_alloc(MEMORY[0x29EDBA070]) initWithInt:{ReadSInt32MaxSize(&v181, &v6[v7])}];
+        v22 = [objc_alloc(MEMORY[0x29EDBA070]) initWithInt:{ReadSInt32MaxSize(&v181, &bytes[v7])}];
         v23 = self->_currentValue;
         self->_currentValue = v22;
 
@@ -303,14 +303,14 @@
         v181 = v25;
         if (v24 == 2)
         {
-          v156 = ReadUInt16MaxSize(&v181, &v6[v7]);
+          v156 = ReadUInt16MaxSize(&v181, &bytes[v7]);
           self->_numberOfValues = v156;
           if (v156)
           {
             v157 = 0;
             do
             {
-              SInt32MaxSize = ReadSInt32MaxSize(&v181, &v6[v7]);
+              SInt32MaxSize = ReadSInt32MaxSize(&v181, &bytes[v7]);
               v159 = self->_supportedValues;
               v160 = [MEMORY[0x29EDBA070] numberWithInt:SInt32MaxSize];
               [(NSMutableArray *)v159 addObject:v160];
@@ -329,15 +329,15 @@
           goto LABEL_51;
         }
 
-        v26 = [objc_alloc(MEMORY[0x29EDBA070]) initWithInt:{ReadSInt32MaxSize(&v181, &v6[v7])}];
+        v26 = [objc_alloc(MEMORY[0x29EDBA070]) initWithInt:{ReadSInt32MaxSize(&v181, &bytes[v7])}];
         v27 = self->_minimumValue;
         self->_minimumValue = v26;
 
-        v28 = [objc_alloc(MEMORY[0x29EDBA070]) initWithInt:{ReadSInt32MaxSize(&v181, &v6[v7])}];
+        v28 = [objc_alloc(MEMORY[0x29EDBA070]) initWithInt:{ReadSInt32MaxSize(&v181, &bytes[v7])}];
         v29 = self->_maximumValue;
         self->_maximumValue = v28;
 
-        v30 = [objc_alloc(MEMORY[0x29EDBA070]) initWithInt:{ReadSInt32MaxSize(&v181, &v6[v7])}];
+        v30 = [objc_alloc(MEMORY[0x29EDBA070]) initWithInt:{ReadSInt32MaxSize(&v181, &bytes[v7])}];
       }
     }
 
@@ -352,11 +352,11 @@ LABEL_50:
   {
     if (UInt16MaxSize == 6)
     {
-      v110 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedInt:{ReadUInt32MaxSize(&v181, &v6[v7])}];
+      v110 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedInt:{ReadUInt32MaxSize(&v181, &bytes[v7])}];
       v111 = self->_factoryDefaultValue;
       self->_factoryDefaultValue = v110;
 
-      v112 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedInt:{ReadUInt32MaxSize(&v181, &v6[v7])}];
+      v112 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedInt:{ReadUInt32MaxSize(&v181, &bytes[v7])}];
       v113 = self->_currentValue;
       self->_currentValue = v112;
 
@@ -366,14 +366,14 @@ LABEL_50:
       v181 = v115;
       if (v114 == 2)
       {
-        v171 = ReadUInt16MaxSize(&v181, &v6[v7]);
+        v171 = ReadUInt16MaxSize(&v181, &bytes[v7]);
         self->_numberOfValues = v171;
         if (v171)
         {
           v172 = 0;
           do
           {
-            UInt32MaxSize = ReadUInt32MaxSize(&v181, &v6[v7]);
+            UInt32MaxSize = ReadUInt32MaxSize(&v181, &bytes[v7]);
             v174 = self->_supportedValues;
             v175 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:UInt32MaxSize];
             [(NSMutableArray *)v174 addObject:v175];
@@ -387,15 +387,15 @@ LABEL_50:
 
       else if (v114 == 1)
       {
-        v116 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedInt:{ReadUInt32MaxSize(&v181, &v6[v7])}];
+        v116 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedInt:{ReadUInt32MaxSize(&v181, &bytes[v7])}];
         v117 = self->_minimumValue;
         self->_minimumValue = v116;
 
-        v118 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedInt:{ReadUInt32MaxSize(&v181, &v6[v7])}];
+        v118 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedInt:{ReadUInt32MaxSize(&v181, &bytes[v7])}];
         v119 = self->_maximumValue;
         self->_maximumValue = v118;
 
-        v30 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedInt:{ReadUInt32MaxSize(&v181, &v6[v7])}];
+        v30 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedInt:{ReadUInt32MaxSize(&v181, &bytes[v7])}];
         goto LABEL_50;
       }
 
@@ -404,11 +404,11 @@ LABEL_50:
 
     if (UInt16MaxSize != 7)
     {
-      v10 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedLongLong:{ReadUInt64MaxSize(&v181, &v6[v7])}];
+      v10 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedLongLong:{ReadUInt64MaxSize(&v181, &bytes[v7])}];
       v11 = self->_factoryDefaultValue;
       self->_factoryDefaultValue = v10;
 
-      v12 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedLongLong:{ReadUInt64MaxSize(&v181, &v6[v7])}];
+      v12 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedLongLong:{ReadUInt64MaxSize(&v181, &bytes[v7])}];
       v13 = self->_currentValue;
       self->_currentValue = v12;
 
@@ -418,14 +418,14 @@ LABEL_50:
       v181 = v15;
       if (v14 == 2)
       {
-        v166 = ReadUInt16MaxSize(&v181, &v6[v7]);
+        v166 = ReadUInt16MaxSize(&v181, &bytes[v7]);
         self->_numberOfValues = v166;
         if (v166)
         {
           v167 = 0;
           do
           {
-            UInt64MaxSize = ReadUInt64MaxSize(&v181, &v6[v7]);
+            UInt64MaxSize = ReadUInt64MaxSize(&v181, &bytes[v7]);
             v169 = self->_supportedValues;
             v170 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:UInt64MaxSize];
             [(NSMutableArray *)v169 addObject:v170];
@@ -439,27 +439,27 @@ LABEL_50:
 
       else if (v14 == 1)
       {
-        v16 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedLongLong:{ReadUInt64MaxSize(&v181, &v6[v7])}];
+        v16 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedLongLong:{ReadUInt64MaxSize(&v181, &bytes[v7])}];
         v17 = self->_minimumValue;
         self->_minimumValue = v16;
 
-        v18 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedLongLong:{ReadUInt64MaxSize(&v181, &v6[v7])}];
+        v18 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedLongLong:{ReadUInt64MaxSize(&v181, &bytes[v7])}];
         v19 = self->_maximumValue;
         self->_maximumValue = v18;
 
 LABEL_39:
-        v30 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedLongLong:{ReadUInt64MaxSize(&v181, &v6[v7])}];
+        v30 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedLongLong:{ReadUInt64MaxSize(&v181, &bytes[v7])}];
         goto LABEL_50;
       }
 
       goto LABEL_51;
     }
 
-    v80 = [objc_alloc(MEMORY[0x29EDBA070]) initWithLongLong:{ReadSInt64MaxSize(&v181, &v6[v7])}];
+    v80 = [objc_alloc(MEMORY[0x29EDBA070]) initWithLongLong:{ReadSInt64MaxSize(&v181, &bytes[v7])}];
     v81 = self->_factoryDefaultValue;
     self->_factoryDefaultValue = v80;
 
-    v82 = [objc_alloc(MEMORY[0x29EDBA070]) initWithLongLong:{ReadSInt64MaxSize(&v181, &v6[v7])}];
+    v82 = [objc_alloc(MEMORY[0x29EDBA070]) initWithLongLong:{ReadSInt64MaxSize(&v181, &bytes[v7])}];
     v83 = self->_currentValue;
     self->_currentValue = v82;
 
@@ -469,14 +469,14 @@ LABEL_39:
     v181 = v85;
     if (v84 == 2)
     {
-      v146 = ReadUInt16MaxSize(&v181, &v6[v7]);
+      v146 = ReadUInt16MaxSize(&v181, &bytes[v7]);
       self->_numberOfValues = v146;
       if (v146)
       {
         v147 = 0;
         do
         {
-          SInt64MaxSize = ReadSInt64MaxSize(&v181, &v6[v7]);
+          SInt64MaxSize = ReadSInt64MaxSize(&v181, &bytes[v7]);
           v149 = self->_supportedValues;
           v150 = [MEMORY[0x29EDBA070] numberWithLongLong:SInt64MaxSize];
           [(NSMutableArray *)v149 addObject:v150];
@@ -495,29 +495,29 @@ LABEL_39:
       goto LABEL_51;
     }
 
-    v86 = [objc_alloc(MEMORY[0x29EDBA070]) initWithLongLong:{ReadSInt64MaxSize(&v181, &v6[v7])}];
+    v86 = [objc_alloc(MEMORY[0x29EDBA070]) initWithLongLong:{ReadSInt64MaxSize(&v181, &bytes[v7])}];
     v87 = self->_minimumValue;
     self->_minimumValue = v86;
 
-    v88 = [objc_alloc(MEMORY[0x29EDBA070]) initWithLongLong:{ReadSInt64MaxSize(&v181, &v6[v7])}];
+    v88 = [objc_alloc(MEMORY[0x29EDBA070]) initWithLongLong:{ReadSInt64MaxSize(&v181, &bytes[v7])}];
     v89 = self->_maximumValue;
     self->_maximumValue = v88;
 
 LABEL_49:
-    v30 = [objc_alloc(MEMORY[0x29EDBA070]) initWithLongLong:{ReadSInt64MaxSize(&v181, &v6[v7])}];
+    v30 = [objc_alloc(MEMORY[0x29EDBA070]) initWithLongLong:{ReadSInt64MaxSize(&v181, &bytes[v7])}];
     goto LABEL_50;
   }
 
   switch(UInt16MaxSize)
   {
     case 9:
-      ReadSInt64MaxSize(&v181, &v6[v7]);
-      v120 = [objc_alloc(MEMORY[0x29EDBA070]) initWithLongLong:{ReadSInt64MaxSize(&v181, &v6[v7])}];
+      ReadSInt64MaxSize(&v181, &bytes[v7]);
+      v120 = [objc_alloc(MEMORY[0x29EDBA070]) initWithLongLong:{ReadSInt64MaxSize(&v181, &bytes[v7])}];
       v121 = self->_factoryDefaultValue;
       self->_factoryDefaultValue = v120;
 
-      ReadSInt64MaxSize(&v181, &v6[v7]);
-      v122 = [objc_alloc(MEMORY[0x29EDBA070]) initWithLongLong:{ReadSInt64MaxSize(&v181, &v6[v7])}];
+      ReadSInt64MaxSize(&v181, &bytes[v7]);
+      v122 = [objc_alloc(MEMORY[0x29EDBA070]) initWithLongLong:{ReadSInt64MaxSize(&v181, &bytes[v7])}];
       v123 = self->_currentValue;
       self->_currentValue = v122;
 
@@ -527,15 +527,15 @@ LABEL_49:
       v181 = v125;
       if (v124 == 2)
       {
-        v176 = ReadUInt16MaxSize(&v181, &v6[v7]);
+        v176 = ReadUInt16MaxSize(&v181, &bytes[v7]);
         self->_numberOfValues = v176;
         if (v176)
         {
           v177 = 0;
           do
           {
-            ReadSInt64MaxSize(&v181, &v6[v7]);
-            v178 = ReadSInt64MaxSize(&v181, &v6[v7]);
+            ReadSInt64MaxSize(&v181, &bytes[v7]);
+            v178 = ReadSInt64MaxSize(&v181, &bytes[v7]);
             v179 = self->_supportedValues;
             v180 = [MEMORY[0x29EDBA070] numberWithLongLong:v178];
             [(NSMutableArray *)v179 addObject:v180];
@@ -554,26 +554,26 @@ LABEL_49:
         break;
       }
 
-      ReadSInt64MaxSize(&v181, &v6[v7]);
-      v126 = [objc_alloc(MEMORY[0x29EDBA070]) initWithLongLong:{ReadSInt64MaxSize(&v181, &v6[v7])}];
+      ReadSInt64MaxSize(&v181, &bytes[v7]);
+      v126 = [objc_alloc(MEMORY[0x29EDBA070]) initWithLongLong:{ReadSInt64MaxSize(&v181, &bytes[v7])}];
       v127 = self->_minimumValue;
       self->_minimumValue = v126;
 
-      ReadSInt64MaxSize(&v181, &v6[v7]);
-      v128 = [objc_alloc(MEMORY[0x29EDBA070]) initWithLongLong:{ReadSInt64MaxSize(&v181, &v6[v7])}];
+      ReadSInt64MaxSize(&v181, &bytes[v7]);
+      v128 = [objc_alloc(MEMORY[0x29EDBA070]) initWithLongLong:{ReadSInt64MaxSize(&v181, &bytes[v7])}];
       v129 = self->_maximumValue;
       self->_maximumValue = v128;
 
-      ReadSInt64MaxSize(&v181, &v6[v7]);
+      ReadSInt64MaxSize(&v181, &bytes[v7]);
       goto LABEL_49;
     case 0xA:
-      ReadUInt64MaxSize(&v181, &v6[v7]);
-      v90 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedLongLong:{ReadUInt64MaxSize(&v181, &v6[v7])}];
+      ReadUInt64MaxSize(&v181, &bytes[v7]);
+      v90 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedLongLong:{ReadUInt64MaxSize(&v181, &bytes[v7])}];
       v91 = self->_factoryDefaultValue;
       self->_factoryDefaultValue = v90;
 
-      ReadUInt64MaxSize(&v181, &v6[v7]);
-      v92 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedLongLong:{ReadUInt64MaxSize(&v181, &v6[v7])}];
+      ReadUInt64MaxSize(&v181, &bytes[v7]);
+      v92 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedLongLong:{ReadUInt64MaxSize(&v181, &bytes[v7])}];
       v93 = self->_currentValue;
       self->_currentValue = v92;
 
@@ -583,15 +583,15 @@ LABEL_49:
       v181 = v95;
       if (v94 == 2)
       {
-        v151 = ReadUInt16MaxSize(&v181, &v6[v7]);
+        v151 = ReadUInt16MaxSize(&v181, &bytes[v7]);
         self->_numberOfValues = v151;
         if (v151)
         {
           v152 = 0;
           do
           {
-            ReadUInt64MaxSize(&v181, &v6[v7]);
-            v153 = ReadUInt64MaxSize(&v181, &v6[v7]);
+            ReadUInt64MaxSize(&v181, &bytes[v7]);
+            v153 = ReadUInt64MaxSize(&v181, &bytes[v7]);
             v154 = self->_supportedValues;
             v155 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:v153];
             [(NSMutableArray *)v154 addObject:v155];
@@ -605,27 +605,27 @@ LABEL_49:
 
       else if (v94 == 1)
       {
-        ReadUInt64MaxSize(&v181, &v6[v7]);
-        v96 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedLongLong:{ReadUInt64MaxSize(&v181, &v6[v7])}];
+        ReadUInt64MaxSize(&v181, &bytes[v7]);
+        v96 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedLongLong:{ReadUInt64MaxSize(&v181, &bytes[v7])}];
         v97 = self->_minimumValue;
         self->_minimumValue = v96;
 
-        ReadUInt64MaxSize(&v181, &v6[v7]);
-        v98 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedLongLong:{ReadUInt64MaxSize(&v181, &v6[v7])}];
+        ReadUInt64MaxSize(&v181, &bytes[v7]);
+        v98 = [objc_alloc(MEMORY[0x29EDBA070]) initWithUnsignedLongLong:{ReadUInt64MaxSize(&v181, &bytes[v7])}];
         v99 = self->_maximumValue;
         self->_maximumValue = v98;
 
-        ReadUInt64MaxSize(&v181, &v6[v7]);
+        ReadUInt64MaxSize(&v181, &bytes[v7]);
         goto LABEL_39;
       }
 
       break;
     case 0xFFFF:
-      v31 = CopyUnicodeStringWithLengthByteFromBufferMaxSize(&v181, &v6[v7]);
+      v31 = CopyUnicodeStringWithLengthByteFromBufferMaxSize(&v181, &bytes[v7]);
       v32 = self->_factoryDefaultValue;
       self->_factoryDefaultValue = v31;
 
-      v33 = CopyUnicodeStringWithLengthByteFromBufferMaxSize(&v181, &v6[v7]);
+      v33 = CopyUnicodeStringWithLengthByteFromBufferMaxSize(&v181, &bytes[v7]);
       v34 = self->_currentValue;
       self->_currentValue = v33;
 
@@ -635,14 +635,14 @@ LABEL_49:
       v181 = v35;
       if (v36 == 2)
       {
-        v37 = ReadUInt16MaxSize(&v181, &v6[v7]);
+        v37 = ReadUInt16MaxSize(&v181, &bytes[v7]);
         self->_numberOfValues = v37;
         if (v37)
         {
           v38 = 0;
           do
           {
-            v39 = CopyUnicodeStringWithLengthByteFromBufferMaxSize(&v181, &v6[v7]);
+            v39 = CopyUnicodeStringWithLengthByteFromBufferMaxSize(&v181, &bytes[v7]);
             [(NSMutableArray *)self->_supportedValues addObject:v39];
 
             ++v38;
@@ -658,9 +658,9 @@ LABEL_49:
 LABEL_51:
 }
 
-- (PTPDevicePropDescDataset)initWithData:(id)a3
+- (PTPDevicePropDescDataset)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = PTPDevicePropDescDataset;
   v5 = [(PTPDevicePropDescDataset *)&v10 init];
@@ -670,7 +670,7 @@ LABEL_51:
     supportedValues = v5->_supportedValues;
     v5->_supportedValues = v6;
 
-    if ([v4 length] < 6)
+    if ([dataCopy length] < 6)
     {
 
       v5 = 0;
@@ -678,7 +678,7 @@ LABEL_51:
 
     else
     {
-      v8 = [v4 mutableCopy];
+      v8 = [dataCopy mutableCopy];
       [(PTPDevicePropDescDataset *)v5 setContent:v8];
 
       v5->_readOnlyObject = 1;
@@ -688,9 +688,9 @@ LABEL_51:
   return v5;
 }
 
-- (PTPDevicePropDescDataset)initWithMutableData:(id)a3
+- (PTPDevicePropDescDataset)initWithMutableData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = PTPDevicePropDescDataset;
   v5 = [(PTPDevicePropDescDataset *)&v9 init];
@@ -700,7 +700,7 @@ LABEL_51:
     supportedValues = v5->_supportedValues;
     v5->_supportedValues = v6;
 
-    if ([v4 length] < 6)
+    if ([dataCopy length] < 6)
     {
 
       v5 = 0;
@@ -708,7 +708,7 @@ LABEL_51:
 
     else
     {
-      [(PTPDevicePropDescDataset *)v5 setContent:v4];
+      [(PTPDevicePropDescDataset *)v5 setContent:dataCopy];
       v5->_readOnlyObject = 0;
     }
   }
@@ -925,10 +925,10 @@ LABEL_49:
         {
           if (v21 == 1)
           {
-            v36 = [self->_factoryDefaultValue charValue];
-            *v69[0]++ = v36;
-            v37 = [self->_currentValue charValue];
-            *v69[0] = v37;
+            charValue = [self->_factoryDefaultValue charValue];
+            *v69[0]++ = charValue;
+            charValue2 = [self->_currentValue charValue];
+            *v69[0] = charValue2;
             v38 = v69[0]++;
             v31 = self->_formFlag;
             *(v38 + 1) = v31;
@@ -948,8 +948,8 @@ LABEL_49:
                 v50 = v33;
                 v33 = [(NSMutableArray *)self->_supportedValues objectAtIndex:v49];
 
-                v51 = [v33 charValue];
-                *v69[0]++ = v51;
+                charValue3 = [v33 charValue];
+                *v69[0]++ = charValue3;
                 ++v49;
               }
 
@@ -965,10 +965,10 @@ LABEL_49:
               goto LABEL_134;
             }
 
-            v28 = [self->_factoryDefaultValue charValue];
-            *v69[0]++ = v28;
-            v29 = [self->_currentValue charValue];
-            *v69[0] = v29;
+            charValue4 = [self->_factoryDefaultValue charValue];
+            *v69[0]++ = charValue4;
+            charValue5 = [self->_currentValue charValue];
+            *v69[0] = charValue5;
             v30 = v69[0]++;
             v31 = self->_formFlag;
             *(v30 + 1) = v31;
@@ -988,8 +988,8 @@ LABEL_49:
                 v34 = v33;
                 v33 = [(NSMutableArray *)self->_supportedValues objectAtIndex:v32];
 
-                v35 = [v33 charValue];
-                *v69[0]++ = v35;
+                charValue6 = [v33 charValue];
+                *v69[0]++ = charValue6;
                 ++v32;
               }
 
@@ -1000,12 +1000,12 @@ LABEL_49:
 
           if (v31 == 1)
           {
-            v39 = [self->_minimumValue charValue];
-            *v69[0]++ = v39;
-            v40 = [self->_maximumValue charValue];
-            *v69[0]++ = v40;
-            v41 = [self->_stepSize charValue];
-            *v69[0]++ = v41;
+            charValue7 = [self->_minimumValue charValue];
+            *v69[0]++ = charValue7;
+            charValue8 = [self->_maximumValue charValue];
+            *v69[0]++ = charValue8;
+            charValue9 = [self->_stepSize charValue];
+            *v69[0]++ = charValue9;
           }
 
           goto LABEL_134;
@@ -1187,9 +1187,9 @@ LABEL_133:
             if (v22 == 1)
             {
               WriteUInt64(v69, [self->_minimumValue unsignedLongLongValue]);
-              v23 = [self->_maximumValue unsignedLongLongValue];
+              unsignedLongLongValue = [self->_maximumValue unsignedLongLongValue];
 LABEL_91:
-              WriteUInt64(v69, v23);
+              WriteUInt64(v69, unsignedLongLongValue);
               WriteUInt64(v69, [self->_stepSize unsignedLongLongValue]);
               goto LABEL_134;
             }
@@ -1251,9 +1251,9 @@ LABEL_91:
         }
 
         WriteSInt64(v69, [self->_minimumValue longLongValue]);
-        v44 = [self->_maximumValue longLongValue];
+        longLongValue = [self->_maximumValue longLongValue];
 LABEL_101:
-        WriteSInt64(v69, v44);
+        WriteSInt64(v69, longLongValue);
         WriteSInt64(v69, [self->_stepSize longLongValue]);
         goto LABEL_134;
       }
@@ -1277,7 +1277,7 @@ LABEL_101:
           WriteSInt64(v69, [self->_minimumValue longLongValue]);
           WriteSInt64(v69, 0x4170706C65496E63);
           WriteSInt64(v69, [self->_maximumValue longLongValue]);
-          v44 = 0x4170706C65496E63;
+          longLongValue = 0x4170706C65496E63;
           goto LABEL_101;
         }
 
@@ -1350,7 +1350,7 @@ LABEL_101:
             WriteUInt64(v69, [self->_minimumValue unsignedLongLongValue]);
             WriteUInt64(v69, 0x4170706C65496E63);
             WriteUInt64(v69, [self->_maximumValue unsignedLongLongValue]);
-            v23 = 0x4170706C65496E63;
+            unsignedLongLongValue = 0x4170706C65496E63;
             goto LABEL_91;
           }
 
@@ -1436,94 +1436,94 @@ LABEL_134:
   return v7;
 }
 
-- (void)setFactoryDefaultValue:(id)a3
+- (void)setFactoryDefaultValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   p_factoryDefaultValue = &self->_factoryDefaultValue;
-  if (self->_factoryDefaultValue != v5)
+  if (self->_factoryDefaultValue != valueCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_factoryDefaultValue, a3);
-    v5 = v7;
+    v7 = valueCopy;
+    objc_storeStrong(p_factoryDefaultValue, value);
+    valueCopy = v7;
     self->_dirty = 1;
   }
 
-  MEMORY[0x2A1C71028](p_factoryDefaultValue, v5);
+  MEMORY[0x2A1C71028](p_factoryDefaultValue, valueCopy);
 }
 
-- (void)setCurrentValue:(id)a3
+- (void)setCurrentValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   p_currentValue = &self->_currentValue;
-  if (self->_currentValue != v5)
+  if (self->_currentValue != valueCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_currentValue, a3);
-    v5 = v7;
+    v7 = valueCopy;
+    objc_storeStrong(p_currentValue, value);
+    valueCopy = v7;
     self->_dirty = 1;
   }
 
-  MEMORY[0x2A1C71028](p_currentValue, v5);
+  MEMORY[0x2A1C71028](p_currentValue, valueCopy);
 }
 
-- (void)setMinimumValue:(id)a3
+- (void)setMinimumValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   p_minimumValue = &self->_minimumValue;
-  if (self->_minimumValue != v5)
+  if (self->_minimumValue != valueCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_minimumValue, a3);
-    v5 = v7;
+    v7 = valueCopy;
+    objc_storeStrong(p_minimumValue, value);
+    valueCopy = v7;
     self->_dirty = 1;
   }
 
-  MEMORY[0x2A1C71028](p_minimumValue, v5);
+  MEMORY[0x2A1C71028](p_minimumValue, valueCopy);
 }
 
-- (void)setMaximumValue:(id)a3
+- (void)setMaximumValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   p_maximumValue = &self->_maximumValue;
-  if (self->_maximumValue != v5)
+  if (self->_maximumValue != valueCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_maximumValue, a3);
-    v5 = v7;
+    v7 = valueCopy;
+    objc_storeStrong(p_maximumValue, value);
+    valueCopy = v7;
     self->_dirty = 1;
   }
 
-  MEMORY[0x2A1C71028](p_maximumValue, v5);
+  MEMORY[0x2A1C71028](p_maximumValue, valueCopy);
 }
 
-- (void)setStepSize:(id)a3
+- (void)setStepSize:(id)size
 {
-  v5 = a3;
+  sizeCopy = size;
   p_stepSize = &self->_stepSize;
-  if (self->_stepSize != v5)
+  if (self->_stepSize != sizeCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_stepSize, a3);
-    v5 = v7;
+    v7 = sizeCopy;
+    objc_storeStrong(p_stepSize, size);
+    sizeCopy = v7;
     self->_dirty = 1;
   }
 
-  MEMORY[0x2A1C71028](p_stepSize, v5);
+  MEMORY[0x2A1C71028](p_stepSize, sizeCopy);
 }
 
-- (void)setSupportedValues:(id)a3
+- (void)setSupportedValues:(id)values
 {
-  v5 = a3;
+  valuesCopy = values;
   p_supportedValues = &self->_supportedValues;
-  if (self->_supportedValues != v5)
+  if (self->_supportedValues != valuesCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_supportedValues, a3);
-    v5 = v7;
+    v7 = valuesCopy;
+    objc_storeStrong(p_supportedValues, values);
+    valuesCopy = v7;
     self->_dirty = 1;
   }
 
-  MEMORY[0x2A1C71028](p_supportedValues, v5);
+  MEMORY[0x2A1C71028](p_supportedValues, valuesCopy);
 }
 
 @end

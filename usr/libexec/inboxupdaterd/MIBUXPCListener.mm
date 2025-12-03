@@ -1,6 +1,6 @@
 @interface MIBUXPCListener
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (MIBUXPCListener)init;
 - (void)start;
 - (void)terminate;
@@ -33,12 +33,12 @@
   v3 = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.inboxupdaterd"];
   [(MIBUXPCListener *)v2 setListener:v3];
 
-  v4 = [(MIBUXPCListener *)v2 listener];
+  listener = [(MIBUXPCListener *)v2 listener];
 
-  if (v4)
+  if (listener)
   {
-    v5 = [(MIBUXPCListener *)v2 listener];
-    [v5 setDelegate:v2];
+    listener2 = [(MIBUXPCListener *)v2 listener];
+    [listener2 setDelegate:v2];
 
 LABEL_4:
     v6 = v2;
@@ -64,20 +64,20 @@ LABEL_10:
 
 - (void)start
 {
-  v2 = [(MIBUXPCListener *)self listener];
-  [v2 resume];
+  listener = [(MIBUXPCListener *)self listener];
+  [listener resume];
 }
 
 - (void)terminate
 {
-  v2 = [(MIBUXPCListener *)self listener];
-  [v2 invalidate];
+  listener = [(MIBUXPCListener *)self listener];
+  [listener invalidate];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (qword_1000B84A8[0] != -1)
   {
     sub_10005F948();
@@ -90,7 +90,7 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Received a new xpc connection!", v13, 2u);
   }
 
-  v8 = [v6 valueForEntitlement:@"com.apple.private.mobileinboxupdater.xpc"];
+  v8 = [connectionCopy valueForEntitlement:@"com.apple.private.mobileinboxupdater.xpc"];
   if (!v8)
   {
     sub_10005FA40();
@@ -107,18 +107,18 @@ LABEL_10:
   if (![v8 BOOLValue])
   {
 LABEL_12:
-    [v6 invalidate];
+    [connectionCopy invalidate];
     v11 = 0;
     goto LABEL_9;
   }
 
   v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MIBUXPCProtocol];
-  [v6 setExportedInterface:v9];
+  [connectionCopy setExportedInterface:v9];
 
   v10 = objc_alloc_init(MIBUXPCResponder);
-  [(MIBUXPCResponder *)v10 setXpcConnection:v6];
-  [v6 setExportedObject:v10];
-  [v6 resume];
+  [(MIBUXPCResponder *)v10 setXpcConnection:connectionCopy];
+  [connectionCopy setExportedObject:v10];
+  [connectionCopy resume];
 
   v11 = 1;
 LABEL_9:

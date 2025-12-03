@@ -1,25 +1,25 @@
 @interface KerberosBaseViewController
-- (BOOL)requestContainsNegotiateChallenge:(id)a3;
-- (BOOL)retrievePasswordFromKeychain:(id)a3;
-- (KerberosBaseViewController)initWithCoder:(id)a3;
-- (KerberosBaseViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)addViewControllerAsChildViewController:(id)a3;
-- (void)beginAuthorizationWithRequest:(id)a3;
-- (void)cancelAuthorizationWithRequest:(id)a3;
-- (void)createLoginViewControllerWithContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleChangePasswordWithRequest:(id)a3;
-- (void)handleKerberosOperations:(id)a3;
-- (void)handleResult:(unint64_t)a3 context:(id)a4 error:(id)a5;
+- (BOOL)requestContainsNegotiateChallenge:(id)challenge;
+- (BOOL)retrievePasswordFromKeychain:(id)keychain;
+- (KerberosBaseViewController)initWithCoder:(id)coder;
+- (KerberosBaseViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)addViewControllerAsChildViewController:(id)controller;
+- (void)beginAuthorizationWithRequest:(id)request;
+- (void)cancelAuthorizationWithRequest:(id)request;
+- (void)createLoginViewControllerWithContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleChangePasswordWithRequest:(id)request;
+- (void)handleKerberosOperations:(id)operations;
+- (void)handleResult:(unint64_t)result context:(id)context error:(id)error;
 @end
 
 @implementation KerberosBaseViewController
 
-- (KerberosBaseViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (KerberosBaseViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v12.receiver = self;
   v12.super_class = KerberosBaseViewController;
-  v4 = [(KerberosBaseViewController *)&v12 initWithNibName:a3 bundle:a4];
+  v4 = [(KerberosBaseViewController *)&v12 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(SOKerberosExtensionProcess);
@@ -39,11 +39,11 @@
   return v4;
 }
 
-- (KerberosBaseViewController)initWithCoder:(id)a3
+- (KerberosBaseViewController)initWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = KerberosBaseViewController;
-  v3 = [(KerberosBaseViewController *)&v11 initWithCoder:a3];
+  v3 = [(KerberosBaseViewController *)&v11 initWithCoder:coder];
   if (v3)
   {
     v4 = objc_alloc_init(SOKerberosExtensionProcess);
@@ -63,130 +63,130 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = KerberosBaseViewController;
-  [(KerberosBaseViewController *)&v3 encodeWithCoder:a3];
+  [(KerberosBaseViewController *)&v3 encodeWithCoder:coder];
 }
 
-- (void)beginAuthorizationWithRequest:(id)a3
+- (void)beginAuthorizationWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000976C;
   v7[3] = &unk_100014428;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)cancelAuthorizationWithRequest:(id)a3
+- (void)cancelAuthorizationWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = sub_1000099B0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_10000B978(v4, v5);
+    sub_10000B978(requestCopy, v5);
   }
 
-  v6 = [(KerberosBaseViewController *)self process];
-  [v6 cancelAuthorizationWithRequest:v4];
+  process = [(KerberosBaseViewController *)self process];
+  [process cancelAuthorizationWithRequest:requestCopy];
 }
 
-- (void)handleKerberosOperations:(id)a3
+- (void)handleKerberosOperations:(id)operations
 {
-  v4 = a3;
+  operationsCopy = operations;
   v5 = sub_1000099B0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_10000B9F0(v4);
+    sub_10000B9F0(operationsCopy);
   }
 
-  v6 = [(KerberosBaseViewController *)self process];
-  [v6 handleKerberosOperations:v4 andDelegate:self];
+  process = [(KerberosBaseViewController *)self process];
+  [process handleKerberosOperations:operationsCopy andDelegate:self];
 }
 
-- (void)handleChangePasswordWithRequest:(id)a3
+- (void)handleChangePasswordWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = sub_1000099B0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_10000BA78(v4);
+    sub_10000BA78(requestCopy);
   }
 
-  v6 = [(KerberosBaseViewController *)self process];
-  v7 = [v6 createContextForRequest:v4];
+  process = [(KerberosBaseViewController *)self process];
+  v7 = [process createContextForRequest:requestCopy];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100009BE8;
   v9[3] = &unk_100014428;
   v10 = v7;
-  v11 = self;
+  selfCopy = self;
   v8 = v7;
   dispatch_async(&_dispatch_main_q, v9);
 }
 
-- (void)addViewControllerAsChildViewController:(id)a3
+- (void)addViewControllerAsChildViewController:(id)controller
 {
-  v4 = a3;
-  [(KerberosBaseViewController *)self addChildViewController:v4];
-  v5 = [v4 view];
+  controllerCopy = controller;
+  [(KerberosBaseViewController *)self addChildViewController:controllerCopy];
+  view = [controllerCopy view];
 
   v6 = +[UIColor clearColor];
-  v7 = [(KerberosBaseViewController *)self view];
-  [v7 setBackgroundColor:v6];
+  view2 = [(KerberosBaseViewController *)self view];
+  [view2 setBackgroundColor:v6];
 
-  v8 = [(KerberosBaseViewController *)self view];
-  [v8 addSubview:v5];
+  view3 = [(KerberosBaseViewController *)self view];
+  [view3 addSubview:view];
 
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v28 = [v5 topAnchor];
-  v29 = [(KerberosBaseViewController *)self view];
-  v27 = [v29 topAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  topAnchor = [view topAnchor];
+  view4 = [(KerberosBaseViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v30[0] = v26;
-  v24 = [v5 bottomAnchor];
-  v25 = [(KerberosBaseViewController *)self view];
-  v23 = [v25 bottomAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  bottomAnchor = [view bottomAnchor];
+  view5 = [(KerberosBaseViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v30[1] = v22;
-  v21 = [v5 leadingAnchor];
-  v9 = [(KerberosBaseViewController *)self view];
-  v10 = [v9 leadingAnchor];
-  v11 = [v21 constraintEqualToAnchor:v10];
+  leadingAnchor = [view leadingAnchor];
+  view6 = [(KerberosBaseViewController *)self view];
+  leadingAnchor2 = [view6 leadingAnchor];
+  v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v30[2] = v11;
-  v12 = [v5 trailingAnchor];
-  v13 = [(KerberosBaseViewController *)self view];
-  v14 = [v13 trailingAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  trailingAnchor = [view trailingAnchor];
+  view7 = [(KerberosBaseViewController *)self view];
+  trailingAnchor2 = [view7 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v30[3] = v15;
   v16 = [NSArray arrayWithObjects:v30 count:4];
   [NSLayoutConstraint activateConstraints:v16];
 
-  v17 = [(KerberosBaseViewController *)self view];
-  v18 = [v17 window];
-  [v18 layoutIfNeeded];
+  view8 = [(KerberosBaseViewController *)self view];
+  window = [view8 window];
+  [window layoutIfNeeded];
 
-  v19 = [(KerberosBaseViewController *)self view];
-  v20 = [v19 window];
-  [v20 center];
+  view9 = [(KerberosBaseViewController *)self view];
+  window2 = [view9 window];
+  [window2 center];
 }
 
-- (BOOL)requestContainsNegotiateChallenge:(id)a3
+- (BOOL)requestContainsNegotiateChallenge:(id)challenge
 {
-  v3 = a3;
+  challengeCopy = challenge;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [v3 httpHeaders];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  httpHeaders = [challengeCopy httpHeaders];
+  v5 = [httpHeaders countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -197,12 +197,12 @@ LABEL_3:
     {
       if (*v19 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(httpHeaders);
       }
 
       v9 = *(*(&v18 + 1) + 8 * v8);
-      v10 = [v9 lowercaseString];
-      v11 = [v10 isEqualToString:@"www-authenticate"];
+      lowercaseString = [v9 lowercaseString];
+      v11 = [lowercaseString isEqualToString:@"www-authenticate"];
 
       if (v11)
       {
@@ -211,7 +211,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v6 = [httpHeaders countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -225,8 +225,8 @@ LABEL_3:
 
     if (v12)
     {
-      v13 = [v3 httpHeaders];
-      v14 = [v13 objectForKeyedSubscript:v12];
+      httpHeaders2 = [challengeCopy httpHeaders];
+      v14 = [httpHeaders2 objectForKeyedSubscript:v12];
 
       v15 = 1;
       v16 = [v14 rangeOfString:@"Negotiate" options:1];
@@ -251,84 +251,84 @@ LABEL_13:
   return v15;
 }
 
-- (void)createLoginViewControllerWithContext:(id)a3
+- (void)createLoginViewControllerWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [KerberosLoginViewController alloc];
   v6 = +[NSBundle mainBundle];
   v7 = [(KerberosLoginViewController *)v5 initWithNibName:@"KerberosLoginViewController" bundle:v6];
   [(KerberosBaseViewController *)self setLoginViewController:v7];
 
-  v8 = [(KerberosBaseViewController *)self process];
-  v9 = [(KerberosBaseViewController *)self loginViewController];
-  [v9 setProcess:v8];
+  process = [(KerberosBaseViewController *)self process];
+  loginViewController = [(KerberosBaseViewController *)self loginViewController];
+  [loginViewController setProcess:process];
 
-  v10 = [(KerberosBaseViewController *)self keychainHelper];
-  v11 = [(KerberosBaseViewController *)self loginViewController];
-  [v11 setKeychainHelper:v10];
+  keychainHelper = [(KerberosBaseViewController *)self keychainHelper];
+  loginViewController2 = [(KerberosBaseViewController *)self loginViewController];
+  [loginViewController2 setKeychainHelper:keychainHelper];
 
-  v12 = [(KerberosBaseViewController *)self loginViewController];
-  [v12 setCurrentUIContext:v4];
+  loginViewController3 = [(KerberosBaseViewController *)self loginViewController];
+  [loginViewController3 setCurrentUIContext:contextCopy];
 
-  v13 = [(KerberosBaseViewController *)self loginViewController];
-  [(KerberosBaseViewController *)self addViewControllerAsChildViewController:v13];
+  loginViewController4 = [(KerberosBaseViewController *)self loginViewController];
+  [(KerberosBaseViewController *)self addViewControllerAsChildViewController:loginViewController4];
 }
 
-- (void)handleResult:(unint64_t)a3 context:(id)a4 error:(id)a5
+- (void)handleResult:(unint64_t)result context:(id)context error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  errorCopy = error;
   v10 = sub_1000099B0();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 134218498;
-    v43 = a3;
+    resultCopy = result;
     v44 = 2112;
-    v45 = v8;
+    v45 = contextCopy;
     v46 = 2112;
-    v47 = v9;
+    v47 = errorCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "handleResult: %lu, %@, %@", buf, 0x20u);
   }
 
-  if (a3 == 18)
+  if (result == 18)
   {
-    v17 = [v8 extensionData];
-    if ([v17 requireUserPresence])
+    extensionData = [contextCopy extensionData];
+    if ([extensionData requireUserPresence])
     {
-      v18 = [v8 extensionData];
-      v19 = [v18 certificateUUID];
+      extensionData2 = [contextCopy extensionData];
+      certificateUUID = [extensionData2 certificateUUID];
 
-      if (!v19)
+      if (!certificateUUID)
       {
-        v20 = [v8 extensionData];
-        v21 = [v20 customUsernameLabel];
+        extensionData3 = [contextCopy extensionData];
+        customUsernameLabel = [extensionData3 customUsernameLabel];
 
-        if (![v21 length])
+        if (![customUsernameLabel length])
         {
           v22 = +[NSBundle mainBundle];
           v23 = [v22 localizedStringForKey:@"ACTIVE_DIRECTORY_PRODUCTNAME" value:&stru_100014860 table:0];
 
-          v21 = v23;
+          customUsernameLabel = v23;
         }
 
         v24 = +[NSBundle mainBundle];
         v25 = [v24 localizedStringForKey:@"LAPOLICY_REASON" value:&stru_100014860 table:0];
-        v26 = [NSString stringWithFormat:v25, v21];
+        v26 = [NSString stringWithFormat:v25, customUsernameLabel];
 
         v27 = objc_alloc_init(LAContext);
-        [v8 setKeychainLAContext:v27];
+        [contextCopy setKeychainLAContext:v27];
 
-        v28 = [v8 keychainLAContext];
-        [v28 setOptionCallerName:@"Kerberos"];
+        keychainLAContext = [contextCopy keychainLAContext];
+        [keychainLAContext setOptionCallerName:@"Kerberos"];
 
-        v29 = [v8 keychainLAContext];
+        keychainLAContext2 = [contextCopy keychainLAContext];
         v40[0] = _NSConcreteStackBlock;
         v40[1] = 3221225472;
         v40[2] = sub_10000A864;
         v40[3] = &unk_100014450;
         v40[4] = self;
-        v41 = v8;
-        [v29 evaluatePolicy:4 localizedReason:v26 reply:v40];
+        v41 = contextCopy;
+        [keychainLAContext2 evaluatePolicy:4 localizedReason:v26 reply:v40];
 
         goto LABEL_32;
       }
@@ -341,29 +341,29 @@ LABEL_13:
     goto LABEL_22;
   }
 
-  if (a3 != 1)
+  if (result != 1)
   {
     goto LABEL_22;
   }
 
-  if (([v8 attemptedToGetCredsFromKeychain] & 1) == 0 && (objc_msgSend(v8, "credsCameFromKeychain") & 1) == 0)
+  if (([contextCopy attemptedToGetCredsFromKeychain] & 1) == 0 && (objc_msgSend(contextCopy, "credsCameFromKeychain") & 1) == 0)
   {
-    v11 = [v8 extensionUserData];
-    if (![v11 useKeychain])
+    extensionUserData = [contextCopy extensionUserData];
+    if (![extensionUserData useKeychain])
     {
 LABEL_10:
 
       goto LABEL_11;
     }
 
-    v12 = [v8 extensionData];
-    if ([v12 requireUserPresence])
+    extensionData4 = [contextCopy extensionData];
+    if ([extensionData4 requireUserPresence])
     {
 
       goto LABEL_10;
     }
 
-    v35 = [(KerberosBaseViewController *)self retrievePasswordFromKeychain:v8];
+    v35 = [(KerberosBaseViewController *)self retrievePasswordFromKeychain:contextCopy];
 
     if (v35)
     {
@@ -372,23 +372,23 @@ LABEL_10:
   }
 
 LABEL_11:
-  if (([v8 attemptedToGetCredsFromKeychain] & 1) == 0 && (objc_msgSend(v8, "credsCameFromKeychain") & 1) == 0)
+  if (([contextCopy attemptedToGetCredsFromKeychain] & 1) == 0 && (objc_msgSend(contextCopy, "credsCameFromKeychain") & 1) == 0)
   {
     if (+[SOUtils isInternalBuild])
     {
-      v13 = [v8 extensionData];
-      v14 = [v13 password];
+      extensionData5 = [contextCopy extensionData];
+      password = [extensionData5 password];
 
-      if (v14)
+      if (password)
       {
-        v15 = [v8 extensionData];
-        v16 = [v15 password];
-        [v8 setPassword:v16];
+        extensionData6 = [contextCopy extensionData];
+        password2 = [extensionData6 password];
+        [contextCopy setPassword:password2];
 
 LABEL_31:
-        [v8 setAttemptedToGetCredsFromKeychain:1];
-        v21 = [(KerberosBaseViewController *)self process];
-        [v21 attemptKerberosWithContext:v8 andDelegate:self];
+        [contextCopy setAttemptedToGetCredsFromKeychain:1];
+        customUsernameLabel = [(KerberosBaseViewController *)self process];
+        [customUsernameLabel attemptKerberosWithContext:contextCopy andDelegate:self];
 LABEL_32:
 
         goto LABEL_33;
@@ -397,10 +397,10 @@ LABEL_32:
   }
 
 LABEL_22:
-  v30 = [v8 extensionData];
-  v31 = [v30 usePlatformSSOTGT];
+  extensionData7 = [contextCopy extensionData];
+  usePlatformSSOTGT = [extensionData7 usePlatformSSOTGT];
 
-  if (!v31)
+  if (!usePlatformSSOTGT)
   {
 LABEL_25:
     block[0] = _NSConcreteStackBlock;
@@ -408,20 +408,20 @@ LABEL_25:
     block[2] = sub_10000A8FC;
     block[3] = &unk_100014738;
     block[4] = self;
-    v37 = v8;
-    v39 = a3;
-    v38 = v9;
+    v37 = contextCopy;
+    resultCopy2 = result;
+    v38 = errorCopy;
     dispatch_async(&_dispatch_main_q, block);
 
     goto LABEL_33;
   }
 
-  v32 = [v8 extensionData];
-  if ([v32 allowPlatformSSOAuthFallback])
+  extensionData8 = [contextCopy extensionData];
+  if ([extensionData8 allowPlatformSSOAuthFallback])
   {
-    v33 = [v8 returnCredentialOnly];
+    returnCredentialOnly = [contextCopy returnCredentialOnly];
 
-    if (v33)
+    if (returnCredentialOnly)
     {
       goto LABEL_25;
     }
@@ -438,14 +438,14 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "allowPlatformSSOAuthFallback not enabled", buf, 2u);
   }
 
-  [v8 completeRequestWithDoNotHandle];
+  [contextCopy completeRequestWithDoNotHandle];
 LABEL_33:
 }
 
-- (BOOL)retrievePasswordFromKeychain:(id)a3
+- (BOOL)retrievePasswordFromKeychain:(id)keychain
 {
-  v4 = a3;
-  v5 = [v4 serviceName];
+  keychainCopy = keychain;
+  serviceName = [keychainCopy serviceName];
   v6 = sub_1000099B0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -453,11 +453,11 @@ LABEL_33:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Requesting credentials from the keychain", buf, 2u);
   }
 
-  v7 = [(KerberosBaseViewController *)self keychainHelper];
-  v8 = [v4 keychainLAContext];
+  keychainHelper = [(KerberosBaseViewController *)self keychainHelper];
+  keychainLAContext = [keychainCopy keychainLAContext];
   v14 = 0;
   v15 = 0;
-  v9 = [v7 retrieveCredentialsFromKeychainWithContext:v8 service:v5 returnedUsername:&v15 returnedPassword:&v14];
+  v9 = [keychainHelper retrieveCredentialsFromKeychainWithContext:keychainLAContext service:serviceName returnedUsername:&v15 returnedPassword:&v14];
   v10 = v15;
   v11 = v14;
 
@@ -471,9 +471,9 @@ LABEL_33:
 
   if (!v9)
   {
-    [v4 setPassword:v11];
-    [v4 setUserName:v10];
-    [v4 setCredsCameFromKeychain:1];
+    [keychainCopy setPassword:v11];
+    [keychainCopy setUserName:v10];
+    [keychainCopy setCredsCameFromKeychain:1];
   }
 
   return v9 == 0;

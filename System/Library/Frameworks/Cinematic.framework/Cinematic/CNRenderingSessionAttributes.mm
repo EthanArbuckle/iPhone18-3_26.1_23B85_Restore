@@ -1,22 +1,22 @@
 @interface CNRenderingSessionAttributes
-+ (id)_PTGlobalRenderingMetadataFromItems:(id)a3;
-+ (void)_loadPTGlobalRenderingMetadataFromAsset:(id)a3 completionHandler:(id)a4;
++ (id)_PTGlobalRenderingMetadataFromItems:(id)items;
++ (void)_loadPTGlobalRenderingMetadataFromAsset:(id)asset completionHandler:(id)handler;
 + (void)loadFromAsset:(AVAsset *)asset completionHandler:(void *)completionHandler;
-- (CNRenderingSessionAttributes)initWithPTGlobalRenderingMetadata:(id)a3;
+- (CNRenderingSessionAttributes)initWithPTGlobalRenderingMetadata:(id)metadata;
 @end
 
 @implementation CNRenderingSessionAttributes
 
-- (CNRenderingSessionAttributes)initWithPTGlobalRenderingMetadata:(id)a3
+- (CNRenderingSessionAttributes)initWithPTGlobalRenderingMetadata:(id)metadata
 {
-  v5 = a3;
+  metadataCopy = metadata;
   v9.receiver = self;
   v9.super_class = CNRenderingSessionAttributes;
   v6 = [(CNRenderingSessionAttributes *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_internalMetadata, a3);
+    objc_storeStrong(&v6->_internalMetadata, metadata);
   }
 
   return v7;
@@ -34,7 +34,7 @@
   v12 = v7;
   v8 = v7;
   v9 = v6;
-  [a1 _loadPTGlobalRenderingMetadataFromAsset:v9 completionHandler:v10];
+  [self _loadPTGlobalRenderingMetadataFromAsset:v9 completionHandler:v10];
 }
 
 void __64__CNRenderingSessionAttributes_loadFromAsset_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -62,17 +62,17 @@ void __64__CNRenderingSessionAttributes_loadFromAsset_completionHandler___block_
   v9();
 }
 
-+ (void)_loadPTGlobalRenderingMetadataFromAsset:(id)a3 completionHandler:(id)a4
++ (void)_loadPTGlobalRenderingMetadataFromAsset:(id)asset completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __90__CNRenderingSessionAttributes__loadPTGlobalRenderingMetadataFromAsset_completionHandler___block_invoke;
   v8[3] = &unk_278A16290;
-  v9 = v6;
-  v10 = a1;
-  v7 = v6;
-  [a3 loadMetadataForFormat:0x284A052C0 completionHandler:v8];
+  v9 = handlerCopy;
+  selfCopy = self;
+  v7 = handlerCopy;
+  [asset loadMetadataForFormat:0x284A052C0 completionHandler:v8];
 }
 
 void __90__CNRenderingSessionAttributes__loadPTGlobalRenderingMetadataFromAsset_completionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -92,15 +92,15 @@ void __90__CNRenderingSessionAttributes__loadPTGlobalRenderingMetadataFromAsset_
   }
 }
 
-+ (id)_PTGlobalRenderingMetadataFromItems:(id)a3
++ (id)_PTGlobalRenderingMetadataFromItems:(id)items
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  itemsCopy = items;
+  v4 = [itemsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -111,7 +111,7 @@ void __90__CNRenderingSessionAttributes__loadPTGlobalRenderingMetadataFromAsset_
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
@@ -120,15 +120,15 @@ void __90__CNRenderingSessionAttributes__loadPTGlobalRenderingMetadataFromAsset_
 
         if (v10)
         {
-          v12 = [v8 value];
+          value = [v8 value];
           v15 = 0;
-          v11 = [MEMORY[0x277D3E890] deserializeMetadataWithType:2 fromGlobalMetadata:v12 error:&v15];
+          v11 = [MEMORY[0x277D3E890] deserializeMetadataWithType:2 fromGlobalMetadata:value error:&v15];
 
           goto LABEL_11;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [itemsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v5)
       {
         continue;

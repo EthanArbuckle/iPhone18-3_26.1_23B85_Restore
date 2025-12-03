@@ -1,11 +1,11 @@
 @interface STStorefrontClient
 - (STStorefrontClient)init;
-- (STStorefrontClient)initWithAmsStorefrontClient:(id)a3;
-- (id)fetchStorefrontFromLocale:(id)a3 error:(id *)a4;
-- (void)fetchStorefrontFromAMSForChildWithDSID:(NSNumber *)a3 parentAccount:(ACAccount *)a4 completionHandler:(id)a5;
-- (void)fetchStorefrontFromAMSForLocalUserWithCompletionHandler:(id)a3;
-- (void)fetchStorefrontFromAMSWith:(STRegionRatingsRequestOptions *)a3 completionHandler:(id)a4;
-- (void)fetchStorefrontWithOptions:(STRegionRatingsRequestOptions *)a3 completionHandler:(id)a4;
+- (STStorefrontClient)initWithAmsStorefrontClient:(id)client;
+- (id)fetchStorefrontFromLocale:(id)locale error:(id *)error;
+- (void)fetchStorefrontFromAMSForChildWithDSID:(NSNumber *)d parentAccount:(ACAccount *)account completionHandler:(id)handler;
+- (void)fetchStorefrontFromAMSForLocalUserWithCompletionHandler:(id)handler;
+- (void)fetchStorefrontFromAMSWith:(STRegionRatingsRequestOptions *)with completionHandler:(id)handler;
+- (void)fetchStorefrontWithOptions:(STRegionRatingsRequestOptions *)options completionHandler:(id)handler;
 @end
 
 @implementation STStorefrontClient
@@ -19,25 +19,25 @@
   return [(STStorefrontClient *)&v4 init];
 }
 
-- (STStorefrontClient)initWithAmsStorefrontClient:(id)a3
+- (STStorefrontClient)initWithAmsStorefrontClient:(id)client
 {
   swift_unknownObjectRetain();
   v5 = [(STStorefrontClient *)self init];
   v6 = *(&v5->super.isa + OBJC_IVAR___STStorefrontClient_amsStorefrontClient);
-  *(&v5->super.isa + OBJC_IVAR___STStorefrontClient_amsStorefrontClient) = a3;
+  *(&v5->super.isa + OBJC_IVAR___STStorefrontClient_amsStorefrontClient) = client;
   swift_unknownObjectRelease();
   return v5;
 }
 
-- (void)fetchStorefrontWithOptions:(STRegionRatingsRequestOptions *)a3 completionHandler:(id)a4
+- (void)fetchStorefrontWithOptions:(STRegionRatingsRequestOptions *)options completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBA84D90, &qword_1B83E8B00);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = options;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1B83DDE3C();
@@ -52,20 +52,20 @@
   v15[3] = 0;
   v15[4] = &unk_1B83E9B70;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  optionsCopy = options;
+  selfCopy = self;
   sub_1B83CD2A8(0, 0, v10, &unk_1B83E9B78, v15);
 }
 
-- (void)fetchStorefrontFromAMSWith:(STRegionRatingsRequestOptions *)a3 completionHandler:(id)a4
+- (void)fetchStorefrontFromAMSWith:(STRegionRatingsRequestOptions *)with completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBA84D90, &qword_1B83E8B00);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = with;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1B83DDE3C();
@@ -80,18 +80,18 @@
   v15[3] = 0;
   v15[4] = &unk_1B83E9B40;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  withCopy = with;
+  selfCopy = self;
   sub_1B83CD2A8(0, 0, v10, &unk_1B83E9B48, v15);
 }
 
-- (void)fetchStorefrontFromAMSForLocalUserWithCompletionHandler:(id)a3
+- (void)fetchStorefrontFromAMSForLocalUserWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBA84D90, &qword_1B83E8B00);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -107,20 +107,20 @@
   v13[3] = 0;
   v13[4] = &unk_1B83E9B18;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1B83CD2A8(0, 0, v8, &unk_1B83E9B20, v13);
 }
 
-- (void)fetchStorefrontFromAMSForChildWithDSID:(NSNumber *)a3 parentAccount:(ACAccount *)a4 completionHandler:(id)a5
+- (void)fetchStorefrontFromAMSForChildWithDSID:(NSNumber *)d parentAccount:(ACAccount *)account completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBA84D90, &qword_1B83E8B00);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = d;
+  v14[3] = account;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_1B83DDE3C();
@@ -135,13 +135,13 @@
   v17[3] = 0;
   v17[4] = &unk_1B83E9940;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  dCopy = d;
+  accountCopy = account;
+  selfCopy = self;
   sub_1B83CD2A8(0, 0, v12, &unk_1B83E9948, v17);
 }
 
-- (id)fetchStorefrontFromLocale:(id)a3 error:(id *)a4
+- (id)fetchStorefrontFromLocale:(id)locale error:(id *)error
 {
   v5 = sub_1B83DD9EC();
   v6 = *(v5 - 8);
@@ -149,7 +149,7 @@
   MEMORY[0x1EEE9AC00](v5);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1B83DD9AC();
-  v10 = self;
+  selfCopy = self;
   sub_1B83CDC10();
   (*(v6 + 8))(v9, v5);
 

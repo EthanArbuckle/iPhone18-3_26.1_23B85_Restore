@@ -1,25 +1,25 @@
 @interface HMMTRFabricControllerStore
-+ (BOOL)startupParams1:(id)a3 isEquivalentTo:(id)a4;
-+ (BOOL)startupParams2:(id)a3 isEquivalentTo:(id)a4;
-+ (BOOL)startupParams:(id)a3 isEquivalentTo:(id)a4;
++ (BOOL)startupParams1:(id)params1 isEquivalentTo:(id)to;
++ (BOOL)startupParams2:(id)params2 isEquivalentTo:(id)to;
++ (BOOL)startupParams:(id)params isEquivalentTo:(id)to;
 + (id)logCategory;
-- (HMMTRFabricControllerStore)initWithQueue:(id)a3 controllerFactory:(id)a4;
-- (id)cachedWrapperWithTargetFabricUUID:(id)a3;
-- (id)wrapperWithTargetFabricUUID:(id)a3 startupParams:(id)a4 allTargetFabricUUIDs:(id)a5 entityIdentifier:(id)a6;
-- (void)_auditControllerWrappersWithAllFabricUUIDs:(id)a3;
+- (HMMTRFabricControllerStore)initWithQueue:(id)queue controllerFactory:(id)factory;
+- (id)cachedWrapperWithTargetFabricUUID:(id)d;
+- (id)wrapperWithTargetFabricUUID:(id)d startupParams:(id)params allTargetFabricUUIDs:(id)ds entityIdentifier:(id)identifier;
+- (void)_auditControllerWrappersWithAllFabricUUIDs:(id)ds;
 - (void)removeAllGetters;
-- (void)removeTargetFabricUUID:(id)a3;
-- (void)updateAllTargetFabricUUIDs:(id)a3;
+- (void)removeTargetFabricUUID:(id)d;
+- (void)updateAllTargetFabricUUIDs:(id)ds;
 @end
 
 @implementation HMMTRFabricControllerStore
 
-- (void)_auditControllerWrappersWithAllFabricUUIDs:(id)a3
+- (void)_auditControllerWrappersWithAllFabricUUIDs:(id)ds
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -27,28 +27,28 @@
     *buf = 138543618;
     v43 = v8;
     v44 = 2112;
-    v45 = v4;
+    v45 = dsCopy;
     _os_log_impl(&dword_22AEAE000, v7, OS_LOG_TYPE_ERROR, "%{public}@Hitting maximum number of wrappers. Removing unused and restarting factory. Currently used: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v10 = [(HMMTRFabricControllerStore *)v6 controllerWrappers];
-  v11 = [v10 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  controllerWrappers = [(HMMTRFabricControllerStore *)selfCopy controllerWrappers];
+  v11 = [controllerWrappers countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (!v11)
   {
 
-    v31 = [(HMMTRFabricControllerStore *)v6 controllerWrappers];
-    [v31 removeObjectsForKeys:v9];
+    controllerWrappers2 = [(HMMTRFabricControllerStore *)selfCopy controllerWrappers];
+    [controllerWrappers2 removeObjectsForKeys:array];
     goto LABEL_20;
   }
 
   v13 = v11;
-  v36 = 0;
+  usesCommonStorageDelegate = 0;
   v14 = *v38;
   *&v12 = 138543618;
   v33 = v12;
@@ -61,18 +61,18 @@
     {
       if (*v38 != v14)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(controllerWrappers);
       }
 
       v16 = *(*(&v37 + 1) + 8 * v15);
-      if (([v4 containsObject:{v16, v33}] & 1) == 0)
+      if (([dsCopy containsObject:{v16, v33}] & 1) == 0)
       {
-        v17 = v10;
-        v18 = v9;
-        v19 = v4;
+        v17 = controllerWrappers;
+        v18 = array;
+        v19 = dsCopy;
         v20 = objc_autoreleasePoolPush();
-        v21 = v6;
-        v22 = v6;
+        v21 = selfCopy;
+        v22 = selfCopy;
         v23 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
         {
@@ -85,28 +85,28 @@
         }
 
         objc_autoreleasePoolPop(v20);
-        if (v36)
+        if (usesCommonStorageDelegate)
         {
-          v36 = 1;
+          usesCommonStorageDelegate = 1;
         }
 
         else
         {
-          v25 = [(HMMTRFabricControllerStore *)v22 controllerWrappers];
-          v26 = [v25 objectForKeyedSubscript:v16];
-          v27 = [v26 startupParams];
-          v36 = [v27 usesCommonStorageDelegate];
+          controllerWrappers3 = [(HMMTRFabricControllerStore *)v22 controllerWrappers];
+          v26 = [controllerWrappers3 objectForKeyedSubscript:v16];
+          startupParams = [v26 startupParams];
+          usesCommonStorageDelegate = [startupParams usesCommonStorageDelegate];
         }
 
-        v6 = v21;
-        v28 = [(HMMTRFabricControllerStore *)v22 controllerWrappers];
-        v29 = [v28 objectForKeyedSubscript:v16];
+        selfCopy = v21;
+        controllerWrappers4 = [(HMMTRFabricControllerStore *)v22 controllerWrappers];
+        v29 = [controllerWrappers4 objectForKeyedSubscript:v16];
         [v29 remove];
 
-        v9 = v18;
+        array = v18;
         [v18 addObject:v16];
-        v4 = v19;
-        v10 = v17;
+        dsCopy = v19;
+        controllerWrappers = v17;
         v14 = v34;
         v13 = v35;
       }
@@ -115,18 +115,18 @@
     }
 
     while (v13 != v15);
-    v13 = [v10 countByEnumeratingWithState:&v37 objects:v41 count:16];
+    v13 = [controllerWrappers countByEnumeratingWithState:&v37 objects:v41 count:16];
   }
 
   while (v13);
 
-  v30 = [(HMMTRFabricControllerStore *)v6 controllerWrappers];
-  [v30 removeObjectsForKeys:v9];
+  controllerWrappers5 = [(HMMTRFabricControllerStore *)selfCopy controllerWrappers];
+  [controllerWrappers5 removeObjectsForKeys:array];
 
-  if (v36)
+  if (usesCommonStorageDelegate)
   {
-    v31 = [(HMMTRFabricControllerStore *)v6 controllerFactory];
-    [v31 restartNormalOperation];
+    controllerWrappers2 = [(HMMTRFabricControllerStore *)selfCopy controllerFactory];
+    [controllerWrappers2 restartNormalOperation];
 LABEL_20:
   }
 
@@ -137,7 +137,7 @@ LABEL_20:
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -148,13 +148,13 @@ LABEL_20:
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMMTRFabricControllerStore *)v4 workQueue];
+  workQueue = [(HMMTRFabricControllerStore *)selfCopy workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__HMMTRFabricControllerStore_removeAllGetters__block_invoke;
   block[3] = &unk_2786F0CA8;
-  block[4] = v4;
-  dispatch_async(v7, block);
+  block[4] = selfCopy;
+  dispatch_async(workQueue, block);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -203,25 +203,25 @@ void __46__HMMTRFabricControllerStore_removeAllGetters__block_invoke(uint64_t a1
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cachedWrapperWithTargetFabricUUID:(id)a3
+- (id)cachedWrapperWithTargetFabricUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__3169;
   v16 = __Block_byref_object_dispose__3170;
   v17 = 0;
-  v5 = [(HMMTRFabricControllerStore *)self workQueue];
+  workQueue = [(HMMTRFabricControllerStore *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__HMMTRFabricControllerStore_cachedWrapperWithTargetFabricUUID___block_invoke;
   block[3] = &unk_2786F0468;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(workQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -238,12 +238,12 @@ void __64__HMMTRFabricControllerStore_cachedWrapperWithTargetFabricUUID___block_
   *(v3 + 40) = v2;
 }
 
-- (void)removeTargetFabricUUID:(id)a3
+- (void)removeTargetFabricUUID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -251,20 +251,20 @@ void __64__HMMTRFabricControllerStore_cachedWrapperWithTargetFabricUUID___block_
     *buf = 138543618;
     v15 = v8;
     v16 = 2112;
-    v17 = v4;
+    v17 = dCopy;
     _os_log_impl(&dword_22AEAE000, v7, OS_LOG_TYPE_INFO, "%{public}@Removing %@ from factory", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMMTRFabricControllerStore *)v6 workQueue];
+  workQueue = [(HMMTRFabricControllerStore *)selfCopy workQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__HMMTRFabricControllerStore_removeTargetFabricUUID___block_invoke;
   v12[3] = &unk_2786EF328;
-  v12[4] = v6;
-  v13 = v4;
-  v10 = v4;
-  dispatch_sync(v9, v12);
+  v12[4] = selfCopy;
+  v13 = dCopy;
+  v10 = dCopy;
+  dispatch_sync(workQueue, v12);
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -279,18 +279,18 @@ void __53__HMMTRFabricControllerStore_removeTargetFabricUUID___block_invoke(uint
   [v4 removeObjectForKey:*(a1 + 40)];
 }
 
-- (void)updateAllTargetFabricUUIDs:(id)a3
+- (void)updateAllTargetFabricUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(HMMTRFabricControllerStore *)self workQueue];
+  dsCopy = ds;
+  workQueue = [(HMMTRFabricControllerStore *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__HMMTRFabricControllerStore_updateAllTargetFabricUUIDs___block_invoke;
   v7[3] = &unk_2786EF328;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = dsCopy;
+  v6 = dsCopy;
+  dispatch_sync(workQueue, v7);
 }
 
 void __57__HMMTRFabricControllerStore_updateAllTargetFabricUUIDs___block_invoke(uint64_t a1)
@@ -355,34 +355,34 @@ void __57__HMMTRFabricControllerStore_updateAllTargetFabricUUIDs___block_invoke(
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)wrapperWithTargetFabricUUID:(id)a3 startupParams:(id)a4 allTargetFabricUUIDs:(id)a5 entityIdentifier:(id)a6
+- (id)wrapperWithTargetFabricUUID:(id)d startupParams:(id)params allTargetFabricUUIDs:(id)ds entityIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  paramsCopy = params;
+  dsCopy = ds;
+  identifierCopy = identifier;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__3169;
   v31 = __Block_byref_object_dispose__3170;
   v32 = 0;
-  v14 = [(HMMTRFabricControllerStore *)self workQueue];
+  workQueue = [(HMMTRFabricControllerStore *)self workQueue];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __110__HMMTRFabricControllerStore_wrapperWithTargetFabricUUID_startupParams_allTargetFabricUUIDs_entityIdentifier___block_invoke;
   v21[3] = &unk_2786EDD48;
   v21[4] = self;
-  v22 = v10;
-  v23 = v11;
-  v24 = v13;
-  v25 = v12;
+  v22 = dCopy;
+  v23 = paramsCopy;
+  v24 = identifierCopy;
+  v25 = dsCopy;
   v26 = &v27;
-  v15 = v12;
-  v16 = v13;
-  v17 = v11;
-  v18 = v10;
-  dispatch_sync(v14, v21);
+  v15 = dsCopy;
+  v16 = identifierCopy;
+  v17 = paramsCopy;
+  v18 = dCopy;
+  dispatch_sync(workQueue, v21);
 
   v19 = v28[5];
   _Block_object_dispose(&v27, 8);
@@ -518,21 +518,21 @@ LABEL_21:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (HMMTRFabricControllerStore)initWithQueue:(id)a3 controllerFactory:(id)a4
+- (HMMTRFabricControllerStore)initWithQueue:(id)queue controllerFactory:(id)factory
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  factoryCopy = factory;
   v14.receiver = self;
   v14.super_class = HMMTRFabricControllerStore;
   v9 = [(HMMTRFabricControllerStore *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_workQueue, a3);
-    objc_storeStrong(&v10->_controllerFactory, a4);
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v9->_workQueue, queue);
+    objc_storeStrong(&v10->_controllerFactory, factory);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     controllerWrappers = v10->_controllerWrappers;
-    v10->_controllerWrappers = v11;
+    v10->_controllerWrappers = dictionary;
   }
 
   return v10;
@@ -558,26 +558,26 @@ uint64_t __41__HMMTRFabricControllerStore_logCategory__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)startupParams2:(id)a3 isEquivalentTo:(id)a4
++ (BOOL)startupParams2:(id)params2 isEquivalentTo:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 operationalKeypair];
-  if ([v8 publicKey])
+  params2Copy = params2;
+  toCopy = to;
+  operationalKeypair = [params2Copy operationalKeypair];
+  if ([operationalKeypair publicKey])
   {
-    v9 = [v7 operationalKeypair];
-    v10 = [v9 publicKey];
+    operationalKeypair2 = [toCopy operationalKeypair];
+    publicKey = [operationalKeypair2 publicKey];
 
-    if (v10)
+    if (publicKey)
     {
-      v11 = [v6 operationalKeypair];
-      v12 = SecKeyCopyExternalRepresentation([v11 publicKey], 0);
+      operationalKeypair3 = [params2Copy operationalKeypair];
+      v12 = SecKeyCopyExternalRepresentation([operationalKeypair3 publicKey], 0);
 
-      v13 = [v7 operationalKeypair];
-      v14 = SecKeyCopyExternalRepresentation([v13 publicKey], 0);
+      operationalKeypair4 = [toCopy operationalKeypair];
+      publicKey2 = SecKeyCopyExternalRepresentation([operationalKeypair4 publicKey], 0);
 
-      LOBYTE(v13) = [(__CFData *)v12 isEqual:v14];
-      if ((v13 & 1) == 0)
+      LOBYTE(operationalKeypair4) = [(__CFData *)v12 isEqual:publicKey2];
+      if ((operationalKeypair4 & 1) == 0)
       {
         goto LABEL_12;
       }
@@ -590,13 +590,13 @@ uint64_t __41__HMMTRFabricControllerStore_logCategory__block_invoke()
   {
   }
 
-  v15 = [v6 operationalKeypair];
-  if (![v15 publicKey])
+  operationalKeypair5 = [params2Copy operationalKeypair];
+  if (![operationalKeypair5 publicKey])
   {
-    v17 = [v7 operationalKeypair];
-    v14 = [v17 publicKey];
+    operationalKeypair6 = [toCopy operationalKeypair];
+    publicKey2 = [operationalKeypair6 publicKey];
 
-    if (v14)
+    if (publicKey2)
     {
 LABEL_12:
       v16 = 0;
@@ -604,30 +604,30 @@ LABEL_12:
     }
 
 LABEL_10:
-    v18 = [v6 usesCommonStorageDelegate];
-    if (v18 != [v7 usesCommonStorageDelegate])
+    usesCommonStorageDelegate = [params2Copy usesCommonStorageDelegate];
+    if (usesCommonStorageDelegate != [toCopy usesCommonStorageDelegate])
     {
       goto LABEL_12;
     }
 
-    v19 = [v6 shouldAdvertiseOperational];
-    if (v19 != [v7 shouldAdvertiseOperational])
+    shouldAdvertiseOperational = [params2Copy shouldAdvertiseOperational];
+    if (shouldAdvertiseOperational != [toCopy shouldAdvertiseOperational])
     {
       goto LABEL_12;
     }
 
-    v15 = [v6 ipk];
-    if (v15 || ([v7 ipk], (v55 = objc_claimAutoreleasedReturnValue()) != 0))
+    operationalKeypair5 = [params2Copy ipk];
+    if (operationalKeypair5 || ([toCopy ipk], (v55 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v14 = [v6 ipk];
-      v4 = [v7 ipk];
-      if (![v14 isEqual:v4])
+      publicKey2 = [params2Copy ipk];
+      v4 = [toCopy ipk];
+      if (![publicKey2 isEqual:v4])
       {
         v16 = 0;
 LABEL_59:
 
 LABEL_60:
-        if (!v15)
+        if (!operationalKeypair5)
         {
         }
 
@@ -644,25 +644,25 @@ LABEL_60:
     }
 
     v21 = MEMORY[0x277CD5230];
-    v22 = [v6 rootCertificate];
-    v23 = [v7 rootCertificate];
-    if (![v21 isCertificate:v22 equalTo:v23])
+    rootCertificate = [params2Copy rootCertificate];
+    rootCertificate2 = [toCopy rootCertificate];
+    if (![v21 isCertificate:rootCertificate equalTo:rootCertificate2])
     {
       v16 = 0;
       goto LABEL_58;
     }
 
-    v54 = [v6 intermediateCertificate];
-    if (v54 || ([v7 intermediateCertificate], (v47 = objc_claimAutoreleasedReturnValue()) != 0))
+    intermediateCertificate = [params2Copy intermediateCertificate];
+    if (intermediateCertificate || ([toCopy intermediateCertificate], (v47 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v24 = MEMORY[0x277CD5230];
-      v25 = [v6 intermediateCertificate];
-      v52 = [v7 intermediateCertificate];
-      v53 = v25;
-      if (![v24 isCertificate:v25 equalTo:?])
+      intermediateCertificate2 = [params2Copy intermediateCertificate];
+      intermediateCertificate3 = [toCopy intermediateCertificate];
+      v53 = intermediateCertificate2;
+      if (![v24 isCertificate:intermediateCertificate2 equalTo:?])
       {
         v16 = 0;
-        v26 = v54;
+        v26 = intermediateCertificate;
 LABEL_54:
 
 LABEL_55:
@@ -688,18 +688,18 @@ LABEL_58:
       v51 = 0;
     }
 
-    v50 = [v6 operationalCertificate];
-    if (v50 || ([v7 operationalCertificate], (v42 = objc_claimAutoreleasedReturnValue()) != 0))
+    operationalCertificate = [params2Copy operationalCertificate];
+    if (operationalCertificate || ([toCopy operationalCertificate], (v42 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v27 = MEMORY[0x277CD5230];
-      v28 = [v6 operationalCertificate];
-      v48 = [v7 operationalCertificate];
-      v49 = v28;
-      if (![v27 isCertificate:v28 equalTo:?])
+      operationalCertificate2 = [params2Copy operationalCertificate];
+      operationalCertificate3 = [toCopy operationalCertificate];
+      v49 = operationalCertificate2;
+      if (![v27 isCertificate:operationalCertificate2 equalTo:?])
       {
         v16 = 0;
-        v26 = v54;
-        v29 = v50;
+        v26 = intermediateCertificate;
+        v29 = operationalCertificate;
 LABEL_50:
 
         goto LABEL_51;
@@ -714,14 +714,14 @@ LABEL_50:
       v45 = 0;
     }
 
-    v46 = [v6 operationalCertificateIssuer];
-    if (v46 || ([v7 operationalCertificateIssuer], (v40 = objc_claimAutoreleasedReturnValue()) != 0))
+    operationalCertificateIssuer = [params2Copy operationalCertificateIssuer];
+    if (operationalCertificateIssuer || ([toCopy operationalCertificateIssuer], (v40 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v30 = [v6 operationalCertificateIssuer];
+      operationalCertificateIssuer2 = [params2Copy operationalCertificateIssuer];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v31 = v30;
+        v31 = operationalCertificateIssuer2;
       }
 
       else
@@ -731,11 +731,11 @@ LABEL_50:
 
       v32 = v31;
 
-      v33 = [v7 operationalCertificateIssuer];
+      operationalCertificateIssuer3 = [toCopy operationalCertificateIssuer];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v34 = v33;
+        v34 = operationalCertificateIssuer3;
       }
 
       else
@@ -762,16 +762,16 @@ LABEL_50:
       v41 = 0;
     }
 
-    v36 = [v6 vendorID];
-    v37 = [v7 vendorID];
-    v16 = [v36 isEqual:v37];
+    vendorID = [params2Copy vendorID];
+    vendorID2 = [toCopy vendorID];
+    v16 = [vendorID isEqual:vendorID2];
 
     if (!v41)
     {
-      v26 = v54;
-      v29 = v50;
-      v39 = v46;
-      if (!v46)
+      v26 = intermediateCertificate;
+      v29 = operationalCertificate;
+      v39 = operationalCertificateIssuer;
+      if (!operationalCertificateIssuer)
       {
         v39 = v40;
       }
@@ -785,11 +785,11 @@ LABEL_50:
     }
 
 LABEL_47:
-    v26 = v54;
-    v29 = v50;
+    v26 = intermediateCertificate;
+    v29 = operationalCertificate;
 
-    v38 = v46;
-    if (!v46)
+    v38 = operationalCertificateIssuer;
+    if (!operationalCertificateIssuer)
     {
 
       v38 = 0;
@@ -820,25 +820,25 @@ LABEL_13:
   return v16;
 }
 
-+ (BOOL)startupParams1:(id)a3 isEquivalentTo:(id)a4
++ (BOOL)startupParams1:(id)params1 isEquivalentTo:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 nocSigner];
-  if ([v7 publicKey])
+  params1Copy = params1;
+  toCopy = to;
+  nocSigner = [params1Copy nocSigner];
+  if ([nocSigner publicKey])
   {
-    v8 = [v6 nocSigner];
-    v9 = [v8 publicKey];
+    nocSigner2 = [toCopy nocSigner];
+    publicKey = [nocSigner2 publicKey];
 
-    if (v9)
+    if (publicKey)
     {
-      v10 = [v5 nocSigner];
-      v11 = SecKeyCopyExternalRepresentation([v10 publicKey], 0);
+      nocSigner3 = [params1Copy nocSigner];
+      nocSigner5 = SecKeyCopyExternalRepresentation([nocSigner3 publicKey], 0);
 
-      v12 = [v6 nocSigner];
-      v13 = SecKeyCopyExternalRepresentation([v12 publicKey], 0);
+      nocSigner4 = [toCopy nocSigner];
+      nocSigner6 = SecKeyCopyExternalRepresentation([nocSigner4 publicKey], 0);
 
-      v14 = [v11 isEqual:v13];
+      v14 = [nocSigner5 isEqual:nocSigner6];
       goto LABEL_8;
     }
   }
@@ -847,33 +847,33 @@ LABEL_13:
   {
   }
 
-  v11 = [v5 nocSigner];
-  if ([v11 publicKey])
+  nocSigner5 = [params1Copy nocSigner];
+  if ([nocSigner5 publicKey])
   {
     v14 = 0;
     goto LABEL_9;
   }
 
-  v13 = [v6 nocSigner];
-  v14 = [v13 publicKey] == 0;
+  nocSigner6 = [toCopy nocSigner];
+  v14 = [nocSigner6 publicKey] == 0;
 LABEL_8:
 
 LABEL_9:
-  v15 = [v5 operationalKeypair];
-  if ([v15 publicKey])
+  operationalKeypair = [params1Copy operationalKeypair];
+  if ([operationalKeypair publicKey])
   {
-    v16 = [v6 operationalKeypair];
-    v17 = [v16 publicKey];
+    operationalKeypair2 = [toCopy operationalKeypair];
+    publicKey2 = [operationalKeypair2 publicKey];
 
-    if (v17)
+    if (publicKey2)
     {
-      v18 = [v5 operationalKeypair];
-      v19 = SecKeyCopyExternalRepresentation([v18 publicKey], 0);
+      operationalKeypair3 = [params1Copy operationalKeypair];
+      operationalKeypair5 = SecKeyCopyExternalRepresentation([operationalKeypair3 publicKey], 0);
 
-      v20 = [v6 operationalKeypair];
-      v21 = SecKeyCopyExternalRepresentation([v20 publicKey], 0);
+      operationalKeypair4 = [toCopy operationalKeypair];
+      operationalKeypair6 = SecKeyCopyExternalRepresentation([operationalKeypair4 publicKey], 0);
 
-      v22 = [v19 isEqual:v21];
+      v22 = [operationalKeypair5 isEqual:operationalKeypair6];
       goto LABEL_16;
     }
   }
@@ -882,8 +882,8 @@ LABEL_9:
   {
   }
 
-  v19 = [v5 operationalKeypair];
-  if ([v19 publicKey])
+  operationalKeypair5 = [params1Copy operationalKeypair];
+  if ([operationalKeypair5 publicKey])
   {
     v23 = 0;
 LABEL_77:
@@ -891,24 +891,24 @@ LABEL_77:
     goto LABEL_78;
   }
 
-  v21 = [v6 operationalKeypair];
-  v22 = [v21 publicKey] == 0;
+  operationalKeypair6 = [toCopy operationalKeypair];
+  v22 = [operationalKeypair6 publicKey] == 0;
 LABEL_16:
 
   if ((v14 & v22) == 1)
   {
-    v19 = [v5 ipk];
-    if (v19 || ([v6 ipk], (v71 = objc_claimAutoreleasedReturnValue()) != 0))
+    operationalKeypair5 = [params1Copy ipk];
+    if (operationalKeypair5 || ([toCopy ipk], (v71 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v21 = [v5 ipk];
-      v22 = [v6 ipk];
-      if (![v21 isEqual:v22])
+      operationalKeypair6 = [params1Copy ipk];
+      v22 = [toCopy ipk];
+      if (![operationalKeypair6 isEqual:v22])
       {
         v23 = 0;
 LABEL_74:
 
 LABEL_75:
-        if (!v19)
+        if (!operationalKeypair5)
         {
         }
 
@@ -926,36 +926,36 @@ LABEL_75:
 
     v24 = 0x277CD5000uLL;
     v25 = MEMORY[0x277CD5230];
-    v26 = [v5 rootCertificate];
-    v27 = [v6 rootCertificate];
-    if (![v25 isCertificate:v26 equalTo:v27])
+    rootCertificate = [params1Copy rootCertificate];
+    rootCertificate2 = [toCopy rootCertificate];
+    if (![v25 isCertificate:rootCertificate equalTo:rootCertificate2])
     {
       v23 = 0;
       goto LABEL_73;
     }
 
-    v28 = [v5 intermediateCertificate];
-    if (v28 || ([v6 intermediateCertificate], (v64 = objc_claimAutoreleasedReturnValue()) != 0))
+    intermediateCertificate = [params1Copy intermediateCertificate];
+    if (intermediateCertificate || ([toCopy intermediateCertificate], (v64 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v14 = v21;
-      v29 = v27;
-      v30 = v26;
-      v31 = v28;
+      v14 = operationalKeypair6;
+      v29 = rootCertificate2;
+      v30 = rootCertificate;
+      v31 = intermediateCertificate;
       v32 = MEMORY[0x277CD5230];
-      v33 = [v5 intermediateCertificate];
-      v69 = [v6 intermediateCertificate];
-      v70 = v33;
-      if (![v32 isCertificate:v33 equalTo:?])
+      intermediateCertificate2 = [params1Copy intermediateCertificate];
+      intermediateCertificate3 = [toCopy intermediateCertificate];
+      v70 = intermediateCertificate2;
+      if (![v32 isCertificate:intermediateCertificate2 equalTo:?])
       {
         v23 = 0;
-        v28 = v31;
-        v26 = v30;
-        v27 = v29;
-        v21 = v14;
+        intermediateCertificate = v31;
+        rootCertificate = v30;
+        rootCertificate2 = v29;
+        operationalKeypair6 = v14;
 LABEL_69:
 
 LABEL_70:
-        if (!v28)
+        if (!intermediateCertificate)
         {
         }
 
@@ -969,10 +969,10 @@ LABEL_73:
       }
 
       v68 = 1;
-      v28 = v31;
-      v26 = v30;
-      v27 = v29;
-      v21 = v14;
+      intermediateCertificate = v31;
+      rootCertificate = v30;
+      rootCertificate2 = v29;
+      operationalKeypair6 = v14;
       v24 = 0x277CD5000;
     }
 
@@ -982,16 +982,16 @@ LABEL_73:
       v68 = 0;
     }
 
-    v67 = [v5 operationalCertificate];
-    if (v67 || ([v6 operationalCertificate], (v66 = objc_claimAutoreleasedReturnValue()) != 0))
+    operationalCertificate = [params1Copy operationalCertificate];
+    if (operationalCertificate || ([toCopy operationalCertificate], (v66 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v34 = *(v24 + 560);
-      v35 = [v5 operationalCertificate];
-      v36 = [v6 operationalCertificate];
-      v65 = v35;
-      v37 = v35;
-      v14 = v36;
-      if (![v34 isCertificate:v37 equalTo:v36])
+      operationalCertificate2 = [params1Copy operationalCertificate];
+      operationalCertificate3 = [toCopy operationalCertificate];
+      v65 = operationalCertificate2;
+      v37 = operationalCertificate2;
+      v14 = operationalCertificate3;
+      if (![v34 isCertificate:v37 equalTo:operationalCertificate3])
       {
         v23 = 0;
         goto LABEL_65;
@@ -1007,15 +1007,15 @@ LABEL_73:
       v61 = 0;
     }
 
-    [v5 caseAuthenticatedTags];
+    [params1Copy caseAuthenticatedTags];
     v63 = v62 = v14;
     v66 = v38;
-    if (v63 || ([v6 caseAuthenticatedTags], (v54 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v63 || ([toCopy caseAuthenticatedTags], (v54 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v39 = [v5 caseAuthenticatedTags];
-      v59 = [v6 caseAuthenticatedTags];
-      v60 = v39;
-      if (![v39 isEqual:?])
+      caseAuthenticatedTags = [params1Copy caseAuthenticatedTags];
+      caseAuthenticatedTags2 = [toCopy caseAuthenticatedTags];
+      v60 = caseAuthenticatedTags;
+      if (![caseAuthenticatedTags isEqual:?])
       {
         v23 = 0;
 LABEL_61:
@@ -1032,14 +1032,14 @@ LABEL_61:
       v56 = 0;
     }
 
-    v57 = [v5 operationalCertificateIssuer];
-    if (v57 || ([v6 operationalCertificateIssuer], (v51 = objc_claimAutoreleasedReturnValue()) != 0))
+    operationalCertificateIssuer = [params1Copy operationalCertificateIssuer];
+    if (operationalCertificateIssuer || ([toCopy operationalCertificateIssuer], (v51 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v40 = [v5 operationalCertificateIssuer];
+      operationalCertificateIssuer2 = [params1Copy operationalCertificateIssuer];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v41 = v40;
+        v41 = operationalCertificateIssuer2;
       }
 
       else
@@ -1049,11 +1049,11 @@ LABEL_61:
 
       v58 = v41;
 
-      v42 = [v6 operationalCertificateIssuer];
+      operationalCertificateIssuer3 = [toCopy operationalCertificateIssuer];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v43 = v42;
+        v43 = operationalCertificateIssuer3;
       }
 
       else
@@ -1070,27 +1070,27 @@ LABEL_61:
         goto LABEL_58;
       }
 
-      v53 = v28;
+      v53 = intermediateCertificate;
       v52 = 1;
     }
 
     else
     {
-      v53 = v28;
+      v53 = intermediateCertificate;
       v51 = 0;
       v52 = 0;
     }
 
-    v45 = [v5 vendorID];
-    v46 = [v6 vendorID];
-    v23 = [v45 isEqual:v46];
+    vendorID = [params1Copy vendorID];
+    vendorID2 = [toCopy vendorID];
+    v23 = [vendorID isEqual:vendorID2];
 
     if (!v52)
     {
-      v28 = v53;
+      intermediateCertificate = v53;
       v14 = v62;
-      v50 = v57;
-      if (!v57)
+      v50 = operationalCertificateIssuer;
+      if (!operationalCertificateIssuer)
       {
         v50 = v51;
       }
@@ -1103,12 +1103,12 @@ LABEL_61:
       goto LABEL_62;
     }
 
-    v28 = v53;
+    intermediateCertificate = v53;
 LABEL_58:
     v14 = v62;
 
-    v47 = v57;
-    if (!v57)
+    v47 = operationalCertificateIssuer;
+    if (!operationalCertificateIssuer)
     {
 
       v47 = 0;
@@ -1130,7 +1130,7 @@ LABEL_62:
     if (!v61)
     {
 LABEL_66:
-      if (!v67)
+      if (!operationalCertificate)
       {
       }
 
@@ -1153,23 +1153,23 @@ LABEL_78:
   return v23;
 }
 
-+ (BOOL)startupParams:(id)a3 isEquivalentTo:(id)a4
++ (BOOL)startupParams:(id)params isEquivalentTo:(id)to
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v7 usesCommonStorageDelegate])
+  toCopy = to;
+  paramsCopy = params;
+  if ([paramsCopy usesCommonStorageDelegate])
   {
-    v8 = [v7 controllerParams];
+    controllerParams = [paramsCopy controllerParams];
 
-    v9 = [v6 controllerParams];
-    v10 = [a1 startupParams1:v8 isEquivalentTo:v9];
+    controllerParams2 = [toCopy controllerParams];
+    v10 = [self startupParams1:controllerParams isEquivalentTo:controllerParams2];
 
-    v7 = v8;
+    paramsCopy = controllerParams;
   }
 
   else
   {
-    v10 = [a1 startupParams2:v7 isEquivalentTo:v6];
+    v10 = [self startupParams2:paramsCopy isEquivalentTo:toCopy];
   }
 
   return v10;

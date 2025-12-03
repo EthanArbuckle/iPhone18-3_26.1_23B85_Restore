@@ -15,12 +15,12 @@
     v6 = objc_alloc_init(NSMutableArray);
     v16.receiver = self;
     v16.super_class = MONotificationDefaultAppListController;
-    v7 = [(MONotificationDefaultAppListController *)&v16 specifiers];
-    [v6 addObjectsFromArray:v7];
+    specifiers = [(MONotificationDefaultAppListController *)&v16 specifiers];
+    [v6 addObjectsFromArray:specifiers];
 
-    v8 = [v6 firstObject];
+    firstObject = [v6 firstObject];
     v9 = [v5 localizedStringForKey:@"Choose an app to open journaling notifications." value:&stru_C5D8 table:0];
-    [v8 setProperty:v9 forKey:PSFooterTextGroupKey];
+    [firstObject setProperty:v9 forKey:PSFooterTextGroupKey];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = __52__MONotificationDefaultAppListController_specifiers__block_invoke;

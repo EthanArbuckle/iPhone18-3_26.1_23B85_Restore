@@ -1,14 +1,14 @@
 @interface PXCMMSpec
 - (CGSize)reviewGridInterItemSpacing;
 - (CGSize)reviewGridItemSize;
-- (PXCMMSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 activityType:(unint64_t)a5;
+- (PXCMMSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options activityType:(unint64_t)type;
 - (UIEdgeInsets)composeFooterInsets;
 - (UIEdgeInsets)composeFooterMargins;
 - (UIEdgeInsets)composeHeaderLabelMargins;
 - (UIEdgeInsets)reviewContentInsets;
 - (UIEdgeInsets)reviewGridContentInsets;
 - (UIEdgeInsets)reviewSafeAreaInsets;
-- (double)_reviewSectionHeaderHeightForContentSize:(id)a3;
+- (double)_reviewSectionHeaderHeightForContentSize:(id)size;
 @end
 
 @implementation PXCMMSpec
@@ -109,9 +109,9 @@
   return result;
 }
 
-- (double)_reviewSectionHeaderHeightForContentSize:(id)a3
+- (double)_reviewSectionHeaderHeightForContentSize:(id)size
 {
-  if (UIContentSizeCategoryIsAccessibilityCategory(a3))
+  if (UIContentSizeCategoryIsAccessibilityCategory(size))
   {
     PXScaledValueForTextStyleWithSymbolicTraits();
   }
@@ -119,28 +119,28 @@
   return 54.0;
 }
 
-- (PXCMMSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 activityType:(unint64_t)a5
+- (PXCMMSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options activityType:(unint64_t)type
 {
-  v8 = a3;
+  collectionCopy = collection;
   v41.receiver = self;
   v41.super_class = PXCMMSpec;
-  v9 = [(PXCMMSpec *)&v41 initWithExtendedTraitCollection:v8 options:a4];
+  v9 = [(PXCMMSpec *)&v41 initWithExtendedTraitCollection:collectionCopy options:options];
   v10 = v9;
   if (v9)
   {
-    v9->_activityType = a5;
-    v11 = [[PXPhotosDetailsSpec alloc] initWithExtendedTraitCollection:v8 options:a4];
-    v12 = [(PXPhotosDetailsSpec *)v11 widgetSpec];
-    v13 = [[PXPhotosDetailsHeaderSpec alloc] initWithExtendedTraitCollection:v8 options:a4];
-    v14 = [[PXPhotosDetailsAssetsSpec alloc] initWithExtendedTraitCollection:v8 options:a4];
-    [v8 safeAreaInsets];
+    v9->_activityType = type;
+    v11 = [[PXPhotosDetailsSpec alloc] initWithExtendedTraitCollection:collectionCopy options:options];
+    widgetSpec = [(PXPhotosDetailsSpec *)v11 widgetSpec];
+    v13 = [[PXPhotosDetailsHeaderSpec alloc] initWithExtendedTraitCollection:collectionCopy options:options];
+    v14 = [[PXPhotosDetailsAssetsSpec alloc] initWithExtendedTraitCollection:collectionCopy options:options];
+    [collectionCopy safeAreaInsets];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    v23 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
     reviewBackgroundColor = v10->_reviewBackgroundColor;
-    v10->_reviewBackgroundColor = v23;
+    v10->_reviewBackgroundColor = systemBackgroundColor;
 
     [(PXPhotosDetailsAssetsSpec *)v14 gridContentInsets];
     v10->_reviewGridContentInsets.top = v25;
@@ -166,24 +166,24 @@
     *&v10->_reviewContentInsets.bottom = v33;
     if ([(PXPhotosDetailsSpec *)v11 shouldInsetAllPhotoDetailsContent])
     {
-      [v12 distanceBetweenTopAndHeaderlessWidgetContentTop];
+      [widgetSpec distanceBetweenTopAndHeaderlessWidgetContentTop];
       v10->_reviewHeaderTopInset = v34 + v10->_reviewHeaderTopInset;
-      [v12 distanceBetweenFooterlessWidgetContentBottomAndBottom];
+      [widgetSpec distanceBetweenFooterlessWidgetContentBottomAndBottom];
       v10->_reviewFooterBottomInset = v35 + v10->_reviewFooterBottomInset;
-      [v12 contentGuideInsets];
+      [widgetSpec contentGuideInsets];
       PXEdgeInsetsMax();
     }
 
     [(PXPhotosDetailsHeaderSpec *)v13 defaultCornerRadius];
     v10->_reviewHeaderCornerRadius = v36;
-    [v8 traitCollection];
+    [collectionCopy traitCollection];
     [objc_claimAutoreleasedReturnValue() preferredContentSizeCategory];
     [(PXCMMSpec *)v10 _reviewSectionHeaderHeightForContentSize:objc_claimAutoreleasedReturnValue()];
     v10->_reviewSectionHeaderHeight = v37;
     v10->_bubbleStatusIconCornerRadius = 10.0;
-    v38 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+    systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
     composeRecipientViewBackgroundColor = v10->_composeRecipientViewBackgroundColor;
-    v10->_composeRecipientViewBackgroundColor = v38;
+    v10->_composeRecipientViewBackgroundColor = systemGroupedBackgroundColor;
 
     v10->_composeCornerRadius = 5.0;
     PXEdgeInsetsMake();

@@ -1,21 +1,21 @@
 @interface SCROBrailleUILiveCaptionsManager
 - (BOOL)isSourceAudio;
 - (SCROBrailleUILiveCaptionsManager)init;
-- (SCROBrailleUILiveCaptionsManager)initWithClient:(id)a3;
+- (SCROBrailleUILiveCaptionsManager)initWithClient:(id)client;
 - (void)dealloc;
-- (void)setIsSourceAudio:(BOOL)a3;
-- (void)startWithCompletionHandler:(id)a3;
+- (void)setIsSourceAudio:(BOOL)audio;
+- (void)startWithCompletionHandler:(id)handler;
 - (void)stop;
 @end
 
 @implementation SCROBrailleUILiveCaptionsManager
 
-- (SCROBrailleUILiveCaptionsManager)initWithClient:(id)a3
+- (SCROBrailleUILiveCaptionsManager)initWithClient:(id)client
 {
   *(&self->super.isa + OBJC_IVAR___SCROBrailleUILiveCaptionsManager_isTranscribing) = 0;
   *(&self->super.isa + OBJC_IVAR___SCROBrailleUILiveCaptionsManager_sourceType) = 0;
   *(&self->super.isa + OBJC_IVAR___SCROBrailleUILiveCaptionsManager_isSourceAudio) = 0;
-  *(&self->super.isa + OBJC_IVAR___SCROBrailleUILiveCaptionsManager_client) = a3;
+  *(&self->super.isa + OBJC_IVAR___SCROBrailleUILiveCaptionsManager_client) = client;
   v4.receiver = self;
   v4.super_class = SCROBrailleUILiveCaptionsManager;
   swift_unknownObjectRetain();
@@ -29,24 +29,24 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsSourceAudio:(BOOL)a3
+- (void)setIsSourceAudio:(BOOL)audio
 {
   v5 = OBJC_IVAR___SCROBrailleUILiveCaptionsManager_isSourceAudio;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = audio;
   if (*(&self->super.isa + OBJC_IVAR___SCROBrailleUILiveCaptionsManager_isTranscribing) == 1)
   {
-    v6 = self;
-    [(SCROBrailleUILiveCaptionsManager *)v6 stop];
-    [(SCROBrailleUILiveCaptionsManager *)v6 startWithCompletionHandler:0];
+    selfCopy = self;
+    [(SCROBrailleUILiveCaptionsManager *)selfCopy stop];
+    [(SCROBrailleUILiveCaptionsManager *)selfCopy startWithCompletionHandler:0];
   }
 }
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   v3 = *sub_26496AB68();
-  v4 = v2;
+  v4 = selfCopy;
   v5 = v3;
   sub_26496C184(v4);
 
@@ -55,13 +55,13 @@
   [(SCROBrailleUILiveCaptionsManager *)&v6 dealloc];
 }
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FF86DD0, &qword_26498CEE0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8, v7, v8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a3);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
   *(v12 + 16) = v11;
   *(v12 + 24) = self;
@@ -77,13 +77,13 @@
   v15[3] = 0;
   v15[4] = &unk_26498CF00;
   v15[5] = v14;
-  v16 = self;
+  selfCopy = self;
   sub_264978F68(0, 0, v10, &unk_26498CF10, v15);
 }
 
 - (void)stop
 {
-  v2 = self;
+  selfCopy = self;
   SCROBrailleUILiveCaptionsManager.stop()();
 }
 

@@ -1,55 +1,55 @@
 @interface HDFitnessMachineManager
-- (HDFitnessMachineManager)initWithProfile:(id)a3;
-- (id)pairingManagerRequestsOOBData:(id)a3 error:(id *)a4;
+- (HDFitnessMachineManager)initWithProfile:(id)profile;
+- (id)pairingManagerRequestsOOBData:(id)data error:(id *)error;
 - (id)unitTest_currentFitnessMachineSession;
-- (unint64_t)fitnessMachineTypeForSessionUUID:(id)a3;
-- (void)_queue_handleBeginPairing:(id)a3;
-- (void)_queue_handleReceivedCharacteristic:(id)a3 device:(id)a4 error:(id)a5;
-- (void)_queue_registerClient:(id)a3 withConnectionUUID:(id)a4;
-- (void)addFitnessMachineSessionObserver:(id)a3;
-- (void)clientInvalidatedWithConnectionUUID:(id)a3;
+- (unint64_t)fitnessMachineTypeForSessionUUID:(id)d;
+- (void)_queue_handleBeginPairing:(id)pairing;
+- (void)_queue_handleReceivedCharacteristic:(id)characteristic device:(id)device error:(id)error;
+- (void)_queue_registerClient:(id)client withConnectionUUID:(id)d;
+- (void)addFitnessMachineSessionObserver:(id)observer;
+- (void)clientInvalidatedWithConnectionUUID:(id)d;
 - (void)dealloc;
-- (void)endFitnessMachineConnectionForFitnessMachineSessionUUID:(id)a3 withConnectionUUID:(id)a4;
-- (void)endFitnessMachineConnectionWithUUID:(id)a3;
-- (void)endFitnessMachineSessionWithUUID:(id)a3;
-- (void)finishSessionWithConfiguration:(id)a3;
-- (void)hktest_setMachinePreferredUntilDate:(id)a3;
-- (void)markClientReadyWithConnectionUUID:(id)a3;
-- (void)pairingManager:(id)a3 didChangeNFCEnabledState:(BOOL)a4;
-- (void)pairingManager:(id)a3 discoveredHealthService:(id)a4 machineType:(unint64_t)a5;
-- (void)pairingManager:(id)a3 failedPairingWithError:(id)a4;
-- (void)pairingManager:(id)a3 updatedConnectionStateFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)pairingManagerReadyToConnect:(id)a3;
-- (void)pairingManagerReceivedActivityTypeAndPermission:(id)a3;
-- (void)pairingManagerUpdatedMachineInformation:(id)a3;
-- (void)pairingManagerWillBeginPairing:(id)a3 fitnessMachineToken:(id)a4;
-- (void)recoverSessionWithConfiguration:(id)a3;
-- (void)registerClient:(id)a3 withConnectionUUID:(id)a4;
-- (void)removeFitnessMachineSessionObserver:(id)a3;
+- (void)endFitnessMachineConnectionForFitnessMachineSessionUUID:(id)d withConnectionUUID:(id)iD;
+- (void)endFitnessMachineConnectionWithUUID:(id)d;
+- (void)endFitnessMachineSessionWithUUID:(id)d;
+- (void)finishSessionWithConfiguration:(id)configuration;
+- (void)hktest_setMachinePreferredUntilDate:(id)date;
+- (void)markClientReadyWithConnectionUUID:(id)d;
+- (void)pairingManager:(id)manager didChangeNFCEnabledState:(BOOL)state;
+- (void)pairingManager:(id)manager discoveredHealthService:(id)service machineType:(unint64_t)type;
+- (void)pairingManager:(id)manager failedPairingWithError:(id)error;
+- (void)pairingManager:(id)manager updatedConnectionStateFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)pairingManagerReadyToConnect:(id)connect;
+- (void)pairingManagerReceivedActivityTypeAndPermission:(id)permission;
+- (void)pairingManagerUpdatedMachineInformation:(id)information;
+- (void)pairingManagerWillBeginPairing:(id)pairing fitnessMachineToken:(id)token;
+- (void)recoverSessionWithConfiguration:(id)configuration;
+- (void)registerClient:(id)client withConnectionUUID:(id)d;
+- (void)removeFitnessMachineSessionObserver:(id)observer;
 - (void)simulateDisconnect;
-- (void)stateTimersDisconnectTimeout:(id)a3;
-- (void)stateTimersMfaTimeout:(id)a3;
-- (void)stateTimersPauseTimeout:(id)a3;
-- (void)stateTimersRetryConnectionTimeout:(id)a3;
-- (void)stateTimersWaitForMachineStartTimeout:(id)a3;
-- (void)unitTest_fakeMachineDiscoveryForType:(unint64_t)a3;
-- (void)unitTest_fakeSession:(id)a3;
-- (void)unitTest_receiveFakeCharacteristicUpdate:(id)a3;
+- (void)stateTimersDisconnectTimeout:(id)timeout;
+- (void)stateTimersMfaTimeout:(id)timeout;
+- (void)stateTimersPauseTimeout:(id)timeout;
+- (void)stateTimersRetryConnectionTimeout:(id)timeout;
+- (void)stateTimersWaitForMachineStartTimeout:(id)timeout;
+- (void)unitTest_fakeMachineDiscoveryForType:(unint64_t)type;
+- (void)unitTest_fakeSession:(id)session;
+- (void)unitTest_receiveFakeCharacteristicUpdate:(id)update;
 - (void)unitTest_tearDownFakeSession;
 @end
 
 @implementation HDFitnessMachineManager
 
-- (HDFitnessMachineManager)initWithProfile:(id)a3
+- (HDFitnessMachineManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v25.receiver = self;
   v25.super_class = HDFitnessMachineManager;
   v5 = [(HDFitnessMachineManager *)&v25 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
@@ -58,12 +58,12 @@
     connections = v6->_connections;
     v6->_connections = v9;
 
-    v11 = [[HDGymKitPairingManager alloc] initWithProfile:v4];
+    v11 = [[HDGymKitPairingManager alloc] initWithProfile:profileCopy];
     pairingManager = v6->_pairingManager;
     v6->_pairingManager = v11;
 
     [(HDGymKitPairingManager *)v6->_pairingManager setDelegate:v6];
-    v13 = [[HDFitnessMachineDataProducer alloc] initWithProfile:v4];
+    v13 = [[HDFitnessMachineDataProducer alloc] initWithProfile:profileCopy];
     fitnessMachineDataProducer = v6->_fitnessMachineDataProducer;
     v6->_fitnessMachineDataProducer = v13;
 
@@ -96,99 +96,99 @@
   [(HDFitnessMachineManager *)&v3 dealloc];
 }
 
-- (void)registerClient:(id)a3 withConnectionUUID:(id)a4
+- (void)registerClient:(id)client withConnectionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  dCopy = d;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_15FBC;
   block[3] = &unk_5C788;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = clientCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = clientCopy;
   dispatch_async(queue, block);
 }
 
-- (void)markClientReadyWithConnectionUUID:(id)a3
+- (void)markClientReadyWithConnectionUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_16064;
   v7[3] = &unk_5C8C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)endFitnessMachineConnectionWithUUID:(id)a3
+- (void)endFitnessMachineConnectionWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1619C;
   v7[3] = &unk_5C8C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)endFitnessMachineConnectionForFitnessMachineSessionUUID:(id)a3 withConnectionUUID:(id)a4
+- (void)endFitnessMachineConnectionForFitnessMachineSessionUUID:(id)d withConnectionUUID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_2FC18;
   block[3] = &unk_5C788;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = iDCopy;
+  v9 = iDCopy;
+  v10 = dCopy;
   dispatch_async(queue, block);
 }
 
-- (void)endFitnessMachineSessionWithUUID:(id)a3
+- (void)endFitnessMachineSessionWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_2FC28;
   v7[3] = &unk_5C8C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)clientInvalidatedWithConnectionUUID:(id)a3
+- (void)clientInvalidatedWithConnectionUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_2FF10;
   v7[3] = &unk_5C8C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(queue, v7);
 }
 
-- (unint64_t)fitnessMachineTypeForSessionUUID:(id)a3
+- (unint64_t)fitnessMachineTypeForSessionUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -198,10 +198,10 @@
   block[1] = 3221225472;
   block[2] = sub_16470;
   block[3] = &unk_5D1E8;
-  v10 = v4;
-  v11 = self;
+  v10 = dCopy;
+  selfCopy = self;
   v12 = &v13;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v14[3];
 
@@ -209,67 +209,67 @@
   return v7;
 }
 
-- (void)recoverSessionWithConfiguration:(id)a3
+- (void)recoverSessionWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_165B8;
   v7[3] = &unk_5C8C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)finishSessionWithConfiguration:(id)a3
+- (void)finishSessionWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1665C;
   v7[3] = &unk_5C8C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)addFitnessMachineSessionObserver:(id)a3
+- (void)addFitnessMachineSessionObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_168A0;
   v7[3] = &unk_5C8C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)removeFitnessMachineSessionObserver:(id)a3
+- (void)removeFitnessMachineSessionObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_16944;
   v7[3] = &unk_5C8C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_queue_handleReceivedCharacteristic:(id)a3 device:(id)a4 error:(id)a5
+- (void)_queue_handleReceivedCharacteristic:(id)characteristic device:(id)device error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  characteristicCopy = characteristic;
+  deviceCopy = device;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -287,48 +287,48 @@
     v28 = 138543618;
     v29 = v13;
     v30 = 2114;
-    v31 = v8;
+    v31 = characteristicCopy;
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "%{public}@Received fitness machine characteristic %{public}@", &v28, 0x16u);
   }
 
-  v15 = [(HDFitnessMachineSession *)self->_fitnessMachineSession fitnessMachine];
-  v16 = [v15 device];
-  v17 = [v16 localIdentifier];
+  fitnessMachine = [(HDFitnessMachineSession *)self->_fitnessMachineSession fitnessMachine];
+  device = [fitnessMachine device];
+  localIdentifier = [device localIdentifier];
 
-  v18 = [v9 localIdentifier];
-  LODWORD(v16) = [v18 isEqualToString:v17];
+  localIdentifier2 = [deviceCopy localIdentifier];
+  LODWORD(device) = [localIdentifier2 isEqualToString:localIdentifier];
 
-  if (v16)
+  if (device)
   {
-    if (v10)
+    if (errorCopy)
     {
-      sub_30728(self, v10);
+      sub_30728(self, errorCopy);
       goto LABEL_19;
     }
 
-    v19 = [(HDFitnessMachineSession *)self->_fitnessMachineSession fitnessMachine];
-    v20 = [v19 device];
-    v21 = [v20 manufacturer];
+    fitnessMachine2 = [(HDFitnessMachineSession *)self->_fitnessMachineSession fitnessMachine];
+    device2 = [fitnessMachine2 device];
+    manufacturer = [device2 manufacturer];
 
-    if (!v21)
+    if (!manufacturer)
     {
-      v27 = [v9 manufacturer];
+      manufacturer2 = [deviceCopy manufacturer];
 
-      if (!v27)
+      if (!manufacturer2)
       {
         sub_32CA4();
         goto LABEL_19;
       }
 
-      sub_30F3C(self, v9);
+      sub_30F3C(self, deviceCopy);
     }
 
-    v22 = [(HDFitnessMachineSession *)self->_fitnessMachineSession fitnessMachine];
-    v23 = [v22 type];
-    v24 = v8;
-    if (v23 <= 2)
+    fitnessMachine3 = [(HDFitnessMachineSession *)self->_fitnessMachineSession fitnessMachine];
+    type = [fitnessMachine3 type];
+    v24 = characteristicCopy;
+    if (type <= 2)
     {
-      if (v23 == (&dword_0 + 1) || v23 == (&dword_0 + 2))
+      if (type == (&dword_0 + 1) || type == (&dword_0 + 2))
       {
 LABEL_15:
         objc_opt_class();
@@ -344,7 +344,7 @@ LABEL_15:
       }
     }
 
-    else if (v23 == (&dword_0 + 3) || v23 == &dword_4 || v23 == (&dword_4 + 2))
+    else if (type == (&dword_0 + 3) || type == &dword_4 || type == (&dword_4 + 2))
     {
       goto LABEL_15;
     }
@@ -377,9 +377,9 @@ LABEL_16:
 LABEL_19:
 }
 
-- (void)pairingManagerWillBeginPairing:(id)a3 fitnessMachineToken:(id)a4
+- (void)pairingManagerWillBeginPairing:(id)pairing fitnessMachineToken:(id)token
 {
-  v5 = a4;
+  tokenCopy = token;
   _HKInitializeLogging();
   v6 = HKLogWorkouts;
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEBUG))
@@ -393,14 +393,14 @@ LABEL_19:
   v9[2] = sub_175C4;
   v9[3] = &unk_5C8C8;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = tokenCopy;
+  v8 = tokenCopy;
   dispatch_async(queue, v9);
 }
 
-- (void)pairingManager:(id)a3 failedPairingWithError:(id)a4
+- (void)pairingManager:(id)manager failedPairingWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   _HKInitializeLogging();
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_ERROR))
   {
@@ -413,22 +413,22 @@ LABEL_19:
   v8[2] = sub_328E8;
   v8[3] = &unk_5C8C8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = errorCopy;
+  v7 = errorCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)pairingManager:(id)a3 didChangeNFCEnabledState:(BOOL)a4
+- (void)pairingManager:(id)manager didChangeNFCEnabledState:(BOOL)state
 {
   _HKInitializeLogging();
   v5 = HKLogWorkouts;
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEBUG))
   {
-    sub_32DEC(a4, v5);
+    sub_32DEC(state, v5);
   }
 }
 
-- (void)pairingManagerUpdatedMachineInformation:(id)a3
+- (void)pairingManagerUpdatedMachineInformation:(id)information
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -439,7 +439,7 @@ LABEL_19:
   dispatch_async(queue, block);
 }
 
-- (void)pairingManager:(id)a3 updatedConnectionStateFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)pairingManager:(id)manager updatedConnectionStateFromState:(unint64_t)state toState:(unint64_t)toState
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -447,12 +447,12 @@ LABEL_19:
   block[2] = sub_32988;
   block[3] = &unk_5D1B8;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a5;
+  block[5] = state;
+  block[6] = toState;
   dispatch_async(queue, block);
 }
 
-- (void)pairingManagerReceivedActivityTypeAndPermission:(id)a3
+- (void)pairingManagerReceivedActivityTypeAndPermission:(id)permission
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -463,7 +463,7 @@ LABEL_19:
   dispatch_async(queue, block);
 }
 
-- (void)pairingManager:(id)a3 discoveredHealthService:(id)a4 machineType:(unint64_t)a5
+- (void)pairingManager:(id)manager discoveredHealthService:(id)service machineType:(unint64_t)type
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
@@ -471,11 +471,11 @@ LABEL_19:
   v6[2] = sub_178C8;
   v6[3] = &unk_5C9B0;
   v6[4] = self;
-  v6[5] = a5;
+  v6[5] = type;
   dispatch_async(queue, v6);
 }
 
-- (void)pairingManagerReadyToConnect:(id)a3
+- (void)pairingManagerReadyToConnect:(id)connect
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -497,21 +497,21 @@ LABEL_19:
   dispatch_async(queue, block);
 }
 
-- (void)hktest_setMachinePreferredUntilDate:(id)a3
+- (void)hktest_setMachinePreferredUntilDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_32AA0;
   v7[3] = &unk_5C8C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)unitTest_fakeMachineDiscoveryForType:(unint64_t)a3
+- (void)unitTest_fakeMachineDiscoveryForType:(unint64_t)type
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -519,21 +519,21 @@ LABEL_19:
   v4[2] = sub_17B78;
   v4[3] = &unk_5C9B0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = type;
   dispatch_sync(queue, v4);
 }
 
-- (void)unitTest_fakeSession:(id)a3
+- (void)unitTest_fakeSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_32AAC;
   v7[3] = &unk_5C8C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sessionCopy;
+  v6 = sessionCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -559,17 +559,17 @@ LABEL_19:
   return v3;
 }
 
-- (void)unitTest_receiveFakeCharacteristicUpdate:(id)a3
+- (void)unitTest_receiveFakeCharacteristicUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_17E70;
   v7[3] = &unk_5C8C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = updateCopy;
+  v6 = updateCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -584,13 +584,13 @@ LABEL_19:
   dispatch_sync(queue, block);
 }
 
-- (void)_queue_handleBeginPairing:(id)a3
+- (void)_queue_handleBeginPairing:(id)pairing
 {
-  v5 = a3;
+  pairingCopy = pairing;
   dispatch_assert_queue_V2(self->_queue);
   fitnessMachineSession = self->_fitnessMachineSession;
-  self->_fitnessMachineSession = v5;
-  v7 = v5;
+  self->_fitnessMachineSession = pairingCopy;
+  v7 = pairingCopy;
 
   v8 = sub_2F750(self);
   [(HDFitnessMachineSession *)self->_fitnessMachineSession nfcSessionID];
@@ -609,11 +609,11 @@ LABEL_19:
   sub_7D04();
   v14 = sub_16F98;
   v15 = &unk_5CD20;
-  v16 = self;
+  selfCopy = self;
   [v10 sendBluetoothStatusUpdatesForServer:v12 updateHandler:v13 completion:0];
 }
 
-- (void)stateTimersPauseTimeout:(id)a3
+- (void)stateTimersPauseTimeout:(id)timeout
 {
   sub_7CD4(self);
   _HKInitializeLogging();
@@ -626,7 +626,7 @@ LABEL_19:
   sub_31874(v3);
 }
 
-- (void)stateTimersWaitForMachineStartTimeout:(id)a3
+- (void)stateTimersWaitForMachineStartTimeout:(id)timeout
 {
   sub_7CD4(self);
   _HKInitializeLogging();
@@ -639,7 +639,7 @@ LABEL_19:
   sub_31874(v3);
 }
 
-- (void)stateTimersDisconnectTimeout:(id)a3
+- (void)stateTimersDisconnectTimeout:(id)timeout
 {
   sub_7CD4(self);
   _HKInitializeLogging();
@@ -652,7 +652,7 @@ LABEL_19:
   sub_30CE8(v3);
 }
 
-- (void)stateTimersRetryConnectionTimeout:(id)a3
+- (void)stateTimersRetryConnectionTimeout:(id)timeout
 {
   sub_7CD4(self);
   _HKInitializeLogging();
@@ -672,7 +672,7 @@ LABEL_19:
   sub_2FC38(v11, v12);
 }
 
-- (void)stateTimersMfaTimeout:(id)a3
+- (void)stateTimersMfaTimeout:(id)timeout
 {
   _HKInitializeLogging();
   v3 = HKLogServices;
@@ -691,12 +691,12 @@ LABEL_19:
   sub_2FC38(v11, v12);
 }
 
-- (void)_queue_registerClient:(id)a3 withConnectionUUID:(id)a4
+- (void)_queue_registerClient:(id)client withConnectionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = sub_300A0(self, v7);
+  v8 = sub_300A0(self, dCopy);
   if (v8)
   {
     v9 = [NSError hk_error:108 description:@"Client already registered"];
@@ -712,12 +712,12 @@ LABEL_19:
       _os_log_error_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "Error registering client connection: %@ client: %@, connection UUID: %@, error: %{public}@", v24, 0x2Au);
     }
 
-    [v6 clientRemote_deliverFailedWithError:{v9, *v24}];
+    [clientCopy clientRemote_deliverFailedWithError:{v9, *v24}];
   }
 
   else
   {
-    v9 = [[HDFitnessMachineConnection alloc] initWithUUID:v7 client:v6];
+    v9 = [[HDFitnessMachineConnection alloc] initWithUUID:dCopy client:clientCopy];
     _HKInitializeLogging();
     v11 = HKLogWorkouts;
     if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
@@ -729,33 +729,33 @@ LABEL_19:
     }
 
     sub_3285C(self, v9);
-    v12 = [(HDFitnessMachineSession *)self->_fitnessMachineSession fitnessMachineSessionUUID];
+    fitnessMachineSessionUUID = [(HDFitnessMachineSession *)self->_fitnessMachineSession fitnessMachineSessionUUID];
 
-    if (v12)
+    if (fitnessMachineSessionUUID)
     {
-      v13 = [(HDFitnessMachineSession *)self->_fitnessMachineSession fitnessMachine];
+      fitnessMachine = [(HDFitnessMachineSession *)self->_fitnessMachineSession fitnessMachine];
 
-      if (v13)
+      if (fitnessMachine)
       {
-        v14 = [(HDFitnessMachineSession *)self->_fitnessMachineSession fitnessMachine];
-        [v6 clientRemote_deliverMachineInformationUpdated:v14];
+        fitnessMachine2 = [(HDFitnessMachineSession *)self->_fitnessMachineSession fitnessMachine];
+        [clientCopy clientRemote_deliverMachineInformationUpdated:fitnessMachine2];
       }
 
-      v15 = [(HDFitnessMachineSession *)self->_fitnessMachineSession connectionState];
-      v16 = [(HDFitnessMachineSession *)self->_fitnessMachineSession fitnessMachineSessionUUID];
-      [v6 clientRemote_deliverConnectionChangedToState:v15 fromState:0 fitnessMachineSessionUUID:v16 error:0];
+      connectionState = [(HDFitnessMachineSession *)self->_fitnessMachineSession connectionState];
+      fitnessMachineSessionUUID2 = [(HDFitnessMachineSession *)self->_fitnessMachineSession fitnessMachineSessionUUID];
+      [clientCopy clientRemote_deliverConnectionChangedToState:connectionState fromState:0 fitnessMachineSessionUUID:fitnessMachineSessionUUID2 error:0];
 
-      v17 = [(HDFitnessMachineSession *)self->_fitnessMachineSession machineState];
-      v18 = [(HDFitnessMachineSession *)self->_fitnessMachineSession fitnessMachine];
+      machineState = [(HDFitnessMachineSession *)self->_fitnessMachineSession machineState];
+      fitnessMachine3 = [(HDFitnessMachineSession *)self->_fitnessMachineSession fitnessMachine];
 
-      if (v18 && v17)
+      if (fitnessMachine3 && machineState)
       {
-        if ((v17 & 0xFFFFFFFFFFFFFFFELL) == 2)
+        if ((machineState & 0xFFFFFFFFFFFFFFFELL) == 2)
         {
-          v19 = [(HDFitnessMachineSession *)self->_fitnessMachineSession fitnessMachineSessionUUID];
-          v20 = [(HDFitnessMachineSession *)self->_fitnessMachineSession machineStartDate];
+          fitnessMachineSessionUUID3 = [(HDFitnessMachineSession *)self->_fitnessMachineSession fitnessMachineSessionUUID];
+          machineStartDate = [(HDFitnessMachineSession *)self->_fitnessMachineSession machineStartDate];
           v21 = 1;
-          [v6 clientRemote_deliverMachineChangedToState:1 fromState:0 fitnessMachineSessionUUID:v19 date:v20];
+          [clientCopy clientRemote_deliverMachineChangedToState:1 fromState:0 fitnessMachineSessionUUID:fitnessMachineSessionUUID3 date:machineStartDate];
         }
 
         else
@@ -763,18 +763,18 @@ LABEL_19:
           v21 = 0;
         }
 
-        v22 = [(HDFitnessMachineSession *)self->_fitnessMachineSession fitnessMachineSessionUUID];
-        v23 = [(HDFitnessMachineSession *)self->_fitnessMachineSession machineStateUpdateDate];
-        [v6 clientRemote_deliverMachineChangedToState:v17 fromState:v21 fitnessMachineSessionUUID:v22 date:v23];
+        fitnessMachineSessionUUID4 = [(HDFitnessMachineSession *)self->_fitnessMachineSession fitnessMachineSessionUUID];
+        machineStateUpdateDate = [(HDFitnessMachineSession *)self->_fitnessMachineSession machineStateUpdateDate];
+        [clientCopy clientRemote_deliverMachineChangedToState:machineState fromState:v21 fitnessMachineSessionUUID:fitnessMachineSessionUUID4 date:machineStateUpdateDate];
       }
     }
   }
 }
 
-- (id)pairingManagerRequestsOOBData:(id)a3 error:(id *)a4
+- (id)pairingManagerRequestsOOBData:(id)data error:(id *)error
 {
   v5 = sub_2F750(self);
-  v6 = [v5 retrieveOOBData:a4];
+  v6 = [v5 retrieveOOBData:error];
 
   return v6;
 }

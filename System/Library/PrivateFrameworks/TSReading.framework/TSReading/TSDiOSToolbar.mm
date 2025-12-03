@@ -1,14 +1,14 @@
 @interface TSDiOSToolbar
 - (CGSize)shadowOffset;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
+- (id)actionForLayer:(id)layer forKey:(id)key;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
 - (void)p_updateLayerFlags;
-- (void)setBackgroundImage:(id)a3;
-- (void)setDrawsBackground:(BOOL)a3;
-- (void)setShadowOffset:(CGSize)a3;
-- (void)setShadowOpacity:(double)a3;
+- (void)setBackgroundImage:(id)image;
+- (void)setDrawsBackground:(BOOL)background;
+- (void)setShadowOffset:(CGSize)offset;
+- (void)setShadowOpacity:(double)opacity;
 - (void)setupShadowPath;
 @end
 
@@ -21,24 +21,24 @@
   [(TSDiOSToolbar *)&v3 dealloc];
 }
 
-- (void)setBackgroundImage:(id)a3
+- (void)setBackgroundImage:(id)image
 {
-  if (self->mBackgroundImage != a3)
+  if (self->mBackgroundImage != image)
   {
-    v5 = a3;
+    imageCopy = image;
 
-    self->mBackgroundImage = a3;
+    self->mBackgroundImage = image;
     [(TSDiOSToolbar *)self p_updateLayerFlags];
 
     [(TSDiOSToolbar *)self setNeedsDisplay];
   }
 }
 
-- (void)setDrawsBackground:(BOOL)a3
+- (void)setDrawsBackground:(BOOL)background
 {
-  if (self->mDrawsBackground != a3)
+  if (self->mDrawsBackground != background)
   {
-    self->mDrawsBackground = a3;
+    self->mDrawsBackground = background;
     [(TSDiOSToolbar *)self p_updateLayerFlags];
 
     [(TSDiOSToolbar *)self setNeedsDisplay];
@@ -64,32 +64,32 @@
   [(TSDiOSToolbar *)self setClearsContextBeforeDrawing:v5];
 }
 
-- (void)setShadowOpacity:(double)a3
+- (void)setShadowOpacity:(double)opacity
 {
-  v5 = a3;
-  v6 = [(TSDiOSToolbar *)self layer];
-  *&v7 = v5;
-  [v6 setShadowOpacity:v7];
-  self->mShadowOpacity = a3;
+  opacityCopy = opacity;
+  layer = [(TSDiOSToolbar *)self layer];
+  *&v7 = opacityCopy;
+  [layer setShadowOpacity:v7];
+  self->mShadowOpacity = opacity;
 }
 
-- (void)setShadowOffset:(CGSize)a3
+- (void)setShadowOffset:(CGSize)offset
 {
-  height = a3.height;
-  width = a3.width;
+  height = offset.height;
+  width = offset.width;
   [-[TSDiOSToolbar layer](self "layer")];
   self->mShadowOffset.width = width;
   self->mShadowOffset.height = height;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if (self->mDrawsBackground)
   {
     mBackgroundImage = self->mBackgroundImage;
     if (mBackgroundImage)
     {
-      [(TSDiOSToolbar *)self bounds:a3.origin.x];
+      [(TSDiOSToolbar *)self bounds:rect.origin.x];
 
       [(UIImage *)mBackgroundImage drawInRect:?];
     }
@@ -98,7 +98,7 @@
     {
       v4.receiver = self;
       v4.super_class = TSDiOSToolbar;
-      [(TSDiOSToolbar *)&v4 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+      [(TSDiOSToolbar *)&v4 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
     }
   }
 }
@@ -110,12 +110,12 @@
   [(TSDiOSToolbar *)&v5 layoutSubviews];
   if (self->mShadowOpacity > 0.0)
   {
-    v3 = [(TSDiOSToolbar *)self layer];
+    layer = [(TSDiOSToolbar *)self layer];
     mShadowOpacity = self->mShadowOpacity;
     *&mShadowOpacity = mShadowOpacity;
-    [v3 setShadowOpacity:mShadowOpacity];
-    [v3 setShadowOffset:{self->mShadowOffset.width, self->mShadowOffset.height}];
-    [v3 setShadowRadius:self->mShadowRadius];
+    [layer setShadowOpacity:mShadowOpacity];
+    [layer setShadowOffset:{self->mShadowOffset.width, self->mShadowOffset.height}];
+    [layer setShadowRadius:self->mShadowRadius];
     [(TSDiOSToolbar *)self setupShadowPath];
   }
 }
@@ -133,18 +133,18 @@
   CFRelease(Mutable);
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  if (![a4 isEqualToString:@"shadowPath"])
+  if (![key isEqualToString:@"shadowPath"])
   {
     v11.receiver = self;
     v11.super_class = TSDiOSToolbar;
-    return [(TSDiOSToolbar *)&v11 actionForLayer:a3 forKey:a4];
+    return [(TSDiOSToolbar *)&v11 actionForLayer:layer forKey:key];
   }
 
   v12.receiver = self;
   v12.super_class = TSDiOSToolbar;
-  v7 = [(TSDiOSToolbar *)&v12 actionForLayer:a3 forKey:@"position"];
+  v7 = [(TSDiOSToolbar *)&v12 actionForLayer:layer forKey:@"position"];
   if (v7 == [MEMORY[0x277CBEB68] null])
   {
     return [MEMORY[0x277CBEB68] null];
@@ -156,7 +156,7 @@
     return 0;
   }
 
-  v8 = [MEMORY[0x277CD9E10] animationWithKeyPath:a4];
+  v8 = [MEMORY[0x277CD9E10] animationWithKeyPath:key];
   [v7 duration];
   [v8 setDuration:?];
   [v8 setTimingFunction:{objc_msgSend(v7, "timingFunction")}];

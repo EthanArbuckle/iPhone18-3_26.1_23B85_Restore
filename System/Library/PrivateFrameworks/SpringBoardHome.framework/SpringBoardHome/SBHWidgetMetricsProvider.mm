@@ -1,11 +1,11 @@
 @interface SBHWidgetMetricsProvider
 - (SBHWidgetMetricsProviderDelegate)delegate;
-- (id)previewMetricsSpecificationForBundleIdentifier:(id)a3;
-- (id)previewMetricsSpecificationForDeviceContext:(id)a3 displayContext:(id)a4 bundleIdentifier:(id)a5;
+- (id)previewMetricsSpecificationForBundleIdentifier:(id)identifier;
+- (id)previewMetricsSpecificationForDeviceContext:(id)context displayContext:(id)displayContext bundleIdentifier:(id)identifier;
 - (id)systemDefaultMetricsSpecification;
-- (id)systemDefaultMetricsSpecificationForFamilies:(unint64_t)a3;
-- (id)systemMetricsForFamily:(int64_t)a3;
-- (id)systemMetricsForWidget:(id)a3;
+- (id)systemDefaultMetricsSpecificationForFamilies:(unint64_t)families;
+- (id)systemMetricsForFamily:(int64_t)family;
+- (id)systemMetricsForWidget:(id)widget;
 @end
 
 @implementation SBHWidgetMetricsProvider
@@ -19,65 +19,65 @@
 
 - (id)systemDefaultMetricsSpecification
 {
-  v2 = [(SBHWidgetMetricsProvider *)self delegate];
-  v3 = [v2 listLayoutProvider];
+  delegate = [(SBHWidgetMetricsProvider *)self delegate];
+  listLayoutProvider = [delegate listLayoutProvider];
 
   SBHScreenTypeForCurrentDevice();
-  v4 = SBHWidgetMetricsSpecificationWithLayoutProviderScreenTypeAndFamilies(v3);
+  v4 = SBHWidgetMetricsSpecificationWithLayoutProviderScreenTypeAndFamilies(listLayoutProvider);
 
   return v4;
 }
 
-- (id)systemDefaultMetricsSpecificationForFamilies:(unint64_t)a3
+- (id)systemDefaultMetricsSpecificationForFamilies:(unint64_t)families
 {
-  v3 = [(SBHWidgetMetricsProvider *)self delegate];
-  v4 = [v3 listLayoutProvider];
+  delegate = [(SBHWidgetMetricsProvider *)self delegate];
+  listLayoutProvider = [delegate listLayoutProvider];
 
   SBHScreenTypeForCurrentDevice();
-  v5 = SBHWidgetMetricsSpecificationWithLayoutProviderScreenTypeAndFamilies(v4);
+  v5 = SBHWidgetMetricsSpecificationWithLayoutProviderScreenTypeAndFamilies(listLayoutProvider);
 
   return v5;
 }
 
-- (id)systemMetricsForFamily:(int64_t)a3
+- (id)systemMetricsForFamily:(int64_t)family
 {
-  v4 = [(SBHWidgetMetricsProvider *)self delegate];
-  v5 = [v4 listLayoutProvider];
+  delegate = [(SBHWidgetMetricsProvider *)self delegate];
+  listLayoutProvider = [delegate listLayoutProvider];
 
   v6 = SBHScreenTypeForCurrentDevice();
-  v7 = SBHWidgetMetricsForFamilyWithLayoutProviderAndScreenType(a3, v5, v6);
+  v7 = SBHWidgetMetricsForFamilyWithLayoutProviderAndScreenType(family, listLayoutProvider, v6);
 
   return v7;
 }
 
-- (id)systemMetricsForWidget:(id)a3
+- (id)systemMetricsForWidget:(id)widget
 {
-  v4 = [a3 family];
+  family = [widget family];
 
-  return [(SBHWidgetMetricsProvider *)self systemMetricsForFamily:v4];
+  return [(SBHWidgetMetricsProvider *)self systemMetricsForFamily:family];
 }
 
-- (id)previewMetricsSpecificationForBundleIdentifier:(id)a3
+- (id)previewMetricsSpecificationForBundleIdentifier:(id)identifier
 {
-  v3 = [(SBHWidgetMetricsProvider *)self delegate];
-  v4 = [v3 listLayoutProvider];
+  delegate = [(SBHWidgetMetricsProvider *)self delegate];
+  listLayoutProvider = [delegate listLayoutProvider];
 
   SBHScreenTypeForCurrentDevice();
-  v5 = SBHWidgetMetricsSpecificationWithLayoutProviderScreenTypeAndFamilies(v4);
+  v5 = SBHWidgetMetricsSpecificationWithLayoutProviderScreenTypeAndFamilies(listLayoutProvider);
 
   return v5;
 }
 
-- (id)previewMetricsSpecificationForDeviceContext:(id)a3 displayContext:(id)a4 bundleIdentifier:(id)a5
+- (id)previewMetricsSpecificationForDeviceContext:(id)context displayContext:(id)displayContext bundleIdentifier:(id)identifier
 {
-  v6 = SBHScreenTypeForDeviceAndDisplayContexts(a3, a4);
-  v7 = [(SBHWidgetMetricsProvider *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v7 widgetMetricsProvider:self listLayoutProviderForScreenType:v6], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  v6 = SBHScreenTypeForDeviceAndDisplayContexts(context, displayContext);
+  delegate = [(SBHWidgetMetricsProvider *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([delegate widgetMetricsProvider:self listLayoutProviderForScreenType:v6], (listLayoutProvider = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v8 = [v7 listLayoutProvider];
+    listLayoutProvider = [delegate listLayoutProvider];
   }
 
-  v9 = SBHWidgetMetricsSpecificationWithLayoutProviderScreenTypeAndFamilies(v8);
+  v9 = SBHWidgetMetricsSpecificationWithLayoutProviderScreenTypeAndFamilies(listLayoutProvider);
 
   return v9;
 }

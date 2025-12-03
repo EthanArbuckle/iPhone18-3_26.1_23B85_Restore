@@ -1,10 +1,10 @@
 @interface NWStatsAppEventListener
 - (NWAppStateEventListenerDelegate)appStateDelegate;
-- (NWStatsAppEventListener)initWithQueue:(id)a3;
+- (NWStatsAppEventListener)initWithQueue:(id)queue;
 - (void)_applicationStateMonitorInit;
 - (void)cleanupAppStateMonitor;
 - (void)dealloc;
-- (void)setAppStateDelegate:(id)a3;
+- (void)setAppStateDelegate:(id)delegate;
 @end
 
 @implementation NWStatsAppEventListener
@@ -138,9 +138,9 @@ void __55__NWStatsAppEventListener__applicationStateMonitorInit__block_invoke(id
   }
 }
 
-- (void)setAppStateDelegate:(id)a3
+- (void)setAppStateDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_appStateDelegate);
   if (WeakRetained != obj)
   {
@@ -157,16 +157,16 @@ void __55__NWStatsAppEventListener__applicationStateMonitorInit__block_invoke(id
   }
 }
 
-- (NWStatsAppEventListener)initWithQueue:(id)a3
+- (NWStatsAppEventListener)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = NWStatsAppEventListener;
   v6 = [(NWStatsAppEventListener *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;

@@ -1,5 +1,5 @@
 @interface HMCoreAnalyticsMetricEvent
-- (HMCoreAnalyticsMetricEvent)initWithName:(id)a3;
+- (HMCoreAnalyticsMetricEvent)initWithName:(id)name;
 - (id)eventPayload;
 @end
 
@@ -8,32 +8,32 @@
 - (id)eventPayload
 {
   v25[3] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (!v4)
+  if (!bundleIdentifier)
   {
-    v5 = [MEMORY[0x1E69A2A50] processInfo];
-    v4 = [v5 applicationIdentifier];
+    processInfo = [MEMORY[0x1E69A2A50] processInfo];
+    bundleIdentifier = [processInfo applicationIdentifier];
   }
 
   v6 = @"unknown";
-  if (v4)
+  if (bundleIdentifier)
   {
-    v6 = v4;
+    v6 = bundleIdentifier;
   }
 
   v7 = v6;
 
-  v8 = [(HMCoreAnalyticsMetricEvent *)self error];
+  error = [(HMCoreAnalyticsMetricEvent *)self error];
   v9 = [[HMCoreAnalyticsStringFieldData alloc] initWithName:@"bundleIdentifier" stringValue:v7];
 
-  if (v8)
+  if (error)
   {
-    v10 = -[HMCoreAnalyticsIntegerFieldData initWithName:integerValue:]([HMCoreAnalyticsIntegerFieldData alloc], "initWithName:integerValue:", @"eventErrorCode", [v8 code]);
+    v10 = -[HMCoreAnalyticsIntegerFieldData initWithName:integerValue:]([HMCoreAnalyticsIntegerFieldData alloc], "initWithName:integerValue:", @"eventErrorCode", [error code]);
     v11 = [HMCoreAnalyticsStringFieldData alloc];
-    v12 = [v8 domain];
-    v13 = [(HMCoreAnalyticsStringFieldData *)v11 initWithName:@"eventErrorDomain" stringValue:v12];
+    domain = [error domain];
+    v13 = [(HMCoreAnalyticsStringFieldData *)v11 initWithName:@"eventErrorDomain" stringValue:domain];
   }
 
   else
@@ -42,18 +42,18 @@
     v13 = [[HMCoreAnalyticsFieldData alloc] initWithName:@"eventErrorDomain"];
   }
 
-  v14 = [(HMCoreAnalyticsFieldData *)v10 name];
-  v24[0] = v14;
-  v15 = [(HMCoreAnalyticsFieldData *)v10 value];
-  v25[0] = v15;
-  v16 = [(HMCoreAnalyticsFieldData *)v13 name];
-  v24[1] = v16;
-  v17 = [(HMCoreAnalyticsFieldData *)v13 value];
-  v25[1] = v17;
-  v18 = [(HMCoreAnalyticsFieldData *)v9 name];
-  v24[2] = v18;
-  v19 = [(HMCoreAnalyticsFieldData *)v9 value];
-  v25[2] = v19;
+  name = [(HMCoreAnalyticsFieldData *)v10 name];
+  v24[0] = name;
+  value = [(HMCoreAnalyticsFieldData *)v10 value];
+  v25[0] = value;
+  name2 = [(HMCoreAnalyticsFieldData *)v13 name];
+  v24[1] = name2;
+  value2 = [(HMCoreAnalyticsFieldData *)v13 value];
+  v25[1] = value2;
+  name3 = [(HMCoreAnalyticsFieldData *)v9 name];
+  v24[2] = name3;
+  value3 = [(HMCoreAnalyticsFieldData *)v9 value];
+  v25[2] = value3;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:3];
 
   v21 = *MEMORY[0x1E69E9840];
@@ -61,19 +61,19 @@
   return v20;
 }
 
-- (HMCoreAnalyticsMetricEvent)initWithName:(id)a3
+- (HMCoreAnalyticsMetricEvent)initWithName:(id)name
 {
-  v5 = a3;
-  if (v5)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v6 = v5;
+    v6 = nameCopy;
     v12.receiver = self;
     v12.super_class = HMCoreAnalyticsMetricEvent;
     v7 = [(HMCoreAnalyticsMetricEvent *)&v12 init];
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_name, a3);
+      objc_storeStrong(&v7->_name, name);
     }
 
     return v8;

@@ -1,8 +1,8 @@
 @interface QSSAudioPacket
-- (Offset<siri::speech::schema_fb::AudioPacket>)addObjectToBuffer:(void *)a3;
-- (QSSAudioPacket)initWithFlatbuffData:(id)a3 root:(const AudioPacket *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::AudioPacket>)addObjectToBuffer:(void *)buffer;
+- (QSSAudioPacket)initWithFlatbuffData:(id)data root:(const AudioPacket *)root verify:(BOOL)verify;
 - (id)flatbuffData;
-- (void)audio_bytes:(id)a3;
+- (void)audio_bytes:(id)audio_bytes;
 @end
 
 @implementation QSSAudioPacket
@@ -36,9 +36,9 @@ flatbuffers::DetachedBuffer *__30__QSSAudioPacket_flatbuffData__block_invoke(uin
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::AudioPacket>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::AudioPacket>)addObjectToBuffer:(void *)buffer
 {
-  v3 = a3;
+  bufferCopy = buffer;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3812000000;
@@ -51,17 +51,17 @@ flatbuffers::DetachedBuffer *__30__QSSAudioPacket_flatbuffData__block_invoke(uin
   v8[2] = __36__QSSAudioPacket_addObjectToBuffer___block_invoke;
   v8[3] = &unk_279C4C2C8;
   v8[4] = &v9;
-  v8[5] = a3;
+  v8[5] = buffer;
   [(QSSAudioPacket *)self audio_bytes:v8];
-  flatbuffers::FlatBufferBuilder::NotNested(v3);
-  v3[70] = 1;
-  v4 = *(v3 + 5);
-  v5 = *(v3 + 6);
-  v6 = *(v3 + 4);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(v3, 4, *(v10 + 12));
-  LODWORD(v3) = flatbuffers::FlatBufferBuilder::EndTable(v3, v6 - v5 + v4);
+  flatbuffers::FlatBufferBuilder::NotNested(bufferCopy);
+  bufferCopy[70] = 1;
+  v4 = *(bufferCopy + 5);
+  v5 = *(bufferCopy + 6);
+  v6 = *(bufferCopy + 4);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(bufferCopy, 4, *(v10 + 12));
+  LODWORD(bufferCopy) = flatbuffers::FlatBufferBuilder::EndTable(bufferCopy, v6 - v5 + v4);
   _Block_object_dispose(&v9, 8);
-  return v3;
+  return bufferCopy;
 }
 
 uint64_t __36__QSSAudioPacket_addObjectToBuffer___block_invoke(uint64_t a1, const void *a2, unsigned int a3)
@@ -71,52 +71,52 @@ uint64_t __36__QSSAudioPacket_addObjectToBuffer___block_invoke(uint64_t a1, cons
   return result;
 }
 
-- (void)audio_bytes:(id)a3
+- (void)audio_bytes:(id)audio_bytes
 {
   root = self->_root;
   v5 = &root[-*root->var0];
-  v6 = a3;
+  audio_bytesCopy = audio_bytes;
   v7 = *root[*v5[4].var0 + *root[*v5[4].var0].var0].var0;
-  v8 = v6;
-  (*(a3 + 2))();
+  v8 = audio_bytesCopy;
+  (*(audio_bytes + 2))();
 }
 
-- (QSSAudioPacket)initWithFlatbuffData:(id)a3 root:(const AudioPacket *)a4 verify:(BOOL)a5
+- (QSSAudioPacket)initWithFlatbuffData:(id)data root:(const AudioPacket *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSAudioPacket;
   v10 = [(QSSAudioPacket *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -138,9 +138,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

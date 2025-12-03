@@ -1,24 +1,24 @@
 @interface NCNotificationBodyLabel
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NCNotificationBodyLabelDelegate)delegate;
 - (id)_newLabel;
 - (id)_newTextElement;
 - (id)_newTextView;
-- (void)_attributedTextForTextElement:(id *)a3 forUnderlay:(id *)a4 font:(id)a5;
-- (void)_formatTextSupporting:(id)a3;
+- (void)_attributedTextForTextElement:(id *)element forUnderlay:(id *)underlay font:(id)font;
+- (void)_formatTextSupporting:(id)supporting;
 - (void)_resetForNewLayout;
 - (void)_setupViewsIfNecessary;
 - (void)_updateTextAttributes;
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5;
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider;
 - (void)layoutSubviews;
-- (void)nc_setMenuEnabled:(BOOL)a3;
-- (void)nc_setNumberOfLines:(unint64_t)a3;
-- (void)setAttributedText:(id)a3;
-- (void)setPreferredFontWeight:(double)a3;
-- (void)setPreferredTextStyle:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setURLInteractionEnabled:(BOOL)a3;
+- (void)nc_setMenuEnabled:(BOOL)enabled;
+- (void)nc_setNumberOfLines:(unint64_t)lines;
+- (void)setAttributedText:(id)text;
+- (void)setPreferredFontWeight:(double)weight;
+- (void)setPreferredTextStyle:(id)style;
+- (void)setTextColor:(id)color;
+- (void)setURLInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation NCNotificationBodyLabel
@@ -41,8 +41,8 @@
     v3 = 0x8000;
     if (self->_isAppleIntelligenceSummary)
     {
-      v4 = [(NSAttributedString *)self->_attributedText string];
-      if ([v4 _shouldItalicize])
+      string = [(NSAttributedString *)self->_attributedText string];
+      if ([string _shouldItalicize])
       {
         v3 = 32769;
       }
@@ -61,16 +61,16 @@
     v7 = v16;
     if (v7)
     {
-      v8 = [(NCNotificationBodyLabel *)self _newTextElement];
+      _newTextElement = [(NCNotificationBodyLabel *)self _newTextElement];
       backgroundUnderlayElement = self->_backgroundUnderlayElement;
-      self->_backgroundUnderlayElement = v8;
+      self->_backgroundUnderlayElement = _newTextElement;
 
       [(NCNotificationBodyLabel *)self addSubview:self->_backgroundUnderlayElement];
     }
 
-    v10 = [(NCNotificationBodyLabel *)self _newTextElement];
+    _newTextElement2 = [(NCNotificationBodyLabel *)self _newTextElement];
     textElement = self->_textElement;
-    self->_textElement = v10;
+    self->_textElement = _newTextElement2;
 
     [(NCNotificationBodyLabel *)self addSubview:self->_textElement];
     [(NCTextSupporting *)self->_backgroundUnderlayElement setAttributedText:v7];
@@ -80,12 +80,12 @@
     [(NCTextSupporting *)self->_backgroundUnderlayElement setFont:v5];
     [(NCTextSupporting *)self->_textElement setFont:v5];
     v12 = self->_backgroundUnderlayElement;
-    v13 = [(NCNotificationBodyLabel *)self _strokeVisualStylingProvider];
-    [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:v12 style:1 visualStylingProvider:v13 outgoingProvider:0];
+    _strokeVisualStylingProvider = [(NCNotificationBodyLabel *)self _strokeVisualStylingProvider];
+    [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:v12 style:1 visualStylingProvider:_strokeVisualStylingProvider outgoingProvider:0];
 
     v14 = self->_textElement;
-    v15 = [(NCNotificationBodyLabel *)self _strokeVisualStylingProvider];
-    [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:v14 style:0 visualStylingProvider:v15 outgoingProvider:0];
+    _strokeVisualStylingProvider2 = [(NCNotificationBodyLabel *)self _strokeVisualStylingProvider];
+    [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:v14 style:0 visualStylingProvider:_strokeVisualStylingProvider2 outgoingProvider:0];
   }
 }
 
@@ -113,14 +113,14 @@
   [v3 _setInteractiveTextSelectionDisabled:1];
   [v3 setScrollEnabled:0];
   [v3 setTextContainerInset:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
-  v4 = [v3 textContainer];
-  [v4 setLineFragmentPadding:0.0];
+  textContainer = [v3 textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
-  v5 = [v3 textContainer];
-  [v5 setLineBreakMode:4];
+  textContainer2 = [v3 textContainer];
+  [textContainer2 setLineBreakMode:4];
 
-  v6 = [v3 textLayoutManager];
-  [v6 setLimitsLayoutForSuspiciousContents:1];
+  textLayoutManager = [v3 textLayoutManager];
+  [textLayoutManager setLimitsLayoutForSuspiciousContents:1];
 
   [v3 setDelegate:self];
   [(NCNotificationBodyLabel *)self _formatTextSupporting:v3];
@@ -163,10 +163,10 @@ uint64_t __41__NCNotificationBodyLabel_layoutSubviews__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(NCNotificationBodyLabel *)self _setupViewsIfNecessary];
   textElement = self->_textElement;
 
@@ -176,11 +176,11 @@ uint64_t __41__NCNotificationBodyLabel_layoutSubviews__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
-  v9 = a4;
+  lCopy = l;
   textElement = self->_textElement;
-  v11 = a3;
+  viewCopy = view;
   v12 = objc_opt_class();
   v13 = textElement;
   if (v12)
@@ -203,111 +203,111 @@ uint64_t __41__NCNotificationBodyLabel_layoutSubviews__block_invoke(uint64_t a1)
 
   v15 = v14;
 
-  if (!a6 && v15 == v11)
+  if (!interaction && v15 == viewCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained notificationLabel:self requestsInteractionWithURL:v9];
+      [WeakRetained notificationLabel:self requestsInteractionWithURL:lCopy];
     }
   }
 
   return 0;
 }
 
-- (void)setURLInteractionEnabled:(BOOL)a3
+- (void)setURLInteractionEnabled:(BOOL)enabled
 {
-  if (self->_URLInteractionEnabled != a3)
+  if (self->_URLInteractionEnabled != enabled)
   {
-    self->_URLInteractionEnabled = a3;
+    self->_URLInteractionEnabled = enabled;
     [(NCNotificationBodyLabel *)self _resetForNewLayout];
 
     [(NCNotificationBodyLabel *)self setNeedsLayout];
   }
 }
 
-- (void)setPreferredFontWeight:(double)a3
+- (void)setPreferredFontWeight:(double)weight
 {
-  if (self->_preferredFontWeight != a3)
+  if (self->_preferredFontWeight != weight)
   {
-    self->_preferredFontWeight = a3;
+    self->_preferredFontWeight = weight;
     [(NCNotificationBodyLabel *)self _resetForNewLayout];
 
     [(NCNotificationBodyLabel *)self setNeedsLayout];
   }
 }
 
-- (void)setPreferredTextStyle:(id)a3
+- (void)setPreferredTextStyle:(id)style
 {
-  if (self->_preferredTextStyle != a3)
+  if (self->_preferredTextStyle != style)
   {
-    self->_preferredTextStyle = a3;
+    self->_preferredTextStyle = style;
     [(NCNotificationBodyLabel *)self _resetForNewLayout];
 
     [(NCNotificationBodyLabel *)self setNeedsLayout];
   }
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v7 = a3;
-  v5 = [(NCNotificationBodyLabel *)self attributedText];
+  textCopy = text;
+  attributedText = [(NCNotificationBodyLabel *)self attributedText];
   v6 = BSEqualObjects();
 
   if ((v6 & 1) == 0)
   {
-    objc_storeStrong(&self->_attributedText, a3);
+    objc_storeStrong(&self->_attributedText, text);
     self->_isAppleIntelligenceSummary = [(NSAttributedString *)self->_attributedText nc_isAppleIntelligenceSummary]!= 0;
     [(NCNotificationBodyLabel *)self _resetForNewLayout];
     [(NCNotificationBodyLabel *)self setNeedsLayout];
   }
 }
 
-- (void)nc_setNumberOfLines:(unint64_t)a3
+- (void)nc_setNumberOfLines:(unint64_t)lines
 {
-  if (self->_nc_numberOfLines != a3)
+  if (self->_nc_numberOfLines != lines)
   {
-    self->_nc_numberOfLines = a3;
+    self->_nc_numberOfLines = lines;
     [(NCTextSupporting *)self->_textElement nc_setNumberOfLines:?];
-    [(NCTextSupporting *)self->_backgroundUnderlayElement nc_setNumberOfLines:a3];
+    [(NCTextSupporting *)self->_backgroundUnderlayElement nc_setNumberOfLines:lines];
 
     [(NCNotificationBodyLabel *)self setNeedsLayout];
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_textColor, a3);
-    [(NCTextSupporting *)self->_textElement setTextColor:v5];
+    objc_storeStrong(&self->_textColor, color);
+    [(NCTextSupporting *)self->_textElement setTextColor:colorCopy];
   }
 }
 
-- (void)nc_setMenuEnabled:(BOOL)a3
+- (void)nc_setMenuEnabled:(BOOL)enabled
 {
-  if (self->_nc_menuEnabled != a3)
+  if (self->_nc_menuEnabled != enabled)
   {
-    v4 = a3;
-    self->_nc_menuEnabled = a3;
+    enabledCopy = enabled;
+    self->_nc_menuEnabled = enabled;
     [(NCTextSupporting *)self->_textElement nc_setMenuEnabled:?];
-    [(NCTextSupporting *)self->_backgroundUnderlayElement nc_setMenuEnabled:v4];
+    [(NCTextSupporting *)self->_backgroundUnderlayElement nc_setMenuEnabled:enabledCopy];
 
     [(NCNotificationBodyLabel *)self setNeedsLayout];
   }
 }
 
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider
 {
   textElement = self->_textElement;
-  v7 = a5;
-  v8 = [(NCNotificationBodyLabel *)self _strokeVisualStylingProvider];
-  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:textElement style:0 visualStylingProvider:v8 outgoingProvider:v7];
+  providerCopy = provider;
+  _strokeVisualStylingProvider = [(NCNotificationBodyLabel *)self _strokeVisualStylingProvider];
+  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:textElement style:0 visualStylingProvider:_strokeVisualStylingProvider outgoingProvider:providerCopy];
 
   backgroundUnderlayElement = self->_backgroundUnderlayElement;
-  v10 = [(NCNotificationBodyLabel *)self _strokeVisualStylingProvider];
-  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:backgroundUnderlayElement style:1 visualStylingProvider:v10 outgoingProvider:v7];
+  _strokeVisualStylingProvider2 = [(NCNotificationBodyLabel *)self _strokeVisualStylingProvider];
+  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:backgroundUnderlayElement style:1 visualStylingProvider:_strokeVisualStylingProvider2 outgoingProvider:providerCopy];
 }
 
 - (void)_updateTextAttributes
@@ -317,14 +317,14 @@ uint64_t __41__NCNotificationBodyLabel_layoutSubviews__block_invoke(uint64_t a1)
   [(NCNotificationBodyLabel *)self setNeedsLayout];
 }
 
-- (void)_attributedTextForTextElement:(id *)a3 forUnderlay:(id *)a4 font:(id)a5
+- (void)_attributedTextForTextElement:(id *)element forUnderlay:(id *)underlay font:(id)font
 {
-  v8 = a5;
-  v9 = [(NSAttributedString *)self->_attributedText nc_isAppleIntelligenceSummary];
-  v10 = [(NCNotificationBodyLabel *)self attributedText];
-  v11 = [v10 nc_styledTextWithGylphAddedIfNecessaryForFont:v8 glyphColor:0];
+  fontCopy = font;
+  nc_isAppleIntelligenceSummary = [(NSAttributedString *)self->_attributedText nc_isAppleIntelligenceSummary];
+  attributedText = [(NCNotificationBodyLabel *)self attributedText];
+  v11 = [attributedText nc_styledTextWithGylphAddedIfNecessaryForFont:fontCopy glyphColor:0];
 
-  if (v9)
+  if (nc_isAppleIntelligenceSummary)
   {
     v12 = [v11 mutableCopy];
     v13 = [v11 mutableCopy];
@@ -344,8 +344,8 @@ uint64_t __41__NCNotificationBodyLabel_layoutSubviews__block_invoke(uint64_t a1)
     v17 = v13;
     v21 = v17;
     [v16 enumerateAttribute:v15 inRange:0 options:v14 usingBlock:{0, v19}];
-    *a3 = [v16 copy];
-    *a4 = [v17 copy];
+    *element = [v16 copy];
+    *underlay = [v17 copy];
 
     _Block_object_dispose(v23, 8);
   }
@@ -353,8 +353,8 @@ uint64_t __41__NCNotificationBodyLabel_layoutSubviews__block_invoke(uint64_t a1)
   else
   {
     v18 = v11;
-    *a3 = v11;
-    *a4 = 0;
+    *element = v11;
+    *underlay = 0;
   }
 }
 
@@ -384,16 +384,16 @@ void __74__NCNotificationBodyLabel__attributedTextForTextElement_forUnderlay_fon
   }
 }
 
-- (void)_formatTextSupporting:(id)a3
+- (void)_formatTextSupporting:(id)supporting
 {
   nc_menuEnabled = self->_nc_menuEnabled;
-  v6 = a3;
-  [v6 nc_setMenuEnabled:nc_menuEnabled];
-  [v6 nc_setNumberOfLines:self->_nc_numberOfLines];
-  v5 = [MEMORY[0x277D75348] clearColor];
-  [v6 setBackgroundColor:v5];
+  supportingCopy = supporting;
+  [supportingCopy nc_setMenuEnabled:nc_menuEnabled];
+  [supportingCopy nc_setNumberOfLines:self->_nc_numberOfLines];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [supportingCopy setBackgroundColor:clearColor];
 
-  [v6 setContentMode:4];
+  [supportingCopy setContentMode:4];
 }
 
 - (NCNotificationBodyLabelDelegate)delegate

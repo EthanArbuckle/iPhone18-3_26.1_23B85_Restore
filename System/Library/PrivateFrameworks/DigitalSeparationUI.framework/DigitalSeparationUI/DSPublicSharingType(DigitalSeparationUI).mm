@@ -8,23 +8,23 @@
 - (id)iconForTable
 {
   v1 = MEMORY[0x277D054C0];
-  v2 = [a1 source];
-  v3 = [v2 name];
-  v4 = [v1 sourceDescriptorForSource:v3];
-  v5 = [v4 iconForTable];
+  source = [self source];
+  name = [source name];
+  v4 = [v1 sourceDescriptorForSource:name];
+  iconForTable = [v4 iconForTable];
 
-  return v5;
+  return iconForTable;
 }
 
 - (id)iconForDetail
 {
   v1 = MEMORY[0x277D054C0];
-  v2 = [a1 source];
-  v3 = [v2 name];
-  v4 = [v1 sourceDescriptorForSource:v3];
-  v5 = [v4 iconForDetail];
+  source = [self source];
+  name = [source name];
+  v4 = [v1 sourceDescriptorForSource:name];
+  iconForDetail = [v4 iconForDetail];
 
-  return v5;
+  return iconForDetail;
 }
 
 @end

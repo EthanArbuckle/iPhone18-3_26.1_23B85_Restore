@@ -1,9 +1,9 @@
 @interface SMSApplicationSoundHelper
 - (BOOL)_shouldPlayTextTone;
-- (BOOL)allowedByScreenTimeToPlayReceiveSoundForChat:(id)a3;
-- (BOOL)playTapbackReceivedSoundForMessageInCurrentTranscript:(id)a3;
-- (void)_playIncomingMessageSoundAndHapticForMessage:(id)a3 messageIsForCurrentTranscript:(BOOL)a4;
-- (void)playIncomingMessageSoundAndHapticForMessage:(id)a3 messageIsForCurrentTranscript:(BOOL)a4;
+- (BOOL)allowedByScreenTimeToPlayReceiveSoundForChat:(id)chat;
+- (BOOL)playTapbackReceivedSoundForMessageInCurrentTranscript:(id)transcript;
+- (void)_playIncomingMessageSoundAndHapticForMessage:(id)message messageIsForCurrentTranscript:(BOOL)transcript;
+- (void)playIncomingMessageSoundAndHapticForMessage:(id)message messageIsForCurrentTranscript:(BOOL)transcript;
 - (void)stopPlayingAlert;
 @end
 
@@ -17,31 +17,31 @@
     v3 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(SMSApplicationSoundHelper *)self alert];
+      alert = [(SMSApplicationSoundHelper *)self alert];
       v6 = 138412290;
-      v7 = v4;
+      v7 = alert;
       _os_log_impl(&dword_19020E000, v3, OS_LOG_TYPE_INFO, "Requesting stop-alert: %@", &v6, 0xCu);
     }
   }
 
-  v5 = [(SMSApplicationSoundHelper *)self alert];
-  [v5 stop];
+  alert2 = [(SMSApplicationSoundHelper *)self alert];
+  [alert2 stop];
 
   [(SMSApplicationSoundHelper *)self setAlert:0];
 }
 
-- (BOOL)playTapbackReceivedSoundForMessageInCurrentTranscript:(id)a3
+- (BOOL)playTapbackReceivedSoundForMessageInCurrentTranscript:(id)transcript
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 guid];
+  transcriptCopy = transcript;
+  guid = [transcriptCopy guid];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v5;
+      v11 = guid;
       _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "Requesting play-tapback-receive-alert for messageGUID: %@", &v10, 0xCu);
     }
   }
@@ -84,7 +84,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  [v4 associatedMessageType];
+  [transcriptCopy associatedMessageType];
   v7 = IMMessageSoundPlayReceivedAckSound();
 LABEL_17:
 
@@ -121,11 +121,11 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)allowedByScreenTimeToPlayReceiveSoundForChat:(id)a3
+- (BOOL)allowedByScreenTimeToPlayReceiveSoundForChat:(id)chat
 {
-  if (a3)
+  if (chat)
   {
-    return [a3 allowedToShowConversationSync];
+    return [chat allowedToShowConversationSync];
   }
 
   else
@@ -134,13 +134,13 @@ LABEL_17:
   }
 }
 
-- (void)playIncomingMessageSoundAndHapticForMessage:(id)a3 messageIsForCurrentTranscript:(BOOL)a4
+- (void)playIncomingMessageSoundAndHapticForMessage:(id)message messageIsForCurrentTranscript:(BOOL)transcript
 {
-  v4 = a4;
-  v6 = a3;
+  transcriptCopy = transcript;
+  messageCopy = message;
   if ([(SMSApplicationSoundHelper *)self _isPlaySoundEnabled])
   {
-    [(SMSApplicationSoundHelper *)self _playIncomingMessageSoundAndHapticForMessage:v6 messageIsForCurrentTranscript:v4];
+    [(SMSApplicationSoundHelper *)self _playIncomingMessageSoundAndHapticForMessage:messageCopy messageIsForCurrentTranscript:transcriptCopy];
   }
 
   else if (IMOSLoggingEnabled())
@@ -154,19 +154,19 @@ LABEL_17:
   }
 }
 
-- (void)_playIncomingMessageSoundAndHapticForMessage:(id)a3 messageIsForCurrentTranscript:(BOOL)a4
+- (void)_playIncomingMessageSoundAndHapticForMessage:(id)message messageIsForCurrentTranscript:(BOOL)transcript
 {
-  v4 = a4;
+  transcriptCopy = transcript;
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v26 = [v6 guid];
+  messageCopy = message;
+  guid = [messageCopy guid];
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v26;
+      *(&buf + 4) = guid;
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Requesting play-incoming-alert for message.guid: %@", &buf, 0xCu);
     }
   }
@@ -192,15 +192,15 @@ LABEL_17:
   if (v8)
   {
     v10 = [CKEntity alloc];
-    v11 = [v6 sender];
-    v12 = [(CKEntity *)v10 initWithIMHandle:v11];
+    sender = [messageCopy sender];
+    v12 = [(CKEntity *)v10 initWithIMHandle:sender];
 
-    v13 = [(CKEntity *)v12 textToneIdentifier];
-    v14 = [(CKEntity *)v12 textVibrationIdentifier];
-    if (v4)
+    textToneIdentifier = [(CKEntity *)v12 textToneIdentifier];
+    textVibrationIdentifier = [(CKEntity *)v12 textVibrationIdentifier];
+    if (transcriptCopy)
     {
       v15 = getTLToneIdentifierNone();
-      if ([v13 isEqualToString:v15])
+      if ([textToneIdentifier isEqualToString:v15])
       {
         v16 = getTLToneIdentifierNone();
       }
@@ -211,7 +211,7 @@ LABEL_17:
       }
 
       v19 = getTLVibrationIdentifierNone();
-      if ([v14 isEqualToString:v19])
+      if ([textVibrationIdentifier isEqualToString:v19])
       {
         v20 = getTLVibrationIdentifierNone();
       }
@@ -222,8 +222,8 @@ LABEL_17:
       }
 
       v18 = 3;
-      v13 = v16;
-      v14 = v20;
+      textToneIdentifier = v16;
+      textVibrationIdentifier = v20;
     }
 
     else
@@ -237,7 +237,7 @@ LABEL_17:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         v22 = @"text message";
-        if (v4)
+        if (transcriptCopy)
         {
           v22 = @"message in conversation";
         }
@@ -249,20 +249,20 @@ LABEL_17:
     }
 
     v23 = [objc_alloc(MEMORY[0x1E69DA8E8]) initWithType:v18];
-    [v23 setToneIdentifier:v13];
-    [v23 setVibrationIdentifier:v14];
+    [v23 setToneIdentifier:textToneIdentifier];
+    [v23 setVibrationIdentifier:textVibrationIdentifier];
     v24 = [v8 alertWithConfiguration:v23];
     [(SMSApplicationSoundHelper *)self setAlert:v24];
 
     objc_initWeak(&buf, self);
-    v25 = [(SMSApplicationSoundHelper *)self alert];
+    alert = [(SMSApplicationSoundHelper *)self alert];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __104__SMSApplicationSoundHelper__playIncomingMessageSoundAndHapticForMessage_messageIsForCurrentTranscript___block_invoke;
     v27[3] = &unk_1E72EB940;
-    v28 = v26;
+    v28 = guid;
     objc_copyWeak(&v29, &buf);
-    [v25 playWithCompletionHandler:v27];
+    [alert playWithCompletionHandler:v27];
 
     objc_destroyWeak(&v29);
     objc_destroyWeak(&buf);

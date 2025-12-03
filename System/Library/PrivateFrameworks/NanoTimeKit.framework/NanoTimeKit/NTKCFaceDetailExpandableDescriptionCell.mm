@@ -6,9 +6,9 @@
 - (void)_moreTapped;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAttributedText:(id)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setText:(id)a3;
+- (void)setAttributedText:(id)text;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setText:(id)text;
 @end
 
 @implementation NTKCFaceDetailExpandableDescriptionCell
@@ -36,18 +36,18 @@
     v6 = BPSBridgeTintColor();
     [(UIButton *)v3->_moreButton setTintColor:v6];
 
-    v7 = [(NTKCFaceDetailDescriptionCell *)v3 textView];
-    v8 = [v7 font];
-    v9 = [(UIButton *)v3->_moreButton titleLabel];
-    [v9 setFont:v8];
+    textView = [(NTKCFaceDetailDescriptionCell *)v3 textView];
+    font = [textView font];
+    titleLabel = [(UIButton *)v3->_moreButton titleLabel];
+    [titleLabel setFont:font];
 
     v10 = v3->_moreButton;
     v12 = NTKCCustomizationLocalizedString(@"ACTION_MORE", @"more", v11);
     [(UIButton *)v10 setTitle:v12 forState:0];
 
     [(UIButton *)v3->_moreButton addTarget:v3 action:sel__moreTapped forControlEvents:64];
-    v13 = [(NTKCFaceDetailExpandableDescriptionCell *)v3 contentView];
-    [v13 addSubview:v3->_moreButton];
+    contentView = [(NTKCFaceDetailExpandableDescriptionCell *)v3 contentView];
+    [contentView addSubview:v3->_moreButton];
 
     v3->_shouldLayoutText = 1;
     v3->_laidOutWidth = 0.0;
@@ -56,29 +56,29 @@
   return v3;
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
-    self->_expanded = a3;
+    self->_expanded = expanded;
     self->_shouldLayoutText = 1;
     [(NTKCFaceDetailExpandableDescriptionCell *)self setNeedsLayout];
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v4.receiver = self;
   v4.super_class = NTKCFaceDetailExpandableDescriptionCell;
-  [(NTKCFaceDetailDescriptionCell *)&v4 setText:a3];
+  [(NTKCFaceDetailDescriptionCell *)&v4 setText:text];
   self->_shouldLayoutText = 1;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
   v4.receiver = self;
   v4.super_class = NTKCFaceDetailExpandableDescriptionCell;
-  [(NTKCFaceDetailDescriptionCell *)&v4 setAttributedText:a3];
+  [(NTKCFaceDetailDescriptionCell *)&v4 setAttributedText:text];
   self->_shouldLayoutText = 1;
 }
 
@@ -96,8 +96,8 @@
   v99.receiver = self;
   v99.super_class = NTKCFaceDetailExpandableDescriptionCell;
   [(NTKCFaceDetailDescriptionCell *)&v99 layoutSubviews];
-  v3 = [(NTKCFaceDetailExpandableDescriptionCell *)self contentView];
-  [v3 bounds];
+  contentView = [(NTKCFaceDetailExpandableDescriptionCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -113,24 +113,24 @@
   IsRTL = CLKLayoutIsRTL();
   if (self->_shouldLayoutText || self->_laidOutWidth != v14)
   {
-    v16 = [(NTKCFaceDetailDescriptionCell *)self textView];
-    v17 = [v16 textContainer];
-    [v17 setExclusionPaths:MEMORY[0x277CBEBF8]];
+    textView = [(NTKCFaceDetailDescriptionCell *)self textView];
+    textContainer = [textView textContainer];
+    [textContainer setExclusionPaths:MEMORY[0x277CBEBF8]];
 
-    v18 = [(NTKCFaceDetailDescriptionCell *)self textView];
-    v19 = [v18 textContainer];
-    [v19 setMaximumNumberOfLines:3];
+    textView2 = [(NTKCFaceDetailDescriptionCell *)self textView];
+    textContainer2 = [textView2 textContainer];
+    [textContainer2 setMaximumNumberOfLines:3];
 
-    v20 = [(NTKCFaceDetailDescriptionCell *)self textView];
-    [v20 sizeThatFits:{v14, 1.79769313e308}];
+    textView3 = [(NTKCFaceDetailDescriptionCell *)self textView];
+    [textView3 sizeThatFits:{v14, 1.79769313e308}];
     rect_16 = v21;
 
-    v22 = [(NTKCFaceDetailDescriptionCell *)self textView];
-    v23 = [v22 textContainer];
-    [v23 setMaximumNumberOfLines:0];
+    textView4 = [(NTKCFaceDetailDescriptionCell *)self textView];
+    textContainer3 = [textView4 textContainer];
+    [textContainer3 setMaximumNumberOfLines:0];
 
-    v24 = [(NTKCFaceDetailDescriptionCell *)self textView];
-    [v24 sizeThatFits:{v14, 1.79769313e308}];
+    textView5 = [(NTKCFaceDetailDescriptionCell *)self textView];
+    [textView5 sizeThatFits:{v14, 1.79769313e308}];
     rect_8 = v25;
 
     if (self->_expanded)
@@ -143,35 +143,35 @@
       v26 = 3;
     }
 
-    v27 = [(NTKCFaceDetailDescriptionCell *)self textView];
-    v28 = [v27 textContainer];
-    [v28 setMaximumNumberOfLines:v26];
+    textView6 = [(NTKCFaceDetailDescriptionCell *)self textView];
+    textContainer4 = [textView6 textContainer];
+    [textContainer4 setMaximumNumberOfLines:v26];
 
-    v29 = [(NTKCFaceDetailDescriptionCell *)self textView];
-    [v29 frame];
+    textView7 = [(NTKCFaceDetailDescriptionCell *)self textView];
+    [textView7 frame];
 
-    v30 = [(NTKCFaceDetailDescriptionCell *)self textView];
-    [v30 sizeThatFits:{v14, 1.79769313e308}];
+    textView8 = [(NTKCFaceDetailDescriptionCell *)self textView];
+    [textView8 sizeThatFits:{v14, 1.79769313e308}];
     v32 = v31;
 
     [(NTKCFaceDetailExpandableDescriptionCell *)self separatorInset];
     v34 = v33;
-    v35 = [(NTKCFaceDetailDescriptionCell *)self textView];
-    v36 = [v35 font];
-    [v36 _scaledValueForValue:13.5];
+    textView9 = [(NTKCFaceDetailDescriptionCell *)self textView];
+    font = [textView9 font];
+    [font _scaledValueForValue:13.5];
     v38 = v37;
 
-    v39 = [(NTKCFaceDetailDescriptionCell *)self textView];
-    [v39 setFrame:{v34, v38, v14, v32}];
+    textView10 = [(NTKCFaceDetailDescriptionCell *)self textView];
+    [textView10 setFrame:{v34, v38, v14, v32}];
 
-    v40 = [(NTKCFaceDetailExpandableDescriptionCell *)self moreButton];
-    [v40 sizeToFit];
+    moreButton = [(NTKCFaceDetailExpandableDescriptionCell *)self moreButton];
+    [moreButton sizeToFit];
 
-    v41 = [(NTKCFaceDetailExpandableDescriptionCell *)self moreButton];
-    [v41 layoutIfNeeded];
+    moreButton2 = [(NTKCFaceDetailExpandableDescriptionCell *)self moreButton];
+    [moreButton2 layoutIfNeeded];
 
-    v42 = [(NTKCFaceDetailExpandableDescriptionCell *)self moreButton];
-    [v42 frame];
+    moreButton3 = [(NTKCFaceDetailExpandableDescriptionCell *)self moreButton];
+    [moreButton3 frame];
     v44 = v43;
     v46 = v45;
     v48 = v47;
@@ -183,9 +183,9 @@
     v102.size.width = v48;
     v102.size.height = v50;
     Height = CGRectGetHeight(v102);
-    v52 = [(NTKCFaceDetailExpandableDescriptionCell *)self moreButton];
-    v53 = [v52 titleLabel];
-    [v53 frame];
+    moreButton4 = [(NTKCFaceDetailExpandableDescriptionCell *)self moreButton];
+    titleLabel = [moreButton4 titleLabel];
+    [titleLabel frame];
     rect_24 = Height - CGRectGetMaxY(v103);
 
     v54 = v34;
@@ -220,32 +220,32 @@
     v105.size.width = v14;
     v105.size.height = v32;
     v63 = rect_24 + CGRectGetMaxY(v105) - Height;
-    v64 = [(NTKCFaceDetailExpandableDescriptionCell *)self moreButton];
-    [v64 setFrame:{MinX, v63, v48, v50}];
+    moreButton5 = [(NTKCFaceDetailExpandableDescriptionCell *)self moreButton];
+    [moreButton5 setFrame:{MinX, v63, v48, v50}];
 
     expanded = self->_expanded;
-    v66 = [(NTKCFaceDetailExpandableDescriptionCell *)self moreButton];
-    v69 = v66;
+    moreButton6 = [(NTKCFaceDetailExpandableDescriptionCell *)self moreButton];
+    v69 = moreButton6;
     if (expanded || (v68 = rect_8, v67 = rect_16, rect_8 <= rect_16))
     {
-      [v66 setHidden:{1, v67, v68}];
+      [moreButton6 setHidden:{1, v67, v68}];
     }
 
     else
     {
-      [v66 setHidden:{0, rect_16, rect_8}];
+      [moreButton6 setHidden:{0, rect_16, rect_8}];
 
-      v70 = [(NTKCFaceDetailDescriptionCell *)self textView];
-      v71 = [(NTKCFaceDetailExpandableDescriptionCell *)self moreButton];
-      v72 = [v71 titleLabel];
-      [v72 frame];
+      textView11 = [(NTKCFaceDetailDescriptionCell *)self textView];
+      moreButton7 = [(NTKCFaceDetailExpandableDescriptionCell *)self moreButton];
+      titleLabel2 = [moreButton7 titleLabel];
+      [titleLabel2 frame];
       v74 = v73;
       v76 = v75;
       v77 = v14;
       v79 = v78;
       v81 = v80;
-      v82 = [(NTKCFaceDetailExpandableDescriptionCell *)self moreButton];
-      [v70 convertRect:v82 fromView:{v74, v76, v79, v81}];
+      moreButton8 = [(NTKCFaceDetailExpandableDescriptionCell *)self moreButton];
+      [textView11 convertRect:moreButton8 fromView:{v74, v76, v79, v81}];
       v84 = v83;
       v86 = v85;
       v88 = v87;
@@ -260,9 +260,9 @@
       v69 = [MEMORY[0x277D75208] bezierPathWithRect:{v107.origin.x, v107.origin.y, v107.size.width, v107.size.height}];
       v100[0] = v69;
       v91 = [MEMORY[0x277CBEA60] arrayWithObjects:v100 count:1];
-      v92 = [(NTKCFaceDetailDescriptionCell *)self textView];
-      v93 = [v92 textContainer];
-      [v93 setExclusionPaths:v91];
+      textView12 = [(NTKCFaceDetailDescriptionCell *)self textView];
+      textContainer5 = [textView12 textContainer];
+      [textContainer5 setExclusionPaths:v91];
     }
 
     self->_shouldLayoutText = 0;
@@ -273,8 +273,8 @@
 - (void)_moreTapped
 {
   [(NTKCFaceDetailExpandableDescriptionCell *)self setExpanded:1];
-  v3 = [(NTKCFaceDetailExpandableDescriptionCell *)self delegate];
-  [v3 descriptionCellDidExpand:self];
+  delegate = [(NTKCFaceDetailExpandableDescriptionCell *)self delegate];
+  [delegate descriptionCellDidExpand:self];
 }
 
 - (void)_fontSizeDidChange
@@ -282,10 +282,10 @@
   v6.receiver = self;
   v6.super_class = NTKCFaceDetailExpandableDescriptionCell;
   [(NTKCFaceDetailDescriptionCell *)&v6 _fontSizeDidChange];
-  v3 = [(NTKCFaceDetailDescriptionCell *)self textView];
-  v4 = [v3 font];
-  v5 = [(UIButton *)self->_moreButton titleLabel];
-  [v5 setFont:v4];
+  textView = [(NTKCFaceDetailDescriptionCell *)self textView];
+  font = [textView font];
+  titleLabel = [(UIButton *)self->_moreButton titleLabel];
+  [titleLabel setFont:font];
 
   self->_shouldLayoutText = 1;
   [(NTKCFaceDetailExpandableDescriptionCell *)self setNeedsLayout];

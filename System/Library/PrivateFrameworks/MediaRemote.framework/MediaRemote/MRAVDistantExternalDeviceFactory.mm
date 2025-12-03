@@ -1,9 +1,9 @@
 @interface MRAVDistantExternalDeviceFactory
 - (MRAVDistantExternalDeviceFactory)init;
 - (NSArray)externalDevices;
-- (id)_withLock_createDistantExternalDeviceForEndpoint:(id)a3;
+- (id)_withLock_createDistantExternalDeviceForEndpoint:(id)endpoint;
 - (id)description;
-- (id)distantExternalDeviceForEndpoint:(id)a3;
+- (id)distantExternalDeviceForEndpoint:(id)endpoint;
 - (void)_withLock_purgeCache;
 @end
 
@@ -66,39 +66,39 @@ void __56__MRAVDistantExternalDeviceFactory__withLock_purgeCache__block_invoke(u
 - (NSArray)externalDevices
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_distantExternalDevices allValues];
+  allValues = [(NSMutableDictionary *)self->_distantExternalDevices allValues];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allValues;
 }
 
-- (id)distantExternalDeviceForEndpoint:(id)a3
+- (id)distantExternalDeviceForEndpoint:(id)endpoint
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  endpointCopy = endpoint;
   os_unfair_lock_lock(&self->_lock);
   [(MRAVDistantExternalDeviceFactory *)self _withLock_purgeCache];
   distantExternalDevices = self->_distantExternalDevices;
-  v6 = [v4 uniqueIdentifier];
-  v7 = [(NSMutableDictionary *)distantExternalDevices objectForKeyedSubscript:v6];
+  uniqueIdentifier = [endpointCopy uniqueIdentifier];
+  v7 = [(NSMutableDictionary *)distantExternalDevices objectForKeyedSubscript:uniqueIdentifier];
 
   if (v7)
   {
-    v8 = _MRLogForCategory(0);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    uniqueIdentifier2 = _MRLogForCategory(0);
+    if (os_log_type_enabled(uniqueIdentifier2, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 debugName];
+      debugName = [endpointCopy debugName];
       v18 = 138412546;
-      v19 = v9;
+      v19 = debugName;
       v20 = 2112;
       v21 = v7;
-      _os_log_impl(&dword_1A2860000, v8, OS_LOG_TYPE_DEFAULT, "[MRAVDistantExternalDeviceFactory] Reusing distantExternalDevice for endpoint %@ %@", &v18, 0x16u);
+      _os_log_impl(&dword_1A2860000, uniqueIdentifier2, OS_LOG_TYPE_DEFAULT, "[MRAVDistantExternalDeviceFactory] Reusing distantExternalDevice for endpoint %@ %@", &v18, 0x16u);
     }
   }
 
   else
   {
-    v7 = [(MRAVDistantExternalDeviceFactory *)self _withLock_createDistantExternalDeviceForEndpoint:v4];
+    v7 = [(MRAVDistantExternalDeviceFactory *)self _withLock_createDistantExternalDeviceForEndpoint:endpointCopy];
     if (v7)
     {
       if (!self->_distantExternalDevices)
@@ -111,30 +111,30 @@ void __56__MRAVDistantExternalDeviceFactory__withLock_purgeCache__block_invoke(u
       v12 = _MRLogForCategory(0);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v4 debugName];
+        debugName2 = [endpointCopy debugName];
         v18 = 138412546;
-        v19 = v13;
+        v19 = debugName2;
         v20 = 2112;
         v21 = v7;
         _os_log_impl(&dword_1A2860000, v12, OS_LOG_TYPE_DEFAULT, "[MRAVDistantExternalDeviceFactory] Caching distantExternalDevice for endpoint %@ %@", &v18, 0x16u);
       }
 
       v14 = self->_distantExternalDevices;
-      v8 = [v4 uniqueIdentifier];
-      [(NSMutableDictionary *)v14 setObject:v7 forKeyedSubscript:v8];
+      uniqueIdentifier2 = [endpointCopy uniqueIdentifier];
+      [(NSMutableDictionary *)v14 setObject:v7 forKeyedSubscript:uniqueIdentifier2];
     }
 
     else
     {
-      v8 = _MRLogForCategory(0);
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      uniqueIdentifier2 = _MRLogForCategory(0);
+      if (os_log_type_enabled(uniqueIdentifier2, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v4 debugName];
+        debugName3 = [endpointCopy debugName];
         v18 = 138412546;
-        v19 = v15;
+        v19 = debugName3;
         v20 = 2112;
         v21 = 0;
-        _os_log_impl(&dword_1A2860000, v8, OS_LOG_TYPE_DEFAULT, "[MRAVDistantExternalDeviceFactory] Failed to create distantExternalDevice for endpoint %@ %@", &v18, 0x16u);
+        _os_log_impl(&dword_1A2860000, uniqueIdentifier2, OS_LOG_TYPE_DEFAULT, "[MRAVDistantExternalDeviceFactory] Failed to create distantExternalDevice for endpoint %@ %@", &v18, 0x16u);
 
         v7 = 0;
       }
@@ -147,13 +147,13 @@ void __56__MRAVDistantExternalDeviceFactory__withLock_purgeCache__block_invoke(u
   return v7;
 }
 
-- (id)_withLock_createDistantExternalDeviceForEndpoint:(id)a3
+- (id)_withLock_createDistantExternalDeviceForEndpoint:(id)endpoint
 {
-  v3 = a3;
-  v4 = [v3 externalDeviceListenerEndpoint];
-  if (v4)
+  endpointCopy = endpoint;
+  externalDeviceListenerEndpoint = [endpointCopy externalDeviceListenerEndpoint];
+  if (externalDeviceListenerEndpoint)
   {
-    v5 = [[MRDistantExternalDevice alloc] initWithExternalDeviceListenerEndpoint:v4 endpoint:v3];
+    v5 = [[MRDistantExternalDevice alloc] initWithExternalDeviceListenerEndpoint:externalDeviceListenerEndpoint endpoint:endpointCopy];
   }
 
   else

@@ -3,14 +3,14 @@
 - (VKCImageAnalysis)imageAnalysis;
 - (VKCImageAnalyzerRequest)request;
 - (VKFeedbackProvider)init;
-- (id)_jsonRepresentationForAttributesDictionary:(id)a3;
+- (id)_jsonRepresentationForAttributesDictionary:(id)dictionary;
 - (void)_captureScreenshots;
-- (void)_saveFeedbackAttributesJSON:(id)a3;
-- (void)_saveImage:(id)a3 withName:(id)a4;
+- (void)_saveFeedbackAttributesJSON:(id)n;
+- (void)_saveImage:(id)image withName:(id)name;
 - (void)_saveScreenshots;
-- (void)feedbackProviderViewController:(id)a3 submitWithOptions:(unint64_t)a4 attachments:(id)a5;
-- (void)feedbackProviderViewControllerDidCancel:(id)a3;
-- (void)provideFeedbackWithType:(unint64_t)a3 options:(unint64_t)a4 metadata:(id)a5 promisedAttachments:(id)a6 userResponseHandler:(id)a7;
+- (void)feedbackProviderViewController:(id)controller submitWithOptions:(unint64_t)options attachments:(id)attachments;
+- (void)feedbackProviderViewControllerDidCancel:(id)cancel;
+- (void)provideFeedbackWithType:(unint64_t)type options:(unint64_t)options metadata:(id)metadata promisedAttachments:(id)attachments userResponseHandler:(id)handler;
 @end
 
 @implementation VKFeedbackProvider
@@ -22,14 +22,14 @@
   v2 = [(VKFeedbackProvider *)&v18 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
-    v4 = [v3 temporaryDirectory];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    temporaryDirectory = [defaultManager temporaryDirectory];
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [MEMORY[0x1E696AFB0] UUID];
-    v7 = [v6 UUIDString];
-    v8 = [v5 stringWithFormat:@"feedbackAttachments-%@", v7];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v8 = [v5 stringWithFormat:@"feedbackAttachments-%@", uUIDString];
 
-    v9 = [v4 URLByAppendingPathComponent:v8 isDirectory:1];
+    v9 = [temporaryDirectory URLByAppendingPathComponent:v8 isDirectory:1];
     attachmentsFolderURL = v2->_attachmentsFolderURL;
     v2->_attachmentsFolderURL = v9;
 
@@ -49,72 +49,72 @@
   return v2;
 }
 
-- (void)provideFeedbackWithType:(unint64_t)a3 options:(unint64_t)a4 metadata:(id)a5 promisedAttachments:(id)a6 userResponseHandler:(id)a7
+- (void)provideFeedbackWithType:(unint64_t)type options:(unint64_t)options metadata:(id)metadata promisedAttachments:(id)attachments userResponseHandler:(id)handler
 {
-  v23 = a5;
-  v13 = a6;
-  v14 = a7;
-  if (a4)
+  metadataCopy = metadata;
+  attachmentsCopy = attachments;
+  handlerCopy = handler;
+  if (options)
   {
     [(VKFeedbackProvider *)self _captureScreenshots];
   }
 
-  v15 = [MEMORY[0x1E696AC08] defaultManager];
-  [v15 removeItemAtURL:self->_attachmentsFolderURL error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager removeItemAtURL:self->_attachmentsFolderURL error:0];
 
-  self->_type = a3;
-  objc_storeStrong(&self->_metadata, a5);
-  v16 = _Block_copy(v14);
+  self->_type = type;
+  objc_storeStrong(&self->_metadata, metadata);
+  v16 = _Block_copy(handlerCopy);
   userResponseHandler = self->_userResponseHandler;
   self->_userResponseHandler = v16;
 
-  if (!v13)
+  if (!attachmentsCopy)
   {
-    v13 = MEMORY[0x1E695E0F0];
+    attachmentsCopy = MEMORY[0x1E695E0F0];
   }
 
-  v18 = [(VKFeedbackProvider *)self assetsProvider];
+  assetsProvider = [(VKFeedbackProvider *)self assetsProvider];
 
-  if (v18)
+  if (assetsProvider)
   {
-    v19 = [v13 arrayByAddingObject:self->_requestAssetAttachment];
+    v19 = [attachmentsCopy arrayByAddingObject:self->_requestAssetAttachment];
 
-    v13 = v19;
+    attachmentsCopy = v19;
   }
 
-  v20 = [(VKFeedbackProvider *)self imageAnalysis];
+  imageAnalysis = [(VKFeedbackProvider *)self imageAnalysis];
 
-  if (v20)
+  if (imageAnalysis)
   {
-    v21 = [v13 arrayByAddingObject:self->_analysisArchiveAttachment];
+    v21 = [attachmentsCopy arrayByAddingObject:self->_analysisArchiveAttachment];
 
-    v13 = v21;
+    attachmentsCopy = v21;
   }
 
-  v22 = [[VKFeedbackProviderViewController alloc] initWithOptions:a4 attachments:v13];
+  v22 = [[VKFeedbackProviderViewController alloc] initWithOptions:options attachments:attachmentsCopy];
   [(VKFeedbackProviderViewController *)v22 setDelegate:self];
   [(VKFeedbackProviderViewController *)v22 present];
 }
 
-- (void)feedbackProviderViewControllerDidCancel:(id)a3
+- (void)feedbackProviderViewControllerDidCancel:(id)cancel
 {
   (*(self->_userResponseHandler + 2))();
   userResponseHandler = self->_userResponseHandler;
   self->_userResponseHandler = 0;
 
   [(NSMutableArray *)self->_screenshots removeAllObjects];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  [v5 removeItemAtURL:self->_attachmentsFolderURL error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager removeItemAtURL:self->_attachmentsFolderURL error:0];
 }
 
-- (void)feedbackProviderViewController:(id)a3 submitWithOptions:(unint64_t)a4 attachments:(id)a5
+- (void)feedbackProviderViewController:(id)controller submitWithOptions:(unint64_t)options attachments:(id)attachments
 {
-  v7 = a5;
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [(NSURL *)self->_attachmentsFolderURL path];
-  v10 = [v8 fileExistsAtPath:v9];
+  attachmentsCopy = attachments;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [(NSURL *)self->_attachmentsFolderURL path];
+  v10 = [defaultManager fileExistsAtPath:path];
 
-  if ((v10 & 1) != 0 || (attachmentsFolderURL = self->_attachmentsFolderURL, v74[0] = 0, [v8 createDirectoryAtURL:attachmentsFolderURL withIntermediateDirectories:1 attributes:0 error:v74], (v12 = v74[0]) == 0))
+  if ((v10 & 1) != 0 || (attachmentsFolderURL = self->_attachmentsFolderURL, v74[0] = 0, [defaultManager createDirectoryAtURL:attachmentsFolderURL withIntermediateDirectories:1 attributes:0 error:v74], (v12 = v74[0]) == 0))
   {
     v16 = [(NSDictionary *)self->_metadata objectForKeyedSubscript:@"ComponentName"];
     v17 = v16;
@@ -147,7 +147,7 @@
     v55 = v24;
 
     type = self->_type;
-    v60 = v8;
+    v60 = defaultManager;
     if (type > 3)
     {
       v26 = 0;
@@ -171,13 +171,13 @@
     [v27 appendString:{@"\n If this is a data detector issue, please also select and copy the OCR text output if possible"}];
     [v27 appendString:{@"\n If this is a MRC issue, please verify that the MRC correctly works in the Code Scanner app"}];
     [v27 appendString:{@"\n For visual search issues, also please attach a screenshot of the Siri Search results"}];
-    v28 = [(VKFeedbackProvider *)self error];
+    error = [(VKFeedbackProvider *)self error];
 
-    if (v28)
+    if (error)
     {
-      v29 = [(VKFeedbackProvider *)self error];
-      v30 = [v29 localizedDescription];
-      [v27 appendFormat:@"\n\nAnalysis Error: %@", v30];
+      error2 = [(VKFeedbackProvider *)self error];
+      localizedDescription = [error2 localizedDescription];
+      [v27 appendFormat:@"\n\nAnalysis Error: %@", localizedDescription];
     }
 
     v31 = [(NSDictionary *)self->_metadata objectForKeyedSubscript:@"AdditionalText"];
@@ -190,26 +190,26 @@
     v59 = v32;
     v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [v15 setObject:v26 forKey:@"feedback_type"];
-    v33 = [(NSDictionary *)self->_metadata objectForKeyedSubscript:@"Client"];
-    if (!v33)
+    bundleIdentifier = [(NSDictionary *)self->_metadata objectForKeyedSubscript:@"Client"];
+    if (!bundleIdentifier)
     {
-      v34 = [MEMORY[0x1E696AAE8] mainBundle];
-      v33 = [v34 bundleIdentifier];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
     }
 
-    v53 = v33;
-    [v15 setObject:v33 forKey:@"client_id"];
+    v53 = bundleIdentifier;
+    [v15 setObject:bundleIdentifier forKey:@"client_id"];
     [v15 setObject:@"iOS" forKey:@"platform"];
     v52 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:@"/System/Library/CoreServices/SystemVersion.plist"];
     v51 = [v52 valueForKey:@"ProductBuildVersion"];
     [NSObject setObject:v15 forKey:"setObject:forKey:"];
-    if ((a4 & 2) != 0)
+    if ((options & 2) != 0)
     {
-      v35 = [MEMORY[0x1E695DF58] currentLocale];
-      v36 = [v35 countryCode];
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+      countryCode = [currentLocale countryCode];
 
       v37 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"en_US"];
-      v38 = [v37 localizedStringForCountryCode:v36];
+      v38 = [v37 localizedStringForCountryCode:countryCode];
       if (v38)
       {
         [v15 setObject:v38 forKey:@"country"];
@@ -224,25 +224,25 @@
       [v27 appendFormat:@"\n\nFeedback Attributes:\n%@", v40];
     }
 
-    if (a4)
+    if (options)
     {
       [(VKFeedbackProvider *)self _saveScreenshots];
     }
 
     v41 = self->_attachmentsFolderURL;
-    v42 = [(VKFeedbackProvider *)self assetsProvider];
-    v43 = [(VKFeedbackProvider *)self imageAnalysis];
+    assetsProvider = [(VKFeedbackProvider *)self assetsProvider];
+    imageAnalysis = [(VKFeedbackProvider *)self imageAnalysis];
     v44 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __83__VKFeedbackProvider_feedbackProviderViewController_submitWithOptions_attachments___block_invoke;
     block[3] = &unk_1E7BE6710;
-    v63 = v7;
-    v64 = self;
-    v65 = v42;
+    v63 = attachmentsCopy;
+    selfCopy = self;
+    v65 = assetsProvider;
     v66 = v41;
-    v73 = a4;
-    v67 = v43;
+    optionsCopy = options;
+    v67 = imageAnalysis;
     v68 = v54;
     v69 = v27;
     v70 = v61;
@@ -253,13 +253,13 @@
     v45 = v61;
     v46 = v27;
     v47 = v54;
-    v48 = v43;
+    v48 = imageAnalysis;
     v49 = v41;
-    v50 = v42;
+    v50 = assetsProvider;
     dispatch_async(v44, block);
 
     v13 = v59;
-    v8 = v60;
+    defaultManager = v60;
     v14 = v53;
   }
 
@@ -407,13 +407,13 @@ LABEL_19:
   [VKRadarUtilities createRadarWithTitle:*(a1 + 72) description:*(a1 + 80) componentName:*(a1 + 88) componentVersion:*(a1 + 96) componentID:*(a1 + 104) keywordIDs:0 attachmentURLs:v23 includeSysdiagnose:v30];
 }
 
-- (id)_jsonRepresentationForAttributesDictionary:(id)a3
+- (id)_jsonRepresentationForAttributesDictionary:(id)dictionary
 {
-  v3 = a3;
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v3])
+  dictionaryCopy = dictionary;
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryCopy])
   {
     v8 = 0;
-    v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v3 options:3 error:&v8];
+    v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryCopy options:3 error:&v8];
     v5 = v8;
     if (!v5)
     {
@@ -432,7 +432,7 @@ LABEL_19:
     v6 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(VKFeedbackProvider *)v3 _jsonRepresentationForAttributesDictionary:v6];
+      [(VKFeedbackProvider *)dictionaryCopy _jsonRepresentationForAttributesDictionary:v6];
     }
 
     v5 = 0;
@@ -444,13 +444,13 @@ LABEL_10:
   return v4;
 }
 
-- (void)_saveFeedbackAttributesJSON:(id)a3
+- (void)_saveFeedbackAttributesJSON:(id)n
 {
   attachmentsFolderURL = self->_attachmentsFolderURL;
-  v4 = a3;
+  nCopy = n;
   v5 = [(NSURL *)attachmentsFolderURL URLByAppendingPathComponent:@"FeedbackAttributes.json"];
   v8 = 0;
-  [v4 writeToURL:v5 options:2 error:&v8];
+  [nCopy writeToURL:v5 options:2 error:&v8];
 
   v6 = v8;
   if (v6)
@@ -516,8 +516,8 @@ LABEL_10:
   }
 
   v16 = objc_alloc(MEMORY[0x1E69DCA78]);
-  v17 = [MEMORY[0x1E69DCA80] defaultFormat];
-  v18 = [v16 initWithBounds:v17 format:{x, y, width, height}];
+  defaultFormat = [MEMORY[0x1E69DCA80] defaultFormat];
+  v18 = [v16 initWithBounds:defaultFormat format:{x, y, width, height}];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -597,15 +597,15 @@ unint64_t __41__VKFeedbackProvider__captureScreenshots__block_invoke(uint64_t a1
   }
 }
 
-- (void)_saveImage:(id)a3 withName:(id)a4
+- (void)_saveImage:(id)image withName:(id)name
 {
-  v6 = a4;
-  v7 = [a3 vk_PNGData];
-  if (v7)
+  nameCopy = name;
+  vk_PNGData = [image vk_PNGData];
+  if (vk_PNGData)
   {
-    v8 = [(NSURL *)self->_attachmentsFolderURL URLByAppendingPathComponent:v6];
+    v8 = [(NSURL *)self->_attachmentsFolderURL URLByAppendingPathComponent:nameCopy];
     v11 = 0;
-    [v7 writeToURL:v8 options:2 error:&v11];
+    [vk_PNGData writeToURL:v8 options:2 error:&v11];
     v9 = v11;
     if (v9)
     {
@@ -620,21 +620,21 @@ unint64_t __41__VKFeedbackProvider__captureScreenshots__block_invoke(uint64_t a1
 
 - (VKCImageAnalyzerRequest)request
 {
-  v3 = [(VKFeedbackProvider *)self assetsProvider];
+  assetsProvider = [(VKFeedbackProvider *)self assetsProvider];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(VKFeedbackProvider *)self assetsProvider];
+    assetsProvider2 = [(VKFeedbackProvider *)self assetsProvider];
   }
 
   else
   {
-    v5 = 0;
+    assetsProvider2 = 0;
   }
 
-  return v5;
+  return assetsProvider2;
 }
 
 - (VKCImageAnalysis)imageAnalysis

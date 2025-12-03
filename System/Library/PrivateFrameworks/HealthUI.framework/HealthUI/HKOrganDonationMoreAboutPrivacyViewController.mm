@@ -1,8 +1,8 @@
 @interface HKOrganDonationMoreAboutPrivacyViewController
 - (void)_updateForCurrentSizeCategory;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HKOrganDonationMoreAboutPrivacyViewController
@@ -12,13 +12,13 @@
   v26.receiver = self;
   v26.super_class = HKOrganDonationMoreAboutPrivacyViewController;
   [(HKOrganDonationMoreAboutPrivacyViewController *)&v26 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v4 = [(HKOrganDonationMoreAboutPrivacyViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  view = [(HKOrganDonationMoreAboutPrivacyViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
   v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_doneButtonTapped_];
-  v6 = [(HKOrganDonationMoreAboutPrivacyViewController *)self navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  navigationItem = [(HKOrganDonationMoreAboutPrivacyViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v5];
 
   v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v8 = [v7 localizedStringForKey:@"OD_PRIVACY_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
@@ -31,29 +31,29 @@
   [(UITextView *)self->_textView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UITextView *)self->_textView setEditable:0];
   [(UITextView *)self->_textView setSelectable:0];
-  v11 = [(HKOrganDonationMoreAboutPrivacyViewController *)self view];
-  [v11 addSubview:self->_textView];
+  view2 = [(HKOrganDonationMoreAboutPrivacyViewController *)self view];
+  [view2 addSubview:self->_textView];
 
-  v12 = [(UITextView *)self->_textView widthAnchor];
-  v13 = [v12 constraintEqualToConstant:308.0];
+  widthAnchor = [(UITextView *)self->_textView widthAnchor];
+  v13 = [widthAnchor constraintEqualToConstant:308.0];
   [v13 setActive:1];
 
-  v14 = [(UITextView *)self->_textView centerXAnchor];
-  v15 = [(HKOrganDonationMoreAboutPrivacyViewController *)self view];
-  v16 = [v15 centerXAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  centerXAnchor = [(UITextView *)self->_textView centerXAnchor];
+  view3 = [(HKOrganDonationMoreAboutPrivacyViewController *)self view];
+  centerXAnchor2 = [view3 centerXAnchor];
+  v17 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v17 setActive:1];
 
-  v18 = [(UITextView *)self->_textView topAnchor];
-  v19 = [(HKOrganDonationMoreAboutPrivacyViewController *)self view];
-  v20 = [v19 topAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  topAnchor = [(UITextView *)self->_textView topAnchor];
+  view4 = [(HKOrganDonationMoreAboutPrivacyViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v21 setActive:1];
 
-  v22 = [(UITextView *)self->_textView bottomAnchor];
-  v23 = [(HKOrganDonationMoreAboutPrivacyViewController *)self view];
-  v24 = [v23 bottomAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24];
+  bottomAnchor = [(UITextView *)self->_textView bottomAnchor];
+  view5 = [(HKOrganDonationMoreAboutPrivacyViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v25 setActive:1];
 
   [(HKOrganDonationMoreAboutPrivacyViewController *)self _updateForCurrentSizeCategory];
@@ -67,8 +67,8 @@
   v5 = v4;
   [v3 _scaledValueForValue:32.0];
   v7 = v6 - v5;
-  v8 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v9 = [v8 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v9 = [defaultParagraphStyle mutableCopy];
 
   [v9 setMinimumLineHeight:v5];
   [v9 setParagraphSpacing:v7];
@@ -80,8 +80,8 @@
   v18[0] = v3;
   v18[1] = v9;
   v17[2] = *MEMORY[0x1E69DB650];
-  v11 = [MEMORY[0x1E69DC888] labelColor];
-  v18[2] = v11;
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v18[2] = labelColor;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:3];
 
   v13 = objc_alloc(MEMORY[0x1E696AAB0]);
@@ -92,28 +92,28 @@
   [(UITextView *)self->_textView setAttributedText:v16];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = HKOrganDonationMoreAboutPrivacyViewController;
-  [(HKOrganDonationMoreAboutPrivacyViewController *)&v6 viewWillAppear:a3];
+  [(HKOrganDonationMoreAboutPrivacyViewController *)&v6 viewWillAppear:appear];
   textView = self->_textView;
   [(UITextView *)textView contentInset];
   [(UITextView *)textView setContentOffset:0.0, -v5];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = HKOrganDonationMoreAboutPrivacyViewController;
-  [(HKOrganDonationMoreAboutPrivacyViewController *)&v9 traitCollectionDidChange:v4];
-  if (v4)
+  [(HKOrganDonationMoreAboutPrivacyViewController *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(HKOrganDonationMoreAboutPrivacyViewController *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(HKOrganDonationMoreAboutPrivacyViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {

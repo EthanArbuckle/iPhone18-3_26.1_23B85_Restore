@@ -1,6 +1,6 @@
 @interface PXWidgetBarSpec
 - (UIEdgeInsets)contentInsets;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXWidgetBarSpec
@@ -18,9 +18,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong((v4 + 16), self->_textColor);
   objc_storeStrong((v4 + 24), self->_primaryFont);
   objc_storeStrong((v4 + 32), self->_secondaryFont);

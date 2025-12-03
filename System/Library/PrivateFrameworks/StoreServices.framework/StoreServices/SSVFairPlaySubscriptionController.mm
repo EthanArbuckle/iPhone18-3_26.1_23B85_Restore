@@ -1,17 +1,17 @@
 @interface SSVFairPlaySubscriptionController
-- (BOOL)generateSubscriptionBagRequestWithAccountUniqueIdentifier:(unint64_t)a3 transactionType:(unsigned int)a4 machineIDData:(id)a5 returningSubscriptionBagData:(id *)a6 error:(id *)a7;
-- (BOOL)generateSubscriptionLeaseRequestWithAccountUniqueID:(unint64_t)a3 transactionType:(unsigned int)a4 certificateData:(id)a5 assetIDData:(id)a6 returningLeaseData:(id *)a7 subscriptionBagData:(id *)a8 error:(id *)a9;
-- (BOOL)importSubscriptionKeyBagData:(id)a3 leaseInfoData:(id)a4 returningError:(id *)a5;
-- (BOOL)importSubscriptionKeyBagData:(id)a3 returningError:(id *)a4;
-- (BOOL)stopSubscriptionLease:(id *)a3;
+- (BOOL)generateSubscriptionBagRequestWithAccountUniqueIdentifier:(unint64_t)identifier transactionType:(unsigned int)type machineIDData:(id)data returningSubscriptionBagData:(id *)bagData error:(id *)error;
+- (BOOL)generateSubscriptionLeaseRequestWithAccountUniqueID:(unint64_t)d transactionType:(unsigned int)type certificateData:(id)data assetIDData:(id)dData returningLeaseData:(id *)leaseData subscriptionBagData:(id *)bagData error:(id *)error;
+- (BOOL)importSubscriptionKeyBagData:(id)data leaseInfoData:(id)infoData returningError:(id *)error;
+- (BOOL)importSubscriptionKeyBagData:(id)data returningError:(id *)error;
+- (BOOL)stopSubscriptionLease:(id *)lease;
 - (SSVFairPlaySubscriptionController)init;
-- (id)_accountUniqueIdentifierToSubscriptionStatusWithFPSubscriptionInfoList:(FPSubscriptionInfo_ *)a3 subscriptionInfoListLength:(unsigned int)a4;
-- (id)_subscriptionStatusForFPSubscriptionInfo:(FPSubscriptionInfo_)a3;
-- (id)subscriptionStatusForAccountUniqueIdentifier:(unint64_t)a3;
-- (void)_enumerateSubscriptionInfoUsingBlock:(id)a3;
+- (id)_accountUniqueIdentifierToSubscriptionStatusWithFPSubscriptionInfoList:(FPSubscriptionInfo_ *)list subscriptionInfoListLength:(unsigned int)length;
+- (id)_subscriptionStatusForFPSubscriptionInfo:(FPSubscriptionInfo_)info;
+- (id)subscriptionStatusForAccountUniqueIdentifier:(unint64_t)identifier;
+- (void)_enumerateSubscriptionInfoUsingBlock:(id)block;
 - (void)_notifySubscriptionStatusDidChange;
 - (void)dealloc;
-- (void)enumerateAccountSubscriptionStatusUsingBlock:(id)a3;
+- (void)enumerateAccountSubscriptionStatusUsingBlock:(id)block;
 @end
 
 @implementation SSVFairPlaySubscriptionController
@@ -78,18 +78,18 @@ void __41__SSVFairPlaySubscriptionController_init__block_invoke(uint64_t a1, int
   [(SSVFairPlaySubscriptionController *)&v3 dealloc];
 }
 
-- (void)enumerateAccountSubscriptionStatusUsingBlock:(id)a3
+- (void)enumerateAccountSubscriptionStatusUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __82__SSVFairPlaySubscriptionController_enumerateAccountSubscriptionStatusUsingBlock___block_invoke;
     v6[3] = &unk_1E84B2DB8;
     v6[4] = self;
-    v7 = v4;
+    v7 = blockCopy;
     [(SSVFairPlaySubscriptionController *)self _enumerateSubscriptionInfoUsingBlock:v6];
   }
 }
@@ -105,7 +105,7 @@ uint64_t __82__SSVFairPlaySubscriptionController_enumerateAccountSubscriptionSta
   return MEMORY[0x1EEE66BE0]();
 }
 
-- (id)subscriptionStatusForAccountUniqueIdentifier:(unint64_t)a3
+- (id)subscriptionStatusForAccountUniqueIdentifier:(unint64_t)identifier
 {
   v6 = 0;
   v7 = &v6;
@@ -118,7 +118,7 @@ uint64_t __82__SSVFairPlaySubscriptionController_enumerateAccountSubscriptionSta
   v5[2] = __82__SSVFairPlaySubscriptionController_subscriptionStatusForAccountUniqueIdentifier___block_invoke;
   v5[3] = &unk_1E84B2DE0;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = identifier;
   v5[4] = self;
   [(SSVFairPlaySubscriptionController *)self _enumerateSubscriptionInfoUsingBlock:v5];
   v3 = v7[5];
@@ -140,17 +140,17 @@ void __82__SSVFairPlaySubscriptionController_subscriptionStatusForAccountUniqueI
   }
 }
 
-- (BOOL)generateSubscriptionBagRequestWithAccountUniqueIdentifier:(unint64_t)a3 transactionType:(unsigned int)a4 machineIDData:(id)a5 returningSubscriptionBagData:(id *)a6 error:(id *)a7
+- (BOOL)generateSubscriptionBagRequestWithAccountUniqueIdentifier:(unint64_t)identifier transactionType:(unsigned int)type machineIDData:(id)data returningSubscriptionBagData:(id *)bagData error:(id *)error
 {
-  v9 = *&a4;
+  v9 = *&type;
   v23 = 0;
   v22 = 0;
-  v11 = a5;
+  dataCopy = data;
   v12 = SSVFairPlayContextIdentifier();
-  v13 = [v11 bytes];
-  v14 = [v11 length];
+  bytes = [dataCopy bytes];
+  v14 = [dataCopy length];
 
-  V3lNO(v12, a3, v9, v13, v14, &v23, &v22);
+  V3lNO(v12, identifier, v9, bytes, v14, &v23, &v22);
   if (v15)
   {
     v16 = SSError(@"SSVFairPlayErrorDomain", v15, 0, 0);
@@ -162,7 +162,7 @@ void __82__SSVFairPlaySubscriptionController_subscriptionStatusForAccountUniqueI
     v16 = 0;
 LABEL_3:
     v17 = 0;
-    if (!a6)
+    if (!bagData)
     {
       goto LABEL_5;
     }
@@ -173,40 +173,40 @@ LABEL_3:
   v21 = objc_alloc(MEMORY[0x1E695DEF0]);
   v17 = [v21 initWithBytesNoCopy:v23 length:v22 deallocator:&__block_literal_global_33];
   v16 = 0;
-  if (a6)
+  if (bagData)
   {
 LABEL_4:
     v18 = v17;
-    *a6 = v17;
+    *bagData = v17;
   }
 
 LABEL_5:
-  if (a7)
+  if (error)
   {
     v19 = v16;
-    *a7 = v16;
+    *error = v16;
   }
 
   return v16 == 0;
 }
 
-- (BOOL)generateSubscriptionLeaseRequestWithAccountUniqueID:(unint64_t)a3 transactionType:(unsigned int)a4 certificateData:(id)a5 assetIDData:(id)a6 returningLeaseData:(id *)a7 subscriptionBagData:(id *)a8 error:(id *)a9
+- (BOOL)generateSubscriptionLeaseRequestWithAccountUniqueID:(unint64_t)d transactionType:(unsigned int)type certificateData:(id)data assetIDData:(id)dData returningLeaseData:(id *)leaseData subscriptionBagData:(id *)bagData error:(id *)error
 {
-  v12 = *&a4;
+  v12 = *&type;
   v34 = 0;
   v33 = 0;
   v32 = 0;
   v31 = 0;
-  v14 = a6;
-  v15 = a5;
+  dDataCopy = dData;
+  dataCopy = data;
   v16 = SSVFairPlayContextIdentifier();
-  v17 = [v15 bytes];
-  v18 = [v15 length];
+  bytes = [dataCopy bytes];
+  v18 = [dataCopy length];
 
-  v19 = [v14 bytes];
-  v20 = [v14 length];
+  bytes2 = [dDataCopy bytes];
+  v20 = [dDataCopy length];
 
-  PhUojZmspd(v16, a3, v12, v17, v18, v19, v20, &v34, &v33, &v32, &v31);
+  PhUojZmspd(v16, d, v12, bytes, v18, bytes2, v20, &v34, &v33, &v32, &v31);
   if (v21)
   {
     v22 = SSError(@"SSVFairPlayErrorDomain", v21, 0, 0);
@@ -241,30 +241,30 @@ LABEL_5:
     v22 = 0;
   }
 
-  if (a8)
+  if (bagData)
   {
     v27 = v24;
-    *a8 = v24;
+    *bagData = v24;
   }
 
-  if (a7)
+  if (leaseData)
   {
     v28 = v23;
-    *a7 = v23;
+    *leaseData = v23;
   }
 
-  if (a9)
+  if (error)
   {
     v29 = v22;
-    *a9 = v22;
+    *error = v22;
   }
 
   return v22 == 0;
 }
 
-- (BOOL)importSubscriptionKeyBagData:(id)a3 returningError:(id *)a4
+- (BOOL)importSubscriptionKeyBagData:(id)data returningError:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -277,13 +277,13 @@ LABEL_5:
   block[2] = __81__SSVFairPlaySubscriptionController_importSubscriptionKeyBagData_returningError___block_invoke;
   block[3] = &unk_1E84ADE08;
   block[4] = self;
-  v8 = v6;
+  v8 = dataCopy;
   v12 = v8;
   v13 = &v14;
   dispatch_barrier_sync(accessQueue, block);
-  if (a4)
+  if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   v9 = v15[5] == 0;
@@ -321,10 +321,10 @@ void __81__SSVFairPlaySubscriptionController_importSubscriptionKeyBagData_return
   }
 }
 
-- (BOOL)importSubscriptionKeyBagData:(id)a3 leaseInfoData:(id)a4 returningError:(id *)a5
+- (BOOL)importSubscriptionKeyBagData:(id)data leaseInfoData:(id)infoData returningError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  infoDataCopy = infoData;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -337,15 +337,15 @@ void __81__SSVFairPlaySubscriptionController_importSubscriptionKeyBagData_return
   v15[2] = __95__SSVFairPlaySubscriptionController_importSubscriptionKeyBagData_leaseInfoData_returningError___block_invoke;
   v15[3] = &unk_1E84B2E08;
   v15[4] = self;
-  v11 = v9;
+  v11 = infoDataCopy;
   v16 = v11;
-  v12 = v8;
+  v12 = dataCopy;
   v17 = v12;
   v18 = &v19;
   dispatch_barrier_sync(accessQueue, v15);
-  if (a5)
+  if (error)
   {
-    *a5 = v20[5];
+    *error = v20[5];
   }
 
   v13 = v20[5] == 0;
@@ -385,7 +385,7 @@ void __95__SSVFairPlaySubscriptionController_importSubscriptionKeyBagData_leaseI
   }
 }
 
-- (BOOL)stopSubscriptionLease:(id *)a3
+- (BOOL)stopSubscriptionLease:(id *)lease
 {
   v14 = 0;
   v15 = &v14;
@@ -406,9 +406,9 @@ void __95__SSVFairPlaySubscriptionController_importSubscriptionKeyBagData_leaseI
   v7[5] = &v8;
   dispatch_barrier_sync(accessQueue, v7);
   v5 = *(v15 + 24);
-  if (a3 && (v15[3] & 1) == 0)
+  if (lease && (v15[3] & 1) == 0)
   {
-    *a3 = v9[5];
+    *lease = v9[5];
     v5 = *(v15 + 24);
   }
 
@@ -436,13 +436,13 @@ void __59__SSVFairPlaySubscriptionController_stopSubscriptionLease___block_invok
   }
 }
 
-- (id)_accountUniqueIdentifierToSubscriptionStatusWithFPSubscriptionInfoList:(FPSubscriptionInfo_ *)a3 subscriptionInfoListLength:(unsigned int)a4
+- (id)_accountUniqueIdentifierToSubscriptionStatusWithFPSubscriptionInfoList:(FPSubscriptionInfo_ *)list subscriptionInfoListLength:(unsigned int)length
 {
-  if (a4)
+  if (length)
   {
     v5 = 0;
-    p_var1 = &a3->var1;
-    v7 = a4;
+    p_var1 = &list->var1;
+    lengthCopy = length;
     do
     {
       v8 = *(p_var1 - 1);
@@ -460,10 +460,10 @@ void __59__SSVFairPlaySubscriptionController_stopSubscriptionLease___block_invok
 
       p_var1 += 4;
 
-      --v7;
+      --lengthCopy;
     }
 
-    while (v7);
+    while (lengthCopy);
   }
 
   else
@@ -474,10 +474,10 @@ void __59__SSVFairPlaySubscriptionController_stopSubscriptionLease___block_invok
   return v5;
 }
 
-- (void)_enumerateSubscriptionInfoUsingBlock:(id)a3
+- (void)_enumerateSubscriptionInfoUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v18 = 0;
     v19 = &v18;
@@ -505,7 +505,7 @@ void __59__SSVFairPlaySubscriptionController_stopSubscriptionLease___block_invok
         v9 = *v8;
         v10 = v8[1];
         v12 = 0;
-        v4[2](v4, v9, v10, &v12);
+        blockCopy[2](blockCopy, v9, v10, &v12);
         if (v12)
         {
           break;
@@ -562,10 +562,10 @@ void __71__SSVFairPlaySubscriptionController__notifySubscriptionStatusDidChange_
   [v2 postNotificationName:@"SSVFairPlaySubscriptionControllerSubscriptionStatusDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (id)_subscriptionStatusForFPSubscriptionInfo:(FPSubscriptionInfo_)a3
+- (id)_subscriptionStatusForFPSubscriptionInfo:(FPSubscriptionInfo_)info
 {
-  var1 = a3.var1;
-  if ((a3.var1 - 1) > 2)
+  var1 = info.var1;
+  if ((info.var1 - 1) > 2)
   {
     v4 = 0;
   }

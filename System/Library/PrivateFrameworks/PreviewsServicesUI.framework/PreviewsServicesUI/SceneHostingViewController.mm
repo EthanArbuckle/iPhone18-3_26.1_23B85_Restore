@@ -1,7 +1,7 @@
 @interface SceneHostingViewController
 - (BOOL)canBecomeFirstResponder;
-- (_TtC18PreviewsServicesUI26SceneHostingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC18PreviewsServicesUI26SceneHostingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -14,11 +14,11 @@
   v6.super_class = swift_getObjectType();
   v2 = v6.receiver;
   [(SceneHostingViewController *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [objc_opt_self() systemBackgroundColor];
+    v4 = view;
+    systemBackgroundColor = [objc_opt_self() systemBackgroundColor];
     [v4 setBackgroundColor_];
   }
 
@@ -30,7 +30,7 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SceneHostingViewController.viewDidLayoutSubviews()();
 }
 
@@ -46,21 +46,21 @@
   return *(&self->super.super.super.isa + v2);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4 = OBJC_IVAR____TtC18PreviewsServicesUI26SceneHostingViewController_isUserActivePreview;
   swift_beginAccess();
   if (*(&self->super.super.super.isa + v4) == 1)
   {
-    v5 = self;
-    v6 = [(SceneHostingViewController *)v5 traitCollection];
-    [v6 activeAppearance];
+    selfCopy = self;
+    traitCollection = [(SceneHostingViewController *)selfCopy traitCollection];
+    [traitCollection activeAppearance];
   }
 }
 
-- (_TtC18PreviewsServicesUI26SceneHostingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18PreviewsServicesUI26SceneHostingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_25F55F3F8();
     v7 = v6;
@@ -72,8 +72,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return SceneHostingViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return SceneHostingViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

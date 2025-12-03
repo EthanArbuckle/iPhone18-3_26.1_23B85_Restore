@@ -1,15 +1,15 @@
 @interface APMetricPreparedUnsignedDataProcessor
 - (APMetricStoringEC)storage;
-- (void)_processNextFile:(id)a3 completionHandler:(id)a4;
-- (void)_signFile:(id)a3 usingSigningAuthority:(id)a4 completionHandler:(id)a5;
+- (void)_processNextFile:(id)file completionHandler:(id)handler;
+- (void)_signFile:(id)file usingSigningAuthority:(id)authority completionHandler:(id)handler;
 @end
 
 @implementation APMetricPreparedUnsignedDataProcessor
 
-- (void)_processNextFile:(id)a3 completionHandler:(id)a4
+- (void)_processNextFile:(id)file completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  fileCopy = file;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v8 = [APSigningAuthority alloc];
   v9 = objc_opt_class();
@@ -21,9 +21,9 @@
   v14[2] = sub_1003282EC;
   v14[3] = &unk_10047E458;
   objc_copyWeak(&v17, &location);
-  v12 = v6;
+  v12 = fileCopy;
   v15 = v12;
-  v13 = v7;
+  v13 = handlerCopy;
   v16 = v13;
   [v11 setupWithCompletion:1 completion:v14];
 
@@ -31,25 +31,25 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_signFile:(id)a3 usingSigningAuthority:(id)a4 completionHandler:(id)a5
+- (void)_signFile:(id)file usingSigningAuthority:(id)authority completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fileCopy = file;
+  authorityCopy = authority;
+  handlerCopy = handler;
   v11 = os_transaction_create();
-  v12 = [(APMetricPreparedUnsignedDataProcessor *)self metricsFileManager];
+  metricsFileManager = [(APMetricPreparedUnsignedDataProcessor *)self metricsFileManager];
   v33 = 0;
-  v13 = [v12 fileForReadingAtKeyPath:v8 error:&v33];
+  v13 = [metricsFileManager fileForReadingAtKeyPath:fileCopy error:&v33];
   v14 = v33;
 
   if (!v14)
   {
-    v16 = [v13 nextObject];
-    v17 = v16;
-    if (v16)
+    nextObject = [v13 nextObject];
+    v17 = nextObject;
+    if (nextObject)
     {
       v32 = 0;
-      v18 = [v16 buildSignatureUsingSigning:v9 error:&v32];
+      v18 = [nextObject buildSignatureUsingSigning:authorityCopy error:&v32];
       v19 = v32;
       if (v19 || ([v17 signature], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "length"), v22, !v23))
       {
@@ -58,11 +58,11 @@
 
       else
       {
-        v24 = [APMetricStorage_private signedPathFromUnsigned:v8];
-        v25 = [(APMetricPreparedUnsignedDataProcessor *)self metricsFileManager];
+        v24 = [APMetricStorage_private signedPathFromUnsigned:fileCopy];
+        metricsFileManager2 = [(APMetricPreparedUnsignedDataProcessor *)self metricsFileManager];
         v31 = 0;
         v29 = v24;
-        v26 = [v25 fileForWritingAtKeyPath:v24 error:&v31];
+        v26 = [metricsFileManager2 fileForWritingAtKeyPath:v24 error:&v31];
         v27 = v31;
 
         v30 = v27;
@@ -77,24 +77,24 @@
 
         if (v19)
         {
-          v28 = APLogForCategory();
-          if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+          metricsFileManager3 = APLogForCategory();
+          if (os_log_type_enabled(metricsFileManager3, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543362;
             v35 = v19;
-            _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "Failed to save a file: %{public}@", buf, 0xCu);
+            _os_log_impl(&_mh_execute_header, metricsFileManager3, OS_LOG_TYPE_ERROR, "Failed to save a file: %{public}@", buf, 0xCu);
           }
         }
 
         else
         {
-          v28 = [(APMetricPreparedUnsignedDataProcessor *)self metricsFileManager];
-          [v28 removeObjectAtPath:v8 error:0];
+          metricsFileManager3 = [(APMetricPreparedUnsignedDataProcessor *)self metricsFileManager];
+          [metricsFileManager3 removeObjectAtPath:fileCopy error:0];
         }
       }
 
       v14 = v19;
-      if (!v10)
+      if (!handlerCopy)
       {
         goto LABEL_24;
       }
@@ -106,22 +106,22 @@
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v35 = v8;
+        v35 = fileCopy;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Failed to read data from %{public}@", buf, 0xCu);
       }
 
-      v21 = [(APMetricPreparedUnsignedDataProcessor *)self metricsFileManager];
-      [v21 removeObjectAtPath:v8 error:0];
+      metricsFileManager4 = [(APMetricPreparedUnsignedDataProcessor *)self metricsFileManager];
+      [metricsFileManager4 removeObjectAtPath:fileCopy error:0];
 
       v19 = 0;
       v14 = 0;
-      if (!v10)
+      if (!handlerCopy)
       {
         goto LABEL_24;
       }
     }
 
-    v10[2](v10);
+    handlerCopy[2](handlerCopy);
     v14 = v19;
 LABEL_24:
 
@@ -136,9 +136,9 @@ LABEL_24:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Failed to open metrics data file: %{public}@", buf, 0xCu);
   }
 
-  if (v10)
+  if (handlerCopy)
   {
-    v10[2](v10);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_25:

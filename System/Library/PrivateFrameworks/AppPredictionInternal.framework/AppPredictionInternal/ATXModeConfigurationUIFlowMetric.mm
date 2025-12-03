@@ -8,34 +8,34 @@
 {
   v27[15] = *MEMORY[0x277D85DE8];
   v26[0] = @"stableModeID";
-  v25 = [(ATXModeConfigurationUIFlowMetric *)self modeUUID];
-  if (v25)
+  modeUUID = [(ATXModeConfigurationUIFlowMetric *)self modeUUID];
+  if (modeUUID)
   {
-    v24 = [(ATXModeConfigurationUIFlowMetric *)self modeUUID];
-    v3 = [ATXCoreAnalyticsFieldUtilities hashBoundString:?];
+    modeUUID2 = [(ATXModeConfigurationUIFlowMetric *)self modeUUID];
+    null = [ATXCoreAnalyticsFieldUtilities hashBoundString:?];
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBEB68] null];
-    v24 = v3;
+    null = [MEMORY[0x277CBEB68] null];
+    modeUUID2 = null;
   }
 
-  v18 = v3;
-  v27[0] = v3;
+  v18 = null;
+  v27[0] = null;
   v26[1] = @"modeSemanticType";
-  v4 = [(ATXModeConfigurationUIFlowMetric *)self modeSemanticType];
-  v5 = v4;
-  if (!v4)
+  modeSemanticType = [(ATXModeConfigurationUIFlowMetric *)self modeSemanticType];
+  v5 = modeSemanticType;
+  if (!modeSemanticType)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    modeSemanticType = [MEMORY[0x277CBEB68] null];
   }
 
-  v17 = v4;
-  v27[1] = v4;
+  v17 = modeSemanticType;
+  v27[1] = modeSemanticType;
   v26[2] = @"modeConfigurationUI";
-  v23 = [(ATXModeConfigurationUIFlowMetric *)self modeConfigurationUI];
-  v27[2] = v23;
+  modeConfigurationUI = [(ATXModeConfigurationUIFlowMetric *)self modeConfigurationUI];
+  v27[2] = modeConfigurationUI;
   v26[3] = @"numAppsAdded";
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ATXModeConfigurationUIFlowMetric numAppsAdded](self, "numAppsAdded")}];
   v27[3] = v22;
@@ -78,7 +78,7 @@
   {
   }
 
-  if (v25)
+  if (modeUUID)
   {
   }
 

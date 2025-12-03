@@ -6,13 +6,13 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(CKGlassSendMenuButtonAccessibility *)self accessibilityContainer];
-  v3 = [v2 accessibilityContainer];
+  accessibilityContainer = [(CKGlassSendMenuButtonAccessibility *)self accessibilityContainer];
+  v2AccessibilityContainer = [accessibilityContainer accessibilityContainer];
 
-  v4 = [v3 safeValueForKey:@"cancelAudioRecordingButton"];
-  v5 = [v4 _accessibilityViewIsVisible];
+  v4 = [v2AccessibilityContainer safeValueForKey:@"cancelAudioRecordingButton"];
+  _accessibilityViewIsVisible = [v4 _accessibilityViewIsVisible];
 
-  return v5 ^ 1;
+  return _accessibilityViewIsVisible ^ 1;
 }
 
 @end

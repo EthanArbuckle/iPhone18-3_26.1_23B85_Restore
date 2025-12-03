@@ -1,11 +1,11 @@
 @interface TSCEFormulasToSet
-- (BOOL)flushFormulaChangesForSeconds:(double)a3;
+- (BOOL)flushFormulaChangesForSeconds:(double)seconds;
 - (BOOL)isEmpty;
-- (TSCEFormulasToSet)initWithCalcEngine:(id)a3 forMinion:(id)a4 options:(unsigned __int8)a5;
+- (TSCEFormulasToSet)initWithCalcEngine:(id)engine forMinion:(id)minion options:(unsigned __int8)options;
 - (id).cxx_construct;
-- (void)_flushFormulasToRemoveWithDepTracker:(id)a3 startTime:(id)a4 timeout:(double)a5;
-- (void)_flushFormulasToReplaceWithDepTracker:(id)a3 startTime:(id)a4 timeout:(double)a5;
-- (void)_flushFormulasToResetWithDepTracker:(id)a3 startTime:(id)a4 timeout:(double)a5;
+- (void)_flushFormulasToRemoveWithDepTracker:(id)tracker startTime:(id)time timeout:(double)timeout;
+- (void)_flushFormulasToReplaceWithDepTracker:(id)tracker startTime:(id)time timeout:(double)timeout;
+- (void)_flushFormulasToResetWithDepTracker:(id)tracker startTime:(id)time timeout:(double)timeout;
 - (void)commonInit;
 - (void)dealloc;
 - (void)flushAllFormulaChanges;
@@ -13,15 +13,15 @@
 - (void)flushReplaceFormulas;
 - (void)flushResetFormulas;
 - (void)processInBackgroundIfNecessary;
-- (void)removeAllFormulasFromOwner:(const TSKUIDStruct *)a3;
-- (void)removeFormulaAt:(const TSUCellCoord *)a3 inOwner:(const TSKUIDStruct *)a4;
-- (void)removeFormulasAt:(const void *)a3;
-- (void)removeFormulasAt:(const void *)a3 inOwner:(const TSKUIDStruct *)a4 removeOutstandingReplaces:(BOOL)a5;
-- (void)removeFormulasFromRange:(const TSCERangeRef *)a3;
-- (void)replaceFormula:(id)a3 atCellCoord:(const TSUCellCoord *)a4 inOwner:(const TSKUIDStruct *)a5;
-- (void)replaceFormula:(id)a3 atCellCoord:(const TSUCellCoord *)a4 inOwner:(const TSKUIDStruct *)a5 replaceOptions:(TSCEReplaceFormulaOptions *)a6;
-- (void)replaceFormulaAt:(const TSUCellCoord *)a3 inOwner:(const TSKUIDStruct *)a4 precedents:(id)a5 replaceOptions:(TSCEReplaceFormulaOptions *)a6;
-- (void)resetFormulaAt:(const TSCECellRef *)a3;
+- (void)removeAllFormulasFromOwner:(const TSKUIDStruct *)owner;
+- (void)removeFormulaAt:(const TSUCellCoord *)at inOwner:(const TSKUIDStruct *)owner;
+- (void)removeFormulasAt:(const void *)at;
+- (void)removeFormulasAt:(const void *)at inOwner:(const TSKUIDStruct *)owner removeOutstandingReplaces:(BOOL)replaces;
+- (void)removeFormulasFromRange:(const TSCERangeRef *)range;
+- (void)replaceFormula:(id)formula atCellCoord:(const TSUCellCoord *)coord inOwner:(const TSKUIDStruct *)owner;
+- (void)replaceFormula:(id)formula atCellCoord:(const TSUCellCoord *)coord inOwner:(const TSKUIDStruct *)owner replaceOptions:(TSCEReplaceFormulaOptions *)options;
+- (void)replaceFormulaAt:(const TSUCellCoord *)at inOwner:(const TSKUIDStruct *)owner precedents:(id)precedents replaceOptions:(TSCEReplaceFormulaOptions *)options;
+- (void)resetFormulaAt:(const TSCECellRef *)at;
 - (void)willClose;
 @end
 
@@ -76,11 +76,11 @@
   }
 }
 
-- (TSCEFormulasToSet)initWithCalcEngine:(id)a3 forMinion:(id)a4 options:(unsigned __int8)a5
+- (TSCEFormulasToSet)initWithCalcEngine:(id)engine forMinion:(id)minion options:(unsigned __int8)options
 {
-  v8 = a3;
-  v12 = a4;
-  if (!v12)
+  engineCopy = engine;
+  minionCopy = minion;
+  if (!minionCopy)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSCEFormulasToSet initWithCalcEngine:forMinion:options:]", v10, v11);
@@ -90,7 +90,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
   }
 
-  if (!v8)
+  if (!engineCopy)
   {
     v24 = MEMORY[0x277D81150];
     v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSCEFormulasToSet initWithCalcEngine:forMinion:options:]", v10, v11);
@@ -106,9 +106,9 @@
   v40 = v35;
   if (v35)
   {
-    v35->_calcEngine = v8;
-    v35->_minion = v12;
-    v35->_options = a5;
+    v35->_calcEngine = engineCopy;
+    v35->_minion = minionCopy;
+    v35->_options = options;
     objc_msgSend_commonInit(v35, v36, v37, v38, v39);
   }
 
@@ -243,23 +243,23 @@ LABEL_9:
   }
 }
 
-- (void)replaceFormula:(id)a3 atCellCoord:(const TSUCellCoord *)a4 inOwner:(const TSKUIDStruct *)a5
+- (void)replaceFormula:(id)formula atCellCoord:(const TSUCellCoord *)coord inOwner:(const TSKUIDStruct *)owner
 {
-  v8 = a3;
+  formulaCopy = formula;
   TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v11, 0, 1);
   TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v10, &v11);
-  objc_msgSend_replaceFormula_atCellCoord_inOwner_replaceOptions_(self, v9, v8, a4, a5, &v10);
+  objc_msgSend_replaceFormula_atCellCoord_inOwner_replaceOptions_(self, v9, formulaCopy, coord, owner, &v10);
 }
 
-- (void)replaceFormula:(id)a3 atCellCoord:(const TSUCellCoord *)a4 inOwner:(const TSKUIDStruct *)a5 replaceOptions:(TSCEReplaceFormulaOptions *)a6
+- (void)replaceFormula:(id)formula atCellCoord:(const TSUCellCoord *)coord inOwner:(const TSKUIDStruct *)owner replaceOptions:(TSCEReplaceFormulaOptions *)options
 {
-  v10 = a3;
-  v15 = v10;
-  v16 = *a4;
-  v36 = *a5;
+  formulaCopy = formula;
+  v15 = formulaCopy;
+  v16 = *coord;
+  v36 = *owner;
   if (self->_options)
   {
-    v19 = objc_msgSend_formulaObject(v10, v11, v12, v13, v14);
+    v19 = objc_msgSend_formulaObject(formulaCopy, v11, v12, v13, v14);
     precedentLoadingQueue = self->_precedentLoadingQueue;
     precedentLoadingGroup = self->_precedentLoadingGroup;
     block[0] = MEMORY[0x277D85DD0];
@@ -268,18 +268,18 @@ LABEL_9:
     block[3] = &unk_2834A79F8;
     v35 = v16;
     v31 = v19;
-    v32 = self;
+    selfCopy = self;
     v33 = v36;
     v22 = v19;
-    TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v34, a6);
+    TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v34, options);
     dispatch_group_async(precedentLoadingGroup, precedentLoadingQueue, block);
   }
 
   else
   {
     v29.coordinate = v16;
-    v29._tableUID = *a5;
-    sub_2213E91EC(v25, &v29, a6, v10);
+    v29._tableUID = *owner;
+    sub_2213E91EC(v25, &v29, options, formulaCopy);
     os_unfair_lock_lock(&self->_removeReplaceMutex);
     if ((TSCECellRefSet::containsCellRef(&self->_formulasToReset, &v29) & 1) == 0)
     {
@@ -296,12 +296,12 @@ LABEL_9:
   }
 }
 
-- (void)replaceFormulaAt:(const TSUCellCoord *)a3 inOwner:(const TSKUIDStruct *)a4 precedents:(id)a5 replaceOptions:(TSCEReplaceFormulaOptions *)a6
+- (void)replaceFormulaAt:(const TSUCellCoord *)at inOwner:(const TSKUIDStruct *)owner precedents:(id)precedents replaceOptions:(TSCEReplaceFormulaOptions *)options
 {
-  v10 = a5;
-  v23.coordinate = *a3;
-  v23._tableUID = *a4;
-  sub_2213E9258(v19, &v23, a6, v10);
+  precedentsCopy = precedents;
+  v23.coordinate = *at;
+  v23._tableUID = *owner;
+  sub_2213E9258(v19, &v23, options, precedentsCopy);
   os_unfair_lock_lock(&self->_removeReplaceMutex);
   if ((TSCECellRefSet::containsCellRef(&self->_formulasToReset, &v23) & 1) == 0)
   {
@@ -318,17 +318,17 @@ LABEL_9:
   objc_msgSend_processInBackgroundIfNecessary(self, v13, v14, v15, v16);
 }
 
-- (void)removeFormulasAt:(const void *)a3 inOwner:(const TSKUIDStruct *)a4 removeOutstandingReplaces:(BOOL)a5
+- (void)removeFormulasAt:(const void *)at inOwner:(const TSKUIDStruct *)owner removeOutstandingReplaces:(BOOL)replaces
 {
-  if (*a4 != 0)
+  if (*owner != 0)
   {
-    v5 = a5;
+    replacesCopy = replaces;
     os_unfair_lock_lock(&self->_removeReplaceMutex);
-    TSCECellRefSet::addCellRefs(&self->_formulasToRemove, a4, a3);
-    if (v5)
+    TSCECellRefSet::addCellRefs(&self->_formulasToRemove, owner, at);
+    if (replacesCopy)
     {
-      sub_2213E9A0C(&self->_formulasToReplace.__table_.__bucket_list_.__ptr_, a4);
-      TSCECellRefSet::removeAllCellRefsForOwner(&self->_formulasToReset, a4);
+      sub_2213E9A0C(&self->_formulasToReplace.__table_.__bucket_list_.__ptr_, owner);
+      TSCECellRefSet::removeAllCellRefsForOwner(&self->_formulasToReset, owner);
     }
 
     else
@@ -338,13 +338,13 @@ LABEL_9:
       v18._rectRepresentation.origin = 0;
       v18._rectRepresentation.size = 0;
       v18._rowsPerColumn.__tree_.__begin_node_ = &v18._rowsPerColumn.__tree_.__end_node_;
-      v9 = sub_2210875C4(&self->_formulasToReplace.__table_.__bucket_list_.__ptr_, a4);
+      v9 = sub_2210875C4(&self->_formulasToReplace.__table_.__bucket_list_.__ptr_, owner);
       v10 = v9;
       if (v9)
       {
         for (i = v9[6]; i; i = *i)
         {
-          if (TSCECellCoordSet::containsCellCoord(a3, i + 2))
+          if (TSCECellCoordSet::containsCellCoord(at, i + 2))
           {
             TSCECellCoordSet::addCellCoord(&v18, i + 2);
           }
@@ -358,7 +358,7 @@ LABEL_9:
         TSCECellCoordSet::enumerateCoordsUsingBlock(&v18, v17);
         if (!v10[7])
         {
-          sub_2213E9A0C(&self->_formulasToReplace.__table_.__bucket_list_.__ptr_, a4);
+          sub_2213E9A0C(&self->_formulasToReplace.__table_.__bucket_list_.__ptr_, owner);
         }
       }
 
@@ -369,8 +369,8 @@ LABEL_9:
         v16[2] = sub_2213E78A4;
         v16[3] = &unk_278460EB8;
         v16[4] = self;
-        v16[5] = a4;
-        TSCECellCoordSet::enumerateCoordsUsingBlock(a3, v16);
+        v16[5] = owner;
+        TSCECellCoordSet::enumerateCoordsUsingBlock(at, v16);
       }
 
       sub_22107C860(&v18._rowsPerColumn, v18._rowsPerColumn.__tree_.__end_node_.__left_);
@@ -381,13 +381,13 @@ LABEL_9:
   }
 }
 
-- (void)removeAllFormulasFromOwner:(const TSKUIDStruct *)a3
+- (void)removeAllFormulasFromOwner:(const TSKUIDStruct *)owner
 {
-  if (*a3 != 0)
+  if (*owner != 0)
   {
     if ((self->_options & 2) != 0)
     {
-      v14 = *a3;
+      v14 = *owner;
       backgroundProcessingQueue = self->_backgroundProcessingQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -396,8 +396,8 @@ LABEL_9:
       block[4] = self;
       dispatch_async(backgroundProcessingQueue, block);
       os_unfair_lock_lock(&self->_removeReplaceMutex);
-      sub_2213E9A0C(&self->_formulasToReplace.__table_.__bucket_list_.__ptr_, a3);
-      TSCECellRefSet::removeAllCellRefsForOwner(&self->_formulasToReset, a3);
+      sub_2213E9A0C(&self->_formulasToReplace.__table_.__bucket_list_.__ptr_, owner);
+      TSCECellRefSet::removeAllCellRefsForOwner(&self->_formulasToReset, owner);
       os_unfair_lock_unlock(&self->_removeReplaceMutex);
     }
 
@@ -406,7 +406,7 @@ LABEL_9:
       calcEngine = self->_calcEngine;
       if (calcEngine)
       {
-        objc_msgSend_allFormulaCoordsInOwner_(calcEngine, a2, a3, v3, v4);
+        objc_msgSend_allFormulaCoordsInOwner_(calcEngine, a2, owner, v3, v4);
       }
 
       else
@@ -421,18 +421,18 @@ LABEL_9:
       v9[2] = sub_2213E7A64;
       v9[3] = &unk_278460EB8;
       v9[4] = self;
-      v9[5] = a3;
+      v9[5] = owner;
       TSCECellCoordSet::enumerateCoordsUsingBlock(&v10, v9);
       sub_22107C860(&v11, *(&v11 + 1));
     }
   }
 }
 
-- (void)removeFormulasFromRange:(const TSCERangeRef *)a3
+- (void)removeFormulasFromRange:(const TSCERangeRef *)range
 {
-  if (TSCERangeRef::isValid(a3))
+  if (TSCERangeRef::isValid(range))
   {
-    TSCERangeCoordinate::asCellRect(&a3->range);
+    TSCERangeCoordinate::asCellRect(&range->range);
     os_unfair_lock_lock(&self->_removeReplaceMutex);
     TSUCellRect::enumerateCoordinatesUsingBlock();
     os_unfair_lock_unlock(&self->_removeReplaceMutex);
@@ -440,11 +440,11 @@ LABEL_9:
   }
 }
 
-- (void)removeFormulaAt:(const TSUCellCoord *)a3 inOwner:(const TSKUIDStruct *)a4
+- (void)removeFormulaAt:(const TSUCellCoord *)at inOwner:(const TSKUIDStruct *)owner
 {
-  v5 = *a3;
-  v12.coordinate = *a3;
-  v12._tableUID = *a4;
+  v5 = *at;
+  v12.coordinate = *at;
+  v12._tableUID = *owner;
   os_unfair_lock_lock(&self->_removeReplaceMutex);
   tableUID = v12._tableUID;
   v6 = sub_2210875C4(&self->_formulasToReplace.__table_.__bucket_list_.__ptr_, &tableUID);
@@ -460,9 +460,9 @@ LABEL_9:
   objc_msgSend_processInBackgroundIfNecessary(self, v7, v8, v9, v10);
 }
 
-- (void)removeFormulasAt:(const void *)a3
+- (void)removeFormulasAt:(const void *)at
 {
-  if ((TSCECellRefSet::isEmpty(a3) & 1) == 0)
+  if ((TSCECellRefSet::isEmpty(at) & 1) == 0)
   {
     os_unfair_lock_lock(&self->_removeReplaceMutex);
     v9[0] = MEMORY[0x277D85DD0];
@@ -470,42 +470,42 @@ LABEL_9:
     v9[2] = sub_2213E7CF4;
     v9[3] = &unk_27845FBD8;
     v9[4] = self;
-    TSCECellRefSet::enumerateCellRefsUsingBlock(a3, v9);
+    TSCECellRefSet::enumerateCellRefsUsingBlock(at, v9);
     os_unfair_lock_unlock(&self->_removeReplaceMutex);
     objc_msgSend_processInBackgroundIfNecessary(self, v5, v6, v7, v8);
   }
 }
 
-- (void)resetFormulaAt:(const TSCECellRef *)a3
+- (void)resetFormulaAt:(const TSCECellRef *)at
 {
-  if (*&a3->coordinate != 0x7FFFFFFF && (*&a3->coordinate & 0xFFFF00000000) != 0x7FFF00000000)
+  if (*&at->coordinate != 0x7FFFFFFF && (*&at->coordinate & 0xFFFF00000000) != 0x7FFF00000000)
   {
     v14 = v3;
     v15 = v4;
-    if (*&a3->_tableUID != 0)
+    if (*&at->_tableUID != 0)
     {
       os_unfair_lock_lock(&self->_removeReplaceMutex);
-      tableUID = a3->_tableUID;
+      tableUID = at->_tableUID;
       v8 = sub_2210875C4(&self->_formulasToReplace.__table_.__bucket_list_.__ptr_, &tableUID);
       if (v8)
       {
-        tableUID._lower = a3->coordinate;
+        tableUID._lower = at->coordinate;
         sub_2213E9A58(v8 + 4, &tableUID);
       }
 
-      TSCECellRefSet::removeCellRef(&self->_formulasToRemove, a3);
-      TSCECellRefSet::addCellRef(&self->_formulasToReset, a3);
+      TSCECellRefSet::removeCellRef(&self->_formulasToRemove, at);
+      TSCECellRefSet::addCellRef(&self->_formulasToReset, at);
       os_unfair_lock_unlock(&self->_removeReplaceMutex);
       objc_msgSend_processInBackgroundIfNecessary(self, v9, v10, v11, v12);
     }
   }
 }
 
-- (void)_flushFormulasToRemoveWithDepTracker:(id)a3 startTime:(id)a4 timeout:(double)a5
+- (void)_flushFormulasToRemoveWithDepTracker:(id)tracker startTime:(id)time timeout:(double)timeout
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  trackerCopy = tracker;
+  timeCopy = time;
+  if (trackerCopy)
   {
     v65 = 0;
     v66 = &v65;
@@ -530,7 +530,7 @@ LABEL_9:
       v59 = 0x2020000000;
       v60 = 0;
       os_unfair_lock_lock(&self->_removeReplaceMutex);
-      if (v9)
+      if (timeCopy)
       {
         v56[0] = MEMORY[0x277D85DD0];
         v56[1] = 3221225472;
@@ -570,13 +570,13 @@ LABEL_9:
       v40[1] = 3221225472;
       v40[2] = sub_2213E830C;
       v40[3] = &unk_278464890;
-      v41 = v8;
+      v41 = trackerCopy;
       v43 = &v48;
-      v24 = v9;
+      v24 = timeCopy;
       v42 = v24;
       v44 = &v61;
       v45 = v47;
-      v46 = a5;
+      timeoutCopy = timeout;
       TSCECellRefSet::enumerateCellRefsUsingBlock(&v23[2]._coordsForOwnerUid.__tree_.__begin_node_, v40);
       v25 = TSCECellRefSet::count(v49 + 2);
       if (v25 <= v58[3])
@@ -587,12 +587,12 @@ LABEL_9:
         os_unfair_lock_unlock(&self->_removeReplaceMutex);
       }
 
-      if (v9)
+      if (timeCopy)
       {
         if ((v62[3] & 1) == 0)
         {
           objc_msgSend_timeIntervalSinceNow(v24, v26, v27, v28, v29);
-          if (-v30 > a5)
+          if (-v30 > timeout)
           {
             *(v62 + 24) = 1;
           }
@@ -615,12 +615,12 @@ LABEL_9:
   }
 }
 
-- (void)_flushFormulasToReplaceWithDepTracker:(id)a3 startTime:(id)a4 timeout:(double)a5
+- (void)_flushFormulasToReplaceWithDepTracker:(id)tracker startTime:(id)time timeout:(double)timeout
 {
-  v8 = a3;
-  v9 = a4;
-  v47 = v8;
-  if (v8)
+  trackerCopy = tracker;
+  timeCopy = time;
+  v47 = trackerCopy;
+  if (trackerCopy)
   {
     v46 = self->_calcEngine;
     objc_msgSend_beginSuppressingWillModifyCalls(v46, v10, v11, v12, v13);
@@ -687,9 +687,9 @@ LABEL_9:
         }
       }
 
-      if (v9 == 0 || v21)
+      if (timeCopy == 0 || v21)
       {
-        if (((v9 == 0) & v21 & v18) == 1)
+        if (((timeCopy == 0) & v21 & v18) == 1)
         {
           objc_msgSend_waitForAllPrecedentsToLoad(self, v22, v23, v24, v25);
           os_unfair_lock_lock(&self->_removeReplaceMutex);
@@ -701,8 +701,8 @@ LABEL_9:
 
       else
       {
-        objc_msgSend_timeIntervalSinceNow(v9, v22, v23, v24, v25);
-        LOBYTE(v21) = -v29 > a5;
+        objc_msgSend_timeIntervalSinceNow(timeCopy, v22, v23, v24, v25);
+        LOBYTE(v21) = -v29 > timeout;
       }
     }
 
@@ -713,11 +713,11 @@ LABEL_9:
   }
 }
 
-- (void)_flushFormulasToResetWithDepTracker:(id)a3 startTime:(id)a4 timeout:(double)a5
+- (void)_flushFormulasToResetWithDepTracker:(id)tracker startTime:(id)time timeout:(double)timeout
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8 && (TSCECellRefSet::isEmpty(&self->_formulasToReset) & 1) == 0)
+  trackerCopy = tracker;
+  timeCopy = time;
+  if (trackerCopy && (TSCECellRefSet::isEmpty(&self->_formulasToReset) & 1) == 0)
   {
     v10 = self->_calcEngine;
     objc_msgSend_beginSuppressingWillModifyCalls(v10, v11, v12, v13, v14);
@@ -759,7 +759,7 @@ LABEL_10:
       }
 
 LABEL_11:
-      if ((v9 == 0) | isEmpty & 1)
+      if ((timeCopy == 0) | isEmpty & 1)
       {
         if (isEmpty)
         {
@@ -769,8 +769,8 @@ LABEL_11:
 
       else
       {
-        objc_msgSend_timeIntervalSinceNow(v9, v21, v29, v30, v24);
-        if (-v31 > a5)
+        objc_msgSend_timeIntervalSinceNow(timeCopy, v21, v29, v30, v24);
+        if (-v31 > timeout)
         {
 LABEL_15:
           objc_msgSend_endBatchingGroupCellDirtying(v10, v21, v29, v30, v24);
@@ -866,7 +866,7 @@ LABEL_15:
   objc_msgSend_endSuppressingWillModifyCalls(v43, v39, v40, v41, v42);
 }
 
-- (BOOL)flushFormulaChangesForSeconds:(double)a3
+- (BOOL)flushFormulaChangesForSeconds:(double)seconds
 {
   os_unfair_lock_lock(&self->_removeReplaceMutex);
   v5 = TSCECellRefSet::isEmpty(&self->_formulasToRemove) ^ 1;
@@ -882,7 +882,7 @@ LABEL_15:
   v14 = objc_msgSend_dependencyTracker(self->_calcEngine, v9, v10, v11, v12);
   if (v14)
   {
-    if (a3 <= 0.0)
+    if (seconds <= 0.0)
     {
       v15 = 0;
     }
@@ -898,7 +898,7 @@ LABEL_15:
     v33 = &unk_278460DF0;
     v16 = v15;
     v34 = v16;
-    v35 = a3;
+    secondsCopy = seconds;
     v21 = MEMORY[0x223DA1C10](&v30);
     v22 = 1;
     while (1)
@@ -906,7 +906,7 @@ LABEL_15:
       v23 = v22;
       if (v5)
       {
-        objc_msgSend__flushFormulasToRemoveWithDepTracker_startTime_timeout_(self, v17, v14, v16, v20, a3, v30, v31, v32, v33);
+        objc_msgSend__flushFormulasToRemoveWithDepTracker_startTime_timeout_(self, v17, v14, v16, v20, seconds, v30, v31, v32, v33);
         if (v21[2](v21))
         {
           break;
@@ -915,7 +915,7 @@ LABEL_15:
 
       if (v8)
       {
-        objc_msgSend__flushFormulasToResetWithDepTracker_startTime_timeout_(self, v17, v14, v16, v20, a3);
+        objc_msgSend__flushFormulasToResetWithDepTracker_startTime_timeout_(self, v17, v14, v16, v20, seconds);
         if (v21[2](v21))
         {
           break;
@@ -924,7 +924,7 @@ LABEL_15:
 
       if (v7)
       {
-        objc_msgSend__flushFormulasToReplaceWithDepTracker_startTime_timeout_(self, v17, v14, v16, v20, a3);
+        objc_msgSend__flushFormulasToReplaceWithDepTracker_startTime_timeout_(self, v17, v14, v16, v20, seconds);
       }
 
       if (v16)

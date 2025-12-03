@@ -1,18 +1,18 @@
 @interface VTSuperResolutionScalerConfiguration
 + (NSIndexSet)supportedRevisions;
 + (int64_t)defaultRevision;
-- (VTSuperResolutionScalerConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 scaleFactor:(int64_t)a5 inputType:(int64_t)a6 usePrecomputedFlow:(BOOL)a7 qualityPrioritization:(int64_t)a8 revision:(int64_t)a9;
+- (VTSuperResolutionScalerConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height scaleFactor:(int64_t)factor inputType:(int64_t)type usePrecomputedFlow:(BOOL)flow qualityPrioritization:(int64_t)prioritization revision:(int64_t)revision;
 - (float)configurationModelPercentageAvailable;
 - (int64_t)configurationModelStatus;
 - (void)dealloc;
-- (void)downloadConfigurationModelWithCompletionHandler:(id)a3;
+- (void)downloadConfigurationModelWithCompletionHandler:(id)handler;
 @end
 
 @implementation VTSuperResolutionScalerConfiguration
 
-- (VTSuperResolutionScalerConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 scaleFactor:(int64_t)a5 inputType:(int64_t)a6 usePrecomputedFlow:(BOOL)a7 qualityPrioritization:(int64_t)a8 revision:(int64_t)a9
+- (VTSuperResolutionScalerConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height scaleFactor:(int64_t)factor inputType:(int64_t)type usePrecomputedFlow:(BOOL)flow qualityPrioritization:(int64_t)prioritization revision:(int64_t)revision
 {
-  v10 = a7;
+  flowCopy = flow;
   v32[4] = *MEMORY[0x1E69E9840];
   if (!loadVEFrameworkOnce())
   {
@@ -24,7 +24,7 @@ LABEL_11:
   }
 
   v16 = +[VTSuperResolutionScalerConfiguration supportedScaleFactors];
-  if (!-[NSArray containsObject:](v16, "containsObject:", [MEMORY[0x1E696AD98] numberWithInteger:a5]))
+  if (!-[NSArray containsObject:](v16, "containsObject:", [MEMORY[0x1E696AD98] numberWithInteger:factor]))
   {
     NSLog(&cfstr_UnsupportedSca.isa);
     goto LABEL_11;
@@ -39,7 +39,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v17 = [objc_alloc(NSClassFromString(&cfstr_Vesuperresolut.isa)) initWithFrameWidth:a3 frameHeight:a4 scaleFactor:a5 inputType:a6 usePrecomputedFlow:v10 qualityPrioritization:a8 revision:a9];
+  v17 = [objc_alloc(NSClassFromString(&cfstr_Vesuperresolut.isa)) initWithFrameWidth:width frameHeight:height scaleFactor:factor inputType:type usePrecomputedFlow:flowCopy qualityPrioritization:prioritization revision:revision];
   self->_veConfiguration = v17;
   if (!v17)
   {
@@ -47,13 +47,13 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  self->_frameWidth = a3;
-  self->_frameHeight = a4;
-  self->_precomputedFlow = v10;
-  self->_qualityPrioritization = a8;
-  self->_revision = a9;
-  self->_inputType = a6;
-  self->_scaleFactor = a5;
+  self->_frameWidth = width;
+  self->_frameHeight = height;
+  self->_precomputedFlow = flowCopy;
+  self->_qualityPrioritization = prioritization;
+  self->_revision = revision;
+  self->_inputType = type;
+  self->_scaleFactor = factor;
   v18 = [-[VESuperResolutionConfiguration framePreferredPixelFormats](v17 "framePreferredPixelFormats")];
   self->_frameSupportedPixelFormats = v18;
   v19 = *MEMORY[0x1E6966130];
@@ -61,10 +61,10 @@ LABEL_11:
   v20 = *MEMORY[0x1E6966208];
   v29[0] = v19;
   v29[1] = v20;
-  v32[1] = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v32[1] = [MEMORY[0x1E696AD98] numberWithInteger:width];
   v30 = *MEMORY[0x1E69660B8];
   v21 = v30;
-  v22 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v22 = [MEMORY[0x1E696AD98] numberWithInteger:height];
   v31 = *MEMORY[0x1E69660D8];
   v23 = v31;
   v32[2] = v22;
@@ -73,11 +73,11 @@ LABEL_11:
   v28[0] = self->_frameSupportedPixelFormats;
   v27[0] = v19;
   v27[1] = v20;
-  v28[1] = [MEMORY[0x1E696AD98] numberWithInteger:a5 * a3];
+  v28[1] = [MEMORY[0x1E696AD98] numberWithInteger:factor * width];
   v27[2] = v21;
-  v24 = [MEMORY[0x1E696AD98] numberWithInteger:a5 * a4];
+  height = [MEMORY[0x1E696AD98] numberWithInteger:factor * height];
   v27[3] = v23;
-  v28[2] = v24;
+  v28[2] = height;
   v28[3] = MEMORY[0x1E695E0F8];
   self->_destinationPixelBufferAttributes = [objc_msgSend(MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:{4), "copy"}];
   return self;
@@ -111,14 +111,14 @@ LABEL_11:
   return v3 / 100.0;
 }
 
-- (void)downloadConfigurationModelWithCompletionHandler:(id)a3
+- (void)downloadConfigurationModelWithCompletionHandler:(id)handler
 {
   veConfiguration = self->_veConfiguration;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __88__VTSuperResolutionScalerConfiguration_downloadConfigurationModelWithCompletionHandler___block_invoke;
   v4[3] = &unk_1E72C8EA0;
-  v4[4] = a3;
+  v4[4] = handler;
   [(VESuperResolutionConfiguration *)veConfiguration downloadAssetWithCompletionHandler:v4];
 }
 

@@ -1,62 +1,62 @@
 @interface CBDisplayStateClient
 - (BOOL)supported;
-- (BOOL)switchToFlipbookState:(int64_t)a3 error:(id *)a4;
-- (BOOL)transitionToDisplayMode:(int64_t)a3 withDuration:(double)a4 error:(id *)a5;
+- (BOOL)switchToFlipbookState:(int64_t)state error:(id *)error;
+- (BOOL)transitionToDisplayMode:(int64_t)mode withDuration:(double)duration error:(id *)error;
 - (CBDisplayStateClient)init;
 - (int64_t)displayMode;
-- (void)_displayModeChangeCompletionHandler:(int64_t)a3;
+- (void)_displayModeChangeCompletionHandler:(int64_t)handler;
 - (void)_removeCompletionDelegate;
 - (void)activate;
 - (void)cancel;
 - (void)dealloc;
-- (void)setCompletionDelegate:(id)a3;
+- (void)setCompletionDelegate:(id)delegate;
 @end
 
 @implementation CBDisplayStateClient
 
 - (CBDisplayStateClient)init
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6.receiver = self;
   v6.super_class = CBDisplayStateClient;
-  v8 = [(CBDisplayStateClient *)&v6 init];
-  if (v8)
+  selfCopy = [(CBDisplayStateClient *)&v6 init];
+  if (selfCopy)
   {
     v2 = objc_alloc_init(BrightnessSystemClientInternal);
-    v8->_bsci = v2;
+    selfCopy->_bsci = v2;
     v3 = dispatch_queue_create("CB - DisplayStateClient", 0);
-    v8->_queue = v3;
+    selfCopy->_queue = v3;
     v4 = os_log_create("com.apple.CoreBrightness.DisplayStateClient", "Default");
-    v8->_logHandle = v4;
+    selfCopy->_logHandle = v4;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v2 = MEMORY[0x1E69E5920](self->_bsci).n128_u64[0];
-  if (v5->_queue)
+  if (selfCopy->_queue)
   {
-    dispatch_release(v5->_queue);
+    dispatch_release(selfCopy->_queue);
   }
 
-  if (v5->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    v2 = MEMORY[0x1E69E5920](v5->_logHandle).n128_u64[0];
+    v2 = MEMORY[0x1E69E5920](selfCopy->_logHandle).n128_u64[0];
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = CBDisplayStateClient;
   [(CBDisplayStateClient *)&v3 dealloc];
 }
 
 - (void)activate
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   queue = self->_queue;
   block = MEMORY[0x1E69E9820];
@@ -64,7 +64,7 @@
   v5 = 0;
   v6 = __32__CBDisplayStateClient_activate__block_invoke;
   v7 = &unk_1E867B480;
-  v8 = v10;
+  v8 = selfCopy;
   dispatch_sync(queue, &block);
 }
 
@@ -135,7 +135,7 @@ void __32__CBDisplayStateClient_activate__block_invoke_3(id *a1)
 
 - (void)cancel
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   queue = self->_queue;
   block = MEMORY[0x1E69E9820];
@@ -143,7 +143,7 @@ void __32__CBDisplayStateClient_activate__block_invoke_3(id *a1)
   v5 = 0;
   v6 = __30__CBDisplayStateClient_cancel__block_invoke;
   v7 = &unk_1E867B480;
-  v8 = v10;
+  v8 = selfCopy;
   dispatch_sync(queue, &block);
 }
 
@@ -156,19 +156,19 @@ uint64_t __30__CBDisplayStateClient_cancel__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setCompletionDelegate:(id)a3
+- (void)setCompletionDelegate:(id)delegate
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   block = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __46__CBDisplayStateClient_setCompletionDelegate___block_invoke;
   v8 = &unk_1E867BB90;
-  v9 = v13;
-  v10 = a3;
+  v9 = selfCopy;
+  delegateCopy2 = delegate;
   dispatch_sync(queue, &block);
 }
 
@@ -192,15 +192,15 @@ uint64_t __46__CBDisplayStateClient_setCompletionDelegate___block_invoke(uint64_
   [(BrightnessSystemClientInternal *)self->_bsci removePropertyFromNotification:@"DisplayModeChangeComplete", v2];
 }
 
-- (void)_displayModeChangeCompletionHandler:(int64_t)a3
+- (void)_displayModeChangeCompletionHandler:(int64_t)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
-  v17 = a3;
+  handlerCopy = handler;
   if (self->_logHandle)
   {
-    logHandle = v19->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -223,22 +223,22 @@ uint64_t __46__CBDisplayStateClient_setCompletionDelegate___block_invoke(uint64_
   v14 = 0xEEEEB0B5B2B2EEEELL;
   if (os_signpost_enabled(v16))
   {
-    __os_log_helper_16_0_1_8_0(v20, v17);
+    __os_log_helper_16_0_1_8_0(v20, handlerCopy);
     _os_signpost_emit_with_name_impl(&dword_1DE8E5000, v16, v15, v14, "DisplayModeClientCompletionHandler", "mode: %ld", v20, 0xCu);
   }
 
-  if ([(CBDisplayStateClientDelegate *)v19->_completionDelegate delegateQueue])
+  if ([(CBDisplayStateClientDelegate *)selfCopy->_completionDelegate delegateQueue])
   {
-    v13 = MEMORY[0x1E69E5928](v19->_completionDelegate);
-    v3 = [(CBDisplayStateClientDelegate *)v19->_completionDelegate delegateQueue];
+    v13 = MEMORY[0x1E69E5928](selfCopy->_completionDelegate);
+    delegateQueue = [(CBDisplayStateClientDelegate *)selfCopy->_completionDelegate delegateQueue];
     block = MEMORY[0x1E69E9820];
     v7 = -1073741824;
     v8 = 0;
     v9 = __60__CBDisplayStateClient__displayModeChangeCompletionHandler___block_invoke;
     v10 = &unk_1E867B9D8;
     v11 = v13;
-    v12 = v17;
-    dispatch_async(v3, &block);
+    v12 = handlerCopy;
+    dispatch_async(delegateQueue, &block);
   }
 
   *MEMORY[0x1E69E9840];
@@ -253,14 +253,14 @@ double __60__CBDisplayStateClient__displayModeChangeCompletionHandler___block_in
 
 - (BOOL)supported
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v3 = MEMORY[0x1E69E9820];
   v4 = -1073741824;
   v5 = 0;
   v6 = __33__CBDisplayStateClient_supported__block_invoke;
   v7 = &unk_1E867B480;
-  v8 = self;
+  selfCopy2 = self;
   v12 = &supported_onceToken;
   v11 = &v3;
   if (supported_onceToken != -1)
@@ -268,7 +268,7 @@ double __60__CBDisplayStateClient__displayModeChangeCompletionHandler___block_in
     dispatch_once(v12, v11);
   }
 
-  return v10->_supported;
+  return selfCopy->_supported;
 }
 
 void __33__CBDisplayStateClient_supported__block_invoke(uint64_t a1)
@@ -304,7 +304,7 @@ double __33__CBDisplayStateClient_supported__block_invoke_2(uint64_t a1)
 
 - (int64_t)displayMode
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
   v12 = 0;
   v13 = &v12;
@@ -317,7 +317,7 @@ double __33__CBDisplayStateClient_supported__block_invoke_2(uint64_t a1)
   v7 = 0;
   v8 = __35__CBDisplayStateClient_displayMode__block_invoke;
   v9 = &unk_1E867C080;
-  v10 = v18;
+  v10 = selfCopy;
   v11 = &v12;
   dispatch_sync(queue, &block);
   v4 = v13[3];
@@ -342,17 +342,17 @@ double __35__CBDisplayStateClient_displayMode__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)transitionToDisplayMode:(int64_t)a3 withDuration:(double)a4 error:(id *)a5
+- (BOOL)transitionToDisplayMode:(int64_t)mode withDuration:(double)duration error:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v46 = self;
+  selfCopy = self;
   v45 = a2;
-  v44 = a3;
-  v43 = a4;
-  v42 = a5;
+  modeCopy = mode;
+  durationCopy = duration;
+  errorCopy = error;
   if (self->_logHandle)
   {
-    logHandle = v46->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -374,13 +374,13 @@ double __35__CBDisplayStateClient_displayMode__block_invoke(uint64_t a1)
   v40 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_1_8_0(v49, v44);
+    __os_log_helper_16_0_1_8_0(v49, modeCopy);
     _os_log_impl(&dword_1DE8E5000, v41, v40, "[Display Mode] Client request transition to display mode %ld", v49, 0xCu);
   }
 
-  if (v46->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    v14 = v46->_logHandle;
+    v14 = selfCopy->_logHandle;
   }
 
   else
@@ -403,7 +403,7 @@ double __35__CBDisplayStateClient_displayMode__block_invoke(uint64_t a1)
   v37 = 0xEEEEB0B5B2B2EEEELL;
   if (os_signpost_enabled(v14))
   {
-    __os_log_helper_16_0_1_8_0(v48, v44);
+    __os_log_helper_16_0_1_8_0(v48, modeCopy);
     _os_signpost_emit_with_name_impl(&dword_1DE8E5000, v39, v38, v37, "DisplayModeClientTransitionToDisplayMode", "%ld", v48, 0xCu);
   }
 
@@ -417,29 +417,29 @@ double __35__CBDisplayStateClient_displayMode__block_invoke(uint64_t a1)
   v29 = 0x20000000;
   v30 = 32;
   v31 = 0;
-  queue = v46->_queue;
+  queue = selfCopy->_queue;
   block = MEMORY[0x1E69E9820];
   v18 = -1073741824;
   v19 = 0;
   v20 = __67__CBDisplayStateClient_transitionToDisplayMode_withDuration_error___block_invoke;
   v21 = &unk_1E867D188;
-  v22 = v46;
-  v25 = v44;
-  v26 = v43;
+  v22 = selfCopy;
+  v25 = modeCopy;
+  v26 = durationCopy;
   v23 = &v32;
   v24 = &v27;
   dispatch_sync(queue, &block);
-  if (v42 && v28[3])
+  if (errorCopy && v28[3])
   {
     v11 = MEMORY[0x1E696ABC0];
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:CBClientErrorDomain];
     v6 = [v11 errorWithDomain:v12 code:v28[3] userInfo:0];
-    *v42 = v6;
+    *errorCopy = v6;
   }
 
-  if (v46->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    v10 = v46->_logHandle;
+    v10 = selfCopy->_logHandle;
   }
 
   else
@@ -459,7 +459,7 @@ double __35__CBDisplayStateClient_displayMode__block_invoke(uint64_t a1)
 
   if (os_signpost_enabled(v10))
   {
-    __os_log_helper_16_0_1_8_0(v47, v44);
+    __os_log_helper_16_0_1_8_0(v47, modeCopy);
     _os_signpost_emit_with_name_impl(&dword_1DE8E5000, v10, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "DisplayModeClientTransitionToDisplayMode", "%ld", v47, 0xCu);
   }
 
@@ -496,12 +496,12 @@ void __67__CBDisplayStateClient_transitionToDisplayMode_withDuration_error___blo
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)switchToFlipbookState:(int64_t)a3 error:(id *)a4
+- (BOOL)switchToFlipbookState:(int64_t)state error:(id *)error
 {
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
-  v18 = a4;
+  stateCopy = state;
+  errorCopy = error;
   v14[0] = 0;
   v14[1] = v14;
   v15 = 0x20000000;
@@ -513,8 +513,8 @@ void __67__CBDisplayStateClient_transitionToDisplayMode_withDuration_error___blo
   v8 = 0;
   v9 = __52__CBDisplayStateClient_switchToFlipbookState_error___block_invoke;
   v10 = &unk_1E867BC80;
-  v11 = v21;
-  v13 = a3;
+  v11 = selfCopy;
+  stateCopy2 = state;
   v12 = v14;
   dispatch_sync(queue, &block);
   _Block_object_dispose(v14, 8);

@@ -1,40 +1,40 @@
 @interface _INPBPlayAnnouncementSoundIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBPlayAnnouncementSoundIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBPlayAnnouncementSoundIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSoundType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSoundType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBPlayAnnouncementSoundIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBPlayAnnouncementSoundIntent *)self intentMetadata];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"intentMetadata"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  intentMetadata = [(_INPBPlayAnnouncementSoundIntent *)self intentMetadata];
+  dictionaryRepresentation = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"intentMetadata"];
 
   if ([(_INPBPlayAnnouncementSoundIntent *)self hasSoundType])
   {
-    v6 = [(_INPBPlayAnnouncementSoundIntent *)self soundType];
-    if (v6 == 1)
+    soundType = [(_INPBPlayAnnouncementSoundIntent *)self soundType];
+    if (soundType == 1)
     {
       v7 = @"ANNOUNCEMENT_SENT";
     }
 
     else
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", soundType];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"soundType"];
+    [dictionary setObject:v7 forKeyedSubscript:@"soundType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -53,26 +53,26 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = [(_INPBPlayAnnouncementSoundIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  v7 = v6;
-  if ((v5 != 0) != (v6 == 0))
+  intentMetadata = [(_INPBPlayAnnouncementSoundIntent *)self intentMetadata];
+  intentMetadata2 = [equalCopy intentMetadata];
+  v7 = intentMetadata2;
+  if ((intentMetadata != 0) != (intentMetadata2 == 0))
   {
-    v8 = [(_INPBPlayAnnouncementSoundIntent *)self intentMetadata];
-    if (v8)
+    intentMetadata3 = [(_INPBPlayAnnouncementSoundIntent *)self intentMetadata];
+    if (intentMetadata3)
     {
-      v9 = v8;
-      v10 = [(_INPBPlayAnnouncementSoundIntent *)self intentMetadata];
-      v11 = [v4 intentMetadata];
-      v12 = [v10 isEqual:v11];
+      v9 = intentMetadata3;
+      intentMetadata4 = [(_INPBPlayAnnouncementSoundIntent *)self intentMetadata];
+      intentMetadata5 = [equalCopy intentMetadata];
+      v12 = [intentMetadata4 isEqual:intentMetadata5];
 
       if (!v12)
       {
@@ -84,10 +84,10 @@
     {
     }
 
-    v13 = [(_INPBPlayAnnouncementSoundIntent *)self hasSoundType];
-    if (v13 == [v4 hasSoundType])
+    hasSoundType = [(_INPBPlayAnnouncementSoundIntent *)self hasSoundType];
+    if (hasSoundType == [equalCopy hasSoundType])
     {
-      if (!-[_INPBPlayAnnouncementSoundIntent hasSoundType](self, "hasSoundType") || ![v4 hasSoundType] || (soundType = self->_soundType, soundType == objc_msgSend(v4, "soundType")))
+      if (!-[_INPBPlayAnnouncementSoundIntent hasSoundType](self, "hasSoundType") || ![equalCopy hasSoundType] || (soundType = self->_soundType, soundType == objc_msgSend(equalCopy, "soundType")))
       {
         v14 = 1;
         goto LABEL_10;
@@ -106,10 +106,10 @@ LABEL_10:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBPlayAnnouncementSoundIntent allocWithZone:](_INPBPlayAnnouncementSoundIntent init];
-  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBPlayAnnouncementSoundIntent *)v5 setIntentMetadata:v6];
 
   if ([(_INPBPlayAnnouncementSoundIntent *)self hasSoundType])
@@ -120,38 +120,38 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBPlayAnnouncementSoundIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBPlayAnnouncementSoundIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBPlayAnnouncementSoundIntent)initWithCoder:(id)a3
+- (_INPBPlayAnnouncementSoundIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBPlayAnnouncementSoundIntent *)self initWithData:v6];
+    self = [(_INPBPlayAnnouncementSoundIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(_INPBPlayAnnouncementSoundIntent *)self intentMetadata];
+  toCopy = to;
+  intentMetadata = [(_INPBPlayAnnouncementSoundIntent *)self intentMetadata];
 
-  if (v4)
+  if (intentMetadata)
   {
-    v5 = [(_INPBPlayAnnouncementSoundIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBPlayAnnouncementSoundIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -162,10 +162,10 @@ LABEL_10:
   }
 }
 
-- (void)setSoundType:(int)a3
+- (void)setSoundType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -173,7 +173,7 @@ LABEL_10:
   else
   {
     *&self->_has = has | 1;
-    self->_soundType = a3;
+    self->_soundType = type;
   }
 }
 

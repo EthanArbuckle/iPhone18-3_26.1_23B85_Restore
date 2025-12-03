@@ -1,17 +1,17 @@
 @interface STDailyAverageSummaryTableViewCell
-- (STDailyAverageSummaryTableViewCell)initWithUsageReport:(id)a3;
-- (void)_layoutDidChangeFrom:(BOOL)a3 to:(BOOL)a4;
-- (void)_numberOfLinesDidChangeFrom:(unint64_t)a3 to:(unint64_t)a4;
+- (STDailyAverageSummaryTableViewCell)initWithUsageReport:(id)report;
+- (void)_layoutDidChangeFrom:(BOOL)from to:(BOOL)to;
+- (void)_numberOfLinesDidChangeFrom:(unint64_t)from to:(unint64_t)to;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation STDailyAverageSummaryTableViewCell
 
-- (STDailyAverageSummaryTableViewCell)initWithUsageReport:(id)a3
+- (STDailyAverageSummaryTableViewCell)initWithUsageReport:(id)report
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reportCopy = report;
   v49.receiver = self;
   v49.super_class = STDailyAverageSummaryTableViewCell;
   v5 = [(STTableCell *)&v49 initWithStyle:0 reuseIdentifier:0 specifier:0];
@@ -20,35 +20,35 @@
   v5->_titleView = v6;
 
   [(STUsageSummaryTitleView *)v5->_titleView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(STUsageSummaryTitleView *)v5->_titleView setUsageReport:v4];
+  [(STUsageSummaryTitleView *)v5->_titleView setUsageReport:reportCopy];
   v8 = [[STUsageGraphViewController alloc] initWithTitleView:v5->_titleView graphHeight:0 includePaddle:0 useVibrancy:90.0];
   usageGraphViewController = v5->_usageGraphViewController;
   v5->_usageGraphViewController = v8;
 
-  v10 = [v4 categoryUsageDataSet];
-  [(STUsageGraphViewController *)v5->_usageGraphViewController setDataSet:v10];
+  categoryUsageDataSet = [reportCopy categoryUsageDataSet];
+  [(STUsageGraphViewController *)v5->_usageGraphViewController setDataSet:categoryUsageDataSet];
 
-  v11 = [(STTableCell *)v5 childViewControllers];
-  [v11 addObject:v5->_usageGraphViewController];
+  childViewControllers = [(STTableCell *)v5 childViewControllers];
+  [childViewControllers addObject:v5->_usageGraphViewController];
 
-  v12 = [(STUsageGraphViewController *)v5->_usageGraphViewController view];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v13 = [(STDailyAverageSummaryTableViewCell *)v5 contentView];
-  firstValue = v12;
-  [v13 addSubview:v12];
+  view = [(STUsageGraphViewController *)v5->_usageGraphViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentView = [(STDailyAverageSummaryTableViewCell *)v5 contentView];
+  firstValue = view;
+  [contentView addSubview:view];
   v14 = objc_opt_new();
   topItemsView = v5->_topItemsView;
   v5->_topItemsView = v14;
 
   [(STHorizontallySegmentedView *)v5->_topItemsView setTranslatesAutoresizingMaskIntoConstraints:0];
   v42 = v5;
-  v40 = v13;
-  [v13 addSubview:v5->_topItemsView];
-  v16 = [v4 topUsageItemsWithMaxCount:3 type:3 includeAggregateItem:0 nonAggregateItems:0 darkColors:0];
-  v43 = v4;
+  v40 = contentView;
+  [contentView addSubview:v5->_topItemsView];
+  v16 = [reportCopy topUsageItemsWithMaxCount:3 type:3 includeAggregateItem:0 nonAggregateItems:0 darkColors:0];
+  v43 = reportCopy;
   if (![v16 count])
   {
-    v17 = [v4 topUsageItemsWithMaxCount:3 type:2 includeAggregateItem:0 nonAggregateItems:0 darkColors:0];
+    v17 = [reportCopy topUsageItemsWithMaxCount:3 type:2 includeAggregateItem:0 nonAggregateItems:0 darkColors:0];
 
     v16 = v17;
   }
@@ -75,26 +75,26 @@
 
         v23 = *(*(&v45 + 1) + 8 * i);
         v24 = [STSegmentItem alloc];
-        v25 = [v23 displayName];
-        v26 = [v23 totalUsage];
-        [v26 doubleValue];
+        displayName = [v23 displayName];
+        totalUsage = [v23 totalUsage];
+        [totalUsage doubleValue];
         v28 = v27;
         if (v27 >= 60.0)
         {
-          v29 = objc_opt_new();
-          [v29 setAllowedUnits:96];
-          [v29 setUnitsStyle:1];
+          st_sharedAbbreviatedSecondsDateFormatter = objc_opt_new();
+          [st_sharedAbbreviatedSecondsDateFormatter setAllowedUnits:96];
+          [st_sharedAbbreviatedSecondsDateFormatter setUnitsStyle:1];
         }
 
         else
         {
-          v29 = [MEMORY[0x277CCA958] st_sharedAbbreviatedSecondsDateFormatter];
+          st_sharedAbbreviatedSecondsDateFormatter = [MEMORY[0x277CCA958] st_sharedAbbreviatedSecondsDateFormatter];
         }
 
-        v30 = [v29 stringFromTimeInterval:v28];
+        v30 = [st_sharedAbbreviatedSecondsDateFormatter stringFromTimeInterval:v28];
 
-        v31 = [v23 color];
-        v32 = [(STSegmentItem *)v24 initWithTitleText:v25 detailText:v30 titleColor:v31 detailImage:0 detailImageTintColor:0];
+        color = [v23 color];
+        v32 = [(STSegmentItem *)v24 initWithTitleText:displayName detailText:v30 titleColor:color detailImage:0 detailImageTintColor:0];
 
         [v18 addObject:v32];
       }
@@ -133,27 +133,27 @@
   [(PSTableCell *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  if (a6 == "KVOContextDailyAverageSummaryTableViewCell")
+  pathCopy = path;
+  changeCopy = change;
+  if (context == "KVOContextDailyAverageSummaryTableViewCell")
   {
-    if ([v10 isEqualToString:@"numberOfLines"])
+    if ([pathCopy isEqualToString:@"numberOfLines"])
     {
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-      v13 = [MEMORY[0x277CBEB68] null];
+      v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v12 == v13)
+      if (v12 == null)
       {
 
         v12 = 0;
       }
 
-      v14 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v15 = [MEMORY[0x277CBEB68] null];
+      v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null2 = [MEMORY[0x277CBEB68] null];
 
-      if (v14 == v15)
+      if (v14 == null2)
       {
 
         v14 = 0;
@@ -164,24 +164,24 @@
 
     else
     {
-      if (![v10 isEqualToString:@"hasMultilineLayout"])
+      if (![pathCopy isEqualToString:@"hasMultilineLayout"])
       {
         goto LABEL_16;
       }
 
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-      v16 = [MEMORY[0x277CBEB68] null];
+      v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+      null3 = [MEMORY[0x277CBEB68] null];
 
-      if (v12 == v16)
+      if (v12 == null3)
       {
 
         v12 = 0;
       }
 
-      v14 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v17 = [MEMORY[0x277CBEB68] null];
+      v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null4 = [MEMORY[0x277CBEB68] null];
 
-      if (v14 == v17)
+      if (v14 == null4)
       {
 
         v14 = 0;
@@ -195,25 +195,25 @@
 
   v18.receiver = self;
   v18.super_class = STDailyAverageSummaryTableViewCell;
-  [(STDailyAverageSummaryTableViewCell *)&v18 observeValueForKeyPath:v10 ofObject:a4 change:v11 context:a6];
+  [(STDailyAverageSummaryTableViewCell *)&v18 observeValueForKeyPath:pathCopy ofObject:object change:changeCopy context:context];
 LABEL_16:
 }
 
-- (void)_numberOfLinesDidChangeFrom:(unint64_t)a3 to:(unint64_t)a4
+- (void)_numberOfLinesDidChangeFrom:(unint64_t)from to:(unint64_t)to
 {
-  if (a3 != a4)
+  if (from != to)
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 postNotificationName:@"HeightDidChange" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"HeightDidChange" object:self];
   }
 }
 
-- (void)_layoutDidChangeFrom:(BOOL)a3 to:(BOOL)a4
+- (void)_layoutDidChangeFrom:(BOOL)from to:(BOOL)to
 {
-  if (a3 != a4)
+  if (from != to)
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 postNotificationName:@"HeightDidChange" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"HeightDidChange" object:self];
   }
 }
 

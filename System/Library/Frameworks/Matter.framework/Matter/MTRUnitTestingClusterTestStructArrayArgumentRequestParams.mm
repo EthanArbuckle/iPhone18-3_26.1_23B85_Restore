@@ -1,8 +1,8 @@
 @interface MTRUnitTestingClusterTestStructArrayArgumentRequestParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRUnitTestingClusterTestStructArrayArgumentRequestParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -15,21 +15,21 @@
   v2 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)&v16 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     arg1 = v2->_arg1;
-    v2->_arg1 = v3;
+    v2->_arg1 = array;
 
-    v5 = [MEMORY[0x277CBEA60] array];
+    array2 = [MEMORY[0x277CBEA60] array];
     arg2 = v2->_arg2;
-    v2->_arg2 = v5;
+    v2->_arg2 = array2;
 
-    v7 = [MEMORY[0x277CBEA60] array];
+    array3 = [MEMORY[0x277CBEA60] array];
     arg3 = v2->_arg3;
-    v2->_arg3 = v7;
+    v2->_arg3 = array3;
 
-    v9 = [MEMORY[0x277CBEA60] array];
+    array4 = [MEMORY[0x277CBEA60] array];
     arg4 = v2->_arg4;
-    v2->_arg4 = v9;
+    v2->_arg4 = array4;
 
     arg5 = v2->_arg5;
     v2->_arg5 = &unk_284C3E4C8;
@@ -47,32 +47,32 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterTestStructArrayArgumentRequestParams);
-  v5 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg1];
-  [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)v4 setArg1:v5];
+  arg1 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg1];
+  [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)v4 setArg1:arg1];
 
-  v6 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg2];
-  [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)v4 setArg2:v6];
+  arg2 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg2];
+  [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)v4 setArg2:arg2];
 
-  v7 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg3];
-  [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)v4 setArg3:v7];
+  arg3 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg3];
+  [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)v4 setArg3:arg3];
 
-  v8 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg4];
-  [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)v4 setArg4:v8];
+  arg4 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg4];
+  [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)v4 setArg4:arg4];
 
-  v9 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg5];
-  [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)v4 setArg5:v9];
+  arg5 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg5];
+  [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)v4 setArg5:arg5];
 
-  v10 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg6];
-  [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)v4 setArg6:v10];
+  arg6 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg6];
+  [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)v4 setArg6:arg6];
 
-  v11 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self timedInvokeTimeoutMs];
-  [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)v4 setTimedInvokeTimeoutMs:v11];
+  timedInvokeTimeoutMs = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self timedInvokeTimeoutMs];
+  [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v12 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self serverSideProcessingTimeout];
-  [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)v4 setServerSideProcessingTimeout:v12];
+  serverSideProcessingTimeout = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self serverSideProcessingTimeout];
+  [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -87,7 +87,7 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v36 = *MEMORY[0x277D85DE8];
   v30 = 0;
@@ -98,8 +98,8 @@
   v25[0] = 0;
   v25[1] = 0;
   v24 = v25;
-  v4 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg1];
-  v5 = [v4 count] == 0;
+  arg1 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg1];
+  v5 = [arg1 count] == 0;
 
   if (!v5)
   {
@@ -107,8 +107,8 @@
   }
 
   v26 = 0uLL;
-  v6 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg2];
-  v7 = [v6 count] == 0;
+  arg2 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg2];
+  v7 = [arg2 count] == 0;
 
   if (!v7)
   {
@@ -116,8 +116,8 @@
   }
 
   v27 = 0uLL;
-  v8 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg3];
-  v9 = [v8 count] == 0;
+  arg3 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg3];
+  v9 = [arg3 count] == 0;
 
   if (!v9)
   {
@@ -125,8 +125,8 @@
   }
 
   v28 = 0uLL;
-  v10 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg4];
-  v11 = [v10 count] == 0;
+  arg4 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg4];
+  v11 = [arg4 count] == 0;
 
   if (!v11)
   {
@@ -134,11 +134,11 @@
   }
 
   v29 = 0uLL;
-  v15 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg5];
-  LOBYTE(v30) = [v15 unsignedCharValue];
+  arg5 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg5];
+  LOBYTE(v30) = [arg5 unsignedCharValue];
 
-  v16 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg6];
-  HIBYTE(v30) = [v16 BOOLValue];
+  arg6 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self arg6];
+  HIBYTE(v30) = [arg6 BOOLValue];
 
   sub_2393D9C18(0x62FuLL, 0, &v23);
   if (v23)
@@ -159,8 +159,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v23);
-      v18 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v23);
+      v18 = sub_2393C7114(reader, 21, 256);
       v20 = v21;
       v19 = v18;
     }
@@ -188,19 +188,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRUnitTestingClusterTestStructArrayArgumentRequestParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -211,7 +211,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0xB1B600000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

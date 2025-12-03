@@ -1,24 +1,24 @@
 @interface WDClinicalOnboardingOAuthNavigationViewController
 - (ClinicalSharingOnboardingDelegate)onboardingDelegate;
 - (WDClinicalOnboardingOAuthNavigationViewController)init;
-- (WDClinicalOnboardingOAuthNavigationViewController)initWithContext:(int64_t)a3 onboardingOptions:(unint64_t)a4 sourceIdentifier:(id)a5 profile:(id)a6 existingAccount:(id)a7;
-- (WDClinicalOnboardingOAuthNavigationViewController)initWithSession:(id)a3 existingAccount:(id)a4;
+- (WDClinicalOnboardingOAuthNavigationViewController)initWithContext:(int64_t)context onboardingOptions:(unint64_t)options sourceIdentifier:(id)identifier profile:(id)profile existingAccount:(id)account;
+- (WDClinicalOnboardingOAuthNavigationViewController)initWithSession:(id)session existingAccount:(id)account;
 - (id)_createInitialRootViewController;
 - (id)keyCommands;
 - (void)_clearLoginBusyIndicator;
 - (void)_dismissViewController;
-- (void)_mainQueue_completionNotificationHandler:(id)a3;
+- (void)_mainQueue_completionNotificationHandler:(id)handler;
 - (void)beginListeningToNotification;
-- (void)completionNotificationHandler:(id)a3;
+- (void)completionNotificationHandler:(id)handler;
 - (void)createRootViewController;
-- (void)didCompleteOnboardingFor:(id)a3;
-- (void)didLoginToAccount:(id)a3;
-- (void)dismissWithAccount:(id)a3 error:(id)a4 animated:(BOOL)a5;
+- (void)didCompleteOnboardingFor:(id)for;
+- (void)didLoginToAccount:(id)account;
+- (void)dismissWithAccount:(id)account error:(id)error animated:(BOOL)animated;
 - (void)stopListeningToNotification;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation WDClinicalOnboardingOAuthNavigationViewController
@@ -33,31 +33,31 @@
   return 0;
 }
 
-- (WDClinicalOnboardingOAuthNavigationViewController)initWithContext:(int64_t)a3 onboardingOptions:(unint64_t)a4 sourceIdentifier:(id)a5 profile:(id)a6 existingAccount:(id)a7
+- (WDClinicalOnboardingOAuthNavigationViewController)initWithContext:(int64_t)context onboardingOptions:(unint64_t)options sourceIdentifier:(id)identifier profile:(id)profile existingAccount:(id)account
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
+  accountCopy = account;
+  profileCopy = profile;
+  identifierCopy = identifier;
   v15 = [WDClinicalAccountOnboardingSession alloc];
   v16 = +[CHRAnalyticsManager shared];
-  v17 = [(WDClinicalAccountOnboardingSession *)v15 initWithContext:a3 options:a4 sourceIdentifier:v14 profile:v13 analyticsManager:v16];
+  v17 = [(WDClinicalAccountOnboardingSession *)v15 initWithContext:context options:options sourceIdentifier:identifierCopy profile:profileCopy analyticsManager:v16];
 
-  v18 = [(WDClinicalOnboardingOAuthNavigationViewController *)self initWithSession:v17 existingAccount:v12];
+  v18 = [(WDClinicalOnboardingOAuthNavigationViewController *)self initWithSession:v17 existingAccount:accountCopy];
   return v18;
 }
 
-- (WDClinicalOnboardingOAuthNavigationViewController)initWithSession:(id)a3 existingAccount:(id)a4
+- (WDClinicalOnboardingOAuthNavigationViewController)initWithSession:(id)session existingAccount:(id)account
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  accountCopy = account;
   v14.receiver = self;
   v14.super_class = WDClinicalOnboardingOAuthNavigationViewController;
   v9 = [(WDClinicalOnboardingOAuthNavigationViewController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_onboardingSession, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_onboardingSession, session);
+    v11 = [accountCopy copy];
     onboardingAccount = v10->_onboardingAccount;
     v10->_onboardingAccount = v11;
 
@@ -73,41 +73,41 @@
   v7.super_class = WDClinicalOnboardingOAuthNavigationViewController;
   [(HKNavigationController *)&v7 viewDidLoad];
   v3 = +[HRProfileManager sharedInstance];
-  v4 = [(WDClinicalOnboardingOAuthNavigationViewController *)self profile];
-  v5 = [v4 healthStore];
-  v6 = [v5 profileIdentifier];
-  [v3 switchCurrentProfileWithIdentifier:v6];
+  profile = [(WDClinicalOnboardingOAuthNavigationViewController *)self profile];
+  healthStore = [profile healthStore];
+  profileIdentifier = [healthStore profileIdentifier];
+  [v3 switchCurrentProfileWithIdentifier:profileIdentifier];
 
   [(WDClinicalOnboardingOAuthNavigationViewController *)self createRootViewController];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = WDClinicalOnboardingOAuthNavigationViewController;
-  [(HKNavigationController *)&v4 viewDidAppear:a3];
+  [(HKNavigationController *)&v4 viewDidAppear:appear];
   [(WDClinicalOnboardingOAuthNavigationViewController *)self beginListeningToNotification];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = WDClinicalOnboardingOAuthNavigationViewController;
   [(WDClinicalOnboardingOAuthNavigationViewController *)&v5 viewWillDisappear:?];
   if (([(WDClinicalOnboardingOAuthNavigationViewController *)self isMovingFromParentViewController]& 1) != 0 || [(WDClinicalOnboardingOAuthNavigationViewController *)self isBeingDismissed])
   {
-    [(WDClinicalAccountOnboardingSession *)self->_onboardingSession onboardingWillDisappearWith:self->_onboardingTileNavigationViewController animated:v3];
+    [(WDClinicalAccountOnboardingSession *)self->_onboardingSession onboardingWillDisappearWith:self->_onboardingTileNavigationViewController animated:disappearCopy];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(WDClinicalOnboardingOAuthNavigationViewController *)self stopListeningToNotification];
   v5.receiver = self;
   v5.super_class = WDClinicalOnboardingOAuthNavigationViewController;
-  [(HKNavigationController *)&v5 viewDidDisappear:v3];
+  [(HKNavigationController *)&v5 viewDidDisappear:disappearCopy];
 }
 
 - (id)keyCommands
@@ -123,35 +123,35 @@
 - (void)beginListeningToNotification
 {
   [(WDClinicalOnboardingOAuthNavigationViewController *)self stopListeningToNotification];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  v3 = [MEMORY[0x1E696AD80] OAuthCompletionNotification];
-  [v4 addObserver:self selector:sel_completionNotificationHandler_ name:v3 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  oAuthCompletionNotification = [MEMORY[0x1E696AD80] OAuthCompletionNotification];
+  [defaultCenter addObserver:self selector:sel_completionNotificationHandler_ name:oAuthCompletionNotification object:0];
 }
 
 - (void)stopListeningToNotification
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  v3 = [MEMORY[0x1E696AD80] OAuthCompletionNotification];
-  [v4 removeObserver:self name:v3 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  oAuthCompletionNotification = [MEMORY[0x1E696AD80] OAuthCompletionNotification];
+  [defaultCenter removeObserver:self name:oAuthCompletionNotification object:0];
 }
 
-- (void)completionNotificationHandler:(id)a3
+- (void)completionNotificationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __83__WDClinicalOnboardingOAuthNavigationViewController_completionNotificationHandler___block_invoke;
   v6[3] = &unk_1E83DD1A8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)_mainQueue_completionNotificationHandler:(id)a3
+- (void)_mainQueue_completionNotificationHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   _HKInitializeLogging();
   v5 = MEMORY[0x1E696B948];
@@ -159,18 +159,18 @@
   if (os_log_type_enabled(*MEMORY[0x1E696B948], OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138543362;
-    v18 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1D101F000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: got notified by OAuthCompletionNotification", &v17, 0xCu);
   }
 
-  v7 = [v4 userInfo];
+  userInfo = [handlerCopy userInfo];
   v8 = +[_TtC15HealthRecordsUI39OAuthCompletionNotificationUserInfoKeys account];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v9 = [userInfo objectForKeyedSubscript:v8];
 
-  v10 = [v4 userInfo];
+  userInfo2 = [handlerCopy userInfo];
 
   v11 = +[_TtC15HealthRecordsUI39OAuthCompletionNotificationUserInfoKeys error];
-  v12 = [v10 objectForKeyedSubscript:v11];
+  v12 = [userInfo2 objectForKeyedSubscript:v11];
 
   if (v9)
   {
@@ -199,7 +199,7 @@
     else if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543362;
-      v18 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1D101F000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: user aborted login (neither account nor error in the notification)", &v17, 0xCu);
     }
   }
@@ -208,19 +208,19 @@
 - (void)createRootViewController
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(WDClinicalOnboardingOAuthNavigationViewController *)self _createInitialRootViewController];
+  _createInitialRootViewController = [(WDClinicalOnboardingOAuthNavigationViewController *)self _createInitialRootViewController];
   _HKInitializeLogging();
   v4 = *MEMORY[0x1E696B948];
   if (os_log_type_enabled(*MEMORY[0x1E696B948], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v3;
+    v10 = _createInitialRootViewController;
     _os_log_impl(&dword_1D101F000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: created initial root view controller %{public}@", buf, 0x16u);
   }
 
-  v6 = v3;
+  v6 = _createInitialRootViewController;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v6 count:1];
   [(WDClinicalOnboardingOAuthNavigationViewController *)self setViewControllers:v5];
 }
@@ -230,13 +230,13 @@
   if (self->_providerToPresent)
   {
     v3 = [WDClinicalProviderDetailsViewController alloc];
-    v4 = [(WDClinicalOnboardingOAuthNavigationViewController *)self profile];
-    v5 = [(WDClinicalOnboardingOAuthNavigationViewController *)self providerToPresent];
-    v6 = [(WDClinicalProviderDetailsViewController *)v3 initWithProfile:v4 provider:v5];
+    profile = [(WDClinicalOnboardingOAuthNavigationViewController *)self profile];
+    providerToPresent = [(WDClinicalOnboardingOAuthNavigationViewController *)self providerToPresent];
+    v6 = [(WDClinicalProviderDetailsViewController *)v3 initWithProfile:profile provider:providerToPresent];
 
-    v7 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__dismissViewController];
-    v8 = [(OBBaseWelcomeController *)v6 navigationItem];
-    [v8 setLeftBarButtonItem:v7];
+    navigationItem2 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__dismissViewController];
+    navigationItem = [(OBBaseWelcomeController *)v6 navigationItem];
+    [navigationItem setLeftBarButtonItem:navigationItem2];
   }
 
   else
@@ -266,27 +266,27 @@
       goto LABEL_15;
     }
 
-    v11 = [(WDClinicalOnboardingOAuthNavigationViewController *)self gatewayProxyToTry];
+    gatewayProxyToTry = [(WDClinicalOnboardingOAuthNavigationViewController *)self gatewayProxyToTry];
 
     v12 = [WDClinicalOnboardingViewController alloc];
-    v13 = [(WDClinicalOnboardingOAuthNavigationViewController *)self profile];
-    if (v11)
+    profile2 = [(WDClinicalOnboardingOAuthNavigationViewController *)self profile];
+    if (gatewayProxyToTry)
     {
-      v14 = [(WDClinicalOnboardingOAuthNavigationViewController *)self gatewayProxyToTry];
-      v6 = [(WDClinicalOnboardingViewController *)v12 initWithProfile:v13 gatewayProxy:v14];
+      gatewayProxyToTry2 = [(WDClinicalOnboardingOAuthNavigationViewController *)self gatewayProxyToTry];
+      v6 = [(WDClinicalOnboardingViewController *)v12 initWithProfile:profile2 gatewayProxy:gatewayProxyToTry2];
 
       [(WDClinicalOnboardingOAuthNavigationViewController *)self setGatewayProxyToTry:0];
     }
 
     else
     {
-      v6 = [(WDClinicalOnboardingViewController *)v12 initWithProfile:v13];
+      v6 = [(WDClinicalOnboardingViewController *)v12 initWithProfile:profile2];
 
       [(HRClinicalSharingOnboardingInformationalViewController *)v6 setShowProviderNotFound:[(WDClinicalOnboardingOAuthNavigationViewController *)self showProviderNotFound]];
     }
 
-    v7 = [(OBBaseWelcomeController *)v6 navigationItem];
-    [v7 setLargeTitleDisplayMode:2];
+    navigationItem2 = [(OBBaseWelcomeController *)v6 navigationItem];
+    [navigationItem2 setLargeTitleDisplayMode:2];
   }
 
 LABEL_15:
@@ -297,7 +297,7 @@ LABEL_15:
 - (void)_clearLoginBusyIndicator
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(WDClinicalOnboardingOAuthNavigationViewController *)self topViewController];
+  topViewController = [(WDClinicalOnboardingOAuthNavigationViewController *)self topViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   _HKInitializeLogging();
@@ -308,53 +308,53 @@ LABEL_15:
     if (v6)
     {
       v7 = 138543618;
-      v8 = self;
+      selfCopy2 = self;
       v9 = 2114;
-      v10 = v3;
+      v10 = topViewController;
       _os_log_impl(&dword_1D101F000, v5, OS_LOG_TYPE_INFO, "%{public}@: finished login, clearing busy indicator from %{public}@", &v7, 0x16u);
     }
 
-    [v3 clearLoginBusyIndicator];
+    [topViewController clearLoginBusyIndicator];
   }
 
   else if (v6)
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy2 = self;
     v9 = 2114;
-    v10 = v3;
+    v10 = topViewController;
     _os_log_impl(&dword_1D101F000, v5, OS_LOG_TYPE_INFO, "%{public}@: finished login but top view controller is %{public}@, not , unable to clear busy indicator", &v7, 0x16u);
   }
 }
 
-- (void)didLoginToAccount:(id)a3
+- (void)didLoginToAccount:(id)account
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (!-[WDClinicalAccountOnboardingSession shouldLaunchClinicalSharing](self->_onboardingSession, "shouldLaunchClinicalSharing") || ([v4 gateway], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "canEnableSharingToProvider"), v5, !v6))
+  if (!-[WDClinicalAccountOnboardingSession shouldLaunchClinicalSharing](self->_onboardingSession, "shouldLaunchClinicalSharing") || ([accountCopy gateway], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "canEnableSharingToProvider"), v5, !v6))
   {
-    v10 = [[WDClinicalAccountAddedViewController alloc] initWithOnboardingSession:self->_onboardingSession account:v4];
+    v10 = [[WDClinicalAccountAddedViewController alloc] initWithOnboardingSession:self->_onboardingSession account:accountCopy];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __71__WDClinicalOnboardingOAuthNavigationViewController_didLoginToAccount___block_invoke;
     v35[3] = &unk_1E83DD1A8;
     v35[4] = self;
-    v11 = v4;
+    v11 = accountCopy;
     v36 = v11;
     [(WDClinicalAccountAddedViewController *)v10 setDismissHandler:v35];
     if ([v11 canEnableSharingToProvider])
     {
-      v12 = [v11 hasClinicalSharingScopes];
+      hasClinicalSharingScopes = [v11 hasClinicalSharingScopes];
       _HKInitializeLogging();
       v13 = *MEMORY[0x1E696B948];
       v14 = os_log_type_enabled(*MEMORY[0x1E696B948], OS_LOG_TYPE_DEFAULT);
-      if (v12)
+      if (hasClinicalSharingScopes)
       {
         if (v14)
         {
           *buf = 138543362;
-          v39 = self;
+          selfCopy6 = self;
           _os_log_impl(&dword_1D101F000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: did log in but may proceed to clinical sharing, not storing account just yet", buf, 0xCu);
         }
 
@@ -367,7 +367,7 @@ LABEL_15:
       if (v14)
       {
         *buf = 138543362;
-        v39 = self;
+        selfCopy6 = self;
         _os_log_impl(&dword_1D101F000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: did log in to a gateway supporting clinical sharing, but don't have the necessary scopes, proceeding as if logging in to a non-clinical-sharing gateway", buf, 0xCu);
       }
     }
@@ -381,12 +381,12 @@ LABEL_15:
       {
         onboardingSession = self->_onboardingSession;
         v19 = v17;
-        v20 = [(WDClinicalAccountOnboardingSession *)onboardingSession profile];
-        v21 = [v20 clinicalAccountStore];
+        profile = [(WDClinicalAccountOnboardingSession *)onboardingSession profile];
+        clinicalAccountStore = [profile clinicalAccountStore];
         *buf = 138543618;
-        v39 = self;
+        selfCopy6 = self;
         v40 = 2114;
-        v41 = v21;
+        v41 = clinicalAccountStore;
         _os_log_impl(&dword_1D101F000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: did log in, persisting account and kicking off ingestion on %{public}@", buf, 0x16u);
       }
 
@@ -402,10 +402,10 @@ LABEL_15:
       goto LABEL_26;
     }
 
-    v23 = [v11 gateway];
-    v24 = [v23 baseURL];
-    v25 = [v24 absoluteString];
-    v26 = [v25 isEqualToString:@"https://localhost:9090/resource"];
+    gateway = [v11 gateway];
+    baseURL = [gateway baseURL];
+    absoluteString = [baseURL absoluteString];
+    v26 = [absoluteString isEqualToString:@"https://localhost:9090/resource"];
 
     _HKInitializeLogging();
     v27 = *MEMORY[0x1E696B948];
@@ -415,7 +415,7 @@ LABEL_15:
       if (v28)
       {
         *buf = 138543362;
-        v39 = self;
+        selfCopy6 = self;
         _os_log_impl(&dword_1D101F000, v27, OS_LOG_TYPE_DEFAULT, "%{public}@: account re-logged in. How did you get here? File a Radar to CHR Ingest & Extract if you see me!", buf, 0xCu);
       }
 
@@ -426,13 +426,13 @@ LABEL_15:
     if (v28)
     {
       *buf = 138543362;
-      v39 = self;
+      selfCopy6 = self;
       _os_log_impl(&dword_1D101F000, v27, OS_LOG_TYPE_DEFAULT, "%{public}@: static sample account added", buf, 0xCu);
     }
 
     v29 = self->_onboardingSession;
-    v30 = [v11 identifier];
-    [(WDClinicalAccountOnboardingSession *)v29 didAddStaticSampleAccount:v30];
+    identifier = [v11 identifier];
+    [(WDClinicalAccountOnboardingSession *)v29 didAddStaticSampleAccount:identifier];
 
     v37 = v10;
     v15 = MEMORY[0x1E695DEC8];
@@ -445,20 +445,20 @@ LABEL_26:
     goto LABEL_31;
   }
 
-  v7 = [v4 hasClinicalSharingScopes];
+  hasClinicalSharingScopes2 = [accountCopy hasClinicalSharingScopes];
   _HKInitializeLogging();
   v8 = *MEMORY[0x1E696B948];
   v9 = *MEMORY[0x1E696B948];
-  if (v7)
+  if (hasClinicalSharingScopes2)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v39 = self;
+      selfCopy6 = self;
       _os_log_impl(&dword_1D101F000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: did log in but onboarding for clinical sharing, not storing account just yet", buf, 0xCu);
     }
 
-    v10 = [(WDClinicalAccountOnboardingSession *)self->_onboardingSession makeDataTypeSelectionViewControllerForAccount:v4];
+    v10 = [(WDClinicalAccountOnboardingSession *)self->_onboardingSession makeDataTypeSelectionViewControllerForAccount:accountCopy];
     [(WDClinicalAccountOnboardingSession *)self->_onboardingSession submitClinicalSharingOnboardingStepAnalytic:2];
   }
 
@@ -469,7 +469,7 @@ LABEL_26:
       [(WDClinicalOnboardingOAuthNavigationViewController *)self didLoginToAccount:v8];
     }
 
-    v10 = [(WDClinicalAccountOnboardingSession *)self->_onboardingSession makeNecessaryScopesNotPresentViewControllerForAccount:v4];
+    v10 = [(WDClinicalAccountOnboardingSession *)self->_onboardingSession makeNecessaryScopesNotPresentViewControllerForAccount:accountCopy];
   }
 
   v43[0] = v10;
@@ -535,17 +535,17 @@ void __71__WDClinicalOnboardingOAuthNavigationViewController_didLoginToAccount__
   }
 }
 
-- (void)dismissWithAccount:(id)a3 error:(id)a4 animated:(BOOL)a5
+- (void)dismissWithAccount:(id)account error:(id)error animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v23[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v9)
+  accountCopy = account;
+  errorCopy = error;
+  if (errorCopy)
   {
     v10 = +[_TtC15HealthRecordsUI59ClinicalAccountOnboardingCompletionNotificationUserInfoKeys error];
     v22 = v10;
-    v23[0] = v9;
+    v23[0] = errorCopy;
     v11 = MEMORY[0x1E695DF20];
     v12 = v23;
     v13 = &v22;
@@ -553,7 +553,7 @@ void __71__WDClinicalOnboardingOAuthNavigationViewController_didLoginToAccount__
 
   else
   {
-    if (!v8)
+    if (!accountCopy)
     {
       v14 = 0;
       goto LABEL_6;
@@ -561,7 +561,7 @@ void __71__WDClinicalOnboardingOAuthNavigationViewController_didLoginToAccount__
 
     v10 = +[_TtC15HealthRecordsUI59ClinicalAccountOnboardingCompletionNotificationUserInfoKeys account];
     v20 = v10;
-    v21 = v8;
+    v21 = accountCopy;
     v11 = MEMORY[0x1E695DF20];
     v12 = &v21;
     v13 = &v20;
@@ -571,15 +571,15 @@ void __71__WDClinicalOnboardingOAuthNavigationViewController_didLoginToAccount__
 
 LABEL_6:
   v15 = MEMORY[0x1E696AD80];
-  v16 = [MEMORY[0x1E696AD80] ClinicalAccountOnboardingCompletionNotification];
-  v17 = [v15 notificationWithName:v16 object:self userInfo:v14];
+  clinicalAccountOnboardingCompletionNotification = [MEMORY[0x1E696AD80] ClinicalAccountOnboardingCompletionNotification];
+  v17 = [v15 notificationWithName:clinicalAccountOnboardingCompletionNotification object:self userInfo:v14];
 
-  v18 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v18 postNotification:v17];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotification:v17];
 
   [(WDClinicalAccountOnboardingSession *)self->_onboardingSession markShouldDismissOnboardingTileViewController];
-  v19 = [(WDClinicalOnboardingOAuthNavigationViewController *)self presentingViewController];
-  [v19 dismissViewControllerAnimated:v5 completion:0];
+  presentingViewController = [(WDClinicalOnboardingOAuthNavigationViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:animatedCopy completion:0];
 }
 
 - (void)_dismissViewController
@@ -588,10 +588,10 @@ LABEL_6:
   [(WDClinicalOnboardingOAuthNavigationViewController *)self dismissWithAccount:0 error:v3 animated:1];
 }
 
-- (void)didCompleteOnboardingFor:(id)a3
+- (void)didCompleteOnboardingFor:(id)for
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  forCopy = for;
   _HKInitializeLogging();
   v5 = *MEMORY[0x1E696B948];
   if (os_log_type_enabled(*MEMORY[0x1E696B948], OS_LOG_TYPE_DEFAULT))
@@ -599,16 +599,16 @@ LABEL_6:
     v6 = v5;
     WeakRetained = objc_loadWeakRetained(&self->_onboardingDelegate);
     v9 = 138543874;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = forCopy;
     v13 = 2112;
     v14 = WeakRetained;
     _os_log_impl(&dword_1D101F000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: didCompleteOnboardingFor %@ _onboardingDelegate %@", &v9, 0x20u);
   }
 
   v8 = objc_loadWeakRetained(&self->_onboardingDelegate);
-  [v8 didAddAccount:v4];
+  [v8 didAddAccount:forCopy];
 }
 
 - (ClinicalSharingOnboardingDelegate)onboardingDelegate

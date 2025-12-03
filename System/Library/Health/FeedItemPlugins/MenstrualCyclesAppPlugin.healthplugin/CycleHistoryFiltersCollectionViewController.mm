@@ -1,18 +1,18 @@
 @interface CycleHistoryFiltersCollectionViewController
-- (_TtC24MenstrualCyclesAppPlugin43CycleHistoryFiltersCollectionViewController)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin43CycleHistoryFiltersCollectionViewController)initWithCollectionViewLayout:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin43CycleHistoryFiltersCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (_TtC24MenstrualCyclesAppPlugin43CycleHistoryFiltersCollectionViewController)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin43CycleHistoryFiltersCollectionViewController)initWithCollectionViewLayout:(id)layout;
+- (_TtC24MenstrualCyclesAppPlugin43CycleHistoryFiltersCollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)doneAndDismiss;
 - (void)viewDidLoad;
 @end
 
 @implementation CycleHistoryFiltersCollectionViewController
 
-- (_TtC24MenstrualCyclesAppPlugin43CycleHistoryFiltersCollectionViewController)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin43CycleHistoryFiltersCollectionViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin43CycleHistoryFiltersCollectionViewController_selectedItem) = 51;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin43CycleHistoryFiltersCollectionViewController____lazy_storage___filterMapping) = 0;
@@ -36,25 +36,25 @@
 
 - (void)doneAndDismiss
 {
-  v4 = self;
-  v2 = [(CycleHistoryFiltersCollectionViewController *)v4 presentingViewController];
-  if (v2)
+  selfCopy = self;
+  presentingViewController = [(CycleHistoryFiltersCollectionViewController *)selfCopy presentingViewController];
+  if (presentingViewController)
   {
-    v3 = v2;
-    [v2 dismissViewControllerAnimated:1 completion:0];
+    v3 = presentingViewController;
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  if (a4 > 9)
+  if (section > 9)
   {
     __break(1u);
   }
 
   else
   {
-    v4 = *(sub_29DED2F28(byte_2A24AE210[a4 + 32]) + 2);
+    v4 = *(sub_29DED2F28(byte_2A24AE210[section + 32]) + 2);
 
     return v4;
   }
@@ -62,37 +62,37 @@
   return self;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = sub_29E2BCFB4();
   v7 = *(v6 - 8);
   MEMORY[0x2A1C7C4A8](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29E2BCF44();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_29DFC5F28(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_29DFC5F28(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_29E2BCFB4();
   v7 = *(v6 - 8);
   MEMORY[0x2A1C7C4A8](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29E2BCF44();
-  v10 = a3;
-  v11 = self;
-  sub_29DFC64C4(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_29DFC64C4(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v7 = sub_29E2BCFB4();
   v8 = *(v7 - 8);
@@ -101,23 +101,23 @@
   v11 = _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
   v13 = v12;
   sub_29E2BCF44();
-  v14 = a3;
-  v15 = self;
-  v16 = sub_29DFC7CCC(v14, v11, v13);
+  viewCopy = view;
+  selfCopy = self;
+  v16 = sub_29DFC7CCC(viewCopy, v11, v13);
 
   (*(v8 + 8))(v10, v7);
 
   return v16;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin43CycleHistoryFiltersCollectionViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin43CycleHistoryFiltersCollectionViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin43CycleHistoryFiltersCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC24MenstrualCyclesAppPlugin43CycleHistoryFiltersCollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

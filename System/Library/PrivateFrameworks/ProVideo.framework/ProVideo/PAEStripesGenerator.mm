@@ -1,18 +1,18 @@
 @interface PAEStripesGenerator
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInfo:(id *)a4;
-- (BOOL)frameSetup:(id *)a3 hardware:(BOOL *)a4 software:(BOOL *)a5;
-- (PAEStripesGenerator)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEStripesGenerator)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAEStripesGenerator
 
-- (PAEStripesGenerator)initWithAPIManager:(id)a3
+- (PAEStripesGenerator)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEStripesGenerator;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (BOOL)addParameters
@@ -43,7 +43,7 @@
   return [v2 dictionaryWithObjectsAndKeys:{v3, @"MayRemapTime", v4, @"PreservesAlpha", v5, @"SupportsHeliumRendering", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", 3), @"AutoColorProcessingSupport", 0}];
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInfo:(id *)a4
+- (BOOL)canThrowRenderOutput:(id)output withInfo:(id *)info
 {
   v7 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v8 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735F2C8];
@@ -72,24 +72,24 @@
     v16 = 0.0;
     v13 = 1.0;
     v14 = 80.0;
-    [a3 height];
-    [a3 width];
-    [v7 getXValue:&v24 YValue:&v23 fromParm:310 atFxTime:a4->var0.var1];
-    [v7 getRedValue:&v22 greenValue:&v21 blueValue:&v20 alphaValue:&v19 fromParm:311 atFxTime:a4->var0.var1];
+    [output height];
+    [output width];
+    [v7 getXValue:&v24 YValue:&v23 fromParm:310 atFxTime:info->var0.var1];
+    [v7 getRedValue:&v22 greenValue:&v21 blueValue:&v20 alphaValue:&v19 fromParm:311 atFxTime:info->var0.var1];
     v21 = v19 * v21;
     v22 = v19 * v22;
     v20 = v19 * v20;
-    [v7 getRedValue:&v18 greenValue:&v17 blueValue:&v16 alphaValue:&v15 fromParm:312 atFxTime:a4->var0.var1];
+    [v7 getRedValue:&v18 greenValue:&v17 blueValue:&v16 alphaValue:&v15 fromParm:312 atFxTime:info->var0.var1];
     v17 = v15 * v17;
     v18 = v15 * v18;
     v16 = v15 * v16;
-    [v7 getFloatValue:&v14 fromParm:313 atFxTime:a4->var0.var1];
-    [v7 getFloatValue:&v13 fromParm:314 atFxTime:a4->var0.var1];
+    [v7 getFloatValue:&v14 fromParm:313 atFxTime:info->var0.var1];
+    [v7 getFloatValue:&v13 fromParm:314 atFxTime:info->var0.var1];
     v13 = v13 * (v14 * 0.5);
-    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a3];
-    if ([(PAESharedDefaultBase *)self getRenderMode:a4->var0.var1])
+    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:output];
+    if ([(PAESharedDefaultBase *)self getRenderMode:info->var0.var1])
     {
-      if ([a3 imageType] == 3)
+      if ([output imageType] == 3)
       {
         v11 = HGObject::operator new(0x1A0uLL);
         HgcStripes::HgcStripes(v11);
@@ -100,14 +100,14 @@
   return v10;
 }
 
-- (BOOL)frameSetup:(id *)a3 hardware:(BOOL *)a4 software:(BOOL *)a5
+- (BOOL)frameSetup:(id *)setup hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a5 = 0;
-  *a4 = 0;
-  v5 = *&a3->var2;
-  v7[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v5 = *&setup->var2;
+  v7[0] = *&setup->var0.var0;
   v7[1] = v5;
-  v7[2] = *&a3->var4;
+  v7[2] = *&setup->var4;
   [PAESharedDefaultBase overrideFrameSetupForRenderMode:"overrideFrameSetupForRenderMode:hardware:software:" hardware:v7 software:?];
   return 1;
 }

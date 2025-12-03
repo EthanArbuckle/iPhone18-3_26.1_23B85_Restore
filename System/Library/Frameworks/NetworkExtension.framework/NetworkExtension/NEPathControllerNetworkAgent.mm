@@ -1,29 +1,29 @@
 @interface NEPathControllerNetworkAgent
-+ (id)agentFromData:(id)a3;
-- (BOOL)assertAgentWithOptions:(id)a3;
-- (NEPathControllerNetworkAgent)initWithAdvisoryAgentDomain:(id)a3 agentType:(id)a4 advisoryMode:(unint64_t)a5;
-- (NEPathControllerNetworkAgent)initWithAdvisoryInterface:(id)a3 advisoryMode:(unint64_t)a4;
-- (NEPathControllerNetworkAgent)initWithAdvisoryInterface:(id)a3 predictedInterface:(id)a4 advisoryMode:(unint64_t)a5;
++ (id)agentFromData:(id)data;
+- (BOOL)assertAgentWithOptions:(id)options;
+- (NEPathControllerNetworkAgent)initWithAdvisoryAgentDomain:(id)domain agentType:(id)type advisoryMode:(unint64_t)mode;
+- (NEPathControllerNetworkAgent)initWithAdvisoryInterface:(id)interface advisoryMode:(unint64_t)mode;
+- (NEPathControllerNetworkAgent)initWithAdvisoryInterface:(id)interface predictedInterface:(id)predictedInterface advisoryMode:(unint64_t)mode;
 - (id)copyAgentData;
-- (void)setAssertHandler:(id)a3;
-- (void)setUnassertHandler:(id)a3;
-- (void)unassertAgentWithOptions:(id)a3;
+- (void)setAssertHandler:(id)handler;
+- (void)setUnassertHandler:(id)handler;
+- (void)unassertAgentWithOptions:(id)options;
 @end
 
 @implementation NEPathControllerNetworkAgent
 
-- (NEPathControllerNetworkAgent)initWithAdvisoryAgentDomain:(id)a3 agentType:(id)a4 advisoryMode:(unint64_t)a5
+- (NEPathControllerNetworkAgent)initWithAdvisoryAgentDomain:(id)domain agentType:(id)type advisoryMode:(unint64_t)mode
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  v11 = [(NENetworkAgent *)self initWithConfigUUID:v10 sessionType:5 name:0];
+  domainCopy = domain;
+  typeCopy = type;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v11 = [(NENetworkAgent *)self initWithConfigUUID:uUID sessionType:5 name:0];
 
   if (v11)
   {
-    [(NEPathControllerNetworkAgent *)v11 setAdvisoryAgentDomain:v8];
-    [(NEPathControllerNetworkAgent *)v11 setAdvisoryAgentType:v9];
-    switch(a5)
+    [(NEPathControllerNetworkAgent *)v11 setAdvisoryAgentDomain:domainCopy];
+    [(NEPathControllerNetworkAgent *)v11 setAdvisoryAgentType:typeCopy];
+    switch(mode)
     {
       case 4uLL:
         [(NEPathControllerNetworkAgent *)v11 setPreferAdvisory:1];
@@ -40,12 +40,12 @@
   return v11;
 }
 
-- (NEPathControllerNetworkAgent)initWithAdvisoryInterface:(id)a3 predictedInterface:(id)a4 advisoryMode:(unint64_t)a5
+- (NEPathControllerNetworkAgent)initWithAdvisoryInterface:(id)interface predictedInterface:(id)predictedInterface advisoryMode:(unint64_t)mode
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  v11 = [(NENetworkAgent *)self initWithConfigUUID:v10 sessionType:5 name:0];
+  interfaceCopy = interface;
+  predictedInterfaceCopy = predictedInterface;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v11 = [(NENetworkAgent *)self initWithConfigUUID:uUID sessionType:5 name:0];
 
   if (v11)
   {
@@ -55,15 +55,15 @@
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(NEPathControllerNetworkAgent *)v11 setPredictedInterfaceArray:v13];
 
-    v14 = [(NEPathControllerNetworkAgent *)v11 advisoryInterfaceArray];
-    v15 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLong:{objc_msgSend(v8, "interfaceIndex")}];
-    [v14 addObject:v15];
+    advisoryInterfaceArray = [(NEPathControllerNetworkAgent *)v11 advisoryInterfaceArray];
+    v15 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLong:{objc_msgSend(interfaceCopy, "interfaceIndex")}];
+    [advisoryInterfaceArray addObject:v15];
 
-    v16 = [(NEPathControllerNetworkAgent *)v11 predictedInterfaceArray];
-    v17 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLong:{objc_msgSend(v9, "interfaceIndex")}];
-    [v16 addObject:v17];
+    predictedInterfaceArray = [(NEPathControllerNetworkAgent *)v11 predictedInterfaceArray];
+    v17 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLong:{objc_msgSend(predictedInterfaceCopy, "interfaceIndex")}];
+    [predictedInterfaceArray addObject:v17];
 
-    switch(a5)
+    switch(mode)
     {
       case 4uLL:
         [(NEPathControllerNetworkAgent *)v11 setPreferAdvisory:1];
@@ -80,11 +80,11 @@
   return v11;
 }
 
-- (NEPathControllerNetworkAgent)initWithAdvisoryInterface:(id)a3 advisoryMode:(unint64_t)a4
+- (NEPathControllerNetworkAgent)initWithAdvisoryInterface:(id)interface advisoryMode:(unint64_t)mode
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AFB0] UUID];
-  v8 = [(NENetworkAgent *)self initWithConfigUUID:v7 sessionType:5 name:0];
+  interfaceCopy = interface;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v8 = [(NENetworkAgent *)self initWithConfigUUID:uUID sessionType:5 name:0];
 
   if (v8)
   {
@@ -94,14 +94,14 @@
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(NEPathControllerNetworkAgent *)v8 setPredictedInterfaceArray:v10];
 
-    v11 = [(NEPathControllerNetworkAgent *)v8 advisoryInterfaceArray];
-    v12 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLong:{objc_msgSend(v6, "interfaceIndex")}];
-    [v11 addObject:v12];
+    advisoryInterfaceArray = [(NEPathControllerNetworkAgent *)v8 advisoryInterfaceArray];
+    v12 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLong:{objc_msgSend(interfaceCopy, "interfaceIndex")}];
+    [advisoryInterfaceArray addObject:v12];
 
-    v13 = [(NEPathControllerNetworkAgent *)v8 predictedInterfaceArray];
-    [v13 addObject:&unk_1F38BA5C8];
+    predictedInterfaceArray = [(NEPathControllerNetworkAgent *)v8 predictedInterfaceArray];
+    [predictedInterfaceArray addObject:&unk_1F38BA5C8];
 
-    switch(a4)
+    switch(mode)
     {
       case 4uLL:
         [(NEPathControllerNetworkAgent *)v8 setPreferAdvisory:1];
@@ -118,38 +118,38 @@
   return v8;
 }
 
-- (void)setUnassertHandler:(id)a3
+- (void)setUnassertHandler:(id)handler
 {
   if (self)
   {
-    objc_setProperty_atomic_copy(self, a2, a3, 96);
+    objc_setProperty_atomic_copy(self, a2, handler, 96);
   }
 }
 
-- (void)setAssertHandler:(id)a3
+- (void)setAssertHandler:(id)handler
 {
   if (self)
   {
-    objc_setProperty_atomic_copy(self, a2, a3, 88);
+    objc_setProperty_atomic_copy(self, a2, handler, 88);
   }
 }
 
-- (void)unassertAgentWithOptions:(id)a3
+- (void)unassertAgentWithOptions:(id)options
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x1E6977DF0]];
+  v4 = [options objectForKeyedSubscript:*MEMORY[0x1E6977DF0]];
   v5 = ne_log_obj();
   v6 = v5;
   if (v4)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [(NENetworkAgent *)self agentDescription];
-      v12 = [v4 UUIDString];
+      agentDescription = [(NENetworkAgent *)self agentDescription];
+      uUIDString = [v4 UUIDString];
       v13 = 138412546;
-      v14 = v11;
+      v14 = agentDescription;
       v15 = 2112;
-      v16 = v12;
+      v16 = uUIDString;
       _os_log_debug_impl(&dword_1BA83C000, v6, OS_LOG_TYPE_DEBUG, "%@ unasserted by: client=%@", &v13, 0x16u);
     }
 
@@ -172,32 +172,32 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)assertAgentWithOptions:(id)a3
+- (BOOL)assertAgentWithOptions:(id)options
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x1E6977DF0]];
+  v4 = [options objectForKeyedSubscript:*MEMORY[0x1E6977DF0]];
   if (v4)
   {
     v5 = [MEMORY[0x1E6977E48] pathForClientID:v4];
     v6 = v5 != 0;
     v7 = ne_log_obj();
-    v8 = v7;
+    parameters2 = v7;
     if (v5)
     {
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        v16 = [(NENetworkAgent *)self agentDescription];
-        v17 = [v4 UUIDString];
-        v18 = [v5 parameters];
-        v19 = [v18 effectiveProcessUUID];
-        v20 = [v19 UUIDString];
+        agentDescription = [(NENetworkAgent *)self agentDescription];
+        uUIDString = [v4 UUIDString];
+        parameters = [v5 parameters];
+        effectiveProcessUUID = [parameters effectiveProcessUUID];
+        uUIDString2 = [effectiveProcessUUID UUIDString];
         v22 = 138412802;
-        v23 = v16;
+        v23 = agentDescription;
         v24 = 2112;
-        v25 = v17;
+        v25 = uUIDString;
         v26 = 2112;
-        v27 = v20;
-        _os_log_debug_impl(&dword_1BA83C000, v8, OS_LOG_TYPE_DEBUG, "%@ asserted by: client=%@ process=%@", &v22, 0x20u);
+        v27 = uUIDString2;
+        _os_log_debug_impl(&dword_1BA83C000, parameters2, OS_LOG_TYPE_DEBUG, "%@ asserted by: client=%@ process=%@", &v22, 0x20u);
       }
 
       if (!self || !objc_getProperty(self, v9, 88, 1))
@@ -208,17 +208,17 @@
 
       Property = objc_getProperty(self, v10, 88, 1);
       v12 = Property;
-      v8 = [v5 parameters];
-      v13 = [v8 effectiveProcessUUID];
-      (*(Property + 2))(v12, v4, v13);
+      parameters2 = [v5 parameters];
+      effectiveProcessUUID2 = [parameters2 effectiveProcessUUID];
+      (*(Property + 2))(v12, v4, effectiveProcessUUID2);
     }
 
     else if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v21 = [v4 UUIDString];
+      uUIDString3 = [v4 UUIDString];
       v22 = 138412290;
-      v23 = v21;
-      _os_log_error_impl(&dword_1BA83C000, v8, OS_LOG_TYPE_ERROR, "Could not fetch path for assert message (client %@)", &v22, 0xCu);
+      v23 = uUIDString3;
+      _os_log_error_impl(&dword_1BA83C000, parameters2, OS_LOG_TYPE_ERROR, "Could not fetch path for assert message (client %@)", &v22, 0xCu);
     }
   }
 
@@ -243,22 +243,22 @@ LABEL_15:
 - (id)copyAgentData
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [(NEPathControllerNetworkAgent *)self advisoryInterfaceArray];
-  if ([v3 count])
+  advisoryInterfaceArray = [(NEPathControllerNetworkAgent *)self advisoryInterfaceArray];
+  if ([advisoryInterfaceArray count])
   {
     goto LABEL_4;
   }
 
-  v4 = [(NEPathControllerNetworkAgent *)self advisoryAgentDomain];
-  if ([v4 length])
+  advisoryAgentDomain = [(NEPathControllerNetworkAgent *)self advisoryAgentDomain];
+  if ([advisoryAgentDomain length])
   {
 
 LABEL_4:
     goto LABEL_5;
   }
 
-  v28 = [(NEPathControllerNetworkAgent *)self advisoryAgentType];
-  v29 = [v28 length];
+  advisoryAgentType = [(NEPathControllerNetworkAgent *)self advisoryAgentType];
+  v29 = [advisoryAgentType length];
 
   if (!v29)
   {
@@ -323,18 +323,18 @@ LABEL_5:
     v11 = &v34 + 2;
     do
     {
-      v12 = [(NEPathControllerNetworkAgent *)self advisoryInterfaceArray];
-      v13 = [v12 objectAtIndexedSubscript:v10];
-      v14 = [v13 unsignedIntegerValue];
+      advisoryInterfaceArray2 = [(NEPathControllerNetworkAgent *)self advisoryInterfaceArray];
+      v13 = [advisoryInterfaceArray2 objectAtIndexedSubscript:v10];
+      unsignedIntegerValue = [v13 unsignedIntegerValue];
 
-      if (v14)
+      if (unsignedIntegerValue)
       {
-        v15 = [(NEPathControllerNetworkAgent *)self advisoryInterfaceArray];
-        v16 = [v15 objectAtIndexedSubscript:v10];
+        advisoryInterfaceArray3 = [(NEPathControllerNetworkAgent *)self advisoryInterfaceArray];
+        v16 = [advisoryInterfaceArray3 objectAtIndexedSubscript:v10];
         *(v11 - 4) = [v16 unsignedIntegerValue];
 
-        v17 = [(NEPathControllerNetworkAgent *)self predictedInterfaceArray];
-        v18 = [v17 objectAtIndexedSubscript:v10];
+        predictedInterfaceArray = [(NEPathControllerNetworkAgent *)self predictedInterfaceArray];
+        v18 = [predictedInterfaceArray objectAtIndexedSubscript:v10];
         *v11 = [v18 unsignedIntegerValue];
       }
 
@@ -346,8 +346,8 @@ LABEL_5:
     while (v9);
   }
 
-  v19 = [(NEPathControllerNetworkAgent *)self weakAdvisory];
-  BYTE8(v35) = BYTE8(v35) & 0xFE | v19;
+  weakAdvisory = [(NEPathControllerNetworkAgent *)self weakAdvisory];
+  BYTE8(v35) = BYTE8(v35) & 0xFE | weakAdvisory;
   if ([(NEPathControllerNetworkAgent *)self noAdvisoryTimer])
   {
     v20 = 2;
@@ -381,17 +381,17 @@ LABEL_5:
   }
 
   BYTE8(v35) = BYTE8(v35) & 0xFB | v22;
-  v23 = [(NEPathControllerNetworkAgent *)self advisoryAgentDomain];
-  v24 = [(NEPathControllerNetworkAgent *)self advisoryAgentType];
-  if (v23 && [v23 length] <= 0x1F)
+  advisoryAgentDomain2 = [(NEPathControllerNetworkAgent *)self advisoryAgentDomain];
+  advisoryAgentType2 = [(NEPathControllerNetworkAgent *)self advisoryAgentType];
+  if (advisoryAgentDomain2 && [advisoryAgentDomain2 length] <= 0x1F)
   {
-    [v23 UTF8String];
+    [advisoryAgentDomain2 UTF8String];
     __strlcpy_chk();
   }
 
-  if (v24 && [v24 length] <= 0x1F)
+  if (advisoryAgentType2 && [advisoryAgentType2 length] <= 0x1F)
   {
-    [v24 UTF8String];
+    [advisoryAgentType2 UTF8String];
     __strlcpy_chk();
   }
 
@@ -402,16 +402,16 @@ LABEL_31:
   return v25;
 }
 
-+ (id)agentFromData:(id)a3
++ (id)agentFromData:(id)data
 {
-  v3 = a3;
-  if ([v3 length] == 140)
+  dataCopy = data;
+  if ([dataCopy length] == 140)
   {
-    v4 = [v3 bytes];
+    bytes = [dataCopy bytes];
     v5 = [NEPathControllerNetworkAgent alloc];
-    v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:v4];
-    v7 = *(v4 + 16);
-    v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v4 + 20];
+    v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:bytes];
+    v7 = *(bytes + 16);
+    v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:bytes + 20];
     v9 = [(NENetworkAgent *)v5 initWithConfigUUID:v6 sessionType:v7 name:v8];
 
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -420,19 +420,19 @@ LABEL_31:
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(NEPathControllerNetworkAgent *)v9 setPredictedInterfaceArray:v11];
 
-    v12 = (v4 + 40);
+    v12 = (bytes + 40);
     v13 = 4;
     do
     {
       if (*v12)
       {
-        v14 = [(NEPathControllerNetworkAgent *)v9 advisoryInterfaceArray];
+        advisoryInterfaceArray = [(NEPathControllerNetworkAgent *)v9 advisoryInterfaceArray];
         v15 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLong:*v12];
-        [v14 addObject:v15];
+        [advisoryInterfaceArray addObject:v15];
 
-        v16 = [(NEPathControllerNetworkAgent *)v9 predictedInterfaceArray];
+        predictedInterfaceArray = [(NEPathControllerNetworkAgent *)v9 predictedInterfaceArray];
         v17 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLong:v12[4]];
-        [v16 addObject:v17];
+        [predictedInterfaceArray addObject:v17];
       }
 
       ++v12;
@@ -440,18 +440,18 @@ LABEL_31:
     }
 
     while (v13);
-    [(NEPathControllerNetworkAgent *)v9 setWeakAdvisory:*(v4 + 72) & 1];
-    [(NEPathControllerNetworkAgent *)v9 setNoAdvisoryTimer:(*(v4 + 72) >> 1) & 1];
-    [(NEPathControllerNetworkAgent *)v9 setIsForcedAdvisory:(*(v4 + 72) >> 2) & 1];
-    [(NEPathControllerNetworkAgent *)v9 setPreferAdvisory:(*(v4 + 72) >> 3) & 1];
-    if (*(v4 + 73))
+    [(NEPathControllerNetworkAgent *)v9 setWeakAdvisory:*(bytes + 72) & 1];
+    [(NEPathControllerNetworkAgent *)v9 setNoAdvisoryTimer:(*(bytes + 72) >> 1) & 1];
+    [(NEPathControllerNetworkAgent *)v9 setIsForcedAdvisory:(*(bytes + 72) >> 2) & 1];
+    [(NEPathControllerNetworkAgent *)v9 setPreferAdvisory:(*(bytes + 72) >> 3) & 1];
+    if (*(bytes + 73))
     {
-      v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v4 + 73];
+      v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:bytes + 73];
       [(NEPathControllerNetworkAgent *)v9 setAdvisoryAgentDomain:v18];
     }
 
-    v20 = *(v4 + 105);
-    v19 = v4 + 105;
+    v20 = *(bytes + 105);
+    v19 = bytes + 105;
     if (v20)
     {
       v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v19];

@@ -1,61 +1,61 @@
 @interface MADMLEnhancementRequest
-- (MADMLEnhancementRequest)initWithCoder:(id)a3;
+- (MADMLEnhancementRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADMLEnhancementRequest
 
-- (MADMLEnhancementRequest)initWithCoder:(id)a3
+- (MADMLEnhancementRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MADMLEnhancementRequest;
-  v5 = [(MADRequest *)&v9 initWithCoder:v4];
+  v5 = [(MADRequest *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
 
-    v5->_modelPreparationOnly = [v4 decodeBoolForKey:@"ModelPreparationOnly"];
+    v5->_modelPreparationOnly = [coderCopy decodeBoolForKey:@"ModelPreparationOnly"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MADMLEnhancementRequest;
-  v4 = a3;
-  [(MADRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_uuid forKey:{@"UUID", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_modelPreparationOnly forKey:@"ModelPreparationOnly"];
+  coderCopy = coder;
+  [(MADRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_uuid forKey:{@"UUID", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_modelPreparationOnly forKey:@"ModelPreparationOnly"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p", v5, self];
+  [string appendFormat:@"<%@ %p", v5, self];
 
-  v6 = [(MADMLEnhancementRequest *)self uuid];
-  [v3 appendFormat:@"%@: %@", @"UUID", v6];
+  uuid = [(MADMLEnhancementRequest *)self uuid];
+  [string appendFormat:@"%@: %@", @"UUID", uuid];
 
-  v7 = [(MADMLEnhancementRequest *)self modelPreparationOnly];
+  modelPreparationOnly = [(MADMLEnhancementRequest *)self modelPreparationOnly];
   v8 = @"No";
-  if (v7)
+  if (modelPreparationOnly)
   {
     v8 = @"Yes";
   }
 
-  [v3 appendFormat:@"%@: %@", @"ModelPreparationOnly", v8];
-  v9 = [(MADRequest *)self error];
-  [v3 appendFormat:@"error: %@>", v9];
+  [string appendFormat:@"%@: %@", @"ModelPreparationOnly", v8];
+  error = [(MADRequest *)self error];
+  [string appendFormat:@"error: %@>", error];
 
-  return v3;
+  return string;
 }
 
 @end

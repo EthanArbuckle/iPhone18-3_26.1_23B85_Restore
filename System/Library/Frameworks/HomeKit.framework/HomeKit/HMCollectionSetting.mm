@@ -1,18 +1,18 @@
 @interface HMCollectionSetting
 + (id)defaultItemValueClasses;
-- (BOOL)isKindOfClass:(Class)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (BOOL)isKindOfClass:(Class)class;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation HMCollectionSetting
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = [(HMSetting *)self value];
+  value = [(HMSetting *)self value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = value;
   }
 
   else
@@ -22,15 +22,15 @@
 
   v10 = v9;
 
-  v11 = [v10 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  v11 = [v10 countByEnumeratingWithState:state objects:objects count:count];
   return v11;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = HMCollectionSetting;
-  return [(HMCollectionSetting *)&v5 isKindOfClass:?]|| objc_opt_class() == a3;
+  return [(HMCollectionSetting *)&v5 isKindOfClass:?]|| objc_opt_class() == class;
 }
 
 + (id)defaultItemValueClasses

@@ -1,16 +1,16 @@
 @interface FigCaptureVideoDataSinkPipeline
-- (id)initWithConfiguration:(uint64_t)a3 sourceVideoOutput:(void *)a4 captureDevice:(void *)a5 graph:(uint64_t)a6 name:(uint64_t)a7 delegate:(void *)a8 sourceStillImageOutputsByPortType:;
-- (uint64_t)_buildVideoDataSinkPipelineWithConfiguration:(uint64_t)a3 sourceVideoOutput:(void *)a4 captureDevice:(void *)a5 graph:(uint64_t)a6 delegate:(void *)a7 sourceStillImageOutputsByPortType:;
+- (id)initWithConfiguration:(uint64_t)configuration sourceVideoOutput:(void *)output captureDevice:(void *)device graph:(uint64_t)graph name:(uint64_t)name delegate:(void *)delegate sourceStillImageOutputsByPortType:;
+- (uint64_t)_buildVideoDataSinkPipelineWithConfiguration:(uint64_t)configuration sourceVideoOutput:(void *)output captureDevice:(void *)device graph:(uint64_t)graph delegate:(void *)delegate sourceStillImageOutputsByPortType:;
 - (uint64_t)faceTrackingVideoCaptureOutput;
 - (uint64_t)filterNode;
-- (uint64_t)liveReconfigureForOutputDimensions:(uint64_t)result stabilizationCropDimensions:(uint64_t)a2;
+- (uint64_t)liveReconfigureForOutputDimensions:(uint64_t)result stabilizationCropDimensions:(uint64_t)dimensions;
 - (uint64_t)offlineVISMotionDataCaptureOutput;
 - (uint64_t)optimizedForPreview;
 - (uint64_t)prepareForRendering;
 - (uint64_t)sourceDeviceType;
 - (uint64_t)sourceID;
 - (void)dealloc;
-- (void)setDiscardsSampleData:(BOOL)a3;
+- (void)setDiscardsSampleData:(BOOL)data;
 - (void)setVideoHDRImageStatisticsEnabled:(void *)result;
 - (void)videoHDRImageStatisticsEnabled;
 @end
@@ -49,12 +49,12 @@
   [(FigCaptureRemoteQueueSinkPipeline *)&v4 dealloc];
 }
 
-- (void)setDiscardsSampleData:(BOOL)a3
+- (void)setDiscardsSampleData:(BOOL)data
 {
-  v3 = a3;
+  dataCopy = data;
   if ([(BWPipelineStage *)self->_visPipelineStage queue])
   {
-    v5 = !v3;
+    v5 = !dataCopy;
   }
 
   else
@@ -65,43 +65,43 @@
   if (!v5 && ![(FigCaptureSinkPipeline *)self discardsSampleData])
   {
     objc_initWeak(&location, self);
-    v6 = [(BWPipelineStage *)self->_visPipelineStage queue];
+    queue = [(BWPipelineStage *)self->_visPipelineStage queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __57__FigCaptureVideoDataSinkPipeline_setDiscardsSampleData___block_invoke;
     block[3] = &unk_1E798F9C0;
     objc_copyWeak(&v11, &location);
-    dispatch_async(v6, block);
+    dispatch_async(queue, block);
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
   }
 
   v9.receiver = self;
   v9.super_class = FigCaptureVideoDataSinkPipeline;
-  [(FigCaptureSinkPipeline *)&v9 setDiscardsSampleData:v3];
+  [(FigCaptureSinkPipeline *)&v9 setDiscardsSampleData:dataCopy];
   if ([(NSString *)[(FigCaptureSinkPipeline *)self sinkID] isEqualToString:@"CMCaptureLocalSessionSinkID_DeskcamVideo"])
   {
-    [(BWFigVideoCaptureDevice *)self->_captureDevice setDeskCamActive:v3 ^ 1];
+    [(BWFigVideoCaptureDevice *)self->_captureDevice setDeskCamActive:dataCopy ^ 1];
   }
 
   else if ([(NSString *)[(FigCaptureSinkPipeline *)self sinkID] isEqualToString:@"CMCaptureLocalSessionSinkID_MainVideo"])
   {
     captureDevice = self->_captureDevice;
-    if (v3)
+    if (dataCopy)
     {
       [(BWFigVideoCaptureDevice *)captureDevice setCenterStageActive:0];
       [(BWFigVideoCaptureDevice *)self->_captureDevice setManualCinematicFramingActive:0];
-      v8 = 0;
+      isManualCinematicFramingActive = 0;
     }
 
     else
     {
       [(BWFigVideoCaptureDevice *)self->_captureDevice setCenterStageActive:[(BWFigVideoCaptureDevice *)captureDevice cinematicFramingEnabled]];
       [(BWFigVideoCaptureDevice *)self->_captureDevice setManualCinematicFramingActive:[(BWFigVideoCaptureDevice *)self->_captureDevice manualCinematicFramingEnabled]];
-      v8 = [(BWFigVideoCaptureDevice *)self->_captureDevice cinematicFramingEnabled]|| [(BWFigVideoCaptureDevice *)self->_captureDevice isManualCinematicFramingActive];
+      isManualCinematicFramingActive = [(BWFigVideoCaptureDevice *)self->_captureDevice cinematicFramingEnabled]|| [(BWFigVideoCaptureDevice *)self->_captureDevice isManualCinematicFramingActive];
     }
 
-    [(BWFigVideoCaptureDevice *)self->_captureDevice setUltraWideActive:v8];
+    [(BWFigVideoCaptureDevice *)self->_captureDevice setUltraWideActive:isManualCinematicFramingActive];
   }
 }
 
@@ -118,9 +118,9 @@ void *__57__FigCaptureVideoDataSinkPipeline_setDiscardsSampleData___block_invoke
   return result;
 }
 
-- (id)initWithConfiguration:(uint64_t)a3 sourceVideoOutput:(void *)a4 captureDevice:(void *)a5 graph:(uint64_t)a6 name:(uint64_t)a7 delegate:(void *)a8 sourceStillImageOutputsByPortType:
+- (id)initWithConfiguration:(uint64_t)configuration sourceVideoOutput:(void *)output captureDevice:(void *)device graph:(uint64_t)graph name:(uint64_t)name delegate:(void *)delegate sourceStillImageOutputsByPortType:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -135,12 +135,12 @@ void *__57__FigCaptureVideoDataSinkPipeline_setDiscardsSampleData___block_invoke
     v15 = 0;
   }
 
-  v18.receiver = a1;
+  v18.receiver = self;
   v18.super_class = FigCaptureVideoDataSinkPipeline;
-  v16 = objc_msgSendSuper2(&v18, sel_initWithGraph_name_sinkID_, a5, a6, [objc_msgSend(v15 "sinkConfiguration")]);
+  v16 = objc_msgSendSuper2(&v18, sel_initWithGraph_name_sinkID_, device, graph, [objc_msgSend(v15 "sinkConfiguration")]);
   if (v16)
   {
-    if (!a2 || (*(v16 + 7) = a4, *(v16 + 16) = [*(a2 + 64) sourceID], *(v16 + 34) = *(a2 + 72), -[FigCaptureVideoDataSinkPipeline _buildVideoDataSinkPipelineWithConfiguration:sourceVideoOutput:captureDevice:graph:delegate:sourceStillImageOutputsByPortType:](v16, a2, a3, a4, a5, a7, a8)))
+    if (!a2 || (*(v16 + 7) = output, *(v16 + 16) = [*(a2 + 64) sourceID], *(v16 + 34) = *(a2 + 72), -[FigCaptureVideoDataSinkPipeline _buildVideoDataSinkPipelineWithConfiguration:sourceVideoOutput:captureDevice:graph:delegate:sourceStillImageOutputsByPortType:](v16, a2, configuration, output, device, name, delegate)))
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_2_33();
@@ -150,13 +150,13 @@ void *__57__FigCaptureVideoDataSinkPipeline_setDiscardsSampleData___block_invoke
     }
   }
 
-  [objc_msgSend(a5 "memoryAnalyticsPayload")];
+  [objc_msgSend(device "memoryAnalyticsPayload")];
   return v16;
 }
 
-- (uint64_t)_buildVideoDataSinkPipelineWithConfiguration:(uint64_t)a3 sourceVideoOutput:(void *)a4 captureDevice:(void *)a5 graph:(uint64_t)a6 delegate:(void *)a7 sourceStillImageOutputsByPortType:
+- (uint64_t)_buildVideoDataSinkPipelineWithConfiguration:(uint64_t)configuration sourceVideoOutput:(void *)output captureDevice:(void *)device graph:(uint64_t)graph delegate:(void *)delegate sourceStillImageOutputsByPortType:
 {
-  v377 = a3;
+  configurationCopy = configuration;
   if (!result)
   {
     return result;
@@ -165,7 +165,7 @@ void *__57__FigCaptureVideoDataSinkPipeline_setDiscardsSampleData___block_invoke
   v11 = result;
   v425[0] = 0;
   v424 = 0;
-  v339 = a6;
+  graphCopy = graph;
   if (a2)
   {
     v12 = *(a2 + 88);
@@ -177,8 +177,8 @@ void *__57__FigCaptureVideoDataSinkPipeline_setDiscardsSampleData___block_invoke
   }
 
   v389 = +[BWPipelineStage pipelineStageWithName:priority:](BWPipelineStage, "pipelineStageWithName:priority:", FigCaptureBuildPipelineStageName(@"com.apple.coremedia.capture.videodata", [v12 sourceConfiguration]), 13);
-  v381 = a5;
-  v382 = a4;
+  deviceCopy = device;
+  outputCopy = output;
   if (a2)
   {
     v13 = *(a2 + 8);
@@ -188,7 +188,7 @@ void *__57__FigCaptureVideoDataSinkPipeline_setDiscardsSampleData___block_invoke
     v16 = *(a2 + 64);
     v17 = *(a2 + 28);
     LODWORD(v378) = *(a2 + 32);
-    v372 = [v16 requiredFormat];
+    requiredFormat = [v16 requiredFormat];
     LODWORD(v351) = *(a2 + 24);
     v357 = v13;
     v363 = v13;
@@ -196,7 +196,7 @@ void *__57__FigCaptureVideoDataSinkPipeline_setDiscardsSampleData___block_invoke
 
   else
   {
-    v372 = [0 requiredFormat];
+    requiredFormat = [0 requiredFormat];
     LODWORD(v378) = 0;
     v15 = 0;
     v363 = 0;
@@ -211,7 +211,7 @@ void *__57__FigCaptureVideoDataSinkPipeline_setDiscardsSampleData___block_invoke
   HIDWORD(v360) = v17;
   v18 = [FigCaptureVISPipeline visPipelineIsRequiredForFigCaptureVideoStabilizationType:v17];
   v369 = v16;
-  v19 = [v16 imageControlMode];
+  imageControlMode = [v16 imageControlMode];
   CFPreferenceNumberWithDefault = FigGetCFPreferenceNumberWithDefault();
   v390 = v15;
   v21 = [objc_msgSend(v15 "sinkConfiguration")];
@@ -253,7 +253,7 @@ LABEL_14:
   {
     if (a2)
     {
-      v27 = v377;
+      output = configurationCopy;
       if (*(a2 + 130) == 1)
       {
         v28 = CFPreferenceNumberWithDefault;
@@ -270,14 +270,14 @@ LABEL_14:
         [(BWNode *)v29 setName:@"Pocket Detection"];
         v423.receiver = v11;
         v423.super_class = FigCaptureVideoDataSinkPipeline;
-        if ((objc_msgSendSuper2(&v423, sel_addNode_error_, v30, &v424) & 1) == 0 || ([v381 connectOutput:v377 toInput:-[BWNode input](v30 pipelineStage:{"input"), v389}] & 1) == 0)
+        if ((objc_msgSendSuper2(&v423, sel_addNode_error_, v30, &v424) & 1) == 0 || ([deviceCopy connectOutput:configurationCopy toInput:-[BWNode input](v30 pipelineStage:{"input"), v389}] & 1) == 0)
         {
           fig_log_get_emitter();
           OUTLINED_FUNCTION_0_123();
           goto LABEL_169;
         }
 
-        v27 = [(BWNode *)v30 output];
+        output = [(BWNode *)v30 output];
         CFPreferenceNumberWithDefault = v28;
       }
 
@@ -287,7 +287,7 @@ LABEL_14:
 
   else
   {
-    v27 = v377;
+    output = configurationCopy;
     if (a2)
     {
 LABEL_22:
@@ -319,14 +319,14 @@ LABEL_22:
         [(BWSmartStyleApplyNode *)v32 setMaxLossyCompressionLevel:LossyCompressionLevel];
         v422.receiver = v11;
         v422.super_class = FigCaptureVideoDataSinkPipeline;
-        if ((objc_msgSendSuper2(&v422, sel_addNode_error_, v32, &v424) & 1) == 0 || (v35 = [(BWNode *)v32 input], (OUTLINED_FUNCTION_10_57(v381, v36, v37, v35, v38, v39, v40, v41, v261, v265, v268, v271, v274, v277, v280, v283, v286, v289, v292, v295, v298, v301, v304, v307, v310, v313, v319, v326, v14, v333, v336, v339, v342, v348, v351, v354, v357, v360, v363, v366, v369, v372, v376, v377, v378, v381, v382, v383, v389) & 1) == 0))
+        if ((objc_msgSendSuper2(&v422, sel_addNode_error_, v32, &v424) & 1) == 0 || (v35 = [(BWNode *)v32 input], (OUTLINED_FUNCTION_10_57(deviceCopy, v36, v37, v35, v38, v39, v40, v41, v261, v265, v268, v271, allKeys, v277, v280, v283, v286, v289, v292, v295, v298, v301, v304, v307, v310, v313, v319, v326, v14, v333, v336, graphCopy, v342, v348, v351, v354, v357, v360, v363, v366, v369, requiredFormat, v376, configurationCopy, v378, deviceCopy, outputCopy, v383, v389) & 1) == 0))
         {
           fig_log_get_emitter();
           OUTLINED_FUNCTION_0_123();
           goto LABEL_169;
         }
 
-        v27 = [(BWNode *)v32 output];
+        output = [(BWNode *)v32 output];
         v14 = v329;
         v18 = v342;
       }
@@ -341,12 +341,12 @@ LABEL_22:
     }
   }
 
-  v239 = [0 cinematicFramingEnabled];
+  cinematicFramingEnabled = [0 cinematicFramingEnabled];
   v42 = 0;
-  v27 = v377;
-  if ((v239 & 1) == 0)
+  output = configurationCopy;
+  if ((cinematicFramingEnabled & 1) == 0)
   {
-    v27 = v377;
+    output = configurationCopy;
     goto LABEL_38;
   }
 
@@ -375,35 +375,35 @@ LABEL_37:
 
   v42 = 0;
 LABEL_38:
-  v384 = FigCaptureConvertDimensionsForAspectRatio(v14, [v42 outputAspectRatio]);
+  outputDimensions = FigCaptureConvertDimensionsForAspectRatio(v14, [v42 outputAspectRatio]);
   if (v22)
   {
-    v44 = [objc_msgSend(objc_msgSend(v382 "captureStreamsByFocalLength")];
+    v44 = [objc_msgSend(objc_msgSend(outputCopy "captureStreamsByFocalLength")];
     if (!v18)
     {
 LABEL_40:
-      if (v19 == 4 || CFPreferenceNumberWithDefault)
+      if (imageControlMode == 4 || CFPreferenceNumberWithDefault)
       {
-        v52 = v27;
-        v53 = v19 == 4;
-        v54 = [v372 horizontalSensorBinningFactor];
-        v55 = [v372 verticalSensorBinningFactor];
-        [v372 maxSupportedFrameRate];
-        v57 = FigCaptureBuildMotionAttachmentsNode(v11, v52, v54, v55, v389, v378, [v382 sensorIDDictionaryByPortType], objc_msgSend(v382, "cameraInfoByPortType"), v56, objc_msgSend(v382, "activePortTypes"), v53, 0, objc_msgSend(objc_msgSend(v390, "irisSinkConfiguration"), "optimizesImagesForOfflineVideoStabilization"), 1, 0, v425);
-        v46 = v381;
+        v52 = output;
+        v53 = imageControlMode == 4;
+        horizontalSensorBinningFactor = [requiredFormat horizontalSensorBinningFactor];
+        verticalSensorBinningFactor = [requiredFormat verticalSensorBinningFactor];
+        [requiredFormat maxSupportedFrameRate];
+        v57 = FigCaptureBuildMotionAttachmentsNode(v11, v52, horizontalSensorBinningFactor, verticalSensorBinningFactor, v389, v378, [outputCopy sensorIDDictionaryByPortType], objc_msgSend(outputCopy, "cameraInfoByPortType"), v56, objc_msgSend(outputCopy, "activePortTypes"), v53, 0, objc_msgSend(objc_msgSend(v390, "irisSinkConfiguration"), "optimizesImagesForOfflineVideoStabilization"), 1, 0, v425);
+        v46 = deviceCopy;
         if (v425[0])
         {
           fig_log_get_emitter();
           goto LABEL_169;
         }
 
-        v27 = v57;
+        output = v57;
       }
 
       else
       {
         v45 = v22;
-        v46 = v381;
+        v46 = deviceCopy;
         if ((v354 | v44))
         {
           if (BWDeviceTypeIsExtensionDeviceType(*(v11 + 136)))
@@ -421,7 +421,7 @@ LABEL_40:
             v330 = v103;
           }
 
-          v105 = [v372 dimensions];
+          dimensions = [requiredFormat dimensions];
           if (a2)
           {
             v106 = *(a2 + 64);
@@ -432,7 +432,7 @@ LABEL_40:
             v106 = 0;
           }
 
-          v388 = FigCaptureConvertDimensionsForAspectRatio(v105, [v106 outputAspectRatio]);
+          v388 = FigCaptureConvertDimensionsForAspectRatio(dimensions, [v106 outputAspectRatio]);
           if (v44)
           {
             v107 = 2;
@@ -444,9 +444,9 @@ LABEL_40:
           }
 
           v108 = [BWSmartCropNode alloc];
-          v109 = [v382 cameraInfoByPortType];
-          v110 = [v372 horizontalSensorBinningFactor];
-          v111 = [v372 verticalSensorBinningFactor];
+          cameraInfoByPortType = [outputCopy cameraInfoByPortType];
+          horizontalSensorBinningFactor2 = [requiredFormat horizontalSensorBinningFactor];
+          verticalSensorBinningFactor2 = [requiredFormat verticalSensorBinningFactor];
           if (a2)
           {
             v112 = *(a2 + 56);
@@ -458,7 +458,7 @@ LABEL_40:
           }
 
           LOBYTE(v261) = 0;
-          v113 = [(BWSmartCropNode *)v108 initWithOutputDimensions:v388 cameraInfoByPortType:v109 horizontalSensorBinningFactor:v110 verticalSensorBinningFactor:v111 maxLossyCompressionLevel:v112 cameraExtrinsicMatrix:v107 processingMode:*&v343 stillCaptureEnabled:*&v330 objectMetadataIdentifiers:*&v320 captureDevice:v261];
+          v113 = [(BWSmartCropNode *)v108 initWithOutputDimensions:v388 cameraInfoByPortType:cameraInfoByPortType horizontalSensorBinningFactor:horizontalSensorBinningFactor2 verticalSensorBinningFactor:verticalSensorBinningFactor2 maxLossyCompressionLevel:v112 cameraExtrinsicMatrix:v107 processingMode:*&v343 stillCaptureEnabled:*&v330 objectMetadataIdentifiers:*&v320 captureDevice:v261];
           v114 = v113;
           if (v44)
           {
@@ -473,20 +473,20 @@ LABEL_40:
           [(BWNode *)v113 setName:v115];
           v421.receiver = v11;
           v421.super_class = FigCaptureVideoDataSinkPipeline;
-          if ((OUTLINED_FUNCTION_9_69(&v421, sel_addNode_error_) & 1) == 0 || (v116 = [(BWNode *)v114 input], v46 = v381, v59 = &OBJC_IVAR___FigCaptureCinematographyPipeline__videoCaptureOutputIndex, (OUTLINED_FUNCTION_10_57(v381, v117, v118, v116, v119, v120, v121, v122, v263, 0, v382, v271, v274, v277, v280, v283, v286, v289, v292, v295, v298, v301, v304, v307, v310, v313, v320, *(&v320 + 1), v330, *(&v330 + 1), v336, v339, v343, *(&v343 + 1), v351, v354, v357, v360, v363, v366, v369, v372, v376, v377, v27, v381, v382, v388, v389) & 1) == 0))
+          if ((OUTLINED_FUNCTION_9_69(&v421, sel_addNode_error_) & 1) == 0 || (v116 = [(BWNode *)v114 input], v46 = deviceCopy, v59 = &OBJC_IVAR___FigCaptureCinematographyPipeline__videoCaptureOutputIndex, (OUTLINED_FUNCTION_10_57(deviceCopy, v117, v118, v116, v119, v120, v121, v122, v263, 0, outputCopy, v271, allKeys, v277, v280, v283, v286, v289, v292, v295, v298, v301, v304, v307, v310, v313, v320, *(&v320 + 1), v330, *(&v330 + 1), v336, graphCopy, v343, *(&v343 + 1), v351, v354, v357, v360, v363, v366, v369, requiredFormat, v376, configurationCopy, output, deviceCopy, outputCopy, v388, v389) & 1) == 0))
           {
             fig_log_get_emitter();
             OUTLINED_FUNCTION_0_123();
             goto LABEL_169;
           }
 
-          v58 = [(BWNode *)v114 output];
+          output2 = [(BWNode *)v114 output];
           *(v11 + 104) = v114;
           if (((v354 ^ 1) & v45 & 1) == 0)
           {
             LODWORD(v329) = 0;
             v47 = v390;
-            v27 = v58;
+            output = output2;
             goto LABEL_58;
           }
 
@@ -495,16 +495,16 @@ LABEL_40:
 
         if (v45)
         {
-          v58 = v27;
+          output2 = output;
           v59 = &OBJC_IVAR___FigCaptureCinematographyPipeline__videoCaptureOutputIndex;
 LABEL_94:
-          v123 = [v382 cameraInfoByPortType];
-          v124 = [v382 autoImageControlMode] == 0;
+          cameraInfoByPortType2 = [outputCopy cameraInfoByPortType];
+          v124 = [outputCopy autoImageControlMode] == 0;
           [-[NSDictionary objectForKeyedSubscript:](-[FigCaptureCameraParameters previewStabilizationParameters](+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters "sharedInstance")];
           v126 = v125;
           v127 = [BWPreviewStabilizationNode alloc];
           LODWORD(v128) = v126;
-          v129 = [(BWPreviewStabilizationNode *)v127 initWithCameraInfoByPortType:v123 forStillImagePreview:v124 updateFinalCropRectWithStabilizationShift:1 minimumSupportedUIZoomFactor:v128];
+          v129 = [(BWPreviewStabilizationNode *)v127 initWithCameraInfoByPortType:cameraInfoByPortType2 forStillImagePreview:v124 updateFinalCropRectWithStabilizationShift:1 minimumSupportedUIZoomFactor:v128];
           if (v129)
           {
             v130 = v129;
@@ -512,14 +512,14 @@ LABEL_94:
             v420.receiver = v11;
             v420.super_class = FigCaptureVideoDataSinkPipeline;
             v47 = v390;
-            if ((OUTLINED_FUNCTION_9_69(&v420, sel_addNode_error_) & 1) == 0 || ([v46 connectOutput:v58 toInput:-[BWNode input](v130 pipelineStage:{"input"), v389}] & 1) == 0)
+            if ((OUTLINED_FUNCTION_9_69(&v420, sel_addNode_error_) & 1) == 0 || ([v46 connectOutput:output2 toInput:-[BWNode input](v130 pipelineStage:{"input"), v389}] & 1) == 0)
             {
               fig_log_get_emitter();
               OUTLINED_FUNCTION_0_123();
               goto LABEL_169;
             }
 
-            v27 = [(BWNode *)v130 output];
+            output = [(BWNode *)v130 output];
             LODWORD(v329) = 1;
             goto LABEL_58;
           }
@@ -552,19 +552,19 @@ LABEL_174:
   IsPackedBayerRaw = FigCapturePixelFormatIsPackedBayerRaw([v390 outputFormat]);
   *(v11 + 72) = [BWPipelineStage pipelineStageWithName:FigCaptureBuildPipelineStageName(@"com.apple.coremedia.capture.videodata-stabilization" priority:v369), 13];
   *v406 = 0;
-  v49 = [v369 source];
+  source = [v369 source];
   v50 = *(*(CMBaseObjectGetVTable() + 8) + 48);
   if (v50)
   {
-    v46 = v381;
-    v50(v49, @"AttributesDictionary", *MEMORY[0x1E695E480], v406);
+    v46 = deviceCopy;
+    v50(source, @"AttributesDictionary", *MEMORY[0x1E695E480], v406);
     v51 = *v406;
   }
 
   else
   {
     v51 = 0;
-    v46 = v381;
+    v46 = deviceCopy;
   }
 
   v60 = [objc_msgSend(v51 objectForKeyedSubscript:{@"HEVC", "BOOLValue"}];
@@ -590,7 +590,7 @@ LABEL_174:
     v67 = 0;
   }
 
-  v68 = [FigCaptureVISPipeline initWithUpstreamOutput:v61 graph:v27 name:v46 parentPipeline:@"Video Data Sink VIS Pipeline" videoCaptureConnectionConfiguration:v11 pipelineStage:v390 sdofPipelineStage:*(v11 + 72) videoStabilizationType:0 motionAttachmentsSource:HIDWORD(v360) fillExtendedRowsOfOutputBuffer:v378 overCaptureEnabled:v60 stereoMode:0 videoStabilizationOverscanOverride:0 videoStabilizationStrength:0 motionMetadataPreloadingEnabled:IsPackedBayerRaw visExecutionMode:0x5Au pipelineTraceID:v382 captureDevice:v62 outputDimensions:v63 generatedTransformsOutputDimensionsOverride:BYTE4(v376) & 1 P3ToBT2020ConversionEnabled:0 stabilizeDepthAttachments:0 outputDepthDimensions:v64 maxLossyCompressionLevel:v65 & 1 videoSTFEnabled:0 videoGreenGhostMitigationEnabled:0 lightSourceMaskAndKeypointDescriptorDataEnabled:0 videoGreenGhostOfflineMetadataEnabled:0 videoGreenGhostOfflineLightSourceMaskEnabled:0 personSegmentationRenderingEnabled:v66 & 1 smartStyleRenderingEnabled:0 smartStyleReversibilityEnabled:0 lowResImageUsedByVideoEncoderEnabled:v67 portTypesWithGeometricDistortionCorrectionInVISEnabled:0 visProcessingSemaphore:?];
+  v68 = [FigCaptureVISPipeline initWithUpstreamOutput:v61 graph:output name:v46 parentPipeline:@"Video Data Sink VIS Pipeline" videoCaptureConnectionConfiguration:v11 pipelineStage:v390 sdofPipelineStage:*(v11 + 72) videoStabilizationType:0 motionAttachmentsSource:HIDWORD(v360) fillExtendedRowsOfOutputBuffer:v378 overCaptureEnabled:v60 stereoMode:0 videoStabilizationOverscanOverride:0 videoStabilizationStrength:0 motionMetadataPreloadingEnabled:IsPackedBayerRaw visExecutionMode:0x5Au pipelineTraceID:outputCopy captureDevice:v62 outputDimensions:v63 generatedTransformsOutputDimensionsOverride:BYTE4(v376) & 1 P3ToBT2020ConversionEnabled:0 stabilizeDepthAttachments:0 outputDepthDimensions:v64 maxLossyCompressionLevel:v65 & 1 videoSTFEnabled:0 videoGreenGhostMitigationEnabled:0 lightSourceMaskAndKeypointDescriptorDataEnabled:0 videoGreenGhostOfflineMetadataEnabled:0 videoGreenGhostOfflineLightSourceMaskEnabled:0 personSegmentationRenderingEnabled:v66 & 1 smartStyleRenderingEnabled:0 smartStyleReversibilityEnabled:0 lowResImageUsedByVideoEncoderEnabled:v67 portTypesWithGeometricDistortionCorrectionInVISEnabled:0 visProcessingSemaphore:?];
   *(v11 + 64) = v68;
   v59 = &OBJC_IVAR___FigCaptureCinematographyPipeline__videoCaptureOutputIndex;
   if (!v68)
@@ -599,15 +599,15 @@ LABEL_174:
   }
 
   [-[FigCaptureVISPipeline motionAttachmentsNode](v68) setAdjustsValidBufferRectForDarkShade:1];
-  v27 = [-[FigCaptureVISPipeline visNode](*(v11 + 64)) output];
-  v384 = [-[FigCaptureVISPipeline visNode](*(v11 + 64)) outputDimensions];
+  output = [-[FigCaptureVISPipeline visNode](*(v11 + 64)) output];
+  outputDimensions = [-[FigCaptureVISPipeline visNode](*(v11 + 64)) outputDimensions];
   LODWORD(v329) = 0;
 LABEL_58:
   IsRunningInMacCatalystEnvironment = BWCaptureIsRunningInMacCatalystEnvironment();
   v373 = v11;
   if (!a2)
   {
-    v380 = v27;
+    output4 = output;
     if ((IsRunningInMacCatalystEnvironment & 1) == 0)
     {
       [OUTLINED_FUNCTION_13_46(56 v261];
@@ -621,33 +621,33 @@ LABEL_167:
   LODWORD(v342) = *(a2 + 149);
   if ((IsRunningInMacCatalystEnvironment & 1) == 0)
   {
-    v70 = [OUTLINED_FUNCTION_3_114() cameraInfoByPortType];
-    v71 = v70;
+    cameraInfoByPortType3 = [OUTLINED_FUNCTION_3_114() cameraInfoByPortType];
+    v71 = cameraInfoByPortType3;
     if (*(a2 + 140) == 1)
     {
-      v319 = v70;
-      v72 = [v47 outputWidth];
-      v73 = [v47 outputHeight];
+      v319 = cameraInfoByPortType3;
+      outputWidth = [v47 outputWidth];
+      outputHeight = [v47 outputHeight];
       *v406 = 0;
-      v74 = [v369 source];
+      source2 = [v369 source];
       v75 = *(*(CMBaseObjectGetVTable() + 8) + 48);
       if (v75)
       {
-        v75(v74, @"OverheadCameraMode", *MEMORY[0x1E695E480], v406);
+        v75(source2, @"OverheadCameraMode", *MEMORY[0x1E695E480], v406);
       }
 
       v76 = *v406;
-      v378 = v27;
-      v385 = v73;
-      v77 = v72;
+      v378 = output;
+      v385 = outputHeight;
+      v77 = outputWidth;
       if (*v406)
       {
-        v78 = [*v406 intValue];
+        intValue = [*v406 intValue];
       }
 
       else
       {
-        v78 = *(a2 + 144);
+        intValue = *(a2 + 144);
       }
 
       v96 = [BWDeskCamNode alloc];
@@ -655,12 +655,12 @@ LABEL_167:
       [objc_msgSend(v369 "requiredFormat")];
       v98 = *(a2 + 56);
       v99 = [objc_msgSend(OUTLINED_FUNCTION_3_114() "captureStream")];
-      LOBYTE(v274) = v342;
+      LOBYTE(allKeys) = v342;
       v271 = *(v11 + v59[190]);
-      LODWORD(v268) = v78;
+      LODWORD(v268) = intValue;
       v265 = v99;
       LODWORD(v261) = v98;
-      v384 = v77 | (v385 << 32);
+      outputDimensions = v77 | (v385 << 32);
       v100 = [BWDeskCamNode initWithOutputDimensions:v96 cameraInfoByPortType:"initWithOutputDimensions:cameraInfoByPortType:horizontalSensorBinningFactor:verticalSensorBinningFactor:stillImageCaptureEnabled:objectMetadataIdentifiers:maxLossyCompressionLevel:portType:overheadCameraMode:captureDevice:downStreamRequires10BitPixelFormat:" horizontalSensorBinningFactor:? verticalSensorBinningFactor:? stillImageCaptureEnabled:? objectMetadataIdentifiers:? maxLossyCompressionLevel:? portType:? overheadCameraMode:? captureDevice:? downStreamRequires10BitPixelFormat:?];
       [OUTLINED_FUNCTION_2_128() applicationID];
       [OUTLINED_FUNCTION_17() setClientApplicationID:?];
@@ -670,13 +670,13 @@ LABEL_167:
       {
         if ([v97 videoCaptureInput])
         {
-          v46 = v381;
-          if ([v381 connectOutput:v378 toInput:objc_msgSend(v97 pipelineStage:{"videoCaptureInput"), v389}])
+          v46 = deviceCopy;
+          if ([deviceCopy connectOutput:v378 toInput:objc_msgSend(v97 pipelineStage:{"videoCaptureInput"), v389}])
           {
             if ([v97 videoCaptureOutput])
             {
-              v27 = [v97 videoCaptureOutput];
-              [v382 deskViewCameraZoomFactor];
+              output = [v97 videoCaptureOutput];
+              [outputCopy deskViewCameraZoomFactor];
               [v97 setDeskViewCameraZoomFactor:v101];
               v47 = v390;
               goto LABEL_114;
@@ -696,10 +696,10 @@ LABEL_183:
       goto LABEL_114;
     }
 
-    v379 = v27;
-    v386 = [v47 outputWidth];
+    v379 = output;
+    outputWidth2 = [v47 outputWidth];
     v79 = v47;
-    v80 = [v47 outputHeight];
+    outputHeight2 = [v47 outputHeight];
     v314 = [objc_msgSend(OUTLINED_FUNCTION_3_114() "captureStream")];
     v81 = v314 != 0;
     [objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_3_114() "captureStream")];
@@ -709,14 +709,14 @@ LABEL_183:
     v85 = [BWSubjectSelectionNode alloc];
     v86 = [objc_msgSend(v369 "requiredFormat")];
     v87 = [objc_msgSend(v369 "requiredFormat")];
-    v88 = [v79 deviceOrientationCorrectionEnabled];
-    v418 = [objc_msgSend(OUTLINED_FUNCTION_13_46(v59[190] v261];
-    v89 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v418 count:1];
+    deviceOrientationCorrectionEnabled = [v79 deviceOrientationCorrectionEnabled];
+    v261 = [objc_msgSend(OUTLINED_FUNCTION_13_46(v59[190] v261];
+    v89 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v261 count:1];
     LOBYTE(v266) = *(a2 + 142);
     HIDWORD(v262) = *(a2 + 136);
     BYTE1(v262) = v84;
     LOBYTE(v262) = v81;
-    v90 = [BWSubjectSelectionNode initWithOutputDimensions:v85 cameraInfoByPortType:"initWithOutputDimensions:cameraInfoByPortType:horizontalSensorBinningFactor:verticalSensorBinningFactor:deviceOrientationCorrectionEnabled:portTypes:cameraHasDistortionCoefficients:cameraHasCalibrationValidMaxRadius:centerStageFramingMode:gazeSelectionEnabled:" horizontalSensorBinningFactor:v386 | (v80 << 32) verticalSensorBinningFactor:v322 deviceOrientationCorrectionEnabled:v86 portTypes:v87 cameraHasDistortionCoefficients:v88 cameraHasCalibrationValidMaxRadius:v89 centerStageFramingMode:? gazeSelectionEnabled:?];
+    v90 = [BWSubjectSelectionNode initWithOutputDimensions:v85 cameraInfoByPortType:"initWithOutputDimensions:cameraInfoByPortType:horizontalSensorBinningFactor:verticalSensorBinningFactor:deviceOrientationCorrectionEnabled:portTypes:cameraHasDistortionCoefficients:cameraHasCalibrationValidMaxRadius:centerStageFramingMode:gazeSelectionEnabled:" horizontalSensorBinningFactor:outputWidth2 | (outputHeight2 << 32) verticalSensorBinningFactor:v322 deviceOrientationCorrectionEnabled:v86 portTypes:v87 cameraHasDistortionCoefficients:deviceOrientationCorrectionEnabled cameraHasCalibrationValidMaxRadius:v89 centerStageFramingMode:? gazeSelectionEnabled:?];
     v417.receiver = v374;
     v417.super_class = FigCaptureVideoDataSinkPipeline;
     if ((objc_msgSendSuper2(&v417, sel_addNode_error_, v90, &v424) & 1) == 0)
@@ -733,7 +733,7 @@ LABEL_183:
 
     [(BWSubjectSelectionNode *)v90 videoCaptureInputsByPortType];
     [objc_msgSend(OUTLINED_FUNCTION_2_128() "captureStream")];
-    if (([v381 connectOutput:v379 toInput:objc_msgSend(OUTLINED_FUNCTION_17() pipelineStage:{"objectForKeyedSubscript:"), v389}] & 1) == 0)
+    if (([deviceCopy connectOutput:v379 toInput:objc_msgSend(OUTLINED_FUNCTION_17() pipelineStage:{"objectForKeyedSubscript:"), v389}] & 1) == 0)
     {
       goto LABEL_183;
     }
@@ -752,14 +752,14 @@ LABEL_183:
     v91 = OUTLINED_FUNCTION_3_114();
     LODWORD(v92) = 1.0;
     [v91 setZoomFactor:v92];
-    v387 = [v390 outputWidth];
-    v308 = [v390 outputHeight];
+    outputWidth3 = [v390 outputWidth];
+    outputHeight3 = [v390 outputHeight];
     v416 = 0;
-    v93 = [v370 source];
+    source3 = [v370 source];
     v94 = *(*(CMBaseObjectGetVTable() + 8) + 48);
     if (v94)
     {
-      v94(v93, @"AttributesDictionary", *MEMORY[0x1E695E480], &v416);
+      v94(source3, @"AttributesDictionary", *MEMORY[0x1E695E480], &v416);
     }
 
     v378 = sel_addNode_error_;
@@ -830,7 +830,7 @@ LABEL_183:
     [objc_msgSend(v370 "requiredFormat")];
     [v390 deviceOrientationCorrectionEnabled];
     v154 = *(a2 + 56);
-    v155 = [OUTLINED_FUNCTION_13_46(56 v262];
+    v262 = [OUTLINED_FUNCTION_13_46(56 v262];
     v406[0] = v151;
     v406[1] = v152;
     memset(&v406[2], 0, 22);
@@ -848,27 +848,27 @@ LABEL_183:
     v415 = 0;
     LOBYTE(v280) = v342;
     v277 = 1;
-    *(&v274 + 1) = BYTE4(v304);
-    LOBYTE(v274) = v150;
-    v268 = v155;
+    *(&allKeys + 1) = BYTE4(v304);
+    LOBYTE(allKeys) = v150;
+    v268 = v262;
     v271 = v406;
     LODWORD(v265) = v154;
     v11 = v373;
     v261 = 0;
-    v384 = v387 | (v307 << 32);
+    outputDimensions = outputWidth3 | (v307 << 32);
     v161 = [BWCinematicFramingNode initWithOutputDimensions:v153 cameraInfoByPortType:"initWithOutputDimensions:cameraInfoByPortType:horizontalSensorBinningFactor:verticalSensorBinningFactor:deviceOrientationCorrectionEnabled:stillImageCaptureEnabled:objectMetadataIdentifiers:maxLossyCompressionLevel:portTypes:cinematicFramingControls:cameraHasDistortionCoefficients:cameraHasCalibrationValidMaxRadius:centerStageMetadataDeliveryEnabled:pipelineType:downStreamRequires10BitPixelFormat:" horizontalSensorBinningFactor:? verticalSensorBinningFactor:? deviceOrientationCorrectionEnabled:? stillImageCaptureEnabled:? objectMetadataIdentifiers:? maxLossyCompressionLevel:? portTypes:? cinematicFramingControls:? cameraHasDistortionCoefficients:? cameraHasCalibrationValidMaxRadius:? centerStageMetadataDeliveryEnabled:? pipelineType:? downStreamRequires10BitPixelFormat:?];
     [OUTLINED_FUNCTION_2_128() applicationID];
     [OUTLINED_FUNCTION_17() setClientApplicationID:?];
     v405.receiver = v373;
     v405.super_class = FigCaptureVideoDataSinkPipeline;
-    if ((objc_msgSendSuper2(&v405, sel_addNode_error_, v151, &v424) & 1) == 0 || (v46 = v381, ![objc_msgSend(v151 "videoCaptureInputsByPortType")]) || (v47 = v390, (objc_msgSend(v381, "connectOutput:toInput:pipelineStage:", v301, objc_msgSend(objc_msgSend(v151, "videoCaptureInputsByPortType"), "objectForKeyedSubscript:", objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_3_114(), "captureStream"), "portType")), v389) & 1) == 0) || !objc_msgSend(v151, "videoCaptureOutput"))
+    if ((objc_msgSendSuper2(&v405, sel_addNode_error_, v151, &v424) & 1) == 0 || (v46 = deviceCopy, ![objc_msgSend(v151 "videoCaptureInputsByPortType")]) || (v47 = v390, (objc_msgSend(deviceCopy, "connectOutput:toInput:pipelineStage:", v301, objc_msgSend(objc_msgSend(v151, "videoCaptureInputsByPortType"), "objectForKeyedSubscript:", objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_3_114(), "captureStream"), "portType")), v389) & 1) == 0) || !objc_msgSend(v151, "videoCaptureOutput"))
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_0_123();
       goto LABEL_169;
     }
 
-    v27 = [v151 videoCaptureOutput];
+    output = [v151 videoCaptureOutput];
     [v151 setCinematicFramingControlMode:1];
     [OUTLINED_FUNCTION_3_114() setCenterStageDelegate:v151];
     [OUTLINED_FUNCTION_3_114() setManualCinematicFramingDelegate:v151];
@@ -885,17 +885,17 @@ LABEL_114:
     [OUTLINED_FUNCTION_17() setName:?];
     v404.receiver = v11;
     v404.super_class = FigCaptureVideoDataSinkPipeline;
-    if ((OUTLINED_FUNCTION_9_69(&v404, sel_addNode_error_) & 1) == 0 || (v166 = [v165 input], (OUTLINED_FUNCTION_10_57(v46, v167, v168, v166, v169, v170, v171, v172, v261, v265, v268, v271, v274, v277, v280, v283, v286, v289, v292, v295, v298, v301, v304, v307, v310, v313, v319, v326, v329, v333, v336, v339, v342, v348, v351, v354, v357, v360, v363, v366, v369, v373, v376, v377, v378, v381, v382, v384, v389) & 1) == 0))
+    if ((OUTLINED_FUNCTION_9_69(&v404, sel_addNode_error_) & 1) == 0 || (v166 = [v165 input], (OUTLINED_FUNCTION_10_57(v46, v167, v168, v166, v169, v170, v171, v172, v261, v265, v268, v271, allKeys, v277, v280, v283, v286, v289, v292, v295, v298, v301, v304, v307, v310, v313, v319, v326, v329, v333, v336, graphCopy, v342, v348, v351, v354, v357, v360, v363, v366, v369, v373, v376, configurationCopy, v378, deviceCopy, outputCopy, outputDimensions, v389) & 1) == 0))
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_0_123();
       goto LABEL_169;
     }
 
-    v27 = [v165 output];
+    output = [v165 output];
   }
 
-  v380 = v27;
+  output4 = output;
   if (*(a2 + 150) == 1)
   {
     v208 = [objc_msgSend(*(a2 + 64) "requiredFormat")];
@@ -903,17 +903,17 @@ LABEL_114:
     v210 = [BWStreamingFilterNode alloc];
     v211 = *(a2 + 56);
     v212 = *(a2 + 168);
-    v213 = [*(a2 + 88) transform];
+    transform = [*(a2 + 88) transform];
     v214 = [*(a2 + 88) transform] >> 32;
     *(&v277 + 1) = 0;
     LOBYTE(v277) = v208;
-    v274 = [a7 allKeys];
+    allKeys = [delegate allKeys];
     LODWORD(v271) = v214;
-    BYTE4(v268) = v213 & 1;
+    BYTE4(v268) = transform & 1;
     LODWORD(v268) = 13;
     v265 = v209;
     LOBYTE(v261) = 0;
-    v215 = [BWStreamingFilterNode initWithCaptureDevice:v210 maxLossyCompressionLevel:"initWithCaptureDevice:maxLossyCompressionLevel:semanticStyleRenderingEnabled:cinematicVideoEnabled:smartStyleRenderingEnabled:portraitPreviewForegroundBlurEnabled:depthFilterRenderingIsAfterPreviewStitcher:metalCommandQueue:priority:mirroredForMetadataAdjustment:rotationDegreesForMetadataAdjustment:sourceStillImageOutputPortTypes:squareAspectRatioConfigEnabled:cropDepthToPrimaryCaptureAspectRatio:disableDepthAndSegmentationRotationInLandscape:" semanticStyleRenderingEnabled:v382 cinematicVideoEnabled:v211 smartStyleRenderingEnabled:0 portraitPreviewForegroundBlurEnabled:1 depthFilterRenderingIsAfterPreviewStitcher:v212 metalCommandQueue:0 priority:? mirroredForMetadataAdjustment:? rotationDegreesForMetadataAdjustment:? sourceStillImageOutputPortTypes:? squareAspectRatioConfigEnabled:? cropDepthToPrimaryCaptureAspectRatio:? disableDepthAndSegmentationRotationInLandscape:?];
+    v215 = [BWStreamingFilterNode initWithCaptureDevice:v210 maxLossyCompressionLevel:"initWithCaptureDevice:maxLossyCompressionLevel:semanticStyleRenderingEnabled:cinematicVideoEnabled:smartStyleRenderingEnabled:portraitPreviewForegroundBlurEnabled:depthFilterRenderingIsAfterPreviewStitcher:metalCommandQueue:priority:mirroredForMetadataAdjustment:rotationDegreesForMetadataAdjustment:sourceStillImageOutputPortTypes:squareAspectRatioConfigEnabled:cropDepthToPrimaryCaptureAspectRatio:disableDepthAndSegmentationRotationInLandscape:" semanticStyleRenderingEnabled:outputCopy cinematicVideoEnabled:v211 smartStyleRenderingEnabled:0 portraitPreviewForegroundBlurEnabled:1 depthFilterRenderingIsAfterPreviewStitcher:v212 metalCommandQueue:0 priority:? mirroredForMetadataAdjustment:? rotationDegreesForMetadataAdjustment:? sourceStillImageOutputPortTypes:? squareAspectRatioConfigEnabled:? cropDepthToPrimaryCaptureAspectRatio:? disableDepthAndSegmentationRotationInLandscape:?];
     v403 = [MEMORY[0x1E695F648] filterWithName:@"CIDepthEffect"];
     [MEMORY[0x1E695DEC8] arrayWithObjects:&v403 count:1];
     [OUTLINED_FUNCTION_17() changeToFilters:? animated:?];
@@ -923,12 +923,12 @@ LABEL_114:
     v373[10] = v215;
     v402.receiver = v373;
     v402.super_class = FigCaptureVideoDataSinkPipeline;
-    if (OUTLINED_FUNCTION_9_69(&v402, sel_addNode_error_) & 1) != 0 && ([v381 connectOutput:v27 toInput:-[BWNode input](v215 pipelineStage:{"input"), v389}])
+    if (OUTLINED_FUNCTION_9_69(&v402, sel_addNode_error_) & 1) != 0 && ([deviceCopy connectOutput:output toInput:-[BWNode input](v215 pipelineStage:{"input"), v389}])
     {
-      v217 = [(BWNode *)v215 output];
+      output3 = [(BWNode *)v215 output];
       v47 = v390;
-      v380 = v217;
-      if (!a7)
+      output4 = output3;
+      if (!delegate)
       {
         goto LABEL_119;
       }
@@ -937,7 +937,7 @@ LABEL_114:
       v401 = 0u;
       v398 = 0u;
       v399 = 0u;
-      v225 = OUTLINED_FUNCTION_14_45(v217, v218, v219, v220, v221, v222, v223, v224, v261, v209, v268, v271, v274, v277, v280, v283, v286, v289, v292, v295, v298, v301, v304, v307, v310, v313, v319, v326, v329, v333, v336, v339, v342, v348, v351, v354, v357, v360, v363, v366, v369, v373, v376, v377, v217, v381, v382, v384, v389, v390, v391.receiver, v391.super_class, v392.receiver, v392.super_class, v393.receiver, v393.super_class, v394.receiver, v394.super_class, v395.receiver, v395.super_class, v396.receiver, v396.super_class, v397);
+      v225 = OUTLINED_FUNCTION_14_45(output3, v218, v219, v220, v221, v222, v223, v224, v261, v209, v268, v271, allKeys, v277, v280, v283, v286, v289, v292, v295, v298, v301, v304, v307, v310, v313, v319, v326, v329, v333, v336, graphCopy, v342, v348, v351, v354, v357, v360, v363, v366, v369, v373, v376, configurationCopy, output3, deviceCopy, outputCopy, outputDimensions, v389, v390, v391.receiver, v391.super_class, v392.receiver, v392.super_class, v393.receiver, v393.super_class, v394.receiver, v394.super_class, v395.receiver, v395.super_class, v396.receiver, v396.super_class, v397);
       if (!v225)
       {
         goto LABEL_119;
@@ -951,11 +951,11 @@ LABEL_160:
       {
         if (*v399 != v227)
         {
-          objc_enumerationMutation(a7);
+          objc_enumerationMutation(delegate);
         }
 
         v229 = *(*(&v398 + 1) + 8 * v228);
-        v230 = [a7 objectForKeyedSubscript:v229];
+        v230 = [delegate objectForKeyedSubscript:v229];
         v231 = [objc_msgSend(v230 "connection")];
         if (!v231)
         {
@@ -969,7 +969,7 @@ LABEL_160:
 
         if (v226 == ++v228)
         {
-          v226 = OUTLINED_FUNCTION_14_45(v231, v232, v233, v234, v235, v236, v237, v238, v261, v265, v268, v271, v274, v277, v280, v283, v286, v289, v292, v295, v298, v301, v304, v307, v310, v318, v325, v326, v329, v333, v336, v339, v347, v348, v351, v354, v357, v360, v363, v366, v369, v373, v376, v377, v380, v381, v382, v384, v389, v390, v391.receiver, v391.super_class, v392.receiver, v392.super_class, v393.receiver, v393.super_class, v394.receiver, v394.super_class, v395.receiver, v395.super_class, v396.receiver, v396.super_class, v397);
+          v226 = OUTLINED_FUNCTION_14_45(v231, v232, v233, v234, v235, v236, v237, v238, v261, v265, v268, v271, allKeys, v277, v280, v283, v286, v289, v292, v295, v298, v301, v304, v307, v310, v318, v325, v326, v329, v333, v336, graphCopy, v347, v348, v351, v354, v357, v360, v363, v366, v369, v373, v376, configurationCopy, output4, deviceCopy, outputCopy, outputDimensions, v389, v390, v391.receiver, v391.super_class, v392.receiver, v392.super_class, v393.receiver, v393.super_class, v394.receiver, v394.super_class, v395.receiver, v395.super_class, v396.receiver, v396.super_class, v397);
           if (v226)
           {
             goto LABEL_160;
@@ -986,25 +986,25 @@ LABEL_160:
   }
 
 LABEL_119:
-  v173 = [v47 transform];
-  v316 = HIDWORD(v173);
+  transform2 = [v47 transform];
+  v316 = HIDWORD(transform2);
   v323 = v174;
-  v175 = HIDWORD(v173) != v366;
-  v345 = v173;
-  v176 = v173 ^ v363;
-  v177 = [v47 requiresScalingForInputTransForm:v357 nodeName:{v384, @"Video Data Converter/Rotator/Scaler"}];
+  v175 = HIDWORD(transform2) != v366;
+  v345 = transform2;
+  v176 = transform2 ^ v363;
+  v177 = [v47 requiresScalingForInputTransForm:v357 nodeName:{outputDimensions, @"Video Data Converter/Rotator/Scaler"}];
   v178 = (HIDWORD(v360) == 2) | v351;
-  v179 = [v47 deviceOrientationCorrectionEnabled];
-  v180 = FigCaptureVideoAspectRatiosAreEqual(v384, [v47 nonRotatedOutputDimensions], 0.01);
+  deviceOrientationCorrectionEnabled2 = [v47 deviceOrientationCorrectionEnabled];
+  v180 = FigCaptureVideoAspectRatiosAreEqual(outputDimensions, [v47 nonRotatedOutputDimensions], 0.01);
   v181 = v175 | v176;
   v182 = v181 | v177;
   v183 = off_1E7989000;
   if (FigCapturePixelFormatIsPackedBayerRaw([v47 outputFormat]))
   {
-    v184 = v182 | ~v178 | BYTE4(v376) | v179 | !v180;
+    v184 = v182 | ~v178 | BYTE4(v376) | deviceOrientationCorrectionEnabled2 | !v180;
     v185 = v373;
-    v186 = v381;
-    v187 = v382;
+    v186 = deviceCopy;
+    v187 = outputCopy;
     if (v184)
     {
       fig_log_get_emitter();
@@ -1020,8 +1020,8 @@ LABEL_119:
   LODWORD(v366) = !v180;
   v188 = v180 & ~(v182 | BYTE4(v376) | BYTE4(v351));
   [v47 outputFormat];
-  v189 = [OUTLINED_FUNCTION_13_46(56 v261];
-  v190 = [[BWPixelTransferNode alloc] initWithfractionalSourceRectEnabled:((v332 | v356) | v189) & 1];
+  v2612 = [OUTLINED_FUNCTION_13_46(56 v261];
+  v190 = [[BWPixelTransferNode alloc] initWithfractionalSourceRectEnabled:((v332 | v356) | v2612) & 1];
   [(BWPixelTransferNode *)v190 setPassesBuffersThroughWhenPossible:v188 & 1];
   v191 = [MEMORY[0x1E696AD60] stringWithString:@"Video Data Converter"];
   v192 = v191;
@@ -1047,7 +1047,7 @@ LABEL_119:
 
   if ((v353 & 0x100000000) == 0)
   {
-    if (!v179)
+    if (!deviceOrientationCorrectionEnabled2)
     {
       goto LABEL_132;
     }
@@ -1063,7 +1063,7 @@ LABEL_142:
   }
 
   [v192 appendString:@"/Copier"];
-  if (v179)
+  if (deviceOrientationCorrectionEnabled2)
   {
     goto LABEL_142;
   }
@@ -1077,7 +1077,7 @@ LABEL_133:
 
 LABEL_134:
   [(BWNode *)v190 setName:v192];
-  v193 = [v382 supportsWideColor];
+  supportsWideColor = [outputCopy supportsWideColor];
   if (a2)
   {
     v195 = *(a2 + 52);
@@ -1090,8 +1090,8 @@ LABEL_134:
     v195 = 0;
   }
 
-  FigCaptureConfigureVideoDataConverterRotatorNode(v190, v390, v359, v384, v193, BYTE4(v376) & 1, v194, v195);
-  if (v182 & 1 | ((v178 & 1) == 0) | (HIDWORD(v376) | v179) & 1 | v368 & 1)
+  FigCaptureConfigureVideoDataConverterRotatorNode(v190, v390, v359, outputDimensions, supportsWideColor, BYTE4(v376) & 1, v194, v195);
+  if (v182 & 1 | ((v178 & 1) == 0) | (HIDWORD(v376) | deviceOrientationCorrectionEnabled2) & 1 | v368 & 1)
   {
     v185 = v375;
     v183 = off_1E7989000;
@@ -1103,7 +1103,7 @@ LABEL_134:
     else if (!v180)
     {
       [(BWPixelTransferNode *)v190 setCropMode:0];
-      -[BWPixelTransferNode setInputCropRect:](v190, "setInputCropRect:", FigCaptureMakeRectWithAspectRatioInsideDimensions(v384, 1, [v390 nonRotatedOutputDimensions] / (objc_msgSend(v390, "nonRotatedOutputDimensions") >> 32)));
+      -[BWPixelTransferNode setInputCropRect:](v190, "setInputCropRect:", FigCaptureMakeRectWithAspectRatioInsideDimensions(outputDimensions, 1, [v390 nonRotatedOutputDimensions] / (objc_msgSend(v390, "nonRotatedOutputDimensions") >> 32)));
     }
   }
 
@@ -1121,17 +1121,17 @@ LABEL_134:
 
   v396.receiver = v185;
   v396.super_class = FigCaptureVideoDataSinkPipeline;
-  v186 = v381;
-  v187 = v382;
-  if ((objc_msgSendSuper2(&v396, sel_addNode_error_, v190, &v424) & 1) == 0 || (v185[11] = v190, [(BWNode *)v190 input], v196 = OUTLINED_FUNCTION_129(), (OUTLINED_FUNCTION_10_57(v196, v197, v198, v199, v200, v201, v202, v203, v264, v267, v270, v273, v276, v279, v282, v285, v288, v291, v294, v297, v300, v303, v306, v309, v312, v317, v324, v328, v332, v335, v338, v341, v346, v350, v353, v356, v359, v362, v365, v368, v371, v375, v376, v377, v380, v381, v382, v384, v389) & 1) == 0))
+  v186 = deviceCopy;
+  v187 = outputCopy;
+  if ((objc_msgSendSuper2(&v396, sel_addNode_error_, v190, &v424) & 1) == 0 || (v185[11] = v190, [(BWNode *)v190 input], v196 = OUTLINED_FUNCTION_129(), (OUTLINED_FUNCTION_10_57(v196, v197, v198, v199, v200, v201, v202, v203, v264, v267, v270, v273, v276, v279, v282, v285, v288, v291, v294, v297, v300, v303, v306, v309, v312, v317, v324, v328, v332, v335, v338, v341, v346, v350, v353, v356, v359, v362, v365, v368, v371, v375, v376, configurationCopy, output4, deviceCopy, outputCopy, outputDimensions, v389) & 1) == 0))
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_0_123();
     goto LABEL_169;
   }
 
-  v380 = [(BWNode *)v190 output];
-  v384 = v323;
+  output4 = [(BWNode *)v190 output];
+  outputDimensions = v323;
   v363 = v345;
   v366 = v316;
   v47 = v390;
@@ -1164,7 +1164,7 @@ LABEL_210:
     [(BWNode *)v241 setName:@"Video Splitter"];
     v395.receiver = v185;
     v395.super_class = FigCaptureVideoDataSinkPipeline;
-    if ((objc_msgSendSuper2(&v395, sel_addNode_error_, v241, &v424) & 1) == 0 || (-[BWNode input](v241, "input"), ([OUTLINED_FUNCTION_129() connectOutput:v380 toInput:? pipelineStage:?] & 1) == 0))
+    if ((objc_msgSendSuper2(&v395, sel_addNode_error_, v241, &v424) & 1) == 0 || (-[BWNode input](v241, "input"), ([OUTLINED_FUNCTION_129() connectOutput:output4 toInput:? pipelineStage:?] & 1) == 0))
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_0_123();
@@ -1175,13 +1175,13 @@ LABEL_210:
     v243 = v183;
     if (v206)
     {
-      v377 = 0;
+      configurationCopy = 0;
       v244 = 0;
     }
 
     else
     {
-      v377 = [(NSArray *)[(BWNode *)v241 outputs] objectAtIndexedSubscript:0];
+      configurationCopy = [(NSArray *)[(BWNode *)v241 outputs] objectAtIndexedSubscript:0];
       v244 = 1;
     }
 
@@ -1199,7 +1199,7 @@ LABEL_210:
     {
       v246 = [objc_alloc(v243[92]) initWithfractionalSourceRectEnabled:0];
       [v246 setName:@"Video Data Copier"];
-      v247 = [v187 supportsWideColor];
+      supportsWideColor2 = [v187 supportsWideColor];
       if (a2)
       {
         v249 = *(a2 + 52);
@@ -1213,10 +1213,10 @@ LABEL_210:
       }
 
       v186 = v242;
-      FigCaptureConfigureVideoDataConverterRotatorNode(v246, v47, v363 | (v366 << 32), v384, v247, 0, v248, v249);
+      FigCaptureConfigureVideoDataConverterRotatorNode(v246, v47, v363 | (v366 << 32), outputDimensions, supportsWideColor2, 0, v248, v249);
       v394.receiver = v185;
       v394.super_class = FigCaptureVideoDataSinkPipeline;
-      if ((objc_msgSendSuper2(&v394, sel_addNode_error_, v246, &v424) & 1) == 0 || ([v246 input], (objc_msgSend(OUTLINED_FUNCTION_129(), "connectOutput:toInput:pipelineStage:", v377) & 1) == 0))
+      if ((objc_msgSendSuper2(&v394, sel_addNode_error_, v246, &v424) & 1) == 0 || ([v246 input], (objc_msgSend(OUTLINED_FUNCTION_129(), "connectOutput:toInput:pipelineStage:", configurationCopy) & 1) == 0))
       {
         fig_log_get_emitter();
         OUTLINED_FUNCTION_0_123();
@@ -1253,7 +1253,7 @@ LABEL_210:
   {
     v245 = 15;
 LABEL_219:
-    v185[v245] = v380;
+    v185[v245] = output4;
     if (v206)
     {
       goto LABEL_245;
@@ -1275,7 +1275,7 @@ LABEL_236:
 
     v252 = -[BWRemoteQueueSinkNode initWithMediaType:clientAuditToken:sinkID:cameraInfoByPortType:](v250, "initWithMediaType:clientAuditToken:sinkID:cameraInfoByPortType:", 1986618469, v406, [v185 sinkID], objc_msgSend(v187, "cameraInfoByPortTypeIncludingLSCGains:includeCameraInfoForSensorRawProcessing:", 1, 0));
     [(BWNode *)v252 setName:@"Video Data Remote Queue Sink"];
-    [(BWRemoteQueueSinkNode *)v252 setDelegate:v339];
+    [(BWRemoteQueueSinkNode *)v252 setDelegate:graphCopy];
     [(BWRemoteQueueSinkNode *)v252 setFrameSenderSupportEnabled:1];
     if ([objc_msgSend(v47 "videoDataSinkConfiguration")])
     {
@@ -1304,7 +1304,7 @@ LABEL_236:
     {
       [(BWNode *)v252 input];
       v253 = OUTLINED_FUNCTION_129();
-      if (OUTLINED_FUNCTION_10_57(v253, v254, v255, v256, v257, v258, v259, v260, v261, v265, v268, v271, v274, v277, v280, v283, v286, v289, v292, v295, v298, v301, v304, v307, v310, v316, v323, v326, v329, v333, v336, v339, v345, v348, v351, v354, v357, v360, v363, v366, v369, v373, v376, v377, v380, v381, v382, v384, v389))
+      if (OUTLINED_FUNCTION_10_57(v253, v254, v255, v256, v257, v258, v259, v260, v261, v265, v268, v271, allKeys, v277, v280, v283, v286, v289, v292, v295, v298, v301, v304, v307, v310, v316, v323, v326, v329, v333, v336, graphCopy, v345, v348, v351, v354, v357, v360, v363, v366, v369, v373, v376, configurationCopy, output4, deviceCopy, outputCopy, outputDimensions, v389))
       {
         v392.receiver = v185;
         v392.super_class = FigCaptureVideoDataSinkPipeline;
@@ -1344,7 +1344,7 @@ LABEL_245:
   *(v185 + 140) = [objc_msgSend(v47 "videoDataSinkConfiguration")];
   v391.receiver = v185;
   v391.super_class = FigCaptureVideoDataSinkPipeline;
-  objc_msgSendSuper2(&v391, sel_setUpstreamOutput_, v377);
+  objc_msgSendSuper2(&v391, sel_setUpstreamOutput_, configurationCopy);
   result = v425[0];
   if (!v425[0] && v424)
   {
@@ -1378,9 +1378,9 @@ LABEL_245:
 {
   if (result)
   {
-    v3 = [result sinkNode];
+    sinkNode = [result sinkNode];
 
-    return [v3 setVideoHDRImageStatisticsEnabled:a2];
+    return [sinkNode setVideoHDRImageStatisticsEnabled:a2];
   }
 
   return result;
@@ -1390,26 +1390,26 @@ LABEL_245:
 {
   if (result)
   {
-    v1 = [result sinkNode];
+    sinkNode = [result sinkNode];
 
-    return [v1 videoHDRImageStatisticsEnabled];
+    return [sinkNode videoHDRImageStatisticsEnabled];
   }
 
   return result;
 }
 
-- (uint64_t)liveReconfigureForOutputDimensions:(uint64_t)result stabilizationCropDimensions:(uint64_t)a2
+- (uint64_t)liveReconfigureForOutputDimensions:(uint64_t)result stabilizationCropDimensions:(uint64_t)dimensions
 {
   if (result)
   {
     v3 = result;
     [*(result + 104) setOutputDimensions:?];
-    [(FigCaptureVISPipeline *)*(v3 + 64) liveReconfigureForOutputDimensions:a2];
-    v4 = a2;
-    [*(v3 + 88) setOutputWidth:a2];
-    v5 = a2 >> 32;
+    [(FigCaptureVISPipeline *)*(v3 + 64) liveReconfigureForOutputDimensions:dimensions];
+    dimensionsCopy = dimensions;
+    [*(v3 + 88) setOutputWidth:dimensions];
+    v5 = dimensions >> 32;
     [*(v3 + 88) setOutputHeight:v5];
-    [*(v3 + 96) setOutputWidth:v4];
+    [*(v3 + 96) setOutputWidth:dimensionsCopy];
     v6 = *(v3 + 96);
 
     return [v6 setOutputHeight:v5];
@@ -1440,9 +1440,9 @@ LABEL_245:
 
 - (uint64_t)optimizedForPreview
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 140));
+    return OUTLINED_FUNCTION_5_27(*(self + 140));
   }
 
   else

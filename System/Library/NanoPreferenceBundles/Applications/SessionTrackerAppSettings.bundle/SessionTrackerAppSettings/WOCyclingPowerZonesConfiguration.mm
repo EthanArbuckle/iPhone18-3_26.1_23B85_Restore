@@ -13,7 +13,7 @@
 - (BOOL)isEmpty
 {
   v2 = *(&self->super.isa + OBJC_IVAR___WOCyclingPowerZonesConfiguration_configuration);
-  v3 = self;
+  selfCopy = self;
   LOBYTE(v2) = sub_22644();
 
   return v2 & 1;
@@ -22,7 +22,7 @@
 - (BOOL)isAutomaticEmpty
 {
   v2 = *(&self->super.isa + OBJC_IVAR___WOCyclingPowerZonesConfiguration_configuration);
-  v3 = self;
+  selfCopy = self;
   LOBYTE(v2) = sub_22604();
 
   return v2 & 1;
@@ -31,7 +31,7 @@
 - (BOOL)isAutomaticFromAppleFTP
 {
   v2 = *(&self->super.isa + OBJC_IVAR___WOCyclingPowerZonesConfiguration_configuration);
-  v3 = self;
+  selfCopy = self;
   LOBYTE(v2) = sub_22624();
 
   return v2 & 1;
@@ -39,7 +39,7 @@
 
 - (BOOL)isEditable
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1804C();
 
   return v3 & 1;
@@ -53,7 +53,7 @@
   __chkstk_darwin(v3);
   v7 = &v13 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v8 = *(&self->super.isa + OBJC_IVAR___WOCyclingPowerZonesConfiguration_configuration);
-  v9 = self;
+  selfCopy = self;
   sub_22614();
   v10 = (*(v4 + 88))(v7, v3);
   v11 = 0;
@@ -77,7 +77,7 @@ LABEL_4:
 
 - (NSArray)zones
 {
-  v2 = self;
+  selfCopy = self;
   sub_183D0();
 
   type metadata accessor for CyclingPowerZoneBridge();

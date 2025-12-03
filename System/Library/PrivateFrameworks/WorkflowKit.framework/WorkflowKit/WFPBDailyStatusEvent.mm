@@ -1,64 +1,64 @@
 @interface WFPBDailyStatusEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (int)coherenceSyncEnablement;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAppSessionCount:(BOOL)a3;
-- (void)setHasAutoShortcutsSectionsViewed:(BOOL)a3;
-- (void)setHasAverageShortcutCountPerFolder:(BOOL)a3;
-- (void)setHasCoherenceBlobSize:(BOOL)a3;
-- (void)setHasCoherenceSyncEnablement:(BOOL)a3;
-- (void)setHasFolderCount:(BOOL)a3;
-- (void)setHasHomeAutomationsEnabled:(BOOL)a3;
-- (void)setHasInstalled:(BOOL)a3;
-- (void)setHasNumberOfExtraLargeWidgets:(BOOL)a3;
-- (void)setHasNumberOfLargeWidgets:(BOOL)a3;
-- (void)setHasNumberOfLockScreenWidgets:(BOOL)a3;
-- (void)setHasNumberOfMediumWidgets:(BOOL)a3;
-- (void)setHasNumberOfPersonalAutomationsEnabled:(BOOL)a3;
-- (void)setHasNumberOfPersonalAutomationsFromSuggestionsEnabled:(BOOL)a3;
-- (void)setHasNumberOfRemoteWidgetsSetup:(BOOL)a3;
-- (void)setHasNumberOfSmallMultiShortcutWidgets:(BOOL)a3;
-- (void)setHasNumberOfSmallWidgets:(BOOL)a3;
-- (void)setHasNumberOfSuggestedAutomationsGenerated:(BOOL)a3;
-- (void)setHasNumberOfSuggestedAutomationsGeneratedUserAlreadyHas:(BOOL)a3;
-- (void)setHasNumberOfWidgetsOnHomeScreen:(BOOL)a3;
-- (void)setHasNumberOfWidgetsOnLoL:(BOOL)a3;
-- (void)setHasPersonalAutomationsEnabled:(BOOL)a3;
-- (void)setHasSharingEnabled:(BOOL)a3;
-- (void)setHasShortcutComplicationSlotsUsed:(BOOL)a3;
-- (void)setHasShortcutRunCount:(BOOL)a3;
-- (void)setHasShortcutsCount:(BOOL)a3;
-- (void)setHasSleepEnabled:(BOOL)a3;
-- (void)setHasSleepShortcutsCount:(BOOL)a3;
-- (void)setHasUncategorizedShortcutCount:(BOOL)a3;
-- (void)setHasWatchShortcutCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAppSessionCount:(BOOL)count;
+- (void)setHasAutoShortcutsSectionsViewed:(BOOL)viewed;
+- (void)setHasAverageShortcutCountPerFolder:(BOOL)folder;
+- (void)setHasCoherenceBlobSize:(BOOL)size;
+- (void)setHasCoherenceSyncEnablement:(BOOL)enablement;
+- (void)setHasFolderCount:(BOOL)count;
+- (void)setHasHomeAutomationsEnabled:(BOOL)enabled;
+- (void)setHasInstalled:(BOOL)installed;
+- (void)setHasNumberOfExtraLargeWidgets:(BOOL)widgets;
+- (void)setHasNumberOfLargeWidgets:(BOOL)widgets;
+- (void)setHasNumberOfLockScreenWidgets:(BOOL)widgets;
+- (void)setHasNumberOfMediumWidgets:(BOOL)widgets;
+- (void)setHasNumberOfPersonalAutomationsEnabled:(BOOL)enabled;
+- (void)setHasNumberOfPersonalAutomationsFromSuggestionsEnabled:(BOOL)enabled;
+- (void)setHasNumberOfRemoteWidgetsSetup:(BOOL)setup;
+- (void)setHasNumberOfSmallMultiShortcutWidgets:(BOOL)widgets;
+- (void)setHasNumberOfSmallWidgets:(BOOL)widgets;
+- (void)setHasNumberOfSuggestedAutomationsGenerated:(BOOL)generated;
+- (void)setHasNumberOfSuggestedAutomationsGeneratedUserAlreadyHas:(BOOL)has;
+- (void)setHasNumberOfWidgetsOnHomeScreen:(BOOL)screen;
+- (void)setHasNumberOfWidgetsOnLoL:(BOOL)l;
+- (void)setHasPersonalAutomationsEnabled:(BOOL)enabled;
+- (void)setHasSharingEnabled:(BOOL)enabled;
+- (void)setHasShortcutComplicationSlotsUsed:(BOOL)used;
+- (void)setHasShortcutRunCount:(BOOL)count;
+- (void)setHasShortcutsCount:(BOOL)count;
+- (void)setHasSleepEnabled:(BOOL)enabled;
+- (void)setHasSleepShortcutsCount:(BOOL)count;
+- (void)setHasUncategorizedShortcutCount:(BOOL)count;
+- (void)setHasWatchShortcutCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFPBDailyStatusEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 5))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(WFPBDailyStatusEvent *)self setKey:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 0x8000000) != 0)
   {
-    self->_installed = *(v4 + 126);
+    self->_installed = *(fromCopy + 126);
     *&self->_has |= 0x8000000u;
-    v5 = *(v4 + 33);
+    v5 = *(fromCopy + 33);
     if ((v5 & 0x20000000) == 0)
     {
 LABEL_5:
@@ -76,9 +76,9 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  self->_sharingEnabled = *(v4 + 128);
+  self->_sharingEnabled = *(fromCopy + 128);
   *&self->_has |= 0x20000000u;
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 0x10000000) == 0)
   {
 LABEL_6:
@@ -91,9 +91,9 @@ LABEL_6:
   }
 
 LABEL_43:
-  self->_personalAutomationsEnabled = *(v4 + 127);
+  self->_personalAutomationsEnabled = *(fromCopy + 127);
   *&self->_has |= 0x10000000u;
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 0x4000000) == 0)
   {
 LABEL_7:
@@ -106,9 +106,9 @@ LABEL_7:
   }
 
 LABEL_44:
-  self->_homeAutomationsEnabled = *(v4 + 125);
+  self->_homeAutomationsEnabled = *(fromCopy + 125);
   *&self->_has |= 0x4000000u;
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 0x80000) == 0)
   {
 LABEL_8:
@@ -121,9 +121,9 @@ LABEL_8:
   }
 
 LABEL_45:
-  self->_shortcutComplicationSlotsUsed = *(v4 + 25);
+  self->_shortcutComplicationSlotsUsed = *(fromCopy + 25);
   *&self->_has |= 0x80000u;
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 1) == 0)
   {
 LABEL_9:
@@ -136,9 +136,9 @@ LABEL_9:
   }
 
 LABEL_46:
-  self->_appComplicationSlotsUsed = *(v4 + 2);
+  self->_appComplicationSlotsUsed = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 0x40000000) == 0)
   {
 LABEL_10:
@@ -151,9 +151,9 @@ LABEL_10:
   }
 
 LABEL_47:
-  self->_sleepEnabled = *(v4 + 129);
+  self->_sleepEnabled = *(fromCopy + 129);
   *&self->_has |= 0x40000000u;
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 0x200000) == 0)
   {
 LABEL_11:
@@ -166,9 +166,9 @@ LABEL_11:
   }
 
 LABEL_48:
-  self->_shortcutsCount = *(v4 + 27);
+  self->_shortcutsCount = *(fromCopy + 27);
   *&self->_has |= 0x200000u;
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 0x20) == 0)
   {
 LABEL_12:
@@ -181,9 +181,9 @@ LABEL_12:
   }
 
 LABEL_49:
-  self->_folderCount = *(v4 + 9);
+  self->_folderCount = *(fromCopy + 9);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 4) == 0)
   {
 LABEL_13:
@@ -196,9 +196,9 @@ LABEL_13:
   }
 
 LABEL_50:
-  self->_averageShortcutCountPerFolder = *(v4 + 6);
+  self->_averageShortcutCountPerFolder = *(fromCopy + 6);
   *&self->_has |= 4u;
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 0x800000) == 0)
   {
 LABEL_14:
@@ -211,9 +211,9 @@ LABEL_14:
   }
 
 LABEL_51:
-  self->_uncategorizedShortcutCount = *(v4 + 29);
+  self->_uncategorizedShortcutCount = *(fromCopy + 29);
   *&self->_has |= 0x800000u;
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 0x100000) == 0)
   {
 LABEL_15:
@@ -226,9 +226,9 @@ LABEL_15:
   }
 
 LABEL_52:
-  self->_shortcutRunCount = *(v4 + 26);
+  self->_shortcutRunCount = *(fromCopy + 26);
   *&self->_has |= 0x100000u;
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 2) == 0)
   {
 LABEL_16:
@@ -241,9 +241,9 @@ LABEL_16:
   }
 
 LABEL_53:
-  self->_appSessionCount = *(v4 + 3);
+  self->_appSessionCount = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 0x1000000) == 0)
   {
 LABEL_17:
@@ -256,9 +256,9 @@ LABEL_17:
   }
 
 LABEL_54:
-  self->_watchShortcutCount = *(v4 + 30);
+  self->_watchShortcutCount = *(fromCopy + 30);
   *&self->_has |= 0x1000000u;
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 0x400000) == 0)
   {
 LABEL_18:
@@ -271,9 +271,9 @@ LABEL_18:
   }
 
 LABEL_55:
-  self->_sleepShortcutsCount = *(v4 + 28);
+  self->_sleepShortcutsCount = *(fromCopy + 28);
   *&self->_has |= 0x400000u;
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_19:
@@ -286,9 +286,9 @@ LABEL_19:
   }
 
 LABEL_56:
-  self->_numberOfSmallWidgets = *(v4 + 20);
+  self->_numberOfSmallWidgets = *(fromCopy + 20);
   *&self->_has |= 0x4000u;
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 0x200) == 0)
   {
 LABEL_20:
@@ -301,9 +301,9 @@ LABEL_20:
   }
 
 LABEL_57:
-  self->_numberOfMediumWidgets = *(v4 + 15);
+  self->_numberOfMediumWidgets = *(fromCopy + 15);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 0x80) == 0)
   {
 LABEL_21:
@@ -316,9 +316,9 @@ LABEL_21:
   }
 
 LABEL_58:
-  self->_numberOfLargeWidgets = *(v4 + 13);
+  self->_numberOfLargeWidgets = *(fromCopy + 13);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 0x20000) == 0)
   {
 LABEL_22:
@@ -331,9 +331,9 @@ LABEL_22:
   }
 
 LABEL_59:
-  self->_numberOfWidgetsOnHomeScreen = *(v4 + 23);
+  self->_numberOfWidgetsOnHomeScreen = *(fromCopy + 23);
   *&self->_has |= 0x20000u;
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 0x40000) == 0)
   {
 LABEL_23:
@@ -346,9 +346,9 @@ LABEL_23:
   }
 
 LABEL_60:
-  self->_numberOfWidgetsOnLoL = *(v4 + 24);
+  self->_numberOfWidgetsOnLoL = *(fromCopy + 24);
   *&self->_has |= 0x40000u;
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 0x400) == 0)
   {
 LABEL_24:
@@ -361,9 +361,9 @@ LABEL_24:
   }
 
 LABEL_61:
-  self->_numberOfPersonalAutomationsEnabled = *(v4 + 16);
+  self->_numberOfPersonalAutomationsEnabled = *(fromCopy + 16);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 0x800) == 0)
   {
 LABEL_25:
@@ -376,9 +376,9 @@ LABEL_25:
   }
 
 LABEL_62:
-  self->_numberOfPersonalAutomationsFromSuggestionsEnabled = *(v4 + 17);
+  self->_numberOfPersonalAutomationsFromSuggestionsEnabled = *(fromCopy + 17);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 33);
+  v5 = *(fromCopy + 33);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_26:
@@ -391,28 +391,28 @@ LABEL_26:
   }
 
 LABEL_63:
-  self->_numberOfSuggestedAutomationsGenerated = *(v4 + 21);
+  self->_numberOfSuggestedAutomationsGenerated = *(fromCopy + 21);
   *&self->_has |= 0x8000u;
-  if ((*(v4 + 33) & 0x10000) != 0)
+  if ((*(fromCopy + 33) & 0x10000) != 0)
   {
 LABEL_27:
-    self->_numberOfSuggestedAutomationsGeneratedUserAlreadyHas = *(v4 + 22);
+    self->_numberOfSuggestedAutomationsGeneratedUserAlreadyHas = *(fromCopy + 22);
     *&self->_has |= 0x10000u;
   }
 
 LABEL_28:
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(WFPBDailyStatusEvent *)self setAutomationSuggestionsTrialIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 33);
+  v6 = *(fromCopy + 33);
   if ((v6 & 0x2000000) != 0)
   {
-    self->_autoShortcutsSectionsViewed = *(v4 + 124);
+    self->_autoShortcutsSectionsViewed = *(fromCopy + 124);
     *&self->_has |= 0x2000000u;
-    v6 = *(v4 + 33);
+    v6 = *(fromCopy + 33);
     if ((v6 & 0x1000) == 0)
     {
 LABEL_32:
@@ -430,9 +430,9 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  self->_numberOfRemoteWidgetsSetup = *(v4 + 18);
+  self->_numberOfRemoteWidgetsSetup = *(fromCopy + 18);
   *&self->_has |= 0x1000u;
-  v6 = *(v4 + 33);
+  v6 = *(fromCopy + 33);
   if ((v6 & 0x100) == 0)
   {
 LABEL_33:
@@ -445,9 +445,9 @@ LABEL_33:
   }
 
 LABEL_67:
-  self->_numberOfLockScreenWidgets = *(v4 + 14);
+  self->_numberOfLockScreenWidgets = *(fromCopy + 14);
   *&self->_has |= 0x100u;
-  v6 = *(v4 + 33);
+  v6 = *(fromCopy + 33);
   if ((v6 & 0x40) == 0)
   {
 LABEL_34:
@@ -460,9 +460,9 @@ LABEL_34:
   }
 
 LABEL_68:
-  self->_numberOfExtraLargeWidgets = *(v4 + 12);
+  self->_numberOfExtraLargeWidgets = *(fromCopy + 12);
   *&self->_has |= 0x40u;
-  v6 = *(v4 + 33);
+  v6 = *(fromCopy + 33);
   if ((v6 & 0x2000) == 0)
   {
 LABEL_35:
@@ -475,9 +475,9 @@ LABEL_35:
   }
 
 LABEL_69:
-  self->_numberOfSmallMultiShortcutWidgets = *(v4 + 19);
+  self->_numberOfSmallMultiShortcutWidgets = *(fromCopy + 19);
   *&self->_has |= 0x2000u;
-  v6 = *(v4 + 33);
+  v6 = *(fromCopy + 33);
   if ((v6 & 0x10) == 0)
   {
 LABEL_36:
@@ -490,12 +490,12 @@ LABEL_36:
   }
 
 LABEL_70:
-  self->_coherenceSyncEnablement = *(v4 + 8);
+  self->_coherenceSyncEnablement = *(fromCopy + 8);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 33) & 8) != 0)
+  if ((*(fromCopy + 33) & 8) != 0)
   {
 LABEL_37:
-    self->_coherenceBlobSize = *(v4 + 7);
+    self->_coherenceBlobSize = *(fromCopy + 7);
     *&self->_has |= 8u;
   }
 
@@ -932,16 +932,16 @@ LABEL_57:
   return v38 ^ v39 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_180;
   }
 
   key = self->_key;
-  if (key | *(v4 + 5))
+  if (key | *(equalCopy + 5))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -950,7 +950,7 @@ LABEL_57:
   }
 
   has = self->_has;
-  v7 = *(v4 + 33);
+  v7 = *(equalCopy + 33);
   if ((*&has & 0x8000000) != 0)
   {
     if ((v7 & 0x8000000) == 0)
@@ -958,16 +958,16 @@ LABEL_57:
       goto LABEL_180;
     }
 
-    v8 = *(v4 + 126);
+    v8 = *(equalCopy + 126);
     if (self->_installed)
     {
-      if ((*(v4 + 126) & 1) == 0)
+      if ((*(equalCopy + 126) & 1) == 0)
       {
         goto LABEL_180;
       }
     }
 
-    else if (*(v4 + 126))
+    else if (*(equalCopy + 126))
     {
       goto LABEL_180;
     }
@@ -985,16 +985,16 @@ LABEL_57:
       goto LABEL_180;
     }
 
-    v9 = *(v4 + 128);
+    v9 = *(equalCopy + 128);
     if (self->_sharingEnabled)
     {
-      if ((*(v4 + 128) & 1) == 0)
+      if ((*(equalCopy + 128) & 1) == 0)
       {
         goto LABEL_180;
       }
     }
 
-    else if (*(v4 + 128))
+    else if (*(equalCopy + 128))
     {
       goto LABEL_180;
     }
@@ -1012,16 +1012,16 @@ LABEL_57:
       goto LABEL_180;
     }
 
-    v10 = *(v4 + 127);
+    v10 = *(equalCopy + 127);
     if (self->_personalAutomationsEnabled)
     {
-      if ((*(v4 + 127) & 1) == 0)
+      if ((*(equalCopy + 127) & 1) == 0)
       {
         goto LABEL_180;
       }
     }
 
-    else if (*(v4 + 127))
+    else if (*(equalCopy + 127))
     {
       goto LABEL_180;
     }
@@ -1039,16 +1039,16 @@ LABEL_57:
       goto LABEL_180;
     }
 
-    v11 = *(v4 + 125);
+    v11 = *(equalCopy + 125);
     if (self->_homeAutomationsEnabled)
     {
-      if ((*(v4 + 125) & 1) == 0)
+      if ((*(equalCopy + 125) & 1) == 0)
       {
         goto LABEL_180;
       }
     }
 
-    else if (*(v4 + 125))
+    else if (*(equalCopy + 125))
     {
       goto LABEL_180;
     }
@@ -1061,7 +1061,7 @@ LABEL_57:
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v7 & 0x80000) == 0 || self->_shortcutComplicationSlotsUsed != *(v4 + 25))
+    if ((v7 & 0x80000) == 0 || self->_shortcutComplicationSlotsUsed != *(equalCopy + 25))
     {
       goto LABEL_180;
     }
@@ -1074,7 +1074,7 @@ LABEL_57:
 
   if (*&has)
   {
-    if ((v7 & 1) == 0 || self->_appComplicationSlotsUsed != *(v4 + 2))
+    if ((v7 & 1) == 0 || self->_appComplicationSlotsUsed != *(equalCopy + 2))
     {
       goto LABEL_180;
     }
@@ -1092,16 +1092,16 @@ LABEL_57:
       goto LABEL_180;
     }
 
-    v12 = *(v4 + 129);
+    v12 = *(equalCopy + 129);
     if (self->_sleepEnabled)
     {
-      if ((*(v4 + 129) & 1) == 0)
+      if ((*(equalCopy + 129) & 1) == 0)
       {
         goto LABEL_180;
       }
     }
 
-    else if (*(v4 + 129))
+    else if (*(equalCopy + 129))
     {
       goto LABEL_180;
     }
@@ -1114,7 +1114,7 @@ LABEL_57:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v7 & 0x200000) == 0 || self->_shortcutsCount != *(v4 + 27))
+    if ((v7 & 0x200000) == 0 || self->_shortcutsCount != *(equalCopy + 27))
     {
       goto LABEL_180;
     }
@@ -1127,7 +1127,7 @@ LABEL_57:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_folderCount != *(v4 + 9))
+    if ((v7 & 0x20) == 0 || self->_folderCount != *(equalCopy + 9))
     {
       goto LABEL_180;
     }
@@ -1140,7 +1140,7 @@ LABEL_57:
 
   if ((*&has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_averageShortcutCountPerFolder != *(v4 + 6))
+    if ((v7 & 4) == 0 || self->_averageShortcutCountPerFolder != *(equalCopy + 6))
     {
       goto LABEL_180;
     }
@@ -1153,7 +1153,7 @@ LABEL_57:
 
   if ((*&has & 0x800000) != 0)
   {
-    if ((v7 & 0x800000) == 0 || self->_uncategorizedShortcutCount != *(v4 + 29))
+    if ((v7 & 0x800000) == 0 || self->_uncategorizedShortcutCount != *(equalCopy + 29))
     {
       goto LABEL_180;
     }
@@ -1166,7 +1166,7 @@ LABEL_57:
 
   if ((*&has & 0x100000) != 0)
   {
-    if ((v7 & 0x100000) == 0 || self->_shortcutRunCount != *(v4 + 26))
+    if ((v7 & 0x100000) == 0 || self->_shortcutRunCount != *(equalCopy + 26))
     {
       goto LABEL_180;
     }
@@ -1179,7 +1179,7 @@ LABEL_57:
 
   if ((*&has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_appSessionCount != *(v4 + 3))
+    if ((v7 & 2) == 0 || self->_appSessionCount != *(equalCopy + 3))
     {
       goto LABEL_180;
     }
@@ -1192,7 +1192,7 @@ LABEL_57:
 
   if ((*&has & 0x1000000) != 0)
   {
-    if ((v7 & 0x1000000) == 0 || self->_watchShortcutCount != *(v4 + 30))
+    if ((v7 & 0x1000000) == 0 || self->_watchShortcutCount != *(equalCopy + 30))
     {
       goto LABEL_180;
     }
@@ -1205,7 +1205,7 @@ LABEL_57:
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v7 & 0x400000) == 0 || self->_sleepShortcutsCount != *(v4 + 28))
+    if ((v7 & 0x400000) == 0 || self->_sleepShortcutsCount != *(equalCopy + 28))
     {
       goto LABEL_180;
     }
@@ -1218,7 +1218,7 @@ LABEL_57:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v7 & 0x4000) == 0 || self->_numberOfSmallWidgets != *(v4 + 20))
+    if ((v7 & 0x4000) == 0 || self->_numberOfSmallWidgets != *(equalCopy + 20))
     {
       goto LABEL_180;
     }
@@ -1231,7 +1231,7 @@ LABEL_57:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v7 & 0x200) == 0 || self->_numberOfMediumWidgets != *(v4 + 15))
+    if ((v7 & 0x200) == 0 || self->_numberOfMediumWidgets != *(equalCopy + 15))
     {
       goto LABEL_180;
     }
@@ -1244,7 +1244,7 @@ LABEL_57:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_numberOfLargeWidgets != *(v4 + 13))
+    if ((v7 & 0x80) == 0 || self->_numberOfLargeWidgets != *(equalCopy + 13))
     {
       goto LABEL_180;
     }
@@ -1257,7 +1257,7 @@ LABEL_57:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v7 & 0x20000) == 0 || self->_numberOfWidgetsOnHomeScreen != *(v4 + 23))
+    if ((v7 & 0x20000) == 0 || self->_numberOfWidgetsOnHomeScreen != *(equalCopy + 23))
     {
       goto LABEL_180;
     }
@@ -1270,7 +1270,7 @@ LABEL_57:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v7 & 0x40000) == 0 || self->_numberOfWidgetsOnLoL != *(v4 + 24))
+    if ((v7 & 0x40000) == 0 || self->_numberOfWidgetsOnLoL != *(equalCopy + 24))
     {
       goto LABEL_180;
     }
@@ -1283,7 +1283,7 @@ LABEL_57:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v7 & 0x400) == 0 || self->_numberOfPersonalAutomationsEnabled != *(v4 + 16))
+    if ((v7 & 0x400) == 0 || self->_numberOfPersonalAutomationsEnabled != *(equalCopy + 16))
     {
       goto LABEL_180;
     }
@@ -1296,7 +1296,7 @@ LABEL_57:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v7 & 0x800) == 0 || self->_numberOfPersonalAutomationsFromSuggestionsEnabled != *(v4 + 17))
+    if ((v7 & 0x800) == 0 || self->_numberOfPersonalAutomationsFromSuggestionsEnabled != *(equalCopy + 17))
     {
       goto LABEL_180;
     }
@@ -1309,7 +1309,7 @@ LABEL_57:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v7 & 0x8000) == 0 || self->_numberOfSuggestedAutomationsGenerated != *(v4 + 21))
+    if ((v7 & 0x8000) == 0 || self->_numberOfSuggestedAutomationsGenerated != *(equalCopy + 21))
     {
       goto LABEL_180;
     }
@@ -1322,7 +1322,7 @@ LABEL_57:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v7 & 0x10000) == 0 || self->_numberOfSuggestedAutomationsGeneratedUserAlreadyHas != *(v4 + 22))
+    if ((v7 & 0x10000) == 0 || self->_numberOfSuggestedAutomationsGeneratedUserAlreadyHas != *(equalCopy + 22))
     {
       goto LABEL_180;
     }
@@ -1334,7 +1334,7 @@ LABEL_57:
   }
 
   automationSuggestionsTrialIdentifier = self->_automationSuggestionsTrialIdentifier;
-  if (automationSuggestionsTrialIdentifier | *(v4 + 2))
+  if (automationSuggestionsTrialIdentifier | *(equalCopy + 2))
   {
     if (![(NSString *)automationSuggestionsTrialIdentifier isEqual:?])
     {
@@ -1342,17 +1342,17 @@ LABEL_57:
     }
 
     has = self->_has;
-    v7 = *(v4 + 33);
+    v7 = *(equalCopy + 33);
   }
 
   if ((*&has & 0x2000000) != 0)
   {
     if ((v7 & 0x2000000) != 0)
     {
-      v14 = *(v4 + 124);
+      v14 = *(equalCopy + 124);
       if (self->_autoShortcutsSectionsViewed)
       {
-        if ((*(v4 + 124) & 1) == 0)
+        if ((*(equalCopy + 124) & 1) == 0)
         {
           goto LABEL_180;
         }
@@ -1360,7 +1360,7 @@ LABEL_57:
         goto LABEL_150;
       }
 
-      if ((*(v4 + 124) & 1) == 0)
+      if ((*(equalCopy + 124) & 1) == 0)
       {
         goto LABEL_150;
       }
@@ -1379,7 +1379,7 @@ LABEL_180:
 LABEL_150:
   if ((*&has & 0x1000) != 0)
   {
-    if ((v7 & 0x1000) == 0 || self->_numberOfRemoteWidgetsSetup != *(v4 + 18))
+    if ((v7 & 0x1000) == 0 || self->_numberOfRemoteWidgetsSetup != *(equalCopy + 18))
     {
       goto LABEL_180;
     }
@@ -1392,7 +1392,7 @@ LABEL_150:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v7 & 0x100) == 0 || self->_numberOfLockScreenWidgets != *(v4 + 14))
+    if ((v7 & 0x100) == 0 || self->_numberOfLockScreenWidgets != *(equalCopy + 14))
     {
       goto LABEL_180;
     }
@@ -1405,7 +1405,7 @@ LABEL_150:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_numberOfExtraLargeWidgets != *(v4 + 12))
+    if ((v7 & 0x40) == 0 || self->_numberOfExtraLargeWidgets != *(equalCopy + 12))
     {
       goto LABEL_180;
     }
@@ -1418,7 +1418,7 @@ LABEL_150:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v7 & 0x2000) == 0 || self->_numberOfSmallMultiShortcutWidgets != *(v4 + 19))
+    if ((v7 & 0x2000) == 0 || self->_numberOfSmallMultiShortcutWidgets != *(equalCopy + 19))
     {
       goto LABEL_180;
     }
@@ -1431,7 +1431,7 @@ LABEL_150:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_coherenceSyncEnablement != *(v4 + 8))
+    if ((v7 & 0x10) == 0 || self->_coherenceSyncEnablement != *(equalCopy + 8))
     {
       goto LABEL_180;
     }
@@ -1444,7 +1444,7 @@ LABEL_150:
 
   if ((*&has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_coherenceBlobSize != *(v4 + 7))
+    if ((v7 & 8) == 0 || self->_coherenceBlobSize != *(equalCopy + 7))
     {
       goto LABEL_180;
     }
@@ -1462,10 +1462,10 @@ LABEL_181:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -1817,7 +1817,7 @@ LABEL_25:
   }
 
 LABEL_26:
-  v9 = [(NSString *)self->_automationSuggestionsTrialIdentifier copyWithZone:a3];
+  v9 = [(NSString *)self->_automationSuggestionsTrialIdentifier copyWithZone:zone];
   v10 = *(v5 + 16);
   *(v5 + 16) = v9;
 
@@ -1916,21 +1916,21 @@ LABEL_33:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_key)
   {
-    [v4 setKey:?];
-    v4 = v7;
+    [toCopy setKey:?];
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((*&has & 0x8000000) != 0)
   {
-    *(v4 + 126) = self->_installed;
-    *(v4 + 33) |= 0x8000000u;
+    *(toCopy + 126) = self->_installed;
+    *(toCopy + 33) |= 0x8000000u;
     has = self->_has;
     if ((*&has & 0x20000000) == 0)
     {
@@ -1949,8 +1949,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 128) = self->_sharingEnabled;
-  *(v4 + 33) |= 0x20000000u;
+  *(toCopy + 128) = self->_sharingEnabled;
+  *(toCopy + 33) |= 0x20000000u;
   has = self->_has;
   if ((*&has & 0x10000000) == 0)
   {
@@ -1964,8 +1964,8 @@ LABEL_6:
   }
 
 LABEL_43:
-  *(v4 + 127) = self->_personalAutomationsEnabled;
-  *(v4 + 33) |= 0x10000000u;
+  *(toCopy + 127) = self->_personalAutomationsEnabled;
+  *(toCopy + 33) |= 0x10000000u;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -1979,8 +1979,8 @@ LABEL_7:
   }
 
 LABEL_44:
-  *(v4 + 125) = self->_homeAutomationsEnabled;
-  *(v4 + 33) |= 0x4000000u;
+  *(toCopy + 125) = self->_homeAutomationsEnabled;
+  *(toCopy + 33) |= 0x4000000u;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1994,8 +1994,8 @@ LABEL_8:
   }
 
 LABEL_45:
-  *(v4 + 25) = self->_shortcutComplicationSlotsUsed;
-  *(v4 + 33) |= 0x80000u;
+  *(toCopy + 25) = self->_shortcutComplicationSlotsUsed;
+  *(toCopy + 33) |= 0x80000u;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -2009,8 +2009,8 @@ LABEL_9:
   }
 
 LABEL_46:
-  *(v4 + 2) = self->_appComplicationSlotsUsed;
-  *(v4 + 33) |= 1u;
+  *(toCopy + 2) = self->_appComplicationSlotsUsed;
+  *(toCopy + 33) |= 1u;
   has = self->_has;
   if ((*&has & 0x40000000) == 0)
   {
@@ -2024,8 +2024,8 @@ LABEL_10:
   }
 
 LABEL_47:
-  *(v4 + 129) = self->_sleepEnabled;
-  *(v4 + 33) |= 0x40000000u;
+  *(toCopy + 129) = self->_sleepEnabled;
+  *(toCopy + 33) |= 0x40000000u;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -2039,8 +2039,8 @@ LABEL_11:
   }
 
 LABEL_48:
-  *(v4 + 27) = self->_shortcutsCount;
-  *(v4 + 33) |= 0x200000u;
+  *(toCopy + 27) = self->_shortcutsCount;
+  *(toCopy + 33) |= 0x200000u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -2054,8 +2054,8 @@ LABEL_12:
   }
 
 LABEL_49:
-  *(v4 + 9) = self->_folderCount;
-  *(v4 + 33) |= 0x20u;
+  *(toCopy + 9) = self->_folderCount;
+  *(toCopy + 33) |= 0x20u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -2069,8 +2069,8 @@ LABEL_13:
   }
 
 LABEL_50:
-  *(v4 + 6) = self->_averageShortcutCountPerFolder;
-  *(v4 + 33) |= 4u;
+  *(toCopy + 6) = self->_averageShortcutCountPerFolder;
+  *(toCopy + 33) |= 4u;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -2084,8 +2084,8 @@ LABEL_14:
   }
 
 LABEL_51:
-  *(v4 + 29) = self->_uncategorizedShortcutCount;
-  *(v4 + 33) |= 0x800000u;
+  *(toCopy + 29) = self->_uncategorizedShortcutCount;
+  *(toCopy + 33) |= 0x800000u;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -2099,8 +2099,8 @@ LABEL_15:
   }
 
 LABEL_52:
-  *(v4 + 26) = self->_shortcutRunCount;
-  *(v4 + 33) |= 0x100000u;
+  *(toCopy + 26) = self->_shortcutRunCount;
+  *(toCopy + 33) |= 0x100000u;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -2114,8 +2114,8 @@ LABEL_16:
   }
 
 LABEL_53:
-  *(v4 + 3) = self->_appSessionCount;
-  *(v4 + 33) |= 2u;
+  *(toCopy + 3) = self->_appSessionCount;
+  *(toCopy + 33) |= 2u;
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -2129,8 +2129,8 @@ LABEL_17:
   }
 
 LABEL_54:
-  *(v4 + 30) = self->_watchShortcutCount;
-  *(v4 + 33) |= 0x1000000u;
+  *(toCopy + 30) = self->_watchShortcutCount;
+  *(toCopy + 33) |= 0x1000000u;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -2144,8 +2144,8 @@ LABEL_18:
   }
 
 LABEL_55:
-  *(v4 + 28) = self->_sleepShortcutsCount;
-  *(v4 + 33) |= 0x400000u;
+  *(toCopy + 28) = self->_sleepShortcutsCount;
+  *(toCopy + 33) |= 0x400000u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -2159,8 +2159,8 @@ LABEL_19:
   }
 
 LABEL_56:
-  *(v4 + 20) = self->_numberOfSmallWidgets;
-  *(v4 + 33) |= 0x4000u;
+  *(toCopy + 20) = self->_numberOfSmallWidgets;
+  *(toCopy + 33) |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -2174,8 +2174,8 @@ LABEL_20:
   }
 
 LABEL_57:
-  *(v4 + 15) = self->_numberOfMediumWidgets;
-  *(v4 + 33) |= 0x200u;
+  *(toCopy + 15) = self->_numberOfMediumWidgets;
+  *(toCopy + 33) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -2189,8 +2189,8 @@ LABEL_21:
   }
 
 LABEL_58:
-  *(v4 + 13) = self->_numberOfLargeWidgets;
-  *(v4 + 33) |= 0x80u;
+  *(toCopy + 13) = self->_numberOfLargeWidgets;
+  *(toCopy + 33) |= 0x80u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -2204,8 +2204,8 @@ LABEL_22:
   }
 
 LABEL_59:
-  *(v4 + 23) = self->_numberOfWidgetsOnHomeScreen;
-  *(v4 + 33) |= 0x20000u;
+  *(toCopy + 23) = self->_numberOfWidgetsOnHomeScreen;
+  *(toCopy + 33) |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -2219,8 +2219,8 @@ LABEL_23:
   }
 
 LABEL_60:
-  *(v4 + 24) = self->_numberOfWidgetsOnLoL;
-  *(v4 + 33) |= 0x40000u;
+  *(toCopy + 24) = self->_numberOfWidgetsOnLoL;
+  *(toCopy + 33) |= 0x40000u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -2234,8 +2234,8 @@ LABEL_24:
   }
 
 LABEL_61:
-  *(v4 + 16) = self->_numberOfPersonalAutomationsEnabled;
-  *(v4 + 33) |= 0x400u;
+  *(toCopy + 16) = self->_numberOfPersonalAutomationsEnabled;
+  *(toCopy + 33) |= 0x400u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -2249,8 +2249,8 @@ LABEL_25:
   }
 
 LABEL_62:
-  *(v4 + 17) = self->_numberOfPersonalAutomationsFromSuggestionsEnabled;
-  *(v4 + 33) |= 0x800u;
+  *(toCopy + 17) = self->_numberOfPersonalAutomationsFromSuggestionsEnabled;
+  *(toCopy + 33) |= 0x800u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -2264,27 +2264,27 @@ LABEL_26:
   }
 
 LABEL_63:
-  *(v4 + 21) = self->_numberOfSuggestedAutomationsGenerated;
-  *(v4 + 33) |= 0x8000u;
+  *(toCopy + 21) = self->_numberOfSuggestedAutomationsGenerated;
+  *(toCopy + 33) |= 0x8000u;
   if ((*&self->_has & 0x10000) != 0)
   {
 LABEL_27:
-    *(v4 + 22) = self->_numberOfSuggestedAutomationsGeneratedUserAlreadyHas;
-    *(v4 + 33) |= 0x10000u;
+    *(toCopy + 22) = self->_numberOfSuggestedAutomationsGeneratedUserAlreadyHas;
+    *(toCopy + 33) |= 0x10000u;
   }
 
 LABEL_28:
   if (self->_automationSuggestionsTrialIdentifier)
   {
     [v7 setAutomationSuggestionsTrialIdentifier:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((*&v6 & 0x2000000) != 0)
   {
-    *(v4 + 124) = self->_autoShortcutsSectionsViewed;
-    *(v4 + 33) |= 0x2000000u;
+    *(toCopy + 124) = self->_autoShortcutsSectionsViewed;
+    *(toCopy + 33) |= 0x2000000u;
     v6 = self->_has;
     if ((*&v6 & 0x1000) == 0)
     {
@@ -2303,8 +2303,8 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  *(v4 + 18) = self->_numberOfRemoteWidgetsSetup;
-  *(v4 + 33) |= 0x1000u;
+  *(toCopy + 18) = self->_numberOfRemoteWidgetsSetup;
+  *(toCopy + 33) |= 0x1000u;
   v6 = self->_has;
   if ((*&v6 & 0x100) == 0)
   {
@@ -2318,8 +2318,8 @@ LABEL_33:
   }
 
 LABEL_67:
-  *(v4 + 14) = self->_numberOfLockScreenWidgets;
-  *(v4 + 33) |= 0x100u;
+  *(toCopy + 14) = self->_numberOfLockScreenWidgets;
+  *(toCopy + 33) |= 0x100u;
   v6 = self->_has;
   if ((*&v6 & 0x40) == 0)
   {
@@ -2333,8 +2333,8 @@ LABEL_34:
   }
 
 LABEL_68:
-  *(v4 + 12) = self->_numberOfExtraLargeWidgets;
-  *(v4 + 33) |= 0x40u;
+  *(toCopy + 12) = self->_numberOfExtraLargeWidgets;
+  *(toCopy + 33) |= 0x40u;
   v6 = self->_has;
   if ((*&v6 & 0x2000) == 0)
   {
@@ -2348,8 +2348,8 @@ LABEL_35:
   }
 
 LABEL_69:
-  *(v4 + 19) = self->_numberOfSmallMultiShortcutWidgets;
-  *(v4 + 33) |= 0x2000u;
+  *(toCopy + 19) = self->_numberOfSmallMultiShortcutWidgets;
+  *(toCopy + 33) |= 0x2000u;
   v6 = self->_has;
   if ((*&v6 & 0x10) == 0)
   {
@@ -2363,26 +2363,26 @@ LABEL_36:
   }
 
 LABEL_70:
-  *(v4 + 8) = self->_coherenceSyncEnablement;
-  *(v4 + 33) |= 0x10u;
+  *(toCopy + 8) = self->_coherenceSyncEnablement;
+  *(toCopy + 33) |= 0x10u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_37:
-    *(v4 + 7) = self->_coherenceBlobSize;
-    *(v4 + 33) |= 8u;
+    *(toCopy + 7) = self->_coherenceBlobSize;
+    *(toCopy + 33) |= 8u;
   }
 
 LABEL_38:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v38 = v4;
+  toCopy = to;
+  v38 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v38;
+    toCopy = v38;
   }
 
   has = self->_has;
@@ -2390,7 +2390,7 @@ LABEL_38:
   {
     installed = self->_installed;
     PBDataWriterWriteBOOLField();
-    v4 = v38;
+    toCopy = v38;
     has = self->_has;
     if ((*&has & 0x20000000) == 0)
     {
@@ -2411,7 +2411,7 @@ LABEL_5:
 
   sharingEnabled = self->_sharingEnabled;
   PBDataWriterWriteBOOLField();
-  v4 = v38;
+  toCopy = v38;
   has = self->_has;
   if ((*&has & 0x10000000) == 0)
   {
@@ -2427,7 +2427,7 @@ LABEL_6:
 LABEL_43:
   personalAutomationsEnabled = self->_personalAutomationsEnabled;
   PBDataWriterWriteBOOLField();
-  v4 = v38;
+  toCopy = v38;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -2443,7 +2443,7 @@ LABEL_7:
 LABEL_44:
   homeAutomationsEnabled = self->_homeAutomationsEnabled;
   PBDataWriterWriteBOOLField();
-  v4 = v38;
+  toCopy = v38;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -2459,7 +2459,7 @@ LABEL_8:
 LABEL_45:
   shortcutComplicationSlotsUsed = self->_shortcutComplicationSlotsUsed;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -2475,7 +2475,7 @@ LABEL_9:
 LABEL_46:
   appComplicationSlotsUsed = self->_appComplicationSlotsUsed;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   has = self->_has;
   if ((*&has & 0x40000000) == 0)
   {
@@ -2491,7 +2491,7 @@ LABEL_10:
 LABEL_47:
   sleepEnabled = self->_sleepEnabled;
   PBDataWriterWriteBOOLField();
-  v4 = v38;
+  toCopy = v38;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -2507,7 +2507,7 @@ LABEL_11:
 LABEL_48:
   shortcutsCount = self->_shortcutsCount;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -2523,7 +2523,7 @@ LABEL_12:
 LABEL_49:
   folderCount = self->_folderCount;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -2539,7 +2539,7 @@ LABEL_13:
 LABEL_50:
   averageShortcutCountPerFolder = self->_averageShortcutCountPerFolder;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -2555,7 +2555,7 @@ LABEL_14:
 LABEL_51:
   uncategorizedShortcutCount = self->_uncategorizedShortcutCount;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -2571,7 +2571,7 @@ LABEL_15:
 LABEL_52:
   shortcutRunCount = self->_shortcutRunCount;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -2587,7 +2587,7 @@ LABEL_16:
 LABEL_53:
   appSessionCount = self->_appSessionCount;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -2603,7 +2603,7 @@ LABEL_17:
 LABEL_54:
   watchShortcutCount = self->_watchShortcutCount;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -2619,7 +2619,7 @@ LABEL_18:
 LABEL_55:
   sleepShortcutsCount = self->_sleepShortcutsCount;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -2635,7 +2635,7 @@ LABEL_19:
 LABEL_56:
   numberOfSmallWidgets = self->_numberOfSmallWidgets;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -2651,7 +2651,7 @@ LABEL_20:
 LABEL_57:
   numberOfMediumWidgets = self->_numberOfMediumWidgets;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -2667,7 +2667,7 @@ LABEL_21:
 LABEL_58:
   numberOfLargeWidgets = self->_numberOfLargeWidgets;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -2683,7 +2683,7 @@ LABEL_22:
 LABEL_59:
   numberOfWidgetsOnHomeScreen = self->_numberOfWidgetsOnHomeScreen;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -2699,7 +2699,7 @@ LABEL_23:
 LABEL_60:
   numberOfWidgetsOnLoL = self->_numberOfWidgetsOnLoL;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -2715,7 +2715,7 @@ LABEL_24:
 LABEL_61:
   numberOfPersonalAutomationsEnabled = self->_numberOfPersonalAutomationsEnabled;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -2731,7 +2731,7 @@ LABEL_25:
 LABEL_62:
   numberOfPersonalAutomationsFromSuggestionsEnabled = self->_numberOfPersonalAutomationsFromSuggestionsEnabled;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -2747,20 +2747,20 @@ LABEL_26:
 LABEL_63:
   numberOfSuggestedAutomationsGenerated = self->_numberOfSuggestedAutomationsGenerated;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   if ((*&self->_has & 0x10000) != 0)
   {
 LABEL_27:
     numberOfSuggestedAutomationsGeneratedUserAlreadyHas = self->_numberOfSuggestedAutomationsGeneratedUserAlreadyHas;
     PBDataWriterWriteUint32Field();
-    v4 = v38;
+    toCopy = v38;
   }
 
 LABEL_28:
   if (self->_automationSuggestionsTrialIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v38;
+    toCopy = v38;
   }
 
   v7 = self->_has;
@@ -2768,7 +2768,7 @@ LABEL_28:
   {
     autoShortcutsSectionsViewed = self->_autoShortcutsSectionsViewed;
     PBDataWriterWriteBOOLField();
-    v4 = v38;
+    toCopy = v38;
     v7 = self->_has;
     if ((*&v7 & 0x1000) == 0)
     {
@@ -2789,7 +2789,7 @@ LABEL_32:
 
   numberOfRemoteWidgetsSetup = self->_numberOfRemoteWidgetsSetup;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   v7 = self->_has;
   if ((*&v7 & 0x100) == 0)
   {
@@ -2805,7 +2805,7 @@ LABEL_33:
 LABEL_67:
   numberOfLockScreenWidgets = self->_numberOfLockScreenWidgets;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   v7 = self->_has;
   if ((*&v7 & 0x40) == 0)
   {
@@ -2821,7 +2821,7 @@ LABEL_34:
 LABEL_68:
   numberOfExtraLargeWidgets = self->_numberOfExtraLargeWidgets;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   v7 = self->_has;
   if ((*&v7 & 0x2000) == 0)
   {
@@ -2837,7 +2837,7 @@ LABEL_35:
 LABEL_69:
   numberOfSmallMultiShortcutWidgets = self->_numberOfSmallMultiShortcutWidgets;
   PBDataWriterWriteUint32Field();
-  v4 = v38;
+  toCopy = v38;
   v7 = self->_has;
   if ((*&v7 & 0x10) == 0)
   {
@@ -2853,13 +2853,13 @@ LABEL_36:
 LABEL_70:
   coherenceSyncEnablement = self->_coherenceSyncEnablement;
   PBDataWriterWriteInt32Field();
-  v4 = v38;
+  toCopy = v38;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_37:
     coherenceBlobSize = self->_coherenceBlobSize;
     PBDataWriterWriteUint32Field();
-    v4 = v38;
+    toCopy = v38;
   }
 
 LABEL_38:
@@ -2867,12 +2867,12 @@ LABEL_38:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   has = self->_has;
@@ -3362,15 +3362,15 @@ LABEL_38:
   v8.receiver = self;
   v8.super_class = WFPBDailyStatusEvent;
   v4 = [(WFPBDailyStatusEvent *)&v8 description];
-  v5 = [(WFPBDailyStatusEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFPBDailyStatusEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasCoherenceBlobSize:(BOOL)a3
+- (void)setHasCoherenceBlobSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 8;
   }
@@ -3383,9 +3383,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasCoherenceSyncEnablement:(BOOL)a3
+- (void)setHasCoherenceSyncEnablement:(BOOL)enablement
 {
-  if (a3)
+  if (enablement)
   {
     v3 = 16;
   }
@@ -3411,9 +3411,9 @@ LABEL_38:
   }
 }
 
-- (void)setHasNumberOfSmallMultiShortcutWidgets:(BOOL)a3
+- (void)setHasNumberOfSmallMultiShortcutWidgets:(BOOL)widgets
 {
-  if (a3)
+  if (widgets)
   {
     v3 = 0x2000;
   }
@@ -3426,9 +3426,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasNumberOfExtraLargeWidgets:(BOOL)a3
+- (void)setHasNumberOfExtraLargeWidgets:(BOOL)widgets
 {
-  if (a3)
+  if (widgets)
   {
     v3 = 64;
   }
@@ -3441,9 +3441,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasNumberOfLockScreenWidgets:(BOOL)a3
+- (void)setHasNumberOfLockScreenWidgets:(BOOL)widgets
 {
-  if (a3)
+  if (widgets)
   {
     v3 = 256;
   }
@@ -3456,9 +3456,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasNumberOfRemoteWidgetsSetup:(BOOL)a3
+- (void)setHasNumberOfRemoteWidgetsSetup:(BOOL)setup
 {
-  if (a3)
+  if (setup)
   {
     v3 = 4096;
   }
@@ -3471,9 +3471,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasAutoShortcutsSectionsViewed:(BOOL)a3
+- (void)setHasAutoShortcutsSectionsViewed:(BOOL)viewed
 {
-  if (a3)
+  if (viewed)
   {
     v3 = 0x2000000;
   }
@@ -3486,9 +3486,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasNumberOfSuggestedAutomationsGeneratedUserAlreadyHas:(BOOL)a3
+- (void)setHasNumberOfSuggestedAutomationsGeneratedUserAlreadyHas:(BOOL)has
 {
-  if (a3)
+  if (has)
   {
     v3 = 0x10000;
   }
@@ -3501,9 +3501,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasNumberOfSuggestedAutomationsGenerated:(BOOL)a3
+- (void)setHasNumberOfSuggestedAutomationsGenerated:(BOOL)generated
 {
-  if (a3)
+  if (generated)
   {
     v3 = 0x8000;
   }
@@ -3516,9 +3516,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasNumberOfPersonalAutomationsFromSuggestionsEnabled:(BOOL)a3
+- (void)setHasNumberOfPersonalAutomationsFromSuggestionsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2048;
   }
@@ -3531,9 +3531,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasNumberOfPersonalAutomationsEnabled:(BOOL)a3
+- (void)setHasNumberOfPersonalAutomationsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 1024;
   }
@@ -3546,9 +3546,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasNumberOfWidgetsOnLoL:(BOOL)a3
+- (void)setHasNumberOfWidgetsOnLoL:(BOOL)l
 {
-  if (a3)
+  if (l)
   {
     v3 = 0x40000;
   }
@@ -3561,9 +3561,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasNumberOfWidgetsOnHomeScreen:(BOOL)a3
+- (void)setHasNumberOfWidgetsOnHomeScreen:(BOOL)screen
 {
-  if (a3)
+  if (screen)
   {
     v3 = 0x20000;
   }
@@ -3576,9 +3576,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasNumberOfLargeWidgets:(BOOL)a3
+- (void)setHasNumberOfLargeWidgets:(BOOL)widgets
 {
-  if (a3)
+  if (widgets)
   {
     v3 = 128;
   }
@@ -3591,9 +3591,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasNumberOfMediumWidgets:(BOOL)a3
+- (void)setHasNumberOfMediumWidgets:(BOOL)widgets
 {
-  if (a3)
+  if (widgets)
   {
     v3 = 512;
   }
@@ -3606,9 +3606,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasNumberOfSmallWidgets:(BOOL)a3
+- (void)setHasNumberOfSmallWidgets:(BOOL)widgets
 {
-  if (a3)
+  if (widgets)
   {
     v3 = 0x4000;
   }
@@ -3621,9 +3621,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasSleepShortcutsCount:(BOOL)a3
+- (void)setHasSleepShortcutsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x400000;
   }
@@ -3636,9 +3636,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasWatchShortcutCount:(BOOL)a3
+- (void)setHasWatchShortcutCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x1000000;
   }
@@ -3651,9 +3651,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasAppSessionCount:(BOOL)a3
+- (void)setHasAppSessionCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -3666,9 +3666,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasShortcutRunCount:(BOOL)a3
+- (void)setHasShortcutRunCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x100000;
   }
@@ -3681,9 +3681,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasUncategorizedShortcutCount:(BOOL)a3
+- (void)setHasUncategorizedShortcutCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x800000;
   }
@@ -3696,9 +3696,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasAverageShortcutCountPerFolder:(BOOL)a3
+- (void)setHasAverageShortcutCountPerFolder:(BOOL)folder
 {
-  if (a3)
+  if (folder)
   {
     v3 = 4;
   }
@@ -3711,9 +3711,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasFolderCount:(BOOL)a3
+- (void)setHasFolderCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -3726,9 +3726,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasShortcutsCount:(BOOL)a3
+- (void)setHasShortcutsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x200000;
   }
@@ -3741,9 +3741,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasSleepEnabled:(BOOL)a3
+- (void)setHasSleepEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x40000000;
   }
@@ -3756,9 +3756,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xBFFFFFFF | v3);
 }
 
-- (void)setHasShortcutComplicationSlotsUsed:(BOOL)a3
+- (void)setHasShortcutComplicationSlotsUsed:(BOOL)used
 {
-  if (a3)
+  if (used)
   {
     v3 = 0x80000;
   }
@@ -3771,9 +3771,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasHomeAutomationsEnabled:(BOOL)a3
+- (void)setHasHomeAutomationsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x4000000;
   }
@@ -3786,9 +3786,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xFBFFFFFF | v3);
 }
 
-- (void)setHasPersonalAutomationsEnabled:(BOOL)a3
+- (void)setHasPersonalAutomationsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x10000000;
   }
@@ -3801,9 +3801,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xEFFFFFFF | v3);
 }
 
-- (void)setHasSharingEnabled:(BOOL)a3
+- (void)setHasSharingEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x20000000;
   }
@@ -3816,9 +3816,9 @@ LABEL_38:
   self->_has = (*&self->_has & 0xDFFFFFFF | v3);
 }
 
-- (void)setHasInstalled:(BOOL)a3
+- (void)setHasInstalled:(BOOL)installed
 {
-  if (a3)
+  if (installed)
   {
     v3 = 0x8000000;
   }

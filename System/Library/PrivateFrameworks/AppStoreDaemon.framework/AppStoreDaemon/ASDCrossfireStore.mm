@@ -1,13 +1,13 @@
 @interface ASDCrossfireStore
 + (id)interface;
 - (ASDCrossfireStore)init;
-- (void)flushMetricsWithCompletionBlock:(id)a3;
-- (void)getAppEventsWithCompletionBlock:(id)a3;
-- (void)recordLaunchesWithCompletionBlock:(id)a3;
-- (void)recordMetricsWithCompletionBlock:(id)a3;
-- (void)reportAppEvent:(id)a3 completionBlock:(id)a4;
-- (void)resetMetricsWithCompletionBlock:(id)a3;
-- (void)sendMetricsWithCompletionBlock:(id)a3;
+- (void)flushMetricsWithCompletionBlock:(id)block;
+- (void)getAppEventsWithCompletionBlock:(id)block;
+- (void)recordLaunchesWithCompletionBlock:(id)block;
+- (void)recordMetricsWithCompletionBlock:(id)block;
+- (void)reportAppEvent:(id)event completionBlock:(id)block;
+- (void)resetMetricsWithCompletionBlock:(id)block;
+- (void)sendMetricsWithCompletionBlock:(id)block;
 @end
 
 @implementation ASDCrossfireStore
@@ -42,10 +42,10 @@
   return self;
 }
 
-- (void)flushMetricsWithCompletionBlock:(id)a3
+- (void)flushMetricsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -60,8 +60,8 @@
   v10[1] = 3221225472;
   v10[2] = __53__ASDCrossfireStore_flushMetricsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDC400;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getCrossfireServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -94,10 +94,10 @@ void __53__ASDCrossfireStore_flushMetricsWithCompletionBlock___block_invoke(uint
   }
 }
 
-- (void)getAppEventsWithCompletionBlock:(id)a3
+- (void)getAppEventsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -112,8 +112,8 @@ void __53__ASDCrossfireStore_flushMetricsWithCompletionBlock___block_invoke(uint
   v10[1] = 3221225472;
   v10[2] = __53__ASDCrossfireStore_getAppEventsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDC400;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getCrossfireServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -146,10 +146,10 @@ void __53__ASDCrossfireStore_getAppEventsWithCompletionBlock___block_invoke(uint
   }
 }
 
-- (void)recordLaunchesWithCompletionBlock:(id)a3
+- (void)recordLaunchesWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -164,8 +164,8 @@ void __53__ASDCrossfireStore_getAppEventsWithCompletionBlock___block_invoke(uint
   v10[1] = 3221225472;
   v10[2] = __55__ASDCrossfireStore_recordLaunchesWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDC400;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getCrossfireServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -198,10 +198,10 @@ void __55__ASDCrossfireStore_recordLaunchesWithCompletionBlock___block_invoke(ui
   }
 }
 
-- (void)recordMetricsWithCompletionBlock:(id)a3
+- (void)recordMetricsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -216,8 +216,8 @@ void __55__ASDCrossfireStore_recordLaunchesWithCompletionBlock___block_invoke(ui
   v10[1] = 3221225472;
   v10[2] = __54__ASDCrossfireStore_recordMetricsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDC400;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getCrossfireServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -250,11 +250,11 @@ void __54__ASDCrossfireStore_recordMetricsWithCompletionBlock___block_invoke(uin
   }
 }
 
-- (void)reportAppEvent:(id)a3 completionBlock:(id)a4
+- (void)reportAppEvent:(id)event completionBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  blockCopy = block;
   v8 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -269,10 +269,10 @@ void __54__ASDCrossfireStore_recordMetricsWithCompletionBlock___block_invoke(uin
   v14[1] = 3221225472;
   v14[2] = __52__ASDCrossfireStore_reportAppEvent_completionBlock___block_invoke;
   v14[3] = &unk_1E7CDC428;
-  v15 = v6;
-  v16 = v7;
-  v11 = v6;
-  v12 = v7;
+  v15 = eventCopy;
+  v16 = blockCopy;
+  v11 = eventCopy;
+  v12 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getCrossfireServiceWithCompletionHandler:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -306,10 +306,10 @@ void __52__ASDCrossfireStore_reportAppEvent_completionBlock___block_invoke(uint6
   }
 }
 
-- (void)resetMetricsWithCompletionBlock:(id)a3
+- (void)resetMetricsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -324,8 +324,8 @@ void __52__ASDCrossfireStore_reportAppEvent_completionBlock___block_invoke(uint6
   v10[1] = 3221225472;
   v10[2] = __53__ASDCrossfireStore_resetMetricsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDC400;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getCrossfireServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -358,10 +358,10 @@ void __53__ASDCrossfireStore_resetMetricsWithCompletionBlock___block_invoke(uint
   }
 }
 
-- (void)sendMetricsWithCompletionBlock:(id)a3
+- (void)sendMetricsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -376,8 +376,8 @@ void __53__ASDCrossfireStore_resetMetricsWithCompletionBlock___block_invoke(uint
   v10[1] = 3221225472;
   v10[2] = __52__ASDCrossfireStore_sendMetricsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDC400;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getCrossfireServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];

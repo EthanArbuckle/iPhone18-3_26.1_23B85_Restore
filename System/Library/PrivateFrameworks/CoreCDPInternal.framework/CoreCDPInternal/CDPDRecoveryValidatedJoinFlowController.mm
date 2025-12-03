@@ -1,58 +1,58 @@
 @interface CDPDRecoveryValidatedJoinFlowController
 - (BOOL)_isWalrusEnabled;
-- (id)_accountResetRecoveryOptionWithCompletion:(id)a3;
-- (id)_cancelRecoveryOptionWithCompletion:(id)a3;
-- (id)_custodianRecoveryOptionWithCompletion:(id)a3;
-- (id)_deviceSelectionRecoveryOptionWithCompletion:(id)a3;
-- (id)_entryHardLimitCustodianRecoveryAvailableBodyForDevice:(id)a3;
-- (id)_entryHardLimitDeviceSelectionAvailableBodyForDevice:(id)a3;
-- (id)_entryHardLimitNoResetForSignInForDevice:(id)a3;
-- (id)_entryHardLimitPiggybackingAvailableBodyForDevice:(id)a3;
-- (id)_entryHardLimitRecoveryKeyAndCustodianRecoveryAvailableBodyForDevice:(id)a3;
-- (id)_entryHardLimitRecoveryKeyAvailableBodyForDevice:(id)a3;
-- (id)_entryHardLimitRepairBodyForDevice:(id)a3;
-- (id)_entryLimitCustodianRecoveryAvailableBodyForDevice:(id)a3;
-- (id)_entryLimitDeviceSelectionAvailableBodyForDevice:(id)a3;
-- (id)_entryLimitNoResetForDevice:(id)a3;
-- (id)_entryLimitNoResetForRepairForDevice:(id)a3;
-- (id)_entryLimitPiggybackingAvailableBodyForDevice:(id)a3;
-- (id)_entryLimitRecoveryKeyAndCustodianRecoveryAvailableBodyForDevice:(id)a3;
-- (id)_entryLimitRecoveryKeyAvailableBodyForDevice:(id)a3;
-- (id)_entryLimitResetAvailableBodyForDevice:(id)a3;
-- (id)_entryLimitSignInBodyForDevice:(id)a3;
-- (id)_entryLimitTitleForDevice:(id)a3;
-- (id)_fallbackRecoveryOptionsForLimitType:(unint64_t)a3 withCompletion:(id)a4;
-- (id)_hardLimitErrorBodyWithDevice:(id)a3;
-- (id)_infoDictionaryWithTitle:(id)a3 andBody:(id)a4;
-- (id)_limitErrorBodyForDevice:(id)a3 limitType:(unint64_t)a4;
-- (id)_piggybackingRecoveryOptionWithCompletion:(id)a3;
-- (id)_recoveryKeyRecoveryOptionWithCompletion:(id)a3;
-- (id)_recoveryMethodRecoveryOptionWithCompletion:(id)a3;
-- (id)_resetDataErrorForCurrentContextWithRecoveryIndexMap:(id)a3;
+- (id)_accountResetRecoveryOptionWithCompletion:(id)completion;
+- (id)_cancelRecoveryOptionWithCompletion:(id)completion;
+- (id)_custodianRecoveryOptionWithCompletion:(id)completion;
+- (id)_deviceSelectionRecoveryOptionWithCompletion:(id)completion;
+- (id)_entryHardLimitCustodianRecoveryAvailableBodyForDevice:(id)device;
+- (id)_entryHardLimitDeviceSelectionAvailableBodyForDevice:(id)device;
+- (id)_entryHardLimitNoResetForSignInForDevice:(id)device;
+- (id)_entryHardLimitPiggybackingAvailableBodyForDevice:(id)device;
+- (id)_entryHardLimitRecoveryKeyAndCustodianRecoveryAvailableBodyForDevice:(id)device;
+- (id)_entryHardLimitRecoveryKeyAvailableBodyForDevice:(id)device;
+- (id)_entryHardLimitRepairBodyForDevice:(id)device;
+- (id)_entryLimitCustodianRecoveryAvailableBodyForDevice:(id)device;
+- (id)_entryLimitDeviceSelectionAvailableBodyForDevice:(id)device;
+- (id)_entryLimitNoResetForDevice:(id)device;
+- (id)_entryLimitNoResetForRepairForDevice:(id)device;
+- (id)_entryLimitPiggybackingAvailableBodyForDevice:(id)device;
+- (id)_entryLimitRecoveryKeyAndCustodianRecoveryAvailableBodyForDevice:(id)device;
+- (id)_entryLimitRecoveryKeyAvailableBodyForDevice:(id)device;
+- (id)_entryLimitResetAvailableBodyForDevice:(id)device;
+- (id)_entryLimitSignInBodyForDevice:(id)device;
+- (id)_entryLimitTitleForDevice:(id)device;
+- (id)_fallbackRecoveryOptionsForLimitType:(unint64_t)type withCompletion:(id)completion;
+- (id)_hardLimitErrorBodyWithDevice:(id)device;
+- (id)_infoDictionaryWithTitle:(id)title andBody:(id)body;
+- (id)_limitErrorBodyForDevice:(id)device limitType:(unint64_t)type;
+- (id)_piggybackingRecoveryOptionWithCompletion:(id)completion;
+- (id)_recoveryKeyRecoveryOptionWithCompletion:(id)completion;
+- (id)_recoveryMethodRecoveryOptionWithCompletion:(id)completion;
+- (id)_resetDataErrorForCurrentContextWithRecoveryIndexMap:(id)map;
 - (id)_resetProtectedDataErrorUnrecoverable;
 - (id)_skipErrorUnrecoverable;
-- (id)_skipSignInRecoveryOptionWithCompletion:(id)a3;
-- (id)_tryAgainLaterOptionWithCompletion:(id)a3;
-- (id)_userInfoForLimit:(unint64_t)a3 withDevice:(id)a4;
-- (void)_escapeOfferForDevices:(id)a3 remoteApproval:(BOOL)a4 forMultipleICSC:(BOOL)a5 completion:(id)a6;
-- (void)_handleHardLimitErrorForCurrentContextWithDevice:(id)a3 completion:(id)a4;
-- (void)_handleLimit:(unint64_t)a3 forDevice:(id)a4 completion:(id)a5;
-- (void)_handleNoRecoveryFactorsWithMask:(unint64_t)a3 validator:(id)a4;
-- (void)_handleResetOptionWithResetRequested:(BOOL)a3 localSecret:(id)a4 validator:(id)a5;
-- (void)_handleSoftLimitErrorForCurrentContextWithDevice:(id)a3 completion:(id)a4;
-- (void)_isSingleICSC:(id)a3;
-- (void)_populateUserInfo:(id)a3 recoveryIndexHandlers:(id)a4 withRecoveryOptions:(id)a5;
-- (void)_showAccountResetConfirmationWithCompletion:(id)a3;
-- (void)_showEntryLimitError:(id)a3 withRecoveryOptionHandlers:(id)a4 defaultIndex:(int64_t)a5 completion:(id)a6;
-- (void)_showQuotaScreenWithCompletion:(id)a3;
-- (void)cancelRemoteSecretValidatorApplicationToJoinCircle:(id)a3;
-- (void)remoteSecretValidator:(id)a3 applyToJoinCircleWithJoinHandler:(id)a4;
-- (void)remoteSecretValidator:(id)a3 attemptCircleJoinWithPiggybackingContext:(id)a4 completion:(id)a5;
-- (void)remoteSecretValidator:(id)a3 attemptCustodianRecoveryWithInfo:(id)a4 completion:(id)a5;
-- (void)secretValidator:(id)a3 didFailRecovery:(id)a4 withError:(id)a5 completion:(id)a6;
-- (void)secretValidator:(id)a3 recoverSecureBackupWithContext:(id)a4 completion:(id)a5;
+- (id)_skipSignInRecoveryOptionWithCompletion:(id)completion;
+- (id)_tryAgainLaterOptionWithCompletion:(id)completion;
+- (id)_userInfoForLimit:(unint64_t)limit withDevice:(id)device;
+- (void)_escapeOfferForDevices:(id)devices remoteApproval:(BOOL)approval forMultipleICSC:(BOOL)c completion:(id)completion;
+- (void)_handleHardLimitErrorForCurrentContextWithDevice:(id)device completion:(id)completion;
+- (void)_handleLimit:(unint64_t)limit forDevice:(id)device completion:(id)completion;
+- (void)_handleNoRecoveryFactorsWithMask:(unint64_t)mask validator:(id)validator;
+- (void)_handleResetOptionWithResetRequested:(BOOL)requested localSecret:(id)secret validator:(id)validator;
+- (void)_handleSoftLimitErrorForCurrentContextWithDevice:(id)device completion:(id)completion;
+- (void)_isSingleICSC:(id)c;
+- (void)_populateUserInfo:(id)info recoveryIndexHandlers:(id)handlers withRecoveryOptions:(id)options;
+- (void)_showAccountResetConfirmationWithCompletion:(id)completion;
+- (void)_showEntryLimitError:(id)error withRecoveryOptionHandlers:(id)handlers defaultIndex:(int64_t)index completion:(id)completion;
+- (void)_showQuotaScreenWithCompletion:(id)completion;
+- (void)cancelRemoteSecretValidatorApplicationToJoinCircle:(id)circle;
+- (void)remoteSecretValidator:(id)validator applyToJoinCircleWithJoinHandler:(id)handler;
+- (void)remoteSecretValidator:(id)validator attemptCircleJoinWithPiggybackingContext:(id)context completion:(id)completion;
+- (void)remoteSecretValidator:(id)validator attemptCustodianRecoveryWithInfo:(id)info completion:(id)completion;
+- (void)secretValidator:(id)validator didFailRecovery:(id)recovery withError:(id)error completion:(id)completion;
+- (void)secretValidator:(id)validator recoverSecureBackupWithContext:(id)context completion:(id)completion;
 - (void)secretValidatorWillAttemptRecovery;
-- (void)shouldOfferPiggybackingBasedRecovery:(id)a3;
+- (void)shouldOfferPiggybackingBasedRecovery:(id)recovery;
 @end
 
 @implementation CDPDRecoveryValidatedJoinFlowController
@@ -95,17 +95,17 @@ void __117__CDPDRecoveryValidatedJoinFlowController_recoveryValidatorWithDevices
   *(v3 + 40) = 0;
 }
 
-- (void)_isSingleICSC:(id)a3
+- (void)_isSingleICSC:(id)c
 {
-  v4 = a3;
-  v5 = [(CDPDRecoveryFlowController *)self secureBackupController];
+  cCopy = c;
+  secureBackupController = [(CDPDRecoveryFlowController *)self secureBackupController];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__CDPDRecoveryValidatedJoinFlowController__isSingleICSC___block_invoke;
   v7[3] = &unk_278E24708;
-  v8 = v4;
-  v6 = v4;
-  [v5 getBackupRecordDevicesWithOptionForceFetch:0 completion:v7];
+  v8 = cCopy;
+  v6 = cCopy;
+  [secureBackupController getBackupRecordDevicesWithOptionForceFetch:0 completion:v7];
 }
 
 uint64_t __57__CDPDRecoveryValidatedJoinFlowController__isSingleICSC___block_invoke(uint64_t a1, int a2, uint64_t a3, uint64_t a4)
@@ -129,10 +129,10 @@ uint64_t __57__CDPDRecoveryValidatedJoinFlowController__isSingleICSC___block_inv
   return result;
 }
 
-- (void)shouldOfferPiggybackingBasedRecovery:(id)a3
+- (void)shouldOfferPiggybackingBasedRecovery:(id)recovery
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recoveryCopy = recovery;
   if ([MEMORY[0x277CFD560] isInternalBuild] && CFPreferencesGetAppBooleanValue(@"offerPiggybackingForCDPRepair", @"com.apple.corecdp", 0))
   {
     v5 = _CDPLogSystem();
@@ -141,33 +141,33 @@ uint64_t __57__CDPDRecoveryValidatedJoinFlowController__isSingleICSC___block_inv
       [CDPDRecoveryValidatedJoinFlowController shouldOfferPiggybackingBasedRecovery:];
     }
 
-    if (v4)
+    if (recoveryCopy)
     {
-      v4[2](v4, 1);
+      recoveryCopy[2](recoveryCopy, 1);
     }
   }
 
   else
   {
-    v6 = [MEMORY[0x277CF0130] sharedInstance];
-    v7 = [(CDPDRecoveryFlowController *)self recoveryContext];
-    v8 = [v7 context];
-    v9 = [v8 altDSID];
-    v10 = [v6 authKitAccountWithAltDSID:v9];
+    mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+    recoveryContext = [(CDPDRecoveryFlowController *)self recoveryContext];
+    context = [recoveryContext context];
+    altDSID = [context altDSID];
+    v10 = [mEMORY[0x277CF0130] authKitAccountWithAltDSID:altDSID];
 
-    v11 = [MEMORY[0x277CF0130] sharedInstance];
-    v12 = [v11 piggybackingApprovalEligible:v10];
+    mEMORY[0x277CF0130]2 = [MEMORY[0x277CF0130] sharedInstance];
+    v12 = [mEMORY[0x277CF0130]2 piggybackingApprovalEligible:v10];
 
-    v13 = [MEMORY[0x277CFD560] isCDPRepairWithProximityBasedPiggybackingEnabled];
+    isCDPRepairWithProximityBasedPiggybackingEnabled = [MEMORY[0x277CFD560] isCDPRepairWithProximityBasedPiggybackingEnabled];
     v14 = _CDPLogSystem();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v16 = [(CDPDRecoveryFlowController *)self recoveryContext];
-      v17 = [v16 context];
+      recoveryContext2 = [(CDPDRecoveryFlowController *)self recoveryContext];
+      context2 = [recoveryContext2 context];
       *buf = 67109632;
-      v23 = v13;
+      v23 = isCDPRepairWithProximityBasedPiggybackingEnabled;
       v24 = 2048;
-      v25 = [v17 type];
+      type = [context2 type];
       v26 = 1024;
       v27 = v12;
       _os_log_debug_impl(&dword_24510B000, v14, OS_LOG_TYPE_DEBUG, "piggybackingBasedCDPRecoveryFeatureEnabled = %d CDPRepairContext = %ld piggybackingApprovalEligible = %d", buf, 0x18u);
@@ -178,8 +178,8 @@ uint64_t __57__CDPDRecoveryValidatedJoinFlowController__isSingleICSC___block_inv
     v18[2] = __80__CDPDRecoveryValidatedJoinFlowController_shouldOfferPiggybackingBasedRecovery___block_invoke;
     v18[3] = &unk_278E24730;
     v18[4] = self;
-    v19 = v4;
-    v20 = v13;
+    v19 = recoveryCopy;
+    v20 = isCDPRepairWithProximityBasedPiggybackingEnabled;
     v21 = v12;
     [(CDPDRecoveryValidatedJoinFlowController *)self _isSingleICSC:v18];
   }
@@ -219,11 +219,11 @@ uint64_t __80__CDPDRecoveryValidatedJoinFlowController_shouldOfferPiggybackingBa
   return result;
 }
 
-- (void)_escapeOfferForDevices:(id)a3 remoteApproval:(BOOL)a4 forMultipleICSC:(BOOL)a5 completion:(id)a6
+- (void)_escapeOfferForDevices:(id)devices remoteApproval:(BOOL)approval forMultipleICSC:(BOOL)c completion:(id)completion
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a6;
+  cCopy = c;
+  devicesCopy = devices;
+  completionCopy = completion;
   v11 = _CDPLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -234,7 +234,7 @@ uint64_t __80__CDPDRecoveryValidatedJoinFlowController_shouldOfferPiggybackingBa
   v38 = &v37;
   v39 = 0x2020000000;
   v40 = 1;
-  if ([v9 count] >= 2)
+  if ([devicesCopy count] >= 2)
   {
     v12 = _CDPLogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -249,9 +249,9 @@ uint64_t __80__CDPDRecoveryValidatedJoinFlowController_shouldOfferPiggybackingBa
   if (([MEMORY[0x277CFD560] isVirtualMachine] & 1) == 0)
   {
     v13 = MEMORY[0x277CFD4A8];
-    v14 = [(CDPDRecoveryFlowController *)self recoveryContext];
-    v15 = [v14 context];
-    v16 = [v13 isSubsetOfContextTypeRepair:{objc_msgSend(v15, "type")}] | !v7;
+    recoveryContext = [(CDPDRecoveryFlowController *)self recoveryContext];
+    context = [recoveryContext context];
+    v16 = [v13 isSubsetOfContextTypeRepair:{objc_msgSend(context, "type")}] | !cCopy;
 
     if (v16 == 1)
     {
@@ -267,9 +267,9 @@ uint64_t __80__CDPDRecoveryValidatedJoinFlowController_shouldOfferPiggybackingBa
   }
 
   v18 = MEMORY[0x277CFD4A8];
-  v19 = [(CDPDRecoveryFlowController *)self recoveryContext];
-  v20 = [v19 context];
-  LODWORD(v18) = [v18 isSubsetOfContextTypeSignIn:{objc_msgSend(v20, "type")}];
+  recoveryContext2 = [(CDPDRecoveryFlowController *)self recoveryContext];
+  context2 = [recoveryContext2 context];
+  LODWORD(v18) = [v18 isSubsetOfContextTypeSignIn:{objc_msgSend(context2, "type")}];
 
   if (v18)
   {
@@ -283,9 +283,9 @@ uint64_t __80__CDPDRecoveryValidatedJoinFlowController_shouldOfferPiggybackingBa
     v38[3] |= 0x10uLL;
   }
 
-  v22 = [(CDPDRecoveryFlowController *)self secureBackupController];
+  secureBackupController = [(CDPDRecoveryFlowController *)self secureBackupController];
   v35 = 0;
-  v23 = [v22 supportsRecoveryKeyWithError:&v35];
+  v23 = [secureBackupController supportsRecoveryKeyWithError:&v35];
   v24 = v35;
 
   if (v23)
@@ -309,11 +309,11 @@ uint64_t __80__CDPDRecoveryValidatedJoinFlowController_shouldOfferPiggybackingBa
     }
   }
 
-  v27 = [(CDPDRecoveryFlowController *)self recoveryContext];
-  v28 = [v27 context];
-  v29 = [v28 _supportsCustodianRecovery];
+  recoveryContext3 = [(CDPDRecoveryFlowController *)self recoveryContext];
+  context3 = [recoveryContext3 context];
+  _supportsCustodianRecovery = [context3 _supportsCustodianRecovery];
 
-  if (v29)
+  if (_supportsCustodianRecovery)
   {
     v30 = _CDPLogSystem();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -330,7 +330,7 @@ uint64_t __80__CDPDRecoveryValidatedJoinFlowController_shouldOfferPiggybackingBa
   v32[2] = __108__CDPDRecoveryValidatedJoinFlowController__escapeOfferForDevices_remoteApproval_forMultipleICSC_completion___block_invoke;
   v32[3] = &unk_278E24758;
   v34 = &v37;
-  v31 = v10;
+  v31 = completionCopy;
   v33 = v31;
   [(CDPDRecoveryValidatedJoinFlowController *)self shouldOfferPiggybackingBasedRecovery:v32];
 
@@ -360,20 +360,20 @@ uint64_t __108__CDPDRecoveryValidatedJoinFlowController__escapeOfferForDevices_r
   return result;
 }
 
-- (void)remoteSecretValidator:(id)a3 applyToJoinCircleWithJoinHandler:(id)a4
+- (void)remoteSecretValidator:(id)validator applyToJoinCircleWithJoinHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = _CDPLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [CDPDRecoveryValidatedJoinFlowController remoteSecretValidator:applyToJoinCircleWithJoinHandler:];
   }
 
-  v7 = [(CDPDRecoveryFlowController *)self circleController];
-  [v7 applyToJoinCircleWithJoinHandler:v5];
+  circleController = [(CDPDRecoveryFlowController *)self circleController];
+  [circleController applyToJoinCircleWithJoinHandler:handlerCopy];
 }
 
-- (void)cancelRemoteSecretValidatorApplicationToJoinCircle:(id)a3
+- (void)cancelRemoteSecretValidatorApplicationToJoinCircle:(id)circle
 {
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -381,23 +381,23 @@ uint64_t __108__CDPDRecoveryValidatedJoinFlowController__escapeOfferForDevices_r
     [CDPDRecoveryValidatedJoinFlowController cancelRemoteSecretValidatorApplicationToJoinCircle:];
   }
 
-  v5 = [(CDPDRecoveryFlowController *)self circleController];
-  [v5 cancelApplicationToJoinCircle];
+  circleController = [(CDPDRecoveryFlowController *)self circleController];
+  [circleController cancelApplicationToJoinCircle];
 }
 
-- (void)remoteSecretValidator:(id)a3 attemptCustodianRecoveryWithInfo:(id)a4 completion:(id)a5
+- (void)remoteSecretValidator:(id)validator attemptCustodianRecoveryWithInfo:(id)info completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(CDPDRecoveryFlowController *)self circleController];
-  v10 = [v9 circleProxy];
+  completionCopy = completion;
+  infoCopy = info;
+  circleController = [(CDPDRecoveryFlowController *)self circleController];
+  circleProxy = [circleController circleProxy];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __109__CDPDRecoveryValidatedJoinFlowController_remoteSecretValidator_attemptCustodianRecoveryWithInfo_completion___block_invoke;
   v12[3] = &unk_278E24780;
-  v13 = v7;
-  v11 = v7;
-  [v10 recoverOctagonUsingCustodianInfo:v8 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [circleProxy recoverOctagonUsingCustodianInfo:infoCopy completion:v12];
 }
 
 void __109__CDPDRecoveryValidatedJoinFlowController_remoteSecretValidator_attemptCustodianRecoveryWithInfo_completion___block_invoke(uint64_t a1, void *a2)
@@ -412,18 +412,18 @@ void __109__CDPDRecoveryValidatedJoinFlowController_remoteSecretValidator_attemp
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)remoteSecretValidator:(id)a3 attemptCircleJoinWithPiggybackingContext:(id)a4 completion:(id)a5
+- (void)remoteSecretValidator:(id)validator attemptCircleJoinWithPiggybackingContext:(id)context completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(CDPDRecoveryFlowController *)self circleController];
+  completionCopy = completion;
+  contextCopy = context;
+  circleController = [(CDPDRecoveryFlowController *)self circleController];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __117__CDPDRecoveryValidatedJoinFlowController_remoteSecretValidator_attemptCircleJoinWithPiggybackingContext_completion___block_invoke;
   v11[3] = &unk_278E247A8;
-  v12 = v7;
-  v10 = v7;
-  [v9 joinCircleWithContext:v8 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [circleController joinCircleWithContext:contextCopy completion:v11];
 }
 
 void __117__CDPDRecoveryValidatedJoinFlowController_remoteSecretValidator_attemptCircleJoinWithPiggybackingContext_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -450,31 +450,31 @@ void __117__CDPDRecoveryValidatedJoinFlowController_remoteSecretValidator_attemp
 
 - (void)secretValidatorWillAttemptRecovery
 {
-  v2 = [(CDPDRecoveryFlowController *)self circleController];
-  [v2 prepareCircleStateForRecovery];
+  circleController = [(CDPDRecoveryFlowController *)self circleController];
+  [circleController prepareCircleStateForRecovery];
 }
 
-- (void)secretValidator:(id)a3 recoverSecureBackupWithContext:(id)a4 completion:(id)a5
+- (void)secretValidator:(id)validator recoverSecureBackupWithContext:(id)context completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  contextCopy = context;
+  completionCopy = completion;
   v9 = _CDPLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v7;
+    v16 = contextCopy;
     _os_log_impl(&dword_24510B000, v9, OS_LOG_TYPE_DEFAULT, "Attempting to recover a record with context: %@", buf, 0xCu);
   }
 
-  v10 = [(CDPDRecoveryFlowController *)self secureBackupController];
+  secureBackupController = [(CDPDRecoveryFlowController *)self secureBackupController];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __101__CDPDRecoveryValidatedJoinFlowController_secretValidator_recoverSecureBackupWithContext_completion___block_invoke;
   v13[3] = &unk_278E247D0;
-  v14 = v8;
-  v11 = v8;
-  [v10 performEscrowRecoveryWithRecoveryContext:v7 completion:v13];
+  v14 = completionCopy;
+  v11 = completionCopy;
+  [secureBackupController performEscrowRecoveryWithRecoveryContext:contextCopy completion:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -516,32 +516,32 @@ void __101__CDPDRecoveryValidatedJoinFlowController_secretValidator_recoverSecur
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)secretValidator:(id)a3 didFailRecovery:(id)a4 withError:(id)a5 completion:(id)a6
+- (void)secretValidator:(id)validator didFailRecovery:(id)recovery withError:(id)error completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v13)
+  validatorCopy = validator;
+  recoveryCopy = recovery;
+  errorCopy = error;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [CDPDRecoveryValidatedJoinFlowController secretValidator:didFailRecovery:withError:completion:];
   }
 
-  v14 = v13;
-  if ([v12 isLoginHardLimit])
+  v14 = completionCopy;
+  if ([errorCopy isLoginHardLimit])
   {
-    [(CDPDRecoveryValidatedJoinFlowController *)self _handleHardLimitErrorForCurrentContextWithDevice:v11 completion:v14];
+    [(CDPDRecoveryValidatedJoinFlowController *)self _handleHardLimitErrorForCurrentContextWithDevice:recoveryCopy completion:v14];
   }
 
-  else if ([v12 isLoginSoftLimit])
+  else if ([errorCopy isLoginSoftLimit])
   {
-    [(CDPDRecoveryValidatedJoinFlowController *)self _handleSoftLimitErrorForCurrentContextWithDevice:v11 completion:v14];
+    [(CDPDRecoveryValidatedJoinFlowController *)self _handleSoftLimitErrorForCurrentContextWithDevice:recoveryCopy completion:v14];
   }
 
   else
   {
-    v15 = [v12 cdp_isCDPErrorWithCode:-5206] ^ 1;
+    v15 = [errorCopy cdp_isCDPErrorWithCode:-5206] ^ 1;
     v16 = _CDPLogSystem();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -550,16 +550,16 @@ void __101__CDPDRecoveryValidatedJoinFlowController_secretValidator_recoverSecur
       _os_log_impl(&dword_24510B000, v16, OS_LOG_TYPE_DEFAULT, "Non-terminating error detected, with retry option: %{BOOL}d", v18, 8u);
     }
 
-    (v14)[2](v14, v15, v12);
+    (v14)[2](v14, v15, errorCopy);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleHardLimitErrorForCurrentContextWithDevice:(id)a3 completion:(id)a4
+- (void)_handleHardLimitErrorForCurrentContextWithDevice:(id)device completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  deviceCopy = device;
   v8 = _CDPLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -567,13 +567,13 @@ void __101__CDPDRecoveryValidatedJoinFlowController_secretValidator_recoverSecur
     _os_log_impl(&dword_24510B000, v8, OS_LOG_TYPE_DEFAULT, "Starting handling hard limit error...", v9, 2u);
   }
 
-  [(CDPDRecoveryValidatedJoinFlowController *)self _handleLimit:2 forDevice:v7 completion:v6];
+  [(CDPDRecoveryValidatedJoinFlowController *)self _handleLimit:2 forDevice:deviceCopy completion:completionCopy];
 }
 
-- (void)_handleSoftLimitErrorForCurrentContextWithDevice:(id)a3 completion:(id)a4
+- (void)_handleSoftLimitErrorForCurrentContextWithDevice:(id)device completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  deviceCopy = device;
   v8 = _CDPLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -581,32 +581,32 @@ void __101__CDPDRecoveryValidatedJoinFlowController_secretValidator_recoverSecur
     _os_log_impl(&dword_24510B000, v8, OS_LOG_TYPE_DEFAULT, "Starting handling soft limit error...", v9, 2u);
   }
 
-  [(CDPDRecoveryValidatedJoinFlowController *)self _handleLimit:1 forDevice:v7 completion:v6];
+  [(CDPDRecoveryValidatedJoinFlowController *)self _handleLimit:1 forDevice:deviceCopy completion:completionCopy];
 }
 
-- (void)_handleLimit:(unint64_t)a3 forDevice:(id)a4 completion:(id)a5
+- (void)_handleLimit:(unint64_t)limit forDevice:(id)device completion:(id)completion
 {
   v88 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v67 = v8;
-  v71 = [(CDPDRecoveryValidatedJoinFlowController *)self _userInfoForLimit:a3 withDevice:v8];
+  deviceCopy = device;
+  completionCopy = completion;
+  v67 = deviceCopy;
+  v71 = [(CDPDRecoveryValidatedJoinFlowController *)self _userInfoForLimit:limit withDevice:deviceCopy];
   v70 = [MEMORY[0x277CBEC10] mutableCopy];
   v10 = MEMORY[0x277CE44D8];
-  v11 = [(CDPDRecoveryFlowController *)self recoveryContext];
-  v12 = [v11 context];
+  recoveryContext = [(CDPDRecoveryFlowController *)self recoveryContext];
+  context = [recoveryContext context];
   v13 = MEMORY[0x277CFD898];
-  if (a3 != 1)
+  if (limit != 1)
   {
     v13 = MEMORY[0x277CFD740];
   }
 
-  v14 = [v10 analyticsEventWithContext:v12 eventName:*v13 category:*MEMORY[0x277CFD930]];
+  v14 = [v10 analyticsEventWithContext:context eventName:*v13 category:*MEMORY[0x277CFD930]];
 
-  v15 = [(CDPDRecoveryValidatedJoinFlowController *)self _fallbackRecoveryOptionsForLimitType:a3 withCompletion:v9];
-  v72 = [(CDPDRecoveryValidatedJoinFlowController *)self _cancelRecoveryOptionWithCompletion:v9];
-  v68 = v9;
-  v16 = [(CDPDRecoveryValidatedJoinFlowController *)self _tryAgainLaterOptionWithCompletion:v9];
+  v15 = [(CDPDRecoveryValidatedJoinFlowController *)self _fallbackRecoveryOptionsForLimitType:limit withCompletion:completionCopy];
+  v72 = [(CDPDRecoveryValidatedJoinFlowController *)self _cancelRecoveryOptionWithCompletion:completionCopy];
+  v68 = completionCopy;
+  v16 = [(CDPDRecoveryValidatedJoinFlowController *)self _tryAgainLaterOptionWithCompletion:completionCopy];
   v69 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v66 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v73 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -633,8 +633,8 @@ void __101__CDPDRecoveryValidatedJoinFlowController_secretValidator_recoverSecur
         v23 = *(*(&v82 + 1) + 8 * i);
         if (v23)
         {
-          v24 = [v23 telemetryRecoveryOption];
-          [v17 addObject:v24];
+          telemetryRecoveryOption = [v23 telemetryRecoveryOption];
+          [v17 addObject:telemetryRecoveryOption];
         }
       }
 
@@ -654,10 +654,10 @@ void __101__CDPDRecoveryValidatedJoinFlowController_secretValidator_recoverSecur
     [v73 addObject:v16];
   }
 
-  v25 = [(CDPDRecoveryFlowController *)self validator];
-  v26 = [v25 supportedEscapeOfferMask];
+  validator = [(CDPDRecoveryFlowController *)self validator];
+  supportedEscapeOfferMask = [validator supportedEscapeOfferMask];
 
-  if ((v26 & 0x82) != 0)
+  if ((supportedEscapeOfferMask & 0x82) != 0)
   {
     [(CDPDRecoveryValidatedJoinFlowController *)self _populateUserInfo:v71 recoveryIndexHandlers:v70 withRecoveryOptions:v18];
     [(CDPDRecoveryValidatedJoinFlowController *)self _populateUserInfo:v71 recoveryIndexHandlers:v70 withRecoveryOptions:v73];
@@ -670,7 +670,7 @@ void __101__CDPDRecoveryValidatedJoinFlowController_secretValidator_recoverSecur
     goto LABEL_32;
   }
 
-  if ((v26 & 0x60) != 0)
+  if ((supportedEscapeOfferMask & 0x60) != 0)
   {
     [(CDPDRecoveryValidatedJoinFlowController *)self _populateUserInfo:v71 recoveryIndexHandlers:v70 withRecoveryOptions:v18];
     if ([MEMORY[0x277CFD560] isICSCHarmonizationEnabled])
@@ -684,8 +684,8 @@ void __101__CDPDRecoveryValidatedJoinFlowController_secretValidator_recoverSecur
     }
 
     [(CDPDRecoveryValidatedJoinFlowController *)self _populateUserInfo:v71 recoveryIndexHandlers:v70 withRecoveryOptions:v28];
-    v29 = [MEMORY[0x277CFD560] isICSCHarmonizationEnabled];
-    if (v16 && v29)
+    isICSCHarmonizationEnabled = [MEMORY[0x277CFD560] isICSCHarmonizationEnabled];
+    if (v16 && isICSCHarmonizationEnabled)
     {
       v27 = v16;
     }
@@ -701,20 +701,20 @@ void __101__CDPDRecoveryValidatedJoinFlowController_secretValidator_recoverSecur
     }
 
 LABEL_32:
-    v31 = [v27 telemetryRecoveryOption];
-    [v17 addObject:v31];
+    telemetryRecoveryOption2 = [v27 telemetryRecoveryOption];
+    [v17 addObject:telemetryRecoveryOption2];
 LABEL_33:
 
     goto LABEL_62;
   }
 
-  v30 = [MEMORY[0x277CFD560] isICSCHarmonizationEnabled];
-  if ((v26 & 8) == 0)
+  isICSCHarmonizationEnabled2 = [MEMORY[0x277CFD560] isICSCHarmonizationEnabled];
+  if ((supportedEscapeOfferMask & 8) == 0)
   {
-    if (!v30)
+    if (!isICSCHarmonizationEnabled2)
     {
       v36 = [(CDPDRecoveryValidatedJoinFlowController *)self _skipSignInRecoveryOptionWithCompletion:v68];
-      v31 = v36;
+      telemetryRecoveryOption2 = v36;
       if (v36)
       {
         v86 = v36;
@@ -722,8 +722,8 @@ LABEL_33:
         [(CDPDRecoveryValidatedJoinFlowController *)self _populateUserInfo:v71 recoveryIndexHandlers:v70 withRecoveryOptions:v37];
       }
 
-      v38 = [v31 telemetryRecoveryOption];
-      [v17 addObject:v38];
+      v31TelemetryRecoveryOption = [telemetryRecoveryOption2 telemetryRecoveryOption];
+      [v17 addObject:v31TelemetryRecoveryOption];
 
       goto LABEL_33;
     }
@@ -738,41 +738,41 @@ LABEL_33:
     goto LABEL_32;
   }
 
-  if (!v30)
+  if (!isICSCHarmonizationEnabled2)
   {
     v74[0] = MEMORY[0x277D85DD0];
     v74[1] = 3221225472;
     v74[2] = __77__CDPDRecoveryValidatedJoinFlowController__handleLimit_forDevice_completion___block_invoke_2;
     v74[3] = &unk_278E247F8;
     v76 = v68;
-    v77 = a3;
+    limitCopy = limit;
     v74[4] = self;
     v75 = v67;
     v39 = [(CDPDRecoveryValidatedJoinFlowController *)self _accountResetRecoveryOptionWithCompletion:v74];
     if (v39)
     {
       [v66 addObject:v39];
-      if (a3 == 2)
+      if (limit == 2)
       {
         if (![v18 count])
         {
-          v40 = self;
+          selfCopy2 = self;
           v42 = v70;
           v41 = v71;
           v43 = v66;
 LABEL_52:
-          [(CDPDRecoveryValidatedJoinFlowController *)v40 _populateUserInfo:v41 recoveryIndexHandlers:v42 withRecoveryOptions:v43];
+          [(CDPDRecoveryValidatedJoinFlowController *)selfCopy2 _populateUserInfo:v41 recoveryIndexHandlers:v42 withRecoveryOptions:v43];
 LABEL_55:
-          v46 = [v39 telemetryRecoveryOption];
-          [v17 addObject:v46];
+          telemetryRecoveryOption3 = [v39 telemetryRecoveryOption];
+          [v17 addObject:telemetryRecoveryOption3];
 
-          v31 = v76;
+          telemetryRecoveryOption2 = v76;
           goto LABEL_33;
         }
 
 LABEL_51:
         [(CDPDRecoveryValidatedJoinFlowController *)self _populateUserInfo:v71 recoveryIndexHandlers:v70 withRecoveryOptions:v18];
-        v40 = self;
+        selfCopy2 = self;
         v41 = v71;
         v42 = v70;
         v43 = v69;
@@ -780,7 +780,7 @@ LABEL_51:
       }
     }
 
-    else if (a3 == 2)
+    else if (limit == 2)
     {
       goto LABEL_51;
     }
@@ -788,19 +788,19 @@ LABEL_51:
     [(CDPDRecoveryValidatedJoinFlowController *)self _populateUserInfo:v71 recoveryIndexHandlers:v70 withRecoveryOptions:v73];
     if (v16)
     {
-      v45 = [v16 telemetryRecoveryOption];
-      [v17 addObject:v45];
+      telemetryRecoveryOption4 = [v16 telemetryRecoveryOption];
+      [v17 addObject:telemetryRecoveryOption4];
     }
 
     goto LABEL_55;
   }
 
-  if (a3 == 2)
+  if (limit == 2)
   {
     v32 = MEMORY[0x277CFD4A8];
-    v33 = [(CDPDRecoveryFlowController *)self recoveryContext];
-    v34 = [v33 context];
-    LODWORD(v32) = [v32 isSubsetOfContextTypeSignIn:{objc_msgSend(v34, "type")}];
+    recoveryContext2 = [(CDPDRecoveryFlowController *)self recoveryContext];
+    context2 = [recoveryContext2 context];
+    LODWORD(v32) = [v32 isSubsetOfContextTypeSignIn:{objc_msgSend(context2, "type")}];
 
     if (!v32)
     {
@@ -819,64 +819,64 @@ LABEL_51:
       }
 
       [(CDPDRecoveryValidatedJoinFlowController *)self _populateUserInfo:v71 recoveryIndexHandlers:v70 withRecoveryOptions:v66];
-      v48 = [v47 telemetryRecoveryOption];
-      [v17 addObject:v48];
+      telemetryRecoveryOption5 = [v47 telemetryRecoveryOption];
+      [v17 addObject:telemetryRecoveryOption5];
 
       [(CDPDRecoveryValidatedJoinFlowController *)self _populateUserInfo:v71 recoveryIndexHandlers:v70 withRecoveryOptions:v69];
       if (v72)
       {
-        v49 = [v72 telemetryRecoveryOption];
-        [v17 addObject:v49];
+        telemetryRecoveryOption6 = [v72 telemetryRecoveryOption];
+        [v17 addObject:telemetryRecoveryOption6];
       }
 
-      v35 = v80;
+      telemetryRecoveryOption7 = v80;
       goto LABEL_61;
     }
 
     [(CDPDRecoveryValidatedJoinFlowController *)self _populateUserInfo:v71 recoveryIndexHandlers:v70 withRecoveryOptions:v73];
     if (v16)
     {
-      v35 = [v16 telemetryRecoveryOption];
-      [v17 addObject:v35];
+      telemetryRecoveryOption7 = [v16 telemetryRecoveryOption];
+      [v17 addObject:telemetryRecoveryOption7];
 LABEL_61:
     }
   }
 
-  else if (a3 == 1)
+  else if (limit == 1)
   {
     [(CDPDRecoveryValidatedJoinFlowController *)self _populateUserInfo:v71 recoveryIndexHandlers:v70 withRecoveryOptions:v73];
     if (v16)
     {
-      v44 = [v16 telemetryRecoveryOption];
-      [v17 addObject:v44];
+      telemetryRecoveryOption8 = [v16 telemetryRecoveryOption];
+      [v17 addObject:telemetryRecoveryOption8];
     }
   }
 
 LABEL_62:
   v50 = _CDPStateError();
-  v51 = [v17 aaf_arrayAsCommaSeperatedString];
-  [v14 setObject:v51 forKeyedSubscript:*MEMORY[0x277CFD6C8]];
+  aaf_arrayAsCommaSeperatedString = [v17 aaf_arrayAsCommaSeperatedString];
+  [v14 setObject:aaf_arrayAsCommaSeperatedString forKeyedSubscript:*MEMORY[0x277CFD6C8]];
 
   v52 = MEMORY[0x277CCABB0];
-  v53 = [(CDPDRecoveryFlowController *)self recoveryContext];
-  v54 = [v53 context];
-  v55 = [v52 numberWithInteger:{objc_msgSend(v54, "totalEscrowDeviceCount")}];
+  recoveryContext3 = [(CDPDRecoveryFlowController *)self recoveryContext];
+  context3 = [recoveryContext3 context];
+  v55 = [v52 numberWithInteger:{objc_msgSend(context3, "totalEscrowDeviceCount")}];
   [v14 setObject:v55 forKeyedSubscript:*MEMORY[0x277CFD8A8]];
 
   v56 = MEMORY[0x277CCABB0];
-  v57 = [(CDPDRecoveryFlowController *)self recoveryContext];
-  v58 = [v57 context];
-  v59 = [v56 numberWithInteger:{objc_msgSend(v58, "validEscrowDeviceCount")}];
+  recoveryContext4 = [(CDPDRecoveryFlowController *)self recoveryContext];
+  context4 = [recoveryContext4 context];
+  v59 = [v56 numberWithInteger:{objc_msgSend(context4, "validEscrowDeviceCount")}];
   [v14 setObject:v59 forKeyedSubscript:*MEMORY[0x277CFD8B0]];
 
   v60 = MEMORY[0x277CCABB0];
-  v61 = [(CDPDRecoveryFlowController *)self recoveryContext];
-  v62 = [v61 context];
-  v63 = [v60 numberWithInteger:{objc_msgSend(v62, "totalRecoveryAttempts")}];
+  recoveryContext5 = [(CDPDRecoveryFlowController *)self recoveryContext];
+  context5 = [recoveryContext5 context];
+  v63 = [v60 numberWithInteger:{objc_msgSend(context5, "totalRecoveryAttempts")}];
   [v14 setObject:v63 forKeyedSubscript:*MEMORY[0x277CFD778]];
 
-  v64 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-  [v64 sendEvent:v14];
+  rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter sendEvent:v14];
 
   [(CDPDRecoveryValidatedJoinFlowController *)self _showEntryLimitError:v50 withRecoveryOptionHandlers:v70 defaultIndex:0 completion:v68];
   v65 = *MEMORY[0x277D85DE8];
@@ -922,16 +922,16 @@ void __77__CDPDRecoveryValidatedJoinFlowController__handleLimit_forDevice_comple
   }
 }
 
-- (void)_populateUserInfo:(id)a3 recoveryIndexHandlers:(id)a4 withRecoveryOptions:(id)a5
+- (void)_populateUserInfo:(id)info recoveryIndexHandlers:(id)handlers withRecoveryOptions:(id)options
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  handlersCopy = handlers;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = a5;
+  obj = options;
   v9 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v9)
   {
@@ -950,27 +950,27 @@ void __77__CDPDRecoveryValidatedJoinFlowController__handleLimit_forDevice_comple
         v14 = *(*(&v24 + 1) + 8 * i);
         if (v14)
         {
-          v15 = [v7 objectForKeyedSubscript:v12];
+          v15 = [infoCopy objectForKeyedSubscript:v12];
           if (v15)
           {
-            v16 = [v7 objectForKeyedSubscript:v12];
-            v17 = [v16 mutableCopy];
+            v16 = [infoCopy objectForKeyedSubscript:v12];
+            array = [v16 mutableCopy];
           }
 
           else
           {
-            v17 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
           }
 
-          v18 = [v14 localizedRecoveryOption];
-          [v17 addObject:v18];
+          localizedRecoveryOption = [v14 localizedRecoveryOption];
+          [array addObject:localizedRecoveryOption];
 
-          v19 = [v14 recoveryHandler];
-          v20 = _Block_copy(v19);
-          v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
-          [v8 setObject:v20 forKeyedSubscript:v21];
+          recoveryHandler = [v14 recoveryHandler];
+          v20 = _Block_copy(recoveryHandler);
+          v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(handlersCopy, "count")}];
+          [handlersCopy setObject:v20 forKeyedSubscript:v21];
 
-          [v7 setObject:v17 forKeyedSubscript:v12];
+          [infoCopy setObject:array forKeyedSubscript:v12];
         }
       }
 
@@ -983,47 +983,47 @@ void __77__CDPDRecoveryValidatedJoinFlowController__handleLimit_forDevice_comple
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_userInfoForLimit:(unint64_t)a3 withDevice:(id)a4
+- (id)_userInfoForLimit:(unint64_t)limit withDevice:(id)device
 {
-  v6 = a4;
-  if (a3 != 2)
+  deviceCopy = device;
+  if (limit != 2)
   {
-    if (a3 != 1)
+    if (limit != 1)
     {
       v11 = 0;
       goto LABEL_10;
     }
 
-    v7 = self;
-    v8 = v6;
+    selfCopy2 = self;
+    v8 = deviceCopy;
     v9 = 1;
     goto LABEL_8;
   }
 
   if (![MEMORY[0x277CFD560] isICSCHarmonizationEnabled])
   {
-    v7 = self;
-    v8 = v6;
+    selfCopy2 = self;
+    v8 = deviceCopy;
     v9 = 2;
 LABEL_8:
-    v10 = [(CDPDRecoveryValidatedJoinFlowController *)v7 _limitErrorBodyForDevice:v8 limitType:v9];
+    v10 = [(CDPDRecoveryValidatedJoinFlowController *)selfCopy2 _limitErrorBodyForDevice:v8 limitType:v9];
     goto LABEL_9;
   }
 
-  v10 = [(CDPDRecoveryValidatedJoinFlowController *)self _hardLimitErrorBodyWithDevice:v6];
+  v10 = [(CDPDRecoveryValidatedJoinFlowController *)self _hardLimitErrorBodyWithDevice:deviceCopy];
 LABEL_9:
   v11 = v10;
 LABEL_10:
-  v12 = [(CDPDRecoveryValidatedJoinFlowController *)self _entryLimitTitleForDevice:v6];
+  v12 = [(CDPDRecoveryValidatedJoinFlowController *)self _entryLimitTitleForDevice:deviceCopy];
   v13 = [(CDPDRecoveryValidatedJoinFlowController *)self _infoDictionaryWithTitle:v12 andBody:v11];
 
   return v13;
 }
 
-- (id)_fallbackRecoveryOptionsForLimitType:(unint64_t)a3 withCompletion:(id)a4
+- (id)_fallbackRecoveryOptionsForLimitType:(unint64_t)type withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB18] array];
+  completionCopy = completion;
+  array = [MEMORY[0x277CBEB18] array];
   v7 = _CDPLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1031,51 +1031,51 @@ LABEL_10:
     _os_log_impl(&dword_24510B000, v7, OS_LOG_TYPE_DEFAULT, "Attempting to fallback recovery options...", buf, 2u);
   }
 
-  v8 = [(CDPDRecoveryFlowController *)self validator];
-  v9 = [v8 supportedEscapeOfferMask];
+  validator = [(CDPDRecoveryFlowController *)self validator];
+  supportedEscapeOfferMask = [validator supportedEscapeOfferMask];
 
-  if ((v9 & 2) != 0)
+  if ((supportedEscapeOfferMask & 2) != 0)
   {
-    v10 = [(CDPDRecoveryValidatedJoinFlowController *)self _deviceSelectionRecoveryOptionWithCompletion:v5];
+    v10 = [(CDPDRecoveryValidatedJoinFlowController *)self _deviceSelectionRecoveryOptionWithCompletion:completionCopy];
     goto LABEL_14;
   }
 
-  if ((v9 & 0x80) != 0)
+  if ((supportedEscapeOfferMask & 0x80) != 0)
   {
-    v10 = [(CDPDRecoveryValidatedJoinFlowController *)self _piggybackingRecoveryOptionWithCompletion:v5];
+    v10 = [(CDPDRecoveryValidatedJoinFlowController *)self _piggybackingRecoveryOptionWithCompletion:completionCopy];
     goto LABEL_14;
   }
 
-  if ((~v9 & 0x60) == 0)
+  if ((~supportedEscapeOfferMask & 0x60) == 0)
   {
     if ([MEMORY[0x277CFD560] isICSCHarmonizationEnabled])
     {
-      v10 = [(CDPDRecoveryValidatedJoinFlowController *)self _recoveryMethodRecoveryOptionWithCompletion:v5];
+      v10 = [(CDPDRecoveryValidatedJoinFlowController *)self _recoveryMethodRecoveryOptionWithCompletion:completionCopy];
       goto LABEL_14;
     }
 
 LABEL_13:
-    v10 = [(CDPDRecoveryValidatedJoinFlowController *)self _recoveryKeyRecoveryOptionWithCompletion:v5];
+    v10 = [(CDPDRecoveryValidatedJoinFlowController *)self _recoveryKeyRecoveryOptionWithCompletion:completionCopy];
     goto LABEL_14;
   }
 
-  if ((v9 & 0x20) != 0)
+  if ((supportedEscapeOfferMask & 0x20) != 0)
   {
     goto LABEL_13;
   }
 
-  if ((v9 & 0x40) == 0)
+  if ((supportedEscapeOfferMask & 0x40) == 0)
   {
     goto LABEL_15;
   }
 
-  v10 = [(CDPDRecoveryValidatedJoinFlowController *)self _custodianRecoveryOptionWithCompletion:v5];
+  v10 = [(CDPDRecoveryValidatedJoinFlowController *)self _custodianRecoveryOptionWithCompletion:completionCopy];
 LABEL_14:
   v11 = v10;
-  [v6 addObject:v10];
+  [array addObject:v10];
 
 LABEL_15:
-  if (![v6 count])
+  if (![array count])
   {
     v12 = _CDPLogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1085,12 +1085,12 @@ LABEL_15:
     }
   }
 
-  return v6;
+  return array;
 }
 
-- (id)_skipSignInRecoveryOptionWithCompletion:(id)a3
+- (id)_skipSignInRecoveryOptionWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1100,16 +1100,16 @@ LABEL_15:
 
   v5 = objc_alloc_init(CDPDRecoveryOption);
   v6 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_MULTIPLE_INCORRECT_BUTTON_OK"];
-  v7 = [v6 localizedString];
-  [(CDPDRecoveryOption *)v5 setLocalizedRecoveryOption:v7];
+  localizedString = [v6 localizedString];
+  [(CDPDRecoveryOption *)v5 setLocalizedRecoveryOption:localizedString];
 
   [(CDPDRecoveryOption *)v5 setTelemetryRecoveryOption:*MEMORY[0x277CFD958]];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __83__CDPDRecoveryValidatedJoinFlowController__skipSignInRecoveryOptionWithCompletion___block_invoke;
   v10[3] = &unk_278E24820;
-  v11 = v3;
-  v8 = v3;
+  v11 = completionCopy;
+  v8 = completionCopy;
   [(CDPDRecoveryOption *)v5 setRecoveryHandler:v10];
 
   return v5;
@@ -1122,9 +1122,9 @@ void __83__CDPDRecoveryValidatedJoinFlowController__skipSignInRecoveryOptionWith
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (id)_accountResetRecoveryOptionWithCompletion:(id)a3
+- (id)_accountResetRecoveryOptionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1143,8 +1143,8 @@ void __83__CDPDRecoveryValidatedJoinFlowController__skipSignInRecoveryOptionWith
     [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_MULTIPLE_INCORRECT_BUTTON_RESET"];
   }
   v7 = ;
-  v8 = [v7 localizedString];
-  [(CDPDRecoveryOption *)v6 setLocalizedRecoveryOption:v8];
+  localizedString = [v7 localizedString];
+  [(CDPDRecoveryOption *)v6 setLocalizedRecoveryOption:localizedString];
 
   [(CDPDRecoveryOption *)v6 setTelemetryRecoveryOption:*MEMORY[0x277CFDA18]];
   v11[0] = MEMORY[0x277D85DD0];
@@ -1152,8 +1152,8 @@ void __83__CDPDRecoveryValidatedJoinFlowController__skipSignInRecoveryOptionWith
   v11[2] = __85__CDPDRecoveryValidatedJoinFlowController__accountResetRecoveryOptionWithCompletion___block_invoke;
   v11[3] = &unk_278E24898;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
+  v12 = completionCopy;
+  v9 = completionCopy;
   [(CDPDRecoveryOption *)v6 setRecoveryHandler:v11];
 
   return v6;
@@ -1199,12 +1199,12 @@ void __85__CDPDRecoveryValidatedJoinFlowController__accountResetRecoveryOptionWi
   [v4 _handleResetOptionWithResetRequested:a2 localSecret:v5 validator:v6];
 }
 
-- (void)_handleResetOptionWithResetRequested:(BOOL)a3 localSecret:(id)a4 validator:(id)a5
+- (void)_handleResetOptionWithResetRequested:(BOOL)requested localSecret:(id)secret validator:(id)validator
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v6)
+  requestedCopy = requested;
+  secretCopy = secret;
+  validatorCopy = validator;
+  if (!requestedCopy)
   {
     v11 = _CDPLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -1215,11 +1215,11 @@ void __85__CDPDRecoveryValidatedJoinFlowController__accountResetRecoveryOptionWi
     goto LABEL_13;
   }
 
-  v10 = [(CDPDRecoveryFlowController *)self uiProvider];
+  uiProvider = [(CDPDRecoveryFlowController *)self uiProvider];
 
   v11 = _CDPLogSystem();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG);
-  if (!v10)
+  if (!uiProvider)
   {
     if (v12)
     {
@@ -1228,9 +1228,9 @@ void __85__CDPDRecoveryValidatedJoinFlowController__accountResetRecoveryOptionWi
 
 LABEL_13:
 
-    v22 = [(CDPDRecoveryFlowController *)self validator];
+    validator = [(CDPDRecoveryFlowController *)self validator];
     v23 = _CDPStateError();
-    [v22 cancelValidationWithError:v23];
+    [validator cancelValidationWithError:v23];
 
 LABEL_14:
     goto LABEL_15;
@@ -1242,13 +1242,13 @@ LABEL_14:
   }
 
   v13 = MEMORY[0x277CFD480];
-  v14 = [(CDPDRecoveryFlowController *)self recoveryContext];
-  v15 = [v14 context];
-  v16 = [v15 dsid];
-  v17 = [v16 stringValue];
-  v18 = [v13 isICDPEnabledForDSID:v17];
+  recoveryContext = [(CDPDRecoveryFlowController *)self recoveryContext];
+  context = [recoveryContext context];
+  dsid = [context dsid];
+  stringValue = [dsid stringValue];
+  v18 = [v13 isICDPEnabledForDSID:stringValue];
 
-  if (v8 || !v18)
+  if (secretCopy || !v18)
   {
     v24 = _CDPLogSystem();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -1256,21 +1256,21 @@ LABEL_14:
       [CDPDRecoveryValidatedJoinFlowController _handleResetOptionWithResetRequested:localSecret:validator:];
     }
 
-    v22 = [(CDPDRecoveryFlowController *)self validator];
-    [v22 resetAccountCDPStateWithEscapeOptionsOffered:1 andSetSecret:v8];
+    validator = [(CDPDRecoveryFlowController *)self validator];
+    [validator resetAccountCDPStateWithEscapeOptionsOffered:1 andSetSecret:secretCopy];
     goto LABEL_14;
   }
 
-  v19 = [(CDPDRecoveryFlowController *)self uiProvider];
-  v20 = [(CDPDRecoveryFlowController *)self recoveryContext];
-  v21 = [v20 context];
+  uiProvider2 = [(CDPDRecoveryFlowController *)self uiProvider];
+  recoveryContext2 = [(CDPDRecoveryFlowController *)self recoveryContext];
+  context2 = [recoveryContext2 context];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __102__CDPDRecoveryValidatedJoinFlowController__handleResetOptionWithResetRequested_localSecret_validator___block_invoke;
   v25[3] = &unk_278E248C0;
   v25[4] = self;
-  v26 = v9;
-  [v19 cdpContext:v21 createLocalSecretWithCompletion:v25];
+  v26 = validatorCopy;
+  [uiProvider2 cdpContext:context2 createLocalSecretWithCompletion:v25];
 
 LABEL_15:
 }
@@ -1298,9 +1298,9 @@ void __102__CDPDRecoveryValidatedJoinFlowController__handleResetOptionWithResetR
   }
 }
 
-- (id)_cancelRecoveryOptionWithCompletion:(id)a3
+- (id)_cancelRecoveryOptionWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1310,16 +1310,16 @@ void __102__CDPDRecoveryValidatedJoinFlowController__handleResetOptionWithResetR
 
   v5 = objc_alloc_init(CDPDRecoveryOption);
   v6 = [MEMORY[0x277CFD508] builderForKey:@"GENERIC_CANCEL_BUTTON"];
-  v7 = [v6 localizedString];
-  [(CDPDRecoveryOption *)v5 setLocalizedRecoveryOption:v7];
+  localizedString = [v6 localizedString];
+  [(CDPDRecoveryOption *)v5 setLocalizedRecoveryOption:localizedString];
 
   [(CDPDRecoveryOption *)v5 setTelemetryRecoveryOption:*MEMORY[0x277CFD958]];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __79__CDPDRecoveryValidatedJoinFlowController__cancelRecoveryOptionWithCompletion___block_invoke;
   v10[3] = &unk_278E24820;
-  v11 = v3;
-  v8 = v3;
+  v11 = completionCopy;
+  v8 = completionCopy;
   [(CDPDRecoveryOption *)v5 setRecoveryHandler:v10];
 
   return v5;
@@ -1332,9 +1332,9 @@ void __79__CDPDRecoveryValidatedJoinFlowController__cancelRecoveryOptionWithComp
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (id)_tryAgainLaterOptionWithCompletion:(id)a3
+- (id)_tryAgainLaterOptionWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1344,16 +1344,16 @@ void __79__CDPDRecoveryValidatedJoinFlowController__cancelRecoveryOptionWithComp
 
   v5 = objc_alloc_init(CDPDRecoveryOption);
   v6 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_CODE_DIALOG_CUSTODIAN_TRY_LATER"];
-  v7 = [v6 localizedString];
-  [(CDPDRecoveryOption *)v5 setLocalizedRecoveryOption:v7];
+  localizedString = [v6 localizedString];
+  [(CDPDRecoveryOption *)v5 setLocalizedRecoveryOption:localizedString];
 
   [(CDPDRecoveryOption *)v5 setTelemetryRecoveryOption:*MEMORY[0x277CFDA40]];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __78__CDPDRecoveryValidatedJoinFlowController__tryAgainLaterOptionWithCompletion___block_invoke;
   v10[3] = &unk_278E24820;
-  v11 = v3;
-  v8 = v3;
+  v11 = completionCopy;
+  v8 = completionCopy;
   [(CDPDRecoveryOption *)v5 setRecoveryHandler:v10];
 
   return v5;
@@ -1375,9 +1375,9 @@ void __78__CDPDRecoveryValidatedJoinFlowController__tryAgainLaterOptionWithCompl
   }
 }
 
-- (id)_deviceSelectionRecoveryOptionWithCompletion:(id)a3
+- (id)_deviceSelectionRecoveryOptionWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1387,16 +1387,16 @@ void __78__CDPDRecoveryValidatedJoinFlowController__tryAgainLaterOptionWithCompl
 
   v5 = objc_alloc_init(CDPDRecoveryOption);
   v6 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_MULTIPLE_INCORRECT_BUTTON_CHOOSE_ANOTHER_DEVICE"];
-  v7 = [v6 localizedString];
-  [(CDPDRecoveryOption *)v5 setLocalizedRecoveryOption:v7];
+  localizedString = [v6 localizedString];
+  [(CDPDRecoveryOption *)v5 setLocalizedRecoveryOption:localizedString];
 
   [(CDPDRecoveryOption *)v5 setTelemetryRecoveryOption:*MEMORY[0x277CFD990]];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __88__CDPDRecoveryValidatedJoinFlowController__deviceSelectionRecoveryOptionWithCompletion___block_invoke;
   v10[3] = &unk_278E24820;
-  v11 = v3;
-  v8 = v3;
+  v11 = completionCopy;
+  v8 = completionCopy;
   [(CDPDRecoveryOption *)v5 setRecoveryHandler:v10];
 
   return v5;
@@ -1418,9 +1418,9 @@ void __88__CDPDRecoveryValidatedJoinFlowController__deviceSelectionRecoveryOptio
   }
 }
 
-- (id)_piggybackingRecoveryOptionWithCompletion:(id)a3
+- (id)_piggybackingRecoveryOptionWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1430,16 +1430,16 @@ void __88__CDPDRecoveryValidatedJoinFlowController__deviceSelectionRecoveryOptio
 
   v5 = objc_alloc_init(CDPDRecoveryOption);
   v6 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_MULTIPLE_INCORRECT_BUTTON_PIGGYBACKING"];
-  v7 = [v6 localizedString];
-  [(CDPDRecoveryOption *)v5 setLocalizedRecoveryOption:v7];
+  localizedString = [v6 localizedString];
+  [(CDPDRecoveryOption *)v5 setLocalizedRecoveryOption:localizedString];
 
   [(CDPDRecoveryOption *)v5 setTelemetryRecoveryOption:*MEMORY[0x277CFD9B0]];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __85__CDPDRecoveryValidatedJoinFlowController__piggybackingRecoveryOptionWithCompletion___block_invoke;
   v10[3] = &unk_278E24820;
-  v11 = v3;
-  v8 = v3;
+  v11 = completionCopy;
+  v8 = completionCopy;
   [(CDPDRecoveryOption *)v5 setRecoveryHandler:v10];
 
   return v5;
@@ -1461,9 +1461,9 @@ void __85__CDPDRecoveryValidatedJoinFlowController__piggybackingRecoveryOptionWi
   }
 }
 
-- (id)_recoveryKeyRecoveryOptionWithCompletion:(id)a3
+- (id)_recoveryKeyRecoveryOptionWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1473,16 +1473,16 @@ void __85__CDPDRecoveryValidatedJoinFlowController__piggybackingRecoveryOptionWi
 
   v5 = objc_alloc_init(CDPDRecoveryOption);
   v6 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_CODE_DIALOG_RK"];
-  v7 = [v6 localizedString];
-  [(CDPDRecoveryOption *)v5 setLocalizedRecoveryOption:v7];
+  localizedString = [v6 localizedString];
+  [(CDPDRecoveryOption *)v5 setLocalizedRecoveryOption:localizedString];
 
   [(CDPDRecoveryOption *)v5 setTelemetryRecoveryOption:*MEMORY[0x277CFDA10]];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __84__CDPDRecoveryValidatedJoinFlowController__recoveryKeyRecoveryOptionWithCompletion___block_invoke;
   v10[3] = &unk_278E24820;
-  v11 = v3;
-  v8 = v3;
+  v11 = completionCopy;
+  v8 = completionCopy;
   [(CDPDRecoveryOption *)v5 setRecoveryHandler:v10];
 
   return v5;
@@ -1495,9 +1495,9 @@ void __84__CDPDRecoveryValidatedJoinFlowController__recoveryKeyRecoveryOptionWit
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (id)_custodianRecoveryOptionWithCompletion:(id)a3
+- (id)_custodianRecoveryOptionWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1517,16 +1517,16 @@ void __84__CDPDRecoveryValidatedJoinFlowController__recoveryKeyRecoveryOptionWit
   }
 
   v7 = [MEMORY[0x277CFD508] builderForKey:v6];
-  v8 = [v7 localizedString];
-  [(CDPDRecoveryOption *)v5 setLocalizedRecoveryOption:v8];
+  localizedString = [v7 localizedString];
+  [(CDPDRecoveryOption *)v5 setLocalizedRecoveryOption:localizedString];
 
   [(CDPDRecoveryOption *)v5 setTelemetryRecoveryOption:*MEMORY[0x277CFD9F0]];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __82__CDPDRecoveryValidatedJoinFlowController__custodianRecoveryOptionWithCompletion___block_invoke;
   v11[3] = &unk_278E24820;
-  v12 = v3;
-  v9 = v3;
+  v12 = completionCopy;
+  v9 = completionCopy;
   [(CDPDRecoveryOption *)v5 setRecoveryHandler:v11];
 
   return v5;
@@ -1539,9 +1539,9 @@ void __82__CDPDRecoveryValidatedJoinFlowController__custodianRecoveryOptionWithC
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (id)_recoveryMethodRecoveryOptionWithCompletion:(id)a3
+- (id)_recoveryMethodRecoveryOptionWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1551,16 +1551,16 @@ void __82__CDPDRecoveryValidatedJoinFlowController__custodianRecoveryOptionWithC
 
   v5 = objc_alloc_init(CDPDRecoveryOption);
   v6 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_ALERT_USE_RECOVERY_METHOD"];
-  v7 = [v6 localizedString];
-  [(CDPDRecoveryOption *)v5 setLocalizedRecoveryOption:v7];
+  localizedString = [v6 localizedString];
+  [(CDPDRecoveryOption *)v5 setLocalizedRecoveryOption:localizedString];
 
   [(CDPDRecoveryOption *)v5 setTelemetryRecoveryOption:*MEMORY[0x277CFDA10]];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __87__CDPDRecoveryValidatedJoinFlowController__recoveryMethodRecoveryOptionWithCompletion___block_invoke;
   v10[3] = &unk_278E24820;
-  v11 = v3;
-  v8 = v3;
+  v11 = completionCopy;
+  v8 = completionCopy;
   [(CDPDRecoveryOption *)v5 setRecoveryHandler:v10];
 
   return v5;
@@ -1573,43 +1573,43 @@ void __87__CDPDRecoveryValidatedJoinFlowController__recoveryMethodRecoveryOption
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)_showEntryLimitError:(id)a3 withRecoveryOptionHandlers:(id)a4 defaultIndex:(int64_t)a5 completion:(id)a6
+- (void)_showEntryLimitError:(id)error withRecoveryOptionHandlers:(id)handlers defaultIndex:(int64_t)index completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  errorCopy = error;
+  handlersCopy = handlers;
+  completionCopy = completion;
   v13 = _CDPLogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(CDPDRecoveryFlowController *)self uiProvider];
+    uiProvider = [(CDPDRecoveryFlowController *)self uiProvider];
     *buf = 138412546;
-    v25 = v14;
+    v25 = uiProvider;
     v26 = 2112;
-    v27 = v10;
+    v27 = errorCopy;
     _os_log_impl(&dword_24510B000, v13, OS_LOG_TYPE_DEFAULT, "Attempting to preset alert (using: %@) for error: %@", buf, 0x16u);
   }
 
-  v15 = [(CDPDRecoveryFlowController *)self uiProvider];
+  uiProvider2 = [(CDPDRecoveryFlowController *)self uiProvider];
 
-  if (v15)
+  if (uiProvider2)
   {
-    v16 = [(CDPDRecoveryFlowController *)self uiProvider];
-    v17 = [(CDPDRecoveryFlowController *)self recoveryContext];
-    v18 = [v17 context];
+    uiProvider3 = [(CDPDRecoveryFlowController *)self uiProvider];
+    recoveryContext = [(CDPDRecoveryFlowController *)self recoveryContext];
+    context = [recoveryContext context];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __115__CDPDRecoveryValidatedJoinFlowController__showEntryLimitError_withRecoveryOptionHandlers_defaultIndex_completion___block_invoke;
     v20[3] = &unk_278E248E8;
-    v21 = v11;
-    v23 = v12;
-    v22 = v10;
-    [v16 cdpContext:v18 showError:v22 withDefaultIndex:a5 withCompletion:v20];
+    v21 = handlersCopy;
+    v23 = completionCopy;
+    v22 = errorCopy;
+    [uiProvider3 cdpContext:context showError:v22 withDefaultIndex:index withCompletion:v20];
   }
 
   else
   {
-    (*(v12 + 2))(v12, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, errorCopy);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -1647,61 +1647,61 @@ void __115__CDPDRecoveryValidatedJoinFlowController__showEntryLimitError_withRec
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_hardLimitErrorBodyWithDevice:(id)a3
+- (id)_hardLimitErrorBodyWithDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(CDPDRecoveryFlowController *)self validator];
-  v6 = [v5 supportedEscapeOfferMask];
+  deviceCopy = device;
+  validator = [(CDPDRecoveryFlowController *)self validator];
+  supportedEscapeOfferMask = [validator supportedEscapeOfferMask];
 
-  if ((v6 & 2) != 0)
+  if ((supportedEscapeOfferMask & 2) != 0)
   {
-    v10 = [(CDPDRecoveryValidatedJoinFlowController *)self _entryHardLimitDeviceSelectionAvailableBodyForDevice:v4];
+    v10 = [(CDPDRecoveryValidatedJoinFlowController *)self _entryHardLimitDeviceSelectionAvailableBodyForDevice:deviceCopy];
   }
 
-  else if (v6 < 0)
+  else if (supportedEscapeOfferMask < 0)
   {
-    v10 = [(CDPDRecoveryValidatedJoinFlowController *)self _entryHardLimitPiggybackingAvailableBodyForDevice:v4];
+    v10 = [(CDPDRecoveryValidatedJoinFlowController *)self _entryHardLimitPiggybackingAvailableBodyForDevice:deviceCopy];
   }
 
   else
   {
-    if ((v6 & 0x20) != 0)
+    if ((supportedEscapeOfferMask & 0x20) != 0)
     {
-      if ((v6 & 0x40) != 0)
+      if ((supportedEscapeOfferMask & 0x40) != 0)
       {
-        [(CDPDRecoveryValidatedJoinFlowController *)self _entryHardLimitRecoveryKeyAndCustodianRecoveryAvailableBodyForDevice:v4];
+        [(CDPDRecoveryValidatedJoinFlowController *)self _entryHardLimitRecoveryKeyAndCustodianRecoveryAvailableBodyForDevice:deviceCopy];
       }
 
       else
       {
-        [(CDPDRecoveryValidatedJoinFlowController *)self _entryHardLimitRecoveryKeyAvailableBodyForDevice:v4];
+        [(CDPDRecoveryValidatedJoinFlowController *)self _entryHardLimitRecoveryKeyAvailableBodyForDevice:deviceCopy];
       }
 
       goto LABEL_7;
     }
 
-    if ((v6 & 0x40) == 0)
+    if ((supportedEscapeOfferMask & 0x40) == 0)
     {
       v7 = MEMORY[0x277CFD4A8];
-      v8 = [(CDPDRecoveryFlowController *)self recoveryContext];
-      v9 = [v8 context];
-      LODWORD(v7) = [v7 isSubsetOfContextTypeSignIn:{objc_msgSend(v9, "type")}];
+      recoveryContext = [(CDPDRecoveryFlowController *)self recoveryContext];
+      context = [recoveryContext context];
+      LODWORD(v7) = [v7 isSubsetOfContextTypeSignIn:{objc_msgSend(context, "type")}];
 
       if (v7)
       {
-        [(CDPDRecoveryValidatedJoinFlowController *)self _entryHardLimitNoResetForSignInForDevice:v4];
+        [(CDPDRecoveryValidatedJoinFlowController *)self _entryHardLimitNoResetForSignInForDevice:deviceCopy];
       }
 
       else
       {
-        [(CDPDRecoveryValidatedJoinFlowController *)self _entryHardLimitRepairBodyForDevice:v4];
+        [(CDPDRecoveryValidatedJoinFlowController *)self _entryHardLimitRepairBodyForDevice:deviceCopy];
       }
 
       v10 = LABEL_7:;
       goto LABEL_10;
     }
 
-    v10 = [(CDPDRecoveryValidatedJoinFlowController *)self _entryHardLimitCustodianRecoveryAvailableBodyForDevice:v4];
+    v10 = [(CDPDRecoveryValidatedJoinFlowController *)self _entryHardLimitCustodianRecoveryAvailableBodyForDevice:deviceCopy];
   }
 
 LABEL_10:
@@ -1710,60 +1710,60 @@ LABEL_10:
   return v11;
 }
 
-- (id)_limitErrorBodyForDevice:(id)a3 limitType:(unint64_t)a4
+- (id)_limitErrorBodyForDevice:(id)device limitType:(unint64_t)type
 {
-  v5 = a3;
-  v6 = [(CDPDRecoveryFlowController *)self validator];
-  v7 = [v6 supportedEscapeOfferMask];
+  deviceCopy = device;
+  validator = [(CDPDRecoveryFlowController *)self validator];
+  supportedEscapeOfferMask = [validator supportedEscapeOfferMask];
 
-  if ((v7 & 2) != 0)
+  if ((supportedEscapeOfferMask & 2) != 0)
   {
-    v8 = [(CDPDRecoveryValidatedJoinFlowController *)self _entryLimitDeviceSelectionAvailableBodyForDevice:v5];
+    v8 = [(CDPDRecoveryValidatedJoinFlowController *)self _entryLimitDeviceSelectionAvailableBodyForDevice:deviceCopy];
   }
 
-  else if (v7 < 0)
+  else if (supportedEscapeOfferMask < 0)
   {
-    v8 = [(CDPDRecoveryValidatedJoinFlowController *)self _entryLimitPiggybackingAvailableBodyForDevice:v5];
+    v8 = [(CDPDRecoveryValidatedJoinFlowController *)self _entryLimitPiggybackingAvailableBodyForDevice:deviceCopy];
   }
 
-  else if ((v7 & 0x20) != 0)
+  else if ((supportedEscapeOfferMask & 0x20) != 0)
   {
-    if ([MEMORY[0x277CFD560] isICSCHarmonizationEnabled] && (v7 & 0x40) != 0)
+    if ([MEMORY[0x277CFD560] isICSCHarmonizationEnabled] && (supportedEscapeOfferMask & 0x40) != 0)
     {
-      v8 = [(CDPDRecoveryValidatedJoinFlowController *)self _entryLimitRecoveryKeyAndCustodianRecoveryAvailableBodyForDevice:v5];
+      v8 = [(CDPDRecoveryValidatedJoinFlowController *)self _entryLimitRecoveryKeyAndCustodianRecoveryAvailableBodyForDevice:deviceCopy];
     }
 
     else
     {
-      v8 = [(CDPDRecoveryValidatedJoinFlowController *)self _entryLimitRecoveryKeyAvailableBodyForDevice:v5];
+      v8 = [(CDPDRecoveryValidatedJoinFlowController *)self _entryLimitRecoveryKeyAvailableBodyForDevice:deviceCopy];
     }
   }
 
-  else if ((v7 & 0x40) != 0)
+  else if ((supportedEscapeOfferMask & 0x40) != 0)
   {
-    v8 = [(CDPDRecoveryValidatedJoinFlowController *)self _entryLimitCustodianRecoveryAvailableBodyForDevice:v5];
+    v8 = [(CDPDRecoveryValidatedJoinFlowController *)self _entryLimitCustodianRecoveryAvailableBodyForDevice:deviceCopy];
   }
 
   else if ([MEMORY[0x277CFD560] isICSCHarmonizationEnabled])
   {
-    v8 = [(CDPDRecoveryValidatedJoinFlowController *)self _entryLimitNoResetForDevice:v5];
+    v8 = [(CDPDRecoveryValidatedJoinFlowController *)self _entryLimitNoResetForDevice:deviceCopy];
   }
 
   else
   {
     v11 = MEMORY[0x277CFD4A8];
-    v12 = [(CDPDRecoveryFlowController *)self recoveryContext];
-    v13 = [v12 context];
-    LODWORD(v11) = [v11 isSubsetOfContextTypeRepair:{objc_msgSend(v13, "type")}];
+    recoveryContext = [(CDPDRecoveryFlowController *)self recoveryContext];
+    context = [recoveryContext context];
+    LODWORD(v11) = [v11 isSubsetOfContextTypeRepair:{objc_msgSend(context, "type")}];
 
     if (v11)
     {
-      [(CDPDRecoveryValidatedJoinFlowController *)self _entryLimitNoResetForRepairForDevice:v5];
+      [(CDPDRecoveryValidatedJoinFlowController *)self _entryLimitNoResetForRepairForDevice:deviceCopy];
     }
 
     else
     {
-      [(CDPDRecoveryValidatedJoinFlowController *)self _entryLimitSignInBodyForDevice:v5];
+      [(CDPDRecoveryValidatedJoinFlowController *)self _entryLimitSignInBodyForDevice:deviceCopy];
     }
     v8 = ;
   }
@@ -1773,15 +1773,15 @@ LABEL_10:
   return v9;
 }
 
-- (id)_entryLimitRecoveryKeyAndCustodianRecoveryAvailableBodyForDevice:(id)a3
+- (id)_entryLimitRecoveryKeyAndCustodianRecoveryAvailableBodyForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(CDPDRecoveryFlowController *)self recoveryContext];
-  v6 = [v5 context];
-  v7 = [v6 idmsRecovery];
+  deviceCopy = device;
+  recoveryContext = [(CDPDRecoveryFlowController *)self recoveryContext];
+  context = [recoveryContext context];
+  idmsRecovery = [context idmsRecovery];
 
   v8 = MEMORY[0x277CCACA8];
-  if (v7)
+  if (idmsRecovery)
   {
     v9 = @"RECOVERY_REMOTE_SECRET_ENTRY_SOFT_LIMIT_ALERT_SUBTITLE_RK_AND_RC";
   }
@@ -1792,24 +1792,24 @@ LABEL_10:
   }
 
   v10 = [MEMORY[0x277CFD508] builderForKey:v9];
-  v11 = [v10 addSecretType:{objc_msgSend(v4, "localSecretType")}];
-  v12 = [v11 localizedString];
-  v13 = [v4 localizedName];
+  v11 = [v10 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v11 localizedString];
+  localizedName = [deviceCopy localizedName];
 
-  v14 = [v8 stringWithValidatedFormat:v12 validFormatSpecifiers:@"%@" error:0, v13];
+  v14 = [v8 stringWithValidatedFormat:localizedString validFormatSpecifiers:@"%@" error:0, localizedName];
 
   return v14;
 }
 
-- (id)_entryHardLimitRecoveryKeyAndCustodianRecoveryAvailableBodyForDevice:(id)a3
+- (id)_entryHardLimitRecoveryKeyAndCustodianRecoveryAvailableBodyForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(CDPDRecoveryFlowController *)self recoveryContext];
-  v6 = [v5 context];
-  v7 = [v6 idmsRecovery];
+  deviceCopy = device;
+  recoveryContext = [(CDPDRecoveryFlowController *)self recoveryContext];
+  context = [recoveryContext context];
+  idmsRecovery = [context idmsRecovery];
 
   v8 = MEMORY[0x277CCACA8];
-  if (v7)
+  if (idmsRecovery)
   {
     v9 = @"RECOVERY_REMOTE_SECRET_ENTRY_HARD_LIMIT_ALERT_SUBTITLE_RK_AND_RC";
   }
@@ -1820,39 +1820,39 @@ LABEL_10:
   }
 
   v10 = [MEMORY[0x277CFD508] builderForKey:v9];
-  v11 = [v10 addSecretType:{objc_msgSend(v4, "localSecretType")}];
-  v12 = [v11 localizedString];
-  v13 = [v4 localizedName];
+  v11 = [v10 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v11 localizedString];
+  localizedName = [deviceCopy localizedName];
 
-  v14 = [v8 stringWithValidatedFormat:v12 validFormatSpecifiers:@"%@" error:0, v13];
+  v14 = [v8 stringWithValidatedFormat:localizedString validFormatSpecifiers:@"%@" error:0, localizedName];
 
   return v14;
 }
 
-- (id)_entryHardLimitPiggybackingAvailableBodyForDevice:(id)a3
+- (id)_entryHardLimitPiggybackingAvailableBodyForDevice:(id)device
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = MEMORY[0x277CFD508];
-  v5 = a3;
+  deviceCopy = device;
   v6 = [v4 builderForKey:@"REMOTE_SECRET_ENTRY_HARD_LIMIT_ALERT_SUBTITLE_TRUSTED_DEVICES"];
-  v7 = [v6 addSecretType:{objc_msgSend(v5, "localSecretType")}];
-  v8 = [v7 localizedString];
-  v9 = [v5 localizedName];
+  v7 = [v6 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v7 localizedString];
+  localizedName = [deviceCopy localizedName];
 
-  v10 = [v3 stringWithValidatedFormat:v8 validFormatSpecifiers:@"%@" error:0, v9];
+  v10 = [v3 stringWithValidatedFormat:localizedString validFormatSpecifiers:@"%@" error:0, localizedName];
 
   return v10;
 }
 
-- (id)_entryHardLimitRecoveryKeyAvailableBodyForDevice:(id)a3
+- (id)_entryHardLimitRecoveryKeyAvailableBodyForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(CDPDRecoveryFlowController *)self recoveryContext];
-  v6 = [v5 context];
-  v7 = [v6 idmsRecovery];
+  deviceCopy = device;
+  recoveryContext = [(CDPDRecoveryFlowController *)self recoveryContext];
+  context = [recoveryContext context];
+  idmsRecovery = [context idmsRecovery];
 
   v8 = MEMORY[0x277CCACA8];
-  if (v7)
+  if (idmsRecovery)
   {
     v9 = @"RECOVERY_REMOTE_SECRET_ENTRY_HARD_LIMIT_ALERT_SUBTITLE_RK";
   }
@@ -1863,24 +1863,24 @@ LABEL_10:
   }
 
   v10 = [MEMORY[0x277CFD508] builderForKey:v9];
-  v11 = [v10 addSecretType:{objc_msgSend(v4, "localSecretType")}];
-  v12 = [v11 localizedString];
-  v13 = [v4 localizedName];
+  v11 = [v10 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v11 localizedString];
+  localizedName = [deviceCopy localizedName];
 
-  v14 = [v8 stringWithValidatedFormat:v12 validFormatSpecifiers:@"%@" error:0, v13];
+  v14 = [v8 stringWithValidatedFormat:localizedString validFormatSpecifiers:@"%@" error:0, localizedName];
 
   return v14;
 }
 
-- (id)_entryHardLimitCustodianRecoveryAvailableBodyForDevice:(id)a3
+- (id)_entryHardLimitCustodianRecoveryAvailableBodyForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(CDPDRecoveryFlowController *)self recoveryContext];
-  v6 = [v5 context];
-  v7 = [v6 idmsRecovery];
+  deviceCopy = device;
+  recoveryContext = [(CDPDRecoveryFlowController *)self recoveryContext];
+  context = [recoveryContext context];
+  idmsRecovery = [context idmsRecovery];
 
   v8 = MEMORY[0x277CCACA8];
-  if (v7)
+  if (idmsRecovery)
   {
     v9 = @"RECOVERY_REMOTE_SECRET_ENTRY_HARD_LIMIT_ALERT_SUBTITLE_RC";
   }
@@ -1891,54 +1891,54 @@ LABEL_10:
   }
 
   v10 = [MEMORY[0x277CFD508] builderForKey:v9];
-  v11 = [v10 addSecretType:{objc_msgSend(v4, "localSecretType")}];
-  v12 = [v11 localizedString];
-  v13 = [v4 localizedName];
+  v11 = [v10 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v11 localizedString];
+  localizedName = [deviceCopy localizedName];
 
-  v14 = [v8 stringWithValidatedFormat:v12 validFormatSpecifiers:@"%@" error:0, v13];
+  v14 = [v8 stringWithValidatedFormat:localizedString validFormatSpecifiers:@"%@" error:0, localizedName];
 
   return v14;
 }
 
-- (id)_entryHardLimitNoResetForSignInForDevice:(id)a3
+- (id)_entryHardLimitNoResetForSignInForDevice:(id)device
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = MEMORY[0x277CFD508];
-  v5 = a3;
+  deviceCopy = device;
   v6 = [v4 builderForKey:@"REMOTE_SECRET_ENTRY_HARD_LIMIT_ALERT_SUBTITLE_NO_RECOVERY_METHOD"];
-  v7 = [v6 addSecretType:{objc_msgSend(v5, "localSecretType")}];
-  v8 = [v7 localizedString];
-  v9 = [v5 localizedName];
+  v7 = [v6 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v7 localizedString];
+  localizedName = [deviceCopy localizedName];
 
-  v10 = [v3 stringWithValidatedFormat:v8 validFormatSpecifiers:@"%@" error:0, v9];
+  v10 = [v3 stringWithValidatedFormat:localizedString validFormatSpecifiers:@"%@" error:0, localizedName];
 
   return v10;
 }
 
-- (id)_entryHardLimitRepairBodyForDevice:(id)a3
+- (id)_entryHardLimitRepairBodyForDevice:(id)device
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = MEMORY[0x277CFD508];
-  v5 = a3;
+  deviceCopy = device;
   v6 = [v4 builderForKey:@"REMOTE_SECRET_ENTRY_HARD_LIMIT_ALERT_SUBTITLE_NO_RECOVERY_RPD"];
-  v7 = [v6 addSecretType:{objc_msgSend(v5, "localSecretType")}];
-  v8 = [v7 localizedString];
-  v9 = [v5 localizedName];
+  v7 = [v6 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v7 localizedString];
+  localizedName = [deviceCopy localizedName];
 
-  v10 = [v3 stringWithValidatedFormat:v8 validFormatSpecifiers:@"%@" error:0, v9];
+  v10 = [v3 stringWithValidatedFormat:localizedString validFormatSpecifiers:@"%@" error:0, localizedName];
 
   return v10;
 }
 
-- (id)_entryHardLimitDeviceSelectionAvailableBodyForDevice:(id)a3
+- (id)_entryHardLimitDeviceSelectionAvailableBodyForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(CDPDRecoveryFlowController *)self recoveryContext];
-  v6 = [v5 context];
-  v7 = [v6 idmsRecovery];
+  deviceCopy = device;
+  recoveryContext = [(CDPDRecoveryFlowController *)self recoveryContext];
+  context = [recoveryContext context];
+  idmsRecovery = [context idmsRecovery];
 
   v8 = MEMORY[0x277CCACA8];
-  if (v7)
+  if (idmsRecovery)
   {
     v9 = @"RECOVERY_REMOTE_SECRET_ENTRY_HARD_LIMIT_ALERT_SUBTITLE_OTHER_ICSC";
   }
@@ -1949,99 +1949,99 @@ LABEL_10:
   }
 
   v10 = [MEMORY[0x277CFD508] builderForKey:v9];
-  v11 = [v10 addSecretType:{objc_msgSend(v4, "localSecretType")}];
-  v12 = [v11 localizedString];
-  v13 = [v4 localizedName];
+  v11 = [v10 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v11 localizedString];
+  localizedName = [deviceCopy localizedName];
 
-  v14 = [v8 stringWithValidatedFormat:v12 validFormatSpecifiers:@"%@" error:0, v13];
+  v14 = [v8 stringWithValidatedFormat:localizedString validFormatSpecifiers:@"%@" error:0, localizedName];
 
   return v14;
 }
 
-- (id)_entryLimitNoResetForDevice:(id)a3
+- (id)_entryLimitNoResetForDevice:(id)device
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = MEMORY[0x277CFD508];
-  v5 = a3;
+  deviceCopy = device;
   v6 = [v4 builderForKey:@"REMOTE_SECRET_ENTRY_SOFT_LIMIT_ALERT_SUBTITLE_NO_RECOVERY_METHOD"];
-  v7 = [v6 addSecretType:{objc_msgSend(v5, "localSecretType")}];
-  v8 = [v7 localizedString];
-  v9 = [v5 localizedName];
+  v7 = [v6 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v7 localizedString];
+  localizedName = [deviceCopy localizedName];
 
-  v10 = [v3 stringWithValidatedFormat:v8 validFormatSpecifiers:@"%@" error:0, v9];
+  v10 = [v3 stringWithValidatedFormat:localizedString validFormatSpecifiers:@"%@" error:0, localizedName];
 
   return v10;
 }
 
-- (id)_entryLimitTitleForDevice:(id)a3
+- (id)_entryLimitTitleForDevice:(id)device
 {
   v3 = MEMORY[0x277CFD508];
-  v4 = a3;
+  deviceCopy = device;
   v5 = [v3 builderForKey:@"REMOTE_SECRET_ENTRY_MULTIPLE_INCORRECT_TITLE"];
-  v6 = [v4 localSecretType];
+  localSecretType = [deviceCopy localSecretType];
 
-  v7 = [v5 addSecretType:v6];
-  v8 = [v7 localizedString];
+  v7 = [v5 addSecretType:localSecretType];
+  localizedString = [v7 localizedString];
 
-  return v8;
+  return localizedString;
 }
 
-- (id)_entryLimitSignInBodyForDevice:(id)a3
+- (id)_entryLimitSignInBodyForDevice:(id)device
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = MEMORY[0x277CFD508];
-  v5 = a3;
+  deviceCopy = device;
   v6 = [v4 builderForKey:@"REMOTE_SECRET_ENTRY_MULTIPLE_INCORRECT_MESSAGE_SIGNIN"];
-  v7 = [v6 addSecretType:{objc_msgSend(v5, "localSecretType")}];
-  v8 = [v7 localizedString];
-  v9 = [v5 localizedName];
+  v7 = [v6 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v7 localizedString];
+  localizedName = [deviceCopy localizedName];
 
-  v10 = [v3 stringWithValidatedFormat:v8 validFormatSpecifiers:@"%@" error:0, v9];
+  v10 = [v3 stringWithValidatedFormat:localizedString validFormatSpecifiers:@"%@" error:0, localizedName];
 
   return v10;
 }
 
-- (id)_entryLimitNoResetForRepairForDevice:(id)a3
+- (id)_entryLimitNoResetForRepairForDevice:(id)device
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = MEMORY[0x277CFD508];
-  v5 = a3;
+  deviceCopy = device;
   v6 = [v4 builderForKey:@"REMOTE_SECRET_ENTRY_MULTIPLE_INCORRECT_MESSAGE_NO_RESET"];
-  v7 = [v6 addSecretType:{objc_msgSend(v5, "localSecretType")}];
-  v8 = [v7 localizedString];
-  v9 = [v5 localizedName];
+  v7 = [v6 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v7 localizedString];
+  localizedName = [deviceCopy localizedName];
 
-  v10 = [v3 stringWithValidatedFormat:v8 validFormatSpecifiers:@"%@" error:0, v9];
+  v10 = [v3 stringWithValidatedFormat:localizedString validFormatSpecifiers:@"%@" error:0, localizedName];
 
   return v10;
 }
 
-- (id)_entryLimitResetAvailableBodyForDevice:(id)a3
+- (id)_entryLimitResetAvailableBodyForDevice:(id)device
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = MEMORY[0x277CFD508];
-  v5 = a3;
+  deviceCopy = device;
   v6 = [v4 builderForKey:@"REMOTE_SECRET_ENTRY_MULTIPLE_INCORRECT_MESSAGE_RESET"];
-  v7 = [v6 addSecretType:{objc_msgSend(v5, "localSecretType")}];
-  v8 = [v7 localizedString];
-  v9 = [v5 localizedName];
+  v7 = [v6 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v7 localizedString];
+  localizedName = [deviceCopy localizedName];
 
-  v10 = [v3 stringWithValidatedFormat:v8 validFormatSpecifiers:@"%@" error:0, v9];
+  v10 = [v3 stringWithValidatedFormat:localizedString validFormatSpecifiers:@"%@" error:0, localizedName];
 
   return v10;
 }
 
-- (id)_entryLimitRecoveryKeyAvailableBodyForDevice:(id)a3
+- (id)_entryLimitRecoveryKeyAvailableBodyForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if ([MEMORY[0x277CFD560] isICSCHarmonizationEnabled])
   {
-    v5 = [(CDPDRecoveryFlowController *)self recoveryContext];
-    v6 = [v5 context];
-    v7 = [v6 idmsRecovery];
+    recoveryContext = [(CDPDRecoveryFlowController *)self recoveryContext];
+    context = [recoveryContext context];
+    idmsRecovery = [context idmsRecovery];
 
     v8 = MEMORY[0x277CCACA8];
-    if (v7)
+    if (idmsRecovery)
     {
       v9 = @"RECOVERY_REMOTE_SECRET_ENTRY_SOFT_LIMIT_ALERT_SUBTITLE_RK";
     }
@@ -2052,39 +2052,39 @@ LABEL_10:
     }
 
     v11 = [MEMORY[0x277CFD508] builderForKey:v9];
-    v12 = [v11 addSecretType:{objc_msgSend(v4, "localSecretType")}];
-    v13 = [v12 localizedString];
-    v14 = [v4 localizedName];
-    v18 = [v8 stringWithValidatedFormat:v13 validFormatSpecifiers:@"%@" error:0, v14];
+    v12 = [v11 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+    localizedString = [v12 localizedString];
+    localizedName = [deviceCopy localizedName];
+    v18 = [v8 stringWithValidatedFormat:localizedString validFormatSpecifiers:@"%@" error:0, localizedName];
   }
 
   else
   {
     v10 = MEMORY[0x277CCACA8];
     v11 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_GLOBAL_LIMIT"];
-    v12 = [v11 addSecretType:{objc_msgSend(v4, "localSecretType")}];
-    v13 = [v4 modelClass];
-    v14 = [v12 addDeviceClass:v13];
-    v15 = [v14 localizedString];
-    v16 = [v4 localizedName];
-    v17 = [v4 localizedName];
-    v18 = [v10 stringWithValidatedFormat:v15 validFormatSpecifiers:@"%@%@" error:0, v16, v17];
+    v12 = [v11 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+    localizedString = [deviceCopy modelClass];
+    localizedName = [v12 addDeviceClass:localizedString];
+    localizedString2 = [localizedName localizedString];
+    localizedName2 = [deviceCopy localizedName];
+    localizedName3 = [deviceCopy localizedName];
+    v18 = [v10 stringWithValidatedFormat:localizedString2 validFormatSpecifiers:@"%@%@" error:0, localizedName2, localizedName3];
   }
 
   return v18;
 }
 
-- (id)_entryLimitCustodianRecoveryAvailableBodyForDevice:(id)a3
+- (id)_entryLimitCustodianRecoveryAvailableBodyForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if ([MEMORY[0x277CFD560] isICSCHarmonizationEnabled])
   {
-    v5 = [(CDPDRecoveryFlowController *)self recoveryContext];
-    v6 = [v5 context];
-    v7 = [v6 idmsRecovery];
+    recoveryContext = [(CDPDRecoveryFlowController *)self recoveryContext];
+    context = [recoveryContext context];
+    idmsRecovery = [context idmsRecovery];
 
     v8 = MEMORY[0x277CCACA8];
-    if (v7)
+    if (idmsRecovery)
     {
       v9 = @"RECOVERY_REMOTE_SECRET_ENTRY_SOFT_LIMIT_ALERT_SUBTITLE_RC";
     }
@@ -2095,64 +2095,64 @@ LABEL_10:
     }
 
     v11 = [MEMORY[0x277CFD508] builderForKey:v9];
-    v12 = [v11 addSecretType:{objc_msgSend(v4, "localSecretType")}];
-    v13 = [v12 localizedString];
-    v14 = [v4 localizedName];
-    v16 = [v8 stringWithValidatedFormat:v13 validFormatSpecifiers:@"%@" error:0, v14];
+    v12 = [v11 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+    localizedString = [v12 localizedString];
+    localizedName = [deviceCopy localizedName];
+    v16 = [v8 stringWithValidatedFormat:localizedString validFormatSpecifiers:@"%@" error:0, localizedName];
   }
 
   else
   {
     v10 = MEMORY[0x277CCACA8];
     v11 = [MEMORY[0x277CFD508] builderForKey:@"CUSTODIAN_RECOVERY_HELP_PROMPT_MESSAGE"];
-    v12 = [v11 addSecretType:{objc_msgSend(v4, "localSecretType")}];
-    v13 = [v12 localizedString];
-    v14 = [v4 localizedName];
-    v15 = [v4 localizedName];
-    v16 = [v10 stringWithValidatedFormat:v13 validFormatSpecifiers:@"%@%@" error:0, v14, v15];
+    v12 = [v11 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+    localizedString = [v12 localizedString];
+    localizedName = [deviceCopy localizedName];
+    localizedName2 = [deviceCopy localizedName];
+    v16 = [v10 stringWithValidatedFormat:localizedString validFormatSpecifiers:@"%@%@" error:0, localizedName, localizedName2];
   }
 
   return v16;
 }
 
-- (id)_entryLimitDeviceSelectionAvailableBodyForDevice:(id)a3
+- (id)_entryLimitDeviceSelectionAvailableBodyForDevice:(id)device
 {
   cdpDevices = self->_cdpDevices;
-  v4 = a3;
-  v5 = [(NSArray *)cdpDevices prevailingLocalSecretType];
-  v6 = [MEMORY[0x277CFD560] isICSCHarmonizationEnabled];
+  deviceCopy = device;
+  prevailingLocalSecretType = [(NSArray *)cdpDevices prevailingLocalSecretType];
+  isICSCHarmonizationEnabled = [MEMORY[0x277CFD560] isICSCHarmonizationEnabled];
   v7 = MEMORY[0x277CCACA8];
-  if (v6)
+  if (isICSCHarmonizationEnabled)
   {
     v8 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_SOFT_LIMIT_ALERT_SUBTITLE_OTHER_ICSC"];
-    v9 = [v8 addSecretType:{objc_msgSend(v4, "localSecretType")}];
-    v10 = [v9 localizedString];
-    v11 = [v4 localizedName];
+    v9 = [v8 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+    localizedString = [v9 localizedString];
+    localizedName = [deviceCopy localizedName];
 
-    v12 = [v7 stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@" error:0, v11];
+    v12 = [v7 stringWithValidatedFormat:localizedString validFormatSpecifiers:@"%@" error:0, localizedName];
   }
 
   else
   {
     v8 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_CODE_DIALOG_MESSAGE_ANOTHER_DEVICE"];
-    v9 = [v8 addSecretType:{objc_msgSend(v4, "localSecretType")}];
-    v10 = [v9 addSecretType:v5];
-    v11 = [v10 localizedString];
-    v13 = [v4 localizedName];
+    v9 = [v8 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+    localizedString = [v9 addSecretType:prevailingLocalSecretType];
+    localizedName = [localizedString localizedString];
+    localizedName2 = [deviceCopy localizedName];
 
-    v12 = [v7 stringWithValidatedFormat:v11 validFormatSpecifiers:@"%@" error:0, v13];
+    v12 = [v7 stringWithValidatedFormat:localizedName validFormatSpecifiers:@"%@" error:0, localizedName2];
   }
 
   return v12;
 }
 
-- (id)_entryLimitPiggybackingAvailableBodyForDevice:(id)a3
+- (id)_entryLimitPiggybackingAvailableBodyForDevice:(id)device
 {
   v3 = MEMORY[0x277CFD560];
-  v4 = a3;
-  v5 = [v3 isICSCHarmonizationEnabled];
+  deviceCopy = device;
+  isICSCHarmonizationEnabled = [v3 isICSCHarmonizationEnabled];
   v6 = MEMORY[0x277CCACA8];
-  if (v5)
+  if (isICSCHarmonizationEnabled)
   {
     v7 = @"REMOTE_SECRET_ENTRY_SOFT_LIMIT_ALERT_SUBTITLE_TRUSTED_DEVICES";
   }
@@ -2163,44 +2163,44 @@ LABEL_10:
   }
 
   v8 = [MEMORY[0x277CFD508] builderForKey:v7];
-  v9 = [v8 addSecretType:{objc_msgSend(v4, "localSecretType")}];
-  v10 = [v9 localizedString];
-  v11 = [v4 localizedName];
-  v12 = [v4 localizedName];
+  v9 = [v8 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v9 localizedString];
+  localizedName = [deviceCopy localizedName];
+  localizedName2 = [deviceCopy localizedName];
 
-  v13 = [v6 stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@%@" error:0, v11, v12];
+  v13 = [v6 stringWithValidatedFormat:localizedString validFormatSpecifiers:@"%@%@" error:0, localizedName, localizedName2];
 
   return v13;
 }
 
-- (id)_infoDictionaryWithTitle:(id)a3 andBody:(id)a4
+- (id)_infoDictionaryWithTitle:(id)title andBody:(id)body
 {
-  v5 = a3;
-  v6 = a4;
+  titleCopy = title;
+  bodyCopy = body;
   v7 = [MEMORY[0x277CBEC10] mutableCopy];
   v8 = v7;
-  if (v5)
+  if (titleCopy)
   {
-    [v7 setObject:v5 forKeyedSubscript:*MEMORY[0x277CCA450]];
+    [v7 setObject:titleCopy forKeyedSubscript:*MEMORY[0x277CCA450]];
   }
 
-  if (v6)
+  if (bodyCopy)
   {
-    [v8 setObject:v6 forKeyedSubscript:*MEMORY[0x277CCA470]];
+    [v8 setObject:bodyCopy forKeyedSubscript:*MEMORY[0x277CCA470]];
   }
 
   return v8;
 }
 
-- (void)_showQuotaScreenWithCompletion:(id)a3
+- (void)_showQuotaScreenWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CDPDRecoveryFlowController *)self uiProvider];
+  completionCopy = completion;
+  uiProvider = [(CDPDRecoveryFlowController *)self uiProvider];
 
-  if (v5)
+  if (uiProvider)
   {
-    v7 = [(CDPDRecoveryFlowController *)self uiProvider];
-    [v7 presentQuotaScreenWithCompletion:v4];
+    uiProvider2 = [(CDPDRecoveryFlowController *)self uiProvider];
+    [uiProvider2 presentQuotaScreenWithCompletion:completionCopy];
   }
 
   else
@@ -2211,13 +2211,13 @@ LABEL_10:
       [CDPDRecoveryValidatedJoinFlowController _showQuotaScreenWithCompletion:];
     }
 
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)_showAccountResetConfirmationWithCompletion:(id)a3
+- (void)_showAccountResetConfirmationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2227,25 +2227,25 @@ LABEL_10:
 
   v6 = [MEMORY[0x277CBEC10] mutableCopy];
   v7 = [(CDPDRecoveryValidatedJoinFlowController *)self _resetDataErrorForCurrentContextWithRecoveryIndexMap:v6];
-  v8 = [(CDPDRecoveryFlowController *)self uiProvider];
+  uiProvider = [(CDPDRecoveryFlowController *)self uiProvider];
 
-  if (v8)
+  if (uiProvider)
   {
-    v9 = [(CDPDRecoveryFlowController *)self uiProvider];
-    v10 = [(CDPDRecoveryFlowController *)self recoveryContext];
-    v11 = [v10 context];
+    uiProvider2 = [(CDPDRecoveryFlowController *)self uiProvider];
+    recoveryContext = [(CDPDRecoveryFlowController *)self recoveryContext];
+    context = [recoveryContext context];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __87__CDPDRecoveryValidatedJoinFlowController__showAccountResetConfirmationWithCompletion___block_invoke;
     v12[3] = &unk_278E24910;
     v13 = v6;
-    v14 = v4;
-    [v9 cdpContext:v11 showError:v7 withDefaultIndex:1 withCompletion:v12];
+    v14 = completionCopy;
+    [uiProvider2 cdpContext:context showError:v7 withDefaultIndex:1 withCompletion:v12];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -2271,32 +2271,32 @@ uint64_t __87__CDPDRecoveryValidatedJoinFlowController__showAccountResetConfirma
   return result;
 }
 
-- (id)_resetDataErrorForCurrentContextWithRecoveryIndexMap:(id)a3
+- (id)_resetDataErrorForCurrentContextWithRecoveryIndexMap:(id)map
 {
   v33[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CDPDRecoveryValidatedJoinFlowController *)self _isWalrusEnabled];
+  mapCopy = map;
+  _isWalrusEnabled = [(CDPDRecoveryValidatedJoinFlowController *)self _isWalrusEnabled];
   v6 = [MEMORY[0x277CBEC10] mutableCopy];
-  if (v5)
+  if (_isWalrusEnabled)
   {
     v7 = [MEMORY[0x277CFD508] builderForKey:@"RPD_CONFIRMATION_STEP_2_TITLE" inTable:@"Localizable-Walrus"];
-    v8 = [v7 localizedString];
-    [v6 setObject:v8 forKeyedSubscript:*MEMORY[0x277CCA450]];
+    localizedString = [v7 localizedString];
+    [v6 setObject:localizedString forKeyedSubscript:*MEMORY[0x277CCA450]];
 
     v9 = [MEMORY[0x277CFD508] builderForKey:@"RPD_CONFIRMATION_STEP_2_MESSAGE" inTable:@"Localizable-Walrus"];
-    v10 = [v9 localizedString];
-    [v6 setObject:v10 forKeyedSubscript:*MEMORY[0x277CCA470]];
+    localizedString2 = [v9 localizedString];
+    [v6 setObject:localizedString2 forKeyedSubscript:*MEMORY[0x277CCA470]];
 
     v11 = [MEMORY[0x277CFD508] builderForKey:@"WALRUS_STORAGE_LIST_UNAVAILABLE_CONFIRMATION_DELETE_BUTTON_TITLE"];
-    v12 = [v11 localizedString];
-    v33[0] = v12;
+    localizedString3 = [v11 localizedString];
+    v33[0] = localizedString3;
     v13 = [MEMORY[0x277CFD508] builderForKey:@"GENERIC_CANCEL_BUTTON"];
-    v14 = [v13 localizedString];
-    v33[1] = v14;
+    localizedString4 = [v13 localizedString];
+    v33[1] = localizedString4;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:2];
     [v6 setObject:v15 forKeyedSubscript:*MEMORY[0x277CCA480]];
 
-    [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:&unk_2858221B0];
+    [mapCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:&unk_2858221B0];
     v16 = _CDPLogSystem();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -2304,29 +2304,29 @@ uint64_t __87__CDPDRecoveryValidatedJoinFlowController__showAccountResetConfirma
     }
 
     *buf = 138412290;
-    v32 = v4;
+    v32 = mapCopy;
     v17 = "Showing RPD error alert for Walrus user. RecoveryMap is %@";
   }
 
   else
   {
     v18 = [MEMORY[0x277CFD508] builderForKey:@"RESET_CONFIRMATION_DIALOG_TITLE"];
-    v19 = [v18 localizedString];
-    [v6 setObject:v19 forKeyedSubscript:*MEMORY[0x277CCA450]];
+    localizedString5 = [v18 localizedString];
+    [v6 setObject:localizedString5 forKeyedSubscript:*MEMORY[0x277CCA450]];
 
     v20 = [MEMORY[0x277CFD508] builderForKey:@"RESET_CONFIRMATION_DIALOG_MESSAGE"];
-    v21 = [v20 localizedString];
-    [v6 setObject:v21 forKeyedSubscript:*MEMORY[0x277CCA470]];
+    localizedString6 = [v20 localizedString];
+    [v6 setObject:localizedString6 forKeyedSubscript:*MEMORY[0x277CCA470]];
 
     v22 = [MEMORY[0x277CFD508] builderForKey:@"RESET_CONFIRMATION_DIALOG_BUTTON_RESET"];
-    v23 = [v22 localizedString];
-    v24 = [MEMORY[0x277CFD508] builderForKey:{@"GENERIC_CANCEL_BUTTON", v23}];
-    v25 = [v24 localizedString];
-    v30[1] = v25;
+    localizedString7 = [v22 localizedString];
+    v24 = [MEMORY[0x277CFD508] builderForKey:{@"GENERIC_CANCEL_BUTTON", localizedString7}];
+    localizedString8 = [v24 localizedString];
+    v30[1] = localizedString8;
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:2];
     [v6 setObject:v26 forKeyedSubscript:*MEMORY[0x277CCA480]];
 
-    [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:&unk_2858221B0];
+    [mapCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:&unk_2858221B0];
     v16 = _CDPLogSystem();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -2334,7 +2334,7 @@ uint64_t __87__CDPDRecoveryValidatedJoinFlowController__showAccountResetConfirma
     }
 
     *buf = 138412290;
-    v32 = v4;
+    v32 = mapCopy;
     v17 = "Showing RPD error alert for non-Walrus user. RecoveryMap is %@";
   }
 
@@ -2351,11 +2351,11 @@ LABEL_7:
 - (id)_resetProtectedDataErrorUnrecoverable
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v2 = [(CDPDRecoveryValidatedJoinFlowController *)self _isWalrusEnabled];
+  _isWalrusEnabled = [(CDPDRecoveryValidatedJoinFlowController *)self _isWalrusEnabled];
   v3 = [MEMORY[0x277CBEC10] mutableCopy];
   v4 = _CDPLogSystem();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v2)
+  if (_isWalrusEnabled)
   {
     if (v5)
     {
@@ -2364,16 +2364,16 @@ LABEL_7:
     }
 
     v6 = [MEMORY[0x277CFD508] builderForKey:@"RPD_CONFIRMATION_STEP_2_TITLE" inTable:@"Localizable-Walrus"];
-    v7 = [v6 localizedString];
-    [v3 setObject:v7 forKeyedSubscript:*MEMORY[0x277CCA450]];
+    localizedString = [v6 localizedString];
+    [v3 setObject:localizedString forKeyedSubscript:*MEMORY[0x277CCA450]];
 
     v8 = [MEMORY[0x277CFD508] builderForKey:@"RPD_CONFIRMATION_STEP_2_MESSAGE" inTable:@"Localizable-Walrus"];
-    v9 = [v8 localizedString];
-    [v3 setObject:v9 forKeyedSubscript:*MEMORY[0x277CCA470]];
+    localizedString2 = [v8 localizedString];
+    [v3 setObject:localizedString2 forKeyedSubscript:*MEMORY[0x277CCA470]];
 
     v10 = [MEMORY[0x277CFD508] builderForKey:@"GENERIC_CANCEL_BUTTON"];
-    v11 = [v10 localizedString];
-    v25[0] = v11;
+    localizedString3 = [v10 localizedString];
+    v25[0] = localizedString3;
     v12 = [MEMORY[0x277CFD508] builderForKey:@"WALRUS_ALERT_BUTTON_TITLE_DELETE_ICLOUD_DATA" inTable:@"Localizable-Walrus"];
     v13 = v25;
   }
@@ -2387,22 +2387,22 @@ LABEL_7:
     }
 
     v14 = [MEMORY[0x277CFD508] builderForKey:@"RESET_CONFIRMATION_DIALOG_TITLE_NO_RECOVERY"];
-    v15 = [v14 localizedString];
-    [v3 setObject:v15 forKeyedSubscript:*MEMORY[0x277CCA450]];
+    localizedString4 = [v14 localizedString];
+    [v3 setObject:localizedString4 forKeyedSubscript:*MEMORY[0x277CCA450]];
 
     v16 = [MEMORY[0x277CFD508] builderForKey:@"RESET_CONFIRMATION_DIALOG_MESSAGE_NO_RECOVERY"];
-    v17 = [v16 localizedString];
-    [v3 setObject:v17 forKeyedSubscript:*MEMORY[0x277CCA470]];
+    localizedString5 = [v16 localizedString];
+    [v3 setObject:localizedString5 forKeyedSubscript:*MEMORY[0x277CCA470]];
 
     v10 = [MEMORY[0x277CFD508] builderForKey:@"GENERIC_CANCEL_BUTTON"];
-    v11 = [v10 localizedString];
-    v24 = v11;
+    localizedString3 = [v10 localizedString];
+    v24 = localizedString3;
     v12 = [MEMORY[0x277CFD508] builderForKey:@"RESET_CONFIRMATION_DIALOG_BUTTON_RESET_NO_RECOVERY"];
     v13 = &v24;
   }
 
-  v18 = [v12 localizedString];
-  v13[1] = v18;
+  localizedString6 = [v12 localizedString];
+  v13[1] = localizedString6;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
   [v3 setObject:v19 forKeyedSubscript:*MEMORY[0x277CCA480]];
 
@@ -2417,7 +2417,7 @@ LABEL_7:
 {
   v15[1] = *MEMORY[0x277D85DE8];
   [(CDPDRecoveryValidatedJoinFlowController *)self _isWalrusEnabled];
-  v2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v3 = _CDPLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -2426,18 +2426,18 @@ LABEL_7:
   }
 
   v4 = [MEMORY[0x277CFD508] builderForKey:@"SKIP_CONFIRMATION_DIALOG_TITLE_NO_RECOVERY"];
-  v5 = [v4 localizedString];
-  [v2 setObject:v5 forKeyedSubscript:*MEMORY[0x277CCA450]];
+  localizedString = [v4 localizedString];
+  [dictionary setObject:localizedString forKeyedSubscript:*MEMORY[0x277CCA450]];
 
   v6 = [MEMORY[0x277CFD508] builderForKey:@"SKIP_CONFIRMATION_DIALOG_MESSAGE_NO_RECOVERY"];
-  v7 = [v6 localizedString];
-  [v2 setObject:v7 forKeyedSubscript:*MEMORY[0x277CCA470]];
+  localizedString2 = [v6 localizedString];
+  [dictionary setObject:localizedString2 forKeyedSubscript:*MEMORY[0x277CCA470]];
 
   v8 = [MEMORY[0x277CFD508] builderForKey:@"DATA_RECOVERY_ESCAPE_OPTION_SKIP"];
-  v9 = [v8 localizedString];
-  v15[0] = v9;
+  localizedString3 = [v8 localizedString];
+  v15[0] = localizedString3;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  [v2 setObject:v10 forKeyedSubscript:*MEMORY[0x277CCA480]];
+  [dictionary setObject:v10 forKeyedSubscript:*MEMORY[0x277CCA480]];
 
   v11 = _CDPStateError();
 
@@ -2446,26 +2446,26 @@ LABEL_7:
   return v11;
 }
 
-- (void)_handleNoRecoveryFactorsWithMask:(unint64_t)a3 validator:(id)a4
+- (void)_handleNoRecoveryFactorsWithMask:(unint64_t)mask validator:(id)validator
 {
-  v6 = a4;
-  v7 = [(CDPDRecoveryFlowController *)self uiProvider];
+  validatorCopy = validator;
+  uiProvider = [(CDPDRecoveryFlowController *)self uiProvider];
 
-  if (v7)
+  if (uiProvider)
   {
-    v23 = v6;
+    v23 = validatorCopy;
     v8 = [CDPEscapeOffersLedger alloc];
-    v9 = [(CDPDRecoveryFlowController *)self recoveryContext];
-    v10 = [MEMORY[0x277CFD4F8] sharedInstance];
-    v11 = [v10 hasLocalSecret];
-    v12 = [MEMORY[0x277CFD480] sharedInstance];
-    v13 = [MEMORY[0x277CFD560] isVirtualMachine];
-    v14 = [(CDPDRecoveryFlowController *)self recoveryContext];
-    v15 = [v14 context];
-    v16 = -[CDPEscapeOffersLedger initWithExpectedEscapeOffers:recoveryFlowContext:deviceHasPasscode:probationChecker:deviceIsVM:isICDPEnabled:](v8, "initWithExpectedEscapeOffers:recoveryFlowContext:deviceHasPasscode:probationChecker:deviceIsVM:isICDPEnabled:", a3, v9, v11, v12, v13, [v15 isICDPEnabledFromNetwork]);
+    recoveryContext = [(CDPDRecoveryFlowController *)self recoveryContext];
+    mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+    hasLocalSecret = [mEMORY[0x277CFD4F8] hasLocalSecret];
+    mEMORY[0x277CFD480] = [MEMORY[0x277CFD480] sharedInstance];
+    isVirtualMachine = [MEMORY[0x277CFD560] isVirtualMachine];
+    recoveryContext2 = [(CDPDRecoveryFlowController *)self recoveryContext];
+    context = [recoveryContext2 context];
+    v16 = -[CDPEscapeOffersLedger initWithExpectedEscapeOffers:recoveryFlowContext:deviceHasPasscode:probationChecker:deviceIsVM:isICDPEnabled:](v8, "initWithExpectedEscapeOffers:recoveryFlowContext:deviceHasPasscode:probationChecker:deviceIsVM:isICDPEnabled:", mask, recoveryContext, hasLocalSecret, mEMORY[0x277CFD480], isVirtualMachine, [context isICDPEnabledFromNetwork]);
 
-    v17 = [(CDPEscapeOffersLedger *)v16 canOfferRPD];
-    if (v17)
+    canOfferRPD = [(CDPEscapeOffersLedger *)v16 canOfferRPD];
+    if (canOfferRPD)
     {
       [(CDPDRecoveryValidatedJoinFlowController *)self _resetProtectedDataErrorUnrecoverable];
     }
@@ -2475,18 +2475,18 @@ LABEL_7:
       [(CDPDRecoveryValidatedJoinFlowController *)self _skipErrorUnrecoverable];
     }
     v19 = ;
-    v20 = [(CDPDRecoveryFlowController *)self uiProvider];
-    v21 = [(CDPDRecoveryFlowController *)self recoveryContext];
-    v22 = [v21 context];
+    uiProvider2 = [(CDPDRecoveryFlowController *)self uiProvider];
+    recoveryContext3 = [(CDPDRecoveryFlowController *)self recoveryContext];
+    context2 = [recoveryContext3 context];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __86__CDPDRecoveryValidatedJoinFlowController__handleNoRecoveryFactorsWithMask_validator___block_invoke;
     v25[3] = &unk_278E24960;
-    v27 = v17;
+    v27 = canOfferRPD;
     v25[4] = self;
-    v6 = v24;
+    validatorCopy = v24;
     v26 = v24;
-    [v20 cdpContext:v22 showError:v19 withDefaultIndex:1 withCompletion:v25];
+    [uiProvider2 cdpContext:context2 showError:v19 withDefaultIndex:1 withCompletion:v25];
   }
 
   else
@@ -2497,7 +2497,7 @@ LABEL_7:
       [CDPDRecoveryValidatedJoinFlowController _handleNoRecoveryFactorsWithMask:validator:];
     }
 
-    [(CDPDRecoveryValidatedJoinFlowController *)self _handleResetOptionWithResetRequested:0 localSecret:0 validator:v6];
+    [(CDPDRecoveryValidatedJoinFlowController *)self _handleResetOptionWithResetRequested:0 localSecret:0 validator:validatorCopy];
   }
 }
 
@@ -2557,16 +2557,16 @@ LABEL_11:
   v3 = _CDPLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CDPDRecoveryFlowController *)self recoveryContext];
-    v5 = [v4 context];
+    recoveryContext = [(CDPDRecoveryFlowController *)self recoveryContext];
+    context = [recoveryContext context];
     v11 = 134217984;
-    v12 = [v5 walrusStatus];
+    walrusStatus = [context walrusStatus];
     _os_log_impl(&dword_24510B000, v3, OS_LOG_TYPE_DEFAULT, "Walrus status on recovery context is %ld", &v11, 0xCu);
   }
 
-  v6 = [(CDPDRecoveryFlowController *)self recoveryContext];
-  v7 = [v6 context];
-  v8 = [v7 walrusStatus] == 1;
+  recoveryContext2 = [(CDPDRecoveryFlowController *)self recoveryContext];
+  context2 = [recoveryContext2 context];
+  v8 = [context2 walrusStatus] == 1;
 
   v9 = *MEMORY[0x277D85DE8];
   return v8;

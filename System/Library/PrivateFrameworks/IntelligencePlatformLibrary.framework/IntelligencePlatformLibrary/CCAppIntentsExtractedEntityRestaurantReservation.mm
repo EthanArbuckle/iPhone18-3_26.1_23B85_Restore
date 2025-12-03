@@ -1,7 +1,7 @@
 @interface CCAppIntentsExtractedEntityRestaurantReservation
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCAppIntentsExtractedEntityRestaurantReservation)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCAppIntentsExtractedEntityRestaurantReservation)initWithProvider:(id)a3 reservationID:(id)a4 customerNames:(id)a5 restaurantPartySize:(id)a6 startLocationName:(id)a7 startLocationAddress:(id)a8 startLocationTelephone:(id)a9 startDate:(id)a10 startDateTimeZone:(id)a11 restaurantMealType:(id)a12 eventStatus:(id)a13 error:(id *)a14;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCAppIntentsExtractedEntityRestaurantReservation)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCAppIntentsExtractedEntityRestaurantReservation)initWithProvider:(id)provider reservationID:(id)d customerNames:(id)names restaurantPartySize:(id)size startLocationName:(id)name startLocationAddress:(id)address startLocationTelephone:(id)telephone startDate:(id)self0 startDateTimeZone:(id)self1 restaurantMealType:(id)self2 eventStatus:(id)self3 error:(id *)self4;
 - (NSArray)customerNames;
 - (NSString)eventStatus;
 - (NSString)provider;
@@ -13,32 +13,32 @@
 - (NSString)startLocationName;
 - (NSString)startLocationTelephone;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCAppIntentsExtractedEntityRestaurantReservation
 
-- (CCAppIntentsExtractedEntityRestaurantReservation)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCAppIntentsExtractedEntityRestaurantReservation)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v22 = [v6 objectForKeyedSubscript:@"provider"];
-    v19 = [v6 objectForKeyedSubscript:@"reservationID"];
-    v9 = [v6 objectForKeyedSubscript:@"customerNames"];
-    v10 = [v6 objectForKeyedSubscript:@"restaurantPartySize"];
-    v20 = [v6 objectForKeyedSubscript:@"startLocationName"];
-    v18 = [v6 objectForKeyedSubscript:@"startLocationAddress"];
-    v17 = [v6 objectForKeyedSubscript:@"startLocationTelephone"];
-    [v6 objectForKeyedSubscript:@"startDate"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"provider"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"reservationID"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"customerNames"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"restaurantPartySize"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"startLocationName"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"startLocationAddress"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"startLocationTelephone"];
+    [dictionaryCopy objectForKeyedSubscript:@"startDate"];
     v16 = v21 = self;
-    v11 = [v6 objectForKeyedSubscript:@"startDateTimeZone"];
-    v12 = [v6 objectForKeyedSubscript:@"restaurantMealType"];
-    v13 = [v6 objectForKeyedSubscript:@"eventStatus"];
-    v14 = [[CCAppIntentsExtractedEntityRestaurantReservation alloc] initWithProvider:v22 reservationID:v19 customerNames:v9 restaurantPartySize:v10 startLocationName:v20 startLocationAddress:v18 startLocationTelephone:v17 startDate:v16 startDateTimeZone:v11 restaurantMealType:v12 eventStatus:v13 error:a4];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"startDateTimeZone"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"restaurantMealType"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"eventStatus"];
+    v14 = [[CCAppIntentsExtractedEntityRestaurantReservation alloc] initWithProvider:v22 reservationID:v19 customerNames:v9 restaurantPartySize:v10 startLocationName:v20 startLocationAddress:v18 startLocationTelephone:v17 startDate:v16 startDateTimeZone:v11 restaurantMealType:v12 eventStatus:v13 error:error];
 
     self = v21;
   }
@@ -57,20 +57,20 @@
   v3 = objc_opt_new();
   if (self->_provider)
   {
-    v4 = [(CCAppIntentsExtractedEntityRestaurantReservation *)self provider];
-    [v3 setObject:v4 forKeyedSubscript:@"provider"];
+    provider = [(CCAppIntentsExtractedEntityRestaurantReservation *)self provider];
+    [v3 setObject:provider forKeyedSubscript:@"provider"];
   }
 
   if (self->_reservationID)
   {
-    v5 = [(CCAppIntentsExtractedEntityRestaurantReservation *)self reservationID];
-    [v3 setObject:v5 forKeyedSubscript:@"reservationID"];
+    reservationID = [(CCAppIntentsExtractedEntityRestaurantReservation *)self reservationID];
+    [v3 setObject:reservationID forKeyedSubscript:@"reservationID"];
   }
 
   if (self->_customerNames)
   {
-    v6 = [(CCAppIntentsExtractedEntityRestaurantReservation *)self customerNames];
-    [v3 setObject:v6 forKeyedSubscript:@"customerNames"];
+    customerNames = [(CCAppIntentsExtractedEntityRestaurantReservation *)self customerNames];
+    [v3 setObject:customerNames forKeyedSubscript:@"customerNames"];
   }
 
   if (self->_hasRestaurantPartySize)
@@ -81,44 +81,44 @@
 
   if (self->_startLocationName)
   {
-    v8 = [(CCAppIntentsExtractedEntityRestaurantReservation *)self startLocationName];
-    [v3 setObject:v8 forKeyedSubscript:@"startLocationName"];
+    startLocationName = [(CCAppIntentsExtractedEntityRestaurantReservation *)self startLocationName];
+    [v3 setObject:startLocationName forKeyedSubscript:@"startLocationName"];
   }
 
   if (self->_startLocationAddress)
   {
-    v9 = [(CCAppIntentsExtractedEntityRestaurantReservation *)self startLocationAddress];
-    [v3 setObject:v9 forKeyedSubscript:@"startLocationAddress"];
+    startLocationAddress = [(CCAppIntentsExtractedEntityRestaurantReservation *)self startLocationAddress];
+    [v3 setObject:startLocationAddress forKeyedSubscript:@"startLocationAddress"];
   }
 
   if (self->_startLocationTelephone)
   {
-    v10 = [(CCAppIntentsExtractedEntityRestaurantReservation *)self startLocationTelephone];
-    [v3 setObject:v10 forKeyedSubscript:@"startLocationTelephone"];
+    startLocationTelephone = [(CCAppIntentsExtractedEntityRestaurantReservation *)self startLocationTelephone];
+    [v3 setObject:startLocationTelephone forKeyedSubscript:@"startLocationTelephone"];
   }
 
   if (self->_startDate)
   {
-    v11 = [(CCAppIntentsExtractedEntityRestaurantReservation *)self startDate];
-    [v3 setObject:v11 forKeyedSubscript:@"startDate"];
+    startDate = [(CCAppIntentsExtractedEntityRestaurantReservation *)self startDate];
+    [v3 setObject:startDate forKeyedSubscript:@"startDate"];
   }
 
   if (self->_startDateTimeZone)
   {
-    v12 = [(CCAppIntentsExtractedEntityRestaurantReservation *)self startDateTimeZone];
-    [v3 setObject:v12 forKeyedSubscript:@"startDateTimeZone"];
+    startDateTimeZone = [(CCAppIntentsExtractedEntityRestaurantReservation *)self startDateTimeZone];
+    [v3 setObject:startDateTimeZone forKeyedSubscript:@"startDateTimeZone"];
   }
 
   if (self->_restaurantMealType)
   {
-    v13 = [(CCAppIntentsExtractedEntityRestaurantReservation *)self restaurantMealType];
-    [v3 setObject:v13 forKeyedSubscript:@"restaurantMealType"];
+    restaurantMealType = [(CCAppIntentsExtractedEntityRestaurantReservation *)self restaurantMealType];
+    [v3 setObject:restaurantMealType forKeyedSubscript:@"restaurantMealType"];
   }
 
   if (self->_eventStatus)
   {
-    v14 = [(CCAppIntentsExtractedEntityRestaurantReservation *)self eventStatus];
-    [v3 setObject:v14 forKeyedSubscript:@"eventStatus"];
+    eventStatus = [(CCAppIntentsExtractedEntityRestaurantReservation *)self eventStatus];
+    [v3 setObject:eventStatus forKeyedSubscript:@"eventStatus"];
   }
 
   v15 = [v3 copy];
@@ -126,76 +126,76 @@
   return v15;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v17 = a3;
+  blockCopy = block;
   if (self->_provider)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27382 stringValue:self->_provider];
-    v17[2](v17, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_reservationID)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27383 stringValue:self->_reservationID];
-    v17[2](v17, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_customerNames)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27384 repeatedStringValue:self->_customerNames];
-    v17[2](v17, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_hasRestaurantPartySize)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27385 uint32Value:self->_restaurantPartySize];
-    v17[2](v17, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_startLocationName)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27386 stringValue:self->_startLocationName];
-    v17[2](v17, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_startLocationAddress)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27387 stringValue:self->_startLocationAddress];
-    v17[2](v17, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_startLocationTelephone)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27388 stringValue:self->_startLocationTelephone];
-    v17[2](v17, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
   if (self->_startDate)
   {
     v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27389 stringValue:self->_startDate];
-    v17[2](v17, v12);
+    blockCopy[2](blockCopy, v12);
   }
 
   if (self->_startDateTimeZone)
   {
     v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27390 stringValue:self->_startDateTimeZone];
-    v17[2](v17, v13);
+    blockCopy[2](blockCopy, v13);
   }
 
   if (self->_restaurantMealType)
   {
     v14 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27391 stringValue:self->_restaurantMealType];
-    v17[2](v17, v14);
+    blockCopy[2](blockCopy, v14);
   }
 
-  v15 = v17;
+  v15 = blockCopy;
   if (self->_eventStatus)
   {
     v16 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27392 stringValue:self->_eventStatus];
-    v17[2](v17, v16);
+    blockCopy[2](blockCopy, v16);
 
-    v15 = v17;
+    v15 = blockCopy;
   }
 }
 
@@ -269,10 +269,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   if (*&v7[*MEMORY[0x1E6993AB8]] < *&v7[*MEMORY[0x1E6993AB0]])
@@ -491,13 +491,13 @@ LABEL_57:
 
       v36 = objc_opt_class();
       NSStringFromClass(v36);
-      v50 = a4;
-      v38 = v37 = v6;
+      errorCopy = error;
+      v38 = v37 = dataCopy;
       v39 = *&v7[*v11];
       v10 = CCSkipFieldErrorForMessage();
 
-      v6 = v37;
-      a4 = v50;
+      dataCopy = v37;
+      error = errorCopy;
 LABEL_58:
       if (*&v7[*v8] < *&v7[*v9])
       {
@@ -534,10 +534,10 @@ LABEL_68:
     v44 = NSStringFromClass(v43);
     v45 = *&v7[*v42];
     CCInvalidBufferErrorForMessage();
-    v47 = v46 = v6;
+    v47 = v46 = dataCopy;
     CCSetError();
 
-    v6 = v46;
+    dataCopy = v46;
   }
 
   v48 = 0;
@@ -546,23 +546,23 @@ LABEL_73:
   return v48;
 }
 
-- (CCAppIntentsExtractedEntityRestaurantReservation)initWithProvider:(id)a3 reservationID:(id)a4 customerNames:(id)a5 restaurantPartySize:(id)a6 startLocationName:(id)a7 startLocationAddress:(id)a8 startLocationTelephone:(id)a9 startDate:(id)a10 startDateTimeZone:(id)a11 restaurantMealType:(id)a12 eventStatus:(id)a13 error:(id *)a14
+- (CCAppIntentsExtractedEntityRestaurantReservation)initWithProvider:(id)provider reservationID:(id)d customerNames:(id)names restaurantPartySize:(id)size startLocationName:(id)name startLocationAddress:(id)address startLocationTelephone:(id)telephone startDate:(id)self0 startDateTimeZone:(id)self1 restaurantMealType:(id)self2 eventStatus:(id)self3 error:(id *)self4
 {
   v75 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v66 = a7;
-  v65 = a8;
-  v64 = a9;
-  v63 = a10;
-  v62 = a11;
-  v61 = a12;
-  v60 = a13;
+  providerCopy = provider;
+  dCopy = d;
+  namesCopy = names;
+  sizeCopy = size;
+  nameCopy = name;
+  addressCopy = address;
+  telephoneCopy = telephone;
+  dateCopy = date;
+  zoneCopy = zone;
+  typeCopy = type;
+  statusCopy = status;
   v23 = objc_opt_new();
   v24 = 0x1E696A000uLL;
-  if (v19)
+  if (providerCopy)
   {
     objc_opt_class();
     v73 = 0;
@@ -574,11 +574,11 @@ LABEL_73:
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v20)
+    if (!dCopy)
     {
 LABEL_4:
       v27 = v26;
-      if (v21)
+      if (namesCopy)
       {
         goto LABEL_5;
       }
@@ -590,7 +590,7 @@ LABEL_4:
   else
   {
     v26 = 0;
-    if (!v20)
+    if (!dCopy)
     {
       goto LABEL_4;
     }
@@ -607,7 +607,7 @@ LABEL_4:
   }
 
   CCPBDataWriterWriteStringField();
-  if (v21)
+  if (namesCopy)
   {
 LABEL_5:
     objc_opt_class();
@@ -620,12 +620,12 @@ LABEL_5:
       goto LABEL_50;
     }
 
-    v29 = v19;
+    v29 = providerCopy;
     v69 = 0u;
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v30 = v21;
+    v30 = namesCopy;
     v31 = [v30 countByEnumeratingWithState:&v67 objects:v74 count:16];
     if (v31)
     {
@@ -650,9 +650,9 @@ LABEL_5:
       while (v32);
     }
 
-    v19 = v29;
+    providerCopy = v29;
     v24 = 0x1E696A000;
-    if (!v22)
+    if (!sizeCopy)
     {
       goto LABEL_14;
     }
@@ -662,7 +662,7 @@ LABEL_5:
 
 LABEL_18:
   v26 = v27;
-  if (!v22)
+  if (!sizeCopy)
   {
 LABEL_14:
     v27 = v26;
@@ -679,10 +679,10 @@ LABEL_19:
     goto LABEL_45;
   }
 
-  [v22 unsignedIntValue];
+  [sizeCopy unsignedIntValue];
   CCPBDataWriterWriteUint32Field();
 LABEL_21:
-  if (v66)
+  if (nameCopy)
   {
     v38 = *(v24 + 3776);
     objc_opt_class();
@@ -702,7 +702,7 @@ LABEL_21:
     v26 = v27;
   }
 
-  if (v65)
+  if (addressCopy)
   {
     v40 = *(v24 + 3776);
     objc_opt_class();
@@ -722,7 +722,7 @@ LABEL_21:
     v27 = v26;
   }
 
-  if (v64)
+  if (telephoneCopy)
   {
     v42 = *(v24 + 3776);
     objc_opt_class();
@@ -742,7 +742,7 @@ LABEL_21:
     v26 = v27;
   }
 
-  if (!v63)
+  if (!dateCopy)
   {
     v46 = v26;
     goto LABEL_37;
@@ -757,7 +757,7 @@ LABEL_21:
   {
     CCPBDataWriterWriteStringField();
 LABEL_37:
-    if (!v62)
+    if (!zoneCopy)
     {
       v26 = v46;
       goto LABEL_42;
@@ -772,7 +772,7 @@ LABEL_37:
     {
       CCPBDataWriterWriteStringField();
 LABEL_42:
-      if (!v61)
+      if (!typeCopy)
       {
         v27 = v26;
         goto LABEL_47;
@@ -787,7 +787,7 @@ LABEL_42:
       {
         CCPBDataWriterWriteStringField();
 LABEL_47:
-        if (!v60)
+        if (!statusCopy)
         {
           v26 = v27;
           goto LABEL_54;
@@ -802,11 +802,11 @@ LABEL_47:
         {
           CCPBDataWriterWriteStringField();
 LABEL_54:
-          v50 = v63;
-          v58 = [v23 immutableData];
-          v51 = [(CCItemMessage *)self initWithData:v58 error:a14];
+          v50 = dateCopy;
+          immutableData = [v23 immutableData];
+          selfCopy2 = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-          v49 = v51;
+          v49 = selfCopy2;
           goto LABEL_52;
         }
 
@@ -818,8 +818,8 @@ LABEL_45:
       v49 = 0;
       v26 = v27;
 LABEL_51:
-      v51 = self;
-      v50 = v63;
+      selfCopy2 = self;
+      v50 = dateCopy;
       goto LABEL_52;
     }
 
@@ -832,8 +832,8 @@ LABEL_50:
   CCSetError();
   v49 = 0;
   v26 = v46;
-  v50 = v63;
-  v51 = self;
+  v50 = dateCopy;
+  selfCopy2 = self;
 LABEL_52:
 
   v56 = *MEMORY[0x1E69E9840];

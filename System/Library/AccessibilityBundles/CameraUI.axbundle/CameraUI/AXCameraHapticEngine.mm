@@ -1,13 +1,13 @@
 @interface AXCameraHapticEngine
-+ (id)_stringForHapticEngineStoppedReason:(int64_t)a3;
++ (id)_stringForHapticEngineStoppedReason:(int64_t)reason;
 - (AXCameraHapticEngine)init;
-- (unint64_t)_registerAudioWithResourceWithName:(id)a3;
+- (unint64_t)_registerAudioWithResourceWithName:(id)name;
 - (void)_createLevelPlayerIfNeeded;
 - (void)_createScreenEdgePlayerIfNeeded;
 - (void)_createUnlevelPlayerIfNeeded;
-- (void)_performHapticForPlayer:(id)a3;
+- (void)_performHapticForPlayer:(id)player;
 - (void)_releasePlayers;
-- (void)_unregisterAudioResource:(unint64_t)a3;
+- (void)_unregisterAudioResource:(unint64_t)resource;
 - (void)dealloc;
 - (void)performLevelFeedback;
 - (void)performSubjectHitScreenEdgeFeedback;
@@ -23,12 +23,12 @@
   v2 = [(AXCameraHapticEngine *)&v19 init];
   if (v2)
   {
-    v3 = [MEMORY[0x29EDB9130] capabilitiesForHardware];
-    if ([v3 supportsHaptics] & 1) != 0 || (objc_msgSend(v3, "supportsAudio"))
+    capabilitiesForHardware = [MEMORY[0x29EDB9130] capabilitiesForHardware];
+    if ([capabilitiesForHardware supportsHaptics] & 1) != 0 || (objc_msgSend(capabilitiesForHardware, "supportsAudio"))
     {
-      v4 = [MEMORY[0x29EDB8038] sharedInstance];
+      mEMORY[0x29EDB8038] = [MEMORY[0x29EDB8038] sharedInstance];
       v18 = 0;
-      [v4 setPrefersNoDucking:1 error:&v18];
+      [mEMORY[0x29EDB8038] setPrefersNoDucking:1 error:&v18];
       v5 = v18;
 
       if (v5)
@@ -41,9 +41,9 @@
       }
 
       v7 = objc_alloc(MEMORY[0x29EDB9130]);
-      v8 = [MEMORY[0x29EDB8038] sharedInstance];
+      mEMORY[0x29EDB8038]2 = [MEMORY[0x29EDB8038] sharedInstance];
       v17 = 0;
-      v9 = [v7 initWithAudioSession:v8 error:&v17];
+      v9 = [v7 initWithAudioSession:mEMORY[0x29EDB8038]2 error:&v17];
       v10 = v17;
 
       if (!v9 || v10)
@@ -59,8 +59,8 @@
 
       else
       {
-        v2->__supportsHaptics = [v3 supportsHaptics];
-        v2->__supportsAudio = [v3 supportsAudio];
+        v2->__supportsHaptics = [capabilitiesForHardware supportsHaptics];
+        v2->__supportsAudio = [capabilitiesForHardware supportsAudio];
         objc_storeStrong(&v2->__engine, v9);
         [(AXCameraHapticEngine *)v2 _createLevelPlayerIfNeeded];
         [(AXCameraHapticEngine *)v2 _createUnlevelPlayerIfNeeded];
@@ -137,16 +137,16 @@ void __28__AXCameraHapticEngine_init__block_invoke_474(uint64_t a1, uint64_t a2)
   [(AXCameraHapticEngine *)&v3 dealloc];
 }
 
-+ (id)_stringForHapticEngineStoppedReason:(int64_t)a3
++ (id)_stringForHapticEngineStoppedReason:(int64_t)reason
 {
-  if ((a3 + 1) > 4)
+  if ((reason + 1) > 4)
   {
     return @"Unexpected enum";
   }
 
   else
   {
-    return off_29F2ACB48[a3 + 1];
+    return off_29F2ACB48[reason + 1];
   }
 }
 
@@ -161,9 +161,9 @@ void __28__AXCameraHapticEngine_init__block_invoke_474(uint64_t a1, uint64_t a2)
 - (void)_createLevelPlayerIfNeeded
 {
   v48[3] = *MEMORY[0x29EDCA608];
-  v3 = [(AXCameraHapticEngine *)self _levelPlayer];
+  _levelPlayer = [(AXCameraHapticEngine *)self _levelPlayer];
 
-  if (!v3)
+  if (!_levelPlayer)
   {
     [(AXCameraHapticEngine *)self set_levelAudioResourceID:[(AXCameraHapticEngine *)self _registerAudioWithResourceWithName:@"inLevel.wav"]];
     if ([(AXCameraHapticEngine *)self _supportsHaptics])
@@ -210,13 +210,13 @@ void __28__AXCameraHapticEngine_init__block_invoke_474(uint64_t a1, uint64_t a2)
     if ([(AXCameraHapticEngine *)self _levelAudioResourceID])
     {
       v27 = objc_alloc(MEMORY[0x29EDB9138]);
-      v28 = [(AXCameraHapticEngine *)self _levelAudioResourceID];
+      _levelAudioResourceID = [(AXCameraHapticEngine *)self _levelAudioResourceID];
       v29 = objc_alloc(MEMORY[0x29EDB9140]);
       LODWORD(v30) = 0.75;
       v31 = [v29 initWithParameterID:*MEMORY[0x29EDB9100] value:v30];
       v46 = v31;
       v32 = [MEMORY[0x29EDB8D80] arrayWithObjects:&v46 count:1];
-      v33 = [v27 initWithAudioResourceID:v28 parameters:v32 relativeTime:0.0];
+      v33 = [v27 initWithAudioResourceID:_levelAudioResourceID parameters:v32 relativeTime:0.0];
     }
 
     else
@@ -245,9 +245,9 @@ void __28__AXCameraHapticEngine_init__block_invoke_474(uint64_t a1, uint64_t a2)
     v45 = 0;
     v37 = [v36 initWithEvents:v35 parameters:MEMORY[0x29EDB8E90] error:&v45];
     v38 = v45;
-    v39 = [(AXCameraHapticEngine *)self _engine];
+    _engine = [(AXCameraHapticEngine *)self _engine];
     v44 = v38;
-    v40 = [v39 createPrivilegedPlayerWithPlayable:v37 error:&v44];
+    v40 = [_engine createPrivilegedPlayerWithPlayable:v37 error:&v44];
     v41 = v44;
 
     if (!v40 || v41)
@@ -269,9 +269,9 @@ void __28__AXCameraHapticEngine_init__block_invoke_474(uint64_t a1, uint64_t a2)
 - (void)_createUnlevelPlayerIfNeeded
 {
   v65[3] = *MEMORY[0x29EDCA608];
-  v3 = [(AXCameraHapticEngine *)self _unlevelPlayer];
+  _unlevelPlayer = [(AXCameraHapticEngine *)self _unlevelPlayer];
 
-  if (!v3)
+  if (!_unlevelPlayer)
   {
     [(AXCameraHapticEngine *)self set_unlevelAudioResourceID:[(AXCameraHapticEngine *)self _registerAudioWithResourceWithName:@"outLevel.aif"]];
     if ([(AXCameraHapticEngine *)self _supportsHaptics])
@@ -338,13 +338,13 @@ void __28__AXCameraHapticEngine_init__block_invoke_474(uint64_t a1, uint64_t a2)
     if ([(AXCameraHapticEngine *)self _unlevelAudioResourceID])
     {
       v40 = objc_alloc(MEMORY[0x29EDB9138]);
-      v41 = [(AXCameraHapticEngine *)self _unlevelAudioResourceID];
+      _unlevelAudioResourceID = [(AXCameraHapticEngine *)self _unlevelAudioResourceID];
       v42 = objc_alloc(MEMORY[0x29EDB9140]);
       LODWORD(v43) = 0.75;
       v44 = [v42 initWithParameterID:*MEMORY[0x29EDB9100] value:v43];
       v62 = v44;
       v45 = [MEMORY[0x29EDB8D80] arrayWithObjects:&v62 count:1];
-      v46 = [v40 initWithAudioResourceID:v41 parameters:v45 relativeTime:0.0];
+      v46 = [v40 initWithAudioResourceID:_unlevelAudioResourceID parameters:v45 relativeTime:0.0];
     }
 
     else
@@ -380,9 +380,9 @@ void __28__AXCameraHapticEngine_init__block_invoke_474(uint64_t a1, uint64_t a2)
     v61 = 0;
     v51 = [v50 initWithEvents:v48 parameters:MEMORY[0x29EDB8E90] error:&v61];
     v52 = v61;
-    v53 = [(AXCameraHapticEngine *)self _engine];
+    _engine = [(AXCameraHapticEngine *)self _engine];
     v60 = v52;
-    v54 = [v53 createPrivilegedPlayerWithPlayable:v51 error:&v60];
+    v54 = [_engine createPrivilegedPlayerWithPlayable:v51 error:&v60];
     v55 = v60;
 
     if (!v54 || v55)
@@ -404,9 +404,9 @@ void __28__AXCameraHapticEngine_init__block_invoke_474(uint64_t a1, uint64_t a2)
 - (void)_createScreenEdgePlayerIfNeeded
 {
   v27[3] = *MEMORY[0x29EDCA608];
-  v3 = [(AXCameraHapticEngine *)self _screenEdgePlayer];
+  _screenEdgePlayer = [(AXCameraHapticEngine *)self _screenEdgePlayer];
 
-  if (!v3)
+  if (!_screenEdgePlayer)
   {
     if ([(AXCameraHapticEngine *)self _supportsHaptics])
     {
@@ -443,9 +443,9 @@ void __28__AXCameraHapticEngine_init__block_invoke_474(uint64_t a1, uint64_t a2)
     v26 = 0;
     v19 = [v18 initWithEvents:v17 parameters:MEMORY[0x29EDB8E90] error:&v26];
     v20 = v26;
-    v21 = [(AXCameraHapticEngine *)self _engine];
+    _engine = [(AXCameraHapticEngine *)self _engine];
     v25 = v20;
-    v22 = [v21 createPrivilegedPlayerWithPlayable:v19 error:&v25];
+    v22 = [_engine createPrivilegedPlayerWithPlayable:v19 error:&v25];
     v23 = v25;
 
     if (!v22 || v23)
@@ -464,20 +464,20 @@ void __28__AXCameraHapticEngine_init__block_invoke_474(uint64_t a1, uint64_t a2)
   }
 }
 
-- (unint64_t)_registerAudioWithResourceWithName:(id)a3
+- (unint64_t)_registerAudioWithResourceWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if ([(AXCameraHapticEngine *)self _supportsAudio])
   {
-    v5 = [v4 stringByDeletingPathExtension];
-    v6 = [v4 pathExtension];
+    stringByDeletingPathExtension = [nameCopy stringByDeletingPathExtension];
+    pathExtension = [nameCopy pathExtension];
     v7 = [MEMORY[0x29EDB9F48] bundleForClass:objc_opt_class()];
-    v8 = [v7 URLForResource:v5 withExtension:v6];
+    v8 = [v7 URLForResource:stringByDeletingPathExtension withExtension:pathExtension];
     if (v8)
     {
-      v9 = [(AXCameraHapticEngine *)self _engine];
+      _engine = [(AXCameraHapticEngine *)self _engine];
       v14 = 0;
-      v10 = [v9 registerAudioResource:v8 options:MEMORY[0x29EDB8EA0] error:&v14];
+      v10 = [_engine registerAudioResource:v8 options:MEMORY[0x29EDB8EA0] error:&v14];
       v11 = v14;
 
       if (v10 && !v11)
@@ -513,13 +513,13 @@ LABEL_13:
   return v10;
 }
 
-- (void)_unregisterAudioResource:(unint64_t)a3
+- (void)_unregisterAudioResource:(unint64_t)resource
 {
-  if (a3)
+  if (resource)
   {
-    v4 = [(AXCameraHapticEngine *)self _engine];
+    _engine = [(AXCameraHapticEngine *)self _engine];
     v8 = 0;
-    v5 = [v4 unregisterAudioResource:a3 error:&v8];
+    v5 = [_engine unregisterAudioResource:resource error:&v8];
     v6 = v8;
 
     if (!v5 || v6)
@@ -533,28 +533,28 @@ LABEL_13:
   }
 }
 
-- (void)_performHapticForPlayer:(id)a3
+- (void)_performHapticForPlayer:(id)player
 {
   v12 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  playerCopy = player;
   v5 = AXMediaLogHaptics();
   v6 = v5;
-  if (v4)
+  if (playerCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v11 = v4;
+      v11 = playerCopy;
       _os_log_impl(&dword_29BC67000, v6, OS_LOG_TYPE_INFO, "Playing haptic/sound for: %@", buf, 0xCu);
     }
 
-    v7 = [(AXCameraHapticEngine *)self _engine];
+    _engine = [(AXCameraHapticEngine *)self _engine];
     v8[0] = MEMORY[0x29EDCA5F8];
     v8[1] = 3221225472;
     v8[2] = __48__AXCameraHapticEngine__performHapticForPlayer___block_invoke;
     v8[3] = &unk_29F2ACB28;
-    v9 = v4;
-    [v7 startWithCompletionHandler:v8];
+    v9 = playerCopy;
+    [_engine startWithCompletionHandler:v8];
 
     v6 = v9;
   }
@@ -609,15 +609,15 @@ void __48__AXCameraHapticEngine__performHapticForPlayer___block_invoke(uint64_t 
 - (void)performLevelFeedback
 {
   [(AXCameraHapticEngine *)self _createLevelPlayerIfNeeded];
-  v3 = [(AXCameraHapticEngine *)self _levelPlayer];
-  [(AXCameraHapticEngine *)self _performHapticForPlayer:v3];
+  _levelPlayer = [(AXCameraHapticEngine *)self _levelPlayer];
+  [(AXCameraHapticEngine *)self _performHapticForPlayer:_levelPlayer];
 }
 
 - (void)performUnlevelFeedback
 {
   [(AXCameraHapticEngine *)self _createUnlevelPlayerIfNeeded];
-  v3 = [(AXCameraHapticEngine *)self _unlevelPlayer];
-  [(AXCameraHapticEngine *)self _performHapticForPlayer:v3];
+  _unlevelPlayer = [(AXCameraHapticEngine *)self _unlevelPlayer];
+  [(AXCameraHapticEngine *)self _performHapticForPlayer:_unlevelPlayer];
 }
 
 - (void)performSubjectHitScreenEdgeFeedback
@@ -644,8 +644,8 @@ void __48__AXCameraHapticEngine__performHapticForPlayer___block_invoke(uint64_t 
   else
   {
     [(AXCameraHapticEngine *)self _createScreenEdgePlayerIfNeeded];
-    v8 = [(AXCameraHapticEngine *)self _screenEdgePlayer];
-    [(AXCameraHapticEngine *)self _performHapticForPlayer:v8];
+    _screenEdgePlayer = [(AXCameraHapticEngine *)self _screenEdgePlayer];
+    [(AXCameraHapticEngine *)self _performHapticForPlayer:_screenEdgePlayer];
 
     [(AXCameraHapticEngine *)self set_lastScreenEdgeTimestamp:Current];
   }

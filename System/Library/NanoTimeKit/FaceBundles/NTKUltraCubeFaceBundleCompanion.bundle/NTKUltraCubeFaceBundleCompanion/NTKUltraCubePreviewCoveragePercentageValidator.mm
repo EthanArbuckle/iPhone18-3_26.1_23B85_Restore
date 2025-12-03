@@ -1,21 +1,21 @@
 @interface NTKUltraCubePreviewCoveragePercentageValidator
-- (NTKUltraCubePreviewCoveragePercentageValidator)initWithMaskImage:(CGImage *)a3 orientation:(unsigned int)a4;
-- (double)coverageOfTimeLabel:(CGRect)a3;
+- (NTKUltraCubePreviewCoveragePercentageValidator)initWithMaskImage:(CGImage *)image orientation:(unsigned int)orientation;
+- (double)coverageOfTimeLabel:(CGRect)label;
 - (void)dealloc;
-- (void)validateTimeLabel:(CGRect)a3 completion:(id)a4;
+- (void)validateTimeLabel:(CGRect)label completion:(id)completion;
 @end
 
 @implementation NTKUltraCubePreviewCoveragePercentageValidator
 
-- (NTKUltraCubePreviewCoveragePercentageValidator)initWithMaskImage:(CGImage *)a3 orientation:(unsigned int)a4
+- (NTKUltraCubePreviewCoveragePercentageValidator)initWithMaskImage:(CGImage *)image orientation:(unsigned int)orientation
 {
   v16.receiver = self;
   v16.super_class = NTKUltraCubePreviewCoveragePercentageValidator;
   v5 = [(NTKUltraCubePreviewCoveragePercentageValidator *)&v16 init];
   if (v5)
   {
-    CGImageGetWidth(a3);
-    CGImageGetHeight(a3);
+    CGImageGetWidth(image);
+    CGImageGetHeight(image);
     v6 = objc_autoreleasePoolPush();
     NTKCGImagePropertyOrientationToUIImageOrientation();
     NTKImagePresentationTransform();
@@ -41,7 +41,7 @@
     CGColorSpaceRelease(v13);
     memset(&buf, 0, sizeof(buf));
     memset(&v18, 0, sizeof(v18));
-    sub_197D4(a3, &v18, &buf);
+    sub_197D4(image, &v18, &buf);
     transform = buf;
     memset(&v18, 0, sizeof(v18));
     CGAffineTransformInvert(&v18, &transform);
@@ -53,7 +53,7 @@
     v20.size.width = v8;
     v20.size.height = v10;
     v21 = CGRectApplyAffineTransform(v20, &transform);
-    CGContextDrawImage(v14, v21, a3);
+    CGContextDrawImage(v14, v21, image);
     CGContextRelease(v14);
     v5->_cumulativeData = createCumulativeData(v12, v5->_width, v5->_height);
 
@@ -76,12 +76,12 @@
   [(NTKUltraCubePreviewCoveragePercentageValidator *)&v4 dealloc];
 }
 
-- (double)coverageOfTimeLabel:(CGRect)a3
+- (double)coverageOfTimeLabel:(CGRect)label
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = label.size.height;
+  width = label.size.width;
+  y = label.origin.y;
+  x = label.origin.x;
   v8 = self->_width;
   v9 = v8;
   v10 = self->_height;
@@ -119,15 +119,15 @@
   return (v14[v12] - (v14[v11 - 1] + v15[v12]) + v15[v11 - 1]) / (v19.size.width * v19.size.height * 255.0);
 }
 
-- (void)validateTimeLabel:(CGRect)a3 completion:(id)a4
+- (void)validateTimeLabel:(CGRect)label completion:(id)completion
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = label.size.height;
+  width = label.size.width;
+  y = label.origin.y;
+  x = label.origin.x;
+  completionCopy = completion;
   [(NTKUltraCubePreviewCoveragePercentageValidator *)self coverageOfTimeLabel:x, y, width, height];
-  v10[2](v10, v9 <= 0.2);
+  completionCopy[2](completionCopy, v9 <= 0.2);
 }
 
 @end

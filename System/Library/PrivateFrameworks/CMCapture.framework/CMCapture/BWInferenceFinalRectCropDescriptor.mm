@@ -1,16 +1,16 @@
 @interface BWInferenceFinalRectCropDescriptor
-+ (id)finalCropRectDescriptorWithName:(id)a3;
-+ (id)finalCropRectDescriptorWithName:(id)a3 attachedMediaKey:(id)a4;
-- (CGRect)rectForSampleBuffer:(opaqueCMSampleBuffer *)a3;
++ (id)finalCropRectDescriptorWithName:(id)name;
++ (id)finalCropRectDescriptorWithName:(id)name attachedMediaKey:(id)key;
+- (CGRect)rectForSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (void)dealloc;
-- (void)initWithNameAndAttachedMediaKey:(void *)a3 attachedMediaKey:;
+- (void)initWithNameAndAttachedMediaKey:(void *)key attachedMediaKey:;
 @end
 
 @implementation BWInferenceFinalRectCropDescriptor
 
-+ (id)finalCropRectDescriptorWithName:(id)a3
++ (id)finalCropRectDescriptorWithName:(id)name
 {
-  v3 = [[BWInferenceFinalRectCropDescriptor alloc] initWithNameAndAttachedMediaKey:a3 attachedMediaKey:0];
+  v3 = [[BWInferenceFinalRectCropDescriptor alloc] initWithNameAndAttachedMediaKey:name attachedMediaKey:0];
 
   return v3;
 }
@@ -22,13 +22,13 @@
   [(BWInferenceFinalRectCropDescriptor *)&v3 dealloc];
 }
 
-- (CGRect)rectForSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (CGRect)rectForSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  AttachedMedia = a3;
+  AttachedMedia = buffer;
   attachedMediaKey = self->_attachedMediaKey;
   if (attachedMediaKey)
   {
-    AttachedMedia = BWSampleBufferGetAttachedMedia(a3, attachedMediaKey);
+    AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, attachedMediaKey);
   }
 
   CMGetAttachment(AttachedMedia, *off_1E798A3C8, 0);
@@ -47,28 +47,28 @@
   return result;
 }
 
-- (void)initWithNameAndAttachedMediaKey:(void *)a3 attachedMediaKey:
+- (void)initWithNameAndAttachedMediaKey:(void *)key attachedMediaKey:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = BWInferenceFinalRectCropDescriptor;
   v5 = objc_msgSendSuper2(&v7, sel_init);
   if (v5)
   {
     v5[1] = a2;
-    v5[2] = a3;
+    v5[2] = key;
   }
 
   return v5;
 }
 
-+ (id)finalCropRectDescriptorWithName:(id)a3 attachedMediaKey:(id)a4
++ (id)finalCropRectDescriptorWithName:(id)name attachedMediaKey:(id)key
 {
-  v4 = [[BWInferenceFinalRectCropDescriptor alloc] initWithNameAndAttachedMediaKey:a3 attachedMediaKey:a4];
+  v4 = [[BWInferenceFinalRectCropDescriptor alloc] initWithNameAndAttachedMediaKey:name attachedMediaKey:key];
 
   return v4;
 }

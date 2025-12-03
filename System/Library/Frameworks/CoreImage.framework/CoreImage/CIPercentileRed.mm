@@ -102,10 +102,10 @@
     return 0;
   }
 
-  v9 = [(NSNumber *)self->inputCount intValue];
-  v10 = [(NSNumber *)self->inputNormalize BOOLValue];
-  v50 = [(NSNumber *)self->inputClip BOOLValue];
-  if (v10)
+  intValue = [(NSNumber *)self->inputCount intValue];
+  bOOLValue = [(NSNumber *)self->inputNormalize BOOLValue];
+  bOOLValue2 = [(NSNumber *)self->inputClip BOOLValue];
+  if (bOOLValue)
   {
     v58 = @"inputExtent";
     [(CIImage *)inputImage extent];
@@ -113,7 +113,7 @@
     v11 = -[CIImage imageByClampingToExtent](-[CIImage imageByApplyingFilter:withInputParameters:](inputImage, "imageByApplyingFilter:withInputParameters:", @"CIAreaMinMaxRed", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v59 forKeys:&v58 count:1]), "imageByClampingToExtent");
     v12 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_perc_norm_red];
     [(CIImage *)inputImage extent];
-    v49 = v9;
+    v49 = intValue;
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -122,7 +122,7 @@
     v57[1] = v11;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:2];
     v22 = v14;
-    v9 = v49;
+    intValue = v49;
     inputImage = [(CIColorKernel *)v12 applyWithExtent:v21 arguments:v22, v16, v18, v20];
   }
 
@@ -132,9 +132,9 @@
   }
 
   v55[0] = @"inputExtent";
-  v23 = [CIVector vectorWithCGRect:x, y, width, height];
+  height = [CIVector vectorWithCGRect:x, y, width, height];
   inputScale = self->inputScale;
-  v56[0] = v23;
+  v56[0] = height;
   v56[1] = inputScale;
   v55[1] = @"inputScale";
   v55[2] = @"inputCount";
@@ -147,7 +147,7 @@
   v51[3] = &__block_descriptor_96_e73__CGRect__CGPoint_dd__CGSize_dd__44__0i8_CGRect__CGPoint_dd__CGSize_dd__12l;
   v51[4] = 0;
   v51[5] = 0;
-  *&v51[6] = v9;
+  *&v51[6] = intValue;
   v51[8] = 0;
   v51[9] = 0;
   v51[7] = 0x3FF0000000000000;
@@ -159,7 +159,7 @@
   v54[1] = inputPercentile;
   v54[2] = self->inputCount;
   v8 = -[CIImage imageByClampingToExtent](-[CIKernel applyWithExtent:roiCallback:arguments:](v26, "applyWithExtent:roiCallback:arguments:", v51, [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:3], 0.0, 0.0, 1.0, 1.0), "imageByClampingToExtent");
-  if (v10)
+  if (bOOLValue)
   {
     v33 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_perc_denorm_red];
     [(CIImage *)inputImage extent];
@@ -168,13 +168,13 @@
     v8 = -[CIColorKernel applyWithExtent:arguments:](v33, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:2], v34, v35, v36, v37);
   }
 
-  if (v50)
+  if (bOOLValue2)
   {
     v38 = self->inputImage;
-    v39 = [(NSNumber *)self->inputHard BOOLValue];
+    bOOLValue3 = [(NSNumber *)self->inputHard BOOLValue];
     v40 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_perc_clip_hard];
     v41 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_perc_clip_soft];
-    if (v39)
+    if (bOOLValue3)
     {
       v42 = v40;
     }
@@ -184,10 +184,10 @@
       v42 = v41;
     }
 
-    v43 = [(CIImage *)v8 imageByClampingToExtent];
+    imageByClampingToExtent = [(CIImage *)v8 imageByClampingToExtent];
     [(CIImage *)v38 extent];
     v60[0] = v38;
-    v60[1] = v43;
+    v60[1] = imageByClampingToExtent;
     return -[CIColorKernel applyWithExtent:arguments:](v42, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v60 count:2], v44, v45, v46, v47);
   }
 

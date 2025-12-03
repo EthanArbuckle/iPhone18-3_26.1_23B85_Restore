@@ -5,7 +5,7 @@
 - (void)_avsSettingsDidUpdate;
 - (void)_bootstrapAVSDetection;
 - (void)_startupAVSDetectionUIServer;
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3;
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client;
 @end
 
 @implementation AXBAVSDetectionManager
@@ -46,13 +46,13 @@ uint64_t __36__AXBAVSDetectionManager_controller__block_invoke()
 - (void)_bootstrapAVSDetection
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x29EDBDFA0] sharedInstance];
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
   v4 = MEMORY[0x29EDCA5F8];
   v5 = 3221225472;
   v6 = __48__AXBAVSDetectionManager__bootstrapAVSDetection__block_invoke;
   v7 = &unk_29F2A4D08;
   objc_copyWeak(&v8, &location);
-  [v3 registerUpdateBlock:&v4 forRetrieveSelector:sel_isAdaptiveVoiceShortcutsEnabled withListener:self];
+  [mEMORY[0x29EDBDFA0] registerUpdateBlock:&v4 forRetrieveSelector:sel_isAdaptiveVoiceShortcutsEnabled withListener:self];
 
   [(AXBAVSDetectionManager *)self _avsSettingsDidUpdate:v4];
   objc_destroyWeak(&v8);
@@ -85,10 +85,10 @@ void __48__AXBAVSDetectionManager__bootstrapAVSDetection__block_invoke(uint64_t 
   }
 }
 
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client
 {
   avsDetectionClient = self->_avsDetectionClient;
-  if (avsDetectionClient == a3 && avsDetectionClient != 0)
+  if (avsDetectionClient == client && avsDetectionClient != 0)
   {
     [(AXBAVSDetectionManager *)self _startupAVSDetectionUIServer];
   }
@@ -122,17 +122,17 @@ void __48__AXBAVSDetectionManager__bootstrapAVSDetection__block_invoke(uint64_t 
     }
 
     v7 = self->_avsDetectionClient;
-    v8 = [MEMORY[0x29EDBD688] mainAccessQueue];
-    [(AXUIClient *)v7 sendAsynchronousMessage:MEMORY[0x29EDB8EA0] withIdentifier:10000 targetAccessQueue:v8 completion:0];
+    mainAccessQueue = [MEMORY[0x29EDBD688] mainAccessQueue];
+    [(AXUIClient *)v7 sendAsynchronousMessage:MEMORY[0x29EDB8EA0] withIdentifier:10000 targetAccessQueue:mainAccessQueue completion:0];
   }
 }
 
 - (BOOL)_shouldArmAVS
 {
-  v2 = [MEMORY[0x29EDBDFA0] sharedInstance];
-  v3 = [v2 isAdaptiveVoiceShortcutsEnabled];
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+  isAdaptiveVoiceShortcutsEnabled = [mEMORY[0x29EDBDFA0] isAdaptiveVoiceShortcutsEnabled];
 
-  return v3;
+  return isAdaptiveVoiceShortcutsEnabled;
 }
 
 @end

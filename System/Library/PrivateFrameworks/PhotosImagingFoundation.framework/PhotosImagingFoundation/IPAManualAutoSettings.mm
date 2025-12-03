@@ -1,22 +1,22 @@
 @interface IPAManualAutoSettings
 - (IPAManualAutoSettings)init;
-- (IPAManualAutoSettings)initWithIdentifier:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (IPAManualAutoSettings)initWithIdentifier:(id)identifier;
+- (id)valueForUndefinedKey:(id)key;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation IPAManualAutoSettings
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v11 = a3;
-  v6 = a4;
-  if (v6)
+  valueCopy = value;
+  keyCopy = key;
+  if (keyCopy)
   {
-    v7 = v6;
-    if (v11)
+    v7 = keyCopy;
+    if (valueCopy)
     {
-      [(NSMutableDictionary *)self->_state setObject:v11 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_state setObject:valueCopy forKeyedSubscript:keyCopy];
     }
   }
 
@@ -27,13 +27,13 @@
   }
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v5 = v4;
-    v6 = [(NSMutableDictionary *)self->_state objectForKeyedSubscript:v4];
+    v5 = keyCopy;
+    v6 = [(NSMutableDictionary *)self->_state objectForKeyedSubscript:keyCopy];
 
     return v6;
   }
@@ -45,7 +45,7 @@
   }
 }
 
-- (IPAManualAutoSettings)initWithIdentifier:(id)a3
+- (IPAManualAutoSettings)initWithIdentifier:(id)identifier
 {
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"unsupported method for manual settings"];
 

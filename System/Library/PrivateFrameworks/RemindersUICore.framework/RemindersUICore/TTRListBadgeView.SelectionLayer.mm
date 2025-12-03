@@ -1,7 +1,7 @@
 @interface TTRListBadgeView.SelectionLayer
 - (_TtCC15RemindersUICore16TTRListBadgeViewP33_3DF80B16FE3BCF93F419A82E393676A414SelectionLayer)init;
-- (_TtCC15RemindersUICore16TTRListBadgeViewP33_3DF80B16FE3BCF93F419A82E393676A414SelectionLayer)initWithCoder:(id)a3;
-- (_TtCC15RemindersUICore16TTRListBadgeViewP33_3DF80B16FE3BCF93F419A82E393676A414SelectionLayer)initWithLayer:(id)a3;
+- (_TtCC15RemindersUICore16TTRListBadgeViewP33_3DF80B16FE3BCF93F419A82E393676A414SelectionLayer)initWithCoder:(id)coder;
+- (_TtCC15RemindersUICore16TTRListBadgeViewP33_3DF80B16FE3BCF93F419A82E393676A414SelectionLayer)initWithLayer:(id)layer;
 @end
 
 @implementation TTRListBadgeView.SelectionLayer
@@ -20,7 +20,7 @@
   return v3;
 }
 
-- (_TtCC15RemindersUICore16TTRListBadgeViewP33_3DF80B16FE3BCF93F419A82E393676A414SelectionLayer)initWithLayer:(id)a3
+- (_TtCC15RemindersUICore16TTRListBadgeViewP33_3DF80B16FE3BCF93F419A82E393676A414SelectionLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_21DBFBC1C();
@@ -41,7 +41,7 @@
   return v6;
 }
 
-- (_TtCC15RemindersUICore16TTRListBadgeViewP33_3DF80B16FE3BCF93F419A82E393676A414SelectionLayer)initWithCoder:(id)a3
+- (_TtCC15RemindersUICore16TTRListBadgeViewP33_3DF80B16FE3BCF93F419A82E393676A414SelectionLayer)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtCC15RemindersUICore16TTRListBadgeViewP33_3DF80B16FE3BCF93F419A82E393676A414SelectionLayer_shape;
   *v3 = 0u;

@@ -1,38 +1,38 @@
 @interface _UIStatusBarCycleAnimation
 - (NSString)description;
-- (_UIStatusBarCycleAnimation)initWithLayerAnimations:(id)a3;
-- (void)_sendCompletionsWithFinished:(BOOL)a3;
+- (_UIStatusBarCycleAnimation)initWithLayerAnimations:(id)animations;
+- (void)_sendCompletionsWithFinished:(BOOL)finished;
 - (void)_startAnimations;
 - (void)_stopAnimations;
 - (void)_stopStoppingAnimations;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
 - (void)resumePersistentAnimation;
 - (void)start;
-- (void)stopWithCompletionHandler:(id)a3;
+- (void)stopWithCompletionHandler:(id)handler;
 @end
 
 @implementation _UIStatusBarCycleAnimation
 
-- (_UIStatusBarCycleAnimation)initWithLayerAnimations:(id)a3
+- (_UIStatusBarCycleAnimation)initWithLayerAnimations:(id)animations
 {
-  v5 = a3;
+  animationsCopy = animations;
   v13.receiver = self;
   v13.super_class = _UIStatusBarCycleAnimation;
   v6 = [(_UIStatusBarCycleAnimation *)&v13 init];
-  if (![(NSArray *)v5 count])
+  if (![(NSArray *)animationsCopy count])
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:v6 file:@"_UIStatusBarCycleAnimation.m" lineNumber:67 description:@"There must be at least one animation"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v6 file:@"_UIStatusBarCycleAnimation.m" lineNumber:67 description:@"There must be at least one animation"];
   }
 
   layerAnimations = v6->_layerAnimations;
-  v6->_layerAnimations = v5;
-  v8 = v5;
+  v6->_layerAnimations = animationsCopy;
+  v8 = animationsCopy;
 
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   completionHandlers = v6->_completionHandlers;
-  v6->_completionHandlers = v9;
+  v6->_completionHandlers = array;
 
   v6->_visible = 1;
   return v6;
@@ -54,12 +54,12 @@
     if (state == 2)
     {
       [(_UIStatusBarCycleAnimation *)self _stopStoppingAnimations];
-      v4 = [(_UIStatusBarCycleAnimation *)self mainLayerAnimation];
-      v5 = [v4 animation];
-      v6 = [v4 layer];
-      v7 = [v4 key];
-      [v6 removeAnimationForKey:v7];
-      [v6 addAnimation:v5 forKey:v7];
+      mainLayerAnimation = [(_UIStatusBarCycleAnimation *)self mainLayerAnimation];
+      animation = [mainLayerAnimation animation];
+      layer = [mainLayerAnimation layer];
+      v7 = [mainLayerAnimation key];
+      [layer removeAnimationForKey:v7];
+      [layer addAnimation:animation forKey:v7];
       [(_UIStatusBarCycleAnimation *)self _sendCompletionsWithFinished:0];
     }
 
@@ -72,16 +72,16 @@
   self->_state = 1;
 }
 
-- (void)stopWithCompletionHandler:(id)a3
+- (void)stopWithCompletionHandler:(id)handler
 {
   v74 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (!self->_visible)
   {
     self->_state = 0;
 LABEL_7:
-    (*(v4 + 2))(v4, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
     goto LABEL_8;
   }
 
@@ -89,7 +89,7 @@ LABEL_7:
   if (state == 2)
   {
     completionHandlers = self->_completionHandlers;
-    v23 = _Block_copy(v4);
+    v23 = _Block_copy(handlerCopy);
     [(NSMutableArray *)completionHandlers addObject:v23];
 
     goto LABEL_8;
@@ -105,15 +105,15 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v41 = [(_UIStatusBarCycleAnimation *)self mainLayerAnimation];
-  v7 = [v41 animation];
-  v40 = [v41 layer];
-  v39 = [v41 key];
-  v8 = [v7 copy];
-  [v7 beginTime];
+  mainLayerAnimation = [(_UIStatusBarCycleAnimation *)self mainLayerAnimation];
+  animation = [mainLayerAnimation animation];
+  layer = [mainLayerAnimation layer];
+  v39 = [mainLayerAnimation key];
+  v8 = [animation copy];
+  [animation beginTime];
   v10 = v9;
   v11 = CACurrentMediaTime();
-  [v7 duration];
+  [animation duration];
   v13 = v12;
   v68 = 0;
   v69 = &v68;
@@ -134,9 +134,9 @@ LABEL_7:
   v55 = &v64;
   v56 = &v68;
   v58 = v12;
-  v38 = v7;
+  v38 = animation;
   v53 = v38;
-  v54 = self;
+  selfCopy = self;
   v57 = &v60;
   v59 = v10;
   v46 = 0u;
@@ -158,8 +158,8 @@ LABEL_7:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v46 + 1) + 8 * i) originalAnimation];
-        [v19 duration];
+        originalAnimation = [*(*(&v46 + 1) + 8 * i) originalAnimation];
+        [originalAnimation duration];
         v21 = v20;
 
         if (v17 < v21)
@@ -209,13 +209,13 @@ LABEL_7:
         }
 
         v29 = *(*(&v42 + 1) + 8 * j);
-        v30 = [v29 originalAnimation];
+        originalAnimation2 = [v29 originalAnimation];
         v31 = v61[3];
-        [v30 duration];
-        [v30 setBeginTime:v31 - v32];
-        v33 = [v29 layer];
+        [originalAnimation2 duration];
+        [originalAnimation2 setBeginTime:v31 - v32];
+        layer2 = [v29 layer];
         v34 = [v29 key];
-        [v33 addAnimation:v30 forKey:v34];
+        [layer2 addAnimation:originalAnimation2 forKey:v34];
       }
 
       v26 = [(NSArray *)v25 countByEnumeratingWithState:&v42 objects:v72 count:16];
@@ -228,8 +228,8 @@ LABEL_7:
   *&v35 = v35;
   [v8 setRepeatCount:v35];
   [v8 setDelegate:self];
-  [v40 removeAnimationForKey:v39];
-  [v40 addAnimation:v8 forKey:v39];
+  [layer removeAnimationForKey:v39];
+  [layer addAnimation:v8 forKey:v39];
   v36 = self->_completionHandlers;
   v37 = _Block_copy(v5);
   [(NSMutableArray *)v36 addObject:v37];
@@ -251,9 +251,9 @@ LABEL_8:
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  [(_UIStatusBarCycleAnimation *)self _stopAnimations:a3];
+  [(_UIStatusBarCycleAnimation *)self _stopAnimations:stop];
   if (self->_state == 2)
   {
     self->_state = 0;
@@ -285,13 +285,13 @@ LABEL_8:
         }
 
         v7 = *(*(&v12 + 1) + 8 * i);
-        v8 = [v7 animation];
-        [v8 setBeginTime:CACurrentMediaTime()];
+        animation = [v7 animation];
+        [animation setBeginTime:CACurrentMediaTime()];
         LODWORD(v9) = 2139095040;
-        [v8 setRepeatCount:v9];
-        v10 = [v7 layer];
+        [animation setRepeatCount:v9];
+        layer = [v7 layer];
         v11 = [v7 key];
-        [v10 addAnimation:v8 forKey:v11];
+        [layer addAnimation:animation forKey:v11];
       }
 
       v4 = [(NSArray *)v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -324,9 +324,9 @@ LABEL_8:
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [v8 layer];
+        layer = [v8 layer];
         v10 = [v8 key];
-        [v9 removeAnimationForKey:v10];
+        [layer removeAnimationForKey:v10];
       }
 
       v5 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -361,9 +361,9 @@ LABEL_8:
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 layer];
+        layer = [v8 layer];
         v10 = [v8 key];
-        [v9 removeAnimationForKey:v10];
+        [layer removeAnimationForKey:v10];
       }
 
       v5 = [(NSArray *)v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -376,7 +376,7 @@ LABEL_8:
   self->_stoppingLayerAnimations = MEMORY[0x1E695E0F0];
 }
 
-- (void)_sendCompletionsWithFinished:(BOOL)a3
+- (void)_sendCompletionsWithFinished:(BOOL)finished
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;

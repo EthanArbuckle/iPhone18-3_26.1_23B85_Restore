@@ -1,7 +1,7 @@
 @interface _UIClickHighlightInteractionEffectAnchorView
 - (_UIClickHighlightInteractionEffectAnchorView)init;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation _UIClickHighlightInteractionEffectAnchorView
@@ -20,14 +20,14 @@
   return v3;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v3.receiver = self;
   v3.super_class = _UIClickHighlightInteractionEffectAnchorView;
-  [(UIView *)&v3 setFrame:a3.origin.x, a3.origin.y, 5.0, 5.0];
+  [(UIView *)&v3 setFrame:frame.origin.x, frame.origin.y, 5.0, 5.0];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v3.receiver = self;
   v3.super_class = _UIClickHighlightInteractionEffectAnchorView;

@@ -1,40 +1,40 @@
 @interface AXSSInterDeviceSwitchEvent
-- (AXSSInterDeviceSwitchEvent)initWithDictionaryRepresentation:(id)a3;
-- (AXSSInterDeviceSwitchEvent)initWithSwitchIdentifier:(id)a3 switchDisplayName:(id)a4 deviceIdentifier:(id)a5 actions:(id)a6 longPressActions:(id)a7 isDown:(BOOL)a8;
+- (AXSSInterDeviceSwitchEvent)initWithDictionaryRepresentation:(id)representation;
+- (AXSSInterDeviceSwitchEvent)initWithSwitchIdentifier:(id)identifier switchDisplayName:(id)name deviceIdentifier:(id)deviceIdentifier actions:(id)actions longPressActions:(id)pressActions isDown:(BOOL)down;
 - (id)description;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation AXSSInterDeviceSwitchEvent
 
-- (AXSSInterDeviceSwitchEvent)initWithSwitchIdentifier:(id)a3 switchDisplayName:(id)a4 deviceIdentifier:(id)a5 actions:(id)a6 longPressActions:(id)a7 isDown:(BOOL)a8
+- (AXSSInterDeviceSwitchEvent)initWithSwitchIdentifier:(id)identifier switchDisplayName:(id)name deviceIdentifier:(id)deviceIdentifier actions:(id)actions longPressActions:(id)pressActions isDown:(BOOL)down
 {
-  v22 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  identifierCopy = identifier;
+  nameCopy = name;
+  deviceIdentifierCopy = deviceIdentifier;
+  actionsCopy = actions;
+  pressActionsCopy = pressActions;
   v23.receiver = self;
   v23.super_class = AXSSInterDeviceSwitchEvent;
   v18 = [(AXSSInterDeviceSwitchEvent *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_switchIdentifier, a3);
-    objc_storeStrong(&v19->_switchDisplayName, a4);
-    objc_storeStrong(&v19->_deviceIdentifier, a5);
-    objc_storeStrong(&v19->_actions, a6);
-    objc_storeStrong(&v19->_longPressActions, a7);
-    v19->_isDown = a8;
+    objc_storeStrong(&v18->_switchIdentifier, identifier);
+    objc_storeStrong(&v19->_switchDisplayName, name);
+    objc_storeStrong(&v19->_deviceIdentifier, deviceIdentifier);
+    objc_storeStrong(&v19->_actions, actions);
+    objc_storeStrong(&v19->_longPressActions, pressActions);
+    v19->_isDown = down;
   }
 
   return v19;
 }
 
-- (AXSSInterDeviceSwitchEvent)initWithDictionaryRepresentation:(id)a3
+- (AXSSInterDeviceSwitchEvent)initWithDictionaryRepresentation:(id)representation
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  representationCopy = representation;
   v36.receiver = self;
   v36.super_class = AXSSInterDeviceSwitchEvent;
   v5 = [(AXSSInterDeviceSwitchEvent *)&v36 init];
@@ -43,29 +43,29 @@
     goto LABEL_21;
   }
 
-  v6 = [v4 axssDecodeObjectOfClass:objc_opt_class() forKey:@"SwitchIdentifier"];
+  v6 = [representationCopy axssDecodeObjectOfClass:objc_opt_class() forKey:@"SwitchIdentifier"];
   switchIdentifier = v5->_switchIdentifier;
   v5->_switchIdentifier = v6;
 
-  v8 = [v4 axssDecodeObjectOfClass:objc_opt_class() forKey:@"SwitchDisplayName"];
+  v8 = [representationCopy axssDecodeObjectOfClass:objc_opt_class() forKey:@"SwitchDisplayName"];
   switchDisplayName = v5->_switchDisplayName;
   v5->_switchDisplayName = v8;
 
-  v10 = [v4 axssDecodeObjectOfClass:objc_opt_class() forKey:@"DeviceIdentifier"];
+  v10 = [representationCopy axssDecodeObjectOfClass:objc_opt_class() forKey:@"DeviceIdentifier"];
   deviceIdentifier = v5->_deviceIdentifier;
   v5->_deviceIdentifier = v10;
 
-  v12 = [v4 axssDecodeArrayOfClass:objc_opt_class() forKey:@"Actions"];
+  v12 = [representationCopy axssDecodeArrayOfClass:objc_opt_class() forKey:@"Actions"];
   actions = v5->_actions;
   v5->_actions = v12;
 
-  v14 = [v4 axssDecodeArrayOfClass:objc_opt_class() forKey:@"LongPressActions"];
+  v14 = [representationCopy axssDecodeArrayOfClass:objc_opt_class() forKey:@"LongPressActions"];
   longPressActions = v5->_longPressActions;
   v5->_longPressActions = v14;
 
-  v5->_isDown = [v4 axssDecodeBoolForKey:@"IsDown"];
-  v16 = [(AXSSInterDeviceSwitchEvent *)v5 switchDisplayName];
-  v17 = [v16 length];
+  v5->_isDown = [representationCopy axssDecodeBoolForKey:@"IsDown"];
+  switchDisplayName = [(AXSSInterDeviceSwitchEvent *)v5 switchDisplayName];
+  v17 = [switchDisplayName length];
 
   if (!v17)
   {
@@ -79,8 +79,8 @@
     goto LABEL_8;
   }
 
-  v18 = [(AXSSInterDeviceSwitchEvent *)v5 switchDisplayName];
-  v19 = [v18 isEqualToString:@"switch.key.space.displayName"];
+  switchDisplayName2 = [(AXSSInterDeviceSwitchEvent *)v5 switchDisplayName];
+  v19 = [switchDisplayName2 isEqualToString:@"switch.key.space.displayName"];
 
   if (v19)
   {
@@ -91,8 +91,8 @@ LABEL_8:
     [(AXSSInterDeviceSwitchEvent *)v5 setSwitchDisplayName:v23];
   }
 
-  v24 = [(AXSSInterDeviceSwitchEvent *)v5 switchIdentifier];
-  v25 = [v24 length];
+  switchIdentifier = [(AXSSInterDeviceSwitchEvent *)v5 switchIdentifier];
+  v25 = [switchIdentifier length];
 
   if (!v25)
   {
@@ -105,8 +105,8 @@ LABEL_8:
     [(AXSSInterDeviceSwitchEvent *)v5 setSwitchIdentifier:@"missing-switch-identifier"];
   }
 
-  v27 = [(AXSSInterDeviceSwitchEvent *)v5 deviceIdentifier];
-  v28 = [v27 length];
+  deviceIdentifier = [(AXSSInterDeviceSwitchEvent *)v5 deviceIdentifier];
+  v28 = [deviceIdentifier length];
 
   if (!v28)
   {
@@ -119,8 +119,8 @@ LABEL_8:
     [(AXSSInterDeviceSwitchEvent *)v5 setDeviceIdentifier:@"missing-device-identifier"];
   }
 
-  v30 = [(AXSSInterDeviceSwitchEvent *)v5 actions];
-  v31 = [v30 count];
+  actions = [(AXSSInterDeviceSwitchEvent *)v5 actions];
+  v31 = [actions count];
 
   if (!v31)
   {
@@ -143,26 +143,26 @@ LABEL_21:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(AXSSInterDeviceSwitchEvent *)self switchIdentifier];
-  [v3 setObject:v4 forKeyedSubscript:@"SwitchIdentifier"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  switchIdentifier = [(AXSSInterDeviceSwitchEvent *)self switchIdentifier];
+  [dictionary setObject:switchIdentifier forKeyedSubscript:@"SwitchIdentifier"];
 
-  v5 = [(AXSSInterDeviceSwitchEvent *)self switchDisplayName];
-  [v3 setObject:v5 forKeyedSubscript:@"SwitchDisplayName"];
+  switchDisplayName = [(AXSSInterDeviceSwitchEvent *)self switchDisplayName];
+  [dictionary setObject:switchDisplayName forKeyedSubscript:@"SwitchDisplayName"];
 
-  v6 = [(AXSSInterDeviceSwitchEvent *)self deviceIdentifier];
-  [v3 setObject:v6 forKeyedSubscript:@"DeviceIdentifier"];
+  deviceIdentifier = [(AXSSInterDeviceSwitchEvent *)self deviceIdentifier];
+  [dictionary setObject:deviceIdentifier forKeyedSubscript:@"DeviceIdentifier"];
 
-  v7 = [(AXSSInterDeviceSwitchEvent *)self actions];
-  [v3 setObject:v7 forKeyedSubscript:@"Actions"];
+  actions = [(AXSSInterDeviceSwitchEvent *)self actions];
+  [dictionary setObject:actions forKeyedSubscript:@"Actions"];
 
-  v8 = [(AXSSInterDeviceSwitchEvent *)self longPressActions];
-  [v3 setObject:v8 forKeyedSubscript:@"LongPressActions"];
+  longPressActions = [(AXSSInterDeviceSwitchEvent *)self longPressActions];
+  [dictionary setObject:longPressActions forKeyedSubscript:@"LongPressActions"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[AXSSInterDeviceSwitchEvent isDown](self, "isDown")}];
-  [v3 setObject:v9 forKeyedSubscript:@"IsDown"];
+  [dictionary setObject:v9 forKeyedSubscript:@"IsDown"];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -170,12 +170,12 @@ LABEL_21:
   v11.receiver = self;
   v11.super_class = AXSSInterDeviceSwitchEvent;
   v3 = [(AXSSInterDeviceSwitchEvent *)&v11 description];
-  v4 = [(AXSSInterDeviceSwitchEvent *)self switchIdentifier];
-  v5 = [(AXSSInterDeviceSwitchEvent *)self switchDisplayName];
-  v6 = [(AXSSInterDeviceSwitchEvent *)self deviceIdentifier];
-  v7 = [(AXSSInterDeviceSwitchEvent *)self actions];
-  v8 = [(AXSSInterDeviceSwitchEvent *)self longPressActions];
-  v9 = [v3 stringByAppendingFormat:@" - switch identifier: %@, switch display name: %@, device identifier: %@, actions: %@, long press actions: %@, is down: %i", v4, v5, v6, v7, v8, -[AXSSInterDeviceSwitchEvent isDown](self, "isDown")];
+  switchIdentifier = [(AXSSInterDeviceSwitchEvent *)self switchIdentifier];
+  switchDisplayName = [(AXSSInterDeviceSwitchEvent *)self switchDisplayName];
+  deviceIdentifier = [(AXSSInterDeviceSwitchEvent *)self deviceIdentifier];
+  actions = [(AXSSInterDeviceSwitchEvent *)self actions];
+  longPressActions = [(AXSSInterDeviceSwitchEvent *)self longPressActions];
+  v9 = [v3 stringByAppendingFormat:@" - switch identifier: %@, switch display name: %@, device identifier: %@, actions: %@, long press actions: %@, is down: %i", switchIdentifier, switchDisplayName, deviceIdentifier, actions, longPressActions, -[AXSSInterDeviceSwitchEvent isDown](self, "isDown")];
 
   return v9;
 }

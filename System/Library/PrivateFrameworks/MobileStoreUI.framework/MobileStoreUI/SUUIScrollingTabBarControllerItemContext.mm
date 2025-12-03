@@ -1,39 +1,39 @@
 @interface SUUIScrollingTabBarControllerItemContext
 - (BOOL)viewControllerIsNavigationController;
-- (SUUIScrollingTabBarControllerItemContext)initWithViewController:(id)a3;
+- (SUUIScrollingTabBarControllerItemContext)initWithViewController:(id)controller;
 - (SUUIScrollingTabBarControllerItemContextDelegate)delegate;
 - (double)nestedPagingScrollViewContentWidth;
 - (id)_appearanceStatusObserver;
-- (id)_nestedPagedScrollingConformingViewControllerForcingViewLoading:(BOOL)a3;
-- (id)viewControllerInNestedPagingScrollViewAtPageIndex:(unint64_t)a3;
-- (void)_applyNewContentInset:(UIEdgeInsets)a3 withOldContentInset:(UIEdgeInsets)a4 toContentScrollView:(id)a5;
+- (id)_nestedPagedScrollingConformingViewControllerForcingViewLoading:(BOOL)loading;
+- (id)viewControllerInNestedPagingScrollViewAtPageIndex:(unint64_t)index;
+- (void)_applyNewContentInset:(UIEdgeInsets)inset withOldContentInset:(UIEdgeInsets)contentInset toContentScrollView:(id)view;
 - (void)_notifyDelegateOfUpdatedContentWidthInObservedNestedPagingScrollView;
-- (void)_prepareViewControllerForDisplayWithViewFrame:(CGRect)a3 updateContentOffset:(BOOL)a4 contentOffset:(CGPoint)a5;
+- (void)_prepareViewControllerForDisplayWithViewFrame:(CGRect)frame updateContentOffset:(BOOL)offset contentOffset:(CGPoint)contentOffset;
 - (void)_prepareViewControllerForTearDown;
 - (void)_updateAppliedContentInsetsAdjustment;
-- (void)applyNewContentInsetDescriptor:(id *)a3;
+- (void)applyNewContentInsetDescriptor:(id *)descriptor;
 - (void)dealloc;
-- (void)notifyOfUpdatedAppearanceStatus:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)observedNavigationStackDidChange:(id)a3;
+- (void)notifyOfUpdatedAppearanceStatus:(id)status;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)observedNavigationStackDidChange:(id)change;
 - (void)updateForPossibleNestedPagingScrollViewChange;
-- (void)updateNestedPagingScrollViewContentOffset:(CGPoint)a3;
+- (void)updateNestedPagingScrollViewContentOffset:(CGPoint)offset;
 @end
 
 @implementation SUUIScrollingTabBarControllerItemContext
 
-- (SUUIScrollingTabBarControllerItemContext)initWithViewController:(id)a3
+- (SUUIScrollingTabBarControllerItemContext)initWithViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = SUUIScrollingTabBarControllerItemContext;
   v6 = [(SUUIScrollingTabBarControllerItemContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (controllerCopy)
     {
-      objc_storeStrong(&v6->_viewController, a3);
+      objc_storeStrong(&v6->_viewController, controller);
       v7->_viewControllerIsNavigationController = -1;
     }
 
@@ -55,12 +55,12 @@
   [(SUUIScrollingTabBarControllerItemContext *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (_SUUIScrollingTabNestedPagingScrollViewContentOffsetObservingContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (_SUUIScrollingTabNestedPagingScrollViewContentOffsetObservingContext == context)
   {
     if (!self->_adjustingNestedPagingScrollViewContentOffset)
     {
@@ -72,7 +72,7 @@
     }
   }
 
-  else if (_SUUIScrollingTabNestedPagingScrollViewContentSizeObservingContext == a6)
+  else if (_SUUIScrollingTabNestedPagingScrollViewContentSizeObservingContext == context)
   {
     [(SUUIScrollingTabBarControllerItemContext *)self _notifyDelegateOfUpdatedContentWidthInObservedNestedPagingScrollView];
   }
@@ -81,16 +81,16 @@
   {
     v14.receiver = self;
     v14.super_class = SUUIScrollingTabBarControllerItemContext;
-    [(SUUIScrollingTabBarControllerItemContext *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(SUUIScrollingTabBarControllerItemContext *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)observedNavigationStackDidChange:(id)a3
+- (void)observedNavigationStackDidChange:(id)change
 {
-  v7 = a3;
+  changeCopy = change;
   v4 = [(SUUIScrollingTabBarControllerItemContext *)self _nestedPagedScrollingConformingViewControllerForcingViewLoading:1];
-  v5 = [v4 scrollingTabNestedPagingScrollView];
-  if (v5 != self->_observedNestedPagingScrollView)
+  scrollingTabNestedPagingScrollView = [v4 scrollingTabNestedPagingScrollView];
+  if (scrollingTabNestedPagingScrollView != self->_observedNestedPagingScrollView)
   {
     [(SUUIScrollingTabBarControllerItemContext *)self updateForPossibleNestedPagingScrollViewChange];
   }
@@ -99,7 +99,7 @@
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained scrollingTabBarControllerItemContext:self observedNavigationStackDidChange:v7];
+    [WeakRetained scrollingTabBarControllerItemContext:self observedNavigationStackDidChange:changeCopy];
   }
 }
 
@@ -130,31 +130,31 @@
   return viewControllerIsNavigationController != 0;
 }
 
-- (void)applyNewContentInsetDescriptor:(id *)a3
+- (void)applyNewContentInsetDescriptor:(id *)descriptor
 {
-  if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_desiredContentInsetAdjustmentDescriptor.contentInset.top, *&a3->var0.top), vceqq_f64(*&self->_desiredContentInsetAdjustmentDescriptor.contentInset.bottom, *&a3->var0.bottom)))) & 1) == 0 || vabdd_f64(self->_desiredContentInsetAdjustmentDescriptor.bottomInsetValueAddedForScrollingTabBar, a3->var1) > 0.00000011920929)
+  if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_desiredContentInsetAdjustmentDescriptor.contentInset.top, *&descriptor->var0.top), vceqq_f64(*&self->_desiredContentInsetAdjustmentDescriptor.contentInset.bottom, *&descriptor->var0.bottom)))) & 1) == 0 || vabdd_f64(self->_desiredContentInsetAdjustmentDescriptor.bottomInsetValueAddedForScrollingTabBar, descriptor->var1) > 0.00000011920929)
   {
-    v3 = *&a3->var0.top;
-    v4 = *&a3->var0.bottom;
-    self->_desiredContentInsetAdjustmentDescriptor.bottomInsetValueAddedForScrollingTabBar = a3->var1;
+    v3 = *&descriptor->var0.top;
+    v4 = *&descriptor->var0.bottom;
+    self->_desiredContentInsetAdjustmentDescriptor.bottomInsetValueAddedForScrollingTabBar = descriptor->var1;
     *&self->_desiredContentInsetAdjustmentDescriptor.contentInset.top = v3;
     *&self->_desiredContentInsetAdjustmentDescriptor.contentInset.bottom = v4;
     [(SUUIScrollingTabBarControllerItemContext *)self _updateAppliedContentInsetsAdjustment];
   }
 }
 
-- (void)notifyOfUpdatedAppearanceStatus:(id)a3
+- (void)notifyOfUpdatedAppearanceStatus:(id)status
 {
-  v3 = *&a3.var1;
-  var0 = a3.var0;
-  if (vabdd_f64(self->_lastSentAppearanceStatus.progress, a3.var0) > 0.00000011920929 || a3.var1 != self->_lastSentAppearanceStatus.isBouncingOffTheEdge)
+  v3 = *&status.var1;
+  var0 = status.var0;
+  if (vabdd_f64(self->_lastSentAppearanceStatus.progress, status.var0) > 0.00000011920929 || status.var1 != self->_lastSentAppearanceStatus.isBouncingOffTheEdge)
   {
-    v6 = [(SUUIScrollingTabBarControllerItemContext *)self _appearanceStatusObserver];
-    if (v6)
+    _appearanceStatusObserver = [(SUUIScrollingTabBarControllerItemContext *)self _appearanceStatusObserver];
+    if (_appearanceStatusObserver)
     {
-      v7 = v6;
-      [v6 scrollingTabAppearanceStatusWasUpdated:{*&var0, v3}];
-      v6 = v7;
+      v7 = _appearanceStatusObserver;
+      [_appearanceStatusObserver scrollingTabAppearanceStatusWasUpdated:{*&var0, v3}];
+      _appearanceStatusObserver = v7;
       self->_lastSentAppearanceStatus.progress = var0;
       *&self->_lastSentAppearanceStatus.isBouncingOffTheEdge = v3;
     }
@@ -170,53 +170,53 @@
   }
 
   [(SUUIScrollingTabBarControllerItemContext *)self _prepareViewControllerForTearDown];
-  v4 = [(UIViewController *)self->_viewController view];
-  [v4 frame];
+  view = [(UIViewController *)self->_viewController view];
+  [view frame];
   [SUUIScrollingTabBarControllerItemContext _prepareViewControllerForDisplayWithViewFrame:"_prepareViewControllerForDisplayWithViewFrame:updateContentOffset:contentOffset:" updateContentOffset:observedNestedPagingScrollView != 0 contentOffset:?];
 }
 
-- (void)updateNestedPagingScrollViewContentOffset:(CGPoint)a3
+- (void)updateNestedPagingScrollViewContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   if (self->_adjustingNestedPagingScrollViewContentOffset)
   {
-    v7 = [(SUUIScrollingTabBarControllerItemContext *)self nestedPagingScrollView];
-    [v7 setContentOffset:{x, y}];
+    nestedPagingScrollView = [(SUUIScrollingTabBarControllerItemContext *)self nestedPagingScrollView];
+    [nestedPagingScrollView setContentOffset:{x, y}];
   }
 
   else
   {
     self->_adjustingNestedPagingScrollViewContentOffset = 1;
-    v6 = [(SUUIScrollingTabBarControllerItemContext *)self nestedPagingScrollView];
-    [v6 setContentOffset:{x, y}];
+    nestedPagingScrollView2 = [(SUUIScrollingTabBarControllerItemContext *)self nestedPagingScrollView];
+    [nestedPagingScrollView2 setContentOffset:{x, y}];
 
     self->_adjustingNestedPagingScrollViewContentOffset = 0;
   }
 }
 
-- (id)viewControllerInNestedPagingScrollViewAtPageIndex:(unint64_t)a3
+- (id)viewControllerInNestedPagingScrollViewAtPageIndex:(unint64_t)index
 {
   v4 = [(SUUIScrollingTabBarControllerItemContext *)self _nestedPagedScrollingConformingViewControllerForcingViewLoading:0];
-  v5 = [v4 scrollingTabViewControllerInNestedPagingScrollViewAtPageIndex:a3];
+  v5 = [v4 scrollingTabViewControllerInNestedPagingScrollViewAtPageIndex:index];
 
   return v5;
 }
 
 - (id)_appearanceStatusObserver
 {
-  v3 = [(SUUIScrollingTabBarControllerItemContext *)self viewControllerIsNavigationController];
+  viewControllerIsNavigationController = [(SUUIScrollingTabBarControllerItemContext *)self viewControllerIsNavigationController];
   viewController = self->_viewController;
-  if (v3)
+  if (viewControllerIsNavigationController)
   {
     v5 = viewController;
-    v6 = [(UIViewController *)v5 viewControllers];
-    v7 = [v6 firstObject];
+    viewControllers = [(UIViewController *)v5 viewControllers];
+    firstObject = [viewControllers firstObject];
 
-    LODWORD(v6) = [v7 conformsToProtocol:&unk_286BCF800];
-    if (v6)
+    LODWORD(viewControllers) = [firstObject conformsToProtocol:&unk_286BCF800];
+    if (viewControllers)
     {
-      v8 = v7;
+      v8 = firstObject;
     }
 
     else
@@ -238,45 +238,45 @@
   return v8;
 }
 
-- (void)_applyNewContentInset:(UIEdgeInsets)a3 withOldContentInset:(UIEdgeInsets)a4 toContentScrollView:(id)a5
+- (void)_applyNewContentInset:(UIEdgeInsets)inset withOldContentInset:(UIEdgeInsets)contentInset toContentScrollView:(id)view
 {
-  if (a4.left != a3.left || a4.top != a3.top || a4.right != a3.right || a4.bottom != a3.bottom)
+  if (contentInset.left != inset.left || contentInset.top != inset.top || contentInset.right != inset.right || contentInset.bottom != inset.bottom)
   {
-    right = a4.right;
-    bottom = a4.bottom;
-    left = a4.left;
-    top = a4.top;
-    v13 = a3.right;
-    v14 = a3.bottom;
-    v15 = a3.left;
-    v16 = a3.top;
-    v37 = a5;
-    [v37 contentInset];
+    right = contentInset.right;
+    bottom = contentInset.bottom;
+    left = contentInset.left;
+    top = contentInset.top;
+    v13 = inset.right;
+    v14 = inset.bottom;
+    v15 = inset.left;
+    v16 = inset.top;
+    viewCopy = view;
+    [viewCopy contentInset];
     v27 = v17;
     v28 = v18;
     v29 = v19;
     v30 = v20;
-    [v37 scrollIndicatorInsets];
+    [viewCopy scrollIndicatorInsets];
     v31 = v21;
     v32 = v22;
     v33 = v23;
     v34 = v24;
-    [v37 contentOffset];
+    [viewCopy contentOffset];
     v35 = v26;
     v36 = v25;
-    [v37 setContentInset:{v16 + v27 - top, v15 + v28 - left, v14 + v29 - bottom, v13 + v30 - right}];
-    [v37 setScrollIndicatorInsets:{v16 + v31 - top, v15 + v32 - left, v14 + v33 - bottom, v13 + v34 - right}];
-    [v37 setContentOffset:{v36, top + v35 - v16}];
+    [viewCopy setContentInset:{v16 + v27 - top, v15 + v28 - left, v14 + v29 - bottom, v13 + v30 - right}];
+    [viewCopy setScrollIndicatorInsets:{v16 + v31 - top, v15 + v32 - left, v14 + v33 - bottom, v13 + v34 - right}];
+    [viewCopy setContentOffset:{v36, top + v35 - v16}];
   }
 }
 
-- (id)_nestedPagedScrollingConformingViewControllerForcingViewLoading:(BOOL)a3
+- (id)_nestedPagedScrollingConformingViewControllerForcingViewLoading:(BOOL)loading
 {
-  v3 = a3;
+  loadingCopy = loading;
   viewController = self->_viewController;
-  if (a3)
+  if (loading)
   {
-    v6 = [(UIViewController *)viewController view];
+    view = [(UIViewController *)viewController view];
   }
 
   else if (![(UIViewController *)viewController isViewLoaded])
@@ -286,9 +286,9 @@ LABEL_9:
     goto LABEL_15;
   }
 
-  v7 = [(SUUIScrollingTabBarControllerItemContext *)self viewControllerIsNavigationController];
+  viewControllerIsNavigationController = [(SUUIScrollingTabBarControllerItemContext *)self viewControllerIsNavigationController];
   v8 = self->_viewController;
-  if (!v7)
+  if (!viewControllerIsNavigationController)
   {
     if ([(UIViewController *)v8 conformsToProtocol:&unk_286BCF8D8])
     {
@@ -300,27 +300,27 @@ LABEL_9:
   }
 
   v9 = v8;
-  v10 = [(UIViewController *)v9 viewControllers];
-  v11 = [v10 firstObject];
+  viewControllers = [(UIViewController *)v9 viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  if (v3)
+  if (loadingCopy)
   {
-    v12 = [v11 view];
+    view2 = [firstObject view];
   }
 
-  else if (![v11 isViewLoaded])
+  else if (![firstObject isViewLoaded])
   {
 LABEL_13:
     v13 = 0;
     goto LABEL_14;
   }
 
-  if (![v11 conformsToProtocol:&unk_286BCF8D8])
+  if (![firstObject conformsToProtocol:&unk_286BCF8D8])
   {
     goto LABEL_13;
   }
 
-  v13 = v11;
+  v13 = firstObject;
 LABEL_14:
 
 LABEL_15:
@@ -346,36 +346,36 @@ LABEL_15:
   }
 }
 
-- (void)_prepareViewControllerForDisplayWithViewFrame:(CGRect)a3 updateContentOffset:(BOOL)a4 contentOffset:(CGPoint)a5
+- (void)_prepareViewControllerForDisplayWithViewFrame:(CGRect)frame updateContentOffset:(BOOL)offset contentOffset:(CGPoint)contentOffset
 {
   if (!self->_readyForDisplay)
   {
-    y = a5.y;
-    x = a5.x;
-    v8 = a4;
-    height = a3.size.height;
-    width = a3.size.width;
-    v11 = a3.origin.y;
-    v12 = a3.origin.x;
+    y = contentOffset.y;
+    x = contentOffset.x;
+    offsetCopy = offset;
+    height = frame.size.height;
+    width = frame.size.width;
+    v11 = frame.origin.y;
+    v12 = frame.origin.x;
     v14 = [(SUUIScrollingTabBarControllerItemContext *)self _nestedPagedScrollingConformingViewControllerForcingViewLoading:1];
     v20 = v14;
     if (v14)
     {
-      v15 = [v14 scrollingTabNestedPagingScrollView];
-      v16 = v15 != 0;
-      if (v15)
+      scrollingTabNestedPagingScrollView = [v14 scrollingTabNestedPagingScrollView];
+      v16 = scrollingTabNestedPagingScrollView != 0;
+      if (scrollingTabNestedPagingScrollView)
       {
-        v17 = [(UIViewController *)self->_viewController view];
-        v18 = [v17 autoresizingMask];
-        self->_originalAutoresizingMask = v18;
-        [v17 setAutoresizingMask:v18 & 0xFFFFFFFFFFFFFFFDLL];
-        [v17 setFrame:{v12, v11, width, height}];
-        if (v8)
+        view = [(UIViewController *)self->_viewController view];
+        autoresizingMask = [view autoresizingMask];
+        self->_originalAutoresizingMask = autoresizingMask;
+        [view setAutoresizingMask:autoresizingMask & 0xFFFFFFFFFFFFFFFDLL];
+        [view setFrame:{v12, v11, width, height}];
+        if (offsetCopy)
         {
-          [v15 setContentOffset:{x, y}];
+          [scrollingTabNestedPagingScrollView setContentOffset:{x, y}];
         }
 
-        [v17 layoutIfNeeded];
+        [view layoutIfNeeded];
         if (self->_lastSeenContentWidth < 0.00000011920929)
         {
           v21.origin.x = v12;
@@ -385,13 +385,13 @@ LABEL_15:
           self->_lastSeenContentWidth = CGRectGetWidth(v21);
         }
 
-        [v15 setPagingEnabled:0];
-        v19 = [v15 panGestureRecognizer];
-        [v19 _setCanPanHorizontally:0];
+        [scrollingTabNestedPagingScrollView setPagingEnabled:0];
+        panGestureRecognizer = [scrollingTabNestedPagingScrollView panGestureRecognizer];
+        [panGestureRecognizer _setCanPanHorizontally:0];
 
-        [v15 addObserver:self forKeyPath:@"contentOffset" options:0 context:_SUUIScrollingTabNestedPagingScrollViewContentOffsetObservingContext];
-        [v15 addObserver:self forKeyPath:@"contentSize" options:0 context:_SUUIScrollingTabNestedPagingScrollViewContentSizeObservingContext];
-        objc_storeStrong(&self->_observedNestedPagingScrollView, v15);
+        [scrollingTabNestedPagingScrollView addObserver:self forKeyPath:@"contentOffset" options:0 context:_SUUIScrollingTabNestedPagingScrollViewContentOffsetObservingContext];
+        [scrollingTabNestedPagingScrollView addObserver:self forKeyPath:@"contentSize" options:0 context:_SUUIScrollingTabNestedPagingScrollViewContentSizeObservingContext];
+        objc_storeStrong(&self->_observedNestedPagingScrollView, scrollingTabNestedPagingScrollView);
       }
     }
 
@@ -422,12 +422,12 @@ LABEL_15:
     {
       [(UIScrollView *)v7 removeObserver:self forKeyPath:@"contentSize" context:_SUUIScrollingTabNestedPagingScrollViewContentSizeObservingContext];
       [(UIScrollView *)v7 removeObserver:self forKeyPath:@"contentOffset" context:_SUUIScrollingTabNestedPagingScrollViewContentOffsetObservingContext];
-      v4 = [(UIScrollView *)v7 panGestureRecognizer];
-      [v4 _setCanPanHorizontally:1];
+      panGestureRecognizer = [(UIScrollView *)v7 panGestureRecognizer];
+      [panGestureRecognizer _setCanPanHorizontally:1];
 
       [(UIScrollView *)v7 setPagingEnabled:1];
-      v5 = [(UIViewController *)self->_viewController view];
-      [v5 setAutoresizingMask:self->_originalAutoresizingMask];
+      view = [(UIViewController *)self->_viewController view];
+      [view setAutoresizingMask:self->_originalAutoresizingMask];
 
       observedNestedPagingScrollView = self->_observedNestedPagingScrollView;
       self->_observedNestedPagingScrollView = 0;
@@ -445,27 +445,27 @@ LABEL_15:
 
 - (void)_updateAppliedContentInsetsAdjustment
 {
-  v3 = [(SUUIScrollingTabBarControllerItemContext *)self viewControllerIsNavigationController];
+  viewControllerIsNavigationController = [(SUUIScrollingTabBarControllerItemContext *)self viewControllerIsNavigationController];
   viewController = self->_viewController;
-  if (v3)
+  if (viewControllerIsNavigationController)
   {
     v5 = viewController;
-    v6 = [(UIViewController *)v5 viewControllers];
-    v7 = [v6 firstObject];
+    viewControllers = [(UIViewController *)v5 viewControllers];
+    firstObject = [viewControllers firstObject];
 
-    obja = [v7 contentScrollView];
+    obja = [firstObject contentScrollView];
 
-    v8 = obja;
+    contentScrollView = obja;
   }
 
   else
   {
-    v8 = [(UIViewController *)viewController contentScrollView];
+    contentScrollView = [(UIViewController *)viewController contentScrollView];
   }
 
   insetAdjustedContentScrollView = self->_insetAdjustedContentScrollView;
-  obj = v8;
-  if (insetAdjustedContentScrollView != v8)
+  obj = contentScrollView;
+  if (insetAdjustedContentScrollView != contentScrollView)
   {
     v10 = MEMORY[0x277D768C8];
     if (insetAdjustedContentScrollView)

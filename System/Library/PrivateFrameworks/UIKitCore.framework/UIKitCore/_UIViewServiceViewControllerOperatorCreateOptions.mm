@@ -1,72 +1,72 @@
 @interface _UIViewServiceViewControllerOperatorCreateOptions
-- (_UIViewServiceViewControllerOperatorCreateOptions)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_UIViewServiceViewControllerOperatorCreateOptions)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIViewServiceViewControllerOperatorCreateOptions
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v14 = a3;
-  v4 = [(_UIViewServiceViewControllerOperatorCreateOptions *)self viewControllerClassName];
+  coderCopy = coder;
+  viewControllerClassName = [(_UIViewServiceViewControllerOperatorCreateOptions *)self viewControllerClassName];
 
-  if (v4)
+  if (viewControllerClassName)
   {
-    v5 = [(_UIViewServiceViewControllerOperatorCreateOptions *)self viewControllerClassName];
-    [v14 encodeObject:v5 forKey:@"viewControllerClassName"];
+    viewControllerClassName2 = [(_UIViewServiceViewControllerOperatorCreateOptions *)self viewControllerClassName];
+    [coderCopy encodeObject:viewControllerClassName2 forKey:@"viewControllerClassName"];
   }
 
-  v6 = [(_UIViewServiceViewControllerOperatorCreateOptions *)self contextToken];
+  contextToken = [(_UIViewServiceViewControllerOperatorCreateOptions *)self contextToken];
 
-  if (v6)
+  if (contextToken)
   {
-    v7 = [(_UIViewServiceViewControllerOperatorCreateOptions *)self contextToken];
-    [v14 encodeObject:v7 forKey:@"contextToken"];
+    contextToken2 = [(_UIViewServiceViewControllerOperatorCreateOptions *)self contextToken];
+    [coderCopy encodeObject:contextToken2 forKey:@"contextToken"];
   }
 
-  v8 = [(_UIViewServiceViewControllerOperatorCreateOptions *)self displayConfigurations];
+  displayConfigurations = [(_UIViewServiceViewControllerOperatorCreateOptions *)self displayConfigurations];
 
-  if (v8)
+  if (displayConfigurations)
   {
-    v9 = [(_UIViewServiceViewControllerOperatorCreateOptions *)self displayConfigurations];
-    [v14 encodeObject:v9 forKey:@"displayConfigurations"];
+    displayConfigurations2 = [(_UIViewServiceViewControllerOperatorCreateOptions *)self displayConfigurations];
+    [coderCopy encodeObject:displayConfigurations2 forKey:@"displayConfigurations"];
   }
 
-  v10 = [(_UIViewServiceViewControllerOperatorCreateOptions *)self traitCollection];
+  traitCollection = [(_UIViewServiceViewControllerOperatorCreateOptions *)self traitCollection];
 
-  if (v10)
+  if (traitCollection)
   {
-    v11 = [(_UIViewServiceViewControllerOperatorCreateOptions *)self traitCollection];
-    [v14 encodeObject:v11 forKey:@"traitCollection"];
+    traitCollection2 = [(_UIViewServiceViewControllerOperatorCreateOptions *)self traitCollection];
+    [coderCopy encodeObject:traitCollection2 forKey:@"traitCollection"];
   }
 
-  v12 = [(_UIViewServiceViewControllerOperatorCreateOptions *)self hostAccessibilityServerPort];
+  hostAccessibilityServerPort = [(_UIViewServiceViewControllerOperatorCreateOptions *)self hostAccessibilityServerPort];
 
-  if (v12)
+  if (hostAccessibilityServerPort)
   {
-    v13 = [(_UIViewServiceViewControllerOperatorCreateOptions *)self hostAccessibilityServerPort];
-    [v14 encodeObject:v13 forKey:@"hostAccessibilityServerPort"];
+    hostAccessibilityServerPort2 = [(_UIViewServiceViewControllerOperatorCreateOptions *)self hostAccessibilityServerPort];
+    [coderCopy encodeObject:hostAccessibilityServerPort2 forKey:@"hostAccessibilityServerPort"];
   }
 
-  [v14 encodeInteger:-[_UIViewServiceViewControllerOperatorCreateOptions availableTextServices](self forKey:{"availableTextServices"), @"availableTextServices"}];
-  [v14 encodeInteger:-[_UIViewServiceViewControllerOperatorCreateOptions initialInterfaceOrientation](self forKey:{"initialInterfaceOrientation"), @"initialInterfaceOrientation"}];
+  [coderCopy encodeInteger:-[_UIViewServiceViewControllerOperatorCreateOptions availableTextServices](self forKey:{"availableTextServices"), @"availableTextServices"}];
+  [coderCopy encodeInteger:-[_UIViewServiceViewControllerOperatorCreateOptions initialInterfaceOrientation](self forKey:{"initialInterfaceOrientation"), @"initialInterfaceOrientation"}];
 }
 
-- (_UIViewServiceViewControllerOperatorCreateOptions)initWithCoder:(id)a3
+- (_UIViewServiceViewControllerOperatorCreateOptions)initWithCoder:(id)coder
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = _UIViewServiceViewControllerOperatorCreateOptions;
   v5 = [(_UIViewServiceViewControllerOperatorCreateOptions *)&v21 init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"viewControllerClassName"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"viewControllerClassName"];
     [(_UIViewServiceViewControllerOperatorCreateOptions *)v5 setViewControllerClassName:v7];
 
     v8 = objc_opt_self();
-    v9 = [v4 decodeObjectOfClass:v8 forKey:@"contextToken"];
+    v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"contextToken"];
     [(_UIViewServiceViewControllerOperatorCreateOptions *)v5 setContextToken:v9];
 
     v10 = MEMORY[0x1E695DFD8];
@@ -76,19 +76,19 @@
     v22[1] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
     v14 = [v10 setWithArray:v13];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"displayConfigurations"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"displayConfigurations"];
     [(_UIViewServiceViewControllerOperatorCreateOptions *)v5 setDisplayConfigurations:v15];
 
     v16 = objc_opt_self();
-    v17 = [v4 decodeObjectOfClass:v16 forKey:@"traitCollection"];
+    v17 = [coderCopy decodeObjectOfClass:v16 forKey:@"traitCollection"];
     [(_UIViewServiceViewControllerOperatorCreateOptions *)v5 setTraitCollection:v17];
 
     v18 = objc_opt_self();
-    v19 = [v4 decodeObjectOfClass:v18 forKey:@"hostAccessibilityServerPort"];
+    v19 = [coderCopy decodeObjectOfClass:v18 forKey:@"hostAccessibilityServerPort"];
     [(_UIViewServiceViewControllerOperatorCreateOptions *)v5 setHostAccessibilityServerPort:v19];
 
-    -[_UIViewServiceViewControllerOperatorCreateOptions setAvailableTextServices:](v5, "setAvailableTextServices:", [v4 decodeIntegerForKey:@"availableTextServices"]);
-    -[_UIViewServiceViewControllerOperatorCreateOptions setInitialInterfaceOrientation:](v5, "setInitialInterfaceOrientation:", [v4 decodeIntegerForKey:@"initialInterfaceOrientation"]);
+    -[_UIViewServiceViewControllerOperatorCreateOptions setAvailableTextServices:](v5, "setAvailableTextServices:", [coderCopy decodeIntegerForKey:@"availableTextServices"]);
+    -[_UIViewServiceViewControllerOperatorCreateOptions setInitialInterfaceOrientation:](v5, "setInitialInterfaceOrientation:", [coderCopy decodeIntegerForKey:@"initialInterfaceOrientation"]);
   }
 
   return v5;

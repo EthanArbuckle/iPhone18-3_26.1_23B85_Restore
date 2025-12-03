@@ -1,7 +1,7 @@
 @interface PreviewConfiguration.ContentView
 - (BOOL)becomeFirstResponder;
 - (BOOL)resignFirstResponder;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (void)backgroundTapped;
 - (void)textDidChange;
 @end
@@ -10,13 +10,13 @@
 
 - (void)textDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_27488538C();
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_274882C6C();
 
   return v3 & 1;
@@ -24,24 +24,24 @@
 
 - (BOOL)resignFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_274885508();
 
   return v3 & 1;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = self;
-  sub_274885568(v4);
+  returnCopy = return;
+  selfCopy = self;
+  sub_274885568(returnCopy);
 
   return 0;
 }
 
 - (void)backgroundTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_2748855D0();
 }
 

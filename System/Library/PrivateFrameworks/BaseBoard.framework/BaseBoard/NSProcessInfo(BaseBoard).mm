@@ -6,8 +6,8 @@
 
 - (id)bs_jobLabel
 {
-  v1 = [a1 environment];
-  v2 = [v1 objectForKey:@"XPC_SERVICE_NAME"];
+  environment = [self environment];
+  v2 = [environment objectForKey:@"XPC_SERVICE_NAME"];
 
   return v2;
 }

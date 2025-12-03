@@ -1,20 +1,20 @@
 @interface WGWidgetStatsController
 - (WGWidgetDiscoveryController)discoveryController;
-- (WGWidgetStatsController)initWithDiscoveryController:(id)a3;
+- (WGWidgetStatsController)initWithDiscoveryController:(id)controller;
 - (void)_setupLaunchStats;
 - (void)_teardownLaunchStats;
 - (void)_updateFavoriteWidgetIdentifiers;
 - (void)dealloc;
-- (void)launchStats:(id)a3 incomingRecommendationForBundleIDs:(id)a4 completion:(id)a5;
-- (void)setBootstrapFavoriteWidgets:(BOOL)a3;
+- (void)launchStats:(id)stats incomingRecommendationForBundleIDs:(id)ds completion:(id)completion;
+- (void)setBootstrapFavoriteWidgets:(BOOL)widgets;
 @end
 
 @implementation WGWidgetStatsController
 
-- (WGWidgetStatsController)initWithDiscoveryController:(id)a3
+- (WGWidgetStatsController)initWithDiscoveryController:(id)controller
 {
-  v5 = a3;
-  if (!v5)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     [(WGWidgetStatsController *)a2 initWithDiscoveryController:?];
   }
@@ -25,9 +25,9 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_discoveryController, v5);
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v7 selector:sel__favoriteWidgetIdentifiersDidUpdate_ name:@"WGWidgetFavoritesDidChange" object:v5];
+    objc_storeWeak(&v6->_discoveryController, controllerCopy);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__favoriteWidgetIdentifiersDidUpdate_ name:@"WGWidgetFavoritesDidChange" object:controllerCopy];
 
     [(WGWidgetStatsController *)v7 _setupLaunchStats];
   }
@@ -43,11 +43,11 @@
   [(WGWidgetStatsController *)&v3 dealloc];
 }
 
-- (void)setBootstrapFavoriteWidgets:(BOOL)a3
+- (void)setBootstrapFavoriteWidgets:(BOOL)widgets
 {
-  if (self->_bootstrapFavoriteWidgets != a3)
+  if (self->_bootstrapFavoriteWidgets != widgets)
   {
-    self->_bootstrapFavoriteWidgets = a3;
+    self->_bootstrapFavoriteWidgets = widgets;
     [(WGWidgetStatsController *)self _updateFavoriteWidgetIdentifiers];
   }
 }
@@ -96,21 +96,21 @@ void __44__WGWidgetStatsController__setupLaunchStats__block_invoke(uint64_t a1, 
   [WeakRetained launchStats:v7 incomingRecommendationForBundleIDs:v6 completion:v5];
 }
 
-- (void)launchStats:(id)a3 incomingRecommendationForBundleIDs:(id)a4 completion:(id)a5
+- (void)launchStats:(id)stats incomingRecommendationForBundleIDs:(id)ds completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(WGWidgetStatsController *)self discoveryController];
+  dsCopy = ds;
+  completionCopy = completion;
+  discoveryController = [(WGWidgetStatsController *)self discoveryController];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__WGWidgetStatsController_launchStats_incomingRecommendationForBundleIDs_completion___block_invoke;
   block[3] = &unk_279ED15C0;
-  v14 = v9;
-  v15 = v7;
-  v16 = v8;
-  v10 = v8;
-  v11 = v7;
-  v12 = v9;
+  v14 = discoveryController;
+  v15 = dsCopy;
+  v16 = completionCopy;
+  v10 = completionCopy;
+  v11 = dsCopy;
+  v12 = discoveryController;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -141,18 +141,18 @@ uint64_t __85__WGWidgetStatsController_launchStats_incomingRecommendationForBund
 {
   if (self->_bootstrapFavoriteWidgets)
   {
-    v3 = [(WGWidgetStatsController *)self discoveryController];
-    v7 = [v3 favoriteWidgetIdentifiers];
+    discoveryController = [(WGWidgetStatsController *)self discoveryController];
+    favoriteWidgetIdentifiers = [discoveryController favoriteWidgetIdentifiers];
 
     launchStats = self->_launchStats;
-    v5 = [MEMORY[0x277CBEB98] setWithArray:v7];
+    v5 = [MEMORY[0x277CBEB98] setWithArray:favoriteWidgetIdentifiers];
     [(NCLaunchStats *)launchStats setBootstrapWidgetIDs:v5];
   }
 
   else
   {
     v6 = self->_launchStats;
-    v7 = [MEMORY[0x277CBEB98] set];
+    favoriteWidgetIdentifiers = [MEMORY[0x277CBEB98] set];
     [(NCLaunchStats *)v6 setBootstrapWidgetIDs:?];
   }
 }

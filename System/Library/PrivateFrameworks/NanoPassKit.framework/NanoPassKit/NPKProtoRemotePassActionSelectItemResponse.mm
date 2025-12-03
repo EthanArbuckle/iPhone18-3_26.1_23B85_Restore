@@ -1,41 +1,41 @@
 @interface NPKProtoRemotePassActionSelectItemResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsResult:(id)a3;
+- (int)StringAsResult:(id)result;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoRemotePassActionSelectItemResponse
 
-- (int)StringAsResult:(id)a3
+- (int)StringAsResult:(id)result
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  resultCopy = result;
+  if ([resultCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Successful"])
+  else if ([resultCopy isEqualToString:@"Successful"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Fail"])
+  else if ([resultCopy isEqualToString:@"Fail"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Reject"])
+  else if ([resultCopy isEqualToString:@"Reject"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Unsupported"])
+  else if ([resultCopy isEqualToString:@"Unsupported"])
   {
     v4 = 4;
   }
@@ -54,20 +54,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoRemotePassActionSelectItemResponse;
   v4 = [(NPKProtoRemotePassActionSelectItemResponse *)&v8 description];
-  v5 = [(NPKProtoRemotePassActionSelectItemResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoRemotePassActionSelectItemResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   requestUniqueID = self->_requestUniqueID;
   if (requestUniqueID)
   {
-    [v3 setObject:requestUniqueID forKey:@"requestUniqueID"];
+    [dictionary setObject:requestUniqueID forKey:@"requestUniqueID"];
   }
 
   v6 = self->_result;
@@ -104,15 +104,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_requestUniqueID)
   {
     [NPKProtoRemotePassActionSelectItemResponse writeTo:];
   }
 
-  v8 = v4;
+  v8 = toCopy;
   PBDataWriterWriteStringField();
   result = self->_result;
   PBDataWriterWriteInt32Field();
@@ -135,16 +135,16 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setRequestUniqueID:self->_requestUniqueID];
-  v4 = v5;
-  v5[8] = self->_result;
+  toCopy = to;
+  [toCopy setRequestUniqueID:self->_requestUniqueID];
+  v4 = toCopy;
+  toCopy[8] = self->_result;
   if (self->_incrementCurrency)
   {
-    [v5 setIncrementCurrency:?];
-    v4 = v5;
+    [toCopy setIncrementCurrency:?];
+    v4 = toCopy;
   }
 
   if (*&self->_has)
@@ -155,20 +155,20 @@
 
   if (self->_serviceProviderDataData)
   {
-    [v5 setServiceProviderDataData:?];
-    v4 = v5;
+    [toCopy setServiceProviderDataData:?];
+    v4 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_requestUniqueID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_requestUniqueID copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
   *(v5 + 32) = self->_result;
-  v8 = [(NSString *)self->_incrementCurrency copyWithZone:a3];
+  v8 = [(NSString *)self->_incrementCurrency copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
@@ -178,23 +178,23 @@
     *(v5 + 48) |= 1u;
   }
 
-  v10 = [(NSData *)self->_serviceProviderDataData copyWithZone:a3];
+  v10 = [(NSData *)self->_serviceProviderDataData copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   requestUniqueID = self->_requestUniqueID;
-  if (requestUniqueID | *(v4 + 3))
+  if (requestUniqueID | *(equalCopy + 3))
   {
     if (![(NSString *)requestUniqueID isEqual:?])
     {
@@ -202,13 +202,13 @@
     }
   }
 
-  if (self->_result != *(v4 + 8))
+  if (self->_result != *(equalCopy + 8))
   {
     goto LABEL_14;
   }
 
   incrementCurrency = self->_incrementCurrency;
-  if (incrementCurrency | *(v4 + 2))
+  if (incrementCurrency | *(equalCopy + 2))
   {
     if (![(NSString *)incrementCurrency isEqual:?])
     {
@@ -216,16 +216,16 @@
     }
   }
 
-  v7 = *(v4 + 48);
+  v7 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_incrementAmount != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_incrementAmount != *(equalCopy + 1))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_14:
     v9 = 0;
@@ -233,7 +233,7 @@ LABEL_14:
   }
 
   serviceProviderDataData = self->_serviceProviderDataData;
-  if (serviceProviderDataData | *(v4 + 5))
+  if (serviceProviderDataData | *(equalCopy + 5))
   {
     v9 = [(NSData *)serviceProviderDataData isEqual:?];
   }
@@ -266,33 +266,33 @@ LABEL_15:
   return (2654435761 * v4) ^ v3 ^ v5 ^ v6 ^ [(NSData *)self->_serviceProviderDataData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(NPKProtoRemotePassActionSelectItemResponse *)self setRequestUniqueID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_result = *(v4 + 8);
-  if (*(v4 + 2))
+  self->_result = *(fromCopy + 8);
+  if (*(fromCopy + 2))
   {
     [(NPKProtoRemotePassActionSelectItemResponse *)self setIncrementCurrency:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 48))
+  if (*(fromCopy + 48))
   {
-    self->_incrementAmount = *(v4 + 1);
+    self->_incrementAmount = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(NPKProtoRemotePassActionSelectItemResponse *)self setServiceProviderDataData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

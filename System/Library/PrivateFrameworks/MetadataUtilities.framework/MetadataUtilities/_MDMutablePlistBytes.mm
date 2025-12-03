@@ -1,13 +1,13 @@
 @interface _MDMutablePlistBytes
-+ (__MDPlistBytes)createArrayPlistBytesUsingBlock:(id)a3;
-+ (__MDPlistBytes)createDictionaryPlistBytesUsingBlock:(id)a3;
-- (_MDMutablePlistBytes)initWithCapacity:(unint64_t)a3;
-- (_MDMutablePlistBytes)initWithCapacity:(unint64_t)a3 useMalloc:(BOOL)a4 zone:(_malloc_zone_t *)a5;
++ (__MDPlistBytes)createArrayPlistBytesUsingBlock:(id)block;
++ (__MDPlistBytes)createDictionaryPlistBytesUsingBlock:(id)block;
+- (_MDMutablePlistBytes)initWithCapacity:(unint64_t)capacity;
+- (_MDMutablePlistBytes)initWithCapacity:(unint64_t)capacity useMalloc:(BOOL)malloc zone:(_malloc_zone_t *)zone;
 @end
 
 @implementation _MDMutablePlistBytes
 
-+ (__MDPlistBytes)createArrayPlistBytesUsingBlock:(id)a3
++ (__MDPlistBytes)createArrayPlistBytesUsingBlock:(id)block
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = [[_MDMutablePlistBytes alloc] initWithCapacity:0 useMalloc:0];
@@ -21,7 +21,7 @@
 
   _MDPlistBytesBeginPlist(v5);
   _MDPlistBytesBeginContainer(v5, 10);
-  (*(a3 + 2))(a3, v5);
+  (*(block + 2))(block, v5);
   _MDPlistBytesEndArray(v5);
   _MDPlistBytesEndPlist(v5);
   if (*(v5 + 32))
@@ -34,7 +34,7 @@
   return v5;
 }
 
-+ (__MDPlistBytes)createDictionaryPlistBytesUsingBlock:(id)a3
++ (__MDPlistBytes)createDictionaryPlistBytesUsingBlock:(id)block
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = [[_MDMutablePlistBytes alloc] initWithCapacity:0 useMalloc:0];
@@ -48,7 +48,7 @@
 
   _MDPlistBytesBeginPlist(v5);
   _MDPlistBytesBeginContainer(v5, 13);
-  (*(a3 + 2))(a3, v5);
+  (*(block + 2))(block, v5);
   _MDPlistBytesEndDictionary(v5);
   _MDPlistBytesEndPlist(v5);
   if (*(v5 + 32))
@@ -61,7 +61,7 @@
   return v5;
 }
 
-- (_MDMutablePlistBytes)initWithCapacity:(unint64_t)a3 useMalloc:(BOOL)a4 zone:(_malloc_zone_t *)a5
+- (_MDMutablePlistBytes)initWithCapacity:(unint64_t)capacity useMalloc:(BOOL)malloc zone:(_malloc_zone_t *)zone
 {
   v20 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
@@ -70,9 +70,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->super._zone = a5;
-    v10 = (a3 + *MEMORY[0x1E69E9AC8] - 1) & -*MEMORY[0x1E69E9AC8];
-    if (!a3)
+    v8->super._zone = zone;
+    v10 = (capacity + *MEMORY[0x1E69E9AC8] - 1) & -*MEMORY[0x1E69E9AC8];
+    if (!capacity)
     {
       v10 = 2 * *MEMORY[0x1E69E9AC8];
     }
@@ -88,9 +88,9 @@
     }
 
     v8->super._byteVectorCapacity = v11;
-    if (a4)
+    if (malloc)
     {
-      v8->super._byteVector = malloc_type_zone_malloc(a5, v11, 0xC1D74B50uLL);
+      v8->super._byteVector = malloc_type_zone_malloc(zone, v11, 0xC1D74B50uLL);
       v12 = 8;
 LABEL_14:
       *(&v9->super + 34) = *(&v9->super + 34) & 0xF7 | v12;
@@ -128,13 +128,13 @@ LABEL_15:
   return v9;
 }
 
-- (_MDMutablePlistBytes)initWithCapacity:(unint64_t)a3
+- (_MDMutablePlistBytes)initWithCapacity:(unint64_t)capacity
 {
   v8 = *MEMORY[0x1E69E9840];
   v5 = malloc_default_zone();
   v6 = *MEMORY[0x1E69E9840];
 
-  return [(_MDMutablePlistBytes *)self initWithCapacity:a3 useMalloc:0 zone:v5];
+  return [(_MDMutablePlistBytes *)self initWithCapacity:capacity useMalloc:0 zone:v5];
 }
 
 @end

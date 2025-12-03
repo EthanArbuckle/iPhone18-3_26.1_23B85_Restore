@@ -1,46 +1,46 @@
 @interface IEFlowTestBuilder
-- (BOOL)addToTestFile:(id)a3 flowId:(id)a4 testName:(id)a5 description:(id)a6;
-- (BOOL)addToTestFile:(id)a3 testName:(id)a4 description:(id)a5;
+- (BOOL)addToTestFile:(id)file flowId:(id)id testName:(id)name description:(id)description;
+- (BOOL)addToTestFile:(id)file testName:(id)name description:(id)description;
 - (TestCaseBuilder)mBuilder;
-- (void)assertResponseAllIds:(id)a3;
-- (void)assertResponseAnyId:(id)a3;
-- (void)gotoResponse:(id)a3;
-- (void)sendEvent:(id)a3;
-- (void)setMBuilder:(TestCaseBuilder)a3;
-- (void)setVariable:(id)a3 value:(id)a4;
-- (void)switchActivity:(id)a3;
+- (void)assertResponseAllIds:(id)ids;
+- (void)assertResponseAnyId:(id)id;
+- (void)gotoResponse:(id)response;
+- (void)sendEvent:(id)event;
+- (void)setMBuilder:(TestCaseBuilder)builder;
+- (void)setVariable:(id)variable value:(id)value;
+- (void)switchActivity:(id)activity;
 @end
 
 @implementation IEFlowTestBuilder
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  eventCopy = event;
+  v7 = eventCopy;
+  if (eventCopy)
   {
-    v3 = [v6 eventId];
-    if (v3)
+    eventId = [eventCopy eventId];
+    if (eventId)
     {
-      v4 = [v7 eventId];
-      v8 = [v4 UTF8String];
+      eventId2 = [v7 eventId];
+      uTF8String = [eventId2 UTF8String];
       v9 = 1;
     }
 
     else
     {
       v9 = 0;
-      v8 = "";
+      uTF8String = "";
     }
   }
 
   else
   {
     v9 = 0;
-    v8 = "";
+    uTF8String = "";
   }
 
-  std::string::basic_string[abi:ne200100]<0>(v22, v8);
+  std::string::basic_string[abi:ne200100]<0>(v22, uTF8String);
   if (v9)
   {
   }
@@ -48,28 +48,28 @@
   if (v7)
   {
 
-    v3 = [v7 name];
-    if (v3)
+    eventId = [v7 name];
+    if (eventId)
     {
-      v4 = [v7 name];
-      v10 = [v4 UTF8String];
+      eventId2 = [v7 name];
+      uTF8String2 = [eventId2 UTF8String];
       v11 = 1;
     }
 
     else
     {
       v11 = 0;
-      v10 = "";
+      uTF8String2 = "";
     }
   }
 
   else
   {
     v11 = 0;
-    v10 = "";
+    uTF8String2 = "";
   }
 
-  std::string::basic_string[abi:ne200100]<0>(&__p, v10);
+  std::string::basic_string[abi:ne200100]<0>(&__p, uTF8String2);
   if (v11)
   {
   }
@@ -85,11 +85,11 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v12 = [v7 slots];
-  if (v12)
+  slots = [v7 slots];
+  if (slots)
   {
-    v13 = [v7 slots];
-    IE_NSObjectToVariable(v13, &lpsrc);
+    slots2 = [v7 slots];
+    IE_NSObjectToVariable(slots2, &lpsrc);
   }
 
   else
@@ -140,19 +140,19 @@ LABEL_25:
   }
 }
 
-- (void)assertResponseAllIds:(id)a3
+- (void)assertResponseAllIds:(id)ids
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  idsCopy = ids;
+  v5 = idsCopy;
   memset(v18, 0, sizeof(v18));
-  if (v4)
+  if (idsCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4;
+    v6 = idsCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v7)
     {
@@ -192,19 +192,19 @@ LABEL_25:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assertResponseAnyId:(id)a3
+- (void)assertResponseAnyId:(id)id
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  idCopy = id;
+  v5 = idCopy;
   memset(v18, 0, sizeof(v18));
-  if (v4)
+  if (idCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4;
+    v6 = idCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v7)
     {
@@ -244,22 +244,22 @@ LABEL_25:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setVariable:(id)a3 value:(id)a4
+- (void)setVariable:(id)variable value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  variableCopy = variable;
+  valueCopy = value;
+  if (variableCopy)
   {
-    v8 = [v6 UTF8String];
+    uTF8String = [variableCopy UTF8String];
   }
 
   else
   {
-    v8 = "";
+    uTF8String = "";
   }
 
-  std::string::basic_string[abi:ne200100]<0>(&__p, v8);
-  IE_NSObjectToVariable(v7, &v11);
+  std::string::basic_string[abi:ne200100]<0>(&__p, uTF8String);
+  IE_NSObjectToVariable(valueCopy, &v11);
   v9 = v11;
   v10 = v12;
   if (v12)
@@ -284,21 +284,21 @@ LABEL_25:
   }
 }
 
-- (void)gotoResponse:(id)a3
+- (void)gotoResponse:(id)response
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  responseCopy = response;
+  v5 = responseCopy;
+  if (responseCopy)
   {
-    v6 = [v4 UTF8String];
+    uTF8String = [responseCopy UTF8String];
   }
 
   else
   {
-    v6 = "";
+    uTF8String = "";
   }
 
-  std::string::basic_string[abi:ne200100]<0>(&__p, v6);
+  std::string::basic_string[abi:ne200100]<0>(&__p, uTF8String);
   siri::intelligence::TestCaseBuilder::GotoResponse(&self->_mBuilder, &__p);
   if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -306,21 +306,21 @@ LABEL_25:
   }
 }
 
-- (void)switchActivity:(id)a3
+- (void)switchActivity:(id)activity
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  activityCopy = activity;
+  v5 = activityCopy;
+  if (activityCopy)
   {
-    v6 = [v4 UTF8String];
+    uTF8String = [activityCopy UTF8String];
   }
 
   else
   {
-    v6 = "";
+    uTF8String = "";
   }
 
-  std::string::basic_string[abi:ne200100]<0>(&__p, v6);
+  std::string::basic_string[abi:ne200100]<0>(&__p, uTF8String);
   siri::intelligence::TestCaseBuilder::SwitchActivity(&self->_mBuilder, &__p);
   if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -328,97 +328,97 @@ LABEL_25:
   }
 }
 
-- (BOOL)addToTestFile:(id)a3 flowId:(id)a4 testName:(id)a5 description:(id)a6
+- (BOOL)addToTestFile:(id)file flowId:(id)id testName:(id)name description:(id)description
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  fileCopy = file;
+  idCopy = id;
+  nameCopy = name;
+  descriptionCopy = description;
+  if (fileCopy)
   {
-    v14 = [v10 UTF8String];
+    uTF8String = [fileCopy UTF8String];
   }
 
   else
   {
-    v14 = "";
+    uTF8String = "";
   }
 
-  std::string::basic_string[abi:ne200100]<0>(&v22, v14);
-  if (v11)
+  std::string::basic_string[abi:ne200100]<0>(&v22, uTF8String);
+  if (idCopy)
   {
-    v15 = [v11 UTF8String];
+    uTF8String2 = [idCopy UTF8String];
   }
 
   else
   {
-    v15 = "";
+    uTF8String2 = "";
   }
 
-  std::string::basic_string[abi:ne200100]<0>(&v21, v15);
-  if (v12)
+  std::string::basic_string[abi:ne200100]<0>(&v21, uTF8String2);
+  if (nameCopy)
   {
-    v16 = [v12 UTF8String];
+    uTF8String3 = [nameCopy UTF8String];
   }
 
   else
   {
-    v16 = "";
+    uTF8String3 = "";
   }
 
-  std::string::basic_string[abi:ne200100]<0>(&__str, v16);
-  if (v13)
+  std::string::basic_string[abi:ne200100]<0>(&__str, uTF8String3);
+  if (descriptionCopy)
   {
-    v17 = [v13 UTF8String];
+    uTF8String4 = [descriptionCopy UTF8String];
   }
 
   else
   {
-    v17 = "";
+    uTF8String4 = "";
   }
 
-  std::string::basic_string[abi:ne200100]<0>(__p, v17);
+  std::string::basic_string[abi:ne200100]<0>(__p, uTF8String4);
   siri::intelligence::TestCaseBuilder::AddToTestFile(&self->_mBuilder, &v22, &v21, &__str, __p);
 }
 
-- (BOOL)addToTestFile:(id)a3 testName:(id)a4 description:(id)a5
+- (BOOL)addToTestFile:(id)file testName:(id)name description:(id)description
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  fileCopy = file;
+  nameCopy = name;
+  descriptionCopy = description;
+  if (fileCopy)
   {
-    v11 = [v8 UTF8String];
+    uTF8String = [fileCopy UTF8String];
   }
 
   else
   {
-    v11 = "";
+    uTF8String = "";
   }
 
-  std::string::basic_string[abi:ne200100]<0>(&v17, v11);
-  if (v9)
+  std::string::basic_string[abi:ne200100]<0>(&v17, uTF8String);
+  if (nameCopy)
   {
-    v12 = [v9 UTF8String];
+    uTF8String2 = [nameCopy UTF8String];
   }
 
   else
   {
-    v12 = "";
+    uTF8String2 = "";
   }
 
-  std::string::basic_string[abi:ne200100]<0>(&v16, v12);
-  if (v10)
+  std::string::basic_string[abi:ne200100]<0>(&v16, uTF8String2);
+  if (descriptionCopy)
   {
-    v13 = [v10 UTF8String];
+    uTF8String3 = [descriptionCopy UTF8String];
   }
 
   else
   {
-    v13 = "";
+    uTF8String3 = "";
   }
 
-  std::string::basic_string[abi:ne200100]<0>(&__p, v13);
+  std::string::basic_string[abi:ne200100]<0>(&__p, uTF8String3);
   siri::intelligence::TestCaseBuilder::AddToTestFile(&self->_mBuilder, &v17);
 }
 
@@ -437,10 +437,10 @@ LABEL_25:
   return result;
 }
 
-- (void)setMBuilder:(TestCaseBuilder)a3
+- (void)setMBuilder:(TestCaseBuilder)builder
 {
-  v4 = *a3.mImpl.__ptr_;
-  v3 = *(a3.mImpl.__ptr_ + 1);
+  v4 = *builder.mImpl.__ptr_;
+  v3 = *(builder.mImpl.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);

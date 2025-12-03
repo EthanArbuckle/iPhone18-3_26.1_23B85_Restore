@@ -3,19 +3,19 @@
 - (NSData)lastAdvertisementPayload;
 - (NSDictionary)lastAdvertisementOptions;
 - (SDActivityDecryptionKey)decryptionKey;
-- (SDActivityDeviceRecord)initWithDevice:(id)a3;
+- (SDActivityDeviceRecord)initWithDevice:(id)device;
 - (SFActivityAdvertisement)clientAdvertisement;
 - (id)description;
 - (unsigned)lastCounter;
-- (void)updateWithRawAdvertisementData:(id)a3 receivedViaScanning:(BOOL)a4 isReplay:(BOOL)a5 newAdvertisementHandler:(id)a6;
+- (void)updateWithRawAdvertisementData:(id)data receivedViaScanning:(BOOL)scanning isReplay:(BOOL)replay newAdvertisementHandler:(id)handler;
 @end
 
 @implementation SDActivityDeviceRecord
 
-- (SDActivityDeviceRecord)initWithDevice:(id)a3
+- (SDActivityDeviceRecord)initWithDevice:(id)device
 {
-  v5 = a3;
-  if (v5)
+  deviceCopy = device;
+  if (deviceCopy)
   {
     v10.receiver = self;
     v10.super_class = SDActivityDeviceRecord;
@@ -23,51 +23,51 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_idsDevice, a3);
+      objc_storeStrong(&v6->_idsDevice, device);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(IDSDevice *)self->_idsDevice uniqueIDOverride];
-  v6 = [(SDActivityDeviceRecord *)self decryptionKey];
+  uniqueIDOverride = [(IDSDevice *)self->_idsDevice uniqueIDOverride];
+  decryptionKey = [(SDActivityDeviceRecord *)self decryptionKey];
   v7 = @"YES";
-  if (!v6)
+  if (!decryptionKey)
   {
     v7 = @"NO";
   }
 
-  v8 = [NSString stringWithFormat:@"<%@: %p, deviceUniqueID:%@, hasKey:%@, lastReceivedAdvertisementDate:%@>", v4, self, v5, v7, self->_lastReceivedAdvertisementDate];
+  v8 = [NSString stringWithFormat:@"<%@: %p, deviceUniqueID:%@, hasKey:%@, lastReceivedAdvertisementDate:%@>", v4, self, uniqueIDOverride, v7, self->_lastReceivedAdvertisementDate];
 
   return v8;
 }
 
-- (void)updateWithRawAdvertisementData:(id)a3 receivedViaScanning:(BOOL)a4 isReplay:(BOOL)a5 newAdvertisementHandler:(id)a6
+- (void)updateWithRawAdvertisementData:(id)data receivedViaScanning:(BOOL)scanning isReplay:(BOOL)replay newAdvertisementHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
-  if (![(NSData *)self->_lastRawAdvertisementData isEqual:v10]|| self->_disableDuplicateFilterOnce || v7)
+  replayCopy = replay;
+  dataCopy = data;
+  handlerCopy = handler;
+  if (![(NSData *)self->_lastRawAdvertisementData isEqual:dataCopy]|| self->_disableDuplicateFilterOnce || replayCopy)
   {
-    v66 = sub_100108C78(v10);
+    v66 = sub_100108C78(dataCopy);
     v67 = v12;
     v68 = v13;
-    if (!a4)
+    if (!scanning)
     {
-      v32 = [v10 copy];
+      v32 = [dataCopy copy];
       lastRawAdvertisementData = self->_lastRawAdvertisementData;
       self->_lastRawAdvertisementData = v32;
 
@@ -79,8 +79,8 @@
       lastAdvertisementData = self->_lastAdvertisementData;
       self->_lastAdvertisementData = v36;
 
-      v15 = [(SDActivityDeviceRecord *)self clientAdvertisement];
-      v11[2](v11, v15, 0);
+      clientAdvertisement = [(SDActivityDeviceRecord *)self clientAdvertisement];
+      handlerCopy[2](handlerCopy, clientAdvertisement, 0);
 LABEL_23:
 
       goto LABEL_24;
@@ -90,13 +90,13 @@ LABEL_23:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       v52 = SFHexStringForData();
-      v53 = [(IDSDevice *)self->_idsDevice uniqueIDOverride];
-      v54 = v53;
+      uniqueIDOverride = [(IDSDevice *)self->_idsDevice uniqueIDOverride];
+      v54 = uniqueIDOverride;
       v55 = @"NO";
       disableDuplicateFilterOnce = self->_disableDuplicateFilterOnce;
       *buf = 138413058;
       *v72 = v52;
-      if (v7)
+      if (replayCopy)
       {
         v57 = @"YES";
       }
@@ -112,7 +112,7 @@ LABEL_23:
         v55 = @"YES";
       }
 
-      *v73 = v53;
+      *v73 = uniqueIDOverride;
       *&v73[8] = 2112;
       *v74 = v57;
       *&v74[8] = 2112;
@@ -120,20 +120,20 @@ LABEL_23:
       _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Received a new rawAdvertisementData %@ from %@ (isReplay:%@, disabledDuplicateFilter:%@)", buf, 0x2Au);
     }
 
-    v15 = [(SDActivityDeviceRecord *)self decryptionKey];
+    clientAdvertisement = [(SDActivityDeviceRecord *)self decryptionKey];
     v16 = sub_100108D18(v66);
-    if (v15)
+    if (clientAdvertisement)
     {
       if (self->_disableDuplicateFilterOnce && v16 == [(SDActivityDeviceRecord *)self lastCounter]|| v16 > [(SDActivityDeviceRecord *)self lastCounter])
       {
         self->_disableDuplicateFilterOnce = 0;
-        v17 = [v10 copy];
+        v17 = [dataCopy copy];
         v18 = self->_lastRawAdvertisementData;
         self->_lastRawAdvertisementData = v17;
 
         v58 = [NSData dataWithBytes:&v66 + 4 length:10];
-        v19 = [(SDActivityDeviceRecord *)self decryptionKey];
-        v20 = [v19 getResultWhileDecryptingBytesInPlace:&v66 + 4 andCounter:&v66 + 1 withTag:BYTE3(v66) version:v66];
+        decryptionKey = [(SDActivityDeviceRecord *)self decryptionKey];
+        v20 = [decryptionKey getResultWhileDecryptingBytesInPlace:&v66 + 4 andCounter:&v66 + 1 withTag:BYTE3(v66) version:v66];
 
         if (v20)
         {
@@ -152,24 +152,24 @@ LABEL_23:
             v27 = SFHexStringForData();
             v28 = self->_lastAdvertisementData;
             v29 = SFHexStringForData();
-            v30 = [(SDActivityDeviceRecord *)self lastCounter];
+            lastCounter = [(SDActivityDeviceRecord *)self lastCounter];
             *buf = 138412802;
             *v72 = v27;
             *&v72[8] = 2112;
             *v73 = v29;
             *&v73[8] = 1024;
-            *v74 = v30;
+            *v74 = lastCounter;
             _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Successfully decrypted advertisement (sharing flags + advertisementPayload): %@ => %@, counter: %u", buf, 0x1Cu);
           }
 
-          v31 = [(SDActivityDeviceRecord *)self clientAdvertisement];
-          v11[2](v11, v31, 0);
+          clientAdvertisement2 = [(SDActivityDeviceRecord *)self clientAdvertisement];
+          handlerCopy[2](handlerCopy, clientAdvertisement2, 0);
           goto LABEL_22;
         }
 
         p_super = handoff_log();
         v50 = os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR);
-        if (v7)
+        if (replayCopy)
         {
           if (v50)
           {
@@ -178,9 +178,9 @@ LABEL_23:
 
           v69 = NSLocalizedDescriptionKey;
           v70 = @"Failed to decrypt advertisement";
-          v31 = [NSDictionary dictionaryWithObjects:&v70 forKeys:&v69 count:1];
-          v51 = [NSError errorWithDomain:NSPOSIXErrorDomain code:94 userInfo:v31];
-          (v11)[2](v11, 0, v51);
+          clientAdvertisement2 = [NSDictionary dictionaryWithObjects:&v70 forKeys:&v69 count:1];
+          v51 = [NSError errorWithDomain:NSPOSIXErrorDomain code:94 userInfo:clientAdvertisement2];
+          (handlerCopy)[2](handlerCopy, 0, v51);
 
           goto LABEL_21;
         }
@@ -193,22 +193,22 @@ LABEL_23:
 LABEL_20:
 
         v46 = +[SDActivityPayloadManager sharedPayloadManager];
-        v47 = [(IDSDevice *)self->_idsDevice uniqueIDOverride];
-        v48 = [(SDActivityDeviceRecord *)self decryptionKey];
-        v49 = [v48 keyIdentifier];
+        uniqueIDOverride2 = [(IDSDevice *)self->_idsDevice uniqueIDOverride];
+        decryptionKey2 = [(SDActivityDeviceRecord *)self decryptionKey];
+        keyIdentifier = [decryptionKey2 keyIdentifier];
         v59[0] = _NSConcreteStackBlock;
         v59[1] = 3221225472;
         v59[2] = sub_100070F6C;
         v59[3] = &unk_1008CE108;
-        v60 = v15;
-        v61 = self;
-        v62 = v10;
-        v65 = a4;
-        v63 = v11;
+        v60 = clientAdvertisement;
+        selfCopy = self;
+        v62 = dataCopy;
+        scanningCopy = scanning;
+        v63 = handlerCopy;
         v64 = v16;
-        [v46 sendEncryptionKeyRequestToDeviceIdentifier:v47 previousKeyIdentifier:v49 completionHandler:v59];
+        [v46 sendEncryptionKeyRequestToDeviceIdentifier:uniqueIDOverride2 previousKeyIdentifier:keyIdentifier completionHandler:v59];
 
-        v31 = v60;
+        clientAdvertisement2 = v60;
 LABEL_21:
         v26 = v58;
 LABEL_22:
@@ -219,15 +219,15 @@ LABEL_22:
       v38 = handoff_log();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
-        v41 = [(SDActivityDeviceRecord *)self lastCounter];
-        v42 = [(IDSDevice *)self->_idsDevice uniqueIDOverride];
+        lastCounter2 = [(SDActivityDeviceRecord *)self lastCounter];
+        uniqueIDOverride3 = [(IDSDevice *)self->_idsDevice uniqueIDOverride];
         v43 = SFHexStringForData();
         *buf = 67109890;
         *v72 = v16;
         *&v72[4] = 1024;
-        *&v72[6] = v41;
+        *&v72[6] = lastCounter2;
         *v73 = 2112;
-        *&v73[2] = v42;
+        *&v73[2] = uniqueIDOverride3;
         *v74 = 2112;
         *&v74[2] = v43;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "New counter %d is not greater than previous %d from %@ with rawAdvertisementData %@. Requesting new key", buf, 0x22u);
@@ -239,10 +239,10 @@ LABEL_22:
       v38 = handoff_log();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
-        v39 = [(IDSDevice *)self->_idsDevice uniqueID];
+        uniqueID = [(IDSDevice *)self->_idsDevice uniqueID];
         v40 = SFHexStringForData();
         *buf = 138412546;
-        *v72 = v39;
+        *v72 = uniqueID;
         *&v72[8] = 2112;
         *v73 = v40;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "No current key to decrypt advertisement from %@ with rawAdvertisementData %@. Requesting key", buf, 0x16u);
@@ -250,7 +250,7 @@ LABEL_22:
     }
 
     self->_disableDuplicateFilterOnce = 0;
-    v44 = [v10 copy];
+    v44 = [dataCopy copy];
     v58 = 0;
     p_super = &self->_lastRawAdvertisementData->super;
     self->_lastRawAdvertisementData = v44;
@@ -263,18 +263,18 @@ LABEL_24:
 - (SDActivityDecryptionKey)decryptionKey
 {
   v3 = +[SDActivityEncryptionManager sharedEncryptionManager];
-  v4 = [(IDSDevice *)self->_idsDevice uniqueIDOverride];
-  v5 = [v3 decryptionKeyForDeviceIdentifier:v4];
+  uniqueIDOverride = [(IDSDevice *)self->_idsDevice uniqueIDOverride];
+  v5 = [v3 decryptionKeyForDeviceIdentifier:uniqueIDOverride];
 
   lastUsedKeyIdentifier = self->_lastUsedKeyIdentifier;
-  v7 = [v5 keyIdentifier];
-  LOBYTE(lastUsedKeyIdentifier) = [(NSUUID *)lastUsedKeyIdentifier isEqual:v7];
+  keyIdentifier = [v5 keyIdentifier];
+  LOBYTE(lastUsedKeyIdentifier) = [(NSUUID *)lastUsedKeyIdentifier isEqual:keyIdentifier];
 
   if ((lastUsedKeyIdentifier & 1) == 0)
   {
-    v8 = [v5 keyIdentifier];
+    keyIdentifier2 = [v5 keyIdentifier];
     v9 = self->_lastUsedKeyIdentifier;
-    self->_lastUsedKeyIdentifier = v8;
+    self->_lastUsedKeyIdentifier = keyIdentifier2;
 
     lastAdvertisementData = self->_lastAdvertisementData;
     self->_lastAdvertisementData = 0;
@@ -314,22 +314,22 @@ LABEL_24:
 {
   if (self->_lastAdvertisementData)
   {
-    v3 = [(SDActivityDeviceRecord *)self lastActivityAdvertisement];
+    lastActivityAdvertisement = [(SDActivityDeviceRecord *)self lastActivityAdvertisement];
 
-    return sub_100108D18(v3);
+    return sub_100108D18(lastActivityAdvertisement);
   }
 
   else
   {
-    v5 = [(SDActivityDeviceRecord *)self decryptionKey];
+    decryptionKey = [(SDActivityDeviceRecord *)self decryptionKey];
 
-    if (v5)
+    if (decryptionKey)
     {
-      v6 = [(SDActivityDeviceRecord *)self decryptionKey];
-      LOWORD(v5) = [v6 lastUsedCounter] - 1;
+      decryptionKey2 = [(SDActivityDeviceRecord *)self decryptionKey];
+      LOWORD(decryptionKey) = [decryptionKey2 lastUsedCounter] - 1;
     }
 
-    return v5;
+    return decryptionKey;
   }
 }
 
@@ -337,8 +337,8 @@ LABEL_24:
 {
   if (self->_lastAdvertisementData)
   {
-    v3 = [(SDActivityDeviceRecord *)self lastActivityAdvertisement];
-    v5 = sub_100108D20(v3, v4 & 0xFFFFFFFFFFFFLL);
+    lastActivityAdvertisement = [(SDActivityDeviceRecord *)self lastActivityAdvertisement];
+    v5 = sub_100108D20(lastActivityAdvertisement, v4 & 0xFFFFFFFFFFFFLL);
   }
 
   else
@@ -353,8 +353,8 @@ LABEL_24:
 {
   if (self->_lastAdvertisementData)
   {
-    v4 = [(SDActivityDeviceRecord *)self lastActivityAdvertisement];
-    v6 = sub_100108D9C(v4, v5 & 0xFFFFFFFFFFFFLL, [(IDSDevice *)self->_idsDevice isDefaultPairedDevice]);
+    lastActivityAdvertisement = [(SDActivityDeviceRecord *)self lastActivityAdvertisement];
+    v6 = sub_100108D9C(lastActivityAdvertisement, v5 & 0xFFFFFFFFFFFFLL, [(IDSDevice *)self->_idsDevice isDefaultPairedDevice]);
   }
 
   else
@@ -369,10 +369,10 @@ LABEL_24:
 {
   v3 = sub_100108EE8(self->_idsDevice);
   v4 = [SFActivityAdvertisement alloc];
-  v5 = [(SDActivityDeviceRecord *)self lastActivityAdvertisement];
-  v6 = [(SDActivityDeviceRecord *)self lastAdvertisementPayload];
-  v7 = [(SDActivityDeviceRecord *)self lastAdvertisementOptions];
-  v8 = [v4 initWithAdvertisementVersion:v5 advertisementPayload:v6 options:v7 device:v3];
+  lastActivityAdvertisement = [(SDActivityDeviceRecord *)self lastActivityAdvertisement];
+  lastAdvertisementPayload = [(SDActivityDeviceRecord *)self lastAdvertisementPayload];
+  lastAdvertisementOptions = [(SDActivityDeviceRecord *)self lastAdvertisementOptions];
+  v8 = [v4 initWithAdvertisementVersion:lastActivityAdvertisement advertisementPayload:lastAdvertisementPayload options:lastAdvertisementOptions device:v3];
 
   return v8;
 }

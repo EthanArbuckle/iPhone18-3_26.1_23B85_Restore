@@ -1,15 +1,15 @@
 @interface PreviewDetailsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)setupViewsAndConstraints;
 @end
 
 @implementation PreviewDetailsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PreviewDetailsViewControllerAccessibility" hasInstanceMethod:@"setupViewsAndConstraints" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PreviewDetailsViewController" hasInstanceVariable:@"_filenameTextField" withType:"UITextField"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PreviewDetailsViewControllerAccessibility" hasInstanceMethod:@"setupViewsAndConstraints" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PreviewDetailsViewController" hasInstanceVariable:@"_filenameTextField" withType:"UITextField"];
 }
 
 - (void)setupViewsAndConstraints

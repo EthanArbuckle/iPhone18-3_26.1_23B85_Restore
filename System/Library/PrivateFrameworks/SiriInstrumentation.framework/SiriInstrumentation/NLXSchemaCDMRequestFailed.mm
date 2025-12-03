@@ -1,49 +1,49 @@
 @interface NLXSchemaCDMRequestFailed
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMRequestFailed)initWithDictionary:(id)a3;
-- (NLXSchemaCDMRequestFailed)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMRequestFailed)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMRequestFailed)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)setHasErrorDomain:(BOOL)a3;
-- (void)setHasOriginalCode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)setHasErrorDomain:(BOOL)domain;
+- (void)setHasOriginalCode:(BOOL)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMRequestFailed
 
-- (NLXSchemaCDMRequestFailed)initWithDictionary:(id)a3
+- (NLXSchemaCDMRequestFailed)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = NLXSchemaCDMRequestFailed;
   v5 = [(NLXSchemaCDMRequestFailed *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"code"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"code"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaCDMRequestFailed setCode:](v5, "setCode:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"originalCode"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"originalCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaCDMRequestFailed setOriginalCode:](v5, "setOriginalCode:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"errorCode"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"errorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaCDMRequestFailed setErrorCode:](v5, "setErrorCode:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"errorDomain"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"errorDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMRequestFailed)initWithJSON:(id)a3
+- (NLXSchemaCDMRequestFailed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMRequestFailed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMRequestFailed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMRequestFailed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,7 +92,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
@@ -107,14 +107,14 @@
       v6 = off_1E78DB920[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"code"];
+    [dictionary setObject:v6 forKeyedSubscript:@"code"];
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithInt:{-[NLXSchemaCDMRequestFailed errorCode](self, "errorCode")}];
-    [v3 setObject:v9 forKeyedSubscript:@"errorCode"];
+    [dictionary setObject:v9 forKeyedSubscript:@"errorCode"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -145,7 +145,7 @@ LABEL_8:
     v11 = off_1E78DB980[v10];
   }
 
-  [v3 setObject:v11 forKeyedSubscript:@"errorDomain"];
+  [dictionary setObject:v11 forKeyedSubscript:@"errorDomain"];
   if ((*&self->_has & 2) == 0)
   {
     goto LABEL_10;
@@ -153,12 +153,12 @@ LABEL_8:
 
 LABEL_9:
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[NLXSchemaCDMRequestFailed originalCode](self, "originalCode")}];
-  [v3 setObject:v7 forKeyedSubscript:@"originalCode"];
+  [dictionary setObject:v7 forKeyedSubscript:@"originalCode"];
 
 LABEL_10:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -215,16 +215,16 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -233,13 +233,13 @@ LABEL_5:
   if (*&has)
   {
     code = self->_code;
-    if (code != [v4 code])
+    if (code != [equalCopy code])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -251,13 +251,13 @@ LABEL_5:
   if (v8)
   {
     originalCode = self->_originalCode;
-    if (originalCode != [v4 originalCode])
+    if (originalCode != [equalCopy originalCode])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -269,10 +269,10 @@ LABEL_5:
   if (v10)
   {
     errorCode = self->_errorCode;
-    if (errorCode == [v4 errorCode])
+    if (errorCode == [equalCopy errorCode])
     {
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
       goto LABEL_14;
     }
 
@@ -291,7 +291,7 @@ LABEL_14:
   if (v12)
   {
     errorDomain = self->_errorDomain;
-    if (errorDomain != [v4 errorDomain])
+    if (errorDomain != [equalCopy errorDomain])
     {
       goto LABEL_18;
     }
@@ -303,9 +303,9 @@ LABEL_19:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -352,9 +352,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasErrorDomain:(BOOL)a3
+- (void)setHasErrorDomain:(BOOL)domain
 {
-  if (a3)
+  if (domain)
   {
     v3 = 8;
   }
@@ -367,9 +367,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 4;
   }
@@ -382,9 +382,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasOriginalCode:(BOOL)a3
+- (void)setHasOriginalCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }

@@ -44,7 +44,7 @@
 
 - (BOOL)isExplicit
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ServerPodcastEpisode.isExplicit.getter();
 
   return v3 & 1;
@@ -105,7 +105,7 @@ LABEL_8:
   MEMORY[0x1EEE9AC00](v3 - 8);
   v6 = &v15 - v5;
   v7 = *(self + OBJC_IVAR___MTServerPodcastEpisode_attributes);
-  v8 = self;
+  selfCopy = self;
   PodcastEpisodeAttributes.releaseDateResolved.getter(v6);
 
   v9 = sub_1D9176E3C();
@@ -131,7 +131,7 @@ LABEL_8:
   if (*(*(self + OBJC_IVAR___MTServerPodcastEpisode_attributes) + 208))
   {
     v16 = 2;
-    v7 = self;
+    selfCopy = self;
 
     PodcastEpisodeAttributes.AvailabilityDates.subscript.getter(&v16, v6);
 
@@ -165,7 +165,7 @@ LABEL_8:
   v6 = &v15 - v5;
   if (*(*(self + OBJC_IVAR___MTServerPodcastEpisode_attributes) + 208))
   {
-    v7 = self;
+    selfCopy = self;
 
     PodcastEpisodeAttributes.AvailabilityDates.free.getter(v6);
 
@@ -213,7 +213,7 @@ LABEL_8:
 - (NSString)uti
 {
   v2 = *(self + OBJC_IVAR___MTServerPodcastEpisode_attributes);
-  v3 = self;
+  selfCopy = self;
   PodcastEpisodeAttributes.uti.getter();
   v5 = v4;
 
@@ -308,7 +308,7 @@ LABEL_8:
 
 - (NSString)priceType
 {
-  v2 = self;
+  selfCopy = self;
   ServerPodcastEpisode.determineBestChannelMetaData(isSubscriptionActive:)(v3, &v8);
 
   v4 = v8;
@@ -321,7 +321,7 @@ LABEL_8:
 
 - (NSString)entitledPriceType
 {
-  v2 = self;
+  selfCopy = self;
   ServerPodcastEpisode.determineBestChannelMetaData(isSubscriptionActive:)(v3, &v8);
 
   v4 = v8;
@@ -334,7 +334,7 @@ LABEL_8:
 
 - (NSOrderedSet)chapters
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ServerPodcastEpisode.chapters.getter();
 
   return v3;
@@ -342,7 +342,7 @@ LABEL_8:
 
 - (BOOL)priceTypeIsPSUB
 {
-  v2 = self;
+  selfCopy = self;
   ServerPodcastEpisode.determineBestChannelMetaData(isSubscriptionActive:)(v3, &v6);
 
   if (v6 == 2)
@@ -360,7 +360,7 @@ LABEL_8:
 
 - (BOOL)isRestricted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ServerPodcastEpisode.isRestricted.getter();
 
   return v3 & 1;

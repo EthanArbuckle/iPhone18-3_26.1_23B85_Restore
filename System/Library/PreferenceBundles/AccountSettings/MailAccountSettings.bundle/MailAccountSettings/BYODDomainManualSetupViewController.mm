@@ -1,11 +1,11 @@
 @interface BYODDomainManualSetupViewController
 + (id)log;
-- (BYODDomainManualSetupViewController)initWithDomainName:(id)a3 acAccount:(id)a4 showRedBadge:(BOOL)a5;
+- (BYODDomainManualSetupViewController)initWithDomainName:(id)name acAccount:(id)account showRedBadge:(BOOL)badge;
 - (id)specifiers;
-- (void)_finishSetupSpecifierWasTapped:(id)a3;
-- (void)_loadDnsRecords:(id)a3;
-- (void)_refreshDomainResultNotification:(id)a3;
-- (void)_viewInstructionSpecifierWasTapped:(id)a3;
+- (void)_finishSetupSpecifierWasTapped:(id)tapped;
+- (void)_loadDnsRecords:(id)records;
+- (void)_refreshDomainResultNotification:(id)notification;
+- (void)_viewInstructionSpecifierWasTapped:(id)tapped;
 - (void)dealloc;
 - (void)viewDidLoad;
 @end
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = sub_3D61C;
   block[3] = &unk_B8D78;
-  block[4] = a1;
+  block[4] = self;
   if (qword_D6510 != -1)
   {
     dispatch_once(&qword_D6510, block);
@@ -29,20 +29,20 @@
   return v2;
 }
 
-- (BYODDomainManualSetupViewController)initWithDomainName:(id)a3 acAccount:(id)a4 showRedBadge:(BOOL)a5
+- (BYODDomainManualSetupViewController)initWithDomainName:(id)name acAccount:(id)account showRedBadge:(BOOL)badge
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  badgeCopy = badge;
+  nameCopy = name;
+  accountCopy = account;
   v13.receiver = self;
   v13.super_class = BYODDomainManualSetupViewController;
   v10 = [(BYODDomainManualSetupViewController *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(BYODDomainManualSetupViewController *)v10 setDomainName:v8];
-    [(BYODDomainManualSetupViewController *)v11 setLoggedInUserAccount:v9];
-    [(BYODDomainManualSetupViewController *)v11 setShowRedBadge:v5];
+    [(BYODDomainManualSetupViewController *)v10 setDomainName:nameCopy];
+    [(BYODDomainManualSetupViewController *)v11 setLoggedInUserAccount:accountCopy];
+    [(BYODDomainManualSetupViewController *)v11 setShowRedBadge:badgeCopy];
   }
 
   return v11;
@@ -53,8 +53,8 @@
   v4.receiver = self;
   v4.super_class = BYODDomainManualSetupViewController;
   [(BYODDomainManualSetupViewController *)&v4 viewDidLoad];
-  v3 = [(BYODDomainManualSetupViewController *)self domainName];
-  [(BYODDomainManualSetupViewController *)self setTitle:v3];
+  domainName = [(BYODDomainManualSetupViewController *)self domainName];
+  [(BYODDomainManualSetupViewController *)self setTitle:domainName];
 }
 
 - (id)specifiers
@@ -126,48 +126,48 @@
   return v26;
 }
 
-- (void)_viewInstructionSpecifierWasTapped:(id)a3
+- (void)_viewInstructionSpecifierWasTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(BYODDomainManualSetupViewController *)self viewInstructionSpecifier];
-  [v5 removePropertyForKey:PSBadgeNumberKey];
+  tappedCopy = tapped;
+  viewInstructionSpecifier = [(BYODDomainManualSetupViewController *)self viewInstructionSpecifier];
+  [viewInstructionSpecifier removePropertyForKey:PSBadgeNumberKey];
 
-  v6 = [(BYODDomainManualSetupViewController *)self viewInstructionSpecifier];
-  [(BYODDomainManualSetupViewController *)self reloadSpecifier:v6];
+  viewInstructionSpecifier2 = [(BYODDomainManualSetupViewController *)self viewInstructionSpecifier];
+  [(BYODDomainManualSetupViewController *)self reloadSpecifier:viewInstructionSpecifier2];
 
-  v7 = [(BYODDomainManualSetupViewController *)self finishSetupSpecifier];
+  finishSetupSpecifier = [(BYODDomainManualSetupViewController *)self finishSetupSpecifier];
   v8 = [NSNumber numberWithBool:1];
-  [v7 setProperty:v8 forKey:PSEnabledKey];
+  [finishSetupSpecifier setProperty:v8 forKey:PSEnabledKey];
 
-  v9 = [(BYODDomainManualSetupViewController *)self finishSetupSpecifier];
-  [(BYODDomainManualSetupViewController *)self reloadSpecifier:v9];
+  finishSetupSpecifier2 = [(BYODDomainManualSetupViewController *)self finishSetupSpecifier];
+  [(BYODDomainManualSetupViewController *)self reloadSpecifier:finishSetupSpecifier2];
 
-  v13 = self;
-  v10 = v4;
+  selfCopy = self;
+  v10 = tappedCopy;
   v14 = v10;
   v11 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v11 performBlock:&v12];
 }
 
-- (void)_finishSetupSpecifierWasTapped:(id)a3
+- (void)_finishSetupSpecifierWasTapped:(id)tapped
 {
   v4 = [BYODConfirmFinishSetupViewController alloc];
-  v5 = [(BYODDomainManualSetupViewController *)self domainName];
-  v6 = [(BYODDomainManualSetupViewController *)self loggedInUserAccount];
-  v7 = [(BYODConfirmFinishSetupViewController *)v4 initWithDomainName:v5 acAccount:v6];
+  domainName = [(BYODDomainManualSetupViewController *)self domainName];
+  loggedInUserAccount = [(BYODDomainManualSetupViewController *)self loggedInUserAccount];
+  v7 = [(BYODConfirmFinishSetupViewController *)v4 initWithDomainName:domainName acAccount:loggedInUserAccount];
 
-  v11 = self;
+  selfCopy = self;
   v8 = [[UINavigationController alloc] initWithRootViewController:v7];
   v12 = v8;
   v9 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v9 performBlock:&v10];
 }
 
-- (void)_loadDnsRecords:(id)a3
+- (void)_loadDnsRecords:(id)records
 {
-  v4 = a3;
-  v5 = [(BYODDomainManualSetupViewController *)self dnsRecords];
-  v6 = [v5 count];
+  recordsCopy = records;
+  dnsRecords = [(BYODDomainManualSetupViewController *)self dnsRecords];
+  v6 = [dnsRecords count];
 
   if (v6)
   {
@@ -182,7 +182,7 @@
 
   else
   {
-    [v4 byod_startSpinner];
+    [recordsCopy byod_startSpinner];
     objc_initWeak(&location, self);
     v8 = +[BYODDomainManualSetupViewController log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -192,18 +192,18 @@
     }
 
     v9 = [BYODGetDnsRecordsRequest alloc];
-    v10 = [(BYODDomainManualSetupViewController *)self loggedInUserAccount];
-    v11 = [(BYODDomainManualSetupViewController *)self loggedInUserAccount];
-    v12 = [v11 accountStore];
-    v13 = [(BYODDomainManualSetupViewController *)self domainName];
-    v14 = [(BYODGetDnsRecordsRequest *)v9 initWithAccount:v10 accountStore:v12 domain:v13];
+    loggedInUserAccount = [(BYODDomainManualSetupViewController *)self loggedInUserAccount];
+    loggedInUserAccount2 = [(BYODDomainManualSetupViewController *)self loggedInUserAccount];
+    accountStore = [loggedInUserAccount2 accountStore];
+    domainName = [(BYODDomainManualSetupViewController *)self domainName];
+    v14 = [(BYODGetDnsRecordsRequest *)v9 initWithAccount:loggedInUserAccount accountStore:accountStore domain:domainName];
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_3E3AC;
     v16[3] = &unk_B9360;
     objc_copyWeak(&v18, &location);
-    v17 = v4;
+    v17 = recordsCopy;
     [(BYODGetDnsRecordsRequest *)v14 performRequestWithCallback:v16];
 
     objc_destroyWeak(&v18);
@@ -211,10 +211,10 @@
   }
 }
 
-- (void)_refreshDomainResultNotification:(id)a3
+- (void)_refreshDomainResultNotification:(id)notification
 {
-  v4 = [(BYODDomainManualSetupViewController *)self navigationController];
-  v3 = [v4 popViewControllerAnimated:1];
+  navigationController = [(BYODDomainManualSetupViewController *)self navigationController];
+  v3 = [navigationController popViewControllerAnimated:1];
 }
 
 - (void)dealloc

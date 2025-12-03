@@ -24,16 +24,16 @@
   v2 = v16[0];
   v16[1] = v4;
   v17[0] = v3;
-  v5 = [MEMORY[0x1E695F610] blueColor];
-  v17[1] = v5;
+  blueColor = [MEMORY[0x1E695F610] blueColor];
+  v17[1] = blueColor;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
   v19[0] = v6;
   v18[1] = @"inputHighlightColor";
   v14[1] = v4;
   v15[0] = v3;
   v14[0] = v2;
-  v7 = [MEMORY[0x1E695F610] yellowColor];
-  v15[1] = v7;
+  yellowColor = [MEMORY[0x1E695F610] yellowColor];
+  v15[1] = yellowColor;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
   v18[2] = @"inputMode";
   v19[1] = v8;
@@ -52,72 +52,72 @@
 
 + (id)rgbColorWashDuoVariableKernel
 {
-  v2 = [a1 colorWashKernels];
-  v3 = [v2 objectForKeyedSubscript:@"rgb_color_wash_duo_variable"];
+  colorWashKernels = [self colorWashKernels];
+  v3 = [colorWashKernels objectForKeyedSubscript:@"rgb_color_wash_duo_variable"];
 
   return v3;
 }
 
 + (id)rgbColorWashDuoFixedKernel
 {
-  v2 = [a1 colorWashKernels];
-  v3 = [v2 objectForKeyedSubscript:@"rgb_color_wash_duo_fixed"];
+  colorWashKernels = [self colorWashKernels];
+  v3 = [colorWashKernels objectForKeyedSubscript:@"rgb_color_wash_duo_fixed"];
 
   return v3;
 }
 
 + (id)rgbColorWashDuoKernel
 {
-  v2 = [a1 colorWashKernels];
-  v3 = [v2 objectForKeyedSubscript:@"rgb_color_wash_duo"];
+  colorWashKernels = [self colorWashKernels];
+  v3 = [colorWashKernels objectForKeyedSubscript:@"rgb_color_wash_duo"];
 
   return v3;
 }
 
 + (id)hueChromaColorWashDuoVariableKernel
 {
-  v2 = [a1 colorWashKernels];
-  v3 = [v2 objectForKeyedSubscript:@"ipt_hue_chroma_color_wash_duo_variable"];
+  colorWashKernels = [self colorWashKernels];
+  v3 = [colorWashKernels objectForKeyedSubscript:@"ipt_hue_chroma_color_wash_duo_variable"];
 
   return v3;
 }
 
 + (id)hueChromaColorWashDuoFixedKernel
 {
-  v2 = [a1 colorWashKernels];
-  v3 = [v2 objectForKeyedSubscript:@"ipt_hue_chroma_color_wash_duo_fixed"];
+  colorWashKernels = [self colorWashKernels];
+  v3 = [colorWashKernels objectForKeyedSubscript:@"ipt_hue_chroma_color_wash_duo_fixed"];
 
   return v3;
 }
 
 + (id)hueChromaColorWashDuoKernel
 {
-  v2 = [a1 colorWashKernels];
-  v3 = [v2 objectForKeyedSubscript:@"ipt_hue_chroma_color_wash_duo"];
+  colorWashKernels = [self colorWashKernels];
+  v3 = [colorWashKernels objectForKeyedSubscript:@"ipt_hue_chroma_color_wash_duo"];
 
   return v3;
 }
 
 + (id)iptColorWashDuoVariableKernel
 {
-  v2 = [a1 colorWashKernels];
-  v3 = [v2 objectForKeyedSubscript:@"ipt_color_wash_duo_variable"];
+  colorWashKernels = [self colorWashKernels];
+  v3 = [colorWashKernels objectForKeyedSubscript:@"ipt_color_wash_duo_variable"];
 
   return v3;
 }
 
 + (id)iptColorWashDuoFixedKernel
 {
-  v2 = [a1 colorWashKernels];
-  v3 = [v2 objectForKeyedSubscript:@"ipt_color_wash_duo_fixed"];
+  colorWashKernels = [self colorWashKernels];
+  v3 = [colorWashKernels objectForKeyedSubscript:@"ipt_color_wash_duo_fixed"];
 
   return v3;
 }
 
 + (id)iptColorWashDuoKernel
 {
-  v2 = [a1 colorWashKernels];
-  v3 = [v2 objectForKeyedSubscript:@"ipt_color_wash_duo"];
+  colorWashKernels = [self colorWashKernels];
+  v3 = [colorWashKernels objectForKeyedSubscript:@"ipt_color_wash_duo"];
 
   return v3;
 }
@@ -125,47 +125,47 @@
 - (id)outputImage
 {
   v99[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PIColorWashDuoFilter *)self inputImage];
-  if (!v3)
+  inputImage = [(PIColorWashDuoFilter *)self inputImage];
+  if (!inputImage)
   {
-    v8 = 0;
+    imageByPremultiplyingAlpha = 0;
     goto LABEL_41;
   }
 
-  v4 = v3;
-  v5 = [(PIColorWashDuoFilter *)self inputShadowColor];
-  v6 = v5;
-  if (v5)
+  v4 = inputImage;
+  inputShadowColor = [(PIColorWashDuoFilter *)self inputShadowColor];
+  v6 = inputShadowColor;
+  if (inputShadowColor)
   {
-    v7 = v5;
+    blueColor = inputShadowColor;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695F610] blueColor];
+    blueColor = [MEMORY[0x1E695F610] blueColor];
   }
 
-  v9 = v7;
+  v9 = blueColor;
 
-  v10 = [(PIColorWashDuoFilter *)self inputHighlightColor];
-  v11 = v10;
-  if (v10)
+  inputHighlightColor = [(PIColorWashDuoFilter *)self inputHighlightColor];
+  v11 = inputHighlightColor;
+  if (inputHighlightColor)
   {
-    v12 = v10;
+    blueColor2 = inputHighlightColor;
   }
 
   else
   {
-    v12 = [MEMORY[0x1E695F610] blueColor];
+    blueColor2 = [MEMORY[0x1E695F610] blueColor];
   }
 
-  v13 = v12;
+  v13 = blueColor2;
 
-  v14 = [(PIColorWashDuoFilter *)self inputMode];
-  v15 = v14;
-  if (v14)
+  inputMode = [(PIColorWashDuoFilter *)self inputMode];
+  v15 = inputMode;
+  if (inputMode)
   {
-    v16 = v14;
+    v16 = inputMode;
   }
 
   else
@@ -182,12 +182,12 @@
       v96 = v9;
       v18 = [MEMORY[0x1E69C0750] colorWithCGColor:{objc_msgSend(v9, "cgColor")}];
       v19 = [MEMORY[0x1E69C0750] colorWithCGColor:{objc_msgSend(v13, "cgColor")}];
-      v23 = [v4 imageByUnpremultiplyingAlpha];
-      v21 = [PIIPTHueChromaFilter convertRGBImageToHueChroma:v23];
+      imageByUnpremultiplyingAlpha = [v4 imageByUnpremultiplyingAlpha];
+      v21 = [PIIPTHueChromaFilter convertRGBImageToHueChroma:imageByUnpremultiplyingAlpha];
 
       if ([(__CFString *)v17 isEqualToString:@"HueChromaFixed"])
       {
-        v24 = [objc_opt_class() hueChromaColorWashDuoFixedKernel];
+        hueChromaColorWashDuoFixedKernel = [objc_opt_class() hueChromaColorWashDuoFixedKernel];
       }
 
       else
@@ -203,10 +203,10 @@
         {
           [v29 hueChromaColorWashDuoKernel];
         }
-        v24 = ;
+        hueChromaColorWashDuoFixedKernel = ;
       }
 
-      v30 = v24;
+      v30 = hueChromaColorWashDuoFixedKernel;
       [v18 hue];
       v57 = v56;
       [v19 hue];
@@ -242,19 +242,19 @@
       v81 = [v30 applyWithExtent:v80 arguments:{v94, v65, v67, v69}];
 
       v82 = [PIIPTHueChromaFilter convertHueChromaImageToRGB:v81];
-      v8 = [v82 imageByPremultiplyingAlpha];
+      imageByPremultiplyingAlpha = [v82 imageByPremultiplyingAlpha];
 
       goto LABEL_35;
     }
 
     if ([(__CFString *)v17 isEqualToString:@"RGB"])
     {
-      v27 = [objc_opt_class() rgbColorWashDuoKernel];
+      rgbColorWashDuoKernel = [objc_opt_class() rgbColorWashDuoKernel];
     }
 
     else if ([(__CFString *)v17 isEqualToString:@"RGBFixed"])
     {
-      v27 = [objc_opt_class() rgbColorWashDuoFixedKernel];
+      rgbColorWashDuoKernel = [objc_opt_class() rgbColorWashDuoFixedKernel];
     }
 
     else
@@ -265,39 +265,39 @@
         goto LABEL_39;
       }
 
-      v27 = [objc_opt_class() rgbColorWashDuoVariableKernel];
+      rgbColorWashDuoKernel = [objc_opt_class() rgbColorWashDuoVariableKernel];
     }
 
-    v18 = v27;
+    v18 = rgbColorWashDuoKernel;
 LABEL_39:
-    v83 = [v4 imageByUnpremultiplyingAlpha];
+    imageByUnpremultiplyingAlpha2 = [v4 imageByUnpremultiplyingAlpha];
 
-    [v83 extent];
+    [imageByUnpremultiplyingAlpha2 extent];
     v85 = v84;
     v87 = v86;
     v89 = v88;
     v91 = v90;
-    v97[0] = v83;
+    v97[0] = imageByUnpremultiplyingAlpha2;
     v97[1] = v9;
     v97[2] = v13;
     v92 = [MEMORY[0x1E695DEC8] arrayWithObjects:v97 count:3];
     v19 = [v18 applyWithExtent:v92 arguments:{v85, v87, v89, v91}];
 
-    v8 = [v19 imageByPremultiplyingAlpha];
-    v4 = v83;
+    imageByPremultiplyingAlpha = [v19 imageByPremultiplyingAlpha];
+    v4 = imageByUnpremultiplyingAlpha2;
     goto LABEL_40;
   }
 
   v96 = v9;
   v18 = [MEMORY[0x1E69C0750] colorWithCGColor:{objc_msgSend(v9, "cgColor")}];
   v19 = [MEMORY[0x1E69C0750] colorWithCGColor:{objc_msgSend(v13, "cgColor")}];
-  v20 = [v4 imageByUnpremultiplyingAlpha];
-  v21 = [PIIPTHueChromaFilter convertRGBImageToIPT:v20];
+  imageByUnpremultiplyingAlpha3 = [v4 imageByUnpremultiplyingAlpha];
+  v21 = [PIIPTHueChromaFilter convertRGBImageToIPT:imageByUnpremultiplyingAlpha3];
 
   v95 = v13;
   if ([(__CFString *)v17 isEqualToString:@"IPTFixed"])
   {
-    v22 = [objc_opt_class() iptColorWashDuoFixedKernel];
+    iptColorWashDuoFixedKernel = [objc_opt_class() iptColorWashDuoFixedKernel];
   }
 
   else
@@ -313,10 +313,10 @@ LABEL_39:
     {
       [v26 iptColorWashDuoKernel];
     }
-    v22 = ;
+    iptColorWashDuoFixedKernel = ;
   }
 
-  v30 = v22;
+  v30 = iptColorWashDuoFixedKernel;
   [v4 extent];
   v32 = v31;
   v34 = v33;
@@ -343,7 +343,7 @@ LABEL_39:
   v54 = [v30 applyWithExtent:v53 arguments:{v32, v34, v36, v38}];
 
   v55 = [PIIPTHueChromaFilter convertIPTImageToRGB:v54];
-  v8 = [v55 imageByPremultiplyingAlpha];
+  imageByPremultiplyingAlpha = [v55 imageByPremultiplyingAlpha];
 
 LABEL_35:
   v13 = v95;
@@ -352,7 +352,7 @@ LABEL_40:
 
 LABEL_41:
 
-  return v8;
+  return imageByPremultiplyingAlpha;
 }
 
 @end

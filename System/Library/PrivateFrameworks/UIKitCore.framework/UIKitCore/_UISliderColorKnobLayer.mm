@@ -1,12 +1,12 @@
 @interface _UISliderColorKnobLayer
-- (_TtC5UIKit23_UISliderColorKnobLayer)initWithCoder:(id)a3;
-- (_TtC5UIKit23_UISliderColorKnobLayer)initWithLayer:(id)a3;
+- (_TtC5UIKit23_UISliderColorKnobLayer)initWithCoder:(id)coder;
+- (_TtC5UIKit23_UISliderColorKnobLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
 @implementation _UISliderColorKnobLayer
 
-- (_TtC5UIKit23_UISliderColorKnobLayer)initWithLayer:(id)a3
+- (_TtC5UIKit23_UISliderColorKnobLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_18A4A7DE8();
@@ -23,7 +23,7 @@
   return v6;
 }
 
-- (_TtC5UIKit23_UISliderColorKnobLayer)initWithCoder:(id)a3
+- (_TtC5UIKit23_UISliderColorKnobLayer)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC5UIKit23_UISliderColorKnobLayer_maskLayer;
   *(&self->super.super.isa + v3) = [objc_allocWithZone(MEMORY[0x1E6979398]) init];

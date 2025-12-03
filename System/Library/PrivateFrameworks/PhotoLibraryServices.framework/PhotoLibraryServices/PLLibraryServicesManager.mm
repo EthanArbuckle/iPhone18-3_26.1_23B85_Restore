@@ -1,43 +1,43 @@
 @interface PLLibraryServicesManager
-+ (id)errorForInvalidationError:(id)a3 userInfo:(id)a4;
-+ (id)libraryServicesManagerForLibraryURL:(id)a3;
++ (id)errorForInvalidationError:(id)error userInfo:(id)info;
++ (id)libraryServicesManagerForLibraryURL:(id)l;
 - ($5E5F304956FB491AF6F034FDF0808287)resourceCacheMetrics;
-- (BOOL)_canTransitionToState:(int64_t)a3 error:(id *)a4;
-- (BOOL)_enqueueOperation:(id)a3 error:(id *)a4;
-- (BOOL)activate:(id *)a3;
-- (BOOL)awaitLibraryState:(int64_t)a3 error:(id *)a4;
-- (BOOL)disableiCPLForLibraryDeletionWithError:(id *)a3;
-- (BOOL)enqueueOperation:(id)a3 error:(id *)a4;
-- (BOOL)enqueueOperationWithName:(id)a3 requiredState:(int64_t)a4 executionBlock:(id)a5;
-- (BOOL)finalize:(id *)a3;
+- (BOOL)_canTransitionToState:(int64_t)state error:(id *)error;
+- (BOOL)_enqueueOperation:(id)operation error:(id *)error;
+- (BOOL)activate:(id *)activate;
+- (BOOL)awaitLibraryState:(int64_t)state error:(id *)error;
+- (BOOL)disableiCPLForLibraryDeletionWithError:(id *)error;
+- (BOOL)enqueueOperation:(id)operation error:(id *)error;
+- (BOOL)enqueueOperationWithName:(id)name requiredState:(int64_t)state executionBlock:(id)block;
+- (BOOL)finalize:(id *)finalize;
 - (BOOL)isAppPhotoLibrary;
 - (BOOL)isBackgroundAppRefreshEnabled;
-- (BOOL)isBackgroundAppRefreshEnabledForBundleIdentifier:(id)a3;
+- (BOOL)isBackgroundAppRefreshEnabledForBundleIdentifier:(id)identifier;
 - (BOOL)isCPLSyncablePhotoLibrary;
 - (BOOL)isCloudPhotoLibraryEnabled;
 - (BOOL)isSearchIndexingEnabled;
-- (BOOL)transitionToState:(int64_t)a3 error:(id *)a4;
+- (BOOL)transitionToState:(int64_t)state error:(id *)error;
 - (BOOL)updateGreenTeaSavedContactsAuthorizationIfNeeded;
 - (BOOL)updateSavedLocaleIfNeeded;
-- (BOOL)willBecomeNonSyncablePhotoLibrary:(id *)a3;
+- (BOOL)willBecomeNonSyncablePhotoLibrary:(id *)library;
 - (NSPersistentStoreCoordinator)persistentStoreCoordinator;
 - (NSString)description;
 - (NSString)mainScopeIdentifier;
 - (NSURL)libraryURL;
 - (PFClientSideEncryptionManager)clientSideEncryptionManager;
 - (PLChangeHandlingContainer)changeHandlingContainer;
-- (PLLibraryServicesManager)initWithLibraryBundle:(id)a3 backgroundJobService:(id)a4 cacheDeleteRegistration:(id)a5 delegateClass:(Class)a6;
+- (PLLibraryServicesManager)initWithLibraryBundle:(id)bundle backgroundJobService:(id)service cacheDeleteRegistration:(id)registration delegateClass:(Class)class;
 - (PLLibraryServicesStateNode)currentStateNode;
 - (PLMigrationServiceProtocol)migrationServiceProxy;
 - (PLMomentGenerationDataManager)momentGenerationDataManager;
 - (PLPhotoLibraryBundle)libraryBundle;
 - (id)_enqueueAwaitOperation;
-- (id)_libraryServicesStateNodeWithState:(int64_t)a3;
-- (id)_newContainer:(Class)a3 scope:(id)a4;
+- (id)_libraryServicesStateNodeWithState:(int64_t)state;
+- (id)_newContainer:(Class)container scope:(id)scope;
 - (id)_provideContextForSearchDonationProgress;
 - (id)activeOperations;
-- (id)collectionShareBackendForKind:(signed __int16)a3;
-- (id)journalManagerForName:(id)a3;
+- (id)collectionShareBackendForKind:(signed __int16)kind;
+- (id)journalManagerForName:(id)name;
 - (id)newAlbumCountCoalescer;
 - (id)newBackgroundAssetResourceUploader;
 - (id)newClientSideEncryptionManager;
@@ -58,13 +58,13 @@
 - (int64_t)state;
 - (unint64_t)createOptions;
 - (unsigned)maxWaiterQoS;
-- (void)_addPendingOperationsForStateNode:(id)a3;
-- (void)_awaitLibraryState:(int64_t)a3 sync:(BOOL)a4 completionHandler:(id)a5;
+- (void)_addPendingOperationsForStateNode:(id)node;
+- (void)_awaitLibraryState:(int64_t)state sync:(BOOL)sync completionHandler:(id)handler;
 - (void)_cancelPendingOperations;
-- (void)_dispatchAwaitLibraryStateCompletionHandler:(id)a3 group:(id)a4 error:(id)a5;
-- (void)_dispatchExternalWaitersForState:(int64_t)a3;
-- (void)_enqueueExternalWaiterCompletionBlockForState:(int64_t)a3 completionBlock:(id)a4;
-- (void)_handleCoalescerActionWithScope:(id)a3 class:(Class)a4 forIDs:(id)a5 context:(id)a6;
+- (void)_dispatchAwaitLibraryStateCompletionHandler:(id)handler group:(id)group error:(id)error;
+- (void)_dispatchExternalWaitersForState:(int64_t)state;
+- (void)_enqueueExternalWaiterCompletionBlockForState:(int64_t)state completionBlock:(id)block;
+- (void)_handleCoalescerActionWithScope:(id)scope class:(Class)class forIDs:(id)ds context:(id)context;
 - (void)_handleLibraryStateCompletedAllOperations;
 - (void)_increaseStateQueueQoSIfNeeded;
 - (void)_initCameraPreviewWellManager;
@@ -76,40 +76,40 @@
 - (void)_invalidateSyndicationPhotoLibrarySpecificServices;
 - (void)_invalidateSystemPhotoLibrarySpecificServices;
 - (void)_resetStateQueueQoS;
-- (void)_setCameraRollCountedInQuota:(BOOL)a3;
-- (void)_setCurrentStateNode:(id)a3;
+- (void)_setCameraRollCountedInQuota:(BOOL)quota;
+- (void)_setCurrentStateNode:(id)node;
 - (void)_startObservingLibraryStateCompletedAllOperations;
 - (void)_stopObservingLibraryStateCompletedAllOperations;
-- (void)_transitionToState:(int64_t)a3;
-- (void)_waitForAwaitOperation:(id)a3;
-- (void)deactivateWithInvalidationError:(id)a3;
+- (void)_transitionToState:(int64_t)state;
+- (void)_waitForAwaitOperation:(id)operation;
+- (void)deactivateWithInvalidationError:(id)error;
 - (void)dealloc;
 - (void)didBecomeNonSyncablePhotoLibrary;
 - (void)initializeChangeHandling;
 - (void)initializeConstraintsDirector;
 - (void)invalidateReverseLocationDataOnAllAssets;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performFileSystemAssetImporterWorkWithLibrary:(id)a3 block:(id)a4;
-- (void)performTransactionForSyndicationDeleteManager:(id)a3 name:(const char *)a4 transaction:(id)a5;
-- (void)refreshAlbumCountForAlbumIDs:(id)a3;
-- (void)refreshImportSessionCountForImportSessionIDs:(id)a3;
-- (void)registerOutstandingTransactionsHandler:(id)a3;
-- (void)setCreateMode:(BOOL)a3 options:(id)a4;
-- (void)setICloudPhotosEnabledInternal:(BOOL)a3;
-- (void)shutdownLibraryWithDescription:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performFileSystemAssetImporterWorkWithLibrary:(id)library block:(id)block;
+- (void)performTransactionForSyndicationDeleteManager:(id)manager name:(const char *)name transaction:(id)transaction;
+- (void)refreshAlbumCountForAlbumIDs:(id)ds;
+- (void)refreshImportSessionCountForImportSessionIDs:(id)ds;
+- (void)registerOutstandingTransactionsHandler:(id)handler;
+- (void)setCreateMode:(BOOL)mode options:(id)options;
+- (void)setICloudPhotosEnabledInternal:(BOOL)internal;
+- (void)shutdownLibraryWithDescription:(id)description;
 @end
 
 @implementation PLLibraryServicesManager
 
 - (int64_t)_state
 {
-  v3 = [(PLLibraryServicesManager *)self stateSerializationQueue];
-  dispatch_assert_queue_V2(v3);
+  stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
+  dispatch_assert_queue_V2(stateSerializationQueue);
 
-  v4 = [(PLLibraryServicesManager *)self currentStateNode];
-  v5 = [v4 state];
+  currentStateNode = [(PLLibraryServicesManager *)self currentStateNode];
+  state = [currentStateNode state];
 
-  return v5;
+  return state;
 }
 
 - (int64_t)state
@@ -118,14 +118,14 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(PLLibraryServicesManager *)self stateSerializationQueue];
+  stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __33__PLLibraryServicesManager_state__block_invoke;
   v6[3] = &unk_1E7578910;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(stateSerializationQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -148,10 +148,10 @@ uint64_t __33__PLLibraryServicesManager_state__block_invoke(uint64_t a1)
 
 - (BOOL)isCloudPhotoLibraryEnabled
 {
-  v2 = [(PLLibraryServicesManager *)self cplSettings];
-  v3 = [v2 isCloudPhotoLibraryEnabled];
+  cplSettings = [(PLLibraryServicesManager *)self cplSettings];
+  isCloudPhotoLibraryEnabled = [cplSettings isCloudPhotoLibraryEnabled];
 
-  return v3;
+  return isCloudPhotoLibraryEnabled;
 }
 
 - (id)newComputeCacheManager
@@ -187,11 +187,11 @@ uint64_t __33__PLLibraryServicesManager_state__block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-- (BOOL)isBackgroundAppRefreshEnabledForBundleIdentifier:(id)a3
+- (BOOL)isBackgroundAppRefreshEnabledForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy)
   {
     *buf = 0;
     v20 = buf;
@@ -201,18 +201,18 @@ uint64_t __33__PLLibraryServicesManager_state__block_invoke(uint64_t a1)
     v13 = 3221225472;
     v14 = __77__PLLibraryServicesManager_isBackgroundAppRefreshEnabledForBundleIdentifier___block_invoke;
     v15 = &unk_1E7578820;
-    v16 = self;
-    v17 = v4;
+    selfCopy = self;
+    v17 = identifierCopy;
     v18 = buf;
     PLRunWithUnfairLock();
-    v6 = [MEMORY[0x1E699A4B8] sharedScheduler];
+    mEMORY[0x1E699A4B8] = [MEMORY[0x1E699A4B8] sharedScheduler];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __77__PLLibraryServicesManager_isBackgroundAppRefreshEnabledForBundleIdentifier___block_invoke_2;
     v10[3] = &unk_1E756CEA8;
     v10[4] = self;
     v11 = v17;
-    [v6 backgroundAppRefreshEnabledForApp:v11 withHandler:v10];
+    [mEMORY[0x1E699A4B8] backgroundAppRefreshEnabledForApp:v11 withHandler:v10];
     v7 = v20[24];
 
     _Block_object_dispose(buf, 8);
@@ -258,10 +258,10 @@ void __77__PLLibraryServicesManager_isBackgroundAppRefreshEnabledForBundleIdenti
 
 - (BOOL)isBackgroundAppRefreshEnabled
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 isAutomaticAppUpdatesAllowed];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  isAutomaticAppUpdatesAllowed = [mEMORY[0x1E69ADFB8] isAutomaticAppUpdatesAllowed];
 
-  if ((v3 & 1) == 0)
+  if ((isAutomaticAppUpdatesAllowed & 1) == 0)
   {
     v4 = PLBackendGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -271,7 +271,7 @@ void __77__PLLibraryServicesManager_isBackgroundAppRefreshEnabledForBundleIdenti
     }
   }
 
-  return v3;
+  return isAutomaticAppUpdatesAllowed;
 }
 
 - (id)stateCaptureDictionary
@@ -280,34 +280,34 @@ void __77__PLLibraryServicesManager_isBackgroundAppRefreshEnabledForBundleIdenti
   v3 = PLLibraryServicesGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PLLibraryServicesManager *)self logPrefix];
+    logPrefix = [(PLLibraryServicesManager *)self logPrefix];
     v5 = MEMORY[0x1E69BF220];
     WeakRetained = objc_loadWeakRetained(&self->_libraryBundle);
-    v7 = [WeakRetained libraryURL];
-    v8 = [v5 descriptionWithFileURL:v7];
+    libraryURL = [WeakRetained libraryURL];
+    v8 = [v5 descriptionWithFileURL:libraryURL];
     v21 = 138412546;
-    v22 = v4;
+    v22 = logPrefix;
     v23 = 2112;
     v24 = v8;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "STATEDUMP: %@: State information for library services manager at path %@", &v21, 0x16u);
   }
 
-  v9 = [(PLLibraryServicesManager *)self currentStateNode];
+  currentStateNode = [(PLLibraryServicesManager *)self currentStateNode];
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v9 state];
+  [currentStateNode state];
   v11 = PLStringFromLibraryServicesState();
   [v10 setObject:v11 forKeyedSubscript:@"state"];
 
-  v12 = [v9 description];
+  v12 = [currentStateNode description];
   [v10 setObject:v12 forKeyedSubscript:@"currentStateNode"];
 
-  v13 = [(PLLibraryServicesManager *)self activeOperations];
-  v14 = [v13 _pl_prettyDescription];
-  [v10 setObject:v14 forKeyedSubscript:@"activeOperations"];
+  activeOperations = [(PLLibraryServicesManager *)self activeOperations];
+  _pl_prettyDescription = [activeOperations _pl_prettyDescription];
+  [v10 setObject:_pl_prettyDescription forKeyedSubscript:@"activeOperations"];
 
-  v15 = [(PLLibraryServicesManager *)self pendingOperations];
-  v16 = [v15 _pl_prettyDescription];
-  [v10 setObject:v16 forKeyedSubscript:@"pendingOperations"];
+  pendingOperations = [(PLLibraryServicesManager *)self pendingOperations];
+  _pl_prettyDescription2 = [pendingOperations _pl_prettyDescription];
+  [v10 setObject:_pl_prettyDescription2 forKeyedSubscript:@"pendingOperations"];
 
   [(PLLibraryServicesManager *)self maxWaiterQoS];
   v17 = PLStringFromQoSClass();
@@ -323,19 +323,19 @@ void __77__PLLibraryServicesManager_isBackgroundAppRefreshEnabledForBundleIdenti
   return v10;
 }
 
-- (BOOL)disableiCPLForLibraryDeletionWithError:(id *)a3
+- (BOOL)disableiCPLForLibraryDeletionWithError:(id *)error
 {
   if ([(PLLibraryServicesManager *)self isCPLSyncablePhotoLibrary])
   {
     v5 = [[PLPhotoLibraryOpener alloc] initWithLibraryServicesManager:self reportInProgressUpgrades:0];
-    v6 = [(PLPhotoLibraryOpener *)v5 openPhotoLibraryDatabaseWithAutoUpgrade:1 autoCreate:0 error:a3];
+    v6 = [(PLPhotoLibraryOpener *)v5 openPhotoLibraryDatabaseWithAutoUpgrade:1 autoCreate:0 error:error];
     if (v6)
     {
-      v7 = [(PLLibraryServicesManager *)self cloudPhotoLibraryManager];
-      v8 = v7;
-      if (v7)
+      cloudPhotoLibraryManager = [(PLLibraryServicesManager *)self cloudPhotoLibraryManager];
+      v8 = cloudPhotoLibraryManager;
+      if (cloudPhotoLibraryManager)
       {
-        [v7 disableiCPLSyncForLibraryDeletion];
+        [cloudPhotoLibraryManager disableiCPLSyncForLibraryDeletion];
       }
 
       else
@@ -360,40 +360,40 @@ void __77__PLLibraryServicesManager_isBackgroundAppRefreshEnabledForBundleIdenti
 
 - (void)didBecomeNonSyncablePhotoLibrary
 {
-  v3 = [(PLLibraryServicesManager *)self isSystemPhotoLibrary];
+  isSystemPhotoLibrary = [(PLLibraryServicesManager *)self isSystemPhotoLibrary];
   self->_wellKnownPhotoLibraryIdentifier = [(PLLibraryServicesManager *)self _determineWellKnownPhotoLibraryIdentifier];
   [(PLLazyObject *)self->_lazyMainScopeIdentifier resetObject];
   [(PLLazyObject *)self->_lazyCloudPhotoLibraryManager resetObjectWithHandler:&__block_literal_global_260];
-  if (v3)
+  if (isSystemPhotoLibrary)
   {
     [(PLLibraryServicesManager *)self _invalidateSystemPhotoLibrarySpecificServices];
   }
 
-  v6 = [(PLLibraryServicesManager *)self backgroundJobService];
-  v4 = [(PLLibraryServicesManager *)self libraryBundle];
+  backgroundJobService = [(PLLibraryServicesManager *)self backgroundJobService];
+  libraryBundle = [(PLLibraryServicesManager *)self libraryBundle];
   v5 = +[PLBackgroundJobWorkerTypes maskForBecomingNonSyncablePhotoLibrary];
-  [v6 signalBackgroundProcessingNeededOnBundle:v4 workerTypes:v5];
+  [backgroundJobService signalBackgroundProcessingNeededOnBundle:libraryBundle workerTypes:v5];
 }
 
-- (BOOL)willBecomeNonSyncablePhotoLibrary:(id *)a3
+- (BOOL)willBecomeNonSyncablePhotoLibrary:(id *)library
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = [(PLLibraryServicesManager *)self awaitLibraryState:6 error:a3];
+  v4 = [(PLLibraryServicesManager *)self awaitLibraryState:6 error:library];
   if (v4)
   {
     v5 = PLLibraryServicesGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(PLLibraryServicesManager *)self logPrefix];
+      logPrefix = [(PLLibraryServicesManager *)self logPrefix];
       v7 = MEMORY[0x1E69BF220];
-      v8 = [(PLLibraryServicesManager *)self libraryURL];
-      v9 = [v7 descriptionWithFileURL:v8];
-      v10 = [(PLLibraryServicesManager *)self isSystemPhotoLibrary];
+      libraryURL = [(PLLibraryServicesManager *)self libraryURL];
+      v9 = [v7 descriptionWithFileURL:libraryURL];
+      isSystemPhotoLibrary = [(PLLibraryServicesManager *)self isSystemPhotoLibrary];
       v11 = @"no";
       *buf = 138543874;
-      v31 = v6;
+      v31 = logPrefix;
       v32 = 2112;
-      if (v10)
+      if (isSystemPhotoLibrary)
       {
         v11 = @"yes";
       }
@@ -404,31 +404,31 @@ void __77__PLLibraryServicesManager_isBackgroundAppRefreshEnabledForBundleIdenti
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Library will become non-syncable: %@ isSPL: %@", buf, 0x20u);
     }
 
-    v12 = [(PLLibraryServicesManager *)self cloudPhotoLibraryManager];
-    [v12 disableiCPLSyncWillBecomeNonSyncablePhotoLibrary];
+    cloudPhotoLibraryManager = [(PLLibraryServicesManager *)self cloudPhotoLibraryManager];
+    [cloudPhotoLibraryManager disableiCPLSyncWillBecomeNonSyncablePhotoLibrary];
 
     if ([(PLLibraryServicesManager *)self isSystemPhotoLibrary])
     {
       v13 = dispatch_group_create();
       v14 = +[PLAccountStore pl_sharedAccountStore];
-      v15 = [v14 cachedPrimaryAppleAccount];
+      cachedPrimaryAppleAccount = [v14 cachedPrimaryAppleAccount];
 
       v16 = *MEMORY[0x1E6959AE8];
-      if ([v15 isEnabledForDataclass:*MEMORY[0x1E6959AE8]])
+      if ([cachedPrimaryAppleAccount isEnabledForDataclass:*MEMORY[0x1E6959AE8]])
       {
-        [v15 setEnabled:0 forDataclass:v16];
+        [cachedPrimaryAppleAccount setEnabled:0 forDataclass:v16];
         v17 = *MEMORY[0x1E6959B50];
-        if (([v15 isEnabledForDataclass:*MEMORY[0x1E6959B50]] & 1) == 0)
+        if (([cachedPrimaryAppleAccount isEnabledForDataclass:*MEMORY[0x1E6959B50]] & 1) == 0)
         {
 LABEL_14:
           v23 = PLLibraryServicesGetLog();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
-            v24 = [(PLLibraryServicesManager *)self logPrefix];
+            logPrefix2 = [(PLLibraryServicesManager *)self logPrefix];
             *buf = 138543618;
-            v31 = v24;
+            v31 = logPrefix2;
             v32 = 2112;
-            v33 = v15;
+            v33 = cachedPrimaryAppleAccount;
             _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@: SPL Change: Updating account %@", buf, 0x16u);
           }
 
@@ -439,7 +439,7 @@ LABEL_14:
           v27[2] = __62__PLLibraryServicesManager_willBecomeNonSyncablePhotoLibrary___block_invoke;
           v27[3] = &unk_1E756CE80;
           v27[4] = self;
-          v28 = v15;
+          v28 = cachedPrimaryAppleAccount;
           v29 = v13;
           [v25 saveAccount:v28 withDataclassActions:0 doVerify:0 completion:v27];
 
@@ -450,7 +450,7 @@ LABEL_14:
       else
       {
         v17 = *MEMORY[0x1E6959B50];
-        if (![v15 isEnabledForDataclass:*MEMORY[0x1E6959B50]])
+        if (![cachedPrimaryAppleAccount isEnabledForDataclass:*MEMORY[0x1E6959B50]])
         {
 LABEL_17:
           dispatch_group_wait(v13, 0xFFFFFFFFFFFFFFFFLL);
@@ -459,16 +459,16 @@ LABEL_17:
         }
       }
 
-      [v15 setEnabled:0 forDataclass:v17];
+      [cachedPrimaryAppleAccount setEnabled:0 forDataclass:v17];
       v18 = PLLibraryServicesGetLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(PLLibraryServicesManager *)self logPrefix];
+        logPrefix3 = [(PLLibraryServicesManager *)self logPrefix];
         v20 = MEMORY[0x1E69BF220];
-        v21 = [(PLLibraryServicesManager *)self libraryURL];
-        v22 = [v20 descriptionWithFileURL:v21];
+        libraryURL2 = [(PLLibraryServicesManager *)self libraryURL];
+        v22 = [v20 descriptionWithFileURL:libraryURL2];
         *buf = 138543618;
-        v31 = v19;
+        v31 = logPrefix3;
         v32 = 2112;
         v33 = v22;
         _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: SPL Change: Disabling Shared Albums of previous SPL at %@", buf, 0x16u);
@@ -527,93 +527,93 @@ LABEL_6:
   dispatch_group_leave(*(a1 + 48));
 }
 
-- (void)setICloudPhotosEnabledInternal:(BOOL)a3
+- (void)setICloudPhotosEnabledInternal:(BOOL)internal
 {
-  v3 = a3;
+  internalCopy = internal;
   *&v29[5] = *MEMORY[0x1E69E9840];
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PLLibraryServicesManager.m" lineNumber:1795 description:@"Only Assetsd should be calling setICloudPhotosEnabledInternal"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLLibraryServicesManager.m" lineNumber:1795 description:@"Only Assetsd should be calling setICloudPhotosEnabledInternal"];
   }
 
-  v6 = [(PLLibraryServicesManager *)self libraryBundle];
-  v7 = [v6 indicatorFileCoordinator];
+  libraryBundle = [(PLLibraryServicesManager *)self libraryBundle];
+  indicatorFileCoordinator = [libraryBundle indicatorFileCoordinator];
 
   v8 = PLLibraryServicesGetLog();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (internalCopy)
   {
     if (v9)
     {
-      v10 = [(PLLibraryServicesManager *)self logPrefix];
+      logPrefix = [(PLLibraryServicesManager *)self logPrefix];
       *buf = 138543362;
-      *v29 = v10;
+      *v29 = logPrefix;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: enabling iCloud Photos", buf, 0xCu);
     }
 
-    [v7 writeEnableICloudPhotosMarker];
+    [indicatorFileCoordinator writeEnableICloudPhotosMarker];
     if ([(PLLibraryServicesManager *)self isSystemPhotoLibrary])
     {
-      v11 = [(PLLibraryServicesManager *)self modelMigrator];
-      v12 = [v11 isPostProcessingLightweightMigration];
+      modelMigrator = [(PLLibraryServicesManager *)self modelMigrator];
+      isPostProcessingLightweightMigration = [modelMigrator isPostProcessingLightweightMigration];
 
-      if ((v12 & 1) == 0)
+      if ((isPostProcessingLightweightMigration & 1) == 0)
       {
         v13 = PLLibraryServicesGetLog();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [(PLLibraryServicesManager *)self logPrefix];
+          logPrefix2 = [(PLLibraryServicesManager *)self logPrefix];
           *buf = 138543362;
-          *v29 = v14;
+          *v29 = logPrefix2;
           _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: deleting all iTunes synced content", buf, 0xCu);
         }
 
-        v15 = [(PLLibraryServicesManager *)self databaseContext];
-        [v15 performSync:&__block_literal_global_244 withName:"-[PLLibraryServicesManager setICloudPhotosEnabledInternal:]"];
+        databaseContext = [(PLLibraryServicesManager *)self databaseContext];
+        [databaseContext performSync:&__block_literal_global_244 withName:"-[PLLibraryServicesManager setICloudPhotosEnabledInternal:]"];
       }
 
       v16 = PLLibraryServicesGetLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(PLLibraryServicesManager *)self logPrefix];
+        logPrefix3 = [(PLLibraryServicesManager *)self logPrefix];
         *buf = 138543362;
-        *v29 = v17;
+        *v29 = logPrefix3;
         _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: deleting all My Photo Stream assets", buf, 0xCu);
       }
 
-      v18 = [MEMORY[0x1E695DF90] dictionary];
-      [v18 setObject:*MEMORY[0x1E69C0448] forKey:*MEMORY[0x1E69C0410]];
-      v19 = [(PLLibraryServicesManager *)self imageWriter];
-      [v19 enqueueJob:v18];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [dictionary setObject:*MEMORY[0x1E69C0448] forKey:*MEMORY[0x1E69C0410]];
+      imageWriter = [(PLLibraryServicesManager *)self imageWriter];
+      [imageWriter enqueueJob:dictionary];
 
       [(PLLibraryServicesManager *)self _setCameraRollCountedInQuota:1];
     }
 
-    v20 = [(PLLibraryServicesManager *)self readyForAnalysis];
-    [v20 resetReadyForAnalysisState];
+    readyForAnalysis = [(PLLibraryServicesManager *)self readyForAnalysis];
+    [readyForAnalysis resetReadyForAnalysisState];
   }
 
   else
   {
     if (v9)
     {
-      v21 = [(PLLibraryServicesManager *)self logPrefix];
+      logPrefix4 = [(PLLibraryServicesManager *)self logPrefix];
       *buf = 138543362;
-      *v29 = v21;
+      *v29 = logPrefix4;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: disabling iCloud Photos", buf, 0xCu);
     }
 
-    [v7 writeDisableICloudPhotosMarker];
+    [indicatorFileCoordinator writeDisableICloudPhotosMarker];
     if ([(PLLibraryServicesManager *)self isSystemPhotoLibrary])
     {
       [(PLLibraryServicesManager *)self _setCameraRollCountedInQuota:0];
     }
   }
 
-  v22 = [(PLLibraryServicesManager *)self cplSettings];
+  cplSettings = [(PLLibraryServicesManager *)self cplSettings];
   v27 = 0;
-  v23 = [v22 setICPLEnabled:v3 error:&v27];
+  v23 = [cplSettings setICPLEnabled:internalCopy error:&v27];
   v24 = v27;
 
   if ((v23 & 1) == 0)
@@ -622,27 +622,27 @@ LABEL_6:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109378;
-      v29[0] = v3;
+      v29[0] = internalCopy;
       LOWORD(v29[1]) = 2112;
       *(&v29[1] + 2) = v24;
       _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_ERROR, "Failed to write CPL enabled setting to %d, %@", buf, 0x12u);
     }
   }
 
-  if ([v7 isICloudPhotosPaused])
+  if ([indicatorFileCoordinator isICloudPhotosPaused])
   {
     CFPreferencesSetAppValue(@"cloudPhotosPaused", 0, @"com.apple.mobileslideshow");
-    [v7 clearPauseMarkerForReason:3];
+    [indicatorFileCoordinator clearPauseMarkerForReason:3];
   }
 
   CFPreferencesAppSynchronize(@"com.apple.mobileslideshow");
 }
 
-- (void)_setCameraRollCountedInQuota:(BOOL)a3
+- (void)_setCameraRollCountedInQuota:(BOOL)quota
 {
-  v3 = a3;
+  quotaCopy = quota;
   pl_dispatch_once();
-  if (v3)
+  if (quotaCopy)
   {
     [_setCameraRollCountedInQuota___BackupManager countCameraRollQuota];
   }
@@ -678,29 +678,29 @@ void __57__PLLibraryServicesManager__setCameraRollCountedInQuota___block_invoke(
   _setCameraRollCountedInQuota___BackupManager = v2;
 }
 
-- (void)registerOutstandingTransactionsHandler:(id)a3
+- (void)registerOutstandingTransactionsHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(PLLibraryServicesManager *)self pathManager];
+  handlerCopy = handler;
+  pathManager = [(PLLibraryServicesManager *)self pathManager];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __67__PLLibraryServicesManager_registerOutstandingTransactionsHandler___block_invoke;
   v11[3] = &unk_1E75781E8;
   v11[4] = self;
-  v7 = [PLClientServerTransaction handleOutstandingTransactionsForPathManager:v6 sqliteErrorHandler:v11 handler:v5];
+  v7 = [PLClientServerTransaction handleOutstandingTransactionsForPathManager:pathManager sqliteErrorHandler:v11 handler:handlerCopy];
 
   if (!v7)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PLLibraryServicesManager.m" lineNumber:1759 description:{@"Invalid parameter not satisfying: %@", @"timer != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLLibraryServicesManager.m" lineNumber:1759 description:{@"Invalid parameter not satisfying: %@", @"timer != nil"}];
   }
 
   os_unfair_lock_lock(&self->_outstandingTransactionHandlerTimerLock);
   outstandingTransactionHandlerTimer = self->_outstandingTransactionHandlerTimer;
   if (outstandingTransactionHandlerTimer)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PLLibraryServicesManager.m" lineNumber:1761 description:{@"Invalid parameter not satisfying: %@", @"_outstandingTransactionHandlerTimer == nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLLibraryServicesManager.m" lineNumber:1761 description:{@"Invalid parameter not satisfying: %@", @"_outstandingTransactionHandlerTimer == nil"}];
 
     outstandingTransactionHandlerTimer = self->_outstandingTransactionHandlerTimer;
   }
@@ -710,27 +710,27 @@ void __57__PLLibraryServicesManager__setCameraRollCountedInQuota___block_invoke(
   os_unfair_lock_unlock(&self->_outstandingTransactionHandlerTimerLock);
 }
 
-- (void)performFileSystemAssetImporterWorkWithLibrary:(id)a3 block:(id)a4
+- (void)performFileSystemAssetImporterWorkWithLibrary:(id)library block:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [[PLFileSystemAssetImporter alloc] initWithPhotoLibrary:v6 libraryServicesManager:self];
+  libraryCopy = library;
+  blockCopy = block;
+  v8 = [[PLFileSystemAssetImporter alloc] initWithPhotoLibrary:libraryCopy libraryServicesManager:self];
   v9 = PLLibraryServicesGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(PLLibraryServicesManager *)self logPrefix];
+    logPrefix = [(PLLibraryServicesManager *)self logPrefix];
     *buf = 138543362;
-    v18 = v10;
+    v18 = logPrefix;
     _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Preparing to run file system asset importer work block", buf, 0xCu);
   }
 
-  v14 = v6;
+  v14 = libraryCopy;
   v15 = v8;
-  v16 = v7;
+  v16 = blockCopy;
   v11 = v8;
-  v12 = v7;
-  v13 = v6;
+  v12 = blockCopy;
+  v13 = libraryCopy;
   PLSafeRunWithUnfairLock();
 }
 
@@ -763,14 +763,14 @@ void __80__PLLibraryServicesManager_performFileSystemAssetImporterWorkWithLibrar
 - (void)_cancelPendingOperations
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(PLLibraryServicesManager *)self stateSerializationQueue];
-  dispatch_assert_queue_V2(v3);
+  stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
+  dispatch_assert_queue_V2(stateSerializationQueue);
 
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __52__PLLibraryServicesManager__cancelPendingOperations__block_invoke;
   v16 = &unk_1E756CE38;
-  v17 = self;
+  selfCopy = self;
   v4 = PLResultWithUnfairLock();
   v9 = 0u;
   v10 = 0u;
@@ -810,16 +810,16 @@ id __52__PLLibraryServicesManager__cancelPendingOperations__block_invoke(uint64_
   return v2;
 }
 
-- (void)_addPendingOperationsForStateNode:(id)a3
+- (void)_addPendingOperationsForStateNode:(id)node
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLLibraryServicesManager *)self stateSerializationQueue];
-  dispatch_assert_queue_V2(v5);
+  nodeCopy = node;
+  stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
+  dispatch_assert_queue_V2(stateSerializationQueue);
 
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = v4;
-  v8 = [v4 state];
+  array = [MEMORY[0x1E695DF70] array];
+  v7 = nodeCopy;
+  state = [nodeCopy state];
   [(PLLibraryServicesManager *)self pendingOperations];
   v36 = 0u;
   v37 = 0u;
@@ -840,14 +840,14 @@ id __52__PLLibraryServicesManager__cancelPendingOperations__block_invoke(uint64_
         }
 
         v13 = *(*(&v36 + 1) + 8 * i);
-        if ([v13 requiredState] == v8)
+        if ([v13 requiredState] == state)
         {
-          [v6 addObject:v13];
+          [array addObject:v13];
           v30 = MEMORY[0x1E69E9820];
           v31 = 3221225472;
           v32 = __62__PLLibraryServicesManager__addPendingOperationsForStateNode___block_invoke;
           v33 = &unk_1E7578848;
-          v34 = self;
+          selfCopy = self;
           v35 = v13;
           PLRunWithUnfairLock();
         }
@@ -863,7 +863,7 @@ id __52__PLLibraryServicesManager__cancelPendingOperations__block_invoke(uint64_
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v24 = v6;
+  v24 = array;
   v14 = [v24 countByEnumeratingWithState:&v26 objects:v46 count:16];
   if (v14)
   {
@@ -882,11 +882,11 @@ id __52__PLLibraryServicesManager__cancelPendingOperations__block_invoke(uint64_
         v19 = PLLibraryServicesGetLog();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
-          v20 = [(PLLibraryServicesManager *)self logPrefix];
+          logPrefix = [(PLLibraryServicesManager *)self logPrefix];
           [v18 qualityOfService];
           v21 = PLStringFromQualityOfService();
           *buf = 138543874;
-          v41 = v20;
+          v41 = logPrefix;
           v42 = 2114;
           v43 = v18;
           v44 = 2114;
@@ -896,8 +896,8 @@ id __52__PLLibraryServicesManager__cancelPendingOperations__block_invoke(uint64_
 
         if (([v7 enqueueOperation:v18 error:0] & 1) == 0)
         {
-          v22 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v22 handleFailureInMethod:a2 object:self file:@"PLLibraryServicesManager.m" lineNumber:1720 description:{@"Invalid parameter not satisfying: %@", @"enqueued"}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PLLibraryServicesManager.m" lineNumber:1720 description:{@"Invalid parameter not satisfying: %@", @"enqueued"}];
         }
       }
 
@@ -908,64 +908,64 @@ id __52__PLLibraryServicesManager__cancelPendingOperations__block_invoke(uint64_
   }
 }
 
-- (void)_setCurrentStateNode:(id)a3
+- (void)_setCurrentStateNode:(id)node
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLLibraryServicesManager *)self stateSerializationQueue];
-  dispatch_assert_queue_V2(v5);
+  nodeCopy = node;
+  stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
+  dispatch_assert_queue_V2(stateSerializationQueue);
 
   v11[0] = @"PLLibraryServicesManagerStateChangeStateKey";
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "state")}];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(nodeCopy, "state")}];
   v11[1] = @"PLLibraryServicesManagerStateChangeStateNodeKey";
   v12[0] = v6;
-  v12[1] = v4;
+  v12[1] = nodeCopy;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 postNotificationName:@"PLLibraryServicesManagerStateWillChangeNotification" object:self userInfo:v7];
-  v10 = v4;
-  v9 = v4;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PLLibraryServicesManagerStateWillChangeNotification" object:self userInfo:v7];
+  v10 = nodeCopy;
+  v9 = nodeCopy;
   PLRunWithUnfairLock();
-  [v8 postNotificationName:@"PLLibraryServicesManagerStateDidChangeNotification" object:self userInfo:v7];
+  [defaultCenter postNotificationName:@"PLLibraryServicesManagerStateDidChangeNotification" object:self userInfo:v7];
 }
 
 - (void)_handleLibraryStateCompletedAllOperations
 {
-  v3 = [(PLLibraryServicesManager *)self stateSerializationQueue];
-  dispatch_assert_queue_V2(v3);
+  stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
+  dispatch_assert_queue_V2(stateSerializationQueue);
 
-  v4 = [(PLLibraryServicesManager *)self currentStateNode];
-  v5 = [v4 operationCount];
+  currentStateNode = [(PLLibraryServicesManager *)self currentStateNode];
+  operationCount = [currentStateNode operationCount];
 
-  if (!v5)
+  if (!operationCount)
   {
-    v6 = [(PLLibraryServicesManager *)self _state];
+    _state = [(PLLibraryServicesManager *)self _state];
     [objc_opt_class() _finalState];
     if (PLCanMoveFromSourceStateToTargetState() && [(PLLibraryServicesManager *)self isFinalizing])
     {
       -[PLLibraryServicesManager _transitionToState:](self, "_transitionToState:", [objc_opt_class() _finalState]);
     }
 
-    if (v6 == 7)
+    if (_state == 7)
     {
       [(PLLibraryServicesManager *)self _resetStateQueueQoS];
     }
 
-    v7 = [(PLLibraryServicesManager *)self libraryServicesDelegate];
-    objc_initWeak(&location, v7);
+    libraryServicesDelegate = [(PLLibraryServicesManager *)self libraryServicesDelegate];
+    objc_initWeak(&location, libraryServicesDelegate);
 
     v8 = objc_loadWeakRetained(&location);
     if (v8)
     {
-      v9 = [(PLLibraryServicesManager *)self helperQueue];
+      helperQueue = [(PLLibraryServicesManager *)self helperQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __69__PLLibraryServicesManager__handleLibraryStateCompletedAllOperations__block_invoke;
       block[3] = &unk_1E756CE10;
       objc_copyWeak(v11, &location);
-      v11[1] = v6;
-      dispatch_async(v9, block);
+      v11[1] = _state;
+      dispatch_async(helperQueue, block);
 
       objc_destroyWeak(v11);
     }
@@ -980,21 +980,21 @@ void __69__PLLibraryServicesManager__handleLibraryStateCompletedAllOperations__b
   [WeakRetained handleCompletedAllOperationsForLibraryState:*(a1 + 40)];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a4;
-  v11 = v10;
-  if (a6 == &PLLibraryServicesManagerOperationQueueObserverOperationCountContext)
+  objectCopy = object;
+  v11 = objectCopy;
+  if (context == &PLLibraryServicesManagerOperationQueueObserverOperationCountContext)
   {
-    if (![v10 operationCount])
+    if (![objectCopy operationCount])
     {
-      v12 = [(PLLibraryServicesManager *)self stateSerializationQueue];
+      stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __75__PLLibraryServicesManager_observeValueForKeyPath_ofObject_change_context___block_invoke;
       block[3] = &unk_1E75781E8;
       block[4] = self;
-      dispatch_async(v12, block);
+      dispatch_async(stateSerializationQueue, block);
     }
   }
 
@@ -1002,22 +1002,22 @@ void __69__PLLibraryServicesManager__handleLibraryStateCompletedAllOperations__b
   {
     v13.receiver = self;
     v13.super_class = PLLibraryServicesManager;
-    [(PLLibraryServicesManager *)&v13 observeValueForKeyPath:a3 ofObject:v10 change:a5 context:a6];
+    [(PLLibraryServicesManager *)&v13 observeValueForKeyPath:path ofObject:objectCopy change:change context:context];
   }
 }
 
 - (void)_stopObservingLibraryStateCompletedAllOperations
 {
-  v3 = [(PLLibraryServicesManager *)self stateSerializationQueue];
-  dispatch_assert_queue_V2(v3);
+  stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
+  dispatch_assert_queue_V2(stateSerializationQueue);
 
-  v4 = [(PLLibraryServicesManager *)self operationCountObservee];
+  operationCountObservee = [(PLLibraryServicesManager *)self operationCountObservee];
 
-  if (v4)
+  if (operationCountObservee)
   {
     v5 = MEMORY[0x1E69BF280];
-    v6 = [(PLLibraryServicesManager *)self operationCountObservee];
-    [v5 removeOperationCountObserver:self fromObservedObject:v6 context:&PLLibraryServicesManagerOperationQueueObserverOperationCountContext];
+    operationCountObservee2 = [(PLLibraryServicesManager *)self operationCountObservee];
+    [v5 removeOperationCountObserver:self fromObservedObject:operationCountObservee2 context:&PLLibraryServicesManagerOperationQueueObserverOperationCountContext];
 
     [(PLLibraryServicesManager *)self setOperationCountObservee:0];
   }
@@ -1025,31 +1025,31 @@ void __69__PLLibraryServicesManager__handleLibraryStateCompletedAllOperations__b
 
 - (void)_startObservingLibraryStateCompletedAllOperations
 {
-  v3 = [(PLLibraryServicesManager *)self stateSerializationQueue];
-  dispatch_assert_queue_V2(v3);
+  stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
+  dispatch_assert_queue_V2(stateSerializationQueue);
 
-  v4 = [(PLLibraryServicesManager *)self operationCountObservee];
+  operationCountObservee = [(PLLibraryServicesManager *)self operationCountObservee];
 
-  if (v4)
+  if (operationCountObservee)
   {
     [(PLLibraryServicesManager *)self _stopObservingLibraryStateCompletedAllOperations];
   }
 
-  v6 = [(PLLibraryServicesManager *)self currentStateNode];
-  v5 = [v6 addOperationCountObserver:self context:&PLLibraryServicesManagerOperationQueueObserverOperationCountContext];
+  currentStateNode = [(PLLibraryServicesManager *)self currentStateNode];
+  v5 = [currentStateNode addOperationCountObserver:self context:&PLLibraryServicesManagerOperationQueueObserverOperationCountContext];
   [(PLLibraryServicesManager *)self setOperationCountObservee:v5];
 }
 
-- (void)_dispatchExternalWaitersForState:(int64_t)a3
+- (void)_dispatchExternalWaitersForState:(int64_t)state
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [(PLLibraryServicesManager *)self stateSerializationQueue];
-  dispatch_assert_queue_V2(v5);
+  stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
+  dispatch_assert_queue_V2(stateSerializationQueue);
 
-  v6 = [objc_opt_class() _initialState];
-  if (v6 <= a3)
+  _initialState = [objc_opt_class() _initialState];
+  if (_initialState <= state)
   {
-    v7 = v6;
+    v7 = _initialState;
     do
     {
       externalWaiterCompletionBlocksByState = self->_externalWaiterCompletionBlocksByState;
@@ -1094,29 +1094,29 @@ void __69__PLLibraryServicesManager__handleLibraryStateCompletedAllOperations__b
       }
     }
 
-    while (v7++ != a3);
+    while (v7++ != state);
   }
 }
 
-- (void)_transitionToState:(int64_t)a3
+- (void)_transitionToState:(int64_t)state
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = [(PLLibraryServicesManager *)self stateSerializationQueue];
-  dispatch_assert_queue_V2(v5);
+  stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
+  dispatch_assert_queue_V2(stateSerializationQueue);
 
-  v6 = [(PLLibraryServicesManager *)self currentStateNode];
-  v7 = [v6 state];
+  currentStateNode = [(PLLibraryServicesManager *)self currentStateNode];
+  state = [currentStateNode state];
 
-  if (v7 != a3)
+  if (state != state)
   {
     v8 = PLLibraryServicesGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(PLLibraryServicesManager *)self logPrefix];
+      logPrefix = [(PLLibraryServicesManager *)self logPrefix];
       v10 = PLStringFromLibraryServicesState();
       v11 = PLStringFromLibraryServicesState();
       *buf = 138543874;
-      v43 = v9;
+      v43 = logPrefix;
       v44 = 2114;
       v45 = v10;
       v46 = 2114;
@@ -1126,17 +1126,17 @@ void __69__PLLibraryServicesManager__handleLibraryStateCompletedAllOperations__b
   }
 
   [(PLLibraryServicesManager *)self _stopObservingLibraryStateCompletedAllOperations];
-  v12 = [(PLLibraryServicesManager *)self currentStateNode];
-  [v12 terminate];
+  currentStateNode2 = [(PLLibraryServicesManager *)self currentStateNode];
+  [currentStateNode2 terminate];
 
-  v13 = [(PLLibraryServicesManager *)self _libraryServicesStateNodeWithState:a3];
+  v13 = [(PLLibraryServicesManager *)self _libraryServicesStateNodeWithState:state];
   [(PLLibraryServicesManager *)self _setCurrentStateNode:v13];
 
   if ([(PLLibraryServicesManager *)self isActive])
   {
-    v14 = [(PLLibraryServicesManager *)self libraryServicesDelegate];
+    libraryServicesDelegate = [(PLLibraryServicesManager *)self libraryServicesDelegate];
 
-    if (v14 && [objc_opt_class() _initialState] == a3)
+    if (libraryServicesDelegate && [objc_opt_class() _initialState] == state)
     {
       v15 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:100];
       [(PLLibraryServicesManager *)self setPreRunningProgress:v15];
@@ -1144,12 +1144,12 @@ void __69__PLLibraryServicesManager__handleLibraryStateCompletedAllOperations__b
       v16 = PLLibraryServicesGetLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
-        v17 = [(PLLibraryServicesManager *)self logPrefix];
-        v18 = [(PLLibraryServicesManager *)self preRunningProgress];
+        logPrefix2 = [(PLLibraryServicesManager *)self logPrefix];
+        preRunningProgress = [(PLLibraryServicesManager *)self preRunningProgress];
         *buf = 138543618;
-        v43 = v17;
+        v43 = logPrefix2;
         v44 = 2048;
-        v45 = v18;
+        v45 = preRunningProgress;
         _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEBUG, "%{public}@: preRunningProgress = %p", buf, 0x16u);
       }
 
@@ -1159,23 +1159,23 @@ void __69__PLLibraryServicesManager__handleLibraryStateCompletedAllOperations__b
       v20 = PLLibraryServicesGetLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
-        v21 = [(PLLibraryServicesManager *)self logPrefix];
-        v22 = [(PLLibraryServicesManager *)self postRunningProgress];
+        logPrefix3 = [(PLLibraryServicesManager *)self logPrefix];
+        postRunningProgress = [(PLLibraryServicesManager *)self postRunningProgress];
         *buf = 138543618;
-        v43 = v21;
+        v43 = logPrefix3;
         v44 = 2048;
-        v45 = v22;
+        v45 = postRunningProgress;
         _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEBUG, "%{public}@: postRunningProgress = %p", buf, 0x16u);
       }
 
-      v23 = [(PLLibraryServicesManager *)self libraryServicesDelegate];
-      v24 = [v23 operations];
+      libraryServicesDelegate2 = [(PLLibraryServicesManager *)self libraryServicesDelegate];
+      operations = [libraryServicesDelegate2 operations];
 
       v39 = 0u;
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v25 = v24;
+      v25 = operations;
       v26 = [v25 countByEnumeratingWithState:&v37 objects:v41 count:16];
       if (v26)
       {
@@ -1210,10 +1210,10 @@ void __69__PLLibraryServicesManager__handleLibraryStateCompletedAllOperations__b
       v32 = PLLibraryServicesGetLog();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
       {
-        v33 = [(PLLibraryServicesManager *)self logPrefix];
+        logPrefix4 = [(PLLibraryServicesManager *)self logPrefix];
         v34 = [v25 debugDescription];
         *buf = 138543874;
-        v43 = v33;
+        v43 = logPrefix4;
         v44 = 2112;
         v45 = v34;
         v46 = 2048;
@@ -1222,29 +1222,29 @@ void __69__PLLibraryServicesManager__handleLibraryStateCompletedAllOperations__b
       }
     }
 
-    v35 = [(PLLibraryServicesManager *)self currentStateNode];
-    [(PLLibraryServicesManager *)self _addPendingOperationsForStateNode:v35];
+    currentStateNode3 = [(PLLibraryServicesManager *)self currentStateNode];
+    [(PLLibraryServicesManager *)self _addPendingOperationsForStateNode:currentStateNode3];
 
     [(PLLibraryServicesManager *)self _startObservingLibraryStateCompletedAllOperations];
-    v36 = [(PLLibraryServicesManager *)self currentStateNode];
-    [v36 run];
+    currentStateNode4 = [(PLLibraryServicesManager *)self currentStateNode];
+    [currentStateNode4 run];
   }
 
-  [(PLLibraryServicesManager *)self _dispatchExternalWaitersForState:a3];
+  [(PLLibraryServicesManager *)self _dispatchExternalWaitersForState:state];
 }
 
-- (BOOL)_canTransitionToState:(int64_t)a3 error:(id *)a4
+- (BOOL)_canTransitionToState:(int64_t)state error:(id *)error
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v6 = [(PLLibraryServicesManager *)self stateSerializationQueue];
-  dispatch_assert_queue_V2(v6);
+  stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
+  dispatch_assert_queue_V2(stateSerializationQueue);
 
   [(PLLibraryServicesManager *)self _state];
   [(PLLibraryServicesManager *)self _state];
   if (PLCanMoveFromSourceStateToTargetState())
   {
-    v7 = [(PLLibraryServicesManager *)self activeOperations];
-    v8 = [v7 count];
+    activeOperations = [(PLLibraryServicesManager *)self activeOperations];
+    v8 = [activeOperations count];
 
     if (!v8)
     {
@@ -1288,11 +1288,11 @@ void __69__PLLibraryServicesManager__handleLibraryStateCompletedAllOperations__b
   v17 = [v13 dictionaryWithObjects:v14 forKeys:v15 count:v16];
   v18 = [v9 errorWithDomain:v10 code:43002 userInfo:v17];
 
-  if (a4)
+  if (error)
   {
     v19 = v18;
     v20 = 0;
-    *a4 = v18;
+    *error = v18;
   }
 
   else
@@ -1305,30 +1305,30 @@ LABEL_9:
   return v20;
 }
 
-- (void)deactivateWithInvalidationError:(id)a3
+- (void)deactivateWithInvalidationError:(id)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = PLLibraryServicesGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PLLibraryServicesManager *)self logPrefix];
+    logPrefix = [(PLLibraryServicesManager *)self logPrefix];
     *buf = 138543618;
-    v16 = v6;
+    v16 = logPrefix;
     v17 = 2112;
-    v18 = v4;
+    v18 = errorCopy;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Deactivating with error %@", buf, 0x16u);
   }
 
-  v7 = [(PLLibraryServicesManager *)self stateSerializationQueue];
+  stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __60__PLLibraryServicesManager_deactivateWithInvalidationError___block_invoke;
   v12 = &unk_1E7578848;
-  v13 = self;
-  v14 = v4;
-  v8 = v4;
-  dispatch_sync(v7, &v9);
+  selfCopy = self;
+  v14 = errorCopy;
+  v8 = errorCopy;
+  dispatch_sync(stateSerializationQueue, &v9);
 
   [(PLLibraryServicesManager *)self _invalidate:v9];
 }
@@ -1358,26 +1358,26 @@ uint64_t __60__PLLibraryServicesManager_deactivateWithInvalidationError___block_
   return result;
 }
 
-- (BOOL)finalize:(id *)a3
+- (BOOL)finalize:(id *)finalize
 {
   v20 = *MEMORY[0x1E69E9840];
   [(PLLibraryServicesManager *)self setFinalizing:1];
   v5 = PLLibraryServicesGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PLLibraryServicesManager *)self logPrefix];
+    logPrefix = [(PLLibraryServicesManager *)self logPrefix];
     *buf = 138543362;
-    v17 = v6;
+    v17 = logPrefix;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Starting finalize", buf, 0xCu);
   }
 
-  v7 = [(PLLibraryServicesManager *)self stateSerializationQueue];
+  stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __37__PLLibraryServicesManager_finalize___block_invoke;
   block[3] = &unk_1E75781E8;
   block[4] = self;
-  dispatch_sync(v7, block);
+  dispatch_sync(stateSerializationQueue, block);
 
   v14 = 0;
   v8 = -[PLLibraryServicesManager awaitLibraryState:error:](self, "awaitLibraryState:error:", [objc_opt_class() _finalState], &v14);
@@ -1392,18 +1392,18 @@ uint64_t __60__PLLibraryServicesManager_deactivateWithInvalidationError___block_
     v10 = PLLibraryServicesGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(PLLibraryServicesManager *)self logPrefix];
+      logPrefix2 = [(PLLibraryServicesManager *)self logPrefix];
       *buf = 138543618;
-      v17 = v11;
+      v17 = logPrefix2;
       v18 = 2112;
       v19 = v9;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Finalize failed with error %@", buf, 0x16u);
     }
 
-    if (a3)
+    if (finalize)
     {
       v12 = v9;
-      *a3 = v9;
+      *finalize = v9;
     }
   }
 
@@ -1439,20 +1439,20 @@ void __37__PLLibraryServicesManager_finalize___block_invoke(uint64_t a1)
   v3 = PLLibraryServicesGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PLLibraryServicesManager *)self logPrefix];
+    logPrefix = [(PLLibraryServicesManager *)self logPrefix];
     *buf = 138543362;
-    v8 = v4;
+    v8 = logPrefix;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Invalidating", buf, 0xCu);
   }
 
   [(PLLibraryServicesManager *)self _invalidateCPLReadiness];
-  v5 = [(PLLibraryServicesManager *)self stateSerializationQueue];
+  stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__PLLibraryServicesManager__invalidate__block_invoke;
   block[3] = &unk_1E75781E8;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(stateSerializationQueue, block);
 
   [(PLLibraryServicesManager *)self _invalidateCloudPhotoLibraryManager];
   [(PLLibraryServicesManager *)self _invalidateCrashRecoverySupport];
@@ -1502,26 +1502,26 @@ uint64_t __39__PLLibraryServicesManager__invalidate__block_invoke(uint64_t a1)
   return [v3 setActive:0];
 }
 
-- (BOOL)transitionToState:(int64_t)a3 error:(id *)a4
+- (BOOL)transitionToState:(int64_t)state error:(id *)error
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 1;
-  v7 = [(PLLibraryServicesManager *)self stateSerializationQueue];
+  stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52__PLLibraryServicesManager_transitionToState_error___block_invoke;
   v9[3] = &unk_1E7576590;
   v9[4] = self;
   v9[5] = &v10;
-  v9[6] = a3;
-  v9[7] = a4;
-  dispatch_sync(v7, v9);
+  v9[6] = state;
+  v9[7] = error;
+  dispatch_sync(stateSerializationQueue, v9);
 
-  LOBYTE(a4) = *(v11 + 24);
+  LOBYTE(error) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
-  return a4;
+  return error;
 }
 
 void __52__PLLibraryServicesManager_transitionToState_error___block_invoke(uint64_t a1)
@@ -1572,27 +1572,27 @@ void __52__PLLibraryServicesManager_transitionToState_error___block_invoke(uint6
   }
 }
 
-- (void)_enqueueExternalWaiterCompletionBlockForState:(int64_t)a3 completionBlock:(id)a4
+- (void)_enqueueExternalWaiterCompletionBlockForState:(int64_t)state completionBlock:(id)block
 {
-  aBlock = a4;
-  v7 = [(PLLibraryServicesManager *)self stateSerializationQueue];
-  dispatch_assert_queue_V2(v7);
+  aBlock = block;
+  stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
+  dispatch_assert_queue_V2(stateSerializationQueue);
 
   if (!aBlock)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PLLibraryServicesManager.m" lineNumber:1411 description:{@"Invalid parameter not satisfying: %@", @"completionBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLLibraryServicesManager.m" lineNumber:1411 description:{@"Invalid parameter not satisfying: %@", @"completionBlock"}];
   }
 
   externalWaiterCompletionBlocksByState = self->_externalWaiterCompletionBlocksByState;
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:state];
   v10 = [(NSMutableDictionary *)externalWaiterCompletionBlocksByState objectForKeyedSubscript:v9];
 
   if (!v10)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v11 = self->_externalWaiterCompletionBlocksByState;
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:state];
     [(NSMutableDictionary *)v11 setObject:v10 forKeyedSubscript:v12];
   }
 
@@ -1602,7 +1602,7 @@ void __52__PLLibraryServicesManager_transitionToState_error___block_invoke(uint6
   [(PLLibraryServicesManager *)self _increaseStateQueueQoSIfNeeded];
 }
 
-- (BOOL)awaitLibraryState:(int64_t)a3 error:(id *)a4
+- (BOOL)awaitLibraryState:(int64_t)state error:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -1620,10 +1620,10 @@ void __52__PLLibraryServicesManager_transitionToState_error___block_invoke(uint6
   v7[3] = &unk_1E7577598;
   v7[4] = &v14;
   v7[5] = &v8;
-  [(PLLibraryServicesManager *)self _awaitLibraryState:a3 sync:1 completionHandler:v7];
-  if (a4)
+  [(PLLibraryServicesManager *)self _awaitLibraryState:state sync:1 completionHandler:v7];
+  if (error)
   {
-    *a4 = v9[5];
+    *error = v9[5];
   }
 
   v5 = *(v15 + 24);
@@ -1633,54 +1633,54 @@ void __52__PLLibraryServicesManager_transitionToState_error___block_invoke(uint6
   return v5;
 }
 
-- (void)_waitForAwaitOperation:(id)a3
+- (void)_waitForAwaitOperation:(id)operation
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  operationCopy = operation;
+  if (operationCopy)
   {
     v5 = PLLibraryServicesGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(PLLibraryServicesManager *)self logPrefix];
+      logPrefix = [(PLLibraryServicesManager *)self logPrefix];
       qos_class_self();
       v7 = PLStringFromQoSClass();
       v8 = 138543874;
-      v9 = v6;
+      v9 = logPrefix;
       v10 = 2114;
-      v11 = v4;
+      v11 = operationCopy;
       v12 = 2114;
       v13 = v7;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Waiting for await operation to finish: %{public}@ at QoS: %{public}@", &v8, 0x20u);
     }
 
-    [v4 waitUntilFinished];
+    [operationCopy waitUntilFinished];
   }
 }
 
 - (id)_enqueueAwaitOperation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(PLLibraryServicesManager *)self currentStateNode];
-  v4 = [v3 state];
+  currentStateNode = [(PLLibraryServicesManager *)self currentStateNode];
+  state = [currentStateNode state];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __50__PLLibraryServicesManager__enqueueAwaitOperation__block_invoke;
   v17[3] = &unk_1E756CDE0;
   v17[4] = self;
-  v17[5] = v4;
-  v5 = [PLLibraryServicesOperation operationWithName:@"Await Operation" libraryServicesManager:self requiredState:v4 parentProgress:0 executionBlock:v17];
+  v17[5] = state;
+  v5 = [PLLibraryServicesOperation operationWithName:@"Await Operation" libraryServicesManager:self requiredState:state parentProgress:0 executionBlock:v17];
   qos_class_self();
   [v5 setQualityOfService:PLQualityOfServiceFromQoSClass()];
   v6 = PLLibraryServicesGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(PLLibraryServicesManager *)self logPrefix];
+    logPrefix = [(PLLibraryServicesManager *)self logPrefix];
     [v5 qualityOfService];
     v8 = PLStringFromQualityOfService();
     *buf = 138543874;
-    v19 = v7;
+    v19 = logPrefix;
     v20 = 2114;
     v21 = v5;
     v22 = 2114;
@@ -1688,9 +1688,9 @@ void __52__PLLibraryServicesManager_transitionToState_error___block_invoke(uint6
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEBUG, "%{public}@: Adding await operation: %{public}@ at QoS: %{public}@", buf, 0x20u);
   }
 
-  v9 = [(PLLibraryServicesManager *)self currentStateNode];
+  currentStateNode2 = [(PLLibraryServicesManager *)self currentStateNode];
   v16 = 0;
-  v10 = [v9 enqueueOperation:v5 error:&v16];
+  v10 = [currentStateNode2 enqueueOperation:v5 error:&v16];
   v11 = v16;
 
   if (v10)
@@ -1703,9 +1703,9 @@ void __52__PLLibraryServicesManager_transitionToState_error___block_invoke(uint6
     v13 = PLLibraryServicesGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(PLLibraryServicesManager *)self logPrefix];
+      logPrefix2 = [(PLLibraryServicesManager *)self logPrefix];
       *buf = 138543874;
-      v19 = v14;
+      v19 = logPrefix2;
       v20 = 2112;
       v21 = v5;
       v22 = 2112;
@@ -1739,12 +1739,12 @@ void __50__PLLibraryServicesManager__enqueueAwaitOperation__block_invoke(uint64_
   }
 }
 
-- (void)_awaitLibraryState:(int64_t)a3 sync:(BOOL)a4 completionHandler:(id)a5
+- (void)_awaitLibraryState:(int64_t)state sync:(BOOL)sync completionHandler:(id)handler
 {
-  v5 = a4;
+  syncCopy = sync;
   v61 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (a3 < 1)
+  handlerCopy = handler;
+  if (state < 1)
   {
     goto LABEL_4;
   }
@@ -1763,9 +1763,9 @@ LABEL_4:
     block[1] = 3221225472;
     block[2] = __70__PLLibraryServicesManager__awaitLibraryState_sync_completionHandler___block_invoke;
     block[3] = &unk_1E7576078;
-    v13 = v8;
+    v13 = handlerCopy;
     v52 = v13;
-    v53 = a3;
+    stateCopy = state;
     block[4] = self;
     v14 = v12;
     v51 = v14;
@@ -1784,7 +1784,7 @@ LABEL_4:
     v39 = __Block_byref_object_copy__46470;
     v40 = __Block_byref_object_dispose__46471;
     v41 = 0;
-    v16 = [(PLLibraryServicesManager *)self stateSerializationQueue];
+    stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __70__PLLibraryServicesManager__awaitLibraryState_sync_completionHandler___block_invoke_2;
@@ -1792,16 +1792,16 @@ LABEL_4:
     v32 = &v46;
     v33 = &v42;
     v28[4] = self;
-    v35 = a3;
+    stateCopy2 = state;
     v30 = v13;
     v11 = v14;
     v29 = v11;
     v17 = v15;
     v31 = v17;
     v34 = &v36;
-    dispatch_sync(v16, v28);
+    dispatch_sync(stateSerializationQueue, v28);
 
-    if (v5)
+    if (syncCopy)
     {
       [(PLLibraryServicesManager *)self _waitForAwaitOperation:v37[5]];
       if (*(v47 + 24) == 1)
@@ -1809,12 +1809,12 @@ LABEL_4:
         v18 = PLLibraryServicesGetLog();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [(PLLibraryServicesManager *)self logPrefix];
+          logPrefix = [(PLLibraryServicesManager *)self logPrefix];
           v20 = PLStringFromLibraryServicesState();
           qos_class_self();
           v21 = PLStringFromQoSClass();
           *buf = 138543874;
-          v56 = v19;
+          v56 = logPrefix;
           v57 = 2114;
           v58 = v20;
           v59 = 2114;
@@ -1828,12 +1828,12 @@ LABEL_4:
         v18 = PLLibraryServicesGetLog();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [(PLLibraryServicesManager *)self logPrefix];
+          logPrefix2 = [(PLLibraryServicesManager *)self logPrefix];
           v23 = PLStringFromLibraryServicesState();
           qos_class_self();
           v24 = PLStringFromQoSClass();
           *buf = 138543874;
-          v56 = v22;
+          v56 = logPrefix2;
           v57 = 2114;
           v58 = v23;
           v59 = 2114;
@@ -1847,12 +1847,12 @@ LABEL_4:
         v18 = PLLibraryServicesGetLog();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v25 = [(PLLibraryServicesManager *)self logPrefix];
+          logPrefix3 = [(PLLibraryServicesManager *)self logPrefix];
           v26 = PLStringFromLibraryServicesState();
           qos_class_self();
           v27 = PLStringFromQoSClass();
           *buf = 138543874;
-          v56 = v25;
+          v56 = logPrefix3;
           v57 = 2114;
           v58 = v26;
           v59 = 2114;
@@ -1871,9 +1871,9 @@ LABEL_4:
     goto LABEL_17;
   }
 
-  if (v8)
+  if (handlerCopy)
   {
-    (*(v8 + 2))(v8, 0, v10);
+    (*(handlerCopy + 2))(handlerCopy, 0, v10);
   }
 
 LABEL_17:
@@ -1953,22 +1953,22 @@ void __70__PLLibraryServicesManager__awaitLibraryState_sync_completionHandler___
   }
 }
 
-- (void)_dispatchAwaitLibraryStateCompletionHandler:(id)a3 group:(id)a4 error:(id)a5
+- (void)_dispatchAwaitLibraryStateCompletionHandler:(id)handler group:(id)group error:(id)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  handlerCopy = handler;
+  groupCopy = group;
+  errorCopy = error;
+  if (handlerCopy)
   {
     v11 = PLLibraryServicesGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [(PLLibraryServicesManager *)self logPrefix];
+      logPrefix = [(PLLibraryServicesManager *)self logPrefix];
       qos_class_self();
       v13 = PLStringFromQoSClass();
       *buf = 138543618;
-      v21 = v12;
+      v21 = logPrefix;
       v22 = 2114;
       v23 = v13;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEBUG, "%{public}@: Dispatching await completion handler at current QoS: %{public}@", buf, 0x16u);
@@ -1980,15 +1980,15 @@ void __70__PLLibraryServicesManager__awaitLibraryState_sync_completionHandler___
     block[1] = 3221225472;
     block[2] = __84__PLLibraryServicesManager__dispatchAwaitLibraryStateCompletionHandler_group_error___block_invoke;
     block[3] = &unk_1E7576F38;
-    v17 = v10;
-    v19 = v8;
-    v18 = v9;
+    v17 = errorCopy;
+    v19 = handlerCopy;
+    v18 = groupCopy;
     dispatch_group_async(v18, v15, block);
   }
 
   else
   {
-    dispatch_group_leave(v9);
+    dispatch_group_leave(groupCopy);
   }
 }
 
@@ -2000,17 +2000,17 @@ void __84__PLLibraryServicesManager__dispatchAwaitLibraryStateCompletionHandler_
   dispatch_group_leave(v2);
 }
 
-- (BOOL)activate:(id *)a3
+- (BOOL)activate:(id *)activate
 {
   v15 = *MEMORY[0x1E69E9840];
   v6 = PLLibraryServicesGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(PLLibraryServicesManager *)self logPrefix];
+    logPrefix = [(PLLibraryServicesManager *)self logPrefix];
     qos_class_self();
     v8 = PLStringFromQoSClass();
     *buf = 138543618;
-    *&buf[4] = v7;
+    *&buf[4] = logPrefix;
     *&buf[12] = 2114;
     *&buf[14] = v8;
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEBUG, "%{public}@: Received activate state machine at current QoS: %{public}@", buf, 0x16u);
@@ -2020,7 +2020,7 @@ void __84__PLLibraryServicesManager__dispatchAwaitLibraryStateCompletionHandler_
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v14 = 1;
-  v9 = [(PLLibraryServicesManager *)self stateSerializationQueue];
+  stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __37__PLLibraryServicesManager_activate___block_invoke;
@@ -2028,8 +2028,8 @@ void __84__PLLibraryServicesManager__dispatchAwaitLibraryStateCompletionHandler_
   v12[4] = self;
   v12[5] = buf;
   v12[6] = a2;
-  v12[7] = a3;
-  dispatch_sync(v9, v12);
+  v12[7] = activate;
+  dispatch_sync(stateSerializationQueue, v12);
 
   v10 = *(*&buf[8] + 24);
   _Block_object_dispose(buf, 8);
@@ -2125,44 +2125,44 @@ id __45__PLLibraryServicesManager_pendingOperations__block_invoke(uint64_t a1)
 
 - (id)activeOperations
 {
-  v2 = [(PLLibraryServicesManager *)self currentStateNode];
-  v3 = [v2 operations];
+  currentStateNode = [(PLLibraryServicesManager *)self currentStateNode];
+  operations = [currentStateNode operations];
 
-  return v3;
+  return operations;
 }
 
-- (BOOL)_enqueueOperation:(id)a3 error:(id *)a4
+- (BOOL)_enqueueOperation:(id)operation error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLLibraryServicesManager *)self stateSerializationQueue];
-  dispatch_assert_queue_V2(v7);
+  operationCopy = operation;
+  stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
+  dispatch_assert_queue_V2(stateSerializationQueue);
 
-  if (!-[PLLibraryServicesManager isFinalizing](self, "isFinalizing") || (v8 = [v6 requiredState], v8 == objc_msgSend(objc_opt_class(), "_finalState")))
+  if (!-[PLLibraryServicesManager isFinalizing](self, "isFinalizing") || (v8 = [operationCopy requiredState], v8 == objc_msgSend(objc_opt_class(), "_finalState")))
   {
     if ([(PLLibraryServicesManager *)self isActive])
     {
-      v9 = [(PLLibraryServicesManager *)self _state];
-      if (v9 == [v6 requiredState])
+      _state = [(PLLibraryServicesManager *)self _state];
+      if (_state == [operationCopy requiredState])
       {
         [(PLLibraryServicesManager *)self _increaseStateQueueQoSIfNeeded];
         v10 = PLLibraryServicesGetLog();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
         {
-          v11 = [(PLLibraryServicesManager *)self logPrefix];
-          [v6 qualityOfService];
+          logPrefix = [(PLLibraryServicesManager *)self logPrefix];
+          [operationCopy qualityOfService];
           v12 = PLStringFromQualityOfService();
           *buf = 138543874;
-          v31 = v11;
+          v31 = logPrefix;
           v32 = 2114;
-          v33 = v6;
+          v33 = operationCopy;
           v34 = 2114;
           v35 = v12;
           _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEBUG, "%{public}@: Adding operation: %{public}@ at QoS: %{public}@", buf, 0x20u);
         }
 
-        v13 = [(PLLibraryServicesManager *)self currentStateNode];
-        v14 = [v13 enqueueOperation:v6 error:0];
+        currentStateNode = [(PLLibraryServicesManager *)self currentStateNode];
+        v14 = [currentStateNode enqueueOperation:operationCopy error:0];
 
         if ((v14 & 1) == 0)
         {
@@ -2176,11 +2176,11 @@ LABEL_11:
     }
 
     [(PLLibraryServicesManager *)self _state];
-    [v6 requiredState];
+    [operationCopy requiredState];
     if (PLHasPathFromSourceStateToTargetState())
     {
       [(PLLibraryServicesManager *)self _increaseStateQueueQoSIfNeeded];
-      v27 = v6;
+      v27 = operationCopy;
       PLRunWithUnfairLock();
 
       goto LABEL_11;
@@ -2193,36 +2193,36 @@ LABEL_12:
   v16 = PLStringFromLibraryServicesState();
   v28[1] = @"operation";
   v29[0] = v16;
-  v17 = [v6 description];
+  v17 = [operationCopy description];
   v29[1] = v17;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:2];
 
   v19 = objc_opt_class();
-  v20 = [(PLLibraryServicesManager *)self invalidationError];
-  v21 = [v19 errorForInvalidationError:v20 userInfo:v18];
+  invalidationError = [(PLLibraryServicesManager *)self invalidationError];
+  v21 = [v19 errorForInvalidationError:invalidationError userInfo:v18];
 
   if (!+[PLLibraryServicesOperation shouldSuppressLogging])
   {
     v22 = PLLibraryServicesGetLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(PLLibraryServicesManager *)self logPrefix];
+      logPrefix2 = [(PLLibraryServicesManager *)self logPrefix];
       [(PLLibraryServicesManager *)self _state];
       v24 = PLStringFromLibraryServicesState();
       *buf = 138543874;
-      v31 = v23;
+      v31 = logPrefix2;
       v32 = 2114;
       v33 = v24;
       v34 = 2114;
-      v35 = v6;
+      v35 = operationCopy;
       _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: Enqueue operation failed with invalid library state %{public}@ %{public}@", buf, 0x20u);
     }
   }
 
-  if (a4)
+  if (error)
   {
     v25 = v21;
-    *a4 = v21;
+    *error = v21;
   }
 
   v15 = 0;
@@ -2234,35 +2234,35 @@ LABEL_19:
 - (void)_resetStateQueueQoS
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(PLLibraryServicesManager *)self stateSerializationQueue];
-  dispatch_assert_queue_V2(v3);
+  stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
+  dispatch_assert_queue_V2(stateSerializationQueue);
 
   if ([(PLLibraryServicesManager *)self maxWaiterQoS]!= 9)
   {
     v4 = PLLibraryServicesGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(PLLibraryServicesManager *)self logPrefix];
+      logPrefix = [(PLLibraryServicesManager *)self logPrefix];
       v6 = PLStringFromQoSClass();
       v9 = 138543618;
-      v10 = v5;
+      v10 = logPrefix;
       v11 = 2114;
       v12 = v6;
       _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Resetting QoS to %{public}@", &v9, 0x16u);
     }
 
     [(PLLibraryServicesManager *)self setMaxWaiterQoS:9];
-    v7 = [(PLLibraryServicesManager *)self maxWaiterQoS];
-    v8 = [(PLLibraryServicesManager *)self currentStateNode];
-    [v8 setQos:v7];
+    maxWaiterQoS = [(PLLibraryServicesManager *)self maxWaiterQoS];
+    currentStateNode = [(PLLibraryServicesManager *)self currentStateNode];
+    [currentStateNode setQos:maxWaiterQoS];
   }
 }
 
 - (void)_increaseStateQueueQoSIfNeeded
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(PLLibraryServicesManager *)self stateSerializationQueue];
-  dispatch_assert_queue_V2(v3);
+  stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
+  dispatch_assert_queue_V2(stateSerializationQueue);
 
   v4 = qos_class_self();
   if (v4 > [(PLLibraryServicesManager *)self maxWaiterQoS])
@@ -2270,12 +2270,12 @@ LABEL_19:
     v5 = PLLibraryServicesGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(PLLibraryServicesManager *)self logPrefix];
+      logPrefix = [(PLLibraryServicesManager *)self logPrefix];
       [(PLLibraryServicesManager *)self maxWaiterQoS];
       v7 = PLStringFromQoSClass();
       v8 = PLStringFromQoSClass();
       v10 = 138543874;
-      v11 = v6;
+      v11 = logPrefix;
       v12 = 2114;
       v13 = v7;
       v14 = 2114;
@@ -2284,8 +2284,8 @@ LABEL_19:
     }
 
     [(PLLibraryServicesManager *)self setMaxWaiterQoS:v4];
-    v9 = [(PLLibraryServicesManager *)self currentStateNode];
-    [v9 setQos:v4];
+    currentStateNode = [(PLLibraryServicesManager *)self currentStateNode];
+    [currentStateNode setQos:v4];
   }
 }
 
@@ -2301,40 +2301,40 @@ LABEL_19:
   return v2;
 }
 
-- (void)shutdownLibraryWithDescription:(id)a3
+- (void)shutdownLibraryWithDescription:(id)description
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptionCopy = description;
   v5 = +[PLPhotoLibraryBundleController sharedBundleController];
   WeakRetained = objc_loadWeakRetained(&self->_libraryBundle);
   v7 = MEMORY[0x1E696ABC0];
   v8 = *MEMORY[0x1E69BFF48];
   v11 = *MEMORY[0x1E696A278];
-  v12[0] = v4;
+  v12[0] = descriptionCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v10 = [v7 errorWithDomain:v8 code:41021 userInfo:v9];
 
   [v5 shutdownBundle:WeakRetained reason:v10];
 }
 
-- (BOOL)enqueueOperationWithName:(id)a3 requiredState:(int64_t)a4 executionBlock:(id)a5
+- (BOOL)enqueueOperationWithName:(id)name requiredState:(int64_t)state executionBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __82__PLLibraryServicesManager_enqueueOperationWithName_requiredState_executionBlock___block_invoke;
   v12[3] = &unk_1E756CD68;
-  v13 = v8;
-  v9 = v8;
-  v10 = [PLLibraryServicesOperation operationWithName:a3 libraryServicesManager:self requiredState:a4 parentProgress:0 executionBlock:v12];
-  LOBYTE(a3) = [(PLLibraryServicesManager *)self enqueueOperation:v10 error:0];
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = [PLLibraryServicesOperation operationWithName:name libraryServicesManager:self requiredState:state parentProgress:0 executionBlock:v12];
+  LOBYTE(name) = [(PLLibraryServicesManager *)self enqueueOperation:v10 error:0];
 
-  return a3;
+  return name;
 }
 
-- (BOOL)enqueueOperation:(id)a3 error:(id *)a4
+- (BOOL)enqueueOperation:(id)operation error:(id *)error
 {
-  v6 = a3;
+  operationCopy = operation;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -2345,22 +2345,22 @@ LABEL_19:
   v18 = __Block_byref_object_copy__46470;
   v19 = __Block_byref_object_dispose__46471;
   v20 = 0;
-  v7 = [(PLLibraryServicesManager *)self stateSerializationQueue];
+  stateSerializationQueue = [(PLLibraryServicesManager *)self stateSerializationQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __51__PLLibraryServicesManager_enqueueOperation_error___block_invoke;
   v11[3] = &unk_1E7578898;
   v13 = &v21;
   v11[4] = self;
-  v8 = v6;
+  v8 = operationCopy;
   v12 = v8;
   v14 = &v15;
-  dispatch_sync(v7, v11);
+  dispatch_sync(stateSerializationQueue, v11);
 
   v9 = *(v22 + 24);
-  if (a4 && (v22[3] & 1) == 0)
+  if (error && (v22[3] & 1) == 0)
   {
-    *a4 = v16[5];
+    *error = v16[5];
     v9 = *(v22 + 24);
   }
 
@@ -2381,53 +2381,53 @@ void __51__PLLibraryServicesManager_enqueueOperation_error___block_invoke(void *
   *(*(a1[6] + 8) + 24) = v5;
 }
 
-- (id)_libraryServicesStateNodeWithState:(int64_t)a3
+- (id)_libraryServicesStateNodeWithState:(int64_t)state
 {
   v5 = objc_alloc(MEMORY[0x1E69BF280]);
-  v6 = [(PLLibraryServicesManager *)self maxWaiterQoS];
-  v7 = [(PLLibraryServicesManager *)self logPrefix];
-  v8 = [v5 initWithLibraryServicesState:a3 qualityOfService:v6 logPrefix:v7];
+  maxWaiterQoS = [(PLLibraryServicesManager *)self maxWaiterQoS];
+  logPrefix = [(PLLibraryServicesManager *)self logPrefix];
+  v8 = [v5 initWithLibraryServicesState:state qualityOfService:maxWaiterQoS logPrefix:logPrefix];
 
   return v8;
 }
 
 - (void)initializeConstraintsDirector
 {
-  v3 = [(PLLibraryServicesManager *)self libraryBundle];
-  v2 = [v3 constraintsDirector];
+  libraryBundle = [(PLLibraryServicesManager *)self libraryBundle];
+  constraintsDirector = [libraryBundle constraintsDirector];
 }
 
 - (PLChangeHandlingContainer)changeHandlingContainer
 {
-  v2 = [(PLLibraryServicesManager *)self libraryBundle];
-  v3 = [v2 changeHandlingContainer];
+  libraryBundle = [(PLLibraryServicesManager *)self libraryBundle];
+  changeHandlingContainer = [libraryBundle changeHandlingContainer];
 
-  return v3;
+  return changeHandlingContainer;
 }
 
 - (void)initializeChangeHandling
 {
-  v2 = [(PLLibraryServicesManager *)self libraryBundle];
-  [v2 initializeChangeHandling];
+  libraryBundle = [(PLLibraryServicesManager *)self libraryBundle];
+  [libraryBundle initializeChangeHandling];
 }
 
-- (id)collectionShareBackendForKind:(signed __int16)a3
+- (id)collectionShareBackendForKind:(signed __int16)kind
 {
-  v3 = a3;
+  kindCopy = kind;
   v16 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (kind)
   {
-    if (a3 == 2)
+    if (kind == 2)
     {
       lazyCollectionShareSharedStreamBackend = self->_lazyCollectionShareSharedStreamBackend;
       goto LABEL_6;
     }
 
-    if (a3 == 1)
+    if (kind == 1)
     {
       lazyCollectionShareSharedStreamBackend = self->_lazyCollectionShareCPLBackend;
 LABEL_6:
-      v6 = [(PLLazyObject *)lazyCollectionShareSharedStreamBackend objectValue];
+      objectValue = [(PLLazyObject *)lazyCollectionShareSharedStreamBackend objectValue];
       goto LABEL_13;
     }
   }
@@ -2437,9 +2437,9 @@ LABEL_6:
     v7 = PLLibraryServicesGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(PLLibraryServicesManager *)self logPrefix];
+      logPrefix = [(PLLibraryServicesManager *)self logPrefix];
       v12 = 138543362;
-      v13 = v8;
+      v13 = logPrefix;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Invalid Collection Share Kind Unknown", &v12, 0xCu);
     }
   }
@@ -2447,18 +2447,18 @@ LABEL_6:
   v9 = PLLibraryServicesGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    v10 = [(PLLibraryServicesManager *)self logPrefix];
+    logPrefix2 = [(PLLibraryServicesManager *)self logPrefix];
     v12 = 138543618;
-    v13 = v10;
+    v13 = logPrefix2;
     v14 = 1024;
-    v15 = v3;
+    v15 = kindCopy;
     _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "%{public}@: Invalid Collection Share Kind: %d", &v12, 0x12u);
   }
 
-  v6 = 0;
+  objectValue = 0;
 LABEL_13:
 
-  return v6;
+  return objectValue;
 }
 
 - (id)newDirectServerConfiguration
@@ -2498,22 +2498,22 @@ LABEL_13:
 {
   if ([(PLLibraryServicesManager *)self isSystemPhotoLibrary])
   {
-    v3 = [(PLLazyObject *)self->_lazyClientSideEncryptionManager objectValue];
+    objectValue = [(PLLazyObject *)self->_lazyClientSideEncryptionManager objectValue];
   }
 
   else
   {
-    v3 = 0;
+    objectValue = 0;
   }
 
-  return v3;
+  return objectValue;
 }
 
-- (id)journalManagerForName:(id)a3
+- (id)journalManagerForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = +[PLComputeCacheManager name];
-  v6 = [v4 isEqualToString:v5];
+  v6 = [nameCopy isEqualToString:v5];
 
   if (v6)
   {
@@ -2531,10 +2531,10 @@ LABEL_13:
 
 - (id)newRebuildJournalManager
 {
-  v3 = [(PLLibraryServicesManager *)self createOptions];
+  createOptions = [(PLLibraryServicesManager *)self createOptions];
   if ([PLRebuildJournalManager isEnabledWithPathManager:self->_pathManager error:0])
   {
-    v4 = (v3 & 0x200) == 0;
+    v4 = (createOptions & 0x200) == 0;
   }
 
   else
@@ -2556,15 +2556,15 @@ LABEL_13:
 {
   if (PLPlatformMomentsSupported())
   {
-    v3 = [(PLLazyObject *)self->_lazyMomentGenerationDataManager objectValue];
+    objectValue = [(PLLazyObject *)self->_lazyMomentGenerationDataManager objectValue];
   }
 
   else
   {
-    v3 = 0;
+    objectValue = 0;
   }
 
-  return v3;
+  return objectValue;
 }
 
 - (void)_invalidateOutstandingTransactionHandlerTimer
@@ -2584,8 +2584,8 @@ LABEL_13:
   {
     block = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &__block_literal_global_171_46514);
     backgroundJobService = self->_backgroundJobService;
-    v4 = [(PLLibraryServicesManager *)self libraryBundle];
-    [(PLBackgroundJobService *)backgroundJobService invalidateLibraryBundle:v4 completion:block];
+    libraryBundle = [(PLLibraryServicesManager *)self libraryBundle];
+    [(PLBackgroundJobService *)backgroundJobService invalidateLibraryBundle:libraryBundle completion:block];
 
     dispatch_block_wait(block, 0xFFFFFFFFFFFFFFFFLL);
   }
@@ -2606,9 +2606,9 @@ LABEL_13:
     v5 = PLLibraryServicesGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(PLLibraryServicesManager *)self logPrefix];
+      logPrefix = [(PLLibraryServicesManager *)self logPrefix];
       v7 = 138543362;
-      v8 = v6;
+      v8 = logPrefix;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_ERROR, "%{public}@: Moments disabled, momentGenerationDataManager unavailable", &v7, 0xCu);
     }
 
@@ -2644,12 +2644,12 @@ id __53__PLLibraryServicesManager_newSearchDonationProgress__block_invoke(uint64
 
 - (id)_provideContextForSearchDonationProgress
 {
-  v2 = [(PLLibraryServicesManager *)self databaseContext];
-  v3 = [v2 newShortLivedLibraryWithName:"search donation progress"];
+  databaseContext = [(PLLibraryServicesManager *)self databaseContext];
+  v3 = [databaseContext newShortLivedLibraryWithName:"search donation progress"];
 
-  v4 = [v3 managedObjectContext];
+  managedObjectContext = [v3 managedObjectContext];
 
-  return v4;
+  return managedObjectContext;
 }
 
 - (id)newSearchIndexingEngine
@@ -2667,9 +2667,9 @@ id __53__PLLibraryServicesManager_newSearchDonationProgress__block_invoke(uint64
     v5 = PLLibraryServicesGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(PLLibraryServicesManager *)self logPrefix];
+      logPrefix = [(PLLibraryServicesManager *)self logPrefix];
       v7 = 138543362;
-      v8 = v6;
+      v8 = logPrefix;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_ERROR, "%{public}@: Search indexing disabled, newSearchIndexingEngine unavailable", &v7, 0xCu);
     }
 
@@ -2683,8 +2683,8 @@ id __53__PLLibraryServicesManager_newSearchDonationProgress__block_invoke(uint64
   if ([(PLLibraryServicesManager *)self isSystemPhotoLibrary])
   {
     v3 = [PLAssetsdCrashRecoverySupport alloc];
-    v4 = [(PLLibraryServicesManager *)self pathManager];
-    v5 = [(PLAssetsdCrashRecoverySupport *)v3 initWithPathManager:v4];
+    pathManager = [(PLLibraryServicesManager *)self pathManager];
+    v5 = [(PLAssetsdCrashRecoverySupport *)v3 initWithPathManager:pathManager];
 
     return v5;
   }
@@ -2694,12 +2694,12 @@ id __53__PLLibraryServicesManager_newSearchDonationProgress__block_invoke(uint64
     v7 = PLLibraryServicesGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(PLLibraryServicesManager *)self logPrefix];
-      v9 = [(PLLibraryServicesManager *)self pathManager];
+      logPrefix = [(PLLibraryServicesManager *)self logPrefix];
+      pathManager2 = [(PLLibraryServicesManager *)self pathManager];
       v10 = 138543618;
-      v11 = v8;
+      v11 = logPrefix;
       v12 = 2112;
-      v13 = v9;
+      v13 = pathManager2;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_ERROR, "%{public}@: Request for newCrashRecoverySupport from a non-system photo library: %@", &v10, 0x16u);
     }
 
@@ -2722,12 +2722,12 @@ id __53__PLLibraryServicesManager_newSearchDonationProgress__block_invoke(uint64
     v5 = PLLibraryServicesGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(PLLibraryServicesManager *)self logPrefix];
-      v7 = [(PLLibraryServicesManager *)self pathManager];
+      logPrefix = [(PLLibraryServicesManager *)self logPrefix];
+      pathManager = [(PLLibraryServicesManager *)self pathManager];
       v8 = 138543618;
-      v9 = v6;
+      v9 = logPrefix;
       v10 = 2112;
-      v11 = v7;
+      v11 = pathManager;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_ERROR, "%{public}@: Request for newCloudPhotoLibraryManager from a non-system photo library: %@", &v8, 0x16u);
     }
 
@@ -2735,54 +2735,54 @@ id __53__PLLibraryServicesManager_newSearchDonationProgress__block_invoke(uint64
   }
 }
 
-- (id)_newContainer:(Class)a3 scope:(id)a4
+- (id)_newContainer:(Class)container scope:(id)scope
 {
-  v6 = a4;
-  v7 = [(objc_class *)a3 entityName];
+  scopeCopy = scope;
+  entityName = [(objc_class *)container entityName];
   v8 = MEMORY[0x1E69BDD68];
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.photos.%@counts", v7];
+  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.photos.%@counts", entityName];
   albumCountQueue = self->_albumCountQueue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __48__PLLibraryServicesManager__newContainer_scope___block_invoke;
   v14[3] = &unk_1E756CBD8;
-  v15 = v6;
-  v16 = a3;
-  v11 = v6;
+  v15 = scopeCopy;
+  containerCopy = container;
+  v11 = scopeCopy;
   v12 = [v8 setCoalescerWithLabel:v9 target:self queue:albumCountQueue action:v14];
 
   return v12;
 }
 
-- (void)_handleCoalescerActionWithScope:(id)a3 class:(Class)a4 forIDs:(id)a5 context:(id)a6
+- (void)_handleCoalescerActionWithScope:(id)scope class:(Class)class forIDs:(id)ds context:(id)context
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  scopeCopy = scope;
+  dsCopy = ds;
+  contextCopy = context;
   dispatch_assert_queue_V2(self->_albumCountQueue);
-  v24 = [(PLLibraryServicesManager *)self isSystemPhotoLibrary];
-  v13 = [(objc_class *)a4 entityName];
-  v14 = [v12 activityToken];
-  v25 = v11;
-  v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v11];
-  v16 = [(PLLibraryServicesManager *)self databaseContext];
-  v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-countCoalescer", v13];
-  v18 = [v16 newShortLivedLibraryWithName:{objc_msgSend(v17, "UTF8String")}];
+  isSystemPhotoLibrary = [(PLLibraryServicesManager *)self isSystemPhotoLibrary];
+  entityName = [(objc_class *)class entityName];
+  activityToken = [contextCopy activityToken];
+  v25 = dsCopy;
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", dsCopy];
+  databaseContext = [(PLLibraryServicesManager *)self databaseContext];
+  v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-countCoalescer", entityName];
+  v18 = [databaseContext newShortLivedLibraryWithName:{objc_msgSend(v17, "UTF8String")}];
 
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __81__PLLibraryServicesManager__handleCoalescerActionWithScope_class_forIDs_context___block_invoke;
   v26[3] = &unk_1E756CBB0;
-  v29 = a4;
+  classCopy = class;
   v19 = v18;
   v27 = v19;
-  v20 = v15;
+  v20 = dsCopy;
   v28 = v20;
   [v19 performTransactionAndWait:v26];
-  v21 = self;
-  objc_sync_enter(v21);
-  [(PLClientServerTransaction *)v21->_serverTransaction completeTransactionScope:v10];
-  if (v24)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PLClientServerTransaction *)selfCopy->_serverTransaction completeTransactionScope:scopeCopy];
+  if (isSystemPhotoLibrary)
   {
     v22 = 4.0;
   }
@@ -2792,12 +2792,12 @@ id __53__PLLibraryServicesManager_newSearchDonationProgress__block_invoke(uint64
     v22 = 0.5;
   }
 
-  serverTransaction = v21->_serverTransaction;
-  v21->_serverTransaction = 0;
+  serverTransaction = selfCopy->_serverTransaction;
+  selfCopy->_serverTransaction = 0;
 
-  objc_sync_exit(v21);
-  [v14 endActivity];
-  [v12 delayNextInvocationByTimeInterval:v22];
+  objc_sync_exit(selfCopy);
+  [activityToken endActivity];
+  [contextCopy delayNextInvocationByTimeInterval:v22];
 }
 
 void __81__PLLibraryServicesManager__handleCoalescerActionWithScope_class_forIDs_context___block_invoke(uint64_t a1)
@@ -2892,8 +2892,8 @@ PLCacheDeleteSupport *__72__PLLibraryServicesManager__initSyndicationPhotoLibrar
 
 - (void)_invalidateSystemPhotoLibrarySpecificServices
 {
-  v3 = [(PLLibraryServicesManager *)self searchIndexingEngine];
-  [v3 disableUISearch];
+  searchIndexingEngine = [(PLLibraryServicesManager *)self searchIndexingEngine];
+  [searchIndexingEngine disableUISearch];
 
   [(PLLibraryServicesManager *)self _invalidateCameraPreviewWellManager];
   [(PLLibraryServicesManager *)self _invalidateCrashRecoverySupport];
@@ -2977,19 +2977,19 @@ PLSyndicationDeleteEngine *__67__PLLibraryServicesManager__initSystemPhotoLibrar
   }
 
   v3 = [PLBackgroundAssetResourceUploader alloc];
-  v4 = [(PLLibraryServicesManager *)self databaseContext];
-  v5 = [(PLBackgroundAssetResourceUploader *)v3 initWithPhotoLibraryFactory:v4];
+  databaseContext = [(PLLibraryServicesManager *)self databaseContext];
+  v5 = [(PLBackgroundAssetResourceUploader *)v3 initWithPhotoLibraryFactory:databaseContext];
 
   return v5;
 }
 
 - (NSString)mainScopeIdentifier
 {
-  v2 = [(PLLazyObject *)self->_lazyMainScopeIdentifier objectValue];
-  v3 = v2;
-  if (v2)
+  objectValue = [(PLLazyObject *)self->_lazyMainScopeIdentifier objectValue];
+  v3 = objectValue;
+  if (objectValue)
   {
-    v4 = v2;
+    v4 = objectValue;
   }
 
   else
@@ -3004,10 +3004,10 @@ PLSyndicationDeleteEngine *__67__PLLibraryServicesManager__initSystemPhotoLibrar
 
 - (BOOL)isSearchIndexingEnabled
 {
-  v2 = self;
-  v3 = [(PLLibraryServicesManager *)self createOptions];
-  LOBYTE(v2) = [(PLLibraryServicesManager *)v2 isSyndicationPhotoLibrary]|| (v3 & 2) == 0;
-  return PLPlatformSearchSupported() & v2;
+  selfCopy = self;
+  createOptions = [(PLLibraryServicesManager *)self createOptions];
+  LOBYTE(selfCopy) = [(PLLibraryServicesManager *)selfCopy isSyndicationPhotoLibrary]|| (createOptions & 2) == 0;
+  return PLPlatformSearchSupported() & selfCopy;
 }
 
 - (BOOL)isCPLSyncablePhotoLibrary
@@ -3027,45 +3027,45 @@ PLSyndicationDeleteEngine *__67__PLLibraryServicesManager__initSystemPhotoLibrar
     return PLCloudPhotoLibraryMultiLibarySyncingEnabled_multiLibrarySyncingEnabled == 1 && [(PLLibraryServicesManager *)self isSyndicationPhotoLibrary];
   }
 
-  v4 = [(PLLibraryServicesManager *)self libraryBundle];
-  v5 = [v4 indicatorFileCoordinator];
+  libraryBundle = [(PLLibraryServicesManager *)self libraryBundle];
+  indicatorFileCoordinator = [libraryBundle indicatorFileCoordinator];
 
   if ([(PLLibraryServicesManager *)self isCloudPhotoLibraryEnabled])
   {
-    v3 = 1;
+    isDisableICloudPhotos = 1;
   }
 
   else
   {
-    v3 = [v5 isDisableICloudPhotos];
+    isDisableICloudPhotos = [indicatorFileCoordinator isDisableICloudPhotos];
   }
 
-  return v3;
+  return isDisableICloudPhotos;
 }
 
 - (BOOL)isAppPhotoLibrary
 {
-  v2 = [(PLLibraryServicesManager *)self cplSettings];
-  v3 = [v2 isAppLibrary];
+  cplSettings = [(PLLibraryServicesManager *)self cplSettings];
+  isAppLibrary = [cplSettings isAppLibrary];
 
-  return v3;
+  return isAppLibrary;
 }
 
-- (void)refreshImportSessionCountForImportSessionIDs:(id)a3
+- (void)refreshImportSessionCountForImportSessionIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLLibraryServicesManager refreshImportSessionCountForImportSessionIDs:]"];
-  v6 = [(PLLazyObject *)self->_lazyImportSessionCountCoalescer objectValue];
+  objectValue = [(PLLazyObject *)self->_lazyImportSessionCountCoalescer objectValue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __73__PLLibraryServicesManager_refreshImportSessionCountForImportSessionIDs___block_invoke;
   v9[3] = &unk_1E756CB88;
   v9[4] = self;
-  v10 = v4;
+  v10 = dsCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
-  [v6 update:v9];
+  v8 = dsCopy;
+  [objectValue update:v9];
 }
 
 void __73__PLLibraryServicesManager_refreshImportSessionCountForImportSessionIDs___block_invoke(uint64_t a1, void *a2)
@@ -3095,21 +3095,21 @@ void __73__PLLibraryServicesManager_refreshImportSessionCountForImportSessionIDs
   [*(a1 + 48) stillAlive];
 }
 
-- (void)refreshAlbumCountForAlbumIDs:(id)a3
+- (void)refreshAlbumCountForAlbumIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLLibraryServicesManager refreshAlbumCountForAlbumIDs:]"];
-  v6 = [(PLLazyObject *)self->_lazyAlbumCountCoalescer objectValue];
+  objectValue = [(PLLazyObject *)self->_lazyAlbumCountCoalescer objectValue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __57__PLLibraryServicesManager_refreshAlbumCountForAlbumIDs___block_invoke;
   v9[3] = &unk_1E756CB88;
   v9[4] = self;
-  v10 = v4;
+  v10 = dsCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
-  [v6 update:v9];
+  v8 = dsCopy;
+  [objectValue update:v9];
 }
 
 void __57__PLLibraryServicesManager_refreshAlbumCountForAlbumIDs___block_invoke(uint64_t a1, void *a2)
@@ -3139,39 +3139,39 @@ void __57__PLLibraryServicesManager_refreshAlbumCountForAlbumIDs___block_invoke(
   [*(a1 + 48) stillAlive];
 }
 
-- (void)setCreateMode:(BOOL)a3 options:(id)a4
+- (void)setCreateMode:(BOOL)mode options:(id)options
 {
-  v7 = a4;
-  self->_isCreateMode = a3;
-  if (v7)
+  optionsCopy = options;
+  self->_isCreateMode = mode;
+  if (optionsCopy)
   {
-    v10 = v7;
-    objc_storeStrong(&self->_openerCreationOptions, a4);
-    v8 = [v10 createDatabaseOptionsDictionary];
-    v9 = [(PLLibraryServicesManager *)self modelMigrator];
-    [v9 setOptions:v8];
+    v10 = optionsCopy;
+    objc_storeStrong(&self->_openerCreationOptions, options);
+    createDatabaseOptionsDictionary = [v10 createDatabaseOptionsDictionary];
+    modelMigrator = [(PLLibraryServicesManager *)self modelMigrator];
+    [modelMigrator setOptions:createDatabaseOptionsDictionary];
 
-    v7 = v10;
+    optionsCopy = v10;
   }
 }
 
 - (unint64_t)createOptions
 {
-  v2 = [(PLLibraryServicesManager *)self modelMigrator];
-  v3 = [v2 options];
-  v4 = [v3 objectForKeyedSubscript:@"PLPhotoLibraryCreateOptions"];
-  v5 = [v4 unsignedIntegerValue];
+  modelMigrator = [(PLLibraryServicesManager *)self modelMigrator];
+  options = [modelMigrator options];
+  v4 = [options objectForKeyedSubscript:@"PLPhotoLibraryCreateOptions"];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (NSPersistentStoreCoordinator)persistentStoreCoordinator
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(PLLibraryServicesManager *)self libraryBundle];
-  v4 = [v3 persistentContainer];
+  libraryBundle = [(PLLibraryServicesManager *)self libraryBundle];
+  persistentContainer = [libraryBundle persistentContainer];
   v10 = 0;
-  v5 = [v4 sharedPersistentStoreCoordinatorWithError:&v10];
+  v5 = [persistentContainer sharedPersistentStoreCoordinatorWithError:&v10];
   v6 = v10;
 
   if (!v5)
@@ -3179,9 +3179,9 @@ void __57__PLLibraryServicesManager_refreshAlbumCountForAlbumIDs___block_invoke(
     v7 = PLLibraryServicesGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(PLLibraryServicesManager *)self logPrefix];
+      logPrefix = [(PLLibraryServicesManager *)self logPrefix];
       *buf = 138543618;
-      v12 = v8;
+      v12 = logPrefix;
       v13 = 2112;
       v14 = v6;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_ERROR, "%{public}@: Failed to get shared PSC: %@", buf, 0x16u);
@@ -3193,10 +3193,10 @@ void __57__PLLibraryServicesManager_refreshAlbumCountForAlbumIDs___block_invoke(
 
 - (NSURL)libraryURL
 {
-  v2 = [(PLLibraryServicesManager *)self pathManager];
-  v3 = [v2 libraryURL];
+  pathManager = [(PLLibraryServicesManager *)self pathManager];
+  libraryURL = [pathManager libraryURL];
 
-  return v3;
+  return libraryURL;
 }
 
 - (void)invalidateReverseLocationDataOnAllAssets
@@ -3212,16 +3212,16 @@ void __57__PLLibraryServicesManager_refreshAlbumCountForAlbumIDs___block_invoke(
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v3 = [(PLLibraryServicesManager *)self databaseContext];
-  v4 = [v3 newShortLivedLibraryWithName:"-[PLLibraryServicesManager invalidateReverseLocationDataOnAllAssets]"];
+  databaseContext = [(PLLibraryServicesManager *)self databaseContext];
+  v4 = [databaseContext newShortLivedLibraryWithName:"-[PLLibraryServicesManager invalidateReverseLocationDataOnAllAssets]"];
 
-  v5 = [v4 managedObjectContext];
+  managedObjectContext = [v4 managedObjectContext];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__PLLibraryServicesManager_invalidateReverseLocationDataOnAllAssets__block_invoke;
   v11[3] = &unk_1E7578870;
   v13 = &v15;
-  v6 = v5;
+  v6 = managedObjectContext;
   v12 = v6;
   v14 = &v19;
   [v4 performTransactionAndWait:v11];
@@ -3230,9 +3230,9 @@ void __57__PLLibraryServicesManager_refreshAlbumCountForAlbumIDs___block_invoke(
     v7 = PLLibraryServicesGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(PLLibraryServicesManager *)self logPrefix];
+      logPrefix = [(PLLibraryServicesManager *)self logPrefix];
       *buf = 138543362;
-      v26 = v8;
+      v26 = logPrefix;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Successfully invalidated reverseLocationDataIsValid on ALL assets", buf, 0xCu);
     }
   }
@@ -3242,10 +3242,10 @@ void __57__PLLibraryServicesManager_refreshAlbumCountForAlbumIDs___block_invoke(
     v7 = PLLibraryServicesGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(PLLibraryServicesManager *)self logPrefix];
+      logPrefix2 = [(PLLibraryServicesManager *)self logPrefix];
       v10 = v20[5];
       *buf = 138543618;
-      v26 = v9;
+      v26 = logPrefix2;
       v27 = 2112;
       v28 = v10;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_ERROR, "%{public}@: Failed to invalidate reverseLocationDataIsValid on ALL assets error: %@", buf, 0x16u);
@@ -3439,16 +3439,16 @@ PLCameraPreviewWellManager *__57__PLLibraryServicesManager__initCameraPreviewWel
 - (int64_t)_determineWellKnownPhotoLibraryIdentifier
 {
   v3 = MEMORY[0x1E69BF2A0];
-  v4 = [(PLLibraryServicesManager *)self pathManager];
-  v5 = [v4 libraryURL];
-  v6 = [v3 wellKnownPhotoLibraryIdentifierForURL:v5];
+  pathManager = [(PLLibraryServicesManager *)self pathManager];
+  libraryURL = [pathManager libraryURL];
+  v6 = [v3 wellKnownPhotoLibraryIdentifierForURL:libraryURL];
 
   if (!v6)
   {
     v7 = MEMORY[0x1E69BF2A0];
-    v8 = [(PLLibraryServicesManager *)self pathManager];
-    v9 = [v8 libraryURL];
-    LODWORD(v6) = [v7 isSystemPhotoLibraryURL:v9];
+    pathManager2 = [(PLLibraryServicesManager *)self pathManager];
+    libraryURL2 = [pathManager2 libraryURL];
+    LODWORD(v6) = [v7 isSystemPhotoLibraryURL:libraryURL2];
 
     return v6;
   }
@@ -3467,7 +3467,7 @@ PLCameraPreviewWellManager *__57__PLLibraryServicesManager__initCameraPreviewWel
     *buf = 138412802;
     v8 = v4;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = pathManager;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "%@ %p dealloc %@", buf, 0x20u);
@@ -3478,13 +3478,13 @@ PLCameraPreviewWellManager *__57__PLLibraryServicesManager__initCameraPreviewWel
   [(PLLibraryServicesManager *)&v6 dealloc];
 }
 
-- (PLLibraryServicesManager)initWithLibraryBundle:(id)a3 backgroundJobService:(id)a4 cacheDeleteRegistration:(id)a5 delegateClass:(Class)a6
+- (PLLibraryServicesManager)initWithLibraryBundle:(id)bundle backgroundJobService:(id)service cacheDeleteRegistration:(id)registration delegateClass:(Class)class
 {
   v247 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  obj = a5;
-  v173 = a4;
-  v174 = a5;
+  bundleCopy = bundle;
+  obj = registration;
+  serviceCopy = service;
+  registrationCopy = registration;
   v240.receiver = self;
   v240.super_class = PLLibraryServicesManager;
   v12 = [(PLLibraryServicesManager *)&v240 init];
@@ -3492,14 +3492,14 @@ PLCameraPreviewWellManager *__57__PLLibraryServicesManager__initCameraPreviewWel
   {
     if ((PLIsAssetsd() & 1) == 0)
     {
-      v170 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v170 handleFailureInMethod:a2 object:v12 file:@"PLLibraryServicesManager.m" lineNumber:298 description:@"Only supposed to be running in assetsd"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v12 file:@"PLLibraryServicesManager.m" lineNumber:298 description:@"Only supposed to be running in assetsd"];
     }
 
-    objc_storeWeak(v12 + 1, v11);
-    v13 = [v11 pathManager];
+    objc_storeWeak(v12 + 1, bundleCopy);
+    pathManager = [bundleCopy pathManager];
     v14 = *(v12 + 3);
-    *(v12 + 3) = v13;
+    *(v12 + 3) = pathManager;
 
     *(v12 + 5) = [v12 _determineWellKnownPhotoLibraryIdentifier];
     v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"LSM-%d-%p", *(v12 + 5), v12];
@@ -3509,13 +3509,13 @@ PLCameraPreviewWellManager *__57__PLLibraryServicesManager__initCameraPreviewWel
     v17 = PLLibraryServicesGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v12 logPrefix];
+      logPrefix = [v12 logPrefix];
       v19 = MEMORY[0x1E69BF220];
-      v20 = [v11 libraryURL];
-      v21 = [v19 descriptionWithFileURL:v20];
+      libraryURL = [bundleCopy libraryURL];
+      v21 = [v19 descriptionWithFileURL:libraryURL];
       v22 = PLStringFromWellKnownPhotoLibraryIdentifier();
       *buf = 138543874;
-      v242 = v18;
+      v242 = logPrefix;
       v243 = 2112;
       v244 = v21;
       v245 = 2112;
@@ -3538,13 +3538,13 @@ PLCameraPreviewWellManager *__57__PLLibraryServicesManager__initCameraPreviewWel
     v28 = *(v12 + 46);
     *(v12 + 46) = v27;
 
-    if (a6)
+    if (class)
     {
-      v29 = [a6 alloc];
+      v29 = [class alloc];
       if (([v29 conformsToProtocol:&unk_1F109F188] & 1) == 0)
       {
-        v171 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v171 handleFailureInMethod:a2 object:v12 file:@"PLLibraryServicesManager.m" lineNumber:315 description:{@"Invalid class '%@' assigned to libraryServicesDelegateClass, must conform to PLLibraryServicesDelegate", a6}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:v12 file:@"PLLibraryServicesManager.m" lineNumber:315 description:{@"Invalid class '%@' assigned to libraryServicesDelegateClass, must conform to PLLibraryServicesDelegate", class}];
       }
 
       v30 = [v29 initWithLibraryServicesManager:v12];
@@ -3568,7 +3568,7 @@ PLCameraPreviewWellManager *__57__PLLibraryServicesManager__initCameraPreviewWel
     v237[2] = __109__PLLibraryServicesManager_initWithLibraryBundle_backgroundJobService_cacheDeleteRegistration_delegateClass___block_invoke;
     v237[3] = &unk_1E7573318;
     objc_copyWeak(&v239, buf);
-    v238 = v11;
+    v238 = bundleCopy;
     v39 = [v38 initWithBlock:v237];
 
     objc_destroyWeak(&v239);
@@ -3706,7 +3706,7 @@ PLCameraPreviewWellManager *__57__PLLibraryServicesManager__initCameraPreviewWel
     v80 = *(v12 + 16);
     *(v12 + 16) = v79;
 
-    objc_storeStrong(v12 + 58, a4);
+    objc_storeStrong(v12 + 58, service);
     v81 = objc_initWeak(buf, v12);
 
     v82 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -4007,7 +4007,7 @@ PLCameraPreviewWellManager *__57__PLLibraryServicesManager__initCameraPreviewWel
     v243 = 2048;
     v244 = v12;
     v245 = 2112;
-    v246 = v11;
+    v246 = bundleCopy;
     _os_log_impl(&dword_19BF1F000, v167, OS_LOG_TYPE_DEBUG, "%@ %p initWithLibraryBundle:%@", buf, 0x20u);
   }
 
@@ -4555,25 +4555,25 @@ id __109__PLLibraryServicesManager_initWithLibraryBundle_backgroundJobService_ca
 - (id)statusDescription
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [(PLLibraryServicesManager *)self activeOperations];
-  v4 = [(PLLibraryServicesManager *)self pendingOperations];
+  activeOperations = [(PLLibraryServicesManager *)self activeOperations];
+  pendingOperations = [(PLLibraryServicesManager *)self pendingOperations];
   v5 = MEMORY[0x1E696AD60];
-  v6 = [(PLLibraryServicesManager *)self libraryURL];
-  v7 = [v6 path];
-  v8 = [(PLLibraryServicesManager *)self currentStateNode];
-  [v8 state];
+  libraryURL = [(PLLibraryServicesManager *)self libraryURL];
+  path = [libraryURL path];
+  currentStateNode = [(PLLibraryServicesManager *)self currentStateNode];
+  [currentStateNode state];
   v9 = PLStringFromLibraryServicesState();
-  v10 = [v5 stringWithFormat:@"%@ [%@, %d active, %d pending]\n", v7, v9, objc_msgSend(v3, "count"), objc_msgSend(v4, "count")];
+  v10 = [v5 stringWithFormat:@"%@ [%@, %d active, %d pending]\n", path, v9, objc_msgSend(activeOperations, "count"), objc_msgSend(pendingOperations, "count")];
 
-  v28 = v3;
-  if ([v3 count])
+  v28 = activeOperations;
+  if ([activeOperations count])
   {
     [v10 appendFormat:@"  Active operations\n"];
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v11 = v3;
+    v11 = activeOperations;
     v12 = [v11 countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v12)
     {
@@ -4592,8 +4592,8 @@ id __109__PLLibraryServicesManager_initWithLibraryBundle_backgroundJobService_ca
           }
 
           v14 = (v17 + 1);
-          v18 = [*(*(&v33 + 1) + 8 * v16) statusDescription];
-          [v10 appendFormat:@"  %d: %@\n", v17, v18];
+          statusDescription = [*(*(&v33 + 1) + 8 * v16) statusDescription];
+          [v10 appendFormat:@"  %d: %@\n", v17, statusDescription];
 
           ++v16;
           v17 = v14;
@@ -4606,17 +4606,17 @@ id __109__PLLibraryServicesManager_initWithLibraryBundle_backgroundJobService_ca
       while (v13);
     }
 
-    v3 = v28;
+    activeOperations = v28;
   }
 
-  if ([v4 count])
+  if ([pendingOperations count])
   {
     [v10 appendFormat:@"  Pending operations\n"];
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v19 = v4;
+    v19 = pendingOperations;
     v20 = [v19 countByEnumeratingWithState:&v29 objects:v37 count:16];
     if (v20)
     {
@@ -4635,8 +4635,8 @@ id __109__PLLibraryServicesManager_initWithLibraryBundle_backgroundJobService_ca
           }
 
           v22 = (v25 + 1);
-          v26 = [*(*(&v29 + 1) + 8 * v24) statusDescription];
-          [v10 appendFormat:@"  %d: %@\n", v25, v26];
+          statusDescription2 = [*(*(&v29 + 1) + 8 * v24) statusDescription];
+          [v10 appendFormat:@"  %d: %@\n", v25, statusDescription2];
 
           ++v24;
           v25 = v22;
@@ -4649,7 +4649,7 @@ id __109__PLLibraryServicesManager_initWithLibraryBundle_backgroundJobService_ca
       while (v21);
     }
 
-    v3 = v28;
+    activeOperations = v28;
   }
 
   return v10;
@@ -4666,32 +4666,32 @@ id __109__PLLibraryServicesManager_initWithLibraryBundle_backgroundJobService_ca
   return v6;
 }
 
-+ (id)errorForInvalidationError:(id)a3 userInfo:(id)a4
++ (id)errorForInvalidationError:(id)error userInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 domain];
+  errorCopy = error;
+  infoCopy = info;
+  domain = [errorCopy domain];
   v8 = *MEMORY[0x1E69BFF48];
-  v9 = [v7 isEqualToString:*MEMORY[0x1E69BFF48]];
+  v9 = [domain isEqualToString:*MEMORY[0x1E69BFF48]];
 
   if (v9)
   {
-    v10 = v5;
+    v10 = errorCopy;
   }
 
   else
   {
     v11 = *MEMORY[0x1E696AA08];
-    if (v5)
+    if (errorCopy)
     {
-      v12 = [v6 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+      v12 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
       if (!v12)
       {
         v13 = objc_alloc(MEMORY[0x1E695DF90]);
-        if (v6)
+        if (infoCopy)
         {
-          v14 = v6;
+          v14 = infoCopy;
         }
 
         else
@@ -4700,13 +4700,13 @@ id __109__PLLibraryServicesManager_initWithLibraryBundle_backgroundJobService_ca
         }
 
         v15 = [v13 initWithDictionary:v14];
-        [v15 setObject:v5 forKeyedSubscript:v11];
+        [v15 setObject:errorCopy forKeyedSubscript:v11];
 
-        v6 = v15;
+        infoCopy = v15;
       }
     }
 
-    v16 = [v6 objectForKeyedSubscript:v11];
+    v16 = [infoCopy objectForKeyedSubscript:v11];
     if (PLIsErrorEqualToCode())
     {
       v17 = 46516;
@@ -4717,43 +4717,43 @@ id __109__PLLibraryServicesManager_initWithLibraryBundle_backgroundJobService_ca
       v17 = 43002;
     }
 
-    v10 = [MEMORY[0x1E696ABC0] errorWithDomain:v8 code:v17 userInfo:v6];
+    v10 = [MEMORY[0x1E696ABC0] errorWithDomain:v8 code:v17 userInfo:infoCopy];
   }
 
   return v10;
 }
 
-+ (id)libraryServicesManagerForLibraryURL:(id)a3
++ (id)libraryServicesManagerForLibraryURL:(id)l
 {
-  v5 = a3;
-  if (!v5)
+  lCopy = l;
+  if (!lCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PLLibraryServicesManager.m" lineNumber:236 description:{@"Invalid parameter not satisfying: %@", @"url"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLLibraryServicesManager.m" lineNumber:236 description:{@"Invalid parameter not satisfying: %@", @"url"}];
   }
 
   v6 = +[PLPhotoLibraryBundleController sharedBundleController];
-  v7 = [v6 lookupOrCreateBundleForLibraryURL:v5];
+  v7 = [v6 lookupOrCreateBundleForLibraryURL:lCopy];
 
-  v8 = [v7 libraryServicesManager];
+  libraryServicesManager = [v7 libraryServicesManager];
 
-  return v8;
+  return libraryServicesManager;
 }
 
-- (void)performTransactionForSyndicationDeleteManager:(id)a3 name:(const char *)a4 transaction:(id)a5
+- (void)performTransactionForSyndicationDeleteManager:(id)manager name:(const char *)name transaction:(id)transaction
 {
-  v7 = a5;
-  v8 = [(PLLibraryServicesManager *)self databaseContext];
-  v9 = [v8 newShortLivedLibraryWithName:a4];
+  transactionCopy = transaction;
+  databaseContext = [(PLLibraryServicesManager *)self databaseContext];
+  v9 = [databaseContext newShortLivedLibraryWithName:name];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __126__PLLibraryServicesManager_PLSyndicationDeleteEngineDelegate__performTransactionForSyndicationDeleteManager_name_transaction___block_invoke;
   v12[3] = &unk_1E7577C08;
   v13 = v9;
-  v14 = v7;
+  v14 = transactionCopy;
   v10 = v9;
-  v11 = v7;
+  v11 = transactionCopy;
   [v10 performTransactionAndWait:v12];
 }
 

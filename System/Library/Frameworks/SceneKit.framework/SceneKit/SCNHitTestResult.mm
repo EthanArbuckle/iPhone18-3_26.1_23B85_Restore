@@ -1,8 +1,8 @@
 @interface SCNHitTestResult
-+ (id)hitTestResultsFromHitTestResultRef:(__CFArray *)a3;
++ (id)hitTestResultsFromHitTestResultRef:(__CFArray *)ref;
 - (CGPoint)textureCoordinate;
 - (CGPoint)textureCoordinatesWithMappingChannel:(NSInteger)channel;
-- (SCNHitTestResult)initWithResult:(__C3DHitTestResult *)a3;
+- (SCNHitTestResult)initWithResult:(__C3DHitTestResult *)result;
 - (SCNMatrix4)modelTransform;
 - (SCNNode)boneNode;
 - (SCNNode)node;
@@ -20,21 +20,21 @@
 
 @implementation SCNHitTestResult
 
-- (SCNHitTestResult)initWithResult:(__C3DHitTestResult *)a3
+- (SCNHitTestResult)initWithResult:(__C3DHitTestResult *)result
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (result)
   {
     v6.receiver = self;
     v6.super_class = SCNHitTestResult;
-    v3 = [(SCNHitTestResult *)&v6 init];
-    if (v3)
+    selfCopy = [(SCNHitTestResult *)&v6 init];
+    if (selfCopy)
     {
-      v3->_result = CFRetain(a3);
+      selfCopy->_result = CFRetain(result);
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -169,15 +169,15 @@
   return result;
 }
 
-+ (id)hitTestResultsFromHitTestResultRef:(__CFArray *)a3
++ (id)hitTestResultsFromHitTestResultRef:(__CFArray *)ref
 {
-  v4 = [(__CFArray *)a3 count];
+  v4 = [(__CFArray *)ref count];
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:v4];
   if (v4)
   {
     for (i = 0; i != v4; ++i)
     {
-      v7 = [[SCNHitTestResult alloc] initWithResult:[(__CFArray *)a3 objectAtIndex:i]];
+      v7 = [[SCNHitTestResult alloc] initWithResult:[(__CFArray *)ref objectAtIndex:i]];
       [v5 addObject:v7];
     }
   }

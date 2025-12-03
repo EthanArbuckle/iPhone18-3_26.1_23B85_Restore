@@ -1,7 +1,7 @@
 @interface _DKEventStatsCounterInternal
-- (id)initWithCollectionName:(void *)a3 eventName:(void *)a4 eventType:(void *)a5 eventTypePossibleValues:(char)a6 hasResult:(int)a7 scalar:;
-- (uint64_t)incrementCountByNumber:(void *)a3 typeValue:(int)a4 success:;
-- (uint64_t)indexOfTypeValue:(int)a3 success:;
+- (id)initWithCollectionName:(void *)name eventName:(void *)eventName eventType:(void *)type eventTypePossibleValues:(char)values hasResult:(int)result scalar:;
+- (uint64_t)incrementCountByNumber:(void *)number typeValue:(int)value success:;
+- (uint64_t)indexOfTypeValue:(int)value success:;
 - (void)dealloc;
 @end
 
@@ -21,52 +21,52 @@
   [(_DKEventStatsCounterInternal *)&v4 dealloc];
 }
 
-- (id)initWithCollectionName:(void *)a3 eventName:(void *)a4 eventType:(void *)a5 eventTypePossibleValues:(char)a6 hasResult:(int)a7 scalar:
+- (id)initWithCollectionName:(void *)name eventName:(void *)eventName eventType:(void *)type eventTypePossibleValues:(char)values hasResult:(int)result scalar:
 {
   v40[2] = *MEMORY[0x1E69E9840];
   v13 = a2;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  if (!a1)
+  nameCopy = name;
+  eventNameCopy = eventName;
+  typeCopy = type;
+  if (!self)
   {
     goto LABEL_24;
   }
 
-  v39.receiver = a1;
+  v39.receiver = self;
   v39.super_class = _DKEventStatsCounterInternal;
   v17 = objc_msgSendSuper2(&v39, sel_init);
-  a1 = v17;
+  self = v17;
   if (!v17)
   {
     goto LABEL_23;
   }
 
   *(v17 + 2) = 0;
-  objc_storeStrong(v17 + 4, a3);
-  objc_storeStrong(a1 + 5, a4);
-  objc_storeStrong(a1 + 6, a5);
+  objc_storeStrong(v17 + 4, name);
+  objc_storeStrong(self + 5, eventName);
+  objc_storeStrong(self + 6, type);
   v18 = 0;
-  if (v15 && v16)
+  if (eventNameCopy && typeCopy)
   {
-    v18 = [v16 count] != 0;
+    v18 = [typeCopy count] != 0;
   }
 
-  *(a1 + 12) = v18;
-  *(a1 + 13) = a6;
-  v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.coreduet.%@.%@", v13, v14];
-  v20 = a1[7];
-  a1[7] = v19;
+  *(self + 12) = v18;
+  *(self + 13) = values;
+  nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.coreduet.%@.%@", v13, nameCopy];
+  v20 = self[7];
+  self[7] = nameCopy;
 
-  v21 = *(a1 + 12) == 1 ? [v16 count] : 1;
-  v22 = v21 << a6;
-  a1[2] = v22;
+  v21 = *(self + 12) == 1 ? [typeCopy count] : 1;
+  v22 = v21 << values;
+  self[2] = v22;
   v23 = malloc_type_calloc(v22, 8uLL, 0x100004000313F17uLL);
-  a1[3] = v23;
+  self[3] = v23;
   if (!v23)
   {
 LABEL_24:
-    v32 = 0;
+    selfCopy4 = 0;
     goto LABEL_25;
   }
 
@@ -76,12 +76,12 @@ LABEL_24:
     if ((v24 & 1) == 0)
     {
       v25 = objc_opt_new();
-      if (*(a1 + 12) == 1)
+      if (*(self + 12) == 1)
       {
-        v26 = [getPETEventPropertyClass() propertyWithName:v15 possibleValues:v16];
+        v26 = [getPETEventPropertyClass() propertyWithName:eventNameCopy possibleValues:typeCopy];
         if (!v26)
         {
-          v37 = a1;
+          selfCopy = self;
           goto LABEL_30;
         }
 
@@ -89,10 +89,10 @@ LABEL_24:
         [v25 addObject:v26];
       }
 
-      if (*(a1 + 13) != 1)
+      if (*(self + 13) != 1)
       {
 LABEL_20:
-        if (a7)
+        if (result)
         {
           PETScalarEventTrackerClass = getPETScalarEventTrackerClass();
         }
@@ -102,9 +102,9 @@ LABEL_20:
           PETScalarEventTrackerClass = getPETDistributionEventTrackerClass();
         }
 
-        v35 = [[PETScalarEventTrackerClass alloc] initWithFeatureId:v13 event:v14 registerProperties:v25];
-        v36 = a1[8];
-        a1[8] = v35;
+        v35 = [[PETScalarEventTrackerClass alloc] initWithFeatureId:v13 event:nameCopy registerProperties:v25];
+        v36 = self[8];
+        self[8] = v35;
 
         goto LABEL_23;
       }
@@ -121,10 +121,10 @@ LABEL_20:
         goto LABEL_20;
       }
 
-      v38 = a1;
+      selfCopy2 = self;
 
 LABEL_30:
-      v32 = a1;
+      selfCopy4 = self;
       goto LABEL_25;
     }
   }
@@ -135,28 +135,28 @@ LABEL_30:
   }
 
 LABEL_23:
-  a1 = a1;
-  v32 = a1;
+  self = self;
+  selfCopy4 = self;
 LABEL_25:
 
   v33 = *MEMORY[0x1E69E9840];
-  return v32;
+  return selfCopy4;
 }
 
-- (uint64_t)indexOfTypeValue:(int)a3 success:
+- (uint64_t)indexOfTypeValue:(int)value success:
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 12) == (v5 != 0))
+    if (*(self + 12) == (v5 != 0))
     {
       if (!v5)
       {
-        if (*(a1 + 13))
+        if (*(self + 13))
         {
-          v10 = (*(a1 + 13) & a3);
+          v10 = (*(self + 13) & value);
         }
 
         else
@@ -167,14 +167,14 @@ LABEL_25:
         goto LABEL_17;
       }
 
-      v7 = [*(a1 + 48) indexOfObject:v5];
+      v7 = [*(self + 48) indexOfObject:v5];
       if (v7 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v10 = v7;
-        if (*(a1 + 13) == 1)
+        if (*(self + 13) == 1)
         {
-          v11 = [*(a1 + 48) count];
-          if (a3)
+          v11 = [*(self + 48) count];
+          if (value)
           {
             v12 = v11;
           }
@@ -206,7 +206,7 @@ LABEL_24:
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
       v15 = @"unexpected";
-      if (*(a1 + 12))
+      if (*(self + 12))
       {
         v15 = @"missing";
       }
@@ -222,41 +222,41 @@ LABEL_24:
 
     v10 = -1;
 LABEL_17:
-    if (v10 >= *(a1 + 16))
+    if (v10 >= *(self + 16))
     {
-      a1 = -1;
+      self = -1;
     }
 
     else
     {
-      a1 = v10;
+      self = v10;
     }
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
-- (uint64_t)incrementCountByNumber:(void *)a3 typeValue:(int)a4 success:
+- (uint64_t)incrementCountByNumber:(void *)number typeValue:(int)value success:
 {
-  v7 = a3;
-  v8 = v7;
-  if (a1)
+  numberCopy = number;
+  v8 = numberCopy;
+  if (self)
   {
-    v11 = v7;
-    v7 = [(_DKEventStatsCounterInternal *)a1 indexOfTypeValue:v7 success:a4];
+    v11 = numberCopy;
+    numberCopy = [(_DKEventStatsCounterInternal *)self indexOfTypeValue:numberCopy success:value];
     v8 = v11;
-    if (v7 >= 1)
+    if (numberCopy >= 1)
     {
-      v9 = v7;
-      os_unfair_lock_lock((a1 + 8));
-      *(*(a1 + 24) + 8 * v9) += a2;
-      os_unfair_lock_unlock((a1 + 8));
+      v9 = numberCopy;
+      os_unfair_lock_lock((self + 8));
+      *(*(self + 24) + 8 * v9) += a2;
+      os_unfair_lock_unlock((self + 8));
       v8 = v11;
     }
   }
 
-  return MEMORY[0x1EEE66BB8](v7, v8);
+  return MEMORY[0x1EEE66BB8](numberCopy, v8);
 }
 
 @end

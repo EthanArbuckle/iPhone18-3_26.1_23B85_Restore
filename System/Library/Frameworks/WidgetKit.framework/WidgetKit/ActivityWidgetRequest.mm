@@ -1,15 +1,15 @@
 @interface ActivityWidgetRequest
 - (_TtC9WidgetKit21ActivityWidgetRequest)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ActivityWidgetRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_192154474(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_192154474(coderCopy);
 }
 
 - (_TtC9WidgetKit21ActivityWidgetRequest)init

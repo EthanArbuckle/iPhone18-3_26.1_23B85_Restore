@@ -3,43 +3,43 @@
 + (id)allAvailableRequestClassNames;
 + (id)availablePrivateRequestClassNames;
 + (id)availableRequestClassNames;
-+ (id)specifierForRequest:(id)a3;
-+ (id)specifierForRequestClass:(Class)a3 revision:(unint64_t)a4 error:(id *)a5;
-+ (id)specifierForRequestClassCode:(unsigned int *)a3 revision:(unint64_t)a4 error:(id *)a5;
-+ (id)specifierForRequestClassName:(id)a3 revision:(unint64_t)a4 error:(id *)a5;
-- (BOOL)hasModelEquivalencyToRequestSpecifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)specifierForRequest:(id)request;
++ (id)specifierForRequestClass:(Class)class revision:(unint64_t)revision error:(id *)error;
++ (id)specifierForRequestClassCode:(unsigned int *)code revision:(unint64_t)revision error:(id *)error;
++ (id)specifierForRequestClassName:(id)name revision:(unint64_t)revision error:(id *)error;
+- (BOOL)hasModelEquivalencyToRequestSpecifier:(id)specifier;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPrivate;
 - (BOOL)isPublic;
 - (BOOL)observationProvidesBoundsNormalizedToROI;
-- (BOOL)representsSupportedRequestAndReturnError:(id *)a3;
-- (BOOL)specifiesAnyRequestClass:(Class)a3;
-- (BOOL)specifiesAnyRequestClassName:(id)a3;
-- (BOOL)specifiesRequestClass:(Class)a3 revision:(unint64_t)a4;
-- (BOOL)specifiesRequestClass:(Class)a3 withAnyRevision:(unint64_t)a4;
-- (BOOL)specifiesRequestClassName:(id)a3;
-- (BOOL)specifiesRequestClassName:(id)a3 revision:(unint64_t)a4;
-- (BOOL)specifiesRequestClassName:(id)a3 withAnyRevision:(unint64_t)a4;
-- (Class)requestClassAndReturnError:(id *)a3;
+- (BOOL)representsSupportedRequestAndReturnError:(id *)error;
+- (BOOL)specifiesAnyRequestClass:(Class)class;
+- (BOOL)specifiesAnyRequestClassName:(id)name;
+- (BOOL)specifiesRequestClass:(Class)class revision:(unint64_t)revision;
+- (BOOL)specifiesRequestClass:(Class)class withAnyRevision:(unint64_t)revision;
+- (BOOL)specifiesRequestClassName:(id)name;
+- (BOOL)specifiesRequestClassName:(id)name revision:(unint64_t)revision;
+- (BOOL)specifiesRequestClassName:(id)name withAnyRevision:(unint64_t)revision;
+- (Class)requestClassAndReturnError:(id *)error;
 - (NSArray)allModelEquivalents;
-- (VNRequestSpecifier)initWithCoder:(id)a3;
-- (VNRequestSpecifier)initWithRequestClass:(Class)a3 name:(id)a4 code:(unsigned int)a5 revision:(unint64_t)a6;
+- (VNRequestSpecifier)initWithCoder:(id)coder;
+- (VNRequestSpecifier)initWithRequestClass:(Class)class name:(id)name code:(unsigned int)code revision:(unint64_t)revision;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNRequestSpecifier
 
 - (unint64_t)hash
 {
-  v3 = [(VNRequestSpecifier *)self requestClassName];
-  v4 = [v3 hash];
+  requestClassName = [(VNRequestSpecifier *)self requestClassName];
+  v4 = [requestClassName hash];
 
   return [(VNRequestSpecifier *)self requestRevision]^ __ROR8__(v4, 51);
 }
 
-- (Class)requestClassAndReturnError:(id *)a3
+- (Class)requestClassAndReturnError:(id *)error
 {
   cachedRequestClass = self->_cachedRequestClass;
   if (cachedRequestClass)
@@ -47,19 +47,19 @@
     v4 = cachedRequestClass;
   }
 
-  else if (a3)
+  else if (error)
   {
-    v6 = [(VNRequestSpecifier *)self requestClassName];
-    *a3 = [VNError errorForUnsupportedRequestClassName:v6];
+    requestClassName = [(VNRequestSpecifier *)self requestClassName];
+    *error = [VNError errorForUnsupportedRequestClassName:requestClassName];
   }
 
   return cachedRequestClass;
 }
 
-- (VNRequestSpecifier)initWithCoder:(id)a3
+- (VNRequestSpecifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt32ForKey:@"code"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt32ForKey:@"code"];
   v13 = 0;
   v6 = [VNClassRegistrar classNameForClassCode:v5 error:&v13];
   v7 = v13;
@@ -71,40 +71,40 @@
 
     if (v8)
     {
-      self = -[VNRequestSpecifier initWithRequestClass:name:code:revision:](self, "initWithRequestClass:name:code:revision:", NSClassFromString(v6), v6, v5, [v4 decodeIntegerForKey:@"rev"]);
+      self = -[VNRequestSpecifier initWithRequestClass:name:code:revision:](self, "initWithRequestClass:name:code:revision:", NSClassFromString(v6), v6, v5, [coderCopy decodeIntegerForKey:@"rev"]);
       v7 = v9;
-      v10 = self;
+      selfCopy = self;
     }
 
     else
     {
-      [v4 failWithError:v9];
-      v10 = 0;
+      [coderCopy failWithError:v9];
+      selfCopy = 0;
       v7 = v9;
     }
   }
 
   else
   {
-    [v4 failWithError:v7];
-    v10 = 0;
+    [coderCopy failWithError:v7];
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   requestClassCode = self->_requestClassCode;
-  v5 = a3;
-  [v5 encodeInt32:requestClassCode forKey:@"code"];
-  [v5 encodeInteger:self->_requestRevision forKey:@"rev"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:requestClassCode forKey:@"code"];
+  [coderCopy encodeInteger:self->_requestRevision forKey:@"rev"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -114,12 +114,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VNRequestSpecifier *)self requestRevision];
-      if (v6 == [(VNRequestSpecifier *)v5 requestRevision])
+      v5 = equalCopy;
+      requestRevision = [(VNRequestSpecifier *)self requestRevision];
+      if (requestRevision == [(VNRequestSpecifier *)v5 requestRevision])
       {
-        v7 = [(VNRequestSpecifier *)self requestClassCode];
-        v8 = v7 == [(VNRequestSpecifier *)v5 requestClassCode];
+        requestClassCode = [(VNRequestSpecifier *)self requestClassCode];
+        v8 = requestClassCode == [(VNRequestSpecifier *)v5 requestClassCode];
       }
 
       else
@@ -140,12 +140,12 @@
 - (id)description
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v4 = [(VNRequestSpecifier *)self requestRevision];
+  requestRevision = [(VNRequestSpecifier *)self requestRevision];
   v5 = [(VNRequestSpecifier *)self requestClassAndReturnError:0];
   if (v5)
   {
     v6 = v5;
-    v7 = VNRequestRevisionString(v5, v4);
+    v7 = VNRequestRevisionString(v5, requestRevision);
     if (v7)
     {
       v8 = v7;
@@ -163,15 +163,15 @@
 
   else
   {
-    v9 = [(VNRequestSpecifier *)self requestClassName];
-    v8 = v9;
+    requestClassName = [(VNRequestSpecifier *)self requestClassName];
+    v8 = requestClassName;
     v10 = "";
-    if (v4 > 0xDECAEFFF)
+    if (requestRevision > 0xDECAEFFF)
     {
       v10 = "private ";
     }
 
-    [v3 appendFormat:@"unavailable %@, %srevision %lu", v9, v10, v4];
+    [v3 appendFormat:@"unavailable %@, %srevision %lu", requestClassName, v10, requestRevision];
   }
 
   return v3;
@@ -189,29 +189,29 @@
 
 - (BOOL)isPublic
 {
-  v3 = [(VNRequestSpecifier *)self isPublicRevision];
-  if (v3)
+  isPublicRevision = [(VNRequestSpecifier *)self isPublicRevision];
+  if (isPublicRevision)
   {
 
-    LOBYTE(v3) = [(VNRequestSpecifier *)self isPublicRequestClass];
+    LOBYTE(isPublicRevision) = [(VNRequestSpecifier *)self isPublicRequestClass];
   }
 
-  return v3;
+  return isPublicRevision;
 }
 
 - (BOOL)observationProvidesBoundsNormalizedToROI
 {
-  v3 = [(VNRequestSpecifier *)self requestClassCode];
-  v4 = [(VNRequestSpecifier *)self requestRevision];
+  requestClassCode = [(VNRequestSpecifier *)self requestClassCode];
+  requestRevision = [(VNRequestSpecifier *)self requestRevision];
 
-  return [VNClassRegistrar observationBoundsAreNormalizedToROIForRequestClassCode:v3 revision:v4];
+  return [VNClassRegistrar observationBoundsAreNormalizedToROIForRequestClassCode:requestClassCode revision:requestRevision];
 }
 
-- (BOOL)specifiesAnyRequestClassName:(id)a3
+- (BOOL)specifiesAnyRequestClassName:(id)name
 {
-  v4 = a3;
-  v5 = [(VNRequestSpecifier *)self requestClassName];
-  v6 = v4;
+  nameCopy = name;
+  requestClassName = [(VNRequestSpecifier *)self requestClassName];
+  v6 = nameCopy;
   v7 = v6;
   v13 = &v14;
   if (v6)
@@ -219,7 +219,7 @@
     v8 = v6;
     do
     {
-      v9 = [v5 isEqualToString:v8];
+      v9 = [requestClassName isEqualToString:v8];
       if (v9)
       {
         break;
@@ -242,16 +242,16 @@
   return v9;
 }
 
-- (BOOL)specifiesRequestClassName:(id)a3
+- (BOOL)specifiesRequestClassName:(id)name
 {
-  v4 = a3;
-  v5 = [(VNRequestSpecifier *)self requestClassName];
-  v6 = [v4 isEqualToString:v5];
+  nameCopy = name;
+  requestClassName = [(VNRequestSpecifier *)self requestClassName];
+  v6 = [nameCopy isEqualToString:requestClassName];
 
   return v6;
 }
 
-- (BOOL)specifiesAnyRequestClass:(Class)a3
+- (BOOL)specifiesAnyRequestClass:(Class)class
 {
   v4 = [(VNRequestSpecifier *)self requestClassAndReturnError:0];
   if (!v4)
@@ -260,8 +260,8 @@
   }
 
   v10 = &v11;
-  v5 = a3 != 0;
-  if (v4 != a3 && a3)
+  v5 = class != 0;
+  if (v4 != class && class)
   {
     do
     {
@@ -276,18 +276,18 @@
   return v5;
 }
 
-- (BOOL)specifiesRequestClassName:(id)a3 withAnyRevision:(unint64_t)a4
+- (BOOL)specifiesRequestClassName:(id)name withAnyRevision:(unint64_t)revision
 {
-  v6 = a3;
-  v7 = [(VNRequestSpecifier *)self requestClassName];
-  v8 = [v6 isEqualToString:v7];
+  nameCopy = name;
+  requestClassName = [(VNRequestSpecifier *)self requestClassName];
+  v8 = [nameCopy isEqualToString:requestClassName];
 
   if (v8)
   {
-    v9 = [(VNRequestSpecifier *)self requestRevision];
+    requestRevision = [(VNRequestSpecifier *)self requestRevision];
     v15 = &v16;
-    v10 = a4 != 0;
-    if (a4 && v9 != a4)
+    v10 = revision != 0;
+    if (revision && requestRevision != revision)
     {
       do
       {
@@ -296,7 +296,7 @@
         v10 = v12 != 0;
         if (v12)
         {
-          v13 = v9 == v12;
+          v13 = requestRevision == v12;
         }
 
         else
@@ -317,20 +317,20 @@
   return v10;
 }
 
-- (BOOL)specifiesRequestClass:(Class)a3 withAnyRevision:(unint64_t)a4
+- (BOOL)specifiesRequestClass:(Class)class withAnyRevision:(unint64_t)revision
 {
   v7 = [(VNRequestSpecifier *)self requestClassAndReturnError:0];
   result = 0;
   if (v7)
   {
-    if (v7 == a3)
+    if (v7 == class)
     {
-      v9 = [(VNRequestSpecifier *)self requestRevision];
+      requestRevision = [(VNRequestSpecifier *)self requestRevision];
       v13 = &v14;
-      result = a4 != 0;
-      if (a4)
+      result = revision != 0;
+      if (revision)
       {
-        if (v9 != a4)
+        if (requestRevision != revision)
         {
           do
           {
@@ -339,7 +339,7 @@
             result = v11 != 0;
             if (v11)
             {
-              v12 = v9 == v11;
+              v12 = requestRevision == v11;
             }
 
             else
@@ -357,13 +357,13 @@
   return result;
 }
 
-- (BOOL)specifiesRequestClassName:(id)a3 revision:(unint64_t)a4
+- (BOOL)specifiesRequestClassName:(id)name revision:(unint64_t)revision
 {
-  v6 = a3;
-  if ([(VNRequestSpecifier *)self requestRevision]== a4)
+  nameCopy = name;
+  if ([(VNRequestSpecifier *)self requestRevision]== revision)
   {
-    v7 = [(VNRequestSpecifier *)self requestClassName];
-    v8 = [v6 isEqualToString:v7];
+    requestClassName = [(VNRequestSpecifier *)self requestClassName];
+    v8 = [nameCopy isEqualToString:requestClassName];
   }
 
   else
@@ -374,15 +374,15 @@
   return v8;
 }
 
-- (BOOL)specifiesRequestClass:(Class)a3 revision:(unint64_t)a4
+- (BOOL)specifiesRequestClass:(Class)class revision:(unint64_t)revision
 {
-  if ([(VNRequestSpecifier *)self requestRevision]!= a4)
+  if ([(VNRequestSpecifier *)self requestRevision]!= revision)
   {
     return 0;
   }
 
   v6 = [(VNRequestSpecifier *)self requestClassAndReturnError:0];
-  return v6 && v6 == a3;
+  return v6 && v6 == class;
 }
 
 - (NSArray)allModelEquivalents
@@ -461,10 +461,10 @@ void __50__VNRequestSpecifier__modelEquivalenciesRegistrar__block_invoke()
   objc_autoreleasePoolPop(context);
 }
 
-- (BOOL)hasModelEquivalencyToRequestSpecifier:(id)a3
+- (BOOL)hasModelEquivalencyToRequestSpecifier:(id)specifier
 {
-  v4 = a3;
-  if ([(VNRequestSpecifier *)self isEqual:v4])
+  specifierCopy = specifier;
+  if ([(VNRequestSpecifier *)self isEqual:specifierCopy])
   {
     v5 = 1;
   }
@@ -472,26 +472,26 @@ void __50__VNRequestSpecifier__modelEquivalenciesRegistrar__block_invoke()
   else
   {
     v6 = +[VNRequestSpecifier _modelEquivalenciesRegistrar];
-    v5 = [v6 isRequestSpecifier:self equivalentToRequestSpecifier:v4];
+    v5 = [v6 isRequestSpecifier:self equivalentToRequestSpecifier:specifierCopy];
   }
 
   return v5;
 }
 
-- (BOOL)representsSupportedRequestAndReturnError:(id *)a3
+- (BOOL)representsSupportedRequestAndReturnError:(id *)error
 {
   v5 = [(VNRequestSpecifier *)self requestClassAndReturnError:?];
   if (v5)
   {
     LOBYTE(v5) = [(objc_class *)v5 supportsAnyRevision:[(VNRequestSpecifier *)self requestRevision]];
-    if (a3)
+    if (error)
     {
       if ((v5 & 1) == 0)
       {
         v6 = [VNError errorForUnsupportedRequestSpecifier:self];
         v5 = v6;
         LOBYTE(v5) = 0;
-        *a3 = v6;
+        *error = v6;
       }
     }
   }
@@ -499,35 +499,35 @@ void __50__VNRequestSpecifier__modelEquivalenciesRegistrar__block_invoke()
   return v5;
 }
 
-- (VNRequestSpecifier)initWithRequestClass:(Class)a3 name:(id)a4 code:(unsigned int)a5 revision:(unint64_t)a6
+- (VNRequestSpecifier)initWithRequestClass:(Class)class name:(id)name code:(unsigned int)code revision:(unint64_t)revision
 {
-  v10 = a4;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = VNRequestSpecifier;
   v11 = [(VNRequestSpecifier *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_requestClassCode = a5;
-    v11->_requestRevision = a6;
-    v13 = [v10 copy];
+    v11->_requestClassCode = code;
+    v11->_requestRevision = revision;
+    v13 = [nameCopy copy];
     cachedRequestClassName = v12->_cachedRequestClassName;
     v12->_cachedRequestClassName = v13;
 
-    v12->_cachedRequestClass = a3;
+    v12->_cachedRequestClass = class;
   }
 
   return v12;
 }
 
-+ (id)specifierForRequestClassName:(id)a3 revision:(unint64_t)a4 error:(id *)a5
++ (id)specifierForRequestClassName:(id)name revision:(unint64_t)revision error:(id *)error
 {
-  v8 = a3;
-  if ([VNClassRegistrar validateRequestClassName:v8 error:a5]&& (v13 = 0, [VNClassRegistrar getClassCode:&v13 forClassName:v8 error:a5]))
+  nameCopy = name;
+  if ([VNClassRegistrar validateRequestClassName:nameCopy error:error]&& (v13 = 0, [VNClassRegistrar getClassCode:&v13 forClassName:nameCopy error:error]))
   {
-    v9 = [a1 alloc];
-    v10 = NSClassFromString(v8);
-    v11 = [v9 initWithRequestClass:v10 name:v8 code:v13 revision:a4];
+    v9 = [self alloc];
+    v10 = NSClassFromString(nameCopy);
+    v11 = [v9 initWithRequestClass:v10 name:nameCopy code:v13 revision:revision];
   }
 
   else
@@ -538,16 +538,16 @@ void __50__VNRequestSpecifier__modelEquivalenciesRegistrar__block_invoke()
   return v11;
 }
 
-+ (id)specifierForRequestClass:(Class)a3 revision:(unint64_t)a4 error:(id *)a5
++ (id)specifierForRequestClass:(Class)class revision:(unint64_t)revision error:(id *)error
 {
-  if (_validateRequestClass(a3, a5))
+  if (_validateRequestClass(class, error))
   {
-    v9 = NSStringFromClass(a3);
+    v9 = NSStringFromClass(class);
     v13 = 0;
-    if ([VNClassRegistrar getClassCode:&v13 forClassName:v9 error:a5])
+    if ([VNClassRegistrar getClassCode:&v13 forClassName:v9 error:error])
     {
-      v10 = [a1 alloc];
-      v11 = [v10 initWithRequestClass:a3 name:v9 code:v13 revision:a4];
+      v10 = [self alloc];
+      v11 = [v10 initWithRequestClass:class name:v9 code:v13 revision:revision];
     }
 
     else
@@ -564,18 +564,18 @@ void __50__VNRequestSpecifier__modelEquivalenciesRegistrar__block_invoke()
   return v11;
 }
 
-+ (id)specifierForRequest:(id)a3
++ (id)specifierForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v12 = 0;
   [VNClassRegistrar getClassCode:&v12 forClassName:v6 error:0];
-  v7 = [a1 alloc];
+  v7 = [self alloc];
   v8 = v12;
-  v9 = [v4 revision];
+  revision = [requestCopy revision];
 
-  v10 = [v7 initWithRequestClass:v5 name:v6 code:v8 revision:v9];
+  v10 = [v7 initWithRequestClass:v5 name:v6 code:v8 revision:revision];
 
   return v10;
 }
@@ -691,13 +691,13 @@ uint64_t __48__VNRequestSpecifier_availableRequestClassNames__block_invoke_2(uin
   return result;
 }
 
-+ (id)specifierForRequestClassCode:(unsigned int *)a3 revision:(unint64_t)a4 error:(id *)a5
++ (id)specifierForRequestClassCode:(unsigned int *)code revision:(unint64_t)revision error:(id *)error
 {
-  v9 = [VNClassRegistrar classNameForClassCode:a3 error:a5];
+  v9 = [VNClassRegistrar classNameForClassCode:code error:error];
   v10 = v9;
-  if (v9 && ((v11 = NSClassFromString(v9), (v12 = v11) == 0) || _validateRequestClass(v11, a5)))
+  if (v9 && ((v11 = NSClassFromString(v9), (v12 = v11) == 0) || _validateRequestClass(v11, error)))
   {
-    v13 = [[a1 alloc] initWithRequestClass:v12 name:v10 code:a3 revision:a4];
+    v13 = [[self alloc] initWithRequestClass:v12 name:v10 code:code revision:revision];
   }
 
   else

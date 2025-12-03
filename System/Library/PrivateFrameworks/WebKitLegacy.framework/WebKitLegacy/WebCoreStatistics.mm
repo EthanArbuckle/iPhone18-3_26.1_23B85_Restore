@@ -13,10 +13,10 @@
 + (unint64_t)javaScriptProtectedObjectsCount;
 + (unint64_t)javaScriptReferencedObjectsCount;
 + (void)garbageCollectJavaScriptObjects;
-+ (void)garbageCollectJavaScriptObjectsOnAlternateThreadForDebugging:(BOOL)a3;
++ (void)garbageCollectJavaScriptObjectsOnAlternateThreadForDebugging:(BOOL)debugging;
 + (void)purgeInactiveFontData;
-+ (void)setJavaScriptGarbageCollectorTimerEnabled:(BOOL)a3;
-+ (void)setShouldPrintExceptions:(BOOL)a3;
++ (void)setJavaScriptGarbageCollectorTimerEnabled:(BOOL)enabled;
++ (void)setShouldPrintExceptions:(BOOL)exceptions;
 @end
 
 @implementation WebCoreStatistics
@@ -36,7 +36,7 @@
 
   else
   {
-    v4 = WebCore::commonVMSlow(a1);
+    v4 = WebCore::commonVMSlow(self);
     MEMORY[0x1CCA631F0](v7, v4);
     v3 = *v2;
     if (!*v2)
@@ -66,7 +66,7 @@ LABEL_5:
 
   else
   {
-    v4 = WebCore::commonVMSlow(a1);
+    v4 = WebCore::commonVMSlow(self);
     MEMORY[0x1CCA631F0](v7, v4);
     v3 = *v2;
     if (!*v2)
@@ -96,7 +96,7 @@ LABEL_5:
 
   else
   {
-    v4 = WebCore::commonVMSlow(a1);
+    v4 = WebCore::commonVMSlow(self);
     MEMORY[0x1CCA631F0](v7, v4);
     v3 = *v2;
     if (!*v2)
@@ -126,7 +126,7 @@ LABEL_5:
 
   else
   {
-    v4 = WebCore::commonVMSlow(a1);
+    v4 = WebCore::commonVMSlow(self);
     MEMORY[0x1CCA631F0](v7, v4);
     v3 = *v2;
     if (!*v2)
@@ -156,7 +156,7 @@ LABEL_5:
 
   else
   {
-    v4 = WebCore::commonVMSlow(a1);
+    v4 = WebCore::commonVMSlow(self);
     MEMORY[0x1CCA631F0](v12, v4);
     v3 = *v2;
     if (*v2)
@@ -206,7 +206,7 @@ LABEL_6:
 
   else
   {
-    v4 = WebCore::commonVMSlow(a1);
+    v4 = WebCore::commonVMSlow(self);
     MEMORY[0x1CCA631F0](v12, v4);
     v3 = *v2;
     if (*v2)
@@ -243,30 +243,30 @@ LABEL_6:
 
 + (void)garbageCollectJavaScriptObjects
 {
-  v2 = WebCore::GCController::singleton(a1);
+  v2 = WebCore::GCController::singleton(self);
 
   MEMORY[0x1EEE54BE0](v2);
 }
 
-+ (void)garbageCollectJavaScriptObjectsOnAlternateThreadForDebugging:(BOOL)a3
++ (void)garbageCollectJavaScriptObjectsOnAlternateThreadForDebugging:(BOOL)debugging
 {
-  v3 = a3;
-  v4 = WebCore::GCController::singleton(a1);
+  debuggingCopy = debugging;
+  v4 = WebCore::GCController::singleton(self);
 
-  MEMORY[0x1EEE54BF0](v4, v3);
+  MEMORY[0x1EEE54BF0](v4, debuggingCopy);
 }
 
-+ (void)setJavaScriptGarbageCollectorTimerEnabled:(BOOL)a3
++ (void)setJavaScriptGarbageCollectorTimerEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = WebCore::GCController::singleton(a1);
+  enabledCopy = enabled;
+  v4 = WebCore::GCController::singleton(self);
 
-  MEMORY[0x1EEE54BE8](v4, v3);
+  MEMORY[0x1EEE54BE8](v4, enabledCopy);
 }
 
 + (unint64_t)cachedFontDataCount
 {
-  WebCore::FontCache::forCurrentThread(&v4, a1);
+  WebCore::FontCache::forCurrentThread(&v4, self);
   if (!v4)
   {
     goto LABEL_6;
@@ -293,7 +293,7 @@ LABEL_6:
 
 + (unint64_t)cachedFontDataInactiveCount
 {
-  WebCore::FontCache::forCurrentThread(&v4, a1);
+  WebCore::FontCache::forCurrentThread(&v4, self);
   if (!v4)
   {
     goto LABEL_6;
@@ -320,7 +320,7 @@ LABEL_6:
 
 + (void)purgeInactiveFontData
 {
-  WebCore::FontCache::forCurrentThread(&v3, a1);
+  WebCore::FontCache::forCurrentThread(&v3, self);
   if (!v3)
   {
     goto LABEL_6;
@@ -348,7 +348,7 @@ LABEL_6:
 {
   if (!*MEMORY[0x1E69E25C0])
   {
-    WebCore::commonVMSlow(a1);
+    WebCore::commonVMSlow(self);
   }
 
   v2 = MEMORY[0x1CCA631F0](v5);
@@ -357,16 +357,16 @@ LABEL_6:
   return shouldPrintExceptions;
 }
 
-+ (void)setShouldPrintExceptions:(BOOL)a3
++ (void)setShouldPrintExceptions:(BOOL)exceptions
 {
-  v3 = a3;
+  exceptionsCopy = exceptions;
   if (!*MEMORY[0x1E69E25C0])
   {
-    WebCore::commonVMSlow(a1);
+    WebCore::commonVMSlow(self);
   }
 
   MEMORY[0x1CCA631F0](v4);
-  WebCore::PageConsoleClient::setShouldPrintExceptions(v3);
+  WebCore::PageConsoleClient::setShouldPrintExceptions(exceptionsCopy);
   MEMORY[0x1CCA63200](v4);
 }
 
@@ -376,7 +376,7 @@ LABEL_6:
   v14 = 0;
   v15 = 0;
   v16 = 0;
-  v2 = WTF::fastMallocStatistics(&v14, a1);
+  v2 = WTF::fastMallocStatistics(&v14, self);
   v3 = MEMORY[0x1E69E25C0];
   if (!*MEMORY[0x1E69E25C0])
   {
@@ -421,7 +421,7 @@ LABEL_6:
 
 + (int)cachedPageCount
 {
-  v2 = *(WebCore::BackForwardCache::singleton(a1) + 8);
+  v2 = *(WebCore::BackForwardCache::singleton(self) + 8);
   if (v2)
   {
     return *(v2 - 12);
@@ -435,7 +435,7 @@ LABEL_6:
 
 + (int)cachedFrameCount
 {
-  v2 = WebCore::BackForwardCache::singleton(a1);
+  v2 = WebCore::BackForwardCache::singleton(self);
 
   return MEMORY[0x1EEE5CE08](v2);
 }
@@ -455,7 +455,7 @@ LABEL_6:
 
   else
   {
-    v4 = WebCore::commonVMSlow(a1);
+    v4 = WebCore::commonVMSlow(self);
     MEMORY[0x1CCA631F0](v7, v4);
     v3 = *v2;
     if (!*v2)

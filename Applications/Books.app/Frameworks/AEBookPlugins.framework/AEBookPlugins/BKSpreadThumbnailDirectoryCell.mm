@@ -1,6 +1,6 @@
 @interface BKSpreadThumbnailDirectoryCell
 - (BKSpreadThumbnailView)spreadView;
-- (CGRect)contentRectForBounds:(CGRect)a3;
+- (CGRect)contentRectForBounds:(CGRect)bounds;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
@@ -12,8 +12,8 @@
   v12.receiver = self;
   v12.super_class = BKSpreadThumbnailDirectoryCell;
   [(BKThumbnailDirectoryCell *)&v12 layoutSubviews];
-  v3 = [(BKSpreadThumbnailDirectoryCell *)self contentView];
-  [v3 bounds];
+  contentView = [(BKSpreadThumbnailDirectoryCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -28,33 +28,33 @@
   v7.receiver = self;
   v7.super_class = BKSpreadThumbnailDirectoryCell;
   [(BKThumbnailDirectoryCell *)&v7 prepareForReuse];
-  v3 = [(BKSpreadThumbnailView *)self->_spreadView leftPageView];
-  [v3 setImage:0];
+  leftPageView = [(BKSpreadThumbnailView *)self->_spreadView leftPageView];
+  [leftPageView setImage:0];
 
-  v4 = [(BKSpreadThumbnailView *)self->_spreadView leftPageView];
-  [v4 setPageNumber:0x7FFFFFFFFFFFFFFFLL];
+  leftPageView2 = [(BKSpreadThumbnailView *)self->_spreadView leftPageView];
+  [leftPageView2 setPageNumber:0x7FFFFFFFFFFFFFFFLL];
 
-  v5 = [(BKSpreadThumbnailView *)self->_spreadView rightPageView];
-  [v5 setImage:0];
+  rightPageView = [(BKSpreadThumbnailView *)self->_spreadView rightPageView];
+  [rightPageView setImage:0];
 
-  v6 = [(BKSpreadThumbnailView *)self->_spreadView rightPageView];
-  [v6 setPageNumber:0x7FFFFFFFFFFFFFFFLL];
+  rightPageView2 = [(BKSpreadThumbnailView *)self->_spreadView rightPageView];
+  [rightPageView2 setPageNumber:0x7FFFFFFFFFFFFFFFLL];
 }
 
-- (CGRect)contentRectForBounds:(CGRect)a3
+- (CGRect)contentRectForBounds:(CGRect)bounds
 {
-  [(BKSpreadThumbnailDirectoryCell *)self bounds:a3.origin.x];
+  [(BKSpreadThumbnailDirectoryCell *)self bounds:bounds.origin.x];
   x = v4;
   y = v6;
   width = v8;
   height = v10;
-  v12 = [(BKSpreadThumbnailView *)self->_spreadView leftPageView];
-  v13 = [v12 pageNumber];
+  leftPageView = [(BKSpreadThumbnailView *)self->_spreadView leftPageView];
+  pageNumber = [leftPageView pageNumber];
 
-  v14 = [(BKSpreadThumbnailView *)self->_spreadView rightPageView];
-  v15 = [v14 pageNumber];
+  rightPageView = [(BKSpreadThumbnailView *)self->_spreadView rightPageView];
+  pageNumber2 = [rightPageView pageNumber];
 
-  if (v13 == 0x7FFFFFFFFFFFFFFFLL && v15 == 0x7FFFFFFFFFFFFFFFLL)
+  if (pageNumber == 0x7FFFFFFFFFFFFFFFLL && pageNumber2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     x = CGRectZero.origin.x;
     y = CGRectZero.origin.y;
@@ -62,7 +62,7 @@
     height = CGRectZero.size.height;
   }
 
-  else if (v13 == 0x7FFFFFFFFFFFFFFFLL)
+  else if (pageNumber == 0x7FFFFFFFFFFFFFFFLL)
   {
     v21.origin.x = x;
     v21.origin.y = y;
@@ -72,7 +72,7 @@
     x = x + width;
   }
 
-  else if (v15 == 0x7FFFFFFFFFFFFFFFLL)
+  else if (pageNumber2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v22.origin.x = x;
     v22.origin.y = y;

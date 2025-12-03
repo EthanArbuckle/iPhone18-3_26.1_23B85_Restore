@@ -1,40 +1,40 @@
 @interface UIKeyboardEmojiDraggableView
 - (CGSize)intrinsicContentSize;
-- (UIKeyboardEmojiDraggableView)initWithFrame:(CGRect)a3;
+- (UIKeyboardEmojiDraggableView)initWithFrame:(CGRect)frame;
 - (UIKeyboardEmojiDraggableViewDelegate)delegate;
-- (id)_dragInteraction:(id)a3 sessionPropertiesForSession:(id)a4;
+- (id)_dragInteraction:(id)interaction sessionPropertiesForSession:(id)session;
 - (id)createLabel;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
 - (id)newLiftContainerView;
-- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)a3;
-- (void)addSilhouetteFiltersToView:(id)a3;
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 sessionDidTransferItems:(id)a4;
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4;
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5;
-- (void)generateEmoji:(id)a3 withCompletion:(id)a4;
+- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)dragging;
+- (void)addSilhouetteFiltersToView:(id)view;
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator;
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction sessionDidTransferItems:(id)items;
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin;
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session;
+- (void)generateEmoji:(id)emoji withCompletion:(id)completion;
 - (void)layoutSubviews;
-- (void)registerPlainText:(id)a3 toItemProvider:(id)a4;
+- (void)registerPlainText:(id)text toItemProvider:(id)provider;
 - (void)reset;
-- (void)sendPeelAndStickAnalytics:(id)a3;
-- (void)setAttributedText:(id)a3;
-- (void)setEmojiPopoverBackgroundHitTestingEnabled:(BOOL)a3;
-- (void)setFont:(id)a3;
-- (void)setText:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)sendPeelAndStickAnalytics:(id)analytics;
+- (void)setAttributedText:(id)text;
+- (void)setEmojiPopoverBackgroundHitTestingEnabled:(BOOL)enabled;
+- (void)setFont:(id)font;
+- (void)setText:(id)text;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 - (void)updateDragInteraction;
-- (void)willCancelVariantsWithTouch:(id)a3;
+- (void)willCancelVariantsWithTouch:(id)touch;
 @end
 
 @implementation UIKeyboardEmojiDraggableView
 
-- (UIKeyboardEmojiDraggableView)initWithFrame:(CGRect)a3
+- (UIKeyboardEmojiDraggableView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = UIKeyboardEmojiDraggableView;
-  v3 = [(UIView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -43,9 +43,9 @@
     font = v4->_font;
     v4->_font = v5;
 
-    v7 = [(UIKeyboardEmojiDraggableView *)v4 createLabel];
+    createLabel = [(UIKeyboardEmojiDraggableView *)v4 createLabel];
     fixedLabel = v4->_fixedLabel;
-    v4->_fixedLabel = v7;
+    v4->_fixedLabel = createLabel;
 
     [(UIView *)v4 addSubview:v4->_fixedLabel];
     [(UIView *)v4 setUserInteractionEnabled:1];
@@ -77,17 +77,17 @@
   v7 = v6 * liftScale;
   v8 = v4 * liftScale * 0.5;
   v9 = v6 * liftScale * 0.5;
-  v10 = [[UIView alloc] initWithFrame:0.0, 0.0, v4 * liftScale, v6 * liftScale];
+  liftScale = [[UIView alloc] initWithFrame:0.0, 0.0, v4 * liftScale, v6 * liftScale];
   v11 = [[UIView alloc] initWithFrame:0.0, 0.0, v5, v7];
-  [(UIView *)v10 addSubview:v11];
+  [(UIView *)liftScale addSubview:v11];
   v12 = [[UIImageView alloc] initWithFrame:0.0, 0.0, v5, v7];
   upscaledImageView = self->_upscaledImageView;
   self->_upscaledImageView = v12;
 
   [(UIImageView *)self->_upscaledImageView setContentMode:1];
-  v14 = [(UIKeyboardEmojiDraggableView *)self createLabel];
+  createLabel = [(UIKeyboardEmojiDraggableView *)self createLabel];
   previewLabel = self->_previewLabel;
-  self->_previewLabel = v14;
+  self->_previewLabel = createLabel;
 
   font = self->_font;
   [(UIFont *)font pointSize];
@@ -102,14 +102,14 @@
   v23 = 3221225472;
   v24 = __52__UIKeyboardEmojiDraggableView_newLiftContainerView__block_invoke;
   v25 = &unk_1E70F98A0;
-  v26 = self;
+  selfCopy = self;
   v27 = v11;
   v20 = v11;
   [(UIKeyboardEmojiDraggableView *)self generateEmoji:text withCompletion:&v22];
-  [(UIKeyboardEmojiDraggableView *)self addSilhouetteFiltersToView:self->_fixedLabel, v22, v23, v24, v25, v26];
+  [(UIKeyboardEmojiDraggableView *)self addSilhouetteFiltersToView:self->_fixedLabel, v22, v23, v24, v25, selfCopy];
   self->_lifted = 1;
 
-  return v10;
+  return liftScale;
 }
 
 void __52__UIKeyboardEmojiDraggableView_newLiftContainerView__block_invoke(uint64_t a1, uint64_t a2)
@@ -124,8 +124,8 @@ void __52__UIKeyboardEmojiDraggableView_newLiftContainerView__block_invoke(uint6
 
 - (void)reset
 {
-  v3 = [(UIView *)self->_fixedLabel layer];
-  [v3 setFilters:0];
+  layer = [(UIView *)self->_fixedLabel layer];
+  [layer setFilters:0];
 
   [(UIView *)self->_liftContainerView removeFromSuperview];
   liftContainerView = self->_liftContainerView;
@@ -148,22 +148,22 @@ void __52__UIKeyboardEmojiDraggableView_newLiftContainerView__block_invoke(uint6
   [(UIDragInteraction *)dragInteraction setEnabled:dragEnabled];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  objc_storeStrong(&self->_font, a3);
-  v5 = a3;
-  [(UILabel *)self->_fixedLabel setFont:v5];
+  objc_storeStrong(&self->_font, font);
+  fontCopy = font;
+  [(UILabel *)self->_fixedLabel setFont:fontCopy];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v7 = a3;
+  textCopy = text;
   if (([(NSString *)self->_text isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_text, a3);
-    if (v7)
+    objc_storeStrong(&self->_text, text);
+    if (textCopy)
     {
-      v5 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v7];
+      v5 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:textCopy];
     }
 
     else
@@ -172,11 +172,11 @@ void __52__UIKeyboardEmojiDraggableView_newLiftContainerView__block_invoke(uint6
     }
 
     objc_storeStrong(&self->_attributedText, v5);
-    v6 = v7;
-    if (v7)
+    v6 = textCopy;
+    if (textCopy)
     {
 
-      v6 = v7;
+      v6 = textCopy;
     }
 
     [(UILabel *)self->_fixedLabel setText:v6];
@@ -184,24 +184,24 @@ void __52__UIKeyboardEmojiDraggableView_newLiftContainerView__block_invoke(uint6
   }
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v9 = a3;
+  textCopy = text;
   if (([(NSAttributedString *)self->_attributedText isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_attributedText, a3);
-    v5 = [v9 string];
+    objc_storeStrong(&self->_attributedText, text);
+    string = [textCopy string];
     text = self->_text;
-    self->_text = v5;
+    self->_text = string;
 
-    v7 = [v9 attributesAtIndex:0 effectiveRange:0];
+    v7 = [textCopy attributesAtIndex:0 effectiveRange:0];
     v8 = [v7 objectForKeyedSubscript:*off_1E70EC918];
     if (v8)
     {
       objc_storeStrong(&self->_font, v8);
     }
 
-    [(UILabel *)self->_fixedLabel setAttributedText:v9];
+    [(UILabel *)self->_fixedLabel setAttributedText:textCopy];
     [(UIKeyboardEmojiDraggableView *)self reset];
   }
 }
@@ -224,10 +224,10 @@ void __52__UIKeyboardEmojiDraggableView_newLiftContainerView__block_invoke(uint6
   [(UIKeyboardEmojiDraggableView *)self updateLiftScale];
 }
 
-- (void)addSilhouetteFiltersToView:(id)a3
+- (void)addSilhouetteFiltersToView:(id)view
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  viewCopy = view;
   v4 = +[UIColor tertiarySystemFillColor];
   [v4 getRed:&v26 green:&v27 blue:&v28 alpha:v29];
 
@@ -254,16 +254,16 @@ void __52__UIKeyboardEmojiDraggableView_newLiftContainerView__block_invoke(uint6
 
   v25 = v9;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
-  v12 = [v3 layer];
+  layer = [viewCopy layer];
 
-  [v12 setFilters:v11];
+  [layer setFilters:v11];
 }
 
 - (void)updateDragInteraction
 {
   v3 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v4 = [v3 preferencesActions];
-  if ([v4 BOOLForPreferenceKey:@"ShowStickers"])
+  preferencesActions = [v3 preferencesActions];
+  if ([preferencesActions BOOLForPreferenceKey:@"ShowStickers"])
   {
     LOBYTE(v5) = 0;
   }
@@ -296,30 +296,30 @@ void __52__UIKeyboardEmojiDraggableView_newLiftContainerView__block_invoke(uint6
   }
 }
 
-- (void)setEmojiPopoverBackgroundHitTestingEnabled:(BOOL)a3
+- (void)setEmojiPopoverBackgroundHitTestingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 emojiPopoverController];
-  v6 = [v5 popoverPresentationController];
+  emojiPopoverController = [v4 emojiPopoverController];
+  popoverPresentationController = [emojiPopoverController popoverPresentationController];
 
-  [v6 _setOverrideAllowsHitTestingOnBackgroundViews:v3];
+  [popoverPresentationController _setOverrideAllowsHitTestingOnBackgroundViews:enabledCopy];
 }
 
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin
 {
-  v5 = [getTUIEmojiUpscalerClass() sharedInstance];
+  sharedInstance = [getTUIEmojiUpscalerClass() sharedInstance];
   [(UIKeyboardEmojiDraggableView *)self setEmojiPopoverBackgroundHitTestingEnabled:0];
   if (_UIApplicationIsFirstPartyStickers())
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 postNotificationName:@"UIKeyboardWillBeginLiftEmoji" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"UIKeyboardWillBeginLiftEmoji" object:self userInfo:0];
   }
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation
 {
-  [(UIKeyboardEmojiDraggableView *)self setEmojiPopoverBackgroundHitTestingEnabled:1, a4];
+  [(UIKeyboardEmojiDraggableView *)self setEmojiPopoverBackgroundHitTestingEnabled:1, session];
   [(UIKeyboardEmojiDraggableView *)self reset];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
@@ -327,38 +327,38 @@ void __52__UIKeyboardEmojiDraggableView_newLiftContainerView__block_invoke(uint6
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 dragDidEnd:self withOperation:a5];
+    [v9 dragDidEnd:self withOperation:operation];
   }
 
-  if ((a5 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((operation & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v10 = [[_UIStickerUsageEvent alloc] initForEmojiKeyboardUsage];
-    [v10 setUsageType:1];
-    [v10 send];
+    initForEmojiKeyboardUsage = [[_UIStickerUsageEvent alloc] initForEmojiKeyboardUsage];
+    [initForEmojiKeyboardUsage setUsageType:1];
+    [initForEmojiKeyboardUsage send];
   }
 
   if (_UIApplicationIsFirstPartyStickers())
   {
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 postNotificationName:@"UIKeyboardWillEndLiftEmoji" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"UIKeyboardWillEndLiftEmoji" object:self userInfo:0];
   }
 }
 
-- (void)dragInteraction:(id)a3 sessionDidTransferItems:(id)a4
+- (void)dragInteraction:(id)interaction sessionDidTransferItems:(id)items
 {
-  v5 = [_UISignalAnalytics getIAPayloadValueGenmojiUsageTypeStick:a3];
+  v5 = [_UISignalAnalytics getIAPayloadValueGenmojiUsageTypeStick:interaction];
   [(UIKeyboardEmojiDraggableView *)self sendPeelAndStickAnalytics:v5];
 }
 
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session
 {
-  v6 = [_UISignalAnalytics getIAPayloadValueGenmojiUsageTypePeel:a3];
+  v6 = [_UISignalAnalytics getIAPayloadValueGenmojiUsageTypePeel:interaction];
   [(UIKeyboardEmojiDraggableView *)self sendPeelAndStickAnalytics:v6];
 }
 
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator
 {
-  v6 = a5;
+  animatorCopy = animator;
   v7 = +[_UISignalAnalytics getIAPayloadValueGenmojiUsageTypePeelCancel];
   [(UIKeyboardEmojiDraggableView *)self sendPeelAndStickAnalytics:v7];
 
@@ -367,27 +367,27 @@ void __52__UIKeyboardEmojiDraggableView_newLiftContainerView__block_invoke(uint6
   v9[2] = __83__UIKeyboardEmojiDraggableView_dragInteraction_item_willAnimateCancelWithAnimator___block_invoke;
   v9[3] = &unk_1E70F5DB8;
   v9[4] = self;
-  [v6 addCompletion:v9];
+  [animatorCopy addCompletion:v9];
 
   if (_UIApplicationIsFirstPartyStickers())
   {
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 postNotificationName:@"UIKeyboardWillCancelLiftEmoji" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"UIKeyboardWillCancelLiftEmoji" object:self userInfo:0];
   }
 }
 
-- (void)generateEmoji:(id)a3 withCompletion:(id)a4
+- (void)generateEmoji:(id)emoji withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [getTUIEmojiUpscalerClass() sharedInstance];
+  completionCopy = completion;
+  emojiCopy = emoji;
+  sharedInstance = [getTUIEmojiUpscalerClass() sharedInstance];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__UIKeyboardEmojiDraggableView_generateEmoji_withCompletion___block_invoke;
   v9[3] = &unk_1E70F98C8;
-  v10 = v5;
-  v8 = v5;
-  [v7 generateEmoji:v6 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [sharedInstance generateEmoji:emojiCopy completion:v9];
 }
 
 void __61__UIKeyboardEmojiDraggableView_generateEmoji_withCompletion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -431,19 +431,19 @@ void __61__UIKeyboardEmojiDraggableView_generateEmoji_withCompletion___block_inv
   }
 }
 
-- (void)registerPlainText:(id)a3 toItemProvider:(id)a4
+- (void)registerPlainText:(id)text toItemProvider:(id)provider
 {
-  v5 = a3;
+  textCopy = text;
   v6 = *MEMORY[0x1E6982F40];
-  v7 = a4;
-  v8 = [v6 identifier];
+  providerCopy = provider;
+  identifier = [v6 identifier];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__UIKeyboardEmojiDraggableView_registerPlainText_toItemProvider___block_invoke;
   v10[3] = &unk_1E70F6AD0;
-  v11 = v5;
-  v9 = v5;
-  [v7 registerDataRepresentationForTypeIdentifier:v8 visibility:0 loadHandler:v10];
+  v11 = textCopy;
+  v9 = textCopy;
+  [providerCopy registerDataRepresentationForTypeIdentifier:identifier visibility:0 loadHandler:v10];
 }
 
 uint64_t __65__UIKeyboardEmojiDraggableView_registerPlainText_toItemProvider___block_invoke(uint64_t a1, void (**a2)(void, void, void))
@@ -456,7 +456,7 @@ uint64_t __65__UIKeyboardEmojiDraggableView_registerPlainText_toItemProvider___b
   return 0;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E696ACA0]);
@@ -477,16 +477,16 @@ uint64_t __65__UIKeyboardEmojiDraggableView_registerPlainText_toItemProvider___b
   v14 = 3221225472;
   v15 = __73__UIKeyboardEmojiDraggableView_dragInteraction_itemsForBeginningSession___block_invoke;
   v16 = &unk_1E70F9918;
-  v17 = self;
+  selfCopy = self;
   v9 = v6;
   v18 = v9;
   [v5 registerObjectOfClass:v8 visibility:0 loadHandler:&v13];
   if (v7)
   {
-    [(UIKeyboardEmojiDraggableView *)self registerPlainText:v9 toItemProvider:v5, v13, v14, v15, v16, v17];
+    [(UIKeyboardEmojiDraggableView *)self registerPlainText:v9 toItemProvider:v5, v13, v14, v15, v16, selfCopy];
   }
 
-  [v5 registerDataRepresentationForTypeIdentifier:@"com.apple.sticker" visibility:0 loadHandler:{&__block_literal_global_88, v13, v14, v15, v16, v17}];
+  [v5 registerDataRepresentationForTypeIdentifier:@"com.apple.sticker" visibility:0 loadHandler:{&__block_literal_global_88, v13, v14, v15, v16, selfCopy}];
   v10 = [[UIDragItem alloc] initWithItemProvider:v5];
   v19[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
@@ -533,14 +533,14 @@ void __73__UIKeyboardEmojiDraggableView_dragInteraction_itemsForBeginningSession
   }
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(UIKeyboardEmojiDraggableView *)self newLiftContainerView];
+  interactionCopy = interaction;
+  itemCopy = item;
+  sessionCopy = session;
+  newLiftContainerView = [(UIKeyboardEmojiDraggableView *)self newLiftContainerView];
   liftContainerView = self->_liftContainerView;
-  self->_liftContainerView = v11;
+  self->_liftContainerView = newLiftContainerView;
 
   v13 = objc_alloc_init(UIDragPreviewParameters);
   v14 = objc_alloc_init(UIBezierPath);
@@ -549,12 +549,12 @@ void __73__UIKeyboardEmojiDraggableView_dragInteraction_itemsForBeginningSession
   v15 = +[UIColor clearColor];
   [(UIPreviewParameters *)v13 setBackgroundColor:v15];
 
-  v16 = [(UIView *)self window];
+  window = [(UIView *)self window];
   [(UIView *)self center];
   v18 = v17;
   v20 = v19;
-  v21 = [(UIView *)self superview];
-  [v16 convertPoint:v21 fromView:{v18, v20}];
+  superview = [(UIView *)self superview];
+  [window convertPoint:superview fromView:{v18, v20}];
   x = v22;
   y = v24;
 
@@ -570,18 +570,18 @@ void __73__UIKeyboardEmojiDraggableView_dragInteraction_itemsForBeginningSession
   CGAffineTransformMakeScale(&v43, v27, v27);
   [(UIView *)self->_liftContainerView setCenter:x, y];
   v28 = [UIDragPreviewTarget alloc];
-  v29 = [(UIView *)self window];
+  window2 = [(UIView *)self window];
   v42 = v43;
-  v30 = [(UIPreviewTarget *)v28 initWithContainer:v29 center:&v42 transform:x, y];
+  v30 = [(UIPreviewTarget *)v28 initWithContainer:window2 center:&v42 transform:x, y];
 
   v31 = [[UITargetedDragPreview alloc] initWithView:self->_liftContainerView parameters:v13 target:v30];
-  v32 = [getTUIEmojiUpscalerClass() sharedInstance];
+  sharedInstance = [getTUIEmojiUpscalerClass() sharedInstance];
   if (objc_opt_respondsToSelector())
   {
-    v41 = v10;
-    v33 = v9;
-    v34 = v8;
-    v35 = [v32 imageFromEmoji:self->_text];
+    v41 = sessionCopy;
+    v33 = itemCopy;
+    v34 = interactionCopy;
+    v35 = [sharedInstance imageFromEmoji:self->_text];
     v44 = 0;
     v45 = &v44;
     v46 = 0x2050000000;
@@ -613,20 +613,20 @@ void __73__UIKeyboardEmojiDraggableView_dragInteraction_itemsForBeginningSession
 
       if (objc_opt_respondsToSelector())
       {
-        v39 = [v36 shadowPropertiesForDrag];
-        [(UIDragPreviewParameters *)v13 _setShadowProperties:v39];
+        shadowPropertiesForDrag = [v36 shadowPropertiesForDrag];
+        [(UIDragPreviewParameters *)v13 _setShadowProperties:shadowPropertiesForDrag];
       }
     }
 
-    v8 = v34;
-    v9 = v33;
-    v10 = v41;
+    interactionCopy = v34;
+    itemCopy = v33;
+    sessionCopy = v41;
   }
 
   return v31;
 }
 
-- (id)_dragInteraction:(id)a3 sessionPropertiesForSession:(id)a4
+- (id)_dragInteraction:(id)interaction sessionPropertiesForSession:(id)session
 {
   v4 = objc_opt_new();
   [v4 set_rotatable:1];
@@ -638,7 +638,7 @@ void __73__UIKeyboardEmojiDraggableView_dragInteraction_itemsForBeginningSession
   return v4;
 }
 
-- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)a3
+- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)dragging
 {
   v4 = +[_UISignalAnalytics getIAPayloadValueGenmojiUsageTypePeelCancelNoDrag];
   [(UIKeyboardEmojiDraggableView *)self sendPeelAndStickAnalytics:v4];
@@ -652,40 +652,40 @@ void __73__UIKeyboardEmojiDraggableView_dragInteraction_itemsForBeginningSession
   [(_MSStickerDragPreviewContainerView *)container _animateLiftCancellationAlongsideAnimator:0 completion:v7];
   if (_UIApplicationIsFirstPartyStickers())
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 postNotificationName:@"UIKeyboardWillCancelLiftEmoji" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"UIKeyboardWillCancelLiftEmoji" object:self userInfo:0];
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v23[3] = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = UIKeyboardEmojiDraggableView;
-  [(UIResponder *)&v21 touchesBegan:a3 withEvent:a4];
+  [(UIResponder *)&v21 touchesBegan:began withEvent:event];
   if (_UIApplicationIsFirstPartyStickers())
   {
-    v5 = [(UIView *)self superview];
+    superview = [(UIView *)self superview];
     [(UIView *)self frame];
-    [v5 convertRect:0 toView:?];
+    [superview convertRect:0 toView:?];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
 
-    v14 = [(UIKeyboardEmojiDraggableView *)self text];
-    v15 = [(UIView *)self window];
-    if (!v15)
+    text = [(UIKeyboardEmojiDraggableView *)self text];
+    window = [(UIView *)self window];
+    if (!window)
     {
       v16 = +[UIKeyboard activeKeyboard];
-      v15 = [v16 window];
+      window = [v16 window];
     }
 
-    if (v14)
+    if (text)
     {
-      if (v15)
+      if (window)
       {
-        v23[0] = v14;
+        v23[0] = text;
         v22[0] = @"emoji";
         v22[1] = @"frame";
         v20[0] = v7;
@@ -695,26 +695,26 @@ void __73__UIKeyboardEmojiDraggableView_dragInteraction_itemsForBeginningSession
         v17 = [MEMORY[0x1E696B098] valueWithBytes:v20 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
         v22[2] = @"window";
         v23[1] = v17;
-        v23[2] = v15;
+        v23[2] = window;
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:3];
 
-        v19 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v19 postNotificationName:@"UIKeyboardBeganTouchEmoji" object:self userInfo:v18];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter postNotificationName:@"UIKeyboardBeganTouchEmoji" object:self userInfo:v18];
       }
     }
   }
 }
 
-- (void)willCancelVariantsWithTouch:(id)a3
+- (void)willCancelVariantsWithTouch:(id)touch
 {
-  v4 = a3;
+  touchCopy = touch;
   if (![(UIKeyboardEmojiDraggableView *)self dragEnabled])
   {
     [(UIKeyboardEmojiDraggableView *)self setDragEnabled:1];
     self->_dragEnabled = 0;
     self->_shouldLiftFromLastTouchLocation = 1;
-    v5 = [(UIView *)self window];
-    [v4 locationInView:v5];
+    window = [(UIView *)self window];
+    [touchCopy locationInView:window];
     self->_lastTouchLocation.x = v6;
     self->_lastTouchLocation.y = v7;
 
@@ -724,21 +724,21 @@ void __73__UIKeyboardEmojiDraggableView_dragInteraction_itemsForBeginningSession
     v9[2] = __60__UIKeyboardEmojiDraggableView_willCancelVariantsWithTouch___block_invoke;
     v9[3] = &unk_1E70F5AC0;
     v9[4] = self;
-    [(UIDragInteraction *)dragInteraction _immediatelyBeginDragWithTouch:v4 completion:v9];
+    [(UIDragInteraction *)dragInteraction _immediatelyBeginDragWithTouch:touchCopy completion:v9];
   }
 }
 
-- (void)sendPeelAndStickAnalytics:(id)a3
+- (void)sendPeelAndStickAnalytics:(id)analytics
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  analyticsCopy = analytics;
   v5 = +[_UISignalAnalytics getIAPayloadKeyGenmojiImageType];
   v12[0] = v5;
   v6 = +[_UISignalAnalytics getIAPayloadValueGenmojiImageTypeEmoji];
   v13[0] = v6;
   v7 = +[_UISignalAnalytics getIAPayloadKeyGenmojiUsageType];
   v12[1] = v7;
-  v13[1] = v4;
+  v13[1] = analyticsCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);

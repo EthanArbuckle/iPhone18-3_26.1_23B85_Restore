@@ -7,7 +7,7 @@
 
 - (void)startDonation
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D8D32880();
 }
 

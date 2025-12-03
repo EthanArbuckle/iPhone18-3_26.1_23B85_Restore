@@ -1,18 +1,18 @@
 @interface CUIKUpdatedEventProperties
 - (BOOL)titleChanged;
 - (NSString)title;
-- (void)setAllDay:(BOOL)a3;
-- (void)setLocation:(id)a3;
-- (void)setParticipants:(id)a3;
-- (void)setRecurrenceRule:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setAllDay:(BOOL)day;
+- (void)setLocation:(id)location;
+- (void)setParticipants:(id)participants;
+- (void)setRecurrenceRule:(id)rule;
+- (void)setTitle:(id)title;
 @end
 
 @implementation CUIKUpdatedEventProperties
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = sub_1CAD4DF94();
     v6 = v5;
@@ -36,9 +36,9 @@
   sub_1CAC8C3BC(v9, v10);
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  if (a3)
+  if (location)
   {
     v4 = sub_1CAD4DF94();
     v6 = v5;
@@ -62,18 +62,18 @@
   sub_1CAC8C3BC(v9, v10);
 }
 
-- (void)setAllDay:(BOOL)a3
+- (void)setAllDay:(BOOL)day
 {
   v5 = OBJC_IVAR___CUIKUpdatedEventProperties_updatedEventProperties;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
   swift_beginAccess();
-  *(v6 + 48) = a3;
+  *(v6 + 48) = day;
 }
 
-- (void)setRecurrenceRule:(id)a3
+- (void)setRecurrenceRule:(id)rule
 {
-  if (a3)
+  if (rule)
   {
     v4 = sub_1CAD4DF94();
     v6 = v5;
@@ -97,9 +97,9 @@
   sub_1CAC8C3BC(v9, v10);
 }
 
-- (void)setParticipants:(id)a3
+- (void)setParticipants:(id)participants
 {
-  if (a3)
+  if (participants)
   {
     v4 = sub_1CAD4E214();
   }
@@ -128,7 +128,7 @@
   swift_beginAccess();
   v5 = *(v4 + 16);
   v6 = *(v4 + 24);
-  v7 = self;
+  selfCopy = self;
   sub_1CAC8C358(v5, v6);
   v8 = sub_1CAC8D214(v5, v6, 0, 1);
 

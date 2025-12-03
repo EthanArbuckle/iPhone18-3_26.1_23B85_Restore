@@ -4,7 +4,7 @@
 + (BOOL)notifyOfUnknownTokens;
 + (BOOL)parsingLeafNode;
 + (BOOL)parsingWithSubItems;
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8;
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account;
 @end
 
 @implementation ASBool
@@ -18,7 +18,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_19 = v2;
     acceptsTopLevelLeaves___haveChecked_19 = 1;
   }
@@ -35,7 +35,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_19 = v2;
     parsingLeafNode___haveChecked_19 = 1;
   }
@@ -52,7 +52,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_19 = v2;
     parsingWithSubItems___haveChecked_19 = 1;
   }
@@ -69,7 +69,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_19 = v2;
     frontingBasicTypes___haveChecked_19 = 1;
   }
@@ -86,7 +86,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_19 = v2;
     notifyOfUnknownTokens___haveChecked_19 = 1;
   }
@@ -94,26 +94,26 @@
   return v2 & 1;
 }
 
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account
 {
-  v11 = a5;
-  v12 = a4;
-  v14 = a3;
-  self->super._codePage = [v14 codePage];
-  if (v12)
+  parentCopy = parent;
+  rootCopy = root;
+  contextCopy = context;
+  self->super._codePage = [contextCopy codePage];
+  if (rootCopy)
   {
-    v13 = v12;
+    selfCopy = rootCopy;
   }
 
   else
   {
-    v13 = self;
+    selfCopy = self;
   }
 
-  objc_storeWeak(&self->super._root, v13);
+  objc_storeWeak(&self->super._root, selfCopy);
 
-  objc_storeWeak(&self->super._parent, v11);
-  [v14 advanceOffsetByAmount:1];
+  objc_storeWeak(&self->super._parent, parentCopy);
+  [contextCopy advanceOffsetByAmount:1];
 }
 
 @end

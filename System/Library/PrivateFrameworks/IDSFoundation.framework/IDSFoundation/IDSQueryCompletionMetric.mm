@@ -1,35 +1,35 @@
 @interface IDSQueryCompletionMetric
-- (IDSQueryCompletionMetric)initWithService:(id)a3 querySuccess:(BOOL)a4 connectionType:(unsigned int)a5 queryTimeInterval:(double)a6 queryURITypes:(unsigned int)a7 conferenceResultCode:(unsigned int)a8 queryErrorType:(unsigned int)a9 queryError:(id)a10 wasReversePushAttempted:(BOOL)a11 hasEmptyResult:(BOOL)a12 queryReason:(id)a13 retryCount:(unint64_t)a14 uriCount:(unint64_t)a15 isForced:(BOOL)a16;
+- (IDSQueryCompletionMetric)initWithService:(id)service querySuccess:(BOOL)success connectionType:(unsigned int)type queryTimeInterval:(double)interval queryURITypes:(unsigned int)types conferenceResultCode:(unsigned int)code queryErrorType:(unsigned int)errorType queryError:(id)self0 wasReversePushAttempted:(BOOL)self1 hasEmptyResult:(BOOL)self2 queryReason:(id)self3 retryCount:(unint64_t)self4 uriCount:(unint64_t)self5 isForced:(BOOL)self6;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
 @implementation IDSQueryCompletionMetric
 
-- (IDSQueryCompletionMetric)initWithService:(id)a3 querySuccess:(BOOL)a4 connectionType:(unsigned int)a5 queryTimeInterval:(double)a6 queryURITypes:(unsigned int)a7 conferenceResultCode:(unsigned int)a8 queryErrorType:(unsigned int)a9 queryError:(id)a10 wasReversePushAttempted:(BOOL)a11 hasEmptyResult:(BOOL)a12 queryReason:(id)a13 retryCount:(unint64_t)a14 uriCount:(unint64_t)a15 isForced:(BOOL)a16
+- (IDSQueryCompletionMetric)initWithService:(id)service querySuccess:(BOOL)success connectionType:(unsigned int)type queryTimeInterval:(double)interval queryURITypes:(unsigned int)types conferenceResultCode:(unsigned int)code queryErrorType:(unsigned int)errorType queryError:(id)self0 wasReversePushAttempted:(BOOL)self1 hasEmptyResult:(BOOL)self2 queryReason:(id)self3 retryCount:(unint64_t)self4 uriCount:(unint64_t)self5 isForced:(BOOL)self6
 {
-  v22 = a3;
-  v23 = a10;
-  v24 = a13;
+  serviceCopy = service;
+  errorCopy = error;
+  reasonCopy = reason;
   v30.receiver = self;
   v30.super_class = IDSQueryCompletionMetric;
   v25 = [(IDSQueryCompletionMetric *)&v30 init];
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_serviceIdentifier, a3);
-    v26->_success = a4;
-    v26->_queryTimeInterval = a6;
-    v26->_connectionType = a5;
-    v26->_queryURITypes = a7;
-    v26->_conferenceResultCode = a8;
-    v26->_queryErrorType = a9;
-    objc_storeStrong(&v26->_queryError, a10);
-    v26->_wasReversePushAttempted = a11;
-    v26->_hasEmptyResult = a12;
-    objc_storeStrong(&v26->_queryReason, a13);
-    v26->_retryCount = a14;
-    v26->_uriCount = a15;
-    v26->_isForced = a16;
+    objc_storeStrong(&v25->_serviceIdentifier, service);
+    v26->_success = success;
+    v26->_queryTimeInterval = interval;
+    v26->_connectionType = type;
+    v26->_queryURITypes = types;
+    v26->_conferenceResultCode = code;
+    v26->_queryErrorType = errorType;
+    objc_storeStrong(&v26->_queryError, error);
+    v26->_wasReversePushAttempted = attempted;
+    v26->_hasEmptyResult = result;
+    objc_storeStrong(&v26->_queryReason, reason);
+    v26->_retryCount = count;
+    v26->_uriCount = uriCount;
+    v26->_isForced = forced;
     v26->_ktQueryTimeInterval = -1.0;
   }
 

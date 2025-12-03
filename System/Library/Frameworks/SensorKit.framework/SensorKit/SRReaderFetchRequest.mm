@@ -1,9 +1,9 @@
 @interface SRReaderFetchRequest
 - (NSString)description;
 - (SRReaderFetchRequest)init;
-- (SRReaderFetchRequest)initWithCoder:(id)a3;
+- (SRReaderFetchRequest)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRReaderFetchRequest
@@ -30,25 +30,25 @@
   [(SRReaderFetchRequest *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeObject:self->_readerRequest forKey:@"ReaderRequest"];
-  [a3 encodeBool:self->_bypassHoldingPeriod forKey:@"BypassHoldingPeriod"];
-  [a3 encodeDouble:@"From" forKey:self->_from];
-  [a3 encodeDouble:@"To" forKey:self->_to];
+  [coder encodeObject:self->_readerRequest forKey:@"ReaderRequest"];
+  [coder encodeBool:self->_bypassHoldingPeriod forKey:@"BypassHoldingPeriod"];
+  [coder encodeDouble:@"From" forKey:self->_from];
+  [coder encodeDouble:@"To" forKey:self->_to];
   cursor = self->_cursor;
 
-  [a3 encodeObject:cursor forKey:@"Cursor"];
+  [coder encodeObject:cursor forKey:@"Cursor"];
 }
 
-- (SRReaderFetchRequest)initWithCoder:(id)a3
+- (SRReaderFetchRequest)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
@@ -58,13 +58,13 @@
   v6 = [(SRReaderFetchRequest *)&v10 init];
   if (v6)
   {
-    v6->_readerRequest = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"ReaderRequest"];
-    v6->_bypassHoldingPeriod = [a3 decodeBoolForKey:@"BypassHoldingPeriod"];
-    [a3 decodeDoubleForKey:@"From"];
+    v6->_readerRequest = [coder decodeObjectOfClass:objc_opt_class() forKey:@"ReaderRequest"];
+    v6->_bypassHoldingPeriod = [coder decodeBoolForKey:@"BypassHoldingPeriod"];
+    [coder decodeDoubleForKey:@"From"];
     v6->_from = v7;
-    [a3 decodeDoubleForKey:@"To"];
+    [coder decodeDoubleForKey:@"To"];
     v6->_to = v8;
-    v6->_cursor = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"Cursor"];
+    v6->_cursor = [coder decodeObjectOfClass:objc_opt_class() forKey:@"Cursor"];
   }
 
   return v6;

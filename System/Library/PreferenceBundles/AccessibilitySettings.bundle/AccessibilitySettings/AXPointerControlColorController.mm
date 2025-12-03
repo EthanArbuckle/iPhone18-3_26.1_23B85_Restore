@@ -1,25 +1,25 @@
 @interface AXPointerControlColorController
-+ (id)localizedNameForColor:(int)a3;
-- (id)pointerStrokeWidth:(id)a3;
++ (id)localizedNameForColor:(int)color;
+- (id)pointerStrokeWidth:(id)width;
 - (id)specifiers;
-- (void)setPointerStrokeWidth:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)setPointerStrokeWidth:(id)width specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation AXPointerControlColorController
 
-+ (id)localizedNameForColor:(int)a3
++ (id)localizedNameForColor:(int)color
 {
-  if (a3 > 6)
+  if (color > 6)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = settingsLocString(*(&off_258C08 + a3), @"Accessibility-hello");
+    v4 = settingsLocString(*(&off_258C08 + color), @"Accessibility-hello");
   }
 
   return v4;
@@ -30,15 +30,15 @@
   v6.receiver = self;
   v6.super_class = AXPointerControlColorController;
   [(AXPointerControlColorController *)&v6 viewDidLoad];
-  v3 = [(AXPointerControlColorController *)self table];
+  table = [(AXPointerControlColorController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXColorChooserCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = *&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v3)
   {
@@ -82,12 +82,12 @@
             v38[2] = v15;
             LODWORD(v16) = 0;
             [NSNumber numberWithFloat:v16];
-            v18 = v17 = v2;
+            v18 = v17 = selfCopy;
             v38[3] = v18;
             v19 = [NSArray arrayWithObjects:v38 count:4];
             [v9 setProperty:v19 forKey:@"rgb"];
 
-            v2 = v17;
+            selfCopy = v17;
           }
 
           [v33 addObject:v9];
@@ -103,7 +103,7 @@
     v21 = [PSSpecifier groupSpecifierWithName:v20];
 
     [v33 addObject:v21];
-    v22 = [PSSpecifier preferenceSpecifierNamed:0 target:v2 set:"setPointerStrokeWidth:specifier:" get:"pointerStrokeWidth:" detail:0 cell:5 edit:0];
+    v22 = [PSSpecifier preferenceSpecifierNamed:0 target:selfCopy set:"setPointerStrokeWidth:specifier:" get:"pointerStrokeWidth:" detail:0 cell:5 edit:0];
     [v22 setProperty:&__kCFBooleanFalse forKey:PSSliderIsSegmented];
     [v22 setProperty:&__kCFBooleanTrue forKey:PSSliderIsContinuous];
     LODWORD(v23) = kAXSPointerStrokeColorWidthMinimum;
@@ -116,46 +116,46 @@
 
     [v22 setProperty:@"PointerStrokeWidth" forKey:PSIDKey];
     [v33 addObject:v22];
-    v27 = *&v2->AXUISettingsBaseListController_opaque[v29];
-    *&v2->AXUISettingsBaseListController_opaque[v29] = v33;
+    v27 = *&selfCopy->AXUISettingsBaseListController_opaque[v29];
+    *&selfCopy->AXUISettingsBaseListController_opaque[v29] = v33;
 
-    v3 = *&v2->AXUISettingsBaseListController_opaque[v29];
+    v3 = *&selfCopy->AXUISettingsBaseListController_opaque[v29];
   }
 
   return v3;
 }
 
-- (id)pointerStrokeWidth:(id)a3
+- (id)pointerStrokeWidth:(id)width
 {
   _AXSPointerStrokeColorWidth();
 
   return [NSNumber numberWithFloat:?];
 }
 
-- (void)setPointerStrokeWidth:(id)a3 specifier:(id)a4
+- (void)setPointerStrokeWidth:(id)width specifier:(id)specifier
 {
-  v4 = [a3 floatValue];
+  floatValue = [width floatValue];
 
-  __AXSPointerSetStrokeColorWidth(v4);
+  __AXSPointerSetStrokeColorWidth(floatValue);
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [(AXPointerControlColorController *)self specifierForIndexPath:a5];
+  cellCopy = cell;
+  v8 = [(AXPointerControlColorController *)self specifierForIndexPath:path];
   v9 = [v8 propertyForKey:@"ColorKey"];
   if (v9)
   {
-    v10 = v7;
-    v11 = [v9 intValue];
-    [v10 setChecked:v11 == _AXSPointerStrokeColor()];
+    v10 = cellCopy;
+    intValue = [v9 intValue];
+    [v10 setChecked:intValue == _AXSPointerStrokeColor()];
     v12 = _AXSPointerStrokeColorValues();
     v13 = [(AXPointerControlColorController *)self traitCollection:0];
-    v14 = [v13 userInterfaceStyle];
+    userInterfaceStyle = [v13 userInterfaceStyle];
 
     if (v12)
     {
-      v15 = v11 == 1;
+      v15 = intValue == 1;
     }
 
     else
@@ -164,7 +164,7 @@
     }
 
     v16 = !v15;
-    if (v14 == &dword_0 + 2)
+    if (userInterfaceStyle == &dword_0 + 2)
     {
       v17 = v12 != 0;
     }
@@ -178,28 +178,28 @@
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v26.receiver = self;
   v26.super_class = AXPointerControlColorController;
-  [(AXPointerControlColorController *)&v26 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [(AXPointerControlColorController *)self specifierForIndexPath:v7];
+  [(AXPointerControlColorController *)&v26 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [(AXPointerControlColorController *)self specifierForIndexPath:pathCopy];
   v9 = [v8 propertyForKey:@"ColorKey"];
   v10 = v9;
   if (v9)
   {
     v20 = v8;
-    v21 = v7;
+    v21 = pathCopy;
     [v9 intValue];
     _AXSPointerSetStrokeColor();
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = [v6 visibleCells];
-    v12 = [v11 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    visibleCells = [viewCopy visibleCells];
+    v12 = [visibleCells countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v12)
     {
       v13 = v12;
@@ -210,12 +210,12 @@
         {
           if (*v23 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(visibleCells);
           }
 
           v16 = *(*(&v22 + 1) + 8 * i);
-          v17 = [v16 specifier];
-          v18 = [v17 propertyForKey:@"ColorKey"];
+          specifier = [v16 specifier];
+          v18 = [specifier propertyForKey:@"ColorKey"];
           v19 = v18;
           if (v18)
           {
@@ -223,13 +223,13 @@
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v13 = [visibleCells countByEnumeratingWithState:&v22 objects:v27 count:16];
       }
 
       while (v13);
     }
 
-    v7 = v21;
+    pathCopy = v21;
     v8 = v20;
   }
 }

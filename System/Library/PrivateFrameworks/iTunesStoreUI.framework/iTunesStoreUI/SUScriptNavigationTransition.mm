@@ -1,23 +1,23 @@
 @interface SUScriptNavigationTransition
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (SUScriptNavigationItem)topNavigationItem;
-- (SUScriptNavigationTransition)initWithContainer:(id)a3 finishBlock:(id)a4;
+- (SUScriptNavigationTransition)initWithContainer:(id)container finishBlock:(id)block;
 - (id)scriptAttributeKeys;
 - (int64_t)status;
-- (void)addFinishBlock:(id)a3;
+- (void)addFinishBlock:(id)block;
 - (void)finishedLoading;
-- (void)setStatus:(int64_t)a3;
-- (void)setTopNavigationItem:(id)a3;
+- (void)setStatus:(int64_t)status;
+- (void)setTopNavigationItem:(id)item;
 @end
 
 @implementation SUScriptNavigationTransition
 
-- (SUScriptNavigationTransition)initWithContainer:(id)a3 finishBlock:(id)a4
+- (SUScriptNavigationTransition)initWithContainer:(id)container finishBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  containerCopy = container;
+  blockCopy = block;
   v17.receiver = self;
   v17.super_class = SUScriptNavigationTransition;
   v9 = [(SUScriptObject *)&v17 init];
@@ -28,7 +28,7 @@
     v9->_finishBlocks = v10;
 
     v12 = v9->_finishBlocks;
-    v13 = [v8 copy];
+    v13 = [blockCopy copy];
     [(NSMutableArray *)v12 addObject:v13];
 
     v9->_status = 0;
@@ -36,18 +36,18 @@
     lock = v9->super._lock;
     v9->super._lock = v14;
 
-    objc_storeStrong(&v9->_container, a3);
+    objc_storeStrong(&v9->_container, container);
   }
 
   return v9;
 }
 
-- (void)addFinishBlock:(id)a3
+- (void)addFinishBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(SUScriptObject *)self lock];
   finishBlocks = self->_finishBlocks;
-  v6 = [v4 copy];
+  v6 = [blockCopy copy];
 
   [(NSMutableArray *)finishBlocks addObject:v6];
 
@@ -62,15 +62,15 @@
   return status;
 }
 
-- (void)setStatus:(int64_t)a3
+- (void)setStatus:(int64_t)status
 {
   [(SUScriptObject *)self lock];
-  self->_status = a3;
+  self->_status = status;
 
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setTopNavigationItem:(id)a3
+- (void)setTopNavigationItem:(id)item
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"topNavigationItem"];
@@ -82,8 +82,8 @@
   if (self->_container)
   {
     v3 = [SUScriptNavigationItem alloc];
-    v4 = [(SUViewController *)self->_container navigationItem];
-    v5 = [(SUScriptNavigationItem *)v3 initWithNativeNavigationItem:v4];
+    navigationItem = [(SUViewController *)self->_container navigationItem];
+    v5 = [(SUScriptNavigationItem *)v3 initWithNativeNavigationItem:navigationItem];
 
     [(SUScriptObject *)self checkInScriptObject:v5];
   }
@@ -149,28 +149,28 @@
   }
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
-  v4 = a3;
-  v5 = [__KeyMapping_19 objectForKey:v4];
+  nameCopy = name;
+  v5 = [__KeyMapping_19 objectForKey:nameCopy];
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SUScriptNavigationTransition;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, nameCopy);
   }
 
   return v5;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  v5 = SUWebScriptNameForSelector2(a3, &__SelectorMapping_14, 1);
+  v5 = SUWebScriptNameForSelector2(selector, &__SelectorMapping_14, 1);
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SUScriptNavigationTransition;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, a3);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, selector);
   }
 
   return v5;
@@ -180,16 +180,16 @@
 {
   v5.receiver = self;
   v5.super_class = SUScriptNavigationTransition;
-  v2 = [(SUScriptObject *)&v5 scriptAttributeKeys];
-  v3 = [__KeyMapping_19 allKeys];
-  [v2 addObjectsFromArray:v3];
+  scriptAttributeKeys = [(SUScriptObject *)&v5 scriptAttributeKeys];
+  allKeys = [__KeyMapping_19 allKeys];
+  [scriptAttributeKeys addObjectsFromArray:allKeys];
 
-  return v2;
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_14 = sel_finishedLoading;
     unk_1EBF3AB00 = @"finishedLoading";

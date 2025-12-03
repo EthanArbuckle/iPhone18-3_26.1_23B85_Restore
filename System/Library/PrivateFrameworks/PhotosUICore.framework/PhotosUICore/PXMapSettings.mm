@@ -25,10 +25,10 @@
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v7 = [v2 sectionWithRows:v6];
 
-  v8 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v9 = MEMORY[0x1E69C6638];
   v13[0] = v7;
-  v13[1] = v8;
+  v13[1] = px_restoreDefaultsSection;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
   v11 = [v9 moduleWithTitle:@"Maps" contents:v10];
 

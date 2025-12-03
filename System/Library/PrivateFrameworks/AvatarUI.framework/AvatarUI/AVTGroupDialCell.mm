@@ -1,21 +1,21 @@
 @interface AVTGroupDialCell
-- (AVTGroupDialCell)initWithFrame:(CGRect)a3;
+- (AVTGroupDialCell)initWithFrame:(CGRect)frame;
 - (void)cancelShimmerTimer;
 - (void)prepareForReuse;
-- (void)setActiveItem:(BOOL)a3 animated:(BOOL)a4;
-- (void)setString:(id)a3;
-- (void)shimmerOnceWithCompletion:(id)a3;
+- (void)setActiveItem:(BOOL)item animated:(BOOL)animated;
+- (void)setString:(id)string;
+- (void)shimmerOnceWithCompletion:(id)completion;
 - (void)startShimmering;
-- (void)stopShimmeringAnimated:(BOOL)a3;
+- (void)stopShimmeringAnimated:(BOOL)animated;
 @end
 
 @implementation AVTGroupDialCell
 
-- (AVTGroupDialCell)initWithFrame:(CGRect)a3
+- (AVTGroupDialCell)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = AVTGroupDialCell;
-  v3 = [(AVTGroupDialCell *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVTGroupDialCell *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -25,15 +25,15 @@
     v3->_label = v5;
 
     [(UILabel *)v3->_label setTextAlignment:1];
-    v7 = [objc_opt_class() labelFont];
-    [(UILabel *)v3->_label setFont:v7];
+    labelFont = [objc_opt_class() labelFont];
+    [(UILabel *)v3->_label setFont:labelFont];
 
     v8 = +[AVTUIColorRepository groupDialCellTextColor];
     [(UILabel *)v3->_label setTextColor:v8];
 
     [(UILabel *)v3->_label setAutoresizingMask:18];
-    v9 = [(AVTGroupDialCell *)v3 contentView];
-    [v9 addSubview:v3->_label];
+    contentView = [(AVTGroupDialCell *)v3 contentView];
+    [contentView addSubview:v3->_label];
   }
 
   return v3;
@@ -44,55 +44,55 @@
   v9.receiver = self;
   v9.super_class = AVTGroupDialCell;
   [(AVTGroupDialCell *)&v9 prepareForReuse];
-  v3 = [objc_opt_class() labelFont];
-  v4 = [(AVTGroupDialCell *)self label];
-  [v4 setFont:v3];
+  labelFont = [objc_opt_class() labelFont];
+  label = [(AVTGroupDialCell *)self label];
+  [label setFont:labelFont];
 
   v5 = +[AVTUIColorRepository groupDialCellTextColor];
-  v6 = [(AVTGroupDialCell *)self label];
-  [v6 setTextColor:v5];
+  label2 = [(AVTGroupDialCell *)self label];
+  [label2 setTextColor:v5];
 
-  v7 = [(AVTGroupDialCell *)self label];
-  v8 = [v7 layer];
-  [v8 removeAllAnimations];
+  label3 = [(AVTGroupDialCell *)self label];
+  layer = [label3 layer];
+  [layer removeAllAnimations];
 
   [(AVTGroupDialCell *)self cancelShimmerTimer];
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
-  v6 = a3;
+  stringCopy = string;
   if (![(NSString *)self->_string isEqualToString:?])
   {
-    objc_storeStrong(&self->_string, a3);
-    v5 = [(AVTGroupDialCell *)self label];
-    [v5 setText:v6];
+    objc_storeStrong(&self->_string, string);
+    label = [(AVTGroupDialCell *)self label];
+    [label setText:stringCopy];
   }
 }
 
-- (void)setActiveItem:(BOOL)a3 animated:(BOOL)a4
+- (void)setActiveItem:(BOOL)item animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(AVTGroupDialCell *)self cancelShimmerTimer];
-  v7 = [(AVTGroupDialCell *)self label];
-  v8 = [v7 layer];
-  [v8 removeAllAnimations];
+  label = [(AVTGroupDialCell *)self label];
+  layer = [label layer];
+  [layer removeAllAnimations];
 
   v9 = MEMORY[0x1E69DD250];
-  v10 = [(AVTGroupDialCell *)self label];
+  label2 = [(AVTGroupDialCell *)self label];
   v11 = 0.2;
   v12[1] = 3221225472;
   v12[0] = MEMORY[0x1E69E9820];
   v12[2] = __43__AVTGroupDialCell_setActiveItem_animated___block_invoke;
   v12[3] = &unk_1E7F3B910;
-  if (!v4)
+  if (!animatedCopy)
   {
     v11 = 0.0;
   }
 
   v12[4] = self;
-  v13 = a3;
-  [v9 transitionWithView:v10 duration:5242880 options:v12 animations:0 completion:v11];
+  itemCopy = item;
+  [v9 transitionWithView:label2 duration:5242880 options:v12 animations:0 completion:v11];
 }
 
 void __43__AVTGroupDialCell_setActiveItem_animated___block_invoke(uint64_t a1)
@@ -126,14 +126,14 @@ void __43__AVTGroupDialCell_setActiveItem_animated___block_invoke(uint64_t a1)
   [v6 setTextColor:v7];
 }
 
-- (void)stopShimmeringAnimated:(BOOL)a3
+- (void)stopShimmeringAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(AVTGroupDialCell *)self cancelShimmerTimer];
   v5 = MEMORY[0x1E69DD250];
-  v6 = [(AVTGroupDialCell *)self label];
+  label = [(AVTGroupDialCell *)self label];
   v7 = 0.0;
-  if (v3)
+  if (animatedCopy)
   {
     v7 = 1.0;
   }
@@ -148,7 +148,7 @@ void __43__AVTGroupDialCell_setActiveItem_animated___block_invoke(uint64_t a1)
   v8[2] = __43__AVTGroupDialCell_stopShimmeringAnimated___block_invoke_2;
   v8[3] = &unk_1E7F3AA80;
   v8[4] = self;
-  [v5 transitionWithView:v6 duration:5242884 options:v9 animations:v8 completion:v7];
+  [v5 transitionWithView:label duration:5242884 options:v9 animations:v8 completion:v7];
 }
 
 void __43__AVTGroupDialCell_stopShimmeringAnimated___block_invoke(uint64_t a1)
@@ -168,9 +168,9 @@ void __43__AVTGroupDialCell_stopShimmeringAnimated___block_invoke_2(uint64_t a1)
 - (void)startShimmering
 {
   [(AVTGroupDialCell *)self cancelShimmerTimer];
-  v3 = [(AVTGroupDialCell *)self label];
-  v4 = [v3 layer];
-  [v4 removeAllAnimations];
+  label = [(AVTGroupDialCell *)self label];
+  layer = [label layer];
+  [layer removeAllAnimations];
 
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -239,17 +239,17 @@ void __35__AVTGroupDialCell_startShimmering__block_invoke_4(uint64_t a1)
 
 - (void)cancelShimmerTimer
 {
-  v3 = [(AVTGroupDialCell *)self shimmerTimer];
-  [v3 invalidate];
+  shimmerTimer = [(AVTGroupDialCell *)self shimmerTimer];
+  [shimmerTimer invalidate];
 
   [(AVTGroupDialCell *)self setShimmerTimer:0];
 }
 
-- (void)shimmerOnceWithCompletion:(id)a3
+- (void)shimmerOnceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x1E69DD250];
-  v6 = [(AVTGroupDialCell *)self label];
+  label = [(AVTGroupDialCell *)self label];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __46__AVTGroupDialCell_shimmerOnceWithCompletion___block_invoke;
@@ -260,9 +260,9 @@ void __35__AVTGroupDialCell_startShimmering__block_invoke_4(uint64_t a1)
   v8[2] = __46__AVTGroupDialCell_shimmerOnceWithCompletion___block_invoke_2;
   v8[3] = &unk_1E7F3B960;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v5 transitionWithView:v6 duration:5242884 options:v10 animations:v8 completion:1.0];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [v5 transitionWithView:label duration:5242884 options:v10 animations:v8 completion:1.0];
 }
 
 void __46__AVTGroupDialCell_shimmerOnceWithCompletion___block_invoke(uint64_t a1)

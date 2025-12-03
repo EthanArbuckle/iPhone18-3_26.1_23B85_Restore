@@ -1,77 +1,77 @@
 @interface HDCloudSyncCodableRegistry
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDisabledOwnerIdentifiers:(id)a3;
-- (void)addDisabledSyncIdentities:(id)a3;
-- (void)addStores:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDeleted:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addDisabledOwnerIdentifiers:(id)identifiers;
+- (void)addDisabledSyncIdentities:(id)identities;
+- (void)addStores:(id)stores;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDeleted:(BOOL)deleted;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCloudSyncCodableRegistry
 
-- (void)addDisabledOwnerIdentifiers:(id)a3
+- (void)addDisabledOwnerIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   disabledOwnerIdentifiers = self->_disabledOwnerIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!disabledOwnerIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_disabledOwnerIdentifiers;
     self->_disabledOwnerIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     disabledOwnerIdentifiers = self->_disabledOwnerIdentifiers;
   }
 
-  [(NSMutableArray *)disabledOwnerIdentifiers addObject:v4];
+  [(NSMutableArray *)disabledOwnerIdentifiers addObject:identifiersCopy];
 }
 
-- (void)addStores:(id)a3
+- (void)addStores:(id)stores
 {
-  v4 = a3;
+  storesCopy = stores;
   stores = self->_stores;
-  v8 = v4;
+  v8 = storesCopy;
   if (!stores)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_stores;
     self->_stores = v6;
 
-    v4 = v8;
+    storesCopy = v8;
     stores = self->_stores;
   }
 
-  [(NSMutableArray *)stores addObject:v4];
+  [(NSMutableArray *)stores addObject:storesCopy];
 }
 
-- (void)addDisabledSyncIdentities:(id)a3
+- (void)addDisabledSyncIdentities:(id)identities
 {
-  v4 = a3;
+  identitiesCopy = identities;
   disabledSyncIdentities = self->_disabledSyncIdentities;
-  v8 = v4;
+  v8 = identitiesCopy;
   if (!disabledSyncIdentities)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_disabledSyncIdentities;
     self->_disabledSyncIdentities = v6;
 
-    v4 = v8;
+    identitiesCopy = v8;
     disabledSyncIdentities = self->_disabledSyncIdentities;
   }
 
-  [(NSMutableArray *)disabledSyncIdentities addObject:v4];
+  [(NSMutableArray *)disabledSyncIdentities addObject:identitiesCopy];
 }
 
-- (void)setHasDeleted:(BOOL)a3
+- (void)setHasDeleted:(BOOL)deleted
 {
-  if (a3)
+  if (deleted)
   {
     v3 = 2;
   }
@@ -90,8 +90,8 @@
   v8.receiver = self;
   v8.super_class = HDCloudSyncCodableRegistry;
   v4 = [(HDCloudSyncCodableRegistry *)&v8 description];
-  v5 = [(HDCloudSyncCodableRegistry *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCloudSyncCodableRegistry *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -99,12 +99,12 @@
 - (id)dictionaryRepresentation
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   disabledOwnerIdentifiers = self->_disabledOwnerIdentifiers;
   if (disabledOwnerIdentifiers)
   {
-    [v3 setObject:disabledOwnerIdentifiers forKey:@"disabledOwnerIdentifiers"];
+    [dictionary setObject:disabledOwnerIdentifiers forKey:@"disabledOwnerIdentifiers"];
   }
 
   if ([(NSMutableArray *)self->_stores count])
@@ -129,8 +129,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v34 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v34 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v34 objects:v39 count:16];
@@ -164,8 +164,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v30 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v30 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation2];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v30 objects:v38 count:16];
@@ -204,15 +204,15 @@
   ownerProfileIdentifier = self->_ownerProfileIdentifier;
   if (ownerProfileIdentifier)
   {
-    v25 = [(HDCloudSyncCodableProfileIdentifier *)ownerProfileIdentifier dictionaryRepresentation];
-    [v4 setObject:v25 forKey:@"ownerProfileIdentifier"];
+    dictionaryRepresentation3 = [(HDCloudSyncCodableProfileIdentifier *)ownerProfileIdentifier dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"ownerProfileIdentifier"];
   }
 
   sharedProfileIdentifier = self->_sharedProfileIdentifier;
   if (sharedProfileIdentifier)
   {
-    v27 = [(HDCloudSyncCodableProfileIdentifier *)sharedProfileIdentifier dictionaryRepresentation];
-    [v4 setObject:v27 forKey:@"sharedProfileIdentifier"];
+    dictionaryRepresentation4 = [(HDCloudSyncCodableProfileIdentifier *)sharedProfileIdentifier dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"sharedProfileIdentifier"];
   }
 
   v28 = *MEMORY[0x277D85DE8];
@@ -220,10 +220,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -355,65 +355,65 @@
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v17 = a3;
+  toCopy = to;
   if ([(HDCloudSyncCodableRegistry *)self disabledOwnerIdentifiersCount])
   {
-    [v17 clearDisabledOwnerIdentifiers];
-    v4 = [(HDCloudSyncCodableRegistry *)self disabledOwnerIdentifiersCount];
-    if (v4)
+    [toCopy clearDisabledOwnerIdentifiers];
+    disabledOwnerIdentifiersCount = [(HDCloudSyncCodableRegistry *)self disabledOwnerIdentifiersCount];
+    if (disabledOwnerIdentifiersCount)
     {
-      v5 = v4;
+      v5 = disabledOwnerIdentifiersCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HDCloudSyncCodableRegistry *)self disabledOwnerIdentifiersAtIndex:i];
-        [v17 addDisabledOwnerIdentifiers:v7];
+        [toCopy addDisabledOwnerIdentifiers:v7];
       }
     }
   }
 
   if ([(HDCloudSyncCodableRegistry *)self storesCount])
   {
-    [v17 clearStores];
-    v8 = [(HDCloudSyncCodableRegistry *)self storesCount];
-    if (v8)
+    [toCopy clearStores];
+    storesCount = [(HDCloudSyncCodableRegistry *)self storesCount];
+    if (storesCount)
     {
-      v9 = v8;
+      v9 = storesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(HDCloudSyncCodableRegistry *)self storesAtIndex:j];
-        [v17 addStores:v11];
+        [toCopy addStores:v11];
       }
     }
   }
 
   if ([(HDCloudSyncCodableRegistry *)self disabledSyncIdentitiesCount])
   {
-    [v17 clearDisabledSyncIdentities];
-    v12 = [(HDCloudSyncCodableRegistry *)self disabledSyncIdentitiesCount];
-    if (v12)
+    [toCopy clearDisabledSyncIdentities];
+    disabledSyncIdentitiesCount = [(HDCloudSyncCodableRegistry *)self disabledSyncIdentitiesCount];
+    if (disabledSyncIdentitiesCount)
     {
-      v13 = v12;
+      v13 = disabledSyncIdentitiesCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(HDCloudSyncCodableRegistry *)self disabledSyncIdentitiesAtIndex:k];
-        [v17 addDisabledSyncIdentities:v15];
+        [toCopy addDisabledSyncIdentities:v15];
       }
     }
   }
 
-  v16 = v17;
+  v16 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
-    v17[72] = self->_deleted;
-    v17[76] |= 2u;
+    toCopy[72] = self->_deleted;
+    toCopy[76] |= 2u;
   }
 
   if (self->_displayFirstName)
   {
-    [v17 setDisplayFirstName:?];
-    v16 = v17;
+    [toCopy setDisplayFirstName:?];
+    v16 = toCopy;
   }
 
   if (*&self->_has)
@@ -424,27 +424,27 @@
 
   if (self->_displayLastName)
   {
-    [v17 setDisplayLastName:?];
-    v16 = v17;
+    [toCopy setDisplayLastName:?];
+    v16 = toCopy;
   }
 
   if (self->_ownerProfileIdentifier)
   {
-    [v17 setOwnerProfileIdentifier:?];
-    v16 = v17;
+    [toCopy setOwnerProfileIdentifier:?];
+    v16 = toCopy;
   }
 
   if (self->_sharedProfileIdentifier)
   {
-    [v17 setSharedProfileIdentifier:?];
-    v16 = v17;
+    [toCopy setSharedProfileIdentifier:?];
+    v16 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -465,7 +465,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v42 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v42 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addDisabledOwnerIdentifiers:v11];
 
         ++v10;
@@ -498,7 +498,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v38 + 1) + 8 * v16) copyWithZone:a3];
+        v17 = [*(*(&v38 + 1) + 8 * v16) copyWithZone:zone];
         [v5 addStores:v17];
 
         ++v16;
@@ -531,7 +531,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v34 + 1) + 8 * v22) copyWithZone:{a3, v34}];
+        v23 = [*(*(&v34 + 1) + 8 * v22) copyWithZone:{zone, v34}];
         [v5 addDisabledSyncIdentities:v23];
 
         ++v22;
@@ -550,7 +550,7 @@
     *(v5 + 76) |= 2u;
   }
 
-  v24 = [(NSString *)self->_displayFirstName copyWithZone:a3, v34];
+  v24 = [(NSString *)self->_displayFirstName copyWithZone:zone, v34];
   v25 = *(v5 + 32);
   *(v5 + 32) = v24;
 
@@ -560,15 +560,15 @@
     *(v5 + 76) |= 1u;
   }
 
-  v26 = [(NSString *)self->_displayLastName copyWithZone:a3];
+  v26 = [(NSString *)self->_displayLastName copyWithZone:zone];
   v27 = *(v5 + 40);
   *(v5 + 40) = v26;
 
-  v28 = [(HDCloudSyncCodableProfileIdentifier *)self->_ownerProfileIdentifier copyWithZone:a3];
+  v28 = [(HDCloudSyncCodableProfileIdentifier *)self->_ownerProfileIdentifier copyWithZone:zone];
   v29 = *(v5 + 48);
   *(v5 + 48) = v28;
 
-  v30 = [(HDCloudSyncCodableProfileIdentifier *)self->_sharedProfileIdentifier copyWithZone:a3];
+  v30 = [(HDCloudSyncCodableProfileIdentifier *)self->_sharedProfileIdentifier copyWithZone:zone];
   v31 = *(v5 + 56);
   *(v5 + 56) = v30;
 
@@ -576,16 +576,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
   disabledOwnerIdentifiers = self->_disabledOwnerIdentifiers;
-  if (disabledOwnerIdentifiers | *(v4 + 2))
+  if (disabledOwnerIdentifiers | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)disabledOwnerIdentifiers isEqual:?])
     {
@@ -594,7 +594,7 @@
   }
 
   stores = self->_stores;
-  if (stores | *(v4 + 8))
+  if (stores | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)stores isEqual:?])
     {
@@ -603,7 +603,7 @@
   }
 
   disabledSyncIdentities = self->_disabledSyncIdentities;
-  if (disabledSyncIdentities | *(v4 + 3))
+  if (disabledSyncIdentities | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)disabledSyncIdentities isEqual:?])
     {
@@ -612,36 +612,36 @@
   }
 
   has = self->_has;
-  v9 = *(v4 + 76);
+  v9 = *(equalCopy + 76);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 76) & 2) == 0)
+    if ((*(equalCopy + 76) & 2) == 0)
     {
       goto LABEL_29;
     }
 
-    v11 = *(v4 + 72);
+    v11 = *(equalCopy + 72);
     if (self->_deleted)
     {
-      if ((*(v4 + 72) & 1) == 0)
+      if ((*(equalCopy + 72) & 1) == 0)
       {
         goto LABEL_29;
       }
     }
 
-    else if (*(v4 + 72))
+    else if (*(equalCopy + 72))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 76) & 2) != 0)
+  else if ((*(equalCopy + 76) & 2) != 0)
   {
     goto LABEL_29;
   }
 
   displayFirstName = self->_displayFirstName;
-  if (!(displayFirstName | *(v4 + 4)))
+  if (!(displayFirstName | *(equalCopy + 4)))
   {
     goto LABEL_13;
   }
@@ -654,11 +654,11 @@ LABEL_29:
   }
 
   has = self->_has;
-  v9 = *(v4 + 76);
+  v9 = *(equalCopy + 76);
 LABEL_13:
   if (has)
   {
-    if ((v9 & 1) == 0 || self->_displayNameModificationDate != *(v4 + 1))
+    if ((v9 & 1) == 0 || self->_displayNameModificationDate != *(equalCopy + 1))
     {
       goto LABEL_29;
     }
@@ -670,13 +670,13 @@ LABEL_13:
   }
 
   displayLastName = self->_displayLastName;
-  if (displayLastName | *(v4 + 5) && ![(NSString *)displayLastName isEqual:?])
+  if (displayLastName | *(equalCopy + 5) && ![(NSString *)displayLastName isEqual:?])
   {
     goto LABEL_29;
   }
 
   ownerProfileIdentifier = self->_ownerProfileIdentifier;
-  if (ownerProfileIdentifier | *(v4 + 6))
+  if (ownerProfileIdentifier | *(equalCopy + 6))
   {
     if (![(HDCloudSyncCodableProfileIdentifier *)ownerProfileIdentifier isEqual:?])
     {
@@ -685,7 +685,7 @@ LABEL_13:
   }
 
   sharedProfileIdentifier = self->_sharedProfileIdentifier;
-  if (sharedProfileIdentifier | *(v4 + 7))
+  if (sharedProfileIdentifier | *(equalCopy + 7))
   {
     v15 = [(HDCloudSyncCodableProfileIdentifier *)sharedProfileIdentifier isEqual:?];
   }
@@ -754,15 +754,15 @@ LABEL_30:
   return v14 ^ v15 ^ [(HDCloudSyncCodableProfileIdentifier *)self->_sharedProfileIdentifier hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v6)
   {
@@ -790,7 +790,7 @@ LABEL_30:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v10 = *(v4 + 8);
+  v10 = *(fromCopy + 8);
   v11 = [v10 countByEnumeratingWithState:&v29 objects:v38 count:16];
   if (v11)
   {
@@ -818,7 +818,7 @@ LABEL_30:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v15 = *(v4 + 3);
+  v15 = *(fromCopy + 3);
   v16 = [v15 countByEnumeratingWithState:&v25 objects:v37 count:16];
   if (v16)
   {
@@ -842,30 +842,30 @@ LABEL_30:
     while (v17);
   }
 
-  if ((*(v4 + 76) & 2) != 0)
+  if ((*(fromCopy + 76) & 2) != 0)
   {
-    self->_deleted = *(v4 + 72);
+    self->_deleted = *(fromCopy + 72);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(HDCloudSyncCodableRegistry *)self setDisplayFirstName:?];
   }
 
-  if (*(v4 + 76))
+  if (*(fromCopy + 76))
   {
-    self->_displayNameModificationDate = *(v4 + 1);
+    self->_displayNameModificationDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(HDCloudSyncCodableRegistry *)self setDisplayLastName:?];
   }
 
   ownerProfileIdentifier = self->_ownerProfileIdentifier;
-  v21 = *(v4 + 6);
+  v21 = *(fromCopy + 6);
   if (ownerProfileIdentifier)
   {
     if (v21)
@@ -880,7 +880,7 @@ LABEL_30:
   }
 
   sharedProfileIdentifier = self->_sharedProfileIdentifier;
-  v23 = *(v4 + 7);
+  v23 = *(fromCopy + 7);
   if (sharedProfileIdentifier)
   {
     if (v23)

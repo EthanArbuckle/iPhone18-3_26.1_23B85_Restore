@@ -1,123 +1,123 @@
 @interface CNContactEditAuthorizationManager
 - (BOOL)saveWasAuthorized;
 - (BOOL)shouldPromptForPasscodeAuthorization;
-- (CNContactEditAuthorizationManager)initWithContact:(id)a3 contactStore:(id)a4;
+- (CNContactEditAuthorizationManager)initWithContact:(id)contact contactStore:(id)store;
 - (id)authorizationCheck;
-- (void)authorizeForViewController:(id)a3 sender:(id)a4 animated:(BOOL)a5 completionBlock:(id)a6;
-- (void)editAuthorizationController:(id)a3 authorizationDidFinishWithResult:(int64_t)a4;
-- (void)updateWithContact:(id)a3;
+- (void)authorizeForViewController:(id)controller sender:(id)sender animated:(BOOL)animated completionBlock:(id)block;
+- (void)editAuthorizationController:(id)controller authorizationDidFinishWithResult:(int64_t)result;
+- (void)updateWithContact:(id)contact;
 @end
 
 @implementation CNContactEditAuthorizationManager
 
-- (void)editAuthorizationController:(id)a3 authorizationDidFinishWithResult:(int64_t)a4
+- (void)editAuthorizationController:(id)controller authorizationDidFinishWithResult:(int64_t)result
 {
   [(CNContactEditAuthorizationManager *)self setAuthorizationController:0];
-  [(CNContactEditAuthorizationManager *)self setAuthorizationResult:a4];
-  v6 = [(CNContactEditAuthorizationManager *)self authorizationResultBlock];
+  [(CNContactEditAuthorizationManager *)self setAuthorizationResult:result];
+  authorizationResultBlock = [(CNContactEditAuthorizationManager *)self authorizationResultBlock];
 
-  if (v6)
+  if (authorizationResultBlock)
   {
-    v7 = [(CNContactEditAuthorizationManager *)self authorizationResultBlock];
-    v7[2](v7, a4);
+    authorizationResultBlock2 = [(CNContactEditAuthorizationManager *)self authorizationResultBlock];
+    authorizationResultBlock2[2](authorizationResultBlock2, result);
 
     [(CNContactEditAuthorizationManager *)self setAuthorizationResultBlock:0];
   }
 }
 
-- (void)authorizeForViewController:(id)a3 sender:(id)a4 animated:(BOOL)a5 completionBlock:(id)a6
+- (void)authorizeForViewController:(id)controller sender:(id)sender animated:(BOOL)animated completionBlock:(id)block
 {
-  v7 = a5;
-  v19 = a3;
-  v10 = a4;
-  v11 = a6;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  senderCopy = sender;
+  blockCopy = block;
   if ([(CNContactEditAuthorizationManager *)self authorizationResult]== 2)
   {
-    v11[2](v11, [(CNContactEditAuthorizationManager *)self authorizationResult]);
+    blockCopy[2](blockCopy, [(CNContactEditAuthorizationManager *)self authorizationResult]);
   }
 
-  [(CNContactEditAuthorizationManager *)self setAuthorizationResultBlock:v11];
-  v12 = [(CNContactEditAuthorizationManager *)self authorizationController];
+  [(CNContactEditAuthorizationManager *)self setAuthorizationResultBlock:blockCopy];
+  authorizationController = [(CNContactEditAuthorizationManager *)self authorizationController];
 
-  if (!v12)
+  if (!authorizationController)
   {
     v13 = objc_alloc_init(CNUIEditAuthorizationController);
     [(CNContactEditAuthorizationManager *)self setAuthorizationController:v13];
 
-    v14 = [(CNContactEditAuthorizationManager *)self authorizationController];
-    [v14 setDelegate:self];
+    authorizationController2 = [(CNContactEditAuthorizationManager *)self authorizationController];
+    [authorizationController2 setDelegate:self];
 
-    v15 = [(CNContactEditAuthorizationManager *)self authorizationController];
-    [v15 setSender:v10];
+    authorizationController3 = [(CNContactEditAuthorizationManager *)self authorizationController];
+    [authorizationController3 setSender:senderCopy];
 
-    v16 = [(CNContactEditAuthorizationManager *)self authorizationController];
-    [v16 setAnimated:v7];
+    authorizationController4 = [(CNContactEditAuthorizationManager *)self authorizationController];
+    [authorizationController4 setAnimated:animatedCopy];
 
-    v17 = [(CNContactEditAuthorizationManager *)self authorizationController];
-    [v17 setGuardedViewController:v19];
+    authorizationController5 = [(CNContactEditAuthorizationManager *)self authorizationController];
+    [authorizationController5 setGuardedViewController:controllerCopy];
   }
 
-  v18 = [(CNContactEditAuthorizationManager *)self authorizationController];
-  [v18 presentAuthorizationUI];
+  authorizationController6 = [(CNContactEditAuthorizationManager *)self authorizationController];
+  [authorizationController6 presentAuthorizationUI];
 }
 
 - (id)authorizationCheck
 {
   v3 = objc_alloc(MEMORY[0x1E6996B08]);
-  v4 = [(CNContactEditAuthorizationManager *)self contact];
-  v5 = [(CNContactEditAuthorizationManager *)self parentContainer];
-  v6 = [(CNContactEditAuthorizationManager *)self ignoresParentalRestrictions];
-  v7 = [(CNContactEditAuthorizationManager *)self contactViewCache];
-  v8 = [v3 initWithContact:v4 parentContainer:v5 ignoresParentalRestrictions:v6 linkedParentContainerProvider:v7];
+  contact = [(CNContactEditAuthorizationManager *)self contact];
+  parentContainer = [(CNContactEditAuthorizationManager *)self parentContainer];
+  ignoresParentalRestrictions = [(CNContactEditAuthorizationManager *)self ignoresParentalRestrictions];
+  contactViewCache = [(CNContactEditAuthorizationManager *)self contactViewCache];
+  v8 = [v3 initWithContact:contact parentContainer:parentContainer ignoresParentalRestrictions:ignoresParentalRestrictions linkedParentContainerProvider:contactViewCache];
 
   return v8;
 }
 
 - (BOOL)saveWasAuthorized
 {
-  v2 = self;
-  v3 = [(CNContactEditAuthorizationManager *)self authorizationCheck];
-  LOBYTE(v2) = [v3 shouldBypassRestrictionsGivenAuthorizationResult:{-[CNContactEditAuthorizationManager authorizationResult](v2, "authorizationResult")}];
+  selfCopy = self;
+  authorizationCheck = [(CNContactEditAuthorizationManager *)self authorizationCheck];
+  LOBYTE(selfCopy) = [authorizationCheck shouldBypassRestrictionsGivenAuthorizationResult:{-[CNContactEditAuthorizationManager authorizationResult](selfCopy, "authorizationResult")}];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)shouldPromptForPasscodeAuthorization
 {
-  v2 = [(CNContactEditAuthorizationManager *)self authorizationCheck];
-  v3 = [v2 shouldPromptForPasscodeAuthorization];
+  authorizationCheck = [(CNContactEditAuthorizationManager *)self authorizationCheck];
+  shouldPromptForPasscodeAuthorization = [authorizationCheck shouldPromptForPasscodeAuthorization];
 
-  return v3;
+  return shouldPromptForPasscodeAuthorization;
 }
 
-- (void)updateWithContact:(id)a3
+- (void)updateWithContact:(id)contact
 {
-  v5 = a3;
+  contactCopy = contact;
   p_contact = &self->_contact;
-  if (self->_contact != v5)
+  if (self->_contact != contactCopy)
   {
-    v9 = v5;
-    objc_storeStrong(p_contact, a3);
-    v7 = [(CNContactEditAuthorizationManager *)self contactViewCache];
-    v8 = [v7 containerForContact:v9];
+    v9 = contactCopy;
+    objc_storeStrong(p_contact, contact);
+    contactViewCache = [(CNContactEditAuthorizationManager *)self contactViewCache];
+    v8 = [contactViewCache containerForContact:v9];
     [(CNContactEditAuthorizationManager *)self setParentContainer:v8];
   }
 
   MEMORY[0x1EEE66BE0](p_contact);
 }
 
-- (CNContactEditAuthorizationManager)initWithContact:(id)a3 contactStore:(id)a4
+- (CNContactEditAuthorizationManager)initWithContact:(id)contact contactStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  contactCopy = contact;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = CNContactEditAuthorizationManager;
   v9 = [(CNContactEditAuthorizationManager *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contact, a3);
-    objc_storeStrong(&v10->_contactStore, a4);
+    objc_storeStrong(&v9->_contact, contact);
+    objc_storeStrong(&v10->_contactStore, store);
     v10->_authorizationResult = 1;
     v11 = v10;
   }

@@ -1,25 +1,25 @@
 @interface HKFeatureAvailabilityRequirementOnboardingRecordsArePresentForPrerequisiteFeatures
-- (BOOL)isEqual:(id)a3;
-- (HKFeatureAvailabilityRequirementOnboardingRecordsArePresentForPrerequisiteFeatures)initWithCoder:(id)a3;
-- (HKFeatureAvailabilityRequirementOnboardingRecordsArePresentForPrerequisiteFeatures)initWithPrerequisiteFeatureIdentifiers:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKFeatureAvailabilityRequirementOnboardingRecordsArePresentForPrerequisiteFeatures)initWithCoder:(id)coder;
+- (HKFeatureAvailabilityRequirementOnboardingRecordsArePresentForPrerequisiteFeatures)initWithPrerequisiteFeatureIdentifiers:(id)identifiers;
 - (NSString)requirementDescription;
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4;
-- (void)registerObserver:(id)a3 forDataSource:(id)a4;
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4;
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error;
+- (void)registerObserver:(id)observer forDataSource:(id)source;
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source;
 @end
 
 @implementation HKFeatureAvailabilityRequirementOnboardingRecordsArePresentForPrerequisiteFeatures
 
-- (HKFeatureAvailabilityRequirementOnboardingRecordsArePresentForPrerequisiteFeatures)initWithPrerequisiteFeatureIdentifiers:(id)a3
+- (HKFeatureAvailabilityRequirementOnboardingRecordsArePresentForPrerequisiteFeatures)initWithPrerequisiteFeatureIdentifiers:(id)identifiers
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v9.receiver = self;
   v9.super_class = HKFeatureAvailabilityRequirementOnboardingRecordsArePresentForPrerequisiteFeatures;
   v6 = [(HKFeatureAvailabilityRequirementOnboardingRecordsArePresentForPrerequisiteFeatures *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_prerequisiteFeatureIdentifiers, a3);
+    objc_storeStrong(&v6->_prerequisiteFeatureIdentifiers, identifiers);
   }
 
   return v7;
@@ -32,24 +32,24 @@
   prerequisiteFeatureIdentifiers = self->_prerequisiteFeatureIdentifiers;
   if (v3 == 1)
   {
-    v6 = [(NSArray *)prerequisiteFeatureIdentifiers firstObject];
-    [v4 stringWithFormat:@"An onboarding record must be present for %@", v6];
+    firstObject = [(NSArray *)prerequisiteFeatureIdentifiers firstObject];
+    [v4 stringWithFormat:@"An onboarding record must be present for %@", firstObject];
   }
 
   else
   {
-    v6 = [(NSArray *)prerequisiteFeatureIdentifiers componentsJoinedByString:@", "];
-    [v4 stringWithFormat:@"Onboarding records must be present for %@", v6];
+    firstObject = [(NSArray *)prerequisiteFeatureIdentifiers componentsJoinedByString:@", "];
+    [v4 stringWithFormat:@"Onboarding records must be present for %@", firstObject];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  sourceCopy = source;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -75,7 +75,7 @@
         objc_enumerationMutation(v7);
       }
 
-      v14 = [v6 onboardingRecordForFeatureWithIdentifier:*(*(&v18 + 1) + 8 * i) error:{a4, v18}];
+      v14 = [sourceCopy onboardingRecordForFeatureWithIdentifier:*(*(&v18 + 1) + 8 * i) error:{error, v18}];
       v15 = v14;
       if (!v14)
       {
@@ -107,12 +107,12 @@ LABEL_15:
   return v12;
 }
 
-- (void)registerObserver:(id)a3 forDataSource:(id)a4
+- (void)registerObserver:(id)observer forDataSource:(id)source
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  objc_initWeak(&location, v7);
+  observerCopy = observer;
+  sourceCopy = source;
+  objc_initWeak(&location, sourceCopy);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __117__HKFeatureAvailabilityRequirementOnboardingRecordsArePresentForPrerequisiteFeatures_registerObserver_forDataSource___block_invoke;
@@ -140,13 +140,13 @@ LABEL_15:
         }
 
         v12 = *(*(&v18 + 1) + 8 * v11);
-        v13 = [v7 featureAvailabilityProvidingDataSource];
+        featureAvailabilityProvidingDataSource = [sourceCopy featureAvailabilityProvidingDataSource];
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
         v16[2] = __117__HKFeatureAvailabilityRequirementOnboardingRecordsArePresentForPrerequisiteFeatures_registerObserver_forDataSource___block_invoke_16;
         v16[3] = &unk_1E737DBD0;
         v17 = v8;
-        [v13 registerObserver:v6 forKey:v12 newValueHandler:v16];
+        [featureAvailabilityProvidingDataSource registerObserver:observerCopy forKey:v12 newValueHandler:v16];
 
         ++v11;
       }
@@ -192,11 +192,11 @@ void __117__HKFeatureAvailabilityRequirementOnboardingRecordsArePresentForPrereq
   }
 }
 
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  sourceCopy = source;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -218,8 +218,8 @@ void __117__HKFeatureAvailabilityRequirementOnboardingRecordsArePresentForPrereq
         }
 
         v13 = *(*(&v16 + 1) + 8 * v12);
-        v14 = [v7 featureAvailabilityProvidingDataSource];
-        [v14 unregisterObserver:v6 forKey:v13];
+        featureAvailabilityProvidingDataSource = [sourceCopy featureAvailabilityProvidingDataSource];
+        [featureAvailabilityProvidingDataSource unregisterObserver:observerCopy forKey:v13];
 
         ++v12;
       }
@@ -234,13 +234,13 @@ void __117__HKFeatureAvailabilityRequirementOnboardingRecordsArePresentForPrereq
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSArray *)self->_prerequisiteFeatureIdentifiers isEqual:v4[1]];
+    v5 = [(NSArray *)self->_prerequisiteFeatureIdentifiers isEqual:equalCopy[1]];
   }
 
   else
@@ -251,13 +251,13 @@ void __117__HKFeatureAvailabilityRequirementOnboardingRecordsArePresentForPrereq
   return v5;
 }
 
-- (HKFeatureAvailabilityRequirementOnboardingRecordsArePresentForPrerequisiteFeatures)initWithCoder:(id)a3
+- (HKFeatureAvailabilityRequirementOnboardingRecordsArePresentForPrerequisiteFeatures)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"prerequisiteFeatureIdentifiers"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"prerequisiteFeatureIdentifiers"];
 
   v9 = [(HKFeatureAvailabilityRequirementOnboardingRecordsArePresentForPrerequisiteFeatures *)self initWithPrerequisiteFeatureIdentifiers:v8];
   return v9;

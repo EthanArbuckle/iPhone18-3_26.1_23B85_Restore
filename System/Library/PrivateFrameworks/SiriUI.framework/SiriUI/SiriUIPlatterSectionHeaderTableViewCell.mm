@@ -1,57 +1,57 @@
 @interface SiriUIPlatterSectionHeaderTableViewCell
-+ (CGSize)sizeThatFits:(CGSize)a3 text:(id)a4;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (SiriUIPlatterSectionHeaderTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (SiriUIPlatterSectionHeaderTableViewCell)initWithText:(id)a3;
++ (CGSize)sizeThatFits:(CGSize)fits text:(id)text;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (SiriUIPlatterSectionHeaderTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (SiriUIPlatterSectionHeaderTableViewCell)initWithText:(id)text;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation SiriUIPlatterSectionHeaderTableViewCell
 
-+ (CGSize)sizeThatFits:(CGSize)a3 text:(id)a4
++ (CGSize)sizeThatFits:(CGSize)fits text:(id)text
 {
-  [SiriUIPlatterSectionHeaderView sizeThatFits:a4 text:a3.width, a3.height];
+  [SiriUIPlatterSectionHeaderView sizeThatFits:text text:fits.width, fits.height];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (SiriUIPlatterSectionHeaderTableViewCell)initWithText:(id)a3
+- (SiriUIPlatterSectionHeaderTableViewCell)initWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = [(SiriUIPlatterSectionHeaderTableViewCell *)self initWithStyle:0 reuseIdentifier:0];
   v6 = v5;
   if (v5)
   {
-    [(SiriUIPlatterSectionHeaderTableViewCell *)v5 setText:v4];
+    [(SiriUIPlatterSectionHeaderTableViewCell *)v5 setText:textCopy];
   }
 
   return v6;
 }
 
-- (SiriUIPlatterSectionHeaderTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SiriUIPlatterSectionHeaderTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = SiriUIPlatterSectionHeaderTableViewCell;
-  v4 = [(SiriUIPlatterSectionHeaderTableViewCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SiriUIPlatterSectionHeaderTableViewCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [[SiriUIPlatterSectionHeaderView alloc] initWithText:0 visualEffect:0];
     headerView = v4->_headerView;
     v4->_headerView = v5;
 
-    v7 = [(SiriUIPlatterSectionHeaderTableViewCell *)v4 contentView];
-    [v7 addSubview:v4->_headerView];
+    contentView = [(SiriUIPlatterSectionHeaderTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_headerView];
   }
 
   return v4;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  width = a3.width;
-  [(SiriUITextContainerView *)self->_headerView sizeThatFits:a3.width, 1.79769313e308];
+  width = size.width;
+  [(SiriUITextContainerView *)self->_headerView sizeThatFits:size.width, 1.79769313e308];
   v7 = width;
   result.height = v6;
   result.width = v7;

@@ -2,20 +2,20 @@
 + (UIMenuController)sharedMenuController;
 - (BOOL)_shouldPassthroughInView;
 - (CGRect)_targetRect;
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4;
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration;
 - (CGRect)menuFrame;
 - (UIMenuController)init;
-- (id)_editMenuInteraction:(id)a3 firstResponderTargetForConfiguration:(id)a4;
+- (id)_editMenuInteraction:(id)interaction firstResponderTargetForConfiguration:(id)configuration;
 - (id)_targetView;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
 - (int64_t)_resolvedEditMenuArrowDirection;
-- (void)_applicationDidAddDeactivationReason:(id)a3;
+- (void)_applicationDidAddDeactivationReason:(id)reason;
 - (void)_prepareEditMenuInteractionIfNeeded;
 - (void)_presentEditMenu;
-- (void)_setTargetRect:(CGRect)a3 inView:(id)a4 animated:(BOOL)a5;
+- (void)_setTargetRect:(CGRect)rect inView:(id)view animated:(BOOL)animated;
 - (void)dealloc;
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)editMenuInteraction:(id)a3 willPresentMenuForConfiguration:(id)a4 animator:(id)a5;
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)editMenuInteraction:(id)interaction willPresentMenuForConfiguration:(id)configuration animator:(id)animator;
 - (void)hideMenuFromView:(UIView *)targetView;
 - (void)setMenuVisible:(BOOL)menuVisible animated:(BOOL)animated;
 - (void)showMenuFromView:(UIView *)targetView rect:(CGRect)targetRect;
@@ -43,8 +43,8 @@
 {
   if (__sharedMenuController)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIMenuController.m" lineNumber:94 description:@"There can only be one UIMenuController instance."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIMenuController.m" lineNumber:94 description:@"There can only be one UIMenuController instance."];
   }
 
   v8.receiver = self;
@@ -52,8 +52,8 @@
   v3 = [(UIMenuController *)&v8 init];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__applicationDidAddDeactivationReason_ name:@"_UIApplicationWillAddDeactivationReasonNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__applicationDidAddDeactivationReason_ name:@"_UIApplicationWillAddDeactivationReasonNotification" object:0];
   }
 
   return v3;
@@ -61,8 +61,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"_UIApplicationWillAddDeactivationReasonNotification" object:UIApp];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"_UIApplicationWillAddDeactivationReasonNotification" object:UIApp];
 
   v4.receiver = self;
   v4.super_class = UIMenuController;
@@ -138,9 +138,9 @@ uint64_t __44__UIMenuController_setMenuVisible_animated___block_invoke(uint64_t 
 {
   currentMenuInteraction = self->_currentMenuInteraction;
   v5 = targetView;
-  v6 = [(UIEditMenuInteraction *)currentMenuInteraction view];
+  view = [(UIEditMenuInteraction *)currentMenuInteraction view];
 
-  if (v6 == v5)
+  if (view == v5)
   {
 
     [(UIMenuController *)self hideMenu];
@@ -165,14 +165,14 @@ uint64_t __44__UIMenuController_setMenuVisible_animated___block_invoke(uint64_t 
 
 - (CGRect)menuFrame
 {
-  v3 = [(UIEditMenuInteraction *)self->_currentMenuInteraction view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 _coordinateSpace];
+  view = [(UIEditMenuInteraction *)self->_currentMenuInteraction view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _coordinateSpace = [windowScene _coordinateSpace];
 
-  if (v6)
+  if (_coordinateSpace)
   {
-    [(UIEditMenuInteraction *)self->_currentMenuInteraction menuFrameInCoordinateSpace:v6];
+    [(UIEditMenuInteraction *)self->_currentMenuInteraction menuFrameInCoordinateSpace:_coordinateSpace];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -218,19 +218,19 @@ uint64_t __44__UIMenuController_setMenuVisible_animated___block_invoke(uint64_t 
   return result;
 }
 
-- (void)_setTargetRect:(CGRect)a3 inView:(id)a4 animated:(BOOL)a5
+- (void)_setTargetRect:(CGRect)rect inView:(id)view animated:(BOOL)animated
 {
-  v5 = a5;
-  self->_targetRect = a3;
-  objc_storeWeak(&self->_targetView, a4);
-  v7 = [(UIEditMenuInteraction *)self->_currentMenuInteraction view];
+  animatedCopy = animated;
+  self->_targetRect = rect;
+  objc_storeWeak(&self->_targetView, view);
+  view = [(UIEditMenuInteraction *)self->_currentMenuInteraction view];
   WeakRetained = objc_loadWeakRetained(&self->_targetView);
 
-  if (v7 == WeakRetained)
+  if (view == WeakRetained)
   {
     currentMenuInteraction = self->_currentMenuInteraction;
 
-    [(UIEditMenuInteraction *)currentMenuInteraction updateVisibleMenuPositionAnimated:v5];
+    [(UIEditMenuInteraction *)currentMenuInteraction updateVisibleMenuPositionAnimated:animatedCopy];
   }
 
   else
@@ -246,16 +246,16 @@ uint64_t __44__UIMenuController_setMenuVisible_animated___block_invoke(uint64_t 
   if (WeakRetained)
   {
     v4 = WeakRetained;
-    v5 = [(UIEditMenuInteraction *)self->_currentMenuInteraction view];
+    view = [(UIEditMenuInteraction *)self->_currentMenuInteraction view];
     v6 = objc_loadWeakRetained(&self->_targetView);
 
-    if (v5 != v6)
+    if (view != v6)
     {
       currentMenuInteraction = self->_currentMenuInteraction;
       if (currentMenuInteraction)
       {
-        v8 = [(UIEditMenuInteraction *)currentMenuInteraction view];
-        [v8 removeInteraction:self->_currentMenuInteraction];
+        view2 = [(UIEditMenuInteraction *)currentMenuInteraction view];
+        [view2 removeInteraction:self->_currentMenuInteraction];
       }
 
       v9 = [[UIEditMenuInteraction alloc] initWithDelegate:self];
@@ -292,27 +292,27 @@ uint64_t __44__UIMenuController_setMenuVisible_animated___block_invoke(uint64_t 
 - (BOOL)_shouldPassthroughInView
 {
   v2 = objc_loadWeakRetained(&self->_targetView);
-  v3 = [v2 window];
-  v4 = [v3 _firstResponder];
+  window = [v2 window];
+  _firstResponder = [window _firstResponder];
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 textInputView];
+    textInputView = [_firstResponder textInputView];
   }
 
   else
   {
-    v5 = 0;
+    textInputView = 0;
   }
 
-  if (v5)
+  if (textInputView)
   {
-    v6 = v5;
+    v6 = textInputView;
   }
 
   else
   {
-    v6 = v4;
+    v6 = _firstResponder;
   }
 
   if (v2 == v6)
@@ -325,7 +325,7 @@ uint64_t __44__UIMenuController_setMenuVisible_animated___block_invoke(uint64_t 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v2 isDescendantOfView:v4] ^ 1;
+      v7 = [v2 isDescendantOfView:_firstResponder] ^ 1;
     }
 
     else
@@ -348,16 +348,16 @@ uint64_t __44__UIMenuController_setMenuVisible_animated___block_invoke(uint64_t 
   return result;
 }
 
-- (void)_applicationDidAddDeactivationReason:(id)a3
+- (void)_applicationDidAddDeactivationReason:(id)reason
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"_UIApplicationDeactivationReasonUserInfoKey"];
-  v6 = [v5 integerValue];
+  userInfo = [reason userInfo];
+  v5 = [userInfo objectForKey:@"_UIApplicationDeactivationReasonUserInfoKey"];
+  integerValue = [v5 integerValue];
 
-  [(UIMenuController *)self setMenuVisible:0 animated:v6 != 5];
+  [(UIMenuController *)self setMenuVisible:0 animated:integerValue != 5];
 }
 
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration
 {
   x = self->_targetRect.origin.x;
   y = self->_targetRect.origin.y;
@@ -370,19 +370,19 @@ uint64_t __44__UIMenuController_setMenuVisible_animated___block_invoke(uint64_t 
   return result;
 }
 
-- (void)editMenuInteraction:(id)a3 willPresentMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)editMenuInteraction:(id)interaction willPresentMenuForConfiguration:(id)configuration animator:(id)animator
 {
   v6 = MEMORY[0x1E696AD88];
-  v7 = a5;
-  v8 = [v6 defaultCenter];
-  [v8 postNotificationName:@"UIMenuControllerWillShowMenuNotification" object:self];
+  animatorCopy = animator;
+  defaultCenter = [v6 defaultCenter];
+  [defaultCenter postNotificationName:@"UIMenuControllerWillShowMenuNotification" object:self];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __81__UIMenuController_editMenuInteraction_willPresentMenuForConfiguration_animator___block_invoke;
   v9[3] = &unk_1E70F3590;
   v9[4] = self;
-  [v7 addCompletion:v9];
+  [animatorCopy addCompletion:v9];
 }
 
 void __81__UIMenuController_editMenuInteraction_willPresentMenuForConfiguration_animator___block_invoke(uint64_t a1)
@@ -391,22 +391,22 @@ void __81__UIMenuController_editMenuInteraction_willPresentMenuForConfiguration_
   [v2 postNotificationName:@"UIMenuControllerDidShowMenuNotification" object:*(a1 + 32)];
 }
 
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a3;
+  interactionCopy = interaction;
   v8 = MEMORY[0x1E696AD88];
-  v9 = a5;
-  v10 = [v8 defaultCenter];
-  [v10 postNotificationName:@"UIMenuControllerWillHideMenuNotification" object:self];
+  animatorCopy = animator;
+  defaultCenter = [v8 defaultCenter];
+  [defaultCenter postNotificationName:@"UIMenuControllerWillHideMenuNotification" object:self];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __81__UIMenuController_editMenuInteraction_willDismissMenuForConfiguration_animator___block_invoke;
   v12[3] = &unk_1E70F35B8;
-  v13 = v7;
-  v14 = self;
-  v11 = v7;
-  [v9 addCompletion:v12];
+  v13 = interactionCopy;
+  selfCopy = self;
+  v11 = interactionCopy;
+  [animatorCopy addCompletion:v12];
 }
 
 void __81__UIMenuController_editMenuInteraction_willDismissMenuForConfiguration_animator___block_invoke(uint64_t a1)
@@ -428,16 +428,16 @@ void __81__UIMenuController_editMenuInteraction_willDismissMenuForConfiguration_
   [v5 postNotificationName:@"UIMenuControllerDidHideMenuNotification" object:*(a1 + 40)];
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
-  v6 = a5;
+  actionsCopy = actions;
   v7 = +[UIKeyboardImpl activeInstance];
   WeakRetained = objc_loadWeakRetained(&self->_targetView);
   v9 = [v7 stopDictationMenuElementsForTextInputView:WeakRetained];
 
   if (v9)
   {
-    v10 = [v9 arrayByAddingObjectsFromArray:v6];
+    v10 = [v9 arrayByAddingObjectsFromArray:actionsCopy];
     v11 = [UIMenu menuWithChildren:v10];
   }
 
@@ -449,41 +449,41 @@ void __81__UIMenuController_editMenuInteraction_willDismissMenuForConfiguration_
   return v11;
 }
 
-- (id)_editMenuInteraction:(id)a3 firstResponderTargetForConfiguration:(id)a4
+- (id)_editMenuInteraction:(id)interaction firstResponderTargetForConfiguration:(id)configuration
 {
-  v5 = [UIWindow _externalKeyWindow:a3];
+  v5 = [UIWindow _externalKeyWindow:interaction];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    _keyWindow = v5;
   }
 
   else
   {
-    v8 = [(UIMenuController *)self _targetView];
-    v9 = [v8 window];
-    v10 = [v9 windowScene];
-    v7 = [(UIWindowScene *)v10 _keyWindow];
+    _targetView = [(UIMenuController *)self _targetView];
+    window = [_targetView window];
+    windowScene = [window windowScene];
+    _keyWindow = [(UIWindowScene *)windowScene _keyWindow];
   }
 
-  v11 = [v7 firstResponder];
-  v12 = [v11 _responderForEditing];
+  firstResponder = [_keyWindow firstResponder];
+  _responderForEditing = [firstResponder _responderForEditing];
 
   v13 = +[UIKeyboardImpl activeInstance];
-  v14 = [v13 inputDelegateManager];
-  v15 = [v14 forwardingInputDelegate];
+  inputDelegateManager = [v13 inputDelegateManager];
+  forwardingInputDelegate = [inputDelegateManager forwardingInputDelegate];
 
-  if (v15)
+  if (forwardingInputDelegate)
   {
     v16 = +[UIKeyboardImpl activeInstance];
-    v17 = [v16 inputDelegateManager];
-    v18 = [v17 forwardingInputDelegate];
-    v19 = [v18 _responderForEditing];
+    inputDelegateManager2 = [v16 inputDelegateManager];
+    forwardingInputDelegate2 = [inputDelegateManager2 forwardingInputDelegate];
+    _responderForEditing2 = [forwardingInputDelegate2 _responderForEditing];
 
-    v12 = v19;
+    _responderForEditing = _responderForEditing2;
   }
 
-  return v12;
+  return _responderForEditing;
 }
 
 @end

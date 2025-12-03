@@ -8,25 +8,25 @@
 - (id)_indexPathForLastRow;
 - (id)_newContainerView;
 - (id)_newStackView;
-- (id)initRequiringTableView:(BOOL)a3;
-- (int64_t)_safeIndexWithCount:(int64_t)a3;
-- (void)_adjustForPositionOfScrollView:(id)a3;
-- (void)_cancelButtonSelected:(id)a3;
-- (void)_setCompressedHeightForView:(id)a3;
+- (id)initRequiringTableView:(BOOL)view;
+- (int64_t)_safeIndexWithCount:(int64_t)count;
+- (void)_adjustForPositionOfScrollView:(id)view;
+- (void)_cancelButtonSelected:(id)selected;
+- (void)_setCompressedHeightForView:(id)view;
 - (void)_setUpContexts;
 - (void)_updateBlurForTray;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updatePreferredContentSizeAndLayoutIfNeeded:(BOOL)a3 allowShrinking:(BOOL)a4;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updatePreferredContentSizeAndLayoutIfNeeded:(BOOL)needed allowShrinking:(BOOL)shrinking;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ASCredentialRequestPaneViewController
 
-- (id)initRequiringTableView:(BOOL)a3
+- (id)initRequiringTableView:(BOOL)view
 {
   v10.receiver = self;
   v10.super_class = ASCredentialRequestPaneViewController;
@@ -34,11 +34,11 @@
   v5 = v4;
   if (v4)
   {
-    v4->_isTableViewRequired = a3;
+    v4->_isTableViewRequired = view;
     [(ASCredentialRequestPaneViewController *)v4 setModalInPresentation:1];
     v6 = objc_alloc_init(_ASNavigationTitleView);
-    v7 = [(ASCredentialRequestPaneViewController *)v5 navigationItem];
-    [v7 setTitleView:v6];
+    navigationItem = [(ASCredentialRequestPaneViewController *)v5 navigationItem];
+    [navigationItem setTitleView:v6];
 
     v8 = v5;
   }
@@ -52,16 +52,16 @@
   v145.receiver = self;
   v145.super_class = ASCredentialRequestPaneViewController;
   [(ASCredentialRequestPaneViewController *)&v145 viewDidLoad];
-  v3 = [(ASCredentialRequestPaneViewController *)self view];
-  v4 = [(ASCredentialRequestPaneViewController *)self _newStackView];
+  view = [(ASCredentialRequestPaneViewController *)self view];
+  _newStackView = [(ASCredentialRequestPaneViewController *)self _newStackView];
   paneHeaderStackView = self->_paneHeaderStackView;
-  self->_paneHeaderStackView = v4;
+  self->_paneHeaderStackView = _newStackView;
 
-  v144 = v3;
+  v144 = view;
   if (self->_isTableViewRequired)
   {
-    v6 = [(ASCredentialRequestPaneViewController *)self view];
-    [v6 bounds];
+    view2 = [(ASCredentialRequestPaneViewController *)self view];
+    [view2 bounds];
     Width = CGRectGetWidth(v153);
 
     v8 = [objc_alloc(MEMORY[0x1E69DD020]) initWithFrame:+[ASViewServiceInterfaceUtilities tableViewStyle](ASViewServiceInterfaceUtilities style:{"tableViewStyle"), 0.0, 0.0, Width, 0.0}];
@@ -69,8 +69,8 @@
     self->_tableView = v8;
 
     [(UITableView *)self->_tableView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [(UITableView *)self->_tableView setBackgroundColor:v10];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UITableView *)self->_tableView setBackgroundColor:clearColor];
 
     [(UITableView *)self->_tableView setAlwaysBounceVertical:0];
     [(UITableView *)self->_tableView setShowsVerticalScrollIndicator:0];
@@ -79,78 +79,78 @@
     [(UITableView *)self->_tableView setSeparatorInsetReference:1];
     [(UITableView *)self->_tableView setDelegate:self];
     [(UITableView *)self->_tableView _setSectionContentInset:0.0, 32.0, 0.0, 32.0];
-    v11 = [(ASCredentialRequestPaneViewController *)self _newContainerView];
-    [(UITableView *)self->_tableView setTableHeaderView:v11];
+    _newContainerView = [(ASCredentialRequestPaneViewController *)self _newContainerView];
+    [(UITableView *)self->_tableView setTableHeaderView:_newContainerView];
 
-    v12 = [(UITableView *)self->_tableView tableHeaderView];
-    [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+    tableHeaderView = [(UITableView *)self->_tableView tableHeaderView];
+    [tableHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v13 = [(UITableView *)self->_tableView tableHeaderView];
-    [v13 addSubview:self->_paneHeaderStackView];
+    tableHeaderView2 = [(UITableView *)self->_tableView tableHeaderView];
+    [tableHeaderView2 addSubview:self->_paneHeaderStackView];
 
-    [v3 addSubview:self->_tableView];
+    [view addSubview:self->_tableView];
     v14 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:0];
     blurryTray = self->_blurryTray;
     self->_blurryTray = v14;
 
     [(UIVisualEffectView *)self->_blurryTray setTranslatesAutoresizingMaskIntoConstraints:0];
-    v16 = [(ASCredentialRequestPaneViewController *)self _newStackView];
+    _newStackView2 = [(ASCredentialRequestPaneViewController *)self _newStackView];
     paneFooterStackView = self->_paneFooterStackView;
-    self->_paneFooterStackView = v16;
+    self->_paneFooterStackView = _newStackView2;
 
-    v18 = [(UIVisualEffectView *)self->_blurryTray contentView];
-    [v18 addSubview:self->_paneFooterStackView];
+    contentView = [(UIVisualEffectView *)self->_blurryTray contentView];
+    [contentView addSubview:self->_paneFooterStackView];
 
     [(ASCredentialRequestPaneViewController *)self _footerStackViewSpacing];
     [(UIStackView *)self->_paneFooterStackView setSpacing:?];
-    [v3 addSubview:self->_blurryTray];
+    [view addSubview:self->_blurryTray];
     [(ASCredentialRequestPaneViewController *)self _setUpContexts];
     v108 = MEMORY[0x1E696ACD8];
-    v133 = [(UIStackView *)self->_paneHeaderStackView topAnchor];
-    v141 = [(UITableView *)self->_tableView tableHeaderView];
-    v128 = [v141 topAnchor];
-    v123 = [v133 constraintEqualToAnchor:v128];
+    topAnchor = [(UIStackView *)self->_paneHeaderStackView topAnchor];
+    tableHeaderView3 = [(UITableView *)self->_tableView tableHeaderView];
+    topAnchor2 = [tableHeaderView3 topAnchor];
+    v123 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v151[0] = v123;
-    v113 = [(UIStackView *)self->_paneHeaderStackView bottomAnchor];
-    v118 = [(UITableView *)self->_tableView tableHeaderView];
-    v110 = [v118 bottomAnchor];
-    v106 = [v113 constraintEqualToAnchor:v110];
+    bottomAnchor = [(UIStackView *)self->_paneHeaderStackView bottomAnchor];
+    tableHeaderView4 = [(UITableView *)self->_tableView tableHeaderView];
+    bottomAnchor2 = [tableHeaderView4 bottomAnchor];
+    v106 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v151[1] = v106;
-    v104 = [(UIStackView *)self->_paneHeaderStackView leadingAnchor];
-    v19 = [(UITableView *)self->_tableView tableHeaderView];
-    v20 = [v19 leadingAnchor];
-    v21 = [v104 constraintEqualToAnchor:v20];
+    leadingAnchor = [(UIStackView *)self->_paneHeaderStackView leadingAnchor];
+    tableHeaderView5 = [(UITableView *)self->_tableView tableHeaderView];
+    leadingAnchor2 = [tableHeaderView5 leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v151[2] = v21;
-    v22 = [(UIStackView *)self->_paneHeaderStackView trailingAnchor];
-    v23 = [(UITableView *)self->_tableView tableHeaderView];
-    v24 = [v23 trailingAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24];
+    trailingAnchor = [(UIStackView *)self->_paneHeaderStackView trailingAnchor];
+    tableHeaderView6 = [(UITableView *)self->_tableView tableHeaderView];
+    trailingAnchor2 = [tableHeaderView6 trailingAnchor];
+    v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v151[3] = v25;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v151 count:4];
     [v108 activateConstraints:v26];
 
     v114 = MEMORY[0x1E696ACD8];
-    v142 = [(UITableView *)self->_tableView centerXAnchor];
-    v134 = [v144 centerXAnchor];
-    v129 = [v142 constraintEqualToAnchor:v134];
+    centerXAnchor = [(UITableView *)self->_tableView centerXAnchor];
+    centerXAnchor2 = [v144 centerXAnchor];
+    v129 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v150[0] = v129;
-    v124 = [(UITableView *)self->_tableView widthAnchor];
-    v119 = [v144 widthAnchor];
-    v27 = [v124 constraintEqualToAnchor:v119];
+    widthAnchor = [(UITableView *)self->_tableView widthAnchor];
+    widthAnchor2 = [v144 widthAnchor];
+    v27 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v150[1] = v27;
-    v28 = [(UITableView *)self->_tableView topAnchor];
-    v29 = [v144 topAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    topAnchor3 = [(UITableView *)self->_tableView topAnchor];
+    topAnchor4 = [v144 topAnchor];
+    v30 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v150[2] = v30;
-    v31 = [(UITableView *)self->_tableView bottomAnchor];
-    v32 = [(UIVisualEffectView *)self->_blurryTray topAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32];
+    bottomAnchor3 = [(UITableView *)self->_tableView bottomAnchor];
+    topAnchor5 = [(UIVisualEffectView *)self->_blurryTray topAnchor];
+    v33 = [bottomAnchor3 constraintEqualToAnchor:topAnchor5];
     v150[3] = v33;
     v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v150 count:4];
     [v114 activateConstraints:v34];
 
-    v35 = [(UIVisualEffectView *)self->_blurryTray heightAnchor];
-    v36 = [v35 constraintEqualToConstant:0.0];
+    heightAnchor = [(UIVisualEffectView *)self->_blurryTray heightAnchor];
+    v36 = [heightAnchor constraintEqualToConstant:0.0];
 
     [v36 priority];
     *&v38 = v37 + -1.0;
@@ -158,65 +158,65 @@
     v115 = MEMORY[0x1E696ACD8];
     v143 = v36;
     v149[0] = v36;
-    v135 = [(UIVisualEffectView *)self->_blurryTray heightAnchor];
+    heightAnchor2 = [(UIVisualEffectView *)self->_blurryTray heightAnchor];
     [(ASCredentialRequestPaneViewController *)self _blurryTrayMinimumHeight];
-    v130 = [v135 constraintGreaterThanOrEqualToConstant:?];
+    v130 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:?];
     v149[1] = v130;
-    v125 = [(UIVisualEffectView *)self->_blurryTray widthAnchor];
-    v120 = [v144 widthAnchor];
-    v39 = [v125 constraintEqualToAnchor:v120];
+    widthAnchor3 = [(UIVisualEffectView *)self->_blurryTray widthAnchor];
+    widthAnchor4 = [v144 widthAnchor];
+    v39 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
     v149[2] = v39;
-    v40 = [(UIVisualEffectView *)self->_blurryTray bottomAnchor];
-    v41 = [v144 bottomAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41];
+    bottomAnchor4 = [(UIVisualEffectView *)self->_blurryTray bottomAnchor];
+    bottomAnchor5 = [v144 bottomAnchor];
+    v42 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     v149[3] = v42;
-    v43 = [(UIVisualEffectView *)self->_blurryTray centerXAnchor];
-    v44 = [v144 centerXAnchor];
-    v45 = [v43 constraintEqualToAnchor:v44];
+    centerXAnchor3 = [(UIVisualEffectView *)self->_blurryTray centerXAnchor];
+    centerXAnchor4 = [v144 centerXAnchor];
+    v45 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v149[4] = v45;
     v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:v149 count:5];
     [v115 activateConstraints:v46];
 
-    v47 = [(UIStackView *)self->_paneFooterStackView leadingAnchor];
-    v48 = [(UIVisualEffectView *)self->_blurryTray contentView];
-    v49 = [v48 leadingAnchor];
-    v50 = [v47 constraintEqualToAnchor:v49 constant:32.0];
+    leadingAnchor3 = [(UIStackView *)self->_paneFooterStackView leadingAnchor];
+    contentView2 = [(UIVisualEffectView *)self->_blurryTray contentView];
+    leadingAnchor4 = [contentView2 leadingAnchor];
+    v50 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:32.0];
     v148[0] = v50;
-    v51 = [(UIVisualEffectView *)self->_blurryTray contentView];
-    v52 = [v51 trailingAnchor];
-    v53 = [(UIStackView *)self->_paneFooterStackView trailingAnchor];
-    v54 = [v52 constraintEqualToAnchor:v53 constant:32.0];
+    contentView3 = [(UIVisualEffectView *)self->_blurryTray contentView];
+    trailingAnchor3 = [contentView3 trailingAnchor];
+    trailingAnchor4 = [(UIStackView *)self->_paneFooterStackView trailingAnchor];
+    v54 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:32.0];
     v148[1] = v54;
     v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v148 count:2];
     v136 = [v55 mutableCopy];
 
-    v126 = [(UIVisualEffectView *)self->_blurryTray bottomAnchor];
-    v131 = [(ASCredentialRequestPaneViewController *)self view];
-    v121 = [v131 bottomAnchor];
-    v116 = [v126 constraintEqualToAnchor:v121];
+    bottomAnchor6 = [(UIVisualEffectView *)self->_blurryTray bottomAnchor];
+    view3 = [(ASCredentialRequestPaneViewController *)self view];
+    bottomAnchor7 = [view3 bottomAnchor];
+    v116 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
     v147[0] = v116;
-    v111 = [(UIStackView *)self->_paneFooterStackView topAnchor];
-    v56 = [(UIVisualEffectView *)self->_blurryTray contentView];
-    v57 = [v56 topAnchor];
-    v58 = [v111 constraintGreaterThanOrEqualToAnchor:v57 constant:24.0];
+    topAnchor6 = [(UIStackView *)self->_paneFooterStackView topAnchor];
+    contentView4 = [(UIVisualEffectView *)self->_blurryTray contentView];
+    topAnchor7 = [contentView4 topAnchor];
+    v58 = [topAnchor6 constraintGreaterThanOrEqualToAnchor:topAnchor7 constant:24.0];
     v147[1] = v58;
-    v59 = [(UIStackView *)self->_paneFooterStackView bottomAnchor];
-    v60 = [(UIVisualEffectView *)self->_blurryTray contentView];
-    v61 = [v60 bottomAnchor];
-    v62 = [v59 constraintLessThanOrEqualToAnchor:v61 constant:-38.0];
+    bottomAnchor8 = [(UIStackView *)self->_paneFooterStackView bottomAnchor];
+    contentView5 = [(UIVisualEffectView *)self->_blurryTray contentView];
+    bottomAnchor9 = [contentView5 bottomAnchor];
+    v62 = [bottomAnchor8 constraintLessThanOrEqualToAnchor:bottomAnchor9 constant:-38.0];
     v147[2] = v62;
     v63 = [MEMORY[0x1E695DEC8] arrayWithObjects:v147 count:3];
     v64 = v136;
     [v136 addObjectsFromArray:v63];
 
     [MEMORY[0x1E696ACD8] activateConstraints:v136];
-    v65 = [(UIStackView *)self->_paneHeaderStackView widthAnchor];
-    v66 = [v65 constraintEqualToConstant:0.0];
+    widthAnchor5 = [(UIStackView *)self->_paneHeaderStackView widthAnchor];
+    v66 = [widthAnchor5 constraintEqualToConstant:0.0];
     headerWidthConstraint = self->_headerWidthConstraint;
     self->_headerWidthConstraint = v66;
 
-    v68 = [(UIStackView *)self->_paneFooterStackView widthAnchor];
-    v69 = [v68 constraintEqualToConstant:0.0];
+    widthAnchor6 = [(UIStackView *)self->_paneFooterStackView widthAnchor];
+    v69 = [widthAnchor6 constraintEqualToConstant:0.0];
     footerWidthConstraint = self->_footerWidthConstraint;
     self->_footerWidthConstraint = v69;
 
@@ -238,58 +238,58 @@
     [v74 setContentInset:{0.0, 0.0, 0.0, 0.0}];
     [v74 setContentInsetAdjustmentBehavior:2];
     [v74 addSubview:self->_paneHeaderStackView];
-    [v3 addSubview:v74];
-    v75 = [v74 contentLayoutGuide];
-    v76 = [v74 frameLayoutGuide];
-    v77 = [(UIStackView *)self->_paneHeaderStackView heightAnchor];
-    v100 = v76;
-    v78 = [v76 heightAnchor];
-    v79 = [v77 constraintEqualToAnchor:v78];
+    [view addSubview:v74];
+    contentLayoutGuide = [v74 contentLayoutGuide];
+    frameLayoutGuide = [v74 frameLayoutGuide];
+    heightAnchor3 = [(UIStackView *)self->_paneHeaderStackView heightAnchor];
+    v100 = frameLayoutGuide;
+    heightAnchor4 = [frameLayoutGuide heightAnchor];
+    v79 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
 
     LODWORD(v80) = 1144750080;
     v81 = v79;
     v101 = v79;
     [v79 setPriority:v80];
     v103 = MEMORY[0x1E696ACD8];
-    v139 = [v74 topAnchor];
-    v140 = [v3 layoutMarginsGuide];
-    v138 = [v140 topAnchor];
-    v137 = [v139 constraintEqualToSystemSpacingBelowAnchor:v138 multiplier:1.0];
+    topAnchor8 = [v74 topAnchor];
+    layoutMarginsGuide = [view layoutMarginsGuide];
+    topAnchor9 = [layoutMarginsGuide topAnchor];
+    v137 = [topAnchor8 constraintEqualToSystemSpacingBelowAnchor:topAnchor9 multiplier:1.0];
     v152[0] = v137;
-    v132 = [v74 leadingAnchor];
-    v127 = [v3 leadingAnchor];
-    v122 = [v132 constraintEqualToAnchor:v127];
+    leadingAnchor5 = [v74 leadingAnchor];
+    leadingAnchor6 = [view leadingAnchor];
+    v122 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v152[1] = v122;
-    v117 = [v74 trailingAnchor];
-    v112 = [v3 trailingAnchor];
-    v109 = [v117 constraintEqualToAnchor:v112];
+    trailingAnchor5 = [v74 trailingAnchor];
+    trailingAnchor6 = [view trailingAnchor];
+    v109 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v152[2] = v109;
     v143 = v74;
-    v107 = [v74 bottomAnchor];
-    v105 = [v3 bottomAnchor];
-    v102 = [v107 constraintEqualToAnchor:v105];
+    bottomAnchor10 = [v74 bottomAnchor];
+    bottomAnchor11 = [view bottomAnchor];
+    v102 = [bottomAnchor10 constraintEqualToAnchor:bottomAnchor11];
     v152[3] = v102;
-    v99 = [(UIStackView *)self->_paneHeaderStackView leadingAnchor];
-    v82 = v75;
-    v98 = [v75 leadingAnchor];
-    v97 = [v99 constraintEqualToAnchor:v98];
+    leadingAnchor7 = [(UIStackView *)self->_paneHeaderStackView leadingAnchor];
+    v82 = contentLayoutGuide;
+    leadingAnchor8 = [contentLayoutGuide leadingAnchor];
+    v97 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     v152[4] = v97;
-    v96 = [(UIStackView *)self->_paneHeaderStackView trailingAnchor];
-    v95 = [v75 trailingAnchor];
-    v94 = [v96 constraintEqualToAnchor:v95];
+    trailingAnchor7 = [(UIStackView *)self->_paneHeaderStackView trailingAnchor];
+    trailingAnchor8 = [contentLayoutGuide trailingAnchor];
+    v94 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     v152[5] = v94;
-    v93 = [(UIStackView *)self->_paneHeaderStackView topAnchor];
-    v92 = [v75 topAnchor];
-    v83 = [v93 constraintEqualToAnchor:v92];
+    topAnchor10 = [(UIStackView *)self->_paneHeaderStackView topAnchor];
+    topAnchor11 = [contentLayoutGuide topAnchor];
+    v83 = [topAnchor10 constraintEqualToAnchor:topAnchor11];
     v152[6] = v83;
-    v84 = [(UIStackView *)self->_paneHeaderStackView bottomAnchor];
-    v85 = [v82 bottomAnchor];
-    v86 = [v84 constraintEqualToAnchor:v85];
+    bottomAnchor12 = [(UIStackView *)self->_paneHeaderStackView bottomAnchor];
+    bottomAnchor13 = [v82 bottomAnchor];
+    v86 = [bottomAnchor12 constraintEqualToAnchor:bottomAnchor13];
     v152[7] = v86;
     v152[8] = v81;
-    v87 = [(UIStackView *)self->_paneHeaderStackView widthAnchor];
-    v88 = [v76 widthAnchor];
-    v89 = [v87 constraintEqualToAnchor:v88 constant:-0.0];
+    widthAnchor7 = [(UIStackView *)self->_paneHeaderStackView widthAnchor];
+    widthAnchor8 = [frameLayoutGuide widthAnchor];
+    v89 = [widthAnchor7 constraintEqualToAnchor:widthAnchor8 constant:-0.0];
     v152[9] = v89;
     v90 = [MEMORY[0x1E695DEC8] arrayWithObjects:v152 count:10];
     [v103 activateConstraints:v90];
@@ -316,8 +316,8 @@
   v6.receiver = self;
   v6.super_class = ASCredentialRequestPaneViewController;
   [(ASCredentialRequestPaneViewController *)&v6 viewWillLayoutSubviews];
-  v3 = [(ASCredentialRequestPaneViewController *)self view];
-  [v3 frame];
+  view = [(ASCredentialRequestPaneViewController *)self view];
+  [view frame];
   v5 = v4;
 
   [(NSLayoutConstraint *)self->_headerWidthConstraint setConstant:v5];
@@ -329,18 +329,18 @@
   v7.receiver = self;
   v7.super_class = ASCredentialRequestPaneViewController;
   [(ASCredentialRequestPaneViewController *)&v7 viewDidLayoutSubviews];
-  v3 = [(UITableView *)self->_tableView tableHeaderView];
-  paneHeaderStackView = v3;
-  if (!v3)
+  tableHeaderView = [(UITableView *)self->_tableView tableHeaderView];
+  paneHeaderStackView = tableHeaderView;
+  if (!tableHeaderView)
   {
     paneHeaderStackView = self->_paneHeaderStackView;
   }
 
   v5 = paneHeaderStackView;
 
-  v6 = [(UITableView *)self->_tableView tableHeaderView];
+  tableHeaderView2 = [(UITableView *)self->_tableView tableHeaderView];
 
-  if (v6)
+  if (tableHeaderView2)
   {
     [(ASCredentialRequestPaneViewController *)self _setCompressedHeightForView:v5];
   }
@@ -354,27 +354,27 @@
   [(ASCredentialRequestPaneViewController *)self _updateBlurForTray];
 }
 
-- (void)_setCompressedHeightForView:(id)a3
+- (void)_setCompressedHeightForView:(id)view
 {
-  v6 = a3;
-  [v6 systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
+  viewCopy = view;
+  [viewCopy systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
   v4 = v3;
-  [v6 frame];
+  [viewCopy frame];
   if (v5 != v4)
   {
-    [v6 setFrame:?];
+    [viewCopy setFrame:?];
   }
 }
 
-- (void)updatePreferredContentSizeAndLayoutIfNeeded:(BOOL)a3 allowShrinking:(BOOL)a4
+- (void)updatePreferredContentSizeAndLayoutIfNeeded:(BOOL)needed allowShrinking:(BOOL)shrinking
 {
-  v5 = a3;
+  neededCopy = needed;
   [(ASCredentialRequestPaneViewController *)self _intrinsicContentHeight];
   v8 = v7;
   [(ASCredentialRequestPaneViewController *)self _maximumContentHeight];
   v10 = v9;
   v11 = v8;
-  if (!a4)
+  if (!shrinking)
   {
     [(ASCredentialRequestPaneViewController *)self preferredContentSize];
     if (v8 >= v12)
@@ -399,53 +399,53 @@
   }
 
   [(UITableView *)self->_tableView setScrollEnabled:v10 < v8];
-  v13 = [(ASCredentialRequestPaneViewController *)self view];
-  [v13 bounds];
+  view = [(ASCredentialRequestPaneViewController *)self view];
+  [view bounds];
   v15 = v14;
 
   [(ASCredentialRequestPaneViewController *)self preferredContentSize];
   if (v17 != v15 || v16 != v10)
   {
     [(ASCredentialRequestPaneViewController *)self setPreferredContentSize:v15, v10];
-    if (v5)
+    if (neededCopy)
     {
-      v18 = [(ASCredentialRequestPaneViewController *)self view];
-      [v18 layoutIfNeeded];
+      view2 = [(ASCredentialRequestPaneViewController *)self view];
+      [view2 layoutIfNeeded];
     }
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = ASCredentialRequestPaneViewController;
-  v4 = a3;
-  [(ASCredentialRequestPaneViewController *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(ASCredentialRequestPaneViewController *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(ASCredentialRequestPaneViewController *)self traitCollection:v8.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  LOBYTE(v4) = [v6 isEqualToString:v7];
-  if ((v4 & 1) == 0)
+  LOBYTE(changeCopy) = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
+  if ((changeCopy & 1) == 0)
   {
     [(ASCredentialRequestPaneViewController *)self sizeToFitPaneContent];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = ASCredentialRequestPaneViewController;
-  v7 = a4;
-  [(ASCredentialRequestPaneViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(ASCredentialRequestPaneViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __92__ASCredentialRequestPaneViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E7AF8C58;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 - (double)_blurryTrayMinimumHeight
@@ -466,7 +466,7 @@
   return v2;
 }
 
-- (void)_cancelButtonSelected:(id)a3
+- (void)_cancelButtonSelected:(id)selected
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E698DF70] code:2 userInfo:0];
@@ -486,8 +486,8 @@
 - (id)_newContainerView
 {
   v2 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [v2 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v2 setBackgroundColor:clearColor];
 
   return v2;
 }
@@ -495,26 +495,26 @@
 - (void)_setUpContexts
 {
   v3 = [ASCredentialRequestPaneContext alloc];
-  v4 = [(ASCredentialRequestPaneViewController *)self paneHeaderStackView];
-  v5 = [(ASCredentialRequestPaneContext *)v3 initWithPaneViewController:self stackView:v4];
+  paneHeaderStackView = [(ASCredentialRequestPaneViewController *)self paneHeaderStackView];
+  v5 = [(ASCredentialRequestPaneContext *)v3 initWithPaneViewController:self stackView:paneHeaderStackView];
   headerPaneContext = self->_headerPaneContext;
   self->_headerPaneContext = v5;
 
   if (self->_isTableViewRequired)
   {
     v7 = [ASCredentialRequestPaneContext alloc];
-    v10 = [(ASCredentialRequestPaneViewController *)self paneFooterStackView];
-    v8 = [(ASCredentialRequestPaneContext *)v7 initWithPaneViewController:self stackView:v10];
+    paneFooterStackView = [(ASCredentialRequestPaneViewController *)self paneFooterStackView];
+    v8 = [(ASCredentialRequestPaneContext *)v7 initWithPaneViewController:self stackView:paneFooterStackView];
     footerPaneContext = self->_footerPaneContext;
     self->_footerPaneContext = v8;
   }
 }
 
-- (void)_adjustForPositionOfScrollView:(id)a3
+- (void)_adjustForPositionOfScrollView:(id)view
 {
-  v4 = [(ASCredentialRequestPaneViewController *)self navigationController];
-  v5 = [v4 navigationBar];
-  [v5 setBackgroundEffects:0];
+  navigationController = [(ASCredentialRequestPaneViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setBackgroundEffects:0];
 
   [(ASCredentialRequestPaneViewController *)self _updateBlurForTray];
 }
@@ -556,22 +556,22 @@ void __59__ASCredentialRequestPaneViewController__updateBlurForTray__block_invok
     return 0;
   }
 
-  v3 = [(ASCredentialRequestPaneViewController *)self _indexPathForLastRow];
-  if ([v3 row] == 0x7FFFFFFFFFFFFFFFLL)
+  _indexPathForLastRow = [(ASCredentialRequestPaneViewController *)self _indexPathForLastRow];
+  if ([_indexPathForLastRow row] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;
   }
 
   else
   {
-    [(UITableView *)self->_tableView rectForRowAtIndexPath:v3];
+    [(UITableView *)self->_tableView rectForRowAtIndexPath:_indexPathForLastRow];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
     tableView = self->_tableView;
-    v14 = [(ASCredentialRequestPaneViewController *)self view];
-    [(UITableView *)tableView convertRect:v14 toView:v6, v8, v10, v12];
+    view = [(ASCredentialRequestPaneViewController *)self view];
+    [(UITableView *)tableView convertRect:view toView:v6, v8, v10, v12];
     v16 = v15;
     v18 = v17;
     v20 = v19;
@@ -612,28 +612,28 @@ void __59__ASCredentialRequestPaneViewController__updateBlurForTray__block_invok
   return v8;
 }
 
-- (int64_t)_safeIndexWithCount:(int64_t)a3
+- (int64_t)_safeIndexWithCount:(int64_t)count
 {
-  if (a3 <= 0)
+  if (count <= 0)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    return a3 - 1;
+    return count - 1;
   }
 }
 
 - (double)_maximumContentHeight
 {
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
 
-  v6 = [(ASCredentialRequestPaneViewController *)self navigationController];
-  v7 = [v6 navigationBar];
-  [v7 bounds];
+  navigationController = [(ASCredentialRequestPaneViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar bounds];
   v9 = v5 * 0.86 - v8;
 
   return v9;
@@ -641,33 +641,33 @@ void __59__ASCredentialRequestPaneViewController__updateBlurForTray__block_invok
 
 - (double)_intrinsicContentHeight
 {
-  v3 = [(ASCredentialRequestPaneViewController *)self tableView];
-  v4 = [(ASCredentialRequestPaneViewController *)self paneHeaderStackView];
-  [v4 bounds];
+  tableView = [(ASCredentialRequestPaneViewController *)self tableView];
+  paneHeaderStackView = [(ASCredentialRequestPaneViewController *)self paneHeaderStackView];
+  [paneHeaderStackView bounds];
   v6 = v5;
   LODWORD(v5) = 1148846080;
   LODWORD(v7) = 1112014848;
   v8 = 0.0;
-  [v4 systemLayoutSizeFittingSize:v6 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v5, v7}];
+  [paneHeaderStackView systemLayoutSizeFittingSize:v6 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v5, v7}];
   v10 = v9;
   [(UIVisualEffectView *)self->_blurryTray frame];
   Height = CGRectGetHeight(v17);
-  if ([v3 numberOfSections] >= 1)
+  if ([tableView numberOfSections] >= 1)
   {
     v12 = 0;
     do
     {
-      if (![v3 numberOfRowsInSection:v12])
+      if (![tableView numberOfRowsInSection:v12])
       {
         break;
       }
 
-      [v3 rectForSection:v12];
+      [tableView rectForSection:v12];
       v8 = v8 + CGRectGetHeight(v18);
       ++v12;
     }
 
-    while (v12 < [v3 numberOfSections]);
+    while (v12 < [tableView numberOfSections]);
   }
 
   v13 = 12.0;

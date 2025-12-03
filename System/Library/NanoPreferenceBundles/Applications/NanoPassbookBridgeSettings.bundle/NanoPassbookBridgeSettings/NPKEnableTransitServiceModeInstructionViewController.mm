@@ -26,11 +26,11 @@
 
 - (void)handleEnableServiceModeUnlockRequired
 {
-  v6 = [(NPKEnableTransitServiceModeInstructionViewController *)self _unlockRequiredTitle];
-  v3 = [(NPKEnableTransitServiceModeInstructionViewController *)self _unlockRequiredMessage];
+  _unlockRequiredTitle = [(NPKEnableTransitServiceModeInstructionViewController *)self _unlockRequiredTitle];
+  _unlockRequiredMessage = [(NPKEnableTransitServiceModeInstructionViewController *)self _unlockRequiredMessage];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"EXPRESS_TRANSIT_ERROR_ACKNOWLEDGE_BUTTON_TITLE" value:&stru_2D300 table:@"NanoPassbookBridgeSettings-Companion_ICE"];
-  [(NPKBridgeInstructionViewController *)self handleErrorWithTitle:v6 message:v3 acknowledgeButtonTitle:v5];
+  [(NPKBridgeInstructionViewController *)self handleErrorWithTitle:_unlockRequiredTitle message:_unlockRequiredMessage acknowledgeButtonTitle:v5];
 }
 
 - (id)_unlockRequiredTitle

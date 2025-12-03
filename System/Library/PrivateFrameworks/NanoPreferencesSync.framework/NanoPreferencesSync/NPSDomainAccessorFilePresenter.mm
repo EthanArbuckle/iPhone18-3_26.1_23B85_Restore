@@ -1,10 +1,10 @@
 @interface NPSDomainAccessorFilePresenter
 - (BOOL)isCurrent;
-- (NPSDomainAccessorFilePresenter)initWithDelegate:(id)a3 domainURL:(id)a4;
+- (NPSDomainAccessorFilePresenter)initWithDelegate:(id)delegate domainURL:(id)l;
 - (NPSDomainAccessorFilePresenterDelegate)delegate;
-- (id)synchronizeForReadingOnly:(BOOL)a3 handler:(id)a4;
+- (id)synchronizeForReadingOnly:(BOOL)only handler:(id)handler;
 - (void)dealloc;
-- (void)relinquishPresentedItemToWriter:(id)a3;
+- (void)relinquishPresentedItemToWriter:(id)writer;
 @end
 
 @implementation NPSDomainAccessorFilePresenter
@@ -34,12 +34,12 @@
   return presenterOperationQueue;
 }
 
-- (NPSDomainAccessorFilePresenter)initWithDelegate:(id)a3 domainURL:(id)a4
+- (NPSDomainAccessorFilePresenter)initWithDelegate:(id)delegate domainURL:(id)l
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  delegateCopy = delegate;
+  lCopy = l;
+  if (!delegateCopy)
   {
     v18 = MEMORY[0x1E695DF30];
     v19 = *MEMORY[0x1E695D940];
@@ -50,7 +50,7 @@
     objc_exception_throw(v21);
   }
 
-  v8 = v7;
+  v8 = lCopy;
   v23.receiver = self;
   v23.super_class = NPSDomainAccessorFilePresenter;
   v9 = [(NPSDomainAccessorFilePresenter *)&v23 init];
@@ -62,14 +62,14 @@
       *buf = 134218498;
       v25 = v9;
       v26 = 2048;
-      v27 = v6;
+      v27 = delegateCopy;
       v28 = 2112;
       v29 = v8;
       _os_log_impl(&dword_1C0D93000, v10, OS_LOG_TYPE_DEFAULT, "self: (%p); delegate: (%p); domainURL: (%@)", buf, 0x20u);
     }
 
-    objc_storeWeak(&v9->_delegate, v6);
-    objc_storeStrong(&v9->_domainURL, a4);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_domainURL, l);
     v9->_current = 0;
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.nanoprefsync.frmrk.filePresenter", v11);
@@ -95,7 +95,7 @@
   if (os_log_type_enabled(nps_domain_accessor_log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C0D93000, v3, OS_LOG_TYPE_DEFAULT, "self: (%p)", buf, 0xCu);
   }
 
@@ -105,20 +105,20 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)synchronizeForReadingOnly:(BOOL)a3 handler:(id)a4
+- (id)synchronizeForReadingOnly:(BOOL)only handler:(id)handler
 {
-  v4 = a3;
+  onlyCopy = only;
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (!v6)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [NPSDomainAccessorFilePresenter synchronizeForReadingOnly:handler:];
   }
 
-  v7 = v6;
+  v7 = handlerCopy;
   v8 = [objc_alloc(MEMORY[0x1E696ABF8]) initWithFilePresenter:self];
   domainURL = self->_domainURL;
-  if (v4)
+  if (onlyCopy)
   {
     v23 = 0;
     v21[0] = MEMORY[0x1E69E9820];
@@ -185,15 +185,15 @@ uint64_t __68__NPSDomainAccessorFilePresenter_synchronizeForReadingOnly_handler_
   return result;
 }
 
-- (void)relinquishPresentedItemToWriter:(id)a3
+- (void)relinquishPresentedItemToWriter:(id)writer
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  writerCopy = writer;
   v5 = nps_domain_accessor_log;
   if (os_log_type_enabled(nps_domain_accessor_log, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C0D93000, v5, OS_LOG_TYPE_DEFAULT, "self: (%p)", &v8, 0xCu);
   }
 
@@ -201,9 +201,9 @@ uint64_t __68__NPSDomainAccessorFilePresenter_synchronizeForReadingOnly_handler_
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained filePresenterDidBecomeNonCurrent:self];
 
-  if (v4)
+  if (writerCopy)
   {
-    v4[2](v4, 0);
+    writerCopy[2](writerCopy, 0);
   }
 
   v7 = *MEMORY[0x1E69E9840];

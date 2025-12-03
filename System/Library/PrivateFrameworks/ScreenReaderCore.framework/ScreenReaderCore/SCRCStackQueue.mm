@@ -7,8 +7,8 @@
 - (id)popObjectRetained;
 - (void)_safeReleaseAllObjects;
 - (void)dealloc;
-- (void)pushArray:(id)a3;
-- (void)pushObject:(id)a3;
+- (void)pushArray:(id)array;
+- (void)pushObject:(id)object;
 @end
 
 @implementation SCRCStackQueue
@@ -34,27 +34,27 @@
   {
     do
     {
-      v6 = [(_SCRCStackNode *)v3 next];
+      next = [(_SCRCStackNode *)v3 next];
 
-      v3 = v6;
+      v3 = next;
     }
 
-    while (v6);
+    while (next);
   }
 }
 
-- (void)pushArray:(id)a3
+- (void)pushArray:(id)array
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  arrayCopy = array;
+  v5 = arrayCopy;
+  if (arrayCopy)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v6 = [arrayCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -81,13 +81,13 @@
   }
 }
 
-- (void)pushObject:(id)a3
+- (void)pushObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    v4 = a3;
+    objectCopy = object;
     v5 = objc_alloc_init(_SCRCStackNode);
-    [(_SCRCStackNode *)v5 setObject:v4];
+    [(_SCRCStackNode *)v5 setObject:objectCopy];
 
     if (self->_firstNode)
     {
@@ -109,9 +109,9 @@
 
 - (id)popObject
 {
-  v2 = [(SCRCStackQueue *)self popObjectRetained];
+  popObjectRetained = [(SCRCStackQueue *)self popObjectRetained];
 
-  return v2;
+  return popObjectRetained;
 }
 
 - (id)popObjectRetained
@@ -123,7 +123,7 @@
   }
 
   v4 = v3;
-  v5 = [(_SCRCStackNode *)v3 object];
+  object = [(_SCRCStackNode *)v3 object];
   lastNode = self->_lastNode;
   --self->_count;
   if (lastNode == self->_firstNode)
@@ -136,14 +136,14 @@
 
   else
   {
-    v7 = [(_SCRCStackNode *)lastNode prev];
+    prev = [(_SCRCStackNode *)lastNode prev];
     v8 = self->_lastNode;
-    self->_lastNode = v7;
+    self->_lastNode = prev;
 
     [(_SCRCStackNode *)self->_lastNode setNext:0];
   }
 
-  return v5;
+  return object;
 }
 
 - (id)dequeueObjectRetained
@@ -155,7 +155,7 @@
   }
 
   v4 = v3;
-  v5 = [(_SCRCStackNode *)v3 object];
+  object = [(_SCRCStackNode *)v3 object];
   firstNode = self->_firstNode;
   if (firstNode == self->_lastNode)
   {
@@ -167,23 +167,23 @@
 
   else
   {
-    v7 = [(_SCRCStackNode *)v4 next];
+    next = [(_SCRCStackNode *)v4 next];
     v8 = self->_firstNode;
-    self->_firstNode = v7;
+    self->_firstNode = next;
 
     [(_SCRCStackNode *)self->_firstNode setPrev:0];
   }
 
   --self->_count;
 
-  return v5;
+  return object;
 }
 
 - (id)dequeueObject
 {
-  v2 = [(SCRCStackQueue *)self dequeueObjectRetained];
+  dequeueObjectRetained = [(SCRCStackQueue *)self dequeueObjectRetained];
 
-  return v2;
+  return dequeueObjectRetained;
 }
 
 - (id)description
@@ -196,16 +196,16 @@
     do
     {
       v6 = objc_alloc(MEMORY[0x277CCACA8]);
-      v7 = [v5 object];
-      v8 = [v6 initWithFormat:@"\t%@\n", v7];
+      object = [v5 object];
+      v8 = [v6 initWithFormat:@"\t%@\n", object];
 
       [v3 appendString:v8];
-      v9 = [v5 next];
+      next = [v5 next];
 
-      v5 = v9;
+      v5 = next;
     }
 
-    while (v9);
+    while (next);
   }
 
   return v3;

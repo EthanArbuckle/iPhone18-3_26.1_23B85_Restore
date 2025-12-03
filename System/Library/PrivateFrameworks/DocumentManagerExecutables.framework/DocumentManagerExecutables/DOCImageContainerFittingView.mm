@@ -1,13 +1,13 @@
 @interface DOCImageContainerFittingView
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
 - (double)contentOffsetFromTop;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (void)fittingImageViewDidLayout:(id)a3;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (void)fittingImageViewDidLayout:(id)layout;
 - (void)layoutSubviews;
-- (void)setContentOffsetFromTop:(double)a3;
-- (void)thumbnailLoaded:(id)a3;
+- (void)setContentOffsetFromTop:(double)top;
+- (void)thumbnailLoaded:(id)loaded;
 @end
 
 @implementation DOCImageContainerFittingView
@@ -19,18 +19,18 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setContentOffsetFromTop:(double)a3
+- (void)setContentOffsetFromTop:(double)top
 {
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables28DOCImageContainerFittingView_contentOffsetFromTop;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = top;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   v6 = DOCImageContainerFittingView.systemLayoutSizeFitting(_:)(__PAIR128__(*&height, *&width));
 
   v7 = v6.width;
@@ -43,9 +43,9 @@
 - (CGSize)intrinsicContentSize
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.super.isa) + 0x120);
-  v3 = self;
+  selfCopy = self;
   v2();
-  [(DOCImageContainerFittingView *)v3 systemLayoutSizeFittingSize:?];
+  [(DOCImageContainerFittingView *)selfCopy systemLayoutSizeFittingSize:?];
   v5 = v4;
   v7 = v6;
 
@@ -61,35 +61,35 @@
   v4.receiver = self;
   v4.super_class = type metadata accessor for DOCImageContainerFittingView();
   v2 = v4.receiver;
-  v3 = [(DOCImageContainerFittingView *)&v4 layoutSubviews];
-  (*((*MEMORY[0x277D85000] & *v2) + 0x158))(v3);
+  layoutSubviews = [(DOCImageContainerFittingView *)&v4 layoutSubviews];
+  (*((*MEMORY[0x277D85000] & *v2) + 0x158))(layoutSubviews);
   [v2 setContentOffsetFromTop_];
 }
 
-- (void)thumbnailLoaded:(id)a3
+- (void)thumbnailLoaded:(id)loaded
 {
   v5 = swift_allocObject();
   *(v5 + 16) = self;
-  *(v5 + 24) = a3;
+  *(v5 + 24) = loaded;
   swift_unknownObjectRetain_n();
-  v6 = self;
+  selfCopy = self;
   DOCRunInMainThread(_:)();
 
   swift_unknownObjectRelease();
 }
 
-- (void)fittingImageViewDidLayout:(id)a3
+- (void)fittingImageViewDidLayout:(id)layout
 {
-  v3 = self;
+  selfCopy = self;
   DOCImageContainerFittingView.updateLayers()();
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v6 = a3;
+  interactionCopy = interaction;
   swift_unknownObjectRetain();
-  v7 = self;
-  specialized DOCImageContainerFittingView.dragInteraction(_:itemsForBeginning:)(v6, a4);
+  selfCopy = self;
+  specialized DOCImageContainerFittingView.dragInteraction(_:itemsForBeginning:)(interactionCopy, session);
 
   swift_unknownObjectRelease();
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for UIDragItem);
@@ -98,13 +98,13 @@
   return v8.super.isa;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v7 = a3;
-  v8 = a4;
+  interactionCopy = interaction;
+  itemCopy = item;
   swift_unknownObjectRetain();
-  v9 = self;
-  v10 = specialized DOCImageContainerFittingView.dragInteraction(_:previewForLifting:session:)(v7);
+  selfCopy = self;
+  v10 = specialized DOCImageContainerFittingView.dragInteraction(_:previewForLifting:session:)(interactionCopy);
 
   swift_unknownObjectRelease();
 

@@ -1,28 +1,28 @@
 @interface HDSPSyncedDefaultsConfiguration
-- (BOOL)shouldPersistKey:(id)a3;
-- (BOOL)shouldSyncKey:(id)a3;
-- (HDSPSyncedDefaultsConfiguration)initWithInfo:(id)a3 keySets:(id)a4;
+- (BOOL)shouldPersistKey:(id)key;
+- (BOOL)shouldSyncKey:(id)key;
+- (HDSPSyncedDefaultsConfiguration)initWithInfo:(id)info keySets:(id)sets;
 - (NSDictionary)allDefaultValues;
-- (id)_accumulateKeysWithBlock:(id)a3 includeVersionInfo:(BOOL)a4 isForSync:(BOOL)a5;
-- (id)_createKeySetMapForKeySets:(id)a3;
-- (id)_keySetForKey:(id)a3;
-- (id)filteredKeySetsWithKeysToSync:(id)a3;
+- (id)_accumulateKeysWithBlock:(id)block includeVersionInfo:(BOOL)info isForSync:(BOOL)sync;
+- (id)_createKeySetMapForKeySets:(id)sets;
+- (id)_keySetForKey:(id)key;
+- (id)filteredKeySetsWithKeysToSync:(id)sync;
 @end
 
 @implementation HDSPSyncedDefaultsConfiguration
 
-- (HDSPSyncedDefaultsConfiguration)initWithInfo:(id)a3 keySets:(id)a4
+- (HDSPSyncedDefaultsConfiguration)initWithInfo:(id)info keySets:(id)sets
 {
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  setsCopy = sets;
   v15.receiver = self;
   v15.super_class = HDSPSyncedDefaultsConfiguration;
   v9 = [(HDSPSyncedDefaultsConfiguration *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_info, a3);
-    v11 = [(HDSPSyncedDefaultsConfiguration *)v10 _createKeySetMapForKeySets:v8];
+    objc_storeStrong(&v9->_info, info);
+    v11 = [(HDSPSyncedDefaultsConfiguration *)v10 _createKeySetMapForKeySets:setsCopy];
     keySetMap = v10->_keySetMap;
     v10->_keySetMap = v11;
 
@@ -32,10 +32,10 @@
   return v10;
 }
 
-- (id)_createKeySetMapForKeySets:(id)a3
+- (id)_createKeySetMapForKeySets:(id)sets
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  setsCopy = sets;
   v5 = objc_alloc_init(v3);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -43,7 +43,7 @@
   v9[3] = &unk_279C7C450;
   v10 = v5;
   v6 = v5;
-  [v4 na_each:v9];
+  [setsCopy na_each:v9];
 
   v7 = [v6 copy];
 
@@ -58,34 +58,34 @@ void __62__HDSPSyncedDefaultsConfiguration__createKeySetMapForKeySets___block_in
   [v2 setObject:v3 forKeyedSubscript:v4];
 }
 
-- (id)_accumulateKeysWithBlock:(id)a3 includeVersionInfo:(BOOL)a4 isForSync:(BOOL)a5
+- (id)_accumulateKeysWithBlock:(id)block includeVersionInfo:(BOOL)info isForSync:(BOOL)sync
 {
-  v6 = a4;
-  v8 = a3;
+  infoCopy = info;
+  blockCopy = block;
   v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v10 = [(HDSPSyncedDefaultsConfiguration *)self keySets];
+  keySets = [(HDSPSyncedDefaultsConfiguration *)self keySets];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __89__HDSPSyncedDefaultsConfiguration__accumulateKeysWithBlock_includeVersionInfo_isForSync___block_invoke;
   v21 = &unk_279C7C630;
   v11 = v9;
   v22 = v11;
-  v12 = v8;
+  v12 = blockCopy;
   v23 = v12;
-  [v10 na_each:&v18];
+  [keySets na_each:&v18];
 
-  if (v6)
+  if (infoCopy)
   {
     v13 = [(HDSPSyncedDefaultsInfo *)self->_info dataVersionKey:v18];
     [v11 addObject:v13];
 
-    v14 = [(HDSPSyncedDefaultsInfo *)self->_info cloudDataVersionKey];
-    [v11 addObject:v14];
+    cloudDataVersionKey = [(HDSPSyncedDefaultsInfo *)self->_info cloudDataVersionKey];
+    [v11 addObject:cloudDataVersionKey];
 
-    if (!a5)
+    if (!sync)
     {
-      v15 = [(HDSPSyncedDefaultsInfo *)self->_info localDataVersionKey];
-      [v11 addObject:v15];
+      localDataVersionKey = [(HDSPSyncedDefaultsInfo *)self->_info localDataVersionKey];
+      [v11 addObject:localDataVersionKey];
     }
   }
 
@@ -104,14 +104,14 @@ void __89__HDSPSyncedDefaultsConfiguration__accumulateKeysWithBlock_includeVersi
 - (NSDictionary)allDefaultValues
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(HDSPSyncedDefaultsConfiguration *)self keySets];
+  keySets = [(HDSPSyncedDefaultsConfiguration *)self keySets];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__HDSPSyncedDefaultsConfiguration_allDefaultValues__block_invoke;
   v8[3] = &unk_279C7C450;
   v9 = v3;
   v5 = v3;
-  [v4 na_each:v8];
+  [keySets na_each:v8];
 
   v6 = [v5 copy];
 
@@ -125,35 +125,35 @@ void __51__HDSPSyncedDefaultsConfiguration_allDefaultValues__block_invoke(uint64
   [v2 addEntriesFromDictionary:v3];
 }
 
-- (BOOL)shouldPersistKey:(id)a3
+- (BOOL)shouldPersistKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HDSPSyncedDefaultsConfiguration *)self allKeysToPersist];
-  v6 = [v5 containsObject:v4];
+  keyCopy = key;
+  allKeysToPersist = [(HDSPSyncedDefaultsConfiguration *)self allKeysToPersist];
+  v6 = [allKeysToPersist containsObject:keyCopy];
 
   return v6;
 }
 
-- (BOOL)shouldSyncKey:(id)a3
+- (BOOL)shouldSyncKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HDSPSyncedDefaultsConfiguration *)self allKeysToSync];
-  v6 = [v5 containsObject:v4];
+  keyCopy = key;
+  allKeysToSync = [(HDSPSyncedDefaultsConfiguration *)self allKeysToSync];
+  v6 = [allKeysToSync containsObject:keyCopy];
 
   return v6;
 }
 
-- (id)_keySetForKey:(id)a3
+- (id)_keySetForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HDSPSyncedDefaultsConfiguration *)self keySets];
+  keyCopy = key;
+  keySets = [(HDSPSyncedDefaultsConfiguration *)self keySets];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__HDSPSyncedDefaultsConfiguration__keySetForKey___block_invoke;
   v9[3] = &unk_279C7C678;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v10 = keyCopy;
+  v6 = keyCopy;
+  v7 = [keySets na_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -166,15 +166,15 @@ uint64_t __49__HDSPSyncedDefaultsConfiguration__keySetForKey___block_invoke(uint
   return v4;
 }
 
-- (id)filteredKeySetsWithKeysToSync:(id)a3
+- (id)filteredKeySetsWithKeysToSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   keySetMap = self->_keySetMap;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__HDSPSyncedDefaultsConfiguration_filteredKeySetsWithKeysToSync___block_invoke;
   v13[3] = &unk_279C7C6A0;
-  v6 = v4;
+  v6 = syncCopy;
   v14 = v6;
   v7 = [(NSDictionary *)keySetMap na_filter:v13];
   v11[0] = MEMORY[0x277D85DD0];

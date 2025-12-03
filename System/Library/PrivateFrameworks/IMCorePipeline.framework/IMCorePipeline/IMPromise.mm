@@ -1,24 +1,24 @@
 @interface IMPromise
-+ (id)all:(id)a3;
-- (IMPromise)initWithError:(id)a3;
-- (IMPromise)initWithValue:(id)a3;
-- (id)then:(id)a3;
-- (void)failWithError:(id)a3;
-- (void)fullfillWithValue:(id)a3;
-- (void)registerCompletionBlock:(id)a3;
++ (id)all:(id)all;
+- (IMPromise)initWithError:(id)error;
+- (IMPromise)initWithValue:(id)value;
+- (id)then:(id)then;
+- (void)failWithError:(id)error;
+- (void)fullfillWithValue:(id)value;
+- (void)registerCompletionBlock:(id)block;
 @end
 
 @implementation IMPromise
 
-- (IMPromise)initWithValue:(id)a3
+- (IMPromise)initWithValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = IMPromise;
   v5 = [(IMPromise *)&v9 init];
   if (v5)
   {
-    v6 = [[IMResult alloc] initWithSuccess:v4];
+    v6 = [[IMResult alloc] initWithSuccess:valueCopy];
     v7 = v5->_result;
     v5->_result = v6;
   }
@@ -26,15 +26,15 @@
   return v5;
 }
 
-- (IMPromise)initWithError:(id)a3
+- (IMPromise)initWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v9.receiver = self;
   v9.super_class = IMPromise;
   v5 = [(IMPromise *)&v9 init];
   if (v5)
   {
-    v6 = [[IMResult alloc] initWithError:v4];
+    v6 = [[IMResult alloc] initWithError:errorCopy];
     v7 = v5->_result;
     v5->_result = v6;
   }
@@ -42,11 +42,11 @@
   return v5;
 }
 
-- (void)fullfillWithValue:(id)a3
+- (void)fullfillWithValue:(id)value
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [[IMResult alloc] initWithSuccess:v4];
+  valueCopy = value;
+  v5 = [[IMResult alloc] initWithSuccess:valueCopy];
   result = self->_result;
   self->_result = v5;
 
@@ -88,11 +88,11 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [[IMResult alloc] initWithError:v4];
+  errorCopy = error;
+  v5 = [[IMResult alloc] initWithError:errorCopy];
   result = self->_result;
   self->_result = v5;
 
@@ -134,12 +134,12 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerCompletionBlock:(id)a3
+- (void)registerCompletionBlock:(id)block
 {
-  v10 = a3;
+  blockCopy = block;
   if ([(IMPromise *)self completed])
   {
-    v10[2](v10, self->_result);
+    blockCopy[2](blockCopy, self->_result);
   }
 
   else
@@ -147,14 +147,14 @@
     completionBlocks = self->_completionBlocks;
     if (completionBlocks)
     {
-      v5 = MEMORY[0x259C198A0](v10);
+      v5 = MEMORY[0x259C198A0](blockCopy);
       [(NSMutableArray *)completionBlocks addObject:v5];
     }
 
     else
     {
       v6 = objc_alloc(MEMORY[0x277CBEB18]);
-      v7 = MEMORY[0x259C198A0](v10);
+      v7 = MEMORY[0x259C198A0](blockCopy);
       v8 = [v6 initWithObjects:{v7, 0}];
       v9 = self->_completionBlocks;
       self->_completionBlocks = v8;
@@ -162,23 +162,23 @@
   }
 }
 
-+ (id)all:(id)a3
++ (id)all:(id)all
 {
-  v3 = a3;
+  allCopy = all;
   v4 = objc_alloc_init(IMPromise);
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  if ([v3 count])
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(allCopy, "count")}];
+  if ([allCopy count])
   {
     v6 = 0;
     do
     {
-      v7 = [MEMORY[0x277CBEB68] null];
-      [v5 addObject:v7];
+      null = [MEMORY[0x277CBEB68] null];
+      [v5 addObject:null];
 
       ++v6;
     }
 
-    while ([v3 count] > v6);
+    while ([allCopy count] > v6);
   }
 
   v20 = 0;
@@ -189,15 +189,15 @@
   v18[1] = v18;
   v18[2] = 0x2020000000;
   v19 = 0;
-  if (![v3 count])
+  if (![allCopy count])
   {
     [(IMPromise *)v4 fullfillWithValue:v5];
     *(v21 + 24) = 1;
   }
 
-  for (i = 0; [v3 count] > i; ++i)
+  for (i = 0; [allCopy count] > i; ++i)
   {
-    v9 = [v3 objectAtIndexedSubscript:i];
+    v9 = [allCopy objectAtIndexedSubscript:i];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = sub_2547E0198;
@@ -217,9 +217,9 @@
   return v4;
 }
 
-- (id)then:(id)a3
+- (id)then:(id)then
 {
-  v4 = a3;
+  thenCopy = then;
   v5 = objc_alloc_init(IMPromise);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -227,8 +227,8 @@
   v11[3] = &unk_279788548;
   v6 = v5;
   v12 = v6;
-  v13 = v4;
-  v7 = v4;
+  v13 = thenCopy;
+  v7 = thenCopy;
   [(IMPromise *)self registerCompletionBlock:v11];
   v8 = v13;
   v9 = v6;

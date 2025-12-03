@@ -1,17 +1,17 @@
 @interface CKEntryRichTextViewEffectsPickerAssistant
 - (BOOL)shouldSkipNextAdjustingOfTypingAttributes;
 - (CKEntryRichTextViewEffectsPickerAssistant)init;
-- (CKEntryRichTextViewEffectsPickerAssistant)initWithTextView:(id)a3;
-- (void)adjustTypingAttributesIfNeededForReplacement:(id)a3 inRange:(_NSRange)a4;
+- (CKEntryRichTextViewEffectsPickerAssistant)initWithTextView:(id)view;
+- (void)adjustTypingAttributesIfNeededForReplacement:(id)replacement inRange:(_NSRange)range;
 - (void)removeTypingAttributesAdjustments;
 - (void)selectSentenceAtCaretIfPossible;
 - (void)selectWordAtCaretIfPossible;
-- (void)setShouldSkipNextAdjustingOfTypingAttributes:(BOOL)a3;
+- (void)setShouldSkipNextAdjustingOfTypingAttributes:(BOOL)attributes;
 @end
 
 @implementation CKEntryRichTextViewEffectsPickerAssistant
 
-- (CKEntryRichTextViewEffectsPickerAssistant)initWithTextView:(id)a3
+- (CKEntryRichTextViewEffectsPickerAssistant)initWithTextView:(id)view
 {
   swift_unknownObjectWeakInit();
   *(&self->super.isa + OBJC_IVAR___CKEntryRichTextViewEffectsPickerAssistant_shouldSkipNextAdjustingOfTypingAttributes) = 0;
@@ -28,38 +28,38 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setShouldSkipNextAdjustingOfTypingAttributes:(BOOL)a3
+- (void)setShouldSkipNextAdjustingOfTypingAttributes:(BOOL)attributes
 {
   v5 = OBJC_IVAR___CKEntryRichTextViewEffectsPickerAssistant_shouldSkipNextAdjustingOfTypingAttributes;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = attributes;
 }
 
 - (void)selectSentenceAtCaretIfPossible
 {
-  v2 = self;
+  selfCopy = self;
   sub_190975404();
 }
 
 - (void)selectWordAtCaretIfPossible
 {
-  v2 = self;
+  selfCopy = self;
   sub_190975ACC();
 }
 
-- (void)adjustTypingAttributesIfNeededForReplacement:(id)a3 inRange:(_NSRange)a4
+- (void)adjustTypingAttributesIfNeededForReplacement:(id)replacement inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v7 = sub_190D56F10();
   v9 = v8;
-  v10 = self;
+  selfCopy = self;
   sub_190975C60(v7, v9, location, length, 1);
 }
 
 - (void)removeTypingAttributesAdjustments
 {
-  v2 = self;
+  selfCopy = self;
   sub_190976A74();
 }
 

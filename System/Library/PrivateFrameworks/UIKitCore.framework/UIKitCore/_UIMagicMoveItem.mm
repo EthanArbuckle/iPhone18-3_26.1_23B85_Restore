@@ -1,6 +1,6 @@
 @interface _UIMagicMoveItem
 - (NSArray)portals;
-- (void)setPortals:(id)a3;
+- (void)setPortals:(id)portals;
 @end
 
 @implementation _UIMagicMoveItem
@@ -15,7 +15,7 @@
   return v2;
 }
 
-- (void)setPortals:(id)a3
+- (void)setPortals:(id)portals
 {
   sub_188A34624(0, &qword_1EA934138);
   v4 = sub_18A4A7548();

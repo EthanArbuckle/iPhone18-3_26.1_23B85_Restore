@@ -1,7 +1,7 @@
 @interface TempOptInReprompt
 - (NSArray)keyCommands;
-- (_TtC17SequoiaTranslator17TempOptInReprompt)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC17SequoiaTranslator17TempOptInReprompt)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC17SequoiaTranslator17TempOptInReprompt)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC17SequoiaTranslator17TempOptInReprompt)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)continueButtonPressed;
 @end
 
@@ -26,20 +26,20 @@
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v3 = self;
+    selfCopy = self;
     sub_10019E03C();
     swift_unknownObjectRelease();
   }
 }
 
-- (_TtC17SequoiaTranslator17TempOptInReprompt)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC17SequoiaTranslator17TempOptInReprompt)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC17SequoiaTranslator17TempOptInReprompt)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC17SequoiaTranslator17TempOptInReprompt)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

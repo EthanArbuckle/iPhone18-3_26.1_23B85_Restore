@@ -1,13 +1,13 @@
 @interface RangeBiasEstimatorModelDataTransformer
-- (RangeBiasEstimatorModelDataTransformer)initWithContentsOfURL:(id)a3;
-- (id)applyTransformation:(id)a3;
+- (RangeBiasEstimatorModelDataTransformer)initWithContentsOfURL:(id)l;
+- (id)applyTransformation:(id)transformation;
 @end
 
 @implementation RangeBiasEstimatorModelDataTransformer
 
-- (RangeBiasEstimatorModelDataTransformer)initWithContentsOfURL:(id)a3
+- (RangeBiasEstimatorModelDataTransformer)initWithContentsOfURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
@@ -21,7 +21,7 @@
   if (v6)
   {
     v12 = 0;
-    v7 = [MLModel modelWithContentsOfURL:v4 error:&v12];
+    v7 = [MLModel modelWithContentsOfURL:lCopy error:&v12];
     v8 = v12;
     dataTransformerModel = v6->_dataTransformerModel;
     v6->_dataTransformerModel = v7;
@@ -60,9 +60,9 @@ LABEL_12:
   return v10;
 }
 
-- (id)applyTransformation:(id)a3
+- (id)applyTransformation:(id)transformation
 {
-  v4 = a3;
+  transformationCopy = transformation;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
@@ -72,7 +72,7 @@ LABEL_12:
 
   dataTransformerModel = self->_dataTransformerModel;
   v15 = 0;
-  v7 = [(MLModel *)dataTransformerModel predictionFromFeatures:v4 error:&v15];
+  v7 = [(MLModel *)dataTransformerModel predictionFromFeatures:transformationCopy error:&v15];
   v8 = v15;
   v9 = v8;
   if (!v7 || v8)
@@ -89,8 +89,8 @@ LABEL_12:
   {
     v10 = [v7 featureValueForName:@"transformed_features"];
     v11 = [RangeBiasEstimatorInput alloc];
-    v12 = [v10 multiArrayValue];
-    v13 = [(RangeBiasEstimatorInput *)v11 initWithData:v12];
+    multiArrayValue = [v10 multiArrayValue];
+    v13 = [(RangeBiasEstimatorInput *)v11 initWithData:multiArrayValue];
   }
 
   return v13;

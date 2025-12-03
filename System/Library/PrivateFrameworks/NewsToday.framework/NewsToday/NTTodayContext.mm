@@ -1,13 +1,13 @@
 @interface NTTodayContext
 - (NTTodayContext)init;
-- (NTTodayContext)initWithContentContext:(id)a3 feedPersonalizerFactory:(id)a4 groupingService:(id)a5 todayBannerValidator:(id)a6 articleExposureRegistry:(id)a7 processVariant:(unint64_t)a8 accessQueue:(id)a9 fetchQueue:(id)a10;
-- (id)placeholderResultsWithOperationInfo:(id)a3;
+- (NTTodayContext)initWithContentContext:(id)context feedPersonalizerFactory:(id)factory groupingService:(id)service todayBannerValidator:(id)validator articleExposureRegistry:(id)registry processVariant:(unint64_t)variant accessQueue:(id)queue fetchQueue:(id)self0;
+- (id)placeholderResultsWithOperationInfo:(id)info;
 - (void)_setupTodayResultsSource;
-- (void)fetchLatestResultsWithOperationInfo:(id)a3 completion:(id)a4;
-- (void)fetchModuleDescriptorsWithCompletion:(id)a3;
-- (void)networkReachabilityDidChange:(id)a3;
-- (void)writeUserDidReadHeadlineWithAnalyticsElement:(id)a3 atDate:(id)a4;
-- (void)writeUserDidSeeHeadlinesWithAnalyticsElements:(id)a3 atDate:(id)a4;
+- (void)fetchLatestResultsWithOperationInfo:(id)info completion:(id)completion;
+- (void)fetchModuleDescriptorsWithCompletion:(id)completion;
+- (void)networkReachabilityDidChange:(id)change;
+- (void)writeUserDidReadHeadlineWithAnalyticsElement:(id)element atDate:(id)date;
+- (void)writeUserDidSeeHeadlinesWithAnalyticsElements:(id)elements atDate:(id)date;
 @end
 
 @implementation NTTodayContext
@@ -38,28 +38,28 @@
   objc_exception_throw(v6);
 }
 
-- (NTTodayContext)initWithContentContext:(id)a3 feedPersonalizerFactory:(id)a4 groupingService:(id)a5 todayBannerValidator:(id)a6 articleExposureRegistry:(id)a7 processVariant:(unint64_t)a8 accessQueue:(id)a9 fetchQueue:(id)a10
+- (NTTodayContext)initWithContentContext:(id)context feedPersonalizerFactory:(id)factory groupingService:(id)service todayBannerValidator:(id)validator articleExposureRegistry:(id)registry processVariant:(unint64_t)variant accessQueue:(id)queue fetchQueue:(id)self0
 {
   v54[1] = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v45 = a5;
-  obj = a6;
-  v18 = a6;
-  v43 = a7;
-  v19 = a7;
-  v20 = a9;
-  v46 = a10;
-  if (!v16 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  contextCopy = context;
+  factoryCopy = factory;
+  serviceCopy = service;
+  obj = validator;
+  validatorCopy = validator;
+  registryCopy = registry;
+  registryCopy2 = registry;
+  queueCopy = queue;
+  fetchQueueCopy = fetchQueue;
+  if (!contextCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayContext initWithContentContext:feedPersonalizerFactory:groupingService:todayBannerValidator:articleExposureRegistry:processVariant:accessQueue:fetchQueue:];
-    if (v17)
+    if (factoryCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v17)
+  else if (factoryCopy)
   {
     goto LABEL_6;
   }
@@ -70,12 +70,12 @@
   }
 
 LABEL_6:
-  if (!v20 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!queueCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayContext initWithContentContext:feedPersonalizerFactory:groupingService:todayBannerValidator:articleExposureRegistry:processVariant:accessQueue:fetchQueue:];
   }
 
-  if (!v46 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!fetchQueueCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayContext initWithContentContext:feedPersonalizerFactory:groupingService:todayBannerValidator:articleExposureRegistry:processVariant:accessQueue:fetchQueue:];
   }
@@ -86,24 +86,24 @@ LABEL_6:
   if (v21)
   {
     NewsCoreUserDefaults();
-    v44 = v20;
-    v22 = v19;
-    v24 = v23 = v16;
+    v44 = queueCopy;
+    v22 = registryCopy2;
+    v24 = v23 = contextCopy;
     v53 = *MEMORY[0x277D30D18];
     v54[0] = MEMORY[0x277CBEC38];
     [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:&v53 count:1];
-    v41 = v18;
-    v26 = v25 = v17;
+    v41 = validatorCopy;
+    v26 = v25 = factoryCopy;
     [v24 registerDefaults:v26];
 
-    v17 = v25;
-    v16 = v23;
-    v19 = v22;
-    objc_storeStrong(&v21->_contentContext, a3);
-    objc_storeStrong(&v21->_feedPersonalizerFactory, a4);
-    objc_storeStrong(&v21->_groupingService, a5);
+    factoryCopy = v25;
+    contextCopy = v23;
+    registryCopy2 = v22;
+    objc_storeStrong(&v21->_contentContext, context);
+    objc_storeStrong(&v21->_feedPersonalizerFactory, factory);
+    objc_storeStrong(&v21->_groupingService, service);
     objc_storeStrong(&v21->_todayBannerValidator, obj);
-    objc_storeStrong(&v21->_articleExposureRegistry, v43);
+    objc_storeStrong(&v21->_articleExposureRegistry, registryCopy);
     v27 = objc_alloc(MEMORY[0x277D31070]);
     v28 = FCURLForTodayPrivateDataTransactionQueue();
     v29 = [v27 initWithFileURL:v28];
@@ -120,8 +120,8 @@ LABEL_6:
     readablePrivateDataStorage = v21->_readablePrivateDataStorage;
     v21->_readablePrivateDataStorage = v35;
 
-    objc_storeStrong(&v21->_accessQueue, a9);
-    objc_storeStrong(&v21->_fetchQueue, a10);
+    objc_storeStrong(&v21->_accessQueue, queue);
+    objc_storeStrong(&v21->_fetchQueue, fetchQueue);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __164__NTTodayContext_initWithContentContext_feedPersonalizerFactory_groupingService_todayBannerValidator_articleExposureRegistry_processVariant_accessQueue_fetchQueue___block_invoke;
@@ -129,14 +129,14 @@ LABEL_6:
     v50 = v44;
     v37 = v21;
     v51 = v37;
-    v18 = v41;
+    validatorCopy = v41;
     dispatch_sync(v50, block);
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
     v47[2] = __164__NTTodayContext_initWithContentContext_feedPersonalizerFactory_groupingService_todayBannerValidator_articleExposureRegistry_processVariant_accessQueue_fetchQueue___block_invoke_4;
     v47[3] = &unk_279982740;
     v38 = v37;
-    v20 = v44;
+    queueCopy = v44;
     v48 = v38;
     dispatch_async(MEMORY[0x277D85CD0], v47);
   }
@@ -192,17 +192,17 @@ void __164__NTTodayContext_initWithContentContext_feedPersonalizerFactory_groupi
   [v2 addObserver:*(a1 + 32)];
 }
 
-- (void)networkReachabilityDidChange:(id)a3
+- (void)networkReachabilityDidChange:(id)change
 {
-  if ([a3 isNetworkReachable])
+  if ([change isNetworkReachable])
   {
-    v4 = [(NTTodayContext *)self accessQueue];
+    accessQueue = [(NTTodayContext *)self accessQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __47__NTTodayContext_networkReachabilityDidChange___block_invoke;
     block[3] = &unk_279982740;
     block[4] = self;
-    dispatch_async(v4, block);
+    dispatch_async(accessQueue, block);
   }
 }
 
@@ -217,23 +217,23 @@ void __47__NTTodayContext_networkReachabilityDidChange___block_invoke(uint64_t a
   }
 }
 
-- (void)fetchModuleDescriptorsWithCompletion:(id)a3
+- (void)fetchModuleDescriptorsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  completionCopy = completion;
+  if (!completionCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayContext fetchModuleDescriptorsWithCompletion:];
   }
 
-  v5 = [(NTTodayContext *)self accessQueue];
+  accessQueue = [(NTTodayContext *)self accessQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__NTTodayContext_fetchModuleDescriptorsWithCompletion___block_invoke;
   v7[3] = &unk_279983698;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(accessQueue, v7);
 }
 
 void __55__NTTodayContext_fetchModuleDescriptorsWithCompletion___block_invoke(uint64_t a1)
@@ -260,20 +260,20 @@ void __55__NTTodayContext_fetchModuleDescriptorsWithCompletion___block_invoke_2(
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchLatestResultsWithOperationInfo:(id)a3 completion:(id)a4
+- (void)fetchLatestResultsWithOperationInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  infoCopy = info;
+  completionCopy = completion;
+  if (!infoCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayContext fetchLatestResultsWithOperationInfo:completion:];
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     goto LABEL_6;
   }
@@ -284,17 +284,17 @@ void __55__NTTodayContext_fetchModuleDescriptorsWithCompletion___block_invoke_2(
   }
 
 LABEL_6:
-  v8 = [(NTTodayContext *)self accessQueue];
+  accessQueue = [(NTTodayContext *)self accessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__NTTodayContext_fetchLatestResultsWithOperationInfo_completion___block_invoke;
   block[3] = &unk_2799836E8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = infoCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = infoCopy;
+  dispatch_async(accessQueue, block);
 }
 
 void __65__NTTodayContext_fetchLatestResultsWithOperationInfo_completion___block_invoke(uint64_t a1)
@@ -324,34 +324,34 @@ void __65__NTTodayContext_fetchLatestResultsWithOperationInfo_completion___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)placeholderResultsWithOperationInfo:(id)a3
+- (id)placeholderResultsWithOperationInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(NTTodayContext *)self sourceAvailabilityManager];
-  [v5 preferredSourceFetchDescriptorClass];
+  infoCopy = info;
+  sourceAvailabilityManager = [(NTTodayContext *)self sourceAvailabilityManager];
+  [sourceAvailabilityManager preferredSourceFetchDescriptorClass];
   v6 = objc_opt_new();
 
-  v7 = [(NTTodayContext *)self contentContext];
-  v8 = [NTTodayResultsSource placeholderResultsWithFetchDescriptor:v6 contentContext:v7 operationInfo:v4];
+  contentContext = [(NTTodayContext *)self contentContext];
+  v8 = [NTTodayResultsSource placeholderResultsWithFetchDescriptor:v6 contentContext:contentContext operationInfo:infoCopy];
 
   return v8;
 }
 
-- (void)writeUserDidSeeHeadlinesWithAnalyticsElements:(id)a3 atDate:(id)a4
+- (void)writeUserDidSeeHeadlinesWithAnalyticsElements:(id)elements atDate:(id)date
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  elementsCopy = elements;
+  dateCopy = date;
+  if (!elementsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayContext writeUserDidSeeHeadlinesWithAnalyticsElements:atDate:];
-    if (v7)
+    if (dateCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (dateCopy)
   {
     goto LABEL_6;
   }
@@ -366,9 +366,9 @@ LABEL_6:
   v14[1] = 3221225472;
   v14[2] = __71__NTTodayContext_writeUserDidSeeHeadlinesWithAnalyticsElements_atDate___block_invoke;
   v14[3] = &unk_279983710;
-  v8 = v7;
+  v8 = dateCopy;
   v15 = v8;
-  v9 = [v6 fc_arrayByTransformingWithBlock:v14];
+  v9 = [elementsCopy fc_arrayByTransformingWithBlock:v14];
   if ([v9 count])
   {
     v10 = [v9 fc_arrayByTransformingWithBlock:&__block_literal_global_40];
@@ -383,8 +383,8 @@ LABEL_6:
     }
   }
 
-  v12 = [(NTTodayContext *)self writablePrivateDataStorage];
-  [v12 writeSeenHistoryItems:v9];
+  writablePrivateDataStorage = [(NTTodayContext *)self writablePrivateDataStorage];
+  [writablePrivateDataStorage writeSeenHistoryItems:v9];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -413,21 +413,21 @@ id __71__NTTodayContext_writeUserDidSeeHeadlinesWithAnalyticsElements_atDate___b
   return v5;
 }
 
-- (void)writeUserDidReadHeadlineWithAnalyticsElement:(id)a3 atDate:(id)a4
+- (void)writeUserDidReadHeadlineWithAnalyticsElement:(id)element atDate:(id)date
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  elementCopy = element;
+  dateCopy = date;
+  if (!elementCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayContext writeUserDidReadHeadlineWithAnalyticsElement:atDate:];
-    if (v7)
+    if (dateCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (dateCopy)
   {
     goto LABEL_6;
   }
@@ -439,44 +439,44 @@ id __71__NTTodayContext_writeUserDidSeeHeadlinesWithAnalyticsElements_atDate___b
 
 LABEL_6:
   v8 = objc_opt_new();
-  v9 = [v6 articleID];
-  [v8 setArticleID:v9];
+  articleID = [elementCopy articleID];
+  [v8 setArticleID:articleID];
 
-  [v8 setMaxVersionRead:{objc_msgSend(v6, "articleVersion")}];
-  [v8 setLastVisitedAt:v7];
+  [v8 setMaxVersionRead:{objc_msgSend(elementCopy, "articleVersion")}];
+  [v8 setLastVisitedAt:dateCopy];
   v10 = v8;
   v11 = NTSharedLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v10 articleID];
+    articleID2 = [v10 articleID];
     v15 = 138543618;
-    v16 = v12;
+    v16 = articleID2;
     v17 = 2114;
-    v18 = v7;
+    v18 = dateCopy;
     _os_log_impl(&dword_25BF21000, v11, OS_LOG_TYPE_DEFAULT, "user did read headline, articleID=%{public}@, date=%{public}@", &v15, 0x16u);
   }
 
-  v13 = [(NTTodayContext *)self writablePrivateDataStorage];
-  [v13 writeReadHistoryItem:v10];
+  writablePrivateDataStorage = [(NTTodayContext *)self writablePrivateDataStorage];
+  [writablePrivateDataStorage writeReadHistoryItem:v10];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_setupTodayResultsSource
 {
-  v3 = [(NTTodayContext *)self sourceAvailabilityManager];
-  [v3 preferredSourceFetchDescriptorClass];
+  sourceAvailabilityManager = [(NTTodayContext *)self sourceAvailabilityManager];
+  [sourceAvailabilityManager preferredSourceFetchDescriptorClass];
   v14 = objc_opt_new();
 
   v4 = [NTTodayResultsSource alloc];
-  v5 = [(NTTodayContext *)self feedPersonalizerFactory];
-  v6 = [(NTTodayContext *)self groupingService];
-  v7 = [(NTTodayContext *)self todayBannerValidator];
-  v8 = [(NTTodayContext *)self articleExposureRegistry];
-  v9 = [(NTTodayContext *)self readablePrivateDataStorage];
-  v10 = [(NTTodayContext *)self contentContext];
-  v11 = [(NTTodayContext *)self fetchQueue];
-  v12 = [(NTTodayResultsSource *)v4 initWithFetchDescriptor:v14 feedPersonalizerFactory:v5 groupingService:v6 todayBannerValidator:v7 articleExposureRegistry:v8 privateDataStorage:v9 contentContext:v10 fetchQueue:v11];
+  feedPersonalizerFactory = [(NTTodayContext *)self feedPersonalizerFactory];
+  groupingService = [(NTTodayContext *)self groupingService];
+  todayBannerValidator = [(NTTodayContext *)self todayBannerValidator];
+  articleExposureRegistry = [(NTTodayContext *)self articleExposureRegistry];
+  readablePrivateDataStorage = [(NTTodayContext *)self readablePrivateDataStorage];
+  contentContext = [(NTTodayContext *)self contentContext];
+  fetchQueue = [(NTTodayContext *)self fetchQueue];
+  v12 = [(NTTodayResultsSource *)v4 initWithFetchDescriptor:v14 feedPersonalizerFactory:feedPersonalizerFactory groupingService:groupingService todayBannerValidator:todayBannerValidator articleExposureRegistry:articleExposureRegistry privateDataStorage:readablePrivateDataStorage contentContext:contentContext fetchQueue:fetchQueue];
   todayResultsSource = self->_todayResultsSource;
   self->_todayResultsSource = v12;
 }

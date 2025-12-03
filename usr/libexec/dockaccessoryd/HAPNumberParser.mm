@@ -1,19 +1,19 @@
 @interface HAPNumberParser
-- (HAPNumberParser)initWithTLVData:(id)a3;
+- (HAPNumberParser)initWithTLVData:(id)data;
 @end
 
 @implementation HAPNumberParser
 
-- (HAPNumberParser)initWithTLVData:(id)a3
+- (HAPNumberParser)initWithTLVData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v8.receiver = self;
   v8.super_class = HAPNumberParser;
   v5 = [(HAPNumberParser *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [v4 getBytes:&v5->_decodedNumber length:8];
+    [dataCopy getBytes:&v5->_decodedNumber length:8];
   }
 
   return v6;

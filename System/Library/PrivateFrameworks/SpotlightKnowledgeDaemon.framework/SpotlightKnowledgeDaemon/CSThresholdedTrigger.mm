@@ -1,11 +1,11 @@
 @interface CSThresholdedTrigger
-- (BOOL)incrementAndCheckPerformActionForKey:(id)a3;
-- (CSThresholdedTrigger)initWithCountThreshold:(int64_t)a3 timeInterval:(double)a4;
+- (BOOL)incrementAndCheckPerformActionForKey:(id)key;
+- (CSThresholdedTrigger)initWithCountThreshold:(int64_t)threshold timeInterval:(double)interval;
 @end
 
 @implementation CSThresholdedTrigger
 
-- (CSThresholdedTrigger)initWithCountThreshold:(int64_t)a3 timeInterval:(double)a4
+- (CSThresholdedTrigger)initWithCountThreshold:(int64_t)threshold timeInterval:(double)interval
 {
   v13.receiver = self;
   v13.super_class = CSThresholdedTrigger;
@@ -13,8 +13,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_countThreshold = a3;
-    v6->_timeInterval = a4;
+    v6->_countThreshold = threshold;
+    v6->_timeInterval = interval;
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     actionCounts = v7->_actionCounts;
     v7->_actionCounts = v8;
@@ -27,41 +27,41 @@
   return v7;
 }
 
-- (BOOL)incrementAndCheckPerformActionForKey:(id)a3
+- (BOOL)incrementAndCheckPerformActionForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_actionCounts objectForKeyedSubscript:v4];
+  keyCopy = key;
+  v5 = [(NSMutableDictionary *)self->_actionCounts objectForKeyedSubscript:keyCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  v8 = [(NSMutableDictionary *)self->_lastActionDates objectForKeyedSubscript:v4];
-  v9 = [MEMORY[0x277CBEAA8] date];
-  v10 = [(NSMutableDictionary *)self->_lastActionDates objectForKeyedSubscript:v4];
+  v8 = [(NSMutableDictionary *)self->_lastActionDates objectForKeyedSubscript:keyCopy];
+  date = [MEMORY[0x277CBEAA8] date];
+  v10 = [(NSMutableDictionary *)self->_lastActionDates objectForKeyedSubscript:keyCopy];
 
   if (!v10)
   {
-    [(NSMutableDictionary *)self->_lastActionDates setObject:v9 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_lastActionDates setObject:date forKeyedSubscript:keyCopy];
   }
 
-  if (v7 >= self->_countThreshold || v8 && ([v9 timeIntervalSinceDate:v8], v12 = v11, -[CSThresholdedTrigger timeInterval](self, "timeInterval"), v12 >= v13))
+  if (unsignedIntegerValue >= self->_countThreshold || v8 && ([date timeIntervalSinceDate:v8], v12 = v11, -[CSThresholdedTrigger timeInterval](self, "timeInterval"), v12 >= v13))
   {
-    [(NSMutableDictionary *)self->_actionCounts setObject:0 forKeyedSubscript:v4];
-    [(NSMutableDictionary *)self->_lastActionDates setObject:v9 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_actionCounts setObject:0 forKeyedSubscript:keyCopy];
+    [(NSMutableDictionary *)self->_lastActionDates setObject:date forKeyedSubscript:keyCopy];
     v15 = 1;
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7 + 1];
-    [(NSMutableDictionary *)self->_actionCounts setObject:v14 forKeyedSubscript:v4];
+    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue + 1];
+    [(NSMutableDictionary *)self->_actionCounts setObject:v14 forKeyedSubscript:keyCopy];
 
     v15 = 0;
   }

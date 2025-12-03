@@ -1,20 +1,20 @@
 @interface WFQuantityUnitPickerParameter
-- (WFQuantityUnitPickerParameter)initWithDefinition:(id)a3;
+- (WFQuantityUnitPickerParameter)initWithDefinition:(id)definition;
 - (id)defaultSerializedRepresentation;
-- (id)localizedLabelForPossibleState:(id)a3;
+- (id)localizedLabelForPossibleState:(id)state;
 - (id)possibleStates;
-- (void)setQuantityType:(id)a3;
+- (void)setQuantityType:(id)type;
 - (void)updatePossibleStates;
 @end
 
 @implementation WFQuantityUnitPickerParameter
 
-- (id)localizedLabelForPossibleState:(id)a3
+- (id)localizedLabelForPossibleState:(id)state
 {
-  v4 = [a3 value];
-  v5 = [(WFQuantityUnitPickerParameter *)self quantityType];
-  v6 = [v5 identifier];
-  v7 = [WFHealthKitHelper localizedDisplayNameForUnit:v4 quantityTypeIdentifier:v6];
+  value = [state value];
+  quantityType = [(WFQuantityUnitPickerParameter *)self quantityType];
+  identifier = [quantityType identifier];
+  v7 = [WFHealthKitHelper localizedDisplayNameForUnit:value quantityTypeIdentifier:identifier];
 
   return v7;
 }
@@ -31,16 +31,16 @@
 
 - (void)updatePossibleStates
 {
-  v3 = [(WFQuantityUnitPickerParameter *)self quantityType];
-  if (v3)
+  quantityType = [(WFQuantityUnitPickerParameter *)self quantityType];
+  if (quantityType)
   {
     dispatch_group_enter(self->_possibleStateLoadingGroup);
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __53__WFQuantityUnitPickerParameter_updatePossibleStates__block_invoke;
     v5[3] = &unk_278C21868;
-    v6 = v3;
-    v7 = self;
+    v6 = quantityType;
+    selfCopy = self;
     [WFHealthKitHelper validUnitsForQuantityType:v6 completion:v5];
   }
 
@@ -101,27 +101,27 @@ WFHKUnitSubstitutableState *__53__WFQuantityUnitPickerParameter_updatePossibleSt
 
 - (id)defaultSerializedRepresentation
 {
-  v2 = [(WFQuantityUnitPickerParameter *)self possibleStates];
-  v3 = [v2 firstObject];
-  v4 = [v3 serializedRepresentation];
+  possibleStates = [(WFQuantityUnitPickerParameter *)self possibleStates];
+  firstObject = [possibleStates firstObject];
+  serializedRepresentation = [firstObject serializedRepresentation];
 
-  return v4;
+  return serializedRepresentation;
 }
 
-- (void)setQuantityType:(id)a3
+- (void)setQuantityType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   quantityType = self->_quantityType;
-  v8 = v5;
-  if (quantityType == v5)
+  v8 = typeCopy;
+  if (quantityType == typeCopy)
   {
-    objc_storeStrong(&self->_quantityType, a3);
+    objc_storeStrong(&self->_quantityType, type);
   }
 
   else
   {
-    v7 = [(HKQuantityType *)quantityType isEqual:v5];
-    objc_storeStrong(&self->_quantityType, a3);
+    v7 = [(HKQuantityType *)quantityType isEqual:typeCopy];
+    objc_storeStrong(&self->_quantityType, type);
     if ((v7 & 1) == 0)
     {
       [(WFQuantityUnitPickerParameter *)self updatePossibleStates];
@@ -129,16 +129,16 @@ WFHKUnitSubstitutableState *__53__WFQuantityUnitPickerParameter_updatePossibleSt
   }
 }
 
-- (WFQuantityUnitPickerParameter)initWithDefinition:(id)a3
+- (WFQuantityUnitPickerParameter)initWithDefinition:(id)definition
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  definitionCopy = definition;
   v19.receiver = self;
   v19.super_class = WFQuantityUnitPickerParameter;
-  v5 = [(WFQuantityUnitPickerParameter *)&v19 initWithDefinition:v4];
+  v5 = [(WFQuantityUnitPickerParameter *)&v19 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"QuantityTypeIdentifier"];
+    v6 = [definitionCopy objectForKey:@"QuantityTypeIdentifier"];
     v7 = objc_opt_class();
     v8 = v6;
     if (v8 && (objc_opt_isKindOfClass() & 1) == 0)

@@ -8,7 +8,7 @@
 + (id)storeConfigurationForNowPlaying;
 + (id)storeConfigurationForRoute;
 + (id)storeConfigurationForStreamingStats;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)syncPolicyForNowPlaying;
 + (id)validKeyPaths;
 @end
@@ -18,7 +18,7 @@
 + (id)NowPlaying
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForNowPlaying];
+  configurationForNowPlaying = [self configurationForNowPlaying];
   v3 = +[BMMediaNowPlaying columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -30,7 +30,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Media.NowPlaying" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Media.NowPlaying" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Media.NowPlaying" schema:v9 configuration:configurationForNowPlaying];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -40,8 +40,8 @@
 + (id)configurationForNowPlaying
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v3 = [a1 storeConfigurationForNowPlaying];
-  v4 = [a1 syncPolicyForNowPlaying];
+  storeConfigurationForNowPlaying = [self storeConfigurationForNowPlaying];
+  syncPolicyForNowPlaying = [self syncPolicyForNowPlaying];
   v5 = objc_alloc(MEMORY[0x1E698F330]);
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"$uninstalled == bundleID" argumentArray:0];
   v7 = [v5 initWithIdentifier:@"app-uninstall" predicate:v6];
@@ -56,7 +56,7 @@
   v13 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"5015B088-E292-411F-9AEB-40E2B4BF3931"];
   BYTE2(v17) = 1;
   LOWORD(v17) = 1;
-  v14 = [v12 _libraryStreamConfigurationWithUUID:v13 streamIdentifier:@"Media.NowPlaying" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3EB010 internalMetadata:0 enableSubscriptions:v17 enableSubscriptionSubstream:0 enableTombstoneSubstream:v11 allowedClients:0 pruningTriggers:v18[0] spaceAttributionOwner:?];
+  v14 = [v12 _libraryStreamConfigurationWithUUID:v13 streamIdentifier:@"Media.NowPlaying" eventClass:objc_opt_class() storeConfig:storeConfigurationForNowPlaying syncPolicy:syncPolicyForNowPlaying legacyNames:&unk_1EF3EB010 internalMetadata:0 enableSubscriptions:v17 enableSubscriptionSubstream:0 enableTombstoneSubstream:v11 allowedClients:0 pruningTriggers:v18[0] spaceAttributionOwner:?];
 
   v15 = *MEMORY[0x1E69E9840];
 
@@ -111,7 +111,7 @@
 + (id)Route
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForRoute];
+  configurationForRoute = [self configurationForRoute];
   v3 = +[BMMediaRoute columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -123,7 +123,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Media.Route" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Media.Route" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Media.Route" schema:v9 configuration:configurationForRoute];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -132,13 +132,13 @@
 
 + (id)configurationForRoute
 {
-  v3 = [a1 storeConfigurationForRoute];
-  v4 = [a1 syncPolicyForRoute];
+  storeConfigurationForRoute = [self storeConfigurationForRoute];
+  syncPolicyForRoute = [self syncPolicyForRoute];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"31C87A4F-1C7A-4EC8-A9CB-7B816C316E49"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Media.Route" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Media.Route" eventClass:objc_opt_class() storeConfig:storeConfigurationForRoute syncPolicy:syncPolicyForRoute legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -151,26 +151,26 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"NowPlaying"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"NowPlaying"])
   {
-    v5 = [a1 NowPlaying];
+    nowPlaying = [self NowPlaying];
 LABEL_7:
-    v6 = v5;
+    v6 = nowPlaying;
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"Route"])
+  if ([nameCopy isEqualToString:@"Route"])
   {
-    v5 = [a1 Route];
+    nowPlaying = [self Route];
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"StreamingStats"])
+  if ([nameCopy isEqualToString:@"StreamingStats"])
   {
-    v5 = [a1 StreamingStats];
+    nowPlaying = [self StreamingStats];
     goto LABEL_7;
   }
 
@@ -199,13 +199,13 @@ LABEL_8:
 
 + (id)configurationForStreamingStats
 {
-  v3 = [a1 storeConfigurationForStreamingStats];
-  v4 = [a1 syncPolicyForStreamingStats];
+  storeConfigurationForStreamingStats = [self storeConfigurationForStreamingStats];
+  syncPolicyForStreamingStats = [self syncPolicyForStreamingStats];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"DB4BAB4D-DD4F-45B3-8D34-24D42CFC55D8"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Media.StreamingStats" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Media.StreamingStats" eventClass:objc_opt_class() storeConfig:storeConfigurationForStreamingStats syncPolicy:syncPolicyForStreamingStats legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -221,7 +221,7 @@ LABEL_8:
 + (id)StreamingStats
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForStreamingStats];
+  configurationForStreamingStats = [self configurationForStreamingStats];
   v3 = +[BMMediaStreamingStats columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -233,7 +233,7 @@ LABEL_8:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Media.StreamingStats" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Media.StreamingStats" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Media.StreamingStats" schema:v9 configuration:configurationForStreamingStats];
 
   v11 = *MEMORY[0x1E69E9840];
 

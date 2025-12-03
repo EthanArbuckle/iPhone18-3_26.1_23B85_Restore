@@ -1,24 +1,24 @@
 @interface MTAStopwatchController
-- (MTAStopwatchController)initWithTarget:(id)a3;
+- (MTAStopwatchController)initWithTarget:(id)target;
 - (MTAStopwatchControlsTarget)target;
-- (void)_lapControlButtonDown:(id)a3;
-- (void)_startStopButtonDown:(id)a3;
-- (void)setButtonSize:(unint64_t)a3;
-- (void)setMode:(unint64_t)a3 force:(BOOL)a4;
+- (void)_lapControlButtonDown:(id)down;
+- (void)_startStopButtonDown:(id)down;
+- (void)setButtonSize:(unint64_t)size;
+- (void)setMode:(unint64_t)mode force:(BOOL)force;
 @end
 
 @implementation MTAStopwatchController
 
-- (MTAStopwatchController)initWithTarget:(id)a3
+- (MTAStopwatchController)initWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v20.receiver = self;
   v20.super_class = MTAStopwatchController;
   v5 = [(MTAStopwatchController *)&v20 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_target, v4);
+    objc_storeWeak(&v5->_target, targetCopy);
     v7 = objc_alloc_init(MTACircleButton);
     startStopButton = v6->_startStopButton;
     v6->_startStopButton = v7;
@@ -30,8 +30,8 @@
     [(MTACircleButton *)v6->_startStopButton addTarget:v6 action:"_startStopButtonDown:" forControlEvents:64];
     [(MTACircleButton *)v6->_startStopButton setButtonCircleSize:0];
     v11 = +[UIShape circleShape];
-    v12 = [(MTACircleButton *)v6->_startStopButton hoverStyle];
-    [v12 setShape:v11];
+    hoverStyle = [(MTACircleButton *)v6->_startStopButton hoverStyle];
+    [hoverStyle setShape:v11];
 
     v13 = objc_alloc_init(MTACircleButton);
     lapControlButton = v6->_lapControlButton;
@@ -44,39 +44,39 @@
     [(MTACircleButton *)v6->_lapControlButton addTarget:v6 action:"_lapControlButtonDown:" forControlEvents:64];
     [(MTACircleButton *)v6->_lapControlButton setButtonCircleSize:0];
     v17 = +[UIShape circleShape];
-    v18 = [(MTACircleButton *)v6->_lapControlButton hoverStyle];
-    [v18 setShape:v17];
+    hoverStyle2 = [(MTACircleButton *)v6->_lapControlButton hoverStyle];
+    [hoverStyle2 setShape:v17];
   }
 
   return v6;
 }
 
-- (void)setButtonSize:(unint64_t)a3
+- (void)setButtonSize:(unint64_t)size
 {
   [(MTACircleButton *)self->_startStopButton setButtonCircleSize:?];
   lapControlButton = self->_lapControlButton;
 
-  [(MTACircleButton *)lapControlButton setButtonCircleSize:a3];
+  [(MTACircleButton *)lapControlButton setButtonCircleSize:size];
 }
 
-- (void)_startStopButtonDown:(id)a3
+- (void)_startStopButtonDown:(id)down
 {
-  v4 = a3;
+  downCopy = down;
   mode = self->_mode;
   switch(mode)
   {
     case 3uLL:
-      v7 = v4;
+      v7 = downCopy;
       WeakRetained = objc_loadWeakRetained(&self->_target);
       [WeakRetained resumeLapTimer];
       break;
     case 2uLL:
-      v7 = v4;
+      v7 = downCopy;
       WeakRetained = objc_loadWeakRetained(&self->_target);
       [WeakRetained pauseLapTimer];
       break;
     case 1uLL:
-      v7 = v4;
+      v7 = downCopy;
       WeakRetained = objc_loadWeakRetained(&self->_target);
       [WeakRetained startLapTimer];
       break;
@@ -84,19 +84,19 @@
       goto LABEL_8;
   }
 
-  v4 = v7;
+  downCopy = v7;
 LABEL_8:
 }
 
-- (void)_lapControlButtonDown:(id)a3
+- (void)_lapControlButtonDown:(id)down
 {
-  v4 = a3;
+  downCopy = down;
   mode = self->_mode;
   if (mode != 3)
   {
     if (mode == 2)
     {
-      v7 = v4;
+      v7 = downCopy;
       WeakRetained = objc_loadWeakRetained(&self->_target);
       [WeakRetained lapLapTimer];
       goto LABEL_6;
@@ -108,24 +108,24 @@ LABEL_8:
     }
   }
 
-  v7 = v4;
+  v7 = downCopy;
   WeakRetained = objc_loadWeakRetained(&self->_target);
   [WeakRetained resetLapTimer];
 LABEL_6:
 
-  v4 = v7;
+  downCopy = v7;
 LABEL_7:
 }
 
-- (void)setMode:(unint64_t)a3 force:(BOOL)a4
+- (void)setMode:(unint64_t)mode force:(BOOL)force
 {
-  if (!a4 && self->_mode == a3)
+  if (!force && self->_mode == mode)
   {
     return;
   }
 
-  self->_mode = a3;
-  switch(a3)
+  self->_mode = mode;
+  switch(mode)
   {
     case 3uLL:
       startStopButton = self->_startStopButton;

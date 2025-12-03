@@ -1,19 +1,19 @@
 @interface MechanismManagerACM
 + (MechanismManagerACM)sharedInstance;
-- (BOOL)_shouldBindBiometricIdentitiesForMechanism:(id)a3 request:(id)a4;
-- (id)_biometricIdentitiesForRequirement:(__ACMRequirement *)a3 request:(id)a4 error:(id *)a5;
-- (id)_buildUiForMechanism:(id)a3 policy:(int64_t)a4 internalInfo:(id)a5 uiDelegate:(id)a6 request:(id)a7 error:(id *)a8;
-- (id)_evaluationModeForPolicy:(int64_t)a3;
-- (id)_loadACMMechanism:(int64_t)a3 initParams:(id)a4 request:(id)a5 error:(id *)a6;
-- (id)_loadACMMechanismFromPlugin:(int64_t)a3 acmContextRecord:(id)a4 internalInfo:(id)a5 request:(id)a6 error:(id *)a7;
-- (id)_nonUiMechanismForACMRequirement:(const __ACMRequirement *)a3 acmContextRecord:(id)a4 policy:(int64_t)a5 internalInfo:(id)a6 request:(id)a7 state:(unsigned int *)a8 error:(id *)a9;
-- (id)_nonUiSubmechanismsForACMRequirement:(const __ACMRequirement *)a3 acmContextRecord:(id)a4 policy:(int64_t)a5 internalInfo:(id)a6 request:(id)a7 requiredCount:(unint64_t *)a8 error:(id *)a9;
-- (id)_preferedError:(id)a3;
-- (id)_prepareInitParamsUsingInternalInfo:(id)a3 acmContextRecord:(id)a4;
-- (id)_restrictedNonUiMechanism:(id)a3 availabilityEvents:(id *)a4 policy:(int64_t)a5 internalInfo:(id)a6 request:(id)a7 error:(id *)a8;
-- (unint64_t)_acmRequirementPropertyFlags:(__ACMRequirement *)a3;
-- (void)_mechanismForACMRequirement:(const __ACMRequirement *)a3 acmContextRecord:(id)a4 policy:(int64_t)a5 internalInfo:(id)a6 uiDelegate:(id)a7 originator:(id)a8 request:(id)a9 reply:(id)a10;
-- (void)mechanismForApplicationPasswordMode:(int64_t)a3 acmContextRecord:(id)a4 options:(id)a5 internalInfo:(id)a6 uiDelegate:(id)a7 originator:(id)a8 request:(id)a9 reply:(id)a10;
+- (BOOL)_shouldBindBiometricIdentitiesForMechanism:(id)mechanism request:(id)request;
+- (id)_biometricIdentitiesForRequirement:(__ACMRequirement *)requirement request:(id)request error:(id *)error;
+- (id)_buildUiForMechanism:(id)mechanism policy:(int64_t)policy internalInfo:(id)info uiDelegate:(id)delegate request:(id)request error:(id *)error;
+- (id)_evaluationModeForPolicy:(int64_t)policy;
+- (id)_loadACMMechanism:(int64_t)mechanism initParams:(id)params request:(id)request error:(id *)error;
+- (id)_loadACMMechanismFromPlugin:(int64_t)plugin acmContextRecord:(id)record internalInfo:(id)info request:(id)request error:(id *)error;
+- (id)_nonUiMechanismForACMRequirement:(const __ACMRequirement *)requirement acmContextRecord:(id)record policy:(int64_t)policy internalInfo:(id)info request:(id)request state:(unsigned int *)state error:(id *)error;
+- (id)_nonUiSubmechanismsForACMRequirement:(const __ACMRequirement *)requirement acmContextRecord:(id)record policy:(int64_t)policy internalInfo:(id)info request:(id)request requiredCount:(unint64_t *)count error:(id *)error;
+- (id)_preferedError:(id)error;
+- (id)_prepareInitParamsUsingInternalInfo:(id)info acmContextRecord:(id)record;
+- (id)_restrictedNonUiMechanism:(id)mechanism availabilityEvents:(id *)events policy:(int64_t)policy internalInfo:(id)info request:(id)request error:(id *)error;
+- (unint64_t)_acmRequirementPropertyFlags:(__ACMRequirement *)flags;
+- (void)_mechanismForACMRequirement:(const __ACMRequirement *)requirement acmContextRecord:(id)record policy:(int64_t)policy internalInfo:(id)info uiDelegate:(id)delegate originator:(id)originator request:(id)request reply:(id)self0;
+- (void)mechanismForApplicationPasswordMode:(int64_t)mode acmContextRecord:(id)record options:(id)options internalInfo:(id)info uiDelegate:(id)delegate originator:(id)originator request:(id)request reply:(id)self0;
 @end
 
 @implementation MechanismManagerACM
@@ -30,15 +30,15 @@
   return v3;
 }
 
-- (void)_mechanismForACMRequirement:(const __ACMRequirement *)a3 acmContextRecord:(id)a4 policy:(int64_t)a5 internalInfo:(id)a6 uiDelegate:(id)a7 originator:(id)a8 request:(id)a9 reply:(id)a10
+- (void)_mechanismForACMRequirement:(const __ACMRequirement *)requirement acmContextRecord:(id)record policy:(int64_t)policy internalInfo:(id)info uiDelegate:(id)delegate originator:(id)originator request:(id)request reply:(id)self0
 {
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a9;
-  v18 = a10;
-  v19 = [v17 payload];
-  v20 = [v19 mutableCopy];
+  recordCopy = record;
+  infoCopy = info;
+  delegateCopy = delegate;
+  requestCopy = request;
+  replyCopy = reply;
+  payload = [requestCopy payload];
+  v20 = [payload mutableCopy];
   v21 = v20;
   if (v20)
   {
@@ -52,19 +52,19 @@
 
   v23 = v22;
 
-  [v23 setObject:v15 forKeyedSubscript:LACEvaluationRequestPayloadKeyInternalInfo];
-  [v17 updatePayload:v23];
+  [v23 setObject:infoCopy forKeyedSubscript:LACEvaluationRequestPayloadKeyInternalInfo];
+  [requestCopy updatePayload:v23];
   v70 = 0;
   v69 = 0;
-  v24 = [(MechanismManagerACM *)self _nonUiMechanismForACMRequirement:a3 acmContextRecord:v14 policy:a5 internalInfo:v15 request:v17 state:&v70 error:&v69];
+  v24 = [(MechanismManagerACM *)self _nonUiMechanismForACMRequirement:requirement acmContextRecord:recordCopy policy:policy internalInfo:infoCopy request:requestCopy state:&v70 error:&v69];
   v25 = v69;
   objc_opt_class();
   v58 = v23;
-  v59 = v18;
-  v57 = a5;
+  v59 = replyCopy;
+  policyCopy = policy;
   if (objc_opt_isKindOfClass())
   {
-    v26 = [v17 log];
+    v26 = [requestCopy log];
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
@@ -74,11 +74,11 @@
 
     v76 = v24;
     v27 = [NSArray arrayWithObjects:&v76 count:1];
-    v28 = [MechanismKofN mechanismWithK:1 ofSubmechanisms:v27 serial:0 request:v17 preserveStandaloneReorganizers:0];
+    v28 = [MechanismKofN mechanismWithK:1 ofSubmechanisms:v27 serial:0 request:requestCopy preserveStandaloneReorganizers:0];
 
     if (v28)
     {
-      v18 = v59;
+      replyCopy = v59;
       goto LABEL_16;
     }
 
@@ -86,11 +86,11 @@
 
     v24 = 0;
     v25 = v29;
-    v18 = v59;
-    a5 = v57;
+    replyCopy = v59;
+    policy = policyCopy;
   }
 
-  if (a5 != 1026 || v24)
+  if (policy != 1026 || v24)
   {
     v28 = v24;
   }
@@ -102,10 +102,10 @@
     v66[1] = 3221225472;
     v66[2] = sub_F370;
     v66[3] = &unk_30E18;
-    v67 = v15;
-    v68 = v14;
+    v67 = infoCopy;
+    v68 = recordCopy;
     v31 = sub_F370(v66);
-    v28 = [v30 initWithParams:v31 request:v17];
+    v28 = [v30 initWithParams:v31 request:requestCopy];
   }
 
   else
@@ -114,7 +114,7 @@
   }
 
 LABEL_16:
-  v32 = [v17 log];
+  v32 = [requestCopy log];
   if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
@@ -124,10 +124,10 @@ LABEL_16:
 
   if (v28)
   {
-    v55 = v14;
-    v56 = v16;
+    v55 = recordCopy;
+    v56 = delegateCopy;
     v65 = v25;
-    v33 = [v28 bestEffortAvailableMechanismForRequest:v17 error:&v65];
+    v33 = [v28 bestEffortAvailableMechanismForRequest:requestCopy error:&v65];
     v34 = v65;
 
     if (v33 != v28 && os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
@@ -143,11 +143,11 @@ LABEL_16:
       goto LABEL_24;
     }
 
-    if (+[LAErrorHelper error:hasCode:](LAErrorHelper, "error:hasCode:", v34, -8) && [v28 canRecoverFromAvailabilityError:v34 request:v17])
+    if (+[LAErrorHelper error:hasCode:](LAErrorHelper, "error:hasCode:", v34, -8) && [v28 canRecoverFromAvailabilityError:v34 request:requestCopy])
     {
       v64 = v34;
       v41 = v34;
-      v42 = [(MechanismManagerACM *)self _loadACMMechanismFromPlugin:2 acmContextRecord:v55 internalInfo:v15 request:v17 error:&v64];
+      v42 = [(MechanismManagerACM *)self _loadACMMechanismFromPlugin:2 acmContextRecord:v55 internalInfo:infoCopy request:requestCopy error:&v64];
       v34 = v64;
 
       if (v42)
@@ -155,22 +155,22 @@ LABEL_16:
         v75[0] = v42;
         v75[1] = v28;
         v43 = [NSArray arrayWithObjects:v75 count:2];
-        v44 = [MechanismKofN mechanismWithK:2 ofSubmechanisms:v43 serial:1 request:v17];
+        v44 = [MechanismKofN mechanismWithK:2 ofSubmechanisms:v43 serial:1 request:requestCopy];
 
-        v18 = v59;
-        [v17 setRetryingForError:v41];
+        replyCopy = v59;
+        [requestCopy setRetryingForError:v41];
 
         v35 = v44;
         if (v44)
         {
 LABEL_24:
-          v36 = [v35 availabilityEventsForPurpose:{objc_msgSend(v17, "purpose")}];
+          v36 = [v35 availabilityEventsForPurpose:{objc_msgSend(requestCopy, "purpose")}];
           v37 = v36;
           if (v33)
           {
             v62 = v34;
             v63 = v36;
-            v38 = [(MechanismManagerACM *)self _restrictedNonUiMechanism:v35 availabilityEvents:&v63 policy:v57 internalInfo:v15 request:v17 error:&v62];
+            v38 = [(MechanismManagerACM *)self _restrictedNonUiMechanism:v35 availabilityEvents:&v63 policy:policyCopy internalInfo:infoCopy request:requestCopy error:&v62];
             v39 = v63;
             v40 = v37;
             v37 = v39;
@@ -178,11 +178,11 @@ LABEL_24:
             v25 = v62;
             if (!v38)
             {
-              v18[2](v18, 0, v25);
-              v16 = v56;
+              replyCopy[2](replyCopy, 0, v25);
+              delegateCopy = v56;
 LABEL_48:
 
-              v14 = v55;
+              recordCopy = v55;
               goto LABEL_51;
             }
 
@@ -203,9 +203,9 @@ LABEL_48:
             v38 = v35;
           }
 
-          v45 = [v15 objectForKeyedSubscript:@"AuditToken"];
-          v54 = v15;
-          v46 = [v15 objectForKeyedSubscript:@"Options"];
+          v45 = [infoCopy objectForKeyedSubscript:@"AuditToken"];
+          v54 = infoCopy;
+          v46 = [infoCopy objectForKeyedSubscript:@"Options"];
           v47 = [v46 objectForKeyedSubscript:&off_32908];
           v48 = [v38 tccPreflightWithAuditTokenData:v45 auditTokenUsage:v47];
 
@@ -213,14 +213,14 @@ LABEL_48:
           {
             v49 = [v38 tccError:0];
             v59[2](v59, 0, v49);
-            v15 = v54;
+            infoCopy = v54;
           }
 
           else
           {
             v61 = v34;
-            v15 = v54;
-            v49 = [(MechanismManagerACM *)self _buildUiForMechanism:v38 policy:v57 internalInfo:v54 uiDelegate:v56 request:v17 error:&v61];
+            infoCopy = v54;
+            v49 = [(MechanismManagerACM *)self _buildUiForMechanism:v38 policy:policyCopy internalInfo:v54 uiDelegate:v56 request:requestCopy error:&v61];
             v50 = v61;
 
             if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -234,11 +234,11 @@ LABEL_48:
 
             if (v49)
             {
-              v51 = [v38 mechanismTreeDescription];
-              v52 = [[MechanismManagerACMResult alloc] initWithMechanism:v49 availableMechanisms:v37 mechanismTree:v51 internalInfo:v54];
+              mechanismTreeDescription = [v38 mechanismTreeDescription];
+              v52 = [[MechanismManagerACMResult alloc] initWithMechanism:v49 availableMechanisms:v37 mechanismTree:mechanismTreeDescription internalInfo:v54];
               (v59)[2](v59, v52, v50);
 
-              v15 = v54;
+              infoCopy = v54;
             }
 
             else
@@ -250,8 +250,8 @@ LABEL_48:
           }
 
           v25 = v34;
-          v16 = v56;
-          v18 = v59;
+          delegateCopy = v56;
+          replyCopy = v59;
           v35 = v53;
           goto LABEL_48;
         }
@@ -262,63 +262,63 @@ LABEL_48:
       }
     }
 
-    v18[2](v18, 0, v34);
+    replyCopy[2](replyCopy, 0, v34);
     v25 = v34;
-    v14 = v55;
-    v16 = v56;
+    recordCopy = v55;
+    delegateCopy = v56;
     goto LABEL_51;
   }
 
-  v18[2](v18, 0, v25);
+  replyCopy[2](replyCopy, 0, v25);
 LABEL_51:
 }
 
-- (void)mechanismForApplicationPasswordMode:(int64_t)a3 acmContextRecord:(id)a4 options:(id)a5 internalInfo:(id)a6 uiDelegate:(id)a7 originator:(id)a8 request:(id)a9 reply:(id)a10
+- (void)mechanismForApplicationPasswordMode:(int64_t)mode acmContextRecord:(id)record options:(id)options internalInfo:(id)info uiDelegate:(id)delegate originator:(id)originator request:(id)request reply:(id)self0
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a9;
-  v17 = a10;
+  recordCopy = record;
+  optionsCopy = options;
+  infoCopy = info;
+  requestCopy = request;
+  replyCopy = reply;
   v27[0] = @"PasswordMode";
-  v18 = [NSNumber numberWithInteger:a3];
+  v18 = [NSNumber numberWithInteger:mode];
   v28[0] = v18;
-  v28[1] = v13;
+  v28[1] = recordCopy;
   v27[1] = @"AcmContextRecord";
   v27[2] = @"UserId";
-  v19 = [v15 objectForKeyedSubscript:?];
+  v19 = [infoCopy objectForKeyedSubscript:?];
   v28[2] = v19;
   v20 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:3];
 
   v21 = +[MechanismManagerACM sharedInstance];
   v26 = 0;
-  v22 = [v21 loadMechanism:2 initParams:v20 request:v16 className:@"MechanismPassword" error:&v26];
+  v22 = [v21 loadMechanism:2 initParams:v20 request:requestCopy className:@"MechanismPassword" error:&v26];
   v23 = v26;
 
   if (v22)
   {
-    v24 = [v14 objectForKey:&off_32920];
-    v25 = [[MechanismUI alloc] initWithNonUiMechanism:v22 eventProcessing:v24 policy:0 internalInfo:v15 request:v16];
-    v17[2](v17, v25, 0);
+    v24 = [optionsCopy objectForKey:&off_32920];
+    v25 = [[MechanismUI alloc] initWithNonUiMechanism:v22 eventProcessing:v24 policy:0 internalInfo:infoCopy request:requestCopy];
+    replyCopy[2](replyCopy, v25, 0);
   }
 
   else
   {
-    (v17)[2](v17, 0, v23);
+    (replyCopy)[2](replyCopy, 0, v23);
   }
 }
 
-- (id)_nonUiMechanismForACMRequirement:(const __ACMRequirement *)a3 acmContextRecord:(id)a4 policy:(int64_t)a5 internalInfo:(id)a6 request:(id)a7 state:(unsigned int *)a8 error:(id *)a9
+- (id)_nonUiMechanismForACMRequirement:(const __ACMRequirement *)requirement acmContextRecord:(id)record policy:(int64_t)policy internalInfo:(id)info request:(id)request state:(unsigned int *)state error:(id *)error
 {
-  v14 = a4;
-  v15 = a6;
-  v81 = a7;
-  if (!v15 || ([v15 objectForKeyedSubscript:@"UserId"], v16 = objc_claimAutoreleasedReturnValue(), v16, !v14) || !v16)
+  recordCopy = record;
+  infoCopy = info;
+  requestCopy = request;
+  if (!infoCopy || ([infoCopy objectForKeyedSubscript:@"UserId"], v16 = objc_claimAutoreleasedReturnValue(), v16, !recordCopy) || !v16)
   {
-    if (a9)
+    if (error)
     {
       [LAErrorHelper silentInternalErrorWithMessage:@"Bad parameters"];
-      *a9 = v21 = 0;
+      *error = v21 = 0;
     }
 
     else
@@ -329,22 +329,22 @@ LABEL_51:
     goto LABEL_113;
   }
 
-  v108[0] = v14;
+  v108[0] = recordCopy;
   v107[0] = @"AcmContextRecord";
   v107[1] = @"UserId";
-  v17 = [v15 objectForKeyedSubscript:@"UserId"];
+  v17 = [infoCopy objectForKeyedSubscript:@"UserId"];
   v108[1] = v17;
   v107[2] = @"EvaluationMode";
-  v18 = [(MechanismManagerACM *)self _evaluationModeForPolicy:a5];
+  v18 = [(MechanismManagerACM *)self _evaluationModeForPolicy:policy];
   v108[2] = v18;
   v19 = [NSDictionary dictionaryWithObjects:v108 forKeys:v107 count:3];
   v79 = [NSMutableDictionary dictionaryWithDictionary:v19];
 
-  v20 = [(MechanismManagerACM *)self _acmRequirementType:a3];
-  v78 = [(MechanismManagerACM *)self _acmRequirementState:a3];
-  if ((v20 & 0xFFFFFFFD) == 1 && (v77 = [(MechanismManagerACM *)self _acmRequirementPropertyFlags:a3]) != 0)
+  v20 = [(MechanismManagerACM *)self _acmRequirementType:requirement];
+  v78 = [(MechanismManagerACM *)self _acmRequirementState:requirement];
+  if ((v20 & 0xFFFFFFFD) == 1 && (v77 = [(MechanismManagerACM *)self _acmRequirementPropertyFlags:requirement]) != 0)
   {
-    [v14 setFlags:?];
+    [recordCopy setFlags:?];
   }
 
   else
@@ -361,9 +361,9 @@ LABEL_51:
         goto LABEL_60;
       }
 
-      if (a5 != 1026)
+      if (policy != 1026)
       {
-        v35 = [NSNumber numberWithInteger:a5];
+        v35 = [NSNumber numberWithInteger:policy];
         v36 = [NSString stringWithFormat:@"Requirement: %d not handled for policy: %@", v20, v35];
         v32 = [LAErrorHelper internalErrorWithMessage:v36];
 
@@ -376,7 +376,7 @@ LABEL_51:
       v100 = v27;
       v28 = [NSDictionary dictionaryWithObjects:&v100 forKeys:&v99 count:1];
       v29 = [v28 dictionaryByMergingWith:v79];
-      v21 = [v26 initWithParams:v29 request:v81];
+      v21 = [v26 initWithParams:v29 request:requestCopy];
     }
 
     else
@@ -434,7 +434,7 @@ LABEL_51:
         goto LABEL_60;
       }
 
-      v21 = [[MechanismCompanion alloc] initWithParams:v79 request:v81];
+      v21 = [[MechanismCompanion alloc] initWithParams:v79 request:requestCopy];
     }
 
     v32 = 0;
@@ -459,15 +459,15 @@ LABEL_30:
         }
 
         v30 = [LACACMHelper BOOLEnvironmentVariable:13];
-        v31 = [v30 BOOLValue];
+        bOOLValue = [v30 BOOLValue];
 
-        if (v31)
+        if (bOOLValue)
         {
           [v79 setObject:&__kCFBooleanTrue forKey:@"AXMode"];
         }
 
         v89 = 0;
-        v21 = [(MechanismManagerACM *)self loadMechanism:3 initParams:v79 request:v81 error:&v89];
+        v21 = [(MechanismManagerACM *)self loadMechanism:3 initParams:v79 request:requestCopy error:&v89];
         v32 = v89;
         v33 = [NSSet setWithArray:&off_32BA8];
         v34 = v33;
@@ -479,7 +479,7 @@ LABEL_30:
           }
         }
 
-        else if (!v33 || !((v78 == 1) | v31 & 1))
+        else if (!v33 || !((v78 == 1) | bOOLValue & 1))
         {
           goto LABEL_64;
         }
@@ -491,7 +491,7 @@ LABEL_30:
         v84[3] = &unk_30E68;
         v85 = v34;
         v88 = v20 == 19;
-        v86 = v81;
+        v86 = requestCopy;
         v87 = v21;
         v56 = v21;
         v21 = [v55 initWithMin:0 max:1 k:0 request:v86 apply:v84];
@@ -500,7 +500,7 @@ LABEL_64:
         goto LABEL_93;
       }
 
-      v38 = [LACACMHelper requirement:a3 uint32Property:700];
+      v38 = [LACACMHelper requirement:requirement uint32Property:700];
       v39 = v38;
       if (!v38)
       {
@@ -513,13 +513,13 @@ LABEL_92:
 
       *&buf = [v38 unsignedIntegerValue];
       v83[0] = 0;
-      v40 = [(MechanismManagerACM *)self _nonUiSubmechanismsForACMRequirement:a3 acmContextRecord:v14 policy:a5 internalInfo:v15 request:v81 requiredCount:&buf error:v83];
+      v40 = [(MechanismManagerACM *)self _nonUiSubmechanismsForACMRequirement:requirement acmContextRecord:recordCopy policy:policy internalInfo:infoCopy request:requestCopy requiredCount:&buf error:v83];
       v32 = v83[0];
       if ([v40 count])
       {
         v41 = buf;
         v42 = v41 == [v40 count];
-        v21 = [MechanismKofN mechanismWithK:buf ofSubmechanisms:v40 serial:v42 request:v81];
+        v21 = [MechanismKofN mechanismWithK:buf ofSubmechanisms:v40 serial:v42 request:requestCopy];
         if (!v21)
         {
           v50 = [LAErrorHelper internalErrorWithMessage:@"Failed to create kofn mechanism."];
@@ -547,7 +547,7 @@ LABEL_90:
             else
             {
               v73 = +[LAPasscodeHelper sharedInstance];
-              v48 = [v15 objectForKeyedSubscript:@"UserId"];
+              v48 = [infoCopy objectForKeyedSubscript:@"UserId"];
               v82 = v32;
               v49 = [v73 isPasscodeSetForUser:objc_msgSend(v48 error:{"unsignedIntValue"), &v82}];
               v50 = v82;
@@ -587,7 +587,7 @@ LABEL_91:
       goto LABEL_92;
     }
 
-    if ([(MechanismManagerACM *)self _shouldDisregardUserIdForPolicy:a5])
+    if ([(MechanismManagerACM *)self _shouldDisregardUserIdForPolicy:policy])
     {
       [v79 removeObjectForKey:@"UserId"];
     }
@@ -597,7 +597,7 @@ LABEL_91:
       if ((v77 & 4) == 0)
       {
         v96 = 0;
-        v21 = [(MechanismManagerACM *)self loadMechanism:4 initParams:v79 request:v81 error:&v96];
+        v21 = [(MechanismManagerACM *)self loadMechanism:4 initParams:v79 request:requestCopy error:&v96];
         v37 = &v96;
 LABEL_68:
         v32 = *v37;
@@ -620,8 +620,8 @@ LABEL_98:
         v91[1] = 3221225472;
         v91[2] = sub_10398;
         v91[3] = &unk_30E40;
-        v94 = a3;
-        v57 = v81;
+        requirementCopy = requirement;
+        v57 = requestCopy;
         v92 = v57;
         v21 = v21;
         v93 = v21;
@@ -631,7 +631,7 @@ LABEL_98:
         if ([(MechanismManagerACM *)self _shouldBindBiometricIdentitiesForMechanism:v21 request:v57])
         {
           v90 = 0;
-          v59 = [(MechanismManagerACM *)self _biometricIdentitiesForRequirement:a3 request:v57 error:&v90];
+          v59 = [(MechanismManagerACM *)self _biometricIdentitiesForRequirement:requirement request:v57 error:&v90];
           v60 = v90;
           v61 = v60;
           if (v60)
@@ -654,10 +654,10 @@ LABEL_93:
 
           v54 = [LAErrorHelper errorWithCode:-1 subcode:6 message:@"Unsatisfiable constraint."];
 
-          v66 = [v81 log];
+          v66 = [requestCopy log];
           if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
           {
-            v67 = [v15 objectForKeyedSubscript:@"UserId"];
+            v67 = [infoCopy objectForKeyedSubscript:@"UserId"];
             v68 = [LACACMHelper catacombUUID:v67];
             LODWORD(buf) = 138543362;
             *(&buf + 4) = v68;
@@ -680,7 +680,7 @@ LABEL_99:
       if ((v77 & 8) == 0)
       {
         v95 = 0;
-        v21 = [(MechanismManagerACM *)self loadMechanism:1 initParams:v79 request:v81 error:&v95];
+        v21 = [(MechanismManagerACM *)self loadMechanism:1 initParams:v79 request:requestCopy error:&v95];
         v37 = &v95;
         goto LABEL_68;
       }
@@ -697,16 +697,16 @@ LABEL_80:
   if (v20 == 1)
   {
     v98 = 0;
-    v21 = [(MechanismManagerACM *)self loadMechanism:2 initParams:v79 request:v81 error:&v98];
+    v21 = [(MechanismManagerACM *)self loadMechanism:2 initParams:v79 request:requestCopy error:&v98];
     v25 = v98;
     goto LABEL_38;
   }
 
   if (v20 == 2)
   {
-    [v14 setPassphrasePurpose:{-[MechanismManagerACM _acmPurposeForPolicy:](self, "_acmPurposeForPolicy:", a5)}];
+    [recordCopy setPassphrasePurpose:{-[MechanismManagerACM _acmPurposeForPolicy:](self, "_acmPurposeForPolicy:", policy)}];
     v97 = 0;
-    v21 = [(MechanismManagerACM *)self loadMechanism:2 initParams:v79 request:v81 className:@"MechanismPassphrase" error:&v97];
+    v21 = [(MechanismManagerACM *)self loadMechanism:2 initParams:v79 request:requestCopy className:@"MechanismPassphrase" error:&v97];
     v25 = v97;
 LABEL_38:
     v32 = v25;
@@ -720,7 +720,7 @@ LABEL_60:
   v21 = 0;
   v32 = @"skipping this requirement";
 LABEL_100:
-  if (a9)
+  if (error)
   {
     if (v21)
     {
@@ -732,15 +732,15 @@ LABEL_100:
       v69 = v54;
     }
 
-    *a9 = v69;
+    *error = v69;
   }
 
-  if (a8)
+  if (state)
   {
-    *a8 = v78;
+    *state = v78;
   }
 
-  v70 = [v81 log];
+  v70 = [requestCopy log];
   if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
   {
     if (v21)
@@ -769,17 +769,17 @@ LABEL_113:
   return v21;
 }
 
-- (unint64_t)_acmRequirementPropertyFlags:(__ACMRequirement *)a3
+- (unint64_t)_acmRequirementPropertyFlags:(__ACMRequirement *)flags
 {
-  v3 = [LACACMHelper requirement:a3 uint32Property:100];
-  v4 = [v3 unsignedIntegerValue];
+  v3 = [LACACMHelper requirement:flags uint32Property:100];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (id)_evaluationModeForPolicy:(int64_t)a3
+- (id)_evaluationModeForPolicy:(int64_t)policy
 {
-  if (a3 == 1008)
+  if (policy == 1008)
   {
     return &off_32968;
   }
@@ -790,35 +790,35 @@ LABEL_113:
   }
 }
 
-- (BOOL)_shouldBindBiometricIdentitiesForMechanism:(id)a3 request:(id)a4
+- (BOOL)_shouldBindBiometricIdentitiesForMechanism:(id)mechanism request:(id)request
 {
-  if (!a3)
+  if (!mechanism)
   {
     return 0;
   }
 
-  v4 = [a3 updateConstraintOffset];
-  v5 = [v4 unsignedIntValue] == 0;
+  updateConstraintOffset = [mechanism updateConstraintOffset];
+  v5 = [updateConstraintOffset unsignedIntValue] == 0;
 
   return v5;
 }
 
-- (id)_biometricIdentitiesForRequirement:(__ACMRequirement *)a3 request:(id)a4 error:(id *)a5
+- (id)_biometricIdentitiesForRequirement:(__ACMRequirement *)requirement request:(id)request error:(id *)error
 {
-  v7 = a4;
-  v8 = [LACACMHelper requirement:a3 uint32Property:304];
+  requestCopy = request;
+  v8 = [LACACMHelper requirement:requirement uint32Property:304];
   if (![v8 unsignedIntValue])
   {
     v22 = 0;
     goto LABEL_30;
   }
 
-  v9 = [LACACMHelper requirement:a3 dataProperty:303];
+  v9 = [LACACMHelper requirement:requirement dataProperty:303];
   v10 = (16 * [v8 unsignedIntValue]);
   v11 = [v9 length];
   if (v11 != v10)
   {
-    v21 = [v7 log];
+    v21 = [requestCopy log];
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
@@ -832,7 +832,7 @@ LABEL_113:
   }
 
   v12 = v11;
-  v25 = a5;
+  errorCopy = error;
   v26 = v8;
   v27 = +[NSMutableArray array];
   if (v10)
@@ -847,9 +847,9 @@ LABEL_113:
         if (v15)
         {
           v16 = +[BiometryHelper sharedInstance];
-          v17 = [v16 device];
+          device = [v16 device];
           v28 = 0;
-          v18 = [v17 identityForUUID:v15 error:&v28];
+          v18 = [device identityForUUID:v15 error:&v28];
           v19 = v28;
 
           if (v18)
@@ -859,7 +859,7 @@ LABEL_113:
 
           else
           {
-            v20 = [v7 log];
+            v20 = [requestCopy log];
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
@@ -873,7 +873,7 @@ LABEL_113:
 
         else
         {
-          v19 = [v7 log];
+          v19 = [requestCopy log];
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
@@ -885,7 +885,7 @@ LABEL_113:
 
       else
       {
-        v15 = [v7 log];
+        v15 = [requestCopy log];
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
@@ -905,7 +905,7 @@ LABEL_113:
   v21 = v27;
   if (![v27 count])
   {
-    v23 = [v7 log];
+    v23 = [requestCopy log];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
@@ -914,10 +914,10 @@ LABEL_113:
     }
 
     v8 = v26;
-    if (v25)
+    if (errorCopy)
     {
       [LAErrorHelper errorWithCode:-1 message:@"No bound identity found."];
-      *v25 = v22 = 0;
+      *errorCopy = v22 = 0;
       goto LABEL_29;
     }
 
@@ -936,9 +936,9 @@ LABEL_30:
   return v22;
 }
 
-- (id)_preferedError:(id)a3
+- (id)_preferedError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -957,10 +957,10 @@ LABEL_30:
           objc_enumerationMutation(&off_32BC0);
         }
 
-        v8 = [v3 objectForKeyedSubscript:*(*(&v12 + 1) + 8 * i)];
+        v8 = [errorCopy objectForKeyedSubscript:*(*(&v12 + 1) + 8 * i)];
         if (v8)
         {
-          v10 = v8;
+          nextObject = v8;
           goto LABEL_11;
         }
       }
@@ -975,19 +975,19 @@ LABEL_30:
     }
   }
 
-  v9 = [v3 objectEnumerator];
-  v10 = [v9 nextObject];
+  objectEnumerator = [errorCopy objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
 
 LABEL_11:
 
-  return v10;
+  return nextObject;
 }
 
-- (id)_nonUiSubmechanismsForACMRequirement:(const __ACMRequirement *)a3 acmContextRecord:(id)a4 policy:(int64_t)a5 internalInfo:(id)a6 request:(id)a7 requiredCount:(unint64_t *)a8 error:(id *)a9
+- (id)_nonUiSubmechanismsForACMRequirement:(const __ACMRequirement *)requirement acmContextRecord:(id)record policy:(int64_t)policy internalInfo:(id)info request:(id)request requiredCount:(unint64_t *)count error:(id *)error
 {
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  recordCopy = record;
+  infoCopy = info;
+  requestCopy = request;
   v17 = objc_opt_new();
   v18 = objc_opt_new();
   v50 = 0;
@@ -998,40 +998,40 @@ LABEL_11:
   v48[1] = v48;
   v48[2] = 0x2020000000;
   v49 = 0;
-  v19 = *a8;
+  v19 = *count;
   v46[0] = _NSConcreteStackBlock;
   v46[1] = 3221225472;
   v46[2] = sub_11124;
   v46[3] = &unk_30978;
   v20 = objc_opt_new();
   v47 = v20;
-  ACMRequirementGetSubrequirements(a3, v46);
+  ACMRequirementGetSubrequirements(requirement, v46);
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_11190;
   v34[3] = &unk_30EB8;
   v41 = &v50;
   v34[4] = self;
-  v21 = v14;
+  v21 = recordCopy;
   v35 = v21;
-  v43 = a5;
-  v22 = v15;
+  policyCopy = policy;
+  v22 = infoCopy;
   v36 = v22;
-  v23 = v16;
+  v23 = requestCopy;
   v37 = v23;
   v44 = v19;
   v24 = v20;
   v38 = v24;
   v25 = v18;
-  v45 = a8;
+  countCopy = count;
   v39 = v25;
   v42 = v48;
   v26 = v17;
   v40 = v26;
-  ACMRequirementGetSubrequirements(a3, v34);
-  if ([v25 count] >= *a8)
+  ACMRequirementGetSubrequirements(requirement, v34);
+  if ([v25 count] >= *count)
   {
-    if (*a8)
+    if (*count)
     {
       v27 = 0;
       v29 = 1;
@@ -1045,19 +1045,19 @@ LABEL_11:
   else
   {
     v27 = [(MechanismManagerACM *)self _preferedError:v26];
-    if (*a8 > *(v51[0] + 24))
+    if (*count > *(v51[0] + 24))
     {
       v28 = [v23 log];
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        sub_190FC(a8, v51, v28);
+        sub_190FC(count, v51, v28);
       }
     }
   }
 
   v29 = 0;
 LABEL_10:
-  if (a9)
+  if (error)
   {
     if (v29)
     {
@@ -1069,7 +1069,7 @@ LABEL_10:
       v30 = v27;
     }
 
-    *a9 = v30;
+    *error = v30;
   }
 
   if (v29)
@@ -1088,15 +1088,15 @@ LABEL_10:
   return v31;
 }
 
-- (id)_buildUiForMechanism:(id)a3 policy:(int64_t)a4 internalInfo:(id)a5 uiDelegate:(id)a6 request:(id)a7 error:(id *)a8
+- (id)_buildUiForMechanism:(id)mechanism policy:(int64_t)policy internalInfo:(id)info uiDelegate:(id)delegate request:(id)request error:(id *)error
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v15)
+  mechanismCopy = mechanism;
+  infoCopy = info;
+  delegateCopy = delegate;
+  requestCopy = request;
+  if (delegateCopy)
   {
-    v17 = [v14 objectForKey:@"Options"];
+    v17 = [infoCopy objectForKey:@"Options"];
     v18 = [v17 objectForKey:&off_32920];
     if (!v18)
     {
@@ -1123,45 +1123,45 @@ LABEL_10:
     v18 = 0;
   }
 
-  if ([v13 requiresUiWithEventProcessing:v18])
+  if ([mechanismCopy requiresUiWithEventProcessing:v18])
   {
-    v19 = [[MechanismUI alloc] initWithNonUiMechanism:v13 eventProcessing:v18 policy:a4 internalInfo:v14 request:v16];
+    v19 = [[MechanismUI alloc] initWithNonUiMechanism:mechanismCopy eventProcessing:v18 policy:policy internalInfo:infoCopy request:requestCopy];
   }
 
   else
   {
-    v19 = v13;
+    v19 = mechanismCopy;
   }
 
   v20 = v19;
-  if (a8)
+  if (error)
   {
-    *a8 = 0;
+    *error = 0;
   }
 
   return v20;
 }
 
-- (id)_restrictedNonUiMechanism:(id)a3 availabilityEvents:(id *)a4 policy:(int64_t)a5 internalInfo:(id)a6 request:(id)a7 error:(id *)a8
+- (id)_restrictedNonUiMechanism:(id)mechanism availabilityEvents:(id *)events policy:(int64_t)policy internalInfo:(id)info request:(id)request error:(id *)error
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = v12;
-  if (([v14 isPurposeApplePay] & 1) == 0)
+  mechanismCopy = mechanism;
+  infoCopy = info;
+  requestCopy = request;
+  v15 = mechanismCopy;
+  if (([requestCopy isPurposeApplePay] & 1) == 0)
   {
-    v16 = [v13 objectForKeyedSubscript:@"Options"];
+    v16 = [infoCopy objectForKeyedSubscript:@"Options"];
     v17 = [v16 objectForKeyedSubscript:&off_32A88];
-    v18 = [v17 BOOLValue];
+    bOOLValue = [v17 BOOLValue];
 
-    if (!v18)
+    if (!bOOLValue)
     {
       goto LABEL_4;
     }
   }
 
   v19 = +[BiometryHelper sharedInstance];
-  v20 = [v13 objectForKeyedSubscript:@"UserId"];
+  v20 = [infoCopy objectForKeyedSubscript:@"UserId"];
   v21 = [v19 isBiometryOnForApplePay:v20];
 
   if (v21)
@@ -1181,7 +1181,7 @@ LABEL_4:
     v39[0] = v24;
     v39[1] = v25;
     v28 = [NSArray arrayWithObjects:v39 count:2];
-    v23 = [MechanismKofN mechanismWithK:2 ofSubmechanisms:v28 serial:1 request:v14];
+    v23 = [MechanismKofN mechanismWithK:2 ofSubmechanisms:v28 serial:1 request:requestCopy];
 
 LABEL_18:
     v22 = 0;
@@ -1214,10 +1214,10 @@ LABEL_18:
   v23 = 0;
 LABEL_19:
 
-  if (a4 && v23 != v15)
+  if (events && v23 != v15)
   {
     v30 = objc_opt_new();
-    v31 = [v15 availabilityEventsForPurpose:{objc_msgSend(v14, "purpose")}];
+    v31 = [v15 availabilityEventsForPurpose:{objc_msgSend(requestCopy, "purpose")}];
     v36[0] = _NSConcreteStackBlock;
     v36[1] = 3221225472;
     v36[2] = sub_118E8;
@@ -1229,40 +1229,40 @@ LABEL_19:
     [v31 enumerateKeysAndObjectsUsingBlock:v36];
 
     v33 = v32;
-    *a4 = v32;
+    *events = v32;
   }
 
 LABEL_22:
-  if (a8)
+  if (error)
   {
     v34 = v22;
-    *a8 = v22;
+    *error = v22;
   }
 
   return v23;
 }
 
-- (id)_loadACMMechanismFromPlugin:(int64_t)a3 acmContextRecord:(id)a4 internalInfo:(id)a5 request:(id)a6 error:(id *)a7
+- (id)_loadACMMechanismFromPlugin:(int64_t)plugin acmContextRecord:(id)record internalInfo:(id)info request:(id)request error:(id *)error
 {
-  v12 = a6;
-  v13 = [(MechanismManagerACM *)self _prepareInitParamsUsingInternalInfo:a5 acmContextRecord:a4];
-  v14 = [(MechanismManagerACM *)self _loadACMMechanism:a3 initParams:v13 request:v12 error:a7];
+  requestCopy = request;
+  v13 = [(MechanismManagerACM *)self _prepareInitParamsUsingInternalInfo:info acmContextRecord:record];
+  v14 = [(MechanismManagerACM *)self _loadACMMechanism:plugin initParams:v13 request:requestCopy error:error];
 
   return v14;
 }
 
-- (id)_loadACMMechanism:(int64_t)a3 initParams:(id)a4 request:(id)a5 error:(id *)a6
+- (id)_loadACMMechanism:(int64_t)mechanism initParams:(id)params request:(id)request error:(id *)error
 {
-  v7 = [(MechanismManagerACM *)self loadMechanism:a3 initParams:a4 request:a5 className:0 error:a6];
+  v7 = [(MechanismManagerACM *)self loadMechanism:mechanism initParams:params request:request className:0 error:error];
   if (v7)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a6)
+      if (error)
       {
         v8 = [NSString stringWithFormat:@"Unexpected mechanism class: %@", v7];
-        *a6 = [LAErrorHelper internalErrorWithMessage:v8];
+        *error = [LAErrorHelper internalErrorWithMessage:v8];
       }
 
       v7 = 0;
@@ -1272,13 +1272,13 @@ LABEL_22:
   return v7;
 }
 
-- (id)_prepareInitParamsUsingInternalInfo:(id)a3 acmContextRecord:(id)a4
+- (id)_prepareInitParamsUsingInternalInfo:(id)info acmContextRecord:(id)record
 {
   v10[0] = @"AcmContextRecord";
   v10[1] = @"UserId";
-  v11[0] = a4;
-  v5 = a4;
-  v6 = [a3 objectForKeyedSubscript:@"UserId"];
+  v11[0] = record;
+  recordCopy = record;
+  v6 = [info objectForKeyedSubscript:@"UserId"];
   v11[1] = v6;
   v7 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:2];
 

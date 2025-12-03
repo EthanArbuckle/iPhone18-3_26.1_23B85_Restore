@@ -1,37 +1,37 @@
 @interface OspreyPreferences
-- (OspreyPreferences)initWithKeychain:(id)a3;
-- (id)connectionPreferencesForHost:(id)a3;
+- (OspreyPreferences)initWithKeychain:(id)keychain;
+- (id)connectionPreferencesForHost:(id)host;
 - (id)connections;
-- (void)deleteConnectionPreferencesForHost:(id)a3;
-- (void)setConnectionPreferences:(id)a3;
+- (void)deleteConnectionPreferencesForHost:(id)host;
+- (void)setConnectionPreferences:(id)preferences;
 @end
 
 @implementation OspreyPreferences
 
-- (OspreyPreferences)initWithKeychain:(id)a3
+- (OspreyPreferences)initWithKeychain:(id)keychain
 {
-  v5 = a3;
+  keychainCopy = keychain;
   v9.receiver = self;
   v9.super_class = OspreyPreferences;
   v6 = [(OspreyPreferences *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_keychain, a3);
+    objc_storeStrong(&v6->_keychain, keychain);
   }
 
   return v7;
 }
 
-- (id)connectionPreferencesForHost:(id)a3
+- (id)connectionPreferencesForHost:(id)host
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  hostCopy = host;
+  v5 = hostCopy;
+  if (hostCopy)
   {
-    v6 = [v4 lowercaseString];
+    lowercaseString = [hostCopy lowercaseString];
     v7 = CFPreferencesCopyAppValue(@"Connections", @"com.apple.osprey");
-    v8 = [v7 objectForKey:v6];
+    v8 = [v7 objectForKey:lowercaseString];
     v9 = [OspreyConnectionPreferences alloc];
     keychain = self->_keychain;
     if (v8)
@@ -55,37 +55,37 @@
   return v12;
 }
 
-- (void)deleteConnectionPreferencesForHost:(id)a3
+- (void)deleteConnectionPreferencesForHost:(id)host
 {
-  v9 = a3;
+  hostCopy = host;
   v4 = CFPreferencesCopyAppValue(@"Connections", @"com.apple.osprey");
   v5 = [v4 mutableCopy];
 
   if (v5)
   {
-    v6 = [v9 lowercaseString];
-    v7 = [v5 objectForKey:v6];
+    lowercaseString = [hostCopy lowercaseString];
+    v7 = [v5 objectForKey:lowercaseString];
     if (v7)
     {
       v8 = [[OspreyConnectionPreferences alloc] initWithDictionary:v7 keychain:self->_keychain];
       [(OspreyConnectionPreferences *)v8 deleteAll];
 
-      [v5 removeObjectForKey:v6];
+      [v5 removeObjectForKey:lowercaseString];
       CFPreferencesSetAppValue(@"Connections", v5, @"com.apple.osprey");
     }
   }
 }
 
-- (void)setConnectionPreferences:(id)a3
+- (void)setConnectionPreferences:(id)preferences
 {
-  v10 = a3;
-  v3 = [v10 connectionHost];
+  preferencesCopy = preferences;
+  connectionHost = [preferencesCopy connectionHost];
 
-  v4 = v10;
-  if (v3)
+  v4 = preferencesCopy;
+  if (connectionHost)
   {
-    v5 = [v10 connectionHost];
-    v6 = [v5 lowercaseString];
+    connectionHost2 = [preferencesCopy connectionHost];
+    lowercaseString = [connectionHost2 lowercaseString];
 
     v7 = CFPreferencesCopyAppValue(@"Connections", @"com.apple.osprey");
     v8 = [v7 mutableCopy];
@@ -95,20 +95,20 @@
       v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     }
 
-    v9 = [v10 dictionaryRepresentation];
-    if (v9)
+    dictionaryRepresentation = [preferencesCopy dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v8 setValue:v9 forKey:v6];
+      [v8 setValue:dictionaryRepresentation forKey:lowercaseString];
     }
 
     else
     {
-      [v8 removeObjectForKey:v6];
+      [v8 removeObjectForKey:lowercaseString];
     }
 
     CFPreferencesSetAppValue(@"Connections", v8, @"com.apple.osprey");
 
-    v4 = v10;
+    v4 = preferencesCopy;
   }
 }
 
@@ -121,8 +121,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v3 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [v3 allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -133,7 +133,7 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
@@ -144,7 +144,7 @@
         [v4 addObject:v13];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);

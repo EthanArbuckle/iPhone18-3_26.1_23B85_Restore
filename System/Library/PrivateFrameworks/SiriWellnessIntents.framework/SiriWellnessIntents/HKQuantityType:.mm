@@ -9,7 +9,7 @@
 {
   MEMORY[0x277D82BE0](a2);
   MEMORY[0x277D82BE0](a3);
-  v10 = *__swift_project_boxed_opaque_existential_1((a1 + 32), *(a1 + 56));
+  v10 = *__swift_project_boxed_opaque_existential_1((self + 32), *(self + 56));
   if (a3)
   {
     v5 = a3;

@@ -1,24 +1,24 @@
 @interface ExitReasonLayer
 - (CGSize)preferredFrameSize;
-- (ExitReasonLayer)initWithNamespaceLayer:(id)a3 codeLayer:(id)a4;
+- (ExitReasonLayer)initWithNamespaceLayer:(id)layer codeLayer:(id)codeLayer;
 - (void)layoutSublayers;
 - (void)nilifyCALayers;
 @end
 
 @implementation ExitReasonLayer
 
-- (ExitReasonLayer)initWithNamespaceLayer:(id)a3 codeLayer:(id)a4
+- (ExitReasonLayer)initWithNamespaceLayer:(id)layer codeLayer:(id)codeLayer
 {
-  v7 = a3;
-  v8 = a4;
+  layerCopy = layer;
+  codeLayerCopy = codeLayer;
   v12.receiver = self;
   v12.super_class = ExitReasonLayer;
   v9 = [(ExitReasonLayer *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_exitReasonNamespaceTextLayer, a3);
-    objc_storeStrong(&v10->_exitReasonCodeTextLayer, a4);
+    objc_storeStrong(&v9->_exitReasonNamespaceTextLayer, layer);
+    objc_storeStrong(&v10->_exitReasonCodeTextLayer, codeLayer);
     [(ExitReasonLayer *)v10 addSublayer:v10->_exitReasonNamespaceTextLayer];
     [(ExitReasonLayer *)v10 addSublayer:v10->_exitReasonCodeTextLayer];
     v10->_spaceBetweenTextLayers = sub_100017378();
@@ -44,14 +44,14 @@
   v13 = 0;
   v14 = 0;
   v12 = &unk_10002305A;
-  v3 = [(ExitReasonLayer *)self sublayers];
+  sublayers = [(ExitReasonLayer *)self sublayers];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000BFC4;
   v8[3] = &unk_100030CF0;
   v8[4] = self;
   v8[5] = &v9;
-  [v3 enumerateObjectsUsingBlock:v8];
+  [sublayers enumerateObjectsUsingBlock:v8];
 
   v4 = v10[4];
   v5 = v10[5];

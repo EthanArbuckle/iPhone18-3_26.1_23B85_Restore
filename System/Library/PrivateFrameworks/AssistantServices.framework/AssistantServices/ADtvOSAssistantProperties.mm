@@ -1,18 +1,18 @@
 @interface ADtvOSAssistantProperties
-- (ADtvOSAssistantProperties)initWithQueue:(id)a3;
+- (ADtvOSAssistantProperties)initWithQueue:(id)queue;
 - (BOOL)_getIsAdaptiveVolumeEnabled;
 - (BOOL)_getIsPermanentOffsetEnabled;
 - (BOOL)_getIsPersonalDomainsEnabled;
 - (float)_getPermanentOffsetFactor;
 - (id)_getODDAdaptiveVolumeProperties;
 - (id)_getODDHomePodProperties;
-- (id)_getODDMultiUserSetupStatusFrom:(id)a3;
+- (id)_getODDMultiUserSetupStatusFrom:(id)from;
 - (int)_getAdaptiveVolumeUserIntent;
-- (void)_getMultiUserSetupStatusWithCompletion:(id)a3;
-- (void)_getODDMultiUserStateWithCompletion:(id)a3;
-- (void)_getODDUserPersonalizationArrayWithCompletion:(id)a3;
-- (void)_getODDUserPersonalizationForSharedUser:(id)a3 withCompletion:(id)a4;
-- (void)getODDtvOSAssistantPropertiesWithCompletion:(id)a3;
+- (void)_getMultiUserSetupStatusWithCompletion:(id)completion;
+- (void)_getODDMultiUserStateWithCompletion:(id)completion;
+- (void)_getODDUserPersonalizationArrayWithCompletion:(id)completion;
+- (void)_getODDUserPersonalizationForSharedUser:(id)user withCompletion:(id)completion;
+- (void)getODDtvOSAssistantPropertiesWithCompletion:(id)completion;
 @end
 
 @implementation ADtvOSAssistantProperties
@@ -32,9 +32,9 @@
 - (BOOL)_getIsPermanentOffsetEnabled
 {
   v2 = +[CSPreferences sharedPreferences];
-  v3 = [v2 isAdaptiveSiriVolumePermanentOffsetEnabled];
+  isAdaptiveSiriVolumePermanentOffsetEnabled = [v2 isAdaptiveSiriVolumePermanentOffsetEnabled];
 
-  return v3;
+  return isAdaptiveSiriVolumePermanentOffsetEnabled;
 }
 
 - (int)_getAdaptiveVolumeUserIntent
@@ -42,10 +42,10 @@
   v2 = +[CSPreferences sharedPreferences];
   v3 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v2 adaptiveSiriVolumeRecentIntent]);
 
-  v4 = [v3 intValue];
-  if (v4 - 1 < 3)
+  intValue = [v3 intValue];
+  if (intValue - 1 < 3)
   {
-    v5 = v4 + 1;
+    v5 = intValue + 1;
   }
 
   else
@@ -59,31 +59,31 @@
 - (BOOL)_getIsAdaptiveVolumeEnabled
 {
   v2 = +[CSPreferences sharedPreferences];
-  v3 = [v2 smartSiriVolumeContextAwareEnabled];
+  smartSiriVolumeContextAwareEnabled = [v2 smartSiriVolumeContextAwareEnabled];
 
-  return v3;
+  return smartSiriVolumeContextAwareEnabled;
 }
 
 - (BOOL)_getIsPersonalDomainsEnabled
 {
   v2 = +[ADMultiUserService sharedService];
-  v3 = [v2 primaryUser];
-  v4 = [v3 personalDomainsIsEnabled];
+  primaryUser = [v2 primaryUser];
+  personalDomainsIsEnabled = [primaryUser personalDomainsIsEnabled];
 
-  return v4;
+  return personalDomainsIsEnabled;
 }
 
-- (void)_getMultiUserSetupStatusWithCompletion:(id)a3
+- (void)_getMultiUserSetupStatusWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (id)_getODDMultiUserSetupStatusFrom:(id)a3
+- (id)_getODDMultiUserSetupStatusFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -93,15 +93,15 @@
   }
 
   v5 = objc_alloc_init(ODDSiriSchemaODDMultiUserSetupStatus);
-  [v5 setNumGuestsAccepted:{objc_msgSend(v3, "numGuestsAccepted")}];
-  [v5 setNumParticipantsWithTrust:{objc_msgSend(v3, "numParticipantsWithTrust")}];
-  [v5 setNumUsersWhoSyncedRecognizeMyVoice:{objc_msgSend(v3, "numUsersWhoSyncedRecognizeMyVoice")}];
-  [v5 setNumUsersWithRecognizeMyVoiceEnabled:{objc_msgSend(v3, "numUsersWithRecognizeMyVoiceEnabled")}];
-  [v5 setNumVoiceProfilesAvailable:{objc_msgSend(v3, "numVoiceProfilesAvailable")}];
-  [v5 setNumUsersWithPersonalRequestsEnabled:{objc_msgSend(v3, "numUsersWithPersonalRequestsEnabled")}];
-  [v5 setNumUsersWithMatchingSiriLanguage:{objc_msgSend(v3, "numUsersWithMatchingSiriLanguage")}];
-  [v5 setNumUsersWithSiriCloudSyncEnabled:{objc_msgSend(v3, "numUsersWithSiriCloudSyncEnabled")}];
-  [v5 setNumUsersWithLocationServicesEnabled:{objc_msgSend(v3, "numUsersWithLocationServicesEnabled")}];
+  [v5 setNumGuestsAccepted:{objc_msgSend(fromCopy, "numGuestsAccepted")}];
+  [v5 setNumParticipantsWithTrust:{objc_msgSend(fromCopy, "numParticipantsWithTrust")}];
+  [v5 setNumUsersWhoSyncedRecognizeMyVoice:{objc_msgSend(fromCopy, "numUsersWhoSyncedRecognizeMyVoice")}];
+  [v5 setNumUsersWithRecognizeMyVoiceEnabled:{objc_msgSend(fromCopy, "numUsersWithRecognizeMyVoiceEnabled")}];
+  [v5 setNumVoiceProfilesAvailable:{objc_msgSend(fromCopy, "numVoiceProfilesAvailable")}];
+  [v5 setNumUsersWithPersonalRequestsEnabled:{objc_msgSend(fromCopy, "numUsersWithPersonalRequestsEnabled")}];
+  [v5 setNumUsersWithMatchingSiriLanguage:{objc_msgSend(fromCopy, "numUsersWithMatchingSiriLanguage")}];
+  [v5 setNumUsersWithSiriCloudSyncEnabled:{objc_msgSend(fromCopy, "numUsersWithSiriCloudSyncEnabled")}];
+  [v5 setNumUsersWithLocationServicesEnabled:{objc_msgSend(fromCopy, "numUsersWithLocationServicesEnabled")}];
 
   return v5;
 }
@@ -137,18 +137,18 @@
   }
 
   v4 = objc_alloc_init(ODDSiriSchemaODDHomePodProperties);
-  v5 = [(ADtvOSAssistantProperties *)self _getODDAdaptiveVolumeProperties];
-  [v4 setAdaptiveVolume:v5];
+  _getODDAdaptiveVolumeProperties = [(ADtvOSAssistantProperties *)self _getODDAdaptiveVolumeProperties];
+  [v4 setAdaptiveVolume:_getODDAdaptiveVolumeProperties];
 
   [v4 setIsPersonalDomainsEnabled:{-[ADtvOSAssistantProperties _getIsPersonalDomainsEnabled](self, "_getIsPersonalDomainsEnabled")}];
 
   return v4;
 }
 
-- (void)_getODDUserPersonalizationForSharedUser:(id)a3 withCompletion:(id)a4
+- (void)_getODDUserPersonalizationForSharedUser:(id)user withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  completionCopy = completion;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -158,9 +158,9 @@
   }
 
   v9 = objc_alloc_init(ODDSiriSchemaODDUserPersonalization);
-  [v9 setIsPersonalDomainRequestsEnabled:{objc_msgSend(v6, "personalDomainsIsEnabled")}];
-  v10 = [(ADtvOSAssistantProperties *)self _getVoiceSettings];
-  [v9 setVoiceSettings:v10];
+  [v9 setIsPersonalDomainRequestsEnabled:{objc_msgSend(userCopy, "personalDomainsIsEnabled")}];
+  _getVoiceSettings = [(ADtvOSAssistantProperties *)self _getVoiceSettings];
+  [v9 setVoiceSettings:_getVoiceSettings];
 
   queue = self->_queue;
   v14[0] = _NSConcreteStackBlock;
@@ -168,15 +168,15 @@
   v14[2] = sub_100136DA4;
   v14[3] = &unk_10051DD70;
   v15 = v9;
-  v16 = v7;
-  v12 = v7;
+  v16 = completionCopy;
+  v12 = completionCopy;
   v13 = v9;
   [ADDevicePropertiesUtils fetchActiveSubscriptionsWithQueue:queue completion:v14];
 }
 
-- (void)_getODDUserPersonalizationArrayWithCompletion:(id)a3
+- (void)_getODDUserPersonalizationArrayWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -187,20 +187,20 @@
 
   v5 = dispatch_group_create();
   v6 = +[ADMultiUserService sharedService];
-  v7 = [v6 sharedUsersBySharedUserID];
-  v8 = [v7 count];
+  sharedUsersBySharedUserID = [v6 sharedUsersBySharedUserID];
+  v8 = [sharedUsersBySharedUserID count];
 
   v9 = &qword_1003F0000;
   if (v8)
   {
-    v22 = v3;
+    v22 = completionCopy;
     v10 = [[NSMutableArray alloc] initWithCapacity:1];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v11 = [v6 sharedUsersBySharedUserID];
-    v12 = [v11 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    sharedUsersBySharedUserID2 = [v6 sharedUsersBySharedUserID];
+    v12 = [sharedUsersBySharedUserID2 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v12)
     {
       v13 = v12;
@@ -212,12 +212,12 @@
         {
           if (*v31 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(sharedUsersBySharedUserID2);
           }
 
           v16 = *(*(&v30 + 1) + 8 * v15);
-          v17 = [v6 sharedUsersBySharedUserID];
-          v18 = [v17 objectForKey:v16];
+          sharedUsersBySharedUserID3 = [v6 sharedUsersBySharedUserID];
+          v18 = [sharedUsersBySharedUserID3 objectForKey:v16];
 
           if (v18)
           {
@@ -235,13 +235,13 @@
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v13 = [sharedUsersBySharedUserID2 countByEnumeratingWithState:&v30 objects:v34 count:16];
       }
 
       while (v13);
     }
 
-    v3 = v22;
+    completionCopy = v22;
     v9 = &qword_1003F0000;
   }
 
@@ -256,15 +256,15 @@
   block[2] = sub_10013714C;
   block[3] = &unk_10051E038;
   v25 = v10;
-  v26 = v3;
+  v26 = completionCopy;
   v20 = v10;
-  v21 = v3;
+  v21 = completionCopy;
   dispatch_group_notify(v5, queue, block);
 }
 
-- (void)_getODDMultiUserStateWithCompletion:(id)a3
+- (void)_getODDMultiUserStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -301,15 +301,15 @@
   v15[2] = sub_100137440;
   v15[3] = &unk_10051E038;
   v16 = v10;
-  v17 = v4;
+  v17 = completionCopy;
   v13 = v10;
-  v14 = v4;
+  v14 = completionCopy;
   dispatch_group_notify(v11, queue, v15);
 }
 
-- (void)getODDtvOSAssistantPropertiesWithCompletion:(id)a3
+- (void)getODDtvOSAssistantPropertiesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -319,30 +319,30 @@
   }
 
   v6 = objc_alloc_init(ODDSiriSchemaODDtvOSAssistantProperties);
-  v7 = [(ADtvOSAssistantProperties *)self _getODDHomePodProperties];
-  [v6 setHomePodProperties:v7];
+  _getODDHomePodProperties = [(ADtvOSAssistantProperties *)self _getODDHomePodProperties];
+  [v6 setHomePodProperties:_getODDHomePodProperties];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001375CC;
   v10[3] = &unk_100512A38;
   v11 = v6;
-  v12 = v4;
-  v8 = v4;
+  v12 = completionCopy;
+  v8 = completionCopy;
   v9 = v6;
   [(ADtvOSAssistantProperties *)self _getODDMultiUserStateWithCompletion:v10];
 }
 
-- (ADtvOSAssistantProperties)initWithQueue:(id)a3
+- (ADtvOSAssistantProperties)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = ADtvOSAssistantProperties;
   v6 = [(ADtvOSAssistantProperties *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;

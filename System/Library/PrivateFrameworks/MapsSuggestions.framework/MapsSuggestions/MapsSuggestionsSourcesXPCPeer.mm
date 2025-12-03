@@ -1,25 +1,25 @@
 @interface MapsSuggestionsSourcesXPCPeer
-- (MapsSuggestionsSourcesXPCPeer)initWithXPCConnection:(id)a3 sourceWrapper:(id)a4 graph:(id)a5;
+- (MapsSuggestionsSourcesXPCPeer)initWithXPCConnection:(id)connection sourceWrapper:(id)wrapper graph:(id)graph;
 - (NSString)description;
 - (void)_stopMonitoring;
 - (void)dealloc;
-- (void)feedbackForContact:(id)a3 action:(int64_t)a4;
-- (void)feedbackForEntryData:(id)a3 action:(int64_t)a4;
-- (void)feedbackForMapItem:(id)a3 action:(int64_t)a4;
-- (void)forceEarlyUpdateForType:(int64_t)a3 handler:(id)a4;
-- (void)removeEntryData:(id)a3 behavior:(int64_t)a4 handler:(id)a5;
-- (void)startMonitoringWithHandler:(id)a3;
-- (void)stopMonitoringWithHandler:(id)a3;
-- (void)updateGraphWithHandler:(id)a3;
+- (void)feedbackForContact:(id)contact action:(int64_t)action;
+- (void)feedbackForEntryData:(id)data action:(int64_t)action;
+- (void)feedbackForMapItem:(id)item action:(int64_t)action;
+- (void)forceEarlyUpdateForType:(int64_t)type handler:(id)handler;
+- (void)removeEntryData:(id)data behavior:(int64_t)behavior handler:(id)handler;
+- (void)startMonitoringWithHandler:(id)handler;
+- (void)stopMonitoringWithHandler:(id)handler;
+- (void)updateGraphWithHandler:(id)handler;
 @end
 
 @implementation MapsSuggestionsSourcesXPCPeer
 
-- (MapsSuggestionsSourcesXPCPeer)initWithXPCConnection:(id)a3 sourceWrapper:(id)a4 graph:(id)a5
+- (MapsSuggestionsSourcesXPCPeer)initWithXPCConnection:(id)connection sourceWrapper:(id)wrapper graph:(id)graph
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  connectionCopy = connection;
+  wrapperCopy = wrapper;
+  graphCopy = graph;
   v20.receiver = self;
   v20.super_class = MapsSuggestionsSourcesXPCPeer;
   v12 = [(MapsSuggestionsSourcesXPCPeer *)&v20 init];
@@ -30,15 +30,15 @@
     queue = v12->_queue;
     v12->_queue = v14;
 
-    objc_storeStrong(&v12->_connection, a3);
-    objc_storeStrong(&v12->_wrapper, a4);
-    objc_storeStrong(&v12->_graph, a5);
+    objc_storeStrong(&v12->_connection, connection);
+    objc_storeStrong(&v12->_wrapper, wrapper);
+    objc_storeStrong(&v12->_graph, graph);
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       connection = v12->_connection;
       *buf = 138412290;
-      v22 = connection;
+      connectionCopy2 = connection;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "SourcesXPCPeer{%@} created.", buf, 0xCu);
     }
 
@@ -48,12 +48,12 @@
   return v12;
 }
 
-- (void)startMonitoringWithHandler:(id)a3
+- (void)startMonitoringWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = GEOFindOrCreateLog();
   v6 = v5;
-  if (v4)
+  if (handlerCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -63,7 +63,7 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "SourcesXPCPeer{%@} Received start...", buf, 0xCu);
     }
 
-    v8 = [v4 copy];
+    v8 = [handlerCopy copy];
     objc_initWeak(buf, self);
     queue = self->_queue;
     v11[0] = _NSConcreteStackBlock;
@@ -96,12 +96,12 @@
   }
 }
 
-- (void)stopMonitoringWithHandler:(id)a3
+- (void)stopMonitoringWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = GEOFindOrCreateLog();
   v6 = v5;
-  if (v4)
+  if (handlerCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -117,7 +117,7 @@
     v9[2] = sub_10002746C;
     v9[3] = &unk_100075BB0;
     v9[4] = self;
-    v10 = v4;
+    v10 = handlerCopy;
     dispatch_async(queue, v9);
     v6 = v10;
   }
@@ -136,12 +136,12 @@
   }
 }
 
-- (void)forceEarlyUpdateForType:(int64_t)a3 handler:(id)a4
+- (void)forceEarlyUpdateForType:(int64_t)type handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = GEOFindOrCreateLog();
   v8 = v7;
-  if (v6)
+  if (handlerCopy)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
@@ -149,7 +149,7 @@
       *buf = 138412546;
       v15 = connection;
       v16 = 1024;
-      v17 = a3;
+      typeCopy = type;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "SourcesXPCPeer{%@} Received forceEarlyUpdateForType:%d...", buf, 0x12u);
     }
 
@@ -160,8 +160,8 @@
     block[2] = sub_1000276A8;
     block[3] = &unk_100075BD8;
     objc_copyWeak(v13, buf);
-    v13[1] = a3;
-    v12 = v6;
+    v13[1] = type;
+    v12 = handlerCopy;
     dispatch_async(queue, block);
 
     objc_destroyWeak(v13);
@@ -175,7 +175,7 @@
       *buf = 136446978;
       v15 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/destinationd/MapsSuggestionsSourcesServer.m";
       v16 = 1024;
-      v17 = 157;
+      typeCopy = 157;
       v18 = 2082;
       v19 = "[MapsSuggestionsSourcesXPCPeer forceEarlyUpdateForType:handler:]";
       v20 = 2082;
@@ -185,13 +185,13 @@
   }
 }
 
-- (void)removeEntryData:(id)a3 behavior:(int64_t)a4 handler:(id)a5
+- (void)removeEntryData:(id)data behavior:(int64_t)behavior handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  handlerCopy = handler;
   v10 = GEOFindOrCreateLog();
   v11 = v10;
-  if (v9)
+  if (handlerCopy)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
@@ -208,9 +208,9 @@
     v14[2] = sub_100027A2C;
     v14[3] = &unk_100075C00;
     objc_copyWeak(v17, buf);
-    v15 = v8;
-    v17[1] = a4;
-    v16 = v9;
+    v15 = dataCopy;
+    v17[1] = behavior;
+    v16 = handlerCopy;
     dispatch_async(queue, v14);
 
     objc_destroyWeak(v17);
@@ -234,9 +234,9 @@
   }
 }
 
-- (void)feedbackForEntryData:(id)a3 action:(int64_t)a4
+- (void)feedbackForEntryData:(id)data action:(int64_t)action
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -253,18 +253,18 @@
   block[2] = sub_100027D04;
   block[3] = &unk_100075468;
   objc_copyWeak(v13, buf);
-  v12 = v6;
-  v13[1] = a4;
-  v10 = v6;
+  v12 = dataCopy;
+  v13[1] = action;
+  v10 = dataCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(v13);
   objc_destroyWeak(buf);
 }
 
-- (void)feedbackForMapItem:(id)a3 action:(int64_t)a4
+- (void)feedbackForMapItem:(id)item action:(int64_t)action
 {
-  v6 = a3;
+  itemCopy = item;
   v7 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -281,18 +281,18 @@
   block[2] = sub_100027FDC;
   block[3] = &unk_100075468;
   objc_copyWeak(v13, buf);
-  v12 = v6;
-  v13[1] = a4;
-  v10 = v6;
+  v12 = itemCopy;
+  v13[1] = action;
+  v10 = itemCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(v13);
   objc_destroyWeak(buf);
 }
 
-- (void)feedbackForContact:(id)a3 action:(int64_t)a4
+- (void)feedbackForContact:(id)contact action:(int64_t)action
 {
-  v6 = a3;
+  contactCopy = contact;
   v7 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -309,9 +309,9 @@
   block[2] = sub_1000282B4;
   block[3] = &unk_100075468;
   objc_copyWeak(v13, buf);
-  v12 = v6;
-  v13[1] = a4;
-  v10 = v6;
+  v12 = contactCopy;
+  v13[1] = action;
+  v10 = contactCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(v13);
@@ -350,12 +350,12 @@
   [(NSXPCConnection *)self->_connection invalidate];
 }
 
-- (void)updateGraphWithHandler:(id)a3
+- (void)updateGraphWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = GEOFindOrCreateLog();
   v6 = v5;
-  if (v4)
+  if (handlerCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -374,7 +374,7 @@
       v9[2] = sub_100028780;
       v9[3] = &unk_100075B88;
       objc_copyWeak(&v11, buf);
-      v10 = v4;
+      v10 = handlerCopy;
       dispatch_async(queue, v9);
 
       objc_destroyWeak(&v11);
@@ -383,7 +383,7 @@
 
     else
     {
-      (*(v4 + 2))(v4, 1);
+      (*(handlerCopy + 2))(handlerCopy, 1);
     }
   }
 
@@ -434,8 +434,8 @@
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(MapsSuggestionsSourcesXPCPeer *)self connection];
-  v6 = [v5 debugDescription];
+  connection = [(MapsSuggestionsSourcesXPCPeer *)self connection];
+  v6 = [connection debugDescription];
   v7 = [v3 initWithFormat:@"%@<%p> from %@ to %@", v4, self, v6, self->_wrapper];
 
   return v7;

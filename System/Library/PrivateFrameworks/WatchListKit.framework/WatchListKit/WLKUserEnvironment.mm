@@ -1,7 +1,7 @@
 @interface WLKUserEnvironment
 + (id)currentEnvironment;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEnvironment:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEnvironment:(id)environment;
 - (BOOL)isRunningInTVAppExtension;
 - (BOOL)isRunningInTVExtension;
 - (WLKUserEnvironment)init;
@@ -38,19 +38,19 @@
   if (v2)
   {
     v2->_protocolVersion = WLKCurrentProtocolVersion();
-    v3 = [MEMORY[0x277D6C478] activeOrLocalAccount];
-    v4 = [v3 ams_DSID];
+    activeOrLocalAccount = [MEMORY[0x277D6C478] activeOrLocalAccount];
+    ams_DSID = [activeOrLocalAccount ams_DSID];
     DSID = v2->_DSID;
-    v2->_DSID = v4;
+    v2->_DSID = ams_DSID;
 
-    v6 = [v3 ams_storefront];
+    ams_storefront = [activeOrLocalAccount ams_storefront];
     storeFrontIdentifier = v2->_storeFrontIdentifier;
-    v2->_storeFrontIdentifier = v6;
+    v2->_storeFrontIdentifier = ams_storefront;
 
     v8 = +[WLKAppLibrary defaultAppLibrary];
-    v9 = [v8 dictionaryRepresentation];
+    dictionaryRepresentation = [v8 dictionaryRepresentation];
     entitlements = v2->_entitlements;
-    v2->_entitlements = v9;
+    v2->_entitlements = dictionaryRepresentation;
 
     v11 = WLKRestrictionsCountryCode();
     countryCode = v2->_countryCode;
@@ -68,13 +68,13 @@
     restrictions = v2->_restrictions;
     v2->_restrictions = v17;
 
-    v19 = [MEMORY[0x277CBEAF8] currentLocale];
-    v20 = [v19 objectForKey:*MEMORY[0x277CBE6C8]];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v20 = [currentLocale objectForKey:*MEMORY[0x277CBE6C8]];
     languageIdentifier = v2->_languageIdentifier;
     v2->_languageIdentifier = v20;
 
-    v22 = [MEMORY[0x277CBEAF8] currentLocale];
-    v23 = [v22 objectForKey:*MEMORY[0x277CBE690]];
+    currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+    v23 = [currentLocale2 objectForKey:*MEMORY[0x277CBE690]];
     countryIdentifier = v2->_countryIdentifier;
     v2->_countryIdentifier = v23;
 
@@ -86,14 +86,14 @@
     if (v2->_DSID)
     {
       v25 = +[WLKSettingsStore sharedSettings];
-      v26 = [v25 deniedBrands];
+      deniedBrands = [v25 deniedBrands];
       deniedBrands = v2->_deniedBrands;
-      v2->_deniedBrands = v26;
+      v2->_deniedBrands = deniedBrands;
 
       v28 = +[WLKSettingsStore sharedSettings];
-      v29 = [v28 consentedBrands];
+      consentedBrands = [v28 consentedBrands];
       consentedBrands = v2->_consentedBrands;
-      v2->_consentedBrands = v29;
+      v2->_consentedBrands = consentedBrands;
 
       v31 = +[WLKSettingsStore sharedSettings];
       v2->_consented = [v31 optedIn];
@@ -115,9 +115,9 @@
     {
       if ([(WLKUserEnvironment *)v2 isRunningInTVExtension])
       {
-        v35 = [(WLKUserEnvironment *)v2 isRunningInTVAppExtension];
+        isRunningInTVAppExtension = [(WLKUserEnvironment *)v2 isRunningInTVAppExtension];
         v36 = @"iPhone-extension";
-        if (v35)
+        if (isRunningInTVAppExtension)
         {
           v36 = @"vision-companion";
         }
@@ -136,9 +136,9 @@
     {
       if ([(WLKUserEnvironment *)v2 isRunningInTVExtension])
       {
-        v38 = [(WLKUserEnvironment *)v2 isRunningInTVAppExtension];
+        isRunningInTVAppExtension2 = [(WLKUserEnvironment *)v2 isRunningInTVAppExtension];
         v39 = @"iPad-extension";
-        if (v38)
+        if (isRunningInTVAppExtension2)
         {
           v39 = @"vision-companion";
         }
@@ -183,27 +183,27 @@ LABEL_28:
 
 - (BOOL)isRunningInTVExtension
 {
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v5 = [(WLKUserEnvironment *)self tvExtensionBundleIDs];
-  LOBYTE(v3) = [v5 containsObject:v4];
+  tvExtensionBundleIDs = [(WLKUserEnvironment *)self tvExtensionBundleIDs];
+  LOBYTE(mainBundle) = [tvExtensionBundleIDs containsObject:bundleIdentifier];
 
-  return v3;
+  return mainBundle;
 }
 
 - (unint64_t)hash
 {
   v3 = objc_opt_new();
-  v4 = [(WLKUserEnvironment *)self _queryParametersV3];
-  v5 = [(WLKUserEnvironment *)self _queryPostV3];
-  [v3 wlk_setObjectUnlessNilOrEmpty:v4 forKey:@"params"];
-  [v3 wlk_setObjectUnlessNilOrEmpty:v5 forKey:@"post"];
+  _queryParametersV3 = [(WLKUserEnvironment *)self _queryParametersV3];
+  _queryPostV3 = [(WLKUserEnvironment *)self _queryPostV3];
+  [v3 wlk_setObjectUnlessNilOrEmpty:_queryParametersV3 forKey:@"params"];
+  [v3 wlk_setObjectUnlessNilOrEmpty:_queryPostV3 forKey:@"post"];
   [v3 wlk_setObjectUnlessNil:self->_DSID forKey:@"account"];
   [v3 wlk_setObjectUnlessNil:self->_languageIdentifier forKey:@"language"];
-  v6 = [v3 wlk_deepHash];
+  wlk_deepHash = [v3 wlk_deepHash];
 
-  return v6;
+  return wlk_deepHash;
 }
 
 - (id)_queryParametersV3
@@ -211,37 +211,37 @@ LABEL_28:
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", -[WLKUserEnvironment protocolVersion](self, "protocolVersion")];
   [v3 wlk_setObjectUnlessNil:v4 forKey:@"v"];
-  v5 = [(WLKUserEnvironment *)self platform];
-  [v3 wlk_setObjectUnlessNil:v5 forKey:@"pfm"];
+  platform = [(WLKUserEnvironment *)self platform];
+  [v3 wlk_setObjectUnlessNil:platform forKey:@"pfm"];
 
   [v3 wlk_setObjectUnlessNil:self->_countryIdentifier forKey:@"region"];
-  v6 = [(WLKUserEnvironment *)self storeFrontIdentifier];
-  [v3 wlk_setObjectUnlessNil:v6 forKey:@"sfh"];
+  storeFrontIdentifier = [(WLKUserEnvironment *)self storeFrontIdentifier];
+  [v3 wlk_setObjectUnlessNil:storeFrontIdentifier forKey:@"sfh"];
 
   if ([(WLKUserEnvironment *)self internalBuild])
   {
     [v3 setObject:@"true" forKeyedSubscript:@"ib"];
   }
 
-  v7 = [(WLKUserEnvironment *)self movieRanking];
+  movieRanking = [(WLKUserEnvironment *)self movieRanking];
 
-  if (v7)
+  if (movieRanking)
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [(WLKUserEnvironment *)self countryCode];
-    v10 = [(WLKUserEnvironment *)self movieRanking];
-    v11 = [v8 stringWithFormat:@"%@:%lu", v9, objc_msgSend(v10, "longValue")];
+    countryCode = [(WLKUserEnvironment *)self countryCode];
+    movieRanking2 = [(WLKUserEnvironment *)self movieRanking];
+    v11 = [v8 stringWithFormat:@"%@:%lu", countryCode, objc_msgSend(movieRanking2, "longValue")];
     [v3 setObject:v11 forKeyedSubscript:@"mr"];
   }
 
-  v12 = [(WLKUserEnvironment *)self tvShowRanking];
+  tvShowRanking = [(WLKUserEnvironment *)self tvShowRanking];
 
-  if (v12)
+  if (tvShowRanking)
   {
     v13 = MEMORY[0x277CCACA8];
-    v14 = [(WLKUserEnvironment *)self countryCode];
-    v15 = [(WLKUserEnvironment *)self tvShowRanking];
-    v16 = [v13 stringWithFormat:@"%@:%lu", v14, objc_msgSend(v15, "longValue")];
+    countryCode2 = [(WLKUserEnvironment *)self countryCode];
+    tvShowRanking2 = [(WLKUserEnvironment *)self tvShowRanking];
+    v16 = [v13 stringWithFormat:@"%@:%lu", countryCode2, objc_msgSend(tvShowRanking2, "longValue")];
     [v3 setObject:v16 forKeyedSubscript:@"tvr"];
   }
 
@@ -343,8 +343,8 @@ LABEL_28:
           objc_enumerationMutation(v23);
         }
 
-        v28 = [*(*(&v39 + 1) + 8 * i) jsonRepresentation];
-        [v22 addObject:v28];
+        jsonRepresentation = [*(*(&v39 + 1) + 8 * i) jsonRepresentation];
+        [v22 addObject:jsonRepresentation];
       }
 
       v25 = [v23 countByEnumeratingWithState:&v39 objects:v47 count:16];
@@ -365,10 +365,10 @@ LABEL_28:
   return v31;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -376,25 +376,25 @@ LABEL_28:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WLKUserEnvironment *)self isEqualToEnvironment:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WLKUserEnvironment *)self isEqualToEnvironment:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToEnvironment:(id)a3
+- (BOOL)isEqualToEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  environmentCopy = environment;
+  v5 = environmentCopy;
+  if (environmentCopy)
   {
     protocolVersion = self->_protocolVersion;
-    if (protocolVersion == [v4 protocolVersion])
+    if (protocolVersion == [environmentCopy protocolVersion])
     {
       DSID = self->_DSID;
-      v8 = [v5 DSID];
+      dSID = [v5 DSID];
       v9 = DSID;
-      v10 = v8;
+      v10 = dSID;
       v11 = v10;
       if (v9 == v10)
       {
@@ -423,9 +423,9 @@ LABEL_49:
       }
 
       storeFrontIdentifier = self->_storeFrontIdentifier;
-      v15 = [v5 storeFrontIdentifier];
+      storeFrontIdentifier = [v5 storeFrontIdentifier];
       p_isa = storeFrontIdentifier;
-      v17 = v15;
+      v17 = storeFrontIdentifier;
       v9 = v17;
       if (p_isa == v17)
       {
@@ -454,9 +454,9 @@ LABEL_48:
       }
 
       languageIdentifier = self->_languageIdentifier;
-      v20 = [v5 languageIdentifier];
+      languageIdentifier = [v5 languageIdentifier];
       v21 = languageIdentifier;
-      v22 = v20;
+      v22 = languageIdentifier;
       p_isa = v22;
       if (v21 == v22)
       {
@@ -467,7 +467,7 @@ LABEL_48:
         LOBYTE(platform) = 0;
         if (!v21 || !v22)
         {
-          v26 = v22;
+          entitlements = v22;
           goto LABEL_45;
         }
 
@@ -481,26 +481,26 @@ LABEL_48:
       }
 
       countryIdentifier = self->_countryIdentifier;
-      v25 = [v5 countryIdentifier];
-      v26 = countryIdentifier;
-      v27 = v25;
+      countryIdentifier = [v5 countryIdentifier];
+      entitlements = countryIdentifier;
+      v27 = countryIdentifier;
       v21 = v27;
-      if (v26 == v27)
+      if (entitlements == v27)
       {
       }
 
       else
       {
         LOBYTE(platform) = 0;
-        if (!v26 || !v27)
+        if (!entitlements || !v27)
         {
-          v30 = v27;
+          restrictions = v27;
 LABEL_44:
 
           goto LABEL_45;
         }
 
-        LODWORD(platform) = [(NSString *)v26 isEqual:v27];
+        LODWORD(platform) = [(NSString *)entitlements isEqual:v27];
 
         if (!platform)
         {
@@ -509,24 +509,24 @@ LABEL_44:
       }
 
       entitlements = self->_entitlements;
-      v26 = [v5 entitlements];
-      if (WLKEqualObjects(entitlements, v26))
+      entitlements = [v5 entitlements];
+      if (WLKEqualObjects(entitlements, entitlements))
       {
         restrictions = self->_restrictions;
-        v30 = [v5 restrictions];
-        if (WLKEqualObjects(restrictions, v30))
+        restrictions = [v5 restrictions];
+        if (WLKEqualObjects(restrictions, restrictions))
         {
           consentedBrands = self->_consentedBrands;
-          v32 = [v5 consentedBrands];
-          if (WLKEqualObjects(consentedBrands, v32))
+          consentedBrands = [v5 consentedBrands];
+          if (WLKEqualObjects(consentedBrands, consentedBrands))
           {
             deniedBrands = self->_deniedBrands;
-            v37 = [v5 deniedBrands];
-            if (WLKEqualObjects(deniedBrands, v37) && (consented = self->_consented, consented == [v5 consented]))
+            deniedBrands = [v5 deniedBrands];
+            if (WLKEqualObjects(deniedBrands, deniedBrands) && (consented = self->_consented, consented == [v5 consented]))
             {
               platform = self->_platform;
-              v35 = [v5 platform];
-              LOBYTE(platform) = WLKEqualObjects(platform, v35);
+              platform = [v5 platform];
+              LOBYTE(platform) = WLKEqualObjects(platform, platform);
             }
 
             else
@@ -668,28 +668,28 @@ LABEL_50:
     while (v7);
   }
 
-  v14 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([v21 count])
   {
     v15 = [v21 componentsJoinedByString:{@", "}];
-    [v14 setObject:v15 forKeyedSubscript:@"ibids"];
+    [dictionary setObject:v15 forKeyedSubscript:@"ibids"];
   }
 
   if ([obj count])
   {
     v16 = [v5 componentsJoinedByString:{@", "}];
-    [v14 setObject:v16 forKeyedSubscript:@"sbids"];
+    [dictionary setObject:v16 forKeyedSubscript:@"sbids"];
   }
 
   if ([v20 count])
   {
     v17 = [v20 componentsJoinedByString:{@", "}];
-    [v14 setObject:v17 forKeyedSubscript:@"tbids"];
+    [dictionary setObject:v17 forKeyedSubscript:@"tbids"];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return dictionary;
 }
 
 void __40__WLKUserEnvironment__entitlementsQuery__block_invoke()
@@ -705,12 +705,12 @@ void __40__WLKUserEnvironment__entitlementsQuery__block_invoke()
 
 - (id)_consentQuery
 {
-  v3 = [MEMORY[0x277D6C478] activeAccount];
-  if (v3)
+  activeAccount = [MEMORY[0x277D6C478] activeAccount];
+  if (activeAccount)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v5 = [(WLKUserEnvironment *)self consented];
-    if (v5)
+    consented = [(WLKUserEnvironment *)self consented];
+    if (consented)
     {
       v6 = @"true";
     }
@@ -721,19 +721,19 @@ void __40__WLKUserEnvironment__entitlementsQuery__block_invoke()
     }
 
     [v4 setObject:v6 forKeyedSubscript:@"gac"];
-    if (v5)
+    if (consented)
     {
-      v7 = [(WLKUserEnvironment *)self consentedBrands];
-      if ([v7 count])
+      consentedBrands = [(WLKUserEnvironment *)self consentedBrands];
+      if ([consentedBrands count])
       {
-        v8 = [v7 componentsJoinedByString:{@", "}];
+        v8 = [consentedBrands componentsJoinedByString:{@", "}];
         [v4 setObject:v8 forKeyedSubscript:@"cbrids"];
       }
 
-      v9 = [(WLKUserEnvironment *)self deniedBrands];
-      if ([v9 count])
+      deniedBrands = [(WLKUserEnvironment *)self deniedBrands];
+      if ([deniedBrands count])
       {
-        v10 = [v9 componentsJoinedByString:{@", "}];
+        v10 = [deniedBrands componentsJoinedByString:{@", "}];
         [v4 setObject:v10 forKeyedSubscript:@"dbrids"];
       }
     }
@@ -760,11 +760,11 @@ void __34__WLKUserEnvironment__queryPostV3__block_invoke()
 
 - (BOOL)isRunningInTVAppExtension
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  LOBYTE(v2) = [v3 isEqual:@"com.apple.VideosUI.TVAppExtension"];
-  return v2;
+  LOBYTE(mainBundle) = [bundleIdentifier isEqual:@"com.apple.VideosUI.TVAppExtension"];
+  return mainBundle;
 }
 
 @end

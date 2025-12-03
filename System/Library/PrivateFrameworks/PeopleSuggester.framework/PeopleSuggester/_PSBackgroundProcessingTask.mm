@@ -1,12 +1,12 @@
 @interface _PSBackgroundProcessingTask
-+ (BOOL)attachmentsInObject:(id)a3 hasField:(id)a4;
++ (BOOL)attachmentsInObject:(id)object hasField:(id)field;
 + (id)interactionStore;
 + (id)savedBookmark;
 + (void)savedBookmark;
-+ (void)updateInteractionWithPhotoFeatures:(id)a3;
-- (BOOL)updatePlistWithDict:(id)a3;
++ (void)updateInteractionWithPhotoFeatures:(id)features;
+- (BOOL)updatePlistWithDict:(id)dict;
 - (_PSBackgroundProcessingTask)init;
-- (void)handleRepeatingTask:(id)a3;
+- (void)handleRepeatingTask:(id)task;
 - (void)saveBookmark;
 @end
 
@@ -15,8 +15,8 @@
 + (id)interactionStore
 {
   v2 = MEMORY[0x1E69978F8];
-  v3 = [MEMORY[0x1E69978F8] defaultDatabaseDirectory];
-  v4 = [v2 storeWithDirectory:v3 readOnly:0];
+  defaultDatabaseDirectory = [MEMORY[0x1E69978F8] defaultDatabaseDirectory];
+  v4 = [v2 storeWithDirectory:defaultDatabaseDirectory readOnly:0];
 
   [v4 setReadConcurrently:1];
 
@@ -25,8 +25,8 @@
 
 + (id)savedBookmark
 {
-  v2 = [MEMORY[0x1E6997910] peopleDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"PSBackgroundTaskData"];
+  peopleDirectory = [MEMORY[0x1E6997910] peopleDirectory];
+  v3 = [peopleDirectory stringByAppendingPathComponent:@"PSBackgroundTaskData"];
 
   v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v3];
   if (v4)
@@ -46,9 +46,9 @@
     if (v5)
     {
       v8 = [v5 objectForKeyedSubscript:@"_PSInteractionsUpdate"];
-      v9 = [v8 objectForKeyedSubscript:@"BookmarkDate"];
+      distantPast = [v8 objectForKeyedSubscript:@"BookmarkDate"];
 
-      if (v9)
+      if (distantPast)
       {
 
         goto LABEL_11;
@@ -56,10 +56,10 @@
     }
   }
 
-  v9 = [MEMORY[0x1E695DF00] distantPast];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
 LABEL_11:
 
-  return v9;
+  return distantPast;
 }
 
 - (_PSBackgroundProcessingTask)init
@@ -81,10 +81,10 @@ LABEL_11:
   return v2;
 }
 
-- (void)handleRepeatingTask:(id)a3
+- (void)handleRepeatingTask:(id)task
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v33 = a3;
+  taskCopy = task;
   v4 = +[_PSLogging psBackgroundProcessingChannel];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -101,7 +101,7 @@ LABEL_11:
   v36[3] = &unk_1E7C262F0;
   v36[4] = self;
   v36[5] = &v37;
-  [v33 setExpirationHandler:v36];
+  [taskCopy setExpirationHandler:v36];
   v32 = [MEMORY[0x1E696AE18] predicateWithFormat:@"startDate > %@ AND direction == %@ AND mechanism IN %@", self->_bookmark, &unk_1F2D8BCE8, &unk_1F2D8C5A0];
   v35 = 0;
   interactionStore = self->_interactionStore;
@@ -129,8 +129,8 @@ LABEL_11:
       }
 
       v12 = MEMORY[0x1E6997950];
-      v13 = [(_CDInteractionStore *)self->_interactionStore storage];
-      v14 = [v13 managedObjectContextFor:v11];
+      storage = [(_CDInteractionStore *)self->_interactionStore storage];
+      v14 = [storage managedObjectContextFor:v11];
       v15 = MEMORY[0x1E696AE18];
       v16 = [v35 objectAtIndexedSubscript:v10];
       v42 = v16;
@@ -145,8 +145,8 @@ LABEL_11:
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
           v24 = [v8 objectAtIndexedSubscript:v10];
-          v25 = [v24 uuid];
-          [(_PSBackgroundProcessingTask *)v25 handleRepeatingTask:v41, v23, v24];
+          uuid = [v24 uuid];
+          [(_PSBackgroundProcessingTask *)uuid handleRepeatingTask:v41, v23, v24];
         }
 
 LABEL_14:
@@ -155,9 +155,9 @@ LABEL_14:
       }
 
       v20 = [v8 objectAtIndexedSubscript:v10];
-      v21 = [v20 startDate];
+      startDate = [v20 startDate];
       bookmark = self->_bookmark;
-      self->_bookmark = v21;
+      self->_bookmark = startDate;
 
       [(_PSBackgroundProcessingTask *)self saveBookmark];
       ++v10;
@@ -166,11 +166,11 @@ LABEL_14:
     if (v38[5])
     {
       v34 = 0;
-      v26 = [v33 setTaskExpiredWithRetryAfter:&v34 error:0.0];
+      v26 = [taskCopy setTaskExpiredWithRetryAfter:&v34 error:0.0];
       v27 = v34;
       if ((v26 & 1) == 0)
       {
-        [v33 setTaskCompleted];
+        [taskCopy setTaskCompleted];
         v28 = +[_PSLogging psBackgroundProcessingChannel];
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
         {
@@ -181,7 +181,7 @@ LABEL_14:
 
     else
     {
-      [v33 setTaskCompleted];
+      [taskCopy setTaskCompleted];
       v27 = +[_PSLogging psBackgroundProcessingChannel];
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
       {
@@ -192,7 +192,7 @@ LABEL_14:
 
   else
   {
-    [v33 setTaskCompleted];
+    [taskCopy setTaskCompleted];
   }
 
   _Block_object_dispose(&v37, 8);
@@ -202,22 +202,22 @@ LABEL_14:
 - (void)saveBookmark
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = *a1;
+  v3 = *self;
   v5 = 138412290;
   v6 = v3;
   OUTLINED_FUNCTION_0_10(&dword_1B5ED1000, a2, a3, "Could not update plist file for bookmark: %@", &v5);
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)updatePlistWithDict:(id)a3
+- (BOOL)updatePlistWithDict:(id)dict
 {
   v9 = 0;
-  v3 = [MEMORY[0x1E696AE40] dataWithPropertyList:a3 format:200 options:0 error:&v9];
+  v3 = [MEMORY[0x1E696AE40] dataWithPropertyList:dict format:200 options:0 error:&v9];
   v4 = v9;
   if (v3)
   {
-    v5 = [MEMORY[0x1E6997910] peopleDirectory];
-    v6 = [v5 stringByAppendingPathComponent:@"PSBackgroundTaskData"];
+    peopleDirectory = [MEMORY[0x1E6997910] peopleDirectory];
+    v6 = [peopleDirectory stringByAppendingPathComponent:@"PSBackgroundTaskData"];
 
     v7 = [v3 writeToFile:v6 atomically:1];
   }
@@ -236,15 +236,15 @@ LABEL_14:
   return v7;
 }
 
-+ (void)updateInteractionWithPhotoFeatures:(id)a3
++ (void)updateInteractionWithPhotoFeatures:(id)features
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v25 = [_PSBackgroundProcessingTask attachmentsInObject:v3 hasField:@"photoSceneDescriptor"];
-  v24 = [_PSBackgroundProcessingTask attachmentsInObject:v3 hasField:@"personInPhoto"];
+  featuresCopy = features;
+  v25 = [_PSBackgroundProcessingTask attachmentsInObject:featuresCopy hasField:@"photoSceneDescriptor"];
+  v24 = [_PSBackgroundProcessingTask attachmentsInObject:featuresCopy hasField:@"personInPhoto"];
   v4 = objc_opt_new();
-  v22 = v3;
-  v5 = [v3 valueForKey:@"attachments"];
+  v22 = featuresCopy;
+  v5 = [featuresCopy valueForKey:@"attachments"];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -314,11 +314,11 @@ LABEL_14:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)attachmentsInObject:(id)a3 hasField:(id)a4
++ (BOOL)attachmentsInObject:(id)object hasField:(id)field
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  [a3 valueForKey:@"attachments"];
+  fieldCopy = field;
+  [object valueForKey:@"attachments"];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -336,7 +336,7 @@ LABEL_14:
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) valueForKey:{v5, v13}];
+        v10 = [*(*(&v13 + 1) + 8 * i) valueForKey:{fieldCopy, v13}];
 
         if (v10)
         {
@@ -364,9 +364,9 @@ LABEL_11:
 + (void)savedBookmark
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [a1 localizedDescription];
+  localizedDescription = [self localizedDescription];
   v6 = 138412290;
-  v7 = v3;
+  v7 = localizedDescription;
   OUTLINED_FUNCTION_0_10(&dword_1B5ED1000, a2, v4, "Error encountered while reading bookmark: %@", &v6);
 
   v5 = *MEMORY[0x1E69E9840];

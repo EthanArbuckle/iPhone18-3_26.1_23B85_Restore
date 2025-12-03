@@ -1,40 +1,40 @@
 @interface JournalTextView
-- (BOOL)_shouldHandleTextFormattingChangeValue:(id)a3;
+- (BOOL)_shouldHandleTextFormattingChangeValue:(id)value;
 - (BOOL)accessibilityActivate;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)isEditable;
-- (BOOL)textContentManager:(id)a3 shouldEnumerateTextElement:(id)a4 options:(unint64_t)a5;
+- (BOOL)textContentManager:(id)manager shouldEnumerateTextElement:(id)element options:(unint64_t)options;
 - (CGRect)accessibilityFrame;
 - (CGSize)intrinsicContentSize;
 - (UIEdgeInsets)textContainerInset;
-- (_TtC7Journal15JournalTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (_TtC7Journal15JournalTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
 - (id)_configurationForTextFormattingOptions;
 - (id)_descriptorForTextFormattingOptions;
-- (id)editMenuForTextRange:(id)a3 suggestedActions:(id)a4;
-- (void)delete:(id)a3;
+- (id)editMenuForTextRange:(id)range suggestedActions:(id)actions;
+- (void)delete:(id)delete;
 - (void)deleteBackward;
 - (void)layoutSubviews;
-- (void)setAccessibilityFrame:(CGRect)a3;
-- (void)setEditable:(BOOL)a3;
-- (void)setTextContainerInset:(UIEdgeInsets)a3;
-- (void)textPasteConfigurationSupporting:(id)a3 transformPasteItem:(id)a4;
-- (void)toggleBlockQuote:(id)a3;
-- (void)toggleStrikethrough:(id)a3;
-- (void)toggleTextListFormatting:(id)a3;
+- (void)setAccessibilityFrame:(CGRect)frame;
+- (void)setEditable:(BOOL)editable;
+- (void)setTextContainerInset:(UIEdgeInsets)inset;
+- (void)textPasteConfigurationSupporting:(id)supporting transformPasteItem:(id)item;
+- (void)toggleBlockQuote:(id)quote;
+- (void)toggleStrikethrough:(id)strikethrough;
+- (void)toggleTextListFormatting:(id)formatting;
 - (void)updateProperties;
-- (void)validateCommand:(id)a3;
+- (void)validateCommand:(id)command;
 - (void)viewportDidLayout;
 @end
 
 @implementation JournalTextView
 
-- (void)setTextContainerInset:(UIEdgeInsets)a3
+- (void)setTextContainerInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = self;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  selfCopy = self;
   sub_100051190(top, left, bottom, right);
 }
 
@@ -50,7 +50,7 @@
   return result;
 }
 
-- (BOOL)textContentManager:(id)a3 shouldEnumerateTextElement:(id)a4 options:(unint64_t)a5
+- (BOOL)textContentManager:(id)manager shouldEnumerateTextElement:(id)element options:(unint64_t)options
 {
   objc_opt_self();
   v6 = swift_dynamicCastObjCClass();
@@ -64,7 +64,7 @@
     v11[2] = sub_1007C5118;
     v11[3] = &unk_100A7E4B8;
     v8 = _Block_copy(v11);
-    v9 = a4;
+    elementCopy = element;
     [v7 setMarkerTextAttributeOverrides:v8];
     _Block_release(v8);
   }
@@ -72,19 +72,19 @@
   return 1;
 }
 
-- (_TtC7Journal15JournalTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC7Journal15JournalTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  return sub_100051C18(a4, x, y, width, height);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  containerCopy = container;
+  return sub_100051C18(container, x, y, width, height);
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_100083850();
   v4 = v3;
   v6 = v5;
@@ -98,13 +98,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007BDED4();
 }
 
 - (void)viewportDidLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_100080784();
 }
 
@@ -115,52 +115,52 @@
   return [(JournalTextView *)&v3 isEditable];
 }
 
-- (void)setEditable:(BOOL)a3
+- (void)setEditable:(BOOL)editable
 {
-  v3 = a3;
+  editableCopy = editable;
   v5.receiver = self;
   v5.super_class = type metadata accessor for JournalTextView();
   v4 = v5.receiver;
-  [(JournalTextView *)&v5 setEditable:v3];
+  [(JournalTextView *)&v5 setEditable:editableCopy];
   sub_1007BBA50();
 }
 
 - (void)updateProperties
 {
-  v7 = self;
-  v2 = [(JournalTextView *)v7 textContainer];
-  v3 = [objc_opt_self() defaultMetrics];
-  v4 = [(JournalTextView *)v7 traitCollection];
-  [v3 scaledValueForValue:v4 compatibleWithTraitCollection:60.0];
+  selfCopy = self;
+  textContainer = [(JournalTextView *)selfCopy textContainer];
+  defaultMetrics = [objc_opt_self() defaultMetrics];
+  traitCollection = [(JournalTextView *)selfCopy traitCollection];
+  [defaultMetrics scaledValueForValue:traitCollection compatibleWithTraitCollection:60.0];
   v6 = v5;
 
-  [v2 setMinimumLineFragmentWidth:v6];
+  [textContainer setMinimumLineFragmentWidth:v6];
 }
 
 - (void)deleteBackward
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007BE254();
 }
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
-  if (([(JournalTextView *)v2 isFirstResponder]& 1) == 0)
+  selfCopy = self;
+  if (([(JournalTextView *)selfCopy isFirstResponder]& 1) == 0)
   {
-    [(JournalTextView *)v2 becomeFirstResponder];
+    [(JournalTextView *)selfCopy becomeFirstResponder];
   }
 
-  v5.receiver = v2;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for JournalTextView();
-  v3 = [(JournalTextView *)&v5 accessibilityActivate];
+  accessibilityActivate = [(JournalTextView *)&v5 accessibilityActivate];
 
-  return v3;
+  return accessibilityActivate;
 }
 
 - (CGRect)accessibilityFrame
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007BF264();
   v5 = v4;
   v7 = v6;
@@ -177,22 +177,22 @@
   return result;
 }
 
-- (void)setAccessibilityFrame:(CGRect)a3
+- (void)setAccessibilityFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7.receiver = self;
   v7.super_class = type metadata accessor for JournalTextView();
   [(JournalTextView *)&v7 setAccessibilityFrame:x, y, width, height];
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
-  if (a3)
+  if (delete)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -201,7 +201,7 @@
   else
   {
     memset(v7, 0, sizeof(v7));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   if ([(JournalTextView *)self isEditing])
@@ -214,11 +214,11 @@
   sub_100004F84(v7, &qword_100AD13D0);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -227,42 +227,42 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_1007BF4D4(a3, v10);
+  v8 = sub_1007BF4D4(action, v10);
 
   sub_100004F84(v10, &qword_100AD13D0);
   return v8 & 1;
 }
 
-- (id)editMenuForTextRange:(id)a3 suggestedActions:(id)a4
+- (id)editMenuForTextRange:(id)range suggestedActions:(id)actions
 {
   sub_1000065A8(0, &unk_100ADC630);
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a3;
-  v7 = self;
-  sub_1007BFAA8(v6);
+  rangeCopy = range;
+  selfCopy = self;
+  sub_1007BFAA8(rangeCopy);
   v9 = v8;
 
   return v9;
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
-  v5 = self;
-  sub_1007C08E4(v4);
+  commandCopy = command;
+  selfCopy = self;
+  sub_1007C08E4(commandCopy);
 }
 
-- (BOOL)_shouldHandleTextFormattingChangeValue:(id)a3
+- (BOOL)_shouldHandleTextFormattingChangeValue:(id)value
 {
   v4 = type metadata accessor for UITextFormattingViewController.ChangeValue();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UITextFormattingViewController.ChangeValue._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_1007C2818(v7);
 
   (*(v5 + 8))(v7, v4);
@@ -282,7 +282,7 @@
   v4 = *(v3 - 8);
   __chkstk_darwin(v3);
   v6 = &v10 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   sub_1007C3048(v6);
 
   v8 = UITextFormattingViewController.FormattingDescriptor._bridgeToObjectiveC()();
@@ -291,35 +291,35 @@
   return v8;
 }
 
-- (void)textPasteConfigurationSupporting:(id)a3 transformPasteItem:(id)a4
+- (void)textPasteConfigurationSupporting:(id)supporting transformPasteItem:(id)item
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_1007C7310(a4);
+  selfCopy = self;
+  sub_1007C7310(item);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)toggleBlockQuote:(id)a3
+- (void)toggleBlockQuote:(id)quote
 {
-  v4 = a3;
-  v5 = self;
+  quoteCopy = quote;
+  selfCopy = self;
   sub_1007C7900();
 }
 
-- (void)toggleStrikethrough:(id)a3
+- (void)toggleStrikethrough:(id)strikethrough
 {
-  v4 = a3;
-  v5 = self;
+  strikethroughCopy = strikethrough;
+  selfCopy = self;
   sub_1007C7CB8();
 }
 
-- (void)toggleTextListFormatting:(id)a3
+- (void)toggleTextListFormatting:(id)formatting
 {
-  v4 = a3;
-  v5 = self;
-  sub_1007C54BC(v4);
+  formattingCopy = formatting;
+  selfCopy = self;
+  sub_1007C54BC(formattingCopy);
 }
 
 @end

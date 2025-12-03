@@ -1,37 +1,37 @@
 @interface USOSchemaUSOEntityIdentifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (USOSchemaUSOEntityIdentifier)initWithDictionary:(id)a3;
-- (USOSchemaUSOEntityIdentifier)initWithJSON:(id)a3;
+- (USOSchemaUSOEntityIdentifier)initWithDictionary:(id)dictionary;
+- (USOSchemaUSOEntityIdentifier)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasBackingAppBundleType:(BOOL)a3;
-- (void)setHasGroupIndex:(BOOL)a3;
-- (void)setHasInterpretationGroup:(BOOL)a3;
-- (void)setHasProbability:(BOOL)a3;
-- (void)setHasSourceNluComponent:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasBackingAppBundleType:(BOOL)type;
+- (void)setHasGroupIndex:(BOOL)index;
+- (void)setHasInterpretationGroup:(BOOL)group;
+- (void)setHasProbability:(BOOL)probability;
+- (void)setHasSourceNluComponent:(BOOL)component;
+- (void)writeTo:(id)to;
 @end
 
 @implementation USOSchemaUSOEntityIdentifier
 
-- (USOSchemaUSOEntityIdentifier)initWithDictionary:(id)a3
+- (USOSchemaUSOEntityIdentifier)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = USOSchemaUSOEntityIdentifier;
   v5 = [(USOSchemaUSOEntityIdentifier *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"nodeIndex"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"nodeIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSOEntityIdentifier setNodeIndex:](v5, "setNodeIndex:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"identifierNamespace"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"identifierNamespace"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,7 +39,7 @@
       [(USOSchemaUSOEntityIdentifier *)v5 setIdentifierNamespace:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"probability"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"probability"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,28 +47,28 @@
       [(USOSchemaUSOEntityIdentifier *)v5 setProbability:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"sourceNluComponent"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"sourceNluComponent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSOEntityIdentifier setSourceNluComponent:](v5, "setSourceNluComponent:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"backingAppBundleType"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"backingAppBundleType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSOEntityIdentifier setBackingAppBundleType:](v5, "setBackingAppBundleType:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"groupIndex"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"groupIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSOEntityIdentifier setGroupIndex:](v5, "setGroupIndex:", [v12 unsignedIntValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"interpretationGroup"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"interpretationGroup"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (USOSchemaUSOEntityIdentifier)initWithJSON:(id)a3
+- (USOSchemaUSOEntityIdentifier)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(USOSchemaUSOEntityIdentifier *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(USOSchemaUSOEntityIdentifier *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(USOSchemaUSOEntityIdentifier *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -117,7 +117,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -132,28 +132,28 @@
       v6 = off_1E78E8A28[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"backingAppBundleType"];
+    [dictionary setObject:v6 forKeyedSubscript:@"backingAppBundleType"];
     has = self->_has;
   }
 
   if ((has & 0x10) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[USOSchemaUSOEntityIdentifier groupIndex](self, "groupIndex")}];
-    [v3 setObject:v7 forKeyedSubscript:@"groupIndex"];
+    [dictionary setObject:v7 forKeyedSubscript:@"groupIndex"];
   }
 
   if (self->_identifierNamespace)
   {
-    v8 = [(USOSchemaUSOEntityIdentifier *)self identifierNamespace];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"identifierNamespace"];
+    identifierNamespace = [(USOSchemaUSOEntityIdentifier *)self identifierNamespace];
+    v9 = [identifierNamespace copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"identifierNamespace"];
   }
 
   v10 = self->_has;
   if ((v10 & 0x20) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[USOSchemaUSOEntityIdentifier interpretationGroup](self, "interpretationGroup")}];
-    [v3 setObject:v11 forKeyedSubscript:@"interpretationGroup"];
+    [dictionary setObject:v11 forKeyedSubscript:@"interpretationGroup"];
 
     v10 = self->_has;
     if ((v10 & 1) == 0)
@@ -168,7 +168,7 @@ LABEL_17:
       v13 = MEMORY[0x1E696AD98];
       [(USOSchemaUSOEntityIdentifier *)self probability];
       v14 = [v13 numberWithDouble:?];
-      [v3 setObject:v14 forKeyedSubscript:@"probability"];
+      [dictionary setObject:v14 forKeyedSubscript:@"probability"];
 
       if ((*&self->_has & 4) == 0)
       {
@@ -187,7 +187,7 @@ LABEL_18:
         v16 = off_1E78E8AF0[v15];
       }
 
-      [v3 setObject:v16 forKeyedSubscript:@"sourceNluComponent"];
+      [dictionary setObject:v16 forKeyedSubscript:@"sourceNluComponent"];
       goto LABEL_22;
     }
   }
@@ -198,7 +198,7 @@ LABEL_18:
   }
 
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[USOSchemaUSOEntityIdentifier nodeIndex](self, "nodeIndex")}];
-  [v3 setObject:v12 forKeyedSubscript:@"nodeIndex"];
+  [dictionary setObject:v12 forKeyedSubscript:@"nodeIndex"];
 
   v10 = self->_has;
   if ((v10 & 2) != 0)
@@ -213,9 +213,9 @@ LABEL_13:
   }
 
 LABEL_22:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -316,15 +316,15 @@ LABEL_16:
   return v4 ^ v3 ^ v7 ^ v11 ^ v12 ^ v13 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
-  if ((*&self->_has & 1) != (v4[48] & 1))
+  if ((*&self->_has & 1) != (equalCopy[48] & 1))
   {
     goto LABEL_31;
   }
@@ -332,28 +332,28 @@ LABEL_16:
   if (*&self->_has)
   {
     nodeIndex = self->_nodeIndex;
-    if (nodeIndex != [v4 nodeIndex])
+    if (nodeIndex != [equalCopy nodeIndex])
     {
       goto LABEL_31;
     }
   }
 
-  v6 = [(USOSchemaUSOEntityIdentifier *)self identifierNamespace];
-  v7 = [v4 identifierNamespace];
-  v8 = v7;
-  if ((v6 != 0) == (v7 == 0))
+  identifierNamespace = [(USOSchemaUSOEntityIdentifier *)self identifierNamespace];
+  identifierNamespace2 = [equalCopy identifierNamespace];
+  v8 = identifierNamespace2;
+  if ((identifierNamespace != 0) == (identifierNamespace2 == 0))
   {
 
     goto LABEL_31;
   }
 
-  v9 = [(USOSchemaUSOEntityIdentifier *)self identifierNamespace];
-  if (v9)
+  identifierNamespace3 = [(USOSchemaUSOEntityIdentifier *)self identifierNamespace];
+  if (identifierNamespace3)
   {
-    v10 = v9;
-    v11 = [(USOSchemaUSOEntityIdentifier *)self identifierNamespace];
-    v12 = [v4 identifierNamespace];
-    v13 = [v11 isEqual:v12];
+    v10 = identifierNamespace3;
+    identifierNamespace4 = [(USOSchemaUSOEntityIdentifier *)self identifierNamespace];
+    identifierNamespace5 = [equalCopy identifierNamespace];
+    v13 = [identifierNamespace4 isEqual:identifierNamespace5];
 
     if (!v13)
     {
@@ -367,7 +367,7 @@ LABEL_16:
 
   has = self->_has;
   v15 = (*&has >> 1) & 1;
-  v16 = v4[48];
+  v16 = equalCopy[48];
   if (v15 != ((v16 >> 1) & 1))
   {
 LABEL_31:
@@ -378,14 +378,14 @@ LABEL_31:
   if (v15)
   {
     probability = self->_probability;
-    [v4 probability];
+    [equalCopy probability];
     if (probability != v18)
     {
       goto LABEL_31;
     }
 
     has = self->_has;
-    v16 = v4[48];
+    v16 = equalCopy[48];
   }
 
   v19 = (*&has >> 2) & 1;
@@ -397,13 +397,13 @@ LABEL_31:
   if (v19)
   {
     sourceNluComponent = self->_sourceNluComponent;
-    if (sourceNluComponent != [v4 sourceNluComponent])
+    if (sourceNluComponent != [equalCopy sourceNluComponent])
     {
       goto LABEL_31;
     }
 
     has = self->_has;
-    v16 = v4[48];
+    v16 = equalCopy[48];
   }
 
   v21 = (*&has >> 3) & 1;
@@ -415,13 +415,13 @@ LABEL_31:
   if (v21)
   {
     backingAppBundleType = self->_backingAppBundleType;
-    if (backingAppBundleType != [v4 backingAppBundleType])
+    if (backingAppBundleType != [equalCopy backingAppBundleType])
     {
       goto LABEL_31;
     }
 
     has = self->_has;
-    v16 = v4[48];
+    v16 = equalCopy[48];
   }
 
   v23 = (*&has >> 4) & 1;
@@ -433,10 +433,10 @@ LABEL_31:
   if (v23)
   {
     groupIndex = self->_groupIndex;
-    if (groupIndex == [v4 groupIndex])
+    if (groupIndex == [equalCopy groupIndex])
     {
       has = self->_has;
-      v16 = v4[48];
+      v16 = equalCopy[48];
       goto LABEL_27;
     }
 
@@ -453,7 +453,7 @@ LABEL_27:
   if (v25)
   {
     interpretationGroup = self->_interpretationGroup;
-    if (interpretationGroup != [v4 interpretationGroup])
+    if (interpretationGroup != [equalCopy interpretationGroup])
     {
       goto LABEL_31;
     }
@@ -465,17 +465,17 @@ LABEL_32:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteUint32Field();
   }
 
-  v4 = [(USOSchemaUSOEntityIdentifier *)self identifierNamespace];
+  identifierNamespace = [(USOSchemaUSOEntityIdentifier *)self identifierNamespace];
 
-  if (v4)
+  if (identifierNamespace)
   {
     PBDataWriterWriteStringField();
   }
@@ -540,9 +540,9 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)setHasInterpretationGroup:(BOOL)a3
+- (void)setHasInterpretationGroup:(BOOL)group
 {
-  if (a3)
+  if (group)
   {
     v3 = 32;
   }
@@ -555,9 +555,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasGroupIndex:(BOOL)a3
+- (void)setHasGroupIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 16;
   }
@@ -570,9 +570,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasBackingAppBundleType:(BOOL)a3
+- (void)setHasBackingAppBundleType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -585,9 +585,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSourceNluComponent:(BOOL)a3
+- (void)setHasSourceNluComponent:(BOOL)component
 {
-  if (a3)
+  if (component)
   {
     v3 = 4;
   }
@@ -600,9 +600,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasProbability:(BOOL)a3
+- (void)setHasProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 2;
   }

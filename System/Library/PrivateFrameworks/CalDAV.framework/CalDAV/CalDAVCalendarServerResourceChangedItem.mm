@@ -1,95 +1,95 @@
 @interface CalDAVCalendarServerResourceChangedItem
 - (id)copyParseRules;
-- (void)addCollectionChanges:(id)a3;
-- (void)addCollectionUpdates:(id)a3;
-- (void)addCreated:(id)a3;
-- (void)addDeleted:(id)a3;
-- (void)addUpdated:(id)a3;
-- (void)setDtstampItem:(id)a3;
+- (void)addCollectionChanges:(id)changes;
+- (void)addCollectionUpdates:(id)updates;
+- (void)addCreated:(id)created;
+- (void)addDeleted:(id)deleted;
+- (void)addUpdated:(id)updated;
+- (void)setDtstampItem:(id)item;
 @end
 
 @implementation CalDAVCalendarServerResourceChangedItem
 
-- (void)addCreated:(id)a3
+- (void)addCreated:(id)created
 {
-  v4 = a3;
-  v5 = [(CalDAVCalendarServerResourceChangedItem *)self created];
+  createdCopy = created;
+  created = [(CalDAVCalendarServerResourceChangedItem *)self created];
 
-  if (!v5)
+  if (!created)
   {
     v6 = [MEMORY[0x277CBEB58] setWithCapacity:1];
     [(CalDAVCalendarServerResourceChangedItem *)self setCreated:v6];
   }
 
-  v7 = [(CalDAVCalendarServerResourceChangedItem *)self created];
-  [v7 addObject:v4];
+  created2 = [(CalDAVCalendarServerResourceChangedItem *)self created];
+  [created2 addObject:createdCopy];
 }
 
-- (void)addUpdated:(id)a3
+- (void)addUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(CalDAVCalendarServerResourceChangedItem *)self updated];
+  updatedCopy = updated;
+  updated = [(CalDAVCalendarServerResourceChangedItem *)self updated];
 
-  if (!v5)
+  if (!updated)
   {
     v6 = [MEMORY[0x277CBEB58] setWithCapacity:1];
     [(CalDAVCalendarServerResourceChangedItem *)self setUpdated:v6];
   }
 
-  v7 = [(CalDAVCalendarServerResourceChangedItem *)self updated];
-  [v7 addObject:v4];
+  updated2 = [(CalDAVCalendarServerResourceChangedItem *)self updated];
+  [updated2 addObject:updatedCopy];
 }
 
-- (void)addDeleted:(id)a3
+- (void)addDeleted:(id)deleted
 {
-  v4 = a3;
-  v5 = [(CalDAVCalendarServerResourceChangedItem *)self deleted];
+  deletedCopy = deleted;
+  deleted = [(CalDAVCalendarServerResourceChangedItem *)self deleted];
 
-  if (!v5)
+  if (!deleted)
   {
     v6 = [MEMORY[0x277CBEB58] setWithCapacity:1];
     [(CalDAVCalendarServerResourceChangedItem *)self setDeleted:v6];
   }
 
-  v7 = [(CalDAVCalendarServerResourceChangedItem *)self deleted];
-  [v7 addObject:v4];
+  deleted2 = [(CalDAVCalendarServerResourceChangedItem *)self deleted];
+  [deleted2 addObject:deletedCopy];
 }
 
-- (void)addCollectionChanges:(id)a3
+- (void)addCollectionChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(CalDAVCalendarServerResourceChangedItem *)self collectionChanges];
+  changesCopy = changes;
+  collectionChanges = [(CalDAVCalendarServerResourceChangedItem *)self collectionChanges];
 
-  if (!v5)
+  if (!collectionChanges)
   {
     v6 = [MEMORY[0x277CBEB58] setWithCapacity:1];
     [(CalDAVCalendarServerResourceChangedItem *)self setCollectionChanges:v6];
   }
 
-  v7 = [(CalDAVCalendarServerResourceChangedItem *)self collectionChanges];
-  [v7 addObject:v4];
+  collectionChanges2 = [(CalDAVCalendarServerResourceChangedItem *)self collectionChanges];
+  [collectionChanges2 addObject:changesCopy];
 }
 
-- (void)addCollectionUpdates:(id)a3
+- (void)addCollectionUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [(CalDAVCalendarServerResourceChangedItem *)self collectionUpdates];
+  updatesCopy = updates;
+  collectionUpdates = [(CalDAVCalendarServerResourceChangedItem *)self collectionUpdates];
 
-  if (!v5)
+  if (!collectionUpdates)
   {
     v6 = [MEMORY[0x277CBEB58] setWithCapacity:1];
     [(CalDAVCalendarServerResourceChangedItem *)self setCollectionUpdates:v6];
   }
 
-  v7 = [(CalDAVCalendarServerResourceChangedItem *)self collectionUpdates];
-  [v7 addObject:v4];
+  collectionUpdates2 = [(CalDAVCalendarServerResourceChangedItem *)self collectionUpdates];
+  [collectionUpdates2 addObject:updatesCopy];
 }
 
-- (void)setDtstampItem:(id)a3
+- (void)setDtstampItem:(id)item
 {
   v4 = MEMORY[0x277D7F100];
-  v6 = [a3 payloadAsString];
-  v5 = [v4 dateFromICSString:v6];
+  payloadAsString = [item payloadAsString];
+  v5 = [v4 dateFromICSString:payloadAsString];
   [(CalDAVCalendarServerResourceChangedItem *)self setDtstamp:v5];
 }
 

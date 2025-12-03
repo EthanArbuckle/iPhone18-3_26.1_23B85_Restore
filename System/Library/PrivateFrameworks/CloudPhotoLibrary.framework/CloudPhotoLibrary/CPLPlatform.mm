@@ -1,25 +1,25 @@
 @interface CPLPlatform
 + (id)defaultPlatform;
-+ (void)setDefaultPlatform:(id)a3;
-+ (void)setProxyImplementationForPlatform:(id)a3;
++ (void)setDefaultPlatform:(id)platform;
++ (void)setProxyImplementationForPlatform:(id)platform;
 - (CPLPlatform)init;
-- (Class)implementationClassForAbstractClass:(Class)a3;
+- (Class)implementationClassForAbstractClass:(Class)class;
 - (id)description;
-- (id)newPlatformImplementationForObject:(id)a3;
-- (void)setPlatformImplementation:(Class)a3 forClass:(Class)a4;
+- (id)newPlatformImplementationForObject:(id)object;
+- (void)setPlatformImplementation:(Class)implementation forClass:(Class)class;
 @end
 
 @implementation CPLPlatform
 
-+ (void)setProxyImplementationForPlatform:(id)a3
++ (void)setProxyImplementationForPlatform:(id)platform
 {
-  v6 = a3;
+  platformCopy = platform;
   v3 = objc_opt_class();
-  [v6 setPlatformImplementation:v3 forClass:objc_opt_class()];
+  [platformCopy setPlatformImplementation:v3 forClass:objc_opt_class()];
   v4 = objc_opt_class();
-  [v6 setPlatformImplementation:v4 forClass:objc_opt_class()];
+  [platformCopy setPlatformImplementation:v4 forClass:objc_opt_class()];
   v5 = objc_opt_class();
-  [v6 setPlatformImplementation:v5 forClass:objc_opt_class()];
+  [platformCopy setPlatformImplementation:v5 forClass:objc_opt_class()];
 }
 
 - (id)description
@@ -63,15 +63,15 @@ void __26__CPLPlatform_description__block_invoke(uint64_t a1)
   }
 }
 
-- (id)newPlatformImplementationForObject:(id)a3
+- (id)newPlatformImplementationForObject:(id)object
 {
-  v4 = a3;
-  v5 = [objc_alloc(-[CPLPlatform implementationClassForAbstractClass:](self implementationClassForAbstractClass:{objc_opt_class())), "initWithAbstractObject:", v4}];
+  objectCopy = object;
+  v5 = [objc_alloc(-[CPLPlatform implementationClassForAbstractClass:](self implementationClassForAbstractClass:{objc_opt_class())), "initWithAbstractObject:", objectCopy}];
 
   return v5;
 }
 
-- (Class)implementationClassForAbstractClass:(Class)a3
+- (Class)implementationClassForAbstractClass:(Class)class
 {
   v26 = *MEMORY[0x1E69E9840];
   v18 = 0;
@@ -84,7 +84,7 @@ void __26__CPLPlatform_description__block_invoke(uint64_t a1)
   block[2] = __51__CPLPlatform_implementationClassForAbstractClass___block_invoke;
   block[3] = &unk_1E86203F8;
   block[5] = &v18;
-  block[6] = a3;
+  block[6] = class;
   block[4] = self;
   dispatch_sync(lock, block);
   v6 = v19[3];
@@ -108,9 +108,9 @@ void __26__CPLPlatform_description__block_invoke(uint64_t a1)
         }
       }
 
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLPlatform.m"];
-      [v15 handleFailureInMethod:a2 object:self file:v16 lineNumber:132 description:{@"%@ is not a subclass of %@", v19[3], objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:v16 lineNumber:132 description:{@"%@ is not a subclass of %@", v19[3], objc_opt_class()}];
 
       abort();
     }
@@ -214,10 +214,10 @@ LABEL_22:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPlatformImplementation:(Class)a3 forClass:(Class)a4
+- (void)setPlatformImplementation:(Class)implementation forClass:(Class)class
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  if (([(objc_class *)implementation isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -225,22 +225,22 @@ LABEL_22:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v23 = a3;
+        classCopy = implementation;
         v24 = 2112;
-        v25 = objc_opt_class();
-        v13 = v25;
+        selfCopy = objc_opt_class();
+        v13 = selfCopy;
         _os_log_impl(&dword_1DC05A000, v12, OS_LOG_TYPE_ERROR, "%@ should be a subclass of %@", buf, 0x16u);
       }
     }
 
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLPlatform.m"];
-    [v14 handleFailureInMethod:a2 object:self file:v15 lineNumber:89 description:{@"%@ should be a subclass of %@", a3, objc_opt_class()}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v15 lineNumber:89 description:{@"%@ should be a subclass of %@", implementation, objc_opt_class()}];
 
     abort();
   }
 
-  if (([(objc_class *)a4 conformsToProtocol:&unk_1F57F43C8]& 1) == 0)
+  if (([(objc_class *)class conformsToProtocol:&unk_1F57F43C8]& 1) == 0)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -249,17 +249,17 @@ LABEL_22:
       {
         v17 = NSStringFromProtocol(&unk_1F57F43C8);
         *buf = 138412546;
-        v23 = a4;
+        classCopy = class;
         v24 = 2112;
-        v25 = v17;
+        selfCopy = v17;
         _os_log_impl(&dword_1DC05A000, v16, OS_LOG_TYPE_ERROR, "%@ should conform to %@", buf, 0x16u);
       }
     }
 
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLPlatform.m"];
     v20 = NSStringFromProtocol(&unk_1F57F43C8);
-    [v18 handleFailureInMethod:a2 object:self file:v19 lineNumber:90 description:{@"%@ should conform to %@", a4, v20}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:v19 lineNumber:90 description:{@"%@ should conform to %@", class, v20}];
 
     abort();
   }
@@ -270,14 +270,14 @@ LABEL_22:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138413058;
-      v23 = objc_opt_class();
+      classCopy = objc_opt_class();
       v24 = 2048;
-      v25 = self;
+      selfCopy = self;
       v26 = 2112;
-      v27 = a4;
+      classCopy2 = class;
       v28 = 2112;
-      v29 = a3;
-      v9 = v23;
+      implementationCopy2 = implementation;
+      v9 = classCopy;
       _os_log_impl(&dword_1DC05A000, v8, OS_LOG_TYPE_DEBUG, "<%@ %p> registering platform implementation %@ -> %@", buf, 0x2Au);
     }
   }
@@ -288,8 +288,8 @@ LABEL_22:
   block[2] = __50__CPLPlatform_setPlatformImplementation_forClass___block_invoke;
   block[3] = &unk_1E86203D0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = implementation;
+  block[6] = class;
   dispatch_sync(lock, block);
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -323,10 +323,10 @@ LABEL_22:
   return v3;
 }
 
-+ (void)setDefaultPlatform:(id)a3
++ (void)setDefaultPlatform:(id)platform
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  platformCopy = platform;
   v4 = objc_opt_class();
   objc_sync_enter(v4);
   if ((_CPLSilentLogging & 1) == 0)
@@ -335,13 +335,13 @@ LABEL_22:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = platformCopy;
       _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEBUG, "Setting default platform to %@", &v8, 0xCu);
     }
   }
 
   v6 = _defaultPlatform;
-  _defaultPlatform = v3;
+  _defaultPlatform = platformCopy;
 
   objc_sync_exit(v4);
   v7 = *MEMORY[0x1E69E9840];

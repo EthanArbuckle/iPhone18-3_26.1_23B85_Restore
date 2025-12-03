@@ -1,25 +1,25 @@
 @interface APAppDownloaderDataAdaptor
-- (BOOL)_validateParameters:(id *)a3;
-- (void)_run:(id)a3;
+- (BOOL)_validateParameters:(id *)parameters;
+- (void)_run:(id)_run;
 @end
 
 @implementation APAppDownloaderDataAdaptor
 
-- (void)_run:(id)a3
+- (void)_run:(id)_run
 {
-  v13 = a3;
-  v4 = [(APAppDownloaderDataAdaptor *)self downloadedApps];
-  v5 = [(APDataAdaptor *)self parameters];
-  v6 = [v5 objectForKeyedSubscript:@"included"];
+  _runCopy = _run;
+  downloadedApps = [(APAppDownloaderDataAdaptor *)self downloadedApps];
+  parameters = [(APDataAdaptor *)self parameters];
+  v6 = [parameters objectForKeyedSubscript:@"included"];
   v7 = [NSSet setWithArray:v6];
 
-  v8 = [(APDataAdaptor *)self parameters];
-  v9 = [v8 objectForKeyedSubscript:@"excluded"];
+  parameters2 = [(APDataAdaptor *)self parameters];
+  v9 = [parameters2 objectForKeyedSubscript:@"excluded"];
   v10 = [NSSet setWithArray:v9];
 
-  if ([v7 intersectsSet:v4])
+  if ([v7 intersectsSet:downloadedApps])
   {
-    v11 = [v10 intersectsSet:v4] ^ 1;
+    v11 = [v10 intersectsSet:downloadedApps] ^ 1;
   }
 
   else
@@ -27,14 +27,14 @@
     v11 = 0;
   }
 
-  if (v13)
+  if (_runCopy)
   {
     v12 = [NSNumber numberWithBool:v11];
-    (*(v13 + 2))(v13, v12, 0, 0);
+    (*(_runCopy + 2))(_runCopy, v12, 0, 0);
   }
 }
 
-- (BOOL)_validateParameters:(id *)a3
+- (BOOL)_validateParameters:(id *)parameters
 {
   v11.receiver = self;
   v11.super_class = APAppDownloaderDataAdaptor;
@@ -43,13 +43,13 @@
     return 0;
   }
 
-  v5 = [(APDataAdaptor *)self parameters];
-  v6 = [v5 objectForKeyedSubscript:@"included"];
-  if ([(APDataAdaptor *)self _checkClassType:v6 name:@"included" expectedClass:objc_opt_class() error:a3])
+  parameters = [(APDataAdaptor *)self parameters];
+  v6 = [parameters objectForKeyedSubscript:@"included"];
+  if ([(APDataAdaptor *)self _checkClassType:v6 name:@"included" expectedClass:objc_opt_class() error:parameters])
   {
-    v7 = [(APDataAdaptor *)self parameters];
-    v8 = [v7 objectForKeyedSubscript:@"excluded"];
-    v9 = [(APDataAdaptor *)self _checkClassType:v8 name:@"excluded" expectedClass:objc_opt_class() error:a3];
+    parameters2 = [(APDataAdaptor *)self parameters];
+    v8 = [parameters2 objectForKeyedSubscript:@"excluded"];
+    v9 = [(APDataAdaptor *)self _checkClassType:v8 name:@"excluded" expectedClass:objc_opt_class() error:parameters];
   }
 
   else

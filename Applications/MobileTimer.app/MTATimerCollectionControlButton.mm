@@ -1,15 +1,15 @@
 @interface MTATimerCollectionControlButton
-- (MTATimerCollectionControlButton)initWithFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (MTATimerCollectionControlButton)initWithFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation MTATimerCollectionControlButton
 
-- (MTATimerCollectionControlButton)initWithFrame:(CGRect)a3
+- (MTATimerCollectionControlButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MTATimerCollectionControlButton;
-  v3 = [(MTATimerCollectionControlButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTATimerCollectionControlButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -20,44 +20,44 @@
   return v4;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v11.receiver = self;
   v11.super_class = MTATimerCollectionControlButton;
   [(MTATimerCollectionControlButton *)&v11 setHighlighted:?];
-  if (!v3)
+  if (!highlightedCopy)
   {
-    v7 = [(MTATimerCollectionControlButton *)self normalBackgroundColor];
+    normalBackgroundColor = [(MTATimerCollectionControlButton *)self normalBackgroundColor];
 
-    if (v7)
+    if (normalBackgroundColor)
     {
-      v6 = [(MTATimerCollectionControlButton *)self normalBackgroundColor];
+      normalBackgroundColor2 = [(MTATimerCollectionControlButton *)self normalBackgroundColor];
       goto LABEL_6;
     }
 
-    v8 = [(MTATimerCollectionControlButton *)self tintColor];
-    v9 = [v8 normalShade];
+    tintColor = [(MTATimerCollectionControlButton *)self tintColor];
+    normalShade = [tintColor normalShade];
 LABEL_9:
-    v10 = v9;
-    [(MTATimerCollectionControlButton *)self setBackgroundColor:v9];
+    v10 = normalShade;
+    [(MTATimerCollectionControlButton *)self setBackgroundColor:normalShade];
 
     goto LABEL_10;
   }
 
-  v5 = [(MTATimerCollectionControlButton *)self highlightedBackgroundColor];
+  highlightedBackgroundColor = [(MTATimerCollectionControlButton *)self highlightedBackgroundColor];
 
-  if (!v5)
+  if (!highlightedBackgroundColor)
   {
-    v8 = [(MTATimerCollectionControlButton *)self tintColor];
-    v9 = [v8 highlightedShade];
+    tintColor = [(MTATimerCollectionControlButton *)self tintColor];
+    normalShade = [tintColor highlightedShade];
     goto LABEL_9;
   }
 
-  v6 = [(MTATimerCollectionControlButton *)self highlightedBackgroundColor];
+  normalBackgroundColor2 = [(MTATimerCollectionControlButton *)self highlightedBackgroundColor];
 LABEL_6:
-  v8 = v6;
-  [(MTATimerCollectionControlButton *)self setBackgroundColor:v6];
+  tintColor = normalBackgroundColor2;
+  [(MTATimerCollectionControlButton *)self setBackgroundColor:normalBackgroundColor2];
 LABEL_10:
 }
 

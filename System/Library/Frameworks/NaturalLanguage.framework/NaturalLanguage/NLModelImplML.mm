@@ -1,27 +1,27 @@
 @interface NLModelImplML
-- (NLModelImplML)initWithMLModel:(id)a3 configuration:(id)a4;
-- (id)predictedLabelForString:(id)a3;
-- (id)predictedLabelsForTokens:(id)a3;
+- (NLModelImplML)initWithMLModel:(id)model configuration:(id)configuration;
+- (id)predictedLabelForString:(id)string;
+- (id)predictedLabelsForTokens:(id)tokens;
 @end
 
 @implementation NLModelImplML
 
-- (NLModelImplML)initWithMLModel:(id)a3 configuration:(id)a4
+- (NLModelImplML)initWithMLModel:(id)model configuration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 modelDescription];
-  v10 = [v9 inputDescriptionsByName];
-  v11 = [v10 allKeys];
-  v12 = [v11 objectAtIndexedSubscript:0];
+  modelCopy = model;
+  configurationCopy = configuration;
+  modelDescription = [modelCopy modelDescription];
+  inputDescriptionsByName = [modelDescription inputDescriptionsByName];
+  allKeys = [inputDescriptionsByName allKeys];
+  v12 = [allKeys objectAtIndexedSubscript:0];
 
-  v13 = [v9 outputDescriptionsByName];
-  v14 = [v13 allKeys];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  outputDescriptionsByName = [modelDescription outputDescriptionsByName];
+  allKeys2 = [outputDescriptionsByName allKeys];
+  v15 = [allKeys2 objectAtIndexedSubscript:0];
 
-  if (v7)
+  if (modelCopy)
   {
-    if (v8)
+    if (configurationCopy)
     {
       if (v12)
       {
@@ -33,8 +33,8 @@
           self = v16;
           if (v16)
           {
-            objc_storeStrong(&v16->_mlModel, a3);
-            v17 = [v8 copy];
+            objc_storeStrong(&v16->_mlModel, model);
+            v17 = [configurationCopy copy];
             configuration = self->_configuration;
             self->_configuration = v17;
 
@@ -54,13 +54,13 @@
   return self;
 }
 
-- (id)predictedLabelForString:(id)a3
+- (id)predictedLabelForString:(id)string
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   if (!self->_mlModel || !self->_inputName || !self->_outputName)
   {
-    v14 = 0;
+    stringValue = 0;
     v9 = 0;
     v8 = 0;
 LABEL_7:
@@ -70,7 +70,7 @@ LABEL_7:
 
   v5 = objc_alloc(MEMORY[0x1E695FE48]);
   inputName = self->_inputName;
-  v6 = [MEMORY[0x1E695FE60] featureValueWithString:v4];
+  v6 = [MEMORY[0x1E695FE60] featureValueWithString:stringCopy];
   v21[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&inputName count:1];
   v19 = 0;
@@ -79,7 +79,7 @@ LABEL_7:
 
   if (!v8)
   {
-    v14 = 0;
+    stringValue = 0;
     goto LABEL_7;
   }
 
@@ -89,24 +89,24 @@ LABEL_7:
   v12 = v18;
 
   v13 = [v11 featureValueForName:self->_outputName];
-  v14 = [v13 stringValue];
+  stringValue = [v13 stringValue];
 
   v9 = v12;
 LABEL_8:
-  v15 = v14;
+  v15 = stringValue;
 
   v16 = *MEMORY[0x1E69E9840];
-  return v14;
+  return stringValue;
 }
 
-- (id)predictedLabelsForTokens:(id)a3
+- (id)predictedLabelsForTokens:(id)tokens
 {
-  v4 = a3;
-  v5 = [v4 componentsJoinedByString:@" "];
+  tokensCopy = tokens;
+  v5 = [tokensCopy componentsJoinedByString:@" "];
   v6 = [(NLModelImplML *)self predictedLabelForString:v5];
 
-  v7 = [MEMORY[0x1E695DF70] array];
-  if ([v4 count])
+  array = [MEMORY[0x1E695DF70] array];
+  if ([tokensCopy count])
   {
     v8 = 0;
     if (v6)
@@ -121,14 +121,14 @@ LABEL_8:
 
     do
     {
-      [v7 addObject:v9];
+      [array addObject:v9];
       ++v8;
     }
 
-    while (v8 < [v4 count]);
+    while (v8 < [tokensCopy count]);
   }
 
-  return v7;
+  return array;
 }
 
 @end

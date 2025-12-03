@@ -10,21 +10,21 @@
 {
   if ([(IKJSLegacyPlayer *)self conformsToProtocol:&unk_2867035E0])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (IKDOMElement)currentAVMediaElement
 {
-  v3 = [(IKJSLegacyPlayer *)self appBridge];
-  v4 = [v3 currentAVMediaElementForPlayer:self];
+  appBridge = [(IKJSLegacyPlayer *)self appBridge];
+  v4 = [appBridge currentAVMediaElementForPlayer:self];
 
   return v4;
 }

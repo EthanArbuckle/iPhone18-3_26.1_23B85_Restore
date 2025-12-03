@@ -28,8 +28,8 @@
 - (BOOL)addRequest:(VNRequest *)request processingOptions:(VNVideoProcessorRequestProcessingOptions *)processingOptions error:(NSError *)error
 {
   v8 = request;
-  v9 = [(VNVideoProcessorRequestProcessingOptions *)processingOptions _createVCPVideoProcessorRequestConfiguration];
-  LOBYTE(error) = [(VCPVideoProcessor *)self->_videoProcessor addRequest:v8 withConfiguration:v9 error:error];
+  _createVCPVideoProcessorRequestConfiguration = [(VNVideoProcessorRequestProcessingOptions *)processingOptions _createVCPVideoProcessorRequestConfiguration];
+  LOBYTE(error) = [(VCPVideoProcessor *)self->_videoProcessor addRequest:v8 withConfiguration:_createVCPVideoProcessorRequestConfiguration error:error];
 
   return error;
 }

@@ -1,19 +1,19 @@
 @interface WebViewerViewController
-- (_TtC7NewsUI223WebViewerViewController)initWithCoder:(id)a3;
-- (_TtC7NewsUI223WebViewerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC7NewsUI223WebViewerViewController)initWithCoder:(id)coder;
+- (_TtC7NewsUI223WebViewerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation WebViewerViewController
 
-- (_TtC7NewsUI223WebViewerViewController)initWithCoder:(id)a3
+- (_TtC7NewsUI223WebViewerViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7NewsUI223WebViewerViewController_coverViewManager;
   sub_219BE6C14();
@@ -29,7 +29,7 @@
   return result;
 }
 
-- (_TtC7NewsUI223WebViewerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI223WebViewerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -38,21 +38,21 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_219B72B7C();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(WebViewerViewController *)&v4 viewDidAppear:v3];
+  [(WebViewerViewController *)&v4 viewDidAppear:appearCopy];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_219B72D18();
 }
 
@@ -65,36 +65,36 @@
   sub_219BE6B94();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(WebViewerViewController *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
+  [(WebViewerViewController *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
   sub_219B740A4();
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  viewCopy = view;
+  navigationCopy = navigation;
+  selfCopy = self;
   sub_219B74200();
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_219B742EC();
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   v4 = 1;
-  v3 = self;
+  selfCopy = self;
   sub_218ED5C68(&v4);
 }
 

@@ -1,8 +1,8 @@
 @interface DROrientationObserver
 + (id)sharedObserver;
 - (id)_init;
-- (void)_didReceiveOrientationUpdate:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_didReceiveOrientationUpdate:(id)update;
+- (void)addObserver:(id)observer;
 @end
 
 @implementation DROrientationObserver
@@ -49,37 +49,37 @@
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (([(NSMutableSet *)self->_observers containsObject:v4]& 1) == 0)
+  observerCopy = observer;
+  if (([(NSMutableSet *)self->_observers containsObject:observerCopy]& 1) == 0)
   {
-    [(NSMutableSet *)self->_observers addObject:v4];
+    [(NSMutableSet *)self->_observers addObject:observerCopy];
     interfaceOrientationObserver = self->_interfaceOrientationObserver;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000046B8;
     v6[3] = &unk_100054C28;
-    v7 = v4;
-    v8 = self;
+    v7 = observerCopy;
+    selfCopy = self;
     [(FBSOrientationObserver *)interfaceOrientationObserver activeInterfaceOrientationWithCompletion:v6];
   }
 }
 
-- (void)_didReceiveOrientationUpdate:(id)a3
+- (void)_didReceiveOrientationUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = DRLogTarget();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 orientation];
-    [v4 duration];
+    orientation = [updateCopy orientation];
+    [updateCopy duration];
     *buf = 134218496;
-    v12 = v6;
+    v12 = orientation;
     v13 = 2048;
     v14 = v7;
     v15 = 2048;
-    v16 = [v4 rotationDirection];
+    rotationDirection = [updateCopy rotationDirection];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Got orientation change to %ld duration %g direction %ld", buf, 0x20u);
   }
 
@@ -88,8 +88,8 @@
   v9[2] = sub_10000482C;
   v9[3] = &unk_100054C50;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = updateCopy;
+  v8 = updateCopy;
   dispatch_async(&_dispatch_main_q, v9);
 }
 

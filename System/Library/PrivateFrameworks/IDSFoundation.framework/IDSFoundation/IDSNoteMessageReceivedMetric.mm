@@ -1,5 +1,5 @@
 @interface IDSNoteMessageReceivedMetric
-- (IDSNoteMessageReceivedMetric)initWithService:(id)a3 accountType:(id)a4 fromStorage:(BOOL)a5 serverTimestamp:(double)a6 localTimeDelta:(double)a7;
+- (IDSNoteMessageReceivedMetric)initWithService:(id)service accountType:(id)type fromStorage:(BOOL)storage serverTimestamp:(double)timestamp localTimeDelta:(double)delta;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -8,16 +8,16 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(IDSNoteMessageReceivedMetric *)self service];
-  if (v4)
+  service = [(IDSNoteMessageReceivedMetric *)self service];
+  if (service)
   {
-    CFDictionarySetValue(v3, @"service", v4);
+    CFDictionarySetValue(v3, @"service", service);
   }
 
-  v5 = [(IDSNoteMessageReceivedMetric *)self accountType];
-  if (v5)
+  accountType = [(IDSNoteMessageReceivedMetric *)self accountType];
+  if (accountType)
   {
-    CFDictionarySetValue(v3, @"accountType", v5);
+    CFDictionarySetValue(v3, @"accountType", accountType);
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[IDSNoteMessageReceivedMetric fromStorage](self, "fromStorage")}];
@@ -45,21 +45,21 @@
   return v3;
 }
 
-- (IDSNoteMessageReceivedMetric)initWithService:(id)a3 accountType:(id)a4 fromStorage:(BOOL)a5 serverTimestamp:(double)a6 localTimeDelta:(double)a7
+- (IDSNoteMessageReceivedMetric)initWithService:(id)service accountType:(id)type fromStorage:(BOOL)storage serverTimestamp:(double)timestamp localTimeDelta:(double)delta
 {
-  v13 = a3;
-  v14 = a4;
+  serviceCopy = service;
+  typeCopy = type;
   v18.receiver = self;
   v18.super_class = IDSNoteMessageReceivedMetric;
   v15 = [(IDSNoteMessageReceivedMetric *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_service, a3);
-    objc_storeStrong(&v16->_accountType, a4);
-    v16->_fromStorage = a5;
-    v16->_serverTimestamp = a6;
-    v16->_localTimeDelta = a7;
+    objc_storeStrong(&v15->_service, service);
+    objc_storeStrong(&v16->_accountType, type);
+    v16->_fromStorage = storage;
+    v16->_serverTimestamp = timestamp;
+    v16->_localTimeDelta = delta;
   }
 
   return v16;

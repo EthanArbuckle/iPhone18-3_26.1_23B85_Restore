@@ -1,12 +1,12 @@
 @interface __SwiftNativeNSStringBase
-- (__SwiftNativeNSStringBase)initWithCoder:(id)a3;
+- (__SwiftNativeNSStringBase)initWithCoder:(id)coder;
 - (void)_noteAssociatedObjects;
 - (void)_setWeaklyReferenced;
 @end
 
 @implementation __SwiftNativeNSStringBase
 
-- (__SwiftNativeNSStringBase)initWithCoder:(id)a3
+- (__SwiftNativeNSStringBase)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = __SwiftNativeNSStringBase;

@@ -1,10 +1,10 @@
 @interface CLSMemeModel
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3;
-- (BOOL)isMemeExclusiveFromSceneClassifications:(id)a3;
-- (BOOL)isMemeFromSceneClassifications:(id)a3;
-- (CLSMemeModel)initWithSceneAnalysisVersion:(unint64_t)a3;
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version;
+- (BOOL)isMemeExclusiveFromSceneClassifications:(id)classifications;
+- (BOOL)isMemeFromSceneClassifications:(id)classifications;
+- (CLSMemeModel)initWithSceneAnalysisVersion:(unint64_t)version;
 - (id)modelInfo;
-- (id)nodeForSignalIdentifier:(unint64_t)a3;
+- (id)nodeForSignalIdentifier:(unint64_t)identifier;
 - (void)setupVersion55;
 - (void)setupVersion59;
 - (void)setupVersion62;
@@ -12,15 +12,15 @@
 
 @implementation CLSMemeModel
 
-- (BOOL)isMemeFromSceneClassifications:(id)a3
+- (BOOL)isMemeFromSceneClassifications:(id)classifications
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  classificationsCopy = classifications;
+  v5 = [classificationsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -32,7 +32,7 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(classificationsCopy);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -50,7 +50,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [classificationsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -66,15 +66,15 @@ LABEL_14:
   return v7 & 1;
 }
 
-- (BOOL)isMemeExclusiveFromSceneClassifications:(id)a3
+- (BOOL)isMemeExclusiveFromSceneClassifications:(id)classifications
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  classificationsCopy = classifications;
+  v5 = [classificationsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -86,7 +86,7 @@ LABEL_14:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(classificationsCopy);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -101,7 +101,7 @@ LABEL_14:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [classificationsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -120,13 +120,13 @@ LABEL_12:
 - (id)modelInfo
 {
   v12[3] = *MEMORY[0x277D85DE8];
-  v3 = [(CLSMemeModel *)self negativeNode];
-  v4 = [v3 signalInfoWithIsHierarchical:0];
-  v5 = [(CLSMemeModel *)self documentNode];
-  v6 = [v5 signalInfoWithIsHierarchical:0];
+  negativeNode = [(CLSMemeModel *)self negativeNode];
+  v4 = [negativeNode signalInfoWithIsHierarchical:0];
+  documentNode = [(CLSMemeModel *)self documentNode];
+  v6 = [documentNode signalInfoWithIsHierarchical:0];
   v12[1] = v6;
-  v7 = [(CLSMemeModel *)self memeScreenshotEtcNode];
-  v8 = [v7 signalInfoWithIsHierarchical:0];
+  memeScreenshotEtcNode = [(CLSMemeModel *)self memeScreenshotEtcNode];
+  v8 = [memeScreenshotEtcNode signalInfoWithIsHierarchical:0];
   v12[2] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:3];
 
@@ -135,27 +135,27 @@ LABEL_12:
   return v9;
 }
 
-- (id)nodeForSignalIdentifier:(unint64_t)a3
+- (id)nodeForSignalIdentifier:(unint64_t)identifier
 {
-  switch(a3)
+  switch(identifier)
   {
     case 0x7FFFFAFF:
-      v4 = [(CLSMemeModel *)self memeScreenshotEtcNode];
+      memeScreenshotEtcNode = [(CLSMemeModel *)self memeScreenshotEtcNode];
       goto LABEL_7;
     case 0x7FFFFAFE:
-      v4 = [(CLSMemeModel *)self documentNode];
+      memeScreenshotEtcNode = [(CLSMemeModel *)self documentNode];
       goto LABEL_7;
     case 0x7FFFFAFD:
-      v4 = [(CLSMemeModel *)self negativeNode];
+      memeScreenshotEtcNode = [(CLSMemeModel *)self negativeNode];
 LABEL_7:
-      v5 = v4;
+      v5 = memeScreenshotEtcNode;
       goto LABEL_8;
   }
 
-  if ([(CLSMemeModel *)self isResponsibleForSignalIdentifier:a3])
+  if ([(CLSMemeModel *)self isResponsibleForSignalIdentifier:identifier])
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Meme - Unknown (%X)", a3];
-    v5 = [[CLSSignalNode alloc] initWithIdentifier:a3 name:v7 operatingPoint:0.0 highPrecisionOperatingPoint:0.0 highRecallOperatingPoint:0.0];
+    identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"Meme - Unknown (%X)", identifier];
+    v5 = [[CLSSignalNode alloc] initWithIdentifier:identifier name:identifier operatingPoint:0.0 highPrecisionOperatingPoint:0.0 highRecallOperatingPoint:0.0];
   }
 
   else
@@ -222,7 +222,7 @@ LABEL_8:
   MEMORY[0x2821F96F8]();
 }
 
-- (CLSMemeModel)initWithSceneAnalysisVersion:(unint64_t)a3
+- (CLSMemeModel)initWithSceneAnalysisVersion:(unint64_t)version
 {
   v14 = *MEMORY[0x277D85DE8];
   v9.receiver = self;
@@ -231,17 +231,17 @@ LABEL_8:
   v5 = v4;
   if (v4)
   {
-    if (a3 < 0x3E)
+    if (version < 0x3E)
     {
-      if (a3 < 0x3B)
+      if (version < 0x3B)
       {
-        if (a3 < 0x37)
+        if (version < 0x37)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
             v6 = objc_opt_class();
             *buf = 67109378;
-            v11 = a3;
+            versionCopy = version;
             v12 = 2112;
             v13 = v6;
             _os_log_impl(&dword_25E5F0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unsupported version %d in %@", buf, 0x12u);
@@ -272,21 +272,21 @@ LABEL_8:
   return v5;
 }
 
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version
 {
   v3 = 59;
   v4 = 55;
-  if (a3 < 0x37)
+  if (version < 0x37)
   {
     v4 = 0;
   }
 
-  if (a3 <= 0x3A)
+  if (version <= 0x3A)
   {
     v3 = v4;
   }
 
-  if (a3 <= 0x3D)
+  if (version <= 0x3D)
   {
     return v3;
   }

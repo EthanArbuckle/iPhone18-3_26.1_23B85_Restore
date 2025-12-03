@@ -1,17 +1,17 @@
 @interface CuratedCollectionMediaIntegrationViewModel
-+ (double)logoToTitlePaddingWithMediaType:(int64_t)a3;
-+ (id)actionTextForResult:(id)a3 hasChildLinks:(BOOL)a4;
-+ (id)bundleIdentifierForResult:(id)a3;
++ (double)logoToTitlePaddingWithMediaType:(int64_t)type;
++ (id)actionTextForResult:(id)result hasChildLinks:(BOOL)links;
++ (id)bundleIdentifierForResult:(id)result;
 + (id)formatterForDurationString;
-+ (id)localizedSystemFirstPartyNameForResult:(id)a3;
-+ (id)realmIconForResult:(id)a3;
-+ (id)subtitleForResult:(id)a3;
-+ (id)systemFirstPartyIconForResult:(id)a3;
-- (CuratedCollectionMediaIntegrationViewModel)initWithAdamID:(id)a3 title:(id)a4 subtitle:(id)a5 actionText:(id)a6 url:(id)a7 artworkURL:(id)a8 systemFirstPartyIcon:(id)a9 localizedSystemFirstPartyName:(id)a10 realmIcon:(id)a11 childViewModels:(id)a12 targetAppIdentifier:(id)a13 mediaType:(int64_t)a14 logoToTitlePadding:(double)a15;
-- (CuratedCollectionMediaIntegrationViewModel)initWithAppleMediaServicesResult:(id)a3 thirdPartyLinks:(id)a4;
-- (CuratedCollectionMediaIntegrationViewModel)initWithResolvedThirdPartyLink:(id)a3 mediaType:(int64_t)a4;
++ (id)localizedSystemFirstPartyNameForResult:(id)result;
++ (id)realmIconForResult:(id)result;
++ (id)subtitleForResult:(id)result;
++ (id)systemFirstPartyIconForResult:(id)result;
+- (CuratedCollectionMediaIntegrationViewModel)initWithAdamID:(id)d title:(id)title subtitle:(id)subtitle actionText:(id)text url:(id)url artworkURL:(id)l systemFirstPartyIcon:(id)icon localizedSystemFirstPartyName:(id)self0 realmIcon:(id)self1 childViewModels:(id)self2 targetAppIdentifier:(id)self3 mediaType:(int64_t)self4 logoToTitlePadding:(double)self5;
+- (CuratedCollectionMediaIntegrationViewModel)initWithAppleMediaServicesResult:(id)result thirdPartyLinks:(id)links;
+- (CuratedCollectionMediaIntegrationViewModel)initWithResolvedThirdPartyLink:(id)link mediaType:(int64_t)type;
 - (void)cancelImageDownload;
-- (void)loadImageForSize:(CGSize)a3 completion:(id)a4;
+- (void)loadImageForSize:(CGSize)size completion:(id)completion;
 @end
 
 @implementation CuratedCollectionMediaIntegrationViewModel
@@ -22,46 +22,46 @@
   [v3 cancelLoadAppImageAtURL:self->_artworkURL];
 }
 
-- (void)loadImageForSize:(CGSize)a3 completion:(id)a4
+- (void)loadImageForSize:(CGSize)size completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = +[MKAppImageManager sharedImageManager];
   artworkURL = self->_artworkURL;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1006C0C84;
   v9[3] = &unk_101650190;
-  v10 = v5;
-  v8 = v5;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [v6 loadAppImageAtURL:artworkURL completionHandler:v9];
 }
 
-- (CuratedCollectionMediaIntegrationViewModel)initWithAdamID:(id)a3 title:(id)a4 subtitle:(id)a5 actionText:(id)a6 url:(id)a7 artworkURL:(id)a8 systemFirstPartyIcon:(id)a9 localizedSystemFirstPartyName:(id)a10 realmIcon:(id)a11 childViewModels:(id)a12 targetAppIdentifier:(id)a13 mediaType:(int64_t)a14 logoToTitlePadding:(double)a15
+- (CuratedCollectionMediaIntegrationViewModel)initWithAdamID:(id)d title:(id)title subtitle:(id)subtitle actionText:(id)text url:(id)url artworkURL:(id)l systemFirstPartyIcon:(id)icon localizedSystemFirstPartyName:(id)self0 realmIcon:(id)self1 childViewModels:(id)self2 targetAppIdentifier:(id)self3 mediaType:(int64_t)self4 logoToTitlePadding:(double)self5
 {
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
-  v51 = a7;
-  v25 = a8;
-  v50 = a8;
-  v49 = a9;
-  v26 = a10;
-  v27 = v24;
-  v48 = a11;
-  v28 = v23;
-  v29 = a12;
-  v30 = a13;
+  dCopy = d;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  textCopy = text;
+  urlCopy = url;
+  lCopy = l;
+  lCopy2 = l;
+  iconCopy = icon;
+  nameCopy = name;
+  v27 = textCopy;
+  realmIconCopy = realmIcon;
+  v28 = subtitleCopy;
+  modelsCopy = models;
+  identifierCopy = identifier;
   v52.receiver = self;
   v52.super_class = CuratedCollectionMediaIntegrationViewModel;
   v31 = [(CuratedCollectionMediaIntegrationViewModel *)&v52 init];
   if (v31)
   {
-    v32 = [v21 copy];
+    v32 = [dCopy copy];
     identifier = v31->_identifier;
     v31->_identifier = v32;
 
-    v34 = [v22 copy];
+    v34 = [titleCopy copy];
     title = v31->_title;
     v31->_title = v34;
 
@@ -73,94 +73,94 @@
     actionText = v31->_actionText;
     v31->_actionText = v38;
 
-    objc_storeStrong(&v31->_url, a7);
-    objc_storeStrong(&v31->_artworkURL, v25);
-    objc_storeStrong(&v31->_systemFirstPartyIcon, a9);
-    v40 = [v26 copy];
+    objc_storeStrong(&v31->_url, url);
+    objc_storeStrong(&v31->_artworkURL, lCopy);
+    objc_storeStrong(&v31->_systemFirstPartyIcon, icon);
+    v40 = [nameCopy copy];
     localizedSystemFirstPartyName = v31->_localizedSystemFirstPartyName;
     v31->_localizedSystemFirstPartyName = v40;
 
-    objc_storeStrong(&v31->_realmIcon, a11);
-    v42 = [v29 copy];
+    objc_storeStrong(&v31->_realmIcon, realmIcon);
+    v42 = [modelsCopy copy];
     childViewModels = v31->_childViewModels;
     v31->_childViewModels = v42;
 
-    v44 = [v30 copy];
+    v44 = [identifierCopy copy];
     targetAppIdentifier = v31->_targetAppIdentifier;
     v31->_targetAppIdentifier = v44;
 
-    v31->_mediaType = a14;
-    v31->_logoToTitlePadding = a15;
+    v31->_mediaType = type;
+    v31->_logoToTitlePadding = padding;
   }
 
   return v31;
 }
 
-- (CuratedCollectionMediaIntegrationViewModel)initWithResolvedThirdPartyLink:(id)a3 mediaType:(int64_t)a4
+- (CuratedCollectionMediaIntegrationViewModel)initWithResolvedThirdPartyLink:(id)link mediaType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [v6 adamID];
-  v8 = [v6 appName];
-  v9 = [v6 url];
-  v10 = [v6 appIconURL];
-  v11 = [v6 adamID];
+  linkCopy = link;
+  adamID = [linkCopy adamID];
+  appName = [linkCopy appName];
+  v9 = [linkCopy url];
+  appIconURL = [linkCopy appIconURL];
+  adamID2 = [linkCopy adamID];
 
-  [objc_opt_class() logoToTitlePaddingWithMediaType:a4];
-  v12 = [(CuratedCollectionMediaIntegrationViewModel *)self initWithAdamID:v7 title:v8 subtitle:0 actionText:0 url:v9 artworkURL:v10 systemFirstPartyIcon:0 localizedSystemFirstPartyName:0 realmIcon:0 childViewModels:0 targetAppIdentifier:v11 mediaType:a4 logoToTitlePadding:?];
+  [objc_opt_class() logoToTitlePaddingWithMediaType:type];
+  v12 = [(CuratedCollectionMediaIntegrationViewModel *)self initWithAdamID:adamID title:appName subtitle:0 actionText:0 url:v9 artworkURL:appIconURL systemFirstPartyIcon:0 localizedSystemFirstPartyName:0 realmIcon:0 childViewModels:0 targetAppIdentifier:adamID2 mediaType:type logoToTitlePadding:?];
 
   return v12;
 }
 
-- (CuratedCollectionMediaIntegrationViewModel)initWithAppleMediaServicesResult:(id)a3 thirdPartyLinks:(id)a4
+- (CuratedCollectionMediaIntegrationViewModel)initWithAppleMediaServicesResult:(id)result thirdPartyLinks:(id)links
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [v8 copy];
+  resultCopy = result;
+  linksCopy = links;
+  identifier = [resultCopy identifier];
+  v9 = [identifier copy];
 
-  v10 = [v6 displayName];
-  v11 = [v10 copy];
+  displayName = [resultCopy displayName];
+  v11 = [displayName copy];
 
-  v12 = [v6 url];
-  v13 = [v6 artworkURL];
-  v14 = 0;
-  if (v9 && v11 && v12 && v13)
+  v12 = [resultCopy url];
+  artworkURL = [resultCopy artworkURL];
+  selfCopy2 = 0;
+  if (v9 && v11 && v12 && artworkURL)
   {
-    v28 = v13;
+    v28 = artworkURL;
     v27 = v9;
-    v15 = [v6 mediaType];
+    mediaType = [resultCopy mediaType];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_1006C1254;
     v29[3] = &unk_1016264E0;
-    v16 = self;
-    v30 = v16;
-    v31 = v15;
-    v17 = [v7 _maps_map:v29];
-    v25 = [objc_opt_class() subtitleForResult:v6];
-    v24 = [objc_opt_class() actionTextForResult:v6 hasChildLinks:{objc_msgSend(v17, "count") != 0}];
-    v23 = [objc_opt_class() systemFirstPartyIconForResult:v6];
-    v18 = [objc_opt_class() localizedSystemFirstPartyNameForResult:v6];
-    v19 = [objc_opt_class() realmIconForResult:v6];
-    [objc_opt_class() bundleIdentifierForResult:v6];
-    v20 = v26 = v7;
-    [objc_opt_class() logoToTitlePaddingWithMediaType:v15];
-    v22 = v15;
+    selfCopy = self;
+    v30 = selfCopy;
+    v31 = mediaType;
+    v17 = [linksCopy _maps_map:v29];
+    v25 = [objc_opt_class() subtitleForResult:resultCopy];
+    v24 = [objc_opt_class() actionTextForResult:resultCopy hasChildLinks:{objc_msgSend(v17, "count") != 0}];
+    v23 = [objc_opt_class() systemFirstPartyIconForResult:resultCopy];
+    v18 = [objc_opt_class() localizedSystemFirstPartyNameForResult:resultCopy];
+    v19 = [objc_opt_class() realmIconForResult:resultCopy];
+    [objc_opt_class() bundleIdentifierForResult:resultCopy];
+    v20 = v26 = linksCopy;
+    [objc_opt_class() logoToTitlePaddingWithMediaType:mediaType];
+    v22 = mediaType;
     v9 = v27;
-    self = [(CuratedCollectionMediaIntegrationViewModel *)v16 initWithAdamID:v27 title:v11 subtitle:v25 actionText:v24 url:v12 artworkURL:v28 systemFirstPartyIcon:v23 localizedSystemFirstPartyName:v18 realmIcon:v19 childViewModels:v17 targetAppIdentifier:v20 mediaType:v22 logoToTitlePadding:?];
+    self = [(CuratedCollectionMediaIntegrationViewModel *)selfCopy initWithAdamID:v27 title:v11 subtitle:v25 actionText:v24 url:v12 artworkURL:v28 systemFirstPartyIcon:v23 localizedSystemFirstPartyName:v18 realmIcon:v19 childViewModels:v17 targetAppIdentifier:v20 mediaType:v22 logoToTitlePadding:?];
 
-    v7 = v26;
-    v13 = v28;
-    v14 = self;
+    linksCopy = v26;
+    artworkURL = v28;
+    selfCopy2 = self;
   }
 
-  return v14;
+  return selfCopy2;
 }
 
-+ (double)logoToTitlePaddingWithMediaType:(int64_t)a3
++ (double)logoToTitlePaddingWithMediaType:(int64_t)type
 {
   result = 6.0;
-  if ((a3 - 1) < 3)
+  if ((type - 1) < 3)
   {
     return 4.0;
   }
@@ -168,31 +168,31 @@
   return result;
 }
 
-+ (id)bundleIdentifierForResult:(id)a3
++ (id)bundleIdentifierForResult:(id)result
 {
-  v3 = [a3 mediaType];
-  if ((v3 - 1) > 0x13)
+  mediaType = [result mediaType];
+  if ((mediaType - 1) > 0x13)
   {
     return 0;
   }
 
   else
   {
-    return off_101626660[(v3 - 1)];
+    return off_101626660[(mediaType - 1)];
   }
 }
 
-+ (id)localizedSystemFirstPartyNameForResult:(id)a3
++ (id)localizedSystemFirstPartyNameForResult:(id)result
 {
-  v3 = [a3 mediaType];
-  if ((v3 - 1) > 0x13)
+  mediaType = [result mediaType];
+  if ((mediaType - 1) > 0x13)
   {
     v7 = 0;
   }
 
   else
   {
-    v4 = off_1016265C0[(v3 - 1)];
+    v4 = off_1016265C0[(mediaType - 1)];
     v5 = +[NSBundle mainBundle];
     v6 = [v5 localizedStringForKey:v4 value:@"localized string not found" table:0];
     v7 = [NSString localizedStringWithFormat:v6];
@@ -201,9 +201,9 @@
   return v7;
 }
 
-+ (id)systemFirstPartyIconForResult:(id)a3
++ (id)systemFirstPartyIconForResult:(id)result
 {
-  v3 = [a1 bundleIdentifierForResult:a3];
+  v3 = [self bundleIdentifierForResult:result];
   v4 = +[UIScreen mainScreen];
   [v4 scale];
   v5 = [UIImage _applicationIconImageForBundleIdentifier:v3 format:1 scale:?];
@@ -211,31 +211,31 @@
   return v5;
 }
 
-+ (id)realmIconForResult:(id)a3
++ (id)realmIconForResult:(id)result
 {
-  v3 = [a3 mediaType];
-  if ((v3 - 1) > 0x13)
+  mediaType = [result mediaType];
+  if ((mediaType - 1) > 0x13)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [UIImage imageNamed:off_101626520[(v3 - 1)]];
+    v4 = [UIImage imageNamed:off_101626520[(mediaType - 1)]];
   }
 
   return v4;
 }
 
-+ (id)actionTextForResult:(id)a3 hasChildLinks:(BOOL)a4
++ (id)actionTextForResult:(id)result hasChildLinks:(BOOL)links
 {
-  v5 = [a3 mediaType];
+  mediaType = [result mediaType];
   v6 = 0;
-  if (v5 > 10)
+  if (mediaType > 10)
   {
-    if (v5 > 15)
+    if (mediaType > 15)
     {
-      if ((v5 - 18) < 3)
+      if ((mediaType - 18) < 3)
       {
         v9 = +[NSBundle mainBundle];
         v7 = v9;
@@ -246,15 +246,15 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      if (v5 != 16)
+      if (mediaType != 16)
       {
-        if (v5 != 17)
+        if (mediaType != 17)
         {
           goto LABEL_31;
         }
 
         v7 = +[NSBundle mainBundle];
-        if (a4)
+        if (links)
         {
           v8 = @"[Curated Guides] View Now";
         }
@@ -268,7 +268,7 @@ LABEL_30:
       }
 
       v7 = +[NSBundle mainBundle];
-      if (!a4)
+      if (!links)
       {
         v8 = @"[Curated Guides] Listen on Apple Books";
         goto LABEL_29;
@@ -277,10 +277,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    if ((v5 - 12) < 3)
+    if ((mediaType - 12) < 3)
     {
       v7 = +[NSBundle mainBundle];
-      if (!a4)
+      if (!links)
       {
         v8 = @"[Curated Guides] Listen on Apple Podcasts";
         goto LABEL_29;
@@ -291,15 +291,15 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    if (v5 != 11)
+    if (mediaType != 11)
     {
-      if (v5 != 15)
+      if (mediaType != 15)
       {
         goto LABEL_31;
       }
 
       v7 = +[NSBundle mainBundle];
-      if (a4)
+      if (links)
       {
         v8 = @"[Curated Guides] Read Now";
       }
@@ -315,9 +315,9 @@ LABEL_28:
     goto LABEL_25;
   }
 
-  if (v5 <= 3)
+  if (mediaType <= 3)
   {
-    if ((v5 - 1) >= 3)
+    if ((mediaType - 1) >= 3)
     {
       goto LABEL_31;
     }
@@ -328,11 +328,11 @@ LABEL_28:
     goto LABEL_30;
   }
 
-  if ((v5 - 4) < 5)
+  if ((mediaType - 4) < 5)
   {
 LABEL_4:
     v7 = +[NSBundle mainBundle];
-    if (!a4)
+    if (!links)
     {
       v8 = @"[Curated Guides] Listen on Apple Music";
 LABEL_29:
@@ -343,11 +343,11 @@ LABEL_29:
     goto LABEL_28;
   }
 
-  if (v5 == 9)
+  if (mediaType == 9)
   {
 LABEL_25:
     v7 = +[NSBundle mainBundle];
-    if (a4)
+    if (links)
     {
       v8 = @"[Curated Guides] Watch Now";
     }
@@ -360,7 +360,7 @@ LABEL_25:
     goto LABEL_29;
   }
 
-  if (v5 == 10)
+  if (mediaType == 10)
   {
     goto LABEL_4;
   }
@@ -370,17 +370,17 @@ LABEL_31:
   return v6;
 }
 
-+ (id)subtitleForResult:(id)a3
++ (id)subtitleForResult:(id)result
 {
-  v4 = a3;
-  switch([v4 mediaType])
+  resultCopy = result;
+  switch([resultCopy mediaType])
   {
     case 1uLL:
     case 2uLL:
-      v5 = [v4 subtitle];
+      subtitle = [resultCopy subtitle];
       goto LABEL_12;
     case 3uLL:
-      v5 = [v4 editorialSubtitle];
+      subtitle = [resultCopy editorialSubtitle];
       goto LABEL_12;
     case 4uLL:
     case 5uLL:
@@ -389,9 +389,9 @@ LABEL_31:
     case 0xDuLL:
     case 0xFuLL:
     case 0x10uLL:
-      v5 = [v4 artistName];
+      subtitle = [resultCopy artistName];
 LABEL_12:
-      v9 = v5;
+      v9 = subtitle;
       break;
     case 6uLL:
       v6 = +[NSBundle mainBundle];
@@ -437,13 +437,13 @@ LABEL_12:
       v10 = +[NSBundle mainBundle];
       v7 = [v10 localizedStringForKey:@"[Curated Guides] Media Integration Subtitle Fitness+ Class" value:@"localized string not found" table:0];
 
-      v11 = [v4 classType];
-      v12 = [a1 formatterForDurationString];
-      [v4 duration];
-      v14 = [v12 stringFromTimeInterval:v13 * 0.001];
-      v15 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 episodeNumber]);
+      classType = [resultCopy classType];
+      formatterForDurationString = [self formatterForDurationString];
+      [resultCopy duration];
+      v14 = [formatterForDurationString stringFromTimeInterval:v13 * 0.001];
+      v15 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [resultCopy episodeNumber]);
       v16 = [NSNumberFormatter localizedStringFromNumber:v15 numberStyle:1];
-      v9 = [NSString localizedStringWithFormat:v7, v11, v14, v16];
+      v9 = [NSString localizedStringWithFormat:v7, classType, v14, v16];
 
       goto LABEL_18;
     case 0x14uLL:

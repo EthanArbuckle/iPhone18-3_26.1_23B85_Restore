@@ -1,28 +1,28 @@
 @interface SBFolderControllerBackgroundView
-+ (id)_tintColorForEffect:(unint64_t)a3;
-- (SBFolderControllerBackgroundView)initWithFrame:(CGRect)a3;
++ (id)_tintColorForEffect:(unint64_t)effect;
+- (SBFolderControllerBackgroundView)initWithFrame:(CGRect)frame;
 - (SBFolderControllerBackgroundViewDelegate)delegate;
 - (double)minimumHomeScreenScale;
-- (id)currentEffectMaterialRecipeNameForHighQualityBlur:(BOOL)a3;
+- (id)currentEffectMaterialRecipeNameForHighQualityBlur:(BOOL)blur;
 - (unint64_t)concreteEffect;
 - (void)_reduceTransparencyEnabledStateChanged;
 - (void)_updateCurrentEffect;
 - (void)layoutSubviews;
-- (void)setDelegate:(id)a3;
-- (void)setEffect:(unint64_t)a3;
-- (void)setEffectActive:(BOOL)a3;
-- (void)setExpanding:(BOOL)a3;
-- (void)setFrozen:(BOOL)a3;
-- (void)setTransitionCancelled:(BOOL)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setEffect:(unint64_t)effect;
+- (void)setEffectActive:(BOOL)active;
+- (void)setExpanding:(BOOL)expanding;
+- (void)setFrozen:(BOOL)frozen;
+- (void)setTransitionCancelled:(BOOL)cancelled;
 @end
 
 @implementation SBFolderControllerBackgroundView
 
 - (void)_updateCurrentEffect
 {
-  v3 = [(SBFolderControllerBackgroundView *)self currentEffect];
-  v4 = [(SBFolderControllerBackgroundView *)self concreteEffect];
-  [(SBFolderControllerBackgroundView *)self setCurrentEffect:v4];
+  currentEffect = [(SBFolderControllerBackgroundView *)self currentEffect];
+  concreteEffect = [(SBFolderControllerBackgroundView *)self concreteEffect];
+  [(SBFolderControllerBackgroundView *)self setCurrentEffect:concreteEffect];
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x2020000000;
@@ -31,26 +31,26 @@
   v15[1] = 3221225472;
   v15[2] = __56__SBFolderControllerBackgroundView__updateCurrentEffect__block_invoke;
   v15[3] = &unk_1E80897B0;
-  v16 = v4 - 3 < 2;
-  v17 = v3 == 0;
-  v18 = v3 - 3 < 2;
+  v16 = concreteEffect - 3 < 2;
+  v17 = currentEffect == 0;
+  v18 = currentEffect - 3 < 2;
   v15[4] = self;
   v15[5] = v19;
   [MEMORY[0x1E69DD250] performWithoutAnimation:v15];
-  if (v4 - 3 > 1)
+  if (concreteEffect - 3 > 1)
   {
     if (UIAccessibilityIsReduceMotionEnabled() && !UIAccessibilityIsReduceTransparencyEnabled())
     {
-      v9 = [(SBFolderControllerBackgroundView *)self _isCurrentlyExpanding];
+      _isCurrentlyExpanding = [(SBFolderControllerBackgroundView *)self _isCurrentlyExpanding];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __56__SBFolderControllerBackgroundView__updateCurrentEffect__block_invoke_3;
       v13[3] = &unk_1E80897D8;
       v13[4] = self;
-      v14 = v9;
+      v14 = _isCurrentlyExpanding;
       [MEMORY[0x1E69DD250] performWithoutAnimation:v13];
       v10 = 0.0;
-      if (v9)
+      if (_isCurrentlyExpanding)
       {
         v10 = 1.0;
       }
@@ -96,11 +96,11 @@
 
   else
   {
-    v5 = [objc_opt_class() _tintColorForEffect:v4];
+    v5 = [objc_opt_class() _tintColorForEffect:concreteEffect];
     [(UIView *)self->_tintView setBackgroundColor:v5];
-    v6 = [(SBFolderControllerBackgroundView *)self isEffectActive];
+    isEffectActive = [(SBFolderControllerBackgroundView *)self isEffectActive];
     v7 = 0.0;
-    if (v6)
+    if (isEffectActive)
     {
       v7 = 1.0;
     }
@@ -221,9 +221,9 @@ void __56__SBFolderControllerBackgroundView__updateCurrentEffect__block_invoke(u
   }
 }
 
-+ (id)_tintColorForEffect:(unint64_t)a3
++ (id)_tintColorForEffect:(unint64_t)effect
 {
-  if (a3 == 3)
+  if (effect == 3)
   {
     v5 = 0.6;
 LABEL_5:
@@ -232,7 +232,7 @@ LABEL_5:
     return v6;
   }
 
-  if (a3 == 4)
+  if (effect == 4)
   {
     v5 = 0.8;
     goto LABEL_5;
@@ -243,15 +243,15 @@ LABEL_5:
   return v6;
 }
 
-- (SBFolderControllerBackgroundView)initWithFrame:(CGRect)a3
+- (SBFolderControllerBackgroundView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SBFolderControllerBackgroundView;
-  v3 = [(SBFolderControllerBackgroundView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBFolderControllerBackgroundView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__reduceTransparencyEnabledStateChanged name:*MEMORY[0x1E69DD920] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__reduceTransparencyEnabledStateChanged name:*MEMORY[0x1E69DD920] object:0];
 
     [(SBFolderControllerBackgroundView *)v3 _reduceTransparencyEnabledStateChanged];
   }
@@ -304,28 +304,28 @@ LABEL_5:
   [(UIView *)self->_debugFreezingView setFrame:v4, v6, v8, v10];
 }
 
-- (void)setEffect:(unint64_t)a3
+- (void)setEffect:(unint64_t)effect
 {
-  if (self->_effect != a3)
+  if (self->_effect != effect)
   {
-    self->_effect = a3;
+    self->_effect = effect;
     [(SBFolderControllerBackgroundView *)self _updateCurrentEffect];
   }
 }
 
-- (id)currentEffectMaterialRecipeNameForHighQualityBlur:(BOOL)a3
+- (id)currentEffectMaterialRecipeNameForHighQualityBlur:(BOOL)blur
 {
-  v3 = a3;
-  v4 = [(SBFolderControllerBackgroundView *)self concreteEffect];
-  if (v4 == 2)
+  blurCopy = blur;
+  concreteEffect = [(SBFolderControllerBackgroundView *)self concreteEffect];
+  if (concreteEffect == 2)
   {
     v6 = @"folderExpandedBackgroundApp";
   }
 
-  else if (v4 == 1)
+  else if (concreteEffect == 1)
   {
     v5 = @"folderExpandedBackgroundHomeSimplified";
-    if (v3)
+    if (blurCopy)
     {
       v5 = @"folderExpandedBackgroundHome";
     }
@@ -356,42 +356,42 @@ uint64_t __56__SBFolderControllerBackgroundView__updateCurrentEffect__block_invo
   return [v4 setWeighting:1.0];
 }
 
-- (void)setTransitionCancelled:(BOOL)a3
+- (void)setTransitionCancelled:(BOOL)cancelled
 {
-  if (self->_transitionCancelled != a3)
+  if (self->_transitionCancelled != cancelled)
   {
-    self->_transitionCancelled = a3;
+    self->_transitionCancelled = cancelled;
     [(SBFolderControllerBackgroundView *)self _updateCurrentEffect];
   }
 }
 
-- (void)setEffectActive:(BOOL)a3
+- (void)setEffectActive:(BOOL)active
 {
-  if (self->_effectActive != a3)
+  if (self->_effectActive != active)
   {
-    self->_effectActive = a3;
+    self->_effectActive = active;
     [(SBFolderControllerBackgroundView *)self _updateCurrentEffect];
   }
 }
 
-- (void)setExpanding:(BOOL)a3
+- (void)setExpanding:(BOOL)expanding
 {
-  if (self->_expanding != a3)
+  if (self->_expanding != expanding)
   {
-    self->_expanding = a3;
+    self->_expanding = expanding;
     [(SBFolderControllerBackgroundView *)self _updateCurrentEffect];
   }
 }
 
-- (void)setFrozen:(BOOL)a3
+- (void)setFrozen:(BOOL)frozen
 {
-  if (self->_frozen != a3)
+  if (self->_frozen != frozen)
   {
     v16[13] = v3;
     v16[14] = v4;
-    self->_frozen = a3;
-    v6 = !a3;
-    [(UIView *)self->_debugFreezingView setHidden:!a3];
+    self->_frozen = frozen;
+    v6 = !frozen;
+    [(UIView *)self->_debugFreezingView setHidden:!frozen];
     if (v6)
     {
       [(SBFolderControllerBackgroundView *)self addSubview:self->_blurView];
@@ -402,11 +402,11 @@ uint64_t __56__SBFolderControllerBackgroundView__updateCurrentEffect__block_invo
 
     else
     {
-      v7 = [MEMORY[0x1E69DCA80] defaultFormat];
-      [v7 setOpaque:1];
+      defaultFormat = [MEMORY[0x1E69DCA80] defaultFormat];
+      [defaultFormat setOpaque:1];
       v8 = objc_alloc(MEMORY[0x1E69DCA78]);
       [(MTMaterialView *)self->_blurView bounds];
-      v11 = [v8 initWithSize:v7 format:{v9, v10}];
+      v11 = [v8 initWithSize:defaultFormat format:{v9, v10}];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __46__SBFolderControllerBackgroundView_setFrozen___block_invoke;
@@ -435,9 +435,9 @@ uint64_t __46__SBFolderControllerBackgroundView_setFrozen___block_invoke(uint64_
   return [v1 drawViewHierarchyInRect:0 afterScreenUpdates:?];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -451,11 +451,11 @@ uint64_t __46__SBFolderControllerBackgroundView_setFrozen___block_invoke(uint64_
 
 - (double)minimumHomeScreenScale
 {
-  v3 = [(SBFolderControllerBackgroundView *)self delegate];
-  v4 = v3;
-  if (v3)
+  delegate = [(SBFolderControllerBackgroundView *)self delegate];
+  v4 = delegate;
+  if (delegate)
   {
-    [v3 minimumHomeScreenScaleForFolderControllerBackgroundView:self];
+    [delegate minimumHomeScreenScaleForFolderControllerBackgroundView:self];
     v6 = v5;
   }
 
